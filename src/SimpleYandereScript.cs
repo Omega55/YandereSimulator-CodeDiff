@@ -4,19 +4,7 @@ using UnityEngine;
 [Serializable]
 public class SimpleYandereScript : MonoBehaviour
 {
-	public GameObject PointLight;
-
 	public GameObject Character;
-
-	public GameObject Jukebox;
-
-	public GameObject Minimap;
-
-	public Transform RightBreast;
-
-	public Transform LeftBreast;
-
-	public float BreastSize;
 
 	public float WalkSpeed;
 
@@ -26,12 +14,7 @@ public class SimpleYandereScript : MonoBehaviour
 
 	private int ID;
 
-	public SimpleYandereScript()
-	{
-		this.BreastSize = 1f;
-	}
-
-	public virtual void LateUpdate()
+	public virtual void Update()
 	{
 		Vector3 a = Camera.main.transform.TransformDirection(Vector3.forward);
 		a.y = (float)0;
@@ -66,73 +49,10 @@ public class SimpleYandereScript : MonoBehaviour
 		{
 			this.Character.animation.CrossFade("student_idle");
 		}
-		if (this.transform.position.y < (float)-1 || Input.GetKeyDown("r"))
+		if (Input.GetKeyDown("r"))
 		{
 			Application.LoadLevel(Application.loadedLevel);
 		}
-		if (Input.GetKeyDown("escape"))
-		{
-			Application.Quit();
-		}
-		if (Input.GetKeyDown("m"))
-		{
-			if (!this.Minimap.active)
-			{
-				this.Minimap.active = true;
-			}
-			else
-			{
-				this.Minimap.active = false;
-			}
-		}
-		if (Input.GetKeyDown("l"))
-		{
-			if (!this.PointLight.active)
-			{
-				this.PointLight.active = true;
-			}
-			else
-			{
-				this.PointLight.active = false;
-			}
-		}
-		if (Input.GetKeyDown("n"))
-		{
-			if (!this.Jukebox.active)
-			{
-				this.Jukebox.active = true;
-			}
-			else
-			{
-				this.Jukebox.active = false;
-			}
-		}
-		if (Input.GetKey("-"))
-		{
-			this.BreastSize -= Time.deltaTime;
-			if (this.BreastSize < (float)0)
-			{
-				this.BreastSize = (float)0;
-			}
-		}
-		if (Input.GetKeyDown("1"))
-		{
-			Application.LoadLevel(0);
-		}
-		if (Input.GetKeyDown("2"))
-		{
-			Application.LoadLevel(1);
-		}
-		if (Input.GetKeyDown("3"))
-		{
-			Application.LoadLevel(2);
-		}
-		if (Input.GetKey("="))
-		{
-			this.BreastSize += Time.deltaTime;
-		}
-		this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
-		this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 	}
 
 	public virtual void Main()
