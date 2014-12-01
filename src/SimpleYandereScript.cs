@@ -4,7 +4,19 @@ using UnityEngine;
 [Serializable]
 public class SimpleYandereScript : MonoBehaviour
 {
+	public GameObject PointLight;
+
 	public GameObject Character;
+
+	public GameObject Jukebox;
+
+	public GameObject Minimap;
+
+	public Transform RightBreast;
+
+	public Transform LeftBreast;
+
+	public float BreastSize;
 
 	public float WalkSpeed;
 
@@ -14,7 +26,12 @@ public class SimpleYandereScript : MonoBehaviour
 
 	private int ID;
 
-	public virtual void Update()
+	public SimpleYandereScript()
+	{
+		this.BreastSize = 1f;
+	}
+
+	public virtual void LateUpdate()
 	{
 		Vector3 a = Camera.main.transform.TransformDirection(Vector3.forward);
 		a.y = (float)0;
@@ -49,9 +66,24 @@ public class SimpleYandereScript : MonoBehaviour
 		{
 			this.Character.animation.CrossFade("student_idle");
 		}
-		if (Input.GetKeyDown("r"))
+		if (this.transform.position.y < (float)-1 || Input.GetKeyDown("r"))
 		{
 			Application.LoadLevel(Application.loadedLevel);
+		}
+		if (Input.GetKeyDown("escape"))
+		{
+			Application.Quit();
+		}
+		if (Input.GetKeyDown("m"))
+		{
+			if (!this.Jukebox.active)
+			{
+				this.Jukebox.active = true;
+			}
+			else
+			{
+				this.Jukebox.active = false;
+			}
 		}
 	}
 
