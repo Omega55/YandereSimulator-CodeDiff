@@ -10,6 +10,8 @@ public class PauseScreenScript : MonoBehaviour
 
 	public Blur ScreenBlur;
 
+	public GameObject PromptParent;
+
 	public GameObject MainMenu;
 
 	public Transform Highlight;
@@ -45,6 +47,7 @@ public class PauseScreenScript : MonoBehaviour
 			}
 			if (Input.GetButtonDown("Start"))
 			{
+				this.PromptParent.active = false;
 				this.ScreenBlur.enabled = true;
 				this.RPGCamera.enabled = false;
 				this.Show = true;
@@ -110,6 +113,7 @@ public class PauseScreenScript : MonoBehaviour
 				}
 				if (Input.GetButtonDown("Start"))
 				{
+					this.PromptParent.active = true;
 					this.ScreenBlur.enabled = false;
 					this.RPGCamera.enabled = true;
 					this.Show = false;

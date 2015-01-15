@@ -4,6 +4,8 @@ using UnityEngine;
 [Serializable]
 public class JukeboxScript : MonoBehaviour
 {
+	public YandereScript Yandere;
+
 	public AudioSource Piano;
 
 	public AudioSource HipHop;
@@ -35,6 +37,8 @@ public class JukeboxScript : MonoBehaviour
 			this.Piano.volume = this.Piano.volume - Time.deltaTime;
 			this.HipHop.volume = this.HipHop.volume + Time.deltaTime;
 		}
+		this.Piano.pitch = Mathf.Lerp(this.Piano.pitch, (float)1 - (0.5f - this.Yandere.Sanity * 0.005f), Time.deltaTime);
+		this.HipHop.pitch = Mathf.Lerp(this.HipHop.pitch, (float)1 - (0.5f - this.Yandere.Sanity * 0.005f), Time.deltaTime);
 	}
 
 	public virtual void Main()
