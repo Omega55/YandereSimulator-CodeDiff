@@ -34,9 +34,9 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 	public virtual void Update()
 	{
 		this.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
-		if (this.transform.position.y < 0.5f && this.NearbyBlood < 1)
+		if (this.transform.position.y < 0.33333f && this.NearbyBlood < 1)
 		{
-			GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.BloodPool, new Vector3(this.transform.position.x, 0.011f, this.transform.position.z), Quaternion.identity);
+			GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.BloodPool, new Vector3(this.transform.position.x, 0.012f, this.transform.position.z), Quaternion.identity);
 			gameObject.transform.localEulerAngles = new Vector3((float)90, UnityEngine.Random.Range((float)0, 360f), (float)0);
 			gameObject.transform.parent = this.BloodParent;
 		}

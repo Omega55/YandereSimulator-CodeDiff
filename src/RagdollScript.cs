@@ -24,7 +24,11 @@ public class RagdollScript : MonoBehaviour
 
 	public bool Dragged;
 
+	public float AnimStartTime;
+
 	public int LimbID;
+
+	public int Frame;
 
 	public virtual void Start()
 	{
@@ -33,17 +37,21 @@ public class RagdollScript : MonoBehaviour
 		{
 			this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent(typeof(YandereScript));
 		}
+		this.Character.animation.Play("f02_down_22");
+		this.Character.animation["f02_down_22"].time = this.AnimStartTime;
+		this.Character.animation["f02_down_22"].speed = (float)0;
 	}
 
 	public virtual void Update()
 	{
-		this.Character.animation.enabled = false;
+		this.Character.animation.Stop();
 		if (!Input.GetButtonDown("LB"))
 		{
 			if (this.Prompt.Circle[1].fillAmount <= (float)0)
 			{
 				if (!this.Dragged)
 				{
+					this.Prompt.AcceptingInput[1] = false;
 					this.Prompt.Circle[1].fillAmount = (float)1;
 					this.Prompt.Label[1].text = "     " + "Drop";
 					this.PickNearestLimb();
@@ -80,10 +88,15 @@ public class RagdollScript : MonoBehaviour
 			this.Yandere.NearBodies = this.Yandere.NearBodies - 1;
 			this.AddingToCount = false;
 		}
+		if (!this.Prompt.AcceptingInput[1] && Input.GetButtonUp("B"))
+		{
+			this.Prompt.AcceptingInput[1] = true;
+		}
 	}
 
 	public virtual void StopDragging()
 	{
+		this.Prompt.AcceptingInput[1] = false;
 		this.Prompt.Circle[1].fillAmount = (float)1;
 		this.Prompt.Label[1].text = "     " + "Drag";
 		this.Yandere.RagdollDragger.connectedBody = null;

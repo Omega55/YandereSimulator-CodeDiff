@@ -16,9 +16,15 @@ public class YandereScript : MonoBehaviour
 
 	public FootprintSpawnerScript LeftFootprintSpawner;
 
+	public NotificationManagerScript NotificationManager;
+
+	public ColorCorrectionCurves YandereColorCorrection;
+
 	public ColorCorrectionCurves ColorCorrection;
 
 	public StudentManagerScript StudentManager;
+
+	public HighlightingEffect Highlighting;
 
 	public SWP_HeartRateMonitor HeartRate;
 
@@ -34,13 +40,7 @@ public class YandereScript : MonoBehaviour
 
 	public WeaponScript Weapon;
 
-	public WarningScript VisiblyArmed;
-
-	public WarningScript VisiblyBloody;
-
-	public WarningScript VisiblyInsane;
-
-	public WarningScript NearBody;
+	public Vignetting Vignette;
 
 	public SpringJoint RagdollDragger;
 
@@ -68,21 +68,25 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject Ragdoll;
 
+	public GameObject Hearts;
+
+	public GameObject Phone;
+
 	public GameObject Trail;
 
 	public Renderer MyRenderer;
 
+	public float YandereTimer;
+
 	public float AttackTimer;
+
+	public float LaughTimer;
 
 	public float DumpTimer;
 
 	public float TalkTimer;
 
-	public float PreviousBloodiness;
-
 	public float Bloodiness;
-
-	public float PreviousSanity;
 
 	public float Sanity;
 
@@ -92,6 +96,8 @@ public class YandereScript : MonoBehaviour
 
 	public float NextTwitch;
 
+	public float LaughIntensity;
+
 	public float BreastSize;
 
 	public float WalkSpeed;
@@ -100,7 +106,13 @@ public class YandereScript : MonoBehaviour
 
 	public float Slouch;
 
-	public float Tint;
+	public float YandereFade;
+
+	public float YandereTint;
+
+	public float SenpaiFade;
+
+	public float SenpaiTint;
 
 	public int AttackPhase;
 
@@ -108,9 +120,23 @@ public class YandereScript : MonoBehaviour
 
 	public int NearBodies;
 
+	public int Costume;
+
+	public bool BloodyWarning;
+
+	public bool CorpseWarning;
+
+	public bool SanityWarning;
+
+	public bool WeaponWarning;
+
+	public bool TimeSkipping;
+
 	public bool Attacking;
 
 	public bool Dragging;
+
+	public bool Laughing;
 
 	public bool Throwing;
 
@@ -118,9 +144,13 @@ public class YandereScript : MonoBehaviour
 
 	public bool Talking;
 
+	public bool YandereVision;
+
 	public bool Heartbroken;
 
 	public bool DpadPressed;
+
+	public bool NearSenpai;
 
 	public bool CanMove;
 
@@ -134,6 +164,10 @@ public class YandereScript : MonoBehaviour
 
 	public Transform[] Arm;
 
+	public Renderer RightYandereEye;
+
+	public Renderer LeftYandereEye;
+
 	public Vector3 RightEyeOrigin;
 
 	public Vector3 LeftEyeOrigin;
@@ -146,11 +180,26 @@ public class YandereScript : MonoBehaviour
 
 	public Vector3 Twitch;
 
+	private AudioClip LaughClip;
+
+	public string LaughAnim;
+
+	public AudioClip Laugh1;
+
+	public AudioClip Laugh2;
+
+	public AudioClip Laugh3;
+
+	public AudioClip Laugh4;
+
+	public Texture TitanTexture;
+
 	public YandereScript()
 	{
 		this.Sanity = 100f;
 		this.BreastSize = 1f;
 		this.CanMove = true;
+		this.LaughAnim = string.Empty;
 	}
 
 	public virtual void Start()
@@ -158,11 +207,16 @@ public class YandereScript : MonoBehaviour
 		this.RightEyeOrigin = this.RightEye.localPosition;
 		this.LeftEyeOrigin = this.LeftEye.localPosition;
 		this.Character.animation["f02_yanderePose_00"].weight = (float)0;
-		this.ResetEffects();
-		this.UpdateHeartRate();
+		ColorCorrectionCurves[] components = Camera.main.GetComponents<ColorCorrectionCurves>();
+		Vignetting[] components2 = Camera.main.GetComponents<Vignetting>();
+		this.YandereColorCorrection = components[1];
+		this.Vignette = components2[1];
+		this.ResetYandereEffects();
+		this.ResetSenpaiEffects();
+		this.UpdateSanity();
 	}
 
-	public virtual void LateUpdate()
+	public virtual void Update()
 	{
 		if (this.CanMove)
 		{
@@ -211,6 +265,40 @@ public class YandereScript : MonoBehaviour
 			{
 				this.Character.animation.CrossFade("f02_dragIdle_00");
 			}
+			if (!this.NearSenpai)
+			{
+				if (Input.GetButton("RB"))
+				{
+					this.YandereTimer += Time.deltaTime;
+					if (this.YandereTimer > 0.5f)
+					{
+						this.YandereVision = true;
+					}
+				}
+				if (Input.GetButtonUp("RB"))
+				{
+					if (this.YandereTimer < 0.5f)
+					{
+						if (!this.Dragging && !this.Laughing)
+						{
+							this.LaughAnim = "f02_laugh_01";
+							this.LaughClip = this.Laugh1;
+							this.Laughing = true;
+							this.LaughIntensity += (float)1;
+							this.LaughTimer = 0.5f;
+							this.audio.volume = (float)1;
+							this.audio.time = (float)0;
+							this.audio.Play();
+							this.CanMove = false;
+						}
+					}
+					else
+					{
+						this.YandereVision = false;
+					}
+					this.YandereTimer = (float)0;
+				}
+			}
 		}
 		else
 		{
@@ -243,6 +331,73 @@ public class YandereScript : MonoBehaviour
 			{
 				this.Character.animation.CrossFade("f02_down_23");
 			}
+			if (this.Laughing)
+			{
+				if (this.audio.clip != this.LaughClip)
+				{
+					this.audio.clip = this.LaughClip;
+					this.audio.time = (float)0;
+					this.audio.Play();
+				}
+				this.Character.animation.CrossFade(this.LaughAnim);
+				if (Input.GetButtonDown("RB"))
+				{
+					this.LaughIntensity += (float)1;
+					if (this.LaughIntensity <= (float)5)
+					{
+						this.LaughAnim = "f02_laugh_01";
+						this.LaughClip = this.Laugh1;
+						this.LaughTimer = 0.5f;
+					}
+					else if (this.LaughIntensity <= (float)10)
+					{
+						this.LaughAnim = "f02_laugh_02";
+						this.LaughClip = this.Laugh2;
+						this.LaughTimer = (float)1;
+					}
+					else if (this.LaughIntensity <= (float)15)
+					{
+						this.LaughAnim = "f02_laugh_03";
+						this.LaughClip = this.Laugh3;
+						this.LaughTimer = 1.5f;
+					}
+					else if (this.LaughIntensity <= (float)20)
+					{
+						this.LaughAnim = "f02_laugh_04";
+						this.LaughClip = this.Laugh4;
+						this.LaughTimer = (float)2;
+					}
+					else
+					{
+						this.LaughAnim = "f02_laugh_04";
+						this.LaughIntensity = (float)20;
+						this.LaughTimer = (float)2;
+					}
+				}
+				if (this.LaughIntensity > (float)15)
+				{
+					this.Sanity += Time.deltaTime * (float)10;
+					this.UpdateSanity();
+				}
+				this.LaughTimer -= Time.deltaTime;
+				if (this.LaughTimer <= (float)0)
+				{
+					this.LaughIntensity = (float)0;
+					this.Laughing = false;
+					this.LaughClip = null;
+					this.CanMove = true;
+				}
+			}
+			if (this.TimeSkipping)
+			{
+				this.Character.animation.CrossFade("f02_timeSkip_00");
+				this.Sanity += Time.deltaTime * 0.17f;
+				this.UpdateSanity();
+			}
+		}
+		if (!this.Laughing)
+		{
+			this.audio.volume = this.audio.volume - Time.deltaTime * (float)2;
 		}
 		if (this.Die)
 		{
@@ -253,6 +408,7 @@ public class YandereScript : MonoBehaviour
 		}
 		if (Input.GetButtonDown("LS") || Input.GetKeyDown("t"))
 		{
+			Debug.Log("Spawned?");
 			if (this.NewTrail != null)
 			{
 				UnityEngine.Object.Destroy(this.NewTrail);
@@ -272,7 +428,11 @@ public class YandereScript : MonoBehaviour
 				this.DpadPressed = true;
 				this.Armed = true;
 				this.StudentManager.UpdateStudents();
-				this.VisiblyArmed.Warn();
+				if (!this.WeaponWarning)
+				{
+					this.NotificationManager.DisplayNotification("Armed");
+					this.WeaponWarning = true;
+				}
 			}
 		}
 		if (Input.GetAxis("DpadY") > -0.5f && Input.GetAxis("DpadY") < 0.5f && Input.GetAxis("DpadX") > -0.5f && Input.GetAxis("DpadX") < 0.5f)
@@ -285,53 +445,121 @@ public class YandereScript : MonoBehaviour
 		}
 		if (Vector3.Distance(this.transform.position, this.Senpai.position) < (float)2)
 		{
+			if (!this.NearSenpai)
+			{
+				this.DepthOfField.focalSize = (float)150;
+				this.NearSenpai = true;
+			}
+			this.YandereVision = false;
+			this.YandereTimer = (float)0;
 			if (this.Dragging)
 			{
 				((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).StopDragging();
 			}
 			if (this.Armed)
 			{
-				this.VisiblyArmed.Display = false;
+				this.WeaponWarning = false;
 				this.Weapon.Drop();
 			}
-			this.ColorCorrection.enabled = true;
+		}
+		else
+		{
+			this.NearSenpai = false;
+		}
+		if (this.NearSenpai)
+		{
 			this.DepthOfField.enabled = true;
 			this.DepthOfField.focalSize = Mathf.Lerp(this.DepthOfField.focalSize, (float)0, Time.deltaTime * (float)10);
 			this.DepthOfField.focalZStartCurve = Mathf.Lerp(this.DepthOfField.focalZStartCurve, (float)20, Time.deltaTime * (float)10);
 			this.DepthOfField.focalZEndCurve = Mathf.Lerp(this.DepthOfField.focalZEndCurve, (float)20, Time.deltaTime * (float)10);
-			this.Tint = (float)1 - this.DepthOfField.focalSize / (float)150;
-			this.ColorCorrection.redChannel.MoveKey(1, new Keyframe(0.5f, 0.5f + this.Tint * 0.5f));
-			this.ColorCorrection.greenChannel.MoveKey(1, new Keyframe(0.5f, 0.5f - this.Tint * 0.5f));
-			this.ColorCorrection.blueChannel.MoveKey(1, new Keyframe(0.5f, 0.5f + this.Tint * 0.5f));
+			this.DepthOfField.objectFocus = this.Senpai.transform;
+			this.ColorCorrection.enabled = true;
+			this.SenpaiFade = Mathf.Lerp(this.SenpaiFade, (float)0, Time.deltaTime * (float)10);
+			this.SenpaiTint = (float)1 - this.SenpaiFade / (float)100;
+			this.ColorCorrection.redChannel.MoveKey(1, new Keyframe(0.5f, 0.5f + this.SenpaiTint * 0.5f));
+			this.ColorCorrection.greenChannel.MoveKey(1, new Keyframe(0.5f, 0.5f - this.SenpaiTint * 0.5f));
+			this.ColorCorrection.blueChannel.MoveKey(1, new Keyframe(0.5f, 0.5f + this.SenpaiTint * 0.5f));
 			this.ColorCorrection.redChannel.SmoothTangents(1, (float)0);
 			this.ColorCorrection.greenChannel.SmoothTangents(1, (float)0);
 			this.ColorCorrection.blueChannel.SmoothTangents(1, (float)0);
 			this.ColorCorrection.UpdateTextures();
-			this.Character.animation["f02_shy_00"].weight = this.Tint;
-			this.HeartBeat.volume = this.Tint;
+			this.Character.animation["f02_shy_00"].weight = this.SenpaiTint;
+			this.HeartBeat.volume = this.SenpaiTint;
 			this.Sanity += Time.deltaTime * (float)10;
-			this.UpdateHeartRate();
+			this.UpdateSanity();
 		}
-		else if (this.DepthOfField.focalSize < (float)149)
+		else if (this.SenpaiFade < (float)99)
 		{
 			this.DepthOfField.focalSize = Mathf.Lerp(this.DepthOfField.focalSize, (float)150, Time.deltaTime * (float)10);
 			this.DepthOfField.focalZStartCurve = Mathf.Lerp(this.DepthOfField.focalZStartCurve, (float)0, Time.deltaTime * (float)10);
 			this.DepthOfField.focalZEndCurve = Mathf.Lerp(this.DepthOfField.focalZEndCurve, (float)0, Time.deltaTime * (float)10);
-			this.Tint = this.DepthOfField.focalSize / (float)150;
-			this.ColorCorrection.redChannel.MoveKey(1, new Keyframe(0.5f, (float)1 - this.Tint * 0.5f));
-			this.ColorCorrection.greenChannel.MoveKey(1, new Keyframe(0.5f, this.Tint * 0.5f));
-			this.ColorCorrection.blueChannel.MoveKey(1, new Keyframe(0.5f, (float)1 - this.Tint * 0.5f));
+			this.SenpaiFade = Mathf.Lerp(this.SenpaiFade, (float)100, Time.deltaTime * (float)10);
+			this.SenpaiTint = this.SenpaiFade / (float)100;
+			this.ColorCorrection.redChannel.MoveKey(1, new Keyframe(0.5f, (float)1 - this.SenpaiTint * 0.5f));
+			this.ColorCorrection.greenChannel.MoveKey(1, new Keyframe(0.5f, this.SenpaiTint * 0.5f));
+			this.ColorCorrection.blueChannel.MoveKey(1, new Keyframe(0.5f, (float)1 - this.SenpaiTint * 0.5f));
 			this.ColorCorrection.redChannel.SmoothTangents(1, (float)0);
 			this.ColorCorrection.greenChannel.SmoothTangents(1, (float)0);
 			this.ColorCorrection.blueChannel.SmoothTangents(1, (float)0);
 			this.ColorCorrection.UpdateTextures();
-			this.Character.animation["f02_shy_00"].weight = (float)1 - this.Tint;
-			this.HeartBeat.volume = (float)1 - this.Tint;
+			this.Character.animation["f02_shy_00"].weight = (float)1 - this.SenpaiTint;
+			this.HeartBeat.volume = (float)1 - this.SenpaiTint;
+		}
+		else if (this.SenpaiFade < (float)100)
+		{
+			this.ResetSenpaiEffects();
+		}
+		if (this.YandereVision)
+		{
+			Time.timeScale = Mathf.Lerp(Time.timeScale, 0.5f, 0.166666672f);
+			this.YandereColorCorrection.enabled = true;
+			this.Highlighting.enabled = true;
+			this.Vignette.enabled = true;
+			this.YandereFade = Mathf.Lerp(this.YandereFade, (float)0, Time.deltaTime * (float)10);
+			this.YandereTint = (float)1 - this.YandereFade / (float)100;
+			this.YandereColorCorrection.redChannel.MoveKey(1, new Keyframe(0.5f, 0.5f - this.YandereTint * 0.25f));
+			this.YandereColorCorrection.greenChannel.MoveKey(1, new Keyframe(0.5f, 0.5f - this.YandereTint * 0.25f));
+			this.YandereColorCorrection.blueChannel.MoveKey(1, new Keyframe(0.5f, 0.5f + this.YandereTint * 0.25f));
+			this.YandereColorCorrection.redChannel.SmoothTangents(1, (float)0);
+			this.YandereColorCorrection.greenChannel.SmoothTangents(1, (float)0);
+			this.YandereColorCorrection.blueChannel.SmoothTangents(1, (float)0);
+			this.YandereColorCorrection.UpdateTextures();
+			this.Vignette.intensity = Mathf.Lerp(this.Vignette.intensity, this.YandereTint * (float)5, Time.deltaTime * (float)10);
+			this.Vignette.blur = Mathf.Lerp(this.Vignette.blur, this.YandereTint, Time.deltaTime * (float)10);
+			this.Vignette.chromaticAberration = Mathf.Lerp(this.Vignette.chromaticAberration, this.YandereTint * (float)5, Time.deltaTime * (float)10);
 		}
 		else
 		{
-			this.ResetEffects();
+			this.Highlighting.enabled = false;
+			if (this.YandereFade < (float)99)
+			{
+				Time.timeScale = Mathf.Lerp(Time.timeScale, (float)1, 0.166666672f);
+				this.YandereFade = Mathf.Lerp(this.YandereFade, (float)100, Time.deltaTime * (float)10);
+				this.YandereTint = this.YandereFade / (float)100;
+				this.YandereColorCorrection.redChannel.MoveKey(1, new Keyframe(0.5f, this.YandereTint * 0.5f));
+				this.YandereColorCorrection.greenChannel.MoveKey(1, new Keyframe(0.5f, this.YandereTint * 0.5f));
+				this.YandereColorCorrection.blueChannel.MoveKey(1, new Keyframe(0.5f, (float)1 - this.YandereTint * 0.5f));
+				this.YandereColorCorrection.redChannel.SmoothTangents(1, (float)0);
+				this.YandereColorCorrection.greenChannel.SmoothTangents(1, (float)0);
+				this.YandereColorCorrection.blueChannel.SmoothTangents(1, (float)0);
+				this.YandereColorCorrection.UpdateTextures();
+				this.Vignette.intensity = Mathf.Lerp(this.Vignette.intensity, (float)0, Time.deltaTime * (float)10);
+				this.Vignette.blur = Mathf.Lerp(this.Vignette.blur, (float)0, Time.deltaTime * (float)10);
+				this.Vignette.chromaticAberration = Mathf.Lerp(this.Vignette.chromaticAberration, (float)0, Time.deltaTime * (float)10);
+			}
+			else if (this.YandereFade < (float)100)
+			{
+				this.ResetYandereEffects();
+			}
 		}
+		float a3 = (float)1 - this.YandereFade / (float)100;
+		Color color = this.RightYandereEye.material.color;
+		float num = color.a = a3;
+		Color color2 = this.RightYandereEye.material.color = color;
+		float a4 = (float)1 - this.YandereFade / (float)100;
+		Color color3 = this.LeftYandereEye.material.color;
+		float num2 = color3.a = a4;
+		Color color4 = this.LeftYandereEye.material.color = color3;
 		if (this.Armed)
 		{
 			this.Character.animation["f02_fist_00"].weight = Mathf.Lerp(this.Character.animation["f02_fist_00"].weight, (float)1, Time.deltaTime * (float)10);
@@ -342,7 +570,7 @@ public class YandereScript : MonoBehaviour
 		}
 		if (this.Talking)
 		{
-			this.targetRotation = Quaternion.LookRotation(this.TargetStudent.transform.position - this.transform.position);
+			this.targetRotation = Quaternion.LookRotation(new Vector3(this.TargetStudent.transform.position.x, this.transform.position.y, this.TargetStudent.transform.position.z) - this.transform.position);
 			this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
 			if (this.Interaction == 0)
 			{
@@ -406,7 +634,7 @@ public class YandereScript : MonoBehaviour
 		}
 		if (this.Attacking)
 		{
-			this.targetRotation = Quaternion.LookRotation(this.TargetStudent.transform.position - this.transform.position);
+			this.targetRotation = Quaternion.LookRotation(new Vector3(this.TargetStudent.transform.position.x, this.transform.position.y, this.TargetStudent.transform.position.z) - this.transform.position);
 			this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
 			if (this.AttackPhase == 1)
 			{
@@ -419,7 +647,7 @@ public class YandereScript : MonoBehaviour
 					this.Bloodiness += (float)20;
 					this.AttackPhase = 2;
 					this.Sanity -= (float)20;
-					this.UpdateHeartRate();
+					this.UpdateSanity();
 					this.UpdateBlood();
 				}
 			}
@@ -445,48 +673,7 @@ public class YandereScript : MonoBehaviour
 			this.Character.animation["f02_yanderePose_00"].weight = Mathf.Lerp(this.Character.animation["f02_yanderePose_00"].weight, (float)0, Time.deltaTime * (float)10);
 			this.Slouch = Mathf.Lerp(this.Slouch, (float)0, Time.deltaTime * (float)10);
 		}
-		this.ID = 0;
-		while (this.ID < this.Spine.Length)
-		{
-			float x = this.Spine[this.ID].transform.localEulerAngles.x + this.Slouch;
-			Vector3 localEulerAngles = this.Spine[this.ID].transform.localEulerAngles;
-			float num = localEulerAngles.x = x;
-			Vector3 vector = this.Spine[this.ID].transform.localEulerAngles = localEulerAngles;
-			this.ID++;
-		}
-		float z = this.Arm[0].transform.localEulerAngles.z - this.Slouch * (float)3;
-		Vector3 localEulerAngles2 = this.Arm[0].transform.localEulerAngles;
-		float num2 = localEulerAngles2.z = z;
-		Vector3 vector2 = this.Arm[0].transform.localEulerAngles = localEulerAngles2;
-		float z2 = this.Arm[1].transform.localEulerAngles.z + this.Slouch * (float)3;
-		Vector3 localEulerAngles3 = this.Arm[1].transform.localEulerAngles;
-		float num3 = localEulerAngles3.z = z2;
-		Vector3 vector3 = this.Arm[1].transform.localEulerAngles = localEulerAngles3;
 		this.EyeShrink = Mathf.Lerp(this.EyeShrink, (float)1 - this.Sanity / (float)100, Time.deltaTime * (float)10);
-		float z3 = this.LeftEyeOrigin.z - this.EyeShrink * 0.01f;
-		Vector3 localPosition = this.LeftEye.localPosition;
-		float num4 = localPosition.z = z3;
-		Vector3 vector4 = this.LeftEye.localPosition = localPosition;
-		float z4 = this.RightEyeOrigin.z + this.EyeShrink * 0.01f;
-		Vector3 localPosition2 = this.RightEye.localPosition;
-		float num5 = localPosition2.z = z4;
-		Vector3 vector5 = this.RightEye.localPosition = localPosition2;
-		float x2 = (float)1 - this.EyeShrink * 0.5f;
-		Vector3 localScale = this.LeftEye.localScale;
-		float num6 = localScale.x = x2;
-		Vector3 vector6 = this.LeftEye.localScale = localScale;
-		float y = (float)1 - this.EyeShrink * 0.5f;
-		Vector3 localScale2 = this.LeftEye.localScale;
-		float num7 = localScale2.y = y;
-		Vector3 vector7 = this.LeftEye.localScale = localScale2;
-		float x3 = (float)1 - this.EyeShrink * 0.5f;
-		Vector3 localScale3 = this.RightEye.localScale;
-		float num8 = localScale3.x = x3;
-		Vector3 vector8 = this.RightEye.localScale = localScale3;
-		float y2 = (float)1 - this.EyeShrink * 0.5f;
-		Vector3 localScale4 = this.RightEye.localScale;
-		float num9 = localScale4.y = y2;
-		Vector3 vector9 = this.RightEye.localScale = localScale4;
 		if (this.Sanity < (float)100)
 		{
 			this.TwitchTimer += Time.deltaTime;
@@ -503,11 +690,15 @@ public class YandereScript : MonoBehaviour
 		}
 		if (this.NearBodies > 0)
 		{
-			this.NearBody.Warn();
+			if (!this.CorpseWarning)
+			{
+				this.NotificationManager.DisplayNotification("Body");
+				this.CorpseWarning = true;
+			}
 		}
 		else
 		{
-			this.NearBody.Display = false;
+			this.CorpseWarning = false;
 		}
 		if (this.transform.position.y < (float)-1 || Input.GetKeyDown("`"))
 		{
@@ -552,22 +743,80 @@ public class YandereScript : MonoBehaviour
 				this.BreastSize = (float)0;
 			}
 		}
+		if (Input.GetKey("l"))
+		{
+			this.StudentManager.AttackOnTitan();
+			this.AttackOnTitan();
+		}
 		if (this.transform.position.z < (float)-50)
 		{
-			int num10 = -50;
+			int num3 = -50;
 			Vector3 position = this.transform.position;
-			float num11 = position.z = (float)num10;
-			Vector3 vector10 = this.transform.position = position;
+			float num4 = position.z = (float)num3;
+			Vector3 vector = this.transform.position = position;
 		}
+		if (this.rigidbody.velocity.y > (float)0)
+		{
+			int num5 = 0;
+			Vector3 velocity = this.rigidbody.velocity;
+			float num6 = velocity.y = (float)num5;
+			Vector3 vector2 = this.rigidbody.velocity = velocity;
+		}
+	}
+
+	public virtual void LateUpdate()
+	{
+		float z = this.LeftEyeOrigin.z - this.EyeShrink * 0.01f;
+		Vector3 localPosition = this.LeftEye.localPosition;
+		float num = localPosition.z = z;
+		Vector3 vector = this.LeftEye.localPosition = localPosition;
+		float z2 = this.RightEyeOrigin.z + this.EyeShrink * 0.01f;
+		Vector3 localPosition2 = this.RightEye.localPosition;
+		float num2 = localPosition2.z = z2;
+		Vector3 vector2 = this.RightEye.localPosition = localPosition2;
+		float x = (float)1 - this.EyeShrink * 0.5f;
+		Vector3 localScale = this.LeftEye.localScale;
+		float num3 = localScale.x = x;
+		Vector3 vector3 = this.LeftEye.localScale = localScale;
+		float y = (float)1 - this.EyeShrink * 0.5f;
+		Vector3 localScale2 = this.LeftEye.localScale;
+		float num4 = localScale2.y = y;
+		Vector3 vector4 = this.LeftEye.localScale = localScale2;
+		float x2 = (float)1 - this.EyeShrink * 0.5f;
+		Vector3 localScale3 = this.RightEye.localScale;
+		float num5 = localScale3.x = x2;
+		Vector3 vector5 = this.RightEye.localScale = localScale3;
+		float y2 = (float)1 - this.EyeShrink * 0.5f;
+		Vector3 localScale4 = this.RightEye.localScale;
+		float num6 = localScale4.y = y2;
+		Vector3 vector6 = this.RightEye.localScale = localScale4;
+		this.ID = 0;
+		while (this.ID < this.Spine.Length)
+		{
+			float x3 = this.Spine[this.ID].transform.localEulerAngles.x + this.Slouch;
+			Vector3 localEulerAngles = this.Spine[this.ID].transform.localEulerAngles;
+			float num7 = localEulerAngles.x = x3;
+			Vector3 vector7 = this.Spine[this.ID].transform.localEulerAngles = localEulerAngles;
+			this.ID++;
+		}
+		float z3 = this.Arm[0].transform.localEulerAngles.z - this.Slouch * (float)3;
+		Vector3 localEulerAngles2 = this.Arm[0].transform.localEulerAngles;
+		float num8 = localEulerAngles2.z = z3;
+		Vector3 vector8 = this.Arm[0].transform.localEulerAngles = localEulerAngles2;
+		float z4 = this.Arm[1].transform.localEulerAngles.z + this.Slouch * (float)3;
+		Vector3 localEulerAngles3 = this.Arm[1].transform.localEulerAngles;
+		float num9 = localEulerAngles3.z = z4;
+		Vector3 vector9 = this.Arm[1].transform.localEulerAngles = localEulerAngles3;
 		this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 		this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 	}
 
-	public virtual void ResetEffects()
+	public virtual void ResetSenpaiEffects()
 	{
 		this.DepthOfField.focalSize = (float)150;
 		this.DepthOfField.focalZStartCurve = (float)0;
 		this.DepthOfField.focalZEndCurve = (float)0;
+		this.DepthOfField.enabled = false;
 		this.ColorCorrection.redChannel.MoveKey(1, new Keyframe(0.5f, 0.5f));
 		this.ColorCorrection.greenChannel.MoveKey(1, new Keyframe(0.5f, 0.5f));
 		this.ColorCorrection.blueChannel.MoveKey(1, new Keyframe(0.5f, 0.5f));
@@ -576,9 +825,27 @@ public class YandereScript : MonoBehaviour
 		this.ColorCorrection.blueChannel.SmoothTangents(1, (float)0);
 		this.ColorCorrection.UpdateTextures();
 		this.ColorCorrection.enabled = false;
-		this.DepthOfField.enabled = false;
 		this.Character.animation["f02_shy_00"].weight = (float)0;
 		this.HeartBeat.volume = (float)0;
+		this.SenpaiFade = (float)100;
+	}
+
+	public virtual void ResetYandereEffects()
+	{
+		this.Vignette.intensity = (float)0;
+		this.Vignette.blur = (float)0;
+		this.Vignette.chromaticAberration = (float)0;
+		this.Vignette.enabled = false;
+		this.YandereColorCorrection.redChannel.MoveKey(1, new Keyframe(0.5f, 0.5f));
+		this.YandereColorCorrection.greenChannel.MoveKey(1, new Keyframe(0.5f, 0.5f));
+		this.YandereColorCorrection.blueChannel.MoveKey(1, new Keyframe(0.5f, 0.5f));
+		this.YandereColorCorrection.redChannel.SmoothTangents(1, (float)0);
+		this.YandereColorCorrection.greenChannel.SmoothTangents(1, (float)0);
+		this.YandereColorCorrection.blueChannel.SmoothTangents(1, (float)0);
+		this.YandereColorCorrection.UpdateTextures();
+		this.YandereColorCorrection.enabled = false;
+		Time.timeScale = (float)1;
+		this.YandereFade = (float)100;
 	}
 
 	public virtual void SpawnDumpChan()
@@ -598,10 +865,10 @@ public class YandereScript : MonoBehaviour
 		this.DpadPressed = true;
 		this.Armed = false;
 		this.StudentManager.UpdateStudents();
-		this.VisiblyArmed.Display = false;
+		this.WeaponWarning = false;
 	}
 
-	public virtual void UpdateHeartRate()
+	public virtual void UpdateSanity()
 	{
 		if (this.Sanity > (float)100)
 		{
@@ -614,36 +881,31 @@ public class YandereScript : MonoBehaviour
 		if (this.Sanity > 66.66666f)
 		{
 			this.HeartRate.SetHeartRateColour(this.HeartRate.NormalColour);
-			if (this.PreviousSanity < 33.33333f)
-			{
-				this.VisiblyInsane.Display = false;
-			}
+			this.SanityWarning = false;
 		}
 		else if (this.Sanity > 33.33333f)
 		{
 			this.HeartRate.SetHeartRateColour(this.HeartRate.MediumColour);
-			if (this.PreviousSanity < 33.33333f)
-			{
-				this.VisiblyInsane.Display = false;
-			}
+			this.SanityWarning = false;
 		}
 		else
 		{
 			this.HeartRate.SetHeartRateColour(this.HeartRate.BadColour);
-			if (this.PreviousSanity > 33.33333f)
+			if (!this.SanityWarning)
 			{
-				this.VisiblyInsane.Warn();
+				this.NotificationManager.DisplayNotification("Insane");
+				this.SanityWarning = true;
 			}
 		}
 		this.HeartRate.BeatsPerMinute = (int)((float)240 - this.Sanity * 1.8f);
-		this.PreviousSanity = this.Sanity;
 	}
 
 	public virtual void UpdateBlood()
 	{
-		if (this.PreviousBloodiness == (float)0 && this.Bloodiness > (float)0)
+		if (!this.BloodyWarning && this.Bloodiness > (float)0)
 		{
-			this.VisiblyBloody.Warn();
+			this.NotificationManager.DisplayNotification("Bloody");
+			this.BloodyWarning = true;
 		}
 		if (this.Bloodiness > (float)100)
 		{
@@ -672,9 +934,8 @@ public class YandereScript : MonoBehaviour
 		else
 		{
 			this.MyRenderer.material.mainTexture = this.UniformTextures[0];
-			this.VisiblyBloody.Display = false;
+			this.BloodyWarning = false;
 		}
-		this.PreviousBloodiness = this.Bloodiness;
 	}
 
 	public virtual void OnTriggerEnter(Collider other)
@@ -684,6 +945,23 @@ public class YandereScript : MonoBehaviour
 			this.RightFootprintSpawner.Bloodiness = 10;
 			this.LeftFootprintSpawner.Bloodiness = 10;
 		}
+	}
+
+	public virtual void ChangeCostume()
+	{
+		if (this.Costume == 0)
+		{
+			this.Costume = 1;
+		}
+		else
+		{
+			this.Costume = 0;
+		}
+	}
+
+	public virtual void AttackOnTitan()
+	{
+		this.MyRenderer.materials[0].mainTexture = this.TitanTexture;
 	}
 
 	public virtual void Main()

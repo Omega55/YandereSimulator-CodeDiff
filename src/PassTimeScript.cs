@@ -14,6 +14,8 @@ public class PassTimeScript : MonoBehaviour
 
 	public float[] Digits;
 
+	public int TargetTime;
+
 	public int Selected;
 
 	public string AMPM;
@@ -192,6 +194,7 @@ public class PassTimeScript : MonoBehaviour
 		{
 			this.TimeDisplay.text = "0" + (this.Digits[1] - (float)12) + ":" + this.Digits[2] + this.Digits[3] + this.AMPM;
 		}
+		this.TargetTime = (int)(this.Digits[1] * (float)60 + this.Digits[2] * (float)10 + this.Digits[3]);
 	}
 
 	public virtual void Main()

@@ -29,22 +29,29 @@ public class ZoomScript : MonoBehaviour
 		{
 			this.TargetZoom = (float)0;
 		}
-		else if (this.TargetZoom > 0.5f)
+		else if (this.TargetZoom > 0.4f)
 		{
-			this.TargetZoom = 0.5f;
+			this.TargetZoom = 0.4f;
 		}
 		this.Zoom = Mathf.Lerp(this.Zoom, this.TargetZoom, Time.deltaTime);
 		this.CameraScript.distance = (float)2 - this.Zoom * 3.33333f;
 		this.CameraScript.distanceMax = (float)2 - this.Zoom * 3.33333f;
 		this.CameraScript.distanceMin = (float)2 - this.Zoom * 3.33333f;
-		this.Timer += Time.deltaTime;
-		this.ShakeStrength = Mathf.Lerp(this.ShakeStrength, (float)1 - this.Yandere.Sanity * 0.01f, Time.deltaTime);
-		if (this.Timer > 0.1f + this.Yandere.Sanity * 0.01f)
+		if (!this.Yandere.TimeSkipping)
 		{
-			this.Target.x = UnityEngine.Random.Range(-1f * this.ShakeStrength, 1f * this.ShakeStrength);
-			this.Target.y = this.transform.localPosition.y;
-			this.Target.z = UnityEngine.Random.Range(-1f * this.ShakeStrength, 1f * this.ShakeStrength);
-			this.Timer = (float)0;
+			this.Timer += Time.deltaTime;
+			this.ShakeStrength = Mathf.Lerp(this.ShakeStrength, (float)1 - this.Yandere.Sanity * 0.01f, Time.deltaTime);
+			if (this.Timer > 0.1f + this.Yandere.Sanity * 0.01f)
+			{
+				this.Target.x = UnityEngine.Random.Range(-1f * this.ShakeStrength, 1f * this.ShakeStrength);
+				this.Target.y = this.transform.localPosition.y;
+				this.Target.z = UnityEngine.Random.Range(-1f * this.ShakeStrength, 1f * this.ShakeStrength);
+				this.Timer = (float)0;
+			}
+		}
+		else
+		{
+			this.Target = new Vector3((float)0, this.transform.localPosition.y, (float)0);
 		}
 		this.transform.localPosition = Vector3.MoveTowards(this.transform.localPosition, this.Target, Time.deltaTime * this.ShakeStrength * 0.1f);
 	}

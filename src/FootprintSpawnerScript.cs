@@ -30,7 +30,7 @@ public class FootprintSpawnerScript : MonoBehaviour
 			this.FootUp = false;
 			if (this.Bloodiness > 0)
 			{
-				GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.BloodyFootprint, new Vector3(this.transform.position.x, this.Yandere.position.y + 0.011f, this.transform.position.z), Quaternion.identity);
+				GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.BloodyFootprint, new Vector3(this.transform.position.x, this.Yandere.position.y + 0.012f, this.transform.position.z), Quaternion.identity);
 				float y = this.transform.eulerAngles.y;
 				Vector3 eulerAngles = gameObject.transform.eulerAngles;
 				float num = eulerAngles.y = y;

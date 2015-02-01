@@ -21,6 +21,8 @@ public class StudentScript : MonoBehaviour
 
 	public DynamicGridObstacle Obstacle;
 
+	public ColoredOutlineScript Outline;
+
 	public ReputationScript Reputation;
 
 	public SubtitleScript Subtitle;
@@ -33,11 +35,13 @@ public class StudentScript : MonoBehaviour
 
 	public ClockScript Clock;
 
+	public JsonScript JSON;
+
 	public Transform CurrentDestination;
 
-	public Transform[] Destinations;
+	public string[] DestinationNames;
 
-	public Transform[] Focuses;
+	public Transform[] Destinations;
 
 	public float[] PhaseTimes;
 
@@ -50,6 +54,8 @@ public class StudentScript : MonoBehaviour
 	public GameObject Ragdoll;
 
 	public GameObject Marker;
+
+	public CharacterController MyController;
 
 	public Collider MyCollider;
 
@@ -66,6 +72,8 @@ public class StudentScript : MonoBehaviour
 	public float TalkTimer;
 
 	public float WaitTimer;
+
+	public float GroundHeight;
 
 	public float PendingRep;
 
@@ -93,6 +101,8 @@ public class StudentScript : MonoBehaviour
 
 	public int StudentID;
 
+	public int Class;
+
 	public int Phase;
 
 	public Vector3 RightEyeOrigin;
@@ -107,10 +117,21 @@ public class StudentScript : MonoBehaviour
 
 	public string Witnessed;
 
+	private float MaxSpeed;
+
+	public SkinnedMeshRenderer MyRenderer;
+
+	public Mesh NudeMesh;
+
+	public Texture[] NudeTexture;
+
+	public bool AoT;
+
 	public StudentScript()
 	{
 		this.Routine = true;
 		this.Witnessed = string.Empty;
+		this.MaxSpeed = 10f;
 	}
 
 	public virtual void Start()
@@ -118,18 +139,8 @@ public class StudentScript : MonoBehaviour
 		this.DetectionMarker = (DetectionMarkerScript)((GameObject)UnityEngine.Object.Instantiate(this.Marker, GameObject.Find("DetectionPanel").transform.position, Quaternion.identity)).GetComponent(typeof(DetectionMarkerScript));
 		this.DetectionMarker.transform.parent = GameObject.Find("DetectionPanel").transform;
 		this.DetectionMarker.Target = this.transform;
-		this.Destinations[1] = this.StudentManager.Lockers.List[this.StudentID];
-		this.Destinations[2] = this.StudentManager.Classrooms.List[this.StudentID];
-		this.Destinations[3] = this.StudentManager.Hangouts.List[0];
-		this.Destinations[4] = this.StudentManager.Classrooms.List[this.StudentID];
-		this.Destinations[5] = this.StudentManager.Lockers.List[this.StudentID];
-		this.Destinations[6] = this.StudentManager.Hangouts.List[1];
-		this.Focuses[1] = this.StudentManager.LockerFs.List[this.StudentID];
-		this.Focuses[2] = this.StudentManager.ClassroomFs.List[this.StudentID];
-		this.Focuses[3] = this.StudentManager.HangoutFs.List[0];
-		this.Focuses[4] = this.StudentManager.ClassroomFs.List[this.StudentID];
-		this.Focuses[5] = this.StudentManager.LockerFs.List[this.StudentID];
-		this.Focuses[6] = this.StudentManager.HangoutFs.List[1];
+		this.Class = this.JSON.StudentClasses[this.StudentID];
+		this.GetDestinations();
 		this.DialogueWheel = (DialogueWheelScript)GameObject.Find("DialogueWheel").GetComponent(typeof(DialogueWheelScript));
 		this.Reputation = (ReputationScript)GameObject.Find("Reputation").GetComponent(typeof(ReputationScript));
 		this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent(typeof(YandereScript));
@@ -175,8 +186,7 @@ public class StudentScript : MonoBehaviour
 				this.Pathfinding.canMove = false;
 				this.Character.animation.CrossFade("f02_idleShort_00");
 				this.transform.position = Vector3.Lerp(this.transform.position, this.CurrentDestination.position, Time.deltaTime * (float)10);
-				this.targetRotation = Quaternion.LookRotation(this.Focuses[this.Phase].position - this.transform.position);
-				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
+				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.CurrentDestination.rotation, (float)10 * Time.deltaTime);
 			}
 			this.DistanceToPlayer = Vector3.Distance(this.transform.position, this.Yandere.transform.position);
 			if (this.DistanceToPlayer < (float)10)
@@ -213,6 +223,7 @@ public class StudentScript : MonoBehaviour
 				}
 				if (this.Alarm > (float)100 && !this.Alarmed)
 				{
+					this.Outline.color = new Color((float)1, (float)1, (float)0, (float)1);
 					this.Pathfinding.canSearch = false;
 					this.Pathfinding.canMove = false;
 					this.Routine = false;
@@ -332,6 +343,7 @@ public class StudentScript : MonoBehaviour
 					this.Character.animation.CrossFade("f02_nod_01");
 					this.Reputation.PendingRep = this.Reputation.PendingRep + (float)5;
 					this.PendingRep += (float)5;
+					this.Outline.color = new Color((float)0, (float)1, (float)0, (float)1);
 					this.Forgave = true;
 					this.Subtitle.UpdateLabel("Forgiving", 0, (float)3);
 				}
@@ -389,7 +401,7 @@ public class StudentScript : MonoBehaviour
 			if (!this.Dead)
 			{
 				this.Character.animation.CrossFade("f02_defend_00");
-				this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - this.transform.position);
+				this.targetRotation = Quaternion.LookRotation(new Vector3(this.Yandere.transform.position.x, this.transform.position.y, this.Yandere.transform.position.z) - this.transform.position);
 				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
 				this.transform.position = Vector3.Lerp(this.transform.position, this.Yandere.transform.position + this.Yandere.transform.forward * 0.1f, Time.deltaTime * (float)10);
 			}
@@ -403,7 +415,7 @@ public class StudentScript : MonoBehaviour
 				else
 				{
 					GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.Ragdoll, this.transform.position, this.transform.rotation);
-					((RagdollScript)gameObject.GetComponent(typeof(RagdollScript))).Character.animation["f02_down_22"].time = this.Character.animation["f02_down_22"].time;
+					((RagdollScript)gameObject.GetComponent(typeof(RagdollScript))).AnimStartTime = this.Character.animation["f02_down_22"].time;
 					((RagdollScript)gameObject.GetComponent(typeof(RagdollScript))).Yandere = this.Yandere;
 					this.BloodSpray.transform.parent = ((RagdollScript)gameObject.GetComponent(typeof(RagdollScript))).BloodParent;
 					this.BloodSpray.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
@@ -452,6 +464,21 @@ public class StudentScript : MonoBehaviour
 		{
 			this.IgnoreTimer -= Time.deltaTime;
 		}
+		if (this.MyController.isGrounded && this.MyController.velocity.y <= (float)3)
+		{
+			this.GroundHeight = this.transform.position.y;
+		}
+		if (this.MyController.velocity.y > (float)3)
+		{
+			float y2 = this.GroundHeight + 0.1f;
+			Vector3 position = this.transform.position;
+			float num4 = position.y = y2;
+			Vector3 vector2 = this.transform.position = position;
+		}
+		if (this.AoT)
+		{
+			this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)10, (float)10, (float)10), Time.deltaTime);
+		}
 	}
 
 	public virtual void LateUpdate()
@@ -480,6 +507,38 @@ public class StudentScript : MonoBehaviour
 		Vector3 localScale4 = this.RightEye.localScale;
 		float num6 = localScale4.y = y2;
 		Vector3 vector6 = this.RightEye.localScale = localScale4;
+	}
+
+	public virtual void GetDestinations()
+	{
+		this.DestinationNames = (string[])this.JSON.StudentDestinations[this.StudentID].ToBuiltin(typeof(string));
+		for (int i = 1; i < Extensions.get_length(this.Destinations); i++)
+		{
+			if (this.DestinationNames[i] == "Locker")
+			{
+				this.Destinations[i] = this.StudentManager.Lockers.List[this.StudentID];
+			}
+			if (this.DestinationNames[i] == "Class")
+			{
+				this.Destinations[i] = this.StudentManager.Classrooms.List[this.Class];
+			}
+			if (this.DestinationNames[i] == "Rooftop")
+			{
+				this.Destinations[i] = this.StudentManager.Hangouts.List[0];
+			}
+			if (this.DestinationNames[i] == "Exit")
+			{
+				this.Destinations[i] = this.StudentManager.Hangouts.List[1];
+			}
+		}
+	}
+
+	public virtual void AttackOnTitan()
+	{
+		this.AoT = true;
+		this.MyRenderer.sharedMesh = this.NudeMesh;
+		this.MyRenderer.materials[3].mainTexture = this.NudeTexture[0];
+		this.MyRenderer.materials[0].mainTexture = this.NudeTexture[1];
 	}
 
 	public virtual void Main()

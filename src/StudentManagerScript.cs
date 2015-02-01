@@ -13,6 +13,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public ClockScript Clock;
 
+	public JsonScript JSON;
+
 	public ListScript Lockers;
 
 	public ListScript LockerFs;
@@ -37,13 +39,13 @@ public class StudentManagerScript : MonoBehaviour
 
 	public int ID;
 
+	public Texture[] Colors;
+
+	public bool AoT;
+
 	public StudentManagerScript()
 	{
 		this.StudentsTotal = 5;
-	}
-
-	public virtual void Start()
-	{
 	}
 
 	public virtual void Update()
@@ -52,8 +54,13 @@ public class StudentManagerScript : MonoBehaviour
 		{
 			this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.StudentChan, this.SpawnPositions[this.StudentsSpawned].position, Quaternion.identity);
 			this.Students[this.StudentsSpawned] = (StudentScript)this.NewStudent.GetComponent(typeof(StudentScript));
-			this.Students[this.StudentsSpawned].StudentID = this.StudentsSpawned;
+			this.Students[this.StudentsSpawned].StudentID = this.StudentsSpawned + 1;
 			this.Students[this.StudentsSpawned].StudentManager = this;
+			this.Students[this.StudentsSpawned].JSON = this.JSON;
+			if (this.AoT)
+			{
+				this.Students[this.StudentsSpawned].AttackOnTitan();
+			}
 			this.StudentsSpawned++;
 		}
 	}
@@ -102,6 +109,20 @@ public class StudentManagerScript : MonoBehaviour
 			{
 				this.Students[this.ID].Prompt.Hide();
 				this.Students[this.ID].Prompt.enabled = false;
+			}
+			this.ID++;
+		}
+	}
+
+	public virtual void AttackOnTitan()
+	{
+		this.AoT = true;
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.Students))
+		{
+			if (this.Students[this.ID] != null)
+			{
+				this.Students[this.ID].AttackOnTitan();
 			}
 			this.ID++;
 		}

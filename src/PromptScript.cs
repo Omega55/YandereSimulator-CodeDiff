@@ -18,6 +18,8 @@ public class PromptScript : MonoBehaviour
 
 	public Camera UICamera;
 
+	public bool[] AcceptingInput;
+
 	public bool[] ButtonActive;
 
 	public bool[] HideButton;
@@ -85,6 +87,7 @@ public class PromptScript : MonoBehaviour
 				Color color6 = this.Label[this.ID].color = color5;
 				this.Label[this.ID].text = "     " + this.Text[this.ID];
 			}
+			this.AcceptingInput[this.ID] = true;
 			this.ID++;
 		}
 	}
@@ -178,7 +181,7 @@ public class PromptScript : MonoBehaviour
 								}
 								this.ID++;
 							}
-							if (this.ButtonActive[this.ButtonHeld - 1] && !this.Yandere.Attacking)
+							if (this.ButtonActive[this.ButtonHeld - 1] && !this.HideButton[this.ButtonHeld - 1] && this.AcceptingInput[this.ButtonHeld - 1] && !this.Yandere.Attacking)
 							{
 								this.Circle[this.ButtonHeld - 1].color = new Color((float)1, (float)1, (float)1, (float)1);
 								this.Circle[this.ButtonHeld - 1].fillAmount = this.Circle[this.ButtonHeld - 1].fillAmount - Time.deltaTime * (float)2;

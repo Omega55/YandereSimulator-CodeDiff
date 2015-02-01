@@ -10,35 +10,81 @@ public class JukeboxScript : MonoBehaviour
 
 	public AudioSource HipHop;
 
+	public AudioSource AttackOnTitan;
+
+	public AudioSource Sane;
+
+	public AudioSource Halfsane;
+
+	public AudioSource Insane;
+
+	public float FadeSpeed;
+
+	public float Volume;
+
 	public int Track;
+
+	public float Timer;
+
+	public bool AoT;
 
 	public virtual void Update()
 	{
-		if (Input.GetKeyDown("m"))
+		this.Timer += Time.deltaTime;
+		if (!this.AoT)
 		{
-			if (this.Piano.volume == (float)0 && this.HipHop.volume == (float)0)
+			if (Input.GetKeyDown("m"))
 			{
-				this.Piano.Play();
-				this.HipHop.Play();
+				if (this.Volume == (float)1)
+				{
+					this.FadeSpeed = (float)10;
+					this.Volume = (float)0;
+				}
+				else
+				{
+					this.FadeSpeed = (float)1;
+					this.Volume = (float)1;
+				}
 			}
-			this.Track++;
-			if (this.Track > 2)
+			if (Input.GetKeyDown("n"))
 			{
-				this.Track = 1;
+				this.Sane.time = this.Sane.time + (float)60;
+				this.Halfsane.time = this.Halfsane.time + (float)60;
+				this.Insane.time = this.Insane.time + (float)60;
+			}
+			if (this.Timer > (float)5)
+			{
+				if (this.Yandere.Sanity >= 66.66666f)
+				{
+					this.Sane.volume = Mathf.MoveTowards(this.Sane.volume, this.Volume, Time.deltaTime * this.FadeSpeed);
+					this.Halfsane.volume = Mathf.MoveTowards(this.Halfsane.volume, (float)0, Time.deltaTime * this.FadeSpeed);
+					this.Insane.volume = Mathf.MoveTowards(this.Insane.volume, (float)0, Time.deltaTime * this.FadeSpeed);
+				}
+				else if (this.Yandere.Sanity >= 33.33333f)
+				{
+					this.Sane.volume = Mathf.MoveTowards(this.Sane.volume, (float)0, Time.deltaTime * this.FadeSpeed);
+					this.Halfsane.volume = Mathf.MoveTowards(this.Halfsane.volume, this.Volume, Time.deltaTime * this.FadeSpeed);
+					this.Insane.volume = Mathf.MoveTowards(this.Insane.volume, (float)0, Time.deltaTime * this.FadeSpeed);
+				}
+				else
+				{
+					this.Sane.volume = Mathf.MoveTowards(this.Sane.volume, (float)0, Time.deltaTime * this.FadeSpeed);
+					this.Halfsane.volume = Mathf.MoveTowards(this.Halfsane.volume, (float)0, Time.deltaTime * this.FadeSpeed);
+					this.Insane.volume = Mathf.MoveTowards(this.Insane.volume, this.Volume, Time.deltaTime * this.FadeSpeed);
+				}
 			}
 		}
-		if (this.Track == 1)
+		else if (!this.AttackOnTitan.enabled)
 		{
-			this.Piano.volume = this.Piano.volume + Time.deltaTime;
-			this.HipHop.volume = this.HipHop.volume - Time.deltaTime;
+			this.AttackOnTitan.enabled = true;
+			this.Sane.volume = (float)0;
+			this.Halfsane.volume = (float)0;
+			this.Insane.volume = (float)0;
 		}
-		else if (this.Track == 2)
+		if (Input.GetKeyDown("l"))
 		{
-			this.Piano.volume = this.Piano.volume - Time.deltaTime;
-			this.HipHop.volume = this.HipHop.volume + Time.deltaTime;
+			this.AoT = true;
 		}
-		this.Piano.pitch = Mathf.Lerp(this.Piano.pitch, (float)1 - (0.5f - this.Yandere.Sanity * 0.005f), Time.deltaTime);
-		this.HipHop.pitch = Mathf.Lerp(this.HipHop.pitch, (float)1 - (0.5f - this.Yandere.Sanity * 0.005f), Time.deltaTime);
 	}
 
 	public virtual void Main()
