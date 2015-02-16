@@ -14,6 +14,14 @@ public class CameraEffectsScript : MonoBehaviour
 
 	public float EffectStrength;
 
+	public Bloom QualityBloom;
+
+	public Vignetting QualityVignetting;
+
+	public AmbientObscurance QualityAmbientObscurance;
+
+	public AntialiasingAsPostEffect QualityAntialiasingAsPostEffect;
+
 	public virtual void Start()
 	{
 		int num = 0;
@@ -24,6 +32,23 @@ public class CameraEffectsScript : MonoBehaviour
 
 	public virtual void Update()
 	{
+		if (Input.GetKeyDown("0"))
+		{
+			if (this.QualityBloom.enabled)
+			{
+				this.QualityBloom.enabled = false;
+				this.QualityVignetting.enabled = false;
+				this.QualityAmbientObscurance.enabled = false;
+				this.QualityAntialiasingAsPostEffect.enabled = false;
+			}
+			else
+			{
+				this.QualityBloom.enabled = true;
+				this.QualityVignetting.enabled = true;
+				this.QualityAmbientObscurance.enabled = true;
+				this.QualityAntialiasingAsPostEffect.enabled = true;
+			}
+		}
 		if (this.Streaks.color.a > (float)0)
 		{
 			this.AlarmBloom.bloomIntensity = this.AlarmBloom.bloomIntensity - Time.deltaTime;

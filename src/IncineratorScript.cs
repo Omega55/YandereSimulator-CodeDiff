@@ -68,14 +68,26 @@ public class IncineratorScript : MonoBehaviour
 		else if (!this.Occupied)
 		{
 			this.Prompt.enabled = true;
-			if (this.Prompt.Circle[3].fillAmount <= (float)0 && !this.Occupied)
+			if (this.Prompt.Circle[3].fillAmount <= (float)0)
 			{
-				this.Yandere.CanMove = false;
-				this.Yandere.Dumping = true;
-				this.Prompt.Hide();
-				this.Prompt.enabled = false;
-				this.Open = true;
+				if (!this.Occupied)
+				{
+					this.Yandere.CanMove = false;
+					this.Yandere.Dumping = true;
+					this.Prompt.Hide();
+					this.Prompt.enabled = false;
+					this.Open = true;
+				}
 			}
+			else
+			{
+				this.Prompt.enabled = true;
+			}
+		}
+		else
+		{
+			this.Prompt.Hide();
+			this.Prompt.enabled = false;
 		}
 	}
 

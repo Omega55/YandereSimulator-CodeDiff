@@ -14,6 +14,8 @@ public class ClockScript : MonoBehaviour
 
 	public MotionBlur Blur;
 
+	public Transform PromptParent;
+
 	public Transform MinuteHand;
 
 	public Transform HourHand;
@@ -23,6 +25,8 @@ public class ClockScript : MonoBehaviour
 	public UILabel TimeLabel;
 
 	public UILabel DayLabel;
+
+	public Light MainLight;
 
 	public float HalfwayTime;
 
@@ -52,6 +56,8 @@ public class ClockScript : MonoBehaviour
 
 	public AudioSource SchoolBell;
 
+	public Color SkyboxColor;
+
 	public ClockScript()
 	{
 		this.MinuteNumber = string.Empty;
@@ -69,25 +75,28 @@ public class ClockScript : MonoBehaviour
 		this.DayLabel.text = PlayerPrefs.GetString("Day");
 		this.BloomEffect.bloomIntensity = (float)5;
 		this.BloomEffect.bloomThreshhold = (float)0;
+		this.MainLight.color = new Color((float)1, (float)1, (float)1, (float)1);
+		RenderSettings.ambientLight = new Color(0.75f, 0.75f, 0.75f, (float)1);
+		RenderSettings.skybox.SetColor("_Tint", new Color(0.5f, 0.5f, 0.5f));
 	}
 
 	public virtual void Update()
 	{
 		if (this.PresentTime < (float)1080)
 		{
-			this.BloomEffect.bloomIntensity = this.BloomEffect.bloomIntensity - Time.deltaTime * 4.5f;
-			this.BloomEffect.bloomThreshhold = this.BloomEffect.bloomThreshhold + Time.deltaTime / (float)2;
+			this.BloomEffect.bloomIntensity = this.BloomEffect.bloomIntensity - Time.deltaTime * 4.75f;
+			this.BloomEffect.bloomThreshhold = this.BloomEffect.bloomThreshhold + Time.deltaTime * 0.5f;
 			if (this.BloomEffect.bloomThreshhold > 0.5f)
 			{
-				this.BloomEffect.bloomIntensity = 0.5f;
+				this.BloomEffect.bloomIntensity = 0.25f;
 				this.BloomEffect.bloomThreshhold = 0.5f;
 			}
 		}
 		else
 		{
 			this.StopTime = true;
-			this.BloomEffect.bloomIntensity = this.BloomEffect.bloomIntensity + Time.deltaTime * 4.5f;
-			this.BloomEffect.bloomThreshhold = this.BloomEffect.bloomThreshhold - Time.deltaTime / (float)2;
+			this.BloomEffect.bloomIntensity = this.BloomEffect.bloomIntensity + Time.deltaTime * 4.75f;
+			this.BloomEffect.bloomThreshhold = this.BloomEffect.bloomThreshhold - Time.deltaTime * 0.5f;
 			if (this.BloomEffect.bloomThreshhold < (float)0)
 			{
 				Application.LoadLevel(Application.loadedLevel);
@@ -186,6 +195,38 @@ public class ClockScript : MonoBehaviour
 				}
 			}
 		}
+		if (this.PresentTime > (float)900)
+		{
+			float num3 = (this.PresentTime - (float)900) / (float)180;
+			float r = (float)1 - 0.149019614f * num3;
+			Color color = this.MainLight.color;
+			float num4 = color.r = r;
+			Color color2 = this.MainLight.color = color;
+			float g = (float)1 - 0.403921574f * num3;
+			Color color3 = this.MainLight.color;
+			float num5 = color3.g = g;
+			Color color4 = this.MainLight.color = color3;
+			float b = (float)1 - 0.709803939f * num3;
+			Color color5 = this.MainLight.color;
+			float num6 = color5.b = b;
+			Color color6 = this.MainLight.color = color5;
+			float r2 = (float)1 - 0.149019614f * num3 - 0.25f * ((float)1 - num3);
+			Color ambientLight = RenderSettings.ambientLight;
+			float num7 = ambientLight.r = r2;
+			Color color7 = RenderSettings.ambientLight = ambientLight;
+			float g2 = (float)1 - 0.403921574f * num3 - 0.25f * ((float)1 - num3);
+			Color ambientLight2 = RenderSettings.ambientLight;
+			float num8 = ambientLight2.g = g2;
+			Color color8 = RenderSettings.ambientLight = ambientLight2;
+			float b2 = (float)1 - 0.709803939f * num3 - 0.25f * ((float)1 - num3);
+			Color ambientLight3 = RenderSettings.ambientLight;
+			float num9 = ambientLight3.b = b2;
+			Color color9 = RenderSettings.ambientLight = ambientLight3;
+			this.SkyboxColor.r = (float)1 - 0.149019614f * num3 - 0.5f * ((float)1 - num3);
+			this.SkyboxColor.g = (float)1 - 0.403921574f * num3 - 0.5f * ((float)1 - num3);
+			this.SkyboxColor.b = (float)1 - 0.709803939f * num3 - 0.5f * ((float)1 - num3);
+			RenderSettings.skybox.SetColor("_Tint", new Color(this.SkyboxColor.r, this.SkyboxColor.g, this.SkyboxColor.b));
+		}
 		if (this.TimeSkip)
 		{
 			if (this.HalfwayTime == (float)0)
@@ -195,8 +236,11 @@ public class ClockScript : MonoBehaviour
 				this.Yandere.Phone.active = true;
 				this.Yandere.TimeSkipping = true;
 				this.Yandere.CanMove = false;
-				this.Yandere.Unequip();
 				this.Blur.enabled = true;
+				if (this.Yandere.Armed)
+				{
+					this.Yandere.Unequip();
+				}
 			}
 			if (this.PresentTime < this.TargetTime - (float)10)
 			{
@@ -224,6 +268,7 @@ public class ClockScript : MonoBehaviour
 
 	public virtual void EndTimeSkip()
 	{
+		this.PromptParent.localScale = new Vector3((float)1, (float)1, (float)1);
 		this.Yandere.Hearts.active = false;
 		this.Yandere.Phone.active = false;
 		this.Yandere.TimeSkipping = false;

@@ -130,6 +130,13 @@ public class PromptScript : MonoBehaviour
 					{
 						this.Yandere.NearestPrompt = this;
 					}
+					else if (this.Priority == this.Yandere.NearestPrompt.Priority)
+					{
+						if (this.Distance < this.Yandere.NearestPrompt.Distance)
+						{
+							this.Yandere.NearestPrompt = this;
+						}
+					}
 					else if (this.Priority > this.Yandere.NearestPrompt.Priority)
 					{
 						this.Yandere.NearestPrompt = this;
@@ -204,7 +211,7 @@ public class PromptScript : MonoBehaviour
 				}
 				else
 				{
-					if (this.Yandere.NearestPrompt == this.gameObject)
+					if (this.Yandere.NearestPrompt == this)
 					{
 						this.Yandere.NearestPrompt = null;
 					}

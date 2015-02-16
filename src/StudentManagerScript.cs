@@ -59,7 +59,7 @@ public class StudentManagerScript : MonoBehaviour
 			this.Students[this.StudentsSpawned].JSON = this.JSON;
 			if (this.AoT)
 			{
-				this.Students[this.StudentsSpawned].AttackOnTitan();
+				this.Students[this.StudentsSpawned].AoT = true;
 			}
 			this.StudentsSpawned++;
 		}
@@ -109,6 +109,19 @@ public class StudentManagerScript : MonoBehaviour
 			{
 				this.Students[this.ID].Prompt.Hide();
 				this.Students[this.ID].Prompt.enabled = false;
+			}
+			this.ID++;
+		}
+	}
+
+	public virtual void WipePendingRep()
+	{
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.Students))
+		{
+			if (this.Students[this.ID] != null)
+			{
+				this.Students[this.ID].PendingRep = (float)0;
 			}
 			this.ID++;
 		}

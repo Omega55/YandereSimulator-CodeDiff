@@ -7,17 +7,29 @@ public class SubtitleScript : MonoBehaviour
 {
 	public UILabel Label;
 
+	public string[] WeaponBloodInsanityReactions;
+
+	public string[] WeaponBloodReactions;
+
+	public string[] WeaponInsanityReactions;
+
+	public string[] BloodInsanityReactions;
+
 	public string[] KnifeReactions;
 
 	public string[] BloodReactions;
 
-	public string[] WeaponAndBloodReactions;
+	public string[] InsanityReactions;
+
+	public string[] RepeatReactions;
+
+	public string[] WeaponBloodApologies;
 
 	public string[] WeaponApologies;
 
 	public string[] BloodApologies;
 
-	public string[] WeaponAndBloodApologies;
+	public string[] InsanityApologies;
 
 	public string[] Greetings;
 
@@ -26,6 +38,8 @@ public class SubtitleScript : MonoBehaviour
 	public string[] StudentFarewells;
 
 	public string[] Forgivings;
+
+	public string[] InsanityForgivings;
 
 	public string[] Impatiences;
 
@@ -42,7 +56,23 @@ public class SubtitleScript : MonoBehaviour
 
 	public virtual void UpdateLabel(string ReactionType, int ID, float Duration)
 	{
-		if (ReactionType == "Weapon Reaction")
+		if (ReactionType == "Weapon and Blood and Insanity Reaction")
+		{
+			this.Label.text = this.WeaponBloodInsanityReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.WeaponBloodInsanityReactions))];
+		}
+		else if (ReactionType == "Weapon and Blood Reaction")
+		{
+			this.Label.text = this.WeaponBloodReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.WeaponBloodReactions))];
+		}
+		else if (ReactionType == "Weapon and Insanity Reaction")
+		{
+			this.Label.text = this.WeaponInsanityReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.WeaponInsanityReactions))];
+		}
+		else if (ReactionType == "Blood and Insanity Reaction")
+		{
+			this.Label.text = this.BloodInsanityReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.BloodInsanityReactions))];
+		}
+		else if (ReactionType == "Weapon Reaction")
 		{
 			if (ID == 1)
 			{
@@ -53,9 +83,13 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.Label.text = this.BloodReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.BloodReactions))];
 		}
-		else if (ReactionType == "Weapon and Blood Reaction")
+		else if (ReactionType == "Insanity Reaction")
 		{
-			this.Label.text = this.WeaponAndBloodReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.WeaponAndBloodReactions))];
+			this.Label.text = this.InsanityReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.InsanityReactions))];
+		}
+		else if (ReactionType == "Repeat Reaction")
+		{
+			this.Label.text = this.RepeatReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.RepeatReactions))];
 		}
 		else if (ReactionType == "Greeting")
 		{
@@ -69,6 +103,14 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.Label.text = this.StudentFarewells[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentFarewells))];
 		}
+		else if (ReactionType == "Insanity Apology")
+		{
+			this.Label.text = this.InsanityApologies[UnityEngine.Random.Range(0, Extensions.get_length(this.InsanityApologies))];
+		}
+		else if (ReactionType == "Weapon and Blood Apology")
+		{
+			this.Label.text = this.WeaponBloodApologies[UnityEngine.Random.Range(0, Extensions.get_length(this.WeaponBloodApologies))];
+		}
 		else if (ReactionType == "Weapon Apology")
 		{
 			this.Label.text = this.WeaponApologies[UnityEngine.Random.Range(0, Extensions.get_length(this.WeaponApologies))];
@@ -77,13 +119,13 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.Label.text = this.BloodApologies[UnityEngine.Random.Range(0, Extensions.get_length(this.BloodApologies))];
 		}
-		else if (ReactionType == "Weapon and Blood Apology")
-		{
-			this.Label.text = this.WeaponAndBloodApologies[UnityEngine.Random.Range(0, Extensions.get_length(this.WeaponAndBloodApologies))];
-		}
 		else if (ReactionType == "Forgiving")
 		{
 			this.Label.text = this.Forgivings[UnityEngine.Random.Range(0, Extensions.get_length(this.Forgivings))];
+		}
+		else if (ReactionType == "Forgiving Insanity")
+		{
+			this.Label.text = this.InsanityForgivings[UnityEngine.Random.Range(0, Extensions.get_length(this.InsanityForgivings))];
 		}
 		else if (ReactionType == "Impatience")
 		{

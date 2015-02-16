@@ -4,6 +4,8 @@ using UnityEngine;
 [Serializable]
 public class PassTimeScript : MonoBehaviour
 {
+	public InputManagerScript InputManager;
+
 	public ClockScript Clock;
 
 	public UILabel TimeDisplay;
@@ -28,7 +30,7 @@ public class PassTimeScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (Input.GetKeyDown("left"))
+		if (this.InputManager.TappedLeft || Input.GetKeyDown("left"))
 		{
 			this.Selected--;
 			if (this.Selected < 1)
@@ -37,7 +39,7 @@ public class PassTimeScript : MonoBehaviour
 			}
 			this.UpdateHighlightPosition();
 		}
-		if (Input.GetKeyDown("right"))
+		if (this.InputManager.TappedRight || Input.GetKeyDown("right"))
 		{
 			this.Selected++;
 			if (this.Selected > 3)
@@ -46,11 +48,11 @@ public class PassTimeScript : MonoBehaviour
 			}
 			this.UpdateHighlightPosition();
 		}
-		if (Input.GetKeyDown("up"))
+		if (this.InputManager.TappedUp || Input.GetKeyDown("up"))
 		{
 			this.UpdateTime(1);
 		}
-		if (Input.GetKeyDown("down"))
+		if (this.InputManager.TappedDown || Input.GetKeyDown("down"))
 		{
 			this.UpdateTime(-1);
 		}

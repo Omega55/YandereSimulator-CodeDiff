@@ -4,6 +4,8 @@ using UnityEngine;
 [Serializable]
 public class ReputationScript : MonoBehaviour
 {
+	public StudentManagerScript StudentManager;
+
 	public Transform CurrentRepMarker;
 
 	public Transform PendingRepMarker;
@@ -27,6 +29,7 @@ public class ReputationScript : MonoBehaviour
 				this.Reputation += this.PendingRep;
 				this.PendingRep = (float)0;
 				this.Phase++;
+				this.StudentManager.WipePendingRep();
 			}
 		}
 		else if (this.Phase == 2)
@@ -36,6 +39,7 @@ public class ReputationScript : MonoBehaviour
 				this.Reputation += this.PendingRep;
 				this.PendingRep = (float)0;
 				this.Phase++;
+				this.StudentManager.WipePendingRep();
 			}
 		}
 		else if (this.Phase == 3 && this.Clock.PresentTime / (float)60 > (float)18)
@@ -43,31 +47,30 @@ public class ReputationScript : MonoBehaviour
 			this.Reputation += this.PendingRep;
 			this.PendingRep = (float)0;
 			this.Phase++;
-		}
-		if (this.Reputation > (float)100)
-		{
-			this.Reputation = (float)100;
-		}
-		if (this.Reputation < (float)-100)
-		{
-			this.Reputation = (float)-100;
+			this.StudentManager.WipePendingRep();
 		}
 		float x = Mathf.Lerp(this.CurrentRepMarker.localPosition.x, (float)-850 + this.Reputation * 1.5f, Time.deltaTime * (float)10);
 		Vector3 localPosition = this.CurrentRepMarker.localPosition;
 		float num = localPosition.x = x;
 		Vector3 vector = this.CurrentRepMarker.localPosition = localPosition;
-		if (this.Reputation + this.PendingRep > (float)100)
-		{
-			this.PendingRep = (float)100 - this.Reputation;
-		}
-		if (this.Reputation + this.PendingRep < (float)-100)
-		{
-			this.PendingRep = (float)-100 - this.Reputation;
-		}
 		float x2 = Mathf.Lerp(this.PendingRepMarker.localPosition.x, this.CurrentRepMarker.transform.localPosition.x + this.PendingRep * 1.5f, Time.deltaTime * (float)10);
 		Vector3 localPosition2 = this.PendingRepMarker.localPosition;
 		float num2 = localPosition2.x = x2;
 		Vector3 vector2 = this.PendingRepMarker.localPosition = localPosition2;
+		if (this.CurrentRepMarker.localPosition.x < (float)-1000)
+		{
+			int num3 = -1000;
+			Vector3 localPosition3 = this.CurrentRepMarker.localPosition;
+			float num4 = localPosition3.x = (float)num3;
+			Vector3 vector3 = this.CurrentRepMarker.localPosition = localPosition3;
+		}
+		if (this.PendingRepMarker.localPosition.x < (float)-1000)
+		{
+			int num5 = -1000;
+			Vector3 localPosition4 = this.PendingRepMarker.localPosition;
+			float num6 = localPosition4.x = (float)num5;
+			Vector3 vector4 = this.PendingRepMarker.localPosition = localPosition4;
+		}
 		if (this.PendingRep > (float)0)
 		{
 			this.PendingRepLabel.text = "+" + this.PendingRep;

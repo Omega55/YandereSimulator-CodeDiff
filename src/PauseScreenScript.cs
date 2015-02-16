@@ -4,6 +4,8 @@ using UnityEngine;
 [Serializable]
 public class PauseScreenScript : MonoBehaviour
 {
+	public InputManagerScript InputManager;
+
 	public PassTimeScript PassTime;
 
 	public YandereScript Yandere;
@@ -16,7 +18,7 @@ public class PauseScreenScript : MonoBehaviour
 
 	public UILabel PassTimeLabel;
 
-	public GameObject PromptParent;
+	public Transform PromptParent;
 
 	public GameObject MainMenu;
 
@@ -58,7 +60,7 @@ public class PauseScreenScript : MonoBehaviour
 			}
 			if (Input.GetButtonDown("Start") && !this.Yandere.TimeSkipping)
 			{
-				this.PromptParent.active = false;
+				this.PromptParent.localScale = new Vector3((float)0, (float)0, (float)0);
 				this.ScreenBlur.enabled = true;
 				this.RPGCamera.enabled = false;
 				this.Show = true;
@@ -85,7 +87,7 @@ public class PauseScreenScript : MonoBehaviour
 			Time.timeScale = Mathf.Lerp(Time.timeScale, (float)0, 0.166666672f);
 			if (this.MainMenu.active)
 			{
-				if (Input.GetKeyDown("up"))
+				if (this.InputManager.TappedUp || Input.GetKeyDown("up"))
 				{
 					float y = this.Highlight.localPosition.y + (float)75;
 					Vector3 localPosition = this.Highlight.localPosition;
@@ -101,7 +103,7 @@ public class PauseScreenScript : MonoBehaviour
 						this.Selected = 7;
 					}
 				}
-				if (Input.GetKeyDown("down"))
+				if (this.InputManager.TappedDown || Input.GetKeyDown("down"))
 				{
 					float y2 = this.Highlight.localPosition.y - (float)75;
 					Vector3 localPosition3 = this.Highlight.localPosition;
@@ -122,6 +124,7 @@ public class PauseScreenScript : MonoBehaviour
 					this.PressedA = true;
 					if (this.Selected == 1)
 					{
+						this.PromptParent.localScale = new Vector3((float)1, (float)1, (float)1);
 						this.ScreenBlur.enabled = false;
 						this.RPGCamera.enabled = true;
 						this.CorrectingTime = true;
@@ -143,7 +146,7 @@ public class PauseScreenScript : MonoBehaviour
 				}
 				if (Input.GetButtonDown("Start"))
 				{
-					this.PromptParent.active = true;
+					this.PromptParent.localScale = new Vector3((float)1, (float)1, (float)1);
 					this.ScreenBlur.enabled = false;
 					this.RPGCamera.enabled = true;
 					this.CorrectingTime = true;
@@ -154,7 +157,6 @@ public class PauseScreenScript : MonoBehaviour
 			{
 				if (Input.GetButtonDown("A"))
 				{
-					this.PromptParent.active = true;
 					this.ScreenBlur.enabled = false;
 					this.RPGCamera.enabled = true;
 					this.PassTime.active = false;

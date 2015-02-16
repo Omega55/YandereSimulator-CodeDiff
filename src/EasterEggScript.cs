@@ -4,13 +4,14 @@ using UnityEngine;
 [Serializable]
 public class EasterEggScript : MonoBehaviour
 {
-	public Renderer YandereRenderer;
+	public YandereScript Yandere;
 
 	public Texture DarkSeifuku;
 
 	public virtual void OnTriggerEnter()
 	{
-		this.YandereRenderer.materials[0].mainTexture = this.DarkSeifuku;
+		this.Yandere.MyRenderer.materials[0].mainTexture = this.DarkSeifuku;
+		this.Yandere.Outline.h.ReinitMaterials();
 	}
 
 	public virtual void Main()

@@ -20,7 +20,10 @@ public class PromptSwapScript : MonoBehaviour
 
 	public virtual void Start()
 	{
-		this.InputDevice = (InputDeviceScript)this.transform.parent.gameObject.GetComponent("InputDeviceScript");
+		if (this.InputDevice == null)
+		{
+			this.InputDevice = (InputDeviceScript)this.transform.parent.gameObject.GetComponent("InputDeviceScript");
+		}
 	}
 
 	public virtual void Update()

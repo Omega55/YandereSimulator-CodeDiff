@@ -8,6 +8,8 @@ public class RagdollScript : MonoBehaviour
 
 	public PromptScript Prompt;
 
+	public SkinnedMeshRenderer MyRenderer;
+
 	public Rigidbody[] Rigidbodies;
 
 	public Transform BloodParent;

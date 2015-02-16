@@ -1,12 +1,36 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using Boo.Lang;
+using HighlightingSystem;
 using UnityEngine;
 
 [Serializable]
 public class YandereScript : MonoBehaviour
 {
+	[CompilerGenerated]
+	[Serializable]
+	internal sealed class $ApplyCustomCostume$720 : GenericGenerator<WWW>
+	{
+		internal YandereScript $self_$724;
+
+		public $ApplyCustomCostume$720(YandereScript self_)
+		{
+			this.$self_$724 = self_;
+		}
+
+		public override IEnumerator<WWW> GetEnumerator()
+		{
+			return new YandereScript.$ApplyCustomCostume$720.$(this.$self_$724);
+		}
+	}
+
 	private Quaternion targetRotation;
 
 	private Vector3 targetDirection;
+
+	private GameObject NewDumpChan;
 
 	private GameObject NewTrail;
 
@@ -24,7 +48,11 @@ public class YandereScript : MonoBehaviour
 
 	public StudentManagerScript StudentManager;
 
-	public HighlightingEffect Highlighting;
+	public HighlightingRenderer HighlightingR;
+
+	public HighlightingBlitter HighlightingB;
+
+	public WeaponManagerScript WeaponManager;
 
 	public SWP_HeartRateMonitor HeartRate;
 
@@ -34,13 +62,17 @@ public class YandereScript : MonoBehaviour
 
 	public DepthOfField34 DepthOfField;
 
+	public WeaponMenuScript WeaponMenu;
+
 	public PromptScript NearestPrompt;
 
 	public SubtitleScript Subtitle;
 
-	public WeaponScript Weapon;
+	public OutlineScript Outline;
 
 	public Vignetting Vignette;
+
+	public WeaponScript[] Weapon;
 
 	public SpringJoint RagdollDragger;
 
@@ -73,6 +105,8 @@ public class YandereScript : MonoBehaviour
 	public GameObject Phone;
 
 	public GameObject Trail;
+
+	public Projector MyProjector;
 
 	public Renderer MyRenderer;
 
@@ -120,6 +154,8 @@ public class YandereScript : MonoBehaviour
 
 	public int NearBodies;
 
+	public int Equipped;
+
 	public int Costume;
 
 	public bool BloodyWarning;
@@ -148,8 +184,6 @@ public class YandereScript : MonoBehaviour
 
 	public bool Heartbroken;
 
-	public bool DpadPressed;
-
 	public bool NearSenpai;
 
 	public bool CanMove;
@@ -158,7 +192,7 @@ public class YandereScript : MonoBehaviour
 
 	public bool Die;
 
-	public Texture[] UniformTextures;
+	public Texture[] BloodTextures;
 
 	public Transform[] Spine;
 
@@ -192,6 +226,8 @@ public class YandereScript : MonoBehaviour
 
 	public AudioClip Laugh4;
 
+	public bool AoT;
+
 	public Texture TitanTexture;
 
 	public YandereScript()
@@ -214,6 +250,8 @@ public class YandereScript : MonoBehaviour
 		this.ResetYandereEffects();
 		this.ResetSenpaiEffects();
 		this.UpdateSanity();
+		this.UpdateBlood();
+		this.StartCoroutine_Auto(this.ApplyCustomCostume());
 	}
 
 	public virtual void Update()
@@ -310,7 +348,7 @@ public class YandereScript : MonoBehaviour
 				this.DumpTimer += Time.deltaTime;
 				if (this.DumpTimer > (float)1)
 				{
-					if (this.Character.animation["f02_throw_20_p"].time == (float)0)
+					if (this.NewDumpChan == null)
 					{
 						this.SpawnDumpChan();
 					}
@@ -416,33 +454,6 @@ public class YandereScript : MonoBehaviour
 			this.NewTrail = (GameObject)UnityEngine.Object.Instantiate(this.Trail, this.transform.position + Vector3.fwd * 0.5f + Vector3.up * 0.1f, Quaternion.identity);
 			((AIPath)this.NewTrail.GetComponent(typeof(AIPath))).target = this.Homeroom;
 		}
-		if (!this.DpadPressed && this.Weapon != null && this.CanMove && !this.Dragging)
-		{
-			if (Input.GetKeyDown("1") || Input.GetAxis("DpadY") < -0.5f)
-			{
-				this.Unequip();
-			}
-			else if (Input.GetKeyDown("2") || Input.GetAxis("DpadY") > 0.5f)
-			{
-				this.Weapon.active = true;
-				this.DpadPressed = true;
-				this.Armed = true;
-				this.StudentManager.UpdateStudents();
-				if (!this.WeaponWarning)
-				{
-					this.NotificationManager.DisplayNotification("Armed");
-					this.WeaponWarning = true;
-				}
-			}
-		}
-		if (Input.GetAxis("DpadY") > -0.5f && Input.GetAxis("DpadY") < 0.5f && Input.GetAxis("DpadX") > -0.5f && Input.GetAxis("DpadX") < 0.5f)
-		{
-			this.DpadPressed = false;
-		}
-		else
-		{
-			this.DpadPressed = true;
-		}
 		if (Vector3.Distance(this.transform.position, this.Senpai.position) < (float)2)
 		{
 			if (!this.NearSenpai)
@@ -458,8 +469,9 @@ public class YandereScript : MonoBehaviour
 			}
 			if (this.Armed)
 			{
-				this.WeaponWarning = false;
-				this.Weapon.Drop();
+				this.Weapon[this.Equipped].Drop();
+				this.Weapon[this.Equipped] = null;
+				this.Unequip();
 			}
 		}
 		else
@@ -511,10 +523,14 @@ public class YandereScript : MonoBehaviour
 		}
 		if (this.YandereVision)
 		{
+			if (!this.HighlightingR.enabled)
+			{
+				this.YandereColorCorrection.enabled = true;
+				this.HighlightingR.enabled = true;
+				this.HighlightingB.enabled = true;
+				this.Vignette.enabled = true;
+			}
 			Time.timeScale = Mathf.Lerp(Time.timeScale, 0.5f, 0.166666672f);
-			this.YandereColorCorrection.enabled = true;
-			this.Highlighting.enabled = true;
-			this.Vignette.enabled = true;
 			this.YandereFade = Mathf.Lerp(this.YandereFade, (float)0, Time.deltaTime * (float)10);
 			this.YandereTint = (float)1 - this.YandereFade / (float)100;
 			this.YandereColorCorrection.redChannel.MoveKey(1, new Keyframe(0.5f, 0.5f - this.YandereTint * 0.25f));
@@ -530,7 +546,11 @@ public class YandereScript : MonoBehaviour
 		}
 		else
 		{
-			this.Highlighting.enabled = false;
+			if (this.HighlightingR.enabled)
+			{
+				this.HighlightingR.enabled = false;
+				this.HighlightingB.enabled = false;
+			}
 			if (this.YandereFade < (float)99)
 			{
 				Time.timeScale = Mathf.Lerp(Time.timeScale, (float)1, 0.166666672f);
@@ -581,7 +601,11 @@ public class YandereScript : MonoBehaviour
 				if (this.TalkTimer == (float)3)
 				{
 					this.Character.animation.CrossFade("f02_greet_00");
-					if (this.TargetStudent.Witnessed == "Weapon and Blood")
+					if (this.TargetStudent.Witnessed == "Insanity" || this.TargetStudent.Witnessed == "Weapon and Blood and Insanity" || this.TargetStudent.Witnessed == "Weapon and Insanity" || this.TargetStudent.Witnessed == "Blood and Insanity")
+					{
+						this.Subtitle.UpdateLabel("Insanity Apology", 0, (float)3);
+					}
+					else if (this.TargetStudent.Witnessed == "Weapon and Blood")
 					{
 						this.Subtitle.UpdateLabel("Weapon and Blood Apology", 0, (float)3);
 					}
@@ -685,7 +709,6 @@ public class YandereScript : MonoBehaviour
 				this.NextTwitch = UnityEngine.Random.Range((float)0, 1f);
 				this.TwitchTimer = (float)0;
 			}
-			this.Head.localEulerAngles = this.Head.localEulerAngles + this.Twitch;
 			this.Twitch = Vector3.Lerp(this.Twitch, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
 		}
 		if (this.NearBodies > 0)
@@ -743,7 +766,7 @@ public class YandereScript : MonoBehaviour
 				this.BreastSize = (float)0;
 			}
 		}
-		if (Input.GetKey("l"))
+		if (Input.GetKey("l") && !this.AoT)
 		{
 			this.StudentManager.AttackOnTitan();
 			this.AttackOnTitan();
@@ -809,6 +832,7 @@ public class YandereScript : MonoBehaviour
 		Vector3 vector9 = this.Arm[1].transform.localEulerAngles = localEulerAngles3;
 		this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 		this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
+		this.Head.localEulerAngles = this.Head.localEulerAngles + this.Twitch;
 	}
 
 	public virtual void ResetSenpaiEffects()
@@ -850,21 +874,26 @@ public class YandereScript : MonoBehaviour
 
 	public virtual void SpawnDumpChan()
 	{
-		UnityEngine.Object.Destroy(this.Ragdoll);
-		GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.DumpChan, this.transform.position, Quaternion.identity);
-		gameObject.transform.LookAt(this.Incinerator.transform.position);
-		float y = gameObject.transform.eulerAngles.y + (float)180;
-		Vector3 eulerAngles = gameObject.transform.eulerAngles;
+		this.NewDumpChan = (GameObject)UnityEngine.Object.Instantiate(this.DumpChan, this.transform.position, Quaternion.identity);
+		this.NewDumpChan.transform.LookAt(this.Incinerator.transform.position);
+		float y = this.NewDumpChan.transform.eulerAngles.y + (float)180;
+		Vector3 eulerAngles = this.NewDumpChan.transform.eulerAngles;
 		float num = eulerAngles.y = y;
-		Vector3 vector = gameObject.transform.eulerAngles = eulerAngles;
+		Vector3 vector = this.NewDumpChan.transform.eulerAngles = eulerAngles;
+		((DumpScript)this.NewDumpChan.GetComponent(typeof(DumpScript))).MyRenderer.materials[1].mainTexture = ((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).MyRenderer.materials[1].mainTexture;
+		((DumpScript)this.NewDumpChan.GetComponent(typeof(DumpScript))).MyRenderer.materials[3].mainTexture = ((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).MyRenderer.materials[3].mainTexture;
+		UnityEngine.Object.Destroy(this.Ragdoll);
 	}
 
 	public virtual void Unequip()
 	{
-		this.Weapon.active = false;
-		this.DpadPressed = true;
+		if (this.Weapon[this.Equipped] != null)
+		{
+			this.Weapon[this.Equipped].active = false;
+		}
 		this.Armed = false;
 		this.StudentManager.UpdateStudents();
+		this.WeaponManager.UpdateLabels();
 		this.WeaponWarning = false;
 	}
 
@@ -911,31 +940,33 @@ public class YandereScript : MonoBehaviour
 		{
 			this.Bloodiness = (float)100;
 		}
+		this.MyProjector.enabled = true;
 		if (this.Bloodiness == (float)100)
 		{
-			this.MyRenderer.material.mainTexture = this.UniformTextures[5];
+			this.MyProjector.material.mainTexture = this.BloodTextures[5];
 		}
 		else if (this.Bloodiness >= (float)80)
 		{
-			this.MyRenderer.material.mainTexture = this.UniformTextures[4];
+			this.MyProjector.material.mainTexture = this.BloodTextures[4];
 		}
 		else if (this.Bloodiness >= (float)60)
 		{
-			this.MyRenderer.material.mainTexture = this.UniformTextures[3];
+			this.MyProjector.material.mainTexture = this.BloodTextures[3];
 		}
 		else if (this.Bloodiness >= (float)40)
 		{
-			this.MyRenderer.material.mainTexture = this.UniformTextures[2];
+			this.MyProjector.material.mainTexture = this.BloodTextures[2];
 		}
 		else if (this.Bloodiness >= (float)20)
 		{
-			this.MyRenderer.material.mainTexture = this.UniformTextures[1];
+			this.MyProjector.material.mainTexture = this.BloodTextures[1];
 		}
 		else
 		{
-			this.MyRenderer.material.mainTexture = this.UniformTextures[0];
+			this.MyProjector.enabled = false;
 			this.BloodyWarning = false;
 		}
+		this.Outline.h.ReinitMaterials();
 	}
 
 	public virtual void OnTriggerEnter(Collider other)
@@ -959,9 +990,16 @@ public class YandereScript : MonoBehaviour
 		}
 	}
 
+	public virtual IEnumerator ApplyCustomCostume()
+	{
+		return new YandereScript.$ApplyCustomCostume$720(this).GetEnumerator();
+	}
+
 	public virtual void AttackOnTitan()
 	{
 		this.MyRenderer.materials[0].mainTexture = this.TitanTexture;
+		this.AoT = true;
+		this.Outline.h.ReinitMaterials();
 	}
 
 	public virtual void Main()

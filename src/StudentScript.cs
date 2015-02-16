@@ -21,13 +21,13 @@ public class StudentScript : MonoBehaviour
 
 	public DynamicGridObstacle Obstacle;
 
-	public ColoredOutlineScript Outline;
-
 	public ReputationScript Reputation;
 
 	public SubtitleScript Subtitle;
 
 	public YandereScript Yandere;
+
+	public OutlineScript Outline;
 
 	public PromptScript Prompt;
 
@@ -57,6 +57,10 @@ public class StudentScript : MonoBehaviour
 
 	public CharacterController MyController;
 
+	public SkinnedMeshRenderer MyRenderer;
+
+	public Texture HairTexture;
+
 	public Collider MyCollider;
 
 	public Camera Eyes;
@@ -77,7 +81,11 @@ public class StudentScript : MonoBehaviour
 
 	public float PendingRep;
 
+	public float RepLoss;
+
 	public float Alarm;
+
+	public bool RepeatReaction;
 
 	public bool Forgave;
 
@@ -119,11 +127,9 @@ public class StudentScript : MonoBehaviour
 
 	private float MaxSpeed;
 
-	public SkinnedMeshRenderer MyRenderer;
-
 	public Mesh NudeMesh;
 
-	public Texture[] NudeTexture;
+	public Texture NudeTexture;
 
 	public bool AoT;
 
@@ -150,6 +156,11 @@ public class StudentScript : MonoBehaviour
 		this.CameraEffects = (CameraEffectsScript)Camera.main.GetComponent(typeof(CameraEffectsScript));
 		this.RightEyeOrigin = this.RightEye.localPosition;
 		this.LeftEyeOrigin = this.LeftEye.localPosition;
+		this.SetColors();
+		if (this.AoT)
+		{
+			this.AttackOnTitan();
+		}
 		if (this.Yandere.Armed)
 		{
 			this.Prompt.HideButton[0] = true;
@@ -191,7 +202,7 @@ public class StudentScript : MonoBehaviour
 			this.DistanceToPlayer = Vector3.Distance(this.transform.position, this.Yandere.transform.position);
 			if (this.DistanceToPlayer < (float)10)
 			{
-				if (this.Yandere.Armed || this.Yandere.Bloodiness > (float)0)
+				if ((this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].Suspicious) || this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.333f)
 				{
 					this.Planes = GeometryUtility.CalculateFrustumPlanes(this.Eyes);
 					if (GeometryUtility.TestPlanesAABB(this.Planes, this.Yandere.collider.bounds))
@@ -229,26 +240,50 @@ public class StudentScript : MonoBehaviour
 					this.Routine = false;
 					this.Alarmed = true;
 					this.Witness = true;
-					this.Reputation.PendingRep = this.Reputation.PendingRep - (float)10;
-					this.PendingRep -= (float)10;
 					this.Exclamation.Timer = (float)3;
 					this.CameraEffects.Alarm();
-					if (this.Yandere.Armed)
+					string witnessed = this.Witnessed;
+					if (this.Yandere.Armed && this.Yandere.Bloodiness > (float)0 && this.Yandere.Sanity < 33.333f)
 					{
-						this.Witnessed = "Weapon";
+						this.Witnessed = "Weapon and Blood and Insanity";
+						this.RepLoss = (float)30;
 					}
-					if (this.Yandere.Armed && this.Yandere.Bloodiness > (float)0)
+					else if (this.Yandere.Armed && this.Yandere.Sanity < 33.333f)
+					{
+						this.Witnessed = "Weapon and Insanity";
+						this.RepLoss = (float)20;
+					}
+					else if (this.Yandere.Bloodiness > (float)0 && this.Yandere.Sanity < 33.333f)
+					{
+						this.Witnessed = "Blood and Insanity";
+						this.RepLoss = (float)20;
+					}
+					else if (this.Yandere.Armed && this.Yandere.Bloodiness > (float)0)
 					{
 						this.Witnessed = "Weapon and Blood";
+						this.RepLoss = (float)20;
 					}
 					else if (this.Yandere.Armed)
 					{
 						this.Witnessed = "Weapon";
+						this.RepLoss = (float)10;
 					}
 					else if (this.Yandere.Bloodiness > (float)0)
 					{
 						this.Witnessed = "Blood";
+						this.RepLoss = (float)10;
 					}
+					else if (this.Yandere.Sanity < 33.333f)
+					{
+						this.Witnessed = "Insanity";
+						this.RepLoss = (float)10;
+					}
+					if (this.Witnessed == witnessed)
+					{
+						this.RepeatReaction = true;
+					}
+					this.Reputation.PendingRep = this.Reputation.PendingRep - this.RepLoss;
+					this.PendingRep -= this.RepLoss;
 				}
 			}
 			else if (!this.Alarmed)
@@ -345,7 +380,14 @@ public class StudentScript : MonoBehaviour
 					this.PendingRep += (float)5;
 					this.Outline.color = new Color((float)0, (float)1, (float)0, (float)1);
 					this.Forgave = true;
-					this.Subtitle.UpdateLabel("Forgiving", 0, (float)3);
+					if (this.Witnessed == "Insanity" || this.Witnessed == "Weapon and Blood and Insanity" || this.Witnessed == "Weapon and Insanity" || this.Witnessed == "Blood and Insanity")
+					{
+						this.Subtitle.UpdateLabel("Forgiving Insanity", 0, (float)3);
+					}
+					else
+					{
+						this.Subtitle.UpdateLabel("Forgiving", 0, (float)3);
+					}
 				}
 				else
 				{
@@ -415,8 +457,11 @@ public class StudentScript : MonoBehaviour
 				else
 				{
 					GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.Ragdoll, this.transform.position, this.transform.rotation);
-					((RagdollScript)gameObject.GetComponent(typeof(RagdollScript))).AnimStartTime = this.Character.animation["f02_down_22"].time;
-					((RagdollScript)gameObject.GetComponent(typeof(RagdollScript))).Yandere = this.Yandere;
+					RagdollScript ragdollScript = (RagdollScript)gameObject.GetComponent(typeof(RagdollScript));
+					ragdollScript.AnimStartTime = this.Character.animation["f02_down_22"].time;
+					ragdollScript.Yandere = this.Yandere;
+					ragdollScript.MyRenderer.materials[1].mainTexture = this.HairTexture;
+					ragdollScript.MyRenderer.materials[3].mainTexture = this.HairTexture;
 					this.BloodSpray.transform.parent = ((RagdollScript)gameObject.GetComponent(typeof(RagdollScript))).BloodParent;
 					this.BloodSpray.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
 					this.BloodSpray.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
@@ -445,7 +490,28 @@ public class StudentScript : MonoBehaviour
 			}
 			else if (this.AlarmTimer > (float)1 && !this.Reacted)
 			{
-				if (this.Witnessed == "Weapon")
+				if (this.RepeatReaction)
+				{
+					this.Subtitle.UpdateLabel("Repeat Reaction", 1, (float)3);
+					this.RepeatReaction = false;
+				}
+				else if (this.Witnessed == "Weapon and Blood and Insanity")
+				{
+					this.Subtitle.UpdateLabel("Weapon and Blood and Insanity Reaction", 1, (float)3);
+				}
+				else if (this.Witnessed == "Weapon and Blood")
+				{
+					this.Subtitle.UpdateLabel("Weapon and Blood Reaction", 1, (float)3);
+				}
+				else if (this.Witnessed == "Weapon and Insanity")
+				{
+					this.Subtitle.UpdateLabel("Weapon and Insanity Reaction", 1, (float)3);
+				}
+				else if (this.Witnessed == "Blood and Insanity")
+				{
+					this.Subtitle.UpdateLabel("Blood and Insanity Reaction", 1, (float)3);
+				}
+				else if (this.Witnessed == "Weapon")
 				{
 					this.Subtitle.UpdateLabel("Weapon Reaction", 1, (float)3);
 				}
@@ -453,9 +519,9 @@ public class StudentScript : MonoBehaviour
 				{
 					this.Subtitle.UpdateLabel("Blood Reaction", 1, (float)3);
 				}
-				else if (this.Witnessed == "Weapon and Blood")
+				else if (this.Witnessed == "Insanity")
 				{
-					this.Subtitle.UpdateLabel("Weapon and Blood Reaction", 1, (float)3);
+					this.Subtitle.UpdateLabel("Insanity Reaction", 1, (float)3);
 				}
 				this.Reacted = true;
 			}
@@ -479,6 +545,10 @@ public class StudentScript : MonoBehaviour
 		{
 			this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)10, (float)10, (float)10), Time.deltaTime);
 		}
+		int num5 = 0;
+		Vector3 localEulerAngles = this.transform.localEulerAngles;
+		float num6 = localEulerAngles.x = (float)num5;
+		Vector3 vector3 = this.transform.localEulerAngles = localEulerAngles;
 	}
 
 	public virtual void LateUpdate()
@@ -518,27 +588,66 @@ public class StudentScript : MonoBehaviour
 			{
 				this.Destinations[i] = this.StudentManager.Lockers.List[this.StudentID];
 			}
-			if (this.DestinationNames[i] == "Class")
+			else if (this.DestinationNames[i] == "Class")
 			{
 				this.Destinations[i] = this.StudentManager.Classrooms.List[this.Class];
 			}
-			if (this.DestinationNames[i] == "Rooftop")
+			else if (this.DestinationNames[i] == "Rooftop")
 			{
 				this.Destinations[i] = this.StudentManager.Hangouts.List[0];
 			}
-			if (this.DestinationNames[i] == "Exit")
+			else if (this.DestinationNames[i] == "Exit")
 			{
 				this.Destinations[i] = this.StudentManager.Hangouts.List[1];
 			}
 		}
 	}
 
+	public virtual void SetColors()
+	{
+		string a = this.JSON.StudentColors[this.StudentID];
+		if (a == "Red")
+		{
+			this.HairTexture = this.StudentManager.Colors[0];
+		}
+		else if (a == "Yellow")
+		{
+			this.HairTexture = this.StudentManager.Colors[1];
+		}
+		else if (a == "Green")
+		{
+			this.HairTexture = this.StudentManager.Colors[2];
+		}
+		else if (a == "Cyan")
+		{
+			this.HairTexture = this.StudentManager.Colors[3];
+		}
+		else if (a == "Blue")
+		{
+			this.HairTexture = this.StudentManager.Colors[4];
+		}
+		else if (a == "Purple")
+		{
+			this.HairTexture = this.StudentManager.Colors[5];
+		}
+		this.MyRenderer.materials[1].mainTexture = this.HairTexture;
+		this.MyRenderer.materials[3].mainTexture = this.HairTexture;
+		this.Outline.h.ReinitMaterials();
+	}
+
 	public virtual void AttackOnTitan()
 	{
 		this.AoT = true;
+		float y = 0.0825f;
+		Vector3 center = this.MyController.center;
+		float num = center.y = y;
+		Vector3 vector = this.MyController.center = center;
+		this.MyController.radius = 0.015f;
+		this.MyController.height = 0.15f;
 		this.MyRenderer.sharedMesh = this.NudeMesh;
-		this.MyRenderer.materials[3].mainTexture = this.NudeTexture[0];
-		this.MyRenderer.materials[0].mainTexture = this.NudeTexture[1];
+		this.MyRenderer.materials[3].mainTexture = this.NudeTexture;
+		this.MyRenderer.materials[0].mainTexture = this.HairTexture;
+		this.Outline.h.ReinitMaterials();
 	}
 
 	public virtual void Main()
