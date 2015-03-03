@@ -21,6 +21,8 @@ public class JsonScript : MonoBehaviour
 
 	public int[] StudentCrushes;
 
+	public float[] StudentBreasts;
+
 	public string[] StudentHairstyles;
 
 	public string[] StudentColors;
@@ -77,6 +79,7 @@ public class JsonScript : MonoBehaviour
 			this.StudentClubs[this.ID] = TFUtils.LoadString(array[i], "Club");
 			this.StudentPersonalites[this.ID] = TFUtils.LoadString(array[i], "Personality");
 			this.StudentCrushes[this.ID] = TFUtils.LoadInt(array[i], "Crush");
+			this.StudentBreasts[this.ID] = TFUtils.LoadFloat(array[i], "BreastSize");
 			this.StudentHairstyles[this.ID] = TFUtils.LoadString(array[i], "Hairstyle");
 			this.StudentColors[this.ID] = TFUtils.LoadString(array[i], "Color");
 			this.StudentStockings[this.ID] = TFUtils.LoadString(array[i], "Stockings");

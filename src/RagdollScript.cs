@@ -4,11 +4,15 @@ using UnityEngine;
 [Serializable]
 public class RagdollScript : MonoBehaviour
 {
+	public IncineratorScript Incinerator;
+
 	public YandereScript Yandere;
 
 	public PromptScript Prompt;
 
 	public SkinnedMeshRenderer MyRenderer;
+
+	public Rigidbody[] AllRigidbodies;
 
 	public Rigidbody[] Rigidbodies;
 
@@ -16,7 +20,19 @@ public class RagdollScript : MonoBehaviour
 
 	public Transform NearestLimb;
 
+	public Transform RightBreast;
+
+	public Transform LeftBreast;
+
+	public Transform Ponytail;
+
+	public Transform HairR;
+
+	public Transform HairL;
+
 	public Transform[] Limb;
+
+	public Transform Head;
 
 	public Vector3[] LimbAnchor;
 
@@ -24,9 +40,17 @@ public class RagdollScript : MonoBehaviour
 
 	public bool AddingToCount;
 
+	public bool HidePony;
+
 	public bool Dragged;
 
+	public bool Dumped;
+
 	public float AnimStartTime;
+
+	public float DumpTimer;
+
+	public float BreastSize;
 
 	public int LimbID;
 
@@ -34,7 +58,7 @@ public class RagdollScript : MonoBehaviour
 
 	public virtual void Start()
 	{
-		Physics.IgnoreLayerCollision(9, 11, true);
+		Physics.IgnoreLayerCollision(11, 13, true);
 		if (this.Yandere == null)
 		{
 			this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent(typeof(YandereScript));
@@ -46,54 +70,93 @@ public class RagdollScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		this.Character.animation.Stop();
-		if (!Input.GetButtonDown("LB"))
+		if (!this.Dumped)
 		{
-			if (this.Prompt.Circle[1].fillAmount <= (float)0)
+			this.Character.animation.Stop();
+			if (!Input.GetButtonDown("LB"))
 			{
-				if (!this.Dragged)
+				if (this.Prompt.Circle[1].fillAmount <= (float)0)
 				{
-					this.Prompt.AcceptingInput[1] = false;
-					this.Prompt.Circle[1].fillAmount = (float)1;
-					this.Prompt.Label[1].text = "     " + "Drop";
-					this.PickNearestLimb();
-					this.Yandere.RagdollDragger.connectedBody = this.Rigidbodies[this.LimbID];
-					this.Yandere.RagdollDragger.connectedAnchor = this.LimbAnchor[this.LimbID];
-					this.Yandere.Dragging = true;
-					this.Yandere.Ragdoll = this.gameObject;
-					if (this.Yandere.Armed)
+					if (!this.Dragged)
 					{
-						this.Yandere.Unequip();
+						if (this.Yandere.Ragdoll != null)
+						{
+							((RagdollScript)this.Yandere.Ragdoll.GetComponent(typeof(RagdollScript))).StopDragging();
+						}
+						if (this.Yandere.Armed)
+						{
+							this.Yandere.Unequip();
+						}
+						if (this.Yandere.PickUp != null)
+						{
+							this.Yandere.PickUp.Drop();
+						}
+						this.Prompt.AcceptingInput[1] = false;
+						this.Prompt.Circle[1].fillAmount = (float)1;
+						this.Prompt.Label[1].text = "     " + "Drop";
+						this.PickNearestLimb();
+						this.Yandere.RagdollDragger.connectedBody = this.Rigidbodies[this.LimbID];
+						this.Yandere.RagdollDragger.connectedAnchor = this.LimbAnchor[this.LimbID];
+						this.Yandere.Dragging = true;
+						this.Yandere.Ragdoll = this.gameObject;
+						this.Dragged = true;
+						this.Yandere.StudentManager.UpdateStudents();
 					}
-					this.Dragged = true;
-				}
-				else
-				{
-					this.StopDragging();
+					else
+					{
+						this.StopDragging();
+					}
 				}
 			}
-		}
-		else if (this.Dragged)
-		{
-			this.StopDragging();
-		}
-		if (Vector3.Distance(this.Yandere.transform.position, this.transform.position) < (float)2)
-		{
-			if (!this.AddingToCount)
+			else if (this.Dragged)
 			{
-				this.Yandere.NearBodies = this.Yandere.NearBodies + 1;
-				this.AddingToCount = true;
+				this.StopDragging();
+			}
+			if (Vector3.Distance(this.Yandere.transform.position, this.Prompt.transform.position) < (float)2)
+			{
+				if (!this.AddingToCount)
+				{
+					this.Yandere.NearBodies = this.Yandere.NearBodies + 1;
+					this.AddingToCount = true;
+				}
+			}
+			else if (this.AddingToCount)
+			{
+				this.Yandere.NearBodies = this.Yandere.NearBodies - 1;
+				this.AddingToCount = false;
+			}
+			if (!this.Prompt.AcceptingInput[1] && Input.GetButtonUp("B"))
+			{
+				this.Prompt.AcceptingInput[1] = true;
 			}
 		}
-		else if (this.AddingToCount)
+		else
 		{
-			this.Yandere.NearBodies = this.Yandere.NearBodies - 1;
-			this.AddingToCount = false;
+			this.Character.animation.Play("f02_thrown_20");
+			this.DumpTimer += Time.deltaTime;
+			if (this.DumpTimer > (float)2)
+			{
+				if (this.AddingToCount)
+				{
+					this.Yandere.NearBodies = this.Yandere.NearBodies - 1;
+				}
+				this.Incinerator.Corpses = this.Incinerator.Corpses + 1;
+				UnityEngine.Object.Destroy(this.gameObject);
+			}
 		}
-		if (!this.Prompt.AcceptingInput[1] && Input.GetButtonUp("B"))
+	}
+
+	public virtual void LateUpdate()
+	{
+		if (this.HidePony)
 		{
-			this.Prompt.AcceptingInput[1] = true;
+			this.Ponytail.parent.transform.localScale = new Vector3((float)1, (float)1, 0.93f);
+			this.Ponytail.localScale = new Vector3((float)0, (float)0, (float)0);
+			this.HairR.localScale = new Vector3((float)0, (float)0, (float)0);
+			this.HairL.localScale = new Vector3((float)0, (float)0, (float)0);
 		}
+		this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
+		this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 	}
 
 	public virtual void StopDragging()
@@ -104,6 +167,7 @@ public class RagdollScript : MonoBehaviour
 		this.Yandere.RagdollDragger.connectedBody = null;
 		this.Yandere.Dragging = false;
 		this.Yandere.Ragdoll = null;
+		this.Yandere.StudentManager.UpdateStudents();
 		this.Dragged = false;
 	}
 
@@ -118,6 +182,18 @@ public class RagdollScript : MonoBehaviour
 				this.NearestLimb = this.Limb[i];
 				this.LimbID = i;
 			}
+		}
+	}
+
+	public virtual void Dump()
+	{
+		this.Incinerator = this.Yandere.Incinerator;
+		this.Prompt.Hide();
+		this.Prompt.enabled = false;
+		this.Dumped = true;
+		for (int i = 0; i < this.AllRigidbodies.Length; i++)
+		{
+			this.AllRigidbodies[i].isKinematic = true;
 		}
 	}
 

@@ -15,13 +15,21 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] BloodInsanityReactions;
 
-	public string[] KnifeReactions;
-
 	public string[] BloodReactions;
 
 	public string[] InsanityReactions;
 
+	public string[] MurderReactions;
+
+	public string[] CowardReactions;
+
 	public string[] RepeatReactions;
+
+	public string[] KnifeReactions;
+
+	public string[] SyringeReactions;
+
+	public string[] KatanaReactions;
 
 	public string[] WeaponBloodApologies;
 
@@ -78,6 +86,14 @@ public class SubtitleScript : MonoBehaviour
 			{
 				this.Label.text = this.KnifeReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.KnifeReactions))];
 			}
+			else if (ID == 2)
+			{
+				this.Label.text = this.KatanaReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.KatanaReactions))];
+			}
+			else if (ID == 3)
+			{
+				this.Label.text = this.SyringeReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.SyringeReactions))];
+			}
 		}
 		else if (ReactionType == "Blood Reaction")
 		{
@@ -86,6 +102,14 @@ public class SubtitleScript : MonoBehaviour
 		else if (ReactionType == "Insanity Reaction")
 		{
 			this.Label.text = this.InsanityReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.InsanityReactions))];
+		}
+		else if (ReactionType == "Murder Reaction")
+		{
+			this.Label.text = this.MurderReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.MurderReactions))];
+		}
+		else if (ReactionType == "Coward Reaction")
+		{
+			this.Label.text = this.CowardReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.CowardReactions))];
 		}
 		else if (ReactionType == "Repeat Reaction")
 		{

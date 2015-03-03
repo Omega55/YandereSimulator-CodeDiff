@@ -6,6 +6,8 @@ public class SplashSpawnerScript : MonoBehaviour
 {
 	public GameObject BloodSplash;
 
+	public GameObject BloodPool;
+
 	public Transform YandereChan;
 
 	public bool Planted;
@@ -33,12 +35,17 @@ public class SplashSpawnerScript : MonoBehaviour
 		{
 			this.Planted = false;
 		}
+		if (this.BloodPool == null)
+		{
+			this.Bloody = false;
+		}
 	}
 
 	public virtual void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.name == "BloodPool(Clone)")
 		{
+			this.BloodPool = other.gameObject;
 			this.Bloody = true;
 		}
 	}

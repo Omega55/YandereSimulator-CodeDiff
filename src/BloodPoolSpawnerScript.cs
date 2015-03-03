@@ -6,19 +6,26 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 {
 	public Transform BloodParent;
 
+	public GameObject LastBloodPool;
+
 	public GameObject BloodPool;
+
+	public int PoolsSpawned;
 
 	public int NearbyBlood;
 
+	public float Timer;
+
 	public virtual void Start()
 	{
-		this.BloodParent = GameObject.Find("Blood").transform;
+		this.BloodParent = GameObject.Find("BloodParent").transform;
 	}
 
 	public virtual void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.name == "BloodPool(Clone)")
 		{
+			this.LastBloodPool = other.gameObject;
 			this.NearbyBlood++;
 		}
 	}
@@ -34,11 +41,39 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 	public virtual void Update()
 	{
 		this.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
-		if (this.transform.position.y < 0.33333f && this.NearbyBlood < 1)
+		int num = 0;
+		Vector3 position = this.transform.position;
+		float num2 = position.y = (float)num;
+		Vector3 vector = this.transform.position = position;
+		if (this.Timer > (float)0)
 		{
-			GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.BloodPool, new Vector3(this.transform.position.x, 0.012f, this.transform.position.z), Quaternion.identity);
-			gameObject.transform.localEulerAngles = new Vector3((float)90, UnityEngine.Random.Range((float)0, 360f), (float)0);
-			gameObject.transform.parent = this.BloodParent;
+			this.Timer -= Time.deltaTime;
+		}
+		if (this.transform.position.y < 0.33333f)
+		{
+			if (this.NearbyBlood > 0 && this.LastBloodPool == null)
+			{
+				this.NearbyBlood--;
+			}
+			if (this.NearbyBlood < 1 && this.Timer <= (float)0)
+			{
+				this.Timer = 0.1f;
+				if (this.PoolsSpawned < 10)
+				{
+					GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.BloodPool, new Vector3(this.transform.position.x, 0.012f, this.transform.position.z), Quaternion.identity);
+					gameObject.transform.localEulerAngles = new Vector3((float)90, UnityEngine.Random.Range((float)0, 360f), (float)0);
+					gameObject.transform.parent = this.BloodParent;
+					this.PoolsSpawned++;
+				}
+				else if (this.PoolsSpawned < 20)
+				{
+					GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.BloodPool, new Vector3(this.transform.position.x, 0.012f, this.transform.position.z), Quaternion.identity);
+					gameObject.transform.localEulerAngles = new Vector3((float)90, UnityEngine.Random.Range((float)0, 360f), (float)0);
+					gameObject.transform.parent = this.BloodParent;
+					this.PoolsSpawned++;
+					((BloodPoolScript)gameObject.GetComponent(typeof(BloodPoolScript))).TargetSize = (float)1 - (float)(this.PoolsSpawned - 10) * 0.1f;
+				}
+			}
 		}
 	}
 

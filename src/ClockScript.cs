@@ -10,6 +10,8 @@ public class ClockScript : MonoBehaviour
 
 	public YandereScript Yandere;
 
+	public PoliceScript Police;
+
 	public Bloom BloomEffect;
 
 	public MotionBlur Blur;
@@ -19,6 +21,8 @@ public class ClockScript : MonoBehaviour
 	public Transform MinuteHand;
 
 	public Transform HourHand;
+
+	public Transform Sun;
 
 	public UILabel PeriodLabel;
 
@@ -68,11 +72,7 @@ public class ClockScript : MonoBehaviour
 	public virtual void Start()
 	{
 		this.PresentTime = this.StartHour * (float)60;
-		if (PlayerPrefs.GetString("Day") == string.Empty)
-		{
-			PlayerPrefs.SetString("Day", "Monday");
-		}
-		this.DayLabel.text = PlayerPrefs.GetString("Day");
+		this.UpdateWeekdayText(PlayerPrefs.GetInt("Weekday"));
 		this.BloomEffect.bloomIntensity = (float)5;
 		this.BloomEffect.bloomThreshhold = (float)0;
 		this.MainLight.color = new Color((float)1, (float)1, (float)1, (float)1);
@@ -95,12 +95,7 @@ public class ClockScript : MonoBehaviour
 		else
 		{
 			this.StopTime = true;
-			this.BloomEffect.bloomIntensity = this.BloomEffect.bloomIntensity + Time.deltaTime * 4.75f;
-			this.BloomEffect.bloomThreshhold = this.BloomEffect.bloomThreshhold - Time.deltaTime * 0.5f;
-			if (this.BloomEffect.bloomThreshhold < (float)0)
-			{
-				Application.LoadLevel(Application.loadedLevel);
-			}
+			this.Police.FadeOut = true;
 		}
 		if (!this.StopTime)
 		{
@@ -195,36 +190,40 @@ public class ClockScript : MonoBehaviour
 				}
 			}
 		}
+		float z3 = (float)-45 + (float)90 * (this.PresentTime - (float)420) / (float)660;
+		Vector3 eulerAngles = this.Sun.eulerAngles;
+		float num3 = eulerAngles.z = z3;
+		Vector3 vector3 = this.Sun.eulerAngles = eulerAngles;
 		if (this.PresentTime > (float)900)
 		{
-			float num3 = (this.PresentTime - (float)900) / (float)180;
-			float r = (float)1 - 0.149019614f * num3;
+			float num4 = (this.PresentTime - (float)900) / (float)180;
+			float r = (float)1 - 0.149019614f * num4;
 			Color color = this.MainLight.color;
-			float num4 = color.r = r;
+			float num5 = color.r = r;
 			Color color2 = this.MainLight.color = color;
-			float g = (float)1 - 0.403921574f * num3;
+			float g = (float)1 - 0.403921574f * num4;
 			Color color3 = this.MainLight.color;
-			float num5 = color3.g = g;
+			float num6 = color3.g = g;
 			Color color4 = this.MainLight.color = color3;
-			float b = (float)1 - 0.709803939f * num3;
+			float b = (float)1 - 0.709803939f * num4;
 			Color color5 = this.MainLight.color;
-			float num6 = color5.b = b;
+			float num7 = color5.b = b;
 			Color color6 = this.MainLight.color = color5;
-			float r2 = (float)1 - 0.149019614f * num3 - 0.25f * ((float)1 - num3);
+			float r2 = (float)1 - 0.149019614f * num4 - 0.25f * ((float)1 - num4);
 			Color ambientLight = RenderSettings.ambientLight;
-			float num7 = ambientLight.r = r2;
+			float num8 = ambientLight.r = r2;
 			Color color7 = RenderSettings.ambientLight = ambientLight;
-			float g2 = (float)1 - 0.403921574f * num3 - 0.25f * ((float)1 - num3);
+			float g2 = (float)1 - 0.403921574f * num4 - 0.25f * ((float)1 - num4);
 			Color ambientLight2 = RenderSettings.ambientLight;
-			float num8 = ambientLight2.g = g2;
+			float num9 = ambientLight2.g = g2;
 			Color color8 = RenderSettings.ambientLight = ambientLight2;
-			float b2 = (float)1 - 0.709803939f * num3 - 0.25f * ((float)1 - num3);
+			float b2 = (float)1 - 0.709803939f * num4 - 0.25f * ((float)1 - num4);
 			Color ambientLight3 = RenderSettings.ambientLight;
-			float num9 = ambientLight3.b = b2;
+			float num10 = ambientLight3.b = b2;
 			Color color9 = RenderSettings.ambientLight = ambientLight3;
-			this.SkyboxColor.r = (float)1 - 0.149019614f * num3 - 0.5f * ((float)1 - num3);
-			this.SkyboxColor.g = (float)1 - 0.403921574f * num3 - 0.5f * ((float)1 - num3);
-			this.SkyboxColor.b = (float)1 - 0.709803939f * num3 - 0.5f * ((float)1 - num3);
+			this.SkyboxColor.r = (float)1 - 0.149019614f * num4 - 0.5f * ((float)1 - num4);
+			this.SkyboxColor.g = (float)1 - 0.403921574f * num4 - 0.5f * ((float)1 - num4);
+			this.SkyboxColor.b = (float)1 - 0.709803939f * num4 - 0.5f * ((float)1 - num4);
 			RenderSettings.skybox.SetColor("_Tint", new Color(this.SkyboxColor.r, this.SkyboxColor.g, this.SkyboxColor.b));
 		}
 		if (this.TimeSkip)
@@ -264,6 +263,11 @@ public class ClockScript : MonoBehaviour
 				this.EndTimeSkip();
 			}
 		}
+		if (Input.GetKeyDown("backspace"))
+		{
+			Time.timeScale = (float)1;
+			this.PresentTime = (float)1080;
+		}
 	}
 
 	public virtual void EndTimeSkip()
@@ -277,6 +281,30 @@ public class ClockScript : MonoBehaviour
 		Time.timeScale = (float)1;
 		this.TimeSkip = false;
 		this.HalfwayTime = (float)0;
+	}
+
+	public virtual void UpdateWeekdayText(int Weekday)
+	{
+		if (Weekday == 1)
+		{
+			this.DayLabel.text = "Monday";
+		}
+		if (Weekday == 2)
+		{
+			this.DayLabel.text = "Tuesday";
+		}
+		if (Weekday == 3)
+		{
+			this.DayLabel.text = "Wednesday";
+		}
+		if (Weekday == 4)
+		{
+			this.DayLabel.text = "Thursday";
+		}
+		if (Weekday == 5)
+		{
+			this.DayLabel.text = "Friday";
+		}
 	}
 
 	public virtual void Main()

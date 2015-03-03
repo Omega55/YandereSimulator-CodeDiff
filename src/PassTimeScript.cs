@@ -30,7 +30,7 @@ public class PassTimeScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (this.InputManager.TappedLeft || Input.GetKeyDown("left"))
+		if (this.InputManager.TappedLeft || Input.GetKeyDown("a") || Input.GetKeyDown("left"))
 		{
 			this.Selected--;
 			if (this.Selected < 1)
@@ -39,7 +39,7 @@ public class PassTimeScript : MonoBehaviour
 			}
 			this.UpdateHighlightPosition();
 		}
-		if (this.InputManager.TappedRight || Input.GetKeyDown("right"))
+		if (this.InputManager.TappedRight || Input.GetKeyDown("d") || Input.GetKeyDown("right"))
 		{
 			this.Selected++;
 			if (this.Selected > 3)
@@ -48,11 +48,11 @@ public class PassTimeScript : MonoBehaviour
 			}
 			this.UpdateHighlightPosition();
 		}
-		if (this.InputManager.TappedUp || Input.GetKeyDown("up"))
+		if (this.InputManager.TappedUp || Input.GetKeyDown("w") || Input.GetKeyDown("up"))
 		{
 			this.UpdateTime(1);
 		}
-		if (this.InputManager.TappedDown || Input.GetKeyDown("down"))
+		if (this.InputManager.TappedDown || Input.GetKeyDown("s") || Input.GetKeyDown("down"))
 		{
 			this.UpdateTime(-1);
 		}

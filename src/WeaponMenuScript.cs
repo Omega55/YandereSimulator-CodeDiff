@@ -90,7 +90,15 @@ public class WeaponMenuScript : MonoBehaviour
 				if (Input.GetKeyDown("1"))
 				{
 					this.Selected = 4;
-					this.Yandere.Unequip();
+					if (this.Yandere.Equipped > 0)
+					{
+						this.Yandere.Unequip();
+					}
+					if (this.Yandere.PickUp != null)
+					{
+						this.Yandere.PickUp.Drop();
+					}
+					this.Yandere.Mopping = false;
 				}
 				else if (Input.GetKeyDown("2"))
 				{
@@ -114,7 +122,15 @@ public class WeaponMenuScript : MonoBehaviour
 			this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
 			if (Input.GetAxis("DpadY") < -0.5f)
 			{
-				this.Yandere.Unequip();
+				if (this.Yandere.Equipped > 0)
+				{
+					this.Yandere.Unequip();
+				}
+				if (this.Yandere.PickUp != null)
+				{
+					this.Yandere.PickUp.Drop();
+				}
+				this.Yandere.Mopping = false;
 			}
 		}
 		else
@@ -131,8 +147,15 @@ public class WeaponMenuScript : MonoBehaviour
 				}
 				else if (this.Selected == 4)
 				{
-					this.Yandere.Unequip();
-					this.Show = false;
+					if (this.Yandere.Equipped > 0)
+					{
+						this.Yandere.Unequip();
+					}
+					if (this.Yandere.PickUp != null)
+					{
+						this.Yandere.PickUp.Drop();
+					}
+					this.Yandere.Mopping = false;
 				}
 			}
 			if (Input.GetButtonDown("B"))
@@ -159,6 +182,14 @@ public class WeaponMenuScript : MonoBehaviour
 	{
 		if (this.Yandere.Weapon[this.Selected] != null)
 		{
+			if (this.Yandere.PickUp != null)
+			{
+				this.Yandere.PickUp.Drop();
+			}
+			if (this.Yandere.Equipped == 3)
+			{
+				this.Yandere.Weapon[3].Drop();
+			}
 			if (this.Yandere.Weapon[1] != null)
 			{
 				this.Yandere.Weapon[1].active = false;

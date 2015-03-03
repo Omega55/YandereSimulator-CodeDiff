@@ -5,11 +5,15 @@ using UnityScript.Lang;
 [Serializable]
 public class HeartbrokenScript : MonoBehaviour
 {
+	public GameObject MainCamera;
+
 	public UILabel[] Letters;
 
 	public UILabel[] Options;
 
 	public Vector3[] Origins;
+
+	public AudioClip Slam;
 
 	public float Timer;
 
@@ -19,6 +23,7 @@ public class HeartbrokenScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		this.MainCamera.active = false;
 		while (this.ID < Extensions.get_length(this.Letters))
 		{
 			this.Letters[this.ID].transform.localScale = new Vector3((float)10, (float)10, (float)1);
@@ -55,18 +60,26 @@ public class HeartbrokenScript : MonoBehaviour
 				Color color2 = this.Letters[this.ID].color = color;
 				if (this.Letters[this.ID].transform.localScale == new Vector3((float)1, (float)1, (float)1))
 				{
+					this.audio.PlayOneShot(this.Slam);
 					this.ID++;
 				}
 			}
-			else if (this.ID - 11 < Extensions.get_length(this.Options))
+			else if (this.Timer > (float)3)
 			{
-				float a2 = this.Options[this.ID - 11].color.a + Time.deltaTime;
-				Color color3 = this.Options[this.ID - 11].color;
-				float num2 = color3.a = a2;
-				Color color4 = this.Options[this.ID - 11].color = color3;
-				if (this.Options[this.ID - 11].color.a >= (float)1)
+				if (this.Options[0].color.a == (float)0)
 				{
-					this.ID++;
+					this.audio.Play();
+				}
+				if (this.ID - 11 < Extensions.get_length(this.Options))
+				{
+					float a2 = this.Options[this.ID - 11].color.a + Time.deltaTime;
+					Color color3 = this.Options[this.ID - 11].color;
+					float num2 = color3.a = a2;
+					Color color4 = this.Options[this.ID - 11].color = color3;
+					if (this.Options[this.ID - 11].color.a >= (float)1)
+					{
+						this.ID++;
+					}
 				}
 			}
 		}

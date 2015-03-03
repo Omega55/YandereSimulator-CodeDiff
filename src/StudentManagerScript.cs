@@ -9,6 +9,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public StudentScript[] Students;
 
+	public WitnessCameraScript WitnessCamera;
+
 	public YandereScript Yandere;
 
 	public ClockScript Clock;
@@ -55,6 +57,7 @@ public class StudentManagerScript : MonoBehaviour
 			this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.StudentChan, this.SpawnPositions[this.StudentsSpawned].position, Quaternion.identity);
 			this.Students[this.StudentsSpawned] = (StudentScript)this.NewStudent.GetComponent(typeof(StudentScript));
 			this.Students[this.StudentsSpawned].StudentID = this.StudentsSpawned + 1;
+			this.Students[this.StudentsSpawned].WitnessCamera = this.WitnessCamera;
 			this.Students[this.StudentsSpawned].StudentManager = this;
 			this.Students[this.StudentsSpawned].JSON = this.JSON;
 			if (this.AoT)
@@ -62,6 +65,7 @@ public class StudentManagerScript : MonoBehaviour
 				this.Students[this.StudentsSpawned].AoT = true;
 			}
 			this.StudentsSpawned++;
+			this.UpdateStudents();
 		}
 	}
 
@@ -72,15 +76,30 @@ public class StudentManagerScript : MonoBehaviour
 		{
 			if (this.Students[this.ID] != null)
 			{
+				this.Students[this.ID].Prompt.HideButton[0] = false;
+				this.Students[this.ID].Prompt.HideButton[2] = false;
+				this.Students[this.ID].Prompt.Attack = false;
 				if (this.Yandere.Armed)
 				{
 					this.Students[this.ID].Prompt.HideButton[0] = true;
-					this.Students[this.ID].Prompt.HideButton[2] = false;
+					this.Students[this.ID].Prompt.Attack = true;
 				}
 				else
 				{
-					this.Students[this.ID].Prompt.HideButton[0] = false;
 					this.Students[this.ID].Prompt.HideButton[2] = true;
+					if (this.Students[this.ID].WitnessedMurder)
+					{
+						this.Students[this.ID].Prompt.HideButton[0] = true;
+					}
+				}
+				if (this.Yandere.Dragging || this.Yandere.PickUp != null)
+				{
+					this.Students[this.ID].Prompt.HideButton[0] = true;
+					this.Students[this.ID].Prompt.HideButton[2] = true;
+				}
+				if (this.Yandere.NearBodies > 0)
+				{
+					this.Students[this.ID].Prompt.HideButton[0] = true;
 				}
 			}
 			this.ID++;

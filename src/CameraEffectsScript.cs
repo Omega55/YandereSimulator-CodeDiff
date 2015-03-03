@@ -8,6 +8,8 @@ public class CameraEffectsScript : MonoBehaviour
 
 	public Vignetting Vignette;
 
+	public UITexture MurderStreaks;
+
 	public UITexture Streaks;
 
 	public Bloom AlarmBloom;
@@ -18,16 +20,18 @@ public class CameraEffectsScript : MonoBehaviour
 
 	public Vignetting QualityVignetting;
 
-	public AmbientObscurance QualityAmbientObscurance;
-
 	public AntialiasingAsPostEffect QualityAntialiasingAsPostEffect;
 
 	public virtual void Start()
 	{
 		int num = 0;
-		Color color = this.Streaks.color;
+		Color color = this.MurderStreaks.color;
 		float num2 = color.a = (float)num;
-		Color color2 = this.Streaks.color = color;
+		Color color2 = this.MurderStreaks.color = color;
+		int num3 = 0;
+		Color color3 = this.Streaks.color;
+		float num4 = color3.a = (float)num3;
+		Color color4 = this.Streaks.color = color3;
 	}
 
 	public virtual void Update()
@@ -38,14 +42,12 @@ public class CameraEffectsScript : MonoBehaviour
 			{
 				this.QualityBloom.enabled = false;
 				this.QualityVignetting.enabled = false;
-				this.QualityAmbientObscurance.enabled = false;
 				this.QualityAntialiasingAsPostEffect.enabled = false;
 			}
 			else
 			{
 				this.QualityBloom.enabled = true;
 				this.QualityVignetting.enabled = true;
-				this.QualityAmbientObscurance.enabled = true;
 				this.QualityAntialiasingAsPostEffect.enabled = true;
 			}
 		}
@@ -61,6 +63,13 @@ public class CameraEffectsScript : MonoBehaviour
 				this.AlarmBloom.enabled = false;
 			}
 		}
+		if (this.MurderStreaks.color.a > (float)0)
+		{
+			float a2 = this.MurderStreaks.color.a - Time.deltaTime;
+			Color color3 = this.MurderStreaks.color;
+			float num2 = color3.a = a2;
+			Color color4 = this.MurderStreaks.color = color3;
+		}
 		this.EffectStrength = (float)1 - this.Yandere.Sanity * 0.01f;
 		this.Vignette.intensity = Mathf.Lerp(this.Vignette.intensity, this.EffectStrength * (float)5, Time.deltaTime);
 		this.Vignette.blur = Mathf.Lerp(this.Vignette.blur, this.EffectStrength, Time.deltaTime);
@@ -75,6 +84,14 @@ public class CameraEffectsScript : MonoBehaviour
 		float num2 = color.a = (float)num;
 		Color color2 = this.Streaks.color = color;
 		this.AlarmBloom.enabled = true;
+	}
+
+	public virtual void MurderWitnessed()
+	{
+		int num = 1;
+		Color color = this.MurderStreaks.color;
+		float num2 = color.a = (float)num;
+		Color color2 = this.MurderStreaks.color = color;
 	}
 
 	public virtual void Main()

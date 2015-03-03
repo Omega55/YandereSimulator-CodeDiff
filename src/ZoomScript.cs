@@ -20,14 +20,38 @@ public class ZoomScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		float y = (float)1 + this.Zoom;
-		Vector3 localPosition = this.transform.localPosition;
-		float num = localPosition.y = y;
-		Vector3 vector = this.transform.localPosition = localPosition;
+		if (this.Yandere.Crawling)
+		{
+			float y = Mathf.Lerp(this.transform.localPosition.y, 0.05f + this.Zoom, Time.deltaTime * (float)10);
+			Vector3 localPosition = this.transform.localPosition;
+			float num = localPosition.y = y;
+			Vector3 vector = this.transform.localPosition = localPosition;
+		}
+		else if (this.Yandere.Crouching)
+		{
+			float y2 = Mathf.Lerp(this.transform.localPosition.y, 0.4f + this.Zoom, Time.deltaTime * (float)10);
+			Vector3 localPosition2 = this.transform.localPosition;
+			float num2 = localPosition2.y = y2;
+			Vector3 vector2 = this.transform.localPosition = localPosition2;
+		}
+		else
+		{
+			float y3 = Mathf.Lerp(this.transform.localPosition.y, (float)1 + this.Zoom, Time.deltaTime * (float)10);
+			Vector3 localPosition3 = this.transform.localPosition;
+			float num3 = localPosition3.y = y3;
+			Vector3 vector3 = this.transform.localPosition = localPosition3;
+		}
 		this.TargetZoom += Input.GetAxis("Mouse ScrollWheel");
 		if (this.TargetZoom < (float)0)
 		{
 			this.TargetZoom = (float)0;
+		}
+		if (this.Yandere.Crawling)
+		{
+			if (this.TargetZoom > 0.3f)
+			{
+				this.TargetZoom = 0.3f;
+			}
 		}
 		else if (this.TargetZoom > 0.4f)
 		{

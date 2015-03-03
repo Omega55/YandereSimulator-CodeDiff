@@ -17,7 +17,9 @@ public class StudentScript : MonoBehaviour
 
 	public DialogueWheelScript DialogueWheel;
 
-	public ExclamationScript Exclamation;
+	public WitnessCameraScript WitnessCamera;
+
+	public RagdollScript NewRagdollScript;
 
 	public DynamicGridObstacle Obstacle;
 
@@ -27,7 +29,7 @@ public class StudentScript : MonoBehaviour
 
 	public YandereScript Yandere;
 
-	public OutlineScript Outline;
+	public PoliceScript Police;
 
 	public PromptScript Prompt;
 
@@ -37,7 +39,29 @@ public class StudentScript : MonoBehaviour
 
 	public JsonScript JSON;
 
+	public CharacterController MyController;
+
+	public Texture DrillTexture;
+
+	public Texture HairTexture;
+
+	public Collider MyCollider;
+
+	public Camera Eyes;
+
+	public SkinnedMeshRenderer MyRenderer;
+
+	public Renderer PigtailR;
+
+	public Renderer PigtailL;
+
+	public Renderer Drills;
+
 	public Transform CurrentDestination;
+
+	public Transform WitnessPOV;
+
+	public OutlineScript[] Outlines;
 
 	public string[] DestinationNames;
 
@@ -55,15 +79,31 @@ public class StudentScript : MonoBehaviour
 
 	public GameObject Marker;
 
-	public CharacterController MyController;
+	public bool WitnessedMurder;
 
-	public SkinnedMeshRenderer MyRenderer;
+	public bool RepeatReaction;
 
-	public Texture HairTexture;
+	public bool HidePony;
 
-	public Collider MyCollider;
+	public bool Forgave;
 
-	public Camera Eyes;
+	public bool Alarmed;
+
+	public bool Reacted;
+
+	public bool Witness;
+
+	public bool Routine;
+
+	public bool Dead;
+
+	public bool Fleeing;
+
+	public bool Talking;
+
+	public bool Waiting;
+
+	public bool Dying;
 
 	public float DistanceToDestination;
 
@@ -79,31 +119,17 @@ public class StudentScript : MonoBehaviour
 
 	public float GroundHeight;
 
+	public float BreastSize;
+
 	public float PendingRep;
+
+	public float EyeShrink;
 
 	public float RepLoss;
 
 	public float Alarm;
 
-	public bool RepeatReaction;
-
-	public bool Forgave;
-
-	public bool Alarmed;
-
-	public bool Reacted;
-
-	public bool Witness;
-
-	public bool Routine;
-
-	public bool Dead;
-
-	public bool Talking;
-
-	public bool Waiting;
-
-	public bool Dying;
+	public int WeaponWitnessed;
 
 	public int Interaction;
 
@@ -113,17 +139,27 @@ public class StudentScript : MonoBehaviour
 
 	public int Phase;
 
+	public string Witnessed;
+
+	public string Hairstyle;
+
 	public Vector3 RightEyeOrigin;
 
 	public Vector3 LeftEyeOrigin;
+
+	public Transform RightBreast;
+
+	public Transform LeftBreast;
+
+	public Transform Ponytail;
 
 	public Transform RightEye;
 
 	public Transform LeftEye;
 
-	public float EyeShrink;
+	public Transform HairL;
 
-	public string Witnessed;
+	public Transform HairR;
 
 	private float MaxSpeed;
 
@@ -137,6 +173,7 @@ public class StudentScript : MonoBehaviour
 	{
 		this.Routine = true;
 		this.Witnessed = string.Empty;
+		this.Hairstyle = string.Empty;
 		this.MaxSpeed = 10f;
 	}
 
@@ -145,18 +182,23 @@ public class StudentScript : MonoBehaviour
 		this.DetectionMarker = (DetectionMarkerScript)((GameObject)UnityEngine.Object.Instantiate(this.Marker, GameObject.Find("DetectionPanel").transform.position, Quaternion.identity)).GetComponent(typeof(DetectionMarkerScript));
 		this.DetectionMarker.transform.parent = GameObject.Find("DetectionPanel").transform;
 		this.DetectionMarker.Target = this.transform;
+		this.PhaseTimes = (float[])this.JSON.StudentTimes[this.StudentID].ToBuiltin(typeof(float));
 		this.Class = this.JSON.StudentClasses[this.StudentID];
+		this.BreastSize = this.JSON.StudentBreasts[this.StudentID];
+		this.Hairstyle = this.JSON.StudentHairstyles[this.StudentID];
 		this.GetDestinations();
 		this.DialogueWheel = (DialogueWheelScript)GameObject.Find("DialogueWheel").GetComponent(typeof(DialogueWheelScript));
 		this.Reputation = (ReputationScript)GameObject.Find("Reputation").GetComponent(typeof(ReputationScript));
 		this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent(typeof(YandereScript));
 		this.Subtitle = (SubtitleScript)GameObject.Find("Subtitle").GetComponent(typeof(SubtitleScript));
+		this.Police = (PoliceScript)GameObject.Find("Police").GetComponent(typeof(PoliceScript));
 		this.Clock = (ClockScript)GameObject.Find("Clock").GetComponent(typeof(ClockScript));
 		this.ShoulderCamera = (ShoulderCameraScript)Camera.main.GetComponent(typeof(ShoulderCameraScript));
 		this.CameraEffects = (CameraEffectsScript)Camera.main.GetComponent(typeof(CameraEffectsScript));
 		this.RightEyeOrigin = this.RightEye.localPosition;
 		this.LeftEyeOrigin = this.LeftEye.localPosition;
 		this.SetColors();
+		this.UpdateHair();
 		if (this.AoT)
 		{
 			this.AttackOnTitan();
@@ -199,28 +241,64 @@ public class StudentScript : MonoBehaviour
 				this.transform.position = Vector3.Lerp(this.transform.position, this.CurrentDestination.position, Time.deltaTime * (float)10);
 				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.CurrentDestination.rotation, (float)10 * Time.deltaTime);
 			}
+		}
+		else if (this.Fleeing)
+		{
+			this.DistanceToDestination = Vector3.Distance(this.transform.position, this.Pathfinding.target.position);
+			if (this.transform.position.y < (float)-2)
+			{
+				this.Police.Witnesses = this.Police.Witnesses - 1;
+				this.Police.Show = true;
+				this.active = false;
+			}
+			if (this.DistanceToDestination > 0.5f)
+			{
+				this.Pathfinding.canMove = true;
+				this.Character.animation.CrossFade("f02_sprint_00");
+			}
+			else
+			{
+				this.Pathfinding.canMove = false;
+				this.Character.animation.CrossFade("f02_scaredIdle_00");
+				this.transform.position = Vector3.Lerp(this.transform.position, this.Pathfinding.target.position, Time.deltaTime * (float)10);
+				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.Pathfinding.target.rotation, (float)10 * Time.deltaTime);
+			}
+		}
+		if (!this.Dying)
+		{
 			this.DistanceToPlayer = Vector3.Distance(this.transform.position, this.Yandere.transform.position);
 			if (this.DistanceToPlayer < (float)10)
 			{
-				if ((this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].Suspicious) || this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.333f)
+				if (!this.WitnessedMurder)
 				{
-					this.Planes = GeometryUtility.CalculateFrustumPlanes(this.Eyes);
-					if (GeometryUtility.TestPlanesAABB(this.Planes, this.Yandere.collider.bounds))
+					if ((this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].Suspicious) || this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.333f || this.Yandere.Attacking)
 					{
-						RaycastHit raycastHit = default(RaycastHit);
-						if (Physics.Linecast(this.Eyes.transform.position, this.Yandere.transform.position + Vector3.up * (float)1, out raycastHit))
+						this.Planes = GeometryUtility.CalculateFrustumPlanes(this.Eyes);
+						if (GeometryUtility.TestPlanesAABB(this.Planes, this.Yandere.collider.bounds))
 						{
-							if (raycastHit.collider.gameObject == this.Yandere.gameObject)
+							RaycastHit raycastHit = default(RaycastHit);
+							if (Physics.Linecast(this.Eyes.transform.position, this.Yandere.transform.position + Vector3.up * (float)1, out raycastHit))
 							{
-								if (!this.Alarmed && this.IgnoreTimer <= (float)0)
+								if (raycastHit.collider.gameObject == this.Yandere.gameObject)
 								{
-									this.Alarm += Time.deltaTime * ((float)100 / this.DistanceToPlayer);
+									if (this.Yandere.Attacking || (this.Yandere.NearBodies > 0 && this.Yandere.Bloodiness > (float)0) || (this.Yandere.NearBodies > 0 && this.Yandere.Armed) || (this.Yandere.NearBodies > 0 && this.Yandere.Sanity < 66.66666f))
+									{
+										this.WitnessMurder();
+									}
+									else if (!this.Alarmed && this.IgnoreTimer <= (float)0)
+									{
+										this.Alarm += Time.deltaTime * ((float)100 / this.DistanceToPlayer);
+									}
+								}
+								else
+								{
+									this.Alarm -= Time.deltaTime * (float)100;
 								}
 							}
-							else
-							{
-								this.Alarm -= Time.deltaTime * (float)100;
-							}
+						}
+						else if (!this.Alarmed)
+						{
+							this.Alarm -= Time.deltaTime * (float)100;
 						}
 					}
 					else if (!this.Alarmed)
@@ -228,19 +306,17 @@ public class StudentScript : MonoBehaviour
 						this.Alarm -= Time.deltaTime * (float)100;
 					}
 				}
-				else if (!this.Alarmed)
-				{
-					this.Alarm -= Time.deltaTime * (float)100;
-				}
 				if (this.Alarm > (float)100 && !this.Alarmed)
 				{
-					this.Outline.color = new Color((float)1, (float)1, (float)0, (float)1);
+					for (int i = 0; i < Extensions.get_length(this.Outlines); i++)
+					{
+						this.Outlines[i].color = new Color((float)1, (float)1, (float)0, (float)1);
+					}
 					this.Pathfinding.canSearch = false;
 					this.Pathfinding.canMove = false;
 					this.Routine = false;
 					this.Alarmed = true;
 					this.Witness = true;
-					this.Exclamation.Timer = (float)3;
 					this.CameraEffects.Alarm();
 					string witnessed = this.Witnessed;
 					if (this.Yandere.Armed && this.Yandere.Bloodiness > (float)0 && this.Yandere.Sanity < 33.333f)
@@ -265,6 +341,7 @@ public class StudentScript : MonoBehaviour
 					}
 					else if (this.Yandere.Armed)
 					{
+						this.WeaponWitnessed = this.Yandere.Weapon[this.Yandere.Equipped].WeaponID;
 						this.Witnessed = "Weapon";
 						this.RepLoss = (float)10;
 					}
@@ -319,6 +396,7 @@ public class StudentScript : MonoBehaviour
 			this.Pathfinding.canMove = false;
 			this.Obstacle.enabled = true;
 			this.Yandere.TargetStudent = this;
+			this.Yandere.YandereVision = false;
 			this.Yandere.CanMove = false;
 			this.Yandere.Talking = true;
 			this.Reacted = false;
@@ -342,6 +420,7 @@ public class StudentScript : MonoBehaviour
 			this.Pathfinding.canSearch = false;
 			this.Pathfinding.canMove = false;
 			this.Yandere.TargetStudent = this;
+			this.Yandere.YandereVision = false;
 			this.Yandere.Attacking = true;
 			this.Yandere.CanMove = false;
 			this.MyCollider.enabled = false;
@@ -378,7 +457,10 @@ public class StudentScript : MonoBehaviour
 					this.Character.animation.CrossFade("f02_nod_01");
 					this.Reputation.PendingRep = this.Reputation.PendingRep + (float)5;
 					this.PendingRep += (float)5;
-					this.Outline.color = new Color((float)0, (float)1, (float)0, (float)1);
+					for (int i = 0; i < Extensions.get_length(this.Outlines); i++)
+					{
+						this.Outlines[i].color = new Color((float)0, (float)1, (float)0, (float)1);
+					}
 					this.Forgave = true;
 					if (this.Witnessed == "Insanity" || this.Witnessed == "Weapon and Blood and Insanity" || this.Witnessed == "Weapon and Insanity" || this.Witnessed == "Blood and Insanity")
 					{
@@ -457,17 +539,51 @@ public class StudentScript : MonoBehaviour
 				else
 				{
 					GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.Ragdoll, this.transform.position, this.transform.rotation);
-					RagdollScript ragdollScript = (RagdollScript)gameObject.GetComponent(typeof(RagdollScript));
-					ragdollScript.AnimStartTime = this.Character.animation["f02_down_22"].time;
-					ragdollScript.Yandere = this.Yandere;
-					ragdollScript.MyRenderer.materials[1].mainTexture = this.HairTexture;
-					ragdollScript.MyRenderer.materials[3].mainTexture = this.HairTexture;
+					this.NewRagdollScript = (RagdollScript)gameObject.GetComponent(typeof(RagdollScript));
+					this.NewRagdollScript.AnimStartTime = this.Character.animation["f02_down_22"].time;
+					this.NewRagdollScript.BreastSize = this.BreastSize;
+					this.NewRagdollScript.Yandere = this.Yandere;
+					this.NewRagdollScript.MyRenderer.materials[1].mainTexture = this.HairTexture;
+					this.NewRagdollScript.MyRenderer.materials[3].mainTexture = this.HairTexture;
 					this.BloodSpray.transform.parent = ((RagdollScript)gameObject.GetComponent(typeof(RagdollScript))).BloodParent;
 					this.BloodSpray.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
 					this.BloodSpray.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
 					this.Reputation.PendingRep = this.Reputation.PendingRep + this.PendingRep * (float)-1;
+					if (this.WitnessedMurder)
+					{
+						this.Police.Witnesses = this.Police.Witnesses - 1;
+					}
+					this.TransferHair();
 					UnityEngine.Object.Destroy(this.DetectionMarker);
 					UnityEngine.Object.Destroy(this.gameObject);
+				}
+			}
+		}
+		else if (this.WitnessedMurder)
+		{
+			if (!this.Fleeing)
+			{
+				if (this.EyeShrink < (float)1)
+				{
+					this.EyeShrink += Time.deltaTime * 0.2f;
+				}
+				this.Character.animation.CrossFade("f02_scaredIdle_00");
+				this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - this.transform.position);
+				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
+				this.AlarmTimer += Time.deltaTime;
+				if (this.AlarmTimer > (float)5)
+				{
+					this.Subtitle.UpdateLabel("Coward Reaction", 1, (float)3);
+					this.Pathfinding.target = this.StudentManager.Hangouts.List[0];
+					this.Pathfinding.canSearch = true;
+					this.Pathfinding.canMove = true;
+					this.Pathfinding.speed = (float)4;
+					this.Fleeing = true;
+				}
+				else if (this.AlarmTimer > (float)1 && !this.Reacted)
+				{
+					this.Subtitle.UpdateLabel("Murder Reaction", 1, (float)3);
+					this.Reacted = true;
 				}
 			}
 		}
@@ -513,7 +629,7 @@ public class StudentScript : MonoBehaviour
 				}
 				else if (this.Witnessed == "Weapon")
 				{
-					this.Subtitle.UpdateLabel("Weapon Reaction", 1, (float)3);
+					this.Subtitle.UpdateLabel("Weapon Reaction", this.WeaponWitnessed, (float)3);
 				}
 				else if (this.Witnessed == "Blood")
 				{
@@ -577,6 +693,50 @@ public class StudentScript : MonoBehaviour
 		Vector3 localScale4 = this.RightEye.localScale;
 		float num6 = localScale4.y = y2;
 		Vector3 vector6 = this.RightEye.localScale = localScale4;
+		this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
+		this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
+		if (this.HidePony)
+		{
+			this.Ponytail.parent.transform.localScale = new Vector3((float)1, (float)1, 0.93f);
+			this.Ponytail.localScale = new Vector3((float)0, (float)0, (float)0);
+			this.HairR.localScale = new Vector3((float)0, (float)0, (float)0);
+			this.HairL.localScale = new Vector3((float)0, (float)0, (float)0);
+		}
+	}
+
+	public virtual void WitnessMurder()
+	{
+		for (int i = 0; i < Extensions.get_length(this.Outlines); i++)
+		{
+			this.Outlines[i].color = new Color((float)1, (float)0, (float)0, (float)1);
+		}
+		this.WitnessCamera.transform.parent = this.WitnessPOV;
+		this.WitnessCamera.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
+		this.WitnessCamera.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+		this.WitnessCamera.MyCamera.enabled = true;
+		this.WitnessCamera.Show = true;
+		this.CameraEffects.MurderWitnessed();
+		this.Pathfinding.canSearch = false;
+		this.Pathfinding.canMove = false;
+		this.Prompt.HideButton[0] = true;
+		this.WitnessedMurder = true;
+		this.Reacted = false;
+		this.Routine = false;
+		this.Alarmed = true;
+		this.Witnessed = "Murder";
+		this.Police.Witnesses = this.Police.Witnesses + 1;
+		this.Alarm = (float)0;
+		this.Witnessed = "Murder";
+		if (this.Talking)
+		{
+			this.DialogueWheel.End();
+			this.Pathfinding.canSearch = true;
+			this.Pathfinding.canMove = true;
+			this.Obstacle.enabled = false;
+			this.Talking = false;
+			this.Waiting = false;
+			this.StudentManager.EnablePrompts();
+		}
 	}
 
 	public virtual void GetDestinations()
@@ -592,13 +752,25 @@ public class StudentScript : MonoBehaviour
 			{
 				this.Destinations[i] = this.StudentManager.Classrooms.List[this.Class];
 			}
-			else if (this.DestinationNames[i] == "Rooftop")
-			{
-				this.Destinations[i] = this.StudentManager.Hangouts.List[0];
-			}
 			else if (this.DestinationNames[i] == "Exit")
 			{
 				this.Destinations[i] = this.StudentManager.Hangouts.List[1];
+			}
+			else if (this.DestinationNames[i] == "Rooftop")
+			{
+				this.Destinations[i] = this.StudentManager.Hangouts.List[2];
+			}
+			else if (this.DestinationNames[i] == "Senpai")
+			{
+				this.Destinations[i] = this.StudentManager.Hangouts.List[3];
+			}
+			else if (this.DestinationNames[i] == "Death")
+			{
+				this.Destinations[i] = this.StudentManager.Hangouts.List[4];
+			}
+			else if (this.DestinationNames[i] == "Witness")
+			{
+				this.Destinations[i] = this.StudentManager.Hangouts.List[5];
 			}
 		}
 	}
@@ -629,10 +801,132 @@ public class StudentScript : MonoBehaviour
 		else if (a == "Purple")
 		{
 			this.HairTexture = this.StudentManager.Colors[5];
+			this.DrillTexture = this.StudentManager.Colors[6];
 		}
 		this.MyRenderer.materials[1].mainTexture = this.HairTexture;
 		this.MyRenderer.materials[3].mainTexture = this.HairTexture;
-		this.Outline.h.ReinitMaterials();
+		this.PigtailR.material.mainTexture = this.HairTexture;
+		this.PigtailL.material.mainTexture = this.HairTexture;
+		if (this.DrillTexture != null)
+		{
+			this.Drills.materials[0].mainTexture = this.DrillTexture;
+			this.Drills.materials[1].mainTexture = this.DrillTexture;
+			this.Drills.materials[2].mainTexture = this.DrillTexture;
+		}
+		for (int i = 0; i < Extensions.get_length(this.Outlines); i++)
+		{
+			this.Outlines[i].h.ReinitMaterials();
+		}
+	}
+
+	public virtual void UpdateHair()
+	{
+		this.PigtailR.transform.parent.transform.parent.transform.localScale = new Vector3((float)1, 0.75f, (float)1);
+		this.PigtailL.transform.parent.transform.parent.transform.localScale = new Vector3((float)1, 0.75f, (float)1);
+		this.PigtailR.active = false;
+		this.PigtailL.active = false;
+		this.Drills.active = false;
+		this.HidePony = true;
+		if (this.Hairstyle == "PonyTail")
+		{
+			this.HidePony = false;
+			this.Ponytail.localScale = new Vector3((float)1, (float)1, (float)1);
+			this.HairR.localScale = new Vector3((float)1, (float)1, (float)1);
+			this.HairL.localScale = new Vector3((float)1, (float)1, (float)1);
+		}
+		else if (this.Hairstyle == "RightTail")
+		{
+			this.PigtailR.active = true;
+		}
+		else if (this.Hairstyle == "LeftTail")
+		{
+			this.PigtailL.active = true;
+		}
+		else if (this.Hairstyle == "PigTails")
+		{
+			this.PigtailR.active = true;
+			this.PigtailL.active = true;
+		}
+		else if (this.Hairstyle == "TriTails")
+		{
+			this.PigtailR.active = true;
+			this.PigtailL.active = true;
+			this.HidePony = false;
+			this.Ponytail.localScale = new Vector3((float)1, (float)1, (float)1);
+			this.HairR.localScale = new Vector3((float)1, (float)1, (float)1);
+			this.HairL.localScale = new Vector3((float)1, (float)1, (float)1);
+		}
+		else if (this.Hairstyle == "TwinTails")
+		{
+			this.PigtailR.active = true;
+			this.PigtailL.active = true;
+			this.PigtailR.transform.parent.transform.parent.transform.localScale = new Vector3((float)2, (float)2, (float)2);
+			this.PigtailL.transform.parent.transform.parent.transform.localScale = new Vector3((float)2, (float)2, (float)2);
+		}
+		else if (this.Hairstyle == "Drills")
+		{
+			this.Drills.active = true;
+		}
+	}
+
+	public virtual void TransferHair()
+	{
+		for (int i = 0; i < Extensions.get_length(this.Outlines); i++)
+		{
+			this.Outlines[i].color = new Color((float)1, 0.5f, (float)0, (float)1);
+		}
+		if (this.Hairstyle == "RightTail")
+		{
+			this.PigtailR.transform.parent.transform.parent.transform.parent = this.NewRagdollScript.Head;
+			this.PigtailR.transform.parent.transform.parent.transform.localPosition = new Vector3(0.085f, 0.15f, (float)0);
+			this.PigtailR.transform.parent.transform.parent.transform.localEulerAngles = new Vector3((float)0, (float)-90, (float)0);
+			this.NewRagdollScript.HidePony = true;
+		}
+		else if (this.Hairstyle == "LeftTail")
+		{
+			this.PigtailL.transform.parent.transform.parent.transform.parent = this.NewRagdollScript.Head;
+			this.PigtailL.transform.parent.transform.parent.transform.localPosition = new Vector3(-0.085f, 0.15f, (float)0);
+			this.PigtailL.transform.parent.transform.parent.transform.localEulerAngles = new Vector3((float)0, (float)90, (float)0);
+			this.NewRagdollScript.HidePony = true;
+		}
+		else if (this.Hairstyle == "PigTails")
+		{
+			this.PigtailR.transform.parent.transform.parent.transform.parent = this.NewRagdollScript.Head;
+			this.PigtailR.transform.parent.transform.parent.transform.localPosition = new Vector3(0.085f, 0.15f, (float)0);
+			this.PigtailR.transform.parent.transform.parent.transform.localEulerAngles = new Vector3((float)0, (float)-90, (float)0);
+			this.PigtailL.transform.parent.transform.parent.transform.parent = this.NewRagdollScript.Head;
+			this.PigtailL.transform.parent.transform.parent.transform.localPosition = new Vector3(-0.085f, 0.15f, (float)0);
+			this.PigtailL.transform.parent.transform.parent.transform.localEulerAngles = new Vector3((float)0, (float)90, (float)0);
+			this.NewRagdollScript.HidePony = true;
+		}
+		else if (this.Hairstyle == "TriTails")
+		{
+			this.PigtailR.transform.parent.transform.parent.transform.parent = this.NewRagdollScript.Head;
+			this.PigtailR.transform.parent.transform.parent.transform.localPosition = new Vector3(0.085f, 0.15f, (float)0);
+			this.PigtailR.transform.parent.transform.parent.transform.localEulerAngles = new Vector3((float)0, (float)-90, (float)0);
+			this.PigtailL.transform.parent.transform.parent.transform.parent = this.NewRagdollScript.Head;
+			this.PigtailL.transform.parent.transform.parent.transform.localPosition = new Vector3(-0.085f, 0.15f, (float)0);
+			this.PigtailL.transform.parent.transform.parent.transform.localEulerAngles = new Vector3((float)0, (float)90, (float)0);
+		}
+		else if (this.Hairstyle == "TwinTails")
+		{
+			this.PigtailR.transform.parent.transform.parent.transform.parent = this.NewRagdollScript.Head;
+			this.PigtailR.transform.parent.transform.parent.transform.localPosition = new Vector3(0.085f, 0.15f, (float)0);
+			this.PigtailR.transform.parent.transform.parent.transform.localEulerAngles = new Vector3((float)0, (float)-90, (float)0);
+			this.PigtailL.transform.parent.transform.parent.transform.parent = this.NewRagdollScript.Head;
+			this.PigtailL.transform.parent.transform.parent.transform.localPosition = new Vector3(-0.085f, 0.15f, (float)0);
+			this.PigtailL.transform.parent.transform.parent.transform.localEulerAngles = new Vector3((float)0, (float)90, (float)0);
+			this.PigtailR.transform.parent.transform.parent.transform.localScale = new Vector3((float)2, (float)2, (float)2);
+			this.PigtailL.transform.parent.transform.parent.transform.localScale = new Vector3((float)2, (float)2, (float)2);
+			this.NewRagdollScript.HidePony = true;
+		}
+		else if (this.Hairstyle == "Drills")
+		{
+			this.Drills.transform.parent.transform.parent.transform.parent = this.NewRagdollScript.Head;
+			this.Drills.transform.parent.transform.parent.transform.localPosition = new Vector3((float)0, -0.9f, 0.1f);
+			this.Drills.transform.parent.transform.parent.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+			this.NewRagdollScript.HidePony = true;
+		}
 	}
 
 	public virtual void AttackOnTitan()
@@ -647,7 +941,10 @@ public class StudentScript : MonoBehaviour
 		this.MyRenderer.sharedMesh = this.NudeMesh;
 		this.MyRenderer.materials[3].mainTexture = this.NudeTexture;
 		this.MyRenderer.materials[0].mainTexture = this.HairTexture;
-		this.Outline.h.ReinitMaterials();
+		for (int i = 0; i < Extensions.get_length(this.Outlines); i++)
+		{
+			this.Outlines[i].h.ReinitMaterials();
+		}
 	}
 
 	public virtual void Main()
