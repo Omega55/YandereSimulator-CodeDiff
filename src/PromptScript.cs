@@ -98,6 +98,7 @@ public class PromptScript : MonoBehaviour
 		}
 		this.BloodMask = 16384;
 		this.BloodMask |= 4;
+		this.BloodMask |= 65536;
 		this.BloodMask = ~this.BloodMask;
 	}
 

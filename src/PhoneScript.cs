@@ -30,6 +30,12 @@ public class PhoneScript : MonoBehaviour
 
 	public bool FadeOut;
 
+	public bool Auto;
+
+	public float AutoLimit;
+
+	public float AutoTimer;
+
 	public float Timer;
 
 	public int ID;
@@ -83,8 +89,10 @@ public class PhoneScript : MonoBehaviour
 				Vector3 localPosition = this.Buttons.localPosition;
 				float num4 = localPosition.y = y;
 				Vector3 vector = this.Buttons.localPosition = localPosition;
-				if (Input.GetButtonDown("A"))
+				this.AutoTimer += Time.deltaTime;
+				if ((this.Auto && this.AutoTimer > this.AutoLimit) || Input.GetButtonDown("A"))
 				{
+					this.AutoTimer = (float)0;
 					if (this.ID < this.Text.Length - 1)
 					{
 						this.ID++;
@@ -135,6 +143,7 @@ public class PhoneScript : MonoBehaviour
 			this.NewMessage.transform.localPosition = new Vector3((float)225, (float)-375, (float)0);
 			this.NewMessage.transform.localScale = new Vector3((float)0, (float)0, (float)0);
 		}
+		this.AutoLimit = (float)(this.Height[this.ID] + 1);
 		((TextMessageScript)this.NewMessage.GetComponent(typeof(TextMessageScript))).Label.text = this.Text[this.ID];
 	}
 

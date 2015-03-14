@@ -51,7 +51,15 @@ public class WeaponMenuScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (this.Yandere.CanMove && !this.PauseScreen.Show)
+		if (!this.Show)
+		{
+			this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+		}
+		else
+		{
+			this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+		}
+		if (this.Yandere.CanMove && !this.Yandere.Aiming && !this.PauseScreen.Show)
 		{
 			if (Input.GetAxis("DpadX") < -0.5f || Input.GetAxis("DpadX") > 0.5f || Input.GetAxis("DpadY") > 0.5f || Input.GetAxis("DpadY") < -0.5f)
 			{
@@ -117,35 +125,11 @@ public class WeaponMenuScript : MonoBehaviour
 				this.UpdateSprites();
 			}
 		}
-		if (!this.Show)
+		if (this.Yandere.CanMove)
 		{
-			this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-			if (Input.GetAxis("DpadY") < -0.5f)
+			if (!this.Show)
 			{
-				if (this.Yandere.Equipped > 0)
-				{
-					this.Yandere.Unequip();
-				}
-				if (this.Yandere.PickUp != null)
-				{
-					this.Yandere.PickUp.Drop();
-				}
-				this.Yandere.Mopping = false;
-			}
-		}
-		else
-		{
-			this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-			if (Input.GetButtonDown("A"))
-			{
-				if (this.Selected < 3)
-				{
-					if (this.Yandere.Weapon[this.Selected] != null)
-					{
-						this.Equip();
-					}
-				}
-				else if (this.Selected == 4)
+				if (Input.GetAxis("DpadY") < -0.5f)
 				{
 					if (this.Yandere.Equipped > 0)
 					{
@@ -158,9 +142,34 @@ public class WeaponMenuScript : MonoBehaviour
 					this.Yandere.Mopping = false;
 				}
 			}
-			if (Input.GetButtonDown("B"))
+			else
 			{
-				this.Show = false;
+				if (Input.GetButtonDown("A"))
+				{
+					if (this.Selected < 3)
+					{
+						if (this.Yandere.Weapon[this.Selected] != null)
+						{
+							this.Equip();
+						}
+					}
+					else if (this.Selected == 4)
+					{
+						if (this.Yandere.Equipped > 0)
+						{
+							this.Yandere.Unequip();
+						}
+						if (this.Yandere.PickUp != null)
+						{
+							this.Yandere.PickUp.Drop();
+						}
+						this.Yandere.Mopping = false;
+					}
+				}
+				if (Input.GetButtonDown("B"))
+				{
+					this.Show = false;
+				}
 			}
 		}
 		if (!this.KeyboardShow)

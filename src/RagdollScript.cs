@@ -108,7 +108,7 @@ public class RagdollScript : MonoBehaviour
 					}
 				}
 			}
-			else if (this.Dragged)
+			else if (!this.Yandere.Dumping && this.Dragged)
 			{
 				this.StopDragging();
 			}

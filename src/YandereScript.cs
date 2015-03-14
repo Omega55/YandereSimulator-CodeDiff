@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$850 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$1017 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$857;
+		internal YandereScript $self_$1024;
 
-		public $ApplyCustomCostume$850(YandereScript self_)
+		public $ApplyCustomCostume$1017(YandereScript self_)
 		{
-			this.$self_$857 = self_;
+			this.$self_$1024 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$850.$(this.$self_$857);
+			return new YandereScript.$ApplyCustomCostume$1017.$(this.$self_$1024);
 		}
 	}
 
@@ -55,6 +55,8 @@ public class YandereScript : MonoBehaviour
 
 	public Vignetting Vignette;
 
+	public Blur Blur;
+
 	public NotificationManagerScript NotificationManager;
 
 	public ShoulderCameraScript ShoulderCamera;
@@ -79,6 +81,8 @@ public class YandereScript : MonoBehaviour
 
 	public OutlineScript Outline;
 
+	public ShutterScript Shutter;
+
 	public RPG_Camera RPGCamera;
 
 	public BucketScript Bucket;
@@ -88,8 +92,6 @@ public class YandereScript : MonoBehaviour
 	public PoliceScript Police;
 
 	public MopScript Mop;
-
-	public SpringJoint RagdollDragger;
 
 	public Transform RightBreast;
 
@@ -117,7 +119,7 @@ public class YandereScript : MonoBehaviour
 
 	public AudioSource Jukebox;
 
-	public GameObject Smartphone;
+	public GameObject HandCamera;
 
 	public GameObject Character;
 
@@ -141,7 +143,11 @@ public class YandereScript : MonoBehaviour
 
 	public SkinnedMeshRenderer MyRenderer;
 
+	public SpringJoint RagdollDragger;
+
 	public Projector MyProjector;
+
+	public Camera Smartphone;
 
 	public Renderer PigtailR;
 
@@ -299,9 +305,9 @@ public class YandereScript : MonoBehaviour
 
 	public AudioClip Laugh4;
 
-	public bool AoT;
-
 	public Texture TitanTexture;
+
+	public bool AoT;
 
 	public Texture FaceTexture;
 
@@ -313,7 +319,13 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject PunishedScarf;
 
-	public Texture PunishedYandere;
+	public Texture[] PunishedTextures;
+
+	public Shader PunishedShader;
+
+	public Mesh PunishedMesh;
+
+	public bool Punished;
 
 	public YandereScript()
 	{
@@ -338,9 +350,9 @@ public class YandereScript : MonoBehaviour
 		this.UpdateSanity();
 		this.UpdateBlood();
 		this.StartCoroutine_Auto(this.ApplyCustomCostume());
+		this.Smartphone.transform.parent.active = false;
 		this.PunishedAccessories.active = false;
 		this.PunishedScarf.active = false;
-		this.Smartphone.active = false;
 		this.EyepatchL.active = false;
 		this.EyepatchR.active = false;
 		this.PigtailL.active = false;
@@ -514,8 +526,10 @@ public class YandereScript : MonoBehaviour
 					if (!this.Aiming)
 					{
 						this.Character.animation.Play("f02_idleShort_00");
+						this.Smartphone.transform.parent.active = true;
 						this.ShoulderCamera.AimingCamera = true;
-						this.Smartphone.active = true;
+						this.HandCamera.active = true;
+						this.Blur.enabled = true;
 						this.Aiming = true;
 						this.EmptyHands();
 					}
@@ -552,66 +566,63 @@ public class YandereScript : MonoBehaviour
 					}
 					this.YandereTimer = (float)0;
 				}
-				if (Input.GetButtonDown("RS"))
+				if (!Input.GetButton("LB"))
 				{
-					this.CrawlTimer = (float)0;
-					if (this.Crawling)
+					if (Input.GetButtonDown("RS"))
 					{
-						this.Crawling = false;
-					}
-					else if (this.Crouching)
-					{
-						this.Crouching = false;
-					}
-					else
-					{
-						this.Crouching = true;
-						this.EmptyHands();
-					}
-				}
-				if (Input.GetButton("RS"))
-				{
-					this.CrawlTimer += Time.deltaTime;
-					if (this.CrawlTimer > 0.5f)
-					{
-						this.EmptyHands();
-						this.Crouching = false;
-						this.Crawling = true;
 						this.CrawlTimer = (float)0;
+						if (this.Crawling)
+						{
+							this.Crawling = false;
+						}
+						else if (this.Crouching)
+						{
+							this.Crouching = false;
+						}
+						else
+						{
+							this.Crouching = true;
+							this.EmptyHands();
+						}
+					}
+					if (Input.GetButton("RS"))
+					{
+						this.CrawlTimer += Time.deltaTime;
+						if (this.CrawlTimer > 0.5f)
+						{
+							this.EmptyHands();
+							this.Crouching = false;
+							this.Crawling = true;
+							this.CrawlTimer = (float)0;
+						}
 					}
 				}
 			}
 			if (this.Aiming)
 			{
 				this.Character.animation["f02_cameraPose_00"].weight = Mathf.Lerp(this.Character.animation["f02_cameraPose_00"].weight, (float)1, Time.deltaTime * (float)10);
-				if ((this.UsingController && Input.GetAxis("LT") < 0.5f) || Input.GetMouseButtonUp(1))
+				if (Input.GetAxis("DpadY") != (float)0)
 				{
-					if (this.Crawling)
+					this.Smartphone.fieldOfView = this.Smartphone.fieldOfView - Input.GetAxis("DpadY");
+					if (this.Smartphone.fieldOfView > (float)60)
 					{
-						this.Character.animation.Play("f02_crawl_10");
+						this.Smartphone.fieldOfView = (float)60;
 					}
-					else if (this.Crouching)
+					if (this.Smartphone.fieldOfView < (float)30)
 					{
-						this.Character.animation.Play("f02_crouchIdle_00");
+						this.Smartphone.fieldOfView = (float)30;
 					}
-					this.Character.animation["f02_cameraPose_00"].weight = (float)0;
-					int num2 = 0;
-					Vector3 localPosition = this.PelvisRoot.transform.localPosition;
-					float num3 = localPosition.y = (float)num2;
-					Vector3 vector2 = this.PelvisRoot.transform.localPosition = localPosition;
-					this.ShoulderCamera.AimingCamera = false;
-					this.RPGCamera.UpdateRotation();
-					this.RPGCamera.mouseSmoothingFactor = (float)0;
-					this.RPGCamera.GetInput();
-					this.RPGCamera.GetDesiredPosition();
-					this.RPGCamera.PositionUpdate();
-					this.RPGCamera.mouseSmoothingFactor = 0.08f;
-					this.Smartphone.active = false;
-					this.RPGCamera.enabled = true;
-					this.UsingController = false;
-					this.Aiming = false;
-					this.Height = (float)0;
-					this.Bend = (float)0;
+				}
+				if (Input.GetAxis("RT") != (float)0 || Input.GetMouseButtonDown(0))
+				{
+					this.PauseScreen.CorrectingTime = false;
+					Time.timeScale = (float)0;
+					this.CanMove = false;
+					this.Shutter.Snap();
+				}
+				if (Time.timeScale > (float)0 && ((this.UsingController && Input.GetAxis("LT") < 0.5f) || (!this.UsingController && !Input.GetMouseButton(1))))
+				{
+					this.StopAiming();
 				}
 			}
 		}
@@ -784,9 +795,9 @@ public class YandereScript : MonoBehaviour
 			this.Obscurance.enabled = false;
 			this.Obscurance.enabled = false;
 			this.YandereVision = false;
-			this.Mopping = false;
 			this.Crouching = false;
 			this.Crawling = false;
+			this.Mopping = false;
 			this.YandereTimer = (float)0;
 			if (this.Dragging)
 			{
@@ -800,6 +811,10 @@ public class YandereScript : MonoBehaviour
 			if (this.PickUp != null)
 			{
 				this.PickUp.Drop();
+			}
+			if (this.Aiming)
+			{
+				this.StopAiming();
 			}
 		}
 		else
@@ -903,11 +918,11 @@ public class YandereScript : MonoBehaviour
 		}
 		float a3 = (float)1 - this.YandereFade / (float)100;
 		Color color = this.RightYandereEye.material.color;
-		float num4 = color.a = a3;
+		float num2 = color.a = a3;
 		Color color2 = this.RightYandereEye.material.color = color;
 		float a4 = (float)1 - this.YandereFade / (float)100;
 		Color color3 = this.LeftYandereEye.material.color;
-		float num5 = color3.a = a4;
+		float num3 = color3.a = a4;
 		Color color4 = this.LeftYandereEye.material.color = color3;
 		if (this.Armed)
 		{
@@ -1022,7 +1037,7 @@ public class YandereScript : MonoBehaviour
 				}
 			}
 		}
-		if (!this.Attacking && !this.Dragging && this.PickUp == null && !this.Aiming && !this.Crawling)
+		if (!this.Attacking && !this.Dragging && this.PickUp == null && !this.Aiming && !this.Crawling && this.LaughIntensity < (float)16)
 		{
 			this.Character.animation["f02_yanderePose_00"].weight = Mathf.Lerp(this.Character.animation["f02_yanderePose_00"].weight, (float)1 - this.Sanity / (float)100, Time.deltaTime * (float)10);
 			this.Slouch = Mathf.Lerp(this.Slouch, (float)5 * ((float)1 - this.Sanity / (float)100), Time.deltaTime * (float)10);
@@ -1137,28 +1152,28 @@ public class YandereScript : MonoBehaviour
 				this.BreastSize = (float)0;
 			}
 		}
-		if (Input.GetKeyDown("l") && !this.AoT)
+		if (Input.GetKeyDown("l") && !this.Punished && !this.AoT)
 		{
 			this.StudentManager.AttackOnTitan();
 			this.AttackOnTitan();
 		}
-		if (Input.GetKeyDown("k"))
+		if (Input.GetKeyDown("k") && !this.Punished && !this.AoT)
 		{
 			this.Punish();
 		}
 		if (this.transform.position.z < (float)-50)
 		{
-			int num6 = -50;
+			int num4 = -50;
 			Vector3 position = this.transform.position;
-			float num7 = position.z = (float)num6;
-			Vector3 vector3 = this.transform.position = position;
+			float num5 = position.z = (float)num4;
+			Vector3 vector2 = this.transform.position = position;
 		}
 		if (this.rigidbody.velocity.y > (float)0)
 		{
-			int num8 = 0;
+			int num6 = 0;
 			Vector3 velocity = this.rigidbody.velocity;
-			float num9 = velocity.y = (float)num8;
-			Vector3 vector4 = this.rigidbody.velocity = velocity;
+			float num7 = velocity.y = (float)num6;
+			Vector3 vector3 = this.rigidbody.velocity = velocity;
 		}
 	}
 
@@ -1214,7 +1229,10 @@ public class YandereScript : MonoBehaviour
 		Vector3 vector10 = this.Arm[1].transform.localEulerAngles = localEulerAngles4;
 		this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 		this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
-		this.Head.localEulerAngles = this.Head.localEulerAngles + this.Twitch;
+		if (!this.Aiming)
+		{
+			this.Head.localEulerAngles = this.Head.localEulerAngles + this.Twitch;
+		}
 		if (this.HidePony)
 		{
 			this.Ponytail.parent.transform.localScale = new Vector3((float)1, (float)1, 0.93f);
@@ -1242,6 +1260,39 @@ public class YandereScript : MonoBehaviour
 			float num11 = localPosition3.y = height;
 			Vector3 vector11 = this.PelvisRoot.transform.localPosition = localPosition3;
 		}
+	}
+
+	public virtual void StopAiming()
+	{
+		if (this.Crawling)
+		{
+			this.Character.animation.Play("f02_crawl_10");
+		}
+		else if (this.Crouching)
+		{
+			this.Character.animation.Play("f02_crouchIdle_00");
+		}
+		this.Character.animation["f02_cameraPose_00"].weight = (float)0;
+		int num = 0;
+		Vector3 localPosition = this.PelvisRoot.transform.localPosition;
+		float num2 = localPosition.y = (float)num;
+		Vector3 vector = this.PelvisRoot.transform.localPosition = localPosition;
+		this.ShoulderCamera.AimingCamera = false;
+		this.RPGCamera.UpdateRotation();
+		this.RPGCamera.mouseSmoothingFactor = (float)0;
+		this.RPGCamera.GetInput();
+		this.RPGCamera.GetDesiredPosition();
+		this.RPGCamera.PositionUpdate();
+		this.RPGCamera.mouseSmoothingFactor = 0.08f;
+		this.Smartphone.transform.parent.active = false;
+		this.Smartphone.fieldOfView = (float)60;
+		this.HandCamera.active = false;
+		this.RPGCamera.enabled = true;
+		this.UsingController = false;
+		this.Blur.enabled = false;
+		this.Aiming = false;
+		this.Height = (float)0;
+		this.Bend = (float)0;
 	}
 
 	public virtual void ResetSenpaiEffects()
@@ -1426,7 +1477,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$850(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$1017(this).GetEnumerator();
 	}
 
 	public virtual void UpdateHair()
@@ -1486,8 +1537,8 @@ public class YandereScript : MonoBehaviour
 
 	public virtual void AttackOnTitan()
 	{
-		this.MyRenderer.materials[0].mainTexture = this.TitanTexture;
 		this.AoT = true;
+		this.MyRenderer.materials[0].mainTexture = this.TitanTexture;
 		this.Outline.h.ReinitMaterials();
 	}
 
@@ -1502,13 +1553,22 @@ public class YandereScript : MonoBehaviour
 
 	public virtual void Punish()
 	{
+		this.PunishedShader = Shader.Find("Toon/Cutoff");
+		this.Punished = true;
 		this.PunishedAccessories.active = true;
 		this.PunishedScarf.active = true;
 		this.EyepatchL.active = false;
 		this.EyepatchR.active = false;
 		this.Toast.active = false;
 		this.Toaster.active = false;
-		this.MyRenderer.materials[1].mainTexture = this.PunishedYandere;
+		this.MyRenderer.sharedMesh = this.PunishedMesh;
+		this.MyRenderer.materials[0].mainTexture = this.PunishedTextures[1];
+		this.MyRenderer.materials[1].mainTexture = this.PunishedTextures[1];
+		this.MyRenderer.materials[2].mainTexture = this.PunishedTextures[0];
+		this.MyRenderer.materials[3].mainTexture = this.PunishedTextures[0];
+		this.MyRenderer.materials[1].shader = this.PunishedShader;
+		this.MyRenderer.materials[1].SetFloat("_Shininess", (float)2);
+		this.MyRenderer.materials[1].SetFloat("_ShadowThreshold", (float)0);
 		this.Outline.h.ReinitMaterials();
 	}
 

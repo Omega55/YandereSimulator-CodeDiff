@@ -156,6 +156,22 @@ public class InputManagerScript : MonoBehaviour
 			this.TappedUp = false;
 			this.TappedDown = false;
 		}
+		if (Input.GetKeyDown("w"))
+		{
+			this.TappedUp = true;
+		}
+		if (Input.GetKeyDown("s"))
+		{
+			this.TappedDown = true;
+		}
+		if (Input.GetKeyDown("a"))
+		{
+			this.TappedLeft = true;
+		}
+		if (Input.GetKeyDown("d"))
+		{
+			this.TappedRight = true;
+		}
 	}
 
 	public virtual void Main()

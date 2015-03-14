@@ -14,6 +14,8 @@ public class ClockScript : MonoBehaviour
 
 	public Bloom BloomEffect;
 
+	public ClockScript Clock;
+
 	public MotionBlur Blur;
 
 	public Transform PromptParent;
@@ -194,9 +196,9 @@ public class ClockScript : MonoBehaviour
 		Vector3 eulerAngles = this.Sun.eulerAngles;
 		float num3 = eulerAngles.z = z3;
 		Vector3 vector3 = this.Sun.eulerAngles = eulerAngles;
-		if (this.PresentTime > (float)900)
+		if (this.PresentTime > (float)930)
 		{
-			float num4 = (this.PresentTime - (float)900) / (float)180;
+			float num4 = (this.PresentTime - (float)930) / (float)150;
 			float r = (float)1 - 0.149019614f * num4;
 			Color color = this.MainLight.color;
 			float num5 = color.r = r;
@@ -262,16 +264,22 @@ public class ClockScript : MonoBehaviour
 			{
 				this.EndTimeSkip();
 			}
+			if (Input.GetButtonDown("Start"))
+			{
+				this.EndTimeSkip();
+			}
 		}
 		if (Input.GetKeyDown("backspace"))
 		{
 			Time.timeScale = (float)1;
 			this.PresentTime = (float)1080;
+			this.HourTime = this.PresentTime / (float)60;
 		}
 	}
 
 	public virtual void EndTimeSkip()
 	{
+		Debug.Log("I was told to stop.");
 		this.PromptParent.localScale = new Vector3((float)1, (float)1, (float)1);
 		this.Yandere.Hearts.active = false;
 		this.Yandere.Phone.active = false;

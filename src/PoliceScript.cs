@@ -17,6 +17,8 @@ public class PoliceScript : MonoBehaviour
 
 	public YandereScript Yandere;
 
+	public ClockScript Clock;
+
 	public UILabel[] ResultsLabels;
 
 	public UILabel ContinueLabel;
@@ -174,8 +176,9 @@ public class PoliceScript : MonoBehaviour
 		}
 		if (this.FadeOut)
 		{
-			if (this.Yandere.CanMove)
+			if (this.Clock.TimeSkip || this.Yandere.CanMove)
 			{
+				this.Clock.EndTimeSkip();
 				this.Yandere.YandereVision = false;
 				this.Yandere.CanMove = false;
 				this.Yandere.Character.animation.CrossFade("f02_idleShort_00");
@@ -518,7 +521,15 @@ public class PoliceScript : MonoBehaviour
 		}
 		else
 		{
-			this.ResultsLabels[0].text = "The school day has ended. Teachers must walk through the school and tell any lingering students to leave.";
+			if (this.Clock.HourTime < (float)18)
+			{
+				this.ResultsLabels[0].text = "Yandere-chan stands near the school gate and waits for Senpai to leave school.";
+			}
+			else
+			{
+				this.ResultsLabels[0].text = "The school day has ended. Teachers must walk through the school and tell any lingering students to leave.";
+				Debug.Log(this.Clock.HourTime);
+			}
 			if (this.Yandere.Attacking)
 			{
 				this.ResultsLabels[1].text = "Yandere-chan was spotted committing murder by a teacher.";
@@ -529,7 +540,14 @@ public class PoliceScript : MonoBehaviour
 			}
 			else if (this.Corpses == 0 && this.BloodParent.childCount == 0 && this.MurderWeapons == 0 && this.BloodyUniforms == 0)
 			{
-				this.ResultsLabels[1].text = "Yandere-chan is also approached by a teacher and told to leave.";
+				if (this.Clock.HourTime < (float)18)
+				{
+					this.ResultsLabels[1].text = "Finally, Senpai exits the school. Yandere-chan's heart skips a beat when she sees him.";
+				}
+				else
+				{
+					this.ResultsLabels[1].text = "Yandere-chan is also approached by a teacher and told to leave.";
+				}
 				if (this.Yandere.Sanity > 66.66666f && this.Yandere.Bloodiness == (float)0)
 				{
 					this.ResultsLabels[2].text = "Yandere-chan leaves school and watches Senpai walk home.";

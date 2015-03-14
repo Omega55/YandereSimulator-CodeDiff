@@ -23,6 +23,7 @@ public class CalendarScript : MonoBehaviour
 		if (PlayerPrefs.GetInt("Weekday") > 4)
 		{
 			PlayerPrefs.SetInt("Weekday", 0);
+			PlayerPrefs.DeleteAll();
 		}
 		int num = -610;
 		Vector3 localPosition = this.Continue.transform.localPosition;
@@ -60,10 +61,6 @@ public class CalendarScript : MonoBehaviour
 			}
 			else
 			{
-				if (this.Darkness.color.a == (float)0 && !this.Reset)
-				{
-					this.Darkness.color = new Color((float)1, (float)1, (float)1, (float)0);
-				}
 				float a2 = this.Darkness.color.a + Time.deltaTime;
 				Color color5 = this.Darkness.color;
 				float num5 = color5.a = a2;
@@ -72,12 +69,12 @@ public class CalendarScript : MonoBehaviour
 				{
 					if (this.Reset)
 					{
-						PlayerPrefs.SetInt("Weekday", 0);
+						PlayerPrefs.DeleteAll();
 						Application.LoadLevel(Application.loadedLevel);
 					}
 					else
 					{
-						Application.LoadLevel("SchoolScene");
+						Application.LoadLevel("HomeScene");
 					}
 				}
 			}

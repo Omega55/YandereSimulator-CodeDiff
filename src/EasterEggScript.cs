@@ -10,8 +10,11 @@ public class EasterEggScript : MonoBehaviour
 
 	public virtual void OnTriggerEnter()
 	{
-		this.Yandere.MyRenderer.materials[0].mainTexture = this.DarkSeifuku;
-		this.Yandere.Outline.h.ReinitMaterials();
+		if (!this.Yandere.AoT && !this.Yandere.Punished)
+		{
+			this.Yandere.MyRenderer.materials[0].mainTexture = this.DarkSeifuku;
+			this.Yandere.Outline.h.ReinitMaterials();
+		}
 	}
 
 	public virtual void Main()

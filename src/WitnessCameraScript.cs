@@ -54,6 +54,7 @@ public class WitnessCameraScript : MonoBehaviour
 			if (this.MyCamera.enabled && this.MyCamera.rect.width < 0.1f)
 			{
 				this.MyCamera.enabled = false;
+				this.transform.parent = null;
 			}
 		}
 	}

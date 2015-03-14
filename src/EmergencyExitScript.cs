@@ -10,6 +10,10 @@ public class EmergencyExitScript : MonoBehaviour
 
 	public Collider StudentCollider;
 
+	public Transform Neighborhood;
+
+	public Transform Gateway;
+
 	public Transform Pivot;
 
 	public bool Open;
@@ -33,7 +37,7 @@ public class EmergencyExitScript : MonoBehaviour
 			Vector3 vector2 = this.Pivot.localEulerAngles = localEulerAngles2;
 			if (this.FleeingStudent != null && this.Pivot.localEulerAngles.y > (float)89)
 			{
-				this.FleeingStudent.Pathfinding.target = this.FleeingStudent.StudentManager.Hangouts.List[1];
+				this.FleeingStudent.Pathfinding.target = this.Neighborhood;
 				this.FleeingStudent.Pathfinding.SearchPath();
 			}
 			if (this.Student == null)

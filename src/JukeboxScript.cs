@@ -82,13 +82,8 @@ public class JukeboxScript : MonoBehaviour
 					this.Halfsane.volume = Mathf.MoveTowards(this.Halfsane.volume, (float)0, Time.deltaTime * this.FadeSpeed);
 					this.Insane.volume = Mathf.MoveTowards(this.Insane.volume, this.Volume, Time.deltaTime * this.FadeSpeed);
 				}
-				if (this.Yandere.Police.Witnesses > 0 && Input.GetButton("LB"))
+				if (this.Yandere.Police.Witnesses <= 0 || Input.GetButton("LB"))
 				{
-					this.Chase.volume = Mathf.MoveTowards(this.Chase.volume, this.Volume, Time.deltaTime * (float)10);
-				}
-				else
-				{
-					this.Chase.volume = Mathf.MoveTowards(this.Chase.volume, (float)0, Time.deltaTime * (float)10);
 				}
 			}
 		}

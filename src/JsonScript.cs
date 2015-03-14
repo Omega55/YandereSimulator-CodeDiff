@@ -15,9 +15,9 @@ public class JsonScript : MonoBehaviour
 
 	public int[] StudentClasses;
 
-	public string[] StudentClubs;
+	public int[] StudentClubs;
 
-	public string[] StudentPersonalites;
+	public int[] StudentPersonas;
 
 	public int[] StudentCrushes;
 
@@ -34,6 +34,8 @@ public class JsonScript : MonoBehaviour
 	public UnityScript.Lang.Array[] StudentTimes;
 
 	public UnityScript.Lang.Array[] StudentDestinations;
+
+	public UnityScript.Lang.Array[] StudentActions;
 
 	public int TotalStudents;
 
@@ -63,6 +65,7 @@ public class JsonScript : MonoBehaviour
 	{
 		this.StudentTimes = new UnityScript.Lang.Array[this.TotalStudents + 1];
 		this.StudentDestinations = new UnityScript.Lang.Array[this.TotalStudents + 1];
+		this.StudentActions = new UnityScript.Lang.Array[this.TotalStudents + 1];
 		UnityEngine.Object.DontDestroyOnLoad(this.transform.gameObject);
 		int i = 0;
 		Dictionary<string, object>[] array = this.StudentData();
@@ -76,8 +79,8 @@ public class JsonScript : MonoBehaviour
 			}
 			this.StudentNames[this.ID] = TFUtils.LoadString(array[i], "Name");
 			this.StudentClasses[this.ID] = TFUtils.LoadInt(array[i], "Class");
-			this.StudentClubs[this.ID] = TFUtils.LoadString(array[i], "Club");
-			this.StudentPersonalites[this.ID] = TFUtils.LoadString(array[i], "Personality");
+			this.StudentClubs[this.ID] = TFUtils.LoadInt(array[i], "Club");
+			this.StudentPersonas[this.ID] = TFUtils.LoadInt(array[i], "Persona");
 			this.StudentCrushes[this.ID] = TFUtils.LoadInt(array[i], "Crush");
 			this.StudentBreasts[this.ID] = TFUtils.LoadFloat(array[i], "BreastSize");
 			this.StudentHairstyles[this.ID] = TFUtils.LoadString(array[i], "Hairstyle");
@@ -90,6 +93,9 @@ public class JsonScript : MonoBehaviour
 			this.TempString = TFUtils.LoadString(array[i], "ScheduleDestination");
 			this.ConstructTempStringArray();
 			this.StudentDestinations[this.ID] = this.TempStringArray;
+			this.TempString = TFUtils.LoadString(array[i], "ScheduleAction");
+			this.ConstructTempStringArray();
+			this.StudentActions[this.ID] = this.TempStringArray;
 			i++;
 		}
 	}
