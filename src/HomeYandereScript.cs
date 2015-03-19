@@ -10,24 +10,26 @@ public class HomeYandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$998 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$1000 : GenericGenerator<WWW>
 	{
-		internal HomeYandereScript $self_$1005;
+		internal HomeYandereScript $self_$1007;
 
-		public $ApplyCustomCostume$998(HomeYandereScript self_)
+		public $ApplyCustomCostume$1000(HomeYandereScript self_)
 		{
-			this.$self_$1005 = self_;
+			this.$self_$1007 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new HomeYandereScript.$ApplyCustomCostume$998.$(this.$self_$1005);
+			return new HomeYandereScript.$ApplyCustomCostume$1000.$(this.$self_$1007);
 		}
 	}
 
 	public GameObject Character;
 
 	public float WalkSpeed;
+
+	public float RunSpeed;
 
 	public bool CanMove;
 
@@ -51,6 +53,7 @@ public class HomeYandereScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		Time.timeScale = (float)1;
 		this.StartCoroutine_Auto(this.ApplyCustomCostume());
 		this.UpdateHair();
 	}
@@ -77,8 +80,16 @@ public class HomeYandereScript : MonoBehaviour
 			}
 			if (axis != (float)0 || axis2 != (float)0)
 			{
-				this.Character.animation.CrossFade("f02_walk_00");
-				this.transform.Translate(Vector3.forward * this.WalkSpeed * Time.deltaTime);
+				if (Input.GetButton("LB"))
+				{
+					this.Character.animation.CrossFade("f02_run_00");
+					this.transform.Translate(Vector3.forward * this.RunSpeed * Time.deltaTime);
+				}
+				else
+				{
+					this.Character.animation.CrossFade("f02_walk_00");
+					this.transform.Translate(Vector3.forward * this.WalkSpeed * Time.deltaTime);
+				}
 			}
 			else
 			{
@@ -109,7 +120,7 @@ public class HomeYandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new HomeYandereScript.$ApplyCustomCostume$998(this).GetEnumerator();
+		return new HomeYandereScript.$ApplyCustomCostume$1000(this).GetEnumerator();
 	}
 
 	public virtual void UpdateHair()

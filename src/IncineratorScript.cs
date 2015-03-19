@@ -10,6 +10,8 @@ public class IncineratorScript : MonoBehaviour
 
 	public PromptScript Prompt;
 
+	public ClockScript Clock;
+
 	public UISprite Circle;
 
 	public Transform DumpPoint;
@@ -199,7 +201,7 @@ public class IncineratorScript : MonoBehaviour
 		if (this.Prompt.Circle[0].fillAmount <= (float)0)
 		{
 			this.Panel.active = true;
-			this.Timer = 600f;
+			this.Timer = 60f;
 			this.Smoke.Play();
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
@@ -209,8 +211,8 @@ public class IncineratorScript : MonoBehaviour
 		}
 		if (this.Smoke.isPlaying)
 		{
-			this.Timer -= Time.deltaTime;
-			this.Circle.fillAmount = (float)1 - this.Timer / (float)600;
+			this.Timer -= Time.deltaTime * (this.Clock.TimeSpeed / (float)60);
+			this.Circle.fillAmount = (float)1 - this.Timer / (float)60;
 			if (this.Timer <= (float)0)
 			{
 				this.Prompt.HideButton[0] = true;

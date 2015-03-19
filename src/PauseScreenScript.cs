@@ -92,14 +92,15 @@ public class PauseScreenScript : MonoBehaviour
 						Time.timeScale = (float)1;
 					}
 				}
-				if (Input.GetButtonDown("Start") && !this.Yandere.TimeSkipping)
+				if (Input.GetButtonDown("Start") && !this.Yandere.TimeSkipping && !this.Yandere.Talking)
 				{
 					this.PromptParent.localScale = new Vector3((float)0, (float)0, (float)0);
 					this.Yandere.YandereVision = false;
 					this.ScreenBlur.enabled = true;
 					this.RPGCamera.enabled = false;
 					this.Show = true;
-					if (!this.Yandere.CanMove || this.Yandere.Dragging)
+					this.Yandere.StopAiming();
+					if (!this.Yandere.CanMove || this.Yandere.Dragging || this.Police.Corpses > 0)
 					{
 						float a = 0.5f;
 						Color color = this.PassTimeLabel.color;
@@ -177,7 +178,7 @@ public class PauseScreenScript : MonoBehaviour
 						}
 						else if (this.Selected == 2)
 						{
-							if (this.Yandere.CanMove && !this.Yandere.Dragging)
+							if (this.PassTimeLabel.color.a == (float)1 && this.Yandere.CanMove && !this.Yandere.Dragging)
 							{
 								this.MainMenu.active = false;
 								this.PassTime.active = true;
@@ -213,6 +214,11 @@ public class PauseScreenScript : MonoBehaviour
 					{
 						if (Input.GetButtonDown("A"))
 						{
+							if (this.Yandere.PickUp != null)
+							{
+								this.Yandere.PickUp.Drop();
+							}
+							this.Yandere.Unequip();
 							this.ScreenBlur.enabled = false;
 							this.RPGCamera.enabled = true;
 							this.PassTime.active = false;
@@ -268,17 +274,21 @@ public class PauseScreenScript : MonoBehaviour
 		this.BypassPhone = true;
 		this.Quitting = true;
 		this.Show = true;
+		this.Yandere.StopAiming();
 	}
 
 	public virtual void ExitPhone()
 	{
 		this.PromptParent.localScale = new Vector3((float)1, (float)1, (float)1);
 		this.ScreenBlur.enabled = false;
-		this.RPGCamera.enabled = true;
 		this.CorrectingTime = true;
 		this.BypassPhone = false;
 		this.PressedA = false;
 		this.Show = false;
+		if (this.Yandere.ShoulderCamera.Timer == (float)0)
+		{
+			this.RPGCamera.enabled = true;
+		}
 	}
 
 	public virtual void Main()

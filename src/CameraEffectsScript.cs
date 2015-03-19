@@ -22,6 +22,8 @@ public class CameraEffectsScript : MonoBehaviour
 
 	public AntialiasingAsPostEffect QualityAntialiasingAsPostEffect;
 
+	public bool OneCamera;
+
 	public virtual void Start()
 	{
 		int num = 0;
@@ -49,6 +51,27 @@ public class CameraEffectsScript : MonoBehaviour
 				this.QualityBloom.enabled = true;
 				this.QualityVignetting.enabled = true;
 				this.QualityAntialiasingAsPostEffect.enabled = true;
+			}
+		}
+		if (Input.GetKeyDown("9"))
+		{
+			if (!this.OneCamera)
+			{
+				this.OneCamera = true;
+				if (this.Yandere.Aiming)
+				{
+					this.Yandere.MainCamera.clearFlags = CameraClearFlags.Color;
+					this.Yandere.MainCamera.farClipPlane = 0.02f;
+				}
+			}
+			else
+			{
+				this.OneCamera = false;
+				if (this.Yandere.Aiming)
+				{
+					this.Yandere.MainCamera.clearFlags = CameraClearFlags.Skybox;
+					this.Yandere.MainCamera.farClipPlane = 100f;
+				}
 			}
 		}
 		if (this.Streaks.color.a > (float)0)

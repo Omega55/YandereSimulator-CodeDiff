@@ -279,7 +279,6 @@ public class ClockScript : MonoBehaviour
 
 	public virtual void EndTimeSkip()
 	{
-		Debug.Log("I was told to stop.");
 		this.PromptParent.localScale = new Vector3((float)1, (float)1, (float)1);
 		this.Yandere.Hearts.active = false;
 		this.Yandere.Phone.active = false;

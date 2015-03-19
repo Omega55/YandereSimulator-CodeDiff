@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$1017 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$1019 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$1024;
+		internal YandereScript $self_$1026;
 
-		public $ApplyCustomCostume$1017(YandereScript self_)
+		public $ApplyCustomCostume$1019(YandereScript self_)
 		{
-			this.$self_$1024 = self_;
+			this.$self_$1026 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$1017.$(this.$self_$1024);
+			return new YandereScript.$ApplyCustomCostume$1019.$(this.$self_$1026);
 		}
 	}
 
@@ -62,6 +62,8 @@ public class YandereScript : MonoBehaviour
 	public ShoulderCameraScript ShoulderCamera;
 
 	public StudentManagerScript StudentManager;
+
+	public CameraEffectsScript CameraEffects;
 
 	public WeaponManagerScript WeaponManager;
 
@@ -146,6 +148,8 @@ public class YandereScript : MonoBehaviour
 	public SpringJoint RagdollDragger;
 
 	public Projector MyProjector;
+
+	public Camera MainCamera;
 
 	public Camera Smartphone;
 
@@ -365,76 +369,119 @@ public class YandereScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (this.CanMove)
+		if (!this.PauseScreen.Show)
 		{
-			float axis = Input.GetAxis("Vertical");
-			float axis2 = Input.GetAxis("Horizontal");
-			if (!this.Aiming)
+			if (this.CanMove)
 			{
-				Vector3 a = Camera.main.transform.TransformDirection(Vector3.forward);
-				a.y = (float)0;
-				a = a.normalized;
-				Vector3 a2 = new Vector3(a.z, (float)0, -a.x);
-				this.targetDirection = axis2 * a2 + axis * a;
-				if (this.targetDirection != Vector3.zero)
+				float axis = Input.GetAxis("Vertical");
+				float axis2 = Input.GetAxis("Horizontal");
+				if (!this.Aiming)
 				{
-					this.targetRotation = Quaternion.LookRotation(this.targetDirection);
-					this.transform.rotation = Quaternion.Lerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
-				}
-				else
-				{
-					this.targetRotation = new Quaternion((float)0, (float)0, (float)0, (float)0);
-				}
-				if (axis != (float)0 || axis2 != (float)0)
-				{
-					if (Input.GetButton("LB") && Vector3.Distance(this.transform.position, this.Senpai.position) > (float)2)
+					Vector3 a = Camera.main.transform.TransformDirection(Vector3.forward);
+					a.y = (float)0;
+					a = a.normalized;
+					Vector3 a2 = new Vector3(a.z, (float)0, -a.x);
+					this.targetDirection = axis2 * a2 + axis * a;
+					if (this.targetDirection != Vector3.zero)
 					{
-						if (!this.Dragging && !this.Mopping)
+						this.targetRotation = Quaternion.LookRotation(this.targetDirection);
+						this.transform.rotation = Quaternion.Lerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
+					}
+					else
+					{
+						this.targetRotation = new Quaternion((float)0, (float)0, (float)0, (float)0);
+					}
+					if (axis != (float)0 || axis2 != (float)0)
+					{
+						if (Input.GetButton("LB") && Vector3.Distance(this.transform.position, this.Senpai.position) > (float)2)
 						{
-							this.Character.animation.CrossFade("f02_sprint_00");
-							this.transform.Translate(Vector3.forward * this.RunSpeed * Time.deltaTime);
+							if (!this.Dragging && !this.Mopping)
+							{
+								this.Character.animation.CrossFade("f02_sprint_00");
+								this.transform.Translate(Vector3.forward * this.RunSpeed * Time.deltaTime);
+							}
+							else
+							{
+								this.Character.animation.CrossFade("f02_dragWalk_00");
+								this.transform.Translate(Vector3.forward * this.WalkSpeed * Time.deltaTime);
+							}
+							if (this.Crouching)
+							{
+								this.Crouching = false;
+							}
+							if (this.Crawling)
+							{
+								this.Crawling = false;
+							}
+						}
+						else if (!this.Dragging)
+						{
+							if (this.Crawling)
+							{
+								this.Character.animation.CrossFade("f02_crawl_10");
+								this.transform.Translate(Vector3.forward * this.CrawlSpeed * Time.deltaTime);
+							}
+							else if (this.Crouching)
+							{
+								this.Character.animation.CrossFade("f02_crouchWalk_00");
+								this.transform.Translate(Vector3.forward * this.CrouchSpeed * Time.deltaTime);
+							}
+							else
+							{
+								this.Character.animation.CrossFade("f02_walk_00");
+								this.transform.Translate(Vector3.forward * this.WalkSpeed * Time.deltaTime);
+							}
 						}
 						else
 						{
 							this.Character.animation.CrossFade("f02_dragWalk_00");
 							this.transform.Translate(Vector3.forward * this.WalkSpeed * Time.deltaTime);
 						}
-						if (this.Crouching)
-						{
-							this.Crouching = false;
-						}
-						if (this.Crawling)
-						{
-							this.Crawling = false;
-						}
 					}
 					else if (!this.Dragging)
 					{
 						if (this.Crawling)
 						{
-							this.Character.animation.CrossFade("f02_crawl_10");
-							this.transform.Translate(Vector3.forward * this.CrawlSpeed * Time.deltaTime);
+							this.Character.animation.CrossFade("f02_crawlIdle_00");
 						}
 						else if (this.Crouching)
 						{
-							this.Character.animation.CrossFade("f02_crouchWalk_00");
-							this.transform.Translate(Vector3.forward * this.CrouchSpeed * Time.deltaTime);
+							this.Character.animation.CrossFade("f02_crouchIdle_00");
 						}
 						else
 						{
-							this.Character.animation.CrossFade("f02_walk_00");
-							this.transform.Translate(Vector3.forward * this.WalkSpeed * Time.deltaTime);
+							this.Character.animation.CrossFade("f02_idleShort_00");
 						}
 					}
 					else
 					{
-						this.Character.animation.CrossFade("f02_dragWalk_00");
-						this.transform.Translate(Vector3.forward * this.WalkSpeed * Time.deltaTime);
+						this.Character.animation.CrossFade("f02_dragIdle_00");
 					}
 				}
-				else if (!this.Dragging)
+				else
 				{
-					if (this.Crawling)
+					if (axis != (float)0 || axis2 != (float)0)
+					{
+						if (this.Crawling)
+						{
+							this.Character.animation.CrossFade("f02_crawl_10");
+							this.transform.Translate(Vector3.forward * this.CrawlSpeed * Time.deltaTime * axis);
+							this.transform.Translate(Vector3.right * this.CrawlSpeed * Time.deltaTime * axis2);
+						}
+						else if (this.Crouching)
+						{
+							this.Character.animation.CrossFade("f02_crouchWalk_00");
+							this.transform.Translate(Vector3.forward * this.CrouchSpeed * Time.deltaTime * axis);
+							this.transform.Translate(Vector3.right * this.CrouchSpeed * Time.deltaTime * axis2);
+						}
+						else
+						{
+							this.Character.animation.CrossFade("f02_walk_00");
+							this.transform.Translate(Vector3.forward * this.WalkSpeed * Time.deltaTime * axis);
+							this.transform.Translate(Vector3.right * this.WalkSpeed * Time.deltaTime * axis2);
+						}
+					}
+					else if (this.Crawling)
 					{
 						this.Character.animation.CrossFade("f02_crawlIdle_00");
 					}
@@ -446,734 +493,709 @@ public class YandereScript : MonoBehaviour
 					{
 						this.Character.animation.CrossFade("f02_idleShort_00");
 					}
+					this.Bend += Input.GetAxis("Mouse Y") * (float)8;
+					if (this.Crawling)
+					{
+						if (this.Bend < (float)0)
+						{
+							this.Bend = (float)0;
+						}
+					}
+					else if (this.Crouching)
+					{
+						if (this.Bend < (float)-45)
+						{
+							this.Bend = (float)-45;
+						}
+					}
+					else if (this.Bend < (float)-85)
+					{
+						this.Bend = (float)-85;
+					}
+					if (this.Bend > (float)85)
+					{
+						this.Bend = (float)85;
+					}
+					float y = this.transform.localEulerAngles.y + Input.GetAxis("Mouse X") * (float)8;
+					Vector3 localEulerAngles = this.transform.localEulerAngles;
+					float num = localEulerAngles.y = y;
+					Vector3 vector = this.transform.localEulerAngles = localEulerAngles;
 				}
-				else
+				if (!this.NearSenpai)
 				{
-					this.Character.animation.CrossFade("f02_dragIdle_00");
+					if (Input.GetAxis("LT") > 0.5f || Input.GetMouseButtonDown(1))
+					{
+						if (Input.GetAxis("LT") > 0.5f)
+						{
+							this.UsingController = true;
+						}
+						if (!this.Aiming)
+						{
+							if (this.CameraEffects.OneCamera)
+							{
+								this.MainCamera.clearFlags = CameraClearFlags.Color;
+								this.MainCamera.farClipPlane = 0.02f;
+							}
+							float y2 = this.MainCamera.transform.eulerAngles.y;
+							Vector3 eulerAngles = this.transform.eulerAngles;
+							float num2 = eulerAngles.y = y2;
+							Vector3 vector2 = this.transform.eulerAngles = eulerAngles;
+							this.Character.animation.Play("f02_idleShort_00");
+							this.Smartphone.transform.parent.active = true;
+							this.ShoulderCamera.AimingCamera = true;
+							this.HandCamera.active = true;
+							this.YandereVision = false;
+							this.Blur.enabled = true;
+							this.Aiming = true;
+							this.EmptyHands();
+						}
+					}
+					if (!this.Aiming && !this.Crouching && !this.Crawling)
+					{
+						if (Input.GetButton("RB"))
+						{
+							this.YandereTimer += Time.deltaTime;
+							if (this.YandereTimer > 0.5f)
+							{
+								this.YandereVision = true;
+							}
+						}
+						if (Input.GetButtonUp("RB"))
+						{
+							if (this.YandereTimer < 0.5f)
+							{
+								if (!this.Dragging && !this.Laughing)
+								{
+									this.LaughAnim = "f02_laugh_01";
+									this.LaughClip = this.Laugh1;
+									this.Laughing = true;
+									this.LaughIntensity += (float)1;
+									this.LaughTimer = 0.5f;
+									this.audio.volume = (float)1;
+									this.audio.time = (float)0;
+									this.audio.Play();
+									this.CanMove = false;
+								}
+							}
+							else
+							{
+								this.Obscurance.enabled = false;
+								this.YandereVision = false;
+							}
+							this.YandereTimer = (float)0;
+						}
+					}
+					if (!Input.GetButton("LB"))
+					{
+						if (Input.GetButtonDown("RS"))
+						{
+							this.CrawlTimer = (float)0;
+							if (this.Crawling)
+							{
+								this.Crawling = false;
+							}
+							else if (this.Crouching)
+							{
+								this.Crouching = false;
+							}
+							else
+							{
+								this.Crouching = true;
+								this.EmptyHands();
+							}
+						}
+						if (Input.GetButton("RS"))
+						{
+							this.CrawlTimer += Time.deltaTime;
+							if (this.CrawlTimer > 0.5f)
+							{
+								this.EmptyHands();
+								this.Crouching = false;
+								this.Crawling = true;
+								this.CrawlTimer = (float)0;
+							}
+						}
+					}
+				}
+				if (this.Aiming)
+				{
+					this.Character.animation["f02_cameraPose_00"].weight = Mathf.Lerp(this.Character.animation["f02_cameraPose_00"].weight, (float)1, Time.deltaTime * (float)10);
+					if (Input.GetAxis("DpadY") != (float)0 || Input.GetAxis("Mouse ScrollWheel") != (float)0)
+					{
+						this.Smartphone.fieldOfView = this.Smartphone.fieldOfView - Input.GetAxis("DpadY");
+						this.Smartphone.fieldOfView = this.Smartphone.fieldOfView - Input.GetAxis("Mouse ScrollWheel") * (float)10;
+						if (this.Smartphone.fieldOfView > (float)60)
+						{
+							this.Smartphone.fieldOfView = (float)60;
+						}
+						if (this.Smartphone.fieldOfView < (float)30)
+						{
+							this.Smartphone.fieldOfView = (float)30;
+						}
+					}
+					if (Input.GetAxis("RT") != (float)0 || Input.GetMouseButtonDown(0))
+					{
+						this.FixCamera();
+						this.PauseScreen.CorrectingTime = false;
+						Time.timeScale = (float)0;
+						this.CanMove = false;
+						this.Shutter.Snap();
+					}
+					if (Time.timeScale > (float)0 && ((this.UsingController && Input.GetAxis("LT") < 0.5f) || (!this.UsingController && !Input.GetMouseButton(1))))
+					{
+						this.StopAiming();
+					}
 				}
 			}
 			else
 			{
-				if (axis != (float)0 || axis2 != (float)0)
+				if (this.Dumping)
 				{
-					if (this.Crawling)
+					this.targetRotation = Quaternion.LookRotation(this.Incinerator.transform.position + Vector3.fwd * (float)4 - this.transform.position);
+					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
+					this.transform.position = Vector3.Lerp(this.transform.position, this.Incinerator.transform.position + Vector3.fwd * (float)3, Time.deltaTime * (float)10);
+					this.DumpTimer += Time.deltaTime;
+					if (this.DumpTimer > (float)1)
 					{
-						this.Character.animation.CrossFade("f02_crawl_10");
-						this.transform.Translate(Vector3.forward * this.CrawlSpeed * Time.deltaTime * axis);
-						this.transform.Translate(Vector3.right * this.CrawlSpeed * Time.deltaTime * axis2);
-					}
-					else if (this.Crouching)
-					{
-						this.Character.animation.CrossFade("f02_crouchWalk_00");
-						this.transform.Translate(Vector3.forward * this.CrouchSpeed * Time.deltaTime * axis);
-						this.transform.Translate(Vector3.right * this.CrouchSpeed * Time.deltaTime * axis2);
-					}
-					else
-					{
-						this.Character.animation.CrossFade("f02_walk_00");
-						this.transform.Translate(Vector3.forward * this.WalkSpeed * Time.deltaTime * axis);
-						this.transform.Translate(Vector3.right * this.WalkSpeed * Time.deltaTime * axis2);
-					}
-				}
-				else if (this.Crawling)
-				{
-					this.Character.animation.CrossFade("f02_crawlIdle_00");
-				}
-				else if (this.Crouching)
-				{
-					this.Character.animation.CrossFade("f02_crouchIdle_00");
-				}
-				else
-				{
-					this.Character.animation.CrossFade("f02_idleShort_00");
-				}
-				this.Bend += Input.GetAxis("Mouse Y") * (float)8;
-				if (this.Crawling)
-				{
-					if (this.Bend < (float)0)
-					{
-						this.Bend = (float)0;
+						if (!((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).Dumped)
+						{
+							this.DumpRagdoll();
+						}
+						this.Character.animation.CrossFade("f02_throw_20_p");
+						if (this.Character.animation["f02_throw_20_p"].time >= this.Character.animation["f02_throw_20_p"].length)
+						{
+							this.Incinerator.Prompt.enabled = true;
+							this.Incinerator.Ready = true;
+							this.Incinerator.Open = false;
+							this.Dragging = false;
+							this.Dumping = false;
+							this.CanMove = true;
+							this.Ragdoll = null;
+							this.DumpTimer = (float)0;
+						}
 					}
 				}
-				else if (this.Crouching)
+				if (this.Dipping)
 				{
-					if (this.Bend < (float)-45)
+					this.targetRotation = Quaternion.LookRotation(new Vector3(this.Bucket.transform.position.x, this.transform.position.y, this.Bucket.transform.position.z) - this.transform.position);
+					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
+					this.Character.animation.CrossFade("f02_dipping_00");
+					if (this.Character.animation["f02_dipping_00"].time >= this.Character.animation["f02_dipping_00"].length * 0.5f && this.Mop.Bloodiness > (float)0)
 					{
-						this.Bend = (float)-45;
+						this.Mop.Bloodiness = (float)0;
+						this.Mop.UpdateBlood();
+					}
+					if (this.Character.animation["f02_dipping_00"].time >= this.Character.animation["f02_dipping_00"].length)
+					{
+						this.Character.animation["f02_dipping_00"].time = (float)0;
+						this.Mop.Prompt.enabled = true;
+						this.Dipping = false;
+						this.CanMove = true;
 					}
 				}
-				else if (this.Bend < (float)-85)
+				if (this.Laughing)
 				{
-					this.Bend = (float)-85;
-				}
-				if (this.Bend > (float)85)
-				{
-					this.Bend = (float)85;
-				}
-				float y = this.transform.localEulerAngles.y + Input.GetAxis("Mouse X") * (float)8;
-				Vector3 localEulerAngles = this.transform.localEulerAngles;
-				float num = localEulerAngles.y = y;
-				Vector3 vector = this.transform.localEulerAngles = localEulerAngles;
-			}
-			if (!this.NearSenpai)
-			{
-				if (Input.GetAxis("LT") > 0.5f || Input.GetMouseButtonDown(1))
-				{
-					if (Input.GetAxis("LT") > 0.5f)
+					if (this.audio.clip != this.LaughClip)
 					{
-						this.UsingController = true;
+						this.audio.clip = this.LaughClip;
+						this.audio.time = (float)0;
+						this.audio.Play();
 					}
-					if (!this.Aiming)
+					this.Character.animation.CrossFade(this.LaughAnim);
+					if (Input.GetButtonDown("RB"))
 					{
-						this.Character.animation.Play("f02_idleShort_00");
-						this.Smartphone.transform.parent.active = true;
-						this.ShoulderCamera.AimingCamera = true;
-						this.HandCamera.active = true;
-						this.Blur.enabled = true;
-						this.Aiming = true;
-						this.EmptyHands();
-					}
-				}
-				if (Input.GetButton("RB"))
-				{
-					this.YandereTimer += Time.deltaTime;
-					if (this.YandereTimer > 0.5f)
-					{
-						this.YandereVision = true;
-					}
-				}
-				if (Input.GetButtonUp("RB"))
-				{
-					if (this.YandereTimer < 0.5f)
-					{
-						if (!this.Dragging && !this.Laughing)
+						this.LaughIntensity += (float)1;
+						if (this.LaughIntensity <= (float)5)
 						{
 							this.LaughAnim = "f02_laugh_01";
 							this.LaughClip = this.Laugh1;
-							this.Laughing = true;
-							this.LaughIntensity += (float)1;
 							this.LaughTimer = 0.5f;
-							this.audio.volume = (float)1;
-							this.audio.time = (float)0;
-							this.audio.Play();
-							this.CanMove = false;
 						}
-					}
-					else
-					{
-						this.Obscurance.enabled = false;
-						this.YandereVision = false;
-					}
-					this.YandereTimer = (float)0;
-				}
-				if (!Input.GetButton("LB"))
-				{
-					if (Input.GetButtonDown("RS"))
-					{
-						this.CrawlTimer = (float)0;
-						if (this.Crawling)
+						else if (this.LaughIntensity <= (float)10)
 						{
-							this.Crawling = false;
+							this.LaughAnim = "f02_laugh_02";
+							this.LaughClip = this.Laugh2;
+							this.LaughTimer = (float)1;
 						}
-						else if (this.Crouching)
+						else if (this.LaughIntensity <= (float)15)
 						{
-							this.Crouching = false;
+							this.LaughAnim = "f02_laugh_03";
+							this.LaughClip = this.Laugh3;
+							this.LaughTimer = 1.5f;
+						}
+						else if (this.LaughIntensity <= (float)20)
+						{
+							this.LaughAnim = "f02_laugh_04";
+							this.LaughClip = this.Laugh4;
+							this.LaughTimer = (float)2;
 						}
 						else
 						{
-							this.Crouching = true;
-							this.EmptyHands();
+							this.LaughAnim = "f02_laugh_04";
+							this.LaughIntensity = (float)20;
+							this.LaughTimer = (float)2;
 						}
 					}
-					if (Input.GetButton("RS"))
+					if (this.LaughIntensity > (float)15)
 					{
-						this.CrawlTimer += Time.deltaTime;
-						if (this.CrawlTimer > 0.5f)
-						{
-							this.EmptyHands();
-							this.Crouching = false;
-							this.Crawling = true;
-							this.CrawlTimer = (float)0;
-						}
+						this.Sanity += Time.deltaTime * (float)10;
+						this.UpdateSanity();
 					}
+					this.LaughTimer -= Time.deltaTime;
+					if (this.LaughTimer <= (float)0)
+					{
+						this.LaughIntensity = (float)0;
+						this.Laughing = false;
+						this.LaughClip = null;
+						this.CanMove = true;
+					}
+				}
+				if (this.TimeSkipping)
+				{
+					this.Character.animation.CrossFade("f02_timeSkip_00");
+					this.Sanity += Time.deltaTime * 0.17f;
+					this.UpdateSanity();
+				}
+				if (this.Heartbroken && this.Character.animation["f02_down_22"].time >= this.Character.animation["f02_down_22"].length)
+				{
+					this.Character.animation.CrossFade("f02_down_23");
 				}
 			}
-			if (this.Aiming)
+			if (!this.Laughing)
 			{
-				this.Character.animation["f02_cameraPose_00"].weight = Mathf.Lerp(this.Character.animation["f02_cameraPose_00"].weight, (float)1, Time.deltaTime * (float)10);
-				if (Input.GetAxis("DpadY") != (float)0)
+				this.audio.volume = this.audio.volume - Time.deltaTime * (float)2;
+			}
+			if (!this.Mopping)
+			{
+				this.Character.animation["f02_mopping_00"].weight = Mathf.Lerp(this.Character.animation["f02_mopping_00"].weight, (float)0, Time.deltaTime * (float)10);
+			}
+			else
+			{
+				this.Character.animation["f02_mopping_00"].weight = Mathf.Lerp(this.Character.animation["f02_mopping_00"].weight, (float)1, Time.deltaTime * (float)10);
+				if (Input.GetButtonUp("A"))
 				{
-					this.Smartphone.fieldOfView = this.Smartphone.fieldOfView - Input.GetAxis("DpadY");
-					if (this.Smartphone.fieldOfView > (float)60)
-					{
-						this.Smartphone.fieldOfView = (float)60;
-					}
-					if (this.Smartphone.fieldOfView < (float)30)
-					{
-						this.Smartphone.fieldOfView = (float)30;
-					}
+					this.Mopping = false;
 				}
-				if (Input.GetAxis("RT") != (float)0 || Input.GetMouseButtonDown(0))
+			}
+			this.ID = 0;
+			while (this.ID < Extensions.get_length(this.CarryAnims))
+			{
+				if (this.PickUp != null && this.CarryAnimID == this.ID && !this.Mopping && !this.Dipping)
 				{
-					this.PauseScreen.CorrectingTime = false;
-					Time.timeScale = (float)0;
-					this.CanMove = false;
-					this.Shutter.Snap();
+					this.Character.animation[this.CarryAnims[this.ID]].weight = Mathf.Lerp(this.Character.animation[this.CarryAnims[this.ID]].weight, (float)1, Time.deltaTime * (float)10);
 				}
-				if (Time.timeScale > (float)0 && ((this.UsingController && Input.GetAxis("LT") < 0.5f) || (!this.UsingController && !Input.GetMouseButton(1))))
+				else
+				{
+					this.Character.animation[this.CarryAnims[this.ID]].weight = Mathf.Lerp(this.Character.animation[this.CarryAnims[this.ID]].weight, (float)0, Time.deltaTime * (float)10);
+				}
+				this.ID++;
+			}
+			if (this.Die)
+			{
+				this.Character.animation.CrossFade("f02_down_22");
+				this.Heartbroken = true;
+				this.CanMove = false;
+				this.Die = false;
+			}
+			if (Input.GetButtonDown("LS") || Input.GetKeyDown("t"))
+			{
+				if (this.NewTrail != null)
+				{
+					UnityEngine.Object.Destroy(this.NewTrail);
+				}
+				this.NewTrail = (GameObject)UnityEngine.Object.Instantiate(this.Trail, this.transform.position + Vector3.fwd * 0.5f + Vector3.up * 0.1f, Quaternion.identity);
+				((AIPath)this.NewTrail.GetComponent(typeof(AIPath))).target = this.Homeroom;
+			}
+			if (Vector3.Distance(this.transform.position, this.Senpai.position) < (float)2)
+			{
+				if (!this.NearSenpai)
+				{
+					this.DepthOfField.focalSize = (float)150;
+					this.NearSenpai = true;
+				}
+				this.Obscurance.enabled = false;
+				this.Obscurance.enabled = false;
+				this.YandereVision = false;
+				this.Crouching = false;
+				this.Crawling = false;
+				this.Mopping = false;
+				this.YandereTimer = (float)0;
+				if (this.Dragging)
+				{
+					((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).StopDragging();
+				}
+				if (this.Armed)
+				{
+					this.Weapon[this.Equipped].Drop();
+					this.Unequip();
+				}
+				if (this.PickUp != null)
+				{
+					this.PickUp.Drop();
+				}
+				if (this.Aiming)
 				{
 					this.StopAiming();
 				}
 			}
-		}
-		else
-		{
-			if (this.Dumping)
-			{
-				this.targetRotation = Quaternion.LookRotation(this.Incinerator.transform.position + Vector3.fwd * (float)4 - this.transform.position);
-				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
-				this.transform.position = Vector3.Lerp(this.transform.position, this.Incinerator.transform.position + Vector3.fwd * (float)3, Time.deltaTime * (float)10);
-				this.DumpTimer += Time.deltaTime;
-				if (this.DumpTimer > (float)1)
-				{
-					if (!((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).Dumped)
-					{
-						this.DumpRagdoll();
-					}
-					this.Character.animation.CrossFade("f02_throw_20_p");
-					if (this.Character.animation["f02_throw_20_p"].time >= this.Character.animation["f02_throw_20_p"].length)
-					{
-						this.Incinerator.Prompt.enabled = true;
-						this.Incinerator.Ready = true;
-						this.Incinerator.Open = false;
-						this.Dragging = false;
-						this.Dumping = false;
-						this.CanMove = true;
-						this.Ragdoll = null;
-						this.DumpTimer = (float)0;
-					}
-				}
-			}
-			if (this.Dipping)
-			{
-				this.targetRotation = Quaternion.LookRotation(new Vector3(this.Bucket.transform.position.x, this.transform.position.y, this.Bucket.transform.position.z) - this.transform.position);
-				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
-				this.Character.animation.CrossFade("f02_dipping_00");
-				if (this.Character.animation["f02_dipping_00"].time >= this.Character.animation["f02_dipping_00"].length * 0.5f && this.Mop.Bloodiness > (float)0)
-				{
-					this.Mop.Bloodiness = (float)0;
-					this.Mop.UpdateBlood();
-				}
-				if (this.Character.animation["f02_dipping_00"].time >= this.Character.animation["f02_dipping_00"].length)
-				{
-					this.Character.animation["f02_dipping_00"].time = (float)0;
-					this.Mop.Prompt.enabled = true;
-					this.Dipping = false;
-					this.CanMove = true;
-				}
-			}
-			if (this.Laughing)
-			{
-				if (this.audio.clip != this.LaughClip)
-				{
-					this.audio.clip = this.LaughClip;
-					this.audio.time = (float)0;
-					this.audio.Play();
-				}
-				this.Character.animation.CrossFade(this.LaughAnim);
-				if (Input.GetButtonDown("RB"))
-				{
-					this.LaughIntensity += (float)1;
-					if (this.LaughIntensity <= (float)5)
-					{
-						this.LaughAnim = "f02_laugh_01";
-						this.LaughClip = this.Laugh1;
-						this.LaughTimer = 0.5f;
-					}
-					else if (this.LaughIntensity <= (float)10)
-					{
-						this.LaughAnim = "f02_laugh_02";
-						this.LaughClip = this.Laugh2;
-						this.LaughTimer = (float)1;
-					}
-					else if (this.LaughIntensity <= (float)15)
-					{
-						this.LaughAnim = "f02_laugh_03";
-						this.LaughClip = this.Laugh3;
-						this.LaughTimer = 1.5f;
-					}
-					else if (this.LaughIntensity <= (float)20)
-					{
-						this.LaughAnim = "f02_laugh_04";
-						this.LaughClip = this.Laugh4;
-						this.LaughTimer = (float)2;
-					}
-					else
-					{
-						this.LaughAnim = "f02_laugh_04";
-						this.LaughIntensity = (float)20;
-						this.LaughTimer = (float)2;
-					}
-				}
-				if (this.LaughIntensity > (float)15)
-				{
-					this.Sanity += Time.deltaTime * (float)10;
-					this.UpdateSanity();
-				}
-				this.LaughTimer -= Time.deltaTime;
-				if (this.LaughTimer <= (float)0)
-				{
-					this.LaughIntensity = (float)0;
-					this.Laughing = false;
-					this.LaughClip = null;
-					this.CanMove = true;
-				}
-			}
-			if (this.TimeSkipping)
-			{
-				this.Character.animation.CrossFade("f02_timeSkip_00");
-				this.Sanity += Time.deltaTime * 0.17f;
-				this.UpdateSanity();
-			}
-			if (this.Heartbroken && this.Character.animation["f02_down_22"].time >= this.Character.animation["f02_down_22"].length)
-			{
-				this.Character.animation.CrossFade("f02_down_23");
-			}
-		}
-		if (!this.Laughing)
-		{
-			this.audio.volume = this.audio.volume - Time.deltaTime * (float)2;
-		}
-		if (!this.Mopping)
-		{
-			this.Character.animation["f02_mopping_00"].weight = Mathf.Lerp(this.Character.animation["f02_mopping_00"].weight, (float)0, Time.deltaTime * (float)10);
-		}
-		else
-		{
-			this.Character.animation["f02_mopping_00"].weight = Mathf.Lerp(this.Character.animation["f02_mopping_00"].weight, (float)1, Time.deltaTime * (float)10);
-			if (Input.GetButtonUp("A"))
-			{
-				this.Mopping = false;
-			}
-		}
-		this.ID = 0;
-		while (this.ID < Extensions.get_length(this.CarryAnims))
-		{
-			if (this.PickUp != null && this.CarryAnimID == this.ID && !this.Mopping && !this.Dipping)
-			{
-				this.Character.animation[this.CarryAnims[this.ID]].weight = Mathf.Lerp(this.Character.animation[this.CarryAnims[this.ID]].weight, (float)1, Time.deltaTime * (float)10);
-			}
 			else
 			{
-				this.Character.animation[this.CarryAnims[this.ID]].weight = Mathf.Lerp(this.Character.animation[this.CarryAnims[this.ID]].weight, (float)0, Time.deltaTime * (float)10);
+				this.NearSenpai = false;
 			}
-			this.ID++;
-		}
-		if (this.Die)
-		{
-			this.Character.animation.CrossFade("f02_down_22");
-			this.Heartbroken = true;
-			this.CanMove = false;
-			this.Die = false;
-		}
-		if (Input.GetButtonDown("LS") || Input.GetKeyDown("t"))
-		{
-			if (this.NewTrail != null)
+			if (this.NearSenpai)
 			{
-				UnityEngine.Object.Destroy(this.NewTrail);
+				this.DepthOfField.enabled = true;
+				this.DepthOfField.focalSize = Mathf.Lerp(this.DepthOfField.focalSize, (float)0, Time.deltaTime * (float)10);
+				this.DepthOfField.focalZStartCurve = Mathf.Lerp(this.DepthOfField.focalZStartCurve, (float)20, Time.deltaTime * (float)10);
+				this.DepthOfField.focalZEndCurve = Mathf.Lerp(this.DepthOfField.focalZEndCurve, (float)20, Time.deltaTime * (float)10);
+				this.DepthOfField.objectFocus = this.Senpai.transform;
+				this.ColorCorrection.enabled = true;
+				this.SenpaiFade = Mathf.Lerp(this.SenpaiFade, (float)0, Time.deltaTime * (float)10);
+				this.SenpaiTint = (float)1 - this.SenpaiFade / (float)100;
+				this.ColorCorrection.redChannel.MoveKey(1, new Keyframe(0.5f, 0.5f + this.SenpaiTint * 0.5f));
+				this.ColorCorrection.greenChannel.MoveKey(1, new Keyframe(0.5f, 0.5f - this.SenpaiTint * 0.5f));
+				this.ColorCorrection.blueChannel.MoveKey(1, new Keyframe(0.5f, 0.5f + this.SenpaiTint * 0.5f));
+				this.ColorCorrection.redChannel.SmoothTangents(1, (float)0);
+				this.ColorCorrection.greenChannel.SmoothTangents(1, (float)0);
+				this.ColorCorrection.blueChannel.SmoothTangents(1, (float)0);
+				this.ColorCorrection.UpdateTextures();
+				this.Character.animation["f02_shy_00"].weight = this.SenpaiTint;
+				this.HeartBeat.volume = this.SenpaiTint;
+				this.Sanity += Time.deltaTime * (float)10;
+				this.UpdateSanity();
 			}
-			this.NewTrail = (GameObject)UnityEngine.Object.Instantiate(this.Trail, this.transform.position + Vector3.fwd * 0.5f + Vector3.up * 0.1f, Quaternion.identity);
-			((AIPath)this.NewTrail.GetComponent(typeof(AIPath))).target = this.Homeroom;
-		}
-		if (Vector3.Distance(this.transform.position, this.Senpai.position) < (float)2)
-		{
-			if (!this.NearSenpai)
+			else if (this.SenpaiFade < (float)99)
 			{
-				this.DepthOfField.focalSize = (float)150;
-				this.NearSenpai = true;
+				this.DepthOfField.focalSize = Mathf.Lerp(this.DepthOfField.focalSize, (float)150, Time.deltaTime * (float)10);
+				this.DepthOfField.focalZStartCurve = Mathf.Lerp(this.DepthOfField.focalZStartCurve, (float)0, Time.deltaTime * (float)10);
+				this.DepthOfField.focalZEndCurve = Mathf.Lerp(this.DepthOfField.focalZEndCurve, (float)0, Time.deltaTime * (float)10);
+				this.SenpaiFade = Mathf.Lerp(this.SenpaiFade, (float)100, Time.deltaTime * (float)10);
+				this.SenpaiTint = this.SenpaiFade / (float)100;
+				this.ColorCorrection.redChannel.MoveKey(1, new Keyframe(0.5f, (float)1 - this.SenpaiTint * 0.5f));
+				this.ColorCorrection.greenChannel.MoveKey(1, new Keyframe(0.5f, this.SenpaiTint * 0.5f));
+				this.ColorCorrection.blueChannel.MoveKey(1, new Keyframe(0.5f, (float)1 - this.SenpaiTint * 0.5f));
+				this.ColorCorrection.redChannel.SmoothTangents(1, (float)0);
+				this.ColorCorrection.greenChannel.SmoothTangents(1, (float)0);
+				this.ColorCorrection.blueChannel.SmoothTangents(1, (float)0);
+				this.ColorCorrection.UpdateTextures();
+				this.Character.animation["f02_shy_00"].weight = (float)1 - this.SenpaiTint;
+				this.HeartBeat.volume = (float)1 - this.SenpaiTint;
 			}
-			this.Obscurance.enabled = false;
-			this.Obscurance.enabled = false;
-			this.YandereVision = false;
-			this.Crouching = false;
-			this.Crawling = false;
-			this.Mopping = false;
-			this.YandereTimer = (float)0;
-			if (this.Dragging)
+			else if (this.SenpaiFade < (float)100)
 			{
-				((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).StopDragging();
+				this.ResetSenpaiEffects();
 			}
-			if (this.Armed)
+			if (this.YandereVision)
 			{
-				this.Weapon[this.Equipped].Drop();
-				this.Unequip();
-			}
-			if (this.PickUp != null)
-			{
-				this.PickUp.Drop();
-			}
-			if (this.Aiming)
-			{
-				this.StopAiming();
-			}
-		}
-		else
-		{
-			this.NearSenpai = false;
-		}
-		if (this.NearSenpai)
-		{
-			this.DepthOfField.enabled = true;
-			this.DepthOfField.focalSize = Mathf.Lerp(this.DepthOfField.focalSize, (float)0, Time.deltaTime * (float)10);
-			this.DepthOfField.focalZStartCurve = Mathf.Lerp(this.DepthOfField.focalZStartCurve, (float)20, Time.deltaTime * (float)10);
-			this.DepthOfField.focalZEndCurve = Mathf.Lerp(this.DepthOfField.focalZEndCurve, (float)20, Time.deltaTime * (float)10);
-			this.DepthOfField.objectFocus = this.Senpai.transform;
-			this.ColorCorrection.enabled = true;
-			this.SenpaiFade = Mathf.Lerp(this.SenpaiFade, (float)0, Time.deltaTime * (float)10);
-			this.SenpaiTint = (float)1 - this.SenpaiFade / (float)100;
-			this.ColorCorrection.redChannel.MoveKey(1, new Keyframe(0.5f, 0.5f + this.SenpaiTint * 0.5f));
-			this.ColorCorrection.greenChannel.MoveKey(1, new Keyframe(0.5f, 0.5f - this.SenpaiTint * 0.5f));
-			this.ColorCorrection.blueChannel.MoveKey(1, new Keyframe(0.5f, 0.5f + this.SenpaiTint * 0.5f));
-			this.ColorCorrection.redChannel.SmoothTangents(1, (float)0);
-			this.ColorCorrection.greenChannel.SmoothTangents(1, (float)0);
-			this.ColorCorrection.blueChannel.SmoothTangents(1, (float)0);
-			this.ColorCorrection.UpdateTextures();
-			this.Character.animation["f02_shy_00"].weight = this.SenpaiTint;
-			this.HeartBeat.volume = this.SenpaiTint;
-			this.Sanity += Time.deltaTime * (float)10;
-			this.UpdateSanity();
-		}
-		else if (this.SenpaiFade < (float)99)
-		{
-			this.DepthOfField.focalSize = Mathf.Lerp(this.DepthOfField.focalSize, (float)150, Time.deltaTime * (float)10);
-			this.DepthOfField.focalZStartCurve = Mathf.Lerp(this.DepthOfField.focalZStartCurve, (float)0, Time.deltaTime * (float)10);
-			this.DepthOfField.focalZEndCurve = Mathf.Lerp(this.DepthOfField.focalZEndCurve, (float)0, Time.deltaTime * (float)10);
-			this.SenpaiFade = Mathf.Lerp(this.SenpaiFade, (float)100, Time.deltaTime * (float)10);
-			this.SenpaiTint = this.SenpaiFade / (float)100;
-			this.ColorCorrection.redChannel.MoveKey(1, new Keyframe(0.5f, (float)1 - this.SenpaiTint * 0.5f));
-			this.ColorCorrection.greenChannel.MoveKey(1, new Keyframe(0.5f, this.SenpaiTint * 0.5f));
-			this.ColorCorrection.blueChannel.MoveKey(1, new Keyframe(0.5f, (float)1 - this.SenpaiTint * 0.5f));
-			this.ColorCorrection.redChannel.SmoothTangents(1, (float)0);
-			this.ColorCorrection.greenChannel.SmoothTangents(1, (float)0);
-			this.ColorCorrection.blueChannel.SmoothTangents(1, (float)0);
-			this.ColorCorrection.UpdateTextures();
-			this.Character.animation["f02_shy_00"].weight = (float)1 - this.SenpaiTint;
-			this.HeartBeat.volume = (float)1 - this.SenpaiTint;
-		}
-		else if (this.SenpaiFade < (float)100)
-		{
-			this.ResetSenpaiEffects();
-		}
-		if (this.YandereVision)
-		{
-			if (!this.HighlightingR.enabled)
-			{
-				this.YandereColorCorrection.enabled = true;
-				this.HighlightingR.enabled = true;
-				this.HighlightingB.enabled = true;
-				this.Obscurance.enabled = true;
-				this.Vignette.enabled = true;
-			}
-			Time.timeScale = Mathf.Lerp(Time.timeScale, 0.5f, 0.166666672f);
-			this.YandereFade = Mathf.Lerp(this.YandereFade, (float)0, Time.deltaTime * (float)10);
-			this.YandereTint = (float)1 - this.YandereFade / (float)100;
-			this.YandereColorCorrection.redChannel.MoveKey(1, new Keyframe(0.5f, 0.5f - this.YandereTint * 0.25f));
-			this.YandereColorCorrection.greenChannel.MoveKey(1, new Keyframe(0.5f, 0.5f - this.YandereTint * 0.25f));
-			this.YandereColorCorrection.blueChannel.MoveKey(1, new Keyframe(0.5f, 0.5f + this.YandereTint * 0.25f));
-			this.YandereColorCorrection.redChannel.SmoothTangents(1, (float)0);
-			this.YandereColorCorrection.greenChannel.SmoothTangents(1, (float)0);
-			this.YandereColorCorrection.blueChannel.SmoothTangents(1, (float)0);
-			this.YandereColorCorrection.UpdateTextures();
-			this.Vignette.intensity = Mathf.Lerp(this.Vignette.intensity, this.YandereTint * (float)5, Time.deltaTime * (float)10);
-			this.Vignette.blur = Mathf.Lerp(this.Vignette.blur, this.YandereTint, Time.deltaTime * (float)10);
-			this.Vignette.chromaticAberration = Mathf.Lerp(this.Vignette.chromaticAberration, this.YandereTint * (float)5, Time.deltaTime * (float)10);
-		}
-		else
-		{
-			if (this.HighlightingR.enabled)
-			{
-				this.HighlightingR.enabled = false;
-				this.HighlightingB.enabled = false;
-			}
-			if (this.YandereFade < (float)99)
-			{
-				Time.timeScale = Mathf.Lerp(Time.timeScale, (float)1, 0.166666672f);
-				this.YandereFade = Mathf.Lerp(this.YandereFade, (float)100, Time.deltaTime * (float)10);
-				this.YandereTint = this.YandereFade / (float)100;
-				this.YandereColorCorrection.redChannel.MoveKey(1, new Keyframe(0.5f, this.YandereTint * 0.5f));
-				this.YandereColorCorrection.greenChannel.MoveKey(1, new Keyframe(0.5f, this.YandereTint * 0.5f));
-				this.YandereColorCorrection.blueChannel.MoveKey(1, new Keyframe(0.5f, (float)1 - this.YandereTint * 0.5f));
+				if (!this.HighlightingR.enabled)
+				{
+					this.YandereColorCorrection.enabled = true;
+					this.HighlightingR.enabled = true;
+					this.HighlightingB.enabled = true;
+					this.Obscurance.enabled = true;
+					this.Vignette.enabled = true;
+				}
+				Time.timeScale = Mathf.Lerp(Time.timeScale, 0.5f, 0.166666672f);
+				this.YandereFade = Mathf.Lerp(this.YandereFade, (float)0, Time.deltaTime * (float)10);
+				this.YandereTint = (float)1 - this.YandereFade / (float)100;
+				this.YandereColorCorrection.redChannel.MoveKey(1, new Keyframe(0.5f, 0.5f - this.YandereTint * 0.25f));
+				this.YandereColorCorrection.greenChannel.MoveKey(1, new Keyframe(0.5f, 0.5f - this.YandereTint * 0.25f));
+				this.YandereColorCorrection.blueChannel.MoveKey(1, new Keyframe(0.5f, 0.5f + this.YandereTint * 0.25f));
 				this.YandereColorCorrection.redChannel.SmoothTangents(1, (float)0);
 				this.YandereColorCorrection.greenChannel.SmoothTangents(1, (float)0);
 				this.YandereColorCorrection.blueChannel.SmoothTangents(1, (float)0);
 				this.YandereColorCorrection.UpdateTextures();
-				this.Vignette.intensity = Mathf.Lerp(this.Vignette.intensity, (float)0, Time.deltaTime * (float)10);
-				this.Vignette.blur = Mathf.Lerp(this.Vignette.blur, (float)0, Time.deltaTime * (float)10);
-				this.Vignette.chromaticAberration = Mathf.Lerp(this.Vignette.chromaticAberration, (float)0, Time.deltaTime * (float)10);
-			}
-			else if (this.YandereFade < (float)100)
-			{
-				this.ResetYandereEffects();
-			}
-		}
-		float a3 = (float)1 - this.YandereFade / (float)100;
-		Color color = this.RightYandereEye.material.color;
-		float num2 = color.a = a3;
-		Color color2 = this.RightYandereEye.material.color = color;
-		float a4 = (float)1 - this.YandereFade / (float)100;
-		Color color3 = this.LeftYandereEye.material.color;
-		float num3 = color3.a = a4;
-		Color color4 = this.LeftYandereEye.material.color = color3;
-		if (this.Armed)
-		{
-			this.Character.animation["f02_fist_00"].weight = Mathf.Lerp(this.Character.animation["f02_fist_00"].weight, (float)1, Time.deltaTime * (float)10);
-		}
-		else
-		{
-			this.Character.animation["f02_fist_00"].weight = Mathf.Lerp(this.Character.animation["f02_fist_00"].weight, (float)0, Time.deltaTime * (float)10);
-		}
-		if (this.Talking)
-		{
-			this.targetRotation = Quaternion.LookRotation(new Vector3(this.TargetStudent.transform.position.x, this.transform.position.y, this.TargetStudent.transform.position.z) - this.transform.position);
-			this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
-			if (this.Interaction == 0)
-			{
-				this.Character.animation.CrossFade("f02_idleShort_00");
-			}
-			else if (this.Interaction == 1)
-			{
-				if (this.TalkTimer == (float)3)
-				{
-					this.Character.animation.CrossFade("f02_greet_00");
-					if (this.TargetStudent.Witnessed == "Insanity" || this.TargetStudent.Witnessed == "Weapon and Blood and Insanity" || this.TargetStudent.Witnessed == "Weapon and Insanity" || this.TargetStudent.Witnessed == "Blood and Insanity")
-					{
-						this.Subtitle.UpdateLabel("Insanity Apology", 0, (float)3);
-					}
-					else if (this.TargetStudent.Witnessed == "Weapon and Blood")
-					{
-						this.Subtitle.UpdateLabel("Weapon and Blood Apology", 0, (float)3);
-					}
-					else if (this.TargetStudent.Witnessed == "Weapon")
-					{
-						this.Subtitle.UpdateLabel("Weapon Apology", 0, (float)3);
-					}
-					else if (this.TargetStudent.Witnessed == "Blood")
-					{
-						this.Subtitle.UpdateLabel("Blood Apology", 0, (float)3);
-					}
-				}
-				else
-				{
-					if (this.Character.animation["f02_greet_00"].time >= this.Character.animation["f02_greet_00"].length)
-					{
-						this.Character.animation.CrossFade("f02_idleShort_00");
-					}
-					if (this.TalkTimer <= (float)0)
-					{
-						this.TargetStudent.Interaction = 1;
-						this.TargetStudent.TalkTimer = (float)3;
-						this.Interaction = 0;
-					}
-				}
-				this.TalkTimer -= Time.deltaTime;
-			}
-			else if (this.Interaction == 4)
-			{
-				if (this.TalkTimer == (float)2)
-				{
-					this.Character.animation.CrossFade("f02_greet_00");
-					this.Subtitle.UpdateLabel("Player Farewell", 0, (float)2);
-				}
-				else
-				{
-					if (this.Character.animation["f02_greet_00"].time >= this.Character.animation["f02_greet_00"].length)
-					{
-						this.Character.animation.CrossFade("f02_idleShort_00");
-					}
-					if (this.TalkTimer <= (float)0)
-					{
-						this.TargetStudent.Interaction = 4;
-						this.TargetStudent.TalkTimer = (float)2;
-						this.Interaction = 0;
-					}
-				}
-				this.TalkTimer -= Time.deltaTime;
-			}
-		}
-		if (this.Attacking)
-		{
-			this.targetRotation = Quaternion.LookRotation(new Vector3(this.TargetStudent.transform.position.x, this.transform.position.y, this.TargetStudent.transform.position.z) - this.transform.position);
-			this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
-			if (this.AttackPhase == 1)
-			{
-				this.Character.animation.CrossFade("f02_stab_00");
-				if (this.Character.animation["f02_stab_00"].time > this.Character.animation["f02_stab_00"].length * 0.4f)
-				{
-					this.Character.animation.CrossFade("f02_idleShort_00");
-					this.TargetStudent.BloodSpray.active = true;
-					this.TargetStudent.Dead = true;
-					this.Police.Corpses = this.Police.Corpses + 1;
-					this.Bloodiness += (float)20;
-					this.AttackPhase = 2;
-					this.Sanity -= (float)20;
-					this.UpdateSanity();
-					this.UpdateBlood();
-				}
+				this.Vignette.intensity = Mathf.Lerp(this.Vignette.intensity, this.YandereTint * (float)5, Time.deltaTime * (float)10);
+				this.Vignette.blur = Mathf.Lerp(this.Vignette.blur, this.YandereTint, Time.deltaTime * (float)10);
+				this.Vignette.chromaticAberration = Mathf.Lerp(this.Vignette.chromaticAberration, this.YandereTint * (float)5, Time.deltaTime * (float)10);
 			}
 			else
 			{
-				this.AttackTimer += Time.deltaTime;
-				if (this.AttackTimer > 0.3f)
+				if (this.HighlightingR.enabled)
 				{
-					if (!this.Weapon[this.Equipped].Evidence)
-					{
-						this.Weapon[this.Equipped].Evidence = true;
-						this.Police.MurderWeapons = this.Police.MurderWeapons + 1;
-					}
-					this.Attacking = false;
-					this.AttackPhase = 1;
-					this.AttackTimer = (float)0;
-					this.CanMove = true;
+					this.HighlightingR.enabled = false;
+					this.HighlightingB.enabled = false;
+				}
+				if (this.YandereFade < (float)99)
+				{
+					Time.timeScale = Mathf.Lerp(Time.timeScale, (float)1, 0.166666672f);
+					this.YandereFade = Mathf.Lerp(this.YandereFade, (float)100, Time.deltaTime * (float)10);
+					this.YandereTint = this.YandereFade / (float)100;
+					this.YandereColorCorrection.redChannel.MoveKey(1, new Keyframe(0.5f, this.YandereTint * 0.5f));
+					this.YandereColorCorrection.greenChannel.MoveKey(1, new Keyframe(0.5f, this.YandereTint * 0.5f));
+					this.YandereColorCorrection.blueChannel.MoveKey(1, new Keyframe(0.5f, (float)1 - this.YandereTint * 0.5f));
+					this.YandereColorCorrection.redChannel.SmoothTangents(1, (float)0);
+					this.YandereColorCorrection.greenChannel.SmoothTangents(1, (float)0);
+					this.YandereColorCorrection.blueChannel.SmoothTangents(1, (float)0);
+					this.YandereColorCorrection.UpdateTextures();
+					this.Vignette.intensity = Mathf.Lerp(this.Vignette.intensity, (float)0, Time.deltaTime * (float)10);
+					this.Vignette.blur = Mathf.Lerp(this.Vignette.blur, (float)0, Time.deltaTime * (float)10);
+					this.Vignette.chromaticAberration = Mathf.Lerp(this.Vignette.chromaticAberration, (float)0, Time.deltaTime * (float)10);
+				}
+				else if (this.YandereFade < (float)100)
+				{
+					this.ResetYandereEffects();
 				}
 			}
-		}
-		if (!this.Attacking && !this.Dragging && this.PickUp == null && !this.Aiming && !this.Crawling && this.LaughIntensity < (float)16)
-		{
-			this.Character.animation["f02_yanderePose_00"].weight = Mathf.Lerp(this.Character.animation["f02_yanderePose_00"].weight, (float)1 - this.Sanity / (float)100, Time.deltaTime * (float)10);
-			this.Slouch = Mathf.Lerp(this.Slouch, (float)5 * ((float)1 - this.Sanity / (float)100), Time.deltaTime * (float)10);
-		}
-		else
-		{
-			this.Character.animation["f02_yanderePose_00"].weight = Mathf.Lerp(this.Character.animation["f02_yanderePose_00"].weight, (float)0, Time.deltaTime * (float)10);
-			this.Slouch = Mathf.Lerp(this.Slouch, (float)0, Time.deltaTime * (float)10);
-		}
-		this.EyeShrink = Mathf.Lerp(this.EyeShrink, (float)1 - this.Sanity / (float)100, Time.deltaTime * (float)10);
-		if (this.Sanity < (float)100)
-		{
-			this.TwitchTimer += Time.deltaTime;
-			if (this.TwitchTimer > this.NextTwitch)
+			float a3 = (float)1 - this.YandereFade / (float)100;
+			Color color = this.RightYandereEye.material.color;
+			float num3 = color.a = a3;
+			Color color2 = this.RightYandereEye.material.color = color;
+			float a4 = (float)1 - this.YandereFade / (float)100;
+			Color color3 = this.LeftYandereEye.material.color;
+			float num4 = color3.a = a4;
+			Color color4 = this.LeftYandereEye.material.color = color3;
+			if (this.Armed)
 			{
-				this.Twitch.x = ((float)1 - this.Sanity / (float)100) * UnityEngine.Random.Range(-10f, 10f);
-				this.Twitch.y = ((float)1 - this.Sanity / (float)100) * UnityEngine.Random.Range(-10f, 10f);
-				this.Twitch.z = ((float)1 - this.Sanity / (float)100) * UnityEngine.Random.Range(-10f, 10f);
-				this.NextTwitch = UnityEngine.Random.Range((float)0, 1f);
-				this.TwitchTimer = (float)0;
+				this.Character.animation["f02_fist_00"].weight = Mathf.Lerp(this.Character.animation["f02_fist_00"].weight, (float)1, Time.deltaTime * (float)10);
 			}
-			this.Twitch = Vector3.Lerp(this.Twitch, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-		}
-		if (this.NearBodies > 0)
-		{
-			if (!this.CorpseWarning)
+			else
 			{
-				this.NotificationManager.DisplayNotification("Body");
+				this.Character.animation["f02_fist_00"].weight = Mathf.Lerp(this.Character.animation["f02_fist_00"].weight, (float)0, Time.deltaTime * (float)10);
+			}
+			if (this.Talking)
+			{
+				this.targetRotation = Quaternion.LookRotation(new Vector3(this.TargetStudent.transform.position.x, this.transform.position.y, this.TargetStudent.transform.position.z) - this.transform.position);
+				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
+				if (this.Interaction == 0)
+				{
+					this.Character.animation.CrossFade("f02_idleShort_00");
+				}
+				else if (this.Interaction == 1)
+				{
+					if (this.TalkTimer == (float)3)
+					{
+						this.Character.animation.CrossFade("f02_greet_00");
+						if (this.TargetStudent.Witnessed == "Insanity" || this.TargetStudent.Witnessed == "Weapon and Blood and Insanity" || this.TargetStudent.Witnessed == "Weapon and Insanity" || this.TargetStudent.Witnessed == "Blood and Insanity")
+						{
+							this.Subtitle.UpdateLabel("Insanity Apology", 0, (float)3);
+						}
+						else if (this.TargetStudent.Witnessed == "Weapon and Blood")
+						{
+							this.Subtitle.UpdateLabel("Weapon and Blood Apology", 0, (float)3);
+						}
+						else if (this.TargetStudent.Witnessed == "Weapon")
+						{
+							this.Subtitle.UpdateLabel("Weapon Apology", 0, (float)3);
+						}
+						else if (this.TargetStudent.Witnessed == "Blood")
+						{
+							this.Subtitle.UpdateLabel("Blood Apology", 0, (float)3);
+						}
+					}
+					else
+					{
+						if (this.Character.animation["f02_greet_00"].time >= this.Character.animation["f02_greet_00"].length)
+						{
+							this.Character.animation.CrossFade("f02_idleShort_00");
+						}
+						if (this.TalkTimer <= (float)0)
+						{
+							this.TargetStudent.Interaction = 1;
+							this.TargetStudent.TalkTimer = (float)3;
+							this.Interaction = 0;
+						}
+					}
+					this.TalkTimer -= Time.deltaTime;
+				}
+				else if (this.Interaction == 4)
+				{
+					if (this.TalkTimer == (float)2)
+					{
+						this.Character.animation.CrossFade("f02_greet_00");
+						this.Subtitle.UpdateLabel("Player Farewell", 0, (float)2);
+					}
+					else
+					{
+						if (this.Character.animation["f02_greet_00"].time >= this.Character.animation["f02_greet_00"].length)
+						{
+							this.Character.animation.CrossFade("f02_idleShort_00");
+						}
+						if (this.TalkTimer <= (float)0)
+						{
+							this.TargetStudent.Interaction = 4;
+							this.TargetStudent.TalkTimer = (float)2;
+							this.Interaction = 0;
+						}
+					}
+					this.TalkTimer -= Time.deltaTime;
+				}
+			}
+			if (this.Attacking)
+			{
+				this.targetRotation = Quaternion.LookRotation(new Vector3(this.TargetStudent.transform.position.x, this.transform.position.y, this.TargetStudent.transform.position.z) - this.transform.position);
+				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
+				if (this.AttackPhase == 1)
+				{
+					this.Character.animation.CrossFade("f02_stab_00");
+					if (this.Character.animation["f02_stab_00"].time > this.Character.animation["f02_stab_00"].length * 0.4f)
+					{
+						this.Character.animation.CrossFade("f02_idleShort_00");
+						this.TargetStudent.BloodSpray.active = true;
+						this.TargetStudent.Dead = true;
+						this.Police.Corpses = this.Police.Corpses + 1;
+						this.Bloodiness += (float)20;
+						this.AttackPhase = 2;
+						this.Sanity -= (float)20;
+						this.UpdateSanity();
+						this.UpdateBlood();
+					}
+				}
+				else
+				{
+					this.AttackTimer += Time.deltaTime;
+					if (this.AttackTimer > 0.3f)
+					{
+						if (!this.Weapon[this.Equipped].Evidence)
+						{
+							this.Weapon[this.Equipped].Evidence = true;
+							this.Police.MurderWeapons = this.Police.MurderWeapons + 1;
+						}
+						this.Attacking = false;
+						this.AttackPhase = 1;
+						this.AttackTimer = (float)0;
+						this.CanMove = true;
+					}
+				}
+			}
+			if (!this.Attacking && !this.Dragging && this.PickUp == null && !this.Aiming && !this.Crawling && this.LaughIntensity < (float)16)
+			{
+				this.Character.animation["f02_yanderePose_00"].weight = Mathf.Lerp(this.Character.animation["f02_yanderePose_00"].weight, (float)1 - this.Sanity / (float)100, Time.deltaTime * (float)10);
+				this.Slouch = Mathf.Lerp(this.Slouch, (float)5 * ((float)1 - this.Sanity / (float)100), Time.deltaTime * (float)10);
+			}
+			else
+			{
+				this.Character.animation["f02_yanderePose_00"].weight = Mathf.Lerp(this.Character.animation["f02_yanderePose_00"].weight, (float)0, Time.deltaTime * (float)10);
+				this.Slouch = Mathf.Lerp(this.Slouch, (float)0, Time.deltaTime * (float)10);
+			}
+			this.EyeShrink = Mathf.Lerp(this.EyeShrink, (float)1 - this.Sanity / (float)100, Time.deltaTime * (float)10);
+			if (this.Sanity < (float)100)
+			{
+				this.TwitchTimer += Time.deltaTime;
+				if (this.TwitchTimer > this.NextTwitch)
+				{
+					this.Twitch.x = ((float)1 - this.Sanity / (float)100) * UnityEngine.Random.Range(-10f, 10f);
+					this.Twitch.y = ((float)1 - this.Sanity / (float)100) * UnityEngine.Random.Range(-10f, 10f);
+					this.Twitch.z = ((float)1 - this.Sanity / (float)100) * UnityEngine.Random.Range(-10f, 10f);
+					this.NextTwitch = UnityEngine.Random.Range((float)0, 1f);
+					this.TwitchTimer = (float)0;
+				}
+				this.Twitch = Vector3.Lerp(this.Twitch, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+			}
+			if (this.NearBodies > 0)
+			{
+				if (!this.CorpseWarning)
+				{
+					this.NotificationManager.DisplayNotification("Body");
+					this.StudentManager.UpdateStudents();
+					this.CorpseWarning = true;
+				}
+			}
+			else if (this.CorpseWarning)
+			{
 				this.StudentManager.UpdateStudents();
-				this.CorpseWarning = true;
+				this.CorpseWarning = false;
 			}
-		}
-		else if (this.CorpseWarning)
-		{
-			this.StudentManager.UpdateStudents();
-			this.CorpseWarning = false;
-		}
-		if (this.transform.position.y < (float)-1 || Input.GetKeyDown("`"))
-		{
-			Application.LoadLevel(Application.loadedLevel);
-		}
-		if (Input.GetKeyDown("escape"))
-		{
-			this.PauseScreen.JumpToQuit();
-		}
-		if (Input.GetKeyDown("p"))
-		{
-			if (!this.EyepatchL.active)
+			if (this.transform.position.y < (float)-1 || Input.GetKeyDown("`"))
 			{
-				if (!this.EyepatchR.active && !this.EyepatchL.active)
+				Application.LoadLevel(Application.loadedLevel);
+			}
+			if (Input.GetKeyDown("escape"))
+			{
+				this.PauseScreen.JumpToQuit();
+			}
+			if (Input.GetKeyDown("p"))
+			{
+				if (!this.EyepatchL.active)
+				{
+					if (!this.EyepatchR.active && !this.EyepatchL.active)
+					{
+						this.EyepatchR.active = true;
+					}
+					else if (this.EyepatchR.active && !this.EyepatchL.active)
+					{
+						this.EyepatchR.active = false;
+						this.EyepatchL.active = true;
+					}
+				}
+				else if (!this.EyepatchR.active)
 				{
 					this.EyepatchR.active = true;
 				}
-				else if (this.EyepatchR.active && !this.EyepatchL.active)
+				else
 				{
 					this.EyepatchR.active = false;
-					this.EyepatchL.active = true;
+					this.EyepatchL.active = false;
 				}
 			}
-			else if (!this.EyepatchR.active)
+			if (Input.GetKeyDown("h"))
 			{
-				this.EyepatchR.active = true;
+				this.UpdateHair();
 			}
-			else
+			if (Input.GetKeyDown("o"))
 			{
-				this.EyepatchR.active = false;
-				this.EyepatchL.active = false;
+				if (!this.Toast.active && !this.Toaster.active)
+				{
+					this.Toast.active = true;
+				}
+				else if (this.Toast.active && !this.Toaster.active)
+				{
+					this.Toast.active = false;
+					this.Toaster.active = true;
+				}
+				else
+				{
+					this.Toast.active = false;
+					this.Toaster.active = false;
+				}
 			}
-		}
-		if (Input.GetKeyDown("h"))
-		{
-			this.UpdateHair();
-		}
-		if (Input.GetKeyDown("o"))
-		{
-			if (!this.Toast.active && !this.Toaster.active)
+			if (Input.GetKeyDown("-"))
 			{
-				this.Toast.active = true;
+				Time.timeScale -= (float)10;
 			}
-			else if (this.Toast.active && !this.Toaster.active)
+			if (Input.GetKeyDown("="))
 			{
-				this.Toast.active = false;
-				this.Toaster.active = true;
+				Time.timeScale += (float)10;
 			}
-			else
+			if (Input.GetKey("."))
 			{
-				this.Toast.active = false;
-				this.Toaster.active = false;
+				this.BreastSize += Time.deltaTime;
+				if (this.BreastSize > (float)2)
+				{
+					this.BreastSize = (float)2;
+				}
 			}
-		}
-		if (Input.GetKeyDown("-"))
-		{
-			Time.timeScale -= (float)10;
-		}
-		if (Input.GetKeyDown("="))
-		{
-			Time.timeScale += (float)10;
-		}
-		if (Input.GetKey("."))
-		{
-			this.BreastSize += Time.deltaTime;
-			if (this.BreastSize > (float)2)
+			if (Input.GetKey(","))
 			{
-				this.BreastSize = (float)2;
+				this.BreastSize -= Time.deltaTime;
+				if (this.BreastSize < (float)0)
+				{
+					this.BreastSize = (float)0;
+				}
 			}
-		}
-		if (Input.GetKey(","))
-		{
-			this.BreastSize -= Time.deltaTime;
-			if (this.BreastSize < (float)0)
+			if (Input.GetKeyDown("l") && !this.Punished && !this.AoT)
 			{
-				this.BreastSize = (float)0;
+				this.StudentManager.AttackOnTitan();
+				this.AttackOnTitan();
 			}
-		}
-		if (Input.GetKeyDown("l") && !this.Punished && !this.AoT)
-		{
-			this.StudentManager.AttackOnTitan();
-			this.AttackOnTitan();
-		}
-		if (Input.GetKeyDown("k") && !this.Punished && !this.AoT)
-		{
-			this.Punish();
-		}
-		if (this.transform.position.z < (float)-50)
-		{
-			int num4 = -50;
-			Vector3 position = this.transform.position;
-			float num5 = position.z = (float)num4;
-			Vector3 vector2 = this.transform.position = position;
-		}
-		if (this.rigidbody.velocity.y > (float)0)
-		{
-			int num6 = 0;
-			Vector3 velocity = this.rigidbody.velocity;
-			float num7 = velocity.y = (float)num6;
-			Vector3 vector3 = this.rigidbody.velocity = velocity;
+			if (Input.GetKeyDown("k") && !this.Punished && !this.AoT)
+			{
+				this.Punish();
+			}
+			if (this.transform.position.z < (float)-50)
+			{
+				int num5 = -50;
+				Vector3 position = this.transform.position;
+				float num6 = position.z = (float)num5;
+				Vector3 vector3 = this.transform.position = position;
+			}
+			if (this.rigidbody.velocity.y > (float)0)
+			{
+				int num7 = 0;
+				Vector3 velocity = this.rigidbody.velocity;
+				float num8 = velocity.y = (float)num7;
+				Vector3 vector4 = this.rigidbody.velocity = velocity;
+			}
 		}
 	}
 
@@ -1278,21 +1300,35 @@ public class YandereScript : MonoBehaviour
 		float num2 = localPosition.y = (float)num;
 		Vector3 vector = this.PelvisRoot.transform.localPosition = localPosition;
 		this.ShoulderCamera.AimingCamera = false;
+		if (!this.PauseScreen.Show)
+		{
+			this.FixCamera();
+		}
+		if (this.ShoulderCamera.Timer == (float)0)
+		{
+			this.RPGCamera.enabled = true;
+		}
+		this.MainCamera.clearFlags = CameraClearFlags.Skybox;
+		this.MainCamera.farClipPlane = 100f;
+		this.Smartphone.transform.parent.active = false;
+		this.Smartphone.fieldOfView = (float)60;
+		this.HandCamera.active = false;
+		this.UsingController = false;
+		this.Aiming = false;
+		this.Height = (float)0;
+		this.Bend = (float)0;
+	}
+
+	public virtual void FixCamera()
+	{
+		this.RPGCamera.enabled = true;
 		this.RPGCamera.UpdateRotation();
 		this.RPGCamera.mouseSmoothingFactor = (float)0;
 		this.RPGCamera.GetInput();
 		this.RPGCamera.GetDesiredPosition();
 		this.RPGCamera.PositionUpdate();
 		this.RPGCamera.mouseSmoothingFactor = 0.08f;
-		this.Smartphone.transform.parent.active = false;
-		this.Smartphone.fieldOfView = (float)60;
-		this.HandCamera.active = false;
-		this.RPGCamera.enabled = true;
-		this.UsingController = false;
 		this.Blur.enabled = false;
-		this.Aiming = false;
-		this.Height = (float)0;
-		this.Bend = (float)0;
 	}
 
 	public virtual void ResetSenpaiEffects()
@@ -1477,7 +1513,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$1017(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$1019(this).GetEnumerator();
 	}
 
 	public virtual void UpdateHair()

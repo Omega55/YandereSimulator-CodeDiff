@@ -179,6 +179,7 @@ public class PoliceScript : MonoBehaviour
 			if (this.Clock.TimeSkip || this.Yandere.CanMove)
 			{
 				this.Clock.EndTimeSkip();
+				this.Yandere.StopAiming();
 				this.Yandere.YandereVision = false;
 				this.Yandere.CanMove = false;
 				this.Yandere.Character.animation.CrossFade("f02_idleShort_00");
@@ -528,7 +529,6 @@ public class PoliceScript : MonoBehaviour
 			else
 			{
 				this.ResultsLabels[0].text = "The school day has ended. Teachers must walk through the school and tell any lingering students to leave.";
-				Debug.Log(this.Clock.HourTime);
 			}
 			if (this.Yandere.Attacking)
 			{

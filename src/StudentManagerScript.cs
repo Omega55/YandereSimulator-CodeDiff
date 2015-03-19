@@ -148,6 +148,19 @@ public class StudentManagerScript : MonoBehaviour
 		}
 	}
 
+	public virtual void AttendClass()
+	{
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.Students))
+		{
+			if (this.Students[this.ID] != null)
+			{
+				this.Students[this.ID].transform.position = this.Classrooms.List[this.Students[this.ID].Class].position;
+			}
+			this.ID++;
+		}
+	}
+
 	public virtual void EnablePrompts()
 	{
 		this.ID = 0;

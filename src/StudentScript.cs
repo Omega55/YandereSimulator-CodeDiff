@@ -83,6 +83,8 @@ public class StudentScript : MonoBehaviour
 
 	public GameObject BloodSpray;
 
+	public GameObject MainCamera;
+
 	public GameObject Character;
 
 	public GameObject Ragdoll;
@@ -216,8 +218,9 @@ public class StudentScript : MonoBehaviour
 		this.Subtitle = (SubtitleScript)GameObject.Find("Subtitle").GetComponent(typeof(SubtitleScript));
 		this.Police = (PoliceScript)GameObject.Find("Police").GetComponent(typeof(PoliceScript));
 		this.Clock = (ClockScript)GameObject.Find("Clock").GetComponent(typeof(ClockScript));
-		this.ShoulderCamera = (ShoulderCameraScript)Camera.main.GetComponent(typeof(ShoulderCameraScript));
-		this.CameraEffects = (CameraEffectsScript)Camera.main.GetComponent(typeof(CameraEffectsScript));
+		this.MainCamera = GameObject.Find("MainCamera");
+		this.ShoulderCamera = (ShoulderCameraScript)this.MainCamera.GetComponent(typeof(ShoulderCameraScript));
+		this.CameraEffects = (CameraEffectsScript)this.MainCamera.GetComponent(typeof(CameraEffectsScript));
 		this.RightEyeOrigin = this.RightEye.localPosition;
 		this.LeftEyeOrigin = this.LeftEye.localPosition;
 		this.SetColors();

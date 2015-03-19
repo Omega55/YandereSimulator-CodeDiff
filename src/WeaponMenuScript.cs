@@ -6,6 +6,8 @@ using UnityScript.Lang;
 [Serializable]
 public class WeaponMenuScript : MonoBehaviour
 {
+	public InputDeviceScript InputDevice;
+
 	public PauseScreenScript PauseScreen;
 
 	public YandereScript Yandere;
@@ -51,109 +53,79 @@ public class WeaponMenuScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (!this.Show)
+		if (!this.PauseScreen.Show)
 		{
-			this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-		}
-		else
-		{
-			this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-		}
-		if (this.Yandere.CanMove && !this.Yandere.Aiming && !this.PauseScreen.Show)
-		{
-			if (Input.GetAxis("DpadX") < -0.5f || Input.GetAxis("DpadX") > 0.5f || Input.GetAxis("DpadY") > 0.5f || Input.GetAxis("DpadY") < -0.5f)
+			if (this.Yandere.CanMove && !this.Yandere.Aiming)
 			{
-				if (Input.GetAxis("DpadX") < -0.5f || Input.GetAxis("DpadX") > 0.5f || Input.GetAxis("DpadY") > 0.5f)
+				if (Input.GetAxis("DpadX") < -0.5f || Input.GetAxis("DpadX") > 0.5f || Input.GetAxis("DpadY") > 0.5f || Input.GetAxis("DpadY") < -0.5f)
 				{
-					this.KeyboardShow = false;
-					this.Show = true;
-				}
-				if (Input.GetAxis("DpadX") < -0.5f)
-				{
-					this.Button.localPosition = new Vector3((float)-340, (float)0, (float)0);
-					this.Selected = 1;
-				}
-				else if (Input.GetAxis("DpadX") > 0.5f)
-				{
-					this.Button.localPosition = new Vector3((float)340, (float)0, (float)0);
-					this.Selected = 2;
-				}
-				else if (Input.GetAxis("DpadY") > 0.5f)
-				{
-					this.Button.localPosition = new Vector3((float)0, (float)340, (float)0);
-					this.Selected = 3;
-				}
-				else if (Input.GetAxis("DpadY") < 0.5f)
-				{
-					this.Button.localPosition = new Vector3((float)0, (float)-210, (float)0);
-					this.Selected = 4;
-				}
-				this.UpdateSprites();
-			}
-			if (Input.GetKeyDown("1") || Input.GetKeyDown("2") || Input.GetKeyDown("3") || Input.GetKeyDown("4"))
-			{
-				this.KeyboardShow = true;
-				this.Show = false;
-				this.Timer = (float)0;
-				if (Input.GetKeyDown("1"))
-				{
-					this.Selected = 4;
-					if (this.Yandere.Equipped > 0)
+					if (Input.GetAxis("DpadX") < -0.5f || Input.GetAxis("DpadX") > 0.5f || Input.GetAxis("DpadY") > 0.5f)
 					{
-						this.Yandere.Unequip();
+						this.KeyboardShow = false;
+						this.Show = true;
 					}
-					if (this.Yandere.PickUp != null)
+					if (Input.GetAxis("DpadX") < -0.5f)
 					{
-						this.Yandere.PickUp.Drop();
+						this.Button.localPosition = new Vector3((float)-340, (float)0, (float)0);
+						this.Selected = 1;
 					}
-					this.Yandere.Mopping = false;
-				}
-				else if (Input.GetKeyDown("2"))
-				{
-					this.Selected = 1;
-					this.Equip();
-				}
-				else if (Input.GetKeyDown("3"))
-				{
-					this.Selected = 2;
-					this.Equip();
-				}
-				else if (Input.GetKeyDown("4"))
-				{
-					this.Selected = 3;
-				}
-				this.UpdateSprites();
-			}
-		}
-		if (this.Yandere.CanMove)
-		{
-			if (!this.Show)
-			{
-				if (Input.GetAxis("DpadY") < -0.5f)
-				{
-					if (this.Yandere.Equipped > 0)
+					else if (Input.GetAxis("DpadX") > 0.5f)
 					{
-						this.Yandere.Unequip();
+						this.Button.localPosition = new Vector3((float)340, (float)0, (float)0);
+						this.Selected = 2;
 					}
-					if (this.Yandere.PickUp != null)
+					else if (Input.GetAxis("DpadY") > 0.5f)
 					{
-						this.Yandere.PickUp.Drop();
+						this.Button.localPosition = new Vector3((float)0, (float)340, (float)0);
+						this.Selected = 3;
 					}
-					this.Yandere.Mopping = false;
-				}
-			}
-			else
-			{
-				if (Input.GetButtonDown("A"))
-				{
-					if (this.Selected < 3)
+					else if (Input.GetAxis("DpadY") < 0.5f)
 					{
-						if (this.Yandere.Weapon[this.Selected] != null)
+						this.Button.localPosition = new Vector3((float)0, (float)-210, (float)0);
+						this.Selected = 4;
+					}
+					this.UpdateSprites();
+				}
+				if (Input.GetKeyDown("1") || Input.GetKeyDown("2") || Input.GetKeyDown("3") || Input.GetKeyDown("4"))
+				{
+					this.KeyboardShow = true;
+					this.Show = false;
+					this.Timer = (float)0;
+					if (Input.GetKeyDown("1"))
+					{
+						this.Selected = 4;
+						if (this.Yandere.Equipped > 0)
 						{
-							this.Equip();
+							this.Yandere.Unequip();
 						}
+						if (this.Yandere.PickUp != null)
+						{
+							this.Yandere.PickUp.Drop();
+						}
+						this.Yandere.Mopping = false;
 					}
-					else if (this.Selected == 4)
+					else if (Input.GetKeyDown("2"))
+					{
+						this.Selected = 1;
+						this.Equip();
+					}
+					else if (Input.GetKeyDown("3"))
+					{
+						this.Selected = 2;
+						this.Equip();
+					}
+					else if (Input.GetKeyDown("4"))
+					{
+						this.Selected = 3;
+					}
+					this.UpdateSprites();
+				}
+			}
+			if (this.Yandere.CanMove)
+			{
+				if (!this.Show)
+				{
+					if (Input.GetAxis("DpadY") < -0.5f)
 					{
 						if (this.Yandere.Equipped > 0)
 						{
@@ -166,10 +138,47 @@ public class WeaponMenuScript : MonoBehaviour
 						this.Yandere.Mopping = false;
 					}
 				}
-				if (Input.GetButtonDown("B"))
+				else
 				{
-					this.Show = false;
+					if (Input.GetButtonDown("A"))
+					{
+						if (this.Selected < 3)
+						{
+							if (this.Yandere.Weapon[this.Selected] != null)
+							{
+								this.Equip();
+							}
+						}
+						else if (this.Selected == 4)
+						{
+							if (this.Yandere.Equipped > 0)
+							{
+								this.Yandere.Unequip();
+							}
+							if (this.Yandere.PickUp != null)
+							{
+								this.Yandere.PickUp.Drop();
+							}
+							this.Yandere.Mopping = false;
+						}
+					}
+					if (Input.GetButtonDown("B"))
+					{
+						this.Show = false;
+					}
 				}
+			}
+		}
+		if (!this.Show)
+		{
+			this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+		}
+		else
+		{
+			this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+			if (!this.Yandere.CanMove || this.Yandere.Aiming || this.PauseScreen.Show || this.InputDevice.Type == 2)
+			{
+				this.Show = false;
 			}
 		}
 		if (!this.KeyboardShow)
@@ -181,6 +190,10 @@ public class WeaponMenuScript : MonoBehaviour
 			this.KeyboardMenu.localScale = Vector3.Lerp(this.KeyboardMenu.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
 			this.Timer += Time.deltaTime;
 			if (this.Timer > (float)3)
+			{
+				this.KeyboardShow = false;
+			}
+			if (!this.Yandere.CanMove || this.Yandere.Aiming || this.PauseScreen.Show || this.InputDevice.Type == 1)
 			{
 				this.KeyboardShow = false;
 			}

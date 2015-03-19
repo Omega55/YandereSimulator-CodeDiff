@@ -41,7 +41,10 @@ public class ZoomScript : MonoBehaviour
 			float num3 = localPosition3.y = y3;
 			Vector3 vector3 = this.transform.localPosition = localPosition3;
 		}
-		this.TargetZoom += Input.GetAxis("Mouse ScrollWheel");
+		if (!this.Yandere.Aiming)
+		{
+			this.TargetZoom += Input.GetAxis("Mouse ScrollWheel");
+		}
 		if (this.TargetZoom < (float)0)
 		{
 			this.TargetZoom = (float)0;

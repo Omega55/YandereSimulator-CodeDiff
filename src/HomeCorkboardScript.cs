@@ -36,7 +36,10 @@ public class HomeCorkboardScript : MonoBehaviour
 				this.HomeWindow.Show = false;
 				this.enabled = false;
 				this.Loaded = false;
-				this.HomeCamera.EnableEffects();
+				if (!this.HomeCamera.DisablePost)
+				{
+					this.HomeCamera.EnableEffects();
+				}
 			}
 		}
 	}

@@ -376,6 +376,11 @@ public class ShutterScript : MonoBehaviour
 		Time.timeScale = (float)1;
 		this.TakePhoto = false;
 		this.TookPhoto = false;
+		if (!this.Yandere.CameraEffects.OneCamera)
+		{
+			this.Yandere.MainCamera.clearFlags = CameraClearFlags.Skybox;
+			this.Yandere.MainCamera.farClipPlane = 100f;
+		}
 	}
 
 	public virtual void Main()

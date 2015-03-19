@@ -29,65 +29,68 @@ public class MopScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (this.Yandere.PickUp == this.PickUp)
+		if (!this.Prompt.PauseScreen.Show)
 		{
-			if (this.Prompt.HideButton[0])
+			if (this.Yandere.PickUp == this.PickUp)
 			{
-				this.Prompt.HideButton[0] = false;
-				this.Prompt.HideButton[3] = true;
-				this.Yandere.Mop = this;
-			}
-			if (this.Yandere.Bucket == null)
-			{
-				this.Prompt.Label[0].text = "     " + "Sweep";
-				if (Input.GetButtonDown("A"))
+				if (this.Prompt.HideButton[0])
 				{
-					this.Yandere.Mopping = true;
-					this.HeadCollider.enabled = true;
+					this.Prompt.HideButton[0] = false;
+					this.Prompt.HideButton[3] = true;
+					this.Yandere.Mop = this;
+				}
+				if (this.Yandere.Bucket == null)
+				{
+					this.Prompt.Label[0].text = "     " + "Sweep";
+					if (Input.GetButtonDown("A"))
+					{
+						this.Yandere.Mopping = true;
+						this.HeadCollider.enabled = true;
+					}
+				}
+				else
+				{
+					this.Prompt.Label[0].text = "     " + "Dip";
+					if (Input.GetButtonDown("A"))
+					{
+						this.Yandere.YandereVision = false;
+						this.Yandere.CanMove = false;
+						this.Yandere.Dipping = true;
+						this.Prompt.Hide();
+						this.Prompt.enabled = false;
+					}
+				}
+				if (this.Yandere.Mopping)
+				{
+					this.Head.LookAt(this.Head.position + Vector3.down);
+					float x = this.Head.localEulerAngles.x + (float)90;
+					Vector3 localEulerAngles = this.Head.localEulerAngles;
+					float num = localEulerAngles.x = x;
+					Vector3 vector = this.Head.localEulerAngles = localEulerAngles;
+					int num2 = 0;
+					Vector3 localEulerAngles2 = this.Head.localEulerAngles;
+					float num3 = localEulerAngles2.z = (float)num2;
+					Vector3 vector2 = this.Head.localEulerAngles = localEulerAngles2;
+				}
+				else
+				{
+					this.Rotation = Vector3.Lerp(this.Head.localEulerAngles, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+					this.Head.localEulerAngles = this.Rotation;
 				}
 			}
-			else
+			else if (!this.Prompt.HideButton[0])
 			{
-				this.Prompt.Label[0].text = "     " + "Dip";
-				if (Input.GetButtonDown("A"))
+				this.Prompt.HideButton[0] = true;
+				this.Prompt.HideButton[3] = false;
+				if (this.Yandere.Mop == this)
 				{
-					this.Yandere.YandereVision = false;
-					this.Yandere.CanMove = false;
-					this.Yandere.Dipping = true;
-					this.Prompt.Hide();
-					this.Prompt.enabled = false;
+					this.Yandere.Mop = null;
 				}
 			}
-			if (this.Yandere.Mopping)
+			if (!this.Yandere.Mopping && this.HeadCollider.enabled)
 			{
-				this.Head.LookAt(this.Head.position + Vector3.down);
-				float x = this.Head.localEulerAngles.x + (float)90;
-				Vector3 localEulerAngles = this.Head.localEulerAngles;
-				float num = localEulerAngles.x = x;
-				Vector3 vector = this.Head.localEulerAngles = localEulerAngles;
-				int num2 = 0;
-				Vector3 localEulerAngles2 = this.Head.localEulerAngles;
-				float num3 = localEulerAngles2.z = (float)num2;
-				Vector3 vector2 = this.Head.localEulerAngles = localEulerAngles2;
+				this.HeadCollider.enabled = false;
 			}
-			else
-			{
-				this.Rotation = Vector3.Lerp(this.Head.localEulerAngles, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-				this.Head.localEulerAngles = this.Rotation;
-			}
-		}
-		else if (!this.Prompt.HideButton[0])
-		{
-			this.Prompt.HideButton[0] = true;
-			this.Prompt.HideButton[3] = false;
-			if (this.Yandere.Mop == this)
-			{
-				this.Yandere.Mop = null;
-			}
-		}
-		if (!this.Yandere.Mopping && this.HeadCollider.enabled)
-		{
-			this.HeadCollider.enabled = false;
 		}
 	}
 

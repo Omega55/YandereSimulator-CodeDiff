@@ -50,6 +50,8 @@ public class HomeCameraScript : MonoBehaviour
 
 	public int ID;
 
+	public bool DisablePost;
+
 	public virtual void Start()
 	{
 		this.Focus.position = this.Target.position;
@@ -93,10 +95,12 @@ public class HomeCameraScript : MonoBehaviour
 			if (this.SSAO.enabled)
 			{
 				this.DisableEffects();
+				this.DisablePost = true;
 			}
 			else
 			{
 				this.EnableEffects();
+				this.DisablePost = false;
 			}
 		}
 		if (Input.GetKeyDown("`"))

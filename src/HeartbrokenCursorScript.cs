@@ -83,7 +83,7 @@ public class HeartbrokenCursorScript : MonoBehaviour
 			Color color6 = this.Darkness.color = color5;
 			if (this.Darkness.color.a >= (float)1)
 			{
-				PlayerPrefs.SetInt("Weekday", 0);
+				PlayerPrefs.DeleteAll();
 				Application.LoadLevel("CalendarScene");
 			}
 		}

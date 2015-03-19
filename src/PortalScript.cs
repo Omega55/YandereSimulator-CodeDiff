@@ -4,6 +4,8 @@ using UnityEngine;
 [Serializable]
 public class PortalScript : MonoBehaviour
 {
+	public StudentManagerScript StudentManager;
+
 	public ParticleSystem Particles;
 
 	public YandereScript Yandere;
@@ -44,7 +46,7 @@ public class PortalScript : MonoBehaviour
 				Color color = this.ClassDarkness.color;
 				float num = color.a = a;
 				Color color2 = this.ClassDarkness.color = color;
-				if (this.ClassDarkness.color.a > (float)1)
+				if (this.ClassDarkness.color.a >= (float)1)
 				{
 					int num2 = 1;
 					Color color3 = this.ClassDarkness.color;
@@ -52,13 +54,20 @@ public class PortalScript : MonoBehaviour
 					Color color4 = this.ClassDarkness.color = color3;
 					if (this.Clock.HourTime < (float)13)
 					{
+						this.Yandere.Incinerator.Timer = this.Yandere.Incinerator.Timer - ((float)780 - this.Clock.PresentTime);
 						this.Clock.PresentTime = (float)780;
 					}
 					else
 					{
+						this.Yandere.Incinerator.Timer = this.Yandere.Incinerator.Timer - (930f - this.Clock.PresentTime);
 						this.Clock.PresentTime = 930f;
 					}
+					this.StudentManager.AttendClass();
 					this.FadeOut = false;
+					if (this.Police.Show)
+					{
+						this.Police.Timer = 1E-06f;
+					}
 				}
 			}
 			else
@@ -75,20 +84,13 @@ public class PortalScript : MonoBehaviour
 					Color color8 = this.ClassDarkness.color = color7;
 					this.Yandere.CanMove = true;
 					this.Transition = false;
-					if (this.Clock.HourTime > 15.5f)
-					{
-						if (PlayerPrefs.GetInt("Weekday") < 5)
-						{
-							this.transform.position = new Vector3((float)0, (float)0, -49.5f);
-							this.Prompt.Label[0].text = "     " + "Go Home";
-						}
-						else
-						{
-							this.active = false;
-						}
-					}
 				}
 			}
+		}
+		if (this.Clock.HourTime > 15.5f && this.transform.position.z > (float)0)
+		{
+			this.transform.position = new Vector3((float)0, (float)0, -49.5f);
+			this.Prompt.Label[0].text = "     " + "Go Home";
 		}
 	}
 

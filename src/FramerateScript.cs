@@ -12,6 +12,8 @@ public class FramerateScript : MonoBehaviour
 
 	private float timeleft;
 
+	public float FPS;
+
 	public FramerateScript()
 	{
 		this.updateInterval = 0.5f;
@@ -37,6 +39,7 @@ public class FramerateScript : MonoBehaviour
 		this.frames++;
 		if (this.timeleft <= (float)0)
 		{
+			this.FPS = this.accum / (float)this.frames;
 			this.guiText.text = "FPS: " + (this.accum / (float)this.frames).ToString("f0");
 			this.timeleft = this.updateInterval;
 			this.accum = (float)0;
