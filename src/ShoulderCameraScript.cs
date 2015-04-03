@@ -57,7 +57,7 @@ public class ShoulderCameraScript : MonoBehaviour
 				this.transform.LookAt(this.CameraFocus);
 				this.Timer += Time.deltaTime;
 			}
-			else if (!this.RPGCamera.enabled)
+			else if (this.Yandere.Talking && !this.RPGCamera.enabled)
 			{
 				this.Timer += Time.deltaTime;
 				if (this.Timer < 0.5f)

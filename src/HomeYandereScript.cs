@@ -10,22 +10,24 @@ public class HomeYandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$1000 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$1187 : GenericGenerator<WWW>
 	{
-		internal HomeYandereScript $self_$1007;
+		internal HomeYandereScript $self_$1194;
 
-		public $ApplyCustomCostume$1000(HomeYandereScript self_)
+		public $ApplyCustomCostume$1187(HomeYandereScript self_)
 		{
-			this.$self_$1007 = self_;
+			this.$self_$1194 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new HomeYandereScript.$ApplyCustomCostume$1000.$(this.$self_$1007);
+			return new HomeYandereScript.$ApplyCustomCostume$1187.$(this.$self_$1194);
 		}
 	}
 
 	public GameObject Character;
+
+	public GameObject Victim;
 
 	public float WalkSpeed;
 
@@ -53,6 +55,15 @@ public class HomeYandereScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		if (Application.loadedLevelName == "HomeScene")
+		{
+			this.transform.position = new Vector3(-2.271312f, (float)0, (float)1);
+			this.transform.eulerAngles = new Vector3((float)0, (float)0, (float)0);
+			if (PlayerPrefs.GetInt("Kidnapped") == 0)
+			{
+				this.Victim.active = false;
+			}
+		}
 		Time.timeScale = (float)1;
 		this.StartCoroutine_Auto(this.ApplyCustomCostume());
 		this.UpdateHair();
@@ -120,7 +131,7 @@ public class HomeYandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new HomeYandereScript.$ApplyCustomCostume$1000(this).GetEnumerator();
+		return new HomeYandereScript.$ApplyCustomCostume$1187(this).GetEnumerator();
 	}
 
 	public virtual void UpdateHair()

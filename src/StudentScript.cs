@@ -95,7 +95,11 @@ public class StudentScript : MonoBehaviour
 
 	public bool RepeatReaction;
 
+	public bool Complimented;
+
 	public bool HidePony;
+
+	public bool Tranquil;
 
 	public bool Forgave;
 
@@ -108,6 +112,8 @@ public class StudentScript : MonoBehaviour
 	public bool Routine;
 
 	public bool Dead;
+
+	public bool Following;
 
 	public bool Fleeing;
 
@@ -287,26 +293,62 @@ public class StudentScript : MonoBehaviour
 				}
 			}
 		}
-		else if (this.Fleeing)
+		else
 		{
-			this.DistanceToDestination = Vector3.Distance(this.transform.position, this.Pathfinding.target.position);
-			if (this.transform.position.y < (float)-2)
+			if (this.Fleeing)
 			{
-				this.Police.Witnesses = this.Police.Witnesses - 1;
-				this.Police.Show = true;
-				this.active = false;
+				this.DistanceToDestination = Vector3.Distance(this.transform.position, this.Pathfinding.target.position);
+				if (this.transform.position.y < (float)-2)
+				{
+					this.Police.Witnesses = this.Police.Witnesses - 1;
+					this.Police.Show = true;
+					this.active = false;
+				}
+				if (this.DistanceToDestination > 0.5f)
+				{
+					this.Pathfinding.canMove = true;
+					this.Character.animation.CrossFade("f02_sprint_00");
+				}
+				else
+				{
+					this.Pathfinding.canMove = false;
+					this.Character.animation.CrossFade("f02_scaredIdle_00");
+					this.transform.position = Vector3.Lerp(this.transform.position, this.Pathfinding.target.position, Time.deltaTime * (float)10);
+					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.Pathfinding.target.rotation, (float)10 * Time.deltaTime);
+				}
 			}
-			if (this.DistanceToDestination > 0.5f)
+			if (this.Following && !this.Waiting)
 			{
-				this.Pathfinding.canMove = true;
-				this.Character.animation.CrossFade("f02_sprint_00");
-			}
-			else
-			{
-				this.Pathfinding.canMove = false;
-				this.Character.animation.CrossFade("f02_scaredIdle_00");
-				this.transform.position = Vector3.Lerp(this.transform.position, this.Pathfinding.target.position, Time.deltaTime * (float)10);
-				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.Pathfinding.target.rotation, (float)10 * Time.deltaTime);
+				this.DistanceToDestination = Vector3.Distance(this.transform.position, this.Pathfinding.target.position);
+				if (this.DistanceToDestination > (float)5)
+				{
+					this.Character.animation.CrossFade("f02_run_00");
+					this.Pathfinding.speed = (float)4;
+				}
+				else if (this.DistanceToDestination > (float)1)
+				{
+					this.Character.animation.CrossFade("f02_walk_00");
+					this.Pathfinding.canMove = true;
+					this.Pathfinding.speed = (float)1;
+				}
+				else
+				{
+					this.Character.animation.CrossFade("f02_idleShort_00");
+					this.Pathfinding.canMove = false;
+				}
+				if (this.Phase < Extensions.get_length(this.PhaseTimes) - 1 && this.Clock.PresentTime / (float)60 >= this.PhaseTimes[this.Phase])
+				{
+					this.Phase++;
+					this.CurrentDestination = this.Destinations[this.Phase];
+					this.Pathfinding.target = this.Destinations[this.Phase];
+					this.Pathfinding.canSearch = true;
+					this.Pathfinding.canMove = true;
+					this.Pathfinding.speed = (float)1;
+					this.Following = false;
+					this.Routine = true;
+					this.Subtitle.UpdateLabel("Stop Follow Apology", 0, (float)3);
+					this.Prompt.Label[0].text = "     " + "Talk";
+				}
 			}
 		}
 		if (!this.Dying)
@@ -316,29 +358,36 @@ public class StudentScript : MonoBehaviour
 			{
 				if (!this.WitnessedMurder)
 				{
-					if ((this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].Suspicious) || this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.333f || this.Yandere.Attacking)
+					if (!this.Talking)
 					{
-						this.Planes = GeometryUtility.CalculateFrustumPlanes(this.Eyes);
-						if (GeometryUtility.TestPlanesAABB(this.Planes, this.Yandere.collider.bounds))
+						if ((this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].Suspicious) || this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.333f || this.Yandere.Attacking)
 						{
-							RaycastHit raycastHit = default(RaycastHit);
-							if (Physics.Linecast(this.Eyes.transform.position, this.Yandere.transform.position + Vector3.up * (float)1, out raycastHit))
+							this.Planes = GeometryUtility.CalculateFrustumPlanes(this.Eyes);
+							if (GeometryUtility.TestPlanesAABB(this.Planes, this.Yandere.collider.bounds))
 							{
-								if (raycastHit.collider.gameObject == this.Yandere.gameObject)
+								RaycastHit raycastHit = default(RaycastHit);
+								if (Physics.Linecast(this.Eyes.transform.position, this.Yandere.transform.position + Vector3.up * (float)1, out raycastHit))
 								{
-									if (this.Yandere.Attacking || (this.Yandere.NearBodies > 0 && this.Yandere.Bloodiness > (float)0) || (this.Yandere.NearBodies > 0 && this.Yandere.Armed) || (this.Yandere.NearBodies > 0 && this.Yandere.Sanity < 66.66666f))
+									if (raycastHit.collider.gameObject == this.Yandere.gameObject)
 									{
-										this.WitnessMurder();
+										if (this.Yandere.Attacking || (this.Yandere.NearBodies > 0 && this.Yandere.Bloodiness > (float)0) || (this.Yandere.NearBodies > 0 && this.Yandere.Armed) || (this.Yandere.NearBodies > 0 && this.Yandere.Sanity < 66.66666f))
+										{
+											this.WitnessMurder();
+										}
+										else if (!this.Alarmed && this.IgnoreTimer <= (float)0)
+										{
+											this.Alarm += Time.deltaTime * ((float)100 / this.DistanceToPlayer);
+										}
 									}
-									else if (!this.Alarmed && this.IgnoreTimer <= (float)0)
+									else
 									{
-										this.Alarm += Time.deltaTime * ((float)100 / this.DistanceToPlayer);
+										this.Alarm -= Time.deltaTime * (float)100;
 									}
 								}
-								else
-								{
-									this.Alarm -= Time.deltaTime * (float)100;
-								}
+							}
+							else if (!this.Alarmed)
+							{
+								this.Alarm -= Time.deltaTime * (float)100;
 							}
 						}
 						else if (!this.Alarmed)
@@ -346,7 +395,7 @@ public class StudentScript : MonoBehaviour
 							this.Alarm -= Time.deltaTime * (float)100;
 						}
 					}
-					else if (!this.Alarmed)
+					else
 					{
 						this.Alarm -= Time.deltaTime * (float)100;
 					}
@@ -435,38 +484,61 @@ public class StudentScript : MonoBehaviour
 		}
 		if (this.Prompt.Circle[0].fillAmount <= (float)0)
 		{
-			if (!this.Witness && this.Yandere.Bloodiness > (float)0)
+			if (!this.Following)
 			{
-				this.Prompt.Circle[0].fillAmount = (float)1;
-				this.Alarm = (float)200;
+				if (!this.Witness && this.Yandere.Bloodiness > (float)0)
+				{
+					this.Prompt.Circle[0].fillAmount = (float)1;
+					this.Alarm = (float)200;
+				}
+				else
+				{
+					this.Subtitle.UpdateLabel("Greeting", 0, (float)3);
+					this.ShoulderCamera.OverShoulder = true;
+					this.Pathfinding.canSearch = false;
+					this.Pathfinding.canMove = false;
+					this.Obstacle.enabled = true;
+					this.Yandere.TargetStudent = this;
+					this.Yandere.YandereVision = false;
+					this.Yandere.CanMove = false;
+					this.Yandere.Talking = true;
+					this.Reacted = false;
+					this.Talking = true;
+					this.Routine = false;
+					this.StudentManager.DisablePrompts();
+					this.DialogueWheel.HideShadows();
+					if (!this.Witness || this.Forgave)
+					{
+						float a2 = 0.75f;
+						Color color3 = this.DialogueWheel.Shadow[1].color;
+						float num3 = color3.a = a2;
+						Color color4 = this.DialogueWheel.Shadow[1].color = color3;
+					}
+					if (this.Complimented)
+					{
+						float a3 = 0.75f;
+						Color color5 = this.DialogueWheel.Shadow[2].color;
+						float num4 = color5.a = a3;
+						Color color6 = this.DialogueWheel.Shadow[2].color = color5;
+					}
+					this.Yandere.WeaponMenu.KeyboardShow = false;
+					this.Yandere.WeaponMenu.Show = false;
+					this.DialogueWheel.Show = true;
+					this.TalkTimer = (float)0;
+				}
 			}
 			else
 			{
-				this.Subtitle.UpdateLabel("Greeting", 0, (float)3);
-				this.ShoulderCamera.OverShoulder = true;
-				this.Pathfinding.canSearch = false;
-				this.Pathfinding.canMove = false;
-				this.Obstacle.enabled = true;
-				this.Yandere.TargetStudent = this;
-				this.Yandere.YandereVision = false;
-				this.Yandere.CanMove = false;
-				this.Yandere.Talking = true;
-				this.Reacted = false;
-				this.Talking = true;
-				this.Routine = false;
-				this.StudentManager.DisablePrompts();
-				this.DialogueWheel.HideShadows();
-				if (!this.Witness || this.Forgave)
-				{
-					float a2 = 0.75f;
-					Color color3 = this.DialogueWheel.Shadow[1].color;
-					float num3 = color3.a = a2;
-					Color color4 = this.DialogueWheel.Shadow[1].color = color3;
-				}
-				this.Yandere.WeaponMenu.KeyboardShow = false;
-				this.Yandere.WeaponMenu.Show = false;
-				this.DialogueWheel.Show = true;
-				this.TalkTimer = (float)0;
+				this.Subtitle.UpdateLabel("Student Farewell", 0, (float)3);
+				this.Prompt.Label[0].text = "     " + "Talk";
+				this.Prompt.Circle[0].fillAmount = (float)1;
+				this.Following = false;
+				this.Routine = true;
+				this.CurrentDestination = this.Destinations[this.Phase];
+				this.Pathfinding.target = this.Destinations[this.Phase];
+				this.Pathfinding.canSearch = true;
+				this.Pathfinding.canMove = true;
+				this.Pathfinding.speed = (float)1;
 			}
 		}
 		if (this.Prompt.Circle[2].fillAmount <= (float)0 && !this.Yandere.Attacking)
@@ -542,6 +614,22 @@ public class StudentScript : MonoBehaviour
 				}
 				this.TalkTimer -= Time.deltaTime;
 			}
+			else if (this.Interaction == 2)
+			{
+				if (this.TalkTimer == (float)3)
+				{
+					this.Subtitle.UpdateLabel("Student Compliment", 0, (float)3);
+					this.Reputation.PendingRep = this.Reputation.PendingRep + (float)2;
+					this.PendingRep += (float)2;
+					this.Complimented = true;
+				}
+				this.Character.animation.CrossFade("f02_lookdown_00");
+				this.TalkTimer -= Time.deltaTime;
+				if (this.TalkTimer <= (float)0)
+				{
+					this.DialogueWheel.End();
+				}
+			}
 			else if (this.Interaction == 4)
 			{
 				if (this.TalkTimer == (float)2)
@@ -555,6 +643,30 @@ public class StudentScript : MonoBehaviour
 					this.DialogueWheel.End();
 				}
 			}
+			else if (this.Interaction == 9)
+			{
+				if (this.TalkTimer == (float)2)
+				{
+					this.Character.animation.CrossFade("f02_nod_00");
+					this.Subtitle.UpdateLabel("Student Follow", 0, (float)2);
+				}
+				else
+				{
+					if (this.Character.animation["f02_nod_00"].time >= this.Character.animation["f02_nod_00"].length)
+					{
+						this.Character.animation.CrossFade("f02_idleShort_00");
+					}
+					if (this.TalkTimer <= (float)0)
+					{
+						this.DialogueWheel.End();
+						this.Pathfinding.target = this.Yandere.transform;
+						this.Prompt.Label[0].text = "     " + "Stop";
+						this.Yandere.Follower = this;
+						this.Following = true;
+					}
+				}
+				this.TalkTimer -= Time.deltaTime;
+			}
 			if (this.Waiting)
 			{
 				this.WaitTimer -= Time.deltaTime;
@@ -566,7 +678,10 @@ public class StudentScript : MonoBehaviour
 					this.Alarmed = false;
 					this.Talking = false;
 					this.Waiting = false;
-					this.Routine = true;
+					if (!this.Following)
+					{
+						this.Routine = true;
+					}
 					this.StudentManager.EnablePrompts();
 				}
 			}
@@ -603,9 +718,16 @@ public class StudentScript : MonoBehaviour
 					this.NewRagdollScript.Yandere = this.Yandere;
 					this.NewRagdollScript.MyRenderer.materials[1].mainTexture = this.HairTexture;
 					this.NewRagdollScript.MyRenderer.materials[3].mainTexture = this.HairTexture;
-					this.BloodSpray.transform.parent = ((RagdollScript)gameObject.GetComponent(typeof(RagdollScript))).BloodParent;
-					this.BloodSpray.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
-					this.BloodSpray.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+					if (!this.Tranquil)
+					{
+						this.BloodSpray.transform.parent = ((RagdollScript)gameObject.GetComponent(typeof(RagdollScript))).BloodParent;
+						this.BloodSpray.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
+						this.BloodSpray.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+					}
+					else
+					{
+						((RagdollScript)gameObject.GetComponent(typeof(RagdollScript))).Tranquil = true;
+					}
 					this.Reputation.PendingRep = this.Reputation.PendingRep + this.PendingRep * (float)-1;
 					if (this.WitnessedMurder)
 					{
@@ -712,16 +834,16 @@ public class StudentScript : MonoBehaviour
 		{
 			float y2 = this.GroundHeight + 0.1f;
 			Vector3 position = this.transform.position;
-			float num4 = position.y = y2;
+			float num5 = position.y = y2;
 			Vector3 vector2 = this.transform.position = position;
 		}
 		if (this.AoT)
 		{
 			this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)10, (float)10, (float)10), Time.deltaTime);
 		}
-		int num5 = 0;
+		int num6 = 0;
 		Vector3 localEulerAngles = this.transform.localEulerAngles;
-		float num6 = localEulerAngles.x = (float)num5;
+		float num7 = localEulerAngles.x = (float)num6;
 		Vector3 vector3 = this.transform.localEulerAngles = localEulerAngles;
 	}
 
@@ -778,6 +900,7 @@ public class StudentScript : MonoBehaviour
 		this.Pathfinding.canMove = false;
 		this.Prompt.HideButton[0] = true;
 		this.WitnessedMurder = true;
+		this.Following = false;
 		this.Reacted = false;
 		this.Routine = false;
 		this.Alarmed = true;

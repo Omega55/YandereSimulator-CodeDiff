@@ -103,6 +103,7 @@ public class ShutterScript : MonoBehaviour
 					this.PhotoIcons.active = true;
 					this.Panel.active = false;
 					this.Close = false;
+					Time.timeScale = (float)0;
 				}
 			}
 			else
@@ -221,8 +222,8 @@ public class ShutterScript : MonoBehaviour
 	public virtual void CheckPhoto()
 	{
 		int layerMask = 65536;
-		int layerMask2 = 2048;
-		int layerMask3 = 16384;
+		int layerMask2 = 2049;
+		int layerMask3 = 16385;
 		RaycastHit raycastHit = default(RaycastHit);
 		this.InfoX.active = true;
 		this.PantiesX.active = true;
@@ -255,15 +256,11 @@ public class ShutterScript : MonoBehaviour
 				this.Skirt = true;
 			}
 		}
-		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out raycastHit, float.PositiveInfinity, layerMask2))
+		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out raycastHit, float.PositiveInfinity, layerMask2) && (raycastHit.collider.gameObject.tag == "Blood" || raycastHit.collider.gameObject.tag == "Ragdoll"))
 		{
 			this.ViolenceX.active = false;
-			if (raycastHit.collider.gameObject.tag == "Blood")
-			{
-				this.ViolenceX.active = false;
-			}
 		}
-		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out raycastHit, float.PositiveInfinity, layerMask3) && raycastHit.collider.gameObject.tag == "Blood")
+		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out raycastHit, float.PositiveInfinity, layerMask3) && (raycastHit.collider.gameObject.tag == "Blood" || raycastHit.collider.gameObject.tag == "Ragdoll"))
 		{
 			this.ViolenceX.active = false;
 		}
@@ -379,7 +376,7 @@ public class ShutterScript : MonoBehaviour
 		if (!this.Yandere.CameraEffects.OneCamera)
 		{
 			this.Yandere.MainCamera.clearFlags = CameraClearFlags.Skybox;
-			this.Yandere.MainCamera.farClipPlane = 100f;
+			this.Yandere.MainCamera.farClipPlane = 200f;
 		}
 	}
 

@@ -4,7 +4,11 @@ using UnityEngine;
 [Serializable]
 public class RagdollScript : MonoBehaviour
 {
+	public BloodPoolSpawnerScript BloodPoolSpawner;
+
 	public IncineratorScript Incinerator;
+
+	public TranqCaseScript TranqCase;
 
 	public YandereScript Yandere;
 
@@ -38,9 +42,13 @@ public class RagdollScript : MonoBehaviour
 
 	public GameObject Character;
 
+	public GameObject Zs;
+
 	public bool AddingToCount;
 
 	public bool HidePony;
+
+	public bool Tranquil;
 
 	public bool Dragged;
 
@@ -66,6 +74,11 @@ public class RagdollScript : MonoBehaviour
 		this.Character.animation.Play("f02_down_22");
 		this.Character.animation["f02_down_22"].time = this.AnimStartTime;
 		this.Character.animation["f02_down_22"].speed = (float)0;
+		this.Zs.active = this.Tranquil;
+		if (this.Tranquil)
+		{
+			this.BloodPoolSpawner.enabled = false;
+		}
 	}
 
 	public virtual void Update()
@@ -132,16 +145,35 @@ public class RagdollScript : MonoBehaviour
 		}
 		else
 		{
-			this.Character.animation.Play("f02_thrown_20");
-			this.DumpTimer += Time.deltaTime;
-			if (this.DumpTimer > (float)2)
+			if (this.Incinerator != null)
 			{
-				if (this.AddingToCount)
+				this.Character.animation.Play("f02_thrown_20");
+				this.DumpTimer += Time.deltaTime;
+				if (this.DumpTimer > (float)2)
 				{
-					this.Yandere.NearBodies = this.Yandere.NearBodies - 1;
+					if (this.AddingToCount)
+					{
+						this.Yandere.NearBodies = this.Yandere.NearBodies - 1;
+					}
+					this.Incinerator.Corpses = this.Incinerator.Corpses + 1;
+					UnityEngine.Object.Destroy(this.gameObject);
 				}
-				this.Incinerator.Corpses = this.Incinerator.Corpses + 1;
-				UnityEngine.Object.Destroy(this.gameObject);
+			}
+			if (this.TranqCase != null)
+			{
+				this.Character.animation.Play("f02_fetal_00");
+				float y = Mathf.MoveTowards(this.transform.localPosition.y, 0.36f, Time.deltaTime);
+				Vector3 localPosition = this.transform.localPosition;
+				float num = localPosition.y = y;
+				Vector3 vector = this.transform.localPosition = localPosition;
+				if (this.transform.localPosition.y == 0.36f)
+				{
+					this.TranqCase.Open = false;
+					if (this.AddingToCount)
+					{
+						this.Yandere.NearBodies = this.Yandere.NearBodies - 1;
+					}
+				}
 			}
 		}
 	}
@@ -185,9 +217,16 @@ public class RagdollScript : MonoBehaviour
 		}
 	}
 
-	public virtual void Dump()
+	public virtual void Dump(int Type)
 	{
-		this.Incinerator = this.Yandere.Incinerator;
+		if (Type == 1)
+		{
+			this.Incinerator = this.Yandere.Incinerator;
+		}
+		else
+		{
+			this.TranqCase = this.Yandere.TranqCase;
+		}
 		this.Prompt.Hide();
 		this.Prompt.enabled = false;
 		this.Dumped = true;

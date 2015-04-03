@@ -156,19 +156,19 @@ public class InputManagerScript : MonoBehaviour
 			this.TappedUp = false;
 			this.TappedDown = false;
 		}
-		if (Input.GetKeyDown("w"))
+		if (Input.GetKeyDown("w") || Input.GetKeyDown("up"))
 		{
 			this.TappedUp = true;
 		}
-		if (Input.GetKeyDown("s"))
+		if (Input.GetKeyDown("s") || Input.GetKeyDown("down"))
 		{
 			this.TappedDown = true;
 		}
-		if (Input.GetKeyDown("a"))
+		if (Input.GetKeyDown("a") || Input.GetKeyDown("left"))
 		{
 			this.TappedLeft = true;
 		}
-		if (Input.GetKeyDown("d"))
+		if (Input.GetKeyDown("d") || Input.GetKeyDown("right"))
 		{
 			this.TappedRight = true;
 		}

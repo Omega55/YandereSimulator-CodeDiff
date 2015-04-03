@@ -6,6 +6,8 @@ public class PortalScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
 
+	public PromptBarScript PromptBar;
+
 	public ParticleSystem Particles;
 
 	public YandereScript Yandere;
@@ -13,6 +15,8 @@ public class PortalScript : MonoBehaviour
 	public PoliceScript Police;
 
 	public PromptScript Prompt;
+
+	public ClassScript Class;
 
 	public ClockScript Clock;
 
@@ -22,6 +26,8 @@ public class PortalScript : MonoBehaviour
 
 	public bool FadeOut;
 
+	public bool Proceed;
+
 	public virtual void Update()
 	{
 		if (this.Prompt.Circle[0].fillAmount <= (float)0)
@@ -30,6 +36,7 @@ public class PortalScript : MonoBehaviour
 			this.Yandere.CanMove = false;
 			if (this.Clock.HourTime < 15.5f)
 			{
+				this.Clock.StopTime = true;
 				this.Transition = true;
 				this.FadeOut = true;
 			}
@@ -62,16 +69,26 @@ public class PortalScript : MonoBehaviour
 						this.Yandere.Incinerator.Timer = this.Yandere.Incinerator.Timer - (930f - this.Clock.PresentTime);
 						this.Clock.PresentTime = 930f;
 					}
-					this.StudentManager.AttendClass();
 					this.FadeOut = false;
+					this.Proceed = false;
+					this.Yandere.RPGCamera.enabled = false;
+					this.PromptBar.Show = true;
+					this.Class.StudyPoints = 5;
+					this.Class.UpdateLabel();
+					this.Class.active = true;
+					this.Class.Show = true;
 					if (this.Police.Show)
 					{
 						this.Police.Timer = 1E-06f;
 					}
 				}
 			}
-			else
+			else if (this.Proceed)
 			{
+				if (this.ClassDarkness.color.a >= (float)1)
+				{
+					this.StudentManager.AttendClass();
+				}
 				float a2 = this.ClassDarkness.color.a - Time.deltaTime;
 				Color color5 = this.ClassDarkness.color;
 				float num4 = color5.a = a2;
@@ -82,8 +99,11 @@ public class PortalScript : MonoBehaviour
 					Color color7 = this.ClassDarkness.color;
 					float num6 = color7.a = (float)num5;
 					Color color8 = this.ClassDarkness.color = color7;
+					this.Yandere.RPGCamera.enabled = true;
+					this.Clock.StopTime = false;
 					this.Yandere.CanMove = true;
 					this.Transition = false;
+					this.StudentManager.ResumeMovement();
 				}
 			}
 		}

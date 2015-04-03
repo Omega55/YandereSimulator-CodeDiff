@@ -14,7 +14,7 @@ public class HomeCameraScript : MonoBehaviour
 
 	public HomeCorkboardScript HomeCorkboard;
 
-	public HomeSchoolScript HomeSchool;
+	public HomeExitScript HomeExit;
 
 	public GameObject CorkboardLabel;
 
@@ -69,9 +69,9 @@ public class HomeCameraScript : MonoBehaviour
 			this.HomeWindows[this.ID].Show = true;
 			this.HomeYandere.CanMove = false;
 			this.Target = this.Targets[this.ID];
-			if (this.ID == 1)
+			if (this.ID == 1 || this.ID == 5)
 			{
-				this.HomeSchool.enabled = true;
+				this.HomeExit.enabled = true;
 			}
 			else if (this.ID == 2)
 			{

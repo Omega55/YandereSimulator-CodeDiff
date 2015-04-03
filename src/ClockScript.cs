@@ -14,8 +14,6 @@ public class ClockScript : MonoBehaviour
 
 	public Bloom BloomEffect;
 
-	public ClockScript Clock;
-
 	public MotionBlur Blur;
 
 	public Transform PromptParent;
@@ -148,7 +146,7 @@ public class ClockScript : MonoBehaviour
 			Vector3 vector2 = this.HourHand.localEulerAngles = localEulerAngles2;
 			if (this.HourTime < 8.5f)
 			{
-				this.PeriodLabel.text = "Before School";
+				this.PeriodLabel.text = "BEFORE SCHOOL";
 				if (this.Period < 1)
 				{
 					this.SchoolBell.Play();
@@ -157,7 +155,7 @@ public class ClockScript : MonoBehaviour
 			}
 			else if (this.HourTime < (float)13)
 			{
-				this.PeriodLabel.text = "Classtime";
+				this.PeriodLabel.text = "CLASSTIME";
 				if (this.Period < 2)
 				{
 					this.SchoolBell.Play();
@@ -166,7 +164,7 @@ public class ClockScript : MonoBehaviour
 			}
 			else if (this.HourTime < 13.5f)
 			{
-				this.PeriodLabel.text = "Lunchtime";
+				this.PeriodLabel.text = "LUNCHTIME";
 				if (this.Period < 3)
 				{
 					this.SchoolBell.Play();
@@ -175,7 +173,7 @@ public class ClockScript : MonoBehaviour
 			}
 			else if (this.HourTime < 15.5f)
 			{
-				this.PeriodLabel.text = "Classtime";
+				this.PeriodLabel.text = "CLASSTIME";
 				if (this.Period < 4)
 				{
 					this.SchoolBell.Play();
@@ -184,7 +182,7 @@ public class ClockScript : MonoBehaviour
 			}
 			else
 			{
-				this.PeriodLabel.text = "After School";
+				this.PeriodLabel.text = "AFTER SCHOOL";
 				if (this.Period < 5)
 				{
 					this.SchoolBell.Play();
@@ -272,7 +270,7 @@ public class ClockScript : MonoBehaviour
 		if (Input.GetKeyDown("backspace"))
 		{
 			Time.timeScale = (float)1;
-			this.PresentTime = (float)1080;
+			this.PresentTime = (float)1079;
 			this.HourTime = this.PresentTime / (float)60;
 		}
 	}
@@ -294,23 +292,23 @@ public class ClockScript : MonoBehaviour
 	{
 		if (Weekday == 1)
 		{
-			this.DayLabel.text = "Monday";
+			this.DayLabel.text = "MONDAY";
 		}
 		if (Weekday == 2)
 		{
-			this.DayLabel.text = "Tuesday";
+			this.DayLabel.text = "TUESDAY";
 		}
 		if (Weekday == 3)
 		{
-			this.DayLabel.text = "Wednesday";
+			this.DayLabel.text = "WEDNESDAY";
 		}
 		if (Weekday == 4)
 		{
-			this.DayLabel.text = "Thursday";
+			this.DayLabel.text = "THURSDAY";
 		}
 		if (Weekday == 5)
 		{
-			this.DayLabel.text = "Friday";
+			this.DayLabel.text = "FRIDAY";
 		}
 	}
 

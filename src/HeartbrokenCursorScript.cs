@@ -55,7 +55,7 @@ public class HeartbrokenCursorScript : MonoBehaviour
 						this.Selected = 4;
 					}
 				}
-				if (this.Selected == 2)
+				if (this.Selected == 2 || this.Selected == 3)
 				{
 					int num2 = 1;
 					Color color = this.Continue.color;
@@ -84,7 +84,14 @@ public class HeartbrokenCursorScript : MonoBehaviour
 			if (this.Darkness.color.a >= (float)1)
 			{
 				PlayerPrefs.DeleteAll();
-				Application.LoadLevel("CalendarScene");
+				if (this.Selected == 2)
+				{
+					Application.LoadLevel("CalendarScene");
+				}
+				else if (this.Selected == 3)
+				{
+					Application.LoadLevel("TitleScene");
+				}
 			}
 		}
 	}

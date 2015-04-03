@@ -94,12 +94,18 @@ public class PauseScreenScript : MonoBehaviour
 				}
 				if (Input.GetButtonDown("Start") && !this.Yandere.TimeSkipping && !this.Yandere.Talking)
 				{
+					this.Yandere.StopAiming();
 					this.PromptParent.localScale = new Vector3((float)0, (float)0, (float)0);
 					this.Yandere.YandereVision = false;
 					this.ScreenBlur.enabled = true;
-					this.RPGCamera.enabled = false;
 					this.Show = true;
-					this.Yandere.StopAiming();
+					if (this.Yandere.Laughing)
+					{
+						this.Yandere.LaughIntensity = (float)0;
+						this.Yandere.Laughing = false;
+						this.Yandere.LaughTimer = (float)0;
+						this.Yandere.CanMove = true;
+					}
 					if (!this.Yandere.CanMove || this.Yandere.Dragging || this.Police.Corpses > 0)
 					{
 						float a = 0.5f;
@@ -118,6 +124,7 @@ public class PauseScreenScript : MonoBehaviour
 			}
 			else
 			{
+				this.RPGCamera.enabled = false;
 				if (!this.Quitting)
 				{
 					this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3((float)0, (float)0, (float)0), 0.166666672f);
@@ -269,6 +276,7 @@ public class PauseScreenScript : MonoBehaviour
 	public virtual void JumpToQuit()
 	{
 		this.transform.localPosition = new Vector3((float)0, (float)-1200, (float)0);
+		this.Yandere.YandereVision = false;
 		this.RPGCamera.enabled = false;
 		this.ScreenBlur.enabled = true;
 		this.BypassPhone = true;

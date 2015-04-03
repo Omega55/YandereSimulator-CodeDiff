@@ -4,6 +4,14 @@ using UnityEngine;
 [Serializable]
 public class HomeDarknessScript : MonoBehaviour
 {
+	public HomeYandereScript HomeYandere;
+
+	public HomeCameraScript HomeCamera;
+
+	public HomeExitScript HomeExit;
+
+	public UILabel BasementLabel;
+
 	public UISprite Sprite;
 
 	public bool FadeOut;
@@ -20,17 +28,42 @@ public class HomeDarknessScript : MonoBehaviour
 	{
 		if (this.FadeOut)
 		{
-			if (this.Sprite.color.a == (float)0)
-			{
-				this.Sprite.color = new Color((float)1, (float)1, (float)1, (float)0);
-			}
 			float a = this.Sprite.color.a + Time.deltaTime;
 			Color color = this.Sprite.color;
 			float num = color.a = a;
 			Color color2 = this.Sprite.color = color;
 			if (this.Sprite.color.a >= (float)1)
 			{
-				Application.LoadLevel("SchoolScene");
+				if (this.HomeExit.ID == 1)
+				{
+					Application.LoadLevel("SchoolScene");
+				}
+				else if (this.HomeYandere.transform.position.y > (float)-5)
+				{
+					this.HomeYandere.transform.position = new Vector3(3.833333f, (float)-10, (float)-1);
+					this.HomeYandere.transform.eulerAngles = new Vector3((float)0, (float)-90, (float)0);
+					this.HomeYandere.CanMove = true;
+					this.FadeOut = false;
+					this.HomeCamera.Destinations[0].position = new Vector3(0.01f, (float)-8, -0.01f);
+					this.HomeCamera.Destination = this.HomeCamera.Destinations[0];
+					this.HomeCamera.transform.position = this.HomeCamera.Destination.position;
+					this.HomeCamera.Target = this.HomeCamera.Targets[0];
+					this.HomeCamera.Focus.position = this.HomeCamera.Target.position;
+					this.BasementLabel.text = "Upstairs";
+				}
+				else
+				{
+					this.HomeYandere.transform.position = new Vector3(-2.271312f, (float)0, (float)1);
+					this.HomeYandere.transform.eulerAngles = new Vector3((float)0, (float)0, (float)0);
+					this.HomeYandere.CanMove = true;
+					this.FadeOut = false;
+					this.HomeCamera.Destinations[0].position = new Vector3(-2.271312f, (float)2, 3.5f);
+					this.HomeCamera.Destination = this.HomeCamera.Destinations[0];
+					this.HomeCamera.transform.position = this.HomeCamera.Destination.position;
+					this.HomeCamera.Target = this.HomeCamera.Targets[0];
+					this.HomeCamera.Focus.position = this.HomeCamera.Target.position;
+					this.BasementLabel.text = "Basement";
+				}
 			}
 		}
 		else

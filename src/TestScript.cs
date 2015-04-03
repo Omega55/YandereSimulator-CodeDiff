@@ -6,22 +6,19 @@ public class TestScript : MonoBehaviour
 {
 	public SkinnedMeshRenderer MyRenderer;
 
-	public Mesh Schoolwear;
+	public Texture BlueShirt;
 
-	public Mesh BaldNude;
+	public Texture RedShirt;
 
 	public virtual void Update()
 	{
-		if (Input.GetKeyDown("space"))
+		if (Input.GetKeyDown("1"))
 		{
-			if (this.MyRenderer.sharedMesh == this.Schoolwear)
-			{
-				this.MyRenderer.sharedMesh = this.BaldNude;
-			}
-			else
-			{
-				this.MyRenderer.sharedMesh = this.Schoolwear;
-			}
+			this.MyRenderer.material.mainTexture = this.BlueShirt;
+		}
+		if (Input.GetKeyDown("2"))
+		{
+			this.MyRenderer.material.mainTexture = this.RedShirt;
 		}
 	}
 

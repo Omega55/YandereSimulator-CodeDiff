@@ -49,6 +49,16 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] InsanityForgivings;
 
+	public string[] PlayerCompliments;
+
+	public string[] StudentCompliments;
+
+	public string[] PlayerFollows;
+
+	public string[] StudentFollows;
+
+	public string[] StopFollowApologies;
+
 	public string[] Impatiences;
 
 	public string[] ImpatientFarewells;
@@ -161,6 +171,26 @@ public class SubtitleScript : MonoBehaviour
 			{
 				this.Label.text = this.ImpatientFarewells[UnityEngine.Random.Range(0, Extensions.get_length(this.ImpatientFarewells))];
 			}
+		}
+		else if (ReactionType == "Player Compliment")
+		{
+			this.Label.text = this.PlayerCompliments[UnityEngine.Random.Range(0, Extensions.get_length(this.PlayerCompliments))];
+		}
+		else if (ReactionType == "Student Compliment")
+		{
+			this.Label.text = this.StudentCompliments[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentCompliments))];
+		}
+		else if (ReactionType == "Player Follow")
+		{
+			this.Label.text = this.PlayerFollows[UnityEngine.Random.Range(0, Extensions.get_length(this.PlayerFollows))];
+		}
+		else if (ReactionType == "Student Follow")
+		{
+			this.Label.text = this.StudentFollows[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentFollows))];
+		}
+		else if (ReactionType == "Stop Follow Apology")
+		{
+			this.Label.text = this.StopFollowApologies[UnityEngine.Random.Range(0, Extensions.get_length(this.StopFollowApologies))];
 		}
 		else if (ReactionType == "Dying")
 		{

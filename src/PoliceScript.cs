@@ -13,6 +13,10 @@ public class PoliceScript : MonoBehaviour
 
 	public Transform BloodParent;
 
+	public ReputationScript Reputation;
+
+	public TranqCaseScript TranqCase;
+
 	public JukeboxScript Jukebox;
 
 	public YandereScript Yandere;
@@ -79,7 +83,7 @@ public class PoliceScript : MonoBehaviour
 		Color color = this.Darkness.color;
 		float num2 = color.a = (float)num;
 		Color color2 = this.Darkness.color = color;
-		int num3 = -1330;
+		int num3 = -255;
 		Vector3 localPosition = this.transform.localPosition;
 		float num4 = localPosition.x = (float)num3;
 		Vector3 vector = this.transform.localPosition = localPosition;
@@ -104,7 +108,7 @@ public class PoliceScript : MonoBehaviour
 	{
 		if (this.Show)
 		{
-			float x = Mathf.Lerp(this.transform.localPosition.x, (float)-960, Time.deltaTime * (float)10);
+			float x = Mathf.Lerp(this.transform.localPosition.x, (float)0, Time.deltaTime * (float)10);
 			Vector3 localPosition = this.transform.localPosition;
 			float num = localPosition.x = x;
 			Vector3 vector = this.transform.localPosition = localPosition;
@@ -180,8 +184,9 @@ public class PoliceScript : MonoBehaviour
 			{
 				this.Clock.EndTimeSkip();
 				this.Yandere.StopAiming();
-				this.Yandere.YandereVision = false;
 				this.Yandere.CanMove = false;
+				this.Yandere.YandereVision = false;
+				this.Yandere.PauseScreen.active = false;
 				this.Yandere.Character.animation.CrossFade("f02_idleShort_00");
 				for (int i = 1; i < 4; i++)
 				{
@@ -313,6 +318,7 @@ public class PoliceScript : MonoBehaviour
 				}
 				else if (!this.TeacherReport)
 				{
+					PlayerPrefs.SetFloat("Reputation", this.Reputation.Reputation);
 					Application.LoadLevel("CalendarScene");
 				}
 				else
@@ -520,7 +526,7 @@ public class PoliceScript : MonoBehaviour
 			this.ResultsLabels[4].text = "Yandere-chan watches tearfully as Senpai is stolen from her.";
 			this.GameOver = true;
 		}
-		else
+		else if (!this.TranqCase.Occupied)
 		{
 			if (this.Clock.HourTime < (float)18)
 			{
@@ -569,7 +575,7 @@ public class PoliceScript : MonoBehaviour
 			}
 			else if (this.Corpses == 0)
 			{
-				if (this.BloodParent.childCount == 0 || this.BloodyUniforms > 0)
+				if (this.BloodParent.childCount > 0 || this.BloodyUniforms > 0)
 				{
 					if (this.MurderWeapons == 0)
 					{
@@ -603,6 +609,15 @@ public class PoliceScript : MonoBehaviour
 				this.TeacherReport = true;
 				this.Show = true;
 			}
+		}
+		else
+		{
+			this.ResultsLabels[0].text = "Yandere-chan leaves school, returns home, and waits until the clock strikes midnight.";
+			this.ResultsLabels[1].text = "Under the cover of darkness, Yandere-chan travels back to school and sneaks inside of the gym.";
+			this.ResultsLabels[2].text = "Yandere-chan returns to the instrument case that carries her unconscious victim.";
+			this.ResultsLabels[3].text = "She pushes the case back to her house, pretending to be a young musician returning home from a show.";
+			this.ResultsLabels[4].text = "Yandere-chan drags the case down to her basement and ties up her victim.";
+			PlayerPrefs.SetInt("Kidnapped", 1);
 		}
 	}
 

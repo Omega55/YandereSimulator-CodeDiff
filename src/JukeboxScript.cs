@@ -6,13 +6,11 @@ public class JukeboxScript : MonoBehaviour
 {
 	public YandereScript Yandere;
 
-	public AudioSource Piano;
-
-	public AudioSource HipHop;
-
 	public AudioSource AttackOnTitan;
 
 	public AudioSource Nuclear;
+
+	public AudioSource Hatred;
 
 	public AudioSource Sane;
 
@@ -31,10 +29,6 @@ public class JukeboxScript : MonoBehaviour
 	public float Timer;
 
 	public bool Egg;
-
-	public bool AoT;
-
-	public bool MGS;
 
 	public virtual void Update()
 	{
@@ -91,39 +85,34 @@ public class JukeboxScript : MonoBehaviour
 		{
 			this.AttackOnTitan.volume = Mathf.MoveTowards(this.AttackOnTitan.volume, this.Volume, Time.deltaTime * (float)10);
 			this.Nuclear.volume = Mathf.MoveTowards(this.Nuclear.volume, this.Volume, Time.deltaTime * (float)10);
-			if (this.AoT)
-			{
-				if (!this.AttackOnTitan.enabled)
-				{
-					this.AttackOnTitan.enabled = true;
-					this.Nuclear.enabled = false;
-				}
-			}
-			else if (this.MGS && !this.Nuclear.enabled)
-			{
-				this.AttackOnTitan.enabled = false;
-				this.Nuclear.enabled = true;
-			}
+			this.Hatred.volume = Mathf.MoveTowards(this.Hatred.volume, this.Volume, Time.deltaTime * (float)10);
 		}
-		if (Input.GetKeyDown("l"))
+		if (Input.GetKeyDown("l") && !this.Egg)
 		{
 			this.Egg = true;
-			this.AoT = true;
-			this.MGS = false;
 			this.Sane.volume = (float)0;
 			this.Halfsane.volume = (float)0;
 			this.Insane.volume = (float)0;
 			this.Chase.volume = (float)0;
+			this.AttackOnTitan.enabled = true;
 		}
-		if (Input.GetKeyDown("k"))
+		if (Input.GetKeyDown("k") && !this.Egg)
 		{
 			this.Egg = true;
-			this.AoT = false;
-			this.MGS = true;
 			this.Sane.volume = (float)0;
 			this.Halfsane.volume = (float)0;
 			this.Insane.volume = (float)0;
 			this.Chase.volume = (float)0;
+			this.Nuclear.enabled = true;
+		}
+		if (Input.GetKeyDown("j") && !this.Egg)
+		{
+			this.Egg = true;
+			this.Sane.volume = (float)0;
+			this.Halfsane.volume = (float)0;
+			this.Insane.volume = (float)0;
+			this.Chase.volume = (float)0;
+			this.Hatred.enabled = true;
 		}
 	}
 
