@@ -36,9 +36,16 @@ public class PortalScript : MonoBehaviour
 			this.Yandere.CanMove = false;
 			if (this.Clock.HourTime < 15.5f)
 			{
-				this.Clock.StopTime = true;
-				this.Transition = true;
-				this.FadeOut = true;
+				if (!this.Police.Show)
+				{
+					this.Clock.StopTime = true;
+					this.Transition = true;
+					this.FadeOut = true;
+				}
+				else
+				{
+					this.Police.FadeOut = true;
+				}
 			}
 			else
 			{
@@ -72,6 +79,9 @@ public class PortalScript : MonoBehaviour
 					this.FadeOut = false;
 					this.Proceed = false;
 					this.Yandere.RPGCamera.enabled = false;
+					this.PromptBar.Label[4].text = "Choose";
+					this.PromptBar.Label[5].text = "Allocate";
+					this.PromptBar.UpdateButtons();
 					this.PromptBar.Show = true;
 					this.Class.StudyPoints = 5;
 					this.Class.UpdateLabel();

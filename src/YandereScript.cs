@@ -49,11 +49,11 @@ public class YandereScript : MonoBehaviour
 
 	public HighlightingBlitter HighlightingB;
 
+	public RedGrayscaleEffect RedGrayscale;
+
 	public AmbientObscurance Obscurance;
 
 	public DepthOfField34 DepthOfField;
-
-	public GrayscaleEffect Grayscale;
 
 	public Vignetting Vignette;
 
@@ -156,8 +156,6 @@ public class YandereScript : MonoBehaviour
 	public GameObject Trail;
 
 	public GameObject Toast;
-
-	public GameObject FPS;
 
 	public SkinnedMeshRenderer MyRenderer;
 
@@ -630,6 +628,7 @@ public class YandereScript : MonoBehaviour
 							}
 							else
 							{
+								this.YandereVision = false;
 								this.Crouching = true;
 								this.EmptyHands();
 							}
@@ -640,6 +639,7 @@ public class YandereScript : MonoBehaviour
 							if (this.CrawlTimer > 0.5f)
 							{
 								this.EmptyHands();
+								this.YandereVision = false;
 								this.Crouching = false;
 								this.Crawling = true;
 								this.CrawlTimer = (float)0;
@@ -1731,9 +1731,7 @@ public class YandereScript : MonoBehaviour
 		this.BaldSchoolgirl.active = true;
 		this.Character.active = false;
 		this.HeartRate.active = false;
-		this.FPS.active = false;
-		this.Grayscale.enabled = true;
-		this.HUD.enabled = false;
+		this.RedGrayscale.enabled = true;
 		this.Hateful = true;
 		this.Character = this.BaldSchoolgirl.gameObject;
 		this.RightBreast = this.BaldSchoolgirl.RightBreast;

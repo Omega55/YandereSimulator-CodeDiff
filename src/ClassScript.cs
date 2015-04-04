@@ -134,16 +134,6 @@ public class ClassScript : MonoBehaviour
 					this.UpdateLabel();
 					this.UpdateBars();
 				}
-				if (this.StudyPoints == 0)
-				{
-					this.PromptBar.Label[0].text = "Confirm";
-					this.PromptBar.UpdateButtons();
-				}
-				else
-				{
-					this.PromptBar.Label[0].text = string.Empty;
-					this.PromptBar.UpdateButtons();
-				}
 				if (Input.GetButtonDown("A") && this.StudyPoints == 0)
 				{
 					this.Show = false;
@@ -201,6 +191,8 @@ public class ClassScript : MonoBehaviour
 					else if (this.GradeUpWindow.localScale.x > 0.99f && Input.GetButtonDown("A"))
 					{
 						this.PromptBar.Label[0].text = string.Empty;
+						this.PromptBar.Label[4].text = string.Empty;
+						this.PromptBar.Label[5].text = string.Empty;
 						this.PromptBar.UpdateButtons();
 						this.PromptBar.Show = false;
 						this.GradeUp = false;
@@ -223,6 +215,16 @@ public class ClassScript : MonoBehaviour
 	public virtual void UpdateLabel()
 	{
 		this.StudyPointsLabel.text = "STUDY POINTS: " + this.StudyPoints;
+		if (this.StudyPoints == 0)
+		{
+			this.PromptBar.Label[0].text = "Confirm";
+			this.PromptBar.UpdateButtons();
+		}
+		else
+		{
+			this.PromptBar.Label[0].text = string.Empty;
+			this.PromptBar.UpdateButtons();
+		}
 	}
 
 	public virtual void UpdateBars()

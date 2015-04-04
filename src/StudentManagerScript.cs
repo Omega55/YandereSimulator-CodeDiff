@@ -21,6 +21,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public JsonScript JSON;
 
+	public GateScript Gate;
+
 	public ListScript Lockers;
 
 	public ListScript LockerFs;
@@ -34,6 +36,8 @@ public class StudentManagerScript : MonoBehaviour
 	public ListScript HangoutFs;
 
 	public Transform[] SpawnPositions;
+
+	public Transform Exit;
 
 	public GameObject PortraitChan;
 

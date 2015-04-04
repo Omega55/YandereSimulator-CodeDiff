@@ -48,14 +48,8 @@ public class ShoulderCameraScript : MonoBehaviour
 			}
 			else if (this.AimingCamera)
 			{
-				if (this.RPGCamera.enabled)
-				{
-					this.RPGCamera.enabled = false;
-					this.Timer = (float)1;
-				}
 				this.transform.position = this.CameraPOV.position;
 				this.transform.LookAt(this.CameraFocus);
-				this.Timer += Time.deltaTime;
 			}
 			else if (this.Yandere.Talking && !this.RPGCamera.enabled)
 			{

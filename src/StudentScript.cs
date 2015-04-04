@@ -113,6 +113,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool Dead;
 
+	public bool Safe;
+
 	public bool Following;
 
 	public bool Fleeing;
@@ -304,6 +306,10 @@ public class StudentScript : MonoBehaviour
 					this.Police.Show = true;
 					this.active = false;
 				}
+				if (this.transform.position.z < -49.33333f)
+				{
+					this.Safe = true;
+				}
 				if (this.DistanceToDestination > 0.5f)
 				{
 					this.Pathfinding.canMove = true;
@@ -315,6 +321,10 @@ public class StudentScript : MonoBehaviour
 					this.Character.animation.CrossFade("f02_scaredIdle_00");
 					this.transform.position = Vector3.Lerp(this.transform.position, this.Pathfinding.target.position, Time.deltaTime * (float)10);
 					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.Pathfinding.target.rotation, (float)10 * Time.deltaTime);
+				}
+				if (!this.Safe && this.Pathfinding.target == this.StudentManager.Exit && this.StudentManager.Gate.Closed)
+				{
+					this.Pathfinding.target = this.StudentManager.EmergencyExit.Gateway;
 				}
 			}
 			if (this.Following && !this.Waiting)
@@ -754,7 +764,14 @@ public class StudentScript : MonoBehaviour
 				if (this.AlarmTimer > (float)5)
 				{
 					this.Subtitle.UpdateLabel("Coward Reaction", 1, (float)3);
-					this.Pathfinding.target = this.StudentManager.EmergencyExit.Gateway;
+					if (this.StudentManager.Gate.Closed)
+					{
+						this.Pathfinding.target = this.StudentManager.EmergencyExit.Gateway;
+					}
+					else
+					{
+						this.Pathfinding.target = this.StudentManager.Exit;
+					}
 					this.Pathfinding.canSearch = true;
 					this.Pathfinding.canMove = true;
 					this.Pathfinding.speed = (float)4;
