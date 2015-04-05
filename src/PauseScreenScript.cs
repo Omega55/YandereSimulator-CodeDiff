@@ -293,11 +293,9 @@ public class PauseScreenScript : MonoBehaviour
 		this.BypassPhone = false;
 		this.PressedA = false;
 		this.Show = false;
-		Debug.Log("Got here.");
 		if (this.Yandere.ShoulderCamera.Timer == (float)0)
 		{
 			this.RPGCamera.enabled = true;
-			Debug.Log("And got here.");
 		}
 	}
 

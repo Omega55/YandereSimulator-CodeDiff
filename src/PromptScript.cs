@@ -38,6 +38,8 @@ public class PromptScript : MonoBehaviour
 
 	public string[] Text;
 
+	public bool Debugging;
+
 	public bool Carried;
 
 	public bool InSight;
@@ -101,6 +103,7 @@ public class PromptScript : MonoBehaviour
 		}
 		this.BloodMask = 16384;
 		this.BloodMask |= 4;
+		this.BloodMask |= 8192;
 		this.BloodMask |= 65536;
 		this.BloodMask = ~this.BloodMask;
 	}
@@ -287,22 +290,38 @@ public class PromptScript : MonoBehaviour
 						}
 						else
 						{
+							if (this.Debugging)
+							{
+								Debug.Log("1.");
+							}
 							this.Hide();
 						}
 					}
 					else
 					{
+						if (this.Debugging)
+						{
+							Debug.Log("2.");
+						}
 						this.Hide();
 					}
 				}
 				else
 				{
+					if (this.Debugging)
+					{
+						Debug.Log("3.");
+					}
 					this.Hide();
 				}
 			}
 		}
 		else
 		{
+			if (this.Debugging)
+			{
+				Debug.Log("4.");
+			}
 			this.Hide();
 		}
 	}
@@ -315,6 +334,10 @@ public class PromptScript : MonoBehaviour
 	public virtual void OnBecameInvisible()
 	{
 		this.InView = false;
+		if (this.Debugging)
+		{
+			Debug.Log("5.");
+		}
 		this.Hide();
 	}
 

@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$1206 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$1210 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$1213;
+		internal YandereScript $self_$1217;
 
-		public $ApplyCustomCostume$1206(YandereScript self_)
+		public $ApplyCustomCostume$1210(YandereScript self_)
 		{
-			this.$self_$1213 = self_;
+			this.$self_$1217 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$1206.$(this.$self_$1213);
+			return new YandereScript.$ApplyCustomCostume$1210.$(this.$self_$1217);
 		}
 	}
 
@@ -104,6 +104,8 @@ public class YandereScript : MonoBehaviour
 	public MopScript Mop;
 
 	public UIPanel HUD;
+
+	public CharacterController MyCharacterController;
 
 	public Transform CameraFocus;
 
@@ -400,6 +402,7 @@ public class YandereScript : MonoBehaviour
 		{
 			if (this.CanMove)
 			{
+				this.MyCharacterController.Move(Physics.gravity * 0.01f);
 				float axis = Input.GetAxis("Vertical");
 				float axis2 = Input.GetAxis("Horizontal");
 				if (!this.Aiming)
@@ -425,12 +428,12 @@ public class YandereScript : MonoBehaviour
 							if (!this.Dragging && !this.Mopping)
 							{
 								this.Character.animation.CrossFade("f02_sprint_00");
-								this.transform.Translate(Vector3.forward * this.RunSpeed * Time.deltaTime);
+								this.MyCharacterController.Move(this.transform.forward * this.RunSpeed * Time.deltaTime);
 							}
 							else
 							{
 								this.Character.animation.CrossFade("f02_dragWalk_00");
-								this.transform.Translate(Vector3.forward * this.WalkSpeed * Time.deltaTime);
+								this.MyCharacterController.Move(this.transform.forward * this.WalkSpeed * Time.deltaTime);
 							}
 							if (this.Crouching)
 							{
@@ -446,23 +449,23 @@ public class YandereScript : MonoBehaviour
 							if (this.Crawling)
 							{
 								this.Character.animation.CrossFade("f02_crawl_10");
-								this.transform.Translate(Vector3.forward * this.CrawlSpeed * Time.deltaTime);
+								this.MyCharacterController.Move(this.transform.forward * this.CrawlSpeed * Time.deltaTime);
 							}
 							else if (this.Crouching)
 							{
 								this.Character.animation.CrossFade("f02_crouchWalk_00");
-								this.transform.Translate(Vector3.forward * this.CrouchSpeed * Time.deltaTime);
+								this.MyCharacterController.Move(this.transform.forward * this.CrouchSpeed * Time.deltaTime);
 							}
 							else
 							{
 								this.Character.animation.CrossFade("f02_walk_00");
-								this.transform.Translate(Vector3.forward * this.WalkSpeed * Time.deltaTime);
+								this.MyCharacterController.Move(this.transform.forward * this.WalkSpeed * Time.deltaTime);
 							}
 						}
 						else
 						{
 							this.Character.animation.CrossFade("f02_dragWalk_00");
-							this.transform.Translate(Vector3.forward * this.WalkSpeed * Time.deltaTime);
+							this.MyCharacterController.Move(this.transform.forward * this.WalkSpeed * Time.deltaTime);
 						}
 					}
 					else if (!this.Dragging)
@@ -492,20 +495,20 @@ public class YandereScript : MonoBehaviour
 						if (this.Crawling)
 						{
 							this.Character.animation.CrossFade("f02_crawl_10");
-							this.transform.Translate(Vector3.forward * this.CrawlSpeed * Time.deltaTime * axis);
-							this.transform.Translate(Vector3.right * this.CrawlSpeed * Time.deltaTime * axis2);
+							this.MyCharacterController.Move(this.transform.forward * this.CrawlSpeed * Time.deltaTime * axis);
+							this.MyCharacterController.Move(this.transform.right * this.CrawlSpeed * Time.deltaTime * axis2);
 						}
 						else if (this.Crouching)
 						{
 							this.Character.animation.CrossFade("f02_crouchWalk_00");
-							this.transform.Translate(Vector3.forward * this.CrouchSpeed * Time.deltaTime * axis);
-							this.transform.Translate(Vector3.right * this.CrouchSpeed * Time.deltaTime * axis2);
+							this.MyCharacterController.Move(this.transform.forward * this.CrouchSpeed * Time.deltaTime * axis);
+							this.MyCharacterController.Move(this.transform.right * this.CrouchSpeed * Time.deltaTime * axis2);
 						}
 						else
 						{
 							this.Character.animation.CrossFade("f02_walk_00");
-							this.transform.Translate(Vector3.forward * this.WalkSpeed * Time.deltaTime * axis);
-							this.transform.Translate(Vector3.right * this.WalkSpeed * Time.deltaTime * axis2);
+							this.MyCharacterController.Move(this.transform.forward * this.WalkSpeed * Time.deltaTime * axis);
+							this.MyCharacterController.Move(this.transform.right * this.WalkSpeed * Time.deltaTime * axis2);
 						}
 					}
 					else if (this.Crawling)
@@ -683,7 +686,7 @@ public class YandereScript : MonoBehaviour
 				{
 					this.targetRotation = Quaternion.LookRotation(this.Incinerator.transform.position + Vector3.fwd * (float)4 - this.transform.position);
 					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
-					this.transform.position = Vector3.Lerp(this.transform.position, this.Incinerator.transform.position + Vector3.fwd * (float)3, Time.deltaTime * (float)10);
+					this.MoveTowardsTarget(this.Incinerator.transform.position + Vector3.fwd * (float)3);
 					this.DumpTimer += Time.deltaTime;
 					if (this.DumpTimer > (float)1)
 					{
@@ -1190,7 +1193,7 @@ public class YandereScript : MonoBehaviour
 				this.StudentManager.UpdateStudents();
 				this.CorpseWarning = false;
 			}
-			if (this.transform.position.y < (float)-1 || Input.GetKeyDown("`"))
+			if (Input.GetKeyDown("`"))
 			{
 				Application.LoadLevel(Application.loadedLevel);
 			}
@@ -1285,19 +1288,40 @@ public class YandereScript : MonoBehaviour
 			{
 				this.Hate();
 			}
-			if (this.transform.position.z < (float)-50)
+			if (this.transform.position.x < (float)-50)
 			{
 				int num5 = -50;
 				Vector3 position = this.transform.position;
-				float num6 = position.z = (float)num5;
+				float num6 = position.x = (float)num5;
 				Vector3 vector3 = this.transform.position = position;
 			}
-			if (this.rigidbody.velocity.y > (float)0)
+			if (this.transform.position.x > (float)100)
 			{
-				int num7 = 0;
-				Vector3 velocity = this.rigidbody.velocity;
-				float num8 = velocity.y = (float)num7;
-				Vector3 vector4 = this.rigidbody.velocity = velocity;
+				int num7 = 100;
+				Vector3 position2 = this.transform.position;
+				float num8 = position2.x = (float)num7;
+				Vector3 vector4 = this.transform.position = position2;
+			}
+			if (this.transform.position.y < (float)0)
+			{
+				int num9 = 0;
+				Vector3 position3 = this.transform.position;
+				float num10 = position3.y = (float)num9;
+				Vector3 vector5 = this.transform.position = position3;
+			}
+			if (this.transform.position.z < (float)-50)
+			{
+				int num11 = -50;
+				Vector3 position4 = this.transform.position;
+				float num12 = position4.z = (float)num11;
+				Vector3 vector6 = this.transform.position = position4;
+			}
+			if (this.transform.position.z > (float)50)
+			{
+				int num13 = 50;
+				Vector3 position5 = this.transform.position;
+				float num14 = position5.z = (float)num13;
+				Vector3 vector7 = this.transform.position = position5;
 			}
 		}
 	}
@@ -1398,6 +1422,14 @@ public class YandereScript : MonoBehaviour
 			float num13 = localEulerAngles6.x = y4;
 			Vector3 vector13 = this.Spine[5].localEulerAngles = localEulerAngles6;
 		}
+	}
+
+	public virtual void MoveTowardsTarget(Vector3 target)
+	{
+		Vector3 a = target - this.transform.position;
+		float d = Vector3.Distance(this.transform.position, target);
+		a = a.normalized * d;
+		this.MyCharacterController.Move(a * Time.deltaTime * (float)10);
 	}
 
 	public virtual void StopAiming()
@@ -1630,7 +1662,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$1206(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$1210(this).GetEnumerator();
 	}
 
 	public virtual void UpdateHair()

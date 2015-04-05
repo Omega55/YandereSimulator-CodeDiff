@@ -79,8 +79,6 @@ public class StudentScript : MonoBehaviour
 
 	public Collider SkirtCollider;
 
-	public Collider MyCollider;
-
 	public GameObject BloodSpray;
 
 	public GameObject MainCamera;
@@ -136,8 +134,6 @@ public class StudentScript : MonoBehaviour
 	public float TalkTimer;
 
 	public float WaitTimer;
-
-	public float GroundHeight;
 
 	public float BreastSize;
 
@@ -272,6 +268,8 @@ public class StudentScript : MonoBehaviour
 			this.DistanceToDestination = Vector3.Distance(this.transform.position, this.CurrentDestination.position);
 			if (this.DistanceToDestination > 0.5f)
 			{
+				this.Pathfinding.canSearch = true;
+				this.Pathfinding.canMove = true;
 				this.Character.animation.CrossFade("f02_walk_00");
 				this.Character.animation["f02_walk_00"].speed = this.Pathfinding.currentSpeed;
 			}
@@ -279,7 +277,7 @@ public class StudentScript : MonoBehaviour
 			{
 				this.Pathfinding.canSearch = false;
 				this.Pathfinding.canMove = false;
-				this.transform.position = Vector3.Lerp(this.transform.position, this.CurrentDestination.position, Time.deltaTime * (float)10);
+				this.MoveTowardsTarget(this.CurrentDestination.position);
 				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.CurrentDestination.rotation, (float)10 * Time.deltaTime);
 				if (this.Actions[this.Phase] == 0)
 				{
@@ -319,7 +317,7 @@ public class StudentScript : MonoBehaviour
 				{
 					this.Pathfinding.canMove = false;
 					this.Character.animation.CrossFade("f02_scaredIdle_00");
-					this.transform.position = Vector3.Lerp(this.transform.position, this.Pathfinding.target.position, Time.deltaTime * (float)10);
+					this.MoveTowardsTarget(this.Pathfinding.target.position);
 					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.Pathfinding.target.rotation, (float)10 * Time.deltaTime);
 				}
 				if (!this.Safe && this.Pathfinding.target == this.StudentManager.Exit && this.StudentManager.Gate.Closed)
@@ -562,7 +560,7 @@ public class StudentScript : MonoBehaviour
 			this.Yandere.YandereVision = false;
 			this.Yandere.Attacking = true;
 			this.Yandere.CanMove = false;
-			this.MyCollider.enabled = false;
+			this.MyController.radius = (float)0;
 			this.Alarmed = false;
 			this.Routine = false;
 			this.Dying = true;
@@ -710,7 +708,7 @@ public class StudentScript : MonoBehaviour
 				this.Character.animation.CrossFade("f02_defend_00");
 				this.targetRotation = Quaternion.LookRotation(new Vector3(this.Yandere.transform.position.x, this.transform.position.y, this.Yandere.transform.position.z) - this.transform.position);
 				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
-				this.transform.position = Vector3.Lerp(this.transform.position, this.Yandere.transform.position + this.Yandere.transform.forward * 0.1f, Time.deltaTime * (float)10);
+				this.MoveTowardsTarget(this.Yandere.transform.position + this.Yandere.transform.forward * 0.1f);
 			}
 			else
 			{
@@ -843,25 +841,14 @@ public class StudentScript : MonoBehaviour
 		{
 			this.IgnoreTimer -= Time.deltaTime;
 		}
-		if (this.MyController.isGrounded && this.MyController.velocity.y <= (float)3)
-		{
-			this.GroundHeight = this.transform.position.y;
-		}
-		if (this.MyController.velocity.y > (float)3)
-		{
-			float y2 = this.GroundHeight + 0.1f;
-			Vector3 position = this.transform.position;
-			float num5 = position.y = y2;
-			Vector3 vector2 = this.transform.position = position;
-		}
 		if (this.AoT)
 		{
 			this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)10, (float)10, (float)10), Time.deltaTime);
 		}
-		int num6 = 0;
+		int num5 = 0;
 		Vector3 localEulerAngles = this.transform.localEulerAngles;
-		float num7 = localEulerAngles.x = (float)num6;
-		Vector3 vector3 = this.transform.localEulerAngles = localEulerAngles;
+		float num6 = localEulerAngles.x = (float)num5;
+		Vector3 vector2 = this.transform.localEulerAngles = localEulerAngles;
 	}
 
 	public virtual void LateUpdate()
@@ -899,6 +886,14 @@ public class StudentScript : MonoBehaviour
 			this.HairR.localScale = new Vector3((float)0, (float)0, (float)0);
 			this.HairL.localScale = new Vector3((float)0, (float)0, (float)0);
 		}
+	}
+
+	public virtual void MoveTowardsTarget(Vector3 target)
+	{
+		Vector3 a = target - this.transform.position;
+		float d = Vector3.Distance(this.transform.position, target);
+		a = a.normalized * d;
+		this.MyController.Move(a * (Time.deltaTime * (float)10 / Time.timeScale));
 	}
 
 	public virtual void WitnessMurder()
