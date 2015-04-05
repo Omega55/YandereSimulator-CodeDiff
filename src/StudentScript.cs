@@ -890,10 +890,13 @@ public class StudentScript : MonoBehaviour
 
 	public virtual void MoveTowardsTarget(Vector3 target)
 	{
-		Vector3 a = target - this.transform.position;
-		float d = Vector3.Distance(this.transform.position, target);
-		a = a.normalized * d;
-		this.MyController.Move(a * (Time.deltaTime * (float)10 / Time.timeScale));
+		if (Time.timeScale > (float)0)
+		{
+			Vector3 a = target - this.transform.position;
+			float d = Vector3.Distance(this.transform.position, target);
+			a = a.normalized * d;
+			this.MyController.Move(a * (Time.deltaTime * (float)10 / Time.timeScale));
+		}
 	}
 
 	public virtual void WitnessMurder()
