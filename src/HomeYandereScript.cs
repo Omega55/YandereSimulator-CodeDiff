@@ -10,20 +10,22 @@ public class HomeYandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$1191 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$1193 : GenericGenerator<WWW>
 	{
-		internal HomeYandereScript $self_$1198;
+		internal HomeYandereScript $self_$1200;
 
-		public $ApplyCustomCostume$1191(HomeYandereScript self_)
+		public $ApplyCustomCostume$1193(HomeYandereScript self_)
 		{
-			this.$self_$1198 = self_;
+			this.$self_$1200 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new HomeYandereScript.$ApplyCustomCostume$1191.$(this.$self_$1198);
+			return new HomeYandereScript.$ApplyCustomCostume$1193.$(this.$self_$1200);
 		}
 	}
+
+	public CharacterController MyController;
 
 	public GameObject Character;
 
@@ -94,12 +96,12 @@ public class HomeYandereScript : MonoBehaviour
 				if (Input.GetButton("LB"))
 				{
 					this.Character.animation.CrossFade("f02_run_00");
-					this.transform.Translate(Vector3.forward * this.RunSpeed * Time.deltaTime);
+					this.MyController.Move(this.transform.forward * this.RunSpeed * Time.deltaTime);
 				}
 				else
 				{
 					this.Character.animation.CrossFade("f02_walk_00");
-					this.transform.Translate(Vector3.forward * this.WalkSpeed * Time.deltaTime);
+					this.MyController.Move(this.transform.forward * this.WalkSpeed * Time.deltaTime);
 				}
 			}
 			else
@@ -131,7 +133,7 @@ public class HomeYandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new HomeYandereScript.$ApplyCustomCostume$1191(this).GetEnumerator();
+		return new HomeYandereScript.$ApplyCustomCostume$1193(this).GetEnumerator();
 	}
 
 	public virtual void UpdateHair()

@@ -14,18 +14,20 @@ public class FootprintSpawnerScript : MonoBehaviour
 
 	public bool FootUp;
 
+	public float Threshold;
+
 	public int Bloodiness;
 
 	public virtual void Update()
 	{
 		if (!this.FootUp)
 		{
-			if (this.transform.position.y > 0.1f)
+			if (this.transform.position.y > this.Yandere.transform.position.y + 0.1f)
 			{
 				this.FootUp = true;
 			}
 		}
-		else if (this.transform.position.y < 0.01f)
+		else if (this.transform.position.y < this.Yandere.transform.position.y + this.Threshold)
 		{
 			this.FootUp = false;
 			if (this.Bloodiness > 0)

@@ -222,6 +222,7 @@ public class RagdollScript : MonoBehaviour
 		if (Type == 1)
 		{
 			this.Incinerator = this.Yandere.Incinerator;
+			this.BloodPoolSpawner.enabled = false;
 		}
 		else
 		{

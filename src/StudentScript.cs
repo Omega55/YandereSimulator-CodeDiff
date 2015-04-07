@@ -845,10 +845,17 @@ public class StudentScript : MonoBehaviour
 		{
 			this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)10, (float)10, (float)10), Time.deltaTime);
 		}
-		int num5 = 0;
+		if (!this.Fleeing && this.transform.position.y < (float)0)
+		{
+			int num5 = 0;
+			Vector3 position = this.transform.position;
+			float num6 = position.y = (float)num5;
+			Vector3 vector2 = this.transform.position = position;
+		}
+		int num7 = 0;
 		Vector3 localEulerAngles = this.transform.localEulerAngles;
-		float num6 = localEulerAngles.x = (float)num5;
-		Vector3 vector2 = this.transform.localEulerAngles = localEulerAngles;
+		float num8 = localEulerAngles.x = (float)num7;
+		Vector3 vector3 = this.transform.localEulerAngles = localEulerAngles;
 	}
 
 	public virtual void LateUpdate()

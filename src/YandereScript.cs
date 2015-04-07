@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$1210 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$1212 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$1217;
+		internal YandereScript $self_$1219;
 
-		public $ApplyCustomCostume$1210(YandereScript self_)
+		public $ApplyCustomCostume$1212(YandereScript self_)
 		{
-			this.$self_$1217 = self_;
+			this.$self_$1219 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$1210.$(this.$self_$1217);
+			return new YandereScript.$ApplyCustomCostume$1212.$(this.$self_$1219);
 		}
 	}
 
@@ -105,7 +105,7 @@ public class YandereScript : MonoBehaviour
 
 	public UIPanel HUD;
 
-	public CharacterController MyCharacterController;
+	public CharacterController MyController;
 
 	public Transform CameraFocus;
 
@@ -136,6 +136,8 @@ public class YandereScript : MonoBehaviour
 	public AudioSource HeartBeat;
 
 	public AudioSource Jukebox;
+
+	public GameObject CinematicCamera;
 
 	public GameObject HandCamera;
 
@@ -196,6 +198,8 @@ public class YandereScript : MonoBehaviour
 	public float TwitchTimer;
 
 	public float NextTwitch;
+
+	public float CinematicTimer;
 
 	public float LaughIntensity;
 
@@ -402,7 +406,7 @@ public class YandereScript : MonoBehaviour
 		{
 			if (this.CanMove)
 			{
-				this.MyCharacterController.Move(Physics.gravity * 0.01f);
+				this.MyController.Move(Physics.gravity * 0.01f);
 				float axis = Input.GetAxis("Vertical");
 				float axis2 = Input.GetAxis("Horizontal");
 				if (!this.Aiming)
@@ -428,12 +432,12 @@ public class YandereScript : MonoBehaviour
 							if (!this.Dragging && !this.Mopping)
 							{
 								this.Character.animation.CrossFade("f02_sprint_00");
-								this.MyCharacterController.Move(this.transform.forward * this.RunSpeed * Time.deltaTime);
+								this.MyController.Move(this.transform.forward * this.RunSpeed * Time.deltaTime);
 							}
 							else
 							{
 								this.Character.animation.CrossFade("f02_dragWalk_00");
-								this.MyCharacterController.Move(this.transform.forward * this.WalkSpeed * Time.deltaTime);
+								this.MyController.Move(this.transform.forward * this.WalkSpeed * Time.deltaTime);
 							}
 							if (this.Crouching)
 							{
@@ -449,23 +453,23 @@ public class YandereScript : MonoBehaviour
 							if (this.Crawling)
 							{
 								this.Character.animation.CrossFade("f02_crawl_10");
-								this.MyCharacterController.Move(this.transform.forward * this.CrawlSpeed * Time.deltaTime);
+								this.MyController.Move(this.transform.forward * this.CrawlSpeed * Time.deltaTime);
 							}
 							else if (this.Crouching)
 							{
 								this.Character.animation.CrossFade("f02_crouchWalk_00");
-								this.MyCharacterController.Move(this.transform.forward * this.CrouchSpeed * Time.deltaTime);
+								this.MyController.Move(this.transform.forward * this.CrouchSpeed * Time.deltaTime);
 							}
 							else
 							{
 								this.Character.animation.CrossFade("f02_walk_00");
-								this.MyCharacterController.Move(this.transform.forward * this.WalkSpeed * Time.deltaTime);
+								this.MyController.Move(this.transform.forward * this.WalkSpeed * Time.deltaTime);
 							}
 						}
 						else
 						{
 							this.Character.animation.CrossFade("f02_dragWalk_00");
-							this.MyCharacterController.Move(this.transform.forward * this.WalkSpeed * Time.deltaTime);
+							this.MyController.Move(this.transform.forward * this.WalkSpeed * Time.deltaTime);
 						}
 					}
 					else if (!this.Dragging)
@@ -495,20 +499,20 @@ public class YandereScript : MonoBehaviour
 						if (this.Crawling)
 						{
 							this.Character.animation.CrossFade("f02_crawl_10");
-							this.MyCharacterController.Move(this.transform.forward * this.CrawlSpeed * Time.deltaTime * axis);
-							this.MyCharacterController.Move(this.transform.right * this.CrawlSpeed * Time.deltaTime * axis2);
+							this.MyController.Move(this.transform.forward * this.CrawlSpeed * Time.deltaTime * axis);
+							this.MyController.Move(this.transform.right * this.CrawlSpeed * Time.deltaTime * axis2);
 						}
 						else if (this.Crouching)
 						{
 							this.Character.animation.CrossFade("f02_crouchWalk_00");
-							this.MyCharacterController.Move(this.transform.forward * this.CrouchSpeed * Time.deltaTime * axis);
-							this.MyCharacterController.Move(this.transform.right * this.CrouchSpeed * Time.deltaTime * axis2);
+							this.MyController.Move(this.transform.forward * this.CrouchSpeed * Time.deltaTime * axis);
+							this.MyController.Move(this.transform.right * this.CrouchSpeed * Time.deltaTime * axis2);
 						}
 						else
 						{
 							this.Character.animation.CrossFade("f02_walk_00");
-							this.MyCharacterController.Move(this.transform.forward * this.WalkSpeed * Time.deltaTime * axis);
-							this.MyCharacterController.Move(this.transform.right * this.WalkSpeed * Time.deltaTime * axis2);
+							this.MyController.Move(this.transform.forward * this.WalkSpeed * Time.deltaTime * axis);
+							this.MyController.Move(this.transform.right * this.WalkSpeed * Time.deltaTime * axis2);
 						}
 					}
 					else if (this.Crawling)
@@ -591,27 +595,24 @@ public class YandereScript : MonoBehaviour
 								this.YandereVision = true;
 							}
 						}
+						else if (this.YandereVision)
+						{
+							this.Obscurance.enabled = false;
+							this.YandereVision = false;
+						}
 						if (Input.GetButtonUp("RB"))
 						{
-							if (this.YandereTimer < 0.5f)
+							if (this.YandereTimer < 0.5f && !this.Dragging && !this.Laughing)
 							{
-								if (!this.Dragging && !this.Laughing)
-								{
-									this.LaughAnim = "f02_laugh_01";
-									this.LaughClip = this.Laugh1;
-									this.Laughing = true;
-									this.LaughIntensity += (float)1;
-									this.LaughTimer = 0.5f;
-									this.audio.volume = (float)1;
-									this.audio.time = (float)0;
-									this.audio.Play();
-									this.CanMove = false;
-								}
-							}
-							else
-							{
-								this.Obscurance.enabled = false;
-								this.YandereVision = false;
+								this.LaughAnim = "f02_laugh_01";
+								this.LaughClip = this.Laugh1;
+								this.Laughing = true;
+								this.LaughIntensity += (float)1;
+								this.LaughTimer = 0.5f;
+								this.audio.volume = (float)1;
+								this.audio.time = (float)0;
+								this.audio.Play();
+								this.CanMove = false;
 							}
 							this.YandereTimer = (float)0;
 						}
@@ -677,6 +678,25 @@ public class YandereScript : MonoBehaviour
 					if (Time.timeScale > (float)0 && ((this.UsingController && Input.GetAxis("LT") < 0.5f) || (!this.UsingController && !Input.GetMouseButton(1))))
 					{
 						this.StopAiming();
+					}
+					if (Input.GetKey("left alt"))
+					{
+						if (!this.CinematicCamera.active)
+						{
+							if (this.CinematicTimer > (float)0)
+							{
+								this.CinematicCamera.transform.eulerAngles = this.Smartphone.transform.eulerAngles;
+								this.CinematicCamera.transform.position = this.Smartphone.transform.position;
+								this.CinematicCamera.active = true;
+								this.CinematicTimer = (float)0;
+								this.StopAiming();
+							}
+							this.CinematicTimer += (float)1;
+						}
+					}
+					else
+					{
+						this.CinematicTimer = (float)0;
 					}
 				}
 			}
@@ -1288,6 +1308,10 @@ public class YandereScript : MonoBehaviour
 			{
 				this.Hate();
 			}
+			if (Input.GetKeyDown("left alt"))
+			{
+				this.CinematicCamera.active = false;
+			}
 			if (this.transform.position.x < (float)-50)
 			{
 				int num5 = -50;
@@ -1323,6 +1347,10 @@ public class YandereScript : MonoBehaviour
 				float num14 = position5.z = (float)num13;
 				Vector3 vector7 = this.transform.position = position5;
 			}
+		}
+		else
+		{
+			this.audio.volume = this.audio.volume - 0.333333343f;
 		}
 	}
 
@@ -1429,19 +1457,11 @@ public class YandereScript : MonoBehaviour
 		Vector3 a = target - this.transform.position;
 		float d = Vector3.Distance(this.transform.position, target);
 		a = a.normalized * d;
-		this.MyCharacterController.Move(a * Time.deltaTime * (float)10);
+		this.MyController.Move(a * Time.deltaTime * (float)10);
 	}
 
 	public virtual void StopAiming()
 	{
-		if (this.Crawling)
-		{
-			this.Character.animation.Play("f02_crawl_10");
-		}
-		else if (this.Crouching)
-		{
-			this.Character.animation.Play("f02_crouchIdle_00");
-		}
 		this.Character.animation["f02_cameraPose_00"].weight = (float)0;
 		int num = 0;
 		Vector3 localPosition = this.PelvisRoot.transform.localPosition;
@@ -1662,7 +1682,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$1210(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$1212(this).GetEnumerator();
 	}
 
 	public virtual void UpdateHair()

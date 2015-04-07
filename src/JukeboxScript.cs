@@ -87,32 +87,35 @@ public class JukeboxScript : MonoBehaviour
 			this.Nuclear.volume = Mathf.MoveTowards(this.Nuclear.volume, this.Volume, Time.deltaTime * (float)10);
 			this.Hatred.volume = Mathf.MoveTowards(this.Hatred.volume, this.Volume, Time.deltaTime * (float)10);
 		}
-		if (Input.GetKeyDown("l") && !this.Egg)
+		if (!this.Yandere.PauseScreen.Show)
 		{
-			this.Egg = true;
-			this.Sane.volume = (float)0;
-			this.Halfsane.volume = (float)0;
-			this.Insane.volume = (float)0;
-			this.Chase.volume = (float)0;
-			this.AttackOnTitan.enabled = true;
-		}
-		if (Input.GetKeyDown("k") && !this.Egg)
-		{
-			this.Egg = true;
-			this.Sane.volume = (float)0;
-			this.Halfsane.volume = (float)0;
-			this.Insane.volume = (float)0;
-			this.Chase.volume = (float)0;
-			this.Nuclear.enabled = true;
-		}
-		if (Input.GetKeyDown("j") && !this.Egg)
-		{
-			this.Egg = true;
-			this.Sane.volume = (float)0;
-			this.Halfsane.volume = (float)0;
-			this.Insane.volume = (float)0;
-			this.Chase.volume = (float)0;
-			this.Hatred.enabled = true;
+			if (Input.GetKeyDown("l") && !this.Egg)
+			{
+				this.Egg = true;
+				this.Sane.volume = (float)0;
+				this.Halfsane.volume = (float)0;
+				this.Insane.volume = (float)0;
+				this.Chase.volume = (float)0;
+				this.AttackOnTitan.enabled = true;
+			}
+			if (Input.GetKeyDown("k") && !this.Egg)
+			{
+				this.Egg = true;
+				this.Sane.volume = (float)0;
+				this.Halfsane.volume = (float)0;
+				this.Insane.volume = (float)0;
+				this.Chase.volume = (float)0;
+				this.Nuclear.enabled = true;
+			}
+			if (Input.GetKeyDown("j") && !this.Egg)
+			{
+				this.Egg = true;
+				this.Sane.volume = (float)0;
+				this.Halfsane.volume = (float)0;
+				this.Insane.volume = (float)0;
+				this.Chase.volume = (float)0;
+				this.Hatred.enabled = true;
+			}
 		}
 	}
 

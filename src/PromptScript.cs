@@ -101,9 +101,10 @@ public class PromptScript : MonoBehaviour
 			this.AcceptingInput[this.ID] = true;
 			this.ID++;
 		}
-		this.BloodMask = 16384;
-		this.BloodMask |= 4;
+		this.BloodMask = 4;
+		this.BloodMask |= 512;
 		this.BloodMask |= 8192;
+		this.BloodMask |= 16384;
 		this.BloodMask |= 65536;
 		this.BloodMask = ~this.BloodMask;
 	}

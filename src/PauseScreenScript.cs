@@ -92,20 +92,13 @@ public class PauseScreenScript : MonoBehaviour
 						Time.timeScale = (float)1;
 					}
 				}
-				if (Input.GetButtonDown("Start") && !this.Yandere.TimeSkipping && !this.Yandere.Talking)
+				if (Input.GetButtonDown("Start") && !this.Yandere.Shutter.Snapping && !this.Yandere.TimeSkipping && !this.Yandere.Talking)
 				{
 					this.Yandere.StopAiming();
 					this.PromptParent.localScale = new Vector3((float)0, (float)0, (float)0);
 					this.Yandere.YandereVision = false;
 					this.ScreenBlur.enabled = true;
 					this.Show = true;
-					if (this.Yandere.Laughing)
-					{
-						this.Yandere.LaughIntensity = (float)0;
-						this.Yandere.Laughing = false;
-						this.Yandere.LaughTimer = (float)0;
-						this.Yandere.CanMove = true;
-					}
 					if (!this.Yandere.CanMove || this.Yandere.Dragging || this.Police.Corpses > 0)
 					{
 						float a = 0.5f;
@@ -296,6 +289,10 @@ public class PauseScreenScript : MonoBehaviour
 		if (this.Yandere.ShoulderCamera.Timer == (float)0)
 		{
 			this.RPGCamera.enabled = true;
+		}
+		if (this.Yandere.Laughing)
+		{
+			this.Yandere.audio.volume = (float)1;
 		}
 	}
 

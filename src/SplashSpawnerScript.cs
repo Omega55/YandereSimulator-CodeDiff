@@ -6,38 +6,35 @@ public class SplashSpawnerScript : MonoBehaviour
 {
 	public GameObject BloodSplash;
 
-	public GameObject BloodPool;
-
-	public Transform YandereChan;
-
-	public bool Planted;
+	public Transform Yandere;
 
 	public bool Bloody;
 
+	public bool FootUp;
+
+	public float Threshold;
+
 	public virtual void Update()
 	{
-		if (this.transform.position.y < 0.1f)
+		if (!this.FootUp)
 		{
-			if (!this.Planted)
+			if (this.transform.position.y > this.Yandere.transform.position.y + 0.1f)
 			{
-				this.Planted = true;
-				if (this.Bloody)
-				{
-					GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.BloodSplash, new Vector3(this.transform.position.x, this.YandereChan.position.y, this.transform.position.z), Quaternion.identity);
-					int num = -90;
-					Vector3 eulerAngles = gameObject.transform.eulerAngles;
-					float num2 = eulerAngles.x = (float)num;
-					Vector3 vector = gameObject.transform.eulerAngles = eulerAngles;
-				}
+				this.FootUp = true;
 			}
 		}
-		else
+		else if (this.transform.position.y < this.Yandere.transform.position.y + this.Threshold)
 		{
-			this.Planted = false;
-		}
-		if (this.BloodPool == null)
-		{
-			this.Bloody = false;
+			this.FootUp = false;
+			if (this.Bloody)
+			{
+				GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.BloodSplash, new Vector3(this.transform.position.x, this.Yandere.position.y, this.transform.position.z), Quaternion.identity);
+				int num = -90;
+				Vector3 eulerAngles = gameObject.transform.eulerAngles;
+				float num2 = eulerAngles.x = (float)num;
+				Vector3 vector = gameObject.transform.eulerAngles = eulerAngles;
+				this.Bloody = false;
+			}
 		}
 	}
 
@@ -45,16 +42,7 @@ public class SplashSpawnerScript : MonoBehaviour
 	{
 		if (other.gameObject.name == "BloodPool(Clone)")
 		{
-			this.BloodPool = other.gameObject;
 			this.Bloody = true;
-		}
-	}
-
-	public virtual void OnTriggerExit(Collider other)
-	{
-		if (other.gameObject.name == "BloodPool(Clone)")
-		{
-			this.Bloody = false;
 		}
 	}
 
