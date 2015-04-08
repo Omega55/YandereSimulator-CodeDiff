@@ -96,8 +96,10 @@ public class PauseScreenScript : MonoBehaviour
 				{
 					this.Yandere.StopAiming();
 					this.PromptParent.localScale = new Vector3((float)0, (float)0, (float)0);
+					this.Yandere.Obscurance.enabled = false;
 					this.Yandere.YandereVision = false;
 					this.ScreenBlur.enabled = true;
+					this.Yandere.YandereTimer = (float)0;
 					this.Show = true;
 					if (!this.Yandere.CanMove || this.Yandere.Dragging || this.Police.Corpses > 0)
 					{

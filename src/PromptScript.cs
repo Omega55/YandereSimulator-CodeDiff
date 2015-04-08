@@ -38,6 +38,8 @@ public class PromptScript : MonoBehaviour
 
 	public string[] Text;
 
+	public bool DisableAtStart;
+
 	public bool Debugging;
 
 	public bool Carried;
@@ -107,6 +109,11 @@ public class PromptScript : MonoBehaviour
 		this.BloodMask |= 16384;
 		this.BloodMask |= 65536;
 		this.BloodMask = ~this.BloodMask;
+		if (this.DisableAtStart)
+		{
+			this.Hide();
+			this.enabled = false;
+		}
 	}
 
 	public virtual void Update()
@@ -344,10 +351,6 @@ public class PromptScript : MonoBehaviour
 
 	public virtual void Hide()
 	{
-		if (this.Yandere == null)
-		{
-			this.Start();
-		}
 		if (this.Yandere.NearestPrompt == this)
 		{
 			this.Yandere.NearestPrompt = null;

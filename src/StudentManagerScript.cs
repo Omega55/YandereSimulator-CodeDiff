@@ -175,7 +175,7 @@ public class StudentManagerScript : MonoBehaviour
 		this.ID = 0;
 		while (this.ID < Extensions.get_length(this.Students))
 		{
-			if (this.Students[this.ID] != null)
+			if (this.Students[this.ID] != null && !this.Students[this.ID].Dead)
 			{
 				this.Students[this.ID].transform.position = this.Classrooms.List[this.Students[this.ID].Class].position;
 				this.Students[this.ID].Character.animation.Play("f02_idleShort_00");

@@ -577,6 +577,7 @@ public class YandereScript : MonoBehaviour
 							this.Character.animation.Play("f02_idleShort_00");
 							this.Smartphone.transform.parent.active = true;
 							this.ShoulderCamera.AimingCamera = true;
+							this.Obscurance.enabled = false;
 							this.HandCamera.active = true;
 							this.YandereVision = false;
 							this.Blur.enabled = true;
@@ -875,7 +876,6 @@ public class YandereScript : MonoBehaviour
 					this.DepthOfField.focalSize = (float)150;
 					this.NearSenpai = true;
 				}
-				this.Obscurance.enabled = false;
 				this.Obscurance.enabled = false;
 				this.YandereVision = false;
 				this.Crouching = false;
@@ -1291,11 +1291,6 @@ public class YandereScript : MonoBehaviour
 				{
 					this.BreastSize = (float)0;
 				}
-			}
-			if (Input.GetKey("9"))
-			{
-				PlayerPrefs.SetFloat("Reputation", (float)66);
-				((ReputationScript)GameObject.Find("Reputation").GetComponent(typeof(ReputationScript))).Reputation = (float)66;
 			}
 			if (Input.GetKeyDown("l") && !this.Punished && !this.AoT && !this.Hateful)
 			{

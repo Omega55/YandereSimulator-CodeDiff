@@ -104,7 +104,7 @@ public class ReputationScript : MonoBehaviour
 		}
 		if (Input.GetKeyDown("8"))
 		{
-			PlayerPrefs.SetFloat("Reputation", (float)34);
+			PlayerPrefs.SetFloat("Reputation", (float)50);
 			this.Reputation = PlayerPrefs.GetFloat("Reputation");
 		}
 	}

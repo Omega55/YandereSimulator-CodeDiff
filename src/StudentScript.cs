@@ -57,8 +57,6 @@ public class StudentScript : MonoBehaviour
 
 	public Renderer Drills;
 
-	public Mesh TestMesh;
-
 	public Transform CurrentDestination;
 
 	public Transform WitnessPOV;
@@ -96,6 +94,8 @@ public class StudentScript : MonoBehaviour
 	public GameObject Character;
 
 	public GameObject Marker;
+
+	public GameObject Phone;
 
 	public bool WitnessedMurder;
 
@@ -259,7 +259,6 @@ public class StudentScript : MonoBehaviour
 			this.Ragdoll.AllColliders[i].enabled = false;
 		}
 		this.Ragdoll.AllColliders[10].enabled = true;
-		this.Ragdoll.Prompt.enabled = false;
 	}
 
 	public virtual void Update()
@@ -341,11 +340,13 @@ public class StudentScript : MonoBehaviour
 				this.DistanceToDestination = Vector3.Distance(this.transform.position, this.Pathfinding.target.position);
 				if (this.DistanceToDestination > (float)5)
 				{
+					Debug.Log("Should be running.");
 					this.Character.animation.CrossFade("f02_run_00");
 					this.Pathfinding.speed = (float)4;
 				}
 				else if (this.DistanceToDestination > (float)1)
 				{
+					Debug.Log("Should be walking.");
 					this.Character.animation.CrossFade("f02_walk_00");
 					this.Pathfinding.canMove = true;
 					this.Pathfinding.speed = (float)1;
@@ -489,6 +490,7 @@ public class StudentScript : MonoBehaviour
 				this.Character.animation["f02_phonePose_00"].weight = Mathf.Lerp(this.Character.animation["f02_phonePose_00"].weight, (float)1, Time.deltaTime * (float)10);
 				if (this.transform.position.z > (float)-49)
 				{
+					this.Phone.active = false;
 					this.Distracted = false;
 					this.Safe = false;
 					this.StudentManager.UpdateStudents();
@@ -751,6 +753,7 @@ public class StudentScript : MonoBehaviour
 					this.HipCollider.enabled = true;
 					this.Prompt.enabled = false;
 					this.enabled = false;
+					this.Ragdoll.AllColliders[10].isTrigger = false;
 					this.Ragdoll.BreastSize = this.BreastSize;
 					this.Ragdoll.Tranquil = this.Tranquil;
 					this.Ragdoll.Yandere = this.Yandere;
@@ -816,7 +819,10 @@ public class StudentScript : MonoBehaviour
 				this.IgnoreTimer = (float)5;
 				this.Alarmed = false;
 				this.Reacted = false;
-				this.Routine = true;
+				if (!this.Following)
+				{
+					this.Routine = true;
+				}
 				this.AlarmTimer = (float)0;
 			}
 			else if (this.AlarmTimer > (float)1 && !this.Reacted)
@@ -876,10 +882,6 @@ public class StudentScript : MonoBehaviour
 		Vector3 localEulerAngles = this.transform.localEulerAngles;
 		float num8 = localEulerAngles.x = (float)num7;
 		Vector3 vector3 = this.transform.localEulerAngles = localEulerAngles;
-		if (Input.GetKeyDown("space"))
-		{
-			this.MyRenderer.sharedMesh = this.TestMesh;
-		}
 	}
 
 	public virtual void LateUpdate()
@@ -935,6 +937,7 @@ public class StudentScript : MonoBehaviour
 		for (int i = 0; i < Extensions.get_length(this.Outlines); i++)
 		{
 			this.Outlines[i].color = new Color((float)1, (float)0, (float)0, (float)1);
+			this.Outlines[i].enabled = true;
 		}
 		this.WitnessCamera.transform.parent = this.WitnessPOV;
 		this.WitnessCamera.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
@@ -1122,6 +1125,7 @@ public class StudentScript : MonoBehaviour
 		for (int i = 0; i < Extensions.get_length(this.Outlines); i++)
 		{
 			this.Outlines[i].color = new Color((float)1, 0.5f, (float)0, (float)1);
+			this.Outlines[i].enabled = true;
 		}
 		this.Ragdoll.HidePony = this.HidePony;
 	}
