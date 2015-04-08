@@ -138,7 +138,7 @@ public class StudentManagerScript : MonoBehaviour
 		this.ID = 0;
 		while (this.ID < Extensions.get_length(this.Students))
 		{
-			if (this.Students[this.ID] != null)
+			if (this.Students[this.ID] != null && !this.Students[this.ID].Safe)
 			{
 				this.Students[this.ID].Prompt.HideButton[0] = false;
 				this.Students[this.ID].Prompt.HideButton[2] = false;

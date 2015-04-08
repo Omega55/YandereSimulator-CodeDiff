@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using Boo.Lang.Runtime;
 using UnityEngine;
 using UnityScript.Lang;
 
@@ -19,13 +21,13 @@ public class StudentScript : MonoBehaviour
 
 	public WitnessCameraScript WitnessCamera;
 
-	public RagdollScript NewRagdollScript;
-
 	public DynamicGridObstacle Obstacle;
 
 	public ReputationScript Reputation;
 
 	public SubtitleScript Subtitle;
+
+	public RagdollScript Ragdoll;
 
 	public YandereScript Yandere;
 
@@ -55,6 +57,8 @@ public class StudentScript : MonoBehaviour
 
 	public Renderer Drills;
 
+	public Mesh TestMesh;
+
 	public Transform CurrentDestination;
 
 	public Transform WitnessPOV;
@@ -75,17 +79,21 @@ public class StudentScript : MonoBehaviour
 
 	public Plane[] Planes;
 
+	public SphereCollider HipCollider;
+
+	public Collider NotFaceCollider;
+
 	public Collider PantyCollider;
 
 	public Collider SkirtCollider;
+
+	public Collider FaceCollider;
 
 	public GameObject BloodSpray;
 
 	public GameObject MainCamera;
 
 	public GameObject Character;
-
-	public GameObject Ragdoll;
 
 	public GameObject Marker;
 
@@ -94,6 +102,8 @@ public class StudentScript : MonoBehaviour
 	public bool RepeatReaction;
 
 	public bool Complimented;
+
+	public bool Distracted;
 
 	public bool HidePony;
 
@@ -234,16 +244,8 @@ public class StudentScript : MonoBehaviour
 		{
 			this.AttackOnTitan();
 		}
-		if (this.Yandere.Armed)
-		{
-			this.Prompt.HideButton[0] = true;
-			this.Prompt.HideButton[2] = false;
-		}
-		else
-		{
-			this.Prompt.HideButton[0] = false;
-			this.Prompt.HideButton[2] = true;
-		}
+		this.Prompt.HideButton[0] = true;
+		this.Prompt.HideButton[2] = true;
 		if (PlayerPrefs.GetInt("Student_" + this.StudentID + "_Photographed") == 0)
 		{
 			for (int i = 0; i < Extensions.get_length(this.Outlines); i++)
@@ -251,6 +253,13 @@ public class StudentScript : MonoBehaviour
 				this.Outlines[i].enabled = false;
 			}
 		}
+		for (int i = 0; i < this.Ragdoll.AllRigidbodies.Length; i++)
+		{
+			this.Ragdoll.AllRigidbodies[i].isKinematic = true;
+			this.Ragdoll.AllColliders[i].enabled = false;
+		}
+		this.Ragdoll.AllColliders[10].enabled = true;
+		this.Ragdoll.Prompt.enabled = false;
 	}
 
 	public virtual void Update()
@@ -304,8 +313,10 @@ public class StudentScript : MonoBehaviour
 					this.Police.Show = true;
 					this.active = false;
 				}
-				if (this.transform.position.z < -49.33333f)
+				if (this.transform.position.z < (float)-49)
 				{
+					this.Prompt.Hide();
+					this.Prompt.enabled = false;
 					this.Safe = true;
 				}
 				if (this.DistanceToDestination > 0.5f)
@@ -361,36 +372,44 @@ public class StudentScript : MonoBehaviour
 		}
 		if (!this.Dying)
 		{
-			this.DistanceToPlayer = Vector3.Distance(this.transform.position, this.Yandere.transform.position);
-			if (this.DistanceToPlayer < (float)10)
+			if (!this.Distracted)
 			{
-				if (!this.WitnessedMurder)
+				this.Character.animation["f02_phonePose_00"].weight = Mathf.Lerp(this.Character.animation["f02_phonePose_00"].weight, (float)0, Time.deltaTime * (float)10);
+				this.DistanceToPlayer = Vector3.Distance(this.transform.position, this.Yandere.transform.position);
+				if (this.DistanceToPlayer < (float)10)
 				{
-					if (!this.Talking)
+					if (!this.WitnessedMurder)
 					{
-						if ((this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].Suspicious) || this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.333f || this.Yandere.Attacking)
+						if (!this.Talking)
 						{
-							this.Planes = GeometryUtility.CalculateFrustumPlanes(this.Eyes);
-							if (GeometryUtility.TestPlanesAABB(this.Planes, this.Yandere.collider.bounds))
+							if ((this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].Suspicious) || this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.333f || this.Yandere.Attacking)
 							{
-								RaycastHit raycastHit = default(RaycastHit);
-								if (Physics.Linecast(this.Eyes.transform.position, this.Yandere.transform.position + Vector3.up * (float)1, out raycastHit))
+								this.Planes = GeometryUtility.CalculateFrustumPlanes(this.Eyes);
+								if (GeometryUtility.TestPlanesAABB(this.Planes, this.Yandere.collider.bounds))
 								{
-									if (raycastHit.collider.gameObject == this.Yandere.gameObject)
+									RaycastHit raycastHit = default(RaycastHit);
+									if (Physics.Linecast(this.Eyes.transform.position, this.Yandere.transform.position + Vector3.up * (float)1, out raycastHit))
 									{
-										if (this.Yandere.Attacking || (this.Yandere.NearBodies > 0 && this.Yandere.Bloodiness > (float)0) || (this.Yandere.NearBodies > 0 && this.Yandere.Armed) || (this.Yandere.NearBodies > 0 && this.Yandere.Sanity < 66.66666f))
+										if (raycastHit.collider.gameObject == this.Yandere.gameObject)
 										{
-											this.WitnessMurder();
+											if (this.Yandere.Attacking || (this.Yandere.NearBodies > 0 && this.Yandere.Bloodiness > (float)0) || (this.Yandere.NearBodies > 0 && this.Yandere.Armed) || (this.Yandere.NearBodies > 0 && this.Yandere.Sanity < 66.66666f))
+											{
+												this.WitnessMurder();
+											}
+											else if (!this.Alarmed && this.IgnoreTimer <= (float)0)
+											{
+												this.Alarm += Time.deltaTime * ((float)100 / this.DistanceToPlayer);
+											}
 										}
-										else if (!this.Alarmed && this.IgnoreTimer <= (float)0)
+										else
 										{
-											this.Alarm += Time.deltaTime * ((float)100 / this.DistanceToPlayer);
+											this.Alarm -= Time.deltaTime * (float)100;
 										}
 									}
-									else
-									{
-										this.Alarm -= Time.deltaTime * (float)100;
-									}
+								}
+								else if (!this.Alarmed)
+								{
+									this.Alarm -= Time.deltaTime * (float)100;
 								}
 							}
 							else if (!this.Alarmed)
@@ -398,76 +417,82 @@ public class StudentScript : MonoBehaviour
 								this.Alarm -= Time.deltaTime * (float)100;
 							}
 						}
-						else if (!this.Alarmed)
+						else
 						{
 							this.Alarm -= Time.deltaTime * (float)100;
 						}
 					}
-					else
+					if (this.Alarm > (float)100 && !this.Alarmed)
 					{
-						this.Alarm -= Time.deltaTime * (float)100;
+						for (int i = 0; i < Extensions.get_length(this.Outlines); i++)
+						{
+							this.Outlines[i].color = new Color((float)1, (float)1, (float)0, (float)1);
+						}
+						this.Pathfinding.canSearch = false;
+						this.Pathfinding.canMove = false;
+						this.Routine = false;
+						this.Alarmed = true;
+						this.Witness = true;
+						this.CameraEffects.Alarm();
+						string witnessed = this.Witnessed;
+						if (this.Yandere.Armed && this.Yandere.Bloodiness > (float)0 && this.Yandere.Sanity < 33.333f)
+						{
+							this.Witnessed = "Weapon and Blood and Insanity";
+							this.RepLoss = (float)30;
+						}
+						else if (this.Yandere.Armed && this.Yandere.Sanity < 33.333f)
+						{
+							this.Witnessed = "Weapon and Insanity";
+							this.RepLoss = (float)20;
+						}
+						else if (this.Yandere.Bloodiness > (float)0 && this.Yandere.Sanity < 33.333f)
+						{
+							this.Witnessed = "Blood and Insanity";
+							this.RepLoss = (float)20;
+						}
+						else if (this.Yandere.Armed && this.Yandere.Bloodiness > (float)0)
+						{
+							this.Witnessed = "Weapon and Blood";
+							this.RepLoss = (float)20;
+						}
+						else if (this.Yandere.Armed)
+						{
+							this.WeaponWitnessed = this.Yandere.Weapon[this.Yandere.Equipped].WeaponID;
+							this.Witnessed = "Weapon";
+							this.RepLoss = (float)10;
+						}
+						else if (this.Yandere.Bloodiness > (float)0)
+						{
+							this.Witnessed = "Blood";
+							this.RepLoss = (float)10;
+						}
+						else if (this.Yandere.Sanity < 33.333f)
+						{
+							this.Witnessed = "Insanity";
+							this.RepLoss = (float)10;
+						}
+						if (this.Witnessed == witnessed)
+						{
+							this.RepeatReaction = true;
+						}
+						this.Reputation.PendingRep = this.Reputation.PendingRep - this.RepLoss;
+						this.PendingRep -= this.RepLoss;
 					}
 				}
-				if (this.Alarm > (float)100 && !this.Alarmed)
+				else if (!this.Alarmed)
 				{
-					for (int i = 0; i < Extensions.get_length(this.Outlines); i++)
-					{
-						this.Outlines[i].color = new Color((float)1, (float)1, (float)0, (float)1);
-					}
-					this.Pathfinding.canSearch = false;
-					this.Pathfinding.canMove = false;
-					this.Routine = false;
-					this.Alarmed = true;
-					this.Witness = true;
-					this.CameraEffects.Alarm();
-					string witnessed = this.Witnessed;
-					if (this.Yandere.Armed && this.Yandere.Bloodiness > (float)0 && this.Yandere.Sanity < 33.333f)
-					{
-						this.Witnessed = "Weapon and Blood and Insanity";
-						this.RepLoss = (float)30;
-					}
-					else if (this.Yandere.Armed && this.Yandere.Sanity < 33.333f)
-					{
-						this.Witnessed = "Weapon and Insanity";
-						this.RepLoss = (float)20;
-					}
-					else if (this.Yandere.Bloodiness > (float)0 && this.Yandere.Sanity < 33.333f)
-					{
-						this.Witnessed = "Blood and Insanity";
-						this.RepLoss = (float)20;
-					}
-					else if (this.Yandere.Armed && this.Yandere.Bloodiness > (float)0)
-					{
-						this.Witnessed = "Weapon and Blood";
-						this.RepLoss = (float)20;
-					}
-					else if (this.Yandere.Armed)
-					{
-						this.WeaponWitnessed = this.Yandere.Weapon[this.Yandere.Equipped].WeaponID;
-						this.Witnessed = "Weapon";
-						this.RepLoss = (float)10;
-					}
-					else if (this.Yandere.Bloodiness > (float)0)
-					{
-						this.Witnessed = "Blood";
-						this.RepLoss = (float)10;
-					}
-					else if (this.Yandere.Sanity < 33.333f)
-					{
-						this.Witnessed = "Insanity";
-						this.RepLoss = (float)10;
-					}
-					if (this.Witnessed == witnessed)
-					{
-						this.RepeatReaction = true;
-					}
-					this.Reputation.PendingRep = this.Reputation.PendingRep - this.RepLoss;
-					this.PendingRep -= this.RepLoss;
+					this.Alarm -= Time.deltaTime * (float)100;
 				}
 			}
-			else if (!this.Alarmed)
+			else
 			{
-				this.Alarm -= Time.deltaTime * (float)100;
+				this.Character.animation["f02_phonePose_00"].weight = Mathf.Lerp(this.Character.animation["f02_phonePose_00"].weight, (float)1, Time.deltaTime * (float)10);
+				if (this.transform.position.z > (float)-49)
+				{
+					this.Distracted = false;
+					this.Safe = false;
+					this.StudentManager.UpdateStudents();
+				}
 			}
 		}
 		if (this.Alarm > (float)100)
@@ -719,23 +744,17 @@ public class StudentScript : MonoBehaviour
 				}
 				else
 				{
-					GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.Ragdoll, this.transform.position, this.transform.rotation);
-					this.NewRagdollScript = (RagdollScript)gameObject.GetComponent(typeof(RagdollScript));
-					this.NewRagdollScript.AnimStartTime = this.Character.animation["f02_down_22"].time;
-					this.NewRagdollScript.BreastSize = this.BreastSize;
-					this.NewRagdollScript.Yandere = this.Yandere;
-					this.NewRagdollScript.MyRenderer.materials[1].mainTexture = this.HairTexture;
-					this.NewRagdollScript.MyRenderer.materials[3].mainTexture = this.HairTexture;
-					if (!this.Tranquil)
-					{
-						this.BloodSpray.transform.parent = ((RagdollScript)gameObject.GetComponent(typeof(RagdollScript))).BloodParent;
-						this.BloodSpray.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
-						this.BloodSpray.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
-					}
-					else
-					{
-						((RagdollScript)gameObject.GetComponent(typeof(RagdollScript))).Tranquil = true;
-					}
+					this.NotFaceCollider.enabled = false;
+					this.FaceCollider.enabled = false;
+					this.MyController.enabled = false;
+					this.Pathfinding.enabled = false;
+					this.HipCollider.enabled = true;
+					this.Prompt.enabled = false;
+					this.enabled = false;
+					this.Ragdoll.BreastSize = this.BreastSize;
+					this.Ragdoll.Tranquil = this.Tranquil;
+					this.Ragdoll.Yandere = this.Yandere;
+					this.Ragdoll.enabled = true;
 					this.Reputation.PendingRep = this.Reputation.PendingRep + this.PendingRep * (float)-1;
 					if (this.WitnessedMurder)
 					{
@@ -743,7 +762,8 @@ public class StudentScript : MonoBehaviour
 					}
 					this.TransferHair();
 					UnityEngine.Object.Destroy(this.DetectionMarker);
-					UnityEngine.Object.Destroy(this.gameObject);
+					this.SetLayerRecursively(this.gameObject, 11);
+					this.tag = "Blood";
 				}
 			}
 		}
@@ -856,6 +876,10 @@ public class StudentScript : MonoBehaviour
 		Vector3 localEulerAngles = this.transform.localEulerAngles;
 		float num8 = localEulerAngles.x = (float)num7;
 		Vector3 vector3 = this.transform.localEulerAngles = localEulerAngles;
+		if (Input.GetKeyDown("space"))
+		{
+			this.MyRenderer.sharedMesh = this.TestMesh;
+		}
 	}
 
 	public virtual void LateUpdate()
@@ -1099,58 +1123,7 @@ public class StudentScript : MonoBehaviour
 		{
 			this.Outlines[i].color = new Color((float)1, 0.5f, (float)0, (float)1);
 		}
-		if (this.Hairstyle == "RightTail")
-		{
-			this.PigtailR.transform.parent.transform.parent.transform.parent = this.NewRagdollScript.Head;
-			this.PigtailR.transform.parent.transform.parent.transform.localPosition = new Vector3(0.085f, 0.15f, (float)0);
-			this.PigtailR.transform.parent.transform.parent.transform.localEulerAngles = new Vector3((float)0, (float)-90, (float)0);
-			this.NewRagdollScript.HidePony = true;
-		}
-		else if (this.Hairstyle == "LeftTail")
-		{
-			this.PigtailL.transform.parent.transform.parent.transform.parent = this.NewRagdollScript.Head;
-			this.PigtailL.transform.parent.transform.parent.transform.localPosition = new Vector3(-0.085f, 0.15f, (float)0);
-			this.PigtailL.transform.parent.transform.parent.transform.localEulerAngles = new Vector3((float)0, (float)90, (float)0);
-			this.NewRagdollScript.HidePony = true;
-		}
-		else if (this.Hairstyle == "PigTails")
-		{
-			this.PigtailR.transform.parent.transform.parent.transform.parent = this.NewRagdollScript.Head;
-			this.PigtailR.transform.parent.transform.parent.transform.localPosition = new Vector3(0.085f, 0.15f, (float)0);
-			this.PigtailR.transform.parent.transform.parent.transform.localEulerAngles = new Vector3((float)0, (float)-90, (float)0);
-			this.PigtailL.transform.parent.transform.parent.transform.parent = this.NewRagdollScript.Head;
-			this.PigtailL.transform.parent.transform.parent.transform.localPosition = new Vector3(-0.085f, 0.15f, (float)0);
-			this.PigtailL.transform.parent.transform.parent.transform.localEulerAngles = new Vector3((float)0, (float)90, (float)0);
-			this.NewRagdollScript.HidePony = true;
-		}
-		else if (this.Hairstyle == "TriTails")
-		{
-			this.PigtailR.transform.parent.transform.parent.transform.parent = this.NewRagdollScript.Head;
-			this.PigtailR.transform.parent.transform.parent.transform.localPosition = new Vector3(0.085f, 0.15f, (float)0);
-			this.PigtailR.transform.parent.transform.parent.transform.localEulerAngles = new Vector3((float)0, (float)-90, (float)0);
-			this.PigtailL.transform.parent.transform.parent.transform.parent = this.NewRagdollScript.Head;
-			this.PigtailL.transform.parent.transform.parent.transform.localPosition = new Vector3(-0.085f, 0.15f, (float)0);
-			this.PigtailL.transform.parent.transform.parent.transform.localEulerAngles = new Vector3((float)0, (float)90, (float)0);
-		}
-		else if (this.Hairstyle == "TwinTails")
-		{
-			this.PigtailR.transform.parent.transform.parent.transform.parent = this.NewRagdollScript.Head;
-			this.PigtailR.transform.parent.transform.parent.transform.localPosition = new Vector3(0.085f, 0.15f, (float)0);
-			this.PigtailR.transform.parent.transform.parent.transform.localEulerAngles = new Vector3((float)0, (float)-90, (float)0);
-			this.PigtailL.transform.parent.transform.parent.transform.parent = this.NewRagdollScript.Head;
-			this.PigtailL.transform.parent.transform.parent.transform.localPosition = new Vector3(-0.085f, 0.15f, (float)0);
-			this.PigtailL.transform.parent.transform.parent.transform.localEulerAngles = new Vector3((float)0, (float)90, (float)0);
-			this.PigtailR.transform.parent.transform.parent.transform.localScale = new Vector3((float)2, (float)2, (float)2);
-			this.PigtailL.transform.parent.transform.parent.transform.localScale = new Vector3((float)2, (float)2, (float)2);
-			this.NewRagdollScript.HidePony = true;
-		}
-		else if (this.Hairstyle == "Drills")
-		{
-			this.Drills.transform.parent.transform.parent.transform.parent = this.NewRagdollScript.Head;
-			this.Drills.transform.parent.transform.parent.transform.localPosition = new Vector3((float)0, -0.9f, 0.1f);
-			this.Drills.transform.parent.transform.parent.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
-			this.NewRagdollScript.HidePony = true;
-		}
+		this.Ragdoll.HidePony = this.HidePony;
 	}
 
 	public virtual void PickRandomAnim()
@@ -1178,7 +1151,48 @@ public class StudentScript : MonoBehaviour
 		this.SkirtCollider.enabled = false;
 	}
 
+	public virtual void SetLayerRecursively(GameObject obj, int newLayer)
+	{
+		obj.layer = newLayer;
+		IEnumerator enumerator = UnityRuntimeServices.GetEnumerator(obj.transform);
+		while (enumerator.MoveNext())
+		{
+			object obj2 = enumerator.Current;
+			object obj4;
+			object obj3 = obj4 = obj2;
+			if (!(obj3 is Transform))
+			{
+				obj4 = RuntimeServices.Coerce(obj3, typeof(Transform));
+			}
+			Transform transform = (Transform)obj4;
+			this.SetLayerRecursively(transform.gameObject, newLayer);
+			UnityRuntimeServices.Update(enumerator, transform);
+		}
+	}
+
+	public virtual void SetTagRecursively(GameObject obj, string newTag)
+	{
+		obj.tag = newTag;
+		IEnumerator enumerator = UnityRuntimeServices.GetEnumerator(obj.transform);
+		while (enumerator.MoveNext())
+		{
+			object obj2 = enumerator.Current;
+			object obj4;
+			object obj3 = obj4 = obj2;
+			if (!(obj3 is Transform))
+			{
+				obj4 = RuntimeServices.Coerce(obj3, typeof(Transform));
+			}
+			Transform transform = (Transform)obj4;
+			this.SetTagRecursively(transform.gameObject, newTag);
+			UnityRuntimeServices.Update(enumerator, transform);
+		}
+	}
+
 	public virtual void Main()
 	{
+		this.Character.animation["f02_phonePose_00"].layer = 1;
+		this.Character.animation["f02_phonePose_00"].weight = (float)0;
+		this.Character.animation.Play("f02_phonePose_00");
 	}
 }

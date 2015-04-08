@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$1212 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$1214 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$1219;
+		internal YandereScript $self_$1221;
 
-		public $ApplyCustomCostume$1212(YandereScript self_)
+		public $ApplyCustomCostume$1214(YandereScript self_)
 		{
-			this.$self_$1219 = self_;
+			this.$self_$1221 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$1212.$(this.$self_$1219);
+			return new YandereScript.$ApplyCustomCostume$1214.$(this.$self_$1221);
 		}
 	}
 
@@ -632,6 +632,7 @@ public class YandereScript : MonoBehaviour
 							}
 							else
 							{
+								this.Obscurance.enabled = false;
 								this.YandereVision = false;
 								this.Crouching = true;
 								this.EmptyHands();
@@ -643,6 +644,7 @@ public class YandereScript : MonoBehaviour
 							if (this.CrawlTimer > 0.5f)
 							{
 								this.EmptyHands();
+								this.Obscurance.enabled = false;
 								this.YandereVision = false;
 								this.Crouching = false;
 								this.Crawling = true;
@@ -1682,7 +1684,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$1212(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$1214(this).GetEnumerator();
 	}
 
 	public virtual void UpdateHair()

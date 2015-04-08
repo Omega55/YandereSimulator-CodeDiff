@@ -37,6 +37,8 @@ public class EmergencyExitScript : MonoBehaviour
 			Vector3 vector2 = this.Pivot.localEulerAngles = localEulerAngles2;
 			if (this.FleeingStudent != null && this.Pivot.localEulerAngles.y > (float)89)
 			{
+				this.FleeingStudent.Prompt.Hide();
+				this.FleeingStudent.Prompt.enabled = false;
 				this.FleeingStudent.Safe = true;
 				this.FleeingStudent.Pathfinding.target = this.Neighborhood;
 				this.FleeingStudent.Pathfinding.SearchPath();

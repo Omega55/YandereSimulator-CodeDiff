@@ -33,7 +33,6 @@ public class PortalScript : MonoBehaviour
 		if (this.Prompt.Circle[0].fillAmount <= (float)0)
 		{
 			this.Prompt.Circle[0].fillAmount = (float)1;
-			this.Yandere.CanMove = false;
 			if (this.Clock.HourTime < 15.5f)
 			{
 				if (!this.Police.Show)
@@ -51,6 +50,7 @@ public class PortalScript : MonoBehaviour
 			{
 				this.Police.FadeOut = true;
 			}
+			this.Yandere.CanMove = false;
 		}
 		if (this.Transition)
 		{

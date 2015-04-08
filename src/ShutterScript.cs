@@ -256,11 +256,11 @@ public class ShutterScript : MonoBehaviour
 				this.Skirt = true;
 			}
 		}
-		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out raycastHit, float.PositiveInfinity, layerMask2) && (raycastHit.collider.gameObject.tag == "Blood" || raycastHit.collider.gameObject.tag == "Ragdoll"))
+		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out raycastHit, float.PositiveInfinity, layerMask2) && raycastHit.collider.gameObject.layer == 11)
 		{
 			this.ViolenceX.active = false;
 		}
-		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out raycastHit, float.PositiveInfinity, layerMask3) && (raycastHit.collider.gameObject.tag == "Blood" || raycastHit.collider.gameObject.tag == "Ragdoll"))
+		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out raycastHit, float.PositiveInfinity, layerMask3) && raycastHit.collider.gameObject.tag == "Blood")
 		{
 			this.ViolenceX.active = false;
 		}

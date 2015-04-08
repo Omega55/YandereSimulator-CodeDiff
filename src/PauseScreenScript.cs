@@ -270,12 +270,15 @@ public class PauseScreenScript : MonoBehaviour
 	{
 		this.transform.localPosition = new Vector3((float)0, (float)-1200, (float)0);
 		this.Yandere.YandereVision = false;
-		this.RPGCamera.enabled = false;
+		if (!this.Yandere.Talking)
+		{
+			this.RPGCamera.enabled = false;
+			this.Yandere.StopAiming();
+		}
 		this.ScreenBlur.enabled = true;
 		this.BypassPhone = true;
 		this.Quitting = true;
 		this.Show = true;
-		this.Yandere.StopAiming();
 	}
 
 	public virtual void ExitPhone()
@@ -286,7 +289,7 @@ public class PauseScreenScript : MonoBehaviour
 		this.BypassPhone = false;
 		this.PressedA = false;
 		this.Show = false;
-		if (this.Yandere.ShoulderCamera.Timer == (float)0)
+		if (!this.Yandere.Talking)
 		{
 			this.RPGCamera.enabled = true;
 		}

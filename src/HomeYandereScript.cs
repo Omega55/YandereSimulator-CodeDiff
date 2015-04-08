@@ -10,18 +10,18 @@ public class HomeYandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$1193 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$1195 : GenericGenerator<WWW>
 	{
-		internal HomeYandereScript $self_$1200;
+		internal HomeYandereScript $self_$1202;
 
-		public $ApplyCustomCostume$1193(HomeYandereScript self_)
+		public $ApplyCustomCostume$1195(HomeYandereScript self_)
 		{
-			this.$self_$1200 = self_;
+			this.$self_$1202 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new HomeYandereScript.$ApplyCustomCostume$1193.$(this.$self_$1200);
+			return new HomeYandereScript.$ApplyCustomCostume$1195.$(this.$self_$1202);
 		}
 	}
 
@@ -75,6 +75,7 @@ public class HomeYandereScript : MonoBehaviour
 	{
 		if (this.CanMove)
 		{
+			this.MyController.Move(Physics.gravity * 0.01f);
 			float axis = Input.GetAxis("Vertical");
 			float axis2 = Input.GetAxis("Horizontal");
 			Vector3 a = Camera.main.transform.TransformDirection(Vector3.forward);
@@ -133,7 +134,7 @@ public class HomeYandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new HomeYandereScript.$ApplyCustomCostume$1193(this).GetEnumerator();
+		return new HomeYandereScript.$ApplyCustomCostume$1195(this).GetEnumerator();
 	}
 
 	public virtual void UpdateHair()

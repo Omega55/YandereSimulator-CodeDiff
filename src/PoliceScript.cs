@@ -186,7 +186,7 @@ public class PoliceScript : MonoBehaviour
 				this.Yandere.StopAiming();
 				this.Yandere.CanMove = false;
 				this.Yandere.YandereVision = false;
-				this.Yandere.PauseScreen.active = false;
+				this.Yandere.PauseScreen.enabled = false;
 				this.Yandere.Character.animation.CrossFade("f02_idleShort_00");
 				for (int i = 1; i < 4; i++)
 				{

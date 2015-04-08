@@ -344,6 +344,10 @@ public class PromptScript : MonoBehaviour
 
 	public virtual void Hide()
 	{
+		if (this.Yandere == null)
+		{
+			this.Start();
+		}
 		if (this.Yandere.NearestPrompt == this)
 		{
 			this.Yandere.NearestPrompt = null;

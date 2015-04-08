@@ -18,6 +18,8 @@ public class RagdollScript : MonoBehaviour
 
 	public Rigidbody[] AllRigidbodies;
 
+	public Collider[] AllColliders;
+
 	public Rigidbody[] Rigidbodies;
 
 	public Transform BloodParent;
@@ -67,18 +69,17 @@ public class RagdollScript : MonoBehaviour
 	public virtual void Start()
 	{
 		Physics.IgnoreLayerCollision(11, 13, true);
-		if (this.Yandere == null)
-		{
-			this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent(typeof(YandereScript));
-		}
-		this.Character.animation.Play("f02_down_22");
-		this.Character.animation["f02_down_22"].time = this.AnimStartTime;
-		this.Character.animation["f02_down_22"].speed = (float)0;
 		this.Zs.active = this.Tranquil;
-		if (this.Tranquil)
+		if (!this.Tranquil)
 		{
-			this.BloodPoolSpawner.enabled = false;
+			this.BloodPoolSpawner.active = true;
 		}
+		for (int i = 0; i < this.AllRigidbodies.Length; i++)
+		{
+			this.AllRigidbodies[i].isKinematic = false;
+			this.AllColliders[i].enabled = true;
+		}
+		this.Prompt.enabled = true;
 	}
 
 	public virtual void Update()

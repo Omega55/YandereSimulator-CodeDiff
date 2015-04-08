@@ -21,7 +21,7 @@ public class RivalPoseScript : MonoBehaviour
 		if (Input.GetKeyDown("space"))
 		{
 			this.ID++;
-			if (this.ID > Extensions.get_length(this.AnimNames))
+			if (this.ID > Extensions.get_length(this.AnimNames) - 1)
 			{
 				this.ID = 0;
 			}
