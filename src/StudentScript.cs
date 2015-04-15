@@ -579,6 +579,7 @@ public class StudentScript : MonoBehaviour
 							}
 							else
 							{
+								this.Character.animation.CrossFade(this.IdleAnim);
 								this.CameraEffects.Alarm();
 							}
 						}
