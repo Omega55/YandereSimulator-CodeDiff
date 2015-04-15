@@ -89,7 +89,7 @@ public class JukeboxScript : MonoBehaviour
 			this.Nuclear.volume = Mathf.MoveTowards(this.Nuclear.volume, this.Volume, Time.deltaTime * (float)10);
 			this.Hatred.volume = Mathf.MoveTowards(this.Hatred.volume, this.Volume, Time.deltaTime * (float)10);
 		}
-		if (!this.Yandere.PauseScreen.Show)
+		if (!this.Yandere.PauseScreen.Show && !this.Yandere.Noticed)
 		{
 			if (Input.GetKeyDown("l") && !this.Egg)
 			{

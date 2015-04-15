@@ -449,7 +449,7 @@ public class StudentScript : MonoBehaviour
 						{
 							if (!this.Yandere.Noticed)
 							{
-								if ((this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].Suspicious) || this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || (this.StudentID == 1 && this.Yandere.NearSenpai))
+								if ((this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].Suspicious) || this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || (this.StudentID == 1 && this.Yandere.NearSenpai && !this.Yandere.Talking))
 								{
 									this.Planes = GeometryUtility.CalculateFrustumPlanes(this.Eyes);
 									if (GeometryUtility.TestPlanesAABB(this.Planes, this.Yandere.collider.bounds))
@@ -558,14 +558,7 @@ public class StudentScript : MonoBehaviour
 						{
 							if (this.Concern == 5)
 							{
-								this.Yandere.Sanity = (float)100;
-								this.Yandere.EyeShrink = (float)0;
-								this.Yandere.Jukebox.GameOver();
-								this.Yandere.UpdateSanity();
-								this.Yandere.EmptyHands();
-								this.Yandere.RPGCamera.enabled = false;
-								this.Yandere.CanMove = false;
-								this.Yandere.Noticed = true;
+								this.SenpaiNoticed();
 								if (this.Witnessed == "Stalking")
 								{
 									this.Character.animation.CrossFade(this.IdleAnim);
@@ -929,13 +922,7 @@ public class StudentScript : MonoBehaviour
 					{
 						this.Subtitle.UpdateLabel("Senpai Murder Reaction", 1, 4.5f);
 						this.GameOverCause = "Murder";
-						this.Yandere.Sanity = (float)100;
-						this.Yandere.EyeShrink = (float)0;
-						this.Yandere.Jukebox.GameOver();
-						this.Yandere.UpdateSanity();
-						this.Yandere.EmptyHands();
-						this.Yandere.RPGCamera.enabled = false;
-						this.Yandere.CanMove = false;
+						this.SenpaiNoticed();
 						this.Character.animation.CrossFade(this.ScaredAnim);
 						this.Yandere.ShoulderCamera.enabled = true;
 						this.Yandere.ShoulderCamera.Noticed = true;
@@ -1138,6 +1125,21 @@ public class StudentScript : MonoBehaviour
 			a = a.normalized * d;
 			this.MyController.Move(a * (Time.deltaTime * (float)10 / Time.timeScale));
 		}
+	}
+
+	public virtual void SenpaiNoticed()
+	{
+		this.Yandere.Sanity = (float)100;
+		this.Yandere.EyeShrink = (float)0;
+		this.Yandere.Jukebox.GameOver();
+		this.Yandere.UpdateSanity();
+		this.Yandere.EmptyHands();
+		this.Yandere.Obscurance.enabled = false;
+		this.Yandere.RPGCamera.enabled = false;
+		this.Yandere.YandereVision = false;
+		this.Yandere.Police.Show = false;
+		this.Yandere.CanMove = false;
+		this.Yandere.Noticed = true;
 	}
 
 	public virtual void WitnessMurder()

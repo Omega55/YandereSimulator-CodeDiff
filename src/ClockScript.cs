@@ -262,7 +262,7 @@ public class ClockScript : MonoBehaviour
 			{
 				this.EndTimeSkip();
 			}
-			if (Input.GetButtonDown("Start"))
+			if (this.Yandere.NearSenpai || Input.GetButtonDown("Start"))
 			{
 				this.EndTimeSkip();
 			}

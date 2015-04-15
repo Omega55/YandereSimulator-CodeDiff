@@ -1298,19 +1298,22 @@ public class YandereScript : MonoBehaviour
 					this.BreastSize = (float)0;
 				}
 			}
-			if (Input.GetKeyDown("l") && !this.Punished && !this.AoT && !this.Hateful)
+			if (this.CanMove)
 			{
-				this.StudentManager.AttackOnTitan();
-				this.AttackOnTitan();
-			}
-			if (Input.GetKeyDown("k") && !this.Punished && !this.AoT && !this.Hateful)
-			{
-				this.Punish();
-			}
-			if (Input.GetKeyDown("j") && !this.Punished && !this.AoT && !this.Hateful)
-			{
-				this.Unequip();
-				this.Hate();
+				if (Input.GetKeyDown("l") && !this.Punished && !this.AoT && !this.Hateful)
+				{
+					this.StudentManager.AttackOnTitan();
+					this.AttackOnTitan();
+				}
+				if (Input.GetKeyDown("k") && !this.Punished && !this.AoT && !this.Hateful)
+				{
+					this.Punish();
+				}
+				if (Input.GetKeyDown("j") && !this.Punished && !this.AoT && !this.Hateful)
+				{
+					this.Unequip();
+					this.Hate();
+				}
 			}
 			if (Input.GetKeyDown("left alt"))
 			{

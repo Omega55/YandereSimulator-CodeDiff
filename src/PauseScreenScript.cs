@@ -246,7 +246,7 @@ public class PauseScreenScript : MonoBehaviour
 					{
 						if (Input.GetButtonDown("A"))
 						{
-							PlayerPrefs.SetInt("Weekday", 0);
+							PlayerPrefs.SetInt("Weekday", 5);
 							Application.Quit();
 						}
 						if (Input.GetButtonDown("B"))
@@ -270,7 +270,7 @@ public class PauseScreenScript : MonoBehaviour
 
 	public virtual void JumpToQuit()
 	{
-		if (!this.Police.Show)
+		if (!this.Police.FadeOut && !this.Clock.TimeSkip && !this.Yandere.Noticed)
 		{
 			this.transform.localPosition = new Vector3((float)0, (float)-1200, (float)0);
 			this.Yandere.YandereVision = false;
