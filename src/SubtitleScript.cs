@@ -65,7 +65,33 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] Deaths;
 
+	public string[] SenpaiInsanityReactions;
+
+	public string[] SenpaiWeaponReactions;
+
+	public string[] SenpaiBloodReactions;
+
+	public string[] SenpaiStalkingReactions;
+
+	public string[] SenpaiMurderReactions;
+
+	public string[] YandereWhimpers;
+
+	public int RandomID;
+
 	public float Timer;
+
+	public AudioClip[] SenpaiInsanityReactionClips;
+
+	public AudioClip[] SenpaiWeaponReactionClips;
+
+	public AudioClip[] SenpaiBloodReactionClips;
+
+	public AudioClip[] SenpaiStalkingReactionClips;
+
+	public AudioClip[] SenpaiMurderReactionClips;
+
+	public AudioClip[] YandereWhimperClips;
 
 	public virtual void Start()
 	{
@@ -196,6 +222,41 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.Label.text = this.Deaths[UnityEngine.Random.Range(0, Extensions.get_length(this.Deaths))];
 		}
+		else if (ReactionType == "Senpai Insanity Reaction")
+		{
+			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.SenpaiInsanityReactions));
+			this.Label.text = this.SenpaiInsanityReactions[this.RandomID];
+			this.PlayVoice(ReactionType, this.RandomID);
+		}
+		else if (ReactionType == "Senpai Weapon Reaction")
+		{
+			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.SenpaiWeaponReactions));
+			this.Label.text = this.SenpaiWeaponReactions[this.RandomID];
+			this.PlayVoice(ReactionType, this.RandomID);
+		}
+		else if (ReactionType == "Senpai Blood Reaction")
+		{
+			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.SenpaiBloodReactions));
+			this.Label.text = this.SenpaiBloodReactions[this.RandomID];
+			this.PlayVoice(ReactionType, this.RandomID);
+		}
+		else if (ReactionType == "Senpai Stalking Reaction")
+		{
+			this.Label.text = this.SenpaiStalkingReactions[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
+		else if (ReactionType == "Senpai Murder Reaction")
+		{
+			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.SenpaiMurderReactions));
+			this.Label.text = this.SenpaiMurderReactions[this.RandomID];
+			this.PlayVoice(ReactionType, this.RandomID);
+		}
+		else if (ReactionType == "Yandere Whimper")
+		{
+			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.YandereWhimpers));
+			this.Label.text = this.YandereWhimpers[this.RandomID];
+			this.PlayVoice(ReactionType, this.RandomID);
+		}
 		this.Timer = Duration;
 	}
 
@@ -209,6 +270,34 @@ public class SubtitleScript : MonoBehaviour
 				this.Label.text = string.Empty;
 				this.Timer = (float)0;
 			}
+		}
+	}
+
+	public virtual void PlayVoice(string ReactionType, int ID)
+	{
+		if (ReactionType == "Senpai Insanity Reaction")
+		{
+			this.audio.PlayOneShot(this.SenpaiInsanityReactionClips[ID]);
+		}
+		else if (ReactionType == "Senpai Weapon Reaction")
+		{
+			this.audio.PlayOneShot(this.SenpaiWeaponReactionClips[ID]);
+		}
+		else if (ReactionType == "Senpai Blood Reaction")
+		{
+			this.audio.PlayOneShot(this.SenpaiBloodReactionClips[ID]);
+		}
+		else if (ReactionType == "Senpai Stalking Reaction")
+		{
+			this.audio.PlayOneShot(this.SenpaiStalkingReactionClips[ID]);
+		}
+		else if (ReactionType == "Senpai Murder Reaction")
+		{
+			this.audio.PlayOneShot(this.SenpaiMurderReactionClips[ID]);
+		}
+		else if (ReactionType == "Yandere Whimper")
+		{
+			this.audio.PlayOneShot(this.YandereWhimperClips[ID]);
 		}
 	}
 

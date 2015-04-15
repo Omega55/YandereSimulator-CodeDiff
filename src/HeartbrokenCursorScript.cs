@@ -4,6 +4,8 @@ using UnityEngine;
 [Serializable]
 public class HeartbrokenCursorScript : MonoBehaviour
 {
+	public HeartbrokenScript Heartbroken;
+
 	public InputManagerScript InputManager;
 
 	public UISprite Darkness;
@@ -55,7 +57,7 @@ public class HeartbrokenCursorScript : MonoBehaviour
 						this.Selected = 4;
 					}
 				}
-				if (this.Selected == 2 || this.Selected == 3)
+				if (this.Selected != 4)
 				{
 					int num2 = 1;
 					Color color = this.Continue.color;
@@ -77,6 +79,7 @@ public class HeartbrokenCursorScript : MonoBehaviour
 		}
 		else
 		{
+			this.Heartbroken.audio.volume = this.Heartbroken.audio.volume - Time.deltaTime;
 			float a = this.Darkness.color.a + Time.deltaTime;
 			Color color5 = this.Darkness.color;
 			float num6 = color5.a = a;
@@ -84,7 +87,11 @@ public class HeartbrokenCursorScript : MonoBehaviour
 			if (this.Darkness.color.a >= (float)1)
 			{
 				PlayerPrefs.DeleteAll();
-				if (this.Selected == 2)
+				if (this.Selected == 1)
+				{
+					Application.LoadLevel(Application.loadedLevel);
+				}
+				else if (this.Selected == 2)
 				{
 					Application.LoadLevel("CalendarScene");
 				}

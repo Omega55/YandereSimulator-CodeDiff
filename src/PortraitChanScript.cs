@@ -32,6 +32,8 @@ public class PortraitChanScript : MonoBehaviour
 
 	public bool HidePony;
 
+	public bool Male;
+
 	public float BreastSize;
 
 	public string Hairstyle;
@@ -47,49 +49,91 @@ public class PortraitChanScript : MonoBehaviour
 	{
 		this.BreastSize = this.JSON.StudentBreasts[this.StudentID];
 		this.Hairstyle = this.JSON.StudentHairstyles[this.StudentID];
-		this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
-		this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
+		if (!this.Male)
+		{
+			this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
+			this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
+			this.UpdateHair();
+		}
 		this.SetColors();
-		this.UpdateHair();
 	}
 
 	public virtual void SetColors()
 	{
 		string a = this.JSON.StudentColors[this.StudentID];
-		if (a == "Red")
+		if (!this.Male)
 		{
-			this.HairTexture = this.StudentManager.Colors[0];
+			if (a == "Red")
+			{
+				this.HairTexture = this.StudentManager.Colors[0];
+			}
+			else if (a == "Yellow")
+			{
+				this.HairTexture = this.StudentManager.Colors[1];
+			}
+			else if (a == "Green")
+			{
+				this.HairTexture = this.StudentManager.Colors[2];
+			}
+			else if (a == "Cyan")
+			{
+				this.HairTexture = this.StudentManager.Colors[3];
+			}
+			else if (a == "Blue")
+			{
+				this.HairTexture = this.StudentManager.Colors[4];
+			}
+			else if (a == "Purple")
+			{
+				this.HairTexture = this.StudentManager.Colors[5];
+				this.DrillTexture = this.StudentManager.Colors[6];
+			}
+			this.MyRenderer.materials[1].mainTexture = this.HairTexture;
+			this.MyRenderer.materials[3].mainTexture = this.HairTexture;
 		}
-		else if (a == "Yellow")
+		else
 		{
-			this.HairTexture = this.StudentManager.Colors[1];
+			if (a == "Red")
+			{
+				this.HairTexture = this.StudentManager.MaleColors[0];
+			}
+			else if (a == "Yellow")
+			{
+				this.HairTexture = this.StudentManager.MaleColors[1];
+			}
+			else if (a == "Green")
+			{
+				this.HairTexture = this.StudentManager.MaleColors[2];
+			}
+			else if (a == "Cyan")
+			{
+				this.HairTexture = this.StudentManager.MaleColors[3];
+			}
+			else if (a == "Blue")
+			{
+				this.HairTexture = this.StudentManager.MaleColors[4];
+			}
+			else if (a == "Purple")
+			{
+				this.HairTexture = this.StudentManager.MaleColors[5];
+			}
+			else if (a == "Black")
+			{
+				this.HairTexture = this.StudentManager.MaleColors[6];
+			}
+			this.MyRenderer.materials[0].mainTexture = this.HairTexture;
+			this.MyRenderer.materials[3].mainTexture = this.HairTexture;
 		}
-		else if (a == "Green")
+		if (!this.Male)
 		{
-			this.HairTexture = this.StudentManager.Colors[2];
-		}
-		else if (a == "Cyan")
-		{
-			this.HairTexture = this.StudentManager.Colors[3];
-		}
-		else if (a == "Blue")
-		{
-			this.HairTexture = this.StudentManager.Colors[4];
-		}
-		else if (a == "Purple")
-		{
-			this.HairTexture = this.StudentManager.Colors[5];
-			this.DrillTexture = this.StudentManager.Colors[6];
-		}
-		this.MyRenderer.materials[1].mainTexture = this.HairTexture;
-		this.MyRenderer.materials[3].mainTexture = this.HairTexture;
-		this.PigtailR.material.mainTexture = this.HairTexture;
-		this.PigtailL.material.mainTexture = this.HairTexture;
-		if (this.DrillTexture != null)
-		{
-			this.Drills.materials[0].mainTexture = this.DrillTexture;
-			this.Drills.materials[1].mainTexture = this.DrillTexture;
-			this.Drills.materials[2].mainTexture = this.DrillTexture;
+			this.PigtailR.material.mainTexture = this.HairTexture;
+			this.PigtailL.material.mainTexture = this.HairTexture;
+			if (this.DrillTexture != null)
+			{
+				this.Drills.materials[0].mainTexture = this.DrillTexture;
+				this.Drills.materials[1].mainTexture = this.DrillTexture;
+				this.Drills.materials[2].mainTexture = this.DrillTexture;
+			}
 		}
 	}
 

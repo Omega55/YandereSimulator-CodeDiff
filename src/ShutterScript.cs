@@ -235,21 +235,24 @@ public class ShutterScript : MonoBehaviour
 		{
 			if (raycastHit.collider.gameObject.name == "Panties")
 			{
-				this.PantiesX.active = false;
 				this.Student = (StudentScript)raycastHit.collider.gameObject.transform.root.gameObject.GetComponent(typeof(StudentScript));
+				this.PantiesX.active = false;
 			}
 			else if (raycastHit.collider.gameObject.name == "Face")
 			{
-				this.InfoX.active = false;
 				this.Student = (StudentScript)raycastHit.collider.gameObject.transform.root.gameObject.GetComponent(typeof(StudentScript));
+				if (this.Student.StudentID == 1)
+				{
+					this.SenpaiX.active = false;
+				}
+				else
+				{
+					this.InfoX.active = false;
+				}
 			}
 			else if (raycastHit.collider.gameObject.name == "NotFace")
 			{
 				this.NotFace = true;
-			}
-			else if (raycastHit.collider.gameObject.name == "SenpaiHead")
-			{
-				this.SenpaiX.active = false;
 			}
 			else if (raycastHit.collider.gameObject.name == "Skirt")
 			{

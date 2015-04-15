@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$1214 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$1244 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$1221;
+		internal YandereScript $self_$1251;
 
-		public $ApplyCustomCostume$1214(YandereScript self_)
+		public $ApplyCustomCostume$1244(YandereScript self_)
 		{
-			this.$self_$1221 = self_;
+			this.$self_$1251 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$1214.$(this.$self_$1221);
+			return new YandereScript.$ApplyCustomCostume$1244.$(this.$self_$1251);
 		}
 	}
 
@@ -45,11 +45,11 @@ public class YandereScript : MonoBehaviour
 
 	public ColorCorrectionCurves ColorCorrection;
 
+	public SelectiveGrayscale SelectGrayscale;
+
 	public HighlightingRenderer HighlightingR;
 
 	public HighlightingBlitter HighlightingB;
-
-	public RedGrayscaleEffect RedGrayscale;
 
 	public AmbientObscurance Obscurance;
 
@@ -88,6 +88,8 @@ public class YandereScript : MonoBehaviour
 	public SubtitleScript Subtitle;
 
 	public StudentScript Follower;
+
+	public JukeboxScript Jukebox;
 
 	public OutlineScript Outline;
 
@@ -134,8 +136,6 @@ public class YandereScript : MonoBehaviour
 	public Transform Eyes;
 
 	public AudioSource HeartBeat;
-
-	public AudioSource Jukebox;
 
 	public GameObject CinematicCamera;
 
@@ -281,19 +281,19 @@ public class YandereScript : MonoBehaviour
 
 	public bool PossessTranq;
 
-	public bool Heartbroken;
-
 	public bool NearSenpai;
 
 	public bool CanTranq;
 
+	public bool Collapse;
+
 	public bool HidePony;
+
+	public bool Noticed;
 
 	public bool CanMove;
 
 	public bool Armed;
-
-	public bool Die;
 
 	public Texture[] BloodTextures;
 
@@ -812,10 +812,6 @@ public class YandereScript : MonoBehaviour
 					this.Sanity += Time.deltaTime * 0.17f;
 					this.UpdateSanity();
 				}
-				if (this.Heartbroken && this.Character.animation["f02_down_22"].time >= this.Character.animation["f02_down_22"].length)
-				{
-					this.Character.animation.CrossFade("f02_down_23");
-				}
 			}
 			if (!this.Laughing)
 			{
@@ -853,12 +849,18 @@ public class YandereScript : MonoBehaviour
 			{
 				this.Character.animation["f02_mopCarry_00"].weight = Mathf.Lerp(this.Character.animation["f02_mopCarry_00"].weight, (float)1, Time.deltaTime * (float)10);
 			}
-			if (this.Die)
+			if (this.Noticed)
 			{
-				this.Character.animation.CrossFade("f02_down_22");
-				this.Heartbroken = true;
-				this.CanMove = false;
-				this.Die = false;
+				if (!this.Collapse)
+				{
+					this.Character.animation.CrossFade("f02_scaredIdle_00");
+					this.targetRotation = Quaternion.LookRotation(this.Senpai.position - this.transform.position);
+					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
+				}
+				else if (this.Character.animation["f02_down_22"].time >= this.Character.animation["f02_down_22"].length)
+				{
+					this.Character.animation.CrossFade("f02_down_23");
+				}
 			}
 			if (Input.GetButtonDown("LS") || Input.GetKeyDown("t"))
 			{
@@ -904,7 +906,7 @@ public class YandereScript : MonoBehaviour
 			{
 				this.NearSenpai = false;
 			}
-			if (this.NearSenpai)
+			if (this.NearSenpai && !this.Noticed)
 			{
 				this.DepthOfField.enabled = true;
 				this.DepthOfField.focalSize = Mathf.Lerp(this.DepthOfField.focalSize, (float)0, Time.deltaTime * (float)10);
@@ -1154,6 +1156,7 @@ public class YandereScript : MonoBehaviour
 							this.UpdateBlood();
 						}
 						this.TargetStudent.Dead = true;
+						this.Police.MurderWeapons = this.Police.MurderWeapons + 1;
 						this.Police.Corpses = this.Police.Corpses + 1;
 						this.AttackPhase = 2;
 						this.Sanity -= (float)20;
@@ -1168,8 +1171,8 @@ public class YandereScript : MonoBehaviour
 						if (!this.Weapon[this.Equipped].Evidence)
 						{
 							this.Weapon[this.Equipped].Evidence = true;
-							this.Police.MurderWeapons = this.Police.MurderWeapons + 1;
 						}
+						this.MyController.radius = 0.2f;
 						this.Attacking = false;
 						this.AttackPhase = 1;
 						this.AttackTimer = (float)0;
@@ -1187,7 +1190,10 @@ public class YandereScript : MonoBehaviour
 				this.Character.animation["f02_yanderePose_00"].weight = Mathf.Lerp(this.Character.animation["f02_yanderePose_00"].weight, (float)0, Time.deltaTime * (float)10);
 				this.Slouch = Mathf.Lerp(this.Slouch, (float)0, Time.deltaTime * (float)10);
 			}
-			this.EyeShrink = Mathf.Lerp(this.EyeShrink, (float)1 - this.Sanity / (float)100, Time.deltaTime * (float)10);
+			if (!this.Noticed)
+			{
+				this.EyeShrink = Mathf.Lerp(this.EyeShrink, (float)1 - this.Sanity / (float)100, Time.deltaTime * (float)10);
+			}
 			if (this.Sanity < (float)100)
 			{
 				this.TwitchTimer += Time.deltaTime;
@@ -1303,6 +1309,7 @@ public class YandereScript : MonoBehaviour
 			}
 			if (Input.GetKeyDown("j") && !this.Punished && !this.AoT && !this.Hateful)
 			{
+				this.Unequip();
 				this.Hate();
 			}
 			if (Input.GetKeyDown("left alt"))
@@ -1679,7 +1686,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$1214(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$1244(this).GetEnumerator();
 	}
 
 	public virtual void UpdateHair()
@@ -1780,7 +1787,7 @@ public class YandereScript : MonoBehaviour
 		this.BaldSchoolgirl.active = true;
 		this.Character.active = false;
 		this.HeartRate.active = false;
-		this.RedGrayscale.enabled = true;
+		this.SelectGrayscale.enabled = true;
 		this.Hateful = true;
 		this.Character = this.BaldSchoolgirl.gameObject;
 		this.RightBreast = this.BaldSchoolgirl.RightBreast;

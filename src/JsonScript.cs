@@ -13,6 +13,8 @@ public class JsonScript : MonoBehaviour
 
 	public string[] StudentNames;
 
+	public int[] StudentGenders;
+
 	public int[] StudentClasses;
 
 	public int[] StudentClubs;
@@ -78,6 +80,7 @@ public class JsonScript : MonoBehaviour
 				break;
 			}
 			this.StudentNames[this.ID] = TFUtils.LoadString(array[i], "Name");
+			this.StudentGenders[this.ID] = TFUtils.LoadInt(array[i], "Gender");
 			this.StudentClasses[this.ID] = TFUtils.LoadInt(array[i], "Class");
 			this.StudentClubs[this.ID] = TFUtils.LoadInt(array[i], "Club");
 			this.StudentPersonas[this.ID] = TFUtils.LoadInt(array[i], "Persona");

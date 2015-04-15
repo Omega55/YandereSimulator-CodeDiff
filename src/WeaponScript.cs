@@ -129,6 +129,10 @@ public class WeaponScript : MonoBehaviour
 			}
 			this.Yandere.WeaponMenu.UpdateSprites();
 			this.Yandere.WeaponManager.UpdateLabels();
+			if (this.Evidence)
+			{
+				this.Yandere.Police.BloodyWeapons = this.Yandere.Police.BloodyWeapons - 1;
+			}
 		}
 		if (this.Yandere.Weapon[this.Yandere.Equipped] == this && this.Yandere.Armed)
 		{
@@ -168,6 +172,10 @@ public class WeaponScript : MonoBehaviour
 			this.Prompt.enabled = true;
 			this.MyCollider.enabled = true;
 			Physics.IgnoreCollision(this.Yandere.collider, this.MyCollider);
+		}
+		if (this.Evidence)
+		{
+			this.Yandere.Police.BloodyWeapons = this.Yandere.Police.BloodyWeapons + 1;
 		}
 		this.ID = 0;
 		while (this.ID < Extensions.get_length(this.Outline))

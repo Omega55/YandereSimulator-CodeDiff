@@ -24,6 +24,12 @@ public class CameraEffectsScript : MonoBehaviour
 
 	public bool OneCamera;
 
+	public AudioClip MurderNoticed;
+
+	public AudioClip SenpaiNoticed;
+
+	public AudioClip Noticed;
+
 	public virtual void Start()
 	{
 		int num = 0;
@@ -107,6 +113,7 @@ public class CameraEffectsScript : MonoBehaviour
 		float num2 = color.a = (float)num;
 		Color color2 = this.Streaks.color = color;
 		this.AlarmBloom.enabled = true;
+		this.Yandere.Jukebox.SFX.PlayOneShot(this.Noticed);
 	}
 
 	public virtual void MurderWitnessed()
@@ -115,6 +122,14 @@ public class CameraEffectsScript : MonoBehaviour
 		Color color = this.MurderStreaks.color;
 		float num2 = color.a = (float)num;
 		Color color2 = this.MurderStreaks.color = color;
+		if (!this.Yandere.Noticed)
+		{
+			this.Yandere.Jukebox.SFX.PlayOneShot(this.MurderNoticed);
+		}
+		else
+		{
+			this.Yandere.Jukebox.SFX.PlayOneShot(this.SenpaiNoticed);
+		}
 	}
 
 	public virtual void Main()

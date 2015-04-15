@@ -28,10 +28,13 @@ public class TranqDetectorScript : MonoBehaviour
 							{
 								if (this.Yandere.Weapon[this.Yandere.Equipped].WeaponID == 3)
 								{
-									this.Yandere.CanTranq = true;
-									if (this.Yandere.Attacking)
+									if (this.Yandere.PossessTranq && PlayerPrefs.GetInt("BiologyGrade") > 1)
 									{
-										this.Door.Prompt.enabled = false;
+										this.Yandere.CanTranq = true;
+										if (this.Yandere.Attacking)
+										{
+											this.Door.Prompt.enabled = false;
+										}
 									}
 								}
 								else

@@ -205,8 +205,9 @@ public class IncineratorScript : MonoBehaviour
 			this.Smoke.Play();
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
+			this.Yandere.Police.IncineratedWeapons = this.Yandere.Police.IncineratedWeapons + this.MurderWeapons;
 			this.Yandere.Police.BloodyUniforms = this.Yandere.Police.BloodyUniforms - this.BloodyUniforms;
-			this.Yandere.Police.MurderWeapons = this.Yandere.Police.MurderWeapons - this.MurderWeapons;
+			this.Yandere.Police.BloodyWeapons = this.Yandere.Police.BloodyWeapons - this.MurderWeapons;
 			this.Yandere.Police.Corpses = this.Yandere.Police.Corpses - this.Corpses;
 		}
 		if (this.Smoke.isPlaying)

@@ -270,17 +270,20 @@ public class PauseScreenScript : MonoBehaviour
 
 	public virtual void JumpToQuit()
 	{
-		this.transform.localPosition = new Vector3((float)0, (float)-1200, (float)0);
-		this.Yandere.YandereVision = false;
-		if (!this.Yandere.Talking)
+		if (!this.Police.Show)
 		{
-			this.RPGCamera.enabled = false;
-			this.Yandere.StopAiming();
+			this.transform.localPosition = new Vector3((float)0, (float)-1200, (float)0);
+			this.Yandere.YandereVision = false;
+			if (!this.Yandere.Talking)
+			{
+				this.RPGCamera.enabled = false;
+				this.Yandere.StopAiming();
+			}
+			this.ScreenBlur.enabled = true;
+			this.BypassPhone = true;
+			this.Quitting = true;
+			this.Show = true;
 		}
-		this.ScreenBlur.enabled = true;
-		this.BypassPhone = true;
-		this.Quitting = true;
-		this.Show = true;
 	}
 
 	public virtual void ExitPhone()

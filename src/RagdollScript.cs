@@ -22,8 +22,6 @@ public class RagdollScript : MonoBehaviour
 
 	public Rigidbody[] Rigidbodies;
 
-	public Transform BloodParent;
-
 	public Transform NearestLimb;
 
 	public Transform RightBreast;
@@ -56,15 +54,24 @@ public class RagdollScript : MonoBehaviour
 
 	public bool Dumped;
 
+	public bool Male;
+
 	public float AnimStartTime;
 
-	public float DumpTimer;
-
 	public float BreastSize;
+
+	public float DumpTimer;
 
 	public int LimbID;
 
 	public int Frame;
+
+	public string DumpedAnim;
+
+	public RagdollScript()
+	{
+		this.DumpedAnim = string.Empty;
+	}
 
 	public virtual void Start()
 	{
@@ -148,7 +155,7 @@ public class RagdollScript : MonoBehaviour
 		{
 			if (this.Incinerator != null)
 			{
-				this.Character.animation.Play("f02_thrown_20");
+				this.Character.animation.Play(this.DumpedAnim);
 				this.DumpTimer += Time.deltaTime;
 				if (this.DumpTimer > (float)2)
 				{
@@ -181,15 +188,18 @@ public class RagdollScript : MonoBehaviour
 
 	public virtual void LateUpdate()
 	{
-		if (this.HidePony)
+		if (!this.Male)
 		{
-			this.Ponytail.parent.transform.localScale = new Vector3((float)1, (float)1, 0.93f);
-			this.Ponytail.localScale = new Vector3((float)0, (float)0, (float)0);
-			this.HairR.localScale = new Vector3((float)0, (float)0, (float)0);
-			this.HairL.localScale = new Vector3((float)0, (float)0, (float)0);
+			if (this.HidePony)
+			{
+				this.Ponytail.parent.transform.localScale = new Vector3((float)1, (float)1, 0.93f);
+				this.Ponytail.localScale = new Vector3((float)0, (float)0, (float)0);
+				this.HairR.localScale = new Vector3((float)0, (float)0, (float)0);
+				this.HairL.localScale = new Vector3((float)0, (float)0, (float)0);
+			}
+			this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
+			this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 		}
-		this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
-		this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 	}
 
 	public virtual void StopDragging()

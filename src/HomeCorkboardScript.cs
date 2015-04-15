@@ -25,7 +25,7 @@ public class HomeCorkboardScript : MonoBehaviour
 				this.StartCoroutine_Auto(this.PhotoGallery.GetPhotos());
 				this.Loaded = true;
 			}
-			if (!this.PhotoGallery.Adjusting && !this.PhotoGallery.Viewing && Input.GetButtonDown("B"))
+			if (!this.PhotoGallery.Adjusting && !this.PhotoGallery.Viewing && !this.PhotoGallery.LoadingScreen.active && Input.GetButtonDown("B"))
 			{
 				this.HomeCamera.Destination = this.HomeCamera.Destinations[0];
 				this.HomeCamera.Target = this.HomeCamera.Targets[0];

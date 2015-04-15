@@ -6,6 +6,8 @@ public class JukeboxScript : MonoBehaviour
 {
 	public YandereScript Yandere;
 
+	public AudioSource SFX;
+
 	public AudioSource AttackOnTitan;
 
 	public AudioSource Nuclear;
@@ -117,6 +119,17 @@ public class JukeboxScript : MonoBehaviour
 				this.Hatred.enabled = true;
 			}
 		}
+	}
+
+	public virtual void GameOver()
+	{
+		this.AttackOnTitan.Stop();
+		this.Nuclear.Stop();
+		this.Hatred.Stop();
+		this.Sane.Stop();
+		this.Halfsane.Stop();
+		this.Insane.Stop();
+		this.Chase.Stop();
 	}
 
 	public virtual void Main()

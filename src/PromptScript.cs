@@ -125,7 +125,7 @@ public class PromptScript : MonoBehaviour
 				this.Distance = Vector3.Distance(this.Yandere.transform.position, new Vector3(this.transform.position.x, this.Yandere.transform.position.y, this.transform.position.z));
 				if (this.Distance < (float)5)
 				{
-					if (this.Yandere.CanMove && !this.Yandere.Crouching && !this.Yandere.Crawling && !this.Yandere.Aiming && !this.Yandere.Mopping)
+					if (this.Yandere.CanMove && !this.Yandere.Crouching && !this.Yandere.Crawling && !this.Yandere.Aiming && !this.Yandere.Mopping && !this.Yandere.NearSenpai)
 					{
 						RaycastHit raycastHit = default(RaycastHit);
 						Debug.DrawLine(this.Yandere.Eyes.position, this.transform.position, Color.green);

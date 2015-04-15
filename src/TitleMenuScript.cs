@@ -90,6 +90,8 @@ public class TitleMenuScript : MonoBehaviour
 		this.LightColor = this.LightSprites[0].color;
 		this.DarkColor = this.DarkSprites[0].color;
 		this.TurnCute();
+		RenderSettings.ambientLight = new Color(0.75f, 0.75f, 0.75f, (float)1);
+		RenderSettings.skybox.SetColor("_Tint", new Color(0.5f, 0.5f, 0.5f));
 	}
 
 	public virtual void Update()

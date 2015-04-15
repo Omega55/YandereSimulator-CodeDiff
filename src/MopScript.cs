@@ -41,14 +41,17 @@ public class MopScript : MonoBehaviour
 				}
 				if (this.Yandere.Bucket == null)
 				{
-					this.Prompt.Label[0].text = "     " + "Sweep";
-					if (Input.GetButtonDown("A"))
+					if (this.Prompt.Button[0].color.a > (float)0)
 					{
-						this.Yandere.Mopping = true;
-						this.HeadCollider.enabled = true;
+						this.Prompt.Label[0].text = "     " + "Sweep";
+						if (Input.GetButtonDown("A"))
+						{
+							this.Yandere.Mopping = true;
+							this.HeadCollider.enabled = true;
+						}
 					}
 				}
-				else
+				else if (this.Prompt.Button[0].color.a > (float)0)
 				{
 					this.Prompt.Label[0].text = "     " + "Dip";
 					if (Input.GetButtonDown("A"))

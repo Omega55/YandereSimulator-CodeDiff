@@ -22,6 +22,8 @@ public class PortalScript : MonoBehaviour
 
 	public UISprite ClassDarkness;
 
+	public GameObject HeartbeatCamera;
+
 	public bool Transition;
 
 	public bool FadeOut;
@@ -62,6 +64,7 @@ public class PortalScript : MonoBehaviour
 				Color color2 = this.ClassDarkness.color = color;
 				if (this.ClassDarkness.color.a >= (float)1)
 				{
+					this.HeartbeatCamera.active = false;
 					int num2 = 1;
 					Color color3 = this.ClassDarkness.color;
 					float num3 = color3.a = (float)num2;
@@ -97,6 +100,7 @@ public class PortalScript : MonoBehaviour
 			{
 				if (this.ClassDarkness.color.a >= (float)1)
 				{
+					this.HeartbeatCamera.active = true;
 					this.StudentManager.AttendClass();
 				}
 				float a2 = this.ClassDarkness.color.a - Time.deltaTime;
