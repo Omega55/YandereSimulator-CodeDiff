@@ -1156,7 +1156,6 @@ public class YandereScript : MonoBehaviour
 							this.UpdateBlood();
 						}
 						this.TargetStudent.Dead = true;
-						this.Police.MurderWeapons = this.Police.MurderWeapons + 1;
 						this.Police.Corpses = this.Police.Corpses + 1;
 						this.AttackPhase = 2;
 						this.Sanity -= (float)20;
@@ -1171,6 +1170,7 @@ public class YandereScript : MonoBehaviour
 						if (!this.Weapon[this.Equipped].Evidence)
 						{
 							this.Weapon[this.Equipped].Evidence = true;
+							this.Police.MurderWeapons = this.Police.MurderWeapons + 1;
 						}
 						this.MyController.radius = 0.2f;
 						this.Attacking = false;
@@ -1621,6 +1621,7 @@ public class YandereScript : MonoBehaviour
 				this.NotificationManager.DisplayNotification("Insane");
 				this.SanityWarning = true;
 			}
+			this.StudentManager.UpdateStudents();
 		}
 		this.HeartRate.BeatsPerMinute = (int)((float)240 - this.Sanity * 1.8f);
 	}

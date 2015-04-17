@@ -206,6 +206,7 @@ public class PoliceScript : MonoBehaviour
 			Color color2 = this.Darkness.color = color;
 			if (this.Darkness.color.a >= (float)1 && this.HeartbeatCamera.active)
 			{
+				this.Yandere.gameObject.active = false;
 				this.HeartbeatCamera.active = false;
 				this.DetectionCamera.active = false;
 				this.DetermineResults();

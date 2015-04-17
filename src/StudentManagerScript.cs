@@ -184,7 +184,7 @@ public class StudentManagerScript : MonoBehaviour
 					this.Students[this.ID].Prompt.HideButton[0] = true;
 					this.Students[this.ID].Prompt.HideButton[2] = true;
 				}
-				if (this.Yandere.NearBodies > 0)
+				if (this.Yandere.NearBodies > 0 || this.Yandere.Sanity < 33.33333f)
 				{
 					this.Students[this.ID].Prompt.HideButton[0] = true;
 				}

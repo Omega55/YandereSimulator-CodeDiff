@@ -1129,6 +1129,7 @@ public class StudentScript : MonoBehaviour
 
 	public virtual void SenpaiNoticed()
 	{
+		this.Yandere.StopAiming();
 		this.Yandere.Sanity = (float)100;
 		this.Yandere.EyeShrink = (float)0;
 		this.Yandere.Jukebox.GameOver();

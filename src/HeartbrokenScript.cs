@@ -96,7 +96,7 @@ public class HeartbrokenScript : MonoBehaviour
 	{
 		if (this.Noticed)
 		{
-			float y = 0.01f;
+			float y = this.Yandere.transform.position.y + 0.01f;
 			Vector3 position = this.Ground.transform.position;
 			float num = position.y = y;
 			Vector3 vector = this.Ground.transform.position = position;

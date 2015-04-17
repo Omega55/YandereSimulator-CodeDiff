@@ -111,9 +111,9 @@ public class ShoulderCameraScript : MonoBehaviour
 					if (this.NoticedTimer > (float)9)
 					{
 						this.NoticedPOV.Translate(Vector3.back * (float)2);
-						int num = 1;
+						float y = this.Yandere.transform.position.y + (float)1;
 						Vector3 position = this.NoticedPOV.transform.position;
-						float num2 = position.y = (float)num;
+						float num = position.y = y;
 						Vector3 vector = this.NoticedPOV.transform.position = position;
 						this.NoticedSpeed = (float)1;
 						this.Yandere.Character.animation.CrossFade("f02_down_22");
@@ -124,9 +124,9 @@ public class ShoulderCameraScript : MonoBehaviour
 				}
 				else if (this.Phase == 3)
 				{
-					float y = Mathf.Lerp(this.NoticedFocus.transform.position.y, (float)1, Time.deltaTime);
+					float y2 = Mathf.Lerp(this.NoticedFocus.transform.position.y, this.Yandere.transform.position.y + (float)1, Time.deltaTime);
 					Vector3 position2 = this.NoticedFocus.transform.position;
-					float num3 = position2.y = y;
+					float num2 = position2.y = y2;
 					Vector3 vector2 = this.NoticedFocus.transform.position = position2;
 				}
 				this.transform.position = Vector3.Lerp(this.transform.position, this.NoticedPOV.position, Time.deltaTime * this.NoticedSpeed);

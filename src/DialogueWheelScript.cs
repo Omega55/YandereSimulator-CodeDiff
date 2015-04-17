@@ -237,7 +237,7 @@ public class DialogueWheelScript : MonoBehaviour
 		Color color7 = this.Shadow[5].color;
 		float num6 = color7.a = a2;
 		Color color8 = this.Shadow[5].color = color7;
-		if (this.Reputation.Reputation < 33.33333f)
+		if (this.Reputation.Reputation < 33.33333f || this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.33333f)
 		{
 			float a3 = 0.75f;
 			Color color9 = this.Shadow[6].color;
