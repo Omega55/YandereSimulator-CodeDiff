@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$1244 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$1248 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$1251;
+		internal YandereScript $self_$1255;
 
-		public $ApplyCustomCostume$1244(YandereScript self_)
+		public $ApplyCustomCostume$1248(YandereScript self_)
 		{
-			this.$self_$1251 = self_;
+			this.$self_$1255 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$1244.$(this.$self_$1251);
+			return new YandereScript.$ApplyCustomCostume$1248.$(this.$self_$1255);
 		}
 	}
 
@@ -35,7 +35,11 @@ public class YandereScript : MonoBehaviour
 
 	private GameObject NewTrail;
 
+	private int AccessoryID;
+
 	private int ID;
+
+	public Mesh TestMesh;
 
 	public FootprintSpawnerScript RightFootprintSpawner;
 
@@ -60,6 +64,8 @@ public class YandereScript : MonoBehaviour
 	public Blur Blur;
 
 	public NotificationManagerScript NotificationManager;
+
+	public AccessoryGroupScript AccessoryGroup;
 
 	public ShoulderCameraScript ShoulderCamera;
 
@@ -151,15 +157,13 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject Ragdoll;
 
-	public GameObject Toaster;
-
 	public GameObject Hearts;
 
 	public GameObject Phone;
 
 	public GameObject Trail;
 
-	public GameObject Toast;
+	public GameObject[] Accessories;
 
 	public SkinnedMeshRenderer MyRenderer;
 
@@ -253,6 +257,8 @@ public class YandereScript : MonoBehaviour
 
 	public bool TimeSkipping;
 
+	public bool Trespassing;
+
 	public bool Crouching;
 
 	public bool Attacking;
@@ -291,9 +297,15 @@ public class YandereScript : MonoBehaviour
 
 	public bool Noticed;
 
+	public bool InClass;
+
 	public bool CanMove;
 
 	public bool Armed;
+
+	public bool Lewd;
+
+	public bool Egg;
 
 	public Texture[] BloodTextures;
 
@@ -329,6 +341,8 @@ public class YandereScript : MonoBehaviour
 
 	public string LaughAnim;
 
+	public string IdleAnim;
+
 	public AudioClip Laugh1;
 
 	public AudioClip Laugh2;
@@ -338,8 +352,6 @@ public class YandereScript : MonoBehaviour
 	public AudioClip Laugh4;
 
 	public Texture TitanTexture;
-
-	public bool AoT;
 
 	public Texture FaceTexture;
 
@@ -357,17 +369,20 @@ public class YandereScript : MonoBehaviour
 
 	public Mesh PunishedMesh;
 
-	public bool Punished;
-
 	public Material HatefulSkybox;
 
-	public bool Hateful;
+	public GameObject SukebanAccessories;
+
+	public Texture SukebanBandages;
+
+	public Texture SukebanUniform;
 
 	public YandereScript()
 	{
 		this.Sanity = 100f;
 		this.CanMove = true;
 		this.LaughAnim = string.Empty;
+		this.IdleAnim = string.Empty;
 	}
 
 	public virtual void Start()
@@ -388,15 +403,21 @@ public class YandereScript : MonoBehaviour
 		this.StartCoroutine_Auto(this.ApplyCustomCostume());
 		this.Smartphone.transform.parent.active = false;
 		this.PunishedAccessories.active = false;
+		this.SukebanAccessories.active = false;
 		this.BaldSchoolgirl.active = false;
 		this.PunishedScarf.active = false;
 		this.EyepatchL.active = false;
 		this.EyepatchR.active = false;
 		this.PigtailL.active = false;
 		this.PigtailR.active = false;
-		this.Toaster.active = false;
 		this.Drills.active = false;
-		this.Toast.active = false;
+		this.IdleAnim = "f02_idleShort_00";
+		this.ID = 1;
+		while (this.ID < Extensions.get_length(this.Accessories))
+		{
+			this.Accessories[this.ID].active = false;
+			this.ID++;
+		}
 		this.UpdateHair();
 	}
 
@@ -406,7 +427,7 @@ public class YandereScript : MonoBehaviour
 		{
 			if (this.CanMove)
 			{
-				this.MyController.Move(Physics.gravity * 0.01f);
+				this.MyController.Move(Physics.gravity * 0.1f);
 				float axis = Input.GetAxis("Vertical");
 				float axis2 = Input.GetAxis("Horizontal");
 				if (!this.Aiming)
@@ -484,7 +505,7 @@ public class YandereScript : MonoBehaviour
 						}
 						else
 						{
-							this.Character.animation.CrossFade("f02_idleShort_00");
+							this.Character.animation.CrossFade(this.IdleAnim);
 						}
 					}
 					else
@@ -525,7 +546,7 @@ public class YandereScript : MonoBehaviour
 					}
 					else
 					{
-						this.Character.animation.CrossFade("f02_idleShort_00");
+						this.Character.animation.CrossFade(this.IdleAnim);
 					}
 					this.Bend += Input.GetAxis("Mouse Y") * (float)8;
 					if (this.Crawling)
@@ -574,7 +595,7 @@ public class YandereScript : MonoBehaviour
 							Vector3 eulerAngles = this.transform.eulerAngles;
 							float num2 = eulerAngles.y = y2;
 							Vector3 vector2 = this.transform.eulerAngles = eulerAngles;
-							this.Character.animation.Play("f02_idleShort_00");
+							this.Character.animation.Play(this.IdleAnim);
 							this.Smartphone.transform.parent.active = true;
 							this.ShoulderCamera.AimingCamera = true;
 							this.Obscurance.enabled = false;
@@ -824,7 +845,7 @@ public class YandereScript : MonoBehaviour
 			else
 			{
 				this.Character.animation["f02_mopping_00"].weight = Mathf.Lerp(this.Character.animation["f02_mopping_00"].weight, (float)1, Time.deltaTime * (float)10);
-				if (Input.GetButtonUp("A"))
+				if (Input.GetButtonUp("A") || Input.GetKeyDown("escape"))
 				{
 					this.Mopping = false;
 				}
@@ -1029,7 +1050,7 @@ public class YandereScript : MonoBehaviour
 				}
 				if (this.Interaction == 0)
 				{
-					this.Character.animation.CrossFade("f02_idleShort_00");
+					this.Character.animation.CrossFade(this.IdleAnim);
 				}
 				else if (this.Interaction == 1)
 				{
@@ -1052,12 +1073,16 @@ public class YandereScript : MonoBehaviour
 						{
 							this.Subtitle.UpdateLabel("Blood Apology", 0, (float)3);
 						}
+						else if (this.TargetStudent.Witnessed == "Lewd")
+						{
+							this.Subtitle.UpdateLabel("Lewd Apology", 0, (float)3);
+						}
 					}
 					else
 					{
 						if (this.Character.animation["f02_greet_00"].time >= this.Character.animation["f02_greet_00"].length)
 						{
-							this.Character.animation.CrossFade("f02_idleShort_00");
+							this.Character.animation.CrossFade(this.IdleAnim);
 						}
 						if (this.TalkTimer <= (float)0)
 						{
@@ -1079,7 +1104,7 @@ public class YandereScript : MonoBehaviour
 					{
 						if (this.Character.animation["f02_greet_01"].time >= this.Character.animation["f02_greet_01"].length)
 						{
-							this.Character.animation.CrossFade("f02_idleShort_00");
+							this.Character.animation.CrossFade(this.IdleAnim);
 						}
 						if (this.TalkTimer <= (float)0)
 						{
@@ -1101,7 +1126,7 @@ public class YandereScript : MonoBehaviour
 					{
 						if (this.Character.animation["f02_greet_00"].time >= this.Character.animation["f02_greet_00"].length)
 						{
-							this.Character.animation.CrossFade("f02_idleShort_00");
+							this.Character.animation.CrossFade(this.IdleAnim);
 						}
 						if (this.TalkTimer <= (float)0)
 						{
@@ -1123,7 +1148,7 @@ public class YandereScript : MonoBehaviour
 					{
 						if (this.Character.animation["f02_greet_00"].time >= this.Character.animation["f02_greet_01"].length)
 						{
-							this.Character.animation.CrossFade("f02_idleShort_00");
+							this.Character.animation.CrossFade(this.IdleAnim);
 						}
 						if (this.TalkTimer <= (float)0)
 						{
@@ -1139,45 +1164,61 @@ public class YandereScript : MonoBehaviour
 			{
 				this.targetRotation = Quaternion.LookRotation(new Vector3(this.TargetStudent.transform.position.x, this.transform.position.y, this.TargetStudent.transform.position.z) - this.transform.position);
 				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
-				if (this.AttackPhase == 1)
+				if (!this.TargetStudent.Teacher)
 				{
-					this.Character.animation.CrossFade("f02_stab_00");
-					if (this.Character.animation["f02_stab_00"].time > this.Character.animation["f02_stab_00"].length * 0.4f)
+					if (this.AttackPhase == 1)
 					{
-						this.Character.animation.CrossFade("f02_idleShort_00");
-						if (this.CanTranq && this.Weapon[this.Equipped].WeaponID == 3 && this.PossessTranq && PlayerPrefs.GetInt("BiologyGrade") > 1)
+						this.Character.animation.CrossFade("f02_stab_00");
+						if (this.Character.animation["f02_stab_00"].time > this.Character.animation["f02_stab_00"].length * 0.4f)
 						{
-							this.TargetStudent.Tranquil = true;
+							this.Character.animation.CrossFade(this.IdleAnim);
+							if (this.CanTranq && this.Weapon[this.Equipped].WeaponID == 3 && this.PossessTranq && PlayerPrefs.GetInt("BiologyGrade") > 1)
+							{
+								this.TargetStudent.Tranquil = true;
+							}
+							else
+							{
+								this.TargetStudent.BloodSpray.active = true;
+								this.Bloodiness += (float)20;
+								this.UpdateBlood();
+							}
+							if (this.TargetStudent == this.StudentManager.Reporter)
+							{
+								this.StudentManager.Reporter = null;
+							}
+							this.Police.CorpseList[this.Police.Corpses] = this.TargetStudent.Ragdoll;
+							this.TargetStudent.Dead = true;
+							this.Police.Corpses = this.Police.Corpses + 1;
+							this.AttackPhase = 2;
+							this.Sanity -= (float)20;
+							this.UpdateSanity();
 						}
-						else
+					}
+					else
+					{
+						this.AttackTimer += Time.deltaTime;
+						if (this.AttackTimer > 0.3f)
 						{
-							this.TargetStudent.BloodSpray.active = true;
-							this.Bloodiness += (float)20;
-							this.UpdateBlood();
+							if (!this.Weapon[this.Equipped].Evidence)
+							{
+								this.Weapon[this.Equipped].Evidence = true;
+								this.Police.MurderWeapons = this.Police.MurderWeapons + 1;
+							}
+							this.MyController.radius = 0.2f;
+							this.Attacking = false;
+							this.AttackPhase = 1;
+							this.AttackTimer = (float)0;
+							this.CanMove = true;
 						}
-						this.TargetStudent.Dead = true;
-						this.Police.Corpses = this.Police.Corpses + 1;
-						this.AttackPhase = 2;
-						this.Sanity -= (float)20;
-						this.UpdateSanity();
 					}
 				}
 				else
 				{
-					this.AttackTimer += Time.deltaTime;
-					if (this.AttackTimer > 0.3f)
-					{
-						if (!this.Weapon[this.Equipped].Evidence)
-						{
-							this.Weapon[this.Equipped].Evidence = true;
-							this.Police.MurderWeapons = this.Police.MurderWeapons + 1;
-						}
-						this.MyController.radius = 0.2f;
-						this.Attacking = false;
-						this.AttackPhase = 1;
-						this.AttackTimer = (float)0;
-						this.CanMove = true;
-					}
+					this.Character.animation.CrossFade("f02_counterA_00");
+					float y3 = this.TargetStudent.transform.position.y;
+					Vector3 position = this.Character.transform.position;
+					float num5 = position.y = y3;
+					Vector3 vector3 = this.Character.transform.position = position;
 				}
 			}
 			if (!this.Attacking && !this.Dragging && this.PickUp == null && !this.Aiming && !this.Crawling && this.LaughIntensity < (float)16)
@@ -1259,19 +1300,27 @@ public class YandereScript : MonoBehaviour
 			}
 			if (Input.GetKeyDown("o"))
 			{
-				if (!this.Toast.active && !this.Toaster.active)
+				if (this.AccessoryGroup != null)
 				{
-					this.Toast.active = true;
+					this.AccessoryGroup.DeactivateParts();
 				}
-				else if (this.Toast.active && !this.Toaster.active)
+				if (this.AccessoryID > 0)
 				{
-					this.Toast.active = false;
-					this.Toaster.active = true;
+					this.Accessories[this.AccessoryID].active = false;
 				}
-				else
+				this.AccessoryID++;
+				if (this.AccessoryID > this.Accessories.Length - 1)
 				{
-					this.Toast.active = false;
-					this.Toaster.active = false;
+					this.AccessoryID = 0;
+				}
+				if (this.AccessoryID > 0)
+				{
+					this.Accessories[this.AccessoryID].active = true;
+					this.AccessoryGroup = (AccessoryGroupScript)this.Accessories[this.AccessoryID].GetComponent(typeof(AccessoryGroupScript));
+					if (this.AccessoryGroup != null)
+					{
+						this.AccessoryGroup.ActivateParts();
+					}
 				}
 			}
 			if (Input.GetKeyDown("-"))
@@ -1293,26 +1342,30 @@ public class YandereScript : MonoBehaviour
 			if (Input.GetKey(","))
 			{
 				this.BreastSize -= Time.deltaTime;
-				if (this.BreastSize < (float)0)
+				if (this.BreastSize < 0.5f)
 				{
-					this.BreastSize = (float)0;
+					this.BreastSize = 0.5f;
 				}
 			}
-			if (this.CanMove)
+			if (this.CanMove && !this.Egg)
 			{
-				if (Input.GetKeyDown("l") && !this.Punished && !this.AoT && !this.Hateful)
+				if (Input.GetKeyDown("l"))
 				{
 					this.StudentManager.AttackOnTitan();
 					this.AttackOnTitan();
 				}
-				if (Input.GetKeyDown("k") && !this.Punished && !this.AoT && !this.Hateful)
+				if (Input.GetKeyDown("k"))
 				{
 					this.Punish();
 				}
-				if (Input.GetKeyDown("j") && !this.Punished && !this.AoT && !this.Hateful)
+				if (Input.GetKeyDown("j"))
 				{
-					this.Unequip();
+					this.EmptyHands();
 					this.Hate();
+				}
+				if (Input.GetKeyDown("g"))
+				{
+					this.Sukeban();
 				}
 			}
 			if (Input.GetKeyDown("left alt"))
@@ -1321,38 +1374,38 @@ public class YandereScript : MonoBehaviour
 			}
 			if (this.transform.position.x < (float)-50)
 			{
-				int num5 = -50;
-				Vector3 position = this.transform.position;
-				float num6 = position.x = (float)num5;
-				Vector3 vector3 = this.transform.position = position;
+				int num6 = -50;
+				Vector3 position2 = this.transform.position;
+				float num7 = position2.x = (float)num6;
+				Vector3 vector4 = this.transform.position = position2;
 			}
 			if (this.transform.position.x > (float)100)
 			{
-				int num7 = 100;
-				Vector3 position2 = this.transform.position;
-				float num8 = position2.x = (float)num7;
-				Vector3 vector4 = this.transform.position = position2;
+				int num8 = 100;
+				Vector3 position3 = this.transform.position;
+				float num9 = position3.x = (float)num8;
+				Vector3 vector5 = this.transform.position = position3;
 			}
 			if (this.transform.position.y < (float)0)
 			{
-				int num9 = 0;
-				Vector3 position3 = this.transform.position;
-				float num10 = position3.y = (float)num9;
-				Vector3 vector5 = this.transform.position = position3;
-			}
-			if (this.transform.position.z < (float)-50)
-			{
-				int num11 = -50;
+				int num10 = 0;
 				Vector3 position4 = this.transform.position;
-				float num12 = position4.z = (float)num11;
+				float num11 = position4.y = (float)num10;
 				Vector3 vector6 = this.transform.position = position4;
+			}
+			if (this.transform.position.z < -49.5f)
+			{
+				float z = -49.5f;
+				Vector3 position5 = this.transform.position;
+				float num12 = position5.z = z;
+				Vector3 vector7 = this.transform.position = position5;
 			}
 			if (this.transform.position.z > (float)50)
 			{
 				int num13 = 50;
-				Vector3 position5 = this.transform.position;
-				float num14 = position5.z = (float)num13;
-				Vector3 vector7 = this.transform.position = position5;
+				Vector3 position6 = this.transform.position;
+				float num14 = position6.z = (float)num13;
+				Vector3 vector8 = this.transform.position = position6;
 			}
 		}
 		else
@@ -1444,7 +1497,7 @@ public class YandereScript : MonoBehaviour
 			float num11 = localPosition3.y = height;
 			Vector3 vector11 = this.PelvisRoot.transform.localPosition = localPosition3;
 		}
-		if (this.Hateful)
+		if (this.BaldSchoolgirl.active)
 		{
 			this.AntennaeR.localScale = new Vector3((float)0, (float)0, (float)0);
 			this.AntennaeL.localScale = new Vector3((float)0, (float)0, (float)0);
@@ -1491,6 +1544,7 @@ public class YandereScript : MonoBehaviour
 		this.HandCamera.active = false;
 		this.UsingController = false;
 		this.Aiming = false;
+		this.Lewd = false;
 		this.Height = (float)0;
 		this.Bend = (float)0;
 	}
@@ -1690,7 +1744,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$1244(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$1248(this).GetEnumerator();
 	}
 
 	public virtual void UpdateHair()
@@ -1750,7 +1804,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual void AttackOnTitan()
 	{
-		this.AoT = true;
+		this.Egg = true;
 		this.MyRenderer.materials[0].mainTexture = this.TitanTexture;
 		this.Outline.h.ReinitMaterials();
 	}
@@ -1767,18 +1821,21 @@ public class YandereScript : MonoBehaviour
 	public virtual void Punish()
 	{
 		this.PunishedShader = Shader.Find("Toon/Cutoff");
-		this.Punished = true;
+		this.Egg = true;
 		this.PunishedAccessories.active = true;
 		this.PunishedScarf.active = true;
 		this.EyepatchL.active = false;
 		this.EyepatchR.active = false;
-		this.Toast.active = false;
-		this.Toaster.active = false;
+		this.ID = 1;
+		while (this.ID < this.Accessories.Length)
+		{
+			this.Accessories[this.ID].active = false;
+			this.ID++;
+		}
 		this.MyRenderer.sharedMesh = this.PunishedMesh;
 		this.MyRenderer.materials[0].mainTexture = this.PunishedTextures[1];
 		this.MyRenderer.materials[1].mainTexture = this.PunishedTextures[1];
 		this.MyRenderer.materials[2].mainTexture = this.PunishedTextures[0];
-		this.MyRenderer.materials[3].mainTexture = this.PunishedTextures[0];
 		this.MyRenderer.materials[1].shader = this.PunishedShader;
 		this.MyRenderer.materials[1].SetFloat("_Shininess", (float)2);
 		this.MyRenderer.materials[1].SetFloat("_ShadowThreshold", (float)0);
@@ -1792,7 +1849,7 @@ public class YandereScript : MonoBehaviour
 		this.Character.active = false;
 		this.HeartRate.active = false;
 		this.SelectGrayscale.enabled = true;
-		this.Hateful = true;
+		this.Egg = true;
 		this.Character = this.BaldSchoolgirl.gameObject;
 		this.RightBreast = this.BaldSchoolgirl.RightBreast;
 		this.LeftBreast = this.BaldSchoolgirl.LeftBreast;
@@ -1818,6 +1875,15 @@ public class YandereScript : MonoBehaviour
 		this.Smartphone.transform.parent.transform.localEulerAngles = new Vector3(5.147979f, -179.7696f, 47.9222f);
 		this.CameraFocus.parent = this.Spine[3];
 		this.CameraPOV.parent = this.Spine[3];
+	}
+
+	public virtual void Sukeban()
+	{
+		this.IdleAnim = "f02_idle_00";
+		this.SukebanAccessories.active = true;
+		this.MyRenderer.materials[2].mainTexture = this.SukebanBandages;
+		this.MyRenderer.materials[0].mainTexture = this.SukebanUniform;
+		this.Egg = true;
 	}
 
 	public virtual void Main()

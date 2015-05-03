@@ -20,9 +20,15 @@ public class PortalScript : MonoBehaviour
 
 	public ClockScript Clock;
 
+	public GameObject HeartbeatCamera;
+
 	public UISprite ClassDarkness;
 
-	public GameObject HeartbeatCamera;
+	public Transform Teacher;
+
+	public bool LateReport1;
+
+	public bool LateReport2;
 
 	public bool Transition;
 
@@ -30,8 +36,29 @@ public class PortalScript : MonoBehaviour
 
 	public bool Proceed;
 
+	public int Late;
+
 	public virtual void Update()
 	{
+		if (this.Clock.HourTime > 8.52f && this.Clock.HourTime < 8.53f && !this.Yandere.InClass && !this.LateReport1)
+		{
+			this.LateReport1 = true;
+			this.Yandere.NotificationManager.DisplayNotification("Late");
+		}
+		if (this.Clock.HourTime > 13.52f && this.Clock.HourTime < 13.53f && !this.Yandere.InClass && !this.LateReport2)
+		{
+			this.LateReport2 = true;
+			this.Yandere.NotificationManager.DisplayNotification("Late");
+		}
+		if (this.Yandere.Armed || this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Dragging)
+		{
+			this.Prompt.Hide();
+			this.Prompt.enabled = false;
+		}
+		else
+		{
+			this.Prompt.enabled = true;
+		}
 		if (this.Prompt.Circle[0].fillAmount <= (float)0)
 		{
 			this.Prompt.Circle[0].fillAmount = (float)1;
@@ -39,9 +66,62 @@ public class PortalScript : MonoBehaviour
 			{
 				if (!this.Police.Show)
 				{
+					if (this.Clock.HourTime < (float)13)
+					{
+						if (this.Clock.HourTime < 8.52f)
+						{
+							this.Late = 0;
+						}
+						else if (this.Clock.HourTime < (float)10)
+						{
+							this.Late = 1;
+						}
+						else if (this.Clock.HourTime < (float)11)
+						{
+							this.Late = 2;
+						}
+						else if (this.Clock.HourTime < (float)12)
+						{
+							this.Late = 3;
+						}
+						else if (this.Clock.HourTime < (float)13)
+						{
+							this.Late = 4;
+						}
+					}
+					else if (this.Clock.HourTime < 13.52f)
+					{
+						this.Late = 0;
+					}
+					else if (this.Clock.HourTime < (float)14)
+					{
+						this.Late = 1;
+					}
+					else if (this.Clock.HourTime < 14.5f)
+					{
+						this.Late = 2;
+					}
+					else if (this.Clock.HourTime < 15f)
+					{
+						this.Late = 3;
+					}
+					else if (this.Clock.HourTime < 15.5f)
+					{
+						this.Late = 4;
+					}
+					if (this.Late == 0)
+					{
+						this.Transition = true;
+						this.FadeOut = true;
+					}
+					else
+					{
+						this.Yandere.Subtitle.UpdateLabel("Teacher Late Reaction", this.Late, 5.5f);
+						this.Yandere.RPGCamera.enabled = false;
+						this.Yandere.ShoulderCamera.Scolding = true;
+						this.Yandere.ShoulderCamera.Teacher = this.Teacher;
+					}
 					this.Clock.StopTime = true;
-					this.Transition = true;
-					this.FadeOut = true;
 				}
 				else
 				{
@@ -53,6 +133,7 @@ public class PortalScript : MonoBehaviour
 				this.Police.FadeOut = true;
 			}
 			this.Yandere.CanMove = false;
+			this.Yandere.InClass = true;
 		}
 		if (this.Transition)
 		{
@@ -86,7 +167,7 @@ public class PortalScript : MonoBehaviour
 					this.PromptBar.Label[5].text = "Allocate";
 					this.PromptBar.UpdateButtons();
 					this.PromptBar.Show = true;
-					this.Class.StudyPoints = 5;
+					this.Class.StudyPoints = 5 - this.Late;
 					this.Class.UpdateLabel();
 					this.Class.active = true;
 					this.Class.Show = true;
@@ -102,6 +183,8 @@ public class PortalScript : MonoBehaviour
 				{
 					this.HeartbeatCamera.active = true;
 					this.StudentManager.AttendClass();
+					this.Yandere.FixCamera();
+					this.Yandere.RPGCamera.enabled = false;
 				}
 				float a2 = this.ClassDarkness.color.a - Time.deltaTime;
 				Color color5 = this.ClassDarkness.color;
@@ -117,6 +200,7 @@ public class PortalScript : MonoBehaviour
 					this.Clock.StopTime = false;
 					this.Yandere.CanMove = true;
 					this.Transition = false;
+					this.Yandere.InClass = false;
 					this.StudentManager.ResumeMovement();
 				}
 			}

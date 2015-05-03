@@ -25,9 +25,13 @@ public class HeartbrokenCursorScript : MonoBehaviour
 
 	public virtual void Start()
 	{
-		int num = 0;
+		int num = -989;
+		Vector3 localPosition = this.Darkness.transform.localPosition;
+		float num2 = localPosition.z = (float)num;
+		Vector3 vector = this.Darkness.transform.localPosition = localPosition;
+		int num3 = 0;
 		Color color = this.Continue.color;
-		float num2 = color.a = (float)num;
+		float num4 = color.a = (float)num3;
 		Color color2 = this.Continue.color = color;
 	}
 

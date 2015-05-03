@@ -4,6 +4,8 @@ using UnityEngine;
 [Serializable]
 public class GateScript : MonoBehaviour
 {
+	public Collider EmergencyDoor;
+
 	public ClockScript Clock;
 
 	public Transform GateCollider;
@@ -21,10 +23,18 @@ public class GateScript : MonoBehaviour
 		if (this.Clock.PresentTime / (float)60 > 8.5f && this.Clock.PresentTime / (float)60 < 15.5f)
 		{
 			this.Closed = true;
+			if (this.EmergencyDoor.enabled)
+			{
+				this.EmergencyDoor.enabled = false;
+			}
 		}
 		else
 		{
 			this.Closed = false;
+			if (!this.EmergencyDoor.enabled)
+			{
+				this.EmergencyDoor.enabled = true;
+			}
 		}
 		if (!this.Closed)
 		{

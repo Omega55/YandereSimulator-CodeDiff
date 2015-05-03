@@ -65,11 +65,26 @@ public class ShutterScript : MonoBehaviour
 
 	public bool Skirt;
 
+	public RaycastHit hit;
+
 	public int Frame;
 
 	public int Slot;
 
 	public int ID;
+
+	public int OnlyPhotography;
+
+	public int OnlyRagdolls;
+
+	public int OnlyBlood;
+
+	public ShutterScript()
+	{
+		this.OnlyPhotography = 65536;
+		this.OnlyRagdolls = 2049;
+		this.OnlyBlood = 16385;
+	}
 
 	public virtual void Start()
 	{
@@ -118,6 +133,24 @@ public class ShutterScript : MonoBehaviour
 					Color color2 = this.Sprite.color = color;
 					this.Snapping = false;
 				}
+			}
+		}
+		else if (this.Yandere.Aiming)
+		{
+			if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyPhotography))
+			{
+				if (this.hit.collider.gameObject.name == "Panties" || this.hit.collider.gameObject.name == "Skirt")
+				{
+					if (!this.Yandere.Lewd)
+					{
+						this.Yandere.NotificationManager.DisplayNotification("Lewd");
+					}
+					this.Yandere.Lewd = true;
+				}
+			}
+			else
+			{
+				this.Yandere.Lewd = false;
 			}
 		}
 		if (this.TookPhoto)
@@ -221,26 +254,22 @@ public class ShutterScript : MonoBehaviour
 
 	public virtual void CheckPhoto()
 	{
-		int layerMask = 65536;
-		int layerMask2 = 2049;
-		int layerMask3 = 16385;
-		RaycastHit raycastHit = default(RaycastHit);
 		this.InfoX.active = true;
 		this.PantiesX.active = true;
 		this.SenpaiX.active = true;
 		this.ViolenceX.active = true;
 		this.NotFace = false;
 		this.Skirt = false;
-		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out raycastHit, float.PositiveInfinity, layerMask))
+		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyPhotography))
 		{
-			if (raycastHit.collider.gameObject.name == "Panties")
+			if (this.hit.collider.gameObject.name == "Panties")
 			{
-				this.Student = (StudentScript)raycastHit.collider.gameObject.transform.root.gameObject.GetComponent(typeof(StudentScript));
+				this.Student = (StudentScript)this.hit.collider.gameObject.transform.root.gameObject.GetComponent(typeof(StudentScript));
 				this.PantiesX.active = false;
 			}
-			else if (raycastHit.collider.gameObject.name == "Face")
+			else if (this.hit.collider.gameObject.name == "Face")
 			{
-				this.Student = (StudentScript)raycastHit.collider.gameObject.transform.root.gameObject.GetComponent(typeof(StudentScript));
+				this.Student = (StudentScript)this.hit.collider.gameObject.transform.root.gameObject.GetComponent(typeof(StudentScript));
 				if (this.Student.StudentID == 1)
 				{
 					this.SenpaiX.active = false;
@@ -250,20 +279,20 @@ public class ShutterScript : MonoBehaviour
 					this.InfoX.active = false;
 				}
 			}
-			else if (raycastHit.collider.gameObject.name == "NotFace")
+			else if (this.hit.collider.gameObject.name == "NotFace")
 			{
 				this.NotFace = true;
 			}
-			else if (raycastHit.collider.gameObject.name == "Skirt")
+			else if (this.hit.collider.gameObject.name == "Skirt")
 			{
 				this.Skirt = true;
 			}
 		}
-		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out raycastHit, float.PositiveInfinity, layerMask2) && raycastHit.collider.gameObject.layer == 11)
+		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyRagdolls) && this.hit.collider.gameObject.layer == 11)
 		{
 			this.ViolenceX.active = false;
 		}
-		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out raycastHit, float.PositiveInfinity, layerMask3) && raycastHit.collider.gameObject.tag == "Blood")
+		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyBlood) && this.hit.collider.gameObject.tag == "Blood")
 		{
 			this.ViolenceX.active = false;
 		}
@@ -284,7 +313,7 @@ public class ShutterScript : MonoBehaviour
 		int num;
 		if (!this.InfoX.active)
 		{
-			text = "I recognize that student. Here's some information about them.";
+			text = "I recognize this person. Here's some information about them.";
 			num = 3;
 		}
 		else if (!this.PantiesX.active)
@@ -338,7 +367,7 @@ public class ShutterScript : MonoBehaviour
 		}
 		else if (this.NotFace)
 		{
-			text = "Do you want me to identify this student? Please get me a clear shot of their face.";
+			text = "Do you want me to identify this person? Please get me a clear shot of their face.";
 			num = 4;
 		}
 		else if (this.Skirt)

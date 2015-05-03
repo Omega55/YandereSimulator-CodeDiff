@@ -32,6 +32,8 @@ public class PortraitChanScript : MonoBehaviour
 
 	public bool HidePony;
 
+	public bool Teacher;
+
 	public bool Male;
 
 	public float BreastSize;
@@ -40,6 +42,12 @@ public class PortraitChanScript : MonoBehaviour
 
 	public int StudentID;
 
+	public int Club;
+
+	public Mesh TeacherMesh;
+
+	public Texture TeacherTexture;
+
 	public PortraitChanScript()
 	{
 		this.Hairstyle = string.Empty;
@@ -47,6 +55,7 @@ public class PortraitChanScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		this.Club = this.JSON.StudentClubs[this.StudentID];
 		this.BreastSize = this.JSON.StudentBreasts[this.StudentID];
 		this.Hairstyle = this.JSON.StudentHairstyles[this.StudentID];
 		if (!this.Male)
@@ -54,6 +63,10 @@ public class PortraitChanScript : MonoBehaviour
 			this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 			this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 			this.UpdateHair();
+		}
+		if (this.Club == 9)
+		{
+			this.BecomeTeacher();
 		}
 		this.SetColors();
 	}
@@ -88,8 +101,20 @@ public class PortraitChanScript : MonoBehaviour
 				this.HairTexture = this.StudentManager.Colors[5];
 				this.DrillTexture = this.StudentManager.Colors[6];
 			}
-			this.MyRenderer.materials[1].mainTexture = this.HairTexture;
-			this.MyRenderer.materials[3].mainTexture = this.HairTexture;
+			else if (a == "Brown")
+			{
+				this.HairTexture = this.StudentManager.Colors[7];
+			}
+			if (!this.Teacher)
+			{
+				this.MyRenderer.materials[1].mainTexture = this.HairTexture;
+				this.MyRenderer.materials[3].mainTexture = this.HairTexture;
+			}
+			else
+			{
+				this.MyRenderer.materials[1].mainTexture = this.HairTexture;
+				this.MyRenderer.materials[2].mainTexture = this.HairTexture;
+			}
 		}
 		else
 		{
@@ -189,6 +214,14 @@ public class PortraitChanScript : MonoBehaviour
 			this.Ponytail.parent.transform.localScale = new Vector3((float)1, (float)1, 0.93f);
 			this.Ponytail.localScale = new Vector3((float)0, (float)0, (float)0);
 		}
+	}
+
+	public virtual void BecomeTeacher()
+	{
+		this.MyRenderer.sharedMesh = this.TeacherMesh;
+		this.Teacher = true;
+		this.MyRenderer.materials[0].mainTexture = this.TeacherTexture;
+		this.MyRenderer.materials[3].mainTexture = this.TeacherTexture;
 	}
 
 	public virtual void Main()

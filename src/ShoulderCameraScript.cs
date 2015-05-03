@@ -10,9 +10,13 @@ public class ShoulderCameraScript : MonoBehaviour
 
 	public RPG_Camera RPGCamera;
 
+	public PortalScript Portal;
+
 	public GameObject HeartbrokenCamera;
 
 	public Transform Smartphone;
+
+	public Transform Teacher;
 
 	public Transform ShoulderFocus;
 
@@ -32,7 +36,15 @@ public class ShoulderCameraScript : MonoBehaviour
 
 	public bool OverShoulder;
 
+	public bool DoNotMove;
+
+	public bool Scolding;
+
+	public bool Counter;
+
 	public bool Noticed;
+
+	public AudioClip Slam;
 
 	public float NoticedHeight;
 
@@ -43,6 +55,8 @@ public class ShoulderCameraScript : MonoBehaviour
 	public float Height;
 
 	public float Timer;
+
+	public int NoticedLimit;
 
 	public int Phase;
 
@@ -72,18 +86,23 @@ public class ShoulderCameraScript : MonoBehaviour
 				if (this.NoticedTimer == (float)0)
 				{
 					this.Yandere.MyRenderer.enabled = false;
-					if (((StudentScript)this.Yandere.Senpai.GetComponent(typeof(StudentScript))).Witnessed == "Stalking")
+					if (((StudentScript)this.Yandere.Senpai.GetComponent(typeof(StudentScript))).Teacher)
+					{
+						this.NoticedHeight = 1.6f;
+						this.NoticedLimit = 6;
+					}
+					else if (((StudentScript)this.Yandere.Senpai.GetComponent(typeof(StudentScript))).Witnessed == "Stalking")
 					{
 						this.NoticedHeight = 1.481275f;
-						this.NoticedPOV.position = this.Yandere.Senpai.position + this.Yandere.Senpai.forward * (float)1 + Vector3.up * 1.481275f;
-						this.NoticedPOV.LookAt(this.Yandere.Senpai.position + Vector3.up * 1.481275f);
+						this.NoticedLimit = 5;
 					}
 					else
 					{
 						this.NoticedHeight = 1.375f;
-						this.NoticedPOV.position = this.Yandere.Senpai.position + this.Yandere.Senpai.forward * (float)1 + Vector3.up * 1.375f;
-						this.NoticedPOV.LookAt(this.Yandere.Senpai.position + Vector3.up * 1.375f);
+						this.NoticedLimit = 5;
 					}
+					this.NoticedPOV.position = this.Yandere.Senpai.position + this.Yandere.Senpai.forward * (float)1 + Vector3.up * this.NoticedHeight;
+					this.NoticedPOV.LookAt(this.Yandere.Senpai.position + Vector3.up * this.NoticedHeight);
 					this.NoticedFocus.position = this.transform.position + this.transform.forward * (float)1;
 					this.NoticedSpeed = (float)10;
 				}
@@ -91,24 +110,24 @@ public class ShoulderCameraScript : MonoBehaviour
 				if (this.Phase == 1)
 				{
 					this.NoticedFocus.position = Vector3.Lerp(this.NoticedFocus.position, this.Yandere.Senpai.position + Vector3.up * this.NoticedHeight, Time.deltaTime * (float)10);
-					this.NoticedPOV.Translate(Vector3.forward * Time.deltaTime * 0.1f);
-					if (this.NoticedTimer > (float)5)
+					this.NoticedPOV.Translate(Vector3.forward * Time.deltaTime * 0.075f);
+					if (this.NoticedTimer > (float)this.NoticedLimit)
 					{
 						((StudentScript)this.Yandere.Senpai.GetComponent(typeof(StudentScript))).MyRenderer.enabled = false;
 						this.Yandere.MyRenderer.enabled = true;
 						this.Yandere.Subtitle.UpdateLabel("Yandere Whimper", 1, 3.5f);
 						this.NoticedPOV.position = this.Yandere.transform.position + this.Yandere.transform.forward * (float)1 + Vector3.up * 1.375f;
 						this.NoticedPOV.LookAt(this.Yandere.transform.position + Vector3.up * 1.375f);
-						this.NoticedFocus.position = this.transform.position + this.transform.forward * (float)1;
+						this.NoticedFocus.position = this.Yandere.transform.position + Vector3.up * 1.375f;
+						this.transform.position = this.NoticedPOV.position;
 						this.Phase = 2;
 					}
 				}
 				else if (this.Phase == 2)
 				{
 					this.Yandere.EyeShrink = this.Yandere.EyeShrink + Time.deltaTime * 0.25f;
-					this.NoticedFocus.position = Vector3.Lerp(this.NoticedFocus.position, this.Yandere.transform.position + Vector3.up * 1.375f, Time.deltaTime * (float)10);
-					this.NoticedPOV.Translate(Vector3.forward * Time.deltaTime * 0.1f);
-					if (this.NoticedTimer > (float)9)
+					this.NoticedPOV.Translate(Vector3.forward * Time.deltaTime * 0.075f);
+					if (this.NoticedTimer > (float)(this.NoticedLimit + 4))
 					{
 						this.NoticedPOV.Translate(Vector3.back * (float)2);
 						float y = this.Yandere.transform.position.y + (float)1;
@@ -131,6 +150,95 @@ public class ShoulderCameraScript : MonoBehaviour
 				}
 				this.transform.position = Vector3.Lerp(this.transform.position, this.NoticedPOV.position, Time.deltaTime * this.NoticedSpeed);
 				this.transform.LookAt(this.NoticedFocus);
+			}
+			else if (this.Scolding)
+			{
+				if (this.Timer == (float)0)
+				{
+					this.NoticedHeight = 1.6f;
+					this.NoticedPOV.position = this.Teacher.position + this.Teacher.forward * (float)1 + Vector3.up * this.NoticedHeight;
+					this.NoticedPOV.LookAt(this.Teacher.position + Vector3.up * this.NoticedHeight);
+					this.NoticedFocus.position = this.Teacher.position + Vector3.up * this.NoticedHeight;
+					this.NoticedSpeed = (float)10;
+				}
+				this.transform.position = Vector3.Lerp(this.transform.position, this.NoticedPOV.position, Time.deltaTime * this.NoticedSpeed);
+				this.transform.LookAt(this.NoticedFocus);
+				this.Timer += Time.deltaTime;
+				if (this.Timer > (float)6)
+				{
+					this.Portal.Transition = true;
+					this.Portal.FadeOut = true;
+				}
+				if (this.Timer > (float)7)
+				{
+					this.Scolding = false;
+					this.Timer = (float)0;
+				}
+			}
+			else if (this.Counter)
+			{
+				if (this.Timer == (float)0)
+				{
+					this.ShoulderPOV.position = this.transform.position + this.transform.forward * (float)1;
+					this.transform.parent = this.Yandere.transform;
+				}
+				this.Timer += Time.deltaTime;
+				if (this.Timer > 0.5f && this.Phase < 2)
+				{
+					this.Yandere.CameraEffects.MurderWitnessed();
+					this.Yandere.Jukebox.GameOver();
+					this.Phase++;
+				}
+				if (this.Timer > 1.4f && this.Phase < 3)
+				{
+					this.Yandere.Subtitle.UpdateLabel("Teacher Attack Reaction", 1, (float)4);
+					this.Phase++;
+				}
+				if (this.Timer > 6.66666f && this.Phase < 4)
+				{
+					this.audio.PlayOneShot(this.Slam);
+					this.Phase++;
+				}
+				if (this.Timer > (float)10 && this.Phase < 5)
+				{
+					this.HeartbrokenCamera.active = true;
+				}
+				if (this.Timer < (float)5)
+				{
+					this.ShoulderPOV.position = Vector3.Lerp(this.ShoulderPOV.position, this.Yandere.TargetStudent.transform.position + Vector3.up * 1.4f, Time.deltaTime);
+					this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3(0.5f, 1.4f, 0.3f), Time.deltaTime);
+				}
+				else if (this.Timer < (float)6)
+				{
+					if (!this.DoNotMove)
+					{
+						this.transform.Translate(Vector3.back * Time.deltaTime * (float)3);
+					}
+				}
+				else if (this.Timer < (float)10)
+				{
+					if (this.DoNotMove)
+					{
+						this.ShoulderPOV.position = this.transform.position + this.transform.forward * (float)1;
+						this.transform.parent = this.Yandere.transform;
+						this.DoNotMove = false;
+					}
+					this.ShoulderPOV.localPosition = Vector3.Lerp(this.ShoulderPOV.localPosition, new Vector3((float)0, 0.114666663f, -0.84f), Time.deltaTime);
+					this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3(0.6f, 0.114666663f, -0.84f), Time.deltaTime);
+				}
+				else
+				{
+					if (this.Phase < 6)
+					{
+						this.ShoulderPOV.transform.parent = this.transform;
+						this.Phase++;
+					}
+					this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3((float)1, 0.31f, -0.533333f), Time.deltaTime);
+				}
+				if (this.Phase < 6 && !this.DoNotMove)
+				{
+					this.transform.LookAt(this.ShoulderPOV);
+				}
 			}
 			else if (this.Yandere.Talking && !this.RPGCamera.enabled)
 			{

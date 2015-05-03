@@ -14,6 +14,8 @@ public class WarningScript : MonoBehaviour
 
 	public bool FlashRed;
 
+	public float VersionNumber;
+
 	public float Timer;
 
 	public virtual void Start()
@@ -28,6 +30,11 @@ public class WarningScript : MonoBehaviour
 		Color color4 = this.Darkness.color = color3;
 		Screen.lockCursor = true;
 		Screen.showCursor = false;
+		if (PlayerPrefs.GetFloat("VersionNumber") < this.VersionNumber)
+		{
+			PlayerPrefs.DeleteAll();
+			PlayerPrefs.SetFloat("VersionNumber", this.VersionNumber);
+		}
 	}
 
 	public virtual void Update()

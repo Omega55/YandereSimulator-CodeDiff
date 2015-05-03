@@ -75,12 +75,19 @@ public class WeaponScript : MonoBehaviour
 			{
 				if (this.Yandere.Weapon[1] == null)
 				{
+					if (this.Yandere.Weapon[2] != null)
+					{
+						this.Yandere.Weapon[2].active = false;
+					}
 					this.Yandere.Weapon[1] = this;
 					this.Yandere.Equipped = 1;
 				}
 				else if (this.Yandere.Weapon[2] == null)
 				{
-					this.Yandere.Weapon[1].active = false;
+					if (this.Yandere.Weapon[1] != null)
+					{
+						this.Yandere.Weapon[1].active = false;
+					}
 					this.Yandere.Weapon[2] = this;
 					this.Yandere.Equipped = 2;
 				}
@@ -194,9 +201,9 @@ public class WeaponScript : MonoBehaviour
 
 	public virtual void UpdateLabel()
 	{
-		if (this.Yandere.Weapon[1] != null && this.Yandere.Weapon[2] != null)
+		if (this.Yandere.Weapon[1] != null && this.Yandere.Weapon[2] != null && this.Concealable)
 		{
-			if (!this.Yandere.Armed)
+			if (!this.Yandere.Armed || this.Yandere.Equipped == 3)
 			{
 				this.Prompt.Label[3].text = "     " + "Swap " + this.Yandere.Weapon[1].Name + " for " + this.Name;
 			}
@@ -205,7 +212,7 @@ public class WeaponScript : MonoBehaviour
 				this.Prompt.Label[3].text = "     " + "Swap " + this.Yandere.Weapon[this.Yandere.Equipped].Name + " for " + this.Name;
 			}
 		}
-		else
+		else if (this.Prompt.Label[3] != null)
 		{
 			this.Prompt.Label[3].text = "     " + this.Name;
 		}

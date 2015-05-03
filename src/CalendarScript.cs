@@ -87,7 +87,7 @@ public class CalendarScript : MonoBehaviour
 				}
 				if (this.Timer > (float)3)
 				{
-					float y = Mathf.Lerp(this.Continue.localPosition.y, (float)-545, Time.deltaTime * (float)10);
+					float y = Mathf.Lerp(this.Continue.localPosition.y, (float)-540, Time.deltaTime * (float)10);
 					Vector3 localPosition2 = this.Continue.localPosition;
 					float num6 = localPosition2.y = y;
 					Vector3 vector2 = this.Continue.localPosition = localPosition2;

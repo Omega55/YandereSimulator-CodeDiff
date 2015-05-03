@@ -8,6 +8,8 @@ public class BucketScript : MonoBehaviour
 
 	public float Distance;
 
+	public RaycastHit hit;
+
 	public virtual void Start()
 	{
 		this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent(typeof(YandereScript));
@@ -20,11 +22,21 @@ public class BucketScript : MonoBehaviour
 		{
 			if (this.Yandere.Bucket == null)
 			{
-				this.Yandere.Bucket = this;
+				if (this.transform.position.y > this.Yandere.transform.position.y - 0.1f && this.transform.position.y < this.Yandere.transform.position.y + 0.1f && Physics.Linecast(this.transform.position, this.Yandere.transform.position + Vector3.up * (float)1, out this.hit) && this.hit.collider.gameObject == this.Yandere.gameObject)
+				{
+					this.Yandere.Bucket = this;
+				}
 			}
-			else if (this.Distance < this.Yandere.Bucket.Distance)
+			else
 			{
-				this.Yandere.Bucket = this;
+				if (Physics.Linecast(this.transform.position, this.Yandere.transform.position + Vector3.up * (float)1, out this.hit) && this.hit.collider.gameObject != this.Yandere.gameObject)
+				{
+					this.Yandere.Bucket = null;
+				}
+				if (this.transform.position.y < this.Yandere.transform.position.y - 0.1f || this.transform.position.y > this.Yandere.transform.position.y + 0.1f)
+				{
+					this.Yandere.Bucket = null;
+				}
 			}
 		}
 		else if (this.Yandere.Bucket == this)

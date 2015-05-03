@@ -7,6 +7,8 @@ public class HeartbrokenScript : MonoBehaviour
 {
 	public YandereScript Yandere;
 
+	public ClockScript Clock;
+
 	public AudioListener Listener;
 
 	public AudioClip[] NoticedClips;
@@ -33,9 +35,13 @@ public class HeartbrokenScript : MonoBehaviour
 
 	public float Timer;
 
+	public int Phase;
+
+	public int LetterID;
+
 	public int ShakeID;
 
-	public int Phase;
+	public int StopID;
 
 	public int ID;
 
@@ -47,12 +53,42 @@ public class HeartbrokenScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		if (((StudentScript)this.Yandere.Senpai.GetComponent(typeof(StudentScript))).Teacher)
+		{
+			this.Letters[0].text = string.Empty;
+			this.Letters[1].text = "E";
+			this.Letters[2].text = "X";
+			this.Letters[3].text = "P";
+			this.Letters[4].text = "E";
+			this.Letters[5].text = "L";
+			this.Letters[6].text = "L";
+			this.Letters[7].text = "E";
+			this.Letters[8].text = "D";
+			this.Letters[9].text = string.Empty;
+			this.Letters[10].text = string.Empty;
+			while (this.ID < Extensions.get_length(this.Letters))
+			{
+				float x = this.Letters[this.ID].transform.localPosition.x + (float)100;
+				Vector3 localPosition = this.Letters[this.ID].transform.localPosition;
+				float num = localPosition.x = x;
+				Vector3 vector = this.Letters[this.ID].transform.localPosition = localPosition;
+				this.ID++;
+			}
+			this.LetterID = 1;
+			this.StopID = 9;
+		}
+		else
+		{
+			this.LetterID = 0;
+			this.StopID = 11;
+		}
+		this.ID = 0;
 		while (this.ID < Extensions.get_length(this.Letters))
 		{
 			this.Letters[this.ID].transform.localScale = new Vector3((float)10, (float)10, (float)1);
-			int num = 0;
+			int num2 = 0;
 			Color color = this.Letters[this.ID].color;
-			float num2 = color.a = (float)num;
+			float num3 = color.a = (float)num2;
 			Color color2 = this.Letters[this.ID].color = color;
 			this.Origins[this.ID] = this.Letters[this.ID].transform.localPosition;
 			this.ID++;
@@ -60,36 +96,37 @@ public class HeartbrokenScript : MonoBehaviour
 		this.ID = 0;
 		while (this.ID < Extensions.get_length(this.Options))
 		{
-			int num3 = 0;
+			int num4 = 0;
 			Color color3 = this.Options[this.ID].color;
-			float num4 = color3.a = (float)num3;
+			float num5 = color3.a = (float)num4;
 			Color color4 = this.Options[this.ID].color = color3;
 			this.ID++;
 		}
 		this.ID = 0;
-		int num5 = 0;
+		int num6 = 0;
 		Color color5 = this.Subtitle.color;
-		float num6 = color5.a = (float)num5;
+		float num7 = color5.a = (float)num6;
 		Color color6 = this.Subtitle.color = color5;
 		if (this.Noticed)
 		{
 			this.Listener.enabled = false;
-			int num7 = 0;
+			int num8 = 0;
 			Color color7 = this.Background.color;
-			float num8 = color7.a = (float)num7;
+			float num9 = color7.a = (float)num8;
 			Color color8 = this.Background.color = color7;
-			int num9 = 0;
+			int num10 = 0;
 			Color color9 = this.Ground.color;
-			float num10 = color9.a = (float)num9;
+			float num11 = color9.a = (float)num10;
 			Color color10 = this.Ground.color = color9;
 		}
 		else
 		{
-			int num11 = 100;
+			int num12 = 100;
 			Vector3 position = this.transform.parent.transform.position;
-			float num12 = position.y = (float)num11;
-			Vector3 vector = this.transform.parent.transform.position = position;
+			float num13 = position.y = (float)num12;
+			Vector3 vector2 = this.transform.parent.transform.position = position;
 		}
+		this.Clock.StopTime = true;
 	}
 
 	public virtual void Update()
@@ -132,17 +169,21 @@ public class HeartbrokenScript : MonoBehaviour
 				this.MainCamera.enabled = false;
 			}
 		}
-		if (this.ID < Extensions.get_length(this.Letters))
+		if (this.LetterID < this.StopID)
 		{
-			this.Letters[this.ID].transform.localScale = Vector3.MoveTowards(this.Letters[this.ID].transform.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)100);
-			float a3 = this.Letters[this.ID].color.a + Time.deltaTime * (float)10;
-			Color color5 = this.Letters[this.ID].color;
+			this.Letters[this.LetterID].transform.localScale = Vector3.MoveTowards(this.Letters[this.LetterID].transform.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)100);
+			float a3 = this.Letters[this.LetterID].color.a + Time.deltaTime * (float)10;
+			Color color5 = this.Letters[this.LetterID].color;
 			float num4 = color5.a = a3;
-			Color color6 = this.Letters[this.ID].color = color5;
-			if (this.Letters[this.ID].transform.localScale == new Vector3((float)1, (float)1, (float)1))
+			Color color6 = this.Letters[this.LetterID].color = color5;
+			if (this.Letters[this.LetterID].transform.localScale == new Vector3((float)1, (float)1, (float)1))
 			{
 				this.audio.PlayOneShot(this.Slam);
-				this.ID++;
+				this.LetterID++;
+				if (this.LetterID == this.StopID)
+				{
+					this.ID = 0;
+				}
 			}
 		}
 		else if (this.Phase == 3)
@@ -155,13 +196,13 @@ public class HeartbrokenScript : MonoBehaviour
 				Color color8 = this.Subtitle.color = color7;
 				this.audio.Play();
 			}
-			if (this.ID - 11 < Extensions.get_length(this.Options) && this.ID - 11 < Extensions.get_length(this.Options))
+			if (this.ID < Extensions.get_length(this.Options) && this.ID < Extensions.get_length(this.Options))
 			{
-				float a4 = this.Options[this.ID - 11].color.a + Time.deltaTime * (float)2;
-				Color color9 = this.Options[this.ID - 11].color;
+				float a4 = this.Options[this.ID].color.a + Time.deltaTime * (float)2;
+				Color color9 = this.Options[this.ID].color;
 				float num7 = color9.a = a4;
-				Color color10 = this.Options[this.ID - 11].color = color9;
-				if (this.Options[this.ID - 11].color.a >= (float)1)
+				Color color10 = this.Options[this.ID].color = color9;
+				if (this.Options[this.ID].color.a >= (float)1)
 				{
 					this.ID++;
 				}
@@ -184,14 +225,15 @@ public class HeartbrokenScript : MonoBehaviour
 
 	public virtual void UpdateSubtitle()
 	{
+		StudentScript studentScript = (StudentScript)this.Yandere.Senpai.GetComponent(typeof(StudentScript));
 		int num = 0;
-		int num2 = 1;
-		Color color = this.Subtitle.color;
-		float num3 = color.a = (float)num2;
-		Color color2 = this.Subtitle.color = color;
-		if (this.Yandere.Noticed)
+		if (!studentScript.Teacher && this.Yandere.Noticed)
 		{
-			string gameOverCause = ((StudentScript)this.Yandere.Senpai.GetComponent(typeof(StudentScript))).GameOverCause;
+			int num2 = 1;
+			Color color = this.Subtitle.color;
+			float num3 = color.a = (float)num2;
+			Color color2 = this.Subtitle.color = color;
+			string gameOverCause = studentScript.GameOverCause;
 			if (gameOverCause == "Stalking")
 			{
 				num = 4;
@@ -211,6 +253,10 @@ public class HeartbrokenScript : MonoBehaviour
 			else if (gameOverCause == "Blood")
 			{
 				num = 1;
+			}
+			else if (gameOverCause == "Lewd")
+			{
+				num = 6;
 			}
 			this.Subtitle.text = this.NoticedLines[num];
 			this.Subtitle.audio.clip = this.NoticedClips[num];

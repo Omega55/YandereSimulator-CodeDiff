@@ -84,6 +84,7 @@ public class HomeCameraScript : MonoBehaviour
 			else if (this.ID == 3)
 			{
 				this.HomeSenpaiShrine.enabled = true;
+				this.HomeYandere.active = false;
 			}
 			else if (this.ID == 4)
 			{

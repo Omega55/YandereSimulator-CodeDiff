@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityScript.Lang;
 
 [Serializable]
 public class ClockScript : MonoBehaviour
@@ -7,6 +8,8 @@ public class ClockScript : MonoBehaviour
 	private string MinuteNumber;
 
 	private string HourNumber;
+
+	public Collider[] TrespassZones;
 
 	public YandereScript Yandere;
 
@@ -52,6 +55,8 @@ public class ClockScript : MonoBehaviour
 
 	public int Period;
 
+	public int ID;
+
 	public string TimeText;
 
 	public bool StopTime;
@@ -78,6 +83,7 @@ public class ClockScript : MonoBehaviour
 		this.MainLight.color = new Color((float)1, (float)1, (float)1, (float)1);
 		RenderSettings.ambientLight = new Color(0.75f, 0.75f, 0.75f, (float)1);
 		RenderSettings.skybox.SetColor("_Tint", new Color(0.5f, 0.5f, 0.5f));
+		this.DeactivateTresspassZones();
 	}
 
 	public virtual void Update()
@@ -158,6 +164,7 @@ public class ClockScript : MonoBehaviour
 				this.PeriodLabel.text = "CLASSTIME";
 				if (this.Period < 2)
 				{
+					this.ActivateTresspassZones();
 					this.SchoolBell.Play();
 					this.Period++;
 				}
@@ -167,6 +174,7 @@ public class ClockScript : MonoBehaviour
 				this.PeriodLabel.text = "LUNCHTIME";
 				if (this.Period < 3)
 				{
+					this.DeactivateTresspassZones();
 					this.SchoolBell.Play();
 					this.Period++;
 				}
@@ -176,6 +184,7 @@ public class ClockScript : MonoBehaviour
 				this.PeriodLabel.text = "CLASSTIME";
 				if (this.Period < 4)
 				{
+					this.ActivateTresspassZones();
 					this.SchoolBell.Play();
 					this.Period++;
 				}
@@ -185,6 +194,7 @@ public class ClockScript : MonoBehaviour
 				this.PeriodLabel.text = "AFTER SCHOOL";
 				if (this.Period < 5)
 				{
+					this.DeactivateTresspassZones();
 					this.SchoolBell.Play();
 					this.Period++;
 				}
@@ -309,6 +319,26 @@ public class ClockScript : MonoBehaviour
 		if (Weekday == 5)
 		{
 			this.DayLabel.text = "FRIDAY";
+		}
+	}
+
+	public virtual void ActivateTresspassZones()
+	{
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.TrespassZones))
+		{
+			this.TrespassZones[this.ID].enabled = true;
+			this.ID++;
+		}
+	}
+
+	public virtual void DeactivateTresspassZones()
+	{
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.TrespassZones))
+		{
+			this.TrespassZones[this.ID].enabled = false;
+			this.ID++;
 		}
 	}
 

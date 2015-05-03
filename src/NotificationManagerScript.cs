@@ -24,7 +24,7 @@ public class NotificationManagerScript : MonoBehaviour
 
 	public virtual void DisplayNotification(string Type)
 	{
-		if (!this.Yandere.Hateful)
+		if (!this.Yandere.Egg)
 		{
 			GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.Notification);
 			NotificationScript notificationScript = (NotificationScript)gameObject.GetComponent(typeof(NotificationScript));
@@ -47,6 +47,18 @@ public class NotificationManagerScript : MonoBehaviour
 			else if (Type == "Armed")
 			{
 				notificationScript.Label.text = "Visibly Armed";
+			}
+			else if (Type == "Lewd")
+			{
+				notificationScript.Label.text = "Visibly Lewd";
+			}
+			else if (Type == "Trespass")
+			{
+				notificationScript.Label.text = "Trespassing";
+			}
+			else if (Type == "Late")
+			{
+				notificationScript.Label.text = "Late For Class";
 			}
 			this.NotificationsSpawned++;
 			notificationScript.ID = this.NotificationsSpawned;

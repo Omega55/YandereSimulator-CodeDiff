@@ -56,6 +56,7 @@ public class HomeSenpaiShrineScript : MonoBehaviour
 				this.HomeCamera.Destination = this.HomeCamera.Destinations[0];
 				this.HomeCamera.Target = this.HomeCamera.Targets[0];
 				this.HomeYandere.CanMove = true;
+				this.HomeYandere.active = true;
 				this.HomeWindow.Show = false;
 				this.enabled = false;
 				this.Selected = 0;

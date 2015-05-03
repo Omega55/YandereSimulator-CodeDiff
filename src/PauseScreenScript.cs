@@ -92,7 +92,7 @@ public class PauseScreenScript : MonoBehaviour
 						Time.timeScale = (float)1;
 					}
 				}
-				if (Input.GetButtonDown("Start") && !this.Yandere.Shutter.Snapping && !this.Yandere.TimeSkipping && !this.Yandere.Talking)
+				if (Input.GetButtonDown("Start") && !this.Yandere.Shutter.Snapping && !this.Yandere.TimeSkipping && !this.Yandere.Talking && !this.Yandere.Noticed && !this.Yandere.InClass)
 				{
 					this.Yandere.StopAiming();
 					this.PromptParent.localScale = new Vector3((float)0, (float)0, (float)0);
@@ -100,6 +100,7 @@ public class PauseScreenScript : MonoBehaviour
 					this.Yandere.YandereVision = false;
 					this.ScreenBlur.enabled = true;
 					this.Yandere.YandereTimer = (float)0;
+					this.Yandere.Mopping = false;
 					this.Show = true;
 					if (!this.Yandere.CanMove || this.Yandere.Dragging || this.Police.Corpses > 0)
 					{

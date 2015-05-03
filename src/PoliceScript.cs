@@ -13,6 +13,8 @@ public class PoliceScript : MonoBehaviour
 
 	public Transform BloodParent;
 
+	public RagdollScript[] CorpseList;
+
 	public ReputationScript Reputation;
 
 	public TranqCaseScript TranqCase;
@@ -41,9 +43,9 @@ public class PoliceScript : MonoBehaviour
 
 	public UISprite CorpseIcon;
 
-	public string Minutes;
+	public int Minutes;
 
-	public string Seconds;
+	public int Seconds;
 
 	public bool BloodDisposed;
 
@@ -62,6 +64,8 @@ public class PoliceScript : MonoBehaviour
 	public bool GameOver;
 
 	public bool FadeOut;
+
+	public bool Called;
 
 	public int IncineratedWeapons;
 
@@ -178,9 +182,10 @@ public class PoliceScript : MonoBehaviour
 					this.Timer = (float)0;
 				}
 			}
-			this.Minutes = Mathf.Floor(this.Timer / (float)60).ToString("00");
-			this.Seconds = (this.Timer % (float)60).ToString("00");
-			this.TimeLabel.text = this.Minutes + ":" + this.Seconds;
+			int num2 = Mathf.CeilToInt(this.Timer);
+			this.Minutes = num2 / 60;
+			this.Seconds = num2 % 60;
+			this.TimeLabel.text = string.Format("{0:00}:{1:00}", this.Minutes, this.Seconds);
 		}
 		if (this.FadeOut)
 		{
@@ -202,7 +207,7 @@ public class PoliceScript : MonoBehaviour
 			}
 			float a = this.Darkness.color.a + Time.deltaTime;
 			Color color = this.Darkness.color;
-			float num2 = color.a = a;
+			float num3 = color.a = a;
 			Color color2 = this.Darkness.color = color;
 			if (this.Darkness.color.a >= (float)1 && this.HeartbeatCamera.active)
 			{
@@ -222,59 +227,59 @@ public class PoliceScript : MonoBehaviour
 			{
 				float a2 = this.ResultsLabels[0].color.a + Time.deltaTime;
 				Color color3 = this.ResultsLabels[0].color;
-				float num3 = color3.a = a2;
+				float num4 = color3.a = a2;
 				Color color4 = this.ResultsLabels[0].color = color3;
 			}
 			if (this.ResultsTimer > (float)2)
 			{
 				float a3 = this.ResultsLabels[1].color.a + Time.deltaTime;
 				Color color5 = this.ResultsLabels[1].color;
-				float num4 = color5.a = a3;
+				float num5 = color5.a = a3;
 				Color color6 = this.ResultsLabels[1].color = color5;
 			}
 			if (this.ResultsTimer > (float)3)
 			{
 				float a4 = this.ResultsLabels[2].color.a + Time.deltaTime;
 				Color color7 = this.ResultsLabels[2].color;
-				float num5 = color7.a = a4;
+				float num6 = color7.a = a4;
 				Color color8 = this.ResultsLabels[2].color = color7;
 			}
 			if (this.ResultsTimer > (float)4)
 			{
 				float a5 = this.ResultsLabels[3].color.a + Time.deltaTime;
 				Color color9 = this.ResultsLabels[3].color;
-				float num6 = color9.a = a5;
+				float num7 = color9.a = a5;
 				Color color10 = this.ResultsLabels[3].color = color9;
 			}
 			if (this.ResultsTimer > (float)5)
 			{
 				float a6 = this.ResultsLabels[4].color.a + Time.deltaTime;
 				Color color11 = this.ResultsLabels[4].color;
-				float num7 = color11.a = a6;
+				float num8 = color11.a = a6;
 				Color color12 = this.ResultsLabels[4].color = color11;
 			}
 			if (this.ResultsTimer > (float)6)
 			{
 				float a7 = this.ContinueButton.color.a + Time.deltaTime;
 				Color color13 = this.ContinueButton.color;
-				float num8 = color13.a = a7;
+				float num9 = color13.a = a7;
 				Color color14 = this.ContinueButton.color = color13;
 				float a8 = this.ContinueLabel.color.a + Time.deltaTime;
 				Color color15 = this.ContinueLabel.color;
-				float num9 = color15.a = a8;
+				float num10 = color15.a = a8;
 				Color color16 = this.ContinueLabel.color = color15;
 				if (this.ContinueButton.color.a > (float)1)
 				{
-					int num10 = 1;
+					int num11 = 1;
 					Color color17 = this.ContinueButton.color;
-					float num11 = color17.a = (float)num10;
+					float num12 = color17.a = (float)num11;
 					Color color18 = this.ContinueButton.color = color17;
 				}
 				if (this.ContinueLabel.color.a > (float)1)
 				{
-					int num12 = 1;
+					int num13 = 1;
 					Color color19 = this.ContinueLabel.color;
-					float num13 = color19.a = (float)num12;
+					float num14 = color19.a = (float)num13;
 					Color color20 = this.ContinueLabel.color = color19;
 				}
 			}
@@ -290,9 +295,9 @@ public class PoliceScript : MonoBehaviour
 		{
 			if (this.ResultsLabels[i].color.a > (float)1)
 			{
-				int num14 = 1;
+				int num15 = 1;
 				Color color21 = this.ResultsLabels[i].color;
-				float num15 = color21.a = (float)num14;
+				float num16 = color21.a = (float)num15;
 				Color color22 = this.ResultsLabels[i].color = color21;
 			}
 		}
@@ -302,16 +307,16 @@ public class PoliceScript : MonoBehaviour
 			{
 				float a9 = this.ResultsLabels[i].color.a - Time.deltaTime;
 				Color color23 = this.ResultsLabels[i].color;
-				float num16 = color23.a = a9;
+				float num17 = color23.a = a9;
 				Color color24 = this.ResultsLabels[i].color = color23;
 			}
 			float a10 = this.ContinueButton.color.a - Time.deltaTime;
 			Color color25 = this.ContinueButton.color;
-			float num17 = color25.a = a10;
+			float num18 = color25.a = a10;
 			Color color26 = this.ContinueButton.color = color25;
 			float a11 = this.ContinueLabel.color.a - Time.deltaTime;
 			Color color27 = this.ContinueLabel.color;
-			float num18 = color27.a = a11;
+			float num19 = color27.a = a11;
 			Color color28 = this.ContinueLabel.color = color27;
 			if (this.ResultsLabels[0].color.a <= (float)0)
 			{
@@ -640,7 +645,10 @@ public class PoliceScript : MonoBehaviour
 	{
 		for (int i = 1; i < 20; i++)
 		{
-			PlayerPrefs.SetInt("Student_" + i + "_Dead", PlayerPrefs.GetInt("Student_" + i + "_Dying"));
+			if (PlayerPrefs.GetInt("Student_" + i + "_Dying") == 1)
+			{
+				PlayerPrefs.SetInt("Student_" + i + "_Dead", 1);
+			}
 		}
 	}
 

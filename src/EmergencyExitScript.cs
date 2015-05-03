@@ -4,15 +4,7 @@ using UnityEngine;
 [Serializable]
 public class EmergencyExitScript : MonoBehaviour
 {
-	public StudentScript FleeingStudent;
-
 	public StudentScript Student;
-
-	public Collider StudentCollider;
-
-	public Transform Neighborhood;
-
-	public Transform Gateway;
 
 	public Transform Pivot;
 
@@ -35,16 +27,10 @@ public class EmergencyExitScript : MonoBehaviour
 			Vector3 localEulerAngles2 = this.Pivot.localEulerAngles;
 			float num2 = localEulerAngles2.y = y2;
 			Vector3 vector2 = this.Pivot.localEulerAngles = localEulerAngles2;
-			if (this.FleeingStudent != null && this.Pivot.localEulerAngles.y > (float)89)
+			this.Timer -= Time.deltaTime;
+			if (this.Timer <= (float)0)
 			{
-				this.FleeingStudent.Prompt.Hide();
-				this.FleeingStudent.Prompt.enabled = false;
-				this.FleeingStudent.Safe = true;
-				this.FleeingStudent.Pathfinding.target = this.Neighborhood;
-				this.FleeingStudent.Pathfinding.SearchPath();
-			}
-			if (this.Student == null)
-			{
+				this.Student = null;
 				this.Open = false;
 			}
 		}
@@ -53,22 +39,10 @@ public class EmergencyExitScript : MonoBehaviour
 	public virtual void OnTriggerStay(Collider other)
 	{
 		this.Student = (StudentScript)other.gameObject.GetComponent(typeof(StudentScript));
-		if (this.Student != null)
+		if (this.Student != null && this.Student.Fleeing)
 		{
-			this.StudentCollider = other;
-			if (this.Student.Fleeing)
-			{
-				this.FleeingStudent = this.Student;
-				this.Open = true;
-			}
-		}
-	}
-
-	public virtual void OnTriggerExit(Collider other)
-	{
-		if (other == this.StudentCollider)
-		{
-			this.Open = false;
+			this.Open = true;
+			this.Timer = (float)1;
 		}
 	}
 
