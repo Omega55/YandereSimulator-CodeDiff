@@ -636,7 +636,6 @@ public class StudentScript : MonoBehaviour
 					{
 						this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - this.transform.position);
 						this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
-						Debug.Log("Or is it this code?");
 					}
 					else if (this.WitnessedCorpse)
 					{
@@ -695,7 +694,7 @@ public class StudentScript : MonoBehaviour
 						if (this.Police.CorpseList[i] != null)
 						{
 							this.Planes = GeometryUtility.CalculateFrustumPlanes(this.VisionCone);
-							if (GeometryUtility.TestPlanesAABB(this.Planes, this.Police.CorpseList[i].collider.bounds))
+							if (GeometryUtility.TestPlanesAABB(this.Planes, this.Police.CorpseList[i].AllColliders[0].bounds))
 							{
 								RaycastHit raycastHit = default(RaycastHit);
 								Debug.DrawLine(this.Eyes.transform.position, this.Police.CorpseList[i].AllColliders[0].transform.position, Color.green);
@@ -718,7 +717,7 @@ public class StudentScript : MonoBehaviour
 						this.WitnessedCorpse = true;
 					}
 					this.DistanceToPlayer = Vector3.Distance(this.transform.position, this.Yandere.transform.position);
-					if (this.DistanceToPlayer < (float)10)
+					if (this.DistanceToPlayer < (float)11)
 					{
 						if (!this.Talking)
 						{
@@ -1151,7 +1150,6 @@ public class StudentScript : MonoBehaviour
 			{
 				this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - this.transform.position);
 				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
-				Debug.Log("Running this code.");
 			}
 		}
 		else if (this.Dying)
@@ -1204,6 +1202,10 @@ public class StudentScript : MonoBehaviour
 			}
 			else
 			{
+				if (this.Yandere.Laughing)
+				{
+					this.Yandere.Laughing = false;
+				}
 				this.Character.animation.CrossFade(this.CounterAnim);
 				this.targetRotation = Quaternion.LookRotation(new Vector3(this.Yandere.transform.position.x, this.transform.position.y, this.Yandere.transform.position.z) - this.transform.position);
 				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
@@ -1222,7 +1224,6 @@ public class StudentScript : MonoBehaviour
 				this.Character.animation.CrossFade(this.ScaredAnim);
 				this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - this.transform.position);
 				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
-				Debug.Log("And this code?");
 				this.AlarmTimer += Time.deltaTime;
 				if (this.AlarmTimer > (float)5)
 				{
@@ -1276,7 +1277,6 @@ public class StudentScript : MonoBehaviour
 			{
 				this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - this.transform.position);
 				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
-				Debug.Log("This is the right code?");
 			}
 			this.AlarmTimer += Time.deltaTime;
 			this.Alarm -= Time.deltaTime * (float)100;
@@ -1987,6 +1987,7 @@ public class StudentScript : MonoBehaviour
 		this.MyRenderer.sharedMesh = this.TeacherMesh;
 		this.PantyCollider.enabled = false;
 		this.SkirtCollider.enabled = false;
+		this.VisionCone.farClipPlane = (float)12;
 		this.name = "Teacher_" + this.Class;
 		this.Teacher = true;
 		this.MyRenderer.materials[0].mainTexture = this.TeacherTexture;

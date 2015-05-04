@@ -203,13 +203,16 @@ public class WeaponScript : MonoBehaviour
 	{
 		if (this.Yandere.Weapon[1] != null && this.Yandere.Weapon[2] != null && this.Concealable)
 		{
-			if (!this.Yandere.Armed || this.Yandere.Equipped == 3)
+			if (this.Prompt.Label[3] != null)
 			{
-				this.Prompt.Label[3].text = "     " + "Swap " + this.Yandere.Weapon[1].Name + " for " + this.Name;
-			}
-			else
-			{
-				this.Prompt.Label[3].text = "     " + "Swap " + this.Yandere.Weapon[this.Yandere.Equipped].Name + " for " + this.Name;
+				if (!this.Yandere.Armed || this.Yandere.Equipped == 3)
+				{
+					this.Prompt.Label[3].text = "     " + "Swap " + this.Yandere.Weapon[1].Name + " for " + this.Name;
+				}
+				else
+				{
+					this.Prompt.Label[3].text = "     " + "Swap " + this.Yandere.Weapon[this.Yandere.Equipped].Name + " for " + this.Name;
+				}
 			}
 		}
 		else if (this.Prompt.Label[3] != null)

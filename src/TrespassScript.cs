@@ -11,11 +11,14 @@ public class TrespassScript : MonoBehaviour
 		if (other.gameObject.layer == 13)
 		{
 			this.Yandere = (YandereScript)other.gameObject.GetComponent(typeof(YandereScript));
-			if (!this.Yandere.Trespassing)
+			if (this.Yandere != null)
 			{
-				this.Yandere.NotificationManager.DisplayNotification("Trespass");
+				if (!this.Yandere.Trespassing)
+				{
+					this.Yandere.NotificationManager.DisplayNotification("Trespass");
+				}
+				this.Yandere.Trespassing = true;
 			}
-			this.Yandere.Trespassing = true;
 		}
 	}
 

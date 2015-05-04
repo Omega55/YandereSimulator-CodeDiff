@@ -79,7 +79,7 @@ public class HomePantyChangerScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (!this.HomeYandere.CanMove && this.HomeCamera.ID == 4)
+		if (this.HomeWindow.Show)
 		{
 			this.PantyParent.localScale = Vector3.Lerp(this.PantyParent.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
 			if (this.InputManager.TappedRight)

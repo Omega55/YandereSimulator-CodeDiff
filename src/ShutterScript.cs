@@ -81,7 +81,7 @@ public class ShutterScript : MonoBehaviour
 
 	public ShutterScript()
 	{
-		this.OnlyPhotography = 65536;
+		this.OnlyPhotography = 65537;
 		this.OnlyRagdolls = 2049;
 		this.OnlyBlood = 16385;
 	}
@@ -95,6 +95,9 @@ public class ShutterScript : MonoBehaviour
 		Color color = this.Sprite.color;
 		float num2 = color.a = (float)num;
 		Color color2 = this.Sprite.color = color;
+		this.OnlyPhotography = 65537;
+		this.OnlyRagdolls = 2049;
+		this.OnlyBlood = 16385;
 	}
 
 	public virtual void Update()
@@ -139,6 +142,7 @@ public class ShutterScript : MonoBehaviour
 		{
 			if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyPhotography))
 			{
+				Debug.Log(this.hit.collider.gameObject.name);
 				if (this.hit.collider.gameObject.name == "Panties" || this.hit.collider.gameObject.name == "Skirt")
 				{
 					if (!this.Yandere.Lewd)

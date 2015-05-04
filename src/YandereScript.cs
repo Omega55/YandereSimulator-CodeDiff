@@ -830,6 +830,7 @@ public class YandereScript : MonoBehaviour
 				if (this.TimeSkipping)
 				{
 					this.Character.animation.CrossFade("f02_timeSkip_00");
+					this.MyController.Move(this.transform.up * 0.0001f);
 					this.Sanity += Time.deltaTime * 0.17f;
 					this.UpdateSanity();
 				}

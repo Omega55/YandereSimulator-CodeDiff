@@ -272,7 +272,7 @@ public class ClockScript : MonoBehaviour
 			{
 				this.EndTimeSkip();
 			}
-			if (this.Yandere.NearSenpai || Input.GetButtonDown("Start"))
+			if (this.Yandere.CameraEffects.Streaks.color.a > (float)0 || this.Yandere.CameraEffects.MurderStreaks.color.a > (float)0 || this.Yandere.NearSenpai || Input.GetButtonDown("Start"))
 			{
 				this.EndTimeSkip();
 			}
@@ -291,11 +291,14 @@ public class ClockScript : MonoBehaviour
 		this.Yandere.Hearts.active = false;
 		this.Yandere.Phone.active = false;
 		this.Yandere.TimeSkipping = false;
-		this.Yandere.CanMove = true;
 		this.Blur.enabled = false;
 		Time.timeScale = (float)1;
 		this.TimeSkip = false;
 		this.HalfwayTime = (float)0;
+		if (!this.Yandere.Noticed)
+		{
+			this.Yandere.CanMove = true;
+		}
 	}
 
 	public virtual void UpdateWeekdayText(int Weekday)

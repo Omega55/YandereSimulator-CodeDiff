@@ -50,15 +50,6 @@ public class PortalScript : MonoBehaviour
 			this.LateReport2 = true;
 			this.Yandere.NotificationManager.DisplayNotification("Late");
 		}
-		if (this.Yandere.Armed || this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Dragging)
-		{
-			this.Prompt.Hide();
-			this.Prompt.enabled = false;
-		}
-		else
-		{
-			this.Prompt.enabled = true;
-		}
 		if (this.Prompt.Circle[0].fillAmount <= (float)0)
 		{
 			this.Prompt.Circle[0].fillAmount = (float)1;
@@ -205,10 +196,22 @@ public class PortalScript : MonoBehaviour
 				}
 			}
 		}
-		if (this.Clock.HourTime > 15.5f && this.transform.position.z > (float)0)
+		if (this.Clock.HourTime > 15.5f)
 		{
-			this.transform.position = new Vector3((float)0, (float)0, -49.5f);
-			this.Prompt.Label[0].text = "     " + "Go Home";
+			if (this.transform.position.z > (float)0)
+			{
+				this.transform.position = new Vector3((float)0, (float)0, -49.5f);
+				this.Prompt.Label[0].text = "     " + "Go Home";
+			}
+		}
+		else if (this.Yandere.Armed || this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Dragging)
+		{
+			this.Prompt.Hide();
+			this.Prompt.enabled = false;
+		}
+		else
+		{
+			this.Prompt.enabled = true;
 		}
 	}
 
