@@ -93,6 +93,8 @@ public class YandereScript : MonoBehaviour
 
 	public SubtitleScript Subtitle;
 
+	public UIPanel DetectionPanel;
+
 	public StudentScript Follower;
 
 	public JukeboxScript Jukebox;
@@ -300,6 +302,8 @@ public class YandereScript : MonoBehaviour
 	public bool InClass;
 
 	public bool CanMove;
+
+	public bool Chased;
 
 	public bool Armed;
 
@@ -893,40 +897,43 @@ public class YandereScript : MonoBehaviour
 				this.NewTrail = (GameObject)UnityEngine.Object.Instantiate(this.Trail, this.transform.position + Vector3.fwd * 0.5f + Vector3.up * 0.1f, Quaternion.identity);
 				((AIPath)this.NewTrail.GetComponent(typeof(AIPath))).target = this.Homeroom;
 			}
-			if (Vector3.Distance(this.transform.position, this.Senpai.position) < (float)2)
+			if (!this.Attacking)
 			{
-				if (!this.NearSenpai)
+				if (Vector3.Distance(this.transform.position, this.Senpai.position) < (float)2)
 				{
-					this.DepthOfField.focalSize = (float)150;
-					this.NearSenpai = true;
+					if (!this.NearSenpai)
+					{
+						this.DepthOfField.focalSize = (float)150;
+						this.NearSenpai = true;
+					}
+					this.Obscurance.enabled = false;
+					this.YandereVision = false;
+					this.Crouching = false;
+					this.Crawling = false;
+					this.Mopping = false;
+					this.YandereTimer = (float)0;
+					if (this.Dragging)
+					{
+						((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).StopDragging();
+					}
+					if (this.Armed)
+					{
+						this.Weapon[this.Equipped].Drop();
+						this.Unequip();
+					}
+					if (this.PickUp != null)
+					{
+						this.PickUp.Drop();
+					}
+					if (this.Aiming)
+					{
+						this.StopAiming();
+					}
 				}
-				this.Obscurance.enabled = false;
-				this.YandereVision = false;
-				this.Crouching = false;
-				this.Crawling = false;
-				this.Mopping = false;
-				this.YandereTimer = (float)0;
-				if (this.Dragging)
+				else
 				{
-					((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).StopDragging();
+					this.NearSenpai = false;
 				}
-				if (this.Armed)
-				{
-					this.Weapon[this.Equipped].Drop();
-					this.Unequip();
-				}
-				if (this.PickUp != null)
-				{
-					this.PickUp.Drop();
-				}
-				if (this.Aiming)
-				{
-					this.StopAiming();
-				}
-			}
-			else
-			{
-				this.NearSenpai = false;
 			}
 			if (this.NearSenpai && !this.Noticed)
 			{
@@ -1348,23 +1355,23 @@ public class YandereScript : MonoBehaviour
 					this.BreastSize = 0.5f;
 				}
 			}
-			if (this.CanMove && !this.Egg)
+			if (this.CanMove)
 			{
-				if (Input.GetKeyDown("l"))
+				if (Input.GetKeyDown("l") && !this.Egg)
 				{
 					this.StudentManager.AttackOnTitan();
 					this.AttackOnTitan();
 				}
-				if (Input.GetKeyDown("k"))
+				if (Input.GetKeyDown("k") && !this.Egg)
 				{
 					this.Punish();
 				}
-				if (Input.GetKeyDown("j"))
+				if (Input.GetKeyDown("j") && !this.Egg)
 				{
 					this.EmptyHands();
 					this.Hate();
 				}
-				if (Input.GetKeyDown("g"))
+				if (Input.GetKeyDown("g") && !this.Egg)
 				{
 					this.Sukeban();
 				}
@@ -1529,7 +1536,6 @@ public class YandereScript : MonoBehaviour
 		float num2 = localPosition.y = (float)num;
 		Vector3 vector = this.PelvisRoot.transform.localPosition = localPosition;
 		this.ShoulderCamera.AimingCamera = false;
-		this.RPGCamera.enabled = true;
 		if (!Input.GetButtonDown("Start") && !Input.GetKeyDown("escape"))
 		{
 			this.FixCamera();
@@ -1612,7 +1618,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual void Unequip()
 	{
-		if (this.CanMove)
+		if (this.CanMove || this.Noticed)
 		{
 			if (this.Equipped < 3)
 			{

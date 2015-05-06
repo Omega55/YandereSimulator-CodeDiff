@@ -67,6 +67,8 @@ public class ShutterScript : MonoBehaviour
 
 	public RaycastHit hit;
 
+	public float Timer;
+
 	public int Frame;
 
 	public int Slot;
@@ -75,6 +77,8 @@ public class ShutterScript : MonoBehaviour
 
 	public int OnlyPhotography;
 
+	public int OnlyCharacters;
+
 	public int OnlyRagdolls;
 
 	public int OnlyBlood;
@@ -82,6 +86,7 @@ public class ShutterScript : MonoBehaviour
 	public ShutterScript()
 	{
 		this.OnlyPhotography = 65537;
+		this.OnlyCharacters = 257;
 		this.OnlyRagdolls = 2049;
 		this.OnlyBlood = 16385;
 	}
@@ -96,6 +101,7 @@ public class ShutterScript : MonoBehaviour
 		float num2 = color.a = (float)num;
 		Color color2 = this.Sprite.color = color;
 		this.OnlyPhotography = 65537;
+		this.OnlyCharacters = 513;
 		this.OnlyRagdolls = 2049;
 		this.OnlyBlood = 16385;
 	}
@@ -140,22 +146,30 @@ public class ShutterScript : MonoBehaviour
 		}
 		else if (this.Yandere.Aiming)
 		{
-			if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyPhotography))
+			this.Timer += Time.deltaTime;
+			if (this.Timer > 0.5f && Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyPhotography) && (this.hit.collider.gameObject.name == "Panties" || this.hit.collider.gameObject.name == "Skirt"))
 			{
-				Debug.Log(this.hit.collider.gameObject.name);
-				if (this.hit.collider.gameObject.name == "Panties" || this.hit.collider.gameObject.name == "Skirt")
+				GameObject gameObject = this.hit.collider.gameObject.transform.root.gameObject;
+				if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyCharacters))
 				{
-					if (!this.Yandere.Lewd)
+					if (this.hit.collider.gameObject == gameObject)
 					{
-						this.Yandere.NotificationManager.DisplayNotification("Lewd");
+						if (!this.Yandere.Lewd)
+						{
+							this.Yandere.NotificationManager.DisplayNotification("Lewd");
+						}
+						this.Yandere.Lewd = true;
 					}
-					this.Yandere.Lewd = true;
+					else
+					{
+						this.Yandere.Lewd = false;
+					}
 				}
 			}
-			else
-			{
-				this.Yandere.Lewd = false;
-			}
+		}
+		else
+		{
+			this.Timer = (float)0;
 		}
 		if (this.TookPhoto)
 		{

@@ -223,6 +223,10 @@ public class ShoulderCameraScript : MonoBehaviour
 						this.transform.parent = this.Yandere.transform;
 						this.DoNotMove = false;
 					}
+					if (this.Yandere.Armed)
+					{
+						this.Yandere.Weapon[this.Yandere.Equipped].Drop();
+					}
 					this.ShoulderPOV.localPosition = Vector3.Lerp(this.ShoulderPOV.localPosition, new Vector3((float)0, 0.114666663f, -0.84f), Time.deltaTime);
 					this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3(0.6f, 0.114666663f, -0.84f), Time.deltaTime);
 				}

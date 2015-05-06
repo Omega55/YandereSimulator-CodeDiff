@@ -77,6 +77,10 @@ public class ClockScript : MonoBehaviour
 	public virtual void Start()
 	{
 		this.PresentTime = this.StartHour * (float)60;
+		if (PlayerPrefs.GetInt("Weekday") == 0)
+		{
+			PlayerPrefs.SetInt("Weekday", 1);
+		}
 		this.UpdateWeekdayText(PlayerPrefs.GetInt("Weekday"));
 		this.BloomEffect.bloomIntensity = (float)5;
 		this.BloomEffect.bloomThreshhold = (float)0;

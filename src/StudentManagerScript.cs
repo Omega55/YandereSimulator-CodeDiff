@@ -17,6 +17,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public StudentScript Reporter;
 
+	public GhostScript GhostChan;
+
 	public YandereScript Yandere;
 
 	public ClockScript Clock;
@@ -51,7 +53,7 @@ public class StudentManagerScript : MonoBehaviour
 
 	public GameObject StudentKun;
 
-	public GhostScript GhostChan;
+	public GameObject Portal;
 
 	public float[] SpawnTimes;
 
@@ -182,12 +184,12 @@ public class StudentManagerScript : MonoBehaviour
 				else
 				{
 					this.Students[this.ID].Prompt.HideButton[2] = true;
-					if (this.Students[this.ID].WitnessedMurder)
+					if (this.Students[this.ID].WitnessedMurder || this.Students[this.ID].WitnessedCorpse)
 					{
 						this.Students[this.ID].Prompt.HideButton[0] = true;
 					}
 				}
-				if (this.Yandere.Dragging || this.Yandere.PickUp != null)
+				if (this.Yandere.Dragging || this.Yandere.PickUp != null || this.Yandere.Chased)
 				{
 					this.Students[this.ID].Prompt.HideButton[0] = true;
 					this.Students[this.ID].Prompt.HideButton[2] = true;
@@ -233,6 +235,44 @@ public class StudentManagerScript : MonoBehaviour
 				this.Students[this.ID].Pathfinding.canSearch = true;
 				this.Students[this.ID].Pathfinding.canMove = true;
 				this.Students[this.ID].Pathfinding.speed = (float)1;
+				this.Students[this.ID].Routine = true;
+			}
+			this.ID++;
+		}
+	}
+
+	public virtual void StopMoving()
+	{
+		this.ID = 1;
+		while (this.ID < Extensions.get_length(this.Students))
+		{
+			if (this.Students[this.ID] != null)
+			{
+				this.Students[this.ID].Character.animation.CrossFade(this.Students[this.ID].IdleAnim);
+				this.Students[this.ID].Pathfinding.canSearch = false;
+				this.Students[this.ID].Pathfinding.canMove = false;
+				this.Students[this.ID].Pathfinding.speed = (float)0;
+				this.Students[this.ID].enabled = false;
+			}
+			this.ID++;
+		}
+	}
+
+	public virtual void StopFleeing()
+	{
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.Students))
+		{
+			if (this.Students[this.ID] != null && !this.Students[this.ID].Teacher)
+			{
+				this.Students[this.ID].Pathfinding.target = this.Students[this.ID].Destinations[this.Students[this.ID].Phase];
+				this.Students[this.ID].Pathfinding.speed = (float)1;
+				this.Students[this.ID].WitnessedCorpse = false;
+				this.Students[this.ID].WitnessedMurder = false;
+				this.Students[this.ID].Alarmed = false;
+				this.Students[this.ID].Fleeing = false;
+				this.Students[this.ID].Reacted = false;
+				this.Students[this.ID].Witness = false;
 				this.Students[this.ID].Routine = true;
 			}
 			this.ID++;

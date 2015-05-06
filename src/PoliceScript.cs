@@ -15,6 +15,8 @@ public class PoliceScript : MonoBehaviour
 
 	public RagdollScript[] CorpseList;
 
+	public StudentManagerScript StudentManager;
+
 	public ReputationScript Reputation;
 
 	public TranqCaseScript TranqCase;
@@ -177,6 +179,7 @@ public class PoliceScript : MonoBehaviour
 				this.Timer -= Time.deltaTime;
 				if (this.Timer <= (float)0)
 				{
+					this.StudentManager.StopMoving();
 					Time.timeScale = (float)1;
 					this.FadeOut = true;
 					this.Timer = (float)0;

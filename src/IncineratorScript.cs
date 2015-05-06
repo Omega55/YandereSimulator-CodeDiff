@@ -168,6 +168,7 @@ public class IncineratorScript : MonoBehaviour
 		{
 			if (this.Yandere.Ragdoll != null)
 			{
+				this.Yandere.Character.animation.CrossFade("f02_dragIdle_00");
 				this.Yandere.YandereVision = false;
 				this.Yandere.CanMove = false;
 				this.Yandere.Dumping = true;

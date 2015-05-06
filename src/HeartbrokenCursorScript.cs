@@ -90,13 +90,13 @@ public class HeartbrokenCursorScript : MonoBehaviour
 			Color color6 = this.Darkness.color = color5;
 			if (this.Darkness.color.a >= (float)1)
 			{
-				PlayerPrefs.DeleteAll();
 				if (this.Selected == 1)
 				{
 					Application.LoadLevel(Application.loadedLevel);
 				}
 				else if (this.Selected == 2)
 				{
+					PlayerPrefs.DeleteAll();
 					Application.LoadLevel("CalendarScene");
 				}
 				else if (this.Selected == 3)
