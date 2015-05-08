@@ -4,12 +4,15 @@ using UnityEngine;
 [Serializable]
 public class TrespassScript : MonoBehaviour
 {
+	public GameObject YandereObject;
+
 	public YandereScript Yandere;
 
 	public virtual void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.layer == 13)
 		{
+			this.YandereObject = other.gameObject;
 			this.Yandere = (YandereScript)other.gameObject.GetComponent(typeof(YandereScript));
 			if (this.Yandere != null)
 			{
@@ -24,10 +27,7 @@ public class TrespassScript : MonoBehaviour
 
 	public virtual void OnTriggerExit(Collider other)
 	{
-		if (other.gameObject.layer == 13)
-		{
-		}
-		if (this.Yandere != null)
+		if (this.Yandere != null && other.gameObject == this.YandereObject)
 		{
 			this.Yandere.Trespassing = false;
 		}

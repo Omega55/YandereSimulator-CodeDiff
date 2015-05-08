@@ -1643,7 +1643,10 @@ public class YandereScript : MonoBehaviour
 
 	public virtual void EmptyHands()
 	{
-		this.Unequip();
+		if (this.Armed)
+		{
+			this.Unequip();
+		}
 		if (this.PickUp != null)
 		{
 			this.PickUp.Drop();

@@ -634,11 +634,16 @@ public class StudentScript : MonoBehaviour
 									this.Routine = true;
 								}
 							}
-							else
+							else if (!this.Yandere.Dumping)
 							{
 								if (this.Yandere.Aiming)
 								{
 									this.Yandere.StopAiming();
+								}
+								if (this.Yandere.Dragging || this.Yandere.Mopping || this.Yandere.PickUp != null)
+								{
+									this.Yandere.Mopping = false;
+									this.Yandere.EmptyHands();
 								}
 								this.AttackReaction();
 								this.Character.animation[this.CounterAnim].time = (float)5;
@@ -742,6 +747,15 @@ public class StudentScript : MonoBehaviour
 					{
 						this.Alarm = (float)200;
 						this.WitnessedCorpse = true;
+						if (this.Corpse.Dragged || this.Corpse.Dumped)
+						{
+							if (this.Teacher)
+							{
+								this.Subtitle.UpdateLabel("Teacher Murder Reaction", 1, (float)3);
+								this.StudentManager.Portal.active = false;
+							}
+							this.WitnessMurder();
+						}
 					}
 					this.DistanceToPlayer = Vector3.Distance(this.transform.position, this.Yandere.transform.position);
 					if (this.DistanceToPlayer < (float)11)
@@ -839,15 +853,20 @@ public class StudentScript : MonoBehaviour
 						this.Alarmed = true;
 						this.Witness = true;
 						string witnessed = this.Witnessed;
+						bool flag = false;
+						if (this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].Suspicious)
+						{
+							flag = true;
+						}
 						if (this.YandereVisible)
 						{
-							if (this.Yandere.Armed && this.Yandere.Bloodiness > (float)0 && this.Yandere.Sanity < 33.333f)
+							if (flag && this.Yandere.Bloodiness > (float)0 && this.Yandere.Sanity < 33.333f)
 							{
 								this.Witnessed = "Weapon and Blood and Insanity";
 								this.RepLoss = (float)30;
 								this.Concern = 5;
 							}
-							else if (this.Yandere.Armed && this.Yandere.Sanity < 33.333f)
+							else if (flag && this.Yandere.Sanity < 33.333f)
 							{
 								this.Witnessed = "Weapon and Insanity";
 								this.RepLoss = (float)20;
@@ -859,13 +878,13 @@ public class StudentScript : MonoBehaviour
 								this.RepLoss = (float)20;
 								this.Concern = 5;
 							}
-							else if (this.Yandere.Armed && this.Yandere.Bloodiness > (float)0)
+							else if (flag && this.Yandere.Bloodiness > (float)0)
 							{
 								this.Witnessed = "Weapon and Blood";
 								this.RepLoss = (float)20;
 								this.Concern = 5;
 							}
-							else if (this.Yandere.Armed)
+							else if (flag)
 							{
 								this.WeaponWitnessed = this.Yandere.Weapon[this.Yandere.Equipped].WeaponID;
 								this.Witnessed = "Weapon";
@@ -1745,6 +1764,10 @@ public class StudentScript : MonoBehaviour
 			this.CameraEffects.MurderWitnessed();
 			this.Witnessed = "Murder";
 			this.Police.Witnesses = this.Police.Witnesses + 1;
+			if (this.Teacher)
+			{
+				this.StudentManager.Reporter = this;
+			}
 			if (this.Talking)
 			{
 				this.DialogueWheel.End();
@@ -1811,7 +1834,7 @@ public class StudentScript : MonoBehaviour
 		}
 		else if (this.Persona == 2)
 		{
-			if (this.Reporting)
+			if (this.StudentManager.Reporter == this)
 			{
 				this.Pathfinding.target = this.StudentManager.Teachers[this.Class].TeacherTalkPoint;
 				if (this.WitnessedMurder)
