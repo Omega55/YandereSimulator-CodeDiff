@@ -1,0 +1,188 @@
+﻿using System;
+using UnityEngine;
+using UnityScript.Lang;
+
+[Serializable]
+public class EventManagerScript : MonoBehaviour
+{
+	public StudentManagerScript StudentManager;
+
+	public UILabel EventSubtitle;
+
+	public YandereScript Yandere;
+
+	public ClockScript Clock;
+
+	public StudentScript[] EventStudent;
+
+	public Transform[] EventLocation;
+
+	public AudioClip[] EventClip;
+
+	public string[] EventSpeech;
+
+	public string[] EventAnim;
+
+	public int[] EventSpeaker;
+
+	public GameObject RivalLocker;
+
+	public AudioSource VoiceClip;
+
+	public bool EventCheck;
+
+	public bool EventOn;
+
+	public bool Spoken;
+
+	public bool Idle1;
+
+	public bool Idle2;
+
+	public int EventPhase;
+
+	public float Timer;
+
+	public float Scale;
+
+	public virtual void Start()
+	{
+		this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+		if (PlayerPrefs.GetInt("Weekday") == 1)
+		{
+			this.EventCheck = true;
+		}
+		if (PlayerPrefs.GetInt("Event1") == 1)
+		{
+			this.RivalLocker.active = true;
+		}
+	}
+
+	public virtual void Update()
+	{
+		if (!this.Clock.StopTime && this.EventCheck && this.Clock.HourTime > 13.01f)
+		{
+			this.EventStudent[1] = this.StudentManager.Students[5];
+			this.EventStudent[2] = this.StudentManager.Students[6];
+			if (this.EventStudent[1] != null && this.EventStudent[2] != null && this.EventStudent[1].Pathfinding.canMove && this.EventStudent[1].Pathfinding.canMove)
+			{
+				this.EventStudent[1].CurrentDestination = this.EventLocation[1];
+				this.EventStudent[1].Pathfinding.target = this.EventLocation[1];
+				this.EventStudent[1].InEvent = true;
+				this.EventStudent[2].CurrentDestination = this.EventLocation[2];
+				this.EventStudent[2].Pathfinding.target = this.EventLocation[2];
+				this.EventStudent[2].InEvent = true;
+				this.EventCheck = false;
+				this.EventOn = true;
+			}
+		}
+		if (this.EventOn)
+		{
+			if (this.Clock.HourTime > 13.5f)
+			{
+				this.EndEvent();
+			}
+			else
+			{
+				if (!this.EventStudent[1].Pathfinding.canMove && !this.Idle1)
+				{
+					this.EventStudent[1].Character.animation.CrossFade(this.EventStudent[1].IdleAnim);
+					this.Idle1 = true;
+				}
+				if (!this.EventStudent[2].Pathfinding.canMove && !this.Idle2)
+				{
+					this.EventStudent[2].Character.animation.CrossFade(this.EventStudent[2].IdleAnim);
+					this.Idle2 = true;
+				}
+				if (!this.EventStudent[1].Pathfinding.canMove && !this.EventStudent[2].Pathfinding.canMove)
+				{
+					if (!this.Spoken)
+					{
+						this.EventStudent[this.EventSpeaker[this.EventPhase]].Character.animation.CrossFade(this.EventAnim[this.EventPhase]);
+						this.EventSubtitle.text = this.EventSpeech[this.EventPhase];
+						this.PlayClip(this.EventClip[this.EventPhase], this.EventStudent[this.EventSpeaker[this.EventPhase]].transform.position + Vector3.up * 1.5f);
+						this.Spoken = true;
+					}
+					else
+					{
+						this.Timer += Time.deltaTime;
+						if (this.Timer > this.EventClip[this.EventPhase].length)
+						{
+							this.EventSubtitle.text = string.Empty;
+						}
+						float num = Vector3.Distance(this.Yandere.transform.position, this.EventStudent[this.EventSpeaker[this.EventPhase]].transform.position);
+						if (num < (float)10)
+						{
+							this.Scale = Mathf.Abs((num - (float)10) * 0.2f);
+							if (this.Scale < (float)0)
+							{
+								this.Scale = (float)0;
+							}
+							if (this.Scale > (float)1)
+							{
+								this.Scale = (float)1;
+							}
+							this.EventSubtitle.transform.localScale = new Vector3(this.Scale, this.Scale, this.Scale);
+						}
+						else
+						{
+							this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+						}
+						if (this.EventStudent[this.EventSpeaker[this.EventPhase]].Character.animation[this.EventAnim[this.EventPhase]].time >= this.EventStudent[this.EventSpeaker[this.EventPhase]].Character.animation[this.EventAnim[this.EventPhase]].length)
+						{
+							this.EventStudent[this.EventSpeaker[this.EventPhase]].Character.animation.CrossFade(this.EventStudent[this.EventSpeaker[this.EventPhase]].IdleAnim);
+						}
+						if (this.Timer > this.EventClip[this.EventPhase].length + (float)1)
+						{
+							this.Spoken = false;
+							this.EventPhase++;
+							this.Timer = (float)0;
+							if (this.EventPhase == Extensions.get_length(this.EventSpeech))
+							{
+								this.EndEvent();
+							}
+						}
+						if (this.EventPhase == 7 && num < (float)5 && !this.RivalLocker.active)
+						{
+							this.Yandere.NotificationManager.DisplayNotification("Info");
+							PlayerPrefs.SetInt("Event1", 1);
+							this.RivalLocker.active = true;
+						}
+					}
+				}
+			}
+		}
+		if (Input.GetKeyDown("6"))
+		{
+			this.Yandere.transform.position = this.EventLocation[3].position;
+		}
+	}
+
+	public virtual void PlayClip(AudioClip clip, Vector3 pos)
+	{
+		GameObject gameObject = new GameObject("TempAudio");
+		gameObject.transform.position = pos;
+		AudioSource audioSource = (AudioSource)gameObject.AddComponent(typeof(AudioSource));
+		audioSource.clip = clip;
+		audioSource.Play();
+		UnityEngine.Object.Destroy(gameObject, clip.length);
+		audioSource.rolloffMode = AudioRolloffMode.Linear;
+		audioSource.minDistance = (float)5;
+		audioSource.maxDistance = (float)10;
+	}
+
+	public virtual void EndEvent()
+	{
+		this.EventStudent[1].CurrentDestination = this.EventStudent[1].Destinations[this.EventStudent[1].Phase];
+		this.EventStudent[1].Pathfinding.target = this.EventStudent[1].Destinations[this.EventStudent[1].Phase];
+		this.EventStudent[1].InEvent = false;
+		this.EventStudent[2].CurrentDestination = this.EventStudent[2].Destinations[this.EventStudent[2].Phase];
+		this.EventStudent[2].Pathfinding.target = this.EventStudent[2].Destinations[this.EventStudent[2].Phase];
+		this.EventStudent[2].InEvent = false;
+		this.EventOn = false;
+	}
+
+	public virtual void Main()
+	{
+	}
+}

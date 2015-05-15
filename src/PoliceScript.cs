@@ -67,6 +67,8 @@ public class PoliceScript : MonoBehaviour
 
 	public bool FadeOut;
 
+	public bool Suicide;
+
 	public bool Called;
 
 	public int IncineratedWeapons;
@@ -214,7 +216,7 @@ public class PoliceScript : MonoBehaviour
 			Color color2 = this.Darkness.color = color;
 			if (this.Darkness.color.a >= (float)1 && this.HeartbeatCamera.active)
 			{
-				this.Yandere.gameObject.active = false;
+				this.Yandere.enabled = false;
 				this.HeartbeatCamera.active = false;
 				this.DetectionCamera.active = false;
 				this.DetermineResults();
@@ -367,9 +369,13 @@ public class PoliceScript : MonoBehaviour
 				{
 					this.ResultsLabels[0].text = "The police arrived at school, and informed the faculty that a crime may have taken place on school grounds. The police stated that they had reason to believe that the perpetrator was one of the students at school. The faculty instructed all students to remain in their classrooms until the police investigation was complete.";
 				}
-				else
+				else if (!this.Suicide)
 				{
 					this.ResultsLabels[0].text = "The school's faculty members inform the students that a murder has taken place on school grounds. The faculty instruct all students to remain at school and cooperate with the police to catch the killer. The police arrived at school, and begin their investigation.";
+				}
+				else
+				{
+					this.ResultsLabels[0].text = "The school's faculty members inform the students that a death has taken place on school grounds. The faculty instruct all students to remain at school while the police conduct their investigation.";
 				}
 				if (this.Corpses == 0 && this.BloodParent.childCount == 0 && this.BloodyWeapons == 0 && this.BloodyUniforms == 0)
 				{
@@ -468,26 +474,37 @@ public class PoliceScript : MonoBehaviour
 				{
 					if (this.BloodyWeapons == 0)
 					{
-						this.ResultsLabels[1].text = "The police quickly discovered a corpse on school grounds, but were unable to locate the murder weapon.";
-						if (this.Yandere.Sanity > 66.66666f && this.Yandere.Bloodiness == (float)0)
+						if (!this.Suicide)
 						{
-							this.ResultsLabels[2].text = "The police questioned Yandere-chan, but were not able to link her to the murder.";
-							this.ResultsLabels[3].text = "Without any evidence that Yandere-chan had committed the murder, the police could not take action.";
-							this.ResultsLabels[4].text = "After the police investigation ended, all of the students were sent home for the day.";
-						}
-						else if (this.Yandere.Bloodiness > (float)0)
-						{
-							this.ResultsLabels[2].text = "The police questioned Yandere-chan, and immediately noticed the blood staining her clothing.";
-							this.ResultsLabels[3].text = "Yandere-chan was arrested on the spot.";
-							this.ResultsLabels[4].text = "Yandere-chan will never be able to confess her love to Senpai.";
-							this.GameOver = true;
+							this.ResultsLabels[1].text = "The police quickly discovered a corpse on school grounds, but were unable to locate the murder weapon.";
+							if (this.Yandere.Sanity > 66.66666f && this.Yandere.Bloodiness == (float)0)
+							{
+								this.ResultsLabels[2].text = "The police questioned Yandere-chan, but were not able to link her to the murder.";
+								this.ResultsLabels[3].text = "Without any evidence that Yandere-chan had committed the murder, the police could not take action.";
+								this.ResultsLabels[4].text = "After the police investigation ended, all of the students were sent home for the day.";
+							}
+							else if (this.Yandere.Bloodiness > (float)0)
+							{
+								this.ResultsLabels[2].text = "The police questioned Yandere-chan, and immediately noticed the blood staining her clothing.";
+								this.ResultsLabels[3].text = "Yandere-chan was arrested on the spot.";
+								this.ResultsLabels[4].text = "Yandere-chan will never be able to confess her love to Senpai.";
+								this.GameOver = true;
+							}
+							else
+							{
+								this.ResultsLabels[2].text = "The police questioned Yandere-chan, who exhibited extremely erratic behavior.";
+								this.ResultsLabels[3].text = "Under the circumstances, the police decided to take Yandere-chan into custody.";
+								this.ResultsLabels[4].text = "Yandere-chan's crimes will eventually be uncovered, and she will never be able to confess her love to Senpai.";
+								this.GameOver = true;
+							}
 						}
 						else
 						{
-							this.ResultsLabels[2].text = "The police questioned Yandere-chan, who exhibited extremely erratic behavior.";
-							this.ResultsLabels[3].text = "Under the circumstances, the police decided to take Yandere-chan into custody.";
-							this.ResultsLabels[4].text = "Yandere-chan's crimes will eventually be uncovered, and she will never be able to confess her love to Senpai.";
-							this.GameOver = true;
+							this.ResultsLabels[1].text = "The police arrived, and began an investigation to determine whether or not the student's death was a suicide.";
+							this.ResultsLabels[2].text = "The police were unable to discover any evidence which would imply that the student's death was a murder.";
+							this.ResultsLabels[3].text = "The police concluded that the student ended her own life.";
+							this.ResultsLabels[4].text = "After the police investigation ended, all of the students were sent home for the day.";
+							PlayerPrefs.SetInt("Suicide", 1);
 						}
 					}
 					else
@@ -542,70 +559,80 @@ public class PoliceScript : MonoBehaviour
 			this.ResultsLabels[4].text = "Yandere-chan watches tearfully as Senpai is stolen from her.";
 			this.GameOver = true;
 		}
-		else if (!this.TranqCase.Occupied)
+		else if (!this.Suicide)
 		{
-			if (this.Clock.HourTime < (float)18)
+			if (!this.TranqCase.Occupied)
 			{
-				this.ResultsLabels[0].text = "Yandere-chan stands near the school gate and waits for Senpai to leave school.";
-			}
-			else
-			{
-				this.ResultsLabels[0].text = "The school day has ended. Teachers must walk through the school and tell any lingering students to leave.";
-			}
-			if (this.Yandere.Attacking)
-			{
-				this.ResultsLabels[1].text = "Yandere-chan was spotted committing murder by a teacher.";
-				this.ResultsLabels[2].text = "The teacher was able to flee the school and call the police.";
-				this.ResultsLabels[3].text = "The police arrived at school, found evidence of Yandere-chan's murder, and arrested her.";
-				this.ResultsLabels[4].text = "Yandere-chan will never be able to confess her love to Senpai.";
-				this.GameOver = true;
-			}
-			else if (this.Corpses == 0 && this.BloodParent.childCount == 0 && this.BloodyWeapons == 0 && this.BloodyUniforms == 0)
-			{
-				if (this.Yandere.Sanity > 66.66666f && this.Yandere.Bloodiness == (float)0)
+				if (this.Clock.HourTime < (float)18)
 				{
-					if (this.Clock.HourTime < (float)18)
-					{
-						this.ResultsLabels[1].text = "Finally, Senpai exits the school. Yandere-chan's heart skips a beat when she sees him.";
-						this.ResultsLabels[2].text = "Yandere-chan leaves school and watches Senpai walk home.";
-						this.ResultsLabels[3].text = "Once he is safely home, Yandere-chan returns to her own home.";
-						this.ResultsLabels[4].text = "Yandere-chan goes to sleep, and dreams of Senpai...";
-					}
-					else
-					{
-						this.ResultsLabels[1].text = "Like all other students, Yandere-chan is instructed to leave school.";
-						this.ResultsLabels[2].text = "Yandere-chan leaves school and watches Senpai walk home.";
-						this.ResultsLabels[3].text = "Once he is safely home, Yandere-chan returns to her own home.";
-						this.ResultsLabels[4].text = "Yandere-chan goes to sleep, and dreams of Senpai...";
-					}
+					this.ResultsLabels[0].text = "Yandere-chan stands near the school gate and waits for Senpai to leave school.";
 				}
 				else
 				{
-					this.ResultsLabels[1].text = "Yandere-chan is approached by a teacher.";
-					if (this.Yandere.Bloodiness > (float)0)
+					this.ResultsLabels[0].text = "The school day has ended. Teachers must walk through the school and tell any lingering students to leave.";
+				}
+				if (this.Yandere.Attacking)
+				{
+					this.ResultsLabels[1].text = "Yandere-chan was spotted committing murder by a teacher.";
+					this.ResultsLabels[2].text = "The teacher was able to flee the school and call the police.";
+					this.ResultsLabels[3].text = "The police arrived at school, found evidence of Yandere-chan's murder, and arrested her.";
+					this.ResultsLabels[4].text = "Yandere-chan will never be able to confess her love to Senpai.";
+					this.GameOver = true;
+				}
+				else if (this.Corpses == 0 && this.BloodParent.childCount == 0 && this.BloodyWeapons == 0 && this.BloodyUniforms == 0)
+				{
+					if (this.Yandere.Sanity > 66.66666f && this.Yandere.Bloodiness == (float)0)
 					{
-						this.ResultsLabels[2].text = "The teacher immediately notices the blood staining her clothing.";
-						this.ResultsLabels[3].text = "Yandere-chan is able to convince the teacher that nothing is wrong, and leaves returns home.";
-						this.ResultsLabels[4].text = "Yandere-chan goes to sleep, and has a nightmare about losing Senpai...";
+						if (this.Clock.HourTime < (float)18)
+						{
+							this.ResultsLabels[1].text = "Finally, Senpai exits the school. Yandere-chan's heart skips a beat when she sees him.";
+							this.ResultsLabels[2].text = "Yandere-chan leaves school and watches Senpai walk home.";
+							this.ResultsLabels[3].text = "Once he is safely home, Yandere-chan returns to her own home.";
+							this.ResultsLabels[4].text = "Yandere-chan goes to sleep, and dreams of Senpai...";
+						}
+						else
+						{
+							this.ResultsLabels[1].text = "Like all other students, Yandere-chan is instructed to leave school.";
+							this.ResultsLabels[2].text = "Yandere-chan leaves school and watches Senpai walk home.";
+							this.ResultsLabels[3].text = "Once he is safely home, Yandere-chan returns to her own home.";
+							this.ResultsLabels[4].text = "Yandere-chan goes to sleep, and dreams of Senpai...";
+						}
 					}
 					else
 					{
-						this.ResultsLabels[2].text = "Yandere-chan exhibited extremely erratic behavior, frightening the teacher.";
-						this.ResultsLabels[3].text = "The teacher becomes angry with Yandere-chan, but she is able to return home without further incident.";
-						this.ResultsLabels[4].text = "Yandere-chan goes to sleep, and has a nightmare about losing Senpai...";
+						this.ResultsLabels[1].text = "Yandere-chan is approached by a teacher.";
+						if (this.Yandere.Bloodiness > (float)0)
+						{
+							this.ResultsLabels[2].text = "The teacher immediately notices the blood staining her clothing.";
+							this.ResultsLabels[3].text = "Yandere-chan is able to convince the teacher that nothing is wrong, and leaves returns home.";
+							this.ResultsLabels[4].text = "Yandere-chan goes to sleep, and has a nightmare about losing Senpai...";
+						}
+						else
+						{
+							this.ResultsLabels[2].text = "Yandere-chan exhibited extremely erratic behavior, frightening the teacher.";
+							this.ResultsLabels[3].text = "The teacher becomes angry with Yandere-chan, but she is able to return home without further incident.";
+							this.ResultsLabels[4].text = "Yandere-chan goes to sleep, and has a nightmare about losing Senpai...";
+						}
 					}
 				}
-			}
-			else if (this.Corpses == 0)
-			{
-				if (this.BloodParent.childCount > 0 || this.BloodyUniforms > 0)
+				else if (this.Corpses == 0)
 				{
-					if (this.BloodyWeapons == 0)
+					if (this.BloodParent.childCount > 0 || this.BloodyUniforms > 0)
 					{
-						this.ResultsLabels[1].text = "While walking around the school, a teacher discovers a mysterious blood stain.";
-						this.ResultsLabels[2].text = "The teacher can't decide what to do about it, and does not take any action.";
-						this.ResultsLabels[3].text = "Yandere-chan leaves school and returns to her home without incident.";
-						this.ResultsLabels[4].text = "Yandere-chan goes to sleep, and has a nightmare about losing Senpai...";
+						if (this.BloodyWeapons == 0)
+						{
+							this.ResultsLabels[1].text = "While walking around the school, a teacher discovers a mysterious blood stain.";
+							this.ResultsLabels[2].text = "The teacher can't decide what to do about it, and does not take any action.";
+							this.ResultsLabels[3].text = "Yandere-chan leaves school and returns to her home without incident.";
+							this.ResultsLabels[4].text = "Yandere-chan goes to sleep, and has a nightmare about losing Senpai...";
+						}
+						else
+						{
+							this.ResultsLabels[1].text = "While walking around the school, a teacher discovers a mysterious bloody weapon.";
+							this.ResultsLabels[2].text = "The teacher can't decide what to do about it, and does not take any action.";
+							this.ResultsLabels[3].text = "Yandere-chan leaves school and returns to her home without incident.";
+							this.ResultsLabels[4].text = "Yandere-chan goes to sleep, and has a nightmare about losing Senpai...";
+						}
 					}
 					else
 					{
@@ -617,30 +644,33 @@ public class PoliceScript : MonoBehaviour
 				}
 				else
 				{
-					this.ResultsLabels[1].text = "While walking around the school, a teacher discovers a mysterious bloody weapon.";
-					this.ResultsLabels[2].text = "The teacher can't decide what to do about it, and does not take any action.";
-					this.ResultsLabels[3].text = "Yandere-chan leaves school and returns to her home without incident.";
-					this.ResultsLabels[4].text = "Yandere-chan goes to sleep, and has a nightmare about losing Senpai...";
+					this.ResultsLabels[1].text = "Yandere-chan did not clean up after herself after committing murder.";
+					this.ResultsLabels[2].text = "While walking around the school, a teacher discovers a corpse.";
+					this.ResultsLabels[3].text = "The teacher informs the rest of the faculty about her discovery.";
+					this.ResultsLabels[4].text = "The faculty members agree to call the police and report the corpse.";
+					this.TeacherReport = true;
+					this.Show = true;
 				}
 			}
 			else
 			{
-				this.ResultsLabels[1].text = "Yandere-chan did not clean up after herself after committing murder.";
-				this.ResultsLabels[2].text = "While walking around the school, a teacher discovers a corpse.";
-				this.ResultsLabels[3].text = "The teacher informs the rest of the faculty about his discovery.";
-				this.ResultsLabels[4].text = "The faculty members agree to call the police and report the corpse.";
-				this.TeacherReport = true;
-				this.Show = true;
+				this.ResultsLabels[0].text = "Yandere-chan leaves school, returns home, and waits until the clock strikes midnight.";
+				this.ResultsLabels[1].text = "Under the cover of darkness, Yandere-chan travels back to school and sneaks inside of the gym.";
+				this.ResultsLabels[2].text = "Yandere-chan returns to the instrument case that carries her unconscious victim.";
+				this.ResultsLabels[3].text = "She pushes the case back to her house, pretending to be a young musician returning home from a show.";
+				this.ResultsLabels[4].text = "Yandere-chan drags the case down to her basement and ties up her victim.";
+				PlayerPrefs.SetInt("Kidnapped", 1);
 			}
 		}
 		else
 		{
-			this.ResultsLabels[0].text = "Yandere-chan leaves school, returns home, and waits until the clock strikes midnight.";
-			this.ResultsLabels[1].text = "Under the cover of darkness, Yandere-chan travels back to school and sneaks inside of the gym.";
-			this.ResultsLabels[2].text = "Yandere-chan returns to the instrument case that carries her unconscious victim.";
-			this.ResultsLabels[3].text = "She pushes the case back to her house, pretending to be a young musician returning home from a show.";
-			this.ResultsLabels[4].text = "Yandere-chan drags the case down to her basement and ties up her victim.";
-			PlayerPrefs.SetInt("Kidnapped", 1);
+			this.ResultsLabels[0].text = "The school day has ended. Teachers must walk through the school and tell any lingering students to leave.";
+			this.ResultsLabels[1].text = "While walking around the school, a teacher discovers a corpse.";
+			this.ResultsLabels[2].text = "It appears as though a student has committed suicide.";
+			this.ResultsLabels[3].text = "The teacher informs the rest of the faculty about her discovery.";
+			this.ResultsLabels[4].text = "The faculty members agree to call the police and report the student's death.";
+			this.TeacherReport = true;
+			this.Show = true;
 		}
 	}
 

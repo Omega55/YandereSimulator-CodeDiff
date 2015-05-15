@@ -99,35 +99,9 @@ public class StudentManagerScript : MonoBehaviour
 	{
 		if (!this.TakingPortraits)
 		{
-			if (this.NPCsSpawned < this.NPCsTotal && this.Clock.PresentTime / (float)60 >= this.SpawnTimes[this.NPCsSpawned])
+			if (this.NPCsSpawned < this.NPCsTotal)
 			{
-				if (PlayerPrefs.GetInt("Student_" + (this.SpawnID + 1) + "_Dead") == 0)
-				{
-					if (this.JSON.StudentGenders[this.SpawnID + 1] == 0)
-					{
-						this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.StudentChan, this.SpawnPositions[this.NPCsSpawned].position, Quaternion.identity);
-					}
-					else
-					{
-						this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.StudentKun, this.SpawnPositions[this.NPCsSpawned].position, Quaternion.identity);
-					}
-					this.Students[this.SpawnID] = (StudentScript)this.NewStudent.GetComponent(typeof(StudentScript));
-					this.Students[this.SpawnID].StudentID = this.SpawnID + 1;
-					this.Students[this.SpawnID].WitnessCamera = this.WitnessCamera;
-					this.Students[this.SpawnID].StudentManager = this;
-					this.Students[this.SpawnID].JSON = this.JSON;
-					if (this.AoT)
-					{
-						this.Students[this.SpawnID].AoT = true;
-					}
-				}
-				this.NPCsSpawned++;
-				this.SpawnID++;
-				if (this.SpawnID == this.NPCsTotal)
-				{
-					this.SpawnID = 0;
-				}
-				this.UpdateStudents();
+				this.SpawnStudent();
 			}
 		}
 		else if (this.NPCsSpawned < this.NPCsTotal)
@@ -209,12 +183,16 @@ public class StudentManagerScript : MonoBehaviour
 
 	public virtual void AttendClass()
 	{
+		while (this.NPCsSpawned < this.NPCsTotal)
+		{
+			this.SpawnStudent();
+		}
 		this.ID = 0;
 		while (this.ID < Extensions.get_length(this.Students))
 		{
 			if (this.Students[this.ID] != null && !this.Students[this.ID].Dead && !this.Students[this.ID].Teacher)
 			{
-				this.Students[this.ID].transform.position = this.Seats.List[this.Students[this.ID].StudentID].position;
+				this.Students[this.ID].transform.position = this.Seats.List[this.Students[this.ID].StudentID].position + Vector3.up * 0.01f;
 				this.Students[this.ID].Character.animation.Play(this.Students[this.ID].IdleAnim);
 				this.Students[this.ID].Pathfinding.canSearch = false;
 				this.Students[this.ID].Pathfinding.canMove = false;
@@ -246,7 +224,7 @@ public class StudentManagerScript : MonoBehaviour
 		this.ID = 1;
 		while (this.ID < Extensions.get_length(this.Students))
 		{
-			if (this.Students[this.ID] != null)
+			if (this.Students[this.ID] != null && !this.Students[this.ID].Dying)
 			{
 				this.Students[this.ID].Character.animation.CrossFade(this.Students[this.ID].IdleAnim);
 				this.Students[this.ID].Pathfinding.canSearch = false;
@@ -330,6 +308,40 @@ public class StudentManagerScript : MonoBehaviour
 				this.Students[this.ID].AttackOnTitan();
 			}
 			this.ID++;
+		}
+	}
+
+	public virtual void SpawnStudent()
+	{
+		if (this.Clock.HourTime >= this.SpawnTimes[this.NPCsSpawned])
+		{
+			if (PlayerPrefs.GetInt("Student_" + (this.SpawnID + 1) + "_Dead") == 0)
+			{
+				if (this.JSON.StudentGenders[this.SpawnID + 1] == 0)
+				{
+					this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.StudentChan, this.SpawnPositions[this.NPCsSpawned].position, Quaternion.identity);
+				}
+				else
+				{
+					this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.StudentKun, this.SpawnPositions[this.NPCsSpawned].position, Quaternion.identity);
+				}
+				this.Students[this.SpawnID] = (StudentScript)this.NewStudent.GetComponent(typeof(StudentScript));
+				this.Students[this.SpawnID].StudentID = this.SpawnID + 1;
+				this.Students[this.SpawnID].WitnessCamera = this.WitnessCamera;
+				this.Students[this.SpawnID].StudentManager = this;
+				this.Students[this.SpawnID].JSON = this.JSON;
+				if (this.AoT)
+				{
+					this.Students[this.SpawnID].AoT = true;
+				}
+			}
+			this.NPCsSpawned++;
+			this.SpawnID++;
+			if (this.SpawnID == this.NPCsTotal)
+			{
+				this.SpawnID = 0;
+			}
+			this.UpdateStudents();
 		}
 	}
 

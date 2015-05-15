@@ -147,23 +147,37 @@ public class ShutterScript : MonoBehaviour
 		else if (this.Yandere.Aiming)
 		{
 			this.Timer += Time.deltaTime;
-			if (this.Timer > 0.5f && Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyPhotography) && (this.hit.collider.gameObject.name == "Panties" || this.hit.collider.gameObject.name == "Skirt"))
+			if (this.Timer > 0.5f)
 			{
-				GameObject gameObject = this.hit.collider.gameObject.transform.root.gameObject;
-				if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyCharacters))
+				if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyPhotography))
 				{
-					if (this.hit.collider.gameObject == gameObject)
+					if (this.hit.collider.gameObject.name == "Panties" || this.hit.collider.gameObject.name == "Skirt")
 					{
-						if (!this.Yandere.Lewd)
+						GameObject gameObject = this.hit.collider.gameObject.transform.root.gameObject;
+						if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyCharacters))
 						{
-							this.Yandere.NotificationManager.DisplayNotification("Lewd");
+							if (this.hit.collider.gameObject == gameObject)
+							{
+								if (!this.Yandere.Lewd)
+								{
+									this.Yandere.NotificationManager.DisplayNotification("Lewd");
+								}
+								this.Yandere.Lewd = true;
+							}
+							else
+							{
+								this.Yandere.Lewd = false;
+							}
 						}
-						this.Yandere.Lewd = true;
 					}
 					else
 					{
 						this.Yandere.Lewd = false;
 					}
+				}
+				else
+				{
+					this.Yandere.Lewd = false;
 				}
 			}
 		}

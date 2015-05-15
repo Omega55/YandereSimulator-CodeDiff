@@ -41,10 +41,6 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 	public virtual void Update()
 	{
 		this.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
-		int num = 0;
-		Vector3 position = this.transform.position;
-		float num2 = position.y = (float)num;
-		Vector3 vector = this.transform.position = position;
 		if (this.Timer > (float)0)
 		{
 			this.Timer -= Time.deltaTime;

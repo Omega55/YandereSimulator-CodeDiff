@@ -43,6 +43,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] PrankReactions;
 
+	public string[] NoteReactions;
+
 	public string[] KnifeReactions;
 
 	public string[] SyringeReactions;
@@ -138,6 +140,8 @@ public class SubtitleScript : MonoBehaviour
 	public int RandomID;
 
 	public float Timer;
+
+	public AudioClip[] NoteReactionClips;
 
 	public AudioClip[] SenpaiInsanityReactionClips;
 
@@ -238,6 +242,11 @@ public class SubtitleScript : MonoBehaviour
 		else if (ReactionType == "Prank Reaction")
 		{
 			this.Label.text = this.PrankReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.LewdReactions))];
+		}
+		else if (ReactionType == "Note Reaction")
+		{
+			this.Label.text = this.NoteReactions[ID];
+			this.PlayVoice(ReactionType, ID);
 		}
 		else if (ReactionType == "Teacher Weapon Reaction")
 		{
@@ -509,6 +518,10 @@ public class SubtitleScript : MonoBehaviour
 	public virtual void PlayVoice(string ReactionType, int ID)
 	{
 		this.Jukebox.Dip = 0.5f;
+		if (ReactionType == "Note Reaction")
+		{
+			this.audio.PlayOneShot(this.NoteReactionClips[ID]);
+		}
 		if (ReactionType == "Senpai Insanity Reaction")
 		{
 			this.audio.PlayOneShot(this.SenpaiInsanityReactionClips[ID]);

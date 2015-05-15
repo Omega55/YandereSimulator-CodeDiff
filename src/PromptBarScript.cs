@@ -31,14 +31,14 @@ public class PromptBarScript : MonoBehaviour
 	{
 		if (!this.Show)
 		{
-			float y = Mathf.Lerp(this.transform.localPosition.y, (float)-627, Time.deltaTime * (float)10);
+			float y = Mathf.Lerp(this.transform.localPosition.y, (float)-627, 0.166666672f);
 			Vector3 localPosition = this.transform.localPosition;
 			float num = localPosition.y = y;
 			Vector3 vector = this.transform.localPosition = localPosition;
 		}
 		else
 		{
-			float y2 = Mathf.Lerp(this.transform.localPosition.y, (float)-527, Time.deltaTime * (float)10);
+			float y2 = Mathf.Lerp(this.transform.localPosition.y, (float)-527, 0.166666672f);
 			Vector3 localPosition2 = this.transform.localPosition;
 			float num2 = localPosition2.y = y2;
 			Vector3 vector2 = this.transform.localPosition = localPosition2;
@@ -58,6 +58,17 @@ public class PromptBarScript : MonoBehaviour
 			{
 				this.Button[this.ID].enabled = true;
 			}
+			this.ID++;
+		}
+	}
+
+	public virtual void ClearButtons()
+	{
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.Label))
+		{
+			this.Label[this.ID].text = string.Empty;
+			this.Button[this.ID].enabled = false;
 			this.ID++;
 		}
 	}

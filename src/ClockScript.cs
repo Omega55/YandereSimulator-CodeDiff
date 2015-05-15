@@ -102,106 +102,107 @@ public class ClockScript : MonoBehaviour
 				this.BloomEffect.bloomThreshhold = 0.5f;
 			}
 		}
-		else
+		else if (!this.Police.FadeOut)
 		{
-			this.StopTime = true;
+			this.Yandere.StudentManager.StopMoving();
 			this.Police.FadeOut = true;
+			this.StopTime = true;
 		}
 		if (!this.StopTime)
 		{
 			this.PresentTime += Time.deltaTime * 0.01666667f * this.TimeSpeed;
-			if (this.PresentTime > (float)1440)
+		}
+		if (this.PresentTime > (float)1440)
+		{
+			this.PresentTime -= (float)1440;
+		}
+		this.HourTime = this.PresentTime / (float)60;
+		this.Hour = Mathf.Floor(this.PresentTime / (float)60);
+		this.Minute = Mathf.Floor((this.PresentTime / (float)60 - this.Hour) * (float)60);
+		if (this.Hour == (float)0 || this.Hour == (float)12)
+		{
+			this.HourNumber = "12";
+		}
+		else if (this.Hour < (float)12)
+		{
+			this.HourNumber = string.Empty + this.Hour;
+		}
+		else
+		{
+			this.HourNumber = string.Empty + (this.Hour - (float)12);
+		}
+		if (this.Minute < (float)10)
+		{
+			this.MinuteNumber = "0" + this.Minute;
+		}
+		else
+		{
+			this.MinuteNumber = string.Empty + this.Minute;
+		}
+		if (this.Hour < (float)12)
+		{
+			this.TimeText = this.HourNumber + ":" + this.MinuteNumber + " AM";
+		}
+		else
+		{
+			this.TimeText = this.HourNumber + ":" + this.MinuteNumber + " PM";
+		}
+		this.TimeLabel.text = this.TimeText;
+		float z = this.Minute * (float)6;
+		Vector3 localEulerAngles = this.MinuteHand.localEulerAngles;
+		float num = localEulerAngles.z = z;
+		Vector3 vector = this.MinuteHand.localEulerAngles = localEulerAngles;
+		float z2 = this.Hour * (float)30;
+		Vector3 localEulerAngles2 = this.HourHand.localEulerAngles;
+		float num2 = localEulerAngles2.z = z2;
+		Vector3 vector2 = this.HourHand.localEulerAngles = localEulerAngles2;
+		if (this.HourTime < 8.5f)
+		{
+			this.PeriodLabel.text = "BEFORE SCHOOL";
+			if (this.Period < 1)
 			{
-				this.PresentTime -= (float)1440;
+				this.SchoolBell.Play();
+				this.Period++;
 			}
-			this.HourTime = this.PresentTime / (float)60;
-			this.Hour = Mathf.Floor(this.PresentTime / (float)60);
-			this.Minute = Mathf.Floor((this.PresentTime / (float)60 - this.Hour) * (float)60);
-			if (this.Hour == (float)0 || this.Hour == (float)12)
+		}
+		else if (this.HourTime < (float)13)
+		{
+			this.PeriodLabel.text = "CLASSTIME";
+			if (this.Period < 2)
 			{
-				this.HourNumber = "12";
+				this.ActivateTresspassZones();
+				this.SchoolBell.Play();
+				this.Period++;
 			}
-			else if (this.Hour < (float)12)
+		}
+		else if (this.HourTime < 13.5f)
+		{
+			this.PeriodLabel.text = "LUNCHTIME";
+			if (this.Period < 3)
 			{
-				this.HourNumber = string.Empty + this.Hour;
+				this.DeactivateTresspassZones();
+				this.SchoolBell.Play();
+				this.Period++;
 			}
-			else
+		}
+		else if (this.HourTime < 15.5f)
+		{
+			this.PeriodLabel.text = "CLASSTIME";
+			if (this.Period < 4)
 			{
-				this.HourNumber = string.Empty + (this.Hour - (float)12);
+				this.ActivateTresspassZones();
+				this.SchoolBell.Play();
+				this.Period++;
 			}
-			if (this.Minute < (float)10)
+		}
+		else
+		{
+			this.PeriodLabel.text = "AFTER SCHOOL";
+			if (this.Period < 5)
 			{
-				this.MinuteNumber = "0" + this.Minute;
-			}
-			else
-			{
-				this.MinuteNumber = string.Empty + this.Minute;
-			}
-			if (this.Hour < (float)12)
-			{
-				this.TimeText = this.HourNumber + ":" + this.MinuteNumber + " AM";
-			}
-			else
-			{
-				this.TimeText = this.HourNumber + ":" + this.MinuteNumber + " PM";
-			}
-			this.TimeLabel.text = this.TimeText;
-			float z = this.Minute * (float)6;
-			Vector3 localEulerAngles = this.MinuteHand.localEulerAngles;
-			float num = localEulerAngles.z = z;
-			Vector3 vector = this.MinuteHand.localEulerAngles = localEulerAngles;
-			float z2 = this.Hour * (float)30;
-			Vector3 localEulerAngles2 = this.HourHand.localEulerAngles;
-			float num2 = localEulerAngles2.z = z2;
-			Vector3 vector2 = this.HourHand.localEulerAngles = localEulerAngles2;
-			if (this.HourTime < 8.5f)
-			{
-				this.PeriodLabel.text = "BEFORE SCHOOL";
-				if (this.Period < 1)
-				{
-					this.SchoolBell.Play();
-					this.Period++;
-				}
-			}
-			else if (this.HourTime < (float)13)
-			{
-				this.PeriodLabel.text = "CLASSTIME";
-				if (this.Period < 2)
-				{
-					this.ActivateTresspassZones();
-					this.SchoolBell.Play();
-					this.Period++;
-				}
-			}
-			else if (this.HourTime < 13.5f)
-			{
-				this.PeriodLabel.text = "LUNCHTIME";
-				if (this.Period < 3)
-				{
-					this.DeactivateTresspassZones();
-					this.SchoolBell.Play();
-					this.Period++;
-				}
-			}
-			else if (this.HourTime < 15.5f)
-			{
-				this.PeriodLabel.text = "CLASSTIME";
-				if (this.Period < 4)
-				{
-					this.ActivateTresspassZones();
-					this.SchoolBell.Play();
-					this.Period++;
-				}
-			}
-			else
-			{
-				this.PeriodLabel.text = "AFTER SCHOOL";
-				if (this.Period < 5)
-				{
-					this.DeactivateTresspassZones();
-					this.SchoolBell.Play();
-					this.Period++;
-				}
+				this.DeactivateTresspassZones();
+				this.SchoolBell.Play();
+				this.Period++;
 			}
 		}
 		float z3 = (float)-45 + (float)90 * (this.PresentTime - (float)420) / (float)660;

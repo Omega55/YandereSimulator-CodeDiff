@@ -41,6 +41,11 @@ public class JukeboxScript : MonoBehaviour
 		this.Dip = 1f;
 	}
 
+	public virtual void Start()
+	{
+		this.Volume = 0.25f;
+	}
+
 	public virtual void Update()
 	{
 		this.Timer += Time.deltaTime;

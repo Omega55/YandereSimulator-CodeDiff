@@ -14,6 +14,10 @@ public class ClassScript : MonoBehaviour
 
 	public UILabel[] SubjectLabels;
 
+	public UILabel GradeUpDesc;
+
+	public UILabel GradeUpName;
+
 	public UILabel DescLabel;
 
 	public UISprite Darkness;
@@ -28,6 +32,16 @@ public class ClassScript : MonoBehaviour
 
 	public Transform[] Subject5Bars;
 
+	public string[] Subject1GradeText;
+
+	public string[] Subject2GradeText;
+
+	public string[] Subject3GradeText;
+
+	public string[] Subject4GradeText;
+
+	public string[] Subject5GradeText;
+
 	public Transform GradeUpWindow;
 
 	public Transform Highlight;
@@ -38,9 +52,13 @@ public class ClassScript : MonoBehaviour
 
 	public string[] Desc;
 
+	public int GradeUpSubject;
+
 	public int StudyPoints;
 
 	public int Selected;
+
+	public int Grade;
 
 	public bool GradeUp;
 
@@ -68,11 +86,12 @@ public class ClassScript : MonoBehaviour
 		if (Input.GetKeyDown("8"))
 		{
 			PlayerPrefs.SetInt("BiologyGrade", 1);
-			PlayerPrefs.SetInt("Biology", 11);
+			PlayerPrefs.SetInt("LanguageGrade", 1);
+			PlayerPrefs.SetInt("Biology", 19);
 			PlayerPrefs.SetInt("Chemistry", 5);
-			PlayerPrefs.SetInt("Language", 10);
-			PlayerPrefs.SetInt("Physical", 20);
-			PlayerPrefs.SetInt("Psychology", 40);
+			PlayerPrefs.SetInt("Language", 19);
+			PlayerPrefs.SetInt("Physical", 10);
+			PlayerPrefs.SetInt("Psychology", 15);
 			this.Subject[1] = PlayerPrefs.GetInt("Biology");
 			this.Subject[2] = PlayerPrefs.GetInt("Chemistry");
 			this.Subject[3] = PlayerPrefs.GetInt("Language");
@@ -137,8 +156,7 @@ public class ClassScript : MonoBehaviour
 				if (Input.GetButtonDown("A") && this.StudyPoints == 0)
 				{
 					this.Show = false;
-					this.PromptBar.Label[0].text = string.Empty;
-					this.PromptBar.UpdateButtons();
+					this.PromptBar.ClearButtons();
 					this.PromptBar.Show = false;
 					PlayerPrefs.SetInt("Biology", this.Subject[1] + this.SubjectTemp[1]);
 					PlayerPrefs.SetInt("Chemistry", this.Subject[2] + this.SubjectTemp[2]);
@@ -150,11 +168,7 @@ public class ClassScript : MonoBehaviour
 						this.Subject[i] = this.Subject[i] + this.SubjectTemp[i];
 						this.SubjectTemp[i] = 0;
 					}
-					if (PlayerPrefs.GetInt("Biology") >= 20 && PlayerPrefs.GetInt("BiologyGrade") < 2)
-					{
-						PlayerPrefs.SetInt("BiologyGrade", 2);
-						this.GradeUp = true;
-					}
+					this.CheckForGradeUp();
 				}
 			}
 		}
@@ -176,25 +190,52 @@ public class ClassScript : MonoBehaviour
 					if (this.GradeUpWindow.localScale.x < 0.01f)
 					{
 						this.GradeUpWindow.localScale = new Vector3((float)0, (float)0, (float)0);
-						this.Portal.Proceed = true;
-						this.active = false;
+						this.CheckForGradeUp();
+						if (!this.GradeUp)
+						{
+							this.PromptBar.Show = false;
+							this.Portal.Proceed = true;
+							this.active = false;
+						}
 					}
 				}
 				else
 				{
 					if (this.GradeUpWindow.localScale.x == (float)0)
 					{
+						if (this.GradeUpSubject == 1)
+						{
+							this.GradeUpName.text = "BIOLOGY RANK UP";
+							this.GradeUpDesc.text = string.Empty + this.Subject1GradeText[this.Grade];
+						}
+						else if (this.GradeUpSubject == 2)
+						{
+							this.GradeUpName.text = "CHEMISTRY RANK UP";
+							this.GradeUpDesc.text = string.Empty + this.Subject2GradeText[this.Grade];
+						}
+						else if (this.GradeUpSubject == 3)
+						{
+							this.GradeUpName.text = "LANGUAGE RANK UP";
+							this.GradeUpDesc.text = string.Empty + this.Subject3GradeText[this.Grade];
+						}
+						else if (this.GradeUpSubject == 4)
+						{
+							this.GradeUpName.text = "PHYSICAL RANK UP";
+							this.GradeUpDesc.text = string.Empty + this.Subject4GradeText[this.Grade];
+						}
+						else if (this.GradeUpSubject == 5)
+						{
+							this.GradeUpName.text = "PSYCHOLOGY RANK UP";
+							this.GradeUpDesc.text = string.Empty + this.Subject5GradeText[this.Grade];
+						}
+						this.PromptBar.ClearButtons();
 						this.PromptBar.Label[0].text = "Continue";
 						this.PromptBar.UpdateButtons();
 						this.PromptBar.Show = true;
 					}
 					else if (this.GradeUpWindow.localScale.x > 0.99f && Input.GetButtonDown("A"))
 					{
-						this.PromptBar.Label[0].text = string.Empty;
-						this.PromptBar.Label[4].text = string.Empty;
-						this.PromptBar.Label[5].text = string.Empty;
-						this.PromptBar.UpdateButtons();
-						this.PromptBar.Show = false;
+						this.PromptBar.ClearButtons();
 						this.GradeUp = false;
 					}
 					this.GradeUpWindow.localScale = Vector3.Lerp(this.GradeUpWindow.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
@@ -348,6 +389,24 @@ public class ClassScript : MonoBehaviour
 				float num25 = localScale15.x = (float)num24;
 				Vector3 vector15 = this.Subject5Bars[i].localScale = localScale15;
 			}
+		}
+	}
+
+	public virtual void CheckForGradeUp()
+	{
+		if (PlayerPrefs.GetInt("Biology") >= 20 && PlayerPrefs.GetInt("BiologyGrade") < 2)
+		{
+			PlayerPrefs.SetInt("BiologyGrade", 2);
+			this.GradeUpSubject = 1;
+			this.GradeUp = true;
+			this.Grade = 2;
+		}
+		else if (PlayerPrefs.GetInt("Language") >= 20 && PlayerPrefs.GetInt("LanguageGrade") < 2)
+		{
+			PlayerPrefs.SetInt("LanguageGrade", 2);
+			this.GradeUpSubject = 3;
+			this.GradeUp = true;
+			this.Grade = 2;
 		}
 	}
 

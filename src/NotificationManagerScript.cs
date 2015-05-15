@@ -60,6 +60,10 @@ public class NotificationManagerScript : MonoBehaviour
 			{
 				notificationScript.Label.text = "Late For Class";
 			}
+			else if (Type == "Info")
+			{
+				notificationScript.Label.text = "Learned New Info";
+			}
 			this.NotificationsSpawned++;
 			notificationScript.ID = this.NotificationsSpawned;
 		}

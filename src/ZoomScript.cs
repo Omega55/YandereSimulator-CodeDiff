@@ -80,7 +80,21 @@ public class ZoomScript : MonoBehaviour
 		{
 			this.Target = new Vector3((float)0, this.transform.localPosition.y, (float)0);
 		}
-		this.transform.localPosition = Vector3.MoveTowards(this.transform.localPosition, this.Target, Time.deltaTime * this.ShakeStrength * 0.1f);
+		if (this.Yandere.RoofPush)
+		{
+			float x = Mathf.MoveTowards(this.transform.position.x, this.Yandere.Hips.position.x, Time.deltaTime * (float)10);
+			Vector3 position = this.transform.position;
+			float num4 = position.x = x;
+			Vector3 vector4 = this.transform.position = position;
+			float z = Mathf.MoveTowards(this.transform.position.z, this.Yandere.Hips.position.z, Time.deltaTime * (float)10);
+			Vector3 position2 = this.transform.position;
+			float num5 = position2.z = z;
+			Vector3 vector5 = this.transform.position = position2;
+		}
+		else
+		{
+			this.transform.localPosition = Vector3.MoveTowards(this.transform.localPosition, this.Target, Time.deltaTime * this.ShakeStrength * 0.1f);
+		}
 	}
 
 	public virtual void Main()

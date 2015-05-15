@@ -141,16 +141,6 @@ public class PortalScript : MonoBehaviour
 					Color color3 = this.ClassDarkness.color;
 					float num3 = color3.a = (float)num2;
 					Color color4 = this.ClassDarkness.color = color3;
-					if (this.Clock.HourTime < (float)13)
-					{
-						this.Yandere.Incinerator.Timer = this.Yandere.Incinerator.Timer - ((float)780 - this.Clock.PresentTime);
-						this.Clock.PresentTime = (float)780;
-					}
-					else
-					{
-						this.Yandere.Incinerator.Timer = this.Yandere.Incinerator.Timer - (930f - this.Clock.PresentTime);
-						this.Clock.PresentTime = 930f;
-					}
 					this.FadeOut = false;
 					this.Proceed = false;
 					this.Yandere.RPGCamera.enabled = false;
@@ -173,9 +163,22 @@ public class PortalScript : MonoBehaviour
 				if (this.ClassDarkness.color.a >= (float)1)
 				{
 					this.HeartbeatCamera.active = true;
-					this.StudentManager.AttendClass();
 					this.Yandere.FixCamera();
 					this.Yandere.RPGCamera.enabled = false;
+					if (this.Clock.HourTime < (float)13)
+					{
+						this.Yandere.Incinerator.Timer = this.Yandere.Incinerator.Timer - ((float)780 - this.Clock.PresentTime);
+						this.Clock.PresentTime = (float)780;
+						this.Clock.Period = this.Clock.Period + 1;
+					}
+					else
+					{
+						this.Yandere.Incinerator.Timer = this.Yandere.Incinerator.Timer - (930f - this.Clock.PresentTime);
+						this.Clock.PresentTime = 930f;
+						this.Clock.Period = this.Clock.Period + 1;
+					}
+					this.Clock.HourTime = this.Clock.PresentTime / (float)60;
+					this.StudentManager.AttendClass();
 				}
 				float a2 = this.ClassDarkness.color.a - Time.deltaTime;
 				Color color5 = this.ClassDarkness.color;
@@ -212,6 +215,10 @@ public class PortalScript : MonoBehaviour
 		else
 		{
 			this.Prompt.enabled = true;
+		}
+		if (Input.GetKeyDown("7"))
+		{
+			this.Yandere.transform.position = this.transform.position;
 		}
 	}
 

@@ -12,6 +12,8 @@ public class RagdollScript : MonoBehaviour
 
 	public YandereScript Yandere;
 
+	public PoliceScript Police;
+
 	public PromptScript Prompt;
 
 	public SkinnedMeshRenderer MyRenderer;
@@ -51,6 +53,8 @@ public class RagdollScript : MonoBehaviour
 	public bool Tranquil;
 
 	public bool Dragged;
+
+	public bool Suicide;
 
 	public bool Dumped;
 
@@ -122,6 +126,11 @@ public class RagdollScript : MonoBehaviour
 						this.Yandere.Ragdoll = this.gameObject;
 						this.Dragged = true;
 						this.Yandere.StudentManager.UpdateStudents();
+						if (this.Suicide)
+						{
+							this.Police.Suicide = false;
+							this.Suicide = false;
+						}
 					}
 					else
 					{
