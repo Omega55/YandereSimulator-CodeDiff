@@ -52,9 +52,9 @@ public class NotificationManagerScript : MonoBehaviour
 			{
 				notificationScript.Label.text = "Visibly Lewd";
 			}
-			else if (Type == "Trespass")
+			else if (Type == "Intrude")
 			{
-				notificationScript.Label.text = "Trespassing";
+				notificationScript.Label.text = "Intruding";
 			}
 			else if (Type == "Late")
 			{

@@ -21,6 +21,8 @@ public class StudentScript : MonoBehaviour
 
 	public WitnessCameraScript WitnessCamera;
 
+	public EventManagerScript EventManager;
+
 	public DynamicGridObstacle Obstacle;
 
 	public ReputationScript Reputation;
@@ -129,11 +131,13 @@ public class StudentScript : MonoBehaviour
 
 	public bool Tranquil;
 
-	public bool Forgave;
-
 	public bool Alarmed;
 
+	public bool Forgave;
+
 	public bool InEvent;
+
+	public bool Private;
 
 	public bool Reacted;
 
@@ -812,6 +816,7 @@ public class StudentScript : MonoBehaviour
 					{
 						this.Alarm = (float)200;
 						this.WitnessedCorpse = true;
+						this.StudentManager.UpdateMe(this.StudentID - 1);
 					}
 					if (this.Corpse != null && (this.Corpse.Dragged || this.Corpse.Dumped))
 					{
@@ -832,7 +837,7 @@ public class StudentScript : MonoBehaviour
 							{
 								if (!this.Yandere.Chased)
 								{
-									if ((this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].Suspicious) || (this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Dragging || this.Yandere.Lewd || (this.Teacher && this.Yandere.Trespassing)) || (this.StudentID == 1 && this.Yandere.NearSenpai && !this.Yandere.Talking))
+									if ((this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].Suspicious) || (this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Dragging || this.Yandere.Lewd || (this.Private && this.Yandere.Trespassing)) || (this.Teacher && this.Yandere.Trespassing) || (this.StudentID == 1 && this.Yandere.NearSenpai && !this.Yandere.Talking))
 									{
 										this.Planes = GeometryUtility.CalculateFrustumPlanes(this.VisionCone);
 										if (GeometryUtility.TestPlanesAABB(this.Planes, this.Yandere.collider.bounds))
@@ -973,7 +978,18 @@ public class StudentScript : MonoBehaviour
 							}
 							else if (this.Yandere.Trespassing)
 							{
-								this.Witnessed = "Trespassing";
+								if (this.Private)
+								{
+									this.Witnessed = "Interruption";
+									if (this.EventManager != null)
+									{
+										this.EventManager.EndEvent();
+									}
+								}
+								else
+								{
+									this.Witnessed = "Trespassing";
+								}
 								this.Concern++;
 							}
 							else if (this.Yandere.NearSenpai)
@@ -1099,6 +1115,11 @@ public class StudentScript : MonoBehaviour
 				this.Routine = false;
 				this.Pushed = true;
 				this.Character.animation.CrossFade(this.PushedAnim);
+			}
+			else if (this.InEvent)
+			{
+				this.Subtitle.UpdateLabel("Event Apology", 1, (float)3);
+				this.Prompt.Circle[0].fillAmount = (float)1;
 			}
 			else if (!this.Witness && this.Yandere.Bloodiness > (float)0)
 			{
@@ -1281,6 +1302,10 @@ public class StudentScript : MonoBehaviour
 		}
 		else if (this.Dying)
 		{
+			if (this.EventManager != null)
+			{
+				this.EventManager.EndEvent();
+			}
 			this.Alarm -= Time.deltaTime * (float)100;
 			if (!this.Teacher)
 			{
@@ -1598,6 +1623,10 @@ public class StudentScript : MonoBehaviour
 					{
 						this.Subtitle.UpdateLabel("Corpse Reaction", 1, (float)5);
 					}
+					else if (this.Witnessed == "Interruption")
+					{
+						this.Subtitle.UpdateLabel("Interruption Reaction", 1, (float)5);
+					}
 				}
 				else
 				{
@@ -1873,6 +1902,7 @@ public class StudentScript : MonoBehaviour
 		{
 			this.Pathfinding.target = this.Yandere.transform;
 		}
+		this.StudentManager.UpdateMe(this.StudentID - 1);
 	}
 
 	public virtual void PersonaReaction()

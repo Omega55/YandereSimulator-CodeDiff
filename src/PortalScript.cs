@@ -123,6 +123,7 @@ public class PortalScript : MonoBehaviour
 			{
 				this.Police.FadeOut = true;
 			}
+			this.Yandere.Character.animation.CrossFade("f02_idleShort_00");
 			this.Yandere.CanMove = false;
 			this.Yandere.InClass = true;
 		}

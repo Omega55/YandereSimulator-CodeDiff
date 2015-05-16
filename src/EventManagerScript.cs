@@ -25,19 +25,17 @@ public class EventManagerScript : MonoBehaviour
 
 	public int[] EventSpeaker;
 
+	public GameObject InterruptZone;
+
 	public GameObject RivalLocker;
 
-	public AudioSource VoiceClip;
+	public GameObject VoiceClip;
 
 	public bool EventCheck;
 
 	public bool EventOn;
 
 	public bool Spoken;
-
-	public bool Idle1;
-
-	public bool Idle2;
 
 	public int EventPhase;
 
@@ -48,6 +46,7 @@ public class EventManagerScript : MonoBehaviour
 	public virtual void Start()
 	{
 		this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+		this.InterruptZone.active = false;
 		if (PlayerPrefs.GetInt("Weekday") == 1)
 		{
 			this.EventCheck = true;
@@ -68,9 +67,11 @@ public class EventManagerScript : MonoBehaviour
 			{
 				this.EventStudent[1].CurrentDestination = this.EventLocation[1];
 				this.EventStudent[1].Pathfinding.target = this.EventLocation[1];
+				this.EventStudent[1].EventManager = this;
 				this.EventStudent[1].InEvent = true;
 				this.EventStudent[2].CurrentDestination = this.EventLocation[2];
 				this.EventStudent[2].Pathfinding.target = this.EventLocation[2];
+				this.EventStudent[2].EventManager = this;
 				this.EventStudent[2].InEvent = true;
 				this.EventCheck = false;
 				this.EventOn = true;
@@ -84,18 +85,24 @@ public class EventManagerScript : MonoBehaviour
 			}
 			else
 			{
-				if (!this.EventStudent[1].Pathfinding.canMove && !this.Idle1)
+				if (!this.EventStudent[1].Pathfinding.canMove && !this.EventStudent[1].Private)
 				{
 					this.EventStudent[1].Character.animation.CrossFade(this.EventStudent[1].IdleAnim);
-					this.Idle1 = true;
+					this.EventStudent[1].Private = true;
+					this.StudentManager.UpdateStudents();
 				}
-				if (!this.EventStudent[2].Pathfinding.canMove && !this.Idle2)
+				if (!this.EventStudent[2].Pathfinding.canMove && !this.EventStudent[2].Private)
 				{
 					this.EventStudent[2].Character.animation.CrossFade(this.EventStudent[2].IdleAnim);
-					this.Idle2 = true;
+					this.EventStudent[2].Private = true;
+					this.StudentManager.UpdateStudents();
 				}
 				if (!this.EventStudent[1].Pathfinding.canMove && !this.EventStudent[2].Pathfinding.canMove)
 				{
+					if (!this.InterruptZone.active)
+					{
+						this.InterruptZone.active = true;
+					}
 					if (!this.Spoken)
 					{
 						this.EventStudent[this.EventSpeaker[this.EventPhase]].Character.animation.CrossFade(this.EventAnim[this.EventPhase]);
@@ -169,16 +176,29 @@ public class EventManagerScript : MonoBehaviour
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
 		audioSource.minDistance = (float)5;
 		audioSource.maxDistance = (float)10;
+		this.VoiceClip = gameObject;
 	}
 
 	public virtual void EndEvent()
 	{
+		if (this.VoiceClip != null)
+		{
+			UnityEngine.Object.Destroy(this.VoiceClip);
+		}
 		this.EventStudent[1].CurrentDestination = this.EventStudent[1].Destinations[this.EventStudent[1].Phase];
 		this.EventStudent[1].Pathfinding.target = this.EventStudent[1].Destinations[this.EventStudent[1].Phase];
+		this.EventStudent[1].EventManager = null;
 		this.EventStudent[1].InEvent = false;
+		this.EventStudent[1].Private = false;
 		this.EventStudent[2].CurrentDestination = this.EventStudent[2].Destinations[this.EventStudent[2].Phase];
 		this.EventStudent[2].Pathfinding.target = this.EventStudent[2].Destinations[this.EventStudent[2].Phase];
+		this.EventStudent[2].EventManager = null;
 		this.EventStudent[2].InEvent = false;
+		this.EventStudent[2].Private = false;
+		this.StudentManager.UpdateStudents();
+		this.InterruptZone.active = false;
+		this.Yandere.Trespassing = false;
+		this.EventSubtitle.text = string.Empty;
 		this.EventOn = false;
 	}
 

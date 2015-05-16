@@ -60,6 +60,7 @@ public class LeaveNoteScript : MonoBehaviour
 		if (this.Prompt.Circle[0].fillAmount <= (float)0)
 		{
 			this.Prompt.Circle[0].fillAmount = (float)1;
+			this.Yandere.Blur.enabled = true;
 			this.LetterWindow.Origin = this;
 			this.LetterWindow.Show = true;
 			this.Yandere.CanMove = false;
@@ -103,7 +104,7 @@ public class LeaveNoteScript : MonoBehaviour
 					this.NoteLeft = false;
 					this.Phase++;
 				}
-				if (this.Student.Character.animation["f02_keepNote_00"].time >= this.Student.Character.animation["f02_keepNote_00"].length)
+				if (this.Student != null && this.Student.Character.animation["f02_keepNote_00"].time >= this.Student.Character.animation["f02_keepNote_00"].length)
 				{
 					this.DetermineSchedule();
 					this.Student.Character.animation.CrossFade(this.Student.IdleAnim);

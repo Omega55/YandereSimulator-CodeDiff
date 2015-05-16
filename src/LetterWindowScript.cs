@@ -273,6 +273,7 @@ public class LetterWindowScript : MonoBehaviour
 
 	public virtual void Exit()
 	{
+		this.Yandere.Blur.enabled = false;
 		this.Yandere.CanMove = true;
 		this.Show = false;
 		this.Yandere.HUD.alpha = (float)1;

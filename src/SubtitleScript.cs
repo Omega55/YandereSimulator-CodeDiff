@@ -43,6 +43,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] PrankReactions;
 
+	public string[] InterruptReactions;
+
 	public string[] NoteReactions;
 
 	public string[] KnifeReactions;
@@ -60,6 +62,8 @@ public class SubtitleScript : MonoBehaviour
 	public string[] InsanityApologies;
 
 	public string[] LewdApologies;
+
+	public string[] EventApologies;
 
 	public string[] Greetings;
 
@@ -243,6 +247,10 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.Label.text = this.PrankReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.LewdReactions))];
 		}
+		else if (ReactionType == "Interruption Reaction")
+		{
+			this.Label.text = this.InterruptReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.InterruptReactions))];
+		}
 		else if (ReactionType == "Note Reaction")
 		{
 			this.Label.text = this.NoteReactions[ID];
@@ -407,6 +415,10 @@ public class SubtitleScript : MonoBehaviour
 		else if (ReactionType == "Lewd Apology")
 		{
 			this.Label.text = this.LewdApologies[UnityEngine.Random.Range(0, Extensions.get_length(this.LewdApologies))];
+		}
+		else if (ReactionType == "Event Apology")
+		{
+			this.Label.text = this.EventApologies[UnityEngine.Random.Range(0, Extensions.get_length(this.EventApologies))];
 		}
 		else if (ReactionType == "Forgiving")
 		{

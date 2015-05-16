@@ -158,7 +158,7 @@ public class StudentManagerScript : MonoBehaviour
 				else
 				{
 					this.Students[this.ID].Prompt.HideButton[2] = true;
-					if (this.Students[this.ID].WitnessedMurder || this.Students[this.ID].WitnessedCorpse)
+					if (this.Students[this.ID].WitnessedMurder || this.Students[this.ID].WitnessedCorpse || this.Students[this.ID].Private)
 					{
 						this.Students[this.ID].Prompt.HideButton[0] = true;
 					}
@@ -178,6 +178,42 @@ public class StudentManagerScript : MonoBehaviour
 				}
 			}
 			this.ID++;
+		}
+	}
+
+	public virtual void UpdateMe(int ID)
+	{
+		if (!this.Students[ID].Safe)
+		{
+			this.Students[ID].Prompt.HideButton[0] = false;
+			this.Students[ID].Prompt.HideButton[2] = false;
+			this.Students[ID].Prompt.Attack = false;
+			if (this.Yandere.Armed)
+			{
+				this.Students[ID].Prompt.HideButton[0] = true;
+				this.Students[ID].Prompt.Attack = true;
+			}
+			else
+			{
+				this.Students[ID].Prompt.HideButton[2] = true;
+				if (this.Students[ID].WitnessedMurder || this.Students[ID].WitnessedCorpse || this.Students[ID].Private)
+				{
+					this.Students[ID].Prompt.HideButton[0] = true;
+				}
+			}
+			if (this.Yandere.Dragging || this.Yandere.PickUp != null || this.Yandere.Chased)
+			{
+				this.Students[ID].Prompt.HideButton[0] = true;
+				this.Students[ID].Prompt.HideButton[2] = true;
+			}
+			if (this.Yandere.NearBodies > 0 || this.Yandere.Sanity < 33.33333f)
+			{
+				this.Students[ID].Prompt.HideButton[0] = true;
+			}
+			if (this.Students[ID].Teacher)
+			{
+				this.Students[ID].Prompt.HideButton[0] = true;
+			}
 		}
 	}
 

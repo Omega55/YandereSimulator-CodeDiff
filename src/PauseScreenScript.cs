@@ -92,7 +92,7 @@ public class PauseScreenScript : MonoBehaviour
 						Time.timeScale = (float)1;
 					}
 				}
-				if (Input.GetButtonDown("Start") && !this.Yandere.Shutter.Snapping && !this.Yandere.TimeSkipping && !this.Yandere.Talking && !this.Yandere.Noticed && !this.Yandere.InClass)
+				if (Input.GetButtonDown("Start") && !this.Yandere.Shutter.Snapping && !this.Yandere.TimeSkipping && !this.Yandere.Talking && !this.Yandere.Noticed && !this.Yandere.InClass && Time.timeScale > (float)0)
 				{
 					this.Yandere.StopAiming();
 					this.PromptParent.localScale = new Vector3((float)0, (float)0, (float)0);

@@ -8,6 +8,8 @@ public class TrespassScript : MonoBehaviour
 
 	public YandereScript Yandere;
 
+	public bool HideNotification;
+
 	public virtual void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.layer == 13)
@@ -18,7 +20,7 @@ public class TrespassScript : MonoBehaviour
 			{
 				if (!this.Yandere.Trespassing)
 				{
-					this.Yandere.NotificationManager.DisplayNotification("Trespass");
+					this.Yandere.NotificationManager.DisplayNotification("Intrude");
 				}
 				this.Yandere.Trespassing = true;
 			}

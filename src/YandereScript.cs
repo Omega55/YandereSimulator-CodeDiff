@@ -1317,7 +1317,7 @@ public class YandereScript : MonoBehaviour
 			{
 				Application.LoadLevel(Application.loadedLevel);
 			}
-			if (!this.Aiming && Input.GetKeyDown("escape"))
+			if (!this.Aiming && Time.timeScale > (float)0 && Input.GetKeyDown("escape"))
 			{
 				this.PauseScreen.JumpToQuit();
 			}
@@ -1376,11 +1376,22 @@ public class YandereScript : MonoBehaviour
 			}
 			if (Input.GetKeyDown("-"))
 			{
-				Time.timeScale -= (float)10;
+				if (Time.timeScale < (float)10)
+				{
+					Time.timeScale = (float)1;
+				}
+				else
+				{
+					Time.timeScale -= (float)10;
+				}
 			}
 			if (Input.GetKeyDown("="))
 			{
 				Time.timeScale += (float)10;
+				if (Time.timeScale > (float)25)
+				{
+					Time.timeScale = (float)25;
+				}
 			}
 			if (Input.GetKey("."))
 			{

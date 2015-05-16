@@ -246,7 +246,6 @@ public class ClockScript : MonoBehaviour
 			if (this.HalfwayTime == (float)0)
 			{
 				this.HalfwayTime = this.PresentTime + (this.TargetTime - this.PresentTime) * 0.5f;
-				this.Yandere.Hearts.active = true;
 				this.Yandere.Phone.active = true;
 				this.Yandere.TimeSkipping = true;
 				this.Yandere.CanMove = false;
@@ -256,20 +255,9 @@ public class ClockScript : MonoBehaviour
 					this.Yandere.Unequip();
 				}
 			}
-			if (this.PresentTime < this.TargetTime - (float)10)
-			{
-				if (Time.timeScale < (float)100)
-				{
-					Time.timeScale += (float)1;
-				}
-			}
-			else if (this.PresentTime < this.HalfwayTime)
+			if (Time.timeScale < (float)25)
 			{
 				Time.timeScale += (float)1;
-			}
-			else
-			{
-				Time.timeScale = Mathf.Lerp(Time.timeScale, (float)1, 0.01666667f);
 			}
 			this.Yandere.Character.animation["f02_timeSkip_00"].speed = (float)1 / Time.timeScale;
 			this.Blur.blurAmount = 0.92f * (Time.timeScale / (float)100);
@@ -293,7 +281,6 @@ public class ClockScript : MonoBehaviour
 	public virtual void EndTimeSkip()
 	{
 		this.PromptParent.localScale = new Vector3((float)1, (float)1, (float)1);
-		this.Yandere.Hearts.active = false;
 		this.Yandere.Phone.active = false;
 		this.Yandere.TimeSkipping = false;
 		this.Blur.enabled = false;
