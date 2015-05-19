@@ -481,6 +481,7 @@ public class StudentScript : MonoBehaviour
 						this.Subtitle.UpdateLabel("Note Reaction", 4, (float)3);
 						this.CurrentDestination = this.Destinations[this.Phase];
 						this.Pathfinding.target = this.Destinations[this.Phase];
+						this.Prompt.Label[0].text = "     Talk";
 						this.Pathfinding.canSearch = true;
 						this.Pathfinding.canMove = true;
 						this.Pushable = false;
@@ -703,7 +704,7 @@ public class StudentScript : MonoBehaviour
 									this.Routine = true;
 								}
 							}
-							else if (!this.Yandere.Dumping)
+							else if (!this.Yandere.Dumping && !this.Yandere.Attacking)
 							{
 								if (this.Yandere.Aiming)
 								{
@@ -723,6 +724,10 @@ public class StudentScript : MonoBehaviour
 								this.Police.Show = false;
 								this.Yandere.CameraEffects.MurderWitnessed();
 								this.Yandere.Jukebox.GameOver();
+							}
+							else
+							{
+								this.Character.animation.CrossFade(this.IdleAnim);
 							}
 						}
 					}
@@ -812,20 +817,23 @@ public class StudentScript : MonoBehaviour
 							}
 						}
 					}
-					if (num > 0 && !this.WitnessedCorpse)
+					if (num > 0)
 					{
-						this.Alarm = (float)200;
-						this.WitnessedCorpse = true;
-						this.StudentManager.UpdateMe(this.StudentID - 1);
-					}
-					if (this.Corpse != null && (this.Corpse.Dragged || this.Corpse.Dumped))
-					{
-						if (this.Teacher)
+						if (!this.WitnessedCorpse)
 						{
-							this.Subtitle.UpdateLabel("Teacher Murder Reaction", 1, (float)3);
-							this.StudentManager.Portal.active = false;
+							this.Alarm = (float)200;
+							this.WitnessedCorpse = true;
+							this.StudentManager.UpdateMe(this.StudentID - 1);
 						}
-						this.WitnessMurder();
+						if (this.Corpse.Dragged || this.Corpse.Dumped)
+						{
+							if (this.Teacher)
+							{
+								this.Subtitle.UpdateLabel("Teacher Murder Reaction", 1, (float)3);
+								this.StudentManager.Portal.active = false;
+							}
+							this.WitnessMurder();
+						}
 					}
 					this.DistanceToPlayer = Vector3.Distance(this.transform.position, this.Yandere.transform.position);
 					this.PreviousAlarm = this.Alarm;
@@ -2275,6 +2283,7 @@ public class StudentScript : MonoBehaviour
 	{
 		if (this.Pushed)
 		{
+			this.Police.SuicideScene = true;
 			this.Ragdoll.Suicide = true;
 			this.Police.Suicide = true;
 		}

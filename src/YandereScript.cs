@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$1272 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$1286 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$1279;
+		internal YandereScript $self_$1293;
 
-		public $ApplyCustomCostume$1272(YandereScript self_)
+		public $ApplyCustomCostume$1286(YandereScript self_)
 		{
-			this.$self_$1279 = self_;
+			this.$self_$1293 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$1272.$(this.$self_$1279);
+			return new YandereScript.$ApplyCustomCostume$1286.$(this.$self_$1293);
 		}
 	}
 
@@ -287,6 +287,8 @@ public class YandereScript : MonoBehaviour
 
 	public bool Mopping;
 
+	public bool Slender;
+
 	public bool Talking;
 
 	public bool Aiming;
@@ -327,7 +329,13 @@ public class YandereScript : MonoBehaviour
 
 	public Transform[] Spine;
 
+	public Transform[] Foot;
+
+	public Transform[] Hand;
+
 	public Transform[] Arm;
+
+	public Transform[] Leg;
 
 	public Renderer RightYandereEye;
 
@@ -388,6 +396,16 @@ public class YandereScript : MonoBehaviour
 	public Texture SukebanBandages;
 
 	public Texture SukebanUniform;
+
+	public GameObject[] SlenderHair;
+
+	public Material SlenderSkybox;
+
+	public Texture SlenderUniform;
+
+	public Texture SlenderSkin;
+
+	public Mesh SlenderMesh;
 
 	public YandereScript()
 	{
@@ -1429,6 +1447,10 @@ public class YandereScript : MonoBehaviour
 				{
 					this.Sukeban();
 				}
+				if (Input.GetKeyDown("v") && !this.Egg)
+				{
+					this.Slend();
+				}
 			}
 			if (Input.GetKeyDown("left alt"))
 			{
@@ -1571,6 +1593,33 @@ public class YandereScript : MonoBehaviour
 			Vector3 localEulerAngles6 = this.Spine[5].localEulerAngles;
 			float num13 = localEulerAngles6.x = y4;
 			Vector3 vector13 = this.Spine[5].localEulerAngles = localEulerAngles6;
+		}
+		if (this.Slender)
+		{
+			int num14 = 2;
+			Vector3 localScale5 = this.Leg[0].localScale;
+			float num15 = localScale5.y = (float)num14;
+			Vector3 vector14 = this.Leg[0].localScale = localScale5;
+			float y5 = 0.5f;
+			Vector3 localScale6 = this.Foot[0].localScale;
+			float num16 = localScale6.y = y5;
+			Vector3 vector15 = this.Foot[0].localScale = localScale6;
+			int num17 = 2;
+			Vector3 localScale7 = this.Leg[1].localScale;
+			float num18 = localScale7.y = (float)num17;
+			Vector3 vector16 = this.Leg[1].localScale = localScale7;
+			float y6 = 0.5f;
+			Vector3 localScale8 = this.Foot[1].localScale;
+			float num19 = localScale8.y = y6;
+			Vector3 vector17 = this.Foot[1].localScale = localScale8;
+			int num20 = 2;
+			Vector3 localScale9 = this.Arm[0].localScale;
+			float num21 = localScale9.x = (float)num20;
+			Vector3 vector18 = this.Arm[0].localScale = localScale9;
+			int num22 = 2;
+			Vector3 localScale10 = this.Arm[1].localScale;
+			float num23 = localScale10.x = (float)num22;
+			Vector3 vector19 = this.Arm[1].localScale = localScale10;
 		}
 	}
 
@@ -1808,7 +1857,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$1272(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$1286(this).GetEnumerator();
 	}
 
 	public virtual void UpdateHair()
@@ -1908,6 +1957,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual void Hate()
 	{
+		RenderSettings.skybox = this.HatefulSkybox;
 		this.Sanity = (float)0;
 		this.BaldSchoolgirl.active = true;
 		this.Character.active = false;
@@ -1947,6 +1997,27 @@ public class YandereScript : MonoBehaviour
 		this.SukebanAccessories.active = true;
 		this.MyRenderer.materials[2].mainTexture = this.SukebanBandages;
 		this.MyRenderer.materials[0].mainTexture = this.SukebanUniform;
+		this.Egg = true;
+	}
+
+	public virtual void Slend()
+	{
+		RenderSettings.skybox = this.SlenderSkybox;
+		this.SelectGrayscale.desaturation = 0.5f;
+		this.SelectGrayscale.enabled = true;
+		this.SlenderHair[0].active = true;
+		this.SlenderHair[1].active = true;
+		float y = 0.822f;
+		Vector3 localPosition = this.Character.transform.localPosition;
+		float num = localPosition.y = y;
+		Vector3 vector = this.Character.transform.localPosition = localPosition;
+		this.MyRenderer.sharedMesh = this.SlenderMesh;
+		this.MyRenderer.materials[0].mainTexture = this.SlenderUniform;
+		this.MyRenderer.materials[1].mainTexture = this.SlenderSkin;
+		this.MyRenderer.materials[2].mainTexture = this.SlenderSkin;
+		this.MyRenderer.materials[3].mainTexture = this.SlenderUniform;
+		this.Slender = true;
+		this.Sanity = (float)0;
 		this.Egg = true;
 	}
 

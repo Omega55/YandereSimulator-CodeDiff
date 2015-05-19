@@ -59,6 +59,8 @@ public class PoliceScript : MonoBehaviour
 
 	public bool TeacherReport;
 
+	public bool SuicideScene;
+
 	public bool FadeResults;
 
 	public bool ShowResults;
@@ -579,7 +581,7 @@ public class PoliceScript : MonoBehaviour
 					this.ResultsLabels[4].text = "Yandere-chan will never be able to confess her love to Senpai.";
 					this.GameOver = true;
 				}
-				else if (this.Corpses == 0 && this.BloodParent.childCount == 0 && this.BloodyWeapons == 0 && this.BloodyUniforms == 0)
+				else if (this.Corpses == 0 && this.BloodParent.childCount == 0 && this.BloodyWeapons == 0 && this.BloodyUniforms == 0 && !this.SuicideScene)
 				{
 					if (this.Yandere.Sanity > 66.66666f && this.Yandere.Bloodiness == (float)0)
 					{
@@ -617,7 +619,14 @@ public class PoliceScript : MonoBehaviour
 				}
 				else if (this.Corpses == 0)
 				{
-					if (this.BloodParent.childCount > 0 || this.BloodyUniforms > 0)
+					if (this.SuicideScene)
+					{
+						this.ResultsLabels[1].text = "While walking around the school, a teacher discovers a pair of shoes on the rooftop.";
+						this.ResultsLabels[2].text = "The teachers fears that there has been a suicide, but cannot find a corpse anywhere. The teacher does not take any action.";
+						this.ResultsLabels[3].text = "Yandere-chan leaves school and returns to her home without incident.";
+						this.ResultsLabels[4].text = "Yandere-chan goes to sleep, and has a nightmare about losing Senpai...";
+					}
+					else if (this.BloodParent.childCount > 0 || this.BloodyUniforms > 0)
 					{
 						if (this.BloodyWeapons == 0)
 						{

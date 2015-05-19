@@ -57,28 +57,40 @@ public class LeaveNoteScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (this.Prompt.Circle[0].fillAmount <= (float)0)
+		if (this.Student == null)
 		{
-			this.Prompt.Circle[0].fillAmount = (float)1;
-			this.Yandere.Blur.enabled = true;
-			this.LetterWindow.Origin = this;
-			this.LetterWindow.Show = true;
-			this.Yandere.CanMove = false;
-			this.Yandere.HUD.alpha = (float)0;
-			this.PromptBar.Show = true;
-			Time.timeScale = (float)0;
-			this.PromptBar.Label[0].text = "Confirm";
-			this.PromptBar.Label[1].text = "Cancel";
-			this.PromptBar.Label[4].text = "Select";
-			this.PromptBar.UpdateButtons();
+			this.Student = this.StudentManager.Students[this.ID];
 		}
-		if (this.NoteLeft)
+		else
 		{
-			if (this.Student == null)
+			if (this.Prompt.enabled)
 			{
-				this.Student = this.StudentManager.Students[this.ID];
+				if (Vector3.Distance(this.Student.transform.position, new Vector3(this.transform.position.x, this.Student.transform.position.y, this.transform.position.z)) < (float)1)
+				{
+					this.Prompt.Hide();
+					this.Prompt.enabled = false;
+				}
 			}
-			else if ((this.Student.Phase == 1 || this.Student.Phase == 6) && this.Student.Routine && this.Student.DistanceToDestination < 0.1f)
+			else if (Vector3.Distance(this.Student.transform.position, new Vector3(this.transform.position.x, this.Student.transform.position.y, this.transform.position.z)) > (float)1)
+			{
+				this.Prompt.enabled = true;
+			}
+			if (this.Prompt.Circle[0].fillAmount <= (float)0)
+			{
+				this.Prompt.Circle[0].fillAmount = (float)1;
+				this.Yandere.Blur.enabled = true;
+				this.LetterWindow.Origin = this;
+				this.LetterWindow.Show = true;
+				this.Yandere.CanMove = false;
+				this.Yandere.HUD.alpha = (float)0;
+				this.PromptBar.Show = true;
+				Time.timeScale = (float)0;
+				this.PromptBar.Label[0].text = "Confirm";
+				this.PromptBar.Label[1].text = "Cancel";
+				this.PromptBar.Label[4].text = "Select";
+				this.PromptBar.UpdateButtons();
+			}
+			if (this.NoteLeft && (this.Student.Phase == 1 || this.Student.Phase == 6) && this.Student.Routine && this.Student.DistanceToDestination < 0.1f)
 			{
 				if (!this.Student.InEvent)
 				{

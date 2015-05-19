@@ -59,6 +59,7 @@ public class WeaponMenuScript : MonoBehaviour
 			{
 				if (Input.GetAxis("DpadX") < -0.5f || Input.GetAxis("DpadX") > 0.5f || Input.GetAxis("DpadY") > 0.5f || Input.GetAxis("DpadY") < -0.5f)
 				{
+					this.Yandere.EmptyHands();
 					if (Input.GetAxis("DpadX") < -0.5f || Input.GetAxis("DpadX") > 0.5f || Input.GetAxis("DpadY") > 0.5f)
 					{
 						this.KeyboardShow = false;
@@ -88,6 +89,7 @@ public class WeaponMenuScript : MonoBehaviour
 				}
 				if (Input.GetKeyDown("1") || Input.GetKeyDown("2") || Input.GetKeyDown("3") || Input.GetKeyDown("4"))
 				{
+					this.Yandere.EmptyHands();
 					this.KeyboardShow = true;
 					this.Show = false;
 					this.Timer = (float)0;

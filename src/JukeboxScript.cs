@@ -12,6 +12,8 @@ public class JukeboxScript : MonoBehaviour
 
 	public AudioSource Nuclear;
 
+	public AudioSource Slender;
+
 	public AudioSource Sukeban;
 
 	public AudioSource Hatred;
@@ -103,6 +105,7 @@ public class JukeboxScript : MonoBehaviour
 			this.Nuclear.volume = Mathf.MoveTowards(this.Nuclear.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Sukeban.volume = Mathf.MoveTowards(this.Sukeban.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Hatred.volume = Mathf.MoveTowards(this.Hatred.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
+			this.Slender.volume = Mathf.MoveTowards(this.Slender.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 		}
 		if (!this.Yandere.PauseScreen.Show && !this.Yandere.Noticed && this.Yandere.CanMove)
 		{
@@ -113,6 +116,7 @@ public class JukeboxScript : MonoBehaviour
 				this.Halfsane.volume = (float)0;
 				this.Insane.volume = (float)0;
 				this.Chase.volume = (float)0;
+				this.Volume = 0.5f;
 				this.AttackOnTitan.enabled = true;
 			}
 			if (Input.GetKeyDown("k") && !this.Egg)
@@ -122,6 +126,7 @@ public class JukeboxScript : MonoBehaviour
 				this.Halfsane.volume = (float)0;
 				this.Insane.volume = (float)0;
 				this.Chase.volume = (float)0;
+				this.Volume = 0.5f;
 				this.Nuclear.enabled = true;
 			}
 			if (Input.GetKeyDown("j") && !this.Egg)
@@ -131,6 +136,7 @@ public class JukeboxScript : MonoBehaviour
 				this.Halfsane.volume = (float)0;
 				this.Insane.volume = (float)0;
 				this.Chase.volume = (float)0;
+				this.Volume = 0.5f;
 				this.Hatred.enabled = true;
 			}
 			if (Input.GetKeyDown("g") && !this.Egg)
@@ -140,7 +146,18 @@ public class JukeboxScript : MonoBehaviour
 				this.Halfsane.volume = (float)0;
 				this.Insane.volume = (float)0;
 				this.Chase.volume = (float)0;
+				this.Volume = 0.5f;
 				this.Sukeban.enabled = true;
+			}
+			if (Input.GetKeyDown("v") && !this.Egg)
+			{
+				this.Egg = true;
+				this.Sane.volume = (float)0;
+				this.Halfsane.volume = (float)0;
+				this.Insane.volume = (float)0;
+				this.Chase.volume = (float)0;
+				this.Volume = 0.5f;
+				this.Slender.enabled = true;
 			}
 		}
 	}
@@ -151,6 +168,7 @@ public class JukeboxScript : MonoBehaviour
 		this.Nuclear.Stop();
 		this.Sukeban.Stop();
 		this.Hatred.Stop();
+		this.Slender.Stop();
 		this.Sane.Stop();
 		this.Halfsane.Stop();
 		this.Insane.Stop();

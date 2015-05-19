@@ -14,6 +14,8 @@ public class ZoomScript : MonoBehaviour
 
 	public float ShakeStrength;
 
+	public float Slender;
+
 	public float Timer;
 
 	public Vector3 Target;
@@ -22,21 +24,21 @@ public class ZoomScript : MonoBehaviour
 	{
 		if (this.Yandere.Crawling)
 		{
-			float y = Mathf.Lerp(this.transform.localPosition.y, 0.05f + this.Zoom, Time.deltaTime * (float)10);
+			float y = Mathf.Lerp(this.transform.localPosition.y, 0.05f + this.Zoom + this.Slender, Time.deltaTime * (float)10);
 			Vector3 localPosition = this.transform.localPosition;
 			float num = localPosition.y = y;
 			Vector3 vector = this.transform.localPosition = localPosition;
 		}
 		else if (this.Yandere.Crouching)
 		{
-			float y2 = Mathf.Lerp(this.transform.localPosition.y, 0.4f + this.Zoom, Time.deltaTime * (float)10);
+			float y2 = Mathf.Lerp(this.transform.localPosition.y, 0.4f + this.Zoom + this.Slender, Time.deltaTime * (float)10);
 			Vector3 localPosition2 = this.transform.localPosition;
 			float num2 = localPosition2.y = y2;
 			Vector3 vector2 = this.transform.localPosition = localPosition2;
 		}
 		else
 		{
-			float y3 = Mathf.Lerp(this.transform.localPosition.y, (float)1 + this.Zoom, Time.deltaTime * (float)10);
+			float y3 = Mathf.Lerp(this.transform.localPosition.y, (float)1 + this.Zoom + this.Slender, Time.deltaTime * (float)10);
 			Vector3 localPosition3 = this.transform.localPosition;
 			float num3 = localPosition3.y = y3;
 			Vector3 vector3 = this.transform.localPosition = localPosition3;
@@ -44,6 +46,10 @@ public class ZoomScript : MonoBehaviour
 		if (!this.Yandere.Aiming)
 		{
 			this.TargetZoom += Input.GetAxis("Mouse ScrollWheel");
+		}
+		if (this.Yandere.Slender)
+		{
+			this.Slender = 0.5f;
 		}
 		if (this.TargetZoom < (float)0)
 		{
@@ -61,9 +67,9 @@ public class ZoomScript : MonoBehaviour
 			this.TargetZoom = 0.4f;
 		}
 		this.Zoom = Mathf.Lerp(this.Zoom, this.TargetZoom, Time.deltaTime);
-		this.CameraScript.distance = (float)2 - this.Zoom * 3.33333f;
-		this.CameraScript.distanceMax = (float)2 - this.Zoom * 3.33333f;
-		this.CameraScript.distanceMin = (float)2 - this.Zoom * 3.33333f;
+		this.CameraScript.distance = (float)2 - this.Zoom * 3.33333f + this.Slender;
+		this.CameraScript.distanceMax = (float)2 - this.Zoom * 3.33333f + this.Slender;
+		this.CameraScript.distanceMin = (float)2 - this.Zoom * 3.33333f + this.Slender;
 		if (!this.Yandere.TimeSkipping)
 		{
 			this.Timer += Time.deltaTime;
