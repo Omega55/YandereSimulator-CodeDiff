@@ -149,6 +149,8 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject CinematicCamera;
 
+	public GameObject PonytailWig;
+
 	public GameObject HandCamera;
 
 	public GameObject Character;
@@ -172,6 +174,12 @@ public class YandereScript : MonoBehaviour
 	public GameObject[] Accessories;
 
 	public GameObject[] Shoes;
+
+	public GameObject Korra;
+
+	public GameObject Yuno;
+
+	public GameObject Rei;
 
 	public SkinnedMeshRenderer MyRenderer;
 
@@ -405,8 +413,6 @@ public class YandereScript : MonoBehaviour
 
 	public Texture SlenderSkin;
 
-	public Mesh SlenderMesh;
-
 	public YandereScript()
 	{
 		this.Sanity = 100f;
@@ -443,6 +449,9 @@ public class YandereScript : MonoBehaviour
 		this.Shoes[0].active = false;
 		this.Shoes[1].active = false;
 		this.Drills.active = false;
+		this.Korra.active = false;
+		this.Yuno.active = false;
+		this.Rei.active = false;
 		this.IdleAnim = "f02_idleShort_00";
 		this.ID = 1;
 		while (this.ID < Extensions.get_length(this.Accessories))
@@ -634,6 +643,7 @@ public class YandereScript : MonoBehaviour
 							this.HandCamera.active = true;
 							this.YandereVision = false;
 							this.Blur.enabled = true;
+							this.Mopping = false;
 							this.Aiming = true;
 							this.EmptyHands();
 							Time.timeScale = (float)1;
@@ -1363,7 +1373,7 @@ public class YandereScript : MonoBehaviour
 					this.EyepatchL.active = false;
 				}
 			}
-			if (Input.GetKeyDown("h"))
+			if (Input.GetKeyDown("h") && !this.Slender)
 			{
 				this.UpdateHair();
 			}
@@ -1867,15 +1877,19 @@ public class YandereScript : MonoBehaviour
 		this.PigtailR.active = false;
 		this.PigtailL.active = false;
 		this.Drills.active = false;
+		this.Korra.active = false;
+		this.Yuno.active = false;
+		this.Rei.active = false;
 		this.HidePony = true;
 		this.Hairstyle++;
-		if (this.Hairstyle > 7)
+		if (this.Hairstyle > 10)
 		{
 			this.Hairstyle = 1;
 		}
 		if (this.Hairstyle == 1)
 		{
 			this.HidePony = false;
+			this.PonytailWig.active = true;
 			this.Ponytail.localScale = new Vector3((float)1, (float)1, (float)1);
 			this.HairR.localScale = new Vector3((float)1, (float)1, (float)1);
 			this.HairL.localScale = new Vector3((float)1, (float)1, (float)1);
@@ -1913,6 +1927,19 @@ public class YandereScript : MonoBehaviour
 		{
 			this.Drills.active = true;
 		}
+		else if (this.Hairstyle == 8)
+		{
+			this.PonytailWig.active = false;
+			this.Rei.active = true;
+		}
+		else if (this.Hairstyle == 9)
+		{
+			this.Yuno.active = true;
+		}
+		else if (this.Hairstyle == 10)
+		{
+			this.Korra.active = true;
+		}
 	}
 
 	public virtual void AttackOnTitan()
@@ -1945,13 +1972,7 @@ public class YandereScript : MonoBehaviour
 			this.Accessories[this.ID].active = false;
 			this.ID++;
 		}
-		this.MyRenderer.sharedMesh = this.PunishedMesh;
-		this.MyRenderer.materials[0].mainTexture = this.PunishedTextures[1];
-		this.MyRenderer.materials[1].mainTexture = this.PunishedTextures[1];
-		this.MyRenderer.materials[2].mainTexture = this.PunishedTextures[0];
-		this.MyRenderer.materials[1].shader = this.PunishedShader;
-		this.MyRenderer.materials[1].SetFloat("_Shininess", (float)2);
-		this.MyRenderer.materials[1].SetFloat("_ShadowThreshold", (float)0);
+		this.MyRenderer.materials[1].mainTexture = this.PunishedTextures[0];
 		this.Outline.h.ReinitMaterials();
 	}
 
@@ -2005,13 +2026,21 @@ public class YandereScript : MonoBehaviour
 		RenderSettings.skybox = this.SlenderSkybox;
 		this.SelectGrayscale.desaturation = 0.5f;
 		this.SelectGrayscale.enabled = true;
+		this.PigtailR.transform.parent.transform.parent.transform.localScale = new Vector3((float)1, 0.75f, (float)1);
+		this.PigtailL.transform.parent.transform.parent.transform.localScale = new Vector3((float)1, 0.75f, (float)1);
+		this.PonytailWig.active = false;
+		this.PigtailR.active = false;
+		this.PigtailL.active = false;
+		this.Drills.active = false;
+		this.Korra.active = false;
+		this.Yuno.active = false;
+		this.Rei.active = false;
 		this.SlenderHair[0].active = true;
 		this.SlenderHair[1].active = true;
 		float y = 0.822f;
 		Vector3 localPosition = this.Character.transform.localPosition;
 		float num = localPosition.y = y;
 		Vector3 vector = this.Character.transform.localPosition = localPosition;
-		this.MyRenderer.sharedMesh = this.SlenderMesh;
 		this.MyRenderer.materials[0].mainTexture = this.SlenderUniform;
 		this.MyRenderer.materials[1].mainTexture = this.SlenderSkin;
 		this.MyRenderer.materials[2].mainTexture = this.SlenderSkin;
