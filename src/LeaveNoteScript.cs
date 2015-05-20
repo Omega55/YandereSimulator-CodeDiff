@@ -65,13 +65,13 @@ public class LeaveNoteScript : MonoBehaviour
 		{
 			if (this.Prompt.enabled)
 			{
-				if (Vector3.Distance(this.Student.transform.position, new Vector3(this.transform.position.x, this.Student.transform.position.y, this.transform.position.z)) < (float)1)
+				if (Vector3.Distance(this.Student.transform.position, new Vector3(this.transform.position.x, this.Student.transform.position.y, this.transform.position.z)) < (float)1 || this.Yandere.Armed)
 				{
 					this.Prompt.Hide();
 					this.Prompt.enabled = false;
 				}
 			}
-			else if (Vector3.Distance(this.Student.transform.position, new Vector3(this.transform.position.x, this.Student.transform.position.y, this.transform.position.z)) > (float)1)
+			else if (Vector3.Distance(this.Student.transform.position, new Vector3(this.transform.position.x, this.Student.transform.position.y, this.transform.position.z)) > (float)1 && !this.Yandere.Armed)
 			{
 				this.Prompt.enabled = true;
 			}

@@ -69,7 +69,14 @@ public class InputManagerScript : MonoBehaviour
 			{
 				this.TappedUp = false;
 			}
-			this.StickUp = true;
+			if (!this.TappedDown)
+			{
+				this.StickUp = true;
+			}
+			else
+			{
+				this.StickUp = false;
+			}
 		}
 		else if (Input.GetAxis("Vertical") < -0.5f)
 		{
@@ -81,7 +88,14 @@ public class InputManagerScript : MonoBehaviour
 			{
 				this.TappedDown = false;
 			}
-			this.StickDown = true;
+			if (!this.TappedUp)
+			{
+				this.StickDown = true;
+			}
+			else
+			{
+				this.StickDown = false;
+			}
 		}
 		else
 		{
@@ -159,19 +173,31 @@ public class InputManagerScript : MonoBehaviour
 		if (Input.GetKeyDown("w") || Input.GetKeyDown("up"))
 		{
 			this.TappedUp = true;
+			this.NoStick();
 		}
 		if (Input.GetKeyDown("s") || Input.GetKeyDown("down"))
 		{
 			this.TappedDown = true;
+			this.NoStick();
 		}
 		if (Input.GetKeyDown("a") || Input.GetKeyDown("left"))
 		{
 			this.TappedLeft = true;
+			this.NoStick();
 		}
 		if (Input.GetKeyDown("d") || Input.GetKeyDown("right"))
 		{
 			this.TappedRight = true;
+			this.NoStick();
 		}
+	}
+
+	public virtual void NoStick()
+	{
+		this.StickUp = false;
+		this.StickDown = false;
+		this.StickLeft = false;
+		this.StickRight = false;
 	}
 
 	public virtual void Main()

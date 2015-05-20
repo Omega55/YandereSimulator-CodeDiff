@@ -191,6 +191,8 @@ public class YandereScript : MonoBehaviour
 
 	public Camera Smartphone;
 
+	public Renderer PonytailRenderer;
+
 	public Renderer PigtailR;
 
 	public Renderer PigtailL;
@@ -270,6 +272,10 @@ public class YandereScript : MonoBehaviour
 	public bool SanityWarning;
 
 	public bool WeaponWarning;
+
+	public bool CrouchButtonDown;
+
+	public bool CameFromCrouch;
 
 	public bool TimeSkipping;
 
@@ -683,35 +689,50 @@ public class YandereScript : MonoBehaviour
 					}
 					if (!Input.GetButton("LB"))
 					{
-						if (Input.GetButtonDown("RS"))
+						if (!this.Crouching && !this.Crawling)
 						{
-							this.CrawlTimer = (float)0;
-							if (this.Crawling)
-							{
-								this.Crawling = false;
-							}
-							else if (this.Crouching)
-							{
-								this.Crouching = false;
-							}
-							else
+							if (Input.GetButtonDown("RS"))
 							{
 								this.Obscurance.enabled = false;
+								this.CrouchButtonDown = true;
 								this.YandereVision = false;
 								this.Crouching = true;
 								this.EmptyHands();
 							}
 						}
-						if (Input.GetButton("RS"))
+						else
 						{
-							this.CrawlTimer += Time.deltaTime;
-							if (this.CrawlTimer > 0.5f)
+							if (this.Crouching)
 							{
-								this.EmptyHands();
-								this.Obscurance.enabled = false;
-								this.YandereVision = false;
-								this.Crouching = false;
-								this.Crawling = true;
+								if (Input.GetButton("RS") && !this.CameFromCrouch)
+								{
+									this.CrawlTimer += Time.deltaTime;
+								}
+								if (this.CrawlTimer > 0.5f)
+								{
+									this.EmptyHands();
+									this.Obscurance.enabled = false;
+									this.YandereVision = false;
+									this.Crouching = false;
+									this.Crawling = true;
+									this.CrawlTimer = (float)0;
+								}
+								else if (Input.GetButtonUp("RS") && !this.CrouchButtonDown && !this.CameFromCrouch)
+								{
+									this.Crouching = false;
+									this.CrawlTimer = (float)0;
+								}
+							}
+							else if (Input.GetButtonDown("RS"))
+							{
+								this.CameFromCrouch = true;
+								this.Crouching = true;
+								this.Crawling = false;
+							}
+							if (Input.GetButtonUp("RS"))
+							{
+								this.CrouchButtonDown = false;
+								this.CameFromCrouch = false;
 								this.CrawlTimer = (float)0;
 							}
 						}
@@ -2044,7 +2065,6 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.materials[0].mainTexture = this.SlenderUniform;
 		this.MyRenderer.materials[1].mainTexture = this.SlenderSkin;
 		this.MyRenderer.materials[2].mainTexture = this.SlenderSkin;
-		this.MyRenderer.materials[3].mainTexture = this.SlenderUniform;
 		this.Slender = true;
 		this.Sanity = (float)0;
 		this.Egg = true;

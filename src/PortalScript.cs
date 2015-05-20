@@ -208,7 +208,7 @@ public class PortalScript : MonoBehaviour
 				this.Prompt.Label[0].text = "     " + "Go Home";
 			}
 		}
-		else if (this.Yandere.Armed || this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Dragging || this.Yandere.Chased || this.StudentManager.Reporter != null)
+		else if (this.Yandere.Armed || this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Dragging || this.Yandere.Chased || this.StudentManager.Reporter != null || this.Police.Corpses > 0)
 		{
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;

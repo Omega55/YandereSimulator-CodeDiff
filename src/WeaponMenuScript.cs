@@ -195,7 +195,7 @@ public class WeaponMenuScript : MonoBehaviour
 			{
 				this.KeyboardShow = false;
 			}
-			if (!this.Yandere.CanMove || this.Yandere.Aiming || this.PauseScreen.Show || this.InputDevice.Type == 1)
+			if (!this.Yandere.CanMove || this.Yandere.Aiming || this.PauseScreen.Show || this.InputDevice.Type == 1 || Input.GetButton("Y"))
 			{
 				this.KeyboardShow = false;
 			}
