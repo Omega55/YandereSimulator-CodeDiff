@@ -30,6 +30,10 @@ public class InputManagerScript : MonoBehaviour
 
 	public virtual void Update()
 	{
+		this.TappedUp = false;
+		this.TappedDown = false;
+		this.TappedRight = false;
+		this.TappedLeft = false;
 		if (Input.GetAxis("DpadY") > 0.5f)
 		{
 			if (!this.DPadUp)
@@ -59,48 +63,51 @@ public class InputManagerScript : MonoBehaviour
 			this.DPadUp = false;
 			this.DPadDown = false;
 		}
-		if (Input.GetAxis("Vertical") > 0.5f)
+		if (!Input.GetKey("w") && !Input.GetKey("s"))
 		{
-			if (!this.StickUp)
+			if (Input.GetAxis("Vertical") > 0.5f)
 			{
-				this.TappedUp = true;
+				if (!this.StickUp)
+				{
+					this.TappedUp = true;
+				}
+				else
+				{
+					this.TappedUp = false;
+				}
+				if (!this.TappedDown)
+				{
+					this.StickUp = true;
+				}
+				else
+				{
+					this.StickUp = false;
+				}
 			}
-			else
+			else if (Input.GetAxis("Vertical") < -0.5f)
 			{
-				this.TappedUp = false;
-			}
-			if (!this.TappedDown)
-			{
-				this.StickUp = true;
+				if (!this.StickDown)
+				{
+					this.TappedDown = true;
+				}
+				else
+				{
+					this.TappedDown = false;
+				}
+				if (!this.TappedUp)
+				{
+					this.StickDown = true;
+				}
+				else
+				{
+					this.StickDown = false;
+				}
 			}
 			else
 			{
 				this.StickUp = false;
-			}
-		}
-		else if (Input.GetAxis("Vertical") < -0.5f)
-		{
-			if (!this.StickDown)
-			{
-				this.TappedDown = true;
-			}
-			else
-			{
-				this.TappedDown = false;
-			}
-			if (!this.TappedUp)
-			{
-				this.StickDown = true;
-			}
-			else
-			{
 				this.StickDown = false;
 			}
-		}
-		else
-		{
-			this.StickUp = false;
-			this.StickDown = false;
 		}
 		if (Input.GetAxis("DpadX") > 0.5f)
 		{
@@ -131,34 +138,37 @@ public class InputManagerScript : MonoBehaviour
 			this.DPadRight = false;
 			this.DPadLeft = false;
 		}
-		if (Input.GetAxis("Horizontal") > 0.5f)
+		if (!Input.GetKey("a") && !Input.GetKey("d"))
 		{
-			if (!this.StickRight)
+			if (Input.GetAxis("Horizontal") > 0.5f)
 			{
-				this.TappedRight = true;
+				if (!this.StickRight)
+				{
+					this.TappedRight = true;
+				}
+				else
+				{
+					this.TappedRight = false;
+				}
+				this.StickRight = true;
+			}
+			else if (Input.GetAxis("Horizontal") < -0.5f)
+			{
+				if (!this.StickLeft)
+				{
+					this.TappedLeft = true;
+				}
+				else
+				{
+					this.TappedLeft = false;
+				}
+				this.StickLeft = true;
 			}
 			else
 			{
-				this.TappedRight = false;
+				this.StickRight = false;
+				this.StickLeft = false;
 			}
-			this.StickRight = true;
-		}
-		else if (Input.GetAxis("Horizontal") < -0.5f)
-		{
-			if (!this.StickLeft)
-			{
-				this.TappedLeft = true;
-			}
-			else
-			{
-				this.TappedLeft = false;
-			}
-			this.StickLeft = true;
-		}
-		else
-		{
-			this.StickRight = false;
-			this.StickLeft = false;
 		}
 		if (Input.GetAxis("Horizontal") < 0.5f && Input.GetAxis("Horizontal") > -0.5f && Input.GetAxis("DpadX") < 0.5f && Input.GetAxis("DpadX") > -0.5f)
 		{

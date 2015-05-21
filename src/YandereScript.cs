@@ -1011,7 +1011,10 @@ public class YandereScript : MonoBehaviour
 				this.ColorCorrection.greenChannel.SmoothTangents(1, (float)0);
 				this.ColorCorrection.blueChannel.SmoothTangents(1, (float)0);
 				this.ColorCorrection.UpdateTextures();
-				this.Character.animation["f02_shy_00"].weight = this.SenpaiTint;
+				if (!this.Attacking)
+				{
+					this.Character.animation["f02_shy_00"].weight = this.SenpaiTint;
+				}
 				this.HeartBeat.volume = this.SenpaiTint;
 				this.Sanity += Time.deltaTime * (float)10;
 				this.UpdateSanity();
@@ -1280,6 +1283,7 @@ public class YandereScript : MonoBehaviour
 							{
 								this.TargetStudent.BloodSpray.active = true;
 								this.Bloodiness += (float)20;
+								this.Police.Corpses = this.Police.Corpses + 1;
 								this.UpdateBlood();
 							}
 							if (this.TargetStudent == this.StudentManager.Reporter)
@@ -1288,7 +1292,6 @@ public class YandereScript : MonoBehaviour
 							}
 							this.Police.CorpseList[this.Police.Corpses] = this.TargetStudent.Ragdoll;
 							this.TargetStudent.Dead = true;
-							this.Police.Corpses = this.Police.Corpses + 1;
 							this.AttackPhase = 2;
 							this.Sanity -= (float)20;
 							this.UpdateSanity();
@@ -2056,6 +2059,8 @@ public class YandereScript : MonoBehaviour
 		this.Korra.active = false;
 		this.Yuno.active = false;
 		this.Rei.active = false;
+		this.Slender = true;
+		this.Egg = true;
 		this.SlenderHair[0].active = true;
 		this.SlenderHair[1].active = true;
 		float y = 0.822f;
@@ -2065,9 +2070,8 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.materials[0].mainTexture = this.SlenderUniform;
 		this.MyRenderer.materials[1].mainTexture = this.SlenderSkin;
 		this.MyRenderer.materials[2].mainTexture = this.SlenderSkin;
-		this.Slender = true;
 		this.Sanity = (float)0;
-		this.Egg = true;
+		this.UpdateSanity();
 	}
 
 	public virtual void Main()
