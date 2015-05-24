@@ -71,6 +71,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public int ID;
 
+	public Texture[] Stockings;
+
 	public Texture[] MaleColors;
 
 	public Texture[] Colors;

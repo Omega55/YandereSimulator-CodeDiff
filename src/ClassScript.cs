@@ -10,6 +10,8 @@ public class ClassScript : MonoBehaviour
 
 	public PortalScript Portal;
 
+	public GameObject Poison;
+
 	public UILabel StudyPointsLabel;
 
 	public UILabel[] SubjectLabels;
@@ -86,12 +88,13 @@ public class ClassScript : MonoBehaviour
 		if (Input.GetKeyDown("8"))
 		{
 			PlayerPrefs.SetInt("BiologyGrade", 1);
+			PlayerPrefs.SetInt("ChemistryGrade", 1);
 			PlayerPrefs.SetInt("LanguageGrade", 1);
 			PlayerPrefs.SetInt("Biology", 19);
-			PlayerPrefs.SetInt("Chemistry", 5);
+			PlayerPrefs.SetInt("Chemistry", 19);
 			PlayerPrefs.SetInt("Language", 19);
-			PlayerPrefs.SetInt("Physical", 10);
-			PlayerPrefs.SetInt("Psychology", 15);
+			PlayerPrefs.SetInt("Physical", 7);
+			PlayerPrefs.SetInt("Psychology", 6);
 			this.Subject[1] = PlayerPrefs.GetInt("Biology");
 			this.Subject[2] = PlayerPrefs.GetInt("Chemistry");
 			this.Subject[3] = PlayerPrefs.GetInt("Language");
@@ -193,6 +196,10 @@ public class ClassScript : MonoBehaviour
 						this.CheckForGradeUp();
 						if (!this.GradeUp)
 						{
+							if (PlayerPrefs.GetInt("ChemistryGrade") > 1)
+							{
+								this.Poison.active = true;
+							}
 							this.PromptBar.Show = false;
 							this.Portal.Proceed = true;
 							this.active = false;
@@ -401,12 +408,15 @@ public class ClassScript : MonoBehaviour
 			this.GradeUp = true;
 			this.Grade = 2;
 		}
-		else if (PlayerPrefs.GetInt("Language") >= 20 && PlayerPrefs.GetInt("LanguageGrade") < 2)
+		else if (PlayerPrefs.GetInt("Chemistry") < 20 || PlayerPrefs.GetInt("ChemistryGrade") >= 2)
 		{
-			PlayerPrefs.SetInt("LanguageGrade", 2);
-			this.GradeUpSubject = 3;
-			this.GradeUp = true;
-			this.Grade = 2;
+			if (PlayerPrefs.GetInt("Language") >= 20 && PlayerPrefs.GetInt("LanguageGrade") < 2)
+			{
+				PlayerPrefs.SetInt("LanguageGrade", 2);
+				this.GradeUpSubject = 3;
+				this.GradeUp = true;
+				this.Grade = 2;
+			}
 		}
 	}
 

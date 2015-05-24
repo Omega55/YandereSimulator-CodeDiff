@@ -53,15 +53,15 @@ public class JukeboxScript : MonoBehaviour
 		this.Timer += Time.deltaTime;
 		if (Input.GetKeyDown("m"))
 		{
-			if (this.Volume == (float)1)
-			{
-				this.FadeSpeed = (float)10;
-				this.Volume = (float)0;
-			}
-			else
+			if (this.Volume == (float)0)
 			{
 				this.FadeSpeed = (float)1;
 				this.Volume = (float)1;
+			}
+			else
+			{
+				this.FadeSpeed = (float)10;
+				this.Volume = (float)0;
 			}
 		}
 		if (Input.GetKeyDown("n") && this.Volume < (float)1)

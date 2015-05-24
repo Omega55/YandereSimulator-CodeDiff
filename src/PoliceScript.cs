@@ -61,6 +61,8 @@ public class PoliceScript : MonoBehaviour
 
 	public bool SuicideScene;
 
+	public bool MurderScene;
+
 	public bool FadeResults;
 
 	public bool ShowResults;

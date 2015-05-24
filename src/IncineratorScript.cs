@@ -210,6 +210,14 @@ public class IncineratorScript : MonoBehaviour
 			this.Yandere.Police.BloodyUniforms = this.Yandere.Police.BloodyUniforms - this.BloodyUniforms;
 			this.Yandere.Police.BloodyWeapons = this.Yandere.Police.BloodyWeapons - this.MurderWeapons;
 			this.Yandere.Police.Corpses = this.Yandere.Police.Corpses - this.Corpses;
+			if (this.Yandere.Police.SuicideScene && this.Yandere.Police.Corpses == 1)
+			{
+				this.Yandere.Police.MurderScene = false;
+			}
+			if (this.Yandere.Police.Corpses == 0)
+			{
+				this.Yandere.Police.MurderScene = false;
+			}
 		}
 		if (this.Smoke.isPlaying)
 		{

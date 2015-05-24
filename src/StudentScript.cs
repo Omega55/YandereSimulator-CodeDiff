@@ -69,6 +69,8 @@ public class StudentScript : MonoBehaviour
 
 	public Transform WitnessPOV;
 
+	public Transform RightHand;
+
 	public Transform LeftHand;
 
 	public Transform MeetSpot;
@@ -124,6 +126,8 @@ public class StudentScript : MonoBehaviour
 	public bool Complimented;
 
 	public bool Distracted;
+
+	public bool ShortHair;
 
 	public bool HidePony;
 
@@ -255,6 +259,8 @@ public class StudentScript : MonoBehaviour
 
 	public string PushedAnim;
 
+	public string GameAnim;
+
 	public int ReportPhase;
 
 	public int StudentID;
@@ -322,6 +328,7 @@ public class StudentScript : MonoBehaviour
 		this.CallAnim = string.Empty;
 		this.CounterAnim = string.Empty;
 		this.PushedAnim = string.Empty;
+		this.GameAnim = string.Empty;
 		this.MaxSpeed = 10f;
 	}
 
@@ -352,6 +359,7 @@ public class StudentScript : MonoBehaviour
 		this.PickRandomAnim();
 		if (!this.Male)
 		{
+			this.Character.animation[this.GameAnim].speed = (float)2;
 			if (this.Club == 9)
 			{
 				this.BecomeTeacher();
@@ -456,6 +464,13 @@ public class StudentScript : MonoBehaviour
 						if (!this.InEvent)
 						{
 							this.Character.animation.CrossFade(this.IdleAnim);
+						}
+					}
+					else if (this.Actions[this.Phase] == 2)
+					{
+						if (!this.InEvent)
+						{
+							this.Character.animation.CrossFade(this.GameAnim);
 						}
 					}
 					else if (!this.InEvent)
@@ -1756,6 +1771,11 @@ public class StudentScript : MonoBehaviour
 				this.HairR.localScale = new Vector3((float)0, (float)0, (float)0);
 				this.HairL.localScale = new Vector3((float)0, (float)0, (float)0);
 			}
+			if (this.ShortHair)
+			{
+				this.HairR.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+				this.HairL.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+			}
 		}
 	}
 
@@ -2028,12 +2048,17 @@ public class StudentScript : MonoBehaviour
 			{
 				this.Actions[i] = 1;
 			}
+			else if (this.ActionNames[i] == "Game")
+			{
+				this.Actions[i] = 2;
+			}
 		}
 	}
 
 	public virtual void SetColors()
 	{
 		string a = this.JSON.StudentColors[this.StudentID];
+		string a2 = this.JSON.StudentStockings[this.StudentID];
 		if (!this.Male)
 		{
 			if (a == "Red")
@@ -2064,6 +2089,10 @@ public class StudentScript : MonoBehaviour
 			else if (a == "Brown")
 			{
 				this.HairTexture = this.StudentManager.Colors[7];
+			}
+			else if (a == "Pippi")
+			{
+				this.HairTexture = this.StudentManager.Colors[8];
 			}
 			if (!this.Teacher)
 			{
@@ -2108,6 +2137,10 @@ public class StudentScript : MonoBehaviour
 			}
 			this.MyRenderer.materials[0].mainTexture = this.HairTexture;
 			this.MyRenderer.materials[3].mainTexture = this.HairTexture;
+		}
+		if (a2 == "Socks")
+		{
+			this.MyRenderer.materials[0].mainTexture = this.StudentManager.Stockings[0];
 		}
 		if (!this.Male)
 		{
@@ -2173,6 +2206,10 @@ public class StudentScript : MonoBehaviour
 		else if (this.Hairstyle == "Drills")
 		{
 			this.Drills.active = true;
+		}
+		else if (this.Hairstyle == "Short")
+		{
+			this.ShortHair = true;
 		}
 	}
 
@@ -2286,6 +2323,10 @@ public class StudentScript : MonoBehaviour
 			this.Police.SuicideScene = true;
 			this.Ragdoll.Suicide = true;
 			this.Police.Suicide = true;
+		}
+		else
+		{
+			this.Police.MurderScene = true;
 		}
 		this.NotFaceCollider.enabled = false;
 		this.FaceCollider.enabled = false;

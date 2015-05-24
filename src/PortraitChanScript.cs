@@ -105,6 +105,10 @@ public class PortraitChanScript : MonoBehaviour
 			{
 				this.HairTexture = this.StudentManager.Colors[7];
 			}
+			else if (a == "Pippi")
+			{
+				this.HairTexture = this.StudentManager.Colors[8];
+			}
 			if (!this.Teacher)
 			{
 				this.MyRenderer.materials[1].mainTexture = this.HairTexture;
@@ -208,6 +212,11 @@ public class PortraitChanScript : MonoBehaviour
 		{
 			this.Drills.active = true;
 			this.HidePony = true;
+		}
+		else if (this.Hairstyle == "Short")
+		{
+			this.HairR.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+			this.HairL.localScale = new Vector3(0.5f, 0.5f, 0.5f);
 		}
 		if (this.HidePony)
 		{

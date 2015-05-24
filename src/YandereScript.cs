@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$1286 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$1306 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$1293;
+		internal YandereScript $self_$1313;
 
-		public $ApplyCustomCostume$1286(YandereScript self_)
+		public $ApplyCustomCostume$1306(YandereScript self_)
 		{
-			this.$self_$1293 = self_;
+			this.$self_$1313 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$1286.$(this.$self_$1293);
+			return new YandereScript.$ApplyCustomCostume$1306.$(this.$self_$1313);
 		}
 	}
 
@@ -273,10 +273,6 @@ public class YandereScript : MonoBehaviour
 
 	public bool WeaponWarning;
 
-	public bool CrouchButtonDown;
-
-	public bool CameFromCrouch;
-
 	public bool TimeSkipping;
 
 	public bool Trespassing;
@@ -307,7 +303,13 @@ public class YandereScript : MonoBehaviour
 
 	public bool Aiming;
 
+	public bool CrouchButtonDown;
+
 	public bool UsingController;
+
+	public bool CameFromCrouch;
+
+	public bool PossessPoison;
 
 	public bool YandereVision;
 
@@ -817,8 +819,11 @@ public class YandereScript : MonoBehaviour
 				}
 				if (this.Dipping)
 				{
-					this.targetRotation = Quaternion.LookRotation(new Vector3(this.Bucket.transform.position.x, this.transform.position.y, this.Bucket.transform.position.z) - this.transform.position);
-					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
+					if (this.Bucket != null)
+					{
+						this.targetRotation = Quaternion.LookRotation(new Vector3(this.Bucket.transform.position.x, this.transform.position.y, this.Bucket.transform.position.z) - this.transform.position);
+						this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
+					}
 					this.Character.animation.CrossFade("f02_dipping_00");
 					if (this.Character.animation["f02_dipping_00"].time >= this.Character.animation["f02_dipping_00"].length * 0.5f && this.Mop.Bloodiness > (float)0)
 					{
@@ -884,10 +889,7 @@ public class YandereScript : MonoBehaviour
 					this.LaughTimer -= Time.deltaTime;
 					if (this.LaughTimer <= (float)0)
 					{
-						this.LaughIntensity = (float)0;
-						this.Laughing = false;
-						this.LaughClip = null;
-						this.CanMove = true;
+						this.StopLaughing();
 					}
 				}
 				if (this.TimeSkipping)
@@ -964,6 +966,10 @@ public class YandereScript : MonoBehaviour
 					{
 						this.DepthOfField.focalSize = (float)150;
 						this.NearSenpai = true;
+					}
+					if (this.Laughing)
+					{
+						this.StopLaughing();
 					}
 					this.Obscurance.enabled = false;
 					this.YandereVision = false;
@@ -1275,6 +1281,7 @@ public class YandereScript : MonoBehaviour
 						if (this.Character.animation["f02_stab_00"].time > this.Character.animation["f02_stab_00"].length * 0.4f)
 						{
 							this.Character.animation.CrossFade(this.IdleAnim);
+							this.Police.CorpseList[this.Police.Corpses] = this.TargetStudent.Ragdoll;
 							if (this.CanTranq && this.Weapon[this.Equipped].WeaponID == 3 && this.PossessTranq && PlayerPrefs.GetInt("BiologyGrade") > 1)
 							{
 								this.TargetStudent.Tranquil = true;
@@ -1290,7 +1297,6 @@ public class YandereScript : MonoBehaviour
 							{
 								this.StudentManager.Reporter = null;
 							}
-							this.Police.CorpseList[this.Police.Corpses] = this.TargetStudent.Ragdoll;
 							this.TargetStudent.Dead = true;
 							this.AttackPhase = 2;
 							this.Sanity -= (float)20;
@@ -1490,16 +1496,16 @@ public class YandereScript : MonoBehaviour
 			{
 				this.CinematicCamera.active = false;
 			}
-			if (this.transform.position.x < (float)-50)
+			if (this.transform.position.x < (float)-75)
 			{
-				int num7 = -50;
+				int num7 = -75;
 				Vector3 position2 = this.transform.position;
 				float num8 = position2.x = (float)num7;
 				Vector3 vector5 = this.transform.position = position2;
 			}
-			if (this.transform.position.x > (float)100)
+			if (this.transform.position.x > (float)75)
 			{
-				int num9 = 100;
+				int num9 = 75;
 				Vector3 position3 = this.transform.position;
 				float num10 = position3.x = (float)num9;
 				Vector3 vector6 = this.transform.position = position3;
@@ -1891,7 +1897,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$1286(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$1306(this).GetEnumerator();
 	}
 
 	public virtual void UpdateHair()
@@ -1966,6 +1972,14 @@ public class YandereScript : MonoBehaviour
 		}
 	}
 
+	public virtual void StopLaughing()
+	{
+		this.LaughIntensity = (float)0;
+		this.Laughing = false;
+		this.LaughClip = null;
+		this.CanMove = true;
+	}
+
 	public virtual void AttackOnTitan()
 	{
 		this.Egg = true;
@@ -1996,7 +2010,13 @@ public class YandereScript : MonoBehaviour
 			this.Accessories[this.ID].active = false;
 			this.ID++;
 		}
-		this.MyRenderer.materials[1].mainTexture = this.PunishedTextures[0];
+		this.MyRenderer.sharedMesh = this.PunishedMesh;
+		this.MyRenderer.materials[0].mainTexture = this.PunishedTextures[1];
+		this.MyRenderer.materials[1].mainTexture = this.PunishedTextures[1];
+		this.MyRenderer.materials[2].mainTexture = this.PunishedTextures[0];
+		this.MyRenderer.materials[1].shader = this.PunishedShader;
+		this.MyRenderer.materials[1].SetFloat("_Shininess", (float)2);
+		this.MyRenderer.materials[1].SetFloat("_ShadowThreshold", (float)0);
 		this.Outline.h.ReinitMaterials();
 	}
 
@@ -2040,7 +2060,7 @@ public class YandereScript : MonoBehaviour
 	{
 		this.IdleAnim = "f02_idle_00";
 		this.SukebanAccessories.active = true;
-		this.MyRenderer.materials[2].mainTexture = this.SukebanBandages;
+		this.MyRenderer.materials[1].mainTexture = this.SukebanBandages;
 		this.MyRenderer.materials[0].mainTexture = this.SukebanUniform;
 		this.Egg = true;
 	}
