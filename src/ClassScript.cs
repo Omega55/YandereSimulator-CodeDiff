@@ -196,7 +196,7 @@ public class ClassScript : MonoBehaviour
 						this.CheckForGradeUp();
 						if (!this.GradeUp)
 						{
-							if (PlayerPrefs.GetInt("ChemistryGrade") > 1)
+							if (PlayerPrefs.GetInt("ChemistryGrade") > 1 && this.Poison != null)
 							{
 								this.Poison.active = true;
 							}

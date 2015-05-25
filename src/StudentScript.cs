@@ -539,7 +539,7 @@ public class StudentScript : MonoBehaviour
 						if (this.Yandere.Chased)
 						{
 							this.Pathfinding.repathRate = (float)0;
-							this.Pathfinding.speed = (float)6;
+							this.Pathfinding.speed = (float)7;
 						}
 						else
 						{
@@ -1813,8 +1813,10 @@ public class StudentScript : MonoBehaviour
 		{
 			this.Yandere.HeartRate.gameObject.active = false;
 			this.Yandere.ShoulderCamera.Counter = true;
+			this.ShoulderCamera.OverShoulder = false;
 			this.Yandere.RPGCamera.enabled = false;
 			this.Yandere.Senpai = this.transform;
+			this.Yandere.Talking = false;
 			this.Yandere.Noticed = true;
 			this.Yandere.HUD.alpha = (float)0;
 		}
@@ -1845,6 +1847,7 @@ public class StudentScript : MonoBehaviour
 		this.Yandere.EyeShrink = (float)0;
 		this.Yandere.Sanity = (float)100;
 		this.Yandere.HeartRate.gameObject.active = false;
+		this.ShoulderCamera.OverShoulder = false;
 		this.Yandere.Obscurance.enabled = false;
 		this.Yandere.YandereVision = false;
 		this.Yandere.Police.Show = false;
@@ -1852,8 +1855,9 @@ public class StudentScript : MonoBehaviour
 		this.Yandere.Crawling = false;
 		this.Yandere.Laughing = false;
 		this.Yandere.CanMove = false;
-		this.Yandere.Mopping = false;
 		this.Yandere.Dipping = false;
+		this.Yandere.Mopping = false;
+		this.Yandere.Talking = false;
 		this.Yandere.Noticed = true;
 		this.Yandere.Jukebox.GameOver();
 		this.Yandere.UpdateSanity();
@@ -1905,7 +1909,9 @@ public class StudentScript : MonoBehaviour
 			this.EyeShrink = (float)0;
 			this.Fleeing = false;
 			this.Yandere.Noticed = true;
+			this.Yandere.Talking = false;
 			this.CameraEffects.MurderWitnessed();
+			this.ShoulderCamera.OverShoulder = false;
 			this.Character.animation.CrossFade(this.ScaredAnim);
 			this.Character.animation["scaredFace_00"].weight = (float)1;
 		}
