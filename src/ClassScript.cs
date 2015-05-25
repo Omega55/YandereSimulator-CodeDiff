@@ -408,15 +408,19 @@ public class ClassScript : MonoBehaviour
 			this.GradeUp = true;
 			this.Grade = 2;
 		}
-		else if (PlayerPrefs.GetInt("Chemistry") < 20 || PlayerPrefs.GetInt("ChemistryGrade") >= 2)
+		else if (PlayerPrefs.GetInt("Chemistry") >= 20 && PlayerPrefs.GetInt("ChemistryGrade") < 2)
 		{
-			if (PlayerPrefs.GetInt("Language") >= 20 && PlayerPrefs.GetInt("LanguageGrade") < 2)
-			{
-				PlayerPrefs.SetInt("LanguageGrade", 2);
-				this.GradeUpSubject = 3;
-				this.GradeUp = true;
-				this.Grade = 2;
-			}
+			PlayerPrefs.SetInt("ChemistryGrade", 2);
+			this.GradeUpSubject = 2;
+			this.GradeUp = true;
+			this.Grade = 2;
+		}
+		else if (PlayerPrefs.GetInt("Language") >= 20 && PlayerPrefs.GetInt("LanguageGrade") < 2)
+		{
+			PlayerPrefs.SetInt("LanguageGrade", 2);
+			this.GradeUpSubject = 3;
+			this.GradeUp = true;
+			this.Grade = 2;
 		}
 	}
 

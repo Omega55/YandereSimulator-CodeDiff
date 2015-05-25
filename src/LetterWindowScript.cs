@@ -131,6 +131,7 @@ public class LetterWindowScript : MonoBehaviour
 					this.Origin.MeetID = this.MeetID;
 					this.Origin.MeetTime = this.TimeID;
 					this.Origin.Prompt.enabled = false;
+					this.Origin.CanLeaveNote = false;
 					this.Origin.NoteLeft = true;
 					if (this.SlotLabels[1].text == this.Subjects[10])
 					{

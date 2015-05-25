@@ -360,6 +360,10 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.Label.text = this.CowardMurderReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.CowardMurderReactions))];
 		}
+		else if (ReactionType == "Corpse Reaction")
+		{
+			this.Label.text = this.CorpseReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.CorpseReactions))];
+		}
 		else if (ReactionType == "Coward Corpse Reaction")
 		{
 			this.Label.text = this.CowardCorpseReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.CowardCorpseReactions))];

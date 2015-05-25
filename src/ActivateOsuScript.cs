@@ -11,6 +11,8 @@ public class ActivateOsuScript : MonoBehaviour
 
 	public ClockScript Clock;
 
+	public GameObject Music;
+
 	public Transform Mouse;
 
 	public GameObject Osu;
@@ -31,11 +33,9 @@ public class ActivateOsuScript : MonoBehaviour
 		if (other.gameObject.name == "StudentChan(Clone)")
 		{
 			this.Student = (StudentScript)other.gameObject.GetComponent(typeof(StudentScript));
-			if (this.Student != null)
+			if (this.Student != null && this.Student.Routine)
 			{
-				this.Osu.transform.parent.gameObject.active = true;
-				this.Mouse.parent = this.Student.RightHand;
-				this.Mouse.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
+				this.ActivateOsu();
 			}
 		}
 	}
@@ -53,12 +53,29 @@ public class ActivateOsuScript : MonoBehaviour
 			{
 				this.DeactivateOsu();
 			}
+			else if (!this.Student.Routine)
+			{
+				this.DeactivateOsu();
+			}
 		}
+		else if (this.Student != null && Vector3.Distance(this.transform.position, this.Student.transform.position) < 0.1f && this.Student.Routine)
+		{
+			this.ActivateOsu();
+		}
+	}
+
+	public virtual void ActivateOsu()
+	{
+		this.Osu.transform.parent.gameObject.active = true;
+		this.Music.active = true;
+		this.Mouse.parent = this.Student.RightHand;
+		this.Mouse.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
 	}
 
 	public virtual void DeactivateOsu()
 	{
 		this.Osu.transform.parent.gameObject.active = false;
+		this.Music.active = false;
 		for (int i = 0; i < Extensions.get_length(this.OsuScripts); i++)
 		{
 			this.OsuScripts[i].Timer = (float)0;

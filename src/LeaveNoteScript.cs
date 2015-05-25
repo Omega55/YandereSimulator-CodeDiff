@@ -34,6 +34,8 @@ public class LeaveNoteScript : MonoBehaviour
 
 	public Transform Hinge;
 
+	public bool CanLeaveNote;
+
 	public bool NoteLeft;
 
 	public bool Success;
@@ -52,6 +54,7 @@ public class LeaveNoteScript : MonoBehaviour
 
 	public LeaveNoteScript()
 	{
+		this.CanLeaveNote = true;
 		this.Phase = 1;
 	}
 
@@ -75,7 +78,7 @@ public class LeaveNoteScript : MonoBehaviour
 					this.Prompt.enabled = false;
 				}
 			}
-			else if (Vector3.Distance(this.Student.transform.position, new Vector3(this.transform.position.x, this.Student.transform.position.y, this.transform.position.z)) > (float)1 && !this.Yandere.Armed)
+			else if (this.CanLeaveNote && Vector3.Distance(this.Student.transform.position, new Vector3(this.transform.position.x, this.Student.transform.position.y, this.transform.position.z)) > (float)1 && !this.Yandere.Armed)
 			{
 				this.Prompt.enabled = true;
 			}
@@ -121,7 +124,6 @@ public class LeaveNoteScript : MonoBehaviour
 			{
 				this.Student.Character.animation.CrossFade(this.Student.IdleAnim);
 				this.Student.InEvent = false;
-				this.Student = null;
 				this.NoteLeft = false;
 				this.Phase++;
 			}
@@ -130,36 +132,36 @@ public class LeaveNoteScript : MonoBehaviour
 				this.DetermineSchedule();
 				this.Student.Character.animation.CrossFade(this.Student.IdleAnim);
 				this.Student.InEvent = false;
-				this.Student = null;
 				this.NoteLeft = false;
 				this.Phase++;
 			}
 			this.Timer += Time.deltaTime;
-			if (this.Timer > (float)1 && this.Timer < (float)2)
+			if (this.Timer > 0.75f && this.Timer < 1.75f)
 			{
-				this.Rotation -= Time.deltaTime * (float)90;
+				this.Rotation -= Time.deltaTime * (float)80;
 			}
-			if (this.Timer > (float)4 && this.Timer < (float)5)
+			if (this.Timer > 10.5f && this.Timer < 11.5f)
 			{
-				this.Rotation -= Time.deltaTime * (float)45;
+				this.Rotation += Time.deltaTime * (float)80;
 			}
-			if (this.Timer > (float)5 && this.NewNote == null)
+			if (this.Timer > 3.5f && this.NewNote == null)
 			{
 				this.NewNote = (GameObject)UnityEngine.Object.Instantiate(this.Note, this.transform.position, Quaternion.identity);
 				this.NewNote.transform.parent = this.Student.LeftHand;
-				this.NewNote.transform.localPosition = new Vector3(-0.03f, -0.05f, 0.075f);
-				this.NewNote.transform.localEulerAngles = new Vector3((float)-30, (float)-90, (float)-90);
+				this.NewNote.transform.localPosition = new Vector3(-0.065f, -0.005f, 0.055f);
+				this.NewNote.transform.localEulerAngles = new Vector3((float)-75, (float)-135, (float)-105);
 				this.NewNote.transform.localScale = new Vector3(0.1f, 0.2f, (float)1);
 			}
 			if (this.Timer > (float)10)
 			{
 				this.NewNote.transform.localScale = Vector3.MoveTowards(this.NewNote.transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime);
 			}
-			if (!this.Success && this.Timer > (float)12 && this.NewBall == null)
+			if (!this.Success && this.Timer > 10.5f && this.NewBall == null)
 			{
 				this.NewBall = (GameObject)UnityEngine.Object.Instantiate(this.Ball, this.Student.Phone.transform.parent.transform.position, Quaternion.identity);
 				this.NewBall.rigidbody.AddRelativeForce(Vector3.left * (float)100);
 				this.NewBall.rigidbody.AddRelativeForce(Vector3.up * (float)100);
+				this.Phase++;
 			}
 			if (this.Phase == 1)
 			{
@@ -169,7 +171,7 @@ public class LeaveNoteScript : MonoBehaviour
 					this.Phase++;
 				}
 			}
-			else if (this.Phase == 2 && this.Timer > (float)11)
+			else if (this.Phase == 2 && this.Timer > (float)9)
 			{
 				if (!this.Success)
 				{
@@ -187,9 +189,11 @@ public class LeaveNoteScript : MonoBehaviour
 			this.Rotation += Time.deltaTime * (float)135;
 			if (this.Rotation > (float)0)
 			{
+				this.Student.InEvent = false;
 				this.NoteLeft = false;
 				this.Rotation = (float)0;
 				this.Phase = 0;
+				this.Timer = (float)0;
 			}
 		}
 		float rotation = this.Rotation;

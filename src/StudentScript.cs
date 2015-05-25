@@ -805,9 +805,9 @@ public class StudentScript : MonoBehaviour
 		{
 			if (!this.Distracted)
 			{
+				this.Character.animation[this.PhoneAnim].weight = Mathf.Lerp(this.Character.animation[this.PhoneAnim].weight, (float)0, Time.deltaTime * (float)10);
 				if (!this.WitnessedMurder)
 				{
-					this.Character.animation[this.PhoneAnim].weight = Mathf.Lerp(this.Character.animation[this.PhoneAnim].weight, (float)0, Time.deltaTime * (float)10);
 					int num = 0;
 					for (int i = 0; i < this.Police.Corpses; i++)
 					{
@@ -948,7 +948,12 @@ public class StudentScript : MonoBehaviour
 						{
 							flag = true;
 						}
-						if (this.YandereVisible)
+						if (this.WitnessedCorpse && !this.WitnessedMurder)
+						{
+							this.Witnessed = "Corpse";
+							this.EyeShrink = 0.9f;
+						}
+						else if (this.YandereVisible)
 						{
 							if (flag && this.Yandere.Bloodiness > (float)0 && this.Yandere.Sanity < 33.333f)
 							{
@@ -1066,11 +1071,6 @@ public class StudentScript : MonoBehaviour
 							}
 							this.Reputation.PendingRep = this.Reputation.PendingRep - this.RepLoss;
 							this.PendingRep -= this.RepLoss;
-						}
-						else if (this.WitnessedCorpse)
-						{
-							this.Witnessed = "Corpse";
-							this.EyeShrink = 0.9f;
 						}
 					}
 				}
@@ -2324,7 +2324,7 @@ public class StudentScript : MonoBehaviour
 			this.Ragdoll.Suicide = true;
 			this.Police.Suicide = true;
 		}
-		else
+		else if (!this.Tranquil)
 		{
 			this.Police.MurderScene = true;
 		}

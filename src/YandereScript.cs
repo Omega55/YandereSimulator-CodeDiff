@@ -1594,13 +1594,6 @@ public class YandereScript : MonoBehaviour
 		{
 			this.Head.localEulerAngles = this.Head.localEulerAngles + this.Twitch;
 		}
-		if (this.HidePony)
-		{
-			this.Ponytail.parent.transform.localScale = new Vector3((float)1, (float)1, 0.93f);
-			this.Ponytail.localScale = new Vector3((float)0, (float)0, (float)0);
-			this.HairR.localScale = new Vector3((float)0, (float)0, (float)0);
-			this.HairL.localScale = new Vector3((float)0, (float)0, (float)0);
-		}
 		if (this.Aiming)
 		{
 			if (this.Crawling)
@@ -1969,6 +1962,17 @@ public class YandereScript : MonoBehaviour
 		else if (this.Hairstyle == 10)
 		{
 			this.Korra.active = true;
+		}
+		if (this.HidePony)
+		{
+			this.Ponytail.parent.transform.localScale = new Vector3((float)1, (float)1, 0.9f);
+			this.Ponytail.localScale = new Vector3((float)0, (float)0, (float)0);
+			this.HairR.localScale = new Vector3((float)0, (float)0, (float)0);
+			this.HairL.localScale = new Vector3((float)0, (float)0, (float)0);
+		}
+		else
+		{
+			this.Ponytail.parent.transform.localScale = new Vector3((float)1, (float)1, (float)1);
 		}
 	}
 
