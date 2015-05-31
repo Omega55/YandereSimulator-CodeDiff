@@ -23,6 +23,8 @@ public class StudentScript : MonoBehaviour
 
 	public EventManagerScript EventManager;
 
+	public MovingEventScript MovingEvent;
+
 	public DynamicGridObstacle Obstacle;
 
 	public ReputationScript Reputation;
@@ -79,19 +81,21 @@ public class StudentScript : MonoBehaviour
 
 	public string[] DestinationNames;
 
-	public Transform[] Destinations;
-
-	public string[] ActionNames;
-
-	public int[] Actions;
-
 	public OutlineScript[] Outlines;
 
+	public Transform[] Destinations;
+
+	public GameObject[] Chopsticks;
+
 	public string[] AnimationNames;
+
+	public string[] ActionNames;
 
 	public float[] PhaseTimes;
 
 	public Plane[] Planes;
+
+	public int[] Actions;
 
 	public SphereCollider HipCollider;
 
@@ -112,6 +116,8 @@ public class StudentScript : MonoBehaviour
 	public GameObject Character;
 
 	public GameObject Marker;
+
+	public GameObject Bento;
 
 	public GameObject Phone;
 
@@ -261,6 +267,10 @@ public class StudentScript : MonoBehaviour
 
 	public string GameAnim;
 
+	public string BentoAnim;
+
+	public string EatAnim;
+
 	public int ReportPhase;
 
 	public int StudentID;
@@ -329,6 +339,8 @@ public class StudentScript : MonoBehaviour
 		this.CounterAnim = string.Empty;
 		this.PushedAnim = string.Empty;
 		this.GameAnim = string.Empty;
+		this.BentoAnim = string.Empty;
+		this.EatAnim = string.Empty;
 		this.MaxSpeed = 10f;
 	}
 
@@ -366,12 +378,18 @@ public class StudentScript : MonoBehaviour
 			}
 			this.UpdateHair();
 			this.SetColors();
+			this.Character.animation[this.BentoAnim].layer = 3;
+			this.Character.animation.Play(this.BentoAnim);
+			this.Character.animation[this.BentoAnim].weight = (float)0;
 			this.Character.animation[this.AngryFaceAnim].layer = 2;
 			this.Character.animation.Play(this.AngryFaceAnim);
 			this.Character.animation[this.AngryFaceAnim].weight = (float)0;
 			this.Character.animation[this.PhoneAnim].layer = 1;
 			this.Character.animation[this.PhoneAnim].weight = (float)0;
 			this.Character.animation.Play(this.PhoneAnim);
+			this.Bento.active = false;
+			this.Chopsticks[0].active = false;
+			this.Chopsticks[1].active = false;
 		}
 		else
 		{
@@ -649,7 +667,14 @@ public class StudentScript : MonoBehaviour
 								{
 									if (this.WitnessedCorpse)
 									{
-										this.Subtitle.UpdateLabel("Teacher Corpse Inspection", 1, (float)5);
+										if (!this.Corpse.Natural)
+										{
+											this.Subtitle.UpdateLabel("Teacher Corpse Inspection", 1, (float)5);
+										}
+										else
+										{
+											this.Subtitle.UpdateLabel("Teacher Corpse Inspection", 2, (float)2);
+										}
 										this.ReportPhase++;
 									}
 									else
@@ -686,6 +711,10 @@ public class StudentScript : MonoBehaviour
 									this.ReportTimer += Time.deltaTime;
 									if (this.ReportTimer >= (float)5)
 									{
+										if (this.Corpse.Natural)
+										{
+											this.Police.Timer = 1E-06f;
+										}
 										this.Character.animation.CrossFade(this.KneelScanAnim);
 										this.Phone.active = false;
 										this.Police.Show = true;
@@ -794,6 +823,7 @@ public class StudentScript : MonoBehaviour
 					this.Pathfinding.canSearch = true;
 					this.Pathfinding.canMove = true;
 					this.Pathfinding.speed = (float)1;
+					this.Yandere.Followers = this.Yandere.Followers - 1;
 					this.Following = false;
 					this.Routine = true;
 					this.Subtitle.UpdateLabel("Stop Follow Apology", 0, (float)3);
@@ -839,6 +869,10 @@ public class StudentScript : MonoBehaviour
 							this.Alarm = (float)200;
 							this.WitnessedCorpse = true;
 							this.StudentManager.UpdateMe(this.StudentID - 1);
+							if (!this.Teacher && this.Corpse.Natural)
+							{
+								this.Persona = 2;
+							}
 						}
 						if (this.Corpse.Dragged || this.Corpse.Dumped)
 						{
@@ -1118,6 +1152,7 @@ public class StudentScript : MonoBehaviour
 				this.Subtitle.UpdateLabel("Student Farewell", 0, (float)3);
 				this.Prompt.Label[0].text = "     " + "Talk";
 				this.Prompt.Circle[0].fillAmount = (float)1;
+				this.Yandere.Followers = this.Yandere.Followers - 1;
 				this.Following = false;
 				this.Routine = true;
 				this.CurrentDestination = this.Destinations[this.Phase];
@@ -1294,6 +1329,7 @@ public class StudentScript : MonoBehaviour
 						this.Pathfinding.target = this.Yandere.transform;
 						this.Prompt.Label[0].text = "     " + "Stop";
 						this.Yandere.Follower = this;
+						this.Yandere.Followers = this.Yandere.Followers + 1;
 						this.Following = true;
 					}
 				}
@@ -1809,6 +1845,11 @@ public class StudentScript : MonoBehaviour
 		this.Dying = true;
 		this.Prompt.Hide();
 		this.Prompt.enabled = false;
+		if (this.Following)
+		{
+			this.Yandere.Followers = this.Yandere.Followers - 1;
+			this.Following = false;
+		}
 		if (this.Teacher)
 		{
 			this.Yandere.HeartRate.gameObject.active = false;
@@ -1921,12 +1962,16 @@ public class StudentScript : MonoBehaviour
 			this.StudentManager.Reporter = this;
 			this.Reporting = true;
 		}
+		if (this.Following)
+		{
+			this.Yandere.Followers = this.Yandere.Followers - 1;
+			this.Following = false;
+		}
 		this.Pathfinding.canSearch = false;
 		this.Pathfinding.canMove = false;
 		this.Prompt.Label[0].text = "     " + "Talk";
 		this.Prompt.HideButton[0] = true;
 		this.WitnessedMurder = true;
-		this.Following = false;
 		this.Reacted = false;
 		this.Routine = false;
 		this.Alarmed = true;
@@ -2324,16 +2369,19 @@ public class StudentScript : MonoBehaviour
 
 	public virtual void BecomeRagdoll()
 	{
+		this.Police.CorpseList[this.Police.Corpses] = this.Ragdoll;
+		this.Police.Corpses = this.Police.Corpses + 1;
 		if (this.Pushed)
 		{
 			this.Police.SuicideScene = true;
 			this.Ragdoll.Suicide = true;
 			this.Police.Suicide = true;
 		}
-		else if (!this.Tranquil)
+		else if (!this.Tranquil && !this.Ragdoll.Natural)
 		{
 			this.Police.MurderScene = true;
 		}
+		this.Ragdoll.AllColliders[10].isTrigger = false;
 		this.NotFaceCollider.enabled = false;
 		this.FaceCollider.enabled = false;
 		this.MyController.enabled = false;
@@ -2341,8 +2389,10 @@ public class StudentScript : MonoBehaviour
 		this.HipCollider.enabled = true;
 		this.Prompt.enabled = false;
 		this.enabled = false;
-		this.Ragdoll.AllColliders[10].isTrigger = false;
+		this.Ragdoll.RightEyeOrigin = this.RightEyeOrigin;
+		this.Ragdoll.LeftEyeOrigin = this.LeftEyeOrigin;
 		this.Ragdoll.BreastSize = this.BreastSize;
+		this.Ragdoll.EyeShrink = this.EyeShrink;
 		this.Ragdoll.Tranquil = this.Tranquil;
 		this.Ragdoll.Yandere = this.Yandere;
 		this.Ragdoll.Police = this.Police;

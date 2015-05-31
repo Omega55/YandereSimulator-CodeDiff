@@ -32,6 +32,10 @@ public class RagdollScript : MonoBehaviour
 
 	public Transform Ponytail;
 
+	public Transform RightEye;
+
+	public Transform LeftEye;
+
 	public Transform HairR;
 
 	public Transform HairL;
@@ -39,6 +43,10 @@ public class RagdollScript : MonoBehaviour
 	public Transform[] Limb;
 
 	public Transform Head;
+
+	public Vector3 RightEyeOrigin;
+
+	public Vector3 LeftEyeOrigin;
 
 	public Vector3[] LimbAnchor;
 
@@ -54,6 +62,8 @@ public class RagdollScript : MonoBehaviour
 
 	public bool Dragged;
 
+	public bool Natural;
+
 	public bool Suicide;
 
 	public bool Dumped;
@@ -65,6 +75,8 @@ public class RagdollScript : MonoBehaviour
 	public float BreastSize;
 
 	public float DumpTimer;
+
+	public float EyeShrink;
 
 	public int LimbID;
 
@@ -208,6 +220,30 @@ public class RagdollScript : MonoBehaviour
 			}
 			this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 			this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
+			float z = this.LeftEyeOrigin.z - this.EyeShrink * 0.01f;
+			Vector3 localPosition = this.LeftEye.localPosition;
+			float num = localPosition.z = z;
+			Vector3 vector = this.LeftEye.localPosition = localPosition;
+			float z2 = this.RightEyeOrigin.z + this.EyeShrink * 0.01f;
+			Vector3 localPosition2 = this.RightEye.localPosition;
+			float num2 = localPosition2.z = z2;
+			Vector3 vector2 = this.RightEye.localPosition = localPosition2;
+			float x = (float)1 - this.EyeShrink * 0.5f;
+			Vector3 localScale = this.LeftEye.localScale;
+			float num3 = localScale.x = x;
+			Vector3 vector3 = this.LeftEye.localScale = localScale;
+			float y = (float)1 - this.EyeShrink * 0.5f;
+			Vector3 localScale2 = this.LeftEye.localScale;
+			float num4 = localScale2.y = y;
+			Vector3 vector4 = this.LeftEye.localScale = localScale2;
+			float x2 = (float)1 - this.EyeShrink * 0.5f;
+			Vector3 localScale3 = this.RightEye.localScale;
+			float num5 = localScale3.x = x2;
+			Vector3 vector5 = this.RightEye.localScale = localScale3;
+			float y2 = (float)1 - this.EyeShrink * 0.5f;
+			Vector3 localScale4 = this.RightEye.localScale;
+			float num6 = localScale4.y = y2;
+			Vector3 vector6 = this.RightEye.localScale = localScale4;
 		}
 	}
 

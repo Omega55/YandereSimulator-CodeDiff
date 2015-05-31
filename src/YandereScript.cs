@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$1306 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$1346 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$1313;
+		internal YandereScript $self_$1353;
 
-		public $ApplyCustomCostume$1306(YandereScript self_)
+		public $ApplyCustomCostume$1346(YandereScript self_)
 		{
-			this.$self_$1313 = self_;
+			this.$self_$1353 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$1306.$(this.$self_$1313);
+			return new YandereScript.$ApplyCustomCostume$1346.$(this.$self_$1353);
 		}
 	}
 
@@ -147,6 +147,10 @@ public class YandereScript : MonoBehaviour
 
 	public AudioSource HeartBeat;
 
+	public GameObject[] Accessories;
+
+	public GameObject[] Shoes;
+
 	public GameObject CinematicCamera;
 
 	public GameObject PonytailWig;
@@ -170,10 +174,6 @@ public class YandereScript : MonoBehaviour
 	public GameObject Phone;
 
 	public GameObject Trail;
-
-	public GameObject[] Accessories;
-
-	public GameObject[] Shoes;
 
 	public GameObject Korra;
 
@@ -259,6 +259,8 @@ public class YandereScript : MonoBehaviour
 
 	public int NearBodies;
 
+	public int Followers;
+
 	public int Hairstyle;
 
 	public int Equipped;
@@ -337,6 +339,8 @@ public class YandereScript : MonoBehaviour
 
 	public bool Egg;
 
+	public bool DK;
+
 	public Texture[] BloodTextures;
 
 	public WeaponScript[] Weapon;
@@ -398,6 +402,8 @@ public class YandereScript : MonoBehaviour
 	public GameObject PunishedAccessories;
 
 	public GameObject PunishedScarf;
+
+	public GameObject[] PunishedArm;
 
 	public Texture[] PunishedTextures;
 
@@ -465,6 +471,12 @@ public class YandereScript : MonoBehaviour
 		while (this.ID < Extensions.get_length(this.Accessories))
 		{
 			this.Accessories[this.ID].active = false;
+			this.ID++;
+		}
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.PunishedArm))
+		{
+			this.PunishedArm[this.ID].active = false;
 			this.ID++;
 		}
 		this.UpdateHair();
@@ -1265,8 +1277,7 @@ public class YandereScript : MonoBehaviour
 					}
 					if (this.Character.animation["f02_roofPushA_00"].time > this.Character.animation["f02_roofPushA_00"].length)
 					{
-						this.Police.CorpseList[this.Police.Corpses] = this.TargetStudent.Ragdoll;
-						this.Police.Corpses = this.Police.Corpses + 1;
+						this.TargetStudent.Dead = true;
 						this.Attacking = false;
 						this.RoofPush = false;
 						this.CanMove = true;
@@ -1281,7 +1292,6 @@ public class YandereScript : MonoBehaviour
 						if (this.Character.animation["f02_stab_00"].time > this.Character.animation["f02_stab_00"].length * 0.4f)
 						{
 							this.Character.animation.CrossFade(this.IdleAnim);
-							this.Police.CorpseList[this.Police.Corpses] = this.TargetStudent.Ragdoll;
 							if (this.CanTranq && this.Weapon[this.Equipped].WeaponID == 3 && this.PossessTranq && PlayerPrefs.GetInt("BiologyGrade") > 1)
 							{
 								this.TargetStudent.Tranquil = true;
@@ -1290,7 +1300,6 @@ public class YandereScript : MonoBehaviour
 							{
 								this.TargetStudent.BloodSpray.active = true;
 								this.Bloodiness += (float)20;
-								this.Police.Corpses = this.Police.Corpses + 1;
 								this.UpdateBlood();
 							}
 							if (this.TargetStudent == this.StudentManager.Reporter)
@@ -1654,6 +1663,12 @@ public class YandereScript : MonoBehaviour
 			float num23 = localScale10.x = (float)num22;
 			Vector3 vector19 = this.Arm[1].localScale = localScale10;
 		}
+		if (this.DK)
+		{
+			this.Arm[0].localScale = new Vector3((float)2, (float)2, (float)2);
+			this.Arm[1].localScale = new Vector3((float)2, (float)2, (float)2);
+			this.Head.localScale = new Vector3((float)2, (float)2, (float)2);
+		}
 	}
 
 	public virtual void MoveTowardsTarget(Vector3 target)
@@ -1890,7 +1905,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$1306(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$1346(this).GetEnumerator();
 	}
 
 	public virtual void UpdateHair()
@@ -2008,10 +2023,10 @@ public class YandereScript : MonoBehaviour
 		this.PunishedScarf.active = true;
 		this.EyepatchL.active = false;
 		this.EyepatchR.active = false;
-		this.ID = 1;
-		while (this.ID < this.Accessories.Length)
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.PunishedArm))
 		{
-			this.Accessories[this.ID].active = false;
+			this.PunishedArm[this.ID].active = true;
 			this.ID++;
 		}
 		this.MyRenderer.sharedMesh = this.PunishedMesh;

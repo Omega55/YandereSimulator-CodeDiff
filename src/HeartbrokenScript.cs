@@ -33,6 +33,8 @@ public class HeartbrokenScript : MonoBehaviour
 
 	public bool Noticed;
 
+	public float AudioTimer;
+
 	public float Timer;
 
 	public int Phase;
@@ -149,9 +151,13 @@ public class HeartbrokenScript : MonoBehaviour
 				}
 				this.Phase++;
 			}
-			else if (this.Phase == 2 && !this.Subtitle.audio.isPlaying)
+			else if (this.Phase == 2)
 			{
-				this.Phase++;
+				this.AudioTimer += Time.deltaTime;
+				if (this.AudioTimer > this.Subtitle.audio.clip.length)
+				{
+					this.Phase++;
+				}
 			}
 		}
 		if (this.Background.color.a < (float)1)

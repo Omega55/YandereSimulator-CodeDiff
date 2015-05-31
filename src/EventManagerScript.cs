@@ -59,7 +59,7 @@ public class EventManagerScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (!this.Clock.StopTime && this.EventCheck && this.Clock.HourTime > 13.01f)
+		if (!this.Clock.StopTime && this.EventCheck && this.Clock.HourTime > 13.06f)
 		{
 			this.EventStudent[1] = this.StudentManager.Students[5];
 			this.EventStudent[2] = this.StudentManager.Students[6];
@@ -199,6 +199,7 @@ public class EventManagerScript : MonoBehaviour
 		this.InterruptZone.active = false;
 		this.Yandere.Trespassing = false;
 		this.EventSubtitle.text = string.Empty;
+		this.EventCheck = false;
 		this.EventOn = false;
 	}
 

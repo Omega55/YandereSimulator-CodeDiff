@@ -27,6 +27,8 @@ public class PoliceScript : MonoBehaviour
 
 	public ClockScript Clock;
 
+	public UIPanel Panel;
+
 	public UILabel[] ResultsLabels;
 
 	public UILabel ContinueLabel;
@@ -58,6 +60,8 @@ public class PoliceScript : MonoBehaviour
 	public bool CorpseDisposed;
 
 	public bool TeacherReport;
+
+	public bool NaturalScene;
 
 	public bool SuicideScene;
 
@@ -124,6 +128,10 @@ public class PoliceScript : MonoBehaviour
 	{
 		if (this.Show)
 		{
+			if (this.NaturalScene)
+			{
+				this.Panel.alpha = (float)0;
+			}
 			float x = Mathf.Lerp(this.transform.localPosition.x, (float)0, Time.deltaTime * (float)10);
 			Vector3 localPosition = this.transform.localPosition;
 			float num = localPosition.x = x;
@@ -186,6 +194,7 @@ public class PoliceScript : MonoBehaviour
 				if (this.Timer <= (float)0)
 				{
 					this.StudentManager.StopMoving();
+					this.Yandere.StopLaughing();
 					Time.timeScale = (float)1;
 					this.FadeOut = true;
 					this.Timer = (float)0;
@@ -371,7 +380,14 @@ public class PoliceScript : MonoBehaviour
 			{
 				if (!this.TeacherReport)
 				{
-					this.ResultsLabels[0].text = "The police arrived at school, and informed the faculty that a crime may have taken place on school grounds. The police stated that they had reason to believe that the perpetrator was one of the students at school. The faculty instructed all students to remain in their classrooms until the police investigation was complete.";
+					if (!this.NaturalScene)
+					{
+						this.ResultsLabels[0].text = "The police arrived at school, and informed the faculty that a crime may have taken place on school grounds. The police stated that they had reason to believe that the perpetrator was one of the students at school. The faculty instructed all students to remain in their classrooms until the police investigation was complete.";
+					}
+					else
+					{
+						this.ResultsLabels[0].text = "A teacher discovered the dead student on the roof and called for an ambulance.";
+					}
 				}
 				else if (!this.Suicide)
 				{
@@ -478,7 +494,7 @@ public class PoliceScript : MonoBehaviour
 				{
 					if (this.BloodyWeapons == 0)
 					{
-						if (!this.Suicide)
+						if (!this.Suicide && !this.NaturalScene)
 						{
 							this.ResultsLabels[1].text = "The police quickly discovered a corpse on school grounds, but were unable to locate the murder weapon.";
 							if (this.Yandere.Sanity > 66.66666f && this.Yandere.Bloodiness == (float)0)
@@ -504,11 +520,21 @@ public class PoliceScript : MonoBehaviour
 						}
 						else
 						{
-							this.ResultsLabels[1].text = "The police arrived, and began an investigation to determine whether or not the student's death was a suicide.";
-							this.ResultsLabels[2].text = "The police were unable to discover any evidence which would imply that the student's death was a murder.";
-							this.ResultsLabels[3].text = "The police concluded that the student ended her own life.";
-							this.ResultsLabels[4].text = "After the police investigation ended, all of the students were sent home for the day.";
-							PlayerPrefs.SetInt("Suicide", 1);
+							if (this.Suicide)
+							{
+								this.ResultsLabels[1].text = "The police arrived, and began an investigation to determine whether or not the student's death was a suicide.";
+								this.ResultsLabels[2].text = "The police were unable to discover any evidence which would imply that the student's death was a murder.";
+								this.ResultsLabels[3].text = "The police concluded that the student ended her own life.";
+								this.ResultsLabels[4].text = "After the police investigation ended, all of the students were sent home for the day.";
+								PlayerPrefs.SetInt("Suicide", 1);
+							}
+							if (this.NaturalScene)
+							{
+								this.ResultsLabels[1].text = "An ambulance arrived at school, and paramedics attempted to resuscitate the student.";
+								this.ResultsLabels[2].text = "The paramedics were unable to revive her.";
+								this.ResultsLabels[3].text = "After the girl was pronounced dead, all of the students were sent home for the day.";
+								this.ResultsLabels[4].text = "Yandere-chan goes to sleep, and dreams of Senpai...";
+							}
 						}
 					}
 					else
@@ -563,7 +589,7 @@ public class PoliceScript : MonoBehaviour
 			this.ResultsLabels[4].text = "Yandere-chan watches tearfully as Senpai is stolen from her.";
 			this.GameOver = true;
 		}
-		else if (!this.Suicide)
+		else if (!this.Suicide && !this.NaturalScene)
 		{
 			if (!this.TranqCase.Occupied)
 			{
@@ -673,7 +699,7 @@ public class PoliceScript : MonoBehaviour
 				PlayerPrefs.SetInt("Kidnapped", 1);
 			}
 		}
-		else
+		else if (this.Suicide)
 		{
 			this.ResultsLabels[0].text = "The school day has ended. Teachers must walk through the school and tell any lingering students to leave.";
 			this.ResultsLabels[1].text = "While walking around the school, a teacher discovers a corpse.";
@@ -682,6 +708,14 @@ public class PoliceScript : MonoBehaviour
 			this.ResultsLabels[4].text = "The faculty members agree to call the police and report the student's death.";
 			this.TeacherReport = true;
 			this.Show = true;
+		}
+		else if (this.NaturalScene)
+		{
+			this.ResultsLabels[0].text = "A teacher discovered the dead student on the roof and called for an ambulance.";
+			this.ResultsLabels[1].text = "An ambulance arrived at school, and paramedics attempted to resuscitate the student.";
+			this.ResultsLabels[2].text = "The paramedics were unable to revive her.";
+			this.ResultsLabels[3].text = "After the girl was pronounced dead, all of the students were sent home for the day.";
+			this.ResultsLabels[4].text = "Yandere-chan goes to sleep, and dreams of Senpai...";
 		}
 	}
 

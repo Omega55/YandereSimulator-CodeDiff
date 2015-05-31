@@ -13,6 +13,8 @@ public class LetterWindowScript : MonoBehaviour
 
 	public YandereScript Yandere;
 
+	public ClockScript Clock;
+
 	public Transform SubHighlight;
 
 	public Transform SubMenu;
@@ -44,6 +46,8 @@ public class LetterWindowScript : MonoBehaviour
 	public float Rotation;
 
 	public float TimeID;
+
+	public int ID;
 
 	public bool Selecting;
 
@@ -111,8 +115,8 @@ public class LetterWindowScript : MonoBehaviour
 				{
 					this.PromptBar.Label[2].text = string.Empty;
 					this.PromptBar.UpdateButtons();
-					this.UpdateSubLabels();
 					this.Selecting = true;
+					this.UpdateSubLabels();
 				}
 				if (Input.GetButtonDown("B"))
 				{
@@ -167,7 +171,7 @@ public class LetterWindowScript : MonoBehaviour
 					float num6 = localPosition2.y = (float)num5;
 					Vector3 vector4 = this.SubHighlight.localPosition = localPosition2;
 				}
-				if (Input.GetButtonDown("A"))
+				if (Input.GetButtonDown("A") && this.SubLabels[this.SubSlot].color.a > 0.5f)
 				{
 					this.SlotLabels[this.Slot].text = this.SubLabels[this.SubSlot].text;
 					this.SlotsFilled[this.Slot] = true;
@@ -236,30 +240,43 @@ public class LetterWindowScript : MonoBehaviour
 
 	public virtual void UpdateSubLabels()
 	{
-		int i = 1;
+		this.ID = 1;
 		if (this.Slot == 1)
 		{
-			while (i < Extensions.get_length(this.SubLabels))
+			while (this.ID < Extensions.get_length(this.SubLabels))
 			{
-				this.SubLabels[i].text = this.Subjects[i];
-				i++;
+				this.SubLabels[this.ID].text = this.Subjects[this.ID];
+				int num = 1;
+				Color color = this.SubLabels[this.ID].color;
+				float num2 = color.a = (float)num;
+				Color color2 = this.SubLabels[this.ID].color = color;
+				this.ID++;
 			}
 		}
 		else if (this.Slot == 2)
 		{
-			while (i < Extensions.get_length(this.SubLabels))
+			while (this.ID < Extensions.get_length(this.SubLabels))
 			{
-				this.SubLabels[i].text = this.Locations[i];
-				i++;
+				this.SubLabels[this.ID].text = this.Locations[this.ID];
+				int num3 = 1;
+				Color color3 = this.SubLabels[this.ID].color;
+				float num4 = color3.a = (float)num3;
+				Color color4 = this.SubLabels[this.ID].color = color3;
+				this.ID++;
 			}
 		}
 		else if (this.Slot == 3)
 		{
-			while (i < Extensions.get_length(this.SubLabels))
+			while (this.ID < Extensions.get_length(this.SubLabels))
 			{
-				this.SubLabels[i].text = this.Times[i];
-				i++;
+				this.SubLabels[this.ID].text = this.Times[this.ID];
+				int num5 = 1;
+				Color color5 = this.SubLabels[this.ID].color;
+				float num6 = color5.a = (float)num5;
+				Color color6 = this.SubLabels[this.ID].color = color5;
+				this.ID++;
 			}
+			this.DisableOptions();
 		}
 	}
 
@@ -285,6 +302,80 @@ public class LetterWindowScript : MonoBehaviour
 		this.PromptBar.Label[4].text = string.Empty;
 		this.PromptBar.Show = false;
 		this.PromptBar.UpdateButtons();
+	}
+
+	public virtual void DisableOptions()
+	{
+		if (this.Clock.HourTime >= 7.25f)
+		{
+			float a = 0.5f;
+			Color color = this.SubLabels[1].color;
+			float num = color.a = a;
+			Color color2 = this.SubLabels[1].color = color;
+		}
+		if (this.Clock.HourTime >= 7.5f)
+		{
+			float a2 = 0.5f;
+			Color color3 = this.SubLabels[2].color;
+			float num2 = color3.a = a2;
+			Color color4 = this.SubLabels[2].color = color3;
+		}
+		if (this.Clock.HourTime >= 7.75f)
+		{
+			float a3 = 0.5f;
+			Color color5 = this.SubLabels[3].color;
+			float num3 = color5.a = a3;
+			Color color6 = this.SubLabels[3].color = color5;
+		}
+		if (this.Clock.HourTime >= 8f)
+		{
+			float a4 = 0.5f;
+			Color color7 = this.SubLabels[4].color;
+			float num4 = color7.a = a4;
+			Color color8 = this.SubLabels[4].color = color7;
+		}
+		if (this.Clock.HourTime >= 8.25f)
+		{
+			float a5 = 0.5f;
+			Color color9 = this.SubLabels[5].color;
+			float num5 = color9.a = a5;
+			Color color10 = this.SubLabels[5].color = color9;
+		}
+		if (this.Clock.HourTime >= 15.5f)
+		{
+			float a6 = 0.5f;
+			Color color11 = this.SubLabels[6].color;
+			float num6 = color11.a = a6;
+			Color color12 = this.SubLabels[6].color = color11;
+		}
+		if (this.Clock.HourTime >= 16f)
+		{
+			float a7 = 0.5f;
+			Color color13 = this.SubLabels[7].color;
+			float num7 = color13.a = a7;
+			Color color14 = this.SubLabels[7].color = color13;
+		}
+		if (this.Clock.HourTime >= 16.5f)
+		{
+			float a8 = 0.5f;
+			Color color15 = this.SubLabels[8].color;
+			float num8 = color15.a = a8;
+			Color color16 = this.SubLabels[8].color = color15;
+		}
+		if (this.Clock.HourTime >= 17f)
+		{
+			float a9 = 0.5f;
+			Color color17 = this.SubLabels[9].color;
+			float num9 = color17.a = a9;
+			Color color18 = this.SubLabels[9].color = color17;
+		}
+		if (this.Clock.HourTime >= 17.5f)
+		{
+			float a10 = 0.5f;
+			Color color19 = this.SubLabels[10].color;
+			float num10 = color19.a = a10;
+			Color color20 = this.SubLabels[10].color = color19;
+		}
 	}
 
 	public virtual void Main()

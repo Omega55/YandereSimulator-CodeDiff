@@ -103,6 +103,26 @@ public class CalendarScript : MonoBehaviour
 				}
 			}
 		}
+		if (Input.GetKeyDown("1"))
+		{
+			PlayerPrefs.SetInt("Weekday", 1);
+		}
+		if (Input.GetKeyDown("2"))
+		{
+			PlayerPrefs.SetInt("Weekday", 2);
+		}
+		if (Input.GetKeyDown("3"))
+		{
+			PlayerPrefs.SetInt("Weekday", 3);
+		}
+		if (Input.GetKeyDown("4"))
+		{
+			PlayerPrefs.SetInt("Weekday", 4);
+		}
+		if (Input.GetKeyDown("5"))
+		{
+			PlayerPrefs.SetInt("Weekday", 5);
+		}
 	}
 
 	public virtual void Main()

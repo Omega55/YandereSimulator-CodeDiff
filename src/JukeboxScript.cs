@@ -26,6 +26,8 @@ public class JukeboxScript : MonoBehaviour
 
 	public AudioSource Chase;
 
+	public float LastVolume;
+
 	public float FadeSpeed;
 
 	public float Volume;
@@ -56,10 +58,11 @@ public class JukeboxScript : MonoBehaviour
 			if (this.Volume == (float)0)
 			{
 				this.FadeSpeed = (float)1;
-				this.Volume = (float)1;
+				this.Volume = this.LastVolume;
 			}
 			else
 			{
+				this.LastVolume = this.Volume;
 				this.FadeSpeed = (float)10;
 				this.Volume = (float)0;
 			}

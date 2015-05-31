@@ -16,7 +16,7 @@ public class TranqDetectorScript : MonoBehaviour
 	{
 		if (this.MyCollider.bounds.Contains(this.Yandere.transform.position))
 		{
-			if (this.Yandere.Follower != null)
+			if (this.Yandere.Followers == 1)
 			{
 				if (this.MyCollider.bounds.Contains(this.Yandere.Follower.transform.position))
 				{

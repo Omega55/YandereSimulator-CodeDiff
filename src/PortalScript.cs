@@ -36,6 +36,8 @@ public class PortalScript : MonoBehaviour
 
 	public bool Proceed;
 
+	public bool InEvent;
+
 	public int Late;
 
 	public virtual void Update()
@@ -53,6 +55,10 @@ public class PortalScript : MonoBehaviour
 		if (this.Prompt.Circle[0].fillAmount <= (float)0)
 		{
 			this.Prompt.Circle[0].fillAmount = (float)1;
+			if (this.Police.NaturalScene)
+			{
+				this.Police.Show = true;
+			}
 			if (this.Clock.HourTime < 15.5f)
 			{
 				if (!this.Police.Show)
@@ -209,7 +215,7 @@ public class PortalScript : MonoBehaviour
 				this.Prompt.Label[0].text = "     " + "Go Home";
 			}
 		}
-		else if (this.Yandere.Armed || this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Dragging || this.Yandere.Chased || this.StudentManager.Reporter != null || this.Police.MurderScene || (this.Police.Corpses > 0 && !this.Police.SuicideScene))
+		else if (this.InEvent || this.Yandere.Armed || this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Dragging || this.Yandere.Chased || this.StudentManager.Reporter != null || this.Police.MurderScene || (this.Police.Corpses > 0 && !this.Police.SuicideScene && !this.Police.NaturalScene))
 		{
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;

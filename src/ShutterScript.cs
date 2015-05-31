@@ -27,6 +27,8 @@ public class ShutterScript : MonoBehaviour
 
 	public UISprite Sprite;
 
+	public GameObject NotificationManager;
+
 	public GameObject HeartbeatCamera;
 
 	public GameObject CameraButtons;
@@ -36,6 +38,8 @@ public class ShutterScript : MonoBehaviour
 	public GameObject PhotoIcons;
 
 	public GameObject MainMenu;
+
+	public GameObject SubPanel;
 
 	public GameObject Message;
 
@@ -121,10 +125,12 @@ public class ShutterScript : MonoBehaviour
 					this.StudentManager.GhostChan.Look();
 					this.CheckPhoto();
 					this.SmartphoneCamera.targetTexture = null;
+					this.NotificationManager.active = false;
 					this.HeartbeatCamera.active = false;
 					this.CameraButtons.active = true;
 					this.MainCamera.enabled = false;
 					this.PhotoIcons.active = true;
+					this.SubPanel.active = false;
 					this.Panel.active = false;
 					this.Close = false;
 					Time.timeScale = (float)0;
@@ -421,6 +427,7 @@ public class ShutterScript : MonoBehaviour
 		this.ErrorWindow.transform.localScale = new Vector3((float)0, (float)0, (float)0);
 		this.SmartphoneCamera.targetTexture = this.SmartphoneScreen;
 		this.StudentManager.GhostChan.active = false;
+		this.NotificationManager.active = true;
 		this.PauseScreen.CorrectingTime = true;
 		this.Yandere.HandCamera.active = true;
 		this.HeartbeatCamera.active = true;
@@ -430,6 +437,7 @@ public class ShutterScript : MonoBehaviour
 		this.MainCamera.enabled = true;
 		this.PhotoIcons.active = false;
 		this.PauseScreen.Show = false;
+		this.SubPanel.active = true;
 		this.MainMenu.active = true;
 		this.Yandere.CanMove = true;
 		this.DisplayError = false;
