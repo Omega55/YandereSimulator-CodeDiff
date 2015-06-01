@@ -1845,10 +1845,11 @@ public class StudentScript : MonoBehaviour
 		this.Dying = true;
 		this.Prompt.Hide();
 		this.Prompt.enabled = false;
-		if (this.Following)
+		if (!this.Dying && this.Following)
 		{
 			this.Yandere.Followers = this.Yandere.Followers - 1;
 			this.Following = false;
+			Debug.Log("Here?");
 		}
 		if (this.Teacher)
 		{

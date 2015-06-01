@@ -32,6 +32,8 @@ public class MovingEventScript : MonoBehaviour
 
 	public bool EventCheck;
 
+	public bool EventOver;
+
 	public bool Poisoned;
 
 	public int EventPhase;
@@ -48,7 +50,7 @@ public class MovingEventScript : MonoBehaviour
 	public virtual void Start()
 	{
 		this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
-		if (PlayerPrefs.GetInt("Weekday") == 2)
+		if (PlayerPrefs.GetInt("Weekday") == 3)
 		{
 			this.EventCheck = true;
 		}
@@ -59,15 +61,18 @@ public class MovingEventScript : MonoBehaviour
 		if (!this.Clock.StopTime && this.EventCheck && this.Clock.HourTime > 13.06f)
 		{
 			this.EventStudent = this.StudentManager.Students[6];
-			this.EventStudent.Character.animation[this.EventStudent.BentoAnim].weight = (float)1;
-			this.EventStudent.CurrentDestination = this.EventLocation[1];
-			this.EventStudent.Pathfinding.target = this.EventLocation[1];
-			this.EventStudent.Bento.active = true;
-			this.EventStudent.MovingEvent = this;
-			this.EventStudent.InEvent = true;
-			this.EventStudent.Private = true;
-			this.EventCheck = false;
-			this.EventActive = true;
+			if (this.EventStudent != null)
+			{
+				this.EventStudent.Character.animation[this.EventStudent.BentoAnim].weight = (float)1;
+				this.EventStudent.CurrentDestination = this.EventLocation[1];
+				this.EventStudent.Pathfinding.target = this.EventLocation[1];
+				this.EventStudent.Bento.active = true;
+				this.EventStudent.MovingEvent = this;
+				this.EventStudent.InEvent = true;
+				this.EventStudent.Private = true;
+				this.EventCheck = false;
+				this.EventActive = true;
+			}
 		}
 		if (this.EventActive)
 		{
@@ -251,6 +256,7 @@ public class MovingEventScript : MonoBehaviour
 							this.EventStudent.Ragdoll.Natural = true;
 							this.EventStudent.BecomeRagdoll();
 							this.Yandere.Police.NaturalScene = true;
+							this.EventOver = true;
 							this.EndEvent();
 						}
 					}
@@ -293,21 +299,24 @@ public class MovingEventScript : MonoBehaviour
 
 	public virtual void EndEvent()
 	{
-		if (this.VoiceClip != null)
+		if (!this.EventOver)
 		{
-			UnityEngine.Object.Destroy(this.VoiceClip);
+			if (this.VoiceClip != null)
+			{
+				UnityEngine.Object.Destroy(this.VoiceClip);
+			}
+			this.EventStudent.CurrentDestination = this.EventStudent.Destinations[this.EventStudent.Phase];
+			this.EventStudent.Pathfinding.target = this.EventStudent.Destinations[this.EventStudent.Phase];
+			this.EventStudent.Chopsticks[0].active = false;
+			this.EventStudent.Chopsticks[1].active = false;
+			this.EventStudent.Bento.active = false;
+			this.EventStudent.MovingEvent = null;
+			this.EventStudent.InEvent = false;
+			this.EventStudent.Private = false;
+			this.EventSubtitle.text = string.Empty;
+			this.StudentManager.UpdateStudents();
 		}
-		this.EventStudent.CurrentDestination = this.EventStudent.Destinations[this.EventStudent.Phase];
-		this.EventStudent.Pathfinding.target = this.EventStudent.Destinations[this.EventStudent.Phase];
-		this.EventStudent.Chopsticks[0].active = false;
-		this.EventStudent.Chopsticks[1].active = false;
-		this.EventStudent.Bento.active = false;
-		this.EventStudent.MovingEvent = null;
-		this.EventStudent.InEvent = false;
-		this.EventStudent.Private = false;
-		this.StudentManager.UpdateStudents();
 		this.Portal.InEvent = false;
-		this.EventSubtitle.text = string.Empty;
 		this.EventActive = false;
 		this.EventCheck = false;
 		this.Prompt.Hide();

@@ -1295,6 +1295,7 @@ public class YandereScript : MonoBehaviour
 							if (this.CanTranq && this.Weapon[this.Equipped].WeaponID == 3 && this.PossessTranq && PlayerPrefs.GetInt("BiologyGrade") > 1)
 							{
 								this.TargetStudent.Tranquil = true;
+								this.Followers--;
 							}
 							else
 							{

@@ -149,7 +149,14 @@ public class HeartbrokenScript : MonoBehaviour
 				{
 					this.UpdateSubtitle();
 				}
-				this.Phase++;
+				if (this.Subtitle.color.a > (float)0)
+				{
+					this.Phase++;
+				}
+				else
+				{
+					this.Phase += 2;
+				}
 			}
 			else if (this.Phase == 2)
 			{
