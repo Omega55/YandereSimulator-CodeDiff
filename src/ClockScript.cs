@@ -87,7 +87,6 @@ public class ClockScript : MonoBehaviour
 		this.MainLight.color = new Color((float)1, (float)1, (float)1, (float)1);
 		RenderSettings.ambientLight = new Color(0.75f, 0.75f, 0.75f, (float)1);
 		RenderSettings.skybox.SetColor("_Tint", new Color(0.5f, 0.5f, 0.5f));
-		this.DeactivateTresspassZones();
 	}
 
 	public virtual void Update()
@@ -161,7 +160,7 @@ public class ClockScript : MonoBehaviour
 			this.PeriodLabel.text = "BEFORE SCHOOL";
 			if (this.Period < 1)
 			{
-				this.SchoolBell.Play();
+				this.DeactivateTrespassZones();
 				this.Period++;
 			}
 		}
@@ -170,8 +169,7 @@ public class ClockScript : MonoBehaviour
 			this.PeriodLabel.text = "CLASSTIME";
 			if (this.Period < 2)
 			{
-				this.ActivateTresspassZones();
-				this.SchoolBell.Play();
+				this.ActivateTrespassZones();
 				this.Period++;
 			}
 		}
@@ -180,8 +178,7 @@ public class ClockScript : MonoBehaviour
 			this.PeriodLabel.text = "LUNCHTIME";
 			if (this.Period < 3)
 			{
-				this.DeactivateTresspassZones();
-				this.SchoolBell.Play();
+				this.DeactivateTrespassZones();
 				this.Period++;
 			}
 		}
@@ -190,8 +187,7 @@ public class ClockScript : MonoBehaviour
 			this.PeriodLabel.text = "CLASSTIME";
 			if (this.Period < 4)
 			{
-				this.ActivateTresspassZones();
-				this.SchoolBell.Play();
+				this.ActivateTrespassZones();
 				this.Period++;
 			}
 		}
@@ -200,8 +196,7 @@ public class ClockScript : MonoBehaviour
 			this.PeriodLabel.text = "AFTER SCHOOL";
 			if (this.Period < 5)
 			{
-				this.DeactivateTresspassZones();
-				this.SchoolBell.Play();
+				this.DeactivateTrespassZones();
 				this.Period++;
 			}
 		}
@@ -317,8 +312,9 @@ public class ClockScript : MonoBehaviour
 		}
 	}
 
-	public virtual void ActivateTresspassZones()
+	public virtual void ActivateTrespassZones()
 	{
+		this.SchoolBell.Play();
 		this.ID = 0;
 		while (this.ID < Extensions.get_length(this.TrespassZones))
 		{
@@ -327,8 +323,9 @@ public class ClockScript : MonoBehaviour
 		}
 	}
 
-	public virtual void DeactivateTresspassZones()
+	public virtual void DeactivateTrespassZones()
 	{
+		this.SchoolBell.Play();
 		this.ID = 0;
 		while (this.ID < Extensions.get_length(this.TrespassZones))
 		{

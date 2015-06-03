@@ -195,6 +195,7 @@ public class PoliceScript : MonoBehaviour
 				{
 					this.StudentManager.StopMoving();
 					this.Yandere.StopLaughing();
+					this.Clock.StopTime = true;
 					Time.timeScale = (float)1;
 					this.FadeOut = true;
 					this.Timer = (float)0;
@@ -386,7 +387,7 @@ public class PoliceScript : MonoBehaviour
 					}
 					else
 					{
-						this.ResultsLabels[0].text = "A teacher discovered the dead student on the roof and called for an ambulance.";
+						this.ResultsLabels[0].text = "A teacher discovered the student who Yandere-chan poisoned, and called for an ambulance.";
 					}
 				}
 				else if (!this.Suicide)
@@ -711,7 +712,7 @@ public class PoliceScript : MonoBehaviour
 		}
 		else if (this.NaturalScene)
 		{
-			this.ResultsLabels[0].text = "A teacher discovered the dead student on the roof and called for an ambulance.";
+			this.ResultsLabels[0].text = "A teacher discovered the student who Yandere-chan poisoned, and calls for an ambulance.";
 			this.ResultsLabels[1].text = "An ambulance arrived at school, and paramedics attempted to resuscitate the student.";
 			this.ResultsLabels[2].text = "The paramedics were unable to revive her.";
 			this.ResultsLabels[3].text = "After the girl was pronounced dead, all of the students were sent home for the day.";

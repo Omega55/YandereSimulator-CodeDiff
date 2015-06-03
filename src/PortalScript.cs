@@ -176,12 +176,14 @@ public class PortalScript : MonoBehaviour
 					if (this.Clock.HourTime < (float)13)
 					{
 						this.Yandere.Incinerator.Timer = this.Yandere.Incinerator.Timer - ((float)780 - this.Clock.PresentTime);
+						this.Clock.DeactivateTrespassZones();
 						this.Clock.PresentTime = (float)780;
 						this.Clock.Period = this.Clock.Period + 1;
 					}
 					else
 					{
 						this.Yandere.Incinerator.Timer = this.Yandere.Incinerator.Timer - (930f - this.Clock.PresentTime);
+						this.Clock.DeactivateTrespassZones();
 						this.Clock.PresentTime = 930f;
 						this.Clock.Period = this.Clock.Period + 1;
 					}

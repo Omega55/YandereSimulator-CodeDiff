@@ -2370,8 +2370,6 @@ public class StudentScript : MonoBehaviour
 
 	public virtual void BecomeRagdoll()
 	{
-		this.Police.CorpseList[this.Police.Corpses] = this.Ragdoll;
-		this.Police.Corpses = this.Police.Corpses + 1;
 		if (this.Pushed)
 		{
 			this.Police.SuicideScene = true;
@@ -2381,6 +2379,11 @@ public class StudentScript : MonoBehaviour
 		else if (!this.Tranquil && !this.Ragdoll.Natural)
 		{
 			this.Police.MurderScene = true;
+		}
+		if (!this.Tranquil)
+		{
+			this.Police.CorpseList[this.Police.Corpses] = this.Ragdoll;
+			this.Police.Corpses = this.Police.Corpses + 1;
 		}
 		this.Ragdoll.AllColliders[10].isTrigger = false;
 		this.NotFaceCollider.enabled = false;

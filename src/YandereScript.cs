@@ -31,8 +31,6 @@ public class YandereScript : MonoBehaviour
 
 	private Vector3 targetDirection;
 
-	private GameObject NewDumpChan;
-
 	private GameObject NewTrail;
 
 	private int AccessoryID;
@@ -163,8 +161,6 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject EyepatchR;
 
-	public GameObject DumpChan;
-
 	public GameObject ShoePair;
 
 	public GameObject Ragdoll;
@@ -176,6 +172,8 @@ public class YandereScript : MonoBehaviour
 	public GameObject Trail;
 
 	public GameObject Korra;
+
+	public GameObject Galo;
 
 	public GameObject Yuno;
 
@@ -383,6 +381,8 @@ public class YandereScript : MonoBehaviour
 
 	public string IdleAnim;
 
+	public AudioClip PowerUp;
+
 	public AudioClip Laugh1;
 
 	public AudioClip Laugh2;
@@ -427,6 +427,12 @@ public class YandereScript : MonoBehaviour
 
 	public Texture SlenderSkin;
 
+	public GameObject[] GaloAccessories;
+
+	public Texture GaloArms;
+
+	public Texture GaloFace;
+
 	public YandereScript()
 	{
 		this.Sanity = 100f;
@@ -464,6 +470,7 @@ public class YandereScript : MonoBehaviour
 		this.Shoes[1].active = false;
 		this.Drills.active = false;
 		this.Korra.active = false;
+		this.Galo.active = false;
 		this.Yuno.active = false;
 		this.Rei.active = false;
 		this.IdleAnim = "f02_idleShort_00";
@@ -477,6 +484,12 @@ public class YandereScript : MonoBehaviour
 		while (this.ID < Extensions.get_length(this.PunishedArm))
 		{
 			this.PunishedArm[this.ID].active = false;
+			this.ID++;
+		}
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.GaloAccessories))
+		{
+			this.GaloAccessories[this.ID].active = false;
 			this.ID++;
 		}
 		this.UpdateHair();
@@ -852,6 +865,11 @@ public class YandereScript : MonoBehaviour
 				}
 				if (this.Laughing)
 				{
+					if (this.Galo.active)
+					{
+						this.LaughAnim = "storepower_20";
+						this.LaughClip = this.PowerUp;
+					}
 					if (this.audio.clip != this.LaughClip)
 					{
 						this.audio.clip = this.LaughClip;
@@ -1501,6 +1519,10 @@ public class YandereScript : MonoBehaviour
 				{
 					this.Slend();
 				}
+				if (Input.GetKeyDown("i") && !this.Egg)
+				{
+					this.GaloSengen();
+				}
 			}
 			if (Input.GetKeyDown("left alt"))
 			{
@@ -1917,11 +1939,12 @@ public class YandereScript : MonoBehaviour
 		this.PigtailL.active = false;
 		this.Drills.active = false;
 		this.Korra.active = false;
+		this.Galo.active = false;
 		this.Yuno.active = false;
 		this.Rei.active = false;
 		this.HidePony = true;
 		this.Hairstyle++;
-		if (this.Hairstyle > 10)
+		if (this.Hairstyle > 11)
 		{
 			this.Hairstyle = 1;
 		}
@@ -1973,11 +1996,18 @@ public class YandereScript : MonoBehaviour
 		}
 		else if (this.Hairstyle == 9)
 		{
+			this.PonytailWig.active = false;
 			this.Yuno.active = true;
 		}
 		else if (this.Hairstyle == 10)
 		{
+			this.PonytailWig.active = false;
 			this.Korra.active = true;
+		}
+		else if (this.Hairstyle == 11)
+		{
+			this.PonytailWig.active = false;
+			this.Galo.active = true;
 		}
 		if (this.HidePony)
 		{
@@ -2112,6 +2142,21 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.materials[2].mainTexture = this.SlenderSkin;
 		this.Sanity = (float)0;
 		this.UpdateSanity();
+	}
+
+	public virtual void GaloSengen()
+	{
+		this.Egg = true;
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.GaloAccessories))
+		{
+			this.GaloAccessories[this.ID].active = true;
+			this.ID++;
+		}
+		this.MyRenderer.materials[1].mainTexture = this.GaloArms;
+		this.MyRenderer.materials[2].mainTexture = this.GaloFace;
+		this.Hairstyle = 10;
+		this.UpdateHair();
 	}
 
 	public virtual void Main()

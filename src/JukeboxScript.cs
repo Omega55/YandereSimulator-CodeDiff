@@ -18,6 +18,8 @@ public class JukeboxScript : MonoBehaviour
 
 	public AudioSource Hatred;
 
+	public AudioSource Galo;
+
 	public AudioSource Sane;
 
 	public AudioSource Halfsane;
@@ -109,6 +111,7 @@ public class JukeboxScript : MonoBehaviour
 			this.Sukeban.volume = Mathf.MoveTowards(this.Sukeban.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Hatred.volume = Mathf.MoveTowards(this.Hatred.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Slender.volume = Mathf.MoveTowards(this.Slender.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
+			this.Galo.volume = Mathf.MoveTowards(this.Galo.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 		}
 		if (!this.Yandere.PauseScreen.Show && !this.Yandere.Noticed && this.Yandere.CanMove)
 		{
@@ -162,6 +165,16 @@ public class JukeboxScript : MonoBehaviour
 				this.Volume = 0.5f;
 				this.Slender.enabled = true;
 			}
+			if (Input.GetKeyDown("i") && !this.Egg)
+			{
+				this.Egg = true;
+				this.Sane.volume = (float)0;
+				this.Halfsane.volume = (float)0;
+				this.Insane.volume = (float)0;
+				this.Chase.volume = (float)0;
+				this.Volume = 0.5f;
+				this.Galo.enabled = true;
+			}
 		}
 	}
 
@@ -172,6 +185,7 @@ public class JukeboxScript : MonoBehaviour
 		this.Sukeban.Stop();
 		this.Hatred.Stop();
 		this.Slender.Stop();
+		this.Galo.Stop();
 		this.Sane.Stop();
 		this.Halfsane.Stop();
 		this.Insane.Stop();

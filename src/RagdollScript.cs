@@ -93,7 +93,7 @@ public class RagdollScript : MonoBehaviour
 	{
 		Physics.IgnoreLayerCollision(11, 13, true);
 		this.Zs.active = this.Tranquil;
-		if (!this.Tranquil)
+		if (!this.Tranquil && !this.Natural)
 		{
 			this.BloodPoolSpawner.active = true;
 		}
@@ -183,6 +183,11 @@ public class RagdollScript : MonoBehaviour
 					if (this.AddingToCount)
 					{
 						this.Yandere.NearBodies = this.Yandere.NearBodies - 1;
+					}
+					if (this.Natural)
+					{
+						this.Police.NaturalScene = false;
+						this.Natural = false;
 					}
 					this.Incinerator.Corpses = this.Incinerator.Corpses + 1;
 					UnityEngine.Object.Destroy(this.gameObject);
