@@ -353,6 +353,8 @@ public class StudentManagerScript : MonoBehaviour
 	{
 		if (this.Clock.HourTime >= this.SpawnTimes[this.NPCsSpawned])
 		{
+			Debug.Log("Student " + (this.SpawnID + 1) + "'s death is set to: " + PlayerPrefs.GetInt("Student_" + (this.SpawnID + 1) + "_Dying"));
+			Debug.Log("Student " + (this.SpawnID + 1) + "'s life is set to: " + PlayerPrefs.GetInt("Student_" + (this.SpawnID + 1) + "_Dead"));
 			if (PlayerPrefs.GetInt("Student_" + (this.SpawnID + 1) + "_Dead") == 0)
 			{
 				if (this.JSON.StudentGenders[this.SpawnID + 1] == 0)
@@ -372,6 +374,10 @@ public class StudentManagerScript : MonoBehaviour
 				{
 					this.Students[this.SpawnID].AoT = true;
 				}
+			}
+			else
+			{
+				Debug.Log("Student " + (this.SpawnID + 1) + " is dead.");
 			}
 			this.NPCsSpawned++;
 			this.SpawnID++;

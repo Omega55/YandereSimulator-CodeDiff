@@ -66,10 +66,12 @@ public class MovingEventScript : MonoBehaviour
 				this.EventStudent.Character.animation[this.EventStudent.BentoAnim].weight = (float)1;
 				this.EventStudent.CurrentDestination = this.EventLocation[1];
 				this.EventStudent.Pathfinding.target = this.EventLocation[1];
+				this.EventStudent.Prompt.enabled = false;
 				this.EventStudent.Bento.active = true;
 				this.EventStudent.MovingEvent = this;
 				this.EventStudent.InEvent = true;
 				this.EventStudent.Private = true;
+				this.EventStudent.Prompt.Hide();
 				this.EventCheck = false;
 				this.EventActive = true;
 			}
@@ -310,6 +312,7 @@ public class MovingEventScript : MonoBehaviour
 			this.EventStudent.Chopsticks[0].active = false;
 			this.EventStudent.Chopsticks[1].active = false;
 			this.EventStudent.Bento.active = false;
+			this.EventStudent.Prompt.enabled = true;
 			this.EventStudent.MovingEvent = null;
 			this.EventStudent.InEvent = false;
 			this.EventStudent.Private = false;

@@ -18,6 +18,8 @@ public class RagdollScript : MonoBehaviour
 
 	public SkinnedMeshRenderer MyRenderer;
 
+	public Collider HideCollider;
+
 	public Rigidbody[] AllRigidbodies;
 
 	public Collider[] AllColliders;
@@ -62,11 +64,15 @@ public class RagdollScript : MonoBehaviour
 
 	public bool Dragged;
 
+	public bool Drowned;
+
 	public bool Natural;
 
 	public bool Suicide;
 
 	public bool Dumped;
+
+	public bool Hidden;
 
 	public bool Male;
 
@@ -93,7 +99,7 @@ public class RagdollScript : MonoBehaviour
 	{
 		Physics.IgnoreLayerCollision(11, 13, true);
 		this.Zs.active = this.Tranquil;
-		if (!this.Tranquil && !this.Natural)
+		if (!this.Tranquil && !this.Natural && !this.Drowned)
 		{
 			this.BloodPoolSpawner.active = true;
 		}
@@ -209,6 +215,11 @@ public class RagdollScript : MonoBehaviour
 					}
 				}
 			}
+		}
+		if (this.Hidden && this.HideCollider == null)
+		{
+			this.Police.HiddenCorpses = this.Police.HiddenCorpses - 1;
+			this.Hidden = false;
 		}
 	}
 

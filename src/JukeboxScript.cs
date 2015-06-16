@@ -18,7 +18,11 @@ public class JukeboxScript : MonoBehaviour
 
 	public AudioSource Hatred;
 
+	public AudioSource Hitman;
+
 	public AudioSource Galo;
+
+	public AudioSource Jojo;
 
 	public AudioSource Sane;
 
@@ -108,74 +112,73 @@ public class JukeboxScript : MonoBehaviour
 		{
 			this.AttackOnTitan.volume = Mathf.MoveTowards(this.AttackOnTitan.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Nuclear.volume = Mathf.MoveTowards(this.Nuclear.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
+			this.Slender.volume = Mathf.MoveTowards(this.Slender.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Sukeban.volume = Mathf.MoveTowards(this.Sukeban.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Hatred.volume = Mathf.MoveTowards(this.Hatred.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
-			this.Slender.volume = Mathf.MoveTowards(this.Slender.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
+			this.Hitman.volume = Mathf.MoveTowards(this.Hitman.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Galo.volume = Mathf.MoveTowards(this.Galo.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
+			this.Jojo.volume = Mathf.MoveTowards(this.Jojo.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 		}
-		if (!this.Yandere.PauseScreen.Show && !this.Yandere.Noticed && this.Yandere.CanMove)
+		if (!this.Yandere.PauseScreen.Show && !this.Yandere.Noticed && this.Yandere.CanMove && this.Yandere.EasterEggMenu.active && !this.Egg)
 		{
-			if (Input.GetKeyDown("l") && !this.Egg)
+			if (Input.GetKeyDown("t"))
 			{
 				this.Egg = true;
-				this.Sane.volume = (float)0;
-				this.Halfsane.volume = (float)0;
-				this.Insane.volume = (float)0;
-				this.Chase.volume = (float)0;
-				this.Volume = 0.5f;
+				this.KillVolume();
 				this.AttackOnTitan.enabled = true;
 			}
-			if (Input.GetKeyDown("k") && !this.Egg)
+			else if (Input.GetKeyDown("p"))
 			{
 				this.Egg = true;
-				this.Sane.volume = (float)0;
-				this.Halfsane.volume = (float)0;
-				this.Insane.volume = (float)0;
-				this.Chase.volume = (float)0;
-				this.Volume = 0.5f;
+				this.KillVolume();
 				this.Nuclear.enabled = true;
 			}
-			if (Input.GetKeyDown("j") && !this.Egg)
+			else if (Input.GetKeyDown("h"))
 			{
 				this.Egg = true;
-				this.Sane.volume = (float)0;
-				this.Halfsane.volume = (float)0;
-				this.Insane.volume = (float)0;
-				this.Chase.volume = (float)0;
-				this.Volume = 0.5f;
+				this.KillVolume();
 				this.Hatred.enabled = true;
 			}
-			if (Input.GetKeyDown("g") && !this.Egg)
+			else if (Input.GetKeyDown("b"))
 			{
 				this.Egg = true;
-				this.Sane.volume = (float)0;
-				this.Halfsane.volume = (float)0;
-				this.Insane.volume = (float)0;
-				this.Chase.volume = (float)0;
-				this.Volume = 0.5f;
+				this.KillVolume();
 				this.Sukeban.enabled = true;
 			}
-			if (Input.GetKeyDown("v") && !this.Egg)
+			else if (Input.GetKeyDown("x"))
 			{
 				this.Egg = true;
-				this.Sane.volume = (float)0;
-				this.Halfsane.volume = (float)0;
-				this.Insane.volume = (float)0;
-				this.Chase.volume = (float)0;
-				this.Volume = 0.5f;
+				this.KillVolume();
 				this.Slender.enabled = true;
 			}
-			if (Input.GetKeyDown("i") && !this.Egg)
+			else if (Input.GetKeyDown("g"))
 			{
 				this.Egg = true;
-				this.Sane.volume = (float)0;
-				this.Halfsane.volume = (float)0;
-				this.Insane.volume = (float)0;
-				this.Chase.volume = (float)0;
-				this.Volume = 0.5f;
+				this.KillVolume();
 				this.Galo.enabled = true;
 			}
+			else if (Input.GetKeyDown("j"))
+			{
+				this.Egg = true;
+				this.KillVolume();
+				this.Jojo.enabled = true;
+			}
+			else if (Input.GetKeyDown("l"))
+			{
+				this.Egg = true;
+				this.KillVolume();
+				this.Hitman.enabled = true;
+			}
 		}
+	}
+
+	public virtual void KillVolume()
+	{
+		this.Sane.volume = (float)0;
+		this.Halfsane.volume = (float)0;
+		this.Insane.volume = (float)0;
+		this.Chase.volume = (float)0;
+		this.Volume = 0.5f;
 	}
 
 	public virtual void GameOver()
@@ -183,8 +186,9 @@ public class JukeboxScript : MonoBehaviour
 		this.AttackOnTitan.Stop();
 		this.Nuclear.Stop();
 		this.Sukeban.Stop();
-		this.Hatred.Stop();
 		this.Slender.Stop();
+		this.Hatred.Stop();
+		this.Hitman.Stop();
 		this.Galo.Stop();
 		this.Sane.Stop();
 		this.Halfsane.Stop();

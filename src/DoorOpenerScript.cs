@@ -11,8 +11,9 @@ public class DoorOpenerScript : MonoBehaviour
 	public virtual void OnTriggerStay(Collider other)
 	{
 		this.Student = (StudentScript)other.gameObject.GetComponent(typeof(StudentScript));
-		if (this.Student != null && !this.Student.Dying)
+		if (this.Student != null && !this.Student.Dying && !this.Door.Open)
 		{
+			this.Door.Student = this.Student;
 			this.Door.OpenDoor();
 		}
 	}

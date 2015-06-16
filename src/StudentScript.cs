@@ -25,6 +25,8 @@ public class StudentScript : MonoBehaviour
 
 	public MovingEventScript MovingEvent;
 
+	public ToiletEventScript ToiletEvent;
+
 	public DynamicGridObstacle Obstacle;
 
 	public ReputationScript Reputation;
@@ -142,6 +144,8 @@ public class StudentScript : MonoBehaviour
 	public bool Tranquil;
 
 	public bool Alarmed;
+
+	public bool Drowned;
 
 	public bool Forgave;
 
@@ -271,6 +275,8 @@ public class StudentScript : MonoBehaviour
 
 	public string EatAnim;
 
+	public string DrownAnim;
+
 	public int ReportPhase;
 
 	public int StudentID;
@@ -341,6 +347,7 @@ public class StudentScript : MonoBehaviour
 		this.GameAnim = string.Empty;
 		this.BentoAnim = string.Empty;
 		this.EatAnim = string.Empty;
+		this.DrownAnim = string.Empty;
 		this.MaxSpeed = 10f;
 	}
 
@@ -425,6 +432,10 @@ public class StudentScript : MonoBehaviour
 				this.Outlines[i].enabled = true;
 				this.Outlines[i].color = new Color((float)1, (float)0, (float)1);
 			}
+			this.Prompt.ButtonActive[0] = false;
+			this.Prompt.ButtonActive[1] = false;
+			this.Prompt.ButtonActive[2] = false;
+			this.Prompt.ButtonActive[3] = false;
 		}
 		else if (PlayerPrefs.GetInt("Student_" + this.StudentID + "_Photographed") == 0)
 		{
@@ -1113,7 +1124,7 @@ public class StudentScript : MonoBehaviour
 					this.Alarm -= Time.deltaTime * (float)100;
 				}
 			}
-			else
+			else if (!this.Drowned)
 			{
 				this.Character.animation[this.PhoneAnim].weight = Mathf.Lerp(this.Character.animation[this.PhoneAnim].weight, (float)1, Time.deltaTime * (float)10);
 				if (this.transform.position.z > (float)-49)
@@ -1141,90 +1152,93 @@ public class StudentScript : MonoBehaviour
 		Color color = this.DetectionMarker.Tex.color;
 		float num3 = color.a = a;
 		Color color2 = this.DetectionMarker.Tex.color = color;
-		if (this.Alarm > (float)0 || this.AlarmTimer > (float)0 || this.Yandere.Armed)
+		if (this.StudentID > 1)
 		{
-			this.Prompt.Circle[0].fillAmount = (float)1;
-		}
-		if (this.Prompt.Circle[0].fillAmount <= (float)0)
-		{
-			if (this.Following)
-			{
-				this.Subtitle.UpdateLabel("Student Farewell", 0, (float)3);
-				this.Prompt.Label[0].text = "     " + "Talk";
-				this.Prompt.Circle[0].fillAmount = (float)1;
-				this.Yandere.Followers = this.Yandere.Followers - 1;
-				this.Following = false;
-				this.Routine = true;
-				this.CurrentDestination = this.Destinations[this.Phase];
-				this.Pathfinding.target = this.Destinations[this.Phase];
-				this.Pathfinding.canSearch = true;
-				this.Pathfinding.canMove = true;
-				this.Pathfinding.speed = (float)1;
-			}
-			else if (this.Pushable)
-			{
-				this.Subtitle.UpdateLabel("Note Reaction", 5, (float)3);
-				this.Prompt.Label[0].text = "     " + "Talk";
-				this.Prompt.Circle[0].fillAmount = (float)1;
-				this.Yandere.TargetStudent = this;
-				this.Yandere.Attacking = true;
-				this.Yandere.RoofPush = true;
-				this.Yandere.CanMove = false;
-				this.Routine = false;
-				this.Pushed = true;
-				this.Character.animation.CrossFade(this.PushedAnim);
-			}
-			else if (this.InEvent)
-			{
-				this.Subtitle.UpdateLabel("Event Apology", 1, (float)3);
-				this.Prompt.Circle[0].fillAmount = (float)1;
-			}
-			else if (!this.Witness && this.Yandere.Bloodiness > (float)0)
+			if (this.Alarm > (float)0 || this.AlarmTimer > (float)0 || this.Yandere.Armed)
 			{
 				this.Prompt.Circle[0].fillAmount = (float)1;
-				this.YandereVisible = true;
-				this.Alarm = (float)200;
 			}
-			else
+			if (this.Prompt.Circle[0].fillAmount <= (float)0)
 			{
-				this.Subtitle.UpdateLabel("Greeting", 0, (float)3);
-				this.ShoulderCamera.OverShoulder = true;
-				this.Pathfinding.canSearch = false;
-				this.Pathfinding.canMove = false;
-				this.Obstacle.enabled = true;
-				this.Yandere.TargetStudent = this;
-				this.Yandere.Obscurance.enabled = false;
-				this.Yandere.YandereVision = false;
-				this.Yandere.CanMove = false;
-				this.Yandere.Talking = true;
-				this.Reacted = false;
-				this.Talking = true;
-				this.Routine = false;
-				this.StudentManager.DisablePrompts();
-				this.DialogueWheel.HideShadows();
-				if (!this.Witness || this.Forgave)
+				if (this.Following)
 				{
-					float a2 = 0.75f;
-					Color color3 = this.DialogueWheel.Shadow[1].color;
-					float num4 = color3.a = a2;
-					Color color4 = this.DialogueWheel.Shadow[1].color = color3;
+					this.Subtitle.UpdateLabel("Student Farewell", 0, (float)3);
+					this.Prompt.Label[0].text = "     " + "Talk";
+					this.Prompt.Circle[0].fillAmount = (float)1;
+					this.Yandere.Followers = this.Yandere.Followers - 1;
+					this.Following = false;
+					this.Routine = true;
+					this.CurrentDestination = this.Destinations[this.Phase];
+					this.Pathfinding.target = this.Destinations[this.Phase];
+					this.Pathfinding.canSearch = true;
+					this.Pathfinding.canMove = true;
+					this.Pathfinding.speed = (float)1;
 				}
-				if (this.Complimented)
+				else if (this.Pushable)
 				{
-					float a3 = 0.75f;
-					Color color5 = this.DialogueWheel.Shadow[2].color;
-					float num5 = color5.a = a3;
-					Color color6 = this.DialogueWheel.Shadow[2].color = color5;
+					this.Subtitle.UpdateLabel("Note Reaction", 5, (float)3);
+					this.Prompt.Label[0].text = "     " + "Talk";
+					this.Prompt.Circle[0].fillAmount = (float)1;
+					this.Yandere.TargetStudent = this;
+					this.Yandere.Attacking = true;
+					this.Yandere.RoofPush = true;
+					this.Yandere.CanMove = false;
+					this.Routine = false;
+					this.Pushed = true;
+					this.Character.animation.CrossFade(this.PushedAnim);
 				}
-				this.Yandere.WeaponMenu.KeyboardShow = false;
-				this.Yandere.WeaponMenu.Show = false;
-				this.DialogueWheel.Show = true;
-				this.TalkTimer = (float)0;
+				else if (this.InEvent)
+				{
+					this.Subtitle.UpdateLabel("Event Apology", 1, (float)3);
+					this.Prompt.Circle[0].fillAmount = (float)1;
+				}
+				else if (!this.Witness && this.Yandere.Bloodiness > (float)0)
+				{
+					this.Prompt.Circle[0].fillAmount = (float)1;
+					this.YandereVisible = true;
+					this.Alarm = (float)200;
+				}
+				else
+				{
+					this.Subtitle.UpdateLabel("Greeting", 0, (float)3);
+					this.ShoulderCamera.OverShoulder = true;
+					this.Pathfinding.canSearch = false;
+					this.Pathfinding.canMove = false;
+					this.Obstacle.enabled = true;
+					this.Yandere.TargetStudent = this;
+					this.Yandere.Obscurance.enabled = false;
+					this.Yandere.YandereVision = false;
+					this.Yandere.CanMove = false;
+					this.Yandere.Talking = true;
+					this.Reacted = false;
+					this.Talking = true;
+					this.Routine = false;
+					this.StudentManager.DisablePrompts();
+					this.DialogueWheel.HideShadows();
+					if (!this.Witness || this.Forgave)
+					{
+						float a2 = 0.75f;
+						Color color3 = this.DialogueWheel.Shadow[1].color;
+						float num4 = color3.a = a2;
+						Color color4 = this.DialogueWheel.Shadow[1].color = color3;
+					}
+					if (this.Complimented)
+					{
+						float a3 = 0.75f;
+						Color color5 = this.DialogueWheel.Shadow[2].color;
+						float num5 = color5.a = a3;
+						Color color6 = this.DialogueWheel.Shadow[2].color = color5;
+					}
+					this.Yandere.WeaponMenu.KeyboardShow = false;
+					this.Yandere.WeaponMenu.Show = false;
+					this.DialogueWheel.Show = true;
+					this.TalkTimer = (float)0;
+				}
 			}
-		}
-		if (this.Prompt.Circle[2].fillAmount <= (float)0 && !this.Yandere.Attacking)
-		{
-			this.AttackReaction();
+			if (this.Prompt.Circle[2].fillAmount <= (float)0 && !this.Yandere.Attacking)
+			{
+				this.AttackReaction();
+			}
 		}
 		if (this.Talking)
 		{
@@ -1423,6 +1437,15 @@ public class StudentScript : MonoBehaviour
 			this.Alarm -= Time.deltaTime * (float)100;
 			this.EyeShrink = Mathf.Lerp(this.EyeShrink, (float)1, Time.deltaTime * (float)10);
 			if (this.Character.animation[this.PushedAnim].time >= this.Character.animation[this.PushedAnim].length)
+			{
+				this.BecomeRagdoll();
+			}
+		}
+		else if (this.Drowned)
+		{
+			this.Alarm -= Time.deltaTime * (float)100;
+			this.EyeShrink = Mathf.Lerp(this.EyeShrink, (float)1, Time.deltaTime * (float)10);
+			if (this.Character.animation[this.DrownAnim].time >= this.Character.animation[this.DrownAnim].length)
 			{
 				this.BecomeRagdoll();
 			}
@@ -1941,6 +1964,8 @@ public class StudentScript : MonoBehaviour
 				this.Waiting = false;
 				this.StudentManager.EnablePrompts();
 			}
+			this.Prompt.Label[0].text = "     " + "Talk";
+			this.Prompt.HideButton[0] = true;
 		}
 		else
 		{
@@ -1970,8 +1995,6 @@ public class StudentScript : MonoBehaviour
 		}
 		this.Pathfinding.canSearch = false;
 		this.Pathfinding.canMove = false;
-		this.Prompt.Label[0].text = "     " + "Talk";
-		this.Prompt.HideButton[0] = true;
 		this.WitnessedMurder = true;
 		this.Reacted = false;
 		this.Routine = false;
@@ -2398,6 +2421,7 @@ public class StudentScript : MonoBehaviour
 		this.Ragdoll.BreastSize = this.BreastSize;
 		this.Ragdoll.EyeShrink = this.EyeShrink;
 		this.Ragdoll.Tranquil = this.Tranquil;
+		this.Ragdoll.Drowned = this.Drowned;
 		this.Ragdoll.Yandere = this.Yandere;
 		this.Ragdoll.Police = this.Police;
 		this.Ragdoll.Male = this.Male;

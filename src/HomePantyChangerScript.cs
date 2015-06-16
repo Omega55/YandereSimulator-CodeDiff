@@ -40,10 +40,6 @@ public class HomePantyChangerScript : MonoBehaviour
 
 	public GameObject[] PantyModels;
 
-	public Texture[] PantyTextures;
-
-	public Color[] PantyColors;
-
 	public string[] PantyNames;
 
 	public string[] PantyDescs;
@@ -55,8 +51,6 @@ public class HomePantyChangerScript : MonoBehaviour
 		while (this.ID < this.TotalPanties)
 		{
 			this.NewPanties = (GameObject)UnityEngine.Object.Instantiate(this.PantyModels[this.ID], new Vector3((float)0, (float)0, (float)-1), Quaternion.identity);
-			this.NewPanties.renderer.material.mainTexture = this.PantyTextures[this.ID];
-			this.NewPanties.renderer.material.color = this.PantyColors[this.ID];
 			this.NewPanties.transform.parent = this.PantyParent;
 			((HomePantiesScript)this.NewPanties.GetComponent(typeof(HomePantiesScript))).ID = this.ID;
 			float y = this.PantyParent.transform.localEulerAngles.y + (float)(360 / this.TotalPanties);

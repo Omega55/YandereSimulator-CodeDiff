@@ -87,6 +87,8 @@ public class PoliceScript : MonoBehaviour
 
 	public int MurderWeapons;
 
+	public int HiddenCorpses;
+
 	public int Witnesses;
 
 	public int Corpses;

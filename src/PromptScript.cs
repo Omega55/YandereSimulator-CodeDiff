@@ -325,6 +325,14 @@ public class PromptScript : MonoBehaviour
 					this.Hide();
 				}
 			}
+			else
+			{
+				if (this.Debugging)
+				{
+					Debug.Log("4.");
+				}
+				this.Hide();
+			}
 		}
 		else
 		{
@@ -360,7 +368,7 @@ public class PromptScript : MonoBehaviour
 		this.ID = 0;
 		while (this.ID < 4)
 		{
-			if (this.ButtonActive[this.ID])
+			if (this.ButtonActive[this.ID] && this.Button[this.ID].color.a > (float)0)
 			{
 				this.Circle[this.ID].fillAmount = (float)1;
 				int num = 0;
