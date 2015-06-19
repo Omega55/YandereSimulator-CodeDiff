@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$1395 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$1393 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$1402;
+		internal YandereScript $self_$1400;
 
-		public $ApplyCustomCostume$1395(YandereScript self_)
+		public $ApplyCustomCostume$1393(YandereScript self_)
 		{
-			this.$self_$1402 = self_;
+			this.$self_$1400 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$1395.$(this.$self_$1402);
+			return new YandereScript.$ApplyCustomCostume$1393.$(this.$self_$1400);
 		}
 	}
 
@@ -1309,11 +1309,7 @@ public class YandereScript : MonoBehaviour
 					{
 						if (this.Shoes[0].active)
 						{
-							GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.ShoePair, this.transform.position + new Vector3((float)0, 0.045f, -1.6f), Quaternion.identity);
-							float y3 = gameObject.transform.eulerAngles.y + (float)180;
-							Vector3 eulerAngles2 = gameObject.transform.eulerAngles;
-							float num5 = eulerAngles2.y = y3;
-							Vector3 vector3 = gameObject.transform.eulerAngles = eulerAngles2;
+							GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.ShoePair, this.transform.position + new Vector3((float)0, 0.045f, 1.6f), Quaternion.identity);
 							this.Shoes[0].active = false;
 							this.Shoes[1].active = false;
 						}
@@ -1383,10 +1379,10 @@ public class YandereScript : MonoBehaviour
 				else
 				{
 					this.Character.animation.CrossFade("f02_counterA_00");
-					float y4 = this.TargetStudent.transform.position.y;
+					float y3 = this.TargetStudent.transform.position.y;
 					Vector3 position = this.Character.transform.position;
-					float num6 = position.y = y4;
-					Vector3 vector4 = this.Character.transform.position = position;
+					float num5 = position.y = y3;
+					Vector3 vector3 = this.Character.transform.position = position;
 				}
 			}
 			if (!this.Attacking && !this.Dragging && this.PickUp == null && !this.Aiming && !this.Crawling && this.LaughIntensity < (float)16)
@@ -1589,38 +1585,38 @@ public class YandereScript : MonoBehaviour
 			}
 			if (this.transform.position.x < (float)-75)
 			{
-				int num7 = -75;
+				int num6 = -75;
 				Vector3 position2 = this.transform.position;
-				float num8 = position2.x = (float)num7;
-				Vector3 vector5 = this.transform.position = position2;
+				float num7 = position2.x = (float)num6;
+				Vector3 vector4 = this.transform.position = position2;
 			}
 			if (this.transform.position.x > (float)75)
 			{
-				int num9 = 75;
+				int num8 = 75;
 				Vector3 position3 = this.transform.position;
-				float num10 = position3.x = (float)num9;
-				Vector3 vector6 = this.transform.position = position3;
+				float num9 = position3.x = (float)num8;
+				Vector3 vector5 = this.transform.position = position3;
 			}
 			if (this.transform.position.y < (float)0)
 			{
-				int num11 = 0;
+				int num10 = 0;
 				Vector3 position4 = this.transform.position;
-				float num12 = position4.y = (float)num11;
-				Vector3 vector7 = this.transform.position = position4;
+				float num11 = position4.y = (float)num10;
+				Vector3 vector6 = this.transform.position = position4;
 			}
 			if (this.transform.position.z < -49.5f)
 			{
 				float z = -49.5f;
 				Vector3 position5 = this.transform.position;
-				float num13 = position5.z = z;
-				Vector3 vector8 = this.transform.position = position5;
+				float num12 = position5.z = z;
+				Vector3 vector7 = this.transform.position = position5;
 			}
 			if (this.transform.position.z > (float)50)
 			{
-				int num14 = 50;
+				int num13 = 50;
 				Vector3 position6 = this.transform.position;
-				float num15 = position6.z = (float)num14;
-				Vector3 vector9 = this.transform.position = position6;
+				float num14 = position6.z = (float)num13;
+				Vector3 vector8 = this.transform.position = position6;
 			}
 		}
 		else
@@ -1987,7 +1983,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$1395(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$1393(this).GetEnumerator();
 	}
 
 	public virtual void UpdateHair()

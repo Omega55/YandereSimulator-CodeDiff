@@ -63,18 +63,25 @@ public class EventManagerScript : MonoBehaviour
 		{
 			this.EventStudent[1] = this.StudentManager.Students[5];
 			this.EventStudent[2] = this.StudentManager.Students[6];
-			if (this.EventStudent[1] != null && this.EventStudent[2] != null && this.EventStudent[1].Pathfinding.canMove && this.EventStudent[1].Pathfinding.canMove)
+			if (this.EventStudent[1] != null && this.EventStudent[2] != null)
 			{
-				this.EventStudent[1].CurrentDestination = this.EventLocation[1];
-				this.EventStudent[1].Pathfinding.target = this.EventLocation[1];
-				this.EventStudent[1].EventManager = this;
-				this.EventStudent[1].InEvent = true;
-				this.EventStudent[2].CurrentDestination = this.EventLocation[2];
-				this.EventStudent[2].Pathfinding.target = this.EventLocation[2];
-				this.EventStudent[2].EventManager = this;
-				this.EventStudent[2].InEvent = true;
-				this.EventCheck = false;
-				this.EventOn = true;
+				if (this.EventStudent[1].Dead || this.EventStudent[2].Dead)
+				{
+					this.EndEvent();
+				}
+				if (this.EventStudent[1].Pathfinding.canMove && this.EventStudent[1].Pathfinding.canMove)
+				{
+					this.EventStudent[1].CurrentDestination = this.EventLocation[1];
+					this.EventStudent[1].Pathfinding.target = this.EventLocation[1];
+					this.EventStudent[1].EventManager = this;
+					this.EventStudent[1].InEvent = true;
+					this.EventStudent[2].CurrentDestination = this.EventLocation[2];
+					this.EventStudent[2].Pathfinding.target = this.EventLocation[2];
+					this.EventStudent[2].EventManager = this;
+					this.EventStudent[2].InEvent = true;
+					this.EventCheck = false;
+					this.EventOn = true;
+				}
 			}
 		}
 		if (this.EventOn)

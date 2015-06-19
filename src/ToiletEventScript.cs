@@ -52,7 +52,7 @@ public class ToiletEventScript : MonoBehaviour
 
 	public ToiletEventScript()
 	{
-		this.EventTime = 7.5f;
+		this.EventTime = 7f;
 		this.EventPhase = 1;
 		this.EventDay = 4;
 	}
@@ -82,8 +82,17 @@ public class ToiletEventScript : MonoBehaviour
 				this.EventStudent.InEvent = true;
 				this.EventStudent.Private = true;
 				this.EventStudent.Prompt.Hide();
+				this.Prompt.enabled = true;
 				this.EventCheck = false;
 				this.EventActive = true;
+				if (this.EventStudent.Following)
+				{
+					this.Yandere.Followers = this.Yandere.Followers - 1;
+					this.EventStudent.Following = false;
+					this.EventStudent.Routine = true;
+					this.EventStudent.Subtitle.UpdateLabel("Stop Follow Apology", 0, (float)3);
+					this.EventStudent.Prompt.Label[0].text = "     " + "Talk";
+				}
 			}
 		}
 		if (this.EventActive)

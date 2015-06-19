@@ -69,6 +69,8 @@ public class TitleMenuScript : MonoBehaviour
 
 	public int Selected;
 
+	public float Volume;
+
 	public float Timer;
 
 	public TitleMenuScript()
@@ -248,7 +250,7 @@ public class TitleMenuScript : MonoBehaviour
 		this.BloodProjector.active = true;
 		this.BloodCamera.active = true;
 		this.Knife.active = true;
-		this.CuteMusic.pitch = 0.75f;
+		this.CuteMusic.pitch = 0.1f;
 		RenderSettings.ambientLight = new Color(0.5f, 0.5f, 0.5f, (float)1);
 		RenderSettings.skybox = this.DarkSkybox;
 		RenderSettings.fog = true;

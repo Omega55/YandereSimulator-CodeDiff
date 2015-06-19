@@ -884,6 +884,15 @@ public class StudentScript : MonoBehaviour
 							{
 								this.Persona = 2;
 							}
+							if (this.Talking)
+							{
+								this.DialogueWheel.End();
+								this.Pathfinding.canSearch = true;
+								this.Pathfinding.canMove = true;
+								this.Obstacle.enabled = false;
+								this.Talking = false;
+								this.Waiting = false;
+							}
 						}
 						if (this.Corpse.Dragged || this.Corpse.Dumped)
 						{
@@ -998,7 +1007,7 @@ public class StudentScript : MonoBehaviour
 							this.Witnessed = "Corpse";
 							this.EyeShrink = 0.9f;
 						}
-						else if (this.YandereVisible)
+						if (this.YandereVisible)
 						{
 							if (flag && this.Yandere.Bloodiness > (float)0 && this.Yandere.Sanity < 33.333f)
 							{
@@ -1235,7 +1244,7 @@ public class StudentScript : MonoBehaviour
 					this.TalkTimer = (float)0;
 				}
 			}
-			if (this.Prompt.Circle[2].fillAmount <= (float)0 && !this.Yandere.Attacking)
+			if (this.Prompt.Circle[2].fillAmount <= (float)0 && !this.Yandere.NearSenpai && !this.Yandere.Attacking)
 			{
 				this.AttackReaction();
 			}

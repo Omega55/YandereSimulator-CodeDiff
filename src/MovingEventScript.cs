@@ -120,8 +120,8 @@ public class MovingEventScript : MonoBehaviour
 					if (this.Timer > (float)1 && this.EventStudent.Bento.transform.parent != null)
 					{
 						this.EventStudent.Bento.transform.parent = null;
-						this.EventStudent.Bento.transform.position = new Vector3((float)0, 12.465f, 4.4275f);
-						this.EventStudent.Bento.transform.eulerAngles = new Vector3((float)0, (float)0, (float)0);
+						this.EventStudent.Bento.transform.position = new Vector3((float)0, 12.486f, 4.606f);
+						this.EventStudent.Bento.transform.eulerAngles = new Vector3(13.5f, (float)0, (float)0);
 						this.EventStudent.Bento.transform.localScale = new Vector3(1.4f, 1.5f, 1.4f);
 					}
 					if (this.Timer > (float)2)
