@@ -66,7 +66,6 @@ public class MovingEventScript : MonoBehaviour
 				this.EventStudent.Character.animation[this.EventStudent.BentoAnim].weight = (float)1;
 				this.EventStudent.CurrentDestination = this.EventLocation[1];
 				this.EventStudent.Pathfinding.target = this.EventLocation[1];
-				this.EventStudent.Prompt.enabled = false;
 				this.EventStudent.Bento.active = true;
 				this.EventStudent.MovingEvent = this;
 				this.EventStudent.InEvent = true;
@@ -229,6 +228,7 @@ public class MovingEventScript : MonoBehaviour
 								this.PlayClip(this.EventClip[5], this.EventStudent.transform.position + Vector3.up * (float)1);
 								this.EventStudent.Chopsticks[0].active = true;
 								this.EventStudent.Chopsticks[1].active = true;
+								this.EventStudent.Distracted = true;
 							}
 						}
 						else if (this.Timer < 16.33333f)

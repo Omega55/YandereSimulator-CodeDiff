@@ -77,10 +77,8 @@ public class ToiletEventScript : MonoBehaviour
 				this.EventStudent.Pathfinding.target = this.EventLocation[1];
 				this.EventStudent.Pathfinding.canMove = true;
 				this.EventStudent.Obstacle.checkTime = (float)99;
-				this.EventStudent.Prompt.enabled = false;
 				this.EventStudent.ToiletEvent = this;
 				this.EventStudent.InEvent = true;
-				this.EventStudent.Private = true;
 				this.EventStudent.Prompt.Hide();
 				this.Prompt.enabled = true;
 				this.EventCheck = false;
@@ -126,6 +124,10 @@ public class ToiletEventScript : MonoBehaviour
 				this.EventStudent.Character.animation.CrossFade(this.EventStudent.DrownAnim);
 			}
 			if (this.Clock.HourTime > this.EventTime + 0.5f)
+			{
+				this.EndEvent();
+			}
+			else if (this.EventStudent.WitnessedMurder)
 			{
 				this.EndEvent();
 			}

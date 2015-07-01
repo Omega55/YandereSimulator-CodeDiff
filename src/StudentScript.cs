@@ -97,6 +97,8 @@ public class StudentScript : MonoBehaviour
 
 	public Plane[] Planes;
 
+	public LayerMask Mask;
+
 	public int[] Actions;
 
 	public SphereCollider HipCollider;
@@ -165,9 +167,11 @@ public class StudentScript : MonoBehaviour
 
 	public bool Dead;
 
+	public bool Male;
+
 	public bool Safe;
 
-	public bool Male;
+	public bool Stop;
 
 	public bool Following;
 
@@ -448,497 +452,509 @@ public class StudentScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (this.Routine)
+		if (!this.Stop)
 		{
-			if (this.Phase < Extensions.get_length(this.PhaseTimes) - 1)
+			if (this.Routine)
 			{
-				if (this.Clock.HourTime >= this.PhaseTimes[this.Phase])
+				if (this.Phase < Extensions.get_length(this.PhaseTimes) - 1)
 				{
-					this.Phase++;
-					this.CurrentDestination = this.Destinations[this.Phase];
-					this.Pathfinding.target = this.Destinations[this.Phase];
+					if (this.Clock.HourTime >= this.PhaseTimes[this.Phase])
+					{
+						this.Phase++;
+						this.CurrentDestination = this.Destinations[this.Phase];
+						this.Pathfinding.target = this.Destinations[this.Phase];
+						this.Pathfinding.canSearch = true;
+						this.Pathfinding.canMove = true;
+					}
+					if (this.MeetTime > (float)0 && this.Clock.HourTime > this.MeetTime)
+					{
+						this.CurrentDestination = this.MeetSpot;
+						this.Pathfinding.target = this.MeetSpot;
+						this.Pathfinding.canSearch = true;
+						this.Pathfinding.canMove = true;
+						this.Meeting = true;
+						this.MeetTime = (float)0;
+					}
+				}
+				this.DistanceToDestination = Vector3.Distance(this.transform.position, this.CurrentDestination.position);
+				if (this.DistanceToDestination > 0.5f)
+				{
 					this.Pathfinding.canSearch = true;
 					this.Pathfinding.canMove = true;
-				}
-				if (this.MeetTime > (float)0 && this.Clock.HourTime > this.MeetTime)
-				{
-					this.CurrentDestination = this.MeetSpot;
-					this.Pathfinding.target = this.MeetSpot;
-					this.Pathfinding.canSearch = true;
-					this.Pathfinding.canMove = true;
-					this.Meeting = true;
-					this.MeetTime = (float)0;
-				}
-			}
-			this.DistanceToDestination = Vector3.Distance(this.transform.position, this.CurrentDestination.position);
-			if (this.DistanceToDestination > 0.5f)
-			{
-				this.Pathfinding.canSearch = true;
-				this.Pathfinding.canMove = true;
-				this.Obstacle.enabled = false;
-				this.Character.animation.CrossFade(this.WalkAnim);
-				this.Character.animation[this.WalkAnim].speed = this.Pathfinding.currentSpeed;
-			}
-			else
-			{
-				this.Pathfinding.canSearch = false;
-				this.Pathfinding.canMove = false;
-				this.Obstacle.enabled = true;
-				this.MoveTowardsTarget(this.CurrentDestination.position);
-				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.CurrentDestination.rotation, (float)10 * Time.deltaTime);
-				if (!this.Meeting)
-				{
-					if (this.Actions[this.Phase] == 0)
-					{
-						if (!this.InEvent)
-						{
-							this.Character.animation.CrossFade(this.IdleAnim);
-						}
-					}
-					else if (this.Actions[this.Phase] == 2)
-					{
-						if (!this.InEvent)
-						{
-							this.Character.animation.CrossFade(this.GameAnim);
-						}
-					}
-					else if (!this.InEvent)
-					{
-						this.Character.animation.CrossFade(this.RandomAnim);
-						if (this.Character.animation[this.RandomAnim].time >= this.Character.animation[this.RandomAnim].length)
-						{
-							this.PickRandomAnim();
-						}
-					}
+					this.Obstacle.enabled = false;
+					this.Character.animation.CrossFade(this.WalkAnim);
+					this.Character.animation[this.WalkAnim].speed = this.Pathfinding.currentSpeed;
 				}
 				else
 				{
-					if (this.MeetTimer == (float)0 && this.transform.position.y > (float)11)
+					this.Pathfinding.canSearch = false;
+					this.Pathfinding.canMove = false;
+					this.Obstacle.enabled = true;
+					this.MoveTowardsTarget(this.CurrentDestination.position);
+					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.CurrentDestination.rotation, (float)10 * Time.deltaTime);
+					if (!this.Meeting)
 					{
-						this.Prompt.Label[0].text = "     " + "Push";
-						this.Pushable = true;
-					}
-					this.Character.animation.CrossFade(this.IdleAnim);
-					this.MeetTimer += Time.deltaTime;
-					if (this.MeetTimer > (float)60)
-					{
-						this.Subtitle.UpdateLabel("Note Reaction", 4, (float)3);
-						this.CurrentDestination = this.Destinations[this.Phase];
-						this.Pathfinding.target = this.Destinations[this.Phase];
-						this.Prompt.Label[0].text = "     Talk";
-						this.Pathfinding.canSearch = true;
-						this.Pathfinding.canMove = true;
-						this.Pushable = false;
-						this.Meeting = false;
-						this.MeetTimer = (float)0;
-					}
-				}
-			}
-		}
-		else
-		{
-			if (this.Fleeing && this.AlarmTimer == (float)0)
-			{
-				if (this.Persona == 2 && this.StudentManager.Reporter == null && !this.Police.Called)
-				{
-					this.Pathfinding.target = this.StudentManager.Teachers[this.Class].TeacherTalkPoint;
-					this.StudentManager.Reporter = this;
-					this.Reporting = true;
-				}
-				if (this.transform.position.y < (float)-2)
-				{
-					this.Police.Witnesses = this.Police.Witnesses - 1;
-					this.Police.Show = true;
-					this.active = false;
-				}
-				if (this.transform.position.z < (float)-49)
-				{
-					this.Prompt.Hide();
-					this.Prompt.enabled = false;
-					this.Safe = true;
-				}
-				this.DistanceToDestination = Vector3.Distance(this.transform.position, this.Pathfinding.target.position);
-				if (this.AlarmTimer == (float)0)
-				{
-					if (this.DistanceToDestination > this.TargetDistance)
-					{
-						this.Character.animation.CrossFade(this.SprintAnim);
-						this.Pathfinding.canSearch = true;
-						this.Pathfinding.canMove = true;
-						if (this.Yandere.Chased)
+						if (this.Actions[this.Phase] == 0)
 						{
-							this.Pathfinding.repathRate = (float)0;
-							this.Pathfinding.speed = (float)7;
-						}
-						else
-						{
-							this.Pathfinding.speed = (float)4;
-						}
-					}
-					else
-					{
-						this.Pathfinding.canSearch = false;
-						this.Pathfinding.canMove = false;
-						if (!this.Halt)
-						{
-							this.MoveTowardsTarget(this.Pathfinding.target.position);
-							this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.Pathfinding.target.rotation, (float)10 * Time.deltaTime);
-						}
-						else if (this.Persona == 2)
-						{
-							this.targetRotation = Quaternion.LookRotation(this.StudentManager.Teachers[this.Class].transform.position - this.transform.position);
-							this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
-						}
-						if (this.Persona == 2)
-						{
-							this.Character.animation.CrossFade(this.ScaredAnim);
-							if (this.Reporting)
-							{
-								if (this.ReportPhase == 0)
-								{
-									if (this.WitnessedCorpse)
-									{
-										this.Subtitle.UpdateLabel("Pet Corpse Report", 2, (float)3);
-									}
-									else
-									{
-										this.Subtitle.UpdateLabel("Pet Murder Report", 2, (float)3);
-									}
-									this.ReportPhase++;
-								}
-								else if (this.ReportPhase == 1)
-								{
-									this.ReportTimer += Time.deltaTime;
-									if (this.ReportTimer >= (float)3)
-									{
-										this.StudentManager.Teachers[this.Class].MyReporter = this.transform;
-										this.StudentManager.Teachers[this.Class].Routine = false;
-										this.StudentManager.Teachers[this.Class].Fleeing = true;
-										this.ReportTimer = (float)0;
-										this.ReportPhase++;
-									}
-								}
-								else if (this.ReportPhase == 100)
-								{
-									this.ReportTimer += Time.deltaTime;
-									if (this.ReportTimer >= (float)5)
-									{
-										if (this.StudentManager.Reporter == this)
-										{
-											this.StudentManager.Reporter = null;
-											this.StudentManager.StopFleeing();
-											this.StudentManager.UpdateStudents();
-										}
-										this.Pathfinding.target = this.Destinations[this.Phase];
-										this.Pathfinding.speed = (float)1;
-										this.ReportPhase = 0;
-										this.ReportTimer = (float)0;
-										this.AlarmTimer = (float)0;
-										this.WitnessedCorpse = false;
-										this.WitnessedMurder = false;
-										this.Reporting = false;
-										this.Reacted = false;
-										this.Alarmed = false;
-										this.Fleeing = false;
-										this.Routine = true;
-										this.Halt = false;
-									}
-								}
-							}
-						}
-						else if (this.Persona == 9)
-						{
-							if (!this.WitnessedMurder)
-							{
-								if (this.ReportPhase == 0)
-								{
-									this.Subtitle.UpdateLabel("Teacher Report Reaction", 1, (float)3);
-									this.ReportPhase++;
-								}
-								else if (this.ReportPhase == 1)
-								{
-									this.Character.animation.CrossFade(this.IdleAnim);
-									this.ReportTimer += Time.deltaTime;
-									if (this.ReportTimer >= (float)3)
-									{
-										if (!this.StudentManager.Reporter.Teacher)
-										{
-											this.StudentManager.Reporter.Pathfinding.target = this.StudentManager.CorpseLocation;
-										}
-										this.Pathfinding.target = this.StudentManager.CorpseLocation;
-										this.StudentManager.Reporter.TargetDistance = (float)2;
-										this.StudentManager.Reporter.Halt = true;
-										this.TargetDistance = (float)1;
-										this.Halt = true;
-										this.ReportTimer = (float)0;
-										this.ReportPhase++;
-									}
-								}
-								else if (this.ReportPhase == 2)
-								{
-									if (this.WitnessedCorpse)
-									{
-										if (!this.Corpse.Natural)
-										{
-											this.Subtitle.UpdateLabel("Teacher Corpse Inspection", 1, (float)5);
-										}
-										else
-										{
-											this.Subtitle.UpdateLabel("Teacher Corpse Inspection", 2, (float)2);
-										}
-										this.ReportPhase++;
-									}
-									else
-									{
-										this.Character.animation.CrossFade(this.IdleAnim);
-										this.ReportTimer += Time.deltaTime;
-										if (this.ReportTimer > (float)5)
-										{
-											this.Subtitle.UpdateLabel("Teacher Prank Reaction", 1, (float)7);
-											this.ReportPhase = 98;
-											this.ReportTimer = (float)0;
-										}
-									}
-								}
-								else if (this.ReportPhase == 3)
-								{
-									this.Character.animation.CrossFade(this.KneelAnim);
-									this.ReportTimer += Time.deltaTime;
-									if (this.ReportTimer >= (float)6)
-									{
-										this.ReportTimer = (float)0;
-										this.ReportPhase++;
-									}
-								}
-								else if (this.ReportPhase == 4)
-								{
-									this.Subtitle.UpdateLabel("Teacher Police Report", 1, (float)5);
-									this.Phone.active = true;
-									this.ReportPhase++;
-								}
-								else if (this.ReportPhase == 5)
-								{
-									this.Character.animation.CrossFade(this.CallAnim);
-									this.ReportTimer += Time.deltaTime;
-									if (this.ReportTimer >= (float)5)
-									{
-										if (this.Corpse.Natural)
-										{
-											this.Police.Timer = 1E-06f;
-										}
-										this.Character.animation.CrossFade(this.KneelScanAnim);
-										this.Phone.active = false;
-										this.Police.Show = true;
-										this.Fleeing = false;
-										this.ReportTimer = (float)0;
-										this.ReportPhase++;
-									}
-								}
-								else if (this.ReportPhase == 98)
-								{
-									this.targetRotation = Quaternion.LookRotation(this.MyReporter.transform.position - this.transform.position);
-									this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
-									this.ReportTimer += Time.deltaTime;
-									if (this.ReportTimer > (float)7)
-									{
-										this.ReportPhase++;
-									}
-								}
-								else if (this.ReportPhase == 99)
-								{
-									this.Subtitle.UpdateLabel("Prank Reaction", 1, (float)5);
-									this.StudentManager.Reporter.ReportPhase = 100;
-									this.Pathfinding.target = this.Destinations[this.Phase];
-									this.ReportTimer = (float)0;
-									this.ReportPhase++;
-								}
-								else if (this.ReportPhase == 100)
-								{
-									this.ReportPhase = 0;
-									this.Fleeing = false;
-									this.Routine = true;
-								}
-							}
-							else if (!this.Yandere.Dumping && !this.Yandere.Attacking)
-							{
-								if (this.Yandere.Aiming)
-								{
-									this.Yandere.StopAiming();
-								}
-								if (this.Yandere.Dragging || this.Yandere.Mopping || this.Yandere.PickUp != null)
-								{
-									this.Yandere.Mopping = false;
-									this.Yandere.EmptyHands();
-								}
-								this.AttackReaction();
-								this.Character.animation[this.CounterAnim].time = (float)5;
-								this.Yandere.Character.animation["f02_counterA_00"].time = (float)5;
-								this.Yandere.ShoulderCamera.DoNotMove = true;
-								this.Yandere.ShoulderCamera.Timer = (float)5;
-								this.Yandere.ShoulderCamera.Phase = 3;
-								this.Police.Show = false;
-								this.Yandere.CameraEffects.MurderWitnessed();
-								this.Yandere.Jukebox.GameOver();
-							}
-							else
+							if (!this.InEvent)
 							{
 								this.Character.animation.CrossFade(this.IdleAnim);
 							}
 						}
-					}
-				}
-				else
-				{
-					this.Character.animation.CrossFade(this.ScaredAnim);
-					this.Pathfinding.canSearch = false;
-					this.Pathfinding.canMove = false;
-					if (this.WitnessedMurder)
-					{
-						this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - this.transform.position);
-						this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
-					}
-					else if (this.WitnessedCorpse)
-					{
-						this.targetRotation = Quaternion.LookRotation(this.Corpse.AllColliders[0].transform.position - this.transform.position);
-						this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
-					}
-				}
-			}
-			if (this.Following && !this.Waiting)
-			{
-				this.DistanceToDestination = Vector3.Distance(this.transform.position, this.Pathfinding.target.position);
-				if (this.DistanceToDestination > (float)5)
-				{
-					this.Character.animation.CrossFade(this.RunAnim);
-					this.Pathfinding.speed = (float)4;
-					this.Obstacle.enabled = false;
-				}
-				else if (this.DistanceToDestination > (float)1)
-				{
-					this.Character.animation.CrossFade(this.WalkAnim);
-					this.Pathfinding.canMove = true;
-					this.Pathfinding.speed = (float)1;
-					this.Obstacle.enabled = false;
-				}
-				else
-				{
-					this.Character.animation.CrossFade(this.IdleAnim);
-					this.Pathfinding.canMove = false;
-					this.Obstacle.enabled = true;
-				}
-				if (this.Phase < Extensions.get_length(this.PhaseTimes) - 1 && this.Clock.HourTime >= this.PhaseTimes[this.Phase])
-				{
-					this.Phase++;
-					this.CurrentDestination = this.Destinations[this.Phase];
-					this.Pathfinding.target = this.Destinations[this.Phase];
-					this.Pathfinding.canSearch = true;
-					this.Pathfinding.canMove = true;
-					this.Pathfinding.speed = (float)1;
-					this.Yandere.Followers = this.Yandere.Followers - 1;
-					this.Following = false;
-					this.Routine = true;
-					this.Subtitle.UpdateLabel("Stop Follow Apology", 0, (float)3);
-					this.Prompt.Label[0].text = "     " + "Talk";
-				}
-			}
-		}
-		if (!this.Dying)
-		{
-			if (!this.Distracted)
-			{
-				this.Character.animation[this.PhoneAnim].weight = Mathf.Lerp(this.Character.animation[this.PhoneAnim].weight, (float)0, Time.deltaTime * (float)10);
-				if (!this.WitnessedMurder)
-				{
-					int num = 0;
-					for (int i = 0; i < this.Police.Corpses; i++)
-					{
-						if (this.Police.CorpseList[i] != null)
+						else if (this.Actions[this.Phase] == 2)
 						{
-							this.Planes = GeometryUtility.CalculateFrustumPlanes(this.VisionCone);
-							if (GeometryUtility.TestPlanesAABB(this.Planes, this.Police.CorpseList[i].AllColliders[0].bounds))
+							if (!this.InEvent)
 							{
-								RaycastHit raycastHit = default(RaycastHit);
-								Debug.DrawLine(this.Eyes.transform.position, this.Police.CorpseList[i].AllColliders[0].transform.position, Color.green);
-								if (Physics.Linecast(this.Eyes.transform.position, this.Police.CorpseList[i].AllColliders[0].transform.position, out raycastHit) && (raycastHit.collider.gameObject.layer == 11 || raycastHit.collider.gameObject.layer == 14))
+								this.Character.animation.CrossFade(this.GameAnim);
+							}
+						}
+						else if (!this.InEvent)
+						{
+							this.Character.animation.CrossFade(this.RandomAnim);
+							if (this.Character.animation[this.RandomAnim].time >= this.Character.animation[this.RandomAnim].length)
+							{
+								this.PickRandomAnim();
+							}
+						}
+					}
+					else
+					{
+						if (this.MeetTimer == (float)0 && this.transform.position.y > (float)11)
+						{
+							this.Prompt.Label[0].text = "     " + "Push";
+							this.Pushable = true;
+						}
+						this.Character.animation.CrossFade(this.IdleAnim);
+						this.MeetTimer += Time.deltaTime;
+						if (this.MeetTimer > (float)60)
+						{
+							this.Subtitle.UpdateLabel("Note Reaction", 4, (float)3);
+							this.CurrentDestination = this.Destinations[this.Phase];
+							this.Pathfinding.target = this.Destinations[this.Phase];
+							this.Prompt.Label[0].text = "     Talk";
+							this.Pathfinding.canSearch = true;
+							this.Pathfinding.canMove = true;
+							this.Pushable = false;
+							this.Meeting = false;
+							this.MeetTimer = (float)0;
+						}
+					}
+				}
+			}
+			else
+			{
+				if (this.Fleeing && this.AlarmTimer == (float)0)
+				{
+					if (this.Persona == 2 && this.StudentManager.Reporter == null && !this.Police.Called)
+					{
+						this.Pathfinding.target = this.StudentManager.Teachers[this.Class].TeacherTalkPoint;
+						this.StudentManager.Reporter = this;
+						this.Reporting = true;
+					}
+					if (this.transform.position.y < (float)-2)
+					{
+						this.Police.Witnesses = this.Police.Witnesses - 1;
+						this.Police.Show = true;
+						this.active = false;
+					}
+					if (this.transform.position.z < (float)-49)
+					{
+						this.Prompt.Hide();
+						this.Prompt.enabled = false;
+						this.Safe = true;
+					}
+					this.DistanceToDestination = Vector3.Distance(this.transform.position, this.Pathfinding.target.position);
+					if (this.AlarmTimer == (float)0)
+					{
+						if (this.DistanceToDestination > this.TargetDistance)
+						{
+							this.Character.animation.CrossFade(this.SprintAnim);
+							this.Pathfinding.canSearch = true;
+							this.Pathfinding.canMove = true;
+							if (this.Yandere.Chased)
+							{
+								this.Pathfinding.repathRate = (float)0;
+								this.Pathfinding.speed = (float)7;
+							}
+							else
+							{
+								this.Pathfinding.speed = (float)4;
+							}
+						}
+						else
+						{
+							this.Pathfinding.canSearch = false;
+							this.Pathfinding.canMove = false;
+							if (!this.Halt)
+							{
+								this.MoveTowardsTarget(this.Pathfinding.target.position);
+								this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.Pathfinding.target.rotation, (float)10 * Time.deltaTime);
+							}
+							else if (this.Persona == 2)
+							{
+								this.targetRotation = Quaternion.LookRotation(this.StudentManager.Teachers[this.Class].transform.position - this.transform.position);
+								this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
+							}
+							if (this.Persona == 2)
+							{
+								this.Character.animation.CrossFade(this.ScaredAnim);
+								if (this.Reporting)
 								{
-									num++;
-									this.Corpse = this.Police.CorpseList[i];
-									if (this.Persona == 2 && this.StudentManager.Reporter == null && !this.Police.Called)
+									if (this.ReportPhase == 0)
 									{
-										this.StudentManager.CorpseLocation.position = this.Corpse.AllColliders[0].transform.position;
-										this.StudentManager.Reporter = this;
-										this.Reporting = true;
+										if (this.WitnessedCorpse)
+										{
+											this.Subtitle.UpdateLabel("Pet Corpse Report", 2, (float)3);
+										}
+										else
+										{
+											this.Subtitle.UpdateLabel("Pet Murder Report", 2, (float)3);
+										}
+										this.ReportPhase++;
 									}
+									else if (this.ReportPhase == 1)
+									{
+										this.ReportTimer += Time.deltaTime;
+										if (this.ReportTimer >= (float)3)
+										{
+											this.StudentManager.Teachers[this.Class].MyReporter = this.transform;
+											this.StudentManager.Teachers[this.Class].Routine = false;
+											this.StudentManager.Teachers[this.Class].Fleeing = true;
+											this.ReportTimer = (float)0;
+											this.ReportPhase++;
+										}
+									}
+									else if (this.ReportPhase == 100)
+									{
+										this.ReportTimer += Time.deltaTime;
+										if (this.ReportTimer >= (float)5)
+										{
+											if (this.StudentManager.Reporter == this)
+											{
+												this.StudentManager.Reporter = null;
+												this.StudentManager.StopFleeing();
+												this.StudentManager.UpdateStudents();
+											}
+											this.Pathfinding.target = this.Destinations[this.Phase];
+											this.Pathfinding.speed = (float)1;
+											this.ReportPhase = 0;
+											this.ReportTimer = (float)0;
+											this.AlarmTimer = (float)0;
+											this.WitnessedCorpse = false;
+											this.WitnessedMurder = false;
+											this.Reporting = false;
+											this.Reacted = false;
+											this.Alarmed = false;
+											this.Fleeing = false;
+											this.Routine = true;
+											this.Halt = false;
+										}
+									}
+								}
+							}
+							else if (this.Persona == 9)
+							{
+								if (!this.WitnessedMurder)
+								{
+									if (this.ReportPhase == 0)
+									{
+										this.Subtitle.UpdateLabel("Teacher Report Reaction", 1, (float)3);
+										this.ReportPhase++;
+									}
+									else if (this.ReportPhase == 1)
+									{
+										this.Character.animation.CrossFade(this.IdleAnim);
+										this.ReportTimer += Time.deltaTime;
+										if (this.ReportTimer >= (float)3)
+										{
+											if (!this.StudentManager.Reporter.Teacher)
+											{
+												this.StudentManager.Reporter.Pathfinding.target = this.StudentManager.CorpseLocation;
+											}
+											this.Pathfinding.target = this.StudentManager.CorpseLocation;
+											this.StudentManager.Reporter.TargetDistance = (float)2;
+											this.StudentManager.Reporter.Halt = true;
+											this.TargetDistance = (float)1;
+											this.Halt = true;
+											this.ReportTimer = (float)0;
+											this.ReportPhase++;
+										}
+									}
+									else if (this.ReportPhase == 2)
+									{
+										if (this.WitnessedCorpse)
+										{
+											if (!this.Corpse.Natural)
+											{
+												this.Subtitle.UpdateLabel("Teacher Corpse Inspection", 1, (float)5);
+											}
+											else
+											{
+												this.Subtitle.UpdateLabel("Teacher Corpse Inspection", 2, (float)2);
+											}
+											this.ReportPhase++;
+										}
+										else
+										{
+											this.Character.animation.CrossFade(this.IdleAnim);
+											this.ReportTimer += Time.deltaTime;
+											if (this.ReportTimer > (float)5)
+											{
+												this.Subtitle.UpdateLabel("Teacher Prank Reaction", 1, (float)7);
+												this.ReportPhase = 98;
+												this.ReportTimer = (float)0;
+											}
+										}
+									}
+									else if (this.ReportPhase == 3)
+									{
+										this.Character.animation.CrossFade(this.KneelAnim);
+										this.ReportTimer += Time.deltaTime;
+										if (this.ReportTimer >= (float)6)
+										{
+											this.ReportTimer = (float)0;
+											this.ReportPhase++;
+										}
+									}
+									else if (this.ReportPhase == 4)
+									{
+										this.Subtitle.UpdateLabel("Teacher Police Report", 1, (float)5);
+										this.Phone.active = true;
+										this.ReportPhase++;
+									}
+									else if (this.ReportPhase == 5)
+									{
+										this.Character.animation.CrossFade(this.CallAnim);
+										this.ReportTimer += Time.deltaTime;
+										if (this.ReportTimer >= (float)5)
+										{
+											if (this.Corpse.Natural)
+											{
+												this.Police.Timer = 1E-06f;
+											}
+											this.Character.animation.CrossFade(this.KneelScanAnim);
+											this.Phone.active = false;
+											this.Police.Show = true;
+											this.Fleeing = false;
+											this.ReportTimer = (float)0;
+											this.ReportPhase++;
+										}
+									}
+									else if (this.ReportPhase == 98)
+									{
+										this.targetRotation = Quaternion.LookRotation(this.MyReporter.transform.position - this.transform.position);
+										this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
+										this.ReportTimer += Time.deltaTime;
+										if (this.ReportTimer > (float)7)
+										{
+											this.ReportPhase++;
+										}
+									}
+									else if (this.ReportPhase == 99)
+									{
+										this.Subtitle.UpdateLabel("Prank Reaction", 1, (float)5);
+										this.StudentManager.Reporter.ReportPhase = 100;
+										this.Pathfinding.target = this.Destinations[this.Phase];
+										this.ReportTimer = (float)0;
+										this.ReportPhase++;
+									}
+									else if (this.ReportPhase == 100)
+									{
+										this.ReportPhase = 0;
+										this.Fleeing = false;
+										this.Routine = true;
+									}
+								}
+								else if (!this.Yandere.Dumping && !this.Yandere.Attacking)
+								{
+									if (this.Yandere.Aiming)
+									{
+										this.Yandere.StopAiming();
+									}
+									if (this.Yandere.Dragging || this.Yandere.Mopping || this.Yandere.PickUp != null)
+									{
+										this.Yandere.Mopping = false;
+										this.Yandere.EmptyHands();
+									}
+									this.AttackReaction();
+									this.Character.animation[this.CounterAnim].time = (float)5;
+									this.Yandere.Character.animation["f02_counterA_00"].time = (float)5;
+									this.Yandere.ShoulderCamera.DoNotMove = true;
+									this.Yandere.ShoulderCamera.Timer = (float)5;
+									this.Yandere.ShoulderCamera.Phase = 3;
+									this.Police.Show = false;
+									this.Yandere.CameraEffects.MurderWitnessed();
+									this.Yandere.Jukebox.GameOver();
+								}
+								else
+								{
+									this.Character.animation.CrossFade(this.IdleAnim);
 								}
 							}
 						}
 					}
-					if (num > 0)
+					else
 					{
-						if (!this.WitnessedCorpse)
+						this.Character.animation.CrossFade(this.ScaredAnim);
+						this.Pathfinding.canSearch = false;
+						this.Pathfinding.canMove = false;
+						if (this.WitnessedMurder)
 						{
-							this.Alarm = (float)200;
-							this.WitnessedCorpse = true;
-							this.StudentManager.UpdateMe(this.StudentID - 1);
-							if (!this.Teacher && this.Corpse.Natural)
-							{
-								this.Persona = 2;
-							}
-							if (this.Talking)
-							{
-								this.DialogueWheel.End();
-								this.Pathfinding.canSearch = true;
-								this.Pathfinding.canMove = true;
-								this.Obstacle.enabled = false;
-								this.Talking = false;
-								this.Waiting = false;
-							}
+							this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - this.transform.position);
+							this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
 						}
-						if (this.Corpse.Dragged || this.Corpse.Dumped)
+						else if (this.WitnessedCorpse)
 						{
-							if (this.Teacher)
-							{
-								this.Subtitle.UpdateLabel("Teacher Murder Reaction", 1, (float)3);
-								this.StudentManager.Portal.active = false;
-							}
-							this.WitnessMurder();
+							this.targetRotation = Quaternion.LookRotation(this.Corpse.AllColliders[0].transform.position - this.transform.position);
+							this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
 						}
 					}
-					this.DistanceToPlayer = Vector3.Distance(this.transform.position, this.Yandere.transform.position);
-					this.PreviousAlarm = this.Alarm;
-					if (this.DistanceToPlayer < (float)11)
+				}
+				if (this.Following && !this.Waiting)
+				{
+					this.DistanceToDestination = Vector3.Distance(this.transform.position, this.Pathfinding.target.position);
+					if (this.DistanceToDestination > (float)5)
 					{
-						if (!this.Talking)
+						this.Character.animation.CrossFade(this.RunAnim);
+						this.Pathfinding.speed = (float)4;
+						this.Obstacle.enabled = false;
+					}
+					else if (this.DistanceToDestination > (float)1)
+					{
+						this.Character.animation.CrossFade(this.WalkAnim);
+						this.Pathfinding.canMove = true;
+						this.Pathfinding.speed = (float)1;
+						this.Obstacle.enabled = false;
+					}
+					else
+					{
+						this.Character.animation.CrossFade(this.IdleAnim);
+						this.Pathfinding.canMove = false;
+						this.Obstacle.enabled = true;
+					}
+					if (this.Phase < Extensions.get_length(this.PhaseTimes) - 1 && this.Clock.HourTime >= this.PhaseTimes[this.Phase])
+					{
+						this.Phase++;
+						this.CurrentDestination = this.Destinations[this.Phase];
+						this.Pathfinding.target = this.Destinations[this.Phase];
+						this.Pathfinding.canSearch = true;
+						this.Pathfinding.canMove = true;
+						this.Pathfinding.speed = (float)1;
+						this.Yandere.Followers = this.Yandere.Followers - 1;
+						this.Following = false;
+						this.Routine = true;
+						this.Subtitle.UpdateLabel("Stop Follow Apology", 0, (float)3);
+						this.Prompt.Label[0].text = "     " + "Talk";
+					}
+				}
+			}
+			if (!this.Dying)
+			{
+				if (!this.Distracted)
+				{
+					this.Character.animation[this.PhoneAnim].weight = Mathf.Lerp(this.Character.animation[this.PhoneAnim].weight, (float)0, Time.deltaTime * (float)10);
+					if (!this.WitnessedMurder)
+					{
+						int num = 0;
+						for (int i = 0; i < this.Police.Corpses; i++)
 						{
-							if (!this.Yandere.Noticed)
+							if (this.Police.CorpseList[i] != null)
 							{
-								if (!this.Yandere.Chased)
+								this.Planes = GeometryUtility.CalculateFrustumPlanes(this.VisionCone);
+								if (GeometryUtility.TestPlanesAABB(this.Planes, this.Police.CorpseList[i].AllColliders[0].bounds))
 								{
-									if ((this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].Suspicious) || (this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Dragging || this.Yandere.Lewd || (this.Private && this.Yandere.Trespassing)) || (this.Teacher && this.Yandere.Trespassing) || (this.StudentID == 1 && this.Yandere.NearSenpai && !this.Yandere.Talking))
+									RaycastHit raycastHit = default(RaycastHit);
+									Debug.DrawLine(this.Eyes.transform.position, this.Police.CorpseList[i].AllColliders[0].transform.position, Color.green);
+									if (Physics.Linecast(this.Eyes.transform.position, this.Police.CorpseList[i].AllColliders[0].transform.position, out raycastHit, this.Mask) && (raycastHit.collider.gameObject.layer == 11 || raycastHit.collider.gameObject.layer == 14))
 									{
-										this.Planes = GeometryUtility.CalculateFrustumPlanes(this.VisionCone);
-										if (GeometryUtility.TestPlanesAABB(this.Planes, this.Yandere.collider.bounds))
+										num++;
+										this.Corpse = this.Police.CorpseList[i];
+										if (this.Persona == 2 && this.StudentManager.Reporter == null && !this.Police.Called)
 										{
-											RaycastHit raycastHit2 = default(RaycastHit);
-											Debug.DrawLine(this.Eyes.transform.position, this.Yandere.transform.position + Vector3.up * (float)1, Color.green);
-											if (Physics.Linecast(this.Eyes.transform.position, this.Yandere.transform.position + Vector3.up * (float)1, out raycastHit2))
+											this.StudentManager.CorpseLocation.position = this.Corpse.AllColliders[0].transform.position;
+											this.StudentManager.Reporter = this;
+											this.Reporting = true;
+										}
+									}
+								}
+							}
+						}
+						if (num > 0)
+						{
+							if (!this.WitnessedCorpse)
+							{
+								this.Alarm = (float)200;
+								this.WitnessedCorpse = true;
+								this.StudentManager.UpdateMe(this.StudentID - 1);
+								if (!this.Teacher && this.Corpse.Natural)
+								{
+									this.Persona = 2;
+								}
+								if (this.Talking)
+								{
+									this.DialogueWheel.End();
+									this.Pathfinding.canSearch = true;
+									this.Pathfinding.canMove = true;
+									this.Obstacle.enabled = false;
+									this.Talking = false;
+									this.Waiting = false;
+								}
+								if (this.Following)
+								{
+									this.Yandere.Followers = this.Yandere.Followers - 1;
+									this.Following = false;
+								}
+							}
+							if (this.Corpse.Dragged || this.Corpse.Dumped)
+							{
+								if (this.Teacher)
+								{
+									this.Subtitle.UpdateLabel("Teacher Murder Reaction", 1, (float)3);
+									this.StudentManager.Portal.active = false;
+								}
+								this.WitnessMurder();
+							}
+						}
+						this.DistanceToPlayer = Vector3.Distance(this.transform.position, this.Yandere.transform.position);
+						this.PreviousAlarm = this.Alarm;
+						if (this.DistanceToPlayer < (float)11)
+						{
+							if (!this.Talking)
+							{
+								if (!this.Yandere.Noticed)
+								{
+									if (!this.Yandere.Chased)
+									{
+										if ((this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].Suspicious) || (this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Dragging || this.Yandere.Lewd || (this.Private && this.Yandere.Trespassing)) || (this.Teacher && this.Yandere.Trespassing) || (this.StudentID == 1 && this.Yandere.NearSenpai && !this.Yandere.Talking))
+										{
+											this.Planes = GeometryUtility.CalculateFrustumPlanes(this.VisionCone);
+											if (GeometryUtility.TestPlanesAABB(this.Planes, this.Yandere.collider.bounds))
 											{
-												if (raycastHit2.collider.gameObject == this.Yandere.gameObject)
+												RaycastHit raycastHit2 = default(RaycastHit);
+												Debug.DrawLine(this.Eyes.transform.position, this.Yandere.transform.position + Vector3.up * (float)1, Color.green);
+												if (Physics.Linecast(this.Eyes.transform.position, this.Yandere.transform.position + Vector3.up * (float)1, out raycastHit2))
 												{
-													if (this.Yandere.Attacking || (this.Yandere.NearBodies > 0 && this.Yandere.Bloodiness > (float)0) || (this.Yandere.NearBodies > 0 && this.Yandere.Armed) || (this.Yandere.NearBodies > 0 && this.Yandere.Sanity < 66.66666f) || this.Yandere.Dragging)
+													if (raycastHit2.collider.gameObject == this.Yandere.gameObject)
 													{
-														this.WitnessMurder();
-													}
-													else if (!this.Fleeing)
-													{
-														if (!this.Alarmed && this.IgnoreTimer <= (float)0)
+														if (this.Yandere.Attacking || (this.Yandere.NearBodies > 0 && this.Yandere.Bloodiness > (float)0) || (this.Yandere.NearBodies > 0 && this.Yandere.Armed) || (this.Yandere.NearBodies > 0 && this.Yandere.Sanity < 66.66666f) || this.Yandere.Dragging)
 														{
-															this.Alarm += Time.deltaTime * ((float)100 / this.DistanceToPlayer);
-															this.YandereVisible = true;
-															if (this.StudentID == 1 && this.Yandere.TimeSkipping)
+															this.WitnessMurder();
+														}
+														else if (!this.Fleeing)
+														{
+															if (!this.Alarmed && this.IgnoreTimer <= (float)0)
 															{
-																this.Clock.EndTimeSkip();
+																this.Alarm += Time.deltaTime * ((float)100 / this.DistanceToPlayer);
+																this.YandereVisible = true;
+																if (this.StudentID == 1 && this.Yandere.TimeSkipping)
+																{
+																	this.Clock.EndTimeSkip();
+																}
 															}
+														}
+														else
+														{
+															this.Alarm -= Time.deltaTime * (float)100;
 														}
 													}
 													else
@@ -946,10 +962,10 @@ public class StudentScript : MonoBehaviour
 														this.Alarm -= Time.deltaTime * (float)100;
 													}
 												}
-												else
-												{
-													this.Alarm -= Time.deltaTime * (float)100;
-												}
+											}
+											else
+											{
+												this.Alarm -= Time.deltaTime * (float)100;
 											}
 										}
 										else
@@ -976,830 +992,827 @@ public class StudentScript : MonoBehaviour
 						{
 							this.Alarm -= Time.deltaTime * (float)100;
 						}
-					}
-					else
-					{
-						this.Alarm -= Time.deltaTime * (float)100;
-					}
-					if (this.PreviousAlarm > this.Alarm && this.Alarm < (float)100)
-					{
-						this.YandereVisible = false;
-					}
-					if (this.Alarm > (float)100 && !this.Alarmed)
-					{
-						for (int i = 0; i < Extensions.get_length(this.Outlines); i++)
+						if (this.PreviousAlarm > this.Alarm && this.Alarm < (float)100)
 						{
-							this.Outlines[i].color = new Color((float)1, (float)1, (float)0, (float)1);
+							this.YandereVisible = false;
 						}
-						this.Pathfinding.canSearch = false;
-						this.Pathfinding.canMove = false;
-						this.Routine = false;
-						this.Alarmed = true;
-						this.Witness = true;
-						string witnessed = this.Witnessed;
-						bool flag = false;
-						if (this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].Suspicious)
+						if (this.Alarm > (float)100 && !this.Alarmed)
 						{
-							flag = true;
-						}
-						if (this.WitnessedCorpse && !this.WitnessedMurder)
-						{
-							this.Witnessed = "Corpse";
-							this.EyeShrink = 0.9f;
-						}
-						if (this.YandereVisible)
-						{
-							if (flag && this.Yandere.Bloodiness > (float)0 && this.Yandere.Sanity < 33.333f)
+							for (int i = 0; i < Extensions.get_length(this.Outlines); i++)
 							{
-								this.Witnessed = "Weapon and Blood and Insanity";
-								this.RepLoss = (float)30;
-								this.Concern = 5;
+								this.Outlines[i].color = new Color((float)1, (float)1, (float)0, (float)1);
 							}
-							else if (flag && this.Yandere.Sanity < 33.333f)
+							this.Pathfinding.canSearch = false;
+							this.Pathfinding.canMove = false;
+							this.Routine = false;
+							this.Alarmed = true;
+							this.Witness = true;
+							string witnessed = this.Witnessed;
+							bool flag = false;
+							if (this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].Suspicious)
 							{
-								this.Witnessed = "Weapon and Insanity";
-								this.RepLoss = (float)20;
-								this.Concern = 5;
+								flag = true;
 							}
-							else if (this.Yandere.Bloodiness > (float)0 && this.Yandere.Sanity < 33.333f)
+							if (this.WitnessedCorpse && !this.WitnessedMurder)
 							{
-								this.Witnessed = "Blood and Insanity";
-								this.RepLoss = (float)20;
-								this.Concern = 5;
+								this.Witnessed = "Corpse";
+								this.EyeShrink = 0.9f;
 							}
-							else if (flag && this.Yandere.Bloodiness > (float)0)
+							if (this.YandereVisible)
 							{
-								this.Witnessed = "Weapon and Blood";
-								this.RepLoss = (float)20;
-								this.Concern = 5;
-							}
-							else if (flag)
-							{
-								this.WeaponWitnessed = this.Yandere.Weapon[this.Yandere.Equipped].WeaponID;
-								this.Witnessed = "Weapon";
-								this.RepLoss = (float)10;
-								this.Concern = 5;
-							}
-							else if (this.Yandere.Bloodiness > (float)0)
-							{
-								this.Witnessed = "Blood";
-								this.RepLoss = (float)10;
-								this.Concern = 5;
-							}
-							else if (this.Yandere.Sanity < 33.333f)
-							{
-								this.Witnessed = "Insanity";
-								this.RepLoss = (float)10;
-								this.Concern = 5;
-							}
-							else if (this.Yandere.Lewd)
-							{
-								this.Witnessed = "Lewd";
-								this.RepLoss = (float)10;
-								this.Concern = 5;
-							}
-							else if (this.Yandere.Trespassing)
-							{
-								if (this.Private)
+								if (flag && this.Yandere.Bloodiness > (float)0 && this.Yandere.Sanity < 33.333f)
 								{
-									this.Witnessed = "Interruption";
-									if (this.EventManager != null)
-									{
-										this.EventManager.EndEvent();
-									}
+									this.Witnessed = "Weapon and Blood and Insanity";
+									this.RepLoss = (float)30;
+									this.Concern = 5;
 								}
-								else
+								else if (flag && this.Yandere.Sanity < 33.333f)
 								{
-									this.Witnessed = "Trespassing";
+									this.Witnessed = "Weapon and Insanity";
+									this.RepLoss = (float)20;
+									this.Concern = 5;
 								}
-								this.Concern++;
-							}
-							else if (this.Yandere.NearSenpai)
-							{
-								this.Witnessed = "Stalking";
-								this.Concern++;
-							}
-							if (this.Teacher && this.WitnessedCorpse)
-							{
-								this.Concern = 1;
-							}
-							if (this.StudentID == 1)
-							{
-								if (this.Concern == 5)
+								else if (this.Yandere.Bloodiness > (float)0 && this.Yandere.Sanity < 33.333f)
 								{
-									this.SenpaiNoticed();
-									if (this.Witnessed == "Stalking")
+									this.Witnessed = "Blood and Insanity";
+									this.RepLoss = (float)20;
+									this.Concern = 5;
+								}
+								else if (flag && this.Yandere.Bloodiness > (float)0)
+								{
+									this.Witnessed = "Weapon and Blood";
+									this.RepLoss = (float)20;
+									this.Concern = 5;
+								}
+								else if (flag)
+								{
+									this.WeaponWitnessed = this.Yandere.Weapon[this.Yandere.Equipped].WeaponID;
+									this.Witnessed = "Weapon";
+									this.RepLoss = (float)10;
+									this.Concern = 5;
+								}
+								else if (this.Yandere.Bloodiness > (float)0)
+								{
+									this.Witnessed = "Blood";
+									this.RepLoss = (float)10;
+									this.Concern = 5;
+								}
+								else if (this.Yandere.Sanity < 33.333f)
+								{
+									this.Witnessed = "Insanity";
+									this.RepLoss = (float)10;
+									this.Concern = 5;
+								}
+								else if (this.Yandere.Lewd)
+								{
+									this.Witnessed = "Lewd";
+									this.RepLoss = (float)10;
+									this.Concern = 5;
+								}
+								else if (this.Yandere.Trespassing)
+								{
+									if (this.Private)
 									{
-										this.Character.animation.CrossFade(this.IdleAnim);
-										this.Character.animation[this.AngryFaceAnim].weight = (float)1;
+										this.Witnessed = "Interruption";
 									}
 									else
 									{
-										this.Character.animation.CrossFade(this.ScaredAnim);
-										this.Character.animation["scaredFace_00"].weight = (float)1;
+										this.Witnessed = "Trespassing";
 									}
-									this.CameraEffects.MurderWitnessed();
+									this.Witness = false;
+									this.Concern++;
+								}
+								else if (this.Yandere.NearSenpai)
+								{
+									this.Witnessed = "Stalking";
+									this.Concern++;
+								}
+								if (this.EventManager != null)
+								{
+									this.EventManager.EndEvent();
+								}
+								if (this.Teacher && this.WitnessedCorpse)
+								{
+									this.Concern = 1;
+								}
+								if (this.StudentID == 1)
+								{
+									if (this.Concern == 5)
+									{
+										this.SenpaiNoticed();
+										if (this.Witnessed == "Stalking")
+										{
+											this.Character.animation.CrossFade(this.IdleAnim);
+											this.Character.animation[this.AngryFaceAnim].weight = (float)1;
+										}
+										else
+										{
+											this.Character.animation.CrossFade(this.ScaredAnim);
+											this.Character.animation["scaredFace_00"].weight = (float)1;
+										}
+										this.CameraEffects.MurderWitnessed();
+									}
+									else
+									{
+										this.Character.animation.CrossFade(this.IdleAnim);
+										this.CameraEffects.Alarm();
+									}
+								}
+								else if (!this.Teacher)
+								{
+									this.CameraEffects.Alarm();
+								}
+								else if (this.Concern < 5)
+								{
+									this.CameraEffects.Alarm();
 								}
 								else
 								{
-									this.Character.animation.CrossFade(this.IdleAnim);
-									this.CameraEffects.Alarm();
+									this.SenpaiNoticed();
+									this.CameraEffects.MurderWitnessed();
 								}
+								if (!this.Teacher && this.Witnessed == witnessed)
+								{
+									this.RepeatReaction = true;
+								}
+								this.Reputation.PendingRep = this.Reputation.PendingRep - this.RepLoss;
+								this.PendingRep -= this.RepLoss;
 							}
-							else if (!this.Teacher)
-							{
-								this.CameraEffects.Alarm();
-							}
-							else if (this.Concern < 5)
-							{
-								this.CameraEffects.Alarm();
-							}
-							else
-							{
-								this.SenpaiNoticed();
-								this.CameraEffects.MurderWitnessed();
-							}
-							if (!this.Teacher && this.Witnessed == witnessed)
-							{
-								this.RepeatReaction = true;
-							}
-							this.Reputation.PendingRep = this.Reputation.PendingRep - this.RepLoss;
-							this.PendingRep -= this.RepLoss;
+						}
+					}
+					else if (!this.Alarmed)
+					{
+						this.Alarm -= Time.deltaTime * (float)100;
+					}
+				}
+				else if (!this.InEvent)
+				{
+					this.Character.animation[this.PhoneAnim].weight = Mathf.Lerp(this.Character.animation[this.PhoneAnim].weight, (float)1, Time.deltaTime * (float)10);
+					if (this.transform.position.z > (float)-49)
+					{
+						this.Phone.active = false;
+						this.Distracted = false;
+						this.Safe = false;
+						this.StudentManager.UpdateStudents();
+					}
+				}
+			}
+			if (this.Alarm > (float)100)
+			{
+				this.Alarm = (float)100;
+			}
+			if (this.Alarm < (float)0)
+			{
+				this.Alarm = (float)0;
+			}
+			float y = this.Alarm / (float)100;
+			Vector3 localScale = this.DetectionMarker.Tex.transform.localScale;
+			float num2 = localScale.y = y;
+			Vector3 vector = this.DetectionMarker.Tex.transform.localScale = localScale;
+			float a = this.Alarm / (float)100;
+			Color color = this.DetectionMarker.Tex.color;
+			float num3 = color.a = a;
+			Color color2 = this.DetectionMarker.Tex.color = color;
+			if (this.StudentID > 1)
+			{
+				if (this.Alarm > (float)0 || this.AlarmTimer > (float)0 || this.Yandere.Armed)
+				{
+					this.Prompt.Circle[0].fillAmount = (float)1;
+				}
+				if (this.Prompt.Circle[0].fillAmount <= (float)0)
+				{
+					if (this.Following)
+					{
+						this.Subtitle.UpdateLabel("Student Farewell", 0, (float)3);
+						this.Prompt.Label[0].text = "     " + "Talk";
+						this.Prompt.Circle[0].fillAmount = (float)1;
+						this.Yandere.Followers = this.Yandere.Followers - 1;
+						this.Following = false;
+						this.Routine = true;
+						this.CurrentDestination = this.Destinations[this.Phase];
+						this.Pathfinding.target = this.Destinations[this.Phase];
+						this.Pathfinding.canSearch = true;
+						this.Pathfinding.canMove = true;
+						this.Pathfinding.speed = (float)1;
+					}
+					else if (this.Pushable)
+					{
+						this.Subtitle.UpdateLabel("Note Reaction", 5, (float)3);
+						this.Prompt.Label[0].text = "     " + "Talk";
+						this.Prompt.Circle[0].fillAmount = (float)1;
+						this.Yandere.TargetStudent = this;
+						this.Yandere.Attacking = true;
+						this.Yandere.RoofPush = true;
+						this.Yandere.CanMove = false;
+						this.Routine = false;
+						this.Pushed = true;
+						this.Character.animation.CrossFade(this.PushedAnim);
+					}
+					else if (this.InEvent || this.Meeting)
+					{
+						this.Subtitle.UpdateLabel("Event Apology", 1, (float)3);
+						this.Prompt.Circle[0].fillAmount = (float)1;
+					}
+					else if (!this.Witness && this.Yandere.Bloodiness > (float)0)
+					{
+						this.Prompt.Circle[0].fillAmount = (float)1;
+						this.YandereVisible = true;
+						this.Alarm = (float)200;
+					}
+					else
+					{
+						this.Subtitle.UpdateLabel("Greeting", 0, (float)3);
+						this.ShoulderCamera.OverShoulder = true;
+						this.Pathfinding.canSearch = false;
+						this.Pathfinding.canMove = false;
+						this.Obstacle.enabled = true;
+						this.Yandere.TargetStudent = this;
+						this.Yandere.Obscurance.enabled = false;
+						this.Yandere.YandereVision = false;
+						this.Yandere.CanMove = false;
+						this.Yandere.Talking = true;
+						this.Reacted = false;
+						this.Talking = true;
+						this.Routine = false;
+						this.StudentManager.DisablePrompts();
+						this.DialogueWheel.HideShadows();
+						if (!this.Witness || this.Forgave)
+						{
+							float a2 = 0.75f;
+							Color color3 = this.DialogueWheel.Shadow[1].color;
+							float num4 = color3.a = a2;
+							Color color4 = this.DialogueWheel.Shadow[1].color = color3;
+						}
+						if (this.Complimented)
+						{
+							float a3 = 0.75f;
+							Color color5 = this.DialogueWheel.Shadow[2].color;
+							float num5 = color5.a = a3;
+							Color color6 = this.DialogueWheel.Shadow[2].color = color5;
+						}
+						this.Yandere.WeaponMenu.KeyboardShow = false;
+						this.Yandere.WeaponMenu.Show = false;
+						this.DialogueWheel.Show = true;
+						this.TalkTimer = (float)0;
+					}
+				}
+				if (this.Prompt.Circle[2].fillAmount <= (float)0 && !this.Yandere.NearSenpai && !this.Yandere.Attacking)
+				{
+					this.AttackReaction();
+				}
+			}
+			if (this.Talking)
+			{
+				if (this.Interaction == 0)
+				{
+					this.Character.animation.CrossFade(this.IdleAnim);
+					if (this.TalkTimer == (float)0)
+					{
+						this.DialogueWheel.Impatience.fillAmount = this.DialogueWheel.Impatience.fillAmount + Time.deltaTime * 0.1f;
+						if (this.DialogueWheel.Impatience.fillAmount > 0.5f && this.Subtitle.Timer == (float)0)
+						{
+							this.Subtitle.UpdateLabel("Impatience", 1, (float)5);
+						}
+						if (this.DialogueWheel.Impatience.fillAmount >= (float)1)
+						{
+							this.Subtitle.UpdateLabel("Impatience", 2, (float)3);
+							this.DialogueWheel.End();
+							this.WaitTimer = (float)0;
 						}
 					}
 				}
-				else if (!this.Alarmed)
+				else if (this.Interaction == 1)
 				{
-					this.Alarm -= Time.deltaTime * (float)100;
-				}
-			}
-			else if (!this.Drowned)
-			{
-				this.Character.animation[this.PhoneAnim].weight = Mathf.Lerp(this.Character.animation[this.PhoneAnim].weight, (float)1, Time.deltaTime * (float)10);
-				if (this.transform.position.z > (float)-49)
-				{
-					this.Phone.active = false;
-					this.Distracted = false;
-					this.Safe = false;
-					this.StudentManager.UpdateStudents();
-				}
-			}
-		}
-		if (this.Alarm > (float)100)
-		{
-			this.Alarm = (float)100;
-		}
-		if (this.Alarm < (float)0)
-		{
-			this.Alarm = (float)0;
-		}
-		float y = this.Alarm / (float)100;
-		Vector3 localScale = this.DetectionMarker.Tex.transform.localScale;
-		float num2 = localScale.y = y;
-		Vector3 vector = this.DetectionMarker.Tex.transform.localScale = localScale;
-		float a = this.Alarm / (float)100;
-		Color color = this.DetectionMarker.Tex.color;
-		float num3 = color.a = a;
-		Color color2 = this.DetectionMarker.Tex.color = color;
-		if (this.StudentID > 1)
-		{
-			if (this.Alarm > (float)0 || this.AlarmTimer > (float)0 || this.Yandere.Armed)
-			{
-				this.Prompt.Circle[0].fillAmount = (float)1;
-			}
-			if (this.Prompt.Circle[0].fillAmount <= (float)0)
-			{
-				if (this.Following)
-				{
-					this.Subtitle.UpdateLabel("Student Farewell", 0, (float)3);
-					this.Prompt.Label[0].text = "     " + "Talk";
-					this.Prompt.Circle[0].fillAmount = (float)1;
-					this.Yandere.Followers = this.Yandere.Followers - 1;
-					this.Following = false;
-					this.Routine = true;
-					this.CurrentDestination = this.Destinations[this.Phase];
-					this.Pathfinding.target = this.Destinations[this.Phase];
-					this.Pathfinding.canSearch = true;
-					this.Pathfinding.canMove = true;
-					this.Pathfinding.speed = (float)1;
-				}
-				else if (this.Pushable)
-				{
-					this.Subtitle.UpdateLabel("Note Reaction", 5, (float)3);
-					this.Prompt.Label[0].text = "     " + "Talk";
-					this.Prompt.Circle[0].fillAmount = (float)1;
-					this.Yandere.TargetStudent = this;
-					this.Yandere.Attacking = true;
-					this.Yandere.RoofPush = true;
-					this.Yandere.CanMove = false;
-					this.Routine = false;
-					this.Pushed = true;
-					this.Character.animation.CrossFade(this.PushedAnim);
-				}
-				else if (this.InEvent)
-				{
-					this.Subtitle.UpdateLabel("Event Apology", 1, (float)3);
-					this.Prompt.Circle[0].fillAmount = (float)1;
-				}
-				else if (!this.Witness && this.Yandere.Bloodiness > (float)0)
-				{
-					this.Prompt.Circle[0].fillAmount = (float)1;
-					this.YandereVisible = true;
-					this.Alarm = (float)200;
-				}
-				else
-				{
-					this.Subtitle.UpdateLabel("Greeting", 0, (float)3);
-					this.ShoulderCamera.OverShoulder = true;
-					this.Pathfinding.canSearch = false;
-					this.Pathfinding.canMove = false;
-					this.Obstacle.enabled = true;
-					this.Yandere.TargetStudent = this;
-					this.Yandere.Obscurance.enabled = false;
-					this.Yandere.YandereVision = false;
-					this.Yandere.CanMove = false;
-					this.Yandere.Talking = true;
-					this.Reacted = false;
-					this.Talking = true;
-					this.Routine = false;
-					this.StudentManager.DisablePrompts();
-					this.DialogueWheel.HideShadows();
-					if (!this.Witness || this.Forgave)
+					if (this.TalkTimer == (float)3)
 					{
-						float a2 = 0.75f;
-						Color color3 = this.DialogueWheel.Shadow[1].color;
-						float num4 = color3.a = a2;
-						Color color4 = this.DialogueWheel.Shadow[1].color = color3;
-					}
-					if (this.Complimented)
-					{
-						float a3 = 0.75f;
-						Color color5 = this.DialogueWheel.Shadow[2].color;
-						float num5 = color5.a = a3;
-						Color color6 = this.DialogueWheel.Shadow[2].color = color5;
-					}
-					this.Yandere.WeaponMenu.KeyboardShow = false;
-					this.Yandere.WeaponMenu.Show = false;
-					this.DialogueWheel.Show = true;
-					this.TalkTimer = (float)0;
-				}
-			}
-			if (this.Prompt.Circle[2].fillAmount <= (float)0 && !this.Yandere.NearSenpai && !this.Yandere.Attacking)
-			{
-				this.AttackReaction();
-			}
-		}
-		if (this.Talking)
-		{
-			if (this.Interaction == 0)
-			{
-				this.Character.animation.CrossFade(this.IdleAnim);
-				if (this.TalkTimer == (float)0)
-				{
-					this.DialogueWheel.Impatience.fillAmount = this.DialogueWheel.Impatience.fillAmount + Time.deltaTime * 0.1f;
-					if (this.DialogueWheel.Impatience.fillAmount > 0.5f && this.Subtitle.Timer == (float)0)
-					{
-						this.Subtitle.UpdateLabel("Impatience", 1, (float)5);
-					}
-					if (this.DialogueWheel.Impatience.fillAmount >= (float)1)
-					{
-						this.Subtitle.UpdateLabel("Impatience", 2, (float)3);
-						this.DialogueWheel.End();
-						this.WaitTimer = (float)0;
-					}
-				}
-			}
-			else if (this.Interaction == 1)
-			{
-				if (this.TalkTimer == (float)3)
-				{
-					this.Character.animation.CrossFade(this.Nod2Anim);
-					this.Reputation.PendingRep = this.Reputation.PendingRep + (float)5;
-					this.PendingRep += (float)5;
-					for (int i = 0; i < Extensions.get_length(this.Outlines); i++)
-					{
-						this.Outlines[i].color = new Color((float)0, (float)1, (float)0, (float)1);
-					}
-					this.Forgave = true;
-					if (this.Witnessed == "Insanity" || this.Witnessed == "Weapon and Blood and Insanity" || this.Witnessed == "Weapon and Insanity" || this.Witnessed == "Blood and Insanity")
-					{
-						this.Subtitle.UpdateLabel("Forgiving Insanity", 0, (float)3);
-					}
-					else
-					{
-						this.Subtitle.UpdateLabel("Forgiving", 0, (float)3);
-					}
-				}
-				else
-				{
-					if (this.Character.animation[this.Nod2Anim].time >= this.Character.animation[this.Nod2Anim].length)
-					{
-						this.Character.animation.CrossFade(this.IdleAnim);
-					}
-					if (this.TalkTimer <= (float)0)
-					{
-						this.IgnoreTimer = (float)5;
-						this.DialogueWheel.End();
-					}
-				}
-				this.TalkTimer -= Time.deltaTime;
-			}
-			else if (this.Interaction == 2)
-			{
-				if (this.TalkTimer == (float)3)
-				{
-					this.Subtitle.UpdateLabel("Student Compliment", 0, (float)3);
-					this.Reputation.PendingRep = this.Reputation.PendingRep + (float)2;
-					this.PendingRep += (float)2;
-					this.Complimented = true;
-				}
-				this.Character.animation.CrossFade(this.LookDownAnim);
-				this.TalkTimer -= Time.deltaTime;
-				if (this.TalkTimer <= (float)0)
-				{
-					this.DialogueWheel.End();
-				}
-			}
-			else if (this.Interaction == 4)
-			{
-				if (this.TalkTimer == (float)2)
-				{
-					this.Subtitle.UpdateLabel("Student Farewell", 0, (float)2);
-				}
-				this.Character.animation.CrossFade(this.IdleAnim);
-				this.TalkTimer -= Time.deltaTime;
-				if (this.TalkTimer <= (float)0)
-				{
-					this.DialogueWheel.End();
-				}
-			}
-			else if (this.Interaction == 9)
-			{
-				if (this.TalkTimer == (float)2)
-				{
-					this.Character.animation.CrossFade(this.Nod1Anim);
-					this.Subtitle.UpdateLabel("Student Follow", 0, (float)2);
-				}
-				else
-				{
-					if (this.Character.animation[this.Nod1Anim].time >= this.Character.animation[this.Nod1Anim].length)
-					{
-						this.Character.animation.CrossFade(this.IdleAnim);
-					}
-					if (this.TalkTimer <= (float)0)
-					{
-						this.DialogueWheel.End();
-						this.Pathfinding.target = this.Yandere.transform;
-						this.Prompt.Label[0].text = "     " + "Stop";
-						this.Yandere.Follower = this;
-						this.Yandere.Followers = this.Yandere.Followers + 1;
-						this.Following = true;
-					}
-				}
-				this.TalkTimer -= Time.deltaTime;
-			}
-			if (this.Waiting)
-			{
-				this.WaitTimer -= Time.deltaTime;
-				if (this.WaitTimer <= (float)0)
-				{
-					this.Pathfinding.canSearch = true;
-					this.Pathfinding.canMove = true;
-					this.Obstacle.enabled = false;
-					this.Alarmed = false;
-					this.Talking = false;
-					this.Waiting = false;
-					if (!this.Following)
-					{
-						this.Routine = true;
-					}
-					this.StudentManager.EnablePrompts();
-				}
-			}
-			else
-			{
-				this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - this.transform.position);
-				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
-			}
-		}
-		else if (this.Dying)
-		{
-			if (this.EventManager != null)
-			{
-				this.EventManager.EndEvent();
-			}
-			this.Alarm -= Time.deltaTime * (float)100;
-			if (!this.Teacher)
-			{
-				this.EyeShrink = Mathf.Lerp(this.EyeShrink, (float)1, Time.deltaTime * (float)10);
-				if (!this.Dead)
-				{
-					this.Character.animation.CrossFade(this.DefendAnim);
-					this.targetRotation = Quaternion.LookRotation(new Vector3(this.Yandere.transform.position.x, this.transform.position.y, this.Yandere.transform.position.z) - this.transform.position);
-					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
-					this.MoveTowardsTarget(this.Yandere.transform.position + this.Yandere.transform.forward * 0.1f);
-				}
-				else
-				{
-					this.Character.animation.CrossFade(this.DeathAnim);
-					if (this.Character.animation[this.DeathAnim].time < (float)1)
-					{
-						this.transform.Translate(Vector3.back * Time.deltaTime);
-					}
-					else
-					{
-						this.BecomeRagdoll();
-					}
-				}
-			}
-			else
-			{
-				if (this.Yandere.Laughing)
-				{
-					this.Yandere.Laughing = false;
-				}
-				if (this.Yandere.Dipping)
-				{
-					this.Yandere.Dipping = false;
-				}
-				if (this.Yandere.RPGCamera.enabled)
-				{
-					this.Yandere.RPGCamera.enabled = false;
-				}
-				if (this.Phone.active)
-				{
-					this.Phone.active = false;
-				}
-				if (this.Police.Show)
-				{
-					this.Police.Show = false;
-				}
-				this.Character.animation.CrossFade(this.CounterAnim);
-				this.targetRotation = Quaternion.LookRotation(new Vector3(this.Yandere.transform.position.x, this.transform.position.y, this.Yandere.transform.position.z) - this.transform.position);
-				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
-				this.MoveTowardsTarget(this.Yandere.transform.position + this.Yandere.transform.forward * (float)1);
-				this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-			}
-		}
-		else if (this.Pushed)
-		{
-			this.Alarm -= Time.deltaTime * (float)100;
-			this.EyeShrink = Mathf.Lerp(this.EyeShrink, (float)1, Time.deltaTime * (float)10);
-			if (this.Character.animation[this.PushedAnim].time >= this.Character.animation[this.PushedAnim].length)
-			{
-				this.BecomeRagdoll();
-			}
-		}
-		else if (this.Drowned)
-		{
-			this.Alarm -= Time.deltaTime * (float)100;
-			this.EyeShrink = Mathf.Lerp(this.EyeShrink, (float)1, Time.deltaTime * (float)10);
-			if (this.Character.animation[this.DrownAnim].time >= this.Character.animation[this.DrownAnim].length)
-			{
-				this.BecomeRagdoll();
-			}
-		}
-		else if (this.WitnessedMurder)
-		{
-			if (!this.Fleeing)
-			{
-				if (this.StudentID > 1 && this.EyeShrink < (float)1)
-				{
-					this.EyeShrink += Time.deltaTime * 0.2f;
-				}
-				this.Character.animation.CrossFade(this.ScaredAnim);
-				this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - this.transform.position);
-				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
-				this.AlarmTimer += Time.deltaTime;
-				if (this.AlarmTimer > (float)5)
-				{
-					this.PersonaReaction();
-					this.AlarmTimer = (float)0;
-				}
-				else if (this.AlarmTimer > (float)1 && !this.Reacted)
-				{
-					if (this.StudentID > 1)
-					{
-						if (!this.Teacher)
+						this.Character.animation.CrossFade(this.Nod2Anim);
+						this.Reputation.PendingRep = this.Reputation.PendingRep + (float)5;
+						this.PendingRep += (float)5;
+						for (int i = 0; i < Extensions.get_length(this.Outlines); i++)
 						{
-							this.Subtitle.UpdateLabel("Murder Reaction", 1, (float)3);
+							this.Outlines[i].color = new Color((float)0, (float)1, (float)0, (float)1);
+						}
+						this.Forgave = true;
+						if (this.Witnessed == "Insanity" || this.Witnessed == "Weapon and Blood and Insanity" || this.Witnessed == "Weapon and Insanity" || this.Witnessed == "Blood and Insanity")
+						{
+							this.Subtitle.UpdateLabel("Forgiving Insanity", 0, (float)3);
 						}
 						else
 						{
-							this.Subtitle.UpdateLabel("Teacher Murder Reaction", 1, (float)3);
-							this.StudentManager.Portal.active = false;
+							this.Subtitle.UpdateLabel("Forgiving", 0, (float)3);
 						}
 					}
 					else
 					{
-						this.Subtitle.UpdateLabel("Senpai Murder Reaction", 1, 4.5f);
-						this.GameOverCause = "Murder";
-						this.SenpaiNoticed();
-						this.Character.animation.CrossFade(this.ScaredAnim);
-						this.Yandere.ShoulderCamera.enabled = true;
-						this.Yandere.ShoulderCamera.Noticed = true;
+						if (this.Character.animation[this.Nod2Anim].time >= this.Character.animation[this.Nod2Anim].length)
+						{
+							this.Character.animation.CrossFade(this.IdleAnim);
+						}
+						if (this.TalkTimer <= (float)0)
+						{
+							this.IgnoreTimer = (float)5;
+							this.DialogueWheel.End();
+						}
+					}
+					this.TalkTimer -= Time.deltaTime;
+				}
+				else if (this.Interaction == 2)
+				{
+					if (this.TalkTimer == (float)3)
+					{
+						this.Subtitle.UpdateLabel("Student Compliment", 0, (float)3);
+						this.Reputation.PendingRep = this.Reputation.PendingRep + (float)2;
+						this.PendingRep += (float)2;
+						this.Complimented = true;
+					}
+					this.Character.animation.CrossFade(this.LookDownAnim);
+					this.TalkTimer -= Time.deltaTime;
+					if (this.TalkTimer <= (float)0)
+					{
+						this.DialogueWheel.End();
+					}
+				}
+				else if (this.Interaction == 4)
+				{
+					if (this.TalkTimer == (float)2)
+					{
+						this.Subtitle.UpdateLabel("Student Farewell", 0, (float)2);
+					}
+					this.Character.animation.CrossFade(this.IdleAnim);
+					this.TalkTimer -= Time.deltaTime;
+					if (this.TalkTimer <= (float)0)
+					{
+						this.DialogueWheel.End();
+					}
+				}
+				else if (this.Interaction == 9)
+				{
+					if (this.TalkTimer == (float)2)
+					{
+						this.Character.animation.CrossFade(this.Nod1Anim);
+						this.Subtitle.UpdateLabel("Student Follow", 0, (float)2);
+					}
+					else
+					{
+						if (this.Character.animation[this.Nod1Anim].time >= this.Character.animation[this.Nod1Anim].length)
+						{
+							this.Character.animation.CrossFade(this.IdleAnim);
+						}
+						if (this.TalkTimer <= (float)0)
+						{
+							this.DialogueWheel.End();
+							this.Pathfinding.target = this.Yandere.transform;
+							this.Prompt.Label[0].text = "     " + "Stop";
+							this.Yandere.Follower = this;
+							this.Yandere.Followers = this.Yandere.Followers + 1;
+							this.Following = true;
+						}
+					}
+					this.TalkTimer -= Time.deltaTime;
+				}
+				if (this.Waiting)
+				{
+					this.WaitTimer -= Time.deltaTime;
+					if (this.WaitTimer <= (float)0)
+					{
+						this.Pathfinding.canSearch = true;
+						this.Pathfinding.canMove = true;
+						this.Obstacle.enabled = false;
+						this.Alarmed = false;
+						this.Talking = false;
+						this.Waiting = false;
+						if (!this.Following)
+						{
+							this.Routine = true;
+						}
+						this.StudentManager.EnablePrompts();
+					}
+				}
+				else
+				{
+					this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - this.transform.position);
+					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
+				}
+			}
+			else if (this.Dying)
+			{
+				if (this.EventManager != null)
+				{
+					this.EventManager.EndEvent();
+				}
+				this.Alarm -= Time.deltaTime * (float)100;
+				if (!this.Teacher)
+				{
+					this.EyeShrink = Mathf.Lerp(this.EyeShrink, (float)1, Time.deltaTime * (float)10);
+					if (!this.Dead)
+					{
+						this.Character.animation.CrossFade(this.DefendAnim);
+						this.targetRotation = Quaternion.LookRotation(new Vector3(this.Yandere.transform.position.x, this.transform.position.y, this.Yandere.transform.position.z) - this.transform.position);
+						this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
+						this.MoveTowardsTarget(this.Yandere.transform.position + this.Yandere.transform.forward * 0.1f);
+					}
+					else
+					{
+						this.Character.animation.CrossFade(this.DeathAnim);
+						if (this.Character.animation[this.DeathAnim].time < (float)1)
+						{
+							this.transform.Translate(Vector3.back * Time.deltaTime);
+						}
+						else
+						{
+							this.BecomeRagdoll();
+						}
+					}
+				}
+				else
+				{
+					if (this.Yandere.Laughing)
+					{
+						this.Yandere.Laughing = false;
+					}
+					if (this.Yandere.Dipping)
+					{
+						this.Yandere.Dipping = false;
+					}
+					if (this.Yandere.RPGCamera.enabled)
+					{
 						this.Yandere.RPGCamera.enabled = false;
-						this.enabled = false;
+					}
+					if (this.Phone.active)
+					{
+						this.Phone.active = false;
+					}
+					if (this.Police.Show)
+					{
+						this.Police.Show = false;
+					}
+					this.Character.animation.CrossFade(this.CounterAnim);
+					this.targetRotation = Quaternion.LookRotation(new Vector3(this.Yandere.transform.position.x, this.transform.position.y, this.Yandere.transform.position.z) - this.transform.position);
+					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
+					this.MoveTowardsTarget(this.Yandere.transform.position + this.Yandere.transform.forward * (float)1);
+					this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+				}
+			}
+			else if (this.Pushed)
+			{
+				this.Alarm -= Time.deltaTime * (float)100;
+				this.EyeShrink = Mathf.Lerp(this.EyeShrink, (float)1, Time.deltaTime * (float)10);
+				if (this.Character.animation[this.PushedAnim].time >= this.Character.animation[this.PushedAnim].length)
+				{
+					this.BecomeRagdoll();
+				}
+			}
+			else if (this.Drowned)
+			{
+				this.Alarm -= Time.deltaTime * (float)100;
+				this.EyeShrink = Mathf.Lerp(this.EyeShrink, (float)1, Time.deltaTime * (float)10);
+				if (this.Character.animation[this.DrownAnim].time >= this.Character.animation[this.DrownAnim].length)
+				{
+					this.BecomeRagdoll();
+				}
+			}
+			else if (this.WitnessedMurder)
+			{
+				if (!this.Fleeing)
+				{
+					if (this.StudentID > 1 && this.EyeShrink < (float)1)
+					{
+						this.EyeShrink += Time.deltaTime * 0.2f;
+					}
+					this.Character.animation.CrossFade(this.ScaredAnim);
+					this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - this.transform.position);
+					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
+					this.AlarmTimer += Time.deltaTime;
+					if (this.AlarmTimer > (float)5)
+					{
+						this.PersonaReaction();
+						this.AlarmTimer = (float)0;
+					}
+					else if (this.AlarmTimer > (float)1 && !this.Reacted)
+					{
+						if (this.StudentID > 1)
+						{
+							if (!this.Teacher)
+							{
+								this.Subtitle.UpdateLabel("Murder Reaction", 1, (float)3);
+							}
+							else
+							{
+								this.Subtitle.UpdateLabel("Teacher Murder Reaction", 1, (float)3);
+								this.StudentManager.Portal.active = false;
+							}
+						}
+						else
+						{
+							this.Subtitle.UpdateLabel("Senpai Murder Reaction", 1, 4.5f);
+							this.GameOverCause = "Murder";
+							this.SenpaiNoticed();
+							this.Character.animation.CrossFade(this.ScaredAnim);
+							this.Yandere.ShoulderCamera.enabled = true;
+							this.Yandere.ShoulderCamera.Noticed = true;
+							this.Yandere.RPGCamera.enabled = false;
+							this.enabled = false;
+						}
+						this.Reacted = true;
+					}
+				}
+			}
+			else if (this.Alarmed)
+			{
+				if (this.WitnessedCorpse)
+				{
+					this.Character.animation.CrossFade(this.ScaredAnim);
+				}
+				else if (this.StudentID > 1)
+				{
+					this.Character.animation.CrossFade(this.IdleAnim);
+				}
+				if (this.WitnessedCorpse)
+				{
+					this.targetRotation = Quaternion.LookRotation(this.Corpse.AllColliders[0].transform.position - this.transform.position);
+					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
+				}
+				else
+				{
+					this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - this.transform.position);
+					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
+				}
+				this.AlarmTimer += Time.deltaTime;
+				this.Alarm -= Time.deltaTime * (float)100;
+				if (this.AlarmTimer > (float)5)
+				{
+					this.Pathfinding.canSearch = true;
+					this.Pathfinding.canMove = true;
+					if (this.StudentID == 1 || this.Teacher)
+					{
+						this.IgnoreTimer = 0.0001f;
+					}
+					else
+					{
+						this.IgnoreTimer = (float)5;
+					}
+					this.Alarmed = false;
+					this.Reacted = false;
+					this.AlarmTimer = (float)0;
+					if (this.WitnessedCorpse)
+					{
+						this.PersonaReaction();
+					}
+					else if (!this.Following)
+					{
+						this.Routine = true;
+					}
+				}
+				else if (this.AlarmTimer > (float)1 && !this.Reacted)
+				{
+					if (this.Teacher)
+					{
+						if (!this.WitnessedCorpse)
+						{
+							if (this.Witnessed == "Weapon and Blood and Insanity")
+							{
+								this.Subtitle.UpdateLabel("Teacher Insanity Reaction", 1, (float)6);
+								this.GameOverCause = "Insanity";
+							}
+							else if (this.Witnessed == "Weapon and Blood")
+							{
+								this.Subtitle.UpdateLabel("Teacher Weapon Reaction", 1, (float)6);
+								this.GameOverCause = "Weapon";
+							}
+							else if (this.Witnessed == "Weapon and Insanity")
+							{
+								this.Subtitle.UpdateLabel("Teacher Insanity Reaction", 1, (float)6);
+								this.GameOverCause = "Insanity";
+							}
+							else if (this.Witnessed == "Blood and Insanity")
+							{
+								this.Subtitle.UpdateLabel("Teacher Insanity Reaction", 1, (float)6);
+								this.GameOverCause = "Insanity";
+							}
+							else if (this.Witnessed == "Weapon")
+							{
+								this.Subtitle.UpdateLabel("Teacher Weapon Reaction", 1, (float)6);
+								this.GameOverCause = "Weapon";
+							}
+							else if (this.Witnessed == "Blood")
+							{
+								this.Subtitle.UpdateLabel("Teacher Blood Reaction", 1, (float)6);
+								this.GameOverCause = "Blood";
+							}
+							else if (this.Witnessed == "Insanity")
+							{
+								this.Subtitle.UpdateLabel("Teacher Insanity Reaction", 1, (float)6);
+								this.GameOverCause = "Insanity";
+							}
+							else if (this.Witnessed == "Lewd")
+							{
+								this.Subtitle.UpdateLabel("Teacher Lewd Reaction", 1, (float)6);
+								this.GameOverCause = "Lewd";
+							}
+							else if (this.Witnessed == "Trespassing")
+							{
+								this.Subtitle.UpdateLabel("Teacher Trespassing Reaction", this.Concern, (float)5);
+							}
+						}
+						else
+						{
+							this.Concern = 1;
+							if (this.Witnessed == "Weapon and Blood and Insanity")
+							{
+								this.Subtitle.UpdateLabel("Teacher Insanity Hostile", 1, (float)6);
+								this.GameOverCause = "Insanity";
+								this.WitnessedMurder = true;
+							}
+							else if (this.Witnessed == "Weapon and Blood")
+							{
+								this.Subtitle.UpdateLabel("Teacher Weapon Hostile", 1, (float)6);
+								this.GameOverCause = "Weapon";
+								this.WitnessedMurder = true;
+							}
+							else if (this.Witnessed == "Weapon and Insanity")
+							{
+								this.Subtitle.UpdateLabel("Teacher Insanity Hostile", 1, (float)6);
+								this.GameOverCause = "Insanity";
+								this.WitnessedMurder = true;
+							}
+							else if (this.Witnessed == "Blood and Insanity")
+							{
+								this.Subtitle.UpdateLabel("Teacher Insanity Hostile", 1, (float)6);
+								this.GameOverCause = "Insanity";
+								this.WitnessedMurder = true;
+							}
+							else if (this.Witnessed == "Weapon")
+							{
+								this.Subtitle.UpdateLabel("Teacher Weapon Hostile", 1, (float)6);
+								this.GameOverCause = "Weapon";
+								this.WitnessedMurder = true;
+							}
+							else if (this.Witnessed == "Blood")
+							{
+								this.Subtitle.UpdateLabel("Teacher Blood Hostile", 1, (float)6);
+								this.GameOverCause = "Blood";
+								this.WitnessedMurder = true;
+							}
+							else if (this.Witnessed == "Insanity")
+							{
+								this.Subtitle.UpdateLabel("Teacher Insanity Hostile", 1, (float)6);
+								this.GameOverCause = "Insanity";
+								this.WitnessedMurder = true;
+							}
+							else if (this.Witnessed == "Lewd")
+							{
+								this.Subtitle.UpdateLabel("Teacher Lewd Reaction", 1, (float)6);
+								this.GameOverCause = "Lewd";
+							}
+							else if (this.Witnessed == "Trespassing")
+							{
+								this.Subtitle.UpdateLabel("Teacher Trespassing Reaction", this.Concern, (float)5);
+							}
+							else if (this.Witnessed == "Corpse")
+							{
+								this.Subtitle.UpdateLabel("Teacher Corpse Reaction", 1, (float)3);
+								this.Police.Called = true;
+							}
+						}
+						if (this.Concern == 5)
+						{
+							this.Character.animation[this.AngryFaceAnim].weight = (float)1;
+							this.Yandere.ShoulderCamera.enabled = true;
+							this.Yandere.ShoulderCamera.Noticed = true;
+							this.Yandere.RPGCamera.enabled = false;
+							this.enabled = false;
+						}
+					}
+					else if (this.StudentID > 1)
+					{
+						if (this.RepeatReaction)
+						{
+							this.Subtitle.UpdateLabel("Repeat Reaction", 1, (float)3);
+							this.RepeatReaction = false;
+						}
+						else if (this.Witnessed == "Weapon and Blood and Insanity")
+						{
+							this.Subtitle.UpdateLabel("Weapon and Blood and Insanity Reaction", 1, (float)3);
+						}
+						else if (this.Witnessed == "Weapon and Blood")
+						{
+							this.Subtitle.UpdateLabel("Weapon and Blood Reaction", 1, (float)3);
+						}
+						else if (this.Witnessed == "Weapon and Insanity")
+						{
+							this.Subtitle.UpdateLabel("Weapon and Insanity Reaction", 1, (float)3);
+						}
+						else if (this.Witnessed == "Blood and Insanity")
+						{
+							this.Subtitle.UpdateLabel("Blood and Insanity Reaction", 1, (float)3);
+						}
+						else if (this.Witnessed == "Weapon")
+						{
+							this.Subtitle.UpdateLabel("Weapon Reaction", this.WeaponWitnessed, (float)3);
+						}
+						else if (this.Witnessed == "Blood")
+						{
+							this.Subtitle.UpdateLabel("Blood Reaction", 1, (float)3);
+						}
+						else if (this.Witnessed == "Insanity")
+						{
+							this.Subtitle.UpdateLabel("Insanity Reaction", 1, (float)3);
+						}
+						else if (this.Witnessed == "Lewd")
+						{
+							this.Subtitle.UpdateLabel("Lewd Reaction", 1, (float)3);
+						}
+						else if (this.Witnessed == "Corpse")
+						{
+							this.Subtitle.UpdateLabel("Corpse Reaction", 1, (float)5);
+						}
+						else if (this.Witnessed == "Interruption")
+						{
+							this.Subtitle.UpdateLabel("Interruption Reaction", 1, (float)5);
+						}
+					}
+					else
+					{
+						if (this.Witnessed == "Weapon and Blood and Insanity")
+						{
+							this.Subtitle.UpdateLabel("Senpai Insanity Reaction", 1, 4.5f);
+							this.GameOverCause = "Insanity";
+						}
+						else if (this.Witnessed == "Weapon and Blood")
+						{
+							this.Subtitle.UpdateLabel("Senpai Weapon Reaction", 1, 4.5f);
+							this.GameOverCause = "Weapon";
+						}
+						else if (this.Witnessed == "Weapon and Insanity")
+						{
+							this.Subtitle.UpdateLabel("Senpai Insanity Reaction", 1, 4.5f);
+							this.GameOverCause = "Insanity";
+						}
+						else if (this.Witnessed == "Blood and Insanity")
+						{
+							this.Subtitle.UpdateLabel("Senpai Insanity Reaction", 1, 4.5f);
+							this.GameOverCause = "Insanity";
+						}
+						else if (this.Witnessed == "Weapon")
+						{
+							this.Subtitle.UpdateLabel("Senpai Weapon Reaction", 1, 4.5f);
+							this.GameOverCause = "Weapon";
+						}
+						else if (this.Witnessed == "Blood")
+						{
+							this.Subtitle.UpdateLabel("Senpai Blood Reaction", 1, 4.5f);
+							this.GameOverCause = "Blood";
+						}
+						else if (this.Witnessed == "Insanity")
+						{
+							this.Subtitle.UpdateLabel("Senpai Insanity Reaction", 1, 4.5f);
+							this.GameOverCause = "Insanity";
+						}
+						else if (this.Witnessed == "Lewd")
+						{
+							this.Subtitle.UpdateLabel("Senpai Lewd Reaction", 1, 4.5f);
+							this.GameOverCause = "Lewd";
+						}
+						else if (this.Witnessed == "Stalking")
+						{
+							this.Subtitle.UpdateLabel("Senpai Stalking Reaction", this.Concern, 4.5f);
+							this.GameOverCause = "Stalking";
+						}
+						else if (this.Witnessed == "Corpse")
+						{
+							this.Subtitle.UpdateLabel("Senpai Corpse Reaction", 1, (float)5);
+						}
+						if (this.Concern == 5)
+						{
+							this.Yandere.ShoulderCamera.enabled = true;
+							this.Yandere.ShoulderCamera.Noticed = true;
+							this.Yandere.RPGCamera.enabled = false;
+							this.enabled = false;
+						}
 					}
 					this.Reacted = true;
 				}
 			}
-		}
-		else if (this.Alarmed)
-		{
-			if (this.WitnessedCorpse)
+			if (this.IgnoreTimer > (float)0)
 			{
-				this.Character.animation.CrossFade(this.ScaredAnim);
+				this.IgnoreTimer -= Time.deltaTime;
 			}
-			else if (this.StudentID > 1)
+			if (!this.Fleeing && this.transform.position.y < (float)0)
 			{
-				this.Character.animation.CrossFade(this.IdleAnim);
+				int num6 = 0;
+				Vector3 position = this.transform.position;
+				float num7 = position.y = (float)num6;
+				Vector3 vector2 = this.transform.position = position;
 			}
-			if (this.WitnessedCorpse)
-			{
-				this.targetRotation = Quaternion.LookRotation(this.Corpse.AllColliders[0].transform.position - this.transform.position);
-				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
-			}
-			else
-			{
-				this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - this.transform.position);
-				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
-			}
-			this.AlarmTimer += Time.deltaTime;
-			this.Alarm -= Time.deltaTime * (float)100;
-			if (this.AlarmTimer > (float)5)
-			{
-				this.Pathfinding.canSearch = true;
-				this.Pathfinding.canMove = true;
-				if (this.StudentID == 1 || this.Teacher)
-				{
-					this.IgnoreTimer = 0.0001f;
-				}
-				else
-				{
-					this.IgnoreTimer = (float)5;
-				}
-				this.Alarmed = false;
-				this.Reacted = false;
-				this.AlarmTimer = (float)0;
-				if (this.WitnessedCorpse)
-				{
-					this.PersonaReaction();
-				}
-				else if (!this.Following)
-				{
-					this.Routine = true;
-				}
-			}
-			else if (this.AlarmTimer > (float)1 && !this.Reacted)
-			{
-				if (this.Teacher)
-				{
-					if (!this.WitnessedCorpse)
-					{
-						if (this.Witnessed == "Weapon and Blood and Insanity")
-						{
-							this.Subtitle.UpdateLabel("Teacher Insanity Reaction", 1, (float)6);
-							this.GameOverCause = "Insanity";
-						}
-						else if (this.Witnessed == "Weapon and Blood")
-						{
-							this.Subtitle.UpdateLabel("Teacher Weapon Reaction", 1, (float)6);
-							this.GameOverCause = "Weapon";
-						}
-						else if (this.Witnessed == "Weapon and Insanity")
-						{
-							this.Subtitle.UpdateLabel("Teacher Insanity Reaction", 1, (float)6);
-							this.GameOverCause = "Insanity";
-						}
-						else if (this.Witnessed == "Blood and Insanity")
-						{
-							this.Subtitle.UpdateLabel("Teacher Insanity Reaction", 1, (float)6);
-							this.GameOverCause = "Insanity";
-						}
-						else if (this.Witnessed == "Weapon")
-						{
-							this.Subtitle.UpdateLabel("Teacher Weapon Reaction", 1, (float)6);
-							this.GameOverCause = "Weapon";
-						}
-						else if (this.Witnessed == "Blood")
-						{
-							this.Subtitle.UpdateLabel("Teacher Blood Reaction", 1, (float)6);
-							this.GameOverCause = "Blood";
-						}
-						else if (this.Witnessed == "Insanity")
-						{
-							this.Subtitle.UpdateLabel("Teacher Insanity Reaction", 1, (float)6);
-							this.GameOverCause = "Insanity";
-						}
-						else if (this.Witnessed == "Lewd")
-						{
-							this.Subtitle.UpdateLabel("Teacher Lewd Reaction", 1, (float)6);
-							this.GameOverCause = "Lewd";
-						}
-						else if (this.Witnessed == "Trespassing")
-						{
-							this.Subtitle.UpdateLabel("Teacher Trespassing Reaction", this.Concern, (float)5);
-						}
-					}
-					else
-					{
-						this.Concern = 1;
-						if (this.Witnessed == "Weapon and Blood and Insanity")
-						{
-							this.Subtitle.UpdateLabel("Teacher Insanity Hostile", 1, (float)6);
-							this.GameOverCause = "Insanity";
-							this.WitnessedMurder = true;
-						}
-						else if (this.Witnessed == "Weapon and Blood")
-						{
-							this.Subtitle.UpdateLabel("Teacher Weapon Hostile", 1, (float)6);
-							this.GameOverCause = "Weapon";
-							this.WitnessedMurder = true;
-						}
-						else if (this.Witnessed == "Weapon and Insanity")
-						{
-							this.Subtitle.UpdateLabel("Teacher Insanity Hostile", 1, (float)6);
-							this.GameOverCause = "Insanity";
-							this.WitnessedMurder = true;
-						}
-						else if (this.Witnessed == "Blood and Insanity")
-						{
-							this.Subtitle.UpdateLabel("Teacher Insanity Hostile", 1, (float)6);
-							this.GameOverCause = "Insanity";
-							this.WitnessedMurder = true;
-						}
-						else if (this.Witnessed == "Weapon")
-						{
-							this.Subtitle.UpdateLabel("Teacher Weapon Hostile", 1, (float)6);
-							this.GameOverCause = "Weapon";
-							this.WitnessedMurder = true;
-						}
-						else if (this.Witnessed == "Blood")
-						{
-							this.Subtitle.UpdateLabel("Teacher Blood Hostile", 1, (float)6);
-							this.GameOverCause = "Blood";
-							this.WitnessedMurder = true;
-						}
-						else if (this.Witnessed == "Insanity")
-						{
-							this.Subtitle.UpdateLabel("Teacher Insanity Hostile", 1, (float)6);
-							this.GameOverCause = "Insanity";
-							this.WitnessedMurder = true;
-						}
-						else if (this.Witnessed == "Lewd")
-						{
-							this.Subtitle.UpdateLabel("Teacher Lewd Reaction", 1, (float)6);
-							this.GameOverCause = "Lewd";
-						}
-						else if (this.Witnessed == "Trespassing")
-						{
-							this.Subtitle.UpdateLabel("Teacher Trespassing Reaction", this.Concern, (float)5);
-						}
-						else if (this.Witnessed == "Corpse")
-						{
-							this.Subtitle.UpdateLabel("Teacher Corpse Reaction", 1, (float)3);
-							this.Police.Called = true;
-						}
-					}
-					if (this.Concern == 5)
-					{
-						this.Character.animation[this.AngryFaceAnim].weight = (float)1;
-						this.Yandere.ShoulderCamera.enabled = true;
-						this.Yandere.ShoulderCamera.Noticed = true;
-						this.Yandere.RPGCamera.enabled = false;
-						this.enabled = false;
-					}
-				}
-				else if (this.StudentID > 1)
-				{
-					if (this.RepeatReaction)
-					{
-						this.Subtitle.UpdateLabel("Repeat Reaction", 1, (float)3);
-						this.RepeatReaction = false;
-					}
-					else if (this.Witnessed == "Weapon and Blood and Insanity")
-					{
-						this.Subtitle.UpdateLabel("Weapon and Blood and Insanity Reaction", 1, (float)3);
-					}
-					else if (this.Witnessed == "Weapon and Blood")
-					{
-						this.Subtitle.UpdateLabel("Weapon and Blood Reaction", 1, (float)3);
-					}
-					else if (this.Witnessed == "Weapon and Insanity")
-					{
-						this.Subtitle.UpdateLabel("Weapon and Insanity Reaction", 1, (float)3);
-					}
-					else if (this.Witnessed == "Blood and Insanity")
-					{
-						this.Subtitle.UpdateLabel("Blood and Insanity Reaction", 1, (float)3);
-					}
-					else if (this.Witnessed == "Weapon")
-					{
-						this.Subtitle.UpdateLabel("Weapon Reaction", this.WeaponWitnessed, (float)3);
-					}
-					else if (this.Witnessed == "Blood")
-					{
-						this.Subtitle.UpdateLabel("Blood Reaction", 1, (float)3);
-					}
-					else if (this.Witnessed == "Insanity")
-					{
-						this.Subtitle.UpdateLabel("Insanity Reaction", 1, (float)3);
-					}
-					else if (this.Witnessed == "Lewd")
-					{
-						this.Subtitle.UpdateLabel("Lewd Reaction", 1, (float)3);
-					}
-					else if (this.Witnessed == "Corpse")
-					{
-						this.Subtitle.UpdateLabel("Corpse Reaction", 1, (float)5);
-					}
-					else if (this.Witnessed == "Interruption")
-					{
-						this.Subtitle.UpdateLabel("Interruption Reaction", 1, (float)5);
-					}
-				}
-				else
-				{
-					if (this.Witnessed == "Weapon and Blood and Insanity")
-					{
-						this.Subtitle.UpdateLabel("Senpai Insanity Reaction", 1, 4.5f);
-						this.GameOverCause = "Insanity";
-					}
-					else if (this.Witnessed == "Weapon and Blood")
-					{
-						this.Subtitle.UpdateLabel("Senpai Weapon Reaction", 1, 4.5f);
-						this.GameOverCause = "Weapon";
-					}
-					else if (this.Witnessed == "Weapon and Insanity")
-					{
-						this.Subtitle.UpdateLabel("Senpai Insanity Reaction", 1, 4.5f);
-						this.GameOverCause = "Insanity";
-					}
-					else if (this.Witnessed == "Blood and Insanity")
-					{
-						this.Subtitle.UpdateLabel("Senpai Insanity Reaction", 1, 4.5f);
-						this.GameOverCause = "Insanity";
-					}
-					else if (this.Witnessed == "Weapon")
-					{
-						this.Subtitle.UpdateLabel("Senpai Weapon Reaction", 1, 4.5f);
-						this.GameOverCause = "Weapon";
-					}
-					else if (this.Witnessed == "Blood")
-					{
-						this.Subtitle.UpdateLabel("Senpai Blood Reaction", 1, 4.5f);
-						this.GameOverCause = "Blood";
-					}
-					else if (this.Witnessed == "Insanity")
-					{
-						this.Subtitle.UpdateLabel("Senpai Insanity Reaction", 1, 4.5f);
-						this.GameOverCause = "Insanity";
-					}
-					else if (this.Witnessed == "Lewd")
-					{
-						this.Subtitle.UpdateLabel("Senpai Lewd Reaction", 1, 4.5f);
-						this.GameOverCause = "Lewd";
-					}
-					else if (this.Witnessed == "Stalking")
-					{
-						this.Subtitle.UpdateLabel("Senpai Stalking Reaction", this.Concern, 4.5f);
-						this.GameOverCause = "Stalking";
-					}
-					else if (this.Witnessed == "Corpse")
-					{
-						this.Subtitle.UpdateLabel("Senpai Corpse Reaction", 1, (float)5);
-					}
-					if (this.Concern == 5)
-					{
-						this.Yandere.ShoulderCamera.enabled = true;
-						this.Yandere.ShoulderCamera.Noticed = true;
-						this.Yandere.RPGCamera.enabled = false;
-						this.enabled = false;
-					}
-				}
-				this.Reacted = true;
-			}
-		}
-		if (this.IgnoreTimer > (float)0)
-		{
-			this.IgnoreTimer -= Time.deltaTime;
+			int num8 = 0;
+			Vector3 localEulerAngles = this.transform.localEulerAngles;
+			float num9 = localEulerAngles.x = (float)num8;
+			Vector3 vector3 = this.transform.localEulerAngles = localEulerAngles;
 		}
 		if (this.AoT)
 		{
 			this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)10, (float)10, (float)10), Time.deltaTime);
 		}
-		if (!this.Fleeing && this.transform.position.y < (float)0)
-		{
-			int num6 = 0;
-			Vector3 position = this.transform.position;
-			float num7 = position.y = (float)num6;
-			Vector3 vector2 = this.transform.position = position;
-		}
-		int num8 = 0;
-		Vector3 localEulerAngles = this.transform.localEulerAngles;
-		float num9 = localEulerAngles.x = (float)num8;
-		Vector3 vector3 = this.transform.localEulerAngles = localEulerAngles;
 	}
 
 	public virtual void LateUpdate()

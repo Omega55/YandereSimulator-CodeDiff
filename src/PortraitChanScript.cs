@@ -171,57 +171,56 @@ public class PortraitChanScript : MonoBehaviour
 		this.PigtailR.active = false;
 		this.PigtailL.active = false;
 		this.Drills.active = false;
-		if (this.Hairstyle == "PonyTail")
+		if (!(this.Hairstyle == "PonyTail"))
 		{
-			this.Ponytail.localScale = new Vector3((float)1, (float)1, (float)1);
-			this.HairR.localScale = new Vector3((float)1, (float)1, (float)1);
-			this.HairL.localScale = new Vector3((float)1, (float)1, (float)1);
-		}
-		else if (this.Hairstyle == "RightTail")
-		{
-			this.PigtailR.active = true;
-			this.HidePony = true;
-		}
-		else if (this.Hairstyle == "LeftTail")
-		{
-			this.PigtailL.active = true;
-			this.HidePony = true;
-		}
-		else if (this.Hairstyle == "PigTails")
-		{
-			this.PigtailR.active = true;
-			this.PigtailL.active = true;
-			this.HidePony = true;
-		}
-		else if (this.Hairstyle == "TriTails")
-		{
-			this.PigtailR.active = true;
-			this.PigtailL.active = true;
-			this.HairR.localScale = new Vector3((float)1, (float)1, (float)1);
-			this.HairL.localScale = new Vector3((float)1, (float)1, (float)1);
-		}
-		else if (this.Hairstyle == "TwinTails")
-		{
-			this.PigtailR.active = true;
-			this.PigtailL.active = true;
-			this.HidePony = true;
-			this.PigtailR.transform.parent.transform.parent.transform.localScale = new Vector3((float)2, (float)2, (float)2);
-			this.PigtailL.transform.parent.transform.parent.transform.localScale = new Vector3((float)2, (float)2, (float)2);
-		}
-		else if (this.Hairstyle == "Drills")
-		{
-			this.Drills.active = true;
-			this.HidePony = true;
-		}
-		else if (this.Hairstyle == "Short")
-		{
-			this.HairR.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-			this.HairL.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+			if (this.Hairstyle == "RightTail")
+			{
+				this.PigtailR.active = true;
+				this.HidePony = true;
+			}
+			else if (this.Hairstyle == "LeftTail")
+			{
+				this.PigtailL.active = true;
+				this.HidePony = true;
+			}
+			else if (this.Hairstyle == "PigTails")
+			{
+				this.PigtailR.active = true;
+				this.PigtailL.active = true;
+				this.HidePony = true;
+			}
+			else if (this.Hairstyle == "TriTails")
+			{
+				this.PigtailR.active = true;
+				this.PigtailL.active = true;
+				this.PigtailR.transform.localScale = new Vector3((float)1, (float)1, (float)1);
+				this.PigtailL.transform.localScale = new Vector3((float)1, (float)1, (float)1);
+			}
+			else if (this.Hairstyle == "TwinTails")
+			{
+				this.PigtailR.active = true;
+				this.PigtailL.active = true;
+				this.HidePony = true;
+				this.PigtailR.transform.parent.transform.parent.transform.localScale = new Vector3((float)2, (float)2, (float)2);
+				this.PigtailL.transform.parent.transform.parent.transform.localScale = new Vector3((float)2, (float)2, (float)2);
+			}
+			else if (this.Hairstyle == "Drills")
+			{
+				this.Drills.active = true;
+				this.HidePony = true;
+			}
+			else if (this.Hairstyle == "Short")
+			{
+				this.PigtailR.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+				this.PigtailL.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+			}
 		}
 		if (this.HidePony)
 		{
 			this.Ponytail.parent.transform.localScale = new Vector3((float)1, (float)1, 0.93f);
 			this.Ponytail.localScale = new Vector3((float)0, (float)0, (float)0);
+			this.HairR.localScale = new Vector3((float)0, (float)0, (float)0);
+			this.HairL.localScale = new Vector3((float)0, (float)0, (float)0);
 		}
 	}
 

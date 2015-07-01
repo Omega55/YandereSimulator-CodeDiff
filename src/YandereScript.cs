@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$1393 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$1423 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$1400;
+		internal YandereScript $self_$1430;
 
-		public $ApplyCustomCostume$1393(YandereScript self_)
+		public $ApplyCustomCostume$1423(YandereScript self_)
 		{
-			this.$self_$1400 = self_;
+			this.$self_$1430 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$1393.$(this.$self_$1400);
+			return new YandereScript.$ApplyCustomCostume$1423.$(this.$self_$1430);
 		}
 	}
 
@@ -138,6 +138,8 @@ public class YandereScript : MonoBehaviour
 	public Transform HairR;
 
 	public Transform HairL;
+
+	public Transform Stool;
 
 	public Transform Eyes;
 
@@ -299,6 +301,8 @@ public class YandereScript : MonoBehaviour
 
 	public bool Mopping;
 
+	public bool Pouring;
+
 	public bool Slender;
 
 	public bool Talking;
@@ -448,6 +452,12 @@ public class YandereScript : MonoBehaviour
 	public Texture AgentSuit;
 
 	public Mesh AgentMesh;
+
+	public bool LiftOff;
+
+	public GameObject LiftOffParticles;
+
+	public float LiftOffSpeed;
 
 	public YandereScript()
 	{
@@ -700,7 +710,7 @@ public class YandereScript : MonoBehaviour
 							Time.timeScale = (float)1;
 						}
 					}
-					if (!this.Aiming && !this.Crouching && !this.Crawling)
+					if (!this.Aiming && !this.Crouching && !this.Crawling && !this.Accessories[9].active)
 					{
 						if (Input.GetButton("RB"))
 						{
@@ -870,6 +880,7 @@ public class YandereScript : MonoBehaviour
 					this.Character.animation.CrossFade("f02_dipping_00");
 					if (this.Character.animation["f02_dipping_00"].time >= this.Character.animation["f02_dipping_00"].length * 0.5f && this.Mop.Bloodiness > (float)0)
 					{
+						this.Bucket.Bloodiness = this.Bucket.Bloodiness + this.Mop.Bloodiness / (float)2;
 						this.Mop.Bloodiness = (float)0;
 						this.Mop.UpdateBlood();
 					}
@@ -878,6 +889,25 @@ public class YandereScript : MonoBehaviour
 						this.Character.animation["f02_dipping_00"].time = (float)0;
 						this.Mop.Prompt.enabled = true;
 						this.Dipping = false;
+						this.CanMove = true;
+					}
+				}
+				if (this.Pouring)
+				{
+					this.MoveTowardsTarget(this.Stool.position);
+					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.Stool.rotation, (float)10 * Time.deltaTime);
+					this.Character.animation.CrossFade("f02_bucketDump_00", (float)0);
+					if (this.Character.animation["f02_bucketDump_00"].time >= 0.75f && !this.PickUp.Bucket.Poured)
+					{
+						this.PickUp.Bucket.PourEffect.Play();
+						this.PickUp.Bucket.Poured = true;
+						this.PickUp.Bucket.Empty();
+					}
+					if (this.Character.animation["f02_bucketDump_00"].time >= this.Character.animation["f02_bucketDump_00"].length)
+					{
+						this.Character.animation["f02_bucketDump_00"].time = (float)0;
+						this.PickUp.Bucket.Poured = false;
+						this.Pouring = false;
 						this.CanMove = true;
 					}
 				}
@@ -969,7 +999,7 @@ public class YandereScript : MonoBehaviour
 				this.ID = 0;
 				while (this.ID < Extensions.get_length(this.CarryAnims))
 				{
-					if (this.PickUp != null && this.CarryAnimID == this.ID && !this.Mopping && !this.Dipping)
+					if (this.PickUp != null && this.CarryAnimID == this.ID && !this.Mopping && !this.Dipping && !this.Pouring)
 					{
 						this.Character.animation[this.CarryAnims[this.ID]].weight = Mathf.Lerp(this.Character.animation[this.CarryAnims[this.ID]].weight, (float)1, Time.deltaTime * (float)10);
 					}
@@ -1623,6 +1653,19 @@ public class YandereScript : MonoBehaviour
 		{
 			this.audio.volume = this.audio.volume - 0.333333343f;
 		}
+		if (Input.GetKeyDown("space"))
+		{
+			this.LiftOffParticles.active = true;
+			this.LiftOff = true;
+		}
+		if (this.LiftOff)
+		{
+			this.LiftOffSpeed += Time.deltaTime * 0.01f;
+			float y4 = this.Character.transform.localPosition.y + this.LiftOffSpeed;
+			Vector3 localPosition = this.Character.transform.localPosition;
+			float num15 = localPosition.y = y4;
+			Vector3 vector9 = this.Character.transform.localPosition = localPosition;
+		}
 	}
 
 	public virtual void LateUpdate()
@@ -1983,7 +2026,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$1393(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$1423(this).GetEnumerator();
 	}
 
 	public virtual void UpdateHair()

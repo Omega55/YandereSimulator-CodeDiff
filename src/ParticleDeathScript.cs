@@ -8,7 +8,7 @@ public class ParticleDeathScript : MonoBehaviour
 
 	public virtual void LateUpdate()
 	{
-		if (this.Particles.particleCount == 0)
+		if (this.Particles.isPlaying && this.Particles.particleCount == 0)
 		{
 			UnityEngine.Object.Destroy(this.gameObject);
 		}

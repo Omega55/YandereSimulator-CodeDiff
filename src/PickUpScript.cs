@@ -13,6 +13,8 @@ public class PickUpScript : MonoBehaviour
 
 	public YandereScript Yandere;
 
+	public BucketScript Bucket;
+
 	public PromptScript Prompt;
 
 	public Collider MyCollider;
@@ -40,6 +42,13 @@ public class PickUpScript : MonoBehaviour
 	public int CarryAnimID;
 
 	public float DumpTimer;
+
+	public bool Empty;
+
+	public PickUpScript()
+	{
+		this.Empty = true;
+	}
 
 	public virtual void Start()
 	{

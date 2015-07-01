@@ -1,4 +1,5 @@
 ﻿using System;
+using Boo.Lang.Runtime;
 using UnityEngine;
 using UnityScript.Lang;
 
@@ -59,29 +60,38 @@ public class EventManagerScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (!this.Clock.StopTime && this.EventCheck && this.Clock.HourTime > 13.06f)
+		if (!this.Clock.StopTime && this.EventCheck)
 		{
-			this.EventStudent[1] = this.StudentManager.Students[5];
-			this.EventStudent[2] = this.StudentManager.Students[6];
-			if (this.EventStudent[1] != null && this.EventStudent[2] != null)
+			if (this.EventStudent[1] == null)
 			{
-				if (this.EventStudent[1].Dead || this.EventStudent[2].Dead)
-				{
-					this.EndEvent();
-				}
-				if (this.EventStudent[1].Pathfinding.canMove && this.EventStudent[1].Pathfinding.canMove)
-				{
-					this.EventStudent[1].CurrentDestination = this.EventLocation[1];
-					this.EventStudent[1].Pathfinding.target = this.EventLocation[1];
-					this.EventStudent[1].EventManager = this;
-					this.EventStudent[1].InEvent = true;
-					this.EventStudent[2].CurrentDestination = this.EventLocation[2];
-					this.EventStudent[2].Pathfinding.target = this.EventLocation[2];
-					this.EventStudent[2].EventManager = this;
-					this.EventStudent[2].InEvent = true;
-					this.EventCheck = false;
-					this.EventOn = true;
-				}
+				this.EventStudent[1] = this.StudentManager.Students[5];
+			}
+			else if (this.EventStudent[1].Dead)
+			{
+				this.EventCheck = false;
+				this.enabled = false;
+			}
+			if (this.EventStudent[2] == null)
+			{
+				this.EventStudent[2] = this.StudentManager.Students[6];
+			}
+			else if (this.EventStudent[2].Dead)
+			{
+				this.EventCheck = false;
+				this.enabled = false;
+			}
+			if (this.Clock.HourTime > 13.06f && this.EventStudent[1] != null && this.EventStudent[2] != null && this.EventStudent[1].Pathfinding.canMove && this.EventStudent[1].Pathfinding.canMove)
+			{
+				this.EventStudent[1].CurrentDestination = this.EventLocation[1];
+				this.EventStudent[1].Pathfinding.target = this.EventLocation[1];
+				this.EventStudent[1].EventManager = this;
+				this.EventStudent[1].InEvent = true;
+				this.EventStudent[2].CurrentDestination = this.EventLocation[2];
+				this.EventStudent[2].Pathfinding.target = this.EventLocation[2];
+				this.EventStudent[2].EventManager = this;
+				this.EventStudent[2].InEvent = true;
+				this.EventCheck = false;
+				this.EventOn = true;
 			}
 		}
 		if (this.EventOn)
@@ -202,7 +212,10 @@ public class EventManagerScript : MonoBehaviour
 		this.EventStudent[2].EventManager = null;
 		this.EventStudent[2].InEvent = false;
 		this.EventStudent[2].Private = false;
-		this.StudentManager.UpdateStudents();
+		if (RuntimeServices.EqualityOperator(UnityRuntimeServices.GetProperty(this.StudentManager, "Stop"), false))
+		{
+			this.StudentManager.UpdateStudents();
+		}
 		this.InterruptZone.active = false;
 		this.Yandere.Trespassing = false;
 		this.EventSubtitle.text = string.Empty;

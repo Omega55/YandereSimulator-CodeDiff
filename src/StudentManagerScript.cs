@@ -169,6 +169,7 @@ public class StudentManagerScript : MonoBehaviour
 				{
 					this.Students[this.ID].Prompt.HideButton[0] = true;
 					this.Students[this.ID].Prompt.HideButton[2] = true;
+					Debug.Log("Hide attack input.");
 				}
 				if (this.Yandere.NearBodies > 0 || this.Yandere.Sanity < 33.33333f)
 				{
@@ -268,7 +269,11 @@ public class StudentManagerScript : MonoBehaviour
 				this.Students[this.ID].Pathfinding.canSearch = false;
 				this.Students[this.ID].Pathfinding.canMove = false;
 				this.Students[this.ID].Pathfinding.speed = (float)0;
-				this.Students[this.ID].enabled = false;
+				this.Students[this.ID].Stop = true;
+				if (this.Students[this.ID].EventManager != null)
+				{
+					this.Students[this.ID].EventManager.EndEvent();
+				}
 			}
 			this.ID++;
 		}
@@ -353,8 +358,6 @@ public class StudentManagerScript : MonoBehaviour
 	{
 		if (this.Clock.HourTime >= this.SpawnTimes[this.NPCsSpawned])
 		{
-			Debug.Log("Student " + (this.SpawnID + 1) + "'s death is set to: " + PlayerPrefs.GetInt("Student_" + (this.SpawnID + 1) + "_Dying"));
-			Debug.Log("Student " + (this.SpawnID + 1) + "'s life is set to: " + PlayerPrefs.GetInt("Student_" + (this.SpawnID + 1) + "_Dead"));
 			if (PlayerPrefs.GetInt("Student_" + (this.SpawnID + 1) + "_Dead") == 0)
 			{
 				if (this.JSON.StudentGenders[this.SpawnID + 1] == 0)

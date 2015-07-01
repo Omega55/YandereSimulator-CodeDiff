@@ -53,14 +53,28 @@ public class MopScript : MonoBehaviour
 				}
 				else if (this.Prompt.Button[0].color.a > (float)0)
 				{
-					this.Prompt.Label[0].text = "     " + "Dip";
-					if (Input.GetButtonDown("A"))
+					if (this.Yandere.Bucket.Full)
 					{
-						this.Yandere.YandereVision = false;
-						this.Yandere.CanMove = false;
-						this.Yandere.Dipping = true;
-						this.Prompt.Hide();
-						this.Prompt.enabled = false;
+						if (this.Yandere.Bucket.Bloodiness < (float)100)
+						{
+							this.Prompt.Label[0].text = "     " + "Dip";
+							if (Input.GetButtonDown("A"))
+							{
+								this.Yandere.YandereVision = false;
+								this.Yandere.CanMove = false;
+								this.Yandere.Dipping = true;
+								this.Prompt.Hide();
+								this.Prompt.enabled = false;
+							}
+						}
+						else
+						{
+							this.Prompt.Label[0].text = "     " + "Water Too Bloody!";
+						}
+					}
+					else
+					{
+						this.Prompt.Label[0].text = "     " + "Fill Bucket First!";
 					}
 				}
 				if (this.Yandere.Mopping)
@@ -99,6 +113,10 @@ public class MopScript : MonoBehaviour
 
 	public virtual void UpdateBlood()
 	{
+		if (this.Bloodiness > (float)100)
+		{
+			this.Bloodiness = (float)100;
+		}
 		float a = this.Bloodiness / (float)100 * 0.9f;
 		Color color = this.Blood.material.color;
 		float num = color.a = a;

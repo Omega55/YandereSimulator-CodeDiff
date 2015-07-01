@@ -6,13 +6,15 @@ public class IncineratorScript : MonoBehaviour
 {
 	public YandereScript Yandere;
 
-	public ParticleSystem Smoke;
-
 	public PromptScript Prompt;
 
 	public ClockScript Clock;
 
-	public UISprite Circle;
+	public AudioSource FlameSound;
+
+	public ParticleSystem Flames;
+
+	public ParticleSystem Smoke;
 
 	public Transform DumpPoint;
 
@@ -21,6 +23,10 @@ public class IncineratorScript : MonoBehaviour
 	public Transform LeftDoor;
 
 	public GameObject Panel;
+
+	public UILabel TimeLabel;
+
+	public UISprite Circle;
 
 	public bool YandereHoldingEvidence;
 
@@ -38,9 +44,14 @@ public class IncineratorScript : MonoBehaviour
 
 	public float Timer;
 
+	public AudioClip IncineratorActivate;
+
+	public AudioClip IncineratorClose;
+
+	public AudioClip IncineratorOpen;
+
 	public virtual void Start()
 	{
-		this.Prompt.enabled = false;
 		this.Panel.active = false;
 	}
 
@@ -48,25 +59,49 @@ public class IncineratorScript : MonoBehaviour
 	{
 		if (!this.Open)
 		{
-			float y = Mathf.Lerp(this.RightDoor.transform.localEulerAngles.y, (float)0, Time.deltaTime * (float)10);
+			float y = Mathf.MoveTowards(this.RightDoor.transform.localEulerAngles.y, (float)0, Time.deltaTime * (float)360);
 			Vector3 localEulerAngles = this.RightDoor.transform.localEulerAngles;
 			float num = localEulerAngles.y = y;
 			Vector3 vector = this.RightDoor.transform.localEulerAngles = localEulerAngles;
-			float y2 = Mathf.Lerp(this.LeftDoor.transform.localEulerAngles.y, (float)0, Time.deltaTime * (float)10);
+			float y2 = Mathf.MoveTowards(this.LeftDoor.transform.localEulerAngles.y, (float)0, Time.deltaTime * (float)360);
 			Vector3 localEulerAngles2 = this.LeftDoor.transform.localEulerAngles;
 			float num2 = localEulerAngles2.y = y2;
 			Vector3 vector2 = this.LeftDoor.transform.localEulerAngles = localEulerAngles2;
+			if (this.RightDoor.transform.localEulerAngles.y < (float)36)
+			{
+				if (this.RightDoor.transform.localEulerAngles.y > (float)0)
+				{
+					this.audio.clip = this.IncineratorClose;
+					this.audio.Play();
+				}
+				int num3 = 0;
+				Vector3 localEulerAngles3 = this.RightDoor.transform.localEulerAngles;
+				float num4 = localEulerAngles3.y = (float)num3;
+				Vector3 vector3 = this.RightDoor.transform.localEulerAngles = localEulerAngles3;
+			}
 		}
 		else
 		{
+			if (this.RightDoor.transform.localEulerAngles.y == (float)0)
+			{
+				this.audio.clip = this.IncineratorOpen;
+				this.audio.Play();
+			}
 			float y3 = Mathf.Lerp(this.RightDoor.transform.localEulerAngles.y, (float)135, Time.deltaTime * (float)10);
-			Vector3 localEulerAngles3 = this.RightDoor.transform.localEulerAngles;
-			float num3 = localEulerAngles3.y = y3;
-			Vector3 vector3 = this.RightDoor.transform.localEulerAngles = localEulerAngles3;
+			Vector3 localEulerAngles4 = this.RightDoor.transform.localEulerAngles;
+			float num5 = localEulerAngles4.y = y3;
+			Vector3 vector4 = this.RightDoor.transform.localEulerAngles = localEulerAngles4;
 			float y4 = Mathf.Lerp(this.LeftDoor.transform.localEulerAngles.y, (float)135, Time.deltaTime * (float)10);
-			Vector3 localEulerAngles4 = this.LeftDoor.transform.localEulerAngles;
-			float num4 = localEulerAngles4.y = y4;
-			Vector3 vector4 = this.LeftDoor.transform.localEulerAngles = localEulerAngles4;
+			Vector3 localEulerAngles5 = this.LeftDoor.transform.localEulerAngles;
+			float num6 = localEulerAngles5.y = y4;
+			Vector3 vector5 = this.LeftDoor.transform.localEulerAngles = localEulerAngles5;
+			if (this.RightDoor.transform.localEulerAngles.y > (float)134)
+			{
+				int num7 = 135;
+				Vector3 localEulerAngles6 = this.RightDoor.transform.localEulerAngles;
+				float num8 = localEulerAngles6.y = (float)num7;
+				Vector3 vector6 = this.RightDoor.transform.localEulerAngles = localEulerAngles6;
+			}
 		}
 		if (this.OpenTimer > (float)0)
 		{
@@ -203,6 +238,9 @@ public class IncineratorScript : MonoBehaviour
 		{
 			this.Panel.active = true;
 			this.Timer = 60f;
+			this.audio.clip = this.IncineratorActivate;
+			this.audio.Play();
+			this.Flames.Play();
 			this.Smoke.Play();
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
@@ -222,6 +260,7 @@ public class IncineratorScript : MonoBehaviour
 		if (this.Smoke.isPlaying)
 		{
 			this.Timer -= Time.deltaTime * (this.Clock.TimeSpeed / (float)60);
+			this.FlameSound.volume = this.FlameSound.volume + Time.deltaTime;
 			this.Circle.fillAmount = (float)1 - this.Timer / (float)60;
 			if (this.Timer <= (float)0)
 			{
@@ -232,8 +271,20 @@ public class IncineratorScript : MonoBehaviour
 				this.BloodyUniforms = 0;
 				this.MurderWeapons = 0;
 				this.Corpses = 0;
+				this.Flames.Stop();
 				this.Smoke.Stop();
 			}
+		}
+		else
+		{
+			this.FlameSound.volume = this.FlameSound.volume - Time.deltaTime;
+		}
+		if (this.Panel.active)
+		{
+			int num9 = Mathf.CeilToInt(this.Timer * (float)60);
+			int num10 = num9 / 60;
+			int num11 = num9 % 60;
+			this.TimeLabel.text = string.Format("{0:00}:{1:00}", num10, num11);
 		}
 	}
 

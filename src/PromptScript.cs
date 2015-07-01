@@ -105,7 +105,7 @@ public class PromptScript : MonoBehaviour
 			this.AcceptingInput[this.ID] = true;
 			this.ID++;
 		}
-		this.BloodMask = 4;
+		this.BloodMask = 2;
 		this.BloodMask |= 512;
 		this.BloodMask |= 8192;
 		this.BloodMask |= 16384;
@@ -227,7 +227,7 @@ public class PromptScript : MonoBehaviour
 										this.ID = 0;
 										while (this.ID < 4)
 										{
-											if ((this.ButtonActive[this.ID] && this.ID != this.ButtonHeld - 1) || this.HideButton[this.ID])
+											if (((this.ButtonActive[this.ID] && this.ID != this.ButtonHeld - 1) || this.HideButton[this.ID]) && this.Circle[this.ID] != null)
 											{
 												this.Circle[this.ID].fillAmount = (float)1;
 											}
