@@ -263,7 +263,7 @@ public class StudentManagerScript : MonoBehaviour
 		this.ID = 1;
 		while (this.ID < Extensions.get_length(this.Students))
 		{
-			if (this.Students[this.ID] != null && !this.Students[this.ID].Dying)
+			if (this.Students[this.ID] != null && !this.Students[this.ID].Dying && !this.Students[this.ID].Teacher)
 			{
 				this.Students[this.ID].Character.animation.CrossFade(this.Students[this.ID].IdleAnim);
 				this.Students[this.ID].Pathfinding.canSearch = false;

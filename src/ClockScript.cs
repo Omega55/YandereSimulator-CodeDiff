@@ -259,7 +259,6 @@ public class ClockScript : MonoBehaviour
 		}
 		else
 		{
-			Debug.Log(RenderSettings.ambientLight);
 			float ambientLightDim = this.AmbientLightDim;
 			Color ambientLight4 = RenderSettings.ambientLight;
 			float num10 = ambientLight4.r = ambientLightDim;

@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$1423 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$1421 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$1430;
+		internal YandereScript $self_$1428;
 
-		public $ApplyCustomCostume$1423(YandereScript self_)
+		public $ApplyCustomCostume$1421(YandereScript self_)
 		{
-			this.$self_$1430 = self_;
+			this.$self_$1428 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$1423.$(this.$self_$1430);
+			return new YandereScript.$ApplyCustomCostume$1421.$(this.$self_$1428);
 		}
 	}
 
@@ -1653,19 +1653,6 @@ public class YandereScript : MonoBehaviour
 		{
 			this.audio.volume = this.audio.volume - 0.333333343f;
 		}
-		if (Input.GetKeyDown("space"))
-		{
-			this.LiftOffParticles.active = true;
-			this.LiftOff = true;
-		}
-		if (this.LiftOff)
-		{
-			this.LiftOffSpeed += Time.deltaTime * 0.01f;
-			float y4 = this.Character.transform.localPosition.y + this.LiftOffSpeed;
-			Vector3 localPosition = this.Character.transform.localPosition;
-			float num15 = localPosition.y = y4;
-			Vector3 vector9 = this.Character.transform.localPosition = localPosition;
-		}
 	}
 
 	public virtual void LateUpdate()
@@ -2026,7 +2013,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$1423(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$1421(this).GetEnumerator();
 	}
 
 	public virtual void UpdateHair()
