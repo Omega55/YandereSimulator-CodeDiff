@@ -1475,7 +1475,7 @@ public class StudentScript : MonoBehaviour
 			{
 				if (!this.Fleeing)
 				{
-					if (this.StudentID > 1 && this.EyeShrink < (float)1)
+					if (this.StudentID > 1)
 					{
 						this.EyeShrink += Time.deltaTime * 0.2f;
 					}
@@ -1614,70 +1614,65 @@ public class StudentScript : MonoBehaviour
 								this.Subtitle.UpdateLabel("Teacher Trespassing Reaction", this.Concern, (float)5);
 							}
 						}
-						else if (this.Witnessed == "Weapon and Blood and Insanity")
+						else
 						{
-							this.Subtitle.UpdateLabel("Teacher Insanity Hostile", 1, (float)6);
-							this.GameOverCause = "Insanity";
-							this.WitnessedMurder = true;
-							this.Concern = 5;
-						}
-						else if (this.Witnessed == "Weapon and Blood")
-						{
-							this.Subtitle.UpdateLabel("Teacher Weapon Hostile", 1, (float)6);
-							this.GameOverCause = "Weapon";
-							this.WitnessedMurder = true;
-							this.Concern = 5;
-						}
-						else if (this.Witnessed == "Weapon and Insanity")
-						{
-							this.Subtitle.UpdateLabel("Teacher Insanity Hostile", 1, (float)6);
-							this.GameOverCause = "Insanity";
-							this.WitnessedMurder = true;
-							this.Concern = 5;
-						}
-						else if (this.Witnessed == "Blood and Insanity")
-						{
-							this.Subtitle.UpdateLabel("Teacher Insanity Hostile", 1, (float)6);
-							this.GameOverCause = "Insanity";
-							this.WitnessedMurder = true;
-							this.Concern = 5;
-						}
-						else if (this.Witnessed == "Weapon")
-						{
-							this.Subtitle.UpdateLabel("Teacher Weapon Hostile", 1, (float)6);
-							this.GameOverCause = "Weapon";
-							this.WitnessedMurder = true;
-							this.Concern = 5;
-						}
-						else if (this.Witnessed == "Blood")
-						{
-							this.Subtitle.UpdateLabel("Teacher Blood Hostile", 1, (float)6);
-							this.GameOverCause = "Blood";
-							this.WitnessedMurder = true;
-							this.Concern = 5;
-						}
-						else if (this.Witnessed == "Insanity")
-						{
-							this.Subtitle.UpdateLabel("Teacher Insanity Hostile", 1, (float)6);
-							this.GameOverCause = "Insanity";
-							this.WitnessedMurder = true;
-							this.Concern = 5;
-						}
-						else if (this.Witnessed == "Lewd")
-						{
-							this.Subtitle.UpdateLabel("Teacher Lewd Reaction", 1, (float)6);
-							this.GameOverCause = "Lewd";
-							this.Concern = 5;
-						}
-						else if (this.Witnessed == "Trespassing")
-						{
-							this.Concern++;
-							this.Subtitle.UpdateLabel("Teacher Trespassing Reaction", this.Concern, (float)5);
-						}
-						else if (this.Witnessed == "Corpse")
-						{
-							this.Subtitle.UpdateLabel("Teacher Corpse Reaction", 1, (float)3);
-							this.Police.Called = true;
+							this.Concern = 1;
+							if (this.Witnessed == "Weapon and Blood and Insanity")
+							{
+								this.Subtitle.UpdateLabel("Teacher Insanity Hostile", 1, (float)6);
+								this.GameOverCause = "Insanity";
+								this.WitnessedMurder = true;
+							}
+							else if (this.Witnessed == "Weapon and Blood")
+							{
+								this.Subtitle.UpdateLabel("Teacher Weapon Hostile", 1, (float)6);
+								this.GameOverCause = "Weapon";
+								this.WitnessedMurder = true;
+							}
+							else if (this.Witnessed == "Weapon and Insanity")
+							{
+								this.Subtitle.UpdateLabel("Teacher Insanity Hostile", 1, (float)6);
+								this.GameOverCause = "Insanity";
+								this.WitnessedMurder = true;
+							}
+							else if (this.Witnessed == "Blood and Insanity")
+							{
+								this.Subtitle.UpdateLabel("Teacher Insanity Hostile", 1, (float)6);
+								this.GameOverCause = "Insanity";
+								this.WitnessedMurder = true;
+							}
+							else if (this.Witnessed == "Weapon")
+							{
+								this.Subtitle.UpdateLabel("Teacher Weapon Hostile", 1, (float)6);
+								this.GameOverCause = "Weapon";
+								this.WitnessedMurder = true;
+							}
+							else if (this.Witnessed == "Blood")
+							{
+								this.Subtitle.UpdateLabel("Teacher Blood Hostile", 1, (float)6);
+								this.GameOverCause = "Blood";
+								this.WitnessedMurder = true;
+							}
+							else if (this.Witnessed == "Insanity")
+							{
+								this.Subtitle.UpdateLabel("Teacher Insanity Hostile", 1, (float)6);
+								this.GameOverCause = "Insanity";
+								this.WitnessedMurder = true;
+							}
+							else if (this.Witnessed == "Lewd")
+							{
+								this.Subtitle.UpdateLabel("Teacher Lewd Reaction", 1, (float)6);
+								this.GameOverCause = "Lewd";
+							}
+							else if (this.Witnessed == "Trespassing")
+							{
+								this.Subtitle.UpdateLabel("Teacher Trespassing Reaction", this.Concern, (float)5);
+							}
+							else if (this.Witnessed == "Corpse")
+							{
+								this.Subtitle.UpdateLabel("Teacher Corpse Reaction", 1, (float)3);
+								this.Police.Called = true;
+							}
 						}
 						if (this.Concern == 5)
 						{
@@ -1822,6 +1817,10 @@ public class StudentScript : MonoBehaviour
 
 	public virtual void LateUpdate()
 	{
+		if (this.EyeShrink > (float)1)
+		{
+			this.EyeShrink = (float)1;
+		}
 		float z = this.LeftEyeOrigin.z - this.EyeShrink * 0.01f;
 		Vector3 localPosition = this.LeftEye.localPosition;
 		float num = localPosition.z = z;

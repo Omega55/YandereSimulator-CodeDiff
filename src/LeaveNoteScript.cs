@@ -87,7 +87,7 @@ public class LeaveNoteScript : MonoBehaviour
 		{
 			this.Student = this.StudentManager.Students[this.ID];
 		}
-		if (this.Prompt.Circle[0].fillAmount <= (float)0)
+		if (this.Prompt != null && this.Prompt.Circle[0].fillAmount <= (float)0)
 		{
 			this.Prompt.Circle[0].fillAmount = (float)1;
 			this.Yandere.Blur.enabled = true;

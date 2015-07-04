@@ -49,7 +49,7 @@ public class ActivateOsuScript : MonoBehaviour
 			{
 				this.DeactivateOsu();
 			}
-			else if (this.Clock.HourTime > 13.375f)
+			else if (this.Clock.HourTime > 13.375f && this.Clock.HourTime < 15.5f)
 			{
 				this.DeactivateOsu();
 			}

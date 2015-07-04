@@ -251,7 +251,6 @@ public class ClockScript : MonoBehaviour
 			Color ambientLight3 = RenderSettings.ambientLight;
 			float num9 = ambientLight3.b = b2;
 			Color color9 = RenderSettings.ambientLight = ambientLight3;
-			Debug.Log(RenderSettings.ambientLight);
 			this.SkyboxColor.r = (float)1 - 0.149019614f * this.DayProgress - 0.5f * ((float)1 - this.DayProgress);
 			this.SkyboxColor.g = (float)1 - 0.403921574f * this.DayProgress - 0.5f * ((float)1 - this.DayProgress);
 			this.SkyboxColor.b = (float)1 - 0.709803939f * this.DayProgress - 0.5f * ((float)1 - this.DayProgress);

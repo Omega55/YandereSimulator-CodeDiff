@@ -169,7 +169,6 @@ public class StudentManagerScript : MonoBehaviour
 				{
 					this.Students[this.ID].Prompt.HideButton[0] = true;
 					this.Students[this.ID].Prompt.HideButton[2] = true;
-					Debug.Log("Hide attack input.");
 				}
 				if (this.Yandere.NearBodies > 0 || this.Yandere.Sanity < 33.33333f)
 				{
@@ -263,7 +262,7 @@ public class StudentManagerScript : MonoBehaviour
 		this.ID = 1;
 		while (this.ID < Extensions.get_length(this.Students))
 		{
-			if (this.Students[this.ID] != null && !this.Students[this.ID].Dying && !this.Students[this.ID].Teacher)
+			if (this.Students[this.ID] != null && !this.Students[this.ID].Dying)
 			{
 				this.Students[this.ID].Character.animation.CrossFade(this.Students[this.ID].IdleAnim);
 				this.Students[this.ID].Pathfinding.canSearch = false;

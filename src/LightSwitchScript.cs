@@ -12,6 +12,8 @@ public class LightSwitchScript : MonoBehaviour
 
 	public Rigidbody Panel;
 
+	public Transform Wires;
+
 	public virtual void Start()
 	{
 		this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent(typeof(YandereScript));
@@ -54,6 +56,10 @@ public class LightSwitchScript : MonoBehaviour
 		if (this.Prompt.Circle[3].fillAmount <= (float)0)
 		{
 			this.Prompt.HideButton[3] = true;
+			int num = 1;
+			Vector3 localScale = this.Wires.localScale;
+			float num2 = localScale.z = (float)num;
+			Vector3 vector = this.Wires.localScale = localScale;
 			this.Panel.useGravity = true;
 			this.Panel.AddForce((float)0, (float)0, (float)10);
 		}

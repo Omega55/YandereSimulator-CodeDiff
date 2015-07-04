@@ -71,25 +71,32 @@ public class ToiletEventScript : MonoBehaviour
 		if (!this.Clock.StopTime && this.EventCheck && this.Clock.HourTime > this.EventTime)
 		{
 			this.EventStudent = this.StudentManager.Students[6];
-			if (this.EventStudent != null)
+			if (this.EventStudent != null && !this.EventStudent.Distracted)
 			{
-				this.EventStudent.CurrentDestination = this.EventLocation[1];
-				this.EventStudent.Pathfinding.target = this.EventLocation[1];
-				this.EventStudent.Pathfinding.canMove = true;
-				this.EventStudent.Obstacle.checkTime = (float)99;
-				this.EventStudent.ToiletEvent = this;
-				this.EventStudent.InEvent = true;
-				this.EventStudent.Prompt.Hide();
-				this.Prompt.enabled = true;
-				this.EventCheck = false;
-				this.EventActive = true;
-				if (this.EventStudent.Following)
+				if (!this.EventStudent.WitnessedMurder)
 				{
-					this.Yandere.Followers = this.Yandere.Followers - 1;
-					this.EventStudent.Following = false;
-					this.EventStudent.Routine = true;
-					this.EventStudent.Subtitle.UpdateLabel("Stop Follow Apology", 0, (float)3);
-					this.EventStudent.Prompt.Label[0].text = "     " + "Talk";
+					this.EventStudent.CurrentDestination = this.EventLocation[1];
+					this.EventStudent.Pathfinding.target = this.EventLocation[1];
+					this.EventStudent.Pathfinding.canMove = true;
+					this.EventStudent.Obstacle.checkTime = (float)99;
+					this.EventStudent.ToiletEvent = this;
+					this.EventStudent.InEvent = true;
+					this.EventStudent.Prompt.Hide();
+					this.Prompt.enabled = true;
+					this.EventCheck = false;
+					this.EventActive = true;
+					if (this.EventStudent.Following)
+					{
+						this.Yandere.Followers = this.Yandere.Followers - 1;
+						this.EventStudent.Following = false;
+						this.EventStudent.Routine = true;
+						this.EventStudent.Subtitle.UpdateLabel("Stop Follow Apology", 0, (float)3);
+						this.EventStudent.Prompt.Label[0].text = "     " + "Talk";
+					}
+				}
+				else
+				{
+					this.enabled = false;
 				}
 			}
 		}
