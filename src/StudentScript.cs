@@ -458,7 +458,7 @@ public class StudentScript : MonoBehaviour
 			{
 				if (this.Phase < Extensions.get_length(this.PhaseTimes) - 1)
 				{
-					if (this.Clock.HourTime >= this.PhaseTimes[this.Phase])
+					if (this.Clock.HourTime >= this.PhaseTimes[this.Phase] && !this.InEvent)
 					{
 						this.Phase++;
 						this.CurrentDestination = this.Destinations[this.Phase];
@@ -1069,7 +1069,7 @@ public class StudentScript : MonoBehaviour
 									this.RepLoss = (float)10;
 									this.Concern = 5;
 								}
-								else if (this.Yandere.Trespassing)
+								else if (this.Yandere.Trespassing && this.StudentID > 1)
 								{
 									if (this.Private)
 									{
@@ -1956,6 +1956,7 @@ public class StudentScript : MonoBehaviour
 		if (this.Teacher)
 		{
 			this.enabled = true;
+			this.Stop = false;
 		}
 	}
 
@@ -2116,6 +2117,7 @@ public class StudentScript : MonoBehaviour
 			if (this.DestinationNames[i] == "Locker")
 			{
 				this.Destinations[i] = this.StudentManager.Lockers.List[this.StudentID];
+				Debug.Log("Ordered to go to my locker?");
 			}
 			else if (this.DestinationNames[i] == "Seat")
 			{

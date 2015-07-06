@@ -1458,6 +1458,15 @@ public class YandereScript : MonoBehaviour
 			}
 			if (Input.GetKeyDown("`"))
 			{
+				this.ID = 0;
+				while (this.ID < this.StudentManager.NPCsTotal)
+				{
+					if (PlayerPrefs.GetInt("Student_" + this.ID + "_Dying") == 1)
+					{
+						PlayerPrefs.SetInt("Student_" + this.ID + "_Dying", 0);
+					}
+					this.ID++;
+				}
 				Application.LoadLevel(Application.loadedLevel);
 			}
 			if (!this.Aiming && Time.timeScale > (float)0 && Input.GetKeyDown("escape"))
