@@ -87,9 +87,10 @@ public class ToiletEventScript : MonoBehaviour
 					this.EventActive = true;
 					if (this.EventStudent.Following)
 					{
-						this.Yandere.Followers = this.Yandere.Followers - 1;
+						this.EventStudent.Pathfinding.speed = (float)1;
 						this.EventStudent.Following = false;
 						this.EventStudent.Routine = true;
+						this.Yandere.Followers = this.Yandere.Followers - 1;
 						this.EventStudent.Subtitle.UpdateLabel("Stop Follow Apology", 0, (float)3);
 						this.EventStudent.Prompt.Label[0].text = "     " + "Talk";
 					}

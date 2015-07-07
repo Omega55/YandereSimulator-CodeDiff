@@ -1,5 +1,4 @@
 ﻿using System;
-using Boo.Lang.Runtime;
 using UnityEngine;
 using UnityScript.Lang;
 
@@ -204,15 +203,17 @@ public class EventManagerScript : MonoBehaviour
 		}
 		this.EventStudent[1].CurrentDestination = this.EventStudent[1].Destinations[this.EventStudent[1].Phase];
 		this.EventStudent[1].Pathfinding.target = this.EventStudent[1].Destinations[this.EventStudent[1].Phase];
+		this.EventStudent[1].Prompt.enabled = true;
 		this.EventStudent[1].EventManager = null;
 		this.EventStudent[1].InEvent = false;
 		this.EventStudent[1].Private = false;
 		this.EventStudent[2].CurrentDestination = this.EventStudent[2].Destinations[this.EventStudent[2].Phase];
 		this.EventStudent[2].Pathfinding.target = this.EventStudent[2].Destinations[this.EventStudent[2].Phase];
+		this.EventStudent[2].Prompt.enabled = true;
 		this.EventStudent[2].EventManager = null;
 		this.EventStudent[2].InEvent = false;
 		this.EventStudent[2].Private = false;
-		if (RuntimeServices.EqualityOperator(UnityRuntimeServices.GetProperty(this.StudentManager, "Stop"), false))
+		if (!this.StudentManager.Stop)
 		{
 			this.StudentManager.UpdateStudents();
 		}

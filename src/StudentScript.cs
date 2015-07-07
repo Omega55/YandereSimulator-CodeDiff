@@ -818,6 +818,7 @@ public class StudentScript : MonoBehaviour
 						this.Character.animation.CrossFade(this.RunAnim);
 						this.Pathfinding.speed = (float)4;
 						this.Obstacle.enabled = false;
+						Debug.Log("It was this.");
 					}
 					else if (this.DistanceToDestination > (float)1)
 					{
@@ -845,6 +846,7 @@ public class StudentScript : MonoBehaviour
 						this.Routine = true;
 						this.Subtitle.UpdateLabel("Stop Follow Apology", 0, (float)3);
 						this.Prompt.Label[0].text = "     " + "Talk";
+						Debug.Log("Well, this happened.");
 					}
 				}
 			}
@@ -2117,7 +2119,6 @@ public class StudentScript : MonoBehaviour
 			if (this.DestinationNames[i] == "Locker")
 			{
 				this.Destinations[i] = this.StudentManager.Lockers.List[this.StudentID];
-				Debug.Log("Ordered to go to my locker?");
 			}
 			else if (this.DestinationNames[i] == "Seat")
 			{

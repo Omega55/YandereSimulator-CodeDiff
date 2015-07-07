@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$1423 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$1425 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$1430;
+		internal YandereScript $self_$1432;
 
-		public $ApplyCustomCostume$1423(YandereScript self_)
+		public $ApplyCustomCostume$1425(YandereScript self_)
 		{
-			this.$self_$1430 = self_;
+			this.$self_$1432 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$1423.$(this.$self_$1430);
+			return new YandereScript.$ApplyCustomCostume$1425.$(this.$self_$1432);
 		}
 	}
 
@@ -1021,6 +1021,10 @@ public class YandereScript : MonoBehaviour
 					this.Character.animation.CrossFade("f02_scaredIdle_00");
 					this.targetRotation = Quaternion.LookRotation(this.Senpai.position - this.transform.position);
 					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
+					int num3 = 0;
+					Vector3 localEulerAngles2 = this.transform.localEulerAngles;
+					float num4 = localEulerAngles2.x = (float)num3;
+					Vector3 vector3 = this.transform.localEulerAngles = localEulerAngles2;
 				}
 				else if (this.Character.animation["f02_down_22"].time >= this.Character.animation["f02_down_22"].length)
 				{
@@ -1181,11 +1185,11 @@ public class YandereScript : MonoBehaviour
 			}
 			float a3 = (float)1 - this.YandereFade / (float)100;
 			Color color = this.RightYandereEye.material.color;
-			float num3 = color.a = a3;
+			float num5 = color.a = a3;
 			Color color2 = this.RightYandereEye.material.color = color;
 			float a4 = (float)1 - this.YandereFade / (float)100;
 			Color color3 = this.LeftYandereEye.material.color;
-			float num4 = color3.a = a4;
+			float num6 = color3.a = a4;
 			Color color4 = this.LeftYandereEye.material.color = color3;
 			if (this.Armed)
 			{
@@ -1411,8 +1415,8 @@ public class YandereScript : MonoBehaviour
 					this.Character.animation.CrossFade("f02_counterA_00");
 					float y3 = this.TargetStudent.transform.position.y;
 					Vector3 position = this.Character.transform.position;
-					float num5 = position.y = y3;
-					Vector3 vector3 = this.Character.transform.position = position;
+					float num7 = position.y = y3;
+					Vector3 vector4 = this.Character.transform.position = position;
 				}
 			}
 			if (!this.Attacking && !this.Dragging && this.PickUp == null && !this.Aiming && !this.Crawling && this.LaughIntensity < (float)16)
@@ -1528,21 +1532,28 @@ public class YandereScript : MonoBehaviour
 			}
 			if (Input.GetKeyDown("-"))
 			{
-				if (Time.timeScale < (float)10)
+				if (Time.timeScale < (float)6)
 				{
 					Time.timeScale = (float)1;
 				}
 				else
 				{
-					Time.timeScale -= (float)10;
+					Time.timeScale -= (float)5;
 				}
 			}
 			if (Input.GetKeyDown("="))
 			{
-				Time.timeScale += (float)10;
-				if (Time.timeScale > (float)25)
+				if (Time.timeScale < (float)5)
 				{
-					Time.timeScale = (float)25;
+					Time.timeScale = (float)5;
+				}
+				else
+				{
+					Time.timeScale += (float)5;
+					if (Time.timeScale > (float)25)
+					{
+						Time.timeScale = (float)25;
+					}
 				}
 			}
 			if (Input.GetKey("."))
@@ -1624,38 +1635,38 @@ public class YandereScript : MonoBehaviour
 			}
 			if (this.transform.position.x < (float)-75)
 			{
-				int num6 = -75;
+				int num8 = -75;
 				Vector3 position2 = this.transform.position;
-				float num7 = position2.x = (float)num6;
-				Vector3 vector4 = this.transform.position = position2;
+				float num9 = position2.x = (float)num8;
+				Vector3 vector5 = this.transform.position = position2;
 			}
 			if (this.transform.position.x > (float)75)
 			{
-				int num8 = 75;
+				int num10 = 75;
 				Vector3 position3 = this.transform.position;
-				float num9 = position3.x = (float)num8;
-				Vector3 vector5 = this.transform.position = position3;
+				float num11 = position3.x = (float)num10;
+				Vector3 vector6 = this.transform.position = position3;
 			}
 			if (this.transform.position.y < (float)0)
 			{
-				int num10 = 0;
+				int num12 = 0;
 				Vector3 position4 = this.transform.position;
-				float num11 = position4.y = (float)num10;
-				Vector3 vector6 = this.transform.position = position4;
+				float num13 = position4.y = (float)num12;
+				Vector3 vector7 = this.transform.position = position4;
 			}
 			if (this.transform.position.z < -49.5f)
 			{
 				float z = -49.5f;
 				Vector3 position5 = this.transform.position;
-				float num12 = position5.z = z;
-				Vector3 vector7 = this.transform.position = position5;
+				float num14 = position5.z = z;
+				Vector3 vector8 = this.transform.position = position5;
 			}
 			if (this.transform.position.z > (float)50)
 			{
-				int num13 = 50;
+				int num15 = 50;
 				Vector3 position6 = this.transform.position;
-				float num14 = position6.z = (float)num13;
-				Vector3 vector8 = this.transform.position = position6;
+				float num16 = position6.z = (float)num15;
+				Vector3 vector9 = this.transform.position = position6;
 			}
 		}
 		else
@@ -2022,7 +2033,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$1423(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$1425(this).GetEnumerator();
 	}
 
 	public virtual void UpdateHair()

@@ -69,6 +69,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public int SpawnID;
 
+	public int Frame;
+
 	public int ID;
 
 	public Texture[] Stockings;
@@ -79,7 +81,7 @@ public class StudentManagerScript : MonoBehaviour
 
 	public bool TakingPortraits;
 
-	public int Frame;
+	public bool Stop;
 
 	public bool AoT;
 
@@ -259,6 +261,7 @@ public class StudentManagerScript : MonoBehaviour
 
 	public virtual void StopMoving()
 	{
+		this.Stop = true;
 		this.ID = 1;
 		while (this.ID < Extensions.get_length(this.Students))
 		{
