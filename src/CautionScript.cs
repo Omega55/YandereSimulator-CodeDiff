@@ -18,7 +18,7 @@ public class CautionScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (this.Yandere.Armed || this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.33333f || this.Yandere.NearBodies > 0)
+		if ((this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].Suspicious) || this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.33333f || this.Yandere.NearBodies > 0)
 		{
 			float a = this.Sprite.color.a + Time.deltaTime;
 			Color color = this.Sprite.color;

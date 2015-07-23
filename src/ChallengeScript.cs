@@ -122,7 +122,7 @@ public class ChallengeScript : MonoBehaviour
 		Color color9 = this.Shadow.color;
 		float num16 = color9.a = a3;
 		Color color10 = this.Shadow.color = color9;
-		if (Input.GetButtonDown("A") && this.List == 1 && this.ChallengeList[this.List].localPosition.x > (float)-2125)
+		if (Input.GetButtonDown("A") && this.List == 1 && this.ChallengeList[this.List].localPosition.x > (float)-2375)
 		{
 			this.Viewing = true;
 		}

@@ -5,6 +5,8 @@ using UnityScript.Lang;
 [Serializable]
 public class HeartbrokenScript : MonoBehaviour
 {
+	public HeartbrokenCursorScript Cursor;
+
 	public YandereScript Yandere;
 
 	public ClockScript Clock;
@@ -42,6 +44,8 @@ public class HeartbrokenScript : MonoBehaviour
 	public int LetterID;
 
 	public int ShakeID;
+
+	public int GrowID;
 
 	public int StopID;
 
@@ -233,6 +237,19 @@ public class HeartbrokenScript : MonoBehaviour
 			float num9 = localPosition2.y = y2;
 			Vector3 vector3 = this.Letters[this.ShakeID].transform.localPosition = localPosition2;
 			this.ShakeID++;
+		}
+		this.GrowID = 0;
+		while (this.GrowID < 4)
+		{
+			if (this.Cursor.Selected - 1 != this.GrowID)
+			{
+				this.Options[this.GrowID].transform.localScale = Vector3.Lerp(this.Options[this.GrowID].transform.localScale, new Vector3(0.5f, 0.5f, 0.5f), Time.deltaTime * (float)10);
+			}
+			else
+			{
+				this.Options[this.GrowID].transform.localScale = Vector3.Lerp(this.Options[this.GrowID].transform.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+			}
+			this.GrowID++;
 		}
 	}
 

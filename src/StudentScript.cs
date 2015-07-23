@@ -818,7 +818,6 @@ public class StudentScript : MonoBehaviour
 						this.Character.animation.CrossFade(this.RunAnim);
 						this.Pathfinding.speed = (float)4;
 						this.Obstacle.enabled = false;
-						Debug.Log("It was this.");
 					}
 					else if (this.DistanceToDestination > (float)1)
 					{

@@ -99,11 +99,11 @@ public class TitleSponsorScript : MonoBehaviour
 
 	public virtual void UpdateHighlight()
 	{
-		int num = -510 + this.Column * 340;
+		int num = -512 + this.Column * 256;
 		Vector3 localPosition = this.Highlight.localPosition;
 		float num2 = localPosition.x = (float)num;
 		Vector3 vector = this.Highlight.localPosition = localPosition;
-		int num3 = 510 - this.Row * 340;
+		int num3 = 384 - this.Row * 256;
 		Vector3 localPosition2 = this.Highlight.localPosition;
 		float num4 = localPosition2.y = (float)num3;
 		Vector3 vector2 = this.Highlight.localPosition = localPosition2;

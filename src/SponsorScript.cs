@@ -4,12 +4,15 @@ using UnityEngine;
 [Serializable]
 public class SponsorScript : MonoBehaviour
 {
+	public GameObject[] Set;
+
 	public UISprite Darkness;
 
 	public float Timer;
 
 	public virtual void Start()
 	{
+		this.Set[2].active = false;
 		int num = 1;
 		Color color = this.Darkness.color;
 		float num2 = color.a = (float)num;
@@ -44,14 +47,22 @@ public class SponsorScript : MonoBehaviour
 			Color color5 = this.Darkness.color;
 			float num4 = color5.a = a2;
 			Color color6 = this.Darkness.color = color5;
-			this.audio.volume = this.audio.volume - Time.deltaTime;
 			if (this.Darkness.color.a >= (float)1)
 			{
 				int num5 = 1;
 				Color color7 = this.Darkness.color;
 				float num6 = color7.a = (float)num5;
 				Color color8 = this.Darkness.color = color7;
-				Application.LoadLevel("TitleScene");
+				if (this.Set[1].active)
+				{
+					this.Set[1].active = false;
+					this.Set[2].active = true;
+					this.Timer = (float)0;
+				}
+				else
+				{
+					Application.LoadLevel("TitleScene");
+				}
 			}
 		}
 	}
