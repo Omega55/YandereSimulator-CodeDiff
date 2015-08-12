@@ -201,6 +201,7 @@ public class IncineratorScript : MonoBehaviour
 		}
 		if (this.Prompt.Circle[3].fillAmount <= (float)0)
 		{
+			Time.timeScale = (float)1;
 			if (this.Yandere.Ragdoll != null)
 			{
 				this.Yandere.Character.animation.CrossFade("f02_dragIdle_00");

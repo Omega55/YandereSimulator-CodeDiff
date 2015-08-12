@@ -10,18 +10,18 @@ public class HomeYandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$1414 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$1496 : GenericGenerator<WWW>
 	{
-		internal HomeYandereScript $self_$1421;
+		internal HomeYandereScript $self_$1503;
 
-		public $ApplyCustomCostume$1414(HomeYandereScript self_)
+		public $ApplyCustomCostume$1496(HomeYandereScript self_)
 		{
-			this.$self_$1421 = self_;
+			this.$self_$1503 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new HomeYandereScript.$ApplyCustomCostume$1414.$(this.$self_$1421);
+			return new HomeYandereScript.$ApplyCustomCostume$1496.$(this.$self_$1503);
 		}
 	}
 
@@ -134,7 +134,7 @@ public class HomeYandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new HomeYandereScript.$ApplyCustomCostume$1414(this).GetEnumerator();
+		return new HomeYandereScript.$ApplyCustomCostume$1496(this).GetEnumerator();
 	}
 
 	public virtual void UpdateHair()

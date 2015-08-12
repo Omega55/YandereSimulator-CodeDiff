@@ -141,6 +141,10 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] YandereWhimpers;
 
+	public string[] SplashReactions;
+
+	public string[] LightSwitchReactions;
+
 	public int RandomID;
 
 	public float Timer;
@@ -192,6 +196,10 @@ public class SubtitleScript : MonoBehaviour
 	public AudioClip[] TeacherMurderClips;
 
 	public AudioClip[] TeacherPrankClips;
+
+	public AudioClip[] SplashReactionClips;
+
+	public AudioClip[] LightSwitchClips;
 
 	public virtual void Start()
 	{
@@ -513,6 +521,16 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.Label.text = this.StudentMurderReports[ID];
 		}
+		else if (ReactionType == "Splash Reaction")
+		{
+			this.Label.text = this.SplashReactions[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
+		else if (ReactionType == "Light Switch Reaction")
+		{
+			this.Label.text = this.LightSwitchReactions[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
 		this.Timer = Duration;
 	}
 
@@ -628,6 +646,14 @@ public class SubtitleScript : MonoBehaviour
 		else if (ReactionType == "Teacher Prank Reaction")
 		{
 			this.audio.PlayOneShot(this.TeacherPrankClips[ID]);
+		}
+		else if (ReactionType == "Splash Reaction")
+		{
+			this.audio.PlayOneShot(this.SplashReactionClips[ID]);
+		}
+		else if (ReactionType == "Light Switch Reaction")
+		{
+			this.audio.PlayOneShot(this.LightSwitchClips[ID]);
 		}
 	}
 

@@ -35,6 +35,8 @@ public class PickUpScript : MonoBehaviour
 
 	public bool Evidence;
 
+	public bool Garbage;
+
 	public bool Dumped;
 
 	public bool Usable;

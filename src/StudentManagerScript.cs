@@ -15,6 +15,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public WitnessCameraScript WitnessCamera;
 
+	public TallLockerScript CommunalLocker;
+
 	public StudentScript Reporter;
 
 	public GhostScript GhostChan;
@@ -42,6 +44,10 @@ public class StudentManagerScript : MonoBehaviour
 	public StudentScript[] Teachers;
 
 	public Transform CorpseLocation;
+
+	public Transform BatheSpot;
+
+	public Transform StripSpot;
 
 	public Transform Exit;
 
@@ -80,6 +86,8 @@ public class StudentManagerScript : MonoBehaviour
 	public Texture[] Colors;
 
 	public bool TakingPortraits;
+
+	public bool Spooky;
 
 	public bool Stop;
 
@@ -342,20 +350,6 @@ public class StudentManagerScript : MonoBehaviour
 		}
 	}
 
-	public virtual void AttackOnTitan()
-	{
-		this.AoT = true;
-		this.ID = 1;
-		while (this.ID < Extensions.get_length(this.Students))
-		{
-			if (this.Students[this.ID] != null && !this.Students[this.ID].Teacher)
-			{
-				this.Students[this.ID].AttackOnTitan();
-			}
-			this.ID++;
-		}
-	}
-
 	public virtual void SpawnStudent()
 	{
 		if (this.Clock.HourTime >= this.SpawnTimes[this.NPCsSpawned])
@@ -379,6 +373,14 @@ public class StudentManagerScript : MonoBehaviour
 				{
 					this.Students[this.SpawnID].AoT = true;
 				}
+				if (this.Spooky)
+				{
+					this.Students[this.SpawnID].Spooky = true;
+				}
+				if (this.SpawnID == 15)
+				{
+					this.CommunalLocker.Student = this.Students[this.SpawnID];
+				}
 			}
 			else
 			{
@@ -391,6 +393,34 @@ public class StudentManagerScript : MonoBehaviour
 				this.SpawnID = 0;
 			}
 			this.UpdateStudents();
+		}
+	}
+
+	public virtual void AttackOnTitan()
+	{
+		this.AoT = true;
+		this.ID = 1;
+		while (this.ID < Extensions.get_length(this.Students))
+		{
+			if (this.Students[this.ID] != null && !this.Students[this.ID].Teacher)
+			{
+				this.Students[this.ID].AttackOnTitan();
+			}
+			this.ID++;
+		}
+	}
+
+	public virtual void Spook()
+	{
+		this.Spooky = true;
+		this.ID = 1;
+		while (this.ID < Extensions.get_length(this.Students))
+		{
+			if (this.Students[this.ID] != null && !this.Students[this.ID].Male)
+			{
+				this.Students[this.ID].Spook();
+			}
+			this.ID++;
 		}
 	}
 

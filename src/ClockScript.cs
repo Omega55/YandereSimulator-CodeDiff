@@ -276,6 +276,7 @@ public class ClockScript : MonoBehaviour
 			if (this.HalfwayTime == (float)0)
 			{
 				this.HalfwayTime = this.PresentTime + (this.TargetTime - this.PresentTime) * 0.5f;
+				this.Yandere.TimeSkipHeight = this.Yandere.transform.position.y;
 				this.Yandere.Phone.active = true;
 				this.Yandere.TimeSkipping = true;
 				this.Yandere.CanMove = false;

@@ -162,13 +162,20 @@ public class ShutterScript : MonoBehaviour
 						GameObject gameObject = this.hit.collider.gameObject.transform.root.gameObject;
 						if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyCharacters))
 						{
-							if (this.hit.collider.gameObject == gameObject)
+							if (Vector3.Distance(this.Yandere.transform.position, gameObject.transform.position) < (float)5)
 							{
-								if (!this.Yandere.Lewd)
+								if (this.hit.collider.gameObject == gameObject)
 								{
-									this.Yandere.NotificationManager.DisplayNotification("Lewd");
+									if (!this.Yandere.Lewd)
+									{
+										this.Yandere.NotificationManager.DisplayNotification("Lewd");
+									}
+									this.Yandere.Lewd = true;
 								}
-								this.Yandere.Lewd = true;
+								else
+								{
+									this.Yandere.Lewd = false;
+								}
 							}
 							else
 							{
@@ -330,7 +337,7 @@ public class ShutterScript : MonoBehaviour
 		{
 			this.ViolenceX.active = false;
 		}
-		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyBlood) && this.hit.collider.gameObject.tag == "Blood")
+		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyBlood) && this.hit.collider.gameObject.layer == 14)
 		{
 			this.ViolenceX.active = false;
 		}

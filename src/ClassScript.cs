@@ -85,23 +85,6 @@ public class ClassScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (Input.GetKeyDown("8"))
-		{
-			PlayerPrefs.SetInt("BiologyGrade", 1);
-			PlayerPrefs.SetInt("ChemistryGrade", 1);
-			PlayerPrefs.SetInt("LanguageGrade", 1);
-			PlayerPrefs.SetInt("Biology", 19);
-			PlayerPrefs.SetInt("Chemistry", 19);
-			PlayerPrefs.SetInt("Language", 19);
-			PlayerPrefs.SetInt("Physical", 7);
-			PlayerPrefs.SetInt("Psychology", 6);
-			this.Subject[1] = PlayerPrefs.GetInt("Biology");
-			this.Subject[2] = PlayerPrefs.GetInt("Chemistry");
-			this.Subject[3] = PlayerPrefs.GetInt("Language");
-			this.Subject[4] = PlayerPrefs.GetInt("Physical");
-			this.Subject[5] = PlayerPrefs.GetInt("Psychology");
-			this.UpdateBars();
-		}
 		if (this.Show)
 		{
 			float a = this.Darkness.color.a - Time.deltaTime;
@@ -422,6 +405,24 @@ public class ClassScript : MonoBehaviour
 			this.GradeUp = true;
 			this.Grade = 2;
 		}
+	}
+
+	public virtual void GivePoints()
+	{
+		PlayerPrefs.SetInt("BiologyGrade", 1);
+		PlayerPrefs.SetInt("ChemistryGrade", 1);
+		PlayerPrefs.SetInt("LanguageGrade", 1);
+		PlayerPrefs.SetInt("Biology", 19);
+		PlayerPrefs.SetInt("Chemistry", 19);
+		PlayerPrefs.SetInt("Language", 19);
+		PlayerPrefs.SetInt("Physical", 7);
+		PlayerPrefs.SetInt("Psychology", 6);
+		this.Subject[1] = PlayerPrefs.GetInt("Biology");
+		this.Subject[2] = PlayerPrefs.GetInt("Chemistry");
+		this.Subject[3] = PlayerPrefs.GetInt("Language");
+		this.Subject[4] = PlayerPrefs.GetInt("Physical");
+		this.Subject[5] = PlayerPrefs.GetInt("Psychology");
+		this.UpdateBars();
 	}
 
 	public virtual void Main()

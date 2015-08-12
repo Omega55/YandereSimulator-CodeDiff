@@ -72,6 +72,7 @@ public class MovingEventScript : MonoBehaviour
 				this.EventStudent.Private = true;
 				this.EventCheck = false;
 				this.EventActive = true;
+				Debug.Log("The event has begun.");
 			}
 		}
 		if (this.EventActive)
@@ -83,7 +84,7 @@ public class MovingEventScript : MonoBehaviour
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
 			}
-			if (this.Clock.HourTime > 13.375f)
+			if (this.Clock.HourTime > 13.375f || this.EventStudent.Dying)
 			{
 				this.EndEvent();
 			}
@@ -324,6 +325,7 @@ public class MovingEventScript : MonoBehaviour
 
 	public virtual void EndEvent()
 	{
+		Debug.Log("Yes, the event ended.");
 		if (!this.EventOver)
 		{
 			if (this.VoiceClip != null)

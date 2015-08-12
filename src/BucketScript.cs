@@ -10,6 +10,10 @@ public class BucketScript : MonoBehaviour
 
 	public PromptScript Prompt;
 
+	public GameObject WaterCollider;
+
+	public GameObject BloodCollider;
+
 	public Renderer Water;
 
 	public Renderer Blood;
@@ -78,29 +82,29 @@ public class BucketScript : MonoBehaviour
 		}
 		if (this.Full)
 		{
-			this.Water.transform.localScale = Vector3.Lerp(this.Water.transform.localScale, new Vector3(0.143f, (float)1, 0.143f), Time.deltaTime * (float)10);
-			float y = Mathf.Lerp(this.Water.transform.localPosition.y, 0.2f, Time.deltaTime * (float)10);
+			this.Water.transform.localScale = Vector3.Lerp(this.Water.transform.localScale, new Vector3(0.143f, (float)1, 0.143f), Time.deltaTime * (float)5);
+			float y = Mathf.Lerp(this.Water.transform.localPosition.y, 0.2f, Time.deltaTime * (float)5);
 			Vector3 localPosition = this.Water.transform.localPosition;
 			float num = localPosition.y = y;
 			Vector3 vector = this.Water.transform.localPosition = localPosition;
-			float a = Mathf.Lerp(this.Water.material.color.a, 0.5f, Time.deltaTime * (float)10);
+			float a = Mathf.Lerp(this.Water.material.color.a, 0.5f, Time.deltaTime * (float)5);
 			Color color = this.Water.material.color;
 			float num2 = color.a = a;
 			Color color2 = this.Water.material.color = color;
 		}
 		else
 		{
-			this.Water.transform.localScale = Vector3.Lerp(this.Water.transform.localScale, new Vector3(0.12f, (float)1, 0.12f), Time.deltaTime * (float)10);
-			float y2 = Mathf.Lerp(this.Water.transform.localPosition.y, (float)0, Time.deltaTime * (float)10);
+			this.Water.transform.localScale = Vector3.Lerp(this.Water.transform.localScale, new Vector3(0.12f, (float)1, 0.12f), Time.deltaTime * (float)5);
+			float y2 = Mathf.Lerp(this.Water.transform.localPosition.y, (float)0, Time.deltaTime * (float)5);
 			Vector3 localPosition2 = this.Water.transform.localPosition;
 			float num3 = localPosition2.y = y2;
 			Vector3 vector2 = this.Water.transform.localPosition = localPosition2;
-			float a2 = Mathf.Lerp(this.Water.material.color.a, (float)0, Time.deltaTime * (float)10);
+			float a2 = Mathf.Lerp(this.Water.material.color.a, (float)0, Time.deltaTime * (float)5);
 			Color color3 = this.Water.material.color;
 			float num4 = color3.a = a2;
 			Color color4 = this.Water.material.color = color3;
 		}
-		float a3 = Mathf.Lerp(this.Blood.material.color.a, this.Bloodiness / (float)100, Time.deltaTime * (float)10);
+		float a3 = Mathf.Lerp(this.Blood.material.color.a, this.Bloodiness / (float)100, Time.deltaTime);
 		Color color5 = this.Blood.material.color;
 		float num5 = color5.a = a3;
 		Color color6 = this.Blood.material.color = color5;
@@ -124,6 +128,10 @@ public class BucketScript : MonoBehaviour
 		else
 		{
 			this.Prompt.enabled = true;
+		}
+		if (Input.GetKeyDown("b"))
+		{
+			this.Bloodiness = (float)100;
 		}
 	}
 

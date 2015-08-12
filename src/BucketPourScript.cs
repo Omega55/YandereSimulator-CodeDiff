@@ -2,11 +2,24 @@
 using UnityEngine;
 
 [Serializable]
-public class StoolScript : MonoBehaviour
+public class BucketPourScript : MonoBehaviour
 {
+	public SplashCameraScript SplashCamera;
+
 	public YandereScript Yandere;
 
 	public PromptScript Prompt;
+
+	public string PourHeight;
+
+	public float PourDistance;
+
+	public float PourTime;
+
+	public BucketPourScript()
+	{
+		this.PourHeight = string.Empty;
+	}
 
 	public virtual void Start()
 	{
@@ -48,6 +61,16 @@ public class StoolScript : MonoBehaviour
 			this.Yandere.Stool = this.transform;
 			this.Yandere.CanMove = false;
 			this.Yandere.Pouring = true;
+			this.Yandere.PourDistance = this.PourDistance;
+			this.Yandere.PourHeight = this.PourHeight;
+			this.Yandere.PourTime = this.PourTime;
+		}
+		if (this.Yandere.Pouring && this.PourHeight == "Low" && Input.GetButtonDown("B"))
+		{
+			this.SplashCamera.Show = true;
+			this.SplashCamera.MyCamera.enabled = true;
+			this.SplashCamera.transform.position = new Vector3(this.transform.position.x - 1.25f, 0.8f, this.transform.position.z - 1.75f);
+			this.SplashCamera.transform.eulerAngles = new Vector3((float)0, (float)45, (float)0);
 		}
 	}
 

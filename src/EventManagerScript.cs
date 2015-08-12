@@ -133,23 +133,31 @@ public class EventManagerScript : MonoBehaviour
 						{
 							this.EventSubtitle.text = string.Empty;
 						}
-						float num = Vector3.Distance(this.Yandere.transform.position, this.EventStudent[this.EventSpeaker[this.EventPhase]].transform.position);
-						if (num < (float)10)
+						float num;
+						if (this.Yandere.transform.position.y < this.EventStudent[1].transform.position.y - (float)1)
 						{
-							this.Scale = Mathf.Abs((num - (float)10) * 0.2f);
-							if (this.Scale < (float)0)
-							{
-								this.Scale = (float)0;
-							}
-							if (this.Scale > (float)1)
-							{
-								this.Scale = (float)1;
-							}
-							this.EventSubtitle.transform.localScale = new Vector3(this.Scale, this.Scale, this.Scale);
+							this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
 						}
 						else
 						{
-							this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+							num = Vector3.Distance(this.Yandere.transform.position, this.EventStudent[this.EventSpeaker[this.EventPhase]].transform.position);
+							if (num < (float)10)
+							{
+								this.Scale = Mathf.Abs((num - (float)10) * 0.2f);
+								if (this.Scale < (float)0)
+								{
+									this.Scale = (float)0;
+								}
+								if (this.Scale > (float)1)
+								{
+									this.Scale = (float)1;
+								}
+								this.EventSubtitle.transform.localScale = new Vector3(this.Scale, this.Scale, this.Scale);
+							}
+							else
+							{
+								this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+							}
 						}
 						if (this.EventStudent[this.EventSpeaker[this.EventPhase]].Character.animation[this.EventAnim[this.EventPhase]].time >= this.EventStudent[this.EventSpeaker[this.EventPhase]].Character.animation[this.EventAnim[this.EventPhase]].length)
 						{
@@ -175,10 +183,6 @@ public class EventManagerScript : MonoBehaviour
 				}
 			}
 		}
-		if (Input.GetKeyDown("6"))
-		{
-			this.Yandere.transform.position = this.EventLocation[3].position;
-		}
 	}
 
 	public virtual void PlayClip(AudioClip clip, Vector3 pos)
@@ -193,6 +197,14 @@ public class EventManagerScript : MonoBehaviour
 		audioSource.minDistance = (float)5;
 		audioSource.maxDistance = (float)10;
 		this.VoiceClip = gameObject;
+		if (this.Yandere.transform.position.y < gameObject.transform.position.y - (float)2)
+		{
+			audioSource.volume = (float)0;
+		}
+		else
+		{
+			audioSource.volume = (float)1;
+		}
 	}
 
 	public virtual void EndEvent()
@@ -203,13 +215,11 @@ public class EventManagerScript : MonoBehaviour
 		}
 		this.EventStudent[1].CurrentDestination = this.EventStudent[1].Destinations[this.EventStudent[1].Phase];
 		this.EventStudent[1].Pathfinding.target = this.EventStudent[1].Destinations[this.EventStudent[1].Phase];
-		this.EventStudent[1].Prompt.enabled = true;
 		this.EventStudent[1].EventManager = null;
 		this.EventStudent[1].InEvent = false;
 		this.EventStudent[1].Private = false;
 		this.EventStudent[2].CurrentDestination = this.EventStudent[2].Destinations[this.EventStudent[2].Phase];
 		this.EventStudent[2].Pathfinding.target = this.EventStudent[2].Destinations[this.EventStudent[2].Phase];
-		this.EventStudent[2].Prompt.enabled = true;
 		this.EventStudent[2].EventManager = null;
 		this.EventStudent[2].InEvent = false;
 		this.EventStudent[2].Private = false;

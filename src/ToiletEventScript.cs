@@ -6,6 +6,8 @@ public class ToiletEventScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
 
+	public LightSwitchScript LightSwitch;
+
 	public ParticleSystem Splashes;
 
 	public UILabel EventSubtitle;
@@ -78,6 +80,7 @@ public class ToiletEventScript : MonoBehaviour
 					this.EventStudent.CurrentDestination = this.EventLocation[1];
 					this.EventStudent.Pathfinding.target = this.EventLocation[1];
 					this.EventStudent.Pathfinding.canMove = true;
+					this.EventStudent.LightSwitch = this.LightSwitch;
 					this.EventStudent.Obstacle.checkTime = (float)99;
 					this.EventStudent.ToiletEvent = this;
 					this.EventStudent.InEvent = true;
@@ -105,6 +108,7 @@ public class ToiletEventScript : MonoBehaviour
 		{
 			if (this.Prompt.Circle[0].fillAmount <= (float)0)
 			{
+				this.Yandere.EmptyHands();
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
 				this.EventPhase = 5;
@@ -131,11 +135,7 @@ public class ToiletEventScript : MonoBehaviour
 				}
 				this.EventStudent.Character.animation.CrossFade(this.EventStudent.DrownAnim);
 			}
-			if (this.Clock.HourTime > this.EventTime + 0.5f)
-			{
-				this.EndEvent();
-			}
-			else if (this.EventStudent.WitnessedMurder)
+			if (this.Clock.HourTime > this.EventTime + 0.5f || this.EventStudent.WitnessedMurder || this.EventStudent.Wet)
 			{
 				this.EndEvent();
 			}
@@ -147,6 +147,8 @@ public class ToiletEventScript : MonoBehaviour
 					{
 						this.EventStudent.Character.animation.CrossFade(this.EventStudent.IdleAnim);
 						this.Prompt.HideButton[0] = false;
+						this.EventStudent.Prompt.Hide();
+						this.EventStudent.Prompt.enabled = false;
 						if (this.EventDay == 4)
 						{
 							this.StallDoor.Prompt.enabled = false;
@@ -286,7 +288,10 @@ public class ToiletEventScript : MonoBehaviour
 			this.EventStudent.CurrentDestination = this.EventStudent.Destinations[this.EventStudent.Phase];
 			this.EventStudent.Pathfinding.target = this.EventStudent.Destinations[this.EventStudent.Phase];
 			this.EventStudent.Obstacle.checkTime = (float)1;
-			this.EventStudent.Prompt.enabled = true;
+			if (!this.EventStudent.Dying)
+			{
+				this.EventStudent.Prompt.enabled = true;
+			}
 			this.EventStudent.TargetDistance = (float)1;
 			this.EventStudent.ToiletEvent = null;
 			this.EventStudent.InEvent = false;

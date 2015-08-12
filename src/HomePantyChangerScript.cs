@@ -69,6 +69,7 @@ public class HomePantyChangerScript : MonoBehaviour
 		Vector3 vector3 = this.PantyParent.transform.localPosition = localPosition;
 		this.UpdatePantyLabels();
 		this.PantyParent.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+		this.PantyParent.gameObject.active = false;
 	}
 
 	public virtual void Update()
@@ -76,6 +77,7 @@ public class HomePantyChangerScript : MonoBehaviour
 		if (this.HomeWindow.Show)
 		{
 			this.PantyParent.localScale = Vector3.Lerp(this.PantyParent.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+			this.PantyParent.gameObject.active = true;
 			if (this.InputManager.TappedRight)
 			{
 				this.DestinationReached = false;
@@ -119,6 +121,10 @@ public class HomePantyChangerScript : MonoBehaviour
 		else
 		{
 			this.PantyParent.localScale = Vector3.Lerp(this.PantyParent.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+			if (this.PantyParent.localScale.x < 0.01f)
+			{
+				this.PantyParent.gameObject.active = false;
+			}
 		}
 	}
 

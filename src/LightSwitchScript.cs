@@ -4,15 +4,35 @@ using UnityEngine;
 [Serializable]
 public class LightSwitchScript : MonoBehaviour
 {
+	public ToiletEventScript ToiletEvent;
+
 	public YandereScript Yandere;
 
 	public PromptScript Prompt;
 
+	public Transform ElectrocutionSpot;
+
 	public GameObject BathroomLight;
+
+	public GameObject Electricity;
 
 	public Rigidbody Panel;
 
 	public Transform Wires;
+
+	public AudioClip[] ReactionClips;
+
+	public string[] ReactionTexts;
+
+	public AudioClip[] Flick;
+
+	public float SubtitleTimer;
+
+	public float FlickerTimer;
+
+	public int ReactionID;
+
+	public bool Flicker;
 
 	public virtual void Start()
 	{
@@ -21,6 +41,22 @@ public class LightSwitchScript : MonoBehaviour
 
 	public virtual void Update()
 	{
+		if (this.Flicker)
+		{
+			this.FlickerTimer += Time.deltaTime;
+			if (this.FlickerTimer > 0.1f)
+			{
+				this.FlickerTimer = (float)0;
+				if (!this.BathroomLight.active)
+				{
+					this.BathroomLight.active = true;
+				}
+				else
+				{
+					this.BathroomLight.active = false;
+				}
+			}
+		}
 		if (!this.Panel.useGravity)
 		{
 			if (this.Yandere.Armed)
@@ -46,11 +82,31 @@ public class LightSwitchScript : MonoBehaviour
 			{
 				this.Prompt.Label[0].text = "     " + "Turn On";
 				this.BathroomLight.active = false;
+				this.audio.clip = this.Flick[1];
+				this.audio.Play();
+				if (this.ToiletEvent.EventActive && (this.ToiletEvent.EventPhase == 2 || this.ToiletEvent.EventPhase == 3))
+				{
+					this.ReactionID = UnityEngine.Random.Range(1, 4);
+					this.ToiletEvent.PlayClip(this.ReactionClips[this.ReactionID], this.ToiletEvent.EventStudent.transform.position);
+					this.ToiletEvent.EventSubtitle.text = this.ReactionTexts[this.ReactionID];
+					this.SubtitleTimer += Time.deltaTime;
+				}
 			}
 			else
 			{
 				this.Prompt.Label[0].text = "     " + "Turn Off";
 				this.BathroomLight.active = true;
+				this.audio.clip = this.Flick[0];
+				this.audio.Play();
+			}
+		}
+		if (this.SubtitleTimer > (float)0)
+		{
+			this.SubtitleTimer += Time.deltaTime;
+			if (this.SubtitleTimer > (float)3)
+			{
+				this.ToiletEvent.EventSubtitle.text = string.Empty;
+				this.SubtitleTimer = (float)0;
 			}
 		}
 		if (this.Prompt.Circle[3].fillAmount <= (float)0)

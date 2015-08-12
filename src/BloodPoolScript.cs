@@ -6,7 +6,14 @@ public class BloodPoolScript : MonoBehaviour
 {
 	public float TargetSize;
 
+	public bool Blood;
+
 	public bool Grow;
+
+	public BloodPoolScript()
+	{
+		this.Blood = true;
+	}
 
 	public virtual void Start()
 	{

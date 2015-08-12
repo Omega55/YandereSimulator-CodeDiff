@@ -23,11 +23,15 @@ public class StudentScript : MonoBehaviour
 
 	public EventManagerScript EventManager;
 
+	public LightSwitchScript LightSwitch;
+
 	public MovingEventScript MovingEvent;
 
 	public ToiletEventScript ToiletEvent;
 
 	public DynamicGridObstacle Obstacle;
+
+	public PhoneEventScript PhoneEvent;
 
 	public ReputationScript Reputation;
 
@@ -51,6 +55,12 @@ public class StudentScript : MonoBehaviour
 
 	public CharacterController MyController;
 
+	public Projector LiquidProjector;
+
+	public Texture BloodTexture;
+
+	public Texture WaterTexture;
+
 	public Texture DrillTexture;
 
 	public Texture HairTexture;
@@ -64,6 +74,8 @@ public class StudentScript : MonoBehaviour
 	public Renderer PigtailL;
 
 	public Renderer Drills;
+
+	public Mesh BaldMesh;
 
 	public Transform CurrentDestination;
 
@@ -79,7 +91,13 @@ public class StudentScript : MonoBehaviour
 
 	public Transform MeetSpot;
 
+	public Transform DrillR;
+
+	public Transform DrillL;
+
 	public Transform Eyes;
+
+	public ParticleSystem[] LiquidEmitters;
 
 	public string[] DestinationNames;
 
@@ -95,9 +113,11 @@ public class StudentScript : MonoBehaviour
 
 	public float[] PhaseTimes;
 
-	public Plane[] Planes;
+	public GameObject[] Bones;
 
 	public LayerMask Mask;
+
+	public Plane[] Planes;
 
 	public int[] Actions;
 
@@ -119,6 +139,8 @@ public class StudentScript : MonoBehaviour
 
 	public GameObject Character;
 
+	public GameObject LongHair;
+
 	public GameObject Marker;
 
 	public GameObject Bento;
@@ -135,13 +157,19 @@ public class StudentScript : MonoBehaviour
 
 	public bool Complimented;
 
+	public bool Electrocuted;
+
 	public bool Distracted;
+
+	public bool InDarkness;
 
 	public bool ShortHair;
 
 	public bool HidePony;
 
 	public bool Pushable;
+
+	public bool Splashed;
 
 	public bool Tranquil;
 
@@ -161,17 +189,23 @@ public class StudentScript : MonoBehaviour
 
 	public bool Witness;
 
+	public bool Bloody;
+
 	public bool Routine;
 
 	public bool Pushed;
 
 	public bool Dead;
 
+	public bool Halt;
+
 	public bool Male;
 
 	public bool Safe;
 
 	public bool Stop;
+
+	public bool Wet;
 
 	public bool Following;
 
@@ -187,17 +221,19 @@ public class StudentScript : MonoBehaviour
 
 	public bool Dying;
 
-	public bool Halt;
-
 	public float DistanceToDestination;
 
 	public float DistanceToPlayer;
 
 	public float TargetDistance;
 
-	public float ReportTimer;
+	public float ElectroTimer;
 
 	public float IgnoreTimer;
+
+	public float ReportTimer;
+
+	public float SplashTimer;
 
 	public float AlarmTimer;
 
@@ -224,6 +260,12 @@ public class StudentScript : MonoBehaviour
 	public int WeaponWitnessed;
 
 	public int Interaction;
+
+	public int SplashPhase;
+
+	public int BathePhase;
+
+	public int Schoolwear;
 
 	public int Concern;
 
@@ -281,6 +323,12 @@ public class StudentScript : MonoBehaviour
 
 	public string DrownAnim;
 
+	public string WetAnim;
+
+	public string SplashedAnim;
+
+	public string StripAnim;
+
 	public int ReportPhase;
 
 	public int StudentID;
@@ -290,6 +338,8 @@ public class StudentScript : MonoBehaviour
 	public int Class;
 
 	public int Club;
+
+	public int ID;
 
 	public Vector3 RightEyeOrigin;
 
@@ -315,13 +365,35 @@ public class StudentScript : MonoBehaviour
 
 	public Texture TeacherTexture;
 
-	public Mesh NudeMesh;
+	public Texture SocksTexture;
+
+	public GameObject[] ElectroSteam;
+
+	public GameObject[] CensorSteam;
 
 	public Texture NudeTexture;
 
+	public Mesh BaldNudeMesh;
+
+	public Mesh NudeMesh;
+
+	public Mesh SchoolUniform;
+
+	public Mesh SchoolSwimsuit;
+
+	public Mesh BaldGymUniform;
+
+	public Mesh GymUniform;
+
+	public Texture UniformTexture;
+
+	public Texture SwimsuitTexture;
+
+	public Texture GymTexture;
+
 	public bool AoT;
 
-	public Texture SocksTexture;
+	public bool Spooky;
 
 	public StudentScript()
 	{
@@ -352,6 +424,9 @@ public class StudentScript : MonoBehaviour
 		this.BentoAnim = string.Empty;
 		this.EatAnim = string.Empty;
 		this.DrownAnim = string.Empty;
+		this.WetAnim = string.Empty;
+		this.SplashedAnim = string.Empty;
+		this.StripAnim = string.Empty;
 		this.MaxSpeed = 10f;
 	}
 
@@ -382,6 +457,7 @@ public class StudentScript : MonoBehaviour
 		this.PickRandomAnim();
 		if (!this.Male)
 		{
+			this.Character.animation[this.StripAnim].speed = 1.5f;
 			this.Character.animation[this.GameAnim].speed = (float)2;
 			if (this.Club == 9)
 			{
@@ -389,6 +465,9 @@ public class StudentScript : MonoBehaviour
 			}
 			this.UpdateHair();
 			this.SetColors();
+			this.Character.animation[this.WetAnim].layer = 4;
+			this.Character.animation.Play(this.WetAnim);
+			this.Character.animation[this.WetAnim].weight = (float)0;
 			this.Character.animation[this.BentoAnim].layer = 3;
 			this.Character.animation.Play(this.BentoAnim);
 			this.Character.animation[this.BentoAnim].weight = (float)0;
@@ -398,9 +477,31 @@ public class StudentScript : MonoBehaviour
 			this.Character.animation[this.PhoneAnim].layer = 1;
 			this.Character.animation[this.PhoneAnim].weight = (float)0;
 			this.Character.animation.Play(this.PhoneAnim);
+			this.Character.animation["f02_wetIdle_00"].speed = 1.25f;
+			this.LiquidProjector.enabled = false;
 			this.Bento.active = false;
 			this.Chopsticks[0].active = false;
 			this.Chopsticks[1].active = false;
+			this.ElectroSteam[0].active = false;
+			this.ElectroSteam[1].active = false;
+			this.ElectroSteam[2].active = false;
+			this.ElectroSteam[3].active = false;
+			this.CensorSteam[0].active = false;
+			this.CensorSteam[1].active = false;
+			this.CensorSteam[2].active = false;
+			this.CensorSteam[3].active = false;
+			this.ID = 0;
+			while (this.ID < Extensions.get_length(this.LiquidEmitters))
+			{
+				this.LiquidEmitters[this.ID].gameObject.active = false;
+				this.ID++;
+			}
+			this.ID = 0;
+			while (this.ID < Extensions.get_length(this.Bones))
+			{
+				this.Bones[this.ID].active = false;
+				this.ID++;
+			}
 		}
 		else
 		{
@@ -419,22 +520,30 @@ public class StudentScript : MonoBehaviour
 		{
 			this.AttackOnTitan();
 		}
+		if (this.Spooky)
+		{
+			this.Spook();
+		}
 		this.Prompt.HideButton[0] = true;
 		this.Prompt.HideButton[2] = true;
-		for (int i = 0; i < this.Ragdoll.AllRigidbodies.Length; i++)
+		this.ID = 0;
+		while (this.ID < this.Ragdoll.AllRigidbodies.Length)
 		{
-			this.Ragdoll.AllRigidbodies[i].isKinematic = true;
-			this.Ragdoll.AllColliders[i].enabled = false;
+			this.Ragdoll.AllRigidbodies[this.ID].isKinematic = true;
+			this.Ragdoll.AllColliders[this.ID].enabled = false;
+			this.ID++;
 		}
 		this.Ragdoll.AllColliders[10].enabled = true;
 		if (this.StudentID == 1)
 		{
 			((DetectionMarkerScript)this.DetectionMarker.GetComponent(typeof(DetectionMarkerScript))).Tex.color = new Color((float)1, (float)0, (float)0, (float)0);
 			this.Yandere.Senpai = this.transform;
-			for (int i = 0; i < Extensions.get_length(this.Outlines); i++)
+			this.ID = 0;
+			while (this.ID < Extensions.get_length(this.Outlines))
 			{
-				this.Outlines[i].enabled = true;
-				this.Outlines[i].color = new Color((float)1, (float)0, (float)1);
+				this.Outlines[this.ID].enabled = true;
+				this.Outlines[this.ID].color = new Color((float)1, (float)0, (float)1);
+				this.ID++;
 			}
 			this.Prompt.ButtonActive[0] = false;
 			this.Prompt.ButtonActive[1] = false;
@@ -443,9 +552,11 @@ public class StudentScript : MonoBehaviour
 		}
 		else if (PlayerPrefs.GetInt("Student_" + this.StudentID + "_Photographed") == 0)
 		{
-			for (int i = 0; i < Extensions.get_length(this.Outlines); i++)
+			this.ID = 0;
+			while (this.ID < Extensions.get_length(this.Outlines))
 			{
-				this.Outlines[i].enabled = false;
+				this.Outlines[this.ID].enabled = false;
+				this.ID++;
 			}
 		}
 	}
@@ -482,8 +593,15 @@ public class StudentScript : MonoBehaviour
 					this.Pathfinding.canSearch = true;
 					this.Pathfinding.canMove = true;
 					this.Obstacle.enabled = false;
-					this.Character.animation.CrossFade(this.WalkAnim);
-					this.Character.animation[this.WalkAnim].speed = this.Pathfinding.currentSpeed;
+					if (this.Pathfinding.speed == (float)1)
+					{
+						this.Character.animation.CrossFade(this.WalkAnim);
+						this.Character.animation[this.WalkAnim].speed = this.Pathfinding.currentSpeed;
+					}
+					else
+					{
+						this.Character.animation.CrossFade(this.SprintAnim);
+					}
 				}
 				else
 				{
@@ -543,6 +661,10 @@ public class StudentScript : MonoBehaviour
 			}
 			else
 			{
+				if (this.CurrentDestination != null)
+				{
+					this.DistanceToDestination = Vector3.Distance(this.transform.position, this.CurrentDestination.position);
+				}
 				if (this.Fleeing && this.AlarmTimer == (float)0)
 				{
 					if (this.Persona == 2 && this.StudentManager.Reporter == null && !this.Police.Called)
@@ -574,7 +696,7 @@ public class StudentScript : MonoBehaviour
 							if (this.Yandere.Chased)
 							{
 								this.Pathfinding.repathRate = (float)0;
-								this.Pathfinding.speed = (float)7;
+								this.Pathfinding.speed = 7.5f;
 							}
 							else
 							{
@@ -845,7 +967,220 @@ public class StudentScript : MonoBehaviour
 						this.Routine = true;
 						this.Subtitle.UpdateLabel("Stop Follow Apology", 0, (float)3);
 						this.Prompt.Label[0].text = "     " + "Talk";
-						Debug.Log("Well, this happened.");
+					}
+				}
+				if (this.Wet)
+				{
+					if (this.DistanceToDestination < 0.5f)
+					{
+						if (!this.Splashed)
+						{
+							if (!this.InDarkness)
+							{
+								if (this.BathePhase == 1)
+								{
+									this.StudentManager.CommunalLocker.Open = true;
+									this.StudentManager.CommunalLocker.Student = this;
+									this.StudentManager.CommunalLocker.SpawnSteam();
+									this.Pathfinding.speed = (float)1;
+									this.Schoolwear = 0;
+									this.BathePhase++;
+								}
+								else if (this.BathePhase == 2)
+								{
+									this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.CurrentDestination.rotation, Time.deltaTime * (float)10);
+									this.MoveTowardsTarget(this.CurrentDestination.position);
+								}
+								else if (this.BathePhase == 3)
+								{
+									this.StudentManager.CommunalLocker.Open = false;
+									this.Character.animation.CrossFade(this.WalkAnim);
+									this.CurrentDestination = this.StudentManager.BatheSpot;
+									this.Pathfinding.target = this.StudentManager.BatheSpot;
+									this.Pathfinding.canSearch = true;
+									this.Pathfinding.canMove = true;
+									this.BathePhase++;
+								}
+								else if (this.BathePhase == 4)
+								{
+									this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.CurrentDestination.rotation, Time.deltaTime * (float)10);
+									this.MoveTowardsTarget(this.CurrentDestination.position);
+									this.Character.animation.CrossFade("f02_bathEnter_00");
+									if (this.Character.animation["f02_bathEnter_00"].time >= this.Character.animation["f02_bathEnter_00"].length)
+									{
+										this.Character.animation.CrossFade("f02_bathIdle_00");
+										this.BathePhase++;
+									}
+									this.Pathfinding.canSearch = false;
+									this.Pathfinding.canMove = false;
+									this.Distracted = true;
+								}
+								else if (this.BathePhase == 5)
+								{
+									if (this.Character.animation["f02_bathIdle_00"].time >= this.Character.animation["f02_bathIdle_00"].length)
+									{
+										this.Character.animation["f02_bathEnter_00"].time = this.Character.animation["f02_bathEnter_00"].length;
+										this.Character.animation["f02_bathEnter_00"].speed = (float)-1;
+										this.Character.animation.CrossFade("f02_bathEnter_00");
+										this.LiquidProjector.enabled = false;
+										this.ID = 0;
+										while (this.ID < Extensions.get_length(this.LiquidEmitters))
+										{
+											this.LiquidEmitters[this.ID].gameObject.active = false;
+											this.ID++;
+										}
+										this.BathePhase++;
+									}
+								}
+								else if (this.BathePhase == 6)
+								{
+									if (this.Character.animation["f02_bathEnter_00"].time <= (float)0)
+									{
+										this.Character.animation.CrossFade(this.WalkAnim);
+										this.CurrentDestination = this.StudentManager.StripSpot;
+										this.Pathfinding.target = this.StudentManager.StripSpot;
+										this.Pathfinding.canSearch = true;
+										this.Pathfinding.canMove = true;
+										this.Distracted = false;
+										this.BathePhase++;
+									}
+								}
+								else if (this.BathePhase == 7)
+								{
+									this.StudentManager.CommunalLocker.Open = true;
+									this.StudentManager.CommunalLocker.Student = this;
+									this.StudentManager.CommunalLocker.SpawnSteam();
+									this.Schoolwear = 3;
+									this.BathePhase++;
+								}
+								else if (this.BathePhase == 8)
+								{
+									this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.CurrentDestination.rotation, Time.deltaTime * (float)10);
+									this.MoveTowardsTarget(this.CurrentDestination.position);
+								}
+								else if (this.BathePhase == 9)
+								{
+									this.StudentManager.CommunalLocker.Open = false;
+									this.CurrentDestination = this.Destinations[this.Phase];
+									this.Pathfinding.target = this.Destinations[this.Phase];
+									this.Routine = true;
+									this.Wet = false;
+								}
+							}
+							else if (this.BathePhase == -1)
+							{
+								this.Subtitle.UpdateLabel("Light Switch Reaction", 2, (float)5);
+								this.Character.animation.CrossFade("f02_electrocution_00");
+								this.Pathfinding.canSearch = false;
+								this.Pathfinding.canMove = false;
+								this.BathePhase++;
+							}
+							else if (this.BathePhase == 0)
+							{
+								this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.CurrentDestination.rotation, Time.deltaTime * (float)10);
+								this.MoveTowardsTarget(this.CurrentDestination.position);
+								if (this.Character.animation["f02_electrocution_00"].time > (float)2 && this.Character.animation["f02_electrocution_00"].time < 5.95f)
+								{
+									if (!this.LightSwitch.Panel.useGravity)
+									{
+										if (!this.Bloody)
+										{
+											this.Subtitle.UpdateLabel("Splash Reaction", 2, (float)5);
+										}
+										else
+										{
+											this.Subtitle.UpdateLabel("Splash Reaction", 4, (float)5);
+										}
+										this.CurrentDestination = this.StudentManager.StripSpot;
+										this.Pathfinding.target = this.StudentManager.StripSpot;
+										this.Pathfinding.canSearch = true;
+										this.Pathfinding.canMove = true;
+										this.Pathfinding.speed = (float)4;
+										this.Character.animation.CrossFade(this.WalkAnim);
+										this.BathePhase++;
+										this.LightSwitch.Prompt.Label[0].text = "     " + "Turn Off";
+										this.LightSwitch.BathroomLight.active = true;
+										this.LightSwitch.audio.clip = this.LightSwitch.Flick[0];
+										this.LightSwitch.audio.Play();
+									}
+									else
+									{
+										if (!this.LightSwitch.Flicker)
+										{
+											this.Character.animation["f02_electrocution_00"].speed = 0.85f;
+											GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.LightSwitch.Electricity, this.transform.position, Quaternion.identity);
+											gameObject.transform.parent = this.Bones[1].transform;
+											gameObject.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
+											AudioSource audio = this.LightSwitch.audio;
+											object obj2;
+											object obj = obj2 = UnityRuntimeServices.GetProperty(this.LightSwitch, "ElectricityCackling");
+											if (!(obj is AudioClip))
+											{
+												obj2 = RuntimeServices.Coerce(obj, typeof(AudioClip));
+											}
+											audio.clip = (AudioClip)obj2;
+											this.Subtitle.UpdateLabel("Light Switch Reaction", 3, (float)0);
+											this.LightSwitch.audio.clip = this.LightSwitch.Flick[2];
+											this.LightSwitch.Flicker = true;
+											this.LightSwitch.audio.Play();
+											this.EyeShrink = (float)1;
+											this.ElectroSteam[0].active = true;
+											this.ElectroSteam[1].active = true;
+											this.ElectroSteam[2].active = true;
+											this.ElectroSteam[3].active = true;
+										}
+										this.DrillR.eulerAngles = new Vector3(UnityEngine.Random.Range(-360f, 360f), UnityEngine.Random.Range(-360f, 360f), UnityEngine.Random.Range(-360f, 360f));
+										this.DrillL.eulerAngles = new Vector3(UnityEngine.Random.Range(-360f, 360f), UnityEngine.Random.Range(-360f, 360f), UnityEngine.Random.Range(-360f, 360f));
+										this.ElectroTimer += Time.deltaTime;
+										if (this.ElectroTimer > 0.1f)
+										{
+											this.ElectroTimer = (float)0;
+											if (this.MyRenderer.enabled)
+											{
+												this.Spook();
+											}
+											else
+											{
+												this.Unspook();
+											}
+										}
+									}
+								}
+								else if (this.Character.animation["f02_electrocution_00"].time > 5.95f && this.Character.animation["f02_electrocution_00"].time < this.Character.animation["f02_electrocution_00"].length)
+								{
+									if (this.LightSwitch.Flicker)
+									{
+										this.Character.animation["f02_electrocution_00"].speed = (float)1;
+										this.Prompt.Label[0].text = "     " + "Turn Off";
+										this.LightSwitch.BathroomLight.active = true;
+										this.DrillR.localEulerAngles = new Vector3((float)0, (float)0, (float)45);
+										this.DrillL.localEulerAngles = new Vector3((float)0, (float)0, (float)-45);
+										this.LightSwitch.Flicker = false;
+										this.Unspook();
+										this.UnWet();
+									}
+								}
+								else if (this.Character.animation["f02_electrocution_00"].time >= this.Character.animation["f02_electrocution_00"].length)
+								{
+									this.Electrocuted = true;
+									this.BecomeRagdoll();
+									this.Dead = true;
+								}
+							}
+						}
+					}
+					else if (this.Pathfinding.canMove)
+					{
+						if (this.BathePhase == 1)
+						{
+							this.Character.animation.CrossFade(this.SprintAnim);
+							this.Pathfinding.speed = (float)4;
+						}
+						else
+						{
+							this.Character.animation.CrossFade(this.WalkAnim);
+							this.Pathfinding.speed = (float)1;
+						}
 					}
 				}
 			}
@@ -857,19 +1192,20 @@ public class StudentScript : MonoBehaviour
 					if (!this.WitnessedMurder)
 					{
 						int num = 0;
-						for (int i = 0; i < this.Police.Corpses; i++)
+						this.ID = 0;
+						while (this.ID < this.Police.Corpses)
 						{
-							if (this.Police.CorpseList[i] != null)
+							if (this.Police.CorpseList[this.ID] != null)
 							{
 								this.Planes = GeometryUtility.CalculateFrustumPlanes(this.VisionCone);
-								if (GeometryUtility.TestPlanesAABB(this.Planes, this.Police.CorpseList[i].AllColliders[0].bounds))
+								if (GeometryUtility.TestPlanesAABB(this.Planes, this.Police.CorpseList[this.ID].AllColliders[0].bounds))
 								{
 									RaycastHit raycastHit = default(RaycastHit);
-									Debug.DrawLine(this.Eyes.transform.position, this.Police.CorpseList[i].AllColliders[0].transform.position, Color.green);
-									if (Physics.Linecast(this.Eyes.transform.position, this.Police.CorpseList[i].AllColliders[0].transform.position, out raycastHit, this.Mask) && (raycastHit.collider.gameObject.layer == 11 || raycastHit.collider.gameObject.layer == 14))
+									Debug.DrawLine(this.Eyes.transform.position, this.Police.CorpseList[this.ID].AllColliders[0].transform.position, Color.green);
+									if (Physics.Linecast(this.Eyes.transform.position, this.Police.CorpseList[this.ID].AllColliders[0].transform.position, out raycastHit, this.Mask) && (raycastHit.collider.gameObject.layer == 11 || raycastHit.collider.gameObject.layer == 14))
 									{
 										num++;
-										this.Corpse = this.Police.CorpseList[i];
+										this.Corpse = this.Police.CorpseList[this.ID];
 										if (this.Persona == 2 && this.StudentManager.Reporter == null && !this.Police.Called)
 										{
 											this.StudentManager.CorpseLocation.position = this.Corpse.AllColliders[0].transform.position;
@@ -879,6 +1215,7 @@ public class StudentScript : MonoBehaviour
 									}
 								}
 							}
+							this.ID++;
 						}
 						if (num > 0)
 						{
@@ -999,9 +1336,11 @@ public class StudentScript : MonoBehaviour
 						}
 						if (this.Alarm > (float)100 && !this.Alarmed)
 						{
-							for (int i = 0; i < Extensions.get_length(this.Outlines); i++)
+							this.ID = 0;
+							while (this.ID < Extensions.get_length(this.Outlines))
 							{
-								this.Outlines[i].color = new Color((float)1, (float)1, (float)0, (float)1);
+								this.Outlines[this.ID].color = new Color((float)1, (float)1, (float)0, (float)1);
+								this.ID++;
 							}
 							this.Pathfinding.canSearch = false;
 							this.Pathfinding.canMove = false;
@@ -1138,6 +1477,10 @@ public class StudentScript : MonoBehaviour
 								}
 								this.Reputation.PendingRep = this.Reputation.PendingRep - this.RepLoss;
 								this.PendingRep -= this.RepLoss;
+								if (this.ToiletEvent != null)
+								{
+									this.ToiletEvent.EndEvent();
+								}
 							}
 						}
 					}
@@ -1146,7 +1489,7 @@ public class StudentScript : MonoBehaviour
 						this.Alarm -= Time.deltaTime * (float)100;
 					}
 				}
-				else if (!this.InEvent)
+				else if (!this.InEvent && this.BathePhase < 4)
 				{
 					this.Character.animation[this.PhoneAnim].weight = Mathf.Lerp(this.Character.animation[this.PhoneAnim].weight, (float)1, Time.deltaTime * (float)10);
 					if (this.transform.position.z > (float)-49)
@@ -1289,9 +1632,11 @@ public class StudentScript : MonoBehaviour
 						this.Character.animation.CrossFade(this.Nod2Anim);
 						this.Reputation.PendingRep = this.Reputation.PendingRep + (float)5;
 						this.PendingRep += (float)5;
-						for (int i = 0; i < Extensions.get_length(this.Outlines); i++)
+						this.ID = 0;
+						while (this.ID < Extensions.get_length(this.Outlines))
 						{
-							this.Outlines[i].color = new Color((float)0, (float)1, (float)0, (float)1);
+							this.Outlines[this.ID].color = new Color((float)0, (float)1, (float)0, (float)1);
+							this.ID++;
 						}
 						this.Forgave = true;
 						if (this.Witnessed == "Insanity" || this.Witnessed == "Weapon and Blood and Insanity" || this.Witnessed == "Weapon and Insanity" || this.Witnessed == "Blood and Insanity")
@@ -1382,7 +1727,7 @@ public class StudentScript : MonoBehaviour
 						this.Alarmed = false;
 						this.Talking = false;
 						this.Waiting = false;
-						if (!this.Following)
+						if (!this.Following && !this.Wet)
 						{
 							this.Routine = true;
 						}
@@ -1559,7 +1904,7 @@ public class StudentScript : MonoBehaviour
 					{
 						this.PersonaReaction();
 					}
-					else if (!this.Following)
+					else if (!this.Following && !this.Wet)
 					{
 						this.Routine = true;
 					}
@@ -1794,6 +2139,72 @@ public class StudentScript : MonoBehaviour
 					this.Reacted = true;
 				}
 			}
+			else if (this.Splashed)
+			{
+				this.SplashTimer += Time.deltaTime;
+				if (this.SplashTimer > (float)2 && this.SplashPhase == 1)
+				{
+					if (!this.Bloody)
+					{
+						this.Subtitle.UpdateLabel("Splash Reaction", 1, (float)5);
+					}
+					else
+					{
+						this.Subtitle.UpdateLabel("Splash Reaction", 3, (float)5);
+					}
+					this.SplashPhase++;
+				}
+				if (this.SplashTimer > (float)8 && this.SplashPhase == 2)
+				{
+					if (this.LightSwitch == null)
+					{
+						if (!this.Bloody)
+						{
+							this.Subtitle.UpdateLabel("Splash Reaction", 2, (float)5);
+						}
+						else
+						{
+							this.Subtitle.UpdateLabel("Splash Reaction", 4, (float)5);
+						}
+						this.SplashPhase++;
+						this.CurrentDestination = this.StudentManager.StripSpot;
+						this.Pathfinding.target = this.StudentManager.StripSpot;
+					}
+					else if (!this.LightSwitch.BathroomLight.active)
+					{
+						if (this.LightSwitch.Panel.useGravity)
+						{
+							this.LightSwitch.Prompt.Hide();
+							this.LightSwitch.Prompt.enabled = false;
+							this.Prompt.Hide();
+							this.Prompt.enabled = false;
+						}
+						this.Subtitle.UpdateLabel("Light Switch Reaction", 1, (float)5);
+						this.CurrentDestination = this.LightSwitch.ElectrocutionSpot;
+						this.Pathfinding.target = this.LightSwitch.ElectrocutionSpot;
+						this.Pathfinding.speed = (float)1;
+						this.BathePhase = -1;
+						this.InDarkness = true;
+					}
+					else
+					{
+						if (!this.Bloody)
+						{
+							this.Subtitle.UpdateLabel("Splash Reaction", 2, (float)5);
+						}
+						else
+						{
+							this.Subtitle.UpdateLabel("Splash Reaction", 4, (float)5);
+						}
+						this.SplashPhase++;
+						this.CurrentDestination = this.StudentManager.StripSpot;
+						this.Pathfinding.target = this.StudentManager.StripSpot;
+					}
+					this.Pathfinding.canSearch = true;
+					this.Pathfinding.canMove = true;
+					this.Splashed = false;
+				}
+			}
 			if (this.IgnoreTimer > (float)0)
 			{
 				this.IgnoreTimer -= Time.deltaTime;
@@ -1813,6 +2224,17 @@ public class StudentScript : MonoBehaviour
 		if (this.AoT)
 		{
 			this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)10, (float)10, (float)10), Time.deltaTime);
+		}
+		if (!this.Male)
+		{
+			if (!this.Splashed && this.Wet && Mathf.Abs(this.BathePhase) == 1)
+			{
+				this.Character.animation[this.WetAnim].weight = (float)1;
+			}
+			else
+			{
+				this.Character.animation[this.WetAnim].weight = (float)0;
+			}
 		}
 	}
 
@@ -1895,6 +2317,10 @@ public class StudentScript : MonoBehaviour
 		this.Dying = true;
 		this.Prompt.Hide();
 		this.Prompt.enabled = false;
+		if (this.ToiletEvent != null)
+		{
+			this.ToiletEvent.EndEvent();
+		}
 		if (!this.Dying && this.Following)
 		{
 			this.Yandere.Followers = this.Yandere.Followers - 1;
@@ -1965,10 +2391,12 @@ public class StudentScript : MonoBehaviour
 	{
 		if (this.StudentID > 1)
 		{
-			for (int i = 0; i < Extensions.get_length(this.Outlines); i++)
+			this.ID = 0;
+			while (this.ID < Extensions.get_length(this.Outlines))
 			{
-				this.Outlines[i].color = new Color((float)1, (float)0, (float)0, (float)1);
-				this.Outlines[i].enabled = true;
+				this.Outlines[this.ID].color = new Color((float)1, (float)0, (float)0, (float)1);
+				this.Outlines[this.ID].enabled = true;
+				this.ID++;
 			}
 			this.WitnessCamera.transform.parent = this.WitnessPOV;
 			this.WitnessCamera.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
@@ -2031,7 +2459,13 @@ public class StudentScript : MonoBehaviour
 		this.Alarm = (float)0;
 		if (this.Teacher)
 		{
+			this.Subtitle.UpdateLabel("Teacher Murder Reaction", 1, (float)3);
 			this.Pathfinding.target = this.Yandere.transform;
+			this.Pathfinding.speed = 7.5f;
+			this.StudentManager.Portal.active = false;
+			this.Yandere.Chased = true;
+			this.TargetDistance = 0.5f;
+			this.StudentManager.UpdateStudents();
 		}
 		this.StudentManager.UpdateMe(this.StudentID - 1);
 	}
@@ -2090,6 +2524,7 @@ public class StudentScript : MonoBehaviour
 			{
 				this.Subtitle.UpdateLabel("Teacher Murder Reaction", 1, (float)3);
 				this.Pathfinding.target = this.Yandere.transform;
+				this.Pathfinding.speed = 7.5f;
 				this.StudentManager.Portal.active = false;
 				this.Yandere.Chased = true;
 				this.TargetDistance = 0.5f;
@@ -2113,48 +2548,52 @@ public class StudentScript : MonoBehaviour
 	public virtual void GetDestinations()
 	{
 		this.DestinationNames = (string[])this.JSON.StudentDestinations[this.StudentID].ToBuiltin(typeof(string));
-		for (int i = 1; i < this.JSON.StudentDestinations[this.StudentID].length; i++)
+		this.ID = 1;
+		while (this.ID < this.JSON.StudentDestinations[this.StudentID].length)
 		{
-			if (this.DestinationNames[i] == "Locker")
+			if (this.DestinationNames[this.ID] == "Locker")
 			{
-				this.Destinations[i] = this.StudentManager.Lockers.List[this.StudentID];
+				this.Destinations[this.ID] = this.StudentManager.Lockers.List[this.StudentID];
 			}
-			else if (this.DestinationNames[i] == "Seat")
+			else if (this.DestinationNames[this.ID] == "Seat")
 			{
-				this.Destinations[i] = this.StudentManager.Seats.List[this.StudentID];
+				this.Destinations[this.ID] = this.StudentManager.Seats.List[this.StudentID];
 			}
-			else if (this.DestinationNames[i] == "Podium")
+			else if (this.DestinationNames[this.ID] == "Podium")
 			{
-				this.Destinations[i] = this.StudentManager.Podiums.List[this.Class];
+				this.Destinations[this.ID] = this.StudentManager.Podiums.List[this.Class];
 			}
-			else if (this.DestinationNames[i] == "Exit")
+			else if (this.DestinationNames[this.ID] == "Exit")
 			{
-				this.Destinations[i] = this.StudentManager.Hangouts.List[0];
+				this.Destinations[this.ID] = this.StudentManager.Hangouts.List[0];
 			}
-			else if (this.DestinationNames[i] == "Hangout")
+			else if (this.DestinationNames[this.ID] == "Hangout")
 			{
-				this.Destinations[i] = this.StudentManager.Hangouts.List[this.StudentID];
+				this.Destinations[this.ID] = this.StudentManager.Hangouts.List[this.StudentID];
 			}
-			else if (this.DestinationNames[i] == "LunchSpot")
+			else if (this.DestinationNames[this.ID] == "LunchSpot")
 			{
-				this.Destinations[i] = this.StudentManager.LunchSpots.List[this.StudentID];
+				this.Destinations[this.ID] = this.StudentManager.LunchSpots.List[this.StudentID];
 			}
+			this.ID++;
 		}
 		this.ActionNames = (string[])this.JSON.StudentActions[this.StudentID].ToBuiltin(typeof(string));
-		for (int i = 1; i < this.JSON.StudentActions[this.StudentID].length; i++)
+		this.ID = 1;
+		while (this.ID < this.JSON.StudentActions[this.StudentID].length)
 		{
-			if (this.ActionNames[i] == "Stand")
+			if (this.ActionNames[this.ID] == "Stand")
 			{
-				this.Actions[i] = 0;
+				this.Actions[this.ID] = 0;
 			}
-			else if (this.ActionNames[i] == "Socialize")
+			else if (this.ActionNames[this.ID] == "Socialize")
 			{
-				this.Actions[i] = 1;
+				this.Actions[this.ID] = 1;
 			}
-			else if (this.ActionNames[i] == "Game")
+			else if (this.ActionNames[this.ID] == "Game")
 			{
-				this.Actions[i] = 2;
+				this.Actions[this.ID] = 2;
 			}
+			this.ID++;
 		}
 	}
 
@@ -2162,6 +2601,7 @@ public class StudentScript : MonoBehaviour
 	{
 		string a = this.JSON.StudentColors[this.StudentID];
 		string a2 = this.JSON.StudentStockings[this.StudentID];
+		this.ID = 1;
 		if (!this.Male)
 		{
 			if (a == "Red")
@@ -2199,7 +2639,10 @@ public class StudentScript : MonoBehaviour
 			}
 			if (!this.Teacher)
 			{
-				this.MyRenderer.materials[1].mainTexture = this.HairTexture;
+				if (this.Hairstyle != "Long")
+				{
+					this.MyRenderer.materials[1].mainTexture = this.HairTexture;
+				}
 				this.MyRenderer.materials[3].mainTexture = this.HairTexture;
 			}
 			else
@@ -2245,6 +2688,11 @@ public class StudentScript : MonoBehaviour
 		{
 			this.MyRenderer.materials[0].mainTexture = this.StudentManager.Stockings[0];
 		}
+		else if (a2 == "ThighhighGreen")
+		{
+			this.MyRenderer.materials[0].mainTexture = this.StudentManager.Stockings[1];
+			this.MyRenderer.materials[1].mainTexture = this.StudentManager.Stockings[1];
+		}
 		if (!this.Male)
 		{
 			this.PigtailR.material.mainTexture = this.HairTexture;
@@ -2256,9 +2704,11 @@ public class StudentScript : MonoBehaviour
 				this.Drills.materials[2].mainTexture = this.DrillTexture;
 			}
 		}
-		for (int i = 0; i < Extensions.get_length(this.Outlines); i++)
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.Outlines))
 		{
-			this.Outlines[i].h.ReinitMaterials();
+			this.Outlines[this.ID].h.ReinitMaterials();
+			this.ID++;
 		}
 	}
 
@@ -2266,6 +2716,7 @@ public class StudentScript : MonoBehaviour
 	{
 		this.PigtailR.transform.parent.transform.parent.transform.localScale = new Vector3((float)1, 0.75f, (float)1);
 		this.PigtailL.transform.parent.transform.parent.transform.localScale = new Vector3((float)1, 0.75f, (float)1);
+		this.LongHair.active = false;
 		this.PigtailR.active = false;
 		this.PigtailL.active = false;
 		this.Drills.active = false;
@@ -2314,14 +2765,21 @@ public class StudentScript : MonoBehaviour
 		{
 			this.ShortHair = true;
 		}
+		else if (this.Hairstyle == "Long")
+		{
+			this.MyRenderer.sharedMesh = this.BaldMesh;
+			this.LongHair.active = true;
+		}
 	}
 
 	public virtual void TransferHair()
 	{
-		for (int i = 0; i < Extensions.get_length(this.Outlines); i++)
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.Outlines))
 		{
-			this.Outlines[i].color = new Color((float)1, 0.5f, (float)0, (float)1);
-			this.Outlines[i].enabled = true;
+			this.Outlines[this.ID].color = new Color((float)1, 0.5f, (float)0, (float)1);
+			this.Outlines[this.ID].enabled = true;
+			this.ID++;
 		}
 		this.Ragdoll.HidePony = this.HidePony;
 	}
@@ -2343,37 +2801,6 @@ public class StudentScript : MonoBehaviour
 		this.Teacher = true;
 		this.MyRenderer.materials[0].mainTexture = this.TeacherTexture;
 		this.MyRenderer.materials[3].mainTexture = this.TeacherTexture;
-	}
-
-	public virtual void AttackOnTitan()
-	{
-		this.AoT = true;
-		float y = 0.0825f;
-		Vector3 center = this.MyController.center;
-		float num = center.y = y;
-		Vector3 vector = this.MyController.center = center;
-		this.MyController.radius = 0.015f;
-		this.MyController.height = 0.15f;
-		this.MyRenderer.sharedMesh = this.NudeMesh;
-		if (!this.Male)
-		{
-			this.MyRenderer.materials[3].mainTexture = this.NudeTexture;
-			this.MyRenderer.materials[0].mainTexture = this.HairTexture;
-		}
-		else
-		{
-			this.MyRenderer.materials[0].mainTexture = this.NudeTexture;
-			this.MyRenderer.materials[1].mainTexture = this.HairTexture;
-		}
-		for (int i = 0; i < Extensions.get_length(this.Outlines); i++)
-		{
-			this.Outlines[i].h.ReinitMaterials();
-		}
-		if (!this.Male && !this.Teacher)
-		{
-			this.PantyCollider.enabled = false;
-			this.SkirtCollider.enabled = false;
-		}
 	}
 
 	public virtual void RemoveShoes()
@@ -2442,16 +2869,19 @@ public class StudentScript : MonoBehaviour
 		this.MyController.enabled = false;
 		this.Pathfinding.enabled = false;
 		this.HipCollider.enabled = true;
+		this.Prompt.Hide();
 		this.Prompt.enabled = false;
 		this.enabled = false;
 		this.Ragdoll.RightEyeOrigin = this.RightEyeOrigin;
 		this.Ragdoll.LeftEyeOrigin = this.LeftEyeOrigin;
+		this.Ragdoll.Electrocuted = this.Electrocuted;
 		this.Ragdoll.BreastSize = this.BreastSize;
 		this.Ragdoll.EyeShrink = this.EyeShrink;
 		this.Ragdoll.Tranquil = this.Tranquil;
 		this.Ragdoll.Drowned = this.Drowned;
 		this.Ragdoll.Yandere = this.Yandere;
 		this.Ragdoll.Police = this.Police;
+		this.Ragdoll.Pushed = this.Pushed;
 		this.Ragdoll.Male = this.Male;
 		this.Ragdoll.enabled = true;
 		this.Reputation.PendingRep = this.Reputation.PendingRep + this.PendingRep * (float)-1;
@@ -2464,6 +2894,175 @@ public class StudentScript : MonoBehaviour
 		this.SetLayerRecursively(this.gameObject, 11);
 		this.tag = "Blood";
 		PlayerPrefs.SetInt("Student_" + this.StudentID + "_Dying", 1);
+	}
+
+	public virtual void GetWet()
+	{
+		this.Character.animation.CrossFade(this.SplashedAnim);
+		this.LiquidProjector.enabled = true;
+		if (this.Bloody)
+		{
+			this.LiquidProjector.material.mainTexture = this.BloodTexture;
+		}
+		else
+		{
+			this.LiquidProjector.material.mainTexture = this.WaterTexture;
+		}
+		this.Subtitle.UpdateLabel("Splash Reaction", 0, (float)1);
+		this.Pathfinding.canSearch = false;
+		this.Pathfinding.canMove = false;
+		this.SplashTimer = (float)0;
+		this.SplashPhase = 1;
+		this.BathePhase = 1;
+		this.Splashed = true;
+		this.Routine = false;
+		this.Wet = true;
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.LiquidEmitters))
+		{
+			this.LiquidEmitters[this.ID].gameObject.active = true;
+			if (this.Bloody)
+			{
+				this.LiquidEmitters[this.ID].startColor = new Color((float)1, (float)0, (float)0, (float)1);
+			}
+			else
+			{
+				this.LiquidEmitters[this.ID].startColor = new Color((float)0, (float)1, (float)1, (float)1);
+			}
+			this.ID++;
+		}
+	}
+
+	public virtual void UnWet()
+	{
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.LiquidEmitters))
+		{
+			this.LiquidEmitters[this.ID].gameObject.active = false;
+			this.ID++;
+		}
+	}
+
+	public virtual void Nude()
+	{
+		if (this.Hairstyle == "Long")
+		{
+			this.MyRenderer.sharedMesh = this.BaldNudeMesh;
+			this.MyRenderer.materials[0].mainTexture = this.HairTexture;
+			this.MyRenderer.materials[3].mainTexture = this.NudeTexture;
+		}
+		else
+		{
+			this.MyRenderer.sharedMesh = this.NudeMesh;
+			this.MyRenderer.materials[0].mainTexture = this.HairTexture;
+			this.MyRenderer.materials[3].mainTexture = this.NudeTexture;
+		}
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.CensorSteam))
+		{
+			this.CensorSteam[this.ID].active = true;
+			this.ID++;
+		}
+	}
+
+	public virtual void ChangeSchoolwear()
+	{
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.CensorSteam))
+		{
+			this.CensorSteam[this.ID].active = false;
+			this.ID++;
+		}
+		if (this.Schoolwear == 0)
+		{
+			this.Nude();
+		}
+		else if (this.Schoolwear == 1)
+		{
+			this.MyRenderer.sharedMesh = this.SchoolUniform;
+			this.SetColors();
+		}
+		else if (this.Schoolwear == 2)
+		{
+			this.MyRenderer.sharedMesh = this.SchoolSwimsuit;
+		}
+		else if (this.Schoolwear == 3)
+		{
+			if (this.Hairstyle == "Long")
+			{
+				this.MyRenderer.sharedMesh = this.BaldGymUniform;
+				this.MyRenderer.materials[0].mainTexture = this.GymTexture;
+				this.MyRenderer.materials[1].mainTexture = this.GymTexture;
+				this.MyRenderer.materials[2].mainTexture = this.GymTexture;
+				this.MyRenderer.materials[3].mainTexture = this.HairTexture;
+			}
+			else
+			{
+				this.MyRenderer.sharedMesh = this.GymUniform;
+				this.MyRenderer.materials[0].mainTexture = this.GymTexture;
+				this.MyRenderer.materials[1].mainTexture = this.GymTexture;
+				this.MyRenderer.materials[2].mainTexture = this.HairTexture;
+				this.MyRenderer.materials[3].mainTexture = this.HairTexture;
+			}
+		}
+	}
+
+	public virtual void AttackOnTitan()
+	{
+		this.AoT = true;
+		float y = 0.0825f;
+		Vector3 center = this.MyController.center;
+		float num = center.y = y;
+		Vector3 vector = this.MyController.center = center;
+		this.MyController.radius = 0.015f;
+		this.MyController.height = 0.15f;
+		this.MyRenderer.sharedMesh = this.NudeMesh;
+		if (!this.Male)
+		{
+			this.MyRenderer.materials[3].mainTexture = this.NudeTexture;
+			this.MyRenderer.materials[0].mainTexture = this.HairTexture;
+		}
+		else
+		{
+			this.MyRenderer.materials[0].mainTexture = this.NudeTexture;
+			this.MyRenderer.materials[1].mainTexture = this.HairTexture;
+		}
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.Outlines))
+		{
+			this.Outlines[this.ID].h.ReinitMaterials();
+			this.ID++;
+		}
+		if (!this.Male && !this.Teacher)
+		{
+			this.PantyCollider.enabled = false;
+			this.SkirtCollider.enabled = false;
+		}
+	}
+
+	public virtual void Spook()
+	{
+		if (!this.Male)
+		{
+			this.MyRenderer.enabled = false;
+			this.ID = 0;
+			while (this.ID < Extensions.get_length(this.Bones))
+			{
+				this.Bones[this.ID].active = true;
+				this.ID++;
+			}
+		}
+	}
+
+	public virtual void Unspook()
+	{
+		this.MyRenderer.enabled = true;
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.Bones))
+		{
+			this.Bones[this.ID].active = false;
+			this.ID++;
+		}
 	}
 
 	public virtual void Main()

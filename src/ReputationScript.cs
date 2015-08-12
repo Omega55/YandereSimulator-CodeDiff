@@ -102,11 +102,6 @@ public class ReputationScript : MonoBehaviour
 		{
 			this.PendingRepLabel.text = string.Empty;
 		}
-		if (Input.GetKeyDown("8"))
-		{
-			PlayerPrefs.SetFloat("Reputation", (float)50);
-			this.Reputation = PlayerPrefs.GetFloat("Reputation");
-		}
 	}
 
 	public virtual void Main()

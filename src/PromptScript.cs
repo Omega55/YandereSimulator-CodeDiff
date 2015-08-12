@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityScript.Lang;
 
 [Serializable]
 public class PromptScript : MonoBehaviour
@@ -36,6 +37,8 @@ public class PromptScript : MonoBehaviour
 
 	public float[] OffsetY;
 
+	public float[] OffsetZ;
+
 	public string[] Text;
 
 	public bool DisableAtStart;
@@ -52,6 +55,8 @@ public class PromptScript : MonoBehaviour
 
 	public bool Weapon;
 
+	public float MaximumDistance;
+
 	public float MinimumDistance;
 
 	public float Distance;
@@ -66,8 +71,17 @@ public class PromptScript : MonoBehaviour
 
 	public int ID;
 
+	public PromptScript()
+	{
+		this.MaximumDistance = 5f;
+	}
+
 	public virtual void Start()
 	{
+		if (Extensions.get_length(this.OffsetZ) == 0)
+		{
+			this.OffsetZ = new float[4];
+		}
 		this.PauseScreen = (PauseScreenScript)GameObject.Find("PauseScreen").GetComponent(typeof(PauseScreenScript));
 		this.PromptParent = (Transform)GameObject.Find("PromptParent").GetComponent(typeof(Transform));
 		this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent(typeof(YandereScript));
@@ -125,7 +139,7 @@ public class PromptScript : MonoBehaviour
 			if (this.InView)
 			{
 				this.Distance = Vector3.Distance(this.Yandere.transform.position, new Vector3(this.transform.position.x, this.Yandere.transform.position.y, this.transform.position.z));
-				if (this.Distance < (float)5)
+				if (this.Distance < this.MaximumDistance)
 				{
 					if (this.Yandere.CanMove && !this.Yandere.Crouching && !this.Yandere.Crawling && !this.Yandere.Aiming && !this.Yandere.Mopping && !this.Yandere.NearSenpai)
 					{
@@ -149,10 +163,10 @@ public class PromptScript : MonoBehaviour
 							{
 								if (this.ButtonActive[this.ID])
 								{
-									Vector2 vector = this.UICamera.WorldToScreenPoint(this.transform.position + Vector3.right * this.OffsetX[this.ID] + Vector3.up * this.OffsetY[this.ID]);
+									Vector2 vector = this.UICamera.WorldToScreenPoint(this.transform.position + this.transform.right * this.OffsetX[this.ID] + this.transform.up * this.OffsetY[this.ID] + this.transform.forward * this.OffsetZ[this.ID]);
 									this.Button[this.ID].transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector.x, vector.y, 1f));
 									this.Circle[this.ID].transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector.x, vector.y, 1f));
-									Vector2 vector2 = this.UICamera.WorldToScreenPoint(this.transform.position + Vector3.right * this.OffsetX[this.ID] + Vector3.up * this.OffsetY[this.ID]);
+									Vector2 vector2 = this.UICamera.WorldToScreenPoint(this.transform.position + this.transform.right * this.OffsetX[this.ID] + this.transform.up * this.OffsetY[this.ID] + this.transform.forward * this.OffsetZ[this.ID]);
 									this.Label[this.ID].transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector2.x + this.OffsetX[this.ID], vector2.y, 1f));
 									if (!this.HideButton[this.ID])
 									{

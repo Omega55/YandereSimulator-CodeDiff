@@ -44,42 +44,6 @@ public class CameraEffectsScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (Input.GetKeyDown("0"))
-		{
-			if (this.QualityBloom.enabled)
-			{
-				this.QualityBloom.enabled = false;
-				this.QualityVignetting.enabled = false;
-				this.QualityAntialiasingAsPostEffect.enabled = false;
-			}
-			else
-			{
-				this.QualityBloom.enabled = true;
-				this.QualityVignetting.enabled = true;
-				this.QualityAntialiasingAsPostEffect.enabled = true;
-			}
-		}
-		if (Input.GetKeyDown("9"))
-		{
-			if (!this.OneCamera)
-			{
-				this.OneCamera = true;
-				if (this.Yandere.Aiming)
-				{
-					this.Yandere.MainCamera.clearFlags = CameraClearFlags.Color;
-					this.Yandere.MainCamera.farClipPlane = 0.02f;
-				}
-			}
-			else
-			{
-				this.OneCamera = false;
-				if (this.Yandere.Aiming)
-				{
-					this.Yandere.MainCamera.clearFlags = CameraClearFlags.Skybox;
-					this.Yandere.MainCamera.farClipPlane = 200f;
-				}
-			}
-		}
 		if (this.Streaks.color.a > (float)0)
 		{
 			this.AlarmBloom.bloomIntensity = this.AlarmBloom.bloomIntensity - Time.deltaTime;
@@ -129,6 +93,28 @@ public class CameraEffectsScript : MonoBehaviour
 		else
 		{
 			this.Yandere.Jukebox.SFX.PlayOneShot(this.SenpaiNoticed);
+		}
+	}
+
+	public virtual void DisableCamera()
+	{
+		if (!this.OneCamera)
+		{
+			this.OneCamera = true;
+			if (this.Yandere.Aiming)
+			{
+				this.Yandere.MainCamera.clearFlags = CameraClearFlags.Color;
+				this.Yandere.MainCamera.farClipPlane = 0.02f;
+			}
+		}
+		else
+		{
+			this.OneCamera = false;
+			if (this.Yandere.Aiming)
+			{
+				this.Yandere.MainCamera.clearFlags = CameraClearFlags.Skybox;
+				this.Yandere.MainCamera.farClipPlane = 200f;
+			}
 		}
 	}
 

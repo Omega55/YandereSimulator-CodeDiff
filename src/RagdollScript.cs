@@ -58,6 +58,8 @@ public class RagdollScript : MonoBehaviour
 
 	public bool AddingToCount;
 
+	public bool Electrocuted;
+
 	public bool HidePony;
 
 	public bool Tranquil;
@@ -73,6 +75,8 @@ public class RagdollScript : MonoBehaviour
 	public bool Dumped;
 
 	public bool Hidden;
+
+	public bool Pushed;
 
 	public bool Male;
 
@@ -99,9 +103,13 @@ public class RagdollScript : MonoBehaviour
 	{
 		Physics.IgnoreLayerCollision(11, 13, true);
 		this.Zs.active = this.Tranquil;
-		if (!this.Tranquil && !this.Natural && !this.Drowned)
+		if (!this.Tranquil && !this.Natural && !this.Drowned && !this.Electrocuted)
 		{
-			this.BloodPoolSpawner.active = true;
+			this.BloodPoolSpawner.gameObject.active = true;
+			if (this.Pushed)
+			{
+				this.BloodPoolSpawner.Timer = (float)5;
+			}
 		}
 		for (int i = 0; i < this.AllRigidbodies.Length; i++)
 		{

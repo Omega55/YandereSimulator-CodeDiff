@@ -38,31 +38,38 @@ public class HomeDarknessScript : MonoBehaviour
 				{
 					Application.LoadLevel("SchoolScene");
 				}
-				else if (this.HomeYandere.transform.position.y > (float)-5)
+				else if (this.HomeExit.ID == 2)
 				{
-					this.HomeYandere.transform.position = new Vector3(3.833333f, (float)-10, (float)-1);
-					this.HomeYandere.transform.eulerAngles = new Vector3((float)0, (float)-90, (float)0);
-					this.HomeYandere.CanMove = true;
-					this.FadeOut = false;
-					this.HomeCamera.Destinations[0].position = new Vector3(0.01f, (float)-8, -0.01f);
-					this.HomeCamera.Destination = this.HomeCamera.Destinations[0];
-					this.HomeCamera.transform.position = this.HomeCamera.Destination.position;
-					this.HomeCamera.Target = this.HomeCamera.Targets[0];
-					this.HomeCamera.Focus.position = this.HomeCamera.Target.position;
-					this.BasementLabel.text = "Upstairs";
+					Application.LoadLevel("TownScene");
 				}
-				else
+				else if (this.HomeExit.ID == 3)
 				{
-					this.HomeYandere.transform.position = new Vector3(-2.271312f, (float)0, (float)1);
-					this.HomeYandere.transform.eulerAngles = new Vector3((float)0, (float)0, (float)0);
-					this.HomeYandere.CanMove = true;
-					this.FadeOut = false;
-					this.HomeCamera.Destinations[0].position = new Vector3(-2.271312f, (float)2, 3.5f);
-					this.HomeCamera.Destination = this.HomeCamera.Destinations[0];
-					this.HomeCamera.transform.position = this.HomeCamera.Destination.position;
-					this.HomeCamera.Target = this.HomeCamera.Targets[0];
-					this.HomeCamera.Focus.position = this.HomeCamera.Target.position;
-					this.BasementLabel.text = "Basement";
+					if (this.HomeYandere.transform.position.y > (float)-5)
+					{
+						this.HomeYandere.transform.position = new Vector3(3.833333f, (float)-10, (float)-1);
+						this.HomeYandere.transform.eulerAngles = new Vector3((float)0, (float)-90, (float)0);
+						this.HomeYandere.CanMove = true;
+						this.FadeOut = false;
+						this.HomeCamera.Destinations[0].position = new Vector3(0.01f, (float)-8, -0.01f);
+						this.HomeCamera.Destination = this.HomeCamera.Destinations[0];
+						this.HomeCamera.transform.position = this.HomeCamera.Destination.position;
+						this.HomeCamera.Target = this.HomeCamera.Targets[0];
+						this.HomeCamera.Focus.position = this.HomeCamera.Target.position;
+						this.BasementLabel.text = "Upstairs";
+					}
+					else
+					{
+						this.HomeYandere.transform.position = new Vector3(-2.271312f, (float)0, (float)1);
+						this.HomeYandere.transform.eulerAngles = new Vector3((float)0, (float)0, (float)0);
+						this.HomeYandere.CanMove = true;
+						this.FadeOut = false;
+						this.HomeCamera.Destinations[0].position = new Vector3(-2.271312f, (float)2, 3.5f);
+						this.HomeCamera.Destination = this.HomeCamera.Destinations[0];
+						this.HomeCamera.transform.position = this.HomeCamera.Destination.position;
+						this.HomeCamera.Target = this.HomeCamera.Targets[0];
+						this.HomeCamera.Focus.position = this.HomeCamera.Target.position;
+						this.BasementLabel.text = "Basement";
+					}
 				}
 			}
 		}

@@ -26,9 +26,13 @@ public class PortraitChanScript : MonoBehaviour
 
 	public Transform HairR;
 
+	public Texture UniformTexture;
+
 	public Texture DrillTexture;
 
 	public Texture HairTexture;
+
+	public GameObject LongHair;
 
 	public bool HidePony;
 
@@ -47,6 +51,8 @@ public class PortraitChanScript : MonoBehaviour
 	public Mesh TeacherMesh;
 
 	public Texture TeacherTexture;
+
+	public Mesh BaldMesh;
 
 	public PortraitChanScript()
 	{
@@ -164,55 +170,64 @@ public class PortraitChanScript : MonoBehaviour
 				this.Drills.materials[2].mainTexture = this.DrillTexture;
 			}
 		}
+		if (this.Hairstyle == "Long")
+		{
+			this.BecomeBald();
+		}
 	}
 
 	public virtual void UpdateHair()
 	{
-		this.PigtailR.active = false;
-		this.PigtailL.active = false;
-		this.Drills.active = false;
+		this.PigtailR.gameObject.active = false;
+		this.PigtailL.gameObject.active = false;
+		this.Drills.gameObject.active = false;
+		this.LongHair.active = false;
 		if (!(this.Hairstyle == "PonyTail"))
 		{
 			if (this.Hairstyle == "RightTail")
 			{
-				this.PigtailR.active = true;
+				this.PigtailR.gameObject.active = true;
 				this.HidePony = true;
 			}
 			else if (this.Hairstyle == "LeftTail")
 			{
-				this.PigtailL.active = true;
+				this.PigtailL.gameObject.active = true;
 				this.HidePony = true;
 			}
 			else if (this.Hairstyle == "PigTails")
 			{
-				this.PigtailR.active = true;
-				this.PigtailL.active = true;
+				this.PigtailR.gameObject.active = true;
+				this.PigtailL.gameObject.active = true;
 				this.HidePony = true;
 			}
 			else if (this.Hairstyle == "TriTails")
 			{
-				this.PigtailR.active = true;
-				this.PigtailL.active = true;
+				this.PigtailR.gameObject.active = true;
+				this.PigtailL.gameObject.active = true;
 				this.PigtailR.transform.localScale = new Vector3((float)1, (float)1, (float)1);
 				this.PigtailL.transform.localScale = new Vector3((float)1, (float)1, (float)1);
 			}
 			else if (this.Hairstyle == "TwinTails")
 			{
-				this.PigtailR.active = true;
-				this.PigtailL.active = true;
+				this.PigtailR.gameObject.active = true;
+				this.PigtailL.gameObject.active = true;
 				this.HidePony = true;
 				this.PigtailR.transform.parent.transform.parent.transform.localScale = new Vector3((float)2, (float)2, (float)2);
 				this.PigtailL.transform.parent.transform.parent.transform.localScale = new Vector3((float)2, (float)2, (float)2);
 			}
 			else if (this.Hairstyle == "Drills")
 			{
-				this.Drills.active = true;
+				this.Drills.gameObject.active = true;
 				this.HidePony = true;
 			}
 			else if (this.Hairstyle == "Short")
 			{
 				this.PigtailR.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
 				this.PigtailL.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+			}
+			else if (this.Hairstyle == "Long")
+			{
+				this.LongHair.active = true;
 			}
 		}
 		if (this.HidePony)
@@ -230,6 +245,15 @@ public class PortraitChanScript : MonoBehaviour
 		this.Teacher = true;
 		this.MyRenderer.materials[0].mainTexture = this.TeacherTexture;
 		this.MyRenderer.materials[3].mainTexture = this.TeacherTexture;
+	}
+
+	public virtual void BecomeBald()
+	{
+		this.MyRenderer.sharedMesh = this.BaldMesh;
+		this.MyRenderer.materials[0].mainTexture = this.UniformTexture;
+		this.MyRenderer.materials[1].mainTexture = this.UniformTexture;
+		this.MyRenderer.materials[2].mainTexture = this.HairTexture;
+		this.MyRenderer.materials[3].mainTexture = this.HairTexture;
 	}
 
 	public virtual void Main()

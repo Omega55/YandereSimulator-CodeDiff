@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityScript.Lang;
 
 [Serializable]
 public class PauseScreenScript : MonoBehaviour
@@ -24,6 +25,8 @@ public class PauseScreenScript : MonoBehaviour
 
 	public UILabel PassTimeLabel;
 
+	public UISprite Wifi;
+
 	public GameObject LoadingScreen;
 
 	public GameObject StudentInfo;
@@ -34,11 +37,15 @@ public class PauseScreenScript : MonoBehaviour
 
 	public Transform Highlight;
 
+	public Transform[] Eggs;
+
 	public int Selected;
 
 	public bool CorrectingTime;
 
 	public bool BypassPhone;
+
+	public bool EggsChecked;
 
 	public bool PressedA;
 
@@ -120,6 +127,46 @@ public class PauseScreenScript : MonoBehaviour
 			}
 			else
 			{
+				if (!this.EggsChecked)
+				{
+					int num5 = 99999;
+					for (int i = 0; i < Extensions.get_length(this.Eggs); i++)
+					{
+						if (this.Eggs[i] != null)
+						{
+							float num6 = Vector3.Distance(this.Yandere.transform.position, this.Eggs[i].position);
+							if (num6 < (float)num5)
+							{
+								num5 = (int)num6;
+							}
+						}
+					}
+					if (num5 < 5)
+					{
+						this.Wifi.spriteName = "5Bars";
+					}
+					else if (num5 < 10)
+					{
+						this.Wifi.spriteName = "4Bars";
+					}
+					else if (num5 < 15)
+					{
+						this.Wifi.spriteName = "3Bars";
+					}
+					else if (num5 < 20)
+					{
+						this.Wifi.spriteName = "2Bars";
+					}
+					else if (num5 < 25)
+					{
+						this.Wifi.spriteName = "1Bars";
+					}
+					else
+					{
+						this.Wifi.spriteName = "0Bars";
+					}
+					this.EggsChecked = true;
+				}
 				this.RPGCamera.enabled = false;
 				if (!this.Quitting)
 				{
@@ -134,7 +181,7 @@ public class PauseScreenScript : MonoBehaviour
 					this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)1, (float)1, (float)1), 0.166666672f);
 					float z2 = Mathf.Lerp(this.transform.localEulerAngles.z, (float)0, 0.166666672f);
 					Vector3 localEulerAngles2 = this.transform.localEulerAngles;
-					float num5 = localEulerAngles2.z = z2;
+					float num7 = localEulerAngles2.z = z2;
 					Vector3 vector2 = this.transform.localEulerAngles = localEulerAngles2;
 				}
 				else
@@ -142,7 +189,7 @@ public class PauseScreenScript : MonoBehaviour
 					this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3(1.78f, 1.78f, (float)1), 0.166666672f);
 					float z3 = Mathf.Lerp(this.transform.localEulerAngles.z, (float)90, 0.166666672f);
 					Vector3 localEulerAngles3 = this.transform.localEulerAngles;
-					float num6 = localEulerAngles3.z = z3;
+					float num8 = localEulerAngles3.z = z3;
 					Vector3 vector3 = this.transform.localEulerAngles = localEulerAngles3;
 				}
 				Time.timeScale = Mathf.Lerp(Time.timeScale, (float)0, 0.166666672f);
@@ -155,9 +202,9 @@ public class PauseScreenScript : MonoBehaviour
 						{
 							this.Selected = 9;
 						}
-						int num7 = 325 - 75 * this.Selected;
+						int num9 = 325 - 75 * this.Selected;
 						Vector3 localPosition = this.Highlight.localPosition;
-						float num8 = localPosition.y = (float)num7;
+						float num10 = localPosition.y = (float)num9;
 						Vector3 vector4 = this.Highlight.localPosition = localPosition;
 					}
 					if (this.InputManager.TappedDown || Input.GetKeyDown("s") || Input.GetKeyDown("down"))
@@ -167,9 +214,9 @@ public class PauseScreenScript : MonoBehaviour
 						{
 							this.Selected = 1;
 						}
-						int num9 = 325 - 75 * this.Selected;
+						int num11 = 325 - 75 * this.Selected;
 						Vector3 localPosition2 = this.Highlight.localPosition;
-						float num10 = localPosition2.y = (float)num9;
+						float num12 = localPosition2.y = (float)num11;
 						Vector3 vector5 = this.Highlight.localPosition = localPosition2;
 					}
 					if (Input.GetButtonDown("A"))
@@ -293,6 +340,7 @@ public class PauseScreenScript : MonoBehaviour
 		this.ScreenBlur.enabled = false;
 		this.CorrectingTime = true;
 		this.BypassPhone = false;
+		this.EggsChecked = false;
 		this.PressedA = false;
 		this.Show = false;
 		if (!this.Yandere.Talking)

@@ -144,6 +144,10 @@ public class PortalScript : MonoBehaviour
 				Color color2 = this.ClassDarkness.color = color;
 				if (this.ClassDarkness.color.a >= (float)1)
 				{
+					if (this.Yandere.Armed)
+					{
+						this.Yandere.Unequip();
+					}
 					this.HeartbeatCamera.active = false;
 					int num2 = 1;
 					Color color3 = this.ClassDarkness.color;
@@ -215,6 +219,7 @@ public class PortalScript : MonoBehaviour
 			{
 				this.transform.position = new Vector3((float)0, (float)0, -49.5f);
 				this.Prompt.Label[0].text = "     " + "Go Home";
+				this.Prompt.enabled = true;
 			}
 		}
 		else if (this.InEvent || this.Yandere.Armed || this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Dragging || this.Yandere.Chased || this.StudentManager.Reporter != null || (this.Police.Corpses - this.Police.HiddenCorpses > 0 && !this.Police.SuicideScene && !this.Police.NaturalScene))
@@ -225,10 +230,6 @@ public class PortalScript : MonoBehaviour
 		else
 		{
 			this.Prompt.enabled = true;
-		}
-		if (Input.GetKeyDown("7"))
-		{
-			this.Yandere.transform.position = this.transform.position;
 		}
 	}
 
