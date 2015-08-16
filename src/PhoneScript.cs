@@ -8,6 +8,8 @@ public class PhoneScript : MonoBehaviour
 
 	public GameObject[] LeftMessage;
 
+	public AudioClip[] VoiceClips;
+
 	public GameObject NewMessage;
 
 	public Transform OldMessages;
@@ -42,7 +44,7 @@ public class PhoneScript : MonoBehaviour
 
 	public virtual void Start()
 	{
-		int num = -65;
+		int num = -135;
 		Vector3 localPosition = this.Buttons.localPosition;
 		float num2 = localPosition.y = (float)num;
 		Vector3 vector = this.Buttons.localPosition = localPosition;
@@ -59,14 +61,6 @@ public class PhoneScript : MonoBehaviour
 		{
 			if (this.Timer > (float)1)
 			{
-				if (this.Vignette.intensity < (float)5)
-				{
-					this.Vignette.intensity = this.Vignette.intensity + Time.deltaTime * (float)5;
-					if (this.Vignette.intensity > (float)5)
-					{
-						this.Vignette.intensity = (float)5;
-					}
-				}
 				float a = this.Darkness.color.a - Time.deltaTime;
 				Color color = this.Darkness.color;
 				float num = color.a = a;
@@ -104,6 +98,10 @@ public class PhoneScript : MonoBehaviour
 						this.FadeOut = true;
 					}
 				}
+				if (Input.GetButtonDown("X"))
+				{
+					this.FadeOut = true;
+				}
 			}
 		}
 		else
@@ -112,6 +110,7 @@ public class PhoneScript : MonoBehaviour
 			Color color5 = this.Darkness.color;
 			float num5 = color5.a = a2;
 			Color color6 = this.Darkness.color = color5;
+			this.audio.volume = (float)1 - this.Darkness.color.a;
 			if (this.Darkness.color.a >= (float)1)
 			{
 				Application.LoadLevel("CalendarScene");
@@ -129,6 +128,8 @@ public class PhoneScript : MonoBehaviour
 			float num = localPosition.y = y;
 			Vector3 vector = this.OldMessages.localPosition = localPosition;
 		}
+		this.audio.clip = this.VoiceClips[this.ID];
+		this.audio.Play();
 		if (this.Speaker[this.ID] == 1)
 		{
 			this.NewMessage = (GameObject)UnityEngine.Object.Instantiate(this.LeftMessage[this.Height[this.ID]]);

@@ -134,6 +134,12 @@ public class TitleMenuScript : MonoBehaviour
 						this.FadeOut = true;
 						this.Fading = true;
 					}
+					if (this.Selected == 3)
+					{
+						this.Darkness.color = new Color((float)1, (float)1, (float)1, (float)0);
+						this.FadeOut = true;
+						this.Fading = true;
+					}
 					if (this.Selected == 4)
 					{
 						this.PromptBar.Label[0].text = "Visit";
@@ -187,6 +193,11 @@ public class TitleMenuScript : MonoBehaviour
 					if (this.Selected == 1)
 					{
 						Application.LoadLevel("CalendarScene");
+					}
+					if (this.Selected == 3)
+					{
+						PlayerPrefs.DeleteAll();
+						Application.LoadLevel("SenpaiScene");
 					}
 					if (this.Selected == 7)
 					{

@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$1515 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$1567 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$1525;
+		internal YandereScript $self_$1577;
 
-		public $ApplyCustomCostume$1515(YandereScript self_)
+		public $ApplyCustomCostume$1567(YandereScript self_)
 		{
-			this.$self_$1525 = self_;
+			this.$self_$1577 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$1515.$(this.$self_$1525);
+			return new YandereScript.$ApplyCustomCostume$1567.$(this.$self_$1577);
 		}
 	}
 
@@ -768,7 +768,7 @@ public class YandereScript : MonoBehaviour
 							Time.timeScale = (float)1;
 						}
 					}
-					if (!this.Aiming && !this.Crouching && !this.Crawling && !this.Accessories[9].active)
+					if (!this.Aiming && !this.Crouching && !this.Crawling && !this.Accessories[9].active && !this.Accessories[16].active)
 					{
 						if (Input.GetButton("RB"))
 						{
@@ -2137,7 +2137,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$1515(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$1567(this).GetEnumerator();
 	}
 
 	public virtual void UpdateHair()
@@ -2470,6 +2470,7 @@ public class YandereScript : MonoBehaviour
 			this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
 		}
 		this.CanMove = false;
+		this.Outline.h.ReinitMaterials();
 	}
 
 	public virtual void Main()

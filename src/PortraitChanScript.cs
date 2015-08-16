@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityScript.Lang;
 
 [Serializable]
 public class PortraitChanScript : MonoBehaviour
@@ -10,11 +11,17 @@ public class PortraitChanScript : MonoBehaviour
 
 	public SkinnedMeshRenderer MyRenderer;
 
+	public Renderer MaleHairRenderer;
+
 	public Renderer PigtailR;
 
 	public Renderer PigtailL;
 
 	public Renderer Drills;
+
+	public Renderer EyeR;
+
+	public Renderer EyeL;
 
 	public Transform RightBreast;
 
@@ -47,6 +54,8 @@ public class PortraitChanScript : MonoBehaviour
 	public int StudentID;
 
 	public int Club;
+
+	public GameObject[] MaleHairstyles;
 
 	public Mesh TeacherMesh;
 
@@ -128,36 +137,38 @@ public class PortraitChanScript : MonoBehaviour
 		}
 		else
 		{
+			this.MaleHairstyles[UnityBuiltins.parseInt(this.Hairstyle)].active = true;
+			this.MaleHairRenderer = (Renderer)this.MaleHairstyles[UnityBuiltins.parseInt(this.Hairstyle)].GetComponent(typeof(Renderer));
 			if (a == "Red")
 			{
-				this.HairTexture = this.StudentManager.MaleColors[0];
+				this.MaleHairRenderer.material.color = new Color((float)1, (float)0, (float)0);
 			}
 			else if (a == "Yellow")
 			{
-				this.HairTexture = this.StudentManager.MaleColors[1];
+				this.MaleHairRenderer.material.color = new Color((float)1, (float)1, (float)0);
 			}
 			else if (a == "Green")
 			{
-				this.HairTexture = this.StudentManager.MaleColors[2];
+				this.MaleHairRenderer.material.color = new Color((float)0, (float)1, (float)0);
 			}
 			else if (a == "Cyan")
 			{
-				this.HairTexture = this.StudentManager.MaleColors[3];
+				this.MaleHairRenderer.material.color = new Color((float)0, (float)1, (float)1);
 			}
 			else if (a == "Blue")
 			{
-				this.HairTexture = this.StudentManager.MaleColors[4];
+				this.MaleHairRenderer.material.color = new Color((float)0, (float)0, (float)1);
 			}
 			else if (a == "Purple")
 			{
-				this.HairTexture = this.StudentManager.MaleColors[5];
+				this.MaleHairRenderer.material.color = new Color((float)1, (float)0, (float)1);
 			}
 			else if (a == "Black")
 			{
-				this.HairTexture = this.StudentManager.MaleColors[6];
+				this.MaleHairRenderer.material.color = new Color((float)1, (float)1, (float)1);
 			}
-			this.MyRenderer.materials[0].mainTexture = this.HairTexture;
-			this.MyRenderer.materials[3].mainTexture = this.HairTexture;
+			this.EyeR.material.color = this.MaleHairRenderer.material.color;
+			this.EyeL.material.color = this.MaleHairRenderer.material.color;
 		}
 		if (!this.Male)
 		{
