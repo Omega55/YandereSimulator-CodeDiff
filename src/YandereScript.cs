@@ -167,6 +167,8 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject HandCamera;
 
+	public GameObject HatredHair;
+
 	public GameObject KONGlasses;
 
 	public GameObject Character;
@@ -453,6 +455,8 @@ public class YandereScript : MonoBehaviour
 
 	public Material HatefulSkybox;
 
+	public Texture HatefulUniform;
+
 	public GameObject SukebanAccessories;
 
 	public Texture SukebanBandages;
@@ -536,12 +540,12 @@ public class YandereScript : MonoBehaviour
 		this.LongHair[0].gameObject.active = false;
 		this.PunishedAccessories.active = false;
 		this.SukebanAccessories.active = false;
-		this.BaldSchoolgirl.active = false;
 		this.CensorSteam[0].active = false;
 		this.CensorSteam[1].active = false;
 		this.CensorSteam[2].active = false;
 		this.CensorSteam[3].active = false;
 		this.PunishedScarf.active = false;
+		this.HatredHair.active = false;
 		this.KONGlasses.active = false;
 		this.EyepatchL.active = false;
 		this.EyepatchR.active = false;
@@ -738,7 +742,7 @@ public class YandereScript : MonoBehaviour
 				}
 				if (!this.NearSenpai)
 				{
-					if (Input.GetAxis("LT") > 0.5f || Input.GetMouseButtonDown(1))
+					if (!Input.GetButton("X") && (Input.GetAxis("LT") > 0.5f || Input.GetMouseButtonDown(1)))
 					{
 						if (Input.GetAxis("LT") > 0.5f)
 						{
@@ -1856,7 +1860,7 @@ public class YandereScript : MonoBehaviour
 			float num11 = localPosition3.y = height;
 			Vector3 vector11 = this.PelvisRoot.transform.localPosition = localPosition3;
 		}
-		if (this.BaldSchoolgirl.active)
+		if (this.Hairstyle == 14)
 		{
 			this.AntennaeR.localScale = new Vector3((float)0, (float)0, (float)0);
 			this.AntennaeL.localScale = new Vector3((float)0, (float)0, (float)0);
@@ -2145,6 +2149,7 @@ public class YandereScript : MonoBehaviour
 		this.PigtailR.transform.parent.transform.parent.transform.localScale = new Vector3((float)1, 0.75f, (float)1);
 		this.PigtailL.transform.parent.transform.parent.transform.localScale = new Vector3((float)1, 0.75f, (float)1);
 		this.LongHair[0].gameObject.active = false;
+		this.HatredHair.active = false;
 		this.PigtailR.active = false;
 		this.PigtailL.active = false;
 		this.Drills.active = false;
@@ -2154,7 +2159,7 @@ public class YandereScript : MonoBehaviour
 		this.Rei.active = false;
 		this.HidePony = true;
 		this.Hairstyle++;
-		if (this.Hairstyle > 13)
+		if (this.Hairstyle > 14)
 		{
 			this.Hairstyle = 0;
 		}
@@ -2246,6 +2251,12 @@ public class YandereScript : MonoBehaviour
 			this.PonytailWig.active = false;
 			this.Galo.active = true;
 		}
+		else if (this.Hairstyle == 14)
+		{
+			this.Galo.active = false;
+			this.HatredHair.active = true;
+			this.PonytailWig.active = false;
+		}
 		if (this.HidePony)
 		{
 			this.Ponytail.parent.transform.localScale = new Vector3((float)1, (float)1, 0.9f);
@@ -2311,39 +2322,15 @@ public class YandereScript : MonoBehaviour
 
 	public virtual void Hate()
 	{
+		this.MyRenderer.materials[0].mainTexture = this.HatefulUniform;
 		RenderSettings.skybox = this.HatefulSkybox;
-		this.Sanity = (float)0;
-		this.BaldSchoolgirl.active = true;
-		this.Character.active = false;
-		this.HeartRate.active = false;
 		this.SelectGrayscale.enabled = true;
+		this.HeartRate.active = false;
+		this.Sanity = (float)0;
+		this.Hairstyle = 13;
+		this.UpdateHair();
 		this.EasterEggMenu.active = false;
 		this.Egg = true;
-		this.Character = this.BaldSchoolgirl.gameObject;
-		this.RightBreast = this.BaldSchoolgirl.RightBreast;
-		this.LeftBreast = this.BaldSchoolgirl.LeftBreast;
-		this.ItemParent = this.BaldSchoolgirl.ItemParent;
-		this.PelvisRoot = this.BaldSchoolgirl.PelvisRoot;
-		this.RightEye = this.BaldSchoolgirl.RightEye;
-		this.LeftEye = this.BaldSchoolgirl.LeftEye;
-		this.Head = this.BaldSchoolgirl.Head;
-		this.Spine = this.BaldSchoolgirl.Spine;
-		this.Arm = this.BaldSchoolgirl.Arm;
-		this.MyRenderer = this.BaldSchoolgirl.MyRenderer;
-		this.RightYandereEye = this.BaldSchoolgirl.RightYandereEye;
-		this.LeftYandereEye = this.BaldSchoolgirl.LeftYandereEye;
-		this.BaldSchoolgirl.SetAnimations();
-		this.RagdollDragger.transform.parent = this.ItemParent;
-		this.RagdollDragger.transform.localPosition = new Vector3((float)0, -0.05f, (float)0);
-		this.RagdollDragger.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
-		this.Phone.transform.parent = this.ItemParent;
-		this.Phone.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
-		this.Phone.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
-		this.Smartphone.transform.parent.transform.parent = this.ItemParent;
-		this.Smartphone.transform.parent.transform.localPosition = new Vector3(0.0674861f, -0.05341353f, 0.02418186f);
-		this.Smartphone.transform.parent.transform.localEulerAngles = new Vector3(5.147979f, -179.7696f, 47.9222f);
-		this.CameraFocus.parent = this.Spine[3];
-		this.CameraPOV.parent = this.Spine[3];
 	}
 
 	public virtual void Sukeban()

@@ -129,6 +129,13 @@ public class DebugMenuScript : MonoBehaviour
 				this.Class.GivePoints();
 				this.Window.active = false;
 			}
+			else if (Input.GetKeyDown("backspace"))
+			{
+				Time.timeScale = (float)1;
+				this.Clock.PresentTime = (float)1079;
+				this.Clock.HourTime = this.Clock.PresentTime / (float)60;
+				this.Window.active = false;
+			}
 			if (Input.GetKeyDown("`"))
 			{
 				PlayerPrefs.DeleteAll();

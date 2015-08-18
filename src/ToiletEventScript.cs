@@ -135,7 +135,7 @@ public class ToiletEventScript : MonoBehaviour
 				}
 				this.EventStudent.Character.animation.CrossFade(this.EventStudent.DrownAnim);
 			}
-			if (this.Clock.HourTime > this.EventTime + 0.5f || this.EventStudent.WitnessedMurder || this.EventStudent.Wet)
+			if (this.Clock.HourTime > this.EventTime + 0.5f || this.EventStudent.WitnessedMurder || this.EventStudent.Wet || this.EventStudent.Alarmed)
 			{
 				this.EndEvent();
 			}

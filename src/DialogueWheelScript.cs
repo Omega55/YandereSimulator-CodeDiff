@@ -256,11 +256,14 @@ public class DialogueWheelScript : MonoBehaviour
 
 	public virtual void End()
 	{
-		this.Yandere.TargetStudent.Interaction = 0;
-		this.Yandere.TargetStudent.WaitTimer = (float)1;
-		this.Yandere.TargetStudent.ShoulderCamera.OverShoulder = false;
-		this.Yandere.TargetStudent.Waiting = true;
-		this.Yandere.TargetStudent = null;
+		if (this.Yandere.TargetStudent != null)
+		{
+			this.Yandere.TargetStudent.Interaction = 0;
+			this.Yandere.TargetStudent.WaitTimer = (float)1;
+			this.Yandere.TargetStudent.ShoulderCamera.OverShoulder = false;
+			this.Yandere.TargetStudent.Waiting = true;
+			this.Yandere.TargetStudent = null;
+		}
 		this.AskingFavor = false;
 		this.Show = false;
 	}

@@ -301,12 +301,6 @@ public class ClockScript : MonoBehaviour
 				this.EndTimeSkip();
 			}
 		}
-		if (Input.GetKeyDown("backspace"))
-		{
-			Time.timeScale = (float)1;
-			this.PresentTime = (float)1079;
-			this.HourTime = this.PresentTime / (float)60;
-		}
 	}
 
 	public virtual void EndTimeSkip()

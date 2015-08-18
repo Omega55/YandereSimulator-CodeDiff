@@ -747,6 +747,12 @@ public class StudentScript : MonoBehaviour
 								this.Character.animation.CrossFade(this.ScaredAnim);
 								if (this.Reporting)
 								{
+									if (this.StudentManager.Teachers[this.Class].Alarmed)
+									{
+										this.Pathfinding.target = this.StudentManager.Seats.List[this.StudentID];
+										this.CurrentDestination = this.StudentManager.Seats.List[this.StudentID];
+										this.ReportPhase = 2;
+									}
 									if (this.ReportPhase == 0)
 									{
 										if (this.WitnessedCorpse)
@@ -1261,6 +1267,7 @@ public class StudentScript : MonoBehaviour
 									this.Obstacle.enabled = false;
 									this.Talking = false;
 									this.Waiting = false;
+									this.StudentManager.EnablePrompts();
 								}
 								if (this.Following)
 								{
@@ -1577,7 +1584,7 @@ public class StudentScript : MonoBehaviour
 						this.Pushed = true;
 						this.Character.animation.CrossFade(this.PushedAnim);
 					}
-					else if (this.InEvent || this.Meeting)
+					else if (this.InEvent || this.Meeting || this.Wet)
 					{
 						this.Subtitle.UpdateLabel("Event Apology", 1, (float)3);
 						this.Prompt.Circle[0].fillAmount = (float)1;
@@ -2444,6 +2451,7 @@ public class StudentScript : MonoBehaviour
 				this.Talking = false;
 				this.Waiting = false;
 				this.StudentManager.EnablePrompts();
+				Debug.Log("This fired.");
 			}
 			this.Prompt.Label[0].text = "     " + "Talk";
 			this.Prompt.HideButton[0] = true;
@@ -2517,6 +2525,7 @@ public class StudentScript : MonoBehaviour
 			if (this.StudentManager.Reporter == this)
 			{
 				this.Pathfinding.target = this.StudentManager.Teachers[this.Class].TeacherTalkPoint;
+				this.CurrentDestination = this.StudentManager.Teachers[this.Class].TeacherTalkPoint;
 				if (this.WitnessedMurder)
 				{
 					this.Subtitle.UpdateLabel("Pet Murder Report", 1, (float)3);
@@ -2530,6 +2539,7 @@ public class StudentScript : MonoBehaviour
 			else
 			{
 				this.Pathfinding.target = this.StudentManager.Seats.List[this.StudentID];
+				this.CurrentDestination = this.StudentManager.Seats.List[this.StudentID];
 				if (this.WitnessedMurder)
 				{
 					this.Subtitle.UpdateLabel("Pet Murder Reaction", 1, (float)3);
@@ -2543,7 +2553,7 @@ public class StudentScript : MonoBehaviour
 			this.Routine = false;
 			this.Fleeing = true;
 		}
-		else
+		else if (this.Persona == 9)
 		{
 			if (this.WitnessedMurder)
 			{
