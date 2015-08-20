@@ -3,13 +3,13 @@ using UnityEngine;
 using UnityScript.Lang;
 
 [Serializable]
-public class LetterWindowScript : MonoBehaviour
+public class NoteWindowScript : MonoBehaviour
 {
 	public InputManagerScript InputManager;
 
-	public PromptBarScript PromptBar;
+	public NoteLockerScript NoteLocker;
 
-	public LeaveNoteScript Origin;
+	public PromptBarScript PromptBar;
 
 	public YandereScript Yandere;
 
@@ -55,7 +55,7 @@ public class LetterWindowScript : MonoBehaviour
 
 	public bool Show;
 
-	public LetterWindowScript()
+	public NoteWindowScript()
 	{
 		this.Slot = 1;
 	}
@@ -132,14 +132,14 @@ public class LetterWindowScript : MonoBehaviour
 				}
 				if (Input.GetButtonDown("X") && this.SlotsFilled[1] && this.SlotsFilled[2] && this.SlotsFilled[3])
 				{
-					this.Origin.MeetID = this.MeetID;
-					this.Origin.MeetTime = this.TimeID;
-					this.Origin.Prompt.enabled = false;
-					this.Origin.CanLeaveNote = false;
-					this.Origin.NoteLeft = true;
+					this.NoteLocker.MeetID = this.MeetID;
+					this.NoteLocker.MeetTime = this.TimeID;
+					this.NoteLocker.Prompt.enabled = false;
+					this.NoteLocker.CanLeaveNote = false;
+					this.NoteLocker.NoteLeft = true;
 					if (this.SlotLabels[1].text == this.Subjects[10])
 					{
-						this.Origin.Success = true;
+						this.NoteLocker.Success = true;
 					}
 					this.Exit();
 				}
@@ -171,7 +171,7 @@ public class LetterWindowScript : MonoBehaviour
 					float num6 = localPosition2.y = (float)num5;
 					Vector3 vector4 = this.SubHighlight.localPosition = localPosition2;
 				}
-				if (Input.GetButtonDown("A") && this.SubLabels[this.SubSlot].color.a > 0.5f)
+				if (Input.GetButtonDown("A") && this.SubLabels[this.SubSlot].color.a > 0.5f && this.SubLabels[this.SubSlot].text != string.Empty)
 				{
 					this.SlotLabels[this.Slot].text = this.SubLabels[this.SubSlot].text;
 					this.SlotsFilled[this.Slot] = true;

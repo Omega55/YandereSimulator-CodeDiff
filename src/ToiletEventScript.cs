@@ -73,7 +73,7 @@ public class ToiletEventScript : MonoBehaviour
 		if (!this.Clock.StopTime && this.EventCheck && this.Clock.HourTime > this.EventTime)
 		{
 			this.EventStudent = this.StudentManager.Students[6];
-			if (this.EventStudent != null && !this.EventStudent.Distracted)
+			if (this.EventStudent != null && !this.EventStudent.Distracted && !this.EventStudent.Talking)
 			{
 				if (!this.EventStudent.WitnessedMurder)
 				{
@@ -135,11 +135,11 @@ public class ToiletEventScript : MonoBehaviour
 				}
 				this.EventStudent.Character.animation.CrossFade(this.EventStudent.DrownAnim);
 			}
-			if (this.Clock.HourTime > this.EventTime + 0.5f || this.EventStudent.WitnessedMurder || this.EventStudent.Wet || this.EventStudent.Alarmed)
+			if (this.Clock.HourTime > this.EventTime + 0.5f || this.EventStudent.WitnessedMurder || this.EventStudent.Splashed)
 			{
 				this.EndEvent();
 			}
-			else if (!this.EventStudent.Pathfinding.canMove)
+			else if (!this.EventStudent.Alarmed && !this.EventStudent.Pathfinding.canMove)
 			{
 				if (this.EventPhase == 1)
 				{

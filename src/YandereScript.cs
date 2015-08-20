@@ -14,16 +14,16 @@ public class YandereScript : MonoBehaviour
 	[Serializable]
 	internal sealed class $ApplyCustomCostume$1567 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$1577;
+		internal YandereScript $self_$1580;
 
 		public $ApplyCustomCostume$1567(YandereScript self_)
 		{
-			this.$self_$1577 = self_;
+			this.$self_$1580 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$1567.$(this.$self_$1577);
+			return new YandereScript.$ApplyCustomCostume$1567.$(this.$self_$1580);
 		}
 	}
 
@@ -90,6 +90,8 @@ public class YandereScript : MonoBehaviour
 	public WeaponMenuScript WeaponMenu;
 
 	public PromptScript NearestPrompt;
+
+	public TallLockerScript MyLocker;
 
 	public TranqCaseScript TranqCase;
 
@@ -277,6 +279,8 @@ public class YandereScript : MonoBehaviour
 
 	public float SenpaiTint;
 
+	public int PreviousSchoolwear;
+
 	public int CarryAnimID;
 
 	public int AttackPhase;
@@ -315,6 +319,8 @@ public class YandereScript : MonoBehaviour
 
 	public bool Attacking;
 
+	public bool Stripping;
+
 	public bool Crawling;
 
 	public bool Dragging;
@@ -322,6 +328,8 @@ public class YandereScript : MonoBehaviour
 	public bool Laughing;
 
 	public bool Throwing;
+
+	public bool Bathing;
 
 	public bool Dipping;
 
@@ -435,8 +443,6 @@ public class YandereScript : MonoBehaviour
 
 	public Texture TitanTexture;
 
-	public Texture FaceTexture;
-
 	public Texture KONTexture;
 
 	public Mesh KONMesh;
@@ -496,6 +502,8 @@ public class YandereScript : MonoBehaviour
 	public Mesh SchoolSwimsuit;
 
 	public Mesh GymUniform;
+
+	public Texture FaceTexture;
 
 	public Texture UniformTexture;
 
@@ -1082,6 +1090,19 @@ public class YandereScript : MonoBehaviour
 						this.Character.animation.CrossFade("f02_dumpsterGrab_00");
 					}
 				}
+				if (this.Bathing)
+				{
+					this.MoveTowardsTarget(this.Stool.position);
+					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.Stool.rotation, (float)10 * Time.deltaTime);
+					this.Character.animation.CrossFade("f02_stoolBathing_00");
+					if (this.Character.animation["f02_stoolBathing_00"].time >= this.Character.animation["f02_stoolBathing_00"].length)
+					{
+						this.Bloodiness = (float)0;
+						this.UpdateBlood();
+						this.Bathing = false;
+						this.CanMove = true;
+					}
+				}
 			}
 			if (!this.Laughing)
 			{
@@ -1531,7 +1552,7 @@ public class YandereScript : MonoBehaviour
 					Vector3 vector5 = this.Character.transform.position = position2;
 				}
 			}
-			if (!this.Attacking && !this.Dragging && this.PickUp == null && !this.Aiming && !this.Crawling && this.LaughIntensity < (float)16)
+			if (!this.Attacking && !this.Dragging && this.PickUp == null && !this.Aiming && !this.Crawling && !this.Pouring && !this.DumpsterGrabbing && !this.Stripping && !this.Bathing && this.LaughIntensity < (float)16)
 			{
 				this.Character.animation["f02_yanderePose_00"].weight = Mathf.Lerp(this.Character.animation["f02_yanderePose_00"].weight, (float)1 - this.Sanity / (float)100, Time.deltaTime * (float)10);
 				this.Slouch = Mathf.Lerp(this.Slouch, (float)5 * ((float)1 - this.Sanity / (float)100), Time.deltaTime * (float)10);
@@ -2127,6 +2148,7 @@ public class YandereScript : MonoBehaviour
 			this.MyProjector.enabled = false;
 			this.BloodyWarning = false;
 		}
+		this.MyLocker.UpdateButtons();
 		this.Outline.h.ReinitMaterials();
 	}
 

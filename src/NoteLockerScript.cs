@@ -2,11 +2,11 @@
 using UnityEngine;
 
 [Serializable]
-public class LeaveNoteScript : MonoBehaviour
+public class NoteLockerScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
 
-	public LetterWindowScript LetterWindow;
+	public NoteWindowScript NoteWindow;
 
 	public PromptBarScript PromptBar;
 
@@ -52,7 +52,7 @@ public class LeaveNoteScript : MonoBehaviour
 
 	public int ID;
 
-	public LeaveNoteScript()
+	public NoteLockerScript()
 	{
 		this.CanLeaveNote = true;
 		this.Phase = 1;
@@ -90,10 +90,10 @@ public class LeaveNoteScript : MonoBehaviour
 		if (this.Prompt != null && this.Prompt.Circle[0].fillAmount <= (float)0)
 		{
 			this.Prompt.Circle[0].fillAmount = (float)1;
+			this.NoteWindow.NoteLocker = this;
 			this.Yandere.Blur.enabled = true;
-			this.LetterWindow.Origin = this;
-			this.LetterWindow.Show = true;
 			this.Yandere.CanMove = false;
+			this.NoteWindow.Show = true;
 			this.Yandere.HUD.alpha = (float)0;
 			this.PromptBar.Show = true;
 			Time.timeScale = (float)0;

@@ -90,7 +90,7 @@ public class PhoneEventScript : MonoBehaviour
 		}
 		if (this.EventActive)
 		{
-			if (this.Clock.HourTime > this.EventTime + 0.5f || this.EventStudent.WitnessedMurder || this.EventStudent.Splashed)
+			if (this.Clock.HourTime > this.EventTime + 0.5f || this.EventStudent.WitnessedMurder || this.EventStudent.Splashed || this.EventStudent.Alarmed || this.EventStudent.Dying)
 			{
 				this.EndEvent();
 			}

@@ -1509,7 +1509,7 @@ public class StudentScript : MonoBehaviour
 								}
 								this.Reputation.PendingRep = this.Reputation.PendingRep - this.RepLoss;
 								this.PendingRep -= this.RepLoss;
-								if (this.ToiletEvent != null)
+								if (this.ToiletEvent != null && this.ToiletEvent.EventDay == 1)
 								{
 									this.ToiletEvent.EndEvent();
 								}

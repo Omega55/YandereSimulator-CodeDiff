@@ -4,7 +4,11 @@ using UnityEngine;
 [Serializable]
 public class TallLockerScript : MonoBehaviour
 {
+	public GameObject[] BloodyUniform;
+
 	public GameObject[] Schoolwear;
+
+	public bool[] Bloody;
 
 	public GameObject SteamCloud;
 
@@ -50,9 +54,28 @@ public class TallLockerScript : MonoBehaviour
 			if (!this.Open)
 			{
 				this.Open = true;
-				this.Prompt.HideButton[1] = false;
-				this.Prompt.HideButton[2] = false;
-				this.Prompt.HideButton[3] = false;
+				if (this.YandereLocker)
+				{
+					if (this.Yandere.Bloodiness == (float)0)
+					{
+						if (!this.Bloody[1])
+						{
+							this.Prompt.HideButton[1] = false;
+						}
+						if (!this.Bloody[2])
+						{
+							this.Prompt.HideButton[2] = false;
+						}
+						if (!this.Bloody[3])
+						{
+							this.Prompt.HideButton[3] = false;
+						}
+					}
+					else if (this.Yandere.Schoolwear > 0)
+					{
+						this.Prompt.HideButton[this.Yandere.Schoolwear] = false;
+					}
+				}
 				this.UpdateSchoolwear();
 				this.Prompt.Label[0].text = "     " + "Close";
 			}
@@ -77,6 +100,7 @@ public class TallLockerScript : MonoBehaviour
 			this.Rotation = Mathf.Lerp(this.Rotation, (float)-180, Time.deltaTime * (float)10);
 			if (this.Prompt.Circle[1].fillAmount <= (float)0)
 			{
+				this.Yandere.PreviousSchoolwear = this.Yandere.Schoolwear;
 				if (this.Yandere.Schoolwear == 1)
 				{
 					this.Yandere.Schoolwear = 0;
@@ -89,6 +113,7 @@ public class TallLockerScript : MonoBehaviour
 			}
 			else if (this.Prompt.Circle[2].fillAmount <= (float)0)
 			{
+				this.Yandere.PreviousSchoolwear = this.Yandere.Schoolwear;
 				if (this.Yandere.Schoolwear == 2)
 				{
 					this.Yandere.Schoolwear = 0;
@@ -101,6 +126,7 @@ public class TallLockerScript : MonoBehaviour
 			}
 			else if (this.Prompt.Circle[3].fillAmount <= (float)0)
 			{
+				this.Yandere.PreviousSchoolwear = this.Yandere.Schoolwear;
 				if (this.Yandere.Schoolwear == 3)
 				{
 					this.Yandere.Schoolwear = 0;
@@ -128,6 +154,12 @@ public class TallLockerScript : MonoBehaviour
 					{
 						this.Student.ChangeSchoolwear();
 					}
+					if (this.Yandere.Bloodiness > (float)0)
+					{
+						UnityEngine.Object.Instantiate(this.BloodyUniform[this.Yandere.PreviousSchoolwear], this.Yandere.transform.position + Vector3.forward * 0.5f + Vector3.up * (float)1, Quaternion.identity);
+						this.Prompt.HideButton[this.Yandere.PreviousSchoolwear] = true;
+						this.Bloody[this.Yandere.PreviousSchoolwear] = true;
+					}
 					this.UpdateSchoolwear();
 					this.Phase++;
 				}
@@ -137,6 +169,7 @@ public class TallLockerScript : MonoBehaviour
 				if (this.YandereLocker)
 				{
 					this.Yandere.CanMove = true;
+					this.Yandere.Stripping = false;
 				}
 				else
 				{
@@ -156,6 +189,7 @@ public class TallLockerScript : MonoBehaviour
 		{
 			UnityEngine.Object.Instantiate(this.SteamCloud, this.Yandere.transform.position + Vector3.up * 0.81f, Quaternion.identity);
 			this.Yandere.Character.animation.CrossFade("f02_stripping_00");
+			this.Yandere.Stripping = true;
 			this.Yandere.CanMove = false;
 		}
 		else
@@ -170,9 +204,18 @@ public class TallLockerScript : MonoBehaviour
 
 	public virtual void UpdateSchoolwear()
 	{
-		this.Schoolwear[1].active = true;
-		this.Schoolwear[2].active = true;
-		this.Schoolwear[3].active = true;
+		if (!this.Bloody[1])
+		{
+			this.Schoolwear[1].active = true;
+		}
+		if (!this.Bloody[2])
+		{
+			this.Schoolwear[2].active = true;
+		}
+		if (!this.Bloody[3])
+		{
+			this.Schoolwear[3].active = true;
+		}
 		this.Prompt.Label[1].text = "     " + "School Uniform";
 		this.Prompt.Label[2].text = "     " + "School Swimsuit";
 		this.Prompt.Label[3].text = "     " + "Gym Uniform";
@@ -188,6 +231,38 @@ public class TallLockerScript : MonoBehaviour
 		{
 			this.Prompt.HideButton[this.Student.Schoolwear] = true;
 			this.Schoolwear[this.Student.Schoolwear].active = false;
+		}
+	}
+
+	public virtual void UpdateButtons()
+	{
+		if (this.Open)
+		{
+			if (this.Yandere.Bloodiness > (float)0)
+			{
+				this.Prompt.HideButton[1] = true;
+				this.Prompt.HideButton[2] = true;
+				this.Prompt.HideButton[3] = true;
+				if (this.Yandere.Schoolwear > 0)
+				{
+					this.Prompt.HideButton[this.Yandere.Schoolwear] = false;
+				}
+			}
+			else
+			{
+				if (!this.Bloody[1])
+				{
+					this.Prompt.HideButton[1] = false;
+				}
+				if (!this.Bloody[2])
+				{
+					this.Prompt.HideButton[2] = false;
+				}
+				if (!this.Bloody[3])
+				{
+					this.Prompt.HideButton[3] = false;
+				}
+			}
 		}
 	}
 

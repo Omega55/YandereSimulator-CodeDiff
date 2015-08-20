@@ -7,6 +7,8 @@ public class EventManagerScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
 
+	public NoteLockerScript NoteLocker;
+
 	public UILabel EventSubtitle;
 
 	public YandereScript Yandere;
@@ -26,8 +28,6 @@ public class EventManagerScript : MonoBehaviour
 	public int[] EventSpeaker;
 
 	public GameObject InterruptZone;
-
-	public GameObject RivalLocker;
 
 	public GameObject VoiceClip;
 
@@ -51,9 +51,15 @@ public class EventManagerScript : MonoBehaviour
 		{
 			this.EventCheck = true;
 		}
-		if (PlayerPrefs.GetInt("Event1") == 1)
+		if (PlayerPrefs.GetInt("Event1") == 0)
 		{
-			this.RivalLocker.active = true;
+			this.NoteLocker.Prompt.enabled = false;
+			this.NoteLocker.CanLeaveNote = false;
+		}
+		else
+		{
+			this.NoteLocker.Prompt.enabled = true;
+			this.NoteLocker.CanLeaveNote = true;
 		}
 	}
 
@@ -173,11 +179,11 @@ public class EventManagerScript : MonoBehaviour
 								this.EndEvent();
 							}
 						}
-						if (this.EventPhase == 7 && num < (float)5 && !this.RivalLocker.active)
+						if (this.EventPhase == 7 && num < (float)5 && !this.NoteLocker.Prompt.enabled)
 						{
 							this.Yandere.NotificationManager.DisplayNotification("Info");
 							PlayerPrefs.SetInt("Event1", 1);
-							this.RivalLocker.active = true;
+							this.NoteLocker.Prompt.enabled = true;
 						}
 					}
 				}
