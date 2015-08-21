@@ -16,6 +16,8 @@ public class FootprintSpawnerScript : MonoBehaviour
 
 	public float Threshold;
 
+	public float Height;
+
 	public int Bloodiness;
 
 	public virtual void Update()
@@ -32,7 +34,23 @@ public class FootprintSpawnerScript : MonoBehaviour
 			this.FootUp = false;
 			if (this.Bloodiness > 0)
 			{
-				GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.BloodyFootprint, new Vector3(this.transform.position.x, this.Yandere.position.y + 0.012f, this.transform.position.z), Quaternion.identity);
+				if (this.transform.position.y > (float)-1 && this.transform.position.y < (float)1)
+				{
+					this.Height = (float)0;
+				}
+				else if (this.transform.position.y > (float)3 && this.transform.position.y < (float)5)
+				{
+					this.Height = (float)4;
+				}
+				else if (this.transform.position.y > (float)7 && this.transform.position.y < (float)9)
+				{
+					this.Height = (float)8;
+				}
+				else if (this.transform.position.y > (float)11 && this.transform.position.y < (float)13)
+				{
+					this.Height = (float)12;
+				}
+				GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.BloodyFootprint, new Vector3(this.transform.position.x, this.Height + 0.012f, this.transform.position.z), Quaternion.identity);
 				float y = this.transform.eulerAngles.y;
 				Vector3 eulerAngles = gameObject.transform.eulerAngles;
 				float num = eulerAngles.y = y;

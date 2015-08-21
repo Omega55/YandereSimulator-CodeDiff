@@ -85,7 +85,7 @@ public class EventManagerScript : MonoBehaviour
 				this.EventCheck = false;
 				this.enabled = false;
 			}
-			if (this.Clock.HourTime > 13.06f && this.EventStudent[1] != null && this.EventStudent[2] != null && this.EventStudent[1].Pathfinding.canMove && this.EventStudent[1].Pathfinding.canMove)
+			if (this.Clock.HourTime > (float)13 && this.EventStudent[1] != null && this.EventStudent[2] != null && this.EventStudent[1].Pathfinding.canMove && this.EventStudent[1].Pathfinding.canMove)
 			{
 				this.EventStudent[1].CurrentDestination = this.EventLocation[1];
 				this.EventStudent[1].Pathfinding.target = this.EventLocation[1];

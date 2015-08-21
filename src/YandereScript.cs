@@ -950,7 +950,10 @@ public class YandereScript : MonoBehaviour
 					this.Character.animation.CrossFade("f02_dipping_00");
 					if (this.Character.animation["f02_dipping_00"].time >= this.Character.animation["f02_dipping_00"].length * 0.5f && this.Mop.Bloodiness > (float)0)
 					{
-						this.Bucket.Bloodiness = this.Bucket.Bloodiness + this.Mop.Bloodiness / (float)2;
+						if (this.Bucket != null)
+						{
+							this.Bucket.Bloodiness = this.Bucket.Bloodiness + this.Mop.Bloodiness / (float)2;
+						}
 						this.Mop.Bloodiness = (float)0;
 						this.Mop.UpdateBlood();
 					}
@@ -1934,14 +1937,7 @@ public class YandereScript : MonoBehaviour
 		Vector3 a = target - this.transform.position;
 		float d = Vector3.Distance(this.transform.position, target);
 		a = a.normalized * d;
-		if (!this.DumpsterGrabbing)
-		{
-			this.MyController.Move(a * Time.deltaTime * (float)10);
-		}
-		else
-		{
-			this.MyController.Move(a * Time.deltaTime * (float)50);
-		}
+		this.MyController.Move(a * Time.deltaTime * (float)10);
 	}
 
 	public virtual void StopAiming()

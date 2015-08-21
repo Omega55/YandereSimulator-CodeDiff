@@ -149,16 +149,16 @@ public class TallLockerScript : MonoBehaviour
 					if (this.YandereLocker)
 					{
 						this.Yandere.ChangeSchoolwear();
+						if (this.Yandere.Bloodiness > (float)0)
+						{
+							UnityEngine.Object.Instantiate(this.BloodyUniform[this.Yandere.PreviousSchoolwear], this.Yandere.transform.position + Vector3.forward * 0.5f + Vector3.up * (float)1, Quaternion.identity);
+							this.Prompt.HideButton[this.Yandere.PreviousSchoolwear] = true;
+							this.Bloody[this.Yandere.PreviousSchoolwear] = true;
+						}
 					}
 					else
 					{
 						this.Student.ChangeSchoolwear();
-					}
-					if (this.Yandere.Bloodiness > (float)0)
-					{
-						UnityEngine.Object.Instantiate(this.BloodyUniform[this.Yandere.PreviousSchoolwear], this.Yandere.transform.position + Vector3.forward * 0.5f + Vector3.up * (float)1, Quaternion.identity);
-						this.Prompt.HideButton[this.Yandere.PreviousSchoolwear] = true;
-						this.Bloody[this.Yandere.PreviousSchoolwear] = true;
 					}
 					this.UpdateSchoolwear();
 					this.Phase++;

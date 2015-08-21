@@ -1054,6 +1054,7 @@ public class StudentScript : MonoBehaviour
 										this.Character.animation["f02_bathEnter_00"].speed = (float)-1;
 										this.Character.animation.CrossFade("f02_bathEnter_00");
 										this.LiquidProjector.enabled = false;
+										this.Bloody = false;
 										this.ID = 0;
 										while (this.ID < Extensions.get_length(this.LiquidEmitters))
 										{
@@ -1379,7 +1380,7 @@ public class StudentScript : MonoBehaviour
 							this.Routine = false;
 							this.Alarmed = true;
 							this.Witness = true;
-							string witnessed = this.Witnessed;
+							string b = this.Witnessed;
 							bool flag = false;
 							if (this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].Suspicious)
 							{
@@ -1426,8 +1427,16 @@ public class StudentScript : MonoBehaviour
 								else if (this.Yandere.Bloodiness > (float)0)
 								{
 									this.Witnessed = "Blood";
-									this.RepLoss = (float)10;
-									this.Concern = 5;
+									if (!this.Bloody)
+									{
+										this.RepLoss = (float)10;
+										this.Concern = 5;
+									}
+									else
+									{
+										this.RepLoss = (float)0;
+										this.Concern = 0;
+									}
 								}
 								else if (this.Yandere.Sanity < 33.333f)
 								{
@@ -1503,7 +1512,7 @@ public class StudentScript : MonoBehaviour
 									this.SenpaiNoticed();
 									this.CameraEffects.MurderWitnessed();
 								}
-								if (!this.Teacher && this.Witnessed == witnessed)
+								if (!this.Teacher && this.Witnessed == b)
 								{
 									this.RepeatReaction = true;
 								}
@@ -2090,7 +2099,17 @@ public class StudentScript : MonoBehaviour
 						}
 						else if (this.Witnessed == "Blood")
 						{
-							this.Subtitle.UpdateLabel("Blood Reaction", 1, (float)3);
+							if (!this.Bloody)
+							{
+								this.Subtitle.UpdateLabel("Blood Reaction", 1, (float)3);
+							}
+							else
+							{
+								this.Subtitle.UpdateLabel("Wet Blood Reaction", 1, (float)3);
+								string b = string.Empty;
+								this.Witnessed = string.Empty;
+								this.Witness = false;
+							}
 						}
 						else if (this.Witnessed == "Insanity")
 						{

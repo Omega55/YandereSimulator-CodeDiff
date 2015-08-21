@@ -15,6 +15,8 @@ public class FallCheckerScript : MonoBehaviour
 		if (this.Ragdoll == null && other.gameObject.layer == 11)
 		{
 			this.Ragdoll = (RagdollScript)other.transform.root.gameObject.GetComponent(typeof(RagdollScript));
+			this.Ragdoll.Prompt.Hide();
+			this.Ragdoll.Prompt.enabled = false;
 			this.Ragdoll.BloodPoolSpawner.enabled = false;
 			this.Ragdoll.HideCollider = this.MyCollider;
 			this.Ragdoll.Police.HiddenCorpses = this.Ragdoll.Police.HiddenCorpses + 1;

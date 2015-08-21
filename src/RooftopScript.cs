@@ -4,6 +4,8 @@ using UnityEngine;
 [Serializable]
 public class RooftopScript : MonoBehaviour
 {
+	public GameObject DumpPoint;
+
 	public GameObject Railing;
 
 	public GameObject Fence;
@@ -12,6 +14,7 @@ public class RooftopScript : MonoBehaviour
 	{
 		if (PlayerPrefs.GetInt("Suicide") == 1)
 		{
+			this.DumpPoint.active = false;
 			this.Railing.active = false;
 			this.Fence.active = true;
 		}

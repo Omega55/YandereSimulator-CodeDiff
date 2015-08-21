@@ -29,7 +29,7 @@ public class DumpsterHandleScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (this.Prompt.Yandere.PickUp == null)
+		if (this.Prompt.Yandere.PickUp == null && !this.Prompt.Yandere.Dragging)
 		{
 			this.Prompt.HideButton[3] = false;
 		}
@@ -53,7 +53,14 @@ public class DumpsterHandleScript : MonoBehaviour
 		if (this.Grabbed)
 		{
 			this.Prompt.Yandere.transform.rotation = Quaternion.Lerp(this.Prompt.Yandere.transform.rotation, this.GrabSpot.rotation, Time.deltaTime * (float)10);
-			this.Prompt.Yandere.MoveTowardsTarget(this.GrabSpot.position);
+			if (Vector3.Distance(this.Prompt.Yandere.transform.position, this.GrabSpot.position) > 0.1f)
+			{
+				this.Prompt.Yandere.MoveTowardsTarget(this.GrabSpot.position);
+			}
+			else
+			{
+				this.Prompt.Yandere.transform.position = this.GrabSpot.position;
+			}
 			if (Input.GetAxis("Horizontal") > 0.5f || Input.GetAxis("DpadX") > 0.5f)
 			{
 				float x = this.transform.parent.transform.position.x - Time.deltaTime;
@@ -111,7 +118,6 @@ public class DumpsterHandleScript : MonoBehaviour
 			{
 				this.Prompt.Yandere.DumpsterGrabbing = false;
 				this.Prompt.Yandere.CanMove = true;
-				this.DumpsterLid.UpdateFallChecker();
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Show = false;
 				this.Panel.active = false;

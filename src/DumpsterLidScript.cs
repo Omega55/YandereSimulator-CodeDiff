@@ -41,7 +41,6 @@ public class DumpsterLidScript : MonoBehaviour
 			{
 				this.Open = false;
 			}
-			this.UpdateFallChecker();
 		}
 		if (!this.Open)
 		{
@@ -80,6 +79,21 @@ public class DumpsterLidScript : MonoBehaviour
 				this.Prompt.HideButton[3] = false;
 				this.Fill = true;
 			}
+			if (this.transform.position.x > this.DisposalSpot - 0.05f && this.transform.position.x < this.DisposalSpot + 0.05f)
+			{
+				if (this.Prompt.Yandere.RoofPush)
+				{
+					this.FallChecker.active = true;
+				}
+				else
+				{
+					this.FallChecker.active = false;
+				}
+			}
+			else
+			{
+				this.FallChecker.active = false;
+			}
 		}
 		this.Hinge.localEulerAngles = new Vector3(this.Rotation, (float)0, (float)0);
 		if (this.Fill)
@@ -101,25 +115,6 @@ public class DumpsterLidScript : MonoBehaviour
 				UnityEngine.Object.Destroy(this.Corpse);
 				this.Fill = false;
 			}
-		}
-	}
-
-	public virtual void UpdateFallChecker()
-	{
-		if (this.Open)
-		{
-			if (this.transform.position.x > this.DisposalSpot - 0.05f && this.transform.position.x < this.DisposalSpot + 0.05f)
-			{
-				this.FallChecker.active = true;
-			}
-			else
-			{
-				this.FallChecker.active = false;
-			}
-		}
-		else
-		{
-			this.FallChecker.active = false;
 		}
 	}
 

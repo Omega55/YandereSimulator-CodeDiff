@@ -19,6 +19,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] BloodReactions;
 
+	public string[] WetBloodReactions;
+
 	public string[] InsanityReactions;
 
 	public string[] LewdReactions;
@@ -242,6 +244,10 @@ public class SubtitleScript : MonoBehaviour
 		else if (ReactionType == "Blood Reaction")
 		{
 			this.Label.text = this.BloodReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.BloodReactions))];
+		}
+		else if (ReactionType == "Wet Blood Reaction")
+		{
+			this.Label.text = this.WetBloodReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.WetBloodReactions))];
 		}
 		else if (ReactionType == "Insanity Reaction")
 		{
