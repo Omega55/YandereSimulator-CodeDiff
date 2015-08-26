@@ -45,6 +45,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform CorpseLocation;
 
+	public Transform FastBatheSpot;
+
 	public Transform BatheSpot;
 
 	public Transform StripSpot;
@@ -246,6 +248,17 @@ public class StudentManagerScript : MonoBehaviour
 				this.Students[this.ID].Pathfinding.canMove = false;
 				this.Students[this.ID].Pathfinding.speed = (float)0;
 				this.Students[this.ID].Routine = false;
+				if (this.Students[this.ID].Wet)
+				{
+					this.Students[this.ID].Schoolwear = 3;
+					this.Students[this.ID].ChangeSchoolwear();
+					this.Students[this.ID].LiquidProjector.enabled = false;
+					this.Students[this.ID].Splashed = false;
+					this.Students[this.ID].Bloody = false;
+					this.Students[this.ID].BathePhase = 1;
+					this.Students[this.ID].Wet = false;
+					this.Students[this.ID].UnWet();
+				}
 			}
 			this.ID++;
 		}

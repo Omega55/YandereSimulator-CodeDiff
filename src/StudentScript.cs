@@ -171,6 +171,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool YandereVisible;
 
+	public bool FleeWhenClean;
+
 	public bool Complimented;
 
 	public bool Electrocuted;
@@ -178,6 +180,8 @@ public class StudentScript : MonoBehaviour
 	public bool Distracted;
 
 	public bool InDarkness;
+
+	public bool BatheFast;
 
 	public bool ShortHair;
 
@@ -1002,7 +1006,7 @@ public class StudentScript : MonoBehaviour
 				}
 				if (this.Wet)
 				{
-					if (this.DistanceToDestination < 0.5f)
+					if (this.DistanceToDestination < this.TargetDistance)
 					{
 						if (!this.Splashed)
 						{
@@ -1026,8 +1030,16 @@ public class StudentScript : MonoBehaviour
 								{
 									this.StudentManager.CommunalLocker.Open = false;
 									this.Character.animation.CrossFade(this.WalkAnim);
-									this.CurrentDestination = this.StudentManager.BatheSpot;
-									this.Pathfinding.target = this.StudentManager.BatheSpot;
+									if (!this.BatheFast)
+									{
+										this.CurrentDestination = this.StudentManager.BatheSpot;
+										this.Pathfinding.target = this.StudentManager.BatheSpot;
+									}
+									else
+									{
+										this.CurrentDestination = this.StudentManager.FastBatheSpot;
+										this.Pathfinding.target = this.StudentManager.FastBatheSpot;
+									}
 									this.Pathfinding.canSearch = true;
 									this.Pathfinding.canMove = true;
 									this.BathePhase++;
@@ -1036,15 +1048,30 @@ public class StudentScript : MonoBehaviour
 								{
 									this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.CurrentDestination.rotation, Time.deltaTime * (float)10);
 									this.MoveTowardsTarget(this.CurrentDestination.position);
-									this.Character.animation.CrossFade("f02_bathEnter_00");
-									if (this.Character.animation["f02_bathEnter_00"].time >= this.Character.animation["f02_bathEnter_00"].length)
+									if (!this.BatheFast)
 									{
-										this.Character.animation.CrossFade("f02_bathIdle_00");
-										this.BathePhase++;
+										this.Character.animation.CrossFade("f02_bathEnter_00");
+										if (this.Character.animation["f02_bathEnter_00"].time >= this.Character.animation["f02_bathEnter_00"].length)
+										{
+											this.Character.animation.CrossFade("f02_bathIdle_00");
+											this.BathePhase++;
+										}
+										this.Pathfinding.canSearch = false;
+										this.Pathfinding.canMove = false;
+										this.Distracted = true;
 									}
-									this.Pathfinding.canSearch = false;
-									this.Pathfinding.canMove = false;
-									this.Distracted = true;
+									else
+									{
+										this.Character.animation.CrossFade("f02_stoolBathing_00");
+										if (this.Character.animation["f02_stoolBathing_00"].time >= this.Character.animation["f02_stoolBathing_00"].length)
+										{
+											this.LiquidProjector.enabled = false;
+											this.Bloody = false;
+											this.BathePhase = 7;
+											this.GoChange();
+											this.UnWet();
+										}
+									}
 								}
 								else if (this.BathePhase == 5)
 								{
@@ -1055,26 +1082,16 @@ public class StudentScript : MonoBehaviour
 										this.Character.animation.CrossFade("f02_bathEnter_00");
 										this.LiquidProjector.enabled = false;
 										this.Bloody = false;
-										this.ID = 0;
-										while (this.ID < Extensions.get_length(this.LiquidEmitters))
-										{
-											this.LiquidEmitters[this.ID].gameObject.active = false;
-											this.ID++;
-										}
 										this.BathePhase++;
+										this.UnWet();
 									}
 								}
 								else if (this.BathePhase == 6)
 								{
 									if (this.Character.animation["f02_bathEnter_00"].time <= (float)0)
 									{
-										this.Character.animation.CrossFade(this.WalkAnim);
-										this.CurrentDestination = this.StudentManager.StripSpot;
-										this.Pathfinding.target = this.StudentManager.StripSpot;
-										this.Pathfinding.canSearch = true;
-										this.Pathfinding.canMove = true;
-										this.Distracted = false;
 										this.BathePhase++;
+										this.GoChange();
 									}
 								}
 								else if (this.BathePhase == 7)
@@ -1097,6 +1114,13 @@ public class StudentScript : MonoBehaviour
 									this.Pathfinding.target = this.Destinations[this.Phase];
 									this.Routine = true;
 									this.Wet = false;
+									if (this.FleeWhenClean)
+									{
+										this.Pathfinding.target = this.StudentManager.Exit;
+										this.TargetDistance = (float)0;
+										this.Routine = false;
+										this.Fleeing = true;
+									}
 								}
 							}
 							else if (this.BathePhase == -1)
@@ -1203,7 +1227,7 @@ public class StudentScript : MonoBehaviour
 					}
 					else if (this.Pathfinding.canMove)
 					{
-						if (this.BathePhase == 1)
+						if (this.BathePhase == 1 || this.FleeWhenClean)
 						{
 							this.Character.animation.CrossFade(this.SprintAnim);
 							this.Pathfinding.speed = (float)4;
@@ -1280,7 +1304,7 @@ public class StudentScript : MonoBehaviour
 							{
 								if (this.Teacher)
 								{
-									this.Subtitle.UpdateLabel("Teacher Murder Reaction", 1, (float)3);
+									this.Subtitle.UpdateLabel("Teacher Murder Reaction", UnityEngine.Random.Range(1, 3), (float)3);
 									this.StudentManager.Portal.active = false;
 								}
 								this.WitnessMurder();
@@ -1885,7 +1909,7 @@ public class StudentScript : MonoBehaviour
 							}
 							else
 							{
-								this.Subtitle.UpdateLabel("Teacher Murder Reaction", 1, (float)3);
+								this.Subtitle.UpdateLabel("Teacher Murder Reaction", UnityEngine.Random.Range(1, 3), (float)3);
 								this.StudentManager.Portal.active = false;
 							}
 						}
@@ -2376,7 +2400,6 @@ public class StudentScript : MonoBehaviour
 		{
 			this.Yandere.Followers = this.Yandere.Followers - 1;
 			this.Following = false;
-			Debug.Log("Here?");
 		}
 		if (this.Teacher)
 		{
@@ -2470,7 +2493,6 @@ public class StudentScript : MonoBehaviour
 				this.Talking = false;
 				this.Waiting = false;
 				this.StudentManager.EnablePrompts();
-				Debug.Log("This fired.");
 			}
 			this.Prompt.Label[0].text = "     " + "Talk";
 			this.Prompt.HideButton[0] = true;
@@ -2511,7 +2533,6 @@ public class StudentScript : MonoBehaviour
 		this.Alarm = (float)0;
 		if (this.Teacher)
 		{
-			this.Subtitle.UpdateLabel("Teacher Murder Reaction", 1, (float)3);
 			this.Pathfinding.target = this.Yandere.transform;
 			this.Pathfinding.speed = 7.5f;
 			this.StudentManager.Portal.active = false;
@@ -2534,10 +2555,38 @@ public class StudentScript : MonoBehaviour
 			{
 				this.Subtitle.UpdateLabel("Coward Corpse Reaction", 1, (float)3);
 			}
-			this.Pathfinding.target = this.StudentManager.Exit;
-			this.TargetDistance = (float)0;
-			this.Routine = false;
-			this.Fleeing = true;
+			if (this.Schoolwear > 0)
+			{
+				if (!this.Bloody)
+				{
+					this.Pathfinding.target = this.StudentManager.Exit;
+					this.TargetDistance = (float)0;
+					this.Routine = false;
+					this.Fleeing = true;
+				}
+				else
+				{
+					this.FleeWhenClean = true;
+					this.TargetDistance = (float)1;
+					this.BatheFast = true;
+				}
+			}
+			else
+			{
+				this.FleeWhenClean = true;
+				if (!this.Bloody)
+				{
+					this.BathePhase = 7;
+					this.GoChange();
+				}
+				else
+				{
+					this.CurrentDestination = this.StudentManager.FastBatheSpot;
+					this.Pathfinding.target = this.StudentManager.FastBatheSpot;
+					this.TargetDistance = (float)1;
+					this.BatheFast = true;
+				}
+			}
 		}
 		else if (this.Persona == 2)
 		{
@@ -2576,7 +2625,7 @@ public class StudentScript : MonoBehaviour
 		{
 			if (this.WitnessedMurder)
 			{
-				this.Subtitle.UpdateLabel("Teacher Murder Reaction", 1, (float)3);
+				this.Subtitle.UpdateLabel("Teacher Murder Reaction", 3, (float)3);
 				this.Pathfinding.target = this.Yandere.transform;
 				this.Pathfinding.speed = 7.5f;
 				this.StudentManager.Portal.active = false;
@@ -3197,6 +3246,15 @@ public class StudentScript : MonoBehaviour
 			this.Bones[this.ID].active = false;
 			this.ID++;
 		}
+	}
+
+	public virtual void GoChange()
+	{
+		this.CurrentDestination = this.StudentManager.StripSpot;
+		this.Pathfinding.target = this.StudentManager.StripSpot;
+		this.Pathfinding.canSearch = true;
+		this.Pathfinding.canMove = true;
+		this.Distracted = false;
 	}
 
 	public virtual void Main()

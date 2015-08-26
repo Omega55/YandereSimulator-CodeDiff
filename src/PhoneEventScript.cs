@@ -6,13 +6,15 @@ public class PhoneEventScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
 
-	public UILabel EventSubtitle;
+	public BucketPourScript DumpPoint;
 
 	public YandereScript Yandere;
 
 	public ClockScript Clock;
 
 	public StudentScript EventStudent;
+
+	public UILabel EventSubtitle;
 
 	public Transform EventLocation;
 
@@ -49,6 +51,7 @@ public class PhoneEventScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		this.DumpPoint.gameObject.active = false;
 		this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
 		if (PlayerPrefs.GetInt("Weekday") == this.EventDay)
 		{
@@ -65,6 +68,8 @@ public class PhoneEventScript : MonoBehaviour
 			{
 				if (!this.EventStudent.WitnessedMurder)
 				{
+					this.EventStudent.CurrentDestination = this.EventStudent.Destinations[this.EventStudent.Phase];
+					this.EventStudent.Pathfinding.target = this.EventStudent.Destinations[this.EventStudent.Phase];
 					this.EventStudent.Obstacle.checkTime = (float)99;
 					this.EventStudent.PhoneEvent = this;
 					this.EventStudent.InEvent = true;
@@ -74,6 +79,7 @@ public class PhoneEventScript : MonoBehaviour
 					this.EventActive = true;
 					if (this.EventStudent.Following)
 					{
+						this.EventStudent.Pathfinding.canMove = true;
 						this.EventStudent.Pathfinding.speed = (float)1;
 						this.EventStudent.Following = false;
 						this.EventStudent.Routine = true;
@@ -134,6 +140,7 @@ public class PhoneEventScript : MonoBehaviour
 				}
 				else if (this.EventPhase == 4)
 				{
+					this.DumpPoint.gameObject.active = true;
 					this.EventStudent.Character.animation.CrossFade(this.EventAnim[2]);
 					this.PlayClip(this.EventClip[2], this.EventStudent.transform.position);
 					this.EventPhase++;
@@ -228,6 +235,8 @@ public class PhoneEventScript : MonoBehaviour
 			this.EventStudent.Private = false;
 			this.EventSubtitle.text = string.Empty;
 			this.StudentManager.UpdateStudents();
+			this.DumpPoint.Prompt.Hide();
+			this.DumpPoint.active = false;
 		}
 		this.EventActive = false;
 		this.EventCheck = false;

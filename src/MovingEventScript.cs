@@ -72,7 +72,6 @@ public class MovingEventScript : MonoBehaviour
 				this.EventStudent.Private = true;
 				this.EventCheck = false;
 				this.EventActive = true;
-				Debug.Log("The event has begun.");
 			}
 		}
 		if (this.EventActive)

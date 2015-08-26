@@ -355,9 +355,8 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (ReactionType == "Teacher Murder Reaction")
 		{
-			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.TeacherMurderReactions));
-			this.Label.text = this.TeacherMurderReactions[this.RandomID];
-			this.PlayVoice(ReactionType, this.RandomID);
+			this.Label.text = this.TeacherMurderReactions[ID];
+			this.PlayVoice(ReactionType, ID);
 		}
 		else if (ReactionType == "Teacher Prank Reaction")
 		{

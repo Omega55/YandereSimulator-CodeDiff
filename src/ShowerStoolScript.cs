@@ -17,7 +17,7 @@ public class ShowerStoolScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (this.Yandere.Schoolwear > 0)
+		if (this.Yandere.Schoolwear > 0 || this.Yandere.PickUp != null || this.Yandere.Dragging)
 		{
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
