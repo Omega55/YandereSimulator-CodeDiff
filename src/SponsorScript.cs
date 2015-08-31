@@ -12,6 +12,7 @@ public class SponsorScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		this.Set[1].active = true;
 		this.Set[2].active = false;
 		int num = 1;
 		Color color = this.Darkness.color;

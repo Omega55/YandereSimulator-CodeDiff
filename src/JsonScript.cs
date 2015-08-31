@@ -68,7 +68,6 @@ public class JsonScript : MonoBehaviour
 		this.StudentTimes = new UnityScript.Lang.Array[this.TotalStudents + 1];
 		this.StudentDestinations = new UnityScript.Lang.Array[this.TotalStudents + 1];
 		this.StudentActions = new UnityScript.Lang.Array[this.TotalStudents + 1];
-		UnityEngine.Object.DontDestroyOnLoad(this.transform.gameObject);
 		int i = 0;
 		Dictionary<string, object>[] array = this.StudentData();
 		int length = array.Length;

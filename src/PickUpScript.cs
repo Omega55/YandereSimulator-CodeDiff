@@ -19,6 +19,8 @@ public class PickUpScript : MonoBehaviour
 
 	public Collider MyCollider;
 
+	public Vector3 OriginalScale;
+
 	public Vector3 HoldPosition;
 
 	public Vector3 HoldRotation;
@@ -61,6 +63,7 @@ public class PickUpScript : MonoBehaviour
 		}
 		this.OriginalConstraints = this.rigidbody.constraints;
 		this.OriginalColor = this.Outline[0].color;
+		this.OriginalScale = this.transform.localScale;
 	}
 
 	public virtual void LateUpdate()
@@ -163,6 +166,7 @@ public class PickUpScript : MonoBehaviour
 				this.Outline[i].color = this.EvidenceColor;
 			}
 		}
+		this.transform.localScale = this.OriginalScale;
 		this.Yandere.StudentManager.UpdateStudents();
 	}
 

@@ -90,7 +90,7 @@ public class ShutterScript : MonoBehaviour
 	public ShutterScript()
 	{
 		this.OnlyPhotography = 65537;
-		this.OnlyCharacters = 257;
+		this.OnlyCharacters = 513;
 		this.OnlyRagdolls = 2049;
 		this.OnlyBlood = 16385;
 	}

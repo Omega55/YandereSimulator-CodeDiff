@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$1567 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$1613 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$1580;
+		internal YandereScript $self_$1628;
 
-		public $ApplyCustomCostume$1567(YandereScript self_)
+		public $ApplyCustomCostume$1613(YandereScript self_)
 		{
-			this.$self_$1580 = self_;
+			this.$self_$1628 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$1567.$(this.$self_$1580);
+			return new YandereScript.$ApplyCustomCostume$1613.$(this.$self_$1628);
 		}
 	}
 
@@ -172,6 +172,8 @@ public class YandereScript : MonoBehaviour
 	public GameObject HatredHair;
 
 	public GameObject KONGlasses;
+
+	public GameObject AlarmDisc;
 
 	public GameObject Character;
 
@@ -385,6 +387,8 @@ public class YandereScript : MonoBehaviour
 
 	public bool DK;
 
+	public Texture[] UniformTextures;
+
 	public Texture[] BloodTextures;
 
 	public WeaponScript[] Weapon;
@@ -393,6 +397,8 @@ public class YandereScript : MonoBehaviour
 
 	public Transform[] Spine;
 
+	public AudioClip[] Stabs;
+
 	public Transform[] Foot;
 
 	public Transform[] Hand;
@@ -400,6 +406,8 @@ public class YandereScript : MonoBehaviour
 	public Transform[] Arm;
 
 	public Transform[] Leg;
+
+	public Mesh[] Uniforms;
 
 	public Renderer RightYandereEye;
 
@@ -445,8 +453,6 @@ public class YandereScript : MonoBehaviour
 
 	public Texture KONTexture;
 
-	public Mesh KONMesh;
-
 	public GameObject PunishedAccessories;
 
 	public GameObject PunishedScarf;
@@ -489,23 +495,17 @@ public class YandereScript : MonoBehaviour
 
 	public Texture AgentSuit;
 
-	public Mesh AgentMesh;
-
 	public GameObject[] CensorSteam;
 
 	public Texture NudeTexture;
 
 	public Mesh NudeMesh;
 
-	public Mesh SchoolUniform;
-
 	public Mesh SchoolSwimsuit;
 
 	public Mesh GymUniform;
 
 	public Texture FaceTexture;
-
-	public Texture UniformTexture;
 
 	public Texture SwimsuitTexture;
 
@@ -543,7 +543,7 @@ public class YandereScript : MonoBehaviour
 		this.ResetSenpaiEffects();
 		this.UpdateSanity();
 		this.UpdateBlood();
-		this.StartCoroutine_Auto(this.ApplyCustomCostume());
+		this.SetUniform();
 		this.Smartphone.transform.parent.active = false;
 		this.LongHair[0].gameObject.active = false;
 		this.PunishedAccessories.active = false;
@@ -604,7 +604,7 @@ public class YandereScript : MonoBehaviour
 				float axis2 = Input.GetAxis("Horizontal");
 				if (!this.Aiming)
 				{
-					Vector3 a = Camera.main.transform.TransformDirection(Vector3.forward);
+					Vector3 a = this.MainCamera.transform.TransformDirection(Vector3.forward);
 					a.y = (float)0;
 					a = a.normalized;
 					Vector3 a2 = new Vector3(a.z, (float)0, -a.x);
@@ -1031,12 +1031,16 @@ public class YandereScript : MonoBehaviour
 						}
 						else if (this.LaughIntensity <= (float)20)
 						{
+							GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.AlarmDisc, this.transform.position + Vector3.up, Quaternion.identity);
+							((AlarmDiscScript)gameObject.GetComponent(typeof(AlarmDiscScript))).NoScream = true;
 							this.LaughAnim = "f02_laugh_04";
 							this.LaughClip = this.Laugh4;
 							this.LaughTimer = (float)2;
 						}
 						else
 						{
+							GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.AlarmDisc, this.transform.position + Vector3.up, Quaternion.identity);
+							((AlarmDiscScript)gameObject.GetComponent(typeof(AlarmDiscScript))).NoScream = true;
 							this.LaughAnim = "f02_laugh_04";
 							this.LaughIntensity = (float)20;
 							this.LaughTimer = (float)2;
@@ -1472,7 +1476,7 @@ public class YandereScript : MonoBehaviour
 					{
 						if (this.Shoes[0].active)
 						{
-							GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.ShoePair, this.transform.position + new Vector3((float)0, 0.045f, 1.6f), Quaternion.identity);
+							GameObject gameObject2 = (GameObject)UnityEngine.Object.Instantiate(this.ShoePair, this.transform.position + new Vector3((float)0, 0.045f, 1.6f), Quaternion.identity);
 							this.Shoes[0].active = false;
 							this.Shoes[1].active = false;
 						}
@@ -1504,7 +1508,7 @@ public class YandereScript : MonoBehaviour
 					if (this.AttackPhase == 1)
 					{
 						this.Character.animation.CrossFade("f02_stab_00");
-						if (this.Character.animation["f02_stab_00"].time > this.Character.animation["f02_stab_00"].length * 0.4f)
+						if (this.Character.animation["f02_stab_00"].time > this.Character.animation["f02_stab_00"].length * 0.35f)
 						{
 							this.Character.animation.CrossFade(this.IdleAnim);
 							if (this.CanTranq && this.Weapon[this.Equipped].WeaponID == 3 && this.PossessTranq && PlayerPrefs.GetInt("BiologyGrade") > 1)
@@ -1522,6 +1526,8 @@ public class YandereScript : MonoBehaviour
 							{
 								this.StudentManager.Reporter = null;
 							}
+							AudioSource.PlayClipAtPoint(this.Stabs[UnityEngine.Random.Range(0, Extensions.get_length(this.Stabs))], this.transform.position + Vector3.up);
+							UnityEngine.Object.Destroy(this.TargetStudent.DeathScream);
 							this.TargetStudent.Dead = true;
 							this.AttackPhase = 2;
 							this.Sanity -= (float)20;
@@ -2157,11 +2163,6 @@ public class YandereScript : MonoBehaviour
 		}
 	}
 
-	public virtual IEnumerator ApplyCustomCostume()
-	{
-		return new YandereScript.$ApplyCustomCostume$1567(this).GetEnumerator();
-	}
-
 	public virtual void UpdateHair()
 	{
 		this.PigtailR.transform.parent.transform.parent.transform.localScale = new Vector3((float)1, 0.75f, (float)1);
@@ -2296,17 +2297,38 @@ public class YandereScript : MonoBehaviour
 		this.CanMove = true;
 	}
 
+	public virtual void SetUniform()
+	{
+		if (PlayerPrefs.GetInt("FemaleUniform") == 0)
+		{
+			PlayerPrefs.SetInt("FemaleUniform", 1);
+		}
+		this.MyRenderer.sharedMesh = this.Uniforms[PlayerPrefs.GetInt("FemaleUniform")];
+		this.MyRenderer.materials[0].mainTexture = this.UniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+		this.MyRenderer.materials[1].mainTexture = this.UniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+		this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
+		this.StartCoroutine_Auto(this.ApplyCustomCostume());
+	}
+
+	public virtual IEnumerator ApplyCustomCostume()
+	{
+		return new YandereScript.$ApplyCustomCostume$1613(this).GetEnumerator();
+	}
+
 	public virtual void AttackOnTitan()
 	{
 		this.EasterEggMenu.active = false;
 		this.Egg = true;
+		this.MyRenderer.sharedMesh = this.Uniforms[1];
 		this.MyRenderer.materials[0].mainTexture = this.TitanTexture;
+		this.MyRenderer.materials[1].mainTexture = this.TitanTexture;
+		this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
 		this.Outline.h.ReinitMaterials();
 	}
 
 	public virtual void KON()
 	{
-		this.MyRenderer.sharedMesh = this.KONMesh;
+		this.MyRenderer.sharedMesh = this.Uniforms[4];
 		this.MyRenderer.materials[0].mainTexture = this.KONTexture;
 		this.MyRenderer.materials[1].mainTexture = this.KONTexture;
 		this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
@@ -2340,9 +2362,12 @@ public class YandereScript : MonoBehaviour
 
 	public virtual void Hate()
 	{
+		this.MyRenderer.sharedMesh = this.Uniforms[1];
 		this.MyRenderer.materials[0].mainTexture = this.HatefulUniform;
+		this.MyRenderer.materials[1].mainTexture = this.HatefulUniform;
+		this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
 		RenderSettings.skybox = this.HatefulSkybox;
-		this.SelectGrayscale.enabled = true;
+		this.SelectGrayscale.desaturation = (float)1;
 		this.HeartRate.active = false;
 		this.Sanity = (float)0;
 		this.Hairstyle = 13;
@@ -2355,8 +2380,10 @@ public class YandereScript : MonoBehaviour
 	{
 		this.IdleAnim = "f02_idle_00";
 		this.SukebanAccessories.active = true;
+		this.MyRenderer.sharedMesh = this.Uniforms[1];
 		this.MyRenderer.materials[1].mainTexture = this.SukebanBandages;
 		this.MyRenderer.materials[0].mainTexture = this.SukebanUniform;
+		this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
 		this.EasterEggMenu.active = false;
 		this.Egg = true;
 	}
@@ -2384,8 +2411,9 @@ public class YandereScript : MonoBehaviour
 		Vector3 localPosition = this.Character.transform.localPosition;
 		float num = localPosition.y = y;
 		Vector3 vector = this.Character.transform.localPosition = localPosition;
+		this.MyRenderer.sharedMesh = this.Uniforms[1];
 		this.MyRenderer.materials[0].mainTexture = this.SlenderUniform;
-		this.MyRenderer.materials[1].mainTexture = this.SlenderSkin;
+		this.MyRenderer.materials[1].mainTexture = this.SlenderUniform;
 		this.MyRenderer.materials[2].mainTexture = this.SlenderSkin;
 		this.Sanity = (float)0;
 		this.UpdateSanity();
@@ -2401,6 +2429,8 @@ public class YandereScript : MonoBehaviour
 			this.GaloAccessories[this.ID].active = true;
 			this.ID++;
 		}
+		this.MyRenderer.sharedMesh = this.Uniforms[1];
+		this.MyRenderer.materials[0].mainTexture = this.UniformTextures[1];
 		this.MyRenderer.materials[1].mainTexture = this.GaloArms;
 		this.MyRenderer.materials[2].mainTexture = this.GaloFace;
 		this.Hairstyle = 12;
@@ -2416,7 +2446,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual void Agent()
 	{
-		this.MyRenderer.sharedMesh = this.AgentMesh;
+		this.MyRenderer.sharedMesh = this.Uniforms[4];
 		this.MyRenderer.materials[0].mainTexture = this.AgentSuit;
 		this.MyRenderer.materials[1].mainTexture = this.AgentSuit;
 		this.MyRenderer.materials[2].mainTexture = this.AgentFace;
@@ -2454,9 +2484,9 @@ public class YandereScript : MonoBehaviour
 		}
 		else if (this.Schoolwear == 1)
 		{
-			this.MyRenderer.sharedMesh = this.SchoolUniform;
-			this.MyRenderer.materials[0].mainTexture = this.UniformTexture;
-			this.MyRenderer.materials[1].mainTexture = this.UniformTexture;
+			this.MyRenderer.sharedMesh = this.Uniforms[PlayerPrefs.GetInt("FemaleUniform")];
+			this.MyRenderer.materials[0].mainTexture = this.UniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.MyRenderer.materials[1].mainTexture = this.UniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
 			this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
 			this.StartCoroutine_Auto(this.ApplyCustomCostume());
 		}

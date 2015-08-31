@@ -11,6 +11,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public StudentScript[] Students;
 
+	public SelectiveGrayscale SelectiveGreyscale;
+
 	public EmergencyExitScript EmergencyExit;
 
 	public WitnessCameraScript WitnessCamera;
@@ -105,8 +107,25 @@ public class StudentManagerScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		if (PlayerPrefs.GetInt("SchoolAtmosphereSet") == 0)
+		{
+			PlayerPrefs.SetInt("SchoolAtmosphereSet", 1);
+			PlayerPrefs.SetFloat("SchoolAtmosphere", (float)100);
+		}
+		Debug.Log("School Atmosphere is now: " + PlayerPrefs.GetFloat("SchoolAtmosphere"));
+		Vignetting[] components = Camera.main.GetComponents<Vignetting>();
+		float num = (float)1 - PlayerPrefs.GetFloat("SchoolAtmosphere") * 0.01f;
+		this.SelectiveGreyscale.desaturation = num;
+		components[2].intensity = num * (float)5;
+		components[2].blur = num;
+		components[2].chromaticAberration = num * (float)5;
+		RenderSettings.fogDensity = num * 0.05f;
 		this.NPCsTotal = this.StudentsTotal + this.TeachersTotal;
 		this.SpawnID = this.StudentsTotal;
+		if (PlayerPrefs.GetInt("MaleUniform") == 0)
+		{
+			PlayerPrefs.SetInt("MaleUniform", 1);
+		}
 	}
 
 	public virtual void Update()

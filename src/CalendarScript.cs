@@ -4,13 +4,23 @@ using UnityEngine;
 [Serializable]
 public class CalendarScript : MonoBehaviour
 {
+	public SelectiveGrayscale GrayscaleEffect;
+
 	public ChallengeScript Challenge;
+
+	public Vignetting Vignette;
+
+	public UILabel AtmosphereLabel;
 
 	public UIPanel ChallengePanel;
 
 	public UIPanel CalendarPanel;
 
 	public UISprite Darkness;
+
+	public UITexture Cloud;
+
+	public UITexture Sun;
 
 	public Transform Highlight;
 
@@ -26,6 +36,8 @@ public class CalendarScript : MonoBehaviour
 
 	public float Timer;
 
+	public int Atmosphere;
+
 	public int Phase;
 
 	public CalendarScript()
@@ -35,31 +47,51 @@ public class CalendarScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		if (PlayerPrefs.GetInt("SchoolAtmosphereSet") == 0)
+		{
+			PlayerPrefs.SetInt("SchoolAtmosphereSet", 1);
+			PlayerPrefs.SetFloat("SchoolAtmosphere", (float)100);
+		}
 		if (PlayerPrefs.GetInt("Weekday") > 4)
 		{
 			PlayerPrefs.SetInt("Weekday", 0);
 			PlayerPrefs.DeleteAll();
 		}
-		int num = -610;
+		float a = PlayerPrefs.GetFloat("SchoolAtmosphere") * 0.01f;
+		Color color = this.Sun.color;
+		float num = color.a = a;
+		Color color2 = this.Sun.color = color;
+		float a2 = (float)1 - PlayerPrefs.GetFloat("SchoolAtmosphere") * 0.01f;
+		Color color3 = this.Cloud.color;
+		float num2 = color3.a = a2;
+		Color color4 = this.Cloud.color = color3;
+		this.Atmosphere = (int)PlayerPrefs.GetFloat("SchoolAtmosphere");
+		this.AtmosphereLabel.text = this.Atmosphere + "%";
+		float num3 = (float)1 - PlayerPrefs.GetFloat("SchoolAtmosphere") * 0.01f;
+		this.GrayscaleEffect.desaturation = num3;
+		this.Vignette.intensity = num3 * (float)5;
+		this.Vignette.blur = num3;
+		this.Vignette.chromaticAberration = num3;
+		int num4 = -610;
 		Vector3 localPosition = this.Continue.transform.localPosition;
-		float num2 = localPosition.y = (float)num;
+		float num5 = localPosition.y = (float)num4;
 		Vector3 vector = this.Continue.transform.localPosition = localPosition;
 		this.Challenge.ViewButton.active = false;
-		int num3 = 0;
-		Color color = this.Challenge.LargeIcon.color;
-		float num4 = color.a = (float)num3;
-		Color color2 = this.Challenge.LargeIcon.color = color;
+		int num6 = 0;
+		Color color5 = this.Challenge.LargeIcon.color;
+		float num7 = color5.a = (float)num6;
+		Color color6 = this.Challenge.LargeIcon.color = color5;
 		this.Challenge.Panels[1].alpha = 0.5f;
-		int num5 = 0;
-		Color color3 = this.Challenge.Shadow.color;
-		float num6 = color3.a = (float)num5;
-		Color color4 = this.Challenge.Shadow.color = color3;
+		int num8 = 0;
+		Color color7 = this.Challenge.Shadow.color;
+		float num9 = color7.a = (float)num8;
+		Color color8 = this.Challenge.Shadow.color = color7;
 		this.ChallengePanel.alpha = (float)0;
 		this.CalendarPanel.alpha = (float)1;
-		int num7 = 1;
-		Color color5 = this.Darkness.color;
-		float num8 = color5.a = (float)num7;
-		Color color6 = this.Darkness.color = color5;
+		int num10 = 1;
+		Color color9 = this.Darkness.color;
+		float num11 = color9.a = (float)num10;
+		Color color10 = this.Darkness.color = color9;
 		Time.timeScale = (float)1;
 	}
 
@@ -113,15 +145,43 @@ public class CalendarScript : MonoBehaviour
 								this.FadeOut = true;
 								this.Reset = true;
 							}
+							if (Input.GetKeyDown("z"))
+							{
+								if (PlayerPrefs.GetFloat("SchoolAtmosphere") > (float)80)
+								{
+									PlayerPrefs.SetFloat("SchoolAtmosphere", (float)80);
+								}
+								else if (PlayerPrefs.GetFloat("SchoolAtmosphere") > (float)60)
+								{
+									PlayerPrefs.SetFloat("SchoolAtmosphere", (float)40);
+								}
+								else if (PlayerPrefs.GetFloat("SchoolAtmosphere") > (float)40)
+								{
+									PlayerPrefs.SetFloat("SchoolAtmosphere", (float)40);
+								}
+								else if (PlayerPrefs.GetFloat("SchoolAtmosphere") > (float)20)
+								{
+									PlayerPrefs.SetFloat("SchoolAtmosphere", (float)20);
+								}
+								else if (PlayerPrefs.GetFloat("SchoolAtmosphere") > (float)0)
+								{
+									PlayerPrefs.SetFloat("SchoolAtmosphere", (float)0);
+								}
+								Application.LoadLevel(Application.loadedLevel);
+							}
 						}
 					}
 				}
 			}
 			else
 			{
+				float y2 = Mathf.Lerp(this.Continue.localPosition.y, (float)-610, Time.deltaTime * (float)10);
+				Vector3 localPosition3 = this.Continue.localPosition;
+				float num6 = localPosition3.y = y2;
+				Vector3 vector3 = this.Continue.localPosition = localPosition3;
 				float a2 = this.Darkness.color.a + Time.deltaTime;
 				Color color5 = this.Darkness.color;
-				float num6 = color5.a = a2;
+				float num7 = color5.a = a2;
 				Color color6 = this.Darkness.color = color5;
 				if (this.Darkness.color.a >= (float)1)
 				{

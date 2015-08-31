@@ -324,7 +324,6 @@ public class MovingEventScript : MonoBehaviour
 
 	public virtual void EndEvent()
 	{
-		Debug.Log("Yes, the event ended.");
 		if (!this.EventOver)
 		{
 			if (this.VoiceClip != null)

@@ -73,7 +73,7 @@ public class ToiletEventScript : MonoBehaviour
 		if (!this.Clock.StopTime && this.EventCheck && this.Clock.HourTime > this.EventTime)
 		{
 			this.EventStudent = this.StudentManager.Students[6];
-			if (this.EventStudent != null && !this.EventStudent.Distracted && !this.EventStudent.Talking)
+			if (this.EventStudent != null && !this.EventStudent.Distracted && !this.EventStudent.Talking && !this.EventStudent.Alarmed)
 			{
 				if (!this.EventStudent.WitnessedMurder)
 				{
@@ -139,118 +139,125 @@ public class ToiletEventScript : MonoBehaviour
 			{
 				this.EndEvent();
 			}
-			else if (!this.EventStudent.Alarmed && !this.EventStudent.Pathfinding.canMove)
+			else if (!this.EventStudent.Alarmed)
 			{
-				if (this.EventPhase == 1)
+				if (!this.EventStudent.Pathfinding.canMove)
 				{
-					if (this.Timer == (float)0)
+					if (this.EventPhase == 1)
 					{
-						this.EventStudent.Character.animation.CrossFade(this.EventStudent.IdleAnim);
-						this.Prompt.HideButton[0] = false;
-						this.EventStudent.Prompt.Hide();
-						this.EventStudent.Prompt.enabled = false;
-						if (this.EventDay == 4)
+						if (this.Timer == (float)0)
 						{
-							this.StallDoor.Prompt.enabled = false;
-							this.StallDoor.Prompt.Hide();
+							this.EventStudent.Character.animation.CrossFade(this.EventStudent.IdleAnim);
+							this.Prompt.HideButton[0] = false;
+							this.EventStudent.Prompt.Hide();
+							this.EventStudent.Prompt.enabled = false;
+							if (this.EventDay == 4)
+							{
+								this.StallDoor.Prompt.enabled = false;
+								this.StallDoor.Prompt.Hide();
+							}
 						}
-					}
-					this.Timer += Time.deltaTime;
-					if (this.Timer > (float)3)
-					{
-						if (this.EventDay == 4)
+						this.Timer += Time.deltaTime;
+						if (this.Timer > (float)3)
 						{
-							this.StallDoor.Locked = true;
-							this.StallDoor.CloseDoor();
-							this.Toilet.enabled = false;
-							this.Prompt.Hide();
-							this.Prompt.enabled = false;
-						}
-						this.EventStudent.CurrentDestination = this.EventLocation[2];
-						this.EventStudent.Pathfinding.target = this.EventLocation[2];
-						this.EventStudent.TargetDistance = (float)2;
-						this.EventPhase++;
-						this.Timer = (float)0;
-					}
-				}
-				else if (this.EventPhase == 2)
-				{
-					if (this.Timer == (float)0)
-					{
-						this.EventStudent.Character.animation.CrossFade(this.EventAnim[1]);
-					}
-					this.Timer += Time.deltaTime;
-					if (this.Timer > (float)10)
-					{
-						if (this.EventDay == 4)
-						{
-							this.PlayClip(this.EventClip[2], this.Toilet.transform.position);
+							if (this.EventDay == 4)
+							{
+								this.StallDoor.Locked = true;
+								this.StallDoor.CloseDoor();
+								this.Toilet.enabled = false;
+								this.Prompt.Hide();
+								this.Prompt.enabled = false;
+							}
+							this.EventStudent.CurrentDestination = this.EventLocation[2];
+							this.EventStudent.Pathfinding.target = this.EventLocation[2];
+							this.EventStudent.TargetDistance = (float)2;
 							this.EventPhase++;
 							this.Timer = (float)0;
 						}
-						else
+					}
+					else if (this.EventPhase == 2)
+					{
+						if (this.Timer == (float)0)
+						{
+							this.EventStudent.Character.animation.CrossFade(this.EventAnim[1]);
+						}
+						this.Timer += Time.deltaTime;
+						if (this.Timer > (float)10)
+						{
+							if (this.EventDay == 4)
+							{
+								this.PlayClip(this.EventClip[2], this.Toilet.transform.position);
+								this.EventPhase++;
+								this.Timer = (float)0;
+							}
+							else
+							{
+								this.EndEvent();
+							}
+						}
+					}
+					else if (this.EventPhase == 3)
+					{
+						this.Timer += Time.deltaTime;
+						if (this.Timer > (float)4)
+						{
+							this.EventStudent.CurrentDestination = this.EventLocation[3];
+							this.EventStudent.Pathfinding.target = this.EventLocation[3];
+							this.EventStudent.TargetDistance = (float)2;
+							this.StallDoor.gameObject.active = true;
+							this.StallDoor.Prompt.enabled = true;
+							this.StallDoor.Locked = false;
+							this.EventPhase++;
+							this.Timer = (float)0;
+						}
+					}
+					else if (this.EventPhase == 4)
+					{
+						this.EventStudent.Character.animation.CrossFade("f02_washHands_00");
+						this.Timer += Time.deltaTime;
+						if (this.Timer > (float)5)
 						{
 							this.EndEvent();
 						}
 					}
-				}
-				else if (this.EventPhase == 3)
-				{
-					this.Timer += Time.deltaTime;
-					if (this.Timer > (float)4)
+					else if (this.EventPhase == 5)
 					{
-						this.EventStudent.CurrentDestination = this.EventLocation[3];
-						this.EventStudent.Pathfinding.target = this.EventLocation[3];
-						this.EventStudent.TargetDistance = (float)2;
-						this.StallDoor.gameObject.active = true;
-						this.StallDoor.Prompt.enabled = true;
-						this.StallDoor.Locked = false;
-						this.EventPhase++;
-						this.Timer = (float)0;
+						this.Timer += Time.deltaTime;
+						if (this.Timer > (float)9)
+						{
+							this.Splashes.Stop();
+							this.EventOver = true;
+							this.EndEvent();
+						}
+						else if (this.Timer > (float)3)
+						{
+							this.EventSubtitle.text = string.Empty;
+							this.Splashes.Play();
+						}
+					}
+					this.Distance = Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position);
+					if (this.Distance < (float)10)
+					{
+						float num = Mathf.Abs((this.Distance - (float)10) * 0.2f);
+						if (num < (float)0)
+						{
+							num = (float)0;
+						}
+						if (num > (float)1)
+						{
+							num = (float)1;
+						}
+						this.EventSubtitle.transform.localScale = new Vector3(num, num, num);
+					}
+					else
+					{
+						this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
 					}
 				}
-				else if (this.EventPhase == 4)
-				{
-					this.EventStudent.Character.animation.CrossFade("f02_washHands_00");
-					this.Timer += Time.deltaTime;
-					if (this.Timer > (float)5)
-					{
-						this.EndEvent();
-					}
-				}
-				else if (this.EventPhase == 5)
-				{
-					this.Timer += Time.deltaTime;
-					if (this.Timer > (float)9)
-					{
-						this.Splashes.Stop();
-						this.EventOver = true;
-						this.EndEvent();
-					}
-					else if (this.Timer > (float)3)
-					{
-						this.EventSubtitle.text = string.Empty;
-						this.Splashes.Play();
-					}
-				}
-				this.Distance = Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position);
-				if (this.Distance < (float)10)
-				{
-					float num = Mathf.Abs((this.Distance - (float)10) * 0.2f);
-					if (num < (float)0)
-					{
-						num = (float)0;
-					}
-					if (num > (float)1)
-					{
-						num = (float)1;
-					}
-					this.EventSubtitle.transform.localScale = new Vector3(num, num, num);
-				}
-				else
-				{
-					this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
-				}
+			}
+			else
+			{
+				this.EndEvent();
 			}
 		}
 		if (this.EventDay == 4 && this.ToiletCountdown > (float)0)

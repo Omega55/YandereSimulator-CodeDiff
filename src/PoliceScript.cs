@@ -93,6 +93,8 @@ public class PoliceScript : MonoBehaviour
 
 	public int Corpses;
 
+	public int Deaths;
+
 	public bool Show;
 
 	public float ResultsTimer;
@@ -724,12 +726,32 @@ public class PoliceScript : MonoBehaviour
 
 	public virtual void KillStudents()
 	{
-		for (int i = 1; i < 20; i++)
+		float num = PlayerPrefs.GetFloat("SchoolAtmosphere");
+		if (this.Deaths > 0)
 		{
-			if (PlayerPrefs.GetInt("Student_" + i + "_Dying") == 1)
+			for (int i = 1; i < 20; i++)
 			{
-				PlayerPrefs.SetInt("Student_" + i + "_Dead", 1);
+				if (PlayerPrefs.GetInt("Student_" + i + "_Dying") == 1)
+				{
+					PlayerPrefs.SetInt("Student_" + i + "_Dead", 1);
+				}
 			}
+			num -= (float)(this.Deaths * 5);
+			num -= (float)(this.Corpses * 5);
+			PlayerPrefs.SetFloat("SchoolAtmosphere", num);
+		}
+		else
+		{
+			num += (float)20;
+			PlayerPrefs.SetFloat("SchoolAtmosphere", num);
+		}
+		if (PlayerPrefs.GetFloat("SchoolAtmosphere") < (float)0)
+		{
+			PlayerPrefs.SetFloat("SchoolAtmosphere", (float)0);
+		}
+		if (PlayerPrefs.GetFloat("SchoolAtmosphere") > (float)100)
+		{
+			PlayerPrefs.SetFloat("SchoolAtmosphere", (float)100);
 		}
 	}
 

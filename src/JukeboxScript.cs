@@ -61,10 +61,6 @@ public class JukeboxScript : MonoBehaviour
 
 	public virtual void Start()
 	{
-		if (PlayerPrefs.GetFloat("SchoolAtmosphere") == (float)0)
-		{
-			PlayerPrefs.SetFloat("SchoolAtmosphere", (float)100);
-		}
 		int num;
 		if (PlayerPrefs.GetFloat("SchoolAtmosphere") >= 66.66666f)
 		{
