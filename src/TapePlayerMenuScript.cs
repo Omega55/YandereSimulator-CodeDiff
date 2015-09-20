@@ -423,38 +423,6 @@ public class TapePlayerMenuScript : MonoBehaviour
 			Vector3 localPosition6 = this.TimeBar.localPosition;
 			float num12 = localPosition6.y = y3;
 			Vector3 vector10 = this.TimeBar.localPosition = localPosition6;
-			if (Input.GetButtonDown("A") && PlayerPrefs.GetInt("Tape_" + this.Selected + "_Collected") == 1)
-			{
-				PlayerPrefs.SetInt("Tape_" + this.Selected + "_Listened", 1);
-				this.NewIcons[this.Selected].active = false;
-				this.Jukebox.active = false;
-				this.Listening = true;
-				this.Phase = 1;
-				this.PromptBar.Label[0].text = string.Empty;
-				this.PromptBar.Label[1].text = string.Empty;
-				this.PromptBar.Label[4].text = string.Empty;
-				this.PromptBar.UpdateButtons();
-				this.TapePlayer.animation.Play("InsertTape");
-				this.TapePlayer.Tape.active = true;
-				this.audio.clip = this.Recordings[this.Selected];
-				this.audio.time = (float)0;
-				this.RoundedTime = (float)Mathf.CeilToInt(this.audio.clip.length);
-				int num7 = (int)(this.RoundedTime / (float)60);
-				int num8 = (int)(this.RoundedTime % (float)60);
-				this.ClipLength = string.Format("{0:00}:{1:00}", num7, num8);
-			}
-			if (Input.GetButtonDown("B"))
-			{
-				this.TapePlayer.Yandere.HeartCamera.enabled = true;
-				this.TapePlayer.TapePlayerCamera.enabled = false;
-				this.TapePlayer.PromptBar.ClearButtons();
-				this.TapePlayer.Yandere.CanMove = true;
-				this.TapePlayer.PromptBar.Show = false;
-				this.TapePlayer.Prompt.enabled = true;
-				this.TapePlayer.Yandere.HUD.alpha = (float)1;
-				Time.timeScale = (float)1;
-				this.Show = false;
-			}
 			if (this.InputManager.TappedUp)
 			{
 				this.Selected--;
@@ -468,7 +436,7 @@ public class TapePlayerMenuScript : MonoBehaviour
 				Vector3 vector11 = this.Highlight.localPosition = localPosition7;
 				this.CheckSelection();
 			}
-			if (this.InputManager.TappedDown)
+			else if (this.InputManager.TappedDown)
 			{
 				this.Selected++;
 				if (this.Selected > 10)
@@ -480,6 +448,41 @@ public class TapePlayerMenuScript : MonoBehaviour
 				float num16 = localPosition8.y = (float)num15;
 				Vector3 vector12 = this.Highlight.localPosition = localPosition8;
 				this.CheckSelection();
+			}
+			else if (Input.GetButtonDown("A"))
+			{
+				if (PlayerPrefs.GetInt("Tape_" + this.Selected + "_Collected") == 1)
+				{
+					PlayerPrefs.SetInt("Tape_" + this.Selected + "_Listened", 1);
+					this.NewIcons[this.Selected].active = false;
+					this.Jukebox.active = false;
+					this.Listening = true;
+					this.Phase = 1;
+					this.PromptBar.Label[0].text = string.Empty;
+					this.PromptBar.Label[1].text = string.Empty;
+					this.PromptBar.Label[4].text = string.Empty;
+					this.PromptBar.UpdateButtons();
+					this.TapePlayer.animation.Play("InsertTape");
+					this.TapePlayer.Tape.active = true;
+					this.audio.clip = this.Recordings[this.Selected];
+					this.audio.time = (float)0;
+					this.RoundedTime = (float)Mathf.CeilToInt(this.audio.clip.length);
+					int num7 = (int)(this.RoundedTime / (float)60);
+					int num8 = (int)(this.RoundedTime % (float)60);
+					this.ClipLength = string.Format("{0:00}:{1:00}", num7, num8);
+				}
+			}
+			else if (Input.GetButtonDown("B"))
+			{
+				this.TapePlayer.Yandere.HeartCamera.enabled = true;
+				this.TapePlayer.TapePlayerCamera.enabled = false;
+				this.TapePlayer.PromptBar.ClearButtons();
+				this.TapePlayer.Yandere.CanMove = true;
+				this.TapePlayer.PromptBar.Show = false;
+				this.TapePlayer.Prompt.enabled = true;
+				this.TapePlayer.Yandere.HUD.alpha = (float)1;
+				Time.timeScale = (float)1;
+				this.Show = false;
 			}
 		}
 	}

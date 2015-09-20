@@ -115,7 +115,6 @@ public class HeartbrokenScript : MonoBehaviour
 		Color color6 = this.Subtitle.color = color5;
 		if (this.Noticed)
 		{
-			this.Listener.enabled = false;
 			int num8 = 0;
 			Color color7 = this.Background.color;
 			float num9 = color7.a = (float)num8;

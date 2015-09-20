@@ -17,6 +17,8 @@ public class ActivateOsuScript : MonoBehaviour
 
 	public GameObject Osu;
 
+	public int PlayerID;
+
 	public Vector3 OriginalMousePosition;
 
 	public Vector3 OriginalMouseRotation;
@@ -30,10 +32,10 @@ public class ActivateOsuScript : MonoBehaviour
 
 	public virtual void OnTriggerEnter(Collider other)
 	{
-		if (other.gameObject.name == "StudentChan(Clone)")
+		if ((this.PlayerID == 14 && other.gameObject.name == "StudentChan(Clone)") || (this.PlayerID == 15 && other.gameObject.name == "StudentKun(Clone)"))
 		{
 			this.Student = (StudentScript)other.gameObject.GetComponent(typeof(StudentScript));
-			if (this.Student != null && this.Student.Routine)
+			if (this.Student != null && this.Student.StudentID == this.PlayerID && this.Student.Routine)
 			{
 				this.ActivateOsu();
 			}

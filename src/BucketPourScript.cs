@@ -24,6 +24,9 @@ public class BucketPourScript : MonoBehaviour
 	public virtual void Start()
 	{
 		this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent(typeof(YandereScript));
+		this.Prompt.Hide();
+		this.Prompt.enabled = false;
+		this.enabled = false;
 	}
 
 	public virtual void Update()
@@ -56,7 +59,7 @@ public class BucketPourScript : MonoBehaviour
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
 		}
-		if (this.Prompt.Circle[0].fillAmount <= (float)0)
+		if (this.Prompt.Circle[0] != null && this.Prompt.Circle[0].fillAmount <= (float)0)
 		{
 			this.Yandere.Stool = this.transform;
 			this.Yandere.CanMove = false;

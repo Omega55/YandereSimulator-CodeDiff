@@ -54,7 +54,7 @@ public class AlarmDiscScript : MonoBehaviour
 		if (other.gameObject.layer == 9)
 		{
 			this.Student = (StudentScript)other.gameObject.GetComponent(typeof(StudentScript));
-			if (this.Student != null && !this.Student.Alarmed)
+			if (this.Student != null && !this.Student.Alarmed && !this.Student.Wet)
 			{
 				this.Student.DiscCheck = true;
 				this.Student.Alarm = (float)200;

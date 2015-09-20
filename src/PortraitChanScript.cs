@@ -138,37 +138,40 @@ public class PortraitChanScript : MonoBehaviour
 		else
 		{
 			this.MaleHairstyles[UnityBuiltins.parseInt(this.Hairstyle)].active = true;
-			this.MaleHairRenderer = (Renderer)this.MaleHairstyles[UnityBuiltins.parseInt(this.Hairstyle)].GetComponent(typeof(Renderer));
-			if (a == "Red")
+			if (UnityBuiltins.parseInt(this.Hairstyle) < 8)
 			{
-				this.MaleHairRenderer.material.color = new Color((float)1, (float)0, (float)0);
+				this.MaleHairRenderer = (Renderer)this.MaleHairstyles[UnityBuiltins.parseInt(this.Hairstyle)].GetComponent(typeof(Renderer));
+				if (a == "Red")
+				{
+					this.MaleHairRenderer.material.color = new Color((float)1, (float)0, (float)0);
+				}
+				else if (a == "Yellow")
+				{
+					this.MaleHairRenderer.material.color = new Color((float)1, (float)1, (float)0);
+				}
+				else if (a == "Green")
+				{
+					this.MaleHairRenderer.material.color = new Color((float)0, (float)1, (float)0);
+				}
+				else if (a == "Cyan")
+				{
+					this.MaleHairRenderer.material.color = new Color((float)0, (float)1, (float)1);
+				}
+				else if (a == "Blue")
+				{
+					this.MaleHairRenderer.material.color = new Color((float)0, (float)0, (float)1);
+				}
+				else if (a == "Purple")
+				{
+					this.MaleHairRenderer.material.color = new Color((float)1, (float)0, (float)1);
+				}
+				else if (a == "Black")
+				{
+					this.MaleHairRenderer.material.color = new Color((float)1, (float)1, (float)1);
+				}
+				this.EyeR.material.color = this.MaleHairRenderer.material.color;
+				this.EyeL.material.color = this.MaleHairRenderer.material.color;
 			}
-			else if (a == "Yellow")
-			{
-				this.MaleHairRenderer.material.color = new Color((float)1, (float)1, (float)0);
-			}
-			else if (a == "Green")
-			{
-				this.MaleHairRenderer.material.color = new Color((float)0, (float)1, (float)0);
-			}
-			else if (a == "Cyan")
-			{
-				this.MaleHairRenderer.material.color = new Color((float)0, (float)1, (float)1);
-			}
-			else if (a == "Blue")
-			{
-				this.MaleHairRenderer.material.color = new Color((float)0, (float)0, (float)1);
-			}
-			else if (a == "Purple")
-			{
-				this.MaleHairRenderer.material.color = new Color((float)1, (float)0, (float)1);
-			}
-			else if (a == "Black")
-			{
-				this.MaleHairRenderer.material.color = new Color((float)1, (float)1, (float)1);
-			}
-			this.EyeR.material.color = this.MaleHairRenderer.material.color;
-			this.EyeL.material.color = this.MaleHairRenderer.material.color;
 		}
 		if (!this.Male)
 		{
@@ -235,6 +238,8 @@ public class PortraitChanScript : MonoBehaviour
 			{
 				this.PigtailR.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
 				this.PigtailL.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+				this.HairR.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+				this.HairL.localScale = new Vector3(0.5f, 0.5f, 0.5f);
 			}
 			else if (this.Hairstyle == "Long")
 			{

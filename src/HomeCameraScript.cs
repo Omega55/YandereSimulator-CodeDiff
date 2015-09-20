@@ -16,6 +16,8 @@ public class HomeCameraScript : MonoBehaviour
 
 	public HomeExitScript HomeExit;
 
+	public UISprite Button;
+
 	public GameObject CorkboardLabel;
 
 	public GameObject LoadingScreen;
@@ -54,6 +56,10 @@ public class HomeCameraScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		int num = 0;
+		Color color = this.Button.color;
+		float num2 = color.a = (float)num;
+		Color color2 = this.Button.color = color;
 		this.Focus.position = this.Target.position;
 		this.transform.position = this.Destination.position;
 	}
@@ -90,6 +96,20 @@ public class HomeCameraScript : MonoBehaviour
 			{
 				this.HomePantyChanger.enabled = true;
 			}
+		}
+		if (this.ID > 0 && this.HomeYandere.CanMove)
+		{
+			float a = Mathf.MoveTowards(this.Button.color.a, (float)1, Time.deltaTime);
+			Color color = this.Button.color;
+			float num = color.a = a;
+			Color color2 = this.Button.color = color;
+		}
+		else
+		{
+			float a2 = Mathf.MoveTowards(this.Button.color.a, (float)0, Time.deltaTime);
+			Color color3 = this.Button.color;
+			float num2 = color3.a = a2;
+			Color color4 = this.Button.color = color3;
 		}
 		if (Input.GetKeyDown("0"))
 		{

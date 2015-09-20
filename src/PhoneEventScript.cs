@@ -51,7 +51,6 @@ public class PhoneEventScript : MonoBehaviour
 
 	public virtual void Start()
 	{
-		this.DumpPoint.gameObject.active = false;
 		this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
 		if (PlayerPrefs.GetInt("Weekday") == this.EventDay)
 		{
@@ -140,7 +139,7 @@ public class PhoneEventScript : MonoBehaviour
 				}
 				else if (this.EventPhase == 4)
 				{
-					this.DumpPoint.gameObject.active = true;
+					this.DumpPoint.enabled = true;
 					this.EventStudent.Character.animation.CrossFade(this.EventAnim[2]);
 					this.PlayClip(this.EventClip[2], this.EventStudent.transform.position);
 					this.EventPhase++;
@@ -193,6 +192,11 @@ public class PhoneEventScript : MonoBehaviour
 				{
 					this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
 				}
+				if (this.EventPhase == 11 && num < (float)5 && PlayerPrefs.GetInt("Event2") == 0)
+				{
+					this.Yandere.NotificationManager.DisplayNotification("Info");
+					PlayerPrefs.SetInt("Event2", 1);
+				}
 			}
 		}
 	}
@@ -235,8 +239,9 @@ public class PhoneEventScript : MonoBehaviour
 			this.EventStudent.Private = false;
 			this.EventSubtitle.text = string.Empty;
 			this.StudentManager.UpdateStudents();
+			this.DumpPoint.enabled = false;
 			this.DumpPoint.Prompt.Hide();
-			this.DumpPoint.active = false;
+			this.DumpPoint.Prompt.enabled = false;
 		}
 		this.EventActive = false;
 		this.EventCheck = false;

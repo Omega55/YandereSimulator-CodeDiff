@@ -11,6 +11,10 @@ public class StudentManagerScript : MonoBehaviour
 
 	public StudentScript[] Students;
 
+	public SelectiveGrayscale SmartphoneSelectiveGreyscale;
+
+	public SelectiveGrayscale HandSelectiveGreyscale;
+
 	public SelectiveGrayscale SelectiveGreyscale;
 
 	public EmergencyExitScript EmergencyExit;
@@ -97,6 +101,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public bool AoT;
 
+	public bool DK;
+
 	public float ChangeTimer;
 
 	public StudentManagerScript()
@@ -112,14 +118,16 @@ public class StudentManagerScript : MonoBehaviour
 			PlayerPrefs.SetInt("SchoolAtmosphereSet", 1);
 			PlayerPrefs.SetFloat("SchoolAtmosphere", (float)100);
 		}
-		Debug.Log("School Atmosphere is now: " + PlayerPrefs.GetFloat("SchoolAtmosphere"));
 		Vignetting[] components = Camera.main.GetComponents<Vignetting>();
 		float num = (float)1 - PlayerPrefs.GetFloat("SchoolAtmosphere") * 0.01f;
-		this.SelectiveGreyscale.desaturation = num;
-		components[2].intensity = num * (float)5;
-		components[2].blur = num;
-		components[2].chromaticAberration = num * (float)5;
-		RenderSettings.fogDensity = num * 0.05f;
+		if (!this.TakingPortraits)
+		{
+			this.SelectiveGreyscale.desaturation = num;
+			components[2].intensity = num * (float)5;
+			components[2].blur = num;
+			components[2].chromaticAberration = num * (float)5;
+			RenderSettings.fogDensity = num * 0.05f;
+		}
 		this.NPCsTotal = this.StudentsTotal + this.TeachersTotal;
 		this.SpawnID = this.StudentsTotal;
 		if (PlayerPrefs.GetInt("MaleUniform") == 0)
@@ -307,7 +315,14 @@ public class StudentManagerScript : MonoBehaviour
 		{
 			if (this.Students[this.ID] != null && !this.Students[this.ID].Dying)
 			{
-				this.Students[this.ID].Character.animation.CrossFade(this.Students[this.ID].IdleAnim);
+				if (this.Yandere.Attacking)
+				{
+					this.Students[this.ID].Character.animation.CrossFade(this.Students[this.ID].ScaredAnim);
+				}
+				else
+				{
+					this.Students[this.ID].Character.animation.CrossFade(this.Students[this.ID].IdleAnim);
+				}
 				this.Students[this.ID].Pathfinding.canSearch = false;
 				this.Students[this.ID].Pathfinding.canMove = false;
 				this.Students[this.ID].Pathfinding.speed = (float)0;
@@ -386,7 +401,7 @@ public class StudentManagerScript : MonoBehaviour
 	{
 		if (this.Clock.HourTime >= this.SpawnTimes[this.NPCsSpawned])
 		{
-			if (PlayerPrefs.GetInt("Student_" + (this.SpawnID + 1) + "_Dead") == 0)
+			if (PlayerPrefs.GetInt("Student_" + (this.SpawnID + 1) + "_Dead") == 0 && this.JSON.StudentNames[this.SpawnID + 1] != "Unknown")
 			{
 				if (this.JSON.StudentGenders[this.SpawnID + 1] == 0)
 				{
@@ -405,6 +420,10 @@ public class StudentManagerScript : MonoBehaviour
 				{
 					this.Students[this.SpawnID].AoT = true;
 				}
+				if (this.DK)
+				{
+					this.Students[this.SpawnID].DK = true;
+				}
 				if (this.Spooky)
 				{
 					this.Students[this.SpawnID].Spooky = true;
@@ -413,10 +432,6 @@ public class StudentManagerScript : MonoBehaviour
 				{
 					this.CommunalLocker.Student = this.Students[this.SpawnID];
 				}
-			}
-			else
-			{
-				Debug.Log("Student " + (this.SpawnID + 1) + " is dead.");
 			}
 			this.NPCsSpawned++;
 			this.SpawnID++;
@@ -437,6 +452,20 @@ public class StudentManagerScript : MonoBehaviour
 			if (this.Students[this.ID] != null && !this.Students[this.ID].Teacher)
 			{
 				this.Students[this.ID].AttackOnTitan();
+			}
+			this.ID++;
+		}
+	}
+
+	public virtual void Kong()
+	{
+		this.DK = true;
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.Students))
+		{
+			if (this.Students[this.ID] != null)
+			{
+				this.Students[this.ID].DK = true;
 			}
 			this.ID++;
 		}

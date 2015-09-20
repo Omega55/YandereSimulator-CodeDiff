@@ -10,18 +10,18 @@ public class HomeYandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$1594 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$1620 : GenericGenerator<WWW>
 	{
-		internal HomeYandereScript $self_$1601;
+		internal HomeYandereScript $self_$1629;
 
-		public $ApplyCustomCostume$1594(HomeYandereScript self_)
+		public $ApplyCustomCostume$1620(HomeYandereScript self_)
 		{
-			this.$self_$1601 = self_;
+			this.$self_$1629 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new HomeYandereScript.$ApplyCustomCostume$1594.$(this.$self_$1601);
+			return new HomeYandereScript.$ApplyCustomCostume$1620.$(this.$self_$1629);
 		}
 	}
 
@@ -37,7 +37,7 @@ public class HomeYandereScript : MonoBehaviour
 
 	public bool CanMove;
 
-	public SkinnedMeshRenderer MyRenderer;
+	public Renderer PonytailRenderer;
 
 	public Renderer PigtailR;
 
@@ -55,6 +55,14 @@ public class HomeYandereScript : MonoBehaviour
 
 	public int Hairstyle;
 
+	public SkinnedMeshRenderer MyRenderer;
+
+	public Texture[] UniformTextures;
+
+	public Texture FaceTexture;
+
+	public Mesh[] Uniforms;
+
 	public virtual void Start()
 	{
 		if (Application.loadedLevelName == "HomeScene")
@@ -67,8 +75,9 @@ public class HomeYandereScript : MonoBehaviour
 			}
 		}
 		Time.timeScale = (float)1;
-		this.StartCoroutine_Auto(this.ApplyCustomCostume());
 		this.UpdateHair();
+		this.ChangeSchoolwear();
+		this.StartCoroutine_Auto(this.ApplyCustomCostume());
 	}
 
 	public virtual void Update()
@@ -114,10 +123,38 @@ public class HomeYandereScript : MonoBehaviour
 		{
 			this.Character.animation.CrossFade("f02_idleShort_00");
 		}
-		this.rigidbody.velocity = new Vector3((float)0, (float)0, (float)0);
+		if (this.rigidbody != null)
+		{
+			this.rigidbody.velocity = new Vector3((float)0, (float)0, (float)0);
+		}
 		if (Input.GetKeyDown("h"))
 		{
 			this.UpdateHair();
+		}
+		if (Input.GetKeyDown(KeyCode.F1))
+		{
+			PlayerPrefs.SetInt("FemaleUniform", 1);
+			Application.LoadLevel(Application.loadedLevel);
+		}
+		else if (Input.GetKeyDown(KeyCode.F2))
+		{
+			PlayerPrefs.SetInt("FemaleUniform", 2);
+			Application.LoadLevel(Application.loadedLevel);
+		}
+		else if (Input.GetKeyDown(KeyCode.F3))
+		{
+			PlayerPrefs.SetInt("FemaleUniform", 3);
+			Application.LoadLevel(Application.loadedLevel);
+		}
+		else if (Input.GetKeyDown(KeyCode.F4))
+		{
+			PlayerPrefs.SetInt("FemaleUniform", 4);
+			Application.LoadLevel(Application.loadedLevel);
+		}
+		else if (Input.GetKeyDown(KeyCode.F5))
+		{
+			PlayerPrefs.SetInt("FemaleUniform", 5);
+			Application.LoadLevel(Application.loadedLevel);
 		}
 	}
 
@@ -130,11 +167,6 @@ public class HomeYandereScript : MonoBehaviour
 			this.HairR.localScale = new Vector3((float)0, (float)0, (float)0);
 			this.HairL.localScale = new Vector3((float)0, (float)0, (float)0);
 		}
-	}
-
-	public virtual IEnumerator ApplyCustomCostume()
-	{
-		return new HomeYandereScript.$ApplyCustomCostume$1594(this).GetEnumerator();
 	}
 
 	public virtual void UpdateHair()
@@ -190,6 +222,20 @@ public class HomeYandereScript : MonoBehaviour
 		{
 			this.Drills.active = true;
 		}
+	}
+
+	public virtual void ChangeSchoolwear()
+	{
+		this.MyRenderer.sharedMesh = this.Uniforms[PlayerPrefs.GetInt("FemaleUniform")];
+		this.MyRenderer.materials[0].mainTexture = this.UniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+		this.MyRenderer.materials[1].mainTexture = this.UniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+		this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
+		this.StartCoroutine_Auto(this.ApplyCustomCostume());
+	}
+
+	public virtual IEnumerator ApplyCustomCostume()
+	{
+		return new HomeYandereScript.$ApplyCustomCostume$1620(this).GetEnumerator();
 	}
 
 	public virtual void Main()

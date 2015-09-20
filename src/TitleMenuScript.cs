@@ -261,7 +261,8 @@ public class TitleMenuScript : MonoBehaviour
 		this.BloodProjector.active = true;
 		this.BloodCamera.active = true;
 		this.Knife.active = true;
-		this.CuteMusic.pitch = 0.5f;
+		this.CuteMusic.volume = (float)0;
+		this.DarkMusic.volume = (float)1;
 		RenderSettings.ambientLight = new Color(0.5f, 0.5f, 0.5f, (float)1);
 		RenderSettings.skybox = this.DarkSkybox;
 		RenderSettings.fog = true;
@@ -345,7 +346,8 @@ public class TitleMenuScript : MonoBehaviour
 		this.BloodProjector.active = false;
 		this.BloodCamera.active = false;
 		this.Knife.active = false;
-		this.CuteMusic.pitch = (float)1;
+		this.CuteMusic.volume = (float)1;
+		this.DarkMusic.volume = (float)0;
 		this.Timer = (float)0;
 		RenderSettings.ambientLight = new Color(0.75f, 0.75f, 0.75f, (float)1);
 		RenderSettings.skybox = this.CuteSkybox;

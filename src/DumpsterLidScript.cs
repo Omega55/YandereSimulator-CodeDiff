@@ -108,6 +108,7 @@ public class DumpsterLidScript : MonoBehaviour
 				this.Prompt.Yandere.Police.Suicide = false;
 				this.Prompt.Yandere.Police.HiddenCorpses = this.Prompt.Yandere.Police.HiddenCorpses - 1;
 				this.Prompt.Yandere.Police.Corpses = this.Prompt.Yandere.Police.Corpses - 1;
+				this.Prompt.Yandere.NearBodies = this.Prompt.Yandere.NearBodies - 1;
 				int num2 = 1;
 				Vector3 localPosition2 = this.GarbageDebris.localPosition;
 				float num3 = localPosition2.y = (float)num2;

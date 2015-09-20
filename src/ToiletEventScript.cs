@@ -8,6 +8,8 @@ public class ToiletEventScript : MonoBehaviour
 
 	public LightSwitchScript LightSwitch;
 
+	public BucketPourScript BucketPour;
+
 	public ParticleSystem Splashes;
 
 	public UILabel EventSubtitle;
@@ -180,6 +182,10 @@ public class ToiletEventScript : MonoBehaviour
 						if (this.Timer == (float)0)
 						{
 							this.EventStudent.Character.animation.CrossFade(this.EventAnim[1]);
+							if (this.EventDay == 4)
+							{
+								this.BucketPour.enabled = true;
+							}
 						}
 						this.Timer += Time.deltaTime;
 						if (this.Timer > (float)10)
@@ -311,6 +317,9 @@ public class ToiletEventScript : MonoBehaviour
 			this.StallDoor.gameObject.active = true;
 			this.StallDoor.Prompt.enabled = true;
 			this.StallDoor.Locked = false;
+			this.BucketPour.enabled = false;
+			this.BucketPour.Prompt.Hide();
+			this.BucketPour.Prompt.enabled = false;
 		}
 		this.EventActive = false;
 		this.EventCheck = false;

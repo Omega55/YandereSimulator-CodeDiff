@@ -23,7 +23,10 @@ public class LiquidColliderScript : MonoBehaviour
 			UnityEngine.Object.Instantiate(this.GroundSplash, new Vector3(this.transform.position.x, (float)0, this.transform.position.z), Quaternion.identity);
 			this.NewPool = (GameObject)UnityEngine.Object.Instantiate(this.Pool, new Vector3(this.transform.position.x, 0.012f, this.transform.position.z), Quaternion.identity);
 			this.NewPool.transform.localEulerAngles = new Vector3((float)90, UnityEngine.Random.Range((float)0, 360f), (float)0);
-			this.NewPool.transform.parent = GameObject.Find("BloodParent").transform;
+			if (this.Blood)
+			{
+				this.NewPool.transform.parent = GameObject.Find("BloodParent").transform;
+			}
 			UnityEngine.Object.Destroy(this.gameObject);
 		}
 	}

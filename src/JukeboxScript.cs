@@ -26,6 +26,8 @@ public class JukeboxScript : MonoBehaviour
 
 	public AudioSource Jojo;
 
+	public AudioSource DK;
+
 	public AudioSource FullSanity;
 
 	public AudioSource HalfSanity;
@@ -46,6 +48,8 @@ public class JukeboxScript : MonoBehaviour
 
 	public float Dip;
 
+	public bool MuteCopyrights;
+
 	public bool Egg;
 
 	public AudioClip[] FullSanities;
@@ -61,6 +65,11 @@ public class JukeboxScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		if (PlayerPrefs.GetInt("SchoolAtmosphereSet") == 0)
+		{
+			PlayerPrefs.SetInt("SchoolAtmosphereSet", 1);
+			PlayerPrefs.SetFloat("SchoolAtmosphere", (float)100);
+		}
 		int num;
 		if (PlayerPrefs.GetFloat("SchoolAtmosphere") >= 66.66666f)
 		{
@@ -146,20 +155,27 @@ public class JukeboxScript : MonoBehaviour
 			this.Hitman.volume = Mathf.MoveTowards(this.Hitman.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Galo.volume = Mathf.MoveTowards(this.Galo.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Jojo.volume = Mathf.MoveTowards(this.Jojo.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
+			this.DK.volume = Mathf.MoveTowards(this.DK.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 		}
 		if (!this.Yandere.PauseScreen.Show && !this.Yandere.Noticed && this.Yandere.CanMove && this.Yandere.EasterEggMenu.active && !this.Egg)
 		{
 			if (Input.GetKeyDown("t"))
 			{
-				this.Egg = true;
-				this.KillVolume();
-				this.AttackOnTitan.enabled = true;
+				if (!this.MuteCopyrights)
+				{
+					this.Egg = true;
+					this.KillVolume();
+					this.AttackOnTitan.enabled = true;
+				}
 			}
 			else if (Input.GetKeyDown("p"))
 			{
-				this.Egg = true;
-				this.KillVolume();
-				this.Nuclear.enabled = true;
+				if (!this.MuteCopyrights)
+				{
+					this.Egg = true;
+					this.KillVolume();
+					this.Nuclear.enabled = true;
+				}
 			}
 			else if (Input.GetKeyDown("h"))
 			{
@@ -169,9 +185,12 @@ public class JukeboxScript : MonoBehaviour
 			}
 			else if (Input.GetKeyDown("b"))
 			{
-				this.Egg = true;
-				this.KillVolume();
-				this.Sukeban.enabled = true;
+				if (!this.MuteCopyrights)
+				{
+					this.Egg = true;
+					this.KillVolume();
+					this.Sukeban.enabled = true;
+				}
 			}
 			else if (Input.GetKeyDown("x"))
 			{
@@ -181,27 +200,45 @@ public class JukeboxScript : MonoBehaviour
 			}
 			else if (Input.GetKeyDown("g"))
 			{
-				this.Egg = true;
-				this.KillVolume();
-				this.Galo.enabled = true;
+				if (!this.MuteCopyrights)
+				{
+					this.Egg = true;
+					this.KillVolume();
+					this.Galo.enabled = true;
+				}
 			}
 			else if (Input.GetKeyDown("j"))
 			{
-				this.Egg = true;
-				this.KillVolume();
-				this.Jojo.enabled = true;
+				if (!this.MuteCopyrights)
+				{
+					this.Egg = true;
+					this.KillVolume();
+					this.Jojo.enabled = true;
+				}
 			}
 			else if (Input.GetKeyDown("l"))
 			{
-				this.Egg = true;
-				this.KillVolume();
-				this.Hitman.enabled = true;
+				if (!this.MuteCopyrights)
+				{
+					this.Egg = true;
+					this.KillVolume();
+					this.Hitman.enabled = true;
+				}
 			}
 			else if (Input.GetKeyDown("s"))
 			{
+				if (!this.MuteCopyrights)
+				{
+					this.Egg = true;
+					this.KillVolume();
+					this.Skeletons.enabled = true;
+				}
+			}
+			else if (Input.GetKeyDown("k") && !this.MuteCopyrights)
+			{
 				this.Egg = true;
 				this.KillVolume();
-				this.Skeletons.enabled = true;
+				this.DK.enabled = true;
 			}
 		}
 	}
@@ -224,6 +261,7 @@ public class JukeboxScript : MonoBehaviour
 		this.Hatred.Stop();
 		this.Hitman.Stop();
 		this.Galo.Stop();
+		this.DK.Stop();
 		this.FullSanity.Stop();
 		this.HalfSanity.Stop();
 		this.NoSanity.Stop();

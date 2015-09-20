@@ -26,6 +26,10 @@ public class DebugMenuScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		int num = 0;
+		Vector3 localPosition = this.transform.localPosition;
+		float num2 = localPosition.y = (float)num;
+		Vector3 vector = this.transform.localPosition = localPosition;
 		this.Window.active = false;
 	}
 
@@ -74,7 +78,7 @@ public class DebugMenuScript : MonoBehaviour
 				PlayerPrefs.SetInt("MaleUniform", 5);
 				Application.LoadLevel(Application.loadedLevel);
 			}
-			if (Input.GetKeyDown("1"))
+			else if (Input.GetKeyDown("1"))
 			{
 				PlayerPrefs.SetInt("Weekday", 1);
 				Application.LoadLevel(Application.loadedLevel);
@@ -120,7 +124,7 @@ public class DebugMenuScript : MonoBehaviour
 				this.Window.active = false;
 				if (this.Clock.HourTime < 7.075f)
 				{
-					this.Clock.PresentTime = 424.5f;
+					this.Clock.PresentTime = 424.8f;
 				}
 			}
 			else if (Input.GetKeyDown("t"))
@@ -163,14 +167,14 @@ public class DebugMenuScript : MonoBehaviour
 			}
 			else if (Input.GetKeyDown("g"))
 			{
-				if (this.StudentManager.Students[14] != null)
+				if (this.StudentManager.Students[15] != null)
 				{
-					this.StudentManager.Students[14].CurrentDestination = this.RooftopSpot;
-					this.StudentManager.Students[14].Pathfinding.target = this.RooftopSpot;
-					this.StudentManager.Students[14].Pathfinding.canSearch = true;
-					this.StudentManager.Students[14].Pathfinding.canMove = true;
-					this.StudentManager.Students[14].Meeting = true;
-					this.StudentManager.Students[14].MeetTime = (float)0;
+					this.StudentManager.Students[15].CurrentDestination = this.RooftopSpot;
+					this.StudentManager.Students[15].Pathfinding.target = this.RooftopSpot;
+					this.StudentManager.Students[15].Pathfinding.canSearch = true;
+					this.StudentManager.Students[15].Pathfinding.canMove = true;
+					this.StudentManager.Students[15].Meeting = true;
+					this.StudentManager.Students[15].MeetTime = (float)0;
 				}
 				this.Window.active = false;
 			}

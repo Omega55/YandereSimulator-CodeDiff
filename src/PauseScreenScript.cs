@@ -5,11 +5,15 @@ using UnityScript.Lang;
 [Serializable]
 public class PauseScreenScript : MonoBehaviour
 {
+	public StudentInfoMenuScript StudentInfoMenu;
+
 	public InputManagerScript InputManager;
 
 	public PhotoGalleryScript PhotoGallery;
 
 	public FavorMenuScript FavorMenu;
+
+	public PromptBarScript PromptBar;
 
 	public PassTimeScript PassTime;
 
@@ -62,17 +66,20 @@ public class PauseScreenScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		PlayerPrefs.SetInt("Student_0_Photographed", 1);
+		PlayerPrefs.SetInt("Student_1_Photographed", 1);
 		this.transform.localPosition = new Vector3((float)1350, (float)0, (float)0);
 		this.transform.localScale = new Vector3((float)1, (float)1, (float)1);
 		int num = 0;
 		Vector3 localEulerAngles = this.transform.localEulerAngles;
 		float num2 = localEulerAngles.z = (float)num;
 		Vector3 vector = this.transform.localEulerAngles = localEulerAngles;
+		this.StudentInfoMenu.gameObject.active = false;
+		this.PhotoGallery.gameObject.active = false;
+		this.FavorMenu.gameObject.active = false;
+		this.PassTime.gameObject.active = false;
 		this.LoadingScreen.active = false;
-		this.PhotoGallery.active = false;
 		this.StudentInfo.active = false;
-		this.FavorMenu.active = false;
-		this.PassTime.active = false;
 		this.MainMenu.active = true;
 		this.CorrectingTime = false;
 		Time.timeScale = (float)0;
@@ -108,8 +115,9 @@ public class PauseScreenScript : MonoBehaviour
 					this.ScreenBlur.enabled = true;
 					this.Yandere.YandereTimer = (float)0;
 					this.Yandere.Mopping = false;
+					this.Sideways = false;
 					this.Show = true;
-					if (!this.Yandere.CanMove || this.Yandere.Dragging || this.Police.Corpses > 0)
+					if (!this.Yandere.CanMove || this.Yandere.Dragging || (this.Police.Corpses - this.Police.HiddenCorpses > 0 && !this.Police.SuicideScene && !this.Police.NaturalScene))
 					{
 						float a = 0.5f;
 						Color color = this.PassTimeLabel.color;
@@ -186,7 +194,7 @@ public class PauseScreenScript : MonoBehaviour
 				}
 				else
 				{
-					this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3(1.78f, 1.78f, (float)1), 0.166666672f);
+					this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3(1.78f, 1.78f, 1.78f), 0.166666672f);
 					float z3 = Mathf.Lerp(this.transform.localEulerAngles.z, (float)90, 0.166666672f);
 					Vector3 localEulerAngles3 = this.transform.localEulerAngles;
 					float num8 = localEulerAngles3.z = z3;
@@ -234,6 +242,18 @@ public class PauseScreenScript : MonoBehaviour
 								this.PassTime.active = true;
 								this.PassTime.GetCurrentTime();
 							}
+						}
+						else if (this.Selected == 3)
+						{
+							this.StudentInfoMenu.gameObject.active = true;
+							this.StartCoroutine_Auto(this.StudentInfoMenu.UpdatePortraits());
+							this.MainMenu.active = false;
+							this.Sideways = true;
+							this.PromptBar.ClearButtons();
+							this.PromptBar.Label[0].text = "View Info";
+							this.PromptBar.Label[1].text = "Back";
+							this.PromptBar.UpdateButtons();
+							this.PromptBar.Show = true;
 						}
 						else if (this.Selected == 4)
 						{

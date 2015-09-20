@@ -558,107 +558,107 @@ public class SubtitleScript : MonoBehaviour
 		this.Jukebox.Dip = 0.5f;
 		if (ReactionType == "Note Reaction")
 		{
-			this.audio.PlayOneShot(this.NoteReactionClips[ID]);
+			AudioSource.PlayClipAtPoint(this.NoteReactionClips[ID], this.transform.position);
 		}
 		if (ReactionType == "Senpai Insanity Reaction")
 		{
-			this.audio.PlayOneShot(this.SenpaiInsanityReactionClips[ID]);
+			AudioSource.PlayClipAtPoint(this.SenpaiInsanityReactionClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Senpai Weapon Reaction")
 		{
-			this.audio.PlayOneShot(this.SenpaiWeaponReactionClips[ID]);
+			AudioSource.PlayClipAtPoint(this.SenpaiWeaponReactionClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Senpai Blood Reaction")
 		{
-			this.audio.PlayOneShot(this.SenpaiBloodReactionClips[ID]);
+			AudioSource.PlayClipAtPoint(this.SenpaiBloodReactionClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Senpai Lewd Reaction")
 		{
-			this.audio.PlayOneShot(this.SenpaiLewdReactionClips[ID]);
+			AudioSource.PlayClipAtPoint(this.SenpaiLewdReactionClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Senpai Stalking Reaction")
 		{
-			this.audio.PlayOneShot(this.SenpaiStalkingReactionClips[ID]);
+			AudioSource.PlayClipAtPoint(this.SenpaiStalkingReactionClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Senpai Murder Reaction")
 		{
-			this.audio.PlayOneShot(this.SenpaiMurderReactionClips[ID]);
+			AudioSource.PlayClipAtPoint(this.SenpaiMurderReactionClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Yandere Whimper")
 		{
-			this.audio.PlayOneShot(this.YandereWhimperClips[ID]);
+			AudioSource.PlayClipAtPoint(this.YandereWhimperClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Weapon Reaction")
 		{
-			this.audio.PlayOneShot(this.TeacherWeaponClips[ID]);
+			AudioSource.PlayClipAtPoint(this.TeacherWeaponClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Blood Reaction")
 		{
-			this.audio.PlayOneShot(this.TeacherBloodClips[ID]);
+			AudioSource.PlayClipAtPoint(this.TeacherBloodClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Insanity Reaction")
 		{
-			this.audio.PlayOneShot(this.TeacherInsanityClips[ID]);
+			AudioSource.PlayClipAtPoint(this.TeacherInsanityClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Weapon Hostile")
 		{
-			this.audio.PlayOneShot(this.TeacherWeaponHostileClips[ID]);
+			AudioSource.PlayClipAtPoint(this.TeacherWeaponHostileClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Blood Hostile")
 		{
-			this.audio.PlayOneShot(this.TeacherBloodHostileClips[ID]);
+			AudioSource.PlayClipAtPoint(this.TeacherBloodHostileClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Insanity Hostile")
 		{
-			this.audio.PlayOneShot(this.TeacherInsanityHostileClips[ID]);
+			AudioSource.PlayClipAtPoint(this.TeacherInsanityHostileClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Lewd Reaction")
 		{
-			this.audio.PlayOneShot(this.TeacherLewdClips[ID]);
+			AudioSource.PlayClipAtPoint(this.TeacherLewdClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Trespassing Reaction")
 		{
-			this.audio.PlayOneShot(this.TeacherTrespassClips[ID]);
+			AudioSource.PlayClipAtPoint(this.TeacherTrespassClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Late Reaction")
 		{
-			this.audio.PlayOneShot(this.TeacherLateClips[ID]);
+			AudioSource.PlayClipAtPoint(this.TeacherLateClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Report Reaction")
 		{
-			this.audio.PlayOneShot(this.TeacherReportClips[ID]);
+			AudioSource.PlayClipAtPoint(this.TeacherReportClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Corpse Reaction")
 		{
-			this.audio.PlayOneShot(this.TeacherCorpseClips[ID]);
+			AudioSource.PlayClipAtPoint(this.TeacherCorpseClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Corpse Inspection")
 		{
-			this.audio.PlayOneShot(this.TeacherInspectClips[ID]);
+			AudioSource.PlayClipAtPoint(this.TeacherInspectClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Police Report")
 		{
-			this.audio.PlayOneShot(this.TeacherPoliceClips[ID]);
+			AudioSource.PlayClipAtPoint(this.TeacherPoliceClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Attack Reaction")
 		{
-			this.audio.PlayOneShot(this.TeacherAttackClips[ID]);
+			AudioSource.PlayClipAtPoint(this.TeacherAttackClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Murder Reaction")
 		{
-			this.audio.PlayOneShot(this.TeacherMurderClips[ID]);
+			AudioSource.PlayClipAtPoint(this.TeacherMurderClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Prank Reaction")
 		{
-			this.audio.PlayOneShot(this.TeacherPrankClips[ID]);
+			AudioSource.PlayClipAtPoint(this.TeacherPrankClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Splash Reaction")
 		{
-			this.audio.PlayOneShot(this.SplashReactionClips[ID]);
+			AudioSource.PlayClipAtPoint(this.SplashReactionClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Light Switch Reaction")
 		{
-			this.audio.PlayOneShot(this.LightSwitchClips[ID]);
+			AudioSource.PlayClipAtPoint(this.LightSwitchClips[ID], this.transform.position);
 		}
 	}
 

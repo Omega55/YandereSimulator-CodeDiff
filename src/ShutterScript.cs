@@ -247,10 +247,10 @@ public class ShutterScript : MonoBehaviour
 					this.Panel.active = true;
 					this.MainMenu.active = false;
 					this.PauseScreen.Show = true;
-					this.TextMessages.active = true;
 					this.CameraButtons.active = false;
 					if (!this.InfoX.active)
 					{
+						this.PauseScreen.Sideways = true;
 						PlayerPrefs.SetInt("Student_" + this.Student.StudentID + "_Photographed", 1);
 						this.ID = 0;
 						while (this.ID < Extensions.get_length(this.Student.Outlines))
@@ -258,11 +258,15 @@ public class ShutterScript : MonoBehaviour
 							this.Student.Outlines[this.ID].enabled = true;
 							this.ID++;
 						}
+						this.StudentInfo.UpdateInfo(this.Student.StudentID);
 						this.StudentInfo.active = true;
-						this.StudentInfo.Student = this.Student;
-						this.StartCoroutine_Auto(this.StudentInfo.UpdateInfo());
 					}
-					this.SpawnMessage();
+					else
+					{
+						this.PauseScreen.Sideways = false;
+						this.TextMessages.active = true;
+						this.SpawnMessage();
+					}
 				}
 				if (Input.GetButtonDown("B"))
 				{

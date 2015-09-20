@@ -106,9 +106,13 @@ public class PhoneScript : MonoBehaviour
 		}
 		else
 		{
+			float y2 = Mathf.Lerp(this.Buttons.localPosition.y, (float)-135, Time.deltaTime * (float)10);
+			Vector3 localPosition2 = this.Buttons.localPosition;
+			float num5 = localPosition2.y = y2;
+			Vector3 vector2 = this.Buttons.localPosition = localPosition2;
 			float a2 = this.Darkness.color.a + Time.deltaTime;
 			Color color5 = this.Darkness.color;
-			float num5 = color5.a = a2;
+			float num6 = color5.a = a2;
 			Color color6 = this.Darkness.color = color5;
 			this.audio.volume = (float)1 - this.Darkness.color.a;
 			if (this.Darkness.color.a >= (float)1)

@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$1613 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$1642 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$1628;
+		internal YandereScript $self_$1657;
 
-		public $ApplyCustomCostume$1613(YandereScript self_)
+		public $ApplyCustomCostume$1642(YandereScript self_)
 		{
-			this.$self_$1628 = self_;
+			this.$self_$1657 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$1613.$(this.$self_$1628);
+			return new YandereScript.$ApplyCustomCostume$1642.$(this.$self_$1657);
 		}
 	}
 
@@ -166,6 +166,8 @@ public class YandereScript : MonoBehaviour
 	public GameObject EasterEggMenu;
 
 	public GameObject PonytailWig;
+
+	public GameObject Copyrights;
 
 	public GameObject HandCamera;
 
@@ -544,6 +546,10 @@ public class YandereScript : MonoBehaviour
 		this.UpdateSanity();
 		this.UpdateBlood();
 		this.SetUniform();
+		int num = 0;
+		Vector3 localPosition = this.EasterEggMenu.transform.localPosition;
+		float num2 = localPosition.y = (float)num;
+		Vector3 vector = this.EasterEggMenu.transform.localPosition = localPosition;
 		this.Smartphone.transform.parent.active = false;
 		this.LongHair[0].gameObject.active = false;
 		this.PunishedAccessories.active = false;
@@ -552,6 +558,7 @@ public class YandereScript : MonoBehaviour
 		this.CensorSteam[1].active = false;
 		this.CensorSteam[2].active = false;
 		this.CensorSteam[3].active = false;
+		this.EasterEggMenu.active = false;
 		this.PunishedScarf.active = false;
 		this.HatredHair.active = false;
 		this.KONGlasses.active = false;
@@ -1548,7 +1555,14 @@ public class YandereScript : MonoBehaviour
 							this.Attacking = false;
 							this.AttackPhase = 1;
 							this.AttackTimer = (float)0;
-							this.CanMove = true;
+							if (!this.Noticed)
+							{
+								this.CanMove = true;
+							}
+							else
+							{
+								this.Weapon[this.Equipped].Drop();
+							}
 						}
 					}
 				}
@@ -1753,7 +1767,7 @@ public class YandereScript : MonoBehaviour
 					else if (Input.GetKeyDown("k"))
 					{
 						this.EasterEggMenu.active = false;
-						this.Egg = true;
+						this.StudentManager.Kong();
 						this.DK = true;
 					}
 					else if (Input.GetKeyDown("l"))
@@ -1769,6 +1783,19 @@ public class YandereScript : MonoBehaviour
 						this.EasterEggMenu.active = false;
 						this.Egg = true;
 						this.StudentManager.Spook();
+					}
+					if (Input.GetKeyDown("c"))
+					{
+						if (this.Copyrights.active)
+						{
+							this.Jukebox.MuteCopyrights = true;
+							this.Copyrights.active = false;
+						}
+						else
+						{
+							this.Jukebox.MuteCopyrights = false;
+							this.Copyrights.active = true;
+						}
 					}
 				}
 			}
@@ -2073,6 +2100,7 @@ public class YandereScript : MonoBehaviour
 		{
 			((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).StopDragging();
 		}
+		this.Mopping = false;
 	}
 
 	public virtual void UpdateSanity()
@@ -2312,7 +2340,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$1613(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$1642(this).GetEnumerator();
 	}
 
 	public virtual void AttackOnTitan()

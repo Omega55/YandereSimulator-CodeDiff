@@ -212,6 +212,7 @@ public class PoliceScript : MonoBehaviour
 		}
 		if (this.FadeOut)
 		{
+			this.Yandere.StopLaughing();
 			if (this.Clock.TimeSkip || this.Yandere.CanMove)
 			{
 				this.Clock.EndTimeSkip();

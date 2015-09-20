@@ -106,6 +106,7 @@ public class NoteLockerScript : MonoBehaviour
 		{
 			if (!this.Student.InEvent)
 			{
+				this.Student.Character.animation.cullingType = AnimationCullingType.AlwaysAnimate;
 				this.Student.Character.animation.CrossFade("f02_findNote_00");
 				this.Student.InEvent = true;
 			}
@@ -189,6 +190,7 @@ public class NoteLockerScript : MonoBehaviour
 			this.Rotation += Time.deltaTime * (float)135;
 			if (this.Rotation > (float)0)
 			{
+				this.Student.Character.animation.cullingType = AnimationCullingType.BasedOnRenderers;
 				this.Student.InEvent = false;
 				this.NoteLeft = false;
 				this.Rotation = (float)0;
