@@ -456,6 +456,10 @@ public class ShutterScript : MonoBehaviour
 		Time.timeScale = (float)1;
 		this.TakePhoto = false;
 		this.TookPhoto = false;
+		if (this.NewMessage != null)
+		{
+			UnityEngine.Object.Destroy(this.NewMessage);
+		}
 		if (!this.Yandere.CameraEffects.OneCamera)
 		{
 			this.Yandere.MainCamera.clearFlags = CameraClearFlags.Skybox;

@@ -88,6 +88,7 @@ public class FavorMenuScript : MonoBehaviour
 			{
 				this.TextMessages.gameObject.active = false;
 				this.PauseScreen.ExitPhone();
+				UnityEngine.Object.Destroy(this.NewMessage);
 			}
 			this.PauseScreen.Sideways = false;
 			this.FavorScreen.active = true;
@@ -99,7 +100,7 @@ public class FavorMenuScript : MonoBehaviour
 	public virtual void UpdatePantyShots()
 	{
 		this.PantyShots.text = string.Empty + PlayerPrefs.GetInt("PantyShots");
-		if (PlayerPrefs.GetInt("PantyShots") >= 10)
+		if (PlayerPrefs.GetInt("PantyShots") >= 8)
 		{
 			if (PlayerPrefs.GetInt("DarkSecret") == 0)
 			{

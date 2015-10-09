@@ -101,7 +101,7 @@ public class MovingEventScript : MonoBehaviour
 				}
 				else if (this.EventPhase == 1)
 				{
-					if (!this.StudentManager.Students[0].WitnessedCorpse)
+					if (!this.StudentManager.Students[1].WitnessedCorpse)
 					{
 						if (this.Timer == (float)0)
 						{

@@ -2148,6 +2148,11 @@ public class StudentScript : MonoBehaviour
 			}
 			else if (this.Dying)
 			{
+				if (this.Distracting)
+				{
+					this.DistractionTarget.Distracted = false;
+					this.Distracting = false;
+				}
 				if (this.EventManager != null)
 				{
 					this.EventManager.EndEvent();
@@ -2263,7 +2268,7 @@ public class StudentScript : MonoBehaviour
 							this.Yandere.ShoulderCamera.enabled = true;
 							this.Yandere.ShoulderCamera.Noticed = true;
 							this.Yandere.RPGCamera.enabled = false;
-							this.enabled = false;
+							this.Stop = true;
 						}
 						this.Reacted = true;
 					}
@@ -2432,7 +2437,7 @@ public class StudentScript : MonoBehaviour
 							this.Yandere.ShoulderCamera.enabled = true;
 							this.Yandere.ShoulderCamera.Noticed = true;
 							this.Yandere.RPGCamera.enabled = false;
-							this.enabled = false;
+							this.Stop = true;
 						}
 					}
 					else if (this.StudentID > 1)
@@ -2549,7 +2554,7 @@ public class StudentScript : MonoBehaviour
 							this.Yandere.ShoulderCamera.enabled = true;
 							this.Yandere.ShoulderCamera.Noticed = true;
 							this.Yandere.RPGCamera.enabled = false;
-							this.enabled = false;
+							this.Stop = true;
 						}
 					}
 					this.Reacted = true;

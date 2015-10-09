@@ -180,6 +180,7 @@ public class DialogueWheelScript : MonoBehaviour
 						if (this.Selected == 1)
 						{
 							this.Impatience.fillAmount = (float)0;
+							this.Yandere.Interaction = 1;
 							this.Yandere.TalkTimer = (float)3;
 							this.Show = false;
 						}
@@ -194,6 +195,8 @@ public class DialogueWheelScript : MonoBehaviour
 						{
 							this.PauseScreen.StudentInfoMenu.Gossiping = true;
 							this.PauseScreen.StudentInfoMenu.gameObject.active = true;
+							this.PauseScreen.StudentInfoMenu.Column = 0;
+							this.PauseScreen.StudentInfoMenu.Row = 0;
 							this.PauseScreen.StudentInfoMenu.UpdateHighlight();
 							this.StartCoroutine_Auto(this.PauseScreen.StudentInfoMenu.UpdatePortraits());
 							this.PauseScreen.MainMenu.active = false;
@@ -263,6 +266,8 @@ public class DialogueWheelScript : MonoBehaviour
 						{
 							this.PauseScreen.StudentInfoMenu.Distracting = true;
 							this.PauseScreen.StudentInfoMenu.gameObject.active = true;
+							this.PauseScreen.StudentInfoMenu.Column = 0;
+							this.PauseScreen.StudentInfoMenu.Row = 0;
 							this.PauseScreen.StudentInfoMenu.UpdateHighlight();
 							this.StartCoroutine_Auto(this.PauseScreen.StudentInfoMenu.UpdatePortraits());
 							this.PauseScreen.MainMenu.active = false;

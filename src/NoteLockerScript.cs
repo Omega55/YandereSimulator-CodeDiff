@@ -46,11 +46,11 @@ public class NoteLockerScript : MonoBehaviour
 
 	public float Timer;
 
+	public int LockerOwner;
+
 	public int MeetID;
 
 	public int Phase;
-
-	public int ID;
 
 	public NoteLockerScript()
 	{
@@ -60,7 +60,7 @@ public class NoteLockerScript : MonoBehaviour
 
 	public virtual void Start()
 	{
-		if (PlayerPrefs.GetInt("Student_" + (this.ID + 1) + "_Dead") == 1)
+		if (PlayerPrefs.GetInt("Student_" + this.LockerOwner + "_Dead") == 1)
 		{
 			this.active = false;
 		}
@@ -85,7 +85,7 @@ public class NoteLockerScript : MonoBehaviour
 		}
 		else
 		{
-			this.Student = this.StudentManager.Students[this.ID];
+			this.Student = this.StudentManager.Students[this.LockerOwner];
 		}
 		if (this.Prompt != null && this.Prompt.Circle[0].fillAmount <= (float)0)
 		{
