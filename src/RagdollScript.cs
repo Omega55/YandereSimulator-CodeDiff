@@ -88,6 +88,8 @@ public class RagdollScript : MonoBehaviour
 
 	public float EyeShrink;
 
+	public int StudentID;
+
 	public int LimbID;
 
 	public int Frame;

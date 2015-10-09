@@ -631,8 +631,8 @@ public class CustomizationScript : MonoBehaviour
 		{
 			if (this.HairColor == 1)
 			{
-				this.HairRenderer.material.color = new Color((float)1, (float)1, (float)1);
-				this.HairColorName = "Default";
+				this.HairRenderer.material.color = new Color(0.5f, 0.5f, 0.5f);
+				this.HairColorName = "Black";
 			}
 			else if (this.HairColor == 2)
 			{
@@ -676,8 +676,8 @@ public class CustomizationScript : MonoBehaviour
 			}
 			else if (this.HairColor == 10)
 			{
-				this.HairRenderer.material.color = new Color(0.5f, 0.5f, 0.5f);
-				this.HairColorName = "Black";
+				this.HairRenderer.material.color = new Color((float)1, (float)1, (float)1);
+				this.HairColorName = "White";
 			}
 		}
 		this.HairColorLabel.text = "Hair Color " + this.HairColor;
@@ -696,8 +696,8 @@ public class CustomizationScript : MonoBehaviour
 		Color color = default(Color);
 		if (this.EyeColor == 1)
 		{
-			color = new Color((float)1, (float)1, (float)1);
-			this.EyeColorName = "Default";
+			color = new Color(0.5f, 0.5f, 0.5f);
+			this.EyeColorName = "Black";
 		}
 		else if (this.EyeColor == 2)
 		{
@@ -741,8 +741,8 @@ public class CustomizationScript : MonoBehaviour
 		}
 		else if (this.EyeColor == 10)
 		{
-			color = new Color(0.5f, 0.5f, 0.5f);
-			this.EyeColorName = "Black";
+			color = new Color((float)1, (float)1, (float)1);
+			this.EyeColorName = "White";
 		}
 		this.EyeR.material.color = color;
 		this.EyeL.material.color = color;

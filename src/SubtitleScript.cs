@@ -7,6 +7,8 @@ public class SubtitleScript : MonoBehaviour
 {
 	public JukeboxScript Jukebox;
 
+	public Transform Yandere;
+
 	public UILabel Label;
 
 	public string[] WeaponBloodInsanityReactions;
@@ -81,9 +83,21 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] StudentCompliments;
 
+	public string[] PlayerGossip;
+
+	public string[] StudentGossip;
+
 	public string[] PlayerFollows;
 
 	public string[] StudentFollows;
+
+	public string[] PlayerLeaves;
+
+	public string[] StudentLeaves;
+
+	public string[] PlayerDistracts;
+
+	public string[] StudentDistracts;
 
 	public string[] StopFollowApologies;
 
@@ -147,6 +161,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] LightSwitchReactions;
 
+	public string[] Task6Lines;
+
 	public int RandomID;
 
 	public float Timer;
@@ -202,6 +218,10 @@ public class SubtitleScript : MonoBehaviour
 	public AudioClip[] SplashReactionClips;
 
 	public AudioClip[] LightSwitchClips;
+
+	public AudioClip[] Task6Clips;
+
+	public GameObject CurrentClip;
 
 	public virtual void Start()
 	{
@@ -463,6 +483,14 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.Label.text = this.StudentCompliments[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentCompliments))];
 		}
+		else if (ReactionType == "Player Gossip")
+		{
+			this.Label.text = this.PlayerGossip[UnityEngine.Random.Range(0, Extensions.get_length(this.PlayerGossip))];
+		}
+		else if (ReactionType == "Student Gossip")
+		{
+			this.Label.text = this.StudentGossip[UnityEngine.Random.Range(0, Extensions.get_length(this.PlayerGossip))];
+		}
 		else if (ReactionType == "Player Follow")
 		{
 			this.Label.text = this.PlayerFollows[UnityEngine.Random.Range(0, Extensions.get_length(this.PlayerFollows))];
@@ -470,6 +498,22 @@ public class SubtitleScript : MonoBehaviour
 		else if (ReactionType == "Student Follow")
 		{
 			this.Label.text = this.StudentFollows[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentFollows))];
+		}
+		else if (ReactionType == "Player Leave")
+		{
+			this.Label.text = this.PlayerLeaves[UnityEngine.Random.Range(0, Extensions.get_length(this.PlayerLeaves))];
+		}
+		else if (ReactionType == "Student Leave")
+		{
+			this.Label.text = this.StudentLeaves[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentLeaves))];
+		}
+		else if (ReactionType == "Player Distract")
+		{
+			this.Label.text = this.PlayerDistracts[UnityEngine.Random.Range(0, Extensions.get_length(this.PlayerDistracts))];
+		}
+		else if (ReactionType == "Student Distract")
+		{
+			this.Label.text = this.StudentDistracts[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentDistracts))];
 		}
 		else if (ReactionType == "Stop Follow Apology")
 		{
@@ -536,6 +580,11 @@ public class SubtitleScript : MonoBehaviour
 			this.Label.text = this.LightSwitchReactions[ID];
 			this.PlayVoice(ReactionType, ID);
 		}
+		else if (ReactionType == "Task 6 Line")
+		{
+			this.Label.text = this.Task6Lines[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
 		this.Timer = Duration;
 	}
 
@@ -558,107 +607,138 @@ public class SubtitleScript : MonoBehaviour
 		this.Jukebox.Dip = 0.5f;
 		if (ReactionType == "Note Reaction")
 		{
-			AudioSource.PlayClipAtPoint(this.NoteReactionClips[ID], this.transform.position);
+			this.PlayClip(this.NoteReactionClips[ID], this.transform.position);
 		}
 		if (ReactionType == "Senpai Insanity Reaction")
 		{
-			AudioSource.PlayClipAtPoint(this.SenpaiInsanityReactionClips[ID], this.transform.position);
+			this.PlayClip(this.SenpaiInsanityReactionClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Senpai Weapon Reaction")
 		{
-			AudioSource.PlayClipAtPoint(this.SenpaiWeaponReactionClips[ID], this.transform.position);
+			this.PlayClip(this.SenpaiWeaponReactionClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Senpai Blood Reaction")
 		{
-			AudioSource.PlayClipAtPoint(this.SenpaiBloodReactionClips[ID], this.transform.position);
+			this.PlayClip(this.SenpaiBloodReactionClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Senpai Lewd Reaction")
 		{
-			AudioSource.PlayClipAtPoint(this.SenpaiLewdReactionClips[ID], this.transform.position);
+			this.PlayClip(this.SenpaiLewdReactionClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Senpai Stalking Reaction")
 		{
-			AudioSource.PlayClipAtPoint(this.SenpaiStalkingReactionClips[ID], this.transform.position);
+			this.PlayClip(this.SenpaiStalkingReactionClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Senpai Murder Reaction")
 		{
-			AudioSource.PlayClipAtPoint(this.SenpaiMurderReactionClips[ID], this.transform.position);
+			this.PlayClip(this.SenpaiMurderReactionClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Yandere Whimper")
 		{
-			AudioSource.PlayClipAtPoint(this.YandereWhimperClips[ID], this.transform.position);
+			this.PlayClip(this.YandereWhimperClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Weapon Reaction")
 		{
-			AudioSource.PlayClipAtPoint(this.TeacherWeaponClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherWeaponClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Blood Reaction")
 		{
-			AudioSource.PlayClipAtPoint(this.TeacherBloodClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherBloodClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Insanity Reaction")
 		{
-			AudioSource.PlayClipAtPoint(this.TeacherInsanityClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherInsanityClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Weapon Hostile")
 		{
-			AudioSource.PlayClipAtPoint(this.TeacherWeaponHostileClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherWeaponHostileClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Blood Hostile")
 		{
-			AudioSource.PlayClipAtPoint(this.TeacherBloodHostileClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherBloodHostileClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Insanity Hostile")
 		{
-			AudioSource.PlayClipAtPoint(this.TeacherInsanityHostileClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherInsanityHostileClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Lewd Reaction")
 		{
-			AudioSource.PlayClipAtPoint(this.TeacherLewdClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherLewdClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Trespassing Reaction")
 		{
-			AudioSource.PlayClipAtPoint(this.TeacherTrespassClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherTrespassClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Late Reaction")
 		{
-			AudioSource.PlayClipAtPoint(this.TeacherLateClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherLateClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Report Reaction")
 		{
-			AudioSource.PlayClipAtPoint(this.TeacherReportClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherReportClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Corpse Reaction")
 		{
-			AudioSource.PlayClipAtPoint(this.TeacherCorpseClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherCorpseClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Corpse Inspection")
 		{
-			AudioSource.PlayClipAtPoint(this.TeacherInspectClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherInspectClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Police Report")
 		{
-			AudioSource.PlayClipAtPoint(this.TeacherPoliceClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherPoliceClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Attack Reaction")
 		{
-			AudioSource.PlayClipAtPoint(this.TeacherAttackClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherAttackClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Murder Reaction")
 		{
-			AudioSource.PlayClipAtPoint(this.TeacherMurderClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherMurderClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Teacher Prank Reaction")
 		{
-			AudioSource.PlayClipAtPoint(this.TeacherPrankClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherPrankClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Splash Reaction")
 		{
-			AudioSource.PlayClipAtPoint(this.SplashReactionClips[ID], this.transform.position);
+			this.PlayClip(this.SplashReactionClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Light Switch Reaction")
 		{
-			AudioSource.PlayClipAtPoint(this.LightSwitchClips[ID], this.transform.position);
+			this.PlayClip(this.LightSwitchClips[ID], this.transform.position);
+		}
+		else if (ReactionType == "Task 6 Line")
+		{
+			this.PlayClip(this.Task6Clips[ID], this.transform.position);
+		}
+	}
+
+	public virtual float GetClipLength(int StudentID, int TaskPhase)
+	{
+		return (StudentID != 6) ? ((float)0) : this.Task6Clips[TaskPhase].length;
+	}
+
+	public virtual void PlayClip(AudioClip clip, Vector3 pos)
+	{
+		GameObject gameObject = new GameObject("TempAudio");
+		gameObject.transform.position = pos;
+		AudioSource audioSource = (AudioSource)gameObject.AddComponent(typeof(AudioSource));
+		audioSource.clip = clip;
+		audioSource.Play();
+		UnityEngine.Object.Destroy(gameObject, clip.length);
+		audioSource.rolloffMode = AudioRolloffMode.Linear;
+		audioSource.minDistance = (float)5;
+		audioSource.maxDistance = (float)10;
+		this.CurrentClip = gameObject;
+		if (this.Yandere.position.y < gameObject.transform.position.y - (float)2)
+		{
+			audioSource.volume = (float)0;
+		}
+		else
+		{
+			audioSource.volume = (float)1;
 		}
 	}
 

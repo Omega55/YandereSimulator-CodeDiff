@@ -195,7 +195,7 @@ public class PoliceScript : MonoBehaviour
 			if (this.Timer > (float)0)
 			{
 				this.Timer -= Time.deltaTime;
-				if (this.Timer <= (float)0)
+				if (this.Timer <= (float)0 && !this.FadeOut)
 				{
 					this.StudentManager.StopMoving();
 					this.Yandere.StopLaughing();
@@ -212,11 +212,14 @@ public class PoliceScript : MonoBehaviour
 		}
 		if (this.FadeOut)
 		{
-			this.Yandere.StopLaughing();
 			if (this.Clock.TimeSkip || this.Yandere.CanMove)
 			{
-				this.Clock.EndTimeSkip();
+				if (this.Clock.TimeSkip)
+				{
+					this.Clock.EndTimeSkip();
+				}
 				this.Yandere.StopAiming();
+				this.Yandere.StopLaughing();
 				this.Yandere.CanMove = false;
 				this.Yandere.YandereVision = false;
 				this.Yandere.PauseScreen.enabled = false;
@@ -355,8 +358,9 @@ public class PoliceScript : MonoBehaviour
 				else if (!this.TeacherReport)
 				{
 					PlayerPrefs.SetFloat("Reputation", this.Reputation.Reputation);
+					PlayerPrefs.SetInt("Night", 1);
 					this.KillStudents();
-					Application.LoadLevel("CalendarScene");
+					Application.LoadLevel("HomeScene");
 				}
 				else
 				{
@@ -703,6 +707,7 @@ public class PoliceScript : MonoBehaviour
 				this.ResultsLabels[3].text = "She pushes the case back to her house, pretending to be a young musician returning home from a show.";
 				this.ResultsLabels[4].text = "Yandere-chan drags the case down to her basement and ties up her victim.";
 				PlayerPrefs.SetInt("Kidnapped", 1);
+				PlayerPrefs.SetInt("KidnapVictim", this.TranqCase.VictimID);
 			}
 		}
 		else if (this.Suicide)

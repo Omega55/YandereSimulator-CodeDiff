@@ -4,7 +4,13 @@ using UnityEngine;
 [Serializable]
 public class DialogueWheelScript : MonoBehaviour
 {
+	public PauseScreenScript PauseScreen;
+
 	public ReputationScript Reputation;
+
+	public TaskWindowScript TaskWindow;
+
+	public PromptBarScript PromptBar;
 
 	public YandereScript Yandere;
 
@@ -29,6 +35,8 @@ public class DialogueWheelScript : MonoBehaviour
 	public string[] FavorText;
 
 	public int Selected;
+
+	public int Victim;
 
 	public bool AskingFavor;
 
@@ -167,40 +175,109 @@ public class DialogueWheelScript : MonoBehaviour
 			{
 				if (!this.AskingFavor)
 				{
-					if (this.Selected == 1 && this.Shadow[this.Selected].color.a == (float)0)
+					if (this.Selected != 0 && this.Shadow[this.Selected].color.a == (float)0)
 					{
-						this.Impatience.fillAmount = (float)0;
-						this.Yandere.Interaction = 1;
-						this.Yandere.TalkTimer = (float)3;
-						this.Show = false;
-					}
-					if (this.Selected == 2 && this.Shadow[this.Selected].color.a == (float)0)
-					{
-						this.Impatience.fillAmount = (float)0;
-						this.Yandere.Interaction = 2;
-						this.Yandere.TalkTimer = (float)3;
-						this.Show = false;
-					}
-					if (this.Selected == 4)
-					{
-						this.Impatience.fillAmount = (float)0;
-						this.Yandere.Interaction = 4;
-						this.Yandere.TalkTimer = (float)2;
-						this.Show = false;
-					}
-					if (this.Selected == 6 && this.Shadow[this.Selected].color.a == (float)0)
-					{
-						this.AskingFavor = true;
+						if (this.Selected == 1)
+						{
+							this.Impatience.fillAmount = (float)0;
+							this.Yandere.TalkTimer = (float)3;
+							this.Show = false;
+						}
+						if (this.Selected == 2)
+						{
+							this.Impatience.fillAmount = (float)0;
+							this.Yandere.Interaction = 2;
+							this.Yandere.TalkTimer = (float)3;
+							this.Show = false;
+						}
+						if (this.Selected == 3)
+						{
+							this.PauseScreen.StudentInfoMenu.Gossiping = true;
+							this.PauseScreen.StudentInfoMenu.gameObject.active = true;
+							this.PauseScreen.StudentInfoMenu.UpdateHighlight();
+							this.StartCoroutine_Auto(this.PauseScreen.StudentInfoMenu.UpdatePortraits());
+							this.PauseScreen.MainMenu.active = false;
+							this.PauseScreen.Sideways = true;
+							this.PauseScreen.Show = true;
+							Time.timeScale = (float)0;
+							this.PromptBar.ClearButtons();
+							this.PromptBar.Label[0].text = "View Info";
+							this.PromptBar.Label[1].text = "Cancel";
+							this.PromptBar.UpdateButtons();
+							this.PromptBar.Show = true;
+							this.Impatience.fillAmount = (float)0;
+							this.Yandere.Interaction = 3;
+							this.Yandere.TalkTimer = (float)3;
+							this.Show = false;
+						}
+						if (this.Selected == 4)
+						{
+							this.Impatience.fillAmount = (float)0;
+							this.Yandere.Interaction = 4;
+							this.Yandere.TalkTimer = (float)2;
+							this.Show = false;
+						}
+						if (this.Selected == 5)
+						{
+							if (this.Yandere.TargetStudent.TaskPhase == 0)
+							{
+								this.Impatience.fillAmount = (float)0;
+								this.Yandere.TargetStudent.Interaction = 5;
+								this.Yandere.TargetStudent.TalkTimer = (float)100;
+								this.Yandere.TargetStudent.TaskPhase = 1;
+								this.Show = false;
+							}
+							else if (this.Yandere.TargetStudent.TaskPhase == 5)
+							{
+								this.Impatience.fillAmount = (float)0;
+								this.Yandere.TargetStudent.Interaction = 5;
+								this.Yandere.TargetStudent.TalkTimer = (float)100;
+								this.Show = false;
+							}
+						}
+						if (this.Selected == 6)
+						{
+							this.AskingFavor = true;
+						}
 					}
 				}
 				else
 				{
-					if (this.Selected == 1 && this.FavorShadow[this.Selected].color.a == (float)0)
+					if (this.FavorShadow[this.Selected].color.a == (float)0)
 					{
-						this.Impatience.fillAmount = (float)0;
-						this.Yandere.Interaction = 9;
-						this.Yandere.TalkTimer = (float)3;
-						this.Show = false;
+						if (this.Selected == 1)
+						{
+							this.Impatience.fillAmount = (float)0;
+							this.Yandere.Interaction = 6;
+							this.Yandere.TalkTimer = (float)3;
+							this.Show = false;
+						}
+						if (this.Selected == 2)
+						{
+							this.Impatience.fillAmount = (float)0;
+							this.Yandere.Interaction = 7;
+							this.Yandere.TalkTimer = (float)3;
+							this.Show = false;
+						}
+						if (this.Selected == 4)
+						{
+							this.PauseScreen.StudentInfoMenu.Distracting = true;
+							this.PauseScreen.StudentInfoMenu.gameObject.active = true;
+							this.PauseScreen.StudentInfoMenu.UpdateHighlight();
+							this.StartCoroutine_Auto(this.PauseScreen.StudentInfoMenu.UpdatePortraits());
+							this.PauseScreen.MainMenu.active = false;
+							this.PauseScreen.Sideways = true;
+							this.PauseScreen.Show = true;
+							Time.timeScale = (float)0;
+							this.PromptBar.ClearButtons();
+							this.PromptBar.Label[1].text = "Cancel";
+							this.PromptBar.UpdateButtons();
+							this.PromptBar.Show = true;
+							this.Impatience.fillAmount = (float)0;
+							this.Yandere.Interaction = 8;
+							this.Yandere.TalkTimer = (float)3;
+							this.Show = false;
+						}
 					}
 					if (this.Selected == 3)
 					{
@@ -229,29 +306,49 @@ public class DialogueWheelScript : MonoBehaviour
 			float num4 = color3.a = (float)num3;
 			Color color4 = this.FavorShadow[i].color = color3;
 		}
-		float a = 0.75f;
-		Color color5 = this.Shadow[3].color;
-		float num5 = color5.a = a;
-		Color color6 = this.Shadow[3].color = color5;
-		float a2 = 0.75f;
-		Color color7 = this.Shadow[5].color;
-		float num6 = color7.a = a2;
-		Color color8 = this.Shadow[5].color = color7;
-		if (this.Reputation.Reputation < 33.33333f || this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.33333f)
+		if (this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.33333f)
 		{
+			float a = 0.75f;
+			Color color5 = this.Shadow[3].color;
+			float num5 = color5.a = a;
+			Color color6 = this.Shadow[3].color = color5;
+			float a2 = 0.75f;
+			Color color7 = this.Shadow[5].color;
+			float num6 = color7.a = a2;
+			Color color8 = this.Shadow[5].color = color7;
 			float a3 = 0.75f;
 			Color color9 = this.Shadow[6].color;
 			float num7 = color9.a = a3;
 			Color color10 = this.Shadow[6].color = color9;
 		}
-		float a4 = 0.75f;
-		Color color11 = this.FavorShadow[2].color;
-		float num8 = color11.a = a4;
-		Color color12 = this.FavorShadow[2].color = color11;
-		float a5 = 0.75f;
-		Color color13 = this.FavorShadow[4].color;
-		float num9 = color13.a = a5;
-		Color color14 = this.FavorShadow[4].color = color13;
+		else if (this.Reputation.Reputation < -33.33333f)
+		{
+			float a4 = 0.75f;
+			Color color11 = this.Shadow[3].color;
+			float num8 = color11.a = a4;
+			Color color12 = this.Shadow[3].color = color11;
+		}
+		if (this.Yandere.TargetStudent.StudentID != 6)
+		{
+			float a5 = 0.75f;
+			Color color13 = this.Shadow[5].color;
+			float num9 = color13.a = a5;
+			Color color14 = this.Shadow[5].color = color13;
+		}
+		else if (PlayerPrefs.GetInt("Task_6_Status") != 0 && PlayerPrefs.GetInt("Task_6_Status") != 2)
+		{
+			float a6 = 0.75f;
+			Color color15 = this.Shadow[5].color;
+			float num10 = color15.a = a6;
+			Color color16 = this.Shadow[5].color = color15;
+		}
+		if (PlayerPrefs.GetInt("Task_" + this.Yandere.TargetStudent.StudentID + "_Status") < 3)
+		{
+			float a7 = 0.75f;
+			Color color17 = this.Shadow[6].color;
+			float num11 = color17.a = a7;
+			Color color18 = this.Shadow[6].color = color17;
+		}
 	}
 
 	public virtual void End()

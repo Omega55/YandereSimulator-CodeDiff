@@ -36,18 +36,27 @@ public class HomeTriggerScript : MonoBehaviour
 	{
 		if (this.FadeIn)
 		{
-			float a = Mathf.MoveTowards(this.Label.color.a, (float)1, Time.deltaTime);
+			float a = Mathf.MoveTowards(this.Label.color.a, (float)1, Time.deltaTime * (float)10);
 			Color color = this.Label.color;
 			float num = color.a = a;
 			Color color2 = this.Label.color = color;
 		}
 		else
 		{
-			float a2 = Mathf.MoveTowards(this.Label.color.a, (float)0, Time.deltaTime);
+			float a2 = Mathf.MoveTowards(this.Label.color.a, (float)0, Time.deltaTime * (float)10);
 			Color color3 = this.Label.color;
 			float num2 = color3.a = a2;
 			Color color4 = this.Label.color = color3;
 		}
+	}
+
+	public virtual void Disable()
+	{
+		int num = 0;
+		Color color = this.Label.color;
+		float num2 = color.a = (float)num;
+		Color color2 = this.Label.color = color;
+		this.active = false;
 	}
 
 	public virtual void Main()

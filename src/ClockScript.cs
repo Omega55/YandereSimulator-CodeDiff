@@ -312,7 +312,7 @@ public class ClockScript : MonoBehaviour
 		Time.timeScale = (float)1;
 		this.TimeSkip = false;
 		this.HalfwayTime = (float)0;
-		if (!this.Yandere.Noticed)
+		if (!this.Yandere.Noticed && !this.Police.FadeOut)
 		{
 			this.Yandere.CanMove = true;
 		}

@@ -11,11 +11,17 @@ public class PauseScreenScript : MonoBehaviour
 
 	public PhotoGalleryScript PhotoGallery;
 
+	public HomeYandereScript HomeYandere;
+
+	public HomeCameraScript HomeCamera;
+
 	public FavorMenuScript FavorMenu;
 
 	public PromptBarScript PromptBar;
 
 	public PassTimeScript PassTime;
+
+	public TaskListScript TaskList;
 
 	public YandereScript Yandere;
 
@@ -45,6 +51,8 @@ public class PauseScreenScript : MonoBehaviour
 
 	public int Selected;
 
+	public float Speed;
+
 	public bool CorrectingTime;
 
 	public bool BypassPhone;
@@ -56,6 +64,8 @@ public class PauseScreenScript : MonoBehaviour
 	public bool Quitting;
 
 	public bool Sideways;
+
+	public bool Home;
 
 	public bool Show;
 
@@ -69,7 +79,7 @@ public class PauseScreenScript : MonoBehaviour
 		PlayerPrefs.SetInt("Student_0_Photographed", 1);
 		PlayerPrefs.SetInt("Student_1_Photographed", 1);
 		this.transform.localPosition = new Vector3((float)1350, (float)0, (float)0);
-		this.transform.localScale = new Vector3((float)1, (float)1, (float)1);
+		this.transform.localScale = new Vector3(0.9133334f, 0.9133334f, 0.9133334f);
 		int num = 0;
 		Vector3 localEulerAngles = this.transform.localEulerAngles;
 		float num2 = localEulerAngles.z = (float)num;
@@ -82,54 +92,89 @@ public class PauseScreenScript : MonoBehaviour
 		this.StudentInfo.active = false;
 		this.MainMenu.active = true;
 		this.CorrectingTime = false;
-		Time.timeScale = (float)0;
 	}
 
 	public virtual void Update()
 	{
+		if (!this.Home)
+		{
+			this.Speed = 0.166666672f;
+		}
+		else
+		{
+			this.Speed = Time.deltaTime * (float)10;
+		}
 		if (!this.Police.FadeOut)
 		{
 			if (!this.Show)
 			{
-				this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3((float)1350, (float)0, (float)0), 0.166666672f);
-				this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)1, (float)1, (float)1), 0.166666672f);
-				float z = Mathf.Lerp(this.transform.localEulerAngles.z, (float)0, 0.166666672f);
+				this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3((float)1350, (float)50, (float)0), this.Speed);
+				this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3(0.9133334f, 0.9133334f, 0.9133334f), this.Speed);
+				float z = Mathf.Lerp(this.transform.localEulerAngles.z, (float)0, this.Speed);
 				Vector3 localEulerAngles = this.transform.localEulerAngles;
 				float num = localEulerAngles.z = z;
 				Vector3 vector = this.transform.localEulerAngles = localEulerAngles;
 				if (this.CorrectingTime && Time.timeScale < 0.9f)
 				{
-					Time.timeScale = Mathf.Lerp(Time.timeScale, (float)1, 0.166666672f);
+					Time.timeScale = Mathf.Lerp(Time.timeScale, (float)1, this.Speed);
 					if (Time.timeScale > 0.9f)
 					{
 						this.CorrectingTime = false;
 						Time.timeScale = (float)1;
 					}
 				}
-				if (Input.GetButtonDown("Start") && !this.Yandere.Shutter.Snapping && !this.Yandere.TimeSkipping && !this.Yandere.Talking && !this.Yandere.Noticed && !this.Yandere.InClass && Time.timeScale > (float)0)
+				if (Input.GetButtonDown("Start"))
 				{
-					this.Yandere.StopAiming();
-					this.PromptParent.localScale = new Vector3((float)0, (float)0, (float)0);
-					this.Yandere.Obscurance.enabled = false;
-					this.Yandere.YandereVision = false;
-					this.ScreenBlur.enabled = true;
-					this.Yandere.YandereTimer = (float)0;
-					this.Yandere.Mopping = false;
-					this.Sideways = false;
-					this.Show = true;
-					if (!this.Yandere.CanMove || this.Yandere.Dragging || (this.Police.Corpses - this.Police.HiddenCorpses > 0 && !this.Police.SuicideScene && !this.Police.NaturalScene))
+					if (!this.Home)
 					{
-						float a = 0.5f;
-						Color color = this.PassTimeLabel.color;
-						float num2 = color.a = a;
-						Color color2 = this.PassTimeLabel.color = color;
+						if (!this.Yandere.Shutter.Snapping && !this.Yandere.TimeSkipping && !this.Yandere.Talking && !this.Yandere.Noticed && !this.Yandere.InClass && Time.timeScale > (float)0)
+						{
+							this.Yandere.StopAiming();
+							this.PromptParent.localScale = new Vector3((float)0, (float)0, (float)0);
+							this.Yandere.Obscurance.enabled = false;
+							this.Yandere.YandereVision = false;
+							this.ScreenBlur.enabled = true;
+							this.Yandere.YandereTimer = (float)0;
+							this.Yandere.Mopping = false;
+							this.Sideways = false;
+							this.Show = true;
+							this.PromptBar.ClearButtons();
+							this.PromptBar.Label[0].text = "Accept";
+							this.PromptBar.Label[1].text = "Exit";
+							this.PromptBar.Label[4].text = "Choose";
+							this.PromptBar.UpdateButtons();
+							this.PromptBar.Show = true;
+							if (!this.Yandere.CanMove || this.Yandere.Dragging || (this.Police.Corpses - this.Police.HiddenCorpses > 0 && !this.Police.SuicideScene && !this.Police.NaturalScene))
+							{
+								float a = 0.5f;
+								Color color = this.PassTimeLabel.color;
+								float num2 = color.a = a;
+								Color color2 = this.PassTimeLabel.color = color;
+							}
+							else
+							{
+								int num3 = 1;
+								Color color3 = this.PassTimeLabel.color;
+								float num4 = color3.a = (float)num3;
+								Color color4 = this.PassTimeLabel.color = color3;
+							}
+						}
 					}
-					else
+					else if (this.HomeCamera.Destination == this.HomeCamera.Destinations[0])
 					{
-						int num3 = 1;
-						Color color3 = this.PassTimeLabel.color;
-						float num4 = color3.a = (float)num3;
-						Color color4 = this.PassTimeLabel.color = color3;
+						this.PromptBar.ClearButtons();
+						this.PromptBar.Label[0].text = "Accept";
+						this.PromptBar.Label[1].text = "Exit";
+						this.PromptBar.Label[4].text = "Choose";
+						this.PromptBar.UpdateButtons();
+						this.PromptBar.Show = true;
+						this.HomeYandere.CanMove = false;
+						float a2 = 0.5f;
+						Color color5 = this.PassTimeLabel.color;
+						float num5 = color5.a = a2;
+						Color color6 = this.PassTimeLabel.color = color5;
+						this.Sideways = false;
+						this.Show = true;
 					}
 				}
 			}
@@ -137,35 +182,35 @@ public class PauseScreenScript : MonoBehaviour
 			{
 				if (!this.EggsChecked)
 				{
-					int num5 = 99999;
+					int num6 = 99999;
 					for (int i = 0; i < Extensions.get_length(this.Eggs); i++)
 					{
 						if (this.Eggs[i] != null)
 						{
-							float num6 = Vector3.Distance(this.Yandere.transform.position, this.Eggs[i].position);
-							if (num6 < (float)num5)
+							float num7 = Vector3.Distance(this.Yandere.transform.position, this.Eggs[i].position);
+							if (num7 < (float)num6)
 							{
-								num5 = (int)num6;
+								num6 = (int)num7;
 							}
 						}
 					}
-					if (num5 < 5)
+					if (num6 < 5)
 					{
 						this.Wifi.spriteName = "5Bars";
 					}
-					else if (num5 < 10)
+					else if (num6 < 10)
 					{
 						this.Wifi.spriteName = "4Bars";
 					}
-					else if (num5 < 15)
+					else if (num6 < 15)
 					{
 						this.Wifi.spriteName = "3Bars";
 					}
-					else if (num5 < 20)
+					else if (num6 < 20)
 					{
 						this.Wifi.spriteName = "2Bars";
 					}
-					else if (num5 < 25)
+					else if (num6 < 25)
 					{
 						this.Wifi.spriteName = "1Bars";
 					}
@@ -175,32 +220,34 @@ public class PauseScreenScript : MonoBehaviour
 					}
 					this.EggsChecked = true;
 				}
-				this.RPGCamera.enabled = false;
-				if (!this.Quitting)
+				if (!this.Home)
 				{
-					this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3((float)0, (float)0, (float)0), 0.166666672f);
+					Time.timeScale = Mathf.Lerp(Time.timeScale, (float)0, this.Speed);
+					this.RPGCamera.enabled = false;
 				}
-				else
+				if (this.Quitting)
 				{
-					this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3((float)0, (float)-1200, (float)0), 0.166666672f);
+					this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)1, (float)1, (float)1), this.Speed);
+					this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3((float)0, (float)-1200, (float)0), this.Speed);
 				}
-				if (!this.Sideways)
+				else if (!this.Sideways)
 				{
-					this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)1, (float)1, (float)1), 0.166666672f);
-					float z2 = Mathf.Lerp(this.transform.localEulerAngles.z, (float)0, 0.166666672f);
+					this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3(0.9133334f, 0.9133334f, 0.9133334f), this.Speed);
+					this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3((float)0, (float)50, (float)0), this.Speed);
+					float z2 = Mathf.Lerp(this.transform.localEulerAngles.z, (float)0, this.Speed);
 					Vector3 localEulerAngles2 = this.transform.localEulerAngles;
-					float num7 = localEulerAngles2.z = z2;
+					float num8 = localEulerAngles2.z = z2;
 					Vector3 vector2 = this.transform.localEulerAngles = localEulerAngles2;
 				}
 				else
 				{
-					this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3(1.78f, 1.78f, 1.78f), 0.166666672f);
-					float z3 = Mathf.Lerp(this.transform.localEulerAngles.z, (float)90, 0.166666672f);
+					this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3(1.78f, 1.78f, 1.78f), this.Speed);
+					this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3((float)0, (float)14, (float)0), this.Speed);
+					float z3 = Mathf.Lerp(this.transform.localEulerAngles.z, (float)90, this.Speed);
 					Vector3 localEulerAngles3 = this.transform.localEulerAngles;
-					float num8 = localEulerAngles3.z = z3;
+					float num9 = localEulerAngles3.z = z3;
 					Vector3 vector3 = this.transform.localEulerAngles = localEulerAngles3;
 				}
-				Time.timeScale = Mathf.Lerp(Time.timeScale, (float)0, 0.166666672f);
 				if (this.MainMenu.active && !this.Quitting)
 				{
 					if (this.InputManager.TappedUp || Input.GetKeyDown("w") || Input.GetKeyDown("up"))
@@ -210,9 +257,9 @@ public class PauseScreenScript : MonoBehaviour
 						{
 							this.Selected = 9;
 						}
-						int num9 = 325 - 75 * this.Selected;
+						int num10 = 325 - 75 * this.Selected;
 						Vector3 localPosition = this.Highlight.localPosition;
-						float num10 = localPosition.y = (float)num9;
+						float num11 = localPosition.y = (float)num10;
 						Vector3 vector4 = this.Highlight.localPosition = localPosition;
 					}
 					if (this.InputManager.TappedDown || Input.GetKeyDown("s") || Input.GetKeyDown("down"))
@@ -222,9 +269,9 @@ public class PauseScreenScript : MonoBehaviour
 						{
 							this.Selected = 1;
 						}
-						int num11 = 325 - 75 * this.Selected;
+						int num12 = 325 - 75 * this.Selected;
 						Vector3 localPosition2 = this.Highlight.localPosition;
-						float num12 = localPosition2.y = (float)num11;
+						float num13 = localPosition2.y = (float)num12;
 						Vector3 vector5 = this.Highlight.localPosition = localPosition2;
 					}
 					if (Input.GetButtonDown("A"))
@@ -232,7 +279,11 @@ public class PauseScreenScript : MonoBehaviour
 						this.PressedA = true;
 						if (this.Selected == 1)
 						{
-							this.ExitPhone();
+							this.TaskList.gameObject.active = true;
+							this.MainMenu.active = false;
+							this.Sideways = true;
+							this.TaskList.UpdateTaskList();
+							this.StartCoroutine_Auto(this.TaskList.UpdateTaskInfo());
 						}
 						else if (this.Selected == 2)
 						{
@@ -270,6 +321,8 @@ public class PauseScreenScript : MonoBehaviour
 						}
 						else if (this.Selected == 9)
 						{
+							this.PromptBar.ClearButtons();
+							this.PromptBar.Show = false;
 							this.Quitting = true;
 						}
 					}
@@ -319,6 +372,12 @@ public class PauseScreenScript : MonoBehaviour
 						}
 						if (Input.GetButtonDown("B"))
 						{
+							this.PromptBar.ClearButtons();
+							this.PromptBar.Label[0].text = "Accept";
+							this.PromptBar.Label[1].text = "Exit";
+							this.PromptBar.Label[4].text = "Choose";
+							this.PromptBar.UpdateButtons();
+							this.PromptBar.Show = true;
 							this.Quitting = false;
 							if (this.BypassPhone)
 							{
@@ -356,21 +415,30 @@ public class PauseScreenScript : MonoBehaviour
 
 	public virtual void ExitPhone()
 	{
-		this.PromptParent.localScale = new Vector3((float)1, (float)1, (float)1);
-		this.ScreenBlur.enabled = false;
-		this.CorrectingTime = true;
+		if (!this.Home)
+		{
+			this.PromptParent.localScale = new Vector3((float)1, (float)1, (float)1);
+			this.ScreenBlur.enabled = false;
+			this.CorrectingTime = true;
+			if (!this.Yandere.Talking)
+			{
+				this.RPGCamera.enabled = true;
+			}
+			if (this.Yandere.Laughing)
+			{
+				this.Yandere.audio.volume = (float)1;
+			}
+		}
+		else
+		{
+			this.HomeYandere.CanMove = true;
+		}
+		this.PromptBar.ClearButtons();
+		this.PromptBar.Show = false;
 		this.BypassPhone = false;
 		this.EggsChecked = false;
 		this.PressedA = false;
 		this.Show = false;
-		if (!this.Yandere.Talking)
-		{
-			this.RPGCamera.enabled = true;
-		}
-		if (this.Yandere.Laughing)
-		{
-			this.Yandere.audio.volume = (float)1;
-		}
 	}
 
 	public virtual void Main()

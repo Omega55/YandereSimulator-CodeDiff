@@ -43,6 +43,8 @@ public class PromptScript : MonoBehaviour
 
 	public bool DisableAtStart;
 
+	public bool Initialized;
+
 	public bool Debugging;
 
 	public bool Carried;
@@ -81,57 +83,62 @@ public class PromptScript : MonoBehaviour
 
 	public virtual void Start()
 	{
-		if (Extensions.get_length(this.OffsetZ) == 0)
+		if (!this.Initialized)
 		{
-			this.OffsetZ = new float[4];
-		}
-		this.PauseScreen = (PauseScreenScript)GameObject.Find("PauseScreen").GetComponent(typeof(PauseScreenScript));
-		this.PromptParent = (Transform)GameObject.Find("PromptParent").GetComponent(typeof(Transform));
-		this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent(typeof(YandereScript));
-		this.UICamera = (Camera)GameObject.Find("UI Camera").GetComponent(typeof(Camera));
-		while (this.ID < 4)
-		{
-			if (this.ButtonActive[this.ID])
+			if (Extensions.get_length(this.OffsetZ) == 0)
 			{
-				this.Button[this.ID] = (UISprite)((GameObject)UnityEngine.Object.Instantiate(this.ButtonObject[this.ID], this.transform.position, Quaternion.identity)).GetComponent(typeof(UISprite));
-				this.Button[this.ID].transform.parent = this.PromptParent;
-				this.Button[this.ID].transform.localScale = new Vector3((float)1, (float)1, (float)1);
-				this.Button[this.ID].transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
-				int num = 0;
-				Color color = this.Button[this.ID].color;
-				float num2 = color.a = (float)num;
-				Color color2 = this.Button[this.ID].color = color;
-				this.Circle[this.ID] = (UISprite)((GameObject)UnityEngine.Object.Instantiate(this.CircleObject, this.transform.position, Quaternion.identity)).GetComponent(typeof(UISprite));
-				this.Circle[this.ID].transform.parent = this.PromptParent;
-				this.Circle[this.ID].transform.localScale = new Vector3((float)1, (float)1, (float)1);
-				this.Circle[this.ID].transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
-				int num3 = 0;
-				Color color3 = this.Circle[this.ID].color;
-				float num4 = color3.a = (float)num3;
-				Color color4 = this.Circle[this.ID].color = color3;
-				this.Label[this.ID] = (UILabel)((GameObject)UnityEngine.Object.Instantiate(this.LabelObject, this.transform.position, Quaternion.identity)).GetComponent(typeof(UILabel));
-				this.Label[this.ID].transform.parent = this.PromptParent;
-				this.Label[this.ID].transform.localScale = new Vector3((float)1, (float)1, (float)1);
-				this.Label[this.ID].transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
-				int num5 = 0;
-				Color color5 = this.Label[this.ID].color;
-				float num6 = color5.a = (float)num5;
-				Color color6 = this.Label[this.ID].color = color5;
-				this.Label[this.ID].text = "     " + this.Text[this.ID];
+				this.OffsetZ = new float[4];
 			}
-			this.AcceptingInput[this.ID] = true;
-			this.ID++;
-		}
-		this.BloodMask = 2;
-		this.BloodMask |= 512;
-		this.BloodMask |= 8192;
-		this.BloodMask |= 16384;
-		this.BloodMask |= 65536;
-		this.BloodMask = ~this.BloodMask;
-		if (this.DisableAtStart)
-		{
-			this.Hide();
-			this.enabled = false;
+			this.PauseScreen = (PauseScreenScript)GameObject.Find("PauseScreen").GetComponent(typeof(PauseScreenScript));
+			this.PromptParent = (Transform)GameObject.Find("PromptParent").GetComponent(typeof(Transform));
+			this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent(typeof(YandereScript));
+			this.UICamera = (Camera)GameObject.Find("UI Camera").GetComponent(typeof(Camera));
+			this.ID = 0;
+			while (this.ID < 4)
+			{
+				if (this.ButtonActive[this.ID])
+				{
+					this.Button[this.ID] = (UISprite)((GameObject)UnityEngine.Object.Instantiate(this.ButtonObject[this.ID], this.transform.position, Quaternion.identity)).GetComponent(typeof(UISprite));
+					this.Button[this.ID].transform.parent = this.PromptParent;
+					this.Button[this.ID].transform.localScale = new Vector3((float)1, (float)1, (float)1);
+					this.Button[this.ID].transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+					int num = 0;
+					Color color = this.Button[this.ID].color;
+					float num2 = color.a = (float)num;
+					Color color2 = this.Button[this.ID].color = color;
+					this.Circle[this.ID] = (UISprite)((GameObject)UnityEngine.Object.Instantiate(this.CircleObject, this.transform.position, Quaternion.identity)).GetComponent(typeof(UISprite));
+					this.Circle[this.ID].transform.parent = this.PromptParent;
+					this.Circle[this.ID].transform.localScale = new Vector3((float)1, (float)1, (float)1);
+					this.Circle[this.ID].transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+					int num3 = 0;
+					Color color3 = this.Circle[this.ID].color;
+					float num4 = color3.a = (float)num3;
+					Color color4 = this.Circle[this.ID].color = color3;
+					this.Label[this.ID] = (UILabel)((GameObject)UnityEngine.Object.Instantiate(this.LabelObject, this.transform.position, Quaternion.identity)).GetComponent(typeof(UILabel));
+					this.Label[this.ID].transform.parent = this.PromptParent;
+					this.Label[this.ID].transform.localScale = new Vector3((float)1, (float)1, (float)1);
+					this.Label[this.ID].transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+					int num5 = 0;
+					Color color5 = this.Label[this.ID].color;
+					float num6 = color5.a = (float)num5;
+					Color color6 = this.Label[this.ID].color = color5;
+					this.Label[this.ID].text = "     " + this.Text[this.ID];
+				}
+				this.AcceptingInput[this.ID] = true;
+				this.ID++;
+			}
+			this.BloodMask = 2;
+			this.BloodMask |= 512;
+			this.BloodMask |= 8192;
+			this.BloodMask |= 16384;
+			this.BloodMask |= 65536;
+			this.BloodMask = ~this.BloodMask;
+			this.Initialized = true;
+			if (this.DisableAtStart)
+			{
+				this.Hide();
+				this.enabled = false;
+			}
 		}
 	}
 
@@ -389,6 +396,10 @@ public class PromptScript : MonoBehaviour
 
 	public virtual void Hide()
 	{
+		if (!this.Initialized)
+		{
+			this.Start();
+		}
 		if (this.Yandere.NearestPrompt == this)
 		{
 			this.Yandere.NearestPrompt = null;

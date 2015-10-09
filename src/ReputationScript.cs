@@ -20,9 +20,14 @@ public class ReputationScript : MonoBehaviour
 
 	public int Phase;
 
+	public GameObject FlowerVase;
+
+	public GameObject Grafitti;
+
 	public virtual void Start()
 	{
 		this.Reputation = PlayerPrefs.GetFloat("Reputation");
+		this.Bully();
 	}
 
 	public virtual void Update()
@@ -101,6 +106,28 @@ public class ReputationScript : MonoBehaviour
 		else
 		{
 			this.PendingRepLabel.text = string.Empty;
+		}
+	}
+
+	public virtual void Bully()
+	{
+		int @int = PlayerPrefs.GetInt("Student_7_Reputation");
+		this.FlowerVase.active = false;
+		this.Grafitti.active = false;
+		if (PlayerPrefs.GetInt("Student_7_Dead") == 0)
+		{
+			if ((float)@int < -33.33333f && (float)@int > -66.66666f)
+			{
+				this.FlowerVase.active = true;
+			}
+			else if ((float)@int < -66.66666f)
+			{
+				this.Grafitti.active = true;
+			}
+		}
+		else
+		{
+			this.FlowerVase.active = true;
 		}
 	}
 

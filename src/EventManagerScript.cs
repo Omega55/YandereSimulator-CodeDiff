@@ -69,7 +69,7 @@ public class EventManagerScript : MonoBehaviour
 		{
 			if (this.EventStudent[1] == null)
 			{
-				this.EventStudent[1] = this.StudentManager.Students[5];
+				this.EventStudent[1] = this.StudentManager.Students[6];
 			}
 			else if (this.EventStudent[1].Dead)
 			{
@@ -78,7 +78,7 @@ public class EventManagerScript : MonoBehaviour
 			}
 			if (this.EventStudent[2] == null)
 			{
-				this.EventStudent[2] = this.StudentManager.Students[6];
+				this.EventStudent[2] = this.StudentManager.Students[7];
 			}
 			else if (this.EventStudent[2].Dead)
 			{

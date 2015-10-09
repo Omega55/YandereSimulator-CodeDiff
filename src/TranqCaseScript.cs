@@ -16,6 +16,8 @@ public class TranqCaseScript : MonoBehaviour
 
 	public bool Open;
 
+	public int VictimID;
+
 	public virtual void Start()
 	{
 		this.Prompt.enabled = false;
@@ -60,6 +62,7 @@ public class TranqCaseScript : MonoBehaviour
 			this.Yandere.Ragdoll.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)90);
 			((RagdollScript)this.Yandere.Ragdoll.GetComponent(typeof(RagdollScript))).TranqCase = this;
 			((RagdollScript)this.Yandere.Ragdoll.GetComponent(typeof(RagdollScript))).Dump(2);
+			this.VictimID = ((RagdollScript)this.Yandere.Ragdoll.GetComponent(typeof(RagdollScript))).StudentID;
 			this.Yandere.EmptyHands();
 			this.Door.Prompt.enabled = true;
 			this.Occupied = true;

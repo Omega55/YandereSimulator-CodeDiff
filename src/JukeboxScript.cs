@@ -192,7 +192,7 @@ public class JukeboxScript : MonoBehaviour
 					this.Sukeban.enabled = true;
 				}
 			}
-			else if (Input.GetKeyDown("x"))
+			else if (Input.GetKeyDown("x") || Input.GetKeyDown("z"))
 			{
 				this.Egg = true;
 				this.KillVolume();

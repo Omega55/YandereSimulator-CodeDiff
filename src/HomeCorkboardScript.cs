@@ -1,5 +1,7 @@
 ﻿using System;
+using Boo.Lang.Runtime;
 using UnityEngine;
+using UnityScript.Lang;
 
 [Serializable]
 public class HomeCorkboardScript : MonoBehaviour
@@ -36,9 +38,8 @@ public class HomeCorkboardScript : MonoBehaviour
 				this.HomeWindow.Show = false;
 				this.enabled = false;
 				this.Loaded = false;
-				if (!this.HomeCamera.DisablePost)
+				if (RuntimeServices.EqualityOperator(UnityRuntimeServices.GetProperty(this.HomeCamera, "DisablePost"), false))
 				{
-					this.HomeCamera.EnableEffects();
 				}
 			}
 		}

@@ -11,18 +11,18 @@ public class StudentInfoMenuScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $UpdatePortraits$1636 : GenericGenerator<WWW>
+	internal sealed class $UpdatePortraits$1803 : GenericGenerator<WWW>
 	{
-		internal StudentInfoMenuScript $self_$1641;
+		internal StudentInfoMenuScript $self_$1808;
 
-		public $UpdatePortraits$1636(StudentInfoMenuScript self_)
+		public $UpdatePortraits$1803(StudentInfoMenuScript self_)
 		{
-			this.$self_$1641 = self_;
+			this.$self_$1808 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new StudentInfoMenuScript.$UpdatePortraits$1636.$(this.$self_$1641);
+			return new StudentInfoMenuScript.$UpdatePortraits$1803.$(this.$self_$1808);
 		}
 	}
 
@@ -48,11 +48,21 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	public UISprite[] DeathShadows;
 
+	public UISprite[] Friends;
+
+	public UISprite[] Panties;
+
 	public UITexture[] Portraits;
 
-	public UITexture[] Panties;
-
 	public UILabel NameLabel;
+
+	public bool CyberBullying;
+
+	public bool Distracting;
+
+	public bool Gossiping;
+
+	public int[] SetSizes;
 
 	public int StudentID;
 
@@ -66,8 +76,6 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	public int Rows;
 
-	public int[] SetSizes;
-
 	public virtual void Start()
 	{
 		for (int i = 0; i < Extensions.get_length(this.Portraits); i++)
@@ -75,28 +83,69 @@ public class StudentInfoMenuScript : MonoBehaviour
 			this.Portraits[i].mainTexture = null;
 			this.DeathShadows[i].enabled = false;
 			this.Panties[i].enabled = false;
+			this.Friends[i].enabled = false;
 		}
 		this.Portraits[0].mainTexture = this.InfoChan;
 	}
 
 	public virtual void Update()
 	{
-		if (Input.GetButtonDown("A") && PlayerPrefs.GetInt("Student_" + this.StudentID + "_Photographed") == 1)
+		if (Input.GetButtonDown("A") && this.PromptBar.Label[0].text != string.Empty && PlayerPrefs.GetInt("Student_" + this.StudentID + "_Photographed") == 1)
 		{
 			this.StudentInfo.UpdateInfo(this.StudentID);
 			this.StudentInfo.active = true;
 			this.gameObject.active = false;
 			this.PromptBar.ClearButtons();
+			if (this.Gossiping)
+			{
+				this.PromptBar.Label[0].text = "Gossip";
+			}
+			if (this.Distracting)
+			{
+				this.PromptBar.Label[0].text = "Distract";
+			}
+			if (this.CyberBullying)
+			{
+				this.PromptBar.Label[0].text = "Accept";
+			}
 			this.PromptBar.Label[1].text = "Back";
 			this.PromptBar.UpdateButtons();
 		}
 		if (Input.GetButtonDown("B"))
 		{
-			this.PauseScreen.MainMenu.active = true;
-			this.PauseScreen.Sideways = false;
-			this.gameObject.active = false;
-			this.PromptBar.ClearButtons();
-			this.PromptBar.Show = false;
+			if (this.Gossiping || this.Distracting)
+			{
+				this.PauseScreen.Yandere.Interaction = 4;
+				this.PauseScreen.Yandere.TalkTimer = (float)2;
+				this.PauseScreen.MainMenu.active = true;
+				this.PauseScreen.Sideways = false;
+				this.PauseScreen.Show = false;
+				this.gameObject.active = false;
+				Time.timeScale = (float)1;
+				this.Distracting = false;
+				this.Gossiping = false;
+				this.PromptBar.ClearButtons();
+				this.PromptBar.Show = false;
+			}
+			else if (this.CyberBullying)
+			{
+				this.PauseScreen.MainMenu.active = true;
+				this.PauseScreen.Sideways = false;
+				this.PauseScreen.Show = false;
+				this.gameObject.active = false;
+			}
+			else
+			{
+				this.PauseScreen.MainMenu.active = true;
+				this.PauseScreen.Sideways = false;
+				this.gameObject.active = false;
+				this.PromptBar.ClearButtons();
+				this.PromptBar.Label[0].text = "Accept";
+				this.PromptBar.Label[1].text = "Exit";
+				this.PromptBar.Label[4].text = "Choose";
+				this.PromptBar.UpdateButtons();
+				this.PromptBar.Show = true;
+			}
 		}
 		if (this.Row > 1)
 		{
@@ -171,6 +220,21 @@ public class StudentInfoMenuScript : MonoBehaviour
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
+		if (this.Gossiping && (this.StudentID == 1 || this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID))
+		{
+			this.PromptBar.Label[0].text = string.Empty;
+			this.PromptBar.UpdateButtons();
+		}
+		if (this.CyberBullying && this.JSON.StudentGenders[this.StudentID] == 1)
+		{
+			this.PromptBar.Label[0].text = string.Empty;
+			this.PromptBar.UpdateButtons();
+		}
+		if (this.Distracting && this.StudentID == 0)
+		{
+			this.PromptBar.Label[0].text = string.Empty;
+			this.PromptBar.UpdateButtons();
+		}
 		if (this.StudentID < this.SetSizes[1])
 		{
 			this.Set = 0;
@@ -204,7 +268,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	public virtual IEnumerator UpdatePortraits()
 	{
-		return new StudentInfoMenuScript.$UpdatePortraits$1636(this).GetEnumerator();
+		return new StudentInfoMenuScript.$UpdatePortraits$1803(this).GetEnumerator();
 	}
 
 	public virtual void Main()

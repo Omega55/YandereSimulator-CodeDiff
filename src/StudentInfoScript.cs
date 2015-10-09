@@ -1,24 +1,30 @@
 ﻿using System;
+using Boo.Lang.Runtime;
 using UnityEngine;
+using UnityScript.Lang;
 
 [Serializable]
 public class StudentInfoScript : MonoBehaviour
 {
+	public StudentInfoMenuScript StudentInfoMenu;
+
+	public DialogueWheelScript DialogueWheel;
+
+	public HomeInternetScript HomeInternet;
+
 	public PromptBarScript PromptBar;
 
 	public ShutterScript Shutter;
 
 	public JsonScript JSON;
 
-	public GameObject StudentInfoMenu;
-
-	public GameObject Static;
-
 	public Texture DefaultPortrait;
 
 	public Texture InfoChan;
 
 	public Transform ReputationBar;
+
+	public GameObject Static;
 
 	public UILabel ReputationLabel;
 
@@ -35,6 +41,10 @@ public class StudentInfoScript : MonoBehaviour
 	public UITexture Portrait;
 
 	public string[] Strings;
+
+	public int CurrentStudent;
+
+	public bool Back;
 
 	public virtual void UpdateInfo(int ID)
 	{
@@ -109,7 +119,7 @@ public class StudentInfoScript : MonoBehaviour
 		}
 		if (PlayerPrefs.GetInt("Student_" + ID + "_Reputation") < 0)
 		{
-			this.ReputationLabel.text = "-" + PlayerPrefs.GetInt("Student_" + ID + "_Reputation");
+			this.ReputationLabel.text = string.Empty + PlayerPrefs.GetInt("Student_" + ID + "_Reputation");
 		}
 		else if (PlayerPrefs.GetInt("Student_" + ID + "_Reputation") > 0)
 		{
@@ -119,35 +129,122 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.ReputationLabel.text = "0";
 		}
-		int num = PlayerPrefs.GetInt("Student_" + ID + "_Reputation") * 96;
+		float x = (float)PlayerPrefs.GetInt("Student_" + ID + "_Reputation") * 0.96f;
 		Vector3 localPosition = this.ReputationBar.localPosition;
-		float num2 = localPosition.x = (float)num;
+		float num = localPosition.x = x;
 		Vector3 vector = this.ReputationBar.localPosition = localPosition;
+		if (this.ReputationBar.localPosition.x > (float)96)
+		{
+			int num2 = 96;
+			Vector3 localPosition2 = this.ReputationBar.localPosition;
+			float num3 = localPosition2.x = (float)num2;
+			Vector3 vector2 = this.ReputationBar.localPosition = localPosition2;
+		}
+		if (this.ReputationBar.localPosition.x < (float)-96)
+		{
+			int num4 = -96;
+			Vector3 localPosition3 = this.ReputationBar.localPosition;
+			float num5 = localPosition3.x = (float)num4;
+			Vector3 vector3 = this.ReputationBar.localPosition = localPosition3;
+		}
 		if (ID > 0)
 		{
 			string url = "file:///" + Application.streamingAssetsPath + "/Portraits/Student_" + ID + ".png";
 			WWW www = new WWW(url);
 			this.Portrait.mainTexture = www.texture;
 			this.Static.active = false;
+			this.audio.volume = (float)0;
 		}
 		else
 		{
 			this.Portrait.mainTexture = this.InfoChan;
 			this.Static.active = true;
+			if (!this.StudentInfoMenu.Gossiping && !this.StudentInfoMenu.Distracting && !this.StudentInfoMenu.CyberBullying)
+			{
+				this.audio.volume = (float)1;
+			}
 		}
 		this.UpdateAdditionalInfo(ID);
+		this.CurrentStudent = ID;
 	}
 
 	public virtual void Update()
 	{
-		if (Input.GetButtonDown("B") && !this.Shutter.PhotoIcons.active)
+		if (Input.GetButtonDown("A"))
 		{
-			this.StudentInfoMenu.active = true;
-			this.gameObject.active = false;
-			this.PromptBar.ClearButtons();
-			this.PromptBar.Label[0].text = "View Info";
-			this.PromptBar.Label[1].text = "Back";
-			this.PromptBar.UpdateButtons();
+			if (this.StudentInfoMenu.Gossiping)
+			{
+				this.StudentInfoMenu.PauseScreen.MainMenu.active = true;
+				this.StudentInfoMenu.PauseScreen.Show = false;
+				this.DialogueWheel.Victim = this.CurrentStudent;
+				this.StudentInfoMenu.Gossiping = false;
+				this.Shutter.Yandere.Interaction = 3;
+				this.gameObject.active = false;
+				Time.timeScale = (float)1;
+				this.PromptBar.ClearButtons();
+				this.PromptBar.Show = false;
+			}
+			else if (this.StudentInfoMenu.Distracting)
+			{
+				this.StudentInfoMenu.PauseScreen.MainMenu.active = true;
+				this.StudentInfoMenu.PauseScreen.Show = false;
+				this.DialogueWheel.Victim = this.CurrentStudent;
+				this.StudentInfoMenu.Gossiping = false;
+				this.Shutter.Yandere.Interaction = 8;
+				this.gameObject.active = false;
+				Time.timeScale = (float)1;
+				this.PromptBar.ClearButtons();
+				this.PromptBar.Show = false;
+			}
+			else if (this.StudentInfoMenu.CyberBullying)
+			{
+				this.HomeInternet.PostLabels[1].text = this.JSON.StudentNames[this.CurrentStudent];
+				this.HomeInternet.Student = this.CurrentStudent;
+				this.StudentInfoMenu.PauseScreen.MainMenu.active = true;
+				this.StudentInfoMenu.PauseScreen.Show = false;
+				this.StudentInfoMenu.CyberBullying = false;
+				this.gameObject.active = false;
+				this.PromptBar.ClearButtons();
+				this.PromptBar.Show = false;
+			}
+		}
+		if (Input.GetButtonDown("B"))
+		{
+			this.audio.Stop();
+			if (this.Shutter != null)
+			{
+				if (!this.Shutter.PhotoIcons.active)
+				{
+					this.Back = true;
+				}
+			}
+			else
+			{
+				this.Back = true;
+			}
+			if (this.Back)
+			{
+				this.StudentInfoMenu.gameObject.active = true;
+				this.gameObject.active = false;
+				this.PromptBar.ClearButtons();
+				this.PromptBar.Label[0].text = "View Info";
+				if (RuntimeServices.EqualityOperator(UnityRuntimeServices.GetProperty(this.StudentInfoMenu, "Gossipping"), false))
+				{
+					this.PromptBar.Label[1].text = "Back";
+				}
+				this.PromptBar.UpdateButtons();
+				this.Back = false;
+			}
+		}
+		if (Input.GetKeyDown("="))
+		{
+			PlayerPrefs.SetInt("Student_" + this.CurrentStudent + "_Reputation", PlayerPrefs.GetInt("Student_" + this.CurrentStudent + "_Reputation") + 10);
+			this.UpdateInfo(this.CurrentStudent);
+		}
+		if (Input.GetKeyDown("-"))
+		{
+			PlayerPrefs.SetInt("Student_" + this.CurrentStudent + "_Reputation", PlayerPrefs.GetInt("Student_" + this.CurrentStudent + "_Reputation") - 10);
+			this.UpdateInfo(this.CurrentStudent);
 		}
 	}
 

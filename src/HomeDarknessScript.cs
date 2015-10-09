@@ -34,42 +34,54 @@ public class HomeDarknessScript : MonoBehaviour
 			Color color2 = this.Sprite.color = color;
 			if (this.Sprite.color.a >= (float)1)
 			{
-				if (this.HomeExit.ID == 1)
+				if (this.HomeCamera.ID != 2)
 				{
-					Application.LoadLevel("SchoolScene");
-				}
-				else if (this.HomeExit.ID == 2)
-				{
-					Application.LoadLevel("TownScene");
-				}
-				else if (this.HomeExit.ID == 3)
-				{
-					if (this.HomeYandere.transform.position.y > (float)-5)
+					if (this.HomeExit.ID == 1)
 					{
-						this.HomeYandere.transform.position = new Vector3(3.833333f, (float)-10, (float)-1);
-						this.HomeYandere.transform.eulerAngles = new Vector3((float)0, (float)-90, (float)0);
-						this.HomeYandere.CanMove = true;
-						this.FadeOut = false;
-						this.HomeCamera.Destinations[0].position = new Vector3(0.01f, (float)-8, -0.01f);
-						this.HomeCamera.Destination = this.HomeCamera.Destinations[0];
-						this.HomeCamera.transform.position = this.HomeCamera.Destination.position;
-						this.HomeCamera.Target = this.HomeCamera.Targets[0];
-						this.HomeCamera.Focus.position = this.HomeCamera.Target.position;
-						this.BasementLabel.text = "Upstairs";
+						Application.LoadLevel("SchoolScene");
 					}
-					else
+					else if (this.HomeExit.ID == 2)
 					{
-						this.HomeYandere.transform.position = new Vector3(-2.271312f, (float)0, (float)1);
-						this.HomeYandere.transform.eulerAngles = new Vector3((float)0, (float)0, (float)0);
-						this.HomeYandere.CanMove = true;
-						this.FadeOut = false;
-						this.HomeCamera.Destinations[0].position = new Vector3(-2.271312f, (float)2, 3.5f);
-						this.HomeCamera.Destination = this.HomeCamera.Destinations[0];
-						this.HomeCamera.transform.position = this.HomeCamera.Destination.position;
-						this.HomeCamera.Target = this.HomeCamera.Targets[0];
-						this.HomeCamera.Focus.position = this.HomeCamera.Target.position;
-						this.BasementLabel.text = "Basement";
+						Application.LoadLevel("TownScene");
 					}
+					else if (this.HomeExit.ID == 3)
+					{
+						if (this.HomeYandere.transform.position.y > (float)-5)
+						{
+							this.HomeYandere.transform.position = new Vector3((float)-2, (float)-10, (float)-2);
+							this.HomeYandere.transform.eulerAngles = new Vector3((float)0, (float)90, (float)0);
+							this.HomeYandere.CanMove = true;
+							this.FadeOut = false;
+							this.HomeCamera.Destinations[0].position = new Vector3(2.425f, (float)-8, (float)0);
+							this.HomeCamera.Destination = this.HomeCamera.Destinations[0];
+							this.HomeCamera.transform.position = this.HomeCamera.Destination.position;
+							this.HomeCamera.Target = this.HomeCamera.Targets[0];
+							this.HomeCamera.Focus.position = this.HomeCamera.Target.position;
+							this.BasementLabel.text = "Upstairs";
+							this.HomeCamera.DayLight.active = true;
+						}
+						else
+						{
+							this.HomeYandere.transform.position = new Vector3(-1.6f, (float)0, -1.6f);
+							this.HomeYandere.transform.eulerAngles = new Vector3((float)0, (float)45, (float)0);
+							this.HomeYandere.CanMove = true;
+							this.FadeOut = false;
+							this.HomeCamera.Destinations[0].position = new Vector3(-2.0615f, (float)2, 2.418f);
+							this.HomeCamera.Destination = this.HomeCamera.Destinations[0];
+							this.HomeCamera.transform.position = this.HomeCamera.Destination.position;
+							this.HomeCamera.Target = this.HomeCamera.Targets[0];
+							this.HomeCamera.Focus.position = this.HomeCamera.Target.position;
+							this.BasementLabel.text = "Basement";
+							if (PlayerPrefs.GetInt("Night") == 1)
+							{
+								this.HomeCamera.DayLight.active = false;
+							}
+						}
+					}
+				}
+				else
+				{
+					Application.LoadLevel("CalendarScene");
 				}
 			}
 		}

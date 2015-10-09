@@ -167,21 +167,34 @@ public class DebugMenuScript : MonoBehaviour
 			}
 			else if (Input.GetKeyDown("g"))
 			{
-				if (this.StudentManager.Students[15] != null)
+				if (this.StudentManager.Students[16] != null)
 				{
-					this.StudentManager.Students[15].CurrentDestination = this.RooftopSpot;
-					this.StudentManager.Students[15].Pathfinding.target = this.RooftopSpot;
-					this.StudentManager.Students[15].Pathfinding.canSearch = true;
-					this.StudentManager.Students[15].Pathfinding.canMove = true;
-					this.StudentManager.Students[15].Meeting = true;
-					this.StudentManager.Students[15].MeetTime = (float)0;
+					this.StudentManager.Students[16].CurrentDestination = this.RooftopSpot;
+					this.StudentManager.Students[16].Pathfinding.target = this.RooftopSpot;
+					this.StudentManager.Students[16].Pathfinding.canSearch = true;
+					this.StudentManager.Students[16].Pathfinding.canMove = true;
+					this.StudentManager.Students[16].Meeting = true;
+					this.StudentManager.Students[16].MeetTime = (float)0;
 				}
+				this.Window.active = false;
+			}
+			else if (Input.GetKeyDown("p"))
+			{
+				PlayerPrefs.SetInt("PantyShots", 10);
 				this.Window.active = false;
 			}
 			else if (Input.GetKeyDown("r"))
 			{
-				PlayerPrefs.SetFloat("Reputation", (float)50);
-				this.Reputation.Reputation = PlayerPrefs.GetFloat("Reputation");
+				if (PlayerPrefs.GetFloat("Reputation") != 66.66666f)
+				{
+					PlayerPrefs.SetFloat("Reputation", 66.66666f);
+					this.Reputation.Reputation = PlayerPrefs.GetFloat("Reputation");
+				}
+				else
+				{
+					PlayerPrefs.SetFloat("Reputation", -66.66666f);
+					this.Reputation.Reputation = PlayerPrefs.GetFloat("Reputation");
+				}
 				this.Window.active = false;
 			}
 			else if (Input.GetKeyDown("s"))

@@ -50,7 +50,7 @@ public class HomePantyChangerScript : MonoBehaviour
 	{
 		while (this.ID < this.TotalPanties)
 		{
-			this.NewPanties = (GameObject)UnityEngine.Object.Instantiate(this.PantyModels[this.ID], new Vector3((float)0, (float)0, (float)-1), Quaternion.identity);
+			this.NewPanties = (GameObject)UnityEngine.Object.Instantiate(this.PantyModels[this.ID], new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z - (float)1), Quaternion.identity);
 			this.NewPanties.transform.parent = this.PantyParent;
 			((HomePantiesScript)this.NewPanties.GetComponent(typeof(HomePantiesScript))).ID = this.ID;
 			float y = this.PantyParent.transform.localEulerAngles.y + (float)(360 / this.TotalPanties);

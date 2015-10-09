@@ -60,7 +60,7 @@ public class MovingEventScript : MonoBehaviour
 	{
 		if (!this.Clock.StopTime && this.EventCheck && this.Clock.HourTime > (float)13)
 		{
-			this.EventStudent = this.StudentManager.Students[6];
+			this.EventStudent = this.StudentManager.Students[7];
 			if (this.EventStudent != null)
 			{
 				this.EventStudent.Character.animation[this.EventStudent.BentoAnim].weight = (float)1;

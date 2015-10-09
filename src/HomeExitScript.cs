@@ -16,11 +16,28 @@ public class HomeExitScript : MonoBehaviour
 
 	public Transform Highlight;
 
+	public UILabel[] Labels;
+
 	public int ID;
 
 	public HomeExitScript()
 	{
 		this.ID = 1;
+	}
+
+	public virtual void Start()
+	{
+		if (PlayerPrefs.GetInt("Night") == 1)
+		{
+			float a = 0.5f;
+			Color color = this.Labels[1].color;
+			float num = color.a = a;
+			Color color2 = this.Labels[1].color = color;
+			float a2 = 0.5f;
+			Color color3 = this.Labels[2].color;
+			float num2 = color3.a = a2;
+			Color color4 = this.Labels[2].color = color3;
+		}
 	}
 
 	public virtual void Update()
@@ -51,7 +68,7 @@ public class HomeExitScript : MonoBehaviour
 				float num4 = localPosition2.y = (float)num3;
 				Vector3 vector2 = this.Highlight.localPosition = localPosition2;
 			}
-			if (Input.GetButtonDown("A"))
+			if (Input.GetButtonDown("A") && (PlayerPrefs.GetInt("Night") == 0 || (PlayerPrefs.GetInt("Night") == 1 && this.ID == 3)))
 			{
 				if (this.ID < 3)
 				{

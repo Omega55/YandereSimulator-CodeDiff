@@ -10,18 +10,35 @@ public class HomeYandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$1620 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$1784 : GenericGenerator<WWW>
 	{
-		internal HomeYandereScript $self_$1629;
+		internal HomeYandereScript $self_$1790;
 
-		public $ApplyCustomCostume$1620(HomeYandereScript self_)
+		public $ApplyCustomCostume$1784(HomeYandereScript self_)
 		{
-			this.$self_$1629 = self_;
+			this.$self_$1790 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new HomeYandereScript.$ApplyCustomCostume$1620.$(this.$self_$1629);
+			return new HomeYandereScript.$ApplyCustomCostume$1784.$(this.$self_$1790);
+		}
+	}
+
+	[CompilerGenerated]
+	[Serializable]
+	internal sealed class $ApplyCustomFace$1791 : GenericGenerator<WWW>
+	{
+		internal HomeYandereScript $self_$1796;
+
+		public $ApplyCustomFace$1791(HomeYandereScript self_)
+		{
+			this.$self_$1796 = self_;
+		}
+
+		public override IEnumerator<WWW> GetEnumerator()
+		{
+			return new HomeYandereScript.$ApplyCustomFace$1791.$(this.$self_$1796);
 		}
 	}
 
@@ -63,21 +80,28 @@ public class HomeYandereScript : MonoBehaviour
 
 	public Mesh[] Uniforms;
 
+	public Texture PajamaTexture;
+
+	public Mesh PajamaMesh;
+
 	public virtual void Start()
 	{
 		if (Application.loadedLevelName == "HomeScene")
 		{
-			this.transform.position = new Vector3(-2.271312f, (float)0, (float)1);
+			this.transform.position = new Vector3((float)0, (float)0, (float)0);
 			this.transform.eulerAngles = new Vector3((float)0, (float)0, (float)0);
-			if (PlayerPrefs.GetInt("Kidnapped") == 0)
-			{
-				this.Victim.active = false;
-			}
 		}
 		Time.timeScale = (float)1;
 		this.UpdateHair();
-		this.ChangeSchoolwear();
-		this.StartCoroutine_Auto(this.ApplyCustomCostume());
+		if (PlayerPrefs.GetInt("Night") == 0)
+		{
+			this.ChangeSchoolwear();
+			this.StartCoroutine_Auto(this.ApplyCustomCostume());
+		}
+		else
+		{
+			this.WearPajamas();
+		}
 	}
 
 	public virtual void Update()
@@ -233,9 +257,23 @@ public class HomeYandereScript : MonoBehaviour
 		this.StartCoroutine_Auto(this.ApplyCustomCostume());
 	}
 
+	public virtual void WearPajamas()
+	{
+		this.MyRenderer.sharedMesh = this.PajamaMesh;
+		this.MyRenderer.materials[0].mainTexture = this.PajamaTexture;
+		this.MyRenderer.materials[1].mainTexture = this.PajamaTexture;
+		this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
+		this.StartCoroutine_Auto(this.ApplyCustomFace());
+	}
+
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new HomeYandereScript.$ApplyCustomCostume$1620(this).GetEnumerator();
+		return new HomeYandereScript.$ApplyCustomCostume$1784(this).GetEnumerator();
+	}
+
+	public virtual IEnumerator ApplyCustomFace()
+	{
+		return new HomeYandereScript.$ApplyCustomFace$1791(this).GetEnumerator();
 	}
 
 	public virtual void Main()
