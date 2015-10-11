@@ -8,6 +8,8 @@ public class TaskWindowScript : MonoBehaviour
 
 	public TaskManagerScript TaskManager;
 
+	public PromptBarScript PromptBar;
+
 	public UILabel TaskDescLabel;
 
 	public YandereScript Yandere;
@@ -30,6 +32,11 @@ public class TaskWindowScript : MonoBehaviour
 
 	public virtual void UpdateWindow(int ID)
 	{
+		this.PromptBar.ClearButtons();
+		this.PromptBar.Label[0].text = "Accept";
+		this.PromptBar.Label[1].text = "Refuse";
+		this.PromptBar.UpdateButtons();
+		this.PromptBar.Show = true;
 		this.TaskDescLabel.transform.parent.gameObject.active = true;
 		this.TaskDescLabel.text = string.Empty + this.Descriptions[ID];
 		this.Window.active = true;
@@ -46,6 +53,8 @@ public class TaskWindowScript : MonoBehaviour
 				this.Yandere.TargetStudent.TalkTimer = (float)100;
 				this.Yandere.TargetStudent.Interaction = 5;
 				this.Yandere.TargetStudent.TaskPhase = 4;
+				this.PromptBar.ClearButtons();
+				this.PromptBar.Show = false;
 				this.Window.active = false;
 			}
 			else if (Input.GetButtonDown("B"))
@@ -53,6 +62,8 @@ public class TaskWindowScript : MonoBehaviour
 				this.Yandere.TargetStudent.TalkTimer = (float)100;
 				this.Yandere.TargetStudent.Interaction = 5;
 				this.Yandere.TargetStudent.TaskPhase = 0;
+				this.PromptBar.ClearButtons();
+				this.PromptBar.Show = false;
 				this.Window.active = false;
 			}
 		}

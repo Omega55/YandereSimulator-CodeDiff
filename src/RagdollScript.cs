@@ -6,6 +6,8 @@ public class RagdollScript : MonoBehaviour
 {
 	public BloodPoolSpawnerScript BloodPoolSpawner;
 
+	public DetectionMarkerScript DetectionMarker;
+
 	public IncineratorScript Incinerator;
 
 	public TranqCaseScript TranqCase;
@@ -123,6 +125,10 @@ public class RagdollScript : MonoBehaviour
 
 	public virtual void Update()
 	{
+		float a = Mathf.MoveTowards(this.DetectionMarker.Tex.color.a, (float)0, Time.deltaTime * (float)10);
+		Color color = this.DetectionMarker.Tex.color;
+		float num = color.a = a;
+		Color color2 = this.DetectionMarker.Tex.color = color;
 		if (!this.Dumped)
 		{
 			this.Character.animation.Stop();
@@ -214,7 +220,7 @@ public class RagdollScript : MonoBehaviour
 				this.Character.animation.Play("f02_fetal_00");
 				float y = Mathf.MoveTowards(this.transform.localPosition.y, 0.36f, Time.deltaTime);
 				Vector3 localPosition = this.transform.localPosition;
-				float num = localPosition.y = y;
+				float num2 = localPosition.y = y;
 				Vector3 vector = this.transform.localPosition = localPosition;
 				if (this.transform.localPosition.y == 0.36f)
 				{

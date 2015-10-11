@@ -1211,6 +1211,7 @@ public class StudentScript : MonoBehaviour
 								this.Character.animation.CrossFade("f02_electrocution_00");
 								this.Pathfinding.canSearch = false;
 								this.Pathfinding.canMove = false;
+								this.Distracted = true;
 								this.BathePhase++;
 							}
 							else if (this.BathePhase == 0)
@@ -1333,6 +1334,7 @@ public class StudentScript : MonoBehaviour
 							this.DistractionTarget.Pathfinding.speed = (float)0;
 							this.DistractionTarget.Distracted = true;
 							this.DistractionTarget.Routine = false;
+							this.DistractionTarget.InEvent = true;
 							this.Pathfinding.speed = (float)0;
 							this.Distracted = true;
 						}
@@ -1353,10 +1355,12 @@ public class StudentScript : MonoBehaviour
 							this.DistractionTarget.Pathfinding.speed = (float)1;
 							this.DistractionTarget.Distraction = null;
 							this.DistractionTarget.Distracted = false;
+							this.DistractionTarget.InEvent = false;
 							this.DistractionTarget.Routine = true;
 							this.Pathfinding.speed = (float)1;
 							this.Distracting = false;
 							this.Distracted = false;
+							this.InEvent = false;
 							this.Routine = true;
 						}
 					}
@@ -2095,7 +2099,14 @@ public class StudentScript : MonoBehaviour
 					if (this.TalkTimer == (float)3)
 					{
 						this.Character.animation.CrossFade(this.Nod1Anim);
-						this.Subtitle.UpdateLabel("Student Distract", 0, (float)3);
+						if (!this.StudentManager.Students[this.DialogueWheel.Victim].InEvent)
+						{
+							this.Subtitle.UpdateLabel("Student Distract", 0, (float)3);
+						}
+						else
+						{
+							this.Subtitle.UpdateLabel("Student Distract Refuse", 0, (float)3);
+						}
 					}
 					else
 					{
@@ -2110,14 +2121,18 @@ public class StudentScript : MonoBehaviour
 						if (this.TalkTimer <= (float)0)
 						{
 							this.DialogueWheel.End();
-							this.DistractionTarget = this.StudentManager.Students[this.DialogueWheel.Victim];
-							this.CurrentDestination = this.DistractionTarget.transform;
-							this.Pathfinding.target = this.DistractionTarget.transform;
-							this.Pathfinding.speed = (float)4;
-							this.TargetDistance = (float)1;
-							this.DistractTimer = (float)10;
-							this.Distracting = true;
-							this.Routine = false;
+							if (!this.StudentManager.Students[this.DialogueWheel.Victim].InEvent)
+							{
+								this.DistractionTarget = this.StudentManager.Students[this.DialogueWheel.Victim];
+								this.CurrentDestination = this.DistractionTarget.transform;
+								this.Pathfinding.target = this.DistractionTarget.transform;
+								this.Pathfinding.speed = (float)4;
+								this.TargetDistance = (float)1;
+								this.DistractTimer = (float)10;
+								this.Distracting = true;
+								this.Routine = false;
+								this.InEvent = true;
+							}
 						}
 					}
 					this.TalkTimer -= Time.deltaTime;
@@ -3499,6 +3514,7 @@ public class StudentScript : MonoBehaviour
 		this.Prompt.enabled = false;
 		this.enabled = false;
 		this.UnWet();
+		this.Ragdoll.DetectionMarker = this.DetectionMarker;
 		this.Ragdoll.RightEyeOrigin = this.RightEyeOrigin;
 		this.Ragdoll.LeftEyeOrigin = this.LeftEyeOrigin;
 		this.Ragdoll.Electrocuted = this.Electrocuted;

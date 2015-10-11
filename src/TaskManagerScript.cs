@@ -21,6 +21,7 @@ public class TaskManagerScript : MonoBehaviour
 	{
 		if (PlayerPrefs.GetInt("Task_6_Status") == 1 && this.Prompts[6].Circle[3].fillAmount <= (float)0)
 		{
+			this.StudentManager.Students[6].TaskPhase = 5;
 			PlayerPrefs.SetInt("Task_6_Status", 2);
 			UnityEngine.Object.Destroy(this.TaskObjects[6]);
 		}
@@ -32,7 +33,10 @@ public class TaskManagerScript : MonoBehaviour
 		{
 			if (this.StudentManager.Students[6] != null)
 			{
-				this.StudentManager.Students[6].TaskPhase = 5;
+				if (this.StudentManager.Students[6].TaskPhase == 0)
+				{
+					this.StudentManager.Students[6].TaskPhase = 4;
+				}
 				this.TaskObjects[6].active = true;
 			}
 		}

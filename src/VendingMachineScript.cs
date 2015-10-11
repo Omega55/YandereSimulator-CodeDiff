@@ -20,6 +20,7 @@ public class VendingMachineScript : MonoBehaviour
 			Vector3 eulerAngles = gameObject.transform.eulerAngles;
 			float num2 = eulerAngles.x = (float)num;
 			Vector3 vector = gameObject.transform.eulerAngles = eulerAngles;
+			gameObject.audio.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
 		}
 	}
 

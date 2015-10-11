@@ -367,8 +367,7 @@ public class PauseScreenScript : MonoBehaviour
 					{
 						if (Input.GetButtonDown("A"))
 						{
-							PlayerPrefs.SetInt("Weekday", 5);
-							Application.Quit();
+							Application.LoadLevel("TitleScene");
 						}
 						if (Input.GetButtonDown("B"))
 						{

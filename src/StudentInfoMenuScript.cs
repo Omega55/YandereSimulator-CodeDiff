@@ -11,18 +11,18 @@ public class StudentInfoMenuScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $UpdatePortraits$1803 : GenericGenerator<WWW>
+	internal sealed class $UpdatePortraits$1813 : GenericGenerator<WWW>
 	{
-		internal StudentInfoMenuScript $self_$1808;
+		internal StudentInfoMenuScript $self_$1818;
 
-		public $UpdatePortraits$1803(StudentInfoMenuScript self_)
+		public $UpdatePortraits$1813(StudentInfoMenuScript self_)
 		{
-			this.$self_$1808 = self_;
+			this.$self_$1818 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new StudentInfoMenuScript.$UpdatePortraits$1803.$(this.$self_$1808);
+			return new StudentInfoMenuScript.$UpdatePortraits$1813.$(this.$self_$1818);
 		}
 	}
 
@@ -220,17 +220,17 @@ public class StudentInfoMenuScript : MonoBehaviour
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
-		if (this.Gossiping && (this.StudentID == 1 || this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || this.JSON.StudentClubs[this.StudentID] == 9))
+		if (this.Gossiping && (this.StudentID == 1 || this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || this.JSON.StudentClubs[this.StudentID] == 9 || PlayerPrefs.GetInt("Student_" + this.StudentID + "_Dead") == 1))
 		{
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
-		if (this.CyberBullying && this.JSON.StudentGenders[this.StudentID] == 1)
+		if (this.CyberBullying && (this.JSON.StudentGenders[this.StudentID] == 1 || PlayerPrefs.GetInt("Student_" + this.StudentID + "_Dead") == 1))
 		{
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
-		if (this.Distracting && this.StudentID == 0)
+		if (this.Distracting && (this.StudentID == 0 || PlayerPrefs.GetInt("Student_" + this.StudentID + "_Dead") == 1))
 		{
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
@@ -268,7 +268,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	public virtual IEnumerator UpdatePortraits()
 	{
-		return new StudentInfoMenuScript.$UpdatePortraits$1803(this).GetEnumerator();
+		return new StudentInfoMenuScript.$UpdatePortraits$1813(this).GetEnumerator();
 	}
 
 	public virtual void Main()

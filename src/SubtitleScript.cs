@@ -99,6 +99,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] StudentDistracts;
 
+	public string[] StudentDistractRefuses;
+
 	public string[] StopFollowApologies;
 
 	public string[] Impatiences;
@@ -514,6 +516,10 @@ public class SubtitleScript : MonoBehaviour
 		else if (ReactionType == "Student Distract")
 		{
 			this.Label.text = this.StudentDistracts[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentDistracts))];
+		}
+		else if (ReactionType == "Student Distract Refuse")
+		{
+			this.Label.text = this.StudentDistractRefuses[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentDistractRefuses))];
 		}
 		else if (ReactionType == "Stop Follow Apology")
 		{

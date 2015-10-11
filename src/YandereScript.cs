@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$1816 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$1826 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$1831;
+		internal YandereScript $self_$1841;
 
-		public $ApplyCustomCostume$1816(YandereScript self_)
+		public $ApplyCustomCostume$1826(YandereScript self_)
 		{
-			this.$self_$1831 = self_;
+			this.$self_$1841 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$1816.$(this.$self_$1831);
+			return new YandereScript.$ApplyCustomCostume$1826.$(this.$self_$1841);
 		}
 	}
 
@@ -281,6 +281,8 @@ public class YandereScript : MonoBehaviour
 
 	public float CrawlSpeed;
 
+	public float FlapSpeed;
+
 	public float WalkSpeed;
 
 	public float YandereFade;
@@ -346,6 +348,8 @@ public class YandereScript : MonoBehaviour
 	public bool Dipping;
 
 	public bool Dumping;
+
+	public bool FlapOut;
 
 	public bool Mopping;
 
@@ -451,6 +455,10 @@ public class YandereScript : MonoBehaviour
 
 	public string IdleAnim;
 
+	public string WalkAnim;
+
+	public string RunAnim;
+
 	public AudioClip PowerUp;
 
 	public AudioClip Laugh1;
@@ -460,6 +468,8 @@ public class YandereScript : MonoBehaviour
 	public AudioClip Laugh3;
 
 	public AudioClip Laugh4;
+
+	public Vector3 PreviousPosition;
 
 	public Texture TitanTexture;
 
@@ -515,6 +525,26 @@ public class YandereScript : MonoBehaviour
 
 	public Texture AgentSuit;
 
+	public GameObject CirnoIceAttack;
+
+	public AudioClip CirnoIceClip;
+
+	public GameObject CirnoRibbon;
+
+	public GameObject CirnoWings;
+
+	public GameObject CirnoHair;
+
+	public Texture CirnoUniform;
+
+	public Texture CirnoFace;
+
+	public Transform[] CirnoWing;
+
+	public float CirnoRotation;
+
+	public float CirnoTimer;
+
 	public GameObject[] CensorSteam;
 
 	public Texture NudeTexture;
@@ -546,6 +576,8 @@ public class YandereScript : MonoBehaviour
 		this.DrownAnim = string.Empty;
 		this.LaughAnim = string.Empty;
 		this.IdleAnim = string.Empty;
+		this.WalkAnim = string.Empty;
+		this.RunAnim = string.Empty;
 	}
 
 	public virtual void Start()
@@ -581,6 +613,9 @@ public class YandereScript : MonoBehaviour
 		this.PunishedScarf.active = false;
 		this.HatredHair.active = false;
 		this.KONGlasses.active = false;
+		this.CirnoRibbon.active = false;
+		this.CirnoWings.active = false;
+		this.CirnoHair.active = false;
 		this.EyepatchL.active = false;
 		this.EyepatchR.active = false;
 		this.PippiHair.active = false;
@@ -597,6 +632,8 @@ public class YandereScript : MonoBehaviour
 		this.Yuno.active = false;
 		this.Rei.active = false;
 		this.IdleAnim = "f02_idleShort_00";
+		this.WalkAnim = "f02_walk_00";
+		this.RunAnim = "f02_sprint_00";
 		this.ID = 1;
 		while (this.ID < Extensions.get_length(this.Accessories))
 		{
@@ -631,6 +668,7 @@ public class YandereScript : MonoBehaviour
 				this.MyController.Move(Physics.gravity * 0.1f);
 				float axis = Input.GetAxis("Vertical");
 				float axis2 = Input.GetAxis("Horizontal");
+				this.FlapSpeed = Mathf.Abs(axis) + Mathf.Abs(axis2);
 				if (!this.Aiming)
 				{
 					Vector3 a = this.MainCamera.transform.TransformDirection(Vector3.forward);
@@ -653,7 +691,7 @@ public class YandereScript : MonoBehaviour
 						{
 							if (!this.Dragging && !this.Mopping)
 							{
-								this.Character.animation.CrossFade("f02_sprint_00");
+								this.Character.animation.CrossFade(this.RunAnim);
 								this.MyController.Move(this.transform.forward * this.RunSpeed * Time.deltaTime);
 							}
 							else
@@ -684,7 +722,7 @@ public class YandereScript : MonoBehaviour
 							}
 							else
 							{
-								this.Character.animation.CrossFade("f02_walk_00");
+								this.Character.animation.CrossFade(this.WalkAnim);
 								this.MyController.Move(this.transform.forward * this.WalkSpeed * Time.deltaTime);
 							}
 						}
@@ -732,7 +770,7 @@ public class YandereScript : MonoBehaviour
 						}
 						else
 						{
-							this.Character.animation.CrossFade("f02_walk_00");
+							this.Character.animation.CrossFade(this.WalkAnim);
 							this.MyController.Move(this.transform.forward * this.WalkSpeed * Time.deltaTime * axis);
 							this.MyController.Move(this.transform.right * this.WalkSpeed * Time.deltaTime * axis2);
 						}
@@ -830,14 +868,17 @@ public class YandereScript : MonoBehaviour
 							{
 								if (!this.Xtan)
 								{
-									this.LaughAnim = "f02_laugh_01";
-									this.LaughClip = this.Laugh1;
-									this.Laughing = true;
-									this.LaughIntensity += (float)1;
-									this.LaughTimer = 0.5f;
+									if (!this.CirnoHair.active)
+									{
+										this.LaughAnim = "f02_laugh_01";
+										this.LaughClip = this.Laugh1;
+										this.LaughIntensity += (float)1;
+										this.audio.time = (float)0;
+										this.audio.Play();
+									}
 									this.audio.volume = (float)1;
-									this.audio.time = (float)0;
-									this.audio.Play();
+									this.LaughTimer = 0.5f;
+									this.Laughing = true;
 									this.CanMove = false;
 								}
 								else if (this.LongHair[0].gameObject.active)
@@ -1047,7 +1088,31 @@ public class YandereScript : MonoBehaviour
 						this.LaughAnim = "storepower_20";
 						this.LaughClip = this.PowerUp;
 					}
-					if (this.audio.clip != this.LaughClip)
+					if (this.CirnoHair.active)
+					{
+						float axis3 = Input.GetAxis("Vertical");
+						float axis4 = Input.GetAxis("Horizontal");
+						Vector3 a3 = this.MainCamera.transform.TransformDirection(Vector3.forward);
+						a3.y = (float)0;
+						a3 = a3.normalized;
+						Vector3 a4 = new Vector3(a3.z, (float)0, -a3.x);
+						Vector3 vector3 = axis4 * a4 + axis3 * a3;
+						if (vector3 != Vector3.zero)
+						{
+							this.targetRotation = Quaternion.LookRotation(vector3);
+							this.transform.rotation = Quaternion.Lerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
+						}
+						this.LaughAnim = "f02_cirnoAttack_00";
+						this.CirnoTimer -= Time.deltaTime;
+						if (this.CirnoTimer < (float)0)
+						{
+							GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.CirnoIceAttack, this.transform.position + this.transform.up * 1.4f, this.transform.rotation);
+							gameObject.transform.localEulerAngles = gameObject.transform.localEulerAngles + new Vector3(UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f));
+							this.audio.PlayOneShot(this.CirnoIceClip);
+							this.CirnoTimer = 0.1f;
+						}
+					}
+					else if (this.audio.clip != this.LaughClip)
 					{
 						this.audio.clip = this.LaughClip;
 						this.audio.time = (float)0;
@@ -1077,16 +1142,16 @@ public class YandereScript : MonoBehaviour
 						}
 						else if (this.LaughIntensity <= (float)20)
 						{
-							GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.AlarmDisc, this.transform.position + Vector3.up, Quaternion.identity);
-							((AlarmDiscScript)gameObject.GetComponent(typeof(AlarmDiscScript))).NoScream = true;
+							GameObject gameObject2 = (GameObject)UnityEngine.Object.Instantiate(this.AlarmDisc, this.transform.position + Vector3.up, Quaternion.identity);
+							((AlarmDiscScript)gameObject2.GetComponent(typeof(AlarmDiscScript))).NoScream = true;
 							this.LaughAnim = "f02_laugh_04";
 							this.LaughClip = this.Laugh4;
 							this.LaughTimer = (float)2;
 						}
 						else
 						{
-							GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.AlarmDisc, this.transform.position + Vector3.up, Quaternion.identity);
-							((AlarmDiscScript)gameObject.GetComponent(typeof(AlarmDiscScript))).NoScream = true;
+							GameObject gameObject2 = (GameObject)UnityEngine.Object.Instantiate(this.AlarmDisc, this.transform.position + Vector3.up, Quaternion.identity);
+							((AlarmDiscScript)gameObject2.GetComponent(typeof(AlarmDiscScript))).NoScream = true;
 							this.LaughAnim = "f02_laugh_04";
 							this.LaughIntensity = (float)20;
 							this.LaughTimer = (float)2;
@@ -1108,7 +1173,7 @@ public class YandereScript : MonoBehaviour
 					float timeSkipHeight = this.TimeSkipHeight;
 					Vector3 position = this.transform.position;
 					float num3 = position.y = timeSkipHeight;
-					Vector3 vector3 = this.transform.position = position;
+					Vector3 vector4 = this.transform.position = position;
 					this.Character.animation.CrossFade("f02_timeSkip_00");
 					this.MyController.Move(this.transform.up * 0.0001f);
 					this.Sanity += Time.deltaTime * 0.17f;
@@ -1203,7 +1268,7 @@ public class YandereScript : MonoBehaviour
 					int num4 = 0;
 					Vector3 localEulerAngles2 = this.transform.localEulerAngles;
 					float num5 = localEulerAngles2.x = (float)num4;
-					Vector3 vector4 = this.transform.localEulerAngles = localEulerAngles2;
+					Vector3 vector5 = this.transform.localEulerAngles = localEulerAngles2;
 				}
 				else if (this.Character.animation["f02_down_22"].time >= this.Character.animation["f02_down_22"].length)
 				{
@@ -1362,13 +1427,13 @@ public class YandereScript : MonoBehaviour
 					this.ResetYandereEffects();
 				}
 			}
-			float a3 = (float)1 - this.YandereFade / (float)100;
+			float a5 = (float)1 - this.YandereFade / (float)100;
 			Color color = this.RightYandereEye.material.color;
-			float num6 = color.a = a3;
+			float num6 = color.a = a5;
 			Color color2 = this.RightYandereEye.material.color = color;
-			float a4 = (float)1 - this.YandereFade / (float)100;
+			float a6 = (float)1 - this.YandereFade / (float)100;
 			Color color3 = this.LeftYandereEye.material.color;
-			float num7 = color3.a = a4;
+			float num7 = color3.a = a6;
 			Color color4 = this.LeftYandereEye.material.color = color3;
 			if (this.Armed)
 			{
@@ -1616,7 +1681,7 @@ public class YandereScript : MonoBehaviour
 					{
 						if (this.Shoes[0].active)
 						{
-							GameObject gameObject2 = (GameObject)UnityEngine.Object.Instantiate(this.ShoePair, this.transform.position + new Vector3((float)0, 0.045f, 1.6f), Quaternion.identity);
+							GameObject gameObject3 = (GameObject)UnityEngine.Object.Instantiate(this.ShoePair, this.transform.position + new Vector3((float)0, 0.045f, 1.6f), Quaternion.identity);
 							this.Shoes[0].active = false;
 							this.Shoes[1].active = false;
 						}
@@ -1705,7 +1770,7 @@ public class YandereScript : MonoBehaviour
 					float y3 = this.TargetStudent.transform.position.y;
 					Vector3 position2 = this.Character.transform.position;
 					float num8 = position2.y = y3;
-					Vector3 vector5 = this.Character.transform.position = position2;
+					Vector3 vector6 = this.Character.transform.position = position2;
 				}
 			}
 			if (!this.Attacking && !this.Dragging && this.PickUp == null && !this.Aiming && !this.Crawling && !this.Pouring && !this.DumpsterGrabbing && !this.Stripping && !this.Bathing && this.LaughIntensity < (float)16)
@@ -1879,6 +1944,10 @@ public class YandereScript : MonoBehaviour
 					{
 						this.Sukeban();
 					}
+					else if (Input.GetKeyDown("c"))
+					{
+						this.Cirno();
+					}
 					else if (Input.GetKeyDown("h"))
 					{
 						this.EmptyHands();
@@ -1941,35 +2010,35 @@ public class YandereScript : MonoBehaviour
 				int num9 = -75;
 				Vector3 position3 = this.transform.position;
 				float num10 = position3.x = (float)num9;
-				Vector3 vector6 = this.transform.position = position3;
+				Vector3 vector7 = this.transform.position = position3;
 			}
 			if (this.transform.position.x > (float)75)
 			{
 				int num11 = 75;
 				Vector3 position4 = this.transform.position;
 				float num12 = position4.x = (float)num11;
-				Vector3 vector7 = this.transform.position = position4;
+				Vector3 vector8 = this.transform.position = position4;
 			}
 			if (this.transform.position.y < (float)0)
 			{
 				int num13 = 0;
 				Vector3 position5 = this.transform.position;
 				float num14 = position5.y = (float)num13;
-				Vector3 vector8 = this.transform.position = position5;
+				Vector3 vector9 = this.transform.position = position5;
 			}
 			if (this.transform.position.z < -49.5f)
 			{
 				float z = -49.5f;
 				Vector3 position6 = this.transform.position;
 				float num15 = position6.z = z;
-				Vector3 vector9 = this.transform.position = position6;
+				Vector3 vector10 = this.transform.position = position6;
 			}
 			if (this.transform.position.z > (float)50)
 			{
 				int num16 = 50;
 				Vector3 position7 = this.transform.position;
 				float num17 = position7.z = (float)num16;
-				Vector3 vector10 = this.transform.position = position7;
+				Vector3 vector11 = this.transform.position = position7;
 			}
 		}
 		else
@@ -2099,6 +2168,53 @@ public class YandereScript : MonoBehaviour
 			this.Arm[0].localScale = new Vector3((float)2, (float)2, (float)2);
 			this.Arm[1].localScale = new Vector3((float)2, (float)2, (float)2);
 			this.Head.localScale = new Vector3((float)2, (float)2, (float)2);
+		}
+		if (this.CirnoWings.active)
+		{
+			if (Input.GetButton("LB"))
+			{
+				this.FlapSpeed = (float)5;
+			}
+			else if (this.FlapSpeed == (float)0)
+			{
+				this.FlapSpeed = (float)1;
+			}
+			else
+			{
+				this.FlapSpeed = (float)3;
+			}
+			if (!this.FlapOut)
+			{
+				this.CirnoRotation += Time.deltaTime * (float)100 * this.FlapSpeed;
+				float cirnoRotation = this.CirnoRotation;
+				Vector3 localEulerAngles7 = this.CirnoWing[0].localEulerAngles;
+				float num24 = localEulerAngles7.y = cirnoRotation;
+				Vector3 vector20 = this.CirnoWing[0].localEulerAngles = localEulerAngles7;
+				float y7 = (float)-1 * this.CirnoRotation;
+				Vector3 localEulerAngles8 = this.CirnoWing[1].localEulerAngles;
+				float num25 = localEulerAngles8.y = y7;
+				Vector3 vector21 = this.CirnoWing[1].localEulerAngles = localEulerAngles8;
+				if (this.CirnoRotation > (float)15)
+				{
+					this.FlapOut = true;
+				}
+			}
+			else
+			{
+				this.CirnoRotation -= Time.deltaTime * (float)100 * this.FlapSpeed;
+				float cirnoRotation2 = this.CirnoRotation;
+				Vector3 localEulerAngles9 = this.CirnoWing[0].localEulerAngles;
+				float num26 = localEulerAngles9.y = cirnoRotation2;
+				Vector3 vector22 = this.CirnoWing[0].localEulerAngles = localEulerAngles9;
+				float y8 = (float)-1 * this.CirnoRotation;
+				Vector3 localEulerAngles10 = this.CirnoWing[1].localEulerAngles;
+				float num27 = localEulerAngles10.y = y8;
+				Vector3 vector23 = this.CirnoWing[1].localEulerAngles = localEulerAngles10;
+				if (this.CirnoRotation < (float)-15)
+				{
+					this.FlapOut = false;
+				}
+			}
 		}
 	}
 
@@ -2498,7 +2614,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$1816(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$1826(this).GetEnumerator();
 	}
 
 	public virtual void AttackOnTitan()
@@ -2663,6 +2779,25 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.materials[1].mainTexture = this.AgentSuit;
 		this.MyRenderer.materials[2].mainTexture = this.AgentFace;
 		this.EasterEggMenu.active = false;
+		this.Egg = true;
+		this.Hairstyle = 100;
+		this.UpdateHair();
+	}
+
+	public virtual void Cirno()
+	{
+		this.MyRenderer.sharedMesh = this.Uniforms[3];
+		this.MyRenderer.materials[0].mainTexture = this.CirnoUniform;
+		this.MyRenderer.materials[1].mainTexture = this.CirnoUniform;
+		this.MyRenderer.materials[2].mainTexture = this.CirnoFace;
+		this.CirnoRibbon.active = true;
+		this.CirnoWings.active = true;
+		this.CirnoHair.active = true;
+		this.IdleAnim = "f02_cirnoIdle_00";
+		this.WalkAnim = "f02_cirnoWalk_00";
+		this.RunAnim = "f02_cirnoRun_00";
+		this.EasterEggMenu.active = false;
+		this.Crouching = false;
 		this.Egg = true;
 		this.Hairstyle = 100;
 		this.UpdateHair();

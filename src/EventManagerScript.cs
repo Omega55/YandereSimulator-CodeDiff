@@ -179,7 +179,7 @@ public class EventManagerScript : MonoBehaviour
 								this.EndEvent();
 							}
 						}
-						if (this.EventPhase == 7 && num < (float)5 && !this.NoteLocker.Prompt.enabled)
+						if (this.Yandere.transform.position.y > this.EventStudent[1].transform.position.y - (float)1 && this.EventPhase == 7 && num < (float)5 && !this.NoteLocker.Prompt.enabled)
 						{
 							this.Yandere.NotificationManager.DisplayNotification("Info");
 							PlayerPrefs.SetInt("Event1", 1);
