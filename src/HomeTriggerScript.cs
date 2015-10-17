@@ -20,16 +20,22 @@ public class HomeTriggerScript : MonoBehaviour
 		Color color2 = this.Label.color = color;
 	}
 
-	public virtual void OnTriggerEnter()
+	public virtual void OnTriggerEnter(Collider other)
 	{
-		this.HomeCamera.ID = this.ID;
-		this.FadeIn = true;
+		if (other.tag == "Player")
+		{
+			this.HomeCamera.ID = this.ID;
+			this.FadeIn = true;
+		}
 	}
 
-	public virtual void OnTriggerExit()
+	public virtual void OnTriggerExit(Collider other)
 	{
-		this.HomeCamera.ID = 0;
-		this.FadeIn = false;
+		if (other.tag == "Player")
+		{
+			this.HomeCamera.ID = 0;
+			this.FadeIn = false;
+		}
 	}
 
 	public virtual void Update()

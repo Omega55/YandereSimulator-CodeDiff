@@ -61,6 +61,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform ShameSpot;
 
+	public Transform SlaveSpot;
+
 	public Transform StripSpot;
 
 	public Transform Exit;
@@ -101,6 +103,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public bool TakingPortraits;
 
+	public bool ForceSpawn;
+
 	public bool Spooky;
 
 	public bool Stop;
@@ -134,11 +138,26 @@ public class StudentManagerScript : MonoBehaviour
 			components[2].chromaticAberration = num * (float)5;
 			RenderSettings.fogDensity = num * 0.05f;
 		}
+		if (PlayerPrefs.GetInt("Student_6_Slave") == 1)
+		{
+			this.ForceSpawn = true;
+			this.SpawnPositions[6] = this.SlaveSpot;
+			this.SpawnID = 6;
+			this.SpawnStudent();
+			this.SpawnID = 0;
+		}
 		this.NPCsTotal = this.StudentsTotal + this.TeachersTotal;
 		this.SpawnID = this.StudentsTotal + 1;
 		if (PlayerPrefs.GetInt("MaleUniform") == 0)
 		{
 			PlayerPrefs.SetInt("MaleUniform", 1);
+		}
+		if (PlayerPrefs.GetInt("Late") == 1)
+		{
+			PlayerPrefs.SetInt("Late", 0);
+			this.Clock.PresentTime = (float)480;
+			this.Clock.HourTime = (float)8;
+			this.AttendClass();
 		}
 	}
 
@@ -189,9 +208,9 @@ public class StudentManagerScript : MonoBehaviour
 
 	public virtual void SpawnStudent()
 	{
-		if (this.Clock.HourTime >= this.SpawnTimes[this.SpawnID])
+		if (this.ForceSpawn || this.Clock.HourTime >= this.SpawnTimes[this.SpawnID])
 		{
-			if (PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Dead") == 0 && this.JSON.StudentNames[this.SpawnID] != "Unknown" && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Reputation") > -100)
+			if (this.Students[this.SpawnID] == null && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Dead") == 0 && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Kidnapped") == 0 && this.JSON.StudentNames[this.SpawnID] != "Unknown" && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Reputation") > -100)
 			{
 				if (this.JSON.StudentGenders[this.SpawnID] == 0)
 				{
@@ -231,6 +250,7 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			this.UpdateStudents();
 			this.TaskManager.UpdateTaskStatus();
+			this.ForceSpawn = false;
 		}
 	}
 
@@ -239,36 +259,44 @@ public class StudentManagerScript : MonoBehaviour
 		this.ID = 2;
 		while (this.ID < Extensions.get_length(this.Students))
 		{
-			if (this.Students[this.ID] != null && !this.Students[this.ID].Safe)
+			if (this.Students[this.ID] != null)
 			{
-				this.Students[this.ID].Prompt.HideButton[0] = false;
-				this.Students[this.ID].Prompt.HideButton[2] = false;
-				this.Students[this.ID].Prompt.Attack = false;
-				if (this.Yandere.Armed)
+				if (!this.Students[this.ID].Safe)
 				{
-					this.Students[this.ID].Prompt.HideButton[0] = true;
-					this.Students[this.ID].Prompt.Attack = true;
-				}
-				else
-				{
-					this.Students[this.ID].Prompt.HideButton[2] = true;
-					if (this.Students[this.ID].WitnessedMurder || this.Students[this.ID].WitnessedCorpse || this.Students[this.ID].Private)
+					this.Students[this.ID].Prompt.HideButton[0] = false;
+					this.Students[this.ID].Prompt.HideButton[2] = false;
+					this.Students[this.ID].Prompt.Attack = false;
+					if (this.Yandere.Armed)
+					{
+						this.Students[this.ID].Prompt.HideButton[0] = true;
+						this.Students[this.ID].Prompt.Attack = true;
+					}
+					else
+					{
+						this.Students[this.ID].Prompt.HideButton[2] = true;
+						if (this.Students[this.ID].WitnessedMurder || this.Students[this.ID].WitnessedCorpse || this.Students[this.ID].Private)
+						{
+							this.Students[this.ID].Prompt.HideButton[0] = true;
+						}
+					}
+					if (this.Yandere.Dragging || this.Yandere.PickUp != null || this.Yandere.Chased)
+					{
+						this.Students[this.ID].Prompt.HideButton[0] = true;
+						this.Students[this.ID].Prompt.HideButton[2] = true;
+					}
+					if (this.Yandere.NearBodies > 0 || this.Yandere.Sanity < 33.33333f)
+					{
+						this.Students[this.ID].Prompt.HideButton[0] = true;
+					}
+					if (this.Students[this.ID].Teacher)
 					{
 						this.Students[this.ID].Prompt.HideButton[0] = true;
 					}
 				}
-				if (this.Yandere.Dragging || this.Yandere.PickUp != null || this.Yandere.Chased)
+				else if (this.Yandere.Armed && this.Students[this.ID].Slave)
 				{
-					this.Students[this.ID].Prompt.HideButton[0] = true;
-					this.Students[this.ID].Prompt.HideButton[2] = true;
-				}
-				if (this.Yandere.NearBodies > 0 || this.Yandere.Sanity < 33.33333f)
-				{
-					this.Students[this.ID].Prompt.HideButton[0] = true;
-				}
-				if (this.Students[this.ID].Teacher)
-				{
-					this.Students[this.ID].Prompt.HideButton[0] = true;
+					this.Students[this.ID].Prompt.HideButton[0] = false;
+					this.Students[this.ID].Prompt.Label[0].text = "     " + "Give Weapon";
 				}
 			}
 			this.ID++;
@@ -320,7 +348,7 @@ public class StudentManagerScript : MonoBehaviour
 		this.ID = 1;
 		while (this.ID < Extensions.get_length(this.Students))
 		{
-			if (this.Students[this.ID] != null && !this.Students[this.ID].Dead && !this.Students[this.ID].Teacher)
+			if (this.Students[this.ID] != null && !this.Students[this.ID].Dead && !this.Students[this.ID].Teacher && this.ID < Extensions.get_length(this.Seats.List))
 			{
 				this.Students[this.ID].transform.position = this.Seats.List[this.Students[this.ID].StudentID].position + Vector3.up * 0.01f;
 				this.Students[this.ID].Character.animation.Play(this.Students[this.ID].IdleAnim);

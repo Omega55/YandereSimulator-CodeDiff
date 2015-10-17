@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$1826 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$1874 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$1841;
+		internal YandereScript $self_$1889;
 
-		public $ApplyCustomCostume$1826(YandereScript self_)
+		public $ApplyCustomCostume$1874(YandereScript self_)
 		{
-			this.$self_$1841 = self_;
+			this.$self_$1889 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$1826.$(this.$self_$1841);
+			return new YandereScript.$ApplyCustomCostume$1874.$(this.$self_$1889);
 		}
 	}
 
@@ -250,8 +250,6 @@ public class YandereScript : MonoBehaviour
 	public float PreviousSanity;
 
 	public float Sanity;
-
-	public float TwitchFactor;
 
 	public float TwitchTimer;
 
@@ -1990,7 +1988,7 @@ public class YandereScript : MonoBehaviour
 					{
 						this.X();
 					}
-					if (Input.GetKeyDown("c"))
+					if (Input.GetKeyDown("d"))
 					{
 						if (this.Copyrights.active)
 						{
@@ -2614,7 +2612,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$1826(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$1874(this).GetEnumerator();
 	}
 
 	public virtual void AttackOnTitan()

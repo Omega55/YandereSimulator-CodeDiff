@@ -89,9 +89,12 @@ public class PromptScript : MonoBehaviour
 			{
 				this.OffsetZ = new float[4];
 			}
+			if (this.Yandere == null)
+			{
+				this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent(typeof(YandereScript));
+			}
 			this.PauseScreen = (PauseScreenScript)GameObject.Find("PauseScreen").GetComponent(typeof(PauseScreenScript));
 			this.PromptParent = (Transform)GameObject.Find("PromptParent").GetComponent(typeof(Transform));
-			this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent(typeof(YandereScript));
 			this.UICamera = (Camera)GameObject.Find("UI Camera").GetComponent(typeof(Camera));
 			this.ID = 0;
 			while (this.ID < 4)

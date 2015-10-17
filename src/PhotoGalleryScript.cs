@@ -10,18 +10,18 @@ public class PhotoGalleryScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $GetPhotos$1807 : GenericGenerator<WWW>
+	internal sealed class $GetPhotos$1855 : GenericGenerator<WWW>
 	{
-		internal PhotoGalleryScript $self_$1812;
+		internal PhotoGalleryScript $self_$1860;
 
-		public $GetPhotos$1807(PhotoGalleryScript self_)
+		public $GetPhotos$1855(PhotoGalleryScript self_)
 		{
-			this.$self_$1812 = self_;
+			this.$self_$1860 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new PhotoGalleryScript.$GetPhotos$1807.$(this.$self_$1812);
+			return new PhotoGalleryScript.$GetPhotos$1855.$(this.$self_$1860);
 		}
 	}
 
@@ -469,7 +469,7 @@ public class PhotoGalleryScript : MonoBehaviour
 
 	public virtual IEnumerator GetPhotos()
 	{
-		return new PhotoGalleryScript.$GetPhotos$1807(this).GetEnumerator();
+		return new PhotoGalleryScript.$GetPhotos$1855(this).GetEnumerator();
 	}
 
 	public virtual void UpdateUseButton()

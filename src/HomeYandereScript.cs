@@ -10,35 +10,35 @@ public class HomeYandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$1794 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$1842 : GenericGenerator<WWW>
 	{
-		internal HomeYandereScript $self_$1800;
+		internal HomeYandereScript $self_$1848;
 
-		public $ApplyCustomCostume$1794(HomeYandereScript self_)
+		public $ApplyCustomCostume$1842(HomeYandereScript self_)
 		{
-			this.$self_$1800 = self_;
+			this.$self_$1848 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new HomeYandereScript.$ApplyCustomCostume$1794.$(this.$self_$1800);
+			return new HomeYandereScript.$ApplyCustomCostume$1842.$(this.$self_$1848);
 		}
 	}
 
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomFace$1801 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomFace$1849 : GenericGenerator<WWW>
 	{
-		internal HomeYandereScript $self_$1806;
+		internal HomeYandereScript $self_$1854;
 
-		public $ApplyCustomFace$1801(HomeYandereScript self_)
+		public $ApplyCustomFace$1849(HomeYandereScript self_)
 		{
-			this.$self_$1806 = self_;
+			this.$self_$1854 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new HomeYandereScript.$ApplyCustomFace$1801.$(this.$self_$1806);
+			return new HomeYandereScript.$ApplyCustomFace$1849.$(this.$self_$1854);
 		}
 	}
 
@@ -155,6 +155,13 @@ public class HomeYandereScript : MonoBehaviour
 		{
 			this.UpdateHair();
 		}
+		if (Input.GetKeyDown("k"))
+		{
+			PlayerPrefs.SetInt("Kidnapped", 1);
+			PlayerPrefs.SetInt("KidnapVictim", 6);
+			PlayerPrefs.SetFloat("Student_6_Sanity", 100f);
+			Application.LoadLevel(Application.loadedLevel);
+		}
 		if (Input.GetKeyDown(KeyCode.F1))
 		{
 			PlayerPrefs.SetInt("FemaleUniform", 1);
@@ -268,12 +275,12 @@ public class HomeYandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new HomeYandereScript.$ApplyCustomCostume$1794(this).GetEnumerator();
+		return new HomeYandereScript.$ApplyCustomCostume$1842(this).GetEnumerator();
 	}
 
 	public virtual IEnumerator ApplyCustomFace()
 	{
-		return new HomeYandereScript.$ApplyCustomFace$1801(this).GetEnumerator();
+		return new HomeYandereScript.$ApplyCustomFace$1849(this).GetEnumerator();
 	}
 
 	public virtual void Main()

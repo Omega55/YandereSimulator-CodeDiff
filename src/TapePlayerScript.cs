@@ -49,6 +49,7 @@ public class TapePlayerScript : MonoBehaviour
 			this.PromptBar.ClearButtons();
 			this.PromptBar.Label[1].text = "EXIT";
 			this.PromptBar.Label[4].text = "CHOOSE";
+			this.PromptBar.Label[5].text = "CATEGORY";
 			this.TapePlayerMenu.CheckSelection();
 			this.PromptBar.Show = true;
 			this.Prompt.Hide();

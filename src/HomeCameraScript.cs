@@ -20,11 +20,15 @@ public class HomeCameraScript : MonoBehaviour
 
 	public HomeInternetScript HomeInternet;
 
+	public HomePrisonerScript HomePrisoner;
+
 	public HomeYandereScript HomeYandere;
 
 	public HomeSleepScript HomeSleep;
 
 	public HomeExitScript HomeExit;
+
+	public PromptBarScript PromptBar;
 
 	public Vignetting Vignette;
 
@@ -41,6 +45,8 @@ public class HomeCameraScript : MonoBehaviour
 	public GameObject CeilingLight;
 
 	public GameObject NightLight;
+
+	public GameObject RopeGroup;
 
 	public GameObject DayLight;
 
@@ -67,6 +73,8 @@ public class HomeCameraScript : MonoBehaviour
 	public AudioClip NightBasement;
 
 	public AudioClip NightRoom;
+
+	public bool Torturing;
 
 	public virtual void Start()
 	{
@@ -98,7 +106,9 @@ public class HomeCameraScript : MonoBehaviour
 		}
 		if (PlayerPrefs.GetInt("Kidnapped") == 0)
 		{
+			this.RopeGroup.active = false;
 			this.Victim.active = false;
+			this.Triggers[9].Disable();
 		}
 		Time.timeScale = (float)1;
 	}
@@ -161,16 +171,39 @@ public class HomeCameraScript : MonoBehaviour
 			{
 				this.HomePantyChanger.enabled = true;
 			}
+			else if (this.ID == 9)
+			{
+				this.PromptBar.ClearButtons();
+				this.PromptBar.Label[0].text = "Accept";
+				this.PromptBar.Label[1].text = "Back";
+				this.PromptBar.UpdateButtons();
+				this.PromptBar.Show = true;
+				this.HomeYandere.active = false;
+			}
 		}
 		if (this.Destination == this.Destinations[0])
 		{
-			this.Vignette.intensity = Mathf.MoveTowards(this.Vignette.intensity, (float)1, Time.deltaTime);
+			if (this.HomeYandere.transform.position.y > (float)-1)
+			{
+				this.Vignette.intensity = Mathf.MoveTowards(this.Vignette.intensity, (float)1, Time.deltaTime);
+			}
+			else
+			{
+				this.Vignette.intensity = Mathf.MoveTowards(this.Vignette.intensity, (float)5, Time.deltaTime * (float)5);
+			}
 			this.Vignette.chromaticAberration = Mathf.MoveTowards(this.Vignette.chromaticAberration, (float)1, Time.deltaTime);
 			this.Vignette.blur = Mathf.MoveTowards(this.Vignette.blur, (float)1, Time.deltaTime);
 		}
 		else
 		{
-			this.Vignette.intensity = Mathf.MoveTowards(this.Vignette.intensity, (float)0, Time.deltaTime);
+			if (this.HomeYandere.transform.position.y > (float)-1)
+			{
+				this.Vignette.intensity = Mathf.MoveTowards(this.Vignette.intensity, (float)0, Time.deltaTime);
+			}
+			else
+			{
+				this.Vignette.intensity = Mathf.MoveTowards(this.Vignette.intensity, (float)0, Time.deltaTime * (float)5);
+			}
 			this.Vignette.chromaticAberration = Mathf.MoveTowards(this.Vignette.chromaticAberration, (float)0, Time.deltaTime);
 			this.Vignette.blur = Mathf.MoveTowards(this.Vignette.blur, (float)0, Time.deltaTime);
 		}
@@ -198,7 +231,7 @@ public class HomeCameraScript : MonoBehaviour
 			this.BasementJukebox.volume = Mathf.MoveTowards(this.BasementJukebox.volume, (float)0, Time.deltaTime);
 			this.RoomJukebox.volume = Mathf.MoveTowards(this.RoomJukebox.volume, (float)1, Time.deltaTime);
 		}
-		else
+		else if (!this.Torturing)
 		{
 			this.BasementJukebox.volume = Mathf.MoveTowards(this.BasementJukebox.volume, (float)1, Time.deltaTime);
 			this.RoomJukebox.volume = Mathf.MoveTowards(this.RoomJukebox.volume, (float)0, Time.deltaTime);
@@ -214,6 +247,10 @@ public class HomeCameraScript : MonoBehaviour
 				PlayerPrefs.SetInt("Night", 0);
 			}
 			Application.LoadLevel(Application.loadedLevel);
+		}
+		if (Input.GetKeyDown("="))
+		{
+			Time.timeScale = (float)100;
 		}
 	}
 

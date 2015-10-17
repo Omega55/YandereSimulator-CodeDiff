@@ -7,6 +7,8 @@ public class PortraitChanScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
 
+	public HomeCameraScript HomeCamera;
+
 	public JsonScript JSON;
 
 	public SkinnedMeshRenderer MyRenderer;
@@ -25,13 +27,7 @@ public class PortraitChanScript : MonoBehaviour
 
 	public Renderer EyeL;
 
-	public Vector3 RightEyeRotOrigin;
-
-	public Vector3 LeftEyeRotOrigin;
-
-	public Vector3 RightEyeOrigin;
-
-	public Vector3 LeftEyeOrigin;
+	public Transform HomeYandere;
 
 	public Transform RightBreast;
 
@@ -63,19 +59,15 @@ public class PortraitChanScript : MonoBehaviour
 
 	public GameObject LongHair;
 
-	public bool Bullied;
-
-	public bool Kidnapped;
-
 	public bool HidePony;
+
+	public bool Bullied;
 
 	public bool Teacher;
 
 	public bool Male;
 
 	public float BreastSize;
-
-	public float EyeShrink;
 
 	public string Hairstyle;
 
@@ -91,9 +83,43 @@ public class PortraitChanScript : MonoBehaviour
 
 	public Mesh BaldMesh;
 
-	public Transform TwintailL;
+	public HomeYandereDetectorScript YandereDetector;
+
+	public Quaternion LastRotation;
+
+	public GameObject RightIris;
+
+	public GameObject LeftIris;
 
 	public Transform TwintailR;
+
+	public Transform TwintailL;
+
+	public Transform Neck;
+
+	public Vector3 RightEyeRotOrigin;
+
+	public Vector3 LeftEyeRotOrigin;
+
+	public Vector3 RightEyeOrigin;
+
+	public Vector3 LeftEyeOrigin;
+
+	public Vector3 Twitch;
+
+	public float HairRotation;
+
+	public float TwitchTimer;
+
+	public float NextTwitch;
+
+	public float EyeShrink;
+
+	public float Sanity;
+
+	public bool Kidnapped;
+
+	public bool Tortured;
 
 	public PortraitChanScript()
 	{
@@ -112,7 +138,9 @@ public class PortraitChanScript : MonoBehaviour
 		if (this.Kidnapped)
 		{
 			this.StudentID = PlayerPrefs.GetInt("KidnapVictim");
-			this.Character.animation.Play("f02_prisoner_00");
+			this.Character.animation.Play("f02_kidnapIdle_00");
+			this.TwintailR.transform.localEulerAngles = new Vector3((float)10, (float)-90, (float)0);
+			this.TwintailL.transform.localEulerAngles = new Vector3((float)10, (float)90, (float)0);
 		}
 		if (this.Bullied)
 		{
@@ -134,6 +162,7 @@ public class PortraitChanScript : MonoBehaviour
 			this.BecomeTeacher();
 		}
 		this.SetColors();
+		this.UpdateSanity();
 	}
 
 	public virtual void SetColors()
@@ -363,85 +392,156 @@ public class PortraitChanScript : MonoBehaviour
 		this.MyRenderer.materials[3].mainTexture = this.HairTexture;
 	}
 
-	public virtual void Update()
+	public virtual void LateUpdate()
 	{
 		if (this.Kidnapped)
 		{
-			int num = -75;
-			Vector3 localEulerAngles = this.TwintailL.transform.localEulerAngles;
-			float num2 = localEulerAngles.z = (float)num;
-			Vector3 vector = this.TwintailL.transform.localEulerAngles = localEulerAngles;
-			int num3 = 75;
-			Vector3 localEulerAngles2 = this.TwintailR.transform.localEulerAngles;
-			float num4 = localEulerAngles2.z = (float)num3;
-			Vector3 vector2 = this.TwintailR.transform.localEulerAngles = localEulerAngles2;
+			if (!this.Tortured)
+			{
+				if (this.Sanity > (float)0)
+				{
+					if (this.YandereDetector.YandereDetected && Vector3.Distance(this.transform.position, this.HomeYandere.position) < (float)2)
+					{
+						Quaternion to;
+						if (this.HomeCamera.Target == this.HomeCamera.Targets[9])
+						{
+							to = Quaternion.LookRotation(this.HomeCamera.transform.position + Vector3.down * 1.5f * ((float)100 - this.Sanity) / (float)100 - this.Neck.position);
+							this.HairRotation = Mathf.Lerp(this.HairRotation, (float)0, Time.deltaTime * (float)2);
+						}
+						else
+						{
+							to = Quaternion.LookRotation(this.HomeYandere.position + Vector3.up * 1.5f - this.Neck.position);
+							this.HairRotation = Mathf.Lerp(this.HairRotation, (float)-45, Time.deltaTime * (float)2);
+						}
+						this.Neck.rotation = Quaternion.Slerp(this.LastRotation, to, Time.deltaTime * (float)2);
+						this.TwintailR.transform.localEulerAngles = new Vector3((float)15, (float)-75, this.HairRotation);
+						this.TwintailL.transform.localEulerAngles = new Vector3((float)15, (float)75, (float)-1 * this.HairRotation);
+					}
+					else
+					{
+						if (this.HomeCamera.Target == this.HomeCamera.Targets[9])
+						{
+							Quaternion to = Quaternion.LookRotation(this.HomeCamera.transform.position + Vector3.down * 1.5f * ((float)100 - this.Sanity) / (float)100 - this.Neck.position);
+							this.HairRotation = Mathf.Lerp(this.HairRotation, (float)0, Time.deltaTime * (float)2);
+						}
+						else
+						{
+							Quaternion to = Quaternion.LookRotation(this.transform.position + this.transform.forward - this.Neck.position);
+							this.Neck.rotation = Quaternion.Slerp(this.LastRotation, to, Time.deltaTime * (float)2);
+						}
+						this.HairRotation = Mathf.Lerp(this.HairRotation, (float)45, Time.deltaTime * (float)2);
+						this.TwintailR.transform.localEulerAngles = new Vector3((float)15, (float)-75, this.HairRotation);
+						this.TwintailL.transform.localEulerAngles = new Vector3((float)15, (float)75, (float)-1 * this.HairRotation);
+					}
+				}
+				else
+				{
+					float x = this.Neck.localEulerAngles.x - (float)45;
+					Vector3 localEulerAngles = this.Neck.localEulerAngles;
+					float num = localEulerAngles.x = x;
+					Vector3 vector = this.Neck.localEulerAngles = localEulerAngles;
+				}
+			}
+			else
+			{
+				this.EyeShrink += Time.deltaTime * 0.1f;
+			}
+			this.LastRotation = this.Neck.rotation;
+			if (!this.Tortured && this.Sanity < (float)100 && this.Sanity > (float)0)
+			{
+				this.TwitchTimer += Time.deltaTime;
+				if (this.TwitchTimer > this.NextTwitch)
+				{
+					this.Twitch.x = ((float)1 - this.Sanity / (float)100) * UnityEngine.Random.Range(-10f, 10f);
+					this.Twitch.y = ((float)1 - this.Sanity / (float)100) * UnityEngine.Random.Range(-10f, 10f);
+					this.Twitch.z = ((float)1 - this.Sanity / (float)100) * UnityEngine.Random.Range(-10f, 10f);
+					this.NextTwitch = UnityEngine.Random.Range((float)0, 1f);
+					this.TwitchTimer = (float)0;
+				}
+				this.Twitch = Vector3.Lerp(this.Twitch, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+				this.Neck.localEulerAngles = this.Neck.localEulerAngles + this.Twitch;
+			}
 		}
-	}
-
-	public virtual void LateUpdate()
-	{
-		if (this.RightEye != null)
+		if (this.Tortured && this.RightEye != null)
 		{
 			if (this.EyeShrink > (float)1)
 			{
 				this.EyeShrink = (float)1;
 			}
-			float z = this.LeftEyeOrigin.z - this.EyeShrink * 0.009f;
-			Vector3 localPosition = this.LeftEye.localPosition;
-			float num = localPosition.z = z;
-			Vector3 vector = this.LeftEye.localPosition = localPosition;
-			float z2 = this.RightEyeOrigin.z + this.EyeShrink * 0.009f;
-			Vector3 localPosition2 = this.RightEye.localPosition;
-			float num2 = localPosition2.z = z2;
-			Vector3 vector2 = this.RightEye.localPosition = localPosition2;
-			float x = this.LeftEyeOrigin.x - this.EyeShrink * 0.002f;
-			Vector3 localPosition3 = this.LeftEye.localPosition;
-			float num3 = localPosition3.x = x;
-			Vector3 vector3 = this.LeftEye.localPosition = localPosition3;
-			float x2 = this.RightEyeOrigin.x - this.EyeShrink * 0.002f;
-			Vector3 localPosition4 = this.RightEye.localPosition;
-			float num4 = localPosition4.x = x2;
-			Vector3 vector4 = this.RightEye.localPosition = localPosition4;
-			float x3 = this.LeftEyeRotOrigin.x + (float)5 + UnityEngine.Random.Range(this.EyeShrink * -1f, this.EyeShrink * 1f);
-			Vector3 localEulerAngles = this.LeftEye.localEulerAngles;
-			float num5 = localEulerAngles.x = x3;
-			Vector3 vector5 = this.LeftEye.localEulerAngles = localEulerAngles;
-			float y = this.LeftEyeRotOrigin.y + UnityEngine.Random.Range(this.EyeShrink * -1f, this.EyeShrink * 1f);
-			Vector3 localEulerAngles2 = this.LeftEye.localEulerAngles;
-			float num6 = localEulerAngles2.y = y;
-			Vector3 vector6 = this.LeftEye.localEulerAngles = localEulerAngles2;
-			float z3 = this.LeftEyeRotOrigin.z + UnityEngine.Random.Range(this.EyeShrink * -1f, this.EyeShrink * 1f);
-			Vector3 localEulerAngles3 = this.LeftEye.localEulerAngles;
-			float num7 = localEulerAngles3.z = z3;
-			Vector3 vector7 = this.LeftEye.localEulerAngles = localEulerAngles3;
-			float x4 = this.RightEyeRotOrigin.x - (float)5 + UnityEngine.Random.Range(this.EyeShrink * -1f, this.EyeShrink * 1f);
-			Vector3 localEulerAngles4 = this.RightEye.localEulerAngles;
-			float num8 = localEulerAngles4.x = x4;
-			Vector3 vector8 = this.RightEye.localEulerAngles = localEulerAngles4;
-			float y2 = this.RightEyeRotOrigin.y + UnityEngine.Random.Range(this.EyeShrink * -1f, this.EyeShrink * 1f);
-			Vector3 localEulerAngles5 = this.RightEye.localEulerAngles;
-			float num9 = localEulerAngles5.y = y2;
-			Vector3 vector9 = this.RightEye.localEulerAngles = localEulerAngles5;
-			float z4 = this.RightEyeRotOrigin.z + UnityEngine.Random.Range(this.EyeShrink * -1f, this.EyeShrink * 1f);
-			Vector3 localEulerAngles6 = this.RightEye.localEulerAngles;
-			float num10 = localEulerAngles6.z = z4;
-			Vector3 vector10 = this.RightEye.localEulerAngles = localEulerAngles6;
-			float x5 = (float)1 - this.EyeShrink * 0.5f;
-			Vector3 localScale = this.LeftEye.localScale;
-			float num11 = localScale.x = x5;
-			Vector3 vector11 = this.LeftEye.localScale = localScale;
-			float y3 = (float)1 - this.EyeShrink * 0.5f;
-			Vector3 localScale2 = this.LeftEye.localScale;
-			float num12 = localScale2.y = y3;
-			Vector3 vector12 = this.LeftEye.localScale = localScale2;
-			float x6 = (float)1 - this.EyeShrink * 0.5f;
-			Vector3 localScale3 = this.RightEye.localScale;
-			float num13 = localScale3.x = x6;
-			Vector3 vector13 = this.RightEye.localScale = localScale3;
-			float y4 = (float)1 - this.EyeShrink * 0.5f;
-			Vector3 localScale4 = this.RightEye.localScale;
-			float num14 = localScale4.y = y4;
-			Vector3 vector14 = this.RightEye.localScale = localScale4;
+			if (this.Sanity >= (float)50)
+			{
+				float z = this.LeftEye.localPosition.z - this.EyeShrink * 0.009f;
+				Vector3 localPosition = this.LeftEye.localPosition;
+				float num2 = localPosition.z = z;
+				Vector3 vector2 = this.LeftEye.localPosition = localPosition;
+				float z2 = this.RightEye.localPosition.z + this.EyeShrink * 0.009f;
+				Vector3 localPosition2 = this.RightEye.localPosition;
+				float num3 = localPosition2.z = z2;
+				Vector3 vector3 = this.RightEye.localPosition = localPosition2;
+				float x2 = this.LeftEye.localPosition.x - this.EyeShrink * 0.002f;
+				Vector3 localPosition3 = this.LeftEye.localPosition;
+				float num4 = localPosition3.x = x2;
+				Vector3 vector4 = this.LeftEye.localPosition = localPosition3;
+				float x3 = this.RightEye.localPosition.x - this.EyeShrink * 0.002f;
+				Vector3 localPosition4 = this.RightEye.localPosition;
+				float num5 = localPosition4.x = x3;
+				Vector3 vector5 = this.RightEye.localPosition = localPosition4;
+				float x4 = this.LeftEye.localEulerAngles.x + (float)5 + UnityEngine.Random.Range(this.EyeShrink * -1f, this.EyeShrink * 1f);
+				Vector3 localEulerAngles2 = this.LeftEye.localEulerAngles;
+				float num6 = localEulerAngles2.x = x4;
+				Vector3 vector6 = this.LeftEye.localEulerAngles = localEulerAngles2;
+				float y = this.LeftEye.localEulerAngles.y + UnityEngine.Random.Range(this.EyeShrink * -1f, this.EyeShrink * 1f);
+				Vector3 localEulerAngles3 = this.LeftEye.localEulerAngles;
+				float num7 = localEulerAngles3.y = y;
+				Vector3 vector7 = this.LeftEye.localEulerAngles = localEulerAngles3;
+				float z3 = this.LeftEye.localEulerAngles.z + UnityEngine.Random.Range(this.EyeShrink * -1f, this.EyeShrink * 1f);
+				Vector3 localEulerAngles4 = this.LeftEye.localEulerAngles;
+				float num8 = localEulerAngles4.z = z3;
+				Vector3 vector8 = this.LeftEye.localEulerAngles = localEulerAngles4;
+				float x5 = this.RightEye.localEulerAngles.x - (float)5 + UnityEngine.Random.Range(this.EyeShrink * -1f, this.EyeShrink * 1f);
+				Vector3 localEulerAngles5 = this.RightEye.localEulerAngles;
+				float num9 = localEulerAngles5.x = x5;
+				Vector3 vector9 = this.RightEye.localEulerAngles = localEulerAngles5;
+				float y2 = this.RightEye.localEulerAngles.y + UnityEngine.Random.Range(this.EyeShrink * -1f, this.EyeShrink * 1f);
+				Vector3 localEulerAngles6 = this.RightEye.localEulerAngles;
+				float num10 = localEulerAngles6.y = y2;
+				Vector3 vector10 = this.RightEye.localEulerAngles = localEulerAngles6;
+				float z4 = this.RightEye.localEulerAngles.z + UnityEngine.Random.Range(this.EyeShrink * -1f, this.EyeShrink * 1f);
+				Vector3 localEulerAngles7 = this.RightEye.localEulerAngles;
+				float num11 = localEulerAngles7.z = z4;
+				Vector3 vector11 = this.RightEye.localEulerAngles = localEulerAngles7;
+				float x6 = (float)1 - this.EyeShrink * 0.5f;
+				Vector3 localScale = this.LeftEye.localScale;
+				float num12 = localScale.x = x6;
+				Vector3 vector12 = this.LeftEye.localScale = localScale;
+				float y3 = (float)1 - this.EyeShrink * 0.5f;
+				Vector3 localScale2 = this.LeftEye.localScale;
+				float num13 = localScale2.y = y3;
+				Vector3 vector13 = this.LeftEye.localScale = localScale2;
+				float x7 = (float)1 - this.EyeShrink * 0.5f;
+				Vector3 localScale3 = this.RightEye.localScale;
+				float num14 = localScale3.x = x7;
+				Vector3 vector14 = this.RightEye.localScale = localScale3;
+				float y4 = (float)1 - this.EyeShrink * 0.5f;
+				Vector3 localScale4 = this.RightEye.localScale;
+				float num15 = localScale4.y = y4;
+				Vector3 vector15 = this.RightEye.localScale = localScale4;
+			}
+		}
+	}
+
+	public virtual void UpdateSanity()
+	{
+		this.Sanity = PlayerPrefs.GetFloat("Student_" + this.StudentID + "_Sanity");
+		if (this.Sanity == (float)0)
+		{
+			this.RightIris.active = true;
+			this.LeftIris.active = true;
+		}
+		else
+		{
+			this.RightIris.active = false;
+			this.LeftIris.active = false;
 		}
 	}
 

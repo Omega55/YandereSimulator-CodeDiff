@@ -23,6 +23,8 @@ public class TapePlayerMenuScript : MonoBehaviour
 
 	public AudioClip[] Recordings;
 
+	public AudioClip[] BasementRecordings;
+
 	public UILabel[] TapeLabels;
 
 	public GameObject[] NewIcons;
@@ -37,6 +39,8 @@ public class TapePlayerMenuScript : MonoBehaviour
 
 	public bool Show;
 
+	public UILabel HeaderLabel;
+
 	public UILabel Subtitle;
 
 	public UILabel Label;
@@ -44,6 +48,8 @@ public class TapePlayerMenuScript : MonoBehaviour
 	public UISprite Bar;
 
 	public int TotalTapes;
+
+	public int Category;
 
 	public int Selected;
 
@@ -95,9 +101,14 @@ public class TapePlayerMenuScript : MonoBehaviour
 
 	public string[] Subs10;
 
+	public float[] BasementCues1;
+
+	public string[] BasementSubs1;
+
 	public TapePlayerMenuScript()
 	{
 		this.TotalTapes = 10;
+		this.Category = 1;
 		this.Selected = 1;
 		this.Phase = 1;
 	}
@@ -257,6 +268,7 @@ public class TapePlayerMenuScript : MonoBehaviour
 					this.PromptBar.Label[0].text = "PLAY";
 					this.PromptBar.Label[1].text = "BACK";
 					this.PromptBar.Label[4].text = "CHOOSE";
+					this.PromptBar.Label[5].text = "CATEGORY";
 					this.PromptBar.UpdateButtons();
 				}
 			}
@@ -298,103 +310,116 @@ public class TapePlayerMenuScript : MonoBehaviour
 				}
 				this.CurrentTime = string.Format("{00:00}:{1:00}", num7, num8);
 				this.Label.text = this.CurrentTime + " / " + this.ClipLength;
-				if (this.Selected == 1)
+				if (this.Category == 1)
 				{
-					for (int i = 0; i < Extensions.get_length(this.Cues1); i++)
+					if (this.Selected == 1)
 					{
-						if (this.audio.time > this.Cues1[i])
+						for (int i = 0; i < Extensions.get_length(this.Cues1); i++)
 						{
-							this.Subtitle.text = this.Subs1[i];
+							if (this.audio.time > this.Cues1[i])
+							{
+								this.Subtitle.text = this.Subs1[i];
+							}
+						}
+					}
+					else if (this.Selected == 2)
+					{
+						for (int i = 0; i < Extensions.get_length(this.Cues2); i++)
+						{
+							if (this.audio.time > this.Cues2[i])
+							{
+								this.Subtitle.text = this.Subs2[i];
+							}
+						}
+					}
+					else if (this.Selected == 3)
+					{
+						for (int i = 0; i < Extensions.get_length(this.Cues3); i++)
+						{
+							if (this.audio.time > this.Cues3[i])
+							{
+								this.Subtitle.text = this.Subs3[i];
+							}
+						}
+					}
+					else if (this.Selected == 4)
+					{
+						for (int i = 0; i < Extensions.get_length(this.Cues4); i++)
+						{
+							if (this.audio.time > this.Cues4[i])
+							{
+								this.Subtitle.text = this.Subs4[i];
+							}
+						}
+					}
+					else if (this.Selected == 5)
+					{
+						for (int i = 0; i < Extensions.get_length(this.Cues5); i++)
+						{
+							if (this.audio.time > this.Cues5[i])
+							{
+								this.Subtitle.text = this.Subs5[i];
+							}
+						}
+					}
+					else if (this.Selected == 6)
+					{
+						for (int i = 0; i < Extensions.get_length(this.Cues6); i++)
+						{
+							if (this.audio.time > this.Cues6[i])
+							{
+								this.Subtitle.text = this.Subs6[i];
+							}
+						}
+					}
+					else if (this.Selected == 7)
+					{
+						for (int i = 0; i < Extensions.get_length(this.Cues7); i++)
+						{
+							if (this.audio.time > this.Cues7[i])
+							{
+								this.Subtitle.text = this.Subs7[i];
+							}
+						}
+					}
+					else if (this.Selected == 8)
+					{
+						for (int i = 0; i < Extensions.get_length(this.Cues8); i++)
+						{
+							if (this.audio.time > this.Cues8[i])
+							{
+								this.Subtitle.text = this.Subs8[i];
+							}
+						}
+					}
+					else if (this.Selected == 9)
+					{
+						for (int i = 0; i < Extensions.get_length(this.Cues9); i++)
+						{
+							if (this.audio.time > this.Cues9[i])
+							{
+								this.Subtitle.text = this.Subs9[i];
+							}
+						}
+					}
+					else if (this.Selected == 10)
+					{
+						for (int i = 0; i < Extensions.get_length(this.Cues10); i++)
+						{
+							if (this.audio.time > this.Cues10[i])
+							{
+								this.Subtitle.text = this.Subs10[i];
+							}
 						}
 					}
 				}
-				else if (this.Selected == 2)
+				else if (this.Selected == 1)
 				{
-					for (int i = 0; i < Extensions.get_length(this.Cues2); i++)
+					for (int i = 0; i < Extensions.get_length(this.BasementCues1); i++)
 					{
-						if (this.audio.time > this.Cues2[i])
+						if (this.audio.time > this.BasementCues1[i])
 						{
-							this.Subtitle.text = this.Subs2[i];
-						}
-					}
-				}
-				else if (this.Selected == 3)
-				{
-					for (int i = 0; i < Extensions.get_length(this.Cues3); i++)
-					{
-						if (this.audio.time > this.Cues3[i])
-						{
-							this.Subtitle.text = this.Subs3[i];
-						}
-					}
-				}
-				else if (this.Selected == 4)
-				{
-					for (int i = 0; i < Extensions.get_length(this.Cues4); i++)
-					{
-						if (this.audio.time > this.Cues4[i])
-						{
-							this.Subtitle.text = this.Subs4[i];
-						}
-					}
-				}
-				else if (this.Selected == 5)
-				{
-					for (int i = 0; i < Extensions.get_length(this.Cues5); i++)
-					{
-						if (this.audio.time > this.Cues5[i])
-						{
-							this.Subtitle.text = this.Subs5[i];
-						}
-					}
-				}
-				else if (this.Selected == 6)
-				{
-					for (int i = 0; i < Extensions.get_length(this.Cues6); i++)
-					{
-						if (this.audio.time > this.Cues6[i])
-						{
-							this.Subtitle.text = this.Subs6[i];
-						}
-					}
-				}
-				else if (this.Selected == 7)
-				{
-					for (int i = 0; i < Extensions.get_length(this.Cues7); i++)
-					{
-						if (this.audio.time > this.Cues7[i])
-						{
-							this.Subtitle.text = this.Subs7[i];
-						}
-					}
-				}
-				else if (this.Selected == 8)
-				{
-					for (int i = 0; i < Extensions.get_length(this.Cues8); i++)
-					{
-						if (this.audio.time > this.Cues8[i])
-						{
-							this.Subtitle.text = this.Subs8[i];
-						}
-					}
-				}
-				else if (this.Selected == 9)
-				{
-					for (int i = 0; i < Extensions.get_length(this.Cues9); i++)
-					{
-						if (this.audio.time > this.Cues9[i])
-						{
-							this.Subtitle.text = this.Subs9[i];
-						}
-					}
-				}
-				else if (this.Selected == 10)
-				{
-					for (int i = 0; i < Extensions.get_length(this.Cues10); i++)
-					{
-						if (this.audio.time > this.Cues10[i])
-						{
-							this.Subtitle.text = this.Subs10[i];
+							this.Subtitle.text = this.BasementSubs1[i];
 						}
 					}
 				}
@@ -423,6 +448,18 @@ public class TapePlayerMenuScript : MonoBehaviour
 			Vector3 localPosition6 = this.TimeBar.localPosition;
 			float num12 = localPosition6.y = y3;
 			Vector3 vector10 = this.TimeBar.localPosition = localPosition6;
+			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
+			{
+				if (this.Category == 1)
+				{
+					this.Category = 2;
+				}
+				else
+				{
+					this.Category = 1;
+				}
+				this.UpdateLabels();
+			}
 			if (this.InputManager.TappedUp)
 			{
 				this.Selected--;
@@ -451,9 +488,22 @@ public class TapePlayerMenuScript : MonoBehaviour
 			}
 			else if (Input.GetButtonDown("A"))
 			{
-				if (PlayerPrefs.GetInt("Tape_" + this.Selected + "_Collected") == 1)
+				bool flag = false;
+				if (this.Category == 1)
 				{
-					PlayerPrefs.SetInt("Tape_" + this.Selected + "_Listened", 1);
+					if (PlayerPrefs.GetInt("Tape_" + this.Selected + "_Collected") == 1)
+					{
+						PlayerPrefs.SetInt("Tape_" + this.Selected + "_Listened", 1);
+						flag = true;
+					}
+				}
+				else if (PlayerPrefs.GetInt("BasementTape_" + this.Selected + "_Collected") == 1)
+				{
+					PlayerPrefs.SetInt("BasementTape_" + this.Selected + "_Listened", 1);
+					flag = true;
+				}
+				if (flag)
+				{
 					this.NewIcons[this.Selected].active = false;
 					this.Jukebox.active = false;
 					this.Listening = true;
@@ -464,7 +514,14 @@ public class TapePlayerMenuScript : MonoBehaviour
 					this.PromptBar.UpdateButtons();
 					this.TapePlayer.animation.Play("InsertTape");
 					this.TapePlayer.Tape.active = true;
-					this.audio.clip = this.Recordings[this.Selected];
+					if (this.Category == 1)
+					{
+						this.audio.clip = this.Recordings[this.Selected];
+					}
+					else
+					{
+						this.audio.clip = this.BasementRecordings[this.Selected];
+					}
 					this.audio.time = (float)0;
 					this.RoundedTime = (float)Mathf.CeilToInt(this.audio.clip.length);
 					int num7 = (int)(this.RoundedTime / (float)60);
@@ -493,29 +550,67 @@ public class TapePlayerMenuScript : MonoBehaviour
 		while (i < this.TotalTapes)
 		{
 			i++;
-			if (PlayerPrefs.GetInt("Tape_" + i + "_Collected") == 1)
+			if (this.Category == 1)
 			{
-				this.TapeLabels[i].text = "Mysterious Tape " + i;
-				if (PlayerPrefs.GetInt("Tape_" + i + "_Listened") == 1)
+				this.HeaderLabel.text = "Mysterious Tapes";
+				if (PlayerPrefs.GetInt("Tape_" + i + "_Collected") == 1)
 				{
-					this.NewIcons[i].active = false;
+					this.TapeLabels[i].text = "Mysterious Tape " + i;
+					if (PlayerPrefs.GetInt("Tape_" + i + "_Listened") == 1)
+					{
+						this.NewIcons[i].active = false;
+					}
+					else
+					{
+						this.NewIcons[i].active = true;
+					}
 				}
 				else
 				{
-					this.NewIcons[i].active = true;
+					this.TapeLabels[i].text = "?????";
+					this.NewIcons[i].active = false;
 				}
 			}
 			else
 			{
-				this.TapeLabels[i].text = "?????";
-				this.NewIcons[i].active = false;
+				this.HeaderLabel.text = "Basement Tapes";
+				if (PlayerPrefs.GetInt("BasementTape_" + i + "_Collected") == 1)
+				{
+					this.TapeLabels[i].text = "Basement Tape " + i;
+					if (PlayerPrefs.GetInt("BasementTape_" + i + "_Listened") == 1)
+					{
+						this.NewIcons[i].active = false;
+					}
+					else
+					{
+						this.NewIcons[i].active = true;
+					}
+				}
+				else
+				{
+					this.TapeLabels[i].text = "?????";
+					this.NewIcons[i].active = false;
+				}
 			}
 		}
 	}
 
 	public virtual void CheckSelection()
 	{
-		if (PlayerPrefs.GetInt("Tape_" + this.Selected + "_Collected") == 1)
+		if (this.Category == 1)
+		{
+			if (PlayerPrefs.GetInt("Tape_" + this.Selected + "_Collected") == 1)
+			{
+				this.TapePlayer.PromptBar.Label[0].text = "PLAY";
+				this.TapePlayer.PromptBar.UpdateButtons();
+			}
+			else
+			{
+				this.TapePlayer.PromptBar.Label[0].text = string.Empty;
+				this.TapePlayer.PromptBar.UpdateButtons();
+			}
+		}
+		else if (PlayerPrefs.GetInt("BasementTape_" + this.Selected + "_Collected") == 1)
 		{
 			this.TapePlayer.PromptBar.Label[0].text = "PLAY";
 			this.TapePlayer.PromptBar.UpdateButtons();

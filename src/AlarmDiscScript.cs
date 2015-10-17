@@ -9,6 +9,8 @@ public class AlarmDiscScript : MonoBehaviour
 
 	public AudioClip[] MaleScreams;
 
+	public StudentScript Originator;
+
 	public StudentScript Student;
 
 	public bool NoScream;
@@ -54,7 +56,7 @@ public class AlarmDiscScript : MonoBehaviour
 		if (other.gameObject.layer == 9)
 		{
 			this.Student = (StudentScript)other.gameObject.GetComponent(typeof(StudentScript));
-			if (this.Student != null && !this.Student.Alarmed && !this.Student.Wet)
+			if (this.Student != null && this.Student != this.Originator && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave)
 			{
 				this.Student.DiscCheck = true;
 				this.Student.Alarm = (float)200;

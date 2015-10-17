@@ -708,6 +708,8 @@ public class PoliceScript : MonoBehaviour
 				this.ResultsLabels[4].text = "Yandere-chan drags the case down to her basement and ties up her victim.";
 				PlayerPrefs.SetInt("Kidnapped", 1);
 				PlayerPrefs.SetInt("KidnapVictim", this.TranqCase.VictimID);
+				PlayerPrefs.SetInt("Student_" + this.TranqCase.VictimID + "_Kidnapped", 1);
+				PlayerPrefs.SetFloat("Student_" + this.TranqCase.VictimID + "_Sanity", 100f);
 			}
 		}
 		else if (this.Suicide)

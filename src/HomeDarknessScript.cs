@@ -36,7 +36,13 @@ public class HomeDarknessScript : MonoBehaviour
 			{
 				if (this.HomeCamera.ID != 2)
 				{
-					if (this.HomeExit.ID == 1)
+					if (this.HomeCamera.ID == 9)
+					{
+						PlayerPrefs.SetInt("Student_6_Kidnapped", 0);
+						PlayerPrefs.SetInt("Student_6_Slave", 1);
+						Application.LoadLevel("SchoolScene");
+					}
+					else if (this.HomeExit.ID == 1)
 					{
 						Application.LoadLevel("SchoolScene");
 					}
