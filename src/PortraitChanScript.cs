@@ -121,6 +121,10 @@ public class PortraitChanScript : MonoBehaviour
 
 	public bool Tortured;
 
+	public Mesh[] FemaleUniforms;
+
+	public Texture[] FemaleUniformTextures;
+
 	public PortraitChanScript()
 	{
 		this.Hairstyle = string.Empty;
@@ -162,6 +166,10 @@ public class PortraitChanScript : MonoBehaviour
 			this.BecomeTeacher();
 		}
 		this.SetColors();
+		if (!this.Male)
+		{
+			this.SetFemaleUniform();
+		}
 		this.UpdateSanity();
 	}
 
@@ -543,6 +551,14 @@ public class PortraitChanScript : MonoBehaviour
 			this.RightIris.active = false;
 			this.LeftIris.active = false;
 		}
+	}
+
+	public virtual void SetFemaleUniform()
+	{
+		this.MyRenderer.sharedMesh = this.FemaleUniforms[PlayerPrefs.GetInt("FemaleUniform")];
+		this.MyRenderer.materials[0].mainTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+		this.MyRenderer.materials[1].mainTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+		this.MyRenderer.materials[2].mainTexture = this.HairTexture;
 	}
 
 	public virtual void Main()

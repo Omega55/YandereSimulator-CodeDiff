@@ -532,7 +532,9 @@ public class TapePlayerMenuScript : MonoBehaviour
 			else if (Input.GetButtonDown("B"))
 			{
 				this.TapePlayer.Yandere.HeartCamera.enabled = true;
+				this.TapePlayer.Yandere.RPGCamera.enabled = true;
 				this.TapePlayer.TapePlayerCamera.enabled = false;
+				this.TapePlayer.NoteWindow.active = true;
 				this.TapePlayer.PromptBar.ClearButtons();
 				this.TapePlayer.Yandere.CanMove = true;
 				this.TapePlayer.PromptBar.Show = false;

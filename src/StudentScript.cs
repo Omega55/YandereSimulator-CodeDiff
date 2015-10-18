@@ -1431,6 +1431,11 @@ public class StudentScript : MonoBehaviour
 				}
 				if (this.Hunting && this.StudentManager.Students[7] != null)
 				{
+					if (this.StudentManager.Students[7].Prompt.enabled)
+					{
+						this.StudentManager.Students[7].Prompt.Hide();
+						this.StudentManager.Students[7].Prompt.enabled = false;
+					}
 					this.Pathfinding.target = this.StudentManager.Students[7].transform;
 					this.CurrentDestination = this.StudentManager.Students[7].transform;
 					if (!this.StudentManager.Students[7].Safe)
@@ -1511,6 +1516,7 @@ public class StudentScript : MonoBehaviour
 								}
 								if (this.Character.animation[this.SuicideAnim].time >= this.Character.animation[this.SuicideAnim].length)
 								{
+									this.StudentManager.MurderTakingPlace = false;
 									this.MyWeapon.parent = this.Head;
 									UnityEngine.Object.Destroy(this.MyWeapon.rigidbody);
 									this.Broken.enabled = false;
@@ -1914,6 +1920,7 @@ public class StudentScript : MonoBehaviour
 				{
 					if (this.Slave)
 					{
+						this.StudentManager.MurderTakingPlace = true;
 						this.Yandere.Weapon[this.Yandere.Equipped].transform.parent = this.ItemParent;
 						this.Yandere.Weapon[this.Yandere.Equipped].transform.localPosition = new Vector3((float)0, (float)0, (float)0);
 						this.Yandere.Weapon[this.Yandere.Equipped].transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);

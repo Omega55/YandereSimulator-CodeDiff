@@ -178,6 +178,11 @@ public class DebugMenuScript : MonoBehaviour
 				}
 				this.Window.active = false;
 			}
+			else if (Input.GetKeyDown("m"))
+			{
+				PlayerPrefs.SetInt("Student_6_Slave", 1);
+				Application.LoadLevel(Application.loadedLevel);
+			}
 			else if (Input.GetKeyDown("p"))
 			{
 				PlayerPrefs.SetInt("PantyShots", 10);

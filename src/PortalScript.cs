@@ -222,7 +222,7 @@ public class PortalScript : MonoBehaviour
 				this.Prompt.enabled = true;
 			}
 		}
-		else if (this.InEvent || this.Yandere.Armed || this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Dragging || this.Yandere.Chased || this.StudentManager.Reporter != null || (this.Police.Corpses - this.Police.HiddenCorpses > 0 && !this.Police.SuicideScene && !this.Police.NaturalScene))
+		else if (this.InEvent || this.Yandere.Armed || this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Dragging || this.Yandere.Chased || this.StudentManager.Reporter != null || this.StudentManager.MurderTakingPlace || (this.Police.Corpses - this.Police.HiddenCorpses > 0 && !this.Police.SuicideScene && !this.Police.NaturalScene))
 		{
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;

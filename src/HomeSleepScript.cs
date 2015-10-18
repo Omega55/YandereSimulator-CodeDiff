@@ -30,7 +30,6 @@ public class HomeSleepScript : MonoBehaviour
 				this.HomeYandere.CanMove = true;
 				this.HomeWindow.Show = false;
 				this.enabled = false;
-				Debug.Log("Yo?");
 			}
 		}
 	}

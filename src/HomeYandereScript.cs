@@ -90,18 +90,18 @@ public class HomeYandereScript : MonoBehaviour
 		{
 			this.transform.position = new Vector3((float)0, (float)0, (float)0);
 			this.transform.eulerAngles = new Vector3((float)0, (float)0, (float)0);
+			if (PlayerPrefs.GetInt("Night") == 0)
+			{
+				this.ChangeSchoolwear();
+				this.StartCoroutine_Auto(this.ApplyCustomCostume());
+			}
+			else
+			{
+				this.WearPajamas();
+			}
 		}
 		Time.timeScale = (float)1;
 		this.UpdateHair();
-		if (PlayerPrefs.GetInt("Night") == 0)
-		{
-			this.ChangeSchoolwear();
-			this.StartCoroutine_Auto(this.ApplyCustomCostume());
-		}
-		else
-		{
-			this.WearPajamas();
-		}
 	}
 
 	public virtual void Update()

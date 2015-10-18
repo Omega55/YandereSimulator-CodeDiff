@@ -20,6 +20,8 @@ public class TapePlayerScript : MonoBehaviour
 
 	public Transform[] Rolls;
 
+	public GameObject NoteWindow;
+
 	public GameObject Tape;
 
 	public bool FastForward;
@@ -40,9 +42,11 @@ public class TapePlayerScript : MonoBehaviour
 		if (this.Prompt.Circle[0].fillAmount <= (float)0)
 		{
 			this.Yandere.HeartCamera.enabled = false;
+			this.Yandere.RPGCamera.enabled = false;
 			this.TapePlayerCamera.enabled = true;
 			this.TapePlayerMenu.UpdateLabels();
 			this.TapePlayerMenu.Show = true;
+			this.NoteWindow.active = false;
 			this.Yandere.CanMove = false;
 			this.Yandere.HUD.alpha = (float)0;
 			Time.timeScale = (float)0;

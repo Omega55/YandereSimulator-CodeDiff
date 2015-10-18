@@ -232,7 +232,7 @@ public class HomePrisonerScript : MonoBehaviour
 				Vector3 vector2 = this.Highlight.localPosition = localPosition2;
 				this.UpdateDesc();
 			}
-			if (Input.GetKeyDown("s"))
+			if (Input.GetKeyDown("x"))
 			{
 				this.Sanity -= (float)10;
 				if (this.Sanity < (float)0)
@@ -240,7 +240,7 @@ public class HomePrisonerScript : MonoBehaviour
 					this.Sanity = (float)100;
 				}
 				PlayerPrefs.SetFloat("Student_6_Sanity", this.Sanity);
-				this.SanityLabel.text = "Sanity: " + this.Sanity;
+				this.SanityLabel.text = "Sanity: " + this.Sanity + "%";
 				this.Prisoner.UpdateSanity();
 			}
 			if (!this.ZoomIn)
@@ -357,17 +357,20 @@ public class HomePrisonerScript : MonoBehaviour
 					{
 						Application.LoadLevel("CalendarScene");
 						PlayerPrefs.SetFloat("Student_6_Sanity", this.Sanity - (float)10);
+						PlayerPrefs.SetFloat("Reputation", PlayerPrefs.GetFloat("Reputation") - (float)20);
 					}
 					else if (this.ID == 3)
 					{
 						PlayerPrefs.SetInt("Night", 1);
 						Application.LoadLevel("HomeScene");
 						PlayerPrefs.SetFloat("Student_6_Sanity", this.Sanity - (float)30);
+						PlayerPrefs.SetFloat("Reputation", PlayerPrefs.GetFloat("Reputation") - (float)20);
 					}
 					else if (this.ID == 4)
 					{
 						Application.LoadLevel("CalendarScene");
 						PlayerPrefs.SetFloat("Student_6_Sanity", this.Sanity - (float)45);
+						PlayerPrefs.SetFloat("Reputation", PlayerPrefs.GetFloat("Reputation") - (float)20);
 					}
 					if (PlayerPrefs.GetFloat("Student_6_Sanity") < (float)0)
 					{
