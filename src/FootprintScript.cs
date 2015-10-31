@@ -1,16 +1,17 @@
 ﻿using System;
-using Boo.Lang.Runtime;
 using UnityEngine;
-using UnityScript.Lang;
 
 [Serializable]
 public class FootprintScript : MonoBehaviour
 {
+	public YandereScript Yandere;
+
 	public Texture Footprint;
 
 	public virtual void Start()
 	{
-		if (RuntimeServices.EqualityOperator(UnityRuntimeServices.GetProperty(GameObject.Find("YandereChan").GetComponent("YandereScript"), "Schoolwear"), 0))
+		this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent("YandereScript");
+		if (this.Yandere.Schoolwear == 0 || this.Yandere.Schoolwear == 2)
 		{
 			this.renderer.material.mainTexture = this.Footprint;
 		}

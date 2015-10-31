@@ -11,18 +11,18 @@ public class TaskListScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $UpdateTaskInfo$1867 : GenericGenerator<WWW>
+	internal sealed class $UpdateTaskInfo$2116 : GenericGenerator<WWW>
 	{
-		internal TaskListScript $self_$1873;
+		internal TaskListScript $self_$2122;
 
-		public $UpdateTaskInfo$1867(TaskListScript self_)
+		public $UpdateTaskInfo$2116(TaskListScript self_)
 		{
-			this.$self_$1873 = self_;
+			this.$self_$2122 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new TaskListScript.$UpdateTaskInfo$1867.$(this.$self_$1873);
+			return new TaskListScript.$UpdateTaskInfo$2116.$(this.$self_$2122);
 		}
 	}
 
@@ -114,7 +114,7 @@ public class TaskListScript : MonoBehaviour
 
 	public virtual IEnumerator UpdateTaskInfo()
 	{
-		return new TaskListScript.$UpdateTaskInfo$1867(this).GetEnumerator();
+		return new TaskListScript.$UpdateTaskInfo$2116(this).GetEnumerator();
 	}
 
 	public virtual void Main()

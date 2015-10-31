@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$1874 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$2123 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$1889;
+		internal YandereScript $self_$2138;
 
-		public $ApplyCustomCostume$1874(YandereScript self_)
+		public $ApplyCustomCostume$2123(YandereScript self_)
 		{
-			this.$self_$1889 = self_;
+			this.$self_$2138 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$1874.$(this.$self_$1889);
+			return new YandereScript.$ApplyCustomCostume$2123.$(this.$self_$2138);
 		}
 	}
 
@@ -2612,7 +2612,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$1874(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$2123(this).GetEnumerator();
 	}
 
 	public virtual void AttackOnTitan()

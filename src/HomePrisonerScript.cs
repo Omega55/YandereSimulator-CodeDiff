@@ -204,7 +204,7 @@ public class HomePrisonerScript : MonoBehaviour
 			this.Bantering = false;
 			this.BanterTimer = (float)0;
 		}
-		if (!this.HomeYandere.CanMove && (this.HomeCamera.Destination == this.HomeCamera.Destinations[9] || this.HomeCamera.Destination == this.TortureDestination))
+		if (!this.HomeYandere.CanMove && (this.HomeCamera.Destination == this.HomeCamera.Destinations[10] || this.HomeCamera.Destination == this.TortureDestination))
 		{
 			if (this.InputManager.TappedDown)
 			{

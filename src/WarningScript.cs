@@ -39,6 +39,10 @@ public class WarningScript : MonoBehaviour
 
 	public virtual void Update()
 	{
+		if (Input.GetKeyDown("y"))
+		{
+			Application.LoadLevel("YanvaniaScene");
+		}
 		if (!this.Continue)
 		{
 			float a = this.Darkness.color.a - Time.deltaTime;

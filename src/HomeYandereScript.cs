@@ -10,49 +10,59 @@ public class HomeYandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$1842 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$2091 : GenericGenerator<WWW>
 	{
-		internal HomeYandereScript $self_$1848;
+		internal HomeYandereScript $self_$2097;
 
-		public $ApplyCustomCostume$1842(HomeYandereScript self_)
+		public $ApplyCustomCostume$2091(HomeYandereScript self_)
 		{
-			this.$self_$1848 = self_;
+			this.$self_$2097 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new HomeYandereScript.$ApplyCustomCostume$1842.$(this.$self_$1848);
+			return new HomeYandereScript.$ApplyCustomCostume$2091.$(this.$self_$2097);
 		}
 	}
 
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomFace$1849 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomFace$2098 : GenericGenerator<WWW>
 	{
-		internal HomeYandereScript $self_$1854;
+		internal HomeYandereScript $self_$2103;
 
-		public $ApplyCustomFace$1849(HomeYandereScript self_)
+		public $ApplyCustomFace$2098(HomeYandereScript self_)
 		{
-			this.$self_$1854 = self_;
+			this.$self_$2103 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new HomeYandereScript.$ApplyCustomFace$1849.$(this.$self_$1854);
+			return new HomeYandereScript.$ApplyCustomFace$2098.$(this.$self_$2103);
 		}
 	}
 
 	public CharacterController MyController;
 
+	public HomeVideoGamesScript HomeVideoGames;
+
+	public HomeCameraScript HomeCamera;
+
+	public UISprite HomeDarkness;
+
+	public GameObject Controller;
+
 	public GameObject Character;
 
-	public GameObject Victim;
+	public GameObject Disc;
 
 	public float WalkSpeed;
 
 	public float RunSpeed;
 
 	public bool CanMove;
+
+	public AudioClip DiscScratch;
 
 	public Renderer PonytailRenderer;
 
@@ -72,6 +82,8 @@ public class HomeYandereScript : MonoBehaviour
 
 	public int Hairstyle;
 
+	public float Timer;
+
 	public SkinnedMeshRenderer MyRenderer;
 
 	public Texture[] UniformTextures;
@@ -88,15 +100,30 @@ public class HomeYandereScript : MonoBehaviour
 	{
 		if (Application.loadedLevelName == "HomeScene")
 		{
-			this.transform.position = new Vector3((float)0, (float)0, (float)0);
-			this.transform.eulerAngles = new Vector3((float)0, (float)0, (float)0);
-			if (PlayerPrefs.GetInt("Night") == 0)
+			if (PlayerPrefs.GetInt("DraculaDefeated") == 0)
 			{
-				this.ChangeSchoolwear();
-				this.StartCoroutine_Auto(this.ApplyCustomCostume());
+				this.transform.position = new Vector3((float)0, (float)0, (float)0);
+				this.transform.eulerAngles = new Vector3((float)0, (float)0, (float)0);
+				if (PlayerPrefs.GetInt("Night") == 0)
+				{
+					this.ChangeSchoolwear();
+					this.StartCoroutine_Auto(this.ApplyCustomCostume());
+				}
+				else
+				{
+					this.WearPajamas();
+				}
 			}
 			else
 			{
+				this.transform.position = new Vector3((float)1, (float)0, (float)0);
+				this.transform.eulerAngles = new Vector3((float)0, (float)90, (float)0);
+				this.Character.animation.Play("f02_discScratch_00");
+				this.Controller.transform.localPosition = new Vector3(0.09425f, 0.0095f, 0.01878f);
+				this.Controller.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)-180);
+				this.HomeCamera.Destination = this.HomeCamera.Destinations[5];
+				this.HomeCamera.Target = this.HomeCamera.Targets[5];
+				this.Disc.active = true;
 				this.WearPajamas();
 			}
 		}
@@ -106,36 +133,43 @@ public class HomeYandereScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (this.CanMove)
+		if (!this.Disc.active)
 		{
-			this.MyController.Move(Physics.gravity * 0.01f);
-			float axis = Input.GetAxis("Vertical");
-			float axis2 = Input.GetAxis("Horizontal");
-			Vector3 a = Camera.main.transform.TransformDirection(Vector3.forward);
-			a.y = (float)0;
-			a = a.normalized;
-			Vector3 a2 = new Vector3(a.z, (float)0, -a.x);
-			Vector3 vector = axis2 * a2 + axis * a;
-			if (vector != Vector3.zero)
+			if (this.CanMove)
 			{
-				Quaternion to = Quaternion.LookRotation(vector);
-				this.transform.rotation = Quaternion.Lerp(this.transform.rotation, to, Time.deltaTime * (float)10);
-			}
-			else
-			{
-				Quaternion to = new Quaternion((float)0, (float)0, (float)0, (float)0);
-			}
-			if (axis != (float)0 || axis2 != (float)0)
-			{
-				if (Input.GetButton("LB"))
+				this.MyController.Move(Physics.gravity * 0.01f);
+				float axis = Input.GetAxis("Vertical");
+				float axis2 = Input.GetAxis("Horizontal");
+				Vector3 a = Camera.main.transform.TransformDirection(Vector3.forward);
+				a.y = (float)0;
+				a = a.normalized;
+				Vector3 a2 = new Vector3(a.z, (float)0, -a.x);
+				Vector3 vector = axis2 * a2 + axis * a;
+				if (vector != Vector3.zero)
 				{
-					this.Character.animation.CrossFade("f02_run_00");
-					this.MyController.Move(this.transform.forward * this.RunSpeed * Time.deltaTime);
+					Quaternion to = Quaternion.LookRotation(vector);
+					this.transform.rotation = Quaternion.Lerp(this.transform.rotation, to, Time.deltaTime * (float)10);
 				}
 				else
 				{
-					this.Character.animation.CrossFade("f02_walk_00");
-					this.MyController.Move(this.transform.forward * this.WalkSpeed * Time.deltaTime);
+					Quaternion to = new Quaternion((float)0, (float)0, (float)0, (float)0);
+				}
+				if (axis != (float)0 || axis2 != (float)0)
+				{
+					if (Input.GetButton("LB"))
+					{
+						this.Character.animation.CrossFade("f02_run_00");
+						this.MyController.Move(this.transform.forward * this.RunSpeed * Time.deltaTime);
+					}
+					else
+					{
+						this.Character.animation.CrossFade("f02_walk_00");
+						this.MyController.Move(this.transform.forward * this.WalkSpeed * Time.deltaTime);
+					}
+				}
+				else
+				{
+					this.Character.animation.CrossFade("f02_idleShort_00");
 				}
 			}
 			else
@@ -143,9 +177,19 @@ public class HomeYandereScript : MonoBehaviour
 				this.Character.animation.CrossFade("f02_idleShort_00");
 			}
 		}
-		else
+		else if (this.HomeDarkness.color.a == (float)0)
 		{
-			this.Character.animation.CrossFade("f02_idleShort_00");
+			if (this.Timer == (float)0)
+			{
+				this.audio.Play();
+			}
+			else if (this.Timer > this.audio.clip.length + (float)1)
+			{
+				PlayerPrefs.SetInt("DraculaDefeated", 0);
+				this.Disc.active = false;
+				this.HomeVideoGames.Quit();
+			}
+			this.Timer += Time.deltaTime;
 		}
 		if (this.rigidbody != null)
 		{
@@ -275,12 +319,12 @@ public class HomeYandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new HomeYandereScript.$ApplyCustomCostume$1842(this).GetEnumerator();
+		return new HomeYandereScript.$ApplyCustomCostume$2091(this).GetEnumerator();
 	}
 
 	public virtual IEnumerator ApplyCustomFace()
 	{
-		return new HomeYandereScript.$ApplyCustomFace$1849(this).GetEnumerator();
+		return new HomeYandereScript.$ApplyCustomFace$2098(this).GetEnumerator();
 	}
 
 	public virtual void Main()

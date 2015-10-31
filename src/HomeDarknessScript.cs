@@ -36,11 +36,15 @@ public class HomeDarknessScript : MonoBehaviour
 			{
 				if (this.HomeCamera.ID != 2)
 				{
-					if (this.HomeCamera.ID == 9)
+					if (this.HomeCamera.ID == 10)
 					{
 						PlayerPrefs.SetInt("Student_6_Kidnapped", 0);
 						PlayerPrefs.SetInt("Student_6_Slave", 1);
 						Application.LoadLevel("SchoolScene");
+					}
+					else if (this.HomeCamera.ID == 5)
+					{
+						Application.LoadLevel("YanvaniaTitleScene");
 					}
 					else if (this.HomeExit.ID == 1)
 					{

@@ -24,6 +24,8 @@ public class HomeCameraScript : MonoBehaviour
 
 	public HomeYandereScript HomeYandere;
 
+	public HomeMangaScript HomeManga;
+
 	public HomeSleepScript HomeSleep;
 
 	public HomeExitScript HomeExit;
@@ -43,6 +45,8 @@ public class HomeCameraScript : MonoBehaviour
 	public GameObject LoadingScreen;
 
 	public GameObject CeilingLight;
+
+	public GameObject Controller;
 
 	public GameObject NightLight;
 
@@ -89,10 +93,10 @@ public class HomeCameraScript : MonoBehaviour
 			this.CeilingLight.active = true;
 			this.NightLight.active = true;
 			this.DayLight.active = false;
+			this.Triggers[7].Disable();
 			this.BasementJukebox.clip = this.NightBasement;
 			this.RoomJukebox.clip = this.NightRoom;
-			this.BasementJukebox.Play();
-			this.RoomJukebox.Play();
+			this.PlayMusic();
 			this.PantiesMangaLabel.text = "Read Manga";
 		}
 		else
@@ -103,12 +107,13 @@ public class HomeCameraScript : MonoBehaviour
 			this.Triggers[2].Disable();
 			this.Triggers[3].Disable();
 			this.Triggers[5].Disable();
+			this.Triggers[9].Disable();
 		}
 		if (PlayerPrefs.GetInt("Kidnapped") == 0)
 		{
 			this.RopeGroup.active = false;
 			this.Victim.active = false;
-			this.Triggers[9].Disable();
+			this.Triggers[10].Disable();
 		}
 		Time.timeScale = (float)1;
 	}
@@ -129,10 +134,6 @@ public class HomeCameraScript : MonoBehaviour
 		{
 			this.Destination = this.Destinations[this.ID];
 			this.Target = this.Targets[this.ID];
-			if (PlayerPrefs.GetInt("Night") == 1 && this.ID == 7)
-			{
-				this.ID = 5;
-			}
 			this.HomeWindows[this.ID].Show = true;
 			this.HomeYandere.CanMove = false;
 			if (this.ID == 1 || this.ID == 8)
@@ -156,11 +157,17 @@ public class HomeCameraScript : MonoBehaviour
 			}
 			else if (this.ID == 5)
 			{
-				this.HomeVideoGames.enabled = true;
-				if (this.HomeYandere.transform.position.x > (float)0)
-				{
-					this.HomeYandere.active = false;
-				}
+				this.HomeYandere.enabled = false;
+				this.Controller.transform.localPosition = new Vector3(0.1245f, 0.032f, (float)0);
+				this.HomeYandere.transform.position = new Vector3((float)1, (float)0, (float)0);
+				this.HomeYandere.transform.eulerAngles = new Vector3((float)0, (float)90, (float)0);
+				this.HomeYandere.Character.animation.Play("f02_gaming_00");
+				this.PromptBar.ClearButtons();
+				this.PromptBar.Label[0].text = "Play";
+				this.PromptBar.Label[1].text = "Back";
+				this.PromptBar.Label[4].text = "Select";
+				this.PromptBar.UpdateButtons();
+				this.PromptBar.Show = true;
 			}
 			else if (this.ID == 6)
 			{
@@ -172,6 +179,10 @@ public class HomeCameraScript : MonoBehaviour
 				this.HomePantyChanger.enabled = true;
 			}
 			else if (this.ID == 9)
+			{
+				this.HomeManga.enabled = true;
+			}
+			else if (this.ID == 10)
 			{
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Label[0].text = "Accept";
@@ -251,6 +262,21 @@ public class HomeCameraScript : MonoBehaviour
 		if (Input.GetKeyDown("="))
 		{
 			Time.timeScale = (float)100;
+		}
+	}
+
+	public virtual void PlayMusic()
+	{
+		if (PlayerPrefs.GetInt("DraculaDefeated") == 0)
+		{
+			if (!this.BasementJukebox.isPlaying)
+			{
+				this.BasementJukebox.Play();
+			}
+			if (!this.RoomJukebox.isPlaying)
+			{
+				this.RoomJukebox.Play();
+			}
 		}
 	}
 
