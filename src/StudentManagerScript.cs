@@ -140,11 +140,11 @@ public class StudentManagerScript : MonoBehaviour
 			components[2].chromaticAberration = num * (float)5;
 			RenderSettings.fogDensity = num * 0.05f;
 		}
-		if (PlayerPrefs.GetInt("Student_6_Slave") == 1)
+		if (PlayerPrefs.GetInt("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Slave") == 1)
 		{
 			this.ForceSpawn = true;
-			this.SpawnPositions[6] = this.SlaveSpot;
-			this.SpawnID = 6;
+			this.SpawnPositions[PlayerPrefs.GetInt("KidnapVictim")] = this.SlaveSpot;
+			this.SpawnID = PlayerPrefs.GetInt("KidnapVictim");
 			this.SpawnStudent();
 			this.SpawnID = 0;
 		}

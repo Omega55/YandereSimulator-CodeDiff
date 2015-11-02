@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$2123 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$2139 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$2138;
+		internal YandereScript $self_$2154;
 
-		public $ApplyCustomCostume$2123(YandereScript self_)
+		public $ApplyCustomCostume$2139(YandereScript self_)
 		{
-			this.$self_$2138 = self_;
+			this.$self_$2154 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$2123.$(this.$self_$2138);
+			return new YandereScript.$ApplyCustomCostume$2139.$(this.$self_$2154);
 		}
 	}
 
@@ -649,6 +649,10 @@ public class YandereScript : MonoBehaviour
 		{
 			this.GaloAccessories[this.ID].active = false;
 			this.ID++;
+		}
+		if (PlayerPrefs.GetInt("PantiesEquipped") == 5)
+		{
+			this.RunSpeed += (float)1;
 		}
 		this.UpdateHair();
 	}
@@ -1668,7 +1672,14 @@ public class YandereScript : MonoBehaviour
 						this.Attacking = false;
 						this.CanMove = true;
 						this.Drown = false;
-						this.Sanity -= (float)20;
+						if (PlayerPrefs.GetInt("PantiesEquipped") == 10)
+						{
+							this.Sanity -= (float)10;
+						}
+						else
+						{
+							this.Sanity -= (float)20;
+						}
 					}
 				}
 				else if (this.RoofPush)
@@ -2437,8 +2448,16 @@ public class YandereScript : MonoBehaviour
 	{
 		if (other.gameObject.name == "BloodPool(Clone)" && other.transform.localScale.x > 0.3f)
 		{
-			this.RightFootprintSpawner.Bloodiness = 5;
-			this.LeftFootprintSpawner.Bloodiness = 5;
+			if (PlayerPrefs.GetInt("PantiesEquipped") == 8)
+			{
+				this.RightFootprintSpawner.Bloodiness = 5;
+				this.LeftFootprintSpawner.Bloodiness = 5;
+			}
+			else
+			{
+				this.RightFootprintSpawner.Bloodiness = 10;
+				this.LeftFootprintSpawner.Bloodiness = 10;
+			}
 		}
 	}
 
@@ -2612,7 +2631,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$2123(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$2139(this).GetEnumerator();
 	}
 
 	public virtual void AttackOnTitan()

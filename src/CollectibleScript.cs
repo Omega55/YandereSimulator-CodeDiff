@@ -2,22 +2,22 @@
 using UnityEngine;
 
 [Serializable]
-public class CassetteScript : MonoBehaviour
+public class CollectibleScript : MonoBehaviour
 {
 	public PromptScript Prompt;
 
-	public string Prefix;
+	public string Name;
 
 	public int ID;
 
-	public CassetteScript()
+	public CollectibleScript()
 	{
-		this.Prefix = string.Empty;
+		this.Name = string.Empty;
 	}
 
 	public virtual void Start()
 	{
-		if (PlayerPrefs.GetInt(this.Prefix + "Tape_" + this.ID + "_Collected") == 1)
+		if (PlayerPrefs.GetInt(this.Name + "_" + this.ID + "_Collected") == 1)
 		{
 			UnityEngine.Object.Destroy(this.gameObject);
 		}
@@ -27,7 +27,7 @@ public class CassetteScript : MonoBehaviour
 	{
 		if (this.Prompt.Circle[0].fillAmount <= (float)0)
 		{
-			PlayerPrefs.SetInt(this.Prefix + "Tape_" + this.ID + "_Collected", 1);
+			PlayerPrefs.SetInt(this.Name + "_" + this.ID + "_Collected", 1);
 			UnityEngine.Object.Destroy(this.gameObject);
 		}
 	}

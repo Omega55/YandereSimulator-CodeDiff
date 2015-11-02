@@ -61,6 +61,8 @@ public class StudentScript : MonoBehaviour
 
 	public Projector LiquidProjector;
 
+	public ParticleSystem Hearts;
+
 	public Texture BloodTexture;
 
 	public Texture WaterTexture;
@@ -309,6 +311,8 @@ public class StudentScript : MonoBehaviour
 
 	public float PreviousAlarm;
 
+	public float RepDeduction;
+
 	public float BreastSize;
 
 	public float PendingRep;
@@ -543,8 +547,17 @@ public class StudentScript : MonoBehaviour
 		{
 			this.IdleAnim = this.ParanoidAnim;
 		}
+		this.Hearts.emissionRate = (float)PlayerPrefs.GetInt("Seduction");
+		this.Hearts.enableEmission = false;
 		this.Paranoia = (float)2 - PlayerPrefs.GetFloat("SchoolAtmosphere") * 0.01f;
-		this.VisionCone.farClipPlane = (float)10 * this.Paranoia;
+		if (PlayerPrefs.GetInt("PantiesEquipped") == 4)
+		{
+			this.VisionCone.farClipPlane = (float)5 * this.Paranoia;
+		}
+		else
+		{
+			this.VisionCone.farClipPlane = (float)10 * this.Paranoia;
+		}
 		this.DetectionMarker = (DetectionMarkerScript)((GameObject)UnityEngine.Object.Instantiate(this.Marker, GameObject.Find("DetectionPanel").transform.position, Quaternion.identity)).GetComponent(typeof(DetectionMarkerScript));
 		this.DetectionMarker.transform.parent = GameObject.Find("DetectionPanel").transform;
 		this.DetectionMarker.Target = this.transform;
@@ -1133,6 +1146,7 @@ public class StudentScript : MonoBehaviour
 						this.Phase++;
 						this.CurrentDestination = this.Destinations[this.Phase];
 						this.Pathfinding.target = this.Destinations[this.Phase];
+						this.Hearts.enableEmission = false;
 						this.Pathfinding.canSearch = true;
 						this.Pathfinding.canMove = true;
 						this.Pathfinding.speed = (float)1;
@@ -1479,6 +1493,7 @@ public class StudentScript : MonoBehaviour
 								if (this.StudentManager.Students[7].Following)
 								{
 									this.Yandere.Followers = this.Yandere.Followers - 1;
+									this.Hearts.enableEmission = false;
 									this.StudentManager.Students[7].Following = false;
 								}
 							}
@@ -1580,6 +1595,7 @@ public class StudentScript : MonoBehaviour
 								if (this.Talking)
 								{
 									this.DialogueWheel.End();
+									this.Hearts.enableEmission = false;
 									this.Pathfinding.canSearch = true;
 									this.Pathfinding.canMove = true;
 									this.Obstacle.enabled = false;
@@ -1589,6 +1605,7 @@ public class StudentScript : MonoBehaviour
 								}
 								if (this.Following)
 								{
+									this.Hearts.enableEmission = false;
 									this.Yandere.Followers = this.Yandere.Followers - 1;
 									this.Following = false;
 								}
@@ -1844,6 +1861,28 @@ public class StudentScript : MonoBehaviour
 								{
 									this.RepeatReaction = true;
 								}
+								this.RepDeduction = (float)0;
+								if ((this.Male && PlayerPrefs.GetInt("Seduction") > 2) || PlayerPrefs.GetInt("Seduction") == 5)
+								{
+									this.RepDeduction += this.RepLoss * 0.2f;
+								}
+								if (PlayerPrefs.GetFloat("Reputation") < -33.33333f)
+								{
+									this.RepDeduction += this.RepLoss * 0.2f;
+								}
+								if (PlayerPrefs.GetFloat("Reputation") > 33.33333f)
+								{
+									this.RepDeduction -= this.RepLoss * 0.2f;
+								}
+								if (PlayerPrefs.GetInt(this.StudentID + "_Friend") == 1)
+								{
+									this.RepDeduction += this.RepLoss * 0.2f;
+								}
+								if (PlayerPrefs.GetInt("PantiesEquipped") == 1)
+								{
+									this.RepDeduction += this.RepLoss * 0.2f;
+								}
+								this.RepLoss -= this.RepDeduction;
 								this.Reputation.PendingRep = this.Reputation.PendingRep - this.RepLoss * this.Paranoia;
 								this.PendingRep -= this.RepLoss * this.Paranoia;
 								if (this.ToiletEvent != null && this.ToiletEvent.EventDay == 1)
@@ -1944,6 +1983,7 @@ public class StudentScript : MonoBehaviour
 						this.Subtitle.UpdateLabel("Student Farewell", 0, (float)3);
 						this.Prompt.Label[0].text = "     " + "Talk";
 						this.Prompt.Circle[0].fillAmount = (float)1;
+						this.Hearts.enableEmission = false;
 						this.Yandere.Followers = this.Yandere.Followers - 1;
 						this.Following = false;
 						this.Routine = true;
@@ -1990,6 +2030,10 @@ public class StudentScript : MonoBehaviour
 						this.Yandere.YandereVision = false;
 						this.Yandere.CanMove = false;
 						this.Yandere.Talking = true;
+						if ((this.Male && PlayerPrefs.GetInt("Seduction") > 0) || PlayerPrefs.GetInt("Seduction") == 5)
+						{
+							this.Hearts.enableEmission = true;
+						}
 						this.Reacted = false;
 						this.Talking = true;
 						this.Routine = false;
@@ -2052,8 +2096,12 @@ public class StudentScript : MonoBehaviour
 					if (this.TalkTimer == (float)3)
 					{
 						this.Character.animation.CrossFade(this.Nod2Anim);
-						this.Reputation.PendingRep = this.Reputation.PendingRep + (float)5;
+						if (PlayerPrefs.GetInt("PantiesEquipped") == 6)
+						{
+							this.PendingRep += (float)5;
+						}
 						this.PendingRep += (float)5;
+						this.Reputation.PendingRep = this.Reputation.PendingRep + this.PendingRep;
 						this.ID = 0;
 						while (this.ID < Extensions.get_length(this.Outlines))
 						{
@@ -2093,8 +2141,17 @@ public class StudentScript : MonoBehaviour
 					if (this.TalkTimer == (float)3)
 					{
 						this.Subtitle.UpdateLabel("Student Compliment", 0, (float)3);
-						this.Reputation.PendingRep = this.Reputation.PendingRep + (float)2;
-						this.PendingRep += (float)2;
+						int num9 = 0;
+						if (PlayerPrefs.GetInt("PantiesEquipped") == 3)
+						{
+							num9++;
+						}
+						if ((this.Male && PlayerPrefs.GetInt("Seduction") > 0) || PlayerPrefs.GetInt("Seduction") == 5)
+						{
+							num9++;
+						}
+						this.Reputation.PendingRep = this.Reputation.PendingRep + (float)(1 + num9);
+						this.PendingRep += (float)(1 + num9);
 						this.Complimented = true;
 					}
 					else if (Input.GetButtonDown("A"))
@@ -2114,24 +2171,28 @@ public class StudentScript : MonoBehaviour
 					{
 						this.Character.animation.CrossFade(this.GossipAnim);
 						this.Subtitle.UpdateLabel("Student Gossip", 0, (float)3);
-						int num9 = 0;
+						int num10 = 0;
 						if (this.Reputation.Reputation > 33.33333f)
 						{
-							num9++;
+							num10++;
 						}
 						if (PlayerPrefs.GetInt("PantiesEquipped") == 9)
 						{
-							num9++;
+							num10++;
 						}
 						if (PlayerPrefs.GetInt("DarkSecret") == 1)
 						{
-							num9++;
+							num10++;
 						}
 						if (PlayerPrefs.GetInt(this.StudentID + "_Friend") == 1)
 						{
-							num9++;
+							num10++;
 						}
-						PlayerPrefs.SetInt("Student_" + this.DialogueWheel.Victim + "_Reputation", PlayerPrefs.GetInt("Student_" + this.DialogueWheel.Victim + "_Reputation") - (1 + num9));
+						if ((this.Male && PlayerPrefs.GetInt("Seduction") > 1) || PlayerPrefs.GetInt("Seduction") == 5)
+						{
+							num10++;
+						}
+						PlayerPrefs.SetInt("Student_" + this.DialogueWheel.Victim + "_Reputation", PlayerPrefs.GetInt("Student_" + this.DialogueWheel.Victim + "_Reputation") - (1 + num10));
 						this.Reputation.PendingRep = this.Reputation.PendingRep - (float)2;
 						this.PendingRep -= (float)2;
 						this.Gossiped = true;
@@ -2331,6 +2392,10 @@ public class StudentScript : MonoBehaviour
 						if (!this.Following && !this.Distracting && !this.Wet)
 						{
 							this.Routine = true;
+						}
+						if (!this.Following)
+						{
+							this.Hearts.enableEmission = false;
 						}
 						this.StudentManager.EnablePrompts();
 					}
@@ -2827,18 +2892,18 @@ public class StudentScript : MonoBehaviour
 			}
 			if (!this.Fleeing && this.transform.position.y < (float)0)
 			{
-				int num10 = 0;
+				int num11 = 0;
 				Vector3 position = this.transform.position;
-				float num11 = position.y = (float)num10;
+				float num12 = position.y = (float)num11;
 				Vector3 vector3 = this.transform.position = position;
 			}
-			int num12 = 0;
+			int num13 = 0;
 			Vector3 localEulerAngles = this.transform.localEulerAngles;
-			float num13 = localEulerAngles.x = (float)num12;
+			float num14 = localEulerAngles.x = (float)num13;
 			Vector3 vector4 = this.transform.localEulerAngles = localEulerAngles;
-			int num14 = 0;
+			int num15 = 0;
 			Vector3 localEulerAngles2 = this.transform.localEulerAngles;
-			float num15 = localEulerAngles2.z = (float)num14;
+			float num16 = localEulerAngles2.z = (float)num15;
 			Vector3 vector5 = this.transform.localEulerAngles = localEulerAngles2;
 			if (!this.Male)
 			{
@@ -2959,6 +3024,7 @@ public class StudentScript : MonoBehaviour
 		}
 		if (!this.Dying && this.Following)
 		{
+			this.Hearts.enableEmission = false;
 			this.Yandere.Followers = this.Yandere.Followers - 1;
 			this.Following = false;
 		}
@@ -3049,6 +3115,7 @@ public class StudentScript : MonoBehaviour
 			if (this.Talking)
 			{
 				this.DialogueWheel.End();
+				this.Hearts.enableEmission = false;
 				this.Pathfinding.canSearch = true;
 				this.Pathfinding.canMove = true;
 				this.Obstacle.enabled = false;
@@ -3082,6 +3149,7 @@ public class StudentScript : MonoBehaviour
 		}
 		if (this.Following)
 		{
+			this.Hearts.enableEmission = false;
 			this.Yandere.Followers = this.Yandere.Followers - 1;
 			this.Following = false;
 		}
@@ -3594,11 +3662,11 @@ public class StudentScript : MonoBehaviour
 	public virtual void BecomeTeacher()
 	{
 		this.transform.localScale = new Vector3(1.1f, 1.1f, 1.1f);
+		this.VisionCone.farClipPlane = (float)12 * this.Paranoia;
 		this.StudentManager.Teachers[this.Class] = this;
 		this.MyRenderer.sharedMesh = this.TeacherMesh;
 		this.PantyCollider.enabled = false;
 		this.SkirtCollider.enabled = false;
-		this.VisionCone.farClipPlane = (float)12;
 		this.TeacherGlasses.active = true;
 		this.name = "Teacher_" + this.Class;
 		this.Teacher = true;

@@ -17,6 +17,10 @@ public class BloodPoolScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		if (PlayerPrefs.GetInt("PantiesEquipped") == 7)
+		{
+			this.TargetSize *= 0.5f;
+		}
 		this.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 		if (this.transform.position.x > (float)50 || this.transform.position.x < (float)-50 || this.transform.position.z > (float)50 || this.transform.position.z < (float)-50)
 		{

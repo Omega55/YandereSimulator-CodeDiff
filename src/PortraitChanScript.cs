@@ -411,7 +411,7 @@ public class PortraitChanScript : MonoBehaviour
 					if (this.YandereDetector.YandereDetected && Vector3.Distance(this.transform.position, this.HomeYandere.position) < (float)2)
 					{
 						Quaternion to;
-						if (this.HomeCamera.Target == this.HomeCamera.Targets[9])
+						if (this.HomeCamera.Target == this.HomeCamera.Targets[10])
 						{
 							to = Quaternion.LookRotation(this.HomeCamera.transform.position + Vector3.down * 1.5f * ((float)100 - this.Sanity) / (float)100 - this.Neck.position);
 							this.HairRotation = Mathf.Lerp(this.HairRotation, (float)0, Time.deltaTime * (float)2);
@@ -427,7 +427,7 @@ public class PortraitChanScript : MonoBehaviour
 					}
 					else
 					{
-						if (this.HomeCamera.Target == this.HomeCamera.Targets[9])
+						if (this.HomeCamera.Target == this.HomeCamera.Targets[10])
 						{
 							Quaternion to = Quaternion.LookRotation(this.HomeCamera.transform.position + Vector3.down * 1.5f * ((float)100 - this.Sanity) / (float)100 - this.Neck.position);
 							this.HairRotation = Mathf.Lerp(this.HairRotation, (float)0, Time.deltaTime * (float)2);

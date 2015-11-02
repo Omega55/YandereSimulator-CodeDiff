@@ -2,17 +2,25 @@
 using UnityEngine;
 
 [Serializable]
-public class HomePantiesScript : MonoBehaviour
+public class HomeMangaBookScript : MonoBehaviour
 {
-	public HomePantyChangerScript PantyChanger;
+	public HomeMangaScript Manga;
 
 	public float RotationSpeed;
 
 	public int ID;
 
+	public virtual void Start()
+	{
+		int num = 90;
+		Vector3 eulerAngles = this.transform.eulerAngles;
+		float num2 = eulerAngles.x = (float)num;
+		Vector3 vector = this.transform.eulerAngles = eulerAngles;
+	}
+
 	public virtual void Update()
 	{
-		if (this.PantyChanger.Selected == this.ID)
+		if (this.Manga.Selected == this.ID)
 		{
 			float y = this.transform.eulerAngles.y + Time.deltaTime * this.RotationSpeed;
 			Vector3 eulerAngles = this.transform.eulerAngles;

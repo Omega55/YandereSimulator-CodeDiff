@@ -38,9 +38,13 @@ public class HomeDarknessScript : MonoBehaviour
 				{
 					if (this.HomeCamera.ID == 10)
 					{
-						PlayerPrefs.SetInt("Student_6_Kidnapped", 0);
-						PlayerPrefs.SetInt("Student_6_Slave", 1);
+						PlayerPrefs.SetInt("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Kidnapped", 0);
+						PlayerPrefs.SetInt("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Slave", 1);
 						Application.LoadLevel("SchoolScene");
+					}
+					if (this.HomeCamera.ID == 9)
+					{
+						Application.LoadLevel("CalendarScene");
 					}
 					else if (this.HomeCamera.ID == 5)
 					{

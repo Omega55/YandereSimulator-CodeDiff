@@ -160,7 +160,15 @@ public class PortalScript : MonoBehaviour
 					this.PromptBar.Label[5].text = "Allocate";
 					this.PromptBar.UpdateButtons();
 					this.PromptBar.Show = true;
-					this.Class.StudyPoints = 5 - this.Late;
+					if (PlayerPrefs.GetInt("PantiesEquipped") == 11)
+					{
+						this.Class.StudyPoints = 10;
+					}
+					else
+					{
+						this.Class.StudyPoints = 5;
+					}
+					this.Class.StudyPoints = this.Class.StudyPoints - this.Late;
 					this.Class.UpdateLabel();
 					this.Class.active = true;
 					this.Class.Show = true;

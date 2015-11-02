@@ -14,27 +14,41 @@ public class TranqDetectorScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (this.MyCollider.bounds.Contains(this.Yandere.transform.position))
+		if (PlayerPrefs.GetInt("Kidnapped") == 0)
 		{
-			if (this.Yandere.Followers == 1)
+			if (this.MyCollider.bounds.Contains(this.Yandere.transform.position))
 			{
-				if (this.MyCollider.bounds.Contains(this.Yandere.Follower.transform.position))
+				if (this.Yandere.Followers == 1)
 				{
-					if (!this.Door.Open)
+					if (!this.Yandere.Follower.Male)
 					{
-						if (!this.TranqCase.Occupied)
+						if (this.MyCollider.bounds.Contains(this.Yandere.Follower.transform.position))
 						{
-							if (this.Yandere.Armed)
+							if (!this.Door.Open)
 							{
-								if (this.Yandere.Weapon[this.Yandere.Equipped].WeaponID == 3)
+								if (!this.TranqCase.Occupied)
 								{
-									if (this.Yandere.PossessTranq && PlayerPrefs.GetInt("BiologyGrade") > 1)
+									if (this.Yandere.Armed)
 									{
-										this.Yandere.CanTranq = true;
-										if (this.Yandere.Attacking)
+										if (this.Yandere.Weapon[this.Yandere.Equipped].WeaponID == 3)
 										{
-											this.Door.Prompt.enabled = false;
+											if (this.Yandere.PossessTranq && PlayerPrefs.GetInt("BiologyGrade") > 1)
+											{
+												this.Yandere.CanTranq = true;
+												if (this.Yandere.Attacking)
+												{
+													this.Door.Prompt.enabled = false;
+												}
+											}
 										}
+										else
+										{
+											this.Yandere.CanTranq = false;
+										}
+									}
+									else
+									{
+										this.Yandere.CanTranq = false;
 									}
 								}
 								else

@@ -11,18 +11,18 @@ public class StudentInfoMenuScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $UpdatePortraits$2110 : GenericGenerator<WWW>
+	internal sealed class $UpdatePortraits$2126 : GenericGenerator<WWW>
 	{
-		internal StudentInfoMenuScript $self_$2115;
+		internal StudentInfoMenuScript $self_$2131;
 
-		public $UpdatePortraits$2110(StudentInfoMenuScript self_)
+		public $UpdatePortraits$2126(StudentInfoMenuScript self_)
 		{
-			this.$self_$2115 = self_;
+			this.$self_$2131 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new StudentInfoMenuScript.$UpdatePortraits$2110.$(this.$self_$2115);
+			return new StudentInfoMenuScript.$UpdatePortraits$2126.$(this.$self_$2131);
 		}
 	}
 
@@ -268,7 +268,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	public virtual IEnumerator UpdatePortraits()
 	{
-		return new StudentInfoMenuScript.$UpdatePortraits$2110(this).GetEnumerator();
+		return new StudentInfoMenuScript.$UpdatePortraits$2126(this).GetEnumerator();
 	}
 
 	public virtual void Main()

@@ -14,8 +14,6 @@ public class HomePantyChangerScript : MonoBehaviour
 
 	private GameObject NewPanties;
 
-	public GameObject Panties;
-
 	public UILabel PantyNameLabel;
 
 	public UILabel PantyDescLabel;
@@ -52,6 +50,7 @@ public class HomePantyChangerScript : MonoBehaviour
 		{
 			this.NewPanties = (GameObject)UnityEngine.Object.Instantiate(this.PantyModels[this.ID], new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z - (float)1), Quaternion.identity);
 			this.NewPanties.transform.parent = this.PantyParent;
+			((HomePantiesScript)this.NewPanties.GetComponent(typeof(HomePantiesScript))).PantyChanger = this;
 			((HomePantiesScript)this.NewPanties.GetComponent(typeof(HomePantiesScript))).ID = this.ID;
 			float y = this.PantyParent.transform.localEulerAngles.y + (float)(360 / this.TotalPanties);
 			Vector3 localEulerAngles = this.PantyParent.transform.localEulerAngles;

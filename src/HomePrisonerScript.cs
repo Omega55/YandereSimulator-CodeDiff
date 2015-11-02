@@ -89,7 +89,7 @@ public class HomePrisonerScript : MonoBehaviour
 
 	public virtual void Start()
 	{
-		this.Sanity = PlayerPrefs.GetFloat("Student_6_Sanity");
+		this.Sanity = PlayerPrefs.GetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Sanity");
 		this.SanityLabel.text = "Sanity: " + this.Sanity + "%";
 		this.Prisoner.Sanity = this.Sanity;
 		this.Subtitle.text = string.Empty;
@@ -239,7 +239,7 @@ public class HomePrisonerScript : MonoBehaviour
 				{
 					this.Sanity = (float)100;
 				}
-				PlayerPrefs.SetFloat("Student_6_Sanity", this.Sanity);
+				PlayerPrefs.SetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Sanity", this.Sanity);
 				this.SanityLabel.text = "Sanity: " + this.Sanity + "%";
 				this.Prisoner.UpdateSanity();
 			}
@@ -351,30 +351,30 @@ public class HomePrisonerScript : MonoBehaviour
 						this.NowLoading.active = true;
 						PlayerPrefs.SetInt("Late", 1);
 						Application.LoadLevel("SchoolScene");
-						PlayerPrefs.SetFloat("Student_6_Sanity", this.Sanity - 2.5f);
+						PlayerPrefs.SetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Sanity", this.Sanity - 2.5f);
 					}
 					else if (this.ID == 2)
 					{
 						Application.LoadLevel("CalendarScene");
-						PlayerPrefs.SetFloat("Student_6_Sanity", this.Sanity - (float)10);
+						PlayerPrefs.SetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Sanity", this.Sanity - (float)10);
 						PlayerPrefs.SetFloat("Reputation", PlayerPrefs.GetFloat("Reputation") - (float)20);
 					}
 					else if (this.ID == 3)
 					{
 						PlayerPrefs.SetInt("Night", 1);
 						Application.LoadLevel("HomeScene");
-						PlayerPrefs.SetFloat("Student_6_Sanity", this.Sanity - (float)30);
+						PlayerPrefs.SetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Sanity", this.Sanity - (float)30);
 						PlayerPrefs.SetFloat("Reputation", PlayerPrefs.GetFloat("Reputation") - (float)20);
 					}
 					else if (this.ID == 4)
 					{
 						Application.LoadLevel("CalendarScene");
-						PlayerPrefs.SetFloat("Student_6_Sanity", this.Sanity - (float)45);
+						PlayerPrefs.SetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Sanity", this.Sanity - (float)45);
 						PlayerPrefs.SetFloat("Reputation", PlayerPrefs.GetFloat("Reputation") - (float)20);
 					}
-					if (PlayerPrefs.GetFloat("Student_6_Sanity") < (float)0)
+					if (PlayerPrefs.GetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Sanity") < (float)0)
 					{
-						PlayerPrefs.SetFloat("Student_6_Sanity", (float)0);
+						PlayerPrefs.SetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Sanity", (float)0);
 					}
 				}
 			}

@@ -354,6 +354,20 @@ public class DialogueWheelScript : MonoBehaviour
 			float num11 = color17.a = a7;
 			Color color18 = this.Shadow[6].color = color17;
 		}
+		if ((this.Yandere.TargetStudent.Male && PlayerPrefs.GetInt("Seduction") > 3) || PlayerPrefs.GetInt("Seduction") == 5)
+		{
+			int num12 = 0;
+			Color color19 = this.Shadow[6].color;
+			float num13 = color19.a = (float)num12;
+			Color color20 = this.Shadow[6].color = color19;
+		}
+		if (this.Yandere.Followers > 0)
+		{
+			float a8 = 0.75f;
+			Color color21 = this.FavorShadow[1].color;
+			float num14 = color21.a = a8;
+			Color color22 = this.FavorShadow[1].color = color21;
+		}
 	}
 
 	public virtual void End()
