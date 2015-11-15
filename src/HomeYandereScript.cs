@@ -10,35 +10,35 @@ public class HomeYandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$2107 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$2153 : GenericGenerator<WWW>
 	{
-		internal HomeYandereScript $self_$2113;
+		internal HomeYandereScript $self_$2159;
 
-		public $ApplyCustomCostume$2107(HomeYandereScript self_)
+		public $ApplyCustomCostume$2153(HomeYandereScript self_)
 		{
-			this.$self_$2113 = self_;
+			this.$self_$2159 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new HomeYandereScript.$ApplyCustomCostume$2107.$(this.$self_$2113);
+			return new HomeYandereScript.$ApplyCustomCostume$2153.$(this.$self_$2159);
 		}
 	}
 
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomFace$2114 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomFace$2160 : GenericGenerator<WWW>
 	{
-		internal HomeYandereScript $self_$2119;
+		internal HomeYandereScript $self_$2165;
 
-		public $ApplyCustomFace$2114(HomeYandereScript self_)
+		public $ApplyCustomFace$2160(HomeYandereScript self_)
 		{
-			this.$self_$2119 = self_;
+			this.$self_$2165 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new HomeYandereScript.$ApplyCustomFace$2114.$(this.$self_$2119);
+			return new HomeYandereScript.$ApplyCustomFace$2160.$(this.$self_$2165);
 		}
 	}
 
@@ -81,6 +81,8 @@ public class HomeYandereScript : MonoBehaviour
 	public bool HidePony;
 
 	public int Hairstyle;
+
+	public int VictimID;
 
 	public float Timer;
 
@@ -202,8 +204,8 @@ public class HomeYandereScript : MonoBehaviour
 		if (Input.GetKeyDown("k"))
 		{
 			PlayerPrefs.SetInt("Kidnapped", 1);
-			PlayerPrefs.SetInt("KidnapVictim", 6);
-			PlayerPrefs.SetFloat("Student_6_Sanity", 100f);
+			PlayerPrefs.SetInt("KidnapVictim", this.VictimID);
+			PlayerPrefs.SetFloat("Student_" + this.VictimID + "_Sanity", 100f);
 			Application.LoadLevel(Application.loadedLevel);
 		}
 		if (Input.GetKeyDown(KeyCode.F1))
@@ -319,12 +321,12 @@ public class HomeYandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new HomeYandereScript.$ApplyCustomCostume$2107(this).GetEnumerator();
+		return new HomeYandereScript.$ApplyCustomCostume$2153(this).GetEnumerator();
 	}
 
 	public virtual IEnumerator ApplyCustomFace()
 	{
-		return new HomeYandereScript.$ApplyCustomFace$2114(this).GetEnumerator();
+		return new HomeYandereScript.$ApplyCustomFace$2160(this).GetEnumerator();
 	}
 
 	public virtual void Main()

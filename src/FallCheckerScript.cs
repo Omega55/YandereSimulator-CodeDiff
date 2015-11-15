@@ -32,7 +32,7 @@ public class FallCheckerScript : MonoBehaviour
 		{
 			if (this.Ragdoll.Prompt.transform.localPosition.y > -10.5f)
 			{
-				this.Ragdoll.Prompt.transform.localEulerAngles = new Vector3((float)-90, (float)-90, (float)0);
+				this.Ragdoll.Prompt.transform.localEulerAngles = new Vector3((float)-90, (float)90, (float)0);
 				this.Ragdoll.AllColliders[2].transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
 				this.Ragdoll.AllColliders[7].transform.localEulerAngles = new Vector3((float)0, (float)0, (float)-80);
 				float z = this.Dumpster.transform.position.z;

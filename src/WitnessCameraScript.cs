@@ -4,6 +4,8 @@ using UnityEngine;
 [Serializable]
 public class WitnessCameraScript : MonoBehaviour
 {
+	public YandereScript Yandere;
+
 	public Transform WitnessPOV;
 
 	public float WitnessTimer;
@@ -36,6 +38,11 @@ public class WitnessCameraScript : MonoBehaviour
 			Vector3 vector = this.transform.localPosition = localPosition;
 			this.WitnessTimer += Time.deltaTime;
 			if (this.WitnessTimer > (float)5)
+			{
+				this.WitnessTimer = (float)0;
+				this.Show = false;
+			}
+			if (this.Yandere.Struggling)
 			{
 				this.WitnessTimer = (float)0;
 				this.Show = false;

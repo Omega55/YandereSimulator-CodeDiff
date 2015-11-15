@@ -72,7 +72,7 @@ public class BucketPourScript : MonoBehaviour
 		{
 			this.SplashCamera.Show = true;
 			this.SplashCamera.MyCamera.enabled = true;
-			this.SplashCamera.transform.position = new Vector3(this.transform.position.x - 1.25f, 0.8f, this.transform.position.z - 1.75f);
+			this.SplashCamera.transform.position = new Vector3(2.875f, 0.8f, -35.625f);
 			this.SplashCamera.transform.eulerAngles = new Vector3((float)0, (float)45, (float)0);
 		}
 	}

@@ -41,6 +41,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] PetCorpseReactions;
 
+	public string[] HeroMurderReactions;
+
 	public string[] RepeatReactions;
 
 	public string[] CorpseReactions;
@@ -417,6 +419,10 @@ public class SubtitleScript : MonoBehaviour
 		else if (ReactionType == "Pet Corpse Reaction")
 		{
 			this.Label.text = this.PetCorpseReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.PetCorpseReactions))];
+		}
+		else if (ReactionType == "Hero Murder Reaction")
+		{
+			this.Label.text = this.HeroMurderReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.HeroMurderReactions))];
 		}
 		else if (ReactionType == "Repeat Reaction")
 		{

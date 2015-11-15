@@ -35,10 +35,12 @@ public class DumpsterLidScript : MonoBehaviour
 			this.Prompt.Circle[0].fillAmount = (float)1;
 			if (!this.Open)
 			{
+				this.Prompt.Label[0].text = "     " + "Close";
 				this.Open = true;
 			}
 			else
 			{
+				this.Prompt.Label[0].text = "     " + "Open";
 				this.Open = false;
 			}
 		}
@@ -79,7 +81,7 @@ public class DumpsterLidScript : MonoBehaviour
 				this.Prompt.HideButton[3] = false;
 				this.Fill = true;
 			}
-			if (this.transform.position.x > this.DisposalSpot - 0.05f && this.transform.position.x < this.DisposalSpot + 0.05f)
+			if (this.transform.position.z > this.DisposalSpot - 0.05f && this.transform.position.z < this.DisposalSpot + 0.05f)
 			{
 				if (this.Prompt.Yandere.RoofPush)
 				{

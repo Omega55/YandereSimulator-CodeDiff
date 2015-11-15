@@ -124,11 +124,11 @@ public class TapePlayerMenuScript : MonoBehaviour
 		float num4 = localPosition2.y = (float)num3;
 		Vector3 vector2 = this.TimeBar.localPosition = localPosition2;
 		this.Subtitle.text = string.Empty;
-		float x = 18.56667f;
+		float x = -26.15f;
 		Vector3 position = this.TapePlayerCamera.position;
 		float num5 = position.x = x;
 		Vector3 vector3 = this.TapePlayerCamera.position = position;
-		float z = 7.766667f;
+		float z = 5.35f;
 		Vector3 position2 = this.TapePlayerCamera.position;
 		float num6 = position2.z = z;
 		Vector3 vector4 = this.TapePlayerCamera.position = position2;
@@ -157,11 +157,11 @@ public class TapePlayerMenuScript : MonoBehaviour
 			Vector3 localPosition4 = this.TimeBar.localPosition;
 			float num4 = localPosition4.y = y2;
 			Vector3 vector4 = this.TimeBar.localPosition = localPosition4;
-			float x3 = Mathf.Lerp(this.TapePlayerCamera.position.x, 18.65f, 0.166666672f);
+			float x3 = Mathf.Lerp(this.TapePlayerCamera.position.x, -26.15f, 0.166666672f);
 			Vector3 position = this.TapePlayerCamera.position;
 			float num5 = position.x = x3;
 			Vector3 vector5 = this.TapePlayerCamera.position = position;
-			float z = Mathf.Lerp(this.TapePlayerCamera.position.z, 7.85f, 0.166666672f);
+			float z = Mathf.Lerp(this.TapePlayerCamera.position.z, 5.35f, 0.166666672f);
 			Vector3 position2 = this.TapePlayerCamera.position;
 			float num6 = position2.z = z;
 			Vector3 vector6 = this.TapePlayerCamera.position = position2;
@@ -432,11 +432,11 @@ public class TapePlayerMenuScript : MonoBehaviour
 		}
 		else
 		{
-			float x4 = Mathf.Lerp(this.TapePlayerCamera.position.x, 18.56667f, 0.166666672f);
+			float x4 = Mathf.Lerp(this.TapePlayerCamera.position.x, -26.2125f, 0.166666672f);
 			Vector3 position3 = this.TapePlayerCamera.position;
 			float num9 = position3.x = x4;
 			Vector3 vector7 = this.TapePlayerCamera.position = position3;
-			float z2 = Mathf.Lerp(this.TapePlayerCamera.position.z, 7.766667f, 0.166666672f);
+			float z2 = Mathf.Lerp(this.TapePlayerCamera.position.z, 5.4125f, 0.166666672f);
 			Vector3 position4 = this.TapePlayerCamera.position;
 			float num10 = position4.z = z2;
 			Vector3 vector8 = this.TapePlayerCamera.position = position4;

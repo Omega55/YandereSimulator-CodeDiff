@@ -189,6 +189,7 @@ public class HomeCameraScript : MonoBehaviour
 				this.PromptBar.Label[1].text = "Back";
 				this.PromptBar.UpdateButtons();
 				this.PromptBar.Show = true;
+				this.HomePrisoner.UpdateDesc();
 				this.HomeYandere.active = false;
 			}
 		}

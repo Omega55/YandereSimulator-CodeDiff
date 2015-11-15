@@ -25,6 +25,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public TaskManagerScript TaskManager;
 
+	public FountainScript Fountain;
+
 	public StudentScript Reporter;
 
 	public GhostScript GhostChan;
@@ -45,6 +47,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public ListScript Podiums;
 
+	public ListScript Clubs;
+
 	public ListScript Seats;
 
 	public Transform[] SpawnPositions;
@@ -54,6 +58,8 @@ public class StudentManagerScript : MonoBehaviour
 	public Transform CorpseLocation;
 
 	public Transform FastBatheSpot;
+
+	public Transform FountainSpot;
 
 	public Transform GoAwaySpot;
 

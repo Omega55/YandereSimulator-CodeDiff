@@ -22,6 +22,10 @@ public class DoorScript : MonoBehaviour
 
 	public Transform[] Doors;
 
+	public UILabel[] Labels;
+
+	public float[] OriginX;
+
 	public bool HidingSpot;
 
 	public bool Swinging;
@@ -36,9 +40,9 @@ public class DoorScript : MonoBehaviour
 
 	public float Rotation;
 
-	public float OriginX;
+	public float ShiftNorth;
 
-	public float Shift;
+	public float ShiftSouth;
 
 	public float Swing;
 
@@ -50,7 +54,8 @@ public class DoorScript : MonoBehaviour
 
 	public DoorScript()
 	{
-		this.Shift = 0.065f;
+		this.ShiftNorth = -0.1f;
+		this.ShiftSouth = 0.1f;
 		this.Swing = 150f;
 		this.RoomName = string.Empty;
 		this.Facing = string.Empty;
@@ -59,7 +64,19 @@ public class DoorScript : MonoBehaviour
 	public virtual void Start()
 	{
 		this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent(typeof(YandereScript));
-		this.OriginX = this.Doors[0].transform.localPosition.x;
+		if (this.Swinging)
+		{
+			this.OriginX[0] = this.Doors[0].transform.localPosition.z;
+			if (Extensions.get_length(this.OriginX) > 1)
+			{
+				this.OriginX[1] = this.Doors[1].transform.localPosition.z;
+			}
+		}
+		if (Extensions.get_length(this.Labels) > 0)
+		{
+			this.Labels[0].text = this.RoomName;
+			this.Labels[1].text = this.RoomName;
+		}
 	}
 
 	public virtual void Update()
@@ -106,11 +123,11 @@ public class DoorScript : MonoBehaviour
 					}
 					else
 					{
-						float x2 = Mathf.Lerp(this.Doors[i].localPosition.x, this.OriginX, Time.deltaTime * (float)10);
-						Vector3 localPosition2 = this.Doors[i].localPosition;
-						float num2 = localPosition2.x = x2;
-						Vector3 vector2 = this.Doors[i].localPosition = localPosition2;
 						this.Rotation = Mathf.Lerp(this.Rotation, (float)0, Time.deltaTime * (float)10);
+						float z = Mathf.Lerp(this.Doors[i].localPosition.z, this.OriginX[i], Time.deltaTime * (float)10);
+						Vector3 localPosition2 = this.Doors[i].localPosition;
+						float num2 = localPosition2.z = z;
+						Vector3 vector2 = this.Doors[i].localPosition = localPosition2;
 						if (i == 0)
 						{
 							float rotation = this.Rotation;
@@ -120,7 +137,7 @@ public class DoorScript : MonoBehaviour
 						}
 						else
 						{
-							float y = this.Rotation * (float)-1 + (float)180;
+							float y = this.Rotation * (float)-1;
 							Vector3 localEulerAngles2 = this.Doors[i].localEulerAngles;
 							float num4 = localEulerAngles2.y = y;
 							Vector3 vector4 = this.Doors[i].localEulerAngles = localEulerAngles2;
@@ -134,25 +151,25 @@ public class DoorScript : MonoBehaviour
 				{
 					if (!this.Swinging)
 					{
-						float x3 = Mathf.Lerp(this.Doors[i].localPosition.x, this.OpenPositions[i], Time.deltaTime * (float)10);
+						float x2 = Mathf.Lerp(this.Doors[i].localPosition.x, this.OpenPositions[i], Time.deltaTime * (float)10);
 						Vector3 localPosition3 = this.Doors[i].localPosition;
-						float num5 = localPosition3.x = x3;
+						float num5 = localPosition3.x = x2;
 						Vector3 vector5 = this.Doors[i].localPosition = localPosition3;
 					}
 					else
 					{
 						if (this.North)
 						{
-							float x4 = Mathf.Lerp(this.Doors[i].localPosition.x, this.OriginX + this.Shift, Time.deltaTime * (float)10);
+							float z2 = Mathf.Lerp(this.Doors[i].localPosition.z, this.OriginX[i] + this.ShiftNorth, Time.deltaTime * (float)10);
 							Vector3 localPosition4 = this.Doors[i].localPosition;
-							float num6 = localPosition4.x = x4;
+							float num6 = localPosition4.z = z2;
 							Vector3 vector6 = this.Doors[i].localPosition = localPosition4;
 						}
 						else
 						{
-							float x5 = Mathf.Lerp(this.Doors[i].localPosition.x, this.OriginX + this.Shift * (float)-1, Time.deltaTime * (float)10);
+							float z3 = Mathf.Lerp(this.Doors[i].localPosition.z, this.OriginX[i] + this.ShiftSouth, Time.deltaTime * (float)10);
 							Vector3 localPosition5 = this.Doors[i].localPosition;
-							float num7 = localPosition5.x = x5;
+							float num7 = localPosition5.z = z3;
 							Vector3 vector7 = this.Doors[i].localPosition = localPosition5;
 						}
 						if (this.North)
@@ -172,7 +189,7 @@ public class DoorScript : MonoBehaviour
 						}
 						else
 						{
-							float y2 = this.Rotation * (float)-1 + (float)180;
+							float y2 = this.Rotation * (float)-1;
 							Vector3 localEulerAngles4 = this.Doors[i].localEulerAngles;
 							float num9 = localEulerAngles4.y = y2;
 							Vector3 vector9 = this.Doors[i].localEulerAngles = localEulerAngles4;
@@ -212,21 +229,28 @@ public class DoorScript : MonoBehaviour
 		{
 			this.RelativeCharacter = this.Yandere.transform;
 		}
-		if (this.Facing == "South")
+		if (this.Facing == "North")
 		{
 			if (this.RelativeCharacter.position.z < this.transform.position.z)
 			{
 				this.North = true;
 			}
 		}
-		else if (this.Facing == "East")
+		else if (this.Facing == "South")
 		{
-			if (this.RelativeCharacter.position.x > this.transform.position.x)
+			if (this.RelativeCharacter.position.z > this.transform.position.z)
 			{
 				this.North = true;
 			}
 		}
-		else if (this.Facing == "West" && this.RelativeCharacter.position.x < this.transform.position.x)
+		else if (this.Facing == "East")
+		{
+			if (this.RelativeCharacter.position.x < this.transform.position.x)
+			{
+				this.North = true;
+			}
+		}
+		else if (this.Facing == "West" && this.RelativeCharacter.position.x > this.transform.position.x)
 		{
 			this.North = true;
 		}

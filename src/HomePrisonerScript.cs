@@ -119,59 +119,66 @@ public class HomePrisonerScript : MonoBehaviour
 			Color color = this.OptionLabels[2].color;
 			float num = color.a = a;
 			Color color2 = this.OptionLabels[2].color = color;
+			if (PlayerPrefs.GetInt("Late") == 1)
+			{
+				float a2 = 0.5f;
+				Color color3 = this.OptionLabels[1].color;
+				float num2 = color3.a = a2;
+				Color color4 = this.OptionLabels[1].color = color3;
+			}
 		}
 		else
 		{
-			float a2 = 0.5f;
-			Color color3 = this.OptionLabels[1].color;
-			float num2 = color3.a = a2;
-			Color color4 = this.OptionLabels[1].color = color3;
 			float a3 = 0.5f;
-			Color color5 = this.OptionLabels[3].color;
+			Color color5 = this.OptionLabels[1].color;
 			float num3 = color5.a = a3;
-			Color color6 = this.OptionLabels[3].color = color5;
+			Color color6 = this.OptionLabels[1].color = color5;
 			float a4 = 0.5f;
-			Color color7 = this.OptionLabels[4].color;
+			Color color7 = this.OptionLabels[3].color;
 			float num4 = color7.a = a4;
-			Color color8 = this.OptionLabels[4].color = color7;
+			Color color8 = this.OptionLabels[3].color = color7;
+			float a5 = 0.5f;
+			Color color9 = this.OptionLabels[4].color;
+			float num5 = color9.a = a5;
+			Color color10 = this.OptionLabels[4].color = color9;
 		}
 		if (this.Sanity > (float)0)
 		{
 			this.OptionLabels[5].text = "?????";
-			float a5 = 0.5f;
-			Color color9 = this.OptionLabels[5].color;
-			float num5 = color9.a = a5;
-			Color color10 = this.OptionLabels[5].color = color9;
+			float a6 = 0.5f;
+			Color color11 = this.OptionLabels[5].color;
+			float num6 = color11.a = a6;
+			Color color12 = this.OptionLabels[5].color = color11;
 		}
 		else
 		{
 			this.OptionLabels[5].text = "Bring to School";
-			float a6 = 0.5f;
-			Color color11 = this.OptionLabels[1].color;
-			float num6 = color11.a = a6;
-			Color color12 = this.OptionLabels[1].color = color11;
 			float a7 = 0.5f;
-			Color color13 = this.OptionLabels[2].color;
+			Color color13 = this.OptionLabels[1].color;
 			float num7 = color13.a = a7;
-			Color color14 = this.OptionLabels[2].color = color13;
+			Color color14 = this.OptionLabels[1].color = color13;
 			float a8 = 0.5f;
-			Color color15 = this.OptionLabels[3].color;
+			Color color15 = this.OptionLabels[2].color;
 			float num8 = color15.a = a8;
-			Color color16 = this.OptionLabels[3].color = color15;
+			Color color16 = this.OptionLabels[2].color = color15;
 			float a9 = 0.5f;
-			Color color17 = this.OptionLabels[4].color;
+			Color color17 = this.OptionLabels[3].color;
 			float num9 = color17.a = a9;
-			Color color18 = this.OptionLabels[4].color = color17;
-			int num10 = 1;
-			Color color19 = this.OptionLabels[5].color;
-			float num11 = color19.a = (float)num10;
-			Color color20 = this.OptionLabels[5].color = color19;
+			Color color18 = this.OptionLabels[3].color = color17;
+			float a10 = 0.5f;
+			Color color19 = this.OptionLabels[4].color;
+			float num10 = color19.a = a10;
+			Color color20 = this.OptionLabels[4].color = color19;
+			int num11 = 1;
+			Color color21 = this.OptionLabels[5].color;
+			float num12 = color21.a = (float)num11;
+			Color color22 = this.OptionLabels[5].color = color21;
 			if (PlayerPrefs.GetInt("Night") == 1)
 			{
-				float a10 = 0.5f;
-				Color color21 = this.OptionLabels[5].color;
-				float num12 = color21.a = a10;
-				Color color22 = this.OptionLabels[5].color = color21;
+				float a11 = 0.5f;
+				Color color23 = this.OptionLabels[5].color;
+				float num13 = color23.a = a11;
+				Color color24 = this.OptionLabels[5].color = color23;
 			}
 		}
 		this.UpdateDesc();
@@ -387,6 +394,11 @@ public class HomePrisonerScript : MonoBehaviour
 		this.DescLabel.text = string.Empty + this.Descriptions[this.ID];
 		if (PlayerPrefs.GetInt("Night") == 0)
 		{
+			if (PlayerPrefs.GetInt("Late") == 1 && this.ID == 1)
+			{
+				this.DescLabel.text = "This option is unavailable if you are late for school.";
+				this.HomeCamera.PromptBar.Label[0].text = string.Empty;
+			}
 			if (this.ID == 2)
 			{
 				this.DescLabel.text = "This option is unavailable in the daytime.";

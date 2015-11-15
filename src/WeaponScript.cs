@@ -144,8 +144,16 @@ public class WeaponScript : MonoBehaviour
 		if (this.Yandere.Weapon[this.Yandere.Equipped] == this && this.Yandere.Armed)
 		{
 			this.transform.localScale = new Vector3((float)1, (float)1, (float)1);
-			this.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
-			this.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+			if (!this.Yandere.Struggling)
+			{
+				this.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
+				this.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+			}
+			else
+			{
+				this.transform.localPosition = new Vector3(-0.01f, 0.005f, -0.01f);
+				this.transform.localEulerAngles = new Vector3((float)0, (float)180, (float)0);
+			}
 		}
 		if (this.Dumped)
 		{
@@ -179,7 +187,10 @@ public class WeaponScript : MonoBehaviour
 		{
 			this.Prompt.enabled = true;
 			this.MyCollider.enabled = true;
-			Physics.IgnoreCollision(this.Yandere.collider, this.MyCollider);
+			if (this.Yandere.collider.enabled)
+			{
+				Physics.IgnoreCollision(this.Yandere.collider, this.MyCollider);
+			}
 		}
 		if (this.Evidence)
 		{

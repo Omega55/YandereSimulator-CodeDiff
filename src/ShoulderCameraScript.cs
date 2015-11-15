@@ -30,6 +30,10 @@ public class ShoulderCameraScript : MonoBehaviour
 
 	public Transform NoticedPOV;
 
+	public Transform StruggleFocus;
+
+	public Transform StrugglePOV;
+
 	public Vector3 LastPosition;
 
 	public bool AimingCamera;
@@ -39,6 +43,8 @@ public class ShoulderCameraScript : MonoBehaviour
 	public bool DoNotMove;
 
 	public bool Scolding;
+
+	public bool Struggle;
 
 	public bool Counter;
 
@@ -206,6 +212,7 @@ public class ShoulderCameraScript : MonoBehaviour
 				if (this.Timer > (float)10 && this.Phase < 5)
 				{
 					this.HeartbrokenCamera.active = true;
+					this.Phase++;
 				}
 				if (this.Timer < (float)5)
 				{
@@ -248,7 +255,23 @@ public class ShoulderCameraScript : MonoBehaviour
 					this.transform.LookAt(this.ShoulderPOV);
 				}
 			}
-			else if (this.Yandere.Talking && !this.RPGCamera.enabled)
+			else if (this.Struggle)
+			{
+				this.transform.position = Vector3.Lerp(this.transform.position, this.StrugglePOV.position, Time.deltaTime * (float)10);
+				this.transform.LookAt(this.StruggleFocus);
+				if (this.Yandere.Lost)
+				{
+					this.StruggleFocus.localPosition = Vector3.MoveTowards(this.StruggleFocus.localPosition, new Vector3((float)0, 0.4f, (float)-1), Time.deltaTime);
+					this.StrugglePOV.localPosition = Vector3.MoveTowards(this.StrugglePOV.localPosition, new Vector3((float)1, (float)1, (float)-1), Time.deltaTime);
+					this.Timer += Time.deltaTime;
+					if (this.Timer > (float)3 && !this.HeartbrokenCamera.active)
+					{
+						this.HeartbrokenCamera.active = true;
+						this.Yandere.Jukebox.GameOver();
+					}
+				}
+			}
+			else if ((this.Yandere.Talking || this.Yandere.Won) && !this.RPGCamera.enabled)
 			{
 				this.Timer += Time.deltaTime;
 				if (this.Timer < 0.5f)
@@ -260,8 +283,11 @@ public class ShoulderCameraScript : MonoBehaviour
 				else
 				{
 					this.RPGCamera.enabled = true;
+					this.Yandere.MyController.enabled = true;
 					this.Yandere.Talking = false;
 					this.Yandere.CanMove = true;
+					this.Yandere.Chased = false;
+					this.Yandere.Won = false;
 					this.Timer = (float)0;
 				}
 			}

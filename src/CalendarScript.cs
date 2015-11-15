@@ -121,6 +121,7 @@ public class CalendarScript : MonoBehaviour
 				{
 					PlayerPrefs.SetInt("Weekday", PlayerPrefs.GetInt("Weekday") + 1);
 					this.Incremented = true;
+					this.audio.Play();
 				}
 				else
 				{

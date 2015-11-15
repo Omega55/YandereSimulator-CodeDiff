@@ -11,18 +11,18 @@ public class StudentInfoMenuScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $UpdatePortraits$2126 : GenericGenerator<WWW>
+	internal sealed class $UpdatePortraits$2172 : GenericGenerator<WWW>
 	{
-		internal StudentInfoMenuScript $self_$2131;
+		internal StudentInfoMenuScript $self_$2177;
 
-		public $UpdatePortraits$2126(StudentInfoMenuScript self_)
+		public $UpdatePortraits$2172(StudentInfoMenuScript self_)
 		{
-			this.$self_$2131 = self_;
+			this.$self_$2177 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new StudentInfoMenuScript.$UpdatePortraits$2126.$(this.$self_$2131);
+			return new StudentInfoMenuScript.$UpdatePortraits$2172.$(this.$self_$2177);
 		}
 	}
 
@@ -147,27 +147,38 @@ public class StudentInfoMenuScript : MonoBehaviour
 				this.PromptBar.Show = true;
 			}
 		}
-		if (this.Row > 1)
+		if (this.Row == 0 || this.Row == 1)
 		{
-			float y = Mathf.Lerp(this.PortraitGrid.localPosition.y, (float)221, 0.166666672f);
+			float y = Mathf.Lerp(this.PortraitGrid.localPosition.y, (float)0, 0.166666672f);
 			Vector3 localPosition = this.PortraitGrid.localPosition;
 			float num = localPosition.y = y;
 			Vector3 vector = this.PortraitGrid.localPosition = localPosition;
-			float y2 = Mathf.Lerp(this.Scollbar.localPosition.y, (float)-115, 0.166666672f);
+			float y2 = Mathf.Lerp(this.Scollbar.localPosition.y, (float)115, 0.166666672f);
 			Vector3 localPosition2 = this.Scollbar.localPosition;
 			float num2 = localPosition2.y = y2;
 			Vector3 vector2 = this.Scollbar.localPosition = localPosition2;
 		}
-		else
+		if (this.Row == 2 || this.Row == 3)
 		{
-			float y3 = Mathf.Lerp(this.PortraitGrid.localPosition.y, (float)0, 0.166666672f);
+			float y3 = Mathf.Lerp(this.PortraitGrid.localPosition.y, (float)221, 0.166666672f);
 			Vector3 localPosition3 = this.PortraitGrid.localPosition;
 			float num3 = localPosition3.y = y3;
 			Vector3 vector3 = this.PortraitGrid.localPosition = localPosition3;
-			float y4 = Mathf.Lerp(this.Scollbar.localPosition.y, (float)115, 0.166666672f);
+			float y4 = Mathf.Lerp(this.Scollbar.localPosition.y, (float)-115, 0.166666672f);
 			Vector3 localPosition4 = this.Scollbar.localPosition;
 			float num4 = localPosition4.y = y4;
 			Vector3 vector4 = this.Scollbar.localPosition = localPosition4;
+		}
+		else if (this.Row == 4)
+		{
+			float y5 = Mathf.Lerp(this.PortraitGrid.localPosition.y, (float)331, 0.166666672f);
+			Vector3 localPosition5 = this.PortraitGrid.localPosition;
+			float num5 = localPosition5.y = y5;
+			Vector3 vector5 = this.PortraitGrid.localPosition = localPosition5;
+			float y6 = Mathf.Lerp(this.Scollbar.localPosition.y, (float)-115, 0.166666672f);
+			Vector3 localPosition6 = this.Scollbar.localPosition;
+			float num6 = localPosition6.y = y6;
+			Vector3 vector6 = this.Scollbar.localPosition = localPosition6;
 		}
 		if (this.InputManager.TappedUp)
 		{
@@ -268,7 +279,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	public virtual IEnumerator UpdatePortraits()
 	{
-		return new StudentInfoMenuScript.$UpdatePortraits$2126(this).GetEnumerator();
+		return new StudentInfoMenuScript.$UpdatePortraits$2172(this).GetEnumerator();
 	}
 
 	public virtual void Main()

@@ -134,6 +134,7 @@ public class CustomizationScript : MonoBehaviour
 		this.FinishPanel.alpha = (float)0;
 		this.GenderPanel.alpha = (float)0;
 		this.WhitePanel.alpha = (float)1;
+		this.UpdateColor();
 	}
 
 	public virtual void Update()

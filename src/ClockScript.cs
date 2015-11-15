@@ -208,7 +208,7 @@ public class ClockScript : MonoBehaviour
 		Vector3 eulerAngles = this.Sun.eulerAngles;
 		float num3 = eulerAngles.z = z3;
 		Vector3 vector3 = this.Sun.eulerAngles = eulerAngles;
-		if (this.Yandere.transform.position.y < (float)11 && this.Yandere.transform.position.x > (float)6 && this.Yandere.transform.position.z > (float)16 && this.Yandere.transform.position.x < (float)18 && this.Yandere.transform.position.z < (float)24)
+		if ((this.Yandere.transform.position.y < (float)11 && this.Yandere.transform.position.x > (float)-30 && this.Yandere.transform.position.z > (float)-38 && this.Yandere.transform.position.x < (float)-22 && this.Yandere.transform.position.z < (float)-26) || (this.Yandere.transform.position.y < (float)11 && this.Yandere.transform.position.x > (float)22 && this.Yandere.transform.position.z > (float)-38 && this.Yandere.transform.position.x < (float)30 && this.Yandere.transform.position.z < (float)-26))
 		{
 			this.AmbientLightDim -= Time.deltaTime;
 			if (this.AmbientLightDim < 0.1f)

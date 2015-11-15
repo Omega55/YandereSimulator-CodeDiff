@@ -17,15 +17,25 @@ public class PortraitChanScript : MonoBehaviour
 
 	public Renderer MaleHairRenderer;
 
+	public Renderer PonyRenderer;
+
+	public Renderer ShortHair;
+
+	public Renderer TwinPony;
+
 	public Renderer PigtailR;
 
 	public Renderer PigtailL;
+
+	public Renderer LongHair;
 
 	public Renderer Drills;
 
 	public Renderer EyeR;
 
 	public Renderer EyeL;
+
+	public Transform LongHairBone;
 
 	public Transform HomeYandere;
 
@@ -38,6 +48,8 @@ public class PortraitChanScript : MonoBehaviour
 	public Transform RightEye;
 
 	public Transform LeftEye;
+
+	public Transform HairF;
 
 	public Transform HairL;
 
@@ -53,11 +65,15 @@ public class PortraitChanScript : MonoBehaviour
 
 	public GameObject TeacherHair;
 
+	public GameObject CirnoHair;
+
 	public GameObject Character;
 
 	public GameObject PippiHair;
 
-	public GameObject LongHair;
+	public GameObject Bandana;
+
+	public bool VeryLongHair;
 
 	public bool HidePony;
 
@@ -66,6 +82,8 @@ public class PortraitChanScript : MonoBehaviour
 	public bool Teacher;
 
 	public bool Male;
+
+	public bool Emo;
 
 	public float BreastSize;
 
@@ -80,8 +98,6 @@ public class PortraitChanScript : MonoBehaviour
 	public Mesh TeacherMesh;
 
 	public Texture TeacherTexture;
-
-	public Mesh BaldMesh;
 
 	public HomeYandereDetectorScript YandereDetector;
 
@@ -161,12 +177,17 @@ public class PortraitChanScript : MonoBehaviour
 			this.TeacherGlasses.active = false;
 			this.UpdateHair();
 		}
-		if (this.Club == 9)
+		this.Bandana.active = false;
+		if (this.Club == 100)
 		{
 			this.BecomeTeacher();
 		}
+		else if (this.Club == 5)
+		{
+			this.Bandana.active = true;
+		}
 		this.SetColors();
-		if (!this.Male)
+		if (!this.Male && !this.Teacher)
 		{
 			this.SetFemaleUniform();
 		}
@@ -215,12 +236,51 @@ public class PortraitChanScript : MonoBehaviour
 			{
 				this.HairTexture = this.StudentManager.Colors[9];
 			}
+			else if (a == "LongGreen")
+			{
+				this.HairTexture = this.StudentManager.Colors[10];
+			}
+			else if (a == "Succubus1")
+			{
+				this.HairTexture = this.StudentManager.Colors[11];
+			}
+			else if (a == "Succubus2")
+			{
+				this.HairTexture = this.StudentManager.Colors[12];
+			}
+			else if (a == "Kuudere")
+			{
+				this.HairTexture = this.StudentManager.Colors[13];
+			}
+			else if (a == "LongPink")
+			{
+				this.HairTexture = this.StudentManager.Colors[14];
+			}
+			else if (a == "ShortBrown")
+			{
+				this.HairTexture = this.StudentManager.Colors[15];
+			}
+			else if (a == "ShortOrange")
+			{
+				this.HairTexture = this.StudentManager.Colors[16];
+			}
+			else if (a == "Occult")
+			{
+				this.HairTexture = this.StudentManager.Colors[17];
+			}
 			if (!this.Teacher)
 			{
 				this.MyRenderer.materials[0].mainTexture = this.UniformTexture;
 				this.MyRenderer.materials[1].mainTexture = this.UniformTexture;
 				this.MyRenderer.materials[2].mainTexture = this.HairTexture;
-				this.MyRenderer.materials[3].mainTexture = this.HairTexture;
+				this.PonyRenderer.material.mainTexture = this.HairTexture;
+				this.ShortHair.material.mainTexture = this.HairTexture;
+				this.LongHair.material.mainTexture = this.HairTexture;
+				this.PigtailR.material.mainTexture = this.HairTexture;
+				this.PigtailL.material.mainTexture = this.HairTexture;
+				this.Drills.materials[0].mainTexture = this.DrillTexture;
+				this.Drills.materials[1].mainTexture = this.DrillTexture;
+				this.Drills.materials[2].mainTexture = this.DrillTexture;
 			}
 			else
 			{
@@ -249,7 +309,6 @@ public class PortraitChanScript : MonoBehaviour
 					this.TeacherHairRenderer.material.color = new Color(0.25f, 0.125f, (float)0, (float)1);
 				}
 				this.MyRenderer.materials[1].mainTexture = this.StudentManager.Colors[7];
-				this.MyRenderer.materials[2].mainTexture = this.StudentManager.Colors[7];
 				this.TeacherGlasses.active = true;
 			}
 		}
@@ -287,8 +346,24 @@ public class PortraitChanScript : MonoBehaviour
 				{
 					this.MaleHairRenderer.material.color = new Color((float)1, (float)0, (float)1);
 				}
+				else if (a == "Orange")
+				{
+					this.MaleHairRenderer.material.color = new Color((float)1, 0.5f, (float)0);
+				}
+				else if (a == "Brown")
+				{
+					this.MaleHairRenderer.material.color = new Color(0.5f, 0.25f, (float)0);
+				}
 				this.EyeR.material.color = this.MaleHairRenderer.material.color;
 				this.EyeL.material.color = this.MaleHairRenderer.material.color;
+				if (this.Club == 5)
+				{
+					int num = -1;
+					Vector3 localScale = this.MaleHairstyles[UnityBuiltins.parseInt(this.Hairstyle)].transform.localScale;
+					float num2 = localScale.x = (float)num;
+					Vector3 vector = this.MaleHairstyles[UnityBuiltins.parseInt(this.Hairstyle)].transform.localScale = localScale;
+					this.Bandana.active = true;
+				}
 			}
 		}
 		if (!this.Male)
@@ -302,77 +377,119 @@ public class PortraitChanScript : MonoBehaviour
 				this.Drills.materials[2].mainTexture = this.DrillTexture;
 			}
 		}
-		if (this.Hairstyle == "Long" || this.Hairstyle == "Pippi")
-		{
-			this.BecomeBald();
-		}
 	}
 
 	public virtual void UpdateHair()
 	{
+		this.PonyRenderer.gameObject.active = false;
 		this.PigtailR.gameObject.active = false;
 		this.PigtailL.gameObject.active = false;
+		this.LongHair.gameObject.active = false;
+		this.TwinPony.gameObject.active = false;
 		this.Drills.gameObject.active = false;
 		this.TeacherHair.active = false;
+		this.CirnoHair.active = false;
 		this.PippiHair.active = false;
-		this.LongHair.active = false;
-		if (!(this.Hairstyle == "PonyTail"))
+		this.ShortHair.active = false;
+		if (this.Hairstyle == "PonyTail")
 		{
-			if (this.Hairstyle == "RightTail")
-			{
-				this.PigtailR.gameObject.active = true;
-				this.HidePony = true;
-			}
-			else if (this.Hairstyle == "LeftTail")
-			{
-				this.PigtailL.gameObject.active = true;
-				this.HidePony = true;
-			}
-			else if (this.Hairstyle == "PigTails")
-			{
-				this.PigtailR.gameObject.active = true;
-				this.PigtailL.gameObject.active = true;
-				this.HidePony = true;
-			}
-			else if (this.Hairstyle == "TriTails")
-			{
-				this.PigtailR.gameObject.active = true;
-				this.PigtailL.gameObject.active = true;
-				this.PigtailR.transform.localScale = new Vector3((float)1, (float)1, (float)1);
-				this.PigtailL.transform.localScale = new Vector3((float)1, (float)1, (float)1);
-			}
-			else if (this.Hairstyle == "TwinTails")
-			{
-				this.PigtailR.gameObject.active = true;
-				this.PigtailL.gameObject.active = true;
-				this.HidePony = true;
-				this.PigtailR.transform.parent.transform.parent.transform.localScale = new Vector3((float)2, (float)2, (float)2);
-				this.PigtailL.transform.parent.transform.parent.transform.localScale = new Vector3((float)2, (float)2, (float)2);
-			}
-			else if (this.Hairstyle == "Drills")
-			{
-				this.Drills.gameObject.active = true;
-				this.HidePony = true;
-			}
-			else if (this.Hairstyle == "Short")
-			{
-				this.PigtailR.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-				this.PigtailL.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-				this.HairR.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-				this.HairL.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-			}
-			else if (this.Hairstyle == "Pippi")
-			{
-				this.PippiHair.active = true;
-			}
-			else if (this.Hairstyle == "Long")
-			{
-				this.LongHair.active = true;
-			}
-			else if (this.Hairstyle == "Teacher")
-			{
-				this.TeacherHair.active = true;
-			}
+			this.PonyRenderer.transform.parent.gameObject.active = true;
+			this.PonyRenderer.gameObject.active = true;
+		}
+		else if (this.Hairstyle == "RightTail")
+		{
+			this.PonyRenderer.transform.parent.gameObject.active = true;
+			this.PonyRenderer.gameObject.active = true;
+			this.PigtailR.transform.parent.transform.parent.gameObject.active = true;
+			this.PigtailR.gameObject.active = true;
+			this.HidePony = true;
+		}
+		else if (this.Hairstyle == "LeftTail")
+		{
+			this.PonyRenderer.transform.parent.gameObject.active = true;
+			this.PonyRenderer.gameObject.active = true;
+			this.PigtailL.transform.parent.transform.parent.gameObject.active = true;
+			this.PigtailL.gameObject.active = true;
+			this.HidePony = true;
+		}
+		else if (this.Hairstyle == "PigTails")
+		{
+			this.PonyRenderer.transform.parent.gameObject.active = true;
+			this.PonyRenderer.gameObject.active = true;
+			this.PigtailR.transform.parent.transform.parent.gameObject.active = true;
+			this.PigtailL.transform.parent.transform.parent.gameObject.active = true;
+			this.PigtailR.gameObject.active = true;
+			this.PigtailL.gameObject.active = true;
+			this.HidePony = true;
+		}
+		else if (this.Hairstyle == "TriTails")
+		{
+			this.PonyRenderer.transform.parent.gameObject.active = true;
+			this.PonyRenderer.gameObject.active = true;
+			this.PigtailR.transform.parent.transform.parent.gameObject.active = true;
+			this.PigtailL.transform.parent.transform.parent.gameObject.active = true;
+			this.PigtailR.gameObject.active = true;
+			this.PigtailL.gameObject.active = true;
+			this.PigtailR.transform.localScale = new Vector3((float)1, (float)1, (float)1);
+			this.PigtailL.transform.localScale = new Vector3((float)1, (float)1, (float)1);
+		}
+		else if (this.Hairstyle == "TwinTails")
+		{
+			this.PonyRenderer.transform.parent.gameObject.active = true;
+			this.PonyRenderer.gameObject.active = true;
+			this.PigtailR.transform.parent.transform.parent.gameObject.active = true;
+			this.PigtailL.transform.parent.transform.parent.gameObject.active = true;
+			this.PigtailR.gameObject.active = true;
+			this.PigtailL.gameObject.active = true;
+			this.PigtailR.transform.parent.transform.parent.transform.localScale = new Vector3((float)2, (float)2, (float)2);
+			this.PigtailL.transform.parent.transform.parent.transform.localScale = new Vector3((float)2, (float)2, (float)2);
+			this.HidePony = true;
+		}
+		else if (this.Hairstyle == "Drills")
+		{
+			this.PonyRenderer.transform.parent.gameObject.active = true;
+			this.PonyRenderer.gameObject.active = true;
+			this.Drills.transform.parent.transform.parent.gameObject.active = true;
+			this.Drills.gameObject.active = true;
+			this.HidePony = true;
+		}
+		else if (this.Hairstyle == "Short")
+		{
+			this.ShortHair.active = true;
+		}
+		else if (this.Hairstyle == "Pippi")
+		{
+			this.PippiHair.active = true;
+		}
+		else if (this.Hairstyle == "Cirno")
+		{
+			this.CirnoHair.active = true;
+		}
+		else if (this.Hairstyle == "Long")
+		{
+			this.LongHair.transform.parent.gameObject.active = true;
+			this.LongHair.gameObject.active = true;
+		}
+		else if (this.Hairstyle == "VeryLong")
+		{
+			this.LongHair.transform.parent.gameObject.active = true;
+			this.LongHair.gameObject.active = true;
+			this.VeryLongHair = true;
+		}
+		else if (this.Hairstyle == "TwinPony")
+		{
+			this.TwinPony.transform.parent.transform.parent.gameObject.active = true;
+			this.TwinPony.gameObject.active = true;
+		}
+		else if (this.Hairstyle == "Occult")
+		{
+			this.LongHair.transform.parent.gameObject.active = true;
+			this.LongHair.gameObject.active = true;
+			this.Emo = true;
+		}
+		else if (this.Hairstyle == "Teacher")
+		{
+			this.TeacherHair.active = true;
 		}
 		if (this.HidePony)
 		{
@@ -388,16 +505,8 @@ public class PortraitChanScript : MonoBehaviour
 		this.MyRenderer.sharedMesh = this.TeacherMesh;
 		this.Teacher = true;
 		this.MyRenderer.materials[0].mainTexture = this.TeacherTexture;
-		this.MyRenderer.materials[3].mainTexture = this.TeacherTexture;
-	}
-
-	public virtual void BecomeBald()
-	{
-		this.MyRenderer.sharedMesh = this.BaldMesh;
-		this.MyRenderer.materials[0].mainTexture = this.UniformTexture;
-		this.MyRenderer.materials[1].mainTexture = this.UniformTexture;
-		this.MyRenderer.materials[2].mainTexture = this.HairTexture;
-		this.MyRenderer.materials[3].mainTexture = this.HairTexture;
+		this.MyRenderer.materials[1].mainTexture = this.TeacherTexture;
+		this.MyRenderer.materials[2].mainTexture = this.TeacherTexture;
 	}
 
 	public virtual void LateUpdate()
@@ -470,6 +579,24 @@ public class PortraitChanScript : MonoBehaviour
 				this.Neck.localEulerAngles = this.Neck.localEulerAngles + this.Twitch;
 			}
 		}
+		if (this.VeryLongHair)
+		{
+			int num2 = 2;
+			Vector3 localScale = this.LongHairBone.localScale;
+			float num3 = localScale.y = (float)num2;
+			Vector3 vector2 = this.LongHairBone.localScale = localScale;
+		}
+		if (this.Emo)
+		{
+			float x2 = -0.1f;
+			Vector3 localPosition = this.HairF.localPosition;
+			float num4 = localPosition.x = x2;
+			Vector3 vector3 = this.HairF.localPosition = localPosition;
+			float y = -0.285f;
+			Vector3 localPosition2 = this.HairF.localPosition;
+			float num5 = localPosition2.y = y;
+			Vector3 vector4 = this.HairF.localPosition = localPosition2;
+		}
 		if (this.Tortured && this.RightEye != null)
 		{
 			if (this.EyeShrink > (float)1)
@@ -479,86 +606,92 @@ public class PortraitChanScript : MonoBehaviour
 			if (this.Sanity >= (float)50)
 			{
 				float z = this.LeftEye.localPosition.z - this.EyeShrink * 0.009f;
-				Vector3 localPosition = this.LeftEye.localPosition;
-				float num2 = localPosition.z = z;
-				Vector3 vector2 = this.LeftEye.localPosition = localPosition;
-				float z2 = this.RightEye.localPosition.z + this.EyeShrink * 0.009f;
-				Vector3 localPosition2 = this.RightEye.localPosition;
-				float num3 = localPosition2.z = z2;
-				Vector3 vector3 = this.RightEye.localPosition = localPosition2;
-				float x2 = this.LeftEye.localPosition.x - this.EyeShrink * 0.002f;
 				Vector3 localPosition3 = this.LeftEye.localPosition;
-				float num4 = localPosition3.x = x2;
-				Vector3 vector4 = this.LeftEye.localPosition = localPosition3;
-				float x3 = this.RightEye.localPosition.x - this.EyeShrink * 0.002f;
+				float num6 = localPosition3.z = z;
+				Vector3 vector5 = this.LeftEye.localPosition = localPosition3;
+				float z2 = this.RightEye.localPosition.z + this.EyeShrink * 0.009f;
 				Vector3 localPosition4 = this.RightEye.localPosition;
-				float num5 = localPosition4.x = x3;
-				Vector3 vector5 = this.RightEye.localPosition = localPosition4;
-				float x4 = this.LeftEye.localEulerAngles.x + (float)5 + UnityEngine.Random.Range(this.EyeShrink * -1f, this.EyeShrink * 1f);
+				float num7 = localPosition4.z = z2;
+				Vector3 vector6 = this.RightEye.localPosition = localPosition4;
+				float x3 = this.LeftEye.localPosition.x - this.EyeShrink * 0.002f;
+				Vector3 localPosition5 = this.LeftEye.localPosition;
+				float num8 = localPosition5.x = x3;
+				Vector3 vector7 = this.LeftEye.localPosition = localPosition5;
+				float x4 = this.RightEye.localPosition.x - this.EyeShrink * 0.002f;
+				Vector3 localPosition6 = this.RightEye.localPosition;
+				float num9 = localPosition6.x = x4;
+				Vector3 vector8 = this.RightEye.localPosition = localPosition6;
+				float x5 = this.LeftEye.localEulerAngles.x + (float)5 + UnityEngine.Random.Range(this.EyeShrink * -1f, this.EyeShrink * 1f);
 				Vector3 localEulerAngles2 = this.LeftEye.localEulerAngles;
-				float num6 = localEulerAngles2.x = x4;
-				Vector3 vector6 = this.LeftEye.localEulerAngles = localEulerAngles2;
-				float y = this.LeftEye.localEulerAngles.y + UnityEngine.Random.Range(this.EyeShrink * -1f, this.EyeShrink * 1f);
+				float num10 = localEulerAngles2.x = x5;
+				Vector3 vector9 = this.LeftEye.localEulerAngles = localEulerAngles2;
+				float y2 = this.LeftEye.localEulerAngles.y + UnityEngine.Random.Range(this.EyeShrink * -1f, this.EyeShrink * 1f);
 				Vector3 localEulerAngles3 = this.LeftEye.localEulerAngles;
-				float num7 = localEulerAngles3.y = y;
-				Vector3 vector7 = this.LeftEye.localEulerAngles = localEulerAngles3;
+				float num11 = localEulerAngles3.y = y2;
+				Vector3 vector10 = this.LeftEye.localEulerAngles = localEulerAngles3;
 				float z3 = this.LeftEye.localEulerAngles.z + UnityEngine.Random.Range(this.EyeShrink * -1f, this.EyeShrink * 1f);
 				Vector3 localEulerAngles4 = this.LeftEye.localEulerAngles;
-				float num8 = localEulerAngles4.z = z3;
-				Vector3 vector8 = this.LeftEye.localEulerAngles = localEulerAngles4;
-				float x5 = this.RightEye.localEulerAngles.x - (float)5 + UnityEngine.Random.Range(this.EyeShrink * -1f, this.EyeShrink * 1f);
+				float num12 = localEulerAngles4.z = z3;
+				Vector3 vector11 = this.LeftEye.localEulerAngles = localEulerAngles4;
+				float x6 = this.RightEye.localEulerAngles.x - (float)5 + UnityEngine.Random.Range(this.EyeShrink * -1f, this.EyeShrink * 1f);
 				Vector3 localEulerAngles5 = this.RightEye.localEulerAngles;
-				float num9 = localEulerAngles5.x = x5;
-				Vector3 vector9 = this.RightEye.localEulerAngles = localEulerAngles5;
-				float y2 = this.RightEye.localEulerAngles.y + UnityEngine.Random.Range(this.EyeShrink * -1f, this.EyeShrink * 1f);
+				float num13 = localEulerAngles5.x = x6;
+				Vector3 vector12 = this.RightEye.localEulerAngles = localEulerAngles5;
+				float y3 = this.RightEye.localEulerAngles.y + UnityEngine.Random.Range(this.EyeShrink * -1f, this.EyeShrink * 1f);
 				Vector3 localEulerAngles6 = this.RightEye.localEulerAngles;
-				float num10 = localEulerAngles6.y = y2;
-				Vector3 vector10 = this.RightEye.localEulerAngles = localEulerAngles6;
+				float num14 = localEulerAngles6.y = y3;
+				Vector3 vector13 = this.RightEye.localEulerAngles = localEulerAngles6;
 				float z4 = this.RightEye.localEulerAngles.z + UnityEngine.Random.Range(this.EyeShrink * -1f, this.EyeShrink * 1f);
 				Vector3 localEulerAngles7 = this.RightEye.localEulerAngles;
-				float num11 = localEulerAngles7.z = z4;
-				Vector3 vector11 = this.RightEye.localEulerAngles = localEulerAngles7;
-				float x6 = (float)1 - this.EyeShrink * 0.5f;
-				Vector3 localScale = this.LeftEye.localScale;
-				float num12 = localScale.x = x6;
-				Vector3 vector12 = this.LeftEye.localScale = localScale;
-				float y3 = (float)1 - this.EyeShrink * 0.5f;
-				Vector3 localScale2 = this.LeftEye.localScale;
-				float num13 = localScale2.y = y3;
-				Vector3 vector13 = this.LeftEye.localScale = localScale2;
+				float num15 = localEulerAngles7.z = z4;
+				Vector3 vector14 = this.RightEye.localEulerAngles = localEulerAngles7;
 				float x7 = (float)1 - this.EyeShrink * 0.5f;
-				Vector3 localScale3 = this.RightEye.localScale;
-				float num14 = localScale3.x = x7;
-				Vector3 vector14 = this.RightEye.localScale = localScale3;
+				Vector3 localScale2 = this.LeftEye.localScale;
+				float num16 = localScale2.x = x7;
+				Vector3 vector15 = this.LeftEye.localScale = localScale2;
 				float y4 = (float)1 - this.EyeShrink * 0.5f;
+				Vector3 localScale3 = this.LeftEye.localScale;
+				float num17 = localScale3.y = y4;
+				Vector3 vector16 = this.LeftEye.localScale = localScale3;
+				float x8 = (float)1 - this.EyeShrink * 0.5f;
 				Vector3 localScale4 = this.RightEye.localScale;
-				float num15 = localScale4.y = y4;
-				Vector3 vector15 = this.RightEye.localScale = localScale4;
+				float num18 = localScale4.x = x8;
+				Vector3 vector17 = this.RightEye.localScale = localScale4;
+				float y5 = (float)1 - this.EyeShrink * 0.5f;
+				Vector3 localScale5 = this.RightEye.localScale;
+				float num19 = localScale5.y = y5;
+				Vector3 vector18 = this.RightEye.localScale = localScale5;
 			}
 		}
 	}
 
 	public virtual void UpdateSanity()
 	{
-		this.Sanity = PlayerPrefs.GetFloat("Student_" + this.StudentID + "_Sanity");
-		if (this.Sanity == (float)0)
+		if (this.Kidnapped)
 		{
-			this.RightIris.active = true;
-			this.LeftIris.active = true;
-		}
-		else
-		{
-			this.RightIris.active = false;
-			this.LeftIris.active = false;
+			this.Sanity = PlayerPrefs.GetFloat("Student_" + this.StudentID + "_Sanity");
+			if (this.Sanity == (float)0)
+			{
+				this.RightIris.active = true;
+				this.LeftIris.active = true;
+			}
+			else
+			{
+				this.RightIris.active = false;
+				this.LeftIris.active = false;
+			}
 		}
 	}
 
 	public virtual void SetFemaleUniform()
 	{
-		this.MyRenderer.sharedMesh = this.FemaleUniforms[PlayerPrefs.GetInt("FemaleUniform")];
-		this.MyRenderer.materials[0].mainTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
-		this.MyRenderer.materials[1].mainTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
-		this.MyRenderer.materials[2].mainTexture = this.HairTexture;
+		if (this.Tortured)
+		{
+			this.MyRenderer.sharedMesh = this.FemaleUniforms[PlayerPrefs.GetInt("FemaleUniform")];
+			this.MyRenderer.materials[0].mainTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.MyRenderer.materials[1].mainTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.PonyRenderer.material.mainTexture = this.HairTexture;
+		}
 	}
 
 	public virtual void Main()

@@ -93,6 +93,10 @@ public class ClassScript : MonoBehaviour
 			Color color2 = this.Darkness.color = color;
 			if (this.Darkness.color.a <= (float)0)
 			{
+				if (Input.GetKeyDown("p"))
+				{
+					this.MaxPhysical();
+				}
 				int num2 = 0;
 				Color color3 = this.Darkness.color;
 				float num3 = color3.a = (float)num2;
@@ -405,6 +409,41 @@ public class ClassScript : MonoBehaviour
 			this.GradeUp = true;
 			this.Grade = 2;
 		}
+		else if (PlayerPrefs.GetInt("Physical") >= 20 && PlayerPrefs.GetInt("PhysicalGrade") < 2)
+		{
+			PlayerPrefs.SetInt("PhysicalGrade", 2);
+			this.GradeUpSubject = 4;
+			this.GradeUp = true;
+			this.Grade = 2;
+		}
+		else if (PlayerPrefs.GetInt("Physical") >= 40 && PlayerPrefs.GetInt("PhysicalGrade") < 3)
+		{
+			PlayerPrefs.SetInt("PhysicalGrade", 3);
+			this.GradeUpSubject = 4;
+			this.GradeUp = true;
+			this.Grade = 3;
+		}
+		else if (PlayerPrefs.GetInt("Physical") >= 60 && PlayerPrefs.GetInt("PhysicalGrade") < 4)
+		{
+			PlayerPrefs.SetInt("PhysicalGrade", 4);
+			this.GradeUpSubject = 4;
+			this.GradeUp = true;
+			this.Grade = 4;
+		}
+		else if (PlayerPrefs.GetInt("Physical") >= 80 && PlayerPrefs.GetInt("PhysicalGrade") < 5)
+		{
+			PlayerPrefs.SetInt("PhysicalGrade", 5);
+			this.GradeUpSubject = 4;
+			this.GradeUp = true;
+			this.Grade = 5;
+		}
+		else if (PlayerPrefs.GetInt("Physical") >= 100 && PlayerPrefs.GetInt("PhysicalGrade") < 6)
+		{
+			PlayerPrefs.SetInt("PhysicalGrade", 6);
+			this.GradeUpSubject = 4;
+			this.GradeUp = true;
+			this.Grade = 6;
+		}
 	}
 
 	public virtual void GivePoints()
@@ -412,16 +451,26 @@ public class ClassScript : MonoBehaviour
 		PlayerPrefs.SetInt("BiologyGrade", 1);
 		PlayerPrefs.SetInt("ChemistryGrade", 1);
 		PlayerPrefs.SetInt("LanguageGrade", 1);
+		PlayerPrefs.SetInt("PhysicaleGrade", 1);
+		PlayerPrefs.SetInt("PsychologyGrade", 1);
 		PlayerPrefs.SetInt("Biology", 19);
 		PlayerPrefs.SetInt("Chemistry", 19);
 		PlayerPrefs.SetInt("Language", 19);
-		PlayerPrefs.SetInt("Physical", 7);
-		PlayerPrefs.SetInt("Psychology", 6);
+		PlayerPrefs.SetInt("Physical", 19);
+		PlayerPrefs.SetInt("Psychology", 19);
 		this.Subject[1] = PlayerPrefs.GetInt("Biology");
 		this.Subject[2] = PlayerPrefs.GetInt("Chemistry");
 		this.Subject[3] = PlayerPrefs.GetInt("Language");
 		this.Subject[4] = PlayerPrefs.GetInt("Physical");
 		this.Subject[5] = PlayerPrefs.GetInt("Psychology");
+		this.UpdateBars();
+	}
+
+	public virtual void MaxPhysical()
+	{
+		PlayerPrefs.SetInt("PhysicalGrade", 1);
+		PlayerPrefs.SetInt("Physical", 99);
+		this.Subject[4] = PlayerPrefs.GetInt("Physical");
 		this.UpdateBars();
 	}
 

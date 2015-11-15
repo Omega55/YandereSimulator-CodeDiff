@@ -4,11 +4,17 @@ using UnityEngine;
 [Serializable]
 public class WarningScript : MonoBehaviour
 {
+	public GameObject WelcomePanel;
+
+	public GameObject WarningPanel;
+
 	public UILabel FlashingLabel;
 
 	public UILabel BeginLabel;
 
 	public UISprite Darkness;
+
+	public AudioSource Music;
 
 	public bool Continue;
 
@@ -51,6 +57,11 @@ public class WarningScript : MonoBehaviour
 			Color color2 = this.Darkness.color = color;
 			if (this.Darkness.color.a <= (float)0)
 			{
+				if (Input.GetKeyDown("w"))
+				{
+					this.WelcomePanel.active = false;
+					this.WarningPanel.active = true;
+				}
 				if (Input.anyKeyDown)
 				{
 					this.Timer = (float)5;
@@ -62,16 +73,25 @@ public class WarningScript : MonoBehaviour
 					Color color3 = this.BeginLabel.color;
 					float num2 = color3.a = a2;
 					Color color4 = this.BeginLabel.color = color3;
-					if (this.BeginLabel.color.a >= (float)1 && Input.anyKeyDown)
+					if (this.BeginLabel.color.a >= (float)1)
 					{
-						this.Darkness.color = new Color((float)1, (float)1, (float)1, (float)0);
-						this.Continue = true;
+						if (this.WelcomePanel.active && Input.anyKeyDown)
+						{
+							this.Darkness.color = new Color((float)1, (float)1, (float)1, (float)0);
+							this.Continue = true;
+						}
+						if (this.WarningPanel.active && !Input.GetKeyDown("w") && Input.anyKeyDown)
+						{
+							this.Darkness.color = new Color((float)1, (float)1, (float)1, (float)0);
+							this.Continue = true;
+						}
 					}
 				}
 			}
 		}
 		else
 		{
+			this.Music.volume = this.Music.volume - Time.deltaTime;
 			float a3 = this.Darkness.color.a + Time.deltaTime;
 			Color color5 = this.Darkness.color;
 			float num3 = color5.a = a3;

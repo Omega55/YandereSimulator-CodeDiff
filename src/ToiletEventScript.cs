@@ -125,16 +125,8 @@ public class ToiletEventScript : MonoBehaviour
 				this.Yandere.Attacking = true;
 				this.Yandere.CanMove = false;
 				this.Yandere.Drown = true;
-				if (this.EventDay == 4)
-				{
-					this.Yandere.DrownAnim = "f02_toiletDrownA_00";
-					this.EventStudent.DrownAnim = "f02_toiletDrownB_00";
-				}
-				else
-				{
-					this.Yandere.DrownAnim = "f02_fountainDrownA_00";
-					this.EventStudent.DrownAnim = "f02_fountainDrownB_00";
-				}
+				this.Yandere.DrownAnim = "f02_toiletDrownA_00";
+				this.EventStudent.DrownAnim = "f02_toiletDrownB_00";
 				this.EventStudent.Character.animation.CrossFade(this.EventStudent.DrownAnim);
 			}
 			if (this.Clock.HourTime > this.EventTime + 0.5f || this.EventStudent.WitnessedMurder || this.EventStudent.Splashed)
@@ -153,23 +145,17 @@ public class ToiletEventScript : MonoBehaviour
 							this.Prompt.HideButton[0] = false;
 							this.EventStudent.Prompt.Hide();
 							this.EventStudent.Prompt.enabled = false;
-							if (this.EventDay == 4)
-							{
-								this.StallDoor.Prompt.enabled = false;
-								this.StallDoor.Prompt.Hide();
-							}
+							this.StallDoor.Prompt.enabled = false;
+							this.StallDoor.Prompt.Hide();
 						}
 						this.Timer += Time.deltaTime;
 						if (this.Timer > (float)3)
 						{
-							if (this.EventDay == 4)
-							{
-								this.StallDoor.Locked = true;
-								this.StallDoor.CloseDoor();
-								this.Toilet.enabled = false;
-								this.Prompt.Hide();
-								this.Prompt.enabled = false;
-							}
+							this.StallDoor.Locked = true;
+							this.StallDoor.CloseDoor();
+							this.Toilet.enabled = false;
+							this.Prompt.Hide();
+							this.Prompt.enabled = false;
 							this.EventStudent.CurrentDestination = this.EventLocation[2];
 							this.EventStudent.Pathfinding.target = this.EventLocation[2];
 							this.EventStudent.TargetDistance = (float)2;
@@ -182,24 +168,14 @@ public class ToiletEventScript : MonoBehaviour
 						if (this.Timer == (float)0)
 						{
 							this.EventStudent.Character.animation.CrossFade(this.EventAnim[1]);
-							if (this.EventDay == 4)
-							{
-								this.BucketPour.enabled = true;
-							}
+							this.BucketPour.enabled = true;
 						}
 						this.Timer += Time.deltaTime;
 						if (this.Timer > (float)10)
 						{
-							if (this.EventDay == 4)
-							{
-								this.PlayClip(this.EventClip[2], this.Toilet.transform.position);
-								this.EventPhase++;
-								this.Timer = (float)0;
-							}
-							else
-							{
-								this.EndEvent();
-							}
+							this.PlayClip(this.EventClip[2], this.Toilet.transform.position);
+							this.EventPhase++;
+							this.Timer = (float)0;
 						}
 					}
 					else if (this.EventPhase == 3)
@@ -266,7 +242,7 @@ public class ToiletEventScript : MonoBehaviour
 				this.EndEvent();
 			}
 		}
-		if (this.EventDay == 4 && this.ToiletCountdown > (float)0)
+		if (this.ToiletCountdown > (float)0)
 		{
 			this.ToiletCountdown -= Time.deltaTime;
 			if (this.ToiletCountdown < (float)0)
@@ -312,15 +288,12 @@ public class ToiletEventScript : MonoBehaviour
 			this.EventSubtitle.text = string.Empty;
 			this.StudentManager.UpdateStudents();
 		}
-		if (this.EventDay == 4)
-		{
-			this.StallDoor.gameObject.active = true;
-			this.StallDoor.Prompt.enabled = true;
-			this.StallDoor.Locked = false;
-			this.BucketPour.enabled = false;
-			this.BucketPour.Prompt.Hide();
-			this.BucketPour.Prompt.enabled = false;
-		}
+		this.StallDoor.gameObject.active = true;
+		this.StallDoor.Prompt.enabled = true;
+		this.StallDoor.Locked = false;
+		this.BucketPour.enabled = false;
+		this.BucketPour.Prompt.Hide();
+		this.BucketPour.Prompt.enabled = false;
 		this.EventActive = false;
 		this.EventCheck = false;
 		this.Prompt.Hide();

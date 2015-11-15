@@ -223,9 +223,9 @@ public class PortalScript : MonoBehaviour
 		}
 		if (this.Clock.HourTime > 15.5f)
 		{
-			if (this.transform.position.z > (float)0)
+			if (this.transform.position.z < (float)0)
 			{
-				this.transform.position = new Vector3((float)0, (float)0, -49.5f);
+				this.transform.position = new Vector3((float)0, (float)1, -49.5f);
 				this.Prompt.Label[0].text = "     " + "Go Home";
 				this.Prompt.enabled = true;
 			}

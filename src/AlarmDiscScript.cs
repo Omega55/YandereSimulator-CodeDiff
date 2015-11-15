@@ -58,6 +58,15 @@ public class AlarmDiscScript : MonoBehaviour
 			this.Student = (StudentScript)other.gameObject.GetComponent(typeof(StudentScript));
 			if (this.Student != null && this.Student != this.Originator && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave)
 			{
+				this.Student.Character.animation.CrossFade(this.Student.IdleAnim);
+				if (this.Originator.Corpse == null)
+				{
+					this.Student.DistractionSpot = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z);
+				}
+				else
+				{
+					this.Student.DistractionSpot = new Vector3(this.Originator.Corpse.transform.position.x, this.Originator.Corpse.transform.position.y, this.Originator.Corpse.transform.position.z);
+				}
 				this.Student.DiscCheck = true;
 				this.Student.Alarm = (float)200;
 			}

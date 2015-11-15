@@ -63,50 +63,50 @@ public class DumpsterHandleScript : MonoBehaviour
 			}
 			if (Input.GetAxis("Horizontal") > 0.5f || Input.GetAxis("DpadX") > 0.5f)
 			{
-				float x = this.transform.parent.transform.position.x - Time.deltaTime;
+				float z = this.transform.parent.transform.position.z - Time.deltaTime;
 				Vector3 position = this.transform.parent.transform.position;
-				float num = position.x = x;
+				float num = position.z = z;
 				Vector3 vector = this.transform.parent.transform.position = position;
 			}
 			else if (Input.GetAxis("Horizontal") < -0.5f || Input.GetAxis("DpadX") < -0.5f)
 			{
-				float x2 = this.transform.parent.transform.position.x + Time.deltaTime;
+				float z2 = this.transform.parent.transform.position.z + Time.deltaTime;
 				Vector3 position2 = this.transform.parent.transform.position;
-				float num2 = position2.x = x2;
+				float num2 = position2.z = z2;
 				Vector3 vector2 = this.transform.parent.transform.position = position2;
 			}
 			if (this.PullLimit < this.PushLimit)
 			{
-				if (this.transform.parent.transform.position.x < this.PullLimit)
+				if (this.transform.parent.transform.position.z < this.PullLimit)
 				{
 					float pullLimit = this.PullLimit;
 					Vector3 position3 = this.transform.parent.transform.position;
-					float num3 = position3.x = pullLimit;
+					float num3 = position3.z = pullLimit;
 					Vector3 vector3 = this.transform.parent.transform.position = position3;
 				}
-				else if (this.transform.parent.transform.position.x > this.PushLimit)
+				else if (this.transform.parent.transform.position.z > this.PushLimit)
 				{
 					float pushLimit = this.PushLimit;
 					Vector3 position4 = this.transform.parent.transform.position;
-					float num4 = position4.x = pushLimit;
+					float num4 = position4.z = pushLimit;
 					Vector3 vector4 = this.transform.parent.transform.position = position4;
 				}
 			}
-			else if (this.transform.parent.transform.position.x > this.PullLimit)
+			else if (this.transform.parent.transform.position.z > this.PullLimit)
 			{
 				float pullLimit2 = this.PullLimit;
 				Vector3 position5 = this.transform.parent.transform.position;
-				float num5 = position5.x = pullLimit2;
+				float num5 = position5.z = pullLimit2;
 				Vector3 vector5 = this.transform.parent.transform.position = position5;
 			}
-			else if (this.transform.parent.transform.position.x < this.PushLimit)
+			else if (this.transform.parent.transform.position.z < this.PushLimit)
 			{
 				float pushLimit2 = this.PushLimit;
 				Vector3 position6 = this.transform.parent.transform.position;
-				float num6 = position6.x = pushLimit2;
+				float num6 = position6.z = pushLimit2;
 				Vector3 vector6 = this.transform.parent.transform.position = position6;
 			}
-			if (this.DumpsterLid.transform.position.x > this.DumpsterLid.DisposalSpot - 0.05f && this.DumpsterLid.transform.position.x < this.DumpsterLid.DisposalSpot + 0.05f)
+			if (this.DumpsterLid.transform.position.z > this.DumpsterLid.DisposalSpot - 0.05f && this.DumpsterLid.transform.position.z < this.DumpsterLid.DisposalSpot + 0.05f)
 			{
 				this.Panel.active = true;
 			}

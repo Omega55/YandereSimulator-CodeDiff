@@ -127,13 +127,6 @@ public class DebugMenuScript : MonoBehaviour
 					this.Clock.PresentTime = 424.8f;
 				}
 			}
-			else if (Input.GetKeyDown("t"))
-			{
-				this.Yandere.transform.eulerAngles = this.TeleportSpot[5].eulerAngles;
-				this.Yandere.transform.position = this.TeleportSpot[5].position;
-				this.Yandere.FixCamera();
-				this.Window.active = false;
-			}
 			else if (Input.GetKeyDown("0"))
 			{
 				this.CameraEffects.DisableCamera();

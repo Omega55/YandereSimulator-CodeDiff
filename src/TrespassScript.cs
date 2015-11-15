@@ -12,7 +12,7 @@ public class TrespassScript : MonoBehaviour
 
 	public virtual void OnTriggerEnter(Collider other)
 	{
-		if (other.gameObject.layer == 13)
+		if (this.enabled && other.gameObject.layer == 13)
 		{
 			this.YandereObject = other.gameObject;
 			this.Yandere = (YandereScript)other.gameObject.GetComponent(typeof(YandereScript));
@@ -21,6 +21,7 @@ public class TrespassScript : MonoBehaviour
 				if (!this.Yandere.Trespassing)
 				{
 					this.Yandere.NotificationManager.DisplayNotification("Intrude");
+					Debug.Log(this.transform.position);
 				}
 				this.Yandere.Trespassing = true;
 			}
