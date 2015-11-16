@@ -11,18 +11,18 @@ public class StudentInfoMenuScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $UpdatePortraits$2172 : GenericGenerator<WWW>
+	internal sealed class $UpdatePortraits$2176 : GenericGenerator<WWW>
 	{
-		internal StudentInfoMenuScript $self_$2177;
+		internal StudentInfoMenuScript $self_$2181;
 
-		public $UpdatePortraits$2172(StudentInfoMenuScript self_)
+		public $UpdatePortraits$2176(StudentInfoMenuScript self_)
 		{
-			this.$self_$2177 = self_;
+			this.$self_$2181 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new StudentInfoMenuScript.$UpdatePortraits$2172.$(this.$self_$2177);
+			return new StudentInfoMenuScript.$UpdatePortraits$2176.$(this.$self_$2181);
 		}
 	}
 
@@ -241,7 +241,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
-		if (this.Distracting && (this.StudentID == 0 || PlayerPrefs.GetInt("Student_" + this.StudentID + "_Dead") == 1))
+		if (this.Distracting && (this.StudentID == 0 || this.DeathShadows[this.StudentID].enabled))
 		{
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
@@ -279,7 +279,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	public virtual IEnumerator UpdatePortraits()
 	{
-		return new StudentInfoMenuScript.$UpdatePortraits$2172(this).GetEnumerator();
+		return new StudentInfoMenuScript.$UpdatePortraits$2176(this).GetEnumerator();
 	}
 
 	public virtual void Main()

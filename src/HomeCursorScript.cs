@@ -22,9 +22,12 @@ public class HomeCursorScript : MonoBehaviour
 
 	public virtual void OnTriggerEnter(Collider other)
 	{
-		this.Photograph = other.gameObject;
-		this.Highlight.localEulerAngles = this.Photograph.transform.localEulerAngles;
-		this.Highlight.localPosition = this.Photograph.transform.localPosition;
+		if (other.gameObject.name != "SouthWall")
+		{
+			this.Photograph = other.gameObject;
+			this.Highlight.localEulerAngles = this.Photograph.transform.localEulerAngles;
+			this.Highlight.localPosition = this.Photograph.transform.localPosition;
+		}
 	}
 
 	public virtual void Main()

@@ -56,7 +56,7 @@ public class AlarmDiscScript : MonoBehaviour
 		if (other.gameObject.layer == 9)
 		{
 			this.Student = (StudentScript)other.gameObject.GetComponent(typeof(StudentScript));
-			if (this.Student != null && this.Student != this.Originator && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave)
+			if (this.Student != null && this.Student != this.Originator && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse)
 			{
 				this.Student.Character.animation.CrossFade(this.Student.IdleAnim);
 				if (this.Originator.Corpse == null)

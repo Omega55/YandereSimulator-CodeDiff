@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$2185 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$2189 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$2200;
+		internal YandereScript $self_$2204;
 
-		public $ApplyCustomCostume$2185(YandereScript self_)
+		public $ApplyCustomCostume$2189(YandereScript self_)
 		{
-			this.$self_$2200 = self_;
+			this.$self_$2204 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$2185.$(this.$self_$2200);
+			return new YandereScript.$ApplyCustomCostume$2189.$(this.$self_$2204);
 		}
 	}
 
@@ -2060,6 +2060,14 @@ public class YandereScript : MonoBehaviour
 				float num13 = position4.z = z;
 				Vector3 vector9 = this.transform.position = position4;
 			}
+			int num14 = 0;
+			Vector3 eulerAngles3 = this.transform.eulerAngles;
+			float num15 = eulerAngles3.x = (float)num14;
+			Vector3 vector10 = this.transform.eulerAngles = eulerAngles3;
+			int num16 = 0;
+			Vector3 eulerAngles4 = this.transform.eulerAngles;
+			float num17 = eulerAngles4.z = (float)num16;
+			Vector3 vector11 = this.transform.eulerAngles = eulerAngles4;
 		}
 		else
 		{
@@ -2642,7 +2650,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$2185(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$2189(this).GetEnumerator();
 	}
 
 	public virtual void AttackOnTitan()

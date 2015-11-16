@@ -1020,6 +1020,8 @@ public class StudentScript : MonoBehaviour
 								this.Pathfinding.canSearch = false;
 								this.Pathfinding.canMove = false;
 								this.Obstacle.enabled = true;
+								this.Yandere.Character.animation["f02_struggleA_00"].time = (float)0;
+								this.Yandere.StopLaughing();
 								this.Yandere.TargetStudent = this;
 								this.Yandere.Obscurance.enabled = false;
 								this.Yandere.YandereVision = false;
@@ -3161,13 +3163,13 @@ public class StudentScript : MonoBehaviour
 				}
 			}
 			int num14 = 0;
-			Vector3 localEulerAngles = this.transform.localEulerAngles;
-			float num15 = localEulerAngles.x = (float)num14;
-			Vector3 vector4 = this.transform.localEulerAngles = localEulerAngles;
+			Vector3 eulerAngles = this.transform.eulerAngles;
+			float num15 = eulerAngles.x = (float)num14;
+			Vector3 vector4 = this.transform.eulerAngles = eulerAngles;
 			int num16 = 0;
-			Vector3 localEulerAngles2 = this.transform.localEulerAngles;
-			float num17 = localEulerAngles2.z = (float)num16;
-			Vector3 vector5 = this.transform.localEulerAngles = localEulerAngles2;
+			Vector3 eulerAngles2 = this.transform.eulerAngles;
+			float num17 = eulerAngles2.z = (float)num16;
+			Vector3 vector5 = this.transform.eulerAngles = eulerAngles2;
 			if (!this.Male)
 			{
 				if (!this.Splashed && this.Wet && !this.Dying && Mathf.Abs(this.BathePhase) == 1)

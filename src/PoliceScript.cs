@@ -737,7 +737,7 @@ public class PoliceScript : MonoBehaviour
 		float num = PlayerPrefs.GetFloat("SchoolAtmosphere");
 		if (this.Deaths > 0)
 		{
-			for (int i = 1; i < 20; i++)
+			for (int i = 1; i < this.StudentManager.StudentsTotal; i++)
 			{
 				if (PlayerPrefs.GetInt("Student_" + i + "_Dying") == 1)
 				{
