@@ -43,6 +43,8 @@ public class EndOfDayScript : MonoBehaviour
 
 	public int WeaponID;
 
+	public int ArrestID;
+
 	public int Arrests;
 
 	public int Corpses;
@@ -54,6 +56,8 @@ public class EndOfDayScript : MonoBehaviour
 	public int Phase;
 
 	public int ID;
+
+	public int[] VictimArray;
 
 	public EndOfDayScript()
 	{
@@ -175,6 +179,7 @@ public class EndOfDayScript : MonoBehaviour
 					{
 						if (this.Police.CorpseList[this.ID] != null)
 						{
+							this.VictimArray[this.Corpses] = this.Police.CorpseList[this.ID].Student.StudentID;
 							if (this.Corpses > 0)
 							{
 								this.VictimString += ", and ";
@@ -300,6 +305,10 @@ public class EndOfDayScript : MonoBehaviour
 						{
 							this.Phase = 7;
 						}
+						else if (this.TranqCase.VictimID == this.ArrestID)
+						{
+							this.Phase = 7;
+						}
 						else
 						{
 							this.Phase++;
@@ -358,7 +367,7 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 9)
 			{
-				this.Label.text = "Yandere-chan waits until the clock strikes midnight." + "\n" + "Under the cover of darkness, Yandere-chan travels back to school and sneaks inside of the gym." + "\n" + "Yandere-chan returns to the instrument case that carries her unconscious victim." + "\n" + "She pushes the case back to her house, pretending to be a young musician returning home from a late-night show." + "\n" + "Yandere-chan drags the case down to her basement and ties up her victim." + "\n" + "Exhausted, Yandere-chan goes to sleep.";
+				this.Label.text = "Yandere-chan waits until the clock strikes midnight." + "\n" + "\n" + "Under the cover of darkness, Yandere-chan travels back to school and sneaks inside of the gym." + "\n" + "\n" + "Yandere-chan returns to the instrument case that carries her unconscious victim." + "\n" + "\n" + "She pushes the case back to her house, pretending to be a young musician returning home from a late-night show." + "\n" + "\n" + "Yandere-chan drags the case down to her basement and ties up her victim." + "\n" + "\n" + "Exhausted, Yandere-chan goes to sleep.";
 				this.Phase++;
 			}
 			else if (this.Phase == 10)
@@ -388,14 +397,42 @@ public class EndOfDayScript : MonoBehaviour
 			{
 				if (!this.StudentManager.Students[this.WeaponManager.Weapons[this.WeaponID].FingerprintID].Dead)
 				{
-					this.Label.text = this.JSON.StudentNames[this.WeaponManager.Weapons[this.WeaponID].FingerprintID] + " is arrested by the police.";
-					PlayerPrefs.SetInt("Student_" + this.WeaponManager.Weapons[this.WeaponID].FingerprintID + "_Arrested", 1);
-					this.Arrests++;
+					if (!this.StudentManager.Students[this.WeaponManager.Weapons[this.WeaponID].FingerprintID].Tranquil)
+					{
+						this.Label.text = this.JSON.StudentNames[this.WeaponManager.Weapons[this.WeaponID].FingerprintID] + " is arrested by the police.";
+						PlayerPrefs.SetInt("Student_" + this.WeaponManager.Weapons[this.WeaponID].FingerprintID + "_Arrested", 1);
+						this.Arrests++;
+					}
+					else
+					{
+						this.Label.text = this.JSON.StudentNames[this.WeaponManager.Weapons[this.WeaponID].FingerprintID] + " is found asleep inside of a musical instrument case. The police assume that she hid herself inside of the box after committing murder, and arrest her.";
+						PlayerPrefs.SetInt("Student_" + this.WeaponManager.Weapons[this.WeaponID].FingerprintID + "_Arrested", 1);
+						this.ArrestID = this.WeaponManager.Weapons[this.WeaponID].FingerprintID;
+						this.TranqCase.Occupied = false;
+						this.Arrests++;
+					}
 				}
 				else
 				{
-					this.Label.text = this.JSON.StudentNames[this.WeaponManager.Weapons[this.WeaponID].FingerprintID] + " is dead. The police can not perform an arrest.";
-					this.DeadPerps++;
+					this.ID = 0;
+					bool flag;
+					while (this.ID < Extensions.get_length(this.VictimArray))
+					{
+						if (this.VictimArray[this.ID] == this.WeaponManager.Weapons[this.WeaponID].FingerprintID)
+						{
+							flag = true;
+						}
+						this.ID++;
+					}
+					if (!flag)
+					{
+						this.Label.text = this.JSON.StudentNames[this.WeaponManager.Weapons[this.WeaponID].FingerprintID] + " is dead. The police can not perform an arrest.";
+						this.DeadPerps++;
+					}
+					else
+					{
+						this.Label.text = this.JSON.StudentNames[this.WeaponManager.Weapons[this.WeaponID].FingerprintID] + "'s fingerprints are on the same weapon that killed her. The police can not solve this mystery.";
+					}
 				}
 				this.Phase = 5;
 			}

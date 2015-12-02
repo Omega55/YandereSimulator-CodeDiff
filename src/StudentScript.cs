@@ -624,9 +624,12 @@ public class StudentScript : MonoBehaviour
 		{
 			this.VisionCone.farClipPlane = (float)10 * this.Paranoia;
 		}
-		this.DetectionMarker = (DetectionMarkerScript)((GameObject)UnityEngine.Object.Instantiate(this.Marker, GameObject.Find("DetectionPanel").transform.position, Quaternion.identity)).GetComponent(typeof(DetectionMarkerScript));
-		this.DetectionMarker.transform.parent = GameObject.Find("DetectionPanel").transform;
-		this.DetectionMarker.Target = this.transform;
+		if (GameObject.Find("DetectionCamera") != null)
+		{
+			this.DetectionMarker = (DetectionMarkerScript)((GameObject)UnityEngine.Object.Instantiate(this.Marker, GameObject.Find("DetectionPanel").transform.position, Quaternion.identity)).GetComponent(typeof(DetectionMarkerScript));
+			this.DetectionMarker.transform.parent = GameObject.Find("DetectionPanel").transform;
+			this.DetectionMarker.Target = this.transform;
+		}
 		this.PhaseTimes = (float[])this.JSON.StudentTimes[this.StudentID].ToBuiltin(typeof(float));
 		this.Persona = this.JSON.StudentPersonas[this.StudentID];
 		this.Class = this.JSON.StudentClasses[this.StudentID];
@@ -749,7 +752,7 @@ public class StudentScript : MonoBehaviour
 			this.Character.animation.Play(this.PhoneAnim);
 			this.Character.animation[this.PhoneAnim].weight = (float)0;
 		}
-		if (this.Club == 5)
+		if (this.Club == 6)
 		{
 			this.Bandana.active = true;
 			if (this.StudentID == 21)
@@ -1499,6 +1502,7 @@ public class StudentScript : MonoBehaviour
 										this.LightSwitch.BathroomLight.active = true;
 										this.LightSwitch.audio.clip = this.LightSwitch.Flick[0];
 										this.LightSwitch.audio.Play();
+										this.InDarkness = false;
 									}
 									else
 									{
@@ -2146,24 +2150,27 @@ public class StudentScript : MonoBehaviour
 			{
 				this.Alarm = (float)0;
 			}
-			if (this.Alarm <= (float)100)
+			if (this.DetectionMarker != null)
 			{
-				float y = this.Alarm / (float)100;
-				Vector3 localScale = this.DetectionMarker.Tex.transform.localScale;
-				float num2 = localScale.y = y;
-				Vector3 vector = this.DetectionMarker.Tex.transform.localScale = localScale;
+				if (this.Alarm <= (float)100)
+				{
+					float y = this.Alarm / (float)100;
+					Vector3 localScale = this.DetectionMarker.Tex.transform.localScale;
+					float num2 = localScale.y = y;
+					Vector3 vector = this.DetectionMarker.Tex.transform.localScale = localScale;
+				}
+				else
+				{
+					int num3 = 1;
+					Vector3 localScale2 = this.DetectionMarker.Tex.transform.localScale;
+					float num4 = localScale2.y = (float)num3;
+					Vector3 vector2 = this.DetectionMarker.Tex.transform.localScale = localScale2;
+				}
+				float a = this.Alarm / (float)100;
+				Color color = this.DetectionMarker.Tex.color;
+				float num5 = color.a = a;
+				Color color2 = this.DetectionMarker.Tex.color = color;
 			}
-			else
-			{
-				int num3 = 1;
-				Vector3 localScale2 = this.DetectionMarker.Tex.transform.localScale;
-				float num4 = localScale2.y = (float)num3;
-				Vector3 vector2 = this.DetectionMarker.Tex.transform.localScale = localScale2;
-			}
-			float a = this.Alarm / (float)100;
-			Color color = this.DetectionMarker.Tex.color;
-			float num5 = color.a = a;
-			Color color2 = this.DetectionMarker.Tex.color = color;
 			if (this.StudentID > 1)
 			{
 				if ((this.Alarm > (float)0 || this.AlarmTimer > (float)0 || this.Yandere.Armed) && !this.Slave)
@@ -2658,7 +2665,7 @@ public class StudentScript : MonoBehaviour
 				if (!this.Teacher)
 				{
 					this.EyeShrink = Mathf.Lerp(this.EyeShrink, (float)1, Time.deltaTime * (float)10);
-					if (!this.Dead)
+					if (!this.Dead && !this.Tranquil)
 					{
 						this.Character.animation.CrossFade(this.DefendAnim);
 						this.targetRotation = Quaternion.LookRotation(new Vector3(this.Yandere.transform.position.x, this.transform.position.y, this.Yandere.transform.position.z) - this.transform.position);

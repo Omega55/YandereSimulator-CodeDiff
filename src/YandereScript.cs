@@ -1905,6 +1905,7 @@ public class YandereScript : MonoBehaviour
 							else
 							{
 								this.TargetStudent.BloodSpray.active = true;
+								this.TargetStudent.Dead = true;
 								this.Bloodiness += (float)20;
 								this.UpdateBlood();
 							}
@@ -1914,7 +1915,6 @@ public class YandereScript : MonoBehaviour
 							}
 							AudioSource.PlayClipAtPoint(this.Stabs[UnityEngine.Random.Range(0, Extensions.get_length(this.Stabs))], this.transform.position + Vector3.up);
 							UnityEngine.Object.Destroy(this.TargetStudent.DeathScream);
-							this.TargetStudent.Dead = true;
 							this.AttackPhase = 2;
 							this.Sanity -= (float)20;
 							this.UpdateSanity();
@@ -2592,7 +2592,10 @@ public class YandereScript : MonoBehaviour
 		{
 			this.NotificationManager.DisplayNotification("Bloody");
 			this.BloodyWarning = true;
-			this.Police.BloodyClothing = this.Police.BloodyClothing + 1;
+			if (this.Schoolwear > 0)
+			{
+				this.Police.BloodyClothing = this.Police.BloodyClothing + 1;
+			}
 		}
 		if (this.Bloodiness > (float)100)
 		{

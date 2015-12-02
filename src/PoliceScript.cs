@@ -393,7 +393,7 @@ public class PoliceScript : MonoBehaviour
 							PlayerPrefs.SetFloat("Reputation", this.Reputation.Reputation);
 							PlayerPrefs.SetInt("Night", 1);
 							this.KillStudents();
-							Application.LoadLevel("CalendarScene");
+							Application.LoadLevel("HomeScene");
 						}
 					}
 				}

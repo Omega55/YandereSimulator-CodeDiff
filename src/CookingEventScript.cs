@@ -130,7 +130,7 @@ public class CookingEventScript : MonoBehaviour
 		}
 		if (this.EventActive)
 		{
-			if (this.Clock.HourTime > this.EventTime + 0.5f || this.EventStudent.WitnessedMurder || this.EventStudent.Splashed || this.EventStudent.Alarmed || this.EventStudent.Dying)
+			if (this.Clock.HourTime > this.EventTime + (float)1 || this.EventStudent.WitnessedMurder || this.EventStudent.Splashed || this.EventStudent.Alarmed || this.EventStudent.Dying)
 			{
 				this.EndEvent();
 			}
@@ -190,6 +190,8 @@ public class CookingEventScript : MonoBehaviour
 					{
 						((WeaponScript)this.Knife.GetComponent(typeof(WeaponScript))).FingerprintID = this.EventStudent.StudentID;
 						this.Knife.transform.parent = this.EventStudent.LeftHand;
+						this.Knife.transform.localPosition = new Vector3((float)0, -0.01f, (float)0);
+						this.Knife.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)-90);
 						this.EventPhase++;
 					}
 				}
@@ -358,6 +360,12 @@ public class CookingEventScript : MonoBehaviour
 			if (!this.EventStudent.Dying)
 			{
 				this.EventStudent.Prompt.enabled = true;
+			}
+			if (this.Plate.parent == this.EventStudent.RightHand)
+			{
+				this.Plate.parent = null;
+				this.Plate.rigidbody.useGravity = true;
+				((BoxCollider)this.Plate.GetComponent(typeof(BoxCollider))).enabled = true;
 			}
 			this.EventStudent.Character.animation[this.EventStudent.CarryAnim].weight = (float)0;
 			this.EventStudent.Pathfinding.speed = (float)1;

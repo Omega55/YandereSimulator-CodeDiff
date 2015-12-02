@@ -225,6 +225,10 @@ public class WeaponMenuScript : MonoBehaviour
 			this.Yandere.Weapon[this.Selected].active = true;
 			this.Yandere.Equipped = this.Selected;
 			this.Yandere.Armed = true;
+			if (!this.Yandere.Gloved)
+			{
+				this.Yandere.Weapon[this.Selected].FingerprintID = 100;
+			}
 			this.Yandere.StudentManager.UpdateStudents();
 			this.Yandere.WeaponManager.UpdateLabels();
 			if (this.Yandere.Weapon[this.Yandere.Equipped].Suspicious)
