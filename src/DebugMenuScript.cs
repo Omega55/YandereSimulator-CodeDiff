@@ -12,8 +12,6 @@ public class DebugMenuScript : MonoBehaviour
 
 	public YandereScript Yandere;
 
-	public ClassScript Class;
-
 	public ClockScript Clock;
 
 	public Transform[] TeleportSpot;
@@ -35,7 +33,7 @@ public class DebugMenuScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Backslash))
+		if (!this.Yandere.InClass && Input.GetKeyDown(KeyCode.Backslash))
 		{
 			if (!this.Window.active)
 			{
@@ -197,7 +195,7 @@ public class DebugMenuScript : MonoBehaviour
 			}
 			else if (Input.GetKeyDown("s"))
 			{
-				this.Class.GivePoints();
+				PlayerPrefs.SetInt("Seduction", 5);
 				this.Window.active = false;
 			}
 			else if (Input.GetKeyDown("backspace"))

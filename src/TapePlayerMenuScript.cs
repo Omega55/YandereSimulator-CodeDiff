@@ -103,7 +103,11 @@ public class TapePlayerMenuScript : MonoBehaviour
 
 	public float[] BasementCues1;
 
+	public float[] BasementCues10;
+
 	public string[] BasementSubs1;
+
+	public string[] BasementSubs10;
 
 	public TapePlayerMenuScript()
 	{
@@ -413,13 +417,26 @@ public class TapePlayerMenuScript : MonoBehaviour
 						}
 					}
 				}
-				else if (this.Selected == 1)
+				else
 				{
-					for (int i = 0; i < Extensions.get_length(this.BasementCues1); i++)
+					if (this.Selected == 1)
 					{
-						if (this.audio.time > this.BasementCues1[i])
+						for (int i = 0; i < Extensions.get_length(this.BasementCues1); i++)
 						{
-							this.Subtitle.text = this.BasementSubs1[i];
+							if (this.audio.time > this.BasementCues1[i])
+							{
+								this.Subtitle.text = this.BasementSubs1[i];
+							}
+						}
+					}
+					if (this.Selected == 10)
+					{
+						for (int i = 0; i < Extensions.get_length(this.BasementCues10); i++)
+						{
+							if (this.audio.time > this.BasementCues10[i])
+							{
+								this.Subtitle.text = this.BasementSubs10[i];
+							}
 						}
 					}
 				}

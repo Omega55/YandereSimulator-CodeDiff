@@ -105,7 +105,7 @@ public class ClockScript : MonoBehaviour
 				this.BloomEffect.bloomThreshhold = 0.5f;
 			}
 		}
-		else if (!this.Police.FadeOut)
+		else if (!this.Police.FadeOut && !this.Yandere.Attacking && !this.Yandere.Struggling)
 		{
 			this.Yandere.StudentManager.StopMoving();
 			this.Police.FadeOut = true;

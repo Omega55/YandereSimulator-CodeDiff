@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$2189 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$2201 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$2204;
+		internal YandereScript $self_$2216;
 
-		public $ApplyCustomCostume$2189(YandereScript self_)
+		public $ApplyCustomCostume$2201(YandereScript self_)
 		{
-			this.$self_$2204 = self_;
+			this.$self_$2216 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$2189.$(this.$self_$2204);
+			return new YandereScript.$ApplyCustomCostume$2201.$(this.$self_$2216);
 		}
 	}
 
@@ -36,8 +36,6 @@ public class YandereScript : MonoBehaviour
 	private int AccessoryID;
 
 	private int ID;
-
-	public Mesh TestMesh;
 
 	public FootprintSpawnerScript RightFootprintSpawner;
 
@@ -83,6 +81,8 @@ public class YandereScript : MonoBehaviour
 
 	public IncineratorScript Incinerator;
 
+	public InputDeviceScript InputDevice;
+
 	public PauseScreenScript PauseScreen;
 
 	public StudentScript TargetStudent;
@@ -116,6 +116,8 @@ public class YandereScript : MonoBehaviour
 	public PickUpScript PickUp;
 
 	public PoliceScript Police;
+
+	public GloveScript Gloves;
 
 	public MopScript Mop;
 
@@ -160,6 +162,8 @@ public class YandereScript : MonoBehaviour
 	public Transform[] LongHair;
 
 	public GameObject[] Shoes;
+
+	public float[] DropTimer;
 
 	public GameObject CinematicCamera;
 
@@ -238,6 +242,8 @@ public class YandereScript : MonoBehaviour
 	public float AttackTimer;
 
 	public float CrawlTimer;
+
+	public float GloveTimer;
 
 	public float LaughTimer;
 
@@ -329,9 +335,11 @@ public class YandereScript : MonoBehaviour
 
 	public bool Struggling;
 
+	public bool Attacking;
+
 	public bool Crouching;
 
-	public bool Attacking;
+	public bool Degloving;
 
 	public bool Stripping;
 
@@ -373,7 +381,11 @@ public class YandereScript : MonoBehaviour
 
 	public bool PossessTranq;
 
+	public bool PlayedSound;
+
 	public bool NearSenpai;
+
+	public bool Possessed;
 
 	public bool CanTranq;
 
@@ -390,6 +402,8 @@ public class YandereScript : MonoBehaviour
 	public bool CanMove;
 
 	public bool Chased;
+
+	public bool Gloved;
 
 	public bool Armed;
 
@@ -474,6 +488,10 @@ public class YandereScript : MonoBehaviour
 	public AudioClip Laugh4;
 
 	public Vector3 PreviousPosition;
+
+	public GameObject CreepyArms;
+
+	public Texture[] GloveTextures;
 
 	public Texture TitanTexture;
 
@@ -825,7 +843,7 @@ public class YandereScript : MonoBehaviour
 				}
 				if (!this.NearSenpai)
 				{
-					if (!Input.GetButton("X") && (Input.GetAxis("LT") > 0.5f || Input.GetMouseButtonDown(1)))
+					if (!Input.GetButton("A") && !Input.GetButton("B") && !Input.GetButton("X") && !Input.GetButton("Y") && (Input.GetAxis("LT") > 0.5f || Input.GetMouseButtonDown(1)))
 					{
 						if (Input.GetAxis("LT") > 0.5f)
 						{
@@ -1004,6 +1022,84 @@ public class YandereScript : MonoBehaviour
 					else
 					{
 						this.CinematicTimer = (float)0;
+					}
+				}
+				if (this.Gloved)
+				{
+					if (this.InputDevice.Type == 1)
+					{
+						if (Input.GetAxis("DpadY") < -0.5f)
+						{
+							this.GloveTimer += Time.deltaTime;
+							if (this.GloveTimer > 0.5f)
+							{
+								this.Character.animation.CrossFade("f02_removeGloves_00");
+								this.Degloving = true;
+								this.CanMove = false;
+							}
+						}
+						else
+						{
+							this.GloveTimer = (float)0;
+						}
+					}
+					else if (Input.GetKey("1"))
+					{
+						this.GloveTimer += Time.deltaTime;
+						if (this.GloveTimer > 0.1f)
+						{
+							this.Character.animation.CrossFade("f02_removeGloves_00");
+							this.Degloving = true;
+							this.CanMove = false;
+						}
+					}
+					else
+					{
+						this.GloveTimer = (float)0;
+					}
+				}
+				if (this.Weapon[1] != null && this.DropTimer[2] == (float)0)
+				{
+					if (this.InputDevice.Type == 1)
+					{
+						if (Input.GetAxis("DpadX") < -0.5f)
+						{
+							this.DropWeapon(1);
+						}
+						else
+						{
+							this.DropTimer[1] = (float)0;
+						}
+					}
+					else if (Input.GetKey("2"))
+					{
+						this.DropWeapon(1);
+					}
+					else
+					{
+						this.DropTimer[1] = (float)0;
+					}
+				}
+				if (this.Weapon[2] != null && this.DropTimer[1] == (float)0)
+				{
+					if (this.InputDevice.Type == 1)
+					{
+						if (Input.GetAxis("DpadX") > 0.5f)
+						{
+							this.DropWeapon(2);
+						}
+						else
+						{
+							this.DropTimer[2] = (float)0;
+						}
+					}
+					else if (Input.GetKey("3"))
+					{
+						this.DropWeapon(2);
+					}
+					else
+					{
+						this.DropTimer[2] = (float)0;
 					}
 				}
 			}
@@ -1229,6 +1325,35 @@ public class YandereScript : MonoBehaviour
 						this.CanMove = true;
 					}
 				}
+				if (this.Degloving)
+				{
+					this.Character.animation.CrossFade("f02_removeGloves_00");
+					if (this.Character.animation["f02_removeGloves_00"].time >= this.Character.animation["f02_removeGloves_00"].length)
+					{
+						this.Gloves.transform.parent = null;
+						this.Gloves.active = true;
+						this.Degloving = false;
+						this.CanMove = true;
+						this.Gloved = false;
+						this.Gloves = null;
+						this.SetUniform();
+					}
+					else if (this.InputDevice.Type == 1)
+					{
+						if (Input.GetAxis("DpadY") > -0.5f)
+						{
+							this.Degloving = false;
+							this.CanMove = true;
+							this.GloveTimer = (float)0;
+						}
+					}
+					else if (Input.GetKeyUp("1"))
+					{
+						this.Degloving = false;
+						this.CanMove = true;
+						this.GloveTimer = (float)0;
+					}
+				}
 				if (this.Struggling)
 				{
 					if (!this.Won && !this.Lost)
@@ -1240,9 +1365,20 @@ public class YandereScript : MonoBehaviour
 					else if (this.Won)
 					{
 						this.Character.animation.CrossFade("f02_struggleWinA_00");
+						if (!this.PlayedSound && this.Character.animation["f02_struggleWinA_00"].time > 0.9f)
+						{
+							AudioSource.PlayClipAtPoint(this.Stabs[UnityEngine.Random.Range(0, Extensions.get_length(this.Stabs))], this.transform.position + Vector3.up);
+							this.Bloodiness += (float)20;
+							this.UpdateBlood();
+							this.Sanity -= (float)20;
+							this.UpdateSanity();
+							this.StainWeapon();
+							this.PlayedSound = true;
+						}
 						if (this.Character.animation["f02_struggleWinA_00"].time > this.Character.animation["f02_struggleWinA_00"].length)
 						{
 							this.ShoulderCamera.Struggle = false;
+							this.PlayedSound = false;
 							this.Struggling = false;
 						}
 					}
@@ -1250,6 +1386,10 @@ public class YandereScript : MonoBehaviour
 					{
 						this.Character.animation.CrossFade("f02_struggleLoseA_00");
 					}
+				}
+				if (this.Possessed)
+				{
+					this.Character.animation.CrossFade("f02_possessionPose_00");
 				}
 			}
 			if (!this.Laughing)
@@ -1785,11 +1925,7 @@ public class YandereScript : MonoBehaviour
 						this.AttackTimer += Time.deltaTime;
 						if (this.AttackTimer > 0.3f)
 						{
-							if (!this.Weapon[this.Equipped].Evidence)
-							{
-								this.Weapon[this.Equipped].Evidence = true;
-								this.Police.MurderWeapons = this.Police.MurderWeapons + 1;
-							}
+							this.StainWeapon();
 							this.MyController.radius = 0.2f;
 							this.Attacking = false;
 							this.AttackPhase = 1;
@@ -1814,7 +1950,7 @@ public class YandereScript : MonoBehaviour
 					Vector3 vector7 = this.Character.transform.position = position2;
 				}
 			}
-			if (!this.Attacking && !this.Dragging && this.PickUp == null && !this.Aiming && !this.Crawling && !this.Pouring && !this.DumpsterGrabbing && !this.Stripping && !this.Bathing && !this.Struggling && this.LaughIntensity < (float)16)
+			if (!this.Attacking && !this.Dragging && this.PickUp == null && !this.Aiming && !this.Crawling && !this.Pouring && !this.DumpsterGrabbing && !this.Stripping && !this.Bathing && !this.Struggling && !this.Degloving && !this.Possessed && this.LaughIntensity < (float)16)
 			{
 				this.Character.animation["f02_yanderePose_00"].weight = Mathf.Lerp(this.Character.animation["f02_yanderePose_00"].weight, (float)1 - this.Sanity / (float)100, Time.deltaTime * (float)10);
 				this.Slouch = Mathf.Lerp(this.Slouch, (float)5 * ((float)1 - this.Sanity / (float)100), Time.deltaTime * (float)10);
@@ -2246,6 +2382,23 @@ public class YandereScript : MonoBehaviour
 		}
 	}
 
+	public virtual void StainWeapon()
+	{
+		this.Weapon[this.Equipped].Victims[this.TargetStudent.StudentID] = true;
+		this.Weapon[this.Equipped].Blood.enabled = true;
+		if (this.Gloved && !this.Gloves.Blood.enabled)
+		{
+			this.Gloves.PickUp.Evidence = true;
+			this.Gloves.Blood.enabled = true;
+			this.Police.BloodyClothing = this.Police.BloodyClothing + 1;
+		}
+		if (!this.Weapon[this.Equipped].Evidence)
+		{
+			this.Weapon[this.Equipped].Evidence = true;
+			this.Police.MurderWeapons = this.Police.MurderWeapons + 1;
+		}
+	}
+
 	public virtual void MoveTowardsTarget(Vector3 target)
 	{
 		Vector3 a = target - this.transform.position;
@@ -2367,6 +2520,18 @@ public class YandereScript : MonoBehaviour
 		}
 	}
 
+	public virtual void DropWeapon(int ID)
+	{
+		this.DropTimer[ID] = this.DropTimer[ID] + Time.deltaTime;
+		if (this.DropTimer[ID] > 0.5f)
+		{
+			this.Weapon[ID].Drop();
+			this.Weapon[ID] = null;
+			this.Unequip();
+			this.DropTimer[ID] = (float)0;
+		}
+	}
+
 	public virtual void EmptyHands()
 	{
 		if (this.Armed)
@@ -2427,7 +2592,7 @@ public class YandereScript : MonoBehaviour
 		{
 			this.NotificationManager.DisplayNotification("Bloody");
 			this.BloodyWarning = true;
-			this.Police.BloodyUniforms = this.Police.BloodyUniforms + 1;
+			this.Police.BloodyClothing = this.Police.BloodyClothing + 1;
 		}
 		if (this.Bloodiness > (float)100)
 		{
@@ -2650,7 +2815,26 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$2189(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$2201(this).GetEnumerator();
+	}
+
+	public virtual void WearGloves()
+	{
+		if (this.Bloodiness > (float)0 && !this.Gloves.Blood.enabled)
+		{
+			this.Gloves.PickUp.Evidence = true;
+			this.Gloves.Blood.enabled = true;
+			this.Police.BloodyClothing = this.Police.BloodyClothing + 1;
+		}
+		this.Gloved = true;
+		if (PlayerPrefs.GetInt("FemaleUniform") == 1)
+		{
+			this.MyRenderer.materials[1].mainTexture = this.GloveTextures[PlayerPrefs.GetInt("FemaleUniform")];
+		}
+		else
+		{
+			this.MyRenderer.materials[0].mainTexture = this.GloveTextures[PlayerPrefs.GetInt("FemaleUniform")];
+		}
 	}
 
 	public virtual void AttackOnTitan()

@@ -83,7 +83,7 @@ public class StudentInfoScript : MonoBehaviour
 		}
 		if (this.JSON.StudentPersonas[ID] == 1)
 		{
-			this.PersonaLabel.text = "Coward";
+			this.PersonaLabel.text = "Loner";
 		}
 		else if (this.JSON.StudentPersonas[ID] == 2)
 		{
@@ -131,19 +131,19 @@ public class StudentInfoScript : MonoBehaviour
 		}
 		else if (this.JSON.StudentClubs[ID] == 4)
 		{
-			this.ClubLabel.text = "Light Music";
+			this.ClubLabel.text = "Art";
 		}
 		else if (this.JSON.StudentClubs[ID] == 5)
 		{
-			this.ClubLabel.text = "Martial Arts";
+			this.ClubLabel.text = "Light Music";
 		}
 		else if (this.JSON.StudentClubs[ID] == 6)
 		{
-			this.ClubLabel.text = "Photography";
+			this.ClubLabel.text = "Martial Arts";
 		}
 		else if (this.JSON.StudentClubs[ID] == 7)
 		{
-			this.ClubLabel.text = "Science";
+			this.ClubLabel.text = "Photography";
 		}
 		else if (this.JSON.StudentClubs[ID] == 8)
 		{

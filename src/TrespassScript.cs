@@ -21,7 +21,6 @@ public class TrespassScript : MonoBehaviour
 				if (!this.Yandere.Trespassing)
 				{
 					this.Yandere.NotificationManager.DisplayNotification("Intrude");
-					Debug.Log(this.transform.position);
 				}
 				this.Yandere.Trespassing = true;
 			}

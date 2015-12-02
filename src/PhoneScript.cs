@@ -12,6 +12,8 @@ public class PhoneScript : MonoBehaviour
 
 	public GameObject NewMessage;
 
+	public AudioSource Jukebox;
+
 	public Transform OldMessages;
 
 	public Transform Buttons;
@@ -56,21 +58,20 @@ public class PhoneScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		this.Timer += Time.deltaTime;
 		if (!this.FadeOut)
 		{
-			if (this.Timer > (float)1)
+			if (this.Timer > (float)0)
 			{
-				float a = this.Darkness.color.a - Time.deltaTime;
+				float a = Mathf.MoveTowards(this.Darkness.color.a, (float)0, Time.deltaTime);
 				Color color = this.Darkness.color;
 				float num = color.a = a;
 				Color color2 = this.Darkness.color = color;
-				if (this.Darkness.color.a <= (float)0)
+				if (this.Darkness.color.a == (float)0)
 				{
-					int num2 = 0;
-					Color color3 = this.Darkness.color;
-					float num3 = color3.a = (float)num2;
-					Color color4 = this.Darkness.color = color3;
+					if (!this.Jukebox.isPlaying)
+					{
+						this.Jukebox.Play();
+					}
 					if (this.NewMessage == null)
 					{
 						this.SpawnMessage();
@@ -81,7 +82,7 @@ public class PhoneScript : MonoBehaviour
 			{
 				float y = Mathf.Lerp(this.Buttons.localPosition.y, (float)0, Time.deltaTime * (float)10);
 				Vector3 localPosition = this.Buttons.localPosition;
-				float num4 = localPosition.y = y;
+				float num2 = localPosition.y = y;
 				Vector3 vector = this.Buttons.localPosition = localPosition;
 				this.AutoTimer += Time.deltaTime;
 				if ((this.Auto && this.AutoTimer > this.AutoLimit) || Input.GetButtonDown("A"))
@@ -108,18 +109,20 @@ public class PhoneScript : MonoBehaviour
 		{
 			float y2 = Mathf.Lerp(this.Buttons.localPosition.y, (float)-135, Time.deltaTime * (float)10);
 			Vector3 localPosition2 = this.Buttons.localPosition;
-			float num5 = localPosition2.y = y2;
+			float num3 = localPosition2.y = y2;
 			Vector3 vector2 = this.Buttons.localPosition = localPosition2;
 			float a2 = this.Darkness.color.a + Time.deltaTime;
-			Color color5 = this.Darkness.color;
-			float num6 = color5.a = a2;
-			Color color6 = this.Darkness.color = color5;
+			Color color3 = this.Darkness.color;
+			float num4 = color3.a = a2;
+			Color color4 = this.Darkness.color = color3;
 			this.audio.volume = (float)1 - this.Darkness.color.a;
+			this.Jukebox.volume = (float)1 - this.Darkness.color.a;
 			if (this.Darkness.color.a >= (float)1)
 			{
 				Application.LoadLevel("CalendarScene");
 			}
 		}
+		this.Timer += Time.deltaTime;
 	}
 
 	public virtual void SpawnMessage()

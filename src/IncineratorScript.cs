@@ -34,7 +34,7 @@ public class IncineratorScript : MonoBehaviour
 
 	public bool Open;
 
-	public int BloodyUniforms;
+	public int BloodyClothing;
 
 	public int MurderWeapons;
 
@@ -246,7 +246,7 @@ public class IncineratorScript : MonoBehaviour
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
 			this.Yandere.Police.IncineratedWeapons = this.Yandere.Police.IncineratedWeapons + this.MurderWeapons;
-			this.Yandere.Police.BloodyUniforms = this.Yandere.Police.BloodyUniforms - this.BloodyUniforms;
+			this.Yandere.Police.BloodyClothing = this.Yandere.Police.BloodyClothing - this.BloodyClothing;
 			this.Yandere.Police.BloodyWeapons = this.Yandere.Police.BloodyWeapons - this.MurderWeapons;
 			this.Yandere.Police.Corpses = this.Yandere.Police.Corpses - this.Corpses;
 			if (this.Yandere.Police.SuicideScene && this.Yandere.Police.Corpses == 1)
@@ -269,7 +269,7 @@ public class IncineratorScript : MonoBehaviour
 				this.Prompt.enabled = true;
 				this.Panel.active = false;
 				this.Ready = false;
-				this.BloodyUniforms = 0;
+				this.BloodyClothing = 0;
 				this.MurderWeapons = 0;
 				this.Corpses = 0;
 				this.Flames.Stop();

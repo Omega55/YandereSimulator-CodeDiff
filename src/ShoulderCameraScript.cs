@@ -50,6 +50,8 @@ public class ShoulderCameraScript : MonoBehaviour
 
 	public bool Noticed;
 
+	public AudioClip StruggleLose;
+
 	public AudioClip Slam;
 
 	public float NoticedHeight;
@@ -120,7 +122,7 @@ public class ShoulderCameraScript : MonoBehaviour
 					if (this.NoticedTimer > (float)this.NoticedLimit)
 					{
 						((StudentScript)this.Yandere.Senpai.GetComponent(typeof(StudentScript))).MyRenderer.enabled = false;
-						if (((StudentScript)this.Yandere.Senpai.GetComponent(typeof(StudentScript))).Male)
+						if (((StudentScript)this.Yandere.Senpai.GetComponent(typeof(StudentScript))).Male && ((StudentScript)this.Yandere.Senpai.GetComponent(typeof(StudentScript))).MaleHairRenderer != null)
 						{
 							((StudentScript)this.Yandere.Senpai.GetComponent(typeof(StudentScript))).MaleHairRenderer.enabled = false;
 						}
@@ -263,6 +265,11 @@ public class ShoulderCameraScript : MonoBehaviour
 				{
 					this.StruggleFocus.localPosition = Vector3.MoveTowards(this.StruggleFocus.localPosition, new Vector3((float)0, 0.4f, (float)-1), Time.deltaTime);
 					this.StrugglePOV.localPosition = Vector3.MoveTowards(this.StrugglePOV.localPosition, new Vector3((float)1, (float)1, (float)-1), Time.deltaTime);
+					if (this.Timer == (float)0)
+					{
+						this.audio.clip = this.StruggleLose;
+						this.audio.Play();
+					}
 					this.Timer += Time.deltaTime;
 					if (this.Timer > (float)3 && !this.HeartbrokenCamera.active)
 					{

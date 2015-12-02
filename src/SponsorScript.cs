@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityScript.Lang;
 
 [Serializable]
 public class SponsorScript : MonoBehaviour
@@ -10,10 +11,13 @@ public class SponsorScript : MonoBehaviour
 
 	public float Timer;
 
+	public int ID;
+
 	public virtual void Start()
 	{
 		this.Set[1].active = true;
 		this.Set[2].active = false;
+		this.Set[3].active = false;
 		int num = 1;
 		Color color = this.Darkness.color;
 		float num2 = color.a = (float)num;
@@ -54,10 +58,11 @@ public class SponsorScript : MonoBehaviour
 				Color color7 = this.Darkness.color;
 				float num6 = color7.a = (float)num5;
 				Color color8 = this.Darkness.color = color7;
-				if (this.Set[1].active)
+				this.Set[this.ID].active = false;
+				this.ID++;
+				if (this.ID < Extensions.get_length(this.Set))
 				{
-					this.Set[1].active = false;
-					this.Set[2].active = true;
+					this.Set[this.ID].active = true;
 					this.Timer = (float)0;
 				}
 				else

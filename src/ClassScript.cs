@@ -93,6 +93,10 @@ public class ClassScript : MonoBehaviour
 			Color color2 = this.Darkness.color = color;
 			if (this.Darkness.color.a <= (float)0)
 			{
+				if (Input.GetKeyDown(KeyCode.Backslash))
+				{
+					this.GivePoints();
+				}
 				if (Input.GetKeyDown("p"))
 				{
 					this.MaxPhysical();

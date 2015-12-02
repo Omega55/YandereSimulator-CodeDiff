@@ -167,6 +167,15 @@ public class StudentManagerScript : MonoBehaviour
 			this.Clock.HourTime = (float)8;
 			this.AttendClass();
 		}
+		this.ID = 1;
+		while (this.ID < this.NPCsTotal)
+		{
+			if (PlayerPrefs.GetInt("Student_" + this.ID + "_Dead") == 0)
+			{
+				PlayerPrefs.SetInt("Student_" + this.ID + "_Dying", 0);
+			}
+			this.ID++;
+		}
 	}
 
 	public virtual void Update()
@@ -218,7 +227,7 @@ public class StudentManagerScript : MonoBehaviour
 	{
 		if (this.ForceSpawn || this.Clock.HourTime >= this.SpawnTimes[this.SpawnID])
 		{
-			if (this.Students[this.SpawnID] == null && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Dead") == 0 && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Kidnapped") == 0 && this.JSON.StudentNames[this.SpawnID] != "Unknown" && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Reputation") > -100)
+			if (this.Students[this.SpawnID] == null && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Dead") == 0 && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Kidnapped") == 0 && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Arrested") == 0 && this.JSON.StudentNames[this.SpawnID] != "Unknown" && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Reputation") > -100)
 			{
 				if (this.JSON.StudentGenders[this.SpawnID] == 0)
 				{

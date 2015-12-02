@@ -119,7 +119,7 @@ public class PickUpScript : MonoBehaviour
 			this.DumpTimer += Time.deltaTime;
 			if (this.DumpTimer > (float)1)
 			{
-				this.Yandere.Incinerator.BloodyUniforms = this.Yandere.Incinerator.BloodyUniforms + 1;
+				this.Yandere.Incinerator.BloodyClothing = this.Yandere.Incinerator.BloodyClothing + 1;
 				UnityEngine.Object.Destroy(this.gameObject);
 			}
 		}

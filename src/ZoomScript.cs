@@ -67,9 +67,17 @@ public class ZoomScript : MonoBehaviour
 			this.TargetZoom = 0.4f;
 		}
 		this.Zoom = Mathf.Lerp(this.Zoom, this.TargetZoom, Time.deltaTime);
-		this.CameraScript.distance = (float)2 - this.Zoom * 3.33333f + this.Slender;
-		this.CameraScript.distanceMax = (float)2 - this.Zoom * 3.33333f + this.Slender;
-		this.CameraScript.distanceMin = (float)2 - this.Zoom * 3.33333f + this.Slender;
+		if (!this.Yandere.Possessed)
+		{
+			this.CameraScript.distance = (float)2 - this.Zoom * 3.33333f + this.Slender;
+			this.CameraScript.distanceMax = (float)2 - this.Zoom * 3.33333f + this.Slender;
+			this.CameraScript.distanceMin = (float)2 - this.Zoom * 3.33333f + this.Slender;
+		}
+		else
+		{
+			this.CameraScript.distance = (float)5;
+			this.CameraScript.distanceMax = (float)5;
+		}
 		if (!this.Yandere.TimeSkipping)
 		{
 			this.Timer += Time.deltaTime;

@@ -102,7 +102,7 @@ public class NoteLockerScript : MonoBehaviour
 			this.PromptBar.Label[4].text = "Select";
 			this.PromptBar.UpdateButtons();
 		}
-		if (this.NoteLeft && this.Student != null && (this.Student.Phase == 1 || this.Student.Phase == 6) && this.Student.Routine && Vector3.Distance(this.transform.position, this.Student.transform.position) < (float)2 && this.Student.DistanceToDestination < 0.1f)
+		if (this.NoteLeft && this.Student != null && (this.Student.Phase == 1 || this.Student.Phase == 7) && this.Student.Routine && Vector3.Distance(this.transform.position, this.Student.transform.position) < (float)2 && this.Student.DistanceToDestination < 0.1f)
 		{
 			if (!this.Student.InEvent)
 			{

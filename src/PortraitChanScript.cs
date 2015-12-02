@@ -65,6 +65,8 @@ public class PortraitChanScript : MonoBehaviour
 
 	public GameObject TeacherHair;
 
+	public GameObject OccultHair;
+
 	public GameObject CirnoHair;
 
 	public GameObject Character;
@@ -388,6 +390,7 @@ public class PortraitChanScript : MonoBehaviour
 		this.TwinPony.gameObject.active = false;
 		this.Drills.gameObject.active = false;
 		this.TeacherHair.active = false;
+		this.OccultHair.active = false;
 		this.CirnoHair.active = false;
 		this.PippiHair.active = false;
 		this.ShortHair.active = false;
@@ -483,9 +486,7 @@ public class PortraitChanScript : MonoBehaviour
 		}
 		else if (this.Hairstyle == "Occult")
 		{
-			this.LongHair.transform.parent.gameObject.active = true;
-			this.LongHair.gameObject.active = true;
-			this.Emo = true;
+			this.OccultHair.active = true;
 		}
 		else if (this.Hairstyle == "Teacher")
 		{

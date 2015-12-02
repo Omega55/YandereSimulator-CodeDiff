@@ -33,6 +33,8 @@ public class HeartbrokenScript : MonoBehaviour
 
 	public AudioClip Slam;
 
+	public bool Arrested;
+
 	public bool Noticed;
 
 	public float AudioTimer;
@@ -83,6 +85,30 @@ public class HeartbrokenScript : MonoBehaviour
 			this.LetterID = 1;
 			this.StopID = 9;
 		}
+		else if (this.Arrested)
+		{
+			this.Letters[0].text = string.Empty;
+			this.Letters[1].text = "A";
+			this.Letters[2].text = "R";
+			this.Letters[3].text = "R";
+			this.Letters[4].text = "E";
+			this.Letters[5].text = "S";
+			this.Letters[6].text = "T";
+			this.Letters[7].text = "E";
+			this.Letters[8].text = "D";
+			this.Letters[9].text = string.Empty;
+			this.Letters[10].text = string.Empty;
+			while (this.ID < Extensions.get_length(this.Letters))
+			{
+				float x2 = this.Letters[this.ID].transform.localPosition.x + (float)100;
+				Vector3 localPosition2 = this.Letters[this.ID].transform.localPosition;
+				float num2 = localPosition2.x = x2;
+				Vector3 vector2 = this.Letters[this.ID].transform.localPosition = localPosition2;
+				this.ID++;
+			}
+			this.LetterID = 1;
+			this.StopID = 9;
+		}
 		else
 		{
 			this.LetterID = 0;
@@ -92,9 +118,9 @@ public class HeartbrokenScript : MonoBehaviour
 		while (this.ID < Extensions.get_length(this.Letters))
 		{
 			this.Letters[this.ID].transform.localScale = new Vector3((float)10, (float)10, (float)1);
-			int num2 = 0;
+			int num3 = 0;
 			Color color = this.Letters[this.ID].color;
-			float num3 = color.a = (float)num2;
+			float num4 = color.a = (float)num3;
 			Color color2 = this.Letters[this.ID].color = color;
 			this.Origins[this.ID] = this.Letters[this.ID].transform.localPosition;
 			this.ID++;
@@ -102,34 +128,34 @@ public class HeartbrokenScript : MonoBehaviour
 		this.ID = 0;
 		while (this.ID < Extensions.get_length(this.Options))
 		{
-			int num4 = 0;
+			int num5 = 0;
 			Color color3 = this.Options[this.ID].color;
-			float num5 = color3.a = (float)num4;
+			float num6 = color3.a = (float)num5;
 			Color color4 = this.Options[this.ID].color = color3;
 			this.ID++;
 		}
 		this.ID = 0;
-		int num6 = 0;
+		int num7 = 0;
 		Color color5 = this.Subtitle.color;
-		float num7 = color5.a = (float)num6;
+		float num8 = color5.a = (float)num7;
 		Color color6 = this.Subtitle.color = color5;
 		if (this.Noticed)
 		{
-			int num8 = 0;
+			int num9 = 0;
 			Color color7 = this.Background.color;
-			float num9 = color7.a = (float)num8;
+			float num10 = color7.a = (float)num9;
 			Color color8 = this.Background.color = color7;
-			int num10 = 0;
+			int num11 = 0;
 			Color color9 = this.Ground.color;
-			float num11 = color9.a = (float)num10;
+			float num12 = color9.a = (float)num11;
 			Color color10 = this.Ground.color = color9;
 		}
 		else
 		{
-			int num12 = 100;
+			int num13 = 100;
 			Vector3 position = this.transform.parent.transform.position;
-			float num13 = position.y = (float)num12;
-			Vector3 vector2 = this.transform.parent.transform.position = position;
+			float num14 = position.y = (float)num13;
+			Vector3 vector3 = this.transform.parent.transform.position = position;
 		}
 		this.Clock.StopTime = true;
 	}

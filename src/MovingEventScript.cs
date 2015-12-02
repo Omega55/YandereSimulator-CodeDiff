@@ -293,12 +293,9 @@ public class MovingEventScript : MonoBehaviour
 						}
 						if (this.EventStudent.Character.animation["f02_poisonDeath_00"].time > this.EventStudent.Character.animation["f02_poisonDeath_00"].length)
 						{
-							this.EventStudent.Ragdoll.Natural = true;
+							this.EventStudent.Ragdoll.Poisoned = true;
 							this.EventStudent.BecomeRagdoll();
-							if (this.Yandere.Police.Corpses == 1)
-							{
-								this.Yandere.Police.NaturalScene = true;
-							}
+							this.Yandere.Police.PoisonScene = true;
 							this.EventOver = true;
 							this.EndEvent();
 						}

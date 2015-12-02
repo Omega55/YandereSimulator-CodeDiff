@@ -81,6 +81,7 @@ public class ToiletEventScript : MonoBehaviour
 				{
 					this.EventStudent.CurrentDestination = this.EventLocation[1];
 					this.EventStudent.Pathfinding.target = this.EventLocation[1];
+					this.EventStudent.Pathfinding.canSearch = true;
 					this.EventStudent.Pathfinding.canMove = true;
 					this.EventStudent.LightSwitch = this.LightSwitch;
 					this.EventStudent.Obstacle.checkTime = (float)99;

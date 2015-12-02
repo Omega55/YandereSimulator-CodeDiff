@@ -148,6 +148,14 @@ public class TallLockerScript : MonoBehaviour
 				{
 					if (this.YandereLocker)
 					{
+						if (this.Yandere.Gloved)
+						{
+							this.Yandere.Gloves.transform.localPosition = new Vector3((float)0, (float)1, (float)-1);
+							this.Yandere.Gloves.transform.parent = null;
+							this.Yandere.Gloves.active = true;
+							this.Yandere.Gloved = false;
+							this.Yandere.Gloves = null;
+						}
 						this.Yandere.ChangeSchoolwear();
 						if (this.Yandere.Bloodiness > (float)0)
 						{

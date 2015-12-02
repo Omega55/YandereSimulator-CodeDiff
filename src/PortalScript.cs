@@ -55,11 +55,11 @@ public class PortalScript : MonoBehaviour
 		if (this.Prompt.Circle[0].fillAmount <= (float)0)
 		{
 			this.Prompt.Circle[0].fillAmount = (float)1;
-			if (this.Police.NaturalScene)
+			if (this.Police.PoisonScene || this.Police.SuicideScene || this.Police.Corpses - this.Police.HiddenCorpses > 0)
 			{
-				this.Police.Show = true;
+				this.Police.FadeOut = true;
 			}
-			if (this.Clock.HourTime < 15.5f)
+			else if (this.Clock.HourTime < 15.5f)
 			{
 				if (!this.Police.Show)
 				{
@@ -132,7 +132,10 @@ public class PortalScript : MonoBehaviour
 			this.Yandere.Character.animation.CrossFade("f02_idleShort_00");
 			this.Yandere.YandereVision = false;
 			this.Yandere.CanMove = false;
-			this.Yandere.InClass = true;
+			if (this.Clock.HourTime < 15.5f)
+			{
+				this.Yandere.InClass = true;
+			}
 		}
 		if (this.Transition)
 		{
@@ -230,7 +233,7 @@ public class PortalScript : MonoBehaviour
 				this.Prompt.enabled = true;
 			}
 		}
-		else if (this.InEvent || this.Yandere.Armed || this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Dragging || this.Yandere.Chased || this.StudentManager.Reporter != null || this.StudentManager.MurderTakingPlace || (this.Police.Corpses - this.Police.HiddenCorpses > 0 && !this.Police.SuicideScene && !this.Police.NaturalScene))
+		else if (this.InEvent || this.Yandere.Armed || this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Dragging || this.Yandere.Chased || this.StudentManager.Reporter != null || this.StudentManager.MurderTakingPlace)
 		{
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;

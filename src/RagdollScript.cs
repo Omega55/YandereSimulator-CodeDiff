@@ -12,6 +12,8 @@ public class RagdollScript : MonoBehaviour
 
 	public TranqCaseScript TranqCase;
 
+	public StudentScript Student;
+
 	public YandereScript Yandere;
 
 	public PoliceScript Police;
@@ -64,13 +66,13 @@ public class RagdollScript : MonoBehaviour
 
 	public bool HidePony;
 
+	public bool Poisoned;
+
 	public bool Tranquil;
 
 	public bool Dragged;
 
 	public bool Drowned;
-
-	public bool Natural;
 
 	public bool Suicide;
 
@@ -107,7 +109,7 @@ public class RagdollScript : MonoBehaviour
 	{
 		Physics.IgnoreLayerCollision(11, 13, true);
 		this.Zs.active = this.Tranquil;
-		if (!this.Tranquil && !this.Natural && !this.Drowned && !this.Electrocuted)
+		if (!this.Tranquil && !this.Poisoned && !this.Drowned && !this.Electrocuted)
 		{
 			this.BloodPoolSpawner.gameObject.active = true;
 			if (this.Pushed)
@@ -125,10 +127,13 @@ public class RagdollScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		float a = Mathf.MoveTowards(this.DetectionMarker.Tex.color.a, (float)0, Time.deltaTime * (float)10);
-		Color color = this.DetectionMarker.Tex.color;
-		float num = color.a = a;
-		Color color2 = this.DetectionMarker.Tex.color = color;
+		if (this.DetectionMarker != null)
+		{
+			float a = Mathf.MoveTowards(this.DetectionMarker.Tex.color.a, (float)0, Time.deltaTime * (float)10);
+			Color color = this.DetectionMarker.Tex.color;
+			float num = color.a = a;
+			Color color2 = this.DetectionMarker.Tex.color = color;
+		}
 		if (!this.Dumped)
 		{
 			this.Character.animation.Stop();
@@ -206,10 +211,9 @@ public class RagdollScript : MonoBehaviour
 					{
 						this.Yandere.NearBodies = this.Yandere.NearBodies - 1;
 					}
-					if (this.Natural)
+					if (this.Poisoned)
 					{
-						this.Police.NaturalScene = false;
-						this.Natural = false;
+						this.Police.PoisonScene = false;
 					}
 					this.Incinerator.Corpses = this.Incinerator.Corpses + 1;
 					UnityEngine.Object.Destroy(this.gameObject);

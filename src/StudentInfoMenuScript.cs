@@ -11,18 +11,18 @@ public class StudentInfoMenuScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $UpdatePortraits$2176 : GenericGenerator<WWW>
+	internal sealed class $UpdatePortraits$2188 : GenericGenerator<WWW>
 	{
-		internal StudentInfoMenuScript $self_$2181;
+		internal StudentInfoMenuScript $self_$2193;
 
-		public $UpdatePortraits$2176(StudentInfoMenuScript self_)
+		public $UpdatePortraits$2188(StudentInfoMenuScript self_)
 		{
-			this.$self_$2181 = self_;
+			this.$self_$2193 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new StudentInfoMenuScript.$UpdatePortraits$2176.$(this.$self_$2181);
+			return new StudentInfoMenuScript.$UpdatePortraits$2188.$(this.$self_$2193);
 		}
 	}
 
@@ -51,6 +51,8 @@ public class StudentInfoMenuScript : MonoBehaviour
 	public UISprite[] Friends;
 
 	public UISprite[] Panties;
+
+	public UITexture[] PrisonBars;
 
 	public UITexture[] Portraits;
 
@@ -82,6 +84,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 		{
 			this.Portraits[i].mainTexture = null;
 			this.DeathShadows[i].enabled = false;
+			this.PrisonBars[i].enabled = false;
 			this.Panties[i].enabled = false;
 			this.Friends[i].enabled = false;
 		}
@@ -279,7 +282,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	public virtual IEnumerator UpdatePortraits()
 	{
-		return new StudentInfoMenuScript.$UpdatePortraits$2176(this).GetEnumerator();
+		return new StudentInfoMenuScript.$UpdatePortraits$2188(this).GetEnumerator();
 	}
 
 	public virtual void Main()

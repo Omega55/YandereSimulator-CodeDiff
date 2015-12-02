@@ -127,7 +127,7 @@ public class PauseScreenScript : MonoBehaviour
 				{
 					if (!this.Home)
 					{
-						if (!this.Yandere.Shutter.Snapping && !this.Yandere.TimeSkipping && !this.Yandere.Talking && !this.Yandere.Noticed && !this.Yandere.InClass && Time.timeScale > (float)0)
+						if (!this.Yandere.Shutter.Snapping && !this.Yandere.TimeSkipping && !this.Yandere.Talking && !this.Yandere.Noticed && !this.Yandere.InClass && !this.Yandere.Struggling && !this.Yandere.Won && Time.timeScale > (float)0)
 						{
 							this.Yandere.StopAiming();
 							this.PromptParent.localScale = new Vector3((float)0, (float)0, (float)0);
@@ -144,7 +144,7 @@ public class PauseScreenScript : MonoBehaviour
 							this.PromptBar.Label[4].text = "Choose";
 							this.PromptBar.UpdateButtons();
 							this.PromptBar.Show = true;
-							if (!this.Yandere.CanMove || this.Yandere.Dragging || (this.Police.Corpses - this.Police.HiddenCorpses > 0 && !this.Police.SuicideScene && !this.Police.NaturalScene))
+							if (!this.Yandere.CanMove || this.Yandere.Dragging || (this.Police.Corpses - this.Police.HiddenCorpses > 0 && !this.Police.SuicideScene && !this.Police.PoisonScene))
 							{
 								float a = 0.5f;
 								Color color = this.PassTimeLabel.color;
@@ -346,6 +346,7 @@ public class PauseScreenScript : MonoBehaviour
 							this.RPGCamera.enabled = true;
 							this.PassTime.active = false;
 							this.MainMenu.active = true;
+							this.PromptBar.Show = false;
 							this.Show = false;
 							this.Clock.TargetTime = (float)this.PassTime.TargetTime;
 							this.Clock.TimeSkip = true;

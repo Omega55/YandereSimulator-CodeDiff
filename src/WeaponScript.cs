@@ -15,13 +15,9 @@ public class WeaponScript : MonoBehaviour
 
 	public Collider MyCollider;
 
-	public Color EvidenceColor;
+	public Projector Blood;
 
-	public Color OriginalColor;
-
-	public string SpriteName;
-
-	public string Name;
+	public bool DisableCollider;
 
 	public bool Concealable;
 
@@ -29,11 +25,29 @@ public class WeaponScript : MonoBehaviour
 
 	public bool Evidence;
 
+	public bool StartLow;
+
+	public bool Bloody;
+
 	public bool Dumped;
+
+	public Color EvidenceColor;
+
+	public Color OriginalColor;
+
+	public float OriginalOffset;
 
 	public float DumpTimer;
 
+	public string SpriteName;
+
+	public string Name;
+
+	public int FingerprintID;
+
 	public int WeaponID;
+
+	public bool[] Victims;
 
 	private int ID;
 
@@ -41,13 +55,26 @@ public class WeaponScript : MonoBehaviour
 	{
 		this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent(typeof(YandereScript));
 		Physics.IgnoreCollision(this.Yandere.collider, this.MyCollider);
+		if (this.DisableCollider)
+		{
+			this.MyCollider.enabled = false;
+		}
 		this.OriginalColor = this.Outline[0].color;
+		if (this.StartLow)
+		{
+			this.OriginalOffset = this.Prompt.OffsetY[3];
+			this.Prompt.OffsetY[3] = 0.2f;
+		}
 	}
 
 	public virtual void LateUpdate()
 	{
 		if (this.Prompt.Circle[3].fillAmount <= (float)0)
 		{
+			if (!this.Yandere.Gloved)
+			{
+				this.FingerprintID = 100;
+			}
 			this.ID = 0;
 			while (this.ID < Extensions.get_length(this.Outline))
 			{
@@ -164,10 +191,18 @@ public class WeaponScript : MonoBehaviour
 				UnityEngine.Object.Destroy(this.gameObject);
 			}
 		}
+		if (this.transform.parent == this.Yandere.ItemParent && this.Concealable && this.Yandere.Weapon[1] != this && this.Yandere.Weapon[2] != this)
+		{
+			this.Drop();
+		}
 	}
 
 	public virtual void Drop()
 	{
+		if (this.StartLow)
+		{
+			this.Prompt.OffsetY[3] = this.OriginalOffset;
+		}
 		this.Yandere.Weapon[this.Yandere.Equipped] = null;
 		this.Yandere.Armed = false;
 		this.Yandere.Equipped = 0;
@@ -179,6 +214,7 @@ public class WeaponScript : MonoBehaviour
 		this.active = true;
 		this.transform.parent = null;
 		this.rigidbody.constraints = RigidbodyConstraints.None;
+		this.rigidbody.useGravity = true;
 		if (this.Dumped)
 		{
 			this.transform.position = this.Incinerator.DumpPoint.position;

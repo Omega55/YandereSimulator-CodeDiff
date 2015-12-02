@@ -59,8 +59,6 @@ public class WarningScript : MonoBehaviour
 			{
 				if (Input.GetKeyDown("w"))
 				{
-					this.WelcomePanel.active = false;
-					this.WarningPanel.active = true;
 				}
 				if (Input.anyKeyDown)
 				{
