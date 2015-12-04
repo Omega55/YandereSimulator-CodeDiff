@@ -222,7 +222,7 @@ public class EndOfDayScript : MonoBehaviour
 					this.MurderWeapon = null;
 					while (this.ID < Extensions.get_length(this.WeaponManager.Weapons))
 					{
-						if (this.MurderWeapon == null && this.WeaponManager.Weapons[this.ID].Blood.enabled)
+						if (this.MurderWeapon == null && this.WeaponManager.Weapons[this.ID] != null && this.WeaponManager.Weapons[this.ID].Blood.enabled)
 						{
 							this.WeaponManager.Weapons[this.ID].Blood.enabled = false;
 							this.MurderWeapon = this.WeaponManager.Weapons[this.ID];
@@ -300,7 +300,7 @@ public class EndOfDayScript : MonoBehaviour
 					}
 					else
 					{
-						this.Label.text = "The police question Yandere-chan, but can not link her to any crimes.";
+						this.Label.text = "The police question Yandere-chan, but cannot link her to any crimes.";
 						if (!this.TranqCase.Occupied)
 						{
 							this.Phase = 7;
@@ -426,12 +426,12 @@ public class EndOfDayScript : MonoBehaviour
 					}
 					if (!flag)
 					{
-						this.Label.text = this.JSON.StudentNames[this.WeaponManager.Weapons[this.WeaponID].FingerprintID] + " is dead. The police can not perform an arrest.";
+						this.Label.text = this.JSON.StudentNames[this.WeaponManager.Weapons[this.WeaponID].FingerprintID] + " is dead. The police cannot perform an arrest.";
 						this.DeadPerps++;
 					}
 					else
 					{
-						this.Label.text = this.JSON.StudentNames[this.WeaponManager.Weapons[this.WeaponID].FingerprintID] + "'s fingerprints are on the same weapon that killed her. The police can not solve this mystery.";
+						this.Label.text = this.JSON.StudentNames[this.WeaponManager.Weapons[this.WeaponID].FingerprintID] + "'s fingerprints are on the same weapon that killed her. The police cannot solve this mystery.";
 					}
 				}
 				this.Phase = 5;

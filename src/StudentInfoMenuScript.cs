@@ -26,6 +26,8 @@ public class StudentInfoMenuScript : MonoBehaviour
 		}
 	}
 
+	public StudentManagerScript StudentManager;
+
 	public InputManagerScript InputManager;
 
 	public PauseScreenScript PauseScreen;

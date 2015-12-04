@@ -1928,6 +1928,7 @@ public class StudentScript : MonoBehaviour
 									this.ID++;
 								}
 							}
+							this.Character.animation.CrossFade(this.IdleAnim);
 							this.Pathfinding.canSearch = false;
 							this.Pathfinding.canMove = false;
 							this.DiscCheck = false;

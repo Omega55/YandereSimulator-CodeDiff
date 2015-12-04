@@ -42,6 +42,8 @@ public class JukeboxScript : MonoBehaviour
 
 	public float FadeSpeed;
 
+	public float ClubDip;
+
 	public float Volume;
 
 	public int Track;
@@ -125,21 +127,21 @@ public class JukeboxScript : MonoBehaviour
 			{
 				if (this.Yandere.Sanity >= 66.66666f)
 				{
-					this.FullSanity.volume = Mathf.MoveTowards(this.FullSanity.volume, this.Volume * this.Dip, Time.deltaTime * this.FadeSpeed);
+					this.FullSanity.volume = Mathf.MoveTowards(this.FullSanity.volume, this.Volume * this.Dip - this.ClubDip, Time.deltaTime * this.FadeSpeed);
 					this.HalfSanity.volume = Mathf.MoveTowards(this.HalfSanity.volume, (float)0, Time.deltaTime * this.FadeSpeed);
 					this.NoSanity.volume = Mathf.MoveTowards(this.NoSanity.volume, (float)0, Time.deltaTime * this.FadeSpeed);
 				}
 				else if (this.Yandere.Sanity >= 33.33333f)
 				{
 					this.FullSanity.volume = Mathf.MoveTowards(this.FullSanity.volume, (float)0, Time.deltaTime * this.FadeSpeed);
-					this.HalfSanity.volume = Mathf.MoveTowards(this.HalfSanity.volume, this.Volume * this.Dip, Time.deltaTime * this.FadeSpeed);
+					this.HalfSanity.volume = Mathf.MoveTowards(this.HalfSanity.volume, this.Volume * this.Dip - this.ClubDip, Time.deltaTime * this.FadeSpeed);
 					this.NoSanity.volume = Mathf.MoveTowards(this.NoSanity.volume, (float)0, Time.deltaTime * this.FadeSpeed);
 				}
 				else
 				{
 					this.FullSanity.volume = Mathf.MoveTowards(this.FullSanity.volume, (float)0, Time.deltaTime * this.FadeSpeed);
 					this.HalfSanity.volume = Mathf.MoveTowards(this.HalfSanity.volume, (float)0, Time.deltaTime * this.FadeSpeed);
-					this.NoSanity.volume = Mathf.MoveTowards(this.NoSanity.volume, this.Volume * this.Dip, Time.deltaTime * this.FadeSpeed);
+					this.NoSanity.volume = Mathf.MoveTowards(this.NoSanity.volume, this.Volume * this.Dip - this.ClubDip, Time.deltaTime * this.FadeSpeed);
 				}
 				if (this.Yandere.Police.Witnesses <= 0 || Input.GetButton("LB"))
 				{
