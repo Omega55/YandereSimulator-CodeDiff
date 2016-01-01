@@ -19,6 +19,8 @@ public class PoliceScript : MonoBehaviour
 
 	public StudentManagerScript StudentManager;
 
+	public ClubManagerScript ClubManager;
+
 	public ReputationScript Reputation;
 
 	public TranqCaseScript TranqCase;
@@ -74,6 +76,8 @@ public class PoliceScript : MonoBehaviour
 	public bool DrownScene;
 
 	public bool TeacherReport;
+
+	public bool ClubActivity;
 
 	public bool FadeResults;
 
@@ -257,15 +261,24 @@ public class PoliceScript : MonoBehaviour
 			Color color = this.Darkness.color;
 			float num3 = color.a = a;
 			Color color2 = this.Darkness.color = color;
-			if (this.Darkness.color.a >= (float)1 && this.HeartbeatCamera.active)
+			if (this.Darkness.color.a >= (float)1 && !this.ShowResults)
 			{
-				this.Yandere.enabled = false;
 				this.HeartbeatCamera.active = false;
 				this.DetectionCamera.active = false;
-				this.DetermineResults();
-				this.ShowResults = true;
-				Time.timeScale = (float)2;
-				this.Jukebox.Volume = (float)0;
+				if (this.ClubActivity)
+				{
+					this.ClubManager.Club = PlayerPrefs.GetInt("Club");
+					this.ClubManager.ClubActivity();
+					this.FadeOut = false;
+				}
+				else
+				{
+					this.Yandere.enabled = false;
+					this.DetermineResults();
+					this.ShowResults = true;
+					Time.timeScale = (float)2;
+					this.Jukebox.Volume = (float)0;
+				}
 			}
 		}
 		if (this.ShowResults)
@@ -381,20 +394,10 @@ public class PoliceScript : MonoBehaviour
 				}
 				else if (!this.TeacherReport)
 				{
-					if (!this.EndOfDay.gameObject.active)
+					if (this.EndOfDay.Phase == 1)
 					{
-						if (this.TranqCase.Occupied)
-						{
-							this.EndOfDay.Phase = 9;
-							this.EndOfDay.gameObject.active = true;
-						}
-						else
-						{
-							PlayerPrefs.SetFloat("Reputation", this.Reputation.Reputation);
-							PlayerPrefs.SetInt("Night", 1);
-							this.KillStudents();
-							Application.LoadLevel("HomeScene");
-						}
+						this.EndOfDay.Phase = 9;
+						this.EndOfDay.gameObject.active = true;
 					}
 				}
 				else
@@ -578,6 +581,13 @@ public class PoliceScript : MonoBehaviour
 		if (PlayerPrefs.GetFloat("SchoolAtmosphere") > (float)100)
 		{
 			PlayerPrefs.SetFloat("SchoolAtmosphere", (float)100);
+		}
+		for (int i = 1; i < this.StudentManager.StudentsTotal; i++)
+		{
+			if (this.StudentManager.Students[i] != null && this.StudentManager.Students[i].Grudge)
+			{
+				PlayerPrefs.SetInt("Student_" + i + "_Grudge", 1);
+			}
 		}
 	}
 

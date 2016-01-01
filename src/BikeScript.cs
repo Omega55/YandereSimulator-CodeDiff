@@ -101,7 +101,7 @@ public class BikeScript : MonoBehaviour
 		{
 			this.WheelieTime = (float)0;
 		}
-		if (Input.GetKeyDown("`") || this.transform.position.y < (float)0)
+		if (Input.GetKeyDown("`") || this.transform.position.y < (float)25)
 		{
 			Application.LoadLevel(Application.loadedLevel);
 		}

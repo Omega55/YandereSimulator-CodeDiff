@@ -38,15 +38,17 @@ public class DoorScript : MonoBehaviour
 
 	public bool Near;
 
-	public float Rotation;
-
 	public float ShiftNorth;
 
 	public float ShiftSouth;
 
+	public float Rotation;
+
 	public float Swing;
 
 	public float Timer;
+
+	public int Club;
 
 	public string RoomName;
 
@@ -76,6 +78,12 @@ public class DoorScript : MonoBehaviour
 		{
 			this.Labels[0].text = this.RoomName;
 			this.Labels[1].text = this.RoomName;
+		}
+		if (this.Club != 0 && PlayerPrefs.GetInt("Club_" + this.Club + "_Closed") == 1)
+		{
+			this.Prompt.Hide();
+			this.Prompt.enabled = false;
+			this.enabled = false;
 		}
 	}
 

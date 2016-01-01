@@ -173,6 +173,10 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.ClubLabel.text = "Faculty";
 		}
+		if (PlayerPrefs.GetInt("Club_" + this.JSON.StudentClubs[ID] + "_Closed") == 1)
+		{
+			this.ClubLabel.text = "No Club";
+		}
 		if (this.JSON.StudentStrengths[ID] == 0)
 		{
 			this.StrengthLabel.text = "Incapable of self-defense";
@@ -402,6 +406,34 @@ public class StudentInfoScript : MonoBehaviour
 			this.Strings[2] = "Seems to have absolutely no interest in anything that is not paranormal.";
 			this.Strings[3] = "Stalks the Basu sisters daily in a futile search for evidence that they are supernatural beings.";
 			this.InfoLabel.text = this.Strings[1] + "\n" + "\n" + this.Strings[2] + "\n" + "\n" + this.Strings[3];
+		}
+		else if (ID == 27)
+		{
+			this.InfoLabel.text = "Trusted by Oka Ruto to operate the Occult Club when she is not present.";
+		}
+		else if (ID == 28)
+		{
+			this.Strings[1] = "Claims to be wearing a medical eyepatch to correct a problem with her vision.";
+			this.Strings[2] = "Refuses to provide details regarding her eye condition, leading to rumors that she is lying about the reason she wears an eyepatch.";
+			this.InfoLabel.text = this.Strings[1] + "\n" + "\n" + this.Strings[2];
+		}
+		else if (ID == 29)
+		{
+			this.Strings[1] = "No student has ever seen the right side of his face.";
+			this.Strings[2] = "Some students suspect that he is using his hair to hide an unsightly scar or missing eye.";
+			this.InfoLabel.text = this.Strings[1] + "\n" + "\n" + this.Strings[2];
+		}
+		else if (ID == 30)
+		{
+			this.Strings[1] = "Claims that the bandages on her face are the result of being attacked by a wild animal shortly before the school year began.";
+			this.Strings[2] = "There are rumors that the true reason she wears bandages is because she is regularly beaten by a family member, and was blinded in one eye during a domestic dispute.";
+			this.InfoLabel.text = this.Strings[1] + "\n" + "\n" + this.Strings[2];
+		}
+		else if (ID == 31)
+		{
+			this.Strings[1] = "One of the lenses of his glasses is completely opaque. No student has ever seen his right eye.";
+			this.Strings[2] = "Some students suspect that he only has one eye, and prefers to wear an opaque lense over that eye rather than an eyepatch.";
+			this.InfoLabel.text = this.Strings[1] + "\n" + "\n" + this.Strings[2];
 		}
 		else
 		{

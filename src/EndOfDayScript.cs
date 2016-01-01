@@ -9,6 +9,8 @@ public class EndOfDayScript : MonoBehaviour
 
 	public WeaponManagerScript WeaponManager;
 
+	public ClubManagerScript ClubManager;
+
 	public HeartbrokenScript Heartbroken;
 
 	public ReputationScript Reputation;
@@ -33,6 +35,10 @@ public class EndOfDayScript : MonoBehaviour
 
 	public bool PoliceArrived;
 
+	public bool ClubClosed;
+
+	public bool ClubKicked;
+
 	public bool GameOver;
 
 	public bool Darken;
@@ -40,10 +46,6 @@ public class EndOfDayScript : MonoBehaviour
 	public string VictimString;
 
 	public int DeadPerps;
-
-	public int WeaponID;
-
-	public int ArrestID;
 
 	public int Arrests;
 
@@ -55,9 +57,19 @@ public class EndOfDayScript : MonoBehaviour
 
 	public int Phase;
 
+	public int WeaponID;
+
+	public int ArrestID;
+
+	public int ClubID;
+
 	public int ID;
 
+	public string[] ClubNames;
+
 	public int[] VictimArray;
+
+	public int[] ClubArray;
 
 	public EndOfDayScript()
 	{
@@ -71,6 +83,7 @@ public class EndOfDayScript : MonoBehaviour
 		Color color = this.EndOfDayDarkness.color;
 		float num2 = color.a = (float)num;
 		Color color2 = this.EndOfDayDarkness.color = color;
+		this.audio.volume = (float)0;
 		this.UpdateScene();
 	}
 
@@ -86,10 +99,6 @@ public class EndOfDayScript : MonoBehaviour
 			Color color = this.EndOfDayDarkness.color;
 			float num = color.a = a;
 			Color color2 = this.EndOfDayDarkness.color = color;
-			if (this.GameOver || this.Phase == 10)
-			{
-				this.audio.volume = (float)1 - this.EndOfDayDarkness.color.a;
-			}
 			if (this.EndOfDayDarkness.color.a == (float)1)
 			{
 				if (!this.GameOver)
@@ -116,6 +125,7 @@ public class EndOfDayScript : MonoBehaviour
 			float num2 = color3.a = a2;
 			Color color4 = this.EndOfDayDarkness.color = color3;
 		}
+		this.audio.volume = Mathf.MoveTowards(this.audio.volume, (float)1, Time.deltaTime);
 	}
 
 	public virtual void UpdateScene()
@@ -343,7 +353,7 @@ public class EndOfDayScript : MonoBehaviour
 					}
 					else
 					{
-						this.Label.text = "The police police conclude that a murder-suicide took place, but are unable to take any further action. The police investigation ends, and students are free to leave.";
+						this.Label.text = "The police conclude that a murder-suicide took place, but are unable to take any further action. The police investigation ends, and students are free to leave.";
 						this.Phase++;
 					}
 				}
@@ -356,21 +366,79 @@ public class EndOfDayScript : MonoBehaviour
 			else if (this.Phase == 8)
 			{
 				this.Label.text = "Yandere-chan stalks Senpai until he has returned home safely, and then returns to her own home.";
-				if (this.TranqCase.Occupied)
-				{
-					this.Phase++;
-				}
-				else
-				{
-					this.Phase = 10;
-				}
+				this.Phase++;
 			}
 			else if (this.Phase == 9)
 			{
-				this.Label.text = "Yandere-chan waits until the clock strikes midnight." + "\n" + "\n" + "Under the cover of darkness, Yandere-chan travels back to school and sneaks inside of the gym." + "\n" + "\n" + "Yandere-chan returns to the instrument case that carries her unconscious victim." + "\n" + "\n" + "She pushes the case back to her house, pretending to be a young musician returning home from a late-night show." + "\n" + "\n" + "Yandere-chan drags the case down to her basement and ties up her victim." + "\n" + "\n" + "Exhausted, Yandere-chan goes to sleep.";
-				this.Phase++;
+				this.ClubClosed = false;
+				this.ClubKicked = false;
+				if (this.ClubID < Extensions.get_length(this.ClubArray))
+				{
+					if (PlayerPrefs.GetInt("Club_" + this.ClubArray[this.ClubID] + "_Closed") == 0)
+					{
+						this.ClubManager.CheckClub(this.ClubArray[this.ClubID]);
+						if (this.ClubManager.ClubMembers < 5)
+						{
+							PlayerPrefs.SetInt("Club_" + this.ClubArray[this.ClubID] + "_Closed", 1);
+							this.Label.text = "The " + this.ClubNames[this.ClubID] + " no longer has enough members to remain operational. The school forces the club to disband.";
+							this.ClubClosed = true;
+							if (PlayerPrefs.GetInt("Club") == this.ClubArray[this.ClubID])
+							{
+								PlayerPrefs.SetInt("Club", 0);
+							}
+						}
+						if (this.ClubManager.LeaderDead)
+						{
+							PlayerPrefs.SetInt("Club_" + this.ClubArray[this.ClubID] + "_Closed", 1);
+							this.Label.text = "The leader of the " + this.ClubNames[this.ClubID] + " is dead. The remaining members of the club decide to disband the club.";
+							this.ClubClosed = true;
+							if (PlayerPrefs.GetInt("Club") == this.ClubArray[this.ClubID])
+							{
+								PlayerPrefs.SetInt("Club", 0);
+							}
+						}
+					}
+					if (PlayerPrefs.GetInt("Club_" + this.ClubArray[this.ClubID] + "_Closed") == 0 && PlayerPrefs.GetInt("Club_" + this.ClubArray[this.ClubID] + "_Kicked") == 0 && PlayerPrefs.GetInt("Club") == this.ClubArray[this.ClubID])
+					{
+						this.ClubManager.CheckGrudge(this.ClubArray[this.ClubID]);
+						if (this.ClubManager.LeaderGrudge)
+						{
+							this.Label.text = "Yandere-chan receives a text message from the president of the " + this.ClubNames[this.ClubID] + ". Yandere-chan is no longer a member of the " + this.ClubNames[this.ClubID] + ", and is not welcome in the " + this.ClubNames[this.ClubID] + " room.";
+							PlayerPrefs.SetInt("Club_" + this.ClubArray[this.ClubID] + "_Kicked", 1);
+							PlayerPrefs.SetInt("Club", 0);
+							this.ClubKicked = true;
+						}
+						else if (this.ClubManager.ClubGrudge)
+						{
+							this.Label.text = "Yandere-chan receives a text message from the president of the " + this.ClubNames[this.ClubID] + ". There is someone in the " + this.ClubNames[this.ClubID] + " who hates and fears Yandere-chan. Yandere-chan is no longer a member of the " + this.ClubNames[this.ClubID] + ", and is not welcome in the " + this.ClubNames[this.ClubID] + " room.";
+							PlayerPrefs.SetInt("Club_" + this.ClubArray[this.ClubID] + "_Kicked", 1);
+							PlayerPrefs.SetInt("Club", 0);
+							this.ClubKicked = true;
+						}
+					}
+					if (!this.ClubClosed && !this.ClubKicked)
+					{
+						this.ClubID++;
+						this.UpdateScene();
+					}
+				}
+				else if (this.TranqCase.Occupied)
+				{
+					this.Phase++;
+					this.UpdateScene();
+				}
+				else
+				{
+					this.Phase = 11;
+					this.UpdateScene();
+				}
 			}
 			else if (this.Phase == 10)
+			{
+				this.Label.text = "Yandere-chan waits until the clock strikes midnight." + "\n" + "\n" + "Under the cover of darkness, Yandere-chan travels back to school and sneaks inside of the main school building." + "\n" + "\n" + "Yandere-chan returns to the instrument case that carries her unconscious victim." + "\n" + "\n" + "She pushes the case back to her house, pretending to be a young musician returning home from a late-night show." + "\n" + "\n" + "Yandere-chan drags the case down to her basement and ties up her victim." + "\n" + "\n" + "Exhausted, Yandere-chan goes to sleep.";
+				this.Phase++;
+			}
+			else if (this.Phase == 11)
 			{
 				PlayerPrefs.SetFloat("Reputation", this.Reputation.Reputation);
 				PlayerPrefs.SetInt("Night", 1);
@@ -418,7 +486,7 @@ public class EndOfDayScript : MonoBehaviour
 					bool flag;
 					while (this.ID < Extensions.get_length(this.VictimArray))
 					{
-						if (this.VictimArray[this.ID] == this.WeaponManager.Weapons[this.WeaponID].FingerprintID)
+						if (this.VictimArray[this.ID] == this.WeaponManager.Weapons[this.WeaponID].FingerprintID && !this.StudentManager.Students[this.WeaponManager.Weapons[this.WeaponID].FingerprintID].MurderSuicide)
 						{
 							flag = true;
 						}

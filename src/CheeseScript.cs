@@ -4,6 +4,8 @@ using UnityEngine;
 [Serializable]
 public class CheeseScript : MonoBehaviour
 {
+	public GameObject GlowingEye;
+
 	public PromptScript Prompt;
 
 	public UILabel Subtitle;
@@ -17,6 +19,7 @@ public class CheeseScript : MonoBehaviour
 			this.Subtitle.text = "Knowing the mouse might one day leave its hole and get the cheese...It fills you with determination.";
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
+			this.GlowingEye.active = true;
 			this.Timer = (float)5;
 		}
 		if (this.Timer > (float)0)

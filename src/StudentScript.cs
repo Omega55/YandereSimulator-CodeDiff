@@ -17,6 +17,8 @@ public class StudentScript : MonoBehaviour
 
 	public CameraEffectsScript CameraEffects;
 
+	public ChangingBoothScript ChangingBooth;
+
 	public DialogueWheelScript DialogueWheel;
 
 	public WitnessCameraScript WitnessCamera;
@@ -26,6 +28,8 @@ public class StudentScript : MonoBehaviour
 	public CookingEventScript CookingEvent;
 
 	public EventManagerScript EventManager;
+
+	public ClubManagerScript ClubManager;
 
 	public LightSwitchScript LightSwitch;
 
@@ -86,6 +90,8 @@ public class StudentScript : MonoBehaviour
 	public Renderer MaleHairRenderer;
 
 	public Renderer PonyRenderer;
+
+	public Renderer NewLongHair;
 
 	public Renderer ShortHair;
 
@@ -149,7 +155,11 @@ public class StudentScript : MonoBehaviour
 
 	public GameObject[] Chopsticks;
 
+	public GameObject[] OccultHair;
+
 	public string[] AnimationNames;
+
+	public GameObject[] IrisLight;
 
 	public Texture[] FaceTextures;
 
@@ -175,6 +185,10 @@ public class StudentScript : MonoBehaviour
 
 	public int[] Actions;
 
+	public AudioClip[] FemaleAttacks;
+
+	public AudioClip[] MaleAttacks;
+
 	public SphereCollider HipCollider;
 
 	public Collider NotFaceCollider;
@@ -185,6 +199,8 @@ public class StudentScript : MonoBehaviour
 
 	public Collider FaceCollider;
 
+	public GameObject ShinyGlasses;
+
 	public GameObject DeathScream;
 
 	public GameObject TeacherHair;
@@ -193,7 +209,7 @@ public class StudentScript : MonoBehaviour
 
 	public GameObject MainCamera;
 
-	public GameObject OccultHair;
+	public GameObject OccultBook;
 
 	public GameObject AlarmDisc;
 
@@ -202,6 +218,12 @@ public class StudentScript : MonoBehaviour
 	public GameObject CirnoHair;
 
 	public GameObject PippiHair;
+
+	public GameObject Eyepatch;
+
+	public GameObject Armband;
+
+	public GameObject Bandage;
 
 	public GameObject Bandana;
 
@@ -221,11 +243,19 @@ public class StudentScript : MonoBehaviour
 
 	public bool FleeWhenClean;
 
+	public bool MurderSuicide;
+
+	public bool ClubActivity;
+
 	public bool Complimented;
 
 	public bool Electrocuted;
 
+	public bool PlayingAudio;
+
 	public bool VeryLongHair;
+
+	public bool ClubAttire;
 
 	public bool Distracted;
 
@@ -236,6 +266,8 @@ public class StudentScript : MonoBehaviour
 	public bool BatheFast;
 
 	public bool DiscCheck;
+
+	public bool DressCode;
 
 	public bool Drownable;
 
@@ -271,7 +303,11 @@ public class StudentScript : MonoBehaviour
 
 	public bool Routine;
 
+	public bool Grudge;
+
 	public bool Pushed;
+
+	public bool Warned;
 
 	public bool Slave;
 
@@ -288,6 +324,8 @@ public class StudentScript : MonoBehaviour
 	public bool Stop;
 
 	public bool Emo;
+
+	public bool Shy;
 
 	public bool Wet;
 
@@ -312,8 +350,6 @@ public class StudentScript : MonoBehaviour
 	public bool Waiting;
 
 	public bool Dying;
-
-	public bool Shy;
 
 	public float DistanceToDestination;
 
@@ -371,6 +407,8 @@ public class StudentScript : MonoBehaviour
 
 	public int SkinColor;
 
+	public int ClubPhase;
+
 	public int TaskPhase;
 
 	public int Strength;
@@ -385,9 +423,11 @@ public class StudentScript : MonoBehaviour
 
 	public string RandomAnim;
 
-	public string Witnessed;
+	public string Accessory;
 
 	public string Hairstyle;
+
+	public string Witnessed;
 
 	public string Name;
 
@@ -475,7 +515,15 @@ public class StudentScript : MonoBehaviour
 
 	public string CarryAnim;
 
+	public string ActivityAnim;
+
+	public string GrudgeAnim;
+
+	public string SadFaceAnim;
+
 	public string[] TaskAnims;
+
+	public int ClubMemberID;
 
 	public int ReportPhase;
 
@@ -525,6 +573,8 @@ public class StudentScript : MonoBehaviour
 
 	public Texture[] SocksTextures;
 
+	public Texture FaceTexture;
+
 	public GameObject[] ElectroSteam;
 
 	public GameObject[] CensorSteam;
@@ -551,6 +601,10 @@ public class StudentScript : MonoBehaviour
 
 	public bool Spooky;
 
+	public Mesh JudoGiMesh;
+
+	public Texture JudoGiTexture;
+
 	public StudentScript()
 	{
 		this.OnPhone = true;
@@ -559,8 +613,9 @@ public class StudentScript : MonoBehaviour
 		this.GameOverCause = string.Empty;
 		this.CurrentAnim = string.Empty;
 		this.RandomAnim = string.Empty;
-		this.Witnessed = string.Empty;
+		this.Accessory = string.Empty;
 		this.Hairstyle = string.Empty;
+		this.Witnessed = string.Empty;
 		this.Name = string.Empty;
 		this.WalkAnim = string.Empty;
 		this.RunAnim = string.Empty;
@@ -604,6 +659,9 @@ public class StudentScript : MonoBehaviour
 		this.StruggleLostAnim = string.Empty;
 		this.SocialSitAnim = string.Empty;
 		this.CarryAnim = string.Empty;
+		this.ActivityAnim = string.Empty;
+		this.GrudgeAnim = string.Empty;
+		this.SadFaceAnim = string.Empty;
 		this.MaxSpeed = 10f;
 	}
 
@@ -637,6 +695,7 @@ public class StudentScript : MonoBehaviour
 		this.BreastSize = this.JSON.StudentBreasts[this.StudentID];
 		this.Strength = this.JSON.StudentStrengths[this.StudentID];
 		this.Hairstyle = this.JSON.StudentHairstyles[this.StudentID];
+		this.Accessory = this.JSON.StudentAccessories[this.StudentID];
 		this.Name = this.JSON.StudentNames[this.StudentID];
 		this.OriginalPersona = this.Persona;
 		if (PlayerPrefs.GetInt("Student_" + this.StudentID + "_Slave") == 1)
@@ -651,8 +710,13 @@ public class StudentScript : MonoBehaviour
 				this.ID++;
 			}
 		}
+		if (PlayerPrefs.GetInt("Club_" + this.Club + "_Closed") == 1)
+		{
+			this.Club = 0;
+		}
 		this.GetDestinations();
 		this.DialogueWheel = (DialogueWheelScript)GameObject.Find("DialogueWheel").GetComponent(typeof(DialogueWheelScript));
+		this.ClubManager = (ClubManagerScript)GameObject.Find("ClubManager").GetComponent(typeof(ClubManagerScript));
 		this.StruggleBar = (StruggleBarScript)GameObject.Find("StruggleBar").GetComponent(typeof(StruggleBarScript));
 		this.Reputation = (ReputationScript)GameObject.Find("Reputation").GetComponent(typeof(ReputationScript));
 		this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent(typeof(YandereScript));
@@ -665,6 +729,7 @@ public class StudentScript : MonoBehaviour
 		this.RightEyeOrigin = this.RightEye.localPosition;
 		this.LeftEyeOrigin = this.LeftEye.localPosition;
 		this.PickRandomAnim();
+		this.OccultBook.active = false;
 		if (!this.Male)
 		{
 			this.TeacherGlasses.active = false;
@@ -742,9 +807,12 @@ public class StudentScript : MonoBehaviour
 		else
 		{
 			this.SetColors();
-			this.Character.animation["scaredFace_00"].layer = 3;
+			this.Character.animation["scaredFace_00"].layer = 4;
 			this.Character.animation.Play("scaredFace_00");
 			this.Character.animation["scaredFace_00"].weight = (float)0;
+			this.Character.animation[this.SadFaceAnim].layer = 3;
+			this.Character.animation.Play(this.SadFaceAnim);
+			this.Character.animation[this.SadFaceAnim].weight = (float)0;
 			this.Character.animation[this.AngryFaceAnim].layer = 2;
 			this.Character.animation.Play(this.AngryFaceAnim);
 			this.Character.animation[this.AngryFaceAnim].weight = (float)0;
@@ -752,31 +820,87 @@ public class StudentScript : MonoBehaviour
 			this.Character.animation.Play(this.PhoneAnim);
 			this.Character.animation[this.PhoneAnim].weight = (float)0;
 		}
-		if (this.Club == 6)
+		if (this.Accessory == "Eyepatch")
 		{
+			this.Eyepatch.active = true;
+		}
+		else if (this.Accessory == "Bandage")
+		{
+			this.Bandage.active = true;
+		}
+		else if (this.Accessory == "ShinyGlasses")
+		{
+			this.ShinyGlasses.active = true;
+			this.IrisLight[0].active = false;
+			this.IrisLight[1].active = false;
+		}
+		if (this.Club == 3)
+		{
+			if (this.StudentID == 26)
+			{
+				this.ClubAnim = this.IdleAnim;
+			}
+			else
+			{
+				if (this.Male)
+				{
+					this.Character.animation[this.SadFaceAnim].weight = (float)1;
+				}
+				if (this.StudentID == 27)
+				{
+					this.ClubAnim = "sitRead_00";
+				}
+				else if (this.StudentID == 28)
+				{
+					this.ClubAnim = "f02_sitRead_00";
+				}
+				else if (this.StudentID == 29)
+				{
+					this.ClubAnim = "sitRead_00";
+				}
+				else if (this.StudentID == 30)
+				{
+					this.ClubAnim = "f02_sitRead_00";
+				}
+				else if (this.StudentID == 31)
+				{
+					this.ClubAnim = "sitRead_00";
+				}
+			}
+		}
+		else if (this.Club == 6)
+		{
+			this.ChangingBooth = this.StudentManager.ChangingBooths[6];
 			this.Bandana.active = true;
+			this.DressCode = true;
 			if (this.StudentID == 21)
 			{
 				this.IdleAnim = "pose_03";
+				this.ClubAnim = "pose_03";
 			}
 			else if (this.StudentID == 22)
 			{
 				this.ClubAnim = "idle_20";
+				this.ActivityAnim = "kick_24";
 			}
 			else if (this.StudentID == 23)
 			{
 				this.ClubAnim = "sit_04";
+				this.ActivityAnim = "kick_24";
 			}
 			else if (this.StudentID == 24)
 			{
 				this.ClubAnim = "f02_idle_20";
+				this.ActivityAnim = "f02_kick_23";
 			}
 			else if (this.StudentID == 25)
 			{
 				this.ClubAnim = "f02_sit_05";
+				this.ActivityAnim = "f02_kick_23";
 			}
+			this.ClubMemberID = this.StudentID - 20;
 		}
-		else
+		if (this.Club != 6)
 		{
 			this.Bandana.active = false;
 		}
@@ -828,6 +952,22 @@ public class StudentScript : MonoBehaviour
 				this.ID++;
 			}
 		}
+		if (PlayerPrefs.GetInt("Student_" + this.StudentID + "_Grudge") == 1)
+		{
+			this.Reputation.PendingRep = this.Reputation.PendingRep - (float)10;
+			this.PendingRep -= (float)10;
+			this.Grudge = true;
+			this.ID = 0;
+			while (this.ID < Extensions.get_length(this.Outlines))
+			{
+				this.Outlines[this.ID].color = new Color((float)1, (float)1, (float)0, (float)1);
+				this.ID++;
+			}
+		}
+		if ((this.StudentID != 21 && this.StudentID != 26) || this.Club == 0)
+		{
+			this.Armband.active = false;
+		}
 	}
 
 	public virtual void Update()
@@ -857,8 +997,50 @@ public class StudentScript : MonoBehaviour
 					}
 				}
 				this.DistanceToDestination = Vector3.Distance(this.transform.position, this.CurrentDestination.position);
-				if (this.DistanceToDestination > 0.5f)
+				if (this.DistanceToDestination > this.TargetDistance)
 				{
+					if (!this.InEvent && !this.Meeting && this.DressCode)
+					{
+						if (this.Actions[this.Phase] == 8)
+						{
+							if (!this.ClubAttire)
+							{
+								if (!this.ChangingBooth.Occupied)
+								{
+									this.CurrentDestination = this.ChangingBooth.transform;
+									this.Pathfinding.target = this.ChangingBooth.transform;
+								}
+								else
+								{
+									this.CurrentDestination = this.ChangingBooth.WaitSpots[this.ClubMemberID];
+									this.Pathfinding.target = this.ChangingBooth.WaitSpots[this.ClubMemberID];
+								}
+							}
+							else
+							{
+								this.CurrentDestination = this.Destinations[this.Phase];
+								this.Pathfinding.target = this.Destinations[this.Phase];
+							}
+						}
+						else if (this.ClubAttire)
+						{
+							if (!this.ChangingBooth.Occupied)
+							{
+								this.CurrentDestination = this.ChangingBooth.transform;
+								this.Pathfinding.target = this.ChangingBooth.transform;
+							}
+							else
+							{
+								this.CurrentDestination = this.ChangingBooth.WaitSpots[this.ClubMemberID];
+								this.Pathfinding.target = this.ChangingBooth.WaitSpots[this.ClubMemberID];
+							}
+						}
+						else
+						{
+							this.CurrentDestination = this.Destinations[this.Phase];
+							this.Pathfinding.target = this.Destinations[this.Phase];
+						}
+					}
 					if (!this.Pathfinding.canMove)
 					{
 						this.Pathfinding.canSearch = true;
@@ -874,17 +1056,73 @@ public class StudentScript : MonoBehaviour
 					{
 						this.Character.animation.CrossFade(this.SprintAnim);
 					}
+					if (this.Club == 3 && this.Actions[this.Phase] != 8)
+					{
+						this.OccultBook.active = false;
+					}
 				}
 				else
 				{
+					this.MoveTowardsTarget(this.CurrentDestination.position);
+					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.CurrentDestination.rotation, (float)10 * Time.deltaTime);
 					if (this.Pathfinding.canMove)
 					{
 						this.Pathfinding.canSearch = false;
 						this.Pathfinding.canMove = false;
 						this.Obstacle.enabled = true;
 					}
-					this.MoveTowardsTarget(this.CurrentDestination.position);
-					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.CurrentDestination.rotation, (float)10 * Time.deltaTime);
+					if (!this.InEvent && !this.Meeting && this.DressCode)
+					{
+						if (this.Actions[this.Phase] == 8)
+						{
+							if (!this.ClubAttire)
+							{
+								if (!this.ChangingBooth.Occupied)
+								{
+									if (this.CurrentDestination == this.ChangingBooth.transform)
+									{
+										this.ChangingBooth.Occupied = true;
+										this.ChangingBooth.Student = this;
+										this.ChangingBooth.CheckYandereClub();
+									}
+									this.CurrentDestination = this.ChangingBooth.transform;
+									this.Pathfinding.target = this.ChangingBooth.transform;
+								}
+								else
+								{
+									this.Character.animation.CrossFade(this.IdleAnim);
+								}
+							}
+							else
+							{
+								this.CurrentDestination = this.Destinations[this.Phase];
+								this.Pathfinding.target = this.Destinations[this.Phase];
+							}
+						}
+						else if (this.ClubAttire)
+						{
+							if (!this.ChangingBooth.Occupied)
+							{
+								if (this.CurrentDestination == this.ChangingBooth.transform)
+								{
+									this.ChangingBooth.Occupied = true;
+									this.ChangingBooth.Student = this;
+									this.ChangingBooth.CheckYandereClub();
+								}
+								this.CurrentDestination = this.ChangingBooth.transform;
+								this.Pathfinding.target = this.ChangingBooth.transform;
+							}
+							else
+							{
+								this.Character.animation.CrossFade(this.IdleAnim);
+							}
+						}
+						else
+						{
+							this.CurrentDestination = this.Destinations[this.Phase];
+							this.Pathfinding.target = this.Destinations[this.Phase];
+						}
+					}
 					if (!this.InEvent)
 					{
 						if (!this.Meeting)
@@ -926,7 +1164,14 @@ public class StudentScript : MonoBehaviour
 							}
 							else if (this.Actions[this.Phase] == 6)
 							{
-								this.Character.animation.CrossFade(this.SitAnim);
+								if (this.DressCode && this.ClubAttire)
+								{
+									this.Character.animation.CrossFade(this.IdleAnim);
+								}
+								else
+								{
+									this.Character.animation.CrossFade(this.SitAnim);
+								}
 							}
 							else if (this.Actions[this.Phase] == 7)
 							{
@@ -934,7 +1179,18 @@ public class StudentScript : MonoBehaviour
 							}
 							else if (this.Actions[this.Phase] == 8)
 							{
-								this.Character.animation.CrossFade(this.ClubAnim);
+								if (this.DressCode && !this.ClubAttire)
+								{
+									this.Character.animation.CrossFade(this.IdleAnim);
+								}
+								else
+								{
+									this.Character.animation.CrossFade(this.ClubAnim);
+								}
+								if (this.Club == 3 && this.StudentID != 26)
+								{
+									this.OccultBook.active = true;
+								}
 							}
 							else if (this.Actions[this.Phase] == 9)
 							{
@@ -1123,6 +1379,12 @@ public class StudentScript : MonoBehaviour
 											this.Fleeing = false;
 											this.Routine = true;
 											this.Halt = false;
+											this.ID = 0;
+											while (this.ID < Extensions.get_length(this.Outlines))
+											{
+												this.Outlines[this.ID].color = new Color((float)1, (float)1, (float)0, (float)1);
+												this.ID++;
+											}
 										}
 									}
 								}
@@ -1731,6 +1993,7 @@ public class StudentScript : MonoBehaviour
 									this.Broken.enabled = false;
 									this.Broken.Subtitle.text = string.Empty;
 									this.BecomeRagdoll();
+									this.MurderSuicide = true;
 									this.Dead = true;
 								}
 							}
@@ -2174,12 +2437,17 @@ public class StudentScript : MonoBehaviour
 			}
 			if (this.StudentID > 1)
 			{
+				if (!this.Pathfinding.canMove && this.Actions[this.Phase] == 8 && this.Armband.active)
+				{
+					this.Warned = false;
+				}
 				if ((this.Alarm > (float)0 || this.AlarmTimer > (float)0 || this.Yandere.Armed) && !this.Slave)
 				{
 					this.Prompt.Circle[0].fillAmount = (float)1;
 				}
 				if (this.Prompt.Circle[0].fillAmount <= (float)0)
 				{
+					this.OccultBook.active = false;
 					if (this.Slave)
 					{
 						this.StudentManager.MurderTakingPlace = true;
@@ -2197,6 +2465,7 @@ public class StudentScript : MonoBehaviour
 						this.Yandere.WeaponMenu.UpdateSprites();
 						this.Yandere.WeaponWarning = false;
 						this.Broken.Hunting = true;
+						this.TargetDistance = (float)1;
 						this.Routine = false;
 						this.Hunting = true;
 						this.Prompt.Hide();
@@ -2256,6 +2525,11 @@ public class StudentScript : MonoBehaviour
 						this.Subtitle.UpdateLabel("Event Apology", 1, (float)3);
 						this.Prompt.Circle[0].fillAmount = (float)1;
 					}
+					else if (this.Warned)
+					{
+						this.Subtitle.UpdateLabel("Grudge Refusal", 0, (float)3);
+						this.Prompt.Circle[0].fillAmount = (float)1;
+					}
 					else if (!this.Witness && this.Yandere.Bloodiness > (float)0)
 					{
 						this.Prompt.Circle[0].fillAmount = (float)1;
@@ -2264,50 +2538,89 @@ public class StudentScript : MonoBehaviour
 					}
 					else
 					{
-						this.Subtitle.UpdateLabel("Greeting", 0, (float)3);
+						this.Yandere.TargetStudent = this;
+						if (!this.Grudge)
+						{
+							this.ClubManager.CheckGrudge(this.Club);
+							if (PlayerPrefs.GetInt("Club_" + this.Club + "_Kicked") == 1 && !this.Pathfinding.canMove && this.Actions[this.Phase] == 8 && this.Armband.active)
+							{
+								this.Interaction = 15;
+								this.TalkTimer = (float)5;
+								this.Warned = true;
+							}
+							else if (PlayerPrefs.GetInt("Club") == this.Club && !this.Pathfinding.canMove && this.Actions[this.Phase] == 8 && this.Armband.active && this.ClubManager.ClubGrudge)
+							{
+								this.Interaction = 16;
+								this.TalkTimer = (float)5;
+								this.Warned = true;
+							}
+							else
+							{
+								if (!this.Pathfinding.canMove && this.Actions[this.Phase] == 8 && this.Armband.active)
+								{
+									this.Subtitle.UpdateLabel("Club Greeting", this.Club, (float)4);
+									this.DialogueWheel.ClubLeader = true;
+								}
+								else
+								{
+									this.Subtitle.UpdateLabel("Greeting", 0, (float)3);
+								}
+								if ((this.Male && PlayerPrefs.GetInt("Seduction") > 0) || PlayerPrefs.GetInt("Seduction") == 5)
+								{
+									this.Hearts.enableEmission = true;
+								}
+								if (!this.Witness || this.Forgave)
+								{
+									float a2 = 0.75f;
+									Color color3 = this.DialogueWheel.Shadow[1].color;
+									float num6 = color3.a = a2;
+									Color color4 = this.DialogueWheel.Shadow[1].color = color3;
+								}
+								if (this.Complimented)
+								{
+									float a3 = 0.75f;
+									Color color5 = this.DialogueWheel.Shadow[2].color;
+									float num7 = color5.a = a3;
+									Color color6 = this.DialogueWheel.Shadow[2].color = color5;
+								}
+								if (this.Gossiped)
+								{
+									float a4 = 0.75f;
+									Color color7 = this.DialogueWheel.Shadow[3].color;
+									float num8 = color7.a = a4;
+									Color color8 = this.DialogueWheel.Shadow[3].color = color7;
+								}
+								this.StudentManager.DisablePrompts();
+								this.DialogueWheel.HideShadows();
+								this.DialogueWheel.Show = true;
+								this.TalkTimer = (float)0;
+							}
+						}
+						else if (!this.Pathfinding.canMove && this.Actions[this.Phase] == 8 && this.Armband.active)
+						{
+							this.Interaction = 15;
+							this.TalkTimer = (float)5;
+							this.Warned = true;
+						}
+						else
+						{
+							this.Interaction = 9;
+							this.TalkTimer = (float)5;
+							this.Warned = true;
+						}
 						this.ShoulderCamera.OverShoulder = true;
 						this.Pathfinding.canSearch = false;
 						this.Pathfinding.canMove = false;
 						this.Obstacle.enabled = true;
-						this.Yandere.TargetStudent = this;
+						this.Yandere.WeaponMenu.KeyboardShow = false;
 						this.Yandere.Obscurance.enabled = false;
+						this.Yandere.WeaponMenu.Show = false;
 						this.Yandere.YandereVision = false;
 						this.Yandere.CanMove = false;
 						this.Yandere.Talking = true;
-						if ((this.Male && PlayerPrefs.GetInt("Seduction") > 0) || PlayerPrefs.GetInt("Seduction") == 5)
-						{
-							this.Hearts.enableEmission = true;
-						}
 						this.Reacted = false;
 						this.Talking = true;
 						this.Routine = false;
-						this.StudentManager.DisablePrompts();
-						this.DialogueWheel.HideShadows();
-						if (!this.Witness || this.Forgave)
-						{
-							float a2 = 0.75f;
-							Color color3 = this.DialogueWheel.Shadow[1].color;
-							float num6 = color3.a = a2;
-							Color color4 = this.DialogueWheel.Shadow[1].color = color3;
-						}
-						if (this.Complimented)
-						{
-							float a3 = 0.75f;
-							Color color5 = this.DialogueWheel.Shadow[2].color;
-							float num7 = color5.a = a3;
-							Color color6 = this.DialogueWheel.Shadow[2].color = color5;
-						}
-						if (this.Gossiped)
-						{
-							float a4 = 0.75f;
-							Color color7 = this.DialogueWheel.Shadow[3].color;
-							float num8 = color7.a = a4;
-							Color color8 = this.DialogueWheel.Shadow[3].color = color7;
-						}
-						this.Yandere.WeaponMenu.KeyboardShow = false;
-						this.Yandere.WeaponMenu.Show = false;
-						this.DialogueWheel.Show = true;
-						this.TalkTimer = (float)0;
 					}
 				}
 				if (this.Prompt.Circle[2].fillAmount <= (float)0 && !this.Yandere.NearSenpai && !this.Yandere.Attacking && !this.Yandere.Crouching)
@@ -2623,6 +2936,290 @@ public class StudentScript : MonoBehaviour
 					}
 					this.TalkTimer -= Time.deltaTime;
 				}
+				else if (this.Interaction == 9)
+				{
+					if (this.TalkTimer == (float)5)
+					{
+						this.Character.animation.CrossFade(this.GrudgeAnim);
+						if (!this.Male)
+						{
+							this.Subtitle.UpdateLabel("Grudge Warning", 0, (float)99);
+						}
+						else
+						{
+							this.Subtitle.UpdateLabel("Grudge Warning", 1, (float)99);
+						}
+						this.TalkTimer = this.Subtitle.CurrentClip.audio.clip.length;
+					}
+					else
+					{
+						if (Input.GetButtonDown("A"))
+						{
+							this.TalkTimer = (float)0;
+						}
+						if (this.Character.animation[this.GrudgeAnim].time >= this.Character.animation[this.GrudgeAnim].length)
+						{
+							this.Character.animation.CrossFade(this.GrudgeAnim);
+						}
+						if (this.TalkTimer <= (float)0)
+						{
+							this.DialogueWheel.End();
+						}
+					}
+					this.TalkTimer -= Time.deltaTime;
+				}
+				else if (this.Interaction == 10)
+				{
+					if (this.TalkTimer == (float)100)
+					{
+						this.Subtitle.UpdateLabel("Club " + this.Club + " Info", this.ClubPhase, (float)99);
+						this.TalkTimer = this.Subtitle.GetClubClipLength(this.Club, this.ClubPhase);
+					}
+					else if (Input.GetButtonDown("A"))
+					{
+						this.Subtitle.Label.text = string.Empty;
+						UnityEngine.Object.Destroy(this.Subtitle.CurrentClip);
+						this.TalkTimer = (float)0;
+					}
+					this.TalkTimer -= Time.deltaTime;
+					if (this.TalkTimer <= (float)0)
+					{
+						if (this.ClubPhase == 3)
+						{
+							this.DialogueWheel.Show = true;
+							this.Subtitle.Label.text = string.Empty;
+							this.Interaction = 0;
+							this.TalkTimer = (float)0;
+						}
+						else
+						{
+							this.ClubPhase++;
+							this.Subtitle.UpdateLabel("Club " + this.Club + " Info", this.ClubPhase, (float)99);
+							this.TalkTimer = this.Subtitle.GetClubClipLength(this.Club, this.ClubPhase);
+						}
+					}
+				}
+				else if (this.Interaction == 11)
+				{
+					if (this.TalkTimer == (float)100)
+					{
+						if (this.ClubPhase == 1)
+						{
+							this.Subtitle.UpdateLabel("Club Join", this.Club, (float)99);
+							this.TalkTimer = this.Subtitle.CurrentClip.audio.clip.length;
+						}
+						else if (this.ClubPhase == 2)
+						{
+							this.Subtitle.UpdateLabel("Club Accept", this.Club, (float)99);
+							this.TalkTimer = this.Subtitle.CurrentClip.audio.clip.length;
+						}
+						else if (this.ClubPhase == 3)
+						{
+							this.Subtitle.UpdateLabel("Club Refuse", this.Club, (float)99);
+							this.TalkTimer = this.Subtitle.CurrentClip.audio.clip.length;
+						}
+						else if (this.ClubPhase == 4)
+						{
+							this.Subtitle.UpdateLabel("Club Rejoin", this.Club, (float)99);
+							this.TalkTimer = this.Subtitle.CurrentClip.audio.clip.length;
+						}
+						else if (this.ClubPhase == 5)
+						{
+							this.Subtitle.UpdateLabel("Club Exclusive", this.Club, (float)99);
+							this.TalkTimer = this.Subtitle.CurrentClip.audio.clip.length;
+						}
+						else if (this.ClubPhase == 6)
+						{
+							this.Subtitle.UpdateLabel("Club Grudge", this.Club, (float)99);
+							this.TalkTimer = this.Subtitle.CurrentClip.audio.clip.length;
+						}
+					}
+					else if (Input.GetButtonDown("A"))
+					{
+						this.Subtitle.Label.text = string.Empty;
+						UnityEngine.Object.Destroy(this.Subtitle.CurrentClip);
+						this.TalkTimer = (float)0;
+					}
+					this.TalkTimer -= Time.deltaTime;
+					if (this.TalkTimer <= (float)0)
+					{
+						if (this.ClubPhase == 1)
+						{
+							this.DialogueWheel.ClubWindow.Club = this.Club;
+							this.DialogueWheel.ClubWindow.UpdateWindow();
+							this.Interaction = 0;
+						}
+						else
+						{
+							this.DialogueWheel.End();
+							if (this.Club == 6)
+							{
+								this.ChangingBooth.CheckYandereClub();
+							}
+						}
+					}
+				}
+				else if (this.Interaction == 12)
+				{
+					if (this.TalkTimer == (float)100)
+					{
+						if (this.ClubPhase == 1)
+						{
+							this.Subtitle.UpdateLabel("Club Quit", this.Club, (float)99);
+							this.TalkTimer = this.Subtitle.CurrentClip.audio.clip.length;
+						}
+						else if (this.ClubPhase == 2)
+						{
+							this.Subtitle.UpdateLabel("Club Confirm", this.Club, (float)99);
+							this.TalkTimer = this.Subtitle.CurrentClip.audio.clip.length;
+						}
+						else if (this.ClubPhase == 3)
+						{
+							this.Subtitle.UpdateLabel("Club Deny", this.Club, (float)99);
+							this.TalkTimer = this.Subtitle.CurrentClip.audio.clip.length;
+						}
+					}
+					else if (Input.GetButtonDown("A"))
+					{
+						this.Subtitle.Label.text = string.Empty;
+						UnityEngine.Object.Destroy(this.Subtitle.CurrentClip);
+						this.TalkTimer = (float)0;
+					}
+					this.TalkTimer -= Time.deltaTime;
+					if (this.TalkTimer <= (float)0)
+					{
+						if (this.ClubPhase == 1)
+						{
+							this.DialogueWheel.ClubWindow.Club = this.Club;
+							this.DialogueWheel.ClubWindow.Quitting = true;
+							this.DialogueWheel.ClubWindow.UpdateWindow();
+							this.Interaction = 0;
+						}
+						else
+						{
+							this.DialogueWheel.End();
+							if (this.Club == 6)
+							{
+								this.ChangingBooth.CheckYandereClub();
+							}
+						}
+					}
+				}
+				else if (this.Interaction == 13)
+				{
+					if (this.TalkTimer == this.Subtitle.ClubFarewellClips[this.Club].length)
+					{
+						this.Subtitle.UpdateLabel("Club Farewell", this.Club, this.Subtitle.ClubFarewellClips[this.Club].length);
+					}
+					else if (Input.GetButtonDown("A"))
+					{
+						this.TalkTimer = (float)0;
+					}
+					this.TalkTimer -= Time.deltaTime;
+					if (this.TalkTimer <= (float)0)
+					{
+						this.DialogueWheel.End();
+					}
+				}
+				else if (this.Interaction == 14)
+				{
+					if (this.TalkTimer == (float)100)
+					{
+						if (this.ClubPhase == 1)
+						{
+							this.Subtitle.UpdateLabel("Club Activity", this.Club, (float)99);
+							this.TalkTimer = this.Subtitle.CurrentClip.audio.clip.length;
+						}
+						else if (this.ClubPhase == 2)
+						{
+							this.Subtitle.UpdateLabel("Club Yes", this.Club, (float)99);
+							this.TalkTimer = this.Subtitle.CurrentClip.audio.clip.length;
+						}
+						else if (this.ClubPhase == 3)
+						{
+							this.Subtitle.UpdateLabel("Club No", this.Club, (float)99);
+							this.TalkTimer = this.Subtitle.CurrentClip.audio.clip.length;
+						}
+						else if (this.ClubPhase == 4)
+						{
+							this.Subtitle.UpdateLabel("Club Early", this.Club, (float)99);
+							this.TalkTimer = this.Subtitle.CurrentClip.audio.clip.length;
+						}
+						else if (this.ClubPhase == 5)
+						{
+							this.Subtitle.UpdateLabel("Club Late", this.Club, (float)99);
+							this.TalkTimer = this.Subtitle.CurrentClip.audio.clip.length;
+						}
+					}
+					else if (Input.GetButtonDown("A"))
+					{
+						this.Subtitle.Label.text = string.Empty;
+						UnityEngine.Object.Destroy(this.Subtitle.CurrentClip);
+						this.TalkTimer = (float)0;
+					}
+					this.TalkTimer -= Time.deltaTime;
+					if (this.TalkTimer <= (float)0)
+					{
+						if (this.ClubPhase == 1)
+						{
+							this.DialogueWheel.ClubWindow.Club = this.Club;
+							this.DialogueWheel.ClubWindow.Activity = true;
+							this.DialogueWheel.ClubWindow.UpdateWindow();
+							this.Interaction = 0;
+						}
+						else if (this.ClubPhase == 2)
+						{
+							this.Police.ClubActivity = true;
+							this.Police.FadeOut = true;
+							this.Interaction = 0;
+						}
+						else
+						{
+							this.DialogueWheel.End();
+						}
+					}
+				}
+				else if (this.Interaction == 15)
+				{
+					if (this.TalkTimer == (float)5)
+					{
+						this.Subtitle.UpdateLabel("Club Unwelcome", this.Club, (float)99);
+						this.TalkTimer = this.Subtitle.CurrentClip.audio.clip.length;
+					}
+					else
+					{
+						if (Input.GetButtonDown("A"))
+						{
+							this.TalkTimer = (float)0;
+						}
+						if (this.TalkTimer <= (float)0)
+						{
+							this.DialogueWheel.End();
+						}
+					}
+					this.TalkTimer -= Time.deltaTime;
+				}
+				else if (this.Interaction == 16)
+				{
+					if (this.TalkTimer == (float)5)
+					{
+						this.Subtitle.UpdateLabel("Club Kick", this.Club, (float)99);
+						this.TalkTimer = this.Subtitle.CurrentClip.audio.clip.length;
+					}
+					else
+					{
+						if (Input.GetButtonDown("A"))
+						{
+							this.TalkTimer = (float)0;
+						}
+						if (this.TalkTimer <= (float)0)
+						{
+							PlayerPrefs.SetInt("Club", 0);
+							this.DialogueWheel.End();
+						}
+					}
+					this.TalkTimer -= Time.deltaTime;
+				}
 				if (this.Waiting)
 				{
 					this.WaitTimer -= Time.deltaTime;
@@ -2791,6 +3388,7 @@ public class StudentScript : MonoBehaviour
 			}
 			else if (this.Alarmed)
 			{
+				this.OccultBook.active = false;
 				if (this.WitnessedCorpse)
 				{
 					this.Character.animation.CrossFade(this.ScaredAnim);
@@ -3207,10 +3805,48 @@ public class StudentScript : MonoBehaviour
 				this.Character.animation.cullingType = AnimationCullingType.AlwaysAnimate;
 			}
 		}
-		else
+		else if (!this.ClubActivity)
 		{
 			this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - this.transform.position);
 			this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
+		}
+		else if (this.Police.Darkness.color.a < (float)1)
+		{
+			this.Character.animation.Play(this.ActivityAnim);
+			if (this.Club == 6)
+			{
+				if (!this.Male)
+				{
+					if (this.Character.animation["f02_kick_23"].time > (float)1)
+					{
+						if (!this.PlayingAudio)
+						{
+							this.audio.clip = this.FemaleAttacks[UnityEngine.Random.Range(0, Extensions.get_length(this.FemaleAttacks))];
+							this.audio.Play();
+							this.PlayingAudio = true;
+						}
+						if (this.Character.animation["f02_kick_23"].time >= this.Character.animation["f02_kick_23"].length)
+						{
+							this.Character.animation["f02_kick_23"].time = (float)0;
+							this.PlayingAudio = false;
+						}
+					}
+				}
+				else if (this.Character.animation["kick_24"].time > (float)1)
+				{
+					if (!this.PlayingAudio)
+					{
+						this.audio.clip = this.MaleAttacks[UnityEngine.Random.Range(0, Extensions.get_length(this.MaleAttacks))];
+						this.audio.Play();
+						this.PlayingAudio = true;
+					}
+					if (this.Character.animation["kick_24"].time >= this.Character.animation["kick_24"].length)
+					{
+						this.Character.animation["kick_24"].time = (float)0;
+						this.PlayingAudio = false;
+					}
+				}
+			}
 		}
 		if (this.AoT)
 		{
@@ -3263,7 +3899,7 @@ public class StudentScript : MonoBehaviour
 			{
 				int num7 = 2;
 				Vector3 localScale5 = this.LongHairBone.localScale;
-				float num8 = localScale5.y = (float)num7;
+				float num8 = localScale5.x = (float)num7;
 				Vector3 vector7 = this.LongHairBone.localScale = localScale5;
 			}
 			if (this.Emo)
@@ -3415,6 +4051,7 @@ public class StudentScript : MonoBehaviour
 
 	public virtual void WitnessMurder()
 	{
+		this.Grudge = true;
 		if (this.Persona != this.OriginalPersona)
 		{
 			this.Persona = this.OriginalPersona;
@@ -3652,6 +4289,7 @@ public class StudentScript : MonoBehaviour
 
 	public virtual void BeginStruggle()
 	{
+		Debug.Log("My name is " + this.Name + " and now I am fighting Yandere-chan.");
 		if (this.Yandere.Dragging)
 		{
 			((RagdollScript)this.Yandere.Ragdoll.GetComponent(typeof(RagdollScript))).StopDragging();
@@ -3732,7 +4370,14 @@ public class StudentScript : MonoBehaviour
 			}
 			else if (this.DestinationNames[this.ID] == "Club")
 			{
-				this.Destinations[this.ID] = this.StudentManager.Clubs.List[this.StudentID];
+				if (this.Club > 0)
+				{
+					this.Destinations[this.ID] = this.StudentManager.Clubs.List[this.StudentID];
+				}
+				else
+				{
+					this.Destinations[this.ID] = this.StudentManager.Hangouts.List[this.StudentID];
+				}
 			}
 			this.ID++;
 		}
@@ -3767,13 +4412,20 @@ public class StudentScript : MonoBehaviour
 			{
 				this.Actions[this.ID] = 7;
 			}
-			else if (this.ActionNames[this.ID] == "Club")
-			{
-				this.Actions[this.ID] = 8;
-			}
 			else if (this.ActionNames[this.ID] == "SocialSit")
 			{
 				this.Actions[this.ID] = 9;
+			}
+			else if (this.ActionNames[this.ID] == "Club")
+			{
+				if (this.Club > 0)
+				{
+					this.Actions[this.ID] = 8;
+				}
+				else
+				{
+					this.Actions[this.ID] = 1;
+				}
 			}
 			this.ID++;
 		}
@@ -3859,11 +4511,23 @@ public class StudentScript : MonoBehaviour
 			{
 				this.HairTexture = this.StudentManager.Colors[16];
 			}
-			else if (this.HairColor == "Occult")
+			else if (this.HairColor == "Occult1")
 			{
 				this.HairTexture = this.StudentManager.Colors[17];
+				this.FaceTexture = this.HairTexture;
+			}
+			else if (this.HairColor == "Occult3")
+			{
+				this.HairTexture = this.StudentManager.Colors[19];
+				this.FaceTexture = this.HairTexture;
+			}
+			else if (this.HairColor == "Occult5")
+			{
+				this.HairTexture = this.StudentManager.Colors[21];
+				this.FaceTexture = this.HairTexture;
 			}
 			this.PonyRenderer.material.mainTexture = this.HairTexture;
+			this.NewLongHair.material.mainTexture = this.HairTexture;
 			this.ShortHair.material.mainTexture = this.HairTexture;
 			this.LongHair.material.mainTexture = this.HairTexture;
 			this.PigtailR.material.mainTexture = this.HairTexture;
@@ -3900,57 +4564,66 @@ public class StudentScript : MonoBehaviour
 					float num3 = localScale.x = (float)num2;
 					Vector3 vector = this.MaleHairstyles[num].transform.localScale = localScale;
 				}
-				if (num < 8)
+				if (num < 10)
 				{
 					this.MaleHairRenderer = (Renderer)this.MaleHairstyles[num].GetComponent(typeof(Renderer));
 				}
 			}
-			if (this.MaleHairRenderer != null && num < 8)
+			if (this.MaleHairRenderer != null)
 			{
-				if (this.HairColor == "Black")
+				if (num < 10)
 				{
-					this.MaleHairRenderer.material.color = new Color(0.5f, 0.5f, 0.5f);
+					if (this.HairColor == "Black")
+					{
+						this.MaleHairRenderer.material.color = new Color(0.5f, 0.5f, 0.5f);
+					}
+					else if (this.HairColor == "Red")
+					{
+						this.MaleHairRenderer.material.color = new Color((float)1, (float)0, (float)0);
+					}
+					else if (this.HairColor == "Yellow")
+					{
+						this.MaleHairRenderer.material.color = new Color((float)1, (float)1, (float)0);
+					}
+					else if (this.HairColor == "Green")
+					{
+						this.MaleHairRenderer.material.color = new Color((float)0, (float)1, (float)0);
+					}
+					else if (this.HairColor == "Cyan")
+					{
+						this.MaleHairRenderer.material.color = new Color((float)0, (float)1, (float)1);
+					}
+					else if (this.HairColor == "Blue")
+					{
+						this.MaleHairRenderer.material.color = new Color((float)0, (float)0, (float)1);
+					}
+					else if (this.HairColor == "Purple")
+					{
+						this.MaleHairRenderer.material.color = new Color((float)1, (float)0, (float)1);
+					}
+					else if (this.HairColor == "Default")
+					{
+						this.MaleHairRenderer.material.color = new Color((float)1, (float)1, (float)1);
+					}
+					else if (this.HairColor == "Orange")
+					{
+						this.MaleHairRenderer.material.color = new Color((float)1, 0.5f, (float)0);
+					}
+					else if (this.HairColor == "Brown")
+					{
+						this.MaleHairRenderer.material.color = new Color(0.5f, 0.25f, (float)0);
+					}
 				}
-				else if (this.HairColor == "Red")
-				{
-					this.MaleHairRenderer.material.color = new Color((float)1, (float)0, (float)0);
-				}
-				else if (this.HairColor == "Yellow")
-				{
-					this.MaleHairRenderer.material.color = new Color((float)1, (float)1, (float)0);
-				}
-				else if (this.HairColor == "Green")
-				{
-					this.MaleHairRenderer.material.color = new Color((float)0, (float)1, (float)0);
-				}
-				else if (this.HairColor == "Cyan")
-				{
-					this.MaleHairRenderer.material.color = new Color((float)0, (float)1, (float)1);
-				}
-				else if (this.HairColor == "Blue")
-				{
-					this.MaleHairRenderer.material.color = new Color((float)0, (float)0, (float)1);
-				}
-				else if (this.HairColor == "Purple")
-				{
-					this.MaleHairRenderer.material.color = new Color((float)1, (float)0, (float)1);
-				}
-				else if (this.HairColor == "Default")
-				{
-					this.MaleHairRenderer.material.color = new Color((float)1, (float)1, (float)1);
-				}
-				else if (this.HairColor == "Orange")
-				{
-					this.MaleHairRenderer.material.color = new Color((float)1, 0.5f, (float)0);
-				}
-				else if (this.HairColor == "Brown")
-				{
-					this.MaleHairRenderer.material.color = new Color(0.5f, 0.25f, (float)0);
-				}
+			}
+			else if (this.HairColor == "Occult2" || this.HairColor == "Occult4" || this.HairColor == "Occult6")
+			{
+				this.MaleHairRenderer = (Renderer)this.MaleHairstyles[UnityBuiltins.parseInt(this.Hairstyle)].GetComponent(typeof(Renderer));
+				this.EyeR.material.mainTexture = this.MaleHairRenderer.material.mainTexture;
+				this.EyeL.material.mainTexture = this.MaleHairRenderer.material.mainTexture;
 			}
 			if (this.StudentID > 1)
 			{
-				if (num < 8)
+				if (num < 10)
 				{
 					this.EyeR.material.color = this.MaleHairRenderer.material.color;
 					this.EyeL.material.color = this.MaleHairRenderer.material.color;
@@ -4030,8 +4703,11 @@ public class StudentScript : MonoBehaviour
 		this.PigtailL.transform.parent.transform.parent.transform.localScale = new Vector3((float)1, 0.75f, (float)1);
 		this.TwinPony.transform.parent.gameObject.active = false;
 		this.PonyRenderer.gameObject.active = false;
+		this.NewLongHair.gameObject.active = false;
+		this.OccultHair[1].active = false;
+		this.OccultHair[3].active = false;
+		this.OccultHair[5].active = false;
 		this.TeacherHair.active = false;
-		this.OccultHair.active = false;
 		this.CirnoHair.active = false;
 		this.PippiHair.active = false;
 		this.ShortHair.active = false;
@@ -4105,9 +4781,13 @@ public class StudentScript : MonoBehaviour
 		{
 			this.LongHair.active = true;
 		}
+		else if (this.Hairstyle == "NewLong")
+		{
+			this.NewLongHair.active = true;
+		}
 		else if (this.Hairstyle == "VeryLong")
 		{
-			this.LongHair.active = true;
+			this.NewLongHair.active = true;
 			this.VeryLongHair = true;
 		}
 		else if (this.Hairstyle == "TwinPony")
@@ -4115,10 +4795,18 @@ public class StudentScript : MonoBehaviour
 			this.TwinPony.transform.parent.gameObject.active = true;
 			this.TwinPony.active = true;
 		}
-		else if (this.Hairstyle == "Occult")
+		else if (this.Hairstyle == "Occult1")
 		{
-			this.OccultHair.active = true;
+			this.OccultHair[1].active = true;
 			this.Emo = true;
+		}
+		else if (this.Hairstyle == "Occult3")
+		{
+			this.OccultHair[3].active = true;
+		}
+		else if (this.Hairstyle == "Occult5")
+		{
+			this.OccultHair[5].active = true;
 		}
 		else if (this.Hairstyle == "Teacher")
 		{
@@ -4260,6 +4948,7 @@ public class StudentScript : MonoBehaviour
 		this.Character.animation.cullingType = AnimationCullingType.AlwaysAnimate;
 		this.Ragdoll.AllColliders[10].isTrigger = false;
 		this.NotFaceCollider.enabled = false;
+		this.Hearts.enableEmission = false;
 		this.FaceCollider.enabled = false;
 		this.MyController.enabled = false;
 		this.Pathfinding.enabled = false;
@@ -4349,33 +5038,38 @@ public class StudentScript : MonoBehaviour
 			this.SkinColor = PlayerPrefs.GetInt("SenpaiSkinColor");
 		}
 		this.MyRenderer.sharedMesh = this.MaleUniforms[PlayerPrefs.GetInt("MaleUniform")];
+		this.FaceTexture = this.FaceTextures[this.SkinColor];
+		if (this.Club == 3)
+		{
+			this.FaceTexture = this.MaleHairRenderer.material.mainTexture;
+		}
 		if (PlayerPrefs.GetInt("MaleUniform") == 1)
 		{
 			this.MyRenderer.materials[0].mainTexture = this.SkinTextures[this.SkinColor];
 			this.MyRenderer.materials[1].mainTexture = this.MaleUniformTextures[1];
-			this.MyRenderer.materials[2].mainTexture = this.FaceTextures[this.SkinColor];
+			this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
 		}
 		else if (PlayerPrefs.GetInt("MaleUniform") == 2)
 		{
 			this.MyRenderer.materials[0].mainTexture = this.MaleUniformTextures[2];
-			this.MyRenderer.materials[1].mainTexture = this.FaceTextures[this.SkinColor];
+			this.MyRenderer.materials[1].mainTexture = this.FaceTexture;
 			this.MyRenderer.materials[2].mainTexture = this.SkinTextures[this.SkinColor];
 		}
 		else if (PlayerPrefs.GetInt("MaleUniform") == 3)
 		{
 			this.MyRenderer.materials[0].mainTexture = this.MaleUniformTextures[3];
-			this.MyRenderer.materials[1].mainTexture = this.FaceTextures[this.SkinColor];
+			this.MyRenderer.materials[1].mainTexture = this.FaceTexture;
 			this.MyRenderer.materials[2].mainTexture = this.SkinTextures[this.SkinColor];
 		}
 		else if (PlayerPrefs.GetInt("MaleUniform") == 4)
 		{
-			this.MyRenderer.materials[0].mainTexture = this.FaceTextures[this.SkinColor];
+			this.MyRenderer.materials[0].mainTexture = this.FaceTexture;
 			this.MyRenderer.materials[1].mainTexture = this.SkinTextures[this.SkinColor];
 			this.MyRenderer.materials[2].mainTexture = this.MaleUniformTextures[4];
 		}
 		else if (PlayerPrefs.GetInt("MaleUniform") == 5)
 		{
-			this.MyRenderer.materials[0].mainTexture = this.FaceTextures[this.SkinColor];
+			this.MyRenderer.materials[0].mainTexture = this.FaceTexture;
 			this.MyRenderer.materials[1].mainTexture = this.SkinTextures[this.SkinColor];
 			this.MyRenderer.materials[2].mainTexture = this.MaleUniformTextures[5];
 		}
@@ -4511,6 +5205,35 @@ public class StudentScript : MonoBehaviour
 		GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.AlarmDisc, this.transform.position + Vector3.up * (float)1, Quaternion.identity);
 		((AlarmDiscScript)gameObject.GetComponent(typeof(AlarmDiscScript))).Male = this.Male;
 		((AlarmDiscScript)gameObject.GetComponent(typeof(AlarmDiscScript))).Originator = this;
+	}
+
+	public virtual void ChangeClubwear()
+	{
+		if (!this.ClubAttire)
+		{
+			this.ClubAttire = true;
+			if (this.Club == 6)
+			{
+				this.MyRenderer.sharedMesh = this.JudoGiMesh;
+				if (!this.Male)
+				{
+					this.MyRenderer.materials[0].mainTexture = this.JudoGiTexture;
+					this.MyRenderer.materials[1].mainTexture = this.JudoGiTexture;
+					this.MyRenderer.materials[2].mainTexture = this.HairTexture;
+				}
+				else
+				{
+					this.MyRenderer.materials[0].mainTexture = this.JudoGiTexture;
+					this.MyRenderer.materials[1].mainTexture = this.HairTexture;
+					this.MyRenderer.materials[2].mainTexture = this.JudoGiTexture;
+				}
+			}
+		}
+		else
+		{
+			this.ChangeSchoolwear();
+			this.ClubAttire = false;
+		}
 	}
 
 	public virtual void Main()

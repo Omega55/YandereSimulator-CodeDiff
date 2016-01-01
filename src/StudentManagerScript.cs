@@ -51,6 +51,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public ListScript Seats;
 
+	public ChangingBoothScript[] ChangingBooths;
+
 	public Transform[] SpawnPositions;
 
 	public StudentScript[] Teachers;
@@ -198,11 +200,11 @@ public class StudentManagerScript : MonoBehaviour
 				}
 				if (this.JSON.StudentGenders[this.NPCsSpawned + 1] == 0)
 				{
-					this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.PortraitChan, this.SpawnPositions[this.NPCsSpawned].position, Quaternion.identity);
+					this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.PortraitChan, new Vector3((float)0, (float)0, (float)0), Quaternion.identity);
 				}
 				else
 				{
-					this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.PortraitKun, this.SpawnPositions[this.NPCsSpawned].position, Quaternion.identity);
+					this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.PortraitKun, new Vector3((float)0, (float)0, (float)0), Quaternion.identity);
 				}
 				this.NewPortraitChan = (PortraitChanScript)this.NewStudent.GetComponent(typeof(PortraitChanScript));
 				this.NewPortraitChan.StudentID = this.NPCsSpawned + 1;
@@ -266,7 +268,10 @@ public class StudentManagerScript : MonoBehaviour
 				this.SpawnID = 1;
 			}
 			this.UpdateStudents();
-			this.TaskManager.UpdateTaskStatus();
+			if (!this.TakingPortraits)
+			{
+				this.TaskManager.UpdateTaskStatus();
+			}
 			this.ForceSpawn = false;
 		}
 	}
@@ -371,6 +376,7 @@ public class StudentManagerScript : MonoBehaviour
 				this.Students[this.ID].Character.animation.Play(this.Students[this.ID].IdleAnim);
 				this.Students[this.ID].Pathfinding.canSearch = false;
 				this.Students[this.ID].Pathfinding.canMove = false;
+				this.Students[this.ID].OccultBook.active = false;
 				this.Students[this.ID].Pathfinding.speed = (float)0;
 				this.Students[this.ID].Routine = false;
 				if (this.Students[this.ID].Wet)
@@ -383,6 +389,11 @@ public class StudentManagerScript : MonoBehaviour
 					this.Students[this.ID].BathePhase = 1;
 					this.Students[this.ID].Wet = false;
 					this.Students[this.ID].UnWet();
+				}
+				if (this.Students[this.ID].ClubAttire)
+				{
+					this.Students[this.ID].ChangeSchoolwear();
+					this.Students[this.ID].ClubAttire = false;
 				}
 			}
 			this.ID++;

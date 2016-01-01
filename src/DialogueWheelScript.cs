@@ -4,9 +4,13 @@ using UnityEngine;
 [Serializable]
 public class DialogueWheelScript : MonoBehaviour
 {
+	public ClubManagerScript ClubManager;
+
 	public PauseScreenScript PauseScreen;
 
 	public ReputationScript Reputation;
+
+	public ClubWindowScript ClubWindow;
 
 	public TaskWindowScript TaskWindow;
 
@@ -14,9 +18,13 @@ public class DialogueWheelScript : MonoBehaviour
 
 	public YandereScript Yandere;
 
+	public ClockScript Clock;
+
 	public Transform Interaction;
 
 	public Transform Favors;
+
+	public Transform Club;
 
 	public UISprite Impatience;
 
@@ -34,11 +42,19 @@ public class DialogueWheelScript : MonoBehaviour
 
 	public string[] FavorText;
 
+	public UISprite[] ClubSegment;
+
+	public UISprite[] ClubShadow;
+
+	public string[] ClubText;
+
 	public int Selected;
 
 	public int Victim;
 
 	public bool AskingFavor;
+
+	public bool ClubLeader;
 
 	public bool Show;
 
@@ -61,15 +77,23 @@ public class DialogueWheelScript : MonoBehaviour
 		}
 		else
 		{
-			if (!this.AskingFavor)
+			if (this.ClubLeader)
+			{
+				this.Interaction.localScale = Vector3.Lerp(this.Interaction.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+				this.Favors.localScale = Vector3.Lerp(this.Favors.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+				this.Club.localScale = Vector3.Lerp(this.Club.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+			}
+			else if (!this.AskingFavor)
 			{
 				this.Interaction.localScale = Vector3.Lerp(this.Interaction.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
 				this.Favors.localScale = Vector3.Lerp(this.Favors.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+				this.Club.localScale = Vector3.Lerp(this.Club.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
 			}
 			else
 			{
 				this.Interaction.localScale = Vector3.Lerp(this.Interaction.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
 				this.Favors.localScale = Vector3.Lerp(this.Favors.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+				this.Club.localScale = Vector3.Lerp(this.Club.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
 			}
 			this.MouseDelta.x = this.MouseDelta.x + Input.GetAxis("Mouse X");
 			this.MouseDelta.y = this.MouseDelta.y + Input.GetAxis("Mouse Y");
@@ -120,7 +144,14 @@ public class DialogueWheelScript : MonoBehaviour
 				{
 					this.Selected = 6;
 				}
-				this.CenterLabel.text = this.Text[this.Selected];
+				if (!this.ClubLeader)
+				{
+					this.CenterLabel.text = this.Text[this.Selected];
+				}
+				else
+				{
+					this.CenterLabel.text = this.ClubText[this.Selected];
+				}
 			}
 			else
 			{
@@ -149,15 +180,32 @@ public class DialogueWheelScript : MonoBehaviour
 					this.CenterLabel.text = this.FavorText[this.Selected];
 				}
 			}
-			for (int i = 1; i < 7; i++)
+			if (!this.ClubLeader)
 			{
-				if (this.Selected == i)
+				for (int i = 1; i < 7; i++)
 				{
-					this.Segment[i].transform.localScale = Vector3.Lerp(this.Segment[i].transform.localScale, new Vector3(1.3f, 1.3f, (float)1), Time.deltaTime * (float)10);
+					if (this.Selected == i)
+					{
+						this.Segment[i].transform.localScale = Vector3.Lerp(this.Segment[i].transform.localScale, new Vector3(1.3f, 1.3f, (float)1), Time.deltaTime * (float)10);
+					}
+					else
+					{
+						this.Segment[i].transform.localScale = Vector3.Lerp(this.Segment[i].transform.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+					}
 				}
-				else
+			}
+			else
+			{
+				for (int i = 1; i < 7; i++)
 				{
-					this.Segment[i].transform.localScale = Vector3.Lerp(this.Segment[i].transform.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+					if (this.Selected == i)
+					{
+						this.ClubSegment[i].transform.localScale = Vector3.Lerp(this.ClubSegment[i].transform.localScale, new Vector3(1.3f, 1.3f, (float)1), Time.deltaTime * (float)10);
+					}
+					else
+					{
+						this.ClubSegment[i].transform.localScale = Vector3.Lerp(this.ClubSegment[i].transform.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+					}
 				}
 			}
 			for (int i = 1; i < 5; i++)
@@ -173,7 +221,82 @@ public class DialogueWheelScript : MonoBehaviour
 			}
 			if (Input.GetButtonDown("A"))
 			{
-				if (!this.AskingFavor)
+				if (this.ClubLeader)
+				{
+					if (this.Selected != 0 && this.ClubShadow[this.Selected].color.a == (float)0)
+					{
+						if (this.Selected == 1)
+						{
+							this.Impatience.fillAmount = (float)0;
+							this.Yandere.TargetStudent.Interaction = 10;
+							this.Yandere.TargetStudent.TalkTimer = (float)100;
+							this.Yandere.TargetStudent.ClubPhase = 1;
+							this.Show = false;
+						}
+						if (this.Selected == 2)
+						{
+							this.Impatience.fillAmount = (float)0;
+							this.Yandere.TargetStudent.Interaction = 11;
+							this.Yandere.TargetStudent.TalkTimer = (float)100;
+							this.Show = false;
+							this.ClubManager.CheckGrudge(this.Yandere.TargetStudent.Club);
+							if (PlayerPrefs.GetInt("QuitClub_" + this.Yandere.TargetStudent.Club) == 1)
+							{
+								this.Yandere.TargetStudent.ClubPhase = 4;
+							}
+							else if (PlayerPrefs.GetInt("Club") != 0)
+							{
+								this.Yandere.TargetStudent.ClubPhase = 5;
+							}
+							else if (this.ClubManager.ClubGrudge)
+							{
+								this.Yandere.TargetStudent.ClubPhase = 6;
+							}
+							else
+							{
+								this.Yandere.TargetStudent.ClubPhase = 1;
+							}
+						}
+						if (this.Selected == 3)
+						{
+							this.Impatience.fillAmount = (float)0;
+							this.Yandere.TargetStudent.Interaction = 12;
+							this.Yandere.TargetStudent.TalkTimer = (float)100;
+							this.Yandere.TargetStudent.ClubPhase = 1;
+							this.Show = false;
+						}
+						if (this.Selected == 4)
+						{
+							this.Impatience.fillAmount = (float)0;
+							this.Yandere.TargetStudent.Interaction = 13;
+							this.Yandere.TargetStudent.TalkTimer = this.Yandere.Subtitle.ClubFarewellClips[this.Yandere.TargetStudent.Club].length;
+							this.Show = false;
+						}
+						if (this.Selected == 5)
+						{
+							this.Impatience.fillAmount = (float)0;
+							this.Yandere.TargetStudent.Interaction = 14;
+							this.Yandere.TargetStudent.TalkTimer = (float)100;
+							if (this.Clock.HourTime < (float)17)
+							{
+								this.Yandere.TargetStudent.ClubPhase = 4;
+							}
+							else if (this.Clock.HourTime > 17.5f)
+							{
+								this.Yandere.TargetStudent.ClubPhase = 5;
+							}
+							else
+							{
+								this.Yandere.TargetStudent.ClubPhase = 1;
+							}
+							this.Show = false;
+						}
+						if (this.Selected == 6)
+						{
+						}
+					}
+				}
+				else if (!this.AskingFavor)
 				{
 					if (this.Selected != 0 && this.Shadow[this.Selected].color.a == (float)0)
 					{
@@ -311,62 +434,102 @@ public class DialogueWheelScript : MonoBehaviour
 			float num4 = color3.a = (float)num3;
 			Color color4 = this.FavorShadow[i].color = color3;
 		}
+		for (int i = 1; i < 7; i++)
+		{
+			int num5 = 0;
+			Color color5 = this.ClubShadow[i].color;
+			float num6 = color5.a = (float)num5;
+			Color color6 = this.ClubShadow[i].color = color5;
+		}
 		if (this.Yandere.Bloodiness > (float)0 || this.Yandere.Sanity < 33.33333f)
 		{
 			float a = 0.75f;
-			Color color5 = this.Shadow[3].color;
-			float num5 = color5.a = a;
-			Color color6 = this.Shadow[3].color = color5;
+			Color color7 = this.Shadow[3].color;
+			float num7 = color7.a = a;
+			Color color8 = this.Shadow[3].color = color7;
 			float a2 = 0.75f;
-			Color color7 = this.Shadow[5].color;
-			float num6 = color7.a = a2;
-			Color color8 = this.Shadow[5].color = color7;
+			Color color9 = this.Shadow[5].color;
+			float num8 = color9.a = a2;
+			Color color10 = this.Shadow[5].color = color9;
 			float a3 = 0.75f;
-			Color color9 = this.Shadow[6].color;
-			float num7 = color9.a = a3;
-			Color color10 = this.Shadow[6].color = color9;
+			Color color11 = this.Shadow[6].color;
+			float num9 = color11.a = a3;
+			Color color12 = this.Shadow[6].color = color11;
 		}
 		else if (this.Reputation.Reputation < -33.33333f)
 		{
 			float a4 = 0.75f;
-			Color color11 = this.Shadow[3].color;
-			float num8 = color11.a = a4;
-			Color color12 = this.Shadow[3].color = color11;
+			Color color13 = this.Shadow[3].color;
+			float num10 = color13.a = a4;
+			Color color14 = this.Shadow[3].color = color13;
 		}
 		if (this.Yandere.TargetStudent.StudentID != 6)
 		{
 			float a5 = 0.75f;
-			Color color13 = this.Shadow[5].color;
-			float num9 = color13.a = a5;
-			Color color14 = this.Shadow[5].color = color13;
+			Color color15 = this.Shadow[5].color;
+			float num11 = color15.a = a5;
+			Color color16 = this.Shadow[5].color = color15;
 		}
 		else if (PlayerPrefs.GetInt("Task_6_Status") != 0 && PlayerPrefs.GetInt("Task_6_Status") != 2)
 		{
 			float a6 = 0.75f;
-			Color color15 = this.Shadow[5].color;
-			float num10 = color15.a = a6;
-			Color color16 = this.Shadow[5].color = color15;
+			Color color17 = this.Shadow[5].color;
+			float num12 = color17.a = a6;
+			Color color18 = this.Shadow[5].color = color17;
 		}
 		if (PlayerPrefs.GetInt("Task_" + this.Yandere.TargetStudent.StudentID + "_Status") < 3)
 		{
 			float a7 = 0.75f;
-			Color color17 = this.Shadow[6].color;
-			float num11 = color17.a = a7;
-			Color color18 = this.Shadow[6].color = color17;
+			Color color19 = this.Shadow[6].color;
+			float num13 = color19.a = a7;
+			Color color20 = this.Shadow[6].color = color19;
 		}
 		if ((this.Yandere.TargetStudent.Male && PlayerPrefs.GetInt("Seduction") > 3) || PlayerPrefs.GetInt("Seduction") == 5)
 		{
-			int num12 = 0;
-			Color color19 = this.Shadow[6].color;
-			float num13 = color19.a = (float)num12;
-			Color color20 = this.Shadow[6].color = color19;
+			int num14 = 0;
+			Color color21 = this.Shadow[6].color;
+			float num15 = color21.a = (float)num14;
+			Color color22 = this.Shadow[6].color = color21;
+		}
+		float a8 = 0.75f;
+		Color color23 = this.ClubShadow[6].color;
+		float num16 = color23.a = a8;
+		Color color24 = this.ClubShadow[6].color = color23;
+		if (PlayerPrefs.GetInt("Club") == this.Yandere.TargetStudent.Club)
+		{
+			float a9 = 0.75f;
+			Color color25 = this.ClubShadow[1].color;
+			float num17 = color25.a = a9;
+			Color color26 = this.ClubShadow[1].color = color25;
+			float a10 = 0.75f;
+			Color color27 = this.ClubShadow[2].color;
+			float num18 = color27.a = a10;
+			Color color28 = this.ClubShadow[2].color = color27;
+		}
+		if (this.Yandere.ClubAttire)
+		{
+			float a11 = 0.75f;
+			Color color29 = this.ClubShadow[3].color;
+			float num19 = color29.a = a11;
+			Color color30 = this.ClubShadow[3].color = color29;
+		}
+		if (PlayerPrefs.GetInt("Club") != this.Yandere.TargetStudent.Club)
+		{
+			float a12 = 0.75f;
+			Color color31 = this.ClubShadow[3].color;
+			float num20 = color31.a = a12;
+			Color color32 = this.ClubShadow[3].color = color31;
+			float a13 = 0.75f;
+			Color color33 = this.ClubShadow[5].color;
+			float num21 = color33.a = a13;
+			Color color34 = this.ClubShadow[5].color = color33;
 		}
 		if (this.Yandere.Followers > 0)
 		{
-			float a8 = 0.75f;
-			Color color21 = this.FavorShadow[1].color;
-			float num14 = color21.a = a8;
-			Color color22 = this.FavorShadow[1].color = color21;
+			float a14 = 0.75f;
+			Color color35 = this.FavorShadow[1].color;
+			float num22 = color35.a = a14;
+			Color color36 = this.FavorShadow[1].color = color35;
 		}
 	}
 
@@ -380,7 +543,9 @@ public class DialogueWheelScript : MonoBehaviour
 			this.Yandere.TargetStudent.Waiting = true;
 			this.Yandere.TargetStudent = null;
 		}
+		this.Yandere.Subtitle.Label.text = string.Empty;
 		this.AskingFavor = false;
+		this.ClubLeader = false;
 		this.Show = false;
 	}
 

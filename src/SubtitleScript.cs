@@ -105,6 +105,10 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] StopFollowApologies;
 
+	public string[] GrudgeWarnings;
+
+	public string[] GrudgeRefusals;
+
 	public string[] Impatiences;
 
 	public string[] ImpatientFarewells;
@@ -167,11 +171,53 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] Task6Lines;
 
+	public string[] Club3Info;
+
+	public string[] Club6Info;
+
+	public string[] ClubGreetings;
+
+	public string[] ClubUnwelcomes;
+
+	public string[] ClubKicks;
+
+	public string[] ClubJoins;
+
+	public string[] ClubAccepts;
+
+	public string[] ClubRefuses;
+
+	public string[] ClubRejoins;
+
+	public string[] ClubExclusives;
+
+	public string[] ClubGrudges;
+
+	public string[] ClubQuits;
+
+	public string[] ClubConfirms;
+
+	public string[] ClubDenies;
+
+	public string[] ClubFarewells;
+
+	public string[] ClubActivities;
+
+	public string[] ClubEarlies;
+
+	public string[] ClubLates;
+
+	public string[] ClubYeses;
+
+	public string[] ClubNoes;
+
 	public int RandomID;
 
 	public float Timer;
 
 	public AudioClip[] NoteReactionClips;
+
+	public AudioClip[] GrudgeWarningClips;
 
 	public AudioClip[] SenpaiInsanityReactionClips;
 
@@ -224,6 +270,46 @@ public class SubtitleScript : MonoBehaviour
 	public AudioClip[] LightSwitchClips;
 
 	public AudioClip[] Task6Clips;
+
+	public AudioClip[] Club3Clips;
+
+	public AudioClip[] Club6Clips;
+
+	public AudioClip[] ClubGreetingClips;
+
+	public AudioClip[] ClubUnwelcomeClips;
+
+	public AudioClip[] ClubKickClips;
+
+	public AudioClip[] ClubJoinClips;
+
+	public AudioClip[] ClubAcceptClips;
+
+	public AudioClip[] ClubRefuseClips;
+
+	public AudioClip[] ClubRejoinClips;
+
+	public AudioClip[] ClubExclusiveClips;
+
+	public AudioClip[] ClubGrudgeClips;
+
+	public AudioClip[] ClubQuitClips;
+
+	public AudioClip[] ClubConfirmClips;
+
+	public AudioClip[] ClubDenyClips;
+
+	public AudioClip[] ClubFarewellClips;
+
+	public AudioClip[] ClubActivityClips;
+
+	public AudioClip[] ClubEarlyClips;
+
+	public AudioClip[] ClubLateClips;
+
+	public AudioClip[] ClubYesClips;
+
+	public AudioClip[] ClubNoClips;
 
 	public GameObject CurrentClip;
 
@@ -283,7 +369,7 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (ReactionType == "Prank Reaction")
 		{
-			this.Label.text = this.PrankReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.LewdReactions))];
+			this.Label.text = this.PrankReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.PrankReactions))];
 		}
 		else if (ReactionType == "Interruption Reaction")
 		{
@@ -531,6 +617,15 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.Label.text = this.StopFollowApologies[UnityEngine.Random.Range(0, Extensions.get_length(this.StopFollowApologies))];
 		}
+		else if (ReactionType == "Grudge Warning")
+		{
+			this.Label.text = this.GrudgeWarnings[UnityEngine.Random.Range(0, Extensions.get_length(this.GrudgeWarnings))];
+			this.PlayVoice(ReactionType, ID);
+		}
+		else if (ReactionType == "Grudge Refusal")
+		{
+			this.Label.text = this.GrudgeRefusals[UnityEngine.Random.Range(0, Extensions.get_length(this.GrudgeRefusals))];
+		}
 		else if (ReactionType == "Dying")
 		{
 			this.Label.text = this.Deaths[UnityEngine.Random.Range(0, Extensions.get_length(this.Deaths))];
@@ -597,6 +692,106 @@ public class SubtitleScript : MonoBehaviour
 			this.Label.text = this.Task6Lines[ID];
 			this.PlayVoice(ReactionType, ID);
 		}
+		else if (ReactionType == "Club Greeting")
+		{
+			this.Label.text = this.ClubGreetings[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
+		else if (ReactionType == "Club Unwelcome")
+		{
+			this.Label.text = this.ClubUnwelcomes[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
+		else if (ReactionType == "Club Kick")
+		{
+			this.Label.text = this.ClubKicks[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
+		else if (ReactionType == "Club 3 Info")
+		{
+			this.Label.text = this.Club3Info[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
+		else if (ReactionType == "Club 6 Info")
+		{
+			this.Label.text = this.Club6Info[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
+		else if (ReactionType == "Club Join")
+		{
+			this.Label.text = this.ClubJoins[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
+		else if (ReactionType == "Club Accept")
+		{
+			this.Label.text = this.ClubAccepts[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
+		else if (ReactionType == "Club Refuse")
+		{
+			this.Label.text = this.ClubRefuses[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
+		else if (ReactionType == "Club Rejoin")
+		{
+			this.Label.text = this.ClubRejoins[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
+		else if (ReactionType == "Club Exclusive")
+		{
+			this.Label.text = this.ClubExclusives[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
+		else if (ReactionType == "Club Grudge")
+		{
+			this.Label.text = this.ClubGrudges[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
+		else if (ReactionType == "Club Quit")
+		{
+			this.Label.text = this.ClubQuits[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
+		else if (ReactionType == "Club Confirm")
+		{
+			this.Label.text = this.ClubConfirms[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
+		else if (ReactionType == "Club Deny")
+		{
+			this.Label.text = this.ClubDenies[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
+		else if (ReactionType == "Club Farewell")
+		{
+			this.Label.text = this.ClubFarewells[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
+		else if (ReactionType == "Club Activity")
+		{
+			this.Label.text = this.ClubActivities[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
+		else if (ReactionType == "Club Early")
+		{
+			this.Label.text = this.ClubEarlies[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
+		else if (ReactionType == "Club Late")
+		{
+			this.Label.text = this.ClubLates[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
+		else if (ReactionType == "Club Yes")
+		{
+			this.Label.text = this.ClubYeses[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
+		else if (ReactionType == "Club No")
+		{
+			this.Label.text = this.ClubNoes[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
 		this.Timer = Duration;
 	}
 
@@ -616,12 +811,20 @@ public class SubtitleScript : MonoBehaviour
 
 	public virtual void PlayVoice(string ReactionType, int ID)
 	{
+		if (this.CurrentClip != null)
+		{
+			UnityEngine.Object.Destroy(this.CurrentClip);
+		}
 		this.Jukebox.Dip = 0.5f;
 		if (ReactionType == "Note Reaction")
 		{
 			this.PlayClip(this.NoteReactionClips[ID], this.transform.position);
 		}
-		if (ReactionType == "Senpai Insanity Reaction")
+		else if (ReactionType == "Grudge Warning")
+		{
+			this.PlayClip(this.GrudgeWarningClips[ID], this.transform.position);
+		}
+		else if (ReactionType == "Senpai Insanity Reaction")
 		{
 			this.PlayClip(this.SenpaiInsanityReactionClips[ID], this.transform.position);
 		}
@@ -725,6 +928,86 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.PlayClip(this.Task6Clips[ID], this.transform.position);
 		}
+		else if (ReactionType == "Club Greeting")
+		{
+			this.PlayClip(this.ClubGreetingClips[ID], this.transform.position);
+		}
+		else if (ReactionType == "Club Unwelcome")
+		{
+			this.PlayClip(this.ClubUnwelcomeClips[ID], this.transform.position);
+		}
+		else if (ReactionType == "Club Kick")
+		{
+			this.PlayClip(this.ClubKickClips[ID], this.transform.position);
+		}
+		else if (ReactionType == "Club Join")
+		{
+			this.PlayClip(this.ClubJoinClips[ID], this.transform.position);
+		}
+		else if (ReactionType == "Club Accept")
+		{
+			this.PlayClip(this.ClubAcceptClips[ID], this.transform.position);
+		}
+		else if (ReactionType == "Club Refuse")
+		{
+			this.PlayClip(this.ClubRefuseClips[ID], this.transform.position);
+		}
+		else if (ReactionType == "Club Exclusive")
+		{
+			this.PlayClip(this.ClubExclusiveClips[ID], this.transform.position);
+		}
+		else if (ReactionType == "Club Grudge")
+		{
+			this.PlayClip(this.ClubGrudgeClips[ID], this.transform.position);
+		}
+		else if (ReactionType == "Club Rejoin")
+		{
+			this.PlayClip(this.ClubRejoinClips[ID], this.transform.position);
+		}
+		else if (ReactionType == "Club Quit")
+		{
+			this.PlayClip(this.ClubQuitClips[ID], this.transform.position);
+		}
+		else if (ReactionType == "Club Confirm")
+		{
+			this.PlayClip(this.ClubConfirmClips[ID], this.transform.position);
+		}
+		else if (ReactionType == "Club Deny")
+		{
+			this.PlayClip(this.ClubDenyClips[ID], this.transform.position);
+		}
+		else if (ReactionType == "Club Farewell")
+		{
+			this.PlayClip(this.ClubFarewellClips[ID], this.transform.position);
+		}
+		else if (ReactionType == "Club Activity")
+		{
+			this.PlayClip(this.ClubActivityClips[ID], this.transform.position);
+		}
+		else if (ReactionType == "Club Early")
+		{
+			this.PlayClip(this.ClubEarlyClips[ID], this.transform.position);
+		}
+		else if (ReactionType == "Club Late")
+		{
+			this.PlayClip(this.ClubLateClips[ID], this.transform.position);
+		}
+		else if (ReactionType == "Club Yes")
+		{
+			this.PlayClip(this.ClubYesClips[ID], this.transform.position);
+		}
+		else if (ReactionType == "Club No")
+		{
+			this.PlayClip(this.ClubNoClips[ID], this.transform.position);
+		}
+		else if (ReactionType == "Club 3 Info")
+		{
+			this.PlayClip(this.Club3Clips[ID], this.transform.position);
+		}
+		else if (ReactionType == "Club 6 Info")
+		{
+			this.PlayClip(this.Club6Clips[ID], this.transform.position);
+		}
 	}
 
 	public virtual float GetClipLength(int StudentID, int TaskPhase)
@@ -732,25 +1015,33 @@ public class SubtitleScript : MonoBehaviour
 		return (StudentID != 6) ? ((float)0) : this.Task6Clips[TaskPhase].length;
 	}
 
+	public virtual float GetClubClipLength(int Club, int ClubPhase)
+	{
+		return (Club != 3) ? ((Club != 6) ? ((float)0) : this.Club6Clips[ClubPhase].length) : this.Club3Clips[ClubPhase].length;
+	}
+
 	public virtual void PlayClip(AudioClip clip, Vector3 pos)
 	{
-		GameObject gameObject = new GameObject("TempAudio");
-		gameObject.transform.position = pos;
-		AudioSource audioSource = (AudioSource)gameObject.AddComponent(typeof(AudioSource));
-		audioSource.clip = clip;
-		audioSource.Play();
-		UnityEngine.Object.Destroy(gameObject, clip.length);
-		audioSource.rolloffMode = AudioRolloffMode.Linear;
-		audioSource.minDistance = (float)5;
-		audioSource.maxDistance = (float)10;
-		this.CurrentClip = gameObject;
-		if (this.Yandere.position.y < gameObject.transform.position.y - (float)2)
+		if (clip != null)
 		{
-			audioSource.volume = (float)0;
-		}
-		else
-		{
-			audioSource.volume = (float)1;
+			GameObject gameObject = new GameObject("TempAudio");
+			gameObject.transform.position = pos;
+			AudioSource audioSource = (AudioSource)gameObject.AddComponent(typeof(AudioSource));
+			audioSource.clip = clip;
+			audioSource.Play();
+			UnityEngine.Object.Destroy(gameObject, clip.length);
+			audioSource.rolloffMode = AudioRolloffMode.Linear;
+			audioSource.minDistance = (float)5;
+			audioSource.maxDistance = (float)10;
+			this.CurrentClip = gameObject;
+			if (this.Yandere.position.y < gameObject.transform.position.y - (float)2)
+			{
+				audioSource.volume = (float)0;
+			}
+			else
+			{
+				audioSource.volume = (float)1;
+			}
 		}
 	}
 

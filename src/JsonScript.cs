@@ -33,7 +33,7 @@ public class JsonScript : MonoBehaviour
 
 	public string[] StudentStockings;
 
-	public string[] StudentPanties;
+	public string[] StudentAccessories;
 
 	public UnityScript.Lang.Array[] StudentTimes;
 
@@ -91,7 +91,7 @@ public class JsonScript : MonoBehaviour
 			this.StudentHairstyles[this.ID] = TFUtils.LoadString(array[i], "Hairstyle");
 			this.StudentColors[this.ID] = TFUtils.LoadString(array[i], "Color");
 			this.StudentStockings[this.ID] = TFUtils.LoadString(array[i], "Stockings");
-			this.StudentPanties[this.ID] = TFUtils.LoadString(array[i], "Panties");
+			this.StudentAccessories[this.ID] = TFUtils.LoadString(array[i], "Accessory");
 			this.TempString = TFUtils.LoadString(array[i], "ScheduleTime");
 			this.ConstructTempFloatArray();
 			this.StudentTimes[this.ID] = this.TempFloatArray;

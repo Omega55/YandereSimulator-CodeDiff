@@ -1,6 +1,7 @@
 ﻿using System;
 using Boo.Lang.Runtime;
 using UnityEngine;
+using UnityScript.Lang;
 
 [Serializable]
 public class CustomizationScript : MonoBehaviour
@@ -593,15 +594,15 @@ public class CustomizationScript : MonoBehaviour
 
 	public virtual void UpdateStyle()
 	{
-		if (this.HairStyle > 7)
+		if (this.HairStyle > Extensions.get_length(this.Hairstyles) - 1)
 		{
 			this.HairStyle = 0;
 		}
 		else if (this.HairStyle < 0)
 		{
-			this.HairStyle = 7;
+			this.HairStyle = Extensions.get_length(this.Hairstyles) - 1;
 		}
-		for (int i = 1; i < this.Hairstyles.Length; i++)
+		for (int i = 1; i < Extensions.get_length(this.Hairstyles); i++)
 		{
 			this.Hairstyles[i].active = false;
 		}

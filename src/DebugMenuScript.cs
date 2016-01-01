@@ -195,6 +195,7 @@ public class DebugMenuScript : MonoBehaviour
 			}
 			else if (Input.GetKeyDown("s"))
 			{
+				PlayerPrefs.SetInt("PhysicalGrade", 5);
 				PlayerPrefs.SetInt("Seduction", 5);
 				this.Window.active = false;
 			}
@@ -205,10 +206,32 @@ public class DebugMenuScript : MonoBehaviour
 				this.Clock.HourTime = this.Clock.PresentTime / (float)60;
 				this.Window.active = false;
 			}
-			if (Input.GetKeyDown("`"))
+			else if (Input.GetKeyDown("`"))
 			{
 				PlayerPrefs.DeleteAll();
 				Application.LoadLevel(Application.loadedLevel);
+			}
+			else if (Input.GetKeyDown("space"))
+			{
+				this.Yandere.transform.position = this.TeleportSpot[5].position;
+				if (this.StudentManager.Students[21] != null)
+				{
+					this.StudentManager.Students[21].transform.position = this.TeleportSpot[5].position;
+				}
+				this.Clock.PresentTime = (float)1015;
+				this.Clock.HourTime = this.Clock.PresentTime / (float)60;
+				this.Window.active = false;
+			}
+			else if (Input.GetKeyDown("left ctrl"))
+			{
+				this.Yandere.transform.position = this.TeleportSpot[6].position;
+				if (this.StudentManager.Students[26] != null)
+				{
+					this.StudentManager.Students[26].transform.position = this.TeleportSpot[6].position;
+				}
+				this.Clock.PresentTime = (float)1015;
+				this.Clock.HourTime = this.Clock.PresentTime / (float)60;
+				this.Window.active = false;
 			}
 		}
 		else if (Input.GetKeyDown("`"))

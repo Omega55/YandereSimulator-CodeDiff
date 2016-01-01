@@ -30,6 +30,11 @@ public class TaskWindowScript : MonoBehaviour
 
 	public float Timer;
 
+	public virtual void Start()
+	{
+		this.Window.active = false;
+	}
+
 	public virtual void UpdateWindow(int ID)
 	{
 		this.PromptBar.ClearButtons();

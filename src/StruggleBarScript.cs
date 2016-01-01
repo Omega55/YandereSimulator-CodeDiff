@@ -50,6 +50,10 @@ public class StruggleBarScript : MonoBehaviour
 			float num = localEulerAngles.z = z;
 			Vector3 vector = this.Spikes.localEulerAngles = localEulerAngles;
 			this.Victory -= Time.deltaTime * (float)20 * this.Strength;
+			if (PlayerPrefs.GetInt("Club") == 6)
+			{
+				this.Victory = (float)100;
+			}
 			if (Input.GetButtonDown(this.CurrentButton))
 			{
 				this.Victory += Time.deltaTime * (float)(500 + PlayerPrefs.GetInt("PhysicalGrade") * 100);

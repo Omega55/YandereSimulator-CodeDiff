@@ -47,6 +47,8 @@ public class WeaponScript : MonoBehaviour
 
 	public int WeaponID;
 
+	public int AnimID;
+
 	public bool[] Victims;
 
 	private int ID;

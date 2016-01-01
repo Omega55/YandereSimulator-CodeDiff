@@ -1,7 +1,5 @@
 ﻿using System;
-using Boo.Lang.Runtime;
 using UnityEngine;
-using UnityScript.Lang;
 
 [Serializable]
 public class ClubAmbienceScript : MonoBehaviour
@@ -43,7 +41,7 @@ public class ClubAmbienceScript : MonoBehaviour
 			{
 				this.audio.volume = Mathf.MoveTowards(this.audio.volume, (float)0, Time.deltaTime * 0.1f);
 				this.Jukebox.ClubDip = Mathf.MoveTowards(this.Jukebox.ClubDip, (float)0, Time.deltaTime * 0.1f);
-				if (RuntimeServices.EqualityOperator(UnityRuntimeServices.GetProperty(this.Jukebox, "ClipDip"), 0))
+				if (this.Jukebox.ClubDip == (float)0)
 				{
 					this.EffectJukebox = false;
 				}

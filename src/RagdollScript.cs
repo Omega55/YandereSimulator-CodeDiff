@@ -216,7 +216,7 @@ public class RagdollScript : MonoBehaviour
 						this.Police.PoisonScene = false;
 					}
 					this.Incinerator.Corpses = this.Incinerator.Corpses + 1;
-					UnityEngine.Object.Destroy(this.gameObject);
+					this.active = false;
 				}
 			}
 			if (this.TranqCase != null)

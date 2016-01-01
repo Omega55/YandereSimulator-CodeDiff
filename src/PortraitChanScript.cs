@@ -63,15 +63,23 @@ public class PortraitChanScript : MonoBehaviour
 
 	public GameObject TeacherGlasses;
 
+	public GameObject ShinyGlasses;
+
 	public GameObject TeacherHair;
 
-	public GameObject OccultHair;
+	public GameObject[] OccultHair;
+
+	public GameObject[] IrisLight;
 
 	public GameObject CirnoHair;
 
 	public GameObject Character;
 
 	public GameObject PippiHair;
+
+	public GameObject Eyepatch;
+
+	public GameObject Bandage;
 
 	public GameObject Bandana;
 
@@ -88,6 +96,8 @@ public class PortraitChanScript : MonoBehaviour
 	public bool Emo;
 
 	public float BreastSize;
+
+	public string Accessory;
 
 	public string Hairstyle;
 
@@ -145,6 +155,7 @@ public class PortraitChanScript : MonoBehaviour
 
 	public PortraitChanScript()
 	{
+		this.Accessory = string.Empty;
 		this.Hairstyle = string.Empty;
 	}
 
@@ -172,6 +183,7 @@ public class PortraitChanScript : MonoBehaviour
 		this.Club = this.JSON.StudentClubs[this.StudentID];
 		this.BreastSize = this.JSON.StudentBreasts[this.StudentID];
 		this.Hairstyle = this.JSON.StudentHairstyles[this.StudentID];
+		this.Accessory = this.JSON.StudentAccessories[this.StudentID];
 		if (!this.Male)
 		{
 			this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
@@ -179,12 +191,18 @@ public class PortraitChanScript : MonoBehaviour
 			this.TeacherGlasses.active = false;
 			this.UpdateHair();
 		}
+		else if (this.Club == 3)
+		{
+			this.Character.animation["sadFace_00"].layer = 1;
+			this.Character.animation.Play("sadFace_00");
+			this.Character.animation["sadFace_00"].weight = (float)1;
+		}
 		this.Bandana.active = false;
 		if (this.Club == 100)
 		{
 			this.BecomeTeacher();
 		}
-		else if (this.Club == 5)
+		else if (this.Club == 6)
 		{
 			this.Bandana.active = true;
 		}
@@ -266,9 +284,17 @@ public class PortraitChanScript : MonoBehaviour
 			{
 				this.HairTexture = this.StudentManager.Colors[16];
 			}
-			else if (a == "Occult")
+			else if (a == "Occult1")
 			{
 				this.HairTexture = this.StudentManager.Colors[17];
+			}
+			else if (a == "Occult3")
+			{
+				this.HairTexture = this.StudentManager.Colors[19];
+			}
+			else if (a == "Occult5")
+			{
+				this.HairTexture = this.StudentManager.Colors[21];
 			}
 			if (!this.Teacher)
 			{
@@ -312,6 +338,14 @@ public class PortraitChanScript : MonoBehaviour
 				}
 				this.MyRenderer.materials[1].mainTexture = this.StudentManager.Colors[7];
 				this.TeacherGlasses.active = true;
+			}
+			if (this.Accessory == "Bandage")
+			{
+				this.Bandage.active = true;
+			}
+			else if (this.Accessory == "Eyepatch")
+			{
+				this.Eyepatch.active = true;
 			}
 		}
 		else
@@ -358,7 +392,7 @@ public class PortraitChanScript : MonoBehaviour
 				}
 				this.EyeR.material.color = this.MaleHairRenderer.material.color;
 				this.EyeL.material.color = this.MaleHairRenderer.material.color;
-				if (this.Club == 5)
+				if (this.Club == 6)
 				{
 					int num = -1;
 					Vector3 localScale = this.MaleHairstyles[UnityBuiltins.parseInt(this.Hairstyle)].transform.localScale;
@@ -366,6 +400,19 @@ public class PortraitChanScript : MonoBehaviour
 					Vector3 vector = this.MaleHairstyles[UnityBuiltins.parseInt(this.Hairstyle)].transform.localScale = localScale;
 					this.Bandana.active = true;
 				}
+			}
+			else if (a == "Occult2" || a == "Occult4" || a == "Occult6")
+			{
+				this.MaleHairRenderer = (Renderer)this.MaleHairstyles[UnityBuiltins.parseInt(this.Hairstyle)].GetComponent(typeof(Renderer));
+				this.MyRenderer.materials[2].mainTexture = this.MaleHairRenderer.material.mainTexture;
+				this.EyeR.material.mainTexture = this.MaleHairRenderer.material.mainTexture;
+				this.EyeL.material.mainTexture = this.MaleHairRenderer.material.mainTexture;
+			}
+			if (this.Accessory == "ShinyGlasses")
+			{
+				this.ShinyGlasses.active = true;
+				this.IrisLight[0].active = false;
+				this.IrisLight[1].active = false;
 			}
 		}
 		if (!this.Male)
@@ -389,8 +436,10 @@ public class PortraitChanScript : MonoBehaviour
 		this.LongHair.gameObject.active = false;
 		this.TwinPony.gameObject.active = false;
 		this.Drills.gameObject.active = false;
+		this.OccultHair[1].active = false;
+		this.OccultHair[3].active = false;
+		this.OccultHair[5].active = false;
 		this.TeacherHair.active = false;
-		this.OccultHair.active = false;
 		this.CirnoHair.active = false;
 		this.PippiHair.active = false;
 		this.ShortHair.active = false;
@@ -484,9 +533,17 @@ public class PortraitChanScript : MonoBehaviour
 			this.TwinPony.transform.parent.transform.parent.gameObject.active = true;
 			this.TwinPony.gameObject.active = true;
 		}
-		else if (this.Hairstyle == "Occult")
+		else if (this.Hairstyle == "Occult1")
 		{
-			this.OccultHair.active = true;
+			this.OccultHair[1].active = true;
+		}
+		else if (this.Hairstyle == "Occult3")
+		{
+			this.OccultHair[3].active = true;
+		}
+		else if (this.Hairstyle == "Occult5")
+		{
+			this.OccultHair[5].active = true;
 		}
 		else if (this.Hairstyle == "Teacher")
 		{

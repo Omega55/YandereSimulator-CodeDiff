@@ -11,18 +11,18 @@ public class StudentInfoMenuScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $UpdatePortraits$2188 : GenericGenerator<WWW>
+	internal sealed class $UpdatePortraits$2202 : GenericGenerator<WWW>
 	{
-		internal StudentInfoMenuScript $self_$2193;
+		internal StudentInfoMenuScript $self_$2207;
 
-		public $UpdatePortraits$2188(StudentInfoMenuScript self_)
+		public $UpdatePortraits$2202(StudentInfoMenuScript self_)
 		{
-			this.$self_$2193 = self_;
+			this.$self_$2207 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new StudentInfoMenuScript.$UpdatePortraits$2188.$(this.$self_$2193);
+			return new StudentInfoMenuScript.$UpdatePortraits$2202.$(this.$self_$2207);
 		}
 	}
 
@@ -174,9 +174,9 @@ public class StudentInfoMenuScript : MonoBehaviour
 			float num4 = localPosition4.y = y4;
 			Vector3 vector4 = this.Scollbar.localPosition = localPosition4;
 		}
-		else if (this.Row == 4)
+		else if (this.Row == 4 || this.Row == 5)
 		{
-			float y5 = Mathf.Lerp(this.PortraitGrid.localPosition.y, (float)331, 0.166666672f);
+			float y5 = Mathf.Lerp(this.PortraitGrid.localPosition.y, (float)441, 0.166666672f);
 			Vector3 localPosition5 = this.PortraitGrid.localPosition;
 			float num5 = localPosition5.y = y5;
 			Vector3 vector5 = this.PortraitGrid.localPosition = localPosition5;
@@ -284,7 +284,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	public virtual IEnumerator UpdatePortraits()
 	{
-		return new StudentInfoMenuScript.$UpdatePortraits$2188(this).GetEnumerator();
+		return new StudentInfoMenuScript.$UpdatePortraits$2202(this).GetEnumerator();
 	}
 
 	public virtual void Main()
