@@ -1069,7 +1069,6 @@ public class StudentScript : MonoBehaviour
 					{
 						this.Pathfinding.canSearch = false;
 						this.Pathfinding.canMove = false;
-						this.Obstacle.enabled = true;
 					}
 					if (!this.InEvent && !this.Meeting && this.DressCode)
 					{

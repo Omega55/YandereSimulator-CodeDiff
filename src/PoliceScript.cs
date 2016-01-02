@@ -253,7 +253,6 @@ public class PoliceScript : MonoBehaviour
 				{
 					if (this.Yandere.Weapon[i] != null)
 					{
-						this.Yandere.Weapon[i].Drop();
 					}
 				}
 			}
