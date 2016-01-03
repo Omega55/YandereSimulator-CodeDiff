@@ -548,6 +548,19 @@ public class StudentManagerScript : MonoBehaviour
 		}
 	}
 
+	public virtual void UpdateBooths()
+	{
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.ChangingBooths))
+		{
+			if (this.ChangingBooths[this.ID] != null)
+			{
+				this.ChangingBooths[this.ID].CheckYandereClub();
+			}
+			this.ID++;
+		}
+	}
+
 	public virtual void Main()
 	{
 	}

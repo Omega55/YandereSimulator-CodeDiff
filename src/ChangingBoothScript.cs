@@ -18,6 +18,8 @@ public class ChangingBoothScript : MonoBehaviour
 
 	public bool YandereChanging;
 
+	public bool CannotChange;
+
 	public bool Occupied;
 
 	public AudioClip CurtainSound;
@@ -123,16 +125,24 @@ public class ChangingBoothScript : MonoBehaviour
 
 	public virtual void CheckYandereClub()
 	{
-		if (!this.Occupied)
+		if (this.Yandere.Bloodiness == (float)0 && !this.CannotChange)
 		{
-			if (PlayerPrefs.GetInt("Club") != this.ClubID)
+			if (!this.Occupied)
 			{
-				this.Prompt.Hide();
-				this.Prompt.enabled = false;
+				if (PlayerPrefs.GetInt("Club") != this.ClubID)
+				{
+					this.Prompt.Hide();
+					this.Prompt.enabled = false;
+				}
+				else
+				{
+					this.Prompt.enabled = true;
+				}
 			}
 			else
 			{
-				this.Prompt.enabled = true;
+				this.Prompt.Hide();
+				this.Prompt.enabled = false;
 			}
 		}
 		else

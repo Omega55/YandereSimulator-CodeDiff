@@ -397,6 +397,12 @@ public class PoliceScript : MonoBehaviour
 					{
 						this.EndOfDay.Phase = 9;
 						this.EndOfDay.gameObject.active = true;
+						this.ResultsLabels[0].text = string.Empty;
+						this.ResultsLabels[1].text = string.Empty;
+						this.ResultsLabels[2].text = string.Empty;
+						this.ResultsLabels[3].text = string.Empty;
+						this.ResultsLabels[4].text = string.Empty;
+						this.enabled = false;
 					}
 				}
 				else
@@ -415,6 +421,12 @@ public class PoliceScript : MonoBehaviour
 		if (this.Show)
 		{
 			this.EndOfDay.gameObject.active = true;
+			this.enabled = false;
+			this.ResultsLabels[0].text = string.Empty;
+			this.ResultsLabels[1].text = string.Empty;
+			this.ResultsLabels[2].text = string.Empty;
+			this.ResultsLabels[3].text = string.Empty;
+			this.ResultsLabels[4].text = string.Empty;
 		}
 		else if (PlayerPrefs.GetInt("Weekday") == 5)
 		{
@@ -532,7 +544,14 @@ public class PoliceScript : MonoBehaviour
 		}
 		else if (this.Suicide)
 		{
-			this.ResultsLabels[0].text = "The school day has ended. Teachers must walk through the school and tell any lingering students to leave.";
+			if (!this.Yandere.InClass)
+			{
+				this.ResultsLabels[0].text = "The school day has ended. Teachers must walk through the school and tell any lingering students to leave.";
+			}
+			else
+			{
+				this.ResultsLabels[0].text = "Yandere-chan attempts to attend class without disposing of a corpse.";
+			}
 			this.ResultsLabels[1].text = "While walking around the school, a teacher discovers a corpse.";
 			this.ResultsLabels[2].text = "It appears as though a student has committed suicide.";
 			this.ResultsLabels[3].text = "The teacher informs the rest of the faculty about her discovery.";

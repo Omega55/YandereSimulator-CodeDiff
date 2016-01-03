@@ -375,10 +375,10 @@ public class CookingEventScript : MonoBehaviour
 			this.EventStudent.InEvent = false;
 			this.EventStudent.Private = false;
 			this.EventSubtitle.text = string.Empty;
-			if (this.Knife.parent == this.CookingClub)
-			{
-				((Collider)this.Knife.GetComponent(typeof(Collider))).enabled = true;
-			}
+			this.Knife.parent = this.CookingClub;
+			this.Knife.localPosition = new Vector3(0.197f, 1.1903f, -0.33333f);
+			this.Knife.localEulerAngles = new Vector3((float)45, (float)-90, (float)-90);
+			((Collider)this.Knife.GetComponent(typeof(Collider))).enabled = true;
 			this.StudentManager.UpdateStudents();
 		}
 		this.EventActive = false;

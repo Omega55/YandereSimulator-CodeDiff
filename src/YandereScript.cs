@@ -2825,6 +2825,7 @@ public class YandereScript : MonoBehaviour
 			this.MyProjector.enabled = false;
 			this.BloodyWarning = false;
 		}
+		this.StudentManager.UpdateBooths();
 		this.MyLocker.UpdateButtons();
 		this.Outline.h.ReinitMaterials();
 	}
@@ -3309,6 +3310,7 @@ public class YandereScript : MonoBehaviour
 			this.ID++;
 		}
 		this.EasterEggMenu.active = false;
+		this.ClubAttire = false;
 	}
 
 	public virtual void ChangeSchoolwear()
@@ -3367,6 +3369,7 @@ public class YandereScript : MonoBehaviour
 			this.ChangeSchoolwear();
 			this.ClubAttire = false;
 		}
+		this.MyLocker.UpdateButtons();
 	}
 
 	public virtual void Main()

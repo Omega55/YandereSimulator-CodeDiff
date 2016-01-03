@@ -28,7 +28,7 @@ public class GloveScript : MonoBehaviour
 			this.Prompt.Yandere.WearGloves();
 			this.active = false;
 		}
-		if (this.Prompt.Yandere.Schoolwear == 1)
+		if (this.Prompt.Yandere.Schoolwear == 1 && !this.Prompt.Yandere.ClubAttire)
 		{
 			this.Prompt.HideButton[0] = false;
 		}
