@@ -10,6 +10,8 @@ public class JukeboxScript : MonoBehaviour
 
 	public AudioSource AttackOnTitan;
 
+	public AudioSource Megalovania;
+
 	public AudioSource Skeletons;
 
 	public AudioSource Nuclear;
@@ -155,6 +157,7 @@ public class JukeboxScript : MonoBehaviour
 		else
 		{
 			this.AttackOnTitan.volume = Mathf.MoveTowards(this.AttackOnTitan.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
+			this.Megalovania.volume = Mathf.MoveTowards(this.Megalovania.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Skeletons.volume = Mathf.MoveTowards(this.Skeletons.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Nuclear.volume = Mathf.MoveTowards(this.Nuclear.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Slender.volume = Mathf.MoveTowards(this.Slender.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
@@ -269,11 +272,20 @@ public class JukeboxScript : MonoBehaviour
 					this.Falcon.enabled = true;
 				}
 			}
-			else if (Input.GetKeyDown("o") && !this.MuteCopyrights)
+			else if (Input.GetKeyDown("o"))
+			{
+				if (!this.MuteCopyrights)
+				{
+					this.Egg = true;
+					this.KillVolume();
+					this.Punch.enabled = true;
+				}
+			}
+			else if (Input.GetKeyDown("u") && !this.MuteCopyrights)
 			{
 				this.Egg = true;
 				this.KillVolume();
-				this.Punch.enabled = true;
+				this.Megalovania.enabled = true;
 			}
 		}
 	}
@@ -289,6 +301,7 @@ public class JukeboxScript : MonoBehaviour
 	public virtual void GameOver()
 	{
 		this.AttackOnTitan.Stop();
+		this.Megalovania.Stop();
 		this.Skeletons.Stop();
 		this.Nuclear.Stop();
 		this.Sukeban.Stop();

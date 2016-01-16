@@ -117,6 +117,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public bool Spooky;
 
+	public bool Sans;
+
 	public bool Stop;
 
 	public bool AoT;
@@ -256,6 +258,10 @@ public class StudentManagerScript : MonoBehaviour
 				{
 					this.Students[this.SpawnID].Spooky = true;
 				}
+				if (this.Sans)
+				{
+					this.Students[this.SpawnID].BadTime = true;
+				}
 				if (this.SpawnID == 7)
 				{
 					this.CommunalLocker.Student = this.Students[this.SpawnID];
@@ -321,6 +327,10 @@ public class StudentManagerScript : MonoBehaviour
 					this.Students[this.ID].Prompt.Label[0].text = "     " + "Give Weapon";
 				}
 			}
+			if (this.Sans && this.Students[this.ID] != null)
+			{
+				this.Students[this.ID].Prompt.HideButton[0] = false;
+			}
 			this.ID++;
 		}
 	}
@@ -359,6 +369,10 @@ public class StudentManagerScript : MonoBehaviour
 				this.Students[ID].Prompt.HideButton[0] = true;
 			}
 		}
+		if (this.Sans)
+		{
+			this.Students[ID].Prompt.HideButton[0] = false;
+		}
 	}
 
 	public virtual void AttendClass()
@@ -373,7 +387,8 @@ public class StudentManagerScript : MonoBehaviour
 			if (this.Students[this.ID] != null && !this.Students[this.ID].Dead && !this.Students[this.ID].Teacher && !this.Students[this.ID].Slave && !this.Students[this.ID].Tranquil && this.ID < Extensions.get_length(this.Seats.List))
 			{
 				this.Students[this.ID].transform.position = this.Seats.List[this.Students[this.ID].StudentID].position + Vector3.up * 0.01f;
-				this.Students[this.ID].Character.animation.Play(this.Students[this.ID].IdleAnim);
+				this.Students[this.ID].transform.rotation = this.Seats.List[this.Students[this.ID].StudentID].rotation;
+				this.Students[this.ID].Character.animation.Play(this.Students[this.ID].SitAnim);
 				this.Students[this.ID].Pathfinding.canSearch = false;
 				this.Students[this.ID].Pathfinding.canMove = false;
 				this.Students[this.ID].OccultBook.active = false;
@@ -543,6 +558,20 @@ public class StudentManagerScript : MonoBehaviour
 			if (this.Students[this.ID] != null && !this.Students[this.ID].Male)
 			{
 				this.Students[this.ID].Spook();
+			}
+			this.ID++;
+		}
+	}
+
+	public virtual void BadTime()
+	{
+		this.Sans = true;
+		this.ID = 2;
+		while (this.ID < Extensions.get_length(this.Students))
+		{
+			if (this.Students[this.ID] != null)
+			{
+				this.Students[this.ID].BadTime = true;
 			}
 			this.ID++;
 		}

@@ -23,6 +23,8 @@ public class LaptopScript : MonoBehaviour
 
 	public string[] Subs;
 
+	public float Timer;
+
 	public UILabel EventSubtitle;
 
 	public virtual void Start()
@@ -48,7 +50,6 @@ public class LaptopScript : MonoBehaviour
 				if (this.Yandere.transform.position.x > this.transform.position.x + (float)1 && Vector3.Distance(this.Yandere.transform.position, new Vector3(this.transform.position.x, (float)4, this.transform.position.z)) < (float)2 && this.Yandere.Followers == 0)
 				{
 					this.EventSubtitle.transform.localScale = new Vector3((float)1, (float)1, (float)1);
-					this.SCP.animation["f02_scp_00"].speed = (float)1;
 					this.SCP.animation["f02_scp_00"].time = (float)0;
 					this.SCP.animation.Play();
 					this.Jukebox.Dip = 0.5f;
@@ -65,7 +66,16 @@ public class LaptopScript : MonoBehaviour
 						this.EventSubtitle.text = this.Subs[i];
 					}
 				}
-				if (this.SCP.animation["f02_scp_00"].time >= this.SCP.animation["f02_scp_00"].length)
+				if (this.audio.time >= this.audio.clip.length - (float)1)
+				{
+					this.SCP.animation["f02_scp_00"].speed = (float)1;
+					this.Timer += Time.deltaTime;
+				}
+				else
+				{
+					this.SCP.animation["f02_scp_00"].time = this.audio.time;
+				}
+				if (this.Timer > (float)1)
 				{
 					this.audio.clip = this.ShutDown;
 					this.audio.Play();

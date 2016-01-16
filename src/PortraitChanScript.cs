@@ -19,6 +19,8 @@ public class PortraitChanScript : MonoBehaviour
 
 	public Renderer PonyRenderer;
 
+	public Renderer NewLongHair;
+
 	public Renderer ShortHair;
 
 	public Renderer TwinPony;
@@ -302,6 +304,7 @@ public class PortraitChanScript : MonoBehaviour
 				this.MyRenderer.materials[1].mainTexture = this.UniformTexture;
 				this.MyRenderer.materials[2].mainTexture = this.HairTexture;
 				this.PonyRenderer.material.mainTexture = this.HairTexture;
+				this.NewLongHair.material.mainTexture = this.HairTexture;
 				this.ShortHair.material.mainTexture = this.HairTexture;
 				this.LongHair.material.mainTexture = this.HairTexture;
 				this.PigtailR.material.mainTexture = this.HairTexture;
@@ -431,6 +434,7 @@ public class PortraitChanScript : MonoBehaviour
 	public virtual void UpdateHair()
 	{
 		this.PonyRenderer.gameObject.active = false;
+		this.NewLongHair.gameObject.active = false;
 		this.PigtailR.gameObject.active = false;
 		this.PigtailL.gameObject.active = false;
 		this.LongHair.gameObject.active = false;
@@ -522,10 +526,16 @@ public class PortraitChanScript : MonoBehaviour
 			this.LongHair.transform.parent.gameObject.active = true;
 			this.LongHair.gameObject.active = true;
 		}
+		else if (this.Hairstyle == "NewLong")
+		{
+			this.NewLongHair.transform.parent.gameObject.active = true;
+			this.NewLongHair.gameObject.active = true;
+			this.VeryLongHair = false;
+		}
 		else if (this.Hairstyle == "VeryLong")
 		{
-			this.LongHair.transform.parent.gameObject.active = true;
-			this.LongHair.gameObject.active = true;
+			this.NewLongHair.transform.parent.gameObject.active = true;
+			this.NewLongHair.gameObject.active = true;
 			this.VeryLongHair = true;
 		}
 		else if (this.Hairstyle == "TwinPony")
@@ -641,7 +651,7 @@ public class PortraitChanScript : MonoBehaviour
 		{
 			int num2 = 2;
 			Vector3 localScale = this.LongHairBone.localScale;
-			float num3 = localScale.y = (float)num2;
+			float num3 = localScale.x = (float)num2;
 			Vector3 vector2 = this.LongHairBone.localScale = localScale;
 		}
 		if (this.Emo)

@@ -289,6 +289,7 @@ public class RagdollScript : MonoBehaviour
 		this.Prompt.Circle[1].fillAmount = (float)1;
 		this.Prompt.Label[1].text = "     " + "Drag";
 		this.Yandere.RagdollDragger.connectedBody = null;
+		this.Yandere.RagdollPK.connectedBody = null;
 		this.Yandere.Dragging = false;
 		this.Yandere.Ragdoll = null;
 		this.Yandere.StudentManager.UpdateStudents();

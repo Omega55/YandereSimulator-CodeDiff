@@ -53,13 +53,19 @@ public class ChangingBoothScript : MonoBehaviour
 		{
 			if (this.OccupyTimer == (float)0)
 			{
-				this.audio.clip = this.CurtainSound;
-				this.audio.Play();
+				if (this.Yandere.transform.position.y > this.transform.position.y - (float)1 && this.Yandere.transform.position.y < this.transform.position.y + (float)1)
+				{
+					this.audio.clip = this.CurtainSound;
+					this.audio.Play();
+				}
 			}
 			else if (this.OccupyTimer > (float)1 && this.Phase == 0)
 			{
-				this.audio.clip = this.ClothSound;
-				this.audio.Play();
+				if (this.Yandere.transform.position.y > this.transform.position.y - (float)1 && this.Yandere.transform.position.y < this.transform.position.y + (float)1)
+				{
+					this.audio.clip = this.ClothSound;
+					this.audio.Play();
+				}
 				this.Phase++;
 			}
 			this.OccupyTimer += Time.deltaTime;
@@ -106,8 +112,11 @@ public class ChangingBoothScript : MonoBehaviour
 				this.Curtains.SetBlendShapeWeight(0, this.Weight);
 				if (this.Phase < 2)
 				{
-					this.audio.clip = this.CurtainSound;
-					this.audio.Play();
+					if (this.Yandere.transform.position.y > this.transform.position.y - (float)1 && this.Yandere.transform.position.y < this.transform.position.y + (float)1)
+					{
+						this.audio.clip = this.CurtainSound;
+						this.audio.Play();
+					}
 					this.Student.ChangeClubwear();
 					this.Phase++;
 				}

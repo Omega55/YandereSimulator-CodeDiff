@@ -283,6 +283,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool Alarmed;
 
+	public bool BadTime;
+
 	public bool Drowned;
 
 	public bool Forgave;
@@ -2440,14 +2442,30 @@ public class StudentScript : MonoBehaviour
 				{
 					this.Warned = false;
 				}
-				if ((this.Alarm > (float)0 || this.AlarmTimer > (float)0 || this.Yandere.Armed) && !this.Slave)
+				if ((this.Alarm > (float)0 || this.AlarmTimer > (float)0 || this.Yandere.Armed) && !this.Slave && !this.BadTime)
 				{
 					this.Prompt.Circle[0].fillAmount = (float)1;
 				}
 				if (this.Prompt.Circle[0].fillAmount <= (float)0)
 				{
 					this.OccultBook.active = false;
-					if (this.Slave)
+					if (this.BadTime)
+					{
+						this.BecomeRagdoll();
+						this.Yandere.RagdollPK.connectedBody = this.Ragdoll.AllRigidbodies[5];
+						this.Yandere.RagdollPK.connectedAnchor = this.Ragdoll.LimbAnchor[4];
+						this.DialogueWheel.PromptBar.ClearButtons();
+						this.DialogueWheel.PromptBar.Label[1].text = "Back";
+						this.DialogueWheel.PromptBar.UpdateButtons();
+						this.DialogueWheel.PromptBar.Show = true;
+						this.Yandere.Ragdoll = this.Ragdoll.gameObject;
+						this.Yandere.SansEyes[0].active = true;
+						this.Yandere.SansEyes[1].active = true;
+						this.Yandere.GlowEffect.Play();
+						this.Yandere.CanMove = false;
+						this.Yandere.PK = true;
+					}
+					else if (this.Slave)
 					{
 						this.StudentManager.MurderTakingPlace = true;
 						this.Yandere.Weapon[this.Yandere.Equipped].transform.parent = this.ItemParent;
@@ -3851,6 +3869,10 @@ public class StudentScript : MonoBehaviour
 		{
 			this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)10, (float)10, (float)10), Time.deltaTime);
 		}
+		if (this.BadTime)
+		{
+			this.Prompt.Label[0].text = "     " + "Psychokinesis";
+		}
 	}
 
 	public virtual void LateUpdate()
@@ -4978,7 +5000,6 @@ public class StudentScript : MonoBehaviour
 			this.Police.Witnesses = this.Police.Witnesses - 1;
 		}
 		this.UpdateOutlines();
-		UnityEngine.Object.Destroy(this.DetectionMarker);
 		this.SetLayerRecursively(this.gameObject, 11);
 		this.tag = "Blood";
 	}
