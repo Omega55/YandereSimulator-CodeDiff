@@ -159,7 +159,11 @@ public class CalendarScript : MonoBehaviour
 							}
 							else if (PlayerPrefs.GetFloat("SchoolAtmosphere") > (float)60)
 							{
-								PlayerPrefs.SetFloat("SchoolAtmosphere", (float)40);
+								PlayerPrefs.SetFloat("SchoolAtmosphere", (float)60);
+							}
+							else if (PlayerPrefs.GetFloat("SchoolAtmosphere") > (float)50)
+							{
+								PlayerPrefs.SetFloat("SchoolAtmosphere", (float)50);
 							}
 							else if (PlayerPrefs.GetFloat("SchoolAtmosphere") > (float)40)
 							{

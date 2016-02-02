@@ -126,59 +126,70 @@ public class HomePrisonerScript : MonoBehaviour
 				float num2 = color3.a = a2;
 				Color color4 = this.OptionLabels[1].color = color3;
 			}
+			if (PlayerPrefs.GetInt("Weekday") == 5)
+			{
+				float a3 = 0.5f;
+				Color color5 = this.OptionLabels[3].color;
+				float num3 = color5.a = a3;
+				Color color6 = this.OptionLabels[3].color = color5;
+				float a4 = 0.5f;
+				Color color7 = this.OptionLabels[4].color;
+				float num4 = color7.a = a4;
+				Color color8 = this.OptionLabels[4].color = color7;
+			}
 		}
 		else
 		{
-			float a3 = 0.5f;
-			Color color5 = this.OptionLabels[1].color;
-			float num3 = color5.a = a3;
-			Color color6 = this.OptionLabels[1].color = color5;
-			float a4 = 0.5f;
-			Color color7 = this.OptionLabels[3].color;
-			float num4 = color7.a = a4;
-			Color color8 = this.OptionLabels[3].color = color7;
 			float a5 = 0.5f;
-			Color color9 = this.OptionLabels[4].color;
+			Color color9 = this.OptionLabels[1].color;
 			float num5 = color9.a = a5;
-			Color color10 = this.OptionLabels[4].color = color9;
+			Color color10 = this.OptionLabels[1].color = color9;
+			float a6 = 0.5f;
+			Color color11 = this.OptionLabels[3].color;
+			float num6 = color11.a = a6;
+			Color color12 = this.OptionLabels[3].color = color11;
+			float a7 = 0.5f;
+			Color color13 = this.OptionLabels[4].color;
+			float num7 = color13.a = a7;
+			Color color14 = this.OptionLabels[4].color = color13;
 		}
 		if (this.Sanity > (float)0)
 		{
 			this.OptionLabels[5].text = "?????";
-			float a6 = 0.5f;
-			Color color11 = this.OptionLabels[5].color;
-			float num6 = color11.a = a6;
-			Color color12 = this.OptionLabels[5].color = color11;
+			float a8 = 0.5f;
+			Color color15 = this.OptionLabels[5].color;
+			float num8 = color15.a = a8;
+			Color color16 = this.OptionLabels[5].color = color15;
 		}
 		else
 		{
 			this.OptionLabels[5].text = "Bring to School";
-			float a7 = 0.5f;
-			Color color13 = this.OptionLabels[1].color;
-			float num7 = color13.a = a7;
-			Color color14 = this.OptionLabels[1].color = color13;
-			float a8 = 0.5f;
-			Color color15 = this.OptionLabels[2].color;
-			float num8 = color15.a = a8;
-			Color color16 = this.OptionLabels[2].color = color15;
 			float a9 = 0.5f;
-			Color color17 = this.OptionLabels[3].color;
+			Color color17 = this.OptionLabels[1].color;
 			float num9 = color17.a = a9;
-			Color color18 = this.OptionLabels[3].color = color17;
+			Color color18 = this.OptionLabels[1].color = color17;
 			float a10 = 0.5f;
-			Color color19 = this.OptionLabels[4].color;
+			Color color19 = this.OptionLabels[2].color;
 			float num10 = color19.a = a10;
-			Color color20 = this.OptionLabels[4].color = color19;
-			int num11 = 1;
-			Color color21 = this.OptionLabels[5].color;
-			float num12 = color21.a = (float)num11;
-			Color color22 = this.OptionLabels[5].color = color21;
+			Color color20 = this.OptionLabels[2].color = color19;
+			float a11 = 0.5f;
+			Color color21 = this.OptionLabels[3].color;
+			float num11 = color21.a = a11;
+			Color color22 = this.OptionLabels[3].color = color21;
+			float a12 = 0.5f;
+			Color color23 = this.OptionLabels[4].color;
+			float num12 = color23.a = a12;
+			Color color24 = this.OptionLabels[4].color = color23;
+			int num13 = 1;
+			Color color25 = this.OptionLabels[5].color;
+			float num14 = color25.a = (float)num13;
+			Color color26 = this.OptionLabels[5].color = color25;
 			if (PlayerPrefs.GetInt("Night") == 1)
 			{
-				float a11 = 0.5f;
-				Color color23 = this.OptionLabels[5].color;
-				float num13 = color23.a = a11;
-				Color color24 = this.OptionLabels[5].color = color23;
+				float a13 = 0.5f;
+				Color color27 = this.OptionLabels[5].color;
+				float num15 = color27.a = a13;
+				Color color28 = this.OptionLabels[5].color = color27;
 			}
 		}
 		this.UpdateDesc();
@@ -291,6 +302,7 @@ public class HomePrisonerScript : MonoBehaviour
 					this.HomeWindow.Show = false;
 					this.HomeCamera.PromptBar.ClearButtons();
 					this.HomeCamera.PromptBar.Show = false;
+					this.Jukebox.volume = this.Jukebox.volume - 0.5f;
 				}
 				if (Input.GetButtonDown("B"))
 				{
@@ -310,7 +322,7 @@ public class HomePrisonerScript : MonoBehaviour
 				Vector3 localPosition6 = this.TortureDestination.localPosition;
 				float num10 = localPosition6.z = z;
 				Vector3 vector6 = this.TortureDestination.localPosition = localPosition6;
-				this.Jukebox.volume = this.Jukebox.volume - Time.deltaTime * 0.1f;
+				this.Jukebox.volume = this.Jukebox.volume - Time.deltaTime * 0.05f;
 				this.Timer += Time.deltaTime;
 				if (this.Sanity >= (float)50)
 				{
@@ -402,6 +414,11 @@ public class HomePrisonerScript : MonoBehaviour
 			if (this.ID == 2)
 			{
 				this.DescLabel.text = "This option is unavailable in the daytime.";
+				this.HomeCamera.PromptBar.Label[0].text = string.Empty;
+			}
+			if (PlayerPrefs.GetInt("Weekday") == 5 && (this.ID == 3 || this.ID == 4))
+			{
+				this.DescLabel.text = "This option is unavailable on Friday.";
 				this.HomeCamera.PromptBar.Label[0].text = string.Empty;
 			}
 		}

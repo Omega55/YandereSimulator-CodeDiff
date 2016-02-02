@@ -229,7 +229,7 @@ public class StudentManagerScript : MonoBehaviour
 
 	public virtual void SpawnStudent()
 	{
-		if (this.ForceSpawn || this.Clock.HourTime >= this.SpawnTimes[this.SpawnID])
+		if (this.ForceSpawn || (!this.Stop && this.Clock.HourTime >= this.SpawnTimes[this.SpawnID]))
 		{
 			if (this.Students[this.SpawnID] == null && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Dead") == 0 && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Kidnapped") == 0 && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Arrested") == 0 && this.JSON.StudentNames[this.SpawnID] != "Unknown" && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Reputation") > -100)
 			{
@@ -434,7 +434,7 @@ public class StudentManagerScript : MonoBehaviour
 	public virtual void StopMoving()
 	{
 		this.Stop = true;
-		this.ID = 2;
+		this.ID = 1;
 		while (this.ID < Extensions.get_length(this.Students))
 		{
 			if (this.Students[this.ID] != null && !this.Students[this.ID].Dying)

@@ -63,15 +63,15 @@ public class PortraitChanScript : MonoBehaviour
 
 	public Texture HairTexture;
 
-	public GameObject TeacherGlasses;
+	public GameObject[] TeacherGlasses;
 
-	public GameObject ShinyGlasses;
-
-	public GameObject TeacherHair;
+	public GameObject[] TeacherHair;
 
 	public GameObject[] OccultHair;
 
 	public GameObject[] IrisLight;
+
+	public GameObject ShinyGlasses;
 
 	public GameObject CirnoHair;
 
@@ -190,7 +190,6 @@ public class PortraitChanScript : MonoBehaviour
 		{
 			this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 			this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
-			this.TeacherGlasses.active = false;
 			this.UpdateHair();
 		}
 		else if (this.Club == 3)
@@ -315,32 +314,16 @@ public class PortraitChanScript : MonoBehaviour
 			}
 			else
 			{
-				if (a == "Brown1")
+				if (a == "Brown")
 				{
-					this.TeacherHairRenderer.material.color = new Color(0.5f, 0.25f, (float)0, (float)1);
-				}
-				else if (a == "Brown2")
-				{
-					this.TeacherHairRenderer.material.color = new Color(0.45f, 0.225f, (float)0, (float)1);
-				}
-				else if (a == "Brown3")
-				{
-					this.TeacherHairRenderer.material.color = new Color(0.4f, 0.2f, (float)0, (float)1);
-				}
-				else if (a == "Brown4")
-				{
-					this.TeacherHairRenderer.material.color = new Color(0.35f, 0.175f, (float)0, (float)1);
-				}
-				else if (a == "Brown5")
-				{
-					this.TeacherHairRenderer.material.color = new Color(0.3f, 0.15f, (float)0, (float)1);
-				}
-				else if (a == "Brown6")
-				{
-					this.TeacherHairRenderer.material.color = new Color(0.25f, 0.125f, (float)0, (float)1);
+					((Renderer)this.TeacherHair[1].GetComponent(typeof(Renderer))).material.color = new Color(0.5f, 0.25f, (float)0, (float)1);
+					((Renderer)this.TeacherHair[2].GetComponent(typeof(Renderer))).material.color = new Color(0.5f, 0.25f, (float)0, (float)1);
+					((Renderer)this.TeacherHair[3].GetComponent(typeof(Renderer))).material.color = new Color(0.5f, 0.25f, (float)0, (float)1);
+					((Renderer)this.TeacherHair[4].GetComponent(typeof(Renderer))).material.color = new Color(0.5f, 0.25f, (float)0, (float)1);
+					((Renderer)this.TeacherHair[5].GetComponent(typeof(Renderer))).material.color = new Color(0.5f, 0.25f, (float)0, (float)1);
+					((Renderer)this.TeacherHair[6].GetComponent(typeof(Renderer))).material.color = new Color(0.5f, 0.25f, (float)0, (float)1);
 				}
 				this.MyRenderer.materials[1].mainTexture = this.StudentManager.Colors[7];
-				this.TeacherGlasses.active = true;
 			}
 			if (this.Accessory == "Bandage")
 			{
@@ -443,7 +426,6 @@ public class PortraitChanScript : MonoBehaviour
 		this.OccultHair[1].active = false;
 		this.OccultHair[3].active = false;
 		this.OccultHair[5].active = false;
-		this.TeacherHair.active = false;
 		this.CirnoHair.active = false;
 		this.PippiHair.active = false;
 		this.ShortHair.active = false;
@@ -555,9 +537,35 @@ public class PortraitChanScript : MonoBehaviour
 		{
 			this.OccultHair[5].active = true;
 		}
-		else if (this.Hairstyle == "Teacher")
+		else if (this.Hairstyle == "Teacher1")
 		{
-			this.TeacherHair.active = true;
+			this.TeacherHair[1].active = true;
+			this.TeacherGlasses[1].active = true;
+		}
+		else if (this.Hairstyle == "Teacher2")
+		{
+			this.TeacherHair[2].active = true;
+			this.TeacherGlasses[2].active = true;
+		}
+		else if (this.Hairstyle == "Teacher3")
+		{
+			this.TeacherHair[3].active = true;
+			this.TeacherGlasses[3].active = true;
+		}
+		else if (this.Hairstyle == "Teacher4")
+		{
+			this.TeacherHair[4].active = true;
+			this.TeacherGlasses[4].active = true;
+		}
+		else if (this.Hairstyle == "Teacher5")
+		{
+			this.TeacherHair[5].active = true;
+			this.TeacherGlasses[5].active = true;
+		}
+		else if (this.Hairstyle == "Teacher6")
+		{
+			this.TeacherHair[6].active = true;
+			this.TeacherGlasses[6].active = true;
 		}
 		if (this.HidePony)
 		{

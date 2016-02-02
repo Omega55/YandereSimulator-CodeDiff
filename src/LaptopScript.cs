@@ -5,6 +5,8 @@ using UnityScript.Lang;
 [Serializable]
 public class LaptopScript : MonoBehaviour
 {
+	public Camera LaptopCamera;
+
 	public JukeboxScript Jukebox;
 
 	public YandereScript Yandere;
@@ -39,6 +41,7 @@ public class LaptopScript : MonoBehaviour
 		{
 			this.SCP.animation["f02_scp_00"].speed = (float)0;
 		}
+		this.LaptopCamera.enabled = false;
 	}
 
 	public virtual void Update()
@@ -51,6 +54,7 @@ public class LaptopScript : MonoBehaviour
 				{
 					this.EventSubtitle.transform.localScale = new Vector3((float)1, (float)1, (float)1);
 					this.SCP.animation["f02_scp_00"].time = (float)0;
+					this.LaptopCamera.enabled = true;
 					this.SCP.animation.Play();
 					this.Jukebox.Dip = 0.5f;
 					this.audio.Play();
@@ -81,6 +85,7 @@ public class LaptopScript : MonoBehaviour
 					this.audio.Play();
 					this.EventSubtitle.text = string.Empty;
 					PlayerPrefs.SetInt("SCP", 1);
+					this.LaptopCamera.enabled = false;
 					this.Jukebox.Dip = (float)1;
 					this.React = false;
 					this.Off = true;

@@ -22,6 +22,10 @@ public class ClubWindowScript : MonoBehaviour
 
 	public string[] ClubDescs;
 
+	public string MedAtmosphereDesc;
+
+	public string LowAtmosphereDesc;
+
 	public UILabel ActivityLabel;
 
 	public UILabel BottomLabel;
@@ -36,76 +40,92 @@ public class ClubWindowScript : MonoBehaviour
 
 	public bool Quitting;
 
+	public float Timer;
+
 	public int Club;
 
 	public virtual void Start()
 	{
 		this.Window.active = false;
+		if (PlayerPrefs.GetFloat("SchoolAtmosphere") < 33.33333f)
+		{
+			this.ActivityDescs[7] = this.LowAtmosphereDesc;
+		}
+		else if (PlayerPrefs.GetFloat("SchoolAtmosphere") < 66.66666f)
+		{
+			this.ActivityDescs[7] = this.MedAtmosphereDesc;
+		}
 	}
 
 	public virtual void Update()
 	{
 		if (this.Window.active)
 		{
-			if (Input.GetButtonDown("A"))
+			if (this.Timer > 0.5f)
 			{
-				if (!this.Quitting && !this.Activity)
+				if (Input.GetButtonDown("A"))
 				{
-					PlayerPrefs.SetInt("Club", this.Club);
-					this.Yandere.TargetStudent.Interaction = 11;
+					if (!this.Quitting && !this.Activity)
+					{
+						PlayerPrefs.SetInt("Club", this.Club);
+						this.Yandere.ClubAccessory();
+						this.Yandere.TargetStudent.Interaction = 11;
+					}
+					else if (this.Quitting)
+					{
+						PlayerPrefs.SetInt("QuitClub_" + this.Club, 1);
+						PlayerPrefs.SetInt("Club", 0);
+						this.Yandere.ClubAccessory();
+						this.Yandere.TargetStudent.Interaction = 12;
+						this.Quitting = false;
+					}
+					else if (this.Activity)
+					{
+						this.Yandere.TargetStudent.Interaction = 14;
+					}
+					this.Yandere.TargetStudent.TalkTimer = (float)100;
+					this.Yandere.TargetStudent.ClubPhase = 2;
+					this.PromptBar.ClearButtons();
+					this.PromptBar.Show = false;
+					this.Window.active = false;
 				}
-				else if (this.Quitting)
+				if (Input.GetButtonDown("B"))
 				{
-					PlayerPrefs.SetInt("QuitClub_" + this.Club, 1);
-					PlayerPrefs.SetInt("Club", 0);
-					this.Yandere.TargetStudent.Interaction = 12;
-					this.Quitting = false;
+					if (!this.Quitting && !this.Activity)
+					{
+						this.Yandere.TargetStudent.Interaction = 11;
+					}
+					else if (this.Quitting)
+					{
+						this.Yandere.TargetStudent.Interaction = 12;
+						this.Quitting = false;
+					}
+					else if (this.Activity)
+					{
+						this.Yandere.TargetStudent.Interaction = 14;
+						this.Activity = false;
+					}
+					this.Yandere.TargetStudent.TalkTimer = (float)100;
+					this.Yandere.TargetStudent.ClubPhase = 3;
+					this.PromptBar.ClearButtons();
+					this.PromptBar.Show = false;
+					this.Window.active = false;
 				}
-				else if (this.Activity)
+				if (Input.GetButtonDown("X") && !this.Quitting && !this.Activity)
 				{
-					this.Yandere.TargetStudent.Interaction = 14;
+					if (!this.Warning.active)
+					{
+						this.ClubInfo.active = false;
+						this.Warning.active = true;
+					}
+					else
+					{
+						this.ClubInfo.active = true;
+						this.Warning.active = false;
+					}
 				}
-				this.Yandere.TargetStudent.TalkTimer = (float)100;
-				this.Yandere.TargetStudent.ClubPhase = 2;
-				this.PromptBar.ClearButtons();
-				this.PromptBar.Show = false;
-				this.Window.active = false;
 			}
-			if (Input.GetButtonDown("B"))
-			{
-				if (!this.Quitting && !this.Activity)
-				{
-					this.Yandere.TargetStudent.Interaction = 11;
-				}
-				else if (this.Quitting)
-				{
-					this.Yandere.TargetStudent.Interaction = 12;
-					this.Quitting = false;
-				}
-				else if (this.Activity)
-				{
-					this.Yandere.TargetStudent.Interaction = 14;
-					this.Activity = false;
-				}
-				this.Yandere.TargetStudent.TalkTimer = (float)100;
-				this.Yandere.TargetStudent.ClubPhase = 3;
-				this.PromptBar.ClearButtons();
-				this.PromptBar.Show = false;
-				this.Window.active = false;
-			}
-			if (Input.GetButtonDown("X") && !this.Quitting && !this.Activity)
-			{
-				if (!this.Warning.active)
-				{
-					this.ClubInfo.active = false;
-					this.Warning.active = true;
-				}
-				else
-				{
-					this.ClubInfo.active = true;
-					this.Warning.active = false;
-				}
-			}
+			this.Timer += Time.deltaTime;
 		}
 		if (this.PerformingActivity)
 		{
@@ -154,6 +174,7 @@ public class ClubWindowScript : MonoBehaviour
 		this.ClubInfo.active = true;
 		this.Warning.active = false;
 		this.Window.active = true;
+		this.Timer = (float)0;
 	}
 
 	public virtual void Main()

@@ -57,7 +57,7 @@ public class PortalScript : MonoBehaviour
 			this.Prompt.Circle[0].fillAmount = (float)1;
 			if (this.Police.PoisonScene || this.Police.SuicideScene || this.Police.Corpses - this.Police.HiddenCorpses > 0)
 			{
-				this.Police.FadeOut = true;
+				this.EndDay();
 			}
 			else if (this.Clock.HourTime < 15.5f)
 			{
@@ -122,12 +122,12 @@ public class PortalScript : MonoBehaviour
 				}
 				else
 				{
-					this.Police.FadeOut = true;
+					this.EndDay();
 				}
 			}
 			else
 			{
-				this.Police.FadeOut = true;
+				this.EndDay();
 			}
 			this.Yandere.Character.animation.CrossFade("f02_idleShort_00");
 			this.Yandere.YandereVision = false;
@@ -242,6 +242,14 @@ public class PortalScript : MonoBehaviour
 		{
 			this.Prompt.enabled = true;
 		}
+	}
+
+	public virtual void EndDay()
+	{
+		this.StudentManager.StopMoving();
+		this.Yandere.StopLaughing();
+		this.Clock.StopTime = true;
+		this.Police.FadeOut = true;
 	}
 
 	public virtual void Main()

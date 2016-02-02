@@ -189,9 +189,9 @@ public class CookingEventScript : MonoBehaviour
 					if (this.EventStudent.Character.animation["f02_prepareFood_00"].time > (float)7)
 					{
 						((WeaponScript)this.Knife.GetComponent(typeof(WeaponScript))).FingerprintID = this.EventStudent.StudentID;
-						this.Knife.transform.parent = this.EventStudent.LeftHand;
-						this.Knife.transform.localPosition = new Vector3((float)0, -0.01f, (float)0);
-						this.Knife.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)-90);
+						this.Knife.parent = this.EventStudent.LeftHand;
+						this.Knife.localPosition = new Vector3((float)0, -0.01f, (float)0);
+						this.Knife.localEulerAngles = new Vector3((float)0, (float)0, (float)-90);
 						this.EventPhase++;
 					}
 				}
@@ -375,10 +375,13 @@ public class CookingEventScript : MonoBehaviour
 			this.EventStudent.InEvent = false;
 			this.EventStudent.Private = false;
 			this.EventSubtitle.text = string.Empty;
-			this.Knife.parent = this.CookingClub;
-			this.Knife.localPosition = new Vector3(0.197f, 1.1903f, -0.33333f);
-			this.Knife.localEulerAngles = new Vector3((float)45, (float)-90, (float)-90);
-			((Collider)this.Knife.GetComponent(typeof(Collider))).enabled = true;
+			if (this.Knife.parent == this.EventStudent.LeftHand)
+			{
+				this.Knife.parent = this.CookingClub;
+				this.Knife.localPosition = new Vector3(0.197f, 1.1903f, -0.33333f);
+				this.Knife.localEulerAngles = new Vector3((float)45, (float)-90, (float)-90);
+				((Collider)this.Knife.GetComponent(typeof(Collider))).enabled = true;
+			}
 			this.StudentManager.UpdateStudents();
 		}
 		this.EventActive = false;

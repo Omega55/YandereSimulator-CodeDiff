@@ -31,7 +31,7 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] CowardMurderReactions;
 
-	public string[] CowardCorpseReactions;
+	public string[] EvilMurderReactions;
 
 	public string[] PetMurderReports;
 
@@ -42,6 +42,18 @@ public class SubtitleScript : MonoBehaviour
 	public string[] PetCorpseReactions;
 
 	public string[] HeroMurderReactions;
+
+	public string[] LonerMurderReactions;
+
+	public string[] LonerCorpseReactions;
+
+	public string[] SocialDeathReactions;
+
+	public string[] SocialReports;
+
+	public string[] SocialFears;
+
+	public string[] SocialTerrors;
 
 	public string[] RepeatReactions;
 
@@ -108,6 +120,10 @@ public class SubtitleScript : MonoBehaviour
 	public string[] GrudgeWarnings;
 
 	public string[] GrudgeRefusals;
+
+	public string[] CowardGrudges;
+
+	public string[] EvilGrudges;
 
 	public string[] Impatiences;
 
@@ -478,17 +494,17 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.Label.text = this.MurderReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.MurderReactions))];
 		}
-		else if (ReactionType == "Coward Murder Reaction")
-		{
-			this.Label.text = this.CowardMurderReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.CowardMurderReactions))];
-		}
 		else if (ReactionType == "Corpse Reaction")
 		{
 			this.Label.text = this.CorpseReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.CorpseReactions))];
 		}
-		else if (ReactionType == "Coward Corpse Reaction")
+		else if (ReactionType == "Loner Murder Reaction")
 		{
-			this.Label.text = this.CowardCorpseReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.CowardCorpseReactions))];
+			this.Label.text = this.LonerMurderReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.LonerMurderReactions))];
+		}
+		else if (ReactionType == "Loner Corpse Reaction")
+		{
+			this.Label.text = this.LonerCorpseReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.LonerCorpseReactions))];
 		}
 		else if (ReactionType == "Pet Murder Report")
 		{
@@ -509,6 +525,30 @@ public class SubtitleScript : MonoBehaviour
 		else if (ReactionType == "Hero Murder Reaction")
 		{
 			this.Label.text = this.HeroMurderReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.HeroMurderReactions))];
+		}
+		else if (ReactionType == "Coward Murder Reaction")
+		{
+			this.Label.text = this.CowardMurderReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.CowardMurderReactions))];
+		}
+		else if (ReactionType == "Evil Murder Reaction")
+		{
+			this.Label.text = this.EvilMurderReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.EvilMurderReactions))];
+		}
+		else if (ReactionType == "Social Death Reaction")
+		{
+			this.Label.text = this.SocialDeathReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.SocialDeathReactions))];
+		}
+		else if (ReactionType == "Social Report")
+		{
+			this.Label.text = this.SocialReports[UnityEngine.Random.Range(0, Extensions.get_length(this.SocialReports))];
+		}
+		else if (ReactionType == "Social Fear")
+		{
+			this.Label.text = this.SocialFears[UnityEngine.Random.Range(0, Extensions.get_length(this.SocialFears))];
+		}
+		else if (ReactionType == "Social Terror")
+		{
+			this.Label.text = this.SocialTerrors[UnityEngine.Random.Range(0, Extensions.get_length(this.SocialTerrors))];
 		}
 		else if (ReactionType == "Repeat Reaction")
 		{
@@ -626,6 +666,14 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.Label.text = this.GrudgeRefusals[UnityEngine.Random.Range(0, Extensions.get_length(this.GrudgeRefusals))];
 		}
+		else if (ReactionType == "Coward Grudge")
+		{
+			this.Label.text = this.CowardGrudges[UnityEngine.Random.Range(0, Extensions.get_length(this.CowardGrudges))];
+		}
+		else if (ReactionType == "Evil Grudge")
+		{
+			this.Label.text = this.EvilGrudges[UnityEngine.Random.Range(0, Extensions.get_length(this.EvilGrudges))];
+		}
 		else if (ReactionType == "Dying")
 		{
 			this.Label.text = this.Deaths[UnityEngine.Random.Range(0, Extensions.get_length(this.Deaths))];
@@ -676,6 +724,10 @@ public class SubtitleScript : MonoBehaviour
 		else if (ReactionType == "Student Murder Report")
 		{
 			this.Label.text = this.StudentMurderReports[ID];
+		}
+		else if (ReactionType == "Social Report")
+		{
+			this.Label.text = this.SocialReports[ID];
 		}
 		else if (ReactionType == "Splash Reaction")
 		{

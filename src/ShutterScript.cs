@@ -73,6 +73,8 @@ public class ShutterScript : MonoBehaviour
 
 	public float Timer;
 
+	public int TargetStudent;
+
 	public int Frame;
 
 	public int Slot;
@@ -152,19 +154,40 @@ public class ShutterScript : MonoBehaviour
 		}
 		else if (this.Yandere.Aiming)
 		{
+			this.TargetStudent = 0;
 			this.Timer += Time.deltaTime;
 			if (this.Timer > 0.5f)
 			{
 				if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyPhotography))
 				{
-					if (this.hit.collider.gameObject.name == "Panties" || this.hit.collider.gameObject.name == "Skirt")
+					if (this.hit.collider.gameObject.name == "Face")
 					{
 						GameObject gameObject = this.hit.collider.gameObject.transform.root.gameObject;
+						this.TargetStudent = ((StudentScript)gameObject.GetComponent(typeof(StudentScript))).StudentID;
+						if (!((StudentScript)gameObject.GetComponent(typeof(StudentScript))).Male && !((StudentScript)gameObject.GetComponent(typeof(StudentScript))).Alarmed && !((StudentScript)gameObject.GetComponent(typeof(StudentScript))).Distracted && Vector3.Distance(this.Yandere.transform.position, gameObject.transform.position) < 1.66666f)
+						{
+							Plane[] planes = GeometryUtility.CalculateFrustumPlanes(((StudentScript)gameObject.GetComponent(typeof(StudentScript))).VisionCone);
+							if (GeometryUtility.TestPlanesAABB(planes, this.Yandere.collider.bounds) && Physics.Linecast(((StudentScript)gameObject.GetComponent(typeof(StudentScript))).Eyes.position, this.Yandere.transform.position + Vector3.up * (float)1, out this.hit) && this.hit.collider.gameObject == this.Yandere.gameObject)
+							{
+								if (!((StudentScript)gameObject.GetComponent(typeof(StudentScript))).CameraReacting)
+								{
+									((StudentScript)gameObject.GetComponent(typeof(StudentScript))).CameraReact();
+								}
+								else
+								{
+									((StudentScript)gameObject.GetComponent(typeof(StudentScript))).CameraPoseTimer = (float)1;
+								}
+							}
+						}
+					}
+					else if (this.hit.collider.gameObject.name == "Panties" || this.hit.collider.gameObject.name == "Skirt")
+					{
+						GameObject gameObject2 = this.hit.collider.gameObject.transform.root.gameObject;
 						if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyCharacters))
 						{
-							if (Vector3.Distance(this.Yandere.transform.position, gameObject.transform.position) < (float)5)
+							if (Vector3.Distance(this.Yandere.transform.position, gameObject2.transform.position) < (float)5)
 							{
-								if (this.hit.collider.gameObject == gameObject)
+								if (this.hit.collider.gameObject == gameObject2)
 								{
 									if (!this.Yandere.Lewd)
 									{
@@ -463,7 +486,7 @@ public class ShutterScript : MonoBehaviour
 		if (!this.Yandere.CameraEffects.OneCamera)
 		{
 			this.Yandere.MainCamera.clearFlags = CameraClearFlags.Skybox;
-			this.Yandere.MainCamera.farClipPlane = 250f;
+			this.Yandere.MainCamera.farClipPlane = 325f;
 		}
 	}
 
