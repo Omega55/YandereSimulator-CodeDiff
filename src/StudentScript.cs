@@ -307,6 +307,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool Routine;
 
+	public bool GoAway;
+
 	public bool Grudge;
 
 	public bool Pushed;
@@ -370,6 +372,8 @@ public class StudentScript : MonoBehaviour
 	public float ReactionTimer;
 
 	public float ElectroTimer;
+
+	public float GoAwayTimer;
 
 	public float IgnoreTimer;
 
@@ -1070,6 +1074,7 @@ public class StudentScript : MonoBehaviour
 						this.Pathfinding.target = this.Destinations[this.Phase];
 						this.Pathfinding.canSearch = true;
 						this.Pathfinding.canMove = true;
+						this.GoAway = false;
 					}
 					if (this.MeetTime > (float)0 && this.Clock.HourTime > this.MeetTime)
 					{
@@ -1211,84 +1216,99 @@ public class StudentScript : MonoBehaviour
 					{
 						if (!this.Meeting)
 						{
-							if (this.Actions[this.Phase] == 0)
+							if (!this.GoAway)
+							{
+								if (this.Actions[this.Phase] == 0)
+								{
+									this.Character.animation.CrossFade(this.IdleAnim);
+								}
+								else if (this.Actions[this.Phase] == 1)
+								{
+									if (PlayerPrefs.GetFloat("SchoolAtmosphere") < 33.33333f)
+									{
+										this.Character.animation.CrossFade(this.IdleAnim);
+									}
+									else
+									{
+										this.Character.animation.CrossFade(this.RandomAnim);
+										if (this.Character.animation[this.RandomAnim].time >= this.Character.animation[this.RandomAnim].length)
+										{
+											this.PickRandomAnim();
+										}
+									}
+								}
+								else if (this.Actions[this.Phase] == 2)
+								{
+									this.Character.animation.CrossFade(this.GameAnim);
+								}
+								else if (this.Actions[this.Phase] == 3)
+								{
+									this.Character.animation.CrossFade(this.SadSitAnim);
+								}
+								else if (this.Actions[this.Phase] == 4)
+								{
+									this.Character.animation.CrossFade(this.BrokenAnim);
+								}
+								else if (this.Actions[this.Phase] == 5)
+								{
+									this.Character.animation.CrossFade(this.RelaxAnim);
+								}
+								else if (this.Actions[this.Phase] == 6)
+								{
+									if (this.DressCode && this.ClubAttire)
+									{
+										this.Character.animation.CrossFade(this.IdleAnim);
+									}
+									else
+									{
+										this.Character.animation.CrossFade(this.SitAnim);
+									}
+								}
+								else if (this.Actions[this.Phase] == 7)
+								{
+									this.Character.animation.CrossFade(this.StalkAnim);
+								}
+								else if (this.Actions[this.Phase] == 8)
+								{
+									if (this.DressCode && !this.ClubAttire)
+									{
+										this.Character.animation.CrossFade(this.IdleAnim);
+									}
+									else
+									{
+										this.Character.animation.CrossFade(this.ClubAnim);
+									}
+									if (this.Club == 3 && this.StudentID != 26)
+									{
+										this.OccultBook.active = true;
+									}
+								}
+								else if (this.Actions[this.Phase] == 9)
+								{
+									if (PlayerPrefs.GetFloat("SchoolAtmosphere") < 33.33333f)
+									{
+										this.Character.animation.CrossFade(this.IdleAnim);
+									}
+									else
+									{
+										this.Character.animation.CrossFade(this.RandomAnim);
+										if (this.Character.animation[this.RandomAnim].time >= this.Character.animation[this.RandomAnim].length)
+										{
+											this.PickRandomAnim();
+										}
+									}
+								}
+							}
+							else
 							{
 								this.Character.animation.CrossFade(this.IdleAnim);
-							}
-							else if (this.Actions[this.Phase] == 1)
-							{
-								if (PlayerPrefs.GetFloat("SchoolAtmosphere") < 33.33333f)
+								this.GoAwayTimer += Time.deltaTime;
+								if (this.GoAwayTimer > (float)60)
 								{
-									this.Character.animation.CrossFade(this.IdleAnim);
-								}
-								else
-								{
-									this.Character.animation.CrossFade(this.RandomAnim);
-									if (this.Character.animation[this.RandomAnim].time >= this.Character.animation[this.RandomAnim].length)
-									{
-										this.PickRandomAnim();
-									}
-								}
-							}
-							else if (this.Actions[this.Phase] == 2)
-							{
-								this.Character.animation.CrossFade(this.GameAnim);
-							}
-							else if (this.Actions[this.Phase] == 3)
-							{
-								this.Character.animation.CrossFade(this.SadSitAnim);
-							}
-							else if (this.Actions[this.Phase] == 4)
-							{
-								this.Character.animation.CrossFade(this.BrokenAnim);
-							}
-							else if (this.Actions[this.Phase] == 5)
-							{
-								this.Character.animation.CrossFade(this.RelaxAnim);
-							}
-							else if (this.Actions[this.Phase] == 6)
-							{
-								if (this.DressCode && this.ClubAttire)
-								{
-									this.Character.animation.CrossFade(this.IdleAnim);
-								}
-								else
-								{
-									this.Character.animation.CrossFade(this.SitAnim);
-								}
-							}
-							else if (this.Actions[this.Phase] == 7)
-							{
-								this.Character.animation.CrossFade(this.StalkAnim);
-							}
-							else if (this.Actions[this.Phase] == 8)
-							{
-								if (this.DressCode && !this.ClubAttire)
-								{
-									this.Character.animation.CrossFade(this.IdleAnim);
-								}
-								else
-								{
-									this.Character.animation.CrossFade(this.ClubAnim);
-								}
-								if (this.Club == 3 && this.StudentID != 26)
-								{
-									this.OccultBook.active = true;
-								}
-							}
-							else if (this.Actions[this.Phase] == 9)
-							{
-								if (PlayerPrefs.GetFloat("SchoolAtmosphere") < 33.33333f)
-								{
-									this.Character.animation.CrossFade(this.IdleAnim);
-								}
-								else
-								{
-									this.Character.animation.CrossFade(this.RandomAnim);
-									if (this.Character.animation[this.RandomAnim].time >= this.Character.animation[this.RandomAnim].length)
-									{
-										this.PickRandomAnim();
-									}
+									this.CurrentDestination = this.Destinations[this.Phase];
+									this.Pathfinding.target = this.Destinations[this.Phase];
+									this.GoAwayTimer = (float)0;
+									this.GoAway = false;
 								}
 							}
 						}
@@ -2769,6 +2789,11 @@ public class StudentScript : MonoBehaviour
 						this.DrownAnim = "f02_fountainDrownB_00";
 						this.Character.animation.CrossFade(this.DrownAnim);
 					}
+					else if (this.Clock.Period == 2 || this.Clock.Period == 4)
+					{
+						this.Subtitle.UpdateLabel("Class Apology", 0, (float)3);
+						this.Prompt.Circle[0].fillAmount = (float)1;
+					}
 					else if (this.InEvent || (this.Meeting && !this.Drownable) || this.Wet)
 					{
 						this.Subtitle.UpdateLabel("Event Apology", 1, (float)3);
@@ -3603,6 +3628,7 @@ public class StudentScript : MonoBehaviour
 		this.Yandere.Attacking = true;
 		this.Yandere.CanMove = false;
 		this.DetectionMarker.Tex.enabled = false;
+		this.OccultBook.active = false;
 		this.MyController.radius = (float)0;
 		this.Alarmed = false;
 		this.Fleeing = false;

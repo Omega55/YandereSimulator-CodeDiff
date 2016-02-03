@@ -39,6 +39,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public GateScript Gate;
 
+	public ListScript GoAwaySpots;
+
 	public ListScript LunchSpots;
 
 	public ListScript Hangouts;

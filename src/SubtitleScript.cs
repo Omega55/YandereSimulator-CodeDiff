@@ -83,6 +83,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] EventApologies;
 
+	public string[] ClassApologies;
+
 	public string[] Greetings;
 
 	public string[] PlayerFarewells;
@@ -108,6 +110,8 @@ public class SubtitleScript : MonoBehaviour
 	public string[] PlayerLeaves;
 
 	public string[] StudentLeaves;
+
+	public string[] StudentStays;
 
 	public string[] PlayerDistracts;
 
@@ -590,6 +594,10 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.Label.text = this.EventApologies[UnityEngine.Random.Range(0, Extensions.get_length(this.EventApologies))];
 		}
+		else if (ReactionType == "Class Apology")
+		{
+			this.Label.text = this.ClassApologies[UnityEngine.Random.Range(0, Extensions.get_length(this.ClassApologies))];
+		}
 		else if (ReactionType == "Forgiving")
 		{
 			this.Label.text = this.Forgivings[UnityEngine.Random.Range(0, Extensions.get_length(this.Forgivings))];
@@ -640,6 +648,10 @@ public class SubtitleScript : MonoBehaviour
 		else if (ReactionType == "Student Leave")
 		{
 			this.Label.text = this.StudentLeaves[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentLeaves))];
+		}
+		else if (ReactionType == "Student Stay")
+		{
+			this.Label.text = this.StudentStays[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentStays))];
 		}
 		else if (ReactionType == "Player Distract")
 		{

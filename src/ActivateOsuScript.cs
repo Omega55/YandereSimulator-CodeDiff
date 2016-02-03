@@ -47,7 +47,11 @@ public class ActivateOsuScript : MonoBehaviour
 		if (this.Osu.active)
 		{
 			this.Mouse.transform.eulerAngles = this.OriginalMouseRotation;
-			if (this.Clock.HourTime > (float)8 && this.Clock.HourTime < (float)13)
+			if (Vector3.Distance(this.transform.position, this.Student.transform.position) > 0.1f)
+			{
+				this.DeactivateOsu();
+			}
+			else if (this.Clock.HourTime > (float)8 && this.Clock.HourTime < (float)13)
 			{
 				this.DeactivateOsu();
 			}

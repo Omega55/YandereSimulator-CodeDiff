@@ -545,6 +545,13 @@ public class DialogueWheelScript : MonoBehaviour
 			float num24 = color39.a = a16;
 			Color color40 = this.FavorShadow[1].color = color39;
 		}
+		if (this.Yandere.TargetStudent.DistanceToDestination > 0.5f)
+		{
+			float a17 = 0.75f;
+			Color color41 = this.FavorShadow[2].color;
+			float num25 = color41.a = a17;
+			Color color42 = this.FavorShadow[2].color = color41;
+		}
 	}
 
 	public virtual void End()

@@ -25,6 +25,8 @@ public class LaptopScript : MonoBehaviour
 
 	public string[] Subs;
 
+	public int FirstFrame;
+
 	public float Timer;
 
 	public UILabel EventSubtitle;
@@ -40,12 +42,17 @@ public class LaptopScript : MonoBehaviour
 		else
 		{
 			this.SCP.animation["f02_scp_00"].speed = (float)0;
+			this.SCP.animation["f02_scp_00"].time = (float)0;
 		}
-		this.LaptopCamera.enabled = false;
 	}
 
 	public virtual void Update()
 	{
+		if (this.FirstFrame == 2)
+		{
+			this.LaptopCamera.enabled = false;
+		}
+		this.FirstFrame++;
 		if (!this.Off)
 		{
 			if (!this.React)
@@ -63,6 +70,7 @@ public class LaptopScript : MonoBehaviour
 			}
 			else
 			{
+				this.audio.pitch = Time.timeScale;
 				for (int i = 0; i < Extensions.get_length(this.Cues); i++)
 				{
 					if (this.audio.time > this.Cues[i])

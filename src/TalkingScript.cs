@@ -225,8 +225,17 @@ public class TalkingScript : MonoBehaviour
 			{
 				if (this.S.TalkTimer == (float)2)
 				{
-					this.S.Character.animation.CrossFade(this.S.Nod1Anim);
-					this.S.Subtitle.UpdateLabel("Student Follow", 0, (float)2);
+					if ((this.S.Clock.HourTime > (float)8 && this.S.Clock.HourTime < (float)13) || (this.S.Clock.HourTime > 13.375f && this.S.Clock.HourTime < 15.5f))
+					{
+						this.S.Character.animation.CrossFade(this.S.GossipAnim);
+						this.S.Subtitle.UpdateLabel("Student Stay", 0, (float)5);
+					}
+					else
+					{
+						this.S.Character.animation.CrossFade(this.S.Nod1Anim);
+						this.S.Subtitle.UpdateLabel("Student Follow", 0, (float)2);
+						this.S.Following = true;
+					}
 				}
 				else
 				{
@@ -241,11 +250,13 @@ public class TalkingScript : MonoBehaviour
 					if (this.S.TalkTimer <= (float)0)
 					{
 						this.S.DialogueWheel.End();
-						this.S.Pathfinding.target = this.S.Yandere.transform;
-						this.S.Prompt.Label[0].text = "     " + "Stop";
-						this.S.Yandere.Follower = this.S;
-						this.S.Yandere.Followers = this.S.Yandere.Followers + 1;
-						this.S.Following = true;
+						if (this.S.Following)
+						{
+							this.S.Pathfinding.target = this.S.Yandere.transform;
+							this.S.Prompt.Label[0].text = "     " + "Stop";
+							this.S.Yandere.Follower = this.S;
+							this.S.Yandere.Followers = this.S.Yandere.Followers + 1;
+						}
 					}
 				}
 				this.S.TalkTimer = this.S.TalkTimer - Time.deltaTime;
@@ -254,8 +265,17 @@ public class TalkingScript : MonoBehaviour
 			{
 				if (this.S.TalkTimer == (float)3)
 				{
-					this.S.Character.animation.CrossFade(this.S.Nod1Anim);
-					this.S.Subtitle.UpdateLabel("Student Leave", 0, (float)3);
+					if ((this.S.Clock.HourTime > (float)8 && this.S.Clock.HourTime < (float)13) || (this.S.Clock.HourTime > 13.375f && this.S.Clock.HourTime < 15.5f))
+					{
+						this.S.Character.animation.CrossFade(this.S.GossipAnim);
+						this.S.Subtitle.UpdateLabel("Student Stay", 0, (float)5);
+					}
+					else
+					{
+						this.S.Character.animation.CrossFade(this.S.Nod1Anim);
+						this.S.Subtitle.UpdateLabel("Student Leave", 0, (float)3);
+						this.S.GoAway = true;
+					}
 				}
 				else
 				{
@@ -270,8 +290,11 @@ public class TalkingScript : MonoBehaviour
 					if (this.S.TalkTimer <= (float)0)
 					{
 						this.S.DialogueWheel.End();
-						this.S.CurrentDestination = this.S.StudentManager.GoAwaySpot;
-						this.S.Pathfinding.target = this.S.StudentManager.GoAwaySpot;
+						if (this.S.GoAway)
+						{
+							this.S.CurrentDestination = this.S.StudentManager.GoAwaySpots.List[this.S.StudentID];
+							this.S.Pathfinding.target = this.S.StudentManager.GoAwaySpots.List[this.S.StudentID];
+						}
 					}
 				}
 				this.S.TalkTimer = this.S.TalkTimer - Time.deltaTime;
@@ -280,14 +303,23 @@ public class TalkingScript : MonoBehaviour
 			{
 				if (this.S.TalkTimer == (float)3)
 				{
-					this.S.Character.animation.CrossFade(this.S.Nod1Anim);
-					if (!this.S.StudentManager.Students[this.S.DialogueWheel.Victim].InEvent && PlayerPrefs.GetInt("Student_" + this.S.DialogueWheel.Victim + "_Slave") == 0)
+					if ((this.S.Clock.HourTime > (float)8 && this.S.Clock.HourTime < (float)13) || (this.S.Clock.HourTime > 13.375f && this.S.Clock.HourTime < 15.5f))
 					{
-						this.S.Subtitle.UpdateLabel("Student Distract", 0, (float)3);
+						this.S.Character.animation.CrossFade(this.S.GossipAnim);
+						this.S.Subtitle.UpdateLabel("Student Stay", 0, (float)5);
 					}
 					else
 					{
-						this.S.Subtitle.UpdateLabel("Student Distract Refuse", 0, (float)3);
+						this.S.Character.animation.CrossFade(this.S.Nod1Anim);
+						if (!this.S.StudentManager.Students[this.S.DialogueWheel.Victim].InEvent && PlayerPrefs.GetInt("Student_" + this.S.DialogueWheel.Victim + "_Slave") == 0)
+						{
+							this.S.Subtitle.UpdateLabel("Student Distract", 0, (float)3);
+							this.S.Distracting = true;
+						}
+						else
+						{
+							this.S.Subtitle.UpdateLabel("Student Distract Refuse", 0, (float)3);
+						}
 					}
 				}
 				else
@@ -303,7 +335,7 @@ public class TalkingScript : MonoBehaviour
 					if (this.S.TalkTimer <= (float)0)
 					{
 						this.S.DialogueWheel.End();
-						if (!this.S.StudentManager.Students[this.S.DialogueWheel.Victim].InEvent && PlayerPrefs.GetInt("Student_" + this.S.DialogueWheel.Victim + "_Slave") == 0)
+						if (((this.S.Clock.HourTime > (float)8 && this.S.Clock.HourTime < (float)13) || (this.S.Clock.HourTime > 13.375f && this.S.Clock.HourTime < 15.5f)) && this.S.Distracting)
 						{
 							this.S.DistractionTarget = this.S.StudentManager.Students[this.S.DialogueWheel.Victim];
 							this.S.CurrentDestination = this.S.DistractionTarget.transform;
@@ -311,7 +343,6 @@ public class TalkingScript : MonoBehaviour
 							this.S.Pathfinding.speed = (float)4;
 							this.S.TargetDistance = (float)1;
 							this.S.DistractTimer = (float)10;
-							this.S.Distracting = true;
 							this.S.Routine = false;
 							this.S.InEvent = true;
 						}
