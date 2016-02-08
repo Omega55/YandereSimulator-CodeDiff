@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using UnityEngine;
 
 [Serializable]
@@ -41,6 +42,11 @@ public class WelcomeScript : MonoBehaviour
 			PlayerPrefs.DeleteAll();
 			PlayerPrefs.SetFloat("VersionNumber", this.VersionNumber);
 		}
+		string a = File.ReadAllText(Application.streamingAssetsPath + "/Fun.txt");
+		if (a == "1" || a == "2" || a == "3" || a == "4" || a == "5" || a == "6" || a == "7" || a == "8" || a == "9" || a == "10" || a == "666")
+		{
+			Application.LoadLevel("FunScene");
+		}
 	}
 
 	public virtual void Update()
@@ -59,6 +65,8 @@ public class WelcomeScript : MonoBehaviour
 			{
 				if (Input.GetKeyDown("w"))
 				{
+					this.WelcomePanel.active = false;
+					this.WarningPanel.active = true;
 				}
 				if (Input.anyKeyDown)
 				{

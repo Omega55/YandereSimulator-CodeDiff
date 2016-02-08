@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$2255 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$2297 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$2270;
+		internal YandereScript $self_$2312;
 
-		public $ApplyCustomCostume$2255(YandereScript self_)
+		public $ApplyCustomCostume$2297(YandereScript self_)
 		{
-			this.$self_$2270 = self_;
+			this.$self_$2312 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$2255.$(this.$self_$2270);
+			return new YandereScript.$ApplyCustomCostume$2297.$(this.$self_$2312);
 		}
 	}
 
@@ -198,6 +198,8 @@ public class YandereScript : MonoBehaviour
 	public GameObject HatredHair;
 
 	public GameObject KONGlasses;
+
+	public GameObject LovelyHair;
 
 	public GameObject AlarmDisc;
 
@@ -782,6 +784,7 @@ public class YandereScript : MonoBehaviour
 		this.CirnoWings.active = false;
 		this.HatredHair.active = false;
 		this.KONGlasses.active = false;
+		this.LovelyHair.active = false;
 		this.CirnoHair.active = false;
 		this.FalconGun.active = false;
 		this.EyepatchL.active = false;
@@ -3084,6 +3087,7 @@ public class YandereScript : MonoBehaviour
 		this.HeatherHair.active = false;
 		this.CheikoHair.active = false;
 		this.HatredHair.active = false;
+		this.LovelyHair.active = false;
 		this.PippiHair.active = false;
 		this.RyokoHair.active = false;
 		this.StarsHair.active = false;
@@ -3100,7 +3104,7 @@ public class YandereScript : MonoBehaviour
 		this.Rei.active = false;
 		this.HidePony = true;
 		this.Hairstyle++;
-		if (this.Hairstyle > 31)
+		if (this.Hairstyle > 32)
 		{
 			this.Hairstyle = 0;
 		}
@@ -3264,6 +3268,10 @@ public class YandereScript : MonoBehaviour
 		{
 			this.TashiHair.active = true;
 		}
+		else if (this.Hairstyle == 32)
+		{
+			this.LovelyHair.active = true;
+		}
 		if (this.HidePony)
 		{
 			this.Ponytail.parent.transform.localScale = new Vector3((float)1, (float)1, 0.9f);
@@ -3300,7 +3308,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$2255(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$2297(this).GetEnumerator();
 	}
 
 	public virtual void WearGloves()

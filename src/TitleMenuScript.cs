@@ -105,7 +105,7 @@ public class TitleMenuScript : MonoBehaviour
 				if (this.InputManager.TappedDown)
 				{
 					this.Selected++;
-					if (this.Selected > 7)
+					if (this.Selected > 8)
 					{
 						this.Selected = 1;
 					}
@@ -119,7 +119,7 @@ public class TitleMenuScript : MonoBehaviour
 					this.Selected--;
 					if (this.Selected < 1)
 					{
-						this.Selected = 7;
+						this.Selected = 8;
 					}
 					int num3 = 300 - 75 * this.Selected;
 					Vector3 localPosition2 = this.Highlight.localPosition;
@@ -128,7 +128,7 @@ public class TitleMenuScript : MonoBehaviour
 				}
 				if (Input.GetButtonDown("A"))
 				{
-					if (this.Selected == 1 || this.Selected == 7)
+					if (this.Selected == 1 || this.Selected == 6 || this.Selected == 8)
 					{
 						this.Darkness.color = new Color((float)0, (float)0, (float)0, (float)0);
 						this.FadeOut = true;
@@ -199,7 +199,11 @@ public class TitleMenuScript : MonoBehaviour
 						PlayerPrefs.DeleteAll();
 						Application.LoadLevel("SenpaiScene");
 					}
-					if (this.Selected == 7)
+					if (this.Selected == 6)
+					{
+						Application.LoadLevel("CreditsScene");
+					}
+					if (this.Selected == 8)
 					{
 						Application.Quit();
 					}

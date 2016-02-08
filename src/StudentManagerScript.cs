@@ -210,6 +210,8 @@ public class StudentManagerScript : MonoBehaviour
 				{
 					this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.PortraitKun, new Vector3((float)0, (float)0, (float)0), Quaternion.identity);
 				}
+				((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).StudentID = this.NPCsSpawned + 1;
+				((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).JSON = this.JSON;
 				this.NewPortraitChan = (PortraitChanScript)this.NewStudent.GetComponent(typeof(PortraitChanScript));
 				this.NewPortraitChan.StudentID = this.NPCsSpawned + 1;
 				this.NewPortraitChan.StudentManager = this;
@@ -243,6 +245,8 @@ public class StudentManagerScript : MonoBehaviour
 				{
 					this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.StudentKun, this.SpawnPositions[this.SpawnID].position, Quaternion.identity);
 				}
+				((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).StudentID = this.SpawnID;
+				((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).JSON = this.JSON;
 				this.Students[this.SpawnID] = (StudentScript)this.NewStudent.GetComponent(typeof(StudentScript));
 				this.Students[this.SpawnID].StudentID = this.SpawnID;
 				this.Students[this.SpawnID].WitnessCamera = this.WitnessCamera;

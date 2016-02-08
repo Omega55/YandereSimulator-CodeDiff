@@ -14,6 +14,8 @@ public class CustomizationScript : MonoBehaviour
 
 	public Renderer HairRenderer;
 
+	public Renderer BandanaHair;
+
 	public Renderer EyeR;
 
 	public Renderer EyeL;
@@ -608,7 +610,10 @@ public class CustomizationScript : MonoBehaviour
 		}
 		if (this.HairStyle > 0)
 		{
-			this.HairRenderer = (Renderer)this.Hairstyles[this.HairStyle].GetComponent(typeof(Renderer));
+			if (this.HairStyle != 8)
+			{
+				this.HairRenderer = (Renderer)this.Hairstyles[this.HairStyle].GetComponent(typeof(Renderer));
+			}
 			this.Hairstyles[this.HairStyle].active = true;
 		}
 		this.HairStyleLabel.text = "Hair Style " + this.HairStyle;

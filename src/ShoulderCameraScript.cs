@@ -121,11 +121,7 @@ public class ShoulderCameraScript : MonoBehaviour
 					this.NoticedPOV.Translate(Vector3.forward * Time.deltaTime * 0.075f);
 					if (this.NoticedTimer > (float)this.NoticedLimit)
 					{
-						((StudentScript)this.Yandere.Senpai.GetComponent(typeof(StudentScript))).MyRenderer.enabled = false;
-						if (((StudentScript)this.Yandere.Senpai.GetComponent(typeof(StudentScript))).Male && ((StudentScript)this.Yandere.Senpai.GetComponent(typeof(StudentScript))).MaleHairRenderer != null)
-						{
-							((StudentScript)this.Yandere.Senpai.GetComponent(typeof(StudentScript))).MaleHairRenderer.enabled = false;
-						}
+						((StudentScript)this.Yandere.Senpai.GetComponent(typeof(StudentScript))).Character.active = false;
 						((Camera)this.GetComponent(typeof(Camera))).cullingMask = (((Camera)this.GetComponent(typeof(Camera))).cullingMask | 8192);
 						this.Yandere.Subtitle.UpdateLabel("Yandere Whimper", 1, 3.5f);
 						this.NoticedPOV.position = this.Yandere.transform.position + this.Yandere.transform.forward * (float)1 + Vector3.up * 1.375f;

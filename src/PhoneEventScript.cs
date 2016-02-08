@@ -95,6 +95,11 @@ public class PhoneEventScript : MonoBehaviour
 		}
 		if (this.EventActive)
 		{
+			if (this.EventStudent.DistanceToDestination < 0.5f)
+			{
+				this.EventStudent.Pathfinding.canSearch = false;
+				this.EventStudent.Pathfinding.canMove = false;
+			}
 			if (this.Clock.HourTime > this.EventTime + 0.5f || this.EventStudent.WitnessedMurder || this.EventStudent.Splashed || this.EventStudent.Alarmed || this.EventStudent.Dying)
 			{
 				this.EndEvent();
@@ -129,8 +134,11 @@ public class PhoneEventScript : MonoBehaviour
 					this.Timer += Time.deltaTime;
 					if (this.Timer > this.CurrentClipLength)
 					{
+						this.EventStudent.Character.animation.CrossFade(this.EventStudent.RunAnim);
 						this.EventStudent.CurrentDestination = this.EventLocation;
 						this.EventStudent.Pathfinding.target = this.EventLocation;
+						this.EventStudent.Pathfinding.canSearch = true;
+						this.EventStudent.Pathfinding.canMove = true;
 						this.EventStudent.Pathfinding.speed = (float)4;
 						this.EventSubtitle.text = string.Empty;
 						this.Timer = (float)0;

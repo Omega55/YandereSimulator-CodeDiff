@@ -344,7 +344,7 @@ public class StudentInfoScript : MonoBehaviour
 			}
 			if (PlayerPrefs.GetInt("Event2") == 1)
 			{
-				this.Strings[2] = "May be engaging in compensated dating in Sisuta Town.";
+				this.Strings[2] = "May be engaging in compensated dating in Shisuta Town.";
 			}
 			else
 			{

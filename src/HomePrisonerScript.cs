@@ -7,6 +7,8 @@ public class HomePrisonerScript : MonoBehaviour
 {
 	public InputManagerScript InputManager;
 
+	public HomePrisonerChanScript Prisoner;
+
 	public HomeYandereScript HomeYandere;
 
 	public HomeCameraScript HomeCamera;
@@ -14,8 +16,6 @@ public class HomePrisonerScript : MonoBehaviour
 	public HomeWindowScript HomeWindow;
 
 	public HomeDarknessScript Darkness;
-
-	public PortraitChanScript Prisoner;
 
 	public UILabel[] OptionLabels;
 

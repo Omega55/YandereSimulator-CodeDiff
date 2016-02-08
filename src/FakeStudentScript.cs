@@ -18,6 +18,10 @@ public class FakeStudentScript : MonoBehaviour
 
 	public Quaternion targetRotation;
 
+	public float RotationTimer;
+
+	public bool Rotate;
+
 	public int Club;
 
 	public virtual void Start()
@@ -28,9 +32,15 @@ public class FakeStudentScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (!this.Student.Talking)
+		if (!this.Student.Talking && this.Rotate)
 		{
 			this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
+			this.RotationTimer += Time.deltaTime;
+			if (this.RotationTimer > (float)1)
+			{
+				this.RotationTimer = (float)0;
+				this.Rotate = false;
+			}
 		}
 		if (this.Prompt.Circle[0].fillAmount <= (float)0)
 		{
@@ -49,6 +59,7 @@ public class FakeStudentScript : MonoBehaviour
 			this.Yandere.YandereVision = false;
 			this.Yandere.CanMove = false;
 			this.Yandere.Talking = true;
+			this.Rotate = true;
 		}
 	}
 

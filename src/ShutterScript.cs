@@ -163,19 +163,20 @@ public class ShutterScript : MonoBehaviour
 					if (this.hit.collider.gameObject.name == "Face")
 					{
 						GameObject gameObject = this.hit.collider.gameObject.transform.root.gameObject;
-						this.TargetStudent = ((StudentScript)gameObject.GetComponent(typeof(StudentScript))).StudentID;
-						if (!((StudentScript)gameObject.GetComponent(typeof(StudentScript))).Male && !((StudentScript)gameObject.GetComponent(typeof(StudentScript))).Alarmed && !((StudentScript)gameObject.GetComponent(typeof(StudentScript))).Distracted && Vector3.Distance(this.Yandere.transform.position, gameObject.transform.position) < 1.66666f)
+						StudentScript studentScript = (StudentScript)this.hit.collider.gameObject.transform.root.gameObject.GetComponent(typeof(StudentScript));
+						this.TargetStudent = studentScript.StudentID;
+						if (!studentScript.Male && !studentScript.Alarmed && !studentScript.Distracted && !studentScript.InEvent && !studentScript.Wet && !studentScript.CensorSteam[0].active && Vector3.Distance(this.Yandere.transform.position, gameObject.transform.position) < 1.66666f)
 						{
-							Plane[] planes = GeometryUtility.CalculateFrustumPlanes(((StudentScript)gameObject.GetComponent(typeof(StudentScript))).VisionCone);
-							if (GeometryUtility.TestPlanesAABB(planes, this.Yandere.collider.bounds) && Physics.Linecast(((StudentScript)gameObject.GetComponent(typeof(StudentScript))).Eyes.position, this.Yandere.transform.position + Vector3.up * (float)1, out this.hit) && this.hit.collider.gameObject == this.Yandere.gameObject)
+							Plane[] planes = GeometryUtility.CalculateFrustumPlanes(studentScript.VisionCone);
+							if (GeometryUtility.TestPlanesAABB(planes, this.Yandere.collider.bounds) && Physics.Linecast(studentScript.Eyes.position, this.Yandere.transform.position + Vector3.up * (float)1, out this.hit) && this.hit.collider.gameObject == this.Yandere.gameObject)
 							{
-								if (!((StudentScript)gameObject.GetComponent(typeof(StudentScript))).CameraReacting)
+								if (!studentScript.CameraReacting)
 								{
-									((StudentScript)gameObject.GetComponent(typeof(StudentScript))).CameraReact();
+									studentScript.CameraReact();
 								}
 								else
 								{
-									((StudentScript)gameObject.GetComponent(typeof(StudentScript))).CameraPoseTimer = (float)1;
+									studentScript.CameraPoseTimer = (float)1;
 								}
 							}
 						}
