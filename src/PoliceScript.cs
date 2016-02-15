@@ -51,6 +51,8 @@ public class PoliceScript : MonoBehaviour
 
 	public UISprite CorpseIcon;
 
+	public UISprite PartsIcon;
+
 	public string ElectrocutedStudentName;
 
 	public string DrownedStudentName;
@@ -62,6 +64,8 @@ public class PoliceScript : MonoBehaviour
 	public bool WeaponDisposed;
 
 	public bool CorpseDisposed;
+
+	public bool PartsDisposed;
 
 	public bool MurderSuicideScene;
 
@@ -103,6 +107,8 @@ public class PoliceScript : MonoBehaviour
 
 	public int HiddenCorpses;
 
+	public int BodyParts;
+
 	public int Witnesses;
 
 	public int Corpses;
@@ -129,7 +135,7 @@ public class PoliceScript : MonoBehaviour
 		Color color = this.Darkness.color;
 		float num2 = color.a = (float)num;
 		Color color2 = this.Darkness.color = color;
-		int num3 = -255;
+		int num3 = -260;
 		Vector3 localPosition = this.transform.localPosition;
 		float num4 = localPosition.x = (float)num3;
 		Vector3 vector = this.transform.localPosition = localPosition;
@@ -213,6 +219,19 @@ public class PoliceScript : MonoBehaviour
 			{
 				this.CorpseIcon.spriteName = "No";
 				this.CorpseDisposed = false;
+			}
+			if (this.BodyParts == 0)
+			{
+				if (!this.PartsDisposed)
+				{
+					this.PartsIcon.spriteName = "Yes";
+					this.PartsDisposed = true;
+				}
+			}
+			else if (this.PartsDisposed)
+			{
+				this.PartsIcon.spriteName = "No";
+				this.PartsDisposed = false;
 			}
 			this.Timer -= Time.deltaTime;
 			if (this.Timer <= (float)0)

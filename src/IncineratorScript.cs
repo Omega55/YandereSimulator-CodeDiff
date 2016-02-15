@@ -38,6 +38,8 @@ public class IncineratorScript : MonoBehaviour
 
 	public int MurderWeapons;
 
+	public int BodyParts;
+
 	public int Corpses;
 
 	public float OpenTimer;
@@ -204,7 +206,14 @@ public class IncineratorScript : MonoBehaviour
 			Time.timeScale = (float)1;
 			if (this.Yandere.Ragdoll != null)
 			{
-				this.Yandere.Character.animation.CrossFade("f02_dragIdle_00");
+				if (!this.Yandere.Carrying)
+				{
+					this.Yandere.Character.animation.CrossFade("f02_dragIdle_00");
+				}
+				else
+				{
+					this.Yandere.Character.animation.CrossFade("f02_carryIdleA_00");
+				}
 				this.Yandere.YandereVision = false;
 				this.Yandere.CanMove = false;
 				this.Yandere.Dumping = true;
@@ -248,6 +257,7 @@ public class IncineratorScript : MonoBehaviour
 			this.Yandere.Police.IncineratedWeapons = this.Yandere.Police.IncineratedWeapons + this.MurderWeapons;
 			this.Yandere.Police.BloodyClothing = this.Yandere.Police.BloodyClothing - this.BloodyClothing;
 			this.Yandere.Police.BloodyWeapons = this.Yandere.Police.BloodyWeapons - this.MurderWeapons;
+			this.Yandere.Police.BodyParts = this.Yandere.Police.BodyParts - this.BodyParts;
 			this.Yandere.Police.Corpses = this.Yandere.Police.Corpses - this.Corpses;
 			if (this.Yandere.Police.SuicideScene && this.Yandere.Police.Corpses == 1)
 			{
@@ -271,6 +281,7 @@ public class IncineratorScript : MonoBehaviour
 				this.Ready = false;
 				this.BloodyClothing = 0;
 				this.MurderWeapons = 0;
+				this.BodyParts = 0;
 				this.Corpses = 0;
 				this.Flames.Stop();
 				this.Smoke.Stop();

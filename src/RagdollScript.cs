@@ -22,6 +22,8 @@ public class RagdollScript : MonoBehaviour
 
 	public SkinnedMeshRenderer MyRenderer;
 
+	public Collider BloodSpawnerCollider;
+
 	public Collider HideCollider;
 
 	public Rigidbody[] AllRigidbodies;
@@ -29,6 +31,10 @@ public class RagdollScript : MonoBehaviour
 	public Collider[] AllColliders;
 
 	public Rigidbody[] Rigidbodies;
+
+	public Transform[] SpawnPoints;
+
+	public GameObject[] BodyParts;
 
 	public Transform NearestLimb;
 
@@ -64,11 +70,15 @@ public class RagdollScript : MonoBehaviour
 
 	public bool Electrocuted;
 
+	public bool StopAnimation;
+
 	public bool HidePony;
 
 	public bool Poisoned;
 
 	public bool Tranquil;
+
+	public bool Carried;
 
 	public bool Dragged;
 
@@ -100,9 +110,22 @@ public class RagdollScript : MonoBehaviour
 
 	public string DumpedAnim;
 
+	public string LiftAnim;
+
+	public string IdleAnim;
+
+	public string WalkAnim;
+
+	public string RunAnim;
+
 	public RagdollScript()
 	{
+		this.StopAnimation = true;
 		this.DumpedAnim = string.Empty;
+		this.LiftAnim = string.Empty;
+		this.IdleAnim = string.Empty;
+		this.WalkAnim = string.Empty;
+		this.RunAnim = string.Empty;
 	}
 
 	public virtual void Start()
@@ -123,6 +146,10 @@ public class RagdollScript : MonoBehaviour
 			this.AllColliders[i].enabled = true;
 		}
 		this.Prompt.enabled = true;
+		if (PlayerPrefs.GetInt("PhysicalGrade") > 0)
+		{
+			this.Prompt.HideButton[3] = false;
+		}
 	}
 
 	public virtual void Update()
@@ -136,27 +163,31 @@ public class RagdollScript : MonoBehaviour
 		}
 		if (!this.Dumped)
 		{
-			this.Character.animation.Stop();
+			if (this.StopAnimation)
+			{
+				this.Character.animation.Stop();
+			}
 			if (!Input.GetButtonDown("LB"))
 			{
+				if (!this.Male && this.Prompt.Circle[0].fillAmount <= (float)0)
+				{
+					this.Yandere.Character.animation.CrossFade("f02_dismember_00");
+					this.Yandere.transform.LookAt(this.transform);
+					this.Yandere.RPGCamera.transform.position = this.Yandere.DismemberSpot.position;
+					this.Yandere.RPGCamera.transform.eulerAngles = this.Yandere.DismemberSpot.eulerAngles;
+					this.Yandere.Weapon[this.Yandere.Equipped].Dismember();
+					this.Yandere.RPGCamera.enabled = false;
+					this.Yandere.Ragdoll = this.gameObject;
+					this.Yandere.Dismembering = true;
+					this.Yandere.CanMove = false;
+				}
 				if (this.Prompt.Circle[1].fillAmount <= (float)0)
 				{
+					this.Prompt.Circle[1].fillAmount = (float)1;
 					if (!this.Dragged)
 					{
-						if (this.Yandere.Ragdoll != null)
-						{
-							((RagdollScript)this.Yandere.Ragdoll.GetComponent(typeof(RagdollScript))).StopDragging();
-						}
-						if (this.Yandere.Armed)
-						{
-							this.Yandere.Unequip();
-						}
-						if (this.Yandere.PickUp != null)
-						{
-							this.Yandere.PickUp.Drop();
-						}
+						this.Yandere.EmptyHands();
 						this.Prompt.AcceptingInput[1] = false;
-						this.Prompt.Circle[1].fillAmount = (float)1;
 						this.Prompt.Label[1].text = "     " + "Drop";
 						this.PickNearestLimb();
 						this.Yandere.RagdollDragger.connectedBody = this.Rigidbodies[this.LimbID];
@@ -175,6 +206,34 @@ public class RagdollScript : MonoBehaviour
 					{
 						this.StopDragging();
 					}
+				}
+				if (this.Prompt.Circle[3].fillAmount <= (float)0)
+				{
+					this.Yandere.EmptyHands();
+					this.Prompt.Label[1].text = "     " + "Drop";
+					this.Prompt.HideButton[1] = true;
+					this.Prompt.HideButton[3] = true;
+					for (int i = 0; i < this.AllRigidbodies.Length; i++)
+					{
+						this.AllRigidbodies[i].isKinematic = true;
+						this.AllColliders[i].enabled = false;
+					}
+					if (this.Male)
+					{
+						float y = 0.2f;
+						Vector3 localPosition = this.AllRigidbodies[0].transform.parent.transform.localPosition;
+						float num2 = localPosition.y = y;
+						Vector3 vector = this.AllRigidbodies[0].transform.parent.transform.localPosition = localPosition;
+					}
+					this.Yandere.Character.animation.Play("f02_carryLiftA_00");
+					this.Character.animation.Play(this.LiftAnim);
+					this.BloodSpawnerCollider.enabled = false;
+					this.Prompt.MyCollider.enabled = false;
+					this.Yandere.Ragdoll = this.gameObject;
+					this.Yandere.CanMove = false;
+					this.Yandere.Lifting = true;
+					this.StopAnimation = false;
+					this.Carried = true;
 				}
 			}
 			else if (!this.Yandere.Dumping && this.Dragged)
@@ -198,14 +257,26 @@ public class RagdollScript : MonoBehaviour
 			{
 				this.Prompt.AcceptingInput[1] = true;
 			}
+			if (!this.Dragged && !this.Carried && this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].WeaponID == 7)
+			{
+				this.Prompt.HideButton[0] = false;
+			}
+			else
+			{
+				this.Prompt.HideButton[0] = true;
+			}
 		}
 		else
 		{
 			if (this.Incinerator != null)
 			{
-				this.Character.animation.Play(this.DumpedAnim);
+				if (this.DumpTimer == (float)0 && this.Yandere.Carrying)
+				{
+					this.Character.animation[this.DumpedAnim].time = 2.5f;
+				}
+				this.Character.animation.CrossFade(this.DumpedAnim);
 				this.DumpTimer += Time.deltaTime;
-				if (this.DumpTimer > (float)2)
+				if (this.Character.animation[this.DumpedAnim].time >= this.Character.animation[this.DumpedAnim].length)
 				{
 					if (this.AddingToCount)
 					{
@@ -222,10 +293,10 @@ public class RagdollScript : MonoBehaviour
 			if (this.TranqCase != null)
 			{
 				this.Character.animation.Play("f02_fetal_00");
-				float y = Mathf.MoveTowards(this.transform.localPosition.y, 0.36f, Time.deltaTime);
-				Vector3 localPosition = this.transform.localPosition;
-				float num2 = localPosition.y = y;
-				Vector3 vector = this.transform.localPosition = localPosition;
+				float y2 = Mathf.MoveTowards(this.transform.localPosition.y, 0.36f, Time.deltaTime);
+				Vector3 localPosition2 = this.transform.localPosition;
+				float num3 = localPosition2.y = y2;
+				Vector3 vector2 = this.transform.localPosition = localPosition2;
 				if (this.transform.localPosition.y == 0.36f)
 				{
 					this.TranqCase.Open = false;
@@ -281,6 +352,49 @@ public class RagdollScript : MonoBehaviour
 			float num6 = localScale4.y = y2;
 			Vector3 vector6 = this.RightEye.localScale = localScale4;
 		}
+		if (this.Yandere.Ragdoll == this.gameObject)
+		{
+			if (this.Yandere.DumpTimer < (float)1)
+			{
+				if (this.Yandere.Lifting)
+				{
+					this.transform.position = this.Yandere.transform.position;
+					this.transform.eulerAngles = this.Yandere.transform.eulerAngles;
+				}
+				else if (this.Carried)
+				{
+					this.transform.position = this.Yandere.transform.position;
+					this.transform.eulerAngles = this.Yandere.transform.eulerAngles;
+					float axis = Input.GetAxis("Vertical");
+					float axis2 = Input.GetAxis("Horizontal");
+					if (axis != (float)0 || axis2 != (float)0)
+					{
+						if (Input.GetButton("LB"))
+						{
+							this.Character.animation.CrossFade(this.RunAnim);
+						}
+						else
+						{
+							this.Character.animation.CrossFade(this.WalkAnim);
+						}
+					}
+					else
+					{
+						this.Character.animation.CrossFade(this.IdleAnim);
+					}
+					this.Character.animation[this.IdleAnim].time = this.Yandere.Character.animation["f02_carryIdleA_00"].time;
+					this.Character.animation[this.WalkAnim].time = this.Yandere.Character.animation["f02_carryWalkA_00"].time;
+					this.Character.animation[this.RunAnim].time = this.Yandere.Character.animation["f02_carryRunA_00"].time;
+				}
+			}
+			if (this.Carried && this.Male)
+			{
+				float y3 = 0.2f;
+				Vector3 localPosition3 = this.AllRigidbodies[0].transform.parent.transform.localPosition;
+				float num7 = localPosition3.y = y3;
+				Vector3 vector7 = this.AllRigidbodies[0].transform.parent.transform.localPosition = localPosition3;
+			}
+		}
 	}
 
 	public virtual void StopDragging()
@@ -314,6 +428,8 @@ public class RagdollScript : MonoBehaviour
 	{
 		if (Type == 1)
 		{
+			this.transform.eulerAngles = this.Yandere.transform.eulerAngles;
+			this.transform.position = this.Yandere.transform.position;
 			this.Incinerator = this.Yandere.Incinerator;
 			this.BloodPoolSpawner.enabled = false;
 		}
@@ -328,6 +444,67 @@ public class RagdollScript : MonoBehaviour
 		{
 			this.AllRigidbodies[i].isKinematic = true;
 		}
+	}
+
+	public virtual void Fall()
+	{
+		float y = this.transform.position.y + 0.0001f;
+		Vector3 position = this.transform.position;
+		float num = position.y = y;
+		Vector3 vector = this.transform.position = position;
+		this.Prompt.Label[1].text = "     " + "Drag";
+		this.Prompt.HideButton[1] = false;
+		this.Prompt.HideButton[3] = false;
+		if (this.Dragged)
+		{
+			this.Yandere.RagdollDragger.connectedBody = null;
+			this.Yandere.RagdollPK.connectedBody = null;
+			this.Yandere.Dragging = false;
+			this.Dragged = false;
+		}
+		this.Yandere.Ragdoll = null;
+		this.BloodSpawnerCollider.enabled = true;
+		this.Prompt.MyCollider.enabled = true;
+		this.StopAnimation = true;
+		this.Carried = false;
+		for (int i = 0; i < this.AllRigidbodies.Length; i++)
+		{
+			this.AllRigidbodies[i].isKinematic = false;
+			this.AllColliders[i].enabled = true;
+		}
+	}
+
+	public virtual void Dismember()
+	{
+		for (int i = 0; i < this.BodyParts.Length; i++)
+		{
+			GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.BodyParts[i], this.SpawnPoints[i].position, Quaternion.identity);
+			gameObject.transform.eulerAngles = this.SpawnPoints[i].eulerAngles;
+			((BodyPartScript)gameObject.GetComponent(typeof(BodyPartScript))).StudentID = this.StudentID;
+			if (i == 0)
+			{
+				this.Student.Cosmetic.FemaleHair[this.Student.Cosmetic.Hairstyle].transform.parent = gameObject.transform;
+				this.Student.Cosmetic.FemaleHair[this.Student.Cosmetic.Hairstyle].transform.parent = gameObject.transform;
+				if (this.Student.Club < 11 && this.Student.Cosmetic.ClubAccessories[this.Student.Club] != null)
+				{
+					this.Student.Cosmetic.ClubAccessories[this.Student.Club].transform.parent = gameObject.transform;
+					if (this.Student.Club == 3)
+					{
+						this.Student.Cosmetic.ClubAccessories[this.Student.Club].transform.localPosition = new Vector3((float)0, -1.5f, 0.01f);
+						this.Student.Cosmetic.ClubAccessories[this.Student.Club].transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+					}
+				}
+				if (this.Student.Cosmetic.FemaleAccessories[this.Student.Cosmetic.Accessory] != null)
+				{
+					this.Student.Cosmetic.FemaleAccessories[this.Student.Cosmetic.Accessory].transform.parent = gameObject.transform;
+				}
+				((Renderer)gameObject.GetComponent(typeof(Renderer))).materials[0].mainTexture = this.Student.Cosmetic.FaceTexture;
+			}
+		}
+		this.BloodPoolSpawner.SpawnBigPool();
+		this.Police.BodyParts = this.Police.BodyParts + 6;
+		this.Police.Corpses = this.Police.Corpses - 1;
+		UnityEngine.Object.Destroy(this.gameObject);
 	}
 
 	public virtual void Main()

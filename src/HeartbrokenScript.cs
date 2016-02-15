@@ -5,6 +5,8 @@ using UnityScript.Lang;
 [Serializable]
 public class HeartbrokenScript : MonoBehaviour
 {
+	public ShoulderCameraScript ShoulderCamera;
+
 	public HeartbrokenCursorScript Cursor;
 
 	public YandereScript Yandere;
@@ -61,7 +63,23 @@ public class HeartbrokenScript : MonoBehaviour
 
 	public virtual void Start()
 	{
-		if (((StudentScript)this.Yandere.Senpai.GetComponent(typeof(StudentScript))).Teacher)
+		if (this.Yandere.Lost || this.ShoulderCamera.Counter)
+		{
+			this.Letters[0].text = "A";
+			this.Letters[1].text = "P";
+			this.Letters[2].text = "P";
+			this.Letters[3].text = "R";
+			this.Letters[4].text = "E";
+			this.Letters[5].text = "H";
+			this.Letters[6].text = "E";
+			this.Letters[7].text = "N";
+			this.Letters[8].text = "D";
+			this.Letters[9].text = "E";
+			this.Letters[10].text = "D";
+			this.LetterID = 0;
+			this.StopID = 11;
+		}
+		else if (((StudentScript)this.Yandere.Senpai.GetComponent(typeof(StudentScript))).Teacher)
 		{
 			this.Letters[0].text = string.Empty;
 			this.Letters[1].text = "E";

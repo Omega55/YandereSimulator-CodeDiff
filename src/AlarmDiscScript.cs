@@ -5,6 +5,10 @@ using UnityScript.Lang;
 [Serializable]
 public class AlarmDiscScript : MonoBehaviour
 {
+	public AudioClip[] LongFemaleScreams;
+
+	public AudioClip[] LongMaleScreams;
+
 	public AudioClip[] FemaleScreams;
 
 	public AudioClip[] MaleScreams;
@@ -16,6 +20,8 @@ public class AlarmDiscScript : MonoBehaviour
 	public bool NoScream;
 
 	public bool Male;
+
+	public bool Long;
 
 	public int Frame;
 
@@ -39,13 +45,24 @@ public class AlarmDiscScript : MonoBehaviour
 		}
 		else if (!this.NoScream)
 		{
-			if (!this.Male)
+			if (!this.Long)
 			{
-				this.PlayClip(this.FemaleScreams[UnityEngine.Random.Range(0, Extensions.get_length(this.FemaleScreams))], this.transform.position);
+				if (!this.Male)
+				{
+					this.PlayClip(this.FemaleScreams[UnityEngine.Random.Range(0, Extensions.get_length(this.FemaleScreams))], this.transform.position);
+				}
+				else
+				{
+					this.PlayClip(this.MaleScreams[UnityEngine.Random.Range(0, Extensions.get_length(this.MaleScreams))], this.transform.position);
+				}
+			}
+			else if (!this.Male)
+			{
+				this.PlayClip(this.LongFemaleScreams[UnityEngine.Random.Range(0, Extensions.get_length(this.LongFemaleScreams))], this.transform.position);
 			}
 			else
 			{
-				this.PlayClip(this.MaleScreams[UnityEngine.Random.Range(0, Extensions.get_length(this.MaleScreams))], this.transform.position);
+				this.PlayClip(this.LongMaleScreams[UnityEngine.Random.Range(0, Extensions.get_length(this.LongMaleScreams))], this.transform.position);
 			}
 		}
 		this.Frame++;

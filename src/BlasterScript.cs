@@ -6,7 +6,7 @@ public class BlasterScript : MonoBehaviour
 {
 	public Transform Skull;
 
-	public GameObject[] Eyes;
+	public Renderer Eyes;
 
 	public Transform Beam;
 
@@ -22,9 +22,8 @@ public class BlasterScript : MonoBehaviour
 	{
 		if (this.animation["Blast"].time > (float)1)
 		{
-			this.Beam.localScale = Vector3.Lerp(this.Beam.localScale, new Vector3((float)1000, (float)1, (float)1), Time.deltaTime * (float)10);
-			this.Eyes[0].active = true;
-			this.Eyes[1].active = true;
+			this.Beam.localScale = Vector3.Lerp(this.Beam.localScale, new Vector3((float)15, (float)1, (float)1), Time.deltaTime * (float)10);
+			this.Eyes.material.color = new Color((float)1, (float)0, (float)0, (float)1);
 		}
 		if (this.animation["Blast"].time >= this.animation["Blast"].length)
 		{

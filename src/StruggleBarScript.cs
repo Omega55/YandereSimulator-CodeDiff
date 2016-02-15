@@ -103,6 +103,10 @@ public class StruggleBarScript : MonoBehaviour
 
 	public virtual void HeroWins()
 	{
+		if (this.Yandere.Armed)
+		{
+			this.Yandere.Weapon[this.Yandere.Equipped].Drop();
+		}
 		this.Yandere.Lost = true;
 		this.Student.Won = true;
 		this.Struggling = false;

@@ -321,17 +321,17 @@ public class CosmeticScript : MonoBehaviour
 			this.RightEyeRenderer.material.color = this.HairRenderer.material.color;
 			this.LeftEyeRenderer.material.color = this.HairRenderer.material.color;
 		}
-		if (this.Club == 6)
+		if (this.Male)
 		{
-			float x = this.HairRenderer.transform.localScale.x * (float)-1;
-			Vector3 localScale = this.HairRenderer.transform.localScale;
-			float num = localScale.x = x;
-			Vector3 vector = this.HairRenderer.transform.localScale = localScale;
-		}
-		if (this.Male && this.Accessory == 1)
-		{
-			this.RightIrisLight.active = false;
-			this.LeftIrisLight.active = false;
+			if (this.Accessory == 2)
+			{
+				this.RightIrisLight.active = false;
+				this.LeftIrisLight.active = false;
+			}
+			if (Application.loadedLevelName == "PortraitScene")
+			{
+				this.Character.transform.localScale = new Vector3(0.93f, 0.93f, 0.93f);
+			}
 		}
 		if (this.EyeColor != string.Empty)
 		{

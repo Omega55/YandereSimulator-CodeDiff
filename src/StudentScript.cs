@@ -491,6 +491,8 @@ public class StudentScript : MonoBehaviour
 
 	public string SocialTerrorAnim;
 
+	public string BuzzSawDeathAnim;
+
 	public string[] CameraAnims;
 
 	public string[] SocialAnims;
@@ -632,6 +634,7 @@ public class StudentScript : MonoBehaviour
 		this.SocialReportAnim = string.Empty;
 		this.SocialFearAnim = string.Empty;
 		this.SocialTerrorAnim = string.Empty;
+		this.BuzzSawDeathAnim = string.Empty;
 		this.MaxSpeed = 10f;
 	}
 
@@ -1383,7 +1386,7 @@ public class StudentScript : MonoBehaviour
 									}
 									this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.Yandere.transform.rotation, (float)10 * Time.deltaTime);
 									this.transform.position = Vector3.Lerp(this.transform.position, this.Yandere.transform.position + this.Yandere.transform.forward * 0.0001f, Time.deltaTime * (float)10);
-									if (!this.Yandere.Armed)
+									if (!this.Yandere.Armed || !this.Yandere.Weapon[this.Yandere.Equipped].Concealable)
 									{
 										this.StruggleBar.HeroWins();
 									}
@@ -1619,11 +1622,8 @@ public class StudentScript : MonoBehaviour
 									{
 										this.Yandere.StopAiming();
 									}
-									if (this.Yandere.Dragging || this.Yandere.Mopping || this.Yandere.PickUp != null)
-									{
-										this.Yandere.Mopping = false;
-										this.Yandere.EmptyHands();
-									}
+									this.Yandere.Mopping = false;
+									this.Yandere.EmptyHands();
 									this.AttackReaction();
 									this.Character.animation[this.CounterAnim].time = (float)5;
 									this.Yandere.Character.animation["f02_counterA_00"].time = (float)5;
@@ -2799,10 +2799,18 @@ public class StudentScript : MonoBehaviour
 					this.EyeShrink = Mathf.Lerp(this.EyeShrink, (float)1, Time.deltaTime * (float)10);
 					if (!this.Dead && !this.Tranquil)
 					{
-						this.Character.animation.CrossFade(this.DefendAnim);
+						if (this.Yandere.Weapon[this.Yandere.Equipped].WeaponID == 7)
+						{
+							this.Character.animation.CrossFade(this.BuzzSawDeathAnim);
+							this.MoveTowardsTarget(this.Yandere.transform.position + this.Yandere.transform.forward);
+						}
+						else
+						{
+							this.Character.animation.CrossFade(this.DefendAnim);
+							this.MoveTowardsTarget(this.Yandere.transform.position + this.Yandere.transform.forward * 0.1f);
+						}
 						this.targetRotation = Quaternion.LookRotation(new Vector3(this.Yandere.transform.position.x, this.transform.position.y, this.Yandere.transform.position.z) - this.transform.position);
 						this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
-						this.MoveTowardsTarget(this.Yandere.transform.position + this.Yandere.transform.forward * 0.1f);
 					}
 					else
 					{
@@ -3532,11 +3540,7 @@ public class StudentScript : MonoBehaviour
 
 	public virtual void SenpaiNoticed()
 	{
-		if (!this.Yandere.Attacking && this.Yandere.Armed)
-		{
-			this.Yandere.Weapon[this.Yandere.Equipped].Drop();
-		}
-		if (this.Yandere.Dragging)
+		if (!this.Yandere.Attacking)
 		{
 			this.Yandere.EmptyHands();
 		}
@@ -3871,10 +3875,7 @@ public class StudentScript : MonoBehaviour
 		this.Yandere.YandereVision = false;
 		this.Yandere.Struggling = true;
 		this.Yandere.CanMove = false;
-		if (this.Yandere.PickUp != null)
-		{
-			this.Yandere.EmptyHands();
-		}
+		this.Yandere.EmptyHands();
 		this.Yandere.MyController.enabled = false;
 		this.Yandere.RPGCamera.enabled = false;
 		this.MyController.enabled = false;
@@ -4264,7 +4265,7 @@ public class StudentScript : MonoBehaviour
 		this.MyController.height = 0.15f;
 		if (!this.Male)
 		{
-			RuntimeServices.SetProperty(this.Cosmetic, "HairTexture", this.TitanFaceTexture);
+			this.Cosmetic.FaceTexture = this.TitanFaceTexture;
 		}
 		else
 		{
@@ -4328,6 +4329,10 @@ public class StudentScript : MonoBehaviour
 		GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.AlarmDisc, this.transform.position + Vector3.up * (float)1, Quaternion.identity);
 		((AlarmDiscScript)gameObject.GetComponent(typeof(AlarmDiscScript))).Male = this.Male;
 		((AlarmDiscScript)gameObject.GetComponent(typeof(AlarmDiscScript))).Originator = this;
+		if (this.Dying && this.Yandere.Weapon[this.Yandere.Equipped].WeaponID == 7)
+		{
+			((AlarmDiscScript)gameObject.GetComponent(typeof(AlarmDiscScript))).Long = true;
+		}
 	}
 
 	public virtual void ChangeClubwear()

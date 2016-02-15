@@ -35,6 +35,10 @@ public class PickUpScript : MonoBehaviour
 
 	public bool Suspicious;
 
+	public bool BodyPart;
+
+	public bool Clothing;
+
 	public bool Evidence;
 
 	public bool Garbage;
@@ -86,6 +90,10 @@ public class PickUpScript : MonoBehaviour
 			{
 				((RagdollScript)this.Yandere.Ragdoll.GetComponent(typeof(RagdollScript))).StopDragging();
 			}
+			if (this.Yandere.Carrying)
+			{
+				this.Yandere.StopCarrying();
+			}
 			this.transform.parent = this.Yandere.ItemParent;
 			this.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
 			this.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
@@ -119,7 +127,14 @@ public class PickUpScript : MonoBehaviour
 			this.DumpTimer += Time.deltaTime;
 			if (this.DumpTimer > (float)1)
 			{
-				this.Yandere.Incinerator.BloodyClothing = this.Yandere.Incinerator.BloodyClothing + 1;
+				if (this.Clothing)
+				{
+					this.Yandere.Incinerator.BloodyClothing = this.Yandere.Incinerator.BloodyClothing + 1;
+				}
+				else if (this.BodyPart)
+				{
+					this.Yandere.Incinerator.BodyParts = this.Yandere.Incinerator.BodyParts + 1;
+				}
 				UnityEngine.Object.Destroy(this.gameObject);
 			}
 		}

@@ -5,19 +5,33 @@ using UnityScript.Lang;
 [Serializable]
 public class WeaponScript : MonoBehaviour
 {
-	public IncineratorScript Incinerator;
+	public ParticleSystem[] ShortBloodSpray;
+
+	public ParticleSystem[] BloodSpray;
 
 	public OutlineScript[] Outline;
+
+	public float[] SoundTime;
+
+	public IncineratorScript Incinerator;
 
 	public YandereScript Yandere;
 
 	public PromptScript Prompt;
 
+	public AudioClip DismemberClip;
+
 	public Collider MyCollider;
+
+	public Transform Blade;
 
 	public Projector Blood;
 
 	public bool DisableCollider;
+
+	public bool Dismembering;
+
+	public bool WeaponEffect;
 
 	public bool Concealable;
 
@@ -39,9 +53,15 @@ public class WeaponScript : MonoBehaviour
 
 	public float DumpTimer;
 
+	public float Rotation;
+
+	public float Speed;
+
 	public string SpriteName;
 
 	public string Name;
+
+	public int DismemberPhase;
 
 	public int FingerprintID;
 
@@ -51,21 +71,76 @@ public class WeaponScript : MonoBehaviour
 
 	public bool[] Victims;
 
+	private AudioClip OriginalClip;
+
 	private int ID;
 
 	public virtual void Start()
 	{
 		this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent(typeof(YandereScript));
 		Physics.IgnoreCollision(this.Yandere.collider, this.MyCollider);
-		if (this.DisableCollider)
-		{
-			this.MyCollider.enabled = false;
-		}
 		this.OriginalColor = this.Outline[0].color;
 		if (this.StartLow)
 		{
 			this.OriginalOffset = this.Prompt.OffsetY[3];
 			this.Prompt.OffsetY[3] = 0.2f;
+		}
+		if (this.DisableCollider)
+		{
+			this.MyCollider.enabled = false;
+		}
+		if (this.audio != null)
+		{
+			this.OriginalClip = this.audio.clip;
+		}
+	}
+
+	public virtual void Update()
+	{
+		if (this.Dismembering)
+		{
+			if (this.DismemberPhase < 4)
+			{
+				if (this.audio.time > 0.75f)
+				{
+					if (this.Speed < (float)36)
+					{
+						this.Speed += Time.deltaTime + (float)10;
+					}
+					this.Rotation += this.Speed;
+					float rotation = this.Rotation;
+					Vector3 localEulerAngles = this.Blade.localEulerAngles;
+					float num = localEulerAngles.x = rotation;
+					Vector3 vector = this.Blade.localEulerAngles = localEulerAngles;
+				}
+				if (this.audio.time > this.SoundTime[this.DismemberPhase])
+				{
+					this.Yandere.Sanity = this.Yandere.Sanity - (float)5 * this.Yandere.Numbness;
+					this.Yandere.UpdateSanity();
+					this.Yandere.Bloodiness = this.Yandere.Bloodiness + (float)25;
+					this.Yandere.UpdateBlood();
+					this.ShortBloodSpray[0].Play();
+					this.ShortBloodSpray[1].Play();
+					this.Blood.enabled = true;
+					this.DismemberPhase++;
+				}
+			}
+			else
+			{
+				this.Rotation = Mathf.Lerp(this.Rotation, (float)0, Time.deltaTime * (float)2);
+				float rotation2 = this.Rotation;
+				Vector3 localEulerAngles2 = this.Blade.localEulerAngles;
+				float num2 = localEulerAngles2.x = rotation2;
+				Vector3 vector2 = this.Blade.localEulerAngles = localEulerAngles2;
+				if (!this.audio.isPlaying)
+				{
+					this.audio.clip = this.OriginalClip;
+					this.Dismembering = false;
+					this.DismemberPhase = 0;
+					this.Rotation = (float)0;
+					this.Speed = (float)0;
+				}
+			}
 		}
 	}
 
@@ -272,6 +347,22 @@ public class WeaponScript : MonoBehaviour
 				this.Prompt.Label[3].text = "     " + this.Name;
 			}
 		}
+	}
+
+	public virtual void Effect()
+	{
+		if (this.WeaponID == 7)
+		{
+			this.BloodSpray[0].Play();
+			this.BloodSpray[1].Play();
+		}
+	}
+
+	public virtual void Dismember()
+	{
+		this.audio.clip = this.DismemberClip;
+		this.audio.Play();
+		this.Dismembering = true;
 	}
 
 	public virtual void Main()

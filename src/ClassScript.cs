@@ -455,7 +455,7 @@ public class ClassScript : MonoBehaviour
 		PlayerPrefs.SetInt("BiologyGrade", 1);
 		PlayerPrefs.SetInt("ChemistryGrade", 1);
 		PlayerPrefs.SetInt("LanguageGrade", 1);
-		PlayerPrefs.SetInt("PhysicaleGrade", 1);
+		PlayerPrefs.SetInt("PhysicalGrade", 1);
 		PlayerPrefs.SetInt("PsychologyGrade", 1);
 		PlayerPrefs.SetInt("Biology", 19);
 		PlayerPrefs.SetInt("Chemistry", 19);

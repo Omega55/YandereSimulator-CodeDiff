@@ -10,6 +10,8 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 
 	public GameObject BloodPool;
 
+	public Vector3[] Positions;
+
 	public int PoolsSpawned;
 
 	public int NearbyBlood;
@@ -21,6 +23,11 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 	public virtual void Start()
 	{
 		this.BloodParent = GameObject.Find("BloodParent").transform;
+		this.Positions = new Vector3[5];
+		this.Positions[1] = new Vector3(0.5f, 0.012f, (float)0);
+		this.Positions[2] = new Vector3(-0.5f, 0.012f, (float)0);
+		this.Positions[3] = new Vector3((float)0, 0.012f, 0.5f);
+		this.Positions[4] = new Vector3((float)0, 0.012f, -0.5f);
 	}
 
 	public virtual void OnTriggerEnter(Collider other)
@@ -88,6 +95,16 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 					((BloodPoolScript)gameObject.GetComponent(typeof(BloodPoolScript))).TargetSize = (float)1 - (float)(this.PoolsSpawned - 10) * 0.1f;
 				}
 			}
+		}
+	}
+
+	public virtual void SpawnBigPool()
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.BloodPool, GameObject.Find("YandereChan").transform.position + this.Positions[i], Quaternion.identity);
+			gameObject.transform.localEulerAngles = new Vector3((float)90, UnityEngine.Random.Range((float)0, 360f), (float)0);
+			gameObject.transform.parent = this.BloodParent;
 		}
 	}
 
