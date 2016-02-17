@@ -71,6 +71,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] KatanaReactions;
 
+	public string[] SawReactions;
+
 	public string[] WeaponBloodApologies;
 
 	public string[] WeaponApologies;
@@ -369,6 +371,10 @@ public class SubtitleScript : MonoBehaviour
 			else if (ID == 3)
 			{
 				this.Label.text = this.SyringeReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.SyringeReactions))];
+			}
+			else if (ID == 7)
+			{
+				this.Label.text = this.SawReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.SawReactions))];
 			}
 		}
 		else if (ReactionType == "Blood Reaction")

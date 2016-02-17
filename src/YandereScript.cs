@@ -1085,7 +1085,7 @@ public class YandereScript : MonoBehaviour
 						}
 						if (Input.GetButtonUp("RB"))
 						{
-							if (this.YandereTimer < 0.5f && !this.Dragging && !this.Laughing)
+							if (this.YandereTimer < 0.5f && !this.Dragging && !this.Carrying && !this.Laughing)
 							{
 								if (this.Sans)
 								{

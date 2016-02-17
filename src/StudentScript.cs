@@ -3451,7 +3451,7 @@ public class StudentScript : MonoBehaviour
 					this.Character.animation[this.ShyAnim].weight = Mathf.Lerp(this.Character.animation[this.ShyAnim].weight, (float)0, Time.deltaTime);
 				}
 			}
-			if (this.Routine && !this.InEvent)
+			if (this.Routine && !this.InEvent && !this.Meeting)
 			{
 				if (this.DistanceToDestination < this.TargetDistance && this.Actions[this.Phase] == 9)
 				{

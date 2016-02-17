@@ -378,6 +378,13 @@ public class CosmeticScript : MonoBehaviour
 			this.RightEyeRenderer.material.color = this.CorrectColor;
 			this.LeftEyeRenderer.material.color = this.CorrectColor;
 		}
+		if (this.StudentID == 20)
+		{
+			this.RightEyeRenderer.material.mainTexture = this.DefaultFaceTexture;
+			this.LeftEyeRenderer.material.mainTexture = this.DefaultFaceTexture;
+			((RainbowScript)this.RightEyeRenderer.gameObject.GetComponent(typeof(RainbowScript))).enabled = true;
+			((RainbowScript)this.LeftEyeRenderer.gameObject.GetComponent(typeof(RainbowScript))).enabled = true;
+		}
 	}
 
 	public virtual void SetMaleUniform()

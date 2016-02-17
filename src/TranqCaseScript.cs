@@ -65,6 +65,7 @@ public class TranqCaseScript : MonoBehaviour
 			this.VictimID = ((RagdollScript)this.Yandere.Ragdoll.GetComponent(typeof(RagdollScript))).StudentID;
 			this.Yandere.EmptyHands();
 			this.Door.Prompt.enabled = true;
+			this.Door.enabled = true;
 			this.Occupied = true;
 			this.Open = true;
 		}

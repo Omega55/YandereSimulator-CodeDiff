@@ -37,7 +37,9 @@ public class TranqDetectorScript : MonoBehaviour
 												this.Yandere.CanTranq = true;
 												if (this.Yandere.Attacking)
 												{
+													this.Door.Prompt.Hide();
 													this.Door.Prompt.enabled = false;
+													this.Door.enabled = false;
 												}
 											}
 										}

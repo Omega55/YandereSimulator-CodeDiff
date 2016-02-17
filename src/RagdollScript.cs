@@ -146,7 +146,7 @@ public class RagdollScript : MonoBehaviour
 			this.AllColliders[i].enabled = true;
 		}
 		this.Prompt.enabled = true;
-		if (PlayerPrefs.GetInt("PhysicalGrade") > 0)
+		if (PlayerPrefs.GetInt("PhysicalGrade") > 0 && !this.Tranquil)
 		{
 			this.Prompt.HideButton[3] = false;
 		}
@@ -257,7 +257,7 @@ public class RagdollScript : MonoBehaviour
 			{
 				this.Prompt.AcceptingInput[1] = true;
 			}
-			if (!this.Dragged && !this.Carried && this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].WeaponID == 7)
+			if (!this.Dragged && !this.Carried && !this.Tranquil && this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].WeaponID == 7)
 			{
 				this.Prompt.HideButton[0] = false;
 			}
@@ -494,15 +494,27 @@ public class RagdollScript : MonoBehaviour
 						this.Student.Cosmetic.ClubAccessories[this.Student.Club].transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
 					}
 				}
-				if (this.Student.Cosmetic.FemaleAccessories[this.Student.Cosmetic.Accessory] != null)
+				if (!this.Student.Teacher)
 				{
-					this.Student.Cosmetic.FemaleAccessories[this.Student.Cosmetic.Accessory].transform.parent = gameObject.transform;
+					if (this.Student.Cosmetic.FemaleAccessories[this.Student.Cosmetic.Accessory] != null)
+					{
+						this.Student.Cosmetic.FemaleAccessories[this.Student.Cosmetic.Accessory].transform.parent = gameObject.transform;
+					}
+				}
+				else if (this.Student.Cosmetic.TeacherAccessories[this.Student.Cosmetic.Accessory] != null)
+				{
+					this.Student.Cosmetic.TeacherAccessories[this.Student.Cosmetic.Accessory].transform.parent = gameObject.transform;
 				}
 				((Renderer)gameObject.GetComponent(typeof(Renderer))).materials[0].mainTexture = this.Student.Cosmetic.FaceTexture;
 			}
 		}
+		if (this.BloodPoolSpawner.BloodParent == null)
+		{
+			this.BloodPoolSpawner.Start();
+		}
 		this.BloodPoolSpawner.SpawnBigPool();
 		this.Police.BodyParts = this.Police.BodyParts + 6;
+		this.Yandere.NearBodies = this.Yandere.NearBodies - 1;
 		this.Police.Corpses = this.Police.Corpses - 1;
 		UnityEngine.Object.Destroy(this.gameObject);
 	}
