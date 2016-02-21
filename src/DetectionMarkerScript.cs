@@ -21,7 +21,7 @@ public class DetectionMarkerScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (this.Tex.color.a > (float)0)
+		if (this.Tex.color.a > (float)0 && this.transform != null && this.Target != null)
 		{
 			this.transform.LookAt(new Vector3(this.Target.position.x, this.transform.position.y, this.Target.position.z));
 		}

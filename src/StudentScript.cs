@@ -4252,6 +4252,11 @@ public class StudentScript : MonoBehaviour
 			}
 			this.ID++;
 		}
+		if (!this.Male)
+		{
+			this.SkirtCollider.enabled = true;
+			this.PantyCollider.enabled = true;
+		}
 	}
 
 	public virtual void AttackOnTitan()
@@ -4348,6 +4353,8 @@ public class StudentScript : MonoBehaviour
 					this.MyRenderer.materials[0].mainTexture = this.JudoGiTexture;
 					this.MyRenderer.materials[1].mainTexture = this.JudoGiTexture;
 					this.MyRenderer.materials[2].mainTexture = this.Cosmetic.FaceTexture;
+					this.SkirtCollider.enabled = false;
+					this.PantyCollider.enabled = false;
 				}
 				else
 				{

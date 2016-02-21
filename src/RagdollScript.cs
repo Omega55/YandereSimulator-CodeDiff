@@ -72,7 +72,9 @@ public class RagdollScript : MonoBehaviour
 
 	public bool StopAnimation;
 
-	public bool HidePony;
+	public bool Dismembered;
+
+	public bool Sacrifice;
 
 	public bool Poisoned;
 
@@ -169,7 +171,7 @@ public class RagdollScript : MonoBehaviour
 			}
 			if (!Input.GetButtonDown("LB"))
 			{
-				if (!this.Male && this.Prompt.Circle[0].fillAmount <= (float)0)
+				if (this.Prompt.Circle[0].fillAmount <= (float)0)
 				{
 					this.Yandere.Character.animation.CrossFade("f02_dismember_00");
 					this.Yandere.transform.LookAt(this.transform);
@@ -318,13 +320,6 @@ public class RagdollScript : MonoBehaviour
 	{
 		if (!this.Male)
 		{
-			if (this.HidePony)
-			{
-				this.Ponytail.parent.transform.localScale = new Vector3((float)1, (float)1, 0.93f);
-				this.Ponytail.localScale = new Vector3((float)0, (float)0, (float)0);
-				this.HairR.localScale = new Vector3((float)0, (float)0, (float)0);
-				this.HairL.localScale = new Vector3((float)0, (float)0, (float)0);
-			}
 			this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 			this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 			float z = this.LeftEyeOrigin.z - this.EyeShrink * 0.01f;
@@ -476,47 +471,77 @@ public class RagdollScript : MonoBehaviour
 
 	public virtual void Dismember()
 	{
-		for (int i = 0; i < this.BodyParts.Length; i++)
+		if (!this.Dismembered)
 		{
-			GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.BodyParts[i], this.SpawnPoints[i].position, Quaternion.identity);
-			gameObject.transform.eulerAngles = this.SpawnPoints[i].eulerAngles;
-			((BodyPartScript)gameObject.GetComponent(typeof(BodyPartScript))).StudentID = this.StudentID;
-			if (i == 0)
+			for (int i = 0; i < this.BodyParts.Length; i++)
 			{
-				this.Student.Cosmetic.FemaleHair[this.Student.Cosmetic.Hairstyle].transform.parent = gameObject.transform;
-				this.Student.Cosmetic.FemaleHair[this.Student.Cosmetic.Hairstyle].transform.parent = gameObject.transform;
-				if (this.Student.Club < 11 && this.Student.Cosmetic.ClubAccessories[this.Student.Club] != null)
+				GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.BodyParts[i], this.SpawnPoints[i].position, Quaternion.identity);
+				gameObject.transform.eulerAngles = this.SpawnPoints[i].eulerAngles;
+				((BodyPartScript)gameObject.GetComponent(typeof(BodyPartScript))).StudentID = this.StudentID;
+				((BodyPartScript)gameObject.GetComponent(typeof(BodyPartScript))).Sacrifice = this.Sacrifice;
+				if (i == 0)
 				{
-					this.Student.Cosmetic.ClubAccessories[this.Student.Club].transform.parent = gameObject.transform;
-					if (this.Student.Club == 3)
+					if (!this.Student.Teacher)
 					{
-						this.Student.Cosmetic.ClubAccessories[this.Student.Club].transform.localPosition = new Vector3((float)0, -1.5f, 0.01f);
-						this.Student.Cosmetic.ClubAccessories[this.Student.Club].transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+						if (!this.Male)
+						{
+							this.Student.Cosmetic.FemaleHair[this.Student.Cosmetic.Hairstyle].transform.parent = gameObject.transform;
+							this.Student.Cosmetic.FemaleHair[this.Student.Cosmetic.Hairstyle].transform.parent = gameObject.transform;
+							if (this.Student.Cosmetic.FemaleAccessories[this.Student.Cosmetic.Accessory] != null)
+							{
+								this.Student.Cosmetic.FemaleAccessories[this.Student.Cosmetic.Accessory].transform.parent = gameObject.transform;
+							}
+						}
+						else
+						{
+							this.Student.Cosmetic.MaleHair[this.Student.Cosmetic.Hairstyle].transform.parent = gameObject.transform;
+							this.Student.Cosmetic.MaleHair[this.Student.Cosmetic.Hairstyle].transform.parent = gameObject.transform;
+							if (this.Student.Cosmetic.MaleAccessories[this.Student.Cosmetic.Accessory] != null)
+							{
+								this.Student.Cosmetic.MaleAccessories[this.Student.Cosmetic.Accessory].transform.parent = gameObject.transform;
+							}
+						}
 					}
-				}
-				if (!this.Student.Teacher)
-				{
-					if (this.Student.Cosmetic.FemaleAccessories[this.Student.Cosmetic.Accessory] != null)
+					else
 					{
-						this.Student.Cosmetic.FemaleAccessories[this.Student.Cosmetic.Accessory].transform.parent = gameObject.transform;
+						this.Student.Cosmetic.TeacherHair[this.Student.Cosmetic.Hairstyle].transform.parent = gameObject.transform;
+						this.Student.Cosmetic.TeacherHair[this.Student.Cosmetic.Hairstyle].transform.parent = gameObject.transform;
+						if (this.Student.Cosmetic.TeacherAccessories[this.Student.Cosmetic.Accessory] != null)
+						{
+							this.Student.Cosmetic.TeacherAccessories[this.Student.Cosmetic.Accessory].transform.parent = gameObject.transform;
+						}
 					}
+					if (this.Student.Club < 11 && this.Student.Cosmetic.ClubAccessories[this.Student.Club] != null)
+					{
+						this.Student.Cosmetic.ClubAccessories[this.Student.Club].transform.parent = gameObject.transform;
+						if (this.Student.Club == 3)
+						{
+							if (!this.Male)
+							{
+								this.Student.Cosmetic.ClubAccessories[this.Student.Club].transform.localPosition = new Vector3((float)0, -1.5f, 0.01f);
+								this.Student.Cosmetic.ClubAccessories[this.Student.Club].transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+							}
+							else
+							{
+								this.Student.Cosmetic.ClubAccessories[this.Student.Club].transform.localPosition = new Vector3((float)0, -1.42f, 0.005f);
+								this.Student.Cosmetic.ClubAccessories[this.Student.Club].transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+							}
+						}
+					}
+					((Renderer)gameObject.GetComponent(typeof(Renderer))).materials[0].mainTexture = this.Student.Cosmetic.FaceTexture;
 				}
-				else if (this.Student.Cosmetic.TeacherAccessories[this.Student.Cosmetic.Accessory] != null)
-				{
-					this.Student.Cosmetic.TeacherAccessories[this.Student.Cosmetic.Accessory].transform.parent = gameObject.transform;
-				}
-				((Renderer)gameObject.GetComponent(typeof(Renderer))).materials[0].mainTexture = this.Student.Cosmetic.FaceTexture;
 			}
+			if (this.BloodPoolSpawner.BloodParent == null)
+			{
+				this.BloodPoolSpawner.Start();
+			}
+			this.BloodPoolSpawner.SpawnBigPool();
+			this.Police.BodyParts = this.Police.BodyParts + 6;
+			this.Yandere.NearBodies = this.Yandere.NearBodies - 1;
+			this.Police.Corpses = this.Police.Corpses - 1;
+			UnityEngine.Object.Destroy(this.gameObject);
+			this.Dismembered = true;
 		}
-		if (this.BloodPoolSpawner.BloodParent == null)
-		{
-			this.BloodPoolSpawner.Start();
-		}
-		this.BloodPoolSpawner.SpawnBigPool();
-		this.Police.BodyParts = this.Police.BodyParts + 6;
-		this.Yandere.NearBodies = this.Yandere.NearBodies - 1;
-		this.Police.Corpses = this.Police.Corpses - 1;
-		UnityEngine.Object.Destroy(this.gameObject);
 	}
 
 	public virtual void Main()

@@ -5,6 +5,8 @@ using UnityScript.Lang;
 [Serializable]
 public class CosmeticScript : MonoBehaviour
 {
+	public StudentScript Student;
+
 	public JsonScript JSON;
 
 	public GameObject[] TeacherAccessories;
@@ -384,6 +386,10 @@ public class CosmeticScript : MonoBehaviour
 			this.LeftEyeRenderer.material.mainTexture = this.DefaultFaceTexture;
 			((RainbowScript)this.RightEyeRenderer.gameObject.GetComponent(typeof(RainbowScript))).enabled = true;
 			((RainbowScript)this.LeftEyeRenderer.gameObject.GetComponent(typeof(RainbowScript))).enabled = true;
+		}
+		if (this.Student != null && this.Student.AoT)
+		{
+			this.Student.AttackOnTitan();
 		}
 	}
 

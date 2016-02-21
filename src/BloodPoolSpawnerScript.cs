@@ -10,6 +10,8 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 
 	public GameObject BloodPool;
 
+	public Transform Hips;
+
 	public Vector3[] Positions;
 
 	public int PoolsSpawned;
@@ -102,7 +104,7 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 	{
 		for (int i = 0; i < 5; i++)
 		{
-			GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.BloodPool, GameObject.Find("YandereChan").transform.position + this.Positions[i], Quaternion.identity);
+			GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.BloodPool, new Vector3(this.Hips.position.x, GameObject.Find("YandereChan").transform.position.y, this.Hips.position.z) + this.Positions[i], Quaternion.identity);
 			gameObject.transform.localEulerAngles = new Vector3((float)90, UnityEngine.Random.Range((float)0, 360f), (float)0);
 			gameObject.transform.parent = this.BloodParent;
 		}

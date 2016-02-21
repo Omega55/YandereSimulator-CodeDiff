@@ -322,6 +322,10 @@ public class WeaponScript : MonoBehaviour
 			}
 			this.ID++;
 		}
+		if (this.transform.position.y > (float)1000)
+		{
+			this.transform.position = new Vector3((float)12, (float)0, (float)28);
+		}
 	}
 
 	public virtual void UpdateLabel()
@@ -355,6 +359,11 @@ public class WeaponScript : MonoBehaviour
 		{
 			this.BloodSpray[0].Play();
 			this.BloodSpray[1].Play();
+		}
+		else if (this.WeaponID == 8)
+		{
+			((ParticleSystem)this.gameObject.GetComponent(typeof(ParticleSystem))).Play();
+			this.audio.Play();
 		}
 	}
 

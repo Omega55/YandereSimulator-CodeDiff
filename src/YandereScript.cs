@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$2305 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$2339 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$2320;
+		internal YandereScript $self_$2354;
 
-		public $ApplyCustomCostume$2305(YandereScript self_)
+		public $ApplyCustomCostume$2339(YandereScript self_)
 		{
-			this.$self_$2320 = self_;
+			this.$self_$2354 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$2305.$(this.$self_$2320);
+			return new YandereScript.$ApplyCustomCostume$2339.$(this.$self_$2354);
 		}
 	}
 
@@ -409,19 +409,21 @@ public class YandereScript : MonoBehaviour
 
 	public bool Dumping;
 
-	public bool FlapOut;
-
 	public bool Lifting;
 
 	public bool Mopping;
 
 	public bool Pouring;
 
-	public bool Slender;
-
 	public bool Talking;
 
 	public bool Aiming;
+
+	public bool Demonic;
+
+	public bool FlapOut;
+
+	public bool Slender;
 
 	public bool CrouchButtonDown;
 
@@ -2437,6 +2439,14 @@ public class YandereScript : MonoBehaviour
 							this.AttackPhase = 2;
 							this.Sanity -= (float)20 * this.Numbness;
 							this.UpdateSanity();
+							if (this.Weapon[this.Equipped].WeaponID == 8)
+							{
+								this.TargetStudent.Ragdoll.Sacrifice = true;
+								if (PlayerPrefs.GetInt("Paranormal") == 1)
+								{
+									this.Weapon[this.Equipped].Effect();
+								}
+							}
 						}
 					}
 					else
@@ -2621,7 +2631,7 @@ public class YandereScript : MonoBehaviour
 					this.BreastSize = 0.5f;
 				}
 			}
-			if (this.CanMove && !this.Egg)
+			if (this.CanMove && !this.Egg && this.transform.position.y < (float)1000)
 			{
 				if (Input.GetKeyDown("/"))
 				{
@@ -3447,7 +3457,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$2305(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$2339(this).GetEnumerator();
 	}
 
 	public virtual void WearGloves()

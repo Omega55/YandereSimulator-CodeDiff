@@ -14,6 +14,8 @@ public class DebugMenuScript : MonoBehaviour
 
 	public ClockScript Clock;
 
+	public GameObject SacrificialArm;
+
 	public Transform[] TeleportSpot;
 
 	public Transform RooftopSpot;
@@ -152,6 +154,16 @@ public class DebugMenuScript : MonoBehaviour
 				while (this.ID < 11)
 				{
 					PlayerPrefs.SetInt("Tape_" + this.ID + "_Collected", 1);
+					this.ID++;
+				}
+				this.Window.active = false;
+			}
+			else if (Input.GetKeyDown("d"))
+			{
+				this.ID = 1;
+				while (this.ID < 11)
+				{
+					UnityEngine.Object.Instantiate(this.SacrificialArm, new Vector3((float)12, (float)2, (float)26), Quaternion.identity);
 					this.ID++;
 				}
 				this.Window.active = false;

@@ -137,21 +137,7 @@ public class StudentManagerScript : MonoBehaviour
 
 	public virtual void Start()
 	{
-		if (PlayerPrefs.GetInt("SchoolAtmosphereSet") == 0)
-		{
-			PlayerPrefs.SetInt("SchoolAtmosphereSet", 1);
-			PlayerPrefs.SetFloat("SchoolAtmosphere", (float)100);
-		}
-		Vignetting[] components = Camera.main.GetComponents<Vignetting>();
-		float num = (float)1 - PlayerPrefs.GetFloat("SchoolAtmosphere") * 0.01f;
-		if (!this.TakingPortraits)
-		{
-			this.SelectiveGreyscale.desaturation = num;
-			components[2].intensity = num * (float)5;
-			components[2].blur = num;
-			components[2].chromaticAberration = num * (float)5;
-			RenderSettings.fogDensity = num * 0.05f;
-		}
+		this.SetAtmosphere();
 		if (PlayerPrefs.GetInt("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Slave") == 1)
 		{
 			this.ForceSpawn = true;
@@ -181,6 +167,25 @@ public class StudentManagerScript : MonoBehaviour
 				PlayerPrefs.SetInt("Student_" + this.ID + "_Dying", 0);
 			}
 			this.ID++;
+		}
+	}
+
+	public virtual void SetAtmosphere()
+	{
+		if (PlayerPrefs.GetInt("SchoolAtmosphereSet") == 0)
+		{
+			PlayerPrefs.SetInt("SchoolAtmosphereSet", 1);
+			PlayerPrefs.SetFloat("SchoolAtmosphere", (float)100);
+		}
+		Vignetting[] components = Camera.main.GetComponents<Vignetting>();
+		float num = (float)1 - PlayerPrefs.GetFloat("SchoolAtmosphere") * 0.01f;
+		if (!this.TakingPortraits)
+		{
+			this.SelectiveGreyscale.desaturation = num;
+			components[2].intensity = num * (float)5;
+			components[2].blur = num;
+			components[2].chromaticAberration = num * (float)5;
+			RenderSettings.fogDensity = num * 0.05f;
 		}
 	}
 

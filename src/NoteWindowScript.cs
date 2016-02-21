@@ -63,7 +63,7 @@ public class NoteWindowScript : MonoBehaviour
 	public virtual void Start()
 	{
 		this.SubMenu.transform.localScale = new Vector3((float)0, (float)0, (float)0);
-		this.transform.localPosition = new Vector3((float)455, (float)-960, (float)0);
+		this.transform.localPosition = new Vector3((float)455, (float)-965, (float)0);
 		this.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)-90);
 		this.OriginalText[1] = this.SlotLabels[1].text;
 		this.OriginalText[2] = this.SlotLabels[2].text;
@@ -75,7 +75,7 @@ public class NoteWindowScript : MonoBehaviour
 	{
 		if (!this.Show)
 		{
-			this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3((float)455, (float)-960, (float)0), 0.166666672f);
+			this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3((float)455, (float)-965, (float)0), 0.166666672f);
 			this.Rotation = Mathf.Lerp(this.Rotation, (float)-90, 0.166666672f);
 			float rotation = this.Rotation;
 			Vector3 localEulerAngles = this.transform.localEulerAngles;
