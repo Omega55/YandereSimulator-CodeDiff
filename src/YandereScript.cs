@@ -766,6 +766,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		this.SetAnimationLayers();
 		this.Numbness = (float)1 - 0.1f * (float)PlayerPrefs.GetInt("Numbness");
 		if (PlayerPrefs.GetInt("Club") == 3)
 		{
@@ -864,6 +865,51 @@ public class YandereScript : MonoBehaviour
 		}
 		this.UpdateHair();
 		this.ClubAccessory();
+	}
+
+	public virtual void SetAnimationLayers()
+	{
+		this.Character.animation["f02_yanderePose_00"].layer = 1;
+		this.Character.animation.Play("f02_yanderePose_00");
+		this.Character.animation["f02_yanderePose_00"].weight = (float)0;
+		this.Character.animation["f02_shy_00"].layer = 2;
+		this.Character.animation.Play("f02_shy_00");
+		this.Character.animation["f02_shy_00"].weight = (float)0;
+		this.Character.animation["f02_singleSaw_00"].layer = 3;
+		this.Character.animation.Play("f02_singleSaw_00");
+		this.Character.animation["f02_singleSaw_00"].weight = (float)0;
+		this.Character.animation["f02_fist_00"].layer = 4;
+		this.Character.animation.Play("f02_fist_00");
+		this.Character.animation["f02_fist_00"].weight = (float)0;
+		this.Character.animation["f02_mopping_00"].layer = 5;
+		this.Character.animation["f02_mopping_00"].speed = (float)2;
+		this.Character.animation.Play("f02_mopping_00");
+		this.Character.animation["f02_mopping_00"].weight = (float)0;
+		this.Character.animation["f02_carry_00"].layer = 6;
+		this.Character.animation.Play("f02_carry_00");
+		this.Character.animation["f02_carry_00"].weight = (float)0;
+		this.Character.animation["f02_mopCarry_00"].layer = 7;
+		this.Character.animation.Play("f02_mopCarry_00");
+		this.Character.animation["f02_mopCarry_00"].weight = (float)0;
+		this.Character.animation["f02_bucketCarry_00"].layer = 8;
+		this.Character.animation.Play("f02_bucketCarry_00");
+		this.Character.animation["f02_bucketCarry_00"].weight = (float)0;
+		this.Character.animation["f02_cameraPose_00"].layer = 9;
+		this.Character.animation.Play("f02_cameraPose_00");
+		this.Character.animation["f02_cameraPose_00"].weight = (float)0;
+		this.Character.animation["f02_grip_00"].layer = 10;
+		this.Character.animation.Play("f02_grip_00");
+		this.Character.animation["f02_grip_00"].weight = (float)0;
+		this.Character.animation["f02_holdHead_00"].layer = 11;
+		this.Character.animation.Play("f02_holdHead_00");
+		this.Character.animation["f02_holdHead_00"].weight = (float)0;
+		this.Character.animation["f02_holdTorso_00"].layer = 12;
+		this.Character.animation.Play("f02_holdTorso_00");
+		this.Character.animation["f02_holdTorso_00"].weight = (float)0;
+		this.Character.animation["f02_dipping_00"].speed = (float)2;
+		this.Character.animation["f02_stripping_00"].speed = 1.5f;
+		this.Character.animation["f02_falconIdle_00"].speed = (float)2;
+		this.Character.animation["f02_carryIdleA_00"].speed = 1.75f;
 	}
 
 	public virtual void Update()
@@ -3858,46 +3904,5 @@ public class YandereScript : MonoBehaviour
 
 	public virtual void Main()
 	{
-		this.Character.animation["f02_yanderePose_00"].layer = 1;
-		this.Character.animation.Play("f02_yanderePose_00");
-		this.Character.animation["f02_yanderePose_00"].weight = (float)0;
-		this.Character.animation["f02_shy_00"].layer = 2;
-		this.Character.animation.Play("f02_shy_00");
-		this.Character.animation["f02_shy_00"].weight = (float)0;
-		this.Character.animation["f02_singleSaw_00"].layer = 3;
-		this.Character.animation.Play("f02_singleSaw_00");
-		this.Character.animation["f02_singleSaw_00"].weight = (float)0;
-		this.Character.animation["f02_fist_00"].layer = 4;
-		this.Character.animation.Play("f02_fist_00");
-		this.Character.animation["f02_fist_00"].weight = (float)0;
-		this.Character.animation["f02_mopping_00"].layer = 5;
-		this.Character.animation["f02_mopping_00"].speed = (float)2;
-		this.Character.animation.Play("f02_mopping_00");
-		this.Character.animation["f02_mopping_00"].weight = (float)0;
-		this.Character.animation["f02_carry_00"].layer = 6;
-		this.Character.animation.Play("f02_carry_00");
-		this.Character.animation["f02_carry_00"].weight = (float)0;
-		this.Character.animation["f02_mopCarry_00"].layer = 7;
-		this.Character.animation.Play("f02_mopCarry_00");
-		this.Character.animation["f02_mopCarry_00"].weight = (float)0;
-		this.Character.animation["f02_bucketCarry_00"].layer = 8;
-		this.Character.animation.Play("f02_bucketCarry_00");
-		this.Character.animation["f02_bucketCarry_00"].weight = (float)0;
-		this.Character.animation["f02_cameraPose_00"].layer = 9;
-		this.Character.animation.Play("f02_cameraPose_00");
-		this.Character.animation["f02_cameraPose_00"].weight = (float)0;
-		this.Character.animation["f02_grip_00"].layer = 10;
-		this.Character.animation.Play("f02_grip_00");
-		this.Character.animation["f02_grip_00"].weight = (float)0;
-		this.Character.animation["f02_holdHead_00"].layer = 11;
-		this.Character.animation.Play("f02_holdHead_00");
-		this.Character.animation["f02_holdHead_00"].weight = (float)0;
-		this.Character.animation["f02_holdTorso_00"].layer = 12;
-		this.Character.animation.Play("f02_holdTorso_00");
-		this.Character.animation["f02_holdTorso_00"].weight = (float)0;
-		this.Character.animation["f02_dipping_00"].speed = (float)2;
-		this.Character.animation["f02_stripping_00"].speed = 1.5f;
-		this.Character.animation["f02_falconIdle_00"].speed = (float)2;
-		this.Character.animation["f02_carryIdleA_00"].speed = 1.75f;
 	}
 }

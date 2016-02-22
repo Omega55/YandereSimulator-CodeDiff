@@ -158,16 +158,6 @@ public class DebugMenuScript : MonoBehaviour
 				}
 				this.Window.active = false;
 			}
-			else if (Input.GetKeyDown("d"))
-			{
-				this.ID = 1;
-				while (this.ID < 11)
-				{
-					UnityEngine.Object.Instantiate(this.SacrificialArm, new Vector3((float)12, (float)2, (float)26), Quaternion.identity);
-					this.ID++;
-				}
-				this.Window.active = false;
-			}
 			else if (Input.GetKeyDown("g"))
 			{
 				if (this.StudentManager.Students[16] != null)

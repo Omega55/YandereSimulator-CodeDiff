@@ -88,6 +88,7 @@ public class SkullScript : MonoBehaviour
 					{
 						this.Yandere.transform.position = new Vector3((float)0, (float)2000, (float)0);
 						this.Yandere.Character.active = true;
+						this.Yandere.SetAnimationLayers();
 						this.HeartbeatCamera.active = false;
 						this.FPS.active = false;
 						this.HUD.active = false;

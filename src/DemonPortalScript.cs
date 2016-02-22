@@ -37,7 +37,7 @@ public class DemonPortalScript : MonoBehaviour
 		}
 		if (this.Yandere.transform.position.y > (float)1000)
 		{
-			this.DemonRealmAudio.volume = Mathf.MoveTowards(this.DemonRealmAudio.volume, (float)1, Time.deltaTime * 0.1f);
+			this.DemonRealmAudio.volume = Mathf.MoveTowards(this.DemonRealmAudio.volume, 0.5f, Time.deltaTime * 0.1f);
 		}
 		else
 		{
@@ -58,6 +58,7 @@ public class DemonPortalScript : MonoBehaviour
 					{
 						this.Yandere.transform.position = new Vector3((float)12, (float)0, (float)28);
 						this.Yandere.Character.active = true;
+						this.Yandere.SetAnimationLayers();
 						this.HeartbeatCamera.active = true;
 						this.FPS.active = true;
 						this.HUD.active = true;
