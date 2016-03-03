@@ -34,6 +34,8 @@ public class ShoulderCameraScript : MonoBehaviour
 
 	public Transform StrugglePOV;
 
+	public Transform Focus;
+
 	public Vector3 LastPosition;
 
 	public bool AimingCamera;
@@ -273,6 +275,12 @@ public class ShoulderCameraScript : MonoBehaviour
 						this.Yandere.Jukebox.GameOver();
 					}
 				}
+			}
+			else if (this.Yandere.Attacked)
+			{
+				this.Focus.transform.parent = null;
+				this.Focus.transform.position = Vector3.Lerp(this.Focus.transform.position, this.Yandere.Hips.position, Time.deltaTime);
+				this.transform.LookAt(this.Focus);
 			}
 			else if ((this.Yandere.Talking || this.Yandere.Won) && !this.RPGCamera.enabled)
 			{

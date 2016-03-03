@@ -449,7 +449,10 @@ public class RagdollScript : MonoBehaviour
 		Vector3 vector = this.transform.position = position;
 		this.Prompt.Label[1].text = "     " + "Drag";
 		this.Prompt.HideButton[1] = false;
-		this.Prompt.HideButton[3] = false;
+		if (PlayerPrefs.GetInt("PhysicalGrade") > 0 && !this.Tranquil)
+		{
+			this.Prompt.HideButton[3] = false;
+		}
 		if (this.Dragged)
 		{
 			this.Yandere.RagdollDragger.connectedBody = null;

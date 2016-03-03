@@ -135,6 +135,7 @@ public class WeaponScript : MonoBehaviour
 				if (!this.audio.isPlaying)
 				{
 					this.audio.clip = this.OriginalClip;
+					this.Yandere.StainWeapon();
 					this.Dismembering = false;
 					this.DismemberPhase = 0;
 					this.Rotation = (float)0;
@@ -148,6 +149,7 @@ public class WeaponScript : MonoBehaviour
 	{
 		if (this.Prompt.Circle[3].fillAmount <= (float)0)
 		{
+			this.Prompt.Circle[3].fillAmount = (float)1;
 			if (!this.Yandere.Gloved)
 			{
 				this.FingerprintID = 100;
@@ -174,6 +176,10 @@ public class WeaponScript : MonoBehaviour
 			if (this.Yandere.Dragging)
 			{
 				((RagdollScript)this.Yandere.Ragdoll.GetComponent(typeof(RagdollScript))).StopDragging();
+			}
+			if (this.Yandere.Carrying)
+			{
+				this.Yandere.StopCarrying();
 			}
 			if (this.Concealable)
 			{
@@ -330,7 +336,7 @@ public class WeaponScript : MonoBehaviour
 
 	public virtual void UpdateLabel()
 	{
-		if (this.active)
+		if (this != null && this.active)
 		{
 			if (this.Yandere.Weapon[1] != null && this.Yandere.Weapon[2] != null && this.Concealable)
 			{

@@ -40,6 +40,7 @@ public class DemonScript : MonoBehaviour
 	{
 		if (this.Prompt.Circle[0].fillAmount <= (float)0)
 		{
+			this.Yandere.Character.animation.CrossFade(this.Yandere.IdleAnim);
 			this.Yandere.CanMove = false;
 			this.Communing = true;
 		}

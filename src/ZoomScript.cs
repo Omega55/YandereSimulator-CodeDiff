@@ -20,6 +20,8 @@ public class ZoomScript : MonoBehaviour
 
 	public Vector3 Target;
 
+	public bool OverShoulder;
+
 	public virtual void Update()
 	{
 		if (this.Yandere.Crawling)
@@ -112,6 +114,20 @@ public class ZoomScript : MonoBehaviour
 		else
 		{
 			this.transform.localPosition = Vector3.MoveTowards(this.transform.localPosition, this.Target, Time.deltaTime * this.ShakeStrength * 0.1f);
+		}
+		if (this.OverShoulder)
+		{
+			float x2 = 0.25f;
+			Vector3 localPosition4 = this.transform.localPosition;
+			float num6 = localPosition4.x = x2;
+			Vector3 vector6 = this.transform.localPosition = localPosition4;
+		}
+		else
+		{
+			int num7 = 0;
+			Vector3 localPosition5 = this.transform.localPosition;
+			float num8 = localPosition5.x = (float)num7;
+			Vector3 vector7 = this.transform.localPosition = localPosition5;
 		}
 	}
 

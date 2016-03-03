@@ -1,7 +1,5 @@
 ﻿using System;
-using Boo.Lang.Runtime;
 using UnityEngine;
-using UnityScript.Lang;
 
 [Serializable]
 public class WeaponMenuScript : MonoBehaviour
@@ -151,7 +149,16 @@ public class WeaponMenuScript : MonoBehaviour
 								this.Equip();
 							}
 						}
-						else if (this.Selected == 4)
+						else if (this.Selected == 3)
+						{
+							if (this.Yandere.Container != null && this.Yandere.ObstacleDetector.Obstacles == 0)
+							{
+								this.Yandere.ObstacleDetector.active = false;
+								this.Yandere.Container.Drop();
+								this.UpdateSprites();
+							}
+						}
+						else
 						{
 							if (this.Yandere.Equipped > 0)
 							{
@@ -249,7 +256,8 @@ public class WeaponMenuScript : MonoBehaviour
 
 	public virtual void UpdateSprites()
 	{
-		for (int i = 1; i < 3; i++)
+		int i;
+		for (i = 1; i < 3; i++)
 		{
 			if (this.Selected == i)
 			{
@@ -318,7 +326,7 @@ public class WeaponMenuScript : MonoBehaviour
 				Color color24 = this.KeyboardOutline[i].color = color23;
 			}
 		}
-		if (RuntimeServices.EqualityOperator(UnityRuntimeServices.GetProperty(this.Yandere, "Container"), null))
+		if (this.Yandere.Container == null)
 		{
 			int num21 = 0;
 			Color color25 = this.KeyboardItem[3].color;
@@ -370,6 +378,7 @@ public class WeaponMenuScript : MonoBehaviour
 			Color color41 = this.Outline[3].color;
 			float num34 = color41.a = (float)num33;
 			Color color42 = this.Outline[3].color = color41;
+			this.KeyboardItem[i].spriteName = this.Yandere.Container.SpriteName;
 			int num35 = 1;
 			Color color43 = this.KeyboardItem[3].color;
 			float num36 = color43.a = (float)num35;

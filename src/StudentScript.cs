@@ -2078,7 +2078,7 @@ public class StudentScript : MonoBehaviour
 				{
 					this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - this.transform.position);
 					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
-					if (!this.Yandere.ClubCamera.active)
+					if (RuntimeServices.EqualityOperator(UnityRuntimeServices.GetProperty(UnityRuntimeServices.GetProperty(this.Yandere, "ClubCamera"), "active"), false))
 					{
 						if (this.CameraReactPhase == 1)
 						{
@@ -4395,7 +4395,7 @@ public class StudentScript : MonoBehaviour
 		this.CameraReacting = true;
 		this.CameraReactPhase = 1;
 		this.Routine = false;
-		if (!this.Yandere.ClubCamera.active)
+		if (RuntimeServices.EqualityOperator(UnityRuntimeServices.GetProperty(UnityRuntimeServices.GetProperty(this.Yandere, "ClubCamera"), "active"), false))
 		{
 			this.Character.animation.CrossFade(this.CameraAnims[1]);
 		}

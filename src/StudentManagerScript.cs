@@ -25,7 +25,11 @@ public class StudentManagerScript : MonoBehaviour
 
 	public TaskManagerScript TaskManager;
 
+	public ContainerScript Container;
+
 	public FountainScript Fountain;
+
+	public TrashCanScript TrashCan;
 
 	public StudentScript Reporter;
 
@@ -344,6 +348,8 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			this.ID++;
 		}
+		this.Container.UpdatePrompts();
+		this.TrashCan.UpdatePrompt();
 	}
 
 	public virtual void UpdateMe(int ID)

@@ -68,6 +68,12 @@ public class JukeboxScript : MonoBehaviour
 
 	public AudioClip[] NoSanities;
 
+	public AudioClip[] AlternateFull;
+
+	public AudioClip[] AlternateHalf;
+
+	public AudioClip[] AlternateNo;
+
 	public JukeboxScript()
 	{
 		this.Dip = 1f;
@@ -75,6 +81,12 @@ public class JukeboxScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		if (UnityEngine.Random.Range(0, 2) > 0)
+		{
+			this.FullSanities = this.AlternateFull;
+			this.HalfSanities = this.AlternateHalf;
+			this.NoSanities = this.AlternateNo;
+		}
 		if (PlayerPrefs.GetInt("SchoolAtmosphereSet") == 0)
 		{
 			PlayerPrefs.SetInt("SchoolAtmosphereSet", 1);

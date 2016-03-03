@@ -22,6 +22,8 @@ public class HeartbrokenCursorScript : MonoBehaviour
 
 	public int Selected;
 
+	public int Options;
+
 	public AudioClip SelectSound;
 
 	public AudioClip MoveSound;
@@ -29,6 +31,7 @@ public class HeartbrokenCursorScript : MonoBehaviour
 	public HeartbrokenCursorScript()
 	{
 		this.Selected = 1;
+		this.Options = 4;
 	}
 
 	public virtual void Start()
@@ -56,7 +59,7 @@ public class HeartbrokenCursorScript : MonoBehaviour
 				if (this.InputManager.TappedDown)
 				{
 					this.Selected++;
-					if (this.Selected > 4)
+					if (this.Selected > this.Options)
 					{
 						this.Selected = 1;
 					}
@@ -68,7 +71,7 @@ public class HeartbrokenCursorScript : MonoBehaviour
 					this.Selected--;
 					if (this.Selected < 1)
 					{
-						this.Selected = 4;
+						this.Selected = this.Options;
 					}
 					this.audio.clip = this.MoveSound;
 					this.audio.Play();

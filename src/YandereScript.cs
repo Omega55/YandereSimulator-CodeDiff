@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$2339 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$2373 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$2354;
+		internal YandereScript $self_$2388;
 
-		public $ApplyCustomCostume$2339(YandereScript self_)
+		public $ApplyCustomCostume$2373(YandereScript self_)
 		{
-			this.$self_$2354 = self_;
+			this.$self_$2388 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$2339.$(this.$self_$2354);
+			return new YandereScript.$ApplyCustomCostume$2373.$(this.$self_$2388);
 		}
 	}
 
@@ -61,6 +61,8 @@ public class YandereScript : MonoBehaviour
 
 	public NotificationManagerScript NotificationManager;
 
+	public ObstacleDetectorScript ObstacleDetector;
+
 	public AccessoryGroupScript AccessoryGroup;
 
 	public DumpsterHandleScript DumpsterHandle;
@@ -90,6 +92,8 @@ public class YandereScript : MonoBehaviour
 	public WeaponMenuScript WeaponMenu;
 
 	public PromptScript NearestPrompt;
+
+	public ContainerScript Container;
 
 	public TallLockerScript MyLocker;
 
@@ -129,6 +133,8 @@ public class YandereScript : MonoBehaviour
 
 	public Transform DismemberSpot;
 
+	public Transform CameraTarget;
+
 	public Transform CameraFocus;
 
 	public Transform RightBreast;
@@ -140,6 +146,8 @@ public class YandereScript : MonoBehaviour
 	public Transform PelvisRoot;
 
 	public Transform CameraPOV;
+
+	public Transform Backpack;
 
 	public Transform DropSpot;
 
@@ -419,12 +427,6 @@ public class YandereScript : MonoBehaviour
 
 	public bool Aiming;
 
-	public bool Demonic;
-
-	public bool FlapOut;
-
-	public bool Slender;
-
 	public bool CrouchButtonDown;
 
 	public bool UsingController;
@@ -449,6 +451,8 @@ public class YandereScript : MonoBehaviour
 
 	public bool Possessed;
 
+	public bool Attacked;
+
 	public bool CanTranq;
 
 	public bool Collapse;
@@ -457,15 +461,23 @@ public class YandereScript : MonoBehaviour
 
 	public bool RoofPush;
 
+	public bool Demonic;
+
+	public bool FlapOut;
+
 	public bool Noticed;
 
 	public bool InClass;
+
+	public bool Slender;
 
 	public bool CanMove;
 
 	public bool Chased;
 
 	public bool Gloved;
+
+	public bool Shoved;
 
 	public bool Armed;
 
@@ -731,13 +743,7 @@ public class YandereScript : MonoBehaviour
 
 	public Texture JudoGiTexture;
 
-	public GameObject ClubKerchief;
-
-	public GameObject ClubBandana;
-
-	public GameObject ClubCamera;
-
-	public GameObject ClubChoker;
+	public GameObject[] ClubAccessories;
 
 	public bool LiftOff;
 
@@ -791,6 +797,7 @@ public class YandereScript : MonoBehaviour
 		float num2 = localPosition.y = (float)num;
 		Vector3 vector = this.EasterEggMenu.transform.localPosition = localPosition;
 		this.Smartphone.transform.parent.active = false;
+		this.ObstacleDetector.gameObject.active = false;
 		this.LongHair[0].gameObject.active = false;
 		this.PunishedAccessories.active = false;
 		this.SukebanAccessories.active = false;
@@ -906,6 +913,9 @@ public class YandereScript : MonoBehaviour
 		this.Character.animation["f02_holdTorso_00"].layer = 12;
 		this.Character.animation.Play("f02_holdTorso_00");
 		this.Character.animation["f02_holdTorso_00"].weight = (float)0;
+		this.Character.animation["f02_carryCan_00"].layer = 13;
+		this.Character.animation.Play("f02_carryCan_00");
+		this.Character.animation["f02_carryCan_00"].weight = (float)0;
 		this.Character.animation["f02_dipping_00"].speed = (float)2;
 		this.Character.animation["f02_stripping_00"].speed = 1.5f;
 		this.Character.animation["f02_falconIdle_00"].speed = (float)2;
@@ -1265,7 +1275,7 @@ public class YandereScript : MonoBehaviour
 				if (this.Aiming)
 				{
 					this.Character.animation["f02_cameraPose_00"].weight = Mathf.Lerp(this.Character.animation["f02_cameraPose_00"].weight, (float)1, Time.deltaTime * (float)10);
-					if (this.ClubCamera.active && (Input.GetAxis("DpadY") != (float)0 || Input.GetAxis("Mouse ScrollWheel") != (float)0))
+					if (this.ClubAccessories[7].active && (Input.GetAxis("DpadY") != (float)0 || Input.GetAxis("Mouse ScrollWheel") != (float)0))
 					{
 						this.Smartphone.fieldOfView = this.Smartphone.fieldOfView - Input.GetAxis("DpadY");
 						this.Smartphone.fieldOfView = this.Smartphone.fieldOfView - Input.GetAxis("Mouse ScrollWheel") * (float)10;
@@ -1892,6 +1902,32 @@ public class YandereScript : MonoBehaviour
 					this.Dismembering = false;
 					this.CanMove = true;
 				}
+				if (this.Shoved)
+				{
+					if (this.Character.animation["f02_shoveA_00"].time >= this.Character.animation["f02_shoveA_00"].length)
+					{
+						float x = this.Hips.transform.position.x;
+						Vector3 position2 = this.transform.position;
+						float num4 = position2.x = x;
+						Vector3 vector5 = this.transform.position = position2;
+						float z = this.Hips.transform.position.z;
+						Vector3 position3 = this.transform.position;
+						float num5 = position3.z = z;
+						Vector3 vector6 = this.transform.position = position3;
+						this.CameraTarget.localPosition = new Vector3((float)0, (float)1, (float)0);
+						this.Character.animation.Play(this.IdleAnim);
+						this.Shoved = false;
+						this.CanMove = true;
+					}
+					else
+					{
+						this.CameraTarget.position = new Vector3(this.Hips.position.x, (float)1, this.Hips.position.z);
+					}
+				}
+				if (this.Attacked && this.Character.animation["f02_swingB_00"].time >= this.Character.animation["f02_swingB_00"].length)
+				{
+					this.ShoulderCamera.HeartbrokenCamera.active = true;
+				}
 			}
 			if (!this.Laughing)
 			{
@@ -1936,10 +1972,10 @@ public class YandereScript : MonoBehaviour
 					this.Character.animation.CrossFade("f02_scaredIdle_00");
 					this.targetRotation = Quaternion.LookRotation(this.Senpai.position - this.transform.position);
 					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
-					int num4 = 0;
+					int num6 = 0;
 					Vector3 localEulerAngles2 = this.transform.localEulerAngles;
-					float num5 = localEulerAngles2.x = (float)num4;
-					Vector3 vector5 = this.transform.localEulerAngles = localEulerAngles2;
+					float num7 = localEulerAngles2.x = (float)num6;
+					Vector3 vector7 = this.transform.localEulerAngles = localEulerAngles2;
 				}
 				else if (this.Character.animation["f02_down_22"].time >= this.Character.animation["f02_down_22"].length)
 				{
@@ -2079,27 +2115,27 @@ public class YandereScript : MonoBehaviour
 			}
 			float a5 = (float)1 - this.YandereFade / (float)100;
 			Color color = this.RightRedEye.material.color;
-			float num6 = color.a = a5;
+			float num8 = color.a = a5;
 			Color color2 = this.RightRedEye.material.color = color;
 			float a6 = (float)1 - this.YandereFade / (float)100;
 			Color color3 = this.LeftRedEye.material.color;
-			float num7 = color3.a = a6;
+			float num9 = color3.a = a6;
 			Color color4 = this.LeftRedEye.material.color = color3;
 			float g = this.YandereFade / (float)100;
 			Color color5 = this.RightYandereEye.material.color;
-			float num8 = color5.g = g;
+			float num10 = color5.g = g;
 			Color color6 = this.RightYandereEye.material.color = color5;
 			float b = this.YandereFade / (float)100;
 			Color color7 = this.RightYandereEye.material.color;
-			float num9 = color7.b = b;
+			float num11 = color7.b = b;
 			Color color8 = this.RightYandereEye.material.color = color7;
 			float g2 = this.YandereFade / (float)100;
 			Color color9 = this.LeftYandereEye.material.color;
-			float num10 = color9.g = g2;
+			float num12 = color9.g = g2;
 			Color color10 = this.LeftYandereEye.material.color = color9;
 			float b2 = this.YandereFade / (float)100;
 			Color color11 = this.LeftYandereEye.material.color;
-			float num11 = color11.b = b2;
+			float num13 = color11.b = b2;
 			Color color12 = this.LeftYandereEye.material.color = color11;
 			if (this.Armed)
 			{
@@ -2372,10 +2408,10 @@ public class YandereScript : MonoBehaviour
 						if (this.Shoes[0].active)
 						{
 							GameObject gameObject5 = (GameObject)UnityEngine.Object.Instantiate(this.ShoePair, this.transform.position + new Vector3(-1.6f, 0.045f, (float)0), Quaternion.identity);
-							int num12 = -90;
+							int num14 = -90;
 							Vector3 eulerAngles2 = gameObject5.transform.eulerAngles;
-							float num13 = eulerAngles2.y = (float)num12;
-							Vector3 vector6 = gameObject5.transform.eulerAngles = eulerAngles2;
+							float num15 = eulerAngles2.y = (float)num14;
+							Vector3 vector8 = gameObject5.transform.eulerAngles = eulerAngles2;
 							this.Shoes[0].active = false;
 							this.Shoes[1].active = false;
 						}
@@ -2520,9 +2556,9 @@ public class YandereScript : MonoBehaviour
 				{
 					this.Character.animation.CrossFade("f02_counterA_00");
 					float y3 = this.TargetStudent.transform.position.y;
-					Vector3 position2 = this.Character.transform.position;
-					float num14 = position2.y = y3;
-					Vector3 vector7 = this.Character.transform.position = position2;
+					Vector3 position4 = this.Character.transform.position;
+					float num16 = position4.y = y3;
+					Vector3 vector9 = this.Character.transform.position = position4;
 				}
 			}
 			if (!this.Attacking && !this.Dragging && this.PickUp == null && !this.Aiming && !this.Crawling && !this.Pouring && !this.DumpsterGrabbing && !this.Stripping && !this.Bathing && !this.Struggling && !this.Degloving && !this.Possessed && !this.Carrying && !this.Dismembering && this.LaughIntensity < (float)16)
@@ -2539,11 +2575,11 @@ public class YandereScript : MonoBehaviour
 			{
 				float a7 = (float)1 - this.Sanity / (float)100;
 				Color color13 = this.RightYandereEye.material.color;
-				float num15 = color13.a = a7;
+				float num17 = color13.a = a7;
 				Color color14 = this.RightYandereEye.material.color = color13;
 				float a8 = (float)1 - this.Sanity / (float)100;
 				Color color15 = this.LeftYandereEye.material.color;
-				float num16 = color15.a = a8;
+				float num18 = color15.a = a8;
 				Color color16 = this.LeftYandereEye.material.color = color15;
 				this.EyeShrink = Mathf.Lerp(this.EyeShrink, 0.5f * ((float)1 - this.Sanity / (float)100), Time.deltaTime * (float)10);
 			}
@@ -2787,26 +2823,26 @@ public class YandereScript : MonoBehaviour
 			}
 			if (this.transform.position.y < (float)0)
 			{
-				int num17 = 0;
-				Vector3 position3 = this.transform.position;
-				float num18 = position3.y = (float)num17;
-				Vector3 vector8 = this.transform.position = position3;
+				int num19 = 0;
+				Vector3 position5 = this.transform.position;
+				float num20 = position5.y = (float)num19;
+				Vector3 vector10 = this.transform.position = position5;
 			}
 			if (this.transform.position.z < -49.5f)
 			{
-				float z = -49.5f;
-				Vector3 position4 = this.transform.position;
-				float num19 = position4.z = z;
-				Vector3 vector9 = this.transform.position = position4;
+				float z2 = -49.5f;
+				Vector3 position6 = this.transform.position;
+				float num21 = position6.z = z2;
+				Vector3 vector11 = this.transform.position = position6;
 			}
-			int num20 = 0;
-			Vector3 eulerAngles3 = this.transform.eulerAngles;
-			float num21 = eulerAngles3.x = (float)num20;
-			Vector3 vector10 = this.transform.eulerAngles = eulerAngles3;
 			int num22 = 0;
+			Vector3 eulerAngles3 = this.transform.eulerAngles;
+			float num23 = eulerAngles3.x = (float)num22;
+			Vector3 vector12 = this.transform.eulerAngles = eulerAngles3;
+			int num24 = 0;
 			Vector3 eulerAngles4 = this.transform.eulerAngles;
-			float num23 = eulerAngles4.z = (float)num22;
-			Vector3 vector11 = this.transform.eulerAngles = eulerAngles4;
+			float num25 = eulerAngles4.z = (float)num24;
+			Vector3 vector13 = this.transform.eulerAngles = eulerAngles4;
 		}
 		else
 		{
@@ -2987,18 +3023,21 @@ public class YandereScript : MonoBehaviour
 
 	public virtual void StainWeapon()
 	{
-		this.Weapon[this.Equipped].Victims[this.TargetStudent.StudentID] = true;
-		this.Weapon[this.Equipped].Blood.enabled = true;
-		if (this.Gloved && !this.Gloves.Blood.enabled)
+		if (this.Weapon[this.Equipped] != null)
 		{
-			this.Gloves.PickUp.Evidence = true;
-			this.Gloves.Blood.enabled = true;
-			this.Police.BloodyClothing = this.Police.BloodyClothing + 1;
-		}
-		if (!this.Weapon[this.Equipped].Evidence)
-		{
-			this.Weapon[this.Equipped].Evidence = true;
-			this.Police.MurderWeapons = this.Police.MurderWeapons + 1;
+			this.Weapon[this.Equipped].Victims[this.TargetStudent.StudentID] = true;
+			this.Weapon[this.Equipped].Blood.enabled = true;
+			if (this.Gloved && !this.Gloves.Blood.enabled)
+			{
+				this.Gloves.PickUp.Evidence = true;
+				this.Gloves.Blood.enabled = true;
+				this.Police.BloodyClothing = this.Police.BloodyClothing + 1;
+			}
+			if (!this.Weapon[this.Equipped].Evidence)
+			{
+				this.Weapon[this.Equipped].Evidence = true;
+				this.Police.MurderWeapons = this.Police.MurderWeapons + 1;
+			}
 		}
 	}
 
@@ -3503,7 +3542,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$2339(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$2373(this).GetEnumerator();
 	}
 
 	public virtual void WearGloves()
@@ -3850,43 +3889,18 @@ public class YandereScript : MonoBehaviour
 
 	public virtual void ClubAccessory()
 	{
-		this.ClubKerchief.active = false;
-		this.ClubBandana.active = false;
-		this.ClubCamera.active = false;
-		this.ClubChoker.active = false;
-		if (PlayerPrefs.GetInt("Club") == 1)
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.ClubAccessories))
 		{
-			this.ClubKerchief.active = true;
+			if (this.ClubAccessories[this.ID] != null)
+			{
+				this.ClubAccessories[this.ID].active = false;
+			}
+			this.ID++;
 		}
-		if (PlayerPrefs.GetInt("Club") == 2)
+		if (PlayerPrefs.GetInt("Club") > 0)
 		{
-		}
-		if (PlayerPrefs.GetInt("Club") == 3)
-		{
-			this.ClubChoker.active = true;
-		}
-		if (PlayerPrefs.GetInt("Club") == 4)
-		{
-		}
-		if (PlayerPrefs.GetInt("Club") == 5)
-		{
-		}
-		if (PlayerPrefs.GetInt("Club") == 6)
-		{
-			this.ClubBandana.active = true;
-		}
-		if (PlayerPrefs.GetInt("Club") == 7)
-		{
-			this.ClubCamera.active = true;
-		}
-		if (PlayerPrefs.GetInt("Club") == 8)
-		{
-		}
-		if (PlayerPrefs.GetInt("Club") == 9)
-		{
-		}
-		if (PlayerPrefs.GetInt("Club") == 10)
-		{
+			this.ClubAccessories[PlayerPrefs.GetInt("Club")].active = true;
 		}
 	}
 

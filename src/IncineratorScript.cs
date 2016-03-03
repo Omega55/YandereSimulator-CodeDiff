@@ -135,6 +135,10 @@ public class IncineratorScript : MonoBehaviour
 					{
 						this.YandereHoldingEvidence = true;
 					}
+					else if (this.Yandere.PickUp.Garbage)
+					{
+						this.YandereHoldingEvidence = true;
+					}
 					else
 					{
 						this.YandereHoldingEvidence = false;

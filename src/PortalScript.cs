@@ -4,6 +4,8 @@ using UnityEngine;
 [Serializable]
 public class PortalScript : MonoBehaviour
 {
+	public DelinquentManagerScript DelinquentManager;
+
 	public StudentManagerScript StudentManager;
 
 	public PromptBarScript PromptBar;
@@ -191,6 +193,7 @@ public class PortalScript : MonoBehaviour
 					if (this.Clock.HourTime < (float)13)
 					{
 						this.Yandere.Incinerator.Timer = this.Yandere.Incinerator.Timer - ((float)780 - this.Clock.PresentTime);
+						this.DelinquentManager.CheckTime();
 						this.Clock.DeactivateTrespassZones();
 						this.Clock.PresentTime = (float)780;
 						this.Clock.Period = this.Clock.Period + 1;
@@ -198,6 +201,7 @@ public class PortalScript : MonoBehaviour
 					else
 					{
 						this.Yandere.Incinerator.Timer = this.Yandere.Incinerator.Timer - (930f - this.Clock.PresentTime);
+						this.DelinquentManager.CheckTime();
 						this.Clock.DeactivateTrespassZones();
 						this.Clock.PresentTime = 930f;
 						this.Clock.Period = this.Clock.Period + 1;

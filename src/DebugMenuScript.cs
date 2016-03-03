@@ -14,7 +14,11 @@ public class DebugMenuScript : MonoBehaviour
 
 	public ClockScript Clock;
 
+	public ZoomScript Zoom;
+
 	public GameObject SacrificialArm;
+
+	public GameObject CircularSaw;
 
 	public Transform[] TeleportSpot;
 
@@ -201,6 +205,18 @@ public class DebugMenuScript : MonoBehaviour
 				PlayerPrefs.SetInt("Seduction", 5);
 				this.Window.active = false;
 			}
+			else if (Input.GetKeyDown("t"))
+			{
+				if (!this.Zoom.OverShoulder)
+				{
+					this.Zoom.OverShoulder = true;
+				}
+				else
+				{
+					this.Zoom.OverShoulder = false;
+				}
+				this.Window.active = false;
+			}
 			else if (Input.GetKeyDown("backspace"))
 			{
 				Time.timeScale = (float)1;
@@ -224,12 +240,24 @@ public class DebugMenuScript : MonoBehaviour
 				this.Clock.HourTime = this.Clock.PresentTime / (float)60;
 				this.Window.active = false;
 			}
-			else if (Input.GetKeyDown("left ctrl"))
+			else if (Input.GetKeyDown("left alt"))
 			{
+				this.CircularSaw.transform.position = this.TeleportSpot[6].position;
 				this.Yandere.transform.position = this.TeleportSpot[6].position;
 				if (this.StudentManager.Students[26] != null)
 				{
 					this.StudentManager.Students[26].transform.position = this.TeleportSpot[6].position;
+				}
+				this.Clock.PresentTime = (float)435;
+				this.Clock.HourTime = this.Clock.PresentTime / (float)60;
+				this.Window.active = false;
+			}
+			else if (Input.GetKeyDown("left ctrl"))
+			{
+				this.Yandere.transform.position = this.TeleportSpot[7].position;
+				if (this.StudentManager.Students[26] != null)
+				{
+					this.StudentManager.Students[26].transform.position = this.TeleportSpot[7].position;
 				}
 				this.Clock.PresentTime = (float)1015;
 				this.Clock.HourTime = this.Clock.PresentTime / (float)60;

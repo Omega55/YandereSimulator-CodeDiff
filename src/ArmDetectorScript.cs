@@ -38,6 +38,8 @@ public class ArmDetectorScript : MonoBehaviour
 
 	public AudioClip DemonMusic;
 
+	public AudioClip DemonLine;
+
 	public ArmDetectorScript()
 	{
 		this.Phase = 1;
@@ -109,6 +111,8 @@ public class ArmDetectorScript : MonoBehaviour
 					this.Skull.Prompt.Hide();
 					this.Skull.Prompt.enabled = false;
 					this.Skull.enabled = false;
+					this.audio.clip = this.DemonLine;
+					this.audio.Play();
 					this.Phase++;
 				}
 			}

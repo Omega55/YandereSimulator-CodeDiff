@@ -19,6 +19,10 @@ public class PickUpScript : MonoBehaviour
 
 	public Collider MyCollider;
 
+	public Vector3 TrashPosition;
+
+	public Vector3 TrashRotation;
+
 	public Vector3 OriginalScale;
 
 	public Vector3 HoldPosition;
@@ -74,6 +78,7 @@ public class PickUpScript : MonoBehaviour
 	{
 		if (this.Prompt.Circle[3].fillAmount <= (float)0)
 		{
+			this.Prompt.Circle[3].fillAmount = (float)1;
 			if (this.Yandere.PickUp != null)
 			{
 				this.Yandere.PickUp.Drop();
@@ -114,6 +119,10 @@ public class PickUpScript : MonoBehaviour
 			for (int i = 0; i < Extensions.get_length(this.Outline); i++)
 			{
 				this.Outline[i].color = new Color((float)0, (float)0, (float)0, (float)1);
+			}
+			if (this.BodyPart)
+			{
+				this.Yandere.NearBodies = this.Yandere.NearBodies + 1;
 			}
 			this.Yandere.StudentManager.UpdateStudents();
 		}
@@ -156,6 +165,7 @@ public class PickUpScript : MonoBehaviour
 			Vector3 vector2 = this.transform.localEulerAngles = localEulerAngles2;
 		}
 		this.rigidbody.constraints = this.OriginalConstraints;
+		this.rigidbody.useGravity = true;
 		if (this.Dumped)
 		{
 			this.transform.position = this.Incinerator.DumpPoint.position;
@@ -182,6 +192,10 @@ public class PickUpScript : MonoBehaviour
 			}
 		}
 		this.transform.localScale = this.OriginalScale;
+		if (this.BodyPart)
+		{
+			this.Yandere.NearBodies = this.Yandere.NearBodies - 1;
+		}
 		this.Yandere.StudentManager.UpdateStudents();
 	}
 

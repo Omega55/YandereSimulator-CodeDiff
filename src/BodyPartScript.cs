@@ -8,6 +8,8 @@ public class BodyPartScript : MonoBehaviour
 
 	public int StudentID;
 
+	public int Type;
+
 	public virtual void Main()
 	{
 	}
