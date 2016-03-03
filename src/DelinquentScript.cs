@@ -1,4 +1,5 @@
 ﻿using System;
+using Boo.Lang.Runtime;
 using UnityEngine;
 using UnityScript.Lang;
 
@@ -377,6 +378,10 @@ public class DelinquentScript : MonoBehaviour
 					this.Shove();
 				}
 			}
+		}
+		if (Input.GetKeyDown("v") && this.LongSkirt != null)
+		{
+			RuntimeServices.SetProperty(this.MyRenderer, "sharedMesh", this.LongSkirt);
 		}
 	}
 

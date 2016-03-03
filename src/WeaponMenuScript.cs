@@ -117,6 +117,12 @@ public class WeaponMenuScript : MonoBehaviour
 					else if (Input.GetKeyDown("4"))
 					{
 						this.Selected = 3;
+						if (this.Yandere.Container != null && this.Yandere.ObstacleDetector.Obstacles == 0)
+						{
+							this.Yandere.ObstacleDetector.active = false;
+							this.Yandere.Container.Drop();
+							this.UpdateSprites();
+						}
 					}
 					this.UpdateSprites();
 				}
