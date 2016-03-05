@@ -2078,7 +2078,7 @@ public class StudentScript : MonoBehaviour
 				{
 					this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - this.transform.position);
 					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
-					if (RuntimeServices.EqualityOperator(UnityRuntimeServices.GetProperty(UnityRuntimeServices.GetProperty(this.Yandere, "ClubCamera"), "active"), false))
+					if (!this.Yandere.ClubAccessories[7].active)
 					{
 						if (this.CameraReactPhase == 1)
 						{
@@ -2583,6 +2583,7 @@ public class StudentScript : MonoBehaviour
 					this.OccultBook.active = false;
 					if (this.BadTime)
 					{
+						this.Yandere.EmptyHands();
 						this.BecomeRagdoll();
 						this.Yandere.RagdollPK.connectedBody = this.Ragdoll.AllRigidbodies[5];
 						this.Yandere.RagdollPK.connectedAnchor = this.Ragdoll.LimbAnchor[4];
@@ -4395,7 +4396,7 @@ public class StudentScript : MonoBehaviour
 		this.CameraReacting = true;
 		this.CameraReactPhase = 1;
 		this.Routine = false;
-		if (RuntimeServices.EqualityOperator(UnityRuntimeServices.GetProperty(UnityRuntimeServices.GetProperty(this.Yandere, "ClubCamera"), "active"), false))
+		if (!this.Yandere.ClubAccessories[7].active)
 		{
 			this.Character.animation.CrossFade(this.CameraAnims[1]);
 		}
