@@ -217,7 +217,7 @@ public class ContainerScript : MonoBehaviour
 				this.Prompt.HideButton[1] = true;
 			}
 		}
-		else
+		else if (this.Prompt.Label[0] != null)
 		{
 			this.Prompt.Label[0].text = "     Open";
 			this.Prompt.HideButton[1] = true;

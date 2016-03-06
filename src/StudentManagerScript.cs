@@ -336,10 +336,26 @@ public class StudentManagerScript : MonoBehaviour
 						this.Students[this.ID].Prompt.HideButton[0] = true;
 					}
 				}
-				else if (this.Yandere.Armed && this.Students[this.ID].Slave)
+				else if (this.Yandere.Armed)
 				{
-					this.Students[this.ID].Prompt.HideButton[0] = false;
-					this.Students[this.ID].Prompt.Label[0].text = "     " + "Give Weapon";
+					if (this.Yandere.Weapon[this.Yandere.Equipped].Concealable)
+					{
+						if (this.Students[this.ID].Slave)
+						{
+							this.Students[this.ID].Prompt.HideButton[0] = false;
+							this.Students[this.ID].Prompt.Label[0].text = "     " + "Give Weapon";
+						}
+					}
+					else if (this.Students[this.ID].Slave)
+					{
+						this.Students[this.ID].Prompt.HideButton[0] = true;
+						this.Students[this.ID].Prompt.Label[0].text = string.Empty;
+					}
+				}
+				else if (this.Students[this.ID].Slave)
+				{
+					this.Students[this.ID].Prompt.HideButton[0] = true;
+					this.Students[this.ID].Prompt.Label[0].text = string.Empty;
 				}
 			}
 			if (this.Sans && this.Students[this.ID] != null)

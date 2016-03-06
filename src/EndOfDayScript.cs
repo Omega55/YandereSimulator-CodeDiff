@@ -387,7 +387,17 @@ public class EndOfDayScript : MonoBehaviour
 								PlayerPrefs.SetInt("Club", 0);
 							}
 						}
-						if (this.ClubManager.LeaderDead)
+						if (this.ClubManager.LeaderMissing)
+						{
+							PlayerPrefs.SetInt("Club_" + this.ClubArray[this.ClubID] + "_Closed", 1);
+							this.Label.text = "The leader of the " + this.ClubNames[this.ClubID] + " has gone missing. The " + this.ClubNames[this.ClubID] + " cannot operate without its leader. The club disbands.";
+							this.ClubClosed = true;
+							if (PlayerPrefs.GetInt("Club") == this.ClubArray[this.ClubID])
+							{
+								PlayerPrefs.SetInt("Club", 0);
+							}
+						}
+						else if (this.ClubManager.LeaderDead)
 						{
 							PlayerPrefs.SetInt("Club_" + this.ClubArray[this.ClubID] + "_Closed", 1);
 							this.Label.text = "The leader of the " + this.ClubNames[this.ClubID] + " is dead. The remaining members of the club decide to disband the club.";

@@ -1414,7 +1414,7 @@ public class YandereScript : MonoBehaviour
 				{
 					this.targetRotation = Quaternion.LookRotation(this.Incinerator.transform.position - this.transform.position);
 					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
-					this.MoveTowardsTarget(this.Incinerator.transform.position + Vector3.fwd * (float)2);
+					this.MoveTowardsTarget(this.Incinerator.transform.position + Vector3.right * (float)-2);
 					if (this.DumpTimer == (float)0 && this.Carrying)
 					{
 						this.Character.animation["f02_carryDisposeA_00"].time = 2.5f;
@@ -1866,6 +1866,7 @@ public class YandereScript : MonoBehaviour
 					this.DumpTimer += Time.deltaTime;
 					if (this.DumpTimer > (float)1)
 					{
+						this.CameraTarget.position = Vector3.MoveTowards(this.CameraTarget.position, new Vector3(this.Hips.position.x, this.transform.position.y + (float)1, this.Hips.position.z), Time.deltaTime * (float)10);
 						if (this.Character.animation["f02_carryDisposeA_00"].time >= 4.5f)
 						{
 							this.StopCarrying();
@@ -1889,6 +1890,7 @@ public class YandereScript : MonoBehaviour
 						}
 						if (this.Character.animation["f02_carryDisposeA_00"].time >= this.Character.animation["f02_carryDisposeA_00"].length)
 						{
+							this.CameraTarget.localPosition = new Vector3((float)0, (float)1, (float)0);
 							this.Dropping = false;
 							this.CanMove = true;
 							this.DumpTimer = (float)0;
@@ -1921,7 +1923,7 @@ public class YandereScript : MonoBehaviour
 					}
 					else
 					{
-						this.CameraTarget.position = new Vector3(this.Hips.position.x, (float)1, this.Hips.position.z);
+						this.CameraTarget.position = Vector3.MoveTowards(this.CameraTarget.position, new Vector3(this.Hips.position.x, this.transform.position.y + (float)1, this.Hips.position.z), Time.deltaTime * (float)10);
 					}
 				}
 				if (this.Attacked && this.Character.animation["f02_swingB_00"].time >= this.Character.animation["f02_swingB_00"].length)
@@ -2401,6 +2403,7 @@ public class YandereScript : MonoBehaviour
 				}
 				else if (this.RoofPush)
 				{
+					this.CameraTarget.position = Vector3.MoveTowards(this.CameraTarget.position, new Vector3(this.Hips.position.x, this.transform.position.y + (float)1, this.Hips.position.z), Time.deltaTime * (float)10);
 					this.MoveTowardsTarget(this.TargetStudent.transform.position + this.TargetStudent.transform.forward * (float)-1);
 					this.Character.animation.CrossFade("f02_roofPushA_00");
 					if (this.Character.animation["f02_roofPushA_00"].time > 4.33333349f)
@@ -2424,6 +2427,7 @@ public class YandereScript : MonoBehaviour
 					}
 					if (this.Character.animation["f02_roofPushA_00"].time > this.Character.animation["f02_roofPushA_00"].length)
 					{
+						this.CameraTarget.localPosition = new Vector3((float)0, (float)1, (float)0);
 						this.TargetStudent.Dead = true;
 						this.Attacking = false;
 						this.RoofPush = false;

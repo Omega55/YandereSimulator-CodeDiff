@@ -289,6 +289,7 @@ public class RagdollScript : MonoBehaviour
 						this.Police.PoisonScene = false;
 					}
 					this.Incinerator.Corpses = this.Incinerator.Corpses + 1;
+					this.Incinerator.CorpseList[this.Incinerator.Corpses] = this.StudentID;
 					this.active = false;
 				}
 			}

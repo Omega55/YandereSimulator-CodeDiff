@@ -10,6 +10,12 @@ public class IncineratorScript : MonoBehaviour
 
 	public ClockScript Clock;
 
+	public AudioClip IncineratorActivate;
+
+	public AudioClip IncineratorClose;
+
+	public AudioClip IncineratorOpen;
+
 	public AudioSource FlameSound;
 
 	public ParticleSystem Flames;
@@ -46,11 +52,7 @@ public class IncineratorScript : MonoBehaviour
 
 	public float Timer;
 
-	public AudioClip IncineratorActivate;
-
-	public AudioClip IncineratorClose;
-
-	public AudioClip IncineratorOpen;
+	public int[] CorpseList;
 
 	public virtual void Start()
 	{
@@ -250,6 +252,10 @@ public class IncineratorScript : MonoBehaviour
 		}
 		if (this.Prompt.Circle[0].fillAmount <= (float)0)
 		{
+			for (int i = 0; i < this.CorpseList.Length; i++)
+			{
+				PlayerPrefs.SetInt("Student_" + this.CorpseList[i] + "_Missing", 1);
+			}
 			this.Panel.active = true;
 			this.Timer = 60f;
 			this.audio.clip = this.IncineratorActivate;

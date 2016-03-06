@@ -380,7 +380,7 @@ public class CosmeticScript : MonoBehaviour
 			this.RightEyeRenderer.material.color = this.CorrectColor;
 			this.LeftEyeRenderer.material.color = this.CorrectColor;
 		}
-		if (this.StudentID == 20)
+		if (this.StudentID == 20 && this.transform.position != new Vector3((float)0, (float)0, (float)0))
 		{
 			this.RightEyeRenderer.material.mainTexture = this.DefaultFaceTexture;
 			this.LeftEyeRenderer.material.mainTexture = this.DefaultFaceTexture;

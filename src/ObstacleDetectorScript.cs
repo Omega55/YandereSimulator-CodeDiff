@@ -6,13 +6,16 @@ public class ObstacleDetectorScript : MonoBehaviour
 {
 	public YandereScript Yandere;
 
-	public GameObject X;
+	public GameObject ControllerX;
+
+	public GameObject KeyboardX;
 
 	public int Obstacles;
 
 	public virtual void Start()
 	{
-		this.X.active = false;
+		this.ControllerX.active = false;
+		this.KeyboardX.active = false;
 	}
 
 	public virtual void OnTriggerEnter(Collider other)
@@ -22,7 +25,8 @@ public class ObstacleDetectorScript : MonoBehaviour
 			this.Obstacles++;
 			if (this.Yandere.Container != null)
 			{
-				this.X.active = true;
+				this.ControllerX.active = true;
+				this.KeyboardX.active = true;
 			}
 			Debug.Log("I am colliding with " + other.name);
 		}
@@ -35,7 +39,8 @@ public class ObstacleDetectorScript : MonoBehaviour
 			this.Obstacles--;
 			if (this.Obstacles == 0)
 			{
-				this.X.active = false;
+				this.ControllerX.active = false;
+				this.KeyboardX.active = false;
 			}
 			Debug.Log("I am no longer colliding with " + other.name);
 		}
@@ -45,7 +50,8 @@ public class ObstacleDetectorScript : MonoBehaviour
 	{
 		if (this.Obstacles > 0)
 		{
-			this.X.active = true;
+			this.ControllerX.active = true;
+			this.KeyboardX.active = true;
 		}
 	}
 

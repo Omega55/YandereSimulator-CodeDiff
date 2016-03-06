@@ -193,7 +193,7 @@ public class ArmDetectorScript : MonoBehaviour
 
 	public virtual void OnTriggerEnter(Collider other)
 	{
-		if (other.transform.parent == null && (PickUpScript)other.gameObject.GetComponent(typeof(PickUpScript)) != null && ((PickUpScript)other.gameObject.GetComponent(typeof(PickUpScript))).BodyPart && ((BodyPartScript)other.gameObject.GetComponent(typeof(BodyPartScript))).Sacrifice && (other.gameObject.name == "RightArm(Clone)" || other.gameObject.name == "LeftArm(Clone)" || other.gameObject.name == "MaleRightArm(Clone)" || other.gameObject.name == "MaleLeftArm(Clone)" || other.gameObject.name == "SacrificialArm(Clone)"))
+		if (other.transform.parent == null && (PickUpScript)other.gameObject.GetComponent(typeof(PickUpScript)) != null && ((PickUpScript)other.gameObject.GetComponent(typeof(PickUpScript))).BodyPart && ((BodyPartScript)other.gameObject.GetComponent(typeof(BodyPartScript))).Sacrifice && (other.gameObject.name == "FemaleRightArm(Clone)" || other.gameObject.name == "FemaleLeftArm(Clone)" || other.gameObject.name == "MaleRightArm(Clone)" || other.gameObject.name == "MaleLeftArm(Clone)" || other.gameObject.name == "SacrificialArm(Clone)"))
 		{
 			bool flag = true;
 			for (int i = 1; i < 11; i++)
@@ -213,7 +213,7 @@ public class ArmDetectorScript : MonoBehaviour
 
 	public virtual void OnTriggerExit(Collider other)
 	{
-		if ((PickUpScript)other.gameObject.GetComponent(typeof(PickUpScript)) != null && ((PickUpScript)other.gameObject.GetComponent(typeof(PickUpScript))).BodyPart && ((BodyPartScript)other.gameObject.GetComponent(typeof(BodyPartScript))).Sacrifice && (other.gameObject.name == "RightArm(Clone)" || other.gameObject.name == "LeftArm(Clone)" || other.gameObject.name == "MaleRightArm(Clone)" || other.gameObject.name == "MaleLeftArm(Clone)" || other.gameObject.name == "SacrificialArm(Clone)"))
+		if ((PickUpScript)other.gameObject.GetComponent(typeof(PickUpScript)) != null && ((PickUpScript)other.gameObject.GetComponent(typeof(PickUpScript))).BodyPart && ((BodyPartScript)other.gameObject.GetComponent(typeof(BodyPartScript))).Sacrifice && (other.gameObject.name == "FemaleRightArm(Clone)" || other.gameObject.name == "FemaleLeftArm(Clone)" || other.gameObject.name == "MaleRightArm(Clone)" || other.gameObject.name == "MaleLeftArm(Clone)" || other.gameObject.name == "SacrificialArm(Clone)"))
 		{
 			this.Arms--;
 		}

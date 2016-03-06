@@ -4134,6 +4134,7 @@ public class StudentScript : MonoBehaviour
 			this.Police.Witnesses = this.Police.Witnesses - 1;
 		}
 		this.UpdateOutlines();
+		this.DetectionMarker.Tex.enabled = false;
 		this.SetLayerRecursively(this.gameObject, 11);
 		this.tag = "Blood";
 	}

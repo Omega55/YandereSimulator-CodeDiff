@@ -13,6 +13,8 @@ public class ClubManagerScript : MonoBehaviour
 
 	public PromptBarScript PromptBar;
 
+	public TranqCaseScript TranqCase;
+
 	public YandereScript Yandere;
 
 	public RPG_Camera MainCamera;
@@ -56,6 +58,8 @@ public class ClubManagerScript : MonoBehaviour
 	public float TimeLimit;
 
 	public float Timer;
+
+	public bool LeaderMissing;
 
 	public bool LeaderDead;
 
@@ -226,6 +230,7 @@ public class ClubManagerScript : MonoBehaviour
 		{
 			this.ClubIDs = this.Club6IDs;
 		}
+		this.LeaderMissing = false;
 		this.LeaderDead = false;
 		this.ClubMembers = 0;
 		this.ID = 1;
@@ -243,14 +248,25 @@ public class ClubManagerScript : MonoBehaviour
 		}
 		if (Check == 3)
 		{
-			if (PlayerPrefs.GetInt("Student_" + 26 + "_Dead") == 1 || PlayerPrefs.GetInt("Student_" + 26 + "_Dying") == 1 || PlayerPrefs.GetInt("Student_" + 26 + "_Kidnapped") == 1 || PlayerPrefs.GetInt("Student_" + 26 + "_Arrested") == 1 || PlayerPrefs.GetInt("Student_" + 26 + "_Reputation") <= -100)
+			if (PlayerPrefs.GetInt("Student_" + 26 + "_Dead") == 1 || PlayerPrefs.GetInt("Student_" + 26 + "_Dying") == 1 || PlayerPrefs.GetInt("Student_" + 26 + "_Arrested") == 1 || PlayerPrefs.GetInt("Student_" + 26 + "_Reputation") <= -100)
 			{
 				this.LeaderDead = true;
 			}
+			if (PlayerPrefs.GetInt("Student_" + 26 + "_Missing") == 1 || PlayerPrefs.GetInt("Student_" + 26 + "_Kidnapped") == 1 || this.TranqCase.VictimID == 26)
+			{
+				this.LeaderMissing = true;
+			}
 		}
-		else if (Check == 6 && (PlayerPrefs.GetInt("Student_" + 21 + "_Dead") == 1 || PlayerPrefs.GetInt("Student_" + 21 + "_Dying") == 1 || PlayerPrefs.GetInt("Student_" + 21 + "_Kidnapped") == 1 || PlayerPrefs.GetInt("Student_" + 21 + "_Arrested") == 1 || PlayerPrefs.GetInt("Student_" + 21 + "_Reputation") <= -100))
+		else if (Check == 6)
 		{
-			this.LeaderDead = true;
+			if (PlayerPrefs.GetInt("Student_" + 21 + "_Dead") == 1 || PlayerPrefs.GetInt("Student_" + 21 + "_Dying") == 1 || PlayerPrefs.GetInt("Student_" + 21 + "_Arrested") == 1 || PlayerPrefs.GetInt("Student_" + 21 + "_Reputation") <= -100)
+			{
+				this.LeaderDead = true;
+			}
+			if (PlayerPrefs.GetInt("Student_" + 21 + "_Missing") == 1 || PlayerPrefs.GetInt("Student_" + 21 + "_Kidnapped") == 1 || this.TranqCase.VictimID == 21)
+			{
+				this.LeaderMissing = true;
+			}
 		}
 	}
 
