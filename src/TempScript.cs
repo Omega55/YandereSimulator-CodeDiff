@@ -4,24 +4,30 @@ using UnityEngine;
 [Serializable]
 public class TempScript : MonoBehaviour
 {
-	public int ID;
+	public int RotationSpeed;
 
-	public virtual void Start()
+	public float Rotation;
+
+	public bool Rotate;
+
+	public TempScript()
 	{
-		if (this.ID == 1)
-		{
-			this.animation["f02_delinquentStance_00"].speed = 0.5f;
-		}
+		this.RotationSpeed = 36;
 	}
 
-	public virtual void Update()
+	public virtual void LateUpdate()
 	{
-		if (this.ID == 2)
+		if (Input.GetKeyDown("space"))
 		{
-			float z = this.transform.position.z - Time.deltaTime * 0.1f;
-			Vector3 position = this.transform.position;
-			float num = position.z = z;
-			Vector3 vector = this.transform.position = position;
+			this.Rotate = true;
+		}
+		if (this.Rotate)
+		{
+			this.Rotation = Mathf.MoveTowards(this.Rotation, (float)135, Time.deltaTime * (float)this.RotationSpeed);
+			float rotation = this.Rotation;
+			Vector3 localEulerAngles = this.transform.localEulerAngles;
+			float num = localEulerAngles.y = rotation;
+			Vector3 vector = this.transform.localEulerAngles = localEulerAngles;
 		}
 	}
 

@@ -159,21 +159,17 @@ public class StudentInfoScript : MonoBehaviour
 		}
 		else if (this.JSON.StudentClubs[ID] == 8)
 		{
-			this.ClubLabel.text = "Info";
+			this.ClubLabel.text = "Science";
 		}
 		else if (this.JSON.StudentClubs[ID] == 9)
 		{
-			this.ClubLabel.text = "Sewing";
+			this.ClubLabel.text = "Sports";
 		}
 		else if (this.JSON.StudentClubs[ID] == 10)
 		{
-			this.ClubLabel.text = "Sports";
-		}
-		else if (this.JSON.StudentClubs[ID] == 11)
-		{
 			this.ClubLabel.text = "Gardening";
 		}
-		else if (this.JSON.StudentClubs[ID] == 12)
+		else if (this.JSON.StudentClubs[ID] == 11)
 		{
 			this.ClubLabel.text = "Gaming";
 		}

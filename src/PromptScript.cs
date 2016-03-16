@@ -75,10 +75,17 @@ public class PromptScript : MonoBehaviour
 
 	public int ID;
 
+	public GameObject YandereObject;
+
 	public PromptScript()
 	{
 		this.Local = true;
 		this.MaximumDistance = 5f;
+	}
+
+	public virtual void OnApplicationQuit()
+	{
+		this.Initialized = true;
 	}
 
 	public virtual void Start()

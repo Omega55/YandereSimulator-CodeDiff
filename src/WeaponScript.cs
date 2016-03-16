@@ -232,6 +232,10 @@ public class WeaponScript : MonoBehaviour
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
 			this.Yandere.NearestPrompt = null;
+			if (this.WeaponID == 9 || this.WeaponID == 10)
+			{
+				this.SuspicionCheck();
+			}
 			if (this.Yandere.Weapon[this.Yandere.Equipped].Suspicious)
 			{
 				if (!this.Yandere.WeaponWarning)
@@ -290,10 +294,6 @@ public class WeaponScript : MonoBehaviour
 		this.Yandere.Armed = false;
 		this.Yandere.Equipped = 0;
 		this.Yandere.StudentManager.UpdateStudents();
-		if (this.Yandere.Weapon[3] == this)
-		{
-			this.Yandere.Weapon[3] = null;
-		}
 		this.active = true;
 		this.transform.parent = null;
 		this.rigidbody.constraints = RigidbodyConstraints.None;
@@ -371,6 +371,10 @@ public class WeaponScript : MonoBehaviour
 			((ParticleSystem)this.gameObject.GetComponent(typeof(ParticleSystem))).Play();
 			this.audio.Play();
 		}
+		else if (this.WeaponID == 9 || this.WeaponID == 10)
+		{
+			this.audio.Play();
+		}
 	}
 
 	public virtual void Dismember()
@@ -378,6 +382,22 @@ public class WeaponScript : MonoBehaviour
 		this.audio.clip = this.DismemberClip;
 		this.audio.Play();
 		this.Dismembering = true;
+	}
+
+	public virtual void SuspicionCheck()
+	{
+		if (this.WeaponID == 9 && PlayerPrefs.GetInt("Club") == 9)
+		{
+			this.Suspicious = false;
+		}
+		else if (this.WeaponID == 10 && PlayerPrefs.GetInt("Club") == 10)
+		{
+			this.Suspicious = false;
+		}
+		else
+		{
+			this.Suspicious = true;
+		}
 	}
 
 	public virtual void Main()

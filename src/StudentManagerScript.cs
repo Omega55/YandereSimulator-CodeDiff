@@ -37,6 +37,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public YandereScript Yandere;
 
+	public PoliceScript Police;
+
 	public ClockScript Clock;
 
 	public JsonScript JSON;
@@ -306,6 +308,7 @@ public class StudentManagerScript : MonoBehaviour
 			{
 				if (!this.Students[this.ID].Safe)
 				{
+					this.Students[this.ID].Prompt.Label[0].text = "     " + "Talk";
 					this.Students[this.ID].Prompt.HideButton[0] = false;
 					this.Students[this.ID].Prompt.HideButton[2] = false;
 					this.Students[this.ID].Prompt.Attack = false;
@@ -322,10 +325,20 @@ public class StudentManagerScript : MonoBehaviour
 							this.Students[this.ID].Prompt.HideButton[0] = true;
 						}
 					}
+					if (this.Yandere.Mask != null)
+					{
+						this.Students[this.ID].Prompt.HideButton[0] = true;
+					}
 					if (this.Yandere.Dragging || this.Yandere.PickUp != null || this.Yandere.Chased)
 					{
 						this.Students[this.ID].Prompt.HideButton[0] = true;
 						this.Students[this.ID].Prompt.HideButton[2] = true;
+						if (this.Yandere.PickUp != null && this.Yandere.PickUp.Food > 0)
+						{
+							this.Students[this.ID].Prompt.Label[0].text = "     " + "Feed";
+							this.Students[this.ID].Prompt.HideButton[0] = false;
+							this.Students[this.ID].Prompt.HideButton[2] = true;
+						}
 					}
 					if (this.Yandere.NearBodies > 0 || this.Yandere.Sanity < 33.33333f)
 					{
@@ -358,9 +371,10 @@ public class StudentManagerScript : MonoBehaviour
 					this.Students[this.ID].Prompt.Label[0].text = string.Empty;
 				}
 			}
-			if (this.Sans && this.Students[this.ID] != null)
+			if (this.Sans && this.Students[this.ID] != null && this.Students[this.ID].Prompt.Label[0] != null)
 			{
 				this.Students[this.ID].Prompt.HideButton[0] = false;
+				this.Students[this.ID].Prompt.Label[0].text = "     " + "Psychokinesis";
 			}
 			this.ID++;
 		}
@@ -370,41 +384,46 @@ public class StudentManagerScript : MonoBehaviour
 
 	public virtual void UpdateMe(int ID)
 	{
-		if (!this.Students[ID].Safe)
+		if (ID > 1)
 		{
-			this.Students[ID].Prompt.HideButton[0] = false;
-			this.Students[ID].Prompt.HideButton[2] = false;
-			this.Students[ID].Prompt.Attack = false;
-			if (this.Yandere.Armed)
+			if (!this.Students[ID].Safe)
 			{
-				this.Students[ID].Prompt.HideButton[0] = true;
-				this.Students[ID].Prompt.Attack = true;
-			}
-			else
-			{
-				this.Students[ID].Prompt.HideButton[2] = true;
-				if (this.Students[ID].WitnessedMurder || this.Students[ID].WitnessedCorpse || this.Students[ID].Private)
+				this.Students[ID].Prompt.Label[0].text = "     " + "Talk";
+				this.Students[ID].Prompt.HideButton[0] = false;
+				this.Students[ID].Prompt.HideButton[2] = false;
+				this.Students[ID].Prompt.Attack = false;
+				if (this.Yandere.Armed)
+				{
+					this.Students[ID].Prompt.HideButton[0] = true;
+					this.Students[ID].Prompt.Attack = true;
+				}
+				else
+				{
+					this.Students[ID].Prompt.HideButton[2] = true;
+					if (this.Students[ID].WitnessedMurder || this.Students[ID].WitnessedCorpse || this.Students[ID].Private)
+					{
+						this.Students[ID].Prompt.HideButton[0] = true;
+					}
+				}
+				if (this.Yandere.Dragging || this.Yandere.PickUp != null || this.Yandere.Chased)
+				{
+					this.Students[ID].Prompt.HideButton[0] = true;
+					this.Students[ID].Prompt.HideButton[2] = true;
+				}
+				if (this.Yandere.NearBodies > 0 || this.Yandere.Sanity < 33.33333f)
+				{
+					this.Students[ID].Prompt.HideButton[0] = true;
+				}
+				if (this.Students[ID].Teacher)
 				{
 					this.Students[ID].Prompt.HideButton[0] = true;
 				}
 			}
-			if (this.Yandere.Dragging || this.Yandere.PickUp != null || this.Yandere.Chased)
+			if (this.Sans)
 			{
-				this.Students[ID].Prompt.HideButton[0] = true;
-				this.Students[ID].Prompt.HideButton[2] = true;
+				this.Students[ID].Prompt.HideButton[0] = false;
+				this.Students[ID].Prompt.Label[0].text = "     " + "Psychokinesis";
 			}
-			if (this.Yandere.NearBodies > 0 || this.Yandere.Sanity < 33.33333f)
-			{
-				this.Students[ID].Prompt.HideButton[0] = true;
-			}
-			if (this.Students[ID].Teacher)
-			{
-				this.Students[ID].Prompt.HideButton[0] = true;
-			}
-		}
-		if (this.Sans)
-		{
-			this.Students[ID].Prompt.HideButton[0] = false;
 		}
 	}
 
@@ -470,23 +489,30 @@ public class StudentManagerScript : MonoBehaviour
 		this.ID = 1;
 		while (this.ID < Extensions.get_length(this.Students))
 		{
-			if (this.Students[this.ID] != null && !this.Students[this.ID].Dying)
+			if (this.Students[this.ID] != null)
 			{
-				if (this.Yandere.Attacking)
+				if (!this.Students[this.ID].Dying)
 				{
-					this.Students[this.ID].Character.animation.CrossFade(this.Students[this.ID].ScaredAnim);
+					if (this.Yandere.Attacking)
+					{
+						this.Students[this.ID].Character.animation.CrossFade(this.Students[this.ID].ScaredAnim);
+					}
+					else
+					{
+						this.Students[this.ID].Character.animation.CrossFade(this.Students[this.ID].IdleAnim);
+					}
+					this.Students[this.ID].Pathfinding.canSearch = false;
+					this.Students[this.ID].Pathfinding.canMove = false;
+					this.Students[this.ID].Pathfinding.speed = (float)0;
+					this.Students[this.ID].Stop = true;
+					if (this.Students[this.ID].EventManager != null)
+					{
+						this.Students[this.ID].EventManager.EndEvent();
+					}
 				}
-				else
+				if (this.Students[this.ID].SawMask)
 				{
-					this.Students[this.ID].Character.animation.CrossFade(this.Students[this.ID].IdleAnim);
-				}
-				this.Students[this.ID].Pathfinding.canSearch = false;
-				this.Students[this.ID].Pathfinding.canMove = false;
-				this.Students[this.ID].Pathfinding.speed = (float)0;
-				this.Students[this.ID].Stop = true;
-				if (this.Students[this.ID].EventManager != null)
-				{
-					this.Students[this.ID].EventManager.EndEvent();
+					this.Police.MaskReported = true;
 				}
 			}
 			this.ID++;
@@ -618,6 +644,19 @@ public class StudentManagerScript : MonoBehaviour
 			if (this.ChangingBooths[this.ID] != null)
 			{
 				this.ChangingBooths[this.ID].CheckYandereClub();
+			}
+			this.ID++;
+		}
+	}
+
+	public virtual void UpdatePerception()
+	{
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.Students))
+		{
+			if (this.Students[this.ID] != null)
+			{
+				this.Students[this.ID].UpdatePerception();
 			}
 			this.ID++;
 		}

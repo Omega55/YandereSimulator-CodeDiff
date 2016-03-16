@@ -65,6 +65,10 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] NoteReactions;
 
+	public string[] FoodAccepts;
+
+	public string[] FoodRejects;
+
 	public string[] KnifeReactions;
 
 	public string[] SyringeReactions;
@@ -72,6 +76,10 @@ public class SubtitleScript : MonoBehaviour
 	public string[] KatanaReactions;
 
 	public string[] SawReactions;
+
+	public string[] RitualReactions;
+
+	public string[] BatReactions;
 
 	public string[] WeaponBloodApologies;
 
@@ -233,6 +241,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] ClubNoes;
 
+	public string InfoNotice;
+
 	public int RandomID;
 
 	public float Timer;
@@ -376,6 +386,14 @@ public class SubtitleScript : MonoBehaviour
 			{
 				this.Label.text = this.SawReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.SawReactions))];
 			}
+			else if (ID == 8)
+			{
+				this.Label.text = this.RitualReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.RitualReactions))];
+			}
+			else if (ID == 9)
+			{
+				this.Label.text = this.BatReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.BatReactions))];
+			}
 		}
 		else if (ReactionType == "Blood Reaction")
 		{
@@ -405,6 +423,14 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.Label.text = this.NoteReactions[ID];
 			this.PlayVoice(ReactionType, ID);
+		}
+		else if (ReactionType == "Accept Food")
+		{
+			this.Label.text = this.FoodAccepts[UnityEngine.Random.Range(0, Extensions.get_length(this.FoodAccepts))];
+		}
+		else if (ReactionType == "Reject Food")
+		{
+			this.Label.text = this.FoodRejects[UnityEngine.Random.Range(0, Extensions.get_length(this.FoodRejects))];
 		}
 		else if (ReactionType == "Teacher Weapon Reaction")
 		{
@@ -861,6 +887,10 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.Label.text = this.ClubNoes[ID];
 			this.PlayVoice(ReactionType, ID);
+		}
+		else if (ReactionType == "Info Notice")
+		{
+			this.Label.text = this.InfoNotice;
 		}
 		this.Timer = Duration;
 	}

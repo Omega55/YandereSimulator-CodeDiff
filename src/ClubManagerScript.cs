@@ -9,7 +9,13 @@ public class ClubManagerScript : MonoBehaviour
 
 	public StudentManagerScript StudentManager;
 
+	public BloodCleanerScript BloodCleaner;
+
+	public RefrigeratorScript Refrigerator;
+
 	public ClubWindowScript ClubWindow;
+
+	public ContainerScript Container;
 
 	public PromptBarScript PromptBar;
 
@@ -20,6 +26,8 @@ public class ClubManagerScript : MonoBehaviour
 	public RPG_Camera MainCamera;
 
 	public PoliceScript Police;
+
+	public GloveScript Gloves;
 
 	public UISprite Darkness;
 
@@ -36,6 +44,8 @@ public class ClubManagerScript : MonoBehaviour
 	public AudioClip[] MotivationalQuotes;
 
 	public Transform[] ClubVantages;
+
+	public MaskScript[] Masks;
 
 	public Transform[] Club6ActivitySpots;
 
@@ -83,6 +93,7 @@ public class ClubManagerScript : MonoBehaviour
 	public virtual void Start()
 	{
 		this.ClubWindow.ActivityWindow.localScale = new Vector3((float)0, (float)0, (float)0);
+		this.ActivateClubBenefit();
 	}
 
 	public virtual void Update()
@@ -301,6 +312,131 @@ public class ClubManagerScript : MonoBehaviour
 		else if (Check == 6 && this.StudentManager.Students[21].Grudge)
 		{
 			this.LeaderGrudge = true;
+		}
+	}
+
+	public virtual void ActivateClubBenefit()
+	{
+		if (PlayerPrefs.GetInt("Club") == 1)
+		{
+			this.Refrigerator.enabled = true;
+			this.Refrigerator.Prompt.enabled = true;
+		}
+		else if (PlayerPrefs.GetInt("Club") == 2)
+		{
+			this.ID = 1;
+			while (this.ID < Extensions.get_length(this.Masks))
+			{
+				this.Masks[this.ID].enabled = true;
+				this.Masks[this.ID].Prompt.enabled = true;
+				this.ID++;
+			}
+			this.Gloves.enabled = true;
+			this.Gloves.Prompt.enabled = true;
+		}
+		else if (PlayerPrefs.GetInt("Club") == 3)
+		{
+			this.StudentManager.UpdatePerception();
+			this.Yandere.Numbness = this.Yandere.Numbness - 0.5f;
+		}
+		else if (PlayerPrefs.GetInt("Club") == 4)
+		{
+			this.StudentManager.UpdateBooths();
+		}
+		else if (PlayerPrefs.GetInt("Club") == 5)
+		{
+			this.Container.enabled = true;
+			this.Container.Prompt.enabled = true;
+		}
+		else if (PlayerPrefs.GetInt("Club") == 6)
+		{
+			this.StudentManager.UpdateBooths();
+		}
+		else if (PlayerPrefs.GetInt("Club") != 7)
+		{
+			if (PlayerPrefs.GetInt("Club") == 8)
+			{
+				this.BloodCleaner.Prompt.enabled = true;
+			}
+			else if (PlayerPrefs.GetInt("Club") == 9)
+			{
+				this.Yandere.RunSpeed = this.Yandere.RunSpeed + (float)1;
+				if (this.Yandere.Armed)
+				{
+					this.Yandere.Weapon[this.Yandere.Equipped].SuspicionCheck();
+				}
+			}
+			else if (PlayerPrefs.GetInt("Club") == 10 && this.Yandere.Armed)
+			{
+				this.Yandere.Weapon[this.Yandere.Equipped].SuspicionCheck();
+			}
+		}
+	}
+
+	public virtual void DeactivateClubBenefit()
+	{
+		if (PlayerPrefs.GetInt("Club") == 1)
+		{
+			this.Refrigerator.enabled = false;
+			this.Refrigerator.Prompt.Hide();
+			this.Refrigerator.Prompt.enabled = false;
+		}
+		else if (PlayerPrefs.GetInt("Club") == 2)
+		{
+			this.ID = 1;
+			while (this.ID < Extensions.get_length(this.Masks))
+			{
+				this.Masks[this.ID].enabled = false;
+				this.Masks[this.ID].Prompt.Hide();
+				this.Masks[this.ID].Prompt.enabled = false;
+				this.ID++;
+			}
+			this.Gloves.enabled = false;
+			this.Gloves.Prompt.Hide();
+			this.Gloves.Prompt.enabled = false;
+		}
+		else if (PlayerPrefs.GetInt("Club") == 3)
+		{
+			PlayerPrefs.SetInt("Club", 0);
+			this.StudentManager.UpdatePerception();
+			this.Yandere.Numbness = this.Yandere.Numbness + 0.5f;
+		}
+		else if (PlayerPrefs.GetInt("Club") == 4)
+		{
+			this.StudentManager.UpdateBooths();
+		}
+		else if (PlayerPrefs.GetInt("Club") == 5)
+		{
+			this.Container.enabled = false;
+			this.Container.Prompt.Hide();
+			this.Container.Prompt.enabled = false;
+		}
+		else if (PlayerPrefs.GetInt("Club") == 6)
+		{
+			this.StudentManager.UpdateBooths();
+		}
+		else if (PlayerPrefs.GetInt("Club") != 7)
+		{
+			if (PlayerPrefs.GetInt("Club") == 8)
+			{
+				this.BloodCleaner.enabled = false;
+				this.BloodCleaner.Prompt.Hide();
+				this.BloodCleaner.Prompt.enabled = false;
+			}
+			else if (PlayerPrefs.GetInt("Club") == 9)
+			{
+				this.Yandere.RunSpeed = this.Yandere.RunSpeed - (float)1;
+				if (this.Yandere.Armed)
+				{
+					PlayerPrefs.SetInt("Club", 0);
+					this.Yandere.Weapon[this.Yandere.Equipped].SuspicionCheck();
+				}
+			}
+			else if (PlayerPrefs.GetInt("Club") == 10 && this.Yandere.Armed)
+			{
+				PlayerPrefs.SetInt("Club", 0);
+				this.Yandere.Weapon[this.Yandere.Equipped].SuspicionCheck();
+			}
 		}
 	}
 

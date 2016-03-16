@@ -650,6 +650,57 @@ public class TalkingScript : MonoBehaviour
 				}
 				this.S.TalkTimer = this.S.TalkTimer - Time.deltaTime;
 			}
+			else if (this.S.Interaction == 20)
+			{
+				if (this.S.TalkTimer == (float)3)
+				{
+					if (!this.S.Fed)
+					{
+						this.S.Character.animation.CrossFade(this.S.Nod2Anim);
+						this.S.Subtitle.UpdateLabel("Accept Food", 0, (float)3);
+						this.S.RepBonus = 0;
+						if (PlayerPrefs.GetInt("PantiesEquipped") == 3)
+						{
+							this.S.RepBonus = this.S.RepBonus + 1;
+						}
+						if ((this.S.Male && PlayerPrefs.GetInt("Seduction") > 0) || PlayerPrefs.GetInt("Seduction") == 5)
+						{
+							this.S.RepBonus = this.S.RepBonus + 1;
+						}
+						this.S.Reputation.PendingRep = this.S.Reputation.PendingRep + (float)(5 + this.S.RepBonus);
+						this.S.PendingRep = this.S.PendingRep + (float)(5 + this.S.RepBonus);
+					}
+					else
+					{
+						this.S.Character.animation.CrossFade(this.S.GossipAnim);
+						this.S.Subtitle.UpdateLabel("Reject Food", 0, (float)3);
+					}
+				}
+				else if (Input.GetButtonDown("A"))
+				{
+					this.S.TalkTimer = (float)0;
+				}
+				if (this.S.Character.animation[this.S.Nod2Anim].time >= this.S.Character.animation[this.S.Nod2Anim].length)
+				{
+					this.S.Character.animation.CrossFade(this.S.IdleAnim);
+				}
+				if (this.S.Character.animation[this.S.GossipAnim].time >= this.S.Character.animation[this.S.GossipAnim].length)
+				{
+					this.S.Character.animation.CrossFade(this.S.IdleAnim);
+				}
+				this.S.TalkTimer = this.S.TalkTimer - Time.deltaTime;
+				if (this.S.TalkTimer <= (float)0)
+				{
+					if (!this.S.Fed)
+					{
+						this.S.Yandere.PickUp.FoodPieces[this.S.Yandere.PickUp.Food].active = false;
+						this.S.Yandere.PickUp.Food = this.S.Yandere.PickUp.Food - 1;
+						this.S.Fed = true;
+					}
+					this.S.DialogueWheel.End();
+					this.S.StudentManager.UpdateStudents();
+				}
+			}
 			if (this.S.Waiting)
 			{
 				this.S.WaitTimer = this.S.WaitTimer - Time.deltaTime;

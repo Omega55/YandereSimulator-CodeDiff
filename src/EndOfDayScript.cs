@@ -344,6 +344,21 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 7)
 			{
+				if (this.Police.MaskReported)
+				{
+					PlayerPrefs.SetInt("MasksBanned", 1);
+					this.Label.text = "Witnesses state that the killer was wearing a mask. As a result, the police are unable to identify the murderer. To prevent this from ever happening again, the Headmaster decides to ban all masks from the school from this day forward.";
+					this.Police.MaskReported = false;
+					this.Phase++;
+				}
+				else
+				{
+					this.Phase++;
+					this.UpdateScene();
+				}
+			}
+			else if (this.Phase == 8)
+			{
 				if (this.Arrests == 0)
 				{
 					if (this.DeadPerps == 0)
@@ -363,12 +378,12 @@ public class EndOfDayScript : MonoBehaviour
 					this.Phase++;
 				}
 			}
-			else if (this.Phase == 8)
+			else if (this.Phase == 9)
 			{
 				this.Label.text = "Yandere-chan stalks Senpai until he has returned home safely, and then returns to her own home.";
 				this.Phase++;
 			}
-			else if (this.Phase == 9)
+			else if (this.Phase == 10)
 			{
 				this.ClubClosed = false;
 				this.ClubKicked = false;
@@ -439,16 +454,16 @@ public class EndOfDayScript : MonoBehaviour
 				}
 				else
 				{
-					this.Phase = 11;
+					this.Phase = 12;
 					this.UpdateScene();
 				}
 			}
-			else if (this.Phase == 10)
+			else if (this.Phase == 11)
 			{
 				this.Label.text = "Yandere-chan waits until the clock strikes midnight." + "\n" + "\n" + "Under the cover of darkness, Yandere-chan travels back to school and sneaks inside of the main school building." + "\n" + "\n" + "Yandere-chan returns to the instrument case that carries her unconscious victim." + "\n" + "\n" + "She pushes the case back to her house, pretending to be a young musician returning home from a late-night show." + "\n" + "\n" + "Yandere-chan drags the case down to her basement and ties up her victim." + "\n" + "\n" + "Exhausted, Yandere-chan goes to sleep.";
 				this.Phase++;
 			}
-			else if (this.Phase == 11)
+			else if (this.Phase == 12)
 			{
 				PlayerPrefs.SetFloat("Reputation", this.Reputation.Reputation);
 				PlayerPrefs.SetInt("Night", 1);

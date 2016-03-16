@@ -65,8 +65,6 @@ public class WelcomeScript : MonoBehaviour
 			{
 				if (Input.GetKeyDown("w"))
 				{
-					this.WelcomePanel.active = false;
-					this.WarningPanel.active = true;
 				}
 				if (Input.anyKeyDown)
 				{

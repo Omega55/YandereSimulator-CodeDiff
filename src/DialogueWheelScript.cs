@@ -520,7 +520,7 @@ public class DialogueWheelScript : MonoBehaviour
 			float num20 = color31.a = a12;
 			Color color32 = this.ClubShadow[2].color = color31;
 		}
-		if (this.Yandere.ClubAttire)
+		if (this.Yandere.ClubAttire || this.Yandere.Mask != null || this.Yandere.Gloves != null || this.Yandere.Container != null)
 		{
 			float a13 = 0.75f;
 			Color color33 = this.ClubShadow[3].color;

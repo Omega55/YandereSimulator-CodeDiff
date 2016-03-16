@@ -28,13 +28,20 @@ public class PromptSwapScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (this.InputDevice.Type == 1)
+		if (this.InputDevice != null)
 		{
-			this.MySprite.spriteName = this.GamepadName;
+			if (this.InputDevice.Type == 1)
+			{
+				this.MySprite.spriteName = this.GamepadName;
+			}
+			else
+			{
+				this.MySprite.spriteName = this.KeyboardName;
+			}
 		}
 		else
 		{
-			this.MySprite.spriteName = this.KeyboardName;
+			Debug.Log("My name is " + this.gameObject.name);
 		}
 	}
 

@@ -86,6 +86,8 @@ public class DelinquentScript : MonoBehaviour
 
 	public AudioClip[] SurrenderClips;
 
+	public AudioClip[] SurpriseClips;
+
 	public AudioClip[] ThreatenClips;
 
 	public AudioClip[] AggroClips;
@@ -150,7 +152,7 @@ public class DelinquentScript : MonoBehaviour
 						{
 							if (!this.Threatening)
 							{
-								this.audio.clip = this.SurpriseClip;
+								this.audio.clip = this.SurpriseClips[UnityEngine.Random.Range(0, this.SurpriseClips.Length)];
 								this.audio.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
 								this.audio.Play();
 							}
@@ -167,7 +169,7 @@ public class DelinquentScript : MonoBehaviour
 							{
 								if (!this.Threatening)
 								{
-									this.audio.clip = this.SurpriseClip;
+									this.audio.clip = this.SurpriseClips[UnityEngine.Random.Range(0, this.SurpriseClips.Length)];
 									this.audio.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
 									this.audio.Play();
 								}

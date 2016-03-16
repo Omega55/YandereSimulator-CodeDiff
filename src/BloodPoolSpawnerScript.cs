@@ -4,15 +4,25 @@ using UnityEngine;
 [Serializable]
 public class BloodPoolSpawnerScript : MonoBehaviour
 {
-	public Transform BloodParent;
-
 	public GameObject LastBloodPool;
 
 	public GameObject BloodPool;
 
+	public Transform BloodParent;
+
 	public Transform Hips;
 
+	public Collider NEStairs;
+
+	public Collider NWStairs;
+
+	public Collider SEStairs;
+
+	public Collider SWStairs;
+
 	public Vector3[] Positions;
+
+	public bool CanSpawn;
 
 	public int PoolsSpawned;
 
@@ -24,6 +34,10 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		this.NEStairs = (Collider)GameObject.Find("NEStairs").GetComponent(typeof(Collider));
+		this.NWStairs = (Collider)GameObject.Find("NWStairs").GetComponent(typeof(Collider));
+		this.SEStairs = (Collider)GameObject.Find("SEStairs").GetComponent(typeof(Collider));
+		this.SWStairs = (Collider)GameObject.Find("SWStairs").GetComponent(typeof(Collider));
 		this.BloodParent = GameObject.Find("BloodParent").transform;
 		this.Positions = new Vector3[5];
 		this.Positions[1] = new Vector3(0.5f, 0.012f, (float)0);
@@ -72,7 +86,15 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 		{
 			this.Height = (float)12;
 		}
-		if (this.transform.position.y < this.Height + 0.33333f)
+		if (this.NEStairs.bounds.Contains(this.transform.position) || this.NWStairs.bounds.Contains(this.transform.position) || this.SEStairs.bounds.Contains(this.transform.position) || this.SWStairs.bounds.Contains(this.transform.position))
+		{
+			this.CanSpawn = false;
+		}
+		else
+		{
+			this.CanSpawn = true;
+		}
+		if (this.CanSpawn && this.transform.position.y < this.Height + 0.33333f)
 		{
 			if (this.NearbyBlood > 0 && this.LastBloodPool == null)
 			{

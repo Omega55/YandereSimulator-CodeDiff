@@ -83,6 +83,8 @@ public class PoliceScript : MonoBehaviour
 
 	public bool ClubActivity;
 
+	public bool MaskReported;
+
 	public bool FadeResults;
 
 	public bool ShowResults;
@@ -414,7 +416,7 @@ public class PoliceScript : MonoBehaviour
 				{
 					if (this.EndOfDay.Phase == 1)
 					{
-						this.EndOfDay.Phase = 9;
+						this.EndOfDay.Phase = 10;
 						this.EndOfDay.gameObject.active = true;
 						this.ResultsLabels[0].text = string.Empty;
 						this.ResultsLabels[1].text = string.Empty;

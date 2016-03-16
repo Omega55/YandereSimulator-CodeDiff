@@ -36,6 +36,10 @@ public class TitleSponsorScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		int num = 1050;
+		Vector3 localPosition = this.transform.localPosition;
+		float num2 = localPosition.x = (float)num;
+		Vector3 vector = this.transform.localPosition = localPosition;
 		this.UpdateHighlight();
 	}
 

@@ -7,6 +7,8 @@ public class PickUpScript : MonoBehaviour
 {
 	public RigidbodyConstraints OriginalConstraints;
 
+	public BloodCleanerScript BloodCleaner;
+
 	public IncineratorScript Incinerator;
 
 	public OutlineScript[] Outline;
@@ -53,9 +55,13 @@ public class PickUpScript : MonoBehaviour
 
 	public int CarryAnimID;
 
+	public int Food;
+
 	public float DumpTimer;
 
 	public bool Empty;
+
+	public GameObject[] FoodPieces;
 
 	public PickUpScript()
 	{
@@ -69,7 +75,10 @@ public class PickUpScript : MonoBehaviour
 		{
 			Physics.IgnoreCollision(this.Yandere.collider, this.MyCollider);
 		}
-		this.OriginalConstraints = this.rigidbody.constraints;
+		if (this.rigidbody != null)
+		{
+			this.OriginalConstraints = this.rigidbody.constraints;
+		}
 		this.OriginalColor = this.Outline[0].color;
 		this.OriginalScale = this.transform.localScale;
 	}
@@ -103,7 +112,10 @@ public class PickUpScript : MonoBehaviour
 			this.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
 			this.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
 			this.MyCollider.enabled = false;
-			this.rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+			if (this.rigidbody != null)
+			{
+				this.rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+			}
 			if (!this.Usable)
 			{
 				this.Prompt.Hide();
@@ -151,6 +163,10 @@ public class PickUpScript : MonoBehaviour
 
 	public virtual void Drop()
 	{
+		if (this.BloodCleaner != null)
+		{
+			this.BloodCleaner.enabled = true;
+		}
 		this.Yandere.PickUp = null;
 		this.transform.parent = null;
 		if (this.LockRotation)
@@ -164,8 +180,11 @@ public class PickUpScript : MonoBehaviour
 			float num4 = localEulerAngles2.z = (float)num3;
 			Vector3 vector2 = this.transform.localEulerAngles = localEulerAngles2;
 		}
-		this.rigidbody.constraints = this.OriginalConstraints;
-		this.rigidbody.useGravity = true;
+		if (this.rigidbody != null)
+		{
+			this.rigidbody.constraints = this.OriginalConstraints;
+			this.rigidbody.useGravity = true;
+		}
 		if (this.Dumped)
 		{
 			this.transform.position = this.Incinerator.DumpPoint.position;
@@ -174,6 +193,7 @@ public class PickUpScript : MonoBehaviour
 		{
 			this.Prompt.enabled = true;
 			this.MyCollider.enabled = true;
+			this.MyCollider.isTrigger = false;
 			if (!this.CanCollide)
 			{
 				Physics.IgnoreCollision(this.Yandere.collider, this.MyCollider);

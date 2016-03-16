@@ -29,6 +29,19 @@ public class SinkScript : MonoBehaviour
 					this.Prompt.Label[0].text = "     " + "Empty Bucket";
 				}
 			}
+			else if (this.Yandere.PickUp.BloodCleaner != null)
+			{
+				if (this.Yandere.PickUp.BloodCleaner.Blood > (float)0)
+				{
+					this.Prompt.Label[0].text = "     " + "Empty Robot";
+					this.Prompt.enabled = true;
+				}
+				else
+				{
+					this.Prompt.Hide();
+					this.Prompt.enabled = false;
+				}
+			}
 			else if (this.Prompt.enabled)
 			{
 				this.Prompt.Hide();
@@ -42,21 +55,29 @@ public class SinkScript : MonoBehaviour
 		}
 		if (this.Prompt.Circle[0].fillAmount <= (float)0)
 		{
-			if (!this.Yandere.PickUp.Bucket.Full)
+			if (this.Yandere.PickUp.Bucket != null)
 			{
-				this.Yandere.PickUp.Bucket.Fill();
+				if (!this.Yandere.PickUp.Bucket.Full)
+				{
+					this.Yandere.PickUp.Bucket.Fill();
+				}
+				else
+				{
+					this.Yandere.PickUp.Bucket.Empty();
+				}
+				if (!this.Yandere.PickUp.Bucket.Full)
+				{
+					this.Prompt.Label[0].text = "     " + "Fill Bucket";
+				}
+				else
+				{
+					this.Prompt.Label[0].text = "     " + "Empty Bucket";
+				}
 			}
-			else
+			else if (this.Yandere.PickUp.BloodCleaner != null)
 			{
-				this.Yandere.PickUp.Bucket.Empty();
-			}
-			if (!this.Yandere.PickUp.Bucket.Full)
-			{
-				this.Prompt.Label[0].text = "     " + "Fill Bucket";
-			}
-			else
-			{
-				this.Prompt.Label[0].text = "     " + "Empty Bucket";
+				this.Yandere.PickUp.BloodCleaner.Blood = (float)0;
+				this.Yandere.PickUp.BloodCleaner.Lens.active = false;
 			}
 			this.Prompt.Circle[0].fillAmount = (float)1;
 		}

@@ -464,6 +464,7 @@ public class RagdollScript : MonoBehaviour
 		this.Yandere.Ragdoll = null;
 		this.BloodSpawnerCollider.enabled = true;
 		this.Prompt.MyCollider.enabled = true;
+		this.BloodPoolSpawner.NearbyBlood = 0;
 		this.StopAnimation = true;
 		this.Carried = false;
 		for (int i = 0; i < this.AllRigidbodies.Length; i++)

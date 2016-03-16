@@ -4,6 +4,8 @@ using UnityEngine;
 [Serializable]
 public class ClubWindowScript : MonoBehaviour
 {
+	public ClubManagerScript ClubManager;
+
 	public PromptBarScript PromptBar;
 
 	public YandereScript Yandere;
@@ -70,9 +72,11 @@ public class ClubWindowScript : MonoBehaviour
 						PlayerPrefs.SetInt("Club", this.Club);
 						this.Yandere.ClubAccessory();
 						this.Yandere.TargetStudent.Interaction = 11;
+						this.ClubManager.ActivateClubBenefit();
 					}
 					else if (this.Quitting)
 					{
+						this.ClubManager.DeactivateClubBenefit();
 						PlayerPrefs.SetInt("QuitClub_" + this.Club, 1);
 						PlayerPrefs.SetInt("Club", 0);
 						this.Yandere.ClubAccessory();

@@ -10,9 +10,13 @@ public class WeaponMenuScript : MonoBehaviour
 
 	public YandereScript Yandere;
 
+	public InputManagerScript IM;
+
 	public Transform KeyboardMenu;
 
 	public bool KeyboardShow;
+
+	public bool Released;
 
 	public bool Show;
 
@@ -38,6 +42,7 @@ public class WeaponMenuScript : MonoBehaviour
 
 	public WeaponMenuScript()
 	{
+		this.Released = true;
 		this.Selected = 1;
 	}
 
@@ -55,37 +60,45 @@ public class WeaponMenuScript : MonoBehaviour
 		{
 			if (this.Yandere.CanMove && !this.Yandere.Aiming)
 			{
-				if (Input.GetAxis("DpadX") < -0.5f || Input.GetAxis("DpadX") > 0.5f || Input.GetAxis("DpadY") > 0.5f || Input.GetAxis("DpadY") < -0.5f)
+				if ((this.IM.DPadUp && this.IM.TappedUp) || (this.IM.DPadDown && this.IM.TappedDown) || (this.IM.DPadLeft && this.IM.TappedLeft) || (this.IM.DPadRight && this.IM.TappedRight))
 				{
 					this.Yandere.EmptyHands();
-					if (Input.GetAxis("DpadX") < -0.5f || Input.GetAxis("DpadX") > 0.5f || Input.GetAxis("DpadY") > 0.5f)
+					if (this.IM.DPadLeft || this.IM.DPadRight || this.IM.DPadUp || this.Yandere.Mask != null)
 					{
 						this.KeyboardShow = false;
 						this.Show = true;
 					}
-					if (Input.GetAxis("DpadX") < -0.5f)
+					if (this.IM.DPadLeft)
 					{
 						this.Button.localPosition = new Vector3((float)-340, (float)0, (float)0);
 						this.Selected = 1;
 					}
-					else if (Input.GetAxis("DpadX") > 0.5f)
+					else if (this.IM.DPadRight)
 					{
 						this.Button.localPosition = new Vector3((float)340, (float)0, (float)0);
 						this.Selected = 2;
 					}
-					else if (Input.GetAxis("DpadY") > 0.5f)
+					else if (this.IM.DPadUp)
 					{
 						this.Button.localPosition = new Vector3((float)0, (float)340, (float)0);
 						this.Selected = 3;
 					}
-					else if (Input.GetAxis("DpadY") < 0.5f)
+					else if (this.IM.DPadDown)
 					{
-						this.Button.localPosition = new Vector3((float)0, (float)-210, (float)0);
-						this.Selected = 4;
+						if (this.Selected == 4)
+						{
+							this.Button.localPosition = new Vector3((float)0, (float)-310, (float)0);
+							this.Selected = 5;
+						}
+						else
+						{
+							this.Button.localPosition = new Vector3((float)0, (float)-190, (float)0);
+							this.Selected = 4;
+						}
 					}
 					this.UpdateSprites();
 				}
-				if (Input.GetKeyDown("1") || Input.GetKeyDown("2") || Input.GetKeyDown("3") || Input.GetKeyDown("4"))
+				if (Input.GetKeyDown("1") || Input.GetKeyDown("2") || Input.GetKeyDown("3") || Input.GetKeyDown("4") || Input.GetKeyDown("5"))
 				{
 					this.Yandere.EmptyHands();
 					this.KeyboardShow = true;
@@ -123,6 +136,11 @@ public class WeaponMenuScript : MonoBehaviour
 							this.Yandere.Container.Drop();
 							this.UpdateSprites();
 						}
+					}
+					else if (Input.GetKeyDown("5"))
+					{
+						this.Selected = 5;
+						this.DropMask();
 					}
 					this.UpdateSprites();
 				}
@@ -163,6 +181,10 @@ public class WeaponMenuScript : MonoBehaviour
 								this.Yandere.Container.Drop();
 								this.UpdateSprites();
 							}
+						}
+						else if (this.Selected == 5)
+						{
+							this.DropMask();
 						}
 						else
 						{
@@ -262,8 +284,7 @@ public class WeaponMenuScript : MonoBehaviour
 
 	public virtual void UpdateSprites()
 	{
-		int i;
-		for (i = 1; i < 3; i++)
+		for (int i = 1; i < 3; i++)
 		{
 			if (this.Selected == i)
 			{
@@ -384,7 +405,7 @@ public class WeaponMenuScript : MonoBehaviour
 			Color color41 = this.Outline[3].color;
 			float num34 = color41.a = (float)num33;
 			Color color42 = this.Outline[3].color = color41;
-			this.KeyboardItem[i].spriteName = this.Yandere.Container.SpriteName;
+			this.KeyboardItem[3].spriteName = this.Yandere.Container.SpriteName;
 			int num35 = 1;
 			Color color43 = this.KeyboardItem[3].color;
 			float num36 = color43.a = (float)num35;
@@ -399,6 +420,76 @@ public class WeaponMenuScript : MonoBehaviour
 			float num40 = color47.a = (float)num39;
 			Color color48 = this.KeyboardOutline[3].color = color47;
 		}
+		if (this.Yandere.Mask == null)
+		{
+			int num41 = 0;
+			Color color49 = this.KeyboardItem[5].color;
+			float num42 = color49.a = (float)num41;
+			Color color50 = this.KeyboardItem[5].color = color49;
+			int num43 = 0;
+			Color color51 = this.Item[5].color;
+			float num44 = color51.a = (float)num43;
+			Color color52 = this.Item[5].color = color51;
+			if (this.Selected == 5)
+			{
+				this.KeyboardBG[5].color = new Color((float)1, (float)1, (float)1, (float)1);
+				this.BG[5].color = new Color((float)1, (float)1, (float)1, (float)1);
+			}
+			else
+			{
+				this.KeyboardBG[5].color = this.OriginalColor;
+				this.BG[5].color = this.OriginalColor;
+			}
+			float a9 = 0.5f;
+			Color color53 = this.BG[5].color;
+			float num45 = color53.a = a9;
+			Color color54 = this.BG[5].color = color53;
+			float a10 = 0.5f;
+			Color color55 = this.Outline[5].color;
+			float num46 = color55.a = a10;
+			Color color56 = this.Outline[5].color = color55;
+			float a11 = 0.5f;
+			Color color57 = this.KeyboardBG[5].color;
+			float num47 = color57.a = a11;
+			Color color58 = this.KeyboardBG[5].color = color57;
+			float a12 = 0.5f;
+			Color color59 = this.KeyboardOutline[5].color;
+			float num48 = color59.a = a12;
+			Color color60 = this.KeyboardOutline[5].color = color59;
+		}
+		else
+		{
+			int num49 = 1;
+			Color color61 = this.KeyboardItem[5].color;
+			float num50 = color61.a = (float)num49;
+			Color color62 = this.KeyboardItem[5].color = color61;
+			int num51 = 1;
+			Color color63 = this.Item[5].color;
+			float num52 = color63.a = (float)num51;
+			Color color64 = this.Item[5].color = color63;
+			this.BG[5].color = this.OriginalColor;
+			int num53 = 1;
+			Color color65 = this.BG[5].color;
+			float num54 = color65.a = (float)num53;
+			Color color66 = this.BG[5].color = color65;
+			int num55 = 1;
+			Color color67 = this.Outline[5].color;
+			float num56 = color67.a = (float)num55;
+			Color color68 = this.Outline[5].color = color67;
+			int num57 = 1;
+			Color color69 = this.KeyboardItem[5].color;
+			float num58 = color69.a = (float)num57;
+			Color color70 = this.KeyboardItem[5].color = color69;
+			this.KeyboardBG[5].color = this.OriginalColor;
+			int num59 = 1;
+			Color color71 = this.KeyboardBG[5].color;
+			float num60 = color71.a = (float)num59;
+			Color color72 = this.KeyboardBG[5].color = color71;
+			int num61 = 1;
+			Color color73 = this.KeyboardOutline[5].color;
+			float num62 = color73.a = (float)num61;
+			Color color74 = this.KeyboardOutline[5].color = color73;
+		}
 		if (this.Selected == 4)
 		{
 			this.KeyboardBG[4].color = new Color((float)1, (float)1, (float)1, (float)1);
@@ -408,6 +499,15 @@ public class WeaponMenuScript : MonoBehaviour
 		{
 			this.KeyboardBG[4].color = this.OriginalColor;
 			this.BG[4].color = this.OriginalColor;
+		}
+	}
+
+	public virtual void DropMask()
+	{
+		if (this.Yandere.Mask != null)
+		{
+			this.Yandere.Mask.Drop();
+			this.UpdateSprites();
 		}
 	}
 
