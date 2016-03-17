@@ -2173,7 +2173,7 @@ public class StudentScript : MonoBehaviour
 						this.ID = 0;
 						while (this.ID < this.Police.Corpses)
 						{
-							if (this.Police.CorpseList[this.ID] != null)
+							if (this.Police.CorpseList[this.ID] != null && !this.Police.CorpseList[this.ID].Hidden)
 							{
 								this.Planes = GeometryUtility.CalculateFrustumPlanes(this.VisionCone);
 								if (GeometryUtility.TestPlanesAABB(this.Planes, this.Police.CorpseList[this.ID].AllColliders[0].bounds))
@@ -2559,10 +2559,13 @@ public class StudentScript : MonoBehaviour
 					if (this.OnPhone)
 					{
 						this.Character.animation[this.PhoneAnim].weight = Mathf.Lerp(this.Character.animation[this.PhoneAnim].weight, (float)1, Time.deltaTime * (float)10);
-						if (this.transform.position.z > (float)-49)
+						if (this.transform.position.z > -48.5f)
 						{
+							if (!this.Slave)
+							{
+								this.Distracted = false;
+							}
 							this.Phone.active = false;
-							this.Distracted = false;
 							this.OnPhone = false;
 							this.Safe = false;
 							this.StudentManager.UpdateStudents();

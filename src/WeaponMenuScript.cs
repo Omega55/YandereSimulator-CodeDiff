@@ -4,6 +4,8 @@ using UnityEngine;
 [Serializable]
 public class WeaponMenuScript : MonoBehaviour
 {
+	public StudentManagerScript StudentManager;
+
 	public InputDeviceScript InputDevice;
 
 	public PauseScreenScript PauseScreen;
@@ -508,6 +510,7 @@ public class WeaponMenuScript : MonoBehaviour
 		{
 			this.Yandere.Mask.Drop();
 			this.UpdateSprites();
+			this.StudentManager.UpdateStudents();
 		}
 	}
 

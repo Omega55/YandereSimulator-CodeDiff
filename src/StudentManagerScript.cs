@@ -304,9 +304,9 @@ public class StudentManagerScript : MonoBehaviour
 		this.ID = 2;
 		while (this.ID < Extensions.get_length(this.Students))
 		{
-			if (this.Students[this.ID] != null)
+			if (this.Students[this.ID] != null && !this.Students[this.ID].Safe)
 			{
-				if (!this.Students[this.ID].Safe)
+				if (!this.Students[this.ID].Slave)
 				{
 					this.Students[this.ID].Prompt.Label[0].text = "     " + "Talk";
 					this.Students[this.ID].Prompt.HideButton[0] = false;
@@ -353,19 +353,16 @@ public class StudentManagerScript : MonoBehaviour
 				{
 					if (this.Yandere.Weapon[this.Yandere.Equipped].Concealable)
 					{
-						if (this.Students[this.ID].Slave)
-						{
-							this.Students[this.ID].Prompt.HideButton[0] = false;
-							this.Students[this.ID].Prompt.Label[0].text = "     " + "Give Weapon";
-						}
+						this.Students[this.ID].Prompt.HideButton[0] = false;
+						this.Students[this.ID].Prompt.Label[0].text = "     " + "Give Weapon";
 					}
-					else if (this.Students[this.ID].Slave)
+					else
 					{
 						this.Students[this.ID].Prompt.HideButton[0] = true;
 						this.Students[this.ID].Prompt.Label[0].text = string.Empty;
 					}
 				}
-				else if (this.Students[this.ID].Slave)
+				else
 				{
 					this.Students[this.ID].Prompt.HideButton[0] = true;
 					this.Students[this.ID].Prompt.Label[0].text = string.Empty;

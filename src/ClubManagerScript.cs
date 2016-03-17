@@ -440,6 +440,28 @@ public class ClubManagerScript : MonoBehaviour
 		}
 	}
 
+	public virtual void UpdateMasks()
+	{
+		if (this.Yandere.Mask != null)
+		{
+			this.ID = 1;
+			while (this.ID < Extensions.get_length(this.Masks))
+			{
+				this.Masks[this.ID].Prompt.HideButton[0] = true;
+				this.ID++;
+			}
+		}
+		else
+		{
+			this.ID = 1;
+			while (this.ID < Extensions.get_length(this.Masks))
+			{
+				this.Masks[this.ID].Prompt.HideButton[0] = false;
+				this.ID++;
+			}
+		}
+	}
+
 	public virtual void Main()
 	{
 	}

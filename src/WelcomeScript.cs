@@ -102,7 +102,7 @@ public class WelcomeScript : MonoBehaviour
 			Color color6 = this.Darkness.color = color5;
 			if (this.Darkness.color.a >= (float)1)
 			{
-				Application.LoadLevel("WarningScene");
+				Application.LoadLevel("SponsorScene");
 			}
 		}
 		if (!this.FlashRed)

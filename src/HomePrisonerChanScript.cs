@@ -69,20 +69,28 @@ public class HomePrisonerChanScript : MonoBehaviour
 		if (PlayerPrefs.GetInt("KidnapVictim") > 0)
 		{
 			this.StudentID = PlayerPrefs.GetInt("KidnapVictim");
-			this.Cosmetic.StudentID = this.StudentID;
-			this.Cosmetic.enabled = true;
-			this.BreastSize = this.JSON.StudentBreasts[this.StudentID];
-			this.RightEyeRotOrigin = this.RightEye.localEulerAngles;
-			this.LeftEyeRotOrigin = this.LeftEye.localEulerAngles;
-			this.RightEyeOrigin = this.RightEye.localPosition;
-			this.LeftEyeOrigin = this.LeftEye.localPosition;
-			this.UpdateSanity();
-			this.TwintailR.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)90);
-			this.TwintailL.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)-90);
+			if (PlayerPrefs.GetInt("Student_" + this.StudentID + "_Arrested") == 0 && PlayerPrefs.GetInt("Student_" + this.StudentID + "_Dead") == 0)
+			{
+				this.Cosmetic.StudentID = this.StudentID;
+				this.Cosmetic.enabled = true;
+				this.BreastSize = this.JSON.StudentBreasts[this.StudentID];
+				this.RightEyeRotOrigin = this.RightEye.localEulerAngles;
+				this.LeftEyeRotOrigin = this.LeftEye.localEulerAngles;
+				this.RightEyeOrigin = this.RightEye.localPosition;
+				this.LeftEyeOrigin = this.LeftEye.localPosition;
+				this.UpdateSanity();
+				this.TwintailR.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)90);
+				this.TwintailL.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)-90);
+			}
+			else
+			{
+				PlayerPrefs.SetInt("KidnapVictim", 0);
+				this.active = false;
+			}
 		}
 		else
 		{
-			UnityEngine.Object.Destroy(this.gameObject);
+			this.active = false;
 		}
 	}
 

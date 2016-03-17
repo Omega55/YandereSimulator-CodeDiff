@@ -115,6 +115,16 @@ public class HomeCameraScript : MonoBehaviour
 			this.Victim.active = false;
 			this.Triggers[10].Disable();
 		}
+		else
+		{
+			int @int = PlayerPrefs.GetInt("KidnapVictim");
+			if (PlayerPrefs.GetInt("Student_" + @int + "_Arrested") == 1 || PlayerPrefs.GetInt("Student_" + @int + "_Dead") == 1)
+			{
+				this.RopeGroup.active = false;
+				this.Victim.active = false;
+				this.Triggers[10].Disable();
+			}
+		}
 		Time.timeScale = (float)1;
 	}
 

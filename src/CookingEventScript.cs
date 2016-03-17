@@ -7,6 +7,8 @@ public class CookingEventScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
 
+	public RefrigeratorScript Snacks;
+
 	public YandereScript Yandere;
 
 	public ClockScript Clock;
@@ -102,6 +104,9 @@ public class CookingEventScript : MonoBehaviour
 			{
 				if (!this.EventStudent.WitnessedMurder)
 				{
+					this.Snacks.Prompt.Hide();
+					this.Snacks.Prompt.enabled = false;
+					this.Snacks.enabled = false;
 					this.EventStudent.CurrentDestination = this.EventLocations[0];
 					this.EventStudent.Pathfinding.target = this.EventLocations[0];
 					this.EventStudent.Obstacle.checkTime = (float)99;

@@ -4,6 +4,8 @@ using UnityEngine;
 [Serializable]
 public class RefrigeratorScript : MonoBehaviour
 {
+	public CookingEventScript CookingEvent;
+
 	public YandereScript Yandere;
 
 	public PromptScript Prompt;
@@ -32,6 +34,8 @@ public class RefrigeratorScript : MonoBehaviour
 
 	public Transform Jar;
 
+	public bool Empty;
+
 	public int EventPhase;
 
 	public float Rotation;
@@ -40,6 +44,7 @@ public class RefrigeratorScript : MonoBehaviour
 	{
 		if (this.Prompt.Circle[0].fillAmount == (float)0)
 		{
+			this.CookingEvent.EventCheck = false;
 			this.Yandere.CanMove = false;
 			this.Yandere.Cooking = true;
 		}
@@ -216,6 +221,7 @@ public class RefrigeratorScript : MonoBehaviour
 				this.PlatePrompt.enabled = true;
 				this.Yandere.Cooking = false;
 				this.Yandere.CanMove = true;
+				this.Empty = true;
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
 				this.enabled = false;

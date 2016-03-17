@@ -4,6 +4,10 @@ using UnityEngine;
 [Serializable]
 public class MaskScript : MonoBehaviour
 {
+	public StudentManagerScript StudentManager;
+
+	public ClubManagerScript ClubManager;
+
 	public YandereScript Yandere;
 
 	public PromptScript Prompt;
@@ -49,6 +53,8 @@ public class MaskScript : MonoBehaviour
 			this.transform.localPosition = new Vector3((float)0, 0.033333f, 0.1f);
 			this.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
 			this.Yandere.Mask = this;
+			this.ClubManager.UpdateMasks();
+			this.StudentManager.UpdateStudents();
 		}
 	}
 
@@ -61,6 +67,8 @@ public class MaskScript : MonoBehaviour
 		this.Prompt.enabled = true;
 		this.transform.parent = null;
 		this.Yandere.Mask = null;
+		this.ClubManager.UpdateMasks();
+		this.StudentManager.UpdateStudents();
 	}
 
 	public virtual void Main()

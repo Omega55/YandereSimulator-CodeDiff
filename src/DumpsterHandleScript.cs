@@ -29,7 +29,7 @@ public class DumpsterHandleScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (this.Prompt.Yandere.PickUp == null && !this.Prompt.Yandere.Dragging)
+		if (this.Prompt.Yandere.PickUp == null && !this.Prompt.Yandere.Dragging && !this.Prompt.Yandere.Carrying)
 		{
 			this.Prompt.HideButton[3] = false;
 		}

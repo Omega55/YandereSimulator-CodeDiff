@@ -86,6 +86,8 @@ public class RagdollScript : MonoBehaviour
 
 	public bool Drowned;
 
+	public bool Falling;
+
 	public bool Suicide;
 
 	public bool Dumped;
@@ -103,6 +105,8 @@ public class RagdollScript : MonoBehaviour
 	public float DumpTimer;
 
 	public float EyeShrink;
+
+	public float FallTimer;
 
 	public int StudentID;
 
@@ -315,6 +319,16 @@ public class RagdollScript : MonoBehaviour
 			this.Police.HiddenCorpses = this.Police.HiddenCorpses - 1;
 			this.Hidden = false;
 		}
+		if (this.Falling)
+		{
+			this.FallTimer += Time.deltaTime;
+			if (this.FallTimer > (float)2)
+			{
+				this.BloodSpawnerCollider.enabled = true;
+				this.FallTimer = (float)0;
+				this.Falling = false;
+			}
+		}
 	}
 
 	public virtual void LateUpdate()
@@ -462,11 +476,11 @@ public class RagdollScript : MonoBehaviour
 			this.Dragged = false;
 		}
 		this.Yandere.Ragdoll = null;
-		this.BloodSpawnerCollider.enabled = true;
 		this.Prompt.MyCollider.enabled = true;
 		this.BloodPoolSpawner.NearbyBlood = 0;
 		this.StopAnimation = true;
 		this.Carried = false;
+		this.Falling = true;
 		for (int i = 0; i < this.AllRigidbodies.Length; i++)
 		{
 			this.AllRigidbodies[i].isKinematic = false;
