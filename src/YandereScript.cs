@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$2419 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$2467 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$2434;
+		internal YandereScript $self_$2482;
 
-		public $ApplyCustomCostume$2419(YandereScript self_)
+		public $ApplyCustomCostume$2467(YandereScript self_)
 		{
-			this.$self_$2434 = self_;
+			this.$self_$2482 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$2419.$(this.$self_$2434);
+			return new YandereScript.$ApplyCustomCostume$2467.$(this.$self_$2482);
 		}
 	}
 
@@ -77,8 +77,6 @@ public class YandereScript : MonoBehaviour
 
 	public SplashCameraScript SplashCamera;
 
-	public CharacterScript BaldSchoolgirl;
-
 	public SWP_HeartRateMonitor HeartRate;
 
 	public IncineratorScript Incinerator;
@@ -96,6 +94,8 @@ public class YandereScript : MonoBehaviour
 	public PromptScript NearestPrompt;
 
 	public ContainerScript Container;
+
+	public InventoryScript Inventory;
 
 	public TallLockerScript MyLocker;
 
@@ -143,6 +143,8 @@ public class YandereScript : MonoBehaviour
 
 	public Transform RightBreast;
 
+	public Transform HidingSpot;
+
 	public Transform LeftBreast;
 
 	public Transform ItemParent;
@@ -153,6 +155,8 @@ public class YandereScript : MonoBehaviour
 
 	public Transform RightHand;
 
+	public Transform ExitSpot;
+
 	public Transform LeftHand;
 
 	public Transform Backpack;
@@ -161,13 +165,7 @@ public class YandereScript : MonoBehaviour
 
 	public Transform Homeroom;
 
-	public Transform Ponytail;
-
 	public Transform Senpai;
-
-	public Transform HairR;
-
-	public Transform HairL;
 
 	public Transform Stool;
 
@@ -181,9 +179,7 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject[] Accessories;
 
-	public GameObject[] MisatoHair;
-
-	public Transform[] LongHair;
+	public GameObject[] Hairstyles;
 
 	public GameObject[] Shoes;
 
@@ -191,35 +187,13 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject CinematicCamera;
 
-	public GameObject StarsOrnament;
-
-	public GameObject BlackEyePatch;
-
 	public GameObject EasterEggMenu;
-
-	public GameObject KathlyneHair;
-
-	public GameObject FemaleMohawk;
-
-	public GameObject RongRongHair;
-
-	public GameObject HeatherHair;
-
-	public GameObject NewLongHair;
-
-	public GameObject PonytailWig;
-
-	public GameObject CheikoHair;
 
 	public GameObject Copyrights;
 
 	public GameObject HandCamera;
 
-	public GameObject HatredHair;
-
 	public GameObject KONGlasses;
-
-	public GameObject LovelyHair;
 
 	public GameObject AlarmDisc;
 
@@ -228,22 +202,6 @@ public class YandereScript : MonoBehaviour
 	public GameObject EyepatchL;
 
 	public GameObject EyepatchR;
-
-	public GameObject MisatoBow;
-
-	public GameObject PippiHair;
-
-	public GameObject RyokoHair;
-
-	public GameObject StarsHair;
-
-	public GameObject TashiHair;
-
-	public GameObject AllyHair;
-
-	public GameObject CuteHair;
-
-	public GameObject InfoHair;
 
 	public GameObject ShoePair;
 
@@ -256,28 +214,6 @@ public class YandereScript : MonoBehaviour
 	public GameObject Phone;
 
 	public GameObject Trail;
-
-	public GameObject Korra;
-
-	public GameObject Galo;
-
-	public GameObject Yuno;
-
-	public GameObject Rei;
-
-	public GameObject Asuka;
-
-	public GameObject Claire;
-
-	public GameObject Cookie1;
-
-	public GameObject Cookie2;
-
-	public GameObject Hana;
-
-	public GameObject Mochi;
-
-	public GameObject Nadaka;
 
 	public SkinnedMeshRenderer MyRenderer;
 
@@ -441,6 +377,8 @@ public class YandereScript : MonoBehaviour
 
 	public bool Dumping;
 
+	public bool Exiting;
+
 	public bool Lifting;
 
 	public bool Mopping;
@@ -450,6 +388,8 @@ public class YandereScript : MonoBehaviour
 	public bool Talking;
 
 	public bool Aiming;
+
+	public bool Hiding;
 
 	public bool CrouchButtonDown;
 
@@ -480,8 +420,6 @@ public class YandereScript : MonoBehaviour
 	public bool CanTranq;
 
 	public bool Collapse;
-
-	public bool HidePony;
 
 	public bool RoofPush;
 
@@ -639,6 +577,10 @@ public class YandereScript : MonoBehaviour
 
 	public Texture SukebanUniform;
 
+	public Transform SlenderAntennaeR;
+
+	public Transform SlenderAntennaeL;
+
 	public GameObject[] SlenderHair;
 
 	public Texture SlenderUniform;
@@ -646,6 +588,10 @@ public class YandereScript : MonoBehaviour
 	public Material SlenderSkybox;
 
 	public Texture SlenderSkin;
+
+	public Transform[] LongHair;
+
+	public GameObject BlackEyePatch;
 
 	public GameObject XSclera;
 
@@ -824,7 +770,6 @@ public class YandereScript : MonoBehaviour
 		Vector3 vector = this.EasterEggMenu.transform.localPosition = localPosition;
 		this.Smartphone.transform.parent.active = false;
 		this.ObstacleDetector.gameObject.active = false;
-		this.LongHair[0].gameObject.active = false;
 		this.PunishedAccessories.active = false;
 		this.SukebanAccessories.active = false;
 		this.FalconShoulderpad.active = false;
@@ -836,48 +781,19 @@ public class YandereScript : MonoBehaviour
 		this.EasterEggMenu.active = false;
 		this.FalconNipple1.active = false;
 		this.FalconNipple2.active = false;
-		this.MisatoHair[0].active = false;
-		this.MisatoHair[1].active = false;
-		this.MisatoHair[2].active = false;
-		this.MisatoHair[3].active = false;
 		this.PunishedScarf.active = false;
-		this.StarsOrnament.active = false;
 		this.FalconBuckle.active = false;
 		this.FalconHelmet.active = false;
-		this.RongRongHair.active = false;
 		this.CirnoRibbon.active = false;
-		this.CheikoHair.active = false;
 		this.CirnoWings.active = false;
-		this.HatredHair.active = false;
 		this.KONGlasses.active = false;
-		this.LovelyHair.active = false;
-		this.CirnoHair.active = false;
 		this.FalconGun.active = false;
 		this.EyepatchL.active = false;
 		this.EyepatchR.active = false;
-		this.MisatoBow.active = false;
-		this.PippiHair.active = false;
-		this.StarsHair.active = false;
-		this.CuteHair.active = false;
-		this.InfoHair.active = false;
-		this.PigtailL.active = false;
-		this.PigtailR.active = false;
 		this.Shoes[0].active = false;
 		this.Shoes[1].active = false;
-		this.Drills.active = false;
-		this.Korra.active = false;
 		this.Stand.active = false;
 		this.Cape.active = false;
-		this.Galo.active = false;
-		this.Yuno.active = false;
-		this.Rei.active = false;
-		this.Asuka.active = false;
-		this.Claire.active = false;
-		this.Cookie1.active = false;
-		this.Cookie2.active = false;
-		this.Hana.active = false;
-		this.Mochi.active = false;
-		this.Nadaka.active = false;
 		this.OriginalIdleAnim = this.IdleAnim;
 		this.OriginalWalkAnim = this.WalkAnim;
 		this.OriginalRunAnim = this.RunAnim;
@@ -992,7 +908,13 @@ public class YandereScript : MonoBehaviour
 					{
 						if (Input.GetButton("LB") && Vector3.Distance(this.transform.position, this.Senpai.position) > (float)2)
 						{
-							if (!this.Dragging && !this.Mopping)
+							if (this.Crouching)
+							{
+								this.Character.animation["f02_crouchWalk_00"].speed = (float)2;
+								this.Character.animation.CrossFade("f02_crouchWalk_00");
+								this.MyController.Move(this.transform.forward * ((float)2 + (float)PlayerPrefs.GetInt("PhysicalGrade") * 0.25f) * Time.deltaTime);
+							}
+							else if (!this.Dragging && !this.Mopping)
 							{
 								this.Character.animation.CrossFade(this.RunAnim);
 								this.MyController.Move(this.transform.forward * (this.RunSpeed + (float)PlayerPrefs.GetInt("PhysicalGrade") * 0.25f) * Time.deltaTime);
@@ -1004,11 +926,11 @@ public class YandereScript : MonoBehaviour
 							}
 							if (this.Crouching)
 							{
-								this.Crouching = false;
 							}
 							if (this.Crawling)
 							{
 								this.Crawling = false;
+								this.Crouching = true;
 							}
 						}
 						else if (!this.Dragging)
@@ -1020,6 +942,7 @@ public class YandereScript : MonoBehaviour
 							}
 							else if (this.Crouching)
 							{
+								this.Character.animation["f02_crouchWalk_00"].speed = (float)1;
 								this.Character.animation.CrossFade("f02_crouchWalk_00");
 								this.MyController.Move(this.transform.forward * this.CrouchSpeed * Time.deltaTime);
 							}
@@ -1533,7 +1456,7 @@ public class YandereScript : MonoBehaviour
 				}
 				if (this.Laughing)
 				{
-					if (this.Galo.active)
+					if (this.Hairstyles[14].active)
 					{
 						this.LaughAnim = "storepower_20";
 						this.LaughClip = this.PowerUp;
@@ -1902,6 +1825,17 @@ public class YandereScript : MonoBehaviour
 					this.DumpTimer += Time.deltaTime;
 					if (this.DumpTimer > (float)1)
 					{
+						if (this.Ragdoll != null)
+						{
+							int num4 = 0;
+							Vector3 localEulerAngles2 = ((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).PelvisRoot.localEulerAngles;
+							float num5 = localEulerAngles2.y = (float)num4;
+							Vector3 vector5 = ((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).PelvisRoot.localEulerAngles = localEulerAngles2;
+							int num6 = 0;
+							Vector3 localPosition = ((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).PelvisRoot.localPosition;
+							float num7 = localPosition.z = (float)num6;
+							Vector3 vector6 = ((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).PelvisRoot.localPosition = localPosition;
+						}
 						this.CameraTarget.position = Vector3.MoveTowards(this.CameraTarget.position, new Vector3(this.Hips.position.x, this.transform.position.y + (float)1, this.Hips.position.z), Time.deltaTime * (float)10);
 						if (this.Character.animation["f02_carryDisposeA_00"].time >= 4.5f)
 						{
@@ -1946,12 +1880,12 @@ public class YandereScript : MonoBehaviour
 					{
 						float x = this.Hips.transform.position.x;
 						Vector3 position2 = this.transform.position;
-						float num4 = position2.x = x;
-						Vector3 vector5 = this.transform.position = position2;
+						float num8 = position2.x = x;
+						Vector3 vector7 = this.transform.position = position2;
 						float z = this.Hips.transform.position.z;
 						Vector3 position3 = this.transform.position;
-						float num5 = position3.z = z;
-						Vector3 vector6 = this.transform.position = position3;
+						float num9 = position3.z = z;
+						Vector3 vector8 = this.transform.position = position3;
 						this.CameraTarget.localPosition = new Vector3((float)0, (float)1, (float)0);
 						this.Character.animation.Play(this.IdleAnim);
 						this.Shoved = false;
@@ -1965,6 +1899,37 @@ public class YandereScript : MonoBehaviour
 				if (this.Attacked && this.Character.animation["f02_swingB_00"].time >= this.Character.animation["f02_swingB_00"].length)
 				{
 					this.ShoulderCamera.HeartbrokenCamera.active = true;
+				}
+				if (this.Hiding)
+				{
+					if (!this.Exiting)
+					{
+						this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.HidingSpot.rotation, Time.deltaTime * (float)10);
+						this.MoveTowardsTarget(this.HidingSpot.position);
+						this.Character.animation.CrossFade("f02_hiding_00");
+					}
+					else
+					{
+						this.MoveTowardsTarget(this.ExitSpot.position);
+						this.Character.animation.CrossFade(this.IdleAnim);
+						if (Vector3.Distance(this.transform.position, this.ExitSpot.position) < 0.1f)
+						{
+							float y3 = 0.825f;
+							Vector3 center = this.MyController.center;
+							float num10 = center.y = y3;
+							Vector3 vector9 = this.MyController.center = center;
+							this.MyController.height = 1.45f;
+							this.Exiting = false;
+							this.CanMove = true;
+							this.Hiding = false;
+						}
+					}
+					if (Input.GetButtonDown("B"))
+					{
+						this.PromptBar.ClearButtons();
+						this.PromptBar.Show = false;
+						this.Exiting = true;
+					}
 				}
 			}
 			if (!this.Laughing)
@@ -2010,10 +1975,10 @@ public class YandereScript : MonoBehaviour
 					this.Character.animation.CrossFade("f02_scaredIdle_00");
 					this.targetRotation = Quaternion.LookRotation(this.Senpai.position - this.transform.position);
 					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
-					int num6 = 0;
-					Vector3 localEulerAngles2 = this.transform.localEulerAngles;
-					float num7 = localEulerAngles2.x = (float)num6;
-					Vector3 vector7 = this.transform.localEulerAngles = localEulerAngles2;
+					int num11 = 0;
+					Vector3 localEulerAngles3 = this.transform.localEulerAngles;
+					float num12 = localEulerAngles3.x = (float)num11;
+					Vector3 vector10 = this.transform.localEulerAngles = localEulerAngles3;
 				}
 				else if (this.Character.animation["f02_down_22"].time >= this.Character.animation["f02_down_22"].length)
 				{
@@ -2024,25 +1989,28 @@ public class YandereScript : MonoBehaviour
 			{
 				if (Vector3.Distance(this.transform.position, this.Senpai.position) < (float)2)
 				{
-					if (!this.NearSenpai)
+					if (!this.Talking)
 					{
-						this.DepthOfField.focalSize = (float)150;
-						this.NearSenpai = true;
-					}
-					if (this.Laughing)
-					{
-						this.StopLaughing();
-					}
-					this.Obscurance.enabled = false;
-					this.YandereVision = false;
-					this.Crouching = false;
-					this.Crawling = false;
-					this.Mopping = false;
-					this.YandereTimer = (float)0;
-					this.EmptyHands();
-					if (this.Aiming)
-					{
-						this.StopAiming();
+						if (!this.NearSenpai)
+						{
+							this.DepthOfField.focalSize = (float)150;
+							this.NearSenpai = true;
+						}
+						if (this.Laughing)
+						{
+							this.StopLaughing();
+						}
+						this.Obscurance.enabled = false;
+						this.YandereVision = false;
+						this.Crouching = false;
+						this.Crawling = false;
+						this.Mopping = false;
+						this.YandereTimer = (float)0;
+						this.EmptyHands();
+						if (this.Aiming)
+						{
+							this.StopAiming();
+						}
 					}
 				}
 				else
@@ -2153,27 +2121,27 @@ public class YandereScript : MonoBehaviour
 			}
 			float a5 = (float)1 - this.YandereFade / (float)100;
 			Color color = this.RightRedEye.material.color;
-			float num8 = color.a = a5;
+			float num13 = color.a = a5;
 			Color color2 = this.RightRedEye.material.color = color;
 			float a6 = (float)1 - this.YandereFade / (float)100;
 			Color color3 = this.LeftRedEye.material.color;
-			float num9 = color3.a = a6;
+			float num14 = color3.a = a6;
 			Color color4 = this.LeftRedEye.material.color = color3;
 			float g = this.YandereFade / (float)100;
 			Color color5 = this.RightYandereEye.material.color;
-			float num10 = color5.g = g;
+			float num15 = color5.g = g;
 			Color color6 = this.RightYandereEye.material.color = color5;
 			float b = this.YandereFade / (float)100;
 			Color color7 = this.RightYandereEye.material.color;
-			float num11 = color7.b = b;
+			float num16 = color7.b = b;
 			Color color8 = this.RightYandereEye.material.color = color7;
 			float g2 = this.YandereFade / (float)100;
 			Color color9 = this.LeftYandereEye.material.color;
-			float num12 = color9.g = g2;
+			float num17 = color9.g = g2;
 			Color color10 = this.LeftYandereEye.material.color = color9;
 			float b2 = this.YandereFade / (float)100;
 			Color color11 = this.LeftYandereEye.material.color;
-			float num13 = color11.b = b2;
+			float num18 = color11.b = b2;
 			Color color12 = this.LeftYandereEye.material.color = color11;
 			if (this.Armed)
 			{
@@ -2451,10 +2419,10 @@ public class YandereScript : MonoBehaviour
 						if (this.Shoes[0].active)
 						{
 							GameObject gameObject5 = (GameObject)UnityEngine.Object.Instantiate(this.ShoePair, this.transform.position + new Vector3(-1.6f, 0.045f, (float)0), Quaternion.identity);
-							int num14 = -90;
+							int num19 = -90;
 							Vector3 eulerAngles2 = gameObject5.transform.eulerAngles;
-							float num15 = eulerAngles2.y = (float)num14;
-							Vector3 vector8 = gameObject5.transform.eulerAngles = eulerAngles2;
+							float num20 = eulerAngles2.y = (float)num19;
+							Vector3 vector11 = gameObject5.transform.eulerAngles = eulerAngles2;
 							this.Shoes[0].active = false;
 							this.Shoes[1].active = false;
 						}
@@ -2639,16 +2607,23 @@ public class YandereScript : MonoBehaviour
 				else
 				{
 					this.Character.animation.CrossFade("f02_counterA_00");
-					float y3 = this.TargetStudent.transform.position.y;
+					float y4 = this.TargetStudent.transform.position.y;
 					Vector3 position4 = this.Character.transform.position;
-					float num16 = position4.y = y3;
-					Vector3 vector9 = this.Character.transform.position = position4;
+					float num21 = position4.y = y4;
+					Vector3 vector12 = this.Character.transform.position = position4;
 				}
 			}
-			if (!this.Attacking && !this.Dragging && this.PickUp == null && !this.Aiming && !this.Crawling && !this.Pouring && !this.DumpsterGrabbing && !this.Stripping && !this.Bathing && !this.Struggling && !this.Degloving && !this.Possessed && !this.Carrying && !this.Dismembering && this.LaughIntensity < (float)16)
+			if (!this.Attacking && !this.Dragging && this.PickUp == null && !this.Aiming && !this.Crawling && !this.Pouring && !this.DumpsterGrabbing && !this.Stripping && !this.Bathing && !this.Struggling && !this.Degloving && !this.Possessed && !this.Carrying && !this.Dismembering && !this.CirnoWings.active && this.LaughIntensity < (float)16)
 			{
 				this.Character.animation["f02_yanderePose_00"].weight = Mathf.Lerp(this.Character.animation["f02_yanderePose_00"].weight, (float)1 - this.Sanity / (float)100, Time.deltaTime * (float)10);
-				this.Slouch = Mathf.Lerp(this.Slouch, (float)5 * ((float)1 - this.Sanity / (float)100), Time.deltaTime * (float)10);
+				if (this.Hairstyle == 2 && this.Crouching)
+				{
+					this.Slouch = Mathf.Lerp(this.Slouch, (float)0, Time.deltaTime * (float)20);
+				}
+				else
+				{
+					this.Slouch = Mathf.Lerp(this.Slouch, (float)5 * ((float)1 - this.Sanity / (float)100), Time.deltaTime * (float)10);
+				}
 			}
 			else
 			{
@@ -2659,11 +2634,11 @@ public class YandereScript : MonoBehaviour
 			{
 				float a7 = (float)1 - this.Sanity / (float)100;
 				Color color13 = this.RightYandereEye.material.color;
-				float num17 = color13.a = a7;
+				float num22 = color13.a = a7;
 				Color color14 = this.RightYandereEye.material.color = color13;
 				float a8 = (float)1 - this.Sanity / (float)100;
 				Color color15 = this.LeftYandereEye.material.color;
-				float num18 = color15.a = a8;
+				float num23 = color15.a = a8;
 				Color color16 = this.LeftYandereEye.material.color = color15;
 				this.EyeShrink = Mathf.Lerp(this.EyeShrink, 0.5f * ((float)1 - this.Sanity / (float)100), Time.deltaTime * (float)10);
 			}
@@ -2726,8 +2701,9 @@ public class YandereScript : MonoBehaviour
 					this.EyewearID = 0;
 				}
 			}
-			if (Input.GetKeyDown("h") && !this.Slender)
+			if (Input.GetKeyDown("h"))
 			{
+				this.Hairstyle++;
 				this.UpdateHair();
 			}
 			if (Input.GetKeyDown("o") && !this.EasterEggMenu.active)
@@ -2873,6 +2849,7 @@ public class YandereScript : MonoBehaviour
 					}
 					else if (Input.GetKeyDown("x"))
 					{
+						this.EasterEggMenu.active = false;
 						this.X();
 					}
 					else if (Input.GetKeyDown("o"))
@@ -2907,30 +2884,34 @@ public class YandereScript : MonoBehaviour
 			}
 			if (this.transform.position.y < (float)0)
 			{
-				int num19 = 0;
+				int num24 = 0;
 				Vector3 position5 = this.transform.position;
-				float num20 = position5.y = (float)num19;
-				Vector3 vector10 = this.transform.position = position5;
+				float num25 = position5.y = (float)num24;
+				Vector3 vector13 = this.transform.position = position5;
 			}
 			if (this.transform.position.z < -49.5f)
 			{
 				float z2 = -49.5f;
 				Vector3 position6 = this.transform.position;
-				float num21 = position6.z = z2;
-				Vector3 vector11 = this.transform.position = position6;
+				float num26 = position6.z = z2;
+				Vector3 vector14 = this.transform.position = position6;
 			}
-			int num22 = 0;
+			int num27 = 0;
 			Vector3 eulerAngles3 = this.transform.eulerAngles;
-			float num23 = eulerAngles3.x = (float)num22;
-			Vector3 vector12 = this.transform.eulerAngles = eulerAngles3;
-			int num24 = 0;
+			float num28 = eulerAngles3.x = (float)num27;
+			Vector3 vector15 = this.transform.eulerAngles = eulerAngles3;
+			int num29 = 0;
 			Vector3 eulerAngles4 = this.transform.eulerAngles;
-			float num25 = eulerAngles4.z = (float)num24;
-			Vector3 vector13 = this.transform.eulerAngles = eulerAngles4;
+			float num30 = eulerAngles4.z = (float)num29;
+			Vector3 vector16 = this.transform.eulerAngles = eulerAngles4;
 		}
 		else
 		{
 			this.audio.volume = this.audio.volume - 0.333333343f;
+		}
+		if (this.transform.localScale.x != (float)1)
+		{
+			Application.LoadLevel("AntiModScene");
 		}
 	}
 
@@ -3010,7 +2991,7 @@ public class YandereScript : MonoBehaviour
 			float num11 = localPosition3.y = height;
 			Vector3 vector11 = this.PelvisRoot.transform.localPosition = localPosition3;
 		}
-		if (this.HatredHair.active)
+		if (this.Hairstyles[15].active)
 		{
 			this.AntennaeR.localScale = new Vector3((float)0, (float)0, (float)0);
 			this.AntennaeL.localScale = new Vector3((float)0, (float)0, (float)0);
@@ -3022,6 +3003,11 @@ public class YandereScript : MonoBehaviour
 			Vector3 localEulerAngles6 = this.Spine[5].localEulerAngles;
 			float num13 = localEulerAngles6.x = y4;
 			Vector3 vector13 = this.Spine[5].localEulerAngles = localEulerAngles6;
+		}
+		if (this.SlenderHair[0].active)
+		{
+			this.SlenderAntennaeR.localScale = new Vector3((float)0, (float)0, (float)0);
+			this.SlenderAntennaeL.localScale = new Vector3((float)0, (float)0, (float)0);
 		}
 		if (this.Slender)
 		{
@@ -3117,7 +3103,7 @@ public class YandereScript : MonoBehaviour
 				this.Gloves.Blood.enabled = true;
 				this.Police.BloodyClothing = this.Police.BloodyClothing + 1;
 			}
-			if (this.Mask != null)
+			if (this.Mask != null && !this.Mask.Blood.enabled)
 			{
 				this.Mask.PickUp.Evidence = true;
 				this.Mask.Blood.enabled = true;
@@ -3328,6 +3314,7 @@ public class YandereScript : MonoBehaviour
 			Color color2 = this.MyRenderer.materials[3].color = color;
 		}
 		this.PreviousSanity = this.Sanity;
+		((SkinnedMeshRenderer)this.Hairstyles[2].GetComponent(typeof(SkinnedMeshRenderer))).SetBlendShapeWeight(0, this.Sanity);
 	}
 
 	public virtual void UpdateBlood()
@@ -3395,252 +3382,19 @@ public class YandereScript : MonoBehaviour
 
 	public virtual void UpdateHair()
 	{
-		this.PigtailR.transform.parent.transform.parent.transform.localScale = new Vector3((float)1, 0.75f, (float)1);
-		this.PigtailL.transform.parent.transform.parent.transform.localScale = new Vector3((float)1, 0.75f, (float)1);
-		this.LongHair[0].gameObject.active = false;
-		this.StarsOrnament.active = false;
-		this.MisatoHair[0].active = false;
-		this.MisatoHair[1].active = false;
-		this.MisatoHair[2].active = false;
-		this.MisatoHair[3].active = false;
-		this.FemaleMohawk.active = false;
-		this.KathlyneHair.active = false;
-		this.RongRongHair.active = false;
-		this.NewLongHair.active = false;
-		this.PonytailWig.active = false;
-		this.HeatherHair.active = false;
-		this.CheikoHair.active = false;
-		this.HatredHair.active = false;
-		this.LovelyHair.active = false;
-		this.PippiHair.active = false;
-		this.RyokoHair.active = false;
-		this.StarsHair.active = false;
-		this.TashiHair.active = false;
-		this.AllyHair.active = false;
-		this.CuteHair.active = false;
-		this.InfoHair.active = false;
-		this.PigtailR.active = false;
-		this.PigtailL.active = false;
-		this.Drills.active = false;
-		this.Korra.active = false;
-		this.Galo.active = false;
-		this.Yuno.active = false;
-		this.Rei.active = false;
-		this.Asuka.active = false;
-		this.Claire.active = false;
-		this.Cookie1.active = false;
-		this.Cookie2.active = false;
-		this.Hana.active = false;
-		this.Mochi.active = false;
-		this.Nadaka.active = false;
-		this.HidePony = true;
-		this.Hairstyle++;
-		if (this.Hairstyle > 39)
+		if (this.Hairstyle == Extensions.get_length(this.Hairstyles))
 		{
 			this.Hairstyle = 0;
 		}
-		if (this.Hairstyle == 0)
+		this.ID = 1;
+		while (this.ID < Extensions.get_length(this.Hairstyles))
 		{
-			this.PonytailWig.active = false;
+			this.Hairstyles[this.ID].active = false;
+			this.ID++;
 		}
-		else if (this.Hairstyle == 1)
+		if (this.Hairstyle > 0)
 		{
-			this.HidePony = false;
-			this.PonytailWig.active = true;
-			this.Ponytail.localScale = new Vector3((float)1, (float)1, (float)1);
-			this.HairR.localScale = new Vector3((float)1, (float)1, (float)1);
-			this.HairL.localScale = new Vector3((float)1, (float)1, (float)1);
-		}
-		else if (this.Hairstyle == 2)
-		{
-			this.PonytailWig.active = true;
-			this.PigtailR.active = true;
-		}
-		else if (this.Hairstyle == 3)
-		{
-			this.PonytailWig.active = true;
-			this.PigtailL.active = true;
-		}
-		else if (this.Hairstyle == 4)
-		{
-			this.PonytailWig.active = true;
-			this.PigtailR.active = true;
-			this.PigtailL.active = true;
-		}
-		else if (this.Hairstyle == 5)
-		{
-			this.PonytailWig.active = true;
-			this.PigtailR.active = true;
-			this.PigtailL.active = true;
-			this.HidePony = false;
-			this.Ponytail.localScale = new Vector3((float)1, (float)1, (float)1);
-			this.HairR.localScale = new Vector3((float)1, (float)1, (float)1);
-			this.HairL.localScale = new Vector3((float)1, (float)1, (float)1);
-		}
-		else if (this.Hairstyle == 6)
-		{
-			this.PonytailWig.active = true;
-			this.PigtailR.active = true;
-			this.PigtailL.active = true;
-			this.PigtailR.transform.parent.transform.parent.transform.localScale = new Vector3((float)2, (float)2, (float)2);
-			this.PigtailL.transform.parent.transform.parent.transform.localScale = new Vector3((float)2, (float)2, (float)2);
-		}
-		else if (this.Hairstyle == 7)
-		{
-			this.PonytailWig.active = true;
-			this.Drills.active = true;
-		}
-		else if (this.Hairstyle == 8)
-		{
-			this.LongHair[0].gameObject.active = true;
-			this.LongHair[1].localScale = new Vector3(0.933333f, 0.933333f, 0.933333f);
-			this.LongHair[2].localScale = new Vector3(0.875f, 0.875f, 0.875f);
-			this.LongHair[3].localScale = new Vector3(0.875f, 0.875f, 0.875f);
-			this.LongHair[4].localScale = new Vector3(0.8f, 0.8f, 0.8f);
-			this.LongHair[5].localScale = new Vector3((float)1, 0.5f, 0.5f);
-			this.LongHair[6].localScale = new Vector3((float)1, 0.5f, 0.5f);
-			this.LongHair[7].localScale = new Vector3((float)1, 0.5f, 0.5f);
-		}
-		else if (this.Hairstyle == 9)
-		{
-			this.LongHair[0].gameObject.active = true;
-			this.ID = 1;
-			while (this.ID < Extensions.get_length(this.LongHair))
-			{
-				this.LongHair[this.ID].localScale = new Vector3((float)1, (float)1, (float)1);
-				this.ID++;
-			}
-		}
-		else if (this.Hairstyle == 10)
-		{
-			this.Rei.active = true;
-		}
-		else if (this.Hairstyle == 11)
-		{
-			this.Yuno.active = true;
-		}
-		else if (this.Hairstyle == 12)
-		{
-			this.Korra.active = true;
-		}
-		else if (this.Hairstyle == 13)
-		{
-			this.Galo.active = true;
-		}
-		else if (this.Hairstyle == 14)
-		{
-			this.HatredHair.active = true;
-		}
-		else if (this.Hairstyle == 15)
-		{
-			this.CuteHair.active = true;
-		}
-		else if (this.Hairstyle == 16)
-		{
-			this.PippiHair.active = true;
-		}
-		else if (this.Hairstyle == 17)
-		{
-			this.InfoHair.active = true;
-		}
-		else if (this.Hairstyle == 18)
-		{
-			this.MisatoHair[0].active = true;
-		}
-		else if (this.Hairstyle == 19)
-		{
-			this.MisatoHair[1].active = true;
-		}
-		else if (this.Hairstyle == 20)
-		{
-			this.MisatoHair[2].active = true;
-		}
-		else if (this.Hairstyle == 21)
-		{
-			this.MisatoHair[3].active = true;
-		}
-		else if (this.Hairstyle == 22)
-		{
-			this.RongRongHair.active = true;
-		}
-		else if (this.Hairstyle == 23)
-		{
-			this.NewLongHair.active = true;
-		}
-		else if (this.Hairstyle == 24)
-		{
-			this.CheikoHair.active = true;
-		}
-		else if (this.Hairstyle == 25)
-		{
-			this.StarsHair.active = true;
-		}
-		else if (this.Hairstyle == 26)
-		{
-			this.AllyHair.active = true;
-		}
-		else if (this.Hairstyle == 27)
-		{
-			this.HeatherHair.active = true;
-		}
-		else if (this.Hairstyle == 28)
-		{
-			this.KathlyneHair.active = true;
-		}
-		else if (this.Hairstyle == 29)
-		{
-			this.FemaleMohawk.active = true;
-		}
-		else if (this.Hairstyle == 30)
-		{
-			this.RyokoHair.active = true;
-		}
-		else if (this.Hairstyle == 31)
-		{
-			this.TashiHair.active = true;
-		}
-		else if (this.Hairstyle == 32)
-		{
-			this.LovelyHair.active = true;
-		}
-		else if (this.Hairstyle == 33)
-		{
-			this.Asuka.active = true;
-		}
-		else if (this.Hairstyle == 34)
-		{
-			this.Claire.active = true;
-		}
-		else if (this.Hairstyle == 35)
-		{
-			this.Cookie1.active = true;
-		}
-		else if (this.Hairstyle == 36)
-		{
-			this.Cookie2.active = true;
-		}
-		else if (this.Hairstyle == 37)
-		{
-			this.Hana.active = true;
-		}
-		else if (this.Hairstyle == 38)
-		{
-			this.Mochi.active = true;
-		}
-		else if (this.Hairstyle == 39)
-		{
-			this.Nadaka.active = true;
-		}
-		if (this.HidePony)
-		{
-			this.Ponytail.parent.transform.localScale = new Vector3((float)1, (float)1, 0.9f);
-			this.Ponytail.localScale = new Vector3((float)0, (float)0, (float)0);
-			this.HairR.localScale = new Vector3((float)0, (float)0, (float)0);
-			this.HairL.localScale = new Vector3((float)0, (float)0, (float)0);
-		}
-		else
-		{
-			this.Ponytail.parent.transform.localScale = new Vector3((float)1, (float)1, (float)1);
+			this.Hairstyles[this.Hairstyle].active = true;
 		}
 	}
 
@@ -3667,7 +3421,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$2419(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$2467(this).GetEnumerator();
 	}
 
 	public virtual void WearGloves()
@@ -3747,7 +3501,7 @@ public class YandereScript : MonoBehaviour
 		this.SelectGrayscale.desaturation = (float)1;
 		this.HeartRate.active = false;
 		this.Sanity = (float)0;
-		this.Hairstyle = 13;
+		this.Hairstyle = 15;
 		this.UpdateHair();
 		this.EasterEggMenu.active = false;
 		this.Egg = true;
@@ -3770,18 +3524,11 @@ public class YandereScript : MonoBehaviour
 		RenderSettings.skybox = this.SlenderSkybox;
 		this.SelectGrayscale.desaturation = 0.5f;
 		this.SelectGrayscale.enabled = true;
-		this.PigtailR.transform.parent.transform.parent.transform.localScale = new Vector3((float)1, 0.75f, (float)1);
-		this.PigtailL.transform.parent.transform.parent.transform.localScale = new Vector3((float)1, 0.75f, (float)1);
 		this.EasterEggMenu.active = false;
-		this.PonytailWig.active = false;
-		this.PigtailR.active = false;
-		this.PigtailL.active = false;
-		this.Drills.active = false;
-		this.Korra.active = false;
-		this.Yuno.active = false;
-		this.Rei.active = false;
 		this.Slender = true;
 		this.Egg = true;
+		this.Hairstyle = 0;
+		this.UpdateHair();
 		this.SlenderHair[0].active = true;
 		this.SlenderHair[1].active = true;
 		float y = 0.822f;
@@ -3798,28 +3545,19 @@ public class YandereScript : MonoBehaviour
 
 	public virtual void X()
 	{
-		this.LongHair[0].gameObject.active = true;
+		this.Xtan = true;
+		this.Egg = true;
+		this.Hairstyle = 9;
+		this.UpdateHair();
 		this.BlackEyePatch.active = true;
 		this.XSclera.active = true;
 		this.XEye.active = true;
 		this.Schoolwear = 2;
 		this.ChangeSchoolwear();
+		this.CanMove = true;
 		this.MyRenderer.materials[0].mainTexture = this.XBody;
 		this.MyRenderer.materials[1].mainTexture = this.XBody;
 		this.MyRenderer.materials[2].mainTexture = this.XFace;
-		this.PigtailR.transform.parent.transform.parent.transform.localScale = new Vector3((float)1, 0.75f, (float)1);
-		this.PigtailL.transform.parent.transform.parent.transform.localScale = new Vector3((float)1, 0.75f, (float)1);
-		this.EasterEggMenu.active = false;
-		this.PonytailWig.active = false;
-		this.PigtailR.active = false;
-		this.PigtailL.active = false;
-		this.Drills.active = false;
-		this.Korra.active = false;
-		this.Yuno.active = false;
-		this.Rei.active = false;
-		this.CanMove = true;
-		this.Xtan = true;
-		this.Egg = true;
 	}
 
 	public virtual void GaloSengen()
@@ -3836,7 +3574,7 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.materials[0].mainTexture = this.UniformTextures[1];
 		this.MyRenderer.materials[1].mainTexture = this.GaloArms;
 		this.MyRenderer.materials[2].mainTexture = this.GaloFace;
-		this.Hairstyle = 12;
+		this.Hairstyle = 14;
 		this.UpdateHair();
 	}
 
@@ -3855,7 +3593,7 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.materials[2].mainTexture = this.AgentFace;
 		this.EasterEggMenu.active = false;
 		this.Egg = true;
-		this.Hairstyle = 100;
+		this.Hairstyle = 0;
 		this.UpdateHair();
 	}
 
@@ -3874,7 +3612,7 @@ public class YandereScript : MonoBehaviour
 		this.EasterEggMenu.active = false;
 		this.Crouching = false;
 		this.Egg = true;
-		this.Hairstyle = 100;
+		this.Hairstyle = 0;
 		this.UpdateHair();
 	}
 
@@ -3894,7 +3632,7 @@ public class YandereScript : MonoBehaviour
 		this.IdleAnim = "f02_falconIdle_00";
 		this.RunSpeed *= (float)5;
 		this.Egg = true;
-		this.Hairstyle = 100;
+		this.Hairstyle = 0;
 		this.UpdateHair();
 	}
 
@@ -3911,7 +3649,7 @@ public class YandereScript : MonoBehaviour
 		this.Barcode.active = false;
 		this.Cape.active = true;
 		this.Egg = true;
-		this.Hairstyle = 100;
+		this.Hairstyle = 0;
 		this.UpdateHair();
 	}
 
@@ -3927,7 +3665,7 @@ public class YandereScript : MonoBehaviour
 		this.Barcode.active = false;
 		this.Sans = true;
 		this.Egg = true;
-		this.Hairstyle = 100;
+		this.Hairstyle = 0;
 		this.UpdateHair();
 	}
 

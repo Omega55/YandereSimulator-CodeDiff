@@ -134,7 +134,7 @@ public class ChangingBoothScript : MonoBehaviour
 
 	public virtual void CheckYandereClub()
 	{
-		if (this.Yandere.Bloodiness == (float)0 && !this.CannotChange)
+		if (this.Yandere.Bloodiness == (float)0 && !this.CannotChange && this.Yandere.Schoolwear > 0)
 		{
 			if (!this.Occupied)
 			{

@@ -739,7 +739,7 @@ public class StudentScript : MonoBehaviour
 		{
 			this.Character.animation[this.StripAnim].speed = 1.5f;
 			this.Character.animation[this.GameAnim].speed = (float)2;
-			if (this.Club == 100)
+			if (this.Club > 99)
 			{
 				this.BecomeTeacher();
 			}
@@ -1664,7 +1664,7 @@ public class StudentScript : MonoBehaviour
 				if (this.Following && !this.Waiting)
 				{
 					this.DistanceToDestination = Vector3.Distance(this.transform.position, this.Pathfinding.target.position);
-					if (this.DistanceToDestination > (float)5)
+					if (this.DistanceToDestination > (float)2)
 					{
 						this.Character.animation.CrossFade(this.RunAnim);
 						this.Pathfinding.speed = (float)4;
@@ -1997,7 +1997,13 @@ public class StudentScript : MonoBehaviour
 					}
 					this.Pathfinding.target = this.StudentManager.Students[7].transform;
 					this.CurrentDestination = this.StudentManager.Students[7].transform;
-					if (!this.StudentManager.Students[7].Safe)
+					bool flag;
+					if (this.StudentID == 7)
+					{
+						this.StudentManager.Students[7].Dead = true;
+						flag = true;
+					}
+					if (this.StudentManager.Students[7].transform.position.z > (float)-34 || flag)
 					{
 						if (!this.StudentManager.Students[7].Dead)
 						{
@@ -2079,14 +2085,22 @@ public class StudentScript : MonoBehaviour
 								}
 								if (this.Character.animation[this.SuicideAnim].time >= this.Character.animation[this.SuicideAnim].length)
 								{
-									this.Police.MurderSuicideScene = true;
-									this.StudentManager.MurderTakingPlace = false;
+									if (this.StudentID != 7)
+									{
+										this.Police.MurderSuicideScene = true;
+										this.MurderSuicide = true;
+									}
+									else
+									{
+										this.Police.SuicideScene = true;
+										this.Ragdoll.Suicide = true;
+										this.Police.Suicide = true;
+									}
 									this.MyWeapon.transform.parent = this.Head;
 									UnityEngine.Object.Destroy(this.MyWeapon.gameObject.rigidbody);
 									this.Broken.enabled = false;
 									this.Broken.Subtitle.text = string.Empty;
 									this.BecomeRagdoll();
-									this.MurderSuicide = true;
 									this.Dead = true;
 								}
 							}
@@ -2199,8 +2213,16 @@ public class StudentScript : MonoBehaviour
 						{
 							if (!this.WitnessedCorpse)
 							{
+								if (!this.Male)
+								{
+									this.Character.animation["f02_smile_00"].weight = (float)0;
+								}
 								this.Alarm = (float)200;
 								this.WitnessedCorpse = true;
+								if (this.Wet)
+								{
+									this.Persona = 1;
+								}
 								this.StudentManager.UpdateMe(this.StudentID);
 								if (!this.Teacher)
 								{
@@ -2252,7 +2274,7 @@ public class StudentScript : MonoBehaviour
 						}
 						this.DistanceToPlayer = Vector3.Distance(this.transform.position, this.Yandere.transform.position);
 						this.PreviousAlarm = this.Alarm;
-						if (this.DistanceToPlayer < (float)11 * this.Paranoia)
+						if (this.DistanceToPlayer < this.VisionCone.farClipPlane)
 						{
 							if (!this.Talking)
 							{
@@ -2351,10 +2373,10 @@ public class StudentScript : MonoBehaviour
 							this.Alarmed = true;
 							this.Witness = true;
 							string b = this.Witnessed;
-							bool flag = false;
+							bool flag2 = false;
 							if (this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].Suspicious)
 							{
-								flag = true;
+								flag2 = true;
 							}
 							if (this.WitnessedCorpse && !this.WitnessedMurder)
 							{
@@ -2368,13 +2390,13 @@ public class StudentScript : MonoBehaviour
 								{
 									this.WitnessedBlood = true;
 								}
-								if (flag && this.WitnessedBlood && this.Yandere.Sanity < 33.333f)
+								if (flag2 && this.WitnessedBlood && this.Yandere.Sanity < 33.333f)
 								{
 									this.Witnessed = "Weapon and Blood and Insanity";
 									this.RepLoss = (float)30;
 									this.Concern = 5;
 								}
-								else if (flag && this.Yandere.Sanity < 33.333f)
+								else if (flag2 && this.Yandere.Sanity < 33.333f)
 								{
 									this.Witnessed = "Weapon and Insanity";
 									this.RepLoss = (float)20;
@@ -2386,13 +2408,13 @@ public class StudentScript : MonoBehaviour
 									this.RepLoss = (float)20;
 									this.Concern = 5;
 								}
-								else if (flag && this.WitnessedBlood)
+								else if (flag2 && this.WitnessedBlood)
 								{
 									this.Witnessed = "Weapon and Blood";
 									this.RepLoss = (float)20;
 									this.Concern = 5;
 								}
-								else if (flag)
+								else if (flag2)
 								{
 									this.WeaponWitnessed = this.Yandere.Weapon[this.Yandere.Equipped].WeaponID;
 									this.Witnessed = "Weapon";
@@ -2466,7 +2488,7 @@ public class StudentScript : MonoBehaviour
 									if (this.Concern == 5)
 									{
 										this.SenpaiNoticed();
-										if (this.Witnessed == "Stalking")
+										if (this.Witnessed == "Stalking" || this.Witnessed == "Lewd")
 										{
 											this.Character.animation.CrossFade(this.IdleAnim);
 											this.Character.animation[this.AngryFaceAnim].weight = (float)1;
@@ -2559,7 +2581,7 @@ public class StudentScript : MonoBehaviour
 					if (this.OnPhone)
 					{
 						this.Character.animation[this.PhoneAnim].weight = Mathf.Lerp(this.Character.animation[this.PhoneAnim].weight, (float)1, Time.deltaTime * (float)10);
-						if (this.transform.position.z > -48.5f)
+						if (this.transform.position.z > -48.50001f)
 						{
 							if (!this.Slave)
 							{
@@ -3540,6 +3562,10 @@ public class StudentScript : MonoBehaviour
 
 	public virtual void AttackReaction()
 	{
+		if (!this.Male)
+		{
+			this.Character.animation["f02_smile_00"].weight = (float)0;
+		}
 		this.WitnessCamera.Show = false;
 		this.Pathfinding.canSearch = false;
 		this.Pathfinding.canMove = false;
@@ -3629,6 +3655,10 @@ public class StudentScript : MonoBehaviour
 
 	public virtual void WitnessMurder()
 	{
+		if (!this.Male)
+		{
+			this.Character.animation["f02_smile_00"].weight = (float)0;
+		}
 		if (this.Yandere.Mask == null)
 		{
 			this.Grudge = true;
@@ -4078,11 +4108,20 @@ public class StudentScript : MonoBehaviour
 	public virtual void BecomeTeacher()
 	{
 		this.transform.localScale = new Vector3(1.1f, 1.1f, 1.1f);
-		this.VisionCone.farClipPlane = (float)12 * this.Paranoia;
 		this.StudentManager.Teachers[this.Class] = this;
 		this.PantyCollider.enabled = false;
 		this.SkirtCollider.enabled = false;
-		this.name = "Teacher_" + this.Class;
+		if (this.Class > 0)
+		{
+			this.VisionCone.farClipPlane = (float)12 * this.Paranoia;
+			this.name = "Teacher_" + this.Class;
+		}
+		else
+		{
+			this.VisionCone.farClipPlane = (float)16 * this.Paranoia;
+			this.IdleAnim = "f02_tsunIdle_00";
+			this.name = "Coach";
+		}
 		this.Teacher = true;
 	}
 

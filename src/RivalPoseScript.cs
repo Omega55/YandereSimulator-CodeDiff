@@ -64,6 +64,13 @@ public class RivalPoseScript : MonoBehaviour
 			this.MyRenderer.materials[2].mainTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
 			this.MyRenderer.materials[3].mainTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
 		}
+		else if (PlayerPrefs.GetInt("FemaleUniform") == 6)
+		{
+			this.MyRenderer.materials[0].mainTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.MyRenderer.materials[1].mainTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.MyRenderer.materials[2].mainTexture = this.HairTexture;
+			this.MyRenderer.materials[3].mainTexture = this.HairTexture;
+		}
 	}
 
 	public virtual void Update()

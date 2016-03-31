@@ -15,7 +15,7 @@ public class PromptScript : MonoBehaviour
 
 	public GameObject LabelObject;
 
-	public Transform PromptParent;
+	public PromptParentScript PromptParent;
 
 	public Collider MyCollider;
 
@@ -32,6 +32,8 @@ public class PromptScript : MonoBehaviour
 	public UISprite[] Circle;
 
 	public UILabel[] Label;
+
+	public UISprite Square;
 
 	public float[] OffsetX;
 
@@ -58,6 +60,8 @@ public class PromptScript : MonoBehaviour
 	public bool Weapon;
 
 	public bool Local;
+
+	public float RelativePosition;
 
 	public float MaximumDistance;
 
@@ -90,6 +94,7 @@ public class PromptScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		this.Distance = (float)99999;
 		if (!this.Initialized)
 		{
 			if (Extensions.get_length(this.OffsetZ) == 0)
@@ -107,37 +112,45 @@ public class PromptScript : MonoBehaviour
 			if (this.Yandere != null)
 			{
 				this.PauseScreen = (PauseScreenScript)GameObject.Find("PauseScreen").GetComponent(typeof(PauseScreenScript));
-				this.PromptParent = (Transform)GameObject.Find("PromptParent").GetComponent(typeof(Transform));
+				this.PromptParent = (PromptParentScript)GameObject.Find("PromptParent").GetComponent(typeof(PromptParentScript));
 				this.UICamera = (Camera)GameObject.Find("UI Camera").GetComponent(typeof(Camera));
+				this.Square = (UISprite)((GameObject)UnityEngine.Object.Instantiate(this.PromptParent.SquareObject, this.transform.position, Quaternion.identity)).GetComponent(typeof(UISprite));
+				this.Square.transform.parent = this.PromptParent.transform;
+				this.Square.transform.localScale = new Vector3((float)1, (float)1, (float)1);
+				this.Square.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+				int num = 0;
+				Color color = this.Square.color;
+				float num2 = color.a = (float)num;
+				Color color2 = this.Square.color = color;
 				this.ID = 0;
 				while (this.ID < 4)
 				{
 					if (this.ButtonActive[this.ID])
 					{
 						this.Button[this.ID] = (UISprite)((GameObject)UnityEngine.Object.Instantiate(this.ButtonObject[this.ID], this.transform.position, Quaternion.identity)).GetComponent(typeof(UISprite));
-						this.Button[this.ID].transform.parent = this.PromptParent;
+						this.Button[this.ID].transform.parent = this.PromptParent.transform;
 						this.Button[this.ID].transform.localScale = new Vector3((float)1, (float)1, (float)1);
 						this.Button[this.ID].transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
-						int num = 0;
-						Color color = this.Button[this.ID].color;
-						float num2 = color.a = (float)num;
-						Color color2 = this.Button[this.ID].color = color;
+						int num3 = 0;
+						Color color3 = this.Button[this.ID].color;
+						float num4 = color3.a = (float)num3;
+						Color color4 = this.Button[this.ID].color = color3;
 						this.Circle[this.ID] = (UISprite)((GameObject)UnityEngine.Object.Instantiate(this.CircleObject, this.transform.position, Quaternion.identity)).GetComponent(typeof(UISprite));
-						this.Circle[this.ID].transform.parent = this.PromptParent;
+						this.Circle[this.ID].transform.parent = this.PromptParent.transform;
 						this.Circle[this.ID].transform.localScale = new Vector3((float)1, (float)1, (float)1);
 						this.Circle[this.ID].transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
-						int num3 = 0;
-						Color color3 = this.Circle[this.ID].color;
-						float num4 = color3.a = (float)num3;
-						Color color4 = this.Circle[this.ID].color = color3;
+						int num5 = 0;
+						Color color5 = this.Circle[this.ID].color;
+						float num6 = color5.a = (float)num5;
+						Color color6 = this.Circle[this.ID].color = color5;
 						this.Label[this.ID] = (UILabel)((GameObject)UnityEngine.Object.Instantiate(this.LabelObject, this.transform.position, Quaternion.identity)).GetComponent(typeof(UILabel));
-						this.Label[this.ID].transform.parent = this.PromptParent;
+						this.Label[this.ID].transform.parent = this.PromptParent.transform;
 						this.Label[this.ID].transform.localScale = new Vector3((float)1, (float)1, (float)1);
 						this.Label[this.ID].transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
-						int num5 = 0;
-						Color color5 = this.Label[this.ID].color;
-						float num6 = color5.a = (float)num5;
-						Color color6 = this.Label[this.ID].color = color5;
+						int num7 = 0;
+						Color color7 = this.Label[this.ID].color;
+						float num8 = color7.a = (float)num7;
+						Color color8 = this.Label[this.ID].color = color7;
 						this.Label[this.ID].text = "     " + this.Text[this.ID];
 					}
 					this.AcceptingInput[this.ID] = true;
@@ -195,28 +208,27 @@ public class PromptScript : MonoBehaviour
 										Vector2 vector = this.UICamera.WorldToScreenPoint(this.transform.position + this.transform.right * this.OffsetX[this.ID] + this.transform.up * this.OffsetY[this.ID] + this.transform.forward * this.OffsetZ[this.ID]);
 										this.Button[this.ID].transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector.x, vector.y, 1f));
 										this.Circle[this.ID].transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector.x, vector.y, 1f));
+										this.Square.transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector.x, vector.y, 1f));
 										Vector2 vector2 = this.UICamera.WorldToScreenPoint(this.transform.position + this.transform.right * this.OffsetX[this.ID] + this.transform.up * this.OffsetY[this.ID] + this.transform.forward * this.OffsetZ[this.ID]);
 										this.Label[this.ID].transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector2.x + this.OffsetX[this.ID], vector2.y, 1f));
+										this.RelativePosition = vector.x;
 									}
 									else
 									{
 										Vector2 vector3 = this.UICamera.WorldToScreenPoint(this.transform.position + new Vector3(this.OffsetX[this.ID], this.OffsetY[this.ID], this.OffsetZ[this.ID]));
 										this.Button[this.ID].transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector3.x, vector3.y, 1f));
 										this.Circle[this.ID].transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector3.x, vector3.y, 1f));
+										this.Square.transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector3.x, vector3.y, 1f));
 										Vector2 vector4 = this.UICamera.WorldToScreenPoint(this.transform.position + new Vector3(this.OffsetX[this.ID], this.OffsetY[this.ID], this.OffsetZ[this.ID]));
 										this.Label[this.ID].transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector4.x + this.OffsetX[this.ID], vector4.y, 1f));
+										this.RelativePosition = vector3.x;
 									}
 									if (!this.HideButton[this.ID])
 									{
-										this.Button[this.ID].color = new Color(0.5f, 0.5f, 0.5f, (float)1);
-										int num = 0;
-										Color color = this.Circle[this.ID].color;
+										int num = 1;
+										Color color = this.Square.color;
 										float num2 = color.a = (float)num;
-										Color color2 = this.Circle[this.ID].color = color;
-										float a = 0.5f;
-										Color color3 = this.Label[this.ID].color;
-										float num3 = color3.a = a;
-										Color color4 = this.Label[this.ID].color = color3;
+										Color color2 = this.Square.color = color;
 									}
 								}
 								this.ID++;
@@ -227,19 +239,16 @@ public class PromptScript : MonoBehaviour
 								{
 									this.Yandere.NearestPrompt = this;
 								}
-								else if (this.Priority == this.Yandere.NearestPrompt.Priority)
-								{
-									if (this.Distance < this.Yandere.NearestPrompt.Distance)
-									{
-										this.Yandere.NearestPrompt = this;
-									}
-								}
-								else if (this.Priority > this.Yandere.NearestPrompt.Priority)
+								else if (Mathf.Abs(this.RelativePosition - (float)Screen.width * 0.5f) < Mathf.Abs(this.Yandere.NearestPrompt.RelativePosition - (float)Screen.width * 0.5f))
 								{
 									this.Yandere.NearestPrompt = this;
 								}
 								if (this.Yandere.NearestPrompt == this)
 								{
+									int num3 = 0;
+									Color color3 = this.Square.color;
+									float num4 = color3.a = (float)num3;
+									Color color4 = this.Square.color = color3;
 									this.ID = 0;
 									while (this.ID < 4)
 									{
@@ -247,9 +256,9 @@ public class PromptScript : MonoBehaviour
 										{
 											this.Button[this.ID].color = new Color((float)1, (float)1, (float)1, (float)1);
 											this.Circle[this.ID].color = new Color(0.5f, 0.5f, 0.5f, (float)1);
-											int num4 = 1;
+											int num5 = 1;
 											Color color5 = this.Label[this.ID].color;
-											float num5 = color5.a = (float)num4;
+											float num6 = color5.a = (float)num5;
 											Color color6 = this.Label[this.ID].color = color5;
 										}
 										this.ID++;
@@ -312,6 +321,33 @@ public class PromptScript : MonoBehaviour
 										}
 									}
 								}
+								else
+								{
+									int num7 = 1;
+									Color color7 = this.Square.color;
+									float num8 = color7.a = (float)num7;
+									Color color8 = this.Square.color = color7;
+									this.ID = 0;
+									while (this.ID < 4)
+									{
+										if (this.ButtonActive[this.ID])
+										{
+											int num9 = 0;
+											Color color9 = this.Button[this.ID].color;
+											float num10 = color9.a = (float)num9;
+											Color color10 = this.Button[this.ID].color = color9;
+											int num11 = 0;
+											Color color11 = this.Circle[this.ID].color;
+											float num12 = color11.a = (float)num11;
+											Color color12 = this.Circle[this.ID].color = color11;
+											int num13 = 0;
+											Color color13 = this.Label[this.ID].color;
+											float num14 = color13.a = (float)num13;
+											Color color14 = this.Label[this.ID].color = color13;
+										}
+										this.ID++;
+									}
+								}
 							}
 							else
 							{
@@ -319,33 +355,53 @@ public class PromptScript : MonoBehaviour
 								{
 									this.Yandere.NearestPrompt = null;
 								}
+								int num15 = 1;
+								Color color15 = this.Square.color;
+								float num16 = color15.a = (float)num15;
+								Color color16 = this.Square.color = color15;
 								this.ID = 0;
 								while (this.ID < 4)
 								{
 									if (this.ButtonActive[this.ID])
 									{
 										this.Circle[this.ID].fillAmount = (float)1;
+										int num17 = 0;
+										Color color17 = this.Button[this.ID].color;
+										float num18 = color17.a = (float)num17;
+										Color color18 = this.Button[this.ID].color = color17;
+										int num19 = 0;
+										Color color19 = this.Circle[this.ID].color;
+										float num20 = color19.a = (float)num19;
+										Color color20 = this.Circle[this.ID].color = color19;
+										int num21 = 0;
+										Color color21 = this.Label[this.ID].color;
+										float num22 = color21.a = (float)num21;
+										Color color22 = this.Label[this.ID].color = color21;
 									}
 									this.ID++;
 								}
 							}
+							int num23 = 1;
+							Color color23 = this.Square.color;
+							float num24 = color23.a = (float)num23;
+							Color color24 = this.Square.color = color23;
 							this.ID = 0;
 							while (this.ID < 4)
 							{
 								if (this.ButtonActive[this.ID] && this.HideButton[this.ID])
 								{
-									int num6 = 0;
-									Color color7 = this.Button[this.ID].color;
-									float num7 = color7.a = (float)num6;
-									Color color8 = this.Button[this.ID].color = color7;
-									int num8 = 0;
-									Color color9 = this.Circle[this.ID].color;
-									float num9 = color9.a = (float)num8;
-									Color color10 = this.Circle[this.ID].color = color9;
-									int num10 = 0;
-									Color color11 = this.Label[this.ID].color;
-									float num11 = color11.a = (float)num10;
-									Color color12 = this.Label[this.ID].color = color11;
+									int num25 = 0;
+									Color color25 = this.Button[this.ID].color;
+									float num26 = color25.a = (float)num25;
+									Color color26 = this.Button[this.ID].color = color25;
+									int num27 = 0;
+									Color color27 = this.Circle[this.ID].color;
+									float num28 = color27.a = (float)num27;
+									Color color28 = this.Circle[this.ID].color = color27;
+									int num29 = 0;
+									Color color29 = this.Label[this.ID].color;
+									float num30 = color29.a = (float)num29;
+									Color color30 = this.Label[this.ID].color = color29;
 								}
 								this.ID++;
 							}
@@ -383,6 +439,7 @@ public class PromptScript : MonoBehaviour
 				{
 					Debug.Log("4.");
 				}
+				this.Distance = (float)99999;
 				this.Hide();
 			}
 		}
@@ -423,24 +480,28 @@ public class PromptScript : MonoBehaviour
 			{
 				this.Yandere.NearestPrompt = null;
 			}
+			int num = 0;
+			Color color = this.Square.color;
+			float num2 = color.a = (float)num;
+			Color color2 = this.Square.color = color;
 			this.ID = 0;
 			while (this.ID < 4)
 			{
 				if (this.ButtonActive[this.ID] && this.Button[this.ID].color.a > (float)0)
 				{
 					this.Circle[this.ID].fillAmount = (float)1;
-					int num = 0;
-					Color color = this.Button[this.ID].color;
-					float num2 = color.a = (float)num;
-					Color color2 = this.Button[this.ID].color = color;
 					int num3 = 0;
-					Color color3 = this.Circle[this.ID].color;
+					Color color3 = this.Button[this.ID].color;
 					float num4 = color3.a = (float)num3;
-					Color color4 = this.Circle[this.ID].color = color3;
+					Color color4 = this.Button[this.ID].color = color3;
 					int num5 = 0;
-					Color color5 = this.Label[this.ID].color;
+					Color color5 = this.Circle[this.ID].color;
 					float num6 = color5.a = (float)num5;
-					Color color6 = this.Label[this.ID].color = color5;
+					Color color6 = this.Circle[this.ID].color = color5;
+					int num7 = 0;
+					Color color7 = this.Label[this.ID].color;
+					float num8 = color7.a = (float)num7;
+					Color color8 = this.Label[this.ID].color = color7;
 				}
 				this.ID++;
 			}

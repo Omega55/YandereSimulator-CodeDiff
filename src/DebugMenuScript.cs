@@ -4,6 +4,8 @@ using UnityEngine;
 [Serializable]
 public class DebugMenuScript : MonoBehaviour
 {
+	public FakeStudentSpawnerScript FakeStudentSpawner;
+
 	public StudentManagerScript StudentManager;
 
 	public CameraEffectsScript CameraEffects;
@@ -80,6 +82,12 @@ public class DebugMenuScript : MonoBehaviour
 			{
 				PlayerPrefs.SetInt("FemaleUniform", 5);
 				PlayerPrefs.SetInt("MaleUniform", 5);
+				Application.LoadLevel(Application.loadedLevel);
+			}
+			else if (Input.GetKeyDown(KeyCode.F6))
+			{
+				PlayerPrefs.SetInt("FemaleUniform", 6);
+				PlayerPrefs.SetInt("MaleUniform", 6);
 				Application.LoadLevel(Application.loadedLevel);
 			}
 			else if (Input.GetKeyDown("1"))
@@ -162,6 +170,16 @@ public class DebugMenuScript : MonoBehaviour
 				}
 				this.Window.active = false;
 			}
+			else if (Input.GetKeyDown("e"))
+			{
+				PlayerPrefs.SetInt("Scheme_7_Stage", 6);
+				this.Window.active = false;
+			}
+			else if (Input.GetKeyDown("f"))
+			{
+				this.FakeStudentSpawner.Spawn();
+				this.Window.active = false;
+			}
 			else if (Input.GetKeyDown("g"))
 			{
 				if (this.StudentManager.Students[16] != null)
@@ -174,6 +192,12 @@ public class DebugMenuScript : MonoBehaviour
 					this.StudentManager.Students[16].MeetTime = (float)0;
 				}
 				this.Window.active = false;
+			}
+			else if (Input.GetKeyDown("k"))
+			{
+				PlayerPrefs.SetInt("KidnapVictim", 6);
+				PlayerPrefs.SetInt("Student_6_Slave", 1);
+				Application.LoadLevel(Application.loadedLevel);
 			}
 			else if (Input.GetKeyDown("m"))
 			{

@@ -743,6 +743,7 @@ public class SubtitleScript : MonoBehaviour
 		else if (ReactionType == "Senpai Lewd Reaction")
 		{
 			this.Label.text = this.SenpaiLewdReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.SenpaiLewdReactions))];
+			this.PlayVoice(ReactionType, this.RandomID);
 		}
 		else if (ReactionType == "Senpai Stalking Reaction")
 		{

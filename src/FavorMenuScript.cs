@@ -6,144 +6,84 @@ public class FavorMenuScript : MonoBehaviour
 {
 	public InputManagerScript InputManager;
 
+	public ServicesMenuScript ServicesMenu;
+
 	public PauseScreenScript PauseScreen;
 
-	public GameObject MainMenu;
+	public SchemesScript SchemesMenu;
+
+	public PromptBarScript PromptBar;
 
 	public Transform Highlight;
 
-	public UILabel PantyShots;
-
-	public UILabel DescLabel;
-
-	public UILabel[] FavorLabels;
-
-	public string[] DescText;
-
 	public int ID;
-
-	public Transform TextMessages;
-
-	public GameObject FavorScreen;
-
-	public GameObject NewMessage;
-
-	public GameObject Message;
-
-	public int MessageHeight;
-
-	public string MessageText;
 
 	public FavorMenuScript()
 	{
 		this.ID = 1;
-		this.MessageText = string.Empty;
-	}
-
-	public virtual void Start()
-	{
-		this.DescLabel.text = this.DescText[this.ID];
 	}
 
 	public virtual void Update()
 	{
-		if (this.FavorScreen.active)
+		if (this.InputManager.TappedRight)
 		{
-			if (this.InputManager.TappedUp)
+			this.ID++;
+			this.UpdateHighlight();
+		}
+		else if (this.InputManager.TappedLeft)
+		{
+			this.ID--;
+			this.UpdateHighlight();
+		}
+		if (Input.GetButtonDown("A"))
+		{
+			this.PromptBar.ClearButtons();
+			this.PromptBar.Label[0].text = "Accept";
+			this.PromptBar.Label[1].text = "Exit";
+			this.PromptBar.Label[4].text = "Choose";
+			this.PromptBar.UpdateButtons();
+			if (this.ID == 1)
 			{
-				this.ID--;
-				if (this.ID < 1)
-				{
-					this.ID = 8;
-				}
-				int num = 225 - 50 * this.ID;
-				Vector3 localPosition = this.Highlight.localPosition;
-				float num2 = localPosition.y = (float)num;
-				Vector3 vector = this.Highlight.localPosition = localPosition;
-				this.DescLabel.text = this.DescText[this.ID];
+				this.SchemesMenu.UpdateSchemeList();
+				this.SchemesMenu.UpdateSchemeInfo();
+				this.SchemesMenu.active = true;
+				this.active = false;
 			}
-			if (this.InputManager.TappedDown)
+			else if (this.ID == 2)
 			{
-				this.ID++;
-				if (this.ID > 8)
-				{
-					this.ID = 1;
-				}
-				int num3 = 225 - 50 * this.ID;
-				Vector3 localPosition2 = this.Highlight.localPosition;
-				float num4 = localPosition2.y = (float)num3;
-				Vector3 vector2 = this.Highlight.localPosition = localPosition2;
-				this.DescLabel.text = this.DescText[this.ID];
-			}
-			if (Input.GetButtonDown("A") && this.FavorLabels[this.ID].color.a == (float)1 && this.ID == 4)
-			{
-				PlayerPrefs.SetInt("PantyShots", PlayerPrefs.GetInt("PantyShots") - 10);
-				PlayerPrefs.SetInt("DarkSecret", 1);
-				this.SpawnMessage();
+				this.ServicesMenu.UpdatePantyShots();
+				this.ServicesMenu.active = true;
+				this.active = false;
 			}
 		}
 		if (Input.GetButtonDown("B"))
 		{
-			if (this.TextMessages.gameObject.active)
-			{
-				this.TextMessages.gameObject.active = false;
-				this.PauseScreen.ExitPhone();
-				UnityEngine.Object.Destroy(this.NewMessage);
-			}
+			this.PromptBar.ClearButtons();
+			this.PromptBar.Label[0].text = "Accept";
+			this.PromptBar.Label[1].text = "Exit";
+			this.PromptBar.Label[4].text = "Choose";
+			this.PromptBar.UpdateButtons();
+			this.PauseScreen.MainMenu.active = true;
 			this.PauseScreen.Sideways = false;
-			this.FavorScreen.active = true;
-			this.MainMenu.active = true;
+			this.PauseScreen.PressedB = true;
 			this.active = false;
 		}
 	}
 
-	public virtual void UpdatePantyShots()
+	public virtual void UpdateHighlight()
 	{
-		this.PantyShots.text = string.Empty + PlayerPrefs.GetInt("PantyShots");
-		if (PlayerPrefs.GetInt("PantyShots") >= 8)
+		if (this.ID > 3)
 		{
-			if (PlayerPrefs.GetInt("DarkSecret") == 0)
-			{
-				int num = 1;
-				Color color = this.FavorLabels[4].color;
-				float num2 = color.a = (float)num;
-				Color color2 = this.FavorLabels[4].color = color;
-			}
-			else
-			{
-				float a = 0.5f;
-				Color color3 = this.FavorLabels[4].color;
-				float num3 = color3.a = a;
-				Color color4 = this.FavorLabels[4].color = color3;
-			}
+			this.ID = 1;
 		}
-		else
+		else if (this.ID < 1)
 		{
-			float a2 = 0.5f;
-			Color color5 = this.FavorLabels[4].color;
-			float num4 = color5.a = a2;
-			Color color6 = this.FavorLabels[4].color = color5;
+			this.ID = 3;
 		}
-	}
-
-	public virtual void SpawnMessage()
-	{
-		this.TextMessages.gameObject.active = true;
-		this.PauseScreen.Sideways = false;
-		this.FavorScreen.active = false;
-		if (this.NewMessage != null)
-		{
-			UnityEngine.Object.Destroy(this.NewMessage);
-		}
-		this.NewMessage = (GameObject)UnityEngine.Object.Instantiate(this.Message);
-		this.NewMessage.transform.parent = this.TextMessages;
-		this.NewMessage.transform.localPosition = new Vector3((float)-225, (float)-275, (float)0);
-		this.NewMessage.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
-		this.NewMessage.transform.localScale = new Vector3((float)1, (float)1, (float)1);
-		this.MessageText = "You're going to love this. I've got video footage of Kokona selling used panties to a boy from another school. Enjoy.";
-		this.MessageHeight = 5;
-		((UISprite)this.NewMessage.GetComponent(typeof(UISprite))).height = 36 + 36 * this.MessageHeight;
-		((TextMessageScript)this.NewMessage.GetComponent(typeof(TextMessageScript))).Label.text = this.MessageText;
+		int num = -500 + 250 * this.ID;
+		Vector3 localPosition = this.Highlight.transform.localPosition;
+		float num2 = localPosition.x = (float)num;
+		Vector3 vector = this.Highlight.transform.localPosition = localPosition;
 	}
 
 	public virtual void Main()

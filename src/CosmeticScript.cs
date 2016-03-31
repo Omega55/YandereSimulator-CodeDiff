@@ -57,6 +57,10 @@ public class CosmeticScript : MonoBehaviour
 
 	public Texture TeacherBodyTexture;
 
+	public Texture CoachBodyTexture;
+
+	public Texture CoachFaceTexture;
+
 	public Texture FaceTexture;
 
 	public GameObject RightIrisLight;
@@ -72,6 +76,8 @@ public class CosmeticScript : MonoBehaviour
 	public Color CorrectColor;
 
 	public Mesh TeacherMesh;
+
+	public Mesh CoachMesh;
 
 	public bool CustomHair;
 
@@ -124,6 +130,16 @@ public class CosmeticScript : MonoBehaviour
 			this.MyRenderer.sharedMesh = this.TeacherMesh;
 			this.Teacher = true;
 		}
+		else if (this.Club == 101)
+		{
+			this.Character.animation["f02_smile_00"].layer = 1;
+			this.Character.animation.Play("f02_smile_00");
+			this.Character.animation["f02_smile_00"].weight = (float)1;
+			this.RightEyeRenderer.gameObject.active = false;
+			this.LeftEyeRenderer.gameObject.active = false;
+			this.MyRenderer.sharedMesh = this.CoachMesh;
+			this.Teacher = true;
+		}
 		this.ID = 0;
 		while (this.ID < Extensions.get_length(this.FemaleAccessories))
 		{
@@ -148,6 +164,15 @@ public class CosmeticScript : MonoBehaviour
 			if (this.ClubAccessories[this.ID] != null)
 			{
 				this.ClubAccessories[this.ID].active = false;
+			}
+			this.ID++;
+		}
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.TeacherAccessories))
+		{
+			if (this.TeacherAccessories[this.ID] != null)
+			{
+				this.TeacherAccessories[this.ID].active = false;
 			}
 			this.ID++;
 		}
@@ -209,10 +234,18 @@ public class CosmeticScript : MonoBehaviour
 			{
 				this.TeacherHair[this.Hairstyle].active = true;
 				this.HairRenderer = this.TeacherHairRenderers[this.Hairstyle];
-				this.MyRenderer.sharedMesh = this.TeacherMesh;
-				this.MyRenderer.materials[0].mainTexture = this.TeacherBodyTexture;
-				this.MyRenderer.materials[1].mainTexture = this.DefaultFaceTexture;
-				this.MyRenderer.materials[2].mainTexture = this.TeacherBodyTexture;
+				if (this.Club == 100)
+				{
+					this.MyRenderer.materials[0].mainTexture = this.TeacherBodyTexture;
+					this.MyRenderer.materials[1].mainTexture = this.DefaultFaceTexture;
+					this.MyRenderer.materials[2].mainTexture = this.TeacherBodyTexture;
+				}
+				else
+				{
+					this.MyRenderer.materials[0].mainTexture = this.CoachFaceTexture;
+					this.MyRenderer.materials[1].mainTexture = this.CoachBodyTexture;
+					this.MyRenderer.materials[2].mainTexture = this.CoachBodyTexture;
+				}
 			}
 		}
 		else
@@ -317,7 +350,7 @@ public class CosmeticScript : MonoBehaviour
 				this.LeftEyeRenderer.material.color = this.HairRenderer.material.color;
 			}
 		}
-		else if (this.Teacher)
+		else if (this.Teacher && this.Club == 100)
 		{
 			this.HairRenderer.material.color = new Color(0.5f, 0.25f, (float)0, (float)1);
 			this.RightEyeRenderer.material.color = this.HairRenderer.material.color;
@@ -440,6 +473,12 @@ public class CosmeticScript : MonoBehaviour
 			this.MyRenderer.materials[0].mainTexture = this.FaceTexture;
 			this.MyRenderer.materials[1].mainTexture = this.SkinTextures[@int];
 			this.MyRenderer.materials[2].mainTexture = this.MaleUniformTextures[5];
+		}
+		else if (PlayerPrefs.GetInt("MaleUniform") == 6)
+		{
+			this.MyRenderer.materials[0].mainTexture = this.FaceTexture;
+			this.MyRenderer.materials[1].mainTexture = this.SkinTextures[@int];
+			this.MyRenderer.materials[2].mainTexture = this.MaleUniformTextures[6];
 		}
 	}
 

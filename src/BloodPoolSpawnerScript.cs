@@ -36,10 +36,13 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 
 	public virtual void Start()
 	{
-		this.NEStairs = (Collider)GameObject.Find("NEStairs").GetComponent(typeof(Collider));
-		this.NWStairs = (Collider)GameObject.Find("NWStairs").GetComponent(typeof(Collider));
-		this.SEStairs = (Collider)GameObject.Find("SEStairs").GetComponent(typeof(Collider));
-		this.SWStairs = (Collider)GameObject.Find("SWStairs").GetComponent(typeof(Collider));
+		if (Application.loadedLevel != 3)
+		{
+			this.NEStairs = (Collider)GameObject.Find("NEStairs").GetComponent(typeof(Collider));
+			this.NWStairs = (Collider)GameObject.Find("NWStairs").GetComponent(typeof(Collider));
+			this.SEStairs = (Collider)GameObject.Find("SEStairs").GetComponent(typeof(Collider));
+			this.SWStairs = (Collider)GameObject.Find("SWStairs").GetComponent(typeof(Collider));
+		}
 		this.BloodParent = GameObject.Find("BloodParent").transform;
 		this.Positions = new Vector3[5];
 		this.Positions[1] = new Vector3(0.5f, 0.012f, (float)0);
@@ -90,9 +93,16 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 			{
 				this.Height = (float)12;
 			}
-			if (this.NEStairs.bounds.Contains(this.transform.position) || this.NWStairs.bounds.Contains(this.transform.position) || this.SEStairs.bounds.Contains(this.transform.position) || this.SWStairs.bounds.Contains(this.transform.position))
+			if (Application.loadedLevel != 3)
 			{
-				this.CanSpawn = false;
+				if (this.NEStairs.bounds.Contains(this.transform.position) || this.NWStairs.bounds.Contains(this.transform.position) || this.SEStairs.bounds.Contains(this.transform.position) || this.SWStairs.bounds.Contains(this.transform.position))
+				{
+					this.CanSpawn = false;
+				}
+				else
+				{
+					this.CanSpawn = true;
+				}
 			}
 			else
 			{

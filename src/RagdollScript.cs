@@ -42,6 +42,8 @@ public class RagdollScript : MonoBehaviour
 
 	public Transform LeftBreast;
 
+	public Transform PelvisRoot;
+
 	public Transform Ponytail;
 
 	public Transform RightEye;
@@ -234,7 +236,15 @@ public class RagdollScript : MonoBehaviour
 					this.Yandere.Character.animation.Play("f02_carryLiftA_00");
 					this.Character.animation.Play(this.LiftAnim);
 					this.BloodSpawnerCollider.enabled = false;
+					int num3 = 0;
+					Vector3 localEulerAngles = this.PelvisRoot.localEulerAngles;
+					float num4 = localEulerAngles.y = (float)num3;
+					Vector3 vector2 = this.PelvisRoot.localEulerAngles = localEulerAngles;
 					this.Prompt.MyCollider.enabled = false;
+					int num5 = 0;
+					Vector3 localPosition2 = this.PelvisRoot.localPosition;
+					float num6 = localPosition2.z = (float)num5;
+					Vector3 vector3 = this.PelvisRoot.localPosition = localPosition2;
 					this.Yandere.Ragdoll = this.gameObject;
 					this.Yandere.CanMove = false;
 					this.Yandere.Lifting = true;
@@ -301,9 +311,9 @@ public class RagdollScript : MonoBehaviour
 			{
 				this.Character.animation.Play("f02_fetal_00");
 				float y2 = Mathf.MoveTowards(this.transform.localPosition.y, 0.36f, Time.deltaTime);
-				Vector3 localPosition2 = this.transform.localPosition;
-				float num3 = localPosition2.y = y2;
-				Vector3 vector2 = this.transform.localPosition = localPosition2;
+				Vector3 localPosition3 = this.transform.localPosition;
+				float num7 = localPosition3.y = y2;
+				Vector3 vector4 = this.transform.localPosition = localPosition3;
 				if (this.transform.localPosition.y == 0.36f)
 				{
 					this.TranqCase.Open = false;

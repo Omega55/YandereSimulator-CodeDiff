@@ -4,9 +4,13 @@ using UnityEngine;
 [Serializable]
 public class ClassScript : MonoBehaviour
 {
+	public CutsceneManagerScript CutsceneManager;
+
 	public InputManagerScript InputManager;
 
 	public PromptBarScript PromptBar;
+
+	public SchemesScript Schemes;
 
 	public PortalScript Portal;
 
@@ -191,9 +195,26 @@ public class ClassScript : MonoBehaviour
 							{
 								this.Poison.active = true;
 							}
-							this.PromptBar.Show = false;
-							this.Portal.Proceed = true;
-							this.active = false;
+							if (PlayerPrefs.GetInt("Scheme_7_Stage") == 6)
+							{
+								PlayerPrefs.SetInt("Scheme_7_Stage", 100);
+								if (PlayerPrefs.GetInt("CurrentScheme") == 7)
+								{
+									PlayerPrefs.SetInt("CurrentScheme", 0);
+								}
+								this.PromptBar.ClearButtons();
+								this.PromptBar.Label[0].text = "Continue";
+								this.PromptBar.UpdateButtons();
+								this.CutsceneManager.active = true;
+								this.Schemes.UpdateInstructions();
+								this.active = false;
+							}
+							else
+							{
+								this.PromptBar.Show = false;
+								this.Portal.Proceed = true;
+								this.active = false;
+							}
 						}
 					}
 				}

@@ -26,6 +26,8 @@ public class StudentInfoScript : MonoBehaviour
 
 	public GameObject Static;
 
+	public UILabel OccupationLabel;
+
 	public UILabel ReputationLabel;
 
 	public UILabel StrengthLabel;
@@ -113,6 +115,10 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.PersonaLabel.text = "?????";
 		}
+		if (this.JSON.StudentClubs[ID] == 101)
+		{
+			this.PersonaLabel.text = "Friendly but Strict";
+		}
 		if (this.JSON.StudentCrushes[ID] == 0)
 		{
 			this.CrushLabel.text = "None";
@@ -125,61 +131,104 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.CrushLabel.text = string.Empty + this.JSON.StudentNames[this.JSON.StudentCrushes[ID]];
 		}
-		if (this.JSON.StudentClubs[ID] == 0)
+		if (this.JSON.StudentClubs[ID] < 100)
 		{
-			this.ClubLabel.text = "No Club";
+			this.OccupationLabel.text = "Club";
 		}
-		else if (this.JSON.StudentClubs[ID] == 1)
+		else
 		{
-			this.ClubLabel.text = "Cooking";
+			this.OccupationLabel.text = "Occupation";
 		}
-		else if (this.JSON.StudentClubs[ID] == 2)
+		if (this.JSON.StudentClubs[ID] < 100)
 		{
-			this.ClubLabel.text = "Drama";
+			if (this.JSON.StudentClubs[ID] == 0)
+			{
+				this.ClubLabel.text = "No Club";
+			}
+			else if (this.JSON.StudentClubs[ID] == 1)
+			{
+				this.ClubLabel.text = "Cooking";
+			}
+			else if (this.JSON.StudentClubs[ID] == 2)
+			{
+				this.ClubLabel.text = "Drama";
+			}
+			else if (this.JSON.StudentClubs[ID] == 3)
+			{
+				this.ClubLabel.text = "Occult";
+			}
+			else if (this.JSON.StudentClubs[ID] == 4)
+			{
+				this.ClubLabel.text = "Art";
+			}
+			else if (this.JSON.StudentClubs[ID] == 5)
+			{
+				this.ClubLabel.text = "Light Music";
+			}
+			else if (this.JSON.StudentClubs[ID] == 6)
+			{
+				this.ClubLabel.text = "Martial Arts";
+			}
+			else if (this.JSON.StudentClubs[ID] == 7)
+			{
+				this.ClubLabel.text = "Photography";
+			}
+			else if (this.JSON.StudentClubs[ID] == 8)
+			{
+				this.ClubLabel.text = "Science";
+			}
+			else if (this.JSON.StudentClubs[ID] == 9)
+			{
+				this.ClubLabel.text = "Sports";
+			}
+			else if (this.JSON.StudentClubs[ID] == 10)
+			{
+				this.ClubLabel.text = "Gardening";
+			}
+			else if (this.JSON.StudentClubs[ID] == 11)
+			{
+				this.ClubLabel.text = "Gaming";
+			}
+			else if (this.JSON.StudentClubs[ID] == 99)
+			{
+				this.ClubLabel.text = "?????";
+			}
+			else if (this.JSON.StudentClubs[ID] == 100)
+			{
+				this.ClubLabel.text = "Teacher";
+			}
+			else if (this.JSON.StudentClubs[ID] == 101)
+			{
+				this.ClubLabel.text = "Gym Teacher";
+			}
 		}
-		else if (this.JSON.StudentClubs[ID] == 3)
+		else if (this.JSON.StudentClasses[ID] == 11)
 		{
-			this.ClubLabel.text = "Occult";
+			this.ClubLabel.text = "Teacher of Class 1-1";
 		}
-		else if (this.JSON.StudentClubs[ID] == 4)
+		else if (this.JSON.StudentClasses[ID] == 12)
 		{
-			this.ClubLabel.text = "Art";
+			this.ClubLabel.text = "Teacher of Class 1-2";
 		}
-		else if (this.JSON.StudentClubs[ID] == 5)
+		else if (this.JSON.StudentClasses[ID] == 21)
 		{
-			this.ClubLabel.text = "Light Music";
+			this.ClubLabel.text = "Teacher of Class 2-1";
 		}
-		else if (this.JSON.StudentClubs[ID] == 6)
+		else if (this.JSON.StudentClasses[ID] == 22)
 		{
-			this.ClubLabel.text = "Martial Arts";
+			this.ClubLabel.text = "Teacher of Class 2-2";
 		}
-		else if (this.JSON.StudentClubs[ID] == 7)
+		else if (this.JSON.StudentClasses[ID] == 31)
 		{
-			this.ClubLabel.text = "Photography";
+			this.ClubLabel.text = "Teacher of Class 3-1";
 		}
-		else if (this.JSON.StudentClubs[ID] == 8)
+		else if (this.JSON.StudentClasses[ID] == 32)
 		{
-			this.ClubLabel.text = "Science";
+			this.ClubLabel.text = "Teacher of Class 3-2";
 		}
-		else if (this.JSON.StudentClubs[ID] == 9)
+		else if (this.JSON.StudentClasses[ID] == 0)
 		{
-			this.ClubLabel.text = "Sports";
-		}
-		else if (this.JSON.StudentClubs[ID] == 10)
-		{
-			this.ClubLabel.text = "Gardening";
-		}
-		else if (this.JSON.StudentClubs[ID] == 11)
-		{
-			this.ClubLabel.text = "Gaming";
-		}
-		else if (this.JSON.StudentClubs[ID] == 99)
-		{
-			this.ClubLabel.text = "?????";
-		}
-		else if (this.JSON.StudentClubs[ID] == 100)
-		{
-			this.ClubLabel.text = "Faculty";
+			this.ClubLabel.text = "Gym Teacher";
 		}
 		if (PlayerPrefs.GetInt("Club_" + this.JSON.StudentClubs[ID] + "_Closed") == 1)
 		{

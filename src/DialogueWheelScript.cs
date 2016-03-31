@@ -369,7 +369,7 @@ public class DialogueWheelScript : MonoBehaviour
 				}
 				else if (this.Selected != 0)
 				{
-					if (this.FavorShadow[this.Selected].color.a == (float)0)
+					if (this.FavorShadow[this.Selected] != null && this.FavorShadow[this.Selected].color.a == (float)0)
 					{
 						if (this.Selected == 1)
 						{

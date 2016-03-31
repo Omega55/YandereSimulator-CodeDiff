@@ -23,6 +23,8 @@ public class PauseScreenScript : MonoBehaviour
 
 	public TaskListScript TaskList;
 
+	public SchemesScript Schemes;
+
 	public YandereScript Yandere;
 
 	public RPG_Camera RPGCamera;
@@ -37,7 +39,11 @@ public class PauseScreenScript : MonoBehaviour
 
 	public UISprite Wifi;
 
+	public GameObject ServicesScreen;
+
 	public GameObject LoadingScreen;
+
+	public GameObject SchemesMenu;
 
 	public GameObject StudentInfo;
 
@@ -60,6 +66,8 @@ public class PauseScreenScript : MonoBehaviour
 	public bool EggsChecked;
 
 	public bool PressedA;
+
+	public bool PressedB;
 
 	public bool Quitting;
 
@@ -88,9 +96,15 @@ public class PauseScreenScript : MonoBehaviour
 		this.PhotoGallery.gameObject.active = false;
 		this.FavorMenu.gameObject.active = false;
 		this.PassTime.gameObject.active = false;
+		this.ServicesScreen.active = false;
 		this.LoadingScreen.active = false;
+		this.SchemesMenu.active = false;
 		this.StudentInfo.active = false;
 		this.MainMenu.active = true;
+		if (Application.loadedLevelName == "SchoolScene")
+		{
+			this.Schemes.UpdateInstructions();
+		}
 		this.CorrectingTime = false;
 	}
 
@@ -127,7 +141,7 @@ public class PauseScreenScript : MonoBehaviour
 				{
 					if (!this.Home)
 					{
-						if (!this.Yandere.Shutter.Snapping && !this.Yandere.TimeSkipping && !this.Yandere.Talking && !this.Yandere.Noticed && !this.Yandere.InClass && !this.Yandere.Struggling && !this.Yandere.Won && Time.timeScale > (float)0)
+						if (!this.Yandere.Shutter.Snapping && !this.Yandere.TimeSkipping && !this.Yandere.Talking && !this.Yandere.Noticed && !this.Yandere.InClass && !this.Yandere.Struggling && !this.Yandere.Won && !this.Yandere.Dismembering && Time.timeScale > (float)0)
 						{
 							this.Yandere.StopAiming();
 							this.PromptParent.localScale = new Vector3((float)0, (float)0, (float)0);
@@ -314,8 +328,13 @@ public class PauseScreenScript : MonoBehaviour
 						}
 						else if (this.Selected == 5)
 						{
-							this.FavorMenu.UpdatePantyShots();
-							this.FavorMenu.active = true;
+							this.PromptBar.ClearButtons();
+							this.PromptBar.Label[0].text = "Accept";
+							this.PromptBar.Label[1].text = "Exit";
+							this.PromptBar.Label[5].text = "Choose";
+							this.PromptBar.UpdateButtons();
+							this.FavorMenu.gameObject.active = true;
+							this.FavorMenu.gameObject.audio.Play();
 							this.MainMenu.active = false;
 							this.Sideways = true;
 						}
@@ -326,9 +345,13 @@ public class PauseScreenScript : MonoBehaviour
 							this.Quitting = true;
 						}
 					}
-					if (Input.GetButtonDown("Start") || Input.GetButtonDown("B"))
+					if (!this.PressedB && (Input.GetButtonDown("Start") || Input.GetButtonDown("B")))
 					{
 						this.ExitPhone();
+					}
+					if (Input.GetButtonUp("B"))
+					{
+						this.PressedB = false;
 					}
 				}
 				if (!this.PressedA)

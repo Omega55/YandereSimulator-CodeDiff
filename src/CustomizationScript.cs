@@ -774,13 +774,13 @@ public class CustomizationScript : MonoBehaviour
 
 	public virtual void UpdateMaleUniform()
 	{
-		if (this.MaleUniform > 5)
+		if (this.MaleUniform > Extensions.get_length(this.MaleUniforms) - 1)
 		{
 			this.MaleUniform = 1;
 		}
 		else if (this.MaleUniform < 1)
 		{
-			this.MaleUniform = 5;
+			this.MaleUniform = Extensions.get_length(this.MaleUniforms) - 1;
 		}
 		RuntimeServices.SetProperty(this.SenpaiRenderer, "sharedMesh", this.MaleUniforms[this.MaleUniform]);
 		if (this.MaleUniform == 1)
@@ -813,18 +813,24 @@ public class CustomizationScript : MonoBehaviour
 			this.SenpaiRenderer.materials[1].mainTexture = this.SkinTextures[this.SkinColor];
 			this.SenpaiRenderer.materials[2].mainTexture = this.MaleUniformTextures[this.MaleUniform];
 		}
+		else if (this.MaleUniform == 6)
+		{
+			this.SenpaiRenderer.materials[0].mainTexture = this.FaceTextures[this.SkinColor];
+			this.SenpaiRenderer.materials[1].mainTexture = this.SkinTextures[this.SkinColor];
+			this.SenpaiRenderer.materials[2].mainTexture = this.MaleUniformTextures[this.MaleUniform];
+		}
 		this.MaleUniformLabel.text = "Male Uniform " + this.MaleUniform;
 	}
 
 	public virtual void UpdateFemaleUniform()
 	{
-		if (this.FemaleUniform > 5)
+		if (this.FemaleUniform > Extensions.get_length(this.FemaleUniforms) - 1)
 		{
 			this.FemaleUniform = 1;
 		}
 		else if (this.FemaleUniform < 1)
 		{
-			this.FemaleUniform = 5;
+			this.FemaleUniform = Extensions.get_length(this.FemaleUniforms) - 1;
 		}
 		RuntimeServices.SetProperty(this.YandereRenderer, "sharedMesh", this.FemaleUniforms[this.FemaleUniform]);
 		this.YandereRenderer.materials[0].mainTexture = this.FemaleUniformTextures[this.FemaleUniform];
