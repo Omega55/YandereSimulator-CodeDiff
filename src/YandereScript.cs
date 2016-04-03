@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$2467 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$2463 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$2482;
+		internal YandereScript $self_$2478;
 
-		public $ApplyCustomCostume$2467(YandereScript self_)
+		public $ApplyCustomCostume$2463(YandereScript self_)
 		{
-			this.$self_$2482 = self_;
+			this.$self_$2478 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$2467.$(this.$self_$2482);
+			return new YandereScript.$ApplyCustomCostume$2463.$(this.$self_$2478);
 		}
 	}
 
@@ -3421,7 +3421,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$2467(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$2463(this).GetEnumerator();
 	}
 
 	public virtual void WearGloves()

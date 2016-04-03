@@ -11,18 +11,18 @@ public class TaskListScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $UpdateTaskInfo$2460 : GenericGenerator<WWW>
+	internal sealed class $UpdateTaskInfo$2456 : GenericGenerator<WWW>
 	{
-		internal TaskListScript $self_$2466;
+		internal TaskListScript $self_$2462;
 
-		public $UpdateTaskInfo$2460(TaskListScript self_)
+		public $UpdateTaskInfo$2456(TaskListScript self_)
 		{
-			this.$self_$2466 = self_;
+			this.$self_$2462 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new TaskListScript.$UpdateTaskInfo$2460.$(this.$self_$2466);
+			return new TaskListScript.$UpdateTaskInfo$2456.$(this.$self_$2462);
 		}
 	}
 
@@ -84,6 +84,7 @@ public class TaskListScript : MonoBehaviour
 		if (Input.GetButtonDown("B"))
 		{
 			this.PauseScreen.Sideways = false;
+			this.PauseScreen.PressedB = true;
 			this.MainMenu.active = true;
 			this.active = false;
 		}
@@ -114,7 +115,7 @@ public class TaskListScript : MonoBehaviour
 
 	public virtual IEnumerator UpdateTaskInfo()
 	{
-		return new TaskListScript.$UpdateTaskInfo$2460(this).GetEnumerator();
+		return new TaskListScript.$UpdateTaskInfo$2456(this).GetEnumerator();
 	}
 
 	public virtual void Main()

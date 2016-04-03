@@ -11,18 +11,18 @@ public class StudentInfoMenuScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $UpdatePortraits$2454 : GenericGenerator<WWW>
+	internal sealed class $UpdatePortraits$2450 : GenericGenerator<WWW>
 	{
-		internal StudentInfoMenuScript $self_$2459;
+		internal StudentInfoMenuScript $self_$2455;
 
-		public $UpdatePortraits$2454(StudentInfoMenuScript self_)
+		public $UpdatePortraits$2450(StudentInfoMenuScript self_)
 		{
-			this.$self_$2459 = self_;
+			this.$self_$2455 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new StudentInfoMenuScript.$UpdatePortraits$2454.$(this.$self_$2459);
+			return new StudentInfoMenuScript.$UpdatePortraits$2450.$(this.$self_$2455);
 		}
 	}
 
@@ -143,6 +143,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 			{
 				this.PauseScreen.MainMenu.active = true;
 				this.PauseScreen.Sideways = false;
+				this.PauseScreen.PressedB = true;
 				this.gameObject.active = false;
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Label[0].text = "Accept";
@@ -284,7 +285,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	public virtual IEnumerator UpdatePortraits()
 	{
-		return new StudentInfoMenuScript.$UpdatePortraits$2454(this).GetEnumerator();
+		return new StudentInfoMenuScript.$UpdatePortraits$2450(this).GetEnumerator();
 	}
 
 	public virtual void Main()

@@ -35,7 +35,7 @@ public class PauseScreenScript : MonoBehaviour
 
 	public Blur ScreenBlur;
 
-	public UILabel PassTimeLabel;
+	public UILabel SelectionLabel;
 
 	public UISprite Wifi;
 
@@ -51,7 +51,9 @@ public class PauseScreenScript : MonoBehaviour
 
 	public Transform PromptParent;
 
-	public Transform Highlight;
+	public string[] SelectionNames;
+
+	public UISprite[] PhoneIcons;
 
 	public Transform[] Eggs;
 
@@ -77,9 +79,15 @@ public class PauseScreenScript : MonoBehaviour
 
 	public bool Show;
 
+	public int Row;
+
+	public int Column;
+
 	public PauseScreenScript()
 	{
 		this.Selected = 1;
+		this.Row = 1;
+		this.Column = 2;
 	}
 
 	public virtual void Start()
@@ -105,6 +113,7 @@ public class PauseScreenScript : MonoBehaviour
 		{
 			this.Schemes.UpdateInstructions();
 		}
+		this.UpdateSelection();
 		this.CorrectingTime = false;
 	}
 
@@ -161,16 +170,16 @@ public class PauseScreenScript : MonoBehaviour
 							if (!this.Yandere.CanMove || this.Yandere.Dragging || (this.Police.Corpses - this.Police.HiddenCorpses > 0 && !this.Police.SuicideScene && !this.Police.PoisonScene))
 							{
 								float a = 0.5f;
-								Color color = this.PassTimeLabel.color;
+								Color color = this.PhoneIcons[3].color;
 								float num2 = color.a = a;
-								Color color2 = this.PassTimeLabel.color = color;
+								Color color2 = this.PhoneIcons[3].color = color;
 							}
 							else
 							{
 								int num3 = 1;
-								Color color3 = this.PassTimeLabel.color;
+								Color color3 = this.PhoneIcons[3].color;
 								float num4 = color3.a = (float)num3;
-								Color color4 = this.PassTimeLabel.color = color3;
+								Color color4 = this.PhoneIcons[3].color = color3;
 							}
 						}
 					}
@@ -184,9 +193,9 @@ public class PauseScreenScript : MonoBehaviour
 						this.PromptBar.Show = true;
 						this.HomeYandere.CanMove = false;
 						float a2 = 0.5f;
-						Color color5 = this.PassTimeLabel.color;
+						Color color5 = this.PhoneIcons[3].color;
 						float num5 = color5.a = a2;
-						Color color6 = this.PassTimeLabel.color = color5;
+						Color color6 = this.PhoneIcons[3].color = color5;
 						this.Sideways = false;
 						this.Show = true;
 					}
@@ -266,32 +275,48 @@ public class PauseScreenScript : MonoBehaviour
 				{
 					if (this.InputManager.TappedUp || Input.GetKeyDown("w") || Input.GetKeyDown("up"))
 					{
-						this.Selected--;
-						if (this.Selected < 1)
-						{
-							this.Selected = 9;
-						}
-						int num10 = 325 - 75 * this.Selected;
-						Vector3 localPosition = this.Highlight.localPosition;
-						float num11 = localPosition.y = (float)num10;
-						Vector3 vector4 = this.Highlight.localPosition = localPosition;
+						this.Row--;
+						this.UpdateSelection();
 					}
 					if (this.InputManager.TappedDown || Input.GetKeyDown("s") || Input.GetKeyDown("down"))
 					{
-						this.Selected++;
-						if (this.Selected > 9)
+						this.Row++;
+						this.UpdateSelection();
+					}
+					if (this.InputManager.TappedRight || Input.GetKeyDown("d") || Input.GetKeyDown("right"))
+					{
+						this.Column++;
+						this.UpdateSelection();
+					}
+					if (this.InputManager.TappedLeft || Input.GetKeyDown("a") || Input.GetKeyDown("left"))
+					{
+						this.Column--;
+						this.UpdateSelection();
+					}
+					for (int i = 1; i < 12; i++)
+					{
+						if (this.PhoneIcons[i] != null)
 						{
-							this.Selected = 1;
+							if (this.Selected != i)
+							{
+								this.PhoneIcons[i].transform.localScale = Vector3.Lerp(this.PhoneIcons[i].transform.localScale, new Vector3((float)1, (float)1, (float)1), this.Speed);
+							}
+							else
+							{
+								this.PhoneIcons[i].transform.localScale = Vector3.Lerp(this.PhoneIcons[i].transform.localScale, new Vector3(1.5f, 1.5f, 1.5f), this.Speed);
+							}
 						}
-						int num12 = 325 - 75 * this.Selected;
-						Vector3 localPosition2 = this.Highlight.localPosition;
-						float num13 = localPosition2.y = (float)num12;
-						Vector3 vector5 = this.Highlight.localPosition = localPosition2;
 					}
 					if (Input.GetButtonDown("A"))
 					{
 						this.PressedA = true;
 						if (this.Selected == 1)
+						{
+							this.MainMenu.active = false;
+							this.LoadingScreen.active = true;
+							this.StartCoroutine_Auto(this.PhotoGallery.GetPhotos());
+						}
+						else if (this.Selected == 2)
 						{
 							this.TaskList.gameObject.active = true;
 							this.MainMenu.active = false;
@@ -299,50 +324,56 @@ public class PauseScreenScript : MonoBehaviour
 							this.TaskList.UpdateTaskList();
 							this.StartCoroutine_Auto(this.TaskList.UpdateTaskInfo());
 						}
-						else if (this.Selected == 2)
+						else if (this.Selected == 3)
 						{
-							if (this.PassTimeLabel.color.a == (float)1 && this.Yandere.CanMove && !this.Yandere.Dragging)
+							if (this.PhoneIcons[3].color.a == (float)1 && this.Yandere.CanMove && !this.Yandere.Dragging)
 							{
 								this.MainMenu.active = false;
 								this.PassTime.active = true;
 								this.PassTime.GetCurrentTime();
 							}
 						}
-						else if (this.Selected == 3)
+						else if (this.Selected != 4)
 						{
-							this.StudentInfoMenu.gameObject.active = true;
-							this.StartCoroutine_Auto(this.StudentInfoMenu.UpdatePortraits());
-							this.MainMenu.active = false;
-							this.Sideways = true;
-							this.PromptBar.ClearButtons();
-							this.PromptBar.Label[0].text = "View Info";
-							this.PromptBar.Label[1].text = "Back";
-							this.PromptBar.UpdateButtons();
-							this.PromptBar.Show = true;
-						}
-						else if (this.Selected == 4)
-						{
-							this.MainMenu.active = false;
-							this.LoadingScreen.active = true;
-							this.StartCoroutine_Auto(this.PhotoGallery.GetPhotos());
-						}
-						else if (this.Selected == 5)
-						{
-							this.PromptBar.ClearButtons();
-							this.PromptBar.Label[0].text = "Accept";
-							this.PromptBar.Label[1].text = "Exit";
-							this.PromptBar.Label[5].text = "Choose";
-							this.PromptBar.UpdateButtons();
-							this.FavorMenu.gameObject.active = true;
-							this.FavorMenu.gameObject.audio.Play();
-							this.MainMenu.active = false;
-							this.Sideways = true;
-						}
-						else if (this.Selected == 9)
-						{
-							this.PromptBar.ClearButtons();
-							this.PromptBar.Show = false;
-							this.Quitting = true;
+							if (this.Selected == 5)
+							{
+								this.PromptBar.ClearButtons();
+								this.PromptBar.Label[0].text = "Accept";
+								this.PromptBar.Label[1].text = "Exit";
+								this.PromptBar.Label[5].text = "Choose";
+								this.PromptBar.UpdateButtons();
+								this.FavorMenu.gameObject.active = true;
+								this.FavorMenu.gameObject.audio.Play();
+								this.MainMenu.active = false;
+								this.Sideways = true;
+							}
+							else if (this.Selected == 6)
+							{
+								this.StudentInfoMenu.gameObject.active = true;
+								this.StartCoroutine_Auto(this.StudentInfoMenu.UpdatePortraits());
+								this.MainMenu.active = false;
+								this.Sideways = true;
+								this.PromptBar.ClearButtons();
+								this.PromptBar.Label[0].text = "View Info";
+								this.PromptBar.Label[1].text = "Back";
+								this.PromptBar.UpdateButtons();
+								this.PromptBar.Show = true;
+							}
+							else if (this.Selected != 7)
+							{
+								if (this.Selected != 8)
+								{
+									if (this.Selected != 9)
+									{
+										if (this.Selected == 11)
+										{
+											this.PromptBar.ClearButtons();
+											this.PromptBar.Show = false;
+											this.Quitting = true;
+										}
+									}
+								}
+							}
 						}
 					}
 					if (!this.PressedB && (Input.GetButtonDown("Start") || Input.GetButtonDown("B")))
@@ -462,6 +493,32 @@ public class PauseScreenScript : MonoBehaviour
 		this.EggsChecked = false;
 		this.PressedA = false;
 		this.Show = false;
+	}
+
+	public virtual void UpdateSelection()
+	{
+		if (this.Row < 0)
+		{
+			this.Row = 3;
+		}
+		else if (this.Row > 3)
+		{
+			this.Row = 0;
+		}
+		if (this.Row == 3)
+		{
+			this.Column = 2;
+		}
+		if (this.Column < 1)
+		{
+			this.Column = 3;
+		}
+		else if (this.Column > 3)
+		{
+			this.Column = 1;
+		}
+		this.Selected = this.Row * 3 + this.Column;
+		this.SelectionLabel.text = string.Empty + this.SelectionNames[this.Selected];
 	}
 
 	public virtual void Main()
