@@ -281,6 +281,14 @@ public class DelinquentScript : MonoBehaviour
 							this.DelinquentManager.audio.Play();
 							this.DelinquentManager.enabled = false;
 						}
+						if (this.Yandere.Laughing)
+						{
+							this.Yandere.StopLaughing();
+						}
+						if (this.Yandere.Aiming)
+						{
+							this.Yandere.StopAiming();
+						}
 						this.Character.animation.CrossFade(this.SwingAnim);
 						this.Attacking = true;
 						this.Yandere.Character.animation.CrossFade("f02_swingB_00");
