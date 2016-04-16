@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$2463 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$2525 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$2478;
+		internal YandereScript $self_$2540;
 
-		public $ApplyCustomCostume$2463(YandereScript self_)
+		public $ApplyCustomCostume$2525(YandereScript self_)
 		{
-			this.$self_$2478 = self_;
+			this.$self_$2540 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$2463.$(this.$self_$2478);
+			return new YandereScript.$ApplyCustomCostume$2525.$(this.$self_$2540);
 		}
 	}
 
@@ -127,6 +127,8 @@ public class YandereScript : MonoBehaviour
 
 	public GloveScript Gloves;
 
+	public UILabel PowerUp;
+
 	public MaskScript Mask;
 
 	public MopScript Mop;
@@ -190,6 +192,8 @@ public class YandereScript : MonoBehaviour
 	public GameObject EasterEggMenu;
 
 	public GameObject Copyrights;
+
+	public GameObject GiggleDisc;
 
 	public GameObject HandCamera;
 
@@ -529,7 +533,7 @@ public class YandereScript : MonoBehaviour
 
 	public string CarryRunAnim;
 
-	public AudioClip PowerUp;
+	public AudioClip ChargeUp;
 
 	public AudioClip Laugh1;
 
@@ -749,7 +753,7 @@ public class YandereScript : MonoBehaviour
 	public virtual void Start()
 	{
 		this.SetAnimationLayers();
-		this.Numbness = (float)1 - 0.1f * (float)PlayerPrefs.GetInt("Numbness");
+		this.UpdateNumbness();
 		Application.targetFrameRate = 60;
 		this.RightEyeOrigin = this.RightEye.localPosition;
 		this.LeftEyeOrigin = this.LeftEye.localPosition;
@@ -912,12 +916,12 @@ public class YandereScript : MonoBehaviour
 							{
 								this.Character.animation["f02_crouchWalk_00"].speed = (float)2;
 								this.Character.animation.CrossFade("f02_crouchWalk_00");
-								this.MyController.Move(this.transform.forward * ((float)2 + (float)PlayerPrefs.GetInt("PhysicalGrade") * 0.25f) * Time.deltaTime);
+								this.MyController.Move(this.transform.forward * ((float)2 + (float)(PlayerPrefs.GetInt("PhysicalGrade") + PlayerPrefs.GetInt("SpeedBonus")) * 0.25f) * Time.deltaTime);
 							}
 							else if (!this.Dragging && !this.Mopping)
 							{
 								this.Character.animation.CrossFade(this.RunAnim);
-								this.MyController.Move(this.transform.forward * (this.RunSpeed + (float)PlayerPrefs.GetInt("PhysicalGrade") * 0.25f) * Time.deltaTime);
+								this.MyController.Move(this.transform.forward * (this.RunSpeed + (float)(PlayerPrefs.GetInt("PhysicalGrade") + PlayerPrefs.GetInt("SpeedBonus")) * 0.25f) * Time.deltaTime);
 							}
 							else
 							{
@@ -1135,6 +1139,7 @@ public class YandereScript : MonoBehaviour
 											this.audio.time = (float)0;
 											this.audio.Play();
 										}
+										UnityEngine.Object.Instantiate(this.GiggleDisc, this.transform.position + Vector3.up, Quaternion.identity);
 										this.audio.volume = (float)1;
 										this.LaughTimer = 0.5f;
 										this.Laughing = true;
@@ -1459,7 +1464,7 @@ public class YandereScript : MonoBehaviour
 					if (this.Hairstyles[14].active)
 					{
 						this.LaughAnim = "storepower_20";
-						this.LaughClip = this.PowerUp;
+						this.LaughClip = this.ChargeUp;
 					}
 					if (this.CirnoHair.active)
 					{
@@ -1985,7 +1990,7 @@ public class YandereScript : MonoBehaviour
 					this.Character.animation.CrossFade("f02_down_23");
 				}
 			}
-			if (!this.Attacking)
+			if (!this.Attacking && !this.Lost)
 			{
 				if (Vector3.Distance(this.transform.position, this.Senpai.position) < (float)2)
 				{
@@ -2552,7 +2557,7 @@ public class YandereScript : MonoBehaviour
 						if (this.Character.animation["f02_stab_00"].time > this.Character.animation["f02_stab_00"].length * 0.35f)
 						{
 							this.Character.animation.CrossFade(this.IdleAnim);
-							if (this.CanTranq && this.Weapon[this.Equipped].WeaponID == 3 && this.PossessTranq && PlayerPrefs.GetInt("BiologyGrade") > 1)
+							if (this.CanTranq && this.Weapon[this.Equipped].WeaponID == 3 && this.PossessTranq && PlayerPrefs.GetInt("BiologyGrade") + PlayerPrefs.GetInt("BiologyBonus") > 0)
 							{
 								this.TargetStudent.Tranquil = true;
 								this.Followers--;
@@ -2908,10 +2913,6 @@ public class YandereScript : MonoBehaviour
 		else
 		{
 			this.audio.volume = this.audio.volume - 0.333333343f;
-		}
-		if (this.transform.localScale.x != (float)1)
-		{
-			Application.LoadLevel("AntiModScene");
 		}
 	}
 
@@ -3363,6 +3364,11 @@ public class YandereScript : MonoBehaviour
 		this.Outline.h.ReinitMaterials();
 	}
 
+	public virtual void UpdateNumbness()
+	{
+		this.Numbness = (float)1 - 0.1f * (float)(PlayerPrefs.GetInt("Numbness") + PlayerPrefs.GetInt("NumbnessBonus"));
+	}
+
 	public virtual void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.name == "BloodPool(Clone)" && other.transform.localScale.x > 0.3f)
@@ -3421,7 +3427,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$2463(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$2525(this).GetEnumerator();
 	}
 
 	public virtual void WearGloves()

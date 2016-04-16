@@ -154,7 +154,7 @@ public class RagdollScript : MonoBehaviour
 			this.AllColliders[i].enabled = true;
 		}
 		this.Prompt.enabled = true;
-		if (PlayerPrefs.GetInt("PhysicalGrade") > 0 && !this.Tranquil)
+		if (PlayerPrefs.GetInt("PhysicalGrade") + PlayerPrefs.GetInt("PhysicalBonus") > 0 && !this.Tranquil)
 		{
 			this.Prompt.HideButton[3] = false;
 		}
@@ -474,7 +474,7 @@ public class RagdollScript : MonoBehaviour
 		Vector3 vector = this.transform.position = position;
 		this.Prompt.Label[1].text = "     " + "Drag";
 		this.Prompt.HideButton[1] = false;
-		if (PlayerPrefs.GetInt("PhysicalGrade") > 0 && !this.Tranquil)
+		if (PlayerPrefs.GetInt("PhysicalGrade") + PlayerPrefs.GetInt("PhysicalBonus") > 0 && !this.Tranquil)
 		{
 			this.Prompt.HideButton[3] = false;
 		}

@@ -498,7 +498,7 @@ public class DialogueWheelScript : MonoBehaviour
 			float num15 = color23.a = a9;
 			Color color24 = this.Shadow[6].color = color23;
 		}
-		if ((this.Yandere.TargetStudent.Male && PlayerPrefs.GetInt("Seduction") > 3) || PlayerPrefs.GetInt("Seduction") == 5)
+		if ((this.Yandere.TargetStudent.Male && PlayerPrefs.GetInt("Seduction") + PlayerPrefs.GetInt("SeductionBonus") > 3) || PlayerPrefs.GetInt("Seduction") + PlayerPrefs.GetInt("SeductionBonus") > 4)
 		{
 			int num16 = 0;
 			Color color25 = this.Shadow[6].color;

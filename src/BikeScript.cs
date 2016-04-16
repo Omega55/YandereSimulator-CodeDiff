@@ -105,6 +105,10 @@ public class BikeScript : MonoBehaviour
 		{
 			Application.LoadLevel(Application.loadedLevel);
 		}
+		if (Input.GetKeyDown("0"))
+		{
+			Application.LoadLevel("SchoolScene");
+		}
 		if (Input.GetKeyDown("return"))
 		{
 			float y = this.transform.position.y + (float)1;

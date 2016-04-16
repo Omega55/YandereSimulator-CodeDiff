@@ -78,7 +78,7 @@ public class LaptopScript : MonoBehaviour
 						this.EventSubtitle.text = this.Subs[i];
 					}
 				}
-				if (this.audio.time >= this.audio.clip.length - (float)1)
+				if (this.audio.time >= this.audio.clip.length - (float)1 || this.audio.time == (float)0)
 				{
 					this.SCP.animation["f02_scp_00"].speed = (float)1;
 					this.Timer += Time.deltaTime;

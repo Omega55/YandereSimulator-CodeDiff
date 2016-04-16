@@ -13,7 +13,7 @@ public class ShoePairScript : MonoBehaviour
 	public virtual void Start()
 	{
 		this.Police = (PoliceScript)GameObject.Find("Police").GetComponent(typeof(PoliceScript));
-		if (PlayerPrefs.GetInt("LanguageGrade") < 2)
+		if (PlayerPrefs.GetInt("LanguageGrade") + PlayerPrefs.GetInt("LanguageBonus") < 1)
 		{
 			this.Prompt.enabled = false;
 		}

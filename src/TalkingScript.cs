@@ -39,7 +39,11 @@ public class TalkingScript : MonoBehaviour
 					this.S.RepRecovery = 5;
 					if (PlayerPrefs.GetInt("PantiesEquipped") == 6)
 					{
-						this.S.RepRecovery = this.S.RepRecovery + 5;
+						this.S.RepRecovery = (int)((float)this.S.RepRecovery + 2.5f);
+					}
+					if (PlayerPrefs.GetInt("SocialBonus") > 0)
+					{
+						this.S.RepRecovery = (int)((float)this.S.RepRecovery + 2.5f);
 					}
 					this.S.PendingRep = this.S.PendingRep + (float)this.S.RepRecovery;
 					this.S.Reputation.PendingRep = this.S.Reputation.PendingRep + (float)this.S.RepRecovery;
@@ -91,6 +95,10 @@ public class TalkingScript : MonoBehaviour
 					{
 						this.S.RepBonus = this.S.RepBonus + 1;
 					}
+					if (PlayerPrefs.GetInt("SocialBonus") > 0)
+					{
+						this.S.RepBonus = this.S.RepBonus + 1;
+					}
 					this.S.Reputation.PendingRep = this.S.Reputation.PendingRep + (float)(1 + this.S.RepBonus);
 					this.S.PendingRep = this.S.PendingRep + (float)(1 + this.S.RepBonus);
 					this.S.Complimented = true;
@@ -130,6 +138,10 @@ public class TalkingScript : MonoBehaviour
 						this.S.GossipBonus = this.S.GossipBonus + 1;
 					}
 					if ((this.S.Male && PlayerPrefs.GetInt("Seduction") > 1) || PlayerPrefs.GetInt("Seduction") == 5)
+					{
+						this.S.GossipBonus = this.S.GossipBonus + 1;
+					}
+					if (PlayerPrefs.GetInt("SocialBonus") > 0)
 					{
 						this.S.GossipBonus = this.S.GossipBonus + 1;
 					}

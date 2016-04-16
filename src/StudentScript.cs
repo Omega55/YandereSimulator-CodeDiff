@@ -167,6 +167,8 @@ public class StudentScript : MonoBehaviour
 
 	public GameObject Armband;
 
+	public GameObject Giggle;
+
 	public GameObject Marker;
 
 	public GameObject Bento;
@@ -176,6 +178,8 @@ public class StudentScript : MonoBehaviour
 	public bool WitnessedCorpse;
 
 	public bool WitnessedMurder;
+
+	public bool YandereInnocent;
 
 	public bool RepeatReaction;
 
@@ -281,6 +285,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool CameraReacting;
 
+	public bool Investigating;
+
 	public bool Distracting;
 
 	public bool Following;
@@ -304,6 +310,8 @@ public class StudentScript : MonoBehaviour
 	public float DistanceToPlayer;
 
 	public float TargetDistance;
+
+	public float InvestigationTimer;
 
 	public float CameraPoseTimer;
 
@@ -350,6 +358,8 @@ public class StudentScript : MonoBehaviour
 	public float RepLoss;
 
 	public float Alarm;
+
+	public int InvestigationPhase;
 
 	public int CameraReactPhase;
 
@@ -2165,6 +2175,83 @@ public class StudentScript : MonoBehaviour
 						this.CameraReacting = false;
 					}
 				}
+				if (this.Investigating)
+				{
+					if (!this.YandereInnocent && this.InvestigationPhase < 100)
+					{
+						this.Planes = GeometryUtility.CalculateFrustumPlanes(this.VisionCone);
+						if (GeometryUtility.TestPlanesAABB(this.Planes, this.Yandere.collider.bounds))
+						{
+							RaycastHit raycastHit = default(RaycastHit);
+							if (Physics.Linecast(this.Eyes.transform.position, this.Yandere.transform.position + Vector3.up * (float)1, out raycastHit) && raycastHit.collider.gameObject == this.Yandere.gameObject)
+							{
+								if (Vector3.Distance(this.Yandere.transform.position, this.Giggle.transform.position) > 2.5f)
+								{
+									this.YandereInnocent = true;
+								}
+								else
+								{
+									this.Character.animation.CrossFade(this.IdleAnim);
+									this.Pathfinding.canSearch = false;
+									this.Pathfinding.canMove = false;
+									this.InvestigationPhase = 100;
+									this.InvestigationTimer = (float)0;
+								}
+							}
+						}
+					}
+					if (this.InvestigationPhase == 0)
+					{
+						if (this.InvestigationTimer < (float)5)
+						{
+							this.InvestigationTimer += Time.deltaTime;
+							this.targetRotation = Quaternion.LookRotation(this.Giggle.transform.position - this.transform.position);
+							this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
+						}
+						else
+						{
+							this.Character.animation.CrossFade(this.IdleAnim);
+							this.Pathfinding.target = this.Giggle.transform;
+							this.CurrentDestination = this.Giggle.transform;
+							this.Pathfinding.canSearch = true;
+							this.Pathfinding.canMove = true;
+							this.Pathfinding.speed = (float)1;
+							this.InvestigationPhase++;
+						}
+					}
+					else if (this.InvestigationPhase == 1)
+					{
+						if (this.DistanceToDestination > (float)1)
+						{
+							this.Character.animation.CrossFade(this.WalkAnim);
+						}
+						else if (this.InvestigationPhase == 1)
+						{
+							this.Character.animation.CrossFade(this.IdleAnim);
+							this.Pathfinding.canSearch = false;
+							this.Pathfinding.canMove = false;
+							this.InvestigationPhase++;
+						}
+					}
+					else if (this.InvestigationPhase == 2)
+					{
+						this.InvestigationTimer += Time.deltaTime;
+						if (this.InvestigationTimer > (float)10)
+						{
+							this.StopInvestigating();
+						}
+					}
+					else if (this.InvestigationPhase == 100)
+					{
+						this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - this.transform.position);
+						this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
+						this.InvestigationTimer += Time.deltaTime;
+						if (this.InvestigationTimer > (float)2)
+						{
+							this.StopInvestigating();
+						}
+					}
+				}
 			}
 			if (!this.Dying)
 			{
@@ -2192,9 +2279,9 @@ public class StudentScript : MonoBehaviour
 								this.Planes = GeometryUtility.CalculateFrustumPlanes(this.VisionCone);
 								if (GeometryUtility.TestPlanesAABB(this.Planes, this.Police.CorpseList[this.ID].AllColliders[0].bounds))
 								{
-									RaycastHit raycastHit = default(RaycastHit);
+									RaycastHit raycastHit2 = default(RaycastHit);
 									Debug.DrawLine(this.Eyes.transform.position, this.Police.CorpseList[this.ID].AllColliders[0].transform.position, Color.green);
-									if (Physics.Linecast(this.Eyes.transform.position, this.Police.CorpseList[this.ID].AllColliders[0].transform.position, out raycastHit, this.Mask) && (raycastHit.collider.gameObject.layer == 11 || raycastHit.collider.gameObject.layer == 14))
+									if (Physics.Linecast(this.Eyes.transform.position, this.Police.CorpseList[this.ID].AllColliders[0].transform.position, out raycastHit2, this.Mask) && (raycastHit2.collider.gameObject.layer == 11 || raycastHit2.collider.gameObject.layer == 14))
 									{
 										num++;
 										this.Corpse = this.Police.CorpseList[this.ID];
@@ -2287,11 +2374,11 @@ public class StudentScript : MonoBehaviour
 											this.Planes = GeometryUtility.CalculateFrustumPlanes(this.VisionCone);
 											if (GeometryUtility.TestPlanesAABB(this.Planes, this.Yandere.collider.bounds))
 											{
-												RaycastHit raycastHit2 = default(RaycastHit);
+												RaycastHit raycastHit3 = default(RaycastHit);
 												Debug.DrawLine(this.Eyes.transform.position, this.Yandere.transform.position + Vector3.up * (float)1, Color.green);
-												if (Physics.Linecast(this.Eyes.transform.position, this.Yandere.transform.position + Vector3.up * (float)1, out raycastHit2))
+												if (Physics.Linecast(this.Eyes.transform.position, this.Yandere.transform.position + Vector3.up * (float)1, out raycastHit3))
 												{
-													if (raycastHit2.collider.gameObject == this.Yandere.gameObject)
+													if (raycastHit3.collider.gameObject == this.Yandere.gameObject)
 													{
 														this.YandereVisible = true;
 														if (this.Yandere.Attacking || this.Yandere.Struggling || (this.Yandere.NearBodies > 0 && this.Yandere.Bloodiness > (float)0 && !this.Yandere.Paint) || (this.Yandere.NearBodies > 0 && this.Yandere.Armed) || (this.Yandere.NearBodies > 0 && this.Yandere.Sanity < 66.66666f) || this.Yandere.Dragging)
@@ -2526,7 +2613,7 @@ public class StudentScript : MonoBehaviour
 								if (this.Yandere.Mask == null)
 								{
 									this.RepDeduction = (float)0;
-									if ((this.Male && PlayerPrefs.GetInt("Seduction") > 2) || PlayerPrefs.GetInt("Seduction") == 5)
+									if ((this.Male && PlayerPrefs.GetInt("Seduction") + PlayerPrefs.GetInt("SeductionBonus") > 2) || PlayerPrefs.GetInt("Seduction") + PlayerPrefs.GetInt("SeductionBonus") > 4)
 									{
 										this.RepDeduction += this.RepLoss * 0.2f;
 									}
@@ -2546,7 +2633,14 @@ public class StudentScript : MonoBehaviour
 									{
 										this.RepDeduction += this.RepLoss * 0.2f;
 									}
-									this.RepLoss -= this.RepDeduction;
+									if (PlayerPrefs.GetInt("SocialBonus") > 0)
+									{
+										this.RepDeduction += this.RepLoss * 0.2f;
+									}
+									if (this.RepDeduction >= (float)0)
+									{
+										this.RepLoss -= this.RepDeduction;
+									}
 									this.Reputation.PendingRep = this.Reputation.PendingRep - this.RepLoss * this.Paranoia;
 									this.PendingRep -= this.RepLoss * this.Paranoia;
 								}
@@ -2784,7 +2878,7 @@ public class StudentScript : MonoBehaviour
 									{
 										this.Subtitle.UpdateLabel("Greeting", 0, (float)3);
 									}
-									if ((this.Male && PlayerPrefs.GetInt("Seduction") > 0) || PlayerPrefs.GetInt("Seduction") == 5)
+									if ((this.Male && PlayerPrefs.GetInt("Seduction") + PlayerPrefs.GetInt("SeductionBonus") > 0) || PlayerPrefs.GetInt("Seduction") + PlayerPrefs.GetInt("SeductionBonus") > 4)
 									{
 										this.Hearts.enableEmission = true;
 									}
@@ -3472,34 +3566,42 @@ public class StudentScript : MonoBehaviour
 
 	public virtual void LateUpdate()
 	{
+		int num = 0;
+		Vector3 eulerAngles = this.transform.eulerAngles;
+		float num2 = eulerAngles.x = (float)num;
+		Vector3 vector = this.transform.eulerAngles = eulerAngles;
+		int num3 = 0;
+		Vector3 eulerAngles2 = this.transform.eulerAngles;
+		float num4 = eulerAngles2.z = (float)num3;
+		Vector3 vector2 = this.transform.eulerAngles = eulerAngles2;
 		if (this.EyeShrink > (float)1)
 		{
 			this.EyeShrink = (float)1;
 		}
 		float z = this.LeftEyeOrigin.z - this.EyeShrink * 0.01f;
 		Vector3 localPosition = this.LeftEye.localPosition;
-		float num = localPosition.z = z;
-		Vector3 vector = this.LeftEye.localPosition = localPosition;
+		float num5 = localPosition.z = z;
+		Vector3 vector3 = this.LeftEye.localPosition = localPosition;
 		float z2 = this.RightEyeOrigin.z + this.EyeShrink * 0.01f;
 		Vector3 localPosition2 = this.RightEye.localPosition;
-		float num2 = localPosition2.z = z2;
-		Vector3 vector2 = this.RightEye.localPosition = localPosition2;
+		float num6 = localPosition2.z = z2;
+		Vector3 vector4 = this.RightEye.localPosition = localPosition2;
 		float x = (float)1 - this.EyeShrink * 0.5f;
 		Vector3 localScale = this.LeftEye.localScale;
-		float num3 = localScale.x = x;
-		Vector3 vector3 = this.LeftEye.localScale = localScale;
+		float num7 = localScale.x = x;
+		Vector3 vector5 = this.LeftEye.localScale = localScale;
 		float y = (float)1 - this.EyeShrink * 0.5f;
 		Vector3 localScale2 = this.LeftEye.localScale;
-		float num4 = localScale2.y = y;
-		Vector3 vector4 = this.LeftEye.localScale = localScale2;
+		float num8 = localScale2.y = y;
+		Vector3 vector6 = this.LeftEye.localScale = localScale2;
 		float x2 = (float)1 - this.EyeShrink * 0.5f;
 		Vector3 localScale3 = this.RightEye.localScale;
-		float num5 = localScale3.x = x2;
-		Vector3 vector5 = this.RightEye.localScale = localScale3;
+		float num9 = localScale3.x = x2;
+		Vector3 vector7 = this.RightEye.localScale = localScale3;
 		float y2 = (float)1 - this.EyeShrink * 0.5f;
 		Vector3 localScale4 = this.RightEye.localScale;
-		float num6 = localScale4.y = y2;
-		Vector3 vector6 = this.RightEye.localScale = localScale4;
+		float num10 = localScale4.y = y2;
+		Vector3 vector8 = this.RightEye.localScale = localScale4;
 		if (!this.Male)
 		{
 			this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
@@ -3963,6 +4065,7 @@ public class StudentScript : MonoBehaviour
 		this.Yandere.TargetStudent = this;
 		this.Yandere.Obscurance.enabled = false;
 		this.Yandere.YandereVision = false;
+		this.Yandere.NearSenpai = false;
 		this.Yandere.Struggling = true;
 		this.Yandere.CanMove = false;
 		this.Yandere.EmptyHands();
@@ -4527,7 +4630,7 @@ public class StudentScript : MonoBehaviour
 
 	public virtual void UpdatePerception()
 	{
-		if (PlayerPrefs.GetInt("Club") == 3)
+		if (PlayerPrefs.GetInt("Club") == 3 || PlayerPrefs.GetInt("StealthBonus") > 0)
 		{
 			this.Perception = 0.5f;
 		}
@@ -4535,6 +4638,18 @@ public class StudentScript : MonoBehaviour
 		{
 			this.Perception = (float)1;
 		}
+	}
+
+	public virtual void StopInvestigating()
+	{
+		UnityEngine.Object.Destroy(this.Giggle);
+		this.CurrentDestination = this.Destinations[this.Phase];
+		this.Pathfinding.target = this.Destinations[this.Phase];
+		this.InvestigationTimer = (float)0;
+		this.InvestigationPhase = 0;
+		this.YandereInnocent = false;
+		this.Investigating = false;
+		this.Routine = true;
 	}
 
 	public virtual void Main()

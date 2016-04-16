@@ -12,9 +12,13 @@ public class PoisonScript : MonoBehaviour
 
 	public virtual void Start()
 	{
-		if (PlayerPrefs.GetInt("ChemistryGrade") < 2)
+		if (PlayerPrefs.GetInt("ChemistryGrade") + PlayerPrefs.GetInt("ChemistryBonus") < 1)
 		{
-			this.active = false;
+			this.gameObject.active = false;
+		}
+		else
+		{
+			this.gameObject.active = true;
 		}
 	}
 

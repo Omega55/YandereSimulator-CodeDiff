@@ -123,6 +123,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public bool ForceSpawn;
 
+	public bool Randomize;
+
 	public bool Spooky;
 
 	public bool Sans;
@@ -213,7 +215,18 @@ public class StudentManagerScript : MonoBehaviour
 				{
 					UnityEngine.Object.Destroy(this.NewStudent);
 				}
-				if (this.JSON.StudentGenders[this.NPCsSpawned + 1] == 0)
+				if (this.Randomize)
+				{
+					if (UnityEngine.Random.Range(0, 2) == 0)
+					{
+						this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.PortraitChan, new Vector3((float)0, (float)0, (float)0), Quaternion.identity);
+					}
+					else
+					{
+						this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.PortraitKun, new Vector3((float)0, (float)0, (float)0), Quaternion.identity);
+					}
+				}
+				else if (this.JSON.StudentGenders[this.NPCsSpawned + 1] == 0)
 				{
 					this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.PortraitChan, new Vector3((float)0, (float)0, (float)0), Quaternion.identity);
 				}
@@ -222,12 +235,16 @@ public class StudentManagerScript : MonoBehaviour
 					this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.PortraitKun, new Vector3((float)0, (float)0, (float)0), Quaternion.identity);
 				}
 				((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).StudentID = this.NPCsSpawned + 1;
+				((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).Randomize = this.Randomize;
 				((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).JSON = this.JSON;
 				this.NewPortraitChan = (PortraitChanScript)this.NewStudent.GetComponent(typeof(PortraitChanScript));
 				this.NewPortraitChan.StudentID = this.NPCsSpawned + 1;
 				this.NewPortraitChan.StudentManager = this;
 				this.NewPortraitChan.JSON = this.JSON;
-				this.NPCsSpawned++;
+				if (!this.Randomize)
+				{
+					this.NPCsSpawned++;
+				}
 			}
 			if (this.Frame == 2)
 			{
@@ -256,6 +273,7 @@ public class StudentManagerScript : MonoBehaviour
 				{
 					this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.StudentKun, this.SpawnPositions[this.SpawnID].position, Quaternion.identity);
 				}
+				((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).Randomize = this.Randomize;
 				((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).StudentID = this.SpawnID;
 				((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).JSON = this.JSON;
 				this.Students[this.SpawnID] = (StudentScript)this.NewStudent.GetComponent(typeof(StudentScript));

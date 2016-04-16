@@ -83,6 +83,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public bool Kidnapped;
 
+	public bool Randomize;
+
 	public bool Teacher;
 
 	public bool Male;
@@ -114,6 +116,21 @@ public class CosmeticScript : MonoBehaviour
 		this.BreastSize = this.JSON.StudentBreasts[this.StudentID];
 		string a = this.JSON.StudentColors[this.StudentID];
 		this.Club = this.JSON.StudentClubs[this.StudentID];
+		if (this.Randomize)
+		{
+			this.Teacher = false;
+			this.BreastSize = (float)1;
+			this.Accessory = 0;
+			this.Club = 0;
+			if (!this.Male)
+			{
+				this.Hairstyle = UnityEngine.Random.Range(1, Extensions.get_length(this.FemaleHair));
+			}
+			else
+			{
+				this.Hairstyle = UnityEngine.Random.Range(1, Extensions.get_length(this.MaleHair));
+			}
+		}
 		if (!this.Male)
 		{
 			this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
@@ -276,52 +293,70 @@ public class CosmeticScript : MonoBehaviour
 		{
 			this.ClubAccessories[this.Club].active = true;
 		}
-		if (a == "White")
+		if (!this.Randomize)
 		{
-			this.HairRenderer.material.color = new Color((float)1, (float)1, (float)1);
-		}
-		else if (a == "Black")
-		{
-			this.HairRenderer.material.color = new Color(0.5f, 0.5f, 0.5f);
-		}
-		else if (a == "Red")
-		{
-			this.HairRenderer.material.color = new Color((float)1, (float)0, (float)0);
-		}
-		else if (a == "Yellow")
-		{
-			this.HairRenderer.material.color = new Color((float)1, (float)1, (float)0);
-		}
-		else if (a == "Green")
-		{
-			this.HairRenderer.material.color = new Color((float)0, (float)1, (float)0);
-		}
-		else if (a == "Cyan")
-		{
-			this.HairRenderer.material.color = new Color((float)0, (float)1, (float)1);
-		}
-		else if (a == "Blue")
-		{
-			this.HairRenderer.material.color = new Color((float)0, (float)0, (float)1);
-		}
-		else if (a == "Purple")
-		{
-			this.HairRenderer.material.color = new Color((float)1, (float)0, (float)1);
-		}
-		else if (a == "Orange")
-		{
-			this.HairRenderer.material.color = new Color((float)1, 0.5f, (float)0);
-		}
-		else if (a == "Brown")
-		{
-			this.HairRenderer.material.color = new Color(0.5f, 0.25f, (float)0);
+			if (a == "White")
+			{
+				this.HairRenderer.material.color = new Color((float)1, (float)1, (float)1);
+			}
+			else if (a == "Black")
+			{
+				this.HairRenderer.material.color = new Color(0.5f, 0.5f, 0.5f);
+			}
+			else if (a == "Red")
+			{
+				this.HairRenderer.material.color = new Color((float)1, (float)0, (float)0);
+			}
+			else if (a == "Yellow")
+			{
+				this.HairRenderer.material.color = new Color((float)1, (float)1, (float)0);
+			}
+			else if (a == "Green")
+			{
+				this.HairRenderer.material.color = new Color((float)0, (float)1, (float)0);
+			}
+			else if (a == "Cyan")
+			{
+				this.HairRenderer.material.color = new Color((float)0, (float)1, (float)1);
+			}
+			else if (a == "Blue")
+			{
+				this.HairRenderer.material.color = new Color((float)0, (float)0, (float)1);
+			}
+			else if (a == "Purple")
+			{
+				this.HairRenderer.material.color = new Color((float)1, (float)0, (float)1);
+			}
+			else if (a == "Orange")
+			{
+				this.HairRenderer.material.color = new Color((float)1, 0.5f, (float)0);
+			}
+			else if (a == "Brown")
+			{
+				this.HairRenderer.material.color = new Color(0.5f, 0.25f, (float)0);
+			}
+			else
+			{
+				this.RightEyeRenderer.material.mainTexture = this.HairRenderer.material.mainTexture;
+				this.LeftEyeRenderer.material.mainTexture = this.HairRenderer.material.mainTexture;
+				this.FaceTexture = this.HairRenderer.material.mainTexture;
+				this.CustomHair = true;
+			}
 		}
 		else
 		{
-			this.RightEyeRenderer.material.mainTexture = this.HairRenderer.material.mainTexture;
-			this.LeftEyeRenderer.material.mainTexture = this.HairRenderer.material.mainTexture;
-			this.FaceTexture = this.HairRenderer.material.mainTexture;
-			this.CustomHair = true;
+			float r = UnityEngine.Random.Range((float)0, 1f);
+			Color color = this.HairRenderer.material.color;
+			float num = color.r = r;
+			Color color2 = this.HairRenderer.material.color = color;
+			float g = UnityEngine.Random.Range((float)0, 1f);
+			Color color3 = this.HairRenderer.material.color;
+			float num2 = color3.g = g;
+			Color color4 = this.HairRenderer.material.color = color3;
+			float b = UnityEngine.Random.Range((float)0, 1f);
+			Color color5 = this.HairRenderer.material.color;
+			float num3 = color5.b = b;
+			Color color6 = this.HairRenderer.material.color = color5;
 		}
 		if (!this.Teacher)
 		{
@@ -368,50 +403,83 @@ public class CosmeticScript : MonoBehaviour
 				this.Character.transform.localScale = new Vector3(0.93f, 0.93f, 0.93f);
 			}
 		}
-		if (this.EyeColor != string.Empty)
+		if (!this.Randomize)
 		{
-			if (this.EyeColor == "White")
+			if (this.EyeColor != string.Empty)
 			{
-				this.CorrectColor = new Color((float)1, (float)1, (float)1);
+				if (this.EyeColor == "White")
+				{
+					this.CorrectColor = new Color((float)1, (float)1, (float)1);
+				}
+				else if (this.EyeColor == "Black")
+				{
+					this.CorrectColor = new Color(0.5f, 0.5f, 0.5f);
+				}
+				else if (this.EyeColor == "Red")
+				{
+					this.CorrectColor = new Color((float)1, (float)0, (float)0);
+				}
+				else if (this.EyeColor == "Yellow")
+				{
+					this.CorrectColor = new Color((float)1, (float)1, (float)0);
+				}
+				else if (this.EyeColor == "Green")
+				{
+					this.CorrectColor = new Color((float)0, (float)1, (float)0);
+				}
+				else if (this.EyeColor == "Cyan")
+				{
+					this.CorrectColor = new Color((float)0, (float)1, (float)1);
+				}
+				else if (this.EyeColor == "Blue")
+				{
+					this.CorrectColor = new Color((float)0, (float)0, (float)1);
+				}
+				else if (this.EyeColor == "Purple")
+				{
+					this.CorrectColor = new Color((float)1, (float)0, (float)1);
+				}
+				else if (this.EyeColor == "Orange")
+				{
+					this.CorrectColor = new Color((float)1, 0.5f, (float)0);
+				}
+				else if (this.EyeColor == "Brown")
+				{
+					this.CorrectColor = new Color(0.5f, 0.25f, (float)0);
+				}
+				this.RightEyeRenderer.material.color = this.CorrectColor;
+				this.LeftEyeRenderer.material.color = this.CorrectColor;
 			}
-			else if (this.EyeColor == "Black")
-			{
-				this.CorrectColor = new Color(0.5f, 0.5f, 0.5f);
-			}
-			else if (this.EyeColor == "Red")
-			{
-				this.CorrectColor = new Color((float)1, (float)0, (float)0);
-			}
-			else if (this.EyeColor == "Yellow")
-			{
-				this.CorrectColor = new Color((float)1, (float)1, (float)0);
-			}
-			else if (this.EyeColor == "Green")
-			{
-				this.CorrectColor = new Color((float)0, (float)1, (float)0);
-			}
-			else if (this.EyeColor == "Cyan")
-			{
-				this.CorrectColor = new Color((float)0, (float)1, (float)1);
-			}
-			else if (this.EyeColor == "Blue")
-			{
-				this.CorrectColor = new Color((float)0, (float)0, (float)1);
-			}
-			else if (this.EyeColor == "Purple")
-			{
-				this.CorrectColor = new Color((float)1, (float)0, (float)1);
-			}
-			else if (this.EyeColor == "Orange")
-			{
-				this.CorrectColor = new Color((float)1, 0.5f, (float)0);
-			}
-			else if (this.EyeColor == "Brown")
-			{
-				this.CorrectColor = new Color(0.5f, 0.25f, (float)0);
-			}
-			this.RightEyeRenderer.material.color = this.CorrectColor;
-			this.LeftEyeRenderer.material.color = this.CorrectColor;
+		}
+		else
+		{
+			float num4 = UnityEngine.Random.Range((float)0, 1f);
+			float num5 = UnityEngine.Random.Range((float)0, 1f);
+			float num6 = UnityEngine.Random.Range((float)0, 1f);
+			float r2 = num4;
+			Color color7 = this.RightEyeRenderer.material.color;
+			float num7 = color7.r = r2;
+			Color color8 = this.RightEyeRenderer.material.color = color7;
+			float g2 = num5;
+			Color color9 = this.RightEyeRenderer.material.color;
+			float num8 = color9.g = g2;
+			Color color10 = this.RightEyeRenderer.material.color = color9;
+			float b2 = num6;
+			Color color11 = this.RightEyeRenderer.material.color;
+			float num9 = color11.b = b2;
+			Color color12 = this.RightEyeRenderer.material.color = color11;
+			float r3 = num4;
+			Color color13 = this.LeftEyeRenderer.material.color;
+			float num10 = color13.r = r3;
+			Color color14 = this.LeftEyeRenderer.material.color = color13;
+			float g3 = num5;
+			Color color15 = this.LeftEyeRenderer.material.color;
+			float num11 = color15.g = g3;
+			Color color16 = this.LeftEyeRenderer.material.color = color15;
+			float b3 = num6;
+			Color color17 = this.LeftEyeRenderer.material.color;
+			float num12 = color17.b = b3;
+			Color color18 = this.LeftEyeRenderer.material.color = color17;
 		}
 		if (this.StudentID == 20 && this.transform.position != new Vector3((float)0, (float)0, (float)0))
 		{

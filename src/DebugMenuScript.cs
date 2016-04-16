@@ -41,7 +41,7 @@ public class DebugMenuScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (!this.Yandere.InClass && Input.GetKeyDown(KeyCode.Backslash))
+		if (!this.Yandere.InClass && !this.Yandere.Chased && Input.GetKeyDown(KeyCode.Backslash))
 		{
 			if (!this.Window.active)
 			{

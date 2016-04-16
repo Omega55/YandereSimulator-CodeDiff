@@ -56,7 +56,7 @@ public class StruggleBarScript : MonoBehaviour
 			}
 			if (Input.GetButtonDown(this.CurrentButton))
 			{
-				this.Victory += Time.deltaTime * (float)(500 + PlayerPrefs.GetInt("PhysicalGrade") * 100);
+				this.Victory += Time.deltaTime * (float)(500 + (PlayerPrefs.GetInt("PhysicalGrade") + PlayerPrefs.GetInt("PhysicalBonus") * 100));
 			}
 			if (this.Victory >= (float)100)
 			{

@@ -9,6 +9,8 @@ public class ClubManagerScript : MonoBehaviour
 
 	public StudentManagerScript StudentManager;
 
+	public ComputerGamesScript ComputerGames;
+
 	public BloodCleanerScript BloodCleaner;
 
 	public RefrigeratorScript Refrigerator;
@@ -366,9 +368,16 @@ public class ClubManagerScript : MonoBehaviour
 					this.Yandere.Weapon[this.Yandere.Equipped].SuspicionCheck();
 				}
 			}
-			else if (PlayerPrefs.GetInt("Club") == 10 && this.Yandere.Armed)
+			else if (PlayerPrefs.GetInt("Club") == 10)
 			{
-				this.Yandere.Weapon[this.Yandere.Equipped].SuspicionCheck();
+				if (this.Yandere.Armed)
+				{
+					this.Yandere.Weapon[this.Yandere.Equipped].SuspicionCheck();
+				}
+			}
+			else if (PlayerPrefs.GetInt("Club") == 11)
+			{
+				this.ComputerGames.EnableGames();
 			}
 		}
 	}
@@ -432,10 +441,18 @@ public class ClubManagerScript : MonoBehaviour
 					this.Yandere.Weapon[this.Yandere.Equipped].SuspicionCheck();
 				}
 			}
-			else if (PlayerPrefs.GetInt("Club") == 10 && this.Yandere.Armed)
+			else if (PlayerPrefs.GetInt("Club") == 10)
 			{
-				PlayerPrefs.SetInt("Club", 0);
-				this.Yandere.Weapon[this.Yandere.Equipped].SuspicionCheck();
+				if (this.Yandere.Armed)
+				{
+					PlayerPrefs.SetInt("Club", 0);
+					this.Yandere.Weapon[this.Yandere.Equipped].SuspicionCheck();
+				}
+			}
+			else if (PlayerPrefs.GetInt("Club") == 11)
+			{
+				this.ComputerGames.DeactivateAllBenefits();
+				this.ComputerGames.DisableGames();
 			}
 		}
 	}

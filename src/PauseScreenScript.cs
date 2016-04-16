@@ -33,6 +33,8 @@ public class PauseScreenScript : MonoBehaviour
 
 	public ClockScript Clock;
 
+	public StatsScript Stats;
+
 	public Blur ScreenBlur;
 
 	public UILabel SelectionLabel;
@@ -104,6 +106,7 @@ public class PauseScreenScript : MonoBehaviour
 		this.PhotoGallery.gameObject.active = false;
 		this.FavorMenu.gameObject.active = false;
 		this.PassTime.gameObject.active = false;
+		this.Stats.gameObject.active = false;
 		this.ServicesScreen.active = false;
 		this.LoadingScreen.active = false;
 		this.SchemesMenu.active = false;
@@ -333,44 +336,51 @@ public class PauseScreenScript : MonoBehaviour
 								this.PassTime.GetCurrentTime();
 							}
 						}
-						else if (this.Selected != 4)
+						else if (this.Selected == 4)
 						{
-							if (this.Selected == 5)
+							this.PromptBar.ClearButtons();
+							this.PromptBar.Label[1].text = "Exit";
+							this.PromptBar.UpdateButtons();
+							this.Stats.gameObject.active = true;
+							this.Stats.UpdateStats();
+							this.MainMenu.active = false;
+							this.Sideways = true;
+						}
+						else if (this.Selected == 5)
+						{
+							this.PromptBar.ClearButtons();
+							this.PromptBar.Label[0].text = "Accept";
+							this.PromptBar.Label[1].text = "Exit";
+							this.PromptBar.Label[5].text = "Choose";
+							this.PromptBar.UpdateButtons();
+							this.FavorMenu.gameObject.active = true;
+							this.FavorMenu.gameObject.audio.Play();
+							this.MainMenu.active = false;
+							this.Sideways = true;
+						}
+						else if (this.Selected == 6)
+						{
+							this.StudentInfoMenu.gameObject.active = true;
+							this.StartCoroutine_Auto(this.StudentInfoMenu.UpdatePortraits());
+							this.MainMenu.active = false;
+							this.Sideways = true;
+							this.PromptBar.ClearButtons();
+							this.PromptBar.Label[0].text = "View Info";
+							this.PromptBar.Label[1].text = "Back";
+							this.PromptBar.UpdateButtons();
+							this.PromptBar.Show = true;
+						}
+						else if (this.Selected != 7)
+						{
+							if (this.Selected != 8)
 							{
-								this.PromptBar.ClearButtons();
-								this.PromptBar.Label[0].text = "Accept";
-								this.PromptBar.Label[1].text = "Exit";
-								this.PromptBar.Label[5].text = "Choose";
-								this.PromptBar.UpdateButtons();
-								this.FavorMenu.gameObject.active = true;
-								this.FavorMenu.gameObject.audio.Play();
-								this.MainMenu.active = false;
-								this.Sideways = true;
-							}
-							else if (this.Selected == 6)
-							{
-								this.StudentInfoMenu.gameObject.active = true;
-								this.StartCoroutine_Auto(this.StudentInfoMenu.UpdatePortraits());
-								this.MainMenu.active = false;
-								this.Sideways = true;
-								this.PromptBar.ClearButtons();
-								this.PromptBar.Label[0].text = "View Info";
-								this.PromptBar.Label[1].text = "Back";
-								this.PromptBar.UpdateButtons();
-								this.PromptBar.Show = true;
-							}
-							else if (this.Selected != 7)
-							{
-								if (this.Selected != 8)
+								if (this.Selected != 9)
 								{
-									if (this.Selected != 9)
+									if (this.Selected == 11)
 									{
-										if (this.Selected == 11)
-										{
-											this.PromptBar.ClearButtons();
-											this.PromptBar.Show = false;
-											this.Quitting = true;
-										}
+										this.PromptBar.ClearButtons();
+										this.PromptBar.Show = false;
+										this.Quitting = true;
 									}
 								}
 							}
