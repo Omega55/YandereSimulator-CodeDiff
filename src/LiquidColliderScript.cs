@@ -38,11 +38,14 @@ public class LiquidColliderScript : MonoBehaviour
 			AudioSource.PlayClipAtPoint(this.SplashSound, this.transform.position);
 			UnityEngine.Object.Instantiate(this.Splash, new Vector3(this.transform.position.x, 1.5f, this.transform.position.z), Quaternion.identity);
 			StudentScript studentScript = (StudentScript)other.gameObject.GetComponent(typeof(StudentScript));
-			if (this.Blood)
+			if (!studentScript.Male)
 			{
-				studentScript.Bloody = true;
+				if (this.Blood)
+				{
+					studentScript.Bloody = true;
+				}
+				studentScript.GetWet();
 			}
-			studentScript.GetWet();
 		}
 	}
 

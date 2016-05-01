@@ -26,7 +26,7 @@ public class AnswerSheetScript : MonoBehaviour
 	public virtual void Start()
 	{
 		this.OriginalMesh = this.MyMesh.mesh;
-		if (PlayerPrefs.GetInt("Scheme_7_Stage") == 100)
+		if (PlayerPrefs.GetInt("Scheme_5_Stage") == 100)
 		{
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
@@ -34,7 +34,7 @@ public class AnswerSheetScript : MonoBehaviour
 		}
 		else
 		{
-			if (PlayerPrefs.GetInt("Scheme_7_Stage") > 4)
+			if (PlayerPrefs.GetInt("Scheme_5_Stage") > 4)
 			{
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
@@ -54,7 +54,7 @@ public class AnswerSheetScript : MonoBehaviour
 		{
 			if (this.Phase == 1)
 			{
-				PlayerPrefs.SetInt("Scheme_7_Stage", 2);
+				PlayerPrefs.SetInt("Scheme_5_Stage", 2);
 				this.Schemes.UpdateInstructions();
 				this.Prompt.Yandere.Inventory.AnswerSheet = true;
 				this.Prompt.Hide();
@@ -65,7 +65,7 @@ public class AnswerSheetScript : MonoBehaviour
 			}
 			else
 			{
-				PlayerPrefs.SetInt("Scheme_7_Stage", 5);
+				PlayerPrefs.SetInt("Scheme_5_Stage", 5);
 				this.Schemes.UpdateInstructions();
 				this.Prompt.Yandere.Inventory.AnswerSheet = false;
 				this.Prompt.Hide();

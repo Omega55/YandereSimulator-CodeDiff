@@ -10,7 +10,11 @@ public class TallLockerScript : MonoBehaviour
 
 	public GameObject[] Schoolwear;
 
+	public bool[] Removed;
+
 	public bool[] Bloody;
+
+	public GameObject CleanUniform;
 
 	public GameObject SteamCloud;
 
@@ -26,9 +30,13 @@ public class TallLockerScript : MonoBehaviour
 
 	public bool RemovingClubAttire;
 
+	public bool DropCleanUniform;
+
 	public bool SteamCountdown;
 
 	public bool YandereLocker;
+
+	public bool Swapping;
 
 	public bool Open;
 
@@ -123,10 +131,19 @@ public class TallLockerScript : MonoBehaviour
 				if (this.Yandere.Schoolwear == 1)
 				{
 					this.Yandere.Schoolwear = 0;
+					if (!this.Removed[1])
+					{
+						this.DropCleanUniform = true;
+					}
+					else
+					{
+						this.Removed[1] = false;
+					}
 				}
 				else
 				{
 					this.Yandere.Schoolwear = 1;
+					this.Removed[1] = true;
 				}
 				this.SpawnSteam();
 			}
@@ -137,13 +154,19 @@ public class TallLockerScript : MonoBehaviour
 					this.RemovingClubAttire = true;
 				}
 				this.Yandere.PreviousSchoolwear = this.Yandere.Schoolwear;
+				if (this.Yandere.Schoolwear == 1 && !this.Removed[1])
+				{
+					this.DropCleanUniform = true;
+				}
 				if (this.Yandere.Schoolwear == 2)
 				{
 					this.Yandere.Schoolwear = 0;
+					this.Removed[2] = false;
 				}
 				else
 				{
 					this.Yandere.Schoolwear = 2;
+					this.Removed[2] = true;
 				}
 				this.SpawnSteam();
 			}
@@ -154,13 +177,19 @@ public class TallLockerScript : MonoBehaviour
 					this.RemovingClubAttire = true;
 				}
 				this.Yandere.PreviousSchoolwear = this.Yandere.Schoolwear;
+				if (this.Yandere.Schoolwear == 1 && !this.Removed[1])
+				{
+					this.DropCleanUniform = true;
+				}
 				if (this.Yandere.Schoolwear == 3)
 				{
 					this.Yandere.Schoolwear = 0;
+					this.Removed[3] = false;
 				}
 				else
 				{
 					this.Yandere.Schoolwear = 3;
+					this.Removed[3] = true;
 				}
 				this.SpawnSteam();
 			}
@@ -214,12 +243,7 @@ public class TallLockerScript : MonoBehaviour
 			}
 			else if (this.Timer > (float)3)
 			{
-				if (this.YandereLocker)
-				{
-					this.Yandere.CanMove = true;
-					this.Yandere.Stripping = false;
-				}
-				else
+				if (!this.YandereLocker)
 				{
 					this.Student.BathePhase = this.Student.BathePhase + 1;
 				}
@@ -252,6 +276,11 @@ public class TallLockerScript : MonoBehaviour
 
 	public virtual void UpdateSchoolwear()
 	{
+		if (this.DropCleanUniform)
+		{
+			UnityEngine.Object.Instantiate(this.CleanUniform, this.Yandere.transform.position + Vector3.forward * -0.5f + Vector3.up * (float)1, Quaternion.identity);
+			this.DropCleanUniform = false;
+		}
 		if (!this.Bloody[1])
 		{
 			this.Schoolwear[1].active = true;
@@ -272,7 +301,10 @@ public class TallLockerScript : MonoBehaviour
 			if (this.Yandere.Schoolwear > 0)
 			{
 				this.Prompt.Label[this.Yandere.Schoolwear].text = "     " + "Nude";
-				this.Schoolwear[this.Yandere.Schoolwear].active = false;
+				if (this.Removed[this.Yandere.Schoolwear])
+				{
+					this.Schoolwear[this.Yandere.Schoolwear].active = false;
+				}
 			}
 		}
 		else if (this.Student != null && this.Student.Schoolwear > 0)

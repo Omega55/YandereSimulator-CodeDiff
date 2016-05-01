@@ -28,6 +28,8 @@ public class JukeboxScript : MonoBehaviour
 
 	public AudioSource Falcon;
 
+	public AudioSource Ninja;
+
 	public AudioSource Punch;
 
 	public AudioSource Galo;
@@ -178,6 +180,7 @@ public class JukeboxScript : MonoBehaviour
 			this.Hitman.volume = Mathf.MoveTowards(this.Hitman.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Touhou.volume = Mathf.MoveTowards(this.Touhou.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Falcon.volume = Mathf.MoveTowards(this.Falcon.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
+			this.Ninja.volume = Mathf.MoveTowards(this.Ninja.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Punch.volume = Mathf.MoveTowards(this.Punch.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Galo.volume = Mathf.MoveTowards(this.Galo.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Jojo.volume = Mathf.MoveTowards(this.Jojo.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
@@ -250,30 +253,21 @@ public class JukeboxScript : MonoBehaviour
 			}
 			else if (Input.GetKeyDown("s"))
 			{
-				if (!this.MuteCopyrights)
-				{
-					this.Egg = true;
-					this.KillVolume();
-					this.Skeletons.enabled = true;
-				}
+				this.Egg = true;
+				this.KillVolume();
+				this.Skeletons.enabled = true;
 			}
 			else if (Input.GetKeyDown("k"))
 			{
-				if (!this.MuteCopyrights)
-				{
-					this.Egg = true;
-					this.KillVolume();
-					this.DK.enabled = true;
-				}
+				this.Egg = true;
+				this.KillVolume();
+				this.DK.enabled = true;
 			}
 			else if (Input.GetKeyDown("c"))
 			{
-				if (!this.MuteCopyrights)
-				{
-					this.Egg = true;
-					this.KillVolume();
-					this.Touhou.enabled = true;
-				}
+				this.Egg = true;
+				this.KillVolume();
+				this.Touhou.enabled = true;
 			}
 			else if (Input.GetKeyDown("f"))
 			{
@@ -286,18 +280,24 @@ public class JukeboxScript : MonoBehaviour
 			}
 			else if (Input.GetKeyDown("o"))
 			{
+				this.Egg = true;
+				this.KillVolume();
+				this.Punch.enabled = true;
+			}
+			else if (Input.GetKeyDown("u"))
+			{
 				if (!this.MuteCopyrights)
 				{
 					this.Egg = true;
 					this.KillVolume();
-					this.Punch.enabled = true;
+					this.Megalovania.enabled = true;
 				}
 			}
-			else if (Input.GetKeyDown("u") && !this.MuteCopyrights)
+			else if (Input.GetKeyDown("y") && !this.MuteCopyrights)
 			{
 				this.Egg = true;
 				this.KillVolume();
-				this.Megalovania.enabled = true;
+				this.Ninja.enabled = true;
 			}
 		}
 	}
@@ -323,6 +323,7 @@ public class JukeboxScript : MonoBehaviour
 		this.Touhou.Stop();
 		this.Falcon.Stop();
 		this.Punch.Stop();
+		this.Ninja.Stop();
 		this.Galo.Stop();
 		this.DK.Stop();
 		this.FullSanity.Stop();

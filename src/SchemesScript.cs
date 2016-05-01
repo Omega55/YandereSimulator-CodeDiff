@@ -7,13 +7,9 @@ public class SchemesScript : MonoBehaviour
 {
 	public InputManagerScript InputManager;
 
-	public PauseScreenScript PauseScreen;
-
 	public PromptBarScript PromptBar;
 
 	public GameObject FavorMenu;
-
-	public GameObject MainMenu;
 
 	public Transform Highlight;
 
@@ -28,6 +24,8 @@ public class SchemesScript : MonoBehaviour
 	public UILabel SchemeDesc;
 
 	public UILabel[] SchemeDeadlineLabels;
+
+	public UILabel[] SchemeCostLabels;
 
 	public UILabel[] SchemeNameLabels;
 
@@ -106,7 +104,13 @@ public class SchemesScript : MonoBehaviour
 					{
 						PlayerPrefs.SetInt("PantyShots", PlayerPrefs.GetInt("PantyShots") - this.SchemeCosts[this.ID]);
 						PlayerPrefs.SetInt("Scheme_" + this.ID + "_Unlocked", 1);
-						PlayerPrefs.SetInt("Scheme_" + this.ID + "_Stage", 1);
+						PlayerPrefs.SetInt("CurrentScheme", this.ID);
+						if (PlayerPrefs.GetInt("Scheme_" + this.ID + "_Stage") == 0)
+						{
+							PlayerPrefs.SetInt("Scheme_" + this.ID + "_Stage", 1);
+						}
+						this.UpdateInstructions();
+						this.UpdateSchemeList();
 						this.UpdateSchemeInfo();
 						this.audio.clip = this.InfoPurchase;
 						this.audio.Play();
@@ -155,15 +159,27 @@ public class SchemesScript : MonoBehaviour
 				float num = color.a = a;
 				Color color2 = this.SchemeNameLabels[i].color = color;
 				this.Exclamations[i].enabled = false;
-			}
-			else if (PlayerPrefs.GetInt("Scheme_" + i + "_Stage") > PlayerPrefs.GetInt("Scheme_" + i + "_PreviousStage"))
-			{
-				PlayerPrefs.SetInt("Scheme_" + i + "_PreviousStage", PlayerPrefs.GetInt("Scheme_" + i + "_Stage"));
-				this.Exclamations[i].enabled = true;
+				this.SchemeCostLabels[i].text = string.Empty;
 			}
 			else
 			{
-				this.Exclamations[i].enabled = false;
+				if (PlayerPrefs.GetInt("Scheme_" + i + "_Unlocked") == 0)
+				{
+					this.SchemeCostLabels[i].text = string.Empty + this.SchemeCosts[i];
+				}
+				else
+				{
+					this.SchemeCostLabels[i].text = string.Empty;
+				}
+				if (PlayerPrefs.GetInt("Scheme_" + i + "_Stage") > PlayerPrefs.GetInt("Scheme_" + i + "_PreviousStage"))
+				{
+					PlayerPrefs.SetInt("Scheme_" + i + "_PreviousStage", PlayerPrefs.GetInt("Scheme_" + i + "_Stage"));
+					this.Exclamations[i].enabled = true;
+				}
+				else
+				{
+					this.Exclamations[i].enabled = false;
+				}
 			}
 		}
 	}
@@ -189,7 +205,7 @@ public class SchemesScript : MonoBehaviour
 			else if (PlayerPrefs.GetInt("CurrentScheme") == this.ID)
 			{
 				this.Arrow.gameObject.active = true;
-				int num = -28 - 28 * PlayerPrefs.GetInt("Scheme_" + this.ID + "_Stage");
+				int num = -17 - 28 * PlayerPrefs.GetInt("Scheme_" + this.ID + "_Stage");
 				Vector3 localPosition = this.Arrow.localPosition;
 				float num2 = localPosition.y = (float)num;
 				Vector3 vector = this.Arrow.localPosition = localPosition;
@@ -220,7 +236,7 @@ public class SchemesScript : MonoBehaviour
 		}
 		else if (PlayerPrefs.GetInt("Scheme_" + this.ID + "_Unlocked") == 0)
 		{
-			this.SchemeInstructions.text = "Cost:" + "\n" + this.SchemeCosts[this.ID] + " Panty Shots" + "\n" + "\n" + "Skills Required:" + "\n" + this.SchemeSkills[this.ID];
+			this.SchemeInstructions.text = "Skills Required:" + "\n" + this.SchemeSkills[this.ID];
 		}
 		else
 		{
@@ -236,21 +252,23 @@ public class SchemesScript : MonoBehaviour
 
 	public virtual void UpdateInstructions()
 	{
-		this.Steps = this.SchemeSteps[7].Split(new char[]
+		this.Steps = this.SchemeSteps[PlayerPrefs.GetInt("CurrentScheme")].Split(new char[]
 		{
 			"\n"[0]
 		});
-		if (PlayerPrefs.GetInt("CurrentScheme") == 7)
+		if (PlayerPrefs.GetInt("CurrentScheme") > 0)
 		{
-			if (PlayerPrefs.GetInt("Scheme_" + PlayerPrefs.GetInt("CurrentScheme") + "_Stage") < 7)
+			if (PlayerPrefs.GetInt("Scheme_" + PlayerPrefs.GetInt("CurrentScheme") + "_Stage") < 100)
 			{
 				this.HUDIcon.active = true;
 				this.HUDInstructions.text = string.Empty + this.Steps[PlayerPrefs.GetInt("Scheme_" + PlayerPrefs.GetInt("CurrentScheme") + "_Stage") - 1];
 			}
 			else
 			{
-				this.HUDIcon.active = true;
+				this.Arrow.gameObject.active = false;
+				this.HUDIcon.gameObject.active = false;
 				this.HUDInstructions.text = string.Empty;
+				PlayerPrefs.SetInt("CurrentScheme", 0);
 			}
 		}
 		else

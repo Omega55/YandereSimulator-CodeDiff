@@ -52,7 +52,7 @@ public class RefrigeratorScript : MonoBehaviour
 		{
 			Quaternion to = Quaternion.LookRotation(new Vector3(this.Octodogs[1].transform.position.x, this.Yandere.transform.position.y, this.Octodogs[1].transform.position.z) - this.Yandere.transform.position);
 			this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, to, Time.deltaTime * (float)10);
-			this.Yandere.transform.position = Vector3.Lerp(this.Yandere.transform.position, this.CookingSpot.position, Time.deltaTime * (float)10);
+			this.Yandere.MoveTowardsTarget(this.CookingSpot.position);
 			if (this.EventPhase == 0)
 			{
 				this.Yandere.Character.animation.Play("f02_prepareFood_00");

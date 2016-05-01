@@ -481,7 +481,14 @@ public class CosmeticScript : MonoBehaviour
 			float num12 = color17.b = b3;
 			Color color18 = this.LeftEyeRenderer.material.color = color17;
 		}
-		if (this.StudentID == 20 && this.transform.position != new Vector3((float)0, (float)0, (float)0))
+		if (this.StudentID == 17)
+		{
+			if (PlayerPrefs.GetInt("Scheme_2_Stage") == 2)
+			{
+				this.FemaleAccessories[3].active = false;
+			}
+		}
+		else if (this.StudentID == 20 && this.transform.position != new Vector3((float)0, (float)0, (float)0))
 		{
 			this.RightEyeRenderer.material.mainTexture = this.DefaultFaceTexture;
 			this.LeftEyeRenderer.material.mainTexture = this.DefaultFaceTexture;

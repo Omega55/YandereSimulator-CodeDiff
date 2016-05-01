@@ -41,13 +41,15 @@ public class PauseScreenScript : MonoBehaviour
 
 	public UISprite Wifi;
 
-	public GameObject ServicesScreen;
-
 	public GameObject LoadingScreen;
 
 	public GameObject SchemesMenu;
 
+	public GameObject ServiceMenu;
+
 	public GameObject StudentInfo;
+
+	public GameObject DropsMenu;
 
 	public GameObject MainMenu;
 
@@ -107,10 +109,11 @@ public class PauseScreenScript : MonoBehaviour
 		this.FavorMenu.gameObject.active = false;
 		this.PassTime.gameObject.active = false;
 		this.Stats.gameObject.active = false;
-		this.ServicesScreen.active = false;
 		this.LoadingScreen.active = false;
 		this.SchemesMenu.active = false;
+		this.ServiceMenu.active = false;
 		this.StudentInfo.active = false;
+		this.DropsMenu.active = false;
 		this.MainMenu.active = true;
 		if (Application.loadedLevelName == "SchoolScene")
 		{
@@ -421,12 +424,6 @@ public class PauseScreenScript : MonoBehaviour
 							this.MainMenu.active = true;
 							this.PassTime.active = false;
 						}
-					}
-					if (this.PhotoGallery.active && !this.PhotoGallery.Viewing && Input.GetButtonDown("B"))
-					{
-						this.MainMenu.active = true;
-						this.PhotoGallery.active = false;
-						this.Sideways = false;
 					}
 					if (this.Quitting)
 					{

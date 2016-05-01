@@ -85,7 +85,7 @@ public class EventManagerScript : MonoBehaviour
 				this.EventCheck = false;
 				this.enabled = false;
 			}
-			if (this.Clock.HourTime > (float)13 && this.EventStudent[1] != null && this.EventStudent[2] != null && this.EventStudent[1].Pathfinding.canMove && this.EventStudent[1].Pathfinding.canMove)
+			if (this.Clock.HourTime > 13.01f && this.EventStudent[1] != null && this.EventStudent[2] != null && this.EventStudent[1].Pathfinding.canMove && this.EventStudent[1].Pathfinding.canMove)
 			{
 				this.EventStudent[1].CurrentDestination = this.EventLocation[1];
 				this.EventStudent[1].Pathfinding.target = this.EventLocation[1];
@@ -101,7 +101,8 @@ public class EventManagerScript : MonoBehaviour
 		}
 		if (this.EventOn)
 		{
-			if (this.Clock.HourTime > 13.5f)
+			float num = Vector3.Distance(this.Yandere.transform.position, this.EventStudent[this.EventSpeaker[this.EventPhase]].transform.position);
+			if (this.Clock.HourTime > 13.5f || this.EventStudent[1].WitnessedCorpse || this.EventStudent[2].WitnessedCorpse)
 			{
 				this.EndEvent();
 			}
@@ -128,7 +129,10 @@ public class EventManagerScript : MonoBehaviour
 					if (!this.Spoken)
 					{
 						this.EventStudent[this.EventSpeaker[this.EventPhase]].Character.animation.CrossFade(this.EventAnim[this.EventPhase]);
-						this.EventSubtitle.text = this.EventSpeech[this.EventPhase];
+						if (num < (float)10)
+						{
+							this.EventSubtitle.text = this.EventSpeech[this.EventPhase];
+						}
 						this.PlayClip(this.EventClip[this.EventPhase], this.EventStudent[this.EventSpeaker[this.EventPhase]].transform.position + Vector3.up * 1.5f);
 						this.Spoken = true;
 					}
@@ -139,31 +143,26 @@ public class EventManagerScript : MonoBehaviour
 						{
 							this.EventSubtitle.text = string.Empty;
 						}
-						float num;
 						if (this.Yandere.transform.position.y < this.EventStudent[1].transform.position.y - (float)1)
 						{
 							this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
 						}
+						else if (num < (float)10)
+						{
+							this.Scale = Mathf.Abs((num - (float)10) * 0.2f);
+							if (this.Scale < (float)0)
+							{
+								this.Scale = (float)0;
+							}
+							if (this.Scale > (float)1)
+							{
+								this.Scale = (float)1;
+							}
+							this.EventSubtitle.transform.localScale = new Vector3(this.Scale, this.Scale, this.Scale);
+						}
 						else
 						{
-							num = Vector3.Distance(this.Yandere.transform.position, this.EventStudent[this.EventSpeaker[this.EventPhase]].transform.position);
-							if (num < (float)10)
-							{
-								this.Scale = Mathf.Abs((num - (float)10) * 0.2f);
-								if (this.Scale < (float)0)
-								{
-									this.Scale = (float)0;
-								}
-								if (this.Scale > (float)1)
-								{
-									this.Scale = (float)1;
-								}
-								this.EventSubtitle.transform.localScale = new Vector3(this.Scale, this.Scale, this.Scale);
-							}
-							else
-							{
-								this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
-							}
+							this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
 						}
 						if (this.EventStudent[this.EventSpeaker[this.EventPhase]].Character.animation[this.EventAnim[this.EventPhase]].time >= this.EventStudent[this.EventSpeaker[this.EventPhase]].Character.animation[this.EventAnim[this.EventPhase]].length)
 						{

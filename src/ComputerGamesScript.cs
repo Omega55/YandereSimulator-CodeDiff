@@ -130,6 +130,7 @@ public class ComputerGamesScript : MonoBehaviour
 						this.PromptBar.Label[4].text = "Select";
 						this.PromptBar.UpdateButtons();
 						this.PromptBar.Show = true;
+						this.Yandere.Character.animation.Play(this.Yandere.IdleAnim);
 						this.Yandere.CanMove = false;
 						this.ShowWindow = true;
 					}

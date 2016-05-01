@@ -15,6 +15,8 @@ public class EndOfDayScript : MonoBehaviour
 
 	public ReputationScript Reputation;
 
+	public CounselorScript Counselor;
+
 	public WeaponScript MurderWeapon;
 
 	public TranqCaseScript TranqCase;
@@ -385,14 +387,10 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 10)
 			{
-				if (PlayerPrefs.GetInt("Scheme_7_Stage") > 1 && PlayerPrefs.GetInt("Scheme_7_Stage") < 5)
+				if (this.Counselor.LectureID > 0)
 				{
-					this.Label.text = "A teacher discovers that an answer sheet for an upcoming test is missing. She changes all of the questions for the test and keeps the new answer sheet with her at all times.";
-					PlayerPrefs.SetInt("Scheme_7_Stage", 100);
-					if (PlayerPrefs.GetInt("CurrentScheme") == 7)
-					{
-						PlayerPrefs.SetInt("CurrentScheme", 0);
-					}
+					this.Counselor.Lecturing = true;
+					this.enabled = false;
 				}
 				else
 				{
@@ -401,6 +399,19 @@ public class EndOfDayScript : MonoBehaviour
 				}
 			}
 			else if (this.Phase == 11)
+			{
+				if (PlayerPrefs.GetInt("Scheme_5_Stage") > 1 && PlayerPrefs.GetInt("Scheme_5_Stage") < 5)
+				{
+					this.Label.text = "A teacher discovers that an answer sheet for an upcoming test is missing. She changes all of the questions for the test and keeps the new answer sheet with her at all times.";
+					PlayerPrefs.SetInt("Scheme_5_Stage", 100);
+				}
+				else
+				{
+					this.Phase++;
+					this.UpdateScene();
+				}
+			}
+			else if (this.Phase == 12)
 			{
 				this.ClubClosed = false;
 				this.ClubKicked = false;
@@ -471,16 +482,16 @@ public class EndOfDayScript : MonoBehaviour
 				}
 				else
 				{
-					this.Phase = 13;
+					this.Phase = 14;
 					this.UpdateScene();
 				}
 			}
-			else if (this.Phase == 12)
+			else if (this.Phase == 13)
 			{
 				this.Label.text = "Yandere-chan waits until the clock strikes midnight." + "\n" + "\n" + "Under the cover of darkness, Yandere-chan travels back to school and sneaks inside of the main school building." + "\n" + "\n" + "Yandere-chan returns to the instrument case that carries her unconscious victim." + "\n" + "\n" + "She pushes the case back to her house, pretending to be a young musician returning home from a late-night show." + "\n" + "\n" + "Yandere-chan drags the case down to her basement and ties up her victim." + "\n" + "\n" + "Exhausted, Yandere-chan goes to sleep.";
 				this.Phase++;
 			}
-			else if (this.Phase == 13)
+			else if (this.Phase == 14)
 			{
 				PlayerPrefs.SetFloat("Reputation", this.Reputation.Reputation);
 				PlayerPrefs.SetInt("Night", 1);

@@ -42,6 +42,8 @@ public class MovingEventScript : MonoBehaviour
 
 	public int EventPhase;
 
+	public int EventDay;
+
 	public float Distance;
 
 	public float Timer;
@@ -49,12 +51,13 @@ public class MovingEventScript : MonoBehaviour
 	public MovingEventScript()
 	{
 		this.EventPhase = 1;
+		this.EventDay = 3;
 	}
 
 	public virtual void Start()
 	{
 		this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
-		if (PlayerPrefs.GetInt("Weekday") == 3)
+		if (PlayerPrefs.GetInt("Weekday") == this.EventDay)
 		{
 			this.EventCheck = true;
 		}
@@ -302,22 +305,25 @@ public class MovingEventScript : MonoBehaviour
 					}
 				}
 				this.Distance = Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position);
-				if (this.Distance < (float)10)
+				if (this.Distance < (float)11)
 				{
-					float num3 = Mathf.Abs((this.Distance - (float)10) * 0.2f);
-					if (num3 < (float)0)
+					if (this.Distance < (float)10)
 					{
-						num3 = (float)0;
+						float num3 = Mathf.Abs((this.Distance - (float)10) * 0.2f);
+						if (num3 < (float)0)
+						{
+							num3 = (float)0;
+						}
+						if (num3 > (float)1)
+						{
+							num3 = (float)1;
+						}
+						this.EventSubtitle.transform.localScale = new Vector3(num3, num3, num3);
 					}
-					if (num3 > (float)1)
+					else
 					{
-						num3 = (float)1;
+						this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
 					}
-					this.EventSubtitle.transform.localScale = new Vector3(num3, num3, num3);
-				}
-				else
-				{
-					this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
 				}
 			}
 		}
@@ -347,6 +353,7 @@ public class MovingEventScript : MonoBehaviour
 			}
 			this.EventStudent.CurrentDestination = this.EventStudent.Destinations[this.EventStudent.Phase];
 			this.EventStudent.Pathfinding.target = this.EventStudent.Destinations[this.EventStudent.Phase];
+			this.EventStudent.Character.animation[this.EventStudent.BentoAnim].weight = (float)0;
 			this.EventStudent.Chopsticks[0].active = false;
 			this.EventStudent.Chopsticks[1].active = false;
 			this.EventStudent.Bento.active = false;

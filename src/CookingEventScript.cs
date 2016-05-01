@@ -9,11 +9,15 @@ public class CookingEventScript : MonoBehaviour
 
 	public RefrigeratorScript Snacks;
 
+	public SchemesScript Schemes;
+
 	public YandereScript Yandere;
 
 	public ClockScript Clock;
 
 	public GameObject Refrigerator;
+
+	public GameObject RivalPhone;
 
 	public GameObject Octodog;
 
@@ -86,10 +90,7 @@ public class CookingEventScript : MonoBehaviour
 			this.Octodogs[i].active = false;
 		}
 		this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
-		if (PlayerPrefs.GetInt("Weekday") == this.EventDay)
-		{
-			this.EventCheck = true;
-		}
+		this.EventCheck = true;
 	}
 
 	public virtual void Update()
@@ -135,22 +136,45 @@ public class CookingEventScript : MonoBehaviour
 		}
 		if (this.EventActive)
 		{
-			if (this.Clock.HourTime > this.EventTime + (float)1 || this.EventStudent.WitnessedMurder || this.EventStudent.Splashed || this.EventStudent.Alarmed || this.EventStudent.Dying)
+			if (this.Clock.HourTime > this.EventTime + 1.5f || this.EventStudent.WitnessedMurder || this.EventStudent.Splashed || this.EventStudent.Alarmed || this.EventStudent.Dying)
 			{
 				this.EndEvent();
 			}
 			else if (!this.EventStudent.Pathfinding.canMove)
 			{
+				if (this.EventPhase == -1)
+				{
+					this.Timer += Time.deltaTime;
+					if (this.Timer > (float)5)
+					{
+						PlayerPrefs.SetInt("Scheme_4_Stage", 5);
+						this.Schemes.UpdateInstructions();
+						this.RivalPhone.active = false;
+						this.EventSubtitle.text = string.Empty;
+						this.EventPhase++;
+						this.Timer = (float)0;
+					}
+				}
 				if (this.EventPhase == 0)
 				{
-					this.EventStudent.Character.animation.Play("f02_prepareFood_00");
-					this.Octodog.transform.parent = this.EventStudent.RightHand;
-					this.Octodog.transform.localPosition = new Vector3(0.0129f, -0.02475f, 0.0316f);
-					this.Octodog.transform.localEulerAngles = new Vector3((float)-90, (float)0, (float)0);
-					this.Sausage.transform.parent = this.EventStudent.RightHand;
-					this.Sausage.transform.localPosition = new Vector3(0.013f, -0.038f, 0.015f);
-					this.Sausage.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
-					this.EventPhase++;
+					if (!this.RivalPhone.active)
+					{
+						this.EventStudent.Character.animation.Play("f02_prepareFood_00");
+						this.Octodog.transform.parent = this.EventStudent.RightHand;
+						this.Octodog.transform.localPosition = new Vector3(0.0129f, -0.02475f, 0.0316f);
+						this.Octodog.transform.localEulerAngles = new Vector3((float)-90, (float)0, (float)0);
+						this.Sausage.transform.parent = this.EventStudent.RightHand;
+						this.Sausage.transform.localPosition = new Vector3(0.013f, -0.038f, 0.015f);
+						this.Sausage.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+						this.EventPhase++;
+					}
+					else
+					{
+						this.PlayClip(this.EventClip[0], this.EventStudent.transform.position + Vector3.up);
+						this.EventStudent.Character.animation.CrossFade(this.EventAnim[0]);
+						this.EventSubtitle.text = this.EventSpeech[0];
+						this.EventPhase--;
+					}
 				}
 				else if (this.EventPhase == 1)
 				{
@@ -331,6 +355,24 @@ public class CookingEventScript : MonoBehaviour
 					this.Plate.localPosition = new Vector3(-3.66666f, 0.9066666f, -2.379f);
 					this.Plate.localEulerAngles = new Vector3((float)0, (float)-90, (float)0);
 					this.EndEvent();
+				}
+				float num6 = Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position);
+				if (num6 < (float)10)
+				{
+					float num7 = Mathf.Abs((num6 - (float)10) * 0.2f);
+					if (num7 < (float)0)
+					{
+						num7 = (float)0;
+					}
+					if (num7 > (float)1)
+					{
+						num7 = (float)1;
+					}
+					this.EventSubtitle.transform.localScale = new Vector3(num7, num7, num7);
+				}
+				else
+				{
+					this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
 				}
 			}
 		}

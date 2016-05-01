@@ -6,6 +6,8 @@ public class GiggleScript : MonoBehaviour
 {
 	public GameObject EmptyGameObject;
 
+	public GameObject Giggle;
+
 	public StudentScript Student;
 
 	public bool Distracted;
@@ -38,11 +40,11 @@ public class GiggleScript : MonoBehaviour
 		if (other.gameObject.layer == 9 && !this.Distracted)
 		{
 			this.Student = (StudentScript)other.gameObject.GetComponent(typeof(StudentScript));
-			if (this.Student != null && !this.Student.YandereVisible && !this.Student.Alarmed && !this.Student.Distracted && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.Student.Investigating && !this.Student.InEvent)
+			if (this.Student != null && this.Student.Giggle == null && !this.Student.YandereVisible && !this.Student.Alarmed && !this.Student.Distracted && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.Student.Investigating && !this.Student.InEvent)
 			{
 				this.Student.Character.animation.CrossFade(this.Student.IdleAnim);
-				GameObject giggle = (GameObject)UnityEngine.Object.Instantiate(this.EmptyGameObject, new Vector3(this.transform.position.x, this.Student.transform.position.y, this.transform.position.z), Quaternion.identity);
-				this.Student.Giggle = giggle;
+				this.Giggle = (GameObject)UnityEngine.Object.Instantiate(this.EmptyGameObject, new Vector3(this.transform.position.x, this.Student.transform.position.y, this.transform.position.z), Quaternion.identity);
+				this.Student.Giggle = this.Giggle;
 				this.Student.Pathfinding.canSearch = false;
 				this.Student.Pathfinding.canMove = false;
 				this.Student.InvestigationPhase = 0;

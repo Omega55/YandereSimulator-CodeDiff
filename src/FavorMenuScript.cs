@@ -6,11 +6,13 @@ public class FavorMenuScript : MonoBehaviour
 {
 	public InputManagerScript InputManager;
 
-	public ServicesMenuScript ServicesMenu;
-
 	public PauseScreenScript PauseScreen;
 
+	public ServicesScript ServicesMenu;
+
 	public SchemesScript SchemesMenu;
+
+	public DropsScript DropsMenu;
 
 	public PromptBarScript PromptBar;
 
@@ -44,15 +46,26 @@ public class FavorMenuScript : MonoBehaviour
 			this.PromptBar.UpdateButtons();
 			if (this.ID == 1)
 			{
+				this.SchemesMenu.UpdatePantyCount();
 				this.SchemesMenu.UpdateSchemeList();
 				this.SchemesMenu.UpdateSchemeInfo();
-				this.SchemesMenu.active = true;
+				this.SchemesMenu.gameObject.active = true;
 				this.active = false;
 			}
 			else if (this.ID == 2)
 			{
-				this.ServicesMenu.UpdatePantyShots();
-				this.ServicesMenu.active = true;
+				this.ServicesMenu.UpdatePantyCount();
+				this.ServicesMenu.UpdateList();
+				this.ServicesMenu.UpdateDesc();
+				this.ServicesMenu.gameObject.active = true;
+				this.active = false;
+			}
+			else if (this.ID == 3)
+			{
+				this.DropsMenu.UpdatePantyCount();
+				this.DropsMenu.UpdateList();
+				this.DropsMenu.UpdateDesc();
+				this.DropsMenu.gameObject.active = true;
 				this.active = false;
 			}
 		}

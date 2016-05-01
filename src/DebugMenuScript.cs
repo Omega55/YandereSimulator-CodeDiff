@@ -172,7 +172,9 @@ public class DebugMenuScript : MonoBehaviour
 			}
 			else if (Input.GetKeyDown("e"))
 			{
-				PlayerPrefs.SetInt("Scheme_7_Stage", 6);
+				PlayerPrefs.SetInt("Student_7_Expelled", 0);
+				PlayerPrefs.SetInt("Scheme_5_Stage", 6);
+				PlayerPrefs.SetInt("ExpelProgress", 4);
 				this.Window.active = false;
 			}
 			else if (Input.GetKeyDown("f"))
@@ -204,9 +206,14 @@ public class DebugMenuScript : MonoBehaviour
 				PlayerPrefs.SetInt("Student_6_Slave", 1);
 				Application.LoadLevel(Application.loadedLevel);
 			}
+			else if (Input.GetKeyDown("o"))
+			{
+				this.Yandere.Inventory.RivalPhone = true;
+				this.Window.active = false;
+			}
 			else if (Input.GetKeyDown("p"))
 			{
-				PlayerPrefs.SetInt("PantyShots", 10);
+				PlayerPrefs.SetInt("PantyShots", 17);
 				this.Window.active = false;
 			}
 			else if (Input.GetKeyDown("r"))

@@ -254,6 +254,12 @@ public class WeaponScript : MonoBehaviour
 			{
 				this.Yandere.Police.BloodyWeapons = this.Yandere.Police.BloodyWeapons - 1;
 			}
+			if (this.WeaponID == 11)
+			{
+				this.Yandere.IdleAnim = "CyborgNinja_Idle_Armed";
+				this.Yandere.WalkAnim = "CyborgNinja_Walk_Armed";
+				this.Yandere.RunAnim = "CyborgNinja_Run_Armed";
+			}
 		}
 		if (this.Yandere.Weapon[this.Yandere.Equipped] == this && this.Yandere.Armed)
 		{
@@ -286,6 +292,12 @@ public class WeaponScript : MonoBehaviour
 
 	public virtual void Drop()
 	{
+		if (this.WeaponID == 11)
+		{
+			this.Yandere.IdleAnim = "CyborgNinja_Idle_Unarmed";
+			this.Yandere.WalkAnim = this.Yandere.OriginalWalkAnim;
+			this.Yandere.RunAnim = "CyborgNinja_Run_Unarmed";
+		}
 		if (this.StartLow)
 		{
 			this.Prompt.OffsetY[3] = this.OriginalOffset;

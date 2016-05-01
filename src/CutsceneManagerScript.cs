@@ -6,7 +6,11 @@ public class CutsceneManagerScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
 
+	public CounselorScript Counselor;
+
 	public PromptBarScript PromptBar;
+
+	public EndOfDayScript EndOfDay;
 
 	public PortalScript Portal;
 
@@ -66,6 +70,13 @@ public class CutsceneManagerScript : MonoBehaviour
 		}
 		else if (this.Phase == 4)
 		{
+			this.EndOfDay.gameObject.active = true;
+			this.EndOfDay.Phase = 10;
+			this.Counselor.LecturePhase = 5;
+			this.Phase++;
+		}
+		else if (this.Phase == 6)
+		{
 			float a2 = Mathf.MoveTowards(this.Darkness.color.a, (float)0, Time.deltaTime);
 			Color color3 = this.Darkness.color;
 			float num2 = color3.a = a2;
@@ -75,13 +86,12 @@ public class CutsceneManagerScript : MonoBehaviour
 				this.Phase++;
 			}
 		}
-		else if (this.Phase == 5)
+		else if (this.Phase == 7)
 		{
 			if (this.StudentManager.Students[7] != null)
 			{
 				UnityEngine.Object.Destroy(this.StudentManager.Students[7].gameObject);
 			}
-			PlayerPrefs.SetInt("Student_7_Expelled", 1);
 			this.PromptBar.ClearButtons();
 			this.PromptBar.Show = false;
 			this.Portal.Proceed = true;

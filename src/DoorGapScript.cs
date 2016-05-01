@@ -36,7 +36,7 @@ public class DoorGapScript : MonoBehaviour
 				this.Prompt.enabled = false;
 				this.Prompt.Yandere.Inventory.AnswerSheet = false;
 				this.Papers[1].gameObject.active = true;
-				PlayerPrefs.SetInt("Scheme_7_Stage", 3);
+				PlayerPrefs.SetInt("Scheme_5_Stage", 3);
 				this.Schemes.UpdateInstructions();
 				this.audio.Play();
 			}
@@ -48,7 +48,7 @@ public class DoorGapScript : MonoBehaviour
 				this.Prompt.Yandere.Inventory.DuplicateSheet = true;
 				this.Papers[2].gameObject.active = false;
 				this.AnswerSheet.Prompt.enabled = true;
-				PlayerPrefs.SetInt("Scheme_7_Stage", 4);
+				PlayerPrefs.SetInt("Scheme_5_Stage", 4);
 				this.Schemes.UpdateInstructions();
 			}
 			this.Phase++;

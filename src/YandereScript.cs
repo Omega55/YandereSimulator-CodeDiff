@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$2525 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$2573 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$2540;
+		internal YandereScript $self_$2588;
 
-		public $ApplyCustomCostume$2525(YandereScript self_)
+		public $ApplyCustomCostume$2573(YandereScript self_)
 		{
-			this.$self_$2540 = self_;
+			this.$self_$2588 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$2525.$(this.$self_$2540);
+			return new YandereScript.$ApplyCustomCostume$2573.$(this.$self_$2588);
 		}
 	}
 
@@ -66,6 +66,8 @@ public class YandereScript : MonoBehaviour
 	public AccessoryGroupScript AccessoryGroup;
 
 	public DumpsterHandleScript DumpsterHandle;
+
+	public PhonePromptBarScript PhonePromptBar;
 
 	public ShoulderCameraScript ShoulderCamera;
 
@@ -232,6 +234,8 @@ public class YandereScript : MonoBehaviour
 	public Camera MainCamera;
 
 	public Camera Smartphone;
+
+	public Renderer SmartphoneRenderer;
 
 	public Renderer LongHairRenderer;
 
@@ -416,6 +420,8 @@ public class YandereScript : MonoBehaviour
 	public bool ClubAttire;
 
 	public bool NearSenpai;
+
+	public bool RivalPhone;
 
 	public bool Possessed;
 
@@ -695,6 +701,16 @@ public class YandereScript : MonoBehaviour
 
 	public int PKDir;
 
+	public Texture CyborgBody;
+
+	public Texture CyborgFace;
+
+	public GameObject[] CyborgParts;
+
+	public GameObject EnergySword;
+
+	public GameObject PonyOnly;
+
 	public Mesh LongUniform;
 
 	public GameObject[] CensorSteam;
@@ -794,6 +810,7 @@ public class YandereScript : MonoBehaviour
 		this.FalconGun.active = false;
 		this.EyepatchL.active = false;
 		this.EyepatchR.active = false;
+		this.PonyOnly.active = false;
 		this.Shoes[0].active = false;
 		this.Shoes[1].active = false;
 		this.Stand.active = false;
@@ -817,6 +834,12 @@ public class YandereScript : MonoBehaviour
 		while (this.ID < Extensions.get_length(this.GaloAccessories))
 		{
 			this.GaloAccessories[this.ID].active = false;
+			this.ID++;
+		}
+		this.ID = 1;
+		while (this.ID < Extensions.get_length(this.CyborgParts))
+		{
+			this.CyborgParts[this.ID].active = false;
 			this.ID++;
 		}
 		if (PlayerPrefs.GetInt("PantiesEquipped") == 5)
@@ -876,6 +899,8 @@ public class YandereScript : MonoBehaviour
 		this.Character.animation["f02_stripping_00"].speed = 1.5f;
 		this.Character.animation["f02_falconIdle_00"].speed = (float)2;
 		this.Character.animation["f02_carryIdleA_00"].speed = 1.75f;
+		this.Character.animation["CyborgNinja_Run_Armed"].speed = (float)2;
+		this.Character.animation["CyborgNinja_Run_Unarmed"].speed = (float)2;
 	}
 
 	public virtual void Update()
@@ -1047,34 +1072,55 @@ public class YandereScript : MonoBehaviour
 				}
 				if (!this.NearSenpai)
 				{
-					if (!Input.GetButton("A") && !Input.GetButton("B") && !Input.GetButton("X") && !Input.GetButton("Y") && (Input.GetAxis("LT") > 0.5f || Input.GetMouseButtonDown(1)))
+					if (!Input.GetButton("A") && !Input.GetButton("B") && !Input.GetButton("X") && !Input.GetButton("Y"))
 					{
-						if (Input.GetAxis("LT") > 0.5f)
+						if (this.Inventory.RivalPhone && Input.GetButtonDown("LB"))
 						{
-							this.UsingController = true;
-						}
-						if (!this.Aiming)
-						{
-							if (this.CameraEffects.OneCamera)
+							this.Character.animation["f02_cameraPose_00"].weight = (float)0;
+							if (!this.RivalPhone)
 							{
-								this.MainCamera.clearFlags = CameraClearFlags.Color;
-								this.MainCamera.farClipPlane = 0.02f;
+								this.SmartphoneRenderer.material.color = new Color(0.5f, (float)0, 0.5f, (float)1);
+								this.RivalPhone = true;
 							}
-							float y2 = this.MainCamera.transform.eulerAngles.y;
-							Vector3 eulerAngles = this.transform.eulerAngles;
-							float num2 = eulerAngles.y = y2;
-							Vector3 vector2 = this.transform.eulerAngles = eulerAngles;
-							this.Character.animation.Play(this.IdleAnim);
-							this.Smartphone.transform.parent.active = true;
-							this.ShoulderCamera.AimingCamera = true;
-							this.Obscurance.enabled = false;
-							this.HandCamera.active = true;
-							this.YandereVision = false;
-							this.Blur.enabled = true;
-							this.Mopping = false;
-							this.Aiming = true;
-							this.EmptyHands();
-							Time.timeScale = (float)1;
+							else
+							{
+								this.SmartphoneRenderer.material.color = new Color(0.125f, 0.125f, 0.125f, (float)1);
+								this.RivalPhone = false;
+							}
+						}
+						if (Input.GetAxis("LT") > 0.5f || Input.GetMouseButtonDown(1))
+						{
+							if (Input.GetAxis("LT") > 0.5f)
+							{
+								this.UsingController = true;
+							}
+							if (!this.Aiming)
+							{
+								if (this.CameraEffects.OneCamera)
+								{
+									this.MainCamera.clearFlags = CameraClearFlags.Color;
+									this.MainCamera.farClipPlane = 0.02f;
+								}
+								float y2 = this.MainCamera.transform.eulerAngles.y;
+								Vector3 eulerAngles = this.transform.eulerAngles;
+								float num2 = eulerAngles.y = y2;
+								Vector3 vector2 = this.transform.eulerAngles = eulerAngles;
+								this.Character.animation.Play(this.IdleAnim);
+								this.Smartphone.transform.parent.active = true;
+								this.ShoulderCamera.AimingCamera = true;
+								this.Obscurance.enabled = false;
+								this.HandCamera.active = true;
+								this.YandereVision = false;
+								this.Blur.enabled = true;
+								this.Mopping = false;
+								this.Aiming = true;
+								this.EmptyHands();
+								if (this.Inventory.RivalPhone)
+								{
+									this.PhonePromptBar.Show = true;
+								}
+								Time.timeScale = (float)1;
+							}
 						}
 					}
 					if (!this.Aiming && !this.Crouching && !this.Crawling && !this.Accessories[9].active && !this.Accessories[16].active)
@@ -1585,6 +1631,12 @@ public class YandereScript : MonoBehaviour
 					{
 						this.Character.animation.CrossFade("f02_dumpsterGrab_00");
 					}
+				}
+				if (this.Stripping && this.Character.animation["f02_stripping_00"].time >= this.Character.animation["f02_stripping_00"].length)
+				{
+					this.Stripping = false;
+					this.CanMove = true;
+					this.MyLocker.UpdateSchoolwear();
 				}
 				if (this.Bathing)
 				{
@@ -2392,8 +2444,11 @@ public class YandereScript : MonoBehaviour
 			}
 			if (this.Attacking)
 			{
-				this.targetRotation = Quaternion.LookRotation(new Vector3(this.TargetStudent.transform.position.x, this.transform.position.y, this.TargetStudent.transform.position.z) - this.transform.position);
-				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
+				if (this.TargetStudent != null)
+				{
+					this.targetRotation = Quaternion.LookRotation(new Vector3(this.TargetStudent.transform.position.x, this.transform.position.y, this.TargetStudent.transform.position.z) - this.transform.position);
+					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
+				}
 				if (this.Drown)
 				{
 					this.MoveTowardsTarget(this.TargetStudent.transform.position + this.TargetStudent.transform.forward * -0.0001f);
@@ -2457,7 +2512,34 @@ public class YandereScript : MonoBehaviour
 				}
 				else if (!this.TargetStudent.Teacher)
 				{
-					if (this.Weapon[this.Equipped].WeaponID == 7)
+					if (this.Weapon[this.Equipped].WeaponID == 11)
+					{
+						this.Character.animation.CrossFade("CyborgNinja_Slash");
+						if (this.Character.animation["CyborgNinja_Slash"].time == (float)0)
+						{
+							this.TargetStudent.Character.animation[this.TargetStudent.PhoneAnim].weight = (float)0;
+							this.Weapon[this.Equipped].gameObject.audio.Play();
+						}
+						if (this.Character.animation["CyborgNinja_Slash"].time >= this.Character.animation["CyborgNinja_Slash"].length)
+						{
+							this.Bloodiness += (float)20;
+							this.UpdateBlood();
+							this.StainWeapon();
+							this.Character.animation["CyborgNinja_Slash"].time = (float)0;
+							this.Character.animation.Stop("CyborgNinja_Slash");
+							this.Character.animation.CrossFade(this.IdleAnim);
+							this.Attacking = false;
+							if (!this.Noticed)
+							{
+								this.CanMove = true;
+							}
+							else
+							{
+								this.Weapon[this.Equipped].Drop();
+							}
+						}
+					}
+					else if (this.Weapon[this.Equipped].WeaponID == 7)
 					{
 						this.Character.animation.CrossFade("f02_buzzSawKill_A_00");
 						if (this.Character.animation["f02_buzzSawKill_A_00"].time == (float)0)
@@ -2872,6 +2954,11 @@ public class YandereScript : MonoBehaviour
 						this.EasterEggMenu.active = false;
 						this.BadTime();
 					}
+					else if (Input.GetKeyDown("y"))
+					{
+						this.EasterEggMenu.active = false;
+						this.CyborgNinja();
+					}
 					if (Input.GetKeyDown("d"))
 					{
 						if (this.Copyrights.active)
@@ -3096,7 +3183,10 @@ public class YandereScript : MonoBehaviour
 	{
 		if (this.Weapon[this.Equipped] != null)
 		{
-			this.Weapon[this.Equipped].Victims[this.TargetStudent.StudentID] = true;
+			if (this.TargetStudent.StudentID < Extensions.get_length(this.Weapon[this.Equipped].Victims))
+			{
+				this.Weapon[this.Equipped].Victims[this.TargetStudent.StudentID] = true;
+			}
 			this.Weapon[this.Equipped].Blood.enabled = true;
 			if (this.Gloved && !this.Gloves.Blood.enabled)
 			{
@@ -3145,6 +3235,7 @@ public class YandereScript : MonoBehaviour
 		this.MainCamera.clearFlags = CameraClearFlags.Skybox;
 		this.MainCamera.farClipPlane = 325f;
 		this.Smartphone.transform.parent.active = false;
+		this.PhonePromptBar.Show = false;
 		this.Smartphone.fieldOfView = (float)60;
 		this.Shutter.TargetStudent = 0;
 		this.HandCamera.active = false;
@@ -3427,7 +3518,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$2525(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$2573(this).GetEnumerator();
 	}
 
 	public virtual void WearGloves()
@@ -3673,6 +3764,41 @@ public class YandereScript : MonoBehaviour
 		this.Egg = true;
 		this.Hairstyle = 0;
 		this.UpdateHair();
+	}
+
+	public virtual void CyborgNinja()
+	{
+		this.EnergySword.active = true;
+		this.IdleAnim = "CyborgNinja_Idle_Unarmed";
+		this.RunAnim = "CyborgNinja_Run_Unarmed";
+		this.MyRenderer.sharedMesh = this.NudeMesh;
+		this.MyRenderer.materials[0].mainTexture = this.CyborgFace;
+		this.MyRenderer.materials[1].mainTexture = this.CyborgBody;
+		this.MyRenderer.materials[2].mainTexture = this.CyborgBody;
+		int num = 0;
+		Color color = this.MyRenderer.materials[3].color;
+		float num2 = color.a = (float)num;
+		Color color2 = this.MyRenderer.materials[3].color = color;
+		this.ID = 1;
+		while (this.ID < Extensions.get_length(this.CyborgParts))
+		{
+			this.CyborgParts[this.ID].active = true;
+			this.ID++;
+		}
+		this.ID = 1;
+		while (this.ID < Extensions.get_length(this.StudentManager.Students))
+		{
+			if (this.StudentManager.Students[this.ID] != null)
+			{
+				this.StudentManager.Students[this.ID].Teacher = false;
+			}
+			this.ID++;
+		}
+		this.RunSpeed *= (float)2;
+		this.Hairstyle = 0;
+		this.UpdateHair();
+		this.PonyOnly.active = true;
+		this.Egg = true;
 	}
 
 	public virtual void Long()

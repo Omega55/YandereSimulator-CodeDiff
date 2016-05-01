@@ -195,13 +195,9 @@ public class ClassScript : MonoBehaviour
 							{
 								this.Poison.active = true;
 							}
-							if (PlayerPrefs.GetInt("Scheme_7_Stage") == 6)
+							if (PlayerPrefs.GetInt("Scheme_5_Stage") == 7)
 							{
-								PlayerPrefs.SetInt("Scheme_7_Stage", 100);
-								if (PlayerPrefs.GetInt("CurrentScheme") == 7)
-								{
-									PlayerPrefs.SetInt("CurrentScheme", 0);
-								}
+								PlayerPrefs.SetInt("Scheme_5_Stage", 100);
 								this.PromptBar.ClearButtons();
 								this.PromptBar.Label[0].text = "Continue";
 								this.PromptBar.UpdateButtons();

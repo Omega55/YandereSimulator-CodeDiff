@@ -11,6 +11,10 @@ public class ShutterScript : MonoBehaviour
 
 	public StudentInfoScript StudentInfo;
 
+	public PromptBarScript PromptBar;
+
+	public SchemesScript Schemes;
+
 	public StudentScript Student;
 
 	public YandereScript Yandere;
@@ -127,14 +131,23 @@ public class ShutterScript : MonoBehaviour
 					this.StudentManager.GhostChan.Look();
 					this.CheckPhoto();
 					this.SmartphoneCamera.targetTexture = null;
+					this.Yandere.PhonePromptBar.Show = false;
 					this.NotificationManager.active = false;
 					this.HeartbeatCamera.active = false;
-					this.CameraButtons.active = true;
 					this.MainCamera.enabled = false;
 					this.PhotoIcons.active = true;
 					this.SubPanel.active = false;
 					this.Panel.active = false;
 					this.Close = false;
+					this.PromptBar.ClearButtons();
+					this.PromptBar.Label[0].text = "Save";
+					this.PromptBar.Label[1].text = "Delete";
+					if (!this.Yandere.RivalPhone)
+					{
+						this.PromptBar.Label[2].text = "Send";
+					}
+					this.PromptBar.UpdateButtons();
+					this.PromptBar.Show = true;
 					Time.timeScale = (float)0;
 				}
 			}
@@ -228,50 +241,68 @@ public class ShutterScript : MonoBehaviour
 		}
 		if (!this.DisplayError)
 		{
-			if (this.CameraButtons.active && !this.Snapping)
+			if (this.PhotoIcons.active && !this.Snapping)
 			{
 				if (Input.GetButtonDown("A"))
 				{
-					bool flag = false;
-					if (!this.SenpaiX.active)
+					if (!this.Yandere.RivalPhone)
 					{
-						flag = true;
-					}
-					this.CameraButtons.active = false;
-					this.PhotoIcons.active = false;
-					this.ID = 0;
-					this.FreeSpace = false;
-					while (this.ID < 26)
-					{
-						this.ID++;
-						if (PlayerPrefs.GetInt("Photo_" + this.ID) == 0)
+						bool flag = false;
+						if (!this.SenpaiX.active)
 						{
-							this.FreeSpace = true;
-							this.Slot = this.ID;
-							this.ID = 26;
+							flag = true;
+						}
+						int num3 = -627;
+						Vector3 localPosition = this.PromptBar.transform.localPosition;
+						float num4 = localPosition.y = (float)num3;
+						Vector3 vector = this.PromptBar.transform.localPosition = localPosition;
+						this.PromptBar.ClearButtons();
+						this.PromptBar.Show = false;
+						this.ID = 0;
+						this.FreeSpace = false;
+						while (this.ID < 26)
+						{
+							this.ID++;
+							if (PlayerPrefs.GetInt("Photo_" + this.ID) == 0)
+							{
+								this.FreeSpace = true;
+								this.Slot = this.ID;
+								this.ID = 26;
+							}
+						}
+						if (this.FreeSpace)
+						{
+							Application.CaptureScreenshot(Application.streamingAssetsPath + "/Photographs/" + "Photo_" + this.Slot + ".png");
+							this.TookPhoto = true;
+							PlayerPrefs.SetInt("Photo_" + this.Slot, 1);
+							if (flag)
+							{
+								PlayerPrefs.SetInt("SenpaiPhoto_" + this.Slot, 1);
+							}
+						}
+						else
+						{
+							this.DisplayError = true;
 						}
 					}
-					if (this.FreeSpace)
+					else if (!this.PantiesX.active)
 					{
-						Application.CaptureScreenshot(Application.streamingAssetsPath + "/Photographs/" + "Photo_" + this.Slot + ".png");
-						this.TookPhoto = true;
-						PlayerPrefs.SetInt("Photo_" + this.Slot, 1);
-						if (flag)
-						{
-							PlayerPrefs.SetInt("SenpaiPhoto_" + this.Slot, 1);
-						}
-					}
-					else
-					{
-						this.DisplayError = true;
+						PlayerPrefs.SetInt("Scheme_4_Stage", 3);
+						this.Schemes.UpdateInstructions();
+						this.ResumeGameplay();
 					}
 				}
-				if (Input.GetButtonDown("X"))
+				if (!this.Yandere.RivalPhone && Input.GetButtonDown("X"))
 				{
 					this.Panel.active = true;
 					this.MainMenu.active = false;
 					this.PauseScreen.Show = true;
-					this.CameraButtons.active = false;
+					int num5 = -627;
+					Vector3 localPosition2 = this.PromptBar.transform.localPosition;
+					float num6 = localPosition2.y = (float)num5;
+					Vector3 vector2 = this.PromptBar.transform.localPosition = localPosition2;
+					this.PromptBar.ClearButtons();
+					this.PromptBar.Show = false;
 					if (!this.InfoX.active)
 					{
 						this.PauseScreen.Sideways = true;
@@ -466,7 +497,6 @@ public class ShutterScript : MonoBehaviour
 		this.PauseScreen.CorrectingTime = true;
 		this.Yandere.HandCamera.active = true;
 		this.HeartbeatCamera.active = true;
-		this.CameraButtons.active = false;
 		this.TextMessages.active = false;
 		this.StudentInfo.active = false;
 		this.MainCamera.enabled = true;
@@ -480,6 +510,8 @@ public class ShutterScript : MonoBehaviour
 		Time.timeScale = (float)1;
 		this.TakePhoto = false;
 		this.TookPhoto = false;
+		this.PromptBar.ClearButtons();
+		this.PromptBar.Show = false;
 		if (this.NewMessage != null)
 		{
 			UnityEngine.Object.Destroy(this.NewMessage);

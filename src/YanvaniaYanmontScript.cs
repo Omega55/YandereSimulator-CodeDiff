@@ -890,6 +890,10 @@ public class YanvaniaYanmontScript : MonoBehaviour
 		this.Injured = true;
 		this.StopAttacking();
 		this.Health -= (float)Damage;
+		if (this.Dracula.Health <= (float)0)
+		{
+			this.Health = (float)1;
+		}
 		if (this.Dracula.Health > (float)0 && this.Health <= (float)0)
 		{
 			if (this.NewBlood == null)

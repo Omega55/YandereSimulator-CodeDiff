@@ -10,18 +10,18 @@ public class PhotoGalleryScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $GetPhotos$2506 : GenericGenerator<WWW>
+	internal sealed class $GetPhotos$2554 : GenericGenerator<WWW>
 	{
-		internal PhotoGalleryScript $self_$2511;
+		internal PhotoGalleryScript $self_$2559;
 
-		public $GetPhotos$2506(PhotoGalleryScript self_)
+		public $GetPhotos$2554(PhotoGalleryScript self_)
 		{
-			this.$self_$2511 = self_;
+			this.$self_$2559 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new PhotoGalleryScript.$GetPhotos$2506.$(this.$self_$2511);
+			return new PhotoGalleryScript.$GetPhotos$2554.$(this.$self_$2559);
 		}
 	}
 
@@ -122,6 +122,13 @@ public class PhotoGalleryScript : MonoBehaviour
 						this.DeleteBox.active = false;
 						this.AdjustBox.active = false;
 					}
+				}
+				if (Input.GetButtonDown("B"))
+				{
+					this.PauseScreen.MainMenu.active = true;
+					this.PauseScreen.Sideways = false;
+					this.PauseScreen.PressedB = true;
+					this.gameObject.active = false;
 				}
 				if (Input.GetButtonDown("X"))
 				{
@@ -469,7 +476,7 @@ public class PhotoGalleryScript : MonoBehaviour
 
 	public virtual IEnumerator GetPhotos()
 	{
-		return new PhotoGalleryScript.$GetPhotos$2506(this).GetEnumerator();
+		return new PhotoGalleryScript.$GetPhotos$2554(this).GetEnumerator();
 	}
 
 	public virtual void UpdateUseButton()

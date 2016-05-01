@@ -416,8 +416,10 @@ public class PoliceScript : MonoBehaviour
 				{
 					if (this.EndOfDay.Phase == 1)
 					{
-						this.EndOfDay.Phase = 10;
 						this.EndOfDay.gameObject.active = true;
+						this.EndOfDay.enabled = true;
+						this.EndOfDay.Phase = 10;
+						this.EndOfDay.Start();
 						this.ResultsLabels[0].text = string.Empty;
 						this.ResultsLabels[1].text = string.Empty;
 						this.ResultsLabels[2].text = string.Empty;

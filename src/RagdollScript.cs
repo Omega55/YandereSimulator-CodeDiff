@@ -510,7 +510,7 @@ public class RagdollScript : MonoBehaviour
 				((BodyPartScript)gameObject.GetComponent(typeof(BodyPartScript))).Sacrifice = this.Sacrifice;
 				if (i == 0)
 				{
-					if (!this.Student.Teacher)
+					if (!this.Student.OriginallyTeacher)
 					{
 						if (!this.Male)
 						{

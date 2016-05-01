@@ -226,6 +226,13 @@ public class DoorScript : MonoBehaviour
 		this.CheckDirection();
 	}
 
+	public virtual void LockDoor()
+	{
+		this.Open = false;
+		this.Prompt.Hide();
+		this.Prompt.enabled = false;
+	}
+
 	public virtual void CheckDirection()
 	{
 		this.North = false;

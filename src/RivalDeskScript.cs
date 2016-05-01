@@ -14,22 +14,21 @@ public class RivalDeskScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (PlayerPrefs.GetInt("Scheme_7_Stage") == 5 && PlayerPrefs.GetInt("Weekday") == 5)
+		if (PlayerPrefs.GetInt("Scheme_5_Stage") == 5 && PlayerPrefs.GetInt("Weekday") == 5)
 		{
 			if (this.Clock.HourTime > (float)13)
 			{
-				this.Prompt.enabled = true;
+				this.Prompt.HideButton[0] = false;
 				if (this.Clock.HourTime > 13.5f)
 				{
-					PlayerPrefs.SetInt("Scheme_7_Stage", 100);
-					PlayerPrefs.SetInt("CurrentScheme", 0);
+					PlayerPrefs.SetInt("Scheme_5_Stage", 100);
 					this.Schemes.UpdateInstructions();
-					this.Prompt.enabled = false;
+					this.Prompt.HideButton[0] = true;
 				}
 			}
 			if (this.Prompt.Circle[0].fillAmount == (float)0)
 			{
-				PlayerPrefs.SetInt("Scheme_7_Stage", 6);
+				PlayerPrefs.SetInt("Scheme_5_Stage", 6);
 				this.Schemes.UpdateInstructions();
 				this.Prompt.Yandere.Inventory.DuplicateSheet = false;
 				this.Prompt.Hide();
