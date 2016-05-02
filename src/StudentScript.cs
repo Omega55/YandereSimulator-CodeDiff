@@ -1289,6 +1289,10 @@ public class StudentScript : MonoBehaviour
 				}
 				if (this.Fleeing)
 				{
+					if (this.Yandere.Chased)
+					{
+						this.Pathfinding.speed = this.Pathfinding.speed + Time.deltaTime;
+					}
 					this.DistanceToDestination = Vector3.Distance(this.transform.position, this.Pathfinding.target.position);
 					if (this.AlarmTimer > (float)0)
 					{

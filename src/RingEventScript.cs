@@ -112,6 +112,8 @@ public class RingEventScript : MonoBehaviour
 					if (this.Timer > (float)4)
 					{
 						this.EventStudent.Cosmetic.FemaleAccessories[3].transform.parent = null;
+						this.EventStudent.Cosmetic.FemaleAccessories[3].transform.position = new Vector3(0.9f, 12.471f, -29.3f);
+						this.EventStudent.Cosmetic.FemaleAccessories[3].transform.eulerAngles = new Vector3((float)-15, (float)-90, (float)0);
 						((BoxCollider)this.EventStudent.Cosmetic.FemaleAccessories[3].GetComponent(typeof(BoxCollider))).enabled = true;
 					}
 					if (this.Timer > (float)5)

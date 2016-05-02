@@ -12,10 +12,16 @@ public class FountainScript : MonoBehaviour
 
 	public bool Drowning;
 
+	public AudioSource SpraySFX;
+
+	public AudioSource DropsSFX;
+
 	public float Timer;
 
 	public virtual void Start()
 	{
+		this.SpraySFX.volume = 0.1f;
+		this.DropsSFX.volume = 0.1f;
 	}
 
 	public virtual void Update()

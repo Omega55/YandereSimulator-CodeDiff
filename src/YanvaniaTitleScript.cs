@@ -84,7 +84,7 @@ public class YanvaniaTitleScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (Input.GetKeyDown("m"))
+		if (!this.Logo.active && Input.GetKeyDown("m"))
 		{
 			PlayerPrefs.SetInt("DraculaDefeated", 1);
 			PlayerPrefs.SetInt("MidoriEasterEgg", 1);
@@ -144,6 +144,7 @@ public class YanvaniaTitleScript : MonoBehaviour
 							{
 								this.Midori.mainTexture = this.SadMidori;
 								Time.timeScale = (float)1;
+								this.Midori.gameObject.audio.Stop();
 								this.audio.Stop();
 							}
 							if (!this.ErrorLeave)

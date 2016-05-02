@@ -340,6 +340,7 @@ public class DelinquentScript : MonoBehaviour
 				{
 					this.transform.position = Vector3.MoveTowards(this.transform.position, this.Yandere.transform.position, Time.deltaTime * this.RunSpeed);
 					this.Character.animation.CrossFade(this.RunAnim);
+					this.RunSpeed += Time.deltaTime;
 				}
 			}
 			else if (!this.Cooldown)
