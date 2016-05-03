@@ -173,6 +173,7 @@ public class CounselorScript : MonoBehaviour
 					if (this.Selected == 7)
 					{
 						this.Yandere.ShoulderCamera.OverShoulder = false;
+						this.StudentManager.EnablePrompts();
 						this.Yandere.TargetStudent = null;
 						this.LookAtPlayer = false;
 						this.ShowWindow = false;
@@ -235,6 +236,7 @@ public class CounselorScript : MonoBehaviour
 					if (this.Timer > 0.5f)
 					{
 						this.Yandere.ShoulderCamera.OverShoulder = false;
+						this.StudentManager.EnablePrompts();
 						this.Yandere.TargetStudent = null;
 						this.LookAtPlayer = false;
 						this.Angry = false;

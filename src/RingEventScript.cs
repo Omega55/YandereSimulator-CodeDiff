@@ -53,23 +53,30 @@ public class RingEventScript : MonoBehaviour
 				{
 					if (this.EventStudent.Cosmetic.FemaleAccessories[3].active)
 					{
-						this.OriginalPosition = this.EventStudent.Cosmetic.FemaleAccessories[3].transform.localPosition;
-						this.EventStudent.CurrentDestination = this.EventStudent.Destinations[this.EventStudent.Phase];
-						this.EventStudent.Pathfinding.target = this.EventStudent.Destinations[this.EventStudent.Phase];
-						this.EventStudent.Obstacle.checkTime = (float)99;
-						this.EventStudent.InEvent = true;
-						this.EventStudent.Private = true;
-						this.EventStudent.Prompt.Hide();
-						this.EventActive = true;
-						if (this.EventStudent.Following)
+						if (PlayerPrefs.GetInt("Scheme_2_Stage") < 100)
 						{
-							this.EventStudent.Pathfinding.canMove = true;
-							this.EventStudent.Pathfinding.speed = (float)1;
-							this.EventStudent.Following = false;
-							this.EventStudent.Routine = true;
-							this.Yandere.Followers = this.Yandere.Followers - 1;
-							this.EventStudent.Subtitle.UpdateLabel("Stop Follow Apology", 0, (float)3);
-							this.EventStudent.Prompt.Label[0].text = "     " + "Talk";
+							this.OriginalPosition = this.EventStudent.Cosmetic.FemaleAccessories[3].transform.localPosition;
+							this.EventStudent.CurrentDestination = this.EventStudent.Destinations[this.EventStudent.Phase];
+							this.EventStudent.Pathfinding.target = this.EventStudent.Destinations[this.EventStudent.Phase];
+							this.EventStudent.Obstacle.checkTime = (float)99;
+							this.EventStudent.InEvent = true;
+							this.EventStudent.Private = true;
+							this.EventStudent.Prompt.Hide();
+							this.EventActive = true;
+							if (this.EventStudent.Following)
+							{
+								this.EventStudent.Pathfinding.canMove = true;
+								this.EventStudent.Pathfinding.speed = (float)1;
+								this.EventStudent.Following = false;
+								this.EventStudent.Routine = true;
+								this.Yandere.Followers = this.Yandere.Followers - 1;
+								this.EventStudent.Subtitle.UpdateLabel("Stop Follow Apology", 0, (float)3);
+								this.EventStudent.Prompt.Label[0].text = "     " + "Talk";
+							}
+						}
+						else
+						{
+							this.enabled = false;
 						}
 					}
 					else

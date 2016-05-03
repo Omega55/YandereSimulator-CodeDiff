@@ -8,6 +8,8 @@ public class CustomizationScript : MonoBehaviour
 {
 	public InputManagerScript InputManager;
 
+	public Renderer FacialHairRenderer;
+
 	public Renderer YandereRenderer;
 
 	public Renderer SenpaiRenderer;
@@ -37,6 +39,8 @@ public class CustomizationScript : MonoBehaviour
 	public UIPanel GenderPanel;
 
 	public UIPanel WhitePanel;
+
+	public UILabel FacialHairStyleLabel;
 
 	public UILabel FemaleUniformLabel;
 
@@ -70,6 +74,8 @@ public class CustomizationScript : MonoBehaviour
 
 	public int MaleUniform;
 
+	public int FacialHair;
+
 	public int SkinColor;
 
 	public int HairStyle;
@@ -91,6 +97,8 @@ public class CustomizationScript : MonoBehaviour
 	public Texture[] FaceTextures;
 
 	public Texture[] SkinTextures;
+
+	public GameObject[] FacialHairstyles;
 
 	public GameObject[] Hairstyles;
 
@@ -135,7 +143,8 @@ public class CustomizationScript : MonoBehaviour
 		this.FinishPanel.alpha = (float)0;
 		this.GenderPanel.alpha = (float)0;
 		this.WhitePanel.alpha = (float)1;
-		this.UpdateColor();
+		this.UpdateFacialHair();
+		this.UpdateHairStyle();
 	}
 
 	public virtual void Update()
@@ -198,7 +207,7 @@ public class CustomizationScript : MonoBehaviour
 				if (this.InputManager.TappedDown)
 				{
 					this.Selected++;
-					if (this.Selected > 5)
+					if (this.Selected > 6)
 					{
 						this.Selected = 1;
 					}
@@ -212,7 +221,7 @@ public class CustomizationScript : MonoBehaviour
 					this.Selected--;
 					if (this.Selected < 1)
 					{
-						this.Selected = 5;
+						this.Selected = 6;
 					}
 					int num7 = 650 - this.Selected * 150;
 					Vector3 localPosition2 = this.Highlight.localPosition;
@@ -229,7 +238,7 @@ public class CustomizationScript : MonoBehaviour
 					else if (this.Selected == 2)
 					{
 						this.HairStyle++;
-						this.UpdateStyle();
+						this.UpdateHairStyle();
 					}
 					else if (this.Selected == 3)
 					{
@@ -246,6 +255,11 @@ public class CustomizationScript : MonoBehaviour
 						this.EyeWear++;
 						this.UpdateEyewear();
 					}
+					else if (this.Selected == 6)
+					{
+						this.FacialHair++;
+						this.UpdateFacialHair();
+					}
 				}
 				if (this.InputManager.TappedLeft)
 				{
@@ -257,7 +271,7 @@ public class CustomizationScript : MonoBehaviour
 					else if (this.Selected == 2)
 					{
 						this.HairStyle--;
-						this.UpdateStyle();
+						this.UpdateHairStyle();
 					}
 					else if (this.Selected == 3)
 					{
@@ -273,6 +287,11 @@ public class CustomizationScript : MonoBehaviour
 					{
 						this.EyeWear--;
 						this.UpdateEyewear();
+					}
+					else if (this.Selected == 6)
+					{
+						this.FacialHair--;
+						this.UpdateFacialHair();
 					}
 				}
 			}
@@ -529,6 +548,7 @@ public class CustomizationScript : MonoBehaviour
 				PlayerPrefs.SetString("SenpaiHairColor", this.HairColorName);
 				PlayerPrefs.SetString("SenpaiEyeColor", this.EyeColorName);
 				PlayerPrefs.SetInt("SenpaiEyeWear", this.EyeWear);
+				PlayerPrefs.SetInt("SenpaiFacialHair", this.FacialHair);
 				PlayerPrefs.SetInt("MaleUniform", this.MaleUniform);
 				PlayerPrefs.SetInt("FemaleUniform", this.FemaleUniform);
 				Application.LoadLevel("IntroScene");
@@ -592,7 +612,7 @@ public class CustomizationScript : MonoBehaviour
 		this.SkinColorLabel.text = "Skin Color " + this.SkinColor;
 	}
 
-	public virtual void UpdateStyle()
+	public virtual void UpdateHairStyle()
 	{
 		if (this.HairStyle > Extensions.get_length(this.Hairstyles) - 1)
 		{
@@ -615,6 +635,29 @@ public class CustomizationScript : MonoBehaviour
 		this.UpdateColor();
 	}
 
+	public virtual void UpdateFacialHair()
+	{
+		if (this.FacialHair > Extensions.get_length(this.FacialHairstyles) - 1)
+		{
+			this.FacialHair = 0;
+		}
+		else if (this.FacialHair < 0)
+		{
+			this.FacialHair = Extensions.get_length(this.FacialHairstyles) - 1;
+		}
+		for (int i = 1; i < Extensions.get_length(this.FacialHairstyles); i++)
+		{
+			this.FacialHairstyles[i].active = false;
+		}
+		if (this.FacialHair > 0)
+		{
+			this.FacialHairRenderer = (Renderer)this.FacialHairstyles[this.FacialHair].GetComponent(typeof(Renderer));
+			this.FacialHairstyles[this.FacialHair].active = true;
+		}
+		this.FacialHairStyleLabel.text = "Facial Hair " + this.FacialHair;
+		this.UpdateColor();
+	}
+
 	public virtual void UpdateColor()
 	{
 		if (this.HairColor > 10)
@@ -625,61 +668,69 @@ public class CustomizationScript : MonoBehaviour
 		{
 			this.HairColor = 10;
 		}
+		Color color;
+		if (this.HairColor == 1)
+		{
+			color = new Color(0.5f, 0.5f, 0.5f);
+			this.HairColorName = "Black";
+		}
+		else if (this.HairColor == 2)
+		{
+			color = new Color((float)1, (float)0, (float)0);
+			this.HairColorName = "Red";
+		}
+		else if (this.HairColor == 3)
+		{
+			color = new Color((float)1, (float)1, (float)0);
+			this.HairColorName = "Yellow";
+		}
+		else if (this.HairColor == 4)
+		{
+			color = new Color((float)0, (float)1, (float)0);
+			this.HairColorName = "Green";
+		}
+		else if (this.HairColor == 5)
+		{
+			color = new Color((float)0, (float)1, (float)1);
+			this.HairColorName = "Cyan";
+		}
+		else if (this.HairColor == 6)
+		{
+			color = new Color((float)0, (float)0, (float)1);
+			this.HairColorName = "Blue";
+		}
+		else if (this.HairColor == 7)
+		{
+			color = new Color((float)1, (float)0, (float)1);
+			this.HairColorName = "Purple";
+		}
+		else if (this.HairColor == 8)
+		{
+			color = new Color((float)1, 0.5f, (float)0);
+			this.HairColorName = "Orange";
+		}
+		else if (this.HairColor == 9)
+		{
+			color = new Color(0.5f, 0.25f, (float)0);
+			this.HairColorName = "Brown";
+		}
+		else if (this.HairColor == 10)
+		{
+			color = new Color((float)1, (float)1, (float)1);
+			this.HairColorName = "White";
+		}
 		if (this.HairStyle > 0)
 		{
 			this.HairRenderer = (Renderer)this.Hairstyles[this.HairStyle].GetComponent(typeof(Renderer));
+			this.HairRenderer.material.color = color;
 		}
-		if (this.HairRenderer != null)
+		if (this.FacialHair > 0)
 		{
-			if (this.HairColor == 1)
+			this.FacialHairRenderer = (Renderer)this.FacialHairstyles[this.FacialHair].GetComponent(typeof(Renderer));
+			this.FacialHairRenderer.material.color = color;
+			if (Extensions.get_length(this.FacialHairRenderer.materials) > 1)
 			{
-				this.HairRenderer.material.color = new Color(0.5f, 0.5f, 0.5f);
-				this.HairColorName = "Black";
-			}
-			else if (this.HairColor == 2)
-			{
-				this.HairRenderer.material.color = new Color((float)1, (float)0, (float)0);
-				this.HairColorName = "Red";
-			}
-			else if (this.HairColor == 3)
-			{
-				this.HairRenderer.material.color = new Color((float)1, (float)1, (float)0);
-				this.HairColorName = "Yellow";
-			}
-			else if (this.HairColor == 4)
-			{
-				this.HairRenderer.material.color = new Color((float)0, (float)1, (float)0);
-				this.HairColorName = "Green";
-			}
-			else if (this.HairColor == 5)
-			{
-				this.HairRenderer.material.color = new Color((float)0, (float)1, (float)1);
-				this.HairColorName = "Cyan";
-			}
-			else if (this.HairColor == 6)
-			{
-				this.HairRenderer.material.color = new Color((float)0, (float)0, (float)1);
-				this.HairColorName = "Blue";
-			}
-			else if (this.HairColor == 7)
-			{
-				this.HairRenderer.material.color = new Color((float)1, (float)0, (float)1);
-				this.HairColorName = "Purple";
-			}
-			else if (this.HairColor == 8)
-			{
-				this.HairRenderer.material.color = new Color((float)1, 0.5f, (float)0);
-				this.HairColorName = "Orange";
-			}
-			else if (this.HairColor == 9)
-			{
-				this.HairRenderer.material.color = new Color(0.5f, 0.25f, (float)0);
-				this.HairColorName = "Brown";
-			}
-			else if (this.HairColor == 10)
-			{
-				this.HairRenderer.material.color = new Color((float)1, (float)1, (float)1);
-				this.HairColorName = "White";
+				this.FacialHairRenderer.materials[1].color = color;
 			}
 		}
 		this.HairColorLabel.text = "Hair Color " + this.HairColor;

@@ -19,6 +19,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public GameObject[] TeacherHair;
 
+	public GameObject[] FacialHair;
+
 	public GameObject[] FemaleHair;
 
 	public GameObject[] MaleHair;
@@ -26,6 +28,8 @@ public class CosmeticScript : MonoBehaviour
 	public GameObject[] Eyewear;
 
 	public Renderer[] TeacherHairRenderers;
+
+	public Renderer[] FacialHairRenderers;
 
 	public Renderer[] FemaleHairRenderers;
 
@@ -44,6 +48,8 @@ public class CosmeticScript : MonoBehaviour
 	public Mesh[] MaleUniforms;
 
 	public SkinnedMeshRenderer MyRenderer;
+
+	public Renderer FacialHairRenderer;
 
 	public Renderer RightEyeRenderer;
 
@@ -92,6 +98,8 @@ public class CosmeticScript : MonoBehaviour
 	public float BreastSize;
 
 	public string EyeColor;
+
+	public int FacialHairstyle;
 
 	public int Accessory;
 
@@ -221,6 +229,15 @@ public class CosmeticScript : MonoBehaviour
 			this.ID++;
 		}
 		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.FacialHair))
+		{
+			if (this.FacialHair[this.ID] != null)
+			{
+				this.FacialHair[this.ID].active = false;
+			}
+			this.ID++;
+		}
+		this.ID = 0;
 		while (this.ID < Extensions.get_length(this.Eyewear))
 		{
 			if (this.Eyewear[this.ID] != null)
@@ -235,6 +252,7 @@ public class CosmeticScript : MonoBehaviour
 			{
 				this.Eyewear[PlayerPrefs.GetInt("SenpaiEyeWear")].active = true;
 			}
+			this.FacialHairstyle = PlayerPrefs.GetInt("SenpaiFacialHair");
 			a = PlayerPrefs.GetString("SenpaiHairColor");
 			this.EyeColor = PlayerPrefs.GetString("SenpaiEyeColor");
 			this.Hairstyle = PlayerPrefs.GetInt("SenpaiHairStyle");
@@ -269,6 +287,11 @@ public class CosmeticScript : MonoBehaviour
 		{
 			this.MaleHair[this.Hairstyle].active = true;
 			this.HairRenderer = this.MaleHairRenderers[this.Hairstyle];
+			if (this.FacialHairstyle > 0)
+			{
+				this.FacialHair[this.FacialHairstyle].active = true;
+				this.FacialHairRenderer = this.FacialHairRenderers[this.FacialHairstyle];
+			}
 			this.SetMaleUniform();
 		}
 		if (!this.Male)
@@ -401,6 +424,14 @@ public class CosmeticScript : MonoBehaviour
 			if (Application.loadedLevelName == "PortraitScene")
 			{
 				this.Character.transform.localScale = new Vector3(0.93f, 0.93f, 0.93f);
+			}
+			if (this.FacialHairRenderer != null)
+			{
+				this.FacialHairRenderer.material.color = this.HairRenderer.material.color;
+				if (Extensions.get_length(this.FacialHairRenderer.materials) > 1)
+				{
+					this.FacialHairRenderer.materials[1].color = this.HairRenderer.material.color;
+				}
 			}
 		}
 		if (!this.Randomize)

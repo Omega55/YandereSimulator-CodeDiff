@@ -35,6 +35,8 @@ public class EndOfDayScript : MonoBehaviour
 
 	public UILabel Label;
 
+	public bool PreviouslyActivated;
+
 	public bool PoliceArrived;
 
 	public bool ClubClosed;
@@ -85,6 +87,7 @@ public class EndOfDayScript : MonoBehaviour
 		Color color = this.EndOfDayDarkness.color;
 		float num2 = color.a = (float)num;
 		Color color2 = this.EndOfDayDarkness.color = color;
+		this.PreviouslyActivated = true;
 		this.audio.volume = (float)0;
 		this.UpdateScene();
 	}
@@ -400,7 +403,13 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 11)
 			{
-				if (PlayerPrefs.GetInt("Scheme_5_Stage") > 1 && PlayerPrefs.GetInt("Scheme_5_Stage") < 5)
+				if (PlayerPrefs.GetInt("Scheme_2_Stage") == 3)
+				{
+					this.Label.text = "Kokona discovers Sakyu's ring inside of her book bag. She returns the ring to Sakyu, who decides to never let it out of her sight again.";
+					PlayerPrefs.SetInt("Scheme_2_Stage", 100);
+					Debug.Log("It happened");
+				}
+				else if (PlayerPrefs.GetInt("Scheme_5_Stage") > 1 && PlayerPrefs.GetInt("Scheme_5_Stage") < 5)
 				{
 					this.Label.text = "A teacher discovers that an answer sheet for an upcoming test is missing. She changes all of the questions for the test and keeps the new answer sheet with her at all times.";
 					PlayerPrefs.SetInt("Scheme_5_Stage", 100);
