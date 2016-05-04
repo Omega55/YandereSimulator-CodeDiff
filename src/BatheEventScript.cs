@@ -68,6 +68,11 @@ public class BatheEventScript : MonoBehaviour
 					this.OriginalPosition = this.EventStudent.Cosmetic.FemaleAccessories[3].transform.localPosition;
 					this.EventStudent.CurrentDestination = this.StudentManager.StripSpot;
 					this.EventStudent.Pathfinding.target = this.StudentManager.StripSpot;
+					this.EventStudent.Character.animation.CrossFade(this.EventStudent.WalkAnim);
+					this.EventStudent.Pathfinding.canSearch = true;
+					this.EventStudent.Pathfinding.canMove = true;
+					this.EventStudent.Pathfinding.speed = (float)1;
+					this.EventStudent.DistanceToDestination = (float)100;
 					this.EventStudent.Obstacle.checkTime = (float)99;
 					this.EventStudent.InEvent = true;
 					this.EventStudent.Private = true;

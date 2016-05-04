@@ -2404,6 +2404,13 @@ public class StudentScript : MonoBehaviour
 						this.PreviousAlarm = this.Alarm;
 						if (this.DistanceToPlayer < this.VisionCone.farClipPlane)
 						{
+							if (this.DistanceToPlayer < (float)1 && this.Yandere.EbolaHair.active)
+							{
+								UnityEngine.Object.Instantiate(this.Yandere.EbolaEffect, this.transform.position + Vector3.up, Quaternion.identity);
+								this.SpawnAlarmDisc();
+								this.BecomeRagdoll();
+								this.Dead = true;
+							}
 							if (!this.Talking)
 							{
 								if (!this.Yandere.Noticed)
@@ -2422,7 +2429,7 @@ public class StudentScript : MonoBehaviour
 													if (raycastHit3.collider.gameObject == this.Yandere.gameObject)
 													{
 														this.YandereVisible = true;
-														if (this.Yandere.Attacking || this.Yandere.Struggling || (this.Yandere.NearBodies > 0 && this.Yandere.Bloodiness > (float)0 && !this.Yandere.Paint) || (this.Yandere.NearBodies > 0 && this.Yandere.Armed) || (this.Yandere.NearBodies > 0 && this.Yandere.Sanity < 66.66666f) || this.Yandere.Dragging)
+														if (this.Yandere.Attacking || this.Yandere.Struggling || (this.Yandere.NearBodies > 0 && this.Yandere.Bloodiness > (float)0 && !this.Yandere.Paint) || (this.Yandere.NearBodies > 0 && this.Yandere.Armed) || (this.Yandere.NearBodies > 0 && this.Yandere.Sanity < 66.66666f) || this.Yandere.Carrying || this.Yandere.Dragging)
 														{
 															if (!this.Yandere.Egg)
 															{
@@ -3752,7 +3759,7 @@ public class StudentScript : MonoBehaviour
 		{
 			this.ToiletEvent.EndEvent();
 		}
-		if (this.Following)
+		if (!this.Dying && this.Following)
 		{
 			this.Hearts.enableEmission = false;
 			this.Yandere.Followers = this.Yandere.Followers - 1;
@@ -4347,6 +4354,12 @@ public class StudentScript : MonoBehaviour
 
 	public virtual void BecomeRagdoll()
 	{
+		if (this.Following)
+		{
+			this.Hearts.enableEmission = false;
+			this.Yandere.Followers = this.Yandere.Followers - 1;
+			this.Following = false;
+		}
 		if (this == this.StudentManager.Reporter)
 		{
 			this.StudentManager.Reporter = null;

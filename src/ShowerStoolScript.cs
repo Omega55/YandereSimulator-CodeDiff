@@ -30,6 +30,7 @@ public class ShowerStoolScript : MonoBehaviour
 				this.Yandere.Stool = this.StoolSpot;
 				this.Yandere.CanMove = false;
 				this.Yandere.Bathing = true;
+				this.Yandere.EmptyHands();
 			}
 		}
 	}

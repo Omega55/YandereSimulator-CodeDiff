@@ -123,6 +123,7 @@ public class TallLockerScript : MonoBehaviour
 			this.Rotation = Mathf.Lerp(this.Rotation, (float)-180, Time.deltaTime * (float)10);
 			if (this.Prompt.Circle[1].fillAmount <= (float)0)
 			{
+				this.Yandere.EmptyHands();
 				if (this.Yandere.ClubAttire)
 				{
 					this.RemovingClubAttire = true;
@@ -149,6 +150,7 @@ public class TallLockerScript : MonoBehaviour
 			}
 			else if (this.Prompt.Circle[2].fillAmount <= (float)0)
 			{
+				this.Yandere.EmptyHands();
 				if (this.Yandere.ClubAttire)
 				{
 					this.RemovingClubAttire = true;
@@ -172,6 +174,7 @@ public class TallLockerScript : MonoBehaviour
 			}
 			else if (this.Prompt.Circle[3].fillAmount <= (float)0)
 			{
+				this.Yandere.EmptyHands();
 				if (this.Yandere.ClubAttire)
 				{
 					this.RemovingClubAttire = true;

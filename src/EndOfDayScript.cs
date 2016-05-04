@@ -390,10 +390,18 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 10)
 			{
-				if (this.Counselor.LectureID > 0)
+				if (PlayerPrefs.GetInt("Student_7_Dying") == 0 && PlayerPrefs.GetInt("Student_7_Dead") == 0)
 				{
-					this.Counselor.Lecturing = true;
-					this.enabled = false;
+					if (this.Counselor.LectureID > 0)
+					{
+						this.Counselor.Lecturing = true;
+						this.enabled = false;
+					}
+					else
+					{
+						this.Phase++;
+						this.UpdateScene();
+					}
 				}
 				else
 				{

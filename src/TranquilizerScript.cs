@@ -12,7 +12,7 @@ public class TranquilizerScript : MonoBehaviour
 	{
 		if (this.Prompt.Circle[0].fillAmount == (float)0)
 		{
-			this.Yandere.PossessTranq = true;
+			this.Yandere.Inventory.Tranquilizer = true;
 			UnityEngine.Object.Destroy(this.gameObject);
 		}
 	}

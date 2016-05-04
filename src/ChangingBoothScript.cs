@@ -45,6 +45,7 @@ public class ChangingBoothScript : MonoBehaviour
 		{
 			this.Yandere.CanMove = false;
 			this.YandereChanging = true;
+			this.Yandere.EmptyHands();
 			this.Occupied = true;
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;

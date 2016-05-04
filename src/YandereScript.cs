@@ -711,6 +711,16 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject PonyOnly;
 
+	public GameObject EbolaEffect;
+
+	public GameObject EbolaWings;
+
+	public GameObject EbolaHair;
+
+	public Texture EbolaFace;
+
+	public Texture EbolaUniform;
+
 	public Mesh LongUniform;
 
 	public GameObject[] CensorSteam;
@@ -807,6 +817,8 @@ public class YandereScript : MonoBehaviour
 		this.CirnoRibbon.active = false;
 		this.CirnoWings.active = false;
 		this.KONGlasses.active = false;
+		this.EbolaWings.active = false;
+		this.EbolaHair.active = false;
 		this.FalconGun.active = false;
 		this.EyepatchL.active = false;
 		this.EyepatchR.active = false;
@@ -2639,7 +2651,7 @@ public class YandereScript : MonoBehaviour
 						if (this.Character.animation["f02_stab_00"].time > this.Character.animation["f02_stab_00"].length * 0.35f)
 						{
 							this.Character.animation.CrossFade(this.IdleAnim);
-							if (this.CanTranq && this.Weapon[this.Equipped].WeaponID == 3 && this.PossessTranq && PlayerPrefs.GetInt("BiologyGrade") + PlayerPrefs.GetInt("BiologyBonus") > 0)
+							if (this.CanTranq)
 							{
 								this.TargetStudent.Tranquil = true;
 								this.Followers--;
@@ -2958,6 +2970,11 @@ public class YandereScript : MonoBehaviour
 					{
 						this.EasterEggMenu.active = false;
 						this.CyborgNinja();
+					}
+					else if (Input.GetKeyDown("e"))
+					{
+						this.EasterEggMenu.active = false;
+						this.Ebola();
 					}
 					if (Input.GetKeyDown("d"))
 					{
@@ -3798,6 +3815,20 @@ public class YandereScript : MonoBehaviour
 		this.Hairstyle = 0;
 		this.UpdateHair();
 		this.PonyOnly.active = true;
+		this.Egg = true;
+	}
+
+	public virtual void Ebola()
+	{
+		this.IdleAnim = "f02_ebolaIdle_00";
+		this.MyRenderer.sharedMesh = this.Uniforms[1];
+		this.MyRenderer.materials[0].mainTexture = this.EbolaUniform;
+		this.MyRenderer.materials[1].mainTexture = this.EbolaUniform;
+		this.MyRenderer.materials[2].mainTexture = this.EbolaFace;
+		this.Hairstyle = 0;
+		this.UpdateHair();
+		this.EbolaWings.active = true;
+		this.EbolaHair.active = true;
 		this.Egg = true;
 	}
 

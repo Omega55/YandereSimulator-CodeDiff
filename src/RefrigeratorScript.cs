@@ -47,6 +47,7 @@ public class RefrigeratorScript : MonoBehaviour
 			this.CookingEvent.EventCheck = false;
 			this.Yandere.CanMove = false;
 			this.Yandere.Cooking = true;
+			this.Yandere.EmptyHands();
 		}
 		if (this.Yandere.Cooking)
 		{

@@ -81,6 +81,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public Color CorrectColor;
 
+	public Color ColorValue;
+
 	public Mesh TeacherMesh;
 
 	public Mesh CoachMesh;
@@ -118,6 +120,7 @@ public class CosmeticScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		this.ColorValue = new Color((float)1, (float)1, (float)1, (float)1);
 		this.JSON = (JsonScript)GameObject.Find("JSON").GetComponent(typeof(JsonScript));
 		this.Accessory = UnityBuiltins.parseInt(this.JSON.StudentAccessories[this.StudentID]);
 		this.Hairstyle = UnityBuiltins.parseInt(this.JSON.StudentHairstyles[this.StudentID]);
@@ -285,8 +288,11 @@ public class CosmeticScript : MonoBehaviour
 		}
 		else
 		{
-			this.MaleHair[this.Hairstyle].active = true;
-			this.HairRenderer = this.MaleHairRenderers[this.Hairstyle];
+			if (this.Hairstyle > 0)
+			{
+				this.MaleHair[this.Hairstyle].active = true;
+				this.HairRenderer = this.MaleHairRenderers[this.Hairstyle];
+			}
 			if (this.FacialHairstyle > 0)
 			{
 				this.FacialHair[this.FacialHairstyle].active = true;
@@ -320,43 +326,43 @@ public class CosmeticScript : MonoBehaviour
 		{
 			if (a == "White")
 			{
-				this.HairRenderer.material.color = new Color((float)1, (float)1, (float)1);
+				this.ColorValue = new Color((float)1, (float)1, (float)1);
 			}
 			else if (a == "Black")
 			{
-				this.HairRenderer.material.color = new Color(0.5f, 0.5f, 0.5f);
+				this.ColorValue = new Color(0.5f, 0.5f, 0.5f);
 			}
 			else if (a == "Red")
 			{
-				this.HairRenderer.material.color = new Color((float)1, (float)0, (float)0);
+				this.ColorValue = new Color((float)1, (float)0, (float)0);
 			}
 			else if (a == "Yellow")
 			{
-				this.HairRenderer.material.color = new Color((float)1, (float)1, (float)0);
+				this.ColorValue = new Color((float)1, (float)1, (float)0);
 			}
 			else if (a == "Green")
 			{
-				this.HairRenderer.material.color = new Color((float)0, (float)1, (float)0);
+				this.ColorValue = new Color((float)0, (float)1, (float)0);
 			}
 			else if (a == "Cyan")
 			{
-				this.HairRenderer.material.color = new Color((float)0, (float)1, (float)1);
+				this.ColorValue = new Color((float)0, (float)1, (float)1);
 			}
 			else if (a == "Blue")
 			{
-				this.HairRenderer.material.color = new Color((float)0, (float)0, (float)1);
+				this.ColorValue = new Color((float)0, (float)0, (float)1);
 			}
 			else if (a == "Purple")
 			{
-				this.HairRenderer.material.color = new Color((float)1, (float)0, (float)1);
+				this.ColorValue = new Color((float)1, (float)0, (float)1);
 			}
 			else if (a == "Orange")
 			{
-				this.HairRenderer.material.color = new Color((float)1, 0.5f, (float)0);
+				this.ColorValue = new Color((float)1, 0.5f, (float)0);
 			}
 			else if (a == "Brown")
 			{
-				this.HairRenderer.material.color = new Color(0.5f, 0.25f, (float)0);
+				this.ColorValue = new Color(0.5f, 0.25f, (float)0);
 			}
 			else
 			{
@@ -364,6 +370,10 @@ public class CosmeticScript : MonoBehaviour
 				this.LeftEyeRenderer.material.mainTexture = this.HairRenderer.material.mainTexture;
 				this.FaceTexture = this.HairRenderer.material.mainTexture;
 				this.CustomHair = true;
+			}
+			if (this.Hairstyle > 0)
+			{
+				this.HairRenderer.material.color = this.ColorValue;
 			}
 		}
 		else
@@ -404,8 +414,8 @@ public class CosmeticScript : MonoBehaviour
 			}
 			else
 			{
-				this.RightEyeRenderer.material.color = this.HairRenderer.material.color;
-				this.LeftEyeRenderer.material.color = this.HairRenderer.material.color;
+				this.RightEyeRenderer.material.color = this.ColorValue;
+				this.LeftEyeRenderer.material.color = this.ColorValue;
 			}
 		}
 		else if (this.Teacher && this.Club == 100)
@@ -427,10 +437,10 @@ public class CosmeticScript : MonoBehaviour
 			}
 			if (this.FacialHairRenderer != null)
 			{
-				this.FacialHairRenderer.material.color = this.HairRenderer.material.color;
+				this.FacialHairRenderer.material.color = this.ColorValue;
 				if (Extensions.get_length(this.FacialHairRenderer.materials) > 1)
 				{
-					this.FacialHairRenderer.materials[1].color = this.HairRenderer.material.color;
+					this.FacialHairRenderer.materials[1].color = this.ColorValue;
 				}
 			}
 		}

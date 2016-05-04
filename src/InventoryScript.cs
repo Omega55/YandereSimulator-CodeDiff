@@ -8,6 +8,8 @@ public class InventoryScript : MonoBehaviour
 
 	public bool DuplicateSheet;
 
+	public bool Tranquilizer;
+
 	public bool AnswerSheet;
 
 	public bool RivalPhone;

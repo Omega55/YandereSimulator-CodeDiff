@@ -32,7 +32,7 @@ public class TranqDetectorScript : MonoBehaviour
 									{
 										if (this.Yandere.Weapon[this.Yandere.Equipped].WeaponID == 3)
 										{
-											if (this.Yandere.PossessTranq && PlayerPrefs.GetInt("BiologyGrade") + PlayerPrefs.GetInt("BiologyBonus") > 0)
+											if (this.Yandere.Inventory.Tranquilizer && PlayerPrefs.GetInt("BiologyGrade") + PlayerPrefs.GetInt("BiologyBonus") > 0)
 											{
 												this.Yandere.CanTranq = true;
 												if (this.Yandere.Attacking)
