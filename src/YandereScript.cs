@@ -3854,6 +3854,7 @@ public class YandereScript : MonoBehaviour
 		Color color2 = this.MyRenderer.materials[3].color = color;
 		this.EasterEggMenu.active = false;
 		this.ClubAttire = false;
+		this.ClubAccessory();
 	}
 
 	public virtual void ChangeSchoolwear()
@@ -3897,6 +3898,7 @@ public class YandereScript : MonoBehaviour
 		float num2 = color.a = (float)num;
 		Color color2 = this.MyRenderer.materials[3].color = color;
 		this.Outline.h.ReinitMaterials();
+		this.ClubAccessory();
 	}
 
 	public virtual void ChangeClubwear()
@@ -3940,7 +3942,7 @@ public class YandereScript : MonoBehaviour
 			}
 			this.ID++;
 		}
-		if (PlayerPrefs.GetInt("Club") > 0 && this.ClubAccessories[PlayerPrefs.GetInt("Club")] != null)
+		if (!this.CensorSteam[0].active && PlayerPrefs.GetInt("Club") > 0 && this.ClubAccessories[PlayerPrefs.GetInt("Club")] != null)
 		{
 			this.ClubAccessories[PlayerPrefs.GetInt("Club")].active = true;
 		}

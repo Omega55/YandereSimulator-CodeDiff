@@ -175,16 +175,19 @@ public class RingEventScript : MonoBehaviour
 							this.EndEvent();
 						}
 					}
-					else
+					else if (this.Timer > 1.5f && this.Yandere.transform.position.z < (float)0)
 					{
-						if (this.Timer > 1.5f && this.Yandere.transform.position.z < (float)0)
-						{
-							this.EventSubtitle.text = this.EventSpeech[0];
-						}
-						if (this.Timer > (float)8)
-						{
-							this.EndEvent();
-						}
+						this.EventSubtitle.text = this.EventSpeech[0];
+						this.PlayClip(this.EventClip[0], this.EventStudent.transform.position + Vector3.up);
+						this.EventPhase++;
+					}
+				}
+				else if (this.EventPhase == 5)
+				{
+					this.Timer += Time.deltaTime;
+					if (this.Timer > 9.5f)
+					{
+						this.EndEvent();
 					}
 				}
 				float num = Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position);

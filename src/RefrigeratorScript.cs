@@ -45,9 +45,9 @@ public class RefrigeratorScript : MonoBehaviour
 		if (this.Prompt.Circle[0].fillAmount == (float)0)
 		{
 			this.CookingEvent.EventCheck = false;
+			this.Yandere.EmptyHands();
 			this.Yandere.CanMove = false;
 			this.Yandere.Cooking = true;
-			this.Yandere.EmptyHands();
 		}
 		if (this.Yandere.Cooking)
 		{

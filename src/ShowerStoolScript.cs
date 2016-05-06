@@ -27,10 +27,10 @@ public class ShowerStoolScript : MonoBehaviour
 			this.Prompt.enabled = true;
 			if (this.Prompt.Circle[0].fillAmount <= (float)0)
 			{
+				this.Yandere.EmptyHands();
 				this.Yandere.Stool = this.StoolSpot;
 				this.Yandere.CanMove = false;
 				this.Yandere.Bathing = true;
-				this.Yandere.EmptyHands();
 			}
 		}
 	}

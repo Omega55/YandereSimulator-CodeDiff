@@ -4471,6 +4471,11 @@ public class StudentScript : MonoBehaviour
 
 	public virtual void Nude()
 	{
+		if (!this.Male)
+		{
+			this.PantyCollider.enabled = false;
+			this.SkirtCollider.enabled = false;
+		}
 		this.MyRenderer.sharedMesh = this.BaldNudeMesh;
 		if (!this.Male)
 		{

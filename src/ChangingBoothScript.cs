@@ -43,9 +43,9 @@ public class ChangingBoothScript : MonoBehaviour
 	{
 		if (!this.Occupied && this.Prompt.Circle[0].fillAmount <= (float)0)
 		{
+			this.Yandere.EmptyHands();
 			this.Yandere.CanMove = false;
 			this.YandereChanging = true;
-			this.Yandere.EmptyHands();
 			this.Occupied = true;
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
