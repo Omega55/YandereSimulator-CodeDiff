@@ -251,6 +251,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool Witness;
 
+	public bool CanTalk;
+
 	public bool Bloody;
 
 	public bool Routine;
@@ -601,6 +603,7 @@ public class StudentScript : MonoBehaviour
 
 	public StudentScript()
 	{
+		this.CanTalk = true;
 		this.Routine = true;
 		this.Perception = 1f;
 		this.SkinColor = 3;
@@ -1991,6 +1994,16 @@ public class StudentScript : MonoBehaviour
 				}
 				if (this.Distracting)
 				{
+					if (this.DistractionTarget.InEvent)
+					{
+						this.CurrentDestination = this.Destinations[this.Phase];
+						this.Pathfinding.target = this.Destinations[this.Phase];
+						this.Pathfinding.speed = (float)1;
+						this.Distracting = false;
+						this.Distracted = false;
+						this.CanTalk = true;
+						this.Routine = true;
+					}
 					if (this.DistanceToDestination < this.TargetDistance)
 					{
 						if (!this.DistractionTarget.Distracted)
@@ -1998,10 +2011,11 @@ public class StudentScript : MonoBehaviour
 							this.DistractionTarget.Pathfinding.canSearch = false;
 							this.DistractionTarget.Pathfinding.canMove = false;
 							this.DistractionTarget.Distraction = this.transform;
+							this.DistractionTarget.CameraReacting = false;
 							this.DistractionTarget.Pathfinding.speed = (float)0;
 							this.DistractionTarget.Distracted = true;
 							this.DistractionTarget.Routine = false;
-							this.DistractionTarget.InEvent = true;
+							this.DistractionTarget.CanTalk = false;
 							this.Pathfinding.speed = (float)0;
 							this.Distracted = true;
 						}
@@ -2022,12 +2036,12 @@ public class StudentScript : MonoBehaviour
 							this.DistractionTarget.Pathfinding.speed = (float)1;
 							this.DistractionTarget.Distraction = null;
 							this.DistractionTarget.Distracted = false;
-							this.DistractionTarget.InEvent = false;
+							this.DistractionTarget.CanTalk = true;
 							this.DistractionTarget.Routine = true;
 							this.Pathfinding.speed = (float)1;
 							this.Distracting = false;
 							this.Distracted = false;
-							this.InEvent = false;
+							this.CanTalk = true;
 							this.Routine = true;
 						}
 					}
@@ -2876,7 +2890,7 @@ public class StudentScript : MonoBehaviour
 						this.Subtitle.UpdateLabel("Class Apology", 0, (float)3);
 						this.Prompt.Circle[0].fillAmount = (float)1;
 					}
-					else if (this.InEvent || (this.Meeting && !this.Drownable) || this.Wet)
+					else if (this.InEvent || !this.CanTalk || (this.Meeting && !this.Drownable) || this.Wet)
 					{
 						this.Subtitle.UpdateLabel("Event Apology", 1, (float)3);
 						this.Prompt.Circle[0].fillAmount = (float)1;
@@ -3204,7 +3218,7 @@ public class StudentScript : MonoBehaviour
 					{
 						this.PersonaReaction();
 					}
-					else if (!this.Following && !this.Wet)
+					else if (!this.Following && !this.Wet && !this.Investigating)
 					{
 						this.Routine = true;
 					}

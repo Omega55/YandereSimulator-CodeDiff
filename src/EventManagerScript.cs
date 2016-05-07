@@ -138,44 +138,47 @@ public class EventManagerScript : MonoBehaviour
 					}
 					else
 					{
-						this.Timer += Time.deltaTime;
-						if (this.Timer > this.EventClip[this.EventPhase].length)
+						if (this.Yandere.transform.position.z > (float)0)
 						{
-							this.EventSubtitle.text = string.Empty;
-						}
-						if (this.Yandere.transform.position.y < this.EventStudent[1].transform.position.y - (float)1)
-						{
-							this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
-						}
-						else if (num < (float)10)
-						{
-							this.Scale = Mathf.Abs((num - (float)10) * 0.2f);
-							if (this.Scale < (float)0)
+							this.Timer += Time.deltaTime;
+							if (this.Timer > this.EventClip[this.EventPhase].length)
 							{
-								this.Scale = (float)0;
+								this.EventSubtitle.text = string.Empty;
 							}
-							if (this.Scale > (float)1)
+							if (this.Yandere.transform.position.y < this.EventStudent[1].transform.position.y - (float)1)
 							{
-								this.Scale = (float)1;
+								this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
 							}
-							this.EventSubtitle.transform.localScale = new Vector3(this.Scale, this.Scale, this.Scale);
-						}
-						else
-						{
-							this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
-						}
-						if (this.EventStudent[this.EventSpeaker[this.EventPhase]].Character.animation[this.EventAnim[this.EventPhase]].time >= this.EventStudent[this.EventSpeaker[this.EventPhase]].Character.animation[this.EventAnim[this.EventPhase]].length)
-						{
-							this.EventStudent[this.EventSpeaker[this.EventPhase]].Character.animation.CrossFade(this.EventStudent[this.EventSpeaker[this.EventPhase]].IdleAnim);
-						}
-						if (this.Timer > this.EventClip[this.EventPhase].length + (float)1)
-						{
-							this.Spoken = false;
-							this.EventPhase++;
-							this.Timer = (float)0;
-							if (this.EventPhase == Extensions.get_length(this.EventSpeech))
+							else if (num < (float)10)
 							{
-								this.EndEvent();
+								this.Scale = Mathf.Abs((num - (float)10) * 0.2f);
+								if (this.Scale < (float)0)
+								{
+									this.Scale = (float)0;
+								}
+								if (this.Scale > (float)1)
+								{
+									this.Scale = (float)1;
+								}
+								this.EventSubtitle.transform.localScale = new Vector3(this.Scale, this.Scale, this.Scale);
+							}
+							else
+							{
+								this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+							}
+							if (this.EventStudent[this.EventSpeaker[this.EventPhase]].Character.animation[this.EventAnim[this.EventPhase]].time >= this.EventStudent[this.EventSpeaker[this.EventPhase]].Character.animation[this.EventAnim[this.EventPhase]].length)
+							{
+								this.EventStudent[this.EventSpeaker[this.EventPhase]].Character.animation.CrossFade(this.EventStudent[this.EventSpeaker[this.EventPhase]].IdleAnim);
+							}
+							if (this.Timer > this.EventClip[this.EventPhase].length + (float)1)
+							{
+								this.Spoken = false;
+								this.EventPhase++;
+								this.Timer = (float)0;
+								if (this.EventPhase == Extensions.get_length(this.EventSpeech))
+								{
+									this.EndEvent();
+								}
 							}
 						}
 						if (this.Yandere.transform.position.y > this.EventStudent[1].transform.position.y - (float)1 && this.EventPhase == 7 && num < (float)5 && !this.NoteLocker.Prompt.enabled)

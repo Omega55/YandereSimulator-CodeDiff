@@ -94,235 +94,256 @@ public class MovingEventScript : MonoBehaviour
 			{
 				this.EndEvent();
 			}
-			else if (!this.EventStudent.Alarmed && this.EventStudent.DistanceToDestination < this.EventStudent.TargetDistance && !this.EventStudent.Pathfinding.canMove)
+			else
 			{
-				if (this.EventPhase == 0)
+				this.Distance = Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position);
+				if (!this.EventStudent.Alarmed && this.EventStudent.DistanceToDestination < this.EventStudent.TargetDistance && !this.EventStudent.Pathfinding.canMove)
 				{
-					this.EventStudent.Character.animation.CrossFade(this.EventStudent.IdleAnim);
-					if (this.Clock.HourTime > 13.05f)
+					if (this.EventPhase == 0)
 					{
-						this.EventStudent.CurrentDestination = this.EventLocation[1];
-						this.EventStudent.Pathfinding.target = this.EventLocation[1];
-						this.EventPhase++;
+						this.EventStudent.Character.animation.CrossFade(this.EventStudent.IdleAnim);
+						if (this.Clock.HourTime > 13.05f)
+						{
+							this.EventStudent.CurrentDestination = this.EventLocation[1];
+							this.EventStudent.Pathfinding.target = this.EventLocation[1];
+							this.EventPhase++;
+						}
 					}
-				}
-				else if (this.EventPhase == 1)
-				{
-					if (!this.StudentManager.Students[1].WitnessedCorpse)
+					else if (this.EventPhase == 1)
 					{
+						if (!this.StudentManager.Students[1].WitnessedCorpse)
+						{
+							if (this.Timer == (float)0)
+							{
+								this.PlayClip(this.EventClip[1], this.EventStudent.transform.position + Vector3.up * 1.5f);
+								this.EventStudent.Character.animation.CrossFade(this.EventStudent.IdleAnim);
+								if (this.Distance < (float)10)
+								{
+									this.EventSubtitle.text = this.EventSpeech[1];
+								}
+								this.EventStudent.Prompt.Hide();
+								this.EventStudent.Prompt.enabled = false;
+							}
+							this.Timer += Time.deltaTime;
+							if (this.Timer > (float)2)
+							{
+								this.EventStudent.CurrentDestination = this.EventLocation[2];
+								this.EventStudent.Pathfinding.target = this.EventLocation[2];
+								if (this.Distance < (float)10)
+								{
+									this.EventSubtitle.text = string.Empty;
+								}
+								this.EventPhase++;
+								this.Timer = (float)0;
+							}
+						}
+						else
+						{
+							this.EventPhase = 7;
+							this.Timer = (float)3;
+						}
+					}
+					else if (this.EventPhase == 2)
+					{
+						this.EventStudent.Character.animation[this.EventStudent.BentoAnim].weight = this.EventStudent.Character.animation[this.EventStudent.BentoAnim].weight - Time.deltaTime;
 						if (this.Timer == (float)0)
 						{
-							this.PlayClip(this.EventClip[1], this.EventStudent.transform.position + Vector3.up * 1.5f);
-							this.EventStudent.Character.animation.CrossFade(this.EventStudent.IdleAnim);
-							this.EventSubtitle.text = this.EventSpeech[1];
-							this.EventStudent.Prompt.Hide();
-							this.EventStudent.Prompt.enabled = false;
+							this.EventStudent.Character.animation.CrossFade("f02_bentoPlace_00");
 						}
 						this.Timer += Time.deltaTime;
+						if (this.Timer > (float)1 && this.EventStudent.Bento.transform.parent != null)
+						{
+							this.EventStudent.Bento.transform.parent = null;
+							this.EventStudent.Bento.transform.position = new Vector3((float)8, 0.46f, -2.1885f);
+							this.EventStudent.Bento.transform.eulerAngles = new Vector3((float)5, (float)0, (float)0);
+							this.EventStudent.Bento.transform.localScale = new Vector3(1.4f, 1.5f, 1.4f);
+						}
 						if (this.Timer > (float)2)
 						{
-							this.EventStudent.CurrentDestination = this.EventLocation[2];
-							this.EventStudent.Pathfinding.target = this.EventLocation[2];
-							this.EventSubtitle.text = string.Empty;
+							if (this.Yandere.PossessPoison)
+							{
+								this.Prompt.HideButton[0] = false;
+							}
+							this.EventStudent.CurrentDestination = this.EventLocation[3];
+							this.EventStudent.Pathfinding.target = this.EventLocation[3];
 							this.EventPhase++;
 							this.Timer = (float)0;
 						}
 					}
-					else
+					else if (this.EventPhase == 3)
 					{
-						this.EventPhase = 7;
-						this.Timer = (float)3;
-					}
-				}
-				else if (this.EventPhase == 2)
-				{
-					this.EventStudent.Character.animation[this.EventStudent.BentoAnim].weight = this.EventStudent.Character.animation[this.EventStudent.BentoAnim].weight - Time.deltaTime;
-					if (this.Timer == (float)0)
-					{
-						this.EventStudent.Character.animation.CrossFade("f02_bentoPlace_00");
-					}
-					this.Timer += Time.deltaTime;
-					if (this.Timer > (float)1 && this.EventStudent.Bento.transform.parent != null)
-					{
-						this.EventStudent.Bento.transform.parent = null;
-						this.EventStudent.Bento.transform.position = new Vector3((float)8, 0.46f, -2.1885f);
-						this.EventStudent.Bento.transform.eulerAngles = new Vector3((float)5, (float)0, (float)0);
-						this.EventStudent.Bento.transform.localScale = new Vector3(1.4f, 1.5f, 1.4f);
-					}
-					if (this.Timer > (float)2)
-					{
-						if (this.Yandere.PossessPoison)
+						this.PlayClip(this.EventClip[2], this.EventStudent.transform.position + Vector3.up * 1.5f);
+						this.EventStudent.Character.animation.CrossFade("f02_cornerPeek_00");
+						if (this.Distance < (float)10)
 						{
-							this.Prompt.HideButton[0] = false;
+							this.EventSubtitle.text = this.EventSpeech[2];
 						}
-						this.EventStudent.CurrentDestination = this.EventLocation[3];
-						this.EventStudent.Pathfinding.target = this.EventLocation[3];
 						this.EventPhase++;
-						this.Timer = (float)0;
 					}
-				}
-				else if (this.EventPhase == 3)
-				{
-					this.PlayClip(this.EventClip[2], this.EventStudent.transform.position + Vector3.up * 1.5f);
-					this.EventStudent.Character.animation.CrossFade("f02_cornerPeek_00");
-					this.EventSubtitle.text = this.EventSpeech[2];
-					this.EventPhase++;
-				}
-				else if (this.EventPhase == 4)
-				{
-					this.Timer += Time.deltaTime;
-					if (this.Timer > 5.5f)
+					else if (this.EventPhase == 4)
 					{
-						this.PlayClip(this.EventClip[3], this.EventStudent.transform.position + Vector3.up * 1.5f);
-						this.EventSubtitle.text = this.EventSpeech[3];
-						this.EventPhase++;
-						this.Timer = (float)0;
-					}
-				}
-				else if (this.EventPhase == 5)
-				{
-					this.Timer += Time.deltaTime;
-					if (this.Timer > 5.5f)
-					{
-						this.PlayClip(this.EventClip[4], this.EventStudent.transform.position + Vector3.up * 1.5f);
-						this.EventSubtitle.text = this.EventSpeech[4];
-						this.EventPhase++;
-						this.Timer = (float)0;
-					}
-				}
-				else if (this.EventPhase == 6)
-				{
-					this.Timer += Time.deltaTime;
-					if (this.Timer > (float)3)
-					{
-						this.EventStudent.CurrentDestination = this.EventLocation[2];
-						this.EventStudent.Pathfinding.target = this.EventLocation[2];
-						this.EventSubtitle.text = string.Empty;
-						this.EventPhase++;
-						this.Prompt.Hide();
-						this.Prompt.enabled = false;
-						this.Timer = (float)0;
-					}
-				}
-				else if (this.EventPhase == 7)
-				{
-					if (this.Timer == (float)0)
-					{
-						this.EventStudent.Character.animation["f02_bentoPlace_00"].time = this.EventStudent.Character.animation["f02_bentoPlace_00"].length;
-						this.EventStudent.Character.animation["f02_bentoPlace_00"].speed = (float)-1;
-						this.EventStudent.Character.animation.CrossFade("f02_bentoPlace_00");
-					}
-					this.Timer += Time.deltaTime;
-					if (this.Timer > (float)1 && this.EventStudent.Bento.transform.parent == null)
-					{
-						this.EventStudent.Bento.transform.parent = this.EventStudent.LeftHand;
-						this.EventStudent.Bento.transform.localPosition = new Vector3((float)0, -0.0906f, -0.032f);
-						this.EventStudent.Bento.transform.localEulerAngles = new Vector3((float)0, (float)90, (float)90);
-						this.EventStudent.Bento.transform.localScale = new Vector3(1.4f, 1.5f, 1.4f);
-					}
-					if (this.Timer > (float)2)
-					{
-						this.EventStudent.Bento.transform.localPosition = new Vector3(-0.025f, -0.105f, (float)0);
-						this.EventStudent.Bento.transform.localEulerAngles = new Vector3((float)0, (float)165, 82.5f);
-						this.EventStudent.CurrentDestination = this.EventLocation[4];
-						this.EventStudent.Pathfinding.target = this.EventLocation[4];
-						this.EventStudent.Prompt.Hide();
-						this.EventStudent.Prompt.enabled = false;
-						this.EventPhase++;
-						this.Timer = (float)0;
-					}
-				}
-				else if (this.EventPhase == 8)
-				{
-					if (!this.Poisoned)
-					{
-						this.EventStudent.Character.animation[this.EventStudent.BentoAnim].weight = (float)0;
-						this.EventStudent.Character.animation.CrossFade(this.EventStudent.EatAnim);
-						if (!this.EventStudent.Chopsticks[0].active)
-						{
-							this.EventStudent.Chopsticks[0].active = true;
-							this.EventStudent.Chopsticks[1].active = true;
-						}
-					}
-					else
-					{
-						this.EventStudent.Character.animation.CrossFade("f02_poisonDeath_00");
 						this.Timer += Time.deltaTime;
-						if (this.Timer < 13.55f)
+						if (this.Timer > 5.5f)
 						{
+							this.PlayClip(this.EventClip[3], this.EventStudent.transform.position + Vector3.up * 1.5f);
+							if (this.Distance < (float)10)
+							{
+								this.EventSubtitle.text = this.EventSpeech[3];
+							}
+							this.EventPhase++;
+							this.Timer = (float)0;
+						}
+					}
+					else if (this.EventPhase == 5)
+					{
+						this.Timer += Time.deltaTime;
+						if (this.Timer > 5.5f)
+						{
+							this.PlayClip(this.EventClip[4], this.EventStudent.transform.position + Vector3.up * 1.5f);
+							if (this.Distance < (float)10)
+							{
+								this.EventSubtitle.text = this.EventSpeech[4];
+							}
+							this.EventPhase++;
+							this.Timer = (float)0;
+						}
+					}
+					else if (this.EventPhase == 6)
+					{
+						this.Timer += Time.deltaTime;
+						if (this.Timer > (float)3)
+						{
+							this.EventStudent.CurrentDestination = this.EventLocation[2];
+							this.EventStudent.Pathfinding.target = this.EventLocation[2];
+							if (this.Distance < (float)10)
+							{
+								this.EventSubtitle.text = string.Empty;
+							}
+							this.EventPhase++;
+							this.Prompt.Hide();
+							this.Prompt.enabled = false;
+							this.Timer = (float)0;
+						}
+					}
+					else if (this.EventPhase == 7)
+					{
+						if (this.Timer == (float)0)
+						{
+							this.EventStudent.Character.animation["f02_bentoPlace_00"].time = this.EventStudent.Character.animation["f02_bentoPlace_00"].length;
+							this.EventStudent.Character.animation["f02_bentoPlace_00"].speed = (float)-1;
+							this.EventStudent.Character.animation.CrossFade("f02_bentoPlace_00");
+						}
+						this.Timer += Time.deltaTime;
+						if (this.Timer > (float)1 && this.EventStudent.Bento.transform.parent == null)
+						{
+							this.EventStudent.Bento.transform.parent = this.EventStudent.LeftHand;
+							this.EventStudent.Bento.transform.localPosition = new Vector3((float)0, -0.0906f, -0.032f);
+							this.EventStudent.Bento.transform.localEulerAngles = new Vector3((float)0, (float)90, (float)90);
+							this.EventStudent.Bento.transform.localScale = new Vector3(1.4f, 1.5f, 1.4f);
+						}
+						if (this.Timer > (float)2)
+						{
+							this.EventStudent.Bento.transform.localPosition = new Vector3(-0.025f, -0.105f, (float)0);
+							this.EventStudent.Bento.transform.localEulerAngles = new Vector3((float)0, (float)165, 82.5f);
+							this.EventStudent.CurrentDestination = this.EventLocation[4];
+							this.EventStudent.Pathfinding.target = this.EventLocation[4];
+							this.EventStudent.Prompt.Hide();
+							this.EventStudent.Prompt.enabled = false;
+							this.EventPhase++;
+							this.Timer = (float)0;
+						}
+					}
+					else if (this.EventPhase == 8)
+					{
+						if (!this.Poisoned)
+						{
+							this.EventStudent.Character.animation[this.EventStudent.BentoAnim].weight = (float)0;
+							this.EventStudent.Character.animation.CrossFade(this.EventStudent.EatAnim);
 							if (!this.EventStudent.Chopsticks[0].active)
 							{
-								this.PlayClip(this.EventClip[5], this.EventStudent.transform.position + Vector3.up * (float)1);
 								this.EventStudent.Chopsticks[0].active = true;
 								this.EventStudent.Chopsticks[1].active = true;
-								this.EventStudent.Distracted = true;
 							}
 						}
-						else if (this.Timer < 16.33333f)
+						else
 						{
-							if (this.EventStudent.Chopsticks[0].transform.parent != this.EventStudent.Bento.transform)
+							this.EventStudent.Character.animation.CrossFade("f02_poisonDeath_00");
+							this.Timer += Time.deltaTime;
+							if (this.Timer < 13.55f)
 							{
-								this.EventStudent.Chopsticks[0].transform.parent = this.EventStudent.Bento.transform;
-								this.EventStudent.Chopsticks[1].transform.parent = this.EventStudent.Bento.transform;
+								if (!this.EventStudent.Chopsticks[0].active)
+								{
+									this.PlayClip(this.EventClip[5], this.EventStudent.transform.position + Vector3.up * (float)1);
+									this.EventStudent.Chopsticks[0].active = true;
+									this.EventStudent.Chopsticks[1].active = true;
+									this.EventStudent.Distracted = true;
+								}
 							}
-							this.EventStudent.EyeShrink = this.EventStudent.EyeShrink + Time.deltaTime;
-							if (this.EventStudent.EyeShrink > 0.9f)
+							else if (this.Timer < 16.33333f)
 							{
-								this.EventStudent.EyeShrink = 0.9f;
+								if (this.EventStudent.Chopsticks[0].transform.parent != this.EventStudent.Bento.transform)
+								{
+									this.EventStudent.Chopsticks[0].transform.parent = this.EventStudent.Bento.transform;
+									this.EventStudent.Chopsticks[1].transform.parent = this.EventStudent.Bento.transform;
+								}
+								this.EventStudent.EyeShrink = this.EventStudent.EyeShrink + Time.deltaTime;
+								if (this.EventStudent.EyeShrink > 0.9f)
+								{
+									this.EventStudent.EyeShrink = 0.9f;
+								}
 							}
-						}
-						else if (this.EventStudent.Bento.transform.parent != null)
-						{
-							float num = 0.02402199f;
-							object property = UnityRuntimeServices.GetProperty(this.BenchCollider, "center");
-							RuntimeServices.SetProperty(property, "y", num);
-							UnityRuntimeServices.PropagateValueTypeChanges(new UnityRuntimeServices.ValueTypeChange[]
+							else if (this.EventStudent.Bento.transform.parent != null)
 							{
-								new UnityRuntimeServices.MemberValueTypeChange(this.BenchCollider, "center", property)
-							});
-							float num2 = 0.04804402f;
-							object property2 = UnityRuntimeServices.GetProperty(this.BenchCollider, "size");
-							RuntimeServices.SetProperty(property2, "y", num2);
-							UnityRuntimeServices.PropagateValueTypeChanges(new UnityRuntimeServices.ValueTypeChange[]
+								float num = 0.02402199f;
+								object property = UnityRuntimeServices.GetProperty(this.BenchCollider, "center");
+								RuntimeServices.SetProperty(property, "y", num);
+								UnityRuntimeServices.PropagateValueTypeChanges(new UnityRuntimeServices.ValueTypeChange[]
+								{
+									new UnityRuntimeServices.MemberValueTypeChange(this.BenchCollider, "center", property)
+								});
+								float num2 = 0.04804402f;
+								object property2 = UnityRuntimeServices.GetProperty(this.BenchCollider, "size");
+								RuntimeServices.SetProperty(property2, "y", num2);
+								UnityRuntimeServices.PropagateValueTypeChanges(new UnityRuntimeServices.ValueTypeChange[]
+								{
+									new UnityRuntimeServices.MemberValueTypeChange(this.BenchCollider, "size", property2)
+								});
+								this.EventStudent.Bento.transform.parent = null;
+								((Collider)this.EventStudent.Bento.GetComponent(typeof(Collider))).isTrigger = false;
+								this.EventStudent.Bento.AddComponent(typeof(Rigidbody));
+								this.EventStudent.Bento.rigidbody.AddRelativeForce(Vector3.up * (float)100);
+								this.EventStudent.Bento.rigidbody.AddRelativeForce(Vector3.left * (float)100);
+								this.EventStudent.Bento.rigidbody.AddRelativeForce(Vector3.forward * (float)-100);
+							}
+							if (this.EventStudent.Character.animation["f02_poisonDeath_00"].time > this.EventStudent.Character.animation["f02_poisonDeath_00"].length)
 							{
-								new UnityRuntimeServices.MemberValueTypeChange(this.BenchCollider, "size", property2)
-							});
-							this.EventStudent.Bento.transform.parent = null;
-							((Collider)this.EventStudent.Bento.GetComponent(typeof(Collider))).isTrigger = false;
-							this.EventStudent.Bento.AddComponent(typeof(Rigidbody));
-							this.EventStudent.Bento.rigidbody.AddRelativeForce(Vector3.up * (float)100);
-							this.EventStudent.Bento.rigidbody.AddRelativeForce(Vector3.left * (float)100);
-							this.EventStudent.Bento.rigidbody.AddRelativeForce(Vector3.forward * (float)-100);
-						}
-						if (this.EventStudent.Character.animation["f02_poisonDeath_00"].time > this.EventStudent.Character.animation["f02_poisonDeath_00"].length)
-						{
-							this.EventStudent.Ragdoll.Poisoned = true;
-							this.EventStudent.BecomeRagdoll();
-							this.Yandere.Police.PoisonScene = true;
-							this.EventOver = true;
-							this.EndEvent();
+								this.EventStudent.Ragdoll.Poisoned = true;
+								this.EventStudent.BecomeRagdoll();
+								this.Yandere.Police.PoisonScene = true;
+								this.EventOver = true;
+								this.EndEvent();
+							}
 						}
 					}
-				}
-				this.Distance = Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position);
-				if (this.Distance < (float)11)
-				{
-					if (this.Distance < (float)10)
+					if (this.Distance < (float)11)
 					{
-						float num3 = Mathf.Abs((this.Distance - (float)10) * 0.2f);
-						if (num3 < (float)0)
+						if (this.Distance < (float)10)
 						{
-							num3 = (float)0;
+							float num3 = Mathf.Abs((this.Distance - (float)10) * 0.2f);
+							if (num3 < (float)0)
+							{
+								num3 = (float)0;
+							}
+							if (num3 > (float)1)
+							{
+								num3 = (float)1;
+							}
+							this.EventSubtitle.transform.localScale = new Vector3(num3, num3, num3);
 						}
-						if (num3 > (float)1)
+						else
 						{
-							num3 = (float)1;
+							this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
 						}
-						this.EventSubtitle.transform.localScale = new Vector3(num3, num3, num3);
-					}
-					else
-					{
-						this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
 					}
 				}
 			}

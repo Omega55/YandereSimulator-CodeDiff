@@ -462,7 +462,7 @@ public class PauseScreenScript : MonoBehaviour
 		{
 			this.transform.localPosition = new Vector3((float)0, (float)-1200, (float)0);
 			this.Yandere.YandereVision = false;
-			if (!this.Yandere.Talking)
+			if (!this.Yandere.Talking && !this.Yandere.Dismembering)
 			{
 				this.RPGCamera.enabled = false;
 				this.Yandere.StopAiming();
@@ -481,7 +481,7 @@ public class PauseScreenScript : MonoBehaviour
 			this.PromptParent.localScale = new Vector3((float)1, (float)1, (float)1);
 			this.ScreenBlur.enabled = false;
 			this.CorrectingTime = true;
-			if (!this.Yandere.Talking)
+			if (!this.Yandere.Talking && !this.Yandere.Dismembering)
 			{
 				this.RPGCamera.enabled = true;
 			}

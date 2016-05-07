@@ -18,6 +18,8 @@ public class DebugMenuScript : MonoBehaviour
 
 	public ZoomScript Zoom;
 
+	public GameObject EasterEggWindow;
+
 	public GameObject SacrificialArm;
 
 	public GameObject CircularSaw;
@@ -45,6 +47,7 @@ public class DebugMenuScript : MonoBehaviour
 		{
 			if (Input.GetKeyDown(KeyCode.Backslash))
 			{
+				this.EasterEggWindow.active = false;
 				if (!this.Window.active)
 				{
 					this.Window.active = true;

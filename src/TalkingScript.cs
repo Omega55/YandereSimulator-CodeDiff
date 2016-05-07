@@ -326,7 +326,6 @@ public class TalkingScript : MonoBehaviour
 						if (!this.S.StudentManager.Students[this.S.DialogueWheel.Victim].InEvent && PlayerPrefs.GetInt("Student_" + this.S.DialogueWheel.Victim + "_Slave") == 0)
 						{
 							this.S.Subtitle.UpdateLabel("Student Distract", 0, (float)3);
-							this.S.Distracting = true;
 						}
 						else
 						{
@@ -347,21 +346,17 @@ public class TalkingScript : MonoBehaviour
 					if (this.S.TalkTimer <= (float)0)
 					{
 						this.S.DialogueWheel.End();
-						if (this.S.Clock.HourTime < (float)8 || (this.S.Clock.HourTime > (float)13 && this.S.Clock.HourTime < 13.375f) || this.S.Clock.HourTime > 15.5f)
+						if ((this.S.Clock.HourTime < (float)8 || (this.S.Clock.HourTime > (float)13 && this.S.Clock.HourTime < 13.375f) || this.S.Clock.HourTime > 15.5f) && !this.S.Distracting)
 						{
-							Debug.Log("Do we get here though?");
-							if (this.S.Distracting)
-							{
-								Debug.Log("Yep.");
-								this.S.DistractionTarget = this.S.StudentManager.Students[this.S.DialogueWheel.Victim];
-								this.S.CurrentDestination = this.S.DistractionTarget.transform;
-								this.S.Pathfinding.target = this.S.DistractionTarget.transform;
-								this.S.Pathfinding.speed = (float)4;
-								this.S.TargetDistance = (float)1;
-								this.S.DistractTimer = (float)10;
-								this.S.Routine = false;
-								this.S.InEvent = true;
-							}
+							this.S.DistractionTarget = this.S.StudentManager.Students[this.S.DialogueWheel.Victim];
+							this.S.CurrentDestination = this.S.DistractionTarget.transform;
+							this.S.Pathfinding.target = this.S.DistractionTarget.transform;
+							this.S.Pathfinding.speed = (float)4;
+							this.S.TargetDistance = (float)1;
+							this.S.DistractTimer = (float)10;
+							this.S.Distracting = true;
+							this.S.Routine = false;
+							this.S.CanTalk = false;
 						}
 					}
 				}

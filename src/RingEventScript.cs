@@ -112,17 +112,6 @@ public class RingEventScript : MonoBehaviour
 				else if (this.EventPhase == 2)
 				{
 					this.Timer += Time.deltaTime;
-					if (this.Timer > (float)2)
-					{
-						this.EventStudent.Cosmetic.FemaleAccessories[3].transform.parent = this.EventStudent.RightHand;
-					}
-					if (this.Timer > (float)4)
-					{
-						this.EventStudent.Cosmetic.FemaleAccessories[3].transform.parent = null;
-						this.EventStudent.Cosmetic.FemaleAccessories[3].transform.position = new Vector3(0.9f, 12.471f, -29.3f);
-						this.EventStudent.Cosmetic.FemaleAccessories[3].transform.eulerAngles = new Vector3((float)-15, (float)-90, (float)0);
-						((BoxCollider)this.EventStudent.Cosmetic.FemaleAccessories[3].GetComponent(typeof(BoxCollider))).enabled = true;
-					}
 					if (this.Timer > (float)5)
 					{
 						this.EventStudent.Character.animation.CrossFade(this.EventStudent.EatAnim);
@@ -133,6 +122,20 @@ public class RingEventScript : MonoBehaviour
 						this.EventStudent.Bento.active = true;
 						this.EventPhase++;
 						this.Timer = (float)0;
+					}
+					else if (this.Timer > (float)4)
+					{
+						if (this.EventStudent.Cosmetic.FemaleAccessories[3] != null)
+						{
+							this.EventStudent.Cosmetic.FemaleAccessories[3].transform.parent = null;
+							this.EventStudent.Cosmetic.FemaleAccessories[3].transform.position = new Vector3(0.9f, 12.471f, -29.3f);
+							this.EventStudent.Cosmetic.FemaleAccessories[3].transform.eulerAngles = new Vector3((float)-15, (float)-90, (float)0);
+							((BoxCollider)this.EventStudent.Cosmetic.FemaleAccessories[3].GetComponent(typeof(BoxCollider))).enabled = true;
+						}
+					}
+					else if (this.Timer > (float)2)
+					{
+						this.EventStudent.Cosmetic.FemaleAccessories[3].transform.parent = this.EventStudent.RightHand;
 					}
 				}
 				else if (this.EventPhase == 3)

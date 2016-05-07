@@ -205,6 +205,8 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject Character;
 
+	public GameObject DebugMenu;
+
 	public GameObject EyepatchL;
 
 	public GameObject EyepatchR;
@@ -2876,6 +2878,7 @@ public class YandereScript : MonoBehaviour
 			{
 				if (Input.GetKeyDown("/"))
 				{
+					this.DebugMenu.active = false;
 					if (!this.EasterEggMenu.active)
 					{
 						this.EasterEggMenu.active = true;

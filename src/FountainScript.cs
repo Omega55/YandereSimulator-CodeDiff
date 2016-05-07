@@ -16,6 +16,8 @@ public class FountainScript : MonoBehaviour
 
 	public AudioSource DropsSFX;
 
+	public float StartTimer;
+
 	public float Timer;
 
 	public virtual void Start()
@@ -26,6 +28,15 @@ public class FountainScript : MonoBehaviour
 
 	public virtual void Update()
 	{
+		if (this.StartTimer < (float)1)
+		{
+			this.StartTimer += Time.deltaTime;
+			if (this.StartTimer > (float)1)
+			{
+				this.SpraySFX.gameObject.active = true;
+				this.DropsSFX.gameObject.active = true;
+			}
+		}
 		if (this.Drowning)
 		{
 			if (this.Timer == (float)0 && this.EventSubtitle.transform.localScale.x < (float)1)
