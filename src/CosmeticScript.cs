@@ -17,6 +17,10 @@ public class CosmeticScript : MonoBehaviour
 
 	public GameObject[] ClubAccessories;
 
+	public GameObject[] RightStockings;
+
+	public GameObject[] LeftStockings;
+
 	public GameObject[] TeacherHair;
 
 	public GameObject[] FacialHair;
@@ -34,6 +38,10 @@ public class CosmeticScript : MonoBehaviour
 	public Renderer[] FemaleHairRenderers;
 
 	public Renderer[] MaleHairRenderers;
+
+	public Texture[] GanguroUniformTextures;
+
+	public Texture[] OccultUniformTextures;
 
 	public Texture[] FemaleUniformTextures;
 
@@ -99,6 +107,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public float BreastSize;
 
+	public string Stockings;
+
 	public string EyeColor;
 
 	public int FacialHairstyle;
@@ -115,6 +125,7 @@ public class CosmeticScript : MonoBehaviour
 
 	public CosmeticScript()
 	{
+		this.Stockings = string.Empty;
 		this.EyeColor = string.Empty;
 	}
 
@@ -124,6 +135,7 @@ public class CosmeticScript : MonoBehaviour
 		this.JSON = (JsonScript)GameObject.Find("JSON").GetComponent(typeof(JsonScript));
 		this.Accessory = UnityBuiltins.parseInt(this.JSON.StudentAccessories[this.StudentID]);
 		this.Hairstyle = UnityBuiltins.parseInt(this.JSON.StudentHairstyles[this.StudentID]);
+		this.Stockings = this.JSON.StudentStockings[this.StudentID];
 		this.BreastSize = this.JSON.StudentBreasts[this.StudentID];
 		string a = this.JSON.StudentColors[this.StudentID];
 		this.Club = this.JSON.StudentClubs[this.StudentID];
@@ -146,6 +158,10 @@ public class CosmeticScript : MonoBehaviour
 		{
 			this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 			this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
+			if (this.StudentID == 32 && !this.Kidnapped)
+			{
+				this.Character.animation.Play("f02_socialCameraPose_00");
+			}
 		}
 		else if (this.Club == 3)
 		{
@@ -249,6 +265,19 @@ public class CosmeticScript : MonoBehaviour
 			}
 			this.ID++;
 		}
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.RightStockings))
+		{
+			if (this.RightStockings[this.ID] != null)
+			{
+				this.RightStockings[this.ID].active = false;
+			}
+			if (this.LeftStockings[this.ID] != null)
+			{
+				this.LeftStockings[this.ID].active = false;
+			}
+			this.ID++;
+		}
 		if (this.StudentID == 1 && PlayerPrefs.GetInt("CustomSenpai") == 1)
 		{
 			if (PlayerPrefs.GetInt("SenpaiEyeWear") > 0)
@@ -321,6 +350,11 @@ public class CosmeticScript : MonoBehaviour
 		if (this.Club < 11 && this.ClubAccessories[this.Club] != null && PlayerPrefs.GetInt("Club_" + this.Club + "_Closed") == 0)
 		{
 			this.ClubAccessories[this.Club].active = true;
+		}
+		if (this.Stockings == "Loose")
+		{
+			this.RightStockings[0].active = true;
+			this.LeftStockings[0].active = true;
 		}
 		if (!this.Randomize)
 		{
@@ -602,9 +636,24 @@ public class CosmeticScript : MonoBehaviour
 	{
 		this.MyRenderer.sharedMesh = this.FemaleUniforms[PlayerPrefs.GetInt("FemaleUniform")];
 		this.SchoolUniform = this.FemaleUniforms[PlayerPrefs.GetInt("FemaleUniform")];
-		this.MyRenderer.materials[0].mainTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
-		this.MyRenderer.materials[1].mainTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
-		this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
+		if (this.StudentID == 26)
+		{
+			this.MyRenderer.materials[0].mainTexture = this.OccultUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.MyRenderer.materials[1].mainTexture = this.OccultUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
+		}
+		else if (this.StudentID == 32)
+		{
+			this.MyRenderer.materials[0].mainTexture = this.GanguroUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.MyRenderer.materials[1].mainTexture = this.GanguroUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
+		}
+		else
+		{
+			this.MyRenderer.materials[0].mainTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.MyRenderer.materials[1].mainTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
+		}
 	}
 
 	public virtual void Main()

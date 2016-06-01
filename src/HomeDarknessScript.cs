@@ -14,6 +14,8 @@ public class HomeDarknessScript : MonoBehaviour
 
 	public UISprite Sprite;
 
+	public bool FadeSlow;
+
 	public bool FadeOut;
 
 	public virtual void Start()
@@ -28,27 +30,42 @@ public class HomeDarknessScript : MonoBehaviour
 	{
 		if (this.FadeOut)
 		{
-			float a = this.Sprite.color.a + Time.deltaTime;
-			Color color = this.Sprite.color;
-			float num = color.a = a;
-			Color color2 = this.Sprite.color = color;
+			if (!this.FadeSlow)
+			{
+				float a = this.Sprite.color.a + Time.deltaTime;
+				Color color = this.Sprite.color;
+				float num = color.a = a;
+				Color color2 = this.Sprite.color = color;
+			}
+			else
+			{
+				float a2 = this.Sprite.color.a + Time.deltaTime * 0.2f;
+				Color color3 = this.Sprite.color;
+				float num2 = color3.a = a2;
+				Color color4 = this.Sprite.color = color3;
+			}
 			if (this.Sprite.color.a >= (float)1)
 			{
 				if (this.HomeCamera.ID != 2)
 				{
-					if (this.HomeCamera.ID == 10)
+					if (this.HomeCamera.ID == 5)
+					{
+						Application.LoadLevel("YanvaniaTitleScene");
+					}
+					else if (this.HomeCamera.ID == 9)
+					{
+						Application.LoadLevel("CalendarScene");
+					}
+					else if (this.HomeCamera.ID == 10)
 					{
 						PlayerPrefs.SetInt("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Kidnapped", 0);
 						PlayerPrefs.SetInt("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Slave", 1);
 						Application.LoadLevel("SchoolScene");
 					}
-					if (this.HomeCamera.ID == 9)
+					else if (this.HomeCamera.ID == 11)
 					{
-						Application.LoadLevel("CalendarScene");
-					}
-					else if (this.HomeCamera.ID == 5)
-					{
-						Application.LoadLevel("YanvaniaTitleScene");
+						PlayerPrefs.SetInt("KidnapConversation", 1);
+						Application.LoadLevel("PhoneScene");
 					}
 					else if (this.HomeExit.ID == 1)
 					{
@@ -101,16 +118,16 @@ public class HomeDarknessScript : MonoBehaviour
 		}
 		else
 		{
-			float a2 = this.Sprite.color.a - Time.deltaTime;
-			Color color3 = this.Sprite.color;
-			float num2 = color3.a = a2;
-			Color color4 = this.Sprite.color = color3;
+			float a3 = this.Sprite.color.a - Time.deltaTime;
+			Color color5 = this.Sprite.color;
+			float num3 = color5.a = a3;
+			Color color6 = this.Sprite.color = color5;
 			if (this.Sprite.color.a < (float)0)
 			{
-				int num3 = 0;
-				Color color5 = this.Sprite.color;
-				float num4 = color5.a = (float)num3;
-				Color color6 = this.Sprite.color = color5;
+				int num4 = 0;
+				Color color7 = this.Sprite.color;
+				float num5 = color7.a = (float)num4;
+				Color color8 = this.Sprite.color = color7;
 			}
 		}
 	}

@@ -22,10 +22,12 @@ public class GrowShrinkScript : MonoBehaviour
 
 	public bool Shrink;
 
+	public Vector3 OriginalPosition;
+
 	public GrowShrinkScript()
 	{
 		this.Threshold = 1f;
-		this.Slowdown = 0.75f;
+		this.Slowdown = 0.5f;
 		this.Strength = 1f;
 		this.Target = 1f;
 		this.Speed = 5f;
@@ -33,6 +35,7 @@ public class GrowShrinkScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		this.OriginalPosition = this.transform.localPosition;
 		this.transform.localScale = new Vector3((float)0, (float)0, (float)0);
 	}
 
@@ -75,6 +78,21 @@ public class GrowShrinkScript : MonoBehaviour
 			Vector3 vector = this.transform.localPosition = localPosition;
 		}
 		this.transform.localScale = new Vector3(this.Scale, this.Scale, this.Scale);
+	}
+
+	public virtual void Return()
+	{
+		this.transform.localPosition = this.OriginalPosition;
+		this.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+		this.FallSpeed = (float)0;
+		this.Threshold = 1f;
+		this.Slowdown = 0.5f;
+		this.Strength = 1f;
+		this.Target = 1f;
+		this.Scale = (float)0;
+		this.Speed = 5f;
+		this.Timer = (float)0;
+		this.active = false;
 	}
 
 	public virtual void Main()

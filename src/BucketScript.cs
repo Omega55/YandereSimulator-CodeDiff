@@ -24,9 +24,16 @@ public class BucketScript : MonoBehaviour
 
 	public float Distance;
 
+	public float FillSpeed;
+
 	public bool Poured;
 
 	public bool Full;
+
+	public BucketScript()
+	{
+		this.FillSpeed = 1f;
+	}
 
 	public virtual void Start()
 	{
@@ -82,8 +89,8 @@ public class BucketScript : MonoBehaviour
 		}
 		if (this.Full)
 		{
-			this.Water.transform.localScale = Vector3.Lerp(this.Water.transform.localScale, new Vector3(0.143f, (float)1, 0.143f), Time.deltaTime * (float)5);
-			float y = Mathf.Lerp(this.Water.transform.localPosition.y, 0.2f, Time.deltaTime * (float)5);
+			this.Water.transform.localScale = Vector3.Lerp(this.Water.transform.localScale, new Vector3(0.143f, (float)1, 0.143f), Time.deltaTime * (float)5 * this.FillSpeed);
+			float y = Mathf.Lerp(this.Water.transform.localPosition.y, 0.2f, Time.deltaTime * (float)5 * this.FillSpeed);
 			Vector3 localPosition = this.Water.transform.localPosition;
 			float num = localPosition.y = y;
 			Vector3 vector = this.Water.transform.localPosition = localPosition;

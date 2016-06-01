@@ -27,6 +27,8 @@ public class DropsScript : MonoBehaviour
 
 	public UILabel[] NameLabels;
 
+	public bool[] Purchased;
+
 	public Texture[] DropIcons;
 
 	public int[] DropCosts;
@@ -38,6 +40,8 @@ public class DropsScript : MonoBehaviour
 	public int Selected;
 
 	public int ID;
+
+	public AudioClip InfoUnavailable;
 
 	public AudioClip InfoPurchase;
 
@@ -53,7 +57,6 @@ public class DropsScript : MonoBehaviour
 	{
 		for (int i = 1; i < Extensions.get_length(this.DropNames); i++)
 		{
-			PlayerPrefs.SetInt("Drop_" + i + "_Purchased", 0);
 			this.NameLabels[i].text = this.DropNames[i];
 		}
 	}
@@ -78,30 +81,43 @@ public class DropsScript : MonoBehaviour
 			}
 			this.UpdateDesc();
 		}
-		if (Input.GetButtonDown("A") && PlayerPrefs.GetInt("Drop_" + this.Selected + "_Purchased") == 0)
+		if (Input.GetButtonDown("A"))
 		{
-			if (this.PromptBar.Label[0].text != string.Empty)
+			if (!this.Purchased[this.Selected])
 			{
-				if (PlayerPrefs.GetInt("PantyShots") >= this.DropCosts[this.Selected])
+				if (this.PromptBar.Label[0].text != string.Empty)
 				{
-					PlayerPrefs.SetInt("PantyShots", PlayerPrefs.GetInt("PantyShots") - this.DropCosts[this.Selected]);
-					PlayerPrefs.SetInt("Drop_" + this.Selected + "_Purchased", 1);
-					this.InfoChanWindow.ID = this.Selected;
-					this.InfoChanWindow.DropObject();
-					this.UpdateList();
-					this.UpdateDesc();
-					this.audio.clip = this.InfoPurchase;
-					this.audio.Play();
-					if (this.Selected == 2)
+					if (PlayerPrefs.GetInt("PantyShots") >= this.DropCosts[this.Selected])
 					{
-						PlayerPrefs.SetInt("Scheme_3_Stage", 2);
-						this.Schemes.UpdateInstructions();
+						PlayerPrefs.SetInt("PantyShots", PlayerPrefs.GetInt("PantyShots") - this.DropCosts[this.Selected]);
+						this.Purchased[this.Selected] = true;
+						this.InfoChanWindow.ID = this.Selected;
+						this.InfoChanWindow.DropObject();
+						this.UpdateList();
+						this.UpdateDesc();
+						this.audio.clip = this.InfoPurchase;
+						this.audio.Play();
+						if (this.Selected == 2)
+						{
+							PlayerPrefs.SetInt("Scheme_3_Stage", 2);
+							this.Schemes.UpdateInstructions();
+						}
 					}
 				}
+				else if (PlayerPrefs.GetInt("PantyShots") < this.DropCosts[this.Selected])
+				{
+					this.audio.clip = this.InfoAfford;
+					this.audio.Play();
+				}
+				else
+				{
+					this.audio.clip = this.InfoUnavailable;
+					this.audio.Play();
+				}
 			}
-			else if (PlayerPrefs.GetInt("PantyShots") < this.DropCosts[this.Selected])
+			else
 			{
-				this.audio.clip = this.InfoAfford;
+				this.audio.clip = this.InfoUnavailable;
 				this.audio.Play();
 			}
 		}
@@ -122,7 +138,7 @@ public class DropsScript : MonoBehaviour
 		this.ID = 1;
 		while (this.ID < Extensions.get_length(this.DropNames))
 		{
-			if (PlayerPrefs.GetInt("Drop_" + this.ID + "_Purchased") == 0)
+			if (!this.Purchased[this.ID])
 			{
 				this.CostLabels[this.ID].text = string.Empty + this.DropCosts[this.ID];
 				int num = 1;
@@ -144,7 +160,7 @@ public class DropsScript : MonoBehaviour
 
 	public virtual void UpdateDesc()
 	{
-		if (PlayerPrefs.GetInt("Drop_" + this.Selected + "_Purchased") == 0)
+		if (!this.Purchased[this.Selected])
 		{
 			if (PlayerPrefs.GetInt("PantyShots") >= this.DropCosts[this.Selected])
 			{

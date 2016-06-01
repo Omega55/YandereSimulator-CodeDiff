@@ -129,6 +129,8 @@ public class StudentScript : MonoBehaviour
 
 	public GameObject[] Bones;
 
+	public Transform[] Skirt;
+
 	public Transform[] Arm;
 
 	public LayerMask Mask;
@@ -142,6 +144,10 @@ public class StudentScript : MonoBehaviour
 	public AudioClip[] MaleAttacks;
 
 	public SphereCollider HipCollider;
+
+	public Collider RightHandCollider;
+
+	public Collider LeftHandCollider;
 
 	public Collider NotFaceCollider;
 
@@ -278,8 +284,6 @@ public class StudentScript : MonoBehaviour
 	public bool Safe;
 
 	public bool Stop;
-
-	public bool Emo;
 
 	public bool Fed;
 
@@ -792,8 +796,8 @@ public class StudentScript : MonoBehaviour
 			if (!this.Slave)
 			{
 				this.Character.animation.Play(this.PhoneAnim);
-				UnityEngine.Object.Destroy(this.RightEmptyEye);
-				UnityEngine.Object.Destroy(this.LeftEmptyEye);
+				this.RightEmptyEye.active = false;
+				this.LeftEmptyEye.active = false;
 				UnityEngine.Object.Destroy(this.Broken);
 			}
 			this.Character.animation["f02_wetIdle_00"].speed = 1.25f;
@@ -851,6 +855,7 @@ public class StudentScript : MonoBehaviour
 			if (this.StudentID == 26)
 			{
 				this.ClubAnim = this.IdleAnim;
+				this.Shy = true;
 			}
 			else
 			{
@@ -974,6 +979,16 @@ public class StudentScript : MonoBehaviour
 			}
 			this.Grudge = true;
 		}
+		if (PlayerPrefs.GetInt("Student_" + this.StudentID + "_Broken") == 1)
+		{
+			this.Cosmetic.RightEyeRenderer.gameObject.active = false;
+			this.Cosmetic.LeftEyeRenderer.gameObject.active = false;
+			this.Cosmetic.RightIrisLight.active = false;
+			this.Cosmetic.LeftIrisLight.active = false;
+			this.RightEmptyEye.active = true;
+			this.LeftEmptyEye.active = true;
+			this.Shy = true;
+		}
 		if (this.Club != 0 && (this.StudentID == 21 || this.StudentID == 26))
 		{
 			this.Armband.active = true;
@@ -984,6 +999,14 @@ public class StudentScript : MonoBehaviour
 	{
 		if (!this.Stop)
 		{
+			this.DistanceToPlayer = Vector3.Distance(this.transform.position, this.Yandere.transform.position);
+			if (this.DistanceToPlayer < (float)1 && this.Yandere.EbolaHair.active && !this.Dead)
+			{
+				UnityEngine.Object.Instantiate(this.Yandere.EbolaEffect, this.transform.position + Vector3.up, Quaternion.identity);
+				this.SpawnAlarmDisc();
+				this.BecomeRagdoll();
+				this.Dead = true;
+			}
 			if (this.Routine)
 			{
 				if (this.Phase < Extensions.get_length(this.PhaseTimes) - 1)
@@ -1255,6 +1278,10 @@ public class StudentScript : MonoBehaviour
 						{
 							if (this.MeetTimer == (float)0)
 							{
+								if (PlayerPrefs.GetInt("7_Friend") == 1)
+								{
+									this.StudentManager.OfferHelp.enabled = true;
+								}
 								if (this.transform.position.y > (float)11)
 								{
 									this.Prompt.Label[0].text = "     " + "Push";
@@ -2414,17 +2441,9 @@ public class StudentScript : MonoBehaviour
 								}
 							}
 						}
-						this.DistanceToPlayer = Vector3.Distance(this.transform.position, this.Yandere.transform.position);
 						this.PreviousAlarm = this.Alarm;
 						if (this.DistanceToPlayer < this.VisionCone.farClipPlane)
 						{
-							if (this.DistanceToPlayer < (float)1 && this.Yandere.EbolaHair.active)
-							{
-								UnityEngine.Object.Instantiate(this.Yandere.EbolaEffect, this.transform.position + Vector3.up, Quaternion.identity);
-								this.SpawnAlarmDisc();
-								this.BecomeRagdoll();
-								this.Dead = true;
-							}
 							if (!this.Talking)
 							{
 								if (!this.Yandere.Noticed)
@@ -3687,7 +3706,7 @@ public class StudentScript : MonoBehaviour
 		{
 			this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 			this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
-			if (this.Emo)
+			if (this.Shy)
 			{
 				if (this.Routine)
 				{
@@ -3726,6 +3745,25 @@ public class StudentScript : MonoBehaviour
 			this.Arm[0].localScale = new Vector3((float)2, (float)2, (float)2);
 			this.Arm[1].localScale = new Vector3((float)2, (float)2, (float)2);
 			this.Head.localScale = new Vector3((float)2, (float)2, (float)2);
+		}
+		if (this.StudentID == 32)
+		{
+			float y3 = 0.66666f;
+			Vector3 localScale5 = this.Skirt[0].transform.localScale;
+			float num11 = localScale5.y = y3;
+			Vector3 vector9 = this.Skirt[0].transform.localScale = localScale5;
+			float y4 = 0.66666f;
+			Vector3 localScale6 = this.Skirt[1].transform.localScale;
+			float num12 = localScale6.y = y4;
+			Vector3 vector10 = this.Skirt[1].transform.localScale = localScale6;
+			float y5 = 0.66666f;
+			Vector3 localScale7 = this.Skirt[2].transform.localScale;
+			float num13 = localScale7.y = y5;
+			Vector3 vector11 = this.Skirt[2].transform.localScale = localScale7;
+			float y6 = 0.66666f;
+			Vector3 localScale8 = this.Skirt[3].transform.localScale;
+			float num14 = localScale8.y = y6;
+			Vector3 vector12 = this.Skirt[3].transform.localScale = localScale8;
 		}
 	}
 
@@ -4275,6 +4313,13 @@ public class StudentScript : MonoBehaviour
 			this.Actions[2] = 3;
 			this.Actions[4] = 3;
 		}
+		if (this.StudentID == 32 && PlayerPrefs.GetInt("Student_32_Broken") == 1)
+		{
+			this.Destinations[2] = this.StudentManager.BrokenSpot;
+			this.Destinations[4] = this.StudentManager.BrokenSpot;
+			this.Actions[2] = 3;
+			this.Actions[4] = 3;
+		}
 	}
 
 	public virtual void UpdateOutlines()
@@ -4397,6 +4442,10 @@ public class StudentScript : MonoBehaviour
 		if (!this.Male)
 		{
 			this.LiquidProjector.ignoreLayers = -2049;
+			this.RightHandCollider.enabled = false;
+			this.LeftHandCollider.enabled = false;
+			this.PantyCollider.enabled = false;
+			this.SkirtCollider.enabled = false;
 		}
 		this.Character.animation.cullingType = AnimationCullingType.AlwaysAnimate;
 		this.Ragdoll.AllColliders[10].isTrigger = false;

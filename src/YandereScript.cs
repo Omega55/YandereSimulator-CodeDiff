@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$2593 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$2641 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$2608;
+		internal YandereScript $self_$2656;
 
-		public $ApplyCustomCostume$2593(YandereScript self_)
+		public $ApplyCustomCostume$2641(YandereScript self_)
 		{
-			this.$self_$2608 = self_;
+			this.$self_$2656 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$2593.$(this.$self_$2608);
+			return new YandereScript.$ApplyCustomCostume$2641.$(this.$self_$2656);
 		}
 	}
 
@@ -88,6 +88,8 @@ public class YandereScript : MonoBehaviour
 	public MusicCreditScript MusicCredit;
 
 	public PauseScreenScript PauseScreen;
+
+	public WoodChipperScript WoodChipper;
 
 	public StudentScript TargetStudent;
 
@@ -366,6 +368,8 @@ public class YandereScript : MonoBehaviour
 	public bool Blasting;
 
 	public bool Carrying;
+
+	public bool Chipping;
 
 	public bool Crawling;
 
@@ -711,8 +715,6 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject EnergySword;
 
-	public GameObject PonyOnly;
-
 	public GameObject EbolaEffect;
 
 	public GameObject EbolaWings;
@@ -730,6 +732,10 @@ public class YandereScript : MonoBehaviour
 	public Texture NudeTexture;
 
 	public Mesh NudeMesh;
+
+	public Texture SamusBody;
+
+	public Texture SamusFace;
 
 	public Mesh SchoolSwimsuit;
 
@@ -824,7 +830,6 @@ public class YandereScript : MonoBehaviour
 		this.FalconGun.active = false;
 		this.EyepatchL.active = false;
 		this.EyepatchR.active = false;
-		this.PonyOnly.active = false;
 		this.Shoes[0].active = false;
 		this.Shoes[1].active = false;
 		this.Stand.active = false;
@@ -1448,7 +1453,7 @@ public class YandereScript : MonoBehaviour
 					{
 						if (!((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).Dumped)
 						{
-							this.DumpRagdoll();
+							this.DumpRagdoll(1);
 						}
 						this.Character.animation.CrossFade("f02_carryDisposeA_00");
 						if (this.Character.animation["f02_carryDisposeA_00"].time >= this.Character.animation["f02_carryDisposeA_00"].length)
@@ -1458,6 +1463,38 @@ public class YandereScript : MonoBehaviour
 							this.Incinerator.Open = false;
 							this.Dragging = false;
 							this.Dumping = false;
+							this.CanMove = true;
+							this.Ragdoll = null;
+							this.StopCarrying();
+							this.DumpTimer = (float)0;
+						}
+					}
+				}
+				if (this.Chipping)
+				{
+					this.targetRotation = Quaternion.LookRotation(this.WoodChipper.gameObject.transform.position - this.transform.position);
+					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
+					this.MoveTowardsTarget(this.WoodChipper.DumpPoint.position);
+					if (this.DumpTimer == (float)0 && this.Carrying)
+					{
+						this.Character.animation["f02_carryDisposeA_00"].time = 2.5f;
+					}
+					this.DumpTimer += Time.deltaTime;
+					if (this.DumpTimer > (float)1)
+					{
+						if (!((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).Dumped)
+						{
+							this.DumpRagdoll(3);
+						}
+						this.Character.animation.CrossFade("f02_carryDisposeA_00");
+						if (this.Character.animation["f02_carryDisposeA_00"].time >= this.Character.animation["f02_carryDisposeA_00"].length)
+						{
+							this.WoodChipper.Prompt.HideButton[0] = false;
+							this.WoodChipper.Prompt.HideButton[3] = true;
+							this.WoodChipper.Occupied = true;
+							this.WoodChipper.Open = false;
+							this.Dragging = false;
+							this.Chipping = false;
 							this.CanMove = true;
 							this.Ragdoll = null;
 							this.StopCarrying();
@@ -1942,6 +1979,7 @@ public class YandereScript : MonoBehaviour
 				{
 					((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).Dismember();
 					this.RPGCamera.enabled = true;
+					this.TargetStudent = null;
 					this.Dismembering = false;
 					this.CanMove = true;
 				}
@@ -2776,6 +2814,7 @@ public class YandereScript : MonoBehaviour
 			}
 			if (Input.GetKeyDown("p"))
 			{
+				this.CyborgParts[1].active = false;
 				this.KONGlasses.active = false;
 				this.EyepatchR.active = false;
 				this.EyepatchL.active = false;
@@ -2798,6 +2837,17 @@ public class YandereScript : MonoBehaviour
 					this.KONGlasses.active = true;
 				}
 				else if (this.EyewearID == 5)
+				{
+					if (this.CyborgParts[2].active)
+					{
+						this.CyborgParts[1].active = true;
+					}
+					else
+					{
+						this.EyewearID = 0;
+					}
+				}
+				else
 				{
 					this.EyewearID = 0;
 				}
@@ -2978,6 +3028,11 @@ public class YandereScript : MonoBehaviour
 					{
 						this.EasterEggMenu.active = false;
 						this.Ebola();
+					}
+					else if (Input.GetKeyDown("q"))
+					{
+						this.EasterEggMenu.active = false;
+						this.Samus();
 					}
 					if (Input.GetKeyDown("d"))
 					{
@@ -3203,7 +3258,7 @@ public class YandereScript : MonoBehaviour
 	{
 		if (this.Weapon[this.Equipped] != null)
 		{
-			if (this.TargetStudent.StudentID < Extensions.get_length(this.Weapon[this.Equipped].Victims))
+			if (this.TargetStudent != null && this.TargetStudent.StudentID < Extensions.get_length(this.Weapon[this.Equipped].Victims))
 			{
 				this.Weapon[this.Equipped].Victims[this.TargetStudent.StudentID] = true;
 			}
@@ -3315,15 +3370,23 @@ public class YandereScript : MonoBehaviour
 		this.YandereFade = (float)100;
 	}
 
-	public virtual void DumpRagdoll()
+	public virtual void DumpRagdoll(int Type)
 	{
 		this.Ragdoll.transform.position = this.transform.position;
-		this.Ragdoll.transform.LookAt(this.Incinerator.transform.position);
-		float y = this.Ragdoll.transform.eulerAngles.y + (float)180;
-		Vector3 eulerAngles = this.Ragdoll.transform.eulerAngles;
-		float num = eulerAngles.y = y;
-		Vector3 vector = this.Ragdoll.transform.eulerAngles = eulerAngles;
-		((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).Dump(1);
+		if (Type == 1)
+		{
+			this.Ragdoll.transform.LookAt(this.Incinerator.transform.position);
+			float y = this.Ragdoll.transform.eulerAngles.y + (float)180;
+			Vector3 eulerAngles = this.Ragdoll.transform.eulerAngles;
+			float num = eulerAngles.y = y;
+			Vector3 vector = this.Ragdoll.transform.eulerAngles = eulerAngles;
+		}
+		else
+		{
+			this.Ragdoll.transform.LookAt(this.WoodChipper.transform.position);
+		}
+		((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).DumpType = Type;
+		((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).Dump();
 	}
 
 	public virtual void Unequip()
@@ -3538,7 +3601,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$2593(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$2641(this).GetEnumerator();
 	}
 
 	public virtual void WearGloves()
@@ -3815,9 +3878,9 @@ public class YandereScript : MonoBehaviour
 			this.ID++;
 		}
 		this.RunSpeed *= (float)2;
-		this.Hairstyle = 0;
+		this.EyewearID = 5;
+		this.Hairstyle = 45;
 		this.UpdateHair();
-		this.PonyOnly.active = true;
 		this.Egg = true;
 	}
 
@@ -3858,6 +3921,19 @@ public class YandereScript : MonoBehaviour
 		this.EasterEggMenu.active = false;
 		this.ClubAttire = false;
 		this.ClubAccessory();
+	}
+
+	public virtual void Samus()
+	{
+		this.MyRenderer.sharedMesh = this.NudeMesh;
+		this.MyRenderer.materials[0].mainTexture = this.SamusFace;
+		this.MyRenderer.materials[2].mainTexture = this.SamusBody;
+		int num = 0;
+		Color color = this.MyRenderer.materials[3].color;
+		float num2 = color.a = (float)num;
+		Color color2 = this.MyRenderer.materials[3].color = color;
+		this.PonytailRenderer.material.mainTexture = this.SamusFace;
+		this.Egg = true;
 	}
 
 	public virtual void ChangeSchoolwear()

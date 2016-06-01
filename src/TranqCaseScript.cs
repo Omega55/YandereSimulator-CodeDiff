@@ -61,7 +61,8 @@ public class TranqCaseScript : MonoBehaviour
 			this.Yandere.Ragdoll.transform.localPosition = new Vector3(0.224f, 1.36f, (float)0);
 			this.Yandere.Ragdoll.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)90);
 			((RagdollScript)this.Yandere.Ragdoll.GetComponent(typeof(RagdollScript))).TranqCase = this;
-			((RagdollScript)this.Yandere.Ragdoll.GetComponent(typeof(RagdollScript))).Dump(2);
+			((RagdollScript)this.Yandere.Ragdoll.GetComponent(typeof(RagdollScript))).DumpType = 2;
+			((RagdollScript)this.Yandere.Ragdoll.GetComponent(typeof(RagdollScript))).Dump();
 			this.VictimID = ((RagdollScript)this.Yandere.Ragdoll.GetComponent(typeof(RagdollScript))).StudentID;
 			this.Yandere.EmptyHands();
 			this.Door.Prompt.enabled = true;

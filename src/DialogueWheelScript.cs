@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityScript.Lang;
 
 [Serializable]
 public class DialogueWheelScript : MonoBehaviour
@@ -345,6 +346,7 @@ public class DialogueWheelScript : MonoBehaviour
 						}
 						if (this.Selected == 5)
 						{
+							this.CheckTaskCompletion();
 							if (this.Yandere.TargetStudent.TaskPhase == 0)
 							{
 								this.Impatience.fillAmount = (float)0;
@@ -353,7 +355,7 @@ public class DialogueWheelScript : MonoBehaviour
 								this.Yandere.TargetStudent.TaskPhase = 1;
 								this.Show = false;
 							}
-							else if (this.Yandere.TargetStudent.TaskPhase == 5)
+							else
 							{
 								this.Impatience.fillAmount = (float)0;
 								this.Yandere.TargetStudent.Interaction = 5;
@@ -369,7 +371,7 @@ public class DialogueWheelScript : MonoBehaviour
 				}
 				else if (this.Selected != 0)
 				{
-					if (this.FavorShadow[this.Selected] != null && this.FavorShadow[this.Selected].color.a == (float)0)
+					if (this.Selected < Extensions.get_length(this.FavorShadow) && this.FavorShadow[this.Selected] != null && this.FavorShadow[this.Selected].color.a == (float)0)
 					{
 						if (this.Selected == 1)
 						{
@@ -477,80 +479,109 @@ public class DialogueWheelScript : MonoBehaviour
 			float num12 = color17.a = a6;
 			Color color18 = this.Shadow[3].color = color17;
 		}
-		if (this.Yandere.TargetStudent.StudentID != 6)
+		if (this.Yandere.TargetStudent.StudentID != 6 && this.Yandere.TargetStudent.StudentID != 7 && this.Yandere.TargetStudent.StudentID != 32)
 		{
 			float a7 = 0.75f;
 			Color color19 = this.Shadow[5].color;
 			float num13 = color19.a = a7;
 			Color color20 = this.Shadow[5].color = color19;
 		}
-		else if (PlayerPrefs.GetInt("Task_6_Status") != 0 && PlayerPrefs.GetInt("Task_6_Status") != 2)
+		else
 		{
-			float a8 = 0.75f;
-			Color color21 = this.Shadow[5].color;
-			float num14 = color21.a = a8;
-			Color color22 = this.Shadow[5].color = color21;
+			if (PlayerPrefs.GetInt("Task_" + this.Yandere.TargetStudent.StudentID + "_Status") != 0 && PlayerPrefs.GetInt("Task_" + this.Yandere.TargetStudent.StudentID + "_Status") != 2)
+			{
+				float a8 = 0.75f;
+				Color color21 = this.Shadow[5].color;
+				float num14 = color21.a = a8;
+				Color color22 = this.Shadow[5].color = color21;
+			}
+			if (this.Yandere.TargetStudent.StudentID == 32)
+			{
+				if (this.Clock.Period != 3)
+				{
+					float a9 = 0.75f;
+					Color color23 = this.Shadow[5].color;
+					float num15 = color23.a = a9;
+					Color color24 = this.Shadow[5].color = color23;
+				}
+				else if (PlayerPrefs.GetInt("Task_32_Status") == 1 && this.Yandere.Inventory.Cigs)
+				{
+					int num16 = 0;
+					Color color25 = this.Shadow[5].color;
+					float num17 = color25.a = (float)num16;
+					Color color26 = this.Shadow[5].color = color25;
+				}
+			}
 		}
 		if (PlayerPrefs.GetInt("Task_" + this.Yandere.TargetStudent.StudentID + "_Status") < 3)
 		{
-			float a9 = 0.75f;
-			Color color23 = this.Shadow[6].color;
-			float num15 = color23.a = a9;
-			Color color24 = this.Shadow[6].color = color23;
+			float a10 = 0.75f;
+			Color color27 = this.Shadow[6].color;
+			float num18 = color27.a = a10;
+			Color color28 = this.Shadow[6].color = color27;
 		}
 		if ((this.Yandere.TargetStudent.Male && PlayerPrefs.GetInt("Seduction") + PlayerPrefs.GetInt("SeductionBonus") > 3) || PlayerPrefs.GetInt("Seduction") + PlayerPrefs.GetInt("SeductionBonus") > 4)
 		{
-			int num16 = 0;
-			Color color25 = this.Shadow[6].color;
-			float num17 = color25.a = (float)num16;
-			Color color26 = this.Shadow[6].color = color25;
+			int num19 = 0;
+			Color color29 = this.Shadow[6].color;
+			float num20 = color29.a = (float)num19;
+			Color color30 = this.Shadow[6].color = color29;
 		}
-		float a10 = 0.75f;
-		Color color27 = this.ClubShadow[6].color;
-		float num18 = color27.a = a10;
-		Color color28 = this.ClubShadow[6].color = color27;
+		float a11 = 0.75f;
+		Color color31 = this.ClubShadow[6].color;
+		float num21 = color31.a = a11;
+		Color color32 = this.ClubShadow[6].color = color31;
 		if (PlayerPrefs.GetInt("Club") == this.Yandere.TargetStudent.Club)
 		{
-			float a11 = 0.75f;
-			Color color29 = this.ClubShadow[1].color;
-			float num19 = color29.a = a11;
-			Color color30 = this.ClubShadow[1].color = color29;
 			float a12 = 0.75f;
-			Color color31 = this.ClubShadow[2].color;
-			float num20 = color31.a = a12;
-			Color color32 = this.ClubShadow[2].color = color31;
+			Color color33 = this.ClubShadow[1].color;
+			float num22 = color33.a = a12;
+			Color color34 = this.ClubShadow[1].color = color33;
+			float a13 = 0.75f;
+			Color color35 = this.ClubShadow[2].color;
+			float num23 = color35.a = a13;
+			Color color36 = this.ClubShadow[2].color = color35;
 		}
 		if (this.Yandere.ClubAttire || this.Yandere.Mask != null || this.Yandere.Gloves != null || this.Yandere.Container != null)
 		{
-			float a13 = 0.75f;
-			Color color33 = this.ClubShadow[3].color;
-			float num21 = color33.a = a13;
-			Color color34 = this.ClubShadow[3].color = color33;
+			float a14 = 0.75f;
+			Color color37 = this.ClubShadow[3].color;
+			float num24 = color37.a = a14;
+			Color color38 = this.ClubShadow[3].color = color37;
 		}
 		if (PlayerPrefs.GetInt("Club") != this.Yandere.TargetStudent.Club)
 		{
-			float a14 = 0.75f;
-			Color color35 = this.ClubShadow[3].color;
-			float num22 = color35.a = a14;
-			Color color36 = this.ClubShadow[3].color = color35;
 			float a15 = 0.75f;
-			Color color37 = this.ClubShadow[5].color;
-			float num23 = color37.a = a15;
-			Color color38 = this.ClubShadow[5].color = color37;
+			Color color39 = this.ClubShadow[3].color;
+			float num25 = color39.a = a15;
+			Color color40 = this.ClubShadow[3].color = color39;
+			float a16 = 0.75f;
+			Color color41 = this.ClubShadow[5].color;
+			float num26 = color41.a = a16;
+			Color color42 = this.ClubShadow[5].color = color41;
 		}
 		if (this.Yandere.Followers > 0)
 		{
-			float a16 = 0.75f;
-			Color color39 = this.FavorShadow[1].color;
-			float num24 = color39.a = a16;
-			Color color40 = this.FavorShadow[1].color = color39;
+			float a17 = 0.75f;
+			Color color43 = this.FavorShadow[1].color;
+			float num27 = color43.a = a17;
+			Color color44 = this.FavorShadow[1].color = color43;
 		}
 		if (this.Yandere.TargetStudent.DistanceToDestination > 0.5f)
 		{
-			float a17 = 0.75f;
-			Color color41 = this.FavorShadow[2].color;
-			float num25 = color41.a = a17;
-			Color color42 = this.FavorShadow[2].color = color41;
+			float a18 = 0.75f;
+			Color color45 = this.FavorShadow[2].color;
+			float num28 = color45.a = a18;
+			Color color46 = this.FavorShadow[2].color = color45;
+		}
+	}
+
+	public virtual void CheckTaskCompletion()
+	{
+		if (this.Yandere.TargetStudent.StudentID == 32 && this.Yandere.Inventory.Cigs)
+		{
+			this.Yandere.TargetStudent.TaskPhase = this.Yandere.TargetStudent.TaskPhase + 1;
+			this.Yandere.Inventory.Cigs = false;
 		}
 	}
 

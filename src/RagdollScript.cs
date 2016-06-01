@@ -10,6 +10,8 @@ public class RagdollScript : MonoBehaviour
 
 	public IncineratorScript Incinerator;
 
+	public WoodChipperScript WoodChipper;
+
 	public TranqCaseScript TranqCase;
 
 	public StudentScript Student;
@@ -112,6 +114,8 @@ public class RagdollScript : MonoBehaviour
 
 	public int StudentID;
 
+	public int DumpType;
+
 	public int LimbID;
 
 	public int Frame;
@@ -186,6 +190,7 @@ public class RagdollScript : MonoBehaviour
 					this.Yandere.Weapon[this.Yandere.Equipped].Dismember();
 					this.Yandere.RPGCamera.enabled = false;
 					this.Yandere.Ragdoll = this.gameObject;
+					this.Yandere.TargetStudent = this.Student;
 					this.Yandere.Dismembering = true;
 					this.Yandere.CanMove = false;
 				}
@@ -221,6 +226,8 @@ public class RagdollScript : MonoBehaviour
 					this.Prompt.Label[1].text = "     " + "Drop";
 					this.Prompt.HideButton[1] = true;
 					this.Prompt.HideButton[3] = true;
+					this.Prompt.enabled = false;
+					this.Prompt.Hide();
 					for (int i = 0; i < this.AllRigidbodies.Length; i++)
 					{
 						this.AllRigidbodies[i].isKinematic = true;
@@ -250,6 +257,8 @@ public class RagdollScript : MonoBehaviour
 					this.Yandere.Lifting = true;
 					this.StopAnimation = false;
 					this.Carried = true;
+					this.Falling = false;
+					this.FallTimer = (float)0;
 				}
 			}
 			else if (!this.Yandere.Dumping && this.Dragged)
@@ -282,46 +291,65 @@ public class RagdollScript : MonoBehaviour
 				this.Prompt.HideButton[0] = true;
 			}
 		}
-		else
+		else if (this.DumpType == 1)
 		{
-			if (this.Incinerator != null)
+			if (this.DumpTimer == (float)0 && this.Yandere.Carrying)
 			{
-				if (this.DumpTimer == (float)0 && this.Yandere.Carrying)
+				this.Character.animation[this.DumpedAnim].time = 2.5f;
+			}
+			this.Character.animation.CrossFade(this.DumpedAnim);
+			this.DumpTimer += Time.deltaTime;
+			if (this.Character.animation[this.DumpedAnim].time >= this.Character.animation[this.DumpedAnim].length)
+			{
+				if (this.AddingToCount)
 				{
-					this.Character.animation[this.DumpedAnim].time = 2.5f;
+					this.Yandere.NearBodies = this.Yandere.NearBodies - 1;
 				}
-				this.Character.animation.CrossFade(this.DumpedAnim);
-				this.DumpTimer += Time.deltaTime;
-				if (this.Character.animation[this.DumpedAnim].time >= this.Character.animation[this.DumpedAnim].length)
+				if (this.Poisoned)
 				{
-					if (this.AddingToCount)
-					{
-						this.Yandere.NearBodies = this.Yandere.NearBodies - 1;
-					}
-					if (this.Poisoned)
-					{
-						this.Police.PoisonScene = false;
-					}
-					this.Incinerator.Corpses = this.Incinerator.Corpses + 1;
-					this.Incinerator.CorpseList[this.Incinerator.Corpses] = this.StudentID;
-					this.active = false;
+					this.Police.PoisonScene = false;
+				}
+				this.Incinerator.Corpses = this.Incinerator.Corpses + 1;
+				this.Incinerator.CorpseList[this.Incinerator.Corpses] = this.StudentID;
+				this.active = false;
+			}
+		}
+		else if (this.DumpType == 2)
+		{
+			this.Character.animation.Play("f02_fetal_00");
+			float y2 = Mathf.MoveTowards(this.transform.localPosition.y, 0.36f, Time.deltaTime);
+			Vector3 localPosition3 = this.transform.localPosition;
+			float num7 = localPosition3.y = y2;
+			Vector3 vector4 = this.transform.localPosition = localPosition3;
+			if (this.transform.localPosition.y == 0.36f)
+			{
+				this.TranqCase.Open = false;
+				if (this.AddingToCount)
+				{
+					this.Yandere.NearBodies = this.Yandere.NearBodies - 1;
 				}
 			}
-			if (this.TranqCase != null)
+		}
+		else if (this.DumpType == 3)
+		{
+			if (this.DumpTimer == (float)0 && this.Yandere.Carrying)
 			{
-				this.Character.animation.Play("f02_fetal_00");
-				float y2 = Mathf.MoveTowards(this.transform.localPosition.y, 0.36f, Time.deltaTime);
-				Vector3 localPosition3 = this.transform.localPosition;
-				float num7 = localPosition3.y = y2;
-				Vector3 vector4 = this.transform.localPosition = localPosition3;
-				if (this.transform.localPosition.y == 0.36f)
+				this.Character.animation[this.DumpedAnim].time = 2.5f;
+			}
+			this.Character.animation.CrossFade(this.DumpedAnim);
+			this.DumpTimer += Time.deltaTime;
+			if (this.Character.animation[this.DumpedAnim].time >= this.Character.animation[this.DumpedAnim].length)
+			{
+				if (this.AddingToCount)
 				{
-					this.TranqCase.Open = false;
-					if (this.AddingToCount)
-					{
-						this.Yandere.NearBodies = this.Yandere.NearBodies - 1;
-					}
+					this.Yandere.NearBodies = this.Yandere.NearBodies - 1;
 				}
+				if (this.Poisoned)
+				{
+					this.Police.PoisonScene = false;
+				}
+				this.WoodChipper.VictimID = this.StudentID;
+				this.active = false;
 			}
 		}
 		if (this.Hidden && this.HideCollider == null)
@@ -444,18 +472,22 @@ public class RagdollScript : MonoBehaviour
 		}
 	}
 
-	public virtual void Dump(int Type)
+	public virtual void Dump()
 	{
-		if (Type == 1)
+		if (this.DumpType == 1)
 		{
 			this.transform.eulerAngles = this.Yandere.transform.eulerAngles;
 			this.transform.position = this.Yandere.transform.position;
 			this.Incinerator = this.Yandere.Incinerator;
 			this.BloodPoolSpawner.enabled = false;
 		}
-		else
+		else if (this.DumpType == 2)
 		{
 			this.TranqCase = this.Yandere.TranqCase;
+		}
+		else if (this.DumpType == 3)
+		{
+			this.WoodChipper = this.Yandere.WoodChipper;
 		}
 		this.Prompt.Hide();
 		this.Prompt.enabled = false;
@@ -474,6 +506,7 @@ public class RagdollScript : MonoBehaviour
 		Vector3 vector = this.transform.position = position;
 		this.Prompt.Label[1].text = "     " + "Drag";
 		this.Prompt.HideButton[1] = false;
+		this.Prompt.enabled = true;
 		if (PlayerPrefs.GetInt("PhysicalGrade") + PlayerPrefs.GetInt("PhysicalBonus") > 0 && !this.Tranquil)
 		{
 			this.Prompt.HideButton[3] = false;

@@ -14,9 +14,17 @@ public class TaskWindowScript : MonoBehaviour
 
 	public YandereScript Yandere;
 
+	public UITexture Portrait;
+
+	public UITexture Icon;
+
 	public GameObject[] TaskCompleteLetters;
 
 	public string[] Descriptions;
+
+	public Texture[] Portraits;
+
+	public Texture[] Icons;
 
 	public bool TaskComplete;
 
@@ -44,6 +52,8 @@ public class TaskWindowScript : MonoBehaviour
 		this.PromptBar.Show = true;
 		this.TaskDescLabel.transform.parent.gameObject.active = true;
 		this.TaskDescLabel.text = string.Empty + this.Descriptions[ID];
+		this.Portrait.mainTexture = this.Portraits[ID];
+		this.Icon.mainTexture = this.Icons[ID];
 		this.Window.active = true;
 		this.StudentID = ID;
 	}
@@ -88,8 +98,17 @@ public class TaskWindowScript : MonoBehaviour
 			}
 			if (this.TaskCompleteLetters[12].transform.localPosition.y < (float)-725)
 			{
+				this.ID = 0;
+				while (this.ID < this.TaskCompleteLetters.Length)
+				{
+					((GrowShrinkScript)this.TaskCompleteLetters[this.ID].GetComponent(typeof(GrowShrinkScript))).Return();
+					this.ID++;
+				}
 				this.DialogueWheel.End();
 				this.TaskComplete = false;
+				this.TrueTimer = (float)0;
+				this.Timer = (float)0;
+				this.ID = 0;
 			}
 		}
 	}

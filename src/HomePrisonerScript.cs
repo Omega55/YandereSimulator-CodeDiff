@@ -193,7 +193,7 @@ public class HomePrisonerScript : MonoBehaviour
 			}
 		}
 		this.UpdateDesc();
-		if (PlayerPrefs.GetInt("Kidnapped") == 0)
+		if (PlayerPrefs.GetInt("KidnapVictim") == 0)
 		{
 			this.enabled = false;
 		}

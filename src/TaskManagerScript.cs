@@ -44,6 +44,10 @@ public class TaskManagerScript : MonoBehaviour
 		{
 			this.TaskObjects[6].active = false;
 		}
+		if (PlayerPrefs.GetInt("Task_7_Status") == 1 && this.StudentManager.Students[7] != null && this.StudentManager.Students[7].TaskPhase == 0)
+		{
+			this.StudentManager.Students[7].TaskPhase = 4;
+		}
 	}
 
 	public virtual void Main()

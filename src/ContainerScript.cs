@@ -85,7 +85,6 @@ public class ContainerScript : MonoBehaviour
 				this.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
 				this.Prompt.Yandere.Container = this;
 				this.Prompt.Yandere.WeaponMenu.UpdateSprites();
-				this.Prompt.Yandere.ObstacleDetector.UpdateX();
 				this.Prompt.Yandere.ObstacleDetector.gameObject.active = true;
 				this.Prompt.MyCollider.enabled = false;
 				this.Prompt.Hide();

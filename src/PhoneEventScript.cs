@@ -63,7 +63,7 @@ public class PhoneEventScript : MonoBehaviour
 		if (!this.Clock.StopTime && this.EventCheck && this.Clock.HourTime > this.EventTime)
 		{
 			this.EventStudent = this.StudentManager.Students[7];
-			if (this.EventStudent != null && !this.EventStudent.Distracted && !this.EventStudent.Talking)
+			if (this.EventStudent != null && this.EventStudent.Routine && !this.EventStudent.Distracted && !this.EventStudent.Talking)
 			{
 				if (!this.EventStudent.WitnessedMurder)
 				{
@@ -71,6 +71,7 @@ public class PhoneEventScript : MonoBehaviour
 					this.EventStudent.Pathfinding.target = this.EventStudent.Destinations[this.EventStudent.Phase];
 					this.EventStudent.Obstacle.checkTime = (float)99;
 					this.EventStudent.PhoneEvent = this;
+					this.EventStudent.CanTalk = false;
 					this.EventStudent.InEvent = true;
 					this.EventStudent.Private = true;
 					this.EventStudent.Prompt.Hide();
@@ -245,6 +246,7 @@ public class PhoneEventScript : MonoBehaviour
 			this.EventStudent.PhoneEvent = null;
 			this.EventStudent.InEvent = false;
 			this.EventStudent.Private = false;
+			this.EventStudent.CanTalk = true;
 			this.EventSubtitle.text = string.Empty;
 			this.StudentManager.UpdateStudents();
 			this.DumpPoint.enabled = false;

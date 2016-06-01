@@ -54,6 +54,8 @@ public class HomeCameraScript : MonoBehaviour
 
 	public GameObject DayLight;
 
+	public GameObject Tripod;
+
 	public GameObject Victim;
 
 	public Transform Destination;
@@ -65,8 +67,6 @@ public class HomeCameraScript : MonoBehaviour
 	public Transform[] Destinations;
 
 	public Transform[] Targets;
-
-	public int TargetID;
 
 	public int ID;
 
@@ -109,9 +109,10 @@ public class HomeCameraScript : MonoBehaviour
 			this.Triggers[5].Disable();
 			this.Triggers[9].Disable();
 		}
-		if (PlayerPrefs.GetInt("Kidnapped") == 0)
+		if (PlayerPrefs.GetInt("KidnapVictim") == 0)
 		{
 			this.RopeGroup.active = false;
+			this.Tripod.active = false;
 			this.Victim.active = false;
 			this.Triggers[10].Disable();
 		}
@@ -140,7 +141,7 @@ public class HomeCameraScript : MonoBehaviour
 		this.Focus.position = Vector3.Lerp(this.Focus.position, this.Target.position, Time.deltaTime * (float)10);
 		this.transform.position = Vector3.Lerp(this.transform.position, this.Destination.position, Time.deltaTime * (float)10);
 		this.transform.LookAt(this.Focus.position);
-		if (Input.GetButtonDown("A") && this.HomeYandere.CanMove && this.ID != 0)
+		if (this.ID < 11 && Input.GetButtonDown("A") && this.HomeYandere.CanMove && this.ID != 0)
 		{
 			this.Destination = this.Destinations[this.ID];
 			this.Target = this.Targets[this.ID];

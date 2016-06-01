@@ -236,23 +236,23 @@ public class StudentInfoScript : MonoBehaviour
 		}
 		if (this.JSON.StudentStrengths[ID] == 0)
 		{
-			this.StrengthLabel.text = "Incapable of self-defense";
+			this.StrengthLabel.text = "Incapable";
 		}
 		else if (this.JSON.StudentStrengths[ID] == 1)
 		{
-			this.StrengthLabel.text = "Fights back - Very Weak";
+			this.StrengthLabel.text = "Very Weak";
 		}
 		else if (this.JSON.StudentStrengths[ID] == 2)
 		{
-			this.StrengthLabel.text = "Fights back - Weak";
+			this.StrengthLabel.text = "Weak";
 		}
 		else if (this.JSON.StudentStrengths[ID] == 3)
 		{
-			this.StrengthLabel.text = "Fights back - Strong";
+			this.StrengthLabel.text = "Strong";
 		}
 		else if (this.JSON.StudentStrengths[ID] == 4)
 		{
-			this.StrengthLabel.text = "Fights back - Very Strong";
+			this.StrengthLabel.text = "Very Strong";
 		}
 		else if (this.JSON.StudentStrengths[ID] == 5)
 		{
@@ -260,7 +260,7 @@ public class StudentInfoScript : MonoBehaviour
 		}
 		else if (this.JSON.StudentStrengths[ID] == 6)
 		{
-			this.StrengthLabel.text = "Extensive self-defense training";
+			this.StrengthLabel.text = "Extensive Training";
 		}
 		else if (this.JSON.StudentStrengths[ID] == 99)
 		{
@@ -491,6 +491,13 @@ public class StudentInfoScript : MonoBehaviour
 			this.Strings[1] = "One of the lenses of his glasses is completely opaque. No student has ever seen his right eye.";
 			this.Strings[2] = "Some students suspect that he only has one eye, and prefers to wear an opaque lense over that eye rather than an eyepatch.";
 			this.InfoLabel.text = this.Strings[1] + "\n" + "\n" + this.Strings[2];
+		}
+		else if (ID == 32)
+		{
+			this.Strings[1] = "The most flashy girl in school.";
+			this.Strings[2] = "She is spoiled rotten by her doting father, who buys his daughter anything she wants.";
+			this.Strings[3] = "Her father runs a loan agency.";
+			this.InfoLabel.text = this.Strings[1] + "\n" + "\n" + this.Strings[2] + "\n" + "\n" + this.Strings[3];
 		}
 		else
 		{

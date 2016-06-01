@@ -299,7 +299,7 @@ public class PauseScreenScript : MonoBehaviour
 						this.Column--;
 						this.UpdateSelection();
 					}
-					for (int i = 1; i < 12; i++)
+					for (int i = 1; i < Extensions.get_length(this.PhoneIcons); i++)
 					{
 						if (this.PhoneIcons[i] != null)
 						{
@@ -379,11 +379,17 @@ public class PauseScreenScript : MonoBehaviour
 							{
 								if (this.Selected != 9)
 								{
-									if (this.Selected == 11)
+									if (this.Selected != 10)
 									{
-										this.PromptBar.ClearButtons();
-										this.PromptBar.Show = false;
-										this.Quitting = true;
+										if (this.Selected == 11)
+										{
+											this.PromptBar.ClearButtons();
+											this.PromptBar.Show = false;
+											this.Quitting = true;
+										}
+										else if (this.Selected == 12)
+										{
+										}
 									}
 								}
 							}
@@ -511,10 +517,6 @@ public class PauseScreenScript : MonoBehaviour
 		else if (this.Row > 3)
 		{
 			this.Row = 0;
-		}
-		if (this.Row == 3)
-		{
-			this.Column = 2;
 		}
 		if (this.Column < 1)
 		{

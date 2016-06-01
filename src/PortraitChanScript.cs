@@ -1,4 +1,5 @@
 ﻿using System;
+using Boo.Lang.Runtime;
 using UnityEngine;
 using UnityScript.Lang;
 
@@ -222,80 +223,260 @@ public class PortraitChanScript : MonoBehaviour
 		{
 			if (a == "Red")
 			{
-				this.HairTexture = this.StudentManager.Colors[0];
+				object obj2;
+				object obj = obj2 = RuntimeServices.GetSlice(this.StudentManager, "Colors", new object[]
+				{
+					0
+				});
+				if (!(obj is Texture))
+				{
+					obj2 = RuntimeServices.Coerce(obj, typeof(Texture));
+				}
+				this.HairTexture = (Texture)obj2;
 			}
 			else if (a == "Yellow")
 			{
-				this.HairTexture = this.StudentManager.Colors[1];
+				object obj4;
+				object obj3 = obj4 = RuntimeServices.GetSlice(this.StudentManager, "Colors", new object[]
+				{
+					1
+				});
+				if (!(obj3 is Texture))
+				{
+					obj4 = RuntimeServices.Coerce(obj3, typeof(Texture));
+				}
+				this.HairTexture = (Texture)obj4;
 			}
 			else if (a == "Green")
 			{
-				this.HairTexture = this.StudentManager.Colors[2];
+				object obj6;
+				object obj5 = obj6 = RuntimeServices.GetSlice(this.StudentManager, "Colors", new object[]
+				{
+					2
+				});
+				if (!(obj5 is Texture))
+				{
+					obj6 = RuntimeServices.Coerce(obj5, typeof(Texture));
+				}
+				this.HairTexture = (Texture)obj6;
 			}
 			else if (a == "Cyan")
 			{
-				this.HairTexture = this.StudentManager.Colors[3];
+				object obj8;
+				object obj7 = obj8 = RuntimeServices.GetSlice(this.StudentManager, "Colors", new object[]
+				{
+					3
+				});
+				if (!(obj7 is Texture))
+				{
+					obj8 = RuntimeServices.Coerce(obj7, typeof(Texture));
+				}
+				this.HairTexture = (Texture)obj8;
 			}
 			else if (a == "Blue")
 			{
-				this.HairTexture = this.StudentManager.Colors[4];
+				object obj10;
+				object obj9 = obj10 = RuntimeServices.GetSlice(this.StudentManager, "Colors", new object[]
+				{
+					4
+				});
+				if (!(obj9 is Texture))
+				{
+					obj10 = RuntimeServices.Coerce(obj9, typeof(Texture));
+				}
+				this.HairTexture = (Texture)obj10;
 			}
 			else if (a == "Purple")
 			{
-				this.HairTexture = this.StudentManager.Colors[5];
-				this.DrillTexture = this.StudentManager.Colors[6];
+				object obj12;
+				object obj11 = obj12 = RuntimeServices.GetSlice(this.StudentManager, "Colors", new object[]
+				{
+					5
+				});
+				if (!(obj11 is Texture))
+				{
+					obj12 = RuntimeServices.Coerce(obj11, typeof(Texture));
+				}
+				this.HairTexture = (Texture)obj12;
+				object obj14;
+				object obj13 = obj14 = RuntimeServices.GetSlice(this.StudentManager, "Colors", new object[]
+				{
+					6
+				});
+				if (!(obj13 is Texture))
+				{
+					obj14 = RuntimeServices.Coerce(obj13, typeof(Texture));
+				}
+				this.DrillTexture = (Texture)obj14;
 			}
 			else if (a == "Brown")
 			{
-				this.HairTexture = this.StudentManager.Colors[7];
+				object obj16;
+				object obj15 = obj16 = RuntimeServices.GetSlice(this.StudentManager, "Colors", new object[]
+				{
+					7
+				});
+				if (!(obj15 is Texture))
+				{
+					obj16 = RuntimeServices.Coerce(obj15, typeof(Texture));
+				}
+				this.HairTexture = (Texture)obj16;
 			}
 			else if (a == "Pippi")
 			{
-				this.HairTexture = this.StudentManager.Colors[8];
+				object obj18;
+				object obj17 = obj18 = RuntimeServices.GetSlice(this.StudentManager, "Colors", new object[]
+				{
+					8
+				});
+				if (!(obj17 is Texture))
+				{
+					obj18 = RuntimeServices.Coerce(obj17, typeof(Texture));
+				}
+				this.HairTexture = (Texture)obj18;
 			}
 			else if (a == "Black")
 			{
-				this.HairTexture = this.StudentManager.Colors[9];
+				object obj20;
+				object obj19 = obj20 = RuntimeServices.GetSlice(this.StudentManager, "Colors", new object[]
+				{
+					9
+				});
+				if (!(obj19 is Texture))
+				{
+					obj20 = RuntimeServices.Coerce(obj19, typeof(Texture));
+				}
+				this.HairTexture = (Texture)obj20;
 			}
 			else if (a == "LongGreen")
 			{
-				this.HairTexture = this.StudentManager.Colors[10];
+				object obj22;
+				object obj21 = obj22 = RuntimeServices.GetSlice(this.StudentManager, "Colors", new object[]
+				{
+					10
+				});
+				if (!(obj21 is Texture))
+				{
+					obj22 = RuntimeServices.Coerce(obj21, typeof(Texture));
+				}
+				this.HairTexture = (Texture)obj22;
 			}
 			else if (a == "Succubus1")
 			{
-				this.HairTexture = this.StudentManager.Colors[11];
+				object obj24;
+				object obj23 = obj24 = RuntimeServices.GetSlice(this.StudentManager, "Colors", new object[]
+				{
+					11
+				});
+				if (!(obj23 is Texture))
+				{
+					obj24 = RuntimeServices.Coerce(obj23, typeof(Texture));
+				}
+				this.HairTexture = (Texture)obj24;
 			}
 			else if (a == "Succubus2")
 			{
-				this.HairTexture = this.StudentManager.Colors[12];
+				object obj26;
+				object obj25 = obj26 = RuntimeServices.GetSlice(this.StudentManager, "Colors", new object[]
+				{
+					12
+				});
+				if (!(obj25 is Texture))
+				{
+					obj26 = RuntimeServices.Coerce(obj25, typeof(Texture));
+				}
+				this.HairTexture = (Texture)obj26;
 			}
 			else if (a == "Kuudere")
 			{
-				this.HairTexture = this.StudentManager.Colors[13];
+				object obj28;
+				object obj27 = obj28 = RuntimeServices.GetSlice(this.StudentManager, "Colors", new object[]
+				{
+					13
+				});
+				if (!(obj27 is Texture))
+				{
+					obj28 = RuntimeServices.Coerce(obj27, typeof(Texture));
+				}
+				this.HairTexture = (Texture)obj28;
 			}
 			else if (a == "LongPink")
 			{
-				this.HairTexture = this.StudentManager.Colors[14];
+				object obj30;
+				object obj29 = obj30 = RuntimeServices.GetSlice(this.StudentManager, "Colors", new object[]
+				{
+					14
+				});
+				if (!(obj29 is Texture))
+				{
+					obj30 = RuntimeServices.Coerce(obj29, typeof(Texture));
+				}
+				this.HairTexture = (Texture)obj30;
 			}
 			else if (a == "ShortBrown")
 			{
-				this.HairTexture = this.StudentManager.Colors[15];
+				object obj32;
+				object obj31 = obj32 = RuntimeServices.GetSlice(this.StudentManager, "Colors", new object[]
+				{
+					15
+				});
+				if (!(obj31 is Texture))
+				{
+					obj32 = RuntimeServices.Coerce(obj31, typeof(Texture));
+				}
+				this.HairTexture = (Texture)obj32;
 			}
 			else if (a == "ShortOrange")
 			{
-				this.HairTexture = this.StudentManager.Colors[16];
+				object obj34;
+				object obj33 = obj34 = RuntimeServices.GetSlice(this.StudentManager, "Colors", new object[]
+				{
+					16
+				});
+				if (!(obj33 is Texture))
+				{
+					obj34 = RuntimeServices.Coerce(obj33, typeof(Texture));
+				}
+				this.HairTexture = (Texture)obj34;
 			}
 			else if (a == "Occult1")
 			{
-				this.HairTexture = this.StudentManager.Colors[17];
+				object obj36;
+				object obj35 = obj36 = RuntimeServices.GetSlice(this.StudentManager, "Colors", new object[]
+				{
+					17
+				});
+				if (!(obj35 is Texture))
+				{
+					obj36 = RuntimeServices.Coerce(obj35, typeof(Texture));
+				}
+				this.HairTexture = (Texture)obj36;
 			}
 			else if (a == "Occult3")
 			{
-				this.HairTexture = this.StudentManager.Colors[19];
+				object obj38;
+				object obj37 = obj38 = RuntimeServices.GetSlice(this.StudentManager, "Colors", new object[]
+				{
+					19
+				});
+				if (!(obj37 is Texture))
+				{
+					obj38 = RuntimeServices.Coerce(obj37, typeof(Texture));
+				}
+				this.HairTexture = (Texture)obj38;
 			}
 			else if (a == "Occult5")
 			{
-				this.HairTexture = this.StudentManager.Colors[21];
+				object obj40;
+				object obj39 = obj40 = RuntimeServices.GetSlice(this.StudentManager, "Colors", new object[]
+				{
+					21
+				});
+				if (!(obj39 is Texture))
+				{
+					obj40 = RuntimeServices.Coerce(obj39, typeof(Texture));
+				}
+				this.HairTexture = (Texture)obj40;
 			}
 			if (!this.Teacher)
 			{
@@ -323,7 +504,17 @@ public class PortraitChanScript : MonoBehaviour
 					((Renderer)this.TeacherHair[5].GetComponent(typeof(Renderer))).material.color = new Color(0.5f, 0.25f, (float)0, (float)1);
 					((Renderer)this.TeacherHair[6].GetComponent(typeof(Renderer))).material.color = new Color(0.5f, 0.25f, (float)0, (float)1);
 				}
-				this.MyRenderer.materials[1].mainTexture = this.StudentManager.Colors[7];
+				Material material = this.MyRenderer.materials[1];
+				object obj42;
+				object obj41 = obj42 = RuntimeServices.GetSlice(this.StudentManager, "Colors", new object[]
+				{
+					7
+				});
+				if (!(obj41 is Texture))
+				{
+					obj42 = RuntimeServices.Coerce(obj41, typeof(Texture));
+				}
+				material.mainTexture = (Texture)obj42;
 			}
 			if (this.Accessory == "Bandage")
 			{

@@ -183,7 +183,7 @@ public class DebugMenuScript : MonoBehaviour
 			else if (Input.GetKeyDown("e"))
 			{
 				PlayerPrefs.SetInt("Student_7_Expelled", 0);
-				PlayerPrefs.SetInt("Scheme_5_Stage", 6);
+				PlayerPrefs.SetInt("Scheme_5_Stage", 7);
 				PlayerPrefs.SetInt("ExpelProgress", 4);
 				this.Window.active = false;
 			}
@@ -194,14 +194,22 @@ public class DebugMenuScript : MonoBehaviour
 			}
 			else if (Input.GetKeyDown("g"))
 			{
-				if (this.StudentManager.Students[16] != null)
+				PlayerPrefs.SetInt("7_Friend", 1);
+				this.Yandere.transform.position = this.RooftopSpot.position;
+				if (this.StudentManager.Students[7] != null)
 				{
-					this.StudentManager.Students[16].CurrentDestination = this.RooftopSpot;
-					this.StudentManager.Students[16].Pathfinding.target = this.RooftopSpot;
-					this.StudentManager.Students[16].Pathfinding.canSearch = true;
-					this.StudentManager.Students[16].Pathfinding.canMove = true;
-					this.StudentManager.Students[16].Meeting = true;
-					this.StudentManager.Students[16].MeetTime = (float)0;
+					this.StudentManager.Students[7].transform.position = this.RooftopSpot.position;
+					this.StudentManager.Students[7].Prompt.Label[0].text = "     " + "Push";
+					this.StudentManager.Students[7].CurrentDestination = this.RooftopSpot;
+					this.StudentManager.Students[7].Pathfinding.target = this.RooftopSpot;
+					this.StudentManager.Students[7].Pathfinding.canSearch = true;
+					this.StudentManager.Students[7].Pathfinding.canMove = true;
+					this.StudentManager.Students[7].Meeting = true;
+					this.StudentManager.Students[7].MeetTime = (float)0;
+				}
+				if (this.Clock.HourTime < 7.1f)
+				{
+					this.Clock.PresentTime = 426f;
 				}
 				this.Window.active = false;
 			}

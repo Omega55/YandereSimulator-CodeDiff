@@ -27,6 +27,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public ContainerScript Container;
 
+	public OfferHelpScript OfferHelp;
+
 	public FountainScript Fountain;
 
 	public TrashCanScript TrashCan;
@@ -71,6 +73,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform FountainSpot;
 
+	public Transform BrokenSpot;
+
 	public Transform GoAwaySpot;
 
 	public Transform BatheSpot;
@@ -110,12 +114,6 @@ public class StudentManagerScript : MonoBehaviour
 	public int Frame;
 
 	public int ID;
-
-	public Texture[] Stockings;
-
-	public Texture[] MaleColors;
-
-	public Texture[] Colors;
 
 	public bool MurderTakingPlace;
 

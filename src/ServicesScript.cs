@@ -45,6 +45,8 @@ public class ServicesScript : MonoBehaviour
 
 	public int ID;
 
+	public AudioClip InfoUnavailable;
+
 	public AudioClip InfoPurchase;
 
 	public AudioClip InfoAfford;
@@ -84,30 +86,42 @@ public class ServicesScript : MonoBehaviour
 			}
 			this.UpdateDesc();
 		}
-		if (Input.GetButtonDown("A") && PlayerPrefs.GetInt("Service_" + this.Selected + "_Purchased") == 0)
+		if (Input.GetButtonDown("A"))
 		{
-			if (this.PromptBar.Label[0].text != string.Empty)
+			if (PlayerPrefs.GetInt("Service_" + this.Selected + "_Purchased") == 0)
 			{
-				if (PlayerPrefs.GetInt("PantyShots") >= this.ServiceCosts[this.Selected])
+				if (this.PromptBar.Label[0].text != string.Empty)
 				{
-					PlayerPrefs.SetInt("PantyShots", PlayerPrefs.GetInt("PantyShots") - this.ServiceCosts[this.Selected]);
-					PlayerPrefs.SetInt("Service_" + this.Selected + "_Purchased", 1);
-					if (this.Selected == 4)
+					if (PlayerPrefs.GetInt("PantyShots") >= this.ServiceCosts[this.Selected])
 					{
-						PlayerPrefs.SetInt("Scheme_1_Stage", 2);
-						this.Schemes.UpdateInstructions();
-						PlayerPrefs.SetInt("DarkSecret", 1);
-						this.TextMessageManager.SpawnMessage();
+						PlayerPrefs.SetInt("PantyShots", PlayerPrefs.GetInt("PantyShots") - this.ServiceCosts[this.Selected]);
+						PlayerPrefs.SetInt("Service_" + this.Selected + "_Purchased", 1);
+						AudioSource.PlayClipAtPoint(this.InfoPurchase, this.transform.position);
+						if (this.Selected == 4)
+						{
+							PlayerPrefs.SetInt("Scheme_1_Stage", 2);
+							this.Schemes.UpdateInstructions();
+							PlayerPrefs.SetInt("DarkSecret", 1);
+							this.TextMessageManager.SpawnMessage();
+						}
+						this.UpdateList();
+						this.UpdateDesc();
 					}
-					this.UpdateList();
-					this.UpdateDesc();
-					this.audio.clip = this.InfoPurchase;
+				}
+				else if (PlayerPrefs.GetInt("PantyShots") < this.ServiceCosts[this.Selected])
+				{
+					this.audio.clip = this.InfoAfford;
+					this.audio.Play();
+				}
+				else
+				{
+					this.audio.clip = this.InfoUnavailable;
 					this.audio.Play();
 				}
 			}
-			else if (PlayerPrefs.GetInt("PantyShots") < this.ServiceCosts[this.Selected])
+			else
 			{
-				this.audio.clip = this.InfoAfford;
+				this.audio.clip = this.InfoUnavailable;
 				this.audio.Play();
 			}
 		}

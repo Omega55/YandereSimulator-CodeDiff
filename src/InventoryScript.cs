@@ -6,6 +6,8 @@ public class InventoryScript : MonoBehaviour
 {
 	public SchemesScript Schemes;
 
+	public bool ModifiedUniform;
+
 	public bool DuplicateSheet;
 
 	public bool Tranquilizer;
@@ -17,6 +19,8 @@ public class InventoryScript : MonoBehaviour
 	public bool Cigs;
 
 	public bool Ring;
+
+	public bool Bra;
 
 	public virtual void Main()
 	{

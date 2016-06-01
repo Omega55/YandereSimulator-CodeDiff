@@ -32,6 +32,22 @@ public class PhoneScript : MonoBehaviour
 
 	public int[] Height;
 
+	public AudioClip[] KidnapClip;
+
+	public int[] KidnapSpeaker;
+
+	public string[] KidnapText;
+
+	public int[] KidnapHeight;
+
+	public AudioClip[] BefriendClip;
+
+	public int[] BefriendSpeaker;
+
+	public string[] BefriendText;
+
+	public int[] BefriendHeight;
+
 	public bool FadeOut;
 
 	public bool Auto;
@@ -54,10 +70,35 @@ public class PhoneScript : MonoBehaviour
 		Color color = this.Darkness.color;
 		float num4 = color.a = (float)num3;
 		Color color2 = this.Darkness.color = color;
+		if (PlayerPrefs.GetInt("KidnapConversation") == 1)
+		{
+			this.VoiceClips = this.KidnapClip;
+			this.Speaker = this.KidnapSpeaker;
+			this.Text = this.KidnapText;
+			this.Height = this.KidnapHeight;
+			PlayerPrefs.SetInt("BefriendConversation", 1);
+			PlayerPrefs.SetInt("KidnapConversation", 0);
+		}
+		else if (PlayerPrefs.GetInt("BefriendConversation") == 1)
+		{
+			this.VoiceClips = this.BefriendClip;
+			this.Speaker = this.BefriendSpeaker;
+			this.Text = this.BefriendText;
+			this.Height = this.BefriendHeight;
+			PlayerPrefs.SetInt("LivingRoom", 1);
+			PlayerPrefs.SetInt("BefriendConversation", 0);
+		}
 	}
 
 	public virtual void Update()
 	{
+		if (Input.GetKeyDown("k"))
+		{
+			PlayerPrefs.SetInt("LivingRoom", 0);
+			PlayerPrefs.SetInt("KidnapConversation", 1);
+			PlayerPrefs.SetInt("BefriendConversation", 0);
+			Application.LoadLevel(Application.loadedLevel);
+		}
 		if (!this.FadeOut)
 		{
 			if (this.Timer > (float)0)
@@ -85,7 +126,7 @@ public class PhoneScript : MonoBehaviour
 				float num2 = localPosition.y = y;
 				Vector3 vector = this.Buttons.localPosition = localPosition;
 				this.AutoTimer += Time.deltaTime;
-				if ((this.Auto && this.AutoTimer > this.AutoLimit) || Input.GetButtonDown("A"))
+				if ((this.Auto && this.AutoTimer > this.VoiceClips[this.ID].length + (float)1) || Input.GetButtonDown("A"))
 				{
 					this.AutoTimer = (float)0;
 					if (this.ID < this.Text.Length - 1)
@@ -119,7 +160,18 @@ public class PhoneScript : MonoBehaviour
 			this.Jukebox.volume = (float)1 - this.Darkness.color.a;
 			if (this.Darkness.color.a >= (float)1)
 			{
-				Application.LoadLevel("CalendarScene");
+				if (PlayerPrefs.GetInt("BefriendConversation") == 0 && PlayerPrefs.GetInt("LivingRoom") == 0)
+				{
+					Application.LoadLevel("CalendarScene");
+				}
+				else if (PlayerPrefs.GetInt("LivingRoom") == 1)
+				{
+					Application.LoadLevel("LivingRoomScene");
+				}
+				else
+				{
+					Application.LoadLevel(Application.loadedLevel);
+				}
 			}
 		}
 		this.Timer += Time.deltaTime;
@@ -150,6 +202,10 @@ public class PhoneScript : MonoBehaviour
 			this.NewMessage.transform.parent = this.Panel;
 			this.NewMessage.transform.localPosition = new Vector3((float)225, (float)-375, (float)0);
 			this.NewMessage.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+			if (this.Speaker == this.KidnapSpeaker && this.Height[this.ID] == 8)
+			{
+				((TextMessageScript)this.NewMessage.GetComponent(typeof(TextMessageScript))).Attachment = true;
+			}
 		}
 		this.AutoLimit = (float)(this.Height[this.ID] + 1);
 		((TextMessageScript)this.NewMessage.GetComponent(typeof(TextMessageScript))).Label.text = this.Text[this.ID];

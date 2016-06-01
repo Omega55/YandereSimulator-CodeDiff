@@ -4,7 +4,7 @@ using UnityEngine;
 [Serializable]
 public class RooftopScript : MonoBehaviour
 {
-	public GameObject DumpPoint;
+	public GameObject[] DumpPoints;
 
 	public GameObject Railing;
 
@@ -12,9 +12,12 @@ public class RooftopScript : MonoBehaviour
 
 	public virtual void Start()
 	{
-		if (PlayerPrefs.GetInt("Suicide") == 1)
+		if (PlayerPrefs.GetInt("RoofFence") == 1)
 		{
-			this.DumpPoint.active = false;
+			for (int i = 0; i < this.DumpPoints.Length; i++)
+			{
+				this.DumpPoints[i].active = false;
+			}
 			this.Railing.active = false;
 			this.Fence.active = true;
 		}

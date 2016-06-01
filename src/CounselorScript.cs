@@ -37,6 +37,10 @@ public class CounselorScript : MonoBehaviour
 
 	public string CounselorFarewellText;
 
+	public AudioClip CounselorBusyClip;
+
+	public string CounselorBusyText;
+
 	public string[] CounselorGreetingText;
 
 	public string[] CounselorLectureText;
@@ -85,6 +89,8 @@ public class CounselorScript : MonoBehaviour
 
 	public float ExpelTimer;
 
+	public float ChinTimer;
+
 	public float Timer;
 
 	public Vector3 LookAtTarget;
@@ -118,33 +124,45 @@ public class CounselorScript : MonoBehaviour
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
 		}
-		else if (!this.Busy)
+		else
 		{
 			this.Prompt.enabled = true;
 		}
 		if (this.Prompt.Circle[0].fillAmount <= (float)0)
 		{
-			this.Yandere.TargetStudent = this.Student;
-			int num = UnityEngine.Random.Range(1, 3);
-			this.CounselorSubtitle.text = this.CounselorGreetingText[num];
-			this.audio.clip = this.CounselorGreetingClips[num];
-			this.audio.Play();
-			this.StudentManager.DisablePrompts();
-			this.LookAtPlayer = true;
-			this.ShowWindow = true;
-			this.Yandere.ShoulderCamera.OverShoulder = true;
-			this.Yandere.WeaponMenu.KeyboardShow = false;
-			this.Yandere.Obscurance.enabled = false;
-			this.Yandere.WeaponMenu.Show = false;
-			this.Yandere.YandereVision = false;
-			this.Yandere.CanMove = false;
-			this.Yandere.Talking = true;
-			this.PromptBar.ClearButtons();
-			this.PromptBar.Label[0].text = "Accept";
-			this.PromptBar.Label[4].text = "Choose";
-			this.PromptBar.UpdateButtons();
-			this.PromptBar.Show = true;
-			this.UpdateList();
+			this.Prompt.Circle[0].fillAmount = (float)1;
+			if (!this.Busy)
+			{
+				this.animation.CrossFade("CounselorComputerAttention", (float)1);
+				this.ChinTimer = (float)0;
+				this.Yandere.TargetStudent = this.Student;
+				int num = UnityEngine.Random.Range(1, 3);
+				this.CounselorSubtitle.text = this.CounselorGreetingText[num];
+				this.audio.clip = this.CounselorGreetingClips[num];
+				this.audio.Play();
+				this.StudentManager.DisablePrompts();
+				this.LookAtPlayer = true;
+				this.ShowWindow = true;
+				this.Yandere.ShoulderCamera.OverShoulder = true;
+				this.Yandere.WeaponMenu.KeyboardShow = false;
+				this.Yandere.Obscurance.enabled = false;
+				this.Yandere.WeaponMenu.Show = false;
+				this.Yandere.YandereVision = false;
+				this.Yandere.CanMove = false;
+				this.Yandere.Talking = true;
+				this.PromptBar.ClearButtons();
+				this.PromptBar.Label[0].text = "Accept";
+				this.PromptBar.Label[4].text = "Choose";
+				this.PromptBar.UpdateButtons();
+				this.PromptBar.Show = true;
+				this.UpdateList();
+			}
+			else
+			{
+				this.CounselorSubtitle.text = this.CounselorBusyText;
+				this.audio.clip = this.CounselorBusyClip;
+				this.audio.Play();
+			}
 		}
 		if (this.LookAtPlayer)
 		{
@@ -172,6 +190,7 @@ public class CounselorScript : MonoBehaviour
 				{
 					if (this.Selected == 7)
 					{
+						this.animation.CrossFade("CounselorComputerLoop", (float)1);
 						this.Yandere.ShoulderCamera.OverShoulder = false;
 						this.StudentManager.EnablePrompts();
 						this.Yandere.TargetStudent = null;
@@ -218,8 +237,6 @@ public class CounselorScript : MonoBehaviour
 						this.LectureID = this.Selected;
 						this.PromptBar.ClearButtons();
 						this.PromptBar.Show = false;
-						this.Prompt.Hide();
-						this.Prompt.enabled = false;
 						this.Busy = true;
 					}
 				}
@@ -235,6 +252,7 @@ public class CounselorScript : MonoBehaviour
 					this.Timer += Time.deltaTime;
 					if (this.Timer > 0.5f)
 					{
+						this.animation.CrossFade("CounselorComputerLoop", (float)1);
 						this.Yandere.ShoulderCamera.OverShoulder = false;
 						this.StudentManager.EnablePrompts();
 						this.Yandere.TargetStudent = null;
@@ -242,6 +260,19 @@ public class CounselorScript : MonoBehaviour
 						this.Angry = false;
 						this.UpdateList();
 					}
+				}
+			}
+		}
+		else
+		{
+			this.ChinTimer += Time.deltaTime;
+			if (this.ChinTimer > (float)10)
+			{
+				this.animation.CrossFade("CounselorComputerChin");
+				if (this.animation["CounselorComputerChin"].time > this.animation["CounselorComputerChin"].length)
+				{
+					this.animation.CrossFade("CounselorComputerLoop");
+					this.ChinTimer = (float)0;
 				}
 			}
 		}
@@ -367,9 +398,14 @@ public class CounselorScript : MonoBehaviour
 					}
 					else if (this.LectureID < 6)
 					{
+						int num11 = 1;
+						Color color13 = this.LectureLabel.color;
+						float num12 = color13.a = (float)num11;
+						Color color14 = this.LectureLabel.color = color13;
 						this.EndOfDay.enabled = true;
 						this.EndOfDay.Phase = this.EndOfDay.Phase + 1;
 						this.EndOfDay.UpdateScene();
+						this.enabled = false;
 					}
 					else
 					{

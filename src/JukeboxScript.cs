@@ -14,6 +14,8 @@ public class JukeboxScript : MonoBehaviour
 
 	public AudioSource Skeletons;
 
+	public AudioSource Metroid;
+
 	public AudioSource Nuclear;
 
 	public AudioSource Slender;
@@ -175,6 +177,7 @@ public class JukeboxScript : MonoBehaviour
 			this.AttackOnTitan.volume = Mathf.MoveTowards(this.AttackOnTitan.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Megalovania.volume = Mathf.MoveTowards(this.Megalovania.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Skeletons.volume = Mathf.MoveTowards(this.Skeletons.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
+			this.Metroid.volume = Mathf.MoveTowards(this.Metroid.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Nuclear.volume = Mathf.MoveTowards(this.Nuclear.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Slender.volume = Mathf.MoveTowards(this.Slender.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Sukeban.volume = Mathf.MoveTowards(this.Sukeban.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
@@ -296,6 +299,15 @@ public class JukeboxScript : MonoBehaviour
 					this.Megalovania.enabled = true;
 				}
 			}
+			else if (Input.GetKeyDown("q"))
+			{
+				if (!this.MuteCopyrights)
+				{
+					this.Egg = true;
+					this.KillVolume();
+					this.Metroid.enabled = true;
+				}
+			}
 			else if (Input.GetKeyDown("y"))
 			{
 				this.Egg = true;
@@ -324,6 +336,7 @@ public class JukeboxScript : MonoBehaviour
 		this.AttackOnTitan.Stop();
 		this.Megalovania.Stop();
 		this.Skeletons.Stop();
+		this.Metroid.Stop();
 		this.Nuclear.Stop();
 		this.Sukeban.Stop();
 		this.Slender.Stop();

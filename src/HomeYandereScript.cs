@@ -10,35 +10,35 @@ public class HomeYandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$2561 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$2609 : GenericGenerator<WWW>
 	{
-		internal HomeYandereScript $self_$2567;
+		internal HomeYandereScript $self_$2615;
 
-		public $ApplyCustomCostume$2561(HomeYandereScript self_)
+		public $ApplyCustomCostume$2609(HomeYandereScript self_)
 		{
-			this.$self_$2567 = self_;
+			this.$self_$2615 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new HomeYandereScript.$ApplyCustomCostume$2561.$(this.$self_$2567);
+			return new HomeYandereScript.$ApplyCustomCostume$2609.$(this.$self_$2615);
 		}
 	}
 
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomFace$2568 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomFace$2616 : GenericGenerator<WWW>
 	{
-		internal HomeYandereScript $self_$2573;
+		internal HomeYandereScript $self_$2621;
 
-		public $ApplyCustomFace$2568(HomeYandereScript self_)
+		public $ApplyCustomFace$2616(HomeYandereScript self_)
 		{
-			this.$self_$2573 = self_;
+			this.$self_$2621 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new HomeYandereScript.$ApplyCustomFace$2568.$(this.$self_$2573);
+			return new HomeYandereScript.$ApplyCustomFace$2616.$(this.$self_$2621);
 		}
 	}
 
@@ -115,6 +115,12 @@ public class HomeYandereScript : MonoBehaviour
 				{
 					this.WearPajamas();
 				}
+			}
+			else if (PlayerPrefs.GetInt("StartInBasement") == 1)
+			{
+				PlayerPrefs.SetInt("StartInBasement", 0);
+				this.transform.position = new Vector3((float)0, (float)-135, (float)0);
+				this.transform.eulerAngles = new Vector3((float)0, (float)0, (float)0);
 			}
 			else
 			{
@@ -203,9 +209,9 @@ public class HomeYandereScript : MonoBehaviour
 		}
 		if (Input.GetKeyDown("k"))
 		{
-			PlayerPrefs.SetInt("Kidnapped", 1);
 			PlayerPrefs.SetInt("KidnapVictim", this.VictimID);
 			PlayerPrefs.SetFloat("Student_" + this.VictimID + "_Sanity", 100f);
+			PlayerPrefs.SetInt("Scheme_6_Stage", 5);
 			Application.LoadLevel(Application.loadedLevel);
 		}
 		if (Input.GetKeyDown(KeyCode.F1))
@@ -321,12 +327,12 @@ public class HomeYandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new HomeYandereScript.$ApplyCustomCostume$2561(this).GetEnumerator();
+		return new HomeYandereScript.$ApplyCustomCostume$2609(this).GetEnumerator();
 	}
 
 	public virtual IEnumerator ApplyCustomFace()
 	{
-		return new HomeYandereScript.$ApplyCustomFace$2568(this).GetEnumerator();
+		return new HomeYandereScript.$ApplyCustomFace$2616(this).GetEnumerator();
 	}
 
 	public virtual void Main()

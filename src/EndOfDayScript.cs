@@ -43,6 +43,8 @@ public class EndOfDayScript : MonoBehaviour
 
 	public bool ClubKicked;
 
+	public bool ErectFence;
+
 	public bool GameOver;
 
 	public bool Darken;
@@ -411,11 +413,11 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 11)
 			{
+				Debug.Log("Phase 11.");
 				if (PlayerPrefs.GetInt("Scheme_2_Stage") == 3)
 				{
 					this.Label.text = "Kokona discovers Sakyu's ring inside of her book bag. She returns the ring to Sakyu, who decides to never let it out of her sight again.";
 					PlayerPrefs.SetInt("Scheme_2_Stage", 100);
-					Debug.Log("It happened");
 				}
 				else if (PlayerPrefs.GetInt("Scheme_5_Stage") > 1 && PlayerPrefs.GetInt("Scheme_5_Stage") < 5)
 				{
@@ -430,6 +432,7 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 12)
 			{
+				Debug.Log("Phase 12.");
 				this.ClubClosed = false;
 				this.ClubKicked = false;
 				if (this.ClubID < Extensions.get_length(this.ClubArray))
@@ -492,24 +495,44 @@ public class EndOfDayScript : MonoBehaviour
 						this.UpdateScene();
 					}
 				}
-				else if (this.TranqCase.Occupied)
-				{
-					this.Phase++;
-					this.UpdateScene();
-				}
 				else
 				{
-					this.Phase = 14;
+					this.Phase++;
 					this.UpdateScene();
 				}
 			}
 			else if (this.Phase == 13)
 			{
-				this.Label.text = "Yandere-chan waits until the clock strikes midnight." + "\n" + "\n" + "Under the cover of darkness, Yandere-chan travels back to school and sneaks inside of the main school building." + "\n" + "\n" + "Yandere-chan returns to the instrument case that carries her unconscious victim." + "\n" + "\n" + "She pushes the case back to her house, pretending to be a young musician returning home from a late-night show." + "\n" + "\n" + "Yandere-chan drags the case down to her basement and ties up her victim." + "\n" + "\n" + "Exhausted, Yandere-chan goes to sleep.";
-				this.Phase++;
+				Debug.Log("Phase 13.");
+				if (this.TranqCase.Occupied)
+				{
+					this.Label.text = "Yandere-chan waits until the clock strikes midnight." + "\n" + "\n" + "Under the cover of darkness, Yandere-chan travels back to school and sneaks inside of the main school building." + "\n" + "\n" + "Yandere-chan returns to the instrument case that carries her unconscious victim." + "\n" + "\n" + "She pushes the case back to her house, pretending to be a young musician returning home from a late-night show." + "\n" + "\n" + "Yandere-chan drags the case down to her basement and ties up her victim." + "\n" + "\n" + "Exhausted, Yandere-chan goes to sleep.";
+					this.Phase++;
+				}
+				else
+				{
+					this.Phase++;
+					this.UpdateScene();
+				}
 			}
 			else if (this.Phase == 14)
 			{
+				Debug.Log("Phase 14.");
+				if (this.ErectFence)
+				{
+					this.Label.text = "To prevent any other students from falling off of the school rooftop, the school erects a fence around the roof.";
+					PlayerPrefs.SetInt("RoofFence", 1);
+					this.ErectFence = false;
+				}
+				else
+				{
+					this.Phase++;
+					this.UpdateScene();
+				}
+			}
+			else if (this.Phase == 15)
+			{
+				Debug.Log("Going home.");
 				PlayerPrefs.SetFloat("Reputation", this.Reputation.Reputation);
 				PlayerPrefs.SetInt("Night", 1);
 				this.Police.KillStudents();
@@ -519,7 +542,6 @@ public class EndOfDayScript : MonoBehaviour
 				}
 				else
 				{
-					PlayerPrefs.SetInt("Kidnapped", 1);
 					PlayerPrefs.SetInt("KidnapVictim", this.TranqCase.VictimID);
 					PlayerPrefs.SetInt("Student_" + this.TranqCase.VictimID + "_Kidnapped", 1);
 					PlayerPrefs.SetFloat("Student_" + this.TranqCase.VictimID + "_Sanity", 100f);
@@ -576,7 +598,8 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 102)
 			{
-				this.Label.text = "The police inspect the corpse of the student who appears to have killed herself. The police treat the incident as a murder case, and search the school for any other victims.";
+				this.Label.text = "The police inspect the corpse of a student who appears to have fallen to their death from the school rooftop. The police treat the incident as a murder case, and search the school for any other victims.";
+				this.ErectFence = true;
 				this.ID = 0;
 				while (this.ID < Extensions.get_length(this.Police.CorpseList))
 				{

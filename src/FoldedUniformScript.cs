@@ -16,6 +16,8 @@ public class FoldedUniformScript : MonoBehaviour
 
 	public float Timer;
 
+	public int Type;
+
 	public FoldedUniformScript()
 	{
 		this.InPosition = true;
