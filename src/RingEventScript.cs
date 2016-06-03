@@ -259,6 +259,16 @@ public class RingEventScript : MonoBehaviour
 		this.enabled = false;
 	}
 
+	public virtual void ReturnRing()
+	{
+		if (this.EventStudent.Cosmetic.FemaleAccessories[3] != null)
+		{
+			this.EventStudent.Cosmetic.FemaleAccessories[3].transform.parent = this.EventStudent.LeftMiddleFinger;
+			this.EventStudent.Cosmetic.FemaleAccessories[3].transform.localPosition = this.OriginalPosition;
+			((BoxCollider)this.EventStudent.Cosmetic.FemaleAccessories[3].GetComponent(typeof(BoxCollider))).enabled = false;
+		}
+	}
+
 	public virtual void Main()
 	{
 	}

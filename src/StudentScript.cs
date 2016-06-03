@@ -1036,7 +1036,10 @@ public class StudentScript : MonoBehaviour
 						this.MeetTime = (float)0;
 					}
 				}
-				this.DistanceToDestination = Vector3.Distance(this.transform.position, this.CurrentDestination.position);
+				if (this.CurrentDestination != null)
+				{
+					this.DistanceToDestination = Vector3.Distance(this.transform.position, this.CurrentDestination.position);
+				}
 				if (this.DistanceToDestination > this.TargetDistance)
 				{
 					if (!this.InEvent && !this.Meeting && this.DressCode)
@@ -1103,8 +1106,11 @@ public class StudentScript : MonoBehaviour
 				}
 				else
 				{
-					this.MoveTowardsTarget(this.CurrentDestination.position);
-					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.CurrentDestination.rotation, (float)10 * Time.deltaTime);
+					if (this.CurrentDestination != null)
+					{
+						this.MoveTowardsTarget(this.CurrentDestination.position);
+						this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.CurrentDestination.rotation, (float)10 * Time.deltaTime);
+					}
 					if (this.Pathfinding.canMove)
 					{
 						this.Pathfinding.canSearch = false;
@@ -1298,6 +1304,10 @@ public class StudentScript : MonoBehaviour
 							if (this.MeetTimer > (float)60)
 							{
 								this.Subtitle.UpdateLabel("Note Reaction", 4, (float)3);
+								while (this.Clock.HourTime >= this.PhaseTimes[this.Phase])
+								{
+									this.Phase++;
+								}
 								this.CurrentDestination = this.Destinations[this.Phase];
 								this.Pathfinding.target = this.Destinations[this.Phase];
 								this.Prompt.Label[0].text = "     Talk";
@@ -3783,6 +3793,7 @@ public class StudentScript : MonoBehaviour
 
 	public virtual void AttackReaction()
 	{
+		this.StudentManager.TranqDetector.TranqCheck();
 		if (!this.Male)
 		{
 			this.Character.animation["f02_smile_00"].weight = (float)0;

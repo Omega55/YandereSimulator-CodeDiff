@@ -40,6 +40,8 @@ public class PhoneEventScript : MonoBehaviour
 
 	public float CurrentClipLength;
 
+	public float FailSafe;
+
 	public float Timer;
 
 	public PhoneEventScript()
@@ -63,7 +65,7 @@ public class PhoneEventScript : MonoBehaviour
 		if (!this.Clock.StopTime && this.EventCheck && this.Clock.HourTime > this.EventTime)
 		{
 			this.EventStudent = this.StudentManager.Students[7];
-			if (this.EventStudent != null && this.EventStudent.Routine && !this.EventStudent.Distracted && !this.EventStudent.Talking)
+			if (this.EventStudent != null && this.EventStudent.Routine && !this.EventStudent.Distracted && !this.EventStudent.Talking && !this.EventStudent.Meeting)
 			{
 				if (!this.EventStudent.WitnessedMurder)
 				{
@@ -96,115 +98,119 @@ public class PhoneEventScript : MonoBehaviour
 		}
 		if (this.EventActive)
 		{
-			if (this.EventStudent.DistanceToDestination < 0.5f)
+			this.FailSafe += Time.deltaTime;
+			if (this.FailSafe > (float)1)
 			{
-				this.EventStudent.Pathfinding.canSearch = false;
-				this.EventStudent.Pathfinding.canMove = false;
-			}
-			if (this.Clock.HourTime > this.EventTime + 0.5f || this.EventStudent.WitnessedMurder || this.EventStudent.Splashed || this.EventStudent.Alarmed || this.EventStudent.Dying || this.EventStudent.Dead)
-			{
-				this.EndEvent();
-			}
-			else if (!this.EventStudent.Pathfinding.canMove)
-			{
-				if (this.EventPhase == 1)
+				if (this.EventStudent.DistanceToDestination < 0.5f)
 				{
-					this.Timer += Time.deltaTime;
-					this.EventStudent.Character.animation.CrossFade(this.EventAnim[0]);
-					this.PlayClip(this.EventClip[0], this.EventStudent.transform.position);
-					this.EventPhase++;
+					this.EventStudent.Pathfinding.canSearch = false;
+					this.EventStudent.Pathfinding.canMove = false;
 				}
-				else if (this.EventPhase == 2)
-				{
-					this.Timer += Time.deltaTime;
-					if (this.Timer > (float)2)
-					{
-						this.EventStudent.Phone.active = true;
-					}
-					if (this.Timer > (float)4)
-					{
-						this.EventStudent.Character.animation.CrossFade(this.EventAnim[1]);
-						this.PlayClip(this.EventClip[1], this.EventStudent.transform.position);
-						this.EventSubtitle.text = this.EventSpeech[1];
-						this.Timer = (float)0;
-						this.EventPhase++;
-					}
-				}
-				else if (this.EventPhase == 3)
-				{
-					this.Timer += Time.deltaTime;
-					if (this.Timer > this.CurrentClipLength)
-					{
-						this.EventStudent.Character.animation.CrossFade(this.EventStudent.RunAnim);
-						this.EventStudent.CurrentDestination = this.EventLocation;
-						this.EventStudent.Pathfinding.target = this.EventLocation;
-						this.EventStudent.Pathfinding.canSearch = true;
-						this.EventStudent.Pathfinding.canMove = true;
-						this.EventStudent.Pathfinding.speed = (float)4;
-						this.EventSubtitle.text = string.Empty;
-						this.Timer = (float)0;
-						this.EventPhase++;
-					}
-				}
-				else if (this.EventPhase == 4)
-				{
-					this.DumpPoint.enabled = true;
-					this.EventStudent.Character.animation.CrossFade(this.EventAnim[2]);
-					this.PlayClip(this.EventClip[2], this.EventStudent.transform.position);
-					this.EventPhase++;
-				}
-				else if (this.EventPhase < 13)
-				{
-					if (this.Timer < this.CurrentClipLength)
-					{
-						this.EventSubtitle.text = this.EventSpeech[this.EventPhase - 3];
-					}
-					else
-					{
-						this.EventSubtitle.text = string.Empty;
-					}
-					this.Timer += Time.deltaTime;
-					if (this.Timer > this.CurrentClipLength + (float)1)
-					{
-						if (this.EventPhase < 12)
-						{
-							this.EventStudent.Character.animation.CrossFade(this.EventAnim[this.EventPhase - 2]);
-							this.PlayClip(this.EventClip[this.EventPhase - 2], this.EventStudent.transform.position);
-						}
-						this.Timer = (float)0;
-						this.EventPhase++;
-					}
-				}
-				else
+				if (this.Clock.HourTime > this.EventTime + 0.5f || this.EventStudent.WitnessedMurder || this.EventStudent.Splashed || this.EventStudent.Alarmed || this.EventStudent.Dying || this.EventStudent.Dead)
 				{
 					this.EndEvent();
 				}
-				if (this.EventPhase == 12)
+				else if (!this.EventStudent.Pathfinding.canMove)
 				{
-					this.EventStudent.Phone.active = false;
-				}
-				float num = Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position);
-				if (num < (float)10)
-				{
-					float num2 = Mathf.Abs((num - (float)10) * 0.2f);
-					if (num2 < (float)0)
+					if (this.EventPhase == 1)
 					{
-						num2 = (float)0;
+						this.Timer += Time.deltaTime;
+						this.EventStudent.Character.animation.CrossFade(this.EventAnim[0]);
+						this.PlayClip(this.EventClip[0], this.EventStudent.transform.position);
+						this.EventPhase++;
 					}
-					if (num2 > (float)1)
+					else if (this.EventPhase == 2)
 					{
-						num2 = (float)1;
+						this.Timer += Time.deltaTime;
+						if (this.Timer > (float)2)
+						{
+							this.EventStudent.Phone.active = true;
+						}
+						if (this.Timer > (float)4)
+						{
+							this.EventStudent.Character.animation.CrossFade(this.EventAnim[1]);
+							this.PlayClip(this.EventClip[1], this.EventStudent.transform.position);
+							this.EventSubtitle.text = this.EventSpeech[1];
+							this.Timer = (float)0;
+							this.EventPhase++;
+						}
 					}
-					this.EventSubtitle.transform.localScale = new Vector3(num2, num2, num2);
-				}
-				else
-				{
-					this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
-				}
-				if (this.EventPhase == 11 && num < (float)5 && PlayerPrefs.GetInt("Event2") == 0)
-				{
-					this.Yandere.NotificationManager.DisplayNotification("Info");
-					PlayerPrefs.SetInt("Event2", 1);
+					else if (this.EventPhase == 3)
+					{
+						this.Timer += Time.deltaTime;
+						if (this.Timer > this.CurrentClipLength)
+						{
+							this.EventStudent.Character.animation.CrossFade(this.EventStudent.RunAnim);
+							this.EventStudent.CurrentDestination = this.EventLocation;
+							this.EventStudent.Pathfinding.target = this.EventLocation;
+							this.EventStudent.Pathfinding.canSearch = true;
+							this.EventStudent.Pathfinding.canMove = true;
+							this.EventStudent.Pathfinding.speed = (float)4;
+							this.EventSubtitle.text = string.Empty;
+							this.Timer = (float)0;
+							this.EventPhase++;
+						}
+					}
+					else if (this.EventPhase == 4)
+					{
+						this.DumpPoint.enabled = true;
+						this.EventStudent.Character.animation.CrossFade(this.EventAnim[2]);
+						this.PlayClip(this.EventClip[2], this.EventStudent.transform.position);
+						this.EventPhase++;
+					}
+					else if (this.EventPhase < 13)
+					{
+						if (this.Timer < this.CurrentClipLength)
+						{
+							this.EventSubtitle.text = this.EventSpeech[this.EventPhase - 3];
+						}
+						else
+						{
+							this.EventSubtitle.text = string.Empty;
+						}
+						this.Timer += Time.deltaTime;
+						if (this.Timer > this.CurrentClipLength + (float)1)
+						{
+							if (this.EventPhase < 12)
+							{
+								this.EventStudent.Character.animation.CrossFade(this.EventAnim[this.EventPhase - 2]);
+								this.PlayClip(this.EventClip[this.EventPhase - 2], this.EventStudent.transform.position);
+							}
+							this.Timer = (float)0;
+							this.EventPhase++;
+						}
+					}
+					else
+					{
+						this.EndEvent();
+					}
+					if (this.EventPhase == 12)
+					{
+						this.EventStudent.Phone.active = false;
+					}
+					float num = Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position);
+					if (num < (float)10)
+					{
+						float num2 = Mathf.Abs((num - (float)10) * 0.2f);
+						if (num2 < (float)0)
+						{
+							num2 = (float)0;
+						}
+						if (num2 > (float)1)
+						{
+							num2 = (float)1;
+						}
+						this.EventSubtitle.transform.localScale = new Vector3(num2, num2, num2);
+					}
+					else
+					{
+						this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+					}
+					if (this.EventPhase == 11 && num < (float)5 && PlayerPrefs.GetInt("Event2") == 0)
+					{
+						this.Yandere.NotificationManager.DisplayNotification("Info");
+						PlayerPrefs.SetInt("Event2", 1);
+					}
 				}
 			}
 		}

@@ -21,9 +21,31 @@ public class TaskManagerScript : MonoBehaviour
 	{
 		if (PlayerPrefs.GetInt("Task_6_Status") == 1 && this.Prompts[6].Circle[3].fillAmount <= (float)0)
 		{
-			this.StudentManager.Students[6].TaskPhase = 5;
+			if (this.StudentManager.Students[6] != null)
+			{
+				this.StudentManager.Students[6].TaskPhase = 5;
+			}
 			PlayerPrefs.SetInt("Task_6_Status", 2);
 			UnityEngine.Object.Destroy(this.TaskObjects[6]);
+		}
+		if (!this.Yandere.Talking)
+		{
+			if (PlayerPrefs.GetInt("Task_32_Status") == 1 && this.Yandere.Inventory.Cigs)
+			{
+				if (this.StudentManager.Students[32] != null)
+				{
+					this.StudentManager.Students[32].TaskPhase = 5;
+				}
+				PlayerPrefs.SetInt("Task_32_Status", 2);
+			}
+			if (PlayerPrefs.GetInt("Task_32_Status") == 2 && !this.Yandere.Inventory.Cigs)
+			{
+				if (this.StudentManager.Students[32] != null)
+				{
+					this.StudentManager.Students[32].TaskPhase = 4;
+				}
+				PlayerPrefs.SetInt("Task_32_Status", 1);
+			}
 		}
 	}
 

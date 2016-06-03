@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
 [Serializable]
 public class InfoChanWindowScript : MonoBehaviour
@@ -8,6 +7,12 @@ public class InfoChanWindowScript : MonoBehaviour
 	public Transform DropPoint;
 
 	public GameObject[] Drops;
+
+	public int[] ItemsToDrop;
+
+	public int Orders;
+
+	public int ID;
 
 	public float Rotation;
 
@@ -18,8 +23,6 @@ public class InfoChanWindowScript : MonoBehaviour
 	public bool Drop;
 
 	public bool Open;
-
-	public int ID;
 
 	public bool Test;
 
@@ -47,12 +50,13 @@ public class InfoChanWindowScript : MonoBehaviour
 			this.Timer += Time.deltaTime;
 			if (this.Timer > (float)1)
 			{
-				if (!this.Dropped && this.ID < Extensions.get_length(this.Drops) && this.Drops[this.ID] != null)
+				if (this.Orders > 0)
 				{
-					UnityEngine.Object.Instantiate(this.Drops[this.ID], this.DropPoint.position, Quaternion.identity);
-					this.Dropped = true;
+					UnityEngine.Object.Instantiate(this.Drops[this.ItemsToDrop[this.Orders]], this.DropPoint.position, Quaternion.identity);
+					this.Timer = (float)0;
+					this.Orders--;
 				}
-				if (this.Timer > (float)2)
+				else
 				{
 					this.Open = false;
 					if (this.Timer > (float)3)

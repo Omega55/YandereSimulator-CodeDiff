@@ -91,7 +91,8 @@ public class DropsScript : MonoBehaviour
 					{
 						PlayerPrefs.SetInt("PantyShots", PlayerPrefs.GetInt("PantyShots") - this.DropCosts[this.Selected]);
 						this.Purchased[this.Selected] = true;
-						this.InfoChanWindow.ID = this.Selected;
+						this.InfoChanWindow.Orders = this.InfoChanWindow.Orders + 1;
+						this.InfoChanWindow.ItemsToDrop[this.InfoChanWindow.Orders] = this.Selected;
 						this.InfoChanWindow.DropObject();
 						this.UpdateList();
 						this.UpdateDesc();

@@ -2694,6 +2694,7 @@ public class YandereScript : MonoBehaviour
 							if (this.CanTranq)
 							{
 								this.TargetStudent.Tranquil = true;
+								this.CanTranq = false;
 								this.Followers--;
 							}
 							else

@@ -176,6 +176,7 @@ public class WoodChipperScript : MonoBehaviour
 				this.Prompt.enabled = true;
 				this.Shredding = false;
 				this.Occupied = false;
+				this.Timer = (float)0;
 			}
 			else if (this.Timer >= (float)9)
 			{

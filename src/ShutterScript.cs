@@ -258,6 +258,7 @@ public class ShutterScript : MonoBehaviour
 						Vector3 vector = this.PromptBar.transform.localPosition = localPosition;
 						this.PromptBar.ClearButtons();
 						this.PromptBar.Show = false;
+						this.PhotoIcons.active = false;
 						this.ID = 0;
 						this.FreeSpace = false;
 						while (this.ID < 26)

@@ -19,6 +19,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public EmergencyExitScript EmergencyExit;
 
+	public TranqDetectorScript TranqDetector;
+
 	public WitnessCameraScript WitnessCamera;
 
 	public TallLockerScript CommunalLocker;
@@ -28,6 +30,8 @@ public class StudentManagerScript : MonoBehaviour
 	public ContainerScript Container;
 
 	public OfferHelpScript OfferHelp;
+
+	public RingEventScript RingEvent;
 
 	public FountainScript Fountain;
 
@@ -442,6 +446,10 @@ public class StudentManagerScript : MonoBehaviour
 
 	public virtual void AttendClass()
 	{
+		if (this.RingEvent.EventActive)
+		{
+			this.RingEvent.ReturnRing();
+		}
 		while (this.NPCsSpawned < this.NPCsTotal)
 		{
 			this.SpawnStudent();

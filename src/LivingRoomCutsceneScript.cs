@@ -13,6 +13,8 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 
 	public NoiseAndGrain Noise;
 
+	public SkinnedMeshRenderer YandereRenderer;
+
 	public Transform FriendshipCamera;
 
 	public Transform LivingRoomCamera;
@@ -70,6 +72,10 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 	public int Phase;
 
 	public int ID;
+
+	public Texture ZTR;
+
+	public int ZTRID;
 
 	public LivingRoomCutsceneScript()
 	{
