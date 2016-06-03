@@ -125,7 +125,7 @@ public class OfferHelpScript : MonoBehaviour
 				}
 			}
 		}
-		if (!this.StudentManager.Students[7].Pushable)
+		else if (!this.StudentManager.Students[7].Pushable)
 		{
 			this.active = false;
 		}
