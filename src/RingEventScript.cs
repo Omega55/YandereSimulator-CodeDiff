@@ -112,7 +112,7 @@ public class RingEventScript : MonoBehaviour
 				else if (this.EventPhase == 2)
 				{
 					this.Timer += Time.deltaTime;
-					if (this.Timer > (float)5)
+					if (this.Timer > this.EventStudent.Character.animation[this.EventAnim[0]].length)
 					{
 						this.EventStudent.Character.animation.CrossFade(this.EventStudent.EatAnim);
 						this.EventStudent.Bento.transform.localPosition = new Vector3(-0.025f, -0.105f, (float)0);
@@ -133,7 +133,7 @@ public class RingEventScript : MonoBehaviour
 							((BoxCollider)this.EventStudent.Cosmetic.FemaleAccessories[3].GetComponent(typeof(BoxCollider))).enabled = true;
 						}
 					}
-					else if (this.Timer > (float)2)
+					else if (this.Timer > 2.5f)
 					{
 						this.EventStudent.Cosmetic.FemaleAccessories[3].transform.parent = this.EventStudent.RightHand;
 					}

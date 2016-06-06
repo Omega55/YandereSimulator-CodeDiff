@@ -4,6 +4,8 @@ using UnityEngine;
 [Serializable]
 public class PeekScript : MonoBehaviour
 {
+	public InfoChanWindowScript InfoChanWindow;
+
 	public PromptBarScript PromptBar;
 
 	public SubtitleScript Subtitle;
@@ -20,6 +22,10 @@ public class PeekScript : MonoBehaviour
 
 	public virtual void Update()
 	{
+		if (this.InfoChanWindow.Drop)
+		{
+			this.Prompt.Circle[0].fillAmount = (float)1;
+		}
 		if (this.Prompt.Circle[0].fillAmount == (float)0)
 		{
 			this.Prompt.Yandere.CanMove = false;

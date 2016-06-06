@@ -1284,8 +1284,9 @@ public class StudentScript : MonoBehaviour
 						{
 							if (this.MeetTimer == (float)0)
 							{
-								if (PlayerPrefs.GetInt("7_Friend") == 1)
+								if (PlayerPrefs.GetInt("7_Friend") == 1 && (this.CurrentDestination == this.StudentManager.MeetSpots.List[8] || this.CurrentDestination == this.StudentManager.MeetSpots.List[9] || this.CurrentDestination == this.StudentManager.MeetSpots.List[10]))
 								{
+									this.StudentManager.OfferHelp.UpdateLocation();
 									this.StudentManager.OfferHelp.enabled = true;
 								}
 								if (this.transform.position.y > (float)11)
@@ -1313,6 +1314,7 @@ public class StudentScript : MonoBehaviour
 								this.Prompt.Label[0].text = "     Talk";
 								this.Pathfinding.canSearch = true;
 								this.Pathfinding.canMove = true;
+								this.StudentManager.OfferHelp.active = false;
 								this.Pushable = false;
 								this.Meeting = false;
 								this.MeetTimer = (float)0;

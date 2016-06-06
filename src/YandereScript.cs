@@ -563,6 +563,10 @@ public class YandereScript : MonoBehaviour
 
 	public string OriginalRunAnim;
 
+	public Texture YanderePhoneTexture;
+
+	public Texture KokonaPhoneTexture;
+
 	public GameObject CreepyArms;
 
 	public Texture[] GloveTextures;
@@ -1091,55 +1095,52 @@ public class YandereScript : MonoBehaviour
 				}
 				if (!this.NearSenpai)
 				{
-					if (!Input.GetButton("A") && !Input.GetButton("B") && !Input.GetButton("X") && !Input.GetButton("Y"))
+					if (!Input.GetButton("A") && !Input.GetButton("B") && !Input.GetButton("X") && !Input.GetButton("Y") && (Input.GetAxis("LT") > 0.5f || Input.GetMouseButtonDown(1)))
 					{
 						if (this.Inventory.RivalPhone && Input.GetButtonDown("LB"))
 						{
 							this.Character.animation["f02_cameraPose_00"].weight = (float)0;
 							if (!this.RivalPhone)
 							{
-								this.SmartphoneRenderer.material.color = new Color(0.5f, (float)0, 0.5f, (float)1);
+								this.SmartphoneRenderer.material.mainTexture = this.KokonaPhoneTexture;
 								this.RivalPhone = true;
 							}
 							else
 							{
-								this.SmartphoneRenderer.material.color = new Color(0.125f, 0.125f, 0.125f, (float)1);
+								this.SmartphoneRenderer.material.mainTexture = this.YanderePhoneTexture;
 								this.RivalPhone = false;
 							}
 						}
-						if (Input.GetAxis("LT") > 0.5f || Input.GetMouseButtonDown(1))
+						if (Input.GetAxis("LT") > 0.5f)
 						{
-							if (Input.GetAxis("LT") > 0.5f)
+							this.UsingController = true;
+						}
+						if (!this.Aiming)
+						{
+							if (this.CameraEffects.OneCamera)
 							{
-								this.UsingController = true;
+								this.MainCamera.clearFlags = CameraClearFlags.Color;
+								this.MainCamera.farClipPlane = 0.02f;
 							}
-							if (!this.Aiming)
+							float y2 = this.MainCamera.transform.eulerAngles.y;
+							Vector3 eulerAngles = this.transform.eulerAngles;
+							float num2 = eulerAngles.y = y2;
+							Vector3 vector2 = this.transform.eulerAngles = eulerAngles;
+							this.Character.animation.Play(this.IdleAnim);
+							this.Smartphone.transform.parent.active = true;
+							this.ShoulderCamera.AimingCamera = true;
+							this.Obscurance.enabled = false;
+							this.HandCamera.active = true;
+							this.YandereVision = false;
+							this.Blur.enabled = true;
+							this.Mopping = false;
+							this.Aiming = true;
+							this.EmptyHands();
+							if (this.Inventory.RivalPhone)
 							{
-								if (this.CameraEffects.OneCamera)
-								{
-									this.MainCamera.clearFlags = CameraClearFlags.Color;
-									this.MainCamera.farClipPlane = 0.02f;
-								}
-								float y2 = this.MainCamera.transform.eulerAngles.y;
-								Vector3 eulerAngles = this.transform.eulerAngles;
-								float num2 = eulerAngles.y = y2;
-								Vector3 vector2 = this.transform.eulerAngles = eulerAngles;
-								this.Character.animation.Play(this.IdleAnim);
-								this.Smartphone.transform.parent.active = true;
-								this.ShoulderCamera.AimingCamera = true;
-								this.Obscurance.enabled = false;
-								this.HandCamera.active = true;
-								this.YandereVision = false;
-								this.Blur.enabled = true;
-								this.Mopping = false;
-								this.Aiming = true;
-								this.EmptyHands();
-								if (this.Inventory.RivalPhone)
-								{
-									this.PhonePromptBar.Show = true;
-								}
-								Time.timeScale = (float)1;
+								this.PhonePromptBar.Show = true;
 							}
+							Time.timeScale = (float)1;
 						}
 					}
 					if (!this.Aiming && !this.Crouching && !this.Crawling && !this.Accessories[9].active && !this.Accessories[16].active)

@@ -180,13 +180,6 @@ public class DebugMenuScript : MonoBehaviour
 				}
 				this.Window.active = false;
 			}
-			else if (Input.GetKeyDown("e"))
-			{
-				PlayerPrefs.SetInt("Student_7_Expelled", 0);
-				PlayerPrefs.SetInt("Scheme_5_Stage", 7);
-				PlayerPrefs.SetInt("ExpelProgress", 4);
-				this.Window.active = false;
-			}
 			else if (Input.GetKeyDown("f"))
 			{
 				this.FakeStudentSpawner.Spawn();

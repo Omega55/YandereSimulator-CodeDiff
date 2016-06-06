@@ -17,6 +17,8 @@ public class OfferHelpScript : MonoBehaviour
 
 	public UILabel EventSubtitle;
 
+	public Transform[] Locations;
+
 	public AudioClip[] EventClip;
 
 	public string[] EventSpeech;
@@ -125,9 +127,29 @@ public class OfferHelpScript : MonoBehaviour
 				}
 			}
 		}
-		else if (!this.StudentManager.Students[7].Pushable)
+		else if (this.StudentManager.Students[7].Pushed)
 		{
 			this.active = false;
+		}
+	}
+
+	public virtual void UpdateLocation()
+	{
+		this.Student = this.StudentManager.Students[7];
+		if (this.Student.CurrentDestination == this.StudentManager.MeetSpots.List[8])
+		{
+			this.transform.position = this.Locations[1].position;
+			this.transform.eulerAngles = this.Locations[1].eulerAngles;
+		}
+		else if (this.Student.CurrentDestination == this.StudentManager.MeetSpots.List[9])
+		{
+			this.transform.position = this.Locations[2].position;
+			this.transform.eulerAngles = this.Locations[2].eulerAngles;
+		}
+		else if (this.Student.CurrentDestination == this.StudentManager.MeetSpots.List[10])
+		{
+			this.transform.position = this.Locations[3].position;
+			this.transform.eulerAngles = this.Locations[3].eulerAngles;
 		}
 	}
 

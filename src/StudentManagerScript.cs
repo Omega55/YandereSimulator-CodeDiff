@@ -43,6 +43,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public YandereScript Yandere;
 
+	public ListScript MeetSpots;
+
 	public PoliceScript Police;
 
 	public ClockScript Clock;
