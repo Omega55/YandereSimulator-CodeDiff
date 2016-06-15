@@ -292,12 +292,9 @@ public class JukeboxScript : MonoBehaviour
 			}
 			else if (Input.GetKeyDown("u"))
 			{
-				if (!this.MuteCopyrights)
-				{
-					this.Egg = true;
-					this.KillVolume();
-					this.Megalovania.enabled = true;
-				}
+				this.Egg = true;
+				this.KillVolume();
+				this.Megalovania.enabled = true;
 			}
 			else if (Input.GetKeyDown("q"))
 			{

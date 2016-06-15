@@ -12,6 +12,14 @@ public class RooftopCorpseDisposalScript : MonoBehaviour
 
 	public Transform DropSpot;
 
+	public virtual void Start()
+	{
+		if (PlayerPrefs.GetInt("RoofFence") == 1)
+		{
+			UnityEngine.Object.Destroy(this.gameObject);
+		}
+	}
+
 	public virtual void Update()
 	{
 		if (this.MyCollider.bounds.Contains(this.Yandere.transform.position))

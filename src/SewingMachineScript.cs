@@ -36,7 +36,7 @@ public class SewingMachineScript : MonoBehaviour
 		{
 			if (this.Yandere.PickUp != null)
 			{
-				if (this.Yandere.PickUp.Clothing && !this.Yandere.PickUp.Evidence && ((FoldedUniformScript)this.Yandere.PickUp.gameObject.GetComponent(typeof(FoldedUniformScript))).Type == 1)
+				if (this.Yandere.PickUp.Clothing && ((FoldedUniformScript)this.Yandere.PickUp.GetComponent(typeof(FoldedUniformScript))).Clean && ((FoldedUniformScript)this.Yandere.PickUp.GetComponent(typeof(FoldedUniformScript))).Type == 1 && ((FoldedUniformScript)this.Yandere.PickUp.gameObject.GetComponent(typeof(FoldedUniformScript))).Type == 1)
 				{
 					this.Prompt.enabled = true;
 				}

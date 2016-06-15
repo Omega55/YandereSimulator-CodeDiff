@@ -47,6 +47,10 @@ public class PickUpScript : MonoBehaviour
 
 	public bool Evidence;
 
+	public bool JerryCan;
+
+	public bool LeftHand;
+
 	public bool Garbage;
 
 	public bool Dumped;
@@ -108,7 +112,14 @@ public class PickUpScript : MonoBehaviour
 			{
 				this.Yandere.StopCarrying();
 			}
-			this.transform.parent = this.Yandere.ItemParent;
+			if (!this.LeftHand)
+			{
+				this.transform.parent = this.Yandere.ItemParent;
+			}
+			else
+			{
+				this.transform.parent = this.Yandere.LeftItemParent;
+			}
 			this.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
 			this.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
 			this.MyCollider.enabled = false;

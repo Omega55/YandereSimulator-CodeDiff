@@ -19,6 +19,8 @@ public class AlarmDiscScript : MonoBehaviour
 
 	public bool NoScream;
 
+	public bool Shocking;
+
 	public bool Male;
 
 	public bool Long;
@@ -73,7 +75,7 @@ public class AlarmDiscScript : MonoBehaviour
 		if (other.gameObject.layer == 9)
 		{
 			this.Student = (StudentScript)other.gameObject.GetComponent(typeof(StudentScript));
-			if (this.Student != null && this.Student != this.Originator && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse)
+			if (this.Student != null && this.Student != this.Originator && !this.Student.Dead && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse)
 			{
 				this.Student.Character.animation.CrossFade(this.Student.IdleAnim);
 				if (this.Originator != null)
@@ -92,6 +94,10 @@ public class AlarmDiscScript : MonoBehaviour
 					this.Student.DistractionSpot = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z);
 				}
 				this.Student.DiscCheck = true;
+				if (this.Shocking)
+				{
+					this.Student.Hesitation = 0.5f;
+				}
 				this.Student.Alarm = (float)200;
 			}
 		}

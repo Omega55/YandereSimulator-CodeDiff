@@ -26,6 +26,8 @@ public class RagdollScript : MonoBehaviour
 
 	public Collider BloodSpawnerCollider;
 
+	public Animation CharacterAnimation;
+
 	public Collider HideCollider;
 
 	public Rigidbody[] AllRigidbodies;
@@ -83,6 +85,8 @@ public class RagdollScript : MonoBehaviour
 	public bool Poisoned;
 
 	public bool Tranquil;
+
+	public bool Burning;
 
 	public bool Carried;
 
@@ -144,7 +148,7 @@ public class RagdollScript : MonoBehaviour
 	{
 		Physics.IgnoreLayerCollision(11, 13, true);
 		this.Zs.active = this.Tranquil;
-		if (!this.Tranquil && !this.Poisoned && !this.Drowned && !this.Electrocuted)
+		if (!this.Tranquil && !this.Poisoned && !this.Drowned && !this.Electrocuted && !this.Burning)
 		{
 			this.BloodPoolSpawner.gameObject.active = true;
 			if (this.Pushed)
@@ -367,6 +371,17 @@ public class RagdollScript : MonoBehaviour
 				this.Falling = false;
 			}
 		}
+		if (this.Burning)
+		{
+			this.MyRenderer.materials[0].color = Vector4.MoveTowards(this.MyRenderer.materials[0].color, new Vector4(0.1f, 0.1f, 0.1f, (float)1), Time.deltaTime * 0.1f);
+			this.MyRenderer.materials[1].color = Vector4.MoveTowards(this.MyRenderer.materials[1].color, new Vector4(0.1f, 0.1f, 0.1f, (float)1), Time.deltaTime * 0.1f);
+			this.MyRenderer.materials[2].color = Vector4.MoveTowards(this.MyRenderer.materials[2].color, new Vector4(0.1f, 0.1f, 0.1f, (float)1), Time.deltaTime * 0.1f);
+			this.Student.Cosmetic.HairRenderer.material.color = Vector4.MoveTowards(this.Student.Cosmetic.HairRenderer.material.color, new Vector4(0.1f, 0.1f, 0.1f, (float)1), Time.deltaTime * 0.1f);
+			if (this.MyRenderer.materials[0].color == new Vector4(0.1f, 0.1f, 0.1f, (float)1))
+			{
+				this.Burning = false;
+			}
+		}
 	}
 
 	public virtual void LateUpdate()
@@ -399,6 +414,25 @@ public class RagdollScript : MonoBehaviour
 			Vector3 localScale4 = this.RightEye.localScale;
 			float num6 = localScale4.y = y2;
 			Vector3 vector6 = this.RightEye.localScale = localScale4;
+			if (this.StudentID == 32)
+			{
+				float y3 = 0.66666f;
+				Vector3 localScale5 = this.Student.Skirt[0].transform.localScale;
+				float num7 = localScale5.y = y3;
+				Vector3 vector7 = this.Student.Skirt[0].transform.localScale = localScale5;
+				float y4 = 0.66666f;
+				Vector3 localScale6 = this.Student.Skirt[1].transform.localScale;
+				float num8 = localScale6.y = y4;
+				Vector3 vector8 = this.Student.Skirt[1].transform.localScale = localScale6;
+				float y5 = 0.66666f;
+				Vector3 localScale7 = this.Student.Skirt[2].transform.localScale;
+				float num9 = localScale7.y = y5;
+				Vector3 vector9 = this.Student.Skirt[2].transform.localScale = localScale7;
+				float y6 = 0.66666f;
+				Vector3 localScale8 = this.Student.Skirt[3].transform.localScale;
+				float num10 = localScale8.y = y6;
+				Vector3 vector10 = this.Student.Skirt[3].transform.localScale = localScale8;
+			}
 		}
 		if (this.Yandere.Ragdoll == this.gameObject)
 		{
@@ -437,10 +471,10 @@ public class RagdollScript : MonoBehaviour
 			}
 			if (this.Carried && this.Male)
 			{
-				float y3 = 0.2f;
+				float y7 = 0.2f;
 				Vector3 localPosition3 = this.AllRigidbodies[0].transform.parent.transform.localPosition;
-				float num7 = localPosition3.y = y3;
-				Vector3 vector7 = this.AllRigidbodies[0].transform.parent.transform.localPosition = localPosition3;
+				float num11 = localPosition3.y = y7;
+				Vector3 vector11 = this.AllRigidbodies[0].transform.parent.transform.localPosition = localPosition3;
 			}
 		}
 	}

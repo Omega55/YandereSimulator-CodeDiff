@@ -58,6 +58,10 @@ public class TalkingScript : MonoBehaviour
 					{
 						this.S.Subtitle.UpdateLabel("Forgiving Insanity", 0, (float)3);
 					}
+					else if (this.S.Witnessed == "Accident")
+					{
+						this.S.Subtitle.UpdateLabel("Forgiving Accident", 0, (float)5);
+					}
 					else
 					{
 						this.S.Subtitle.UpdateLabel("Forgiving", 0, (float)3);
@@ -246,7 +250,6 @@ public class TalkingScript : MonoBehaviour
 					{
 						this.S.Character.animation.CrossFade(this.S.Nod1Anim);
 						this.S.Subtitle.UpdateLabel("Student Follow", 0, (float)2);
-						this.S.Following = true;
 					}
 				}
 				else
@@ -262,13 +265,11 @@ public class TalkingScript : MonoBehaviour
 					if (this.S.TalkTimer <= (float)0)
 					{
 						this.S.DialogueWheel.End();
-						if (this.S.Following)
-						{
-							this.S.Pathfinding.target = this.S.Yandere.transform;
-							this.S.Prompt.Label[0].text = "     " + "Stop";
-							this.S.Yandere.Follower = this.S;
-							this.S.Yandere.Followers = this.S.Yandere.Followers + 1;
-						}
+						this.S.Pathfinding.target = this.S.Yandere.transform;
+						this.S.Prompt.Label[0].text = "     " + "Stop";
+						this.S.Yandere.Follower = this.S;
+						this.S.Yandere.Followers = this.S.Yandere.Followers + 1;
+						this.S.Following = true;
 					}
 				}
 				this.S.TalkTimer = this.S.TalkTimer - Time.deltaTime;

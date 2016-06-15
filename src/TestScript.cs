@@ -4,21 +4,36 @@ using UnityEngine;
 [Serializable]
 public class TestScript : MonoBehaviour
 {
-	public SkinnedMeshRenderer MyRenderer;
+	public int Phase;
 
-	public Texture BlueShirt;
+	public float Timer;
 
-	public Texture RedShirt;
+	public TestScript()
+	{
+		this.Phase = 1;
+	}
 
 	public virtual void Update()
 	{
-		if (Input.GetKeyDown("1"))
+		if (this.Phase < 3)
 		{
-			this.MyRenderer.material.mainTexture = this.BlueShirt;
+			this.transform.Translate(this.transform.right * Time.deltaTime);
 		}
-		if (Input.GetKeyDown("2"))
+		if (this.Phase == 1)
 		{
-			this.MyRenderer.material.mainTexture = this.RedShirt;
+			if (Input.GetKeyDown("space"))
+			{
+				this.animation.CrossFade("Trip");
+				this.Phase++;
+			}
+		}
+		else if (this.Phase == 2)
+		{
+			this.Timer += Time.deltaTime;
+			if (this.Timer > 0.5f)
+			{
+				this.Phase++;
+			}
 		}
 	}
 

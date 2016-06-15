@@ -29,7 +29,7 @@ public class SplashCameraScript : MonoBehaviour
 			float num2 = rect3.height = height;
 			Rect rect4 = this.MyCamera.rect = rect3;
 			this.Timer += Time.deltaTime;
-			if (this.Timer > (float)10)
+			if (this.Timer > (float)15)
 			{
 				this.Show = false;
 				this.Timer = (float)0;

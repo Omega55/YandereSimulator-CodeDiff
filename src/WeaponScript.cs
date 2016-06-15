@@ -232,7 +232,7 @@ public class WeaponScript : MonoBehaviour
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
 			this.Yandere.NearestPrompt = null;
-			if (this.WeaponID == 9 || this.WeaponID == 10)
+			if (this.WeaponID == 9 || this.WeaponID == 10 || this.WeaponID == 12)
 			{
 				this.SuspicionCheck();
 			}
@@ -383,7 +383,7 @@ public class WeaponScript : MonoBehaviour
 			((ParticleSystem)this.gameObject.GetComponent(typeof(ParticleSystem))).Play();
 			this.audio.Play();
 		}
-		else if (this.WeaponID == 9 || this.WeaponID == 10)
+		else if (this.WeaponID == 9 || this.WeaponID == 10 || this.WeaponID == 12)
 		{
 			this.audio.Play();
 		}
@@ -403,6 +403,10 @@ public class WeaponScript : MonoBehaviour
 			this.Suspicious = false;
 		}
 		else if (this.WeaponID == 10 && PlayerPrefs.GetInt("Club") == 10)
+		{
+			this.Suspicious = false;
+		}
+		else if (this.WeaponID == 12 && PlayerPrefs.GetInt("Club") == 9)
 		{
 			this.Suspicious = false;
 		}

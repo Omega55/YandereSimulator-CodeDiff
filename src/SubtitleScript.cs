@@ -95,6 +95,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] ClassApologies;
 
+	public string[] AccidentApologies;
+
 	public string[] Greetings;
 
 	public string[] PlayerFarewells;
@@ -102,6 +104,8 @@ public class SubtitleScript : MonoBehaviour
 	public string[] StudentFarewells;
 
 	public string[] Forgivings;
+
+	public string[] AccidentForgivings;
 
 	public string[] InsanityForgivings;
 
@@ -638,9 +642,17 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.Label.text = this.ClassApologies[UnityEngine.Random.Range(0, Extensions.get_length(this.ClassApologies))];
 		}
+		else if (ReactionType == "Accident Apology")
+		{
+			this.Label.text = this.AccidentApologies[UnityEngine.Random.Range(0, Extensions.get_length(this.AccidentApologies))];
+		}
 		else if (ReactionType == "Forgiving")
 		{
 			this.Label.text = this.Forgivings[UnityEngine.Random.Range(0, Extensions.get_length(this.Forgivings))];
+		}
+		else if (ReactionType == "Forgiving Accident")
+		{
+			this.Label.text = this.AccidentForgivings[UnityEngine.Random.Range(0, Extensions.get_length(this.AccidentForgivings))];
 		}
 		else if (ReactionType == "Forgiving Insanity")
 		{

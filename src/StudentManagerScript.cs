@@ -152,6 +152,7 @@ public class StudentManagerScript : MonoBehaviour
 		this.SetAtmosphere();
 		if (PlayerPrefs.GetInt("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Slave") == 1)
 		{
+			PlayerPrefs.SetInt("KidnapVictim", 0);
 			this.ForceSpawn = true;
 			this.SpawnPositions[PlayerPrefs.GetInt("KidnapVictim")] = this.SlaveSpot;
 			this.SpawnID = PlayerPrefs.GetInt("KidnapVictim");
@@ -330,7 +331,10 @@ public class StudentManagerScript : MonoBehaviour
 			{
 				if (!this.Students[this.ID].Slave)
 				{
-					this.Students[this.ID].Prompt.Label[0].text = "     " + "Talk";
+					if (!this.Students[this.ID].Following)
+					{
+						this.Students[this.ID].Prompt.Label[0].text = "     " + "Talk";
+					}
 					this.Students[this.ID].Prompt.HideButton[0] = false;
 					this.Students[this.ID].Prompt.HideButton[2] = false;
 					this.Students[this.ID].Prompt.Attack = false;

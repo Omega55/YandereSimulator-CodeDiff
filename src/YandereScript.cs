@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$2641 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$2661 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$2656;
+		internal YandereScript $self_$2676;
 
-		public $ApplyCustomCostume$2641(YandereScript self_)
+		public $ApplyCustomCostume$2661(YandereScript self_)
 		{
-			this.$self_$2656 = self_;
+			this.$self_$2676 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$2641.$(this.$self_$2656);
+			return new YandereScript.$ApplyCustomCostume$2661.$(this.$self_$2676);
 		}
 	}
 
@@ -141,6 +141,8 @@ public class YandereScript : MonoBehaviour
 
 	public CharacterController MyController;
 
+	public Transform LeftItemParent;
+
 	public Transform DismemberSpot;
 
 	public Transform CameraTarget;
@@ -225,7 +227,13 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject Trail;
 
+	public GameObject Match;
+
+	public GameObject Arc;
+
 	public SkinnedMeshRenderer MyRenderer;
+
+	public Animation CharacterAnimation;
 
 	public SpringJoint RagdollDragger;
 
@@ -349,6 +357,8 @@ public class YandereScript : MonoBehaviour
 
 	public bool DumpsterGrabbing;
 
+	public bool BucketDropping;
+
 	public bool Dismembering;
 
 	public bool TimeSkipping;
@@ -377,11 +387,15 @@ public class YandereScript : MonoBehaviour
 
 	public bool Dropping;
 
+	public bool Flicking;
+
 	public bool Laughing;
 
 	public bool Punching;
 
 	public bool Throwing;
+
+	public bool Tripping;
 
 	public bool Bathing;
 
@@ -555,6 +569,8 @@ public class YandereScript : MonoBehaviour
 
 	public AudioClip Laugh4;
 
+	public AudioClip Thud;
+
 	public Vector3 PreviousPosition;
 
 	public string OriginalIdleAnim;
@@ -566,6 +582,10 @@ public class YandereScript : MonoBehaviour
 	public Texture YanderePhoneTexture;
 
 	public Texture KokonaPhoneTexture;
+
+	public float v;
+
+	public float h;
 
 	public GameObject CreepyArms;
 
@@ -790,13 +810,14 @@ public class YandereScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		this.CharacterAnimation = this.Character.animation;
 		this.SetAnimationLayers();
 		this.UpdateNumbness();
 		Application.targetFrameRate = 60;
 		this.RightEyeOrigin = this.RightEye.localPosition;
 		this.LeftEyeOrigin = this.LeftEye.localPosition;
-		this.Character.animation["f02_yanderePose_00"].weight = (float)0;
-		this.Character.animation["f02_cameraPose_00"].weight = (float)0;
+		this.CharacterAnimation["f02_yanderePose_00"].weight = (float)0;
+		this.CharacterAnimation["f02_cameraPose_00"].weight = (float)0;
 		ColorCorrectionCurves[] components = Camera.main.GetComponents<ColorCorrectionCurves>();
 		Vignetting[] components2 = Camera.main.GetComponents<Vignetting>();
 		this.YandereColorCorrection = components[1];
@@ -875,55 +896,58 @@ public class YandereScript : MonoBehaviour
 
 	public virtual void SetAnimationLayers()
 	{
-		this.Character.animation["f02_yanderePose_00"].layer = 1;
-		this.Character.animation.Play("f02_yanderePose_00");
-		this.Character.animation["f02_yanderePose_00"].weight = (float)0;
-		this.Character.animation["f02_shy_00"].layer = 2;
-		this.Character.animation.Play("f02_shy_00");
-		this.Character.animation["f02_shy_00"].weight = (float)0;
-		this.Character.animation["f02_singleSaw_00"].layer = 3;
-		this.Character.animation.Play("f02_singleSaw_00");
-		this.Character.animation["f02_singleSaw_00"].weight = (float)0;
-		this.Character.animation["f02_fist_00"].layer = 4;
-		this.Character.animation.Play("f02_fist_00");
-		this.Character.animation["f02_fist_00"].weight = (float)0;
-		this.Character.animation["f02_mopping_00"].layer = 5;
-		this.Character.animation["f02_mopping_00"].speed = (float)2;
-		this.Character.animation.Play("f02_mopping_00");
-		this.Character.animation["f02_mopping_00"].weight = (float)0;
-		this.Character.animation["f02_carry_00"].layer = 6;
-		this.Character.animation.Play("f02_carry_00");
-		this.Character.animation["f02_carry_00"].weight = (float)0;
-		this.Character.animation["f02_mopCarry_00"].layer = 7;
-		this.Character.animation.Play("f02_mopCarry_00");
-		this.Character.animation["f02_mopCarry_00"].weight = (float)0;
-		this.Character.animation["f02_bucketCarry_00"].layer = 8;
-		this.Character.animation.Play("f02_bucketCarry_00");
-		this.Character.animation["f02_bucketCarry_00"].weight = (float)0;
-		this.Character.animation["f02_cameraPose_00"].layer = 9;
-		this.Character.animation.Play("f02_cameraPose_00");
-		this.Character.animation["f02_cameraPose_00"].weight = (float)0;
-		this.Character.animation["f02_grip_00"].layer = 10;
-		this.Character.animation.Play("f02_grip_00");
-		this.Character.animation["f02_grip_00"].weight = (float)0;
-		this.Character.animation["f02_holdHead_00"].layer = 11;
-		this.Character.animation.Play("f02_holdHead_00");
-		this.Character.animation["f02_holdHead_00"].weight = (float)0;
-		this.Character.animation["f02_holdTorso_00"].layer = 12;
-		this.Character.animation.Play("f02_holdTorso_00");
-		this.Character.animation["f02_holdTorso_00"].weight = (float)0;
-		this.Character.animation["f02_carryCan_00"].layer = 13;
-		this.Character.animation.Play("f02_carryCan_00");
-		this.Character.animation["f02_carryCan_00"].weight = (float)0;
-		this.Character.animation["f02_carryShoulder_00"].layer = 14;
-		this.Character.animation.Play("f02_carryShoulder_00");
-		this.Character.animation["f02_carryShoulder_00"].weight = (float)0;
-		this.Character.animation["f02_dipping_00"].speed = (float)2;
-		this.Character.animation["f02_stripping_00"].speed = 1.5f;
-		this.Character.animation["f02_falconIdle_00"].speed = (float)2;
-		this.Character.animation["f02_carryIdleA_00"].speed = 1.75f;
-		this.Character.animation["CyborgNinja_Run_Armed"].speed = (float)2;
-		this.Character.animation["CyborgNinja_Run_Unarmed"].speed = (float)2;
+		this.CharacterAnimation["f02_yanderePose_00"].layer = 1;
+		this.CharacterAnimation.Play("f02_yanderePose_00");
+		this.CharacterAnimation["f02_yanderePose_00"].weight = (float)0;
+		this.CharacterAnimation["f02_shy_00"].layer = 2;
+		this.CharacterAnimation.Play("f02_shy_00");
+		this.CharacterAnimation["f02_shy_00"].weight = (float)0;
+		this.CharacterAnimation["f02_singleSaw_00"].layer = 3;
+		this.CharacterAnimation.Play("f02_singleSaw_00");
+		this.CharacterAnimation["f02_singleSaw_00"].weight = (float)0;
+		this.CharacterAnimation["f02_fist_00"].layer = 4;
+		this.CharacterAnimation.Play("f02_fist_00");
+		this.CharacterAnimation["f02_fist_00"].weight = (float)0;
+		this.CharacterAnimation["f02_mopping_00"].layer = 5;
+		this.CharacterAnimation["f02_mopping_00"].speed = (float)2;
+		this.CharacterAnimation.Play("f02_mopping_00");
+		this.CharacterAnimation["f02_mopping_00"].weight = (float)0;
+		this.CharacterAnimation["f02_carry_00"].layer = 6;
+		this.CharacterAnimation.Play("f02_carry_00");
+		this.CharacterAnimation["f02_carry_00"].weight = (float)0;
+		this.CharacterAnimation["f02_mopCarry_00"].layer = 7;
+		this.CharacterAnimation.Play("f02_mopCarry_00");
+		this.CharacterAnimation["f02_mopCarry_00"].weight = (float)0;
+		this.CharacterAnimation["f02_bucketCarry_00"].layer = 8;
+		this.CharacterAnimation.Play("f02_bucketCarry_00");
+		this.CharacterAnimation["f02_bucketCarry_00"].weight = (float)0;
+		this.CharacterAnimation["f02_cameraPose_00"].layer = 9;
+		this.CharacterAnimation.Play("f02_cameraPose_00");
+		this.CharacterAnimation["f02_cameraPose_00"].weight = (float)0;
+		this.CharacterAnimation["f02_grip_00"].layer = 10;
+		this.CharacterAnimation.Play("f02_grip_00");
+		this.CharacterAnimation["f02_grip_00"].weight = (float)0;
+		this.CharacterAnimation["f02_holdHead_00"].layer = 11;
+		this.CharacterAnimation.Play("f02_holdHead_00");
+		this.CharacterAnimation["f02_holdHead_00"].weight = (float)0;
+		this.CharacterAnimation["f02_holdTorso_00"].layer = 12;
+		this.CharacterAnimation.Play("f02_holdTorso_00");
+		this.CharacterAnimation["f02_holdTorso_00"].weight = (float)0;
+		this.CharacterAnimation["f02_carryCan_00"].layer = 13;
+		this.CharacterAnimation.Play("f02_carryCan_00");
+		this.CharacterAnimation["f02_carryCan_00"].weight = (float)0;
+		this.CharacterAnimation["f02_leftGrip_00"].layer = 14;
+		this.CharacterAnimation.Play("f02_leftGrip_00");
+		this.CharacterAnimation["f02_leftGrip_00"].weight = (float)0;
+		this.CharacterAnimation["f02_carryShoulder_00"].layer = 15;
+		this.CharacterAnimation.Play("f02_carryShoulder_00");
+		this.CharacterAnimation["f02_carryShoulder_00"].weight = (float)0;
+		this.CharacterAnimation["f02_dipping_00"].speed = (float)2;
+		this.CharacterAnimation["f02_stripping_00"].speed = 1.5f;
+		this.CharacterAnimation["f02_falconIdle_00"].speed = (float)2;
+		this.CharacterAnimation["f02_carryIdleA_00"].speed = 1.75f;
+		this.CharacterAnimation["CyborgNinja_Run_Armed"].speed = (float)2;
+		this.CharacterAnimation["CyborgNinja_Run_Unarmed"].speed = (float)2;
 	}
 
 	public virtual void Update()
@@ -937,16 +961,16 @@ public class YandereScript : MonoBehaviour
 			if (this.CanMove)
 			{
 				this.MyController.Move(Physics.gravity * 0.1f);
-				float axis = Input.GetAxis("Vertical");
-				float axis2 = Input.GetAxis("Horizontal");
-				this.FlapSpeed = Mathf.Abs(axis) + Mathf.Abs(axis2);
+				this.v = Input.GetAxis("Vertical");
+				this.h = Input.GetAxis("Horizontal");
+				this.FlapSpeed = Mathf.Abs(this.v) + Mathf.Abs(this.h);
 				if (!this.Aiming)
 				{
 					Vector3 a = this.MainCamera.transform.TransformDirection(Vector3.forward);
 					a.y = (float)0;
 					a = a.normalized;
 					Vector3 a2 = new Vector3(a.z, (float)0, -a.x);
-					this.targetDirection = axis2 * a2 + axis * a;
+					this.targetDirection = this.h * a2 + this.v * a;
 					if (this.targetDirection != Vector3.zero)
 					{
 						this.targetRotation = Quaternion.LookRotation(this.targetDirection);
@@ -956,24 +980,24 @@ public class YandereScript : MonoBehaviour
 					{
 						this.targetRotation = new Quaternion((float)0, (float)0, (float)0, (float)0);
 					}
-					if (axis != (float)0 || axis2 != (float)0)
+					if (this.v != (float)0 || this.h != (float)0)
 					{
 						if (Input.GetButton("LB") && Vector3.Distance(this.transform.position, this.Senpai.position) > (float)2)
 						{
 							if (this.Crouching)
 							{
-								this.Character.animation["f02_crouchWalk_00"].speed = (float)2;
-								this.Character.animation.CrossFade("f02_crouchWalk_00");
+								this.CharacterAnimation["f02_crouchWalk_00"].speed = (float)2;
+								this.CharacterAnimation.CrossFade("f02_crouchWalk_00");
 								this.MyController.Move(this.transform.forward * ((float)2 + (float)(PlayerPrefs.GetInt("PhysicalGrade") + PlayerPrefs.GetInt("SpeedBonus")) * 0.25f) * Time.deltaTime);
 							}
 							else if (!this.Dragging && !this.Mopping)
 							{
-								this.Character.animation.CrossFade(this.RunAnim);
+								this.CharacterAnimation.CrossFade(this.RunAnim);
 								this.MyController.Move(this.transform.forward * (this.RunSpeed + (float)(PlayerPrefs.GetInt("PhysicalGrade") + PlayerPrefs.GetInt("SpeedBonus")) * 0.25f) * Time.deltaTime);
 							}
 							else
 							{
-								this.Character.animation.CrossFade("f02_dragWalk_00");
+								this.CharacterAnimation.CrossFade("f02_dragWalk_00");
 								this.MyController.Move(this.transform.forward * this.WalkSpeed * Time.deltaTime);
 							}
 							if (this.Crouching)
@@ -989,24 +1013,24 @@ public class YandereScript : MonoBehaviour
 						{
 							if (this.Crawling)
 							{
-								this.Character.animation.CrossFade("f02_crawl_10");
+								this.CharacterAnimation.CrossFade("f02_crawl_10");
 								this.MyController.Move(this.transform.forward * this.CrawlSpeed * Time.deltaTime);
 							}
 							else if (this.Crouching)
 							{
-								this.Character.animation["f02_crouchWalk_00"].speed = (float)1;
-								this.Character.animation.CrossFade("f02_crouchWalk_00");
+								this.CharacterAnimation["f02_crouchWalk_00"].speed = (float)1;
+								this.CharacterAnimation.CrossFade("f02_crouchWalk_00");
 								this.MyController.Move(this.transform.forward * this.CrouchSpeed * Time.deltaTime);
 							}
 							else
 							{
-								this.Character.animation.CrossFade(this.WalkAnim);
+								this.CharacterAnimation.CrossFade(this.WalkAnim);
 								this.MyController.Move(this.transform.forward * this.WalkSpeed * Time.deltaTime);
 							}
 						}
 						else
 						{
-							this.Character.animation.CrossFade("f02_dragWalk_00");
+							this.CharacterAnimation.CrossFade("f02_dragWalk_00");
 							this.MyController.Move(this.transform.forward * this.WalkSpeed * Time.deltaTime);
 						}
 					}
@@ -1014,56 +1038,56 @@ public class YandereScript : MonoBehaviour
 					{
 						if (this.Crawling)
 						{
-							this.Character.animation.CrossFade("f02_crawlIdle_00");
+							this.CharacterAnimation.CrossFade("f02_crawlIdle_00");
 						}
 						else if (this.Crouching)
 						{
-							this.Character.animation.CrossFade("f02_crouchIdle_00");
+							this.CharacterAnimation.CrossFade("f02_crouchIdle_00");
 						}
 						else
 						{
-							this.Character.animation.CrossFade(this.IdleAnim);
+							this.CharacterAnimation.CrossFade(this.IdleAnim);
 						}
 					}
 					else
 					{
-						this.Character.animation.CrossFade("f02_dragIdle_00");
+						this.CharacterAnimation.CrossFade("f02_dragIdle_00");
 					}
 				}
 				else
 				{
-					if (axis != (float)0 || axis2 != (float)0)
+					if (this.v != (float)0 || this.h != (float)0)
 					{
 						if (this.Crawling)
 						{
-							this.Character.animation.CrossFade("f02_crawl_10");
-							this.MyController.Move(this.transform.forward * this.CrawlSpeed * Time.deltaTime * axis);
-							this.MyController.Move(this.transform.right * this.CrawlSpeed * Time.deltaTime * axis2);
+							this.CharacterAnimation.CrossFade("f02_crawl_10");
+							this.MyController.Move(this.transform.forward * this.CrawlSpeed * Time.deltaTime * this.v);
+							this.MyController.Move(this.transform.right * this.CrawlSpeed * Time.deltaTime * this.h);
 						}
 						else if (this.Crouching)
 						{
-							this.Character.animation.CrossFade("f02_crouchWalk_00");
-							this.MyController.Move(this.transform.forward * this.CrouchSpeed * Time.deltaTime * axis);
-							this.MyController.Move(this.transform.right * this.CrouchSpeed * Time.deltaTime * axis2);
+							this.CharacterAnimation.CrossFade("f02_crouchWalk_00");
+							this.MyController.Move(this.transform.forward * this.CrouchSpeed * Time.deltaTime * this.v);
+							this.MyController.Move(this.transform.right * this.CrouchSpeed * Time.deltaTime * this.h);
 						}
 						else
 						{
-							this.Character.animation.CrossFade(this.WalkAnim);
-							this.MyController.Move(this.transform.forward * this.WalkSpeed * Time.deltaTime * axis);
-							this.MyController.Move(this.transform.right * this.WalkSpeed * Time.deltaTime * axis2);
+							this.CharacterAnimation.CrossFade(this.WalkAnim);
+							this.MyController.Move(this.transform.forward * this.WalkSpeed * Time.deltaTime * this.v);
+							this.MyController.Move(this.transform.right * this.WalkSpeed * Time.deltaTime * this.h);
 						}
 					}
 					else if (this.Crawling)
 					{
-						this.Character.animation.CrossFade("f02_crawlIdle_00");
+						this.CharacterAnimation.CrossFade("f02_crawlIdle_00");
 					}
 					else if (this.Crouching)
 					{
-						this.Character.animation.CrossFade("f02_crouchIdle_00");
+						this.CharacterAnimation.CrossFade("f02_crouchIdle_00");
 					}
 					else
 					{
-						this.Character.animation.CrossFade(this.IdleAnim);
+						this.CharacterAnimation.CrossFade(this.IdleAnim);
 					}
 					this.Bend += Input.GetAxis("Mouse Y") * (float)8;
 					if (this.Crawling)
@@ -1095,11 +1119,11 @@ public class YandereScript : MonoBehaviour
 				}
 				if (!this.NearSenpai)
 				{
-					if (!Input.GetButton("A") && !Input.GetButton("B") && !Input.GetButton("X") && !Input.GetButton("Y") && (Input.GetAxis("LT") > 0.5f || Input.GetMouseButtonDown(1)))
+					if (!Input.GetButton("A") && !Input.GetButton("B") && !Input.GetButton("X") && !Input.GetButton("Y") && (Input.GetAxis("LT") > 0.5f || Input.GetMouseButton(1)))
 					{
 						if (this.Inventory.RivalPhone && Input.GetButtonDown("LB"))
 						{
-							this.Character.animation["f02_cameraPose_00"].weight = (float)0;
+							this.CharacterAnimation["f02_cameraPose_00"].weight = (float)0;
 							if (!this.RivalPhone)
 							{
 								this.SmartphoneRenderer.material.mainTexture = this.KokonaPhoneTexture;
@@ -1126,7 +1150,7 @@ public class YandereScript : MonoBehaviour
 							Vector3 eulerAngles = this.transform.eulerAngles;
 							float num2 = eulerAngles.y = y2;
 							Vector3 vector2 = this.transform.eulerAngles = eulerAngles;
-							this.Character.animation.Play(this.IdleAnim);
+							this.CharacterAnimation.Play(this.IdleAnim);
 							this.Smartphone.transform.parent.active = true;
 							this.ShoulderCamera.AimingCamera = true;
 							this.Obscurance.enabled = false;
@@ -1185,8 +1209,8 @@ public class YandereScript : MonoBehaviour
 									gameObject.transform.position = this.transform.position;
 									gameObject.transform.rotation = this.transform.rotation;
 									AudioSource.PlayClipAtPoint(this.BlasterClip, this.transform.position + Vector3.up);
-									this.Character.animation["f02_sansBlaster_00"].time = (float)0;
-									this.Character.animation.Play("f02_sansBlaster_00");
+									this.CharacterAnimation["f02_sansBlaster_00"].time = (float)0;
+									this.CharacterAnimation.Play("f02_sansBlaster_00");
 									this.SansEyes[0].active = true;
 									this.SansEyes[1].active = true;
 									this.GlowEffect.Play();
@@ -1234,15 +1258,15 @@ public class YandereScript : MonoBehaviour
 										gameObject2.transform.parent = this.ItemParent;
 										gameObject2.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
 										AudioSource.PlayClipAtPoint(this.FalconPunchVoice, this.transform.position + Vector3.up);
-										this.Character.animation["f02_falconPunch_00"].time = (float)0;
-										this.Character.animation.Play("f02_falconPunch_00");
+										this.CharacterAnimation["f02_falconPunch_00"].time = (float)0;
+										this.CharacterAnimation.Play("f02_falconPunch_00");
 										this.FalconSpeed = (float)0;
 									}
 									else
 									{
 										AudioSource.PlayClipAtPoint(this.OnePunchVoice, this.transform.position + Vector3.up);
-										this.Character.animation["f02_punch_21"].time = (float)0;
-										this.Character.animation.CrossFade("f02_punch_21", 0.15f);
+										this.CharacterAnimation["f02_punch_21"].time = (float)0;
+										this.CharacterAnimation.CrossFade("f02_punch_21", 0.15f);
 									}
 									this.Punching = true;
 									this.CanMove = false;
@@ -1304,7 +1328,7 @@ public class YandereScript : MonoBehaviour
 				}
 				if (this.Aiming)
 				{
-					this.Character.animation["f02_cameraPose_00"].weight = Mathf.Lerp(this.Character.animation["f02_cameraPose_00"].weight, (float)1, Time.deltaTime * (float)10);
+					this.CharacterAnimation["f02_cameraPose_00"].weight = Mathf.Lerp(this.CharacterAnimation["f02_cameraPose_00"].weight, (float)1, Time.deltaTime * (float)10);
 					if (this.ClubAccessories[7].active && (Input.GetAxis("DpadY") != (float)0 || Input.GetAxis("Mouse ScrollWheel") != (float)0))
 					{
 						this.Smartphone.fieldOfView = this.Smartphone.fieldOfView - Input.GetAxis("DpadY");
@@ -1359,7 +1383,7 @@ public class YandereScript : MonoBehaviour
 							this.GloveTimer += Time.deltaTime;
 							if (this.GloveTimer > 0.5f)
 							{
-								this.Character.animation.CrossFade("f02_removeGloves_00");
+								this.CharacterAnimation.CrossFade("f02_removeGloves_00");
 								this.Degloving = true;
 								this.CanMove = false;
 							}
@@ -1374,7 +1398,7 @@ public class YandereScript : MonoBehaviour
 						this.GloveTimer += Time.deltaTime;
 						if (this.GloveTimer > 0.1f)
 						{
-							this.Character.animation.CrossFade("f02_removeGloves_00");
+							this.CharacterAnimation.CrossFade("f02_removeGloves_00");
 							this.Degloving = true;
 							this.CanMove = false;
 						}
@@ -1434,7 +1458,7 @@ public class YandereScript : MonoBehaviour
 					{
 						UnityEngine.Object.Destroy(this.NewTrail);
 					}
-					this.NewTrail = (GameObject)UnityEngine.Object.Instantiate(this.Trail, this.transform.position + Vector3.fwd * 0.5f + Vector3.up * 0.1f, Quaternion.identity);
+					this.NewTrail = (GameObject)UnityEngine.Object.Instantiate(this.Trail, this.transform.position + this.transform.forward * 0.5f + Vector3.up * 0.1f, Quaternion.identity);
 					((AIPath)this.NewTrail.GetComponent(typeof(AIPath))).target = this.Homeroom;
 				}
 			}
@@ -1447,7 +1471,7 @@ public class YandereScript : MonoBehaviour
 					this.MoveTowardsTarget(this.Incinerator.transform.position + Vector3.right * (float)-2);
 					if (this.DumpTimer == (float)0 && this.Carrying)
 					{
-						this.Character.animation["f02_carryDisposeA_00"].time = 2.5f;
+						this.CharacterAnimation["f02_carryDisposeA_00"].time = 2.5f;
 					}
 					this.DumpTimer += Time.deltaTime;
 					if (this.DumpTimer > (float)1)
@@ -1456,8 +1480,8 @@ public class YandereScript : MonoBehaviour
 						{
 							this.DumpRagdoll(1);
 						}
-						this.Character.animation.CrossFade("f02_carryDisposeA_00");
-						if (this.Character.animation["f02_carryDisposeA_00"].time >= this.Character.animation["f02_carryDisposeA_00"].length)
+						this.CharacterAnimation.CrossFade("f02_carryDisposeA_00");
+						if (this.CharacterAnimation["f02_carryDisposeA_00"].time >= this.CharacterAnimation["f02_carryDisposeA_00"].length)
 						{
 							this.Incinerator.Prompt.enabled = true;
 							this.Incinerator.Ready = true;
@@ -1478,7 +1502,7 @@ public class YandereScript : MonoBehaviour
 					this.MoveTowardsTarget(this.WoodChipper.DumpPoint.position);
 					if (this.DumpTimer == (float)0 && this.Carrying)
 					{
-						this.Character.animation["f02_carryDisposeA_00"].time = 2.5f;
+						this.CharacterAnimation["f02_carryDisposeA_00"].time = 2.5f;
 					}
 					this.DumpTimer += Time.deltaTime;
 					if (this.DumpTimer > (float)1)
@@ -1487,8 +1511,8 @@ public class YandereScript : MonoBehaviour
 						{
 							this.DumpRagdoll(3);
 						}
-						this.Character.animation.CrossFade("f02_carryDisposeA_00");
-						if (this.Character.animation["f02_carryDisposeA_00"].time >= this.Character.animation["f02_carryDisposeA_00"].length)
+						this.CharacterAnimation.CrossFade("f02_carryDisposeA_00");
+						if (this.CharacterAnimation["f02_carryDisposeA_00"].time >= this.CharacterAnimation["f02_carryDisposeA_00"].length)
 						{
 							this.WoodChipper.Prompt.HideButton[0] = false;
 							this.WoodChipper.Prompt.HideButton[3] = true;
@@ -1510,8 +1534,8 @@ public class YandereScript : MonoBehaviour
 						this.targetRotation = Quaternion.LookRotation(new Vector3(this.Bucket.transform.position.x, this.transform.position.y, this.Bucket.transform.position.z) - this.transform.position);
 						this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
 					}
-					this.Character.animation.CrossFade("f02_dipping_00");
-					if (this.Character.animation["f02_dipping_00"].time >= this.Character.animation["f02_dipping_00"].length * 0.5f && this.Mop.Bloodiness > (float)0)
+					this.CharacterAnimation.CrossFade("f02_dipping_00");
+					if (this.CharacterAnimation["f02_dipping_00"].time >= this.CharacterAnimation["f02_dipping_00"].length * 0.5f && this.Mop.Bloodiness > (float)0)
 					{
 						if (this.Bucket != null)
 						{
@@ -1520,9 +1544,9 @@ public class YandereScript : MonoBehaviour
 						this.Mop.Bloodiness = (float)0;
 						this.Mop.UpdateBlood();
 					}
-					if (this.Character.animation["f02_dipping_00"].time >= this.Character.animation["f02_dipping_00"].length)
+					if (this.CharacterAnimation["f02_dipping_00"].time >= this.CharacterAnimation["f02_dipping_00"].length)
 					{
-						this.Character.animation["f02_dipping_00"].time = (float)0;
+						this.CharacterAnimation["f02_dipping_00"].time = (float)0;
 						this.Mop.Prompt.enabled = true;
 						this.Dipping = false;
 						this.CanMove = true;
@@ -1532,10 +1556,15 @@ public class YandereScript : MonoBehaviour
 				{
 					this.MoveTowardsTarget(this.Stool.position);
 					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.Stool.rotation, (float)10 * Time.deltaTime);
-					this.Character.animation.CrossFade("f02_bucketDump" + this.PourHeight + "_00", (float)0);
-					if (this.Character.animation["f02_bucketDump" + this.PourHeight + "_00"].time >= this.PourTime && !this.PickUp.Bucket.Poured)
+					this.CharacterAnimation.CrossFade("f02_bucketDump" + this.PourHeight + "_00", (float)0);
+					if (this.CharacterAnimation["f02_bucketDump" + this.PourHeight + "_00"].time >= this.PourTime && !this.PickUp.Bucket.Poured)
 					{
-						if (this.PickUp.Bucket.Bloodiness < (float)50)
+						if (this.PickUp.Bucket.Gasoline)
+						{
+							this.PickUp.Bucket.PourEffect.startColor = new Color((float)1, (float)1, (float)0, 0.5f);
+							UnityEngine.Object.Instantiate(this.PickUp.Bucket.GasCollider, this.PickUp.Bucket.PourEffect.transform.position + this.PourDistance * this.transform.forward, Quaternion.identity);
+						}
+						else if (this.PickUp.Bucket.Bloodiness < (float)50)
 						{
 							this.PickUp.Bucket.PourEffect.startColor = new Color((float)0, (float)1, (float)1, 0.5f);
 							UnityEngine.Object.Instantiate(this.PickUp.Bucket.WaterCollider, this.PickUp.Bucket.PourEffect.transform.position + this.PourDistance * this.transform.forward, Quaternion.identity);
@@ -1549,9 +1578,9 @@ public class YandereScript : MonoBehaviour
 						this.PickUp.Bucket.Poured = true;
 						this.PickUp.Bucket.Empty();
 					}
-					if (this.Character.animation["f02_bucketDump" + this.PourHeight + "_00"].time >= this.Character.animation["f02_bucketDump" + this.PourHeight + "_00"].length)
+					if (this.CharacterAnimation["f02_bucketDump" + this.PourHeight + "_00"].time >= this.CharacterAnimation["f02_bucketDump" + this.PourHeight + "_00"].length)
 					{
-						this.Character.animation["f02_bucketDump" + this.PourHeight + "_00"].time = (float)0;
+						this.CharacterAnimation["f02_bucketDump" + this.PourHeight + "_00"].time = (float)0;
 						this.PickUp.Bucket.Poured = false;
 						this.Pouring = false;
 						this.CanMove = true;
@@ -1566,13 +1595,13 @@ public class YandereScript : MonoBehaviour
 					}
 					if (this.CirnoHair.active)
 					{
-						float axis3 = Input.GetAxis("Vertical");
-						float axis4 = Input.GetAxis("Horizontal");
+						float axis = Input.GetAxis("Vertical");
+						float axis2 = Input.GetAxis("Horizontal");
 						Vector3 a3 = this.MainCamera.transform.TransformDirection(Vector3.forward);
 						a3.y = (float)0;
 						a3 = a3.normalized;
 						Vector3 a4 = new Vector3(a3.z, (float)0, -a3.x);
-						Vector3 vector3 = axis4 * a4 + axis3 * a3;
+						Vector3 vector3 = axis2 * a4 + axis * a3;
 						if (vector3 != Vector3.zero)
 						{
 							this.targetRotation = Quaternion.LookRotation(vector3);
@@ -1594,7 +1623,7 @@ public class YandereScript : MonoBehaviour
 						this.audio.time = (float)0;
 						this.audio.Play();
 					}
-					this.Character.animation.CrossFade(this.LaughAnim);
+					this.CharacterAnimation.CrossFade(this.LaughAnim);
 					if (Input.GetButtonDown("RB"))
 					{
 						this.LaughIntensity += (float)1;
@@ -1650,7 +1679,7 @@ public class YandereScript : MonoBehaviour
 					Vector3 position = this.transform.position;
 					float num3 = position.y = timeSkipHeight;
 					Vector3 vector4 = this.transform.position = position;
-					this.Character.animation.CrossFade("f02_timeSkip_00");
+					this.CharacterAnimation.CrossFade("f02_timeSkip_00");
 					this.MyController.Move(this.transform.up * 0.0001f);
 					this.Sanity += Time.deltaTime * 0.17f;
 					this.UpdateSanity();
@@ -1661,30 +1690,30 @@ public class YandereScript : MonoBehaviour
 					{
 						if (this.DumpsterHandle.Direction == (float)-1)
 						{
-							this.Character.animation.CrossFade("f02_dumpsterPull_00");
+							this.CharacterAnimation.CrossFade("f02_dumpsterPull_00");
 						}
 						else
 						{
-							this.Character.animation.CrossFade("f02_dumpsterPush_00");
+							this.CharacterAnimation.CrossFade("f02_dumpsterPush_00");
 						}
 					}
 					else if (Input.GetAxis("Horizontal") < -0.5f || Input.GetAxis("DpadX") < -0.5f)
 					{
 						if (this.DumpsterHandle.Direction == (float)-1)
 						{
-							this.Character.animation.CrossFade("f02_dumpsterPush_00");
+							this.CharacterAnimation.CrossFade("f02_dumpsterPush_00");
 						}
 						else
 						{
-							this.Character.animation.CrossFade("f02_dumpsterPull_00");
+							this.CharacterAnimation.CrossFade("f02_dumpsterPull_00");
 						}
 					}
 					else
 					{
-						this.Character.animation.CrossFade("f02_dumpsterGrab_00");
+						this.CharacterAnimation.CrossFade("f02_dumpsterGrab_00");
 					}
 				}
-				if (this.Stripping && this.Character.animation["f02_stripping_00"].time >= this.Character.animation["f02_stripping_00"].length)
+				if (this.Stripping && this.CharacterAnimation["f02_stripping_00"].time >= this.CharacterAnimation["f02_stripping_00"].length)
 				{
 					this.Stripping = false;
 					this.CanMove = true;
@@ -1694,8 +1723,8 @@ public class YandereScript : MonoBehaviour
 				{
 					this.MoveTowardsTarget(this.Stool.position);
 					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.Stool.rotation, (float)10 * Time.deltaTime);
-					this.Character.animation.CrossFade("f02_stoolBathing_00");
-					if (this.Character.animation["f02_stoolBathing_00"].time >= this.Character.animation["f02_stoolBathing_00"].length)
+					this.CharacterAnimation.CrossFade("f02_stoolBathing_00");
+					if (this.CharacterAnimation["f02_stoolBathing_00"].time >= this.CharacterAnimation["f02_stoolBathing_00"].length)
 					{
 						this.Bloodiness = (float)0;
 						this.UpdateBlood();
@@ -1705,8 +1734,8 @@ public class YandereScript : MonoBehaviour
 				}
 				if (this.Degloving)
 				{
-					this.Character.animation.CrossFade("f02_removeGloves_00");
-					if (this.Character.animation["f02_removeGloves_00"].time >= this.Character.animation["f02_removeGloves_00"].length)
+					this.CharacterAnimation.CrossFade("f02_removeGloves_00");
+					if (this.CharacterAnimation["f02_removeGloves_00"].time >= this.CharacterAnimation["f02_removeGloves_00"].length)
 					{
 						this.Gloves.transform.parent = null;
 						this.Gloves.active = true;
@@ -1736,14 +1765,14 @@ public class YandereScript : MonoBehaviour
 				{
 					if (!this.Won && !this.Lost)
 					{
-						this.Character.animation.CrossFade("f02_struggleA_00");
+						this.CharacterAnimation.CrossFade("f02_struggleA_00");
 						this.targetRotation = Quaternion.LookRotation(this.TargetStudent.transform.position - this.transform.position);
 						this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
 					}
 					else if (this.Won)
 					{
-						this.Character.animation.CrossFade("f02_struggleWinA_00");
-						if (!this.PlayedSound && this.Character.animation["f02_struggleWinA_00"].time > 0.9f)
+						this.CharacterAnimation.CrossFade("f02_struggleWinA_00");
+						if (!this.PlayedSound && this.CharacterAnimation["f02_struggleWinA_00"].time > 0.9f)
 						{
 							AudioSource.PlayClipAtPoint(this.Stabs[UnityEngine.Random.Range(0, Extensions.get_length(this.Stabs))], this.transform.position + Vector3.up);
 							this.Bloodiness += (float)20;
@@ -1753,7 +1782,7 @@ public class YandereScript : MonoBehaviour
 							this.StainWeapon();
 							this.PlayedSound = true;
 						}
-						if (this.Character.animation["f02_struggleWinA_00"].time > this.Character.animation["f02_struggleWinA_00"].length)
+						if (this.CharacterAnimation["f02_struggleWinA_00"].time > this.CharacterAnimation["f02_struggleWinA_00"].length)
 						{
 							this.ShoulderCamera.Struggle = false;
 							this.PlayedSound = false;
@@ -1762,34 +1791,34 @@ public class YandereScript : MonoBehaviour
 					}
 					else if (this.Lost)
 					{
-						this.Character.animation.CrossFade("f02_struggleLoseA_00");
+						this.CharacterAnimation.CrossFade("f02_struggleLoseA_00");
 					}
 				}
 				if (this.ClubActivity && PlayerPrefs.GetInt("Club") == 6)
 				{
-					this.Character.animation.Play("f02_kick_23");
-					if (this.Character.animation["f02_kick_23"].time >= this.Character.animation["f02_kick_23"].length)
+					this.CharacterAnimation.Play("f02_kick_23");
+					if (this.CharacterAnimation["f02_kick_23"].time >= this.CharacterAnimation["f02_kick_23"].length)
 					{
-						this.Character.animation["f02_kick_23"].time = (float)0;
+						this.CharacterAnimation["f02_kick_23"].time = (float)0;
 					}
 				}
 				if (this.Possessed)
 				{
-					this.Character.animation.CrossFade("f02_possessionPose_00");
+					this.CharacterAnimation.CrossFade("f02_possessionPose_00");
 				}
 				if (this.Punching)
 				{
 					if (this.FalconHelmet.active)
 					{
-						if (this.Character.animation["f02_falconPunch_00"].time >= (float)1 && this.Character.animation["f02_falconPunch_00"].time <= 1.25f)
+						if (this.CharacterAnimation["f02_falconPunch_00"].time >= (float)1 && this.CharacterAnimation["f02_falconPunch_00"].time <= 1.25f)
 						{
 							this.FalconSpeed = Mathf.MoveTowards(this.FalconSpeed, 2.5f, Time.deltaTime * 2.5f);
 						}
-						else if (this.Character.animation["f02_falconPunch_00"].time >= 1.25f && this.Character.animation["f02_falconPunch_00"].time <= 1.5f)
+						else if (this.CharacterAnimation["f02_falconPunch_00"].time >= 1.25f && this.CharacterAnimation["f02_falconPunch_00"].time <= 1.5f)
 						{
 							this.FalconSpeed = Mathf.MoveTowards(this.FalconSpeed, (float)0, Time.deltaTime * 2.5f);
 						}
-						if (this.Character.animation["f02_falconPunch_00"].time >= (float)1 && this.Character.animation["f02_falconPunch_00"].time <= 1.5f)
+						if (this.CharacterAnimation["f02_falconPunch_00"].time >= (float)1 && this.CharacterAnimation["f02_falconPunch_00"].time <= 1.5f)
 						{
 							if (this.NewFalconPunch == null)
 							{
@@ -1799,7 +1828,7 @@ public class YandereScript : MonoBehaviour
 							}
 							this.MyController.Move(this.transform.forward * this.FalconSpeed);
 						}
-						if (this.Character.animation["f02_falconPunch_00"].time >= this.Character.animation["f02_falconPunch_00"].length)
+						if (this.CharacterAnimation["f02_falconPunch_00"].time >= this.CharacterAnimation["f02_falconPunch_00"].length)
 						{
 							this.NewFalconPunch = null;
 							this.Punching = false;
@@ -1808,13 +1837,13 @@ public class YandereScript : MonoBehaviour
 					}
 					else
 					{
-						if (this.Character.animation["f02_punch_21"].time >= 0.15f && this.Character.animation["f02_punch_21"].time <= 0.2f && this.NewOnePunch == null)
+						if (this.CharacterAnimation["f02_punch_21"].time >= 0.15f && this.CharacterAnimation["f02_punch_21"].time <= 0.2f && this.NewOnePunch == null)
 						{
 							this.NewOnePunch = (GameObject)UnityEngine.Object.Instantiate(this.OnePunch);
 							this.NewOnePunch.transform.parent = this.ItemParent;
 							this.NewOnePunch.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
 						}
-						if (this.Character.animation["f02_punch_21"].time >= this.Character.animation["f02_punch_21"].length - 0.1f)
+						if (this.CharacterAnimation["f02_punch_21"].time >= this.CharacterAnimation["f02_punch_21"].length - 0.1f)
 						{
 							this.NewOnePunch = null;
 							this.Punching = false;
@@ -1826,7 +1855,7 @@ public class YandereScript : MonoBehaviour
 				{
 					if (Input.GetAxis("Vertical") > 0.5f)
 					{
-						this.Character.animation.CrossFade("f02_sansUp_00");
+						this.CharacterAnimation.CrossFade("f02_sansUp_00");
 						this.RagdollPK.transform.localPosition = new Vector3((float)0, (float)3, (float)2);
 						if (this.PKDir != 1)
 						{
@@ -1836,7 +1865,7 @@ public class YandereScript : MonoBehaviour
 					}
 					else if (Input.GetAxis("Vertical") < -0.5f)
 					{
-						this.Character.animation.CrossFade("f02_sansDown_00");
+						this.CharacterAnimation.CrossFade("f02_sansDown_00");
 						this.RagdollPK.transform.localPosition = new Vector3((float)0, (float)0, (float)2);
 						if (this.PKDir != 2)
 						{
@@ -1846,7 +1875,7 @@ public class YandereScript : MonoBehaviour
 					}
 					else if (Input.GetAxis("Horizontal") > 0.5f)
 					{
-						this.Character.animation.CrossFade("f02_sansRight_00");
+						this.CharacterAnimation.CrossFade("f02_sansRight_00");
 						this.RagdollPK.transform.localPosition = new Vector3(1.5f, 1.5f, (float)2);
 						if (this.PKDir != 3)
 						{
@@ -1856,7 +1885,7 @@ public class YandereScript : MonoBehaviour
 					}
 					else if (Input.GetAxis("Horizontal") < -0.5f)
 					{
-						this.Character.animation.CrossFade("f02_sansLeft_00");
+						this.CharacterAnimation.CrossFade("f02_sansLeft_00");
 						this.RagdollPK.transform.localPosition = new Vector3(-1.5f, 1.5f, (float)2);
 						if (this.PKDir != 4)
 						{
@@ -1866,7 +1895,7 @@ public class YandereScript : MonoBehaviour
 					}
 					else
 					{
-						this.Character.animation.CrossFade("f02_sansHold_00");
+						this.CharacterAnimation.CrossFade("f02_sansHold_00");
 						this.RagdollPK.transform.localPosition = new Vector3((float)0, 1.5f, (float)2);
 						this.PKDir = 0;
 					}
@@ -1885,7 +1914,7 @@ public class YandereScript : MonoBehaviour
 				}
 				if (this.SummonBones)
 				{
-					this.Character.animation.CrossFade("f02_sansBones_00");
+					this.CharacterAnimation.CrossFade("f02_sansBones_00");
 					if (this.BoneTimer == (float)0)
 					{
 						UnityEngine.Object.Instantiate(this.Bone, this.transform.position + this.transform.right * UnityEngine.Random.Range(-2.5f, 2.5f) + this.transform.up * (float)-2 + this.transform.forward * UnityEngine.Random.Range(1f, 6f), Quaternion.identity);
@@ -1904,7 +1933,7 @@ public class YandereScript : MonoBehaviour
 						this.CanMove = true;
 					}
 				}
-				if (this.Blasting && this.Character.animation["f02_sansBlaster_00"].time >= this.Character.animation["f02_sansBlaster_00"].length - 0.25f)
+				if (this.Blasting && this.CharacterAnimation["f02_sansBlaster_00"].time >= this.CharacterAnimation["f02_sansBlaster_00"].length - 0.25f)
 				{
 					this.SansEyes[0].active = false;
 					this.SansEyes[1].active = false;
@@ -1912,7 +1941,7 @@ public class YandereScript : MonoBehaviour
 					this.Blasting = false;
 					this.CanMove = true;
 				}
-				if (this.Lifting && this.Character.animation["f02_carryLiftA_00"].time >= this.Character.animation["f02_carryLiftA_00"].length)
+				if (this.Lifting && this.CharacterAnimation["f02_carryLiftA_00"].time >= this.CharacterAnimation["f02_carryLiftA_00"].length)
 				{
 					this.IdleAnim = this.CarryIdleAnim;
 					this.WalkAnim = this.CarryWalkAnim;
@@ -1928,8 +1957,8 @@ public class YandereScript : MonoBehaviour
 					this.MoveTowardsTarget(this.DropSpot.position);
 					if (this.DumpTimer == (float)0 && this.Carrying)
 					{
-						((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).Character.animation[((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).DumpedAnim].time = 2.5f;
-						this.Character.animation["f02_carryDisposeA_00"].time = 2.5f;
+						((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).CharacterAnimation[((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).DumpedAnim].time = 2.5f;
+						this.CharacterAnimation["f02_carryDisposeA_00"].time = 2.5f;
 					}
 					this.DumpTimer += Time.deltaTime;
 					if (this.DumpTimer > (float)1)
@@ -1946,7 +1975,7 @@ public class YandereScript : MonoBehaviour
 							Vector3 vector6 = ((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).PelvisRoot.localPosition = localPosition;
 						}
 						this.CameraTarget.position = Vector3.MoveTowards(this.CameraTarget.position, new Vector3(this.Hips.position.x, this.transform.position.y + (float)1, this.Hips.position.z), Time.deltaTime * (float)10);
-						if (this.Character.animation["f02_carryDisposeA_00"].time >= 4.5f)
+						if (this.CharacterAnimation["f02_carryDisposeA_00"].time >= 4.5f)
 						{
 							this.StopCarrying();
 						}
@@ -1962,12 +1991,12 @@ public class YandereScript : MonoBehaviour
 									this.ID++;
 								}
 							}
-							this.Character.animation.CrossFade("f02_carryDisposeA_00");
-							((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).Character.animation.CrossFade(((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).DumpedAnim);
+							this.CharacterAnimation.CrossFade("f02_carryDisposeA_00");
+							((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).CharacterAnimation.CrossFade(((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).DumpedAnim);
 							this.Ragdoll.transform.position = this.transform.position;
 							this.Ragdoll.transform.eulerAngles = this.transform.eulerAngles;
 						}
-						if (this.Character.animation["f02_carryDisposeA_00"].time >= this.Character.animation["f02_carryDisposeA_00"].length)
+						if (this.CharacterAnimation["f02_carryDisposeA_00"].time >= this.CharacterAnimation["f02_carryDisposeA_00"].length)
 						{
 							this.CameraTarget.localPosition = new Vector3((float)0, (float)1, (float)0);
 							this.Dropping = false;
@@ -1976,7 +2005,7 @@ public class YandereScript : MonoBehaviour
 						}
 					}
 				}
-				if (this.Dismembering && this.Character.animation["f02_dismember_00"].time >= this.Character.animation["f02_dismember_00"].length)
+				if (this.Dismembering && this.CharacterAnimation["f02_dismember_00"].time >= this.CharacterAnimation["f02_dismember_00"].length)
 				{
 					((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).Dismember();
 					this.RPGCamera.enabled = true;
@@ -1986,7 +2015,7 @@ public class YandereScript : MonoBehaviour
 				}
 				if (this.Shoved)
 				{
-					if (this.Character.animation["f02_shoveA_00"].time >= this.Character.animation["f02_shoveA_00"].length)
+					if (this.CharacterAnimation["f02_shoveA_00"].time >= this.CharacterAnimation["f02_shoveA_00"].length)
 					{
 						float x = this.Hips.transform.position.x;
 						Vector3 position2 = this.transform.position;
@@ -1997,7 +2026,7 @@ public class YandereScript : MonoBehaviour
 						float num9 = position3.z = z;
 						Vector3 vector8 = this.transform.position = position3;
 						this.CameraTarget.localPosition = new Vector3((float)0, (float)1, (float)0);
-						this.Character.animation.Play(this.IdleAnim);
+						this.CharacterAnimation.Play(this.IdleAnim);
 						this.Shoved = false;
 						this.CanMove = true;
 					}
@@ -2006,7 +2035,7 @@ public class YandereScript : MonoBehaviour
 						this.CameraTarget.position = Vector3.MoveTowards(this.CameraTarget.position, new Vector3(this.Hips.position.x, this.transform.position.y + (float)1, this.Hips.position.z), Time.deltaTime * (float)10);
 					}
 				}
-				if (this.Attacked && this.Character.animation["f02_swingB_00"].time >= this.Character.animation["f02_swingB_00"].length)
+				if (this.Attacked && this.CharacterAnimation["f02_swingB_00"].time >= this.CharacterAnimation["f02_swingB_00"].length)
 				{
 					this.ShoulderCamera.HeartbrokenCamera.active = true;
 				}
@@ -2016,12 +2045,12 @@ public class YandereScript : MonoBehaviour
 					{
 						this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.HidingSpot.rotation, Time.deltaTime * (float)10);
 						this.MoveTowardsTarget(this.HidingSpot.position);
-						this.Character.animation.CrossFade("f02_hiding_00");
+						this.CharacterAnimation.CrossFade("f02_hiding_00");
 					}
 					else
 					{
 						this.MoveTowardsTarget(this.ExitSpot.position);
-						this.Character.animation.CrossFade(this.IdleAnim);
+						this.CharacterAnimation.CrossFade(this.IdleAnim);
 						if (Vector3.Distance(this.transform.position, this.ExitSpot.position) < 0.1f)
 						{
 							float y3 = 0.825f;
@@ -2041,6 +2070,63 @@ public class YandereScript : MonoBehaviour
 						this.Exiting = true;
 					}
 				}
+				if (this.Tripping)
+				{
+					if (this.CharacterAnimation["f02_bucketTrip_00"].time >= this.CharacterAnimation["f02_bucketTrip_00"].length)
+					{
+						this.CharacterAnimation["f02_bucketTrip_00"].speed = (float)1;
+						this.Tripping = false;
+						this.CanMove = true;
+					}
+					else if (this.CharacterAnimation["f02_bucketTrip_00"].time < 0.5f)
+					{
+						this.MyController.Move(this.transform.forward * Time.deltaTime * (float)2);
+						if (this.CharacterAnimation["f02_bucketTrip_00"].time > 0.33333f && this.CharacterAnimation["f02_bucketTrip_00"].speed == (float)1)
+						{
+							this.CharacterAnimation["f02_bucketTrip_00"].speed = this.CharacterAnimation["f02_bucketTrip_00"].speed + 1E-06f;
+							AudioSource.PlayClipAtPoint(this.Thud, this.transform.position);
+						}
+					}
+					else if (Input.GetButtonDown("A"))
+					{
+						this.CharacterAnimation["f02_bucketTrip_00"].speed = this.CharacterAnimation["f02_bucketTrip_00"].speed + 0.1f;
+					}
+				}
+				if (this.BucketDropping)
+				{
+					this.targetRotation = Quaternion.LookRotation(this.DropSpot.position + this.DropSpot.forward - this.transform.position);
+					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
+					this.MoveTowardsTarget(this.DropSpot.position);
+					if (this.CharacterAnimation["f02_bucketDrop_00"].time >= this.CharacterAnimation["f02_bucketDrop_00"].length)
+					{
+						this.MyController.radius = 0.2f;
+						this.BucketDropping = false;
+						this.CanMove = true;
+					}
+					else if (this.CharacterAnimation["f02_bucketDrop_00"].time >= (float)1 && this.PickUp != null)
+					{
+						this.PickUp.Bucket.Dropped = true;
+						this.EmptyHands();
+					}
+				}
+				if (this.Flicking)
+				{
+					if (this.CharacterAnimation["f02_flickingMatch_00"].time >= this.CharacterAnimation["f02_flickingMatch_00"].length)
+					{
+						((MatchboxScript)this.PickUp.GetComponent(typeof(MatchboxScript))).Prompt.enabled = true;
+						this.Arc.active = true;
+						this.Flicking = false;
+						this.CanMove = true;
+					}
+					else if (this.CharacterAnimation["f02_flickingMatch_00"].time > (float)1 && this.Match != null)
+					{
+						this.Match.rigidbody.isKinematic = false;
+						this.Match.rigidbody.useGravity = true;
+						this.Match.rigidbody.AddRelativeForce(Vector3.right * (float)250);
+						this.Match.transform.parent = null;
+						this.Match = null;
+					}
+				}
 			}
 			if (!this.Laughing)
 			{
@@ -2048,11 +2134,11 @@ public class YandereScript : MonoBehaviour
 			}
 			if (!this.Mopping)
 			{
-				this.Character.animation["f02_mopping_00"].weight = Mathf.Lerp(this.Character.animation["f02_mopping_00"].weight, (float)0, Time.deltaTime * (float)10);
+				this.CharacterAnimation["f02_mopping_00"].weight = Mathf.Lerp(this.CharacterAnimation["f02_mopping_00"].weight, (float)0, Time.deltaTime * (float)10);
 			}
 			else
 			{
-				this.Character.animation["f02_mopping_00"].weight = Mathf.Lerp(this.Character.animation["f02_mopping_00"].weight, (float)1, Time.deltaTime * (float)10);
+				this.CharacterAnimation["f02_mopping_00"].weight = Mathf.Lerp(this.CharacterAnimation["f02_mopping_00"].weight, (float)1, Time.deltaTime * (float)10);
 				if (Input.GetButtonUp("A") || Input.GetKeyDown("escape"))
 				{
 					this.Mopping = false;
@@ -2063,26 +2149,26 @@ public class YandereScript : MonoBehaviour
 				this.ID = 0;
 				while (this.ID < Extensions.get_length(this.CarryAnims))
 				{
-					if (this.PickUp != null && this.CarryAnimID == this.ID && !this.Mopping && !this.Dipping && !this.Pouring)
+					if (this.PickUp != null && this.CarryAnimID == this.ID && !this.Mopping && !this.Dipping && !this.Pouring && !this.BucketDropping)
 					{
-						this.Character.animation[this.CarryAnims[this.ID]].weight = Mathf.Lerp(this.Character.animation[this.CarryAnims[this.ID]].weight, (float)1, Time.deltaTime * (float)10);
+						this.CharacterAnimation[this.CarryAnims[this.ID]].weight = Mathf.Lerp(this.CharacterAnimation[this.CarryAnims[this.ID]].weight, (float)1, Time.deltaTime * (float)10);
 					}
 					else
 					{
-						this.Character.animation[this.CarryAnims[this.ID]].weight = Mathf.Lerp(this.Character.animation[this.CarryAnims[this.ID]].weight, (float)0, Time.deltaTime * (float)10);
+						this.CharacterAnimation[this.CarryAnims[this.ID]].weight = Mathf.Lerp(this.CharacterAnimation[this.CarryAnims[this.ID]].weight, (float)0, Time.deltaTime * (float)10);
 					}
 					this.ID++;
 				}
 			}
 			else if (this.Armed)
 			{
-				this.Character.animation["f02_mopCarry_00"].weight = Mathf.Lerp(this.Character.animation["f02_mopCarry_00"].weight, (float)1, Time.deltaTime * (float)10);
+				this.CharacterAnimation["f02_mopCarry_00"].weight = Mathf.Lerp(this.CharacterAnimation["f02_mopCarry_00"].weight, (float)1, Time.deltaTime * (float)10);
 			}
 			if (this.Noticed && !this.Attacking)
 			{
 				if (!this.Collapse)
 				{
-					this.Character.animation.CrossFade("f02_scaredIdle_00");
+					this.CharacterAnimation.CrossFade("f02_scaredIdle_00");
 					this.targetRotation = Quaternion.LookRotation(this.Senpai.position - this.transform.position);
 					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
 					int num11 = 0;
@@ -2090,9 +2176,9 @@ public class YandereScript : MonoBehaviour
 					float num12 = localEulerAngles3.x = (float)num11;
 					Vector3 vector10 = this.transform.localEulerAngles = localEulerAngles3;
 				}
-				else if (this.Character.animation["f02_down_22"].time >= this.Character.animation["f02_down_22"].length)
+				else if (this.CharacterAnimation["f02_down_22"].time >= this.CharacterAnimation["f02_down_22"].length)
 				{
-					this.Character.animation.CrossFade("f02_down_23");
+					this.CharacterAnimation.CrossFade("f02_down_23");
 				}
 			}
 			if (!this.Attacking && !this.Lost)
@@ -2147,7 +2233,7 @@ public class YandereScript : MonoBehaviour
 				this.ColorCorrection.UpdateTextures();
 				if (!this.Attacking)
 				{
-					this.Character.animation["f02_shy_00"].weight = this.SenpaiTint;
+					this.CharacterAnimation["f02_shy_00"].weight = this.SenpaiTint;
 				}
 				this.HeartBeat.volume = this.SenpaiTint;
 				this.Sanity += Time.deltaTime * (float)10;
@@ -2167,7 +2253,7 @@ public class YandereScript : MonoBehaviour
 				this.ColorCorrection.greenChannel.SmoothTangents(1, (float)0);
 				this.ColorCorrection.blueChannel.SmoothTangents(1, (float)0);
 				this.ColorCorrection.UpdateTextures();
-				this.Character.animation["f02_shy_00"].weight = (float)1 - this.SenpaiTint;
+				this.CharacterAnimation["f02_shy_00"].weight = (float)1 - this.SenpaiTint;
 				this.HeartBeat.volume = (float)1 - this.SenpaiTint;
 			}
 			else if (this.SenpaiFade < (float)100)
@@ -2260,15 +2346,15 @@ public class YandereScript : MonoBehaviour
 				{
 					if (this.Weapon[this.Equipped].AnimID == this.ID)
 					{
-						this.Character.animation[this.ArmedAnims[this.ID]].weight = Mathf.Lerp(this.Character.animation[this.ArmedAnims[this.ID]].weight, (float)1, Time.deltaTime * (float)10);
+						this.CharacterAnimation[this.ArmedAnims[this.ID]].weight = Mathf.Lerp(this.CharacterAnimation[this.ArmedAnims[this.ID]].weight, (float)1, Time.deltaTime * (float)10);
 					}
 					else
 					{
-						this.Character.animation[this.ArmedAnims[this.ID]].weight = Mathf.Lerp(this.Character.animation[this.ArmedAnims[this.ID]].weight, (float)0, Time.deltaTime * (float)10);
+						this.CharacterAnimation[this.ArmedAnims[this.ID]].weight = Mathf.Lerp(this.CharacterAnimation[this.ArmedAnims[this.ID]].weight, (float)0, Time.deltaTime * (float)10);
 					}
 					if (this.Attacking && this.ID == 2)
 					{
-						this.Character.animation[this.ArmedAnims[2]].weight = (float)0;
+						this.CharacterAnimation[this.ArmedAnims[2]].weight = (float)0;
 					}
 					this.ID++;
 				}
@@ -2278,7 +2364,7 @@ public class YandereScript : MonoBehaviour
 				this.ID = 0;
 				while (this.ID < Extensions.get_length(this.ArmedAnims))
 				{
-					this.Character.animation[this.ArmedAnims[this.ID]].weight = Mathf.Lerp(this.Character.animation[this.ArmedAnims[this.ID]].weight, (float)0, Time.deltaTime * (float)10);
+					this.CharacterAnimation[this.ArmedAnims[this.ID]].weight = Mathf.Lerp(this.CharacterAnimation[this.ArmedAnims[this.ID]].weight, (float)0, Time.deltaTime * (float)10);
 					this.ID++;
 				}
 			}
@@ -2291,13 +2377,13 @@ public class YandereScript : MonoBehaviour
 				}
 				if (this.Interaction == 0)
 				{
-					this.Character.animation.CrossFade(this.IdleAnim);
+					this.CharacterAnimation.CrossFade(this.IdleAnim);
 				}
 				else if (this.Interaction == 1)
 				{
 					if (this.TalkTimer == (float)3)
 					{
-						this.Character.animation.CrossFade("f02_greet_00");
+						this.CharacterAnimation.CrossFade("f02_greet_00");
 						if (this.TargetStudent.Witnessed == "Insanity" || this.TargetStudent.Witnessed == "Weapon and Blood and Insanity" || this.TargetStudent.Witnessed == "Weapon and Insanity" || this.TargetStudent.Witnessed == "Blood and Insanity")
 						{
 							this.Subtitle.UpdateLabel("Insanity Apology", 0, (float)3);
@@ -2318,6 +2404,10 @@ public class YandereScript : MonoBehaviour
 						{
 							this.Subtitle.UpdateLabel("Lewd Apology", 0, (float)3);
 						}
+						else if (this.TargetStudent.Witnessed == "Accident")
+						{
+							this.Subtitle.UpdateLabel("Accident Apology", 0, (float)3);
+						}
 					}
 					else
 					{
@@ -2325,9 +2415,9 @@ public class YandereScript : MonoBehaviour
 						{
 							this.TalkTimer = (float)0;
 						}
-						if (this.Character.animation["f02_greet_00"].time >= this.Character.animation["f02_greet_00"].length)
+						if (this.CharacterAnimation["f02_greet_00"].time >= this.CharacterAnimation["f02_greet_00"].length)
 						{
-							this.Character.animation.CrossFade(this.IdleAnim);
+							this.CharacterAnimation.CrossFade(this.IdleAnim);
 						}
 						if (this.TalkTimer <= (float)0)
 						{
@@ -2342,7 +2432,7 @@ public class YandereScript : MonoBehaviour
 				{
 					if (this.TalkTimer == (float)3)
 					{
-						this.Character.animation.CrossFade("f02_greet_01");
+						this.CharacterAnimation.CrossFade("f02_greet_01");
 						this.Subtitle.UpdateLabel("Player Compliment", 0, (float)3);
 					}
 					else
@@ -2351,9 +2441,9 @@ public class YandereScript : MonoBehaviour
 						{
 							this.TalkTimer = (float)0;
 						}
-						if (this.Character.animation["f02_greet_01"].time >= this.Character.animation["f02_greet_01"].length)
+						if (this.CharacterAnimation["f02_greet_01"].time >= this.CharacterAnimation["f02_greet_01"].length)
 						{
-							this.Character.animation.CrossFade(this.IdleAnim);
+							this.CharacterAnimation.CrossFade(this.IdleAnim);
 						}
 						if (this.TalkTimer <= (float)0)
 						{
@@ -2368,7 +2458,7 @@ public class YandereScript : MonoBehaviour
 				{
 					if (this.TalkTimer == (float)3)
 					{
-						this.Character.animation.CrossFade("f02_lookdown_00");
+						this.CharacterAnimation.CrossFade("f02_lookdown_00");
 						this.Subtitle.UpdateLabel("Player Gossip", 0, (float)3);
 					}
 					else
@@ -2377,9 +2467,9 @@ public class YandereScript : MonoBehaviour
 						{
 							this.TalkTimer = (float)0;
 						}
-						if (this.Character.animation["f02_lookdown_00"].time >= this.Character.animation["f02_lookdown_00"].length)
+						if (this.CharacterAnimation["f02_lookdown_00"].time >= this.CharacterAnimation["f02_lookdown_00"].length)
 						{
-							this.Character.animation.CrossFade(this.IdleAnim);
+							this.CharacterAnimation.CrossFade(this.IdleAnim);
 						}
 						if (this.TalkTimer <= (float)0)
 						{
@@ -2394,7 +2484,7 @@ public class YandereScript : MonoBehaviour
 				{
 					if (this.TalkTimer == (float)2)
 					{
-						this.Character.animation.CrossFade("f02_greet_00");
+						this.CharacterAnimation.CrossFade("f02_greet_00");
 						this.Subtitle.UpdateLabel("Player Farewell", 0, (float)2);
 					}
 					else
@@ -2403,9 +2493,9 @@ public class YandereScript : MonoBehaviour
 						{
 							this.TalkTimer = (float)0;
 						}
-						if (this.Character.animation["f02_greet_00"].time >= this.Character.animation["f02_greet_00"].length)
+						if (this.CharacterAnimation["f02_greet_00"].time >= this.CharacterAnimation["f02_greet_00"].length)
 						{
-							this.Character.animation.CrossFade(this.IdleAnim);
+							this.CharacterAnimation.CrossFade(this.IdleAnim);
 						}
 						if (this.TalkTimer <= (float)0)
 						{
@@ -2420,7 +2510,7 @@ public class YandereScript : MonoBehaviour
 				{
 					if (this.TalkTimer == (float)3)
 					{
-						this.Character.animation.CrossFade("f02_greet_01");
+						this.CharacterAnimation.CrossFade("f02_greet_01");
 						this.Subtitle.UpdateLabel("Player Follow", 0, (float)3);
 					}
 					else
@@ -2429,9 +2519,9 @@ public class YandereScript : MonoBehaviour
 						{
 							this.TalkTimer = (float)0;
 						}
-						if (this.Character.animation["f02_greet_01"].time >= this.Character.animation["f02_greet_01"].length)
+						if (this.CharacterAnimation["f02_greet_01"].time >= this.CharacterAnimation["f02_greet_01"].length)
 						{
-							this.Character.animation.CrossFade(this.IdleAnim);
+							this.CharacterAnimation.CrossFade(this.IdleAnim);
 						}
 						if (this.TalkTimer <= (float)0)
 						{
@@ -2446,7 +2536,7 @@ public class YandereScript : MonoBehaviour
 				{
 					if (this.TalkTimer == (float)3)
 					{
-						this.Character.animation.CrossFade("f02_lookdown_00");
+						this.CharacterAnimation.CrossFade("f02_lookdown_00");
 						this.Subtitle.UpdateLabel("Player Leave", 0, (float)3);
 					}
 					else
@@ -2455,9 +2545,9 @@ public class YandereScript : MonoBehaviour
 						{
 							this.TalkTimer = (float)0;
 						}
-						if (this.Character.animation["f02_lookdown_00"].time >= this.Character.animation["f02_lookdown_00"].length)
+						if (this.CharacterAnimation["f02_lookdown_00"].time >= this.CharacterAnimation["f02_lookdown_00"].length)
 						{
-							this.Character.animation.CrossFade(this.IdleAnim);
+							this.CharacterAnimation.CrossFade(this.IdleAnim);
 						}
 						if (this.TalkTimer <= (float)0)
 						{
@@ -2472,7 +2562,7 @@ public class YandereScript : MonoBehaviour
 				{
 					if (this.TalkTimer == (float)3)
 					{
-						this.Character.animation.CrossFade("f02_lookdown_00");
+						this.CharacterAnimation.CrossFade("f02_lookdown_00");
 						this.Subtitle.UpdateLabel("Player Distract", 0, (float)3);
 					}
 					else
@@ -2481,9 +2571,9 @@ public class YandereScript : MonoBehaviour
 						{
 							this.TalkTimer = (float)0;
 						}
-						if (this.Character.animation["f02_lookdown_00"].time >= this.Character.animation["f02_lookdown_00"].length)
+						if (this.CharacterAnimation["f02_lookdown_00"].time >= this.CharacterAnimation["f02_lookdown_00"].length)
 						{
-							this.Character.animation.CrossFade(this.IdleAnim);
+							this.CharacterAnimation.CrossFade(this.IdleAnim);
 						}
 						if (this.TalkTimer <= (float)0)
 						{
@@ -2505,8 +2595,8 @@ public class YandereScript : MonoBehaviour
 				if (this.Drown)
 				{
 					this.MoveTowardsTarget(this.TargetStudent.transform.position + this.TargetStudent.transform.forward * -0.0001f);
-					this.Character.animation.CrossFade(this.DrownAnim);
-					if (this.Character.animation[this.DrownAnim].time > this.Character.animation[this.DrownAnim].length)
+					this.CharacterAnimation.CrossFade(this.DrownAnim);
+					if (this.CharacterAnimation[this.DrownAnim].time > this.CharacterAnimation[this.DrownAnim].length)
 					{
 						this.TargetStudent.Dead = true;
 						this.Attacking = false;
@@ -2526,8 +2616,8 @@ public class YandereScript : MonoBehaviour
 				{
 					this.CameraTarget.position = Vector3.MoveTowards(this.CameraTarget.position, new Vector3(this.Hips.position.x, this.transform.position.y + (float)1, this.Hips.position.z), Time.deltaTime * (float)10);
 					this.MoveTowardsTarget(this.TargetStudent.transform.position + this.TargetStudent.transform.forward * (float)-1);
-					this.Character.animation.CrossFade("f02_roofPushA_00");
-					if (this.Character.animation["f02_roofPushA_00"].time > 4.33333349f)
+					this.CharacterAnimation.CrossFade("f02_roofPushA_00");
+					if (this.CharacterAnimation["f02_roofPushA_00"].time > 4.33333349f)
 					{
 						if (this.Shoes[0].active)
 						{
@@ -2540,13 +2630,13 @@ public class YandereScript : MonoBehaviour
 							this.Shoes[1].active = false;
 						}
 					}
-					else if (this.Character.animation["f02_roofPushA_00"].time > 2.16666675f && !this.Shoes[0].active)
+					else if (this.CharacterAnimation["f02_roofPushA_00"].time > 2.16666675f && !this.Shoes[0].active)
 					{
 						this.TargetStudent.RemoveShoes();
 						this.Shoes[0].active = true;
 						this.Shoes[1].active = true;
 					}
-					if (this.Character.animation["f02_roofPushA_00"].time > this.Character.animation["f02_roofPushA_00"].length)
+					if (this.CharacterAnimation["f02_roofPushA_00"].time > this.CharacterAnimation["f02_roofPushA_00"].length)
 					{
 						this.CameraTarget.localPosition = new Vector3((float)0, (float)1, (float)0);
 						this.TargetStudent.Dead = true;
@@ -2567,20 +2657,20 @@ public class YandereScript : MonoBehaviour
 				{
 					if (this.Weapon[this.Equipped].WeaponID == 11)
 					{
-						this.Character.animation.CrossFade("CyborgNinja_Slash");
-						if (this.Character.animation["CyborgNinja_Slash"].time == (float)0)
+						this.CharacterAnimation.CrossFade("CyborgNinja_Slash");
+						if (this.CharacterAnimation["CyborgNinja_Slash"].time == (float)0)
 						{
-							this.TargetStudent.Character.animation[this.TargetStudent.PhoneAnim].weight = (float)0;
+							this.TargetStudent.CharacterAnimation[this.TargetStudent.PhoneAnim].weight = (float)0;
 							this.Weapon[this.Equipped].gameObject.audio.Play();
 						}
-						if (this.Character.animation["CyborgNinja_Slash"].time >= this.Character.animation["CyborgNinja_Slash"].length)
+						if (this.CharacterAnimation["CyborgNinja_Slash"].time >= this.CharacterAnimation["CyborgNinja_Slash"].length)
 						{
 							this.Bloodiness += (float)20;
 							this.UpdateBlood();
 							this.StainWeapon();
-							this.Character.animation["CyborgNinja_Slash"].time = (float)0;
-							this.Character.animation.Stop("CyborgNinja_Slash");
-							this.Character.animation.CrossFade(this.IdleAnim);
+							this.CharacterAnimation["CyborgNinja_Slash"].time = (float)0;
+							this.CharacterAnimation.Stop("CyborgNinja_Slash");
+							this.CharacterAnimation.CrossFade(this.IdleAnim);
 							this.Attacking = false;
 							if (!this.Noticed)
 							{
@@ -2594,15 +2684,15 @@ public class YandereScript : MonoBehaviour
 					}
 					else if (this.Weapon[this.Equipped].WeaponID == 7)
 					{
-						this.Character.animation.CrossFade("f02_buzzSawKill_A_00");
-						if (this.Character.animation["f02_buzzSawKill_A_00"].time == (float)0)
+						this.CharacterAnimation.CrossFade("f02_buzzSawKill_A_00");
+						if (this.CharacterAnimation["f02_buzzSawKill_A_00"].time == (float)0)
 						{
-							this.TargetStudent.Character.animation[this.TargetStudent.PhoneAnim].weight = (float)0;
+							this.TargetStudent.CharacterAnimation[this.TargetStudent.PhoneAnim].weight = (float)0;
 							this.Weapon[this.Equipped].gameObject.audio.Play();
 						}
 						if (this.AttackPhase == 1)
 						{
-							if (this.Character.animation["f02_buzzSawKill_A_00"].time > 0.33333f)
+							if (this.CharacterAnimation["f02_buzzSawKill_A_00"].time > 0.33333f)
 							{
 								this.TargetStudent.LiquidProjector.enabled = true;
 								this.Weapon[this.Equipped].Effect();
@@ -2613,22 +2703,22 @@ public class YandereScript : MonoBehaviour
 								this.AttackPhase++;
 							}
 						}
-						else if (this.AttackPhase < 6 && this.Character.animation["f02_buzzSawKill_A_00"].time > 0.33333f * (float)this.AttackPhase)
+						else if (this.AttackPhase < 6 && this.CharacterAnimation["f02_buzzSawKill_A_00"].time > 0.33333f * (float)this.AttackPhase)
 						{
 							this.TargetStudent.LiquidProjector.material.mainTexture = this.BloodTextures[this.AttackPhase];
 							this.Bloodiness += (float)20;
 							this.UpdateBlood();
 							this.AttackPhase++;
 						}
-						if (this.Character.animation["f02_buzzSawKill_A_00"].time > this.Character.animation["f02_buzzSawKill_A_00"].length)
+						if (this.CharacterAnimation["f02_buzzSawKill_A_00"].time > this.CharacterAnimation["f02_buzzSawKill_A_00"].length)
 						{
 							if (this.TargetStudent == this.StudentManager.Reporter)
 							{
 								this.StudentManager.Reporter = null;
 							}
-							this.Character.animation["f02_buzzSawKill_A_00"].time = (float)0;
-							this.Character.animation.Stop("f02_buzzSawKill_A_00");
-							this.Character.animation.CrossFade(this.IdleAnim);
+							this.CharacterAnimation["f02_buzzSawKill_A_00"].time = (float)0;
+							this.CharacterAnimation.Stop("f02_buzzSawKill_A_00");
+							this.CharacterAnimation.CrossFade(this.IdleAnim);
 							this.MyController.radius = 0.2f;
 							this.Attacking = false;
 							this.AttackPhase = 1;
@@ -2650,8 +2740,8 @@ public class YandereScript : MonoBehaviour
 					{
 						if (this.AttackPhase == 1)
 						{
-							this.Character.animation.CrossFade("f02_swingA_00");
-							if (this.Character.animation["f02_swingA_00"].time > this.Character.animation["f02_swingA_00"].length * 0.3f)
+							this.CharacterAnimation.CrossFade("f02_swingA_00");
+							if (this.CharacterAnimation["f02_swingA_00"].time > this.CharacterAnimation["f02_swingA_00"].length * 0.3f)
 							{
 								if (this.TargetStudent == this.StudentManager.Reporter)
 								{
@@ -2667,9 +2757,9 @@ public class YandereScript : MonoBehaviour
 								this.UpdateSanity();
 							}
 						}
-						else if (this.Character.animation["f02_swingA_00"].time >= this.Character.animation["f02_swingA_00"].length * 0.9f)
+						else if (this.CharacterAnimation["f02_swingA_00"].time >= this.CharacterAnimation["f02_swingA_00"].length * 0.9f)
 						{
-							this.Character.animation.CrossFade(this.IdleAnim);
+							this.CharacterAnimation.CrossFade(this.IdleAnim);
 							this.TargetStudent.Dead = true;
 							this.TargetStudent.BecomeRagdoll();
 							this.MyController.radius = 0.2f;
@@ -2688,10 +2778,10 @@ public class YandereScript : MonoBehaviour
 					}
 					else if (this.AttackPhase == 1)
 					{
-						this.Character.animation.CrossFade("f02_stab_00");
-						if (this.Character.animation["f02_stab_00"].time > this.Character.animation["f02_stab_00"].length * 0.35f)
+						this.CharacterAnimation.CrossFade("f02_stab_00");
+						if (this.CharacterAnimation["f02_stab_00"].time > this.CharacterAnimation["f02_stab_00"].length * 0.35f)
 						{
-							this.Character.animation.CrossFade(this.IdleAnim);
+							this.CharacterAnimation.CrossFade(this.IdleAnim);
 							if (this.CanTranq)
 							{
 								this.TargetStudent.Tranquil = true;
@@ -2747,7 +2837,7 @@ public class YandereScript : MonoBehaviour
 				}
 				else
 				{
-					this.Character.animation.CrossFade("f02_counterA_00");
+					this.CharacterAnimation.CrossFade("f02_counterA_00");
 					float y4 = this.TargetStudent.transform.position.y;
 					Vector3 position4 = this.Character.transform.position;
 					float num21 = position4.y = y4;
@@ -2756,7 +2846,7 @@ public class YandereScript : MonoBehaviour
 			}
 			if (!this.Attacking && !this.Dragging && this.PickUp == null && !this.Aiming && !this.Crawling && !this.Pouring && !this.DumpsterGrabbing && !this.Stripping && !this.Bathing && !this.Struggling && !this.Degloving && !this.Possessed && !this.Carrying && !this.Dismembering && !this.CirnoWings.active && this.LaughIntensity < (float)16)
 			{
-				this.Character.animation["f02_yanderePose_00"].weight = Mathf.Lerp(this.Character.animation["f02_yanderePose_00"].weight, (float)1 - this.Sanity / (float)100, Time.deltaTime * (float)10);
+				this.CharacterAnimation["f02_yanderePose_00"].weight = Mathf.Lerp(this.CharacterAnimation["f02_yanderePose_00"].weight, (float)1 - this.Sanity / (float)100, Time.deltaTime * (float)10);
 				if (this.Hairstyle == 2 && this.Crouching)
 				{
 					this.Slouch = Mathf.Lerp(this.Slouch, (float)0, Time.deltaTime * (float)20);
@@ -2768,7 +2858,7 @@ public class YandereScript : MonoBehaviour
 			}
 			else
 			{
-				this.Character.animation["f02_yanderePose_00"].weight = Mathf.Lerp(this.Character.animation["f02_yanderePose_00"].weight, (float)0, Time.deltaTime * (float)10);
+				this.CharacterAnimation["f02_yanderePose_00"].weight = Mathf.Lerp(this.CharacterAnimation["f02_yanderePose_00"].weight, (float)0, Time.deltaTime * (float)10);
 				this.Slouch = Mathf.Lerp(this.Slouch, (float)0, Time.deltaTime * (float)10);
 			}
 			if (!this.Noticed)
@@ -3078,6 +3168,12 @@ public class YandereScript : MonoBehaviour
 		{
 			this.audio.volume = this.audio.volume - 0.333333343f;
 		}
+		if (Input.GetKeyDown(KeyCode.Tab))
+		{
+			this.CharacterAnimation.CrossFade("f02_bucketTrip_00");
+			this.Tripping = true;
+			this.CanMove = false;
+		}
 	}
 
 	public virtual void LateUpdate()
@@ -3295,7 +3391,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual void StopAiming()
 	{
-		this.Character.animation["f02_cameraPose_00"].weight = (float)0;
+		this.CharacterAnimation["f02_cameraPose_00"].weight = (float)0;
 		int num = 0;
 		Vector3 localPosition = this.PelvisRoot.transform.localPosition;
 		float num2 = localPosition.y = (float)num;
@@ -3349,7 +3445,7 @@ public class YandereScript : MonoBehaviour
 		this.ColorCorrection.blueChannel.SmoothTangents(1, (float)0);
 		this.ColorCorrection.UpdateTextures();
 		this.ColorCorrection.enabled = false;
-		this.Character.animation["f02_shy_00"].weight = (float)0;
+		this.CharacterAnimation["f02_shy_00"].weight = (float)0;
 		this.HeartBeat.volume = (float)0;
 		this.SenpaiFade = (float)100;
 	}
@@ -3603,7 +3699,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$2641(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$2661(this).GetEnumerator();
 	}
 
 	public virtual void WearGloves()
@@ -3810,7 +3906,7 @@ public class YandereScript : MonoBehaviour
 		this.FalconBuckle.active = true;
 		this.FalconHelmet.active = true;
 		this.FalconGun.active = true;
-		this.Character.animation[this.RunAnim].speed = (float)5;
+		this.CharacterAnimation[this.RunAnim].speed = (float)5;
 		this.IdleAnim = "f02_falconIdle_00";
 		this.RunSpeed *= (float)5;
 		this.Egg = true;
