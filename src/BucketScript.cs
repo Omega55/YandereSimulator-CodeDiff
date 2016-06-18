@@ -18,6 +18,8 @@ public class BucketScript : MonoBehaviour
 
 	public GameObject GasCollider;
 
+	public GameObject BloodSpillEffect;
+
 	public GameObject GasSpillEffect;
 
 	public GameObject SpillEffect;
@@ -134,7 +136,7 @@ public class BucketScript : MonoBehaviour
 					this.Prompt.HideButton[0] = true;
 				}
 			}
-			else if (this.Yandere.PickUp == this.PickUp && (this.Yandere.v != (float)0 || this.Yandere.h != (float)0) && this.Full && this.Bloodiness == (float)0 && Input.GetButtonDown("RB"))
+			else if (this.Yandere.PickUp == this.PickUp && (this.Yandere.v != (float)0 || this.Yandere.h != (float)0) && this.Full && Input.GetButtonDown("RB"))
 			{
 				this.Yandere.EmptyHands();
 				this.Yandere.Character.animation.CrossFade("f02_bucketTrip_00");
@@ -297,13 +299,22 @@ public class BucketScript : MonoBehaviour
 					if (this.Rotate == (float)0)
 					{
 						this.transform.rotation = this.Yandere.transform.rotation;
-						if (!this.Gasoline)
+						if (this.Bloodiness < (float)50)
 						{
-							UnityEngine.Object.Instantiate(this.SpillEffect, this.transform.position + this.transform.forward * 0.5f + this.transform.up * 0.5f, this.transform.rotation);
+							if (!this.Gasoline)
+							{
+								UnityEngine.Object.Instantiate(this.SpillEffect, this.transform.position + this.transform.forward * 0.5f + this.transform.up * 0.5f, this.transform.rotation);
+							}
+							else
+							{
+								UnityEngine.Object.Instantiate(this.GasSpillEffect, this.transform.position + this.transform.forward * 0.5f + this.transform.up * 0.5f, this.transform.rotation);
+								this.Gasoline = false;
+							}
 						}
 						else
 						{
-							UnityEngine.Object.Instantiate(this.GasSpillEffect, this.transform.position + this.transform.forward * 0.5f + this.transform.up * 0.5f, this.transform.rotation);
+							UnityEngine.Object.Instantiate(this.BloodSpillEffect, this.transform.position + this.transform.forward * 0.5f + this.transform.up * 0.5f, this.transform.rotation);
+							this.Bloodiness = (float)0;
 						}
 						this.rigidbody.AddRelativeForce(Vector3.forward * (float)150);
 						this.rigidbody.AddRelativeForce(Vector3.up * (float)250);

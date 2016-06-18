@@ -55,21 +55,28 @@ public class MopScript : MonoBehaviour
 				{
 					if (this.Yandere.Bucket.Full)
 					{
-						if (this.Yandere.Bucket.Bloodiness < (float)100)
+						if (!this.Yandere.Bucket.Gasoline)
 						{
-							this.Prompt.Label[0].text = "     " + "Dip";
-							if (Input.GetButtonDown("A"))
+							if (this.Yandere.Bucket.Bloodiness < (float)100)
 							{
-								this.Yandere.YandereVision = false;
-								this.Yandere.CanMove = false;
-								this.Yandere.Dipping = true;
-								this.Prompt.Hide();
-								this.Prompt.enabled = false;
+								this.Prompt.Label[0].text = "     " + "Dip";
+								if (Input.GetButtonDown("A"))
+								{
+									this.Yandere.YandereVision = false;
+									this.Yandere.CanMove = false;
+									this.Yandere.Dipping = true;
+									this.Prompt.Hide();
+									this.Prompt.enabled = false;
+								}
+							}
+							else
+							{
+								this.Prompt.Label[0].text = "     " + "Water Too Bloody!";
 							}
 						}
 						else
 						{
-							this.Prompt.Label[0].text = "     " + "Water Too Bloody!";
+							this.Prompt.Label[0].text = "     " + "Can't Use Gasoline!";
 						}
 					}
 					else

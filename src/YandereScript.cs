@@ -783,6 +783,8 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject[] ClubAccessories;
 
+	public GameObject Fireball;
+
 	public bool LiftOff;
 
 	public GameObject LiftOffParticles;
@@ -2181,7 +2183,7 @@ public class YandereScript : MonoBehaviour
 					this.CharacterAnimation.CrossFade("f02_down_23");
 				}
 			}
-			if (!this.Attacking && !this.Lost)
+			if (!this.Attacking && !this.Lost && this.CanMove)
 			{
 				if (Vector3.Distance(this.transform.position, this.Senpai.position) < (float)2)
 				{
@@ -3168,7 +3170,7 @@ public class YandereScript : MonoBehaviour
 		{
 			this.audio.volume = this.audio.volume - 0.333333343f;
 		}
-		if (Input.GetKeyDown(KeyCode.Tab))
+		if (Input.GetKeyDown(KeyCode.Keypad5))
 		{
 			this.CharacterAnimation.CrossFade("f02_bucketTrip_00");
 			this.Tripping = true;

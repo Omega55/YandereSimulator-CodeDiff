@@ -202,13 +202,13 @@ public class BatheEventScript : MonoBehaviour
 			if (!this.EventStudent.Dying)
 			{
 				this.EventStudent.Prompt.enabled = true;
+				this.EventStudent.Pathfinding.canSearch = true;
+				this.EventStudent.Pathfinding.canMove = true;
+				this.EventStudent.Pathfinding.speed = (float)1;
+				this.EventStudent.TargetDistance = (float)1;
+				this.EventStudent.Private = false;
 			}
-			this.EventStudent.Pathfinding.canSearch = true;
-			this.EventStudent.Pathfinding.canMove = true;
-			this.EventStudent.Pathfinding.speed = (float)1;
-			this.EventStudent.TargetDistance = (float)1;
 			this.EventStudent.InEvent = false;
-			this.EventStudent.Private = false;
 			this.EventSubtitle.text = string.Empty;
 			this.StudentManager.UpdateStudents();
 		}

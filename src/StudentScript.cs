@@ -4652,6 +4652,7 @@ public class StudentScript : MonoBehaviour
 
 	public virtual void Combust()
 	{
+		Debug.Log("First, this happened.");
 		this.Police.CorpseList[this.Police.Corpses] = this.Ragdoll;
 		this.Police.Corpses = this.Police.Corpses + 1;
 		this.SetLayerRecursively(this.gameObject, 11);
@@ -4669,6 +4670,11 @@ public class StudentScript : MonoBehaviour
 		this.LiquidProjector.enabled = false;
 		this.UnWet();
 		this.ID = 0;
+		if (this.Following)
+		{
+			this.Yandere.Followers = this.Yandere.Followers - 1;
+			this.Following = false;
+		}
 		while (this.ID < Extensions.get_length(this.FireEmitters))
 		{
 			this.FireEmitters[this.ID].gameObject.active = true;

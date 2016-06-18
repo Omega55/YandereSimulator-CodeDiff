@@ -532,7 +532,6 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 15)
 			{
-				Debug.Log("Going home.");
 				PlayerPrefs.SetFloat("Reputation", this.Reputation.Reputation);
 				PlayerPrefs.SetInt("Night", 1);
 				this.Police.KillStudents();

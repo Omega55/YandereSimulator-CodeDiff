@@ -246,9 +246,9 @@ public class HomeYandereScript : MonoBehaviour
 		if (this.HidePony)
 		{
 			this.Ponytail.parent.transform.localScale = new Vector3((float)1, (float)1, 0.93f);
-			this.Ponytail.localScale = new Vector3((float)0, (float)0, (float)0);
-			this.HairR.localScale = new Vector3((float)0, (float)0, (float)0);
-			this.HairL.localScale = new Vector3((float)0, (float)0, (float)0);
+			this.Ponytail.localScale = new Vector3(0.0001f, 0.0001f, 0.0001f);
+			this.HairR.localScale = new Vector3(0.0001f, 0.0001f, 0.0001f);
+			this.HairL.localScale = new Vector3(0.0001f, 0.0001f, 0.0001f);
 		}
 	}
 
