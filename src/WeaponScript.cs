@@ -383,7 +383,7 @@ public class WeaponScript : MonoBehaviour
 			((ParticleSystem)this.gameObject.GetComponent(typeof(ParticleSystem))).Play();
 			this.audio.Play();
 		}
-		else if (this.WeaponID == 9 || this.WeaponID == 10 || this.WeaponID == 12)
+		else if (this.WeaponID == 2 || this.WeaponID == 9 || this.WeaponID == 10 || this.WeaponID == 12 || this.WeaponID == 13)
 		{
 			this.audio.Play();
 		}

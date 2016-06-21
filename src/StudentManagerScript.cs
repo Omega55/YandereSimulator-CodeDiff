@@ -152,12 +152,12 @@ public class StudentManagerScript : MonoBehaviour
 		this.SetAtmosphere();
 		if (PlayerPrefs.GetInt("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Slave") == 1)
 		{
-			PlayerPrefs.SetInt("KidnapVictim", 0);
 			this.ForceSpawn = true;
 			this.SpawnPositions[PlayerPrefs.GetInt("KidnapVictim")] = this.SlaveSpot;
 			this.SpawnID = PlayerPrefs.GetInt("KidnapVictim");
 			this.SpawnStudent();
 			this.SpawnID = 0;
+			PlayerPrefs.SetInt("KidnapVictim", 0);
 		}
 		this.NPCsTotal = this.StudentsTotal + this.TeachersTotal;
 		this.SpawnID = this.StudentsTotal + 1;

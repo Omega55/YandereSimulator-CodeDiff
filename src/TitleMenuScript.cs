@@ -253,6 +253,7 @@ public class TitleMenuScript : MonoBehaviour
 		this.SetLayerRecursively(this.Yandere.transform.parent.gameObject, 14);
 		this.Yandere.animation["f02_yanderePose_00"].weight = (float)1;
 		this.Yandere.animation["f02_fist_00"].weight = (float)1;
+		this.Yandere.animation.Play("f02_fist_00");
 		int num = 1;
 		Color color = this.YandereEye[0].material.color;
 		float num2 = color.a = (float)num;
@@ -338,6 +339,7 @@ public class TitleMenuScript : MonoBehaviour
 		this.SetLayerRecursively(this.Yandere.transform.parent.gameObject, 9);
 		this.Yandere.animation["f02_yanderePose_00"].weight = (float)0;
 		this.Yandere.animation["f02_fist_00"].weight = (float)0;
+		this.Yandere.animation.Stop("f02_fist_00");
 		int num = 0;
 		Color color = this.YandereEye[0].material.color;
 		float num2 = color.a = (float)num;

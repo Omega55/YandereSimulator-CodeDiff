@@ -789,6 +789,8 @@ public class StudentScript : MonoBehaviour
 		this.OccultBook.active = false;
 		if (!this.Male)
 		{
+			this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
+			this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 			this.CharacterAnimation[this.StripAnim].speed = 1.5f;
 			this.CharacterAnimation[this.GameAnim].speed = (float)2;
 			if (this.Club > 99)
@@ -3763,8 +3765,6 @@ public class StudentScript : MonoBehaviour
 		}
 		if (!this.Male)
 		{
-			this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
-			this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 			if (this.Shy)
 			{
 				if (this.Routine)
@@ -4581,22 +4581,6 @@ public class StudentScript : MonoBehaviour
 
 	public virtual void GetWet()
 	{
-		if (this.Yandere.Tripping && this.Yandere.Mask == null)
-		{
-			this.Witnessed = "Accident";
-			this.Witness = true;
-			this.RepLoss = (float)10;
-			this.RepDeduction = (float)0;
-			this.CalculateReputationPenalty();
-			if (this.RepDeduction >= (float)0)
-			{
-				this.RepLoss -= this.RepDeduction;
-			}
-			this.Reputation.PendingRep = this.Reputation.PendingRep - this.RepLoss * this.Paranoia;
-			this.PendingRep -= this.RepLoss * this.Paranoia;
-		}
-		this.CharacterAnimation[this.SplashedAnim].speed = (float)1;
-		this.CharacterAnimation.CrossFade(this.SplashedAnim);
 		this.LiquidProjector.enabled = true;
 		if (this.Gas)
 		{
@@ -4610,16 +4594,6 @@ public class StudentScript : MonoBehaviour
 		{
 			this.LiquidProjector.material.mainTexture = this.WaterTexture;
 		}
-		this.Subtitle.UpdateLabel("Splash Reaction", 0, (float)1);
-		this.Pathfinding.canSearch = false;
-		this.Pathfinding.canMove = false;
-		this.SplashTimer = (float)0;
-		this.SplashPhase = 1;
-		this.BathePhase = 1;
-		this.Splashed = true;
-		this.Routine = false;
-		this.Wet = true;
-		this.SpawnAlarmDisc();
 		this.ID = 0;
 		while (this.ID < Extensions.get_length(this.LiquidEmitters))
 		{
@@ -4637,6 +4611,35 @@ public class StudentScript : MonoBehaviour
 				this.LiquidEmitters[this.ID].startColor = new Color((float)0, (float)1, (float)1, (float)1);
 			}
 			this.ID++;
+		}
+		if (!this.Slave)
+		{
+			if (this.Yandere.Tripping && this.Yandere.Mask == null)
+			{
+				this.Witnessed = "Accident";
+				this.Witness = true;
+				this.RepLoss = (float)10;
+				this.RepDeduction = (float)0;
+				this.CalculateReputationPenalty();
+				if (this.RepDeduction >= (float)0)
+				{
+					this.RepLoss -= this.RepDeduction;
+				}
+				this.Reputation.PendingRep = this.Reputation.PendingRep - this.RepLoss * this.Paranoia;
+				this.PendingRep -= this.RepLoss * this.Paranoia;
+			}
+			this.CharacterAnimation[this.SplashedAnim].speed = (float)1;
+			this.CharacterAnimation.CrossFade(this.SplashedAnim);
+			this.Subtitle.UpdateLabel("Splash Reaction", 0, (float)1);
+			this.Pathfinding.canSearch = false;
+			this.Pathfinding.canMove = false;
+			this.SplashTimer = (float)0;
+			this.SplashPhase = 1;
+			this.BathePhase = 1;
+			this.Splashed = true;
+			this.Routine = false;
+			this.Wet = true;
+			this.SpawnAlarmDisc();
 		}
 	}
 

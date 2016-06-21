@@ -761,6 +761,10 @@ public class YandereScript : MonoBehaviour
 
 	public Texture SamusFace;
 
+	public Texture WitchBody;
+
+	public Texture WitchFace;
+
 	public Mesh SchoolSwimsuit;
 
 	public Mesh GymUniform;
@@ -3009,6 +3013,8 @@ public class YandereScript : MonoBehaviour
 				{
 					this.BreastSize = (float)2;
 				}
+				this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
+				this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 			}
 			if (Input.GetKey(","))
 			{
@@ -3017,6 +3023,8 @@ public class YandereScript : MonoBehaviour
 				{
 					this.BreastSize = 0.5f;
 				}
+				this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
+				this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 			}
 			if (this.CanMove && !this.Egg && this.transform.position.y < (float)1000)
 			{
@@ -3128,6 +3136,11 @@ public class YandereScript : MonoBehaviour
 						this.EasterEggMenu.active = false;
 						this.Samus();
 					}
+					else if (Input.GetKeyDown("w"))
+					{
+						this.EasterEggMenu.active = false;
+						this.Witch();
+					}
 					if (Input.GetKeyDown("d"))
 					{
 						if (this.Copyrights.active)
@@ -3228,8 +3241,6 @@ public class YandereScript : MonoBehaviour
 		Vector3 localEulerAngles4 = this.Arm[1].transform.localEulerAngles;
 		float num10 = localEulerAngles4.z = z4;
 		Vector3 vector10 = this.Arm[1].transform.localEulerAngles = localEulerAngles4;
-		this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
-		this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 		if (!this.Aiming)
 		{
 			this.Head.localEulerAngles = this.Head.localEulerAngles + this.Twitch;
@@ -4028,11 +4039,18 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.sharedMesh = this.NudeMesh;
 		this.MyRenderer.materials[0].mainTexture = this.SamusFace;
 		this.MyRenderer.materials[2].mainTexture = this.SamusBody;
-		int num = 0;
-		Color color = this.MyRenderer.materials[3].color;
-		float num2 = color.a = (float)num;
-		Color color2 = this.MyRenderer.materials[3].color = color;
+		this.MyRenderer.materials[3].mainTexture = null;
 		this.PonytailRenderer.material.mainTexture = this.SamusFace;
+		this.Egg = true;
+	}
+
+	public virtual void Witch()
+	{
+		this.MyRenderer.sharedMesh = this.NudeMesh;
+		this.MyRenderer.materials[0].mainTexture = this.WitchFace;
+		this.MyRenderer.materials[2].mainTexture = this.WitchBody;
+		this.MyRenderer.materials[3].mainTexture = null;
+		this.PonytailRenderer.material.mainTexture = this.WitchFace;
 		this.Egg = true;
 	}
 

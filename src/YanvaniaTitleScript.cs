@@ -55,8 +55,9 @@ public class YanvaniaTitleScript : MonoBehaviour
 
 	public virtual void Start()
 	{
-		this.Midori.transform.localPosition = new Vector3((float)1732, (float)0, (float)0);
+		this.Midori.transform.localPosition = new Vector3((float)1540, (float)0, (float)0);
 		this.Midori.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+		this.Midori.gameObject.active = false;
 		if (PlayerPrefs.GetInt("DraculaDefeated") == 1)
 		{
 			this.SkipButton.active = true;
@@ -275,18 +276,14 @@ public class YanvaniaTitleScript : MonoBehaviour
 					this.Prologue.audio.enabled = false;
 					this.Midori.gameObject.active = true;
 					this.ScrollSpeed = (float)60;
+					float x = Mathf.Lerp(this.Midori.transform.localPosition.x, (float)875, Time.deltaTime * (float)2);
+					Vector3 localPosition4 = this.Midori.transform.localPosition;
+					float num8 = localPosition4.x = x;
+					Vector3 vector4 = this.Midori.transform.localPosition = localPosition4;
 					float z = Mathf.Lerp(this.Midori.transform.localEulerAngles.z, (float)45, Time.deltaTime * (float)2);
 					Vector3 localEulerAngles = this.Midori.transform.localEulerAngles;
-					float num8 = localEulerAngles.z = z;
-					Vector3 vector4 = this.Midori.transform.localEulerAngles = localEulerAngles;
-					float x = Mathf.Lerp(this.Midori.transform.localPosition.x, (float)1390, Time.deltaTime * (float)2);
-					Vector3 localPosition4 = this.Midori.transform.localPosition;
-					float num9 = localPosition4.x = x;
-					Vector3 vector5 = this.Midori.transform.localPosition = localPosition4;
-					float y2 = Mathf.Lerp(this.Midori.transform.localPosition.y, (float)-100, Time.deltaTime * (float)2);
-					Vector3 localPosition5 = this.Midori.transform.localPosition;
-					float num10 = localPosition5.y = y2;
-					Vector3 vector6 = this.Midori.transform.localPosition = localPosition5;
+					float num9 = localEulerAngles.z = z;
+					Vector3 vector5 = this.Midori.transform.localEulerAngles = localEulerAngles;
 					if (this.Midori.gameObject.audio.time > (float)3)
 					{
 						PlayerPrefs.SetInt("MidoriEasterEgg", 0);
@@ -299,7 +296,7 @@ public class YanvaniaTitleScript : MonoBehaviour
 			this.ErrorWindow.transform.localScale = Vector3.Lerp(this.ErrorWindow.transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
 			float a3 = this.Darkness.color.a + Time.deltaTime;
 			Color color5 = this.Darkness.color;
-			float num11 = color5.a = a3;
+			float num10 = color5.a = a3;
 			Color color6 = this.Darkness.color = color5;
 			this.audio.volume = this.audio.volume - Time.deltaTime;
 			if (this.Darkness.color.a >= (float)1)
