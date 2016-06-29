@@ -569,6 +569,7 @@ public class RagdollScript : MonoBehaviour
 	{
 		if (!this.Dismembered)
 		{
+			this.Student.LiquidProjector.material.mainTexture = this.Student.BloodTexture;
 			for (int i = 0; i < this.BodyParts.Length; i++)
 			{
 				GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.BodyParts[i], this.SpawnPoints[i].position, Quaternion.identity);

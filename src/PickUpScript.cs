@@ -120,6 +120,10 @@ public class PickUpScript : MonoBehaviour
 			{
 				this.transform.parent = this.Yandere.LeftItemParent;
 			}
+			if ((RadioScript)this.GetComponent(typeof(RadioScript)) != null)
+			{
+				((RadioScript)this.GetComponent(typeof(RadioScript))).TurnOff();
+			}
 			this.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
 			this.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
 			this.MyCollider.enabled = false;

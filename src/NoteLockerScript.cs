@@ -34,6 +34,8 @@ public class NoteLockerScript : MonoBehaviour
 
 	public Transform Hinge;
 
+	public bool CheckingNote;
+
 	public bool CanLeaveNote;
 
 	public bool NoteLeft;
@@ -102,87 +104,90 @@ public class NoteLockerScript : MonoBehaviour
 			this.PromptBar.Label[4].text = "Select";
 			this.PromptBar.UpdateButtons();
 		}
-		if (this.NoteLeft && this.Student != null && (this.Student.Phase == 1 || this.Student.Phase == 7) && this.Student.Routine && Vector3.Distance(this.transform.position, this.Student.transform.position) < (float)2 && this.Student.DistanceToDestination < 0.1f)
+		if (this.NoteLeft)
 		{
-			if (!this.Student.InEvent)
+			if (this.Student != null && (this.Student.Phase == 2 || this.Student.Phase == 7) && this.Student.Routine && Vector3.Distance(this.transform.position, this.Student.transform.position) < (float)2 && !this.Student.InEvent)
 			{
 				this.Student.Character.animation.cullingType = AnimationCullingType.AlwaysAnimate;
 				this.Student.Character.animation.CrossFade("f02_findNote_00");
+				this.Student.Pathfinding.canSearch = false;
+				this.Student.Pathfinding.canMove = false;
 				this.Student.InEvent = true;
+				this.Student.Routine = false;
+				this.CheckingNote = true;
 			}
-			if (this.Student.Character.animation["f02_findNote_00"].time >= this.Student.Character.animation["f02_findNote_00"].length)
+			if (this.CheckingNote)
 			{
-				if (!this.Success)
+				this.Student.MoveTowardsTarget(this.Student.MyLocker.position);
+				this.Student.transform.rotation = Quaternion.Slerp(this.Student.transform.rotation, this.Student.MyLocker.rotation, (float)10 * Time.deltaTime);
+				if (this.Student.Character.animation["f02_findNote_00"].time >= this.Student.Character.animation["f02_findNote_00"].length)
 				{
-					this.Student.Character.animation.CrossFade("f02_tossNote_00");
+					if (!this.Success)
+					{
+						this.Student.Character.animation.CrossFade("f02_tossNote_00");
+					}
+					else
+					{
+						this.Student.Character.animation.CrossFade("f02_keepNote_00");
+					}
 				}
-				else
+				if (this.Student.Character.animation["f02_tossNote_00"].time >= this.Student.Character.animation["f02_tossNote_00"].length)
 				{
-					this.Student.Character.animation.CrossFade("f02_keepNote_00");
+					this.Finish();
 				}
-			}
-			if (this.Student.Character.animation["f02_tossNote_00"].time >= this.Student.Character.animation["f02_tossNote_00"].length)
-			{
-				this.Student.Character.animation.CrossFade(this.Student.IdleAnim);
-				this.Student.InEvent = false;
-				this.NoteLeft = false;
-				this.Phase++;
-			}
-			if (this.Student != null && this.Student.Character.animation["f02_keepNote_00"].time >= this.Student.Character.animation["f02_keepNote_00"].length)
-			{
-				this.DetermineSchedule();
-				this.Student.Character.animation.CrossFade(this.Student.IdleAnim);
-				this.Student.InEvent = false;
-				this.NoteLeft = false;
-				this.Phase++;
-			}
-			this.Timer += Time.deltaTime;
-			if (this.Timer > 0.75f && this.Timer < 1.75f)
-			{
-				this.Rotation -= Time.deltaTime * (float)80;
-			}
-			if (this.Timer > 10.5f && this.Timer < 11.5f)
-			{
-				this.Rotation += Time.deltaTime * (float)80;
-			}
-			if (this.Timer > 3.5f && this.NewNote == null)
-			{
-				this.NewNote = (GameObject)UnityEngine.Object.Instantiate(this.Note, this.transform.position, Quaternion.identity);
-				this.NewNote.transform.parent = this.Student.LeftHand;
-				this.NewNote.transform.localPosition = new Vector3(-0.065f, -0.005f, 0.055f);
-				this.NewNote.transform.localEulerAngles = new Vector3((float)-75, (float)-135, (float)-105);
-				this.NewNote.transform.localScale = new Vector3(0.1f, 0.2f, (float)1);
-			}
-			if (this.Timer > (float)10)
-			{
-				this.NewNote.transform.localScale = Vector3.MoveTowards(this.NewNote.transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime);
-			}
-			if (!this.Success && this.Timer > 10.5f && this.NewBall == null)
-			{
-				this.NewBall = (GameObject)UnityEngine.Object.Instantiate(this.Ball, this.Student.Phone.transform.parent.transform.position, Quaternion.identity);
-				this.NewBall.rigidbody.AddRelativeForce(Vector3.left * (float)100);
-				this.NewBall.rigidbody.AddRelativeForce(Vector3.up * (float)100);
-				this.Phase++;
-			}
-			if (this.Phase == 1)
-			{
-				if (this.Timer > (float)2)
+				if (this.Student != null && this.Student.Character.animation["f02_keepNote_00"].time >= this.Student.Character.animation["f02_keepNote_00"].length)
 				{
-					this.Yandere.Subtitle.UpdateLabel("Note Reaction", 1, (float)3);
+					this.DetermineSchedule();
+					this.Finish();
+				}
+				this.Timer += Time.deltaTime;
+				if (this.Timer > 0.75f && this.Timer < 1.75f)
+				{
+					this.Rotation -= Time.deltaTime * (float)80;
+				}
+				if (this.Timer > 10.5f && this.Timer < 11.5f)
+				{
+					this.Rotation += Time.deltaTime * (float)80;
+				}
+				if (this.Timer > 3.5f && this.NewNote == null)
+				{
+					this.NewNote = (GameObject)UnityEngine.Object.Instantiate(this.Note, this.transform.position, Quaternion.identity);
+					this.NewNote.transform.parent = this.Student.LeftHand;
+					this.NewNote.transform.localPosition = new Vector3(-0.065f, -0.005f, 0.055f);
+					this.NewNote.transform.localEulerAngles = new Vector3((float)-75, (float)-135, (float)-105);
+					this.NewNote.transform.localScale = new Vector3(0.1f, 0.2f, (float)1);
+				}
+				if (this.Timer > (float)10)
+				{
+					this.NewNote.transform.localScale = Vector3.MoveTowards(this.NewNote.transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime);
+				}
+				if (!this.Success && this.Timer > 10.5f && this.NewBall == null)
+				{
+					this.NewBall = (GameObject)UnityEngine.Object.Instantiate(this.Ball, this.Student.Phone.transform.parent.transform.position, Quaternion.identity);
+					this.NewBall.rigidbody.AddRelativeForce(Vector3.left * (float)100);
+					this.NewBall.rigidbody.AddRelativeForce(Vector3.up * (float)100);
 					this.Phase++;
 				}
-			}
-			else if (this.Phase == 2 && this.Timer > (float)9)
-			{
-				if (!this.Success)
+				if (this.Phase == 1)
 				{
-					this.Yandere.Subtitle.UpdateLabel("Note Reaction", 2, (float)3);
+					if (this.Timer > (float)2)
+					{
+						this.Yandere.Subtitle.UpdateLabel("Note Reaction", 1, (float)3);
+						this.Phase++;
+					}
 				}
-				else
+				else if (this.Phase == 2 && this.Timer > (float)9)
 				{
-					this.Yandere.Subtitle.UpdateLabel("Note Reaction", 3, (float)3);
+					if (!this.Success)
+					{
+						this.Yandere.Subtitle.UpdateLabel("Note Reaction", 2, (float)3);
+					}
+					else
+					{
+						this.Yandere.Subtitle.UpdateLabel("Note Reaction", 3, (float)3);
+					}
+					this.Phase++;
 				}
-				this.Phase++;
 			}
 		}
 		if (this.Phase == 4)
@@ -190,18 +195,32 @@ public class NoteLockerScript : MonoBehaviour
 			this.Rotation += Time.deltaTime * (float)135;
 			if (this.Rotation > (float)0)
 			{
-				this.Student.Character.animation.cullingType = AnimationCullingType.BasedOnRenderers;
-				this.Student.InEvent = false;
-				this.NoteLeft = false;
 				this.Rotation = (float)0;
 				this.Phase = 0;
 				this.Timer = (float)0;
 			}
 		}
-		float rotation = this.Rotation;
-		Vector3 localEulerAngles = this.Hinge.localEulerAngles;
-		float num = localEulerAngles.y = rotation;
-		Vector3 vector = this.Hinge.localEulerAngles = localEulerAngles;
+	}
+
+	public virtual void Finish()
+	{
+		if (this.Student.Clock.HourTime > this.Student.MeetTime)
+		{
+			this.Student.CurrentDestination = this.Student.MeetSpot;
+			this.Student.Pathfinding.target = this.Student.MeetSpot;
+			this.Student.Pathfinding.canSearch = true;
+			this.Student.Pathfinding.canMove = true;
+			this.Student.Meeting = true;
+			this.Student.MeetTime = (float)0;
+		}
+		this.Student.Character.animation.cullingType = AnimationCullingType.BasedOnRenderers;
+		this.Student.Character.animation.CrossFade(this.Student.IdleAnim);
+		this.Student.DistanceToDestination = (float)100;
+		this.Student.InEvent = false;
+		this.Student.Routine = true;
+		this.CheckingNote = false;
+		this.NoteLeft = false;
+		this.Phase++;
 	}
 
 	public virtual void DetermineSchedule()

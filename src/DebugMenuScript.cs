@@ -28,6 +28,8 @@ public class DebugMenuScript : MonoBehaviour
 
 	public Transform RooftopSpot;
 
+	public Transform Lockers;
+
 	public GameObject Window;
 
 	public int ID;
@@ -144,9 +146,14 @@ public class DebugMenuScript : MonoBehaviour
 			{
 				this.Yandere.transform.position = this.TeleportSpot[4].position;
 				this.Window.active = false;
-				if (this.Clock.HourTime < 7.075f)
+				if (this.StudentManager.Students[16] != null && this.StudentManager.Students[16].Phase < 2)
 				{
-					this.Clock.PresentTime = 424.8f;
+					this.StudentManager.Students[16].ShoeRemoval.Start();
+					this.StudentManager.Students[16].ShoeRemoval.PutOnShoes();
+					this.StudentManager.Students[16].transform.position = this.StudentManager.Students[16].Destinations[2].position;
+					this.StudentManager.Students[16].Phase = 2;
+					this.StudentManager.Students[16].CurrentDestination = this.StudentManager.Students[16].Destinations[2];
+					this.StudentManager.Students[16].Pathfinding.target = this.StudentManager.Students[16].Destinations[2];
 				}
 			}
 			else if (Input.GetKeyDown("0"))
@@ -187,22 +194,30 @@ public class DebugMenuScript : MonoBehaviour
 			}
 			else if (Input.GetKeyDown("g"))
 			{
-				PlayerPrefs.SetInt("7_Friend", 1);
-				this.Yandere.transform.position = this.RooftopSpot.position;
-				if (this.StudentManager.Students[7] != null)
+				if (this.Clock.HourTime < (float)15)
 				{
-					this.StudentManager.Students[7].transform.position = this.RooftopSpot.position;
-					this.StudentManager.Students[7].Prompt.Label[0].text = "     " + "Push";
-					this.StudentManager.Students[7].CurrentDestination = this.RooftopSpot;
-					this.StudentManager.Students[7].Pathfinding.target = this.RooftopSpot;
-					this.StudentManager.Students[7].Pathfinding.canSearch = true;
-					this.StudentManager.Students[7].Pathfinding.canMove = true;
-					this.StudentManager.Students[7].Meeting = true;
-					this.StudentManager.Students[7].MeetTime = (float)0;
+					PlayerPrefs.SetInt("7_Friend", 1);
+					this.Yandere.transform.position = this.RooftopSpot.position;
+					if (this.StudentManager.Students[7] != null)
+					{
+						this.StudentManager.Students[7].transform.position = this.RooftopSpot.position;
+						this.StudentManager.Students[7].Prompt.Label[0].text = "     " + "Push";
+						this.StudentManager.Students[7].CurrentDestination = this.RooftopSpot;
+						this.StudentManager.Students[7].Pathfinding.target = this.RooftopSpot;
+						this.StudentManager.Students[7].Pathfinding.canSearch = true;
+						this.StudentManager.Students[7].Pathfinding.canMove = true;
+						this.StudentManager.Students[7].Meeting = true;
+						this.StudentManager.Students[7].MeetTime = (float)0;
+					}
+					if (this.Clock.HourTime < 7.1f)
+					{
+						this.Clock.PresentTime = 426f;
+					}
 				}
-				if (this.Clock.HourTime < 7.1f)
+				else
 				{
-					this.Clock.PresentTime = 426f;
+					this.Clock.PresentTime = (float)960;
+					this.StudentManager.Students[7].transform.position = this.Lockers.position;
 				}
 				this.Window.active = false;
 			}
@@ -303,6 +318,11 @@ public class DebugMenuScript : MonoBehaviour
 				}
 				this.Clock.PresentTime = (float)1015;
 				this.Clock.HourTime = this.Clock.PresentTime / (float)60;
+				this.Window.active = false;
+			}
+			else if (Input.GetKeyDown("="))
+			{
+				this.Clock.PresentTime = this.Clock.PresentTime + (float)30;
 				this.Window.active = false;
 			}
 		}

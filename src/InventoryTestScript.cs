@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public class NewInventoryScript : MonoBehaviour
+public class InventoryTestScript : MonoBehaviour
 {
 	public GameObject Character;
 
@@ -14,7 +14,7 @@ public class NewInventoryScript : MonoBehaviour
 
 	public bool Open;
 
-	public NewInventoryScript()
+	public InventoryTestScript()
 	{
 		this.Open = true;
 	}

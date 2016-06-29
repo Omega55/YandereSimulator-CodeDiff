@@ -47,11 +47,15 @@ public class StudentManagerScript : MonoBehaviour
 
 	public PoliceScript Police;
 
+	public ListScript Patrols;
+
 	public ClockScript Clock;
 
 	public JsonScript JSON;
 
 	public GateScript Gate;
+
+	public ListScript EntranceVectors;
 
 	public ListScript GoAwaySpots;
 
@@ -68,6 +72,10 @@ public class StudentManagerScript : MonoBehaviour
 	public ListScript Seats;
 
 	public ChangingBoothScript[] ChangingBooths;
+
+	public GradingPaperScript[] FacultyDesks;
+
+	public Transform[] LockerPositions;
 
 	public Transform[] SpawnPositions;
 
@@ -102,6 +110,8 @@ public class StudentManagerScript : MonoBehaviour
 	public GameObject StudentKun;
 
 	public GameObject Portal;
+
+	public GameObject EmptyObject;
 
 	public float[] SpawnTimes;
 
@@ -179,6 +189,18 @@ public class StudentManagerScript : MonoBehaviour
 			{
 				PlayerPrefs.SetInt("Student_" + this.ID + "_Dying", 0);
 			}
+			this.ID++;
+		}
+		this.ID = 1;
+		while (this.ID < Extensions.get_length(this.Lockers.List))
+		{
+			Transform transform = ((GameObject)UnityEngine.Object.Instantiate(this.EmptyObject, this.Lockers.List[this.ID].position + this.Lockers.List[this.ID].forward * 0.5f, this.Lockers.List[this.ID].rotation)).transform;
+			transform.parent = this.Lockers.transform;
+			float y = transform.transform.eulerAngles.y + (float)180;
+			Vector3 eulerAngles = transform.transform.eulerAngles;
+			float num = eulerAngles.y = y;
+			Vector3 vector = transform.transform.eulerAngles = eulerAngles;
+			this.LockerPositions[this.ID] = transform;
 			this.ID++;
 		}
 	}
@@ -463,31 +485,53 @@ public class StudentManagerScript : MonoBehaviour
 		this.ID = 1;
 		while (this.ID < Extensions.get_length(this.Students))
 		{
-			if (this.Students[this.ID] != null && !this.Students[this.ID].Dead && !this.Students[this.ID].Teacher && !this.Students[this.ID].Slave && !this.Students[this.ID].Tranquil && this.ID < Extensions.get_length(this.Seats.List))
+			if (this.Students[this.ID] != null && !this.Students[this.ID].Dead && !this.Students[this.ID].Slave && !this.Students[this.ID].Tranquil && this.ID < Extensions.get_length(this.Seats.List))
 			{
-				this.Students[this.ID].transform.position = this.Seats.List[this.Students[this.ID].StudentID].position + Vector3.up * 0.01f;
-				this.Students[this.ID].transform.rotation = this.Seats.List[this.Students[this.ID].StudentID].rotation;
-				this.Students[this.ID].Character.animation.Play(this.Students[this.ID].SitAnim);
-				this.Students[this.ID].Pathfinding.canSearch = false;
-				this.Students[this.ID].Pathfinding.canMove = false;
-				this.Students[this.ID].OccultBook.active = false;
-				this.Students[this.ID].Pathfinding.speed = (float)0;
-				this.Students[this.ID].Routine = false;
-				if (this.Students[this.ID].Wet)
+				if (!this.Students[this.ID].Teacher)
 				{
-					this.Students[this.ID].Schoolwear = 3;
-					this.Students[this.ID].ChangeSchoolwear();
-					this.Students[this.ID].LiquidProjector.enabled = false;
-					this.Students[this.ID].Splashed = false;
-					this.Students[this.ID].Bloody = false;
-					this.Students[this.ID].BathePhase = 1;
-					this.Students[this.ID].Wet = false;
-					this.Students[this.ID].UnWet();
+					if (this.Students[this.ID].ShoeRemoval.Locker == null)
+					{
+						this.Students[this.ID].ShoeRemoval.Start();
+					}
+					this.Students[this.ID].ShoeRemoval.PutOnShoes();
+					this.Students[this.ID].transform.position = this.Seats.List[this.Students[this.ID].StudentID].position + Vector3.up * 0.01f;
+					this.Students[this.ID].transform.rotation = this.Seats.List[this.Students[this.ID].StudentID].rotation;
+					this.Students[this.ID].Character.animation.Play(this.Students[this.ID].SitAnim);
+					this.Students[this.ID].Pathfinding.canSearch = false;
+					this.Students[this.ID].Pathfinding.canMove = false;
+					this.Students[this.ID].OccultBook.active = false;
+					this.Students[this.ID].Pathfinding.speed = (float)0;
+					this.Students[this.ID].Phone.active = false;
+					this.Students[this.ID].Distracted = false;
+					this.Students[this.ID].OnPhone = false;
+					this.Students[this.ID].Routine = false;
+					this.Students[this.ID].Safe = false;
+					if (this.Students[this.ID].Wet)
+					{
+						this.Students[this.ID].Schoolwear = 3;
+						this.Students[this.ID].ChangeSchoolwear();
+						this.Students[this.ID].LiquidProjector.enabled = false;
+						this.Students[this.ID].Splashed = false;
+						this.Students[this.ID].Bloody = false;
+						this.Students[this.ID].BathePhase = 1;
+						this.Students[this.ID].Wet = false;
+						this.Students[this.ID].UnWet();
+					}
+					if (this.Students[this.ID].ClubAttire)
+					{
+						this.Students[this.ID].ChangeSchoolwear();
+						this.Students[this.ID].ClubAttire = false;
+					}
 				}
-				if (this.Students[this.ID].ClubAttire)
+				else if (this.ID != 41)
 				{
-					this.Students[this.ID].ChangeSchoolwear();
-					this.Students[this.ID].ClubAttire = false;
+					this.Students[this.ID].transform.position = this.Podiums.List[this.Students[this.ID].Class].position + Vector3.up * 0.01f;
+					this.Students[this.ID].transform.rotation = this.Podiums.List[this.Students[this.ID].Class].rotation;
+				}
+				else
+				{
+					this.Students[this.ID].transform.position = this.Seats.List[this.Students[this.ID].StudentID].position + Vector3.up * 0.01f;
+					this.Students[this.ID].transform.rotation = this.Seats.List[this.Students[this.ID].StudentID].rotation;
 				}
 			}
 			this.ID++;

@@ -15,11 +15,15 @@ public class AlarmDiscScript : MonoBehaviour
 
 	public StudentScript Originator;
 
+	public RadioScript SourceRadio;
+
 	public StudentScript Student;
 
 	public bool NoScream;
 
 	public bool Shocking;
+
+	public bool Radio;
 
 	public bool Male;
 
@@ -29,7 +33,7 @@ public class AlarmDiscScript : MonoBehaviour
 
 	public virtual void Start()
 	{
-		float x = (float)500 * ((float)2 - PlayerPrefs.GetFloat("SchoolAtmosphere") * 0.01f);
+		float x = this.transform.localScale.x * ((float)2 - PlayerPrefs.GetFloat("SchoolAtmosphere") * 0.01f);
 		Vector3 localScale = this.transform.localScale;
 		float num = localScale.x = x;
 		Vector3 vector = this.transform.localScale = localScale;
@@ -75,30 +79,46 @@ public class AlarmDiscScript : MonoBehaviour
 		if (other.gameObject.layer == 9)
 		{
 			this.Student = (StudentScript)other.gameObject.GetComponent(typeof(StudentScript));
-			if (this.Student != null && this.Student != this.Originator && !this.Student.Dead && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse)
+			if (this.Student != null)
 			{
-				this.Student.Character.animation.CrossFade(this.Student.IdleAnim);
-				if (this.Originator != null)
+				if (!this.Radio)
 				{
-					if (this.Originator.Corpse == null)
+					if (this.Student != this.Originator && !this.Student.TurnOffRadio && !this.Student.Dead && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse)
 					{
-						this.Student.DistractionSpot = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z);
+						this.Student.Character.animation.CrossFade(this.Student.IdleAnim);
+						if (this.Originator != null)
+						{
+							if (this.Originator.Corpse == null)
+							{
+								this.Student.DistractionSpot = new Vector3(this.transform.position.x, this.Student.transform.position.y, this.transform.position.z);
+							}
+							else
+							{
+								this.Student.DistractionSpot = new Vector3(this.Originator.Corpse.transform.position.x, this.Student.transform.position.y, this.Originator.Corpse.transform.position.z);
+							}
+						}
+						else
+						{
+							this.Student.DistractionSpot = new Vector3(this.transform.position.x, this.Student.transform.position.y, this.transform.position.z);
+						}
+						this.Student.DiscCheck = true;
+						if (this.Shocking)
+						{
+							this.Student.Hesitation = 0.5f;
+						}
+						this.Student.Alarm = (float)200;
 					}
-					else
-					{
-						this.Student.DistractionSpot = new Vector3(this.Originator.Corpse.transform.position.x, this.Originator.Corpse.transform.position.y, this.Originator.Corpse.transform.position.z);
-					}
 				}
-				else
+				else if (!this.Student.Male && !this.Student.Dead && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && this.Student.CharacterAnimation != null && this.SourceRadio.Victim == null)
 				{
-					this.Student.DistractionSpot = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z);
+					this.Student.CharacterAnimation.CrossFade(this.Student.IdleAnim);
+					this.Student.Pathfinding.canSearch = false;
+					this.Student.Pathfinding.canMove = false;
+					this.Student.Radio = this.SourceRadio;
+					this.Student.TurnOffRadio = true;
+					this.Student.Routine = false;
+					this.SourceRadio.Victim = this.Student;
 				}
-				this.Student.DiscCheck = true;
-				if (this.Shocking)
-				{
-					this.Student.Hesitation = 0.5f;
-				}
-				this.Student.Alarm = (float)200;
 			}
 		}
 	}

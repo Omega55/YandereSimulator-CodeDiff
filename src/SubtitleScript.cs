@@ -195,6 +195,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] TeacherPrankReactions;
 
+	public string[] TeacherTheftReactions;
+
 	public string[] StudentMurderReports;
 
 	public string[] YandereWhimpers;
@@ -304,6 +306,8 @@ public class SubtitleScript : MonoBehaviour
 	public AudioClip[] TeacherMurderClips;
 
 	public AudioClip[] TeacherPrankClips;
+
+	public AudioClip[] TeacherTheftClips;
 
 	public AudioClip[] SplashReactionClips;
 
@@ -536,6 +540,12 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.TeacherPrankReactions));
 			this.Label.text = this.TeacherPrankReactions[this.RandomID];
+			this.PlayVoice(ReactionType, this.RandomID);
+		}
+		else if (ReactionType == "Teacher Theft Reaction")
+		{
+			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.TeacherTheftReactions));
+			this.Label.text = this.TeacherTheftReactions[this.RandomID];
 			this.PlayVoice(ReactionType, this.RandomID);
 		}
 		else if (ReactionType == "Murder Reaction")
@@ -1046,6 +1056,10 @@ public class SubtitleScript : MonoBehaviour
 		else if (ReactionType == "Teacher Prank Reaction")
 		{
 			this.PlayClip(this.TeacherPrankClips[ID], this.transform.position);
+		}
+		else if (ReactionType == "Teacher Theft Reaction")
+		{
+			this.PlayClip(this.TeacherTheftClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Splash Reaction")
 		{

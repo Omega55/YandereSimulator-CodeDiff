@@ -355,6 +355,7 @@ public class ClockScript : MonoBehaviour
 
 	public virtual void DeactivateTrespassZones()
 	{
+		this.Yandere.Trespassing = false;
 		this.SchoolBell.Play();
 		this.ID = 0;
 		while (this.ID < Extensions.get_length(this.TrespassZones))

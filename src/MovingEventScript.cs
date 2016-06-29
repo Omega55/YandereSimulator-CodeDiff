@@ -90,7 +90,7 @@ public class MovingEventScript : MonoBehaviour
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
 			}
-			if ((this.Clock.HourTime > 13.375f && !this.Poisoned) || this.EventStudent.Dying)
+			if ((this.Clock.HourTime > 13.375f && !this.Poisoned) || this.EventStudent.Dying || this.EventStudent.Splashed)
 			{
 				this.EndEvent();
 			}

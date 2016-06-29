@@ -4,7 +4,7 @@ using UnityEngine;
 [Serializable]
 public class DoorGapScript : MonoBehaviour
 {
-	public AnswerSheetScript AnswerSheet;
+	public RummageSpotScript RummageSpot;
 
 	public SchemesScript Schemes;
 
@@ -47,7 +47,8 @@ public class DoorGapScript : MonoBehaviour
 				this.Prompt.Yandere.Inventory.AnswerSheet = true;
 				this.Prompt.Yandere.Inventory.DuplicateSheet = true;
 				this.Papers[2].gameObject.active = false;
-				this.AnswerSheet.Prompt.enabled = true;
+				this.RummageSpot.Prompt.Label[0].text = "     " + "Return Answer Sheet";
+				this.RummageSpot.Prompt.enabled = true;
 				PlayerPrefs.SetInt("Scheme_5_Stage", 4);
 				this.Schemes.UpdateInstructions();
 			}
