@@ -127,6 +127,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public bool Randomize;
 
+	public bool Cutscene;
+
 	public bool Teacher;
 
 	public bool Male;
@@ -163,6 +165,15 @@ public class CosmeticScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		if (this.Kidnapped)
+		{
+			this.GanguroCasualTextures = this.GanguroUniformTextures;
+			this.GanguroSocksTextures = this.GanguroUniformTextures;
+			this.OccultCasualTextures = this.OccultUniformTextures;
+			this.OccultSocksTextures = this.OccultUniformTextures;
+			this.FemaleCasualTextures = this.FemaleUniformTextures;
+			this.FemaleSocksTextures = this.FemaleUniformTextures;
+		}
 		if (this.RightShoe != null)
 		{
 			this.RightShoe.active = false;
@@ -706,10 +717,26 @@ public class CosmeticScript : MonoBehaviour
 			this.CasualTexture = this.FemaleCasualTextures[PlayerPrefs.GetInt("FemaleUniform")];
 			this.SocksTexture = this.FemaleSocksTextures[PlayerPrefs.GetInt("FemaleUniform")];
 		}
-		if (!this.Student.Indoors)
+		if (!this.Cutscene)
 		{
-			this.MyRenderer.materials[0].mainTexture = this.CasualTexture;
-			this.MyRenderer.materials[1].mainTexture = this.CasualTexture;
+			if (!this.Kidnapped)
+			{
+				if (!this.Student.Indoors)
+				{
+					this.MyRenderer.materials[0].mainTexture = this.CasualTexture;
+					this.MyRenderer.materials[1].mainTexture = this.CasualTexture;
+				}
+				else
+				{
+					this.MyRenderer.materials[0].mainTexture = this.UniformTexture;
+					this.MyRenderer.materials[1].mainTexture = this.UniformTexture;
+				}
+			}
+			else
+			{
+				this.MyRenderer.materials[0].mainTexture = this.UniformTexture;
+				this.MyRenderer.materials[1].mainTexture = this.UniformTexture;
+			}
 		}
 		else
 		{

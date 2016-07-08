@@ -22,6 +22,8 @@ public class PhoneEventScript : MonoBehaviour
 
 	public string[] EventSpeech;
 
+	public float[] SpeechTimes;
+
 	public string[] EventAnim;
 
 	public GameObject VoiceClip;
@@ -65,7 +67,7 @@ public class PhoneEventScript : MonoBehaviour
 		if (!this.Clock.StopTime && this.EventCheck && this.Clock.HourTime > this.EventTime)
 		{
 			this.EventStudent = this.StudentManager.Students[7];
-			if (this.EventStudent != null && this.EventStudent.Routine && !this.EventStudent.Distracted && !this.EventStudent.Talking && !this.EventStudent.Meeting)
+			if (this.EventStudent != null && this.EventStudent.Routine && !this.EventStudent.Distracted && !this.EventStudent.Talking && !this.EventStudent.Meeting && this.EventStudent.Indoors)
 			{
 				if (!this.EventStudent.WitnessedMurder)
 				{
@@ -160,33 +162,19 @@ public class PhoneEventScript : MonoBehaviour
 					}
 					else if (this.EventPhase < 13)
 					{
-						if (this.Timer < this.CurrentClipLength)
+						if (this.VoiceClip != null)
 						{
-							this.EventSubtitle.text = this.EventSpeech[this.EventPhase - 3];
-						}
-						else
-						{
-							this.EventSubtitle.text = string.Empty;
-						}
-						this.Timer += Time.deltaTime;
-						if (this.Timer > this.CurrentClipLength + (float)1)
-						{
-							if (this.EventPhase < 12)
+							this.EventStudent.Character.animation[this.EventAnim[2]].time = this.VoiceClip.audio.time;
+							if (this.VoiceClip.audio.time > this.SpeechTimes[this.EventPhase - 3])
 							{
-								this.EventStudent.Character.animation.CrossFade(this.EventAnim[this.EventPhase - 2]);
-								this.PlayClip(this.EventClip[this.EventPhase - 2], this.EventStudent.transform.position);
+								this.EventSubtitle.text = this.EventSpeech[this.EventPhase - 3];
+								this.EventPhase++;
 							}
-							this.Timer = (float)0;
-							this.EventPhase++;
 						}
 					}
-					else
+					else if (this.EventStudent.Character.animation[this.EventAnim[2]].time >= this.EventStudent.Character.animation[this.EventAnim[2]].length)
 					{
 						this.EndEvent();
-					}
-					if (this.EventPhase == 12)
-					{
-						this.EventStudent.Phone.active = false;
 					}
 					float num = Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position);
 					if (num < (float)10)

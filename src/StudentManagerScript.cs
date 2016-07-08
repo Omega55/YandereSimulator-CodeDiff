@@ -166,7 +166,9 @@ public class StudentManagerScript : MonoBehaviour
 			this.SpawnPositions[PlayerPrefs.GetInt("KidnapVictim")] = this.SlaveSpot;
 			this.SpawnID = PlayerPrefs.GetInt("KidnapVictim");
 			this.SpawnStudent();
+			this.Students[PlayerPrefs.GetInt("KidnapVictim")].Slave = true;
 			this.SpawnID = 0;
+			PlayerPrefs.SetInt("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Slave", 0);
 			PlayerPrefs.SetInt("KidnapVictim", 0);
 		}
 		this.NPCsTotal = this.StudentsTotal + this.TeachersTotal;
@@ -174,13 +176,6 @@ public class StudentManagerScript : MonoBehaviour
 		if (PlayerPrefs.GetInt("MaleUniform") == 0)
 		{
 			PlayerPrefs.SetInt("MaleUniform", 1);
-		}
-		if (PlayerPrefs.GetInt("Late") == 1)
-		{
-			PlayerPrefs.SetInt("Late", 0);
-			this.Clock.PresentTime = (float)480;
-			this.Clock.HourTime = (float)8;
-			this.AttendClass();
 		}
 		this.ID = 1;
 		while (this.ID < this.NPCsTotal)
@@ -202,6 +197,13 @@ public class StudentManagerScript : MonoBehaviour
 			Vector3 vector = transform.transform.eulerAngles = eulerAngles;
 			this.LockerPositions[this.ID] = transform;
 			this.ID++;
+		}
+		if (PlayerPrefs.GetInt("Late") == 1)
+		{
+			PlayerPrefs.SetInt("Late", 0);
+			this.Clock.PresentTime = (float)480;
+			this.Clock.HourTime = (float)8;
+			this.AttendClass();
 		}
 	}
 
@@ -487,13 +489,20 @@ public class StudentManagerScript : MonoBehaviour
 		{
 			if (this.Students[this.ID] != null && !this.Students[this.ID].Dead && !this.Students[this.ID].Slave && !this.Students[this.ID].Tranquil && this.ID < Extensions.get_length(this.Seats.List))
 			{
+				if (!this.Students[this.ID].Started)
+				{
+					this.Students[this.ID].Start();
+				}
 				if (!this.Students[this.ID].Teacher)
 				{
-					if (this.Students[this.ID].ShoeRemoval.Locker == null)
+					if (!this.Students[this.ID].Indoors)
 					{
-						this.Students[this.ID].ShoeRemoval.Start();
+						if (this.Students[this.ID].ShoeRemoval.Locker == null)
+						{
+							this.Students[this.ID].ShoeRemoval.Start();
+						}
+						this.Students[this.ID].ShoeRemoval.PutOnShoes();
 					}
-					this.Students[this.ID].ShoeRemoval.PutOnShoes();
 					this.Students[this.ID].transform.position = this.Seats.List[this.Students[this.ID].StudentID].position + Vector3.up * 0.01f;
 					this.Students[this.ID].transform.rotation = this.Seats.List[this.Students[this.ID].StudentID].rotation;
 					this.Students[this.ID].Character.animation.Play(this.Students[this.ID].SitAnim);

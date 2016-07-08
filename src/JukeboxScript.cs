@@ -205,12 +205,9 @@ public class JukeboxScript : MonoBehaviour
 			}
 			else if (Input.GetKeyDown("p"))
 			{
-				if (!this.MuteCopyrights)
-				{
-					this.Egg = true;
-					this.KillVolume();
-					this.Nuclear.enabled = true;
-				}
+				this.Egg = true;
+				this.KillVolume();
+				this.Nuclear.enabled = true;
 			}
 			else if (Input.GetKeyDown("h"))
 			{

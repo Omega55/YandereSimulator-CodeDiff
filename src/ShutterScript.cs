@@ -118,7 +118,6 @@ public class ShutterScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		Debug.DrawRay(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), Color.green);
 		if (this.Snapping)
 		{
 			if (this.Close)
@@ -178,7 +177,7 @@ public class ShutterScript : MonoBehaviour
 						GameObject gameObject = this.hit.collider.gameObject.transform.root.gameObject;
 						StudentScript studentScript = (StudentScript)this.hit.collider.gameObject.transform.root.gameObject.GetComponent(typeof(StudentScript));
 						this.TargetStudent = studentScript.StudentID;
-						if (!studentScript.Male && !studentScript.Alarmed && !studentScript.Distracted && !studentScript.InEvent && !studentScript.Wet && !studentScript.CensorSteam[0].active && Vector3.Distance(this.Yandere.transform.position, gameObject.transform.position) < 1.66666f)
+						if (!studentScript.Male && !studentScript.Alarmed && !studentScript.Distracted && !studentScript.InEvent && !studentScript.Wet && !studentScript.CensorSteam[0].active && !studentScript.Fleeing && !studentScript.Fleeing && !studentScript.ShoeRemoval.enabled && Vector3.Distance(this.Yandere.transform.position, gameObject.transform.position) < 1.66666f)
 						{
 							Plane[] planes = GeometryUtility.CalculateFrustumPlanes(studentScript.VisionCone);
 							if (GeometryUtility.TestPlanesAABB(planes, this.Yandere.collider.bounds) && Physics.Linecast(studentScript.Eyes.position, this.Yandere.transform.position + Vector3.up * (float)1, out this.hit) && this.hit.collider.gameObject == this.Yandere.gameObject)
@@ -241,7 +240,7 @@ public class ShutterScript : MonoBehaviour
 		}
 		if (!this.DisplayError)
 		{
-			if (this.PhotoIcons.active && !this.Snapping)
+			if (this.PhotoIcons.active && !this.Snapping && !this.TextMessages.active)
 			{
 				if (Input.GetButtonDown("A"))
 				{
@@ -252,12 +251,9 @@ public class ShutterScript : MonoBehaviour
 						{
 							flag = true;
 						}
-						int num3 = -627;
-						Vector3 localPosition = this.PromptBar.transform.localPosition;
-						float num4 = localPosition.y = (float)num3;
-						Vector3 vector = this.PromptBar.transform.localPosition = localPosition;
 						this.PromptBar.ClearButtons();
-						this.PromptBar.Show = false;
+						this.PromptBar.Label[1].text = "Exit";
+						this.PromptBar.UpdateButtons();
 						this.PhotoIcons.active = false;
 						this.ID = 0;
 						this.FreeSpace = false;
@@ -298,12 +294,9 @@ public class ShutterScript : MonoBehaviour
 					this.Panel.active = true;
 					this.MainMenu.active = false;
 					this.PauseScreen.Show = true;
-					int num5 = -627;
-					Vector3 localPosition2 = this.PromptBar.transform.localPosition;
-					float num6 = localPosition2.y = (float)num5;
-					Vector3 vector2 = this.PromptBar.transform.localPosition = localPosition2;
 					this.PromptBar.ClearButtons();
-					this.PromptBar.Show = false;
+					this.PromptBar.Label[1].text = "Exit";
+					this.PromptBar.UpdateButtons();
 					if (!this.InfoX.active)
 					{
 						this.PauseScreen.Sideways = true;
@@ -317,7 +310,7 @@ public class ShutterScript : MonoBehaviour
 						this.StudentInfo.UpdateInfo(this.Student.StudentID);
 						this.StudentInfo.active = true;
 					}
-					else
+					else if (!this.TextMessages.active)
 					{
 						this.PauseScreen.Sideways = false;
 						this.TextMessages.active = true;
@@ -426,7 +419,7 @@ public class ShutterScript : MonoBehaviour
 			if (PlayerPrefs.GetInt(this.Student.Name + "PantyShot") == 0)
 			{
 				text = "Excellent! Now I have a picture of " + this.Student.Name + "'s panties. I owe you a favor for this one.";
-				num = 4;
+				num = 5;
 				PlayerPrefs.SetInt(this.Student.Name + "PantyShot", 1);
 				PlayerPrefs.SetInt("PantyShots", PlayerPrefs.GetInt("PantyShots") + 1);
 			}

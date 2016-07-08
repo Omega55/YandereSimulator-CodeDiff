@@ -584,7 +584,7 @@ public class RagdollScript : MonoBehaviour
 						{
 							this.Student.Cosmetic.FemaleHair[this.Student.Cosmetic.Hairstyle].transform.parent = gameObject.transform;
 							this.Student.Cosmetic.FemaleHair[this.Student.Cosmetic.Hairstyle].transform.parent = gameObject.transform;
-							if (this.Student.Cosmetic.FemaleAccessories[this.Student.Cosmetic.Accessory] != null)
+							if (this.Student.Cosmetic.FemaleAccessories[this.Student.Cosmetic.Accessory] != null && this.Student.Cosmetic.Accessory != 3)
 							{
 								this.Student.Cosmetic.FemaleAccessories[this.Student.Cosmetic.Accessory].transform.parent = gameObject.transform;
 							}

@@ -112,6 +112,7 @@ public class GradingPaperScript : MonoBehaviour
 			if (this.Teacher.Actions[this.Teacher.Phase] != 12 || !this.Teacher.Routine || this.Teacher.Stop)
 			{
 				this.Paper.localScale = new Vector3((float)0, (float)0, (float)0);
+				this.Teacher.Obstacle.enabled = false;
 				this.Teacher.Pen.active = false;
 				this.Writing = false;
 				this.Phase = 1;
