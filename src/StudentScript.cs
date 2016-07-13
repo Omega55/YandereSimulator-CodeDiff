@@ -83,15 +83,19 @@ public class StudentScript : MonoBehaviour
 
 	public ParticleSystem Hearts;
 
+	public Camera VisionCone;
+
+	public Texture RedBookTexture;
+
 	public Texture BloodTexture;
 
 	public Texture WaterTexture;
 
 	public Texture GasTexture;
 
-	public Camera VisionCone;
-
 	public SkinnedMeshRenderer MyRenderer;
+
+	public Renderer BookRenderer;
 
 	public Transform CurrentDestination;
 
@@ -573,6 +577,8 @@ public class StudentScript : MonoBehaviour
 
 	public string RadioAnim;
 
+	public string ReadAnim;
+
 	public string[] CameraAnims;
 
 	public string[] SocialAnims;
@@ -725,6 +731,7 @@ public class StudentScript : MonoBehaviour
 		this.WalkBackAnim = string.Empty;
 		this.PatrolAnim = string.Empty;
 		this.RadioAnim = string.Empty;
+		this.ReadAnim = string.Empty;
 		this.RadioPhase = 1;
 		this.MaxSpeed = 10f;
 	}
@@ -1062,6 +1069,10 @@ public class StudentScript : MonoBehaviour
 			{
 				this.Indoors = true;
 			}
+			if (this.StudentID == 19)
+			{
+				this.BookRenderer.material.mainTexture = this.RedBookTexture;
+			}
 			this.Started = true;
 		}
 	}
@@ -1394,6 +1405,11 @@ public class StudentScript : MonoBehaviour
 										this.CurrentDestination = this.StudentManager.Patrols.List[this.StudentID].GetChild(this.PatrolID);
 										this.Pathfinding.target = this.CurrentDestination;
 									}
+								}
+								else if (this.Actions[this.Phase] == 14)
+								{
+									this.CharacterAnimation.CrossFade(this.ReadAnim);
+									this.OccultBook.active = true;
 								}
 							}
 							else
@@ -3361,8 +3377,11 @@ public class StudentScript : MonoBehaviour
 				}
 				else if (this.WitnessedCorpse)
 				{
-					this.targetRotation = Quaternion.LookRotation(this.Corpse.AllColliders[0].transform.position - this.transform.position);
-					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * this.DeltaTime);
+					if (this.Corpse != null && this.Corpse.AllColliders[0] != null)
+					{
+						this.targetRotation = Quaternion.LookRotation(this.Corpse.AllColliders[0].transform.position - this.transform.position);
+						this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * this.DeltaTime);
+					}
 				}
 				else if (!this.DiscCheck)
 				{
@@ -4063,7 +4082,7 @@ public class StudentScript : MonoBehaviour
 			Vector3 a = target - this.transform.position;
 			float num = Vector3.Distance(this.transform.position, target);
 			a = a.normalized * num;
-			if (this.MyController.enabled && num > 0.0001f)
+			if (this.MyController.enabled && num > 0.001f)
 			{
 				this.MyController.Move(a * (this.DeltaTime * (float)5 / Time.timeScale));
 			}
@@ -4635,6 +4654,10 @@ public class StudentScript : MonoBehaviour
 			else if (this.ActionNames[this.ID] == "Patrol")
 			{
 				this.Actions[this.ID] = 13;
+			}
+			else if (this.ActionNames[this.ID] == "Read")
+			{
+				this.Actions[this.ID] = 14;
 			}
 			else if (this.ActionNames[this.ID] == "Club")
 			{

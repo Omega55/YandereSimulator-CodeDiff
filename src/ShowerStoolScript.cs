@@ -10,6 +10,8 @@ public class ShowerStoolScript : MonoBehaviour
 
 	public Transform StoolSpot;
 
+	public ParticleSystem Water;
+
 	public virtual void Start()
 	{
 		this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent(typeof(YandereScript));
@@ -31,6 +33,7 @@ public class ShowerStoolScript : MonoBehaviour
 				this.Yandere.Stool = this.StoolSpot;
 				this.Yandere.CanMove = false;
 				this.Yandere.Bathing = true;
+				this.Water.Play();
 			}
 		}
 	}

@@ -22,6 +22,8 @@ public class DoorScript : MonoBehaviour
 
 	public Transform[] Doors;
 
+	public Texture[] Plates;
+
 	public UILabel[] Labels;
 
 	public float[] OriginX;
@@ -48,11 +50,15 @@ public class DoorScript : MonoBehaviour
 
 	public float Timer;
 
-	public int Club;
+	public Renderer Sign;
 
 	public string RoomName;
 
 	public string Facing;
+
+	public int RoomID;
+
+	public int Club;
 
 	public DoorScript()
 	{
@@ -78,6 +84,7 @@ public class DoorScript : MonoBehaviour
 		{
 			this.Labels[0].text = this.RoomName;
 			this.Labels[1].text = this.RoomName;
+			this.UpdatePlate();
 		}
 		if (this.Club != 0 && PlayerPrefs.GetInt("Club_" + this.Club + "_Closed") == 1)
 		{
@@ -212,6 +219,10 @@ public class DoorScript : MonoBehaviour
 			this.Prompt.enabled = false;
 			this.active = false;
 		}
+		if (Input.GetKeyDown("space"))
+		{
+			this.UpdatePlate();
+		}
 	}
 
 	public virtual void OpenDoor()
@@ -290,6 +301,181 @@ public class DoorScript : MonoBehaviour
 			});
 			RuntimeServices.SetProperty(this.HideCollider.GetComponent("BoxCollider"), "isTrigger", true);
 			this.HideCollider.MyCollider = (Collider)this.HideCollider.GetComponent("BoxCollider");
+		}
+	}
+
+	public virtual void UpdatePlate()
+	{
+		int roomID = this.RoomID;
+		if (roomID == 1)
+		{
+			this.Sign.material.mainTexture = this.Plates[1];
+			this.Sign.material.mainTextureOffset = new Vector2((float)0, 0.75f);
+		}
+		else if (roomID == 2)
+		{
+			this.Sign.material.mainTexture = this.Plates[1];
+			this.Sign.material.mainTextureOffset = new Vector2((float)0, 0.5f);
+		}
+		else if (roomID == 3)
+		{
+			this.Sign.material.mainTexture = this.Plates[1];
+			this.Sign.material.mainTextureOffset = new Vector2((float)0, 0.25f);
+		}
+		else if (roomID == 4)
+		{
+			this.Sign.material.mainTexture = this.Plates[1];
+			this.Sign.material.mainTextureOffset = new Vector2((float)0, (float)0);
+		}
+		else if (roomID == 5)
+		{
+			this.Sign.material.mainTexture = this.Plates[1];
+			this.Sign.material.mainTextureOffset = new Vector2(0.25f, 0.75f);
+		}
+		else if (roomID == 6)
+		{
+			this.Sign.material.mainTexture = this.Plates[1];
+			this.Sign.material.mainTextureOffset = new Vector2(0.25f, 0.5f);
+		}
+		else if (roomID == 7)
+		{
+			this.Sign.material.mainTexture = this.Plates[1];
+			this.Sign.material.mainTextureOffset = new Vector2(0.25f, 0.25f);
+		}
+		else if (roomID == 8)
+		{
+			this.Sign.material.mainTexture = this.Plates[1];
+			this.Sign.material.mainTextureOffset = new Vector2(0.25f, (float)0);
+		}
+		else if (roomID == 9)
+		{
+			this.Sign.material.mainTexture = this.Plates[1];
+			this.Sign.material.mainTextureOffset = new Vector2(0.5f, 0.75f);
+		}
+		else if (roomID == 10)
+		{
+			this.Sign.material.mainTexture = this.Plates[1];
+			this.Sign.material.mainTextureOffset = new Vector2(0.5f, 0.5f);
+		}
+		else if (roomID == 11)
+		{
+			this.Sign.material.mainTexture = this.Plates[1];
+			this.Sign.material.mainTextureOffset = new Vector2(0.5f, 0.25f);
+		}
+		else if (roomID == 12)
+		{
+			this.Sign.material.mainTexture = this.Plates[1];
+			this.Sign.material.mainTextureOffset = new Vector2(0.5f, (float)0);
+		}
+		else if (roomID == 13)
+		{
+			this.Sign.material.mainTexture = this.Plates[1];
+			this.Sign.material.mainTextureOffset = new Vector2(0.75f, 0.75f);
+		}
+		else if (roomID == 14)
+		{
+			this.Sign.material.mainTexture = this.Plates[1];
+			this.Sign.material.mainTextureOffset = new Vector2(0.75f, 0.5f);
+		}
+		else if (roomID == 15)
+		{
+			this.Sign.material.mainTexture = this.Plates[1];
+			this.Sign.material.mainTextureOffset = new Vector2(0.75f, 0.25f);
+		}
+		else if (roomID == 16)
+		{
+			this.Sign.material.mainTexture = this.Plates[1];
+			this.Sign.material.mainTextureOffset = new Vector2(0.75f, (float)0);
+		}
+		else if (roomID == 17)
+		{
+			this.Sign.material.mainTexture = this.Plates[2];
+			this.Sign.material.mainTextureOffset = new Vector2((float)0, 0.75f);
+		}
+		else if (roomID == 18)
+		{
+			this.Sign.material.mainTexture = this.Plates[2];
+			this.Sign.material.mainTextureOffset = new Vector2((float)0, 0.5f);
+		}
+		else if (roomID == 19)
+		{
+			this.Sign.material.mainTexture = this.Plates[2];
+			this.Sign.material.mainTextureOffset = new Vector2((float)0, 0.25f);
+		}
+		else if (roomID == 20)
+		{
+			this.Sign.material.mainTexture = this.Plates[2];
+			this.Sign.material.mainTextureOffset = new Vector2((float)0, (float)0);
+		}
+		else if (roomID == 21)
+		{
+			this.Sign.material.mainTexture = this.Plates[2];
+			this.Sign.material.mainTextureOffset = new Vector2(0.25f, 0.75f);
+		}
+		else if (roomID == 22)
+		{
+			this.Sign.material.mainTexture = this.Plates[2];
+			this.Sign.material.mainTextureOffset = new Vector2(0.25f, 0.5f);
+		}
+		else if (roomID == 23)
+		{
+			this.Sign.material.mainTexture = this.Plates[2];
+			this.Sign.material.mainTextureOffset = new Vector2(0.25f, 0.25f);
+		}
+		else if (roomID == 24)
+		{
+			this.Sign.material.mainTexture = this.Plates[2];
+			this.Sign.material.mainTextureOffset = new Vector2(0.25f, (float)0);
+		}
+		else if (roomID == 25)
+		{
+			this.Sign.material.mainTexture = this.Plates[2];
+			this.Sign.material.mainTextureOffset = new Vector2(0.5f, 0.75f);
+		}
+		else if (roomID == 26)
+		{
+			this.Sign.material.mainTexture = this.Plates[2];
+			this.Sign.material.mainTextureOffset = new Vector2(0.5f, 0.5f);
+		}
+		else if (roomID == 27)
+		{
+			this.Sign.material.mainTexture = this.Plates[2];
+			this.Sign.material.mainTextureOffset = new Vector2(0.5f, 0.25f);
+		}
+		else if (roomID == 28)
+		{
+			this.Sign.material.mainTexture = this.Plates[2];
+			this.Sign.material.mainTextureOffset = new Vector2(0.5f, (float)0);
+		}
+		else if (roomID == 29)
+		{
+			this.Sign.material.mainTexture = this.Plates[2];
+			this.Sign.material.mainTextureOffset = new Vector2(0.75f, 0.75f);
+		}
+		else if (roomID == 30)
+		{
+			this.Sign.material.mainTexture = this.Plates[2];
+			this.Sign.material.mainTextureOffset = new Vector2(0.75f, 0.5f);
+		}
+		else if (roomID == 31)
+		{
+			this.Sign.material.mainTexture = this.Plates[2];
+			this.Sign.material.mainTextureOffset = new Vector2(0.75f, 0.25f);
+		}
+		else if (roomID == 32)
+		{
+			this.Sign.material.mainTexture = this.Plates[2];
+			this.Sign.material.mainTextureOffset = new Vector2(0.75f, (float)0);
+		}
+		else if (roomID == 33)
+		{
+			this.Sign.material.mainTexture = this.Plates[3];
+			this.Sign.material.mainTextureOffset = new Vector2((float)0, 0.75f);
+		}
+		else if (roomID == 34)
+		{
+			this.Sign.material.mainTexture = this.Plates[3];
+			this.Sign.material.mainTextureOffset = new Vector2((float)0, 0.5f);
 		}
 	}
 

@@ -75,6 +75,8 @@ public class WeaponScript : MonoBehaviour
 
 	private int ID;
 
+	public GameObject HeartBurst;
+
 	public virtual void Start()
 	{
 		this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent(typeof(YandereScript));
@@ -385,6 +387,11 @@ public class WeaponScript : MonoBehaviour
 		}
 		else if (this.WeaponID == 2 || this.WeaponID == 9 || this.WeaponID == 10 || this.WeaponID == 12 || this.WeaponID == 13)
 		{
+			this.audio.Play();
+		}
+		else if (this.WeaponID == 14)
+		{
+			UnityEngine.Object.Instantiate(this.HeartBurst, this.Yandere.TargetStudent.Head.position, Quaternion.identity);
 			this.audio.Play();
 		}
 	}
