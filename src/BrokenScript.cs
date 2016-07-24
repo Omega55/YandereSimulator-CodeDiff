@@ -94,24 +94,24 @@ public class BrokenScript : MonoBehaviour
 				this.Subtitle.text = "...kill...kill...kill...";
 				this.PlayClip(this.KillKillKill, this.transform.position);
 			}
-		}
-		float num = Vector3.Distance(this.Yandere.transform.position, this.transform.root.position);
-		if (num < (float)5)
-		{
-			float num2 = Mathf.Abs((num - (float)5) * 0.2f);
-			if (num2 < (float)0)
+			float num = Vector3.Distance(this.Yandere.transform.position, this.transform.root.position);
+			if (num < (float)5)
 			{
-				num2 = (float)0;
+				float num2 = Mathf.Abs((num - (float)5) * 0.2f);
+				if (num2 < (float)0)
+				{
+					num2 = (float)0;
+				}
+				if (num2 > (float)1)
+				{
+					num2 = (float)1;
+				}
+				this.Subtitle.transform.localScale = new Vector3(num2, num2, num2);
 			}
-			if (num2 > (float)1)
+			else
 			{
-				num2 = (float)1;
+				this.Subtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
 			}
-			this.Subtitle.transform.localScale = new Vector3(num2, num2, num2);
-		}
-		else
-		{
-			this.Subtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
 		}
 		float x = this.PermanentAngleR.x;
 		Vector3 eulerAngles = this.TwintailR.eulerAngles;

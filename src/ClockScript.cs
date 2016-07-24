@@ -108,6 +108,7 @@ public class ClockScript : MonoBehaviour
 		else if (!this.Police.FadeOut && !this.Yandere.Attacking && !this.Yandere.Struggling)
 		{
 			this.Yandere.StudentManager.StopMoving();
+			this.Police.Darkness.enabled = true;
 			this.Police.FadeOut = true;
 			this.StopTime = true;
 		}

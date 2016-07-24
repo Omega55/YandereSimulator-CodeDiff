@@ -14,6 +14,10 @@ public class WeaponMenuScript : MonoBehaviour
 
 	public InputManagerScript IM;
 
+	public UIPanel KeyboardPanel;
+
+	public UIPanel Panel;
+
 	public Transform KeyboardMenu;
 
 	public bool KeyboardShow;
@@ -68,6 +72,7 @@ public class WeaponMenuScript : MonoBehaviour
 					if (this.IM.DPadLeft || this.IM.DPadRight || this.IM.DPadUp || this.Yandere.Mask != null)
 					{
 						this.KeyboardShow = false;
+						this.Panel.enabled = true;
 						this.Show = true;
 					}
 					if (this.IM.DPadLeft)
@@ -103,6 +108,7 @@ public class WeaponMenuScript : MonoBehaviour
 				if (Input.GetKeyDown("1") || Input.GetKeyDown("2") || Input.GetKeyDown("3") || Input.GetKeyDown("4") || Input.GetKeyDown("5"))
 				{
 					this.Yandere.EmptyHands();
+					this.KeyboardPanel.enabled = true;
 					this.KeyboardShow = true;
 					this.Show = false;
 					this.Timer = (float)0;
@@ -210,7 +216,15 @@ public class WeaponMenuScript : MonoBehaviour
 		}
 		if (!this.Show)
 		{
-			this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+			if (this.transform.localScale.x > 0.1f)
+			{
+				this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+			}
+			else
+			{
+				this.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+				this.Panel.enabled = false;
+			}
 		}
 		else
 		{
@@ -222,7 +236,15 @@ public class WeaponMenuScript : MonoBehaviour
 		}
 		if (!this.KeyboardShow)
 		{
-			this.KeyboardMenu.localScale = Vector3.Lerp(this.KeyboardMenu.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+			if (this.KeyboardMenu.localScale.x > 0.1f)
+			{
+				this.KeyboardMenu.localScale = Vector3.Lerp(this.KeyboardMenu.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+			}
+			else
+			{
+				this.KeyboardMenu.localScale = new Vector3((float)0, (float)0, (float)0);
+				this.KeyboardPanel.enabled = false;
+			}
 		}
 		else
 		{

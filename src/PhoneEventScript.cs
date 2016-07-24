@@ -164,6 +164,7 @@ public class PhoneEventScript : MonoBehaviour
 					{
 						if (this.VoiceClip != null)
 						{
+							this.VoiceClip.audio.pitch = Time.timeScale;
 							this.EventStudent.Character.animation[this.EventAnim[2]].time = this.VoiceClip.audio.time;
 							if (this.VoiceClip.audio.time > this.SpeechTimes[this.EventPhase - 3])
 							{

@@ -39,6 +39,8 @@ public class PauseScreenScript : MonoBehaviour
 
 	public UILabel SelectionLabel;
 
+	public UIPanel Panel;
+
 	public UISprite Wifi;
 
 	public GameObject LoadingScreen;
@@ -143,6 +145,10 @@ public class PauseScreenScript : MonoBehaviour
 				Vector3 localEulerAngles = this.transform.localEulerAngles;
 				float num = localEulerAngles.z = z;
 				Vector3 vector = this.transform.localEulerAngles = localEulerAngles;
+				if (this.transform.localPosition.x > (float)1349)
+				{
+					this.Panel.enabled = false;
+				}
 				if (this.CorrectingTime && Time.timeScale < 0.9f)
 				{
 					Time.timeScale = Mathf.Lerp(Time.timeScale, (float)1, this.Speed);
@@ -165,6 +171,7 @@ public class PauseScreenScript : MonoBehaviour
 							this.ScreenBlur.enabled = true;
 							this.Yandere.YandereTimer = (float)0;
 							this.Yandere.Mopping = false;
+							this.Panel.enabled = true;
 							this.Sideways = false;
 							this.Show = true;
 							this.PromptBar.ClearButtons();
@@ -202,6 +209,7 @@ public class PauseScreenScript : MonoBehaviour
 						Color color5 = this.PhoneIcons[3].color;
 						float num5 = color5.a = a2;
 						Color color6 = this.PhoneIcons[3].color = color5;
+						this.Panel.enabled = true;
 						this.Sideways = false;
 						this.Show = true;
 					}
@@ -474,6 +482,7 @@ public class PauseScreenScript : MonoBehaviour
 				this.Yandere.StopAiming();
 			}
 			this.ScreenBlur.enabled = true;
+			this.Panel.enabled = true;
 			this.BypassPhone = true;
 			this.Quitting = true;
 			this.Show = true;

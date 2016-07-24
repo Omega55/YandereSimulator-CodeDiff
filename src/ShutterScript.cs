@@ -251,9 +251,12 @@ public class ShutterScript : MonoBehaviour
 						{
 							flag = true;
 						}
+						int num3 = -627;
+						Vector3 localPosition = this.PromptBar.transform.localPosition;
+						float num4 = localPosition.y = (float)num3;
+						Vector3 vector = this.PromptBar.transform.localPosition = localPosition;
 						this.PromptBar.ClearButtons();
-						this.PromptBar.Label[1].text = "Exit";
-						this.PromptBar.UpdateButtons();
+						this.PromptBar.Show = false;
 						this.PhotoIcons.active = false;
 						this.ID = 0;
 						this.FreeSpace = false;
@@ -294,6 +297,7 @@ public class ShutterScript : MonoBehaviour
 					this.Panel.active = true;
 					this.MainMenu.active = false;
 					this.PauseScreen.Show = true;
+					this.PauseScreen.Panel.enabled = true;
 					this.PromptBar.ClearButtons();
 					this.PromptBar.Label[1].text = "Exit";
 					this.PromptBar.UpdateButtons();
@@ -339,7 +343,7 @@ public class ShutterScript : MonoBehaviour
 
 	public virtual void Snap()
 	{
-		this.ErrorWindow.transform.localScale = Vector3.Lerp(this.ErrorWindow.transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+		this.ErrorWindow.transform.localScale = new Vector3((float)0, (float)0, (float)0);
 		this.Yandere.HandCamera.active = false;
 		int num = 1;
 		Color color = this.Sprite.color;

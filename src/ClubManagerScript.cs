@@ -95,6 +95,7 @@ public class ClubManagerScript : MonoBehaviour
 	public virtual void Start()
 	{
 		this.ClubWindow.ActivityWindow.localScale = new Vector3((float)0, (float)0, (float)0);
+		this.ClubWindow.ActivityWindow.gameObject.active = false;
 		this.ActivateClubBenefit();
 	}
 
@@ -118,6 +119,7 @@ public class ClubManagerScript : MonoBehaviour
 					this.PromptBar.UpdateButtons();
 					this.PromptBar.Show = true;
 					this.ClubWindow.PerformingActivity = true;
+					this.ClubWindow.ActivityWindow.gameObject.active = true;
 					this.ClubWindow.ActivityLabel.text = this.ClubWindow.ActivityDescs[this.Club];
 					this.Phase++;
 				}
@@ -163,6 +165,7 @@ public class ClubManagerScript : MonoBehaviour
 				}
 				else if (this.ClubWindow.ActivityWindow.localScale.x < 0.1f)
 				{
+					this.Police.Darkness.enabled = true;
 					this.Police.ClubActivity = false;
 					this.Police.FadeOut = true;
 				}

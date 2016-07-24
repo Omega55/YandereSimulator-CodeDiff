@@ -42,6 +42,11 @@ public class PortalScript : MonoBehaviour
 
 	public int Late;
 
+	public virtual void Start()
+	{
+		this.ClassDarkness.enabled = false;
+	}
+
 	public virtual void Update()
 	{
 		if (this.Clock.HourTime > 8.52f && this.Clock.HourTime < 8.53f && !this.Yandere.InClass && !this.LateReport1)
@@ -110,6 +115,7 @@ public class PortalScript : MonoBehaviour
 					}
 					if (this.Late == 0)
 					{
+						this.ClassDarkness.enabled = true;
 						this.Transition = true;
 						this.FadeOut = true;
 					}
@@ -215,6 +221,7 @@ public class PortalScript : MonoBehaviour
 				Color color6 = this.ClassDarkness.color = color5;
 				if (this.ClassDarkness.color.a <= (float)0)
 				{
+					this.ClassDarkness.enabled = false;
 					int num5 = 0;
 					Color color7 = this.ClassDarkness.color;
 					float num6 = color7.a = (float)num5;
@@ -253,6 +260,7 @@ public class PortalScript : MonoBehaviour
 		this.StudentManager.StopMoving();
 		this.Yandere.StopLaughing();
 		this.Clock.StopTime = true;
+		this.Police.Darkness.enabled = true;
 		this.Police.FadeOut = true;
 	}
 

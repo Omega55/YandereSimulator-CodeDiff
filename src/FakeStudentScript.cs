@@ -50,6 +50,7 @@ public class FakeStudentScript : MonoBehaviour
 			this.StudentManager.DisablePrompts();
 			this.DialogueWheel.HideShadows();
 			this.DialogueWheel.Show = true;
+			this.DialogueWheel.Panel.enabled = true;
 			this.Student.Talking = true;
 			this.Student.TalkTimer = (float)0;
 			this.Yandere.ShoulderCamera.OverShoulder = true;

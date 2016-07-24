@@ -137,6 +137,7 @@ public class PoliceScript : MonoBehaviour
 		Color color = this.Darkness.color;
 		float num2 = color.a = (float)num;
 		Color color2 = this.Darkness.color = color;
+		this.Darkness.enabled = false;
 		int num3 = -260;
 		Vector3 localPosition = this.transform.localPosition;
 		float num4 = localPosition.x = (float)num3;
@@ -242,6 +243,7 @@ public class PoliceScript : MonoBehaviour
 				if (!this.Yandere.Attacking && !this.Yandere.Struggling && !this.FadeOut)
 				{
 					this.StudentManager.StopMoving();
+					this.Darkness.enabled = true;
 					this.Yandere.StopLaughing();
 					this.Clock.StopTime = true;
 					this.FadeOut = true;
@@ -444,6 +446,7 @@ public class PoliceScript : MonoBehaviour
 
 	public virtual void DetermineResults()
 	{
+		this.ResultsLabels[0].transform.parent.gameObject.active = true;
 		if (this.Show)
 		{
 			this.EndOfDay.gameObject.active = true;

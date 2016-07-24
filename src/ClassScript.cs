@@ -184,7 +184,14 @@ public class ClassScript : MonoBehaviour
 				Color color8 = this.Darkness.color = color7;
 				if (!this.GradeUp)
 				{
-					this.GradeUpWindow.localScale = Vector3.Lerp(this.GradeUpWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+					if (this.GradeUpWindow.localScale.x > 0.1f)
+					{
+						this.GradeUpWindow.localScale = Vector3.Lerp(this.GradeUpWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+					}
+					else
+					{
+						this.GradeUpWindow.localScale = new Vector3((float)0, (float)0, (float)0);
+					}
 					if (this.GradeUpWindow.localScale.x < 0.01f)
 					{
 						this.GradeUpWindow.localScale = new Vector3((float)0, (float)0, (float)0);

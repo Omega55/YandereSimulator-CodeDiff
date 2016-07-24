@@ -424,6 +424,7 @@ public class TalkingScript : MonoBehaviour
 				{
 					if (this.S.ClubPhase == 3)
 					{
+						this.S.DialogueWheel.Panel.enabled = true;
 						this.S.DialogueWheel.Show = true;
 						this.S.Subtitle.Label.text = string.Empty;
 						this.S.Interaction = 0;
@@ -607,6 +608,7 @@ public class TalkingScript : MonoBehaviour
 					}
 					else if (this.S.ClubPhase == 2)
 					{
+						this.S.Police.Darkness.enabled = true;
 						this.S.Police.ClubActivity = true;
 						this.S.Police.FadeOut = true;
 						this.S.Interaction = 0;

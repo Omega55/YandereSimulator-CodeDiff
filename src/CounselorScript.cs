@@ -111,6 +111,7 @@ public class CounselorScript : MonoBehaviour
 	public virtual void Start()
 	{
 		this.CounselorWindow.localScale = new Vector3((float)0, (float)0, (float)0);
+		this.CounselorWindow.gameObject.active = false;
 		int num = 0;
 		Color color = this.ExpelProgress.color;
 		float num2 = color.a = (float)num;
@@ -141,6 +142,7 @@ public class CounselorScript : MonoBehaviour
 				this.audio.clip = this.CounselorGreetingClips[num];
 				this.audio.Play();
 				this.StudentManager.DisablePrompts();
+				this.CounselorWindow.gameObject.active = true;
 				this.LookAtPlayer = true;
 				this.ShowWindow = true;
 				this.Yandere.ShoulderCamera.OverShoulder = true;
@@ -280,9 +282,14 @@ public class CounselorScript : MonoBehaviour
 		{
 			this.CounselorWindow.localScale = Vector3.Lerp(this.CounselorWindow.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
 		}
-		else
+		else if (this.CounselorWindow.localScale.x > 0.1f)
 		{
 			this.CounselorWindow.localScale = Vector3.Lerp(this.CounselorWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+		}
+		else
+		{
+			this.CounselorWindow.localScale = new Vector3((float)0, (float)0, (float)0);
+			this.CounselorWindow.gameObject.active = false;
 		}
 		if (this.Lecturing)
 		{

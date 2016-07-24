@@ -95,9 +95,14 @@ public class StruggleBarScript : MonoBehaviour
 				}
 			}
 		}
-		else
+		else if (this.transform.localScale.x > 0.1f)
 		{
 			this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+		}
+		else
+		{
+			this.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+			this.active = false;
 		}
 	}
 

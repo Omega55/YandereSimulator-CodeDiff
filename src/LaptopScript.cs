@@ -71,6 +71,15 @@ public class LaptopScript : MonoBehaviour
 			else
 			{
 				this.audio.pitch = Time.timeScale;
+				this.audio.volume = (float)1;
+				if (this.Yandere.transform.position.y > this.transform.position.y + (float)3)
+				{
+					this.audio.volume = (float)0;
+				}
+				else if (this.Yandere.transform.position.y < this.transform.position.y - (float)3)
+				{
+					this.audio.volume = (float)0;
+				}
 				for (int i = 0; i < Extensions.get_length(this.Cues); i++)
 				{
 					if (this.audio.time > this.Cues[i])
@@ -100,13 +109,13 @@ public class LaptopScript : MonoBehaviour
 				}
 			}
 		}
-		else
+		else if (this.LaptopScreen.localScale.x > 0.1f)
 		{
 			this.LaptopScreen.localScale = Vector3.Lerp(this.LaptopScreen.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
 		}
-		if (this.Off)
+		else
 		{
-			this.LaptopScreen.localScale = Vector3.Lerp(this.LaptopScreen.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+			this.LaptopScreen.localScale = new Vector3((float)0, (float)0, (float)0);
 		}
 	}
 

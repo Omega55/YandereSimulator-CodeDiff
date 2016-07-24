@@ -147,6 +147,19 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 		}
 	}
 
+	public virtual void SpawnRow(Transform Location)
+	{
+		GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.BloodPool, Location.position + Location.forward * 2f, Quaternion.identity);
+		gameObject.transform.localEulerAngles = new Vector3((float)90, UnityEngine.Random.Range((float)0, 360f), (float)0);
+		gameObject.transform.parent = this.BloodParent;
+		gameObject = (GameObject)UnityEngine.Object.Instantiate(this.BloodPool, Location.position + Location.forward * 2.5f, Quaternion.identity);
+		gameObject.transform.localEulerAngles = new Vector3((float)90, UnityEngine.Random.Range((float)0, 360f), (float)0);
+		gameObject.transform.parent = this.BloodParent;
+		gameObject = (GameObject)UnityEngine.Object.Instantiate(this.BloodPool, Location.position + Location.forward * 3f, Quaternion.identity);
+		gameObject.transform.localEulerAngles = new Vector3((float)90, UnityEngine.Random.Range((float)0, 360f), (float)0);
+		gameObject.transform.parent = this.BloodParent;
+	}
+
 	public virtual void Main()
 	{
 	}

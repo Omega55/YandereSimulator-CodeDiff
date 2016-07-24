@@ -49,6 +49,7 @@ public class ComputerGamesScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		this.GameWindow.gameObject.active = false;
 		this.DeactivateAllBenefits();
 		this.OriginalColor = this.Yandere.PowerUp.color;
 		if (PlayerPrefs.GetInt("Club") == 11)
@@ -93,9 +94,14 @@ public class ComputerGamesScript : MonoBehaviour
 				this.PromptBar.Show = false;
 			}
 		}
-		else
+		else if (this.GameWindow.localScale.x > 0.1f)
 		{
 			this.GameWindow.localScale = Vector3.Lerp(this.GameWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+		}
+		else
+		{
+			this.GameWindow.localScale = new Vector3((float)0, (float)0, (float)0);
+			this.GameWindow.gameObject.active = false;
 		}
 		if (this.Gaming)
 		{
@@ -132,6 +138,7 @@ public class ComputerGamesScript : MonoBehaviour
 						this.PromptBar.Show = true;
 						this.Yandere.Character.animation.Play(this.Yandere.IdleAnim);
 						this.Yandere.CanMove = false;
+						this.GameWindow.gameObject.active = true;
 						this.ShowWindow = true;
 					}
 					else

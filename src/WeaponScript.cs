@@ -268,8 +268,11 @@ public class WeaponScript : MonoBehaviour
 			this.transform.localScale = new Vector3((float)1, (float)1, (float)1);
 			if (!this.Yandere.Struggling)
 			{
-				this.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
-				this.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+				if (this.Yandere.CanMove)
+				{
+					this.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
+					this.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+				}
 			}
 			else
 			{

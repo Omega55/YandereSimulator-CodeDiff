@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$2715 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$2721 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$2730;
+		internal YandereScript $self_$2736;
 
-		public $ApplyCustomCostume$2715(YandereScript self_)
+		public $ApplyCustomCostume$2721(YandereScript self_)
 		{
-			this.$self_$2730 = self_;
+			this.$self_$2736 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$2715.$(this.$self_$2730);
+			return new YandereScript.$ApplyCustomCostume$2721.$(this.$self_$2736);
 		}
 	}
 
@@ -80,6 +80,8 @@ public class YandereScript : MonoBehaviour
 	public SplashCameraScript SplashCamera;
 
 	public SWP_HeartRateMonitor HeartRate;
+
+	public StruggleBarScript StruggleBar;
 
 	public RummageSpotScript RummageSpot;
 
@@ -177,6 +179,8 @@ public class YandereScript : MonoBehaviour
 
 	public Transform Homeroom;
 
+	public Transform DigSpot;
+
 	public Transform Senpai;
 
 	public Transform Stool;
@@ -198,6 +202,8 @@ public class YandereScript : MonoBehaviour
 	public float[] DropTimer;
 
 	public GameObject CinematicCamera;
+
+	public GameObject FloatingShovel;
 
 	public GameObject EasterEggMenu;
 
@@ -349,6 +355,8 @@ public class YandereScript : MonoBehaviour
 
 	public int Hairstyle;
 
+	public int DigPhase;
+
 	public int Equipped;
 
 	public int Costume;
@@ -407,7 +415,11 @@ public class YandereScript : MonoBehaviour
 
 	public bool Bathing;
 
+	public bool Burying;
+
 	public bool Cooking;
+
+	public bool Digging;
 
 	public bool Dipping;
 
@@ -580,6 +592,8 @@ public class YandereScript : MonoBehaviour
 	public AudioClip Laugh4;
 
 	public AudioClip Thud;
+
+	public AudioClip Dig;
 
 	public Vector3 PreviousPosition;
 
@@ -862,6 +876,7 @@ public class YandereScript : MonoBehaviour
 		this.CensorSteam[1].active = false;
 		this.CensorSteam[2].active = false;
 		this.CensorSteam[3].active = false;
+		this.FloatingShovel.active = false;
 		this.BlackEyePatch.active = false;
 		this.EasterEggMenu.active = false;
 		this.FalconNipple1.active = false;
@@ -1249,6 +1264,7 @@ public class YandereScript : MonoBehaviour
 											this.LaughAnim = "f02_laugh_01";
 											this.LaughClip = this.Laugh1;
 											this.LaughIntensity += (float)1;
+											this.audio.clip = this.LaughClip;
 											this.audio.time = (float)0;
 											this.audio.Play();
 										}
@@ -1487,6 +1503,31 @@ public class YandereScript : MonoBehaviour
 					}
 					this.NewTrail = (GameObject)UnityEngine.Object.Instantiate(this.Trail, this.transform.position + this.transform.forward * 0.5f + Vector3.up * 0.1f, Quaternion.identity);
 					((AIPath)this.NewTrail.GetComponent(typeof(AIPath))).target = this.Homeroom;
+				}
+				if (this.Armed)
+				{
+					this.ID = 0;
+					while (this.ID < Extensions.get_length(this.ArmedAnims))
+					{
+						if (this.Weapon[this.Equipped].AnimID == this.ID)
+						{
+							this.CharacterAnimation[this.ArmedAnims[this.ID]].weight = Mathf.Lerp(this.CharacterAnimation[this.ArmedAnims[this.ID]].weight, (float)1, Time.deltaTime * (float)10);
+						}
+						else
+						{
+							this.CharacterAnimation[this.ArmedAnims[this.ID]].weight = Mathf.Lerp(this.CharacterAnimation[this.ArmedAnims[this.ID]].weight, (float)0, Time.deltaTime * (float)10);
+						}
+						this.ID++;
+					}
+				}
+				else
+				{
+					this.ID = 0;
+					while (this.ID < Extensions.get_length(this.ArmedAnims))
+					{
+						this.CharacterAnimation[this.ArmedAnims[this.ID]].weight = Mathf.Lerp(this.CharacterAnimation[this.ArmedAnims[this.ID]].weight, (float)0, Time.deltaTime * (float)10);
+						this.ID++;
+					}
 				}
 			}
 			else
@@ -1814,6 +1855,8 @@ public class YandereScript : MonoBehaviour
 							this.ShoulderCamera.Struggle = false;
 							this.PlayedSound = false;
 							this.Struggling = false;
+							this.TargetStudent.BecomeRagdoll();
+							this.TargetStudent.Dead = true;
 						}
 					}
 					else if (this.Lost)
@@ -2173,6 +2216,75 @@ public class YandereScript : MonoBehaviour
 						this.CanMove = true;
 					}
 				}
+				if (this.Digging)
+				{
+					if (this.DigPhase == 1)
+					{
+						if (this.CharacterAnimation["f02_shovelDig_00"].time >= 1.66666663f)
+						{
+							this.audio.volume = (float)1;
+							this.audio.clip = this.Dig;
+							this.audio.Play();
+							this.DigPhase++;
+						}
+					}
+					else if (this.DigPhase == 2)
+					{
+						if (this.CharacterAnimation["f02_shovelDig_00"].time >= 3.5f)
+						{
+							this.audio.volume = (float)1;
+							this.audio.Play();
+							this.DigPhase++;
+						}
+					}
+					else if (this.DigPhase == 3)
+					{
+						if (this.CharacterAnimation["f02_shovelDig_00"].time >= 5.66666651f)
+						{
+							this.audio.volume = (float)1;
+							this.audio.Play();
+							this.DigPhase++;
+						}
+					}
+					else if (this.DigPhase == 4 && this.CharacterAnimation["f02_shovelDig_00"].time >= this.CharacterAnimation["f02_shovelDig_00"].length)
+					{
+						this.Weapon[this.Equipped].gameObject.active = true;
+						this.FloatingShovel.active = false;
+						this.RPGCamera.enabled = true;
+						this.Digging = false;
+						this.CanMove = true;
+					}
+				}
+				if (this.Burying)
+				{
+					if (this.DigPhase == 1)
+					{
+						if (this.CharacterAnimation["f02_shovelBury_00"].time >= 2.16666675f)
+						{
+							this.audio.volume = (float)1;
+							this.audio.clip = this.Dig;
+							this.audio.Play();
+							this.DigPhase++;
+						}
+					}
+					else if (this.DigPhase == 2)
+					{
+						if (this.CharacterAnimation["f02_shovelBury_00"].time >= 4.66666651f)
+						{
+							this.audio.volume = (float)1;
+							this.audio.Play();
+							this.DigPhase++;
+						}
+					}
+					else if (this.CharacterAnimation["f02_shovelBury_00"].time >= this.CharacterAnimation["f02_shovelBury_00"].length)
+					{
+						this.Weapon[this.Equipped].gameObject.active = true;
+						this.FloatingShovel.active = false;
+						this.RPGCamera.enabled = true;
+						this.Burying = false;
+						this.CanMove = true;
+					}
+				}
 			}
 			if (!this.Laughing)
 			{
@@ -2195,7 +2307,7 @@ public class YandereScript : MonoBehaviour
 				this.ID = 0;
 				while (this.ID < Extensions.get_length(this.CarryAnims))
 				{
-					if (this.PickUp != null && this.CarryAnimID == this.ID && !this.Mopping && !this.Dipping && !this.Pouring && !this.BucketDropping)
+					if (this.PickUp != null && this.CarryAnimID == this.ID && !this.Mopping && this.CanMove)
 					{
 						this.CharacterAnimation[this.CarryAnims[this.ID]].weight = Mathf.Lerp(this.CharacterAnimation[this.CarryAnims[this.ID]].weight, (float)1, Time.deltaTime * (float)10);
 					}
@@ -2386,35 +2498,6 @@ public class YandereScript : MonoBehaviour
 			Color color11 = this.LeftYandereEye.material.color;
 			float num19 = color11.b = b2;
 			Color color12 = this.LeftYandereEye.material.color = color11;
-			if (this.Armed)
-			{
-				this.ID = 0;
-				while (this.ID < Extensions.get_length(this.ArmedAnims))
-				{
-					if (this.Weapon[this.Equipped].AnimID == this.ID)
-					{
-						this.CharacterAnimation[this.ArmedAnims[this.ID]].weight = Mathf.Lerp(this.CharacterAnimation[this.ArmedAnims[this.ID]].weight, (float)1, Time.deltaTime * (float)10);
-					}
-					else
-					{
-						this.CharacterAnimation[this.ArmedAnims[this.ID]].weight = Mathf.Lerp(this.CharacterAnimation[this.ArmedAnims[this.ID]].weight, (float)0, Time.deltaTime * (float)10);
-					}
-					if (this.Attacking && this.ID == 2)
-					{
-						this.CharacterAnimation[this.ArmedAnims[2]].weight = (float)0;
-					}
-					this.ID++;
-				}
-			}
-			else
-			{
-				this.ID = 0;
-				while (this.ID < Extensions.get_length(this.ArmedAnims))
-				{
-					this.CharacterAnimation[this.ArmedAnims[this.ID]].weight = Mathf.Lerp(this.CharacterAnimation[this.ArmedAnims[this.ID]].weight, (float)0, Time.deltaTime * (float)10);
-					this.ID++;
-				}
-			}
 			if (this.Talking)
 			{
 				if (this.TargetStudent != null)
@@ -2891,7 +2974,7 @@ public class YandereScript : MonoBehaviour
 					Vector3 vector13 = this.Character.transform.position = position4;
 				}
 			}
-			if (!this.Attacking && !this.Dragging && this.PickUp == null && !this.Aiming && !this.Crawling && !this.Pouring && !this.DumpsterGrabbing && !this.Stripping && !this.Bathing && !this.Struggling && !this.Degloving && !this.Possessed && !this.Carrying && !this.Dismembering && !this.CirnoWings.active && this.LaughIntensity < (float)16)
+			if (this.CanMove && !this.Attacking && !this.Dragging && this.PickUp == null && !this.Aiming && !this.Crawling && !this.Possessed && !this.Carrying && !this.CirnoWings.active && this.LaughIntensity < (float)16)
 			{
 				this.CharacterAnimation["f02_yanderePose_00"].weight = Mathf.Lerp(this.CharacterAnimation["f02_yanderePose_00"].weight, (float)1 - this.Sanity / (float)100, Time.deltaTime * (float)10);
 				if (this.Hairstyle == 2 && this.Crouching)
@@ -3761,7 +3844,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$2715(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$2721(this).GetEnumerator();
 	}
 
 	public virtual void WearGloves()

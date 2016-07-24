@@ -80,6 +80,8 @@ public class RagdollScript : MonoBehaviour
 
 	public bool Dismembered;
 
+	public bool Disturbing;
+
 	public bool Sacrifice;
 
 	public bool Poisoned;
@@ -305,17 +307,9 @@ public class RagdollScript : MonoBehaviour
 			this.DumpTimer += Time.deltaTime;
 			if (this.Character.animation[this.DumpedAnim].time >= this.Character.animation[this.DumpedAnim].length)
 			{
-				if (this.AddingToCount)
-				{
-					this.Yandere.NearBodies = this.Yandere.NearBodies - 1;
-				}
-				if (this.Poisoned)
-				{
-					this.Police.PoisonScene = false;
-				}
 				this.Incinerator.Corpses = this.Incinerator.Corpses + 1;
 				this.Incinerator.CorpseList[this.Incinerator.Corpses] = this.StudentID;
-				this.active = false;
+				this.Remove();
 			}
 		}
 		else if (this.DumpType == 2)
@@ -344,16 +338,8 @@ public class RagdollScript : MonoBehaviour
 			this.DumpTimer += Time.deltaTime;
 			if (this.Character.animation[this.DumpedAnim].time >= this.Character.animation[this.DumpedAnim].length)
 			{
-				if (this.AddingToCount)
-				{
-					this.Yandere.NearBodies = this.Yandere.NearBodies - 1;
-				}
-				if (this.Poisoned)
-				{
-					this.Police.PoisonScene = false;
-				}
 				this.WoodChipper.VictimID = this.StudentID;
-				this.active = false;
+				this.Remove();
 			}
 		}
 		if (this.Hidden && this.HideCollider == null)
@@ -639,6 +625,19 @@ public class RagdollScript : MonoBehaviour
 			UnityEngine.Object.Destroy(this.gameObject);
 			this.Dismembered = true;
 		}
+	}
+
+	public virtual void Remove()
+	{
+		if (this.AddingToCount)
+		{
+			this.Yandere.NearBodies = this.Yandere.NearBodies - 1;
+		}
+		if (this.Poisoned)
+		{
+			this.Police.PoisonScene = false;
+		}
+		this.active = false;
 	}
 
 	public virtual void Main()

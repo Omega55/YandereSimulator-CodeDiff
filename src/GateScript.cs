@@ -8,8 +8,6 @@ public class GateScript : MonoBehaviour
 
 	public ClockScript Clock;
 
-	public Transform GateCollider;
-
 	public Transform RightGate;
 
 	public Transform LeftGate;
@@ -38,7 +36,6 @@ public class GateScript : MonoBehaviour
 		}
 		if (!this.Closed)
 		{
-			this.GateCollider.localScale = Vector3.Lerp(this.GateCollider.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime);
 			float x = Mathf.Lerp(this.RightGate.localPosition.x, (float)7, Time.deltaTime);
 			Vector3 localPosition = this.RightGate.localPosition;
 			float num = localPosition.x = x;
@@ -50,7 +47,6 @@ public class GateScript : MonoBehaviour
 		}
 		else
 		{
-			this.GateCollider.localScale = Vector3.Lerp(this.GateCollider.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime);
 			float x3 = Mathf.Lerp(this.RightGate.localPosition.x, 2.325f, Time.deltaTime);
 			Vector3 localPosition3 = this.RightGate.localPosition;
 			float num3 = localPosition3.x = x3;

@@ -146,6 +146,10 @@ public class DebugMenuScript : MonoBehaviour
 			{
 				this.Yandere.transform.position = this.TeleportSpot[4].position;
 				this.Window.active = false;
+				if (this.Clock.HourTime < 7.1f)
+				{
+					this.Clock.PresentTime = 426f;
+				}
 				if (this.StudentManager.Students[16] != null && this.StudentManager.Students[16].Phase < 2)
 				{
 					this.StudentManager.Students[16].ShoeRemoval.Start();
@@ -318,6 +322,11 @@ public class DebugMenuScript : MonoBehaviour
 				}
 				this.Clock.PresentTime = (float)1015;
 				this.Clock.HourTime = this.Clock.PresentTime / (float)60;
+				this.Window.active = false;
+			}
+			else if (Input.GetKeyDown("right ctrl"))
+			{
+				this.Yandere.transform.position = this.TeleportSpot[8].position;
 				this.Window.active = false;
 			}
 			else if (Input.GetKeyDown("="))

@@ -135,9 +135,13 @@ public class ClubWindowScript : MonoBehaviour
 		{
 			this.ActivityWindow.localScale = Vector3.Lerp(this.ActivityWindow.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
 		}
-		else
+		else if (this.ActivityWindow.localScale.x > 0.1f)
 		{
 			this.ActivityWindow.localScale = Vector3.Lerp(this.ActivityWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+		}
+		else
+		{
+			this.ActivityWindow.localScale = new Vector3((float)0, (float)0, (float)0);
 		}
 	}
 

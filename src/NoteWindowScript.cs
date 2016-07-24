@@ -92,7 +92,14 @@ public class NoteWindowScript : MonoBehaviour
 			Vector3 vector2 = this.transform.localEulerAngles = localEulerAngles2;
 			if (!this.Selecting)
 			{
-				this.SubMenu.transform.localScale = Vector3.Lerp(this.SubMenu.transform.localScale, new Vector3((float)0, (float)0, (float)0), 0.166666672f);
+				if (this.SubMenu.transform.localScale.x > 0.1f)
+				{
+					this.SubMenu.transform.localScale = Vector3.Lerp(this.SubMenu.transform.localScale, new Vector3((float)0, (float)0, (float)0), 0.166666672f);
+				}
+				else
+				{
+					this.SubMenu.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+				}
 				if (this.InputManager.TappedDown)
 				{
 					this.Slot++;

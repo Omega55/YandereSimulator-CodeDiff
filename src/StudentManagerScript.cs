@@ -93,6 +93,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform BatheSpot;
 
+	public Transform MournSpot;
+
 	public Transform ShameSpot;
 
 	public Transform SlaveSpot;
@@ -739,6 +741,55 @@ public class StudentManagerScript : MonoBehaviour
 				this.Students[this.ID].UpdatePerception();
 			}
 			this.ID++;
+		}
+	}
+
+	public virtual void StopHesitating()
+	{
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.Students))
+		{
+			if (this.Students[this.ID] != null)
+			{
+				if (this.Students[this.ID].AlarmTimer > (float)0)
+				{
+					this.Students[this.ID].AlarmTimer = (float)1;
+				}
+				this.Students[this.ID].Hesitation = (float)0;
+			}
+			this.ID++;
+		}
+	}
+
+	public virtual void LowerCorpsePostion()
+	{
+		if (this.CorpseLocation.position.y < (float)4)
+		{
+			int num = 0;
+			Vector3 position = this.CorpseLocation.position;
+			float num2 = position.y = (float)num;
+			Vector3 vector = this.CorpseLocation.position = position;
+		}
+		else if (this.CorpseLocation.position.y < (float)8)
+		{
+			int num3 = 4;
+			Vector3 position2 = this.CorpseLocation.position;
+			float num4 = position2.y = (float)num3;
+			Vector3 vector2 = this.CorpseLocation.position = position2;
+		}
+		else if (this.CorpseLocation.position.y < (float)12)
+		{
+			int num5 = 8;
+			Vector3 position3 = this.CorpseLocation.position;
+			float num6 = position3.y = (float)num5;
+			Vector3 vector3 = this.CorpseLocation.position = position3;
+		}
+		else
+		{
+			int num7 = 12;
+			Vector3 position4 = this.CorpseLocation.position;
+			float num8 = position4.y = (float)num7;
+			Vector3 vector4 = this.CorpseLocation.position = position4;
 		}
 	}
 

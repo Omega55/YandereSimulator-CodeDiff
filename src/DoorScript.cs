@@ -96,7 +96,7 @@ public class DoorScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (Vector3.Distance(this.Yandere.transform.position + Vector3.up * (float)1, this.transform.position) < (float)1)
+		if (Vector3.Distance(this.Yandere.transform.position, this.transform.position) < (float)1)
 		{
 			if (!this.Near)
 			{

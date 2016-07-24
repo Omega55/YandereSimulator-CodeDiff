@@ -159,7 +159,14 @@ public class NoteLockerScript : MonoBehaviour
 				}
 				if (this.Timer > (float)10)
 				{
-					this.NewNote.transform.localScale = Vector3.MoveTowards(this.NewNote.transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime);
+					if (this.NewNote.transform.localScale.x > 0.1f)
+					{
+						this.NewNote.transform.localScale = Vector3.Lerp(this.NewNote.transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime);
+					}
+					else
+					{
+						this.NewNote.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+					}
 				}
 				if (!this.Success && this.Timer > 10.5f && this.NewBall == null)
 				{
