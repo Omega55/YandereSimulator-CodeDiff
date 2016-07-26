@@ -2307,7 +2307,7 @@ public class YandereScript : MonoBehaviour
 				this.ID = 0;
 				while (this.ID < Extensions.get_length(this.CarryAnims))
 				{
-					if (this.PickUp != null && this.CarryAnimID == this.ID && !this.Mopping && this.CanMove)
+					if (this.PickUp != null && this.CarryAnimID == this.ID && !this.Mopping && !this.Dipping && !this.Pouring && !this.BucketDropping && !this.Digging && !this.Burying)
 					{
 						this.CharacterAnimation[this.CarryAnims[this.ID]].weight = Mathf.Lerp(this.CharacterAnimation[this.CarryAnims[this.ID]].weight, (float)1, Time.deltaTime * (float)10);
 					}

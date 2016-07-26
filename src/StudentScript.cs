@@ -1491,7 +1491,7 @@ public class StudentScript : MonoBehaviour
 								}
 								else if (this.Actions[this.Phase] == 16)
 								{
-									this.CharacterAnimation.CrossFade("f02_mourning_00");
+									this.CharacterAnimation.CrossFade("f02_brokenSit_00");
 								}
 							}
 							else
@@ -2361,8 +2361,7 @@ public class StudentScript : MonoBehaviour
 								this.MurderSuicidePhase++;
 								this.Pathfinding.canSearch = true;
 								this.Pathfinding.canMove = true;
-								this.Pathfinding.speed = 1.5f;
-								this.CharacterAnimation[this.WalkAnim].speed = this.Pathfinding.speed;
+								this.Pathfinding.speed = (float)1;
 								this.CharacterAnimation.CrossFade(this.WalkAnim);
 							}
 						}
@@ -2381,6 +2380,7 @@ public class StudentScript : MonoBehaviour
 							this.StudentManager.Students[7].Pathfinding.canMove = false;
 							this.StudentManager.Students[7].DetectionMarker.Tex.enabled = false;
 							this.StudentManager.Students[7].MyController.radius = (float)0;
+							this.StudentManager.Students[7].CameraReacting = false;
 							this.StudentManager.Students[7].Investigating = false;
 							this.StudentManager.Students[7].Alarmed = false;
 							this.StudentManager.Students[7].Fleeing = false;
@@ -2504,7 +2504,6 @@ public class StudentScript : MonoBehaviour
 							else if (this.CharacterAnimation["f02_murderSuicide_00"].time >= this.CharacterAnimation["f02_murderSuicide_00"].length)
 							{
 								this.StudentManager.StopHesitating();
-								this.StudentManager.Students[7].Ragdoll.Disturbing = false;
 								this.StudentManager.Students[7].BecomeRagdoll();
 								this.StudentManager.Students[7].Dead = true;
 								if (this.BloodSprayCollider != null)
@@ -2606,7 +2605,7 @@ public class StudentScript : MonoBehaviour
 						if (this.InvestigationTimer < (float)5)
 						{
 							this.InvestigationTimer += this.DeltaTime;
-							this.targetRotation = Quaternion.LookRotation(this.Giggle.transform.position - this.transform.position);
+							this.targetRotation = Quaternion.LookRotation(new Vector3(this.Giggle.transform.position.x, this.transform.position.y, this.Giggle.transform.position.z) - this.transform.position);
 							this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * this.DeltaTime);
 						}
 						else
@@ -3320,11 +3319,15 @@ public class StudentScript : MonoBehaviour
 							this.Yandere.YandereVision = false;
 							this.Yandere.CanMove = false;
 							this.Yandere.Talking = true;
-							this.GreenPhone.active = false;
 							this.Investigating = false;
 							this.Reacted = false;
-							this.Talking = true;
 							this.Routine = false;
+							this.Talking = true;
+							this.ReadPhase = 0;
+							if (!this.Male)
+							{
+								this.GreenPhone.active = false;
+							}
 						}
 					}
 				}
@@ -4937,7 +4940,7 @@ public class StudentScript : MonoBehaviour
 		if (!this.Tranquil)
 		{
 			PlayerPrefs.SetInt("Student_" + this.StudentID + "_Dying", 1);
-			if (!this.Burning)
+			if (!this.Ragdoll.Burning && !this.Ragdoll.Disturbing)
 			{
 				this.Police.CorpseList[this.Police.Corpses] = this.Ragdoll;
 				this.Police.Corpses = this.Police.Corpses + 1;

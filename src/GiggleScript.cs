@@ -54,6 +54,7 @@ public class GiggleScript : MonoBehaviour
 					this.Student.Investigating = true;
 					this.Student.DiscCheck = true;
 					this.Student.Routine = false;
+					this.Student.ReadPhase = 0;
 				}
 				this.Distracted = true;
 			}

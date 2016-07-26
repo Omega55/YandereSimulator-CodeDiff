@@ -231,6 +231,11 @@ public class DebugMenuScript : MonoBehaviour
 				PlayerPrefs.SetInt("Student_6_Slave", 1);
 				Application.LoadLevel(Application.loadedLevel);
 			}
+			else if (Input.GetKeyDown("l"))
+			{
+				PlayerPrefs.SetInt("Event1", 1);
+				this.Window.active = false;
+			}
 			else if (Input.GetKeyDown("m"))
 			{
 				PlayerPrefs.SetInt("Student_6_Slave", 1);
