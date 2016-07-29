@@ -99,6 +99,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform SlaveSpot;
 
+	public Transform StalkSpot;
+
 	public Transform StripSpot;
 
 	public Transform Exit;

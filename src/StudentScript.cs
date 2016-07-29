@@ -301,6 +301,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool Started;
 
+	public bool Suicide;
+
 	public bool Teacher;
 
 	public bool Witness;
@@ -960,32 +962,9 @@ public class StudentScript : MonoBehaviour
 					this.ClubAnim = this.IdleAnim;
 					this.Shy = true;
 				}
-				else
+				else if (this.Male)
 				{
-					if (this.Male)
-					{
-						this.CharacterAnimation[this.SadFaceAnim].weight = (float)1;
-					}
-					if (this.StudentID == 27)
-					{
-						this.ClubAnim = "sitRead_00";
-					}
-					else if (this.StudentID == 28)
-					{
-						this.ClubAnim = "f02_sitRead_00";
-					}
-					else if (this.StudentID == 29)
-					{
-						this.ClubAnim = "sitRead_00";
-					}
-					else if (this.StudentID == 30)
-					{
-						this.ClubAnim = "f02_sitRead_00";
-					}
-					else if (this.StudentID == 31)
-					{
-						this.ClubAnim = "sitRead_00";
-					}
+					this.CharacterAnimation[this.SadFaceAnim].weight = (float)1;
 				}
 			}
 			else if (this.Club == 6)
@@ -2339,182 +2318,266 @@ public class StudentScript : MonoBehaviour
 						this.CharacterAnimation.CrossFade(this.RunAnim);
 					}
 				}
-				if (this.Hunting && this.StudentManager.Students[7] != null)
+				if (this.Hunting)
 				{
-					if (this.StudentManager.Students[7].Prompt.enabled)
+					if (this.StudentManager.Students[7] != null)
 					{
-						this.StudentManager.Students[7].Prompt.Hide();
-						this.StudentManager.Students[7].Prompt.enabled = false;
-					}
-					this.Pathfinding.target = this.StudentManager.Students[7].transform;
-					this.CurrentDestination = this.StudentManager.Students[7].transform;
-					if (this.StudentID == 7)
-					{
-						this.StudentManager.Students[7].Dead = true;
-					}
-					if (!this.StudentManager.Students[7].Dead)
-					{
-						if (this.DistanceToDestination > this.TargetDistance)
+						if (this.StudentManager.Students[7].Prompt.enabled)
 						{
-							if (this.MurderSuicidePhase == 0 && this.CharacterAnimation["f02_brokenStandUp_00"].time >= this.CharacterAnimation["f02_brokenStandUp_00"].length)
-							{
-								this.MurderSuicidePhase++;
-								this.Pathfinding.canSearch = true;
-								this.Pathfinding.canMove = true;
-								this.Pathfinding.speed = (float)1;
-								this.CharacterAnimation.CrossFade(this.WalkAnim);
-							}
-						}
-						else if (this.Pathfinding.canMove)
-						{
-							this.CharacterAnimation.CrossFade("f02_murderSuicide_00");
-							this.Pathfinding.canSearch = false;
-							this.Pathfinding.canMove = false;
-							this.Broken.Subtitle.text = string.Empty;
-							this.MyController.radius = (float)0;
-							this.Broken.Done = true;
-							this.audio.clip = this.MurderSuicideKiller;
-							this.audio.Play();
-							this.StudentManager.Students[7].WitnessCamera.Show = false;
-							this.StudentManager.Students[7].Pathfinding.canSearch = false;
-							this.StudentManager.Students[7].Pathfinding.canMove = false;
-							this.StudentManager.Students[7].DetectionMarker.Tex.enabled = false;
-							this.StudentManager.Students[7].MyController.radius = (float)0;
-							this.StudentManager.Students[7].CameraReacting = false;
-							this.StudentManager.Students[7].Investigating = false;
-							this.StudentManager.Students[7].Alarmed = false;
-							this.StudentManager.Students[7].Fleeing = false;
-							this.StudentManager.Students[7].Routine = false;
 							this.StudentManager.Students[7].Prompt.Hide();
 							this.StudentManager.Students[7].Prompt.enabled = false;
-							this.StudentManager.Students[7].Distracting = false;
-							this.StudentManager.Students[7].EyeShrink = (float)1;
-							this.StudentManager.Students[7].CharacterAnimation.CrossFade("f02_murderSuicide_01");
-							this.StudentManager.Students[7].Subtitle.UpdateLabel("Dying", 0, (float)1);
-							this.StudentManager.Students[7].audio.clip = this.MurderSuicideVictim;
-							this.StudentManager.Students[7].audio.Play();
-							this.Police.CorpseList[this.Police.Corpses] = this.StudentManager.Students[7].Ragdoll;
-							this.Police.Corpses = this.Police.Corpses + 1;
-							this.StudentManager.Students[7].SetLayerRecursively(this.StudentManager.Students[7].gameObject, 11);
-							this.StudentManager.Students[7].tag = "Blood";
-							this.StudentManager.Students[7].Ragdoll.Disturbing = true;
-							this.StudentManager.Students[7].Dying = true;
-							this.StudentManager.Students[7].SpawnAlarmDisc();
-							if (this.StudentManager.Students[7].Following)
+						}
+						this.Pathfinding.target = this.StudentManager.Students[7].transform;
+						this.CurrentDestination = this.StudentManager.Students[7].transform;
+						if (!this.StudentManager.Students[7].Dead)
+						{
+							if (this.DistanceToDestination > this.TargetDistance)
 							{
-								this.Yandere.Followers = this.Yandere.Followers - 1;
-								this.Hearts.enableEmission = false;
-								this.StudentManager.Students[7].Following = false;
+								if (this.MurderSuicidePhase == 0 && this.CharacterAnimation["f02_brokenStandUp_00"].time >= this.CharacterAnimation["f02_brokenStandUp_00"].length)
+								{
+									this.MurderSuicidePhase++;
+									this.Pathfinding.canSearch = true;
+									this.Pathfinding.canMove = true;
+									this.Pathfinding.speed = (float)1;
+									this.CharacterAnimation.CrossFade(this.WalkAnim);
+								}
+							}
+							else if (this.Pathfinding.canMove)
+							{
+								this.CharacterAnimation.CrossFade("f02_murderSuicide_00");
+								this.Pathfinding.canSearch = false;
+								this.Pathfinding.canMove = false;
+								this.Broken.Subtitle.text = string.Empty;
+								this.MyController.radius = (float)0;
+								this.Broken.Done = true;
+								this.audio.clip = this.MurderSuicideKiller;
+								this.audio.Play();
+								this.StudentManager.Students[7].WitnessCamera.Show = false;
+								this.StudentManager.Students[7].Pathfinding.canSearch = false;
+								this.StudentManager.Students[7].Pathfinding.canMove = false;
+								this.StudentManager.Students[7].DetectionMarker.Tex.enabled = false;
+								this.StudentManager.Students[7].MyController.radius = (float)0;
+								this.StudentManager.Students[7].CameraReacting = false;
+								this.StudentManager.Students[7].Investigating = false;
+								this.StudentManager.Students[7].Alarmed = false;
+								this.StudentManager.Students[7].Fleeing = false;
+								this.StudentManager.Students[7].Routine = false;
+								this.StudentManager.Students[7].Prompt.Hide();
+								this.StudentManager.Students[7].Prompt.enabled = false;
+								this.StudentManager.Students[7].Distracting = false;
+								this.StudentManager.Students[7].EyeShrink = (float)1;
+								this.StudentManager.Students[7].CharacterAnimation.CrossFade("f02_murderSuicide_01");
+								this.StudentManager.Students[7].Subtitle.UpdateLabel("Dying", 0, (float)1);
+								this.StudentManager.Students[7].audio.clip = this.MurderSuicideVictim;
+								this.StudentManager.Students[7].audio.Play();
+								this.Police.CorpseList[this.Police.Corpses] = this.StudentManager.Students[7].Ragdoll;
+								this.Police.Corpses = this.Police.Corpses + 1;
+								this.StudentManager.Students[7].SetLayerRecursively(this.StudentManager.Students[7].gameObject, 11);
+								this.StudentManager.Students[7].tag = "Blood";
+								this.StudentManager.Students[7].Ragdoll.Disturbing = true;
+								this.StudentManager.Students[7].Dying = true;
+								this.StudentManager.Students[7].SpawnAlarmDisc();
+								if (this.StudentManager.Students[7].Following)
+								{
+									this.Yandere.Followers = this.Yandere.Followers - 1;
+									this.Hearts.enableEmission = false;
+									this.StudentManager.Students[7].Following = false;
+								}
+							}
+							else
+							{
+								if (this.MurderSuicidePhase > 0)
+								{
+									this.targetRotation = Quaternion.LookRotation(this.StudentManager.Students[7].transform.position - this.transform.position);
+									this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, this.DeltaTime * (float)10);
+									this.StudentManager.Students[7].targetRotation = Quaternion.LookRotation(this.StudentManager.Students[7].transform.position - this.transform.position);
+									this.StudentManager.Students[7].transform.rotation = Quaternion.Slerp(this.StudentManager.Students[7].transform.rotation, this.StudentManager.Students[7].targetRotation, this.DeltaTime * (float)10);
+									this.StudentManager.Students[7].MoveTowardsTarget(this.transform.position + this.transform.forward * 0.01f);
+								}
+								if (this.MurderSuicidePhase == 1)
+								{
+									if (this.CharacterAnimation["f02_murderSuicide_00"].time >= 2.4f)
+									{
+										this.MyWeapon.transform.parent = this.ItemParent;
+										this.MyWeapon.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
+										this.MyWeapon.transform.localEulerAngles = new Vector3((float)0, (float)180, (float)0);
+										this.MurderSuicidePhase++;
+									}
+								}
+								else if (this.MurderSuicidePhase == 2)
+								{
+									if (this.CharacterAnimation["f02_murderSuicide_00"].time >= 3.3f)
+									{
+										GameObject gameObject2 = (GameObject)UnityEngine.Object.Instantiate(this.Ragdoll.BloodPoolSpawner.BloodPool, this.transform.position + this.transform.forward, Quaternion.identity);
+										gameObject2.transform.localEulerAngles = new Vector3((float)90, UnityEngine.Random.Range((float)0, 360f), (float)0);
+										gameObject2.transform.parent = this.Ragdoll.BloodPoolSpawner.BloodParent;
+										UnityEngine.Object.Instantiate(this.StabBloodEffect, this.MyWeapon.transform.position, Quaternion.identity);
+										this.KnifeDown = true;
+										this.MurderSuicidePhase++;
+									}
+								}
+								else if (this.MurderSuicidePhase == 3)
+								{
+									if (!this.KnifeDown)
+									{
+										if (this.MyWeapon.transform.position.y < 0.33333f)
+										{
+											UnityEngine.Object.Instantiate(this.StabBloodEffect, this.MyWeapon.transform.position, Quaternion.identity);
+											this.KnifeDown = true;
+											Debug.Log("Stab!");
+										}
+									}
+									else if (this.MyWeapon.transform.position.y > 0.33333f)
+									{
+										this.KnifeDown = false;
+									}
+									if (this.CharacterAnimation["f02_murderSuicide_00"].time >= 16.666666f)
+									{
+										Debug.Log("Released knife!");
+										this.MyWeapon.transform.parent = null;
+										this.MurderSuicidePhase++;
+									}
+								}
+								else if (this.MurderSuicidePhase == 4)
+								{
+									if (this.CharacterAnimation["f02_murderSuicide_00"].time >= 18.9f)
+									{
+										Debug.Log("Yanked out knife!");
+										UnityEngine.Object.Instantiate(this.StabBloodEffect, this.MyWeapon.transform.position, Quaternion.identity);
+										this.MyWeapon.transform.parent = this.ItemParent;
+										this.MyWeapon.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
+										this.MyWeapon.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+										this.MurderSuicidePhase++;
+									}
+								}
+								else if (this.MurderSuicidePhase == 5)
+								{
+									if (this.CharacterAnimation["f02_murderSuicide_00"].time >= 26.166666f)
+									{
+										Debug.Log("Stabbed neck!");
+										UnityEngine.Object.Instantiate(this.StabBloodEffect, this.MyWeapon.transform.position, Quaternion.identity);
+										this.MurderSuicidePhase++;
+									}
+								}
+								else if (this.MurderSuicidePhase == 6)
+								{
+									if (this.CharacterAnimation["f02_murderSuicide_00"].time >= 30.5f)
+									{
+										Debug.Log("BLOOD FOUNTAIN!");
+										this.BloodFountain.gameObject.audio.Play();
+										this.BloodFountain.Play();
+										this.MurderSuicidePhase++;
+									}
+								}
+								else if (this.MurderSuicidePhase == 7)
+								{
+									if (this.CharacterAnimation["f02_murderSuicide_00"].time >= 31.5f)
+									{
+										this.Ragdoll.BloodPoolSpawner.SpawnRow(this.transform);
+										this.BloodSprayCollider.active = true;
+										this.MurderSuicidePhase++;
+									}
+								}
+								else if (this.CharacterAnimation["f02_murderSuicide_00"].time >= this.CharacterAnimation["f02_murderSuicide_00"].length)
+								{
+									this.MyWeapon.transform.parent = null;
+									this.MyWeapon.Drop();
+									this.MyWeapon = null;
+									this.StudentManager.StopHesitating();
+									this.StudentManager.Students[7].BecomeRagdoll();
+									this.StudentManager.Students[7].Dead = true;
+									if (this.BloodSprayCollider != null)
+									{
+										this.BloodSprayCollider.active = false;
+									}
+									this.BecomeRagdoll();
+									this.Dead = true;
+									this.Police.MurderSuicideScene = true;
+								}
 							}
 						}
 						else
 						{
-							if (this.MurderSuicidePhase > 0)
-							{
-								this.targetRotation = Quaternion.LookRotation(this.StudentManager.Students[7].transform.position - this.transform.position);
-								this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, this.DeltaTime * (float)10);
-								this.StudentManager.Students[7].targetRotation = Quaternion.LookRotation(this.StudentManager.Students[7].transform.position - this.transform.position);
-								this.StudentManager.Students[7].transform.rotation = Quaternion.Slerp(this.StudentManager.Students[7].transform.rotation, this.StudentManager.Students[7].targetRotation, this.DeltaTime * (float)10);
-								this.StudentManager.Students[7].MoveTowardsTarget(this.transform.position + this.transform.forward * 0.01f);
-							}
-							if (this.MurderSuicidePhase == 1)
-							{
-								if (this.CharacterAnimation["f02_murderSuicide_00"].time >= 2.4f)
-								{
-									this.MyWeapon.transform.parent = this.ItemParent;
-									this.MyWeapon.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
-									this.MyWeapon.transform.localEulerAngles = new Vector3((float)0, (float)180, (float)0);
-									this.MurderSuicidePhase++;
-								}
-							}
-							else if (this.MurderSuicidePhase == 2)
-							{
-								if (this.CharacterAnimation["f02_murderSuicide_00"].time >= 3.3f)
-								{
-									GameObject gameObject2 = (GameObject)UnityEngine.Object.Instantiate(this.Ragdoll.BloodPoolSpawner.BloodPool, this.transform.position + this.transform.forward, Quaternion.identity);
-									gameObject2.transform.localEulerAngles = new Vector3((float)90, UnityEngine.Random.Range((float)0, 360f), (float)0);
-									gameObject2.transform.parent = this.Ragdoll.BloodPoolSpawner.BloodParent;
-									UnityEngine.Object.Instantiate(this.StabBloodEffect, this.MyWeapon.transform.position, Quaternion.identity);
-									this.KnifeDown = true;
-									this.MurderSuicidePhase++;
-								}
-							}
-							else if (this.MurderSuicidePhase == 3)
-							{
-								if (!this.KnifeDown)
-								{
-									if (this.MyWeapon.transform.position.y < 0.33333f)
-									{
-										UnityEngine.Object.Instantiate(this.StabBloodEffect, this.MyWeapon.transform.position, Quaternion.identity);
-										this.KnifeDown = true;
-										Debug.Log("Stab!");
-									}
-								}
-								else if (this.MyWeapon.transform.position.y > 0.33333f)
-								{
-									this.KnifeDown = false;
-								}
-								if (this.CharacterAnimation["f02_murderSuicide_00"].time >= 16.666666f)
-								{
-									Debug.Log("Released knife!");
-									this.MyWeapon.transform.parent = null;
-									this.MurderSuicidePhase++;
-								}
-							}
-							else if (this.MurderSuicidePhase == 4)
-							{
-								if (this.CharacterAnimation["f02_murderSuicide_00"].time >= 18.9f)
-								{
-									Debug.Log("Yanked out knife!");
-									UnityEngine.Object.Instantiate(this.StabBloodEffect, this.MyWeapon.transform.position, Quaternion.identity);
-									this.MyWeapon.transform.parent = this.ItemParent;
-									this.MyWeapon.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
-									this.MyWeapon.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
-									this.MurderSuicidePhase++;
-								}
-							}
-							else if (this.MurderSuicidePhase == 5)
-							{
-								if (this.CharacterAnimation["f02_murderSuicide_00"].time >= 26.166666f)
-								{
-									Debug.Log("Stabbed neck!");
-									UnityEngine.Object.Instantiate(this.StabBloodEffect, this.MyWeapon.transform.position, Quaternion.identity);
-									this.MurderSuicidePhase++;
-								}
-							}
-							else if (this.MurderSuicidePhase == 6)
-							{
-								if (this.CharacterAnimation["f02_murderSuicide_00"].time >= 30.5f)
-								{
-									Debug.Log("BLOOD FOUNTAIN!");
-									this.BloodFountain.gameObject.audio.Play();
-									this.BloodFountain.Play();
-									this.MurderSuicidePhase++;
-								}
-							}
-							else if (this.MurderSuicidePhase == 7)
-							{
-								if (this.CharacterAnimation["f02_murderSuicide_00"].time >= 31.5f)
-								{
-									this.Ragdoll.BloodPoolSpawner.SpawnRow(this.transform);
-									this.BloodSprayCollider.active = true;
-									this.MurderSuicidePhase++;
-								}
-							}
-							else if (this.CharacterAnimation["f02_murderSuicide_00"].time >= this.CharacterAnimation["f02_murderSuicide_00"].length)
-							{
-								this.StudentManager.StopHesitating();
-								this.StudentManager.Students[7].BecomeRagdoll();
-								this.StudentManager.Students[7].Dead = true;
-								if (this.BloodSprayCollider != null)
-								{
-									this.BloodSprayCollider.active = false;
-								}
-								this.BecomeRagdoll();
-								this.Dead = true;
-								this.Police.MurderSuicideScene = true;
-							}
+							this.Hunting = false;
+							this.Suicide = true;
 						}
+					}
+					else
+					{
+						this.Hunting = false;
+						this.Suicide = true;
+					}
+				}
+				if (this.Suicide)
+				{
+					if (this.MurderSuicidePhase == 0)
+					{
+						if (this.CharacterAnimation["f02_brokenStandUp_00"].time >= this.CharacterAnimation["f02_brokenStandUp_00"].length)
+						{
+							this.MurderSuicidePhase++;
+							this.Pathfinding.canSearch = false;
+							this.Pathfinding.canMove = false;
+							this.Pathfinding.speed = (float)0;
+							this.CharacterAnimation.CrossFade("f02_suicide_00");
+						}
+					}
+					else if (this.MurderSuicidePhase == 1)
+					{
+						if (this.Pathfinding.speed > (float)0)
+						{
+							this.Pathfinding.canSearch = false;
+							this.Pathfinding.canMove = false;
+							this.Pathfinding.speed = (float)0;
+							this.CharacterAnimation.CrossFade("f02_suicide_00");
+						}
+						if (this.CharacterAnimation["f02_suicide_00"].time >= 0.733333349f)
+						{
+							this.MyWeapon.transform.parent = this.ItemParent;
+							this.MyWeapon.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
+							this.MyWeapon.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+							this.MurderSuicidePhase++;
+						}
+					}
+					else if (this.MurderSuicidePhase == 2)
+					{
+						if (this.CharacterAnimation["f02_suicide_00"].time >= 4.16666651f)
+						{
+							Debug.Log("Stabbed neck!");
+							UnityEngine.Object.Instantiate(this.StabBloodEffect, this.MyWeapon.transform.position, Quaternion.identity);
+							this.MurderSuicidePhase++;
+						}
+					}
+					else if (this.MurderSuicidePhase == 3)
+					{
+						if (this.CharacterAnimation["f02_suicide_00"].time >= 6.16666651f)
+						{
+							Debug.Log("BLOOD FOUNTAIN!");
+							this.BloodFountain.gameObject.audio.Play();
+							this.BloodFountain.Play();
+							this.MurderSuicidePhase++;
+						}
+					}
+					else if (this.MurderSuicidePhase == 4)
+					{
+						if (this.CharacterAnimation["f02_suicide_00"].time >= 7f)
+						{
+							this.Ragdoll.BloodPoolSpawner.SpawnRow(this.transform);
+							this.BloodSprayCollider.active = true;
+							this.MurderSuicidePhase++;
+						}
+					}
+					else if (this.MurderSuicidePhase == 5 && this.CharacterAnimation["f02_suicide_00"].time >= this.CharacterAnimation["f02_suicide_00"].length)
+					{
+						this.MyWeapon.transform.parent = null;
+						this.MyWeapon.Drop();
+						this.MyWeapon = null;
+						this.StudentManager.StopHesitating();
+						if (this.BloodSprayCollider != null)
+						{
+							this.BloodSprayCollider.active = false;
+						}
+						this.BecomeRagdoll();
+						this.Dead = true;
 					}
 				}
 				if (this.CameraReacting)
@@ -3167,11 +3230,20 @@ public class StudentScript : MonoBehaviour
 						this.Yandere.WeaponWarning = false;
 						this.CharacterAnimation["f02_brokenStandUp_00"].speed = 0.5f;
 						this.CharacterAnimation.CrossFade("f02_brokenStandUp_00");
-						this.DistanceToDestination = (float)100;
-						this.Broken.Hunting = true;
-						this.TargetDistance = (float)1;
-						this.Routine = false;
-						this.Hunting = true;
+						if (this.StudentID != 7)
+						{
+							this.DistanceToDestination = (float)100;
+							this.Broken.Hunting = true;
+							this.TargetDistance = (float)1;
+							this.Routine = false;
+							this.Hunting = true;
+						}
+						else
+						{
+							this.Broken.enabled = false;
+							this.Routine = false;
+							this.Suicide = true;
+						}
 						this.Prompt.Hide();
 						this.Prompt.enabled = false;
 					}
@@ -4717,6 +4789,10 @@ public class StudentScript : MonoBehaviour
 			{
 				this.Destinations[this.ID] = this.StudentManager.MournSpot;
 			}
+			else if (this.DestinationNames[this.ID] == "Stalk")
+			{
+				this.Destinations[this.ID] = this.StudentManager.StalkSpot;
+			}
 			else if (this.DestinationNames[this.ID] == "Club")
 			{
 				if (this.Club > 0)
@@ -4797,7 +4873,21 @@ public class StudentScript : MonoBehaviour
 			{
 				if (this.Club > 0)
 				{
-					this.Actions[this.ID] = 8;
+					if (this.Club == 6)
+					{
+						this.Actions[this.ID] = 8;
+					}
+					else if (this.Club == 3)
+					{
+						if (this.StudentID == 26)
+						{
+							this.Actions[this.ID] = 8;
+						}
+						else
+						{
+							this.Actions[this.ID] = 14;
+						}
+					}
 				}
 				else
 				{
