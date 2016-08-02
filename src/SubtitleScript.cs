@@ -1178,7 +1178,8 @@ public class SubtitleScript : MonoBehaviour
 		if (clip != null)
 		{
 			GameObject gameObject = new GameObject("TempAudio");
-			gameObject.transform.position = pos;
+			gameObject.transform.position = this.Yandere.transform.position + this.transform.up;
+			gameObject.transform.parent = this.Yandere.transform;
 			AudioSource audioSource = (AudioSource)gameObject.AddComponent(typeof(AudioSource));
 			audioSource.clip = clip;
 			audioSource.Play();

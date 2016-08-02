@@ -69,6 +69,7 @@ public class NoteWindowScript : MonoBehaviour
 		this.OriginalText[2] = this.SlotLabels[2].text;
 		this.OriginalText[3] = this.SlotLabels[3].text;
 		this.UpdateHighlights();
+		this.UpdateSubLabels();
 	}
 
 	public virtual void Update()
@@ -178,7 +179,7 @@ public class NoteWindowScript : MonoBehaviour
 					float num6 = localPosition2.y = (float)num5;
 					Vector3 vector4 = this.SubHighlight.localPosition = localPosition2;
 				}
-				if (Input.GetButtonDown("A") && this.SubLabels[this.SubSlot].color.a > 0.5f && this.SubLabels[this.SubSlot].text != string.Empty)
+				if (Input.GetButtonDown("A") && this.SubLabels[this.SubSlot].color.a > 0.5f && this.SubLabels[this.SubSlot].text != string.Empty && this.SubLabels[this.SubSlot].text != "??????????")
 				{
 					this.SlotLabels[this.Slot].text = this.SubLabels[this.SubSlot].text;
 					this.SlotsFilled[this.Slot] = true;
@@ -258,6 +259,10 @@ public class NoteWindowScript : MonoBehaviour
 				float num2 = color.a = (float)num;
 				Color color2 = this.SubLabels[this.ID].color = color;
 				this.ID++;
+			}
+			if (PlayerPrefs.GetInt("Event1") == 0)
+			{
+				this.SubLabels[10].text = "??????????";
 			}
 		}
 		else if (this.Slot == 2)

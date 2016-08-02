@@ -74,6 +74,8 @@ public class RagdollScript : MonoBehaviour
 
 	public bool AddingToCount;
 
+	public bool MurderSuicide;
+
 	public bool Electrocuted;
 
 	public bool StopAnimation;
@@ -215,6 +217,11 @@ public class RagdollScript : MonoBehaviour
 						this.Yandere.Ragdoll = this.gameObject;
 						this.Dragged = true;
 						this.Yandere.StudentManager.UpdateStudents();
+						if (this.MurderSuicide)
+						{
+							this.Police.MurderSuicideScene = false;
+							this.MurderSuicide = false;
+						}
 						if (this.Suicide)
 						{
 							this.Police.Suicide = false;

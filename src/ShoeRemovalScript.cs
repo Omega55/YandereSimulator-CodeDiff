@@ -444,8 +444,9 @@ public class ShoeRemovalScript : MonoBehaviour
 				this.Height = 5;
 			}
 		}
-		if (this.Student.Male)
+		if (this.Student.StudentID == 7)
 		{
+			this.Height = 5;
 		}
 		this.RemoveCasualAnim = this.RemoveCasualAnim + this.Height + "_00";
 		this.RemoveSchoolAnim = this.RemoveSchoolAnim + this.Height + "_01";

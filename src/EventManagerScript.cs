@@ -51,16 +51,8 @@ public class EventManagerScript : MonoBehaviour
 		{
 			this.EventCheck = true;
 		}
-		if (PlayerPrefs.GetInt("Event1") == 0)
-		{
-			this.NoteLocker.Prompt.enabled = false;
-			this.NoteLocker.CanLeaveNote = false;
-		}
-		else
-		{
-			this.NoteLocker.Prompt.enabled = true;
-			this.NoteLocker.CanLeaveNote = true;
-		}
+		this.NoteLocker.Prompt.enabled = true;
+		this.NoteLocker.CanLeaveNote = true;
 	}
 
 	public virtual void Update()
@@ -181,11 +173,10 @@ public class EventManagerScript : MonoBehaviour
 								}
 							}
 						}
-						if (this.Yandere.transform.position.y > this.EventStudent[1].transform.position.y - (float)1 && this.EventPhase == 7 && num < (float)5 && !this.NoteLocker.Prompt.enabled)
+						if (this.Yandere.transform.position.y > this.EventStudent[1].transform.position.y - (float)1 && this.EventPhase == 7 && num < (float)5 && PlayerPrefs.GetInt("Event1") == 0)
 						{
 							this.Yandere.NotificationManager.DisplayNotification("Info");
 							PlayerPrefs.SetInt("Event1", 1);
-							this.NoteLocker.Prompt.enabled = true;
 						}
 					}
 				}

@@ -738,7 +738,7 @@ public class TalkingScript : MonoBehaviour
 			}
 			else
 			{
-				this.S.targetRotation = Quaternion.LookRotation(this.S.Yandere.transform.position - this.transform.position);
+				this.S.targetRotation = Quaternion.LookRotation(new Vector3(this.S.Yandere.transform.position.x, this.transform.position.y, this.S.Yandere.transform.position.z) - this.transform.position);
 				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.S.targetRotation, (float)10 * Time.deltaTime);
 			}
 		}

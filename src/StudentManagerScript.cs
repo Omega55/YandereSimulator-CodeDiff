@@ -81,6 +81,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public StudentScript[] Teachers;
 
+	public Collider RivalDeskCollider;
+
 	public Transform CorpseLocation;
 
 	public Transform FastBatheSpot;
@@ -594,7 +596,7 @@ public class StudentManagerScript : MonoBehaviour
 						this.Students[this.ID].EventManager.EndEvent();
 					}
 				}
-				if (this.Students[this.ID].SawMask)
+				if (!this.Students[this.ID].Dead && this.Students[this.ID].SawMask)
 				{
 					this.Police.MaskReported = true;
 				}

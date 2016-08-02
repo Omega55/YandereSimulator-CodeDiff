@@ -22,6 +22,8 @@ public class NoteLockerScript : MonoBehaviour
 
 	public GameObject NewNote;
 
+	public GameObject Locker;
+
 	public GameObject Ball;
 
 	public GameObject Note;
@@ -32,8 +34,6 @@ public class NoteLockerScript : MonoBehaviour
 
 	public AudioClip NoteFind;
 
-	public Transform Hinge;
-
 	public bool CheckingNote;
 
 	public bool CanLeaveNote;
@@ -43,8 +43,6 @@ public class NoteLockerScript : MonoBehaviour
 	public bool Success;
 
 	public float MeetTime;
-
-	public float Rotation;
 
 	public float Timer;
 
@@ -109,7 +107,16 @@ public class NoteLockerScript : MonoBehaviour
 			if (this.Student != null && (this.Student.Phase == 2 || this.Student.Phase == 7) && this.Student.Routine && Vector3.Distance(this.transform.position, this.Student.transform.position) < (float)2 && !this.Student.InEvent)
 			{
 				this.Student.Character.animation.cullingType = AnimationCullingType.AlwaysAnimate;
-				this.Student.Character.animation.CrossFade("f02_findNote_00");
+				if (!this.Success)
+				{
+					this.Student.Character.animation.CrossFade("f02_tossNote_00");
+					this.Locker.animation.CrossFade("lockerTossNote");
+				}
+				else
+				{
+					this.Student.Character.animation.CrossFade("f02_keepNote_00");
+					this.Locker.animation.CrossFade("lockerKeepNote");
+				}
 				this.Student.Pathfinding.canSearch = false;
 				this.Student.Pathfinding.canMove = false;
 				this.Student.InEvent = true;
@@ -118,93 +125,78 @@ public class NoteLockerScript : MonoBehaviour
 			}
 			if (this.CheckingNote)
 			{
+				this.Timer += Time.deltaTime;
 				this.Student.MoveTowardsTarget(this.Student.MyLocker.position);
 				this.Student.transform.rotation = Quaternion.Slerp(this.Student.transform.rotation, this.Student.MyLocker.rotation, (float)10 * Time.deltaTime);
-				if (this.Student.Character.animation["f02_findNote_00"].time >= this.Student.Character.animation["f02_findNote_00"].length)
+				if (this.Student != null)
 				{
-					if (!this.Success)
+					if (this.Student.Character.animation["f02_tossNote_00"].time >= this.Student.Character.animation["f02_tossNote_00"].length)
 					{
-						this.Student.Character.animation.CrossFade("f02_tossNote_00");
+						this.Finish();
 					}
-					else
+					if (this.Student.Character.animation["f02_keepNote_00"].time >= this.Student.Character.animation["f02_keepNote_00"].length)
 					{
-						this.Student.Character.animation.CrossFade("f02_keepNote_00");
+						this.DetermineSchedule();
+						this.Finish();
 					}
 				}
-				if (this.Student.Character.animation["f02_tossNote_00"].time >= this.Student.Character.animation["f02_tossNote_00"].length)
-				{
-					this.Finish();
-				}
-				if (this.Student != null && this.Student.Character.animation["f02_keepNote_00"].time >= this.Student.Character.animation["f02_keepNote_00"].length)
-				{
-					this.DetermineSchedule();
-					this.Finish();
-				}
-				this.Timer += Time.deltaTime;
-				if (this.Timer > 0.75f && this.Timer < 1.75f)
-				{
-					this.Rotation -= Time.deltaTime * (float)80;
-				}
-				if (this.Timer > 10.5f && this.Timer < 11.5f)
-				{
-					this.Rotation += Time.deltaTime * (float)80;
-				}
-				if (this.Timer > 3.5f && this.NewNote == null)
+				if (this.Timer > 4.66666651f && this.NewNote == null)
 				{
 					this.NewNote = (GameObject)UnityEngine.Object.Instantiate(this.Note, this.transform.position, Quaternion.identity);
 					this.NewNote.transform.parent = this.Student.LeftHand;
-					this.NewNote.transform.localPosition = new Vector3(-0.065f, -0.005f, 0.055f);
-					this.NewNote.transform.localEulerAngles = new Vector3((float)-75, (float)-135, (float)-105);
+					this.NewNote.transform.localPosition = new Vector3(-0.06f, -0.01f, (float)0);
+					this.NewNote.transform.localEulerAngles = new Vector3((float)-75, (float)-90, (float)180);
 					this.NewNote.transform.localScale = new Vector3(0.1f, 0.2f, (float)1);
 				}
-				if (this.Timer > (float)10)
+				if (!this.Success)
 				{
-					if (this.NewNote.transform.localScale.x > 0.1f)
+					if (this.Timer > 11.666667f)
 					{
-						this.NewNote.transform.localScale = Vector3.Lerp(this.NewNote.transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime);
+						if (this.NewNote.transform.localScale.x > 0.1f)
+						{
+							this.NewNote.transform.localScale = Vector3.Lerp(this.NewNote.transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime);
+						}
+						else
+						{
+							this.NewNote.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+						}
 					}
-					else
+					if (this.Timer > 13.333333f && this.NewBall == null)
 					{
-						this.NewNote.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+						this.NewBall = (GameObject)UnityEngine.Object.Instantiate(this.Ball, this.Student.LeftHand.position, Quaternion.identity);
+						this.NewBall.rigidbody.AddRelativeForce(Vector3.left * (float)100);
+						this.NewBall.rigidbody.AddRelativeForce(Vector3.up * (float)100);
+						this.Phase++;
 					}
 				}
-				if (!this.Success && this.Timer > 10.5f && this.NewBall == null)
+				else if (this.Timer > 12.833333f)
 				{
-					this.NewBall = (GameObject)UnityEngine.Object.Instantiate(this.Ball, this.Student.Phone.transform.parent.transform.position, Quaternion.identity);
-					this.NewBall.rigidbody.AddRelativeForce(Vector3.left * (float)100);
-					this.NewBall.rigidbody.AddRelativeForce(Vector3.up * (float)100);
-					this.Phase++;
+					this.NewNote.transform.localScale = Vector3.Lerp(this.NewNote.transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime);
 				}
 				if (this.Phase == 1)
 				{
-					if (this.Timer > (float)2)
+					if (this.Timer > 2.33333325f)
 					{
 						this.Yandere.Subtitle.UpdateLabel("Note Reaction", 1, (float)3);
 						this.Phase++;
 					}
 				}
-				else if (this.Phase == 2 && this.Timer > (float)9)
+				else if (this.Phase == 2)
 				{
 					if (!this.Success)
 					{
-						this.Yandere.Subtitle.UpdateLabel("Note Reaction", 2, (float)3);
+						if (this.Timer > 9.666667f)
+						{
+							this.Yandere.Subtitle.UpdateLabel("Note Reaction", 2, (float)3);
+							this.Phase++;
+						}
 					}
-					else
+					else if (this.Timer > 10.166667f)
 					{
 						this.Yandere.Subtitle.UpdateLabel("Note Reaction", 3, (float)3);
+						this.Phase++;
 					}
-					this.Phase++;
 				}
-			}
-		}
-		if (this.Phase == 4)
-		{
-			this.Rotation += Time.deltaTime * (float)135;
-			if (this.Rotation > (float)0)
-			{
-				this.Rotation = (float)0;
-				this.Phase = 0;
-				this.Timer = (float)0;
 			}
 		}
 	}
