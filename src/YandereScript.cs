@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$2721 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$2751 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$2736;
+		internal YandereScript $self_$2766;
 
-		public $ApplyCustomCostume$2721(YandereScript self_)
+		public $ApplyCustomCostume$2751(YandereScript self_)
 		{
-			this.$self_$2736 = self_;
+			this.$self_$2766 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$2721.$(this.$self_$2736);
+			return new YandereScript.$ApplyCustomCostume$2751.$(this.$self_$2766);
 		}
 	}
 
@@ -72,6 +72,8 @@ public class YandereScript : MonoBehaviour
 	public ShoulderCameraScript ShoulderCamera;
 
 	public StudentManagerScript StudentManager;
+
+	public AttackManagerScript AttackManager;
 
 	public CameraEffectsScript CameraEffects;
 
@@ -122,6 +124,8 @@ public class YandereScript : MonoBehaviour
 	public JukeboxScript Jukebox;
 
 	public OutlineScript Outline;
+
+	public StudentScript Pursuer;
 
 	public ShutterScript Shutter;
 
@@ -339,6 +343,8 @@ public class YandereScript : MonoBehaviour
 
 	public int PreviousSchoolwear;
 
+	public int StrugglePhase;
+
 	public int CarryAnimID;
 
 	public int AttackPhase;
@@ -453,11 +459,13 @@ public class YandereScript : MonoBehaviour
 
 	public bool PossessTranq;
 
-	public bool PlayedSound;
+	public bool SanityBased;
 
 	public bool SummonBones;
 
 	public bool ClubAttire;
+
+	public bool FollowHips;
 
 	public bool NearSenpai;
 
@@ -822,6 +830,10 @@ public class YandereScript : MonoBehaviour
 	public GameObject LiftOffParticles;
 
 	public float LiftOffSpeed;
+
+	public SkinnedMeshUpdater SkinUpdater;
+
+	public Mesh RivalChanMesh;
 
 	public YandereScript()
 	{
@@ -1833,35 +1845,86 @@ public class YandereScript : MonoBehaviour
 				{
 					if (!this.Won && !this.Lost)
 					{
-						this.CharacterAnimation.CrossFade("f02_struggleA_00");
+						if (!this.TargetStudent.Teacher)
+						{
+							this.CharacterAnimation.CrossFade("f02_struggleA_00");
+						}
+						else
+						{
+							this.CharacterAnimation.CrossFade("f02_teacherStruggleA_00");
+						}
 						this.targetRotation = Quaternion.LookRotation(this.TargetStudent.transform.position - this.transform.position);
 						this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
 					}
 					else if (this.Won)
 					{
-						this.CharacterAnimation.CrossFade("f02_struggleWinA_00");
-						if (!this.PlayedSound && this.CharacterAnimation["f02_struggleWinA_00"].time > 0.9f)
+						if (!this.TargetStudent.Teacher)
 						{
-							AudioSource.PlayClipAtPoint(this.Stabs[UnityEngine.Random.Range(0, Extensions.get_length(this.Stabs))], this.transform.position + Vector3.up);
-							this.Bloodiness += (float)20;
-							this.UpdateBlood();
-							this.Sanity -= (float)20 * this.Numbness;
-							this.UpdateSanity();
-							this.StainWeapon();
-							this.PlayedSound = true;
+							this.CharacterAnimation.CrossFade("f02_struggleWinA_00");
+							if (this.CharacterAnimation["f02_struggleWinA_00"].time > this.CharacterAnimation["f02_struggleWinA_00"].length - (float)1)
+							{
+								this.Weapon[this.Equipped].transform.localEulerAngles = Vector3.Lerp(this.Weapon[this.Equipped].transform.localEulerAngles, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * 3.33333f);
+							}
 						}
-						if (this.CharacterAnimation["f02_struggleWinA_00"].time > this.CharacterAnimation["f02_struggleWinA_00"].length)
+						else
 						{
+							this.CharacterAnimation.CrossFade("f02_teacherStruggleWinA_00");
+							this.Weapon[this.Equipped].transform.localEulerAngles = Vector3.Lerp(this.Weapon[this.Equipped].transform.localEulerAngles, new Vector3((float)0, (float)0, (float)0), Time.deltaTime);
+						}
+						if (this.StrugglePhase == 0)
+						{
+							if ((!this.TargetStudent.Teacher && this.CharacterAnimation["f02_struggleWinA_00"].time > 1.3f) || (this.TargetStudent.Teacher && this.CharacterAnimation["f02_teacherStruggleWinA_00"].time > 0.8f))
+							{
+								if (!this.TargetStudent.Teacher)
+								{
+									UnityEngine.Object.Instantiate(this.TargetStudent.StabBloodEffect, this.TargetStudent.Head.position, Quaternion.identity);
+								}
+								else
+								{
+									UnityEngine.Object.Instantiate(this.TargetStudent.StabBloodEffect, this.Weapon[this.Equipped].transform.position, Quaternion.identity);
+								}
+								this.Bloodiness += (float)20;
+								this.UpdateBlood();
+								this.Sanity -= (float)20 * this.Numbness;
+								this.UpdateSanity();
+								this.StainWeapon();
+								this.StrugglePhase++;
+							}
+						}
+						else if (this.StrugglePhase == 1)
+						{
+							if (this.TargetStudent.Teacher && this.CharacterAnimation["f02_teacherStruggleWinA_00"].time > 1.3f)
+							{
+								UnityEngine.Object.Instantiate(this.TargetStudent.StabBloodEffect, this.Weapon[this.Equipped].transform.position, Quaternion.identity);
+								this.StrugglePhase++;
+							}
+						}
+						else if (this.StrugglePhase == 2 && this.TargetStudent.Teacher && this.CharacterAnimation["f02_teacherStruggleWinA_00"].time > 2.1f)
+						{
+							UnityEngine.Object.Instantiate(this.TargetStudent.StabBloodEffect, this.Weapon[this.Equipped].transform.position, Quaternion.identity);
+							this.StrugglePhase++;
+						}
+						if ((!this.TargetStudent.Teacher && this.CharacterAnimation["f02_struggleWinA_00"].time > this.CharacterAnimation["f02_struggleWinA_00"].length) || (this.TargetStudent.Teacher && this.CharacterAnimation["f02_teacherStruggleWinA_00"].time > this.CharacterAnimation["f02_teacherStruggleWinA_00"].length))
+						{
+							this.MyController.radius = 0.2f;
+							this.CharacterAnimation.CrossFade(this.IdleAnim);
 							this.ShoulderCamera.Struggle = false;
-							this.PlayedSound = false;
 							this.Struggling = false;
+							this.StrugglePhase = 0;
 							this.TargetStudent.BecomeRagdoll();
 							this.TargetStudent.Dead = true;
 						}
 					}
 					else if (this.Lost)
 					{
-						this.CharacterAnimation.CrossFade("f02_struggleLoseA_00");
+						if (!this.TargetStudent.Teacher)
+						{
+							this.CharacterAnimation.CrossFade("f02_struggleLoseA_00");
+						}
+						else
+						{
+							this.CharacterAnimation.CrossFade("f02_teacherStruggleLoseA_00");
+						}
 					}
 				}
 				if (this.ClubActivity && PlayerPrefs.GetInt("Club") == 6)
@@ -2002,14 +2065,41 @@ public class YandereScript : MonoBehaviour
 						this.SummonBones = false;
 						this.CanMove = true;
 					}
+					if (this.PK)
+					{
+						this.PromptBar.ClearButtons();
+						this.PromptBar.UpdateButtons();
+						this.PromptBar.Show = false;
+						((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).StopDragging();
+						this.SansEyes[0].active = false;
+						this.SansEyes[1].active = false;
+						this.GlowEffect.Stop();
+						this.CanMove = true;
+						this.PK = false;
+					}
 				}
-				if (this.Blasting && this.CharacterAnimation["f02_sansBlaster_00"].time >= this.CharacterAnimation["f02_sansBlaster_00"].length - 0.25f)
+				if (this.Blasting)
 				{
-					this.SansEyes[0].active = false;
-					this.SansEyes[1].active = false;
-					this.GlowEffect.Stop();
-					this.Blasting = false;
-					this.CanMove = true;
+					if (this.CharacterAnimation["f02_sansBlaster_00"].time >= this.CharacterAnimation["f02_sansBlaster_00"].length - 0.25f)
+					{
+						this.SansEyes[0].active = false;
+						this.SansEyes[1].active = false;
+						this.GlowEffect.Stop();
+						this.Blasting = false;
+						this.CanMove = true;
+					}
+					if (this.PK)
+					{
+						this.PromptBar.ClearButtons();
+						this.PromptBar.UpdateButtons();
+						this.PromptBar.Show = false;
+						((RagdollScript)this.Ragdoll.GetComponent(typeof(RagdollScript))).StopDragging();
+						this.SansEyes[0].active = false;
+						this.SansEyes[1].active = false;
+						this.GlowEffect.Stop();
+						this.CanMove = true;
+						this.PK = false;
+					}
 				}
 				if (this.Lifting && this.CharacterAnimation["f02_carryLiftA_00"].time >= this.CharacterAnimation["f02_carryLiftA_00"].length)
 				{
@@ -2783,195 +2873,198 @@ public class YandereScript : MonoBehaviour
 						this.SplashCamera.transform.eulerAngles = new Vector3((float)0, (float)135, (float)0);
 					}
 				}
-				else if (!this.TargetStudent.Teacher)
+				else if (!this.SanityBased)
 				{
-					if (this.Weapon[this.Equipped].WeaponID == 11)
+					if (!this.TargetStudent.Teacher)
 					{
-						this.CharacterAnimation.CrossFade("CyborgNinja_Slash");
-						if (this.CharacterAnimation["CyborgNinja_Slash"].time == (float)0)
+						if (this.Weapon[this.Equipped].WeaponID == 11)
 						{
-							this.TargetStudent.CharacterAnimation[this.TargetStudent.PhoneAnim].weight = (float)0;
-							this.Weapon[this.Equipped].gameObject.audio.Play();
-						}
-						if (this.CharacterAnimation["CyborgNinja_Slash"].time >= this.CharacterAnimation["CyborgNinja_Slash"].length)
-						{
-							this.Bloodiness += (float)20;
-							this.UpdateBlood();
-							this.StainWeapon();
-							this.CharacterAnimation["CyborgNinja_Slash"].time = (float)0;
-							this.CharacterAnimation.Stop("CyborgNinja_Slash");
-							this.CharacterAnimation.CrossFade(this.IdleAnim);
-							this.Attacking = false;
-							if (!this.Noticed)
+							this.CharacterAnimation.CrossFade("CyborgNinja_Slash");
+							if (this.CharacterAnimation["CyborgNinja_Slash"].time == (float)0)
 							{
-								this.CanMove = true;
+								this.TargetStudent.CharacterAnimation[this.TargetStudent.PhoneAnim].weight = (float)0;
+								this.Weapon[this.Equipped].gameObject.audio.Play();
 							}
-							else
+							if (this.CharacterAnimation["CyborgNinja_Slash"].time >= this.CharacterAnimation["CyborgNinja_Slash"].length)
 							{
-								this.Weapon[this.Equipped].Drop();
-							}
-						}
-					}
-					else if (this.Weapon[this.Equipped].WeaponID == 7)
-					{
-						this.CharacterAnimation.CrossFade("f02_buzzSawKill_A_00");
-						if (this.CharacterAnimation["f02_buzzSawKill_A_00"].time == (float)0)
-						{
-							this.TargetStudent.CharacterAnimation[this.TargetStudent.PhoneAnim].weight = (float)0;
-							this.Weapon[this.Equipped].gameObject.audio.Play();
-						}
-						if (this.AttackPhase == 1)
-						{
-							if (this.CharacterAnimation["f02_buzzSawKill_A_00"].time > 0.33333f)
-							{
-								this.TargetStudent.LiquidProjector.enabled = true;
-								this.Weapon[this.Equipped].Effect();
+								this.Bloodiness += (float)20;
+								this.UpdateBlood();
 								this.StainWeapon();
-								this.TargetStudent.LiquidProjector.material.mainTexture = this.BloodTextures[1];
+								this.CharacterAnimation["CyborgNinja_Slash"].time = (float)0;
+								this.CharacterAnimation.Stop("CyborgNinja_Slash");
+								this.CharacterAnimation.CrossFade(this.IdleAnim);
+								this.Attacking = false;
+								if (!this.Noticed)
+								{
+									this.CanMove = true;
+								}
+								else
+								{
+									this.Weapon[this.Equipped].Drop();
+								}
+							}
+						}
+						else if (this.Weapon[this.Equipped].WeaponID == 7)
+						{
+							this.CharacterAnimation.CrossFade("f02_buzzSawKill_A_00");
+							if (this.CharacterAnimation["f02_buzzSawKill_A_00"].time == (float)0)
+							{
+								this.TargetStudent.CharacterAnimation[this.TargetStudent.PhoneAnim].weight = (float)0;
+								this.Weapon[this.Equipped].gameObject.audio.Play();
+							}
+							if (this.AttackPhase == 1)
+							{
+								if (this.CharacterAnimation["f02_buzzSawKill_A_00"].time > 0.33333f)
+								{
+									this.TargetStudent.LiquidProjector.enabled = true;
+									this.Weapon[this.Equipped].Effect();
+									this.StainWeapon();
+									this.TargetStudent.LiquidProjector.material.mainTexture = this.BloodTextures[1];
+									this.Bloodiness += (float)20;
+									this.UpdateBlood();
+									this.AttackPhase++;
+								}
+							}
+							else if (this.AttackPhase < 6 && this.CharacterAnimation["f02_buzzSawKill_A_00"].time > 0.33333f * (float)this.AttackPhase)
+							{
+								this.TargetStudent.LiquidProjector.material.mainTexture = this.BloodTextures[this.AttackPhase];
 								this.Bloodiness += (float)20;
 								this.UpdateBlood();
 								this.AttackPhase++;
 							}
-						}
-						else if (this.AttackPhase < 6 && this.CharacterAnimation["f02_buzzSawKill_A_00"].time > 0.33333f * (float)this.AttackPhase)
-						{
-							this.TargetStudent.LiquidProjector.material.mainTexture = this.BloodTextures[this.AttackPhase];
-							this.Bloodiness += (float)20;
-							this.UpdateBlood();
-							this.AttackPhase++;
-						}
-						if (this.CharacterAnimation["f02_buzzSawKill_A_00"].time > this.CharacterAnimation["f02_buzzSawKill_A_00"].length)
-						{
-							if (this.TargetStudent == this.StudentManager.Reporter)
-							{
-								this.StudentManager.Reporter = null;
-							}
-							this.CharacterAnimation["f02_buzzSawKill_A_00"].time = (float)0;
-							this.CharacterAnimation.Stop("f02_buzzSawKill_A_00");
-							this.CharacterAnimation.CrossFade(this.IdleAnim);
-							this.MyController.radius = 0.2f;
-							this.Attacking = false;
-							this.AttackPhase = 1;
-							this.Sanity -= (float)20 * this.Numbness;
-							this.UpdateSanity();
-							this.TargetStudent.Dead = true;
-							this.TargetStudent.BecomeRagdoll();
-							if (!this.Noticed)
-							{
-								this.CanMove = true;
-							}
-							else
-							{
-								this.Weapon[this.Equipped].Drop();
-							}
-						}
-					}
-					else if (!this.Weapon[this.Equipped].Concealable)
-					{
-						if (this.AttackPhase == 1)
-						{
-							this.CharacterAnimation.CrossFade("f02_swingA_00");
-							if (this.CharacterAnimation["f02_swingA_00"].time > this.CharacterAnimation["f02_swingA_00"].length * 0.3f)
+							if (this.CharacterAnimation["f02_buzzSawKill_A_00"].time > this.CharacterAnimation["f02_buzzSawKill_A_00"].length)
 							{
 								if (this.TargetStudent == this.StudentManager.Reporter)
 								{
 									this.StudentManager.Reporter = null;
 								}
-								UnityEngine.Object.Destroy(this.TargetStudent.DeathScream);
-								this.Weapon[this.Equipped].Effect();
-								this.AttackPhase = 2;
-								this.Bloodiness += (float)20;
-								this.UpdateBlood();
-								this.StainWeapon();
+								this.CharacterAnimation["f02_buzzSawKill_A_00"].time = (float)0;
+								this.CharacterAnimation.Stop("f02_buzzSawKill_A_00");
+								this.CharacterAnimation.CrossFade(this.IdleAnim);
+								this.MyController.radius = 0.2f;
+								this.Attacking = false;
+								this.AttackPhase = 1;
 								this.Sanity -= (float)20 * this.Numbness;
 								this.UpdateSanity();
-							}
-						}
-						else if (this.CharacterAnimation["f02_swingA_00"].time >= this.CharacterAnimation["f02_swingA_00"].length * 0.9f)
-						{
-							this.CharacterAnimation.CrossFade(this.IdleAnim);
-							this.TargetStudent.Dead = true;
-							this.TargetStudent.BecomeRagdoll();
-							this.MyController.radius = 0.2f;
-							this.Attacking = false;
-							this.AttackPhase = 1;
-							this.AttackTimer = (float)0;
-							if (!this.Noticed)
-							{
-								this.CanMove = true;
-							}
-							else
-							{
-								this.Weapon[this.Equipped].Drop();
-							}
-						}
-					}
-					else if (this.AttackPhase == 1)
-					{
-						this.CharacterAnimation.CrossFade("f02_stab_00");
-						if (this.CharacterAnimation["f02_stab_00"].time > this.CharacterAnimation["f02_stab_00"].length * 0.35f)
-						{
-							this.CharacterAnimation.CrossFade(this.IdleAnim);
-							if (this.CanTranq)
-							{
-								this.TargetStudent.Tranquil = true;
-								this.CanTranq = false;
-								this.Followers--;
-							}
-							else
-							{
-								this.TargetStudent.BloodSpray.active = true;
 								this.TargetStudent.Dead = true;
-								this.Bloodiness += (float)20;
-								this.UpdateBlood();
-							}
-							if (this.TargetStudent == this.StudentManager.Reporter)
-							{
-								this.StudentManager.Reporter = null;
-							}
-							AudioSource.PlayClipAtPoint(this.Stabs[UnityEngine.Random.Range(0, Extensions.get_length(this.Stabs))], this.transform.position + Vector3.up);
-							UnityEngine.Object.Destroy(this.TargetStudent.DeathScream);
-							this.AttackPhase = 2;
-							this.Sanity -= (float)20 * this.Numbness;
-							this.UpdateSanity();
-							if (this.Weapon[this.Equipped].WeaponID == 8)
-							{
-								this.TargetStudent.Ragdoll.Sacrifice = true;
-								if (PlayerPrefs.GetInt("Paranormal") == 1)
+								this.TargetStudent.BecomeRagdoll();
+								if (!this.Noticed)
 								{
+									this.CanMove = true;
+								}
+								else
+								{
+									this.Weapon[this.Equipped].Drop();
+								}
+							}
+						}
+						else if (!this.Weapon[this.Equipped].Concealable)
+						{
+							if (this.AttackPhase == 1)
+							{
+								this.CharacterAnimation.CrossFade("f02_swingA_00");
+								if (this.CharacterAnimation["f02_swingA_00"].time > this.CharacterAnimation["f02_swingA_00"].length * 0.3f)
+								{
+									if (this.TargetStudent == this.StudentManager.Reporter)
+									{
+										this.StudentManager.Reporter = null;
+									}
+									UnityEngine.Object.Destroy(this.TargetStudent.DeathScream);
 									this.Weapon[this.Equipped].Effect();
+									this.AttackPhase = 2;
+									this.Bloodiness += (float)20;
+									this.UpdateBlood();
+									this.StainWeapon();
+									this.Sanity -= (float)20 * this.Numbness;
+									this.UpdateSanity();
+								}
+							}
+							else if (this.CharacterAnimation["f02_swingA_00"].time >= this.CharacterAnimation["f02_swingA_00"].length * 0.9f)
+							{
+								this.CharacterAnimation.CrossFade(this.IdleAnim);
+								this.TargetStudent.Dead = true;
+								this.TargetStudent.BecomeRagdoll();
+								this.MyController.radius = 0.2f;
+								this.Attacking = false;
+								this.AttackPhase = 1;
+								this.AttackTimer = (float)0;
+								if (!this.Noticed)
+								{
+									this.CanMove = true;
+								}
+								else
+								{
+									this.Weapon[this.Equipped].Drop();
+								}
+							}
+						}
+						else if (this.AttackPhase == 1)
+						{
+							this.CharacterAnimation.CrossFade("f02_stab_00");
+							if (this.CharacterAnimation["f02_stab_00"].time > this.CharacterAnimation["f02_stab_00"].length * 0.35f)
+							{
+								this.CharacterAnimation.CrossFade(this.IdleAnim);
+								if (this.CanTranq)
+								{
+									this.TargetStudent.Tranquil = true;
+									this.CanTranq = false;
+									this.Followers--;
+								}
+								else
+								{
+									this.TargetStudent.BloodSpray.active = true;
+									this.TargetStudent.Dead = true;
+									this.Bloodiness += (float)20;
+									this.UpdateBlood();
+								}
+								if (this.TargetStudent == this.StudentManager.Reporter)
+								{
+									this.StudentManager.Reporter = null;
+								}
+								AudioSource.PlayClipAtPoint(this.Stabs[UnityEngine.Random.Range(0, Extensions.get_length(this.Stabs))], this.transform.position + Vector3.up);
+								UnityEngine.Object.Destroy(this.TargetStudent.DeathScream);
+								this.AttackPhase = 2;
+								this.Sanity -= (float)20 * this.Numbness;
+								this.UpdateSanity();
+								if (this.Weapon[this.Equipped].WeaponID == 8)
+								{
+									this.TargetStudent.Ragdoll.Sacrifice = true;
+									if (PlayerPrefs.GetInt("Paranormal") == 1)
+									{
+										this.Weapon[this.Equipped].Effect();
+									}
+								}
+							}
+						}
+						else
+						{
+							this.AttackTimer += Time.deltaTime;
+							if (this.AttackTimer > 0.3f)
+							{
+								this.StainWeapon();
+								this.MyController.radius = 0.2f;
+								this.Attacking = false;
+								this.AttackPhase = 1;
+								this.AttackTimer = (float)0;
+								if (!this.Noticed)
+								{
+									this.CanMove = true;
+								}
+								else
+								{
+									this.Weapon[this.Equipped].Drop();
 								}
 							}
 						}
 					}
 					else
 					{
-						this.AttackTimer += Time.deltaTime;
-						if (this.AttackTimer > 0.3f)
-						{
-							this.StainWeapon();
-							this.MyController.radius = 0.2f;
-							this.Attacking = false;
-							this.AttackPhase = 1;
-							this.AttackTimer = (float)0;
-							if (!this.Noticed)
-							{
-								this.CanMove = true;
-							}
-							else
-							{
-								this.Weapon[this.Equipped].Drop();
-							}
-						}
+						this.CharacterAnimation.CrossFade("f02_counterA_00");
+						float y4 = this.TargetStudent.transform.position.y;
+						Vector3 position4 = this.Character.transform.position;
+						float num22 = position4.y = y4;
+						Vector3 vector13 = this.Character.transform.position = position4;
 					}
-				}
-				else
-				{
-					this.CharacterAnimation.CrossFade("f02_counterA_00");
-					float y4 = this.TargetStudent.transform.position.y;
-					Vector3 position4 = this.Character.transform.position;
-					float num22 = position4.y = y4;
-					Vector3 vector13 = this.Character.transform.position = position4;
 				}
 			}
 			if (this.CanMove && !this.Attacking && !this.Dragging && this.PickUp == null && !this.Aiming && !this.Crawling && !this.Possessed && !this.Carrying && !this.CirnoWings.active && this.LaughIntensity < (float)16)
@@ -3716,7 +3809,7 @@ public class YandereScript : MonoBehaviour
 			}
 		}
 		this.HeartRate.BeatsPerMinute = (int)((float)240 - this.Sanity * 1.8f);
-		if (!this.CensorSteam[0].active)
+		if (this.MyRenderer.sharedMesh != this.NudeMesh)
 		{
 			float a = (float)1 - this.Sanity / (float)100;
 			Color color = this.MyRenderer.materials[3].color;
@@ -3844,7 +3937,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$2721(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$2751(this).GetEnumerator();
 	}
 
 	public virtual void WearGloves()

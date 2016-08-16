@@ -136,7 +136,7 @@ public class ShoeRemovalScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (!this.Student.DiscCheck && !this.Student.Dying)
+		if (!this.Student.DiscCheck && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Splashed)
 		{
 			this.Student.MoveTowardsTarget(this.Student.CurrentDestination.position);
 			this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.Student.CurrentDestination.rotation, (float)10 * Time.deltaTime);
@@ -379,7 +379,6 @@ public class ShoeRemovalScript : MonoBehaviour
 		this.LeftCurrentShoe.localPosition = new Vector3(-0.041f, 0.04271515f, (float)0);
 		this.RightCurrentShoe.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
 		this.LeftCurrentShoe.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
-		this.Student.Routine = true;
 		this.Student.Indoors = true;
 		this.Student.CanTalk = true;
 		this.enabled = false;

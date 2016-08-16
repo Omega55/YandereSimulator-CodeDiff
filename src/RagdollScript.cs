@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityScript.Lang;
 
 [Serializable]
 public class RagdollScript : MonoBehaviour
@@ -226,6 +227,10 @@ public class RagdollScript : MonoBehaviour
 						{
 							this.Police.Suicide = false;
 							this.Suicide = false;
+						}
+						for (int i = 0; i < Extensions.get_length(this.Student.Ragdoll.AllRigidbodies); i++)
+						{
+							this.Student.Ragdoll.AllRigidbodies[i].drag = (float)2;
 						}
 					}
 					else
@@ -474,6 +479,10 @@ public class RagdollScript : MonoBehaviour
 
 	public virtual void StopDragging()
 	{
+		for (int i = 0; i < Extensions.get_length(this.Student.Ragdoll.AllRigidbodies); i++)
+		{
+			this.Student.Ragdoll.AllRigidbodies[i].drag = (float)0;
+		}
 		this.Prompt.AcceptingInput[1] = false;
 		this.Prompt.Circle[1].fillAmount = (float)1;
 		this.Prompt.Label[1].text = "     " + "Drag";

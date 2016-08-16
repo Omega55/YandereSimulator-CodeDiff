@@ -139,6 +139,11 @@ public class EndOfDayScript : MonoBehaviour
 	{
 		if (this.PoliceArrived)
 		{
+			if (Input.GetKeyDown("backspace"))
+			{
+				this.Police.KillStudents();
+				Application.LoadLevel("HomeScene");
+			}
 			if (this.Phase == 1)
 			{
 				if (this.Police.PoisonScene)

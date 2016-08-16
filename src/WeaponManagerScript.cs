@@ -53,6 +53,18 @@ public class WeaponManagerScript : MonoBehaviour
 		}
 	}
 
+	public virtual void CleanWeapons()
+	{
+		for (int i = 0; i < Extensions.get_length(this.Weapons); i++)
+		{
+			if (this.Weapons[i] != null)
+			{
+				this.Weapons[i].Blood.enabled = false;
+				this.Weapons[i].FingerprintID = 0;
+			}
+		}
+	}
+
 	public virtual void Update()
 	{
 		if (Input.GetKeyDown("z"))

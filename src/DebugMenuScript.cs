@@ -14,6 +14,8 @@ public class DebugMenuScript : MonoBehaviour
 
 	public YandereScript Yandere;
 
+	public PrayScript Turtle;
+
 	public ClockScript Clock;
 
 	public ZoomScript Zoom;
@@ -23,6 +25,8 @@ public class DebugMenuScript : MonoBehaviour
 	public GameObject SacrificialArm;
 
 	public GameObject CircularSaw;
+
+	public GameObject Knife;
 
 	public Transform[] TeleportSpot;
 
@@ -283,6 +287,23 @@ public class DebugMenuScript : MonoBehaviour
 				}
 				this.Window.active = false;
 			}
+			else if (Input.GetKeyDown("z"))
+			{
+				if (this.StudentManager.NPCsSpawned >= this.StudentManager.NPCsTotal)
+				{
+					if (this.StudentManager.Students[16] != null)
+					{
+						UnityEngine.Object.Destroy(this.StudentManager.Students[16].gameObject);
+					}
+					this.StudentManager.Students[16] = null;
+					this.StudentManager.ForceSpawn = true;
+					this.StudentManager.SpawnPositions[16] = this.TeleportSpot[9];
+					this.StudentManager.SpawnID = 16;
+					this.StudentManager.SpawnStudent();
+					this.StudentManager.SpawnID = 0;
+					this.Window.active = false;
+				}
+			}
 			else if (Input.GetKeyDown("backspace"))
 			{
 				Time.timeScale = (float)1;
@@ -308,13 +329,9 @@ public class DebugMenuScript : MonoBehaviour
 			}
 			else if (Input.GetKeyDown("left alt"))
 			{
-				this.CircularSaw.transform.position = this.TeleportSpot[6].position;
+				this.Turtle.SpawnWeapons();
 				this.Yandere.transform.position = this.TeleportSpot[6].position;
-				if (this.StudentManager.Students[26] != null)
-				{
-					this.StudentManager.Students[26].transform.position = this.TeleportSpot[6].position;
-				}
-				this.Clock.PresentTime = (float)435;
+				this.Clock.PresentTime = (float)425;
 				this.Clock.HourTime = this.Clock.PresentTime / (float)60;
 				this.Window.active = false;
 			}

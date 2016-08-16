@@ -5,6 +5,10 @@ using UnityScript.Lang;
 [Serializable]
 public class CosmeticScript : MonoBehaviour
 {
+	public TextureManagerScript TextureManager;
+
+	public SkinnedMeshUpdater SkinUpdater;
+
 	public StudentScript Student;
 
 	public JsonScript JSON;
@@ -180,7 +184,7 @@ public class CosmeticScript : MonoBehaviour
 			this.LeftShoe.active = false;
 		}
 		this.ColorValue = new Color((float)1, (float)1, (float)1, (float)1);
-		this.JSON = (JsonScript)GameObject.Find("JSON").GetComponent(typeof(JsonScript));
+		this.JSON = this.Student.JSON;
 		this.Accessory = UnityBuiltins.parseInt(this.JSON.StudentAccessories[this.StudentID]);
 		this.Hairstyle = UnityBuiltins.parseInt(this.JSON.StudentHairstyles[this.StudentID]);
 		this.Stockings = this.JSON.StudentStockings[this.StudentID];
@@ -219,16 +223,20 @@ public class CosmeticScript : MonoBehaviour
 		}
 		if (this.Club == 100)
 		{
-			this.MyRenderer.sharedMesh = this.TeacherMesh;
+			this.SkinUpdater.UpdateSkin();
+			this.SkinUpdater.UpdateSkin();
 			this.Teacher = true;
 		}
 		else if (this.Club == 101)
 		{
-			this.Character.animation["f02_smile_00"].layer = 1;
-			this.Character.animation.Play("f02_smile_00");
-			this.Character.animation["f02_smile_00"].weight = (float)1;
-			this.RightEyeRenderer.gameObject.active = false;
-			this.LeftEyeRenderer.gameObject.active = false;
+			if (PlayerPrefs.GetInt("Student_" + this.StudentID + "_Replaced") == 0)
+			{
+				this.Character.animation["f02_smile_00"].layer = 1;
+				this.Character.animation.Play("f02_smile_00");
+				this.Character.animation["f02_smile_00"].weight = (float)1;
+				this.RightEyeRenderer.gameObject.active = false;
+				this.LeftEyeRenderer.gameObject.active = false;
+			}
 			this.MyRenderer.sharedMesh = this.CoachMesh;
 			this.Teacher = true;
 		}
@@ -500,9 +508,15 @@ public class CosmeticScript : MonoBehaviour
 				this.LeftEyeRenderer.material.color = this.ColorValue;
 			}
 		}
-		else if (this.Teacher && this.Club == 100)
+		else if (this.Teacher)
 		{
-			this.HairRenderer.material.color = new Color(0.5f, 0.25f, (float)0, (float)1);
+			if (PlayerPrefs.GetInt("Student_" + this.StudentID + "_Replaced") == 1)
+			{
+				float @float = PlayerPrefs.GetFloat("Student_" + this.StudentID + "_ColorR");
+				float float2 = PlayerPrefs.GetFloat("Student_" + this.StudentID + "_ColorG");
+				float float3 = PlayerPrefs.GetFloat("Student_" + this.StudentID + "_ColorB");
+				this.HairRenderer.material.color = new Color(@float, float2, float3);
+			}
 			this.RightEyeRenderer.material.color = this.HairRenderer.material.color;
 			this.LeftEyeRenderer.material.color = this.HairRenderer.material.color;
 		}
@@ -716,6 +730,21 @@ public class CosmeticScript : MonoBehaviour
 			this.UniformTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
 			this.CasualTexture = this.FemaleCasualTextures[PlayerPrefs.GetInt("FemaleUniform")];
 			this.SocksTexture = this.FemaleSocksTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			if (this.StudentID == 16)
+			{
+				if (this.TextureManager.UniformTextures[this.StudentID] == null)
+				{
+					this.TextureManager.Base2D = (this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")] as Texture2D);
+					this.TextureManager.UniformTextures[this.StudentID] = this.TextureManager.MergeTextures(this.TextureManager.Base2D, this.TextureManager.GreenStockings);
+					this.TextureManager.Base2D = (this.FemaleCasualTextures[PlayerPrefs.GetInt("FemaleUniform")] as Texture2D);
+					this.TextureManager.CasualTextures[this.StudentID] = this.TextureManager.MergeTextures(this.TextureManager.Base2D, this.TextureManager.GreenStockings);
+					this.TextureManager.Base2D = (this.FemaleSocksTextures[PlayerPrefs.GetInt("FemaleUniform")] as Texture2D);
+					this.TextureManager.SocksTextures[this.StudentID] = this.TextureManager.MergeTextures(this.TextureManager.Base2D, this.TextureManager.GreenStockings);
+				}
+				this.UniformTexture = this.TextureManager.UniformTextures[this.StudentID];
+				this.CasualTexture = this.TextureManager.CasualTextures[this.StudentID];
+				this.SocksTexture = this.TextureManager.SocksTextures[this.StudentID];
+			}
 		}
 		if (!this.Cutscene)
 		{

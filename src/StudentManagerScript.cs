@@ -17,6 +17,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public SelectiveGrayscale SelectiveGreyscale;
 
+	public TextureManagerScript TextureManager;
+
 	public EmergencyExitScript EmergencyExit;
 
 	public TranqDetectorScript TranqDetector;
@@ -58,6 +60,8 @@ public class StudentManagerScript : MonoBehaviour
 	public ListScript EntranceVectors;
 
 	public ListScript GoAwaySpots;
+
+	public ListScript HidingSpots;
 
 	public ListScript LunchSpots;
 
@@ -141,6 +145,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public bool TakingPortraits;
 
+	public bool TeachersSpawned;
+
 	public bool ForceSpawn;
 
 	public bool Randomize;
@@ -156,6 +162,12 @@ public class StudentManagerScript : MonoBehaviour
 	public bool DK;
 
 	public float ChangeTimer;
+
+	public string[] ColorNames;
+
+	public string[] FirstNames;
+
+	public string[] LastNames;
 
 	public StudentManagerScript()
 	{
@@ -184,7 +196,7 @@ public class StudentManagerScript : MonoBehaviour
 			PlayerPrefs.SetInt("MaleUniform", 1);
 		}
 		this.ID = 1;
-		while (this.ID < this.NPCsTotal)
+		while (this.ID < this.NPCsTotal + 1)
 		{
 			if (PlayerPrefs.GetInt("Student_" + this.ID + "_Dead") == 0)
 			{
@@ -312,9 +324,10 @@ public class StudentManagerScript : MonoBehaviour
 				((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).StudentID = this.SpawnID;
 				((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).JSON = this.JSON;
 				this.Students[this.SpawnID] = (StudentScript)this.NewStudent.GetComponent(typeof(StudentScript));
-				this.Students[this.SpawnID].StudentID = this.SpawnID;
+				this.Students[this.SpawnID].Cosmetic.TextureManager = this.TextureManager;
 				this.Students[this.SpawnID].WitnessCamera = this.WitnessCamera;
 				this.Students[this.SpawnID].StudentManager = this;
+				this.Students[this.SpawnID].StudentID = this.SpawnID;
 				this.Students[this.SpawnID].JSON = this.JSON;
 				if (this.AoT)
 				{
@@ -341,6 +354,7 @@ public class StudentManagerScript : MonoBehaviour
 			this.SpawnID++;
 			if (this.SpawnID > this.NPCsTotal)
 			{
+				this.TeachersSpawned = true;
 				this.SpawnID = 1;
 			}
 			this.UpdateStudents();

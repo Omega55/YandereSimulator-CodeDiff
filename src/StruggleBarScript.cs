@@ -18,7 +18,11 @@ public class StruggleBarScript : MonoBehaviour
 
 	public bool Struggling;
 
+	public bool Invincible;
+
 	public float ButtonTimer;
+
+	public float Intensity;
 
 	public float Strength;
 
@@ -44,19 +48,24 @@ public class StruggleBarScript : MonoBehaviour
 	{
 		if (this.Struggling)
 		{
+			this.Intensity = Mathf.MoveTowards(this.Intensity, 1f, Time.deltaTime);
 			this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
 			float z = this.Spikes.localEulerAngles.z - Time.deltaTime * (float)360;
 			Vector3 localEulerAngles = this.Spikes.localEulerAngles;
 			float num = localEulerAngles.z = z;
 			Vector3 vector = this.Spikes.localEulerAngles = localEulerAngles;
-			this.Victory -= Time.deltaTime * (float)20 * this.Strength;
+			this.Victory -= Time.deltaTime * (float)20 * this.Strength * this.Intensity;
 			if (PlayerPrefs.GetInt("Club") == 6)
 			{
 				this.Victory = (float)100;
 			}
 			if (Input.GetButtonDown(this.CurrentButton))
 			{
-				this.Victory += Time.deltaTime * (float)(500 + (PlayerPrefs.GetInt("PhysicalGrade") + PlayerPrefs.GetInt("PhysicalBonus") * 100));
+				if (this.Invincible)
+				{
+					this.Victory += (float)100;
+				}
+				this.Victory += Time.deltaTime * (float)(500 + (PlayerPrefs.GetInt("PhysicalGrade") + PlayerPrefs.GetInt("PhysicalBonus")) * 150) * this.Intensity;
 			}
 			if (this.Victory >= (float)100)
 			{
@@ -83,7 +92,10 @@ public class StruggleBarScript : MonoBehaviour
 			}
 			else if (this.Victory == (float)-100)
 			{
-				this.HeroWins();
+				if (!this.Invincible)
+				{
+					this.HeroWins();
+				}
 			}
 			else
 			{

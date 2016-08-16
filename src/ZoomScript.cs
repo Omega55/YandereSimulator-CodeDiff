@@ -24,26 +24,44 @@ public class ZoomScript : MonoBehaviour
 
 	public virtual void Update()
 	{
+		if (this.Yandere.FollowHips)
+		{
+			float x = Mathf.MoveTowards(this.transform.position.x, this.Yandere.Hips.position.x, Time.deltaTime);
+			Vector3 position = this.transform.position;
+			float num = position.x = x;
+			Vector3 vector = this.transform.position = position;
+			float z = Mathf.MoveTowards(this.transform.position.z, this.Yandere.Hips.position.z, Time.deltaTime);
+			Vector3 position2 = this.transform.position;
+			float num2 = position2.z = z;
+			Vector3 vector2 = this.transform.position = position2;
+		}
 		if (this.Yandere.Crawling)
 		{
 			float y = Mathf.Lerp(this.transform.localPosition.y, 0.05f + this.Zoom + this.Slender, Time.deltaTime * (float)10);
 			Vector3 localPosition = this.transform.localPosition;
-			float num = localPosition.y = y;
-			Vector3 vector = this.transform.localPosition = localPosition;
+			float num3 = localPosition.y = y;
+			Vector3 vector3 = this.transform.localPosition = localPosition;
 		}
 		else if (this.Yandere.Crouching)
 		{
 			float y2 = Mathf.Lerp(this.transform.localPosition.y, 0.4f + this.Zoom + this.Slender, Time.deltaTime * (float)10);
 			Vector3 localPosition2 = this.transform.localPosition;
-			float num2 = localPosition2.y = y2;
-			Vector3 vector2 = this.transform.localPosition = localPosition2;
+			float num4 = localPosition2.y = y2;
+			Vector3 vector4 = this.transform.localPosition = localPosition2;
 		}
-		else
+		else if (!this.Yandere.FollowHips)
 		{
 			float y3 = Mathf.Lerp(this.transform.localPosition.y, (float)1 + this.Zoom + this.Slender, Time.deltaTime * (float)10);
 			Vector3 localPosition3 = this.transform.localPosition;
-			float num3 = localPosition3.y = y3;
-			Vector3 vector3 = this.transform.localPosition = localPosition3;
+			float num5 = localPosition3.y = y3;
+			Vector3 vector5 = this.transform.localPosition = localPosition3;
+		}
+		else
+		{
+			float y4 = Mathf.MoveTowards(this.transform.position.y, this.Yandere.Hips.position.y + this.Zoom, Time.deltaTime * (float)10);
+			Vector3 position3 = this.transform.position;
+			float num6 = position3.y = y4;
+			Vector3 vector6 = this.transform.position = position3;
 		}
 		if (!this.Yandere.Aiming)
 		{
@@ -102,14 +120,14 @@ public class ZoomScript : MonoBehaviour
 		}
 		if (this.Yandere.RoofPush)
 		{
-			float x = Mathf.MoveTowards(this.transform.position.x, this.Yandere.Hips.position.x, Time.deltaTime * (float)10);
-			Vector3 position = this.transform.position;
-			float num4 = position.x = x;
-			Vector3 vector4 = this.transform.position = position;
-			float z = Mathf.MoveTowards(this.transform.position.z, this.Yandere.Hips.position.z, Time.deltaTime * (float)10);
-			Vector3 position2 = this.transform.position;
-			float num5 = position2.z = z;
-			Vector3 vector5 = this.transform.position = position2;
+			float x2 = Mathf.MoveTowards(this.transform.position.x, this.Yandere.Hips.position.x, Time.deltaTime * (float)10);
+			Vector3 position4 = this.transform.position;
+			float num7 = position4.x = x2;
+			Vector3 vector7 = this.transform.position = position4;
+			float z2 = Mathf.MoveTowards(this.transform.position.z, this.Yandere.Hips.position.z, Time.deltaTime * (float)10);
+			Vector3 position5 = this.transform.position;
+			float num8 = position5.z = z2;
+			Vector3 vector8 = this.transform.position = position5;
 		}
 		else
 		{
@@ -117,17 +135,17 @@ public class ZoomScript : MonoBehaviour
 		}
 		if (this.OverShoulder)
 		{
-			float x2 = 0.25f;
+			float x3 = 0.25f;
 			Vector3 localPosition4 = this.transform.localPosition;
-			float num6 = localPosition4.x = x2;
-			Vector3 vector6 = this.transform.localPosition = localPosition4;
+			float num9 = localPosition4.x = x3;
+			Vector3 vector9 = this.transform.localPosition = localPosition4;
 		}
 		else
 		{
-			int num7 = 0;
+			int num10 = 0;
 			Vector3 localPosition5 = this.transform.localPosition;
-			float num8 = localPosition5.x = (float)num7;
-			Vector3 vector7 = this.transform.localPosition = localPosition5;
+			float num11 = localPosition5.x = (float)num10;
+			Vector3 vector10 = this.transform.localPosition = localPosition5;
 		}
 	}
 

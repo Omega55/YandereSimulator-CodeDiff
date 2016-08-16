@@ -203,7 +203,7 @@ public class NoteLockerScript : MonoBehaviour
 
 	public virtual void Finish()
 	{
-		if (this.Student.Clock.HourTime > this.Student.MeetTime)
+		if (this.Success && this.Student.Clock.HourTime > this.Student.MeetTime)
 		{
 			this.Student.CurrentDestination = this.Student.MeetSpot;
 			this.Student.Pathfinding.target = this.Student.MeetSpot;

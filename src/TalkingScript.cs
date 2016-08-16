@@ -7,6 +7,8 @@ public class TalkingScript : MonoBehaviour
 {
 	public StudentScript S;
 
+	public bool Follow;
+
 	public bool Fake;
 
 	public virtual void Update()
@@ -250,6 +252,7 @@ public class TalkingScript : MonoBehaviour
 					{
 						this.S.Character.animation.CrossFade(this.S.Nod1Anim);
 						this.S.Subtitle.UpdateLabel("Student Follow", 0, (float)2);
+						this.Follow = true;
 					}
 				}
 				else
@@ -265,11 +268,15 @@ public class TalkingScript : MonoBehaviour
 					if (this.S.TalkTimer <= (float)0)
 					{
 						this.S.DialogueWheel.End();
-						this.S.Pathfinding.target = this.S.Yandere.transform;
-						this.S.Prompt.Label[0].text = "     " + "Stop";
-						this.S.Yandere.Follower = this.S;
-						this.S.Yandere.Followers = this.S.Yandere.Followers + 1;
-						this.S.Following = true;
+						if (this.Follow)
+						{
+							this.S.Pathfinding.target = this.S.Yandere.transform;
+							this.S.Prompt.Label[0].text = "     " + "Stop";
+							this.S.Yandere.Follower = this.S;
+							this.S.Yandere.Followers = this.S.Yandere.Followers + 1;
+							this.S.Following = true;
+						}
+						this.Follow = false;
 					}
 				}
 				this.S.TalkTimer = this.S.TalkTimer - Time.deltaTime;

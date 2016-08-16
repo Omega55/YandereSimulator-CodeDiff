@@ -19,6 +19,8 @@ public class WeaponScript : MonoBehaviour
 
 	public PromptScript Prompt;
 
+	public AudioClip[] Clips;
+
 	public AudioClip DismemberClip;
 
 	public Collider MyCollider;
@@ -45,6 +47,10 @@ public class WeaponScript : MonoBehaviour
 
 	public bool Dumped;
 
+	public bool Flip;
+
+	public bool Spin;
+
 	public Color EvidenceColor;
 
 	public Color OriginalColor;
@@ -69,6 +75,8 @@ public class WeaponScript : MonoBehaviour
 
 	public int AnimID;
 
+	public int Type;
+
 	public bool[] Victims;
 
 	private AudioClip OriginalClip;
@@ -76,6 +84,11 @@ public class WeaponScript : MonoBehaviour
 	private int ID;
 
 	public GameObject HeartBurst;
+
+	public WeaponScript()
+	{
+		this.Type = 1;
+	}
 
 	public virtual void Start()
 	{
@@ -143,6 +156,33 @@ public class WeaponScript : MonoBehaviour
 					this.Rotation = (float)0;
 					this.Speed = (float)0;
 				}
+			}
+		}
+		else if (this.Yandere.Weapon[this.Yandere.Equipped] == this && this.Yandere.AttackManager.Attacking)
+		{
+			if (this.Type == 1)
+			{
+				if (this.Flip)
+				{
+					float y = Mathf.Lerp(this.transform.localEulerAngles.y, (float)180, Time.deltaTime * (float)10);
+					Vector3 localEulerAngles3 = this.transform.localEulerAngles;
+					float num3 = localEulerAngles3.y = y;
+					Vector3 vector3 = this.transform.localEulerAngles = localEulerAngles3;
+				}
+				else
+				{
+					float y2 = Mathf.Lerp(this.transform.localEulerAngles.y, (float)0, Time.deltaTime * (float)10);
+					Vector3 localEulerAngles4 = this.transform.localEulerAngles;
+					float num4 = localEulerAngles4.y = y2;
+					Vector3 vector4 = this.transform.localEulerAngles = localEulerAngles4;
+				}
+			}
+			else if (this.Type == 4 && this.Spin)
+			{
+				float x = this.Blade.transform.localEulerAngles.x + Time.deltaTime * (float)360;
+				Vector3 localEulerAngles5 = this.Blade.transform.localEulerAngles;
+				float num5 = localEulerAngles5.x = x;
+				Vector3 vector5 = this.Blade.transform.localEulerAngles = localEulerAngles5;
 			}
 		}
 	}
@@ -277,7 +317,6 @@ public class WeaponScript : MonoBehaviour
 			else
 			{
 				this.transform.localPosition = new Vector3(-0.01f, 0.005f, -0.01f);
-				this.transform.localEulerAngles = new Vector3((float)0, (float)180, (float)0);
 			}
 		}
 		if (this.Dumped)

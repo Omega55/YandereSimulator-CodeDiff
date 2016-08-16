@@ -5,6 +5,8 @@ using UnityScript.Lang;
 [Serializable]
 public class ActivateOsuScript : MonoBehaviour
 {
+	public StudentManagerScript StudentManager;
+
 	public OsuScript[] OsuScripts;
 
 	public StudentScript Student;
@@ -30,43 +32,30 @@ public class ActivateOsuScript : MonoBehaviour
 		this.OriginalMousePosition = this.Mouse.transform.position;
 	}
 
-	public virtual void OnTriggerEnter(Collider other)
+	public virtual void Update()
 	{
-		if ((this.PlayerID == 14 && other.gameObject.name == "StudentChan(Clone)") || (this.PlayerID == 15 && other.gameObject.name == "StudentKun(Clone)"))
+		if (this.Student == null)
 		{
-			this.Student = (StudentScript)other.gameObject.GetComponent(typeof(StudentScript));
-			if (this.Student != null && this.Student.StudentID == this.PlayerID && this.Student.Routine)
+			this.Student = this.StudentManager.Students[this.PlayerID];
+		}
+		else if (!this.Osu.active)
+		{
+			if (Vector3.Distance(this.transform.position, this.Student.transform.position) < 0.1f && this.Student.Routine && this.Student.Actions[this.Student.Phase] == 2)
 			{
 				this.ActivateOsu();
 			}
 		}
-	}
-
-	public virtual void Update()
-	{
-		if (this.Osu.active)
+		else
 		{
 			this.Mouse.transform.eulerAngles = this.OriginalMouseRotation;
-			if (Vector3.Distance(this.transform.position, this.Student.transform.position) > 0.1f)
+			if (!this.Student.Routine)
 			{
 				this.DeactivateOsu();
 			}
-			else if (this.Clock.HourTime > (float)8 && this.Clock.HourTime < (float)13)
+			else if (this.Student.Actions[this.Student.Phase] != 2)
 			{
 				this.DeactivateOsu();
 			}
-			else if (this.Clock.HourTime > 13.375f && this.Clock.HourTime < 15.5f)
-			{
-				this.DeactivateOsu();
-			}
-			else if (!this.Student.Routine)
-			{
-				this.DeactivateOsu();
-			}
-		}
-		else if (this.Student != null && Vector3.Distance(this.transform.position, this.Student.transform.position) < 0.1f && this.Student.Routine)
-		{
-			this.ActivateOsu();
 		}
 	}
 

@@ -297,50 +297,53 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 
 	public virtual void LateUpdate()
 	{
-		float x = -0.65f + this.ShakeStrength * UnityEngine.Random.Range(-1f, 1f);
-		Vector3 localPosition = this.transform.localPosition;
-		float num = localPosition.x = x;
-		Vector3 vector = this.transform.localPosition = localPosition;
-		float y = this.ShakeStrength * UnityEngine.Random.Range(-1f, 1f);
-		Vector3 localPosition2 = this.transform.localPosition;
-		float num2 = localPosition2.y = y;
-		Vector3 vector2 = this.transform.localPosition = localPosition2;
-		float z = this.ShakeStrength * UnityEngine.Random.Range(-1f, 1f);
-		Vector3 localPosition3 = this.transform.localPosition;
-		float num3 = localPosition3.z = z;
-		Vector3 vector3 = this.transform.localPosition = localPosition3;
-		float x2 = this.CutsceneCamera.position.x + this.xOffset;
-		Vector3 position = this.CutsceneCamera.position;
-		float num4 = position.x = x2;
-		Vector3 vector4 = this.CutsceneCamera.position = position;
-		float z2 = this.CutsceneCamera.position.z + this.zOffset;
-		Vector3 position2 = this.CutsceneCamera.position;
-		float num5 = position2.z = z2;
-		Vector3 vector5 = this.CutsceneCamera.position = position2;
-		float z3 = this.LeftEyeOrigin.z - this.EyeShrink * 0.01f;
-		Vector3 localPosition4 = this.LeftEye.localPosition;
-		float num6 = localPosition4.z = z3;
-		Vector3 vector6 = this.LeftEye.localPosition = localPosition4;
-		float z4 = this.RightEyeOrigin.z + this.EyeShrink * 0.01f;
-		Vector3 localPosition5 = this.RightEye.localPosition;
-		float num7 = localPosition5.z = z4;
-		Vector3 vector7 = this.RightEye.localPosition = localPosition5;
-		float x3 = (float)1 - this.EyeShrink * 0.5f;
-		Vector3 localScale = this.LeftEye.localScale;
-		float num8 = localScale.x = x3;
-		Vector3 vector8 = this.LeftEye.localScale = localScale;
-		float y2 = (float)1 - this.EyeShrink * 0.5f;
-		Vector3 localScale2 = this.LeftEye.localScale;
-		float num9 = localScale2.y = y2;
-		Vector3 vector9 = this.LeftEye.localScale = localScale2;
-		float x4 = (float)1 - this.EyeShrink * 0.5f;
-		Vector3 localScale3 = this.RightEye.localScale;
-		float num10 = localScale3.x = x4;
-		Vector3 vector10 = this.RightEye.localScale = localScale3;
-		float y3 = (float)1 - this.EyeShrink * 0.5f;
-		Vector3 localScale4 = this.RightEye.localScale;
-		float num11 = localScale4.y = y3;
-		Vector3 vector11 = this.RightEye.localScale = localScale4;
+		if (this.Phase > 2)
+		{
+			float x = -0.65f + this.ShakeStrength * UnityEngine.Random.Range(-1f, 1f);
+			Vector3 localPosition = this.transform.localPosition;
+			float num = localPosition.x = x;
+			Vector3 vector = this.transform.localPosition = localPosition;
+			float y = this.ShakeStrength * UnityEngine.Random.Range(-1f, 1f);
+			Vector3 localPosition2 = this.transform.localPosition;
+			float num2 = localPosition2.y = y;
+			Vector3 vector2 = this.transform.localPosition = localPosition2;
+			float z = this.ShakeStrength * UnityEngine.Random.Range(-1f, 1f);
+			Vector3 localPosition3 = this.transform.localPosition;
+			float num3 = localPosition3.z = z;
+			Vector3 vector3 = this.transform.localPosition = localPosition3;
+			float x2 = this.CutsceneCamera.position.x + this.xOffset;
+			Vector3 position = this.CutsceneCamera.position;
+			float num4 = position.x = x2;
+			Vector3 vector4 = this.CutsceneCamera.position = position;
+			float z2 = this.CutsceneCamera.position.z + this.zOffset;
+			Vector3 position2 = this.CutsceneCamera.position;
+			float num5 = position2.z = z2;
+			Vector3 vector5 = this.CutsceneCamera.position = position2;
+			float z3 = this.LeftEyeOrigin.z - this.EyeShrink * 0.01f;
+			Vector3 localPosition4 = this.LeftEye.localPosition;
+			float num6 = localPosition4.z = z3;
+			Vector3 vector6 = this.LeftEye.localPosition = localPosition4;
+			float z4 = this.RightEyeOrigin.z + this.EyeShrink * 0.01f;
+			Vector3 localPosition5 = this.RightEye.localPosition;
+			float num7 = localPosition5.z = z4;
+			Vector3 vector7 = this.RightEye.localPosition = localPosition5;
+			float x3 = (float)1 - this.EyeShrink * 0.5f;
+			Vector3 localScale = this.LeftEye.localScale;
+			float num8 = localScale.x = x3;
+			Vector3 vector8 = this.LeftEye.localScale = localScale;
+			float y2 = (float)1 - this.EyeShrink * 0.5f;
+			Vector3 localScale2 = this.LeftEye.localScale;
+			float num9 = localScale2.y = y2;
+			Vector3 vector9 = this.LeftEye.localScale = localScale2;
+			float x4 = (float)1 - this.EyeShrink * 0.5f;
+			Vector3 localScale3 = this.RightEye.localScale;
+			float num10 = localScale3.x = x4;
+			Vector3 vector10 = this.RightEye.localScale = localScale3;
+			float y3 = (float)1 - this.EyeShrink * 0.5f;
+			Vector3 localScale4 = this.RightEye.localScale;
+			float num11 = localScale4.y = y3;
+			Vector3 vector11 = this.RightEye.localScale = localScale4;
+		}
 	}
 
 	public virtual void Main()

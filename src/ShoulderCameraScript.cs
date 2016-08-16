@@ -38,6 +38,14 @@ public class ShoulderCameraScript : MonoBehaviour
 
 	public Vector3 LastPosition;
 
+	public Vector3 TeacherLossFocus;
+
+	public Vector3 TeacherLossPOV;
+
+	public Vector3 LossFocus;
+
+	public Vector3 LossPOV;
+
 	public bool AimingCamera;
 
 	public bool OverShoulder;
@@ -63,6 +71,8 @@ public class ShoulderCameraScript : MonoBehaviour
 	public float NoticedSpeed;
 
 	public float Height;
+
+	public float PullBackTimer;
 
 	public float Timer;
 
@@ -189,9 +199,11 @@ public class ShoulderCameraScript : MonoBehaviour
 			{
 				if (this.Timer == (float)0)
 				{
-					this.ShoulderPOV.position = this.transform.position + this.transform.forward * (float)1;
-					this.transform.parent = this.Yandere.transform;
+					this.StruggleFocus.position = this.transform.position + this.transform.forward * (float)1;
+					this.StrugglePOV.position = this.transform.position;
 				}
+				this.transform.position = Vector3.Lerp(this.transform.position, this.StrugglePOV.position, Time.deltaTime * (float)10);
+				this.transform.LookAt(this.StruggleFocus);
 				this.Timer += Time.deltaTime;
 				if (this.Timer > 0.5f && this.Phase < 2)
 				{
@@ -203,6 +215,10 @@ public class ShoulderCameraScript : MonoBehaviour
 				{
 					this.Yandere.Subtitle.UpdateLabel("Teacher Attack Reaction", 1, (float)4);
 					this.Phase++;
+				}
+				if (this.Timer > (float)6 && this.Yandere.Armed)
+				{
+					this.Yandere.Weapon[this.Yandere.Equipped].Drop();
 				}
 				if (this.Timer > 6.66666f && this.Phase < 4)
 				{
@@ -216,43 +232,27 @@ public class ShoulderCameraScript : MonoBehaviour
 				}
 				if (this.Timer < (float)5)
 				{
-					this.ShoulderPOV.position = Vector3.Lerp(this.ShoulderPOV.position, this.Yandere.TargetStudent.transform.position + Vector3.up * 1.4f, Time.deltaTime);
-					this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3(0.5f, 1.4f, 0.3f), Time.deltaTime);
-				}
-				else if (this.Timer < (float)6)
-				{
-					if (!this.DoNotMove)
-					{
-						this.transform.Translate(Vector3.back * Time.deltaTime * (float)3);
-					}
+					this.StruggleFocus.position = Vector3.Lerp(this.StruggleFocus.position, this.Yandere.TargetStudent.transform.position + Vector3.up * 1.4f, Time.deltaTime);
+					this.StrugglePOV.localPosition = Vector3.Lerp(this.StrugglePOV.localPosition, new Vector3(0.5f, 1.4f, 0.3f), Time.deltaTime);
 				}
 				else if (this.Timer < (float)10)
 				{
-					if (this.DoNotMove)
+					if (this.Timer < 6.5f)
 					{
-						this.ShoulderPOV.position = this.transform.position + this.transform.forward * (float)1;
-						this.transform.parent = this.Yandere.transform;
-						this.DoNotMove = false;
+						this.PullBackTimer = Mathf.MoveTowards(this.PullBackTimer, 1.5f, Time.deltaTime);
 					}
-					if (this.Yandere.Armed)
+					else
 					{
-						this.Yandere.Weapon[this.Yandere.Equipped].Drop();
+						this.PullBackTimer = Mathf.MoveTowards(this.PullBackTimer, (float)0, Time.deltaTime * 0.428571433f);
 					}
-					this.ShoulderPOV.localPosition = Vector3.Lerp(this.ShoulderPOV.localPosition, new Vector3((float)0, 0.114666663f, -0.84f), Time.deltaTime);
-					this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3(0.6f, 0.114666663f, -0.84f), Time.deltaTime);
+					this.transform.Translate(Vector3.back * Time.deltaTime * (float)10 * this.PullBackTimer);
+					this.StruggleFocus.localPosition = Vector3.Lerp(this.StruggleFocus.localPosition, new Vector3((float)0, 0.114666663f, -0.84f), Time.deltaTime);
+					this.StrugglePOV.localPosition = Vector3.Lerp(this.StrugglePOV.localPosition, new Vector3(0.6f, 0.114666663f, -0.84f), Time.deltaTime);
 				}
 				else
 				{
-					if (this.Phase < 6)
-					{
-						this.ShoulderPOV.transform.parent = this.transform;
-						this.Phase++;
-					}
-					this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3((float)1, 0.31f, -0.533333f), Time.deltaTime);
-				}
-				if (this.Phase < 6 && !this.DoNotMove)
-				{
-					this.transform.LookAt(this.ShoulderPOV);
+					this.StruggleFocus.localPosition = Vector3.Lerp(this.StruggleFocus.localPosition, new Vector3((float)0, 0.3f, -0.4f), Time.deltaTime);
+					this.StrugglePOV.localPosition = Vector3.Lerp(this.StrugglePOV.localPosition, new Vector3(1.05f, 0.3f, -0.4f), Time.deltaTime);
 				}
 			}
 			else if (this.Struggle)
@@ -261,15 +261,19 @@ public class ShoulderCameraScript : MonoBehaviour
 				this.transform.LookAt(this.StruggleFocus);
 				if (this.Yandere.Lost)
 				{
-					this.StruggleFocus.localPosition = Vector3.MoveTowards(this.StruggleFocus.localPosition, new Vector3((float)0, 0.4f, (float)-1), Time.deltaTime);
-					this.StrugglePOV.localPosition = Vector3.MoveTowards(this.StrugglePOV.localPosition, new Vector3((float)1, (float)1, (float)-1), Time.deltaTime);
+					this.StruggleFocus.localPosition = Vector3.MoveTowards(this.StruggleFocus.localPosition, this.LossFocus, Time.deltaTime);
+					this.StrugglePOV.localPosition = Vector3.MoveTowards(this.StrugglePOV.localPosition, this.LossPOV, Time.deltaTime);
 					if (this.Timer == (float)0)
 					{
 						this.audio.clip = this.StruggleLose;
 						this.audio.Play();
 					}
 					this.Timer += Time.deltaTime;
-					if (this.Timer > (float)3 && !this.HeartbrokenCamera.active)
+					if (this.Timer < (float)3)
+					{
+						this.transform.Translate(Vector3.back * Time.deltaTime * (float)10 * this.Timer * ((float)3 - this.Timer));
+					}
+					else if (!this.HeartbrokenCamera.active)
 					{
 						this.HeartbrokenCamera.active = true;
 						this.Yandere.Jukebox.GameOver();
@@ -288,8 +292,16 @@ public class ShoulderCameraScript : MonoBehaviour
 				if (this.Timer < 0.5f)
 				{
 					this.transform.position = Vector3.Lerp(this.transform.position, this.LastPosition, Time.deltaTime * (float)10);
-					this.ShoulderFocus.position = Vector3.Lerp(this.ShoulderFocus.position, this.RPGCamera.cameraPivot.position, Time.deltaTime * (float)10);
-					this.transform.LookAt(this.ShoulderFocus);
+					if (this.Yandere.Talking)
+					{
+						this.ShoulderFocus.position = Vector3.Lerp(this.ShoulderFocus.position, this.RPGCamera.cameraPivot.position, Time.deltaTime * (float)10);
+						this.transform.LookAt(this.ShoulderFocus);
+					}
+					else
+					{
+						this.StruggleFocus.position = Vector3.Lerp(this.StruggleFocus.position, this.RPGCamera.cameraPivot.position, Time.deltaTime * (float)10);
+						this.transform.LookAt(this.StruggleFocus);
+					}
 				}
 				else
 				{
@@ -297,6 +309,7 @@ public class ShoulderCameraScript : MonoBehaviour
 					this.Yandere.MyController.enabled = true;
 					this.Yandere.Talking = false;
 					this.Yandere.CanMove = true;
+					this.Yandere.Pursuer = null;
 					this.Yandere.Chased = false;
 					this.Yandere.Won = false;
 					this.Timer = (float)0;

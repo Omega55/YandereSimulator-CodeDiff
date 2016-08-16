@@ -20,6 +20,8 @@ public class StudentInfoScript : MonoBehaviour
 
 	public Texture DefaultPortrait;
 
+	public Texture BlankPortrait;
+
 	public Texture InfoChan;
 
 	public Transform ReputationBar;
@@ -270,7 +272,14 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			string url = "file:///" + Application.streamingAssetsPath + "/Portraits/Student_" + ID + ".png";
 			WWW www = new WWW(url);
-			this.Portrait.mainTexture = www.texture;
+			if (PlayerPrefs.GetInt("Student_" + ID + "_Replaced") == 0)
+			{
+				this.Portrait.mainTexture = www.texture;
+			}
+			else
+			{
+				this.Portrait.mainTexture = this.BlankPortrait;
+			}
 			this.Static.active = false;
 			this.audio.volume = (float)0;
 		}

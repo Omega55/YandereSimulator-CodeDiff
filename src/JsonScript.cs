@@ -9,6 +9,8 @@ using UnityScript.Lang;
 [Serializable]
 public class JsonScript : MonoBehaviour
 {
+	public StudentManagerScript StudentManager;
+
 	public string StudentFileName;
 
 	public string[] StudentNames;
@@ -103,6 +105,10 @@ public class JsonScript : MonoBehaviour
 			this.StudentActions[this.ID] = this.TempStringArray;
 			i++;
 		}
+		if (Application.loadedLevelName == "SchoolScene")
+		{
+			this.ReplaceDeadTeachers();
+		}
 	}
 
 	public virtual void ConstructTempFloatArray()
@@ -124,6 +130,47 @@ public class JsonScript : MonoBehaviour
 		{
 			"_"[0]
 		});
+	}
+
+	public virtual void ReplaceDeadTeachers()
+	{
+		this.ID = 35;
+		while (this.ID < 42)
+		{
+			if (PlayerPrefs.GetInt("Student_" + this.ID + "_Dead") == 1)
+			{
+				PlayerPrefs.SetInt("Student_" + this.ID + "_Replaced", 1);
+				PlayerPrefs.SetInt("Student_" + this.ID + "_Dead", 0);
+				string value = string.Empty + this.StudentManager.FirstNames[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentManager.FirstNames))] + " " + this.StudentManager.LastNames[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentManager.LastNames))];
+				PlayerPrefs.SetString("Student_" + this.ID + "_Name", value);
+				PlayerPrefs.SetFloat("Student_" + this.ID + "_BustSize", UnityEngine.Random.Range(1f, 1.5f));
+				PlayerPrefs.SetString("Student_" + this.ID + "_Hairstyle", string.Empty + UnityEngine.Random.Range(1, 8));
+				float value2 = UnityEngine.Random.Range((float)0, 1f);
+				float value3 = UnityEngine.Random.Range((float)0, 1f);
+				float value4 = UnityEngine.Random.Range((float)0, 1f);
+				PlayerPrefs.SetFloat("Student_" + this.ID + "_ColorR", value2);
+				PlayerPrefs.SetFloat("Student_" + this.ID + "_ColorG", value3);
+				PlayerPrefs.SetFloat("Student_" + this.ID + "_ColorB", value4);
+				PlayerPrefs.SetString("Student_" + this.ID + "_Accessory", string.Empty + UnityEngine.Random.Range(1, 7));
+			}
+			this.ID++;
+		}
+		this.ID = 35;
+		while (this.ID < 42)
+		{
+			if (PlayerPrefs.GetInt("Student_" + this.ID + "_Replaced") == 1)
+			{
+				this.StudentNames[this.ID] = PlayerPrefs.GetString("Student_" + this.ID + "_Name");
+				this.StudentBreasts[this.ID] = PlayerPrefs.GetFloat("Student_" + this.ID + "_BustSize");
+				this.StudentHairstyles[this.ID] = PlayerPrefs.GetString("Student_" + this.ID + "_Hairstyle");
+				this.StudentAccessories[this.ID] = PlayerPrefs.GetString("Student_" + this.ID + "_Accessory");
+				if (this.ID == 41)
+				{
+					this.StudentAccessories[41] = "7";
+				}
+			}
+			this.ID++;
+		}
 	}
 
 	public virtual void Main()

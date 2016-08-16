@@ -211,7 +211,8 @@ public class HeartbrokenScript : MonoBehaviour
 	{
 		if (this.Noticed)
 		{
-			float y = this.Yandere.transform.position.y + 0.01f;
+			this.Ground.transform.eulerAngles = new Vector3((float)90, (float)0, (float)0);
+			float y = this.Yandere.transform.position.y;
 			Vector3 position = this.Ground.transform.position;
 			float num = position.y = y;
 			Vector3 vector = this.Ground.transform.position = position;

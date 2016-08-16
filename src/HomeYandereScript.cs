@@ -10,35 +10,35 @@ public class HomeYandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$2689 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$2719 : GenericGenerator<WWW>
 	{
-		internal HomeYandereScript $self_$2695;
+		internal HomeYandereScript $self_$2725;
 
-		public $ApplyCustomCostume$2689(HomeYandereScript self_)
+		public $ApplyCustomCostume$2719(HomeYandereScript self_)
 		{
-			this.$self_$2695 = self_;
+			this.$self_$2725 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new HomeYandereScript.$ApplyCustomCostume$2689.$(this.$self_$2695);
+			return new HomeYandereScript.$ApplyCustomCostume$2719.$(this.$self_$2725);
 		}
 	}
 
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomFace$2696 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomFace$2726 : GenericGenerator<WWW>
 	{
-		internal HomeYandereScript $self_$2701;
+		internal HomeYandereScript $self_$2731;
 
-		public $ApplyCustomFace$2696(HomeYandereScript self_)
+		public $ApplyCustomFace$2726(HomeYandereScript self_)
 		{
-			this.$self_$2701 = self_;
+			this.$self_$2731 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new HomeYandereScript.$ApplyCustomFace$2696.$(this.$self_$2701);
+			return new HomeYandereScript.$ApplyCustomFace$2726.$(this.$self_$2731);
 		}
 	}
 
@@ -327,12 +327,12 @@ public class HomeYandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new HomeYandereScript.$ApplyCustomCostume$2689(this).GetEnumerator();
+		return new HomeYandereScript.$ApplyCustomCostume$2719(this).GetEnumerator();
 	}
 
 	public virtual IEnumerator ApplyCustomFace()
 	{
-		return new HomeYandereScript.$ApplyCustomFace$2696(this).GetEnumerator();
+		return new HomeYandereScript.$ApplyCustomFace$2726(this).GetEnumerator();
 	}
 
 	public virtual void Main()

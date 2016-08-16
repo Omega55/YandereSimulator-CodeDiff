@@ -162,7 +162,7 @@ public class PauseScreenScript : MonoBehaviour
 				{
 					if (!this.Home)
 					{
-						if (!this.Yandere.Shutter.Snapping && !this.Yandere.TimeSkipping && !this.Yandere.Talking && !this.Yandere.Noticed && !this.Yandere.InClass && !this.Yandere.Struggling && !this.Yandere.Won && !this.Yandere.Dismembering && Time.timeScale > (float)0)
+						if (!this.Yandere.Shutter.Snapping && !this.Yandere.TimeSkipping && !this.Yandere.Talking && !this.Yandere.Noticed && !this.Yandere.InClass && !this.Yandere.Struggling && !this.Yandere.Won && !this.Yandere.Dismembering && !this.Yandere.Attacked && Time.timeScale > (float)0)
 						{
 							this.Yandere.StopAiming();
 							this.PromptParent.localScale = new Vector3((float)0, (float)0, (float)0);
