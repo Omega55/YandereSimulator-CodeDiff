@@ -2340,12 +2340,14 @@ public class StudentScript : MonoBehaviour
 						{
 							this.DistractionTarget.Pathfinding.canSearch = false;
 							this.DistractionTarget.Pathfinding.canMove = false;
+							this.DistractionTarget.OccultBook.active = false;
 							this.DistractionTarget.Distraction = this.transform;
 							this.DistractionTarget.CameraReacting = false;
 							this.DistractionTarget.Pathfinding.speed = (float)0;
 							this.DistractionTarget.Distracted = true;
 							this.DistractionTarget.Routine = false;
 							this.DistractionTarget.CanTalk = false;
+							this.DistractionTarget.ReadPhase = 0;
 							this.Pathfinding.speed = (float)0;
 							this.Distracted = true;
 						}
@@ -3158,6 +3160,7 @@ public class StudentScript : MonoBehaviour
 								{
 									if (this.Concern == 5)
 									{
+										Debug.Log("Senpai noticed because of this code.");
 										this.SenpaiNoticed();
 										if (this.Witnessed == "Stalking" || this.Witnessed == "Lewd")
 										{
@@ -3181,13 +3184,21 @@ public class StudentScript : MonoBehaviour
 								{
 									this.CameraEffects.Alarm();
 								}
-								else if (this.Concern < 5)
-								{
-									this.CameraEffects.Alarm();
-								}
 								else
 								{
-									this.CameraEffects.MurderWitnessed();
+									Debug.Log("A teacher has just witnessed something that can result in a Game Over.");
+									if (!this.Yandere.Struggling)
+									{
+										this.SenpaiNoticed();
+									}
+									if (this.Concern < 5)
+									{
+										this.CameraEffects.Alarm();
+									}
+									else
+									{
+										this.CameraEffects.MurderWitnessed();
+									}
 								}
 								if (!this.Teacher && this.Witnessed == b)
 								{
@@ -3499,12 +3510,11 @@ public class StudentScript : MonoBehaviour
 				}
 				if (this.Prompt.Circle[2].fillAmount <= (float)0 && !this.Yandere.NearSenpai && !this.Yandere.Attacking && !this.Yandere.Crouching)
 				{
-					this.AttackReaction();
-					if (this.Yandere.SanityBased)
+					if (this.Yandere.Weapon[this.Yandere.Equipped].WeaponID == 3)
 					{
-						this.Yandere.AttackManager.Victim = this.Character;
-						this.Yandere.AttackManager.Attack();
+						this.Yandere.SanityBased = false;
 					}
+					this.AttackReaction();
 				}
 			}
 			if (this.Dying)
@@ -3755,7 +3765,7 @@ public class StudentScript : MonoBehaviour
 					{
 						if (!this.WitnessedCorpse)
 						{
-							Debug.Log("We just got here.");
+							Debug.Log("A teacher's reaction is now being determined.");
 							if (this.Witnessed == "Weapon and Blood and Insanity")
 							{
 								this.Subtitle.UpdateLabel("Teacher Insanity Reaction", 1, (float)6);
@@ -3871,6 +3881,7 @@ public class StudentScript : MonoBehaviour
 						}
 						if (this.Concern == 5)
 						{
+							Debug.Log("A Game Over will now occur.");
 							this.CharacterAnimation[this.AngryFaceAnim].weight = (float)1;
 							this.Yandere.ShoulderCamera.enabled = true;
 							this.Yandere.ShoulderCamera.Noticed = true;
@@ -4423,14 +4434,17 @@ public class StudentScript : MonoBehaviour
 
 	public virtual void AttackReaction()
 	{
-		float f = Vector3.Angle(this.transform.forward * (float)-1, this.Yandere.transform.position - this.transform.position);
-		if (Mathf.Abs(f) > (float)45)
+		if (!this.WitnessedMurder)
 		{
-			this.Yandere.AttackManager.Stealth = false;
-		}
-		else
-		{
-			this.Yandere.AttackManager.Stealth = true;
+			float f = Vector3.Angle(this.transform.forward * (float)-1, this.Yandere.transform.position - this.transform.position);
+			if (Mathf.Abs(f) > (float)45)
+			{
+				this.Yandere.AttackManager.Stealth = false;
+			}
+			else
+			{
+				this.Yandere.AttackManager.Stealth = true;
+			}
 		}
 		this.StudentManager.TranqDetector.TranqCheck();
 		if (!this.Male)
@@ -4465,7 +4479,7 @@ public class StudentScript : MonoBehaviour
 		this.Dying = true;
 		this.Prompt.Hide();
 		this.Prompt.enabled = false;
-		if (!this.Dying && this.Following)
+		if (this.Following)
 		{
 			this.Hearts.enableEmission = false;
 			this.Yandere.Followers = this.Yandere.Followers - 1;
@@ -4480,7 +4494,7 @@ public class StudentScript : MonoBehaviour
 		{
 			if (PlayerPrefs.GetInt("PhysicalGrade") + PlayerPrefs.GetInt("PhysicalBonus") > 0 && this.Yandere.Weapon[this.Yandere.Equipped].Type == 1)
 			{
-				Debug.Log("Began fleeing because AttackReaction was called.");
+				Debug.Log("A teacher has entered the ''Fleeing'' protocol and the ''BeginStruggle'' protocol.");
 				this.Pathfinding.target = this.Yandere.transform;
 				this.CurrentDestination = this.Yandere.transform;
 				this.Yandere.Attacking = false;
@@ -4497,20 +4511,31 @@ public class StudentScript : MonoBehaviour
 				this.ShoulderCamera.OverShoulder = false;
 				this.Yandere.RPGCamera.enabled = false;
 				this.Yandere.Senpai = this.transform;
+				this.Yandere.Attacking = true;
+				this.Yandere.CanMove = false;
 				this.Yandere.Talking = false;
 				this.Yandere.Noticed = true;
 				this.Yandere.HUD.alpha = (float)0;
 			}
 		}
-		else if (!this.Yandere.AttackManager.Stealth)
+		else
 		{
-			this.Subtitle.UpdateLabel("Dying", 0, (float)1);
-			this.SpawnAlarmDisc();
+			if (!this.Yandere.AttackManager.Stealth)
+			{
+				this.Subtitle.UpdateLabel("Dying", 0, (float)1);
+				this.SpawnAlarmDisc();
+			}
+			if (this.Yandere.SanityBased)
+			{
+				this.Yandere.AttackManager.Victim = this.Character;
+				this.Yandere.AttackManager.Attack();
+			}
 		}
 	}
 
 	public virtual void SenpaiNoticed()
 	{
+		Debug.Log("The ''SenpaiNoticed'' function has been called.");
 		if (!this.Yandere.Attacking)
 		{
 			this.Yandere.EmptyHands();
@@ -4667,7 +4692,7 @@ public class StudentScript : MonoBehaviour
 
 	public virtual void ChaseYandere()
 	{
-		Debug.Log("Chase was set to true because ChaseYandere was called.");
+		Debug.Log("A character has begun to chase Yandere-chan.");
 		this.CurrentDestination = this.Yandere.transform;
 		this.Pathfinding.target = this.Yandere.transform;
 		this.Pathfinding.speed = 7.5f;
@@ -4829,7 +4854,7 @@ public class StudentScript : MonoBehaviour
 			{
 				if (this.Yandere.Pursuer == this)
 				{
-					Debug.Log("Began fleeing because Teacher persona reaction to murder was called.");
+					Debug.Log("A teacher is now reacting to the sight of murder.");
 					this.Subtitle.UpdateLabel("Teacher Murder Reaction", 3, (float)3);
 					this.Pathfinding.target = this.Yandere.transform;
 					this.Pathfinding.speed = 7.5f;
@@ -4851,7 +4876,7 @@ public class StudentScript : MonoBehaviour
 			}
 			else if (this.WitnessedCorpse)
 			{
-				Debug.Log("Began fleeing because Teacher persona reaction to a corpse was called.");
+				Debug.Log("A teacher is now reacting to the sight of a corpse.");
 				if (this.ReportPhase == 0)
 				{
 					this.Subtitle.UpdateLabel("Teacher Corpse Reaction", 1, (float)3);

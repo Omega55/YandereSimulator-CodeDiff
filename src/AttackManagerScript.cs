@@ -160,6 +160,7 @@ public class AttackManagerScript : MonoBehaviour
 				this.Yandere.FollowHips = false;
 				this.Yandere.MyController.radius = 0.2f;
 				this.Attacking = false;
+				this.Stealth = false;
 				this.EffectPhase = 0;
 				this.AttackTimer = (float)0;
 				this.Timer = (float)0;

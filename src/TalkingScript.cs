@@ -17,7 +17,10 @@ public class TalkingScript : MonoBehaviour
 		{
 			if (this.S.Interaction == 0)
 			{
-				this.S.Character.animation.CrossFade(this.S.IdleAnim);
+				if (!this.Fake)
+				{
+					this.S.Character.animation.CrossFade(this.S.IdleAnim);
+				}
 				if (this.S.TalkTimer == (float)0)
 				{
 					this.S.DialogueWheel.Impatience.fillAmount = this.S.DialogueWheel.Impatience.fillAmount + Time.deltaTime * 0.1f;

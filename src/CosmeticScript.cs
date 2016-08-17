@@ -184,7 +184,10 @@ public class CosmeticScript : MonoBehaviour
 			this.LeftShoe.active = false;
 		}
 		this.ColorValue = new Color((float)1, (float)1, (float)1, (float)1);
-		this.JSON = this.Student.JSON;
+		if (this.JSON == null)
+		{
+			this.JSON = this.Student.JSON;
+		}
 		this.Accessory = UnityBuiltins.parseInt(this.JSON.StudentAccessories[this.StudentID]);
 		this.Hairstyle = UnityBuiltins.parseInt(this.JSON.StudentHairstyles[this.StudentID]);
 		this.Stockings = this.JSON.StudentStockings[this.StudentID];
