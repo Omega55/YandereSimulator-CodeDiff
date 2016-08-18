@@ -342,6 +342,10 @@ public class PauseScreenScript : MonoBehaviour
 						{
 							if (this.PhoneIcons[3].color.a == (float)1 && this.Yandere.CanMove && !this.Yandere.Dragging)
 							{
+								for (int i = 0; i < Extensions.get_length(this.Yandere.ArmedAnims); i++)
+								{
+									this.Yandere.CharacterAnimation[this.Yandere.ArmedAnims[i]].weight = (float)0;
+								}
 								this.MainMenu.active = false;
 								this.PassTime.active = true;
 								this.PassTime.GetCurrentTime();

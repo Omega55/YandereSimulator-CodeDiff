@@ -155,7 +155,7 @@ public class AttackManagerScript : MonoBehaviour
 				this.Yandere.UpdateSanity();
 				this.Yandere.Bloodiness = this.Yandere.Bloodiness + (float)20;
 				this.Yandere.UpdateBlood();
-				this.Yandere.CanMove = true;
+				this.Yandere.StainWeapon();
 				this.Yandere.Attacking = false;
 				this.Yandere.FollowHips = false;
 				this.Yandere.MyController.radius = 0.2f;
@@ -165,6 +165,14 @@ public class AttackManagerScript : MonoBehaviour
 				this.AttackTimer = (float)0;
 				this.Timer = (float)0;
 				this.CheckForSpecialCase();
+				if (!this.Yandere.Noticed)
+				{
+					this.Yandere.CanMove = true;
+				}
+				else
+				{
+					this.Yandere.Weapon[this.Yandere.Equipped].Drop();
+				}
 			}
 		}
 	}

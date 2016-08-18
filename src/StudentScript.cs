@@ -1555,6 +1555,7 @@ public class StudentScript : MonoBehaviour
 								this.Pathfinding.canSearch = true;
 								this.Pathfinding.canMove = true;
 								this.StudentManager.OfferHelp.active = false;
+								this.Drownable = false;
 								this.Pushable = false;
 								this.Meeting = false;
 								this.MeetTimer = (float)0;
@@ -2706,6 +2707,7 @@ public class StudentScript : MonoBehaviour
 								this.Obstacle.enabled = false;
 								this.CameraReacting = false;
 								this.Routine = true;
+								this.ReadPhase = 0;
 							}
 						}
 					}
@@ -2717,6 +2719,7 @@ public class StudentScript : MonoBehaviour
 							this.Obstacle.enabled = false;
 							this.CameraReacting = false;
 							this.Routine = true;
+							this.ReadPhase = 0;
 						}
 					}
 					else
@@ -2726,6 +2729,7 @@ public class StudentScript : MonoBehaviour
 					if (this.InEvent)
 					{
 						this.CameraReacting = false;
+						this.ReadPhase = 0;
 					}
 				}
 				if (this.Investigating)
@@ -3031,6 +3035,7 @@ public class StudentScript : MonoBehaviour
 							this.Routine = false;
 							this.Alarmed = true;
 							this.Witness = true;
+							this.ReadPhase = 0;
 							string b = this.Witnessed;
 							bool flag = false;
 							if (this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].Suspicious)
@@ -3633,7 +3638,7 @@ public class StudentScript : MonoBehaviour
 					}
 					this.LovedOneCheck();
 					this.CharacterAnimation.CrossFade(this.ScaredAnim);
-					this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - this.transform.position);
+					this.targetRotation = Quaternion.LookRotation(new Vector3(this.Yandere.Hips.position.x, this.transform.position.y, this.Yandere.Hips.position.z) - this.transform.position);
 					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * this.DeltaTime);
 					if (!this.Yandere.Struggling)
 					{

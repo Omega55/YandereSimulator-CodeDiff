@@ -397,7 +397,7 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 10)
 			{
-				if (PlayerPrefs.GetInt("Student_7_Dying") == 0 && PlayerPrefs.GetInt("Student_7_Dead") == 0)
+				if (PlayerPrefs.GetInt("Student_7_Dying") == 0 && PlayerPrefs.GetInt("Student_7_Dead") == 0 && PlayerPrefs.GetInt("Student_7_Arrested") == 0)
 				{
 					if (this.Counselor.LectureID > 0)
 					{
@@ -421,8 +421,11 @@ public class EndOfDayScript : MonoBehaviour
 				Debug.Log("Phase 11.");
 				if (PlayerPrefs.GetInt("Scheme_2_Stage") == 3)
 				{
-					this.Label.text = "Kokona discovers Sakyu's ring inside of her book bag. She returns the ring to Sakyu, who decides to never let it out of her sight again.";
-					PlayerPrefs.SetInt("Scheme_2_Stage", 100);
+					if (PlayerPrefs.GetInt("Student_7_Dying") == 0 && PlayerPrefs.GetInt("Student_7_Dead") == 0 && PlayerPrefs.GetInt("Student_7_Arrested") == 0)
+					{
+						this.Label.text = "Kokona discovers Sakyu's ring inside of her book bag. She returns the ring to Sakyu, who decides to never let it out of her sight again.";
+						PlayerPrefs.SetInt("Scheme_2_Stage", 100);
+					}
 				}
 				else if (PlayerPrefs.GetInt("Scheme_5_Stage") > 1 && PlayerPrefs.GetInt("Scheme_5_Stage") < 5)
 				{
