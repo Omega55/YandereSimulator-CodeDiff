@@ -160,6 +160,13 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 		gameObject.transform.parent = this.BloodParent;
 	}
 
+	public virtual void SpawnPool(Transform Location)
+	{
+		GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.BloodPool, Location.position + Location.forward * 1f, Quaternion.identity);
+		gameObject.transform.localEulerAngles = new Vector3((float)90, UnityEngine.Random.Range((float)0, 360f), (float)0);
+		gameObject.transform.parent = this.BloodParent;
+	}
+
 	public virtual void Main()
 	{
 	}

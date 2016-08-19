@@ -17,7 +17,7 @@ public class YandereShoeLockerScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (this.Yandere.Schoolwear == 1)
+		if (this.Yandere.Schoolwear == 1 && !this.Yandere.ClubAttire)
 		{
 			if (this.Label == 2)
 			{
