@@ -99,15 +99,12 @@ public class ClockScript : MonoBehaviour
 	{
 		if (this.PresentTime < (float)1080)
 		{
-			if (this.StudentManager.TeachersSpawned)
+			this.BloomEffect.bloomIntensity = this.BloomEffect.bloomIntensity - Time.deltaTime * 9.75f;
+			this.BloomEffect.bloomThreshhold = this.BloomEffect.bloomThreshhold + Time.deltaTime * 0.5f;
+			if (this.BloomEffect.bloomThreshhold > 0.5f)
 			{
-				this.BloomEffect.bloomIntensity = this.BloomEffect.bloomIntensity - Time.deltaTime * 9.75f;
-				this.BloomEffect.bloomThreshhold = this.BloomEffect.bloomThreshhold + Time.deltaTime * 0.5f;
-				if (this.BloomEffect.bloomThreshhold > 0.5f)
-				{
-					this.BloomEffect.bloomIntensity = 0.25f;
-					this.BloomEffect.bloomThreshhold = 0.5f;
-				}
+				this.BloomEffect.bloomIntensity = 0.25f;
+				this.BloomEffect.bloomThreshhold = 0.5f;
 			}
 		}
 		else if (!this.Police.FadeOut && !this.Yandere.Attacking && !this.Yandere.Struggling)

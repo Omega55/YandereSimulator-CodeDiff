@@ -11,18 +11,18 @@ public class YanvaniaDraculaScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyScreenshot$2767 : GenericGenerator<WWW>
+	internal sealed class $ApplyScreenshot$2779 : GenericGenerator<WWW>
 	{
-		internal YanvaniaDraculaScript $self_$2771;
+		internal YanvaniaDraculaScript $self_$2783;
 
-		public $ApplyScreenshot$2767(YanvaniaDraculaScript self_)
+		public $ApplyScreenshot$2779(YanvaniaDraculaScript self_)
 		{
-			this.$self_$2771 = self_;
+			this.$self_$2783 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YanvaniaDraculaScript.$ApplyScreenshot$2767.$(this.$self_$2771);
+			return new YanvaniaDraculaScript.$ApplyScreenshot$2779.$(this.$self_$2783);
 		}
 	}
 
@@ -442,7 +442,7 @@ public class YanvaniaDraculaScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyScreenshot()
 	{
-		return new YanvaniaDraculaScript.$ApplyScreenshot$2767(this).GetEnumerator();
+		return new YanvaniaDraculaScript.$ApplyScreenshot$2779(this).GetEnumerator();
 	}
 
 	public virtual void Main()

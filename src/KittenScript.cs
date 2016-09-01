@@ -4,17 +4,52 @@ using UnityEngine;
 [Serializable]
 public class KittenScript : MonoBehaviour
 {
-	public Transform Yandere;
+	public YandereScript Yandere;
+
+	public GameObject Character;
+
+	public string[] AnimationNames;
+
+	public Transform Head;
+
+	public string CurrentAnim;
+
+	public string IdleAnim;
+
+	public float Timer;
+
+	public bool Wait;
+
+	public KittenScript()
+	{
+		this.CurrentAnim = string.Empty;
+		this.IdleAnim = string.Empty;
+	}
+
+	public virtual void Start()
+	{
+	}
 
 	public virtual void Update()
 	{
-		if (this.Yandere.localScale.x != (float)1)
+	}
+
+	public virtual void PickRandomAnim()
+	{
+	}
+
+	public virtual void LateUpdate()
+	{
+		if (this.Wait)
 		{
-			int num = -100;
-			Vector3 position = this.Yandere.transform.position;
-			float num2 = position.y = (float)num;
-			Vector3 vector = this.Yandere.transform.position = position;
-			Application.LoadLevel("AntiModScene");
+			if (!this.Yandere.Aiming)
+			{
+				this.Head.transform.LookAt(this.Yandere.Head);
+			}
+			else
+			{
+				this.Head.transform.LookAt(this.Yandere.transform.position + Vector3.up * this.Head.position.y);
+			}
 		}
 	}
 

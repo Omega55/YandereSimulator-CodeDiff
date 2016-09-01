@@ -100,6 +100,7 @@ public class DoorScript : MonoBehaviour
 		{
 			if (!this.Near)
 			{
+				this.TopicCheck();
 				this.Yandere.Location.Label.text = this.RoomName;
 				this.Yandere.Location.Show = true;
 				this.Near = true;
@@ -476,6 +477,174 @@ public class DoorScript : MonoBehaviour
 		{
 			this.Sign.material.mainTexture = this.Plates[3];
 			this.Sign.material.mainTextureOffset = new Vector2((float)0, 0.5f);
+		}
+	}
+
+	public virtual void TopicCheck()
+	{
+		int roomID = this.RoomID;
+		if (roomID != 1)
+		{
+			if (roomID != 2)
+			{
+				if (roomID == 3)
+				{
+					if (PlayerPrefs.GetInt("Topic_12_Discovered") == 0)
+					{
+						PlayerPrefs.SetInt("Topic_12_Discovered", 1);
+						this.Yandere.NotificationManager.DisplayNotification("Topic");
+					}
+				}
+				else if (roomID != 4)
+				{
+					if (roomID != 5)
+					{
+						if (roomID != 6)
+						{
+							if (roomID != 7)
+							{
+								if (roomID != 8)
+								{
+									if (roomID != 9)
+									{
+										if (roomID != 10)
+										{
+											if (roomID != 11)
+											{
+												if (roomID != 12)
+												{
+													if (roomID == 13)
+													{
+														if (PlayerPrefs.GetInt("Topic_21_Discovered") == 0)
+														{
+															PlayerPrefs.SetInt("Topic_21_Discovered", 1);
+															this.Yandere.NotificationManager.DisplayNotification("Topic");
+														}
+													}
+													else if (roomID != 14)
+													{
+														if (roomID == 15)
+														{
+															if (PlayerPrefs.GetInt("Topic_16_Discovered") == 0)
+															{
+																PlayerPrefs.SetInt("Topic_16_Discovered", 1);
+																PlayerPrefs.SetInt("Topic_17_Discovered", 1);
+																PlayerPrefs.SetInt("Topic_18_Discovered", 1);
+																PlayerPrefs.SetInt("Topic_19_Discovered", 1);
+																this.Yandere.NotificationManager.DisplayNotification("Topic");
+																this.Yandere.NotificationManager.DisplayNotification("Topic");
+																this.Yandere.NotificationManager.DisplayNotification("Topic");
+																this.Yandere.NotificationManager.DisplayNotification("Topic");
+															}
+														}
+														else if (roomID != 16)
+														{
+															if (roomID != 17)
+															{
+																if (roomID != 18)
+																{
+																	if (roomID != 19)
+																	{
+																		if (roomID != 20)
+																		{
+																			if (roomID != 21)
+																			{
+																				if (roomID != 22)
+																				{
+																					if (roomID != 23)
+																					{
+																						if (roomID != 24)
+																						{
+																							if (roomID != 25)
+																							{
+																								if (roomID == 26)
+																								{
+																									if (PlayerPrefs.GetInt("Topic_1_Discovered") == 0)
+																									{
+																										PlayerPrefs.SetInt("Topic_1_Discovered", 1);
+																										this.Yandere.NotificationManager.DisplayNotification("Topic");
+																									}
+																								}
+																								else if (roomID == 27)
+																								{
+																									if (PlayerPrefs.GetInt("Topic_2_Discovered") == 0)
+																									{
+																										PlayerPrefs.SetInt("Topic_2_Discovered", 1);
+																										this.Yandere.NotificationManager.DisplayNotification("Topic");
+																									}
+																								}
+																								else if (roomID == 28)
+																								{
+																									if (PlayerPrefs.GetInt("Topic_3_Discovered") == 0)
+																									{
+																										PlayerPrefs.SetInt("Topic_3_Discovered", 1);
+																										this.Yandere.NotificationManager.DisplayNotification("Topic");
+																									}
+																								}
+																								else if (roomID == 29)
+																								{
+																									if (PlayerPrefs.GetInt("Topic_4_Discovered") == 0)
+																									{
+																										PlayerPrefs.SetInt("Topic_4_Discovered", 1);
+																										this.Yandere.NotificationManager.DisplayNotification("Topic");
+																									}
+																								}
+																								else if (roomID == 30)
+																								{
+																									if (PlayerPrefs.GetInt("Topic_5_Discovered") == 0)
+																									{
+																										PlayerPrefs.SetInt("Topic_5_Discovered", 1);
+																										this.Yandere.NotificationManager.DisplayNotification("Topic");
+																									}
+																								}
+																								else if (roomID == 31)
+																								{
+																									if (PlayerPrefs.GetInt("Topic_6_Discovered") == 0)
+																									{
+																										PlayerPrefs.SetInt("Topic_6_Discovered", 1);
+																										this.Yandere.NotificationManager.DisplayNotification("Topic");
+																									}
+																								}
+																								else if (roomID == 32)
+																								{
+																									if (PlayerPrefs.GetInt("Topic_7_Discovered") == 0)
+																									{
+																										PlayerPrefs.SetInt("Topic_7_Discovered", 1);
+																										this.Yandere.NotificationManager.DisplayNotification("Topic");
+																									}
+																								}
+																								else if (roomID != 33)
+																								{
+																									if (roomID == 34)
+																									{
+																										if (PlayerPrefs.GetInt("Topic_8_Discovered") == 0)
+																										{
+																											PlayerPrefs.SetInt("Topic_8_Discovered", 1);
+																											this.Yandere.NotificationManager.DisplayNotification("Topic");
+																										}
+																									}
+																								}
+																							}
+																						}
+																					}
+																				}
+																			}
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 

@@ -20,6 +20,8 @@ public class SkullScript : MonoBehaviour
 
 	public GameObject RitualKnife;
 
+	public GameObject DebugMenu;
+
 	public GameObject DarkAura;
 
 	public GameObject FPS;
@@ -66,6 +68,7 @@ public class SkullScript : MonoBehaviour
 			this.RitualKnife.rigidbody.useGravity = false;
 			if (((WeaponScript)this.RitualKnife.GetComponent(typeof(WeaponScript))).Blood.enabled)
 			{
+				this.DebugMenu.active = false;
 				this.Yandere.Character.animation.CrossFade(this.Yandere.IdleAnim);
 				this.Yandere.CanMove = false;
 				UnityEngine.Object.Instantiate(this.DarkAura, this.Yandere.transform.position + Vector3.up * 0.81f, Quaternion.identity);
@@ -80,6 +83,7 @@ public class SkullScript : MonoBehaviour
 				this.Timer += Time.deltaTime;
 				if (this.Timer > (float)4)
 				{
+					this.Darkness.enabled = true;
 					float a = Mathf.MoveTowards(this.Darkness.color.a, (float)1, Time.deltaTime);
 					Color color = this.Darkness.color;
 					float num = color.a = a;

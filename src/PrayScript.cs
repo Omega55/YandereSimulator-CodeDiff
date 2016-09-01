@@ -36,9 +36,13 @@ public class PrayScript : MonoBehaviour
 
 	public GameObject[] Weapon;
 
+	public GameObject FemaleTurtle;
+
 	public int Selected;
 
 	public int SpawnID;
+
+	public int Uses;
 
 	public bool SpawnMale;
 
@@ -253,6 +257,11 @@ public class PrayScript : MonoBehaviour
 		this.PromptBar.ClearButtons();
 		this.PromptBar.Show = false;
 		this.Show = false;
+		this.Uses++;
+		if (this.Uses > 9)
+		{
+			this.FemaleTurtle.active = true;
+		}
 	}
 
 	public virtual void SpawnWeapons()

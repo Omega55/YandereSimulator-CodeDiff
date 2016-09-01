@@ -226,8 +226,7 @@ public class CosmeticScript : MonoBehaviour
 		}
 		if (this.Club == 100)
 		{
-			this.SkinUpdater.UpdateSkin();
-			this.SkinUpdater.UpdateSkin();
+			this.MyRenderer.sharedMesh = this.TeacherMesh;
 			this.Teacher = true;
 		}
 		else if (this.Club == 101)

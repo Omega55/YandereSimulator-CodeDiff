@@ -12,6 +12,8 @@ public class StudentInfoScript : MonoBehaviour
 
 	public HomeInternetScript HomeInternet;
 
+	public TopicManagerScript TopicManager;
+
 	public PromptBarScript PromptBar;
 
 	public ShutterScript Shutter;
@@ -27,6 +29,8 @@ public class StudentInfoScript : MonoBehaviour
 	public Transform ReputationBar;
 
 	public GameObject Static;
+
+	public GameObject Topics;
 
 	public UILabel OccupationLabel;
 
@@ -46,11 +50,22 @@ public class StudentInfoScript : MonoBehaviour
 
 	public UITexture Portrait;
 
+	public string[] OpinionSpriteNames;
+
 	public string[] Strings;
 
 	public int CurrentStudent;
 
 	public bool Back;
+
+	public UISprite[] TopicIcons;
+
+	public UISprite[] TopicOpinionIcons;
+
+	public virtual void Start()
+	{
+		this.Topics.active = false;
+	}
 
 	public virtual void UpdateInfo(int ID)
 	{
@@ -289,7 +304,9 @@ public class StudentInfoScript : MonoBehaviour
 			this.Static.active = true;
 			if (!this.StudentInfoMenu.Gossiping && !this.StudentInfoMenu.Distracting && !this.StudentInfoMenu.CyberBullying)
 			{
+				this.audio.enabled = true;
 				this.audio.volume = (float)1;
+				this.audio.Play();
 			}
 		}
 		this.UpdateAdditionalInfo(ID);
@@ -338,6 +355,7 @@ public class StudentInfoScript : MonoBehaviour
 		}
 		if (Input.GetButtonDown("B"))
 		{
+			this.Topics.active = false;
 			this.audio.Stop();
 			if (this.Shutter != null)
 			{
@@ -362,6 +380,22 @@ public class StudentInfoScript : MonoBehaviour
 				}
 				this.PromptBar.UpdateButtons();
 				this.Back = false;
+			}
+		}
+		if (Input.GetButtonDown("Y") && this.PromptBar.Button[3].enabled)
+		{
+			if (!this.Topics.active)
+			{
+				this.PromptBar.Label[3].text = "Basic Info";
+				this.PromptBar.UpdateButtons();
+				this.Topics.active = true;
+				this.UpdateTopics();
+			}
+			else
+			{
+				this.PromptBar.Label[3].text = "Interests";
+				this.PromptBar.UpdateButtons();
+				this.Topics.active = false;
 			}
 		}
 		if (Input.GetKeyDown("="))
@@ -511,6 +545,221 @@ public class StudentInfoScript : MonoBehaviour
 		else
 		{
 			this.InfoLabel.text = "No additional information is available at this time.";
+		}
+	}
+
+	public virtual void UpdateTopics()
+	{
+		for (int i = 1; i < Extensions.get_length(this.TopicIcons); i++)
+		{
+			if (PlayerPrefs.GetInt("Topic_" + i + "_Discovered") == 0)
+			{
+				this.TopicIcons[i].spriteName = string.Empty + 0;
+			}
+			else
+			{
+				this.TopicIcons[i].spriteName = string.Empty + i;
+			}
+		}
+		if (PlayerPrefs.GetInt("Topic_1_Student_" + this.CurrentStudent + "_Learned") == 0)
+		{
+			this.TopicOpinionIcons[1].spriteName = "Unknown";
+		}
+		else
+		{
+			this.TopicOpinionIcons[1].spriteName = this.OpinionSpriteNames[this.JSON.Topic1[this.CurrentStudent]];
+		}
+		if (PlayerPrefs.GetInt("Topic_2_Student_" + this.CurrentStudent + "_Learned") == 0)
+		{
+			this.TopicOpinionIcons[2].spriteName = "Unknown";
+		}
+		else
+		{
+			this.TopicOpinionIcons[2].spriteName = this.OpinionSpriteNames[this.JSON.Topic2[this.CurrentStudent]];
+		}
+		if (PlayerPrefs.GetInt("Topic_3_Student_" + this.CurrentStudent + "_Learned") == 0)
+		{
+			this.TopicOpinionIcons[3].spriteName = "Unknown";
+		}
+		else
+		{
+			this.TopicOpinionIcons[3].spriteName = this.OpinionSpriteNames[this.JSON.Topic3[this.CurrentStudent]];
+		}
+		if (PlayerPrefs.GetInt("Topic_4_Student_" + this.CurrentStudent + "_Learned") == 0)
+		{
+			this.TopicOpinionIcons[4].spriteName = "Unknown";
+		}
+		else
+		{
+			this.TopicOpinionIcons[4].spriteName = this.OpinionSpriteNames[this.JSON.Topic4[this.CurrentStudent]];
+		}
+		if (PlayerPrefs.GetInt("Topic_5_Student_" + this.CurrentStudent + "_Learned") == 0)
+		{
+			this.TopicOpinionIcons[5].spriteName = "Unknown";
+		}
+		else
+		{
+			this.TopicOpinionIcons[5].spriteName = this.OpinionSpriteNames[this.JSON.Topic5[this.CurrentStudent]];
+		}
+		if (PlayerPrefs.GetInt("Topic_6_Student_" + this.CurrentStudent + "_Learned") == 0)
+		{
+			this.TopicOpinionIcons[6].spriteName = "Unknown";
+		}
+		else
+		{
+			this.TopicOpinionIcons[6].spriteName = this.OpinionSpriteNames[this.JSON.Topic6[this.CurrentStudent]];
+		}
+		if (PlayerPrefs.GetInt("Topic_7_Student_" + this.CurrentStudent + "_Learned") == 0)
+		{
+			this.TopicOpinionIcons[7].spriteName = "Unknown";
+		}
+		else
+		{
+			this.TopicOpinionIcons[7].spriteName = this.OpinionSpriteNames[this.JSON.Topic7[this.CurrentStudent]];
+		}
+		if (PlayerPrefs.GetInt("Topic_8_Student_" + this.CurrentStudent + "_Learned") == 0)
+		{
+			this.TopicOpinionIcons[8].spriteName = "Unknown";
+		}
+		else
+		{
+			this.TopicOpinionIcons[8].spriteName = this.OpinionSpriteNames[this.JSON.Topic8[this.CurrentStudent]];
+		}
+		if (PlayerPrefs.GetInt("Topic_9_Student_" + this.CurrentStudent + "_Learned") == 0)
+		{
+			this.TopicOpinionIcons[9].spriteName = "Unknown";
+		}
+		else
+		{
+			this.TopicOpinionIcons[9].spriteName = this.OpinionSpriteNames[this.JSON.Topic9[this.CurrentStudent]];
+		}
+		if (PlayerPrefs.GetInt("Topic_10_Student_" + this.CurrentStudent + "_Learned") == 0)
+		{
+			this.TopicOpinionIcons[10].spriteName = "Unknown";
+		}
+		else
+		{
+			this.TopicOpinionIcons[10].spriteName = this.OpinionSpriteNames[this.JSON.Topic10[this.CurrentStudent]];
+		}
+		if (PlayerPrefs.GetInt("Topic_11_Student_" + this.CurrentStudent + "_Learned") == 0)
+		{
+			this.TopicOpinionIcons[11].spriteName = "Unknown";
+		}
+		else
+		{
+			this.TopicOpinionIcons[11].spriteName = this.OpinionSpriteNames[this.JSON.Topic11[this.CurrentStudent]];
+		}
+		if (PlayerPrefs.GetInt("Topic_12_Student_" + this.CurrentStudent + "_Learned") == 0)
+		{
+			this.TopicOpinionIcons[12].spriteName = "Unknown";
+		}
+		else
+		{
+			this.TopicOpinionIcons[12].spriteName = this.OpinionSpriteNames[this.JSON.Topic12[this.CurrentStudent]];
+		}
+		if (PlayerPrefs.GetInt("Topic_13_Student_" + this.CurrentStudent + "_Learned") == 0)
+		{
+			this.TopicOpinionIcons[13].spriteName = "Unknown";
+		}
+		else
+		{
+			this.TopicOpinionIcons[13].spriteName = this.OpinionSpriteNames[this.JSON.Topic13[this.CurrentStudent]];
+		}
+		if (PlayerPrefs.GetInt("Topic_14_Student_" + this.CurrentStudent + "_Learned") == 0)
+		{
+			this.TopicOpinionIcons[14].spriteName = "Unknown";
+		}
+		else
+		{
+			this.TopicOpinionIcons[14].spriteName = this.OpinionSpriteNames[this.JSON.Topic14[this.CurrentStudent]];
+		}
+		if (PlayerPrefs.GetInt("Topic_15_Student_" + this.CurrentStudent + "_Learned") == 0)
+		{
+			this.TopicOpinionIcons[15].spriteName = "Unknown";
+		}
+		else
+		{
+			this.TopicOpinionIcons[15].spriteName = this.OpinionSpriteNames[this.JSON.Topic15[this.CurrentStudent]];
+		}
+		if (PlayerPrefs.GetInt("Topic_16_Student_" + this.CurrentStudent + "_Learned") == 0)
+		{
+			this.TopicOpinionIcons[16].spriteName = "Unknown";
+		}
+		else
+		{
+			this.TopicOpinionIcons[16].spriteName = this.OpinionSpriteNames[this.JSON.Topic16[this.CurrentStudent]];
+		}
+		if (PlayerPrefs.GetInt("Topic_17_Student_" + this.CurrentStudent + "_Learned") == 0)
+		{
+			this.TopicOpinionIcons[17].spriteName = "Unknown";
+		}
+		else
+		{
+			this.TopicOpinionIcons[17].spriteName = this.OpinionSpriteNames[this.JSON.Topic17[this.CurrentStudent]];
+		}
+		if (PlayerPrefs.GetInt("Topic_18_Student_" + this.CurrentStudent + "_Learned") == 0)
+		{
+			this.TopicOpinionIcons[18].spriteName = "Unknown";
+		}
+		else
+		{
+			this.TopicOpinionIcons[18].spriteName = this.OpinionSpriteNames[this.JSON.Topic18[this.CurrentStudent]];
+		}
+		if (PlayerPrefs.GetInt("Topic_19_Student_" + this.CurrentStudent + "_Learned") == 0)
+		{
+			this.TopicOpinionIcons[19].spriteName = "Unknown";
+		}
+		else
+		{
+			this.TopicOpinionIcons[19].spriteName = this.OpinionSpriteNames[this.JSON.Topic19[this.CurrentStudent]];
+		}
+		if (PlayerPrefs.GetInt("Topic_20_Student_" + this.CurrentStudent + "_Learned") == 0)
+		{
+			this.TopicOpinionIcons[20].spriteName = "Unknown";
+		}
+		else
+		{
+			this.TopicOpinionIcons[20].spriteName = this.OpinionSpriteNames[this.JSON.Topic20[this.CurrentStudent]];
+		}
+		if (PlayerPrefs.GetInt("Topic_21_Student_" + this.CurrentStudent + "_Learned") == 0)
+		{
+			this.TopicOpinionIcons[21].spriteName = "Unknown";
+		}
+		else
+		{
+			this.TopicOpinionIcons[21].spriteName = this.OpinionSpriteNames[this.JSON.Topic21[this.CurrentStudent]];
+		}
+		if (PlayerPrefs.GetInt("Topic_22_Student_" + this.CurrentStudent + "_Learned") == 0)
+		{
+			this.TopicOpinionIcons[22].spriteName = "Unknown";
+		}
+		else
+		{
+			this.TopicOpinionIcons[22].spriteName = this.OpinionSpriteNames[this.JSON.Topic22[this.CurrentStudent]];
+		}
+		if (PlayerPrefs.GetInt("Topic_23_Student_" + this.CurrentStudent + "_Learned") == 0)
+		{
+			this.TopicOpinionIcons[23].spriteName = "Unknown";
+		}
+		else
+		{
+			this.TopicOpinionIcons[23].spriteName = this.OpinionSpriteNames[this.JSON.Topic23[this.CurrentStudent]];
+		}
+		if (PlayerPrefs.GetInt("Topic_24_Student_" + this.CurrentStudent + "_Learned") == 0)
+		{
+			this.TopicOpinionIcons[24].spriteName = "Unknown";
+		}
+		else
+		{
+			this.TopicOpinionIcons[24].spriteName = this.OpinionSpriteNames[this.JSON.Topic24[this.CurrentStudent]];
+		}
+		if (PlayerPrefs.GetInt("Topic_25_Student_" + this.CurrentStudent + "_Learned") == 0)
+		{
+			this.TopicOpinionIcons[25].spriteName = "Unknown";
+		}
+		else
+		{
+			this.TopicOpinionIcons[25].spriteName = this.OpinionSpriteNames[this.JSON.Topic25[this.CurrentStudent]];
 		}
 	}
 

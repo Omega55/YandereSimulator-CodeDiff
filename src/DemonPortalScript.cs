@@ -80,6 +80,7 @@ public class DemonPortalScript : MonoBehaviour
 					Color color4 = this.Darkness.color = color3;
 					if (this.Darkness.color.a == (float)0)
 					{
+						this.Darkness.enabled = false;
 						this.Yandere.CanMove = true;
 						this.Clock.StopTime = false;
 						this.Timer = (float)0;

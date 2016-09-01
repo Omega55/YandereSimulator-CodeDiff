@@ -95,6 +95,7 @@ public class DelinquentManagerScript : MonoBehaviour
 				}
 				else
 				{
+					this.Delinquents.active = false;
 					this.Panel.active = false;
 				}
 			}

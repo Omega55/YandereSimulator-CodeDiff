@@ -405,10 +405,6 @@ public class CounselorScript : MonoBehaviour
 					}
 					else if (this.LectureID < 6)
 					{
-						int num11 = 1;
-						Color color13 = this.LectureLabel.color;
-						float num12 = color13.a = (float)num11;
-						Color color14 = this.LectureLabel.color = color13;
 						this.EndOfDay.enabled = true;
 						this.EndOfDay.Phase = this.EndOfDay.Phase + 1;
 						this.EndOfDay.UpdateScene();

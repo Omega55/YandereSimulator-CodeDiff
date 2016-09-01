@@ -197,8 +197,12 @@ public class PhoneEventScript : MonoBehaviour
 					}
 					if (this.EventPhase == 11 && num < (float)5 && PlayerPrefs.GetInt("Event2") == 0)
 					{
-						this.Yandere.NotificationManager.DisplayNotification("Info");
 						PlayerPrefs.SetInt("Event2", 1);
+						this.Yandere.NotificationManager.DisplayNotification("Info");
+						PlayerPrefs.SetInt("Topic_25_Discovered", 1);
+						this.Yandere.NotificationManager.DisplayNotification("Topic");
+						this.Yandere.NotificationManager.DisplayNotification("Info");
+						PlayerPrefs.SetInt("Topic_25_Student_7_Learned", 1);
 					}
 				}
 			}

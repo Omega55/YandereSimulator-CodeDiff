@@ -13,6 +13,8 @@ public class JsonScript : MonoBehaviour
 
 	public string StudentFileName;
 
+	public string TopicFileName;
+
 	public string[] StudentNames;
 
 	public int[] StudentGenders;
@@ -59,9 +61,67 @@ public class JsonScript : MonoBehaviour
 
 	private int ID;
 
+	public int[] Topic1;
+
+	public int[] Topic2;
+
+	public int[] Topic3;
+
+	public int[] Topic4;
+
+	public int[] Topic5;
+
+	public int[] Topic6;
+
+	public int[] Topic7;
+
+	public int[] Topic8;
+
+	public int[] Topic9;
+
+	public int[] Topic10;
+
+	public int[] Topic11;
+
+	public int[] Topic12;
+
+	public int[] Topic13;
+
+	public int[] Topic14;
+
+	public int[] Topic15;
+
+	public int[] Topic16;
+
+	public int[] Topic17;
+
+	public int[] Topic18;
+
+	public int[] Topic19;
+
+	public int[] Topic20;
+
+	public int[] Topic21;
+
+	public int[] Topic22;
+
+	public int[] Topic23;
+
+	public int[] Topic24;
+
+	public int[] Topic25;
+
 	public virtual Dictionary<string, object>[] StudentData()
 	{
 		string text = Path.Combine("JSON", this.StudentFileName + ".json");
+		text = Path.Combine(Application.streamingAssetsPath, text);
+		string value = File.ReadAllText(text);
+		return JsonReader.Deserialize(value) as Dictionary<string, object>[];
+	}
+
+	public virtual Dictionary<string, object>[] TopicData()
+	{
+		string text = Path.Combine("JSON", this.TopicFileName + ".json");
 		text = Path.Combine(Application.streamingAssetsPath, text);
 		string value = File.ReadAllText(text);
 		return JsonReader.Deserialize(value) as Dictionary<string, object>[];
@@ -107,6 +167,43 @@ public class JsonScript : MonoBehaviour
 		}
 		if (Application.loadedLevelName == "SchoolScene")
 		{
+			int j = 0;
+			Dictionary<string, object>[] array2 = this.TopicData();
+			int length2 = array2.Length;
+			while (j < length2)
+			{
+				this.ID = TFUtils.LoadInt(array2[j], "ID");
+				if (RuntimeServices.EqualityOperator(this.ID, null) || this.ID == 0)
+				{
+					break;
+				}
+				this.Topic1[this.ID] = TFUtils.LoadInt(array2[j], "1");
+				this.Topic2[this.ID] = TFUtils.LoadInt(array2[j], "2");
+				this.Topic3[this.ID] = TFUtils.LoadInt(array2[j], "3");
+				this.Topic4[this.ID] = TFUtils.LoadInt(array2[j], "4");
+				this.Topic5[this.ID] = TFUtils.LoadInt(array2[j], "5");
+				this.Topic6[this.ID] = TFUtils.LoadInt(array2[j], "6");
+				this.Topic7[this.ID] = TFUtils.LoadInt(array2[j], "7");
+				this.Topic8[this.ID] = TFUtils.LoadInt(array2[j], "8");
+				this.Topic9[this.ID] = TFUtils.LoadInt(array2[j], "9");
+				this.Topic10[this.ID] = TFUtils.LoadInt(array2[j], "10");
+				this.Topic11[this.ID] = TFUtils.LoadInt(array2[j], "11");
+				this.Topic12[this.ID] = TFUtils.LoadInt(array2[j], "12");
+				this.Topic13[this.ID] = TFUtils.LoadInt(array2[j], "13");
+				this.Topic14[this.ID] = TFUtils.LoadInt(array2[j], "14");
+				this.Topic15[this.ID] = TFUtils.LoadInt(array2[j], "15");
+				this.Topic16[this.ID] = TFUtils.LoadInt(array2[j], "16");
+				this.Topic17[this.ID] = TFUtils.LoadInt(array2[j], "17");
+				this.Topic18[this.ID] = TFUtils.LoadInt(array2[j], "18");
+				this.Topic19[this.ID] = TFUtils.LoadInt(array2[j], "19");
+				this.Topic20[this.ID] = TFUtils.LoadInt(array2[j], "20");
+				this.Topic21[this.ID] = TFUtils.LoadInt(array2[j], "21");
+				this.Topic22[this.ID] = TFUtils.LoadInt(array2[j], "22");
+				this.Topic23[this.ID] = TFUtils.LoadInt(array2[j], "23");
+				this.Topic24[this.ID] = TFUtils.LoadInt(array2[j], "24");
+				this.Topic25[this.ID] = TFUtils.LoadInt(array2[j], "25");
+				j++;
+			}
 			this.ReplaceDeadTeachers();
 		}
 	}

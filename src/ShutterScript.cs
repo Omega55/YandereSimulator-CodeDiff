@@ -300,6 +300,7 @@ public class ShutterScript : MonoBehaviour
 					this.PauseScreen.Panel.enabled = true;
 					this.PromptBar.ClearButtons();
 					this.PromptBar.Label[1].text = "Exit";
+					this.PromptBar.Label[3].text = "Interests";
 					this.PromptBar.UpdateButtons();
 					if (!this.InfoX.active)
 					{
@@ -388,6 +389,11 @@ public class ShutterScript : MonoBehaviour
 			else if (this.hit.collider.gameObject.name == "Skirt")
 			{
 				this.Skirt = true;
+			}
+			if (this.hit.collider.gameObject.name == "Kitten" && PlayerPrefs.GetInt("Topic_20_Discovered") == 0)
+			{
+				PlayerPrefs.SetInt("Topic_20_Discovered", 1);
+				this.Yandere.NotificationManager.DisplayNotification("Topic");
 			}
 		}
 		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyRagdolls) && this.hit.collider.gameObject.layer == 11)

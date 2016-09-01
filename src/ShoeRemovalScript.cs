@@ -290,6 +290,7 @@ public class ShoeRemovalScript : MonoBehaviour
 				{
 					this.Student.CurrentDestination = this.Student.StudentManager.Hangouts.List[0];
 					this.Student.Pathfinding.target = this.Student.StudentManager.Hangouts.List[0];
+					this.Locker.gameObject.animation.Stop();
 					this.Student.CanTalk = false;
 					this.enabled = false;
 				}
@@ -314,6 +315,7 @@ public class ShoeRemovalScript : MonoBehaviour
 	public virtual void PutOnShoes()
 	{
 		this.Locker.gameObject.animation[this.LockerAnims[this.Height]].time = this.Locker.gameObject.animation[this.LockerAnims[this.Height]].length;
+		this.Locker.gameObject.animation.Stop();
 		this.ShoeParent.parent = this.LeftHand;
 		this.ShoeParent.parent = this.Locker;
 		this.ShoeParent.localPosition = new Vector3(0.272f, (float)0, 0.552f);

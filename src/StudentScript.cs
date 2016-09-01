@@ -1129,6 +1129,8 @@ public class StudentScript : MonoBehaviour
 			{
 				this.BookRenderer.material.mainTexture = this.RedBookTexture;
 			}
+			this.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
+			this.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
 			this.Started = true;
 		}
 	}
@@ -2545,6 +2547,7 @@ public class StudentScript : MonoBehaviour
 											{
 												Debug.Log("Stabbed neck!");
 												UnityEngine.Object.Instantiate(this.BloodEffect, this.MyWeapon.transform.position, Quaternion.identity);
+												this.MyWeapon.Victims[this.StudentID] = true;
 												this.MurderSuicidePhase++;
 											}
 										}
@@ -2639,6 +2642,13 @@ public class StudentScript : MonoBehaviour
 						{
 							Debug.Log("Stabbed neck!");
 							UnityEngine.Object.Instantiate(this.StabBloodEffect, this.MyWeapon.transform.position, Quaternion.identity);
+							this.MyWeapon.Victims[this.StudentID] = true;
+							this.MyWeapon.Blood.enabled = true;
+							if (!this.MyWeapon.Evidence)
+							{
+								this.MyWeapon.Evidence = true;
+								this.Police.MurderWeapons = this.Police.MurderWeapons + 1;
+							}
 							this.MurderSuicidePhase++;
 						}
 					}
@@ -5172,6 +5182,19 @@ public class StudentScript : MonoBehaviour
 	public virtual void PickRandomAnim()
 	{
 		this.RandomAnim = this.AnimationNames[UnityEngine.Random.Range(0, Extensions.get_length(this.AnimationNames))];
+		if (this.Actions[this.Phase] == 1 && this.DistanceToPlayer < (float)3)
+		{
+			if (PlayerPrefs.GetInt("Topic_3_Discovered") == 0)
+			{
+				this.Yandere.NotificationManager.DisplayNotification("Topic");
+				PlayerPrefs.SetInt("Topic_3_Discovered", 1);
+			}
+			if (PlayerPrefs.GetInt("Topic_3_Student_" + this.StudentID + "_Learned") == 0)
+			{
+				this.Yandere.NotificationManager.DisplayNotification("Topic");
+				PlayerPrefs.SetInt("Topic_3_Student_" + this.StudentID + "_Learned", 1);
+			}
+		}
 	}
 
 	public virtual void BecomeTeacher()

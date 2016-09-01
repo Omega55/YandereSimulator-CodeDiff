@@ -49,9 +49,9 @@ public class DebugMenuScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (!this.Yandere.InClass && !this.Yandere.Chased)
+		if (!this.Yandere.InClass && !this.Yandere.Chased && this.Yandere.CanMove)
 		{
-			if (Input.GetKeyDown(KeyCode.Backslash))
+			if (Input.GetKeyDown(KeyCode.Backslash) && this.Yandere.transform.position.y < (float)100)
 			{
 				this.EasterEggWindow.active = false;
 				if (!this.Window.active)
@@ -208,6 +208,16 @@ public class DebugMenuScript : MonoBehaviour
 					this.Yandere.transform.position = this.RooftopSpot.position;
 					if (this.StudentManager.Students[7] != null)
 					{
+						this.StudentManager.OfferHelp.UpdateLocation();
+						this.StudentManager.OfferHelp.enabled = true;
+						if (!this.StudentManager.Students[7].Indoors)
+						{
+							if (this.StudentManager.Students[7].ShoeRemoval.Locker == null)
+							{
+								this.StudentManager.Students[7].ShoeRemoval.Start();
+							}
+							this.StudentManager.Students[7].ShoeRemoval.PutOnShoes();
+						}
 						this.StudentManager.Students[7].transform.position = this.RooftopSpot.position;
 						this.StudentManager.Students[7].Prompt.Label[0].text = "     " + "Push";
 						this.StudentManager.Students[7].CurrentDestination = this.RooftopSpot;
@@ -255,6 +265,11 @@ public class DebugMenuScript : MonoBehaviour
 				PlayerPrefs.SetInt("PantyShots", 17);
 				this.Window.active = false;
 			}
+			else if (Input.GetKeyDown("q"))
+			{
+				this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)1);
+				this.Window.active = false;
+			}
 			else if (Input.GetKeyDown("r"))
 			{
 				if (PlayerPrefs.GetFloat("Reputation") != 66.66666f)
@@ -273,6 +288,39 @@ public class DebugMenuScript : MonoBehaviour
 			{
 				PlayerPrefs.SetInt("PhysicalGrade", 5);
 				PlayerPrefs.SetInt("Seduction", 5);
+				PlayerPrefs.SetInt("Student_1_Photographed", 1);
+				PlayerPrefs.SetInt("Student_2_Photographed", 1);
+				PlayerPrefs.SetInt("Student_3_Photographed", 1);
+				PlayerPrefs.SetInt("Student_4_Photographed", 1);
+				PlayerPrefs.SetInt("Student_5_Photographed", 1);
+				PlayerPrefs.SetInt("Student_6_Photographed", 1);
+				PlayerPrefs.SetInt("Student_7_Photographed", 1);
+				PlayerPrefs.SetInt("Student_8_Photographed", 1);
+				PlayerPrefs.SetInt("Student_9_Photographed", 1);
+				PlayerPrefs.SetInt("Student_10_Photographed", 1);
+				PlayerPrefs.SetInt("Student_11_Photographed", 1);
+				PlayerPrefs.SetInt("Student_12_Photographed", 1);
+				PlayerPrefs.SetInt("Student_13_Photographed", 1);
+				PlayerPrefs.SetInt("Student_14_Photographed", 1);
+				PlayerPrefs.SetInt("Student_15_Photographed", 1);
+				PlayerPrefs.SetInt("Student_16_Photographed", 1);
+				PlayerPrefs.SetInt("Student_17_Photographed", 1);
+				PlayerPrefs.SetInt("Student_18_Photographed", 1);
+				PlayerPrefs.SetInt("Student_19_Photographed", 1);
+				PlayerPrefs.SetInt("Student_20_Photographed", 1);
+				PlayerPrefs.SetInt("Student_20_Photographed", 1);
+				PlayerPrefs.SetInt("Student_21_Photographed", 1);
+				PlayerPrefs.SetInt("Student_22_Photographed", 1);
+				PlayerPrefs.SetInt("Student_23_Photographed", 1);
+				PlayerPrefs.SetInt("Student_24_Photographed", 1);
+				PlayerPrefs.SetInt("Student_25_Photographed", 1);
+				PlayerPrefs.SetInt("Student_26_Photographed", 1);
+				PlayerPrefs.SetInt("Student_27_Photographed", 1);
+				PlayerPrefs.SetInt("Student_28_Photographed", 1);
+				PlayerPrefs.SetInt("Student_29_Photographed", 1);
+				PlayerPrefs.SetInt("Student_30_Photographed", 1);
+				PlayerPrefs.SetInt("Student_31_Photographed", 1);
+				PlayerPrefs.SetInt("Student_32_Photographed", 1);
 				this.Window.active = false;
 			}
 			else if (Input.GetKeyDown("t"))

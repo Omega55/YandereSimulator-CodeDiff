@@ -121,6 +121,13 @@ public class PauseScreenScript : MonoBehaviour
 		{
 			this.Schemes.UpdateInstructions();
 		}
+		else
+		{
+			float a = 0.5f;
+			Color color = this.PhoneIcons[5].color;
+			float num3 = color.a = a;
+			Color color2 = this.PhoneIcons[5].color = color;
+		}
 		this.UpdateSelection();
 		this.CorrectingTime = false;
 	}
@@ -363,15 +370,18 @@ public class PauseScreenScript : MonoBehaviour
 						}
 						else if (this.Selected == 5)
 						{
-							this.PromptBar.ClearButtons();
-							this.PromptBar.Label[0].text = "Accept";
-							this.PromptBar.Label[1].text = "Exit";
-							this.PromptBar.Label[5].text = "Choose";
-							this.PromptBar.UpdateButtons();
-							this.FavorMenu.gameObject.active = true;
-							this.FavorMenu.gameObject.audio.Play();
-							this.MainMenu.active = false;
-							this.Sideways = true;
+							if (this.PhoneIcons[5].color.a == (float)1)
+							{
+								this.PromptBar.ClearButtons();
+								this.PromptBar.Label[0].text = "Accept";
+								this.PromptBar.Label[1].text = "Exit";
+								this.PromptBar.Label[5].text = "Choose";
+								this.PromptBar.UpdateButtons();
+								this.FavorMenu.gameObject.active = true;
+								this.FavorMenu.gameObject.audio.Play();
+								this.MainMenu.active = false;
+								this.Sideways = true;
+							}
 						}
 						else if (this.Selected == 6)
 						{
