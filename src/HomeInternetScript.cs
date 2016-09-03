@@ -254,6 +254,7 @@ public class HomeInternetScript : MonoBehaviour
 						else if (this.Selected == 1)
 						{
 							this.PauseScreen.MainMenu.active = false;
+							this.PauseScreen.Panel.enabled = true;
 							this.PauseScreen.Sideways = true;
 							this.PauseScreen.Show = true;
 							this.StudentInfoMenu.gameObject.active = true;

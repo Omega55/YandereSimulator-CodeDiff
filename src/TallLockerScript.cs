@@ -134,7 +134,10 @@ public class TallLockerScript : MonoBehaviour
 					this.Yandere.Schoolwear = 0;
 					if (!this.Removed[1])
 					{
-						this.DropCleanUniform = true;
+						if (this.Yandere.Bloodiness == (float)0)
+						{
+							this.DropCleanUniform = true;
+						}
 					}
 					else
 					{

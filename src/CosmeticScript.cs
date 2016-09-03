@@ -775,6 +775,22 @@ public class CosmeticScript : MonoBehaviour
 			this.MyRenderer.materials[1].mainTexture = this.UniformTexture;
 		}
 		this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
+		if (this.Student.StudentManager.Censor)
+		{
+			this.CensorPanties();
+		}
+	}
+
+	public virtual void CensorPanties()
+	{
+		this.MyRenderer.materials[this.SkinID].SetFloat("_BlendAmount", (float)1);
+		this.MyRenderer.materials[this.UniformID].SetFloat("_BlendAmount", (float)1);
+	}
+
+	public virtual void RemoveCensor()
+	{
+		this.MyRenderer.materials[this.SkinID].SetFloat("_BlendAmount", (float)0);
+		this.MyRenderer.materials[this.UniformID].SetFloat("_BlendAmount", (float)0);
 	}
 
 	public virtual void Main()

@@ -334,7 +334,7 @@ public class TalkingScript : MonoBehaviour
 					else
 					{
 						this.S.Character.animation.CrossFade(this.S.Nod1Anim);
-						if (!this.S.StudentManager.Students[this.S.DialogueWheel.Victim].InEvent && PlayerPrefs.GetInt("Student_" + this.S.DialogueWheel.Victim + "_Slave") == 0)
+						if (!this.S.StudentManager.Students[this.S.DialogueWheel.Victim].InEvent && !this.S.StudentManager.Students[this.S.DialogueWheel.Victim].Slave)
 						{
 							this.S.Subtitle.UpdateLabel("Student Distract", 0, (float)3);
 						}

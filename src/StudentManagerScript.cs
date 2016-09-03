@@ -151,6 +151,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public bool Randomize;
 
+	public bool Censor;
+
 	public bool Spooky;
 
 	public bool Sans;
@@ -808,6 +810,26 @@ public class StudentManagerScript : MonoBehaviour
 			Vector3 position4 = this.CorpseLocation.position;
 			float num8 = position4.y = (float)num7;
 			Vector3 vector4 = this.CorpseLocation.position = position4;
+		}
+	}
+
+	public virtual void CensorStudents()
+	{
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.Students))
+		{
+			if (this.Students[this.ID] != null && !this.Students[this.ID].Male && !this.Students[this.ID].Teacher)
+			{
+				if (this.Censor)
+				{
+					this.Students[this.ID].Cosmetic.CensorPanties();
+				}
+				else
+				{
+					this.Students[this.ID].Cosmetic.RemoveCensor();
+				}
+			}
+			this.ID++;
 		}
 	}
 

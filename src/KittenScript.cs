@@ -10,15 +10,17 @@ public class KittenScript : MonoBehaviour
 
 	public string[] AnimationNames;
 
+	public Transform Target;
+
 	public Transform Head;
 
 	public string CurrentAnim;
 
 	public string IdleAnim;
 
-	public float Timer;
-
 	public bool Wait;
+
+	public float Timer;
 
 	public KittenScript()
 	{
@@ -44,7 +46,15 @@ public class KittenScript : MonoBehaviour
 		{
 			if (!this.Yandere.Aiming)
 			{
-				this.Head.transform.LookAt(this.Yandere.Head);
+				if (this.Yandere.Head.transform.position.x < this.transform.position.x)
+				{
+					this.Target.position = Vector3.Lerp(this.Target.position, this.Yandere.Head.transform.position, Time.deltaTime * (float)5);
+				}
+				else
+				{
+					this.Target.position = Vector3.Lerp(this.Target.position, this.transform.position + this.transform.forward * (float)1 + this.transform.up * 0.139854f, Time.deltaTime * (float)5);
+				}
+				this.Head.transform.LookAt(this.Target);
 			}
 			else
 			{

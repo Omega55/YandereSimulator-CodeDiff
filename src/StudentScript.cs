@@ -875,6 +875,10 @@ public class StudentScript : MonoBehaviour
 				{
 					this.BecomeTeacher();
 				}
+				if (this.StudentManager.Censor && !this.Teacher)
+				{
+					this.Cosmetic.CensorPanties();
+				}
 				this.CharacterAnimation[this.CarryAnim].layer = 9;
 				this.CharacterAnimation.Play(this.CarryAnim);
 				this.CharacterAnimation[this.CarryAnim].weight = (float)0;
@@ -1451,6 +1455,7 @@ public class StudentScript : MonoBehaviour
 										this.Pathfinding.canSearch = false;
 										this.Pathfinding.canMove = false;
 										this.ShoeRemoval.enabled = true;
+										this.CanTalk = false;
 										this.Routine = false;
 										this.ShoeRemoval.LeavingSchool();
 									}
@@ -5444,6 +5449,7 @@ public class StudentScript : MonoBehaviour
 		this.Ragdoll.Burning = true;
 		this.Routine = false;
 		this.Burning = true;
+		this.Wet = false;
 		this.audio.clip = this.BurningClip;
 		this.audio.Play();
 		this.LiquidProjector.enabled = false;
@@ -5481,6 +5487,7 @@ public class StudentScript : MonoBehaviour
 			this.MyRenderer.materials[1].mainTexture = null;
 			this.MyRenderer.materials[2].mainTexture = this.Cosmetic.FaceTextures[this.SkinColor];
 		}
+		this.Cosmetic.RemoveCensor();
 		if (!this.AoT)
 		{
 			this.ID = 0;

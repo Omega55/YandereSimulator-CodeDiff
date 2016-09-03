@@ -4248,6 +4248,8 @@ public class YandereScript : MonoBehaviour
 			this.CensorSteam[this.ID].active = true;
 			this.ID++;
 		}
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)0);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)0);
 		int num = 0;
 		Color color = this.MyRenderer.materials[3].color;
 		float num2 = color.a = (float)num;
@@ -4301,6 +4303,11 @@ public class YandereScript : MonoBehaviour
 		else if (this.Schoolwear == 1)
 		{
 			this.MyRenderer.sharedMesh = this.Uniforms[PlayerPrefs.GetInt("FemaleUniform")];
+			if (this.StudentManager.Censor)
+			{
+				this.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)1);
+				this.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)1);
+			}
 			this.MyRenderer.materials[0].mainTexture = this.TextureToUse;
 			this.MyRenderer.materials[1].mainTexture = this.TextureToUse;
 			this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
@@ -4308,6 +4315,8 @@ public class YandereScript : MonoBehaviour
 		}
 		else if (this.Schoolwear == 2)
 		{
+			this.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)0);
+			this.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)0);
 			this.MyRenderer.sharedMesh = this.SchoolSwimsuit;
 			this.MyRenderer.materials[0].mainTexture = this.SwimsuitTexture;
 			this.MyRenderer.materials[1].mainTexture = this.SwimsuitTexture;
@@ -4315,6 +4324,8 @@ public class YandereScript : MonoBehaviour
 		}
 		else if (this.Schoolwear == 3)
 		{
+			this.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)0);
+			this.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)0);
 			this.MyRenderer.sharedMesh = this.GymUniform;
 			this.MyRenderer.materials[0].mainTexture = this.GymTexture;
 			this.MyRenderer.materials[1].mainTexture = this.GymTexture;

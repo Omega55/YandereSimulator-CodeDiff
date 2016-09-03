@@ -483,6 +483,11 @@ public class ShutterScript : MonoBehaviour
 			text = "Is this supposed to be a panty shot? My clients are picky. The panties need to be in the EXACT center of the shot.";
 			num = 5;
 		}
+		else if (this.hit.collider.gameObject.name == "Kitten")
+		{
+			text = "Cute, but I have no use for this.";
+			num = 2;
+		}
 		else
 		{
 			text = "I don't get it. What are you trying to show me? Make sure the subject is in the EXACT center of the photo.";

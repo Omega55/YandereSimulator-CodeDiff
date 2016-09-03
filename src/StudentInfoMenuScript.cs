@@ -99,8 +99,9 @@ public class StudentInfoMenuScript : MonoBehaviour
 	{
 		if (Input.GetButtonDown("A") && this.PromptBar.Label[0].text != string.Empty && PlayerPrefs.GetInt("Student_" + this.StudentID + "_Photographed") == 1)
 		{
+			this.StudentInfo.gameObject.active = true;
 			this.StudentInfo.UpdateInfo(this.StudentID);
-			this.StudentInfo.active = true;
+			this.StudentInfo.Topics.active = false;
 			this.gameObject.active = false;
 			this.PromptBar.ClearButtons();
 			if (this.Gossiping)
@@ -141,6 +142,8 @@ public class StudentInfoMenuScript : MonoBehaviour
 				this.PauseScreen.Sideways = false;
 				this.PauseScreen.Show = false;
 				this.gameObject.active = false;
+				this.PromptBar.ClearButtons();
+				this.PromptBar.Show = false;
 			}
 			else
 			{
