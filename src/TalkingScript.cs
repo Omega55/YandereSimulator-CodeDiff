@@ -23,7 +23,10 @@ public class TalkingScript : MonoBehaviour
 				}
 				if (this.S.TalkTimer == (float)0)
 				{
-					this.S.DialogueWheel.Impatience.fillAmount = this.S.DialogueWheel.Impatience.fillAmount + Time.deltaTime * 0.1f;
+					if (!this.S.DialogueWheel.AppearanceWindow.Show)
+					{
+						this.S.DialogueWheel.Impatience.fillAmount = this.S.DialogueWheel.Impatience.fillAmount + Time.deltaTime * 0.1f;
+					}
 					if (this.S.DialogueWheel.Impatience.fillAmount > 0.5f && this.S.Subtitle.Timer == (float)0)
 					{
 						this.S.Subtitle.UpdateLabel("Impatience", 1, (float)5);
@@ -158,6 +161,16 @@ public class TalkingScript : MonoBehaviour
 					this.S.Reputation.PendingRep = this.S.Reputation.PendingRep - (float)2;
 					this.S.PendingRep = this.S.PendingRep - (float)2;
 					this.S.Gossiped = true;
+					if (PlayerPrefs.GetInt("Topic_15_Discovered") == 0)
+					{
+						this.S.Yandere.NotificationManager.DisplayNotification("Topic");
+						PlayerPrefs.SetInt("Topic_15_Discovered", 1);
+					}
+					if (PlayerPrefs.GetInt("Topic_15_Student_" + this.S.StudentID + "_Learned") == 0)
+					{
+						this.S.Yandere.NotificationManager.DisplayNotification("Opinion");
+						PlayerPrefs.SetInt("Topic_15_Student_" + this.S.StudentID + "_Learned", 1);
+					}
 				}
 				else
 				{
@@ -275,6 +288,11 @@ public class TalkingScript : MonoBehaviour
 						{
 							this.S.Pathfinding.target = this.S.Yandere.transform;
 							this.S.Prompt.Label[0].text = "     " + "Stop";
+							if (this.S.StudentID == 7)
+							{
+								this.S.StudentManager.FollowerLookAtTarget.position = this.S.DefaultTarget.position;
+								this.S.StudentManager.LoveManager.Follower = this.S;
+							}
 							this.S.Yandere.Follower = this.S;
 							this.S.Yandere.Followers = this.S.Yandere.Followers + 1;
 							this.S.Following = true;
@@ -334,7 +352,7 @@ public class TalkingScript : MonoBehaviour
 					else
 					{
 						this.S.Character.animation.CrossFade(this.S.Nod1Anim);
-						if (!this.S.StudentManager.Students[this.S.DialogueWheel.Victim].InEvent && !this.S.StudentManager.Students[this.S.DialogueWheel.Victim].Slave)
+						if (!this.S.StudentManager.Students[this.S.DialogueWheel.Victim].InEvent && !this.S.StudentManager.Students[this.S.DialogueWheel.Victim].Slave && !this.S.StudentManager.Students[this.S.DialogueWheel.Victim].Wet)
 						{
 							this.S.Subtitle.UpdateLabel("Student Distract", 0, (float)3);
 						}
@@ -365,6 +383,7 @@ public class TalkingScript : MonoBehaviour
 							this.S.Pathfinding.speed = (float)4;
 							this.S.TargetDistance = (float)1;
 							this.S.DistractTimer = (float)10;
+							Debug.Log("Delete me.");
 							this.S.Distracting = true;
 							this.S.Routine = false;
 							this.S.CanTalk = false;
@@ -670,7 +689,133 @@ public class TalkingScript : MonoBehaviour
 				}
 				this.S.TalkTimer = this.S.TalkTimer - Time.deltaTime;
 			}
+			else if (this.S.Interaction == 17)
+			{
+				if (this.S.TalkTimer == (float)3)
+				{
+					if (this.S.DialogueWheel.Victim != this.S.Crush)
+					{
+						this.S.Subtitle.UpdateLabel("Suitor Love", 0, (float)3);
+						this.S.Character.animation.CrossFade(this.S.GossipAnim);
+						this.S.CurrentAnim = this.S.GossipAnim;
+					}
+					else
+					{
+						PlayerPrefs.SetInt("SuitorProgress", 1);
+						this.S.Yandere.LoveManager.SuitorProgress = this.S.Yandere.LoveManager.SuitorProgress + 1;
+						this.S.Subtitle.UpdateLabel("Suitor Love", 1, (float)3);
+						this.S.Character.animation.CrossFade(this.S.Nod1Anim);
+						this.S.CurrentAnim = this.S.Nod1Anim;
+					}
+				}
+				else
+				{
+					if (Input.GetButtonDown("A"))
+					{
+						this.S.TalkTimer = (float)0;
+					}
+					if (this.S.Character.animation[this.S.CurrentAnim].time >= this.S.Character.animation[this.S.CurrentAnim].length)
+					{
+						this.S.Character.animation.CrossFade(this.S.IdleAnim);
+					}
+					if (this.S.TalkTimer <= (float)0)
+					{
+						this.S.DialogueWheel.End();
+					}
+				}
+				this.S.TalkTimer = this.S.TalkTimer - Time.deltaTime;
+			}
+			else if (this.S.Interaction == 18)
+			{
+				if (this.S.TalkTimer == (float)3)
+				{
+					this.S.Subtitle.UpdateLabel("Suitor Love", 2, (float)3);
+					this.S.Character.animation.CrossFade(this.S.Nod1Anim);
+				}
+				else
+				{
+					if (Input.GetButtonDown("A"))
+					{
+						this.S.TalkTimer = (float)0;
+					}
+					if (this.S.Character.animation[this.S.Nod1Anim].time >= this.S.Character.animation[this.S.Nod1Anim].length)
+					{
+						this.S.Character.animation.CrossFade(this.S.IdleAnim);
+					}
+					if (this.S.TalkTimer <= (float)0)
+					{
+						this.S.DialogueWheel.End();
+					}
+				}
+				this.S.TalkTimer = this.S.TalkTimer - Time.deltaTime;
+			}
+			else if (this.S.Interaction == 19)
+			{
+				if (this.S.TalkTimer == (float)3)
+				{
+					if (this.S.Male)
+					{
+						this.S.Subtitle.UpdateLabel("Suitor Love", 3, (float)5);
+					}
+					else
+					{
+						this.S.Subtitle.UpdateLabel("Suitor Love", 4, (float)5);
+					}
+					this.S.Character.animation.CrossFade(this.S.Nod1Anim);
+				}
+				else
+				{
+					if (Input.GetButtonDown("A"))
+					{
+						this.S.TalkTimer = (float)0;
+					}
+					if (this.S.Character.animation[this.S.Nod1Anim].time >= this.S.Character.animation[this.S.Nod1Anim].length)
+					{
+						this.S.Character.animation.CrossFade(this.S.IdleAnim);
+					}
+					if (this.S.TalkTimer <= (float)0)
+					{
+						this.S.MeetTime = this.S.Clock.HourTime;
+						if (this.S.Male)
+						{
+							this.S.MeetSpot = this.S.StudentManager.SuitorSpot;
+						}
+						else
+						{
+							this.S.MeetSpot = this.S.StudentManager.RomanceSpot;
+							this.S.StudentManager.LoveManager.RivalWaiting = true;
+						}
+						this.S.DialogueWheel.End();
+					}
+				}
+				this.S.TalkTimer = this.S.TalkTimer - Time.deltaTime;
+			}
 			else if (this.S.Interaction == 20)
+			{
+				if (this.S.TalkTimer == (float)5)
+				{
+					this.S.Subtitle.UpdateLabel("Suitor Love", 5, (float)99);
+					this.S.Character.animation.CrossFade(this.S.Nod1Anim);
+				}
+				else
+				{
+					if (Input.GetButtonDown("A"))
+					{
+						this.S.TalkTimer = (float)0;
+					}
+					if (this.S.Character.animation[this.S.Nod1Anim].time >= this.S.Character.animation[this.S.Nod1Anim].length)
+					{
+						this.S.Character.animation.CrossFade(this.S.IdleAnim);
+					}
+					if (this.S.TalkTimer <= (float)0)
+					{
+						this.S.Rose = true;
+						this.S.DialogueWheel.End();
+					}
+				}
+				this.S.TalkTimer = this.S.TalkTimer - Time.deltaTime;
+			}
+			else if (this.S.Interaction == 21)
 			{
 				if (this.S.TalkTimer == (float)3)
 				{

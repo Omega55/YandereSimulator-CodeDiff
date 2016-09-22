@@ -60,6 +60,7 @@ public class YanvaniaTitleScript : MonoBehaviour
 		this.Midori.gameObject.active = false;
 		if (PlayerPrefs.GetInt("DraculaDefeated") == 1)
 		{
+			PlayerPrefs.SetInt("Task_14_Status", 2);
 			this.SkipButton.active = true;
 			this.Logo.active = false;
 		}

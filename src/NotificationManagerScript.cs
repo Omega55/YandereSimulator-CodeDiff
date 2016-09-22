@@ -68,6 +68,10 @@ public class NotificationManagerScript : MonoBehaviour
 			{
 				notificationScript.Label.text = "Learned New Topic";
 			}
+			else if (Type == "Opinion")
+			{
+				notificationScript.Label.text = "Learned Opinion";
+			}
 			this.NotificationsSpawned++;
 			notificationScript.ID = this.NotificationsSpawned;
 		}

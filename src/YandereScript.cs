@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$2763 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$2859 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$2778;
+		internal YandereScript $self_$2874;
 
-		public $ApplyCustomCostume$2763(YandereScript self_)
+		public $ApplyCustomCostume$2859(YandereScript self_)
 		{
-			this.$self_$2778 = self_;
+			this.$self_$2874 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$2763.$(this.$self_$2778);
+			return new YandereScript.$ApplyCustomCostume$2859.$(this.$self_$2874);
 		}
 	}
 
@@ -82,6 +82,8 @@ public class YandereScript : MonoBehaviour
 	public SplashCameraScript SplashCamera;
 
 	public SWP_HeartRateMonitor HeartRate;
+
+	public LoveManagerScript LoveManager;
 
 	public StruggleBarScript StruggleBar;
 
@@ -232,6 +234,8 @@ public class YandereScript : MonoBehaviour
 	public GameObject ShoePair;
 
 	public GameObject Barcode;
+
+	public GameObject Headset;
 
 	public GameObject Ragdoll;
 
@@ -938,6 +942,10 @@ public class YandereScript : MonoBehaviour
 		if (PlayerPrefs.GetInt("PantiesEquipped") == 5)
 		{
 			this.RunSpeed += (float)1;
+		}
+		if (PlayerPrefs.GetInt("Headset") == 1)
+		{
+			this.Inventory.Headset = true;
 		}
 		this.UpdateHair();
 		this.ClubAccessory();
@@ -2804,6 +2812,117 @@ public class YandereScript : MonoBehaviour
 					}
 					this.TalkTimer -= Time.deltaTime;
 				}
+				else if (this.Interaction == 17)
+				{
+					if (this.TalkTimer == (float)3)
+					{
+						this.CharacterAnimation.CrossFade("f02_greet_01");
+						this.Subtitle.UpdateLabel("Player Love", 0, (float)3);
+					}
+					else
+					{
+						if (Input.GetButtonDown("A"))
+						{
+							this.TalkTimer = (float)0;
+						}
+						if (this.CharacterAnimation["f02_greet_01"].time >= this.CharacterAnimation["f02_greet_01"].length)
+						{
+							this.CharacterAnimation.CrossFade(this.IdleAnim);
+						}
+						if (this.TalkTimer <= (float)0)
+						{
+							this.TargetStudent.Interaction = 17;
+							this.TargetStudent.TalkTimer = (float)3;
+							this.Interaction = 0;
+						}
+					}
+					this.TalkTimer -= Time.deltaTime;
+				}
+				else if (this.Interaction == 18)
+				{
+					if (this.TalkTimer == (float)3)
+					{
+						this.CharacterAnimation.CrossFade("f02_greet_01");
+						this.Subtitle.UpdateLabel("Player Love", 2, (float)3);
+					}
+					else
+					{
+						if (Input.GetButtonDown("A"))
+						{
+							this.TalkTimer = (float)0;
+						}
+						if (this.CharacterAnimation["f02_greet_01"].time >= this.CharacterAnimation["f02_greet_01"].length)
+						{
+							this.CharacterAnimation.CrossFade(this.IdleAnim);
+						}
+						if (this.TalkTimer <= (float)0)
+						{
+							this.TargetStudent.Interaction = 18;
+							this.TargetStudent.TalkTimer = (float)3;
+							this.Interaction = 0;
+						}
+					}
+					this.TalkTimer -= Time.deltaTime;
+				}
+				else if (this.Interaction == 19)
+				{
+					if (this.TalkTimer == (float)5)
+					{
+						this.CharacterAnimation.CrossFade("f02_greet_01");
+						if (!this.TargetStudent.Male)
+						{
+							this.Subtitle.UpdateLabel("Player Love", 3, (float)5);
+						}
+						else
+						{
+							this.Subtitle.UpdateLabel("Player Love", 4, (float)5);
+						}
+					}
+					else
+					{
+						if (Input.GetButtonDown("A"))
+						{
+							this.TalkTimer = (float)0;
+						}
+						if (this.CharacterAnimation["f02_greet_01"].time >= this.CharacterAnimation["f02_greet_01"].length)
+						{
+							this.CharacterAnimation.CrossFade(this.IdleAnim);
+						}
+						if (this.TalkTimer <= (float)0)
+						{
+							this.TargetStudent.Interaction = 19;
+							this.TargetStudent.TalkTimer = (float)3;
+							this.Interaction = 0;
+						}
+					}
+					this.TalkTimer -= Time.deltaTime;
+				}
+				else if (this.Interaction == 20)
+				{
+					if (this.TalkTimer == (float)5)
+					{
+						this.CharacterAnimation.CrossFade("f02_greet_01");
+						this.Subtitle.UpdateLabel("Player Love", 5, (float)5);
+					}
+					else
+					{
+						if (Input.GetButtonDown("A"))
+						{
+							this.TalkTimer = (float)0;
+						}
+						if (this.CharacterAnimation["f02_greet_01"].time >= this.CharacterAnimation["f02_greet_01"].length)
+						{
+							this.CharacterAnimation.CrossFade(this.IdleAnim);
+						}
+						if (this.TalkTimer <= (float)0)
+						{
+							this.TargetStudent.Interaction = 20;
+							this.TargetStudent.TalkTimer = (float)5;
+							this.Interaction = 0;
+						}
+					}
+					this.TalkTimer -= Time.deltaTime;
+				}
 			}
 			if (this.Attacking)
 			{
@@ -2869,7 +2988,7 @@ public class YandereScript : MonoBehaviour
 					{
 						this.SplashCamera.Show = true;
 						this.SplashCamera.MyCamera.enabled = true;
-						this.SplashCamera.transform.position = new Vector3(-33.3f, 1.35f, 30.5f);
+						this.SplashCamera.transform.position = new Vector3((float)-33, 1.35f, (float)30);
 						this.SplashCamera.transform.eulerAngles = new Vector3((float)0, (float)135, (float)0);
 					}
 				}
@@ -3047,7 +3166,10 @@ public class YandereScript : MonoBehaviour
 						this.AttackTimer += Time.deltaTime;
 						if (this.AttackTimer > 0.3f)
 						{
-							this.StainWeapon();
+							if (!this.CanTranq)
+							{
+								this.StainWeapon();
+							}
 							this.MyController.radius = 0.2f;
 							this.Attacking = false;
 							this.AttackPhase = 1;
@@ -3377,9 +3499,9 @@ public class YandereScript : MonoBehaviour
 				float num26 = position5.y = (float)num25;
 				Vector3 vector14 = this.transform.position = position5;
 			}
-			if (this.transform.position.z < -49.5f)
+			if (this.transform.position.z < -99.5f)
 			{
-				float z2 = -49.5f;
+				float z2 = -99.5f;
 				Vector3 position6 = this.transform.position;
 				float num27 = position6.z = z2;
 				Vector3 vector15 = this.transform.position = position6;
@@ -3934,7 +4056,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$2763(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$2859(this).GetEnumerator();
 	}
 
 	public virtual void WearGloves()

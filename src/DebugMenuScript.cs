@@ -154,14 +154,42 @@ public class DebugMenuScript : MonoBehaviour
 				{
 					this.Clock.PresentTime = 426f;
 				}
-				if (this.StudentManager.Students[16] != null && this.StudentManager.Students[16].Phase < 2)
+				if (this.StudentManager.Students[7] != null)
 				{
-					this.StudentManager.Students[16].ShoeRemoval.Start();
-					this.StudentManager.Students[16].ShoeRemoval.PutOnShoes();
+					if (this.StudentManager.Students[7].Phase < 2)
+					{
+						this.StudentManager.Students[7].ShoeRemoval.Start();
+						this.StudentManager.Students[7].ShoeRemoval.PutOnShoes();
+						this.StudentManager.Students[7].CanTalk = true;
+						this.StudentManager.Students[7].Phase = 2;
+						this.StudentManager.Students[7].CurrentDestination = this.StudentManager.Students[7].Destinations[2];
+						this.StudentManager.Students[7].Pathfinding.target = this.StudentManager.Students[7].Destinations[2];
+					}
+					this.StudentManager.Students[7].transform.position = this.StudentManager.Students[7].Destinations[2].position;
+				}
+				if (this.StudentManager.Students[13] != null)
+				{
+					if (this.StudentManager.Students[13].Phase < 2)
+					{
+						this.StudentManager.Students[13].ShoeRemoval.Start();
+						this.StudentManager.Students[13].ShoeRemoval.PutOnShoes();
+						this.StudentManager.Students[13].Phase = 2;
+						this.StudentManager.Students[13].CurrentDestination = this.StudentManager.Students[13].Destinations[2];
+						this.StudentManager.Students[13].Pathfinding.target = this.StudentManager.Students[13].Destinations[2];
+					}
+					this.StudentManager.Students[13].transform.position = this.StudentManager.Students[13].Destinations[2].position;
+				}
+				if (this.StudentManager.Students[16] != null)
+				{
+					if (this.StudentManager.Students[16].Phase < 2)
+					{
+						this.StudentManager.Students[16].ShoeRemoval.Start();
+						this.StudentManager.Students[16].ShoeRemoval.PutOnShoes();
+						this.StudentManager.Students[16].Phase = 2;
+						this.StudentManager.Students[16].CurrentDestination = this.StudentManager.Students[16].Destinations[2];
+						this.StudentManager.Students[16].Pathfinding.target = this.StudentManager.Students[16].Destinations[2];
+					}
 					this.StudentManager.Students[16].transform.position = this.StudentManager.Students[16].Destinations[2].position;
-					this.StudentManager.Students[16].Phase = 2;
-					this.StudentManager.Students[16].CurrentDestination = this.StudentManager.Students[16].Destinations[2];
-					this.StudentManager.Students[16].Pathfinding.target = this.StudentManager.Students[16].Destinations[2];
 				}
 			}
 			else if (Input.GetKeyDown("0"))
@@ -348,6 +376,19 @@ public class DebugMenuScript : MonoBehaviour
 				else
 				{
 					this.Zoom.OverShoulder = false;
+				}
+				this.Window.active = false;
+			}
+			else if (Input.GetKeyDown("u"))
+			{
+				PlayerPrefs.SetInt("7_Friend", 1);
+				PlayerPrefs.SetInt("13_Friend", 1);
+				this.ID = 1;
+				while (this.ID < 26)
+				{
+					PlayerPrefs.SetInt("Topic_" + this.ID + "_Student_7_Learned", 1);
+					PlayerPrefs.SetInt("Topic_" + this.ID + "_Discovered", 1);
+					this.ID++;
 				}
 				this.Window.active = false;
 			}

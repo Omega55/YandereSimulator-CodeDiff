@@ -278,11 +278,11 @@ public class ShoeRemovalScript : MonoBehaviour
 			}
 			else if (this.Phase == 10 && this.Character.animation[this.RemovalAnim].time >= this.Character.animation[this.RemovalAnim].length)
 			{
+				this.Character.animation.cullingType = AnimationCullingType.BasedOnRenderers;
 				this.Student.Routine = true;
 				this.enabled = false;
 				if (!this.Student.Indoors)
 				{
-					this.Character.animation.cullingType = AnimationCullingType.BasedOnRenderers;
 					this.Student.Indoors = true;
 					this.Student.CanTalk = true;
 				}
@@ -403,6 +403,7 @@ public class ShoeRemovalScript : MonoBehaviour
 
 	public virtual void LeavingSchool()
 	{
+		this.Student.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
 		this.OutdoorShoes = this.Student.Cosmetic.CasualTexture;
 		this.IndoorShoes = this.Student.Cosmetic.UniformTexture;
 		this.Socks = this.Student.Cosmetic.SocksTexture;

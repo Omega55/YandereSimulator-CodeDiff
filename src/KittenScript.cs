@@ -42,24 +42,21 @@ public class KittenScript : MonoBehaviour
 
 	public virtual void LateUpdate()
 	{
-		if (this.Wait)
+		if (!this.Yandere.Aiming)
 		{
-			if (!this.Yandere.Aiming)
+			if (this.Yandere.Head.transform.position.x < this.transform.position.x)
 			{
-				if (this.Yandere.Head.transform.position.x < this.transform.position.x)
-				{
-					this.Target.position = Vector3.Lerp(this.Target.position, this.Yandere.Head.transform.position, Time.deltaTime * (float)5);
-				}
-				else
-				{
-					this.Target.position = Vector3.Lerp(this.Target.position, this.transform.position + this.transform.forward * (float)1 + this.transform.up * 0.139854f, Time.deltaTime * (float)5);
-				}
-				this.Head.transform.LookAt(this.Target);
+				this.Target.position = Vector3.Lerp(this.Target.position, this.Yandere.Head.transform.position, Time.deltaTime * (float)5);
 			}
 			else
 			{
-				this.Head.transform.LookAt(this.Yandere.transform.position + Vector3.up * this.Head.position.y);
+				this.Target.position = Vector3.Lerp(this.Target.position, this.transform.position + this.transform.forward * (float)1 + this.transform.up * 0.139854f, Time.deltaTime * (float)5);
 			}
+			this.Head.transform.LookAt(this.Target);
+		}
+		else
+		{
+			this.Head.transform.LookAt(this.Yandere.transform.position + Vector3.up * this.Head.position.y);
 		}
 	}
 

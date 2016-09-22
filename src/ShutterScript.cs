@@ -7,6 +7,8 @@ public class ShutterScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
 
+	public TaskManagerScript TaskManager;
+
 	public PauseScreenScript PauseScreen;
 
 	public StudentInfoScript StudentInfo;
@@ -58,6 +60,8 @@ public class ShutterScript : MonoBehaviour
 	public GameObject InfoX;
 
 	public bool DisplayError;
+
+	public bool KittenShot;
 
 	public bool FreeSpace;
 
@@ -279,6 +283,11 @@ public class ShutterScript : MonoBehaviour
 							{
 								PlayerPrefs.SetInt("SenpaiPhoto_" + this.Slot, 1);
 							}
+							if (this.KittenShot)
+							{
+								PlayerPrefs.SetInt("KittenPhoto_" + this.Slot, 1);
+								this.TaskManager.UpdateTaskStatus();
+							}
 						}
 						else
 						{
@@ -361,6 +370,7 @@ public class ShutterScript : MonoBehaviour
 		this.PantiesX.active = true;
 		this.SenpaiX.active = true;
 		this.ViolenceX.active = true;
+		this.KittenShot = false;
 		this.NotFace = false;
 		this.Skirt = false;
 		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyPhotography))
@@ -390,10 +400,14 @@ public class ShutterScript : MonoBehaviour
 			{
 				this.Skirt = true;
 			}
-			if (this.hit.collider.gameObject.name == "Kitten" && PlayerPrefs.GetInt("Topic_20_Discovered") == 0)
+			if (this.hit.collider.gameObject.name == "Kitten")
 			{
-				PlayerPrefs.SetInt("Topic_20_Discovered", 1);
-				this.Yandere.NotificationManager.DisplayNotification("Topic");
+				this.KittenShot = true;
+				if (PlayerPrefs.GetInt("Topic_20_Discovered") == 0)
+				{
+					PlayerPrefs.SetInt("Topic_20_Discovered", 1);
+					this.Yandere.NotificationManager.DisplayNotification("Topic");
+				}
 			}
 		}
 		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyRagdolls) && this.hit.collider.gameObject.layer == 11)

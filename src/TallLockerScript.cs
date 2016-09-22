@@ -54,7 +54,6 @@ public class TallLockerScript : MonoBehaviour
 	public virtual void Start()
 	{
 		this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent(typeof(YandereScript));
-		this.UpdateSchoolwear();
 		this.Prompt.HideButton[1] = true;
 		this.Prompt.HideButton[2] = true;
 		this.Prompt.HideButton[3] = true;
@@ -318,6 +317,7 @@ public class TallLockerScript : MonoBehaviour
 			this.Prompt.HideButton[this.Student.Schoolwear] = true;
 			this.Schoolwear[this.Student.Schoolwear].active = false;
 			this.Student.Indoors = true;
+			Debug.Log("Possibility 6.");
 		}
 	}
 

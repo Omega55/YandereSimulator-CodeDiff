@@ -459,11 +459,11 @@ public class PoliceScript : MonoBehaviour
 		}
 		else if (PlayerPrefs.GetInt("Weekday") == 5)
 		{
-			this.ResultsLabels[0].text = "Yandere-chan has failed to eliminate her rival before Friday evening.";
-			this.ResultsLabels[1].text = "The girl asks Senpai to meet her under the cherry tree behind the school.";
-			this.ResultsLabels[2].text = "As cherry blossoms fall around them, the girl confesses her feelings for Senpai.";
-			this.ResultsLabels[3].text = "Senpai is deeply moved by the girl's heartfelt confession, and happily accepts her feelings.";
-			this.ResultsLabels[4].text = "Yandere-chan watches tearfully as Senpai is stolen from her.";
+			this.ResultsLabels[0].text = "This is the part where the game will determine whether or not the player has eliminated their rival.";
+			this.ResultsLabels[1].text = "This game is still in development.";
+			this.ResultsLabels[2].text = "The ''player eliminated rival'' state has not yet been implemented.";
+			this.ResultsLabels[3].text = "Thank you for playtesting Yandere Simulator!";
+			this.ResultsLabels[4].text = "Please check back soon for more updates!";
 			this.GameOver = true;
 		}
 		else if (!this.Suicide && !this.PoisonScene)

@@ -143,6 +143,12 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] EvilGrudges;
 
+	public string[] PlayerLove;
+
+	public string[] SuitorLove;
+
+	public string[] RivalLove;
+
 	public string[] Impatiences;
 
 	public string[] ImpatientFarewells;
@@ -208,6 +214,12 @@ public class SubtitleScript : MonoBehaviour
 	public string[] Task6Lines;
 
 	public string[] Task7Lines;
+
+	public string[] Task13Lines;
+
+	public string[] Task14Lines;
+
+	public string[] Task15Lines;
 
 	public string[] Task32Lines;
 
@@ -316,6 +328,12 @@ public class SubtitleScript : MonoBehaviour
 	public AudioClip[] Task6Clips;
 
 	public AudioClip[] Task7Clips;
+
+	public AudioClip[] Task13Clips;
+
+	public AudioClip[] Task14Clips;
+
+	public AudioClip[] Task15Clips;
 
 	public AudioClip[] Task32Clips;
 
@@ -748,6 +766,18 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.Label.text = this.EvilGrudges[UnityEngine.Random.Range(0, Extensions.get_length(this.EvilGrudges))];
 		}
+		else if (ReactionType == "Player Love")
+		{
+			this.Label.text = this.PlayerLove[ID];
+		}
+		else if (ReactionType == "Suitor Love")
+		{
+			this.Label.text = this.SuitorLove[ID];
+		}
+		else if (ReactionType == "Rival Love")
+		{
+			this.Label.text = this.RivalLove[ID];
+		}
 		else if (ReactionType == "Dying")
 		{
 			this.Label.text = this.Deaths[UnityEngine.Random.Range(0, Extensions.get_length(this.Deaths))];
@@ -822,6 +852,21 @@ public class SubtitleScript : MonoBehaviour
 		else if (ReactionType == "Task 7 Line")
 		{
 			this.Label.text = this.Task7Lines[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
+		else if (ReactionType == "Task 13 Line")
+		{
+			this.Label.text = this.Task13Lines[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
+		else if (ReactionType == "Task 14 Line")
+		{
+			this.Label.text = this.Task14Lines[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
+		else if (ReactionType == "Task 15 Line")
+		{
+			this.Label.text = this.Task15Lines[ID];
 			this.PlayVoice(ReactionType, ID);
 		}
 		else if (ReactionType == "Task 32 Line")
@@ -1077,6 +1122,18 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.PlayClip(this.Task7Clips[ID], this.transform.position);
 		}
+		else if (ReactionType == "Task 13 Line")
+		{
+			this.PlayClip(this.Task13Clips[ID], this.transform.position);
+		}
+		else if (ReactionType == "Task 14 Line")
+		{
+			this.PlayClip(this.Task14Clips[ID], this.transform.position);
+		}
+		else if (ReactionType == "Task 15 Line")
+		{
+			this.PlayClip(this.Task15Clips[ID], this.transform.position);
+		}
 		else if (ReactionType == "Task 32 Line")
 		{
 			this.PlayClip(this.Task32Clips[ID], this.transform.position);
@@ -1165,7 +1222,7 @@ public class SubtitleScript : MonoBehaviour
 
 	public virtual float GetClipLength(int StudentID, int TaskPhase)
 	{
-		return (StudentID != 6) ? ((StudentID != 7) ? ((StudentID != 32) ? ((float)0) : this.Task32Clips[TaskPhase].length) : this.Task7Clips[TaskPhase].length) : this.Task6Clips[TaskPhase].length;
+		return (StudentID != 6) ? ((StudentID != 7) ? ((StudentID != 13) ? ((StudentID != 14) ? ((StudentID != 15) ? ((StudentID != 32) ? ((float)0) : this.Task32Clips[TaskPhase].length) : this.Task15Clips[TaskPhase].length) : this.Task14Clips[TaskPhase].length) : this.Task13Clips[TaskPhase].length) : this.Task7Clips[TaskPhase].length) : this.Task6Clips[TaskPhase].length;
 	}
 
 	public virtual float GetClubClipLength(int Club, int ClubPhase)

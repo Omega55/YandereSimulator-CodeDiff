@@ -111,6 +111,19 @@ public class OfferHelpScript : MonoBehaviour
 					this.Spoken = false;
 					this.EventPhase++;
 					this.Timer = (float)0;
+					if (this.EventPhase == 14)
+					{
+						if (PlayerPrefs.GetInt("Topic_23_Discovered") == 0)
+						{
+							this.Yandere.NotificationManager.DisplayNotification("Topic");
+							PlayerPrefs.SetInt("Topic_23_Discovered", 1);
+						}
+						if (PlayerPrefs.GetInt("Topic_23_Student_7_Learned") == 0)
+						{
+							this.Yandere.NotificationManager.DisplayNotification("Opinion");
+							PlayerPrefs.SetInt("Topic_23_Student_7_Learned", 1);
+						}
+					}
 					if (this.EventPhase == Extensions.get_length(this.EventSpeech))
 					{
 						PlayerPrefs.SetInt("Scheme_6_Stage", 5);

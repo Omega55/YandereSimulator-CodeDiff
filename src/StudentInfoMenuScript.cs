@@ -11,18 +11,18 @@ public class StudentInfoMenuScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $UpdatePortraits$2750 : GenericGenerator<WWW>
+	internal sealed class $UpdatePortraits$2846 : GenericGenerator<WWW>
 	{
-		internal StudentInfoMenuScript $self_$2755;
+		internal StudentInfoMenuScript $self_$2851;
 
-		public $UpdatePortraits$2750(StudentInfoMenuScript self_)
+		public $UpdatePortraits$2846(StudentInfoMenuScript self_)
 		{
-			this.$self_$2755 = self_;
+			this.$self_$2851 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new StudentInfoMenuScript.$UpdatePortraits$2750.$(this.$self_$2755);
+			return new StudentInfoMenuScript.$UpdatePortraits$2846.$(this.$self_$2851);
 		}
 	}
 
@@ -63,6 +63,8 @@ public class StudentInfoMenuScript : MonoBehaviour
 	public UILabel NameLabel;
 
 	public bool CyberBullying;
+
+	public bool MatchMaking;
 
 	public bool Distracting;
 
@@ -116,13 +118,17 @@ public class StudentInfoMenuScript : MonoBehaviour
 			{
 				this.PromptBar.Label[0].text = "Accept";
 			}
+			if (this.MatchMaking)
+			{
+				this.PromptBar.Label[0].text = "Match";
+			}
 			this.PromptBar.Label[1].text = "Back";
 			this.PromptBar.Label[3].text = "Interests";
 			this.PromptBar.UpdateButtons();
 		}
 		if (Input.GetButtonDown("B"))
 		{
-			if (this.Gossiping || this.Distracting)
+			if (this.Gossiping || this.Distracting || this.MatchMaking)
 			{
 				this.PauseScreen.Yandere.Interaction = 4;
 				this.PauseScreen.Yandere.TalkTimer = (float)2;
@@ -132,6 +138,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 				this.gameObject.active = false;
 				Time.timeScale = (float)1;
 				this.Distracting = false;
+				this.MatchMaking = false;
 				this.Gossiping = false;
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Show = false;
@@ -291,7 +298,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	public virtual IEnumerator UpdatePortraits()
 	{
-		return new StudentInfoMenuScript.$UpdatePortraits$2750(this).GetEnumerator();
+		return new StudentInfoMenuScript.$UpdatePortraits$2846(this).GetEnumerator();
 	}
 
 	public virtual void Main()

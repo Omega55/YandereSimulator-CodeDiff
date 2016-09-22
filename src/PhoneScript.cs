@@ -92,13 +92,6 @@ public class PhoneScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (Input.GetKeyDown("k"))
-		{
-			PlayerPrefs.SetInt("LivingRoom", 0);
-			PlayerPrefs.SetInt("KidnapConversation", 1);
-			PlayerPrefs.SetInt("BefriendConversation", 0);
-			Application.LoadLevel(Application.loadedLevel);
-		}
 		if (!this.FadeOut)
 		{
 			if (this.Timer > (float)0)

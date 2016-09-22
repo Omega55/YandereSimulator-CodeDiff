@@ -104,12 +104,21 @@ public class TaskWindowScript : MonoBehaviour
 					((GrowShrinkScript)this.TaskCompleteLetters[this.ID].GetComponent(typeof(GrowShrinkScript))).Return();
 					this.ID++;
 				}
+				this.TaskCheck();
 				this.DialogueWheel.End();
 				this.TaskComplete = false;
 				this.TrueTimer = (float)0;
 				this.Timer = (float)0;
 				this.ID = 0;
 			}
+		}
+	}
+
+	public virtual void TaskCheck()
+	{
+		if (this.Yandere.TargetStudent.StudentID == 15)
+		{
+			this.DialogueWheel.Yandere.TargetStudent.Cosmetic.MaleAccessories[1].active = true;
 		}
 	}
 

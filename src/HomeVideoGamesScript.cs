@@ -24,6 +24,8 @@ public class HomeVideoGamesScript : MonoBehaviour
 
 	public Transform Highlight;
 
+	public UILabel[] GameTitles;
+
 	public Transform TV;
 
 	public int ID;
@@ -31,6 +33,20 @@ public class HomeVideoGamesScript : MonoBehaviour
 	public HomeVideoGamesScript()
 	{
 		this.ID = 1;
+	}
+
+	public virtual void Start()
+	{
+		if (PlayerPrefs.GetInt("Task_14_Status") == 0)
+		{
+			this.TitleScreens[1] = this.TitleScreens[2];
+			this.GameTitles[1].text = this.GameTitles[2].text;
+			float a = 0.5f;
+			Color color = this.GameTitles[1].color;
+			float num = color.a = a;
+			Color color2 = this.GameTitles[1].color = color;
+		}
+		this.TitleScreen.mainTexture = this.TitleScreens[1];
 	}
 
 	public virtual void Update()
@@ -68,7 +84,7 @@ public class HomeVideoGamesScript : MonoBehaviour
 						float num4 = localPosition2.y = (float)num3;
 						Vector3 vector2 = this.Highlight.localPosition = localPosition2;
 					}
-					if (Input.GetButtonDown("A") && this.ID == 1)
+					if (Input.GetButtonDown("A") && this.GameTitles[this.ID].color.a == (float)1)
 					{
 						float y = 1.153333f;
 						Vector3 localPosition3 = this.HomeCamera.Targets[5].localPosition;

@@ -6,7 +6,7 @@ public class PianoScript : MonoBehaviour
 {
 	public PromptScript Prompt;
 
-	public AudioClip[] Notes;
+	public AudioSource[] Notes;
 
 	public int ID;
 
@@ -15,13 +15,12 @@ public class PianoScript : MonoBehaviour
 		if (this.Prompt.Circle[0].fillAmount < (float)1 && this.Prompt.Circle[0].fillAmount > (float)0)
 		{
 			this.Prompt.Circle[0].fillAmount = (float)0;
+			this.Notes[this.ID].Play();
 			this.ID++;
 			if (this.ID == this.Notes.Length)
 			{
-				this.ID = 1;
+				this.ID = 0;
 			}
-			this.audio.clip = this.Notes[this.ID];
-			this.audio.Play();
 		}
 	}
 

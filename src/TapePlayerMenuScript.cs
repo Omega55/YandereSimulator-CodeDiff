@@ -142,14 +142,17 @@ public class TapePlayerMenuScript : MonoBehaviour
 	{
 		if (!this.Show)
 		{
-			float x = Mathf.Lerp(this.List.transform.localPosition.x, (float)-955, 0.166666672f);
-			Vector3 localPosition = this.List.transform.localPosition;
-			float num = localPosition.x = x;
-			Vector3 vector = this.List.transform.localPosition = localPosition;
-			float y = Mathf.Lerp(this.TimeBar.localPosition.y, (float)100, 0.166666672f);
-			Vector3 localPosition2 = this.TimeBar.localPosition;
-			float num2 = localPosition2.y = y;
-			Vector3 vector2 = this.TimeBar.localPosition = localPosition2;
+			if (this.List.transform.localPosition.x > (float)-955)
+			{
+				float x = Mathf.Lerp(this.List.transform.localPosition.x, (float)-956, 0.166666672f);
+				Vector3 localPosition = this.List.transform.localPosition;
+				float num = localPosition.x = x;
+				Vector3 vector = this.List.transform.localPosition = localPosition;
+				float y = Mathf.Lerp(this.TimeBar.localPosition.y, (float)100, 0.166666672f);
+				Vector3 localPosition2 = this.TimeBar.localPosition;
+				float num2 = localPosition2.y = y;
+				Vector3 vector2 = this.TimeBar.localPosition = localPosition2;
+			}
 		}
 		else if (this.Listening)
 		{

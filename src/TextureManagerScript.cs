@@ -10,6 +10,8 @@ public class TextureManagerScript : MonoBehaviour
 
 	public Texture[] SocksTextures;
 
+	public Texture2D PurpleStockings;
+
 	public Texture2D GreenStockings;
 
 	public Texture2D Base2D;

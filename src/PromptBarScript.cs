@@ -31,10 +31,13 @@ public class PromptBarScript : MonoBehaviour
 	{
 		if (!this.Show)
 		{
-			float y = Mathf.Lerp(this.transform.localPosition.y, (float)-627, 0.166666672f);
-			Vector3 localPosition = this.transform.localPosition;
-			float num = localPosition.y = y;
-			Vector3 vector = this.transform.localPosition = localPosition;
+			if (this.transform.localPosition.y > (float)-627)
+			{
+				float y = Mathf.Lerp(this.transform.localPosition.y, (float)-628, 0.166666672f);
+				Vector3 localPosition = this.transform.localPosition;
+				float num = localPosition.y = y;
+				Vector3 vector = this.transform.localPosition = localPosition;
+			}
 		}
 		else
 		{

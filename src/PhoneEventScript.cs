@@ -201,7 +201,7 @@ public class PhoneEventScript : MonoBehaviour
 						this.Yandere.NotificationManager.DisplayNotification("Info");
 						PlayerPrefs.SetInt("Topic_25_Discovered", 1);
 						this.Yandere.NotificationManager.DisplayNotification("Topic");
-						this.Yandere.NotificationManager.DisplayNotification("Info");
+						this.Yandere.NotificationManager.DisplayNotification("Opinion");
 						PlayerPrefs.SetInt("Topic_25_Student_7_Learned", 1);
 					}
 				}

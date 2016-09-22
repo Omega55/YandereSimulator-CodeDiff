@@ -10,24 +10,26 @@ public class PhotoGalleryScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $GetPhotos$2744 : GenericGenerator<WWW>
+	internal sealed class $GetPhotos$2840 : GenericGenerator<WWW>
 	{
-		internal PhotoGalleryScript $self_$2749;
+		internal PhotoGalleryScript $self_$2845;
 
-		public $GetPhotos$2744(PhotoGalleryScript self_)
+		public $GetPhotos$2840(PhotoGalleryScript self_)
 		{
-			this.$self_$2749 = self_;
+			this.$self_$2845 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new PhotoGalleryScript.$GetPhotos$2744.$(this.$self_$2749);
+			return new PhotoGalleryScript.$GetPhotos$2840.$(this.$self_$2845);
 		}
 	}
 
 	public InputManagerScript InputManager;
 
 	public PauseScreenScript PauseScreen;
+
+	public TaskManagerScript TaskManager;
 
 	public HomeCursorScript Cursor;
 
@@ -139,7 +141,9 @@ public class PhotoGalleryScript : MonoBehaviour
 						this.Photographs[i].mainTexture = this.NoPhoto;
 						PlayerPrefs.SetInt("Photo_" + i, 0);
 						PlayerPrefs.SetInt("SenpaiPhoto_" + i, 0);
+						PlayerPrefs.SetInt("KittenPhoto_" + i, 0);
 						this.Hearts[i].active = false;
+						this.TaskManager.UpdateTaskStatus();
 					}
 				}
 				if (this.Corkboard)
@@ -476,7 +480,7 @@ public class PhotoGalleryScript : MonoBehaviour
 
 	public virtual IEnumerator GetPhotos()
 	{
-		return new PhotoGalleryScript.$GetPhotos$2744(this).GetEnumerator();
+		return new PhotoGalleryScript.$GetPhotos$2840(this).GetEnumerator();
 	}
 
 	public virtual void UpdateUseButton()

@@ -16,9 +16,13 @@ public class InventoryScript : MonoBehaviour
 
 	public bool RivalPhone;
 
+	public bool Headset;
+
 	public bool Cigs;
 
 	public bool Ring;
+
+	public bool Rose;
 
 	public bool Bra;
 

@@ -76,12 +76,15 @@ public class NoteWindowScript : MonoBehaviour
 	{
 		if (!this.Show)
 		{
-			this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3((float)455, (float)-965, (float)0), 0.166666672f);
-			this.Rotation = Mathf.Lerp(this.Rotation, (float)-90, 0.166666672f);
-			float rotation = this.Rotation;
-			Vector3 localEulerAngles = this.transform.localEulerAngles;
-			float num = localEulerAngles.z = rotation;
-			Vector3 vector = this.transform.localEulerAngles = localEulerAngles;
+			if (this.Rotation > (float)-90)
+			{
+				this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3((float)455, (float)-965, (float)0), 0.166666672f);
+				this.Rotation = Mathf.Lerp(this.Rotation, (float)-91, 0.166666672f);
+				float rotation = this.Rotation;
+				Vector3 localEulerAngles = this.transform.localEulerAngles;
+				float num = localEulerAngles.z = rotation;
+				Vector3 vector = this.transform.localEulerAngles = localEulerAngles;
+			}
 		}
 		else
 		{

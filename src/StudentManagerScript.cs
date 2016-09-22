@@ -17,6 +17,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public SelectiveGrayscale SelectiveGreyscale;
 
+	public DatingMinigameScript DatingMinigame;
+
 	public TextureManagerScript TextureManager;
 
 	public EmergencyExitScript EmergencyExit;
@@ -26,6 +28,8 @@ public class StudentManagerScript : MonoBehaviour
 	public WitnessCameraScript WitnessCamera;
 
 	public TallLockerScript CommunalLocker;
+
+	public LoveManagerScript LoveManager;
 
 	public TaskManagerScript TaskManager;
 
@@ -87,15 +91,39 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Collider RivalDeskCollider;
 
+	public Transform FollowerLookAtTarget;
+
+	public Transform SuitorConfessionSpot;
+
+	public Transform ConfessionWaypoint;
+
+	public Transform FemaleCoupleSpot;
+
+	public Transform FemaleStalkSpot;
+
+	public Transform ConfessionSpot;
+
 	public Transform CorpseLocation;
+
+	public Transform MaleCoupleSpot;
 
 	public Transform FastBatheSpot;
 
+	public Transform MaleStalkSpot;
+
 	public Transform FountainSpot;
+
+	public Transform SuitorLocker;
+
+	public Transform RomanceSpot;
 
 	public Transform BrokenSpot;
 
+	public Transform EdgeOfGrid;
+
 	public Transform GoAwaySpot;
+
+	public Transform SuitorSpot;
 
 	public Transform BatheSpot;
 
@@ -104,8 +132,6 @@ public class StudentManagerScript : MonoBehaviour
 	public Transform ShameSpot;
 
 	public Transform SlaveSpot;
-
-	public Transform StalkSpot;
 
 	public Transform StripSpot;
 
@@ -147,6 +173,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public bool TeachersSpawned;
 
+	public bool FirstUpdate;
+
 	public bool ForceSpawn;
 
 	public bool Randomize;
@@ -164,6 +192,8 @@ public class StudentManagerScript : MonoBehaviour
 	public bool DK;
 
 	public float ChangeTimer;
+
+	public float Timer;
 
 	public string[] ColorNames;
 
@@ -192,7 +222,7 @@ public class StudentManagerScript : MonoBehaviour
 			PlayerPrefs.SetInt("KidnapVictim", 0);
 		}
 		this.NPCsTotal = this.StudentsTotal + this.TeachersTotal;
-		this.SpawnID = this.StudentsTotal + 1;
+		this.SpawnID = 1;
 		if (PlayerPrefs.GetInt("MaleUniform") == 0)
 		{
 			PlayerPrefs.SetInt("MaleUniform", 1);
@@ -225,6 +255,10 @@ public class StudentManagerScript : MonoBehaviour
 			this.Clock.HourTime = (float)8;
 			this.AttendClass();
 		}
+		while (this.SpawnID < this.NPCsTotal + 1)
+		{
+			this.SpawnStudent();
+		}
 	}
 
 	public virtual void SetAtmosphere()
@@ -250,9 +284,15 @@ public class StudentManagerScript : MonoBehaviour
 	{
 		if (!this.TakingPortraits)
 		{
-			if (this.NPCsSpawned < this.NPCsTotal)
+			this.Frame++;
+			if (!this.FirstUpdate)
 			{
-				this.SpawnStudent();
+				this.FirstUpdate = true;
+				this.UpdateStudents();
+			}
+			if (this.Frame == 3)
+			{
+				this.LoveManager.CoupleCheck();
 			}
 		}
 		else if (this.NPCsSpawned < this.NPCsTotal)
@@ -310,62 +350,54 @@ public class StudentManagerScript : MonoBehaviour
 
 	public virtual void SpawnStudent()
 	{
-		if (this.ForceSpawn || (!this.Stop && this.Clock.HourTime >= this.SpawnTimes[this.SpawnID]))
+		if (this.Students[this.SpawnID] == null && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Dead") == 0 && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Kidnapped") == 0 && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Arrested") == 0 && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Expelled") == 0 && this.JSON.StudentNames[this.SpawnID] != "Unknown" && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Reputation") > -100)
 		{
-			if (this.Students[this.SpawnID] == null && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Dead") == 0 && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Kidnapped") == 0 && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Arrested") == 0 && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Expelled") == 0 && this.JSON.StudentNames[this.SpawnID] != "Unknown" && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Reputation") > -100)
+			if (this.JSON.StudentGenders[this.SpawnID] == 0)
 			{
-				if (this.JSON.StudentGenders[this.SpawnID] == 0)
-				{
-					this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.StudentChan, this.SpawnPositions[this.SpawnID].position, Quaternion.identity);
-				}
-				else
-				{
-					this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.StudentKun, this.SpawnPositions[this.SpawnID].position, Quaternion.identity);
-				}
-				((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).Randomize = this.Randomize;
-				((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).StudentID = this.SpawnID;
-				((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).JSON = this.JSON;
-				this.Students[this.SpawnID] = (StudentScript)this.NewStudent.GetComponent(typeof(StudentScript));
-				this.Students[this.SpawnID].Cosmetic.TextureManager = this.TextureManager;
-				this.Students[this.SpawnID].WitnessCamera = this.WitnessCamera;
-				this.Students[this.SpawnID].StudentManager = this;
-				this.Students[this.SpawnID].StudentID = this.SpawnID;
-				this.Students[this.SpawnID].JSON = this.JSON;
-				if (this.AoT)
-				{
-					this.Students[this.SpawnID].AoT = true;
-				}
-				if (this.DK)
-				{
-					this.Students[this.SpawnID].DK = true;
-				}
-				if (this.Spooky)
-				{
-					this.Students[this.SpawnID].Spooky = true;
-				}
-				if (this.Sans)
-				{
-					this.Students[this.SpawnID].BadTime = true;
-				}
-				if (this.SpawnID == 7)
-				{
-					this.CommunalLocker.Student = this.Students[this.SpawnID];
-				}
+				this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.StudentChan, this.SpawnPositions[this.SpawnID].position, Quaternion.identity);
 			}
-			this.NPCsSpawned++;
-			this.SpawnID++;
-			if (this.SpawnID > this.NPCsTotal)
+			else
 			{
-				this.TeachersSpawned = true;
-				this.SpawnID = 1;
+				this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.StudentKun, this.SpawnPositions[this.SpawnID].position, Quaternion.identity);
 			}
-			this.UpdateStudents();
-			if (!this.TakingPortraits)
+			((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).LoveManager = this.LoveManager;
+			((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).Randomize = this.Randomize;
+			((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).StudentID = this.SpawnID;
+			((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).JSON = this.JSON;
+			this.Students[this.SpawnID] = (StudentScript)this.NewStudent.GetComponent(typeof(StudentScript));
+			this.Students[this.SpawnID].Cosmetic.TextureManager = this.TextureManager;
+			this.Students[this.SpawnID].WitnessCamera = this.WitnessCamera;
+			this.Students[this.SpawnID].StudentManager = this;
+			this.Students[this.SpawnID].StudentID = this.SpawnID;
+			this.Students[this.SpawnID].JSON = this.JSON;
+			if (this.AoT)
 			{
-				this.TaskManager.UpdateTaskStatus();
+				this.Students[this.SpawnID].AoT = true;
 			}
-			this.ForceSpawn = false;
+			if (this.DK)
+			{
+				this.Students[this.SpawnID].DK = true;
+			}
+			if (this.Spooky)
+			{
+				this.Students[this.SpawnID].Spooky = true;
+			}
+			if (this.Sans)
+			{
+				this.Students[this.SpawnID].BadTime = true;
+			}
+			if (this.SpawnID == 7)
+			{
+				this.CommunalLocker.Student = this.Students[this.SpawnID];
+			}
 		}
+		this.NPCsSpawned++;
+		this.SpawnID++;
+		if (!this.TakingPortraits)
+		{
+			this.TaskManager.UpdateTaskStatus();
+		}
+		this.ForceSpawn = false;
 	}
 
 	public virtual void UpdateStudents()
@@ -776,6 +808,19 @@ public class StudentManagerScript : MonoBehaviour
 					this.Students[this.ID].AlarmTimer = (float)1;
 				}
 				this.Students[this.ID].Hesitation = (float)0;
+			}
+			this.ID++;
+		}
+	}
+
+	public virtual void Unstop()
+	{
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.Students))
+		{
+			if (this.Students[this.ID] != null)
+			{
+				this.Students[this.ID].Stop = false;
 			}
 			this.ID++;
 		}

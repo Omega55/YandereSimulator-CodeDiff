@@ -142,6 +142,16 @@ public class CookingEventScript : MonoBehaviour
 			}
 			else if (!this.EventStudent.Pathfinding.canMove)
 			{
+				if (PlayerPrefs.GetInt("Topic_1_Student_7_Learned") == 0 && Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position) < (float)5)
+				{
+					if (PlayerPrefs.GetInt("Topic_1_Discovered") == 0)
+					{
+						this.Yandere.NotificationManager.DisplayNotification("Topic");
+						PlayerPrefs.SetInt("Topic_1_Discovered", 1);
+					}
+					this.Yandere.NotificationManager.DisplayNotification("Opinion");
+					PlayerPrefs.SetInt("Topic_1_Student_7_Learned", 1);
+				}
 				if (this.EventPhase == -1)
 				{
 					this.Timer += Time.deltaTime;
@@ -155,7 +165,7 @@ public class CookingEventScript : MonoBehaviour
 						this.Timer = (float)0;
 					}
 				}
-				if (this.EventPhase == 0)
+				else if (this.EventPhase == 0)
 				{
 					if (!this.RivalPhone.active)
 					{

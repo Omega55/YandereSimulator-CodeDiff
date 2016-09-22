@@ -323,7 +323,6 @@ public class StudentInfoScript : MonoBehaviour
 				this.StudentInfoMenu.PauseScreen.Show = false;
 				this.DialogueWheel.Victim = this.CurrentStudent;
 				this.StudentInfoMenu.Gossiping = false;
-				this.Shutter.Yandere.Interaction = 3;
 				this.gameObject.active = false;
 				Time.timeScale = (float)1;
 				this.PromptBar.ClearButtons();
@@ -335,7 +334,6 @@ public class StudentInfoScript : MonoBehaviour
 				this.StudentInfoMenu.PauseScreen.Show = false;
 				this.DialogueWheel.Victim = this.CurrentStudent;
 				this.StudentInfoMenu.Gossiping = false;
-				this.Shutter.Yandere.Interaction = 8;
 				this.gameObject.active = false;
 				Time.timeScale = (float)1;
 				this.PromptBar.ClearButtons();
@@ -349,6 +347,17 @@ public class StudentInfoScript : MonoBehaviour
 				this.StudentInfoMenu.PauseScreen.Show = false;
 				this.StudentInfoMenu.CyberBullying = false;
 				this.gameObject.active = false;
+				this.PromptBar.ClearButtons();
+				this.PromptBar.Show = false;
+			}
+			else if (this.StudentInfoMenu.MatchMaking)
+			{
+				this.StudentInfoMenu.PauseScreen.MainMenu.active = true;
+				this.StudentInfoMenu.PauseScreen.Show = false;
+				this.DialogueWheel.Victim = this.CurrentStudent;
+				this.StudentInfoMenu.MatchMaking = false;
+				this.gameObject.active = false;
+				Time.timeScale = (float)1;
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Show = false;
 			}
@@ -439,6 +448,10 @@ public class StudentInfoScript : MonoBehaviour
 				this.Strings[2] = "?????";
 			}
 			this.InfoLabel.text = this.Strings[1] + "\n" + "\n" + this.Strings[2];
+		}
+		else if (ID == 13)
+		{
+			this.InfoLabel.text = "Comes from a rich family. He tries to hide this fact from others, but his affluent origins are very obvious because of his unusual way of speaking.";
 		}
 		else if (ID == 14)
 		{

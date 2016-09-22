@@ -18,10 +18,13 @@ public class PhonePromptBarScript : MonoBehaviour
 	{
 		if (!this.Show)
 		{
-			float y = Mathf.Lerp(this.transform.localPosition.y, (float)630, 0.166666672f);
-			Vector3 localPosition = this.transform.localPosition;
-			float num = localPosition.y = y;
-			Vector3 vector = this.transform.localPosition = localPosition;
+			if (this.transform.localPosition.y < (float)630)
+			{
+				float y = Mathf.Lerp(this.transform.localPosition.y, (float)631, 0.166666672f);
+				Vector3 localPosition = this.transform.localPosition;
+				float num = localPosition.y = y;
+				Vector3 vector = this.transform.localPosition = localPosition;
+			}
 		}
 		else
 		{

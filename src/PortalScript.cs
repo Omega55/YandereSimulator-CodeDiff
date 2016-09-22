@@ -239,7 +239,7 @@ public class PortalScript : MonoBehaviour
 		{
 			if (this.transform.position.z < (float)0)
 			{
-				this.transform.position = new Vector3((float)0, (float)1, -49.5f);
+				this.transform.position = new Vector3((float)0, (float)1, (float)-75);
 				this.Prompt.Label[0].text = "     " + "Go Home";
 				this.Prompt.enabled = true;
 			}

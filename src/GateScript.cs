@@ -8,6 +8,8 @@ public class GateScript : MonoBehaviour
 
 	public ClockScript Clock;
 
+	public Collider GateCollider;
+
 	public Transform RightGate;
 
 	public Transform LeftGate;
