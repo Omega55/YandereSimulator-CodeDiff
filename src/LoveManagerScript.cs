@@ -53,7 +53,7 @@ public class LoveManagerScript : MonoBehaviour
 			this.ID = 0;
 			while (this.ID < this.TotalTargets)
 			{
-				if (this.Targets[this.ID] != null && Vector3.Distance(this.Follower.transform.position, new Vector3(this.Targets[this.ID].position.x, this.Follower.transform.position.y, this.Targets[this.ID].position.z)) < 2.5f)
+				if (this.Targets[this.ID] != null && this.Follower.transform.position.y > this.Targets[this.ID].position.y - (float)2 && this.Follower.transform.position.y < this.Targets[this.ID].position.y + (float)2 && Vector3.Distance(this.Follower.transform.position, new Vector3(this.Targets[this.ID].position.x, this.Follower.transform.position.y, this.Targets[this.ID].position.z)) < 2.5f)
 				{
 					float f = Vector3.Angle(this.Follower.transform.forward, this.Follower.transform.position - new Vector3(this.Targets[this.ID].position.x, this.Follower.transform.position.y, this.Targets[this.ID].position.z));
 					if (Mathf.Abs(f) > this.AngleLimit)
@@ -107,6 +107,8 @@ public class LoveManagerScript : MonoBehaviour
 				this.StudentManager.Students[7].enabled = true;
 				this.StudentManager.Students[7].Cosmetic.MyRenderer.materials[2].SetFloat("_BlendAmount", (float)0);
 				this.StudentManager.Students[7].Hearts.enableEmission = false;
+				this.StudentManager.Students[13].HoldingHands = false;
+				this.StudentManager.Students[7].HoldingHands = false;
 				this.HoldingHands = false;
 			}
 		}
@@ -138,6 +140,8 @@ public class LoveManagerScript : MonoBehaviour
 			this.StudentManager.Students[7].Hearts.enableEmission = true;
 			this.StudentManager.Students[7].Hearts.emissionRate = (float)5;
 			this.StudentManager.Students[7].Hearts.Play();
+			this.StudentManager.Students[13].HoldingHands = true;
+			this.StudentManager.Students[7].HoldingHands = true;
 			this.HoldingHands = true;
 		}
 	}

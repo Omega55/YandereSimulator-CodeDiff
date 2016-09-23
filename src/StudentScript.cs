@@ -263,6 +263,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool Electrocuted;
 
+	public bool HoldingHands;
+
 	public bool PlayingAudio;
 
 	public bool TurnOffRadio;
@@ -4610,13 +4612,12 @@ public class StudentScript : MonoBehaviour
 			{
 				if (this.Gush)
 				{
-					this.StudentManager.FollowerLookAtTarget.position = Vector3.Lerp(this.StudentManager.FollowerLookAtTarget.position, this.GushTarget.position, this.DeltaTime * this.LookSpeed);
+					this.Neck.LookAt(this.GushTarget);
 				}
 				else
 				{
-					this.StudentManager.FollowerLookAtTarget.position = Vector3.Lerp(this.StudentManager.FollowerLookAtTarget.position, new Vector3(this.DefaultTarget.position.x, this.Neck.transform.position.y, this.DefaultTarget.position.z), this.DeltaTime * this.LookSpeed);
+					this.Neck.LookAt(this.DefaultTarget);
 				}
-				this.Neck.LookAt(this.StudentManager.FollowerLookAtTarget);
 			}
 		}
 		if (this.DK)

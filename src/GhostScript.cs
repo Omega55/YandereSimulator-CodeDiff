@@ -8,9 +8,24 @@ public class GhostScript : MonoBehaviour
 
 	public Transform Neck;
 
-	public virtual void Start()
+	public Transform GhostEyeLocation;
+
+	public Transform GhostEye;
+
+	public int Frame;
+
+	public virtual void Update()
 	{
-		this.active = false;
+		if (Time.timeScale > (float)0)
+		{
+			if (this.Frame > 0)
+			{
+				((Animation)this.GetComponent(typeof(Animation))).enabled = false;
+				this.active = false;
+				this.Frame = 0;
+			}
+			this.Frame++;
+		}
 	}
 
 	public virtual void Look()

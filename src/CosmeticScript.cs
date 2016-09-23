@@ -856,7 +856,7 @@ public class CosmeticScript : MonoBehaviour
 			this.MyRenderer.materials[1].mainTexture = this.UniformTexture;
 		}
 		this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
-		if (this.Student.StudentManager.Censor)
+		if (this.Student != null && this.Student.StudentManager.Censor)
 		{
 			this.CensorPanties();
 		}

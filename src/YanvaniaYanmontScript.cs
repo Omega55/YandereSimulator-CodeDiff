@@ -760,27 +760,30 @@ public class YanvaniaYanmontScript : MonoBehaviour
 		Vector3 localScale = this.HealthBar.localScale;
 		float num = localScale.y = y;
 		Vector3 vector = this.HealthBar.localScale = localScale;
-		if (this.EXP >= (float)100)
+		if (this.Health > (float)0)
 		{
-			this.Level++;
-			if (this.Level >= 99)
+			if (this.EXP >= (float)100)
 			{
-				this.Level = 99;
+				this.Level++;
+				if (this.Level >= 99)
+				{
+					this.Level = 99;
+				}
+				else
+				{
+					GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.LevelUpEffect, this.LevelLabel.transform.position, Quaternion.identity);
+					gameObject.transform.parent = this.LevelLabel.transform;
+					this.MaxHealth += (float)20;
+					this.Health = this.MaxHealth;
+					this.EXP -= (float)100;
+				}
+				this.LevelLabel.text = string.Empty + this.Level;
 			}
-			else
-			{
-				GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.LevelUpEffect, this.LevelLabel.transform.position, Quaternion.identity);
-				gameObject.transform.parent = this.LevelLabel.transform;
-				this.MaxHealth += (float)20;
-				this.Health = this.MaxHealth;
-				this.EXP -= (float)100;
-			}
-			this.LevelLabel.text = string.Empty + this.Level;
+			float y2 = Mathf.Lerp(this.EXPBar.localScale.y, this.EXP / 100f, Time.deltaTime * (float)10);
+			Vector3 localScale2 = this.EXPBar.localScale;
+			float num2 = localScale2.y = y2;
+			Vector3 vector2 = this.EXPBar.localScale = localScale2;
 		}
-		float y2 = Mathf.Lerp(this.EXPBar.localScale.y, this.EXP / 100f, Time.deltaTime * (float)10);
-		Vector3 localScale2 = this.EXPBar.localScale;
-		float num2 = localScale2.y = y2;
-		Vector3 vector2 = this.EXPBar.localScale = localScale2;
 		int num3 = 0;
 		Vector3 position = this.transform.position;
 		float num4 = position.z = (float)num3;

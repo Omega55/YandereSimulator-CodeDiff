@@ -181,7 +181,7 @@ public class ShutterScript : MonoBehaviour
 						GameObject gameObject = this.hit.collider.gameObject.transform.root.gameObject;
 						StudentScript studentScript = (StudentScript)this.hit.collider.gameObject.transform.root.gameObject.GetComponent(typeof(StudentScript));
 						this.TargetStudent = studentScript.StudentID;
-						if (!studentScript.Male && !studentScript.Alarmed && !studentScript.Distracted && !studentScript.InEvent && !studentScript.Wet && !studentScript.CensorSteam[0].active && !studentScript.Fleeing && !studentScript.Fleeing && !studentScript.ShoeRemoval.enabled && studentScript.Actions[studentScript.Phase] != 16 && Vector3.Distance(this.Yandere.transform.position, gameObject.transform.position) < 1.66666f)
+						if (!studentScript.Male && !studentScript.Alarmed && !studentScript.Distracted && !studentScript.InEvent && !studentScript.Wet && !studentScript.CensorSteam[0].active && !studentScript.Fleeing && !studentScript.Following && !studentScript.ShoeRemoval.enabled && !studentScript.HoldingHands && studentScript.Actions[studentScript.Phase] != 16 && Vector3.Distance(this.Yandere.transform.position, gameObject.transform.position) < 1.66666f)
 						{
 							Plane[] planes = GeometryUtility.CalculateFrustumPlanes(studentScript.VisionCone);
 							if (GeometryUtility.TestPlanesAABB(planes, this.Yandere.collider.bounds) && Physics.Linecast(studentScript.Eyes.position, this.Yandere.transform.position + Vector3.up * (float)1, out this.hit) && this.hit.collider.gameObject == this.Yandere.gameObject)
