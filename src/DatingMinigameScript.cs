@@ -29,6 +29,8 @@ public class DatingMinigameScript : MonoBehaviour
 
 	public GameObject HeartbeatCamera;
 
+	public GameObject PantyIcon;
+
 	public Transform TopicHighlight;
 
 	public Transform ComplimentSet;
@@ -822,6 +824,15 @@ public class DatingMinigameScript : MonoBehaviour
 		{
 			this.MultiplierIcons[4].mainTexture = this.X;
 			this.Multiplier--;
+		}
+		if (PlayerPrefs.GetInt("PantiesEquipped") == 2)
+		{
+			this.PantyIcon.active = true;
+			this.Multiplier++;
+		}
+		else
+		{
+			this.PantyIcon.active = false;
 		}
 		this.MultiplierLabel.text = "Multiplier: " + this.Multiplier + "x";
 	}

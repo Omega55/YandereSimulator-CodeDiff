@@ -39,15 +39,18 @@ public class TaskManagerScript : MonoBehaviour
 		}
 		if (!this.Yandere.Talking)
 		{
-			if (PlayerPrefs.GetInt("Task_32_Status") == 1 && this.Yandere.Inventory.Cigs)
+			if (PlayerPrefs.GetInt("Task_32_Status") == 1)
 			{
-				if (this.StudentManager.Students[32] != null)
+				if (this.Yandere.Inventory.Cigs)
 				{
-					this.StudentManager.Students[32].TaskPhase = 5;
+					if (this.StudentManager.Students[32] != null)
+					{
+						this.StudentManager.Students[32].TaskPhase = 5;
+					}
+					PlayerPrefs.SetInt("Task_32_Status", 2);
 				}
-				PlayerPrefs.SetInt("Task_32_Status", 2);
 			}
-			if (PlayerPrefs.GetInt("Task_32_Status") == 2 && !this.Yandere.Inventory.Cigs)
+			else if (PlayerPrefs.GetInt("Task_32_Status") == 2 && !this.Yandere.Inventory.Cigs)
 			{
 				if (this.StudentManager.Students[32] != null)
 				{

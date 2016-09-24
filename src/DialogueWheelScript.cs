@@ -787,7 +787,6 @@ public class DialogueWheelScript : MonoBehaviour
 	{
 		if (PlayerPrefs.GetInt("Task_" + this.Yandere.TargetStudent.StudentID + "_Status") == 2 && this.Yandere.TargetStudent.StudentID == 32)
 		{
-			this.Yandere.TargetStudent.TaskPhase = this.Yandere.TargetStudent.TaskPhase + 1;
 			this.Yandere.Inventory.Cigs = false;
 		}
 	}

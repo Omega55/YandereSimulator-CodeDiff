@@ -235,6 +235,8 @@ public class StudentScript : MonoBehaviour
 
 	public GameObject Phone;
 
+	public GameObject Note;
+
 	public GameObject Pen;
 
 	public bool OriginallyTeacher;
@@ -973,6 +975,7 @@ public class StudentScript : MonoBehaviour
 					this.ID++;
 				}
 				this.GreenPhone.active = false;
+				this.Note.active = false;
 			}
 			else
 			{
@@ -1070,10 +1073,10 @@ public class StudentScript : MonoBehaviour
 				this.IdleAnim = this.BrokenAnim;
 				this.WalkAnim = this.BrokenWalkAnim;
 				this.Phone.active = false;
+				this.Distracted = true;
 				this.OnPhone = false;
 				this.Indoors = true;
 				this.Safe = false;
-				Debug.Log("Possibility 4.");
 				this.ID = 0;
 				while (this.ID < Extensions.get_length(this.PhaseTimes))
 				{
@@ -1713,7 +1716,7 @@ public class StudentScript : MonoBehaviour
 							}
 							this.active = false;
 						}
-						if (this.transform.position.z < -49.335f)
+						if (this.transform.position.z < (float)-99)
 						{
 							this.Prompt.Hide();
 							this.Prompt.enabled = false;
@@ -3464,7 +3467,6 @@ public class StudentScript : MonoBehaviour
 						this.Yandere.WeaponManager.UpdateLabels();
 						this.Yandere.WeaponMenu.UpdateSprites();
 						this.Yandere.WeaponWarning = false;
-						this.CharacterAnimation["f02_brokenStandUp_00"].speed = 0.5f;
 						this.CharacterAnimation.CrossFade("f02_brokenStandUp_00");
 						if (this.StudentID != 7)
 						{
@@ -4331,6 +4333,7 @@ public class StudentScript : MonoBehaviour
 							this.CharacterAnimation.CrossFade("f02_insertNote_00");
 							this.Pathfinding.canSearch = false;
 							this.Pathfinding.canMove = false;
+							this.Note.active = true;
 							this.ConfessPhase++;
 						}
 					}
@@ -4338,6 +4341,14 @@ public class StudentScript : MonoBehaviour
 					{
 						this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.CurrentDestination.rotation, this.DeltaTime * (float)10);
 						this.MoveTowardsTarget(this.CurrentDestination.position);
+						if (this.CharacterAnimation["f02_insertNote_00"].time >= (float)9)
+						{
+							this.Note.active = false;
+							this.ConfessPhase++;
+						}
+					}
+					else if (this.ConfessPhase == 3)
+					{
 						if (this.CharacterAnimation["f02_insertNote_00"].time >= this.CharacterAnimation["f02_insertNote_00"].length)
 						{
 							this.CurrentDestination = this.StudentManager.EdgeOfGrid;
@@ -4350,7 +4361,7 @@ public class StudentScript : MonoBehaviour
 							this.ConfessPhase++;
 						}
 					}
-					else if (this.ConfessPhase == 3)
+					else if (this.ConfessPhase == 4)
 					{
 						if (this.DistanceToDestination < 0.5f)
 						{
@@ -4360,7 +4371,7 @@ public class StudentScript : MonoBehaviour
 							this.ConfessPhase++;
 						}
 					}
-					else if (this.ConfessPhase == 4)
+					else if (this.ConfessPhase == 5)
 					{
 						this.targetRotation = Quaternion.LookRotation(new Vector3(this.CurrentDestination.position.x, this.transform.position.y, this.CurrentDestination.position.z) - this.transform.position);
 						this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * this.DeltaTime);
@@ -4371,7 +4382,7 @@ public class StudentScript : MonoBehaviour
 							this.ConfessPhase++;
 						}
 					}
-					else if (this.ConfessPhase == 5)
+					else if (this.ConfessPhase == 6)
 					{
 						this.targetRotation = Quaternion.LookRotation(new Vector3(this.CurrentDestination.position.x, this.transform.position.y, this.CurrentDestination.position.z) - this.transform.position);
 						this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * this.DeltaTime);
@@ -4382,7 +4393,7 @@ public class StudentScript : MonoBehaviour
 							this.ConfessPhase++;
 						}
 					}
-					else if (this.ConfessPhase == 6)
+					else if (this.ConfessPhase == 7)
 					{
 						this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.CurrentDestination.rotation, this.DeltaTime * (float)10);
 						this.CharacterAnimation[this.ShyAnim].weight = Mathf.Lerp(this.CharacterAnimation[this.ShyAnim].weight, (float)1, this.DeltaTime);

@@ -297,7 +297,7 @@ public class DebugMenuScript : MonoBehaviour
 			{
 				if (!this.StudentManager.Censor)
 				{
-					if (this.Yandere.Schoolwear == 1)
+					if (this.Yandere.Schoolwear == 1 && !this.Yandere.Sans)
 					{
 						this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)1);
 						this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)1);

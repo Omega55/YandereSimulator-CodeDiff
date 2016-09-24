@@ -295,6 +295,8 @@ public class YandereScript : MonoBehaviour
 
 	public float DumpTimer;
 
+	public float ExitTimer;
+
 	public float TalkTimer;
 
 	public float Bloodiness;
@@ -2219,13 +2221,15 @@ public class YandereScript : MonoBehaviour
 					{
 						this.MoveTowardsTarget(this.ExitSpot.position);
 						this.CharacterAnimation.CrossFade(this.IdleAnim);
-						if (Vector3.Distance(this.transform.position, this.ExitSpot.position) < 0.1f)
+						this.ExitTimer += Time.deltaTime;
+						if (this.ExitTimer > (float)1 || Vector3.Distance(this.transform.position, this.ExitSpot.position) < 0.1f)
 						{
 							float y3 = 0.825f;
 							Vector3 center = this.MyController.center;
 							float num10 = center.y = y3;
 							Vector3 vector9 = this.MyController.center = center;
 							this.MyController.height = 1.45f;
+							this.ExitTimer = (float)0;
 							this.Exiting = false;
 							this.CanMove = true;
 							this.Hiding = false;
@@ -4295,6 +4299,8 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.materials[0].mainTexture = this.SansFace;
 		this.MyRenderer.materials[1].mainTexture = this.SansTexture;
 		this.MyRenderer.materials[2].mainTexture = this.SansTexture;
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)0);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)0);
 		this.EasterEggMenu.active = false;
 		this.IdleAnim = "f02_sansIdle_00";
 		this.StudentManager.BadTime();
