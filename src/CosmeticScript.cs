@@ -864,14 +864,14 @@ public class CosmeticScript : MonoBehaviour
 
 	public virtual void CensorPanties()
 	{
-		this.MyRenderer.materials[0].SetFloat("_BlendAmount 1", (float)1);
-		this.MyRenderer.materials[1].SetFloat("_BlendAmount 1", (float)1);
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount1", (float)1);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount1", (float)1);
 	}
 
 	public virtual void RemoveCensor()
 	{
-		this.MyRenderer.materials[0].SetFloat("_BlendAmount 1", (float)0);
-		this.MyRenderer.materials[1].SetFloat("_BlendAmount 1", (float)0);
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount1", (float)0);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount1", (float)0);
 	}
 
 	public virtual void TaskCheck()

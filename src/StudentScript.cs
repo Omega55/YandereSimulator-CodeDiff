@@ -737,6 +737,10 @@ public class StudentScript : MonoBehaviour
 
 	public Texture JudoGiTexture;
 
+	public bool Couple;
+
+	public int CoupleID;
+
 	public StudentScript()
 	{
 		this.CanTalk = true;
@@ -1640,7 +1644,14 @@ public class StudentScript : MonoBehaviour
 							this.MeetTimer += this.DeltaTime;
 							if (this.MeetTimer > (float)60)
 							{
-								this.Subtitle.UpdateLabel("Note Reaction", 4, (float)3);
+								if (!this.Male)
+								{
+									this.Subtitle.UpdateLabel("Note Reaction", 4, (float)3);
+								}
+								else
+								{
+									this.Subtitle.UpdateLabel("Note Reaction", 6, (float)3);
+								}
 								while (this.Clock.HourTime >= this.PhaseTimes[this.Phase])
 								{
 									this.Phase++;
@@ -3842,7 +3853,7 @@ public class StudentScript : MonoBehaviour
 				}
 				if (this.WitnessedMurder)
 				{
-					this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - this.transform.position);
+					this.targetRotation = Quaternion.LookRotation(new Vector3(this.Yandere.transform.position.x, this.transform.position.y, this.Yandere.transform.position.z) - this.transform.position);
 					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * this.DeltaTime);
 				}
 				else if (this.WitnessedCorpse)
@@ -3855,7 +3866,7 @@ public class StudentScript : MonoBehaviour
 				}
 				else if (!this.DiscCheck)
 				{
-					this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - this.transform.position);
+					this.targetRotation = Quaternion.LookRotation(new Vector3(this.Yandere.transform.position.x, this.transform.position.y, this.Yandere.transform.position.z) - this.transform.position);
 					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * this.DeltaTime);
 				}
 				else
@@ -4981,7 +4992,7 @@ public class StudentScript : MonoBehaviour
 
 	public virtual void PersonaReaction()
 	{
-		if (!this.Indoors)
+		if (!this.Indoors && this.WitnessedMurder && this.Persona != 3)
 		{
 			this.Persona = 1;
 		}
@@ -6000,7 +6011,12 @@ public class StudentScript : MonoBehaviour
 	{
 		if (this.Yandere.TargetStudent != null)
 		{
-			if (this.StudentID == 14 && this.Yandere.TargetStudent.StudentID == 15)
+			if (this.Couple && this.Yandere.TargetStudent.StudentID == this.CoupleID)
+			{
+				this.Strength = 5;
+				this.Persona = 3;
+			}
+			else if (this.StudentID == 14 && this.Yandere.TargetStudent.StudentID == 15)
 			{
 				this.Strength = 5;
 				this.Persona = 3;

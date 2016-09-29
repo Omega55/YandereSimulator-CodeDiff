@@ -3320,29 +3320,32 @@ public class YandereScript : MonoBehaviour
 					}
 				}
 			}
-			if (Input.GetKeyDown("-"))
+			if (!this.DebugMenu.active)
 			{
-				if (Time.timeScale < (float)6)
+				if (Input.GetKeyDown("-"))
 				{
-					Time.timeScale = (float)1;
-				}
-				else
-				{
-					Time.timeScale -= (float)5;
-				}
-			}
-			if (Input.GetKeyDown("="))
-			{
-				if (Time.timeScale < (float)5)
-				{
-					Time.timeScale = (float)5;
-				}
-				else
-				{
-					Time.timeScale += (float)5;
-					if (Time.timeScale > (float)25)
+					if (Time.timeScale < (float)6)
 					{
-						Time.timeScale = (float)25;
+						Time.timeScale = (float)1;
+					}
+					else
+					{
+						Time.timeScale -= (float)5;
+					}
+				}
+				if (Input.GetKeyDown("="))
+				{
+					if (Time.timeScale < (float)5)
+					{
+						Time.timeScale = (float)5;
+					}
+					else
+					{
+						Time.timeScale += (float)5;
+						if (Time.timeScale > (float)25)
+						{
+							Time.timeScale = (float)25;
+						}
 					}
 				}
 			}

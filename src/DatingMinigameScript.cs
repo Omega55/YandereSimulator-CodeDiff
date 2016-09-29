@@ -29,6 +29,8 @@ public class DatingMinigameScript : MonoBehaviour
 
 	public GameObject HeartbeatCamera;
 
+	public GameObject SeductionIcon;
+
 	public GameObject PantyIcon;
 
 	public Transform TopicHighlight;
@@ -58,6 +60,8 @@ public class DatingMinigameScript : MonoBehaviour
 	public UISprite[] ComplimentBGs;
 
 	public UILabel MultiplierLabel;
+
+	public UILabel SeductionLabel;
 
 	public UILabel TopicNameLabel;
 
@@ -833,6 +837,16 @@ public class DatingMinigameScript : MonoBehaviour
 		else
 		{
 			this.PantyIcon.active = false;
+		}
+		if (PlayerPrefs.GetInt("Seduction") + PlayerPrefs.GetInt("SeductionBonus") > 0)
+		{
+			this.SeductionLabel.text = string.Empty + (PlayerPrefs.GetInt("Seduction") + PlayerPrefs.GetInt("SeductionBonus"));
+			this.Multiplier += PlayerPrefs.GetInt("Seduction") + PlayerPrefs.GetInt("SeductionBonus");
+			this.SeductionIcon.active = true;
+		}
+		else
+		{
+			this.SeductionIcon.active = false;
 		}
 		this.MultiplierLabel.text = "Multiplier: " + this.Multiplier + "x";
 	}

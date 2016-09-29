@@ -278,188 +278,172 @@ public class DebugMenuScript : MonoBehaviour
 				PlayerPrefs.SetInt("Event1", 1);
 				this.Window.active = false;
 			}
-			else if (Input.GetKeyDown("m"))
+			else if (!Input.GetKeyDown("m"))
 			{
-				PlayerPrefs.SetInt("Student_6_Slave", 1);
-				Application.LoadLevel(Application.loadedLevel);
-			}
-			else if (Input.GetKeyDown("o"))
-			{
-				this.Yandere.Inventory.RivalPhone = true;
-				this.Window.active = false;
-			}
-			else if (Input.GetKeyDown("p"))
-			{
-				PlayerPrefs.SetInt("PantyShots", 17);
-				this.Window.active = false;
-			}
-			else if (Input.GetKeyDown("q"))
-			{
-				if (!this.StudentManager.Censor)
+				if (Input.GetKeyDown("o"))
 				{
-					if (this.Yandere.Schoolwear == 1 && !this.Yandere.Sans)
-					{
-						this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)1);
-						this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)1);
-					}
-					this.StudentManager.Censor = true;
-					this.StudentManager.CensorStudents();
-				}
-				else
-				{
-					this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)0);
-					this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)0);
-					this.StudentManager.Censor = false;
-					this.StudentManager.CensorStudents();
-				}
-				this.Window.active = false;
-			}
-			else if (Input.GetKeyDown("r"))
-			{
-				if (PlayerPrefs.GetFloat("Reputation") != 66.66666f)
-				{
-					PlayerPrefs.SetFloat("Reputation", 66.66666f);
-					this.Reputation.Reputation = PlayerPrefs.GetFloat("Reputation");
-				}
-				else
-				{
-					PlayerPrefs.SetFloat("Reputation", -66.66666f);
-					this.Reputation.Reputation = PlayerPrefs.GetFloat("Reputation");
-				}
-				this.Window.active = false;
-			}
-			else if (Input.GetKeyDown("s"))
-			{
-				PlayerPrefs.SetInt("PhysicalGrade", 5);
-				PlayerPrefs.SetInt("Seduction", 5);
-				PlayerPrefs.SetInt("Student_1_Photographed", 1);
-				PlayerPrefs.SetInt("Student_2_Photographed", 1);
-				PlayerPrefs.SetInt("Student_3_Photographed", 1);
-				PlayerPrefs.SetInt("Student_4_Photographed", 1);
-				PlayerPrefs.SetInt("Student_5_Photographed", 1);
-				PlayerPrefs.SetInt("Student_6_Photographed", 1);
-				PlayerPrefs.SetInt("Student_7_Photographed", 1);
-				PlayerPrefs.SetInt("Student_8_Photographed", 1);
-				PlayerPrefs.SetInt("Student_9_Photographed", 1);
-				PlayerPrefs.SetInt("Student_10_Photographed", 1);
-				PlayerPrefs.SetInt("Student_11_Photographed", 1);
-				PlayerPrefs.SetInt("Student_12_Photographed", 1);
-				PlayerPrefs.SetInt("Student_13_Photographed", 1);
-				PlayerPrefs.SetInt("Student_14_Photographed", 1);
-				PlayerPrefs.SetInt("Student_15_Photographed", 1);
-				PlayerPrefs.SetInt("Student_16_Photographed", 1);
-				PlayerPrefs.SetInt("Student_17_Photographed", 1);
-				PlayerPrefs.SetInt("Student_18_Photographed", 1);
-				PlayerPrefs.SetInt("Student_19_Photographed", 1);
-				PlayerPrefs.SetInt("Student_20_Photographed", 1);
-				PlayerPrefs.SetInt("Student_20_Photographed", 1);
-				PlayerPrefs.SetInt("Student_21_Photographed", 1);
-				PlayerPrefs.SetInt("Student_22_Photographed", 1);
-				PlayerPrefs.SetInt("Student_23_Photographed", 1);
-				PlayerPrefs.SetInt("Student_24_Photographed", 1);
-				PlayerPrefs.SetInt("Student_25_Photographed", 1);
-				PlayerPrefs.SetInt("Student_26_Photographed", 1);
-				PlayerPrefs.SetInt("Student_27_Photographed", 1);
-				PlayerPrefs.SetInt("Student_28_Photographed", 1);
-				PlayerPrefs.SetInt("Student_29_Photographed", 1);
-				PlayerPrefs.SetInt("Student_30_Photographed", 1);
-				PlayerPrefs.SetInt("Student_31_Photographed", 1);
-				PlayerPrefs.SetInt("Student_32_Photographed", 1);
-				this.Window.active = false;
-			}
-			else if (Input.GetKeyDown("t"))
-			{
-				if (!this.Zoom.OverShoulder)
-				{
-					this.Zoom.OverShoulder = true;
-				}
-				else
-				{
-					this.Zoom.OverShoulder = false;
-				}
-				this.Window.active = false;
-			}
-			else if (Input.GetKeyDown("u"))
-			{
-				PlayerPrefs.SetInt("7_Friend", 1);
-				PlayerPrefs.SetInt("13_Friend", 1);
-				this.ID = 1;
-				while (this.ID < 26)
-				{
-					PlayerPrefs.SetInt("Topic_" + this.ID + "_Student_7_Learned", 1);
-					PlayerPrefs.SetInt("Topic_" + this.ID + "_Discovered", 1);
-					this.ID++;
-				}
-				this.Window.active = false;
-			}
-			else if (Input.GetKeyDown("z"))
-			{
-				if (this.StudentManager.NPCsSpawned >= this.StudentManager.NPCsTotal)
-				{
-					if (this.StudentManager.Students[16] != null)
-					{
-						UnityEngine.Object.Destroy(this.StudentManager.Students[16].gameObject);
-					}
-					this.StudentManager.Students[16] = null;
-					this.StudentManager.ForceSpawn = true;
-					this.StudentManager.SpawnPositions[16] = this.TeleportSpot[9];
-					this.StudentManager.SpawnID = 16;
-					this.StudentManager.SpawnStudent();
-					this.StudentManager.SpawnID = 0;
+					this.Yandere.Inventory.RivalPhone = true;
 					this.Window.active = false;
 				}
-			}
-			else if (Input.GetKeyDown("backspace"))
-			{
-				Time.timeScale = (float)1;
-				this.Clock.PresentTime = (float)1079;
-				this.Clock.HourTime = this.Clock.PresentTime / (float)60;
-				this.Window.active = false;
-			}
-			else if (Input.GetKeyDown("`"))
-			{
-				PlayerPrefs.DeleteAll();
-				Application.LoadLevel(Application.loadedLevel);
-			}
-			else if (Input.GetKeyDown("space"))
-			{
-				this.Yandere.transform.position = this.TeleportSpot[5].position;
-				if (this.StudentManager.Students[21] != null)
+				else if (Input.GetKeyDown("p"))
 				{
-					this.StudentManager.Students[21].transform.position = this.TeleportSpot[5].position;
+					PlayerPrefs.SetInt("PantyShots", 17);
+					this.Window.active = false;
 				}
-				this.Clock.PresentTime = (float)1015;
-				this.Clock.HourTime = this.Clock.PresentTime / (float)60;
-				this.Window.active = false;
-			}
-			else if (Input.GetKeyDown("left alt"))
-			{
-				this.Turtle.SpawnWeapons();
-				this.Yandere.transform.position = this.TeleportSpot[6].position;
-				this.Clock.PresentTime = (float)425;
-				this.Clock.HourTime = this.Clock.PresentTime / (float)60;
-				this.Window.active = false;
-			}
-			else if (Input.GetKeyDown("left ctrl"))
-			{
-				this.Yandere.transform.position = this.TeleportSpot[7].position;
-				if (this.StudentManager.Students[26] != null)
+				else if (Input.GetKeyDown("q"))
 				{
-					this.StudentManager.Students[26].transform.position = this.TeleportSpot[7].position;
+					if (!this.StudentManager.Censor)
+					{
+						if (this.Yandere.Schoolwear == 1 && !this.Yandere.Sans)
+						{
+							this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)1);
+							this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)1);
+						}
+						this.StudentManager.Censor = true;
+						this.StudentManager.CensorStudents();
+					}
+					else
+					{
+						this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)0);
+						this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)0);
+						this.StudentManager.Censor = false;
+						this.StudentManager.CensorStudents();
+					}
+					this.Window.active = false;
 				}
-				this.Clock.PresentTime = (float)1015;
-				this.Clock.HourTime = this.Clock.PresentTime / (float)60;
-				this.Window.active = false;
-			}
-			else if (Input.GetKeyDown("right ctrl"))
-			{
-				this.Yandere.transform.position = this.TeleportSpot[8].position;
-				this.Window.active = false;
-			}
-			else if (Input.GetKeyDown("="))
-			{
-				this.Clock.PresentTime = this.Clock.PresentTime + (float)30;
-				this.Window.active = false;
+				else if (Input.GetKeyDown("r"))
+				{
+					if (PlayerPrefs.GetFloat("Reputation") != 66.66666f)
+					{
+						PlayerPrefs.SetFloat("Reputation", 66.66666f);
+						this.Reputation.Reputation = PlayerPrefs.GetFloat("Reputation");
+					}
+					else
+					{
+						PlayerPrefs.SetFloat("Reputation", -66.66666f);
+						this.Reputation.Reputation = PlayerPrefs.GetFloat("Reputation");
+					}
+					this.Window.active = false;
+				}
+				else if (Input.GetKeyDown("s"))
+				{
+					PlayerPrefs.SetInt("PhysicalGrade", 5);
+					PlayerPrefs.SetInt("Seduction", 5);
+					PlayerPrefs.SetInt("Student_1_Photographed", 1);
+					PlayerPrefs.SetInt("Student_2_Photographed", 1);
+					PlayerPrefs.SetInt("Student_3_Photographed", 1);
+					PlayerPrefs.SetInt("Student_4_Photographed", 1);
+					PlayerPrefs.SetInt("Student_5_Photographed", 1);
+					PlayerPrefs.SetInt("Student_6_Photographed", 1);
+					PlayerPrefs.SetInt("Student_7_Photographed", 1);
+					PlayerPrefs.SetInt("Student_8_Photographed", 1);
+					PlayerPrefs.SetInt("Student_9_Photographed", 1);
+					PlayerPrefs.SetInt("Student_10_Photographed", 1);
+					PlayerPrefs.SetInt("Student_11_Photographed", 1);
+					PlayerPrefs.SetInt("Student_12_Photographed", 1);
+					PlayerPrefs.SetInt("Student_13_Photographed", 1);
+					PlayerPrefs.SetInt("Student_14_Photographed", 1);
+					PlayerPrefs.SetInt("Student_15_Photographed", 1);
+					PlayerPrefs.SetInt("Student_16_Photographed", 1);
+					PlayerPrefs.SetInt("Student_17_Photographed", 1);
+					PlayerPrefs.SetInt("Student_18_Photographed", 1);
+					PlayerPrefs.SetInt("Student_19_Photographed", 1);
+					PlayerPrefs.SetInt("Student_20_Photographed", 1);
+					PlayerPrefs.SetInt("Student_20_Photographed", 1);
+					PlayerPrefs.SetInt("Student_21_Photographed", 1);
+					PlayerPrefs.SetInt("Student_22_Photographed", 1);
+					PlayerPrefs.SetInt("Student_23_Photographed", 1);
+					PlayerPrefs.SetInt("Student_24_Photographed", 1);
+					PlayerPrefs.SetInt("Student_25_Photographed", 1);
+					PlayerPrefs.SetInt("Student_26_Photographed", 1);
+					PlayerPrefs.SetInt("Student_27_Photographed", 1);
+					PlayerPrefs.SetInt("Student_28_Photographed", 1);
+					PlayerPrefs.SetInt("Student_29_Photographed", 1);
+					PlayerPrefs.SetInt("Student_30_Photographed", 1);
+					PlayerPrefs.SetInt("Student_31_Photographed", 1);
+					PlayerPrefs.SetInt("Student_32_Photographed", 1);
+					this.Window.active = false;
+				}
+				else if (Input.GetKeyDown("t"))
+				{
+					if (!this.Zoom.OverShoulder)
+					{
+						this.Zoom.OverShoulder = true;
+					}
+					else
+					{
+						this.Zoom.OverShoulder = false;
+					}
+					this.Window.active = false;
+				}
+				else if (Input.GetKeyDown("u"))
+				{
+					PlayerPrefs.SetInt("7_Friend", 1);
+					PlayerPrefs.SetInt("13_Friend", 1);
+					this.ID = 1;
+					while (this.ID < 26)
+					{
+						PlayerPrefs.SetInt("Topic_" + this.ID + "_Student_7_Learned", 1);
+						PlayerPrefs.SetInt("Topic_" + this.ID + "_Discovered", 1);
+						this.ID++;
+					}
+					this.Window.active = false;
+				}
+				else if (!Input.GetKeyDown("z"))
+				{
+					if (Input.GetKeyDown("backspace"))
+					{
+						Time.timeScale = (float)1;
+						this.Clock.PresentTime = (float)1079;
+						this.Clock.HourTime = this.Clock.PresentTime / (float)60;
+						this.Window.active = false;
+					}
+					else if (Input.GetKeyDown("`"))
+					{
+						PlayerPrefs.DeleteAll();
+						Application.LoadLevel(Application.loadedLevel);
+					}
+					else if (Input.GetKeyDown("space"))
+					{
+						this.Yandere.transform.position = this.TeleportSpot[5].position;
+						if (this.StudentManager.Students[21] != null)
+						{
+							this.StudentManager.Students[21].transform.position = this.TeleportSpot[5].position;
+						}
+						this.Clock.PresentTime = (float)1015;
+						this.Clock.HourTime = this.Clock.PresentTime / (float)60;
+						this.Window.active = false;
+					}
+					else if (Input.GetKeyDown("left alt"))
+					{
+						this.Turtle.SpawnWeapons();
+						this.Yandere.transform.position = this.TeleportSpot[6].position;
+						this.Clock.PresentTime = (float)425;
+						this.Clock.HourTime = this.Clock.PresentTime / (float)60;
+						this.Window.active = false;
+					}
+					else if (Input.GetKeyDown("left ctrl"))
+					{
+						this.Yandere.transform.position = this.TeleportSpot[7].position;
+						if (this.StudentManager.Students[26] != null)
+						{
+							this.StudentManager.Students[26].transform.position = this.TeleportSpot[7].position;
+						}
+						this.Clock.PresentTime = (float)1015;
+						this.Clock.HourTime = this.Clock.PresentTime / (float)60;
+						this.Window.active = false;
+					}
+					else if (Input.GetKeyDown("right ctrl"))
+					{
+						this.Yandere.transform.position = this.TeleportSpot[8].position;
+						this.Window.active = false;
+					}
+					else if (Input.GetKeyDown("="))
+					{
+						this.Clock.PresentTime = this.Clock.PresentTime + (float)30;
+						this.Window.active = false;
+					}
+				}
 			}
 		}
 		else if (Input.GetKeyDown("`"))

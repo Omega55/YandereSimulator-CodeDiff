@@ -401,7 +401,7 @@ public class DelinquentScript : MonoBehaviour
 
 	public virtual void Shove()
 	{
-		if (!this.Yandere.Shoved && this.DistanceToPlayer < 0.5f)
+		if (!this.Yandere.Shoved && !this.Yandere.Tripping && this.DistanceToPlayer < 0.5f)
 		{
 			this.DelinquentManager.audio.clip = this.ShoveClips[UnityEngine.Random.Range(0, Extensions.get_length(this.ShoveClips))];
 			this.DelinquentManager.audio.Play();

@@ -140,7 +140,7 @@ public class OfferHelpScript : MonoBehaviour
 				}
 			}
 		}
-		else if (this.StudentManager.Students[7].Pushed)
+		else if (this.StudentManager.Students[7].Pushed || this.StudentManager.Students[7].Dead)
 		{
 			this.active = false;
 		}

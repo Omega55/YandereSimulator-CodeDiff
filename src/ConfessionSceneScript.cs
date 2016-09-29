@@ -18,6 +18,10 @@ public class ConfessionSceneScript : MonoBehaviour
 
 	public Bloom BloomEffect;
 
+	public StudentScript Suitor;
+
+	public StudentScript Rival;
+
 	public ParticleSystem MythBlossoms;
 
 	public GameObject HeartBeatCamera;
@@ -72,12 +76,14 @@ public class ConfessionSceneScript : MonoBehaviour
 					this.BloomEffect.bloomIntensity = (float)1;
 					this.BloomEffect.bloomThreshhold = (float)0;
 					this.BloomEffect.bloomBlurIterations = 1;
-					this.StudentManager.Students[7].transform.position = this.RivalSpot.position;
-					this.StudentManager.Students[7].transform.eulerAngles = this.RivalSpot.eulerAngles;
-					this.StudentManager.Students[13].Cosmetic.MyRenderer.materials[this.StudentManager.Students[13].Cosmetic.FaceID].SetFloat("_BlendAmount", (float)1);
-					this.StudentManager.Students[13].transform.eulerAngles = this.StudentManager.SuitorConfessionSpot.eulerAngles;
-					this.StudentManager.Students[13].transform.position = this.StudentManager.SuitorConfessionSpot.position;
-					this.StudentManager.Students[13].Character.animation.Play(this.StudentManager.Students[13].IdleAnim);
+					this.Suitor = this.StudentManager.Students[13];
+					this.Rival = this.StudentManager.Students[7];
+					this.Rival.transform.position = this.RivalSpot.position;
+					this.Rival.transform.eulerAngles = this.RivalSpot.eulerAngles;
+					this.Suitor.Cosmetic.MyRenderer.materials[this.Suitor.Cosmetic.FaceID].SetFloat("_BlendAmount", (float)1);
+					this.Suitor.transform.eulerAngles = this.StudentManager.SuitorConfessionSpot.eulerAngles;
+					this.Suitor.transform.position = this.StudentManager.SuitorConfessionSpot.position;
+					this.Suitor.Character.animation.Play(this.Suitor.IdleAnim);
 					this.MythBlossoms.emissionRate = (float)100;
 					this.HeartBeatCamera.active = false;
 					this.ConfessionBG.active = true;
@@ -111,17 +117,17 @@ public class ConfessionSceneScript : MonoBehaviour
 							this.MainCamera.eulerAngles = this.CameraDestinations[this.TextPhase].eulerAngles;
 							if (this.TextPhase == 4 && !this.Kissing)
 							{
-								this.StudentManager.Students[13].Hearts.enableEmission = true;
-								this.StudentManager.Students[13].Hearts.emissionRate = (float)10;
-								this.StudentManager.Students[13].Hearts.Play();
-								this.StudentManager.Students[7].Hearts.enableEmission = true;
-								this.StudentManager.Students[7].Hearts.emissionRate = (float)10;
-								this.StudentManager.Students[7].Hearts.Play();
-								this.StudentManager.Students[13].Character.transform.localScale = new Vector3((float)1, (float)1, (float)1);
-								this.StudentManager.Students[13].Character.animation.Play("kiss_00");
-								this.StudentManager.Students[13].transform.position = this.KissSpot.position;
-								this.StudentManager.Students[7].Character.animation[this.StudentManager.Students[7].ShyAnim].weight = (float)0;
-								this.StudentManager.Students[7].Character.animation.Play("f02_kiss_00");
+								this.Suitor.Hearts.enableEmission = true;
+								this.Suitor.Hearts.emissionRate = (float)10;
+								this.Suitor.Hearts.Play();
+								this.Rival.Hearts.enableEmission = true;
+								this.Rival.Hearts.emissionRate = (float)10;
+								this.Rival.Hearts.Play();
+								this.Suitor.Character.transform.localScale = new Vector3((float)1, (float)1, (float)1);
+								this.Suitor.Character.animation.Play("kiss_00");
+								this.Suitor.transform.position = this.KissSpot.position;
+								this.Rival.Character.animation[this.Rival.ShyAnim].weight = (float)0;
+								this.Rival.Character.animation.Play("f02_kiss_00");
 								this.Kissing = true;
 							}
 							this.Label.text = this.Text[this.TextPhase];
@@ -169,7 +175,7 @@ public class ConfessionSceneScript : MonoBehaviour
 				if (this.Timer > (float)1)
 				{
 					PlayerPrefs.SetInt("SuitorProgress", 2);
-					this.StudentManager.Students[13].Character.transform.localScale = new Vector3(0.94f, 0.94f, 0.94f);
+					this.Suitor.Character.transform.localScale = new Vector3(0.94f, 0.94f, 0.94f);
 					this.PromptBar.ClearButtons();
 					this.PromptBar.UpdateButtons();
 					this.PromptBar.Show = false;
@@ -194,12 +200,16 @@ public class ConfessionSceneScript : MonoBehaviour
 				this.MythBlossoms.emissionRate = (float)20;
 				this.Clock.StopTime = false;
 				this.enabled = false;
+				this.Suitor.CoupleID = 7;
+				this.Suitor.Couple = true;
+				this.Rival.CoupleID = 13;
+				this.Rival.Couple = true;
 			}
 		}
-		if (this.Kissing && this.StudentManager.Students[13].Character.animation["kiss_00"].time >= this.StudentManager.Students[13].Character.animation["kiss_00"].length)
+		if (this.Kissing && this.Suitor.Character.animation["kiss_00"].time >= this.Suitor.Character.animation["kiss_00"].length)
 		{
-			this.StudentManager.Students[13].Character.animation.CrossFade(this.StudentManager.Students[13].IdleAnim);
-			this.StudentManager.Students[7].Character.animation.CrossFade(this.StudentManager.Students[7].IdleAnim);
+			this.Suitor.Character.animation.CrossFade(this.Suitor.IdleAnim);
+			this.Rival.Character.animation.CrossFade(this.Rival.IdleAnim);
 			this.Kissing = false;
 		}
 	}

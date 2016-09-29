@@ -142,6 +142,10 @@ public class LoveManagerScript : MonoBehaviour
 			this.StudentManager.Students[7].Hearts.Play();
 			this.StudentManager.Students[13].HoldingHands = true;
 			this.StudentManager.Students[7].HoldingHands = true;
+			this.StudentManager.Students[13].CoupleID = 7;
+			this.StudentManager.Students[13].Couple = true;
+			this.StudentManager.Students[7].CoupleID = 13;
+			this.StudentManager.Students[7].Couple = true;
 			this.HoldingHands = true;
 		}
 	}
