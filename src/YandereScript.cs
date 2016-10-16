@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$2859 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$2922 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$2874;
+		internal YandereScript $self_$2937;
 
-		public $ApplyCustomCostume$2859(YandereScript self_)
+		public $ApplyCustomCostume$2922(YandereScript self_)
 		{
-			this.$self_$2874 = self_;
+			this.$self_$2937 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$2859.$(this.$self_$2874);
+			return new YandereScript.$ApplyCustomCostume$2922.$(this.$self_$2937);
 		}
 	}
 
@@ -3484,6 +3484,11 @@ public class YandereScript : MonoBehaviour
 						this.EasterEggMenu.active = false;
 						this.Witch();
 					}
+					else if (Input.GetKeyDown("r"))
+					{
+						this.EasterEggMenu.active = false;
+						this.Pose();
+					}
 					if (Input.GetKeyDown("d"))
 					{
 						if (this.Copyrights.active)
@@ -3761,8 +3766,11 @@ public class YandereScript : MonoBehaviour
 		{
 			this.RPGCamera.enabled = true;
 		}
-		this.MainCamera.clearFlags = CameraClearFlags.Skybox;
-		this.MainCamera.farClipPlane = 325f;
+		if (PlayerPrefs.GetInt("Fog") == 0)
+		{
+			this.MainCamera.clearFlags = CameraClearFlags.Skybox;
+		}
+		this.MainCamera.farClipPlane = (float)PlayerPrefs.GetInt("DrawDistance");
 		this.Smartphone.transform.parent.active = false;
 		this.PhonePromptBar.Show = false;
 		this.Smartphone.fieldOfView = (float)60;
@@ -4063,7 +4071,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$2859(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$2922(this).GetEnumerator();
 	}
 
 	public virtual void WearGloves()
@@ -4408,6 +4416,12 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.materials[3].mainTexture = null;
 		this.PonytailRenderer.material.mainTexture = this.WitchFace;
 		this.Egg = true;
+	}
+
+	public virtual void Pose()
+	{
+		this.StudentManager.Pose = true;
+		this.StudentManager.UpdateStudents();
 	}
 
 	public virtual void ChangeSchoolwear()

@@ -4,6 +4,8 @@ using UnityEngine;
 [Serializable]
 public class FakeStudentSpawnerScript : MonoBehaviour
 {
+	public Transform FakeStudentParent;
+
 	public GameObject NewStudent;
 
 	public GameObject FakeFemale;
@@ -11,6 +13,8 @@ public class FakeStudentSpawnerScript : MonoBehaviour
 	public GameObject FakeMale;
 
 	public GameObject Student;
+
+	public bool AlreadySpawned;
 
 	public int CurrentFloor;
 
@@ -28,52 +32,65 @@ public class FakeStudentSpawnerScript : MonoBehaviour
 
 	public virtual void Spawn()
 	{
-		this.Student = this.FakeFemale;
-		this.NESW = 1;
-		while (this.Spawned < this.FloorLimit * 3)
+		if (!this.AlreadySpawned)
 		{
-			if (this.NESW == 1)
+			this.Student = this.FakeFemale;
+			this.NESW = 1;
+			while (this.Spawned < this.FloorLimit * 3)
 			{
-				this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.Student, new Vector3(UnityEngine.Random.Range(-21f, 21f), (float)this.Height, UnityEngine.Random.Range(21f, 19f)), Quaternion.identity);
-			}
-			else if (this.NESW == 2)
-			{
-				this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.Student, new Vector3(UnityEngine.Random.Range(19f, 21f), (float)this.Height, UnityEngine.Random.Range(29f, -37f)), Quaternion.identity);
-			}
-			else if (this.NESW == 3)
-			{
-				this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.Student, new Vector3(UnityEngine.Random.Range(-21f, 21f), (float)this.Height, UnityEngine.Random.Range(-21f, -19f)), Quaternion.identity);
-			}
-			else if (this.NESW == 4)
-			{
-				this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.Student, new Vector3(UnityEngine.Random.Range(-19f, -21f), (float)this.Height, UnityEngine.Random.Range(29f, -37f)), Quaternion.identity);
-			}
-			((PlaceholderStudentScript)this.NewStudent.GetComponent(typeof(PlaceholderStudentScript))).NESW = this.NESW;
-			this.CurrentFloor++;
-			this.CurrentRow++;
-			this.Spawned++;
-			if (this.CurrentFloor == this.FloorLimit)
-			{
-				this.CurrentFloor = 0;
-				this.Height += 4;
-			}
-			if (this.CurrentRow == this.RowLimit)
-			{
-				this.CurrentRow = 0;
-				this.NESW++;
-				if (this.NESW > 4)
+				if (this.NESW == 1)
 				{
-					this.NESW = 1;
+					this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.Student, new Vector3(UnityEngine.Random.Range(-21f, 21f), (float)this.Height, UnityEngine.Random.Range(21f, 19f)), Quaternion.identity);
+				}
+				else if (this.NESW == 2)
+				{
+					this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.Student, new Vector3(UnityEngine.Random.Range(19f, 21f), (float)this.Height, UnityEngine.Random.Range(29f, -37f)), Quaternion.identity);
+				}
+				else if (this.NESW == 3)
+				{
+					this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.Student, new Vector3(UnityEngine.Random.Range(-21f, 21f), (float)this.Height, UnityEngine.Random.Range(-21f, -19f)), Quaternion.identity);
+				}
+				else if (this.NESW == 4)
+				{
+					this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.Student, new Vector3(UnityEngine.Random.Range(-19f, -21f), (float)this.Height, UnityEngine.Random.Range(29f, -37f)), Quaternion.identity);
+				}
+				((PlaceholderStudentScript)this.NewStudent.GetComponent(typeof(PlaceholderStudentScript))).NESW = this.NESW;
+				this.NewStudent.transform.parent = this.FakeStudentParent;
+				this.CurrentFloor++;
+				this.CurrentRow++;
+				this.Spawned++;
+				if (this.CurrentFloor == this.FloorLimit)
+				{
+					this.CurrentFloor = 0;
+					this.Height += 4;
+				}
+				if (this.CurrentRow == this.RowLimit)
+				{
+					this.CurrentRow = 0;
+					this.NESW++;
+					if (this.NESW > 4)
+					{
+						this.NESW = 1;
+					}
+				}
+				if (this.Student == this.FakeFemale)
+				{
+					this.Student = this.FakeMale;
+				}
+				else
+				{
+					this.Student = this.FakeFemale;
 				}
 			}
-			if (this.Student == this.FakeFemale)
-			{
-				this.Student = this.FakeMale;
-			}
-			else
-			{
-				this.Student = this.FakeFemale;
-			}
+			this.AlreadySpawned = true;
+		}
+		else if (this.FakeStudentParent.active)
+		{
+			this.FakeStudentParent.active = false;
+		}
+		else
+		{
+			this.FakeStudentParent.active = true;
 		}
 	}
 

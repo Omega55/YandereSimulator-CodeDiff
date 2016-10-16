@@ -21,6 +21,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public TextureManagerScript TextureManager;
 
+	public QualityManagerScript QualityManager;
+
 	public EmergencyExitScript EmergencyExit;
 
 	public TranqDetectorScript TranqDetector;
@@ -40,6 +42,8 @@ public class StudentManagerScript : MonoBehaviour
 	public RingEventScript RingEvent;
 
 	public FountainScript Fountain;
+
+	public PoseModeScript PoseMode;
 
 	public TrashCanScript TrashCan;
 
@@ -151,6 +155,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public float[] SpawnTimes;
 
+	public int LowDetailThreshold;
+
 	public int StudentsSpawned;
 
 	public int StudentsTotal;
@@ -182,6 +188,8 @@ public class StudentManagerScript : MonoBehaviour
 	public bool Censor;
 
 	public bool Spooky;
+
+	public bool Pose;
 
 	public bool Sans;
 
@@ -236,17 +244,20 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			this.ID++;
 		}
-		this.ID = 1;
-		while (this.ID < Extensions.get_length(this.Lockers.List))
+		if (!this.TakingPortraits)
 		{
-			Transform transform = ((GameObject)UnityEngine.Object.Instantiate(this.EmptyObject, this.Lockers.List[this.ID].position + this.Lockers.List[this.ID].forward * 0.5f, this.Lockers.List[this.ID].rotation)).transform;
-			transform.parent = this.Lockers.transform;
-			float y = transform.transform.eulerAngles.y + (float)180;
-			Vector3 eulerAngles = transform.transform.eulerAngles;
-			float num = eulerAngles.y = y;
-			Vector3 vector = transform.transform.eulerAngles = eulerAngles;
-			this.LockerPositions[this.ID] = transform;
-			this.ID++;
+			this.ID = 1;
+			while (this.ID < Extensions.get_length(this.Lockers.List))
+			{
+				Transform transform = ((GameObject)UnityEngine.Object.Instantiate(this.EmptyObject, this.Lockers.List[this.ID].position + this.Lockers.List[this.ID].forward * 0.5f, this.Lockers.List[this.ID].rotation)).transform;
+				transform.parent = this.Lockers.transform;
+				float y = transform.transform.eulerAngles.y + (float)180;
+				Vector3 eulerAngles = transform.transform.eulerAngles;
+				float num = eulerAngles.y = y;
+				Vector3 vector = transform.transform.eulerAngles = eulerAngles;
+				this.LockerPositions[this.ID] = transform;
+				this.ID++;
+			}
 		}
 		if (PlayerPrefs.GetInt("Late") == 1)
 		{
@@ -255,9 +266,12 @@ public class StudentManagerScript : MonoBehaviour
 			this.Clock.HourTime = (float)8;
 			this.AttendClass();
 		}
-		while (this.SpawnID < this.NPCsTotal + 1)
+		if (!this.TakingPortraits)
 		{
-			this.SpawnStudent();
+			while (this.SpawnID < this.NPCsTotal + 1)
+			{
+				this.SpawnStudent();
+			}
 		}
 	}
 
@@ -276,7 +290,10 @@ public class StudentManagerScript : MonoBehaviour
 			components[2].intensity = num * (float)5;
 			components[2].blur = num;
 			components[2].chromaticAberration = num * (float)5;
-			RenderSettings.fogDensity = num * 0.05f;
+			float num2 = (float)1 - num;
+			RenderSettings.fogColor = new Color(num2, num2, num2, (float)1);
+			Camera.main.backgroundColor = new Color(num2, num2, num2, (float)1);
+			RenderSettings.fogDensity = num * 0.1f;
 		}
 	}
 
@@ -287,6 +304,7 @@ public class StudentManagerScript : MonoBehaviour
 			this.Frame++;
 			if (!this.FirstUpdate)
 			{
+				this.QualityManager.UpdateOutlines();
 				this.FirstUpdate = true;
 				this.UpdateStudents();
 			}
@@ -324,6 +342,7 @@ public class StudentManagerScript : MonoBehaviour
 					this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.PortraitKun, new Vector3((float)0, (float)0, (float)0), Quaternion.identity);
 				}
 				((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).StudentID = this.NPCsSpawned + 1;
+				((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).TakingPortrait = true;
 				((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).Randomize = this.Randomize;
 				((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).JSON = this.JSON;
 				this.NewPortraitChan = (PortraitChanScript)this.NewStudent.GetComponent(typeof(PortraitChanScript));
@@ -393,10 +412,7 @@ public class StudentManagerScript : MonoBehaviour
 		}
 		this.NPCsSpawned++;
 		this.SpawnID++;
-		if (!this.TakingPortraits)
-		{
-			this.TaskManager.UpdateTaskStatus();
-		}
+		this.TaskManager.UpdateTaskStatus();
 		this.ForceSpawn = false;
 	}
 
@@ -477,6 +493,11 @@ public class StudentManagerScript : MonoBehaviour
 				this.Students[this.ID].Prompt.HideButton[0] = false;
 				this.Students[this.ID].Prompt.Label[0].text = "     " + "Psychokinesis";
 			}
+			if (this.Pose && this.Students[this.ID] != null && this.Students[this.ID].Prompt.Label[0] != null)
+			{
+				this.Students[this.ID].Prompt.HideButton[0] = false;
+				this.Students[this.ID].Prompt.Label[0].text = "     " + "Pose";
+			}
 			this.ID++;
 		}
 		this.Container.UpdatePrompts();
@@ -524,6 +545,11 @@ public class StudentManagerScript : MonoBehaviour
 			{
 				this.Students[ID].Prompt.HideButton[0] = false;
 				this.Students[ID].Prompt.Label[0].text = "     " + "Psychokinesis";
+			}
+			if (this.Pose)
+			{
+				this.Students[ID].Prompt.HideButton[0] = false;
+				this.Students[ID].Prompt.Label[0].text = "     " + "Pose";
 			}
 		}
 	}

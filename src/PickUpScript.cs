@@ -181,6 +181,7 @@ public class PickUpScript : MonoBehaviour
 		if (this.BloodCleaner != null)
 		{
 			this.BloodCleaner.enabled = true;
+			this.BloodCleaner.Pathfinding.enabled = true;
 		}
 		this.Yandere.PickUp = null;
 		this.transform.parent = null;

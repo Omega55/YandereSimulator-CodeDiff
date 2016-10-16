@@ -275,7 +275,7 @@ public class DelinquentScript : MonoBehaviour
 				{
 					if (!this.Yandere.Attacked)
 					{
-						if (!this.Yandere.Chased || (this.Yandere.Chased && this.DelinquentManager.Attacker == this))
+						if (this.Yandere.CanMove && (!this.Yandere.Chased || (this.Yandere.Chased && this.DelinquentManager.Attacker == this)))
 						{
 							if (!this.DelinquentManager.audio.isPlaying)
 							{

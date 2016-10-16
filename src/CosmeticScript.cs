@@ -109,6 +109,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public Texture GreenStockings;
 
+	public Texture OsanaStockings;
+
 	public GameObject RightIrisLight;
 
 	public GameObject LeftIrisLight;
@@ -130,6 +132,10 @@ public class CosmeticScript : MonoBehaviour
 	public Mesh TeacherMesh;
 
 	public Mesh CoachMesh;
+
+	public bool TakingPortrait;
+
+	public bool Initialized;
 
 	public bool CustomHair;
 
@@ -201,12 +207,16 @@ public class CosmeticScript : MonoBehaviour
 		{
 			this.JSON = this.Student.JSON;
 		}
-		this.Accessory = UnityBuiltins.parseInt(this.JSON.StudentAccessories[this.StudentID]);
-		this.Hairstyle = UnityBuiltins.parseInt(this.JSON.StudentHairstyles[this.StudentID]);
-		this.Stockings = this.JSON.StudentStockings[this.StudentID];
-		this.BreastSize = this.JSON.StudentBreasts[this.StudentID];
-		this.HairColor = this.JSON.StudentColors[this.StudentID];
-		this.Club = this.JSON.StudentClubs[this.StudentID];
+		if (!this.Initialized)
+		{
+			this.Accessory = UnityBuiltins.parseInt(this.JSON.StudentAccessories[this.StudentID]);
+			this.Hairstyle = UnityBuiltins.parseInt(this.JSON.StudentHairstyles[this.StudentID]);
+			this.Stockings = this.JSON.StudentStockings[this.StudentID];
+			this.BreastSize = this.JSON.StudentBreasts[this.StudentID];
+			this.HairColor = this.JSON.StudentColors[this.StudentID];
+			this.Club = this.JSON.StudentClubs[this.StudentID];
+			this.Initialized = true;
+		}
 		if (this.Randomize)
 		{
 			this.Teacher = false;
@@ -800,33 +810,24 @@ public class CosmeticScript : MonoBehaviour
 			this.SocksTexture = this.FemaleSocksTextures[PlayerPrefs.GetInt("FemaleUniform")];
 			if (this.StudentID == 7)
 			{
-				if (this.TextureManager.UniformTextures[this.StudentID] == null)
-				{
-					this.TextureManager.Base2D = (this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")] as Texture2D);
-					this.TextureManager.UniformTextures[this.StudentID] = this.TextureManager.MergeTextures(this.TextureManager.Base2D, this.TextureManager.PurpleStockings);
-					this.TextureManager.Base2D = (this.FemaleCasualTextures[PlayerPrefs.GetInt("FemaleUniform")] as Texture2D);
-					this.TextureManager.CasualTextures[this.StudentID] = this.TextureManager.MergeTextures(this.TextureManager.Base2D, this.TextureManager.PurpleStockings);
-					this.TextureManager.Base2D = (this.FemaleSocksTextures[PlayerPrefs.GetInt("FemaleUniform")] as Texture2D);
-					this.TextureManager.SocksTextures[this.StudentID] = this.TextureManager.MergeTextures(this.TextureManager.Base2D, this.TextureManager.PurpleStockings);
-				}
-				this.UniformTexture = this.TextureManager.UniformTextures[this.StudentID];
-				this.CasualTexture = this.TextureManager.CasualTextures[this.StudentID];
-				this.SocksTexture = this.TextureManager.SocksTextures[this.StudentID];
+				this.MyRenderer.materials[0].SetTexture("_OverlayTex", this.PurpleStockings);
+				this.MyRenderer.materials[1].SetTexture("_OverlayTex", this.PurpleStockings);
+				this.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)1);
+				this.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)1);
 			}
 			else if (this.StudentID == 16)
 			{
-				if (this.TextureManager.UniformTextures[this.StudentID] == null)
-				{
-					this.TextureManager.Base2D = (this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")] as Texture2D);
-					this.TextureManager.UniformTextures[this.StudentID] = this.TextureManager.MergeTextures(this.TextureManager.Base2D, this.TextureManager.GreenStockings);
-					this.TextureManager.Base2D = (this.FemaleCasualTextures[PlayerPrefs.GetInt("FemaleUniform")] as Texture2D);
-					this.TextureManager.CasualTextures[this.StudentID] = this.TextureManager.MergeTextures(this.TextureManager.Base2D, this.TextureManager.GreenStockings);
-					this.TextureManager.Base2D = (this.FemaleSocksTextures[PlayerPrefs.GetInt("FemaleUniform")] as Texture2D);
-					this.TextureManager.SocksTextures[this.StudentID] = this.TextureManager.MergeTextures(this.TextureManager.Base2D, this.TextureManager.GreenStockings);
-				}
-				this.UniformTexture = this.TextureManager.UniformTextures[this.StudentID];
-				this.CasualTexture = this.TextureManager.CasualTextures[this.StudentID];
-				this.SocksTexture = this.TextureManager.SocksTextures[this.StudentID];
+				this.MyRenderer.materials[0].SetTexture("_OverlayTex", this.GreenStockings);
+				this.MyRenderer.materials[1].SetTexture("_OverlayTex", this.GreenStockings);
+				this.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)1);
+				this.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)1);
+			}
+			else if (this.StudentID == 33)
+			{
+				this.MyRenderer.materials[0].SetTexture("_OverlayTex", this.OsanaStockings);
+				this.MyRenderer.materials[1].SetTexture("_OverlayTex", this.OsanaStockings);
+				this.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)1);
+				this.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)1);
 			}
 		}
 		if (!this.Cutscene)
@@ -856,7 +857,7 @@ public class CosmeticScript : MonoBehaviour
 			this.MyRenderer.materials[1].mainTexture = this.UniformTexture;
 		}
 		this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
-		if (this.Student != null && this.Student.StudentManager.Censor)
+		if (!this.TakingPortrait && this.Student != null && this.Student.StudentManager.Censor)
 		{
 			this.CensorPanties();
 		}
@@ -884,7 +885,7 @@ public class CosmeticScript : MonoBehaviour
 
 	public virtual void TurnOnCheck()
 	{
-		if (this.Male)
+		if (!this.TakingPortrait && this.Male)
 		{
 			if (this.HairColor == "Purple")
 			{

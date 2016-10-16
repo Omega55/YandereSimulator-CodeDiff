@@ -40,7 +40,7 @@ public class GiggleScript : MonoBehaviour
 		if (other.gameObject.layer == 9 && !this.Distracted)
 		{
 			this.Student = (StudentScript)other.gameObject.GetComponent(typeof(StudentScript));
-			if (this.Student != null && this.Student.Giggle == null && !this.Student.YandereVisible && !this.Student.Alarmed && !this.Student.Distracted && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.Student.Investigating && !this.Student.InEvent && !this.Student.Following && !this.Student.Confessing)
+			if (this.Student != null && this.Student.Giggle == null && !this.Student.YandereVisible && !this.Student.Alarmed && !this.Student.Distracted && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.Student.Investigating && !this.Student.InEvent && !this.Student.Following && !this.Student.Confessing && !this.Student.Meeting)
 			{
 				this.Student.Character.animation.CrossFade(this.Student.IdleAnim);
 				this.Giggle = (GameObject)UnityEngine.Object.Instantiate(this.EmptyGameObject, new Vector3(this.transform.position.x, this.Student.transform.position.y, this.transform.position.z), Quaternion.identity);

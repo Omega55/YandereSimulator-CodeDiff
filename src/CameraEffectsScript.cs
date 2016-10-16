@@ -113,7 +113,7 @@ public class CameraEffectsScript : MonoBehaviour
 			if (this.Yandere.Aiming)
 			{
 				this.Yandere.MainCamera.clearFlags = CameraClearFlags.Skybox;
-				this.Yandere.MainCamera.farClipPlane = 250f;
+				this.Yandere.MainCamera.farClipPlane = (float)PlayerPrefs.GetInt("DrawDistance");
 			}
 		}
 	}

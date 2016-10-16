@@ -21,6 +21,8 @@ public class PauseScreenScript : MonoBehaviour
 
 	public PassTimeScript PassTime;
 
+	public SettingsScript Settings;
+
 	public TaskListScript TaskList;
 
 	public SchemesScript Schemes;
@@ -110,6 +112,7 @@ public class PauseScreenScript : MonoBehaviour
 		this.PhotoGallery.gameObject.active = false;
 		this.FavorMenu.gameObject.active = false;
 		this.PassTime.gameObject.active = false;
+		this.Settings.gameObject.active = false;
 		this.Stats.gameObject.active = false;
 		this.LoadingScreen.active = false;
 		this.SchemesMenu.active = false;
@@ -397,21 +400,31 @@ public class PauseScreenScript : MonoBehaviour
 						}
 						else if (this.Selected != 7)
 						{
-							if (this.Selected != 8)
+							if (this.Selected == 8)
 							{
-								if (this.Selected != 9)
+								this.Settings.gameObject.active = true;
+								this.ScreenBlur.enabled = false;
+								this.Settings.UpdateText();
+								this.MainMenu.active = false;
+								this.PromptBar.ClearButtons();
+								this.PromptBar.Label[1].text = "Back";
+								this.PromptBar.Label[4].text = "Choose";
+								this.PromptBar.Label[5].text = "Change";
+								this.PromptBar.UpdateButtons();
+								this.PromptBar.Show = true;
+							}
+							else if (this.Selected != 9)
+							{
+								if (this.Selected != 10)
 								{
-									if (this.Selected != 10)
+									if (this.Selected == 11)
 									{
-										if (this.Selected == 11)
-										{
-											this.PromptBar.ClearButtons();
-											this.PromptBar.Show = false;
-											this.Quitting = true;
-										}
-										else if (this.Selected == 12)
-										{
-										}
+										this.PromptBar.ClearButtons();
+										this.PromptBar.Show = false;
+										this.Quitting = true;
+									}
+									else if (this.Selected == 12)
+									{
 									}
 								}
 							}

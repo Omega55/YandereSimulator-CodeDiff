@@ -34,6 +34,8 @@ public class PhoneEventScript : MonoBehaviour
 
 	public bool EventOver;
 
+	public int EventStudentID;
+
 	public float EventTime;
 
 	public int EventPhase;
@@ -48,6 +50,7 @@ public class PhoneEventScript : MonoBehaviour
 
 	public PhoneEventScript()
 	{
+		this.EventStudentID = 7;
 		this.EventTime = 7.5f;
 		this.EventPhase = 1;
 		this.EventDay = 1;
@@ -66,7 +69,7 @@ public class PhoneEventScript : MonoBehaviour
 	{
 		if (!this.Clock.StopTime && this.EventCheck && this.Clock.HourTime > this.EventTime)
 		{
-			this.EventStudent = this.StudentManager.Students[7];
+			this.EventStudent = this.StudentManager.Students[this.EventStudentID];
 			if (this.EventStudent != null && this.EventStudent.Routine && !this.EventStudent.Distracted && !this.EventStudent.Talking && !this.EventStudent.Meeting && this.EventStudent.Indoors)
 			{
 				if (!this.EventStudent.WitnessedMurder)
@@ -202,7 +205,7 @@ public class PhoneEventScript : MonoBehaviour
 						PlayerPrefs.SetInt("Topic_25_Discovered", 1);
 						this.Yandere.NotificationManager.DisplayNotification("Topic");
 						this.Yandere.NotificationManager.DisplayNotification("Opinion");
-						PlayerPrefs.SetInt("Topic_25_Student_7_Learned", 1);
+						PlayerPrefs.SetInt("Topic_25_Student_" + this.EventStudentID + "_Learned", 1);
 					}
 				}
 			}

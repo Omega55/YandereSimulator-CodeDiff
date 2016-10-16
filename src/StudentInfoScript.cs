@@ -124,6 +124,10 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.PersonaLabel.text = "Social Butterfly";
 		}
+		else if (this.JSON.StudentPersonas[ID] == 7)
+		{
+			this.PersonaLabel.text = "Tsundere";
+		}
 		else if (this.JSON.StudentPersonas[ID] == 9)
 		{
 			this.PersonaLabel.text = "Strict";

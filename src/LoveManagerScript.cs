@@ -48,7 +48,7 @@ public class LoveManagerScript : MonoBehaviour
 
 	public virtual void LateUpdate()
 	{
-		if (this.Follower != null)
+		if (this.Follower != null && !this.Follower.Dead)
 		{
 			this.ID = 0;
 			while (this.ID < this.TotalTargets)
@@ -78,7 +78,7 @@ public class LoveManagerScript : MonoBehaviour
 				this.ID++;
 			}
 		}
-		if (this.LeftNote && this.StudentManager.Students[7] != null && this.StudentManager.Students[13] != null && this.StudentManager.Students[7].ConfessPhase == 7 && this.StudentManager.Students[13].ConfessPhase == 4 && Vector3.Distance(this.Yandere.transform.position, this.MythHill.position) > (float)10 && Vector3.Distance(this.Yandere.transform.position, this.MythHill.position) < (float)25)
+		if (this.LeftNote && this.StudentManager.Students[7] != null && this.StudentManager.Students[13] != null && !this.StudentManager.Students[7].Dead && !this.StudentManager.Students[13].Dead && this.StudentManager.Students[7].ConfessPhase == 7 && this.StudentManager.Students[13].ConfessPhase == 4 && Vector3.Distance(this.Yandere.transform.position, this.MythHill.position) > (float)10 && Vector3.Distance(this.Yandere.transform.position, this.MythHill.position) < (float)25)
 		{
 			this.Yandere.Character.animation.CrossFade(this.Yandere.IdleAnim);
 			this.Yandere.RPGCamera.enabled = false;

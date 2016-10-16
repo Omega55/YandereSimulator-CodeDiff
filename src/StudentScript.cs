@@ -49,6 +49,8 @@ public class StudentScript : MonoBehaviour
 
 	public ReputationScript Reputation;
 
+	public BoneSetsScript BoneSets;
+
 	public CosmeticScript Cosmetic;
 
 	public SubtitleScript Subtitle;
@@ -703,6 +705,8 @@ public class StudentScript : MonoBehaviour
 
 	public float LookSpeed;
 
+	public LowPolyStudentScript LowPoly;
+
 	public Texture[] SocksTextures;
 
 	public GameObject[] ElectroSteam;
@@ -878,7 +882,7 @@ public class StudentScript : MonoBehaviour
 			{
 				this.CameraAnims = this.EvilAnims;
 			}
-			else if (this.Persona == 6)
+			else if (this.Persona == 6 || this.Persona == 7)
 			{
 				this.CameraAnims = this.SocialAnims;
 			}
@@ -1015,7 +1019,14 @@ public class StudentScript : MonoBehaviour
 				this.DestinationNames[2] = "Mourn";
 				this.ActionNames[2] = "Mourn";
 			}
-			if (this.Club == 3)
+			if (this.Club == 0)
+			{
+				if (this.StudentID == 33)
+				{
+					this.IdleAnim = "f02_tsunIdle_00";
+				}
+			}
+			else if (this.Club == 3)
 			{
 				if (this.StudentID == 26)
 				{
@@ -1325,12 +1336,10 @@ public class StudentScript : MonoBehaviour
 						if (!this.OnPhone)
 						{
 							this.CharacterAnimation.CrossFade(this.WalkAnim);
-							this.CharacterAnimation[this.WalkAnim].speed = this.Pathfinding.currentSpeed;
 						}
 						else
 						{
 							this.CharacterAnimation.CrossFade(this.PhoneAnim);
-							this.CharacterAnimation[this.PhoneAnim].speed = this.Pathfinding.currentSpeed;
 						}
 					}
 					else
@@ -3446,7 +3455,14 @@ public class StudentScript : MonoBehaviour
 				if (this.Prompt.Circle[0].fillAmount <= (float)0)
 				{
 					this.OccultBook.active = false;
-					if (this.BadTime)
+					if (this.StudentManager.Pose)
+					{
+						this.MyController.enabled = false;
+						this.Pathfinding.enabled = false;
+						this.Stop = true;
+						this.Pose();
+					}
+					else if (this.BadTime)
 					{
 						this.Yandere.EmptyHands();
 						this.BecomeRagdoll();
@@ -4503,6 +4519,13 @@ public class StudentScript : MonoBehaviour
 			}
 			this.LastPosition = this.transform.position;
 		}
+		else if (this.StudentManager.Pose)
+		{
+			if (this.Prompt.Circle[0].fillAmount <= (float)0)
+			{
+				this.Pose();
+			}
+		}
 		else if (!this.ClubActivity)
 		{
 			this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - this.transform.position);
@@ -4550,9 +4573,16 @@ public class StudentScript : MonoBehaviour
 		{
 			this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)10, (float)10, (float)10), this.DeltaTime);
 		}
-		if (this.BadTime)
+		if (this.Prompt.Label[0] != null)
 		{
-			this.Prompt.Label[0].text = "     " + "Psychokinesis";
+			if (this.StudentManager.Pose)
+			{
+				this.Prompt.Label[0].text = "     " + "Pose";
+			}
+			else if (this.BadTime)
+			{
+				this.Prompt.Label[0].text = "     " + "Psychokinesis";
+			}
 		}
 	}
 
@@ -5467,6 +5497,7 @@ public class StudentScript : MonoBehaviour
 
 	public virtual void BecomeTeacher()
 	{
+		this.LowPoly.MyMesh = this.LowPoly.TeacherMesh;
 		this.GradingPaper = this.StudentManager.FacultyDesks[this.Class];
 		this.GradingPaper.LeftHand = this.LeftHand.parent;
 		this.GradingPaper.Character = this.Character;
@@ -5788,6 +5819,9 @@ public class StudentScript : MonoBehaviour
 		else if (this.Schoolwear == 2)
 		{
 			this.MyRenderer.sharedMesh = this.SchoolSwimsuit;
+			this.MyRenderer.materials[0].mainTexture = this.SwimsuitTexture;
+			this.MyRenderer.materials[1].mainTexture = this.SwimsuitTexture;
+			this.MyRenderer.materials[2].mainTexture = this.Cosmetic.FaceTexture;
 		}
 		else if (this.Schoolwear == 3)
 		{
@@ -6037,6 +6071,22 @@ public class StudentScript : MonoBehaviour
 				this.Persona = 3;
 			}
 		}
+	}
+
+	public virtual void Pose()
+	{
+		this.StudentManager.PoseMode.Student = this;
+		this.StudentManager.PoseMode.UpdateLabels();
+		this.StudentManager.PoseMode.Show = true;
+		this.DialogueWheel.PromptBar.ClearButtons();
+		this.DialogueWheel.PromptBar.Label[0].text = "Confirm";
+		this.DialogueWheel.PromptBar.Label[1].text = "Back";
+		this.DialogueWheel.PromptBar.Label[4].text = "Change";
+		this.DialogueWheel.PromptBar.Label[5].text = "Increase/Decrease";
+		this.DialogueWheel.PromptBar.UpdateButtons();
+		this.DialogueWheel.PromptBar.Show = true;
+		this.Yandere.Character.animation.CrossFade(this.Yandere.IdleAnim);
+		this.Yandere.CanMove = false;
 	}
 
 	public virtual void Main()

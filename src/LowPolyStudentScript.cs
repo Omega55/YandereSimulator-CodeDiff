@@ -4,25 +4,30 @@ using UnityEngine;
 [Serializable]
 public class LowPolyStudentScript : MonoBehaviour
 {
+	public StudentScript Student;
+
 	public SkinnedMeshRenderer CharacterMesh;
+
+	public Renderer TeacherMesh;
 
 	public Renderer MyMesh;
 
-	public Transform Yandere;
-
-	public virtual void Start()
-	{
-		UnityEngine.Object.Destroy(this);
-	}
-
 	public virtual void Update()
 	{
-		if (Vector3.Distance(this.Yandere.position, this.transform.position) > (float)20)
+		if (this.Student.StudentManager.LowDetailThreshold > 0)
 		{
-			if (!this.MyMesh.enabled)
+			if (Vector3.Distance(this.Student.Yandere.transform.position, this.transform.position) > (float)this.Student.StudentManager.LowDetailThreshold)
 			{
-				this.CharacterMesh.enabled = false;
-				this.MyMesh.enabled = true;
+				if (!this.MyMesh.enabled)
+				{
+					this.CharacterMesh.enabled = false;
+					this.MyMesh.enabled = true;
+				}
+			}
+			else if (this.MyMesh.enabled)
+			{
+				this.CharacterMesh.enabled = true;
+				this.MyMesh.enabled = false;
 			}
 		}
 		else if (this.MyMesh.enabled)
