@@ -57,6 +57,8 @@ public class WeaponScript : MonoBehaviour
 
 	public float OriginalOffset;
 
+	public float KinematicTimer;
+
 	public float DumpTimer;
 
 	public float Rotation;
@@ -108,6 +110,7 @@ public class WeaponScript : MonoBehaviour
 		{
 			this.OriginalClip = this.audio.clip;
 		}
+		this.rigidbody.isKinematic = true;
 	}
 
 	public virtual void Update()
@@ -158,31 +161,43 @@ public class WeaponScript : MonoBehaviour
 				}
 			}
 		}
-		else if (this.Yandere.Weapon[this.Yandere.Equipped] == this && this.Yandere.AttackManager.Attacking)
+		else if (this.Yandere.Weapon[this.Yandere.Equipped] == this)
 		{
-			if (this.Type == 1)
+			if (this.Yandere.AttackManager.Attacking)
 			{
-				if (this.Flip)
+				if (this.Type == 1)
 				{
-					float y = Mathf.Lerp(this.transform.localEulerAngles.y, (float)180, Time.deltaTime * (float)10);
-					Vector3 localEulerAngles3 = this.transform.localEulerAngles;
-					float num3 = localEulerAngles3.y = y;
-					Vector3 vector3 = this.transform.localEulerAngles = localEulerAngles3;
+					if (this.Flip)
+					{
+						float y = Mathf.Lerp(this.transform.localEulerAngles.y, (float)180, Time.deltaTime * (float)10);
+						Vector3 localEulerAngles3 = this.transform.localEulerAngles;
+						float num3 = localEulerAngles3.y = y;
+						Vector3 vector3 = this.transform.localEulerAngles = localEulerAngles3;
+					}
+					else
+					{
+						float y2 = Mathf.Lerp(this.transform.localEulerAngles.y, (float)0, Time.deltaTime * (float)10);
+						Vector3 localEulerAngles4 = this.transform.localEulerAngles;
+						float num4 = localEulerAngles4.y = y2;
+						Vector3 vector4 = this.transform.localEulerAngles = localEulerAngles4;
+					}
 				}
-				else
+				else if (this.Type == 4 && this.Spin)
 				{
-					float y2 = Mathf.Lerp(this.transform.localEulerAngles.y, (float)0, Time.deltaTime * (float)10);
-					Vector3 localEulerAngles4 = this.transform.localEulerAngles;
-					float num4 = localEulerAngles4.y = y2;
-					Vector3 vector4 = this.transform.localEulerAngles = localEulerAngles4;
+					float x = this.Blade.transform.localEulerAngles.x + Time.deltaTime * (float)360;
+					Vector3 localEulerAngles5 = this.Blade.transform.localEulerAngles;
+					float num5 = localEulerAngles5.x = x;
+					Vector3 vector5 = this.Blade.transform.localEulerAngles = localEulerAngles5;
 				}
 			}
-			else if (this.Type == 4 && this.Spin)
+		}
+		else if (!this.rigidbody.isKinematic)
+		{
+			this.KinematicTimer = Mathf.MoveTowards(this.KinematicTimer, (float)5, Time.deltaTime);
+			if (this.KinematicTimer == (float)5)
 			{
-				float x = this.Blade.transform.localEulerAngles.x + Time.deltaTime * (float)360;
-				Vector3 localEulerAngles5 = this.Blade.transform.localEulerAngles;
-				float num5 = localEulerAngles5.x = x;
-				Vector3 vector5 = this.Blade.transform.localEulerAngles = localEulerAngles5;
+				this.rigidbody.isKinematic = true;
+				this.KinematicTimer = (float)0;
 			}
 		}
 	}
@@ -302,6 +317,7 @@ public class WeaponScript : MonoBehaviour
 				this.Yandere.WalkAnim = "CyborgNinja_Walk_Armed";
 				this.Yandere.RunAnim = "CyborgNinja_Run_Armed";
 			}
+			this.KinematicTimer = (float)0;
 		}
 		if (this.Yandere.Weapon[this.Yandere.Equipped] == this && this.Yandere.Armed)
 		{
@@ -353,6 +369,7 @@ public class WeaponScript : MonoBehaviour
 		this.active = true;
 		this.transform.parent = null;
 		this.rigidbody.constraints = RigidbodyConstraints.None;
+		this.rigidbody.isKinematic = false;
 		this.rigidbody.useGravity = true;
 		if (this.Dumped)
 		{

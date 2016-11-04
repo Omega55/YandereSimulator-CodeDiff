@@ -1183,7 +1183,6 @@ public class StudentScript : MonoBehaviour
 			{
 				this.BookRenderer.material.mainTexture = this.RedBookTexture;
 			}
-			this.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
 			this.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
 			this.Started = true;
 		}
@@ -1258,7 +1257,10 @@ public class StudentScript : MonoBehaviour
 						this.Chopsticks[0].active = false;
 						this.Chopsticks[1].active = false;
 					}
-					this.Cosmetic.MyRenderer.materials[this.Cosmetic.FaceID].SetFloat("_BlendAmount", (float)0);
+					if (this.Male)
+					{
+						this.Cosmetic.MyRenderer.materials[this.Cosmetic.FaceID].SetFloat("_BlendAmount", (float)0);
+					}
 					this.Pathfinding.canSearch = true;
 					this.Pathfinding.canMove = true;
 					this.OccultBook.active = false;
@@ -4588,6 +4590,28 @@ public class StudentScript : MonoBehaviour
 
 	public virtual void LateUpdate()
 	{
+		if (this.CharacterAnimation.cullingType == AnimationCullingType.BasedOnRenderers)
+		{
+			if (this.StudentManager.DisableFarAnims)
+			{
+				if (this.DistanceToPlayer > (float)15)
+				{
+					this.CharacterAnimation.enabled = false;
+				}
+				else
+				{
+					this.CharacterAnimation.enabled = true;
+				}
+			}
+			else
+			{
+				this.CharacterAnimation.enabled = true;
+			}
+		}
+		else
+		{
+			this.CharacterAnimation.enabled = true;
+		}
 		if (this.EyeShrink > (float)1)
 		{
 			this.EyeShrink = (float)1;
@@ -5617,6 +5641,7 @@ public class StudentScript : MonoBehaviour
 		}
 		this.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
 		this.Ragdoll.AllColliders[10].isTrigger = false;
+		this.MyRenderer.updateWhenOffscreen = true;
 		this.NotFaceCollider.enabled = false;
 		this.Hearts.enableEmission = false;
 		this.FaceCollider.enabled = false;
@@ -5714,7 +5739,12 @@ public class StudentScript : MonoBehaviour
 			this.BathePhase = 1;
 			this.Splashed = true;
 			this.Routine = false;
+			this.Meeting = false;
 			this.Wet = true;
+			if (this.StudentID == 7)
+			{
+				this.StudentManager.LoveManager.RivalWaiting = false;
+			}
 			this.SpawnAlarmDisc();
 		}
 	}

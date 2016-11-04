@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$2922 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$2918 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$2937;
+		internal YandereScript $self_$2933;
 
-		public $ApplyCustomCostume$2922(YandereScript self_)
+		public $ApplyCustomCostume$2918(YandereScript self_)
 		{
-			this.$self_$2937 = self_;
+			this.$self_$2933 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$2922.$(this.$self_$2937);
+			return new YandereScript.$ApplyCustomCostume$2918.$(this.$self_$2933);
 		}
 	}
 
@@ -3945,10 +3945,7 @@ public class YandereScript : MonoBehaviour
 		this.HeartRate.BeatsPerMinute = (int)((float)240 - this.Sanity * 1.8f);
 		if (this.MyRenderer.sharedMesh != this.NudeMesh)
 		{
-			float a = (float)1 - this.Sanity / (float)100;
-			Color color = this.MyRenderer.materials[3].color;
-			float num = color.a = a;
-			Color color2 = this.MyRenderer.materials[3].color = color;
+			this.MyRenderer.materials[2].SetFloat("_BlendAmount", (float)1 - this.Sanity / (float)100);
 		}
 		this.PreviousSanity = this.Sanity;
 		((SkinnedMeshRenderer)this.Hairstyles[2].GetComponent(typeof(SkinnedMeshRenderer))).SetBlendShapeWeight(0, this.Sanity);
@@ -4071,7 +4068,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$2922(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$2918(this).GetEnumerator();
 	}
 
 	public virtual void WearGloves()
@@ -4331,10 +4328,6 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.materials[0].mainTexture = this.CyborgFace;
 		this.MyRenderer.materials[1].mainTexture = this.CyborgBody;
 		this.MyRenderer.materials[2].mainTexture = this.CyborgBody;
-		int num = 0;
-		Color color = this.MyRenderer.materials[3].color;
-		float num2 = color.a = (float)num;
-		Color color2 = this.MyRenderer.materials[3].color = color;
 		this.ID = 1;
 		while (this.ID < Extensions.get_length(this.CyborgParts))
 		{
@@ -4389,10 +4382,6 @@ public class YandereScript : MonoBehaviour
 		}
 		this.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)0);
 		this.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)0);
-		int num = 0;
-		Color color = this.MyRenderer.materials[3].color;
-		float num2 = color.a = (float)num;
-		Color color2 = this.MyRenderer.materials[3].color = color;
 		this.EasterEggMenu.active = false;
 		this.ClubAttire = false;
 		this.ClubAccessory();
@@ -4403,7 +4392,6 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.sharedMesh = this.NudeMesh;
 		this.MyRenderer.materials[0].mainTexture = this.SamusFace;
 		this.MyRenderer.materials[2].mainTexture = this.SamusBody;
-		this.MyRenderer.materials[3].mainTexture = null;
 		this.PonytailRenderer.material.mainTexture = this.SamusFace;
 		this.Egg = true;
 	}
@@ -4413,7 +4401,6 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.sharedMesh = this.NudeMesh;
 		this.MyRenderer.materials[0].mainTexture = this.WitchFace;
 		this.MyRenderer.materials[2].mainTexture = this.WitchBody;
-		this.MyRenderer.materials[3].mainTexture = null;
 		this.PonytailRenderer.material.mainTexture = this.WitchFace;
 		this.Egg = true;
 	}
@@ -4477,10 +4464,6 @@ public class YandereScript : MonoBehaviour
 			this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
 		}
 		this.CanMove = false;
-		int num = 0;
-		Color color = this.MyRenderer.materials[3].color;
-		float num2 = color.a = (float)num;
-		Color color2 = this.MyRenderer.materials[3].color = color;
 		this.Outline.h.ReinitMaterials();
 		this.ClubAccessory();
 	}

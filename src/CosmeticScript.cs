@@ -857,7 +857,7 @@ public class CosmeticScript : MonoBehaviour
 			this.MyRenderer.materials[1].mainTexture = this.UniformTexture;
 		}
 		this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
-		if (!this.TakingPortrait && this.Student != null && this.Student.StudentManager.Censor)
+		if (!this.TakingPortrait && this.Student != null && this.Student.StudentManager != null && this.Student.StudentManager.Censor)
 		{
 			this.CensorPanties();
 		}
@@ -902,6 +902,104 @@ public class CosmeticScript : MonoBehaviour
 				this.LoveManager.Targets[this.LoveManager.TotalTargets] = this.Student.Head;
 				this.LoveManager.TotalTargets = this.LoveManager.TotalTargets + 1;
 			}
+		}
+	}
+
+	public virtual void DestroyUnneccessaryObjects()
+	{
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.FemaleAccessories))
+		{
+			if (this.FemaleAccessories[this.ID] != null && !this.FemaleAccessories[this.ID].active)
+			{
+				UnityEngine.Object.Destroy(this.FemaleAccessories[this.ID]);
+			}
+			this.ID++;
+		}
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.MaleAccessories))
+		{
+			if (this.MaleAccessories[this.ID] != null && !this.MaleAccessories[this.ID].active)
+			{
+				UnityEngine.Object.Destroy(this.MaleAccessories[this.ID]);
+			}
+			this.ID++;
+		}
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.ClubAccessories))
+		{
+			if (this.ClubAccessories[this.ID] != null && !this.ClubAccessories[this.ID].active)
+			{
+				UnityEngine.Object.Destroy(this.ClubAccessories[this.ID]);
+			}
+			this.ID++;
+		}
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.TeacherAccessories))
+		{
+			if (this.TeacherAccessories[this.ID] != null && !this.TeacherAccessories[this.ID].active)
+			{
+				UnityEngine.Object.Destroy(this.TeacherAccessories[this.ID]);
+			}
+			this.ID++;
+		}
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.TeacherHair))
+		{
+			if (this.TeacherHair[this.ID] != null && !this.TeacherHair[this.ID].active)
+			{
+				UnityEngine.Object.Destroy(this.TeacherHair[this.ID]);
+			}
+			this.ID++;
+		}
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.FemaleHair))
+		{
+			if (this.FemaleHair[this.ID] != null && !this.FemaleHair[this.ID].active)
+			{
+				UnityEngine.Object.Destroy(this.FemaleHair[this.ID]);
+			}
+			this.ID++;
+		}
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.MaleHair))
+		{
+			if (this.MaleHair[this.ID] != null && !this.MaleHair[this.ID].active)
+			{
+				UnityEngine.Object.Destroy(this.MaleHair[this.ID]);
+			}
+			this.ID++;
+		}
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.FacialHair))
+		{
+			if (this.FacialHair[this.ID] != null && !this.FacialHair[this.ID].active)
+			{
+				UnityEngine.Object.Destroy(this.FacialHair[this.ID]);
+			}
+			this.ID++;
+		}
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.Eyewear))
+		{
+			if (this.Eyewear[this.ID] != null && !this.Eyewear[this.ID].active)
+			{
+				UnityEngine.Object.Destroy(this.Eyewear[this.ID]);
+			}
+			this.ID++;
+		}
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.RightStockings))
+		{
+			if (this.RightStockings[this.ID] != null && !this.RightStockings[this.ID].active)
+			{
+				UnityEngine.Object.Destroy(this.RightStockings[this.ID]);
+			}
+			if (this.LeftStockings[this.ID] != null && !this.LeftStockings[this.ID].active)
+			{
+				UnityEngine.Object.Destroy(this.LeftStockings[this.ID]);
+			}
+			this.ID++;
 		}
 	}
 

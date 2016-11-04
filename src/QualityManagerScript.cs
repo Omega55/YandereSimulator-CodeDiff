@@ -31,7 +31,17 @@ public class QualityManagerScript : MonoBehaviour
 
 	public Renderer YandereHairRenderer;
 
-	public Shader NewShader;
+	public Shader NewBodyShader;
+
+	public Shader NewHairShader;
+
+	public Shader Toon;
+
+	public Shader ToonOutline;
+
+	public Shader ToonOverlay;
+
+	public Shader ToonOutlineOverlay;
 
 	public virtual void Start()
 	{
@@ -44,6 +54,7 @@ public class QualityManagerScript : MonoBehaviour
 			PlayerPrefs.SetInt("DrawDistance", 350);
 		}
 		this.UpdateFog();
+		this.UpdateAnims();
 		this.UpdateBloom();
 		this.UpdateShadows();
 		this.UpdateParticles();
@@ -117,48 +128,42 @@ public class QualityManagerScript : MonoBehaviour
 			{
 				if (PlayerPrefs.GetInt("DisableOutlines") == 1)
 				{
-					this.NewShader = Shader.Find("Diffuse");
+					this.NewHairShader = this.Toon;
+					this.NewBodyShader = this.ToonOverlay;
 				}
 				else
 				{
-					this.NewShader = Shader.Find("Toon/Lighted Outline");
+					this.NewHairShader = this.ToonOutline;
+					this.NewBodyShader = this.ToonOutlineOverlay;
 				}
 				if (!this.StudentManager.Students[i].Male)
 				{
-					if (PlayerPrefs.GetInt("DisableOutlines") == 1)
-					{
-						this.StudentManager.Students[i].MyRenderer.materials[0].shader = this.NewShader;
-					}
-					else
-					{
-						Shader shader = Shader.Find("Toon/Lighted Outline Overlay Multiple Textures");
-						this.StudentManager.Students[i].MyRenderer.materials[0].shader = shader;
-					}
-					this.StudentManager.Students[i].MyRenderer.materials[1].shader = this.NewShader;
-					this.StudentManager.Students[i].MyRenderer.materials[2].shader = this.NewShader;
+					this.StudentManager.Students[i].MyRenderer.materials[0].shader = this.NewBodyShader;
+					this.StudentManager.Students[i].MyRenderer.materials[1].shader = this.NewBodyShader;
+					this.StudentManager.Students[i].MyRenderer.materials[2].shader = this.NewBodyShader;
 				}
 				else
 				{
-					this.StudentManager.Students[i].MyRenderer.materials[0].shader = this.NewShader;
-					this.StudentManager.Students[i].MyRenderer.materials[1].shader = this.NewShader;
-					this.StudentManager.Students[i].MyRenderer.materials[2].shader = this.NewShader;
+					this.StudentManager.Students[i].MyRenderer.materials[0].shader = this.NewHairShader;
+					this.StudentManager.Students[i].MyRenderer.materials[1].shader = this.NewHairShader;
+					this.StudentManager.Students[i].MyRenderer.materials[2].shader = this.NewBodyShader;
 				}
 				if (!this.StudentManager.Students[i].Male)
 				{
 					if (!this.StudentManager.Students[i].Teacher)
 					{
-						this.StudentManager.Students[i].Cosmetic.FemaleHairRenderers[this.StudentManager.Students[i].Cosmetic.Hairstyle].material.shader = this.NewShader;
+						this.StudentManager.Students[i].Cosmetic.FemaleHairRenderers[this.StudentManager.Students[i].Cosmetic.Hairstyle].material.shader = this.NewHairShader;
 						if (this.StudentManager.Students[i].Cosmetic.Accessory > 0)
 						{
-							((Renderer)this.StudentManager.Students[i].Cosmetic.FemaleAccessories[this.StudentManager.Students[i].Cosmetic.Accessory].GetComponent(typeof(Renderer))).material.shader = this.NewShader;
+							((Renderer)this.StudentManager.Students[i].Cosmetic.FemaleAccessories[this.StudentManager.Students[i].Cosmetic.Accessory].GetComponent(typeof(Renderer))).material.shader = this.NewHairShader;
 						}
 					}
 					else
 					{
-						this.StudentManager.Students[i].Cosmetic.TeacherHairRenderers[this.StudentManager.Students[i].Cosmetic.Hairstyle].material.shader = this.NewShader;
+						this.StudentManager.Students[i].Cosmetic.TeacherHairRenderers[this.StudentManager.Students[i].Cosmetic.Hairstyle].material.shader = this.NewHairShader;
 						if (this.StudentManager.Students[i].Cosmetic.Accessory > 0)
 						{
-							((Renderer)this.StudentManager.Students[i].Cosmetic.TeacherAccessories[this.StudentManager.Students[i].Cosmetic.Accessory].GetComponent(typeof(Renderer))).material.shader = this.NewShader;
+							((Renderer)this.StudentManager.Students[i].Cosmetic.TeacherAccessories[this.StudentManager.Students[i].Cosmetic.Accessory].GetComponent(typeof(Renderer))).material.shader = this.NewHairShader;
 						}
 					}
 				}
@@ -166,14 +171,14 @@ public class QualityManagerScript : MonoBehaviour
 				{
 					if (this.StudentManager.Students[i].Cosmetic.Hairstyle > 0)
 					{
-						this.StudentManager.Students[i].Cosmetic.MaleHairRenderers[this.StudentManager.Students[i].Cosmetic.Hairstyle].material.shader = this.NewShader;
+						this.StudentManager.Students[i].Cosmetic.MaleHairRenderers[this.StudentManager.Students[i].Cosmetic.Hairstyle].material.shader = this.NewHairShader;
 					}
 					if (this.StudentManager.Students[i].Cosmetic.Accessory > 0)
 					{
 						Renderer renderer = (Renderer)this.StudentManager.Students[i].Cosmetic.MaleAccessories[this.StudentManager.Students[i].Cosmetic.Accessory].GetComponent(typeof(Renderer));
 						if (renderer != null)
 						{
-							renderer.material.shader = this.NewShader;
+							renderer.material.shader = this.NewHairShader;
 						}
 					}
 				}
@@ -182,21 +187,21 @@ public class QualityManagerScript : MonoBehaviour
 					Renderer renderer2 = (Renderer)this.StudentManager.Students[i].Cosmetic.ClubAccessories[this.StudentManager.Students[i].Cosmetic.Club].GetComponent(typeof(Renderer));
 					if (renderer2 != null)
 					{
-						renderer2.material.shader = this.NewShader;
+						renderer2.material.shader = this.NewHairShader;
 					}
 				}
 			}
 		}
-		this.Yandere.MyRenderer.materials[0].shader = this.NewShader;
-		this.Yandere.MyRenderer.materials[1].shader = this.NewShader;
-		this.Yandere.MyRenderer.materials[2].shader = this.NewShader;
+		this.Yandere.MyRenderer.materials[0].shader = this.NewBodyShader;
+		this.Yandere.MyRenderer.materials[1].shader = this.NewBodyShader;
+		this.Yandere.MyRenderer.materials[2].shader = this.NewBodyShader;
 		for (int i = 1; i < Extensions.get_length(this.Yandere.Hairstyles); i++)
 		{
 			Renderer renderer3 = (Renderer)this.Yandere.Hairstyles[i].GetComponent(typeof(Renderer));
 			if (renderer3 != null)
 			{
-				this.YandereHairRenderer.material.shader = this.NewShader;
-				renderer3.material.shader = this.NewShader;
+				this.YandereHairRenderer.material.shader = this.NewHairShader;
+				renderer3.material.shader = this.NewHairShader;
 			}
 		}
 	}
@@ -276,6 +281,18 @@ public class QualityManagerScript : MonoBehaviour
 		else
 		{
 			this.Sun.shadows = LightShadows.Soft;
+		}
+	}
+
+	public virtual void UpdateAnims()
+	{
+		if (PlayerPrefs.GetInt("DisableFarAnimations") == 1)
+		{
+			this.StudentManager.DisableFarAnims = true;
+		}
+		else
+		{
+			this.StudentManager.DisableFarAnims = false;
 		}
 	}
 

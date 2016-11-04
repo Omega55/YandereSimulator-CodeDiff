@@ -30,6 +30,8 @@ public class SettingsScript : MonoBehaviour
 
 	public UILabel ShadowsLabel;
 
+	public UILabel FarAnimsLabel;
+
 	public int SelectionLimit;
 
 	public int Selected;
@@ -194,19 +196,36 @@ public class SettingsScript : MonoBehaviour
 				this.QualityManager.UpdateFog();
 			}
 		}
-		else if (this.Selected == 9 && (this.InputManager.TappedRight || this.InputManager.TappedLeft))
+		else if (this.Selected == 9)
 		{
-			if (PlayerPrefs.GetInt("DisableShadows") == 1)
+			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
 			{
-				PlayerPrefs.SetInt("DisableShadows", 0);
+				if (PlayerPrefs.GetInt("DisableShadows") == 1)
+				{
+					PlayerPrefs.SetInt("DisableShadows", 0);
+					this.UpdateText();
+				}
+				else
+				{
+					PlayerPrefs.SetInt("DisableShadows", 1);
+					this.UpdateText();
+				}
+				this.QualityManager.UpdateShadows();
+			}
+		}
+		else if (this.Selected == 10 && (this.InputManager.TappedRight || this.InputManager.TappedLeft))
+		{
+			if (PlayerPrefs.GetInt("DisableFarAnimations") == 1)
+			{
+				PlayerPrefs.SetInt("DisableFarAnimations", 0);
 				this.UpdateText();
 			}
 			else
 			{
-				PlayerPrefs.SetInt("DisableShadows", 1);
+				PlayerPrefs.SetInt("DisableFarAnimations", 1);
 				this.UpdateText();
 			}
-			this.QualityManager.UpdateShadows();
+			this.QualityManager.UpdateAnims();
 		}
 		if (Input.GetButtonDown("B"))
 		{
@@ -287,6 +306,14 @@ public class SettingsScript : MonoBehaviour
 		{
 			this.ShadowsLabel.text = "Off";
 		}
+		if (PlayerPrefs.GetInt("DisableFarAnimations") == 0)
+		{
+			this.FarAnimsLabel.text = "On";
+		}
+		else if (PlayerPrefs.GetInt("DisableFarAnimations") == 1)
+		{
+			this.FarAnimsLabel.text = "Off";
+		}
 	}
 
 	public virtual void UpdateHighlight()
@@ -299,7 +326,7 @@ public class SettingsScript : MonoBehaviour
 		{
 			this.Selected = 1;
 		}
-		int num = 450 - 90 * this.Selected;
+		int num = 445 - 80 * this.Selected;
 		Vector3 localPosition = this.Highlight.localPosition;
 		float num2 = localPosition.y = (float)num;
 		Vector3 vector = this.Highlight.localPosition = localPosition;

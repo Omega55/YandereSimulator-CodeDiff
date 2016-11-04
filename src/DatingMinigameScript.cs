@@ -191,6 +191,7 @@ public class DatingMinigameScript : MonoBehaviour
 		this.GiveGift.localScale = new Vector3((float)0, (float)0, (float)0);
 		this.ShowOff.localScale = new Vector3((float)0, (float)0, (float)0);
 		this.Topics.localScale = new Vector3((float)0, (float)0, (float)0);
+		this.DatingSimHUD.active = false;
 		this.DatingSimHUD.alpha = (float)0;
 		this.Panel.alpha = (float)1;
 		for (int i = 1; i < 26; i++)
@@ -343,6 +344,7 @@ public class DatingMinigameScript : MonoBehaviour
 						Vector3 vector2 = this.AffectionBar.localScale = localScale;
 						this.DialogueLabel.text = this.Greetings[this.AffectionLevel];
 						this.CalculateMultiplier();
+						this.DatingSimHUD.active = true;
 						this.Timer = (float)0;
 						this.Phase++;
 					}
@@ -748,6 +750,7 @@ public class DatingMinigameScript : MonoBehaviour
 				this.DatingSimHUD.alpha = Mathf.MoveTowards(this.DatingSimHUD.alpha, (float)0, Time.deltaTime);
 				if (this.DatingSimHUD.alpha == (float)0)
 				{
+					this.DatingSimHUD.active = false;
 					this.Phase++;
 				}
 			}

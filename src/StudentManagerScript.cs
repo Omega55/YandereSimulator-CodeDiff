@@ -179,6 +179,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public bool TeachersSpawned;
 
+	public bool DisableFarAnims;
+
 	public bool FirstUpdate;
 
 	public bool ForceSpawn;
@@ -208,6 +210,14 @@ public class StudentManagerScript : MonoBehaviour
 	public string[] FirstNames;
 
 	public string[] LastNames;
+
+	public Shader Toon;
+
+	public Shader ToonOutline;
+
+	public Shader ToonOverlay;
+
+	public Shader ToonOverlayOutline;
 
 	public StudentManagerScript()
 	{

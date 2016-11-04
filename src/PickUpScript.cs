@@ -61,6 +61,8 @@ public class PickUpScript : MonoBehaviour
 
 	public int Food;
 
+	public float KinematicTimer;
+
 	public float DumpTimer;
 
 	public bool Empty;
@@ -78,10 +80,6 @@ public class PickUpScript : MonoBehaviour
 		if (!this.CanCollide)
 		{
 			Physics.IgnoreCollision(this.Yandere.collider, this.MyCollider);
-		}
-		if (this.rigidbody != null)
-		{
-			this.OriginalConstraints = this.rigidbody.constraints;
 		}
 		this.OriginalColor = this.Outline[0].color;
 		this.OriginalScale = this.transform.localScale;
@@ -152,6 +150,7 @@ public class PickUpScript : MonoBehaviour
 				this.Yandere.NearBodies = this.Yandere.NearBodies + 1;
 			}
 			this.Yandere.StudentManager.UpdateStudents();
+			this.KinematicTimer = (float)0;
 		}
 		if (this.Yandere.PickUp == this)
 		{
@@ -172,6 +171,15 @@ public class PickUpScript : MonoBehaviour
 					this.Yandere.Incinerator.BodyParts = this.Yandere.Incinerator.BodyParts + 1;
 				}
 				UnityEngine.Object.Destroy(this.gameObject);
+			}
+		}
+		if (this.rigidbody != null && !this.rigidbody.isKinematic)
+		{
+			this.KinematicTimer = Mathf.MoveTowards(this.KinematicTimer, (float)5, Time.deltaTime);
+			if (this.KinematicTimer == (float)5)
+			{
+				this.rigidbody.isKinematic = true;
+				this.KinematicTimer = (float)0;
 			}
 		}
 	}
@@ -199,6 +207,7 @@ public class PickUpScript : MonoBehaviour
 		if (this.rigidbody != null)
 		{
 			this.rigidbody.constraints = this.OriginalConstraints;
+			this.rigidbody.isKinematic = false;
 			this.rigidbody.useGravity = true;
 		}
 		if (this.Dumped)
