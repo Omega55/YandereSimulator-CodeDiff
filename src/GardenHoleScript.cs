@@ -25,6 +25,8 @@ public class GardenHoleScript : MonoBehaviour
 
 	public bool Dug;
 
+	public int VictimID;
+
 	public int ID;
 
 	public virtual void Start()
@@ -116,6 +118,7 @@ public class GardenHoleScript : MonoBehaviour
 				{
 					this.Yandere.Police.MurderScene = false;
 				}
+				this.VictimID = this.Corpse.StudentID;
 				this.Corpse.Remove();
 				PlayerPrefs.SetInt("GardenGrave_" + this.ID + "_Occupied", 1);
 				this.Prompt.Hide();

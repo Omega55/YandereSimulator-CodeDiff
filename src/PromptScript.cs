@@ -89,6 +89,8 @@ public class PromptScript : MonoBehaviour
 
 	public GameObject YandereObject;
 
+	public bool Hidden;
+
 	public PromptScript()
 	{
 		this.Local = true;
@@ -128,6 +130,7 @@ public class PromptScript : MonoBehaviour
 					this.Speaker.transform.parent = this.PromptParent.transform;
 					this.Speaker.transform.localScale = new Vector3((float)1, (float)1, (float)1);
 					this.Speaker.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+					this.Speaker.enabled = false;
 				}
 				this.Square = (UISprite)((GameObject)UnityEngine.Object.Instantiate(this.PromptParent.SquareObject, this.transform.position, Quaternion.identity)).GetComponent(typeof(UISprite));
 				this.Square.transform.parent = this.PromptParent.transform;
@@ -137,6 +140,7 @@ public class PromptScript : MonoBehaviour
 				Color color = this.Square.color;
 				float num2 = color.a = (float)num;
 				Color color2 = this.Square.color = color;
+				this.Square.enabled = false;
 				this.ID = 0;
 				while (this.ID < 4)
 				{
@@ -150,6 +154,7 @@ public class PromptScript : MonoBehaviour
 						Color color3 = this.Button[this.ID].color;
 						float num4 = color3.a = (float)num3;
 						Color color4 = this.Button[this.ID].color = color3;
+						this.Button[this.ID].enabled = false;
 						this.Circle[this.ID] = (UISprite)((GameObject)UnityEngine.Object.Instantiate(this.CircleObject, this.transform.position, Quaternion.identity)).GetComponent(typeof(UISprite));
 						this.Circle[this.ID].transform.parent = this.PromptParent.transform;
 						this.Circle[this.ID].transform.localScale = new Vector3((float)1, (float)1, (float)1);
@@ -158,6 +163,7 @@ public class PromptScript : MonoBehaviour
 						Color color5 = this.Circle[this.ID].color;
 						float num6 = color5.a = (float)num5;
 						Color color6 = this.Circle[this.ID].color = color5;
+						this.Circle[this.ID].enabled = false;
 						this.Label[this.ID] = (UILabel)((GameObject)UnityEngine.Object.Instantiate(this.LabelObject, this.transform.position, Quaternion.identity)).GetComponent(typeof(UILabel));
 						this.Label[this.ID].transform.parent = this.PromptParent.transform;
 						this.Label[this.ID].transform.localScale = new Vector3((float)1, (float)1, (float)1);
@@ -166,6 +172,7 @@ public class PromptScript : MonoBehaviour
 						Color color7 = this.Label[this.ID].color;
 						float num8 = color7.a = (float)num7;
 						Color color8 = this.Label[this.ID].color = color7;
+						this.Label[this.ID].enabled = false;
 						if (this.Suspicious)
 						{
 							this.Label[this.ID].color = new Color((float)1, (float)0, (float)0, (float)0);
@@ -221,6 +228,7 @@ public class PromptScript : MonoBehaviour
 						}
 						if (this.Carried || this.InSight)
 						{
+							this.Hidden = false;
 							this.ID = 0;
 							Vector2 vector3;
 							while (this.ID < 4)
@@ -249,6 +257,7 @@ public class PromptScript : MonoBehaviour
 									}
 									if (!this.HideButton[this.ID])
 									{
+										this.Square.enabled = true;
 										int num = 1;
 										Color color = this.Square.color;
 										float num2 = color.a = (float)num;
@@ -273,6 +282,7 @@ public class PromptScript : MonoBehaviour
 								}
 								if (this.Yandere.NearestPrompt == this)
 								{
+									this.Square.enabled = false;
 									int num3 = 0;
 									Color color3 = this.Square.color;
 									float num4 = color3.a = (float)num3;
@@ -282,6 +292,12 @@ public class PromptScript : MonoBehaviour
 									{
 										if (this.ButtonActive[this.ID])
 										{
+											if (!this.Button[this.ID].enabled)
+											{
+												this.Button[this.ID].enabled = true;
+												this.Circle[this.ID].enabled = true;
+												this.Label[this.ID].enabled = true;
+											}
 											this.Button[this.ID].color = new Color((float)1, (float)1, (float)1, (float)1);
 											this.Circle[this.ID].color = new Color(0.5f, 0.5f, 0.5f, (float)1);
 											int num5 = 1;
@@ -290,6 +306,7 @@ public class PromptScript : MonoBehaviour
 											Color color6 = this.Label[this.ID].color = color5;
 											if (this.Speaker != null)
 											{
+												this.Speaker.enabled = true;
 												int num7 = 1;
 												Color color7 = this.Speaker.color;
 												float num8 = color7.a = (float)num7;
@@ -367,6 +384,9 @@ public class PromptScript : MonoBehaviour
 									{
 										if (this.ButtonActive[this.ID])
 										{
+											this.Button[this.ID].enabled = false;
+											this.Circle[this.ID].enabled = false;
+											this.Label[this.ID].enabled = false;
 											int num11 = 0;
 											Color color11 = this.Button[this.ID].color;
 											float num12 = color11.a = (float)num11;
@@ -379,15 +399,16 @@ public class PromptScript : MonoBehaviour
 											Color color15 = this.Label[this.ID].color;
 											float num16 = color15.a = (float)num15;
 											Color color16 = this.Label[this.ID].color = color15;
-											if (this.Speaker != null)
-											{
-												int num17 = 0;
-												Color color17 = this.Speaker.color;
-												float num18 = color17.a = (float)num17;
-												Color color18 = this.Speaker.color = color17;
-											}
 										}
 										this.ID++;
+									}
+									if (this.Speaker != null)
+									{
+										this.Speaker.enabled = false;
+										int num17 = 0;
+										Color color17 = this.Speaker.color;
+										float num18 = color17.a = (float)num17;
+										Color color18 = this.Speaker.color = color17;
 									}
 								}
 							}
@@ -407,6 +428,9 @@ public class PromptScript : MonoBehaviour
 									if (this.ButtonActive[this.ID])
 									{
 										this.Circle[this.ID].fillAmount = (float)1;
+										this.Button[this.ID].enabled = false;
+										this.Circle[this.ID].enabled = false;
+										this.Label[this.ID].enabled = false;
 										int num21 = 0;
 										Color color21 = this.Button[this.ID].color;
 										float num22 = color21.a = (float)num21;
@@ -419,15 +443,16 @@ public class PromptScript : MonoBehaviour
 										Color color25 = this.Label[this.ID].color;
 										float num26 = color25.a = (float)num25;
 										Color color26 = this.Label[this.ID].color = color25;
-										if (this.Speaker != null)
-										{
-											int num27 = 0;
-											Color color27 = this.Speaker.color;
-											float num28 = color27.a = (float)num27;
-											Color color28 = this.Speaker.color = color27;
-										}
 									}
 									this.ID++;
+								}
+								if (this.Speaker != null)
+								{
+									this.Speaker.enabled = false;
+									int num27 = 0;
+									Color color27 = this.Speaker.color;
+									float num28 = color27.a = (float)num27;
+									Color color28 = this.Speaker.color = color27;
 								}
 							}
 							int num29 = 1;
@@ -439,6 +464,9 @@ public class PromptScript : MonoBehaviour
 							{
 								if (this.ButtonActive[this.ID] && this.HideButton[this.ID])
 								{
+									this.Button[this.ID].enabled = false;
+									this.Circle[this.ID].enabled = false;
+									this.Label[this.ID].enabled = false;
 									int num31 = 0;
 									Color color31 = this.Button[this.ID].color;
 									float num32 = color31.a = (float)num31;
@@ -453,6 +481,7 @@ public class PromptScript : MonoBehaviour
 									Color color36 = this.Label[this.ID].color = color35;
 									if (this.Speaker != null)
 									{
+										this.Speaker.enabled = false;
 										int num37 = 0;
 										Color color37 = this.Speaker.color;
 										float num38 = color37.a = (float)num37;
@@ -526,47 +555,59 @@ public class PromptScript : MonoBehaviour
 
 	public virtual void Hide()
 	{
-		if (!this.Initialized)
+		if (!this.Hidden)
 		{
-			this.Start();
-		}
-		if (this.YandereObject != null)
-		{
-			if (this.Yandere.NearestPrompt == this)
+			this.Hidden = true;
+			if (!this.Initialized)
 			{
-				this.Yandere.NearestPrompt = null;
+				this.Start();
 			}
-			int num = 0;
-			Color color = this.Square.color;
-			float num2 = color.a = (float)num;
-			Color color2 = this.Square.color = color;
-			this.ID = 0;
-			while (this.ID < 4)
+			if (this.YandereObject != null)
 			{
-				if (this.ButtonActive[this.ID] && this.Button[this.ID].color.a > (float)0)
+				if (this.Yandere.NearestPrompt == this)
 				{
-					this.Circle[this.ID].fillAmount = (float)1;
-					int num3 = 0;
-					Color color3 = this.Button[this.ID].color;
-					float num4 = color3.a = (float)num3;
-					Color color4 = this.Button[this.ID].color = color3;
-					int num5 = 0;
-					Color color5 = this.Circle[this.ID].color;
-					float num6 = color5.a = (float)num5;
-					Color color6 = this.Circle[this.ID].color = color5;
-					int num7 = 0;
-					Color color7 = this.Label[this.ID].color;
-					float num8 = color7.a = (float)num7;
-					Color color8 = this.Label[this.ID].color = color7;
-					if (this.Speaker != null)
-					{
-						int num9 = 0;
-						Color color9 = this.Speaker.color;
-						float num10 = color9.a = (float)num9;
-						Color color10 = this.Speaker.color = color9;
-					}
+					this.Yandere.NearestPrompt = null;
 				}
-				this.ID++;
+				if (this.Square.enabled)
+				{
+					this.Square.enabled = false;
+					int num = 0;
+					Color color = this.Square.color;
+					float num2 = color.a = (float)num;
+					Color color2 = this.Square.color = color;
+				}
+				this.ID = 0;
+				while (this.ID < 4)
+				{
+					if (this.ButtonActive[this.ID] && this.Button[this.ID].enabled)
+					{
+						this.Circle[this.ID].fillAmount = (float)1;
+						this.Button[this.ID].enabled = false;
+						this.Circle[this.ID].enabled = false;
+						this.Label[this.ID].enabled = false;
+						int num3 = 0;
+						Color color3 = this.Button[this.ID].color;
+						float num4 = color3.a = (float)num3;
+						Color color4 = this.Button[this.ID].color = color3;
+						int num5 = 0;
+						Color color5 = this.Circle[this.ID].color;
+						float num6 = color5.a = (float)num5;
+						Color color6 = this.Circle[this.ID].color = color5;
+						int num7 = 0;
+						Color color7 = this.Label[this.ID].color;
+						float num8 = color7.a = (float)num7;
+						Color color8 = this.Label[this.ID].color = color7;
+					}
+					this.ID++;
+				}
+				if (this.Speaker != null)
+				{
+					this.Speaker.enabled = false;
+					int num9 = 0;
+					Color color9 = this.Speaker.color;
+					float num10 = color9.a = (float)num9;
+					Color color10 = this.Speaker.color = color9;
+				}
 			}
 		}
 	}

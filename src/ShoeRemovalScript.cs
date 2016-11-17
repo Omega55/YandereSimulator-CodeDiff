@@ -446,7 +446,7 @@ public class ShoeRemovalScript : MonoBehaviour
 				this.Height = 5;
 			}
 		}
-		if (this.Student.StudentID == 7)
+		if (this.Student.StudentID == this.Student.StudentManager.RivalID || this.Student.StudentID == this.Student.StudentManager.SuitorID)
 		{
 			this.Height = 5;
 		}

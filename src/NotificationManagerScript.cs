@@ -72,6 +72,14 @@ public class NotificationManagerScript : MonoBehaviour
 			{
 				notificationScript.Label.text = "Learned Opinion";
 			}
+			else if (Type == "Complete")
+			{
+				notificationScript.Label.text = "Mission Complete";
+			}
+			else if (Type == "Exfiltrate")
+			{
+				notificationScript.Label.text = "Leave School";
+			}
 			this.NotificationsSpawned++;
 			notificationScript.ID = this.NotificationsSpawned;
 		}

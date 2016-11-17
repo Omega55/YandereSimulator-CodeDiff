@@ -12,10 +12,13 @@ public class PromptSwapScript : MonoBehaviour
 
 	public string GamepadName;
 
+	private int LastType;
+
 	public PromptSwapScript()
 	{
 		this.KeyboardName = string.Empty;
 		this.GamepadName = string.Empty;
+		this.LastType = 1;
 	}
 
 	public virtual void Start()
@@ -30,14 +33,18 @@ public class PromptSwapScript : MonoBehaviour
 	{
 		if (this.InputDevice != null)
 		{
-			if (this.InputDevice.Type == 1)
+			if (this.InputDevice.Type != this.LastType)
 			{
-				this.MySprite.spriteName = this.GamepadName;
+				if (this.InputDevice.Type == 1)
+				{
+					this.MySprite.spriteName = this.GamepadName;
+				}
+				else
+				{
+					this.MySprite.spriteName = this.KeyboardName;
+				}
 			}
-			else
-			{
-				this.MySprite.spriteName = this.KeyboardName;
-			}
+			this.LastType = this.InputDevice.Type;
 		}
 		else
 		{

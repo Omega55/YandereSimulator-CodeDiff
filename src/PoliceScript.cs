@@ -5,25 +5,17 @@ using UnityScript.Lang;
 [Serializable]
 public class PoliceScript : MonoBehaviour
 {
-	public HeartbrokenScript Heartbroken;
-
-	public GameObject HeartbeatCamera;
-
-	public GameObject DetectionCamera;
-
-	public EndOfDayScript EndOfDay;
-
-	public Transform BloodParent;
-
-	public RagdollScript[] CorpseList;
-
 	public StudentManagerScript StudentManager;
+
+	public HeartbrokenScript Heartbroken;
 
 	public ClubManagerScript ClubManager;
 
 	public ReputationScript Reputation;
 
 	public TranqCaseScript TranqCase;
+
+	public EndOfDayScript EndOfDay;
 
 	public JukeboxScript Jukebox;
 
@@ -32,6 +24,16 @@ public class PoliceScript : MonoBehaviour
 	public ClockScript Clock;
 
 	public UIPanel Panel;
+
+	public GameObject HeartbeatCamera;
+
+	public GameObject DetectionCamera;
+
+	public GameObject Icons;
+
+	public Transform BloodParent;
+
+	public RagdollScript[] CorpseList;
 
 	public UILabel[] ResultsLabels;
 
@@ -157,6 +159,7 @@ public class PoliceScript : MonoBehaviour
 		Color color7 = this.ContinueButton.color;
 		float num10 = color7.a = (float)num9;
 		Color color8 = this.ContinueButton.color = color7;
+		this.Icons.active = false;
 	}
 
 	public virtual void Update()
@@ -166,6 +169,10 @@ public class PoliceScript : MonoBehaviour
 			if (this.PoisonScene)
 			{
 				this.Panel.alpha = (float)0;
+			}
+			if (!this.Icons.active)
+			{
+				this.Icons.active = true;
 			}
 			float x = Mathf.Lerp(this.transform.localPosition.x, (float)0, Time.deltaTime * (float)10);
 			Vector3 localPosition = this.transform.localPosition;

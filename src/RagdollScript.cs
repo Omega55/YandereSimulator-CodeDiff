@@ -101,6 +101,8 @@ public class RagdollScript : MonoBehaviour
 
 	public bool Falling;
 
+	public bool Settled;
+
 	public bool Suicide;
 
 	public bool Dumped;
@@ -112,6 +114,8 @@ public class RagdollScript : MonoBehaviour
 	public bool Male;
 
 	public float AnimStartTime;
+
+	public float SettleTimer;
 
 	public float BreastSize;
 
@@ -175,16 +179,40 @@ public class RagdollScript : MonoBehaviour
 
 	public virtual void Update()
 	{
+		if (!this.Dragged && !this.Carried && !this.Settled)
+		{
+			this.SettleTimer += Time.deltaTime;
+			if (this.SettleTimer > (float)5)
+			{
+				this.Settled = true;
+				for (int i = 0; i < this.AllRigidbodies.Length; i++)
+				{
+					this.AllRigidbodies[i].isKinematic = true;
+					this.AllColliders[i].enabled = false;
+				}
+			}
+		}
 		if (this.DetectionMarker != null)
 		{
-			float a = Mathf.MoveTowards(this.DetectionMarker.Tex.color.a, (float)0, Time.deltaTime * (float)10);
-			Color color = this.DetectionMarker.Tex.color;
-			float num = color.a = a;
-			Color color2 = this.DetectionMarker.Tex.color = color;
+			if (this.DetectionMarker.Tex.color.a > 0.1f)
+			{
+				float a = Mathf.MoveTowards(this.DetectionMarker.Tex.color.a, (float)0, Time.deltaTime * (float)10);
+				Color color = this.DetectionMarker.Tex.color;
+				float num = color.a = a;
+				Color color2 = this.DetectionMarker.Tex.color = color;
+			}
+			else
+			{
+				int num2 = 0;
+				Color color3 = this.DetectionMarker.Tex.color;
+				float num3 = color3.a = (float)num2;
+				Color color4 = this.DetectionMarker.Tex.color = color3;
+				this.DetectionMarker = null;
+			}
 		}
 		if (!this.Dumped)
 		{
-			if (this.StopAnimation)
+			if (this.StopAnimation && this.Character.animation.isPlaying)
 			{
 				this.Character.animation.Stop();
 			}
@@ -232,6 +260,11 @@ public class RagdollScript : MonoBehaviour
 						{
 							this.Student.Ragdoll.AllRigidbodies[i].drag = (float)2;
 						}
+						for (int i = 0; i < this.AllRigidbodies.Length; i++)
+						{
+							this.AllRigidbodies[i].isKinematic = false;
+							this.AllColliders[i].enabled = true;
+						}
 					}
 					else
 					{
@@ -255,20 +288,20 @@ public class RagdollScript : MonoBehaviour
 					{
 						float y = 0.2f;
 						Vector3 localPosition = this.AllRigidbodies[0].transform.parent.transform.localPosition;
-						float num2 = localPosition.y = y;
+						float num4 = localPosition.y = y;
 						Vector3 vector = this.AllRigidbodies[0].transform.parent.transform.localPosition = localPosition;
 					}
 					this.Yandere.Character.animation.Play("f02_carryLiftA_00");
 					this.Character.animation.Play(this.LiftAnim);
 					this.BloodSpawnerCollider.enabled = false;
-					int num3 = 0;
+					int num5 = 0;
 					Vector3 localEulerAngles = this.PelvisRoot.localEulerAngles;
-					float num4 = localEulerAngles.y = (float)num3;
+					float num6 = localEulerAngles.y = (float)num5;
 					Vector3 vector2 = this.PelvisRoot.localEulerAngles = localEulerAngles;
 					this.Prompt.MyCollider.enabled = false;
-					int num5 = 0;
+					int num7 = 0;
 					Vector3 localPosition2 = this.PelvisRoot.localPosition;
-					float num6 = localPosition2.z = (float)num5;
+					float num8 = localPosition2.z = (float)num7;
 					Vector3 vector3 = this.PelvisRoot.localPosition = localPosition2;
 					this.Yandere.Ragdoll = this.gameObject;
 					this.Yandere.CanMove = false;
@@ -329,7 +362,7 @@ public class RagdollScript : MonoBehaviour
 			this.Character.animation.Play("f02_fetal_00");
 			float y2 = Mathf.MoveTowards(this.transform.localPosition.y, 0.36f, Time.deltaTime);
 			Vector3 localPosition3 = this.transform.localPosition;
-			float num7 = localPosition3.y = y2;
+			float num9 = localPosition3.y = y2;
 			Vector3 vector4 = this.transform.localPosition = localPosition3;
 			if (this.transform.localPosition.y == 0.36f)
 			{
@@ -483,6 +516,10 @@ public class RagdollScript : MonoBehaviour
 		{
 			this.Student.Ragdoll.AllRigidbodies[i].drag = (float)0;
 		}
+		if (PlayerPrefs.GetInt("PhysicalGrade") + PlayerPrefs.GetInt("PhysicalBonus") > 0 && !this.Tranquil)
+		{
+			this.Prompt.HideButton[3] = false;
+		}
 		this.Prompt.AcceptingInput[1] = false;
 		this.Prompt.Circle[1].fillAmount = (float)1;
 		this.Prompt.Label[1].text = "     " + "Drag";
@@ -491,6 +528,8 @@ public class RagdollScript : MonoBehaviour
 		this.Yandere.Dragging = false;
 		this.Yandere.Ragdoll = null;
 		this.Yandere.StudentManager.UpdateStudents();
+		this.SettleTimer = (float)0;
+		this.Settled = false;
 		this.Dragged = false;
 	}
 
@@ -558,7 +597,9 @@ public class RagdollScript : MonoBehaviour
 		this.Prompt.MyCollider.enabled = true;
 		this.BloodPoolSpawner.NearbyBlood = 0;
 		this.StopAnimation = true;
+		this.SettleTimer = (float)0;
 		this.Carried = false;
+		this.Settled = false;
 		this.Falling = true;
 		for (int i = 0; i < this.AllRigidbodies.Length; i++)
 		{

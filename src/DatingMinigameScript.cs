@@ -193,7 +193,6 @@ public class DatingMinigameScript : MonoBehaviour
 		this.Topics.localScale = new Vector3((float)0, (float)0, (float)0);
 		this.DatingSimHUD.active = false;
 		this.DatingSimHUD.alpha = (float)0;
-		this.Panel.alpha = (float)1;
 		for (int i = 1; i < 26; i++)
 		{
 			if (PlayerPrefs.GetInt("Topic_" + i + "_Discussed") == 1)

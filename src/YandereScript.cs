@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$2918 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$3056 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$2933;
+		internal YandereScript $self_$3071;
 
-		public $ApplyCustomCostume$2918(YandereScript self_)
+		public $ApplyCustomCostume$3056(YandereScript self_)
 		{
-			this.$self_$2933 = self_;
+			this.$self_$3071 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$2918.$(this.$self_$2933);
+			return new YandereScript.$ApplyCustomCostume$3056.$(this.$self_$3071);
 		}
 	}
 
@@ -491,6 +491,8 @@ public class YandereScript : MonoBehaviour
 
 	public bool FlapOut;
 
+	public bool NoDebug;
+
 	public bool Noticed;
 
 	public bool InClass;
@@ -951,6 +953,10 @@ public class YandereScript : MonoBehaviour
 		}
 		this.UpdateHair();
 		this.ClubAccessory();
+		if (PlayerPrefs.GetInt("MissionMode") == 1)
+		{
+			this.NoDebug = true;
+		}
 	}
 
 	public virtual void SetAnimationLayers()
@@ -1222,6 +1228,7 @@ public class YandereScript : MonoBehaviour
 							this.EmptyHands();
 							if (this.Inventory.RivalPhone)
 							{
+								this.PhonePromptBar.Panel.enabled = true;
 								this.PhonePromptBar.Show = true;
 							}
 							Time.timeScale = (float)1;
@@ -1827,6 +1834,7 @@ public class YandereScript : MonoBehaviour
 					this.CharacterAnimation.CrossFade("f02_removeGloves_00");
 					if (this.CharacterAnimation["f02_removeGloves_00"].time >= this.CharacterAnimation["f02_removeGloves_00"].length)
 					{
+						this.Gloves.rigidbody.isKinematic = false;
 						this.Gloves.transform.parent = null;
 						this.Gloves.active = true;
 						this.Degloving = false;
@@ -3320,7 +3328,7 @@ public class YandereScript : MonoBehaviour
 					}
 				}
 			}
-			if (!this.DebugMenu.active)
+			if (!this.NoDebug && !this.DebugMenu.active)
 			{
 				if (Input.GetKeyDown("-"))
 				{
@@ -3369,7 +3377,7 @@ public class YandereScript : MonoBehaviour
 				this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 				this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 			}
-			if (this.CanMove && !this.Egg && this.transform.position.y < (float)1000)
+			if (!this.NoDebug && this.CanMove && !this.Egg && this.transform.position.y < (float)1000)
 			{
 				if (Input.GetKeyDown("/"))
 				{
@@ -4068,7 +4076,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$2918(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$3056(this).GetEnumerator();
 	}
 
 	public virtual void WearGloves()
@@ -4094,6 +4102,7 @@ public class YandereScript : MonoBehaviour
 	{
 		this.MusicCredit.SongLabel.text = "Now Playing: This Is My Choice";
 		this.MusicCredit.BandLabel.text = "By: The Kira Justice";
+		this.MusicCredit.Panel.enabled = true;
 		this.MusicCredit.Slide = true;
 		this.EasterEggMenu.active = false;
 		this.Egg = true;
@@ -4288,6 +4297,7 @@ public class YandereScript : MonoBehaviour
 	{
 		this.MusicCredit.SongLabel.text = "Now Playing: Unknown Hero";
 		this.MusicCredit.BandLabel.text = "By: The Kira Justice";
+		this.MusicCredit.Panel.enabled = true;
 		this.MusicCredit.Slide = true;
 		this.MyRenderer.sharedMesh = this.SchoolSwimsuit;
 		this.MyRenderer.materials[0].mainTexture = this.SaitamaSuit;
@@ -4480,6 +4490,7 @@ public class YandereScript : MonoBehaviour
 				this.MyRenderer.materials[0].mainTexture = this.ApronTexture;
 				this.MyRenderer.materials[1].mainTexture = this.ApronTexture;
 				this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
+				this.Schoolwear = 4;
 				this.Paint = true;
 			}
 			else if (PlayerPrefs.GetInt("Club") == 6)
@@ -4488,6 +4499,7 @@ public class YandereScript : MonoBehaviour
 				this.MyRenderer.materials[0].mainTexture = this.JudoGiTexture;
 				this.MyRenderer.materials[1].mainTexture = this.JudoGiTexture;
 				this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
+				this.Schoolwear = 5;
 			}
 		}
 		else

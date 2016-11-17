@@ -8,6 +8,8 @@ public class StruggleBarScript : MonoBehaviour
 
 	public PromptSwapScript ButtonPrompt;
 
+	public UISprite[] ButtonPrompts;
+
 	public YandereScript Yandere;
 
 	public StudentScript Student;
@@ -75,11 +77,11 @@ public class StruggleBarScript : MonoBehaviour
 			{
 				this.Victory = (float)-100;
 			}
-			float x = Mathf.Lerp(this.ButtonPrompt.transform.localPosition.x, this.Victory * 6.5f, Time.deltaTime * (float)10);
-			Vector3 localPosition = this.ButtonPrompt.transform.localPosition;
+			float x = Mathf.Lerp(this.ButtonPrompts[this.ButtonID].transform.localPosition.x, this.Victory * 6.5f, Time.deltaTime * (float)10);
+			Vector3 localPosition = this.ButtonPrompts[this.ButtonID].transform.localPosition;
 			float num2 = localPosition.x = x;
-			Vector3 vector2 = this.ButtonPrompt.transform.localPosition = localPosition;
-			float x2 = this.ButtonPrompt.transform.localPosition.x;
+			Vector3 vector2 = this.ButtonPrompts[this.ButtonID].transform.localPosition = localPosition;
+			float x2 = this.ButtonPrompts[this.ButtonID].transform.localPosition.x;
 			Vector3 localPosition2 = this.Spikes.localPosition;
 			float num3 = localPosition2.x = x2;
 			Vector3 vector3 = this.Spikes.localPosition = localPosition2;
@@ -132,6 +134,10 @@ public class StruggleBarScript : MonoBehaviour
 
 	public virtual void ChooseButton()
 	{
+		this.ButtonPrompts[1].enabled = false;
+		this.ButtonPrompts[2].enabled = false;
+		this.ButtonPrompts[3].enabled = false;
+		this.ButtonPrompts[4].enabled = false;
 		int buttonID = this.ButtonID;
 		while (this.ButtonID == buttonID)
 		{
@@ -140,27 +146,20 @@ public class StruggleBarScript : MonoBehaviour
 		if (this.ButtonID == 1)
 		{
 			this.CurrentButton = "A";
-			this.ButtonPrompt.GamepadName = "A";
-			this.ButtonPrompt.KeyboardName = "E_Key";
 		}
 		else if (this.ButtonID == 2)
 		{
 			this.CurrentButton = "B";
-			this.ButtonPrompt.GamepadName = "B";
-			this.ButtonPrompt.KeyboardName = "Q_Key";
 		}
 		else if (this.ButtonID == 3)
 		{
 			this.CurrentButton = "X";
-			this.ButtonPrompt.GamepadName = "X";
-			this.ButtonPrompt.KeyboardName = "F_Key";
 		}
 		else if (this.ButtonID == 4)
 		{
 			this.CurrentButton = "Y";
-			this.ButtonPrompt.GamepadName = "Y";
-			this.ButtonPrompt.KeyboardName = "R_Key";
 		}
+		this.ButtonPrompts[this.ButtonID].enabled = true;
 	}
 
 	public virtual void Main()

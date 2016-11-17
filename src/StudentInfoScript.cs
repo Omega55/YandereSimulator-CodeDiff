@@ -8,6 +8,8 @@ public class StudentInfoScript : MonoBehaviour
 {
 	public StudentInfoMenuScript StudentInfoMenu;
 
+	public StudentManagerScript StudentManager;
+
 	public DialogueWheelScript DialogueWheel;
 
 	public HomeInternetScript HomeInternet;
@@ -293,7 +295,21 @@ public class StudentInfoScript : MonoBehaviour
 			WWW www = new WWW(url);
 			if (PlayerPrefs.GetInt("Student_" + ID + "_Replaced") == 0)
 			{
-				this.Portrait.mainTexture = www.texture;
+				if (this.StudentManager.Students[ID] != null)
+				{
+					if (!this.StudentManager.Students[ID].Cosmetic.Randomize)
+					{
+						this.Portrait.mainTexture = www.texture;
+					}
+					else
+					{
+						this.Portrait.mainTexture = this.BlankPortrait;
+					}
+				}
+				else
+				{
+					this.Portrait.mainTexture = this.BlankPortrait;
+				}
 			}
 			else
 			{

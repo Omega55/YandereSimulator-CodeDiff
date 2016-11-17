@@ -11,6 +11,8 @@ public class LaptopScript : MonoBehaviour
 
 	public YandereScript Yandere;
 
+	public DynamicBone Hair;
+
 	public Transform LaptopScreen;
 
 	public AudioClip ShutDown;
@@ -36,6 +38,7 @@ public class LaptopScript : MonoBehaviour
 		if (PlayerPrefs.GetInt("SCP") == 1)
 		{
 			this.LaptopScreen.localScale = new Vector3((float)0, (float)0, (float)0);
+			this.LaptopCamera.enabled = false;
 			this.SCP.active = false;
 			this.enabled = false;
 		}
@@ -63,6 +66,7 @@ public class LaptopScript : MonoBehaviour
 					this.SCP.animation["f02_scp_00"].time = (float)0;
 					this.LaptopCamera.enabled = true;
 					this.SCP.animation.Play();
+					this.Hair.enabled = true;
 					this.Jukebox.Dip = 0.5f;
 					this.audio.Play();
 					this.React = true;
@@ -113,9 +117,11 @@ public class LaptopScript : MonoBehaviour
 		{
 			this.LaptopScreen.localScale = Vector3.Lerp(this.LaptopScreen.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
 		}
-		else
+		else if (this.enabled)
 		{
 			this.LaptopScreen.localScale = new Vector3((float)0, (float)0, (float)0);
+			this.Hair.enabled = false;
+			this.enabled = false;
 		}
 	}
 

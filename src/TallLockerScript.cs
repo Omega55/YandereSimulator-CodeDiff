@@ -317,7 +317,6 @@ public class TallLockerScript : MonoBehaviour
 			this.Prompt.HideButton[this.Student.Schoolwear] = true;
 			this.Schoolwear[this.Student.Schoolwear].active = false;
 			this.Student.Indoors = true;
-			Debug.Log("Possibility 6.");
 		}
 	}
 

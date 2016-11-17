@@ -81,8 +81,6 @@ public class StudentManagerScript : MonoBehaviour
 
 	public ListScript Clubs;
 
-	public ListScript Seats;
-
 	public ChangingBoothScript[] ChangingBooths;
 
 	public GradingPaperScript[] FacultyDesks;
@@ -92,6 +90,20 @@ public class StudentManagerScript : MonoBehaviour
 	public Transform[] SpawnPositions;
 
 	public StudentScript[] Teachers;
+
+	public ListScript[] Seats;
+
+	public bool[] SeatsTaken11;
+
+	public bool[] SeatsTaken12;
+
+	public bool[] SeatsTaken21;
+
+	public bool[] SeatsTaken22;
+
+	public bool[] SeatsTaken31;
+
+	public bool[] SeatsTaken32;
 
 	public Collider RivalDeskCollider;
 
@@ -143,6 +155,10 @@ public class StudentManagerScript : MonoBehaviour
 
 	public GameObject PortraitChan;
 
+	public GameObject RandomPatrol;
+
+	public GameObject EmptyObject;
+
 	public GameObject PortraitKun;
 
 	public GameObject StudentChan;
@@ -150,8 +166,6 @@ public class StudentManagerScript : MonoBehaviour
 	public GameObject StudentKun;
 
 	public GameObject Portal;
-
-	public GameObject EmptyObject;
 
 	public float[] SpawnTimes;
 
@@ -167,9 +181,15 @@ public class StudentManagerScript : MonoBehaviour
 
 	public int NPCsTotal;
 
-	public int SpawnID;
-
 	public int Frame;
+
+	public int GymTeacherID;
+
+	public int SuitorID;
+
+	public int RivalID;
+
+	public int SpawnID;
 
 	public int ID;
 
@@ -182,6 +202,8 @@ public class StudentManagerScript : MonoBehaviour
 	public bool DisableFarAnims;
 
 	public bool FirstUpdate;
+
+	public bool MissionMode;
 
 	public bool ForceSpawn;
 
@@ -207,22 +229,24 @@ public class StudentManagerScript : MonoBehaviour
 
 	public string[] ColorNames;
 
+	public string[] MaleNames;
+
 	public string[] FirstNames;
 
 	public string[] LastNames;
 
-	public Shader Toon;
+	public bool SeatOccupied;
 
-	public Shader ToonOutline;
-
-	public Shader ToonOverlay;
-
-	public Shader ToonOverlayOutline;
+	public int Class;
 
 	public StudentManagerScript()
 	{
 		this.StudentsTotal = 13;
 		this.TeachersTotal = 6;
+		this.GymTeacherID = 100;
+		this.SuitorID = 13;
+		this.RivalID = 7;
+		this.Class = 1;
 	}
 
 	public virtual void Start()
@@ -233,6 +257,7 @@ public class StudentManagerScript : MonoBehaviour
 			this.ForceSpawn = true;
 			this.SpawnPositions[PlayerPrefs.GetInt("KidnapVictim")] = this.SlaveSpot;
 			this.SpawnID = PlayerPrefs.GetInt("KidnapVictim");
+			PlayerPrefs.SetInt("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Dead", 0);
 			this.SpawnStudent();
 			this.Students[PlayerPrefs.GetInt("KidnapVictim")].Slave = true;
 			this.SpawnID = 0;
@@ -352,6 +377,7 @@ public class StudentManagerScript : MonoBehaviour
 					this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.PortraitKun, new Vector3((float)0, (float)0, (float)0), Quaternion.identity);
 				}
 				((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).StudentID = this.NPCsSpawned + 1;
+				((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).StudentManager = this;
 				((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).TakingPortrait = true;
 				((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).Randomize = this.Randomize;
 				((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).JSON = this.JSON;
@@ -379,9 +405,32 @@ public class StudentManagerScript : MonoBehaviour
 
 	public virtual void SpawnStudent()
 	{
-		if (this.Students[this.SpawnID] == null && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Dead") == 0 && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Kidnapped") == 0 && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Arrested") == 0 && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Expelled") == 0 && this.JSON.StudentNames[this.SpawnID] != "Unknown" && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Reputation") > -100)
+		if (this.Students[this.SpawnID] == null && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Dead") == 0 && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Kidnapped") == 0 && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Arrested") == 0 && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Expelled") == 0 && this.JSON.StudentNames[this.SpawnID] != "Unknown" && this.JSON.StudentNames[this.SpawnID] != "Reserved" && PlayerPrefs.GetInt("Student_" + this.SpawnID + "_Reputation") > -100)
 		{
-			if (this.JSON.StudentGenders[this.SpawnID] == 0)
+			int num;
+			if (this.JSON.StudentNames[this.SpawnID] == "Random")
+			{
+				GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.EmptyObject, new Vector3(UnityEngine.Random.Range(-17f, 17f), (float)0, UnityEngine.Random.Range(-17f, 17f)), Quaternion.identity);
+				gameObject.transform.parent = this.HidingSpots.transform;
+				this.HidingSpots.List[this.SpawnID] = gameObject.transform;
+				GameObject gameObject2 = (GameObject)UnityEngine.Object.Instantiate(this.RandomPatrol, new Vector3((float)0, (float)0, (float)0), Quaternion.identity);
+				gameObject2.transform.parent = this.Patrols.transform;
+				this.Patrols.List[this.SpawnID] = gameObject2.transform;
+				if (PlayerPrefs.GetInt("MissionMode") == 1 && PlayerPrefs.GetInt("MissionTarget") == this.SpawnID)
+				{
+					num = 0;
+				}
+				else
+				{
+					num = UnityEngine.Random.Range(0, 2);
+				}
+				this.FindUnoccupiedSeat();
+			}
+			else
+			{
+				num = this.JSON.StudentGenders[this.SpawnID];
+			}
+			if (num == 0)
 			{
 				this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.StudentChan, this.SpawnPositions[this.SpawnID].position, Quaternion.identity);
 			}
@@ -390,6 +439,7 @@ public class StudentManagerScript : MonoBehaviour
 				this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.StudentKun, this.SpawnPositions[this.SpawnID].position, Quaternion.identity);
 			}
 			((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).LoveManager = this.LoveManager;
+			((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).StudentManager = this;
 			((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).Randomize = this.Randomize;
 			((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).StudentID = this.SpawnID;
 			((CosmeticScript)this.NewStudent.GetComponent(typeof(CosmeticScript))).JSON = this.JSON;
@@ -419,6 +469,7 @@ public class StudentManagerScript : MonoBehaviour
 			{
 				this.CommunalLocker.Student = this.Students[this.SpawnID];
 			}
+			this.OccupySeat();
 		}
 		this.NPCsSpawned++;
 		this.SpawnID++;
@@ -577,7 +628,7 @@ public class StudentManagerScript : MonoBehaviour
 		this.ID = 1;
 		while (this.ID < Extensions.get_length(this.Students))
 		{
-			if (this.Students[this.ID] != null && !this.Students[this.ID].Dead && !this.Students[this.ID].Slave && !this.Students[this.ID].Tranquil && this.ID < Extensions.get_length(this.Seats.List))
+			if (this.Students[this.ID] != null && !this.Students[this.ID].Dead && !this.Students[this.ID].Slave && !this.Students[this.ID].Tranquil)
 			{
 				if (!this.Students[this.ID].Started)
 				{
@@ -593,8 +644,8 @@ public class StudentManagerScript : MonoBehaviour
 						}
 						this.Students[this.ID].ShoeRemoval.PutOnShoes();
 					}
-					this.Students[this.ID].transform.position = this.Seats.List[this.Students[this.ID].StudentID].position + Vector3.up * 0.01f;
-					this.Students[this.ID].transform.rotation = this.Seats.List[this.Students[this.ID].StudentID].rotation;
+					this.Students[this.ID].transform.position = this.Students[this.ID].Seat.position + Vector3.up * 0.01f;
+					this.Students[this.ID].transform.rotation = this.Students[this.ID].Seat.rotation;
 					this.Students[this.ID].Character.animation.Play(this.Students[this.ID].SitAnim);
 					this.Students[this.ID].Pathfinding.canSearch = false;
 					this.Students[this.ID].Pathfinding.canMove = false;
@@ -622,15 +673,15 @@ public class StudentManagerScript : MonoBehaviour
 						this.Students[this.ID].ClubAttire = false;
 					}
 				}
-				else if (this.ID != 41)
+				else if (this.ID != this.GymTeacherID)
 				{
 					this.Students[this.ID].transform.position = this.Podiums.List[this.Students[this.ID].Class].position + Vector3.up * 0.01f;
 					this.Students[this.ID].transform.rotation = this.Podiums.List[this.Students[this.ID].Class].rotation;
 				}
 				else
 				{
-					this.Students[this.ID].transform.position = this.Seats.List[this.Students[this.ID].StudentID].position + Vector3.up * 0.01f;
-					this.Students[this.ID].transform.rotation = this.Seats.List[this.Students[this.ID].StudentID].rotation;
+					this.Students[this.ID].transform.position = this.Students[this.ID].Seat.position + Vector3.up * 0.01f;
+					this.Students[this.ID].transform.rotation = this.Students[this.ID].Seat.rotation;
 				}
 			}
 			this.ID++;
@@ -911,6 +962,152 @@ public class StudentManagerScript : MonoBehaviour
 				}
 			}
 			this.ID++;
+		}
+	}
+
+	public virtual void OccupySeat()
+	{
+		if (this.JSON.StudentClasses[this.SpawnID] == 11)
+		{
+			this.SeatsTaken11[this.JSON.StudentSeats[this.SpawnID]] = true;
+		}
+		else if (this.JSON.StudentClasses[this.SpawnID] == 12)
+		{
+			this.SeatsTaken12[this.JSON.StudentSeats[this.SpawnID]] = true;
+		}
+		else if (this.JSON.StudentClasses[this.SpawnID] == 21)
+		{
+			this.SeatsTaken21[this.JSON.StudentSeats[this.SpawnID]] = true;
+		}
+		else if (this.JSON.StudentClasses[this.SpawnID] == 22)
+		{
+			this.SeatsTaken22[this.JSON.StudentSeats[this.SpawnID]] = true;
+		}
+		else if (this.JSON.StudentClasses[this.SpawnID] == 31)
+		{
+			this.SeatsTaken31[this.JSON.StudentSeats[this.SpawnID]] = true;
+		}
+		else if (this.JSON.StudentClasses[this.SpawnID] == 32)
+		{
+			this.SeatsTaken32[this.JSON.StudentSeats[this.SpawnID]] = true;
+		}
+	}
+
+	public virtual void FindUnoccupiedSeat()
+	{
+		this.SeatOccupied = false;
+		this.ID = 1;
+		if (this.Class == 1)
+		{
+			this.JSON.StudentClasses[this.SpawnID] = 11;
+			while (this.ID < this.SeatsTaken11.Length && !this.SeatOccupied)
+			{
+				if (!this.SeatsTaken11[this.ID])
+				{
+					this.JSON.StudentSeats[this.SpawnID] = this.ID;
+					this.SeatsTaken11[this.ID] = true;
+					this.SeatOccupied = true;
+				}
+				this.ID++;
+				if (this.ID > 15)
+				{
+					this.Class++;
+				}
+			}
+		}
+		else if (this.Class == 2)
+		{
+			this.JSON.StudentClasses[this.SpawnID] = 12;
+			while (this.ID < this.SeatsTaken12.Length && !this.SeatOccupied)
+			{
+				if (!this.SeatsTaken12[this.ID])
+				{
+					this.JSON.StudentSeats[this.SpawnID] = this.ID;
+					this.SeatsTaken12[this.ID] = true;
+					this.SeatOccupied = true;
+				}
+				this.ID++;
+				if (this.ID > 15)
+				{
+					this.Class++;
+				}
+			}
+		}
+		else if (this.Class == 3)
+		{
+			this.JSON.StudentClasses[this.SpawnID] = 21;
+			while (this.ID < this.SeatsTaken21.Length && !this.SeatOccupied)
+			{
+				if (!this.SeatsTaken21[this.ID])
+				{
+					this.JSON.StudentSeats[this.SpawnID] = this.ID;
+					this.SeatsTaken21[this.ID] = true;
+					this.SeatOccupied = true;
+				}
+				this.ID++;
+				if (this.ID > 15)
+				{
+					this.Class++;
+				}
+			}
+		}
+		else if (this.Class == 4)
+		{
+			this.JSON.StudentClasses[this.SpawnID] = 22;
+			while (this.ID < this.SeatsTaken22.Length && !this.SeatOccupied)
+			{
+				if (!this.SeatsTaken22[this.ID])
+				{
+					this.JSON.StudentSeats[this.SpawnID] = this.ID;
+					this.SeatsTaken22[this.ID] = true;
+					this.SeatOccupied = true;
+				}
+				this.ID++;
+				if (this.ID > 15)
+				{
+					this.Class++;
+				}
+			}
+		}
+		else if (this.Class == 5)
+		{
+			this.JSON.StudentClasses[this.SpawnID] = 31;
+			while (this.ID < this.SeatsTaken31.Length && !this.SeatOccupied)
+			{
+				if (!this.SeatsTaken31[this.ID])
+				{
+					this.JSON.StudentSeats[this.SpawnID] = this.ID;
+					this.SeatsTaken31[this.ID] = true;
+					this.SeatOccupied = true;
+				}
+				this.ID++;
+				if (this.ID > 15)
+				{
+					this.Class++;
+				}
+			}
+		}
+		else if (this.Class == 6)
+		{
+			this.JSON.StudentClasses[this.SpawnID] = 32;
+			while (this.ID < this.SeatsTaken32.Length && !this.SeatOccupied)
+			{
+				if (!this.SeatsTaken32[this.ID])
+				{
+					this.JSON.StudentSeats[this.SpawnID] = this.ID;
+					this.SeatsTaken32[this.ID] = true;
+					this.SeatOccupied = true;
+				}
+				this.ID++;
+				if (this.ID > 15)
+				{
+					this.Class++;
+				}
+			}
+		}
+		if (!this.SeatOccupied)
+		{
+			this.FindUnoccupiedSeat();
 		}
 	}
 

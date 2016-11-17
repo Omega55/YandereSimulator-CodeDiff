@@ -85,6 +85,10 @@ public class NoteWindowScript : MonoBehaviour
 				float num = localEulerAngles.z = rotation;
 				Vector3 vector = this.transform.localEulerAngles = localEulerAngles;
 			}
+			else
+			{
+				this.gameObject.active = false;
+			}
 		}
 		else
 		{

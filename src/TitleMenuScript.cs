@@ -88,6 +88,7 @@ public class TitleMenuScript : MonoBehaviour
 		Color color = this.Darkness.color;
 		float num2 = color.a = (float)num;
 		Color color2 = this.Darkness.color = color;
+		Time.timeScale = (float)1;
 		this.MediumColor = this.MediumSprites[0].color;
 		this.LightColor = this.LightSprites[0].color;
 		this.DarkColor = this.DarkSprites[0].color;
@@ -105,7 +106,7 @@ public class TitleMenuScript : MonoBehaviour
 				if (this.InputManager.TappedDown)
 				{
 					this.Selected++;
-					if (this.Selected > 8)
+					if (this.Selected > 9)
 					{
 						this.Selected = 1;
 					}
@@ -119,7 +120,7 @@ public class TitleMenuScript : MonoBehaviour
 					this.Selected--;
 					if (this.Selected < 1)
 					{
-						this.Selected = 8;
+						this.Selected = 9;
 					}
 					int num3 = 300 - 75 * this.Selected;
 					Vector3 localPosition2 = this.Highlight.localPosition;
@@ -128,7 +129,7 @@ public class TitleMenuScript : MonoBehaviour
 				}
 				if (Input.GetButtonDown("A"))
 				{
-					if (this.Selected == 1 || this.Selected == 6 || this.Selected == 8)
+					if (this.Selected == 1 || this.Selected == 4 || this.Selected == 7 || this.Selected == 9)
 					{
 						this.Darkness.color = new Color((float)0, (float)0, (float)0, (float)0);
 						this.FadeOut = true;
@@ -140,7 +141,7 @@ public class TitleMenuScript : MonoBehaviour
 						this.FadeOut = true;
 						this.Fading = true;
 					}
-					if (this.Selected == 4)
+					if (this.Selected == 5)
 					{
 						this.PromptBar.Label[0].text = "Visit";
 						this.PromptBar.Label[1].text = "Back";
@@ -192,18 +193,23 @@ public class TitleMenuScript : MonoBehaviour
 				{
 					if (this.Selected == 1)
 					{
+						PlayerPrefs.SetInt("MissionMode", 0);
 						Application.LoadLevel("CalendarScene");
 					}
-					if (this.Selected == 3)
+					else if (this.Selected == 3)
 					{
 						PlayerPrefs.DeleteAll();
 						Application.LoadLevel("SenpaiScene");
 					}
-					if (this.Selected == 6)
+					else if (this.Selected == 4)
+					{
+						Application.LoadLevel("MissionModeScene");
+					}
+					else if (this.Selected == 7)
 					{
 						Application.LoadLevel("CreditsScene");
 					}
-					if (this.Selected == 8)
+					else if (this.Selected == 9)
 					{
 						Application.Quit();
 					}

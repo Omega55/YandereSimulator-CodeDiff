@@ -6,6 +6,8 @@ public class DebugMenuScript : MonoBehaviour
 {
 	public FakeStudentSpawnerScript FakeStudentSpawner;
 
+	public DelinquentManagerScript DelinquentManager;
+
 	public StudentManagerScript StudentManager;
 
 	public CameraEffectsScript CameraEffects;
@@ -45,6 +47,10 @@ public class DebugMenuScript : MonoBehaviour
 		float num2 = localPosition.y = (float)num;
 		Vector3 vector = this.transform.localPosition = localPosition;
 		this.Window.active = false;
+		if (PlayerPrefs.GetInt("MissionMode") == 1)
+		{
+			this.enabled = false;
+		}
 	}
 
 	public virtual void Update()
@@ -329,39 +335,12 @@ public class DebugMenuScript : MonoBehaviour
 				{
 					PlayerPrefs.SetInt("PhysicalGrade", 5);
 					PlayerPrefs.SetInt("Seduction", 5);
-					PlayerPrefs.SetInt("Student_1_Photographed", 1);
-					PlayerPrefs.SetInt("Student_2_Photographed", 1);
-					PlayerPrefs.SetInt("Student_3_Photographed", 1);
-					PlayerPrefs.SetInt("Student_4_Photographed", 1);
-					PlayerPrefs.SetInt("Student_5_Photographed", 1);
-					PlayerPrefs.SetInt("Student_6_Photographed", 1);
-					PlayerPrefs.SetInt("Student_7_Photographed", 1);
-					PlayerPrefs.SetInt("Student_8_Photographed", 1);
-					PlayerPrefs.SetInt("Student_9_Photographed", 1);
-					PlayerPrefs.SetInt("Student_10_Photographed", 1);
-					PlayerPrefs.SetInt("Student_11_Photographed", 1);
-					PlayerPrefs.SetInt("Student_12_Photographed", 1);
-					PlayerPrefs.SetInt("Student_13_Photographed", 1);
-					PlayerPrefs.SetInt("Student_14_Photographed", 1);
-					PlayerPrefs.SetInt("Student_15_Photographed", 1);
-					PlayerPrefs.SetInt("Student_16_Photographed", 1);
-					PlayerPrefs.SetInt("Student_17_Photographed", 1);
-					PlayerPrefs.SetInt("Student_18_Photographed", 1);
-					PlayerPrefs.SetInt("Student_19_Photographed", 1);
-					PlayerPrefs.SetInt("Student_20_Photographed", 1);
-					PlayerPrefs.SetInt("Student_20_Photographed", 1);
-					PlayerPrefs.SetInt("Student_21_Photographed", 1);
-					PlayerPrefs.SetInt("Student_22_Photographed", 1);
-					PlayerPrefs.SetInt("Student_23_Photographed", 1);
-					PlayerPrefs.SetInt("Student_24_Photographed", 1);
-					PlayerPrefs.SetInt("Student_25_Photographed", 1);
-					PlayerPrefs.SetInt("Student_26_Photographed", 1);
-					PlayerPrefs.SetInt("Student_27_Photographed", 1);
-					PlayerPrefs.SetInt("Student_28_Photographed", 1);
-					PlayerPrefs.SetInt("Student_29_Photographed", 1);
-					PlayerPrefs.SetInt("Student_30_Photographed", 1);
-					PlayerPrefs.SetInt("Student_31_Photographed", 1);
-					PlayerPrefs.SetInt("Student_32_Photographed", 1);
+					this.ID = 1;
+					while (this.ID < 101)
+					{
+						PlayerPrefs.SetInt("Student_" + this.ID + "_Photographed", 1);
+						this.ID++;
+					}
 					this.Window.active = false;
 				}
 				else if (Input.GetKeyDown("t"))
@@ -389,60 +368,90 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					this.Window.active = false;
 				}
-				else if (!Input.GetKeyDown("z"))
+				else if (Input.GetKeyDown("y"))
 				{
-					if (Input.GetKeyDown("backspace"))
+					this.DelinquentManager.Delinquents.active = false;
+					this.DelinquentManager.active = false;
+				}
+				else if (Input.GetKeyDown("z"))
+				{
+					this.ID = 1;
+					while (this.ID < 101)
 					{
-						Time.timeScale = (float)1;
-						this.Clock.PresentTime = (float)1079;
-						this.Clock.HourTime = this.Clock.PresentTime / (float)60;
-						this.Window.active = false;
-					}
-					else if (Input.GetKeyDown("`"))
-					{
-						PlayerPrefs.DeleteAll();
-						Application.LoadLevel(Application.loadedLevel);
-					}
-					else if (Input.GetKeyDown("space"))
-					{
-						this.Yandere.transform.position = this.TeleportSpot[5].position;
-						if (this.StudentManager.Students[21] != null)
+						if (this.StudentManager.Students[this.ID] != null)
 						{
-							this.StudentManager.Students[21].transform.position = this.TeleportSpot[5].position;
+							this.StudentManager.Students[this.ID].SpawnAlarmDisc();
+							this.StudentManager.Students[this.ID].BecomeRagdoll();
+							this.StudentManager.Students[this.ID].Dead = true;
+							PlayerPrefs.SetInt("Student_" + this.ID + "_Dead", 1);
 						}
-						this.Clock.PresentTime = (float)1015;
-						this.Clock.HourTime = this.Clock.PresentTime / (float)60;
-						this.Window.active = false;
+						this.ID++;
 					}
-					else if (Input.GetKeyDown("left alt"))
+					this.Window.active = false;
+				}
+				else if (Input.GetKeyDown("x"))
+				{
+					if (PlayerPrefs.GetInt("HighPopulation") == 0)
 					{
-						this.Turtle.SpawnWeapons();
-						this.Yandere.transform.position = this.TeleportSpot[6].position;
-						this.Clock.PresentTime = (float)425;
-						this.Clock.HourTime = this.Clock.PresentTime / (float)60;
-						this.Window.active = false;
+						PlayerPrefs.SetInt("HighPopulation", 1);
 					}
-					else if (Input.GetKeyDown("left ctrl"))
+					else
 					{
-						this.Yandere.transform.position = this.TeleportSpot[7].position;
-						if (this.StudentManager.Students[26] != null)
-						{
-							this.StudentManager.Students[26].transform.position = this.TeleportSpot[7].position;
-						}
-						this.Clock.PresentTime = (float)1015;
-						this.Clock.HourTime = this.Clock.PresentTime / (float)60;
-						this.Window.active = false;
+						PlayerPrefs.SetInt("HighPopulation", 0);
 					}
-					else if (Input.GetKeyDown("right ctrl"))
+					Application.LoadLevel(Application.loadedLevel);
+				}
+				else if (Input.GetKeyDown("backspace"))
+				{
+					Time.timeScale = (float)1;
+					this.Clock.PresentTime = (float)1079;
+					this.Clock.HourTime = this.Clock.PresentTime / (float)60;
+					this.Window.active = false;
+				}
+				else if (Input.GetKeyDown("`"))
+				{
+					PlayerPrefs.DeleteAll();
+					Application.LoadLevel(Application.loadedLevel);
+				}
+				else if (Input.GetKeyDown("space"))
+				{
+					this.Yandere.transform.position = this.TeleportSpot[5].position;
+					if (this.StudentManager.Students[21] != null)
 					{
-						this.Yandere.transform.position = this.TeleportSpot[8].position;
-						this.Window.active = false;
+						this.StudentManager.Students[21].transform.position = this.TeleportSpot[5].position;
 					}
-					else if (Input.GetKeyDown("="))
+					this.Clock.PresentTime = (float)1015;
+					this.Clock.HourTime = this.Clock.PresentTime / (float)60;
+					this.Window.active = false;
+				}
+				else if (Input.GetKeyDown("left alt"))
+				{
+					this.Turtle.SpawnWeapons();
+					this.Yandere.transform.position = this.TeleportSpot[6].position;
+					this.Clock.PresentTime = (float)425;
+					this.Clock.HourTime = this.Clock.PresentTime / (float)60;
+					this.Window.active = false;
+				}
+				else if (Input.GetKeyDown("left ctrl"))
+				{
+					this.Yandere.transform.position = this.TeleportSpot[7].position;
+					if (this.StudentManager.Students[26] != null)
 					{
-						this.Clock.PresentTime = this.Clock.PresentTime + (float)30;
-						this.Window.active = false;
+						this.StudentManager.Students[26].transform.position = this.TeleportSpot[7].position;
 					}
+					this.Clock.PresentTime = (float)1015;
+					this.Clock.HourTime = this.Clock.PresentTime / (float)60;
+					this.Window.active = false;
+				}
+				else if (Input.GetKeyDown("right ctrl"))
+				{
+					this.Yandere.transform.position = this.TeleportSpot[8].position;
+					this.Window.active = false;
+				}
+				else if (Input.GetKeyDown("="))
+				{
+					this.Clock.PresentTime = this.Clock.PresentTime + (float)30;
+					this.Window.active = false;
 				}
 			}
 		}

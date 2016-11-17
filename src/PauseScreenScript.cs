@@ -13,6 +13,8 @@ public class PauseScreenScript : MonoBehaviour
 
 	public HomeYandereScript HomeYandere;
 
+	public MissionModeScript MissionMode;
+
 	public HomeCameraScript HomeCamera;
 
 	public FavorMenuScript FavorMenu;
@@ -155,7 +157,7 @@ public class PauseScreenScript : MonoBehaviour
 				Vector3 localEulerAngles = this.transform.localEulerAngles;
 				float num = localEulerAngles.z = z;
 				Vector3 vector = this.transform.localEulerAngles = localEulerAngles;
-				if (this.transform.localPosition.x > (float)1349)
+				if (this.transform.localPosition.x > (float)1349 && this.Panel.enabled)
 				{
 					this.Panel.enabled = false;
 				}
@@ -334,90 +336,95 @@ public class PauseScreenScript : MonoBehaviour
 					if (Input.GetButtonDown("A"))
 					{
 						this.PressedA = true;
-						if (this.Selected == 1)
+						if (this.PhoneIcons[this.Selected].color.a == (float)1)
 						{
-							this.MainMenu.active = false;
-							this.LoadingScreen.active = true;
-							this.StartCoroutine_Auto(this.PhotoGallery.GetPhotos());
-						}
-						else if (this.Selected == 2)
-						{
-							this.TaskList.gameObject.active = true;
-							this.MainMenu.active = false;
-							this.Sideways = true;
-							this.TaskList.UpdateTaskList();
-							this.StartCoroutine_Auto(this.TaskList.UpdateTaskInfo());
-						}
-						else if (this.Selected == 3)
-						{
-							if (this.PhoneIcons[3].color.a == (float)1 && this.Yandere.CanMove && !this.Yandere.Dragging)
+							if (this.Selected == 1)
 							{
-								for (int i = 0; i < Extensions.get_length(this.Yandere.ArmedAnims); i++)
-								{
-									this.Yandere.CharacterAnimation[this.Yandere.ArmedAnims[i]].weight = (float)0;
-								}
 								this.MainMenu.active = false;
-								this.PassTime.active = true;
-								this.PassTime.GetCurrentTime();
+								this.LoadingScreen.active = true;
+								this.StartCoroutine_Auto(this.PhotoGallery.GetPhotos());
 							}
-						}
-						else if (this.Selected == 4)
-						{
-							this.PromptBar.ClearButtons();
-							this.PromptBar.Label[1].text = "Exit";
-							this.PromptBar.UpdateButtons();
-							this.Stats.gameObject.active = true;
-							this.Stats.UpdateStats();
-							this.MainMenu.active = false;
-							this.Sideways = true;
-						}
-						else if (this.Selected == 5)
-						{
-							if (this.PhoneIcons[5].color.a == (float)1)
+							else if (this.Selected == 2)
+							{
+								this.TaskList.gameObject.active = true;
+								this.MainMenu.active = false;
+								this.Sideways = true;
+								this.TaskList.UpdateTaskList();
+								this.StartCoroutine_Auto(this.TaskList.UpdateTaskInfo());
+							}
+							else if (this.Selected == 3)
+							{
+								if (this.PhoneIcons[3].color.a == (float)1 && this.Yandere.CanMove && !this.Yandere.Dragging)
+								{
+									for (int i = 0; i < Extensions.get_length(this.Yandere.ArmedAnims); i++)
+									{
+										this.Yandere.CharacterAnimation[this.Yandere.ArmedAnims[i]].weight = (float)0;
+									}
+									this.MainMenu.active = false;
+									this.PassTime.active = true;
+									this.PassTime.GetCurrentTime();
+								}
+							}
+							else if (this.Selected == 4)
 							{
 								this.PromptBar.ClearButtons();
-								this.PromptBar.Label[0].text = "Accept";
 								this.PromptBar.Label[1].text = "Exit";
-								this.PromptBar.Label[5].text = "Choose";
 								this.PromptBar.UpdateButtons();
-								this.FavorMenu.gameObject.active = true;
-								this.FavorMenu.gameObject.audio.Play();
+								this.Stats.gameObject.active = true;
+								this.Stats.UpdateStats();
 								this.MainMenu.active = false;
 								this.Sideways = true;
 							}
-						}
-						else if (this.Selected == 6)
-						{
-							this.StudentInfoMenu.gameObject.active = true;
-							this.StartCoroutine_Auto(this.StudentInfoMenu.UpdatePortraits());
-							this.MainMenu.active = false;
-							this.Sideways = true;
-							this.PromptBar.ClearButtons();
-							this.PromptBar.Label[0].text = "View Info";
-							this.PromptBar.Label[1].text = "Back";
-							this.PromptBar.UpdateButtons();
-							this.PromptBar.Show = true;
-						}
-						else if (this.Selected != 7)
-						{
-							if (this.Selected == 8)
+							else if (this.Selected == 5)
 							{
-								this.Settings.gameObject.active = true;
-								this.ScreenBlur.enabled = false;
-								this.Settings.UpdateText();
+								if (this.PhoneIcons[5].color.a == (float)1)
+								{
+									this.PromptBar.ClearButtons();
+									this.PromptBar.Label[0].text = "Accept";
+									this.PromptBar.Label[1].text = "Exit";
+									this.PromptBar.Label[5].text = "Choose";
+									this.PromptBar.UpdateButtons();
+									this.FavorMenu.gameObject.active = true;
+									this.FavorMenu.gameObject.audio.Play();
+									this.MainMenu.active = false;
+									this.Sideways = true;
+								}
+							}
+							else if (this.Selected == 6)
+							{
+								this.StudentInfoMenu.gameObject.active = true;
+								this.StartCoroutine_Auto(this.StudentInfoMenu.UpdatePortraits());
 								this.MainMenu.active = false;
+								this.Sideways = true;
 								this.PromptBar.ClearButtons();
+								this.PromptBar.Label[0].text = "View Info";
 								this.PromptBar.Label[1].text = "Back";
-								this.PromptBar.Label[4].text = "Choose";
-								this.PromptBar.Label[5].text = "Change";
 								this.PromptBar.UpdateButtons();
 								this.PromptBar.Show = true;
 							}
-							else if (this.Selected != 9)
+							else if (this.Selected != 7)
 							{
-								if (this.Selected != 10)
+								if (this.Selected == 8)
 								{
-									if (this.Selected == 11)
+									this.Settings.gameObject.active = true;
+									this.ScreenBlur.enabled = false;
+									this.Settings.UpdateText();
+									this.MainMenu.active = false;
+									this.PromptBar.ClearButtons();
+									this.PromptBar.Label[1].text = "Back";
+									this.PromptBar.Label[4].text = "Choose";
+									this.PromptBar.Label[5].text = "Change";
+									this.PromptBar.UpdateButtons();
+									this.PromptBar.Show = true;
+								}
+								else if (this.Selected != 9)
+								{
+									if (this.Selected == 10)
+									{
+										this.PhoneIcons[this.Selected].transform.localScale = new Vector3((float)1, (float)1, (float)1);
+										this.MissionMode.ChangeMusic();
+									}
+									else if (this.Selected == 11)
 									{
 										this.PromptBar.ClearButtons();
 										this.PromptBar.Show = false;

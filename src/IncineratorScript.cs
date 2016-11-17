@@ -40,6 +40,8 @@ public class IncineratorScript : MonoBehaviour
 
 	public bool Open;
 
+	public int DestroyedEvidence;
+
 	public int BloodyClothing;
 
 	public int MurderWeapons;
@@ -48,11 +50,17 @@ public class IncineratorScript : MonoBehaviour
 
 	public int Corpses;
 
+	public int Victims;
+
 	public float OpenTimer;
 
 	public float Timer;
 
+	public int[] EvidenceList;
+
 	public int[] CorpseList;
+
+	public int[] VictimList;
 
 	public virtual void Start()
 	{
@@ -225,6 +233,8 @@ public class IncineratorScript : MonoBehaviour
 				this.Yandere.Dumping = true;
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
+				this.Victims++;
+				this.VictimList[this.Victims] = ((RagdollScript)this.Yandere.Ragdoll.GetComponent(typeof(RagdollScript))).StudentID;
 				this.Open = true;
 			}
 			if (this.Yandere.PickUp != null)
@@ -240,6 +250,8 @@ public class IncineratorScript : MonoBehaviour
 			}
 			if (this.Yandere.Weapon[this.Yandere.Equipped] != null)
 			{
+				this.DestroyedEvidence++;
+				this.EvidenceList[this.DestroyedEvidence] = this.Yandere.Weapon[this.Yandere.Equipped].WeaponID;
 				this.Yandere.Weapon[this.Yandere.Equipped].Incinerator = this;
 				this.Yandere.Weapon[this.Yandere.Equipped].Dumped = true;
 				this.Yandere.Weapon[this.Yandere.Equipped].Drop();
@@ -277,6 +289,10 @@ public class IncineratorScript : MonoBehaviour
 			{
 				this.Yandere.Police.MurderScene = false;
 			}
+			this.BloodyClothing = 0;
+			this.MurderWeapons = 0;
+			this.BodyParts = 0;
+			this.Corpses = 0;
 		}
 		if (this.Smoke.isPlaying)
 		{
@@ -289,10 +305,6 @@ public class IncineratorScript : MonoBehaviour
 				this.Prompt.enabled = true;
 				this.Panel.active = false;
 				this.Ready = false;
-				this.BloodyClothing = 0;
-				this.MurderWeapons = 0;
-				this.BodyParts = 0;
-				this.Corpses = 0;
 				this.Flames.Stop();
 				this.Smoke.Stop();
 			}

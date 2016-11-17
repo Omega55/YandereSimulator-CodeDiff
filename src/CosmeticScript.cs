@@ -5,6 +5,8 @@ using UnityScript.Lang;
 [Serializable]
 public class CosmeticScript : MonoBehaviour
 {
+	public StudentManagerScript StudentManager;
+
 	public TextureManagerScript TextureManager;
 
 	public SkinnedMeshUpdater SkinUpdater;
@@ -207,6 +209,7 @@ public class CosmeticScript : MonoBehaviour
 		{
 			this.JSON = this.Student.JSON;
 		}
+		string text;
 		if (!this.Initialized)
 		{
 			this.Accessory = UnityBuiltins.parseInt(this.JSON.StudentAccessories[this.StudentID]);
@@ -215,20 +218,44 @@ public class CosmeticScript : MonoBehaviour
 			this.BreastSize = this.JSON.StudentBreasts[this.StudentID];
 			this.HairColor = this.JSON.StudentColors[this.StudentID];
 			this.Club = this.JSON.StudentClubs[this.StudentID];
+			text = this.JSON.StudentNames[this.StudentID];
 			this.Initialized = true;
+		}
+		if (text == "Random")
+		{
+			this.Randomize = true;
+			if (!this.Male)
+			{
+				text = string.Empty + this.StudentManager.FirstNames[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentManager.FirstNames))] + " " + this.StudentManager.LastNames[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentManager.LastNames))];
+				this.JSON.StudentNames[this.StudentID] = text;
+				this.Student.Name = text;
+			}
+			else
+			{
+				text = string.Empty + this.StudentManager.MaleNames[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentManager.MaleNames))] + " " + this.StudentManager.LastNames[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentManager.LastNames))];
+				this.JSON.StudentNames[this.StudentID] = text;
+				this.Student.Name = text;
+			}
+			if (PlayerPrefs.GetInt("MissionMode") == 1 && PlayerPrefs.GetInt("MissionTarget") == this.StudentID)
+			{
+				this.JSON.StudentNames[this.StudentID] = PlayerPrefs.GetString("MissionTargetName");
+				this.Student.Name = PlayerPrefs.GetString("MissionTargetName");
+				text = PlayerPrefs.GetString("MissionTargetName");
+			}
 		}
 		if (this.Randomize)
 		{
 			this.Teacher = false;
-			this.BreastSize = (float)1;
+			this.BreastSize = UnityEngine.Random.Range(0.5f, 2f);
 			this.Accessory = 0;
 			this.Club = 0;
 			if (!this.Male)
 			{
-				this.Hairstyle = UnityEngine.Random.Range(1, Extensions.get_length(this.FemaleHair));
+				this.Hairstyle = UnityEngine.Random.Range(1, Extensions.get_length(this.FemaleHair) - 1);
 			}
 			else
 			{
+				this.SkinColor = UnityEngine.Random.Range(0, Extensions.get_length(this.SkinTextures));
 				this.Hairstyle = UnityEngine.Random.Range(1, Extensions.get_length(this.MaleHair));
 			}
 		}
@@ -724,7 +751,7 @@ public class CosmeticScript : MonoBehaviour
 			}
 			else
 			{
-				this.FaceTexture = this.DefaultFaceTexture;
+				this.FaceTexture = this.FaceTextures[this.SkinColor];
 			}
 			if (this.StudentID == 13 && PlayerPrefs.GetInt("CustomSuitor") == 1 && PlayerPrefs.GetInt("CustomSuitorTan") == 1)
 			{

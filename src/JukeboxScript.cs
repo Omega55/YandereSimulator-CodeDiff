@@ -12,6 +12,8 @@ public class JukeboxScript : MonoBehaviour
 
 	public AudioSource Megalovania;
 
+	public AudioSource MissionMode;
+
 	public AudioSource Skeletons;
 
 	public AudioSource Metroid;
@@ -176,6 +178,7 @@ public class JukeboxScript : MonoBehaviour
 		{
 			this.AttackOnTitan.volume = Mathf.MoveTowards(this.AttackOnTitan.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Megalovania.volume = Mathf.MoveTowards(this.Megalovania.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
+			this.MissionMode.volume = Mathf.MoveTowards(this.MissionMode.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Skeletons.volume = Mathf.MoveTowards(this.Skeletons.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Metroid.volume = Mathf.MoveTowards(this.Metroid.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Nuclear.volume = Mathf.MoveTowards(this.Nuclear.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
@@ -329,6 +332,7 @@ public class JukeboxScript : MonoBehaviour
 	{
 		this.AttackOnTitan.Stop();
 		this.Megalovania.Stop();
+		this.MissionMode.Stop();
 		this.Skeletons.Stop();
 		this.Metroid.Stop();
 		this.Nuclear.Stop();

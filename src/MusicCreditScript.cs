@@ -8,6 +8,8 @@ public class MusicCreditScript : MonoBehaviour
 
 	public UILabel BandLabel;
 
+	public UIPanel Panel;
+
 	public bool Slide;
 
 	public float Timer;
@@ -18,6 +20,7 @@ public class MusicCreditScript : MonoBehaviour
 		Vector3 localPosition = this.transform.localPosition;
 		float num2 = localPosition.x = (float)num;
 		Vector3 vector = this.transform.localPosition = localPosition;
+		this.Panel.enabled = false;
 	}
 
 	public virtual void Update()
@@ -48,6 +51,7 @@ public class MusicCreditScript : MonoBehaviour
 					Vector3 localPosition4 = this.transform.localPosition;
 					float num5 = localPosition4.x = (float)num4;
 					Vector3 vector4 = this.transform.localPosition = localPosition4;
+					this.Panel.enabled = false;
 					this.Slide = false;
 					this.Timer = (float)0;
 				}

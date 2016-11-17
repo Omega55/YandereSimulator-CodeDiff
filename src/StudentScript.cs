@@ -77,6 +77,10 @@ public class StudentScript : MonoBehaviour
 
 	public JsonScript JSON;
 
+	public Rigidbody MyRigidbody;
+
+	public Collider MyCollider;
+
 	public CharacterController MyController;
 
 	public ParticleSystem BloodFountain;
@@ -132,6 +136,8 @@ public class StudentScript : MonoBehaviour
 	public Transform Head;
 
 	public Transform Neck;
+
+	public Transform Seat;
 
 	public ParticleSystem[] LiquidEmitters;
 
@@ -379,6 +385,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool CameraReacting;
 
+	public bool UsingRigidbody;
+
 	public bool Investigating;
 
 	public bool Distracting;
@@ -420,6 +428,8 @@ public class StudentScript : MonoBehaviour
 	public float ElectroTimer;
 
 	public float GoAwayTimer;
+
+	public float PatrolTimer;
 
 	public float IgnoreTimer;
 
@@ -494,6 +504,8 @@ public class StudentScript : MonoBehaviour
 	public int Interaction;
 
 	public int RepRecovery;
+
+	public int DeathCause;
 
 	public int Schoolwear;
 
@@ -697,6 +709,8 @@ public class StudentScript : MonoBehaviour
 
 	private float MaxSpeed;
 
+	public int Frame;
+
 	public Transform DefaultTarget;
 
 	public Transform GushTarget;
@@ -866,6 +880,15 @@ public class StudentScript : MonoBehaviour
 			this.Hairstyle = this.JSON.StudentHairstyles[this.StudentID];
 			this.Accessory = this.JSON.StudentAccessories[this.StudentID];
 			this.Name = this.JSON.StudentNames[this.StudentID];
+			if (this.Name == "Random")
+			{
+				this.Persona = UnityEngine.Random.Range(1, 7);
+				if (this.Persona == 3)
+				{
+					this.Strength = UnityEngine.Random.Range(1, 5);
+				}
+			}
+			this.Seat = this.StudentManager.Seats[this.Class].List[this.JSON.StudentSeats[this.StudentID]];
 			this.DestinationNames = (string[])this.JSON.StudentDestinations[this.StudentID].ToBuiltin(typeof(string));
 			this.ActionNames = (string[])this.JSON.StudentActions[this.StudentID].ToBuiltin(typeof(string));
 			this.gameObject.name = "Student_" + this.StudentID + " (" + this.Name + ")";
@@ -1128,6 +1151,11 @@ public class StudentScript : MonoBehaviour
 				this.Prompt.ButtonActive[1] = false;
 				this.Prompt.ButtonActive[2] = false;
 				this.Prompt.ButtonActive[3] = false;
+				if (this.StudentManager.MissionMode)
+				{
+					this.transform.position = new Vector3((float)0, (float)0, (float)0);
+					this.gameObject.active = false;
+				}
 			}
 			else if (PlayerPrefs.GetInt("Student_" + this.StudentID + "_Photographed") == 0)
 			{
@@ -1184,6 +1212,17 @@ public class StudentScript : MonoBehaviour
 				this.BookRenderer.material.mainTexture = this.RedBookTexture;
 			}
 			this.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
+			if (this.StudentManager.MissionMode && this.StudentID == PlayerPrefs.GetInt("MissionTarget"))
+			{
+				this.ID = 0;
+				while (this.ID < Extensions.get_length(this.Outlines))
+				{
+					this.Outlines[this.ID].enabled = true;
+					this.Outlines[this.ID].color = new Color((float)1, (float)0, (float)0);
+					this.ID++;
+				}
+			}
+			UnityEngine.Object.Destroy(this.MyRigidbody);
 			this.Started = true;
 		}
 	}
@@ -1337,7 +1376,10 @@ public class StudentScript : MonoBehaviour
 					{
 						if (!this.OnPhone)
 						{
-							this.CharacterAnimation.CrossFade(this.WalkAnim);
+							if (!this.CharacterAnimation.IsPlaying(this.WalkAnim))
+							{
+								this.CharacterAnimation.CrossFade(this.WalkAnim);
+							}
 						}
 						else
 						{
@@ -1358,7 +1400,11 @@ public class StudentScript : MonoBehaviour
 					if (this.CurrentDestination != null)
 					{
 						this.MoveTowardsTarget(this.CurrentDestination.position);
-						this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.CurrentDestination.rotation, (float)10 * this.DeltaTime);
+						float num = Quaternion.Angle(this.transform.rotation, this.CurrentDestination.rotation);
+						if (num > (float)1)
+						{
+							this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.CurrentDestination.rotation, (float)10 * this.DeltaTime);
+						}
 						this.Pathfinding.speed = (float)1;
 					}
 					if (this.Pathfinding.canMove)
@@ -1430,7 +1476,7 @@ public class StudentScript : MonoBehaviour
 								}
 								else if (this.Actions[this.Phase] == 1)
 								{
-									if (PlayerPrefs.GetFloat("SchoolAtmosphere") < 33.33333f)
+									if (this.Paranoia > 1.66666f)
 									{
 										this.CharacterAnimation.CrossFade(this.IdleAnim);
 									}
@@ -1495,7 +1541,7 @@ public class StudentScript : MonoBehaviour
 								}
 								else if (this.Actions[this.Phase] == 9)
 								{
-									if (PlayerPrefs.GetFloat("SchoolAtmosphere") < 33.33333f)
+									if (this.Paranoia > 1.66666f)
 									{
 										this.CharacterAnimation.CrossFade(this.IdleAnim);
 									}
@@ -1559,8 +1605,9 @@ public class StudentScript : MonoBehaviour
 								}
 								else if (this.Actions[this.Phase] == 13)
 								{
+									this.PatrolTimer += this.DeltaTime;
 									this.CharacterAnimation.CrossFade(this.PatrolAnim);
-									if (this.CharacterAnimation[this.PatrolAnim].time >= this.CharacterAnimation[this.PatrolAnim].length)
+									if (this.PatrolTimer >= this.CharacterAnimation[this.PatrolAnim].length)
 									{
 										this.PatrolID++;
 										if (this.PatrolID == this.StudentManager.Patrols.List[this.StudentID].childCount)
@@ -1569,6 +1616,7 @@ public class StudentScript : MonoBehaviour
 										}
 										this.CurrentDestination = this.StudentManager.Patrols.List[this.StudentID].GetChild(this.PatrolID);
 										this.Pathfinding.target = this.CurrentDestination;
+										this.PatrolTimer = (float)0;
 									}
 								}
 								else if (this.Actions[this.Phase] == 14)
@@ -1782,8 +1830,8 @@ public class StudentScript : MonoBehaviour
 								{
 									if (this.StudentManager.Teachers[this.Class].Alarmed)
 									{
-										this.Pathfinding.target = this.StudentManager.Seats.List[this.StudentID];
-										this.CurrentDestination = this.StudentManager.Seats.List[this.StudentID];
+										this.Pathfinding.target = this.Seat;
+										this.CurrentDestination = this.Seat;
 										this.ReportPhase = 2;
 									}
 									if (this.ReportPhase == 0)
@@ -1812,7 +1860,7 @@ public class StudentScript : MonoBehaviour
 										{
 											float y = this.transform.position.y + 0.1f;
 											Vector3 position = this.transform.position;
-											float num = position.y = y;
+											float num2 = position.y = y;
 											Vector3 vector = this.transform.position = position;
 											this.StudentManager.Teachers[this.Class].MyReporter = this.transform;
 											this.StudentManager.Teachers[this.Class].Routine = false;
@@ -2012,7 +2060,7 @@ public class StudentScript : MonoBehaviour
 										{
 											float y2 = this.transform.position.y + 0.1f;
 											Vector3 position2 = this.transform.position;
-											float num2 = position2.y = y2;
+											float num3 = position2.y = y2;
 											Vector3 vector2 = this.transform.position = position2;
 											if (this.StudentManager.CorpseLocation.position == new Vector3((float)0, (float)0, (float)0))
 											{
@@ -2517,7 +2565,7 @@ public class StudentScript : MonoBehaviour
 						}
 						this.Pathfinding.target = this.StudentManager.Students[7].transform;
 						this.CurrentDestination = this.StudentManager.Students[7].transform;
-						if (!this.StudentManager.Students[7].Dead)
+						if (!this.StudentManager.Students[7].Dead && !this.StudentManager.Students[7].Tranquil)
 						{
 							if (this.DistanceToDestination > this.TargetDistance)
 							{
@@ -2949,7 +2997,7 @@ public class StudentScript : MonoBehaviour
 				{
 					if (!this.WitnessedMurder)
 					{
-						int num3 = 0;
+						int num4 = 0;
 						this.ID = 0;
 						while (this.ID < this.Police.Corpses)
 						{
@@ -2962,7 +3010,7 @@ public class StudentScript : MonoBehaviour
 									Debug.DrawLine(this.Eyes.transform.position, this.Police.CorpseList[this.ID].AllColliders[0].transform.position, Color.green);
 									if (Physics.Linecast(this.Eyes.transform.position, this.Police.CorpseList[this.ID].AllColliders[0].transform.position, out raycastHit2, this.Mask) && (raycastHit2.collider.gameObject.layer == 11 || raycastHit2.collider.gameObject.layer == 14))
 									{
-										num3++;
+										num4++;
 										this.Corpse = this.Police.CorpseList[this.ID];
 										if (this.Persona == 2 && this.StudentManager.Reporter == null && !this.Police.Called)
 										{
@@ -2976,7 +3024,7 @@ public class StudentScript : MonoBehaviour
 							}
 							this.ID++;
 						}
-						if (num3 > 0)
+						if (num4 > 0)
 						{
 							if (!this.WitnessedCorpse)
 							{
@@ -3429,20 +3477,35 @@ public class StudentScript : MonoBehaviour
 				{
 					float y3 = this.Alarm / (float)100;
 					Vector3 localScale = this.DetectionMarker.Tex.transform.localScale;
-					float num4 = localScale.y = y3;
+					float num5 = localScale.y = y3;
 					Vector3 vector3 = this.DetectionMarker.Tex.transform.localScale = localScale;
 				}
 				else
 				{
-					int num5 = 1;
+					int num6 = 1;
 					Vector3 localScale2 = this.DetectionMarker.Tex.transform.localScale;
-					float num6 = localScale2.y = (float)num5;
+					float num7 = localScale2.y = (float)num6;
 					Vector3 vector4 = this.DetectionMarker.Tex.transform.localScale = localScale2;
 				}
-				float a = this.Alarm / (float)100;
-				Color color = this.DetectionMarker.Tex.color;
-				float num7 = color.a = a;
-				Color color2 = this.DetectionMarker.Tex.color = color;
+				if (this.Alarm > (float)0)
+				{
+					if (!this.DetectionMarker.Tex.enabled)
+					{
+						this.DetectionMarker.Tex.enabled = true;
+					}
+					float a = this.Alarm / (float)100;
+					Color color = this.DetectionMarker.Tex.color;
+					float num8 = color.a = a;
+					Color color2 = this.DetectionMarker.Tex.color = color;
+				}
+				else if (this.DetectionMarker.Tex.color.a != (float)0)
+				{
+					this.DetectionMarker.Tex.enabled = false;
+					int num9 = 0;
+					Color color3 = this.DetectionMarker.Tex.color;
+					float num10 = color3.a = (float)num9;
+					Color color4 = this.DetectionMarker.Tex.color = color3;
+				}
 			}
 			if (this.StudentID > 1)
 			{
@@ -3480,6 +3543,7 @@ public class StudentScript : MonoBehaviour
 						this.Yandere.GlowEffect.Play();
 						this.Yandere.CanMove = false;
 						this.Yandere.PK = true;
+						this.Dead = true;
 					}
 					else if (this.Slave)
 					{
@@ -4486,9 +4550,9 @@ public class StudentScript : MonoBehaviour
 				}
 				else if (this.transform.position.y < (float)0)
 				{
-					int num8 = 0;
+					int num11 = 0;
 					Vector3 position3 = this.transform.position;
-					float num9 = position3.y = (float)num8;
+					float num12 = position3.y = (float)num11;
 					Vector3 vector5 = this.transform.position = position3;
 				}
 			}
@@ -4762,6 +4826,13 @@ public class StudentScript : MonoBehaviour
 			{
 				this.MyController.Move(a * (this.DeltaTime * (float)5 / Time.timeScale));
 			}
+		}
+	}
+
+	public virtual void LookTowardsTarget(Vector3 target)
+	{
+		if (Time.timeScale > (float)0)
+		{
 		}
 	}
 
@@ -5130,8 +5201,8 @@ public class StudentScript : MonoBehaviour
 			}
 			else
 			{
-				this.Pathfinding.target = this.StudentManager.Seats.List[this.StudentID];
-				this.CurrentDestination = this.StudentManager.Seats.List[this.StudentID];
+				this.Pathfinding.target = this.Seat;
+				this.CurrentDestination = this.Seat;
 				if (this.WitnessedMurder)
 				{
 					this.Subtitle.UpdateLabel("Pet Murder Reaction", 1, (float)3);
@@ -5310,7 +5381,7 @@ public class StudentScript : MonoBehaviour
 			}
 			else if (this.DestinationNames[this.ID] == "Seat")
 			{
-				this.Destinations[this.ID] = this.StudentManager.Seats.List[this.StudentID];
+				this.Destinations[this.ID] = this.Seat;
 			}
 			else if (this.DestinationNames[this.ID] == "Podium")
 			{
@@ -5538,6 +5609,7 @@ public class StudentScript : MonoBehaviour
 		else
 		{
 			this.VisionCone.farClipPlane = (float)16 * this.Paranoia;
+			this.PatrolAnim = "f02_stretch_00";
 			this.IdleAnim = "f02_tsunIdle_00";
 			this.name = "Coach";
 		}
@@ -6105,6 +6177,7 @@ public class StudentScript : MonoBehaviour
 
 	public virtual void Pose()
 	{
+		this.StudentManager.PoseMode.Panel.enabled = true;
 		this.StudentManager.PoseMode.Student = this;
 		this.StudentManager.PoseMode.UpdateLabels();
 		this.StudentManager.PoseMode.Show = true;

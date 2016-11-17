@@ -38,7 +38,11 @@ public class WoodChipperScript : MonoBehaviour
 
 	public int VictimID;
 
+	public int Victims;
+
 	public int ID;
+
+	public int[] VictimList;
 
 	public virtual void Update()
 	{
@@ -145,6 +149,8 @@ public class WoodChipperScript : MonoBehaviour
 				this.Yandere.YandereVision = false;
 				this.Yandere.Chipping = true;
 				this.Yandere.CanMove = false;
+				this.Victims++;
+				this.VictimList[this.Victims] = ((RagdollScript)this.Yandere.Ragdoll.GetComponent(typeof(RagdollScript))).StudentID;
 				this.Open = true;
 			}
 		}

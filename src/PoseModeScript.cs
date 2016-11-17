@@ -17,6 +17,8 @@ public class PoseModeScript : MonoBehaviour
 
 	public YandereScript Yandere;
 
+	public UIPanel Panel;
+
 	public UILabel[] OptionLabels;
 
 	public UILabel HeaderLabel;
@@ -72,6 +74,7 @@ public class PoseModeScript : MonoBehaviour
 	public virtual void Start()
 	{
 		this.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+		this.Panel.enabled = false;
 	}
 
 	public virtual void Update()
@@ -525,9 +528,10 @@ public class PoseModeScript : MonoBehaviour
 			{
 				this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
 			}
-			else
+			else if (this.Panel.enabled)
 			{
 				this.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+				this.Panel.enabled = false;
 			}
 			if (this.Placing && Input.GetButtonDown("A"))
 			{

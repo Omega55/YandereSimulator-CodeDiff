@@ -220,7 +220,7 @@ public class WeaponMenuScript : MonoBehaviour
 			{
 				this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
 			}
-			else
+			else if (this.Panel.enabled)
 			{
 				this.transform.localScale = new Vector3((float)0, (float)0, (float)0);
 				this.Panel.enabled = false;
@@ -240,7 +240,7 @@ public class WeaponMenuScript : MonoBehaviour
 			{
 				this.KeyboardMenu.localScale = Vector3.Lerp(this.KeyboardMenu.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
 			}
-			else
+			else if (this.KeyboardPanel.enabled)
 			{
 				this.KeyboardMenu.localScale = new Vector3((float)0, (float)0, (float)0);
 				this.KeyboardPanel.enabled = false;

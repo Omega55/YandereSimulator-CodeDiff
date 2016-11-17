@@ -142,24 +142,29 @@ public class TapePlayerMenuScript : MonoBehaviour
 	{
 		if (!this.Show)
 		{
-			if (this.List.transform.localPosition.x > (float)-955)
+			if (this.List.localPosition.x > (float)-955)
 			{
-				float x = Mathf.Lerp(this.List.transform.localPosition.x, (float)-956, 0.166666672f);
-				Vector3 localPosition = this.List.transform.localPosition;
+				float x = Mathf.Lerp(this.List.localPosition.x, (float)-956, 0.166666672f);
+				Vector3 localPosition = this.List.localPosition;
 				float num = localPosition.x = x;
-				Vector3 vector = this.List.transform.localPosition = localPosition;
+				Vector3 vector = this.List.localPosition = localPosition;
 				float y = Mathf.Lerp(this.TimeBar.localPosition.y, (float)100, 0.166666672f);
 				Vector3 localPosition2 = this.TimeBar.localPosition;
 				float num2 = localPosition2.y = y;
 				Vector3 vector2 = this.TimeBar.localPosition = localPosition2;
 			}
+			else
+			{
+				this.TimeBar.gameObject.active = false;
+				this.List.gameObject.active = false;
+			}
 		}
 		else if (this.Listening)
 		{
-			float x2 = Mathf.Lerp(this.List.transform.localPosition.x, (float)-955, 0.166666672f);
-			Vector3 localPosition3 = this.List.transform.localPosition;
+			float x2 = Mathf.Lerp(this.List.localPosition.x, (float)-955, 0.166666672f);
+			Vector3 localPosition3 = this.List.localPosition;
 			float num3 = localPosition3.x = x2;
-			Vector3 vector3 = this.List.transform.localPosition = localPosition3;
+			Vector3 vector3 = this.List.localPosition = localPosition3;
 			float y2 = Mathf.Lerp(this.TimeBar.localPosition.y, (float)0, 0.166666672f);
 			Vector3 localPosition4 = this.TimeBar.localPosition;
 			float num4 = localPosition4.y = y2;

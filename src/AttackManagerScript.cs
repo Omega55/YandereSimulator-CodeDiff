@@ -149,6 +149,7 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					this.Yandere.StudentManager.Reporter = null;
 				}
+				this.Yandere.TargetStudent.DeathCause = this.Yandere.Weapon[this.Yandere.Equipped].WeaponID;
 				this.Yandere.TargetStudent.BecomeRagdoll();
 				this.Yandere.TargetStudent.Dead = true;
 				this.Yandere.Sanity = this.Yandere.Sanity - (float)20 * this.Yandere.Numbness;

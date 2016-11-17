@@ -92,6 +92,7 @@ public class NoteLockerScript : MonoBehaviour
 			this.Prompt.Circle[0].fillAmount = (float)1;
 			this.NoteWindow.NoteLocker = this;
 			this.Yandere.Blur.enabled = true;
+			this.NoteWindow.active = true;
 			this.Yandere.CanMove = false;
 			this.NoteWindow.Show = true;
 			this.Yandere.HUD.alpha = (float)0;

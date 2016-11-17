@@ -21,6 +21,8 @@ public class JsonScript : MonoBehaviour
 
 	public int[] StudentClasses;
 
+	public int[] StudentSeats;
+
 	public int[] StudentClubs;
 
 	public int[] StudentPersonas;
@@ -145,6 +147,7 @@ public class JsonScript : MonoBehaviour
 			this.StudentNames[this.ID] = TFUtils.LoadString(array[i], "Name");
 			this.StudentGenders[this.ID] = TFUtils.LoadInt(array[i], "Gender");
 			this.StudentClasses[this.ID] = TFUtils.LoadInt(array[i], "Class");
+			this.StudentSeats[this.ID] = TFUtils.LoadInt(array[i], "Seat");
 			this.StudentClubs[this.ID] = TFUtils.LoadInt(array[i], "Club");
 			this.StudentPersonas[this.ID] = TFUtils.LoadInt(array[i], "Persona");
 			this.StudentCrushes[this.ID] = TFUtils.LoadInt(array[i], "Crush");
@@ -154,6 +157,10 @@ public class JsonScript : MonoBehaviour
 			this.StudentColors[this.ID] = TFUtils.LoadString(array[i], "Color");
 			this.StudentStockings[this.ID] = TFUtils.LoadString(array[i], "Stockings");
 			this.StudentAccessories[this.ID] = TFUtils.LoadString(array[i], "Accessory");
+			if (PlayerPrefs.GetInt("HighPopulation") == 1 && this.StudentNames[this.ID] == "Unknown")
+			{
+				this.StudentNames[this.ID] = "Random";
+			}
 			this.TempString = TFUtils.LoadString(array[i], "ScheduleTime");
 			this.ConstructTempFloatArray();
 			this.StudentTimes[this.ID] = this.TempFloatArray;
@@ -231,8 +238,8 @@ public class JsonScript : MonoBehaviour
 
 	public virtual void ReplaceDeadTeachers()
 	{
-		this.ID = 35;
-		while (this.ID < 42)
+		this.ID = 94;
+		while (this.ID < 100)
 		{
 			if (PlayerPrefs.GetInt("Student_" + this.ID + "_Dead") == 1)
 			{
@@ -252,8 +259,8 @@ public class JsonScript : MonoBehaviour
 			}
 			this.ID++;
 		}
-		this.ID = 35;
-		while (this.ID < 42)
+		this.ID = 94;
+		while (this.ID < 100)
 		{
 			if (PlayerPrefs.GetInt("Student_" + this.ID + "_Replaced") == 1)
 			{
@@ -261,9 +268,9 @@ public class JsonScript : MonoBehaviour
 				this.StudentBreasts[this.ID] = PlayerPrefs.GetFloat("Student_" + this.ID + "_BustSize");
 				this.StudentHairstyles[this.ID] = PlayerPrefs.GetString("Student_" + this.ID + "_Hairstyle");
 				this.StudentAccessories[this.ID] = PlayerPrefs.GetString("Student_" + this.ID + "_Accessory");
-				if (this.ID == 41)
+				if (this.ID == 100)
 				{
-					this.StudentAccessories[41] = "7";
+					this.StudentAccessories[100] = "7";
 				}
 			}
 			this.ID++;

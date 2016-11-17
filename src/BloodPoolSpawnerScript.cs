@@ -36,7 +36,7 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 
 	public virtual void Start()
 	{
-		if (Application.loadedLevel != 3)
+		if (Application.loadedLevel == 10)
 		{
 			this.NEStairs = (Collider)GameObject.Find("NEStairs").GetComponent(typeof(Collider));
 			this.NWStairs = (Collider)GameObject.Find("NWStairs").GetComponent(typeof(Collider));
@@ -72,7 +72,6 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 	{
 		if (this.MyCollider.enabled)
 		{
-			this.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
 			if (this.Timer > (float)0)
 			{
 				this.Timer -= Time.deltaTime;
@@ -93,7 +92,7 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 			{
 				this.Height = (float)12;
 			}
-			if (Application.loadedLevel != 3)
+			if (Application.loadedLevel == 10)
 			{
 				if (this.NEStairs.bounds.Contains(this.transform.position) || this.NWStairs.bounds.Contains(this.transform.position) || this.SEStairs.bounds.Contains(this.transform.position) || this.SWStairs.bounds.Contains(this.transform.position))
 				{

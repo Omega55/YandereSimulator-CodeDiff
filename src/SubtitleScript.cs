@@ -81,6 +81,12 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] BatReactions;
 
+	public string[] ShovelReactions;
+
+	public string[] DumbbellReactions;
+
+	public string[] AxeReactions;
+
 	public string[] WeaponBloodApologies;
 
 	public string[] WeaponApologies;
@@ -427,6 +433,18 @@ public class SubtitleScript : MonoBehaviour
 			else if (ID == 9)
 			{
 				this.Label.text = this.BatReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.BatReactions))];
+			}
+			else if (ID == 10)
+			{
+				this.Label.text = this.ShovelReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.ShovelReactions))];
+			}
+			else if (ID == 12)
+			{
+				this.Label.text = this.DumbbellReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.DumbbellReactions))];
+			}
+			else if (ID == 13)
+			{
+				this.Label.text = this.AxeReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.AxeReactions))];
 			}
 		}
 		else if (ReactionType == "Blood Reaction")
