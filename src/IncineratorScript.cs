@@ -52,6 +52,8 @@ public class IncineratorScript : MonoBehaviour
 
 	public int Victims;
 
+	public int Limbs;
+
 	public float OpenTimer;
 
 	public float Timer;
@@ -61,6 +63,8 @@ public class IncineratorScript : MonoBehaviour
 	public int[] CorpseList;
 
 	public int[] VictimList;
+
+	public int[] LimbList;
 
 	public virtual void Start()
 	{
@@ -239,6 +243,11 @@ public class IncineratorScript : MonoBehaviour
 			}
 			if (this.Yandere.PickUp != null)
 			{
+				if (this.Yandere.PickUp.BodyPart)
+				{
+					this.Limbs++;
+					this.LimbList[this.Limbs] = ((BodyPartScript)this.Yandere.PickUp.GetComponent(typeof(BodyPartScript))).StudentID;
+				}
 				this.Yandere.PickUp.Incinerator = this;
 				this.Yandere.PickUp.Dumped = true;
 				this.Yandere.PickUp.Drop();

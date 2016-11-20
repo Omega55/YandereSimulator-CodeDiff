@@ -396,8 +396,18 @@ public class MissionModeMenuScript : MonoBehaviour
 				this.audio.PlayOneShot(this.InfoLuck);
 				int @int = PlayerPrefs.GetInt("HighPopulation");
 				PlayerPrefs.DeleteAll();
+				PlayerPrefs.SetFloat("SchoolAtmosphere", (float)100 - (float)this.Difficulty * 1f / 10f * (float)100);
+				PlayerPrefs.SetString("MissionTargetName", this.TargetName);
+				PlayerPrefs.SetInt("MissionDifficulty", this.Difficulty);
 				PlayerPrefs.SetInt("HighPopulation", @int);
 				PlayerPrefs.SetInt("MissionTarget", this.TargetID);
+				PlayerPrefs.SetInt("SchoolAtmosphereSet", 1);
+				PlayerPrefs.SetInt("MissionMode", 1);
+				PlayerPrefs.SetInt("BiologyGrade", 1);
+				PlayerPrefs.SetInt("ChemistryGrade", 1);
+				PlayerPrefs.SetInt("LanguageGrade", 1);
+				PlayerPrefs.SetInt("PhysicalGrade", 1);
+				PlayerPrefs.SetInt("PsychologyGrade", 1);
 				if (this.Difficulty > 1)
 				{
 					for (int i = 2; i < this.Difficulty + 1; i++)
@@ -497,11 +507,6 @@ public class MissionModeMenuScript : MonoBehaviour
 				else
 				{
 					this.NowLoading.active = true;
-					PlayerPrefs.SetFloat("SchoolAtmosphere", (float)100 - (float)this.Difficulty * 1f / 10f * (float)100);
-					PlayerPrefs.SetString("MissionTargetName", this.TargetName);
-					PlayerPrefs.SetInt("MissionDifficulty", this.Difficulty);
-					PlayerPrefs.SetInt("SchoolAtmosphereSet", 1);
-					PlayerPrefs.SetInt("MissionMode", 1);
 					Application.LoadLevel("SchoolScene");
 				}
 			}

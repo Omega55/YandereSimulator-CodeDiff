@@ -252,6 +252,11 @@ public class StudentManagerScript : MonoBehaviour
 	public virtual void Start()
 	{
 		this.SetAtmosphere();
+		if (PlayerPrefs.GetInt("MissionMode") == 1)
+		{
+			PlayerPrefs.SetInt("FemaleUniform", 5);
+			PlayerPrefs.SetInt("FemaleUniform", 5);
+		}
 		if (PlayerPrefs.GetInt("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Slave") == 1)
 		{
 			this.ForceSpawn = true;

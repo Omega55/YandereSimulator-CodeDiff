@@ -298,23 +298,7 @@ public class DebugMenuScript : MonoBehaviour
 				}
 				else if (Input.GetKeyDown("q"))
 				{
-					if (!this.StudentManager.Censor)
-					{
-						if (this.Yandere.Schoolwear == 1 && !this.Yandere.Sans)
-						{
-							this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)1);
-							this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)1);
-						}
-						this.StudentManager.Censor = true;
-						this.StudentManager.CensorStudents();
-					}
-					else
-					{
-						this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)0);
-						this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)0);
-						this.StudentManager.Censor = false;
-						this.StudentManager.CensorStudents();
-					}
+					this.Censor();
 					this.Window.active = false;
 				}
 				else if (Input.GetKeyDown("r"))
@@ -467,6 +451,27 @@ public class DebugMenuScript : MonoBehaviour
 				this.ID++;
 			}
 			Application.LoadLevel(Application.loadedLevel);
+		}
+	}
+
+	public virtual void Censor()
+	{
+		if (!this.StudentManager.Censor)
+		{
+			if (this.Yandere.Schoolwear == 1 && !this.Yandere.Sans)
+			{
+				this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)1);
+				this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)1);
+			}
+			this.StudentManager.Censor = true;
+			this.StudentManager.CensorStudents();
+		}
+		else
+		{
+			this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)0);
+			this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)0);
+			this.StudentManager.Censor = false;
+			this.StudentManager.CensorStudents();
 		}
 	}
 

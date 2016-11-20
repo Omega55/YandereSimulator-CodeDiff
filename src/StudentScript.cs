@@ -5617,6 +5617,7 @@ public class StudentScript : MonoBehaviour
 		this.StruggleWonAnim = "f02_teacherStruggleWinB_00";
 		this.StruggleLostAnim = "f02_teacherStruggleLoseB_00";
 		this.OriginallyTeacher = true;
+		this.Spawned = true;
 		this.Teacher = true;
 	}
 

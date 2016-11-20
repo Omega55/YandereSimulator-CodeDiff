@@ -49,9 +49,15 @@ public class MissionModeScript : MonoBehaviour
 
 	public AudioClip[] StealthMusic;
 
+	public int[] Conditions;
+
 	public GameObject HeartbrokenCamera;
 
 	public GameObject DetectionCamera;
+
+	public GameObject HeartbeatCamera;
+
+	public GameObject MissionModeHUD;
 
 	public GameObject WitnessCamera;
 
@@ -68,6 +74,10 @@ public class MissionModeScript : MonoBehaviour
 	public int RequiredDisposalID;
 
 	public int RequiredWeaponID;
+
+	public int DisposalMethod;
+
+	public int MurderWeaponID;
 
 	public int Destination;
 
@@ -127,6 +137,12 @@ public class MissionModeScript : MonoBehaviour
 
 	public AudioClip InfoFailure;
 
+	public ColorCorrectionCurves[] ColorCorrections;
+
+	public UILabel Watermark;
+
+	public Font Arial;
+
 	public MissionModeScript()
 	{
 		this.MusicID = 1;
@@ -137,9 +153,11 @@ public class MissionModeScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		this.MissionModeHUD.active = false;
 		this.ExitPortal.active = false;
 		if (PlayerPrefs.GetInt("MissionMode") == 1)
 		{
+			this.ColorCorrections = Camera.main.GetComponents<ColorCorrectionCurves>();
 			this.StudentManager.MissionMode = true;
 			this.Difficulty = PlayerPrefs.GetInt("MissionDifficulty");
 			this.TargetID = PlayerPrefs.GetInt("MissionTarget");
@@ -184,6 +202,7 @@ public class MissionModeScript : MonoBehaviour
 					{
 						this.TimeLimit = true;
 					}
+					this.Conditions[this.ID] = PlayerPrefs.GetInt("MissionCondition_" + this.ID);
 					this.ID++;
 				}
 			}
@@ -223,6 +242,7 @@ public class MissionModeScript : MonoBehaviour
 			this.Yandere.RPGCamera.enabled = false;
 			this.Yandere.SanityBased = true;
 			this.Yandere.CanMove = false;
+			this.HeartbeatCamera.active = false;
 			this.MurderKit.active = false;
 			this.TargetHeight = 1.51505f;
 			this.Yandere.HUD.alpha = (float)0;
@@ -265,6 +285,7 @@ public class MissionModeScript : MonoBehaviour
 					if (this.Yandere.HUD.alpha == (float)1)
 					{
 						this.Yandere.RPGCamera.enabled = true;
+						this.HeartbeatCamera.active = true;
 						this.Yandere.CanMove = true;
 						this.Phase++;
 					}
@@ -277,6 +298,7 @@ public class MissionModeScript : MonoBehaviour
 				float num3 = position2.y = targetHeight;
 				Vector3 vector2 = Camera.main.transform.position = position2;
 				this.Yandere.RPGCamera.enabled = true;
+				this.HeartbeatCamera.active = true;
 				this.Yandere.CanMove = true;
 				this.Yandere.HUD.alpha = (float)1;
 				int num4 = 0;
@@ -288,10 +310,14 @@ public class MissionModeScript : MonoBehaviour
 		}
 		else if (this.Phase == 2)
 		{
-			if (this.StudentManager.Students[this.TargetID] != null)
+			if (!this.TargetDead && this.StudentManager.Students[this.TargetID] != null)
 			{
 				if (this.StudentManager.Students[this.TargetID].Dead)
 				{
+					if (this.Yandere.Equipped > 0)
+					{
+						this.MurderWeaponID = this.Yandere.Weapon[this.Yandere.Equipped].WeaponID;
+					}
 					this.TargetDead = true;
 				}
 				if (this.StudentManager.Students[this.TargetID].transform.position.y < (float)-2)
@@ -322,42 +348,52 @@ public class MissionModeScript : MonoBehaviour
 					this.CorrectClothingConfirmed = true;
 				}
 			}
-			if (this.RequiredDisposalID > 0 && this.StudentManager.Students[this.TargetID] != null)
+			if (this.RequiredDisposalID > 0 && this.DisposalMethod == 0 && this.TargetDead)
 			{
-				int num6;
-				if (this.StudentManager.Students[this.TargetID].Dead)
+				this.ID = 1;
+				while (this.ID < this.Incinerator.Victims + 1)
 				{
-					this.ID = 1;
-					while (this.ID < this.Incinerator.Victims + 1)
+					if (this.Incinerator.VictimList[this.ID] == this.TargetID)
 					{
-						if (this.Incinerator.VictimList[this.ID] == this.TargetID)
-						{
-							num6 = 1;
-						}
-						this.ID++;
+						this.DisposalMethod = 1;
 					}
-					this.ID = 1;
-					while (this.ID < this.WoodChipper.Victims + 1)
-					{
-						if (this.WoodChipper.VictimList[this.ID] == this.TargetID)
-						{
-							num6 = 2;
-						}
-						this.ID++;
-					}
-					this.ID = 1;
-					while (this.ID < Extensions.get_length(this.GardenHoles))
-					{
-						if (this.GardenHoles[this.ID].VictimID == this.TargetID)
-						{
-							num6 = 3;
-						}
-						this.ID++;
-					}
+					this.ID++;
 				}
-				if (num6 > 0)
+				this.ID = 1;
+				int num6 = 0;
+				while (this.ID < this.Incinerator.Limbs + 1)
 				{
-					if (num6 != this.RequiredDisposalID)
+					if (this.Incinerator.LimbList[this.ID] == this.TargetID)
+					{
+						num6++;
+					}
+					if (num6 == 6)
+					{
+						this.DisposalMethod = 1;
+					}
+					this.ID++;
+				}
+				this.ID = 1;
+				while (this.ID < this.WoodChipper.Victims + 1)
+				{
+					if (this.WoodChipper.VictimList[this.ID] == this.TargetID)
+					{
+						this.DisposalMethod = 2;
+					}
+					this.ID++;
+				}
+				this.ID = 1;
+				while (this.ID < Extensions.get_length(this.GardenHoles))
+				{
+					if (this.GardenHoles[this.ID].VictimID == this.TargetID)
+					{
+						this.DisposalMethod = 3;
+					}
+					this.ID++;
+				}
+				if (this.DisposalMethod > 0)
+				{
+					if (this.DisposalMethod != this.RequiredDisposalID)
 					{
 						this.audio.PlayOneShot(this.InfoFailure);
 						this.GameOverID = 4;
@@ -430,12 +466,12 @@ public class MissionModeScript : MonoBehaviour
 					this.BloodCleaned = false;
 				}
 			}
-			if (this.NoWeapon)
+			if (this.NoWeapon && !this.WeaponDisposed && this.Incinerator.Timer > (float)0)
 			{
 				this.ID = 1;
 				while (this.ID < this.Incinerator.DestroyedEvidence + 1)
 				{
-					if (this.Incinerator.EvidenceList[this.ID] == this.RequiredWeaponID)
+					if (this.Incinerator.EvidenceList[this.ID] == this.MurderWeaponID)
 					{
 						this.WeaponDisposed = true;
 					}
@@ -476,22 +512,35 @@ public class MissionModeScript : MonoBehaviour
 				this.GameOver();
 				this.Phase = 4;
 			}
-			if (this.ExitPortal.active && this.ExitPortalPrompt.Circle[0].fillAmount == (float)0)
+			if (this.ExitPortal.active)
 			{
-				Camera.main.transform.position = new Vector3(0.5f, 2.25f, -100.5f);
-				Camera.main.transform.eulerAngles = new Vector3((float)0, (float)0, (float)0);
-				this.Yandere.transform.eulerAngles = new Vector3((float)0, (float)180, (float)0);
-				this.Yandere.transform.position = new Vector3((float)0, (float)0, -94.5f);
-				this.Yandere.Character.animation.Play(this.Yandere.WalkAnim);
-				this.Yandere.RPGCamera.enabled = false;
-				this.Yandere.HUD.active = false;
-				this.Yandere.CanMove = false;
-				this.Jukebox.MissionMode.audio.clip = this.StealthMusic[6];
-				this.Jukebox.MissionMode.audio.loop = false;
-				this.Jukebox.MissionMode.audio.Play();
-				this.audio.PlayOneShot(this.InfoAccomplished);
-				this.Boundary.enabled = false;
-				this.Phase++;
+				if (this.Yandere.Chased)
+				{
+					this.ExitPortalPrompt.Label[0].text = "     " + "Cannot Exfiltrate!";
+					this.ExitPortalPrompt.Circle[0].fillAmount = (float)1;
+				}
+				else
+				{
+					this.ExitPortalPrompt.Label[0].text = "     " + "Exfiltrate";
+					if (this.ExitPortalPrompt.Circle[0].fillAmount == (float)0)
+					{
+						Camera.main.transform.position = new Vector3(0.5f, 2.25f, -100.5f);
+						Camera.main.transform.eulerAngles = new Vector3((float)0, (float)0, (float)0);
+						this.Yandere.transform.eulerAngles = new Vector3((float)0, (float)180, (float)0);
+						this.Yandere.transform.position = new Vector3((float)0, (float)0, -94.5f);
+						this.Yandere.Character.animation.Play(this.Yandere.WalkAnim);
+						this.Yandere.RPGCamera.enabled = false;
+						this.Yandere.HUD.active = false;
+						this.Yandere.CanMove = false;
+						this.Jukebox.MissionMode.audio.clip = this.StealthMusic[6];
+						this.Jukebox.MissionMode.audio.loop = false;
+						this.Jukebox.MissionMode.audio.Play();
+						this.audio.PlayOneShot(this.InfoAccomplished);
+						this.HeartbeatCamera.active = false;
+						this.Boundary.enabled = false;
+						this.Phase++;
+					}
+				}
 			}
 			if (this.TargetDead && this.CorpseDisposed && this.BloodCleaned && this.WeaponDisposed && !this.ExitPortal.active)
 			{
@@ -565,6 +614,7 @@ public class MissionModeScript : MonoBehaviour
 					{
 						if (this.Destination == 1)
 						{
+							this.ResetPlayerPrefs();
 							Application.LoadLevel(Application.loadedLevel);
 						}
 						else if (this.Destination == 2)
@@ -587,40 +637,34 @@ public class MissionModeScript : MonoBehaviour
 	{
 		this.GameOverReason.text = this.GameOverReasons[this.GameOverID];
 		this.Jukebox.MissionMode.audio.clip = this.StealthMusic[0];
+		this.ColorCorrections[2].enabled = true;
 		this.Jukebox.MissionMode.audio.Play();
 		this.DetectionCamera.active = false;
+		this.HeartbeatCamera.active = false;
 		this.WitnessCamera.active = false;
 		this.GameOverText.active = true;
 		this.Yandere.HUD.active = false;
-		this.Grayscale.enabled = true;
 		this.Subtitle.active = false;
-		this.Jukebox.Volume = (float)1;
-		this.PromptBar.Show = true;
+		this.Jukebox.Volume = 0.5f;
 		Time.timeScale = (float)0;
-		this.PromptBar.ClearButtons();
-		this.PromptBar.Label[0].text = "Retry";
-		this.PromptBar.Label[1].text = "Mission Menu";
-		this.PromptBar.Label[2].text = "Main Menu";
-		this.PromptBar.UpdateButtons();
 	}
 
 	public virtual void Success()
 	{
+		int num = 0;
+		Vector3 localPosition = this.GameOverHeader.transform.localPosition;
+		float num2 = localPosition.y = (float)num;
+		Vector3 vector = this.GameOverHeader.transform.localPosition = localPosition;
 		this.GameOverHeader.text = "MISSION ACCOMPLISHED";
-		this.GameOverReason.text = "You successfully completed the mission!";
+		this.GameOverReason.gameObject.active = false;
+		this.ColorCorrections[2].enabled = true;
 		this.DetectionCamera.active = false;
 		this.WitnessCamera.active = false;
 		this.GameOverText.active = true;
-		this.Grayscale.enabled = true;
+		this.GameOverReason.text = string.Empty;
 		this.Subtitle.active = false;
 		this.Jukebox.Volume = (float)1;
-		this.PromptBar.Show = true;
 		Time.timeScale = (float)0;
-		this.PromptBar.ClearButtons();
-		this.PromptBar.Label[0].text = "Replay";
-		this.PromptBar.Label[1].text = "Mission Menu";
-		this.PromptBar.Label[2].text = "Main Menu";
-		this.PromptBar.UpdateButtons();
 	}
 
 	public virtual void ChangeMusic()
@@ -632,6 +676,34 @@ public class MissionModeScript : MonoBehaviour
 		}
 		this.Jukebox.MissionMode.audio.clip = this.StealthMusic[this.MusicID];
 		this.Jukebox.MissionMode.audio.Play();
+	}
+
+	public virtual void ResetPlayerPrefs()
+	{
+		string @string = PlayerPrefs.GetString("MissionTargetName");
+		int @int = PlayerPrefs.GetInt("HighPopulation");
+		PlayerPrefs.DeleteAll();
+		PlayerPrefs.SetFloat("SchoolAtmosphere", (float)100 - (float)this.Difficulty * 1f / 10f * (float)100);
+		PlayerPrefs.SetString("MissionTargetName", @string);
+		PlayerPrefs.SetInt("MissionDifficulty", this.Difficulty);
+		PlayerPrefs.SetInt("HighPopulation", @int);
+		PlayerPrefs.SetInt("MissionTarget", this.TargetID);
+		PlayerPrefs.SetInt("SchoolAtmosphereSet", 1);
+		PlayerPrefs.SetInt("MissionMode", 1);
+		PlayerPrefs.SetInt("MissionRequiredWeapon", this.RequiredWeaponID);
+		PlayerPrefs.SetInt("MissionRequiredClothing", this.RequiredClothingID);
+		PlayerPrefs.SetInt("MissionRequiredDisposal", this.RequiredDisposalID);
+		PlayerPrefs.SetInt("BiologyGrade", 1);
+		PlayerPrefs.SetInt("ChemistryGrade", 1);
+		PlayerPrefs.SetInt("LanguageGrade", 1);
+		PlayerPrefs.SetInt("PhysicalGrade", 1);
+		PlayerPrefs.SetInt("PsychologyGrade", 1);
+		this.ID = 2;
+		while (this.ID < 11)
+		{
+			PlayerPrefs.SetInt("MissionCondition_" + this.ID, this.Conditions[this.ID]);
+			this.ID++;
+		}
 	}
 
 	public virtual void Main()
