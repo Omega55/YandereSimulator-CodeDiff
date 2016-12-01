@@ -179,7 +179,7 @@ public class RagdollScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (!this.Dragged && !this.Carried && !this.Settled)
+		if (!this.Dragged && !this.Carried && !this.Settled && !this.Yandere.PK)
 		{
 			this.SettleTimer += Time.deltaTime;
 			if (this.SettleTimer > (float)5)

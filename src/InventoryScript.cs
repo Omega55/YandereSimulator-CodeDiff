@@ -26,6 +26,8 @@ public class InventoryScript : MonoBehaviour
 
 	public bool Bra;
 
+	public bool Key;
+
 	public virtual void Main()
 	{
 	}

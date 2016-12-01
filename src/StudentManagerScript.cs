@@ -339,6 +339,7 @@ public class StudentManagerScript : MonoBehaviour
 
 	public virtual void Update()
 	{
+		Screen.lockCursor = true;
 		if (!this.TakingPortraits)
 		{
 			this.Frame++;

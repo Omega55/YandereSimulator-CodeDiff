@@ -32,6 +32,10 @@ public class RingEventScript : MonoBehaviour
 
 	public Vector3 OriginalPosition;
 
+	public Vector3 HoldingPosition;
+
+	public Vector3 HoldingRotation;
+
 	public float CurrentClipLength;
 
 	public float Timer;
@@ -40,6 +44,12 @@ public class RingEventScript : MonoBehaviour
 	{
 		this.EventTime = 13.1f;
 		this.EventPhase = 1;
+	}
+
+	public virtual void Start()
+	{
+		this.HoldingPosition = new Vector3(0.0075f, -0.0355f, 0.0175f);
+		this.HoldingRotation = new Vector3((float)15, (float)-70, (float)-135);
 	}
 
 	public virtual void Update()
@@ -136,6 +146,8 @@ public class RingEventScript : MonoBehaviour
 					else if (this.Timer > 2.5f)
 					{
 						this.EventStudent.Cosmetic.FemaleAccessories[3].transform.parent = this.EventStudent.RightHand;
+						this.EventStudent.Cosmetic.FemaleAccessories[3].transform.localPosition = this.HoldingPosition;
+						this.EventStudent.Cosmetic.FemaleAccessories[3].transform.localEulerAngles = this.HoldingRotation;
 					}
 				}
 				else if (this.EventPhase == 3)
@@ -145,6 +157,9 @@ public class RingEventScript : MonoBehaviour
 						this.EventStudent.Bento.active = false;
 						this.EventStudent.Chopsticks[0].active = false;
 						this.EventStudent.Chopsticks[1].active = false;
+						((BoxCollider)this.EventStudent.Cosmetic.FemaleAccessories[3].GetComponent(typeof(BoxCollider))).enabled = false;
+						((PromptScript)this.EventStudent.Cosmetic.FemaleAccessories[3].GetComponent(typeof(PromptScript))).Hide();
+						((PromptScript)this.EventStudent.Cosmetic.FemaleAccessories[3].GetComponent(typeof(PromptScript))).enabled = false;
 						this.EventStudent.Character.animation[this.EventAnim[0]].time = this.EventStudent.Character.animation[this.EventAnim[0]].length;
 						this.EventStudent.Character.animation[this.EventAnim[0]].speed = (float)-1;
 						if (this.EventStudent.Cosmetic.FemaleAccessories[3] != null)
@@ -163,9 +178,11 @@ public class RingEventScript : MonoBehaviour
 					this.Timer += Time.deltaTime;
 					if (this.EventStudent.Cosmetic.FemaleAccessories[3] != null)
 					{
-						if (this.Timer > (float)1)
+						if (this.Timer > (float)2)
 						{
 							this.EventStudent.Cosmetic.FemaleAccessories[3].transform.parent = this.EventStudent.RightHand;
+							this.EventStudent.Cosmetic.FemaleAccessories[3].transform.localPosition = this.HoldingPosition;
+							this.EventStudent.Cosmetic.FemaleAccessories[3].transform.localEulerAngles = this.HoldingRotation;
 						}
 						if (this.Timer > (float)3)
 						{
@@ -266,6 +283,8 @@ public class RingEventScript : MonoBehaviour
 			this.EventStudent.Cosmetic.FemaleAccessories[3].transform.parent = this.EventStudent.LeftMiddleFinger;
 			this.EventStudent.Cosmetic.FemaleAccessories[3].transform.localPosition = this.OriginalPosition;
 			((BoxCollider)this.EventStudent.Cosmetic.FemaleAccessories[3].GetComponent(typeof(BoxCollider))).enabled = false;
+			((PromptScript)this.EventStudent.Cosmetic.FemaleAccessories[3].GetComponent(typeof(PromptScript))).Hide();
+			((PromptScript)this.EventStudent.Cosmetic.FemaleAccessories[3].GetComponent(typeof(PromptScript))).enabled = false;
 		}
 	}
 

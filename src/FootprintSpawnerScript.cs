@@ -10,6 +10,8 @@ public class FootprintSpawnerScript : MonoBehaviour
 
 	public Transform Yandere;
 
+	public Collider GardenArea;
+
 	public Collider NEStairs;
 
 	public Collider NWStairs;
@@ -30,8 +32,11 @@ public class FootprintSpawnerScript : MonoBehaviour
 
 	public int Bloodiness;
 
+	public int Collisions;
+
 	public virtual void Start()
 	{
+		this.GardenArea = (Collider)GameObject.Find("GardenArea").GetComponent(typeof(Collider));
 		this.NEStairs = (Collider)GameObject.Find("NEStairs").GetComponent(typeof(Collider));
 		this.NWStairs = (Collider)GameObject.Find("NWStairs").GetComponent(typeof(Collider));
 		this.SEStairs = (Collider)GameObject.Find("SEStairs").GetComponent(typeof(Collider));
@@ -40,7 +45,7 @@ public class FootprintSpawnerScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (this.NEStairs.bounds.Contains(this.transform.position) || this.NWStairs.bounds.Contains(this.transform.position) || this.SEStairs.bounds.Contains(this.transform.position) || this.SWStairs.bounds.Contains(this.transform.position))
+		if (this.GardenArea.bounds.Contains(this.transform.position) || this.NEStairs.bounds.Contains(this.transform.position) || this.NWStairs.bounds.Contains(this.transform.position) || this.SEStairs.bounds.Contains(this.transform.position) || this.SWStairs.bounds.Contains(this.transform.position))
 		{
 			this.CanSpawn = false;
 		}

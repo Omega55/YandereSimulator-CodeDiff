@@ -680,13 +680,22 @@ public class MissionModeScript : MonoBehaviour
 
 	public virtual void ResetPlayerPrefs()
 	{
+		int @int = PlayerPrefs.GetInt("DisableFarAnimations");
+		int int2 = PlayerPrefs.GetInt("DisablePostAliasing");
+		int int3 = PlayerPrefs.GetInt("DisableOutlines");
+		int int4 = PlayerPrefs.GetInt("LowDetailStudents");
+		int int5 = PlayerPrefs.GetInt("ParticleCount");
+		int int6 = PlayerPrefs.GetInt("DisableShadows");
+		int int7 = PlayerPrefs.GetInt("DrawDistance");
+		int int8 = PlayerPrefs.GetInt("DisableBloom");
+		int int9 = PlayerPrefs.GetInt("Fog");
 		string @string = PlayerPrefs.GetString("MissionTargetName");
-		int @int = PlayerPrefs.GetInt("HighPopulation");
+		int int10 = PlayerPrefs.GetInt("HighPopulation");
 		PlayerPrefs.DeleteAll();
 		PlayerPrefs.SetFloat("SchoolAtmosphere", (float)100 - (float)this.Difficulty * 1f / 10f * (float)100);
 		PlayerPrefs.SetString("MissionTargetName", @string);
 		PlayerPrefs.SetInt("MissionDifficulty", this.Difficulty);
-		PlayerPrefs.SetInt("HighPopulation", @int);
+		PlayerPrefs.SetInt("HighPopulation", int10);
 		PlayerPrefs.SetInt("MissionTarget", this.TargetID);
 		PlayerPrefs.SetInt("SchoolAtmosphereSet", 1);
 		PlayerPrefs.SetInt("MissionMode", 1);
@@ -704,6 +713,15 @@ public class MissionModeScript : MonoBehaviour
 			PlayerPrefs.SetInt("MissionCondition_" + this.ID, this.Conditions[this.ID]);
 			this.ID++;
 		}
+		PlayerPrefs.SetInt("DisableFarAnimations", @int);
+		PlayerPrefs.SetInt("DisablePostAliasing", int2);
+		PlayerPrefs.SetInt("DisableOutlines", int3);
+		PlayerPrefs.SetInt("LowDetailStudents", int4);
+		PlayerPrefs.SetInt("ParticleCount", int5);
+		PlayerPrefs.SetInt("DisableShadows", int6);
+		PlayerPrefs.SetInt("DrawDistance", int7);
+		PlayerPrefs.SetInt("DisableBloom", int8);
+		PlayerPrefs.SetInt("Fog", int9);
 	}
 
 	public virtual void Main()

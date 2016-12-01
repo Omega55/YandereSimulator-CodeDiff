@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$3058 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$3060 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$3073;
+		internal YandereScript $self_$3075;
 
-		public $ApplyCustomCostume$3058(YandereScript self_)
+		public $ApplyCustomCostume$3060(YandereScript self_)
 		{
-			this.$self_$3073 = self_;
+			this.$self_$3075 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$3058.$(this.$self_$3073);
+			return new YandereScript.$ApplyCustomCostume$3060.$(this.$self_$3075);
 		}
 	}
 
@@ -2216,6 +2216,7 @@ public class YandereScript : MonoBehaviour
 				if (this.Attacked && this.CharacterAnimation["f02_swingB_00"].time >= this.CharacterAnimation["f02_swingB_00"].length)
 				{
 					this.ShoulderCamera.HeartbrokenCamera.active = true;
+					this.enabled = false;
 				}
 				if (this.Hiding)
 				{
@@ -4083,7 +4084,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$3058(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$3060(this).GetEnumerator();
 	}
 
 	public virtual void WearGloves()

@@ -14,6 +14,8 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 
 	public Collider MyCollider;
 
+	public Collider GardenArea;
+
 	public Collider NEStairs;
 
 	public Collider NWStairs;
@@ -38,6 +40,7 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 	{
 		if (Application.loadedLevel == 10)
 		{
+			this.GardenArea = (Collider)GameObject.Find("GardenArea").GetComponent(typeof(Collider));
 			this.NEStairs = (Collider)GameObject.Find("NEStairs").GetComponent(typeof(Collider));
 			this.NWStairs = (Collider)GameObject.Find("NWStairs").GetComponent(typeof(Collider));
 			this.SEStairs = (Collider)GameObject.Find("SEStairs").GetComponent(typeof(Collider));
@@ -94,7 +97,7 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 			}
 			if (Application.loadedLevel == 10)
 			{
-				if (this.NEStairs.bounds.Contains(this.transform.position) || this.NWStairs.bounds.Contains(this.transform.position) || this.SEStairs.bounds.Contains(this.transform.position) || this.SWStairs.bounds.Contains(this.transform.position))
+				if (this.GardenArea.bounds.Contains(this.transform.position) || this.NEStairs.bounds.Contains(this.transform.position) || this.NWStairs.bounds.Contains(this.transform.position) || this.SEStairs.bounds.Contains(this.transform.position) || this.SWStairs.bounds.Contains(this.transform.position))
 				{
 					this.CanSpawn = false;
 				}
