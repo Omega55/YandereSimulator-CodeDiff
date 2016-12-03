@@ -431,9 +431,19 @@ public class ShutterScript : MonoBehaviour
 		this.NewMessage.transform.localPosition = new Vector3((float)-225, (float)-275, (float)0);
 		this.NewMessage.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
 		this.NewMessage.transform.localScale = new Vector3((float)1, (float)1, (float)1);
+		bool flag;
+		if (this.hit.collider != null && this.hit.collider.gameObject.name == "Kitten")
+		{
+			flag = true;
+		}
 		string text;
 		int num;
-		if (!this.InfoX.active)
+		if (flag)
+		{
+			text = "Why are you showing me this? I don't care.";
+			num = 2;
+		}
+		else if (!this.InfoX.active)
 		{
 			text = "I recognize this person. Here's some information about them.";
 			num = 3;
@@ -496,11 +506,6 @@ public class ShutterScript : MonoBehaviour
 		{
 			text = "Is this supposed to be a panty shot? My clients are picky. The panties need to be in the EXACT center of the shot.";
 			num = 5;
-		}
-		else if (this.hit.collider.gameObject.name == "Kitten")
-		{
-			text = "Cute, but I have no use for this.";
-			num = 2;
 		}
 		else
 		{

@@ -22,7 +22,7 @@ public class BloodPoolScript : MonoBehaviour
 			this.TargetSize *= 0.5f;
 		}
 		this.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-		if (this.transform.position.x > (float)50 || this.transform.position.x < (float)-50 || this.transform.position.z > (float)50 || this.transform.position.z < (float)-50)
+		if (this.transform.position.x > (float)125 || this.transform.position.x < (float)-125 || this.transform.position.z > (float)200 || this.transform.position.z < (float)-100)
 		{
 			UnityEngine.Object.Destroy(this.gameObject);
 		}

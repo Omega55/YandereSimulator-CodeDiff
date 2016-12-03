@@ -79,22 +79,7 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 			{
 				this.Timer -= Time.deltaTime;
 			}
-			if (this.transform.position.y < (float)4)
-			{
-				this.Height = (float)0;
-			}
-			else if (this.transform.position.y < (float)8)
-			{
-				this.Height = (float)4;
-			}
-			else if (this.transform.position.y < (float)12)
-			{
-				this.Height = (float)8;
-			}
-			else
-			{
-				this.Height = (float)12;
-			}
+			this.GetHeight();
 			if (Application.loadedLevel == 10)
 			{
 				if (this.GardenArea.bounds.Contains(this.transform.position) || this.NEStairs.bounds.Contains(this.transform.position) || this.NWStairs.bounds.Contains(this.transform.position) || this.SEStairs.bounds.Contains(this.transform.position) || this.SWStairs.bounds.Contains(this.transform.position))
@@ -141,9 +126,10 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 
 	public virtual void SpawnBigPool()
 	{
+		this.GetHeight();
 		for (int i = 0; i < 5; i++)
 		{
-			GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.BloodPool, new Vector3(this.Hips.position.x, GameObject.Find("YandereChan").transform.position.y, this.Hips.position.z) + this.Positions[i], Quaternion.identity);
+			GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.BloodPool, new Vector3(this.Hips.position.x, this.Height + 0.012f, this.Hips.position.z) + this.Positions[i], Quaternion.identity);
 			gameObject.transform.localEulerAngles = new Vector3((float)90, UnityEngine.Random.Range((float)0, 360f), (float)0);
 			gameObject.transform.parent = this.BloodParent;
 		}
@@ -167,6 +153,26 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 		GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.BloodPool, Location.position + Location.forward * 1f, Quaternion.identity);
 		gameObject.transform.localEulerAngles = new Vector3((float)90, UnityEngine.Random.Range((float)0, 360f), (float)0);
 		gameObject.transform.parent = this.BloodParent;
+	}
+
+	public virtual void GetHeight()
+	{
+		if (this.transform.position.y < (float)4)
+		{
+			this.Height = (float)0;
+		}
+		else if (this.transform.position.y < (float)8)
+		{
+			this.Height = (float)4;
+		}
+		else if (this.transform.position.y < (float)12)
+		{
+			this.Height = (float)8;
+		}
+		else
+		{
+			this.Height = (float)12;
+		}
 	}
 
 	public virtual void Main()

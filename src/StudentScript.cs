@@ -3336,10 +3336,6 @@ public class StudentScript : MonoBehaviour
 										this.Witness = false;
 									}
 								}
-								if (this.EventManager != null)
-								{
-									this.EventManager.EndEvent();
-								}
 								if (this.Teacher && this.WitnessedCorpse)
 								{
 									this.Concern = 1;

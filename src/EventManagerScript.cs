@@ -221,6 +221,7 @@ public class EventManagerScript : MonoBehaviour
 
 	public virtual void EndEvent()
 	{
+		Debug.Log("Uh?");
 		if (this.VoiceClip != null)
 		{
 			UnityEngine.Object.Destroy(this.VoiceClip);

@@ -295,16 +295,9 @@ public class StudentInfoScript : MonoBehaviour
 			WWW www = new WWW(url);
 			if (PlayerPrefs.GetInt("Student_" + ID + "_Replaced") == 0)
 			{
-				if (this.StudentManager.Students[ID] != null)
+				if (ID < 33 || ID > 93)
 				{
-					if (!this.StudentManager.Students[ID].Cosmetic.Randomize)
-					{
-						this.Portrait.mainTexture = www.texture;
-					}
-					else
-					{
-						this.Portrait.mainTexture = this.BlankPortrait;
-					}
+					this.Portrait.mainTexture = www.texture;
 				}
 				else
 				{

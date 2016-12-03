@@ -434,7 +434,7 @@ public class MissionModeMenuScript : MonoBehaviour
 			else if (Input.GetButtonDown("B"))
 			{
 				this.PromptBar.ClearButtons();
-				this.PromptBar.Label[1].text = "Accept";
+				this.PromptBar.Label[0].text = "Accept";
 				this.PromptBar.Label[4].text = "Choose";
 				this.PromptBar.UpdateButtons();
 				this.PromptBar.Show = true;

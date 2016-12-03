@@ -331,7 +331,7 @@ public class TallLockerScript : MonoBehaviour
 					this.Prompt.HideButton[1] = true;
 					this.Prompt.HideButton[2] = true;
 					this.Prompt.HideButton[3] = true;
-					if (this.Yandere.Schoolwear > 0)
+					if (this.Yandere.Schoolwear > 0 && !this.Yandere.ClubAttire)
 					{
 						this.Prompt.HideButton[this.Yandere.Schoolwear] = false;
 					}

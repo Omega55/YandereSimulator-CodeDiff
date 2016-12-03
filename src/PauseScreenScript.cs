@@ -47,6 +47,8 @@ public class PauseScreenScript : MonoBehaviour
 
 	public UISprite Wifi;
 
+	public GameObject MissionModeIcons;
+
 	public GameObject LoadingScreen;
 
 	public GameObject SchemesMenu;
@@ -128,6 +130,7 @@ public class PauseScreenScript : MonoBehaviour
 		}
 		else
 		{
+			this.MissionModeIcons.active = false;
 			float a = 0.5f;
 			Color color = this.PhoneIcons[5].color;
 			float num3 = color.a = a;

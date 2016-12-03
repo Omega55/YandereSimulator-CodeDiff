@@ -3963,6 +3963,10 @@ public class YandereScript : MonoBehaviour
 		{
 			this.MyRenderer.materials[2].SetFloat("_BlendAmount", (float)1 - this.Sanity / (float)100);
 		}
+		else
+		{
+			this.MyRenderer.materials[2].SetFloat("_BlendAmount", (float)0);
+		}
 		this.PreviousSanity = this.Sanity;
 		((SkinnedMeshRenderer)this.Hairstyles[2].GetComponent(typeof(SkinnedMeshRenderer))).SetBlendShapeWeight(0, this.Sanity);
 	}
@@ -4484,6 +4488,7 @@ public class YandereScript : MonoBehaviour
 		this.CanMove = false;
 		this.Outline.h.ReinitMaterials();
 		this.ClubAccessory();
+		this.UpdateSanity();
 	}
 
 	public virtual void ChangeClubwear()
