@@ -13,15 +13,41 @@ public class MissionModeMenuScript : MonoBehaviour
 
 	public JsonScript JSON;
 
+	public UITexture CustomTargetPortrait;
+
+	public UILabel CustomDifficultyLabel;
+
+	public UILabel CustomPopulationLabel;
+
+	public UILabel CustomNemesisLabel;
+
+	public UITexture NemesisPortrait;
+
+	public UITexture TargetPortrait;
+
+	public UILabel LoadMissionLabel;
+
+	public UILabel DescriptionLabel;
+
 	public UILabel DifficultyLabel;
 
 	public UILabel PopulationLabel;
+
+	public UILabel NemesisLabel;
+
+	public UILabel ErrorLabel;
 
 	public UILabel Header;
 
 	public UISprite Highlight;
 
 	public UISprite Darkness;
+
+	public Transform CustomMissionWindow;
+
+	public Transform ObjectiveHighlight;
+
+	public Transform LoadMissionWindow;
 
 	public Transform MissionWindow;
 
@@ -49,6 +75,12 @@ public class MissionModeMenuScript : MonoBehaviour
 
 	public int RequiredWeaponID;
 
+	public Transform[] CustomNemesisObjectives;
+
+	public Transform[] NemesisObjectives;
+
+	public UIPanel[] CustomObjectives;
+
 	public Texture[] ConditionIcons;
 
 	public Transform[] Objectives;
@@ -57,11 +89,21 @@ public class MissionModeMenuScript : MonoBehaviour
 
 	public UITexture[] Icons;
 
+	public UILabel[] CustomDescs;
+
 	public UILabel[] Descs;
+
+	public Texture NemesisGraphic;
 
 	public Texture BlankPortrait;
 
+	public string MissionIDString;
+
 	public string TargetName;
+
+	public int NemesisDifficulty;
+
+	public int CustomSelected;
 
 	public int Difficulty;
 
@@ -72,6 +114,10 @@ public class MissionModeMenuScript : MonoBehaviour
 	public int TargetID;
 
 	public int Phase;
+
+	public int Column;
+
+	public int Row;
 
 	public float Rotation;
 
@@ -89,15 +135,75 @@ public class MissionModeMenuScript : MonoBehaviour
 
 	public AudioClip InfoLuck;
 
+	public int TargetNumber;
+
+	public int WeaponNumber;
+
+	public int ClothingNumber;
+
+	public int DisposalNumber;
+
+	public int NemesisNumber;
+
+	public int PopulationNumber;
+
+	public int Condition5Number;
+
+	public int Condition6Number;
+
+	public int Condition7Number;
+
+	public int Condition8Number;
+
+	public int Condition9Number;
+
+	public int Condition10Number;
+
+	public int Condition11Number;
+
+	public int Condition12Number;
+
+	public int Condition13Number;
+
+	public int Condition14Number;
+
+	public int Condition15Number;
+
+	public string TargetString;
+
+	public string WeaponString;
+
+	public string ClothingString;
+
+	public string DisposalString;
+
+	public string MissionID;
+
+	public string[] ConditionString;
+
+	public UILabel MissionIDLabel;
+
 	public MissionModeMenuScript()
 	{
+		this.MissionIDString = string.Empty;
 		this.TargetName = string.Empty;
+		this.CustomSelected = 1;
 		this.Difficulty = 1;
 		this.Selected = 1;
+		this.Column = 1;
+		this.Row = 1;
+		this.TargetString = string.Empty;
+		this.WeaponString = string.Empty;
+		this.ClothingString = string.Empty;
+		this.DisposalString = string.Empty;
+		this.MissionID = string.Empty;
 	}
 
 	public virtual void Start()
 	{
+		this.NemesisPortrait.transform.parent.localScale = new Vector3((float)0, (float)0, (float)0);
+		this.CustomMissionWindow.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+		this.LoadMissionWindow.transform.localScale = new Vector3((float)0, (float)0, (float)0);
 		this.MissionWindow.transform.localScale = new Vector3((float)0, (float)0, (float)0);
 		int num = -700;
 		Vector3 localPosition = this.Options.transform.localPosition;
@@ -116,6 +222,9 @@ public class MissionModeMenuScript : MonoBehaviour
 		float num8 = color5.a = (float)num7;
 		Color color6 = this.Header.color = color5;
 		Time.timeScale = (float)1;
+		this.CustomDescs[2].text = this.ConditionDescs[1] + " " + this.WeaponNames[1];
+		this.CustomDescs[3].text = this.ConditionDescs[2] + " " + this.ClothingNames[1];
+		this.CustomDescs[4].text = this.ConditionDescs[3] + " " + this.DisposalNames[1];
 		int num9 = -800;
 		Vector3 localPosition2 = this.Option[1].transform.localPosition;
 		float num10 = localPosition2.x = (float)num9;
@@ -140,12 +249,25 @@ public class MissionModeMenuScript : MonoBehaviour
 		{
 			this.Objectives[i].localScale = new Vector3((float)0, (float)0, (float)0);
 		}
+		for (int i = 1; i < Extensions.get_length(this.NemesisObjectives); i++)
+		{
+			this.NemesisObjectives[i].localScale = new Vector3((float)0, (float)0, (float)0);
+		}
+		for (int i = 1; i < Extensions.get_length(this.CustomObjectives); i++)
+		{
+			if (this.CustomObjectives[i] != null)
+			{
+				this.CustomObjectives[i].alpha = 0.5f;
+			}
+		}
 		if (PlayerPrefs.GetInt("HighPopulation") == 0)
 		{
+			this.CustomPopulationLabel.text = "High School Population: Off";
 			this.PopulationLabel.text = "High School Population: Off";
 		}
 		else
 		{
+			this.CustomPopulationLabel.text = "High School Population: On";
 			this.PopulationLabel.text = "High School Population: On";
 		}
 	}
@@ -283,6 +405,8 @@ public class MissionModeMenuScript : MonoBehaviour
 			Vector3 position3 = this.transform.position;
 			float num29 = position3.z = z2;
 			Vector3 vector16 = this.transform.position = position3;
+			this.CustomMissionWindow.localScale = Vector3.Lerp(this.CustomMissionWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+			this.LoadMissionWindow.localScale = Vector3.Lerp(this.LoadMissionWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
 			this.MissionWindow.localScale = Vector3.Lerp(this.MissionWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
 			float x6 = Mathf.Lerp(this.Options.localPosition.x, (float)-700, Time.deltaTime * (float)10);
 			Vector3 localPosition11 = this.Options.localPosition;
@@ -333,18 +457,62 @@ public class MissionModeMenuScript : MonoBehaviour
 						this.audio.PlayOneShot(this.InfoReady);
 						this.InfoSpoke++;
 					}
+					this.PromptBar.ClearButtons();
+					this.PromptBar.Label[0].text = "Accept";
+					this.PromptBar.Label[1].text = "Return";
+					this.PromptBar.Label[2].text = "Generate";
+					this.PromptBar.Label[3].text = "Population";
+					this.PromptBar.Label[4].text = "Nemesis";
+					this.PromptBar.Label[5].text = "Change Difficulty";
+					this.PromptBar.UpdateButtons();
+					for (int i = 1; i < Extensions.get_length(this.Conditions); i++)
+					{
+						this.Conditions[i] = 0;
+					}
 					if (this.TargetID == 0)
 					{
 						this.ChooseTarget();
 					}
-					this.PromptBar.ClearButtons();
-					this.PromptBar.Label[0].text = "Accept";
-					this.PromptBar.Label[1].text = "Back";
-					this.PromptBar.Label[2].text = "Generate";
-					this.PromptBar.Label[3].text = "Population";
-					this.PromptBar.Label[5].text = "Change Difficulty";
-					this.PromptBar.UpdateButtons();
+					this.RequiredClothingID = 0;
+					this.RequiredDisposalID = 0;
+					this.RequiredWeaponID = 0;
+					this.NemesisDifficulty = 0;
+					this.Difficulty = 1;
+					this.UpdateNemesisDifficulty();
+					this.UpdateDifficultyLabel();
 					this.Phase++;
+				}
+				else if (this.Selected == 2)
+				{
+					this.Difficulty = 1;
+					this.Phase = 5;
+					this.PromptBar.ClearButtons();
+					this.PromptBar.Label[0].text = "Toggle";
+					this.PromptBar.Label[1].text = "Return";
+					this.PromptBar.Label[2].text = "Change";
+					this.PromptBar.Label[3].text = "Population";
+					this.PromptBar.Label[4].text = "Selection";
+					this.PromptBar.Label[5].text = "Selection";
+					this.PromptBar.UpdateButtons();
+					this.CustomDescs[2].text = this.ConditionDescs[1] + " " + this.WeaponNames[1];
+					this.CustomDescs[3].text = this.ConditionDescs[2] + " " + this.ClothingNames[1];
+					this.CustomDescs[4].text = this.ConditionDescs[3] + " " + this.DisposalNames[1];
+					this.UpdateObjectiveHighlight();
+					this.UpdateDifficultyLabel();
+					this.RequiredClothingID = 1;
+					this.RequiredDisposalID = 1;
+					this.RequiredWeaponID = 1;
+					this.TargetID = 2;
+					this.ChooseTarget();
+					this.CalculateMissionID();
+				}
+				else if (this.Selected == 3)
+				{
+					this.PromptBar.ClearButtons();
+					this.PromptBar.Label[0].text = "Confirm";
+					this.PromptBar.Label[1].text = "Back";
+					this.PromptBar.UpdateButtons();
+					this.Phase = 6;
 				}
 				else if (this.Selected == 5)
 				{
@@ -365,6 +533,8 @@ public class MissionModeMenuScript : MonoBehaviour
 			Vector3 position5 = this.transform.position;
 			float num37 = position5.z = z4;
 			Vector3 vector23 = this.transform.position = position5;
+			this.CustomMissionWindow.localScale = Vector3.Lerp(this.CustomMissionWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+			this.LoadMissionWindow.localScale = Vector3.Lerp(this.LoadMissionWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
 			this.MissionWindow.localScale = Vector3.Lerp(this.MissionWindow.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
 			float x9 = Mathf.Lerp(this.Options.localPosition.x, (float)-1550, Time.deltaTime * (float)10);
 			Vector3 localPosition15 = this.Options.localPosition;
@@ -380,56 +550,49 @@ public class MissionModeMenuScript : MonoBehaviour
 				this.Difficulty++;
 				this.UpdateDifficulty();
 			}
+			if (this.InputManager.TappedUp)
+			{
+				this.NemesisDifficulty--;
+				this.UpdateNemesisDifficulty();
+			}
+			if (this.InputManager.TappedDown)
+			{
+				this.NemesisDifficulty++;
+				this.UpdateNemesisDifficulty();
+			}
 			for (int i = 1; i < Extensions.get_length(this.Objectives); i++)
 			{
 				if (i > this.Difficulty)
 				{
-					this.Objectives[i].localScale = Vector3.Lerp(this.Objectives[i].transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+					this.Objectives[i].localScale = Vector3.Lerp(this.Objectives[i].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
 				}
 				else
 				{
-					this.Objectives[i].localScale = Vector3.Lerp(this.Objectives[i].transform.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+					this.Objectives[i].localScale = Vector3.Lerp(this.Objectives[i].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+				}
+			}
+			for (int i = 1; i < Extensions.get_length(this.NemesisObjectives); i++)
+			{
+				if (this.NemesisDifficulty == 0)
+				{
+					this.NemesisPortrait.transform.parent.localScale = Vector3.Lerp(this.NemesisPortrait.transform.parent.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+				}
+				else
+				{
+					this.NemesisPortrait.transform.parent.localScale = Vector3.Lerp(this.NemesisPortrait.transform.parent.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+				}
+				if (i > this.NemesisDifficulty)
+				{
+					this.NemesisObjectives[i].localScale = Vector3.Lerp(this.NemesisObjectives[i].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+				}
+				else
+				{
+					this.NemesisObjectives[i].localScale = Vector3.Lerp(this.NemesisObjectives[i].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
 				}
 			}
 			if (Input.GetButtonDown("A"))
 			{
-				this.audio.PlayOneShot(this.InfoLuck);
-				int @int = PlayerPrefs.GetInt("HighPopulation");
-				PlayerPrefs.DeleteAll();
-				PlayerPrefs.SetFloat("SchoolAtmosphere", (float)100 - (float)this.Difficulty * 1f / 10f * (float)100);
-				PlayerPrefs.SetString("MissionTargetName", this.TargetName);
-				PlayerPrefs.SetInt("MissionDifficulty", this.Difficulty);
-				PlayerPrefs.SetInt("HighPopulation", @int);
-				PlayerPrefs.SetInt("MissionTarget", this.TargetID);
-				PlayerPrefs.SetInt("SchoolAtmosphereSet", 1);
-				PlayerPrefs.SetInt("MissionMode", 1);
-				PlayerPrefs.SetInt("BiologyGrade", 1);
-				PlayerPrefs.SetInt("ChemistryGrade", 1);
-				PlayerPrefs.SetInt("LanguageGrade", 1);
-				PlayerPrefs.SetInt("PhysicalGrade", 1);
-				PlayerPrefs.SetInt("PsychologyGrade", 1);
-				if (this.Difficulty > 1)
-				{
-					for (int i = 2; i < this.Difficulty + 1; i++)
-					{
-						if (this.Conditions[i] == 1)
-						{
-							PlayerPrefs.SetInt("MissionRequiredWeapon", this.RequiredWeaponID);
-						}
-						else if (this.Conditions[i] == 2)
-						{
-							PlayerPrefs.SetInt("MissionRequiredClothing", this.RequiredClothingID);
-						}
-						else if (this.Conditions[i] == 3)
-						{
-							PlayerPrefs.SetInt("MissionRequiredDisposal", this.RequiredDisposalID);
-						}
-						PlayerPrefs.SetInt("MissionCondition_" + i, this.Conditions[i]);
-					}
-				}
-				this.PromptBar.Show = false;
-				this.Speed = (float)0;
-				this.Phase++;
+				this.StartMission();
 			}
 			else if (Input.GetButtonDown("B"))
 			{
@@ -457,25 +620,14 @@ public class MissionModeMenuScript : MonoBehaviour
 			}
 			else if (Input.GetButtonDown("Y"))
 			{
-				if (PlayerPrefs.GetInt("HighPopulation") == 0)
-				{
-					this.PopulationLabel.text = "High School Population: On";
-					PlayerPrefs.SetInt("HighPopulation", 1);
-				}
-				else
-				{
-					this.PopulationLabel.text = "High School Population: Off";
-					PlayerPrefs.SetInt("HighPopulation", 0);
-					if (this.TargetID > 32)
-					{
-						this.ChooseTarget();
-					}
-				}
+				this.UpdatePopulation();
 			}
 		}
 		else if (this.Phase == 4)
 		{
 			this.Speed += Time.deltaTime;
+			this.CustomMissionWindow.localScale = Vector3.Lerp(this.CustomMissionWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+			this.LoadMissionWindow.localScale = Vector3.Lerp(this.LoadMissionWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
 			this.MissionWindow.localScale = Vector3.Lerp(this.MissionWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
 			float y5 = Mathf.Lerp(this.InfoChan.localEulerAngles.y, (float)0, Time.deltaTime * this.Speed);
 			Vector3 localEulerAngles5 = this.InfoChan.localEulerAngles;
@@ -511,15 +663,424 @@ public class MissionModeMenuScript : MonoBehaviour
 				}
 			}
 		}
-		if (Input.GetKeyDown("m"))
+		else if (this.Phase == 5)
 		{
-			this.Difficulty = 3;
-			this.TargetID = 32;
-			this.Conditions[2] = 1;
-			this.Conditions[3] = 2;
-			this.RequiredClothingID = 2;
-			this.RequiredWeaponID = 4;
+			float y6 = Mathf.Lerp(this.InfoChan.localEulerAngles.y, (float)180, Time.deltaTime * (this.Speed - (float)3));
+			Vector3 localEulerAngles6 = this.InfoChan.localEulerAngles;
+			float num44 = localEulerAngles6.y = y6;
+			Vector3 vector28 = this.InfoChan.localEulerAngles = localEulerAngles6;
+			float z6 = Mathf.Lerp(this.transform.position.z, (float)2, this.Speed * Time.deltaTime * 0.25f);
+			Vector3 position7 = this.transform.position;
+			float num45 = position7.z = z6;
+			Vector3 vector29 = this.transform.position = position7;
+			this.CustomMissionWindow.localScale = Vector3.Lerp(this.CustomMissionWindow.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+			this.LoadMissionWindow.localScale = Vector3.Lerp(this.LoadMissionWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+			this.MissionWindow.localScale = Vector3.Lerp(this.MissionWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+			float x11 = Mathf.Lerp(this.Options.localPosition.x, (float)-1550, Time.deltaTime * (float)10);
+			Vector3 localPosition17 = this.Options.localPosition;
+			float num46 = localPosition17.x = x11;
+			Vector3 vector30 = this.Options.localPosition = localPosition17;
+			if (this.InputManager.TappedUp)
+			{
+				this.Row--;
+				this.UpdateObjectiveHighlight();
+			}
+			if (this.InputManager.TappedDown)
+			{
+				this.Row++;
+				this.UpdateObjectiveHighlight();
+			}
+			if (this.InputManager.TappedRight)
+			{
+				this.Column++;
+				this.UpdateObjectiveHighlight();
+			}
+			if (this.InputManager.TappedLeft)
+			{
+				this.Column--;
+				this.UpdateObjectiveHighlight();
+			}
+			if (Input.GetButtonDown("A"))
+			{
+				if (this.CustomSelected == 1)
+				{
+					this.TargetID++;
+					this.ChooseTarget();
+				}
+				else if (this.CustomSelected == 6)
+				{
+					int i;
+					for (i = 1; i < Extensions.get_length(this.Conditions); i++)
+					{
+						this.Conditions[i] = 0;
+					}
+					i = 2;
+					int num47 = 2;
+					while (i < Extensions.get_length(this.CustomObjectives))
+					{
+						if (this.CustomObjectives[i] != null && this.CustomObjectives[i].alpha == (float)1)
+						{
+							if (i < 6)
+							{
+								this.Conditions[num47] = i - 1;
+							}
+							else if (i < 12)
+							{
+								this.Conditions[num47] = i - 2;
+							}
+							else
+							{
+								this.Conditions[num47] = i - 3;
+							}
+							num47++;
+						}
+						i++;
+					}
+					this.StartMission();
+				}
+				else if (this.CustomSelected == 12)
+				{
+					this.NemesisDifficulty++;
+					this.UpdateNemesisDifficulty();
+				}
+				if (this.PromptBar.Label[0].text == "Toggle")
+				{
+					if (this.CustomObjectives[this.CustomSelected].alpha == 0.5f)
+					{
+						if (this.Difficulty < 10)
+						{
+							this.Difficulty++;
+							this.UpdateDifficultyLabel();
+							this.CustomObjectives[this.CustomSelected].alpha = (float)1;
+						}
+					}
+					else
+					{
+						this.Difficulty--;
+						this.UpdateDifficultyLabel();
+						this.CustomObjectives[this.CustomSelected].alpha = 0.5f;
+					}
+				}
+				this.CalculateMissionID();
+			}
+			else if (Input.GetButtonDown("B"))
+			{
+				this.PromptBar.ClearButtons();
+				this.PromptBar.Label[0].text = "Accept";
+				this.PromptBar.Label[4].text = "Choose";
+				this.PromptBar.UpdateButtons();
+				this.PromptBar.Show = true;
+				for (int i = 1; i < Extensions.get_length(this.CustomObjectives); i++)
+				{
+					if (this.CustomObjectives[i] != null)
+					{
+						this.CustomObjectives[i].alpha = 0.5f;
+					}
+				}
+				this.NemesisDifficulty = 0;
+				this.UpdateNemesisDifficulty();
+				this.Difficulty = 1;
+				this.TargetID = 0;
+				this.Phase = 2;
+			}
+			else if (Input.GetButtonDown("X"))
+			{
+				if (this.CustomSelected == 1)
+				{
+					this.TargetID--;
+					this.ChooseTarget();
+					this.CalculateMissionID();
+				}
+				else if (this.CustomSelected == 2)
+				{
+					this.RequiredWeaponID++;
+					if (this.RequiredWeaponID > Extensions.get_length(this.WeaponNames) - 1)
+					{
+						this.RequiredWeaponID = 1;
+					}
+					this.CustomDescs[2].text = this.ConditionDescs[1] + " " + this.WeaponNames[this.RequiredWeaponID];
+				}
+				else if (this.CustomSelected == 3)
+				{
+					this.RequiredClothingID++;
+					if (this.RequiredClothingID > Extensions.get_length(this.ClothingNames) - 1)
+					{
+						this.RequiredClothingID = 1;
+					}
+					this.CustomDescs[3].text = this.ConditionDescs[2] + " " + this.ClothingNames[this.RequiredClothingID];
+				}
+				else if (this.CustomSelected == 4)
+				{
+					this.RequiredDisposalID++;
+					if (this.RequiredDisposalID > Extensions.get_length(this.DisposalNames) - 1)
+					{
+						this.RequiredDisposalID = 1;
+					}
+					this.CustomDescs[4].text = this.ConditionDescs[3] + " " + this.DisposalNames[this.RequiredDisposalID];
+				}
+				else if (this.CustomSelected == 12)
+				{
+					this.NemesisDifficulty--;
+					this.UpdateNemesisDifficulty();
+				}
+				this.CalculateMissionID();
+			}
+			else if (Input.GetButtonDown("Y"))
+			{
+				this.UpdatePopulation();
+				this.CalculateMissionID();
+			}
+			for (int i = 1; i < Extensions.get_length(this.NemesisObjectives); i++)
+			{
+				if (i > this.NemesisDifficulty)
+				{
+					this.CustomNemesisObjectives[i].localScale = Vector3.Lerp(this.CustomNemesisObjectives[i].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+				}
+				else
+				{
+					this.CustomNemesisObjectives[i].localScale = Vector3.Lerp(this.CustomNemesisObjectives[i].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+				}
+			}
+			((UIInput)this.MissionIDLabel.gameObject.GetComponent(typeof(UIInput))).text = this.MissionID;
 		}
+		else if (this.Phase == 6)
+		{
+			float y7 = Mathf.Lerp(this.InfoChan.localEulerAngles.y, (float)180, Time.deltaTime * (this.Speed - (float)3));
+			Vector3 localEulerAngles7 = this.InfoChan.localEulerAngles;
+			float num48 = localEulerAngles7.y = y7;
+			Vector3 vector31 = this.InfoChan.localEulerAngles = localEulerAngles7;
+			float z7 = Mathf.Lerp(this.transform.position.z, (float)2, this.Speed * Time.deltaTime * 0.25f);
+			Vector3 position8 = this.transform.position;
+			float num49 = position8.z = z7;
+			Vector3 vector32 = this.transform.position = position8;
+			this.CustomMissionWindow.localScale = Vector3.Lerp(this.CustomMissionWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+			this.LoadMissionWindow.localScale = Vector3.Lerp(this.LoadMissionWindow.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+			this.MissionWindow.localScale = Vector3.Lerp(this.MissionWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+			float x12 = Mathf.Lerp(this.Options.localPosition.x, (float)-1550, Time.deltaTime * (float)10);
+			Vector3 localPosition18 = this.Options.localPosition;
+			float num50 = localPosition18.x = x12;
+			Vector3 vector33 = this.Options.localPosition = localPosition18;
+			if (!Input.anyKey)
+			{
+				this.MissionIDString = this.LoadMissionLabel.text;
+				if (this.MissionIDString.Length < 19)
+				{
+					this.ErrorLabel.text = "A Mission ID must be 19 numbers long.";
+				}
+				else if (this.MissionIDString[0] != "-")
+				{
+					this.GetNumbers();
+					if (this.TargetNumber == 0)
+					{
+						this.ErrorLabel.text = "Invalid Mission ID (No target specified)";
+					}
+					else if (this.TargetNumber == 1)
+					{
+						this.ErrorLabel.text = "Invalid Mission ID (Target cannot be Senpai)";
+					}
+					else if (this.TargetNumber == 33)
+					{
+						this.ErrorLabel.text = "Invalid Mission ID (Target cannot be Osana...yet.)";
+					}
+					else if (this.PopulationNumber == 0 && this.TargetNumber > 32)
+					{
+						this.ErrorLabel.text = "Invalid Mission ID (Population too low)";
+					}
+					else if (this.WeaponNumber == 3 || this.WeaponNumber == 11)
+					{
+						this.ErrorLabel.text = "Invalid Mission ID (Weapon does not apply to Mission Mode)";
+					}
+					else if (this.WeaponNumber > 14)
+					{
+						this.ErrorLabel.text = "Invalid Mission ID (Weapon does not exist)";
+					}
+					else if (this.ClothingNumber > 5)
+					{
+						this.ErrorLabel.text = "Invalid Mission ID (Clothing does not exist)";
+					}
+					else if (this.DisposalNumber > 3)
+					{
+						this.ErrorLabel.text = "Invalid Mission ID (Disposal method does not exist)";
+					}
+					else if (this.NemesisNumber > 3)
+					{
+						this.ErrorLabel.text = "Invalid Mission ID (Nemesis level too high)";
+					}
+					else if (this.Condition5Number > 1 || this.Condition6Number > 1 || this.Condition7Number > 1 || this.Condition8Number > 1 || this.Condition9Number > 1 || this.Condition10Number > 1 || this.Condition11Number > 1 || this.Condition12Number > 1 || this.Condition13Number > 1 || this.Condition14Number > 1 || this.Condition15Number > 1)
+					{
+						this.ErrorLabel.text = "Invalid Mission ID (One of those conditions should be 1 or 0)";
+					}
+					else
+					{
+						this.ErrorLabel.text = "Valid Mission ID!";
+					}
+				}
+				else
+				{
+					this.ErrorLabel.text = "Invalid Mission ID (Cannot be negative number)";
+				}
+			}
+			else if (Input.GetButtonDown("A"))
+			{
+				if (this.ErrorLabel.text == "Valid Mission ID!")
+				{
+					Debug.Log("Target ID is: " + this.TargetNumber + " and Weapon ID is: " + this.WeaponNumber);
+					this.TargetID = this.TargetNumber;
+					this.Difficulty = 1;
+					if (this.WeaponNumber > 0)
+					{
+						this.Difficulty++;
+						this.Conditions[this.Difficulty] = 2;
+						this.CustomObjectives[2].alpha = (float)1;
+						this.RequiredWeaponID = this.WeaponNumber;
+						this.CustomDescs[2].text = this.ConditionDescs[1] + " " + this.WeaponNames[this.RequiredWeaponID];
+					}
+					else
+					{
+						this.CustomObjectives[2].alpha = 0.5f;
+						this.CustomDescs[2].text = this.ConditionDescs[1] + " " + this.WeaponNames[1];
+					}
+					if (this.ClothingNumber > 0)
+					{
+						this.Difficulty++;
+						this.Conditions[this.Difficulty] = 3;
+						this.CustomObjectives[3].alpha = (float)1;
+						this.RequiredClothingID = this.ClothingNumber;
+						this.CustomDescs[3].text = this.ConditionDescs[2] + " " + this.ClothingNames[this.RequiredClothingID];
+					}
+					else
+					{
+						this.CustomObjectives[3].alpha = 0.5f;
+						this.CustomDescs[3].text = this.ConditionDescs[2] + " " + this.ClothingNames[1];
+					}
+					if (this.DisposalNumber > 0)
+					{
+						this.Difficulty++;
+						this.Conditions[this.Difficulty] = 4;
+						this.CustomObjectives[4].alpha = (float)1;
+						this.RequiredDisposalID = this.DisposalNumber;
+						this.CustomDescs[4].text = this.ConditionDescs[3] + " " + this.DisposalNames[this.RequiredDisposalID];
+					}
+					else
+					{
+						this.CustomObjectives[4].alpha = 0.5f;
+						this.CustomDescs[4].text = this.ConditionDescs[3] + " " + this.DisposalNames[1];
+					}
+					if (this.Difficulty < 10 && this.Condition5Number == 1)
+					{
+						this.Difficulty++;
+						this.Conditions[this.Difficulty] = 5;
+						this.CustomObjectives[5].alpha = (float)1;
+					}
+					if (this.Difficulty < 10 && this.Condition6Number == 1)
+					{
+						this.Difficulty++;
+						this.Conditions[this.Difficulty] = 6;
+						this.CustomObjectives[7].alpha = (float)1;
+					}
+					if (this.Difficulty < 10 && this.Condition7Number == 1)
+					{
+						this.Difficulty++;
+						this.Conditions[this.Difficulty] = 7;
+						this.CustomObjectives[8].alpha = (float)1;
+					}
+					if (this.Difficulty < 10 && this.Condition8Number == 1)
+					{
+						this.Difficulty++;
+						this.Conditions[this.Difficulty] = 8;
+						this.CustomObjectives[9].alpha = (float)1;
+					}
+					if (this.Difficulty < 10 && this.Condition9Number == 1)
+					{
+						this.Difficulty++;
+						this.Conditions[this.Difficulty] = 9;
+						this.CustomObjectives[10].alpha = (float)1;
+					}
+					if (this.Difficulty < 10 && this.Condition10Number == 1)
+					{
+						this.Difficulty++;
+						this.Conditions[this.Difficulty] = 10;
+						this.CustomObjectives[11].alpha = (float)1;
+					}
+					if (this.Difficulty < 10 && this.Condition11Number == 1)
+					{
+						this.Difficulty++;
+						this.Conditions[this.Difficulty] = 11;
+						this.CustomObjectives[13].alpha = (float)1;
+					}
+					if (this.Difficulty < 10 && this.Condition12Number == 1)
+					{
+						this.Difficulty++;
+						this.Conditions[this.Difficulty] = 12;
+						this.CustomObjectives[14].alpha = (float)1;
+					}
+					if (this.Difficulty < 10 && this.Condition13Number == 1)
+					{
+						this.Difficulty++;
+						this.Conditions[this.Difficulty] = 13;
+						this.CustomObjectives[15].alpha = (float)1;
+					}
+					if (this.Difficulty < 10 && this.Condition14Number == 1)
+					{
+						this.Difficulty++;
+						this.Conditions[this.Difficulty] = 14;
+						this.CustomObjectives[16].alpha = (float)1;
+					}
+					if (this.Difficulty < 10 && this.Condition15Number == 1)
+					{
+						this.Difficulty++;
+						this.Conditions[this.Difficulty] = 15;
+						this.CustomObjectives[17].alpha = (float)1;
+					}
+					this.NemesisDifficulty = this.NemesisNumber;
+					PlayerPrefs.SetInt("Population", this.PopulationNumber);
+					this.Phase = 5;
+					this.PromptBar.ClearButtons();
+					this.PromptBar.Label[0].text = "Toggle";
+					this.PromptBar.Label[1].text = "Return";
+					this.PromptBar.Label[2].text = "Change";
+					this.PromptBar.Label[3].text = "Population";
+					this.PromptBar.Label[4].text = "Selection";
+					this.PromptBar.Label[5].text = "Selection";
+					this.PromptBar.UpdateButtons();
+					this.UpdateObjectiveHighlight();
+					this.UpdateDifficultyLabel();
+					this.CalculateMissionID();
+					this.ChooseTarget();
+				}
+			}
+			else if (Input.GetButtonDown("B"))
+			{
+				this.PromptBar.ClearButtons();
+				this.PromptBar.Label[0].text = "Accept";
+				this.PromptBar.Label[4].text = "Choose";
+				this.PromptBar.UpdateButtons();
+				this.PromptBar.Show = true;
+				this.TargetID = 0;
+				this.Phase = 2;
+			}
+		}
+	}
+
+	public virtual void GetNumbers()
+	{
+		this.TargetNumber = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[0]) * 10 + UnityBuiltins.parseInt(string.Empty + this.MissionIDString[1]);
+		this.WeaponNumber = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[2]) * 10 + UnityBuiltins.parseInt(string.Empty + this.MissionIDString[3]);
+		this.ClothingNumber = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[4]);
+		this.DisposalNumber = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[5]);
+		this.Condition5Number = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[6]);
+		this.Condition6Number = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[7]);
+		this.Condition7Number = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[8]);
+		this.Condition8Number = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[9]);
+		this.Condition9Number = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[10]);
+		this.Condition10Number = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[11]);
+		this.Condition11Number = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[12]);
+		this.Condition12Number = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[13]);
+		this.Condition13Number = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[14]);
+		this.Condition14Number = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[15]);
+		this.Condition15Number = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[16]);
+		this.NemesisNumber = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[17]);
+		this.PopulationNumber = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[18]);
 	}
 
 	public virtual void LateUpdate()
@@ -548,24 +1109,47 @@ public class MissionModeMenuScript : MonoBehaviour
 
 	public virtual void ChooseTarget()
 	{
-		if (PlayerPrefs.GetInt("HighPopulation") == 0)
+		if (this.Phase != 5)
 		{
-			this.TargetID = UnityEngine.Random.Range(2, 33);
+			if (PlayerPrefs.GetInt("HighPopulation") == 0)
+			{
+				this.TargetID = UnityEngine.Random.Range(2, 33);
+			}
+			else
+			{
+				this.TargetID = UnityEngine.Random.Range(2, 90);
+			}
 		}
-		else
+		else if (PlayerPrefs.GetInt("HighPopulation") == 0)
 		{
-			this.TargetID = UnityEngine.Random.Range(2, 90);
+			if (this.TargetID > 32)
+			{
+				this.TargetID = 2;
+			}
+			else if (this.TargetID < 2)
+			{
+				this.TargetID = 32;
+			}
+		}
+		else if (this.TargetID > 89)
+		{
+			this.TargetID = 2;
+		}
+		else if (this.TargetID < 2)
+		{
+			this.TargetID = 89;
 		}
 		string url = "file:///" + Application.streamingAssetsPath + "/Portraits/Student_" + this.TargetID + ".png";
 		WWW www = new WWW(url);
 		if (this.TargetID < 33)
 		{
-			this.Icons[1].mainTexture = www.texture;
+			this.TargetPortrait.mainTexture = www.texture;
 		}
 		else
 		{
-			this.Icons[1].mainTexture = this.BlankPortrait;
+			this.TargetPortrait.mainTexture = this.BlankPortrait;
 		}
+		this.CustomTargetPortrait.mainTexture = this.TargetPortrait.mainTexture;
 		if (this.JSON.StudentNames[this.TargetID] == "Random" || this.JSON.StudentNames[this.TargetID] == "Unknown")
 		{
 			this.TargetName = string.Empty + this.StudentManager.FirstNames[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentManager.FirstNames))] + " " + this.StudentManager.LastNames[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentManager.LastNames))];
@@ -574,9 +1158,21 @@ public class MissionModeMenuScript : MonoBehaviour
 		{
 			this.TargetName = this.JSON.StudentNames[this.TargetID];
 		}
+		this.CustomDescs[1].text = "Kill " + this.TargetName + ".";
 		this.Descs[1].text = "Kill " + this.TargetName + ".";
 		if (this.TargetID == 33)
 		{
+			if (this.Phase == 5)
+			{
+				if (Input.GetButtonDown("A"))
+				{
+					this.TargetID++;
+				}
+				else
+				{
+					this.TargetID--;
+				}
+			}
 			this.ChooseTarget();
 		}
 	}
@@ -591,11 +1187,79 @@ public class MissionModeMenuScript : MonoBehaviour
 		{
 			this.Difficulty = 10;
 		}
-		else if (this.InputManager.TappedRight)
+		if (this.InputManager.TappedRight)
 		{
 			this.PickNewCondition();
 		}
+		else
+		{
+			this.ErasePreviousCondition();
+		}
+	}
+
+	public virtual void UpdateDifficultyLabel()
+	{
+		this.CustomDifficultyLabel.text = "Difficulty Level - " + this.Difficulty;
 		this.DifficultyLabel.text = "Difficulty Level - " + this.Difficulty;
+		string lhs = "Kill " + this.TargetName + ".";
+		string rhs;
+		if (this.RequiredWeaponID == 0)
+		{
+			rhs = "You can kill the target with any weapon.";
+		}
+		else
+		{
+			rhs = "You must kill the target with a " + this.WeaponNames[this.RequiredWeaponID];
+		}
+		string rhs2;
+		if (this.RequiredClothingID == 0)
+		{
+			rhs2 = "You can kill the target wearing any clothing.";
+		}
+		else
+		{
+			rhs2 = "You must kill the target while wearing " + this.ClothingNames[this.RequiredClothingID];
+		}
+		string rhs3;
+		if (this.RequiredDisposalID == 0)
+		{
+			rhs3 = "It is not necessary to dispose of the target's corpse.";
+		}
+		else
+		{
+			rhs3 = "You must dispose of the target's corpse by " + this.DisposalNames[this.RequiredDisposalID];
+		}
+		this.DescriptionLabel.text = lhs + "\n" + "\n" + rhs + "\n" + "\n" + rhs2 + "\n" + "\n" + rhs3;
+	}
+
+	public virtual void UpdateNemesisDifficulty()
+	{
+		if (this.NemesisDifficulty < 0)
+		{
+			this.NemesisDifficulty = 3;
+		}
+		else if (this.NemesisDifficulty > 3)
+		{
+			this.NemesisDifficulty = 0;
+		}
+		if (this.NemesisDifficulty == 0)
+		{
+			this.CustomNemesisLabel.text = "Nemesis: Off";
+			this.NemesisLabel.text = "Nemesis: Off";
+		}
+		else
+		{
+			this.CustomNemesisLabel.text = "Nemesis: On";
+			this.NemesisLabel.text = "Nemesis: On";
+			if (this.NemesisDifficulty == 3)
+			{
+				this.NemesisPortrait.mainTexture = this.BlankPortrait;
+			}
+			else
+			{
+				this.NemesisPortrait.mainTexture = this.NemesisGraphic;
+			}
+		}
 	}
 
 	public virtual void PickNewCondition()
@@ -639,6 +1303,25 @@ public class MissionModeMenuScript : MonoBehaviour
 			this.RequiredDisposalID = UnityEngine.Random.Range(1, Extensions.get_length(this.DisposalNames));
 			this.Descs[this.Difficulty].text = this.ConditionDescs[num] + " " + this.DisposalNames[this.RequiredDisposalID];
 		}
+		this.UpdateDifficultyLabel();
+	}
+
+	public virtual void ErasePreviousCondition()
+	{
+		if (this.Conditions[this.Difficulty + 1] == 1)
+		{
+			this.RequiredWeaponID = 0;
+		}
+		else if (this.Conditions[this.Difficulty + 1] == 2)
+		{
+			this.RequiredClothingID = 0;
+		}
+		else if (this.Conditions[this.Difficulty + 1] == 3)
+		{
+			this.RequiredDisposalID = 0;
+		}
+		this.Conditions[this.Difficulty + 1] = 0;
+		this.UpdateDifficultyLabel();
 	}
 
 	public virtual void UpdateGraphics()
@@ -652,7 +1335,7 @@ public class MissionModeMenuScript : MonoBehaviour
 		}
 		else
 		{
-			this.Icons[1].mainTexture = this.BlankPortrait;
+			this.TargetPortrait.mainTexture = this.BlankPortrait;
 			this.TargetName = PlayerPrefs.GetString("MissionTargetName");
 		}
 		this.Descs[1].text = "Kill " + this.TargetName + ".";
@@ -691,6 +1374,198 @@ public class MissionModeMenuScript : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	public virtual void UpdatePopulation()
+	{
+		if (PlayerPrefs.GetInt("HighPopulation") == 0)
+		{
+			this.CustomPopulationLabel.text = "High School Population: On";
+			this.PopulationLabel.text = "High School Population: On";
+			PlayerPrefs.SetInt("HighPopulation", 1);
+		}
+		else
+		{
+			this.CustomPopulationLabel.text = "High School Population: Off";
+			this.PopulationLabel.text = "High School Population: Off";
+			PlayerPrefs.SetInt("HighPopulation", 0);
+			if (this.TargetID > 32)
+			{
+				this.ChooseTarget();
+			}
+		}
+	}
+
+	public virtual void UpdateObjectiveHighlight()
+	{
+		int num = 0;
+		if (this.Row < 1)
+		{
+			this.Row = 6;
+		}
+		else if (this.Row > 6)
+		{
+			this.Row = 1;
+		}
+		else if (this.Column < 1)
+		{
+			this.Column = 3;
+		}
+		else if (this.Column > 3)
+		{
+			this.Column = 1;
+		}
+		if (this.Row == 6 && this.Column == 3)
+		{
+			this.Column = 1;
+		}
+		if (this.Row == 6)
+		{
+			num = 75;
+		}
+		if ((this.Column == 1 && this.Row < 5) || (this.Column == 2 && this.Row == 6))
+		{
+			this.PromptBar.Label[2].text = "Change";
+		}
+		else
+		{
+			this.PromptBar.Label[2].text = string.Empty;
+		}
+		int num2 = -1050 + 650 * this.Column;
+		Vector3 localPosition = this.ObjectiveHighlight.localPosition;
+		float num3 = localPosition.x = (float)num2;
+		Vector3 vector = this.ObjectiveHighlight.localPosition = localPosition;
+		int num4 = 450 - 150 * this.Row - num;
+		Vector3 localPosition2 = this.ObjectiveHighlight.localPosition;
+		float num5 = localPosition2.y = (float)num4;
+		Vector3 vector2 = this.ObjectiveHighlight.localPosition = localPosition2;
+		this.CustomSelected = this.Row + (this.Column - 1) * 6;
+		if (this.CustomSelected == 1 || this.CustomSelected == 12)
+		{
+			this.PromptBar.Label[0].text = "Forward";
+		}
+		else if (this.CustomSelected == 6)
+		{
+			this.PromptBar.Label[0].text = "Start";
+		}
+		else
+		{
+			this.PromptBar.Label[0].text = "Toggle";
+		}
+		if (this.CustomSelected == 1 || this.CustomSelected == 12)
+		{
+			this.PromptBar.Label[2].text = "Backward";
+		}
+		else if (this.CustomSelected > 4)
+		{
+			this.PromptBar.Label[2].text = string.Empty;
+		}
+		else
+		{
+			this.PromptBar.Label[2].text = "Change";
+		}
+		this.PromptBar.UpdateButtons();
+	}
+
+	public virtual void CalculateMissionID()
+	{
+		if (this.TargetID < 10)
+		{
+			this.TargetString = "0" + this.TargetID;
+		}
+		else
+		{
+			this.TargetString = string.Empty + this.TargetID;
+		}
+		if (this.CustomObjectives[2].alpha == (float)1)
+		{
+			if (this.RequiredWeaponID < 10)
+			{
+				this.WeaponString = "0" + this.RequiredWeaponID;
+			}
+			else
+			{
+				this.WeaponString = string.Empty + this.RequiredWeaponID;
+			}
+		}
+		else
+		{
+			this.WeaponString = "00";
+		}
+		if (this.CustomObjectives[3].alpha == (float)1)
+		{
+			this.ClothingString = string.Empty + this.RequiredClothingID;
+		}
+		else
+		{
+			this.ClothingString = "0";
+		}
+		if (this.CustomObjectives[4].alpha == (float)1)
+		{
+			this.DisposalString = string.Empty + this.RequiredDisposalID;
+		}
+		else
+		{
+			this.DisposalString = "0";
+		}
+		for (int i = 1; i < Extensions.get_length(this.CustomObjectives); i++)
+		{
+			if (this.CustomObjectives[i] != null)
+			{
+				if (this.CustomObjectives[i].alpha == (float)1)
+				{
+					this.ConditionString[i] = "1";
+				}
+				else
+				{
+					this.ConditionString[i] = "0";
+				}
+			}
+		}
+		this.MissionID = this.TargetString + this.WeaponString + this.ClothingString + this.DisposalString + this.ConditionString[5] + this.ConditionString[6] + this.ConditionString[7] + this.ConditionString[8] + this.ConditionString[9] + this.ConditionString[10] + this.ConditionString[11] + this.ConditionString[12] + this.ConditionString[13] + this.ConditionString[14] + this.ConditionString[15] + this.ConditionString[16] + this.ConditionString[17] + this.NemesisDifficulty + PlayerPrefs.GetInt("HighPopulation");
+		this.MissionIDLabel.text = this.MissionID;
+	}
+
+	public virtual void StartMission()
+	{
+		this.audio.PlayOneShot(this.InfoLuck);
+		int @int = PlayerPrefs.GetInt("HighPopulation");
+		PlayerPrefs.DeleteAll();
+		PlayerPrefs.SetFloat("SchoolAtmosphere", (float)100 - (float)this.Difficulty * 1f / 10f * (float)100);
+		PlayerPrefs.SetInt("NemesisDifficulty", this.NemesisDifficulty);
+		PlayerPrefs.SetString("MissionTargetName", this.TargetName);
+		PlayerPrefs.SetInt("MissionDifficulty", this.Difficulty);
+		PlayerPrefs.SetInt("HighPopulation", @int);
+		PlayerPrefs.SetInt("MissionTarget", this.TargetID);
+		PlayerPrefs.SetInt("SchoolAtmosphereSet", 1);
+		PlayerPrefs.SetInt("MissionMode", 1);
+		PlayerPrefs.SetInt("BiologyGrade", 1);
+		PlayerPrefs.SetInt("ChemistryGrade", 1);
+		PlayerPrefs.SetInt("LanguageGrade", 1);
+		PlayerPrefs.SetInt("PhysicalGrade", 1);
+		PlayerPrefs.SetInt("PsychologyGrade", 1);
+		if (this.Difficulty > 1)
+		{
+			for (int i = 2; i < this.Difficulty + 1; i++)
+			{
+				if (this.Conditions[i] == 1)
+				{
+					PlayerPrefs.SetInt("MissionRequiredWeapon", this.RequiredWeaponID);
+				}
+				else if (this.Conditions[i] == 2)
+				{
+					PlayerPrefs.SetInt("MissionRequiredClothing", this.RequiredClothingID);
+				}
+				else if (this.Conditions[i] == 3)
+				{
+					PlayerPrefs.SetInt("MissionRequiredDisposal", this.RequiredDisposalID);
+				}
+				PlayerPrefs.SetInt("MissionCondition_" + i, this.Conditions[i]);
+			}
+		}
+		this.PromptBar.Show = false;
+		this.Speed = (float)0;
+		this.Phase = 4;
 	}
 
 	public virtual void Main()

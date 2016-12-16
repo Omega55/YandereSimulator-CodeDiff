@@ -12,22 +12,22 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$3060 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$3092 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$3075;
+		internal YandereScript $self_$3107;
 
-		public $ApplyCustomCostume$3060(YandereScript self_)
+		public $ApplyCustomCostume$3092(YandereScript self_)
 		{
-			this.$self_$3075 = self_;
+			this.$self_$3107 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$3060.$(this.$self_$3075);
+			return new YandereScript.$ApplyCustomCostume$3092.$(this.$self_$3107);
 		}
 	}
 
-	private Quaternion targetRotation;
+	public Quaternion targetRotation;
 
 	private Vector3 targetDirection;
 
@@ -4088,7 +4088,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$3060(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$3092(this).GetEnumerator();
 	}
 
 	public virtual void WearGloves()
@@ -4248,6 +4248,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual void Jojo()
 	{
+		this.IdleAnim = "f02_jojoPose_00";
 		this.EasterEggMenu.active = false;
 		this.Egg = true;
 		this.Stand.active = true;

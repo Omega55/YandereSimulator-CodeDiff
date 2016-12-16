@@ -20,12 +20,18 @@ public class ReputationScript : MonoBehaviour
 
 	public int Phase;
 
+	public bool MissionMode;
+
 	public GameObject FlowerVase;
 
 	public GameObject Grafitti;
 
 	public virtual void Start()
 	{
+		if (PlayerPrefs.GetInt("MissionMode") == 1)
+		{
+			this.MissionMode = true;
+		}
 		this.Reputation = PlayerPrefs.GetFloat("Reputation");
 		this.Bully();
 	}
@@ -59,49 +65,70 @@ public class ReputationScript : MonoBehaviour
 			this.Phase++;
 			this.StudentManager.WipePendingRep();
 		}
-		float x = Mathf.Lerp(this.CurrentRepMarker.localPosition.x, (float)-830 + this.Reputation * 1.5f, Time.deltaTime * (float)10);
-		Vector3 localPosition = this.CurrentRepMarker.localPosition;
-		float num = localPosition.x = x;
-		Vector3 vector = this.CurrentRepMarker.localPosition = localPosition;
-		float x2 = Mathf.Lerp(this.PendingRepMarker.localPosition.x, this.CurrentRepMarker.transform.localPosition.x + this.PendingRep * 1.5f, Time.deltaTime * (float)10);
-		Vector3 localPosition2 = this.PendingRepMarker.localPosition;
-		float num2 = localPosition2.x = x2;
-		Vector3 vector2 = this.PendingRepMarker.localPosition = localPosition2;
+		if (!this.MissionMode)
+		{
+			float x = Mathf.Lerp(this.CurrentRepMarker.localPosition.x, (float)-830 + this.Reputation * 1.5f, Time.deltaTime * (float)10);
+			Vector3 localPosition = this.CurrentRepMarker.localPosition;
+			float num = localPosition.x = x;
+			Vector3 vector = this.CurrentRepMarker.localPosition = localPosition;
+			float x2 = Mathf.Lerp(this.PendingRepMarker.localPosition.x, this.CurrentRepMarker.transform.localPosition.x + this.PendingRep * 1.5f, Time.deltaTime * (float)10);
+			Vector3 localPosition2 = this.PendingRepMarker.localPosition;
+			float num2 = localPosition2.x = x2;
+			Vector3 vector2 = this.PendingRepMarker.localPosition = localPosition2;
+		}
+		else
+		{
+			float x3 = Mathf.Lerp(this.PendingRepMarker.localPosition.x, (float)-980 + this.PendingRep * (float)-3, Time.deltaTime * (float)10);
+			Vector3 localPosition3 = this.PendingRepMarker.localPosition;
+			float num3 = localPosition3.x = x3;
+			Vector3 vector3 = this.PendingRepMarker.localPosition = localPosition3;
+		}
 		if (this.CurrentRepMarker.localPosition.x < (float)-980)
 		{
-			int num3 = -980;
-			Vector3 localPosition3 = this.CurrentRepMarker.localPosition;
-			float num4 = localPosition3.x = (float)num3;
-			Vector3 vector3 = this.CurrentRepMarker.localPosition = localPosition3;
+			int num4 = -980;
+			Vector3 localPosition4 = this.CurrentRepMarker.localPosition;
+			float num5 = localPosition4.x = (float)num4;
+			Vector3 vector4 = this.CurrentRepMarker.localPosition = localPosition4;
 		}
 		if (this.PendingRepMarker.localPosition.x < (float)-980)
 		{
-			int num5 = -980;
-			Vector3 localPosition4 = this.PendingRepMarker.localPosition;
-			float num6 = localPosition4.x = (float)num5;
-			Vector3 vector4 = this.PendingRepMarker.localPosition = localPosition4;
+			int num6 = -980;
+			Vector3 localPosition5 = this.PendingRepMarker.localPosition;
+			float num7 = localPosition5.x = (float)num6;
+			Vector3 vector5 = this.PendingRepMarker.localPosition = localPosition5;
 		}
 		if (this.CurrentRepMarker.localPosition.x > (float)-680)
 		{
-			int num7 = -680;
-			Vector3 localPosition5 = this.CurrentRepMarker.localPosition;
-			float num8 = localPosition5.x = (float)num7;
-			Vector3 vector5 = this.CurrentRepMarker.localPosition = localPosition5;
+			int num8 = -680;
+			Vector3 localPosition6 = this.CurrentRepMarker.localPosition;
+			float num9 = localPosition6.x = (float)num8;
+			Vector3 vector6 = this.CurrentRepMarker.localPosition = localPosition6;
 		}
 		if (this.PendingRepMarker.localPosition.x > (float)-680)
 		{
-			int num9 = -680;
-			Vector3 localPosition6 = this.PendingRepMarker.localPosition;
-			float num10 = localPosition6.x = (float)num9;
-			Vector3 vector6 = this.PendingRepMarker.localPosition = localPosition6;
+			int num10 = -680;
+			Vector3 localPosition7 = this.PendingRepMarker.localPosition;
+			float num11 = localPosition7.x = (float)num10;
+			Vector3 vector7 = this.PendingRepMarker.localPosition = localPosition7;
 		}
-		if (this.PendingRep > (float)0)
+		if (!this.MissionMode)
 		{
-			this.PendingRepLabel.text = "+" + this.PendingRep;
+			if (this.PendingRep > (float)0)
+			{
+				this.PendingRepLabel.text = "+" + this.PendingRep;
+			}
+			else if (this.PendingRep < (float)0)
+			{
+				this.PendingRepLabel.text = string.Empty + this.PendingRep;
+			}
+			else
+			{
+				this.PendingRepLabel.text = string.Empty;
+			}
 		}
 		else if (this.PendingRep < (float)0)
 		{
-			this.PendingRepLabel.text = string.Empty + this.PendingRep;
+			this.PendingRepLabel.text = string.Empty + this.PendingRep * (float)-1;
 		}
 		else
 		{

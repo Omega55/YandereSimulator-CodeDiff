@@ -19,6 +19,8 @@ public class MissionModeScript : MonoBehaviour
 
 	public WoodChipperScript WoodChipper;
 
+	public ReputationScript Reputation;
+
 	public GrayscaleEffect Grayscale;
 
 	public PromptBarScript PromptBar;
@@ -33,6 +35,8 @@ public class MissionModeScript : MonoBehaviour
 
 	public ClockScript Clock;
 
+	public UILabel ReputationLabel;
+
 	public UILabel GameOverHeader;
 
 	public UILabel GameOverReason;
@@ -43,13 +47,23 @@ public class MissionModeScript : MonoBehaviour
 
 	public UISprite Darkness;
 
+	public GUIText FPS;
+
 	public GardenHoleScript[] GardenHoles;
+
+	public GameObject[] ReputationIcons;
 
 	public string[] GameOverReasons;
 
 	public AudioClip[] StealthMusic;
 
+	public Transform[] SpawnPoints;
+
 	public int[] Conditions;
+
+	public GameObject SecurityCameraGroup;
+
+	public GameObject MetalDetectorGroup;
 
 	public GameObject HeartbrokenCamera;
 
@@ -69,11 +83,19 @@ public class MissionModeScript : MonoBehaviour
 
 	public GameObject Subtitle;
 
+	public GameObject Nemesis;
+
+	public GameObject Safe;
+
+	public Transform LastKnownPosition;
+
 	public int RequiredClothingID;
 
 	public int RequiredDisposalID;
 
 	public int RequiredWeaponID;
+
+	public int NemesisDifficulty;
 
 	public int DisposalMethod;
 
@@ -93,11 +115,21 @@ public class MissionModeScript : MonoBehaviour
 
 	public int ID;
 
+	public bool SecurityCameras;
+
+	public bool MetalDetectors;
+
+	public bool StealDocuments;
+
 	public bool NoCollateral;
+
+	public bool NoSuspicion;
 
 	public bool NoWitnesses;
 
 	public bool NoCorpses;
+
+	public bool NoSpeech;
 
 	public bool NoWeapon;
 
@@ -106,6 +138,8 @@ public class MissionModeScript : MonoBehaviour
 	public bool TimeLimit;
 
 	public bool CorrectClothingConfirmed;
+
+	public bool DocumentsStolen;
 
 	public bool CorpseDisposed;
 
@@ -143,6 +177,8 @@ public class MissionModeScript : MonoBehaviour
 
 	public Font Arial;
 
+	public int Frame;
+
 	public MissionModeScript()
 	{
 		this.MusicID = 1;
@@ -153,12 +189,42 @@ public class MissionModeScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		this.SecurityCameraGroup.active = false;
+		this.MetalDetectorGroup.active = false;
 		this.MissionModeHUD.active = false;
 		this.ExitPortal.active = false;
+		this.Safe.active = false;
 		if (PlayerPrefs.GetInt("MissionMode") == 1)
 		{
+			this.Yandere.HeartRate.MediumColour = new Color((float)1, 0.5f, 0.5f, (float)1);
+			this.Yandere.HeartRate.NormalColour = new Color((float)1, (float)1, (float)1, (float)1);
+			this.Clock.PeriodLabel.color = new Color((float)1, (float)1, (float)1, (float)1);
+			this.Clock.TimeLabel.color = new Color((float)1, (float)1, (float)1, (float)1);
+			this.Clock.DayLabel.enabled = false;
+			((UISprite)this.Reputation.PendingRepMarker.GetComponent(typeof(UISprite))).color = new Color((float)1, (float)1, (float)1, (float)1);
+			this.Reputation.CurrentRepMarker.gameObject.active = false;
+			this.Reputation.PendingRepLabel.color = new Color((float)1, (float)1, (float)1, (float)1);
+			this.ReputationLabel.fontStyle = FontStyle.Bold;
+			this.ReputationLabel.trueTypeFont = this.Arial;
+			this.ReputationLabel.color = new Color((float)1, (float)1, (float)1, (float)1);
+			this.ReputationLabel.text = "AWARENESS";
+			this.ReputationIcons[0].active = true;
+			this.ReputationIcons[1].active = false;
+			this.ReputationIcons[2].active = false;
+			this.ReputationIcons[3].active = false;
+			this.ReputationIcons[4].active = false;
+			this.ReputationIcons[5].active = false;
+			this.Clock.TimeLabel.fontStyle = FontStyle.Bold;
+			this.Clock.TimeLabel.trueTypeFont = this.Arial;
+			this.Clock.PeriodLabel.fontStyle = FontStyle.Bold;
+			this.Clock.PeriodLabel.trueTypeFont = this.Arial;
+			this.Watermark.fontStyle = FontStyle.Bold;
+			this.Watermark.color = new Color((float)1, (float)1, (float)1, (float)1);
+			this.Watermark.trueTypeFont = this.Arial;
+			this.FPS.color = new Color((float)1, (float)1, (float)1, (float)1);
 			this.ColorCorrections = Camera.main.GetComponents<ColorCorrectionCurves>();
 			this.StudentManager.MissionMode = true;
+			this.NemesisDifficulty = PlayerPrefs.GetInt("NemesisDifficulty");
 			this.Difficulty = PlayerPrefs.GetInt("MissionDifficulty");
 			this.TargetID = PlayerPrefs.GetInt("MissionTarget");
 			if (this.Difficulty > 1)
@@ -202,17 +268,61 @@ public class MissionModeScript : MonoBehaviour
 					{
 						this.TimeLimit = true;
 					}
+					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID) == 10)
+					{
+						this.NoSuspicion = true;
+					}
+					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID) == 11)
+					{
+						this.SecurityCameras = true;
+					}
+					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID) == 12)
+					{
+						this.MetalDetectors = true;
+					}
+					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID) == 13)
+					{
+						this.NoSpeech = true;
+					}
+					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID) == 14)
+					{
+						this.StealDocuments = true;
+					}
 					this.Conditions[this.ID] = PlayerPrefs.GetInt("MissionCondition_" + this.ID);
 					this.ID++;
 				}
+			}
+			if (!this.StealDocuments)
+			{
+				this.DocumentsStolen = true;
+			}
+			else
+			{
+				this.Safe.active = true;
+			}
+			if (this.SecurityCameras)
+			{
+				this.SecurityCameraGroup.active = true;
+			}
+			if (this.MetalDetectors)
+			{
+				this.MetalDetectorGroup.active = true;
 			}
 			if (!this.TimeLimit)
 			{
 				this.TimeLabel.gameObject.active = false;
 			}
+			if (this.NoSpeech)
+			{
+				this.StudentManager.NoSpeech = true;
+			}
 			if (this.RequiredDisposalID == 0)
 			{
 				this.CorpseDisposed = true;
+			}
+			if (this.NemesisDifficulty > 0)
+			{
+				this.Nemesis.active = true;
 			}
 			if (!this.NoWeapon)
 			{
@@ -493,6 +603,18 @@ public class MissionModeScript : MonoBehaviour
 					this.Phase = 4;
 				}
 			}
+			if (this.Reputation.Reputation + this.Reputation.PendingRep <= (float)-100)
+			{
+				this.GameOverID = 14;
+				this.GameOver();
+				this.Phase = 4;
+			}
+			if (this.NoSuspicion && this.Reputation.Reputation + this.Reputation.PendingRep < (float)0)
+			{
+				this.GameOverID = 14;
+				this.GameOver();
+				this.Phase = 4;
+			}
 			if (this.HeartbrokenCamera.active)
 			{
 				this.HeartbrokenCamera.active = false;
@@ -542,7 +664,7 @@ public class MissionModeScript : MonoBehaviour
 					}
 				}
 			}
-			if (this.TargetDead && this.CorpseDisposed && this.BloodCleaned && this.WeaponDisposed && !this.ExitPortal.active)
+			if (this.TargetDead && this.CorpseDisposed && this.BloodCleaned && this.WeaponDisposed && this.DocumentsStolen && !this.ExitPortal.active)
 			{
 				this.NotificationManager.DisplayNotification("Complete");
 				this.NotificationManager.DisplayNotification("Exfiltrate");
@@ -713,6 +835,7 @@ public class MissionModeScript : MonoBehaviour
 			PlayerPrefs.SetInt("MissionCondition_" + this.ID, this.Conditions[this.ID]);
 			this.ID++;
 		}
+		PlayerPrefs.SetInt("NemesisDifficulty", this.NemesisDifficulty);
 		PlayerPrefs.SetInt("DisableFarAnimations", @int);
 		PlayerPrefs.SetInt("DisablePostAliasing", int2);
 		PlayerPrefs.SetInt("DisableOutlines", int3);
@@ -722,6 +845,34 @@ public class MissionModeScript : MonoBehaviour
 		PlayerPrefs.SetInt("DrawDistance", int7);
 		PlayerPrefs.SetInt("DisableBloom", int8);
 		PlayerPrefs.SetInt("Fog", int9);
+	}
+
+	public virtual void ChangeAllText()
+	{
+		UILabel[] array = ((UILabel[])UnityEngine.Object.FindObjectsOfType(typeof(UILabel))) as UILabel[];
+		int i = 0;
+		UILabel[] array2 = array;
+		int length = array2.Length;
+		while (i < length)
+		{
+			float a = array2[i].color.a;
+			array2[i].color = new Color((float)1, (float)1, (float)1, a);
+			array2[i].trueTypeFont = this.Arial;
+			i++;
+		}
+		UISprite[] array3 = ((UISprite[])UnityEngine.Object.FindObjectsOfType(typeof(UISprite))) as UISprite[];
+		int j = 0;
+		UISprite[] array4 = array3;
+		int length2 = array4.Length;
+		while (j < length2)
+		{
+			float a2 = array4[j].color.a;
+			if (array4[j].color != new Color((float)0, (float)0, (float)0, a2))
+			{
+				array4[j].color = new Color((float)1, (float)1, (float)1, a2);
+			}
+			j++;
+		}
 	}
 
 	public virtual void Main()

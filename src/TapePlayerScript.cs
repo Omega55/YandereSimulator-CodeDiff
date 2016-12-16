@@ -43,8 +43,8 @@ public class TapePlayerScript : MonoBehaviour
 		{
 			this.Yandere.HeartCamera.enabled = false;
 			this.Yandere.RPGCamera.enabled = false;
-			this.TapePlayerMenu.TimeBar.gameObject.active = false;
-			this.TapePlayerMenu.List.gameObject.active = false;
+			this.TapePlayerMenu.TimeBar.gameObject.active = true;
+			this.TapePlayerMenu.List.gameObject.active = true;
 			this.TapePlayerCamera.enabled = true;
 			this.TapePlayerMenu.UpdateLabels();
 			this.TapePlayerMenu.Show = true;

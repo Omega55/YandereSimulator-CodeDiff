@@ -21,6 +21,8 @@ public class ShutterScript : MonoBehaviour
 
 	public YandereScript Yandere;
 
+	public StudentScript FaceStudent;
+
 	public RenderTexture SmartphoneScreen;
 
 	public Camera SmartphoneCamera;
@@ -73,6 +75,10 @@ public class ShutterScript : MonoBehaviour
 
 	public bool Close;
 
+	public bool Disguise;
+
+	public bool Nemesis;
+
 	public bool NotFace;
 
 	public bool Skirt;
@@ -82,6 +88,8 @@ public class ShutterScript : MonoBehaviour
 	public float Timer;
 
 	public int TargetStudent;
+
+	public int NemesisShots;
 
 	public int Frame;
 
@@ -179,20 +187,26 @@ public class ShutterScript : MonoBehaviour
 					if (this.hit.collider.gameObject.name == "Face")
 					{
 						GameObject gameObject = this.hit.collider.gameObject.transform.root.gameObject;
-						StudentScript studentScript = (StudentScript)this.hit.collider.gameObject.transform.root.gameObject.GetComponent(typeof(StudentScript));
-						this.TargetStudent = studentScript.StudentID;
-						if (!studentScript.Male && !studentScript.Alarmed && !studentScript.Distracted && !studentScript.InEvent && !studentScript.Wet && !studentScript.CensorSteam[0].active && !studentScript.Fleeing && !studentScript.Following && !studentScript.ShoeRemoval.enabled && !studentScript.HoldingHands && studentScript.Actions[studentScript.Phase] != 16 && Vector3.Distance(this.Yandere.transform.position, gameObject.transform.position) < 1.66666f)
+						this.FaceStudent = (StudentScript)this.hit.collider.gameObject.transform.root.gameObject.GetComponent(typeof(StudentScript));
+						if (this.FaceStudent != null)
 						{
-							Plane[] planes = GeometryUtility.CalculateFrustumPlanes(studentScript.VisionCone);
-							if (GeometryUtility.TestPlanesAABB(planes, this.Yandere.collider.bounds) && Physics.Linecast(studentScript.Eyes.position, this.Yandere.transform.position + Vector3.up * (float)1, out this.hit) && this.hit.collider.gameObject == this.Yandere.gameObject)
+							this.TargetStudent = this.FaceStudent.StudentID;
+							if (!this.FaceStudent.Male && !this.FaceStudent.Alarmed && !this.FaceStudent.Distracted && !this.FaceStudent.InEvent && !this.FaceStudent.Wet && !this.FaceStudent.CensorSteam[0].active && !this.FaceStudent.Fleeing && !this.FaceStudent.Following && !this.FaceStudent.ShoeRemoval.enabled && !this.FaceStudent.HoldingHands && this.FaceStudent.Actions[this.FaceStudent.Phase] != 16 && Vector3.Distance(this.Yandere.transform.position, gameObject.transform.position) < 1.66666f)
 							{
-								if (!studentScript.CameraReacting)
+								Plane[] planes = GeometryUtility.CalculateFrustumPlanes(this.FaceStudent.VisionCone);
+								if (GeometryUtility.TestPlanesAABB(planes, this.Yandere.collider.bounds) && Physics.Linecast(this.FaceStudent.Eyes.position, this.Yandere.transform.position + Vector3.up * (float)1, out this.hit) && this.hit.collider.gameObject == this.Yandere.gameObject)
 								{
-									studentScript.CameraReact();
-								}
-								else
-								{
-									studentScript.CameraPoseTimer = (float)1;
+									if (!this.FaceStudent.CameraReacting)
+									{
+										if (this.FaceStudent.enabled)
+										{
+											this.FaceStudent.CameraReact();
+										}
+									}
+									else
+									{
+										this.FaceStudent.CameraPoseTimer = (float)1;
+									}
 								}
 							}
 						}
@@ -371,6 +385,7 @@ public class ShutterScript : MonoBehaviour
 		this.SenpaiX.active = true;
 		this.ViolenceX.active = true;
 		this.KittenShot = false;
+		this.Nemesis = false;
 		this.NotFace = false;
 		this.Skirt = false;
 		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyPhotography))
@@ -382,14 +397,26 @@ public class ShutterScript : MonoBehaviour
 			}
 			else if (this.hit.collider.gameObject.name == "Face")
 			{
-				this.Student = (StudentScript)this.hit.collider.gameObject.transform.root.gameObject.GetComponent(typeof(StudentScript));
-				if (this.Student.StudentID == 1)
+				if (this.hit.collider.gameObject.tag == "Nemesis")
 				{
-					this.SenpaiX.active = false;
+					this.Nemesis = true;
+					this.NemesisShots++;
+				}
+				else if (this.hit.collider.gameObject.tag == "Disguise")
+				{
+					this.Disguise = true;
 				}
 				else
 				{
-					this.InfoX.active = false;
+					this.Student = (StudentScript)this.hit.collider.gameObject.transform.root.gameObject.GetComponent(typeof(StudentScript));
+					if (this.Student.StudentID == 1)
+					{
+						this.SenpaiX.active = false;
+					}
+					else
+					{
+						this.InfoX.active = false;
+					}
 				}
 			}
 			else if (this.hit.collider.gameObject.name == "NotFace")
@@ -506,6 +533,39 @@ public class ShutterScript : MonoBehaviour
 		{
 			text = "Is this supposed to be a panty shot? My clients are picky. The panties need to be in the EXACT center of the shot.";
 			num = 5;
+		}
+		else if (this.Nemesis)
+		{
+			if (this.NemesisShots == 1)
+			{
+				text = "Strange. I have no profile for this student.";
+				num = 2;
+			}
+			else if (this.NemesisShots == 2)
+			{
+				text = "...wait. I think I know who she is.";
+				num = 2;
+			}
+			else if (this.NemesisShots == 3)
+			{
+				text = "You are in danger. Avoid her.";
+				num = 2;
+			}
+			else if (this.NemesisShots == 4)
+			{
+				text = "Do not engage.";
+				num = 1;
+			}
+			else
+			{
+				text = "I repeat: Do. Not. Engage.";
+				num = 2;
+			}
+		}
+		else if (this.Disguise)
+		{
+			text = "Something about that student seems...wrong.";
+			num = 2;
 		}
 		else
 		{

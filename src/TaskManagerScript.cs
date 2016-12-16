@@ -37,6 +37,15 @@ public class TaskManagerScript : MonoBehaviour
 			PlayerPrefs.SetInt("Task_15_Status", 2);
 			UnityEngine.Object.Destroy(this.TaskObjects[15]);
 		}
+		if (PlayerPrefs.GetInt("Task_33_Status") == 1 && this.Prompts[33].Circle[3] != null && this.Prompts[33].Circle[3].fillAmount <= (float)0)
+		{
+			if (this.StudentManager.Students[33] != null)
+			{
+				this.StudentManager.Students[33].TaskPhase = 5;
+			}
+			PlayerPrefs.SetInt("Task_33_Status", 2);
+			UnityEngine.Object.Destroy(this.TaskObjects[33]);
+		}
 		if (!this.Yandere.Talking)
 		{
 			if (PlayerPrefs.GetInt("Task_32_Status") == 1)
@@ -118,6 +127,21 @@ public class TaskManagerScript : MonoBehaviour
 		else if (this.TaskObjects[15] != null)
 		{
 			this.TaskObjects[15].active = false;
+		}
+		if (PlayerPrefs.GetInt("Task_33_Status") == 1)
+		{
+			if (this.StudentManager.Students[33] != null)
+			{
+				if (this.StudentManager.Students[33].TaskPhase == 0)
+				{
+					this.StudentManager.Students[33].TaskPhase = 4;
+				}
+				this.TaskObjects[33].active = true;
+			}
+		}
+		else if (this.TaskObjects[33] != null)
+		{
+			this.TaskObjects[33].active = false;
 		}
 	}
 

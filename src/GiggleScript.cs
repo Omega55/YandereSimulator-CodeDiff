@@ -45,7 +45,7 @@ public class GiggleScript : MonoBehaviour
 				this.Student.Character.animation.CrossFade(this.Student.IdleAnim);
 				this.Giggle = (GameObject)UnityEngine.Object.Instantiate(this.EmptyGameObject, new Vector3(this.transform.position.x, this.Student.transform.position.y, this.transform.position.z), Quaternion.identity);
 				this.Student.Giggle = this.Giggle;
-				if (this.Student.Pathfinding != null)
+				if (this.Student.Pathfinding != null && !this.Student.Nemesis)
 				{
 					this.Student.Pathfinding.canSearch = false;
 					this.Student.Pathfinding.canMove = false;

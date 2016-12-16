@@ -25,13 +25,13 @@ public class KatanaCaseScript : MonoBehaviour
 	{
 		if (this.Key.active && this.KeyPrompt.Circle[0].fillAmount == (float)0)
 		{
-			this.KeyPrompt.Yandere.Inventory.Key = true;
+			this.KeyPrompt.Yandere.Inventory.CaseKey = true;
 			this.CasePrompt.enabled = true;
 			this.Key.active = false;
 		}
 		if (this.CasePrompt.Circle[0].fillAmount == (float)0)
 		{
-			this.KeyPrompt.Yandere.Inventory.Key = true;
+			this.KeyPrompt.Yandere.Inventory.CaseKey = false;
 			this.Open = true;
 			this.CasePrompt.Hide();
 			this.CasePrompt.enabled = false;

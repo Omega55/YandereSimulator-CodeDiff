@@ -1,14 +1,17 @@
 ﻿using System;
 using UnityEngine;
+using UnityScript.Lang;
 
 [Serializable]
 public class FootprintSpawnerScript : MonoBehaviour
 {
+	public YandereScript Yandere;
+
 	public GameObject BloodyFootprint;
 
-	public Transform BloodParent;
+	public AudioClip[] Footsteps;
 
-	public Transform Yandere;
+	public Transform BloodParent;
 
 	public Collider GardenArea;
 
@@ -64,8 +67,13 @@ public class FootprintSpawnerScript : MonoBehaviour
 			}
 			else if (this.transform.position.y < this.Yandere.transform.position.y + this.Threshold)
 			{
+				if (!this.Yandere.Crouching && !this.Yandere.Crawling && this.Yandere.CanMove && Input.GetButton("LB") && this.FootUp)
+				{
+					this.audio.clip = this.Footsteps[UnityEngine.Random.Range(0, Extensions.get_length(this.Footsteps))];
+					this.audio.Play();
+				}
 				this.FootUp = false;
-				if (this.Bloodiness > 0)
+				if (this.CanSpawn && this.Bloodiness > 0)
 				{
 					if (this.transform.position.y > (float)-1 && this.transform.position.y < (float)1)
 					{

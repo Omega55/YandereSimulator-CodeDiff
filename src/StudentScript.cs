@@ -323,6 +323,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool InEvent;
 
+	public bool Nemesis;
+
 	public bool OnPhone;
 
 	public bool Private;
@@ -959,12 +961,7 @@ public class StudentScript : MonoBehaviour
 				this.CharacterAnimation[this.AngryFaceAnim].layer = 2;
 				this.CharacterAnimation.Play(this.AngryFaceAnim);
 				this.CharacterAnimation[this.AngryFaceAnim].weight = (float)0;
-				if (!this.Slave)
-				{
-					this.RightEmptyEye.active = false;
-					this.LeftEmptyEye.active = false;
-					UnityEngine.Object.Destroy(this.Broken);
-				}
+				this.DisableEffects();
 				this.CharacterAnimation["f02_wetIdle_00"].speed = 1.25f;
 				if (!this.Teacher)
 				{
@@ -975,38 +972,7 @@ public class StudentScript : MonoBehaviour
 					this.CharacterAnimation[this.CameraAnims[1]].speed = (float)2;
 					this.CharacterAnimation[this.CameraAnims[3]].speed = (float)2;
 				}
-				this.LiquidProjector.enabled = false;
-				this.Bento.active = false;
-				this.Chopsticks[0].active = false;
-				this.Chopsticks[1].active = false;
-				this.ElectroSteam[0].active = false;
-				this.ElectroSteam[1].active = false;
-				this.ElectroSteam[2].active = false;
-				this.ElectroSteam[3].active = false;
-				this.CensorSteam[0].active = false;
-				this.CensorSteam[1].active = false;
-				this.CensorSteam[2].active = false;
-				this.CensorSteam[3].active = false;
-				this.ID = 0;
-				while (this.ID < Extensions.get_length(this.LiquidEmitters))
-				{
-					this.LiquidEmitters[this.ID].gameObject.active = false;
-					this.ID++;
-				}
-				this.ID = 0;
-				while (this.ID < Extensions.get_length(this.FireEmitters))
-				{
-					this.FireEmitters[this.ID].gameObject.active = false;
-					this.ID++;
-				}
-				this.ID = 0;
-				while (this.ID < Extensions.get_length(this.Bones))
-				{
-					this.Bones[this.ID].active = false;
-					this.ID++;
-				}
-				this.GreenPhone.active = false;
-				this.Note.active = false;
+				this.DisableEffects();
 			}
 			else
 			{
@@ -1411,6 +1377,7 @@ public class StudentScript : MonoBehaviour
 					{
 						this.Pathfinding.canSearch = false;
 						this.Pathfinding.canMove = false;
+						this.Obstacle.enabled = true;
 					}
 					if (!this.InEvent && !this.Meeting && this.DressCode)
 					{
@@ -2519,7 +2486,6 @@ public class StudentScript : MonoBehaviour
 							this.DistractionTarget.Routine = false;
 							this.DistractionTarget.CanTalk = false;
 							this.DistractionTarget.ReadPhase = 0;
-							Debug.Log("Delete me.");
 							this.Pathfinding.speed = (float)0;
 							this.Distracted = true;
 						}
@@ -4867,7 +4833,10 @@ public class StudentScript : MonoBehaviour
 		{
 			this.Yandere.CharacterAnimation[this.Yandere.ArmedAnims[2]].weight = (float)0;
 		}
-		this.DetectionMarker.Tex.enabled = false;
+		if (this.DetectionMarker != null)
+		{
+			this.DetectionMarker.Tex.enabled = false;
+		}
 		this.OccultBook.active = false;
 		this.MyController.radius = (float)0;
 		this.Investigating = false;
@@ -5744,7 +5713,10 @@ public class StudentScript : MonoBehaviour
 			this.Police.Witnesses = this.Police.Witnesses - 1;
 		}
 		this.UpdateOutlines();
-		this.DetectionMarker.Tex.enabled = false;
+		if (this.DetectionMarker != null)
+		{
+			this.DetectionMarker.Tex.enabled = false;
+		}
 		this.SetLayerRecursively(this.gameObject, 11);
 		this.tag = "Blood";
 	}
@@ -6187,6 +6159,48 @@ public class StudentScript : MonoBehaviour
 		this.DialogueWheel.PromptBar.Show = true;
 		this.Yandere.Character.animation.CrossFade(this.Yandere.IdleAnim);
 		this.Yandere.CanMove = false;
+	}
+
+	public virtual void DisableEffects()
+	{
+		this.LiquidProjector.enabled = false;
+		this.Bento.active = false;
+		this.Chopsticks[0].active = false;
+		this.Chopsticks[1].active = false;
+		this.ElectroSteam[0].active = false;
+		this.ElectroSteam[1].active = false;
+		this.ElectroSteam[2].active = false;
+		this.ElectroSteam[3].active = false;
+		this.CensorSteam[0].active = false;
+		this.CensorSteam[1].active = false;
+		this.CensorSteam[2].active = false;
+		this.CensorSteam[3].active = false;
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.LiquidEmitters))
+		{
+			this.LiquidEmitters[this.ID].gameObject.active = false;
+			this.ID++;
+		}
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.FireEmitters))
+		{
+			this.FireEmitters[this.ID].gameObject.active = false;
+			this.ID++;
+		}
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.Bones))
+		{
+			this.Bones[this.ID].active = false;
+			this.ID++;
+		}
+		this.GreenPhone.active = false;
+		this.Note.active = false;
+		if (!this.Slave)
+		{
+			this.RightEmptyEye.active = false;
+			this.LeftEmptyEye.active = false;
+			UnityEngine.Object.Destroy(this.Broken);
+		}
 	}
 
 	public virtual void Main()

@@ -229,6 +229,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] Task32Lines;
 
+	public string[] Task33Lines;
+
 	public string[] Club3Info;
 
 	public string[] Club6Info;
@@ -342,6 +344,8 @@ public class SubtitleScript : MonoBehaviour
 	public AudioClip[] Task15Clips;
 
 	public AudioClip[] Task32Clips;
+
+	public AudioClip[] Task33Clips;
 
 	public AudioClip[] Club3Clips;
 
@@ -892,6 +896,11 @@ public class SubtitleScript : MonoBehaviour
 			this.Label.text = this.Task32Lines[ID];
 			this.PlayVoice(ReactionType, ID);
 		}
+		else if (ReactionType == "Task 33 Line")
+		{
+			this.Label.text = this.Task33Lines[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
 		else if (ReactionType == "Club Greeting")
 		{
 			this.Label.text = this.ClubGreetings[ID];
@@ -1156,6 +1165,10 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.PlayClip(this.Task32Clips[ID], this.transform.position);
 		}
+		else if (ReactionType == "Task 33 Line")
+		{
+			this.PlayClip(this.Task33Clips[ID], this.transform.position);
+		}
 		else if (ReactionType == "Club Greeting")
 		{
 			this.PlayClip(this.ClubGreetingClips[ID], this.transform.position);
@@ -1240,7 +1253,7 @@ public class SubtitleScript : MonoBehaviour
 
 	public virtual float GetClipLength(int StudentID, int TaskPhase)
 	{
-		return (StudentID != 6) ? ((StudentID != 7) ? ((StudentID != 13) ? ((StudentID != 14) ? ((StudentID != 15) ? ((StudentID != 32) ? ((float)0) : this.Task32Clips[TaskPhase].length) : this.Task15Clips[TaskPhase].length) : this.Task14Clips[TaskPhase].length) : this.Task13Clips[TaskPhase].length) : this.Task7Clips[TaskPhase].length) : this.Task6Clips[TaskPhase].length;
+		return (StudentID != 6) ? ((StudentID != 7) ? ((StudentID != 13) ? ((StudentID != 14) ? ((StudentID != 15) ? ((StudentID != 32) ? ((StudentID != 33) ? ((float)0) : this.Task33Clips[TaskPhase].length) : this.Task32Clips[TaskPhase].length) : this.Task15Clips[TaskPhase].length) : this.Task14Clips[TaskPhase].length) : this.Task13Clips[TaskPhase].length) : this.Task7Clips[TaskPhase].length) : this.Task6Clips[TaskPhase].length;
 	}
 
 	public virtual float GetClubClipLength(int Club, int ClubPhase)

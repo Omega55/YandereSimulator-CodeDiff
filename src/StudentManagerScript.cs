@@ -209,6 +209,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public bool Randomize;
 
+	public bool NoSpeech;
+
 	public bool Censor;
 
 	public bool Spooky;
@@ -488,60 +490,68 @@ public class StudentManagerScript : MonoBehaviour
 		this.ID = 2;
 		while (this.ID < Extensions.get_length(this.Students))
 		{
-			if (this.Students[this.ID] != null && !this.Students[this.ID].Safe)
+			if (this.Students[this.ID] != null && this.Students[this.ID].active)
 			{
-				if (!this.Students[this.ID].Slave)
+				if (!this.Students[this.ID].Safe)
 				{
-					if (!this.Students[this.ID].Following)
+					if (!this.Students[this.ID].Slave)
 					{
-						this.Students[this.ID].Prompt.Label[0].text = "     " + "Talk";
-					}
-					this.Students[this.ID].Prompt.HideButton[0] = false;
-					this.Students[this.ID].Prompt.HideButton[2] = false;
-					this.Students[this.ID].Prompt.Attack = false;
-					if (this.Yandere.Mask != null)
-					{
-						this.Students[this.ID].Prompt.HideButton[0] = true;
-					}
-					if (this.Yandere.Dragging || this.Yandere.PickUp != null || this.Yandere.Chased)
-					{
-						this.Students[this.ID].Prompt.HideButton[0] = true;
-						this.Students[this.ID].Prompt.HideButton[2] = true;
-						if (this.Yandere.PickUp != null && this.Yandere.PickUp.Food > 0)
+						if (!this.Students[this.ID].Following)
 						{
-							this.Students[this.ID].Prompt.Label[0].text = "     " + "Feed";
-							this.Students[this.ID].Prompt.HideButton[0] = false;
-							this.Students[this.ID].Prompt.HideButton[2] = true;
+							this.Students[this.ID].Prompt.Label[0].text = "     " + "Talk";
 						}
-					}
-					if (this.Yandere.Armed)
-					{
-						this.Students[this.ID].Prompt.HideButton[0] = true;
-						this.Students[this.ID].Prompt.Attack = true;
-					}
-					else
-					{
-						this.Students[this.ID].Prompt.HideButton[2] = true;
-						if (this.Students[this.ID].WitnessedMurder || this.Students[this.ID].WitnessedCorpse || this.Students[this.ID].Private)
+						this.Students[this.ID].Prompt.HideButton[0] = false;
+						this.Students[this.ID].Prompt.HideButton[2] = false;
+						this.Students[this.ID].Prompt.Attack = false;
+						if (this.Yandere.Mask != null)
+						{
+							this.Students[this.ID].Prompt.HideButton[0] = true;
+						}
+						if (this.Yandere.Dragging || this.Yandere.PickUp != null || this.Yandere.Chased)
+						{
+							this.Students[this.ID].Prompt.HideButton[0] = true;
+							this.Students[this.ID].Prompt.HideButton[2] = true;
+							if (this.Yandere.PickUp != null && this.Yandere.PickUp.Food > 0)
+							{
+								this.Students[this.ID].Prompt.Label[0].text = "     " + "Feed";
+								this.Students[this.ID].Prompt.HideButton[0] = false;
+								this.Students[this.ID].Prompt.HideButton[2] = true;
+							}
+						}
+						if (this.Yandere.Armed)
+						{
+							this.Students[this.ID].Prompt.HideButton[0] = true;
+							this.Students[this.ID].Prompt.Attack = true;
+						}
+						else
+						{
+							this.Students[this.ID].Prompt.HideButton[2] = true;
+							if (this.Students[this.ID].WitnessedMurder || this.Students[this.ID].WitnessedCorpse || this.Students[this.ID].Private)
+							{
+								this.Students[this.ID].Prompt.HideButton[0] = true;
+							}
+						}
+						if (this.Yandere.NearBodies > 0 || this.Yandere.Sanity < 33.33333f)
+						{
+							this.Students[this.ID].Prompt.HideButton[0] = true;
+						}
+						if (this.Students[this.ID].Teacher)
 						{
 							this.Students[this.ID].Prompt.HideButton[0] = true;
 						}
 					}
-					if (this.Yandere.NearBodies > 0 || this.Yandere.Sanity < 33.33333f)
+					else if (this.Yandere.Armed)
 					{
-						this.Students[this.ID].Prompt.HideButton[0] = true;
-					}
-					if (this.Students[this.ID].Teacher)
-					{
-						this.Students[this.ID].Prompt.HideButton[0] = true;
-					}
-				}
-				else if (this.Yandere.Armed)
-				{
-					if (this.Yandere.Weapon[this.Yandere.Equipped].Concealable)
-					{
-						this.Students[this.ID].Prompt.HideButton[0] = false;
-						this.Students[this.ID].Prompt.Label[0].text = "     " + "Give Weapon";
+						if (this.Yandere.Weapon[this.Yandere.Equipped].Concealable)
+						{
+							this.Students[this.ID].Prompt.HideButton[0] = false;
+							this.Students[this.ID].Prompt.Label[0].text = "     " + "Give Weapon";
+						}
+						else
+						{
+							this.Students[this.ID].Prompt.HideButton[0] = true;
+							this.Students[this.ID].Prompt.Label[0].text = string.Empty;
+						}
 					}
 					else
 					{
@@ -549,10 +559,9 @@ public class StudentManagerScript : MonoBehaviour
 						this.Students[this.ID].Prompt.Label[0].text = string.Empty;
 					}
 				}
-				else
+				if (this.NoSpeech)
 				{
 					this.Students[this.ID].Prompt.HideButton[0] = true;
-					this.Students[this.ID].Prompt.Label[0].text = string.Empty;
 				}
 			}
 			if (this.Sans && this.Students[this.ID] != null && this.Students[this.ID].Prompt.Label[0] != null)
@@ -617,6 +626,10 @@ public class StudentManagerScript : MonoBehaviour
 			{
 				this.Students[ID].Prompt.HideButton[0] = false;
 				this.Students[ID].Prompt.Label[0].text = "     " + "Pose";
+			}
+			if (this.NoSpeech)
+			{
+				this.Students[ID].Prompt.HideButton[0] = true;
 			}
 		}
 	}
