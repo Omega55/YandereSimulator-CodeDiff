@@ -63,6 +63,8 @@ public class ShutterScript : MonoBehaviour
 
 	public bool DisplayError;
 
+	public bool MissionMode;
+
 	public bool KittenShot;
 
 	public bool FreeSpace;
@@ -84,6 +86,8 @@ public class ShutterScript : MonoBehaviour
 	public bool Skirt;
 
 	public RaycastHit hit;
+
+	public float PenaltyTimer;
 
 	public float Timer;
 
@@ -115,6 +119,10 @@ public class ShutterScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		if (PlayerPrefs.GetInt("MissionMode", 1) != 0)
+		{
+			this.MissionMode = true;
+		}
 		this.ErrorWindow.transform.localScale = new Vector3((float)0, (float)0, (float)0);
 		this.CameraButtons.active = false;
 		this.PhotoIcons.active = false;
@@ -196,6 +204,15 @@ public class ShutterScript : MonoBehaviour
 								Plane[] planes = GeometryUtility.CalculateFrustumPlanes(this.FaceStudent.VisionCone);
 								if (GeometryUtility.TestPlanesAABB(planes, this.Yandere.collider.bounds) && Physics.Linecast(this.FaceStudent.Eyes.position, this.Yandere.transform.position + Vector3.up * (float)1, out this.hit) && this.hit.collider.gameObject == this.Yandere.gameObject)
 								{
+									if (this.MissionMode)
+									{
+										this.PenaltyTimer += Time.deltaTime;
+										if (this.PenaltyTimer > (float)1)
+										{
+											this.FaceStudent.Reputation.PendingRep = this.FaceStudent.Reputation.PendingRep - (float)10;
+											this.PenaltyTimer = (float)0;
+										}
+									}
 									if (!this.FaceStudent.CameraReacting)
 									{
 										if (this.FaceStudent.enabled)

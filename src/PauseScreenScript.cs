@@ -135,6 +135,10 @@ public class PauseScreenScript : MonoBehaviour
 			Color color = this.PhoneIcons[5].color;
 			float num3 = color.a = a;
 			Color color2 = this.PhoneIcons[5].color = color;
+			float a2 = 0.5f;
+			Color color3 = this.PhoneIcons[8].color;
+			float num4 = color3.a = a2;
+			Color color4 = this.PhoneIcons[8].color = color3;
 		}
 		if (PlayerPrefs.GetInt("MissionMode") == 1)
 		{

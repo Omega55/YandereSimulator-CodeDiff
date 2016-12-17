@@ -48,6 +48,7 @@ public class SafeScript : MonoBehaviour
 			this.enabled = false;
 			this.ContentsPrompt.Hide();
 			this.ContentsPrompt.enabled = false;
+			this.ContentsPrompt.gameObject.active = false;
 		}
 		if (this.Open)
 		{

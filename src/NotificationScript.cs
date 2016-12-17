@@ -6,6 +6,8 @@ public class NotificationScript : MonoBehaviour
 {
 	public NotificationManagerScript NotificationManager;
 
+	public UISprite[] Icon;
+
 	public UIPanel Panel;
 
 	public UILabel Label;
@@ -15,6 +17,16 @@ public class NotificationScript : MonoBehaviour
 	public float Timer;
 
 	public int ID;
+
+	public virtual void Start()
+	{
+		if (PlayerPrefs.GetInt("MissionMode") == 1)
+		{
+			this.Icon[0].color = new Color((float)1, (float)1, (float)1, (float)1);
+			this.Icon[1].color = new Color((float)1, (float)1, (float)1, (float)1);
+			this.Label.color = new Color((float)1, (float)1, (float)1, (float)1);
+		}
+	}
 
 	public virtual void Update()
 	{

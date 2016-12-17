@@ -41,6 +41,10 @@ public class MissionModeScript : MonoBehaviour
 
 	public UILabel GameOverReason;
 
+	public UILabel SubtitleLabel;
+
+	public UISprite CautionSign;
+
 	public UISprite MusicIcon;
 
 	public UILabel TimeLabel;
@@ -221,6 +225,8 @@ public class MissionModeScript : MonoBehaviour
 			this.Watermark.fontStyle = FontStyle.Bold;
 			this.Watermark.color = new Color((float)1, (float)1, (float)1, (float)1);
 			this.Watermark.trueTypeFont = this.Arial;
+			this.SubtitleLabel.color = new Color((float)1, (float)1, (float)1, (float)1);
+			this.CautionSign.color = new Color((float)1, (float)1, (float)1, (float)1);
 			this.FPS.color = new Color((float)1, (float)1, (float)1, (float)1);
 			this.ColorCorrections = Camera.main.GetComponents<ColorCorrectionCurves>();
 			this.StudentManager.MissionMode = true;
@@ -590,7 +596,10 @@ public class MissionModeScript : MonoBehaviour
 			}
 			if (this.TimeLimit)
 			{
-				this.TimeRemaining = Mathf.MoveTowards(this.TimeRemaining, (float)0, Time.deltaTime);
+				if (!this.Yandere.PauseScreen.Show)
+				{
+					this.TimeRemaining = Mathf.MoveTowards(this.TimeRemaining, (float)0, Time.unscaledDeltaTime);
+				}
 				int num7 = Mathf.CeilToInt(this.TimeRemaining);
 				int num8 = num7 / 60;
 				int num9 = num7 % 60;

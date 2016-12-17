@@ -62,14 +62,6 @@ public class NemesisScript : MonoBehaviour
 		{
 			this.Student.Character.animation["f02_nemesisEyes_00"].layer = 2;
 			this.Student.Character.animation.Play("f02_nemesisEyes_00");
-			if (this.Cosmetic.Hairstyle > 0)
-			{
-				RuntimeServices.SetProperty(RuntimeServices.GetSlice(this.Cosmetic, "FemaleHairstyles", new object[]
-				{
-					this.Cosmetic.Hairstyle
-				}), "active", false);
-				this.NemesisHair.active = true;
-			}
 			this.Cosmetic.MyRenderer.sharedMesh = this.Cosmetic.FemaleUniforms[5];
 			this.Cosmetic.MyRenderer.materials[0].mainTexture = this.NemesisUniform;
 			this.Cosmetic.MyRenderer.materials[1].mainTexture = this.NemesisUniform;
@@ -77,6 +69,7 @@ public class NemesisScript : MonoBehaviour
 			this.Cosmetic.RightEyeRenderer.material.mainTexture = this.NemesisEyes;
 			this.Cosmetic.LeftEyeRenderer.material.mainTexture = this.NemesisEyes;
 			this.Student.FaceCollider.tag = "Nemesis";
+			this.NemesisHair.active = true;
 		}
 		else
 		{
@@ -94,7 +87,7 @@ public class NemesisScript : MonoBehaviour
 		this.Student.Prompt.HideButton[0] = true;
 		this.Student.Prompt.HideButton[2] = true;
 		UnityEngine.Object.Destroy(this.Student.MyRigidbody);
-		this.transform.position = this.MissionMode.SpawnPoints[UnityEngine.Random.Range(0, 5)].position;
+		this.transform.position = this.MissionMode.SpawnPoints[UnityEngine.Random.Range(0, 4)].position;
 		this.MissionMode.LastKnownPosition.position = new Vector3((float)0, (float)0, (float)-36);
 		this.UpdateLKP();
 	}
@@ -111,6 +104,10 @@ public class NemesisScript : MonoBehaviour
 			this.Student.StudentManager.Students[num].active = false;
 			this.Cosmetic.StudentID = num;
 			this.Cosmetic.Start();
+			if (this.Cosmetic.FemaleHair[this.Cosmetic.Hairstyle].GetComponent("OutlineScript") != null)
+			{
+				RuntimeServices.SetProperty(this.Cosmetic.FemaleHair[this.Cosmetic.Hairstyle].GetComponent("OutlineScript"), "enabled", false);
+			}
 			this.Student.FaceCollider.tag = "Disguise";
 			this.PutOnDisguise = false;
 		}

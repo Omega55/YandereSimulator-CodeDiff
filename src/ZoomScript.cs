@@ -58,20 +58,27 @@ public class ZoomScript : MonoBehaviour
 				float num5 = localPosition3.y = y3;
 				Vector3 vector5 = this.transform.localPosition = localPosition3;
 			}
-			else
+			else if (this.Yandere.Stand.active)
 			{
 				float y4 = Mathf.Lerp(this.transform.localPosition.y, (float)1 - this.Zoom * 0.5f + this.Slender * 0.5f, Time.deltaTime * (float)10);
 				Vector3 localPosition4 = this.transform.localPosition;
 				float num6 = localPosition4.y = y4;
 				Vector3 vector6 = this.transform.localPosition = localPosition4;
 			}
+			else
+			{
+				float y5 = Mathf.Lerp(this.transform.localPosition.y, (float)1 + this.Zoom, Time.deltaTime * (float)10);
+				Vector3 localPosition5 = this.transform.localPosition;
+				float num7 = localPosition5.y = y5;
+				Vector3 vector7 = this.transform.localPosition = localPosition5;
+			}
 		}
 		else
 		{
-			float y5 = Mathf.MoveTowards(this.transform.position.y, this.Yandere.Hips.position.y + this.Zoom, Time.deltaTime * (float)10);
+			float y6 = Mathf.MoveTowards(this.transform.position.y, this.Yandere.Hips.position.y + this.Zoom, Time.deltaTime * (float)10);
 			Vector3 position3 = this.transform.position;
-			float num7 = position3.y = y5;
-			Vector3 vector7 = this.transform.position = position3;
+			float num8 = position3.y = y6;
+			Vector3 vector8 = this.transform.position = position3;
 		}
 		if (!this.Yandere.Aiming)
 		{
@@ -132,12 +139,12 @@ public class ZoomScript : MonoBehaviour
 		{
 			float x2 = Mathf.MoveTowards(this.transform.position.x, this.Yandere.Hips.position.x, Time.deltaTime * (float)10);
 			Vector3 position4 = this.transform.position;
-			float num8 = position4.x = x2;
-			Vector3 vector8 = this.transform.position = position4;
+			float num9 = position4.x = x2;
+			Vector3 vector9 = this.transform.position = position4;
 			float z2 = Mathf.MoveTowards(this.transform.position.z, this.Yandere.Hips.position.z, Time.deltaTime * (float)10);
 			Vector3 position5 = this.transform.position;
-			float num9 = position5.z = z2;
-			Vector3 vector9 = this.transform.position = position5;
+			float num10 = position5.z = z2;
+			Vector3 vector10 = this.transform.position = position5;
 		}
 		else
 		{
@@ -146,16 +153,16 @@ public class ZoomScript : MonoBehaviour
 		if (this.OverShoulder)
 		{
 			float x3 = 0.25f;
-			Vector3 localPosition5 = this.transform.localPosition;
-			float num10 = localPosition5.x = x3;
-			Vector3 vector10 = this.transform.localPosition = localPosition5;
+			Vector3 localPosition6 = this.transform.localPosition;
+			float num11 = localPosition6.x = x3;
+			Vector3 vector11 = this.transform.localPosition = localPosition6;
 		}
 		else
 		{
-			int num11 = 0;
-			Vector3 localPosition6 = this.transform.localPosition;
-			float num12 = localPosition6.x = (float)num11;
-			Vector3 vector11 = this.transform.localPosition = localPosition6;
+			int num12 = 0;
+			Vector3 localPosition7 = this.transform.localPosition;
+			float num13 = localPosition7.x = (float)num12;
+			Vector3 vector12 = this.transform.localPosition = localPosition7;
 		}
 	}
 

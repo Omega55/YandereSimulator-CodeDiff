@@ -107,8 +107,6 @@ public class MissionModeMenuScript : MonoBehaviour
 
 	public int Difficulty;
 
-	public int InfoSpoke;
-
 	public int Selected;
 
 	public int TargetID;
@@ -127,13 +125,9 @@ public class MissionModeMenuScript : MonoBehaviour
 
 	public AudioSource Jukebox;
 
-	public AudioClip InfoWelcome;
+	public AudioClip[] InfoLines;
 
-	public AudioClip InfoReady;
-
-	public AudioClip InfoBack;
-
-	public AudioClip InfoLuck;
+	public bool[] InfoSpoke;
 
 	public int TargetNumber;
 
@@ -293,10 +287,10 @@ public class MissionModeMenuScript : MonoBehaviour
 				Color color4 = this.Header.color = color3;
 				if (this.Speed > (float)3)
 				{
-					if (this.InfoSpoke == 0)
+					if (!this.InfoSpoke[0])
 					{
-						this.audio.PlayOneShot(this.InfoWelcome);
-						this.InfoSpoke++;
+						this.audio.PlayOneShot(this.InfoLines[0]);
+						this.InfoSpoke[0] = true;
 					}
 					float y = Mathf.Lerp(this.InfoChan.localEulerAngles.y, (float)180, Time.deltaTime * (this.Speed - (float)3));
 					Vector3 localEulerAngles = this.InfoChan.localEulerAngles;
@@ -346,10 +340,10 @@ public class MissionModeMenuScript : MonoBehaviour
 			}
 			if (Input.GetButtonDown("A"))
 			{
-				if (this.InfoSpoke == 0)
+				if (!this.InfoSpoke[0])
 				{
-					this.audio.PlayOneShot(this.InfoWelcome);
-					this.InfoSpoke++;
+					this.audio.PlayOneShot(this.InfoLines[0]);
+					this.InfoSpoke[0] = true;
 				}
 				int num10 = 180;
 				Vector3 localEulerAngles2 = this.InfoChan.localEulerAngles;
@@ -450,13 +444,13 @@ public class MissionModeMenuScript : MonoBehaviour
 			Vector3 vector21 = this.Option[this.Selected].localPosition = localPosition14;
 			if (Input.GetButtonDown("A"))
 			{
+				if (!this.InfoSpoke[this.Selected])
+				{
+					this.audio.PlayOneShot(this.InfoLines[this.Selected]);
+					this.InfoSpoke[this.Selected] = true;
+				}
 				if (this.Selected == 1)
 				{
-					if (this.InfoSpoke == 1)
-					{
-						this.audio.PlayOneShot(this.InfoReady);
-						this.InfoSpoke++;
-					}
 					this.PromptBar.ClearButtons();
 					this.PromptBar.Label[0].text = "Accept";
 					this.PromptBar.Label[1].text = "Return";
@@ -516,7 +510,6 @@ public class MissionModeMenuScript : MonoBehaviour
 				}
 				else if (this.Selected == 5)
 				{
-					this.audio.PlayOneShot(this.InfoBack);
 					this.PromptBar.Show = false;
 					this.Phase = 4;
 					this.Speed = (float)0;
@@ -1044,6 +1037,7 @@ public class MissionModeMenuScript : MonoBehaviour
 					this.PromptBar.Label[5].text = "Selection";
 					this.PromptBar.UpdateButtons();
 					this.UpdateObjectiveHighlight();
+					this.UpdateNemesisDifficulty();
 					this.UpdateDifficultyLabel();
 					this.CalculateMissionID();
 					this.ChooseTarget();
@@ -1528,7 +1522,7 @@ public class MissionModeMenuScript : MonoBehaviour
 
 	public virtual void StartMission()
 	{
-		this.audio.PlayOneShot(this.InfoLuck);
+		this.audio.PlayOneShot(this.InfoLines[6]);
 		int @int = PlayerPrefs.GetInt("HighPopulation");
 		PlayerPrefs.DeleteAll();
 		PlayerPrefs.SetFloat("SchoolAtmosphere", (float)100 - (float)this.Difficulty * 1f / 10f * (float)100);
