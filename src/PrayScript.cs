@@ -38,11 +38,13 @@ public class PrayScript : MonoBehaviour
 
 	public GameObject FemaleTurtle;
 
+	public int StudentID;
+
 	public int Selected;
 
-	public int SpawnID;
-
 	public int Uses;
+
+	public bool JustSummoned;
 
 	public bool SpawnMale;
 
@@ -66,6 +68,11 @@ public class PrayScript : MonoBehaviour
 
 	public virtual void Update()
 	{
+		if (this.JustSummoned)
+		{
+			this.StudentManager.UpdateMe(this.StudentID);
+			this.JustSummoned = false;
+		}
 		if (this.GenderPrompt.Circle[0].fillAmount <= (float)0)
 		{
 			this.GenderPrompt.Circle[0].fillAmount = (float)1;
@@ -190,25 +197,25 @@ public class PrayScript : MonoBehaviour
 				{
 					if (this.VictimLabel.color.a == (float)1 && this.StudentManager.NPCsSpawned >= this.StudentManager.NPCsTotal)
 					{
-						int num7;
 						if (this.SpawnMale)
 						{
-							num7 = 15;
+							this.StudentID = 15;
 						}
 						else
 						{
-							num7 = 16;
+							this.StudentID = 16;
 						}
-						if (this.StudentManager.Students[num7] != null)
+						if (this.StudentManager.Students[this.StudentID] != null)
 						{
-							UnityEngine.Object.Destroy(this.StudentManager.Students[num7].gameObject);
+							UnityEngine.Object.Destroy(this.StudentManager.Students[this.StudentID].gameObject);
 						}
-						this.StudentManager.Students[num7] = null;
+						this.StudentManager.Students[this.StudentID] = null;
 						this.StudentManager.ForceSpawn = true;
-						this.StudentManager.SpawnPositions[num7] = this.SummonSpot;
-						this.StudentManager.SpawnID = num7;
+						this.StudentManager.SpawnPositions[this.StudentID] = this.SummonSpot;
+						this.StudentManager.SpawnID = this.StudentID;
 						this.StudentManager.SpawnStudent();
 						this.StudentManager.SpawnID = 0;
+						this.JustSummoned = true;
 						this.Exit();
 					}
 				}

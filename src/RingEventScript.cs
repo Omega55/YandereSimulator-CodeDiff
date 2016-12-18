@@ -40,6 +40,10 @@ public class RingEventScript : MonoBehaviour
 
 	public float Timer;
 
+	public PromptScript RingPrompt;
+
+	public Collider RingCollider;
+
 	public RingEventScript()
 	{
 		this.EventTime = 13.1f;
@@ -65,6 +69,8 @@ public class RingEventScript : MonoBehaviour
 					{
 						if (PlayerPrefs.GetInt("Scheme_2_Stage") < 100)
 						{
+							this.RingPrompt = (PromptScript)this.EventStudent.Cosmetic.FemaleAccessories[3].GetComponent(typeof(PromptScript));
+							this.RingCollider = (BoxCollider)this.EventStudent.Cosmetic.FemaleAccessories[3].GetComponent(typeof(BoxCollider));
 							this.OriginalPosition = this.EventStudent.Cosmetic.FemaleAccessories[3].transform.localPosition;
 							this.EventStudent.CurrentDestination = this.EventStudent.Destinations[this.EventStudent.Phase];
 							this.EventStudent.Pathfinding.target = this.EventStudent.Destinations[this.EventStudent.Phase];
@@ -140,7 +146,7 @@ public class RingEventScript : MonoBehaviour
 							this.EventStudent.Cosmetic.FemaleAccessories[3].transform.parent = null;
 							this.EventStudent.Cosmetic.FemaleAccessories[3].transform.position = new Vector3(0.9f, 12.471f, -29.3f);
 							this.EventStudent.Cosmetic.FemaleAccessories[3].transform.eulerAngles = new Vector3((float)-15, (float)-90, (float)0);
-							((BoxCollider)this.EventStudent.Cosmetic.FemaleAccessories[3].GetComponent(typeof(BoxCollider))).enabled = true;
+							this.RingCollider.enabled = true;
 						}
 					}
 					else if (this.Timer > 2.5f)
@@ -157,9 +163,15 @@ public class RingEventScript : MonoBehaviour
 						this.EventStudent.Bento.active = false;
 						this.EventStudent.Chopsticks[0].active = false;
 						this.EventStudent.Chopsticks[1].active = false;
-						((BoxCollider)this.EventStudent.Cosmetic.FemaleAccessories[3].GetComponent(typeof(BoxCollider))).enabled = false;
-						((PromptScript)this.EventStudent.Cosmetic.FemaleAccessories[3].GetComponent(typeof(PromptScript))).Hide();
-						((PromptScript)this.EventStudent.Cosmetic.FemaleAccessories[3].GetComponent(typeof(PromptScript))).enabled = false;
+						if (this.RingCollider != null)
+						{
+							this.RingCollider.enabled = false;
+						}
+						if (this.RingPrompt != null)
+						{
+							this.RingPrompt.Hide();
+							this.RingPrompt.enabled = false;
+						}
 						this.EventStudent.Character.animation[this.EventAnim[0]].time = this.EventStudent.Character.animation[this.EventAnim[0]].length;
 						this.EventStudent.Character.animation[this.EventAnim[0]].speed = (float)-1;
 						if (this.EventStudent.Cosmetic.FemaleAccessories[3] != null)
@@ -188,7 +200,7 @@ public class RingEventScript : MonoBehaviour
 						{
 							this.EventStudent.Cosmetic.FemaleAccessories[3].transform.parent = this.EventStudent.LeftMiddleFinger;
 							this.EventStudent.Cosmetic.FemaleAccessories[3].transform.localPosition = this.OriginalPosition;
-							((BoxCollider)this.EventStudent.Cosmetic.FemaleAccessories[3].GetComponent(typeof(BoxCollider))).enabled = false;
+							this.RingCollider.enabled = false;
 						}
 						if (this.Timer > (float)5)
 						{
@@ -282,9 +294,9 @@ public class RingEventScript : MonoBehaviour
 		{
 			this.EventStudent.Cosmetic.FemaleAccessories[3].transform.parent = this.EventStudent.LeftMiddleFinger;
 			this.EventStudent.Cosmetic.FemaleAccessories[3].transform.localPosition = this.OriginalPosition;
-			((BoxCollider)this.EventStudent.Cosmetic.FemaleAccessories[3].GetComponent(typeof(BoxCollider))).enabled = false;
-			((PromptScript)this.EventStudent.Cosmetic.FemaleAccessories[3].GetComponent(typeof(PromptScript))).Hide();
-			((PromptScript)this.EventStudent.Cosmetic.FemaleAccessories[3].GetComponent(typeof(PromptScript))).enabled = false;
+			this.RingCollider.enabled = false;
+			this.RingPrompt.Hide();
+			this.RingPrompt.enabled = false;
 		}
 	}
 

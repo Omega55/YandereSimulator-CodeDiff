@@ -101,6 +101,8 @@ public class RagdollScript : MonoBehaviour
 
 	public bool Falling;
 
+	public bool Nemesis;
+
 	public bool Settled;
 
 	public bool Suicide;
@@ -333,7 +335,7 @@ public class RagdollScript : MonoBehaviour
 			{
 				this.Prompt.AcceptingInput[1] = true;
 			}
-			if (!this.Dragged && !this.Carried && !this.Tranquil && this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].WeaponID == 7)
+			if (!this.Dragged && !this.Carried && !this.Tranquil && this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].WeaponID == 7 && !this.Nemesis)
 			{
 				this.Prompt.HideButton[0] = false;
 			}

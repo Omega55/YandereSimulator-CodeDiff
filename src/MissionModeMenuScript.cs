@@ -787,6 +787,10 @@ public class MissionModeMenuScript : MonoBehaviour
 				else if (this.CustomSelected == 2)
 				{
 					this.RequiredWeaponID++;
+					if (this.RequiredWeaponID == 3 || this.RequiredWeaponID == 11)
+					{
+						this.RequiredWeaponID++;
+					}
 					if (this.RequiredWeaponID > Extensions.get_length(this.WeaponNames) - 1)
 					{
 						this.RequiredWeaponID = 1;

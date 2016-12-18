@@ -55,6 +55,7 @@ public class NemesisScript : MonoBehaviour
 		this.Student.Police = (PoliceScript)GameObject.Find("Police").GetComponent(typeof(PoliceScript));
 		this.Student.JSON = (JsonScript)GameObject.Find("JSON").GetComponent(typeof(JsonScript));
 		this.Student.CharacterAnimation = this.Student.Character.animation;
+		this.Student.Ragdoll.Nemesis = true;
 		this.Student.Yandere = this.Yandere;
 		this.Student.ShoeRemoval.RightCasualShoe.gameObject.active = false;
 		this.Student.ShoeRemoval.LeftCasualShoe.gameObject.active = false;
@@ -115,21 +116,18 @@ public class NemesisScript : MonoBehaviour
 		{
 			if (!this.Attacking)
 			{
-				if (!this.Yandere.CanMove)
+				if (this.Yandere.Laughing && Vector3.Distance(this.transform.position, this.Yandere.transform.position) < (float)10)
 				{
-					if (!this.Yandere.Laughing)
+					this.MissionMode.LastKnownPosition.position = this.Yandere.transform.position;
+					this.UpdateLKP();
+				}
+				if (!this.Yandere.CanMove && !this.Yandere.Laughing)
+				{
+					if (this.Student.Pathfinding.enabled)
 					{
-						if (this.Student.Pathfinding.enabled)
-						{
-							this.Student.Character.animation.CrossFade(this.Student.IdleAnim);
-							this.Student.Pathfinding.enabled = false;
-							this.Student.Pathfinding.speed = (float)0;
-						}
-					}
-					else if (Vector3.Distance(this.transform.position, this.Yandere.transform.position) < (float)10)
-					{
-						this.MissionMode.LastKnownPosition.position = this.Yandere.transform.position;
-						this.UpdateLKP();
+						this.Student.Character.animation.CrossFade(this.Student.IdleAnim);
+						this.Student.Pathfinding.enabled = false;
+						this.Student.Pathfinding.speed = (float)0;
 					}
 				}
 				else
@@ -165,8 +163,10 @@ public class NemesisScript : MonoBehaviour
 							AudioSource.PlayClipAtPoint(this.YandereDeath, this.transform.position);
 							this.Student.Pathfinding.enabled = false;
 							this.Yandere.FollowHips = true;
+							this.Yandere.Laughing = false;
 							this.Yandere.CanMove = false;
 							this.Yandere.EyeShrink = (float)1;
+							this.Yandere.StopAiming();
 							this.Knife.active = true;
 							this.Attacking = true;
 							this.audio.Play();
@@ -220,11 +220,11 @@ public class NemesisScript : MonoBehaviour
 			}
 			else
 			{
-				this.Yandere.audio.volume = (float)1;
 				this.SpecialEffect();
 				this.Yandere.targetRotation = Quaternion.LookRotation(this.transform.position - this.Yandere.transform.position);
 				this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, this.Yandere.targetRotation, Time.deltaTime * (float)10);
 				this.Yandere.MoveTowardsTarget(this.transform.position + this.transform.forward * 0.5f);
+				this.Yandere.EyeShrink = (float)1;
 				Quaternion to = Quaternion.LookRotation(this.Yandere.transform.position - this.transform.position);
 				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, to, Time.deltaTime * (float)10);
 				if (this.Student.Character.animation["f02_knifeLowSanityA_00"].time >= this.Student.Character.animation["f02_knifeLowSanityA_00"].length)

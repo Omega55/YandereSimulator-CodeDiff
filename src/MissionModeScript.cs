@@ -77,6 +77,8 @@ public class MissionModeScript : MonoBehaviour
 
 	public GameObject MissionModeHUD;
 
+	public GameObject TranqDetector;
+
 	public GameObject WitnessCamera;
 
 	public GameObject GameOverText;
@@ -359,6 +361,7 @@ public class MissionModeScript : MonoBehaviour
 			this.Yandere.SanityBased = true;
 			this.Yandere.CanMove = false;
 			this.HeartbeatCamera.active = false;
+			this.TranqDetector.active = false;
 			this.MurderKit.active = false;
 			this.TargetHeight = 1.51505f;
 			this.Yandere.HUD.alpha = (float)0;

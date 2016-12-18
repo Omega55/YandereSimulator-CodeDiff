@@ -9,6 +9,8 @@ public class QualityManagerScript : MonoBehaviour
 
 	public AntialiasingAsPostEffect PostAliasing;
 
+	public NemesisScript Nemesis;
+
 	public YandereScript Yandere;
 
 	public Bloom BloomEffect;
@@ -203,6 +205,10 @@ public class QualityManagerScript : MonoBehaviour
 				renderer3.material.shader = this.NewHairShader;
 			}
 		}
+		this.Nemesis.Cosmetic.MyRenderer.materials[0].shader = this.NewHairShader;
+		this.Nemesis.Cosmetic.MyRenderer.materials[1].shader = this.NewHairShader;
+		this.Nemesis.Cosmetic.MyRenderer.materials[2].shader = this.NewHairShader;
+		((Renderer)this.Nemesis.NemesisHair.GetComponent(typeof(Renderer))).material.shader = this.NewHairShader;
 	}
 
 	public virtual void UpdatePostAliasing()
