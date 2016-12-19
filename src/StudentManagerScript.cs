@@ -559,7 +559,7 @@ public class StudentManagerScript : MonoBehaviour
 						this.Students[this.ID].Prompt.Label[0].text = string.Empty;
 					}
 				}
-				if (this.NoSpeech)
+				if (this.NoSpeech && !this.Students[this.ID].Armband.active)
 				{
 					this.Students[this.ID].Prompt.HideButton[0] = true;
 				}

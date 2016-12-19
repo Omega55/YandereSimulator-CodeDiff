@@ -277,6 +277,7 @@ public class ShoulderCameraScript : MonoBehaviour
 					{
 						this.HeartbrokenCamera.active = true;
 						this.Yandere.Jukebox.GameOver();
+						this.enabled = false;
 					}
 				}
 			}

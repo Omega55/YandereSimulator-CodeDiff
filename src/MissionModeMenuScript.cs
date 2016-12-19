@@ -787,7 +787,7 @@ public class MissionModeMenuScript : MonoBehaviour
 				else if (this.CustomSelected == 2)
 				{
 					this.RequiredWeaponID++;
-					if (this.RequiredWeaponID == 3 || this.RequiredWeaponID == 11)
+					if (this.RequiredWeaponID == 11)
 					{
 						this.RequiredWeaponID++;
 					}
@@ -883,7 +883,7 @@ public class MissionModeMenuScript : MonoBehaviour
 					{
 						this.ErrorLabel.text = "Invalid Mission ID (Population too low)";
 					}
-					else if (this.WeaponNumber == 3 || this.WeaponNumber == 11)
+					else if (this.WeaponNumber == 11)
 					{
 						this.ErrorLabel.text = "Invalid Mission ID (Weapon does not apply to Mission Mode)";
 					}
@@ -1285,7 +1285,7 @@ public class MissionModeMenuScript : MonoBehaviour
 		else if (num == 1)
 		{
 			this.RequiredWeaponID = 11;
-			while (this.RequiredWeaponID == 11 || this.RequiredWeaponID == 3)
+			while (this.RequiredWeaponID == 11)
 			{
 				this.RequiredWeaponID = UnityEngine.Random.Range(1, Extensions.get_length(this.WeaponNames));
 			}

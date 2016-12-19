@@ -47,6 +47,8 @@ public class WeaponScript : MonoBehaviour
 
 	public bool Dumped;
 
+	public bool Metal;
+
 	public bool Flip;
 
 	public bool Spin;
@@ -191,13 +193,20 @@ public class WeaponScript : MonoBehaviour
 				}
 			}
 		}
-		else if (!this.rigidbody.isKinematic)
+		else
 		{
-			this.KinematicTimer = Mathf.MoveTowards(this.KinematicTimer, (float)5, Time.deltaTime);
-			if (this.KinematicTimer == (float)5)
+			if (!this.rigidbody.isKinematic)
 			{
-				this.rigidbody.isKinematic = true;
-				this.KinematicTimer = (float)0;
+				this.KinematicTimer = Mathf.MoveTowards(this.KinematicTimer, (float)5, Time.deltaTime);
+				if (this.KinematicTimer == (float)5)
+				{
+					this.rigidbody.isKinematic = true;
+					this.KinematicTimer = (float)0;
+				}
+			}
+			if ((this.transform.position.x > (float)-89 & this.transform.position.x < (float)-79) && this.transform.position.z > -13.5f && this.transform.position.z < -3.5f)
+			{
+				this.transform.position = new Vector3(-80.75f, (float)1, -2.75f);
 			}
 		}
 	}

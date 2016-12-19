@@ -119,7 +119,7 @@ public class ShutterScript : MonoBehaviour
 
 	public virtual void Start()
 	{
-		if (PlayerPrefs.GetInt("MissionMode", 1) != 0)
+		if (PlayerPrefs.GetInt("MissionMode") == 1)
 		{
 			this.MissionMode = true;
 		}

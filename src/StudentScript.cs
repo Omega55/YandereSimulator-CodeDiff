@@ -885,9 +885,11 @@ public class StudentScript : MonoBehaviour
 			if (this.Name == "Random")
 			{
 				this.Persona = UnityEngine.Random.Range(1, 7);
+				this.JSON.StudentPersonas[this.StudentID] = this.Persona;
 				if (this.Persona == 3)
 				{
 					this.Strength = UnityEngine.Random.Range(1, 5);
+					this.JSON.StudentStrengths[this.StudentID] = this.Strength;
 				}
 			}
 			this.Seat = this.StudentManager.Seats[this.Class].List[this.JSON.StudentSeats[this.StudentID]];

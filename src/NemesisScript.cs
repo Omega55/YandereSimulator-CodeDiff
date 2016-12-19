@@ -162,14 +162,15 @@ public class NemesisScript : MonoBehaviour
 							this.Yandere.CharacterAnimation.CrossFade("f02_knifeLowSanityB_00");
 							AudioSource.PlayClipAtPoint(this.YandereDeath, this.transform.position);
 							this.Student.Pathfinding.enabled = false;
+							this.Knife.active = true;
+							this.Attacking = true;
+							this.audio.Play();
 							this.Yandere.FollowHips = true;
 							this.Yandere.Laughing = false;
 							this.Yandere.CanMove = false;
 							this.Yandere.EyeShrink = (float)1;
 							this.Yandere.StopAiming();
-							this.Knife.active = true;
-							this.Attacking = true;
-							this.audio.Play();
+							this.Yandere.EmptyHands();
 						}
 					}
 					else if (Vector3.Distance(this.transform.position, this.MissionMode.LastKnownPosition.position) < (float)1)
