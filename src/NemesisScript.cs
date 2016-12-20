@@ -98,7 +98,7 @@ public class NemesisScript : MonoBehaviour
 		if (this.PutOnDisguise)
 		{
 			int num = 1;
-			while (this.Student.StudentManager.Students[num].Male && num != this.MissionMode.TargetID)
+			while (this.Student.StudentManager.Students[num].Male || num == this.MissionMode.TargetID)
 			{
 				num = UnityEngine.Random.Range(2, 33);
 			}

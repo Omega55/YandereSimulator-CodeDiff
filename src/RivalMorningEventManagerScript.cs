@@ -47,9 +47,16 @@ public class RivalMorningEventManagerScript : MonoBehaviour
 
 	public float Timer;
 
+	public int SpeechPhase;
+
 	public int Phase;
 
 	public int Frame;
+
+	public RivalMorningEventManagerScript()
+	{
+		this.SpeechPhase = 1;
+	}
 
 	public virtual void Start()
 	{
@@ -62,7 +69,7 @@ public class RivalMorningEventManagerScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (this.Phase == -1)
+		if (this.Phase == 0)
 		{
 			this.Frame++;
 			if (this.Frame > 2)
@@ -90,7 +97,7 @@ public class RivalMorningEventManagerScript : MonoBehaviour
 				this.Phase++;
 			}
 		}
-		else if (this.Phase == 0)
+		else if (this.Phase == 1)
 		{
 			this.Timer += Time.deltaTime;
 			if (this.Timer > (float)1)
@@ -105,12 +112,12 @@ public class RivalMorningEventManagerScript : MonoBehaviour
 		else
 		{
 			this.Timer += Time.deltaTime;
-			if (this.Phase < Extensions.get_length(this.SpeechTime))
+			if (this.SpeechPhase < Extensions.get_length(this.SpeechTime))
 			{
-				if (this.Timer > this.SpeechTime[this.Phase])
+				if (this.Timer > this.SpeechTime[this.SpeechPhase])
 				{
-					this.EventSubtitle.text = this.SpeechText[this.Phase];
-					this.Phase++;
+					this.EventSubtitle.text = this.SpeechText[this.SpeechPhase];
+					this.SpeechPhase++;
 				}
 			}
 			else if (this.Rival.CharacterAnimation["f02_Monday_1"].time >= this.Rival.CharacterAnimation["f02_Monday_1"].length)
