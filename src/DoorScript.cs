@@ -123,7 +123,7 @@ public class DoorScript : MonoBehaviour
 				this.CloseDoor();
 			}
 		}
-		if (this.Timer < (float)1)
+		if (this.Timer < (float)2)
 		{
 			this.Timer += Time.deltaTime;
 			if (!this.Open)
@@ -132,15 +132,15 @@ public class DoorScript : MonoBehaviour
 				{
 					if (!this.Swinging)
 					{
-						float x = Mathf.Lerp(this.Doors[i].localPosition.x, this.ClosedPositions[i], Time.deltaTime * (float)10);
+						float x = Mathf.Lerp(this.Doors[i].localPosition.x, this.ClosedPositions[i], Time.deltaTime * 3.6f);
 						Vector3 localPosition = this.Doors[i].localPosition;
 						float num = localPosition.x = x;
 						Vector3 vector = this.Doors[i].localPosition = localPosition;
 					}
 					else
 					{
-						this.Rotation = Mathf.Lerp(this.Rotation, (float)0, Time.deltaTime * (float)10);
-						float z = Mathf.Lerp(this.Doors[i].localPosition.z, this.OriginX[i], Time.deltaTime * (float)10);
+						this.Rotation = Mathf.Lerp(this.Rotation, (float)0, Time.deltaTime * 3.6f);
+						float z = Mathf.Lerp(this.Doors[i].localPosition.z, this.OriginX[i], Time.deltaTime * 3.6f);
 						Vector3 localPosition2 = this.Doors[i].localPosition;
 						float num2 = localPosition2.z = z;
 						Vector3 vector2 = this.Doors[i].localPosition = localPosition2;
@@ -167,7 +167,7 @@ public class DoorScript : MonoBehaviour
 				{
 					if (!this.Swinging)
 					{
-						float x2 = Mathf.Lerp(this.Doors[i].localPosition.x, this.OpenPositions[i], Time.deltaTime * (float)10);
+						float x2 = Mathf.Lerp(this.Doors[i].localPosition.x, this.OpenPositions[i], Time.deltaTime * 3.6f);
 						Vector3 localPosition3 = this.Doors[i].localPosition;
 						float num5 = localPosition3.x = x2;
 						Vector3 vector5 = this.Doors[i].localPosition = localPosition3;
@@ -176,25 +176,25 @@ public class DoorScript : MonoBehaviour
 					{
 						if (this.North)
 						{
-							float z2 = Mathf.Lerp(this.Doors[i].localPosition.z, this.OriginX[i] + this.ShiftNorth, Time.deltaTime * (float)10);
+							float z2 = Mathf.Lerp(this.Doors[i].localPosition.z, this.OriginX[i] + this.ShiftNorth, Time.deltaTime * 3.6f);
 							Vector3 localPosition4 = this.Doors[i].localPosition;
 							float num6 = localPosition4.z = z2;
 							Vector3 vector6 = this.Doors[i].localPosition = localPosition4;
 						}
 						else
 						{
-							float z3 = Mathf.Lerp(this.Doors[i].localPosition.z, this.OriginX[i] + this.ShiftSouth, Time.deltaTime * (float)10);
+							float z3 = Mathf.Lerp(this.Doors[i].localPosition.z, this.OriginX[i] + this.ShiftSouth, Time.deltaTime * 3.6f);
 							Vector3 localPosition5 = this.Doors[i].localPosition;
 							float num7 = localPosition5.z = z3;
 							Vector3 vector7 = this.Doors[i].localPosition = localPosition5;
 						}
 						if (this.North)
 						{
-							this.Rotation = Mathf.Lerp(this.Rotation, this.Swing, Time.deltaTime * (float)10);
+							this.Rotation = Mathf.Lerp(this.Rotation, this.Swing, Time.deltaTime * 3.6f);
 						}
 						else
 						{
-							this.Rotation = Mathf.Lerp(this.Rotation, this.Swing * (float)-1, Time.deltaTime * (float)10);
+							this.Rotation = Mathf.Lerp(this.Rotation, this.Swing * (float)-1, Time.deltaTime * 3.6f);
 						}
 						if (i == 0)
 						{
@@ -216,9 +216,8 @@ public class DoorScript : MonoBehaviour
 		}
 		else if (this.Locked)
 		{
-			this.Prompt.Hide();
-			this.Prompt.enabled = false;
-			this.active = false;
+			this.Prompt.Label[0].text = "     " + "Locked";
+			this.Prompt.Circle[0].fillAmount = (float)1;
 		}
 		if (Input.GetKeyDown("space"))
 		{

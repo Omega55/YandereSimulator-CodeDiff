@@ -87,6 +87,8 @@ public class StudentScript : MonoBehaviour
 
 	public Animation CharacterAnimation;
 
+	public ParticleSystem VomitEmitter;
+
 	public Projector LiquidProjector;
 
 	public ParticleSystem Hearts;
@@ -247,6 +249,8 @@ public class StudentScript : MonoBehaviour
 
 	public GameObject Pen;
 
+	public GameObject Lid;
+
 	public bool OriginallyTeacher;
 
 	public bool WitnessedCorpse;
@@ -343,9 +347,13 @@ public class StudentScript : MonoBehaviour
 
 	public bool Witness;
 
+	public bool Bloody;
+
 	public bool CanTalk;
 
-	public bool Bloody;
+	public bool Emetic;
+
+	public bool Lethal;
 
 	public bool Routine;
 
@@ -396,6 +404,8 @@ public class StudentScript : MonoBehaviour
 	public bool Following;
 
 	public bool Reporting;
+
+	public bool Vomiting;
 
 	public bool Burning;
 
@@ -487,6 +497,8 @@ public class StudentScript : MonoBehaviour
 
 	public int BathePhase;
 
+	public int VomitPhase;
+
 	public int ClubPhase;
 
 	public int TaskPhase;
@@ -534,6 +546,8 @@ public class StudentScript : MonoBehaviour
 	public string Witnessed;
 
 	public string Name;
+
+	public string OriginalWalkAnim;
 
 	public string WalkAnim;
 
@@ -659,6 +673,12 @@ public class StudentScript : MonoBehaviour
 
 	public string CuddleAnim;
 
+	public string VomitAnim;
+
+	public string WashFaceAnim;
+
+	public string EmeticAnim;
+
 	public string[] CameraAnims;
 
 	public string[] SocialAnims;
@@ -774,6 +794,7 @@ public class StudentScript : MonoBehaviour
 		this.Hairstyle = string.Empty;
 		this.Witnessed = string.Empty;
 		this.Name = string.Empty;
+		this.OriginalWalkAnim = string.Empty;
 		this.WalkAnim = string.Empty;
 		this.RunAnim = string.Empty;
 		this.SprintAnim = string.Empty;
@@ -836,6 +857,9 @@ public class StudentScript : MonoBehaviour
 		this.BookReadAnim = string.Empty;
 		this.LovedOneAnim = string.Empty;
 		this.CuddleAnim = string.Empty;
+		this.VomitAnim = string.Empty;
+		this.WashFaceAnim = string.Empty;
+		this.EmeticAnim = string.Empty;
 		this.ConfessPhase = 1;
 		this.RadioPhase = 1;
 		this.MaxSpeed = 10f;
@@ -930,7 +954,11 @@ public class StudentScript : MonoBehaviour
 			this.RightEyeOrigin = this.RightEye.localPosition;
 			this.LeftEyeOrigin = this.LeftEye.localPosition;
 			this.PickRandomAnim();
+			this.Chopsticks[0].active = false;
+			this.Chopsticks[1].active = false;
 			this.OccultBook.active = false;
+			this.Bento.active = false;
+			this.OriginalWalkAnim = this.WalkAnim;
 			if (!this.Male)
 			{
 				this.CharacterAnimation[this.StripAnim].speed = 1.5f;
@@ -1240,6 +1268,10 @@ public class StudentScript : MonoBehaviour
 				else if (this.Phase < Extensions.get_length(this.PhaseTimes) - 1 && this.Clock.HourTime >= this.PhaseTimes[this.Phase] && !this.InEvent && !this.Meeting)
 				{
 					this.Phase++;
+					if (this.StudentID == 33)
+					{
+						Debug.Log("Osana's phase has increased to " + this.Phase + ".");
+					}
 					if (this.Schoolwear > 1 && this.Destinations[this.Phase] == this.MyLocker)
 					{
 						this.Phase++;
@@ -1525,14 +1557,74 @@ public class StudentScript : MonoBehaviour
 								}
 								else if (this.Actions[this.Phase] == 10)
 								{
-									this.CharacterAnimation.CrossFade(this.EatAnim);
-									if (!this.Bento.active)
+									if (!this.Ragdoll.Poisoned && !this.Bento.active)
 									{
 										this.Bento.transform.localPosition = new Vector3(-0.025f, -0.105f, (float)0);
 										this.Bento.transform.localEulerAngles = new Vector3((float)0, (float)165, 82.5f);
 										this.Chopsticks[0].active = true;
 										this.Chopsticks[1].active = true;
 										this.Bento.active = true;
+										this.Lid.active = false;
+									}
+									if (!this.Emetic && !this.Lethal)
+									{
+										this.CharacterAnimation.CrossFade(this.EatAnim);
+									}
+									else if (this.Emetic)
+									{
+										if (!this.Distracted)
+										{
+											this.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
+											this.CharacterAnimation.CrossFade(this.EmeticAnim);
+											this.Distracted = true;
+										}
+										if (this.CharacterAnimation[this.EmeticAnim].time >= this.CharacterAnimation[this.EmeticAnim].length)
+										{
+											this.WalkAnim = "f02_stomachPainWalk_00";
+											this.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
+											this.Pathfinding.target = this.StudentManager.FemaleVomitSpot;
+											this.CurrentDestination = this.StudentManager.FemaleVomitSpot;
+											this.CharacterAnimation.CrossFade(this.WalkAnim);
+											this.Pathfinding.canSearch = true;
+											this.DistanceToDestination = (float)100;
+											this.Pathfinding.canMove = true;
+											this.Pathfinding.speed = (float)2;
+											this.Routine = false;
+											this.Vomiting = true;
+											this.Private = true;
+											this.Chopsticks[0].active = false;
+											this.Chopsticks[1].active = false;
+											this.Bento.active = false;
+										}
+									}
+									else
+									{
+										if (!this.Distracted)
+										{
+											this.StudentManager.Students[1].CharacterAnimation.CrossFade("witnessPoisoning_00");
+											this.StudentManager.Students[1].Distracted = true;
+											this.StudentManager.Students[1].Routine = false;
+											this.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
+											this.CharacterAnimation.CrossFade("f02_poisonDeath_00");
+											this.Ragdoll.Poisoned = true;
+											this.Distracted = true;
+											this.Prompt.Hide();
+											this.Prompt.enabled = false;
+										}
+										if (this.CharacterAnimation["f02_poisonDeath_00"].time >= 17.5f && this.Bento.active)
+										{
+											this.StudentManager.Students[1].Chopsticks[0].active = false;
+											this.StudentManager.Students[1].Chopsticks[1].active = false;
+											this.StudentManager.Students[1].Bento.active = false;
+											this.Chopsticks[0].active = false;
+											this.Chopsticks[1].active = false;
+											this.Bento.active = false;
+										}
+										if (this.CharacterAnimation["f02_poisonDeath_00"].time >= this.CharacterAnimation["f02_poisonDeath_00"].length)
+										{
+											this.BecomeRagdoll();
+											this.Dead = true;
+										}
 									}
 								}
 								else if (this.Actions[this.Phase] == 11)
@@ -2519,6 +2611,7 @@ public class StudentScript : MonoBehaviour
 					}
 					else
 					{
+						Debug.Log("Here?");
 						this.CharacterAnimation.CrossFade(this.RunAnim);
 					}
 				}
@@ -3082,7 +3175,7 @@ public class StudentScript : MonoBehaviour
 								{
 									if (!this.Yandere.Chased)
 									{
-										if ((this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].Suspicious) || (this.Yandere.Bloodiness > (float)0 && !this.Yandere.Paint) || (this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Struggling || this.Yandere.Dragging || this.Yandere.Lewd || (this.Yandere.Laughing && this.Yandere.LaughIntensity > (float)15)) || (this.Private && this.Yandere.Trespassing) || (this.Teacher && this.Yandere.Trespassing) || (this.Teacher && this.Yandere.Rummaging) || (this.StudentID == 1 && this.Yandere.NearSenpai && !this.Yandere.Talking))
+										if ((this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].Suspicious) || (this.Yandere.Bloodiness > (float)0 && !this.Yandere.Paint) || (this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Struggling || this.Yandere.Dragging || this.Yandere.Lewd || (this.Yandere.Laughing && this.Yandere.LaughIntensity > (float)15)) || (this.Private && this.Yandere.Trespassing) || (this.Teacher && this.Yandere.Trespassing) || (this.Teacher && this.Yandere.Rummaging) || (this.StudentID == 1 && this.Yandere.NearSenpai && !this.Yandere.Talking) || (this.StudentID == 1 && this.Yandere.Eavesdropping) || (this.StudentID == 33 && this.Yandere.Eavesdropping))
 										{
 											this.Planes = GeometryUtility.CalculateFrustumPlanes(this.VisionCone);
 											if (GeometryUtility.TestPlanesAABB(this.Planes, this.Yandere.collider.bounds))
@@ -3202,7 +3295,10 @@ public class StudentScript : MonoBehaviour
 							{
 								if (this.Yandere.Attacking || this.Yandere.Struggling)
 								{
-									this.WitnessMurder();
+									if (!this.Yandere.Egg)
+									{
+										this.WitnessMurder();
+									}
 								}
 								else
 								{
@@ -3296,6 +3392,20 @@ public class StudentScript : MonoBehaviour
 									{
 										this.Witnessed = "Stalking";
 										this.Concern++;
+									}
+									else if (this.Yandere.Eavesdropping)
+									{
+										if (this.StudentID == 1)
+										{
+											this.Witnessed = "Stalking";
+											this.Concern++;
+										}
+										else if (this.StudentID == 33)
+										{
+											this.Witnessed = "Eavesdropping";
+											this.RepLoss = (float)10;
+											this.Concern = 5;
+										}
 									}
 									else
 									{
@@ -3573,16 +3683,24 @@ public class StudentScript : MonoBehaviour
 					}
 					else if (this.Drownable)
 					{
+						Debug.Log("How many times?");
+						if (!this.Male)
+						{
+							this.StudentManager.FemaleVomitDoor.Prompt.enabled = true;
+						}
 						this.Yandere.EmptyHands();
 						this.Prompt.Hide();
 						this.Prompt.enabled = false;
+						this.Prompt.Circle[0].fillAmount = (float)1;
 						this.StudentManager.Fountain.Drowning = true;
 						this.Police.DrownedStudentName = this.Name;
 						this.MyController.enabled = false;
 						this.Police.DrownScene = true;
+						this.VomitEmitter.Stop();
 						this.Distracted = true;
 						this.Routine = false;
 						this.Drowned = true;
+						this.Subtitle.UpdateLabel("Drown Reaction", 0, (float)3);
 						this.Yandere.TargetStudent = this;
 						this.Yandere.Attacking = true;
 						this.Yandere.CanMove = false;
@@ -4138,6 +4256,10 @@ public class StudentScript : MonoBehaviour
 						{
 							this.Subtitle.UpdateLabel("Interruption Reaction", 1, (float)5);
 						}
+						else if (this.Witnessed == "Eavesdropping")
+						{
+							this.Subtitle.UpdateLabel("Eavesdrop Reaction", 1, (float)5);
+						}
 					}
 					else
 					{
@@ -4374,6 +4496,106 @@ public class StudentScript : MonoBehaviour
 						this.RadioPhase = 1;
 						this.Routine = true;
 						this.Radio = null;
+					}
+				}
+			}
+			if (this.Vomiting)
+			{
+				if (this.VomitPhase != 0 && this.VomitPhase != 4)
+				{
+					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.CurrentDestination.rotation, this.DeltaTime * (float)10);
+					this.MoveTowardsTarget(this.CurrentDestination.position);
+				}
+				if (this.VomitPhase == 0)
+				{
+					if (this.DistanceToDestination < 0.5f)
+					{
+						if (this.StudentID == 33)
+						{
+							this.Prompt.Label[0].text = "     " + "Drown";
+							this.Drownable = true;
+						}
+						if (!this.Male)
+						{
+							this.StudentManager.FemaleVomitDoor.Prompt.enabled = false;
+							this.StudentManager.FemaleVomitDoor.Prompt.Hide();
+						}
+						this.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
+						this.CharacterAnimation.CrossFade(this.VomitAnim);
+						this.Pathfinding.canSearch = false;
+						this.Pathfinding.canMove = false;
+						this.VomitPhase++;
+					}
+				}
+				else if (this.VomitPhase == 1)
+				{
+					if (this.CharacterAnimation[this.VomitAnim].time > (float)1)
+					{
+						this.VomitEmitter.Play();
+						this.VomitPhase++;
+					}
+				}
+				else if (this.VomitPhase == 2)
+				{
+					if (this.CharacterAnimation[this.VomitAnim].time > (float)13)
+					{
+						this.VomitEmitter.Stop();
+						this.VomitPhase++;
+					}
+				}
+				else if (this.VomitPhase == 3)
+				{
+					if (this.CharacterAnimation[this.VomitAnim].time >= this.CharacterAnimation[this.VomitAnim].length)
+					{
+						this.WalkAnim = this.OriginalWalkAnim;
+						this.CharacterAnimation.CrossFade(this.WalkAnim);
+						if (this.Male)
+						{
+							this.Pathfinding.target = this.StudentManager.MaleWashSpot;
+							this.CurrentDestination = this.StudentManager.MaleWashSpot;
+						}
+						else
+						{
+							this.Pathfinding.target = this.StudentManager.FemaleWashSpot;
+							this.CurrentDestination = this.StudentManager.FemaleWashSpot;
+						}
+						this.Pathfinding.canSearch = true;
+						this.Pathfinding.canMove = true;
+						this.Pathfinding.speed = (float)1;
+						this.DistanceToDestination = (float)100;
+						this.VomitPhase++;
+					}
+				}
+				else if (this.VomitPhase == 4)
+				{
+					if (this.DistanceToDestination < 0.5f)
+					{
+						this.CharacterAnimation.CrossFade(this.WashFaceAnim);
+						this.Pathfinding.canSearch = false;
+						this.Pathfinding.canMove = false;
+						this.VomitPhase++;
+					}
+				}
+				else if (this.VomitPhase == 5 && this.CharacterAnimation[this.WashFaceAnim].time > this.CharacterAnimation[this.WashFaceAnim].length)
+				{
+					this.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
+					this.Prompt.Label[0].text = "     " + "Talk";
+					this.Pathfinding.canSearch = true;
+					this.Pathfinding.canMove = true;
+					this.Distracted = false;
+					this.Drownable = true;
+					this.Vomiting = false;
+					this.Private = false;
+					this.Routine = true;
+					this.Emetic = false;
+					this.VomitPhase = 0;
+					this.Pathfinding.target = this.Destinations[this.Phase];
+					this.CurrentDestination = this.Destinations[this.Phase];
+					this.DistanceToDestination = (float)100;
+					if (!this.Male)
+					{
+						this.StudentManager.FemaleVomitDoor.Prompt.enabled = false;
+						this.StudentManager.FemaleVomitDoor.Prompt.Hide();
 					}
 				}
 			}
@@ -6166,9 +6388,6 @@ public class StudentScript : MonoBehaviour
 	public virtual void DisableEffects()
 	{
 		this.LiquidProjector.enabled = false;
-		this.Bento.active = false;
-		this.Chopsticks[0].active = false;
-		this.Chopsticks[1].active = false;
 		this.ElectroSteam[0].active = false;
 		this.ElectroSteam[1].active = false;
 		this.ElectroSteam[2].active = false;

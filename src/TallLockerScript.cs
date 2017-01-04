@@ -88,7 +88,14 @@ public class TallLockerScript : MonoBehaviour
 						}
 						else if (this.Yandere.Schoolwear > 0)
 						{
-							this.Prompt.HideButton[this.Yandere.Schoolwear] = false;
+							if (!this.Yandere.ClubAttire)
+							{
+								this.Prompt.HideButton[this.Yandere.Schoolwear] = false;
+							}
+							else
+							{
+								this.Prompt.HideButton[1] = false;
+							}
 						}
 					}
 					else
@@ -303,13 +310,20 @@ public class TallLockerScript : MonoBehaviour
 		this.Prompt.Label[3].text = "     " + "Gym Uniform";
 		if (this.YandereLocker)
 		{
-			if (this.Yandere.Schoolwear > 0)
+			if (!this.Yandere.ClubAttire)
 			{
-				this.Prompt.Label[this.Yandere.Schoolwear].text = "     " + "Nude";
-				if (this.Removed[this.Yandere.Schoolwear])
+				if (this.Yandere.Schoolwear > 0)
 				{
-					this.Schoolwear[this.Yandere.Schoolwear].active = false;
+					this.Prompt.Label[this.Yandere.Schoolwear].text = "     " + "Nude";
+					if (this.Removed[this.Yandere.Schoolwear])
+					{
+						this.Schoolwear[this.Yandere.Schoolwear].active = false;
+					}
 				}
+			}
+			else
+			{
+				this.Prompt.Label[1].text = "     " + "Nude";
 			}
 		}
 		else if (this.Student != null && this.Student.Schoolwear > 0)
@@ -334,6 +348,11 @@ public class TallLockerScript : MonoBehaviour
 					if (this.Yandere.Schoolwear > 0 && !this.Yandere.ClubAttire)
 					{
 						this.Prompt.HideButton[this.Yandere.Schoolwear] = false;
+					}
+					if (this.Yandere.ClubAttire)
+					{
+						Debug.Log("Don't hide Prompt 1!");
+						this.Prompt.HideButton[1] = false;
 					}
 				}
 				else

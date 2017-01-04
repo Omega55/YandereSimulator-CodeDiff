@@ -21,6 +21,7 @@ public class MetalDetectorScript : MonoBehaviour
 				this.Prompt.enabled = true;
 				if (this.Prompt.Circle[0].fillAmount == (float)0)
 				{
+					this.audio.Play();
 					this.MyCollider.enabled = false;
 					this.Prompt.Hide();
 					this.Prompt.enabled = false;

@@ -23,6 +23,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public QualityManagerScript QualityManager;
 
+	public ParticleSystem FemaleDrownSplashes;
+
 	public EmergencyExitScript EmergencyExit;
 
 	public TranqDetectorScript TranqDetector;
@@ -34,6 +36,8 @@ public class StudentManagerScript : MonoBehaviour
 	public LoveManagerScript LoveManager;
 
 	public TaskManagerScript TaskManager;
+
+	public DoorScript FemaleVomitDoor;
 
 	public ContainerScript Container;
 
@@ -117,9 +121,13 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform FemaleStalkSpot;
 
+	public Transform FemaleVomitSpot;
+
 	public Transform ConfessionSpot;
 
 	public Transform CorpseLocation;
+
+	public Transform FemaleWashSpot;
 
 	public Transform MaleCoupleSpot;
 
@@ -127,7 +135,11 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform MaleStalkSpot;
 
+	public Transform MaleVomitSpot;
+
 	public Transform FountainSpot;
+
+	public Transform MaleWashSpot;
 
 	public Transform SuitorLocker;
 

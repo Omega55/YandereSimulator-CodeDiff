@@ -5,6 +5,8 @@ using UnityEngine;
 [Serializable]
 public class WelcomeScript : MonoBehaviour
 {
+	public JsonScript JSON;
+
 	public GameObject WelcomePanel;
 
 	public GameObject WarningPanel;
@@ -20,6 +22,8 @@ public class WelcomeScript : MonoBehaviour
 	public bool Continue;
 
 	public bool FlashRed;
+
+	public bool InEditor;
 
 	public float VersionNumber;
 
@@ -42,8 +46,11 @@ public class WelcomeScript : MonoBehaviour
 			PlayerPrefs.DeleteAll();
 			PlayerPrefs.SetFloat("VersionNumber", this.VersionNumber);
 		}
-		string a = File.ReadAllText(Application.streamingAssetsPath + "/Fun.txt");
-		if (a == "1" || a == "2" || a == "3" || a == "4" || a == "5" || a == "6" || a == "7" || a == "8" || a == "9" || a == "10" || a == "666")
+		if (File.Exists(Application.streamingAssetsPath + "/Fun.txt"))
+		{
+			string text = File.ReadAllText(Application.streamingAssetsPath + "/Fun.txt");
+		}
+		if (!this.InEditor && this.JSON.StudentNames[33] != "Reserved")
 		{
 			Application.LoadLevel("FunScene");
 		}

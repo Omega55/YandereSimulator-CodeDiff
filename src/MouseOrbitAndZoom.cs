@@ -59,7 +59,6 @@ public class MouseOrbitAndZoom : MonoBehaviour
 			this.y = MouseOrbitAndZoom.ClampAngle(this.y, (float)this.yMinLimit, (float)this.yMaxLimit);
 			this.distance += Input.GetAxis("Mouse ScrollWheel") * this.zSpeed * 0.02f;
 			this.distance = MouseOrbitAndZoom.ClampAngle(this.distance, this.zMinLimit, this.zMaxLimit);
-			Debug.Log("distance: " + this.distance.ToString());
 			Quaternion rotation = Quaternion.Euler(this.y, this.x, (float)0);
 			Vector3 position = rotation * new Vector3((float)0, (float)0, -this.distance) + this.target.position;
 			this.transform.rotation = rotation;

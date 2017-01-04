@@ -16,7 +16,7 @@ public class LowPolyStudentScript : MonoBehaviour
 	{
 		if (this.Student.StudentManager.LowDetailThreshold > 0)
 		{
-			if (Vector3.Distance(this.Student.Yandere.transform.position, this.transform.position) > (float)this.Student.StudentManager.LowDetailThreshold)
+			if (Vector3.Distance(this.Student.Yandere.MainCamera.transform.position, this.transform.position) > (float)this.Student.StudentManager.LowDetailThreshold)
 			{
 				if (!this.MyMesh.enabled)
 				{

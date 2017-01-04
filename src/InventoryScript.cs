@@ -16,11 +16,11 @@ public class InventoryScript : MonoBehaviour
 
 	public bool RivalPhone;
 
-	public bool CaseKey;
+	public bool EmeticPoison;
 
-	public bool SafeKey;
+	public bool LethalPoison;
 
-	public bool Headset;
+	public bool RatPoison;
 
 	public bool Cigs;
 
@@ -29,6 +29,16 @@ public class InventoryScript : MonoBehaviour
 	public bool Rose;
 
 	public bool Bra;
+
+	public bool CabinetKey;
+
+	public bool CaseKey;
+
+	public bool Headset;
+
+	public bool SafeKey;
+
+	public bool ShedKey;
 
 	public virtual void Main()
 	{

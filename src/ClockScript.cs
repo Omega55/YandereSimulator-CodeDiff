@@ -17,6 +17,8 @@ public class ClockScript : MonoBehaviour
 
 	public PoliceScript Police;
 
+	public ClockScript Clock;
+
 	public Bloom BloomEffect;
 
 	public MotionBlur Blur;
@@ -170,7 +172,7 @@ public class ClockScript : MonoBehaviour
 		Vector3 vector2 = this.HourHand.localEulerAngles = localEulerAngles2;
 		if (this.HourTime < 8.5f)
 		{
-			this.PeriodLabel.text = "BEFORE SCHOOL";
+			this.PeriodLabel.text = "BEFORE CLASS";
 			if (this.Period < 1)
 			{
 				this.DeactivateTrespassZones();

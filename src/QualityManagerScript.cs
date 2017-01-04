@@ -126,7 +126,7 @@ public class QualityManagerScript : MonoBehaviour
 	{
 		for (int i = 1; i < Extensions.get_length(this.StudentManager.Students); i++)
 		{
-			if (this.StudentManager.Students[i] != null)
+			if (this.StudentManager.Students[i] != null && this.StudentManager.Students[i].active)
 			{
 				if (PlayerPrefs.GetInt("DisableOutlines") == 1)
 				{

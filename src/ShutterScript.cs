@@ -494,17 +494,25 @@ public class ShutterScript : MonoBehaviour
 		}
 		else if (!this.PantiesX.active)
 		{
-			if (PlayerPrefs.GetInt(this.Student.Name + "PantyShot") == 0)
+			if (this.Student != null)
 			{
-				text = "Excellent! Now I have a picture of " + this.Student.Name + "'s panties. I owe you a favor for this one.";
-				num = 5;
-				PlayerPrefs.SetInt(this.Student.Name + "PantyShot", 1);
-				PlayerPrefs.SetInt("PantyShots", PlayerPrefs.GetInt("PantyShots") + 1);
+				if (PlayerPrefs.GetInt(this.Student.Name + "PantyShot") == 0)
+				{
+					text = "Excellent! Now I have a picture of " + this.Student.Name + "'s panties. I owe you a favor for this one.";
+					num = 5;
+					PlayerPrefs.SetInt(this.Student.Name + "PantyShot", 1);
+					PlayerPrefs.SetInt("PantyShots", PlayerPrefs.GetInt("PantyShots") + 1);
+				}
+				else
+				{
+					text = "I already have a picture of " + this.Student.Name + "'s panties. I don't need this shot.";
+					num = 4;
+				}
 			}
 			else
 			{
-				text = "I already have a picture of " + this.Student.Name + "'s panties. I don't need this shot.";
-				num = 4;
+				text = "How peculiar. I don't recognize these panties.";
+				num = 2;
 			}
 		}
 		else if (!this.ViolenceX.active)

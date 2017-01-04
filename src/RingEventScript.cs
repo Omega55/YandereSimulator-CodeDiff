@@ -144,8 +144,8 @@ public class RingEventScript : MonoBehaviour
 						if (this.EventStudent.Cosmetic.FemaleAccessories[3] != null)
 						{
 							this.EventStudent.Cosmetic.FemaleAccessories[3].transform.parent = null;
-							this.EventStudent.Cosmetic.FemaleAccessories[3].transform.position = new Vector3(0.9f, 12.471f, -29.3f);
-							this.EventStudent.Cosmetic.FemaleAccessories[3].transform.eulerAngles = new Vector3((float)-15, (float)-90, (float)0);
+							this.EventStudent.Cosmetic.FemaleAccessories[3].transform.position = new Vector3(-2.712f, 12.47f, -31.136f);
+							this.EventStudent.Cosmetic.FemaleAccessories[3].transform.eulerAngles = new Vector3((float)-20, (float)180, (float)0);
 							this.RingCollider.enabled = true;
 						}
 					}

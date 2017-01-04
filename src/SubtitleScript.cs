@@ -69,6 +69,12 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] FoodRejects;
 
+	public string[] EavesdropReactions;
+
+	public string[] PickpocketReactions;
+
+	public string[] DrownReactions;
+
 	public string[] KnifeReactions;
 
 	public string[] SyringeReactions;
@@ -329,7 +335,11 @@ public class SubtitleScript : MonoBehaviour
 
 	public AudioClip[] TeacherTheftClips;
 
+	public AudioClip[] PickpocketReactionClips;
+
 	public AudioClip[] SplashReactionClips;
+
+	public AudioClip[] DrownReactionClips;
 
 	public AudioClip[] LightSwitchClips;
 
@@ -386,6 +396,8 @@ public class SubtitleScript : MonoBehaviour
 	public AudioClip[] ClubYesClips;
 
 	public AudioClip[] ClubNoClips;
+
+	public AudioClip[] RivalEavesdropClips;
 
 	public GameObject CurrentClip;
 
@@ -487,6 +499,24 @@ public class SubtitleScript : MonoBehaviour
 		else if (ReactionType == "Reject Food")
 		{
 			this.Label.text = this.FoodRejects[UnityEngine.Random.Range(0, Extensions.get_length(this.FoodRejects))];
+		}
+		else if (ReactionType == "Eavesdrop Reaction")
+		{
+			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.EavesdropReactions));
+			this.Label.text = this.EavesdropReactions[this.RandomID];
+			this.PlayVoice(ReactionType, this.RandomID);
+		}
+		else if (ReactionType == "Pickpocket Reaction")
+		{
+			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.PickpocketReactions));
+			this.Label.text = this.PickpocketReactions[this.RandomID];
+			this.PlayVoice(ReactionType, this.RandomID);
+		}
+		else if (ReactionType == "Drown Reaction")
+		{
+			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.DrownReactions));
+			this.Label.text = this.DrownReactions[this.RandomID];
+			this.PlayVoice(ReactionType, this.RandomID);
 		}
 		else if (ReactionType == "Teacher Weapon Reaction")
 		{
@@ -1133,9 +1163,17 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.PlayClip(this.TeacherTheftClips[ID], this.transform.position);
 		}
+		else if (ReactionType == "Pickpocket Reaction")
+		{
+			this.PlayClip(this.PickpocketReactionClips[ID], this.transform.position);
+		}
 		else if (ReactionType == "Splash Reaction")
 		{
 			this.PlayClip(this.SplashReactionClips[ID], this.transform.position);
+		}
+		else if (ReactionType == "Drown Reaction")
+		{
+			this.PlayClip(this.DrownReactionClips[ID], this.transform.position);
 		}
 		else if (ReactionType == "Light Switch Reaction")
 		{
@@ -1248,6 +1286,10 @@ public class SubtitleScript : MonoBehaviour
 		else if (ReactionType == "Club 6 Info")
 		{
 			this.PlayClip(this.Club6Clips[ID], this.transform.position);
+		}
+		else if (ReactionType == "Eavesdrop Reaction")
+		{
+			this.PlayClip(this.RivalEavesdropClips[ID], this.transform.position);
 		}
 	}
 

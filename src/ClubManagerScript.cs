@@ -27,6 +27,8 @@ public class ClubManagerScript : MonoBehaviour
 
 	public RPG_Camera MainCamera;
 
+	public DoorScript ShedDoor;
+
 	public PoliceScript Police;
 
 	public GloveScript Gloves;
@@ -373,6 +375,8 @@ public class ClubManagerScript : MonoBehaviour
 			}
 			else if (PlayerPrefs.GetInt("Club") == 10)
 			{
+				this.ShedDoor.Prompt.Label[0].text = "     " + "Open";
+				this.ShedDoor.Locked = false;
 				if (this.Yandere.Armed)
 				{
 					this.Yandere.Weapon[this.Yandere.Equipped].SuspicionCheck();
@@ -446,6 +450,11 @@ public class ClubManagerScript : MonoBehaviour
 			}
 			else if (PlayerPrefs.GetInt("Club") == 10)
 			{
+				if (!this.Yandere.Inventory.ShedKey)
+				{
+					this.ShedDoor.Prompt.Label[0].text = "     " + "Locked";
+					this.ShedDoor.Locked = true;
+				}
 				if (this.Yandere.Armed)
 				{
 					PlayerPrefs.SetInt("Club", 0);

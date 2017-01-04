@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$3096 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$3116 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$3111;
+		internal YandereScript $self_$3131;
 
-		public $ApplyCustomCostume$3096(YandereScript self_)
+		public $ApplyCustomCostume$3116(YandereScript self_)
 		{
-			this.$self_$3111 = self_;
+			this.$self_$3131 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$3096.$(this.$self_$3111);
+			return new YandereScript.$ApplyCustomCostume$3116.$(this.$self_$3131);
 		}
 	}
 
@@ -171,6 +171,8 @@ public class YandereScript : MonoBehaviour
 
 	public Transform PelvisRoot;
 
+	public Transform PoisonSpot;
+
 	public Transform CameraPOV;
 
 	public Transform RightHand;
@@ -202,6 +204,8 @@ public class YandereScript : MonoBehaviour
 	public GameObject[] Accessories;
 
 	public GameObject[] Hairstyles;
+
+	public GameObject[] Poisons;
 
 	public GameObject[] Shoes;
 
@@ -359,6 +363,8 @@ public class YandereScript : MonoBehaviour
 
 	public int NearBodies;
 
+	public int PoisonType;
+
 	public int Schoolwear;
 
 	public int EyewearID;
@@ -385,6 +391,10 @@ public class YandereScript : MonoBehaviour
 
 	public bool BucketDropping;
 
+	public bool Eavesdropping;
+
+	public bool Pickpocketing;
+
 	public bool Dismembering;
 
 	public bool TimeSkipping;
@@ -398,6 +408,8 @@ public class YandereScript : MonoBehaviour
 	public bool Crouching;
 
 	public bool Degloving;
+
+	public bool Poisoning;
 
 	public bool Rummaging;
 
@@ -908,6 +920,9 @@ public class YandereScript : MonoBehaviour
 		this.CirnoWings.active = false;
 		this.KONGlasses.active = false;
 		this.EbolaWings.active = false;
+		this.Poisons[1].active = false;
+		this.Poisons[2].active = false;
+		this.Poisons[3].active = false;
 		this.EbolaHair.active = false;
 		this.FalconGun.active = false;
 		this.EyepatchL.active = false;
@@ -2397,6 +2412,24 @@ public class YandereScript : MonoBehaviour
 					}
 				}
 			}
+			if (this.Poisoning)
+			{
+				this.MoveTowardsTarget(this.PoisonSpot.position);
+				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.PoisonSpot.rotation, Time.deltaTime * (float)10);
+				if (this.CharacterAnimation["f02_poisoning_00"].time >= this.CharacterAnimation["f02_poisoning_00"].length)
+				{
+					this.Poisoning = false;
+					this.CanMove = true;
+				}
+				else if (this.CharacterAnimation["f02_poisoning_00"].time >= 5.25f)
+				{
+					this.Poisons[this.PoisonType].active = false;
+				}
+				else if (this.CharacterAnimation["f02_poisoning_00"].time >= 0.75f)
+				{
+					this.Poisons[this.PoisonType].active = true;
+				}
+			}
 			if (!this.Laughing)
 			{
 				this.audio.volume = this.audio.volume - Time.deltaTime * (float)2;
@@ -2962,6 +2995,14 @@ public class YandereScript : MonoBehaviour
 						{
 							this.Sanity -= (float)20 * this.Numbness;
 						}
+					}
+					if (this.CharacterAnimation[this.DrownAnim].time > (float)9)
+					{
+						this.StudentManager.FemaleDrownSplashes.Stop();
+					}
+					else if (this.CharacterAnimation[this.DrownAnim].time > (float)3)
+					{
+						this.StudentManager.FemaleDrownSplashes.Play();
 					}
 				}
 				else if (this.RoofPush)
@@ -4088,7 +4129,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$3096(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$3116(this).GetEnumerator();
 	}
 
 	public virtual void WearGloves()
@@ -4407,6 +4448,7 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)0);
 		this.EasterEggMenu.active = false;
 		this.ClubAttire = false;
+		this.Schoolwear = 0;
 		this.ClubAccessory();
 	}
 
@@ -4451,7 +4493,7 @@ public class YandereScript : MonoBehaviour
 		{
 			this.TextureToUse = this.UniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
 		}
-		if (this.Schoolwear == 0)
+		if (this.ClubAttire || this.Schoolwear == 0)
 		{
 			this.Nude();
 		}

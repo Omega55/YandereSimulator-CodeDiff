@@ -107,6 +107,8 @@ public class MissionModeScript : MonoBehaviour
 
 	public int MurderWeaponID;
 
+	public int GameOverPhase;
+
 	public int Destination;
 
 	public int Difficulty;
@@ -157,6 +159,8 @@ public class MissionModeScript : MonoBehaviour
 
 	public bool TargetDead;
 
+	public bool Chastise;
+
 	public bool FadeOut;
 
 	public string CauseOfFailure;
@@ -176,6 +180,8 @@ public class MissionModeScript : MonoBehaviour
 	public AudioClip InfoObjective;
 
 	public AudioClip InfoFailure;
+
+	public AudioClip GameOverSound;
 
 	public ColorCorrectionCurves[] ColorCorrections;
 
@@ -448,7 +454,7 @@ public class MissionModeScript : MonoBehaviour
 			}
 			if (this.RequiredWeaponID > 0 && this.StudentManager.Students[this.TargetID] != null && this.StudentManager.Students[this.TargetID].Dead && this.StudentManager.Students[this.TargetID].DeathCause != this.RequiredWeaponID)
 			{
-				this.audio.PlayOneShot(this.InfoFailure);
+				this.Chastise = true;
 				this.GameOverID = 2;
 				this.GameOver();
 				this.Phase = 4;
@@ -457,7 +463,7 @@ public class MissionModeScript : MonoBehaviour
 			{
 				if (this.Yandere.Schoolwear != this.RequiredClothingID)
 				{
-					this.audio.PlayOneShot(this.InfoFailure);
+					this.Chastise = true;
 					this.GameOverID = 3;
 					this.GameOver();
 					this.Phase = 4;
@@ -514,7 +520,7 @@ public class MissionModeScript : MonoBehaviour
 				{
 					if (this.DisposalMethod != this.RequiredDisposalID)
 					{
-						this.audio.PlayOneShot(this.InfoFailure);
+						this.Chastise = true;
 						this.GameOverID = 4;
 						this.GameOver();
 						this.Phase = 4;
@@ -531,7 +537,7 @@ public class MissionModeScript : MonoBehaviour
 				{
 					if (this.StudentManager.Students[this.TargetID] != null && !this.StudentManager.Students[this.TargetID].Dead)
 					{
-						this.audio.PlayOneShot(this.InfoFailure);
+						this.Chastise = true;
 						this.GameOverID = 5;
 						this.GameOver();
 						this.Phase = 4;
@@ -551,7 +557,7 @@ public class MissionModeScript : MonoBehaviour
 				{
 					if (this.StudentManager.Students[this.ID] != null && this.StudentManager.Students[this.ID].WitnessedMurder)
 					{
-						this.audio.PlayOneShot(this.InfoFailure);
+						this.Chastise = true;
 						this.GameOverID = 6;
 						this.GameOver();
 						this.Phase = 4;
@@ -566,7 +572,7 @@ public class MissionModeScript : MonoBehaviour
 				{
 					if (this.StudentManager.Students[this.ID] != null && this.StudentManager.Students[this.ID].WitnessedCorpse)
 					{
-						this.audio.PlayOneShot(this.InfoFailure);
+						this.Chastise = true;
 						this.GameOverID = 7;
 						this.GameOver();
 						this.Phase = 4;
@@ -601,7 +607,7 @@ public class MissionModeScript : MonoBehaviour
 			{
 				if (!this.Yandere.PauseScreen.Show)
 				{
-					this.TimeRemaining = Mathf.MoveTowards(this.TimeRemaining, (float)0, Time.unscaledDeltaTime);
+					this.TimeRemaining = Mathf.MoveTowards(this.TimeRemaining, (float)0, 0.0166666675f);
 				}
 				int num7 = Mathf.CeilToInt(this.TimeRemaining);
 				int num8 = num7 / 60;
@@ -609,7 +615,7 @@ public class MissionModeScript : MonoBehaviour
 				this.TimeLabel.text = string.Format("{0:00}:{1:00}", num8, num9);
 				if (this.TimeRemaining == (float)0)
 				{
-					this.audio.PlayOneShot(this.InfoFailure);
+					this.Chastise = true;
 					this.GameOverID = 10;
 					this.GameOver();
 					this.Phase = 4;
@@ -676,7 +682,7 @@ public class MissionModeScript : MonoBehaviour
 					}
 				}
 			}
-			if (this.TargetDead && this.CorpseDisposed && this.BloodCleaned && this.WeaponDisposed && this.DocumentsStolen && !this.ExitPortal.active)
+			if (this.TargetDead && this.CorpseDisposed && this.BloodCleaned && this.WeaponDisposed && this.DocumentsStolen && this.GameOverID == 0 && !this.ExitPortal.active)
 			{
 				this.NotificationManager.DisplayNotification("Complete");
 				this.NotificationManager.DisplayNotification("Exfiltrate");
@@ -764,23 +770,46 @@ public class MissionModeScript : MonoBehaviour
 					}
 				}
 			}
+			if (this.GameOverPhase == 1)
+			{
+				if (this.Timer > 2.5f)
+				{
+					if (this.Chastise)
+					{
+						this.audio.PlayOneShot(this.InfoFailure);
+						this.GameOverPhase++;
+					}
+					else
+					{
+						this.GameOverPhase++;
+						this.Timer += (float)5;
+					}
+				}
+			}
+			else if (this.GameOverPhase == 2 && this.Timer > 7.5f)
+			{
+				this.Jukebox.MissionMode.audio.clip = this.StealthMusic[0];
+				this.Jukebox.MissionMode.audio.Play();
+				this.Jukebox.Volume = 0.5f;
+				this.GameOverPhase++;
+			}
 		}
 	}
 
 	public virtual void GameOver()
 	{
 		this.GameOverReason.text = this.GameOverReasons[this.GameOverID];
-		this.Jukebox.MissionMode.audio.clip = this.StealthMusic[0];
 		this.ColorCorrections[2].enabled = true;
-		this.Jukebox.MissionMode.audio.Play();
+		this.audio.PlayOneShot(this.GameOverSound);
 		this.DetectionCamera.active = false;
 		this.HeartbeatCamera.active = false;
 		this.WitnessCamera.active = false;
 		this.GameOverText.active = true;
 		this.Yandere.HUD.active = false;
 		this.Subtitle.active = false;
-		this.Jukebox.Volume = 0.5f;
 		Time.timeScale = (float)0;
+		this.GameOverPhase = 1;
+		this.Jukebox.MissionMode.audio.Stop();
 	}
 
 	public virtual void Success()
