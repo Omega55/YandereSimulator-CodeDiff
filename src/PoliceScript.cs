@@ -7,9 +7,11 @@ public class PoliceScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
 
+	public ClubManagerScript ClubManager;
+
 	public HeartbrokenScript Heartbroken;
 
-	public ClubManagerScript ClubManager;
+	public PauseScreenScript PauseScreen;
 
 	public ReputationScript Reputation;
 
@@ -286,6 +288,7 @@ public class PoliceScript : MonoBehaviour
 					}
 				}
 			}
+			this.PauseScreen.Panel.alpha = Mathf.MoveTowards(this.PauseScreen.Panel.alpha, (float)0, Time.deltaTime);
 			float a = this.Darkness.color.a + Time.deltaTime;
 			Color color = this.Darkness.color;
 			float num3 = color.a = a;

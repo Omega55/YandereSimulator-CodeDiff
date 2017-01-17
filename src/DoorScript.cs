@@ -214,7 +214,7 @@ public class DoorScript : MonoBehaviour
 				}
 			}
 		}
-		else if (this.Locked)
+		else if (this.Locked && this.Prompt.Circle[0].fillAmount < (float)1)
 		{
 			this.Prompt.Label[0].text = "     " + "Locked";
 			this.Prompt.Circle[0].fillAmount = (float)1;

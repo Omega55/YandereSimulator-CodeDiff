@@ -19,6 +19,8 @@ public class PickUpScript : MonoBehaviour
 
 	public PromptScript Prompt;
 
+	public Rigidbody MyRigidbody;
+
 	public Collider MyCollider;
 
 	public Vector3 TrashPosition;
@@ -40,6 +42,8 @@ public class PickUpScript : MonoBehaviour
 	public bool CanCollide;
 
 	public bool Suspicious;
+
+	public bool Blowtorch;
 
 	public bool BodyPart;
 
@@ -83,6 +87,7 @@ public class PickUpScript : MonoBehaviour
 		}
 		this.OriginalColor = this.Outline[0].color;
 		this.OriginalScale = this.transform.localScale;
+		this.MyRigidbody = this.rigidbody;
 	}
 
 	public virtual void LateUpdate()
@@ -125,9 +130,9 @@ public class PickUpScript : MonoBehaviour
 			this.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
 			this.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
 			this.MyCollider.enabled = false;
-			if (this.rigidbody != null)
+			if (this.MyRigidbody != null)
 			{
-				this.rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+				this.MyRigidbody.constraints = RigidbodyConstraints.FreezeAll;
 			}
 			if (!this.Usable)
 			{
@@ -173,12 +178,12 @@ public class PickUpScript : MonoBehaviour
 				UnityEngine.Object.Destroy(this.gameObject);
 			}
 		}
-		if (this.rigidbody != null && !this.rigidbody.isKinematic)
+		if (this.MyRigidbody != null && !this.MyRigidbody.isKinematic)
 		{
 			this.KinematicTimer = Mathf.MoveTowards(this.KinematicTimer, (float)5, Time.deltaTime);
 			if (this.KinematicTimer == (float)5)
 			{
-				this.rigidbody.isKinematic = true;
+				this.MyRigidbody.isKinematic = true;
 				this.KinematicTimer = (float)0;
 			}
 		}
@@ -204,11 +209,11 @@ public class PickUpScript : MonoBehaviour
 			float num4 = localEulerAngles2.z = (float)num3;
 			Vector3 vector2 = this.transform.localEulerAngles = localEulerAngles2;
 		}
-		if (this.rigidbody != null)
+		if (this.MyRigidbody != null)
 		{
-			this.rigidbody.constraints = this.OriginalConstraints;
-			this.rigidbody.isKinematic = false;
-			this.rigidbody.useGravity = true;
+			this.MyRigidbody.constraints = this.OriginalConstraints;
+			this.MyRigidbody.isKinematic = false;
+			this.MyRigidbody.useGravity = true;
 		}
 		if (this.Dumped)
 		{

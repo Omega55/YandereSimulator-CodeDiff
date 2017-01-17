@@ -77,11 +77,15 @@ public class RagdollScript : MonoBehaviour
 
 	public bool MurderSuicide;
 
+	public bool Cauterizable;
+
 	public bool Electrocuted;
 
 	public bool StopAnimation;
 
 	public bool Dismembered;
+
+	public bool Cauterized;
 
 	public bool Disturbing;
 
@@ -106,6 +110,8 @@ public class RagdollScript : MonoBehaviour
 	public bool Settled;
 
 	public bool Suicide;
+
+	public bool Burned;
 
 	public bool Dumped;
 
@@ -220,18 +226,55 @@ public class RagdollScript : MonoBehaviour
 			}
 			if (!Input.GetButtonDown("LB"))
 			{
+				if (!this.Cauterized)
+				{
+					if (this.Yandere.PickUp != null)
+					{
+						if (this.Yandere.PickUp.Blowtorch)
+						{
+							if (!this.Cauterizable)
+							{
+								this.Prompt.Label[0].text = "     " + "Cauterize";
+								this.Cauterizable = true;
+							}
+						}
+						else if (this.Cauterizable)
+						{
+							this.Prompt.Label[0].text = "     " + "Dismember";
+							this.Cauterizable = false;
+						}
+					}
+					else if (this.Cauterizable)
+					{
+						this.Prompt.Label[0].text = "     " + "Dismember";
+						this.Cauterizable = false;
+					}
+				}
 				if (this.Prompt.Circle[0].fillAmount <= (float)0)
 				{
-					this.Yandere.Character.animation.CrossFade("f02_dismember_00");
-					this.Yandere.transform.LookAt(this.transform);
-					this.Yandere.RPGCamera.transform.position = this.Yandere.DismemberSpot.position;
-					this.Yandere.RPGCamera.transform.eulerAngles = this.Yandere.DismemberSpot.eulerAngles;
-					this.Yandere.Weapon[this.Yandere.Equipped].Dismember();
-					this.Yandere.RPGCamera.enabled = false;
-					this.Yandere.Ragdoll = this.gameObject;
-					this.Yandere.TargetStudent = this.Student;
-					this.Yandere.Dismembering = true;
-					this.Yandere.CanMove = false;
+					if (this.Cauterizable)
+					{
+						this.BloodPoolSpawner.enabled = false;
+						this.Cauterized = true;
+						this.Yandere.CharacterAnimation.CrossFade("f02_cauterize_00");
+						this.Yandere.Cauterizing = true;
+						this.Yandere.CanMove = false;
+						((BlowtorchScript)this.Yandere.PickUp.GetComponent(typeof(BlowtorchScript))).enabled = true;
+						this.Yandere.PickUp.audio.Play();
+					}
+					else
+					{
+						this.Yandere.Character.animation.CrossFade("f02_dismember_00");
+						this.Yandere.transform.LookAt(this.transform);
+						this.Yandere.RPGCamera.transform.position = this.Yandere.DismemberSpot.position;
+						this.Yandere.RPGCamera.transform.eulerAngles = this.Yandere.DismemberSpot.eulerAngles;
+						this.Yandere.Weapon[this.Yandere.Equipped].Dismember();
+						this.Yandere.RPGCamera.enabled = false;
+						this.Yandere.TargetStudent = this.Student;
+						this.Yandere.Ragdoll = this.gameObject;
+						this.Yandere.Dismembering = true;
+						this.Yandere.CanMove = false;
+					}
 				}
 				if (this.Prompt.Circle[1].fillAmount <= (float)0)
 				{
@@ -335,7 +378,16 @@ public class RagdollScript : MonoBehaviour
 			{
 				this.Prompt.AcceptingInput[1] = true;
 			}
-			if (!this.Dragged && !this.Carried && !this.Tranquil && this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].WeaponID == 7 && !this.Nemesis)
+			bool flag = false;
+			if (this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].WeaponID == 7)
+			{
+				flag = true;
+			}
+			if (!this.Cauterized && this.Yandere.PickUp != null && this.Yandere.PickUp.Blowtorch)
+			{
+				flag = true;
+			}
+			if (!this.Dragged && !this.Carried && !this.Tranquil && flag && !this.Nemesis)
 			{
 				this.Prompt.HideButton[0] = false;
 			}
@@ -413,6 +465,18 @@ public class RagdollScript : MonoBehaviour
 			if (this.MyRenderer.materials[0].color == new Vector4(0.1f, 0.1f, 0.1f, (float)1))
 			{
 				this.Burning = false;
+				this.Burned = true;
+			}
+		}
+		if (this.Burned)
+		{
+			if (Vector3.Distance(this.Prompt.transform.position, this.Yandere.StudentManager.SacrificeSpot.position) < 1.5f)
+			{
+				this.Sacrifice = true;
+			}
+			else
+			{
+				this.Sacrifice = false;
 			}
 		}
 	}

@@ -91,7 +91,11 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform[] LockerPositions;
 
+	public StudentScript[] WitnessList;
+
 	public Transform[] SpawnPositions;
+
+	public Transform[] PinDownSpots;
 
 	public StudentScript[] Teachers;
 
@@ -136,6 +140,8 @@ public class StudentManagerScript : MonoBehaviour
 	public Transform MaleStalkSpot;
 
 	public Transform MaleVomitSpot;
+
+	public Transform SacrificeSpot;
 
 	public Transform FountainSpot;
 
@@ -193,6 +199,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public int NPCsTotal;
 
+	public int Witnesses;
+
 	public int Frame;
 
 	public int GymTeacherID;
@@ -216,6 +224,8 @@ public class StudentManagerScript : MonoBehaviour
 	public bool FirstUpdate;
 
 	public bool MissionMode;
+
+	public bool PinningDown;
 
 	public bool ForceSpawn;
 
@@ -248,6 +258,10 @@ public class StudentManagerScript : MonoBehaviour
 	public string[] FirstNames;
 
 	public string[] LastNames;
+
+	public AudioClip YanderePinDown;
+
+	public AudioClip PinDownSFX;
 
 	public bool SeatOccupied;
 
@@ -420,6 +434,86 @@ public class StudentManagerScript : MonoBehaviour
 		{
 			Application.CaptureScreenshot(Application.streamingAssetsPath + "/Portraits/" + "Student_" + this.NPCsSpawned + ".png");
 			this.active = false;
+		}
+		if (this.Witnesses > 0)
+		{
+			this.ID = 1;
+			while (this.ID < this.WitnessList.Length)
+			{
+				if (this.WitnessList[this.ID] != null && (this.WitnessList[this.ID].Attacked || (this.WitnessList[this.ID].Fleeing && !this.WitnessList[this.ID].PinningDown)))
+				{
+					this.WitnessList[this.ID] = null;
+					if (this.ID != this.WitnessList.Length - 1)
+					{
+						this.Shuffle(this.ID);
+					}
+					this.Witnesses--;
+				}
+				this.ID++;
+			}
+		}
+		if (this.PinningDown)
+		{
+			if (this.WitnessList[1].PinPhase == 0)
+			{
+				if (this.WitnessList[1].DistanceToDestination < (float)1 && this.WitnessList[2].DistanceToDestination < (float)1 && this.WitnessList[3].DistanceToDestination < (float)1 && this.WitnessList[4].DistanceToDestination < (float)1)
+				{
+					this.audio.PlayOneShot(this.PinDownSFX);
+					this.audio.PlayOneShot(this.YanderePinDown);
+					this.Yandere.CharacterAnimation.CrossFade("f02_pinDown_00");
+					this.Yandere.CanMove = false;
+					this.Yandere.ShoulderCamera.LookDown = true;
+					this.Yandere.RPGCamera.enabled = false;
+					this.ID = 1;
+					while (this.ID < 5)
+					{
+						this.WitnessList[this.ID].SetLayerRecursively(this.WitnessList[this.ID].gameObject, 13);
+						if (!this.WitnessList[this.ID].Male)
+						{
+							this.WitnessList[this.ID].CharacterAnimation.CrossFade("f02_pinDown_0" + this.ID);
+						}
+						else
+						{
+							this.WitnessList[this.ID].CharacterAnimation.CrossFade("pinDown_0" + this.ID);
+						}
+						this.WitnessList[this.ID].PinPhase = this.WitnessList[this.ID].PinPhase + 1;
+						this.ID++;
+					}
+				}
+			}
+			else
+			{
+				bool flag = false;
+				if (!this.WitnessList[1].Male)
+				{
+					if (this.WitnessList[1].CharacterAnimation["f02_pinDown_01"].time >= this.WitnessList[1].CharacterAnimation["f02_pinDown_01"].length)
+					{
+						flag = true;
+					}
+				}
+				else if (this.WitnessList[1].CharacterAnimation["pinDown_01"].time >= this.WitnessList[1].CharacterAnimation["pinDown_01"].length)
+				{
+					flag = true;
+				}
+				if (flag)
+				{
+					this.Yandere.CharacterAnimation.CrossFade("f02_pinDownLoop_00");
+					this.ID = 1;
+					while (this.ID < 5)
+					{
+						if (!this.WitnessList[this.ID].Male)
+						{
+							this.WitnessList[this.ID].CharacterAnimation.CrossFade("f02_pinDownLoop_0" + this.ID);
+						}
+						else
+						{
+							this.WitnessList[this.ID].CharacterAnimation.CrossFade("pinDownLoop_0" + this.ID);
+						}
+						this.ID++;
+					}
+					this.PinningDown = false;
+				}
+			}
 		}
 	}
 
@@ -749,7 +843,7 @@ public class StudentManagerScript : MonoBehaviour
 					{
 						this.Students[this.ID].Character.animation.CrossFade(this.Students[this.ID].ScaredAnim);
 					}
-					else
+					else if (this.ID > 1)
 					{
 						this.Students[this.ID].Character.animation.CrossFade(this.Students[this.ID].IdleAnim);
 					}
@@ -1139,6 +1233,46 @@ public class StudentManagerScript : MonoBehaviour
 		if (!this.SeatOccupied)
 		{
 			this.FindUnoccupiedSeat();
+		}
+	}
+
+	public virtual void PinDownCheck()
+	{
+		if (!this.PinningDown && this.Witnesses > 3)
+		{
+			this.Yandere.Chased = true;
+			this.Yandere.RunSpeed = (float)2;
+			this.PinningDown = true;
+			Debug.Log("Met criteria.");
+			this.ID = 1;
+			while (this.ID < 5)
+			{
+				if (this.WitnessList[this.ID] != null)
+				{
+					this.WitnessList[this.ID].CurrentDestination = this.PinDownSpots[this.ID];
+					this.WitnessList[this.ID].Pathfinding.target = this.PinDownSpots[this.ID];
+					this.WitnessList[this.ID].DistanceToDestination = (float)100;
+					this.WitnessList[this.ID].Pathfinding.speed = (float)5;
+					this.WitnessList[this.ID].PinningDown = true;
+					this.WitnessList[this.ID].Alarmed = false;
+					this.WitnessList[this.ID].Routine = false;
+					this.WitnessList[this.ID].Fleeing = true;
+					this.WitnessList[this.ID].AlarmTimer = (float)0;
+					this.WitnessList[this.ID].Safe = true;
+					this.WitnessList[this.ID].Prompt.Hide();
+					this.WitnessList[this.ID].Prompt.enabled = false;
+					Debug.Log(this.WitnessList[this.ID] + "'s current desination is " + this.WitnessList[this.ID].CurrentDestination);
+				}
+				this.ID++;
+			}
+		}
+	}
+
+	public virtual void Shuffle(int Start)
+	{
+		for (int i = Start; i < this.WitnessList.Length - 1; i++)
+		{
+			this.WitnessList[i] = this.WitnessList[i + 1];
 		}
 	}
 

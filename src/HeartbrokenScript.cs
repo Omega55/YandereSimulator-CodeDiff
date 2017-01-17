@@ -92,7 +92,7 @@ public class HeartbrokenScript : MonoBehaviour
 			this.LetterID = 1;
 			this.StopID = 9;
 		}
-		if (this.Yandere.Lost || this.ShoulderCamera.Counter)
+		else if (this.Yandere.Lost || this.ShoulderCamera.LookDown || this.ShoulderCamera.Counter)
 		{
 			this.Letters[0].text = "A";
 			this.Letters[1].text = "P";

@@ -52,6 +52,8 @@ public class ShoulderCameraScript : MonoBehaviour
 
 	public bool DoNotMove;
 
+	public bool LookDown;
+
 	public bool Scolding;
 
 	public bool Struggle;
@@ -59,6 +61,8 @@ public class ShoulderCameraScript : MonoBehaviour
 	public bool Counter;
 
 	public bool Noticed;
+
+	public bool Spoken;
 
 	public AudioClip StruggleLose;
 
@@ -114,12 +118,12 @@ public class ShoulderCameraScript : MonoBehaviour
 					else if (((StudentScript)this.Yandere.Senpai.GetComponent(typeof(StudentScript))).Witnessed == "Stalking")
 					{
 						this.NoticedHeight = 1.481275f;
-						this.NoticedLimit = 5;
+						this.NoticedLimit = 6;
 					}
 					else
 					{
 						this.NoticedHeight = 1.375f;
-						this.NoticedLimit = 5;
+						this.NoticedLimit = 6;
 					}
 					this.NoticedPOV.position = this.Yandere.Senpai.position + this.Yandere.Senpai.forward * (float)1 + Vector3.up * this.NoticedHeight;
 					this.NoticedPOV.LookAt(this.Yandere.Senpai.position + Vector3.up * this.NoticedHeight);
@@ -130,7 +134,12 @@ public class ShoulderCameraScript : MonoBehaviour
 				if (this.Phase == 1)
 				{
 					this.NoticedFocus.position = Vector3.Lerp(this.NoticedFocus.position, this.Yandere.Senpai.position + Vector3.up * this.NoticedHeight, Time.deltaTime * (float)10);
-					this.NoticedPOV.Translate(Vector3.forward * Time.deltaTime * 0.075f);
+					this.NoticedPOV.Translate(Vector3.forward * Time.deltaTime * -0.075f);
+					if (this.NoticedTimer > (float)1 && !this.Spoken)
+					{
+						((StudentScript)this.Yandere.Senpai.GetComponent(typeof(StudentScript))).DetermineSenpaiReaction();
+						this.Spoken = true;
+					}
 					if (this.NoticedTimer > (float)this.NoticedLimit)
 					{
 						((StudentScript)this.Yandere.Senpai.GetComponent(typeof(StudentScript))).Character.active = false;
@@ -286,6 +295,23 @@ public class ShoulderCameraScript : MonoBehaviour
 				this.Focus.transform.parent = null;
 				this.Focus.transform.position = Vector3.Lerp(this.Focus.transform.position, this.Yandere.Hips.position, Time.deltaTime);
 				this.transform.LookAt(this.Focus);
+			}
+			else if (this.LookDown)
+			{
+				this.Timer += Time.deltaTime;
+				if (this.Timer < (float)5)
+				{
+					this.transform.position = Vector3.Lerp(this.transform.position, this.Yandere.Hips.position + Vector3.up * (float)3 + Vector3.right * 0.1f, Time.deltaTime * this.Timer);
+					this.Focus.transform.parent = null;
+					this.Focus.transform.position = Vector3.Lerp(this.Focus.transform.position, this.Yandere.Hips.position, Time.deltaTime * this.Timer);
+					this.transform.LookAt(this.Focus);
+				}
+				else if (!this.HeartbrokenCamera.active)
+				{
+					this.HeartbrokenCamera.active = true;
+					this.Yandere.Jukebox.GameOver();
+					this.enabled = false;
+				}
 			}
 			else if ((this.Yandere.Talking || this.Yandere.Won) && !this.RPGCamera.enabled)
 			{

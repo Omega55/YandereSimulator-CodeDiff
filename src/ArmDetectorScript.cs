@@ -10,6 +10,8 @@ public class ArmDetectorScript : MonoBehaviour
 
 	public YandereScript Yandere;
 
+	public PoliceScript Police;
+
 	public SkullScript Skull;
 
 	public UILabel DemonSubtitle;
@@ -20,21 +22,39 @@ public class ArmDetectorScript : MonoBehaviour
 
 	public GameObject[] ArmArray;
 
+	public GameObject RiggedAccessory;
+
 	public GameObject BloodProjector;
 
 	public GameObject SmallDarkAura;
 
+	public GameObject RightFlame;
+
+	public GameObject LeftFlame;
+
 	public GameObject DemonArm;
+
+	public bool SummonFlameDemon;
 
 	public bool SummonDemon;
 
-	public float Timer;
+	public Mesh FlameDemonMesh;
 
-	public int Phase;
+	public int CorpsesCounted;
 
 	public int ArmsSpawned;
 
+	public int Sacrifices;
+
+	public int Phase;
+
 	public int Arms;
+
+	public float Timer;
+
+	public AudioClip FlameDemonLine;
+
+	public AudioClip FlameActivate;
 
 	public AudioClip DemonMusic;
 
@@ -47,25 +67,53 @@ public class ArmDetectorScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		for (int i = 1; i < this.ArmArray.Length; i++)
+		if (!this.SummonDemon)
 		{
-			if (this.ArmArray[i] != null && this.ArmArray[i].transform.parent != null)
+			for (int i = 1; i < this.ArmArray.Length; i++)
 			{
-				this.ArmArray[i] = null;
-				if (i != this.ArmArray.Length - 1)
+				if (this.ArmArray[i] != null && this.ArmArray[i].transform.parent != null)
 				{
-					this.Shuffle(i);
+					this.ArmArray[i] = null;
+					if (i != this.ArmArray.Length - 1)
+					{
+						this.Shuffle(i);
+					}
+					this.Arms--;
 				}
-				this.Arms--;
+			}
+			if (this.Arms > 9)
+			{
+				this.Yandere.Character.animation.CrossFade(this.Yandere.IdleAnim);
+				this.Yandere.CanMove = false;
+				this.SummonDemon = true;
+				this.audio.Play();
+				this.Arms = 0;
 			}
 		}
-		if (this.Arms > 9)
+		if (!this.SummonFlameDemon)
 		{
-			this.Yandere.Character.animation.CrossFade(this.Yandere.IdleAnim);
-			this.Yandere.CanMove = false;
-			this.SummonDemon = true;
-			this.audio.Play();
-			this.Arms = 0;
+			this.CorpsesCounted = 0;
+			this.Sacrifices = 0;
+			int i = 0;
+			while (this.CorpsesCounted < this.Police.Corpses)
+			{
+				if (this.Police.CorpseList[i] != null)
+				{
+					this.CorpsesCounted++;
+					if (this.Police.CorpseList[i].Burned && this.Police.CorpseList[i].Sacrifice && !this.Police.CorpseList[i].Dragged && !this.Police.CorpseList[i].Carried)
+					{
+						this.Sacrifices++;
+					}
+				}
+				i++;
+			}
+			if (this.Sacrifices > 4)
+			{
+				this.Yandere.Character.animation.CrossFade(this.Yandere.IdleAnim);
+				this.Yandere.CanMove = false;
+				this.SummonFlameDemon = true;
+				this.audio.Play();
+			}
 		}
 		if (this.SummonDemon)
 		{
@@ -118,7 +166,7 @@ public class ArmDetectorScript : MonoBehaviour
 			}
 			else if (this.Phase == 3)
 			{
-				this.DemonSubtitle.transform.localPosition = new Vector3(UnityEngine.Random.Range((float)-10, 10f), UnityEngine.Random.Range((float)-10, 10f), UnityEngine.Random.Range((float)-10, 10f));
+				this.DemonSubtitle.transform.localPosition = new Vector3(UnityEngine.Random.Range(-10f, 10f), UnityEngine.Random.Range(-10f, 10f), UnityEngine.Random.Range(-10f, 10f));
 				float a2 = Mathf.MoveTowards(this.DemonSubtitle.color.a, (float)1, Time.deltaTime);
 				Color color5 = this.DemonSubtitle.color;
 				float num4 = color5.a = a2;
@@ -130,7 +178,7 @@ public class ArmDetectorScript : MonoBehaviour
 			}
 			else if (this.Phase == 4)
 			{
-				this.DemonSubtitle.transform.localPosition = new Vector3(UnityEngine.Random.Range((float)-10, 10f), UnityEngine.Random.Range((float)-10, 10f), UnityEngine.Random.Range((float)-10, 10f));
+				this.DemonSubtitle.transform.localPosition = new Vector3(UnityEngine.Random.Range(-10f, 10f), UnityEngine.Random.Range(-10f, 10f), UnityEngine.Random.Range(-10f, 10f));
 				float a3 = Mathf.MoveTowards(this.DemonSubtitle.color.a, (float)0, Time.deltaTime);
 				Color color7 = this.DemonSubtitle.color;
 				float num5 = color7.a = a3;
@@ -186,6 +234,123 @@ public class ArmDetectorScript : MonoBehaviour
 					this.Yandere.RunAnim = "f02_demonRun_00";
 					this.Yandere.Demonic = true;
 					this.SummonDemon = false;
+				}
+			}
+		}
+		if (this.SummonFlameDemon)
+		{
+			if (this.Phase == 1)
+			{
+				for (int i = 0; i < this.Police.CorpseList.Length; i++)
+				{
+					if (this.Police.CorpseList[i] != null && this.Police.CorpseList[i].Burned && this.Police.CorpseList[i].Sacrifice && !this.Police.CorpseList[i].Dragged && !this.Police.CorpseList[i].Carried)
+					{
+						UnityEngine.Object.Instantiate(this.SmallDarkAura, this.Police.CorpseList[i].Prompt.transform.position, Quaternion.identity);
+						UnityEngine.Object.Destroy(this.Police.CorpseList[i].gameObject);
+						this.Police.Corpses = this.Police.Corpses - 1;
+					}
+				}
+				this.Phase++;
+			}
+			else if (this.Phase == 2)
+			{
+				this.Timer += Time.deltaTime;
+				if (this.Timer > (float)1)
+				{
+					this.Timer = (float)0;
+					this.Phase++;
+				}
+			}
+			else if (this.Phase == 3)
+			{
+				float a5 = Mathf.MoveTowards(this.Darkness.color.a, (float)1, Time.deltaTime);
+				Color color11 = this.Darkness.color;
+				float num8 = color11.a = a5;
+				Color color12 = this.Darkness.color = color11;
+				this.Jukebox.Volume = Mathf.MoveTowards(this.Jukebox.Volume, (float)0, Time.deltaTime);
+				if (this.Darkness.color.a == (float)1)
+				{
+					this.Yandere.transform.eulerAngles = new Vector3((float)0, (float)180, (float)0);
+					this.Yandere.transform.position = new Vector3((float)12, 0.1f, (float)26);
+					this.DemonSubtitle.text = "You have proven your worth. Very well. I shall lend you my power.";
+					this.DemonSubtitle.color = new Color((float)1, (float)0, (float)0, (float)0);
+					this.Skull.Prompt.Hide();
+					this.Skull.Prompt.enabled = false;
+					this.Skull.enabled = false;
+					this.audio.clip = this.FlameDemonLine;
+					this.audio.Play();
+					this.Phase++;
+				}
+			}
+			else if (this.Phase == 4)
+			{
+				this.DemonSubtitle.transform.localPosition = new Vector3(UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f));
+				float a6 = Mathf.MoveTowards(this.DemonSubtitle.color.a, (float)1, Time.deltaTime);
+				Color color13 = this.DemonSubtitle.color;
+				float num9 = color13.a = a6;
+				Color color14 = this.DemonSubtitle.color = color13;
+				if (this.DemonSubtitle.color.a == (float)1 && Input.GetButtonDown("A"))
+				{
+					this.Phase++;
+				}
+			}
+			else if (this.Phase == 5)
+			{
+				this.DemonSubtitle.transform.localPosition = new Vector3(UnityEngine.Random.Range((float)-10, 10f), UnityEngine.Random.Range((float)-10, 10f), UnityEngine.Random.Range((float)-10, 10f));
+				float a7 = Mathf.MoveTowards(this.DemonSubtitle.color.a, (float)0, Time.deltaTime);
+				Color color15 = this.DemonSubtitle.color;
+				float num10 = color15.a = a7;
+				Color color16 = this.DemonSubtitle.color = color15;
+				if (this.DemonSubtitle.color.a == (float)0)
+				{
+					this.Yandere.MyRenderer.sharedMesh = this.FlameDemonMesh;
+					this.RiggedAccessory.active = true;
+					this.Yandere.FlameDemonic = true;
+					this.Yandere.Sanity = (float)100;
+					this.Yandere.UpdateSanity();
+					this.Yandere.MyRenderer.materials[0].mainTexture = this.Yandere.FaceTexture;
+					this.Yandere.MyRenderer.materials[1].mainTexture = this.Yandere.NudePanties;
+					this.Yandere.MyRenderer.materials[2].mainTexture = this.Yandere.NudePanties;
+					this.audio.clip = this.DemonMusic;
+					this.audio.loop = true;
+					this.audio.Play();
+					this.DemonSubtitle.text = string.Empty;
+					this.Phase++;
+				}
+			}
+			else if (this.Phase == 6)
+			{
+				float a8 = Mathf.MoveTowards(this.Darkness.color.a, (float)0, Time.deltaTime);
+				Color color17 = this.Darkness.color;
+				float num11 = color17.a = a8;
+				Color color18 = this.Darkness.color = color17;
+				if (this.Darkness.color.a == (float)0)
+				{
+					this.Yandere.Character.animation.CrossFade("f02_demonSummon_00");
+					this.Phase++;
+				}
+			}
+			else if (this.Phase == 7)
+			{
+				this.Timer += Time.deltaTime;
+				if (this.Timer > (float)5)
+				{
+					this.audio.PlayOneShot(this.FlameActivate);
+					this.RightFlame.active = true;
+					this.LeftFlame.active = true;
+					this.Phase++;
+				}
+			}
+			else if (this.Phase == 8)
+			{
+				this.Timer += Time.deltaTime;
+				if (this.Timer > (float)10)
+				{
+					this.Yandere.CanMove = true;
+					this.Yandere.IdleAnim = "f02_demonIdle_00";
+					this.Yandere.WalkAnim = "f02_demonWalk_00";
+					this.Yandere.RunAnim = "f02_demonRun_00";
+					this.SummonFlameDemon = false;
 				}
 			}
 		}

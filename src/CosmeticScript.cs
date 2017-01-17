@@ -123,6 +123,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public GameObject LeftShoe;
 
+	public GameObject Charm;
+
 	public Transform RightBreast;
 
 	public Transform LeftBreast;
@@ -561,6 +563,10 @@ public class CosmeticScript : MonoBehaviour
 			{
 				this.HairRenderer.material.color = this.ColorValue;
 			}
+			if (!this.Male && this.Accessory == 6)
+			{
+				((Renderer)this.FemaleAccessories[6].GetComponent(typeof(Renderer))).material.color = this.ColorValue;
+			}
 		}
 		else
 		{
@@ -904,9 +910,16 @@ public class CosmeticScript : MonoBehaviour
 
 	public virtual void TaskCheck()
 	{
-		if (this.StudentID == 15 && PlayerPrefs.GetInt("Task_15_Status") < 3)
+		if (this.StudentID == 15)
 		{
-			this.MaleAccessories[1].active = false;
+			if (PlayerPrefs.GetInt("Task_15_Status") < 3)
+			{
+				this.MaleAccessories[1].active = false;
+			}
+		}
+		else if (this.StudentID == 33 && PlayerPrefs.GetInt("Task_33_Status") < 3)
+		{
+			this.Charm.active = true;
 		}
 	}
 

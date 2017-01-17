@@ -12,9 +12,9 @@ public class SkullScript : MonoBehaviour
 
 	public ClockScript Clock;
 
-	public Vector3 OriginalPosition;
+	public AudioClip FlameDemonVoice;
 
-	public Vector3 OriginalRotation;
+	public AudioClip FlameActivation;
 
 	public GameObject HeartbeatCamera;
 
@@ -28,7 +28,13 @@ public class SkullScript : MonoBehaviour
 
 	public GameObject HUD;
 
+	public Vector3 OriginalPosition;
+
+	public Vector3 OriginalRotation;
+
 	public UISprite Darkness;
+
+	public float FlameTimer;
 
 	public float Timer;
 
@@ -66,7 +72,15 @@ public class SkullScript : MonoBehaviour
 			this.RitualKnife.transform.position = this.OriginalPosition;
 			this.RitualKnife.transform.eulerAngles = this.OriginalRotation;
 			this.RitualKnife.rigidbody.useGravity = false;
-			if (((WeaponScript)this.RitualKnife.GetComponent(typeof(WeaponScript))).Blood.enabled)
+			if (((WeaponScript)this.RitualKnife.GetComponent(typeof(WeaponScript))).Heated)
+			{
+				this.audio.clip = this.FlameDemonVoice;
+				this.audio.Play();
+				this.FlameTimer = (float)10;
+				((WeaponScript)this.RitualKnife.GetComponent(typeof(WeaponScript))).Prompt.Hide();
+				((WeaponScript)this.RitualKnife.GetComponent(typeof(WeaponScript))).Prompt.enabled = false;
+			}
+			else if (((WeaponScript)this.RitualKnife.GetComponent(typeof(WeaponScript))).Blood.enabled)
 			{
 				this.DebugMenu.active = false;
 				this.Yandere.Character.animation.CrossFade(this.Yandere.IdleAnim);
@@ -74,6 +88,19 @@ public class SkullScript : MonoBehaviour
 				UnityEngine.Object.Instantiate(this.DarkAura, this.Yandere.transform.position + Vector3.up * 0.81f, Quaternion.identity);
 				this.Timer += Time.deltaTime;
 				this.Clock.StopTime = true;
+			}
+		}
+		if (this.FlameTimer > (float)0)
+		{
+			this.FlameTimer = Mathf.MoveTowards(this.FlameTimer, (float)0, Time.deltaTime);
+			if (this.FlameTimer == (float)0)
+			{
+				((WeaponScript)this.RitualKnife.GetComponent(typeof(WeaponScript))).FireEffect.active = true;
+				((WeaponScript)this.RitualKnife.GetComponent(typeof(WeaponScript))).Prompt.enabled = true;
+				((WeaponScript)this.RitualKnife.GetComponent(typeof(WeaponScript))).Flaming = true;
+				this.Prompt.enabled = true;
+				this.audio.clip = this.FlameActivation;
+				this.audio.Play();
 			}
 		}
 		if (this.Timer > (float)0)

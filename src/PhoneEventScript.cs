@@ -131,13 +131,19 @@ public class PhoneEventScript : MonoBehaviour
 				else if (this.EventPhase == 2)
 				{
 					this.Timer += Time.deltaTime;
-					if (this.Timer > (float)2)
+					if (this.Timer > 1.5f)
 					{
-						this.EventStudent.Phone.active = true;
+						if (this.EventStudent.StudentID == 33)
+						{
+							this.EventStudent.SmartPhone.active = true;
+						}
+						else
+						{
+							this.EventStudent.Phone.active = true;
+						}
 					}
-					if (this.Timer > (float)4)
+					if (this.Timer > (float)3)
 					{
-						this.EventStudent.Character.animation.CrossFade(this.EventAnim[1]);
 						this.PlayClip(this.EventClip[1], this.EventStudent.transform.position);
 						this.EventSubtitle.text = this.EventSpeech[1];
 						this.Timer = (float)0;
@@ -180,9 +186,23 @@ public class PhoneEventScript : MonoBehaviour
 						}
 					}
 				}
-				else if (this.EventStudent.Character.animation[this.EventAnim[2]].time >= this.EventStudent.Character.animation[this.EventAnim[2]].length)
+				else
 				{
-					this.EndEvent();
+					if (this.EventStudent.Character.animation[this.EventAnim[2]].time >= this.EventStudent.Character.animation[this.EventAnim[2]].length * 90.33333f)
+					{
+						if (this.EventStudent.StudentID == 33)
+						{
+							this.EventStudent.SmartPhone.active = true;
+						}
+						else
+						{
+							this.EventStudent.Phone.active = true;
+						}
+					}
+					if (this.EventStudent.Character.animation[this.EventAnim[2]].time >= this.EventStudent.Character.animation[this.EventAnim[2]].length)
+					{
+						this.EndEvent();
+					}
 				}
 				float num = Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position);
 				if (num < (float)10)
@@ -246,6 +266,7 @@ public class PhoneEventScript : MonoBehaviour
 			{
 				this.EventStudent.Prompt.enabled = true;
 			}
+			this.EventStudent.SmartPhone.active = false;
 			this.EventStudent.Pathfinding.speed = (float)1;
 			this.EventStudent.Phone.active = false;
 			this.EventStudent.TargetDistance = (float)1;

@@ -7,6 +7,8 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 {
 	public ColorCorrectionCurves ColorCorrection;
 
+	public CosmeticScript YandereCosmetic;
+
 	public AmbientObscurance Obscurance;
 
 	public Vignetting Vignette;
@@ -85,6 +87,7 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		this.YandereCosmetic.SetFemaleUniform();
 		this.Subtitle.text = string.Empty;
 		this.RightEyeOrigin = this.RightEye.localPosition;
 		this.LeftEyeOrigin = this.LeftEye.localPosition;

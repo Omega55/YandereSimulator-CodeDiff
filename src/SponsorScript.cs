@@ -17,7 +17,6 @@ public class SponsorScript : MonoBehaviour
 	{
 		this.Set[1].active = true;
 		this.Set[2].active = false;
-		this.Set[3].active = false;
 		int num = 1;
 		Color color = this.Darkness.color;
 		float num2 = color.a = (float)num;
@@ -27,10 +26,10 @@ public class SponsorScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		this.Timer += Time.deltaTime;
+		this.Timer += Time.deltaTime * 1.33333f;
 		if (this.Timer < (float)6)
 		{
-			float a = this.Darkness.color.a - Time.deltaTime;
+			float a = this.Darkness.color.a - Time.deltaTime * 1.33333f;
 			Color color = this.Darkness.color;
 			float num = color.a = a;
 			Color color2 = this.Darkness.color = color;
@@ -48,7 +47,7 @@ public class SponsorScript : MonoBehaviour
 		}
 		else
 		{
-			float a2 = this.Darkness.color.a + Time.deltaTime;
+			float a2 = this.Darkness.color.a + Time.deltaTime * 1.33333f;
 			Color color5 = this.Darkness.color;
 			float num4 = color5.a = a2;
 			Color color6 = this.Darkness.color = color5;

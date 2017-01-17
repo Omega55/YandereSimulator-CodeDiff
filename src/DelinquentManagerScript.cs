@@ -99,10 +99,6 @@ public class DelinquentManagerScript : MonoBehaviour
 					this.Panel.active = false;
 				}
 			}
-			int num = Mathf.CeilToInt(this.Timer * (float)60);
-			int num2 = num / 60;
-			int num3 = num % 60;
-			this.TimeLabel.text = string.Format("{0:00}:{1:00}", num2, num3);
 		}
 	}
 

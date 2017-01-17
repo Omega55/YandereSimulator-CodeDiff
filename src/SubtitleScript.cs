@@ -845,6 +845,7 @@ public class SubtitleScript : MonoBehaviour
 			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.SenpaiWeaponReactions));
 			this.Label.text = this.SenpaiWeaponReactions[this.RandomID];
 			this.PlayVoice(ReactionType, this.RandomID);
+			Debug.Log("yeah, here.");
 		}
 		else if (ReactionType == "Senpai Blood Reaction")
 		{
@@ -864,9 +865,8 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (ReactionType == "Senpai Murder Reaction")
 		{
-			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.SenpaiMurderReactions));
-			this.Label.text = this.SenpaiMurderReactions[this.RandomID];
-			this.PlayVoice(ReactionType, this.RandomID);
+			this.Label.text = this.SenpaiMurderReactions[ID];
+			this.PlayVoice(ReactionType, ID);
 		}
 		else if (ReactionType == "Senpai Corpse Reaction")
 		{

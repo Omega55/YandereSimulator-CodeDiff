@@ -23,7 +23,11 @@ public class WeaponScript : MonoBehaviour
 
 	public AudioClip DismemberClip;
 
+	public GameObject FireEffect;
+
 	public Collider MyCollider;
+
+	public Renderer MyRenderer;
 
 	public Transform Blade;
 
@@ -43,9 +47,13 @@ public class WeaponScript : MonoBehaviour
 
 	public bool StartLow;
 
+	public bool Flaming;
+
 	public bool Bloody;
 
 	public bool Dumped;
+
+	public bool Heated;
 
 	public bool Metal;
 
