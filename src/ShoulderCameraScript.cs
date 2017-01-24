@@ -135,7 +135,7 @@ public class ShoulderCameraScript : MonoBehaviour
 				{
 					this.NoticedFocus.position = Vector3.Lerp(this.NoticedFocus.position, this.Yandere.Senpai.position + Vector3.up * this.NoticedHeight, Time.deltaTime * (float)10);
 					this.NoticedPOV.Translate(Vector3.forward * Time.deltaTime * -0.075f);
-					if (this.NoticedTimer > (float)1 && !this.Spoken)
+					if (this.NoticedTimer > (float)1 && !this.Spoken && !((StudentScript)this.Yandere.Senpai.GetComponent(typeof(StudentScript))).Teacher)
 					{
 						((StudentScript)this.Yandere.Senpai.GetComponent(typeof(StudentScript))).DetermineSenpaiReaction();
 						this.Spoken = true;

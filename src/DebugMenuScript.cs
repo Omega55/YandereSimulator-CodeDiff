@@ -44,6 +44,8 @@ public class DebugMenuScript : MonoBehaviour
 
 	public int ID;
 
+	public Texture PantyCensorTexture;
+
 	public virtual void Start()
 	{
 		int num = 0;
@@ -244,28 +246,28 @@ public class DebugMenuScript : MonoBehaviour
 				{
 					if (this.Clock.HourTime < (float)15)
 					{
-						PlayerPrefs.SetInt("7_Friend", 1);
+						PlayerPrefs.SetInt("33_Friend", 1);
 						this.Yandere.transform.position = this.RooftopSpot.position;
-						if (this.StudentManager.Students[7] != null)
+						if (this.StudentManager.Students[33] != null)
 						{
 							this.StudentManager.OfferHelp.UpdateLocation();
 							this.StudentManager.OfferHelp.enabled = true;
-							if (!this.StudentManager.Students[7].Indoors)
+							if (!this.StudentManager.Students[33].Indoors)
 							{
-								if (this.StudentManager.Students[7].ShoeRemoval.Locker == null)
+								if (this.StudentManager.Students[33].ShoeRemoval.Locker == null)
 								{
-									this.StudentManager.Students[7].ShoeRemoval.Start();
+									this.StudentManager.Students[33].ShoeRemoval.Start();
 								}
-								this.StudentManager.Students[7].ShoeRemoval.PutOnShoes();
+								this.StudentManager.Students[33].ShoeRemoval.PutOnShoes();
 							}
-							this.StudentManager.Students[7].transform.position = this.RooftopSpot.position;
-							this.StudentManager.Students[7].Prompt.Label[0].text = "     " + "Push";
-							this.StudentManager.Students[7].CurrentDestination = this.RooftopSpot;
-							this.StudentManager.Students[7].Pathfinding.target = this.RooftopSpot;
-							this.StudentManager.Students[7].Pathfinding.canSearch = true;
-							this.StudentManager.Students[7].Pathfinding.canMove = true;
-							this.StudentManager.Students[7].Meeting = true;
-							this.StudentManager.Students[7].MeetTime = (float)0;
+							this.StudentManager.Students[33].transform.position = this.RooftopSpot.position;
+							this.StudentManager.Students[33].Prompt.Label[0].text = "     " + "Push";
+							this.StudentManager.Students[33].CurrentDestination = this.RooftopSpot;
+							this.StudentManager.Students[33].Pathfinding.target = this.RooftopSpot;
+							this.StudentManager.Students[33].Pathfinding.canSearch = true;
+							this.StudentManager.Students[33].Pathfinding.canMove = true;
+							this.StudentManager.Students[33].Meeting = true;
+							this.StudentManager.Students[33].MeetTime = (float)0;
 						}
 						if (this.Clock.HourTime < 7.1f)
 						{
@@ -275,7 +277,7 @@ public class DebugMenuScript : MonoBehaviour
 					else
 					{
 						this.Clock.PresentTime = (float)960;
-						this.StudentManager.Students[7].transform.position = this.Lockers.position;
+						this.StudentManager.Students[33].transform.position = this.Lockers.position;
 					}
 					this.Window.active = false;
 				}
@@ -487,8 +489,18 @@ public class DebugMenuScript : MonoBehaviour
 		{
 			if (this.Yandere.Schoolwear == 1 && !this.Yandere.Sans)
 			{
-				this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)1);
-				this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)1);
+				if (!this.Yandere.FlameDemonic)
+				{
+					this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)1);
+					this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)1);
+				}
+				else
+				{
+					this.Yandere.MyRenderer.materials[2].SetTexture("_OverlayTex", this.PantyCensorTexture);
+					this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)0);
+					this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)0);
+					this.Yandere.MyRenderer.materials[2].SetFloat("_BlendAmount", (float)1);
+				}
 			}
 			this.StudentManager.Censor = true;
 			this.StudentManager.CensorStudents();
@@ -497,9 +509,16 @@ public class DebugMenuScript : MonoBehaviour
 		{
 			this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)0);
 			this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)0);
+			this.Yandere.MyRenderer.materials[2].SetFloat("_BlendAmount", (float)0);
 			this.StudentManager.Censor = false;
 			this.StudentManager.CensorStudents();
 		}
+	}
+
+	public virtual void UpdateCensor()
+	{
+		this.Censor();
+		this.Censor();
 	}
 
 	public virtual void Main()

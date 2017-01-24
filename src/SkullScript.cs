@@ -72,7 +72,7 @@ public class SkullScript : MonoBehaviour
 			this.RitualKnife.transform.position = this.OriginalPosition;
 			this.RitualKnife.transform.eulerAngles = this.OriginalRotation;
 			this.RitualKnife.rigidbody.useGravity = false;
-			if (((WeaponScript)this.RitualKnife.GetComponent(typeof(WeaponScript))).Heated)
+			if (((WeaponScript)this.RitualKnife.GetComponent(typeof(WeaponScript))).Heated && !((WeaponScript)this.RitualKnife.GetComponent(typeof(WeaponScript))).Flaming)
 			{
 				this.audio.clip = this.FlameDemonVoice;
 				this.audio.Play();

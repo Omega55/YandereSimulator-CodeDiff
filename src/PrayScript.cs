@@ -215,6 +215,7 @@ public class PrayScript : MonoBehaviour
 						this.StudentManager.SpawnID = this.StudentID;
 						this.StudentManager.SpawnStudent();
 						this.StudentManager.SpawnID = 0;
+						this.Police.Corpses = this.Police.Corpses - 1;
 						this.JustSummoned = true;
 						this.Exit();
 					}

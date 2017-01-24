@@ -201,6 +201,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public int Witnesses;
 
+	public int PinPhase;
+
 	public int Frame;
 
 	public int GymTeacherID;
@@ -248,6 +250,8 @@ public class StudentManagerScript : MonoBehaviour
 	public bool DK;
 
 	public float ChangeTimer;
+
+	public float PinTimer;
 
 	public float Timer;
 
@@ -454,10 +458,49 @@ public class StudentManagerScript : MonoBehaviour
 		}
 		if (this.PinningDown)
 		{
-			if (this.WitnessList[1].PinPhase == 0)
+			if (this.PinPhase == 1)
 			{
-				if (this.WitnessList[1].DistanceToDestination < (float)1 && this.WitnessList[2].DistanceToDestination < (float)1 && this.WitnessList[3].DistanceToDestination < (float)1 && this.WitnessList[4].DistanceToDestination < (float)1)
+				if (!this.Yandere.Attacking)
 				{
+					this.PinTimer += Time.deltaTime;
+				}
+				if (this.PinTimer > (float)1)
+				{
+					this.ID = 1;
+					while (this.ID < 5)
+					{
+						if (this.WitnessList[this.ID] != null)
+						{
+							this.WitnessList[this.ID].CurrentDestination = this.PinDownSpots[this.ID];
+							this.WitnessList[this.ID].Pathfinding.target = this.PinDownSpots[this.ID];
+							this.WitnessList[this.ID].DistanceToDestination = (float)100;
+							this.WitnessList[this.ID].Pathfinding.speed = (float)5;
+							this.WitnessList[this.ID].PinningDown = true;
+							this.WitnessList[this.ID].Alarmed = false;
+							this.WitnessList[this.ID].Routine = false;
+							this.WitnessList[this.ID].Fleeing = true;
+							this.WitnessList[this.ID].AlarmTimer = (float)0;
+							this.WitnessList[this.ID].Safe = true;
+							this.WitnessList[this.ID].Prompt.Hide();
+							this.WitnessList[this.ID].Prompt.enabled = false;
+							Debug.Log(this.WitnessList[this.ID] + "'s current desination is " + this.WitnessList[this.ID].CurrentDestination);
+						}
+						this.ID++;
+					}
+					this.PinPhase++;
+				}
+			}
+			else if (this.WitnessList[1].PinPhase == 0)
+			{
+				if (this.Yandere.CanMove && this.WitnessList[1].DistanceToDestination < (float)1 && this.WitnessList[2].DistanceToDestination < (float)1 && this.WitnessList[3].DistanceToDestination < (float)1 && this.WitnessList[4].DistanceToDestination < (float)1)
+				{
+					if (this.Yandere.Aiming)
+					{
+						this.Yandere.StopAiming();
+						this.Yandere.enabled = false;
+					}
+					this.Yandere.Mopping = false;
+					this.Yandere.EmptyHands();
 					this.audio.PlayOneShot(this.PinDownSFX);
 					this.audio.PlayOneShot(this.YanderePinDown);
 					this.Yandere.CharacterAnimation.CrossFade("f02_pinDown_00");
@@ -1243,28 +1286,7 @@ public class StudentManagerScript : MonoBehaviour
 			this.Yandere.Chased = true;
 			this.Yandere.RunSpeed = (float)2;
 			this.PinningDown = true;
-			Debug.Log("Met criteria.");
-			this.ID = 1;
-			while (this.ID < 5)
-			{
-				if (this.WitnessList[this.ID] != null)
-				{
-					this.WitnessList[this.ID].CurrentDestination = this.PinDownSpots[this.ID];
-					this.WitnessList[this.ID].Pathfinding.target = this.PinDownSpots[this.ID];
-					this.WitnessList[this.ID].DistanceToDestination = (float)100;
-					this.WitnessList[this.ID].Pathfinding.speed = (float)5;
-					this.WitnessList[this.ID].PinningDown = true;
-					this.WitnessList[this.ID].Alarmed = false;
-					this.WitnessList[this.ID].Routine = false;
-					this.WitnessList[this.ID].Fleeing = true;
-					this.WitnessList[this.ID].AlarmTimer = (float)0;
-					this.WitnessList[this.ID].Safe = true;
-					this.WitnessList[this.ID].Prompt.Hide();
-					this.WitnessList[this.ID].Prompt.enabled = false;
-					Debug.Log(this.WitnessList[this.ID] + "'s current desination is " + this.WitnessList[this.ID].CurrentDestination);
-				}
-				this.ID++;
-			}
+			this.PinPhase = 1;
 		}
 	}
 

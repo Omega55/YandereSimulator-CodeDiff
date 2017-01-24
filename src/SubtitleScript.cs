@@ -845,7 +845,6 @@ public class SubtitleScript : MonoBehaviour
 			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.SenpaiWeaponReactions));
 			this.Label.text = this.SenpaiWeaponReactions[this.RandomID];
 			this.PlayVoice(ReactionType, this.RandomID);
-			Debug.Log("yeah, here.");
 		}
 		else if (ReactionType == "Senpai Blood Reaction")
 		{

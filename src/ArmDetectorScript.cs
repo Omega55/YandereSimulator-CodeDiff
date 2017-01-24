@@ -6,6 +6,8 @@ public class ArmDetectorScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
 
+	public DebugMenuScript DebugMenu;
+
 	public JukeboxScript Jukebox;
 
 	public YandereScript Yandere;
@@ -27,6 +29,8 @@ public class ArmDetectorScript : MonoBehaviour
 	public GameObject BloodProjector;
 
 	public GameObject SmallDarkAura;
+
+	public GameObject DemonDress;
 
 	public GameObject RightFlame;
 
@@ -63,6 +67,11 @@ public class ArmDetectorScript : MonoBehaviour
 	public ArmDetectorScript()
 	{
 		this.Phase = 1;
+	}
+
+	public virtual void Start()
+	{
+		this.DemonDress.active = false;
 	}
 
 	public virtual void Update()
@@ -303,14 +312,18 @@ public class ArmDetectorScript : MonoBehaviour
 				Color color16 = this.DemonSubtitle.color = color15;
 				if (this.DemonSubtitle.color.a == (float)0)
 				{
+					this.DemonDress.active = true;
 					this.Yandere.MyRenderer.sharedMesh = this.FlameDemonMesh;
 					this.RiggedAccessory.active = true;
 					this.Yandere.FlameDemonic = true;
+					this.Yandere.Crouching = false;
+					this.Yandere.Crawling = false;
 					this.Yandere.Sanity = (float)100;
 					this.Yandere.UpdateSanity();
 					this.Yandere.MyRenderer.materials[0].mainTexture = this.Yandere.FaceTexture;
 					this.Yandere.MyRenderer.materials[1].mainTexture = this.Yandere.NudePanties;
 					this.Yandere.MyRenderer.materials[2].mainTexture = this.Yandere.NudePanties;
+					this.DebugMenu.UpdateCensor();
 					this.audio.clip = this.DemonMusic;
 					this.audio.loop = true;
 					this.audio.Play();

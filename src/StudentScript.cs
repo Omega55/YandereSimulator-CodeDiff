@@ -6535,7 +6535,7 @@ public class StudentScript : MonoBehaviour
 
 	public virtual void DetermineSenpaiReaction()
 	{
-		Debug.Log("Got here.");
+		Debug.Log("We are now determining Senpai's reaction to Yandere-chan's behavior.");
 		if (this.Witnessed == "Weapon and Blood and Insanity")
 		{
 			this.Subtitle.UpdateLabel("Senpai Insanity Reaction", 1, 4.5f);
