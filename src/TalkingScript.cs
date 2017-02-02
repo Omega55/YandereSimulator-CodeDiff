@@ -383,7 +383,6 @@ public class TalkingScript : MonoBehaviour
 							this.S.Pathfinding.speed = (float)4;
 							this.S.TargetDistance = (float)1;
 							this.S.DistractTimer = (float)10;
-							Debug.Log("Delete me.");
 							this.S.Distracting = true;
 							this.S.Routine = false;
 							this.S.CanTalk = false;

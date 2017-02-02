@@ -133,7 +133,7 @@ public class AttackManagerScript : MonoBehaviour
 		{
 			this.AttackTimer += Time.deltaTime;
 			this.SpecialEffect();
-			if (this.Yandere.Sanity <= (float)0)
+			if (this.Yandere.Sanity <= (float)0 && !this.Yandere.Chased)
 			{
 				this.LoopCheck();
 			}

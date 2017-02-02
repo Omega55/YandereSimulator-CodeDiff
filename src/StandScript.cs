@@ -28,7 +28,14 @@ public class StandScript : MonoBehaviour
 			{
 				if (axis != (float)0 || axis2 != (float)0)
 				{
-					this.Stand.animation.CrossFade("StandWalk");
+					if (Input.GetButton("LB"))
+					{
+						this.Stand.animation.CrossFade("StandRun");
+					}
+					else
+					{
+						this.Stand.animation.CrossFade("StandWalk");
+					}
 				}
 				else
 				{

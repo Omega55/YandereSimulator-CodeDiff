@@ -261,6 +261,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool YandereInnocent;
 
+	public bool PinDownWitness;
+
 	public bool RepeatReaction;
 
 	public bool WitnessedBlood;
@@ -1836,6 +1838,10 @@ public class StudentScript : MonoBehaviour
 						if (this.AlarmTimer > (float)0)
 						{
 							this.AlarmTimer = Mathf.MoveTowards(this.AlarmTimer, (float)0, this.DeltaTime);
+							if (this.StudentID == 1)
+							{
+								Debug.Log("Senpai entered his scared animation.");
+							}
 							this.CharacterAnimation.CrossFade(this.ScaredAnim);
 							if (this.AlarmTimer == (float)0)
 							{
@@ -2035,6 +2041,14 @@ public class StudentScript : MonoBehaviour
 										{
 											this.CharacterAnimation.CrossFade(this.StruggleLostAnim);
 										}
+									}
+									else if (!this.Male)
+									{
+										this.CharacterAnimation.CrossFade("CyborgNinja_Idle_Unarmed");
+									}
+									else
+									{
+										this.CharacterAnimation.CrossFade("Male_CyborgNinja_Idle_Unarmed");
 									}
 								}
 								else if (this.Persona == 4)
@@ -2676,6 +2690,13 @@ public class StudentScript : MonoBehaviour
 							{
 								this.CurrentDestination = this.Destinations[this.Phase];
 								this.Pathfinding.target = this.Destinations[this.Phase];
+								this.DistractionTarget.Pathfinding.canSearch = true;
+								this.DistractionTarget.Pathfinding.canMove = true;
+								this.DistractionTarget.Pathfinding.speed = (float)1;
+								this.DistractionTarget.Distraction = null;
+								this.DistractionTarget.Distracted = false;
+								this.DistractionTarget.CanTalk = true;
+								this.DistractionTarget.Routine = true;
 								this.Pathfinding.speed = (float)1;
 								this.Distracting = false;
 								this.Distracted = false;
@@ -3496,7 +3517,7 @@ public class StudentScript : MonoBehaviour
 								{
 									if (this.Concern == 5)
 									{
-										Debug.Log("Senpai noticed because of this code.");
+										Debug.Log("Senpai noticed stalking or lewdness.");
 										this.SenpaiNoticed();
 										if (this.Witnessed == "Stalking" || this.Witnessed == "Lewd")
 										{
@@ -3505,6 +3526,10 @@ public class StudentScript : MonoBehaviour
 										}
 										else
 										{
+											if (this.StudentID == 1)
+											{
+												Debug.Log("Senpai entered his scared animation.");
+											}
 											this.CharacterAnimation.CrossFade(this.ScaredAnim);
 											this.CharacterAnimation["scaredFace_00"].weight = (float)1;
 										}
@@ -4016,6 +4041,10 @@ public class StudentScript : MonoBehaviour
 						this.EyeShrink += this.DeltaTime * 0.2f;
 					}
 					this.LovedOneCheck();
+					if (this.StudentID == 1)
+					{
+						Debug.Log("Senpai entered his scared animation.");
+					}
 					this.CharacterAnimation.CrossFade(this.ScaredAnim);
 					this.targetRotation = Quaternion.LookRotation(new Vector3(this.Yandere.Hips.position.x, this.transform.position.y, this.Yandere.Hips.position.z) - this.transform.position);
 					this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * this.DeltaTime);
@@ -4051,6 +4080,7 @@ public class StudentScript : MonoBehaviour
 						}
 						else
 						{
+							Debug.Log("Senpai witnessed murder, and entered a specific murder reaction animation.");
 							this.MurderReaction = UnityEngine.Random.Range(1, 6);
 							this.CharacterAnimation.CrossFade("senpaiMurderReaction_0" + this.MurderReaction);
 							this.GameOverCause = "Murder";
@@ -4074,6 +4104,10 @@ public class StudentScript : MonoBehaviour
 				{
 					if (!this.WalkBack)
 					{
+						if (this.StudentID == 1)
+						{
+							Debug.Log("Senpai entered his scared animation.");
+						}
 						this.CharacterAnimation.CrossFade(this.ScaredAnim);
 					}
 					else
@@ -5325,7 +5359,6 @@ public class StudentScript : MonoBehaviour
 		{
 			if (!this.Yandere.Attacking)
 			{
-				Debug.Log("Here?");
 				this.SenpaiNoticed();
 			}
 			this.EyeShrink = (float)0;
@@ -5336,6 +5369,10 @@ public class StudentScript : MonoBehaviour
 			this.ShoulderCamera.OverShoulder = false;
 			this.CharacterAnimation.CrossFade(this.ScaredAnim);
 			this.CharacterAnimation["scaredFace_00"].weight = (float)1;
+			if (this.StudentID == 1)
+			{
+				Debug.Log("Senpai entered his scared animation.");
+			}
 		}
 		if (this.Persona == 2 && this.StudentManager.Reporter == null && !this.Police.Called)
 		{
@@ -5378,9 +5415,13 @@ public class StudentScript : MonoBehaviour
 		{
 			this.SpawnAlarmDisc();
 		}
-		this.StudentManager.Witnesses = this.StudentManager.Witnesses + 1;
-		this.StudentManager.WitnessList[this.StudentManager.Witnesses] = this;
-		this.StudentManager.PinDownCheck();
+		if (!this.PinDownWitness)
+		{
+			this.StudentManager.Witnesses = this.StudentManager.Witnesses + 1;
+			this.StudentManager.WitnessList[this.StudentManager.Witnesses] = this;
+			this.StudentManager.PinDownCheck();
+			this.PinDownWitness = true;
+		}
 		this.StudentManager.UpdateMe(this.StudentID);
 	}
 
@@ -5392,7 +5433,6 @@ public class StudentScript : MonoBehaviour
 		this.Pathfinding.speed = 7.5f;
 		this.StudentManager.Portal.active = false;
 		this.Yandere.Pursuer = this;
-		this.Yandere.Chased = true;
 		this.TargetDistance = 0.5f;
 		this.Fleeing = false;
 		this.AlarmTimer = (float)0;

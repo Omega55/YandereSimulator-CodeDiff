@@ -5,6 +5,8 @@ using UnityScript.Lang;
 [Serializable]
 public class CreditsScript : MonoBehaviour
 {
+	public JsonScript JSON;
+
 	public Transform SpawnPoint;
 
 	public Transform Panel;
@@ -25,11 +27,32 @@ public class CreditsScript : MonoBehaviour
 
 	public float TimerLimit;
 
+	public float FadeTimer;
+
 	public float Timer;
+
+	public bool FadeAudio;
 
 	public bool FadeOut;
 
 	public bool Begin;
+
+	public virtual void Start()
+	{
+		this.ID = 1;
+		while (this.ID < Extensions.get_length(this.Lines))
+		{
+			this.Lines[this.ID] = this.JSON.CreditsNames[this.ID];
+			this.ID++;
+		}
+		this.ID = 1;
+		while (this.ID < Extensions.get_length(this.Sizes))
+		{
+			this.Sizes[this.ID] = this.JSON.CreditsSizes[this.ID];
+			this.ID++;
+		}
+		this.ID = 1;
+	}
 
 	public virtual void Update()
 	{
@@ -42,7 +65,7 @@ public class CreditsScript : MonoBehaviour
 				this.Timer = (float)0;
 			}
 		}
-		if (this.audio.time > 1.5f)
+		if (this.audio.time > 1.5f && !this.FadeAudio)
 		{
 			if (this.Timer == (float)0)
 			{
@@ -62,7 +85,7 @@ public class CreditsScript : MonoBehaviour
 				this.ID++;
 				if (this.ID > Extensions.get_length(this.Sizes) - 1)
 				{
-					this.ID = 0;
+					this.FadeAudio = true;
 				}
 			}
 			this.Timer = Mathf.MoveTowards(this.Timer, this.TimerLimit, Time.deltaTime);
@@ -71,9 +94,13 @@ public class CreditsScript : MonoBehaviour
 				this.Timer = (float)0;
 			}
 		}
-		if (this.audio.time > (float)117)
+		if (this.FadeAudio)
 		{
-			this.audio.volume = this.audio.volume - Time.deltaTime;
+			this.FadeTimer += Time.deltaTime;
+			if (this.FadeTimer > (float)14)
+			{
+				this.audio.volume = this.audio.volume - Time.deltaTime;
+			}
 		}
 		if (Input.GetButtonDown("B") || this.audio.volume == (float)0)
 		{

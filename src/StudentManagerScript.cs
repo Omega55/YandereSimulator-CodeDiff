@@ -249,6 +249,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public bool DK;
 
+	public float DefaultRunSpeed;
+
 	public float ChangeTimer;
 
 	public float PinTimer;
@@ -444,8 +446,9 @@ public class StudentManagerScript : MonoBehaviour
 			this.ID = 1;
 			while (this.ID < this.WitnessList.Length)
 			{
-				if (this.WitnessList[this.ID] != null && (this.WitnessList[this.ID].Attacked || (this.WitnessList[this.ID].Fleeing && !this.WitnessList[this.ID].PinningDown)))
+				if (this.WitnessList[this.ID] != null && (this.WitnessList[this.ID].Dead || this.WitnessList[this.ID].Attacked || (this.WitnessList[this.ID].Fleeing && !this.WitnessList[this.ID].PinningDown)))
 				{
+					this.WitnessList[this.ID].PinDownWitness = false;
 					this.WitnessList[this.ID] = null;
 					if (this.ID != this.WitnessList.Length - 1)
 					{
@@ -455,12 +458,22 @@ public class StudentManagerScript : MonoBehaviour
 				}
 				this.ID++;
 			}
+			if (this.PinningDown && this.Witnesses < 4)
+			{
+				this.Yandere.RunSpeed = this.DefaultRunSpeed;
+				this.PinningDown = false;
+				this.PinPhase = 0;
+			}
 		}
 		if (this.PinningDown)
 		{
+			if (!this.Yandere.Attacking)
+			{
+				this.Yandere.Chased = true;
+			}
 			if (this.PinPhase == 1)
 			{
-				if (!this.Yandere.Attacking)
+				if (!this.Yandere.Attacking && !this.Yandere.Struggling)
 				{
 					this.PinTimer += Time.deltaTime;
 				}
@@ -884,7 +897,10 @@ public class StudentManagerScript : MonoBehaviour
 				{
 					if (this.Yandere.Attacking)
 					{
-						this.Students[this.ID].Character.animation.CrossFade(this.Students[this.ID].ScaredAnim);
+						if (this.Students[this.ID].MurderReaction == 0)
+						{
+							this.Students[this.ID].Character.animation.CrossFade(this.Students[this.ID].ScaredAnim);
+						}
 					}
 					else if (this.ID > 1)
 					{
@@ -1283,10 +1299,27 @@ public class StudentManagerScript : MonoBehaviour
 	{
 		if (!this.PinningDown && this.Witnesses > 3)
 		{
-			this.Yandere.Chased = true;
-			this.Yandere.RunSpeed = (float)2;
-			this.PinningDown = true;
-			this.PinPhase = 1;
+			this.ID = 1;
+			while (this.ID < this.WitnessList.Length)
+			{
+				if (this.WitnessList[this.ID] != null && (this.WitnessList[this.ID].Dead || this.WitnessList[this.ID].Attacked || this.WitnessList[this.ID].Fleeing))
+				{
+					this.WitnessList[this.ID] = null;
+					if (this.ID != this.WitnessList.Length - 1)
+					{
+						this.Shuffle(this.ID);
+					}
+					this.Witnesses--;
+				}
+				this.ID++;
+			}
+			if (this.Witnesses > 3)
+			{
+				this.DefaultRunSpeed = this.Yandere.RunSpeed;
+				this.Yandere.RunSpeed = (float)2;
+				this.PinningDown = true;
+				this.PinPhase = 1;
+			}
 		}
 	}
 

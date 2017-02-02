@@ -109,9 +109,19 @@ public class CosmeticScript : MonoBehaviour
 
 	public Texture PurpleStockings;
 
+	public Texture YellowStockings;
+
 	public Texture GreenStockings;
 
 	public Texture OsanaStockings;
+
+	public Texture BlueStockings;
+
+	public Texture CyanStockings;
+
+	public Texture RedStockings;
+
+	public Texture MyStockings;
 
 	public GameObject RightIrisLight;
 
@@ -505,10 +515,50 @@ public class CosmeticScript : MonoBehaviour
 		{
 			this.ClubAccessories[this.Club].active = true;
 		}
-		if (this.Stockings == "Loose")
+		if (!this.Male)
 		{
-			this.RightStockings[0].active = true;
-			this.LeftStockings[0].active = true;
+			if (this.Stockings == "Red")
+			{
+				this.MyStockings = this.RedStockings;
+				this.PutOnStockings();
+			}
+			else if (this.Stockings == "Yellow")
+			{
+				this.MyStockings = this.YellowStockings;
+				this.PutOnStockings();
+			}
+			else if (this.Stockings == "Green")
+			{
+				this.MyStockings = this.GreenStockings;
+				this.PutOnStockings();
+			}
+			else if (this.Stockings == "Cyan")
+			{
+				this.MyStockings = this.CyanStockings;
+				this.PutOnStockings();
+			}
+			else if (this.Stockings == "Blue")
+			{
+				this.MyStockings = this.BlueStockings;
+				this.PutOnStockings();
+			}
+			else if (this.Stockings == "Purple")
+			{
+				this.MyStockings = this.PurpleStockings;
+				this.PutOnStockings();
+			}
+			else if (this.Stockings == "Osana")
+			{
+				this.MyRenderer.materials[0].SetTexture("_OverlayTex", this.OsanaStockings);
+				this.MyRenderer.materials[1].SetTexture("_OverlayTex", this.OsanaStockings);
+				this.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)1);
+				this.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)1);
+			}
+			else if (this.Stockings == "Loose")
+			{
+				this.RightStockings[0].active = true;
+				this.LeftStockings[0].active = true;
+			}
 		}
 		if (!this.Randomize)
 		{
@@ -841,27 +891,6 @@ public class CosmeticScript : MonoBehaviour
 			this.UniformTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
 			this.CasualTexture = this.FemaleCasualTextures[PlayerPrefs.GetInt("FemaleUniform")];
 			this.SocksTexture = this.FemaleSocksTextures[PlayerPrefs.GetInt("FemaleUniform")];
-			if (this.StudentID == 7)
-			{
-				this.MyRenderer.materials[0].SetTexture("_OverlayTex", this.PurpleStockings);
-				this.MyRenderer.materials[1].SetTexture("_OverlayTex", this.PurpleStockings);
-				this.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)1);
-				this.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)1);
-			}
-			else if (this.StudentID == 16)
-			{
-				this.MyRenderer.materials[0].SetTexture("_OverlayTex", this.GreenStockings);
-				this.MyRenderer.materials[1].SetTexture("_OverlayTex", this.GreenStockings);
-				this.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)1);
-				this.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)1);
-			}
-			else if (this.StudentID == 33)
-			{
-				this.MyRenderer.materials[0].SetTexture("_OverlayTex", this.OsanaStockings);
-				this.MyRenderer.materials[1].SetTexture("_OverlayTex", this.OsanaStockings);
-				this.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)1);
-				this.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)1);
-			}
 		}
 		if (!this.Cutscene)
 		{
@@ -1041,6 +1070,14 @@ public class CosmeticScript : MonoBehaviour
 			}
 			this.ID++;
 		}
+	}
+
+	public virtual void PutOnStockings()
+	{
+		this.MyRenderer.materials[0].SetTexture("_OverlayTex", this.MyStockings);
+		this.MyRenderer.materials[1].SetTexture("_OverlayTex", this.MyStockings);
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)1);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)1);
 	}
 
 	public virtual void Main()

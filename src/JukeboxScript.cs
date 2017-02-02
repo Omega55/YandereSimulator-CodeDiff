@@ -311,7 +311,7 @@ public class JukeboxScript : MonoBehaviour
 				this.KillVolume();
 				this.Ninja.enabled = true;
 			}
-			else if (Input.GetKeyDown("e") && !this.MuteCopyrights)
+			else if ((Input.GetKeyDown("e") || Input.GetKeyDown("6") || Input.GetKeyDown("7")) && !this.MuteCopyrights)
 			{
 				this.Egg = true;
 				this.KillVolume();

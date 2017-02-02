@@ -88,7 +88,11 @@ public class AlarmDiscScript : MonoBehaviour
 						this.Student.Character.animation.CrossFade(this.Student.IdleAnim);
 						if (this.Originator != null)
 						{
-							if (this.Originator.Corpse == null)
+							if (this.Originator.WitnessedMurder)
+							{
+								this.Student.DistractionSpot = new Vector3(this.transform.position.x, this.Student.Yandere.transform.position.y, this.transform.position.z);
+							}
+							else if (this.Originator.Corpse == null)
 							{
 								this.Student.DistractionSpot = new Vector3(this.transform.position.x, this.Student.transform.position.y, this.transform.position.z);
 							}

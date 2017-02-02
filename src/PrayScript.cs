@@ -42,7 +42,13 @@ public class PrayScript : MonoBehaviour
 
 	public int Selected;
 
+	public int Victims;
+
 	public int Uses;
+
+	public bool FemaleVictimChecked;
+
+	public bool MaleVictimChecked;
 
 	public bool JustSummoned;
 
@@ -68,6 +74,16 @@ public class PrayScript : MonoBehaviour
 
 	public virtual void Update()
 	{
+		if (!this.FemaleVictimChecked && this.StudentManager.Students[16] != null && this.StudentManager.Students[16].Dead)
+		{
+			this.FemaleVictimChecked = true;
+			this.Victims++;
+		}
+		if (!this.MaleVictimChecked && this.StudentManager.Students[15] != null && this.StudentManager.Students[15].Dead)
+		{
+			this.MaleVictimChecked = true;
+			this.Victims++;
+		}
 		if (this.JustSummoned)
 		{
 			this.StudentManager.UpdateMe(this.StudentID);
@@ -199,10 +215,12 @@ public class PrayScript : MonoBehaviour
 					{
 						if (this.SpawnMale)
 						{
+							this.MaleVictimChecked = false;
 							this.StudentID = 15;
 						}
 						else
 						{
+							this.FemaleVictimChecked = false;
 							this.StudentID = 16;
 						}
 						if (this.StudentManager.Students[this.StudentID] != null)
@@ -215,7 +233,8 @@ public class PrayScript : MonoBehaviour
 						this.StudentManager.SpawnID = this.StudentID;
 						this.StudentManager.SpawnStudent();
 						this.StudentManager.SpawnID = 0;
-						this.Police.Corpses = this.Police.Corpses - 1;
+						this.Police.Corpses = this.Police.Corpses - this.Victims;
+						this.Victims = 0;
 						this.JustSummoned = true;
 						this.Exit();
 					}

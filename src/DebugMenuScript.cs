@@ -88,62 +88,62 @@ public class DebugMenuScript : MonoBehaviour
 				{
 					PlayerPrefs.SetInt("FemaleUniform", 1);
 					PlayerPrefs.SetInt("MaleUniform", 1);
-					Application.LoadLevel(Application.loadedLevel);
+					Application.LoadLevel("LoadingScene");
 				}
 				else if (Input.GetKeyDown(KeyCode.F2))
 				{
 					PlayerPrefs.SetInt("FemaleUniform", 2);
 					PlayerPrefs.SetInt("MaleUniform", 2);
-					Application.LoadLevel(Application.loadedLevel);
+					Application.LoadLevel("LoadingScene");
 				}
 				else if (Input.GetKeyDown(KeyCode.F3))
 				{
 					PlayerPrefs.SetInt("FemaleUniform", 3);
 					PlayerPrefs.SetInt("MaleUniform", 3);
-					Application.LoadLevel(Application.loadedLevel);
+					Application.LoadLevel("LoadingScene");
 				}
 				else if (Input.GetKeyDown(KeyCode.F4))
 				{
 					PlayerPrefs.SetInt("FemaleUniform", 4);
 					PlayerPrefs.SetInt("MaleUniform", 4);
-					Application.LoadLevel(Application.loadedLevel);
+					Application.LoadLevel("LoadingScene");
 				}
 				else if (Input.GetKeyDown(KeyCode.F5))
 				{
 					PlayerPrefs.SetInt("FemaleUniform", 5);
 					PlayerPrefs.SetInt("MaleUniform", 5);
-					Application.LoadLevel(Application.loadedLevel);
+					Application.LoadLevel("LoadingScene");
 				}
 				else if (Input.GetKeyDown(KeyCode.F6))
 				{
 					PlayerPrefs.SetInt("FemaleUniform", 6);
 					PlayerPrefs.SetInt("MaleUniform", 6);
-					Application.LoadLevel(Application.loadedLevel);
+					Application.LoadLevel("LoadingScene");
 				}
 				else if (Input.GetKeyDown("1"))
 				{
 					PlayerPrefs.SetInt("Weekday", 1);
-					Application.LoadLevel(Application.loadedLevel);
+					Application.LoadLevel("LoadingScene");
 				}
 				else if (Input.GetKeyDown("2"))
 				{
 					PlayerPrefs.SetInt("Weekday", 2);
-					Application.LoadLevel(Application.loadedLevel);
+					Application.LoadLevel("LoadingScene");
 				}
 				else if (Input.GetKeyDown("3"))
 				{
 					PlayerPrefs.SetInt("Weekday", 3);
-					Application.LoadLevel(Application.loadedLevel);
+					Application.LoadLevel("LoadingScene");
 				}
 				else if (Input.GetKeyDown("4"))
 				{
 					PlayerPrefs.SetInt("Weekday", 4);
-					Application.LoadLevel(Application.loadedLevel);
+					Application.LoadLevel("LoadingScene");
 				}
 				else if (Input.GetKeyDown("5"))
 				{
 					PlayerPrefs.SetInt("Weekday", 5);
-					Application.LoadLevel(Application.loadedLevel);
+					Application.LoadLevel("LoadingScene");
 				}
 				else if (Input.GetKeyDown("6"))
 				{
@@ -225,7 +225,7 @@ public class DebugMenuScript : MonoBehaviour
 					{
 						PlayerPrefs.SetFloat("SchoolAtmosphere", (float)100);
 					}
-					Application.LoadLevel(Application.loadedLevel);
+					Application.LoadLevel("LoadingScene");
 				}
 				else if (Input.GetKeyDown("c"))
 				{
@@ -246,28 +246,28 @@ public class DebugMenuScript : MonoBehaviour
 				{
 					if (this.Clock.HourTime < (float)15)
 					{
-						PlayerPrefs.SetInt("33_Friend", 1);
+						PlayerPrefs.SetInt("7_Friend", 1);
 						this.Yandere.transform.position = this.RooftopSpot.position;
-						if (this.StudentManager.Students[33] != null)
+						if (this.StudentManager.Students[7] != null)
 						{
 							this.StudentManager.OfferHelp.UpdateLocation();
 							this.StudentManager.OfferHelp.enabled = true;
-							if (!this.StudentManager.Students[33].Indoors)
+							if (!this.StudentManager.Students[7].Indoors)
 							{
-								if (this.StudentManager.Students[33].ShoeRemoval.Locker == null)
+								if (this.StudentManager.Students[7].ShoeRemoval.Locker == null)
 								{
-									this.StudentManager.Students[33].ShoeRemoval.Start();
+									this.StudentManager.Students[7].ShoeRemoval.Start();
 								}
-								this.StudentManager.Students[33].ShoeRemoval.PutOnShoes();
+								this.StudentManager.Students[7].ShoeRemoval.PutOnShoes();
 							}
-							this.StudentManager.Students[33].transform.position = this.RooftopSpot.position;
-							this.StudentManager.Students[33].Prompt.Label[0].text = "     " + "Push";
-							this.StudentManager.Students[33].CurrentDestination = this.RooftopSpot;
-							this.StudentManager.Students[33].Pathfinding.target = this.RooftopSpot;
-							this.StudentManager.Students[33].Pathfinding.canSearch = true;
-							this.StudentManager.Students[33].Pathfinding.canMove = true;
-							this.StudentManager.Students[33].Meeting = true;
-							this.StudentManager.Students[33].MeetTime = (float)0;
+							this.StudentManager.Students[7].transform.position = this.RooftopSpot.position;
+							this.StudentManager.Students[7].Prompt.Label[0].text = "     " + "Push";
+							this.StudentManager.Students[7].CurrentDestination = this.RooftopSpot;
+							this.StudentManager.Students[7].Pathfinding.target = this.RooftopSpot;
+							this.StudentManager.Students[7].Pathfinding.canSearch = true;
+							this.StudentManager.Students[7].Pathfinding.canMove = true;
+							this.StudentManager.Students[7].Meeting = true;
+							this.StudentManager.Students[7].MeetTime = (float)0;
 						}
 						if (this.Clock.HourTime < 7.1f)
 						{
@@ -277,7 +277,7 @@ public class DebugMenuScript : MonoBehaviour
 					else
 					{
 						this.Clock.PresentTime = (float)960;
-						this.StudentManager.Students[33].transform.position = this.Lockers.position;
+						this.StudentManager.Students[7].transform.position = this.Lockers.position;
 					}
 					this.Window.active = false;
 				}
@@ -285,7 +285,7 @@ public class DebugMenuScript : MonoBehaviour
 				{
 					PlayerPrefs.SetInt("KidnapVictim", 6);
 					PlayerPrefs.SetInt("Student_6_Slave", 1);
-					Application.LoadLevel(Application.loadedLevel);
+					Application.LoadLevel("LoadingScene");
 				}
 				else if (Input.GetKeyDown("l"))
 				{
@@ -391,7 +391,7 @@ public class DebugMenuScript : MonoBehaviour
 						{
 							PlayerPrefs.SetInt("HighPopulation", 0);
 						}
-						Application.LoadLevel(Application.loadedLevel);
+						Application.LoadLevel("LoadingScene");
 					}
 					else if (Input.GetKeyDown("backspace"))
 					{
@@ -403,7 +403,7 @@ public class DebugMenuScript : MonoBehaviour
 					else if (Input.GetKeyDown("`"))
 					{
 						PlayerPrefs.DeleteAll();
-						Application.LoadLevel(Application.loadedLevel);
+						Application.LoadLevel("LoadingScene");
 					}
 					else if (Input.GetKeyDown("space"))
 					{
@@ -474,7 +474,7 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					this.ID++;
 				}
-				Application.LoadLevel(Application.loadedLevel);
+				Application.LoadLevel("LoadingScene");
 			}
 		}
 		else if (Input.GetKeyDown(KeyCode.Backslash))

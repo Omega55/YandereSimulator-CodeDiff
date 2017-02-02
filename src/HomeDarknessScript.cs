@@ -60,7 +60,7 @@ public class HomeDarknessScript : MonoBehaviour
 					{
 						PlayerPrefs.SetInt("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Kidnapped", 0);
 						PlayerPrefs.SetInt("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Slave", 1);
-						Application.LoadLevel("SchoolScene");
+						Application.LoadLevel("LoadingScene");
 					}
 					else if (this.HomeCamera.ID == 11)
 					{
@@ -69,7 +69,7 @@ public class HomeDarknessScript : MonoBehaviour
 					}
 					else if (this.HomeExit.ID == 1)
 					{
-						Application.LoadLevel("SchoolScene");
+						Application.LoadLevel("LoadingScene");
 					}
 					else if (this.HomeExit.ID == 2)
 					{

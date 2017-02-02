@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$3132 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$3142 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$3147;
+		internal YandereScript $self_$3157;
 
-		public $ApplyCustomCostume$3132(YandereScript self_)
+		public $ApplyCustomCostume$3142(YandereScript self_)
 		{
-			this.$self_$3147 = self_;
+			this.$self_$3157 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$3132.$(this.$self_$3147);
+			return new YandereScript.$ApplyCustomCostume$3142.$(this.$self_$3157);
 		}
 	}
 
@@ -823,6 +823,22 @@ public class YandereScript : MonoBehaviour
 
 	public Texture WitchFace;
 
+	public GameObject BladeHair;
+
+	public DebugMenuScript TheDebugMenuScript;
+
+	public GameObject RiggedAccessory;
+
+	public GameObject TornadoAttack;
+
+	public GameObject TornadoDress;
+
+	public GameObject TornadoHair;
+
+	public Renderer TornadoRenderer;
+
+	public Mesh NoTorsoMesh;
+
 	public Mesh SchoolSwimsuit;
 
 	public Mesh GymUniform;
@@ -922,13 +938,16 @@ public class YandereScript : MonoBehaviour
 		this.PunishedScarf.active = false;
 		this.FalconBuckle.active = false;
 		this.FalconHelmet.active = false;
+		this.TornadoDress.active = false;
 		this.CirnoRibbon.active = false;
+		this.TornadoHair.active = false;
 		this.CirnoWings.active = false;
 		this.KONGlasses.active = false;
 		this.EbolaWings.active = false;
 		this.Poisons[1].active = false;
 		this.Poisons[2].active = false;
 		this.Poisons[3].active = false;
+		this.BladeHair.active = false;
 		this.EbolaHair.active = false;
 		this.FalconGun.active = false;
 		this.EyepatchL.active = false;
@@ -1309,7 +1328,7 @@ public class YandereScript : MonoBehaviour
 								{
 									if (!this.Xtan)
 									{
-										if (!this.CirnoHair.active)
+										if (!this.CirnoHair.active && !this.TornadoHair.active)
 										{
 											this.LaughAnim = "f02_laugh_01";
 											this.LaughClip = this.Laugh1;
@@ -1760,6 +1779,20 @@ public class YandereScript : MonoBehaviour
 							this.CirnoTimer = 0.1f;
 						}
 					}
+					else if (this.TornadoHair.active)
+					{
+						this.LaughAnim = "f02_tornadoAttack_00";
+						this.CirnoTimer -= Time.deltaTime;
+						if (this.CirnoTimer < (float)0)
+						{
+							GameObject gameObject6 = (GameObject)UnityEngine.Object.Instantiate(this.TornadoAttack, new Vector3(this.transform.position.x + UnityEngine.Random.Range(-5f, 5f), this.transform.position.y, this.transform.position.z + UnityEngine.Random.Range(-5f, 5f)), this.transform.rotation);
+							while (Vector3.Distance(this.transform.position, gameObject6.transform.position) < (float)1)
+							{
+								gameObject6.transform.position = new Vector3(this.transform.position.x + UnityEngine.Random.Range(-5f, 5f), this.transform.position.y, this.transform.position.z + UnityEngine.Random.Range(-5f, 5f));
+							}
+							this.CirnoTimer = 0.1f;
+						}
+					}
 					else if (this.audio.clip != this.LaughClip)
 					{
 						this.audio.clip = this.LaughClip;
@@ -1790,16 +1823,16 @@ public class YandereScript : MonoBehaviour
 						}
 						else if (this.LaughIntensity <= (float)20)
 						{
-							GameObject gameObject6 = (GameObject)UnityEngine.Object.Instantiate(this.AlarmDisc, this.transform.position + Vector3.up, Quaternion.identity);
-							((AlarmDiscScript)gameObject6.GetComponent(typeof(AlarmDiscScript))).NoScream = true;
+							GameObject gameObject7 = (GameObject)UnityEngine.Object.Instantiate(this.AlarmDisc, this.transform.position + Vector3.up, Quaternion.identity);
+							((AlarmDiscScript)gameObject7.GetComponent(typeof(AlarmDiscScript))).NoScream = true;
 							this.LaughAnim = "f02_laugh_04";
 							this.LaughClip = this.Laugh4;
 							this.LaughTimer = (float)2;
 						}
 						else
 						{
-							GameObject gameObject6 = (GameObject)UnityEngine.Object.Instantiate(this.AlarmDisc, this.transform.position + Vector3.up, Quaternion.identity);
-							((AlarmDiscScript)gameObject6.GetComponent(typeof(AlarmDiscScript))).NoScream = true;
+							GameObject gameObject7 = (GameObject)UnityEngine.Object.Instantiate(this.AlarmDisc, this.transform.position + Vector3.up, Quaternion.identity);
+							((AlarmDiscScript)gameObject7.GetComponent(typeof(AlarmDiscScript))).NoScream = true;
 							this.LaughAnim = "f02_laugh_04";
 							this.LaughIntensity = (float)20;
 							this.LaughTimer = (float)2;
@@ -3045,11 +3078,11 @@ public class YandereScript : MonoBehaviour
 					{
 						if (this.Shoes[0].active)
 						{
-							GameObject gameObject7 = (GameObject)UnityEngine.Object.Instantiate(this.ShoePair, this.transform.position + new Vector3(-1.6f, 0.045f, (float)0), Quaternion.identity);
+							GameObject gameObject8 = (GameObject)UnityEngine.Object.Instantiate(this.ShoePair, this.transform.position + new Vector3(-1.6f, 0.045f, (float)0), Quaternion.identity);
 							int num20 = -90;
-							Vector3 eulerAngles2 = gameObject7.transform.eulerAngles;
+							Vector3 eulerAngles2 = gameObject8.transform.eulerAngles;
 							float num21 = eulerAngles2.y = (float)num20;
-							Vector3 vector13 = gameObject7.transform.eulerAngles = eulerAngles2;
+							Vector3 vector13 = gameObject8.transform.eulerAngles = eulerAngles2;
 							this.Shoes[0].active = false;
 							this.Shoes[1].active = false;
 						}
@@ -3555,11 +3588,6 @@ public class YandereScript : MonoBehaviour
 							this.EasterEggMenu.active = false;
 							this.Punch();
 						}
-						else if (Input.GetKeyDown("v"))
-						{
-							this.EasterEggMenu.active = false;
-							this.Long();
-						}
 						else if (Input.GetKeyDown("u"))
 						{
 							this.EasterEggMenu.active = false;
@@ -3589,6 +3617,26 @@ public class YandereScript : MonoBehaviour
 						{
 							this.EasterEggMenu.active = false;
 							this.Pose();
+						}
+						else if (Input.GetKeyDown("v"))
+						{
+							this.EasterEggMenu.active = false;
+							this.HairBlades();
+						}
+						else if (Input.GetKeyDown("v"))
+						{
+							this.EasterEggMenu.active = false;
+							this.Long();
+						}
+						else if (Input.GetKeyDown("6"))
+						{
+							this.EasterEggMenu.active = false;
+							this.HairBlades();
+						}
+						else if (Input.GetKeyDown("7"))
+						{
+							this.EasterEggMenu.active = false;
+							this.Tornado();
 						}
 						if (Input.GetKeyDown("d"))
 						{
@@ -4164,11 +4212,11 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.sharedMesh = this.Uniforms[PlayerPrefs.GetInt("FemaleUniform")];
 		if (this.Casual)
 		{
-			this.TextureToUse = this.CasualTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.TextureToUse = this.UniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
 		}
 		else
 		{
-			this.TextureToUse = this.UniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.TextureToUse = this.CasualTextures[PlayerPrefs.GetInt("FemaleUniform")];
 		}
 		this.MyRenderer.materials[0].mainTexture = this.TextureToUse;
 		this.MyRenderer.materials[1].mainTexture = this.TextureToUse;
@@ -4178,7 +4226,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$3132(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$3142(this).GetEnumerator();
 	}
 
 	public virtual void WearGloves()
@@ -4525,6 +4573,36 @@ public class YandereScript : MonoBehaviour
 		this.StudentManager.UpdateStudents();
 	}
 
+	public virtual void HairBlades()
+	{
+		this.Hairstyle = 0;
+		this.UpdateHair();
+		this.BladeHair.active = true;
+		this.Egg = true;
+	}
+
+	public virtual void Tornado()
+	{
+		this.Hairstyle = 0;
+		this.UpdateHair();
+		this.IdleAnim = "f02_tornadoIdle_00";
+		this.WalkAnim = "f02_tornadoWalk_00";
+		this.RunAnim = "f02_tornadoRun_00";
+		this.TornadoHair.active = true;
+		this.TornadoDress.active = true;
+		this.RiggedAccessory.active = true;
+		this.MyRenderer.sharedMesh = this.NoTorsoMesh;
+		this.Sanity = (float)100;
+		this.UpdateSanity();
+		this.MyRenderer.materials[0].mainTexture = this.FaceTexture;
+		this.MyRenderer.materials[1].mainTexture = this.NudePanties;
+		this.MyRenderer.materials[2].mainTexture = this.NudePanties;
+		this.TheDebugMenuScript.UpdateCensor();
+		this.Crouching = false;
+		this.Crawling = false;
+		this.Egg = true;
+	}
+
 	public virtual void ChangeSchoolwear()
 	{
 		this.Paint = false;
@@ -4536,11 +4614,11 @@ public class YandereScript : MonoBehaviour
 		}
 		if (this.Casual)
 		{
-			this.TextureToUse = this.CasualTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.TextureToUse = this.UniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
 		}
 		else
 		{
-			this.TextureToUse = this.UniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.TextureToUse = this.CasualTextures[PlayerPrefs.GetInt("FemaleUniform")];
 		}
 		if (this.ClubAttire || this.Schoolwear == 0)
 		{

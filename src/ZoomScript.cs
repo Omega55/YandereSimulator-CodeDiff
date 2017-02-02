@@ -120,6 +120,10 @@ public class ZoomScript : MonoBehaviour
 			this.CameraScript.distance = (float)2 - this.Zoom * 3.33333f + this.Slender;
 			this.CameraScript.distanceMax = (float)2 - this.Zoom * 3.33333f + this.Slender;
 			this.CameraScript.distanceMin = (float)2 - this.Zoom * 3.33333f + this.Slender;
+			if (this.Yandere.TornadoHair.active)
+			{
+				this.CameraScript.distanceMax = this.CameraScript.distanceMax + (float)3;
+			}
 		}
 		else
 		{

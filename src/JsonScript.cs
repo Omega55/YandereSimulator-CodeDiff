@@ -13,6 +13,8 @@ public class JsonScript : MonoBehaviour
 
 	public string StudentFileName;
 
+	public string CreditsFileName;
+
 	public string TopicFileName;
 
 	public string[] StudentNames;
@@ -62,6 +64,10 @@ public class JsonScript : MonoBehaviour
 	private int TempInt;
 
 	private int ID;
+
+	public string[] CreditsNames;
+
+	public int[] CreditsSizes;
 
 	public int[] Topic1;
 
@@ -124,6 +130,14 @@ public class JsonScript : MonoBehaviour
 	public virtual Dictionary<string, object>[] TopicData()
 	{
 		string text = Path.Combine("JSON", this.TopicFileName + ".json");
+		text = Path.Combine(Application.streamingAssetsPath, text);
+		string value = File.ReadAllText(text);
+		return JsonReader.Deserialize(value) as Dictionary<string, object>[];
+	}
+
+	public virtual Dictionary<string, object>[] CreditsData()
+	{
+		string text = Path.Combine("JSON", this.CreditsFileName + ".json");
 		text = Path.Combine(Application.streamingAssetsPath, text);
 		string value = File.ReadAllText(text);
 		return JsonReader.Deserialize(value) as Dictionary<string, object>[];
@@ -212,6 +226,23 @@ public class JsonScript : MonoBehaviour
 				j++;
 			}
 			this.ReplaceDeadTeachers();
+		}
+		if (Application.loadedLevelName == "CreditsScene")
+		{
+			int k = 0;
+			Dictionary<string, object>[] array3 = this.CreditsData();
+			int length3 = array3.Length;
+			while (k < length3)
+			{
+				this.ID = TFUtils.LoadInt(array3[k], "ID");
+				if (RuntimeServices.EqualityOperator(this.ID, null) || this.ID == 0)
+				{
+					break;
+				}
+				this.CreditsNames[this.ID] = TFUtils.LoadString(array3[k], "Name");
+				this.CreditsSizes[this.ID] = TFUtils.LoadInt(array3[k], "Size");
+				k++;
+			}
 		}
 	}
 
