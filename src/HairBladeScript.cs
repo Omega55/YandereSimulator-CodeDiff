@@ -18,12 +18,6 @@ public class HairBladeScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		this.MyCollider.enabled = false;
-		if (Vector3.Distance(this.transform.position, this.PreviousPosition) > 0.5f)
-		{
-			this.MyCollider.enabled = true;
-		}
-		this.PreviousPosition = this.transform.position;
 	}
 
 	public virtual void OnTriggerEnter(Collider other)

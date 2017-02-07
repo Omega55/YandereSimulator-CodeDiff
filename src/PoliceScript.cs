@@ -137,11 +137,14 @@ public class PoliceScript : MonoBehaviour
 
 	public virtual void Start()
 	{
-		int num = 0;
-		Color color = this.Darkness.color;
-		float num2 = color.a = (float)num;
-		Color color2 = this.Darkness.color = color;
-		this.Darkness.enabled = false;
+		if (PlayerPrefs.GetFloat("SchoolAtmosphere") > (float)50)
+		{
+			int num = 0;
+			Color color = this.Darkness.color;
+			float num2 = color.a = (float)num;
+			Color color2 = this.Darkness.color = color;
+			this.Darkness.enabled = false;
+		}
 		int num3 = -260;
 		Vector3 localPosition = this.transform.localPosition;
 		float num4 = localPosition.x = (float)num3;

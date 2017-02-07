@@ -354,7 +354,7 @@ public class AttackManagerScript : MonoBehaviour
 				}
 				else if (this.EffectPhase == 0)
 				{
-					if (this.Yandere.Character.animation[this.AnimName].time > 0.366666675f)
+					if (this.Yandere.Character.animation[this.AnimName].time > 0.5f)
 					{
 						UnityEngine.Object.Instantiate(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.66666f, Quaternion.identity);
 						this.EffectPhase++;
@@ -362,7 +362,7 @@ public class AttackManagerScript : MonoBehaviour
 				}
 				else if (this.EffectPhase == 1)
 				{
-					if (this.Yandere.Character.animation[this.AnimName].time > 1.5f)
+					if (this.Yandere.Character.animation[this.AnimName].time > 1f)
 					{
 						this.Weapon.transform.localEulerAngles = new Vector3((float)0, (float)180, (float)0);
 						this.EffectPhase++;
@@ -370,7 +370,7 @@ public class AttackManagerScript : MonoBehaviour
 				}
 				else if (this.EffectPhase == 2)
 				{
-					if (this.Yandere.Character.animation[this.AnimName].time > 1.8f)
+					if (this.Yandere.Character.animation[this.AnimName].time > 2.33333325f)
 					{
 						UnityEngine.Object.Instantiate(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.66666f, Quaternion.identity);
 						this.EffectPhase++;
@@ -378,7 +378,7 @@ public class AttackManagerScript : MonoBehaviour
 				}
 				else if (this.EffectPhase == 3)
 				{
-					if (this.Yandere.Character.animation[this.AnimName].time > 3f)
+					if (this.Yandere.Character.animation[this.AnimName].time > 2.73333335f)
 					{
 						UnityEngine.Object.Instantiate(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.66666f, Quaternion.identity);
 						this.EffectPhase++;
@@ -386,7 +386,7 @@ public class AttackManagerScript : MonoBehaviour
 				}
 				else if (this.EffectPhase == 4)
 				{
-					if (this.Yandere.Character.animation[this.AnimName].time > 3.33333325f)
+					if (this.Yandere.Character.animation[this.AnimName].time > 3.13333344f)
 					{
 						UnityEngine.Object.Instantiate(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.66666f, Quaternion.identity);
 						this.EffectPhase++;
@@ -394,7 +394,7 @@ public class AttackManagerScript : MonoBehaviour
 				}
 				else if (this.EffectPhase == 5)
 				{
-					if (this.Yandere.Character.animation[this.AnimName].time > 3.66666675f)
+					if (this.Yandere.Character.animation[this.AnimName].time > 3.5333333f)
 					{
 						UnityEngine.Object.Instantiate(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.66666f, Quaternion.identity);
 						this.EffectPhase++;
@@ -402,21 +402,13 @@ public class AttackManagerScript : MonoBehaviour
 				}
 				else if (this.EffectPhase == 6)
 				{
-					if (this.Yandere.Character.animation[this.AnimName].time > 4f)
+					if (this.Yandere.Character.animation[this.AnimName].time > 4.133333f)
 					{
 						UnityEngine.Object.Instantiate(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.66666f, Quaternion.identity);
 						this.EffectPhase++;
 					}
 				}
-				else if (this.EffectPhase == 7)
-				{
-					if (this.Yandere.Character.animation[this.AnimName].time > 4.33333349f)
-					{
-						UnityEngine.Object.Instantiate(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.66666f, Quaternion.identity);
-						this.EffectPhase++;
-					}
-				}
-				else if (this.EffectPhase == 8 && this.Yandere.Character.animation[this.AnimName].time > 5.4333334f)
+				else if (this.EffectPhase == 8 && this.Yandere.Character.animation[this.AnimName].time > 5f)
 				{
 					this.Weapon.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
 					this.EffectPhase++;
@@ -452,13 +444,13 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					if (this.EffectPhase == 0)
 					{
-						if (this.Yandere.Character.animation[this.AnimName].time > 0.966666639f)
+						if (this.Yandere.Character.animation[this.AnimName].time > 1f)
 						{
 							UnityEngine.Object.Instantiate(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.5f, Quaternion.identity);
 							this.EffectPhase++;
 						}
 					}
-					else if (this.EffectPhase == 1 && this.Yandere.Character.animation[this.AnimName].time > 2.13333344f)
+					else if (this.EffectPhase == 1 && this.Yandere.Character.animation[this.AnimName].time > 2.9666667f)
 					{
 						UnityEngine.Object.Instantiate(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.5f, Quaternion.identity);
 						this.EffectPhase++;

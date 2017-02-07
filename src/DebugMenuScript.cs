@@ -489,7 +489,7 @@ public class DebugMenuScript : MonoBehaviour
 		{
 			if (this.Yandere.Schoolwear == 1 && !this.Yandere.Sans)
 			{
-				if (!this.Yandere.FlameDemonic)
+				if (!this.Yandere.FlameDemonic && !this.Yandere.TornadoHair.active)
 				{
 					this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)1);
 					this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)1);

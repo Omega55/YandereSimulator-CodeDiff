@@ -73,6 +73,8 @@ public class ClockScript : MonoBehaviour
 
 	public bool TimeSkip;
 
+	public bool FadeIn;
+
 	public AudioSource SchoolBell;
 
 	public Color SkyboxColor;
@@ -91,9 +93,25 @@ public class ClockScript : MonoBehaviour
 		{
 			PlayerPrefs.SetInt("Weekday", 1);
 		}
-		this.UpdateWeekdayText(PlayerPrefs.GetInt("Weekday"));
-		this.BloomEffect.bloomIntensity = (float)10;
+		if (PlayerPrefs.GetFloat("SchoolAtmosphere") < (float)50)
+		{
+			this.BloomEffect.bloomIntensity = 0.25f;
+			this.BloomEffect.bloomThreshhold = 0.5f;
+			this.Police.Darkness.enabled = true;
+			int num = 1;
+			Color color = this.Police.Darkness.color;
+			float num2 = color.a = (float)num;
+			Color color2 = this.Police.Darkness.color = color;
+			this.FadeIn = true;
+			this.Timer = (float)5;
+		}
+		else
+		{
+			this.BloomEffect.bloomIntensity = (float)10;
+			this.BloomEffect.bloomThreshhold = (float)0;
+		}
 		this.BloomEffect.bloomThreshhold = (float)0;
+		this.UpdateWeekdayText(PlayerPrefs.GetInt("Weekday"));
 		this.MainLight.color = new Color((float)1, (float)1, (float)1, (float)1);
 		RenderSettings.ambientLight = new Color(0.75f, 0.75f, 0.75f, (float)1);
 		RenderSettings.skybox.SetColor("_Tint", new Color(0.5f, 0.5f, 0.5f));
@@ -101,6 +119,18 @@ public class ClockScript : MonoBehaviour
 
 	public virtual void Update()
 	{
+		if (this.FadeIn && Time.deltaTime < (float)1)
+		{
+			float a = Mathf.MoveTowards(this.Police.Darkness.color.a, (float)0, Time.deltaTime);
+			Color color = this.Police.Darkness.color;
+			float num = color.a = a;
+			Color color2 = this.Police.Darkness.color = color;
+			if (this.Police.Darkness.color.a == (float)0)
+			{
+				this.Police.Darkness.enabled = false;
+				this.FadeIn = false;
+			}
+		}
 		if (this.PresentTime < (float)1080)
 		{
 			if (this.Timer < (float)5)
@@ -164,11 +194,11 @@ public class ClockScript : MonoBehaviour
 		this.TimeLabel.text = this.TimeText;
 		float z = this.Minute * (float)6;
 		Vector3 localEulerAngles = this.MinuteHand.localEulerAngles;
-		float num = localEulerAngles.z = z;
+		float num2 = localEulerAngles.z = z;
 		Vector3 vector = this.MinuteHand.localEulerAngles = localEulerAngles;
 		float z2 = this.Hour * (float)30;
 		Vector3 localEulerAngles2 = this.HourHand.localEulerAngles;
-		float num2 = localEulerAngles2.z = z2;
+		float num3 = localEulerAngles2.z = z2;
 		Vector3 vector2 = this.HourHand.localEulerAngles = localEulerAngles2;
 		if (this.HourTime < 8.5f)
 		{
@@ -217,7 +247,7 @@ public class ClockScript : MonoBehaviour
 		}
 		float z3 = (float)-45 + (float)90 * (this.PresentTime - (float)420) / (float)660;
 		Vector3 eulerAngles = this.Sun.eulerAngles;
-		float num3 = eulerAngles.z = z3;
+		float num4 = eulerAngles.z = z3;
 		Vector3 vector3 = this.Sun.eulerAngles = eulerAngles;
 		if ((this.Yandere.transform.position.y < (float)11 && this.Yandere.transform.position.x > (float)-30 && this.Yandere.transform.position.z > (float)-38 && this.Yandere.transform.position.x < (float)-22 && this.Yandere.transform.position.z < (float)-26) || (this.Yandere.transform.position.y < (float)11 && this.Yandere.transform.position.x > (float)22 && this.Yandere.transform.position.z > (float)-38 && this.Yandere.transform.position.x < (float)30 && this.Yandere.transform.position.z < (float)-26))
 		{
@@ -239,29 +269,29 @@ public class ClockScript : MonoBehaviour
 		{
 			this.DayProgress = (this.PresentTime - (float)930) / (float)150;
 			float r = (float)1 - 0.149019614f * this.DayProgress;
-			Color color = this.MainLight.color;
-			float num4 = color.r = r;
-			Color color2 = this.MainLight.color = color;
-			float g = (float)1 - 0.403921574f * this.DayProgress;
 			Color color3 = this.MainLight.color;
-			float num5 = color3.g = g;
+			float num5 = color3.r = r;
 			Color color4 = this.MainLight.color = color3;
-			float b = (float)1 - 0.709803939f * this.DayProgress;
+			float g = (float)1 - 0.403921574f * this.DayProgress;
 			Color color5 = this.MainLight.color;
-			float num6 = color5.b = b;
+			float num6 = color5.g = g;
 			Color color6 = this.MainLight.color = color5;
+			float b = (float)1 - 0.709803939f * this.DayProgress;
+			Color color7 = this.MainLight.color;
+			float num7 = color7.b = b;
+			Color color8 = this.MainLight.color = color7;
 			float r2 = (float)1 - 0.149019614f * this.DayProgress - ((float)1 - this.AmbientLightDim) * ((float)1 - this.DayProgress);
 			Color ambientLight = RenderSettings.ambientLight;
-			float num7 = ambientLight.r = r2;
-			Color color7 = RenderSettings.ambientLight = ambientLight;
+			float num8 = ambientLight.r = r2;
+			Color color9 = RenderSettings.ambientLight = ambientLight;
 			float g2 = (float)1 - 0.403921574f * this.DayProgress - ((float)1 - this.AmbientLightDim) * ((float)1 - this.DayProgress);
 			Color ambientLight2 = RenderSettings.ambientLight;
-			float num8 = ambientLight2.g = g2;
-			Color color8 = RenderSettings.ambientLight = ambientLight2;
+			float num9 = ambientLight2.g = g2;
+			Color color10 = RenderSettings.ambientLight = ambientLight2;
 			float b2 = (float)1 - 0.709803939f * this.DayProgress - ((float)1 - this.AmbientLightDim) * ((float)1 - this.DayProgress);
 			Color ambientLight3 = RenderSettings.ambientLight;
-			float num9 = ambientLight3.b = b2;
-			Color color9 = RenderSettings.ambientLight = ambientLight3;
+			float num10 = ambientLight3.b = b2;
+			Color color11 = RenderSettings.ambientLight = ambientLight3;
 			this.SkyboxColor.r = (float)1 - 0.149019614f * this.DayProgress - 0.5f * ((float)1 - this.DayProgress);
 			this.SkyboxColor.g = (float)1 - 0.403921574f * this.DayProgress - 0.5f * ((float)1 - this.DayProgress);
 			this.SkyboxColor.b = (float)1 - 0.709803939f * this.DayProgress - 0.5f * ((float)1 - this.DayProgress);
@@ -271,16 +301,16 @@ public class ClockScript : MonoBehaviour
 		{
 			float ambientLightDim = this.AmbientLightDim;
 			Color ambientLight4 = RenderSettings.ambientLight;
-			float num10 = ambientLight4.r = ambientLightDim;
-			Color color10 = RenderSettings.ambientLight = ambientLight4;
+			float num11 = ambientLight4.r = ambientLightDim;
+			Color color12 = RenderSettings.ambientLight = ambientLight4;
 			float ambientLightDim2 = this.AmbientLightDim;
 			Color ambientLight5 = RenderSettings.ambientLight;
-			float num11 = ambientLight5.g = ambientLightDim2;
-			Color color11 = RenderSettings.ambientLight = ambientLight5;
+			float num12 = ambientLight5.g = ambientLightDim2;
+			Color color13 = RenderSettings.ambientLight = ambientLight5;
 			float ambientLightDim3 = this.AmbientLightDim;
 			Color ambientLight6 = RenderSettings.ambientLight;
-			float num12 = ambientLight6.b = ambientLightDim3;
-			Color color12 = RenderSettings.ambientLight = ambientLight6;
+			float num13 = ambientLight6.b = ambientLightDim3;
+			Color color14 = RenderSettings.ambientLight = ambientLight6;
 		}
 		if (this.TimeSkip)
 		{
