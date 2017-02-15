@@ -256,6 +256,7 @@ public class ArmDetectorScript : MonoBehaviour
 					{
 						UnityEngine.Object.Instantiate(this.SmallDarkAura, this.Police.CorpseList[i].Prompt.transform.position, Quaternion.identity);
 						UnityEngine.Object.Destroy(this.Police.CorpseList[i].gameObject);
+						this.Yandere.NearBodies = this.Yandere.NearBodies - 1;
 						this.Police.Corpses = this.Police.Corpses - 1;
 					}
 				}

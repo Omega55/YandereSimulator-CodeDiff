@@ -3307,6 +3307,7 @@ public class YandereScript : MonoBehaviour
 								this.StainWeapon();
 							}
 							this.MyController.radius = 0.2f;
+							this.SanityBased = true;
 							this.Attacking = false;
 							this.AttackPhase = 1;
 							this.AttackTimer = (float)0;
@@ -3631,11 +3632,6 @@ public class YandereScript : MonoBehaviour
 						{
 							this.EasterEggMenu.active = false;
 							this.Pose();
-						}
-						else if (Input.GetKeyDown("v"))
-						{
-							this.EasterEggMenu.active = false;
-							this.HairBlades();
 						}
 						else if (Input.GetKeyDown("v"))
 						{

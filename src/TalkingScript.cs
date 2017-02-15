@@ -514,6 +514,7 @@ public class TalkingScript : MonoBehaviour
 					{
 						this.S.DialogueWheel.ClubWindow.Club = this.S.Club;
 						this.S.DialogueWheel.ClubWindow.UpdateWindow();
+						this.S.Subtitle.Label.text = string.Empty;
 						this.S.Interaction = 0;
 					}
 					else
@@ -560,6 +561,7 @@ public class TalkingScript : MonoBehaviour
 						this.S.DialogueWheel.ClubWindow.Club = this.S.Club;
 						this.S.DialogueWheel.ClubWindow.Quitting = true;
 						this.S.DialogueWheel.ClubWindow.UpdateWindow();
+						this.S.Subtitle.Label.text = string.Empty;
 						this.S.Interaction = 0;
 					}
 					else
@@ -632,6 +634,7 @@ public class TalkingScript : MonoBehaviour
 						this.S.DialogueWheel.ClubWindow.Club = this.S.Club;
 						this.S.DialogueWheel.ClubWindow.Activity = true;
 						this.S.DialogueWheel.ClubWindow.UpdateWindow();
+						this.S.Subtitle.Label.text = string.Empty;
 						this.S.Interaction = 0;
 					}
 					else if (this.S.ClubPhase == 2)
@@ -639,6 +642,7 @@ public class TalkingScript : MonoBehaviour
 						this.S.Police.Darkness.enabled = true;
 						this.S.Police.ClubActivity = true;
 						this.S.Police.FadeOut = true;
+						this.S.Subtitle.Label.text = string.Empty;
 						this.S.Interaction = 0;
 					}
 					else

@@ -245,6 +245,11 @@ public class HomeYandereScript : MonoBehaviour
 			PlayerPrefs.SetInt("FemaleUniform", 5);
 			Application.LoadLevel(Application.loadedLevel);
 		}
+		else if (Input.GetKeyDown(KeyCode.F6))
+		{
+			PlayerPrefs.SetInt("FemaleUniform", 6);
+			Application.LoadLevel(Application.loadedLevel);
+		}
 	}
 
 	public virtual void LateUpdate()

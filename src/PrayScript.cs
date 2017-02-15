@@ -74,15 +74,31 @@ public class PrayScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (!this.FemaleVictimChecked && this.StudentManager.Students[16] != null && this.StudentManager.Students[16].Dead)
+		if (!this.FemaleVictimChecked)
 		{
-			this.FemaleVictimChecked = true;
-			this.Victims++;
+			if (this.StudentManager.Students[16] != null && this.StudentManager.Students[16].Dead)
+			{
+				this.FemaleVictimChecked = true;
+				this.Victims++;
+			}
 		}
-		if (!this.MaleVictimChecked && this.StudentManager.Students[15] != null && this.StudentManager.Students[15].Dead)
+		else if (this.StudentManager.Students[16] == null)
 		{
-			this.MaleVictimChecked = true;
-			this.Victims++;
+			this.FemaleVictimChecked = false;
+			this.Victims--;
+		}
+		if (!this.MaleVictimChecked)
+		{
+			if (this.StudentManager.Students[15] != null && this.StudentManager.Students[15].Dead)
+			{
+				this.MaleVictimChecked = true;
+				this.Victims++;
+			}
+		}
+		else if (this.StudentManager.Students[15] == null)
+		{
+			this.MaleVictimChecked = false;
+			this.Victims--;
 		}
 		if (this.JustSummoned)
 		{

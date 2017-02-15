@@ -254,7 +254,9 @@ public class RagdollScript : MonoBehaviour
 				{
 					if (this.Cauterizable)
 					{
+						this.Prompt.Label[0].text = "     " + "Dismember";
 						this.BloodPoolSpawner.enabled = false;
+						this.Cauterizable = false;
 						this.Cauterized = true;
 						this.Yandere.CharacterAnimation.CrossFade("f02_cauterize_00");
 						this.Yandere.Cauterizing = true;

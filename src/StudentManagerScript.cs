@@ -1035,6 +1035,7 @@ public class StudentManagerScript : MonoBehaviour
 		{
 			if (this.Students[this.ID] != null)
 			{
+				this.Students[this.ID].Prompt.HideButton[0] = false;
 				this.Students[this.ID].BadTime = true;
 			}
 			this.ID++;

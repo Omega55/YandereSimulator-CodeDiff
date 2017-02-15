@@ -3919,7 +3919,7 @@ public class StudentScript : MonoBehaviour
 				}
 				if (this.Prompt.Circle[2].fillAmount <= (float)0 && !this.Yandere.NearSenpai && !this.Yandere.Attacking && !this.Yandere.Crouching)
 				{
-					if ((this.Yandere.Weapon[this.Yandere.Equipped].WeaponID == 3 && !this.StudentManager.MissionMode) || RuntimeServices.EqualityOperator(UnityRuntimeServices.GetProperty(this.Yandere.Weapon[this.Yandere.Equipped], "Burning"), true))
+					if ((this.Yandere.Weapon[this.Yandere.Equipped].WeaponID == 3 && !this.StudentManager.MissionMode) || this.Yandere.Weapon[this.Yandere.Equipped].Flaming)
 					{
 						this.Yandere.SanityBased = false;
 					}
@@ -4906,8 +4906,11 @@ public class StudentScript : MonoBehaviour
 		}
 		else if (!this.ClubActivity)
 		{
-			this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - this.transform.position);
-			this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * this.DeltaTime);
+			if (!this.Yandere.Talking)
+			{
+				this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - this.transform.position);
+				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * this.DeltaTime);
+			}
 		}
 		else if (this.Police.Darkness.color.a < (float)1)
 		{
@@ -6215,6 +6218,7 @@ public class StudentScript : MonoBehaviour
 		this.MyRenderer.sharedMesh = this.BaldNudeMesh;
 		if (!this.Male)
 		{
+			this.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)0);
 			this.MyRenderer.materials[0].mainTexture = this.Cosmetic.FaceTexture;
 			this.MyRenderer.materials[1].mainTexture = null;
 			this.MyRenderer.materials[2].mainTexture = this.NudeTexture;
@@ -6254,6 +6258,8 @@ public class StudentScript : MonoBehaviour
 			if (!this.Male)
 			{
 				this.Cosmetic.SetFemaleUniform();
+				this.SkirtCollider.enabled = true;
+				this.PantyCollider.enabled = true;
 			}
 			else
 			{
@@ -6281,11 +6287,6 @@ public class StudentScript : MonoBehaviour
 				this.Outlines[this.ID].h.ReinitMaterials();
 			}
 			this.ID++;
-		}
-		if (!this.Male)
-		{
-			this.SkirtCollider.enabled = true;
-			this.PantyCollider.enabled = true;
 		}
 	}
 

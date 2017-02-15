@@ -630,11 +630,11 @@ public class AttackManagerScript : MonoBehaviour
 			}
 			else if (this.Weapon.Type == 2)
 			{
-				if (this.Yandere.Character.animation[this.AnimName].time > 4f && this.Yandere.Character.animation[this.AnimName].time < 4.33333349f)
+				if (this.Yandere.Character.animation[this.AnimName].time > 3.36666656f && this.Yandere.Character.animation[this.AnimName].time < 3.9f)
 				{
-					this.LoopStart = 120f;
-					this.LoopEnd = 130f;
-					this.LoopPhase = 7;
+					this.LoopStart = 101f;
+					this.LoopEnd = 117f;
+					this.LoopPhase = 5;
 					this.Loop = true;
 				}
 			}

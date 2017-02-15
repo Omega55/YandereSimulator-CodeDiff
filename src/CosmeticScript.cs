@@ -923,6 +923,10 @@ public class CosmeticScript : MonoBehaviour
 		{
 			this.CensorPanties();
 		}
+		if (this.MyStockings != null)
+		{
+			this.PutOnStockings();
+		}
 	}
 
 	public virtual void CensorPanties()
