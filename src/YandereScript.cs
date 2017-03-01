@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$3148 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$3152 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$3163;
+		internal YandereScript $self_$3167;
 
-		public $ApplyCustomCostume$3148(YandereScript self_)
+		public $ApplyCustomCostume$3152(YandereScript self_)
 		{
-			this.$self_$3163 = self_;
+			this.$self_$3167 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$3148.$(this.$self_$3163);
+			return new YandereScript.$ApplyCustomCostume$3152.$(this.$self_$3167);
 		}
 	}
 
@@ -2606,7 +2606,7 @@ public class YandereScript : MonoBehaviour
 				this.SenpaiFade = Mathf.Lerp(this.SenpaiFade, (float)0, Time.deltaTime * (float)10);
 				this.SenpaiTint = (float)1 - this.SenpaiFade / (float)100;
 				this.ColorCorrection.redChannel.MoveKey(1, new Keyframe(0.5f, 0.5f + this.SenpaiTint * 0.5f));
-				this.ColorCorrection.greenChannel.MoveKey(1, new Keyframe(0.5f, 0.5f - this.SenpaiTint * 0.5f));
+				this.ColorCorrection.greenChannel.MoveKey(1, new Keyframe(0.5f, (float)1 - this.SenpaiTint * 0.5f));
 				this.ColorCorrection.blueChannel.MoveKey(1, new Keyframe(0.5f, 0.5f + this.SenpaiTint * 0.5f));
 				this.ColorCorrection.redChannel.SmoothTangents(1, (float)0);
 				this.ColorCorrection.greenChannel.SmoothTangents(1, (float)0);
@@ -4238,7 +4238,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$3148(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$3152(this).GetEnumerator();
 	}
 
 	public virtual void WearGloves()

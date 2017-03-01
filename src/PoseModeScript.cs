@@ -59,6 +59,10 @@ public class PoseModeScript : MonoBehaviour
 
 	public int Value;
 
+	public string[] StockingNames;
+
+	public int StockingID;
+
 	public string[] AnimationArray;
 
 	public PoseModeScript()
@@ -344,7 +348,14 @@ public class PoseModeScript : MonoBehaviour
 						this.Student.Cosmetic.Hairstyle = this.Student.Cosmetic.Hairstyle + 1;
 						if (!this.Student.Male)
 						{
-							if (this.Student.Cosmetic.Hairstyle == Extensions.get_length(this.Student.Cosmetic.FemaleHair))
+							if (!this.Student.Teacher)
+							{
+								if (this.Student.Cosmetic.Hairstyle == Extensions.get_length(this.Student.Cosmetic.FemaleHair))
+								{
+									this.Student.Cosmetic.Hairstyle = 1;
+								}
+							}
+							else if (this.Student.Cosmetic.Hairstyle == Extensions.get_length(this.Student.Cosmetic.TeacherHair))
 							{
 								this.Student.Cosmetic.Hairstyle = 1;
 							}
@@ -454,6 +465,34 @@ public class PoseModeScript : MonoBehaviour
 							this.Degree--;
 						}
 						this.UpdateLabels();
+					}
+				}
+				else if (this.Selected == 8)
+				{
+					if (!this.Student.Male)
+					{
+						if (this.InputManager.TappedRight)
+						{
+							this.StockingID++;
+							if (this.StockingID == Extensions.get_length(this.StockingNames))
+							{
+								this.StockingID = 0;
+							}
+							this.Student.Cosmetic.Stockings = this.StockingNames[this.StockingID];
+							this.Student.Cosmetic.PutOnStockings();
+							this.UpdateLabels();
+						}
+						else if (this.InputManager.TappedLeft)
+						{
+							this.StockingID--;
+							if (this.StockingID < 0)
+							{
+								this.StockingID = Extensions.get_length(this.StockingNames) - 1;
+							}
+							this.Student.Cosmetic.Stockings = this.StockingNames[this.StockingID];
+							this.Student.Cosmetic.PutOnStockings();
+							this.UpdateLabels();
+						}
 					}
 				}
 				else if (Input.GetAxis("Horizontal") > 0.5f || Input.GetAxis("Horizontal") < -0.5f || Input.GetAxis("DpadX") > 0.5f || Input.GetAxis("DpadX") < -0.5f || Input.GetKey("right") || Input.GetKey("left"))
@@ -778,20 +817,29 @@ public class PoseModeScript : MonoBehaviour
 			this.OptionLabels[5].text = "Hair G: " + this.Student.Cosmetic.HairRenderer.material.color.g * (float)255;
 			this.OptionLabels[6].text = "Hair B: " + this.Student.Cosmetic.HairRenderer.material.color.b * (float)255;
 			this.OptionLabels[7].text = "Degree of Change: " + this.Degree;
-			this.Limit = 7;
+			this.OptionLabels[8].text = "Stockings: " + this.Student.Cosmetic.Stockings;
+			this.Limit = 8;
 			if (!this.Student.Male)
 			{
 				float a4 = 1f;
 				Color color7 = this.OptionLabels[3].color;
 				float num4 = color7.a = a4;
 				Color color8 = this.OptionLabels[3].color = color7;
+				float a5 = 1f;
+				Color color9 = this.OptionLabels[8].color;
+				float num5 = color9.a = a5;
+				Color color10 = this.OptionLabels[8].color = color9;
 			}
 			else
 			{
-				float a5 = 0.5f;
-				Color color9 = this.OptionLabels[3].color;
-				float num5 = color9.a = a5;
-				Color color10 = this.OptionLabels[3].color = color9;
+				float a6 = 0.5f;
+				Color color11 = this.OptionLabels[3].color;
+				float num6 = color11.a = a6;
+				Color color12 = this.OptionLabels[3].color = color11;
+				float a7 = 0.5f;
+				Color color13 = this.OptionLabels[8].color;
+				float num7 = color13.a = a7;
+				Color color14 = this.OptionLabels[8].color = color13;
 			}
 		}
 		else if (this.Animating)

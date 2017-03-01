@@ -45,8 +45,17 @@ public class QualityManagerScript : MonoBehaviour
 
 	public Shader ToonOutlineOverlay;
 
+	public BloomAndLensFlares ExperimentalBloomAndLensFlares;
+
+	public DepthOfField34 ExperimentalDepthOfField34;
+
+	public SSAOEffect ExperimentalSSAOEffect;
+
 	public virtual void Start()
 	{
+		DepthOfField34[] components = Camera.main.GetComponents<DepthOfField34>();
+		this.ExperimentalDepthOfField34 = components[1];
+		this.ToggleExperiment();
 		if (PlayerPrefs.GetInt("ParticleCount") == 0)
 		{
 			PlayerPrefs.SetInt("ParticleCount", 3);
@@ -298,6 +307,23 @@ public class QualityManagerScript : MonoBehaviour
 		else
 		{
 			this.StudentManager.DisableFarAnims = false;
+		}
+	}
+
+	public virtual void ToggleExperiment()
+	{
+		if (!this.ExperimentalSSAOEffect.enabled)
+		{
+			this.ExperimentalBloomAndLensFlares.enabled = true;
+			this.ExperimentalDepthOfField34.enabled = true;
+			this.ExperimentalSSAOEffect.enabled = true;
+			this.BloomEffect.enabled = false;
+		}
+		else
+		{
+			this.ExperimentalBloomAndLensFlares.enabled = false;
+			this.ExperimentalDepthOfField34.enabled = false;
+			this.ExperimentalSSAOEffect.enabled = false;
 		}
 	}
 

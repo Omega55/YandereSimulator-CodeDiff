@@ -517,48 +517,7 @@ public class CosmeticScript : MonoBehaviour
 		}
 		if (!this.Male)
 		{
-			if (this.Stockings == "Red")
-			{
-				this.MyStockings = this.RedStockings;
-				this.PutOnStockings();
-			}
-			else if (this.Stockings == "Yellow")
-			{
-				this.MyStockings = this.YellowStockings;
-				this.PutOnStockings();
-			}
-			else if (this.Stockings == "Green")
-			{
-				this.MyStockings = this.GreenStockings;
-				this.PutOnStockings();
-			}
-			else if (this.Stockings == "Cyan")
-			{
-				this.MyStockings = this.CyanStockings;
-				this.PutOnStockings();
-			}
-			else if (this.Stockings == "Blue")
-			{
-				this.MyStockings = this.BlueStockings;
-				this.PutOnStockings();
-			}
-			else if (this.Stockings == "Purple")
-			{
-				this.MyStockings = this.PurpleStockings;
-				this.PutOnStockings();
-			}
-			else if (this.Stockings == "Osana")
-			{
-				this.MyRenderer.materials[0].SetTexture("_OverlayTex", this.OsanaStockings);
-				this.MyRenderer.materials[1].SetTexture("_OverlayTex", this.OsanaStockings);
-				this.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)1);
-				this.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)1);
-			}
-			else if (this.Stockings == "Loose")
-			{
-				this.RightStockings[0].active = true;
-				this.LeftStockings[0].active = true;
-			}
+			this.PutOnStockings();
 		}
 		if (!this.Randomize)
 		{
@@ -1078,10 +1037,60 @@ public class CosmeticScript : MonoBehaviour
 
 	public virtual void PutOnStockings()
 	{
-		this.MyRenderer.materials[0].SetTexture("_OverlayTex", this.MyStockings);
-		this.MyRenderer.materials[1].SetTexture("_OverlayTex", this.MyStockings);
-		this.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)1);
-		this.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)1);
+		this.RightStockings[0].active = false;
+		this.LeftStockings[0].active = false;
+		if (this.Stockings == string.Empty)
+		{
+			this.MyStockings = null;
+		}
+		else if (this.Stockings == "Red")
+		{
+			this.MyStockings = this.RedStockings;
+		}
+		else if (this.Stockings == "Yellow")
+		{
+			this.MyStockings = this.YellowStockings;
+		}
+		else if (this.Stockings == "Green")
+		{
+			this.MyStockings = this.GreenStockings;
+		}
+		else if (this.Stockings == "Cyan")
+		{
+			this.MyStockings = this.CyanStockings;
+		}
+		else if (this.Stockings == "Blue")
+		{
+			this.MyStockings = this.BlueStockings;
+		}
+		else if (this.Stockings == "Purple")
+		{
+			this.MyStockings = this.PurpleStockings;
+		}
+		else if (this.Stockings == "Osana")
+		{
+			this.MyStockings = this.OsanaStockings;
+		}
+		else if (this.Stockings == "Loose")
+		{
+			this.MyStockings = null;
+			this.RightStockings[0].active = true;
+			this.LeftStockings[0].active = true;
+		}
+		if (this.MyStockings != null)
+		{
+			this.MyRenderer.materials[0].SetTexture("_OverlayTex", this.MyStockings);
+			this.MyRenderer.materials[1].SetTexture("_OverlayTex", this.MyStockings);
+			this.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)1);
+			this.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)1);
+		}
+		else
+		{
+			this.MyRenderer.materials[0].SetTexture("_OverlayTex", null);
+			this.MyRenderer.materials[1].SetTexture("_OverlayTex", null);
+			this.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)0);
+			this.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)0);
+		}
 	}
 
 	public virtual void Main()

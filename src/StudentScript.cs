@@ -3919,7 +3919,7 @@ public class StudentScript : MonoBehaviour
 				}
 				if (this.Prompt.Circle[2].fillAmount <= (float)0 && !this.Yandere.NearSenpai && !this.Yandere.Attacking && !this.Yandere.Crouching)
 				{
-					if ((this.Yandere.Weapon[this.Yandere.Equipped].WeaponID == 3 && !this.StudentManager.MissionMode) || this.Yandere.Weapon[this.Yandere.Equipped].Flaming)
+					if ((this.Yandere.Weapon[this.Yandere.Equipped].WeaponID == 3 && !this.StudentManager.MissionMode) || this.Yandere.Weapon[this.Yandere.Equipped].Flaming || this.Yandere.CyborgParts[1].active)
 					{
 						this.Yandere.SanityBased = false;
 					}

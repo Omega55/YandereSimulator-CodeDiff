@@ -46,6 +46,10 @@ public class SettingsScript : MonoBehaviour
 
 	public virtual void Update()
 	{
+		if (Input.GetKeyDown("space"))
+		{
+			this.QualityManager.ToggleExperiment();
+		}
 		if (this.InputManager.TappedUp)
 		{
 			this.Selected--;
