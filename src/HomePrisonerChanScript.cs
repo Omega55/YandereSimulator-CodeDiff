@@ -16,6 +16,10 @@ public class HomePrisonerChanScript : MonoBehaviour
 
 	public Vector3 LeftEyeRotOrigin;
 
+	public Vector3 PermanentAngleR;
+
+	public Vector3 PermanentAngleL;
+
 	public Vector3 RightEyeOrigin;
 
 	public Vector3 LeftEyeOrigin;
@@ -76,6 +80,8 @@ public class HomePrisonerChanScript : MonoBehaviour
 	{
 		if (PlayerPrefs.GetInt("KidnapVictim") > 0)
 		{
+			this.PermanentAngleR = this.TwintailR.eulerAngles;
+			this.PermanentAngleL = this.TwintailL.eulerAngles;
 			this.StudentID = PlayerPrefs.GetInt("KidnapVictim");
 			if (PlayerPrefs.GetInt("Student_" + this.StudentID + "_Arrested") == 0 && PlayerPrefs.GetInt("Student_" + this.StudentID + "_Dead") == 0)
 			{
@@ -87,7 +93,7 @@ public class HomePrisonerChanScript : MonoBehaviour
 				this.RightEyeOrigin = this.RightEye.localPosition;
 				this.LeftEyeOrigin = this.LeftEye.localPosition;
 				this.UpdateSanity();
-				this.TwintailR.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)90);
+				this.TwintailR.transform.localEulerAngles = new Vector3((float)0, (float)180, (float)-90);
 				this.TwintailL.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)-90);
 				this.Blindfold.active = false;
 				this.Tripod.active = false;
@@ -138,10 +144,10 @@ public class HomePrisonerChanScript : MonoBehaviour
 					else
 					{
 						to = Quaternion.LookRotation(this.HomeYandere.position + Vector3.up * 1.5f - this.Neck.position);
-						this.HairRotation = Mathf.Lerp(this.HairRotation, (float)60, Time.deltaTime * (float)2);
+						this.HairRotation = Mathf.Lerp(this.HairRotation, (float)45, Time.deltaTime * (float)2);
 					}
 					this.Neck.rotation = Quaternion.Slerp(this.LastRotation, to, Time.deltaTime * (float)2);
-					this.TwintailR.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)90 - this.HairRotation);
+					this.TwintailR.transform.localEulerAngles = new Vector3((float)0, (float)180, (float)-90 - this.HairRotation);
 					this.TwintailL.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)-90 - this.HairRotation);
 				}
 				else
@@ -157,7 +163,7 @@ public class HomePrisonerChanScript : MonoBehaviour
 						this.Neck.rotation = Quaternion.Slerp(this.LastRotation, to, Time.deltaTime * (float)2);
 					}
 					this.HairRotation = Mathf.Lerp(this.HairRotation, (float)0, Time.deltaTime * (float)2);
-					this.TwintailR.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)90 - this.HairRotation);
+					this.TwintailR.transform.localEulerAngles = new Vector3((float)0, (float)180, (float)-90 - this.HairRotation);
 					this.TwintailL.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)-90 - this.HairRotation);
 				}
 			}
@@ -168,10 +174,6 @@ public class HomePrisonerChanScript : MonoBehaviour
 				float num3 = localEulerAngles2.x = x2;
 				Vector3 vector3 = this.Neck.localEulerAngles = localEulerAngles2;
 			}
-		}
-		else
-		{
-			this.EyeShrink += Time.deltaTime * 0.1f;
 		}
 		this.LastRotation = this.Neck.rotation;
 		if (!this.Tortured && this.Sanity < (float)100 && this.Sanity > (float)0)
@@ -190,72 +192,9 @@ public class HomePrisonerChanScript : MonoBehaviour
 		}
 		if (this.Tortured)
 		{
-			this.HairRotation = Mathf.Lerp(this.HairRotation, (float)60, Time.deltaTime * (float)2);
-			this.TwintailR.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)90 - this.HairRotation);
+			this.HairRotation = Mathf.Lerp(this.HairRotation, (float)45, Time.deltaTime * (float)2);
+			this.TwintailR.transform.localEulerAngles = new Vector3((float)0, (float)180, (float)-90 - this.HairRotation);
 			this.TwintailL.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)-90 - this.HairRotation);
-			if (this.EyeShrink > (float)1)
-			{
-				this.EyeShrink = (float)1;
-			}
-			if (this.Sanity >= (float)50)
-			{
-				float z = this.LeftEye.localPosition.z - this.EyeShrink * 0.009f;
-				Vector3 localPosition = this.LeftEye.localPosition;
-				float num4 = localPosition.z = z;
-				Vector3 vector4 = this.LeftEye.localPosition = localPosition;
-				float z2 = this.RightEye.localPosition.z + this.EyeShrink * 0.009f;
-				Vector3 localPosition2 = this.RightEye.localPosition;
-				float num5 = localPosition2.z = z2;
-				Vector3 vector5 = this.RightEye.localPosition = localPosition2;
-				float x3 = this.LeftEye.localPosition.x - this.EyeShrink * 0.002f;
-				Vector3 localPosition3 = this.LeftEye.localPosition;
-				float num6 = localPosition3.x = x3;
-				Vector3 vector6 = this.LeftEye.localPosition = localPosition3;
-				float x4 = this.RightEye.localPosition.x - this.EyeShrink * 0.002f;
-				Vector3 localPosition4 = this.RightEye.localPosition;
-				float num7 = localPosition4.x = x4;
-				Vector3 vector7 = this.RightEye.localPosition = localPosition4;
-				float x5 = this.LeftEye.localEulerAngles.x + (float)5 + UnityEngine.Random.Range(this.EyeShrink * -1f, this.EyeShrink * 1f);
-				Vector3 localEulerAngles3 = this.LeftEye.localEulerAngles;
-				float num8 = localEulerAngles3.x = x5;
-				Vector3 vector8 = this.LeftEye.localEulerAngles = localEulerAngles3;
-				float y2 = this.LeftEye.localEulerAngles.y + UnityEngine.Random.Range(this.EyeShrink * -1f, this.EyeShrink * 1f);
-				Vector3 localEulerAngles4 = this.LeftEye.localEulerAngles;
-				float num9 = localEulerAngles4.y = y2;
-				Vector3 vector9 = this.LeftEye.localEulerAngles = localEulerAngles4;
-				float z3 = this.LeftEye.localEulerAngles.z + UnityEngine.Random.Range(this.EyeShrink * -1f, this.EyeShrink * 1f);
-				Vector3 localEulerAngles5 = this.LeftEye.localEulerAngles;
-				float num10 = localEulerAngles5.z = z3;
-				Vector3 vector10 = this.LeftEye.localEulerAngles = localEulerAngles5;
-				float x6 = this.RightEye.localEulerAngles.x - (float)5 + UnityEngine.Random.Range(this.EyeShrink * -1f, this.EyeShrink * 1f);
-				Vector3 localEulerAngles6 = this.RightEye.localEulerAngles;
-				float num11 = localEulerAngles6.x = x6;
-				Vector3 vector11 = this.RightEye.localEulerAngles = localEulerAngles6;
-				float y3 = this.RightEye.localEulerAngles.y + UnityEngine.Random.Range(this.EyeShrink * -1f, this.EyeShrink * 1f);
-				Vector3 localEulerAngles7 = this.RightEye.localEulerAngles;
-				float num12 = localEulerAngles7.y = y3;
-				Vector3 vector12 = this.RightEye.localEulerAngles = localEulerAngles7;
-				float z4 = this.RightEye.localEulerAngles.z + UnityEngine.Random.Range(this.EyeShrink * -1f, this.EyeShrink * 1f);
-				Vector3 localEulerAngles8 = this.RightEye.localEulerAngles;
-				float num13 = localEulerAngles8.z = z4;
-				Vector3 vector13 = this.RightEye.localEulerAngles = localEulerAngles8;
-				float x7 = (float)1 - this.EyeShrink * 0.5f;
-				Vector3 localScale2 = this.LeftEye.localScale;
-				float num14 = localScale2.x = x7;
-				Vector3 vector14 = this.LeftEye.localScale = localScale2;
-				float y4 = (float)1 - this.EyeShrink * 0.5f;
-				Vector3 localScale3 = this.LeftEye.localScale;
-				float num15 = localScale3.y = y4;
-				Vector3 vector15 = this.LeftEye.localScale = localScale3;
-				float x8 = (float)1 - this.EyeShrink * 0.5f;
-				Vector3 localScale4 = this.RightEye.localScale;
-				float num16 = localScale4.x = x8;
-				Vector3 vector16 = this.RightEye.localScale = localScale4;
-				float y5 = (float)1 - this.EyeShrink * 0.5f;
-				Vector3 localScale5 = this.RightEye.localScale;
-				float num17 = localScale5.y = y5;
-				Vector3 vector17 = this.RightEye.localScale = localScale5;
-			}
 		}
 	}
 

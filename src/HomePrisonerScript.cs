@@ -269,7 +269,7 @@ public class HomePrisonerScript : MonoBehaviour
 					{
 						if (this.Sanity >= (float)50)
 						{
-							this.Prisoner.Character.animation.CrossFade("f02_kidnapTorture_00");
+							this.Prisoner.Character.animation.CrossFade("f02_kidnapTorture_01");
 						}
 						else
 						{
@@ -317,22 +317,18 @@ public class HomePrisonerScript : MonoBehaviour
 			}
 			else
 			{
-				this.TortureDestination.LookAt(this.TortureTarget);
-				float z = this.TortureDestination.localPosition.z - Time.deltaTime * 0.02f;
-				Vector3 localPosition6 = this.TortureDestination.localPosition;
-				float num10 = localPosition6.z = z;
-				Vector3 vector6 = this.TortureDestination.localPosition = localPosition6;
+				this.TortureDestination.Translate(Vector3.forward * Time.deltaTime * 0.02f);
 				this.Jukebox.volume = this.Jukebox.volume - Time.deltaTime * 0.05f;
 				this.Timer += Time.deltaTime;
 				if (this.Sanity >= (float)50)
 				{
-					float y2 = this.TortureDestination.localPosition.y - Time.deltaTime * 0.02f;
-					Vector3 localPosition7 = this.TortureDestination.localPosition;
-					float num11 = localPosition7.y = y2;
-					Vector3 vector7 = this.TortureDestination.localPosition = localPosition7;
+					float y2 = this.TortureDestination.localPosition.y + Time.deltaTime * 0.05f;
+					Vector3 localPosition6 = this.TortureDestination.localPosition;
+					float num10 = localPosition6.y = y2;
+					Vector3 vector6 = this.TortureDestination.localPosition = localPosition6;
 					if (this.Sanity == (float)100)
 					{
-						if (this.Timer > 2.5f && !this.PlayedAudio)
+						if (this.Timer > (float)2 && !this.PlayedAudio)
 						{
 							this.audio.clip = this.FirstTorture;
 							this.PlayedAudio = true;
@@ -355,9 +351,9 @@ public class HomePrisonerScript : MonoBehaviour
 				if (this.Timer > (float)10 && this.Darkness.Sprite.color.a != (float)1)
 				{
 					this.Darkness.enabled = false;
-					int num12 = 1;
+					int num11 = 1;
 					Color color = this.Darkness.Sprite.color;
-					float num13 = color.a = (float)num12;
+					float num12 = color.a = (float)num11;
 					Color color2 = this.Darkness.Sprite.color = color;
 					this.audio.clip = this.TortureHit;
 					this.audio.Play();

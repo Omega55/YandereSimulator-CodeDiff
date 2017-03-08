@@ -5,6 +5,8 @@ using UnityScript.Lang;
 [Serializable]
 public class BrokenScript : MonoBehaviour
 {
+	public DynamicBone[] HairPhysics;
+
 	public string[] MutterTexts;
 
 	public AudioClip[] Mutters;
@@ -50,6 +52,8 @@ public class BrokenScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		this.HairPhysics[0].enabled = false;
+		this.HairPhysics[1].enabled = false;
 		this.PermanentAngleR = this.TwintailR.eulerAngles;
 		this.PermanentAngleL = this.TwintailL.eulerAngles;
 		this.Subtitle = (UILabel)GameObject.Find("EventSubtitle").GetComponent(typeof(UILabel));
@@ -60,43 +64,43 @@ public class BrokenScript : MonoBehaviour
 	{
 		if (!this.Done)
 		{
-			if (!this.Hunting)
-			{
-				this.Timer += Time.deltaTime;
-				if (this.VoiceClip == null)
-				{
-					this.Subtitle.text = string.Empty;
-				}
-				if (this.Timer > (float)5)
-				{
-					this.Timer = (float)0;
-					this.Subtitle.text = this.MutterTexts[this.ID];
-					this.PlayClip(this.Mutters[this.ID], this.transform.position);
-					this.ID++;
-					if (this.ID == Extensions.get_length(this.Mutters))
-					{
-						this.ID = 1;
-					}
-				}
-			}
-			else if (!this.Began)
-			{
-				if (this.VoiceClip != null)
-				{
-					UnityEngine.Object.Destroy(this.VoiceClip);
-				}
-				this.Subtitle.text = "Do it.";
-				this.PlayClip(this.DoIt, this.transform.position);
-				this.Began = true;
-			}
-			else if (this.VoiceClip == null)
-			{
-				this.Subtitle.text = "...kill...kill...kill...";
-				this.PlayClip(this.KillKillKill, this.transform.position);
-			}
 			float num = Vector3.Distance(this.Yandere.transform.position, this.transform.root.position);
 			if (num < (float)5)
 			{
+				if (!this.Hunting)
+				{
+					this.Timer += Time.deltaTime;
+					if (this.VoiceClip == null)
+					{
+						this.Subtitle.text = string.Empty;
+					}
+					if (this.Timer > (float)5)
+					{
+						this.Timer = (float)0;
+						this.Subtitle.text = this.MutterTexts[this.ID];
+						this.PlayClip(this.Mutters[this.ID], this.transform.position);
+						this.ID++;
+						if (this.ID == Extensions.get_length(this.Mutters))
+						{
+							this.ID = 1;
+						}
+					}
+				}
+				else if (!this.Began)
+				{
+					if (this.VoiceClip != null)
+					{
+						UnityEngine.Object.Destroy(this.VoiceClip);
+					}
+					this.Subtitle.text = "Do it.";
+					this.PlayClip(this.DoIt, this.transform.position);
+					this.Began = true;
+				}
+				else if (this.VoiceClip == null)
+				{
+					this.Subtitle.text = "...kill...kill...kill...";
+					this.PlayClip(this.KillKillKill, this.transform.position);
+				}
 				float num2 = Mathf.Abs((num - (float)5) * 0.2f);
 				if (num2 < (float)0)
 				{

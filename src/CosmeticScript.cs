@@ -121,6 +121,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public Texture RedStockings;
 
+	public Texture CustomStockings;
+
 	public Texture MyStockings;
 
 	public GameObject RightIrisLight;
@@ -1070,6 +1072,10 @@ public class CosmeticScript : MonoBehaviour
 		else if (this.Stockings == "Osana")
 		{
 			this.MyStockings = this.OsanaStockings;
+		}
+		else if (this.Stockings == "Custom")
+		{
+			this.MyStockings = this.CustomStockings;
 		}
 		else if (this.Stockings == "Loose")
 		{

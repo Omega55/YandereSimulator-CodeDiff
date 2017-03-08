@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$3152 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$3122 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$3167;
+		internal YandereScript $self_$3137;
 
-		public $ApplyCustomCostume$3152(YandereScript self_)
+		public $ApplyCustomCostume$3122(YandereScript self_)
 		{
-			this.$self_$3167 = self_;
+			this.$self_$3137 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$3152.$(this.$self_$3167);
+			return new YandereScript.$ApplyCustomCostume$3122.$(this.$self_$3137);
 		}
 	}
 
@@ -807,6 +807,10 @@ public class YandereScript : MonoBehaviour
 
 	public Mesh LongUniform;
 
+	public Texture NewFace;
+
+	public Mesh NewMesh;
+
 	public GameObject[] CensorSteam;
 
 	public Texture NudePanties;
@@ -842,6 +846,10 @@ public class YandereScript : MonoBehaviour
 	public Renderer TornadoRenderer;
 
 	public Mesh NoTorsoMesh;
+
+	public GameObject KunHair;
+
+	public GameObject Kun;
 
 	public Mesh SchoolSwimsuit;
 
@@ -3648,6 +3656,16 @@ public class YandereScript : MonoBehaviour
 							this.EasterEggMenu.active = false;
 							this.Tornado();
 						}
+						else if (Input.GetKeyDown("8"))
+						{
+							this.EasterEggMenu.active = false;
+							this.GenderSwap();
+						}
+						else if (Input.GetKeyDown("[5]"))
+						{
+							this.EasterEggMenu.active = false;
+							this.SwapMesh();
+						}
 						if (Input.GetKeyDown("d"))
 						{
 							if (this.Copyrights.active)
@@ -3694,12 +3712,6 @@ public class YandereScript : MonoBehaviour
 		else
 		{
 			this.audio.volume = this.audio.volume - 0.333333343f;
-		}
-		if (Input.GetKeyDown(KeyCode.Keypad5))
-		{
-			this.CharacterAnimation.CrossFade("f02_bucketTrip_00");
-			this.Tripping = true;
-			this.CanMove = false;
 		}
 	}
 
@@ -4238,7 +4250,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$3152(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$3122(this).GetEnumerator();
 	}
 
 	public virtual void WearGloves()
@@ -4542,6 +4554,16 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.sharedMesh = this.LongUniform;
 	}
 
+	public virtual void SwapMesh()
+	{
+		this.MyRenderer.sharedMesh = this.NewMesh;
+		this.MyRenderer.materials[0].mainTexture = this.TextureToUse;
+		this.MyRenderer.materials[1].mainTexture = this.NewFace;
+		this.MyRenderer.materials[2].mainTexture = this.TextureToUse;
+		this.RightYandereEye.gameObject.active = false;
+		this.LeftYandereEye.gameObject.active = false;
+	}
+
 	public virtual void Nude()
 	{
 		this.MyRenderer.sharedMesh = this.NudeMesh;
@@ -4613,6 +4635,18 @@ public class YandereScript : MonoBehaviour
 		this.Crouching = false;
 		this.Crawling = false;
 		this.Egg = true;
+	}
+
+	public virtual void GenderSwap()
+	{
+		this.Kun.active = true;
+		this.KunHair.active = true;
+		this.MyRenderer.enabled = false;
+		this.IdleAnim = "idleShort_00";
+		this.WalkAnim = "walk_00";
+		this.RunAnim = "sprint_00";
+		this.Hairstyle = 0;
+		this.UpdateHair();
 	}
 
 	public virtual void ChangeSchoolwear()
