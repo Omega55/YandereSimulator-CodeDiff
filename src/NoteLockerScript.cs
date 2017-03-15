@@ -165,7 +165,7 @@ public class NoteLockerScript : MonoBehaviour
 					if (this.Timer > 13.333333f && this.NewBall == null)
 					{
 						this.NewBall = (GameObject)UnityEngine.Object.Instantiate(this.Ball, this.Student.LeftHand.position, Quaternion.identity);
-						this.NewBall.rigidbody.AddRelativeForce(Vector3.left * (float)100);
+						this.NewBall.rigidbody.AddRelativeForce(Vector3.right * (float)100);
 						this.NewBall.rigidbody.AddRelativeForce(Vector3.up * (float)100);
 						this.Phase++;
 					}

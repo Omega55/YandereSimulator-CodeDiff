@@ -6,6 +6,8 @@ public class HomeSenpaiShrineScript : MonoBehaviour
 {
 	public InputManagerScript InputManager;
 
+	public PauseScreenScript PauseScreen;
+
 	public HomeYandereScript HomeYandere;
 
 	public HomeCameraScript HomeCamera;
@@ -46,7 +48,7 @@ public class HomeSenpaiShrineScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (!this.HomeYandere.CanMove)
+		if (!this.HomeYandere.CanMove && !this.PauseScreen.Show)
 		{
 			if (this.HomeCamera.ID == 6)
 			{

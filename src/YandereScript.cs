@@ -4645,6 +4645,9 @@ public class YandereScript : MonoBehaviour
 		this.IdleAnim = "idleShort_00";
 		this.WalkAnim = "walk_00";
 		this.RunAnim = "sprint_00";
+		this.OriginalIdleAnim = this.IdleAnim;
+		this.OriginalWalkAnim = this.WalkAnim;
+		this.OriginalRunAnim = this.RunAnim;
 		this.Hairstyle = 0;
 		this.UpdateHair();
 	}
