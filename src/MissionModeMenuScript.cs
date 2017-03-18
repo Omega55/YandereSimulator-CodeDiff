@@ -564,24 +564,40 @@ public class MissionModeMenuScript : MonoBehaviour
 					this.Objectives[i].localScale = Vector3.Lerp(this.Objectives[i].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
 				}
 			}
-			for (int i = 1; i < Extensions.get_length(this.NemesisObjectives); i++)
+			if (this.NemesisDifficulty == 0)
 			{
-				if (this.NemesisDifficulty == 0)
-				{
-					this.NemesisPortrait.transform.parent.localScale = Vector3.Lerp(this.NemesisPortrait.transform.parent.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-				}
-				else
-				{
-					this.NemesisPortrait.transform.parent.localScale = Vector3.Lerp(this.NemesisPortrait.transform.parent.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-				}
-				if (i > this.NemesisDifficulty)
-				{
-					this.NemesisObjectives[i].localScale = Vector3.Lerp(this.NemesisObjectives[i].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-				}
-				else
-				{
-					this.NemesisObjectives[i].localScale = Vector3.Lerp(this.NemesisObjectives[i].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-				}
+				this.NemesisPortrait.transform.parent.localScale = Vector3.Lerp(this.NemesisPortrait.transform.parent.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+				this.NemesisObjectives[1].localScale = Vector3.Lerp(this.NemesisObjectives[1].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+				this.NemesisObjectives[2].localScale = Vector3.Lerp(this.NemesisObjectives[2].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+				this.NemesisObjectives[3].localScale = Vector3.Lerp(this.NemesisObjectives[3].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+			}
+			else
+			{
+				this.NemesisPortrait.transform.parent.localScale = Vector3.Lerp(this.NemesisPortrait.transform.parent.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+			}
+			if (this.NemesisDifficulty == 1)
+			{
+				this.NemesisObjectives[1].localScale = Vector3.Lerp(this.NemesisObjectives[1].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+				this.NemesisObjectives[2].localScale = Vector3.Lerp(this.NemesisObjectives[2].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+				this.NemesisObjectives[3].localScale = Vector3.Lerp(this.NemesisObjectives[3].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+			}
+			else if (this.NemesisDifficulty == 2)
+			{
+				this.NemesisObjectives[1].localScale = Vector3.Lerp(this.NemesisObjectives[1].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+				this.NemesisObjectives[2].localScale = Vector3.Lerp(this.NemesisObjectives[2].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+				this.NemesisObjectives[3].localScale = Vector3.Lerp(this.NemesisObjectives[3].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+			}
+			else if (this.NemesisDifficulty == 3)
+			{
+				this.NemesisObjectives[1].localScale = Vector3.Lerp(this.NemesisObjectives[1].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+				this.NemesisObjectives[2].localScale = Vector3.Lerp(this.NemesisObjectives[2].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+				this.NemesisObjectives[3].localScale = Vector3.Lerp(this.NemesisObjectives[3].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+			}
+			else if (this.NemesisDifficulty == 4)
+			{
+				this.NemesisObjectives[1].localScale = Vector3.Lerp(this.NemesisObjectives[1].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+				this.NemesisObjectives[2].localScale = Vector3.Lerp(this.NemesisObjectives[2].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+				this.NemesisObjectives[3].localScale = Vector3.Lerp(this.NemesisObjectives[3].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
 			}
 			if (Input.GetButtonDown("A"))
 			{
@@ -827,16 +843,35 @@ public class MissionModeMenuScript : MonoBehaviour
 				this.UpdatePopulation();
 				this.CalculateMissionID();
 			}
-			for (int i = 1; i < Extensions.get_length(this.NemesisObjectives); i++)
+			if (this.NemesisDifficulty == 0)
 			{
-				if (i > this.NemesisDifficulty)
-				{
-					this.CustomNemesisObjectives[i].localScale = Vector3.Lerp(this.CustomNemesisObjectives[i].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-				}
-				else
-				{
-					this.CustomNemesisObjectives[i].localScale = Vector3.Lerp(this.CustomNemesisObjectives[i].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-				}
+				this.CustomNemesisObjectives[1].localScale = Vector3.Lerp(this.CustomNemesisObjectives[1].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+				this.CustomNemesisObjectives[2].localScale = Vector3.Lerp(this.CustomNemesisObjectives[2].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+				this.CustomNemesisObjectives[3].localScale = Vector3.Lerp(this.CustomNemesisObjectives[3].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+			}
+			else if (this.NemesisDifficulty == 1)
+			{
+				this.CustomNemesisObjectives[1].localScale = Vector3.Lerp(this.CustomNemesisObjectives[1].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+				this.CustomNemesisObjectives[2].localScale = Vector3.Lerp(this.CustomNemesisObjectives[2].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+				this.CustomNemesisObjectives[3].localScale = Vector3.Lerp(this.CustomNemesisObjectives[3].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+			}
+			else if (this.NemesisDifficulty == 2)
+			{
+				this.CustomNemesisObjectives[1].localScale = Vector3.Lerp(this.CustomNemesisObjectives[1].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+				this.CustomNemesisObjectives[2].localScale = Vector3.Lerp(this.CustomNemesisObjectives[2].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+				this.CustomNemesisObjectives[3].localScale = Vector3.Lerp(this.CustomNemesisObjectives[3].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+			}
+			else if (this.NemesisDifficulty == 3)
+			{
+				this.CustomNemesisObjectives[1].localScale = Vector3.Lerp(this.CustomNemesisObjectives[1].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+				this.CustomNemesisObjectives[2].localScale = Vector3.Lerp(this.CustomNemesisObjectives[2].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+				this.CustomNemesisObjectives[3].localScale = Vector3.Lerp(this.CustomNemesisObjectives[3].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+			}
+			else if (this.NemesisDifficulty == 4)
+			{
+				this.CustomNemesisObjectives[1].localScale = Vector3.Lerp(this.CustomNemesisObjectives[1].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+				this.CustomNemesisObjectives[2].localScale = Vector3.Lerp(this.CustomNemesisObjectives[2].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+				this.CustomNemesisObjectives[3].localScale = Vector3.Lerp(this.CustomNemesisObjectives[3].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
 			}
 			((UIInput)this.MissionIDLabel.gameObject.GetComponent(typeof(UIInput))).text = this.MissionID;
 		}
@@ -899,7 +934,7 @@ public class MissionModeMenuScript : MonoBehaviour
 					{
 						this.ErrorLabel.text = "Invalid Mission ID (Disposal method does not exist)";
 					}
-					else if (this.NemesisNumber > 3)
+					else if (this.NemesisNumber > 4)
 					{
 						this.ErrorLabel.text = "Invalid Mission ID (Nemesis level too high)";
 					}
@@ -1234,9 +1269,9 @@ public class MissionModeMenuScript : MonoBehaviour
 	{
 		if (this.NemesisDifficulty < 0)
 		{
-			this.NemesisDifficulty = 3;
+			this.NemesisDifficulty = 4;
 		}
-		else if (this.NemesisDifficulty > 3)
+		else if (this.NemesisDifficulty > 4)
 		{
 			this.NemesisDifficulty = 0;
 		}
@@ -1249,7 +1284,7 @@ public class MissionModeMenuScript : MonoBehaviour
 		{
 			this.CustomNemesisLabel.text = "Nemesis: On";
 			this.NemesisLabel.text = "Nemesis: On";
-			if (this.NemesisDifficulty == 3)
+			if (this.NemesisDifficulty > 2)
 			{
 				this.NemesisPortrait.mainTexture = this.BlankPortrait;
 			}

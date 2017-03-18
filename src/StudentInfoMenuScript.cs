@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.CompilerServices;
 using Boo.Lang;
 using UnityEngine;
@@ -67,6 +68,8 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	public UILabel NameLabel;
 
+	public bool CustomPortraits;
+
 	public bool CyberBullying;
 
 	public bool MatchMaking;
@@ -108,6 +111,14 @@ public class StudentInfoMenuScript : MonoBehaviour
 		}
 		this.Column = 0;
 		this.Row = 0;
+		if (File.Exists(Application.streamingAssetsPath + "/CustomPortraits.txt"))
+		{
+			string a = File.ReadAllText(Application.streamingAssetsPath + "/CustomPortraits.txt");
+			if (a == "1")
+			{
+				this.CustomPortraits = true;
+			}
+		}
 	}
 
 	public virtual void Update()

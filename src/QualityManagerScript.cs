@@ -163,7 +163,6 @@ public class QualityManagerScript : MonoBehaviour
 				{
 					if (!this.StudentManager.Students[i].Teacher)
 					{
-						Debug.Log("My ID is..." + i);
 						this.StudentManager.Students[i].Cosmetic.FemaleHairRenderers[this.StudentManager.Students[i].Cosmetic.Hairstyle].material.shader = this.NewHairShader;
 						if (this.StudentManager.Students[i].Cosmetic.Accessory > 0)
 						{

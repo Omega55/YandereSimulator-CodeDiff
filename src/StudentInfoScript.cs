@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Boo.Lang.Runtime;
 using UnityEngine;
 using UnityScript.Lang;
@@ -58,6 +59,8 @@ public class StudentInfoScript : MonoBehaviour
 
 	public int CurrentStudent;
 
+	public bool CustomPortraits;
+
 	public bool Back;
 
 	public UISprite[] TopicIcons;
@@ -67,6 +70,14 @@ public class StudentInfoScript : MonoBehaviour
 	public virtual void Start()
 	{
 		this.Topics.active = false;
+		if (File.Exists(Application.streamingAssetsPath + "/CustomPortraits.txt"))
+		{
+			string a = File.ReadAllText(Application.streamingAssetsPath + "/CustomPortraits.txt");
+			if (a == "1")
+			{
+				this.CustomPortraits = true;
+			}
+		}
 	}
 
 	public virtual void UpdateInfo(int ID)
@@ -295,13 +306,20 @@ public class StudentInfoScript : MonoBehaviour
 			WWW www = new WWW(url);
 			if (PlayerPrefs.GetInt("Student_" + ID + "_Replaced") == 0)
 			{
-				if (ID < 33 || ID > 93)
+				if (!this.CustomPortraits)
 				{
-					this.Portrait.mainTexture = www.texture;
+					if (ID < 33 || ID > 93)
+					{
+						this.Portrait.mainTexture = www.texture;
+					}
+					else
+					{
+						this.Portrait.mainTexture = this.BlankPortrait;
+					}
 				}
 				else
 				{
-					this.Portrait.mainTexture = this.BlankPortrait;
+					this.Portrait.mainTexture = www.texture;
 				}
 			}
 			else

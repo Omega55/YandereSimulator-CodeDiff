@@ -39,6 +39,8 @@ public class JsonScript : MonoBehaviour
 
 	public string[] StudentColors;
 
+	public string[] StudentEyes;
+
 	public string[] StudentStockings;
 
 	public string[] StudentAccessories;
@@ -169,6 +171,7 @@ public class JsonScript : MonoBehaviour
 			this.StudentStrengths[this.ID] = (int)TFUtils.LoadFloat(array[i], "Strength");
 			this.StudentHairstyles[this.ID] = TFUtils.LoadString(array[i], "Hairstyle");
 			this.StudentColors[this.ID] = TFUtils.LoadString(array[i], "Color");
+			this.StudentEyes[this.ID] = TFUtils.LoadString(array[i], "Eyes");
 			this.StudentStockings[this.ID] = TFUtils.LoadString(array[i], "Stockings");
 			this.StudentAccessories[this.ID] = TFUtils.LoadString(array[i], "Accessory");
 			if (PlayerPrefs.GetInt("HighPopulation") == 1 && this.StudentNames[this.ID] == "Unknown")
@@ -286,6 +289,12 @@ public class JsonScript : MonoBehaviour
 				PlayerPrefs.SetFloat("Student_" + this.ID + "_ColorR", value2);
 				PlayerPrefs.SetFloat("Student_" + this.ID + "_ColorG", value3);
 				PlayerPrefs.SetFloat("Student_" + this.ID + "_ColorB", value4);
+				value2 = UnityEngine.Random.Range((float)0, 1f);
+				value3 = UnityEngine.Random.Range((float)0, 1f);
+				value4 = UnityEngine.Random.Range((float)0, 1f);
+				PlayerPrefs.SetFloat("Student_" + this.ID + "_EyeColorR", value2);
+				PlayerPrefs.SetFloat("Student_" + this.ID + "_EyeColorG", value3);
+				PlayerPrefs.SetFloat("Student_" + this.ID + "_EyeColorB", value4);
 				PlayerPrefs.SetString("Student_" + this.ID + "_Accessory", string.Empty + UnityEngine.Random.Range(1, 7));
 			}
 			this.ID++;

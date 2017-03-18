@@ -231,6 +231,7 @@ public class CosmeticScript : MonoBehaviour
 			this.Stockings = this.JSON.StudentStockings[this.StudentID];
 			this.BreastSize = this.JSON.StudentBreasts[this.StudentID];
 			this.HairColor = this.JSON.StudentColors[this.StudentID];
+			this.EyeColor = this.JSON.StudentEyes[this.StudentID];
 			this.Club = this.JSON.StudentClubs[this.StudentID];
 			text = this.JSON.StudentNames[this.StudentID];
 			this.Initialized = true;
@@ -523,6 +524,91 @@ public class CosmeticScript : MonoBehaviour
 		}
 		if (!this.Randomize)
 		{
+			if (this.EyeColor != string.Empty)
+			{
+				if (this.EyeColor == "White")
+				{
+					this.CorrectColor = new Color((float)1, (float)1, (float)1);
+				}
+				else if (this.EyeColor == "Black")
+				{
+					this.CorrectColor = new Color(0.5f, 0.5f, 0.5f);
+				}
+				else if (this.EyeColor == "Red")
+				{
+					this.CorrectColor = new Color((float)1, (float)0, (float)0);
+				}
+				else if (this.EyeColor == "Yellow")
+				{
+					this.CorrectColor = new Color((float)1, (float)1, (float)0);
+				}
+				else if (this.EyeColor == "Green")
+				{
+					this.CorrectColor = new Color((float)0, (float)1, (float)0);
+				}
+				else if (this.EyeColor == "Cyan")
+				{
+					this.CorrectColor = new Color((float)0, (float)1, (float)1);
+				}
+				else if (this.EyeColor == "Blue")
+				{
+					this.CorrectColor = new Color((float)0, (float)0, (float)1);
+				}
+				else if (this.EyeColor == "Purple")
+				{
+					this.CorrectColor = new Color((float)1, (float)0, (float)1);
+				}
+				else if (this.EyeColor == "Orange")
+				{
+					this.CorrectColor = new Color((float)1, 0.5f, (float)0);
+				}
+				else if (this.EyeColor == "Brown")
+				{
+					this.CorrectColor = new Color(0.5f, 0.25f, (float)0);
+				}
+				else
+				{
+					this.CorrectColor = new Color((float)0, (float)0, (float)0);
+				}
+				if (this.CorrectColor != new Color((float)0, (float)0, (float)0))
+				{
+					this.RightEyeRenderer.material.color = this.CorrectColor;
+					this.LeftEyeRenderer.material.color = this.CorrectColor;
+				}
+			}
+		}
+		else
+		{
+			float num3 = UnityEngine.Random.Range((float)0, 1f);
+			float num4 = UnityEngine.Random.Range((float)0, 1f);
+			float num5 = UnityEngine.Random.Range((float)0, 1f);
+			float r = num3;
+			Color color = this.RightEyeRenderer.material.color;
+			float num6 = color.r = r;
+			Color color2 = this.RightEyeRenderer.material.color = color;
+			float g = num4;
+			Color color3 = this.RightEyeRenderer.material.color;
+			float num7 = color3.g = g;
+			Color color4 = this.RightEyeRenderer.material.color = color3;
+			float b = num5;
+			Color color5 = this.RightEyeRenderer.material.color;
+			float num8 = color5.b = b;
+			Color color6 = this.RightEyeRenderer.material.color = color5;
+			float r2 = num3;
+			Color color7 = this.LeftEyeRenderer.material.color;
+			float num9 = color7.r = r2;
+			Color color8 = this.LeftEyeRenderer.material.color = color7;
+			float g2 = num4;
+			Color color9 = this.LeftEyeRenderer.material.color;
+			float num10 = color9.g = g2;
+			Color color10 = this.LeftEyeRenderer.material.color = color9;
+			float b2 = num5;
+			Color color11 = this.LeftEyeRenderer.material.color;
+			float num11 = color11.b = b2;
+			Color color12 = this.LeftEyeRenderer.material.color = color11;
+		}
+		if (!this.Randomize)
+		{
 			if (this.HairColor == "White")
 			{
 				this.ColorValue = new Color((float)1, (float)1, (float)1);
@@ -565,8 +651,11 @@ public class CosmeticScript : MonoBehaviour
 			}
 			else
 			{
-				this.RightEyeRenderer.material.mainTexture = this.HairRenderer.material.mainTexture;
-				this.LeftEyeRenderer.material.mainTexture = this.HairRenderer.material.mainTexture;
+				if (this.CorrectColor == new Color((float)0, (float)0, (float)0))
+				{
+					this.RightEyeRenderer.material.mainTexture = this.HairRenderer.material.mainTexture;
+					this.LeftEyeRenderer.material.mainTexture = this.HairRenderer.material.mainTexture;
+				}
 				this.FaceTexture = this.HairRenderer.material.mainTexture;
 				this.CustomHair = true;
 			}
@@ -581,18 +670,18 @@ public class CosmeticScript : MonoBehaviour
 		}
 		else
 		{
-			float r = UnityEngine.Random.Range((float)0, 1f);
-			Color color = this.HairRenderer.material.color;
-			float num3 = color.r = r;
-			Color color2 = this.HairRenderer.material.color = color;
-			float g = UnityEngine.Random.Range((float)0, 1f);
-			Color color3 = this.HairRenderer.material.color;
-			float num4 = color3.g = g;
-			Color color4 = this.HairRenderer.material.color = color3;
-			float b = UnityEngine.Random.Range((float)0, 1f);
-			Color color5 = this.HairRenderer.material.color;
-			float num5 = color5.b = b;
-			Color color6 = this.HairRenderer.material.color = color5;
+			float r3 = UnityEngine.Random.Range((float)0, 1f);
+			Color color13 = this.HairRenderer.material.color;
+			float num12 = color13.r = r3;
+			Color color14 = this.HairRenderer.material.color = color13;
+			float g3 = UnityEngine.Random.Range((float)0, 1f);
+			Color color15 = this.HairRenderer.material.color;
+			float num13 = color15.g = g3;
+			Color color16 = this.HairRenderer.material.color = color15;
+			float b3 = UnityEngine.Random.Range((float)0, 1f);
+			Color color17 = this.HairRenderer.material.color;
+			float num14 = color17.b = b3;
+			Color color18 = this.HairRenderer.material.color = color17;
 		}
 		if (!this.Teacher)
 		{
@@ -652,84 +741,6 @@ public class CosmeticScript : MonoBehaviour
 					this.FacialHairRenderer.materials[1].color = this.ColorValue;
 				}
 			}
-		}
-		if (!this.Randomize)
-		{
-			if (this.EyeColor != string.Empty)
-			{
-				if (this.EyeColor == "White")
-				{
-					this.CorrectColor = new Color((float)1, (float)1, (float)1);
-				}
-				else if (this.EyeColor == "Black")
-				{
-					this.CorrectColor = new Color(0.5f, 0.5f, 0.5f);
-				}
-				else if (this.EyeColor == "Red")
-				{
-					this.CorrectColor = new Color((float)1, (float)0, (float)0);
-				}
-				else if (this.EyeColor == "Yellow")
-				{
-					this.CorrectColor = new Color((float)1, (float)1, (float)0);
-				}
-				else if (this.EyeColor == "Green")
-				{
-					this.CorrectColor = new Color((float)0, (float)1, (float)0);
-				}
-				else if (this.EyeColor == "Cyan")
-				{
-					this.CorrectColor = new Color((float)0, (float)1, (float)1);
-				}
-				else if (this.EyeColor == "Blue")
-				{
-					this.CorrectColor = new Color((float)0, (float)0, (float)1);
-				}
-				else if (this.EyeColor == "Purple")
-				{
-					this.CorrectColor = new Color((float)1, (float)0, (float)1);
-				}
-				else if (this.EyeColor == "Orange")
-				{
-					this.CorrectColor = new Color((float)1, 0.5f, (float)0);
-				}
-				else if (this.EyeColor == "Brown")
-				{
-					this.CorrectColor = new Color(0.5f, 0.25f, (float)0);
-				}
-				this.RightEyeRenderer.material.color = this.CorrectColor;
-				this.LeftEyeRenderer.material.color = this.CorrectColor;
-			}
-		}
-		else
-		{
-			float num6 = UnityEngine.Random.Range((float)0, 1f);
-			float num7 = UnityEngine.Random.Range((float)0, 1f);
-			float num8 = UnityEngine.Random.Range((float)0, 1f);
-			float r2 = num6;
-			Color color7 = this.RightEyeRenderer.material.color;
-			float num9 = color7.r = r2;
-			Color color8 = this.RightEyeRenderer.material.color = color7;
-			float g2 = num7;
-			Color color9 = this.RightEyeRenderer.material.color;
-			float num10 = color9.g = g2;
-			Color color10 = this.RightEyeRenderer.material.color = color9;
-			float b2 = num8;
-			Color color11 = this.RightEyeRenderer.material.color;
-			float num11 = color11.b = b2;
-			Color color12 = this.RightEyeRenderer.material.color = color11;
-			float r3 = num6;
-			Color color13 = this.LeftEyeRenderer.material.color;
-			float num12 = color13.r = r3;
-			Color color14 = this.LeftEyeRenderer.material.color = color13;
-			float g3 = num7;
-			Color color15 = this.LeftEyeRenderer.material.color;
-			float num13 = color15.g = g3;
-			Color color16 = this.LeftEyeRenderer.material.color = color15;
-			float b3 = num8;
-			Color color17 = this.LeftEyeRenderer.material.color;
-			float num14 = color17.b = b3;
-			Color color18 = this.LeftEyeRenderer.material.color = color17;
 		}
 		if (this.StudentID == 17)
 		{

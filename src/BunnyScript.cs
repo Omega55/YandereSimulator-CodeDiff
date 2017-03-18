@@ -29,7 +29,7 @@ public class BunnyScript : MonoBehaviour
 			{
 				this.BakeCookies();
 			}
-			for (int i = 1; i < 102; i++)
+			for (int i = 1; i < 101; i++)
 			{
 				if (RuntimeServices.EqualityOperator(this.JSON.StudentHairstyles[i], 20))
 				{

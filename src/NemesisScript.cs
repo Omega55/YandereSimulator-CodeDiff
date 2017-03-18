@@ -1,6 +1,7 @@
 ﻿using System;
 using Boo.Lang.Runtime;
 using UnityEngine;
+using UnityScript.Lang;
 
 [Serializable]
 public class NemesisScript : MonoBehaviour
@@ -39,6 +40,8 @@ public class NemesisScript : MonoBehaviour
 
 	public int Difficulty;
 
+	public int ID;
+
 	public float ScanTimer;
 
 	public NemesisScript()
@@ -48,6 +51,24 @@ public class NemesisScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.Cosmetic.FemaleHair))
+		{
+			if (this.Cosmetic.FemaleHair[this.ID] != null)
+			{
+				this.Cosmetic.FemaleHair[this.ID].active = false;
+			}
+			this.ID++;
+		}
+		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.Cosmetic.ClubAccessories))
+		{
+			if (this.Cosmetic.ClubAccessories[this.ID] != null)
+			{
+				this.Cosmetic.ClubAccessories[this.ID].active = false;
+			}
+			this.ID++;
+		}
 		this.Difficulty = PlayerPrefs.GetInt("NemesisDifficulty");
 		this.Student.StudentManager = (StudentManagerScript)GameObject.Find("StudentManager").GetComponent(typeof(StudentManagerScript));
 		this.Student.WitnessCamera = (WitnessCameraScript)GameObject.Find("WitnessCamera").GetComponent(typeof(WitnessCameraScript));
@@ -79,10 +100,12 @@ public class NemesisScript : MonoBehaviour
 		}
 		this.Student.LowPoly.enabled = false;
 		this.Student.DisableEffects();
-		for (int i = 0; i < this.Student.Ragdoll.AllRigidbodies.Length; i++)
+		this.ID = 0;
+		while (this.ID < this.Student.Ragdoll.AllRigidbodies.Length)
 		{
-			this.Student.Ragdoll.AllRigidbodies[i].isKinematic = true;
-			this.Student.Ragdoll.AllColliders[i].enabled = false;
+			this.Student.Ragdoll.AllRigidbodies[this.ID].isKinematic = true;
+			this.Student.Ragdoll.AllColliders[this.ID].enabled = false;
+			this.ID++;
 		}
 		this.Student.Ragdoll.AllColliders[10].enabled = true;
 		this.Student.Prompt.HideButton[0] = true;
@@ -193,7 +216,7 @@ public class NemesisScript : MonoBehaviour
 						}
 					}
 				}
-				if (this.Difficulty == 1)
+				if (this.Difficulty == 1 || this.Difficulty == 3)
 				{
 					float f = Vector3.Angle(this.transform.forward * (float)-1, this.Yandere.transform.position - this.transform.position);
 					if (Mathf.Abs(f) > (float)45)

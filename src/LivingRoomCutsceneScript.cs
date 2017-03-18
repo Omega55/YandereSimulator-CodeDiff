@@ -17,6 +17,10 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 
 	public SkinnedMeshRenderer YandereRenderer;
 
+	public Renderer RightEyeRenderer;
+
+	public Renderer LeftEyeRenderer;
+
 	public Transform FriendshipCamera;
 
 	public Transform LivingRoomCamera;
@@ -89,6 +93,8 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 	{
 		this.YandereCosmetic.SetFemaleUniform();
 		this.Subtitle.text = string.Empty;
+		this.RightEyeRenderer.material.color = new Color(0.33f, 0.33f, 0.33f, (float)1);
+		this.LeftEyeRenderer.material.color = new Color(0.33f, 0.33f, 0.33f, (float)1);
 		this.RightEyeOrigin = this.RightEye.localPosition;
 		this.LeftEyeOrigin = this.LeftEye.localPosition;
 		this.EliminationPanel.alpha = (float)0;
