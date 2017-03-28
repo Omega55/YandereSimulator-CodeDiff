@@ -523,7 +523,7 @@ public class StudentInfoScript : MonoBehaviour
 		}
 		else if (ID == 21)
 		{
-			this.Strings[1] = "Founder and President of the Martial Arts Club.";
+			this.Strings[1] = "President of the Martial Arts Club. Inherited the club after defeating the previous president.";
 			this.Strings[2] = "Seems to be incapable of turning down a challenge.";
 			this.Strings[3] = "Always gung ho and enthusiastic. Sometimes a bit overzealous, especially about martial arts.";
 			this.InfoLabel.text = this.Strings[1] + "\n" + "\n" + this.Strings[2] + "\n" + "\n" + this.Strings[3];

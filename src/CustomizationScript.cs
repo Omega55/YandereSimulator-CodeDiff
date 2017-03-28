@@ -145,6 +145,7 @@ public class CustomizationScript : MonoBehaviour
 		this.WhitePanel.alpha = (float)1;
 		this.UpdateFacialHair();
 		this.UpdateHairStyle();
+		this.UpdateEyes();
 	}
 
 	public virtual void Update()

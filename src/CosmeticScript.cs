@@ -1,10 +1,31 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using Boo.Lang;
 using UnityEngine;
 using UnityScript.Lang;
 
 [Serializable]
 public class CosmeticScript : MonoBehaviour
 {
+	[CompilerGenerated]
+	[Serializable]
+	internal sealed class $PutOnStockings$3094 : GenericGenerator<WWW>
+	{
+		internal CosmeticScript $self_$3097;
+
+		public $PutOnStockings$3094(CosmeticScript self_)
+		{
+			this.$self_$3097 = self_;
+		}
+
+		public override IEnumerator<WWW> GetEnumerator()
+		{
+			return new CosmeticScript.$PutOnStockings$3094.$(this.$self_$3097);
+		}
+	}
+
 	public StudentManagerScript StudentManager;
 
 	public TextureManagerScript TextureManager;
@@ -520,7 +541,7 @@ public class CosmeticScript : MonoBehaviour
 		}
 		if (!this.Male)
 		{
-			this.PutOnStockings();
+			this.StartCoroutine_Auto(this.PutOnStockings());
 		}
 		if (!this.Randomize)
 		{
@@ -651,15 +672,16 @@ public class CosmeticScript : MonoBehaviour
 			}
 			else
 			{
-				if (this.CorrectColor == new Color((float)0, (float)0, (float)0))
-				{
-					this.RightEyeRenderer.material.mainTexture = this.HairRenderer.material.mainTexture;
-					this.LeftEyeRenderer.material.mainTexture = this.HairRenderer.material.mainTexture;
-				}
+				this.ColorValue = new Color((float)0, (float)0, (float)0);
+			}
+			if (this.ColorValue == new Color((float)0, (float)0, (float)0))
+			{
+				this.RightEyeRenderer.material.mainTexture = this.HairRenderer.material.mainTexture;
+				this.LeftEyeRenderer.material.mainTexture = this.HairRenderer.material.mainTexture;
 				this.FaceTexture = this.HairRenderer.material.mainTexture;
 				this.CustomHair = true;
 			}
-			if (this.Hairstyle > 0)
+			if (!this.CustomHair && this.Hairstyle > 0)
 			{
 				this.HairRenderer.material.color = this.ColorValue;
 			}
@@ -704,23 +726,13 @@ public class CosmeticScript : MonoBehaviour
 					this.MyRenderer.materials[0].mainTexture = this.FaceTexture;
 				}
 			}
-			else
-			{
-				this.RightEyeRenderer.material.color = this.ColorValue;
-				this.LeftEyeRenderer.material.color = this.ColorValue;
-			}
 		}
-		else if (this.Teacher)
+		else if (this.Teacher && PlayerPrefs.GetInt("Student_" + this.StudentID + "_Replaced") == 1)
 		{
-			if (PlayerPrefs.GetInt("Student_" + this.StudentID + "_Replaced") == 1)
-			{
-				float @float = PlayerPrefs.GetFloat("Student_" + this.StudentID + "_ColorR");
-				float float2 = PlayerPrefs.GetFloat("Student_" + this.StudentID + "_ColorG");
-				float float3 = PlayerPrefs.GetFloat("Student_" + this.StudentID + "_ColorB");
-				this.HairRenderer.material.color = new Color(@float, float2, float3);
-			}
-			this.RightEyeRenderer.material.color = this.HairRenderer.material.color;
-			this.LeftEyeRenderer.material.color = this.HairRenderer.material.color;
+			float @float = PlayerPrefs.GetFloat("Student_" + this.StudentID + "_ColorR");
+			float float2 = PlayerPrefs.GetFloat("Student_" + this.StudentID + "_ColorG");
+			float float3 = PlayerPrefs.GetFloat("Student_" + this.StudentID + "_ColorB");
+			this.HairRenderer.material.color = new Color(@float, float2, float3);
 		}
 		if (this.Male)
 		{
@@ -897,14 +909,17 @@ public class CosmeticScript : MonoBehaviour
 		}
 		if (this.MyStockings != null)
 		{
-			this.PutOnStockings();
+			this.StartCoroutine_Auto(this.PutOnStockings());
 		}
 	}
 
 	public virtual void CensorPanties()
 	{
-		this.MyRenderer.materials[0].SetFloat("_BlendAmount1", (float)1);
-		this.MyRenderer.materials[1].SetFloat("_BlendAmount1", (float)1);
+		if (!this.Student.ClubAttire && this.Student.Schoolwear == 1)
+		{
+			this.MyRenderer.materials[0].SetFloat("_BlendAmount1", (float)1);
+			this.MyRenderer.materials[1].SetFloat("_BlendAmount1", (float)1);
+		}
 	}
 
 	public virtual void RemoveCensor()
@@ -922,7 +937,7 @@ public class CosmeticScript : MonoBehaviour
 				this.MaleAccessories[1].active = false;
 			}
 		}
-		else if (this.StudentID == 33 && PlayerPrefs.GetInt("Task_33_Status") < 3)
+		else if (this.StudentID == 33 && PlayerPrefs.GetInt("Task_33_Status") < 3 && this.Charm != null)
 		{
 			this.Charm.active = true;
 		}
@@ -1048,66 +1063,9 @@ public class CosmeticScript : MonoBehaviour
 		}
 	}
 
-	public virtual void PutOnStockings()
+	public virtual IEnumerator PutOnStockings()
 	{
-		this.RightStockings[0].active = false;
-		this.LeftStockings[0].active = false;
-		if (this.Stockings == string.Empty)
-		{
-			this.MyStockings = null;
-		}
-		else if (this.Stockings == "Red")
-		{
-			this.MyStockings = this.RedStockings;
-		}
-		else if (this.Stockings == "Yellow")
-		{
-			this.MyStockings = this.YellowStockings;
-		}
-		else if (this.Stockings == "Green")
-		{
-			this.MyStockings = this.GreenStockings;
-		}
-		else if (this.Stockings == "Cyan")
-		{
-			this.MyStockings = this.CyanStockings;
-		}
-		else if (this.Stockings == "Blue")
-		{
-			this.MyStockings = this.BlueStockings;
-		}
-		else if (this.Stockings == "Purple")
-		{
-			this.MyStockings = this.PurpleStockings;
-		}
-		else if (this.Stockings == "Osana")
-		{
-			this.MyStockings = this.OsanaStockings;
-		}
-		else if (this.Stockings == "Custom")
-		{
-			this.MyStockings = this.CustomStockings;
-		}
-		else if (this.Stockings == "Loose")
-		{
-			this.MyStockings = null;
-			this.RightStockings[0].active = true;
-			this.LeftStockings[0].active = true;
-		}
-		if (this.MyStockings != null)
-		{
-			this.MyRenderer.materials[0].SetTexture("_OverlayTex", this.MyStockings);
-			this.MyRenderer.materials[1].SetTexture("_OverlayTex", this.MyStockings);
-			this.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)1);
-			this.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)1);
-		}
-		else
-		{
-			this.MyRenderer.materials[0].SetTexture("_OverlayTex", null);
-			this.MyRenderer.materials[1].SetTexture("_OverlayTex", null);
-			this.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)0);
-			this.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)0);
-		}
+		return new CosmeticScript.$PutOnStockings$3094(this).GetEnumerator();
 	}
 
 	public virtual void Main()

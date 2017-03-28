@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$3122 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$3130 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$3137;
+		internal YandereScript $self_$3145;
 
-		public $ApplyCustomCostume$3122(YandereScript self_)
+		public $ApplyCustomCostume$3130(YandereScript self_)
 		{
-			this.$self_$3137 = self_;
+			this.$self_$3145 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$3122.$(this.$self_$3137);
+			return new YandereScript.$ApplyCustomCostume$3130.$(this.$self_$3145);
 		}
 	}
 
@@ -702,6 +702,8 @@ public class YandereScript : MonoBehaviour
 	public Texture GaloArms;
 
 	public Texture GaloFace;
+
+	public AudioClip YanYan;
 
 	public GameObject Stand;
 
@@ -1742,7 +1744,12 @@ public class YandereScript : MonoBehaviour
 						this.LaughAnim = "storepower_20";
 						this.LaughClip = this.ChargeUp;
 					}
-					if (this.FlameDemonic)
+					if (this.Stand.active)
+					{
+						this.LaughAnim = "f02_jojoAttack_00";
+						this.LaughClip = this.YanYan;
+					}
+					else if (this.FlameDemonic)
 					{
 						float axis = Input.GetAxis("Vertical");
 						float axis2 = Input.GetAxis("Horizontal");
@@ -4250,7 +4257,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$3122(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$3130(this).GetEnumerator();
 	}
 
 	public virtual void WearGloves()
@@ -4411,8 +4418,13 @@ public class YandereScript : MonoBehaviour
 	public virtual void Jojo()
 	{
 		this.IdleAnim = "f02_jojoPose_00";
+		this.WalkAnim = "f02_jojoWalk_00";
 		this.EasterEggMenu.active = false;
 		this.Egg = true;
+		this.Laugh1 = this.YanYan;
+		this.Laugh2 = this.YanYan;
+		this.Laugh3 = this.YanYan;
+		this.Laugh4 = this.YanYan;
 		this.Stand.active = true;
 	}
 
@@ -4669,11 +4681,11 @@ public class YandereScript : MonoBehaviour
 		{
 			this.TextureToUse = this.CasualTextures[PlayerPrefs.GetInt("FemaleUniform")];
 		}
-		if (this.ClubAttire || this.Schoolwear == 0)
+		if ((this.ClubAttire && this.Bloodiness > (float)0) || this.Schoolwear == 0)
 		{
 			this.Nude();
 		}
-		else if (this.Schoolwear == 1)
+		else if ((this.ClubAttire && this.Bloodiness == (float)0) || this.Schoolwear == 1)
 		{
 			this.MyRenderer.sharedMesh = this.Uniforms[PlayerPrefs.GetInt("FemaleUniform")];
 			if (this.StudentManager.Censor)
@@ -4712,6 +4724,8 @@ public class YandereScript : MonoBehaviour
 
 	public virtual void ChangeClubwear()
 	{
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount", (float)0);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount", (float)0);
 		this.Paint = false;
 		if (!this.ClubAttire)
 		{

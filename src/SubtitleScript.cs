@@ -517,6 +517,7 @@ public class SubtitleScript : MonoBehaviour
 			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.DrownReactions));
 			this.Label.text = this.DrownReactions[this.RandomID];
 			this.PlayVoice(ReactionType, this.RandomID);
+			Debug.Log("Playing this reaction.");
 		}
 		else if (ReactionType == "Teacher Weapon Reaction")
 		{

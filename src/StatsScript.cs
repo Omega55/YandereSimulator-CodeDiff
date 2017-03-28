@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using UnityEngine;
 
 [Serializable]
@@ -31,6 +32,22 @@ public class StatsScript : MonoBehaviour
 	public int Grade;
 
 	public int BarID;
+
+	public UITexture Portrait;
+
+	public virtual void Start()
+	{
+		if (File.Exists(Application.streamingAssetsPath + "/CustomPortraits.txt"))
+		{
+			string a = File.ReadAllText(Application.streamingAssetsPath + "/CustomPortraits.txt");
+			if (a == "1")
+			{
+				string url = "file:///" + Application.streamingAssetsPath + "/CustomPortrait.png";
+				WWW www = new WWW(url);
+				this.Portrait.mainTexture = www.texture;
+			}
+		}
+	}
 
 	public virtual void Update()
 	{

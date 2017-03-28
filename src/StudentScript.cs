@@ -691,6 +691,8 @@ public class StudentScript : MonoBehaviour
 
 	public string BurningAnim;
 
+	public string JojoReactAnim;
+
 	public string[] CameraAnims;
 
 	public string[] SocialAnims;
@@ -875,6 +877,7 @@ public class StudentScript : MonoBehaviour
 		this.WashFaceAnim = string.Empty;
 		this.EmeticAnim = string.Empty;
 		this.BurningAnim = string.Empty;
+		this.JojoReactAnim = string.Empty;
 		this.ConfessPhase = 1;
 		this.RadioPhase = 1;
 		this.MaxSpeed = 10f;
@@ -1803,18 +1806,7 @@ public class StudentScript : MonoBehaviour
 								}
 								this.CurrentDestination = this.Destinations[this.Phase];
 								this.Pathfinding.target = this.Destinations[this.Phase];
-								this.Prompt.Label[0].text = "     Talk";
-								this.Pathfinding.canSearch = true;
-								this.Pathfinding.canMove = true;
-								this.StudentManager.OfferHelp.active = false;
-								this.Drownable = false;
-								this.Pushable = false;
-								this.Meeting = false;
-								this.MeetTimer = (float)0;
-								if (this.StudentID == 7)
-								{
-									this.StudentManager.LoveManager.RivalWaiting = false;
-								}
+								this.StopMeeting();
 							}
 						}
 					}
@@ -3797,6 +3789,7 @@ public class StudentScript : MonoBehaviour
 						this.Police.DrownScene = true;
 						this.VomitEmitter.Stop();
 						this.Distracted = true;
+						this.Drownable = false;
 						this.Routine = false;
 						this.Drowned = true;
 						this.Subtitle.UpdateLabel("Drown Reaction", 0, (float)3);
@@ -6135,6 +6128,7 @@ public class StudentScript : MonoBehaviour
 			this.CharacterAnimation[this.SplashedAnim].speed = (float)1;
 			this.CharacterAnimation.CrossFade(this.SplashedAnim);
 			this.Subtitle.UpdateLabel("Splash Reaction", 0, (float)1);
+			this.StopMeeting();
 			this.Pathfinding.canSearch = false;
 			this.Pathfinding.canMove = false;
 			this.SplashTimer = (float)0;
@@ -6143,12 +6137,7 @@ public class StudentScript : MonoBehaviour
 			this.Following = false;
 			this.Splashed = true;
 			this.Routine = false;
-			this.Meeting = false;
 			this.Wet = true;
-			if (this.StudentID == 7)
-			{
-				this.StudentManager.LoveManager.RivalWaiting = false;
-			}
 			this.SpawnAlarmDisc();
 		}
 	}
@@ -6160,6 +6149,22 @@ public class StudentScript : MonoBehaviour
 		{
 			this.LiquidEmitters[this.ID].gameObject.active = false;
 			this.ID++;
+		}
+	}
+
+	public virtual void StopMeeting()
+	{
+		this.Prompt.Label[0].text = "     Talk";
+		this.Pathfinding.canSearch = true;
+		this.Pathfinding.canMove = true;
+		this.StudentManager.OfferHelp.active = false;
+		this.Drownable = false;
+		this.Pushable = false;
+		this.Meeting = false;
+		this.MeetTimer = (float)0;
+		if (this.StudentID == 7)
+		{
+			this.StudentManager.LoveManager.RivalWaiting = false;
 		}
 	}
 
@@ -6205,6 +6210,32 @@ public class StudentScript : MonoBehaviour
 		{
 			this.BurnTarget = this.Yandere.transform.position + this.Yandere.transform.forward;
 			this.Attacked = false;
+		}
+	}
+
+	public virtual void JojoReact()
+	{
+		this.Dying = true;
+		this.SpawnAlarmDisc();
+		this.Character.animation.CrossFade(this.JojoReactAnim);
+		this.Pathfinding.canSearch = false;
+		this.Pathfinding.canMove = false;
+		this.WitnessedCorpse = false;
+		this.Investigating = false;
+		this.DiscCheck = false;
+		this.WalkBack = false;
+		this.Alarmed = false;
+		this.CanTalk = false;
+		this.Fleeing = false;
+		this.Routine = false;
+		this.Reacted = false;
+		this.Burning = true;
+		this.Wet = false;
+		this.audio.Play();
+		if (this.Following)
+		{
+			this.Yandere.Followers = this.Yandere.Followers - 1;
+			this.Following = false;
 		}
 	}
 
@@ -6260,6 +6291,11 @@ public class StudentScript : MonoBehaviour
 				this.Cosmetic.SetFemaleUniform();
 				this.SkirtCollider.enabled = true;
 				this.PantyCollider.enabled = true;
+				Debug.Log("Just happened?");
+				if (this.StudentManager.Censor)
+				{
+					this.Cosmetic.CensorPanties();
+				}
 			}
 			else
 			{
@@ -6383,6 +6419,7 @@ public class StudentScript : MonoBehaviour
 	{
 		if (!this.ClubAttire)
 		{
+			this.Cosmetic.RemoveCensor();
 			this.ClubAttire = true;
 			if (this.Club == 6)
 			{
@@ -6413,8 +6450,8 @@ public class StudentScript : MonoBehaviour
 		}
 		else
 		{
-			this.ChangeSchoolwear();
 			this.ClubAttire = false;
+			this.ChangeSchoolwear();
 			if (this.StudentID == 21)
 			{
 				float z2 = 0.012f;

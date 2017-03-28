@@ -352,7 +352,7 @@ public class TalkingScript : MonoBehaviour
 					else
 					{
 						this.S.Character.animation.CrossFade(this.S.Nod1Anim);
-						if (!this.S.StudentManager.Students[this.S.DialogueWheel.Victim].InEvent && !this.S.StudentManager.Students[this.S.DialogueWheel.Victim].Slave && !this.S.StudentManager.Students[this.S.DialogueWheel.Victim].Wet)
+						if (!this.S.StudentManager.Students[this.S.DialogueWheel.Victim].InEvent && !this.S.StudentManager.Students[this.S.DialogueWheel.Victim].Slave && !this.S.StudentManager.Students[this.S.DialogueWheel.Victim].Wet && !this.S.StudentManager.Students[this.S.DialogueWheel.Victim].Meeting)
 						{
 							this.S.Subtitle.UpdateLabel("Student Distract", 0, (float)3);
 						}

@@ -479,7 +479,7 @@ public class PoseModeScript : MonoBehaviour
 								this.StockingID = 0;
 							}
 							this.Student.Cosmetic.Stockings = this.StockingNames[this.StockingID];
-							this.Student.Cosmetic.PutOnStockings();
+							this.StartCoroutine_Auto(this.Student.Cosmetic.PutOnStockings());
 							this.UpdateLabels();
 						}
 						else if (this.InputManager.TappedLeft)
@@ -490,7 +490,7 @@ public class PoseModeScript : MonoBehaviour
 								this.StockingID = Extensions.get_length(this.StockingNames) - 1;
 							}
 							this.Student.Cosmetic.Stockings = this.StockingNames[this.StockingID];
-							this.Student.Cosmetic.PutOnStockings();
+							this.StartCoroutine_Auto(this.Student.Cosmetic.PutOnStockings());
 							this.UpdateLabels();
 						}
 					}
