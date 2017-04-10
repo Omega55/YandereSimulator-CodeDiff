@@ -55,6 +55,10 @@ public class StudentScript : MonoBehaviour
 
 	public SubtitleScript Subtitle;
 
+	public DynamicBone OsanaHairL;
+
+	public DynamicBone OsanaHairR;
+
 	public WeaponScript MyWeapon;
 
 	public RagdollScript Ragdoll;
@@ -235,6 +239,8 @@ public class StudentScript : MonoBehaviour
 
 	public GameObject Character;
 
+	public GameObject OsanaHair;
+
 	public GameObject Earpiece;
 
 	public GameObject Armband;
@@ -252,6 +258,8 @@ public class StudentScript : MonoBehaviour
 	public GameObject Pen;
 
 	public GameObject Lid;
+
+	public bool TargetedForDistraction;
 
 	public bool OriginallyTeacher;
 
@@ -2628,6 +2636,7 @@ public class StudentScript : MonoBehaviour
 					{
 						this.CurrentDestination = this.Destinations[this.Phase];
 						this.Pathfinding.target = this.Destinations[this.Phase];
+						this.DistractionTarget.TargetedForDistraction = false;
 						this.DistractionTarget.Pathfinding.canSearch = true;
 						this.DistractionTarget.Pathfinding.canMove = true;
 						this.DistractionTarget.Pathfinding.speed = (float)1;
@@ -2647,6 +2656,7 @@ public class StudentScript : MonoBehaviour
 						{
 							this.CurrentDestination = this.Destinations[this.Phase];
 							this.Pathfinding.target = this.Destinations[this.Phase];
+							this.DistractionTarget.TargetedForDistraction = false;
 							this.Pathfinding.speed = (float)1;
 							this.Distracting = false;
 							this.Distracted = false;
@@ -2682,6 +2692,7 @@ public class StudentScript : MonoBehaviour
 							{
 								this.CurrentDestination = this.Destinations[this.Phase];
 								this.Pathfinding.target = this.Destinations[this.Phase];
+								this.DistractionTarget.TargetedForDistraction = false;
 								this.DistractionTarget.Pathfinding.canSearch = true;
 								this.DistractionTarget.Pathfinding.canMove = true;
 								this.DistractionTarget.Pathfinding.speed = (float)1;
@@ -2749,6 +2760,7 @@ public class StudentScript : MonoBehaviour
 										this.audio.clip = this.MurderSuicideKiller;
 										this.audio.Play();
 										this.StudentManager.Students[7].DetectionMarker.Tex.enabled = false;
+										this.StudentManager.Students[7].TargetedForDistraction = false;
 										this.StudentManager.Students[7].Pathfinding.canSearch = false;
 										this.StudentManager.Students[7].Pathfinding.canMove = false;
 										this.StudentManager.Students[7].WitnessCamera.Show = false;
@@ -3358,10 +3370,16 @@ public class StudentScript : MonoBehaviour
 									this.ID++;
 								}
 							}
+							if (this.DistractionTarget != null)
+							{
+								this.DistractionTarget.TargetedForDistraction = false;
+							}
 							this.CharacterAnimation.CrossFade(this.IdleAnim);
 							this.Pathfinding.canSearch = false;
 							this.Pathfinding.canMove = false;
 							this.CameraReacting = false;
+							this.Distracting = false;
+							this.Distracted = false;
 							this.DiscCheck = false;
 							this.Routine = false;
 							this.Alarmed = true;
@@ -3912,7 +3930,7 @@ public class StudentScript : MonoBehaviour
 				}
 				if (this.Prompt.Circle[2].fillAmount <= (float)0 && !this.Yandere.NearSenpai && !this.Yandere.Attacking && !this.Yandere.Crouching)
 				{
-					if ((this.Yandere.Weapon[this.Yandere.Equipped].WeaponID == 3 && !this.StudentManager.MissionMode) || this.Yandere.Weapon[this.Yandere.Equipped].Flaming || this.Yandere.CyborgParts[1].active)
+					if (this.Yandere.Weapon[this.Yandere.Equipped].Flaming || this.Yandere.CyborgParts[1].active)
 					{
 						this.Yandere.SanityBased = false;
 					}
@@ -5202,6 +5220,7 @@ public class StudentScript : MonoBehaviour
 		}
 		if (this.Distracting)
 		{
+			this.DistractionTarget.TargetedForDistraction = false;
 			this.DistractionTarget.Distracted = false;
 			this.Distracting = false;
 		}
@@ -6134,6 +6153,8 @@ public class StudentScript : MonoBehaviour
 			this.SplashTimer = (float)0;
 			this.SplashPhase = 1;
 			this.BathePhase = 1;
+			this.Distracting = false;
+			this.Distracted = false;
 			this.Following = false;
 			this.Splashed = true;
 			this.Routine = false;

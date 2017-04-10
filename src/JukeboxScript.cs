@@ -277,12 +277,9 @@ public class JukeboxScript : MonoBehaviour
 			}
 			else if (Input.GetKeyDown("f"))
 			{
-				if (!this.MuteCopyrights)
-				{
-					this.Egg = true;
-					this.KillVolume();
-					this.Falcon.enabled = true;
-				}
+				this.Egg = true;
+				this.KillVolume();
+				this.Falcon.enabled = true;
 			}
 			else if (Input.GetKeyDown("o"))
 			{

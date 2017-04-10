@@ -86,6 +86,10 @@ public class ChangingBoothScript : MonoBehaviour
 					{
 						this.audio.clip = this.CurtainSound;
 						this.audio.Play();
+						if (!this.Yandere.ClubAttire)
+						{
+							this.Yandere.PreviousSchoolwear = this.Yandere.Schoolwear;
+						}
 						this.Yandere.ChangeClubwear();
 						this.Phase++;
 					}

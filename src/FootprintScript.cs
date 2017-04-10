@@ -10,8 +10,7 @@ public class FootprintScript : MonoBehaviour
 
 	public virtual void Start()
 	{
-		this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent("YandereScript");
-		if (this.Yandere.Schoolwear == 0 || this.Yandere.Schoolwear == 2)
+		if (this.Yandere.Schoolwear == 0 || this.Yandere.Schoolwear == 2 || (this.Yandere.ClubAttire && PlayerPrefs.GetInt("Club") == 6))
 		{
 			this.renderer.material.mainTexture = this.Footprint;
 		}

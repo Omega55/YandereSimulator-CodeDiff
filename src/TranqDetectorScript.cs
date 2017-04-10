@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityScript.Lang;
 
 [Serializable]
 public class TranqDetectorScript : MonoBehaviour
@@ -25,6 +26,8 @@ public class TranqDetectorScript : MonoBehaviour
 	public UISprite DoorIcon;
 
 	public bool StopChecking;
+
+	public AudioClip[] TranqClips;
 
 	public virtual void Start()
 	{
@@ -115,11 +118,15 @@ public class TranqDetectorScript : MonoBehaviour
 	{
 		if (!this.StopChecking && this.KidnappingLabel.text == "Kidnapping Checklist" && this.TranquilizerIcon.spriteName == "Yes" && this.FollowerIcon.spriteName == "Yes" && this.BiologyIcon.spriteName == "Yes" && this.SyringeIcon.spriteName == "Yes" && this.DoorIcon.spriteName == "Yes")
 		{
+			this.audio.clip = this.TranqClips[UnityEngine.Random.Range(0, Extensions.get_length(this.TranqClips))];
+			this.audio.Play();
 			this.Door.Prompt.Hide();
 			this.Door.Prompt.enabled = false;
 			this.Door.enabled = false;
 			this.Yandere.Inventory.Tranquilizer = false;
 			this.Yandere.CanTranq = true;
+			this.Yandere.Weapon[this.Yandere.Equipped].Type = 5;
+			this.Yandere.AttackManager.Stealth = true;
 			this.StopChecking = true;
 		}
 	}

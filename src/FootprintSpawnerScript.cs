@@ -23,13 +23,17 @@ public class FootprintSpawnerScript : MonoBehaviour
 
 	public Collider SWStairs;
 
+	public bool Debugging;
+
 	public bool CanSpawn;
 
 	public bool LeftFoot;
 
 	public bool FootUp;
 
-	public float Threshold;
+	public float DownThreshold;
+
+	public float UpThreshold;
 
 	public float Height;
 
@@ -48,6 +52,10 @@ public class FootprintSpawnerScript : MonoBehaviour
 
 	public virtual void Update()
 	{
+		if (this.Debugging)
+		{
+			Debug.Log("UpThreshold: " + (this.Yandere.transform.position.y + this.UpThreshold) + " | DownThreshold: " + (this.Yandere.transform.position.y + this.DownThreshold) + " | CurrentHeight: " + this.transform.position.y);
+		}
 		if (this.GardenArea.bounds.Contains(this.transform.position) || this.NEStairs.bounds.Contains(this.transform.position) || this.NWStairs.bounds.Contains(this.transform.position) || this.SEStairs.bounds.Contains(this.transform.position) || this.SWStairs.bounds.Contains(this.transform.position))
 		{
 			this.CanSpawn = false;
@@ -58,12 +66,12 @@ public class FootprintSpawnerScript : MonoBehaviour
 		}
 		if (!this.FootUp)
 		{
-			if (this.transform.position.y > this.Yandere.transform.position.y + 0.1f)
+			if (this.transform.position.y > this.Yandere.transform.position.y + this.UpThreshold)
 			{
 				this.FootUp = true;
 			}
 		}
-		else if (this.transform.position.y < this.Yandere.transform.position.y + this.Threshold)
+		else if (this.transform.position.y < this.Yandere.transform.position.y + this.DownThreshold)
 		{
 			if (!this.Yandere.Crouching && !this.Yandere.Crawling && this.Yandere.CanMove && Input.GetButton("LB") && this.FootUp)
 			{
@@ -94,6 +102,7 @@ public class FootprintSpawnerScript : MonoBehaviour
 				Vector3 eulerAngles = gameObject.transform.eulerAngles;
 				float num = eulerAngles.y = y;
 				Vector3 vector = gameObject.transform.eulerAngles = eulerAngles;
+				((FootprintScript)gameObject.transform.GetChild(0).GetComponent(typeof(FootprintScript))).Yandere = this.Yandere;
 				gameObject.transform.parent = this.BloodParent;
 				if (this.LeftFoot)
 				{

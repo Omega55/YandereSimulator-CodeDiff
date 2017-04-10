@@ -12,6 +12,8 @@ public class DebugMenuScript : MonoBehaviour
 
 	public CameraEffectsScript CameraEffects;
 
+	public WeaponManagerScript WeaponManager;
+
 	public ReputationScript Reputation;
 
 	public YandereScript Yandere;
@@ -42,9 +44,16 @@ public class DebugMenuScript : MonoBehaviour
 
 	public bool MissionMode;
 
+	public int RooftopStudent;
+
 	public int ID;
 
 	public Texture PantyCensorTexture;
+
+	public DebugMenuScript()
+	{
+		this.RooftopStudent = 7;
+	}
 
 	public virtual void Start()
 	{
@@ -246,28 +255,32 @@ public class DebugMenuScript : MonoBehaviour
 				{
 					if (this.Clock.HourTime < (float)15)
 					{
-						PlayerPrefs.SetInt("7_Friend", 1);
-						this.Yandere.transform.position = this.RooftopSpot.position;
-						if (this.StudentManager.Students[7] != null)
+						PlayerPrefs.SetInt(this.RooftopStudent + "_Friend", 1);
+						this.Yandere.transform.position = this.RooftopSpot.position + new Vector3((float)1, (float)0, (float)0);
+						this.WeaponManager.Weapons[6].transform.position = this.Yandere.transform.position;
+						if (this.StudentManager.Students[this.RooftopStudent] != null)
 						{
 							this.StudentManager.OfferHelp.UpdateLocation();
 							this.StudentManager.OfferHelp.enabled = true;
-							if (!this.StudentManager.Students[7].Indoors)
+							if (!this.StudentManager.Students[this.RooftopStudent].Indoors)
 							{
-								if (this.StudentManager.Students[7].ShoeRemoval.Locker == null)
+								if (this.StudentManager.Students[this.RooftopStudent].ShoeRemoval.Locker == null)
 								{
-									this.StudentManager.Students[7].ShoeRemoval.Start();
+									this.StudentManager.Students[this.RooftopStudent].ShoeRemoval.Start();
 								}
-								this.StudentManager.Students[7].ShoeRemoval.PutOnShoes();
+								this.StudentManager.Students[this.RooftopStudent].ShoeRemoval.PutOnShoes();
 							}
-							this.StudentManager.Students[7].transform.position = this.RooftopSpot.position;
-							this.StudentManager.Students[7].Prompt.Label[0].text = "     " + "Push";
-							this.StudentManager.Students[7].CurrentDestination = this.RooftopSpot;
-							this.StudentManager.Students[7].Pathfinding.target = this.RooftopSpot;
-							this.StudentManager.Students[7].Pathfinding.canSearch = true;
-							this.StudentManager.Students[7].Pathfinding.canMove = true;
-							this.StudentManager.Students[7].Meeting = true;
-							this.StudentManager.Students[7].MeetTime = (float)0;
+							this.StudentManager.Students[this.RooftopStudent].CharacterAnimation.Play(this.StudentManager.Students[this.RooftopStudent].IdleAnim);
+							this.StudentManager.Students[this.RooftopStudent].transform.position = this.RooftopSpot.position;
+							this.StudentManager.Students[this.RooftopStudent].transform.rotation = this.RooftopSpot.rotation;
+							this.StudentManager.Students[this.RooftopStudent].Prompt.Label[0].text = "     " + "Push";
+							this.StudentManager.Students[this.RooftopStudent].CurrentDestination = this.RooftopSpot;
+							this.StudentManager.Students[this.RooftopStudent].Pathfinding.target = this.RooftopSpot;
+							this.StudentManager.Students[this.RooftopStudent].Pathfinding.canSearch = false;
+							this.StudentManager.Students[this.RooftopStudent].Pathfinding.canMove = false;
+							this.StudentManager.Students[this.RooftopStudent].Routine = false;
+							this.StudentManager.Students[this.RooftopStudent].Meeting = true;
+							this.StudentManager.Students[this.RooftopStudent].MeetTime = (float)0;
 						}
 						if (this.Clock.HourTime < 7.1f)
 						{
@@ -277,7 +290,7 @@ public class DebugMenuScript : MonoBehaviour
 					else
 					{
 						this.Clock.PresentTime = (float)960;
-						this.StudentManager.Students[7].transform.position = this.Lockers.position;
+						this.StudentManager.Students[this.RooftopStudent].transform.position = this.Lockers.position;
 					}
 					this.Window.active = false;
 				}

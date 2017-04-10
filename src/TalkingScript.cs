@@ -352,7 +352,7 @@ public class TalkingScript : MonoBehaviour
 					else
 					{
 						this.S.Character.animation.CrossFade(this.S.Nod1Anim);
-						if (!this.S.StudentManager.Students[this.S.DialogueWheel.Victim].InEvent && !this.S.StudentManager.Students[this.S.DialogueWheel.Victim].Slave && !this.S.StudentManager.Students[this.S.DialogueWheel.Victim].Wet && !this.S.StudentManager.Students[this.S.DialogueWheel.Victim].Meeting)
+						if (!this.S.StudentManager.Students[this.S.DialogueWheel.Victim].InEvent && !this.S.StudentManager.Students[this.S.DialogueWheel.Victim].Slave && !this.S.StudentManager.Students[this.S.DialogueWheel.Victim].Wet && !this.S.StudentManager.Students[this.S.DialogueWheel.Victim].Meeting && !this.S.StudentManager.Students[this.S.DialogueWheel.Victim].TargetedForDistraction)
 						{
 							this.S.Subtitle.UpdateLabel("Student Distract", 0, (float)3);
 						}
@@ -378,6 +378,7 @@ public class TalkingScript : MonoBehaviour
 						if ((this.S.Clock.HourTime < (float)8 || (this.S.Clock.HourTime > (float)13 && this.S.Clock.HourTime < 13.375f) || this.S.Clock.HourTime > 15.5f) && !this.S.Distracting)
 						{
 							this.S.DistractionTarget = this.S.StudentManager.Students[this.S.DialogueWheel.Victim];
+							this.S.DistractionTarget.TargetedForDistraction = true;
 							this.S.CurrentDestination = this.S.DistractionTarget.transform;
 							this.S.Pathfinding.target = this.S.DistractionTarget.transform;
 							this.S.Pathfinding.speed = (float)4;

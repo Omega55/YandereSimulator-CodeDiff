@@ -79,6 +79,10 @@ public class AttackManagerScript : MonoBehaviour
 		{
 			this.Prefix = "saw";
 		}
+		else if (this.Weapon.Type == 5)
+		{
+			this.Prefix = "syringe";
+		}
 		if (!this.Yandere.TargetStudent.Male)
 		{
 			this.Gender = "f02_";
@@ -149,14 +153,24 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					this.Yandere.StudentManager.Reporter = null;
 				}
+				if (!this.Yandere.CanTranq)
+				{
+					this.Yandere.TargetStudent.Dead = true;
+					this.Yandere.Bloodiness = this.Yandere.Bloodiness + (float)20;
+					this.Yandere.UpdateBlood();
+					this.Yandere.StainWeapon();
+				}
+				else
+				{
+					this.Yandere.TargetStudent.Tranquil = true;
+					this.Yandere.CanTranq = false;
+					this.Yandere.Followers = this.Yandere.Followers - 1;
+					this.Weapon.Type = 1;
+				}
 				this.Yandere.TargetStudent.DeathCause = this.Yandere.Weapon[this.Yandere.Equipped].WeaponID;
 				this.Yandere.TargetStudent.BecomeRagdoll();
-				this.Yandere.TargetStudent.Dead = true;
 				this.Yandere.Sanity = this.Yandere.Sanity - (float)20 * this.Yandere.Numbness;
 				this.Yandere.UpdateSanity();
-				this.Yandere.Bloodiness = this.Yandere.Bloodiness + (float)20;
-				this.Yandere.UpdateBlood();
-				this.Yandere.StainWeapon();
 				this.Yandere.Attacking = false;
 				this.Yandere.FollowHips = false;
 				this.Yandere.MyController.radius = 0.2f;
@@ -263,6 +277,10 @@ public class AttackManagerScript : MonoBehaviour
 			{
 				this.Distance = (float)1;
 			}
+		}
+		else if (this.Weapon.Type == 5)
+		{
+			this.Distance = 0.5f;
 		}
 	}
 

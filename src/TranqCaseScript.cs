@@ -55,16 +55,12 @@ public class TranqCaseScript : MonoBehaviour
 		}
 		if (this.Prompt.Circle[0].fillAmount == (float)0)
 		{
+			this.Yandere.TranquilHiding = true;
+			this.Yandere.CanMove = false;
 			this.Prompt.enabled = false;
 			this.Prompt.Hide();
-			this.Yandere.Ragdoll.transform.parent = this.transform;
-			this.Yandere.Ragdoll.transform.localPosition = new Vector3(0.224f, 1.36f, (float)0);
-			this.Yandere.Ragdoll.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)90);
 			((RagdollScript)this.Yandere.Ragdoll.GetComponent(typeof(RagdollScript))).TranqCase = this;
-			((RagdollScript)this.Yandere.Ragdoll.GetComponent(typeof(RagdollScript))).DumpType = 2;
-			((RagdollScript)this.Yandere.Ragdoll.GetComponent(typeof(RagdollScript))).Dump();
 			this.VictimID = ((RagdollScript)this.Yandere.Ragdoll.GetComponent(typeof(RagdollScript))).StudentID;
-			this.Yandere.EmptyHands();
 			this.Door.Prompt.enabled = true;
 			this.Door.enabled = true;
 			this.Occupied = true;

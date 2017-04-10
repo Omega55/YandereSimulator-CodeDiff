@@ -4,11 +4,18 @@ using UnityEngine;
 [Serializable]
 public class StandScript : MonoBehaviour
 {
+	public GameObject StandCamera;
+
 	public YandereScript Yandere;
 
 	public GameObject Stand;
 
 	public int Phase;
+
+	public virtual void Start()
+	{
+		this.StandCamera.active = true;
+	}
 
 	public virtual void Update()
 	{

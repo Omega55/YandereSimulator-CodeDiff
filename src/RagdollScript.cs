@@ -83,6 +83,8 @@ public class RagdollScript : MonoBehaviour
 
 	public bool StopAnimation;
 
+	public bool Decapitated;
+
 	public bool Dismembered;
 
 	public bool Cauterized;
@@ -290,6 +292,7 @@ public class RagdollScript : MonoBehaviour
 						this.Yandere.RagdollDragger.connectedBody = this.Rigidbodies[this.LimbID];
 						this.Yandere.RagdollDragger.connectedAnchor = this.LimbAnchor[this.LimbID];
 						this.Yandere.Dragging = true;
+						this.Yandere.DragState = 0;
 						this.Yandere.Ragdoll = this.gameObject;
 						this.Dragged = true;
 						this.Yandere.StudentManager.UpdateStudents();
@@ -415,12 +418,13 @@ public class RagdollScript : MonoBehaviour
 		}
 		else if (this.DumpType == 2)
 		{
-			this.Character.animation.Play("f02_fetal_00");
-			float y2 = Mathf.MoveTowards(this.transform.localPosition.y, 0.36f, Time.deltaTime);
-			Vector3 localPosition3 = this.transform.localPosition;
-			float num9 = localPosition3.y = y2;
-			Vector3 vector4 = this.transform.localPosition = localPosition3;
-			if (this.transform.localPosition.y == 0.36f)
+			if (this.DumpTimer == (float)0 && this.Yandere.Carrying)
+			{
+				this.Character.animation[this.DumpedAnim].time = 2.5f;
+			}
+			this.Character.animation.CrossFade(this.DumpedAnim);
+			this.DumpTimer += Time.deltaTime;
+			if (this.Character.animation[this.DumpedAnim].time >= this.Character.animation[this.DumpedAnim].length)
 			{
 				this.TranqCase.Open = false;
 				if (this.AddingToCount)
@@ -487,8 +491,6 @@ public class RagdollScript : MonoBehaviour
 	{
 		if (!this.Male)
 		{
-			this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
-			this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 			float z = this.LeftEyeOrigin.z - this.EyeShrink * 0.01f;
 			Vector3 localPosition = this.LeftEye.localPosition;
 			float num = localPosition.z = z;
@@ -532,6 +534,10 @@ public class RagdollScript : MonoBehaviour
 				float num10 = localScale8.y = y6;
 				Vector3 vector10 = this.Student.Skirt[3].transform.localScale = localScale8;
 			}
+		}
+		if (this.Decapitated)
+		{
+			this.Head.localScale = new Vector3((float)0, (float)0, (float)0);
 		}
 		if (this.Yandere.Ragdoll == this.gameObject)
 		{

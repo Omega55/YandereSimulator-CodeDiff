@@ -21,7 +21,11 @@ public class MirrorScript : MonoBehaviour
 			{
 				this.ID = 0;
 			}
-			this.Prompt.Yandere.IdleAnim = this.Idles[this.ID];
+			if (!this.Prompt.Yandere.Carrying)
+			{
+				this.Prompt.Yandere.IdleAnim = this.Idles[this.ID];
+			}
+			this.Prompt.Yandere.OriginalIdleAnim = this.Idles[this.ID];
 		}
 	}
 
