@@ -7,11 +7,15 @@ public class DelinquentManagerScript : MonoBehaviour
 {
 	public GameObject Delinquents;
 
+	public GameObject RapBeat;
+
 	public GameObject Panel;
 
 	public float[] NextTime;
 
 	public DelinquentScript Attacker;
+
+	public MirrorScript Mirror;
 
 	public UILabel TimeLabel;
 
@@ -118,6 +122,12 @@ public class DelinquentManagerScript : MonoBehaviour
 			this.Timer = (float)15;
 			this.Phase = 8;
 		}
+	}
+
+	public virtual void EasterEgg()
+	{
+		this.RapBeat.active = true;
+		this.Mirror.Limit = this.Mirror.Limit + 1;
 	}
 
 	public virtual void Main()

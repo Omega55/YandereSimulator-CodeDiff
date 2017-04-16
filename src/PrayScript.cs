@@ -38,6 +38,8 @@ public class PrayScript : MonoBehaviour
 
 	public GameObject FemaleTurtle;
 
+	public int StudentNumber;
+
 	public int StudentID;
 
 	public int Selected;
@@ -166,6 +168,28 @@ public class PrayScript : MonoBehaviour
 			this.PromptBar.Label[4].text = "Choose";
 			this.PromptBar.UpdateButtons();
 			this.PromptBar.Show = true;
+			if (!this.SpawnMale)
+			{
+				this.StudentNumber = 16;
+			}
+			else
+			{
+				this.StudentNumber = 17;
+			}
+			if (this.StudentManager.Students[16] != null && !this.StudentManager.Students[16].active)
+			{
+				float a3 = 0.5f;
+				Color color9 = this.VictimLabel.color;
+				float num7 = color9.a = a3;
+				Color color10 = this.VictimLabel.color = color9;
+			}
+			if (this.StudentManager.Students[17] != null && !this.StudentManager.Students[17].active)
+			{
+				float a4 = 0.5f;
+				Color color11 = this.VictimLabel.color;
+				float num8 = color11.a = a4;
+				Color color12 = this.VictimLabel.color = color11;
+			}
 		}
 		if (!this.Show)
 		{

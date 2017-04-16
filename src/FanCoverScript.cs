@@ -24,9 +24,19 @@ public class FanCoverScript : MonoBehaviour
 
 	public GameObject Explosion;
 
+	public GameObject OfferHelp;
+
 	public GameObject Smoke;
 
+	public AudioClip RivalReaction;
+
+	public AudioSource FanSFX;
+
+	public Texture[] YandereBloodTextures;
+
 	public Texture[] BloodTexture;
+
+	public bool Reacted;
 
 	public float Timer;
 
@@ -36,6 +46,8 @@ public class FanCoverScript : MonoBehaviour
 	{
 		if (this.StudentManager.Students[33] == null)
 		{
+			this.Prompt.Hide();
+			this.Prompt.enabled = false;
 			this.enabled = false;
 		}
 		else
@@ -46,7 +58,7 @@ public class FanCoverScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (Vector3.Distance(this.transform.position, this.Yandere.transform.position) < (float)1)
+		if (Vector3.Distance(this.transform.position, this.Yandere.transform.position) < (float)2)
 		{
 			if (this.Yandere.Armed)
 			{
@@ -79,13 +91,13 @@ public class FanCoverScript : MonoBehaviour
 			this.Rival.Distracted = true;
 			this.Yandere.CanMove = false;
 			this.Rival.Meeting = false;
+			this.FanSFX.enabled = false;
 			this.audio.Play();
-			this.Yandere.Sanity = this.Yandere.Sanity - (float)100;
-			this.Yandere.UpdateSanity();
 			float z = this.transform.localEulerAngles.z + (float)15;
 			Vector3 localEulerAngles = this.transform.localEulerAngles;
 			float num = localEulerAngles.z = z;
 			Vector3 vector = this.transform.localEulerAngles = localEulerAngles;
+			this.rigidbody.isKinematic = false;
 			this.rigidbody.useGravity = true;
 			this.Prompt.enabled = false;
 			this.Prompt.Hide();
@@ -97,17 +109,28 @@ public class FanCoverScript : MonoBehaviour
 			{
 				this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, this.MurderSpot.rotation, Time.deltaTime * (float)10);
 				this.Yandere.MoveTowardsTarget(this.MurderSpot.position);
+				if (this.Yandere.CharacterAnimation["f02_fanMurderA_00"].time > 3.5f && !this.Reacted)
+				{
+					AudioSource.PlayClipAtPoint(this.RivalReaction, new Vector3((float)0, (float)0, (float)0));
+					this.Reacted = true;
+				}
 				if (this.Yandere.CharacterAnimation["f02_fanMurderA_00"].time > (float)5)
 				{
+					this.Rival.LiquidProjector.material.mainTexture = this.Rival.BloodTexture;
+					this.Rival.LiquidProjector.enabled = true;
+					this.Rival.EyeShrink = (float)1;
+					this.Yandere.BloodTextures = this.YandereBloodTextures;
 					this.Yandere.Bloodiness = this.Yandere.Bloodiness + (float)20;
 					this.Yandere.UpdateBlood();
 					this.BloodProjector.active = true;
 					this.BloodProjector.material.mainTexture = this.BloodTexture[1];
+					this.BloodEffects.transform.parent = this.Rival.Head;
+					this.BloodEffects.transform.localPosition = new Vector3((float)0, 0.1f, (float)0);
 					this.BloodEffects.Play();
 					this.Phase++;
 				}
 			}
-			else
+			else if (this.Phase < 10)
 			{
 				if (this.Phase < 6)
 				{
@@ -115,29 +138,36 @@ public class FanCoverScript : MonoBehaviour
 					if (this.Timer > (float)1)
 					{
 						this.Phase++;
-						this.BloodProjector.material.mainTexture = this.BloodTexture[this.Phase - 1];
-						this.Yandere.Bloodiness = this.Yandere.Bloodiness + (float)20;
-						this.Yandere.UpdateBlood();
-						this.Timer = (float)0;
+						if (this.Phase - 1 < 5)
+						{
+							this.BloodProjector.material.mainTexture = this.BloodTexture[this.Phase - 1];
+							this.Yandere.Bloodiness = this.Yandere.Bloodiness + (float)20;
+							this.Yandere.UpdateBlood();
+							this.Timer = (float)0;
+						}
 					}
 				}
-				if (this.Yandere.CharacterAnimation["f02_fanMurderA_00"].time > this.Yandere.CharacterAnimation["f02_fanMurderA_00"].length)
+				if (this.Rival.CharacterAnimation["f02_fanMurderB_00"].time >= this.Rival.CharacterAnimation["f02_fanMurderB_00"].length)
 				{
+					this.BloodProjector.material.mainTexture = this.BloodTexture[5];
+					this.Yandere.Bloodiness = this.Yandere.Bloodiness + (float)20;
+					this.Yandere.UpdateBlood();
 					this.Rival.Ragdoll.Decapitated = true;
 					this.Rival.OsanaHair.active = false;
 					this.Rival.Dead = true;
 					this.Rival.BecomeRagdoll();
-					float y = this.Yandere.transform.eulerAngles.y + (float)180;
-					Vector3 eulerAngles = this.Yandere.transform.eulerAngles;
-					float num2 = eulerAngles.y = y;
-					Vector3 vector2 = this.Yandere.transform.eulerAngles = eulerAngles;
-					this.Yandere.CanMove = true;
+					this.BloodEffects.Stop();
 					this.Explosion.active = true;
 					this.Smoke.active = true;
-					this.BloodEffects.Stop();
 					this.Fan.enabled = false;
-					this.enabled = false;
+					this.Phase = 10;
 				}
+			}
+			else if (this.Yandere.CharacterAnimation["f02_fanMurderA_00"].time >= this.Yandere.CharacterAnimation["f02_fanMurderA_00"].length)
+			{
+				this.OfferHelp.active = false;
+				this.Yandere.CanMove = true;
+				this.enabled = false;
 			}
 		}
 	}

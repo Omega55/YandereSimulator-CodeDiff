@@ -484,6 +484,10 @@ public class StudentManagerScript : MonoBehaviour
 					{
 						if (this.WitnessList[this.ID] != null)
 						{
+							float y = this.WitnessList[this.ID].transform.position.y + 0.1f;
+							Vector3 position = this.WitnessList[this.ID].transform.position;
+							float num = position.y = y;
+							Vector3 vector = this.WitnessList[this.ID].transform.position = position;
 							this.WitnessList[this.ID].CurrentDestination = this.PinDownSpots[this.ID];
 							this.WitnessList[this.ID].Pathfinding.target = this.PinDownSpots[this.ID];
 							this.WitnessList[this.ID].DistanceToDestination = (float)100;
@@ -507,6 +511,7 @@ public class StudentManagerScript : MonoBehaviour
 			{
 				if (this.Yandere.CanMove && this.WitnessList[1].DistanceToDestination < (float)1 && this.WitnessList[2].DistanceToDestination < (float)1 && this.WitnessList[3].DistanceToDestination < (float)1 && this.WitnessList[4].DistanceToDestination < (float)1)
 				{
+					this.Clock.StopTime = true;
 					if (this.Yandere.Aiming)
 					{
 						this.Yandere.StopAiming();
@@ -1329,6 +1334,14 @@ public class StudentManagerScript : MonoBehaviour
 		for (int i = Start; i < this.WitnessList.Length - 1; i++)
 		{
 			this.WitnessList[i] = this.WitnessList[i + 1];
+		}
+	}
+
+	public virtual void ChangeOka()
+	{
+		if (this.Students[26] != null)
+		{
+			this.Students[26].AttachRiggedAccessory();
 		}
 	}
 

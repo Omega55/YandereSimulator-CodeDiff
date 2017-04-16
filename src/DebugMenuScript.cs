@@ -455,6 +455,7 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					else if (Input.GetKeyDown("="))
 					{
+						this.DelinquentManager.Timer = this.DelinquentManager.Timer - (float)30;
 						this.Clock.PresentTime = this.Clock.PresentTime + (float)30;
 						this.Window.active = false;
 					}

@@ -492,7 +492,7 @@ public class DialogueWheelScript : MonoBehaviour
 						this.PauseScreen.Show = true;
 						Time.timeScale = (float)0;
 						this.PromptBar.ClearButtons();
-						this.PromptBar.Label[0].text = "View Info";
+						this.PromptBar.Label[0].text = string.Empty;
 						this.PromptBar.Label[1].text = "Cancel";
 						this.PromptBar.UpdateButtons();
 						this.PromptBar.Show = true;

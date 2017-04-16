@@ -11,18 +11,18 @@ public class StudentInfoMenuScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $UpdatePortraits$3119 : GenericGenerator<WWW>
+	internal sealed class $UpdatePortraits$3123 : GenericGenerator<WWW>
 	{
-		internal StudentInfoMenuScript $self_$3124;
+		internal StudentInfoMenuScript $self_$3128;
 
-		public $UpdatePortraits$3119(StudentInfoMenuScript self_)
+		public $UpdatePortraits$3123(StudentInfoMenuScript self_)
 		{
-			this.$self_$3124 = self_;
+			this.$self_$3128 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new StudentInfoMenuScript.$UpdatePortraits$3119.$(this.$self_$3124);
+			return new StudentInfoMenuScript.$UpdatePortraits$3123.$(this.$self_$3128);
 		}
 	}
 
@@ -325,10 +325,18 @@ public class StudentInfoMenuScript : MonoBehaviour
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
-		if (this.Distracting && (this.StudentID == 0 || this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID))
+		if (this.Distracting)
 		{
-			this.PromptBar.Label[0].text = string.Empty;
-			this.PromptBar.UpdateButtons();
+			bool flag = false;
+			if (this.StudentManager.Students[this.StudentID] != null && this.StudentManager.Students[this.StudentID].Dead)
+			{
+				flag = true;
+			}
+			if (this.StudentID == 0 || this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || flag)
+			{
+				this.PromptBar.Label[0].text = string.Empty;
+				this.PromptBar.UpdateButtons();
+			}
 		}
 		int num = -300 + this.Column * 150;
 		Vector3 localPosition = this.Highlight.localPosition;
@@ -355,7 +363,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	public virtual IEnumerator UpdatePortraits()
 	{
-		return new StudentInfoMenuScript.$UpdatePortraits$3119(this).GetEnumerator();
+		return new StudentInfoMenuScript.$UpdatePortraits$3123(this).GetEnumerator();
 	}
 
 	public virtual void Main()

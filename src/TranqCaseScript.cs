@@ -25,7 +25,7 @@ public class TranqCaseScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (Vector3.Distance(this.transform.position, this.Yandere.transform.position) < (float)1)
+		if (this.Yandere.transform.position.x > this.transform.position.x && Vector3.Distance(this.transform.position, this.Yandere.transform.position) < (float)1)
 		{
 			if (this.Yandere.Dragging)
 			{

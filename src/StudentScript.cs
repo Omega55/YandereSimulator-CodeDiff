@@ -801,6 +801,10 @@ public class StudentScript : MonoBehaviour
 
 	public Texture JudoGiTexture;
 
+	public Mesh NoArmsNoTorso;
+
+	public GameObject RiggedAccessory;
+
 	public bool Couple;
 
 	public int CoupleID;
@@ -6482,6 +6486,13 @@ public class StudentScript : MonoBehaviour
 				this.Armband.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
 			}
 		}
+	}
+
+	public virtual void AttachRiggedAccessory()
+	{
+		this.Cosmetic.FemaleAccessories[this.Cosmetic.Accessory].active = false;
+		this.MyRenderer.sharedMesh = this.NoArmsNoTorso;
+		this.RiggedAccessory.active = true;
 	}
 
 	public virtual void CameraReact()

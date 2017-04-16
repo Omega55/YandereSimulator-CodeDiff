@@ -20,6 +20,8 @@ public class DelinquentScript : MonoBehaviour
 
 	public Renderer MyRenderer;
 
+	public GameObject MyWeapon;
+
 	public GameObject Jukebox;
 
 	public Mesh LongSkirt;
@@ -54,6 +56,8 @@ public class DelinquentScript : MonoBehaviour
 
 	public string IdleAnim;
 
+	public string Prefix;
+
 	public bool ExpressedSurprise;
 
 	public bool LookAtPlayer;
@@ -68,6 +72,8 @@ public class DelinquentScript : MonoBehaviour
 
 	public bool Shoving;
 
+	public bool Rapping;
+
 	public bool Run;
 
 	public float DistanceToPlayer;
@@ -81,6 +87,8 @@ public class DelinquentScript : MonoBehaviour
 	public float Timer;
 
 	public int AudioPhase;
+
+	public int Spaces;
 
 	public AudioClip[] ProximityClips;
 
@@ -104,6 +112,18 @@ public class DelinquentScript : MonoBehaviour
 
 	public AudioClip Strike;
 
+	public GameObject DefaultHair;
+
+	public GameObject Mask;
+
+	public GameObject EasterHair;
+
+	public GameObject Bandanas;
+
+	public Renderer HairRenderer;
+
+	public Color HairColor;
+
 	public DelinquentScript()
 	{
 		this.CooldownAnim = "f02_idleShort_00";
@@ -113,11 +133,14 @@ public class DelinquentScript : MonoBehaviour
 		this.SwingAnim = "f02_swingA_00";
 		this.RunAnim = "f02_spring_00";
 		this.IdleAnim = string.Empty;
+		this.Prefix = "f02_";
 		this.AudioPhase = 1;
 	}
 
 	public virtual void Start()
 	{
+		this.EasterHair.active = false;
+		this.Bandanas.active = false;
 		this.OriginalRotation = this.transform.rotation;
 		this.LookAtTarget = this.Default.position;
 		if (this.Weapon != null)
@@ -292,6 +315,7 @@ public class DelinquentScript : MonoBehaviour
 								this.Yandere.StopAiming();
 							}
 							this.Character.animation.CrossFade(this.SwingAnim);
+							this.MyWeapon.active = true;
 							this.Attacking = true;
 							this.Yandere.Character.animation.CrossFade("f02_swingB_00");
 							this.Yandere.RPGCamera.enabled = false;
@@ -397,6 +421,27 @@ public class DelinquentScript : MonoBehaviour
 		{
 			RuntimeServices.SetProperty(this.MyRenderer, "sharedMesh", this.LongSkirt);
 		}
+		if (Input.GetKeyDown("space") && Vector3.Distance(this.Yandere.transform.position, this.DelinquentManager.transform.position) < (float)10)
+		{
+			this.Spaces++;
+			if (this.Spaces == 10)
+			{
+				this.Rapping = true;
+				this.MyWeapon.active = false;
+				this.IdleAnim = this.Prefix + "gruntIdle_00";
+				this.Character.animation.CrossFade(this.IdleAnim);
+				this.Character.animation[this.IdleAnim].time = UnityEngine.Random.Range((float)0, this.Character.animation[this.IdleAnim].length);
+				this.DefaultHair.active = false;
+				this.Mask.active = false;
+				this.EasterHair.active = true;
+				this.Bandanas.active = true;
+				if (this.HairRenderer != null)
+				{
+					this.HairRenderer.material.color = this.HairColor;
+				}
+				this.DelinquentManager.EasterEgg();
+			}
+		}
 	}
 
 	public virtual void Shove()
@@ -434,7 +479,7 @@ public class DelinquentScript : MonoBehaviour
 	{
 		if (!this.Threatening)
 		{
-			if (!this.Shoving)
+			if (!this.Shoving && !this.Rapping)
 			{
 				if (!this.LookAtPlayer)
 				{

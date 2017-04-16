@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$3132 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$3136 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$3147;
+		internal YandereScript $self_$3151;
 
-		public $ApplyCustomCostume$3132(YandereScript self_)
+		public $ApplyCustomCostume$3136(YandereScript self_)
 		{
-			this.$self_$3147 = self_;
+			this.$self_$3151 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$3132.$(this.$self_$3147);
+			return new YandereScript.$ApplyCustomCostume$3136.$(this.$self_$3151);
 		}
 	}
 
@@ -1118,9 +1118,9 @@ public class YandereScript : MonoBehaviour
 								this.CharacterAnimation.CrossFade(this.RunAnim);
 								this.MyController.Move(this.transform.forward * (this.RunSpeed + (float)(PlayerPrefs.GetInt("PhysicalGrade") + PlayerPrefs.GetInt("SpeedBonus")) * 0.25f) * Time.deltaTime);
 							}
-							else
+							else if (this.Mopping)
 							{
-								this.CharacterAnimation.CrossFade("f02_dragWalk_01");
+								this.CharacterAnimation.CrossFade(this.WalkAnim);
 								this.MyController.Move(this.transform.forward * this.WalkSpeed * Time.deltaTime);
 							}
 							if (this.Crouching)
@@ -1701,6 +1701,7 @@ public class YandereScript : MonoBehaviour
 						this.CharacterAnimation.CrossFade("f02_carryDisposeA_00");
 						if (this.CharacterAnimation["f02_carryDisposeA_00"].time >= this.CharacterAnimation["f02_carryDisposeA_00"].length)
 						{
+							this.TranquilHiding = false;
 							this.Dragging = false;
 							this.Dumping = false;
 							this.CanMove = true;
@@ -3705,6 +3706,11 @@ public class YandereScript : MonoBehaviour
 							this.EasterEggMenu.active = false;
 							this.SwapMesh();
 						}
+						else if (Input.GetKeyDown("a"))
+						{
+							this.StudentManager.ChangeOka();
+							this.EasterEggMenu.active = false;
+						}
 						if (Input.GetKeyDown("d"))
 						{
 							if (this.Copyrights.active)
@@ -4293,7 +4299,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$3132(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$3136(this).GetEnumerator();
 	}
 
 	public virtual void WearGloves()
