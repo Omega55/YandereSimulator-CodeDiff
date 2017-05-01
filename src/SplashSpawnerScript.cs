@@ -12,18 +12,22 @@ public class SplashSpawnerScript : MonoBehaviour
 
 	public bool FootUp;
 
-	public float Threshold;
+	public float DownThreshold;
+
+	public float UpThreshold;
+
+	public float Height;
 
 	public virtual void Update()
 	{
 		if (!this.FootUp)
 		{
-			if (this.transform.position.y > this.Yandere.transform.position.y + 0.1f)
+			if (this.transform.position.y > this.Yandere.transform.position.y + this.UpThreshold)
 			{
 				this.FootUp = true;
 			}
 		}
-		else if (this.transform.position.y < this.Yandere.transform.position.y + this.Threshold)
+		else if (this.transform.position.y < this.Yandere.transform.position.y + this.DownThreshold)
 		{
 			this.FootUp = false;
 			if (this.Bloody)

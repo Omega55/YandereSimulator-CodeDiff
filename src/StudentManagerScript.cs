@@ -231,6 +231,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public bool ForceSpawn;
 
+	public bool NoGravity;
+
 	public bool Randomize;
 
 	public bool NoSpeech;
@@ -1342,6 +1344,19 @@ public class StudentManagerScript : MonoBehaviour
 		if (this.Students[26] != null)
 		{
 			this.Students[26].AttachRiggedAccessory();
+		}
+	}
+
+	public virtual void RemovePapersFromDesks()
+	{
+		this.ID = 1;
+		while (this.ID < Extensions.get_length(this.Students))
+		{
+			if (this.Students[this.ID] != null && this.Students[this.ID].MyPaper != null)
+			{
+				this.Students[this.ID].MyPaper.active = false;
+			}
+			this.ID++;
 		}
 	}
 

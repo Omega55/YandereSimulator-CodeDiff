@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$3136 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$3140 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$3151;
+		internal YandereScript $self_$3155;
 
-		public $ApplyCustomCostume$3136(YandereScript self_)
+		public $ApplyCustomCostume$3140(YandereScript self_)
 		{
-			this.$self_$3151 = self_;
+			this.$self_$3155 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$3136.$(this.$self_$3151);
+			return new YandereScript.$ApplyCustomCostume$3140.$(this.$self_$3155);
 		}
 	}
 
@@ -611,6 +611,16 @@ public class YandereScript : MonoBehaviour
 
 	public string RunAnim;
 
+	public string CrouchIdleAnim;
+
+	public string CrouchWalkAnim;
+
+	public string CrouchRunAnim;
+
+	public string CrawlIdleAnim;
+
+	public string CrawlWalkAnim;
+
 	public string CarryIdleAnim;
 
 	public string CarryWalkAnim;
@@ -906,6 +916,11 @@ public class YandereScript : MonoBehaviour
 		this.IdleAnim = string.Empty;
 		this.WalkAnim = string.Empty;
 		this.RunAnim = string.Empty;
+		this.CrouchIdleAnim = string.Empty;
+		this.CrouchWalkAnim = string.Empty;
+		this.CrouchRunAnim = string.Empty;
+		this.CrawlIdleAnim = string.Empty;
+		this.CrawlWalkAnim = string.Empty;
 		this.CarryIdleAnim = string.Empty;
 		this.CarryWalkAnim = string.Empty;
 		this.CarryRunAnim = string.Empty;
@@ -1109,8 +1124,7 @@ public class YandereScript : MonoBehaviour
 						{
 							if (this.Crouching)
 							{
-								this.CharacterAnimation["f02_crouchWalk_00"].speed = (float)2;
-								this.CharacterAnimation.CrossFade("f02_crouchWalk_00");
+								this.CharacterAnimation.CrossFade(this.CrouchRunAnim);
 								this.MyController.Move(this.transform.forward * ((float)2 + (float)(PlayerPrefs.GetInt("PhysicalGrade") + PlayerPrefs.GetInt("SpeedBonus")) * 0.25f) * Time.deltaTime);
 							}
 							else if (!this.Dragging && !this.Mopping)
@@ -1137,13 +1151,13 @@ public class YandereScript : MonoBehaviour
 						{
 							if (this.Crawling)
 							{
-								this.CharacterAnimation.CrossFade("f02_crawl_10");
+								this.CharacterAnimation.CrossFade(this.CrawlWalkAnim);
 								this.MyController.Move(this.transform.forward * this.CrawlSpeed * Time.deltaTime);
 							}
 							else if (this.Crouching)
 							{
-								this.CharacterAnimation["f02_crouchWalk_00"].speed = (float)1;
-								this.CharacterAnimation.CrossFade("f02_crouchWalk_00");
+								this.CharacterAnimation[this.CrouchWalkAnim].speed = (float)1;
+								this.CharacterAnimation.CrossFade(this.CrouchWalkAnim);
 								this.MyController.Move(this.transform.forward * this.CrouchSpeed * Time.deltaTime);
 							}
 							else
@@ -1162,11 +1176,11 @@ public class YandereScript : MonoBehaviour
 					{
 						if (this.Crawling)
 						{
-							this.CharacterAnimation.CrossFade("f02_crawlIdle_00");
+							this.CharacterAnimation.CrossFade(this.CrawlIdleAnim);
 						}
 						else if (this.Crouching)
 						{
-							this.CharacterAnimation.CrossFade("f02_crouchIdle_00");
+							this.CharacterAnimation.CrossFade(this.CrouchIdleAnim);
 						}
 						else
 						{
@@ -1184,13 +1198,13 @@ public class YandereScript : MonoBehaviour
 					{
 						if (this.Crawling)
 						{
-							this.CharacterAnimation.CrossFade("f02_crawl_10");
+							this.CharacterAnimation.CrossFade(this.CrawlWalkAnim);
 							this.MyController.Move(this.transform.forward * this.CrawlSpeed * Time.deltaTime * this.v);
 							this.MyController.Move(this.transform.right * this.CrawlSpeed * Time.deltaTime * this.h);
 						}
 						else if (this.Crouching)
 						{
-							this.CharacterAnimation.CrossFade("f02_crouchWalk_00");
+							this.CharacterAnimation.CrossFade(this.CrouchWalkAnim);
 							this.MyController.Move(this.transform.forward * this.CrouchSpeed * Time.deltaTime * this.v);
 							this.MyController.Move(this.transform.right * this.CrouchSpeed * Time.deltaTime * this.h);
 						}
@@ -1203,11 +1217,11 @@ public class YandereScript : MonoBehaviour
 					}
 					else if (this.Crawling)
 					{
-						this.CharacterAnimation.CrossFade("f02_crawlIdle_00");
+						this.CharacterAnimation.CrossFade(this.CrawlIdleAnim);
 					}
 					else if (this.Crouching)
 					{
-						this.CharacterAnimation.CrossFade("f02_crouchIdle_00");
+						this.CharacterAnimation.CrossFade(this.CrouchIdleAnim);
 					}
 					else
 					{
@@ -3711,6 +3725,11 @@ public class YandereScript : MonoBehaviour
 							this.StudentManager.ChangeOka();
 							this.EasterEggMenu.active = false;
 						}
+						else if (Input.GetKeyDown("i"))
+						{
+							this.StudentManager.NoGravity = true;
+							this.EasterEggMenu.active = false;
+						}
 						if (Input.GetKeyDown("d"))
 						{
 							if (this.Copyrights.active)
@@ -4299,7 +4318,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$3136(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$3140(this).GetEnumerator();
 	}
 
 	public virtual void WearGloves()

@@ -25,13 +25,15 @@ public class CreditsScript : MonoBehaviour
 
 	public int ID;
 
+	public float SpeedUpFactor;
+
 	public float TimerLimit;
 
 	public float FadeTimer;
 
 	public float Timer;
 
-	public bool FadeAudio;
+	public bool StopCredits;
 
 	public bool FadeOut;
 
@@ -56,55 +58,51 @@ public class CreditsScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (!this.audio.isPlaying)
+		if (!this.Begin)
 		{
 			this.Timer += Time.deltaTime;
 			if (this.Timer > (float)1)
 			{
+				this.Begin = true;
 				this.audio.Play();
 				this.Timer = (float)0;
 			}
 		}
-		if (this.audio.time > 1.5f && !this.FadeAudio)
+		else
 		{
-			if (this.Timer == (float)0)
+			if (!this.StopCredits)
 			{
-				if (this.Sizes[this.ID] == 1)
+				if (this.Timer == (float)0)
 				{
-					this.NewCreditsLabel = (GameObject)UnityEngine.Object.Instantiate(this.SmallCreditsLabel, this.SpawnPoint.position, Quaternion.identity);
-					this.TimerLimit = (float)1;
+					if (this.Sizes[this.ID] == 1)
+					{
+						this.NewCreditsLabel = (GameObject)UnityEngine.Object.Instantiate(this.SmallCreditsLabel, this.SpawnPoint.position, Quaternion.identity);
+						this.TimerLimit = (float)1 * this.SpeedUpFactor;
+					}
+					else
+					{
+						this.NewCreditsLabel = (GameObject)UnityEngine.Object.Instantiate(this.BigCreditsLabel, this.SpawnPoint.position, Quaternion.identity);
+						this.TimerLimit = (float)this.Sizes[this.ID] * this.SpeedUpFactor;
+					}
+					this.NewCreditsLabel.transform.parent = this.Panel;
+					this.NewCreditsLabel.transform.localScale = new Vector3((float)1, (float)1, (float)1);
+					((UILabel)this.NewCreditsLabel.GetComponent(typeof(UILabel))).text = this.Lines[this.ID];
+					this.ID++;
+					if (this.ID > Extensions.get_length(this.Sizes) - 1)
+					{
+						this.StopCredits = true;
+					}
 				}
-				else
+				this.Timer = Mathf.MoveTowards(this.Timer, this.TimerLimit, Time.deltaTime);
+				if (this.Timer >= this.TimerLimit)
 				{
-					this.NewCreditsLabel = (GameObject)UnityEngine.Object.Instantiate(this.BigCreditsLabel, this.SpawnPoint.position, Quaternion.identity);
-					this.TimerLimit = (float)this.Sizes[this.ID];
-				}
-				this.NewCreditsLabel.transform.parent = this.Panel;
-				this.NewCreditsLabel.transform.localScale = new Vector3((float)1, (float)1, (float)1);
-				((UILabel)this.NewCreditsLabel.GetComponent(typeof(UILabel))).text = this.Lines[this.ID];
-				this.ID++;
-				if (this.ID > Extensions.get_length(this.Sizes) - 1)
-				{
-					this.FadeAudio = true;
+					this.Timer = (float)0;
 				}
 			}
-			this.Timer = Mathf.MoveTowards(this.Timer, this.TimerLimit, Time.deltaTime);
-			if (this.Timer >= this.TimerLimit)
+			if (Input.GetButtonDown("B") || !this.audio.isPlaying)
 			{
-				this.Timer = (float)0;
+				this.FadeOut = true;
 			}
-		}
-		if (this.FadeAudio)
-		{
-			this.FadeTimer += Time.deltaTime;
-			if (this.FadeTimer > (float)14)
-			{
-				this.audio.volume = this.audio.volume - Time.deltaTime;
-			}
-		}
-		if (Input.GetButtonDown("B") || this.audio.volume == (float)0)
-		{
-			this.FadeOut = true;
 		}
 		if (this.FadeOut)
 		{

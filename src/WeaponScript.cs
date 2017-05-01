@@ -21,6 +21,10 @@ public class WeaponScript : MonoBehaviour
 
 	public AudioClip[] Clips;
 
+	public AudioClip[] Clips2;
+
+	public AudioClip[] Clips3;
+
 	public AudioClip DismemberClip;
 
 	public GameObject FireEffect;

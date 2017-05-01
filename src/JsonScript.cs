@@ -273,7 +273,7 @@ public class JsonScript : MonoBehaviour
 	public virtual void ReplaceDeadTeachers()
 	{
 		this.ID = 94;
-		while (this.ID < 100)
+		while (this.ID < 101)
 		{
 			if (PlayerPrefs.GetInt("Student_" + this.ID + "_Dead") == 1)
 			{

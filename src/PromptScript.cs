@@ -187,6 +187,7 @@ public class PromptScript : MonoBehaviour
 				this.BloodMask |= 8192;
 				this.BloodMask |= 16384;
 				this.BloodMask |= 65536;
+				this.BloodMask |= 2097152;
 				this.BloodMask = ~this.BloodMask;
 				this.Initialized = true;
 				if (this.DisableAtStart)

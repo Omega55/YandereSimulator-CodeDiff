@@ -179,6 +179,10 @@ public class RagdollScript : MonoBehaviour
 		{
 			this.AllRigidbodies[i].isKinematic = false;
 			this.AllColliders[i].enabled = true;
+			if (this.Yandere.StudentManager.NoGravity)
+			{
+				this.AllRigidbodies[i].useGravity = false;
+			}
 		}
 		this.Prompt.enabled = true;
 		if (PlayerPrefs.GetInt("PhysicalGrade") + PlayerPrefs.GetInt("PhysicalBonus") > 0 && !this.Tranquil)
@@ -189,7 +193,7 @@ public class RagdollScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		if (!this.Dragged && !this.Carried && !this.Settled && !this.Yandere.PK)
+		if (!this.Dragged && !this.Carried && !this.Settled && !this.Yandere.PK && !this.Yandere.StudentManager.NoGravity)
 		{
 			this.SettleTimer += Time.deltaTime;
 			if (this.SettleTimer > (float)5)
@@ -314,6 +318,10 @@ public class RagdollScript : MonoBehaviour
 						{
 							this.AllRigidbodies[i].isKinematic = false;
 							this.AllColliders[i].enabled = true;
+							if (this.Yandere.StudentManager.NoGravity)
+							{
+								this.AllRigidbodies[i].useGravity = false;
+							}
 						}
 					}
 					else
@@ -693,6 +701,10 @@ public class RagdollScript : MonoBehaviour
 				gameObject.transform.eulerAngles = this.SpawnPoints[i].eulerAngles;
 				((BodyPartScript)gameObject.GetComponent(typeof(BodyPartScript))).StudentID = this.StudentID;
 				((BodyPartScript)gameObject.GetComponent(typeof(BodyPartScript))).Sacrifice = this.Sacrifice;
+				if (this.Yandere.StudentManager.NoGravity)
+				{
+					gameObject.rigidbody.useGravity = false;
+				}
 				if (i == 0)
 				{
 					if (!this.Student.OriginallyTeacher)

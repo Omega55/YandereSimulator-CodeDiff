@@ -239,6 +239,7 @@ public class PortalScript : MonoBehaviour
 		{
 			if (this.transform.position.z < (float)0)
 			{
+				this.StudentManager.RemovePapersFromDesks();
 				if (PlayerPrefs.GetInt("MissionMode") == 0)
 				{
 					this.transform.position = new Vector3((float)0, (float)1, (float)-75);

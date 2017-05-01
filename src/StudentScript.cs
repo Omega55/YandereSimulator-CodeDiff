@@ -93,6 +93,8 @@ public class StudentScript : MonoBehaviour
 
 	public ParticleSystem VomitEmitter;
 
+	public ParticleSystem SpeechLines;
+
 	public Projector LiquidProjector;
 
 	public ParticleSystem Hearts;
@@ -245,11 +247,15 @@ public class StudentScript : MonoBehaviour
 
 	public GameObject Armband;
 
+	public GameObject MyPaper;
+
 	public GameObject Giggle;
 
 	public GameObject Marker;
 
 	public GameObject Bento;
+
+	public GameObject Paper;
 
 	public GameObject Phone;
 
@@ -701,6 +707,8 @@ public class StudentScript : MonoBehaviour
 
 	public string JojoReactAnim;
 
+	public string TeachAnim;
+
 	public string[] CameraAnims;
 
 	public string[] SocialAnims;
@@ -890,6 +898,7 @@ public class StudentScript : MonoBehaviour
 		this.EmeticAnim = string.Empty;
 		this.BurningAnim = string.Empty;
 		this.JojoReactAnim = string.Empty;
+		this.TeachAnim = string.Empty;
 		this.ConfessPhase = 1;
 		this.RadioPhase = 1;
 		this.MaxSpeed = 10f;
@@ -988,6 +997,8 @@ public class StudentScript : MonoBehaviour
 			this.Chopsticks[1].active = false;
 			this.OccultBook.active = false;
 			this.Bento.active = false;
+			this.Pen.active = false;
+			this.SpeechLines.Stop();
 			this.OriginalWalkAnim = this.WalkAnim;
 			if (!this.Male)
 			{
@@ -1342,6 +1353,8 @@ public class StudentScript : MonoBehaviour
 					this.Pathfinding.canSearch = true;
 					this.Pathfinding.canMove = true;
 					this.OccultBook.active = false;
+					this.SpeechLines.Stop();
+					this.Pen.active = false;
 					this.GoAway = false;
 					this.ReadPhase = 0;
 				}
@@ -1522,6 +1535,10 @@ public class StudentScript : MonoBehaviour
 									}
 									else
 									{
+										if (!this.SpeechLines.isPlaying)
+										{
+											this.SpeechLines.Play();
+										}
 										this.CharacterAnimation.CrossFade(this.RandomAnim);
 										if (this.CharacterAnimation[this.RandomAnim].time >= this.CharacterAnimation[this.RandomAnim].length)
 										{
@@ -1553,6 +1570,23 @@ public class StudentScript : MonoBehaviour
 									}
 									else
 									{
+										if (!this.Pen.active)
+										{
+											this.Pen.active = true;
+										}
+										if (this.MyPaper == null)
+										{
+											if (this.transform.position.x < (float)0)
+											{
+												this.MyPaper = (GameObject)UnityEngine.Object.Instantiate(this.Paper, this.Seat.position + new Vector3(-0.4f, 0.772f, (float)0), Quaternion.identity);
+											}
+											else
+											{
+												this.MyPaper = (GameObject)UnityEngine.Object.Instantiate(this.Paper, this.Seat.position + new Vector3(0.4f, 0.772f, (float)0), Quaternion.identity);
+											}
+											this.MyPaper.transform.eulerAngles = new Vector3((float)0, (float)0, (float)-90);
+											this.MyPaper.transform.localScale = new Vector3(0.005f, 0.005f, 0.005f);
+										}
 										this.CharacterAnimation.CrossFade(this.SitAnim);
 									}
 								}
@@ -1765,6 +1799,14 @@ public class StudentScript : MonoBehaviour
 										}
 									}
 									this.CharacterAnimation.CrossFade(this.CuddleAnim);
+								}
+								else if (this.Actions[this.Phase] == 18)
+								{
+									if (!this.SpeechLines.isPlaying)
+									{
+										this.SpeechLines.Play();
+									}
+									this.CharacterAnimation.CrossFade(this.TeachAnim);
 								}
 							}
 							else
@@ -2677,10 +2719,13 @@ public class StudentScript : MonoBehaviour
 								this.DistractionTarget.Distraction = this.transform;
 								this.DistractionTarget.CameraReacting = false;
 								this.DistractionTarget.Pathfinding.speed = (float)0;
+								this.DistractionTarget.Pen.active = false;
 								this.DistractionTarget.Distracted = true;
 								this.DistractionTarget.Routine = false;
 								this.DistractionTarget.CanTalk = false;
 								this.DistractionTarget.ReadPhase = 0;
+								this.DistractionTarget.SpeechLines.Play();
+								this.SpeechLines.Play();
 								this.Pathfinding.speed = (float)0;
 								this.Distracted = true;
 							}
@@ -2704,6 +2749,8 @@ public class StudentScript : MonoBehaviour
 								this.DistractionTarget.Distracted = false;
 								this.DistractionTarget.CanTalk = true;
 								this.DistractionTarget.Routine = true;
+								this.DistractionTarget.SpeechLines.Stop();
+								this.SpeechLines.Stop();
 								this.Pathfinding.speed = (float)1;
 								this.Distracting = false;
 								this.Distracted = false;
@@ -3707,6 +3754,8 @@ public class StudentScript : MonoBehaviour
 				if (this.Prompt.Circle[0].fillAmount <= (float)0)
 				{
 					this.OccultBook.active = false;
+					this.SpeechLines.Stop();
+					this.Pen.active = false;
 					if (this.StudentManager.Pose)
 					{
 						this.MyController.enabled = false;
@@ -4113,7 +4162,13 @@ public class StudentScript : MonoBehaviour
 			}
 			else if (this.Alarmed)
 			{
+				if (!this.Male)
+				{
+					this.SpeechLines.Stop();
+				}
 				this.OccultBook.active = false;
+				this.SpeechLines.Stop();
+				this.Pen.active = false;
 				this.ReadPhase = 0;
 				if (this.WitnessedCorpse)
 				{
@@ -5205,9 +5260,15 @@ public class StudentScript : MonoBehaviour
 		{
 			this.DetectionMarker.Tex.enabled = false;
 		}
+		if (!this.Male)
+		{
+			this.SpeechLines.Stop();
+		}
 		this.OccultBook.active = false;
 		this.MyController.radius = (float)0;
 		this.Investigating = false;
+		this.SpeechLines.Stop();
+		this.Pen.active = false;
 		this.Attacked = true;
 		this.Alarmed = false;
 		this.Fleeing = false;
@@ -5856,6 +5917,10 @@ public class StudentScript : MonoBehaviour
 			{
 				this.Actions[this.ID] = 17;
 			}
+			else if (this.ActionNames[this.ID] == "Teach")
+			{
+				this.Actions[this.ID] = 18;
+			}
 			else if (this.ActionNames[this.ID] == "Club")
 			{
 				if (this.Club > 0)
@@ -6316,7 +6381,6 @@ public class StudentScript : MonoBehaviour
 				this.Cosmetic.SetFemaleUniform();
 				this.SkirtCollider.enabled = true;
 				this.PantyCollider.enabled = true;
-				Debug.Log("Just happened?");
 				if (this.StudentManager.Censor)
 				{
 					this.Cosmetic.CensorPanties();

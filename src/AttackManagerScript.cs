@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityScript.Lang;
 
 [Serializable]
 public class AttackManagerScript : MonoBehaviour
@@ -46,6 +47,8 @@ public class AttackManagerScript : MonoBehaviour
 
 	public float LoopEnd;
 
+	public AudioClip[] Clips;
+
 	public AttackManagerScript()
 	{
 		this.VictimAnimName = string.Empty;
@@ -59,6 +62,19 @@ public class AttackManagerScript : MonoBehaviour
 	public virtual void Attack()
 	{
 		this.Weapon = this.Yandere.Weapon[this.Yandere.Equipped];
+		this.Clips = this.Weapon.Clips;
+		if (Extensions.get_length(this.Weapon.Clips2) > 0)
+		{
+			int num = UnityEngine.Random.Range(2, 4);
+			if (num == 2)
+			{
+				this.Clips = this.Weapon.Clips2;
+			}
+			else
+			{
+				this.Clips = this.Weapon.Clips3;
+			}
+		}
 		this.Yandere.FollowHips = true;
 		this.AttackTimer = (float)0;
 		this.EffectPhase = 0;
@@ -107,19 +123,19 @@ public class AttackManagerScript : MonoBehaviour
 		this.Victim.animation.CrossFade(this.VictimAnimName);
 		if (this.Stealth)
 		{
-			this.Weapon.gameObject.audio.clip = this.Weapon.Clips[0];
+			this.Weapon.gameObject.audio.clip = this.Clips[0];
 		}
 		else if (this.Yandere.Sanity / (float)100 > 0.6666667f)
 		{
-			this.Weapon.gameObject.audio.clip = this.Weapon.Clips[1];
+			this.Weapon.gameObject.audio.clip = this.Clips[1];
 		}
 		else if (this.Yandere.Sanity / (float)100 > 0.333333343f)
 		{
-			this.Weapon.gameObject.audio.clip = this.Weapon.Clips[2];
+			this.Weapon.gameObject.audio.clip = this.Clips[2];
 		}
 		else
 		{
-			this.Weapon.gameObject.audio.clip = this.Weapon.Clips[3];
+			this.Weapon.gameObject.audio.clip = this.Clips[3];
 		}
 		this.Weapon.gameObject.audio.time = (float)0;
 		this.Weapon.gameObject.audio.Play();

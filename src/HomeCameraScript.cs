@@ -259,6 +259,10 @@ public class HomeCameraScript : MonoBehaviour
 			this.BasementJukebox.volume = Mathf.MoveTowards(this.BasementJukebox.volume, (float)1, Time.deltaTime);
 			this.RoomJukebox.volume = Mathf.MoveTowards(this.RoomJukebox.volume, (float)0, Time.deltaTime);
 		}
+		if (Input.GetKeyDown("y"))
+		{
+			PlayerPrefs.SetInt("Task_14_Status", 1);
+		}
 		if (Input.GetKeyDown("`"))
 		{
 			if (PlayerPrefs.GetInt("Night") == 0)

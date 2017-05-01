@@ -402,9 +402,12 @@ public class ClubManagerScript : MonoBehaviour
 			this.ID = 1;
 			while (this.ID < Extensions.get_length(this.Masks))
 			{
-				this.Masks[this.ID].enabled = false;
-				this.Masks[this.ID].Prompt.Hide();
-				this.Masks[this.ID].Prompt.enabled = false;
+				if (this.Masks[this.ID] != null)
+				{
+					this.Masks[this.ID].enabled = false;
+					this.Masks[this.ID].Prompt.Hide();
+					this.Masks[this.ID].Prompt.enabled = false;
+				}
 				this.ID++;
 			}
 			this.Gloves.enabled = false;
