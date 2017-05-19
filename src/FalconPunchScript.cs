@@ -10,6 +10,8 @@ public class FalconPunchScript : MonoBehaviour
 
 	public float Strength;
 
+	public bool IgnoreTime;
+
 	public bool Falcon;
 
 	public float TimeLimit;
@@ -24,10 +26,13 @@ public class FalconPunchScript : MonoBehaviour
 
 	public virtual void Update()
 	{
-		this.Timer += Time.deltaTime;
-		if (this.Timer > this.TimeLimit)
+		if (!this.IgnoreTime)
 		{
-			this.MyCollider.enabled = false;
+			this.Timer += Time.deltaTime;
+			if (this.Timer > this.TimeLimit)
+			{
+				this.MyCollider.enabled = false;
+			}
 		}
 	}
 

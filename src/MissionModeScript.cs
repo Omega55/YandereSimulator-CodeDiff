@@ -672,7 +672,7 @@ public class MissionModeScript : MonoBehaviour
 						this.Yandere.RPGCamera.enabled = false;
 						this.Yandere.HUD.active = false;
 						this.Yandere.CanMove = false;
-						this.Jukebox.MissionMode.audio.clip = this.StealthMusic[6];
+						this.Jukebox.MissionMode.audio.clip = this.StealthMusic[7];
 						this.Jukebox.MissionMode.audio.loop = false;
 						this.Jukebox.MissionMode.audio.Play();
 						this.audio.PlayOneShot(this.InfoAccomplished);

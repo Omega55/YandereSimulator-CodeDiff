@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$3140 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$3142 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$3155;
+		internal YandereScript $self_$3157;
 
-		public $ApplyCustomCostume$3140(YandereScript self_)
+		public $ApplyCustomCostume$3142(YandereScript self_)
 		{
-			this.$self_$3155 = self_;
+			this.$self_$3157 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$3140.$(this.$self_$3155);
+			return new YandereScript.$ApplyCustomCostume$3142.$(this.$self_$3157);
 		}
 	}
 
@@ -889,6 +889,10 @@ public class YandereScript : MonoBehaviour
 
 	public Texture ApronTexture;
 
+	public Mesh LabCoatMesh;
+
+	public Texture LabCoatTexture;
+
 	public bool Paint;
 
 	public GameObject[] ClubAccessories;
@@ -904,6 +908,8 @@ public class YandereScript : MonoBehaviour
 	public SkinnedMeshUpdater SkinUpdater;
 
 	public Mesh RivalChanMesh;
+
+	public Mesh TestMesh;
 
 	public YandereScript()
 	{
@@ -4292,7 +4298,10 @@ public class YandereScript : MonoBehaviour
 		this.LaughIntensity = (float)0;
 		this.Laughing = false;
 		this.LaughClip = null;
-		this.CanMove = true;
+		if (!this.Stand.active)
+		{
+			this.CanMove = true;
+		}
 	}
 
 	public virtual void SetUniform()
@@ -4318,7 +4327,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$3140(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$3142(this).GetEnumerator();
 	}
 
 	public virtual void WearGloves()
@@ -4717,7 +4726,7 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.enabled = false;
 		this.IdleAnim = "idleShort_00";
 		this.WalkAnim = "walk_00";
-		this.RunAnim = "sprint_00";
+		this.RunAnim = "newSprint_00";
 		this.OriginalIdleAnim = this.IdleAnim;
 		this.OriginalWalkAnim = this.WalkAnim;
 		this.OriginalRunAnim = this.RunAnim;
@@ -4811,6 +4820,14 @@ public class YandereScript : MonoBehaviour
 				this.MyRenderer.materials[1].mainTexture = this.JudoGiTexture;
 				this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
 				this.Schoolwear = 5;
+			}
+			else if (PlayerPrefs.GetInt("Club") == 8)
+			{
+				this.MyRenderer.sharedMesh = this.LabCoatMesh;
+				this.MyRenderer.materials[0].mainTexture = this.LabCoatTexture;
+				this.MyRenderer.materials[1].mainTexture = this.LabCoatTexture;
+				this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
+				this.Schoolwear = 6;
 			}
 		}
 		else

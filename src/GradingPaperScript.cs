@@ -59,7 +59,7 @@ public class GradingPaperScript : MonoBehaviour
 		{
 			this.Chair.position = Vector3.Lerp(this.Chair.position, this.OriginalPosition, Time.deltaTime * (float)10);
 		}
-		else
+		else if (this.Character != null)
 		{
 			this.Chair.position = Vector3.Lerp(this.Chair.position, this.Character.transform.position + this.Character.transform.forward * 0.1f, Time.deltaTime * (float)10);
 			if (this.Phase == 1)

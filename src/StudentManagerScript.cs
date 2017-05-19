@@ -288,6 +288,7 @@ public class StudentManagerScript : MonoBehaviour
 	public virtual void Start()
 	{
 		this.SetAtmosphere();
+		PlayerPrefs.SetInt("Paranormal", 0);
 		if (PlayerPrefs.GetInt("MissionMode") == 1)
 		{
 			PlayerPrefs.SetInt("FemaleUniform", 5);

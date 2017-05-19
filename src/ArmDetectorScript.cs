@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityScript.Lang;
 
 [Serializable]
 public class ArmDetectorScript : MonoBehaviour
@@ -385,7 +386,10 @@ public class ArmDetectorScript : MonoBehaviour
 			if (flag)
 			{
 				this.Arms++;
-				this.ArmArray[this.Arms] = other.gameObject;
+				if (this.Arms < Extensions.get_length(this.ArmArray))
+				{
+					this.ArmArray[this.Arms] = other.gameObject;
+				}
 			}
 		}
 	}

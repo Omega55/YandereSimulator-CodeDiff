@@ -4,16 +4,26 @@ using UnityEngine;
 [Serializable]
 public class StandScript : MonoBehaviour
 {
+	public FalconPunchScript FalconPunch;
+
+	public StandPunchScript StandPunch;
+
 	public GameObject StandCamera;
 
 	public YandereScript Yandere;
 
 	public GameObject Stand;
 
+	public int FinishPhase;
+
+	public int Finisher;
+
 	public int Phase;
 
 	public virtual void Start()
 	{
+		this.FalconPunch.MyCollider.enabled = false;
+		this.StandPunch.MyCollider.enabled = false;
 		this.StandCamera.active = true;
 	}
 
@@ -58,11 +68,33 @@ public class StandScript : MonoBehaviour
 				float num = localEulerAngles.x = x;
 				Vector3 vector = this.Stand.transform.localEulerAngles = localEulerAngles;
 				this.Stand.animation.CrossFade("StandAttack");
+				this.StandPunch.MyCollider.enabled = true;
 			}
-			else
+			else if (this.Phase == 1)
 			{
-				this.Return();
-				this.Stand.animation.CrossFade("StandIdle");
+				this.Finisher = UnityEngine.Random.Range(1, 3);
+				this.Stand.animation.CrossFade("StandFinisher" + this.Finisher);
+				this.Phase++;
+			}
+			else if (this.Phase == 2)
+			{
+				if (this.Stand.animation["StandFinisher" + this.Finisher].time >= 0.5f)
+				{
+					this.FalconPunch.MyCollider.enabled = true;
+					this.StandPunch.MyCollider.enabled = false;
+					this.Phase++;
+				}
+			}
+			else if (this.Phase == 3)
+			{
+				Debug.Log("StandFinisher" + this.Finisher);
+				if (this.StandPunch.MyCollider.enabled || this.Stand.animation["StandFinisher" + this.Finisher].time >= this.Stand.animation["StandFinisher" + this.Finisher].length)
+				{
+					this.Stand.animation.CrossFade("StandIdle");
+					this.FalconPunch.MyCollider.enabled = false;
+					this.Yandere.CanMove = true;
+					this.Phase = 1;
+				}
 			}
 		}
 	}

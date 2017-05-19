@@ -2,8 +2,10 @@
 using UnityEngine;
 
 [Serializable]
-public class JojoWeaponScript : MonoBehaviour
+public class StandPunchScript : MonoBehaviour
 {
+	public Collider MyCollider;
+
 	public virtual void OnTriggerEnter(Collider other)
 	{
 		if ((StudentScript)other.gameObject.GetComponent(typeof(StudentScript)) != null && ((StudentScript)other.gameObject.GetComponent(typeof(StudentScript))).StudentID > 1)

@@ -709,6 +709,8 @@ public class StudentScript : MonoBehaviour
 
 	public string TeachAnim;
 
+	public string LeanAnim;
+
 	public string[] CameraAnims;
 
 	public string[] SocialAnims;
@@ -899,6 +901,7 @@ public class StudentScript : MonoBehaviour
 		this.BurningAnim = string.Empty;
 		this.JojoReactAnim = string.Empty;
 		this.TeachAnim = string.Empty;
+		this.LeanAnim = string.Empty;
 		this.ConfessPhase = 1;
 		this.RadioPhase = 1;
 		this.MaxSpeed = 10f;
@@ -911,6 +914,7 @@ public class StudentScript : MonoBehaviour
 		{
 			this.CharacterAnimation = this.Character.animation;
 			this.CharacterAnimation[this.WalkAnim].time = UnityEngine.Random.Range((float)0, this.CharacterAnimation[this.WalkAnim].length);
+			this.CharacterAnimation[this.LeanAnim].speed = 0.8f + (float)this.StudentID * 0.01f;
 			if (PlayerPrefs.GetFloat("SchoolAtmosphere") <= 33.33333f)
 			{
 				this.IdleAnim = this.ParanoidAnim;
@@ -1047,6 +1051,7 @@ public class StudentScript : MonoBehaviour
 			}
 			else
 			{
+				this.CharacterAnimation[this.LeanAnim].speed = this.CharacterAnimation[this.LeanAnim].speed * (float)-1;
 				this.CharacterAnimation["scaredFace_00"].layer = 4;
 				this.CharacterAnimation.Play("scaredFace_00");
 				this.CharacterAnimation["scaredFace_00"].weight = (float)0;
@@ -1074,10 +1079,24 @@ public class StudentScript : MonoBehaviour
 					this.ActionNames[2] = "Mourn";
 				}
 			}
-			else if (this.StudentID == 18 && PlayerPrefs.GetInt("Student_17_Dead") == 1)
+			else if (this.StudentID == 18)
 			{
-				this.DestinationNames[2] = "Mourn";
-				this.ActionNames[2] = "Mourn";
+				if (PlayerPrefs.GetInt("Student_17_Dead") == 1)
+				{
+					this.DestinationNames[2] = "Mourn";
+					this.ActionNames[2] = "Mourn";
+				}
+			}
+			else if (this.StudentID == 34)
+			{
+				this.IdleAnim = "f02_idleElegant_01";
+				this.WalkAnim = "f02_jojoWalk_00";
+				this.TaskAnims[0] = "f02_Task34_Line0";
+				this.TaskAnims[1] = "f02_Task34_Line1";
+				this.TaskAnims[2] = "f02_Task34_Line2";
+				this.TaskAnims[3] = "f02_Task34_Line3";
+				this.TaskAnims[4] = "f02_Task34_Line4";
+				this.TaskAnims[5] = "f02_Task34_Line5";
 			}
 			if (this.Club == 0)
 			{
@@ -2823,11 +2842,13 @@ public class StudentScript : MonoBehaviour
 										this.StudentManager.Students[7].Burning = false;
 										this.StudentManager.Students[7].Fleeing = false;
 										this.StudentManager.Students[7].Routine = false;
+										this.StudentManager.Students[7].Wet = false;
 										this.StudentManager.Students[7].Prompt.Hide();
 										this.StudentManager.Students[7].Prompt.enabled = false;
 										this.StudentManager.Students[7].CharacterAnimation.CrossFade("f02_murderSuicide_01");
 										this.StudentManager.Students[7].Subtitle.UpdateLabel("Dying", 0, (float)1);
 										this.StudentManager.Students[7].MyController.radius = (float)0;
+										this.StudentManager.Students[7].SpeechLines.Stop();
 										this.StudentManager.Students[7].EyeShrink = (float)1;
 										this.StudentManager.Students[7].audio.clip = this.MurderSuicideVictim;
 										this.StudentManager.Students[7].audio.Play();
@@ -4193,7 +4214,7 @@ public class StudentScript : MonoBehaviour
 				}
 				else if (this.StudentID > 1)
 				{
-					this.CharacterAnimation.CrossFade(this.IdleAnim);
+					this.CharacterAnimation.CrossFade(this.LeanAnim);
 				}
 				if (this.WitnessedMurder)
 				{

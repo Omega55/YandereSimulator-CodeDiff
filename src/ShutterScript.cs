@@ -498,10 +498,18 @@ public class ShutterScript : MonoBehaviour
 			{
 				if (PlayerPrefs.GetInt(this.Student.Name + "PantyShot") == 0)
 				{
-					text = "Excellent! Now I have a picture of " + this.Student.Name + "'s panties. I owe you a favor for this one.";
-					num = 5;
 					PlayerPrefs.SetInt(this.Student.Name + "PantyShot", 1);
-					PlayerPrefs.SetInt("PantyShots", PlayerPrefs.GetInt("PantyShots") + 1);
+					if (this.Student.StudentID != 32)
+					{
+						text = "Excellent! Now I have a picture of " + this.Student.Name + "'s panties. I owe you a favor for this one.";
+						PlayerPrefs.SetInt("PantyShots", PlayerPrefs.GetInt("PantyShots") + 1);
+					}
+					else
+					{
+						text = "A high value target! " + this.Student.Name + "'s panties were in high demand. I owe you a big favor for this one.";
+						PlayerPrefs.SetInt("PantyShots", PlayerPrefs.GetInt("PantyShots") + 5);
+					}
+					num = 5;
 				}
 				else
 				{

@@ -650,7 +650,7 @@ public class DialogueWheelScript : MonoBehaviour
 		}
 		if (PlayerPrefs.GetInt(this.Yandere.TargetStudent.StudentID + "_Friend") == 0)
 		{
-			if (this.Yandere.TargetStudent.StudentID != 6 && this.Yandere.TargetStudent.StudentID != 7 && this.Yandere.TargetStudent.StudentID != 13 && this.Yandere.TargetStudent.StudentID != 14 && this.Yandere.TargetStudent.StudentID != 15 && this.Yandere.TargetStudent.StudentID != 32 && this.Yandere.TargetStudent.StudentID != 33)
+			if (this.Yandere.TargetStudent.StudentID != 6 && this.Yandere.TargetStudent.StudentID != 7 && this.Yandere.TargetStudent.StudentID != 13 && this.Yandere.TargetStudent.StudentID != 14 && this.Yandere.TargetStudent.StudentID != 15 && this.Yandere.TargetStudent.StudentID != 32 && this.Yandere.TargetStudent.StudentID != 33 && this.Yandere.TargetStudent.StudentID != 34)
 			{
 				float a8 = 0.75f;
 				Color color23 = this.Shadow[5].color;

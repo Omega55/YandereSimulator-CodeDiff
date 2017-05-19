@@ -463,6 +463,7 @@ public class WeaponScript : MonoBehaviour
 		else if (this.WeaponID == 8)
 		{
 			((ParticleSystem)this.gameObject.GetComponent(typeof(ParticleSystem))).Play();
+			this.audio.clip = this.OriginalClip;
 			this.audio.Play();
 		}
 		else if (this.WeaponID == 2 || this.WeaponID == 9 || this.WeaponID == 10 || this.WeaponID == 12 || this.WeaponID == 13)

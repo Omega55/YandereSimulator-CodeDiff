@@ -210,7 +210,7 @@ public class ClubManagerScript : MonoBehaviour
 			this.ID = 0;
 			while (this.ID < Extensions.get_length(this.Club6Students))
 			{
-				if (this.StudentManager.Students[this.Club6Students[this.ID]] != null && !this.StudentManager.Students[this.Club6Students[this.ID]].Tranquil)
+				if (this.StudentManager.Students[this.Club6Students[this.ID]] != null && !this.StudentManager.Students[this.Club6Students[this.ID]].Tranquil && !this.StudentManager.Students[this.Club6Students[this.ID]].Dead)
 				{
 					this.StudentManager.Students[this.Club6Students[this.ID]].transform.position = this.Club6ActivitySpots[this.ID].position;
 					this.StudentManager.Students[this.Club6Students[this.ID]].transform.rotation = this.Club6ActivitySpots[this.ID].rotation;
