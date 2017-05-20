@@ -22,10 +22,14 @@ public class CardboardBoxScript : MonoBehaviour
 		}
 		if (this.transform.parent == this.Prompt.Yandere.Hips)
 		{
-			int num = 0;
-			Vector3 eulerAngles = this.transform.eulerAngles;
-			float num2 = eulerAngles.x = (float)num;
-			Vector3 vector = this.transform.eulerAngles = eulerAngles;
+			this.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+			if (!this.Prompt.Yandere.Crawling)
+			{
+				int num = 0;
+				Vector3 eulerAngles = this.transform.eulerAngles;
+				float num2 = eulerAngles.x = (float)num;
+				Vector3 vector = this.transform.eulerAngles = eulerAngles;
+			}
 			if (Input.GetButtonDown("RB"))
 			{
 				this.Prompt.MyCollider.enabled = true;

@@ -1089,14 +1089,6 @@ public class StudentScript : MonoBehaviour
 			}
 			else if (this.StudentID == 34)
 			{
-				this.IdleAnim = "f02_idleElegant_01";
-				this.WalkAnim = "f02_jojoWalk_00";
-				this.TaskAnims[0] = "f02_Task34_Line0";
-				this.TaskAnims[1] = "f02_Task34_Line1";
-				this.TaskAnims[2] = "f02_Task34_Line2";
-				this.TaskAnims[3] = "f02_Task34_Line3";
-				this.TaskAnims[4] = "f02_Task34_Line4";
-				this.TaskAnims[5] = "f02_Task34_Line5";
 			}
 			if (this.Club == 0)
 			{
@@ -3117,6 +3109,7 @@ public class StudentScript : MonoBehaviour
 							}
 							if (this.CharacterAnimation[this.CameraAnims[3]].time >= this.CharacterAnimation[this.CameraAnims[3]].length)
 							{
+								this.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
 								this.Obstacle.enabled = false;
 								this.CameraReacting = false;
 								this.Routine = true;
@@ -3129,6 +3122,7 @@ public class StudentScript : MonoBehaviour
 						this.CameraPoseTimer -= this.DeltaTime;
 						if (this.CameraPoseTimer <= (float)0)
 						{
+							this.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
 							this.Obstacle.enabled = false;
 							this.CameraReacting = false;
 							this.Routine = true;
@@ -4277,6 +4271,7 @@ public class StudentScript : MonoBehaviour
 						if (!this.WitnessedCorpse)
 						{
 							Debug.Log("A teacher's reaction is now being determined.");
+							this.CharacterAnimation.CrossFade(this.IdleAnim);
 							if (this.Witnessed == "Weapon and Blood and Insanity")
 							{
 								this.Subtitle.UpdateLabel("Teacher Insanity Reaction", 1, (float)6);
@@ -6582,6 +6577,7 @@ public class StudentScript : MonoBehaviour
 
 	public virtual void CameraReact()
 	{
+		this.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
 		this.Pathfinding.canSearch = false;
 		this.Pathfinding.canMove = false;
 		this.Obstacle.enabled = true;

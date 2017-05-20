@@ -363,6 +363,7 @@ public class StudentManagerScript : MonoBehaviour
 		float num = (float)1 - PlayerPrefs.GetFloat("SchoolAtmosphere") * 0.01f;
 		if (!this.TakingPortraits)
 		{
+			this.SmartphoneSelectiveGreyscale.desaturation = num;
 			this.SelectiveGreyscale.desaturation = num;
 			components[2].intensity = num * (float)5;
 			components[2].blur = num;

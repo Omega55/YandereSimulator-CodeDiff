@@ -120,6 +120,7 @@ public class JukeboxScript : MonoBehaviour
 		this.HalfSanity.Play();
 		this.NoSanity.Play();
 		this.Volume = 0.25f;
+		this.Hitman.time = (float)26;
 	}
 
 	public virtual void Update()

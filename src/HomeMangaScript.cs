@@ -167,6 +167,15 @@ public class HomeMangaScript : MonoBehaviour
 					this.HomeYandere.CanMove = true;
 					this.HomeWindow.Show = false;
 				}
+				if (Input.GetKeyDown("space"))
+				{
+					this.ID = 0;
+					while (this.ID < this.TotalManga)
+					{
+						PlayerPrefs.SetInt("Manga_" + (this.ID + 1) + "_Collected", 1);
+						this.ID++;
+					}
+				}
 			}
 			else
 			{
