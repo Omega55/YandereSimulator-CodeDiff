@@ -240,15 +240,6 @@ public class JukeboxScript : MonoBehaviour
 					this.Galo.enabled = true;
 				}
 			}
-			else if (Input.GetKeyDown("j"))
-			{
-				if (!this.MuteCopyrights)
-				{
-					this.Egg = true;
-					this.KillVolume();
-					this.Jojo.enabled = true;
-				}
-			}
 			else if (Input.GetKeyDown("l"))
 			{
 				if (!this.MuteCopyrights)
@@ -348,6 +339,16 @@ public class JukeboxScript : MonoBehaviour
 		this.FullSanity.Stop();
 		this.HalfSanity.Stop();
 		this.NoSanity.Stop();
+	}
+
+	public virtual void PlayJojo()
+	{
+		if (!this.MuteCopyrights)
+		{
+			this.Egg = true;
+			this.KillVolume();
+			this.Jojo.enabled = true;
+		}
 	}
 
 	public virtual void Main()

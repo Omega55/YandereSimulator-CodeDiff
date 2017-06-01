@@ -11,18 +11,18 @@ public class CosmeticScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $PutOnStockings$3106 : GenericGenerator<WWW>
+	internal sealed class $PutOnStockings$3102 : GenericGenerator<WWW>
 	{
-		internal CosmeticScript $self_$3109;
+		internal CosmeticScript $self_$3105;
 
-		public $PutOnStockings$3106(CosmeticScript self_)
+		public $PutOnStockings$3102(CosmeticScript self_)
 		{
-			this.$self_$3109 = self_;
+			this.$self_$3105 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new CosmeticScript.$PutOnStockings$3106.$(this.$self_$3109);
+			return new CosmeticScript.$PutOnStockings$3102.$(this.$self_$3105);
 		}
 	}
 
@@ -1067,7 +1067,7 @@ public class CosmeticScript : MonoBehaviour
 
 	public virtual IEnumerator PutOnStockings()
 	{
-		return new CosmeticScript.$PutOnStockings$3106(this).GetEnumerator();
+		return new CosmeticScript.$PutOnStockings$3102(this).GetEnumerator();
 	}
 
 	public virtual void Main()

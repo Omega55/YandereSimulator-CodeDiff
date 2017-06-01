@@ -52,6 +52,8 @@ public class ShoulderCameraScript : MonoBehaviour
 
 	public bool DoNotMove;
 
+	public bool Summoning;
+
 	public bool LookDown;
 
 	public bool Scolding;
@@ -312,6 +314,55 @@ public class ShoulderCameraScript : MonoBehaviour
 					this.Yandere.Jukebox.GameOver();
 					this.enabled = false;
 				}
+			}
+			else if (this.Summoning)
+			{
+				if (this.Phase == 1)
+				{
+					this.NoticedPOV.position = this.Yandere.transform.position + this.Yandere.transform.forward * (float)1 + this.Yandere.transform.right * -0.15f + Vector3.up * 1.375f;
+					this.NoticedFocus.position = this.transform.position + this.transform.forward * (float)1;
+					this.NoticedSpeed = (float)10;
+					this.Phase++;
+				}
+				else if (this.Phase == 2)
+				{
+					this.NoticedPOV.Translate(this.NoticedPOV.forward * Time.deltaTime * -0.1f);
+					this.NoticedFocus.position = Vector3.Lerp(this.NoticedFocus.position, this.Yandere.transform.position + this.Yandere.transform.right * -0.15f + Vector3.up * 1.375f, Time.deltaTime * (float)10);
+					this.Timer += Time.deltaTime;
+					if (this.Timer > (float)2)
+					{
+						this.Yandere.Jukebox.PlayJojo();
+						this.Yandere.Stand.Spawn();
+						this.NoticedPOV.position = this.Yandere.transform.position + this.Yandere.transform.forward * (float)2 + Vector3.up * (float)2;
+						this.Timer = (float)0;
+						this.Phase++;
+					}
+				}
+				else if (this.Phase == 3)
+				{
+					this.NoticedPOV.Translate(this.NoticedPOV.forward * Time.deltaTime * -0.1f);
+					this.NoticedFocus.position = this.Yandere.transform.position + Vector3.up * (float)2;
+					this.Yandere.Stand.active = true;
+					this.Timer += Time.deltaTime;
+					if (this.Timer > (float)5)
+					{
+						this.Phase++;
+					}
+				}
+				else if (this.Phase == 4)
+				{
+					int num3 = 0;
+					Vector3 localPosition = this.Yandere.Stand.transform.localPosition;
+					float num4 = localPosition.y = (float)num3;
+					Vector3 vector3 = this.Yandere.Stand.transform.localPosition = localPosition;
+					this.Yandere.StudentManager.RestoreStudents();
+					this.Yandere.Talking = true;
+					this.Summoning = false;
+					this.Timer = (float)0;
+					this.Phase = 1;
+				}
+				this.transform.position = Vector3.Lerp(this.transform.position, this.NoticedPOV.position, Time.deltaTime * this.NoticedSpeed);
+				this.transform.LookAt(this.NoticedFocus);
 			}
 			else if ((this.Yandere.Talking || this.Yandere.Won) && !this.RPGCamera.enabled)
 			{

@@ -35,6 +35,10 @@ public class RivalMorningEventManagerScript : MonoBehaviour
 
 	public bool EventActive;
 
+	public bool Transfer;
+
+	public float TransferTime;
+
 	public float Distance;
 
 	public float Scale;
@@ -43,19 +47,24 @@ public class RivalMorningEventManagerScript : MonoBehaviour
 
 	public int SpeechPhase;
 
+	public int EventDay;
+
 	public int Phase;
 
 	public int Frame;
 
+	public string Weekday;
+
 	public RivalMorningEventManagerScript()
 	{
 		this.SpeechPhase = 1;
+		this.Weekday = string.Empty;
 	}
 
 	public virtual void Start()
 	{
 		this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
-		if (PlayerPrefs.GetInt("Weekday") != 1)
+		if (PlayerPrefs.GetInt("Weekday") != this.EventDay)
 		{
 			this.enabled = false;
 		}
@@ -65,7 +74,7 @@ public class RivalMorningEventManagerScript : MonoBehaviour
 	{
 		if (this.Phase == 0)
 		{
-			if (this.Frame > 0 && this.StudentManager.Students[1].active)
+			if (this.Frame > 0 && this.StudentManager.Students[1].active && this.StudentManager.Students[33] != null)
 			{
 				this.Senpai = this.StudentManager.Students[1];
 				this.Rival = this.StudentManager.Students[33];
@@ -91,6 +100,10 @@ public class RivalMorningEventManagerScript : MonoBehaviour
 				this.Rival.Prompt.enabled = false;
 				this.Spy.Prompt.enabled = true;
 				this.Phase++;
+				if (this.EventDay == 2)
+				{
+					this.StudentManager.Students[1].EventBook.active = true;
+				}
 			}
 			this.Frame++;
 		}
@@ -100,8 +113,8 @@ public class RivalMorningEventManagerScript : MonoBehaviour
 			if (this.Timer > (float)1)
 			{
 				this.PlayClip(this.SpeechClip, this.Epicenter.position + Vector3.up * 1.5f);
-				this.Rival.CharacterAnimation.CrossFade("f02_Monday_1");
-				this.Senpai.CharacterAnimation.CrossFade("Monday_1");
+				this.Rival.CharacterAnimation.CrossFade("f02_" + this.Weekday + "_1");
+				this.Senpai.CharacterAnimation.CrossFade(string.Empty + this.Weekday + "_1");
 				this.Timer = (float)0;
 				this.Phase++;
 			}
@@ -121,9 +134,20 @@ public class RivalMorningEventManagerScript : MonoBehaviour
 					this.SpeechPhase++;
 				}
 			}
-			else if (this.Rival.CharacterAnimation["f02_Monday_1"].time >= this.Rival.CharacterAnimation["f02_Monday_1"].length)
+			else if (this.Rival.CharacterAnimation["f02_" + this.Weekday + "_1"].time >= this.Rival.CharacterAnimation["f02_" + this.Weekday + "_1"].length)
 			{
 				this.EndEvent();
+			}
+			if (this.Transfer && this.Rival.CharacterAnimation["f02_" + this.Weekday + "_1"].time > this.TransferTime)
+			{
+				this.Senpai.DestinationNames[2] = "Patrol";
+				this.Senpai.DestinationNames[6] = "Patrol";
+				this.Senpai.ActionNames[2] = "Patrol";
+				this.Senpai.ActionNames[6] = "Patrol";
+				this.Senpai.GetDestinations();
+				this.Senpai.EventBook.active = false;
+				this.Rival.EventBook.active = true;
+				this.Transfer = false;
 			}
 			if (this.Clock.Period > 1)
 			{
@@ -210,6 +234,7 @@ public class RivalMorningEventManagerScript : MonoBehaviour
 			this.Senpai.Routine = true;
 		}
 		this.Senpai.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
+		this.Senpai.EventBook.active = false;
 		this.Senpai.InEvent = false;
 		this.Senpai.Private = false;
 		if (!this.Rival.Alarmed)
@@ -219,6 +244,7 @@ public class RivalMorningEventManagerScript : MonoBehaviour
 			this.Rival.Routine = true;
 		}
 		this.Rival.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
+		this.Rival.EventBook.active = false;
 		this.Rival.Prompt.enabled = true;
 		this.Rival.InEvent = false;
 		this.Rival.Private = false;

@@ -1362,6 +1362,32 @@ public class StudentManagerScript : MonoBehaviour
 		}
 	}
 
+	public virtual void HideStudents()
+	{
+		this.ID = 1;
+		while (this.ID < Extensions.get_length(this.Students))
+		{
+			if (this.Students[this.ID] != null)
+			{
+				this.Students[this.ID].active = false;
+			}
+			this.ID++;
+		}
+	}
+
+	public virtual void RestoreStudents()
+	{
+		this.ID = 1;
+		while (this.ID < Extensions.get_length(this.Students))
+		{
+			if (this.Students[this.ID] != null)
+			{
+				this.Students[this.ID].active = true;
+			}
+			this.ID++;
+		}
+	}
+
 	public virtual void Main()
 	{
 	}

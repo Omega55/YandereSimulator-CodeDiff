@@ -5,6 +5,8 @@ using UnityScript.Lang;
 [Serializable]
 public class AttackManagerScript : MonoBehaviour
 {
+	private GameObject OriginalBloodEffect;
+
 	public GameObject BloodEffect;
 
 	public GameObject Victim;
@@ -57,6 +59,11 @@ public class AttackManagerScript : MonoBehaviour
 		this.Prefix = string.Empty;
 		this.Sanity = string.Empty;
 		this.CurrentWeapon = 1;
+	}
+
+	public virtual void Start()
+	{
+		this.OriginalBloodEffect = this.BloodEffect;
 	}
 
 	public virtual void Attack()
@@ -302,6 +309,11 @@ public class AttackManagerScript : MonoBehaviour
 
 	public virtual void SpecialEffect()
 	{
+		this.BloodEffect = this.OriginalBloodEffect;
+		if (this.Weapon.WeaponID == 14)
+		{
+			this.BloodEffect = this.Weapon.HeartBurst;
+		}
 		if (this.Weapon.Type == 1)
 		{
 			if (!this.Stealth)

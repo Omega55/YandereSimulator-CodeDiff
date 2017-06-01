@@ -43,7 +43,7 @@ public class FalconPunchScript : MonoBehaviour
 			StudentScript studentScript = (StudentScript)other.gameObject.GetComponent(typeof(StudentScript));
 			if (studentScript != null && studentScript.StudentID > 1)
 			{
-				UnityEngine.Object.Instantiate(this.FalconExplosion, this.transform.position, Quaternion.identity);
+				UnityEngine.Object.Instantiate(this.FalconExplosion, studentScript.transform.position + new Vector3((float)0, (float)1, (float)0), Quaternion.identity);
 				studentScript.Dead = true;
 				studentScript.BecomeRagdoll();
 				studentScript.Ragdoll.AllRigidbodies[0].isKinematic = false;

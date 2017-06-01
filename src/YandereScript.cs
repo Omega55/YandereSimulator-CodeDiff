@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$3142 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$3138 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$3157;
+		internal YandereScript $self_$3153;
 
-		public $ApplyCustomCostume$3142(YandereScript self_)
+		public $ApplyCustomCostume$3138(YandereScript self_)
 		{
-			this.$self_$3157 = self_;
+			this.$self_$3153 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$3142.$(this.$self_$3157);
+			return new YandereScript.$ApplyCustomCostume$3138.$(this.$self_$3153);
 		}
 	}
 
@@ -717,9 +717,11 @@ public class YandereScript : MonoBehaviour
 
 	public Texture GaloFace;
 
-	public AudioClip YanYan;
+	public AudioClip SummonStand;
 
-	public GameObject Stand;
+	public StandScript Stand;
+
+	public AudioClip YanYan;
 
 	public Texture AgentFace;
 
@@ -867,6 +869,10 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject Kun;
 
+	public GameObject Kizuna;
+
+	public AudioClip HaiDomo;
+
 	public Mesh SchoolSwimsuit;
 
 	public Mesh GymUniform;
@@ -979,6 +985,7 @@ public class YandereScript : MonoBehaviour
 		this.FalconHelmet.active = false;
 		this.TornadoDress.active = false;
 		this.CirnoRibbon.active = false;
+		this.Stand.Stand.active = false;
 		this.TornadoHair.active = false;
 		this.CirnoWings.active = false;
 		this.KONGlasses.active = false;
@@ -993,7 +1000,6 @@ public class YandereScript : MonoBehaviour
 		this.EyepatchR.active = false;
 		this.Shoes[0].active = false;
 		this.Shoes[1].active = false;
-		this.Stand.active = false;
 		this.Cape.active = false;
 		this.OriginalIdleAnim = this.IdleAnim;
 		this.OriginalWalkAnim = this.WalkAnim;
@@ -1797,7 +1803,7 @@ public class YandereScript : MonoBehaviour
 						this.LaughAnim = "storepower_20";
 						this.LaughClip = this.ChargeUp;
 					}
-					if (this.Stand.active)
+					if (this.Stand.Stand.active)
 					{
 						this.LaughAnim = "f02_jojoAttack_00";
 						this.LaughClip = this.YanYan;
@@ -3736,6 +3742,11 @@ public class YandereScript : MonoBehaviour
 							this.StudentManager.NoGravity = true;
 							this.EasterEggMenu.active = false;
 						}
+						else if (Input.GetKeyDown("space"))
+						{
+							this.EasterEggMenu.active = false;
+							this.KizunaAI();
+						}
 						if (Input.GetKeyDown("d"))
 						{
 							if (this.Copyrights.active)
@@ -4298,7 +4309,7 @@ public class YandereScript : MonoBehaviour
 		this.LaughIntensity = (float)0;
 		this.Laughing = false;
 		this.LaughClip = null;
-		if (!this.Stand.active)
+		if (!this.Stand.Stand.active)
 		{
 			this.CanMove = true;
 		}
@@ -4327,7 +4338,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$3142(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$3138(this).GetEnumerator();
 	}
 
 	public virtual void WearGloves()
@@ -4469,6 +4480,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual void GaloSengen()
 	{
+		this.IdleAnim = "f02_gruntIdle_00";
 		this.EasterEggMenu.active = false;
 		this.Egg = true;
 		this.ID = 0;
@@ -4487,15 +4499,21 @@ public class YandereScript : MonoBehaviour
 
 	public virtual void Jojo()
 	{
+		this.ShoulderCamera.LastPosition = this.ShoulderCamera.transform.position;
+		this.ShoulderCamera.Summoning = true;
+		this.RPGCamera.enabled = false;
+		AudioSource.PlayClipAtPoint(this.SummonStand, this.transform.position);
+		this.StudentManager.HideStudents();
 		this.IdleAnim = "f02_jojoPose_00";
 		this.WalkAnim = "f02_jojoWalk_00";
 		this.EasterEggMenu.active = false;
+		this.CanMove = false;
 		this.Egg = true;
+		this.CharacterAnimation.CrossFade(this.IdleAnim);
 		this.Laugh1 = this.YanYan;
 		this.Laugh2 = this.YanYan;
 		this.Laugh3 = this.YanYan;
 		this.Laugh4 = this.YanYan;
-		this.Stand.active = true;
 	}
 
 	public virtual void Agent()
@@ -4727,6 +4745,21 @@ public class YandereScript : MonoBehaviour
 		this.IdleAnim = "idleShort_00";
 		this.WalkAnim = "walk_00";
 		this.RunAnim = "newSprint_00";
+		this.OriginalIdleAnim = this.IdleAnim;
+		this.OriginalWalkAnim = this.WalkAnim;
+		this.OriginalRunAnim = this.RunAnim;
+		this.Hairstyle = 0;
+		this.UpdateHair();
+	}
+
+	public virtual void KizunaAI()
+	{
+		AudioSource.PlayClipAtPoint(this.HaiDomo, this.transform.position);
+		this.RightYandereEye.enabled = false;
+		this.LeftYandereEye.enabled = false;
+		this.Kizuna.active = true;
+		this.MyRenderer.enabled = false;
+		this.IdleAnim = "f02_idleGirly_00";
 		this.OriginalIdleAnim = this.IdleAnim;
 		this.OriginalWalkAnim = this.WalkAnim;
 		this.OriginalRunAnim = this.RunAnim;

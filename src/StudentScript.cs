@@ -241,6 +241,8 @@ public class StudentScript : MonoBehaviour
 
 	public GameObject Character;
 
+	public GameObject EventBook;
+
 	public GameObject OsanaHair;
 
 	public GameObject Earpiece;
@@ -779,6 +781,8 @@ public class StudentScript : MonoBehaviour
 
 	public Texture[] SocksTextures;
 
+	public GameObject JojoHitEffect;
+
 	public GameObject[] ElectroSteam;
 
 	public GameObject[] CensorSteam;
@@ -1000,6 +1004,7 @@ public class StudentScript : MonoBehaviour
 			this.Chopsticks[0].active = false;
 			this.Chopsticks[1].active = false;
 			this.OccultBook.active = false;
+			this.EventBook.active = false;
 			this.Bento.active = false;
 			this.Pen.active = false;
 			this.SpeechLines.Stop();
@@ -1264,7 +1269,7 @@ public class StudentScript : MonoBehaviour
 			{
 				this.Indoors = true;
 			}
-			if (this.StudentID == 1 || this.StudentID == 19)
+			if (this.StudentID == 1 || this.StudentID == 19 || this.StudentID == 33)
 			{
 				this.BookRenderer.material.mainTexture = this.RedBookTexture;
 			}
@@ -6321,27 +6326,31 @@ public class StudentScript : MonoBehaviour
 
 	public virtual void JojoReact()
 	{
-		this.Dying = true;
-		this.SpawnAlarmDisc();
-		this.Character.animation.CrossFade(this.JojoReactAnim);
-		this.Pathfinding.canSearch = false;
-		this.Pathfinding.canMove = false;
-		this.WitnessedCorpse = false;
-		this.Investigating = false;
-		this.DiscCheck = false;
-		this.WalkBack = false;
-		this.Alarmed = false;
-		this.CanTalk = false;
-		this.Fleeing = false;
-		this.Routine = false;
-		this.Reacted = false;
-		this.Burning = true;
-		this.Wet = false;
-		this.audio.Play();
-		if (this.Following)
+		UnityEngine.Object.Instantiate(this.JojoHitEffect, this.transform.position + new Vector3((float)0, (float)1, (float)0), Quaternion.identity);
+		if (!this.Dying)
 		{
-			this.Yandere.Followers = this.Yandere.Followers - 1;
-			this.Following = false;
+			this.Dying = true;
+			this.SpawnAlarmDisc();
+			this.Character.animation.CrossFade(this.JojoReactAnim);
+			this.Pathfinding.canSearch = false;
+			this.Pathfinding.canMove = false;
+			this.WitnessedCorpse = false;
+			this.Investigating = false;
+			this.DiscCheck = false;
+			this.WalkBack = false;
+			this.Alarmed = false;
+			this.CanTalk = false;
+			this.Fleeing = false;
+			this.Routine = false;
+			this.Reacted = false;
+			this.Burning = true;
+			this.Wet = false;
+			this.audio.Play();
+			if (this.Following)
+			{
+				this.Yandere.Followers = this.Yandere.Followers - 1;
+				this.Following = false;
+			}
 		}
 	}
 

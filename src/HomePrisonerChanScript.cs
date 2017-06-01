@@ -68,6 +68,16 @@ public class HomePrisonerChanScript : MonoBehaviour
 
 	public float Sanity;
 
+	public float HairRot1;
+
+	public float HairRot2;
+
+	public float HairRot3;
+
+	public float HairRot4;
+
+	public float HairRot5;
+
 	public bool LookAhead;
 
 	public bool Tortured;
@@ -139,32 +149,32 @@ public class HomePrisonerChanScript : MonoBehaviour
 					if (this.HomeCamera.Target == this.HomeCamera.Targets[10])
 					{
 						to = Quaternion.LookRotation(this.HomeCamera.transform.position + Vector3.down * 1.5f * ((float)100 - this.Sanity) / (float)100 - this.Neck.position);
-						this.HairRotation = Mathf.Lerp(this.HairRotation, (float)0, Time.deltaTime * (float)2);
+						this.HairRotation = Mathf.Lerp(this.HairRotation, this.HairRot1, Time.deltaTime * (float)2);
 					}
 					else
 					{
 						to = Quaternion.LookRotation(this.HomeYandere.position + Vector3.up * 1.5f - this.Neck.position);
-						this.HairRotation = Mathf.Lerp(this.HairRotation, (float)45, Time.deltaTime * (float)2);
+						this.HairRotation = Mathf.Lerp(this.HairRotation, this.HairRot2, Time.deltaTime * (float)2);
 					}
 					this.Neck.rotation = Quaternion.Slerp(this.LastRotation, to, Time.deltaTime * (float)2);
-					this.TwintailR.transform.localEulerAngles = new Vector3((float)0, (float)180, (float)-90 - this.HairRotation);
-					this.TwintailL.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)-90 - this.HairRotation);
+					this.TwintailR.transform.localEulerAngles = new Vector3(this.HairRotation, (float)180, (float)-90);
+					this.TwintailL.transform.localEulerAngles = new Vector3((float)-1 * this.HairRotation, (float)0, (float)-90);
 				}
 				else
 				{
 					if (this.HomeCamera.Target == this.HomeCamera.Targets[10])
 					{
 						Quaternion to = Quaternion.LookRotation(this.HomeCamera.transform.position + Vector3.down * 1.5f * ((float)100 - this.Sanity) / (float)100 - this.Neck.position);
-						this.HairRotation = Mathf.Lerp(this.HairRotation, (float)0, Time.deltaTime * (float)2);
+						this.HairRotation = Mathf.Lerp(this.HairRotation, this.HairRot3, Time.deltaTime * (float)2);
 					}
 					else
 					{
 						Quaternion to = Quaternion.LookRotation(this.transform.position + this.transform.forward - this.Neck.position);
 						this.Neck.rotation = Quaternion.Slerp(this.LastRotation, to, Time.deltaTime * (float)2);
 					}
-					this.HairRotation = Mathf.Lerp(this.HairRotation, (float)0, Time.deltaTime * (float)2);
-					this.TwintailR.transform.localEulerAngles = new Vector3((float)0, (float)180, (float)-90 - this.HairRotation);
-					this.TwintailL.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)-90 - this.HairRotation);
+					this.HairRotation = Mathf.Lerp(this.HairRotation, this.HairRot4, Time.deltaTime * (float)2);
+					this.TwintailR.transform.localEulerAngles = new Vector3(this.HairRotation, (float)180, (float)-90);
+					this.TwintailL.transform.localEulerAngles = new Vector3((float)-1 * this.HairRotation, (float)0, (float)-90);
 				}
 			}
 			else
@@ -192,9 +202,9 @@ public class HomePrisonerChanScript : MonoBehaviour
 		}
 		if (this.Tortured)
 		{
-			this.HairRotation = Mathf.Lerp(this.HairRotation, (float)45, Time.deltaTime * (float)2);
-			this.TwintailR.transform.localEulerAngles = new Vector3((float)0, (float)180, (float)-90 - this.HairRotation);
-			this.TwintailL.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)-90 - this.HairRotation);
+			this.HairRotation = Mathf.Lerp(this.HairRotation, this.HairRot5, Time.deltaTime * (float)2);
+			this.TwintailR.transform.localEulerAngles = new Vector3(this.HairRotation, (float)180, (float)-90);
+			this.TwintailL.transform.localEulerAngles = new Vector3((float)-1 * this.HairRotation, (float)0, (float)-90);
 		}
 	}
 

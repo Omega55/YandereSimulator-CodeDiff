@@ -67,7 +67,7 @@ public class ZoomScript : MonoBehaviour
 				float num6 = localPosition4.y = y4;
 				Vector3 vector6 = this.transform.localPosition = localPosition4;
 			}
-			else if (this.Yandere.Stand.active)
+			else if (this.Yandere.Stand.Stand.active)
 			{
 				float y5 = Mathf.Lerp(this.transform.localPosition.y, (float)1 - this.Zoom * 0.5f + this.Slender * 0.5f, Time.deltaTime * (float)10);
 				Vector3 localPosition5 = this.transform.localPosition;
@@ -93,7 +93,7 @@ public class ZoomScript : MonoBehaviour
 		{
 			this.TargetZoom += Input.GetAxis("Mouse ScrollWheel");
 		}
-		if (this.Yandere.Slender || this.Yandere.Stand.active || this.Yandere.Blasting || this.Yandere.PK)
+		if (this.Yandere.Slender || this.Yandere.Stand.Stand.active || this.Yandere.Blasting || this.Yandere.PK)
 		{
 			this.Slender = Mathf.Lerp(this.Slender, 0.5f, Time.deltaTime);
 		}

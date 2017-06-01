@@ -83,6 +83,7 @@ public class PhoneEventScript : MonoBehaviour
 						this.EventStudent.CurrentDestination = this.EventStudent.Destinations[this.EventStudent.Phase];
 						this.EventStudent.Pathfinding.target = this.EventStudent.Destinations[this.EventStudent.Phase];
 						this.EventStudent.Obstacle.checkTime = (float)99;
+						this.EventStudent.SpeechLines.Stop();
 						this.EventStudent.PhoneEvent = this;
 						this.EventStudent.CanTalk = false;
 						this.EventStudent.InEvent = true;

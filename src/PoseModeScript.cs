@@ -438,7 +438,7 @@ public class PoseModeScript : MonoBehaviour
 						}
 						if (this.InputManager.TappedLeft)
 						{
-							this.Student.Schoolwear = this.Student.Schoolwear + 1;
+							this.Student.Schoolwear = this.Student.Schoolwear - 1;
 							if (this.Student.Schoolwear < 1)
 							{
 								this.Student.Schoolwear = 3;

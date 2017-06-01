@@ -1,7 +1,5 @@
 ﻿using System;
-using Boo.Lang.Runtime;
 using UnityEngine;
-using UnityScript.Lang;
 
 [Serializable]
 public class MovingEventScript : MonoBehaviour
@@ -154,8 +152,8 @@ public class MovingEventScript : MonoBehaviour
 						if (this.Timer > (float)1 && this.EventStudent.Bento.transform.parent != null)
 						{
 							this.EventStudent.Bento.transform.parent = null;
-							this.EventStudent.Bento.transform.position = new Vector3((float)8, 0.46f, -2.1885f);
-							this.EventStudent.Bento.transform.eulerAngles = new Vector3((float)5, (float)0, (float)0);
+							this.EventStudent.Bento.transform.position = new Vector3((float)8, 0.5f, -2.2965f);
+							this.EventStudent.Bento.transform.eulerAngles = new Vector3((float)0, (float)0, (float)0);
 							this.EventStudent.Bento.transform.localScale = new Vector3(1.4f, 1.5f, 1.4f);
 						}
 						if (this.Timer > (float)2)
@@ -294,20 +292,6 @@ public class MovingEventScript : MonoBehaviour
 							}
 							else if (this.EventStudent.Bento.transform.parent != null)
 							{
-								float num = 0.02402199f;
-								object property = UnityRuntimeServices.GetProperty(this.BenchCollider, "center");
-								RuntimeServices.SetProperty(property, "y", num);
-								UnityRuntimeServices.PropagateValueTypeChanges(new UnityRuntimeServices.ValueTypeChange[]
-								{
-									new UnityRuntimeServices.MemberValueTypeChange(this.BenchCollider, "center", property)
-								});
-								float num2 = 0.04804402f;
-								object property2 = UnityRuntimeServices.GetProperty(this.BenchCollider, "size");
-								RuntimeServices.SetProperty(property2, "y", num2);
-								UnityRuntimeServices.PropagateValueTypeChanges(new UnityRuntimeServices.ValueTypeChange[]
-								{
-									new UnityRuntimeServices.MemberValueTypeChange(this.BenchCollider, "size", property2)
-								});
 								this.EventStudent.Bento.transform.parent = null;
 								((Collider)this.EventStudent.Bento.GetComponent(typeof(Collider))).isTrigger = false;
 								this.EventStudent.Bento.AddComponent(typeof(Rigidbody));
@@ -329,16 +313,16 @@ public class MovingEventScript : MonoBehaviour
 					{
 						if (this.Distance < (float)10)
 						{
-							float num3 = Mathf.Abs((this.Distance - (float)10) * 0.2f);
-							if (num3 < (float)0)
+							float num = Mathf.Abs((this.Distance - (float)10) * 0.2f);
+							if (num < (float)0)
 							{
-								num3 = (float)0;
+								num = (float)0;
 							}
-							if (num3 > (float)1)
+							if (num > (float)1)
 							{
-								num3 = (float)1;
+								num = (float)1;
 							}
-							this.EventSubtitle.transform.localScale = new Vector3(num3, num3, num3);
+							this.EventSubtitle.transform.localScale = new Vector3(num, num, num);
 						}
 						else
 						{
