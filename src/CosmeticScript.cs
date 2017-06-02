@@ -289,7 +289,11 @@ public class CosmeticScript : MonoBehaviour
 			this.Club = 0;
 			if (!this.Male)
 			{
-				this.Hairstyle = UnityEngine.Random.Range(1, Extensions.get_length(this.FemaleHair) - 1);
+				this.Hairstyle = 99;
+				while (this.Hairstyle > 19)
+				{
+					this.Hairstyle = UnityEngine.Random.Range(1, Extensions.get_length(this.FemaleHair) - 1);
+				}
 			}
 			else
 			{
@@ -921,6 +925,10 @@ public class CosmeticScript : MonoBehaviour
 		{
 			this.MyRenderer.materials[0].SetFloat("_BlendAmount1", (float)1);
 			this.MyRenderer.materials[1].SetFloat("_BlendAmount1", (float)1);
+		}
+		else
+		{
+			this.RemoveCensor();
 		}
 	}
 

@@ -241,6 +241,8 @@ public class StudentScript : MonoBehaviour
 
 	public GameObject Character;
 
+	public GameObject Countdown;
+
 	public GameObject EventBook;
 
 	public GameObject OsanaHair;
@@ -1021,16 +1023,19 @@ public class StudentScript : MonoBehaviour
 				{
 					this.Cosmetic.CensorPanties();
 				}
-				this.CharacterAnimation[this.CarryAnim].layer = 9;
+				this.CharacterAnimation["f02_topHalfTexting_00"].layer = 9;
+				this.CharacterAnimation.Play("f02_topHalfTexting_00");
+				this.CharacterAnimation["f02_topHalfTexting_00"].weight = (float)0;
+				this.CharacterAnimation[this.CarryAnim].layer = 8;
 				this.CharacterAnimation.Play(this.CarryAnim);
 				this.CharacterAnimation[this.CarryAnim].weight = (float)0;
-				this.CharacterAnimation[this.SocialSitAnim].layer = 8;
+				this.CharacterAnimation[this.SocialSitAnim].layer = 7;
 				this.CharacterAnimation.Play(this.SocialSitAnim);
 				this.CharacterAnimation[this.SocialSitAnim].weight = (float)0;
-				this.CharacterAnimation[this.ShyAnim].layer = 7;
+				this.CharacterAnimation[this.ShyAnim].layer = 6;
 				this.CharacterAnimation.Play(this.ShyAnim);
 				this.CharacterAnimation[this.ShyAnim].weight = (float)0;
-				this.CharacterAnimation[this.FistAnim].layer = 6;
+				this.CharacterAnimation[this.FistAnim].layer = 5;
 				this.CharacterAnimation[this.FistAnim].weight = (float)0;
 				this.CharacterAnimation[this.WetAnim].layer = 4;
 				this.CharacterAnimation.Play(this.WetAnim);
@@ -5675,6 +5680,12 @@ public class StudentScript : MonoBehaviour
 		}
 		else if (this.Persona == 6)
 		{
+			if (this.StudentID == 16)
+			{
+				this.CharacterAnimation["f02_topHalfTexting_00"].weight = (float)1;
+				this.SmartPhone.active = true;
+				this.Countdown.active = true;
+			}
 			this.CurrentDestination = this.StudentManager.HidingSpots.List[this.StudentID];
 			this.Pathfinding.target = this.StudentManager.HidingSpots.List[this.StudentID];
 			this.Subtitle.UpdateLabel("Social Death Reaction", 1, (float)5);
@@ -6406,10 +6417,6 @@ public class StudentScript : MonoBehaviour
 				this.Cosmetic.SetFemaleUniform();
 				this.SkirtCollider.enabled = true;
 				this.PantyCollider.enabled = true;
-				if (this.StudentManager.Censor)
-				{
-					this.Cosmetic.CensorPanties();
-				}
 			}
 			else
 			{
@@ -6429,6 +6436,10 @@ public class StudentScript : MonoBehaviour
 			this.MyRenderer.materials[0].mainTexture = this.GymTexture;
 			this.MyRenderer.materials[1].mainTexture = this.GymTexture;
 			this.MyRenderer.materials[2].mainTexture = this.Cosmetic.FaceTexture;
+		}
+		if (!this.Male && this.StudentManager.Censor)
+		{
+			this.Cosmetic.CensorPanties();
 		}
 		while (this.ID < Extensions.get_length(this.Outlines))
 		{

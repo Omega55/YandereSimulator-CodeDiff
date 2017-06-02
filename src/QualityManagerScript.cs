@@ -269,6 +269,7 @@ public class QualityManagerScript : MonoBehaviour
 		}
 		Camera.main.farClipPlane = (float)PlayerPrefs.GetInt("DrawDistance");
 		RenderSettings.fogEndDistance = (float)PlayerPrefs.GetInt("DrawDistance");
+		this.Yandere.Smartphone.farClipPlane = (float)PlayerPrefs.GetInt("DrawDistance");
 	}
 
 	public virtual void UpdateFog()

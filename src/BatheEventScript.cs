@@ -61,7 +61,7 @@ public class BatheEventScript : MonoBehaviour
 		if (!this.Clock.StopTime && !this.EventActive && this.Clock.HourTime > this.EventTime)
 		{
 			this.EventStudent = this.StudentManager.Students[7];
-			if (this.EventStudent != null && !this.EventStudent.Distracted && !this.EventStudent.Talking && !this.EventStudent.Meeting)
+			if (this.EventStudent != null && !this.EventStudent.Distracted && !this.EventStudent.Talking && !this.EventStudent.Meeting && this.EventStudent.Indoors)
 			{
 				if (!this.EventStudent.WitnessedMurder)
 				{

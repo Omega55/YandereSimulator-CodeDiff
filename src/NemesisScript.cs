@@ -61,6 +61,15 @@ public class NemesisScript : MonoBehaviour
 			this.ID++;
 		}
 		this.ID = 0;
+		while (this.ID < Extensions.get_length(this.Cosmetic.FemaleAccessories))
+		{
+			if (this.Cosmetic.FemaleAccessories[this.ID] != null)
+			{
+				this.Cosmetic.FemaleAccessories[this.ID].active = false;
+			}
+			this.ID++;
+		}
+		this.ID = 0;
 		while (this.ID < Extensions.get_length(this.Cosmetic.ClubAccessories))
 		{
 			if (this.Cosmetic.ClubAccessories[this.ID] != null)
@@ -100,6 +109,7 @@ public class NemesisScript : MonoBehaviour
 		}
 		this.Student.LowPoly.enabled = false;
 		this.Student.DisableEffects();
+		this.HideObjects();
 		this.ID = 0;
 		while (this.ID < this.Student.Ragdoll.AllRigidbodies.Length)
 		{
@@ -323,6 +333,17 @@ public class NemesisScript : MonoBehaviour
 			UnityEngine.Object.Instantiate(this.BloodEffect, this.Knife.transform.position + this.Knife.transform.forward * 0.1f, Quaternion.identity);
 			this.EffectPhase++;
 		}
+	}
+
+	public virtual void HideObjects()
+	{
+		this.Student.Chopsticks[0].active = false;
+		this.Student.Chopsticks[1].active = false;
+		this.Student.OccultBook.active = false;
+		this.Student.EventBook.active = false;
+		this.Student.Bento.active = false;
+		this.Student.Pen.active = false;
+		this.Student.SpeechLines.Stop();
 	}
 
 	public virtual void Main()
