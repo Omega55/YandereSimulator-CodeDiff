@@ -42,7 +42,7 @@ public class FakeStudentScript : MonoBehaviour
 				this.Rotate = false;
 			}
 		}
-		if (this.Prompt.Circle[0].fillAmount <= (float)0)
+		if (this.Prompt.Circle[0].fillAmount <= (float)0 && !this.Yandere.Chased)
 		{
 			this.Yandere.TargetStudent = this.Student;
 			this.Subtitle.UpdateLabel("Club Greeting", this.Student.Club, (float)4);

@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$3138 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$3134 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$3153;
+		internal YandereScript $self_$3149;
 
-		public $ApplyCustomCostume$3138(YandereScript self_)
+		public $ApplyCustomCostume$3134(YandereScript self_)
 		{
-			this.$self_$3153 = self_;
+			this.$self_$3149 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$3138.$(this.$self_$3153);
+			return new YandereScript.$ApplyCustomCostume$3134.$(this.$self_$3149);
 		}
 	}
 
@@ -3638,114 +3638,111 @@ public class YandereScript : MonoBehaviour
 						{
 							this.GaloSengen();
 						}
-						else if (Input.GetKeyDown("j"))
+						else if (!Input.GetKeyDown("j"))
 						{
-							this.Jojo();
-						}
-						else if (Input.GetKeyDown("k"))
-						{
-							this.EasterEggMenu.active = false;
-							this.StudentManager.Kong();
-							this.DK = true;
-						}
-						else if (Input.GetKeyDown("l"))
-						{
-							this.Agent();
-						}
-						else if (Input.GetKeyDown("n"))
-						{
-							this.Nude();
-						}
-						else if (Input.GetKeyDown("s"))
-						{
-							this.EasterEggMenu.active = false;
-							this.Egg = true;
-							this.StudentManager.Spook();
-						}
-						else if (Input.GetKeyDown("f"))
-						{
-							this.EasterEggMenu.active = false;
-							this.Falcon();
-						}
-						else if (Input.GetKeyDown("x"))
-						{
-							this.EasterEggMenu.active = false;
-							this.X();
-						}
-						else if (Input.GetKeyDown("o"))
-						{
-							this.EasterEggMenu.active = false;
-							this.Punch();
-						}
-						else if (Input.GetKeyDown("u"))
-						{
-							this.EasterEggMenu.active = false;
-							this.BadTime();
-						}
-						else if (Input.GetKeyDown("y"))
-						{
-							this.EasterEggMenu.active = false;
-							this.CyborgNinja();
-						}
-						else if (Input.GetKeyDown("e"))
-						{
-							this.EasterEggMenu.active = false;
-							this.Ebola();
-						}
-						else if (Input.GetKeyDown("q"))
-						{
-							this.EasterEggMenu.active = false;
-							this.Samus();
-						}
-						else if (Input.GetKeyDown("w"))
-						{
-							this.EasterEggMenu.active = false;
-							this.Witch();
-						}
-						else if (Input.GetKeyDown("r"))
-						{
-							this.EasterEggMenu.active = false;
-							this.Pose();
-						}
-						else if (Input.GetKeyDown("v"))
-						{
-							this.EasterEggMenu.active = false;
-							this.Long();
-						}
-						else if (Input.GetKeyDown("6"))
-						{
-							this.EasterEggMenu.active = false;
-							this.HairBlades();
-						}
-						else if (Input.GetKeyDown("7"))
-						{
-							this.EasterEggMenu.active = false;
-							this.Tornado();
-						}
-						else if (Input.GetKeyDown("8"))
-						{
-							this.EasterEggMenu.active = false;
-							this.GenderSwap();
-						}
-						else if (Input.GetKeyDown("[5]"))
-						{
-							this.EasterEggMenu.active = false;
-							this.SwapMesh();
-						}
-						else if (Input.GetKeyDown("a"))
-						{
-							this.StudentManager.ChangeOka();
-							this.EasterEggMenu.active = false;
-						}
-						else if (Input.GetKeyDown("i"))
-						{
-							this.StudentManager.NoGravity = true;
-							this.EasterEggMenu.active = false;
-						}
-						else if (Input.GetKeyDown("space"))
-						{
-							this.EasterEggMenu.active = false;
-							this.KizunaAI();
+							if (Input.GetKeyDown("k"))
+							{
+								this.EasterEggMenu.active = false;
+								this.StudentManager.Kong();
+								this.DK = true;
+							}
+							else if (Input.GetKeyDown("l"))
+							{
+								this.Agent();
+							}
+							else if (Input.GetKeyDown("n"))
+							{
+								this.Nude();
+							}
+							else if (Input.GetKeyDown("s"))
+							{
+								this.EasterEggMenu.active = false;
+								this.Egg = true;
+								this.StudentManager.Spook();
+							}
+							else if (Input.GetKeyDown("f"))
+							{
+								this.EasterEggMenu.active = false;
+								this.Falcon();
+							}
+							else if (Input.GetKeyDown("x"))
+							{
+								this.EasterEggMenu.active = false;
+								this.X();
+							}
+							else if (Input.GetKeyDown("o"))
+							{
+								this.EasterEggMenu.active = false;
+								this.Punch();
+							}
+							else if (Input.GetKeyDown("u"))
+							{
+								this.EasterEggMenu.active = false;
+								this.BadTime();
+							}
+							else if (Input.GetKeyDown("y"))
+							{
+								this.EasterEggMenu.active = false;
+								this.CyborgNinja();
+							}
+							else if (Input.GetKeyDown("e"))
+							{
+								this.EasterEggMenu.active = false;
+								this.Ebola();
+							}
+							else if (Input.GetKeyDown("q"))
+							{
+								this.EasterEggMenu.active = false;
+								this.Samus();
+							}
+							else if (Input.GetKeyDown("w"))
+							{
+								this.EasterEggMenu.active = false;
+								this.Witch();
+							}
+							else if (Input.GetKeyDown("r"))
+							{
+								this.EasterEggMenu.active = false;
+								this.Pose();
+							}
+							else if (Input.GetKeyDown("v"))
+							{
+								this.EasterEggMenu.active = false;
+								this.Long();
+							}
+							else if (Input.GetKeyDown("6"))
+							{
+								this.EasterEggMenu.active = false;
+								this.HairBlades();
+							}
+							else if (Input.GetKeyDown("7"))
+							{
+								this.EasterEggMenu.active = false;
+								this.Tornado();
+							}
+							else if (Input.GetKeyDown("8"))
+							{
+								this.EasterEggMenu.active = false;
+								this.GenderSwap();
+							}
+							else if (Input.GetKeyDown("[5]"))
+							{
+								this.EasterEggMenu.active = false;
+								this.SwapMesh();
+							}
+							else if (Input.GetKeyDown("a"))
+							{
+								this.StudentManager.ChangeOka();
+								this.EasterEggMenu.active = false;
+							}
+							else if (Input.GetKeyDown("i"))
+							{
+								this.StudentManager.NoGravity = true;
+								this.EasterEggMenu.active = false;
+							}
+							else if (Input.GetKeyDown("space"))
+							{
+							}
 						}
 						if (Input.GetKeyDown("d"))
 						{
@@ -4338,7 +4335,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$3138(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$3134(this).GetEnumerator();
 	}
 
 	public virtual void WearGloves()
@@ -4503,7 +4500,6 @@ public class YandereScript : MonoBehaviour
 		this.ShoulderCamera.Summoning = true;
 		this.RPGCamera.enabled = false;
 		AudioSource.PlayClipAtPoint(this.SummonStand, this.transform.position);
-		this.StudentManager.HideStudents();
 		this.IdleAnim = "f02_jojoPose_00";
 		this.WalkAnim = "f02_jojoWalk_00";
 		this.EasterEggMenu.active = false;

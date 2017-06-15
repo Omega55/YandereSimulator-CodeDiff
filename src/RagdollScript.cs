@@ -712,7 +712,7 @@ public class RagdollScript : MonoBehaviour
 						if (!this.Male)
 						{
 							this.Student.Cosmetic.FemaleHair[this.Student.Cosmetic.Hairstyle].transform.parent = gameObject.transform;
-							if (this.Student.Cosmetic.FemaleAccessories[this.Student.Cosmetic.Accessory] != null && this.Student.Cosmetic.Accessory != 3)
+							if (this.Student.Cosmetic.FemaleAccessories[this.Student.Cosmetic.Accessory] != null && this.Student.Cosmetic.Accessory != 3 && this.Student.Cosmetic.Accessory != 6)
 							{
 								this.Student.Cosmetic.FemaleAccessories[this.Student.Cosmetic.Accessory].transform.parent = gameObject.transform;
 							}
@@ -733,10 +733,13 @@ public class RagdollScript : MonoBehaviour
 							Vector3 localScale3 = transform.localScale;
 							float num3 = localScale3.z = z;
 							Vector3 vector3 = transform.localScale = localScale3;
-							float y2 = transform.transform.localPosition.y - 0.1f;
-							Vector3 localPosition = transform.transform.localPosition;
-							float num4 = localPosition.y = y2;
-							Vector3 vector4 = transform.transform.localPosition = localPosition;
+							if (transform.transform.localPosition.y < (float)-1)
+							{
+								float y2 = transform.transform.localPosition.y - 0.1f;
+								Vector3 localPosition = transform.transform.localPosition;
+								float num4 = localPosition.y = y2;
+								Vector3 vector4 = transform.transform.localPosition = localPosition;
+							}
 							if (this.Student.Cosmetic.MaleAccessories[this.Student.Cosmetic.Accessory] != null)
 							{
 								this.Student.Cosmetic.MaleAccessories[this.Student.Cosmetic.Accessory].transform.parent = gameObject.transform;
@@ -769,6 +772,10 @@ public class RagdollScript : MonoBehaviour
 						}
 					}
 					((Renderer)gameObject.GetComponent(typeof(Renderer))).materials[0].mainTexture = this.Student.Cosmetic.FaceTexture;
+				}
+				else if (i == 2 && this.Student.Cosmetic.Accessory == 6)
+				{
+					this.Student.Cosmetic.FemaleAccessories[this.Student.Cosmetic.Accessory].transform.parent = gameObject.transform;
 				}
 			}
 			if (this.BloodPoolSpawner.BloodParent == null)

@@ -61,6 +61,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public PoliceScript Police;
 
+	public UILabel ErrorLabel;
+
 	public ListScript Patrols;
 
 	public ClockScript Clock;
@@ -271,6 +273,10 @@ public class StudentManagerScript : MonoBehaviour
 
 	public AudioClip PinDownSFX;
 
+	public bool Problem;
+
+	public int ProblemID;
+
 	public bool SeatOccupied;
 
 	public int Class;
@@ -282,73 +288,100 @@ public class StudentManagerScript : MonoBehaviour
 		this.GymTeacherID = 100;
 		this.SuitorID = 13;
 		this.RivalID = 7;
+		this.ProblemID = this.ID;
 		this.Class = 1;
 	}
 
 	public virtual void Start()
 	{
-		this.SetAtmosphere();
-		PlayerPrefs.SetInt("Paranormal", 0);
-		if (PlayerPrefs.GetInt("MissionMode") == 1)
-		{
-			PlayerPrefs.SetInt("FemaleUniform", 5);
-			PlayerPrefs.SetInt("FemaleUniform", 5);
-		}
-		if (PlayerPrefs.GetInt("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Slave") == 1)
-		{
-			this.ForceSpawn = true;
-			this.SpawnPositions[PlayerPrefs.GetInt("KidnapVictim")] = this.SlaveSpot;
-			this.SpawnID = PlayerPrefs.GetInt("KidnapVictim");
-			PlayerPrefs.SetInt("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Dead", 0);
-			this.SpawnStudent();
-			this.Students[PlayerPrefs.GetInt("KidnapVictim")].Slave = true;
-			this.SpawnID = 0;
-			PlayerPrefs.SetInt("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Slave", 0);
-			PlayerPrefs.SetInt("KidnapVictim", 0);
-		}
-		this.NPCsTotal = this.StudentsTotal + this.TeachersTotal;
-		this.SpawnID = 1;
-		if (PlayerPrefs.GetInt("MaleUniform") == 0)
-		{
-			PlayerPrefs.SetInt("MaleUniform", 1);
-		}
 		this.ID = 1;
-		while (this.ID < this.NPCsTotal + 1)
+		while (!this.Problem && this.ID < Extensions.get_length(this.JSON.StudentSuccess))
 		{
-			if (PlayerPrefs.GetInt("Student_" + this.ID + "_Dead") == 0)
+			if (!this.JSON.StudentSuccess[this.ID])
 			{
-				PlayerPrefs.SetInt("Student_" + this.ID + "_Dying", 0);
+				this.ProblemID = this.ID;
+				this.Problem = true;
 			}
 			this.ID++;
 		}
-		if (!this.TakingPortraits)
+		if (!this.Problem)
 		{
-			this.ID = 1;
-			while (this.ID < Extensions.get_length(this.Lockers.List))
+			if (this.ErrorLabel != null)
 			{
-				Transform transform = ((GameObject)UnityEngine.Object.Instantiate(this.EmptyObject, this.Lockers.List[this.ID].position + this.Lockers.List[this.ID].forward * 0.5f, this.Lockers.List[this.ID].rotation)).transform;
-				transform.parent = this.Lockers.transform;
-				float y = transform.transform.eulerAngles.y + (float)180;
-				Vector3 eulerAngles = transform.transform.eulerAngles;
-				float num = eulerAngles.y = y;
-				Vector3 vector = transform.transform.eulerAngles = eulerAngles;
-				this.LockerPositions[this.ID] = transform;
+				this.ErrorLabel.text = string.Empty;
+			}
+			this.SetAtmosphere();
+			PlayerPrefs.SetInt("Paranormal", 0);
+			if (PlayerPrefs.GetInt("MissionMode") == 1)
+			{
+				PlayerPrefs.SetInt("FemaleUniform", 5);
+				PlayerPrefs.SetInt("FemaleUniform", 5);
+			}
+			if (PlayerPrefs.GetInt("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Slave") == 1)
+			{
+				this.ForceSpawn = true;
+				this.SpawnPositions[PlayerPrefs.GetInt("KidnapVictim")] = this.SlaveSpot;
+				this.SpawnID = PlayerPrefs.GetInt("KidnapVictim");
+				PlayerPrefs.SetInt("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Dead", 0);
+				this.SpawnStudent();
+				this.Students[PlayerPrefs.GetInt("KidnapVictim")].Slave = true;
+				this.SpawnID = 0;
+				PlayerPrefs.SetInt("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Slave", 0);
+				PlayerPrefs.SetInt("KidnapVictim", 0);
+			}
+			this.NPCsTotal = this.StudentsTotal + this.TeachersTotal;
+			this.SpawnID = 1;
+			if (PlayerPrefs.GetInt("MaleUniform") == 0)
+			{
+				PlayerPrefs.SetInt("MaleUniform", 1);
+			}
+			this.ID = 1;
+			while (this.ID < this.NPCsTotal + 1)
+			{
+				if (PlayerPrefs.GetInt("Student_" + this.ID + "_Dead") == 0)
+				{
+					PlayerPrefs.SetInt("Student_" + this.ID + "_Dying", 0);
+				}
 				this.ID++;
 			}
-		}
-		if (PlayerPrefs.GetInt("Late") == 1)
-		{
-			PlayerPrefs.SetInt("Late", 0);
-			this.Clock.PresentTime = (float)480;
-			this.Clock.HourTime = (float)8;
-			this.AttendClass();
-		}
-		if (!this.TakingPortraits)
-		{
-			while (this.SpawnID < this.NPCsTotal + 1)
+			if (!this.TakingPortraits)
 			{
-				this.SpawnStudent();
+				this.ID = 1;
+				while (this.ID < Extensions.get_length(this.Lockers.List))
+				{
+					Transform transform = ((GameObject)UnityEngine.Object.Instantiate(this.EmptyObject, this.Lockers.List[this.ID].position + this.Lockers.List[this.ID].forward * 0.5f, this.Lockers.List[this.ID].rotation)).transform;
+					transform.parent = this.Lockers.transform;
+					float y = transform.transform.eulerAngles.y + (float)180;
+					Vector3 eulerAngles = transform.transform.eulerAngles;
+					float num = eulerAngles.y = y;
+					Vector3 vector = transform.transform.eulerAngles = eulerAngles;
+					this.LockerPositions[this.ID] = transform;
+					this.ID++;
+				}
 			}
+			if (PlayerPrefs.GetInt("Late") == 1)
+			{
+				PlayerPrefs.SetInt("Late", 0);
+				this.Clock.PresentTime = (float)480;
+				this.Clock.HourTime = (float)8;
+				this.AttendClass();
+			}
+			if (!this.TakingPortraits)
+			{
+				while (this.SpawnID < this.NPCsTotal + 1)
+				{
+					this.SpawnStudent();
+				}
+			}
+		}
+		else
+		{
+			string rhs;
+			if (this.ProblemID > 1)
+			{
+				rhs = "The problem may be caused by Student " + this.ProblemID + ".";
+			}
+			this.ErrorLabel.text = "The game cannot compile Students.JSON! There is a typo somewhere in the JSON file. The problem might be a missing quotation mark, a missing colon, a missing comma, or something else like that. Please find your typo and fix it, or revert to a backup of the JSON file. " + rhs;
 		}
 	}
 

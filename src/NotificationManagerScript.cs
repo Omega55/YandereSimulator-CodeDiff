@@ -14,12 +14,53 @@ public class NotificationManagerScript : MonoBehaviour
 
 	public int NotificationsSpawned;
 
+	public int Phase;
+
+	public ClockScript Clock;
+
+	public NotificationManagerScript()
+	{
+		this.Phase = 1;
+	}
+
 	public virtual void Update()
 	{
-		float y = Mathf.Lerp(this.NotificationParent.localPosition.y, -0.049f * (float)this.NotificationsSpawned, Time.deltaTime * (float)10);
-		Vector3 localPosition = this.NotificationParent.localPosition;
-		float num = localPosition.y = y;
-		Vector3 vector = this.NotificationParent.localPosition = localPosition;
+		if (this.NotificationParent.localPosition.y > 0.001f + -0.049f * (float)this.NotificationsSpawned)
+		{
+			float y = Mathf.Lerp(this.NotificationParent.localPosition.y, -0.049f * (float)this.NotificationsSpawned, Time.deltaTime * (float)10);
+			Vector3 localPosition = this.NotificationParent.localPosition;
+			float num = localPosition.y = y;
+			Vector3 vector = this.NotificationParent.localPosition = localPosition;
+		}
+		if (this.Phase == 1)
+		{
+			if (this.Clock.HourTime > 8.4f)
+			{
+				this.DisplayNotification("Class Soon");
+				this.Phase++;
+			}
+		}
+		else if (this.Phase == 2)
+		{
+			if (this.Clock.HourTime > 8.5f)
+			{
+				this.DisplayNotification("Class Now");
+				this.Phase++;
+			}
+		}
+		else if (this.Phase == 3)
+		{
+			if (this.Clock.HourTime > 13.4f)
+			{
+				this.DisplayNotification("Class Soon");
+				this.Phase++;
+			}
+		}
+		else if (this.Phase == 4 && this.Clock.HourTime > 13.5f)
+		{
+			this.DisplayNotification("Class Now");
+			this.Phase++;
+		}
 	}
 
 	public virtual void DisplayNotification(string Type)
@@ -79,6 +120,14 @@ public class NotificationManagerScript : MonoBehaviour
 			else if (Type == "Exfiltrate")
 			{
 				notificationScript.Label.text = "Leave School";
+			}
+			else if (Type == "Class Soon")
+			{
+				notificationScript.Label.text = "Class Begins Soon";
+			}
+			else if (Type == "Class Now")
+			{
+				notificationScript.Label.text = "Class Begins Now";
 			}
 			this.NotificationsSpawned++;
 			notificationScript.ID = this.NotificationsSpawned;

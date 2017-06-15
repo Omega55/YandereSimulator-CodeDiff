@@ -223,7 +223,11 @@ public class StudentScript : MonoBehaviour
 
 	public GameObject LeftEmptyEye;
 
+	public GameObject AnimatedBook;
+
 	public GameObject BloodyScream;
+
+	public GameObject ChaseCamera;
 
 	public GameObject DeathScream;
 
@@ -436,6 +440,8 @@ public class StudentScript : MonoBehaviour
 	public bool Fleeing;
 
 	public bool Hunting;
+
+	public bool Leaving;
 
 	public bool Meeting;
 
@@ -1013,6 +1019,7 @@ public class StudentScript : MonoBehaviour
 			this.OriginalWalkAnim = this.WalkAnim;
 			if (!this.Male)
 			{
+				this.AnimatedBook.active = false;
 				this.CharacterAnimation[this.StripAnim].speed = 1.5f;
 				this.CharacterAnimation[this.GameAnim].speed = (float)2;
 				if (this.Club > 99)
@@ -1080,6 +1087,10 @@ public class StudentScript : MonoBehaviour
 					this.DestinationNames[4] = "Cuddle";
 					this.ActionNames[4] = "Cuddle";
 				}
+			}
+			else if (this.StudentID == 16)
+			{
+				this.PatrolAnim = "f02_texting_00";
 			}
 			else if (this.StudentID == 17)
 			{
@@ -1772,6 +1783,10 @@ public class StudentScript : MonoBehaviour
 										}
 										this.CurrentDestination = this.StudentManager.Patrols.List[this.StudentID].GetChild(this.PatrolID);
 										this.Pathfinding.target = this.CurrentDestination;
+										if (this.StudentID == 16)
+										{
+											this.CharacterAnimation["f02_topHalfTexting_00"].weight = (float)1;
+										}
 										this.PatrolTimer = (float)0;
 									}
 								}
@@ -5680,12 +5695,6 @@ public class StudentScript : MonoBehaviour
 		}
 		else if (this.Persona == 6)
 		{
-			if (this.StudentID == 16)
-			{
-				this.CharacterAnimation["f02_topHalfTexting_00"].weight = (float)1;
-				this.SmartPhone.active = true;
-				this.Countdown.active = true;
-			}
 			this.CurrentDestination = this.StudentManager.HidingSpots.List[this.StudentID];
 			this.Pathfinding.target = this.StudentManager.HidingSpots.List[this.StudentID];
 			this.Subtitle.UpdateLabel("Social Death Reaction", 1, (float)5);
@@ -6437,9 +6446,21 @@ public class StudentScript : MonoBehaviour
 			this.MyRenderer.materials[1].mainTexture = this.GymTexture;
 			this.MyRenderer.materials[2].mainTexture = this.Cosmetic.FaceTexture;
 		}
-		if (!this.Male && this.StudentManager.Censor)
+		if (!this.Male)
 		{
-			this.Cosmetic.CensorPanties();
+			if (this.Schoolwear == 1)
+			{
+				this.Cosmetic.Stockings = this.Cosmetic.OriginalStockings;
+			}
+			else
+			{
+				this.Cosmetic.Stockings = string.Empty;
+			}
+			this.StartCoroutine_Auto(this.Cosmetic.PutOnStockings());
+			if (this.StudentManager.Censor)
+			{
+				this.Cosmetic.CensorPanties();
+			}
 		}
 		while (this.ID < Extensions.get_length(this.Outlines))
 		{

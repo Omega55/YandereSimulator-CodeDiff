@@ -292,7 +292,9 @@ public class ShoeRemovalScript : MonoBehaviour
 					this.Student.Pathfinding.target = this.Student.StudentManager.Hangouts.List[0];
 					this.Locker.gameObject.animation.Stop();
 					this.Student.CanTalk = false;
+					this.Student.Leaving = true;
 					this.enabled = false;
+					this.Phase++;
 				}
 			}
 		}

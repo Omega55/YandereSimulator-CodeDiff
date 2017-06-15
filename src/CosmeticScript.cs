@@ -11,18 +11,18 @@ public class CosmeticScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $PutOnStockings$3102 : GenericGenerator<WWW>
+	internal sealed class $PutOnStockings$3098 : GenericGenerator<WWW>
 	{
-		internal CosmeticScript $self_$3105;
+		internal CosmeticScript $self_$3101;
 
-		public $PutOnStockings$3102(CosmeticScript self_)
+		public $PutOnStockings$3098(CosmeticScript self_)
 		{
-			this.$self_$3105 = self_;
+			this.$self_$3101 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new CosmeticScript.$PutOnStockings$3102.$(this.$self_$3105);
+			return new CosmeticScript.$PutOnStockings$3098.$(this.$self_$3101);
 		}
 	}
 
@@ -190,6 +190,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public float BreastSize;
 
+	public string OriginalStockings;
+
 	public string HairColor;
 
 	public string Stockings;
@@ -220,6 +222,7 @@ public class CosmeticScript : MonoBehaviour
 
 	public CosmeticScript()
 	{
+		this.OriginalStockings = string.Empty;
 		this.HairColor = string.Empty;
 		this.Stockings = string.Empty;
 		this.EyeColor = string.Empty;
@@ -257,6 +260,7 @@ public class CosmeticScript : MonoBehaviour
 			this.EyeColor = this.JSON.StudentEyes[this.StudentID];
 			this.Club = this.JSON.StudentClubs[this.StudentID];
 			text = this.JSON.StudentNames[this.StudentID];
+			this.OriginalStockings = this.Stockings;
 			this.Initialized = true;
 		}
 		if (text == "Random")
@@ -1075,7 +1079,7 @@ public class CosmeticScript : MonoBehaviour
 
 	public virtual IEnumerator PutOnStockings()
 	{
-		return new CosmeticScript.$PutOnStockings$3102(this).GetEnumerator();
+		return new CosmeticScript.$PutOnStockings$3098(this).GetEnumerator();
 	}
 
 	public virtual void Main()

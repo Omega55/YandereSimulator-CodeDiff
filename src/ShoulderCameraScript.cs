@@ -331,7 +331,6 @@ public class ShoulderCameraScript : MonoBehaviour
 					this.Timer += Time.deltaTime;
 					if (this.Timer > (float)2)
 					{
-						this.Yandere.Jukebox.PlayJojo();
 						this.Yandere.Stand.Spawn();
 						this.NoticedPOV.position = this.Yandere.transform.position + this.Yandere.transform.forward * (float)2 + Vector3.up * (float)2;
 						this.Timer = (float)0;
@@ -355,7 +354,7 @@ public class ShoulderCameraScript : MonoBehaviour
 					Vector3 localPosition = this.Yandere.Stand.transform.localPosition;
 					float num4 = localPosition.y = (float)num3;
 					Vector3 vector3 = this.Yandere.Stand.transform.localPosition = localPosition;
-					this.Yandere.StudentManager.RestoreStudents();
+					this.Yandere.Jukebox.PlayJojo();
 					this.Yandere.Talking = true;
 					this.Summoning = false;
 					this.Timer = (float)0;

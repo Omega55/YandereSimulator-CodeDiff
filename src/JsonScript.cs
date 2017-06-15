@@ -45,6 +45,8 @@ public class JsonScript : MonoBehaviour
 
 	public string[] StudentAccessories;
 
+	public bool[] StudentSuccess;
+
 	public UnityScript.Lang.Array[] StudentTimes;
 
 	public UnityScript.Lang.Array[] StudentDestinations;
@@ -174,6 +176,7 @@ public class JsonScript : MonoBehaviour
 			this.StudentEyes[this.ID] = TFUtils.LoadString(array[i], "Eyes");
 			this.StudentStockings[this.ID] = TFUtils.LoadString(array[i], "Stockings");
 			this.StudentAccessories[this.ID] = TFUtils.LoadString(array[i], "Accessory");
+			this.StudentSuccess[this.ID] = true;
 			if (PlayerPrefs.GetInt("HighPopulation") == 1 && this.StudentNames[this.ID] == "Unknown")
 			{
 				this.StudentNames[this.ID] = "Random";

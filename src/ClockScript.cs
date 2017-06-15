@@ -88,6 +88,7 @@ public class ClockScript : MonoBehaviour
 
 	public virtual void Start()
 	{
+		this.PeriodLabel.text = "BEFORE CLASS";
 		this.PresentTime = this.StartHour * (float)60;
 		if (PlayerPrefs.GetInt("Weekday") == 0)
 		{
@@ -202,48 +203,44 @@ public class ClockScript : MonoBehaviour
 		Vector3 vector2 = this.HourHand.localEulerAngles = localEulerAngles2;
 		if (this.HourTime < 8.5f)
 		{
-			this.PeriodLabel.text = "BEFORE CLASS";
 			if (this.Period < 1)
 			{
+				this.PeriodLabel.text = "CLASSTIME";
 				this.DeactivateTrespassZones();
 				this.Period++;
 			}
 		}
 		else if (this.HourTime < (float)13)
 		{
-			this.PeriodLabel.text = "CLASSTIME";
 			if (this.Period < 2)
 			{
+				this.PeriodLabel.text = "LUNCHTIME";
 				this.ActivateTrespassZones();
 				this.Period++;
 			}
 		}
 		else if (this.HourTime < 13.5f)
 		{
-			this.PeriodLabel.text = "LUNCHTIME";
 			if (this.Period < 3)
 			{
+				this.PeriodLabel.text = "CLASSTIME";
 				this.DeactivateTrespassZones();
 				this.Period++;
 			}
 		}
 		else if (this.HourTime < 15.5f)
 		{
-			this.PeriodLabel.text = "CLASSTIME";
 			if (this.Period < 4)
 			{
+				this.PeriodLabel.text = "AFTER SCHOOL";
 				this.ActivateTrespassZones();
 				this.Period++;
 			}
 		}
-		else
+		else if (this.Period < 5)
 		{
-			this.PeriodLabel.text = "AFTER SCHOOL";
-			if (this.Period < 5)
-			{
-				this.DeactivateTrespassZones();
-				this.Period++;
-			}
+			this.DeactivateTrespassZones();
+			this.Period++;
 		}
 		float z3 = (float)-45 + (float)90 * (this.PresentTime - (float)420) / (float)660;
 		Vector3 eulerAngles = this.Sun.eulerAngles;

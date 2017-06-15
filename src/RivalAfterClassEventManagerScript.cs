@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public class OsanaMondayBeforeClassEventScript : MonoBehaviour
+public class RivalAfterClassEventManagerScript : MonoBehaviour
 {
 	public virtual void Main()
 	{

@@ -163,7 +163,10 @@ public class QualityManagerScript : MonoBehaviour
 				{
 					if (!this.StudentManager.Students[i].Teacher)
 					{
-						this.StudentManager.Students[i].Cosmetic.FemaleHairRenderers[this.StudentManager.Students[i].Cosmetic.Hairstyle].material.shader = this.NewHairShader;
+						if (this.StudentManager.Students[i].Cosmetic.FemaleHairRenderers[this.StudentManager.Students[i].Cosmetic.Hairstyle] != null)
+						{
+							this.StudentManager.Students[i].Cosmetic.FemaleHairRenderers[this.StudentManager.Students[i].Cosmetic.Hairstyle].material.shader = this.NewHairShader;
+						}
 						if (this.StudentManager.Students[i].Cosmetic.Accessory > 0)
 						{
 							((Renderer)this.StudentManager.Students[i].Cosmetic.FemaleAccessories[this.StudentManager.Students[i].Cosmetic.Accessory].GetComponent(typeof(Renderer))).material.shader = this.NewHairShader;

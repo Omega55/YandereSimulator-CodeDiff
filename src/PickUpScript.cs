@@ -61,6 +61,8 @@ public class PickUpScript : MonoBehaviour
 
 	public bool Usable;
 
+	public bool Weight;
+
 	public int CarryAnimID;
 
 	public int Food;

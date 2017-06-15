@@ -30,6 +30,10 @@ public class StandScript : MonoBehaviour
 
 	public int Phase;
 
+	public AudioClip SummonSFX;
+
+	public bool SFX;
+
 	public virtual void Update()
 	{
 		if (!this.Stand.active)
@@ -43,6 +47,11 @@ public class StandScript : MonoBehaviour
 		{
 			if (this.Stand.animation["StandSummon"].time >= (float)2 && this.Stand.animation["StandSummon"].time <= 2.5f)
 			{
+				if (!this.SFX)
+				{
+					AudioSource.PlayClipAtPoint(this.SummonSFX, this.transform.position);
+					this.SFX = true;
+				}
 				UnityEngine.Object.Instantiate(this.SummonEffect, this.SummonTransform.position, Quaternion.identity);
 			}
 			if (this.Stand.animation["StandSummon"].time >= this.Stand.animation["StandSummon"].length)
