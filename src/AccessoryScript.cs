@@ -6,6 +6,8 @@ public class AccessoryScript : MonoBehaviour
 {
 	public PromptScript Prompt;
 
+	public Transform Target;
+
 	public float X;
 
 	public float Y;
@@ -18,7 +20,8 @@ public class AccessoryScript : MonoBehaviour
 		{
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
-			this.transform.parent = this.Prompt.Yandere.Spine[3];
+			this.Prompt.MyCollider.enabled = false;
+			this.transform.parent = this.Target;
 			this.transform.localPosition = new Vector3(this.X, this.Y, this.Z);
 			this.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
 			this.enabled = false;

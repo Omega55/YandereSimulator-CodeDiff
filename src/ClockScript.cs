@@ -205,7 +205,7 @@ public class ClockScript : MonoBehaviour
 		{
 			if (this.Period < 1)
 			{
-				this.PeriodLabel.text = "CLASSTIME";
+				this.PeriodLabel.text = "BEFORE CLASS";
 				this.DeactivateTrespassZones();
 				this.Period++;
 			}
@@ -214,7 +214,7 @@ public class ClockScript : MonoBehaviour
 		{
 			if (this.Period < 2)
 			{
-				this.PeriodLabel.text = "LUNCHTIME";
+				this.PeriodLabel.text = "CLASS TIME";
 				this.ActivateTrespassZones();
 				this.Period++;
 			}
@@ -223,7 +223,7 @@ public class ClockScript : MonoBehaviour
 		{
 			if (this.Period < 3)
 			{
-				this.PeriodLabel.text = "CLASSTIME";
+				this.PeriodLabel.text = "LUNCH TIME";
 				this.DeactivateTrespassZones();
 				this.Period++;
 			}
@@ -232,13 +232,14 @@ public class ClockScript : MonoBehaviour
 		{
 			if (this.Period < 4)
 			{
-				this.PeriodLabel.text = "AFTER SCHOOL";
+				this.PeriodLabel.text = "CLASS TIME";
 				this.ActivateTrespassZones();
 				this.Period++;
 			}
 		}
 		else if (this.Period < 5)
 		{
+			this.PeriodLabel.text = "AFTER SCHOOL";
 			this.DeactivateTrespassZones();
 			this.Period++;
 		}

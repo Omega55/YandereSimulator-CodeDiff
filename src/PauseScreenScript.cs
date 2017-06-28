@@ -19,6 +19,8 @@ public class PauseScreenScript : MonoBehaviour
 
 	public FavorMenuScript FavorMenu;
 
+	public MusicMenuScript MusicMenu;
+
 	public PromptBarScript PromptBar;
 
 	public PassTimeScript PassTime;
@@ -115,6 +117,7 @@ public class PauseScreenScript : MonoBehaviour
 		this.StudentInfoMenu.gameObject.active = false;
 		this.PhotoGallery.gameObject.active = false;
 		this.FavorMenu.gameObject.active = false;
+		this.MusicMenu.gameObject.active = false;
 		this.PassTime.gameObject.active = false;
 		this.Settings.gameObject.active = false;
 		this.Stats.gameObject.active = false;
@@ -431,8 +434,23 @@ public class PauseScreenScript : MonoBehaviour
 								{
 									if (this.Selected == 10)
 									{
-										this.PhoneIcons[this.Selected].transform.localScale = new Vector3((float)1, (float)1, (float)1);
-										this.MissionMode.ChangeMusic();
+										if (PlayerPrefs.GetInt("MissionMode") == 0)
+										{
+											this.MusicMenu.gameObject.active = true;
+											this.Settings.UpdateText();
+											this.MainMenu.active = false;
+											this.PromptBar.ClearButtons();
+											this.PromptBar.Label[0].text = "Play";
+											this.PromptBar.Label[1].text = "Back";
+											this.PromptBar.Label[4].text = "Choose";
+											this.PromptBar.UpdateButtons();
+											this.PromptBar.Show = true;
+										}
+										else
+										{
+											this.PhoneIcons[this.Selected].transform.localScale = new Vector3((float)1, (float)1, (float)1);
+											this.MissionMode.ChangeMusic();
+										}
 									}
 									else if (this.Selected == 11)
 									{

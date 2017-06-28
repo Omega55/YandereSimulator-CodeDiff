@@ -118,6 +118,10 @@ public class LoveManagerScript : MonoBehaviour
 	{
 		if (this.SuitorProgress == 2 && this.StudentManager.Students[7] != null && this.StudentManager.Students[13] != null)
 		{
+			this.StudentManager.Students[13].CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
+			this.StudentManager.Students[7].CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
+			this.StudentManager.Students[13].Character.animation.enabled = true;
+			this.StudentManager.Students[7].Character.animation.enabled = true;
 			this.StudentManager.Students[13].Character.animation.Play("walkHands_00");
 			this.StudentManager.Students[13].transform.eulerAngles = new Vector3((float)0, (float)0, (float)0);
 			this.StudentManager.Students[13].transform.position = new Vector3(-0.25f, (float)0, (float)-100);

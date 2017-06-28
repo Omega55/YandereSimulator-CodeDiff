@@ -61,6 +61,8 @@ public class StudentScript : MonoBehaviour
 
 	public WeaponScript MyWeapon;
 
+	public StudentScript Partner;
+
 	public RagdollScript Ragdoll;
 
 	public YandereScript Yandere;
@@ -1084,6 +1086,14 @@ public class StudentScript : MonoBehaviour
 			{
 				if (PlayerPrefs.GetInt("SuitorProgress") == 2)
 				{
+					if (this.StudentID == 7)
+					{
+						this.Partner = this.StudentManager.Students[13];
+					}
+					else
+					{
+						this.Partner = this.StudentManager.Students[7];
+					}
 					this.DestinationNames[4] = "Cuddle";
 					this.ActionNames[4] = "Cuddle";
 				}
@@ -1822,19 +1832,26 @@ public class StudentScript : MonoBehaviour
 								}
 								else if (this.Actions[this.Phase] == 17)
 								{
-									if (!this.Hearts.enableEmission)
+									if (Vector3.Distance(this.transform.position, this.Partner.transform.position) < (float)1)
 									{
-										this.Hearts.enableEmission = true;
-										if (!this.Male)
+										if (!this.Hearts.enableEmission)
 										{
-											this.Cosmetic.MyRenderer.materials[2].SetFloat("_BlendAmount", (float)1);
+											this.Hearts.enableEmission = true;
+											if (!this.Male)
+											{
+												this.Cosmetic.MyRenderer.materials[2].SetFloat("_BlendAmount", (float)1);
+											}
+											else
+											{
+												this.Cosmetic.MyRenderer.materials[this.Cosmetic.FaceID].SetFloat("_BlendAmount", (float)1);
+											}
 										}
-										else
-										{
-											this.Cosmetic.MyRenderer.materials[this.Cosmetic.FaceID].SetFloat("_BlendAmount", (float)1);
-										}
+										this.CharacterAnimation.CrossFade(this.CuddleAnim);
 									}
-									this.CharacterAnimation.CrossFade(this.CuddleAnim);
+									else
+									{
+										this.CharacterAnimation.CrossFade(this.IdleAnim);
+									}
 								}
 								else if (this.Actions[this.Phase] == 18)
 								{

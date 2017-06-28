@@ -136,6 +136,7 @@ public class RingEventScript : MonoBehaviour
 						this.EventStudent.Chopsticks[0].active = true;
 						this.EventStudent.Chopsticks[1].active = true;
 						this.EventStudent.Bento.active = true;
+						this.EventStudent.Lid.active = false;
 						this.EventPhase++;
 						this.Timer = (float)0;
 					}

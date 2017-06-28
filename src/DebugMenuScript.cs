@@ -475,6 +475,11 @@ public class DebugMenuScript : MonoBehaviour
 						this.Clock.HourTime = this.Clock.PresentTime / (float)60;
 						this.Window.active = false;
 					}
+					else if (Input.GetKeyDown("b"))
+					{
+						PlayerPrefs.SetInt("SuitorProgress", 2);
+						Application.LoadLevel("LoadingScene");
+					}
 				}
 			}
 			else if (Input.GetKeyDown("`"))

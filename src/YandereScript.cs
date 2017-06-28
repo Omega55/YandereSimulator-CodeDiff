@@ -12,18 +12,18 @@ public class YandereScript : MonoBehaviour
 {
 	[CompilerGenerated]
 	[Serializable]
-	internal sealed class $ApplyCustomCostume$3134 : GenericGenerator<WWW>
+	internal sealed class $ApplyCustomCostume$3166 : GenericGenerator<WWW>
 	{
-		internal YandereScript $self_$3149;
+		internal YandereScript $self_$3181;
 
-		public $ApplyCustomCostume$3134(YandereScript self_)
+		public $ApplyCustomCostume$3166(YandereScript self_)
 		{
-			this.$self_$3149 = self_;
+			this.$self_$3181 = self_;
 		}
 
 		public override IEnumerator<WWW> GetEnumerator()
 		{
-			return new YandereScript.$ApplyCustomCostume$3134.$(this.$self_$3149);
+			return new YandereScript.$ApplyCustomCostume$3166.$(this.$self_$3181);
 		}
 	}
 
@@ -217,8 +217,6 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject EasterEggMenu;
 
-	public GameObject Copyrights;
-
 	public GameObject GiggleDisc;
 
 	public GameObject HandCamera;
@@ -404,6 +402,8 @@ public class YandereScript : MonoBehaviour
 	public bool TimeSkipping;
 
 	public bool Cauterizing;
+
+	public bool HeavyWeight;
 
 	public bool Trespassing;
 
@@ -621,6 +621,10 @@ public class YandereScript : MonoBehaviour
 
 	public string CrawlWalkAnim;
 
+	public string HeavyIdleAnim;
+
+	public string HeavyWalkAnim;
+
 	public string CarryIdleAnim;
 
 	public string CarryWalkAnim;
@@ -730,8 +734,6 @@ public class YandereScript : MonoBehaviour
 	public GameObject CirnoIceAttack;
 
 	public AudioClip CirnoIceClip;
-
-	public GameObject CirnoRibbon;
 
 	public GameObject CirnoWings;
 
@@ -933,6 +935,8 @@ public class YandereScript : MonoBehaviour
 		this.CrouchRunAnim = string.Empty;
 		this.CrawlIdleAnim = string.Empty;
 		this.CrawlWalkAnim = string.Empty;
+		this.HeavyIdleAnim = string.Empty;
+		this.HeavyWalkAnim = string.Empty;
 		this.CarryIdleAnim = string.Empty;
 		this.CarryWalkAnim = string.Empty;
 		this.CarryRunAnim = string.Empty;
@@ -984,7 +988,6 @@ public class YandereScript : MonoBehaviour
 		this.FalconBuckle.active = false;
 		this.FalconHelmet.active = false;
 		this.TornadoDress.active = false;
-		this.CirnoRibbon.active = false;
 		this.Stand.Stand.active = false;
 		this.TornadoHair.active = false;
 		this.CirnoWings.active = false;
@@ -994,6 +997,7 @@ public class YandereScript : MonoBehaviour
 		this.Poisons[2].active = false;
 		this.Poisons[3].active = false;
 		this.BladeHair.active = false;
+		this.CirnoHair.active = false;
 		this.EbolaHair.active = false;
 		this.FalconGun.active = false;
 		this.EyepatchL.active = false;
@@ -2286,14 +2290,29 @@ public class YandereScript : MonoBehaviour
 						this.PK = false;
 					}
 				}
-				if (this.Lifting && this.CharacterAnimation["f02_carryLiftA_00"].time >= this.CharacterAnimation["f02_carryLiftA_00"].length)
+				if (this.Lifting)
 				{
-					this.IdleAnim = this.CarryIdleAnim;
-					this.WalkAnim = this.CarryWalkAnim;
-					this.RunAnim = this.CarryRunAnim;
-					this.CanMove = true;
-					this.Carrying = true;
-					this.Lifting = false;
+					if (!this.HeavyWeight)
+					{
+						if (this.CharacterAnimation["f02_carryLiftA_00"].time >= this.CharacterAnimation["f02_carryLiftA_00"].length)
+						{
+							this.IdleAnim = this.CarryIdleAnim;
+							this.WalkAnim = this.CarryWalkAnim;
+							this.RunAnim = this.CarryRunAnim;
+							this.CanMove = true;
+							this.Carrying = true;
+							this.Lifting = false;
+						}
+					}
+					else if (this.CharacterAnimation["f02_heavyWeightLift_00"].time >= this.CharacterAnimation["f02_heavyWeightLift_00"].length)
+					{
+						this.CharacterAnimation[this.CarryAnims[0]].weight = (float)1;
+						this.IdleAnim = this.HeavyIdleAnim;
+						this.WalkAnim = this.HeavyWalkAnim;
+						this.RunAnim = this.CarryRunAnim;
+						this.CanMove = true;
+						this.Lifting = false;
+					}
 				}
 				if (this.Dropping)
 				{
@@ -3744,19 +3763,6 @@ public class YandereScript : MonoBehaviour
 							{
 							}
 						}
-						if (Input.GetKeyDown("d"))
-						{
-							if (this.Copyrights.active)
-							{
-								this.Jukebox.MuteCopyrights = true;
-								this.Copyrights.active = false;
-							}
-							else
-							{
-								this.Jukebox.MuteCopyrights = false;
-								this.Copyrights.active = true;
-							}
-						}
 					}
 				}
 			}
@@ -4148,7 +4154,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual void EmptyHands()
 	{
-		if (this.Carrying)
+		if (this.Carrying || this.HeavyWeight)
 		{
 			this.StopCarrying();
 		}
@@ -4335,7 +4341,7 @@ public class YandereScript : MonoBehaviour
 
 	public virtual IEnumerator ApplyCustomCostume()
 	{
-		return new YandereScript.$ApplyCustomCostume$3134(this).GetEnumerator();
+		return new YandereScript.$ApplyCustomCostume$3166(this).GetEnumerator();
 	}
 
 	public virtual void WearGloves()
@@ -4530,7 +4536,6 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.materials[0].mainTexture = this.CirnoUniform;
 		this.MyRenderer.materials[1].mainTexture = this.CirnoUniform;
 		this.MyRenderer.materials[2].mainTexture = this.CirnoFace;
-		this.CirnoRibbon.active = true;
 		this.CirnoWings.active = true;
 		this.CirnoHair.active = true;
 		this.IdleAnim = "f02_cirnoIdle_00";

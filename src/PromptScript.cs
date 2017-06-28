@@ -89,6 +89,8 @@ public class PromptScript : MonoBehaviour
 
 	public GameObject YandereObject;
 
+	public Transform RaycastTarget;
+
 	public bool Hidden;
 
 	public PromptScript()
@@ -107,6 +109,10 @@ public class PromptScript : MonoBehaviour
 		this.Distance = (float)99999;
 		if (!this.Initialized)
 		{
+			if (this.RaycastTarget == null)
+			{
+				this.RaycastTarget = this.transform;
+			}
 			if (Extensions.get_length(this.OffsetZ) == 0)
 			{
 				this.OffsetZ = new float[4];
@@ -211,8 +217,8 @@ public class PromptScript : MonoBehaviour
 					if (this.Yandere.CanMove && !this.Yandere.Crouching && !this.Yandere.Crawling && !this.Yandere.Aiming && !this.Yandere.Mopping && !this.Yandere.NearSenpai)
 					{
 						RaycastHit raycastHit = default(RaycastHit);
-						Debug.DrawLine(this.Yandere.Eyes.position + Vector3.down * this.Height, this.transform.position, Color.green);
-						if (Physics.Linecast(this.Yandere.Eyes.position + Vector3.down * this.Height, this.transform.position, out raycastHit, this.BloodMask))
+						Debug.DrawLine(this.Yandere.Eyes.position + Vector3.down * this.Height, this.RaycastTarget.position, Color.green);
+						if (Physics.Linecast(this.Yandere.Eyes.position + Vector3.down * this.Height, this.RaycastTarget.position, out raycastHit, this.BloodMask))
 						{
 							if (this.Debugging)
 							{

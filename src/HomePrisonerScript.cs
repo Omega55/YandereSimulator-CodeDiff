@@ -267,9 +267,13 @@ public class HomePrisonerScript : MonoBehaviour
 				{
 					if (this.Sanity > (float)0)
 					{
-						if (this.Sanity >= (float)50)
+						if (this.Sanity == (float)100)
 						{
 							this.Prisoner.Character.animation.CrossFade("f02_kidnapTorture_01");
+						}
+						else if (this.Sanity >= (float)50)
+						{
+							this.Prisoner.Character.animation.CrossFade("f02_kidnapTorture_02");
 						}
 						else
 						{

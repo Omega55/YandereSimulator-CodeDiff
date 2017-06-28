@@ -24,6 +24,8 @@ public class JukeboxScript : MonoBehaviour
 
 	public AudioSource Sukeban;
 
+	public AudioSource Custom;
+
 	public AudioSource Hatred;
 
 	public AudioSource Hitman;
@@ -65,8 +67,6 @@ public class JukeboxScript : MonoBehaviour
 	public float Timer;
 
 	public float Dip;
-
-	public bool MuteCopyrights;
 
 	public bool Egg;
 
@@ -128,6 +128,11 @@ public class JukeboxScript : MonoBehaviour
 		this.Timer += Time.deltaTime;
 		if (Input.GetKeyDown("m"))
 		{
+			if (Input.GetKeyDown("m") && this.Custom.isPlaying)
+			{
+				this.Egg = false;
+				this.Custom.Stop();
+			}
 			if (this.Volume == (float)0)
 			{
 				this.FadeSpeed = (float)1;
@@ -185,6 +190,7 @@ public class JukeboxScript : MonoBehaviour
 			this.Nuclear.volume = Mathf.MoveTowards(this.Nuclear.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Slender.volume = Mathf.MoveTowards(this.Slender.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Sukeban.volume = Mathf.MoveTowards(this.Sukeban.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
+			this.Custom.volume = Mathf.MoveTowards(this.Custom.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Hatred.volume = Mathf.MoveTowards(this.Hatred.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Hitman.volume = Mathf.MoveTowards(this.Hitman.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
 			this.Touhou.volume = Mathf.MoveTowards(this.Touhou.volume, this.Volume * this.Dip, Time.deltaTime * (float)10);
@@ -200,12 +206,9 @@ public class JukeboxScript : MonoBehaviour
 		{
 			if (Input.GetKeyDown("t"))
 			{
-				if (!this.MuteCopyrights)
-				{
-					this.Egg = true;
-					this.KillVolume();
-					this.AttackOnTitan.enabled = true;
-				}
+				this.Egg = true;
+				this.KillVolume();
+				this.AttackOnTitan.enabled = true;
 			}
 			else if (Input.GetKeyDown("p"))
 			{
@@ -233,21 +236,15 @@ public class JukeboxScript : MonoBehaviour
 			}
 			else if (Input.GetKeyDown("g"))
 			{
-				if (!this.MuteCopyrights)
-				{
-					this.Egg = true;
-					this.KillVolume();
-					this.Galo.enabled = true;
-				}
+				this.Egg = true;
+				this.KillVolume();
+				this.Galo.enabled = true;
 			}
 			else if (Input.GetKeyDown("l"))
 			{
-				if (!this.MuteCopyrights)
-				{
-					this.Egg = true;
-					this.KillVolume();
-					this.Hitman.enabled = true;
-				}
+				this.Egg = true;
+				this.KillVolume();
+				this.Hitman.enabled = true;
 			}
 			else if (Input.GetKeyDown("s"))
 			{
@@ -287,12 +284,9 @@ public class JukeboxScript : MonoBehaviour
 			}
 			else if (Input.GetKeyDown("q"))
 			{
-				if (!this.MuteCopyrights)
-				{
-					this.Egg = true;
-					this.KillVolume();
-					this.Metroid.enabled = true;
-				}
+				this.Egg = true;
+				this.KillVolume();
+				this.Metroid.enabled = true;
 			}
 			else if (Input.GetKeyDown("y"))
 			{
@@ -300,7 +294,7 @@ public class JukeboxScript : MonoBehaviour
 				this.KillVolume();
 				this.Ninja.enabled = true;
 			}
-			else if ((Input.GetKeyDown("e") || Input.GetKeyDown("6") || Input.GetKeyDown("7")) && !this.MuteCopyrights)
+			else if (Input.GetKeyDown("e") || Input.GetKeyDown("6") || Input.GetKeyDown("7"))
 			{
 				this.Egg = true;
 				this.KillVolume();
@@ -327,6 +321,7 @@ public class JukeboxScript : MonoBehaviour
 		this.Nuclear.Stop();
 		this.Sukeban.Stop();
 		this.Slender.Stop();
+		this.Custom.Stop();
 		this.Hatred.Stop();
 		this.Hitman.Stop();
 		this.Touhou.Stop();
@@ -343,12 +338,17 @@ public class JukeboxScript : MonoBehaviour
 
 	public virtual void PlayJojo()
 	{
-		if (!this.MuteCopyrights)
-		{
-			this.Egg = true;
-			this.KillVolume();
-			this.Jojo.enabled = true;
-		}
+		this.Egg = true;
+		this.KillVolume();
+		this.Jojo.enabled = true;
+	}
+
+	public virtual void PlayCustom()
+	{
+		this.Egg = true;
+		this.KillVolume();
+		this.Custom.enabled = true;
+		this.Custom.Play();
 	}
 
 	public virtual void Main()

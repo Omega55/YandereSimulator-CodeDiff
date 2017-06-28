@@ -39,6 +39,8 @@ public class PickUpScript : MonoBehaviour
 
 	public bool LockRotation;
 
+	public bool BeingLifted;
+
 	public bool CanCollide;
 
 	public bool Suspicious;
@@ -96,68 +98,22 @@ public class PickUpScript : MonoBehaviour
 	{
 		if (this.Prompt.Circle[3].fillAmount <= (float)0)
 		{
-			this.Prompt.Circle[3].fillAmount = (float)1;
-			if (this.Yandere.PickUp != null)
+			if (this.Weight)
 			{
-				this.Yandere.PickUp.Drop();
-			}
-			if (this.Yandere.Equipped == 3)
-			{
-				this.Yandere.Weapon[3].Drop();
-			}
-			else if (this.Yandere.Equipped > 0)
-			{
-				this.Yandere.Unequip();
-			}
-			if (this.Yandere.Dragging)
-			{
-				((RagdollScript)this.Yandere.Ragdoll.GetComponent(typeof(RagdollScript))).StopDragging();
-			}
-			if (this.Yandere.Carrying)
-			{
-				this.Yandere.StopCarrying();
-			}
-			if (!this.LeftHand)
-			{
-				this.transform.parent = this.Yandere.ItemParent;
+				this.transform.parent = this.Yandere.transform;
+				this.transform.localPosition = new Vector3((float)0, (float)0, 0.75f);
+				this.transform.localEulerAngles = new Vector3((float)0, (float)90, (float)0);
+				this.transform.parent = null;
+				this.Yandere.Character.animation.Play("f02_heavyWeightLift_00");
+				this.Yandere.HeavyWeight = true;
+				this.Yandere.CanMove = false;
+				this.Yandere.Lifting = true;
+				this.BeingLifted = true;
 			}
 			else
 			{
-				this.transform.parent = this.Yandere.LeftItemParent;
+				this.BePickedUp();
 			}
-			if ((RadioScript)this.GetComponent(typeof(RadioScript)) != null)
-			{
-				((RadioScript)this.GetComponent(typeof(RadioScript))).TurnOff();
-			}
-			this.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
-			this.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
-			this.MyCollider.enabled = false;
-			if (this.MyRigidbody != null)
-			{
-				this.MyRigidbody.constraints = RigidbodyConstraints.FreezeAll;
-			}
-			if (!this.Usable)
-			{
-				this.Prompt.Hide();
-				this.Prompt.enabled = false;
-				this.Yandere.NearestPrompt = null;
-			}
-			else
-			{
-				this.Prompt.Carried = true;
-			}
-			this.Yandere.PickUp = this;
-			this.Yandere.CarryAnimID = this.CarryAnimID;
-			for (int i = 0; i < Extensions.get_length(this.Outline); i++)
-			{
-				this.Outline[i].color = new Color((float)0, (float)0, (float)0, (float)1);
-			}
-			if (this.BodyPart)
-			{
-				this.Yandere.NearBodies = this.Yandere.NearBodies + 1;
-			}
-			this.Yandere.StudentManager.UpdateStudents();
-			this.KinematicTimer = (float)0;
 		}
 		if (this.Yandere.PickUp == this)
 		{
@@ -189,6 +145,89 @@ public class PickUpScript : MonoBehaviour
 				this.KinematicTimer = (float)0;
 			}
 		}
+		if (this.Weight && this.BeingLifted)
+		{
+			if (this.Yandere.Lifting)
+			{
+				if (this.Yandere.CharacterAnimation["f02_heavyWeightLift_00"].time >= (float)2)
+				{
+					this.transform.parent = this.Yandere.LeftItemParent;
+					this.transform.localPosition = this.HoldPosition;
+					this.transform.localEulerAngles = this.HoldRotation;
+				}
+			}
+			else
+			{
+				this.BePickedUp();
+				this.BeingLifted = false;
+			}
+		}
+	}
+
+	public virtual void BePickedUp()
+	{
+		this.Prompt.Circle[3].fillAmount = (float)1;
+		if (this.Yandere.PickUp != null)
+		{
+			this.Yandere.PickUp.Drop();
+		}
+		if (this.Yandere.Equipped == 3)
+		{
+			this.Yandere.Weapon[3].Drop();
+		}
+		else if (this.Yandere.Equipped > 0)
+		{
+			this.Yandere.Unequip();
+		}
+		if (this.Yandere.Dragging)
+		{
+			((RagdollScript)this.Yandere.Ragdoll.GetComponent(typeof(RagdollScript))).StopDragging();
+		}
+		if (this.Yandere.Carrying)
+		{
+			this.Yandere.StopCarrying();
+		}
+		if (!this.LeftHand)
+		{
+			this.transform.parent = this.Yandere.ItemParent;
+		}
+		else
+		{
+			this.transform.parent = this.Yandere.LeftItemParent;
+		}
+		if ((RadioScript)this.GetComponent(typeof(RadioScript)) != null)
+		{
+			((RadioScript)this.GetComponent(typeof(RadioScript))).TurnOff();
+		}
+		this.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
+		this.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+		this.MyCollider.enabled = false;
+		if (this.MyRigidbody != null)
+		{
+			this.MyRigidbody.constraints = RigidbodyConstraints.FreezeAll;
+		}
+		if (!this.Usable)
+		{
+			this.Prompt.Hide();
+			this.Prompt.enabled = false;
+			this.Yandere.NearestPrompt = null;
+		}
+		else
+		{
+			this.Prompt.Carried = true;
+		}
+		this.Yandere.PickUp = this;
+		this.Yandere.CarryAnimID = this.CarryAnimID;
+		for (int i = 0; i < Extensions.get_length(this.Outline); i++)
+		{
+			this.Outline[i].color = new Color((float)0, (float)0, (float)0, (float)1);
+		}
+		if (this.BodyPart)
+		{
+			this.Yandere.NearBodies = this.Yandere.NearBodies + 1;
+		}
+		this.Yandere.StudentManager.UpdateStudents();
+		this.KinematicTimer = (float)0;
 	}
 
 	public virtual void Drop()
