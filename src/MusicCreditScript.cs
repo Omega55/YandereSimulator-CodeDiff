@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class MusicCreditScript : MonoBehaviour
 {
 	public UILabel SongLabel;
@@ -14,52 +13,33 @@ public class MusicCreditScript : MonoBehaviour
 
 	public float Timer;
 
-	public virtual void Start()
+	private void Start()
 	{
-		int num = 400;
-		Vector3 localPosition = this.transform.localPosition;
-		float num2 = localPosition.x = (float)num;
-		Vector3 vector = this.transform.localPosition = localPosition;
+		base.transform.localPosition = new Vector3(400f, base.transform.localPosition.y, base.transform.localPosition.z);
 		this.Panel.enabled = false;
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.Slide)
 		{
 			this.Timer += Time.deltaTime;
-			if (this.Timer < (float)5)
+			if (this.Timer < 5f)
 			{
-				float x = Mathf.Lerp(this.transform.localPosition.x, (float)0, Time.deltaTime * (float)10);
-				Vector3 localPosition = this.transform.localPosition;
-				float num = localPosition.x = x;
-				Vector3 vector = this.transform.localPosition = localPosition;
+				base.transform.localPosition = new Vector3(Mathf.Lerp(base.transform.localPosition.x, 0f, Time.deltaTime * 10f), base.transform.localPosition.y, base.transform.localPosition.z);
 			}
 			else
 			{
-				float x2 = this.transform.localPosition.x + Time.deltaTime;
-				Vector3 localPosition2 = this.transform.localPosition;
-				float num2 = localPosition2.x = x2;
-				Vector3 vector2 = this.transform.localPosition = localPosition2;
-				float x3 = this.transform.localPosition.x + Mathf.Abs(this.transform.localPosition.x * 0.01f) * Time.deltaTime * (float)1000;
-				Vector3 localPosition3 = this.transform.localPosition;
-				float num3 = localPosition3.x = x3;
-				Vector3 vector3 = this.transform.localPosition = localPosition3;
-				if (this.transform.localPosition.x > (float)400)
+				base.transform.localPosition = new Vector3(base.transform.localPosition.x + Time.deltaTime, base.transform.localPosition.y, base.transform.localPosition.z);
+				base.transform.localPosition = new Vector3(base.transform.localPosition.x + Mathf.Abs(base.transform.localPosition.x * 0.01f) * (Time.deltaTime * 1000f), base.transform.localPosition.y, base.transform.localPosition.z);
+				if (base.transform.localPosition.x > 400f)
 				{
-					int num4 = 400;
-					Vector3 localPosition4 = this.transform.localPosition;
-					float num5 = localPosition4.x = (float)num4;
-					Vector3 vector4 = this.transform.localPosition = localPosition4;
+					base.transform.localPosition = new Vector3(400f, base.transform.localPosition.y, base.transform.localPosition.z);
 					this.Panel.enabled = false;
 					this.Slide = false;
-					this.Timer = (float)0;
+					this.Timer = 0f;
 				}
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

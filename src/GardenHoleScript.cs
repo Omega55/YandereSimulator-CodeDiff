@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class GardenHoleScript : MonoBehaviour
 {
 	public YandereScript Yandere;
@@ -29,19 +27,19 @@ public class GardenHoleScript : MonoBehaviour
 
 	public int ID;
 
-	public virtual void Start()
+	private void Start()
 	{
-		if (PlayerPrefs.GetInt("GardenGrave_" + this.ID + "_Occupied") == 1)
+		if (PlayerPrefs.GetInt("GardenGrave_" + this.ID.ToString() + "_Occupied") == 1)
 		{
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
-			this.enabled = false;
+			base.enabled = false;
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Yandere.transform.position.z < this.transform.position.z - 0.5f)
+		if (this.Yandere.transform.position.z < base.transform.position.z - 0.5f)
 		{
 			if (this.Yandere.Equipped > 0)
 			{
@@ -66,50 +64,50 @@ public class GardenHoleScript : MonoBehaviour
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
 		}
-		if (this.Prompt.Circle[0].fillAmount == (float)0)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			for (int i = 0; i < Extensions.get_length(this.Yandere.ArmedAnims); i++)
+			foreach (string name in this.Yandere.ArmedAnims)
 			{
-				this.Yandere.CharacterAnimation[this.Yandere.ArmedAnims[i]].weight = (float)0;
+				this.Yandere.CharacterAnimation[name].weight = 0f;
 			}
-			this.Yandere.transform.rotation = Quaternion.LookRotation(new Vector3(this.transform.position.x, this.Yandere.transform.position.y, this.transform.position.z) - this.Yandere.transform.position);
+			this.Yandere.transform.rotation = Quaternion.LookRotation(new Vector3(base.transform.position.x, this.Yandere.transform.position.y, base.transform.position.z) - this.Yandere.transform.position);
 			this.Yandere.RPGCamera.transform.eulerAngles = this.Yandere.DigSpot.eulerAngles;
 			this.Yandere.RPGCamera.transform.position = this.Yandere.DigSpot.position;
-			this.Yandere.Weapon[this.Yandere.Equipped].gameObject.active = false;
-			this.Yandere.CharacterAnimation["f02_shovelBury_00"].time = (float)0;
-			this.Yandere.CharacterAnimation["f02_shovelDig_00"].time = (float)0;
-			this.Yandere.FloatingShovel.active = true;
+			this.Yandere.Weapon[this.Yandere.Equipped].gameObject.SetActive(false);
+			this.Yandere.CharacterAnimation["f02_shovelBury_00"].time = 0f;
+			this.Yandere.CharacterAnimation["f02_shovelDig_00"].time = 0f;
+			this.Yandere.FloatingShovel.SetActive(true);
 			this.Yandere.RPGCamera.enabled = false;
 			this.Yandere.CanMove = false;
 			this.Yandere.DigPhase = 1;
-			this.Prompt.Circle[0].fillAmount = (float)1;
+			this.Prompt.Circle[0].fillAmount = 1f;
 			if (!this.Dug)
 			{
-				this.Yandere.FloatingShovel.animation["Dig"].time = (float)0;
-				this.Yandere.FloatingShovel.animation.Play("Dig");
-				this.Yandere.Character.animation.Play("f02_shovelDig_00");
+				this.Yandere.FloatingShovel.GetComponent<Animation>()["Dig"].time = 0f;
+				this.Yandere.FloatingShovel.GetComponent<Animation>().Play("Dig");
+				this.Yandere.Character.GetComponent<Animation>().Play("f02_shovelDig_00");
 				this.Yandere.Digging = true;
-				this.Prompt.Label[0].text = "     " + "Fill";
+				this.Prompt.Label[0].text = "     Fill";
 				this.MyCollider.isTrigger = true;
 				this.MyMesh.mesh = this.HoleMesh;
-				this.Pile.active = true;
+				this.Pile.SetActive(true);
 				this.Dug = true;
 			}
 			else
 			{
-				this.Yandere.FloatingShovel.animation["Bury"].time = (float)0;
-				this.Yandere.FloatingShovel.animation.Play("Bury");
-				this.Yandere.Character.animation.Play("f02_shovelBury_00");
+				this.Yandere.FloatingShovel.GetComponent<Animation>()["Bury"].time = 0f;
+				this.Yandere.FloatingShovel.GetComponent<Animation>().Play("Bury");
+				this.Yandere.Character.GetComponent<Animation>().Play("f02_shovelBury_00");
 				this.Yandere.Burying = true;
-				this.Prompt.Label[0].text = "     " + "Dig";
+				this.Prompt.Label[0].text = "     Dig";
 				this.MyCollider.isTrigger = false;
 				this.MyMesh.mesh = this.MoundMesh;
-				this.Pile.active = false;
+				this.Pile.SetActive(false);
 				this.Dug = false;
 			}
 			if (this.Bury)
 			{
-				this.Yandere.Police.Corpses = this.Yandere.Police.Corpses - 1;
+				this.Yandere.Police.Corpses--;
 				if (this.Yandere.Police.SuicideScene && this.Yandere.Police.Corpses == 1)
 				{
 					this.Yandere.Police.MurderScene = false;
@@ -120,35 +118,31 @@ public class GardenHoleScript : MonoBehaviour
 				}
 				this.VictimID = this.Corpse.StudentID;
 				this.Corpse.Remove();
-				PlayerPrefs.SetInt("GardenGrave_" + this.ID + "_Occupied", 1);
+				PlayerPrefs.SetInt("GardenGrave_" + this.ID.ToString() + "_Occupied", 1);
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
-				this.enabled = false;
+				base.enabled = false;
 			}
 		}
 	}
 
-	public virtual void OnTriggerEnter(Collider other)
+	private void OnTriggerEnter(Collider other)
 	{
 		if (this.Dug && other.gameObject.layer == 11)
 		{
-			this.Prompt.Label[0].text = "     " + "Bury";
-			this.Corpse = (RagdollScript)other.transform.root.gameObject.GetComponent(typeof(RagdollScript));
+			this.Prompt.Label[0].text = "     Bury";
+			this.Corpse = other.transform.root.gameObject.GetComponent<RagdollScript>();
 			this.Bury = true;
 		}
 	}
 
-	public virtual void OnTriggerExit(Collider other)
+	private void OnTriggerExit(Collider other)
 	{
 		if (this.Dug && other.gameObject.layer == 11)
 		{
-			this.Prompt.Label[0].text = "     " + "Fill";
+			this.Prompt.Label[0].text = "     Fill";
 			this.Corpse = null;
 			this.Bury = false;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

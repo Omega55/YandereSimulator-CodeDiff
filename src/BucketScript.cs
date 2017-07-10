@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class BucketScript : MonoBehaviour
 {
 	public ParticleSystem PourEffect;
@@ -38,7 +37,7 @@ public class BucketScript : MonoBehaviour
 
 	public float Bloodiness;
 
-	public float FillSpeed;
+	public float FillSpeed = 1f;
 
 	public float Distance;
 
@@ -56,57 +55,37 @@ public class BucketScript : MonoBehaviour
 
 	public bool Fly;
 
-	public BucketScript()
+	private void Start()
 	{
-		this.FillSpeed = 1f;
+		this.Water.transform.localPosition = new Vector3(this.Water.transform.localPosition.x, 0f, this.Water.transform.localPosition.z);
+		this.Water.transform.localScale = new Vector3(0.235f, 1f, 0.14f);
+		this.Water.material.color = new Color(this.Water.material.color.r, this.Water.material.color.g, this.Water.material.color.b, 0f);
+		this.Blood.material.color = new Color(this.Blood.material.color.r, this.Blood.material.color.g, this.Blood.material.color.b, 0f);
+		this.Gas.transform.localPosition = new Vector3(this.Gas.transform.localPosition.x, 0f, this.Gas.transform.localPosition.z);
+		this.Gas.transform.localScale = new Vector3(0.235f, 1f, 0.14f);
+		this.Gas.material.color = new Color(this.Gas.material.color.r, this.Gas.material.color.g, this.Gas.material.color.b, 0f);
+		this.Yandere = GameObject.Find("YandereChan").GetComponent<YandereScript>();
 	}
 
-	public virtual void Start()
+	private void Update()
 	{
-		int num = 0;
-		Vector3 localPosition = this.Water.transform.localPosition;
-		float num2 = localPosition.y = (float)num;
-		Vector3 vector = this.Water.transform.localPosition = localPosition;
-		this.Water.transform.localScale = new Vector3(0.235f, (float)1, 0.14f);
-		int num3 = 0;
-		Color color = this.Water.material.color;
-		float num4 = color.a = (float)num3;
-		Color color2 = this.Water.material.color = color;
-		int num5 = 0;
-		Color color3 = this.Blood.material.color;
-		float num6 = color3.a = (float)num5;
-		Color color4 = this.Blood.material.color = color3;
-		int num7 = 0;
-		Vector3 localPosition2 = this.Gas.transform.localPosition;
-		float num8 = localPosition2.y = (float)num7;
-		Vector3 vector2 = this.Gas.transform.localPosition = localPosition2;
-		this.Gas.transform.localScale = new Vector3(0.235f, (float)1, 0.14f);
-		int num9 = 0;
-		Color color5 = this.Gas.material.color;
-		float num10 = color5.a = (float)num9;
-		Color color6 = this.Gas.material.color = color5;
-		this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent(typeof(YandereScript));
-	}
-
-	public virtual void Update()
-	{
-		this.Distance = Vector3.Distance(this.transform.position, this.Yandere.transform.position);
-		if (this.Distance < (float)1)
+		this.Distance = Vector3.Distance(base.transform.position, this.Yandere.transform.position);
+		if (this.Distance < 1f)
 		{
 			if (this.Yandere.Bucket == null)
 			{
-				if (this.transform.position.y > this.Yandere.transform.position.y - 0.1f && this.transform.position.y < this.Yandere.transform.position.y + 0.1f && Physics.Linecast(this.transform.position, this.Yandere.transform.position + Vector3.up * (float)1, out this.hit) && this.hit.collider.gameObject == this.Yandere.gameObject)
+				if (base.transform.position.y > this.Yandere.transform.position.y - 0.1f && base.transform.position.y < this.Yandere.transform.position.y + 0.1f && Physics.Linecast(base.transform.position, this.Yandere.transform.position + Vector3.up, out this.hit) && this.hit.collider.gameObject == this.Yandere.gameObject)
 				{
 					this.Yandere.Bucket = this;
 				}
 			}
 			else
 			{
-				if (Physics.Linecast(this.transform.position, this.Yandere.transform.position + Vector3.up * (float)1, out this.hit) && this.hit.collider.gameObject != this.Yandere.gameObject)
+				if (Physics.Linecast(base.transform.position, this.Yandere.transform.position + Vector3.up, out this.hit) && this.hit.collider.gameObject != this.Yandere.gameObject)
 				{
 					this.Yandere.Bucket = null;
 				}
-				if (this.transform.position.y < this.Yandere.transform.position.y - 0.1f || this.transform.position.y > this.Yandere.transform.position.y + 0.1f)
+				if (base.transform.position.y < this.Yandere.transform.position.y - 0.1f || base.transform.position.y > this.Yandere.transform.position.y + 0.1f)
 				{
 					this.Yandere.Bucket = null;
 				}
@@ -118,9 +97,9 @@ public class BucketScript : MonoBehaviour
 		}
 		if (this.Yandere.Bucket == this && this.Yandere.Dipping)
 		{
-			this.transform.position = Vector3.Lerp(this.transform.position, this.Yandere.transform.position + this.Yandere.transform.forward * 0.55f, Time.deltaTime * (float)10);
-			Quaternion to = Quaternion.LookRotation(new Vector3(this.Yandere.transform.position.x, this.transform.position.y, this.Yandere.transform.position.z) - this.transform.position);
-			this.transform.rotation = Quaternion.Slerp(this.transform.rotation, to, Time.deltaTime * (float)10);
+			base.transform.position = Vector3.Lerp(base.transform.position, this.Yandere.transform.position + this.Yandere.transform.forward * 0.55f, Time.deltaTime * 10f);
+			Quaternion b = Quaternion.LookRotation(new Vector3(this.Yandere.transform.position.x, base.transform.position.y, this.Yandere.transform.position.z) - base.transform.position);
+			base.transform.rotation = Quaternion.Slerp(base.transform.rotation, b, Time.deltaTime * 10f);
 		}
 		if (this.Yandere.PickUp != null)
 		{
@@ -128,7 +107,7 @@ public class BucketScript : MonoBehaviour
 			{
 				if (!this.Yandere.PickUp.Empty)
 				{
-					this.Prompt.Label[0].text = "     " + "Pour Gasoline";
+					this.Prompt.Label[0].text = "     Pour Gasoline";
 					this.Prompt.HideButton[0] = false;
 				}
 				else
@@ -136,10 +115,10 @@ public class BucketScript : MonoBehaviour
 					this.Prompt.HideButton[0] = true;
 				}
 			}
-			else if (this.Yandere.PickUp == this.PickUp && (this.Yandere.v != (float)0 || this.Yandere.h != (float)0) && this.Full && Input.GetButtonDown("RB"))
+			else if (this.Yandere.PickUp == this.PickUp && (this.Yandere.v != 0f || this.Yandere.h != 0f) && this.Full && Input.GetButtonDown("RB"))
 			{
 				this.Yandere.EmptyHands();
-				this.Yandere.Character.animation.CrossFade("f02_bucketTrip_00");
+				this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_bucketTrip_00");
 				this.Yandere.Tripping = true;
 				this.Yandere.CanMove = false;
 				this.Full = false;
@@ -152,7 +131,7 @@ public class BucketScript : MonoBehaviour
 			{
 				if (this.Dumbbells < 5)
 				{
-					this.Prompt.Label[0].text = "     " + "Place Dumbbell";
+					this.Prompt.Label[0].text = "     Place Dumbbell";
 					this.Prompt.HideButton[0] = false;
 				}
 				else
@@ -171,46 +150,48 @@ public class BucketScript : MonoBehaviour
 		}
 		else
 		{
-			this.Prompt.Label[0].text = "     " + "Remove Dumbbell";
+			this.Prompt.Label[0].text = "     Remove Dumbbell";
 			this.Prompt.HideButton[0] = false;
 		}
 		if (this.Dumbbells > 0)
 		{
 			if (PlayerPrefs.GetInt("PhysicalGrade") + PlayerPrefs.GetInt("PhysicalBonus") == 0)
 			{
-				this.Prompt.Label[3].text = "     " + "Physical Stat Too Low";
-				this.Prompt.Circle[3].fillAmount = (float)1;
+				this.Prompt.Label[3].text = "     Physical Stat Too Low";
+				this.Prompt.Circle[3].fillAmount = 1f;
 			}
 			else
 			{
-				this.Prompt.Label[3].text = "     " + "Carry";
+				this.Prompt.Label[3].text = "     Carry";
 			}
 		}
-		if (this.Prompt.Circle[0].fillAmount == (float)0)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			this.Prompt.Circle[0].fillAmount = (float)1;
-			if (this.Prompt.Label[0].text == "     " + "Place Dumbbell")
+			this.Prompt.Circle[0].fillAmount = 1f;
+			if (this.Prompt.Label[0].text.Equals("     Place Dumbbell"))
 			{
 				this.Dumbbells++;
 				this.Dumbbell[this.Dumbbells] = this.Yandere.Weapon[this.Yandere.Equipped].gameObject;
 				this.Yandere.EmptyHands();
-				((WeaponScript)this.Dumbbell[this.Dumbbells].GetComponent(typeof(WeaponScript))).enabled = false;
-				((PromptScript)this.Dumbbell[this.Dumbbells].GetComponent(typeof(PromptScript))).enabled = false;
-				((PromptScript)this.Dumbbell[this.Dumbbells].GetComponent(typeof(PromptScript))).Hide();
-				((Collider)this.Dumbbell[this.Dumbbells].GetComponent(typeof(Collider))).enabled = false;
-				this.Dumbbell[this.Dumbbells].rigidbody.useGravity = false;
-				this.Dumbbell[this.Dumbbells].rigidbody.isKinematic = true;
-				this.Dumbbell[this.Dumbbells].transform.parent = this.transform;
+				this.Dumbbell[this.Dumbbells].GetComponent<WeaponScript>().enabled = false;
+				this.Dumbbell[this.Dumbbells].GetComponent<PromptScript>().enabled = false;
+				this.Dumbbell[this.Dumbbells].GetComponent<PromptScript>().Hide();
+				this.Dumbbell[this.Dumbbells].GetComponent<Collider>().enabled = false;
+				Rigidbody component = this.Dumbbell[this.Dumbbells].GetComponent<Rigidbody>();
+				component.useGravity = false;
+				component.isKinematic = true;
+				this.Dumbbell[this.Dumbbells].transform.parent = base.transform;
 				this.Dumbbell[this.Dumbbells].transform.localPosition = this.Positions[this.Dumbbells].localPosition;
-				this.Dumbbell[this.Dumbbells].transform.localEulerAngles = new Vector3((float)90, (float)0, (float)0);
+				this.Dumbbell[this.Dumbbells].transform.localEulerAngles = new Vector3(90f, 0f, 0f);
 			}
-			else if (this.Prompt.Label[0].text == "     " + "Remove Dumbbell")
+			else if (this.Prompt.Label[0].text.Equals("     Remove Dumbbell"))
 			{
 				this.Yandere.EmptyHands();
-				((WeaponScript)this.Dumbbell[this.Dumbbells].GetComponent(typeof(WeaponScript))).enabled = true;
-				((PromptScript)this.Dumbbell[this.Dumbbells].GetComponent(typeof(PromptScript))).enabled = true;
-				((WeaponScript)this.Dumbbell[this.Dumbbells].GetComponent(typeof(WeaponScript))).Prompt.Circle[3].fillAmount = (float)0;
-				this.Dumbbell[this.Dumbbells].rigidbody.isKinematic = false;
+				this.Dumbbell[this.Dumbbells].GetComponent<WeaponScript>().enabled = true;
+				this.Dumbbell[this.Dumbbells].GetComponent<PromptScript>().enabled = true;
+				this.Dumbbell[this.Dumbbells].GetComponent<WeaponScript>().Prompt.Circle[3].fillAmount = 0f;
+				Rigidbody component2 = this.Dumbbell[this.Dumbbells].GetComponent<Rigidbody>();
+				component2.isKinematic = false;
 				this.Dumbbell[this.Dumbbells] = null;
 				this.Dumbbells--;
 			}
@@ -225,58 +206,28 @@ public class BucketScript : MonoBehaviour
 		{
 			if (!this.Gasoline)
 			{
-				this.Water.transform.localScale = Vector3.Lerp(this.Water.transform.localScale, new Vector3(0.285f, (float)1, 0.17f), Time.deltaTime * (float)5 * this.FillSpeed);
-				float y = Mathf.Lerp(this.Water.transform.localPosition.y, 0.2f, Time.deltaTime * (float)5 * this.FillSpeed);
-				Vector3 localPosition = this.Water.transform.localPosition;
-				float num = localPosition.y = y;
-				Vector3 vector = this.Water.transform.localPosition = localPosition;
-				float a = Mathf.Lerp(this.Water.material.color.a, 0.5f, Time.deltaTime * (float)5);
-				Color color = this.Water.material.color;
-				float num2 = color.a = a;
-				Color color2 = this.Water.material.color = color;
+				this.Water.transform.localScale = Vector3.Lerp(this.Water.transform.localScale, new Vector3(0.285f, 1f, 0.17f), Time.deltaTime * 5f * this.FillSpeed);
+				this.Water.transform.localPosition = new Vector3(this.Water.transform.localPosition.x, Mathf.Lerp(this.Water.transform.localPosition.y, 0.2f, Time.deltaTime * 5f * this.FillSpeed), this.Water.transform.localPosition.z);
+				this.Water.material.color = new Color(this.Water.material.color.r, this.Water.material.color.g, this.Water.material.color.b, Mathf.Lerp(this.Water.material.color.a, 0.5f, Time.deltaTime * 5f));
 			}
 			else
 			{
-				this.Gas.transform.localScale = Vector3.Lerp(this.Gas.transform.localScale, new Vector3(0.285f, (float)1, 0.17f), Time.deltaTime * (float)5 * this.FillSpeed);
-				float y2 = Mathf.Lerp(this.Gas.transform.localPosition.y, 0.2f, Time.deltaTime * (float)5 * this.FillSpeed);
-				Vector3 localPosition2 = this.Gas.transform.localPosition;
-				float num3 = localPosition2.y = y2;
-				Vector3 vector2 = this.Gas.transform.localPosition = localPosition2;
-				float a2 = Mathf.Lerp(this.Gas.material.color.a, 0.5f, Time.deltaTime * (float)5);
-				Color color3 = this.Gas.material.color;
-				float num4 = color3.a = a2;
-				Color color4 = this.Gas.material.color = color3;
+				this.Gas.transform.localScale = Vector3.Lerp(this.Gas.transform.localScale, new Vector3(0.285f, 1f, 0.17f), Time.deltaTime * 5f * this.FillSpeed);
+				this.Gas.transform.localPosition = new Vector3(this.Gas.transform.localPosition.x, Mathf.Lerp(this.Gas.transform.localPosition.y, 0.2f, Time.deltaTime * 5f * this.FillSpeed), this.Gas.transform.localPosition.z);
+				this.Gas.material.color = new Color(this.Gas.material.color.r, this.Gas.material.color.g, this.Gas.material.color.b, Mathf.Lerp(this.Gas.material.color.a, 0.5f, Time.deltaTime * 5f));
 			}
 		}
 		else
 		{
-			this.Water.transform.localScale = Vector3.Lerp(this.Water.transform.localScale, new Vector3(0.235f, (float)1, 0.14f), Time.deltaTime * (float)5);
-			float y3 = Mathf.Lerp(this.Water.transform.localPosition.y, (float)0, Time.deltaTime * (float)5);
-			Vector3 localPosition3 = this.Water.transform.localPosition;
-			float num5 = localPosition3.y = y3;
-			Vector3 vector3 = this.Water.transform.localPosition = localPosition3;
-			float a3 = Mathf.Lerp(this.Water.material.color.a, (float)0, Time.deltaTime * (float)5);
-			Color color5 = this.Water.material.color;
-			float num6 = color5.a = a3;
-			Color color6 = this.Water.material.color = color5;
-			this.Gas.transform.localScale = Vector3.Lerp(this.Gas.transform.localScale, new Vector3(0.235f, (float)1, 0.14f), Time.deltaTime * (float)5);
-			float y4 = Mathf.Lerp(this.Gas.transform.localPosition.y, (float)0, Time.deltaTime * (float)5);
-			Vector3 localPosition4 = this.Gas.transform.localPosition;
-			float num7 = localPosition4.y = y4;
-			Vector3 vector4 = this.Gas.transform.localPosition = localPosition4;
-			float a4 = Mathf.Lerp(this.Gas.material.color.a, (float)0, Time.deltaTime * (float)5);
-			Color color7 = this.Gas.material.color;
-			float num8 = color7.a = a4;
-			Color color8 = this.Gas.material.color = color7;
+			this.Water.transform.localScale = Vector3.Lerp(this.Water.transform.localScale, new Vector3(0.235f, 1f, 0.14f), Time.deltaTime * 5f);
+			this.Water.transform.localPosition = new Vector3(this.Water.transform.localPosition.x, Mathf.Lerp(this.Water.transform.localPosition.y, 0f, Time.deltaTime * 5f), this.Water.transform.localPosition.z);
+			this.Water.material.color = new Color(this.Water.material.color.r, this.Water.material.color.g, this.Water.material.color.b, Mathf.Lerp(this.Water.material.color.a, 0f, Time.deltaTime * 5f));
+			this.Gas.transform.localScale = Vector3.Lerp(this.Gas.transform.localScale, new Vector3(0.235f, 1f, 0.14f), Time.deltaTime * 5f);
+			this.Gas.transform.localPosition = new Vector3(this.Gas.transform.localPosition.x, Mathf.Lerp(this.Gas.transform.localPosition.y, 0f, Time.deltaTime * 5f), this.Gas.transform.localPosition.z);
+			this.Gas.material.color = new Color(this.Gas.material.color.r, this.Gas.material.color.g, this.Gas.material.color.b, Mathf.Lerp(this.Gas.material.color.a, 0f, Time.deltaTime * 5f));
 		}
-		float a5 = Mathf.Lerp(this.Blood.material.color.a, this.Bloodiness / (float)100, Time.deltaTime);
-		Color color9 = this.Blood.material.color;
-		float num9 = color9.a = a5;
-		Color color10 = this.Blood.material.color = color9;
-		float y5 = this.Water.transform.localPosition.y + 0.001f;
-		Vector3 localPosition5 = this.Blood.transform.localPosition;
-		float num10 = localPosition5.y = y5;
-		Vector3 vector5 = this.Blood.transform.localPosition = localPosition5;
+		this.Blood.material.color = new Color(this.Blood.material.color.r, this.Blood.material.color.g, this.Blood.material.color.b, Mathf.Lerp(this.Blood.material.color.a, this.Bloodiness / 100f, Time.deltaTime));
+		this.Blood.transform.localPosition = new Vector3(this.Blood.transform.localPosition.x, this.Water.transform.localPosition.y + 0.001f, this.Blood.transform.localPosition.z);
 		this.Blood.transform.localScale = this.Water.transform.localScale;
 		if (this.Yandere.PickUp != null)
 		{
@@ -294,88 +245,86 @@ public class BucketScript : MonoBehaviour
 		{
 			if (this.Fly)
 			{
-				if (this.Rotate < (float)360)
+				if (this.Rotate < 360f)
 				{
-					if (this.Rotate == (float)0)
+					if (this.Rotate == 0f)
 					{
-						this.transform.rotation = this.Yandere.transform.rotation;
-						if (this.Bloodiness < (float)50)
+						base.transform.rotation = this.Yandere.transform.rotation;
+						if (this.Bloodiness < 50f)
 						{
 							if (!this.Gasoline)
 							{
-								UnityEngine.Object.Instantiate(this.SpillEffect, this.transform.position + this.transform.forward * 0.5f + this.transform.up * 0.5f, this.transform.rotation);
+								UnityEngine.Object.Instantiate<GameObject>(this.SpillEffect, base.transform.position + base.transform.forward * 0.5f + base.transform.up * 0.5f, base.transform.rotation);
 							}
 							else
 							{
-								UnityEngine.Object.Instantiate(this.GasSpillEffect, this.transform.position + this.transform.forward * 0.5f + this.transform.up * 0.5f, this.transform.rotation);
+								UnityEngine.Object.Instantiate<GameObject>(this.GasSpillEffect, base.transform.position + base.transform.forward * 0.5f + base.transform.up * 0.5f, base.transform.rotation);
 								this.Gasoline = false;
 							}
 						}
 						else
 						{
-							UnityEngine.Object.Instantiate(this.BloodSpillEffect, this.transform.position + this.transform.forward * 0.5f + this.transform.up * 0.5f, this.transform.rotation);
-							this.Bloodiness = (float)0;
+							UnityEngine.Object.Instantiate<GameObject>(this.BloodSpillEffect, base.transform.position + base.transform.forward * 0.5f + base.transform.up * 0.5f, base.transform.rotation);
+							this.Bloodiness = 0f;
 						}
-						this.rigidbody.AddRelativeForce(Vector3.forward * (float)150);
-						this.rigidbody.AddRelativeForce(Vector3.up * (float)250);
-						this.transform.Translate(Vector3.forward * 0.5f);
+						Rigidbody component3 = base.GetComponent<Rigidbody>();
+						component3.AddRelativeForce(Vector3.forward * 150f);
+						component3.AddRelativeForce(Vector3.up * 250f);
+						base.transform.Translate(Vector3.forward * 0.5f);
 					}
-					this.Rotate += Time.deltaTime * (float)360;
-					this.transform.Rotate(Vector3.right * Time.deltaTime * (float)360);
+					this.Rotate += Time.deltaTime * 360f;
+					base.transform.Rotate(Vector3.right * Time.deltaTime * 360f);
 				}
 				else
 				{
 					this.Fly = false;
-					this.Rotate = (float)0;
+					this.Rotate = 0f;
 				}
 			}
 			this.Prompt.enabled = true;
 		}
 		if (Input.GetKeyDown("b"))
 		{
-			this.Bloodiness = (float)100;
+			this.Bloodiness = 100f;
 		}
 	}
 
-	public virtual void Empty()
+	public void Empty()
 	{
-		this.Bloodiness = (float)0;
+		this.Bloodiness = 0f;
 		this.Full = false;
 	}
 
-	public virtual void Fill()
+	public void Fill()
 	{
 		this.Full = true;
 	}
 
-	public virtual void OnCollisionEnter(Collision other)
+	private void OnCollisionEnter(Collision other)
 	{
 		if (this.Dropped && other.gameObject.layer == 9)
 		{
-			StudentScript studentScript = (StudentScript)other.gameObject.GetComponent(typeof(StudentScript));
-			if (studentScript != null)
+			StudentScript component = other.gameObject.GetComponent<StudentScript>();
+			if (component != null)
 			{
-				this.audio.Play();
+				base.GetComponent<AudioSource>().Play();
 				while (this.Dumbbells > 0)
 				{
-					((WeaponScript)this.Dumbbell[this.Dumbbells].GetComponent(typeof(WeaponScript))).enabled = true;
-					((PromptScript)this.Dumbbell[this.Dumbbells].GetComponent(typeof(PromptScript))).enabled = true;
-					((Collider)this.Dumbbell[this.Dumbbells].GetComponent(typeof(Collider))).enabled = true;
-					this.Dumbbell[this.Dumbbells].rigidbody.constraints = RigidbodyConstraints.None;
-					this.Dumbbell[this.Dumbbells].rigidbody.isKinematic = false;
-					this.Dumbbell[this.Dumbbells].rigidbody.useGravity = true;
+					this.Dumbbell[this.Dumbbells].GetComponent<WeaponScript>().enabled = true;
+					this.Dumbbell[this.Dumbbells].GetComponent<PromptScript>().enabled = true;
+					this.Dumbbell[this.Dumbbells].GetComponent<Collider>().enabled = true;
+					Rigidbody component2 = this.Dumbbell[this.Dumbbells].GetComponent<Rigidbody>();
+					component2.constraints = RigidbodyConstraints.None;
+					component2.isKinematic = false;
+					component2.useGravity = true;
 					this.Dumbbell[this.Dumbbells].transform.parent = null;
 					this.Dumbbell[this.Dumbbells] = null;
 					this.Dumbbells--;
 				}
 				this.Dropped = false;
-				studentScript.Dead = true;
-				studentScript.BecomeRagdoll();
+				component.Dead = true;
+				component.BecomeRagdoll();
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class TranqDetectorScript : MonoBehaviour
 {
 	public YandereScript Yandere;
@@ -29,12 +27,12 @@ public class TranqDetectorScript : MonoBehaviour
 
 	public AudioClip[] TranqClips;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.Checklist.alpha = (float)0;
+		this.Checklist.alpha = 0f;
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (!this.StopChecking)
 		{
@@ -46,14 +44,7 @@ public class TranqDetectorScript : MonoBehaviour
 				}
 				else
 				{
-					if (!this.Yandere.Inventory.Tranquilizer)
-					{
-						this.TranquilizerIcon.spriteName = "No";
-					}
-					else
-					{
-						this.TranquilizerIcon.spriteName = "Yes";
-					}
+					this.TranquilizerIcon.spriteName = ((!this.Yandere.Inventory.Tranquilizer) ? "No" : "Yes");
 					if (this.Yandere.Followers != 1)
 					{
 						this.FollowerIcon.spriteName = "No";
@@ -68,14 +59,7 @@ public class TranqDetectorScript : MonoBehaviour
 						this.KidnappingLabel.text = "Kidnapping Checklist";
 						this.FollowerIcon.spriteName = "Yes";
 					}
-					if (PlayerPrefs.GetInt("BiologyGrade") + PlayerPrefs.GetInt("BiologyBonus") == 0)
-					{
-						this.BiologyIcon.spriteName = "No";
-					}
-					else
-					{
-						this.BiologyIcon.spriteName = "Yes";
-					}
+					this.BiologyIcon.spriteName = ((PlayerPrefs.GetInt("BiologyGrade") + PlayerPrefs.GetInt("BiologyBonus") == 0) ? "No" : "Yes");
 					if (!this.Yandere.Armed)
 					{
 						this.SyringeIcon.spriteName = "No";
@@ -97,29 +81,30 @@ public class TranqDetectorScript : MonoBehaviour
 						this.DoorIcon.spriteName = "Yes";
 					}
 				}
-				this.Checklist.alpha = Mathf.MoveTowards(this.Checklist.alpha, (float)1, Time.deltaTime);
+				this.Checklist.alpha = Mathf.MoveTowards(this.Checklist.alpha, 1f, Time.deltaTime);
 			}
 			else
 			{
-				this.Checklist.alpha = Mathf.MoveTowards(this.Checklist.alpha, (float)0, Time.deltaTime);
+				this.Checklist.alpha = Mathf.MoveTowards(this.Checklist.alpha, 0f, Time.deltaTime);
 			}
 		}
 		else
 		{
-			this.Checklist.alpha = Mathf.MoveTowards(this.Checklist.alpha, (float)0, Time.deltaTime);
-			if (this.Checklist.alpha == (float)0)
+			this.Checklist.alpha = Mathf.MoveTowards(this.Checklist.alpha, 0f, Time.deltaTime);
+			if (this.Checklist.alpha == 0f)
 			{
-				this.enabled = false;
+				base.enabled = false;
 			}
 		}
 	}
 
-	public virtual void TranqCheck()
+	public void TranqCheck()
 	{
 		if (!this.StopChecking && this.KidnappingLabel.text == "Kidnapping Checklist" && this.TranquilizerIcon.spriteName == "Yes" && this.FollowerIcon.spriteName == "Yes" && this.BiologyIcon.spriteName == "Yes" && this.SyringeIcon.spriteName == "Yes" && this.DoorIcon.spriteName == "Yes")
 		{
-			this.audio.clip = this.TranqClips[UnityEngine.Random.Range(0, Extensions.get_length(this.TranqClips))];
-			this.audio.Play();
+			AudioSource component = base.GetComponent<AudioSource>();
+			component.clip = this.TranqClips[UnityEngine.Random.Range(0, this.TranqClips.Length)];
+			component.Play();
 			this.Door.Prompt.Hide();
 			this.Door.Prompt.enabled = false;
 			this.Door.enabled = false;
@@ -129,9 +114,5 @@ public class TranqDetectorScript : MonoBehaviour
 			this.Yandere.AttackManager.Stealth = true;
 			this.StopChecking = true;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

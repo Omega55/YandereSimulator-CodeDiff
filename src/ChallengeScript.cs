@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class ChallengeScript : MonoBehaviour
 {
 	public InputManagerScript InputManager;
@@ -30,16 +29,11 @@ public class ChallengeScript : MonoBehaviour
 
 	public bool Switch;
 
-	public int Phase;
+	public int Phase = 1;
 
 	public int List;
 
-	public ChallengeScript()
-	{
-		this.Phase = 1;
-	}
-
-	public virtual void Update()
+	private void Update()
 	{
 		if (!this.Viewing)
 		{
@@ -49,94 +43,59 @@ public class ChallengeScript : MonoBehaviour
 				{
 					if (this.List == 0)
 					{
-						int num = -300;
-						Vector3 localPosition = this.Arrows.localPosition;
-						float num2 = localPosition.y = (float)num;
-						Vector3 vector = this.Arrows.localPosition = localPosition;
-						this.ViewButton.active = true;
+						this.Arrows.localPosition = new Vector3(this.Arrows.localPosition.x, -300f, this.Arrows.localPosition.z);
+						this.ViewButton.SetActive(true);
 						this.Panels[0].alpha = 0.5f;
-						this.Panels[1].alpha = (float)1;
+						this.Panels[1].alpha = 1f;
 						this.List = 1;
 					}
 					else
 					{
-						int num3 = 200;
-						Vector3 localPosition2 = this.Arrows.localPosition;
-						float num4 = localPosition2.y = (float)num3;
-						Vector3 vector2 = this.Arrows.localPosition = localPosition2;
-						this.ViewButton.active = false;
-						this.Panels[0].alpha = (float)1;
+						this.Arrows.localPosition = new Vector3(this.Arrows.localPosition.x, 200f, this.Arrows.localPosition.z);
+						this.ViewButton.SetActive(false);
+						this.Panels[0].alpha = 1f;
 						this.Panels[1].alpha = 0.5f;
 						this.List = 0;
 					}
 				}
+				Transform transform = this.ChallengeList[this.List];
 				if (this.InputManager.DPadRight || Input.GetKey("right"))
 				{
-					float x = this.ChallengeList[this.List].localPosition.x - Time.deltaTime * (float)1000;
-					Vector3 localPosition3 = this.ChallengeList[this.List].localPosition;
-					float num5 = localPosition3.x = x;
-					Vector3 vector3 = this.ChallengeList[this.List].localPosition = localPosition3;
+					transform.localPosition = new Vector3(transform.localPosition.x - Time.deltaTime * 1000f, transform.localPosition.y, transform.localPosition.z);
 				}
 				if (this.InputManager.DPadLeft || Input.GetKey("left"))
 				{
-					float x2 = this.ChallengeList[this.List].localPosition.x + Time.deltaTime * (float)1000;
-					Vector3 localPosition4 = this.ChallengeList[this.List].localPosition;
-					float num6 = localPosition4.x = x2;
-					Vector3 vector4 = this.ChallengeList[this.List].localPosition = localPosition4;
+					transform.localPosition = new Vector3(transform.localPosition.x + Time.deltaTime * 1000f, transform.localPosition.y, transform.localPosition.z);
 				}
-				float x3 = this.ChallengeList[this.List].localPosition.x + Input.GetAxis("Horizontal") * (float)-10;
-				Vector3 localPosition5 = this.ChallengeList[this.List].localPosition;
-				float num7 = localPosition5.x = x3;
-				Vector3 vector5 = this.ChallengeList[this.List].localPosition = localPosition5;
-				if (this.ChallengeList[this.List].localPosition.x > (float)500)
+				transform.localPosition = new Vector3(transform.localPosition.x + Input.GetAxis("Horizontal") * -10f, transform.localPosition.y, transform.localPosition.z);
+				if (transform.localPosition.x > 500f)
 				{
-					int num8 = 500;
-					Vector3 localPosition6 = this.ChallengeList[this.List].localPosition;
-					float num9 = localPosition6.x = (float)num8;
-					Vector3 vector6 = this.ChallengeList[this.List].localPosition = localPosition6;
+					transform.localPosition = new Vector3(500f, transform.localPosition.y, transform.localPosition.z);
 				}
-				else if (this.ChallengeList[this.List].localPosition.x < (float)(-250 * (this.Challenges[this.List] - 3)))
+				else if (transform.localPosition.x < -250f * ((float)this.Challenges[this.List] - 3f))
 				{
-					int num10 = -250 * (this.Challenges[this.List] - 3);
-					Vector3 localPosition7 = this.ChallengeList[this.List].localPosition;
-					float num11 = localPosition7.x = (float)num10;
-					Vector3 vector7 = this.ChallengeList[this.List].localPosition = localPosition7;
+					transform.localPosition = new Vector3(-250f * ((float)this.Challenges[this.List] - 3f), transform.localPosition.y, transform.localPosition.z);
 				}
-				if (this.LargeIcon.color.a > (float)0)
+				if (this.LargeIcon.color.a > 0f)
 				{
-					float a = this.LargeIcon.color.a - Time.deltaTime * (float)10;
-					Color color = this.LargeIcon.color;
-					float num12 = color.a = a;
-					Color color2 = this.LargeIcon.color = color;
-					if (this.LargeIcon.color.a < (float)0)
+					this.LargeIcon.color = new Color(this.LargeIcon.color.r, this.LargeIcon.color.g, this.LargeIcon.color.b, this.LargeIcon.color.a - Time.deltaTime * 10f);
+					if (this.LargeIcon.color.a < 0f)
 					{
-						int num13 = 0;
-						Color color3 = this.LargeIcon.color;
-						float num14 = color3.a = (float)num13;
-						Color color4 = this.LargeIcon.color = color3;
+						this.LargeIcon.color = new Color(this.LargeIcon.color.r, this.LargeIcon.color.g, this.LargeIcon.color.b, 0f);
 					}
 				}
 			}
 		}
-		else if (this.LargeIcon.color.a < (float)1)
+		else if (this.LargeIcon.color.a < 1f)
 		{
-			float a2 = this.LargeIcon.color.a + Time.deltaTime * (float)10;
-			Color color5 = this.LargeIcon.color;
-			float num15 = color5.a = a2;
-			Color color6 = this.LargeIcon.color = color5;
-			if (this.LargeIcon.color.a > (float)1)
+			this.LargeIcon.color = new Color(this.LargeIcon.color.r, this.LargeIcon.color.g, this.LargeIcon.color.b, this.LargeIcon.color.a + Time.deltaTime * 10f);
+			if (this.LargeIcon.color.a > 1f)
 			{
-				int num16 = 1;
-				Color color7 = this.LargeIcon.color;
-				float num17 = color7.a = (float)num16;
-				Color color8 = this.LargeIcon.color = color7;
+				this.LargeIcon.color = new Color(this.LargeIcon.color.r, this.LargeIcon.color.g, this.LargeIcon.color.b, 1f);
 			}
 		}
-		float a3 = this.LargeIcon.color.a * 0.75f;
-		Color color9 = this.Shadow.color;
-		float num18 = color9.a = a3;
-		Color color10 = this.Shadow.color = color9;
-		if (!this.Switch && Input.GetButtonDown("A") && this.List == 1 && this.ChallengeList[this.List].localPosition.x > (float)-2375)
+		this.Shadow.color = new Color(this.Shadow.color.r, this.Shadow.color.g, this.Shadow.color.b, this.LargeIcon.color.a * 0.75f);
+		if (!this.Switch && Input.GetButtonDown("A") && this.List == 1 && this.ChallengeList[this.List].localPosition.x > -2375f)
 		{
 			this.Viewing = true;
 		}
@@ -155,27 +114,23 @@ public class ChallengeScript : MonoBehaviour
 		{
 			if (this.Phase == 1)
 			{
-				this.ChallengePanel.alpha = this.ChallengePanel.alpha - Time.deltaTime;
-				if (this.ChallengePanel.alpha <= (float)0)
+				this.ChallengePanel.alpha -= Time.deltaTime;
+				if (this.ChallengePanel.alpha <= 0f)
 				{
 					this.Phase++;
 				}
 			}
 			else
 			{
-				this.CalendarPanel.alpha = this.CalendarPanel.alpha + Time.deltaTime;
-				if (this.CalendarPanel.alpha >= (float)1)
+				this.CalendarPanel.alpha += Time.deltaTime;
+				if (this.CalendarPanel.alpha >= 1f)
 				{
 					this.Calendar.enabled = true;
-					this.enabled = false;
+					base.enabled = false;
 					this.Switch = false;
 					this.Phase = 1;
 				}
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

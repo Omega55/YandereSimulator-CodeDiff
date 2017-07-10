@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class BoneSetsScript : MonoBehaviour
 {
 	public Transform[] BoneSet1;
@@ -40,7 +39,7 @@ public class BoneSetsScript : MonoBehaviour
 
 	public Vector3[] BoneSet9Pos;
 
-	public int Timer;
+	public float Timer;
 
 	public Transform RightArm;
 
@@ -70,11 +69,11 @@ public class BoneSetsScript : MonoBehaviour
 
 	public Vector3 HeadPosition;
 
-	public virtual void Start()
+	private void Start()
 	{
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.Head != null)
 		{
@@ -88,10 +87,6 @@ public class BoneSetsScript : MonoBehaviour
 			this.LeftLeg.localEulerAngles = this.LeftLegRotation;
 			this.Head.localPosition = this.HeadPosition;
 		}
-		this.enabled = false;
-	}
-
-	public virtual void Main()
-	{
+		base.enabled = false;
 	}
 }

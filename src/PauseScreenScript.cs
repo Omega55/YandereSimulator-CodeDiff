@@ -1,8 +1,7 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
+using UnityEngine.SceneManagement;
 
-[Serializable]
 public class PauseScreenScript : MonoBehaviour
 {
 	public StudentInfoMenuScript StudentInfoMenu;
@@ -71,7 +70,7 @@ public class PauseScreenScript : MonoBehaviour
 
 	public Transform[] Eggs;
 
-	public int Selected;
+	public int Selected = 1;
 
 	public float Speed;
 
@@ -93,55 +92,41 @@ public class PauseScreenScript : MonoBehaviour
 
 	public bool Show;
 
-	public int Row;
+	public int Row = 1;
 
-	public int Column;
+	public int Column = 2;
 
-	public PauseScreenScript()
-	{
-		this.Selected = 1;
-		this.Row = 1;
-		this.Column = 2;
-	}
-
-	public virtual void Start()
+	private void Start()
 	{
 		PlayerPrefs.SetInt("Student_0_Photographed", 1);
 		PlayerPrefs.SetInt("Student_1_Photographed", 1);
-		this.transform.localPosition = new Vector3((float)1350, (float)0, (float)0);
-		this.transform.localScale = new Vector3(0.9133334f, 0.9133334f, 0.9133334f);
-		int num = 0;
-		Vector3 localEulerAngles = this.transform.localEulerAngles;
-		float num2 = localEulerAngles.z = (float)num;
-		Vector3 vector = this.transform.localEulerAngles = localEulerAngles;
-		this.StudentInfoMenu.gameObject.active = false;
-		this.PhotoGallery.gameObject.active = false;
-		this.FavorMenu.gameObject.active = false;
-		this.MusicMenu.gameObject.active = false;
-		this.PassTime.gameObject.active = false;
-		this.Settings.gameObject.active = false;
-		this.Stats.gameObject.active = false;
-		this.LoadingScreen.active = false;
-		this.SchemesMenu.active = false;
-		this.ServiceMenu.active = false;
-		this.StudentInfo.active = false;
-		this.DropsMenu.active = false;
-		this.MainMenu.active = true;
-		if (Application.loadedLevelName == "SchoolScene")
+		base.transform.localPosition = new Vector3(1350f, 0f, 0f);
+		base.transform.localScale = new Vector3(0.9133334f, 0.9133334f, 0.9133334f);
+		base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, base.transform.localEulerAngles.y, 0f);
+		this.StudentInfoMenu.gameObject.SetActive(false);
+		this.PhotoGallery.gameObject.SetActive(false);
+		this.FavorMenu.gameObject.SetActive(false);
+		this.MusicMenu.gameObject.SetActive(false);
+		this.PassTime.gameObject.SetActive(false);
+		this.Settings.gameObject.SetActive(false);
+		this.Stats.gameObject.SetActive(false);
+		this.LoadingScreen.SetActive(false);
+		this.SchemesMenu.SetActive(false);
+		this.ServiceMenu.SetActive(false);
+		this.StudentInfo.SetActive(false);
+		this.DropsMenu.SetActive(false);
+		this.MainMenu.SetActive(true);
+		if (SceneManager.GetActiveScene().name.Equals("SchoolScene"))
 		{
 			this.Schemes.UpdateInstructions();
 		}
 		else
 		{
-			this.MissionModeIcons.active = false;
-			float a = 0.5f;
-			Color color = this.PhoneIcons[5].color;
-			float num3 = color.a = a;
-			Color color2 = this.PhoneIcons[5].color = color;
-			float a2 = 0.5f;
-			Color color3 = this.PhoneIcons[8].color;
-			float num4 = color3.a = a2;
-			Color color4 = this.PhoneIcons[8].color = color3;
+			this.MissionModeIcons.SetActive(false);
+			UISprite uisprite = this.PhoneIcons[5];
+			uisprite.color = new Color(uisprite.color.r, uisprite.color.g, uisprite.color.b, 0.5f);
+			UISprite uisprite2 = this.PhoneIcons[8];
+			uisprite2.color = new Color(uisprite2.color.r, uisprite2.color.g, uisprite2.color.b, 0.5f);
 		}
 		if (PlayerPrefs.GetInt("MissionMode") == 1)
 		{
@@ -150,51 +135,41 @@ public class PauseScreenScript : MonoBehaviour
 		this.CorrectingTime = false;
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (!this.Home)
-		{
-			this.Speed = 0.166666672f;
-		}
-		else
-		{
-			this.Speed = Time.deltaTime * (float)10;
-		}
+		this.Speed = ((!this.Home) ? 0.166666672f : (Time.deltaTime * 10f));
 		if (!this.Police.FadeOut)
 		{
 			if (!this.Show)
 			{
-				this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3((float)1350, (float)50, (float)0), this.Speed);
-				this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3(0.9133334f, 0.9133334f, 0.9133334f), this.Speed);
-				float z = Mathf.Lerp(this.transform.localEulerAngles.z, (float)0, this.Speed);
-				Vector3 localEulerAngles = this.transform.localEulerAngles;
-				float num = localEulerAngles.z = z;
-				Vector3 vector = this.transform.localEulerAngles = localEulerAngles;
-				if (this.transform.localPosition.x > (float)1349 && this.Panel.enabled)
+				base.transform.localPosition = Vector3.Lerp(base.transform.localPosition, new Vector3(1350f, 50f, 0f), this.Speed);
+				base.transform.localScale = Vector3.Lerp(base.transform.localScale, new Vector3(0.9133334f, 0.9133334f, 0.9133334f), this.Speed);
+				base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, base.transform.localEulerAngles.y, Mathf.Lerp(base.transform.localEulerAngles.z, 0f, this.Speed));
+				if (base.transform.localPosition.x > 1349f && this.Panel.enabled)
 				{
 					this.Panel.enabled = false;
 				}
 				if (this.CorrectingTime && Time.timeScale < 0.9f)
 				{
-					Time.timeScale = Mathf.Lerp(Time.timeScale, (float)1, this.Speed);
+					Time.timeScale = Mathf.Lerp(Time.timeScale, 1f, this.Speed);
 					if (Time.timeScale > 0.9f)
 					{
 						this.CorrectingTime = false;
-						Time.timeScale = (float)1;
+						Time.timeScale = 1f;
 					}
 				}
 				if (Input.GetButtonDown("Start"))
 				{
 					if (!this.Home)
 					{
-						if (!this.Yandere.Shutter.Snapping && !this.Yandere.TimeSkipping && !this.Yandere.Talking && !this.Yandere.Noticed && !this.Yandere.InClass && !this.Yandere.Struggling && !this.Yandere.Won && !this.Yandere.Dismembering && !this.Yandere.Attacked && this.Yandere.CanMove && Time.timeScale > (float)0)
+						if (!this.Yandere.Shutter.Snapping && !this.Yandere.TimeSkipping && !this.Yandere.Talking && !this.Yandere.Noticed && !this.Yandere.InClass && !this.Yandere.Struggling && !this.Yandere.Won && !this.Yandere.Dismembering && !this.Yandere.Attacked && this.Yandere.CanMove && Time.timeScale > 0f)
 						{
 							this.Yandere.StopAiming();
-							this.PromptParent.localScale = new Vector3((float)0, (float)0, (float)0);
+							this.PromptParent.localScale = Vector3.zero;
 							this.Yandere.Obscurance.enabled = false;
 							this.Yandere.YandereVision = false;
 							this.ScreenBlur.enabled = true;
-							this.Yandere.YandereTimer = (float)0;
+							this.Yandere.YandereTimer = 0f;
 							this.Yandere.Mopping = false;
 							this.Panel.enabled = true;
 							this.Sideways = false;
@@ -205,19 +180,14 @@ public class PauseScreenScript : MonoBehaviour
 							this.PromptBar.Label[4].text = "Choose";
 							this.PromptBar.UpdateButtons();
 							this.PromptBar.Show = true;
+							UISprite uisprite = this.PhoneIcons[3];
 							if (!this.Yandere.CanMove || this.Yandere.Dragging || (this.Police.Corpses - this.Police.HiddenCorpses > 0 && !this.Police.SuicideScene && !this.Police.PoisonScene))
 							{
-								float a = 0.5f;
-								Color color = this.PhoneIcons[3].color;
-								float num2 = color.a = a;
-								Color color2 = this.PhoneIcons[3].color = color;
+								uisprite.color = new Color(uisprite.color.r, uisprite.color.g, uisprite.color.b, 0.5f);
 							}
 							else
 							{
-								int num3 = 1;
-								Color color3 = this.PhoneIcons[3].color;
-								float num4 = color3.a = (float)num3;
-								Color color4 = this.PhoneIcons[3].color = color3;
+								uisprite.color = new Color(uisprite.color.r, uisprite.color.g, uisprite.color.b, 1f);
 							}
 						}
 					}
@@ -230,10 +200,8 @@ public class PauseScreenScript : MonoBehaviour
 						this.PromptBar.UpdateButtons();
 						this.PromptBar.Show = true;
 						this.HomeYandere.CanMove = false;
-						float a2 = 0.5f;
-						Color color5 = this.PhoneIcons[3].color;
-						float num5 = color5.a = a2;
-						Color color6 = this.PhoneIcons[3].color = color5;
+						UISprite uisprite2 = this.PhoneIcons[3];
+						uisprite2.color = new Color(uisprite2.color.r, uisprite2.color.g, uisprite2.color.b, 0.5f);
 						this.Panel.enabled = true;
 						this.Sideways = false;
 						this.Show = true;
@@ -244,35 +212,35 @@ public class PauseScreenScript : MonoBehaviour
 			{
 				if (!this.EggsChecked)
 				{
-					int num6 = 99999;
-					for (int i = 0; i < Extensions.get_length(this.Eggs); i++)
+					float num = 99999f;
+					for (int i = 0; i < this.Eggs.Length; i++)
 					{
 						if (this.Eggs[i] != null)
 						{
-							float num7 = Vector3.Distance(this.Yandere.transform.position, this.Eggs[i].position);
-							if (num7 < (float)num6)
+							float num2 = Vector3.Distance(this.Yandere.transform.position, this.Eggs[i].position);
+							if (num2 < num)
 							{
-								num6 = (int)num7;
+								num = num2;
 							}
 						}
 					}
-					if (num6 < 5)
+					if (num < 5f)
 					{
 						this.Wifi.spriteName = "5Bars";
 					}
-					else if (num6 < 10)
+					else if (num < 10f)
 					{
 						this.Wifi.spriteName = "4Bars";
 					}
-					else if (num6 < 15)
+					else if (num < 15f)
 					{
 						this.Wifi.spriteName = "3Bars";
 					}
-					else if (num6 < 20)
+					else if (num < 20f)
 					{
 						this.Wifi.spriteName = "2Bars";
 					}
-					else if (num6 < 25)
+					else if (num < 25f)
 					{
 						this.Wifi.spriteName = "1Bars";
 					}
@@ -284,33 +252,27 @@ public class PauseScreenScript : MonoBehaviour
 				}
 				if (!this.Home)
 				{
-					Time.timeScale = Mathf.Lerp(Time.timeScale, (float)0, this.Speed);
+					Time.timeScale = Mathf.Lerp(Time.timeScale, 0f, this.Speed);
 					this.RPGCamera.enabled = false;
 				}
 				if (this.Quitting)
 				{
-					this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)1, (float)1, (float)1), this.Speed);
-					this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3((float)0, (float)-1200, (float)0), this.Speed);
+					base.transform.localScale = Vector3.Lerp(base.transform.localScale, new Vector3(1f, 1f, 1f), this.Speed);
+					base.transform.localPosition = Vector3.Lerp(base.transform.localPosition, new Vector3(0f, -1200f, 0f), this.Speed);
 				}
 				else if (!this.Sideways)
 				{
-					this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3(0.9133334f, 0.9133334f, 0.9133334f), this.Speed);
-					this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3((float)0, (float)50, (float)0), this.Speed);
-					float z2 = Mathf.Lerp(this.transform.localEulerAngles.z, (float)0, this.Speed);
-					Vector3 localEulerAngles2 = this.transform.localEulerAngles;
-					float num8 = localEulerAngles2.z = z2;
-					Vector3 vector2 = this.transform.localEulerAngles = localEulerAngles2;
+					base.transform.localScale = Vector3.Lerp(base.transform.localScale, new Vector3(0.9133334f, 0.9133334f, 0.9133334f), this.Speed);
+					base.transform.localPosition = Vector3.Lerp(base.transform.localPosition, new Vector3(0f, 50f, 0f), this.Speed);
+					base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, base.transform.localEulerAngles.y, Mathf.Lerp(base.transform.localEulerAngles.z, 0f, this.Speed));
 				}
 				else
 				{
-					this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3(1.78f, 1.78f, 1.78f), this.Speed);
-					this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3((float)0, (float)14, (float)0), this.Speed);
-					float z3 = Mathf.Lerp(this.transform.localEulerAngles.z, (float)90, this.Speed);
-					Vector3 localEulerAngles3 = this.transform.localEulerAngles;
-					float num9 = localEulerAngles3.z = z3;
-					Vector3 vector3 = this.transform.localEulerAngles = localEulerAngles3;
+					base.transform.localScale = Vector3.Lerp(base.transform.localScale, new Vector3(1.78f, 1.78f, 1.78f), this.Speed);
+					base.transform.localPosition = Vector3.Lerp(base.transform.localPosition, new Vector3(0f, 14f, 0f), this.Speed);
+					base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, base.transform.localEulerAngles.y, Mathf.Lerp(base.transform.localEulerAngles.z, 90f, this.Speed));
 				}
-				if (this.MainMenu.active && !this.Quitting)
+				if (this.MainMenu.activeInHierarchy && !this.Quitting)
 				{
 					if (this.InputManager.TappedUp || Input.GetKeyDown("w") || Input.GetKeyDown("up"))
 					{
@@ -332,49 +294,43 @@ public class PauseScreenScript : MonoBehaviour
 						this.Column--;
 						this.UpdateSelection();
 					}
-					for (int i = 1; i < Extensions.get_length(this.PhoneIcons); i++)
+					for (int j = 1; j < this.PhoneIcons.Length; j++)
 					{
-						if (this.PhoneIcons[i] != null)
+						if (this.PhoneIcons[j] != null)
 						{
-							if (this.Selected != i)
-							{
-								this.PhoneIcons[i].transform.localScale = Vector3.Lerp(this.PhoneIcons[i].transform.localScale, new Vector3((float)1, (float)1, (float)1), this.Speed);
-							}
-							else
-							{
-								this.PhoneIcons[i].transform.localScale = Vector3.Lerp(this.PhoneIcons[i].transform.localScale, new Vector3(1.5f, 1.5f, 1.5f), this.Speed);
-							}
+							Vector3 b = (this.Selected == j) ? new Vector3(1.5f, 1.5f, 1.5f) : new Vector3(1f, 1f, 1f);
+							this.PhoneIcons[j].transform.localScale = Vector3.Lerp(this.PhoneIcons[j].transform.localScale, b, this.Speed);
 						}
 					}
 					if (Input.GetButtonDown("A"))
 					{
 						this.PressedA = true;
-						if (this.PhoneIcons[this.Selected].color.a == (float)1)
+						if (this.PhoneIcons[this.Selected].color.a == 1f)
 						{
 							if (this.Selected == 1)
 							{
-								this.MainMenu.active = false;
-								this.LoadingScreen.active = true;
-								this.StartCoroutine_Auto(this.PhotoGallery.GetPhotos());
+								this.MainMenu.SetActive(false);
+								this.LoadingScreen.SetActive(true);
+								base.StartCoroutine(this.PhotoGallery.GetPhotos());
 							}
 							else if (this.Selected == 2)
 							{
-								this.TaskList.gameObject.active = true;
-								this.MainMenu.active = false;
+								this.TaskList.gameObject.SetActive(true);
+								this.MainMenu.SetActive(false);
 								this.Sideways = true;
 								this.TaskList.UpdateTaskList();
-								this.StartCoroutine_Auto(this.TaskList.UpdateTaskInfo());
+								base.StartCoroutine(this.TaskList.UpdateTaskInfo());
 							}
 							else if (this.Selected == 3)
 							{
-								if (this.PhoneIcons[3].color.a == (float)1 && this.Yandere.CanMove && !this.Yandere.Dragging)
+								if (this.PhoneIcons[3].color.a == 1f && this.Yandere.CanMove && !this.Yandere.Dragging)
 								{
-									for (int i = 0; i < Extensions.get_length(this.Yandere.ArmedAnims); i++)
+									for (int k = 0; k < this.Yandere.ArmedAnims.Length; k++)
 									{
-										this.Yandere.CharacterAnimation[this.Yandere.ArmedAnims[i]].weight = (float)0;
+										this.Yandere.CharacterAnimation[this.Yandere.ArmedAnims[k]].weight = 0f;
 									}
-									this.MainMenu.active = false;
-									this.PassTime.active = true;
+									this.MainMenu.SetActive(false);
+									this.PassTime.gameObject.SetActive(true);
 									this.PassTime.GetCurrentTime();
 								}
 							}
@@ -383,31 +339,31 @@ public class PauseScreenScript : MonoBehaviour
 								this.PromptBar.ClearButtons();
 								this.PromptBar.Label[1].text = "Exit";
 								this.PromptBar.UpdateButtons();
-								this.Stats.gameObject.active = true;
+								this.Stats.gameObject.SetActive(true);
 								this.Stats.UpdateStats();
-								this.MainMenu.active = false;
+								this.MainMenu.SetActive(false);
 								this.Sideways = true;
 							}
 							else if (this.Selected == 5)
 							{
-								if (this.PhoneIcons[5].color.a == (float)1)
+								if (this.PhoneIcons[5].color.a == 1f)
 								{
 									this.PromptBar.ClearButtons();
 									this.PromptBar.Label[0].text = "Accept";
 									this.PromptBar.Label[1].text = "Exit";
 									this.PromptBar.Label[5].text = "Choose";
 									this.PromptBar.UpdateButtons();
-									this.FavorMenu.gameObject.active = true;
-									this.FavorMenu.gameObject.audio.Play();
-									this.MainMenu.active = false;
+									this.FavorMenu.gameObject.SetActive(true);
+									this.FavorMenu.gameObject.GetComponent<AudioSource>().Play();
+									this.MainMenu.SetActive(false);
 									this.Sideways = true;
 								}
 							}
 							else if (this.Selected == 6)
 							{
-								this.StudentInfoMenu.gameObject.active = true;
-								this.StartCoroutine_Auto(this.StudentInfoMenu.UpdatePortraits());
-								this.MainMenu.active = false;
+								this.StudentInfoMenu.gameObject.SetActive(true);
+								base.StartCoroutine(this.StudentInfoMenu.UpdatePortraits());
+								this.MainMenu.SetActive(false);
 								this.Sideways = true;
 								this.PromptBar.ClearButtons();
 								this.PromptBar.Label[0].text = "View Info";
@@ -419,10 +375,10 @@ public class PauseScreenScript : MonoBehaviour
 							{
 								if (this.Selected == 8)
 								{
-									this.Settings.gameObject.active = true;
+									this.Settings.gameObject.SetActive(true);
 									this.ScreenBlur.enabled = false;
 									this.Settings.UpdateText();
-									this.MainMenu.active = false;
+									this.MainMenu.SetActive(false);
 									this.PromptBar.ClearButtons();
 									this.PromptBar.Label[1].text = "Back";
 									this.PromptBar.Label[4].text = "Choose";
@@ -436,9 +392,9 @@ public class PauseScreenScript : MonoBehaviour
 									{
 										if (PlayerPrefs.GetInt("MissionMode") == 0)
 										{
-											this.MusicMenu.gameObject.active = true;
+											this.MusicMenu.gameObject.SetActive(true);
 											this.Settings.UpdateText();
-											this.MainMenu.active = false;
+											this.MainMenu.SetActive(false);
 											this.PromptBar.ClearButtons();
 											this.PromptBar.Label[0].text = "Play";
 											this.PromptBar.Label[1].text = "Back";
@@ -448,7 +404,7 @@ public class PauseScreenScript : MonoBehaviour
 										}
 										else
 										{
-											this.PhoneIcons[this.Selected].transform.localScale = new Vector3((float)1, (float)1, (float)1);
+											this.PhoneIcons[this.Selected].transform.localScale = new Vector3(1f, 1f, 1f);
 											this.MissionMode.ChangeMusic();
 										}
 									}
@@ -476,7 +432,7 @@ public class PauseScreenScript : MonoBehaviour
 				}
 				if (!this.PressedA)
 				{
-					if (this.PassTime.active)
+					if (this.PassTime.gameObject.activeInHierarchy)
 					{
 						if (Input.GetButtonDown("A"))
 						{
@@ -487,25 +443,25 @@ public class PauseScreenScript : MonoBehaviour
 							this.Yandere.Unequip();
 							this.ScreenBlur.enabled = false;
 							this.RPGCamera.enabled = true;
-							this.PassTime.active = false;
-							this.MainMenu.active = true;
+							this.PassTime.gameObject.SetActive(false);
+							this.MainMenu.SetActive(true);
 							this.PromptBar.Show = false;
 							this.Show = false;
 							this.Clock.TargetTime = (float)this.PassTime.TargetTime;
 							this.Clock.TimeSkip = true;
-							Time.timeScale = (float)1;
+							Time.timeScale = 1f;
 						}
 						if (Input.GetButtonDown("B"))
 						{
-							this.MainMenu.active = true;
-							this.PassTime.active = false;
+							this.MainMenu.SetActive(true);
+							this.PassTime.gameObject.SetActive(false);
 						}
 					}
 					if (this.Quitting)
 					{
 						if (Input.GetButtonDown("A"))
 						{
-							Application.LoadLevel("TitleScene");
+							SceneManager.LoadScene("TitleScene");
 						}
 						if (Input.GetButtonDown("B"))
 						{
@@ -518,7 +474,7 @@ public class PauseScreenScript : MonoBehaviour
 							this.Quitting = false;
 							if (this.BypassPhone)
 							{
-								this.transform.localPosition = new Vector3((float)1350, (float)0, (float)0);
+								base.transform.localPosition = new Vector3(1350f, 0f, 0f);
 								this.ExitPhone();
 							}
 						}
@@ -532,11 +488,11 @@ public class PauseScreenScript : MonoBehaviour
 		}
 	}
 
-	public virtual void JumpToQuit()
+	public void JumpToQuit()
 	{
 		if (!this.Police.FadeOut && !this.Clock.TimeSkip && !this.Yandere.Noticed)
 		{
-			this.transform.localPosition = new Vector3((float)0, (float)-1200, (float)0);
+			base.transform.localPosition = new Vector3(0f, -1200f, 0f);
 			this.Yandere.YandereVision = false;
 			if (!this.Yandere.Talking && !this.Yandere.Dismembering)
 			{
@@ -551,11 +507,11 @@ public class PauseScreenScript : MonoBehaviour
 		}
 	}
 
-	public virtual void ExitPhone()
+	private void ExitPhone()
 	{
 		if (!this.Home)
 		{
-			this.PromptParent.localScale = new Vector3((float)1, (float)1, (float)1);
+			this.PromptParent.localScale = new Vector3(1f, 1f, 1f);
 			this.ScreenBlur.enabled = false;
 			this.CorrectingTime = true;
 			if (!this.Yandere.Talking && !this.Yandere.Dismembering)
@@ -564,7 +520,7 @@ public class PauseScreenScript : MonoBehaviour
 			}
 			if (this.Yandere.Laughing)
 			{
-				this.Yandere.audio.volume = (float)1;
+				this.Yandere.GetComponent<AudioSource>().volume = 1f;
 			}
 		}
 		else
@@ -579,7 +535,7 @@ public class PauseScreenScript : MonoBehaviour
 		this.Show = false;
 	}
 
-	public virtual void UpdateSelection()
+	private void UpdateSelection()
 	{
 		if (this.Row < 0)
 		{
@@ -598,10 +554,6 @@ public class PauseScreenScript : MonoBehaviour
 			this.Column = 1;
 		}
 		this.Selected = this.Row * 3 + this.Column;
-		this.SelectionLabel.text = string.Empty + this.SelectionNames[this.Selected];
-	}
-
-	public virtual void Main()
-	{
+		this.SelectionLabel.text = this.SelectionNames[this.Selected];
 	}
 }

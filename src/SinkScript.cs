@@ -1,19 +1,18 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class SinkScript : MonoBehaviour
 {
 	public YandereScript Yandere;
 
 	public PromptScript Prompt;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent(typeof(YandereScript));
+		this.Yandere = GameObject.Find("YandereChan").GetComponent<YandereScript>();
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.Yandere.PickUp != null)
 		{
@@ -22,18 +21,18 @@ public class SinkScript : MonoBehaviour
 				this.Prompt.enabled = true;
 				if (!this.Yandere.PickUp.Bucket.Full)
 				{
-					this.Prompt.Label[0].text = "     " + "Fill Bucket";
+					this.Prompt.Label[0].text = "     Fill Bucket";
 				}
 				else
 				{
-					this.Prompt.Label[0].text = "     " + "Empty Bucket";
+					this.Prompt.Label[0].text = "     Empty Bucket";
 				}
 			}
 			else if (this.Yandere.PickUp.BloodCleaner != null)
 			{
-				if (this.Yandere.PickUp.BloodCleaner.Blood > (float)0)
+				if (this.Yandere.PickUp.BloodCleaner.Blood > 0f)
 				{
-					this.Prompt.Label[0].text = "     " + "Empty Robot";
+					this.Prompt.Label[0].text = "     Empty Robot";
 					this.Prompt.enabled = true;
 				}
 				else
@@ -53,7 +52,7 @@ public class SinkScript : MonoBehaviour
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
 		}
-		if (this.Prompt.Circle[0].fillAmount <= (float)0)
+		if (this.Prompt.Circle[0].fillAmount <= 0f)
 		{
 			if (this.Yandere.PickUp.Bucket != null)
 			{
@@ -67,23 +66,19 @@ public class SinkScript : MonoBehaviour
 				}
 				if (!this.Yandere.PickUp.Bucket.Full)
 				{
-					this.Prompt.Label[0].text = "     " + "Fill Bucket";
+					this.Prompt.Label[0].text = "     Fill Bucket";
 				}
 				else
 				{
-					this.Prompt.Label[0].text = "     " + "Empty Bucket";
+					this.Prompt.Label[0].text = "     Empty Bucket";
 				}
 			}
 			else if (this.Yandere.PickUp.BloodCleaner != null)
 			{
-				this.Yandere.PickUp.BloodCleaner.Blood = (float)0;
-				this.Yandere.PickUp.BloodCleaner.Lens.active = false;
+				this.Yandere.PickUp.BloodCleaner.Blood = 0f;
+				this.Yandere.PickUp.BloodCleaner.Lens.SetActive(false);
 			}
-			this.Prompt.Circle[0].fillAmount = (float)1;
+			this.Prompt.Circle[0].fillAmount = 1f;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

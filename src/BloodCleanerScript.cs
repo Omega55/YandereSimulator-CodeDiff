@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class BloodCleanerScript : MonoBehaviour
 {
 	public Transform BloodParent;
@@ -18,25 +17,25 @@ public class BloodCleanerScript : MonoBehaviour
 
 	public float Blood;
 
-	public virtual void Start()
+	private void Start()
 	{
 		Physics.IgnoreLayerCollision(11, 15, true);
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Blood < (float)100 && this.BloodParent.childCount > 0)
+		if (this.Blood < 100f && this.BloodParent.childCount > 0)
 		{
 			this.Pathfinding.target = this.BloodParent.GetChild(0);
-			if (this.Pathfinding.target.position.y < (float)4)
+			if (this.Pathfinding.target.position.y < 4f)
 			{
 				this.Label.text = "1";
 			}
-			else if (this.Pathfinding.target.position.y < (float)8)
+			else if (this.Pathfinding.target.position.y < 8f)
 			{
 				this.Label.text = "2";
 			}
-			else if (this.Pathfinding.target.position.y < (float)12)
+			else if (this.Pathfinding.target.position.y < 12f)
 			{
 				this.Label.text = "3";
 			}
@@ -46,44 +45,34 @@ public class BloodCleanerScript : MonoBehaviour
 			}
 			if (this.Pathfinding.target != null)
 			{
-				this.Distance = Vector3.Distance(this.transform.position, this.Pathfinding.target.position);
+				this.Distance = Vector3.Distance(base.transform.position, this.Pathfinding.target.position);
 				if (this.Distance < 0.45f)
 				{
-					this.Pathfinding.speed = (float)0;
-					if (this.BloodParent.GetChild(0).GetComponent("BloodPoolScript") != null)
+					this.Pathfinding.speed = 0f;
+					Transform child = this.BloodParent.GetChild(0);
+					if (child.GetComponent("BloodPoolScript") != null)
 					{
-						float x = this.BloodParent.GetChild(0).localScale.x - Time.deltaTime;
-						Vector3 localScale = this.BloodParent.GetChild(0).localScale;
-						float num = localScale.x = x;
-						Vector3 vector = this.BloodParent.GetChild(0).localScale = localScale;
-						float y = this.BloodParent.GetChild(0).localScale.y - Time.deltaTime;
-						Vector3 localScale2 = this.BloodParent.GetChild(0).localScale;
-						float num2 = localScale2.y = y;
-						Vector3 vector2 = this.BloodParent.GetChild(0).localScale = localScale2;
+						child.localScale = new Vector3(child.localScale.x - Time.deltaTime, child.localScale.y - Time.deltaTime, child.localScale.z);
 						this.Blood += Time.deltaTime;
-						if (this.Blood >= (float)100)
+						if (this.Blood >= 100f)
 						{
-							this.Lens.active = true;
+							this.Lens.SetActive(true);
 						}
-						if (this.BloodParent.GetChild(0).transform.localScale.x < 0.1f)
+						if (child.transform.localScale.x < 0.1f)
 						{
-							UnityEngine.Object.Destroy(this.BloodParent.GetChild(0).gameObject);
+							UnityEngine.Object.Destroy(child.gameObject);
 						}
 					}
 					else
 					{
-						UnityEngine.Object.Destroy(this.BloodParent.GetChild(0).gameObject);
+						UnityEngine.Object.Destroy(child.gameObject);
 					}
 				}
 				else
 				{
-					this.Pathfinding.speed = (float)1;
+					this.Pathfinding.speed = 1f;
 				}
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

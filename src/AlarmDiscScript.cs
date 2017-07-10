@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class AlarmDiscScript : MonoBehaviour
 {
 	public AudioClip[] LongFemaleScreams;
@@ -31,23 +29,19 @@ public class AlarmDiscScript : MonoBehaviour
 
 	public int Frame;
 
-	public virtual void Start()
+	private void Start()
 	{
-		float x = this.transform.localScale.x * ((float)2 - PlayerPrefs.GetFloat("SchoolAtmosphere") * 0.01f);
-		Vector3 localScale = this.transform.localScale;
-		float num = localScale.x = x;
-		Vector3 vector = this.transform.localScale = localScale;
-		float x2 = this.transform.localScale.x;
-		Vector3 localScale2 = this.transform.localScale;
-		float num2 = localScale2.z = x2;
-		Vector3 vector2 = this.transform.localScale = localScale2;
+		Vector3 localScale = base.transform.localScale;
+		localScale.x *= 2f - PlayerPrefs.GetFloat("SchoolAtmosphere") * 0.01f;
+		localScale.z = localScale.x;
+		base.transform.localScale = localScale;
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.Frame > 0)
 		{
-			UnityEngine.Object.Destroy(this.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 		else if (!this.NoScream)
 		{
@@ -55,30 +49,30 @@ public class AlarmDiscScript : MonoBehaviour
 			{
 				if (!this.Male)
 				{
-					this.PlayClip(this.FemaleScreams[UnityEngine.Random.Range(0, Extensions.get_length(this.FemaleScreams))], this.transform.position);
+					this.PlayClip(this.FemaleScreams[UnityEngine.Random.Range(0, this.FemaleScreams.Length)], base.transform.position);
 				}
 				else
 				{
-					this.PlayClip(this.MaleScreams[UnityEngine.Random.Range(0, Extensions.get_length(this.MaleScreams))], this.transform.position);
+					this.PlayClip(this.MaleScreams[UnityEngine.Random.Range(0, this.MaleScreams.Length)], base.transform.position);
 				}
 			}
 			else if (!this.Male)
 			{
-				this.PlayClip(this.LongFemaleScreams[UnityEngine.Random.Range(0, Extensions.get_length(this.LongFemaleScreams))], this.transform.position);
+				this.PlayClip(this.LongFemaleScreams[UnityEngine.Random.Range(0, this.LongFemaleScreams.Length)], base.transform.position);
 			}
 			else
 			{
-				this.PlayClip(this.LongMaleScreams[UnityEngine.Random.Range(0, Extensions.get_length(this.LongMaleScreams))], this.transform.position);
+				this.PlayClip(this.LongMaleScreams[UnityEngine.Random.Range(0, this.LongMaleScreams.Length)], base.transform.position);
 			}
 		}
 		this.Frame++;
 	}
 
-	public virtual void OnTriggerEnter(Collider other)
+	private void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.layer == 9)
 		{
-			this.Student = (StudentScript)other.gameObject.GetComponent(typeof(StudentScript));
+			this.Student = other.gameObject.GetComponent<StudentScript>();
 			if (this.Student != null)
 			{
 				if (!this.Radio)
@@ -88,16 +82,16 @@ public class AlarmDiscScript : MonoBehaviour
 						if (this.Student.Male)
 						{
 						}
-						this.Student.Character.animation.CrossFade(this.Student.LeanAnim);
+						this.Student.Character.GetComponent<Animation>().CrossFade(this.Student.LeanAnim);
 						if (this.Originator != null)
 						{
 							if (this.Originator.WitnessedMurder)
 							{
-								this.Student.DistractionSpot = new Vector3(this.transform.position.x, this.Student.Yandere.transform.position.y, this.transform.position.z);
+								this.Student.DistractionSpot = new Vector3(base.transform.position.x, this.Student.Yandere.transform.position.y, base.transform.position.z);
 							}
 							else if (this.Originator.Corpse == null)
 							{
-								this.Student.DistractionSpot = new Vector3(this.transform.position.x, this.Student.transform.position.y, this.transform.position.z);
+								this.Student.DistractionSpot = new Vector3(base.transform.position.x, this.Student.transform.position.y, base.transform.position.z);
 							}
 							else
 							{
@@ -106,14 +100,14 @@ public class AlarmDiscScript : MonoBehaviour
 						}
 						else
 						{
-							this.Student.DistractionSpot = new Vector3(this.transform.position.x, this.Student.transform.position.y, this.transform.position.z);
+							this.Student.DistractionSpot = new Vector3(base.transform.position.x, this.Student.transform.position.y, base.transform.position.z);
 						}
 						this.Student.DiscCheck = true;
 						if (this.Shocking)
 						{
 							this.Student.Hesitation = 0.5f;
 						}
-						this.Student.Alarm = (float)200;
+						this.Student.Alarm = 200f;
 					}
 				}
 				else if (!this.Student.Nemesis && !this.Student.Male && !this.Student.Dead && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.Student.InEvent && this.Student.CharacterAnimation != null && this.SourceRadio.Victim == null)
@@ -130,25 +124,21 @@ public class AlarmDiscScript : MonoBehaviour
 		}
 	}
 
-	public virtual void PlayClip(AudioClip clip, Vector3 pos)
+	private void PlayClip(AudioClip clip, Vector3 pos)
 	{
 		GameObject gameObject = new GameObject("TempAudio");
 		gameObject.transform.position = pos;
-		AudioSource audioSource = (AudioSource)gameObject.AddComponent(typeof(AudioSource));
+		AudioSource audioSource = gameObject.AddComponent<AudioSource>();
 		audioSource.clip = clip;
 		audioSource.Play();
 		UnityEngine.Object.Destroy(gameObject, clip.length);
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
-		audioSource.minDistance = (float)5;
-		audioSource.maxDistance = (float)10;
+		audioSource.minDistance = 5f;
+		audioSource.maxDistance = 10f;
 		audioSource.volume = 0.5f;
 		if (this.Student != null)
 		{
 			this.Student.DeathScream = gameObject;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

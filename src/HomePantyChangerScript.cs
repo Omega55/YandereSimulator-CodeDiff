@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class HomePantyChangerScript : MonoBehaviour
 {
 	public InputManagerScript InputManager;
@@ -34,8 +33,6 @@ public class HomePantyChangerScript : MonoBehaviour
 
 	public int Selected;
 
-	private int ID;
-
 	public GameObject[] PantyModels;
 
 	public string[] PantyNames;
@@ -44,43 +41,33 @@ public class HomePantyChangerScript : MonoBehaviour
 
 	public string[] PantyBuffs;
 
-	public virtual void Start()
+	private void Start()
 	{
-		while (this.ID < this.TotalPanties)
+		for (int i = 0; i < this.TotalPanties; i++)
 		{
-			this.NewPanties = (GameObject)UnityEngine.Object.Instantiate(this.PantyModels[this.ID], new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z - (float)1), Quaternion.identity);
+			this.NewPanties = UnityEngine.Object.Instantiate<GameObject>(this.PantyModels[i], new Vector3(base.transform.position.x, base.transform.position.y, base.transform.position.z - 1f), Quaternion.identity);
 			this.NewPanties.transform.parent = this.PantyParent;
-			((HomePantiesScript)this.NewPanties.GetComponent(typeof(HomePantiesScript))).PantyChanger = this;
-			((HomePantiesScript)this.NewPanties.GetComponent(typeof(HomePantiesScript))).ID = this.ID;
-			float y = this.PantyParent.transform.localEulerAngles.y + (float)(360 / this.TotalPanties);
-			Vector3 localEulerAngles = this.PantyParent.transform.localEulerAngles;
-			float num = localEulerAngles.y = y;
-			Vector3 vector = this.PantyParent.transform.localEulerAngles = localEulerAngles;
-			this.ID++;
+			this.NewPanties.GetComponent<HomePantiesScript>().PantyChanger = this;
+			this.NewPanties.GetComponent<HomePantiesScript>().ID = i;
+			this.PantyParent.transform.localEulerAngles = new Vector3(this.PantyParent.transform.localEulerAngles.x, this.PantyParent.transform.localEulerAngles.y + 360f / (float)this.TotalPanties, this.PantyParent.transform.localEulerAngles.z);
 		}
-		int num2 = 0;
-		Vector3 localEulerAngles2 = this.PantyParent.transform.localEulerAngles;
-		float num3 = localEulerAngles2.y = (float)num2;
-		Vector3 vector2 = this.PantyParent.transform.localEulerAngles = localEulerAngles2;
-		float z = 1.8f;
-		Vector3 localPosition = this.PantyParent.transform.localPosition;
-		float num4 = localPosition.z = z;
-		Vector3 vector3 = this.PantyParent.transform.localPosition = localPosition;
+		this.PantyParent.transform.localEulerAngles = new Vector3(this.PantyParent.transform.localEulerAngles.x, 0f, this.PantyParent.transform.localEulerAngles.z);
+		this.PantyParent.transform.localPosition = new Vector3(this.PantyParent.transform.localPosition.x, this.PantyParent.transform.localPosition.y, 1.8f);
 		this.UpdatePantyLabels();
-		this.PantyParent.transform.localScale = new Vector3((float)0, (float)0, (float)0);
-		this.PantyParent.gameObject.active = false;
+		this.PantyParent.transform.localScale = Vector3.zero;
+		this.PantyParent.gameObject.SetActive(false);
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.HomeWindow.Show)
 		{
-			this.PantyParent.localScale = Vector3.Lerp(this.PantyParent.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-			this.PantyParent.gameObject.active = true;
+			this.PantyParent.localScale = Vector3.Lerp(this.PantyParent.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+			this.PantyParent.gameObject.SetActive(true);
 			if (this.InputManager.TappedRight)
 			{
 				this.DestinationReached = false;
-				this.TargetRotation += (float)(360 / this.TotalPanties);
+				this.TargetRotation += 360f / (float)this.TotalPanties;
 				this.Selected++;
 				if (this.Selected > this.TotalPanties - 1)
 				{
@@ -91,7 +78,7 @@ public class HomePantyChangerScript : MonoBehaviour
 			if (this.InputManager.TappedLeft)
 			{
 				this.DestinationReached = false;
-				this.TargetRotation -= (float)(360 / this.TotalPanties);
+				this.TargetRotation -= 360f / (float)this.TotalPanties;
 				this.Selected--;
 				if (this.Selected < 0)
 				{
@@ -99,11 +86,8 @@ public class HomePantyChangerScript : MonoBehaviour
 				}
 				this.UpdatePantyLabels();
 			}
-			this.Rotation = Mathf.Lerp(this.Rotation, this.TargetRotation, Time.deltaTime * (float)10);
-			float rotation = this.Rotation;
-			Vector3 localEulerAngles = this.PantyParent.localEulerAngles;
-			float num = localEulerAngles.y = rotation;
-			Vector3 vector = this.PantyParent.localEulerAngles = localEulerAngles;
+			this.Rotation = Mathf.Lerp(this.Rotation, this.TargetRotation, Time.deltaTime * 10f);
+			this.PantyParent.localEulerAngles = new Vector3(this.PantyParent.localEulerAngles.x, this.Rotation, this.PantyParent.localEulerAngles.z);
 			if (Input.GetButtonDown("A"))
 			{
 				PlayerPrefs.SetInt("PantiesEquipped", this.Selected);
@@ -119,30 +103,19 @@ public class HomePantyChangerScript : MonoBehaviour
 		}
 		else
 		{
-			this.PantyParent.localScale = Vector3.Lerp(this.PantyParent.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+			this.PantyParent.localScale = Vector3.Lerp(this.PantyParent.localScale, Vector3.zero, Time.deltaTime * 10f);
 			if (this.PantyParent.localScale.x < 0.01f)
 			{
-				this.PantyParent.gameObject.active = false;
+				this.PantyParent.gameObject.SetActive(false);
 			}
 		}
 	}
 
-	public virtual void UpdatePantyLabels()
+	private void UpdatePantyLabels()
 	{
 		this.PantyNameLabel.text = this.PantyNames[this.Selected];
 		this.PantyDescLabel.text = this.PantyDescs[this.Selected];
 		this.PantyBuffLabel.text = this.PantyBuffs[this.Selected];
-		if (this.Selected == PlayerPrefs.GetInt("PantiesEquipped"))
-		{
-			this.ButtonLabel.text = "Equipped";
-		}
-		else
-		{
-			this.ButtonLabel.text = "Wear";
-		}
-	}
-
-	public virtual void Main()
-	{
+		this.ButtonLabel.text = ((this.Selected != PlayerPrefs.GetInt("PantiesEquipped")) ? "Wear" : "Equipped");
 	}
 }

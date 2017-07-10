@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class CameraMoveScript : MonoBehaviour
 {
 	public Transform StartPos;
@@ -22,13 +21,13 @@ public class CameraMoveScript : MonoBehaviour
 
 	public float Timer;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.transform.position = this.StartPos.position;
-		this.transform.rotation = this.StartPos.rotation;
+		base.transform.position = this.StartPos.position;
+		base.transform.rotation = this.StartPos.rotation;
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (Input.GetKeyDown("space"))
 		{
@@ -42,30 +41,20 @@ public class CameraMoveScript : MonoBehaviour
 				this.OpenDoors = true;
 				if (this.LeftDoor != null)
 				{
-					float x = Mathf.Lerp(this.LeftDoor.transform.localPosition.x, (float)1, Time.deltaTime);
-					Vector3 localPosition = this.LeftDoor.transform.localPosition;
-					float num = localPosition.x = x;
-					Vector3 vector = this.LeftDoor.transform.localPosition = localPosition;
-					float x2 = Mathf.Lerp(this.RightDoor.transform.localPosition.x, (float)-1, Time.deltaTime);
-					Vector3 localPosition2 = this.RightDoor.transform.localPosition;
-					float num2 = localPosition2.x = x2;
-					Vector3 vector2 = this.RightDoor.transform.localPosition = localPosition2;
+					this.LeftDoor.transform.localPosition = new Vector3(Mathf.Lerp(this.LeftDoor.transform.localPosition.x, 1f, Time.deltaTime), this.LeftDoor.transform.localPosition.y, this.LeftDoor.transform.localPosition.z);
+					this.RightDoor.transform.localPosition = new Vector3(Mathf.Lerp(this.RightDoor.transform.localPosition.x, -1f, Time.deltaTime), this.RightDoor.transform.localPosition.y, this.RightDoor.transform.localPosition.z);
 				}
 			}
-			this.transform.position = Vector3.Lerp(this.transform.position, this.EndPos.position, Time.deltaTime * this.Timer);
-			this.transform.rotation = Quaternion.Lerp(this.transform.rotation, this.EndPos.rotation, Time.deltaTime * this.Timer);
+			base.transform.position = Vector3.Lerp(base.transform.position, this.EndPos.position, Time.deltaTime * this.Timer);
+			base.transform.rotation = Quaternion.Lerp(base.transform.rotation, this.EndPos.rotation, Time.deltaTime * this.Timer);
 		}
 	}
 
-	public virtual void LateUpdate()
+	private void LateUpdate()
 	{
 		if (this.Target != null)
 		{
-			this.transform.LookAt(this.Target);
+			base.transform.LookAt(this.Target);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

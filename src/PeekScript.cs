@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class PeekScript : MonoBehaviour
 {
 	public InfoChanWindowScript InfoChanWindow;
@@ -20,44 +19,40 @@ public class PeekScript : MonoBehaviour
 
 	public float Timer;
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.InfoChanWindow.Drop)
 		{
-			this.Prompt.Circle[0].fillAmount = (float)1;
+			this.Prompt.Circle[0].fillAmount = 1f;
 		}
-		if (this.Prompt.Circle[0].fillAmount == (float)0)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Yandere.CanMove = false;
-			this.PeekCamera.active = true;
+			this.PeekCamera.SetActive(true);
 			this.Jukebox.Dip = 0.5f;
 			this.PromptBar.ClearButtons();
 			this.PromptBar.Label[1].text = "Stop";
 			this.PromptBar.UpdateButtons();
 			this.PromptBar.Show = true;
 		}
-		if (this.PeekCamera.active)
+		if (this.PeekCamera.activeInHierarchy)
 		{
 			this.Timer += Time.deltaTime;
-			if (this.Timer > (float)5 && !this.Spoke)
+			if (this.Timer > 5f && !this.Spoke)
 			{
 				this.Subtitle.UpdateLabel("Info Notice", 0, 6.5f);
 				this.Spoke = true;
-				this.audio.Play();
+				base.GetComponent<AudioSource>().Play();
 			}
 			if (Input.GetButtonDown("B"))
 			{
 				this.Prompt.Yandere.CanMove = true;
-				this.PeekCamera.active = false;
-				this.Jukebox.Dip = (float)1;
+				this.PeekCamera.SetActive(false);
+				this.Jukebox.Dip = 1f;
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Show = false;
-				this.Timer = (float)0;
+				this.Timer = 0f;
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

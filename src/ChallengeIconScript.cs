@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class ChallengeIconScript : MonoBehaviour
 {
 	public UITexture LargeIcon;
@@ -16,34 +15,30 @@ public class ChallengeIconScript : MonoBehaviour
 
 	public float Dark;
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.transform.position.x > -0.125f && this.transform.position.x < 0.125f)
+		if (base.transform.position.x > -0.125f && base.transform.position.x < 0.125f)
 		{
 			if (this.Icon != null)
 			{
 				this.LargeIcon.mainTexture = this.Icon.mainTexture;
 			}
-			this.Dark -= Time.deltaTime * (float)10;
-			if (this.Dark < (float)0)
+			this.Dark -= Time.deltaTime * 10f;
+			if (this.Dark < 0f)
 			{
-				this.Dark = (float)0;
+				this.Dark = 0f;
 			}
 		}
 		else
 		{
-			this.Dark += Time.deltaTime * (float)10;
-			if (this.Dark > (float)1)
+			this.Dark += Time.deltaTime * 10f;
+			if (this.Dark > 1f)
 			{
-				this.Dark = (float)1;
+				this.Dark = 1f;
 			}
 		}
-		this.IconFrame.color = new Color(this.Dark, this.Dark, this.Dark, (float)1);
-		this.NameFrame.color = new Color(this.Dark, this.Dark, this.Dark, (float)1);
-		this.Name.color = new Color(this.Dark, this.Dark, this.Dark, (float)1);
-	}
-
-	public virtual void Main()
-	{
+		this.IconFrame.color = new Color(this.Dark, this.Dark, this.Dark, 1f);
+		this.NameFrame.color = new Color(this.Dark, this.Dark, this.Dark, 1f);
+		this.Name.color = new Color(this.Dark, this.Dark, this.Dark, 1f);
 	}
 }

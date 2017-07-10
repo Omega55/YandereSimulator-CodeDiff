@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class SafeScript : MonoBehaviour
 {
 	public MissionModeScript MissionMode;
@@ -20,21 +19,21 @@ public class SafeScript : MonoBehaviour
 
 	public bool Open;
 
-	public virtual void Start()
+	private void Start()
 	{
 		this.ContentsPrompt.MyCollider.enabled = false;
 		this.SafePrompt.enabled = false;
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Key.active && this.KeyPrompt.Circle[0].fillAmount == (float)0)
+		if (this.Key.activeInHierarchy && this.KeyPrompt.Circle[0].fillAmount == 0f)
 		{
 			this.KeyPrompt.Yandere.Inventory.SafeKey = true;
 			this.SafePrompt.enabled = true;
-			this.Key.active = false;
+			this.Key.SetActive(false);
 		}
-		if (this.SafePrompt.Circle[0].fillAmount == (float)0)
+		if (this.SafePrompt.Circle[0].fillAmount == 0f)
 		{
 			this.KeyPrompt.Yandere.Inventory.SafeKey = false;
 			this.ContentsPrompt.MyCollider.enabled = true;
@@ -42,29 +41,22 @@ public class SafeScript : MonoBehaviour
 			this.SafePrompt.Hide();
 			this.SafePrompt.enabled = false;
 		}
-		if (this.ContentsPrompt.Circle[0].fillAmount == (float)0)
+		if (this.ContentsPrompt.Circle[0].fillAmount == 0f)
 		{
 			this.MissionMode.DocumentsStolen = true;
-			this.enabled = false;
+			base.enabled = false;
 			this.ContentsPrompt.Hide();
 			this.ContentsPrompt.enabled = false;
-			this.ContentsPrompt.gameObject.active = false;
+			this.ContentsPrompt.gameObject.SetActive(false);
 		}
 		if (this.Open)
 		{
-			this.Rotation = Mathf.Lerp(this.Rotation, (float)0, Time.deltaTime * (float)10);
-			float rotation = this.Rotation;
-			Vector3 localEulerAngles = this.Door.localEulerAngles;
-			float num = localEulerAngles.y = rotation;
-			Vector3 vector = this.Door.localEulerAngles = localEulerAngles;
-			if (this.Rotation < (float)1)
+			this.Rotation = Mathf.Lerp(this.Rotation, 0f, Time.deltaTime * 10f);
+			this.Door.localEulerAngles = new Vector3(this.Door.localEulerAngles.x, this.Rotation, this.Door.localEulerAngles.z);
+			if (this.Rotation < 1f)
 			{
 				this.Open = false;
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

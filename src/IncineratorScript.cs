@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class IncineratorScript : MonoBehaviour
 {
 	public YandereScript Yandere;
@@ -66,97 +65,62 @@ public class IncineratorScript : MonoBehaviour
 
 	public int[] LimbList;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.Panel.active = false;
+		this.Panel.SetActive(false);
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
+		AudioSource component = base.GetComponent<AudioSource>();
 		if (!this.Open)
 		{
-			float y = Mathf.MoveTowards(this.RightDoor.transform.localEulerAngles.y, (float)0, Time.deltaTime * (float)360);
-			Vector3 localEulerAngles = this.RightDoor.transform.localEulerAngles;
-			float num = localEulerAngles.y = y;
-			Vector3 vector = this.RightDoor.transform.localEulerAngles = localEulerAngles;
-			float y2 = Mathf.MoveTowards(this.LeftDoor.transform.localEulerAngles.y, (float)0, Time.deltaTime * (float)360);
-			Vector3 localEulerAngles2 = this.LeftDoor.transform.localEulerAngles;
-			float num2 = localEulerAngles2.y = y2;
-			Vector3 vector2 = this.LeftDoor.transform.localEulerAngles = localEulerAngles2;
-			if (this.RightDoor.transform.localEulerAngles.y < (float)36)
+			this.RightDoor.transform.localEulerAngles = new Vector3(this.RightDoor.transform.localEulerAngles.x, Mathf.MoveTowards(this.RightDoor.transform.localEulerAngles.y, 0f, Time.deltaTime * 360f), this.RightDoor.transform.localEulerAngles.z);
+			this.LeftDoor.transform.localEulerAngles = new Vector3(this.LeftDoor.transform.localEulerAngles.x, Mathf.MoveTowards(this.LeftDoor.transform.localEulerAngles.y, 0f, Time.deltaTime * 360f), this.LeftDoor.transform.localEulerAngles.z);
+			if (this.RightDoor.transform.localEulerAngles.y < 36f)
 			{
-				if (this.RightDoor.transform.localEulerAngles.y > (float)0)
+				if (this.RightDoor.transform.localEulerAngles.y > 0f)
 				{
-					this.audio.clip = this.IncineratorClose;
-					this.audio.Play();
+					component.clip = this.IncineratorClose;
+					component.Play();
 				}
-				int num3 = 0;
-				Vector3 localEulerAngles3 = this.RightDoor.transform.localEulerAngles;
-				float num4 = localEulerAngles3.y = (float)num3;
-				Vector3 vector3 = this.RightDoor.transform.localEulerAngles = localEulerAngles3;
+				this.RightDoor.transform.localEulerAngles = new Vector3(this.RightDoor.transform.localEulerAngles.x, 0f, this.RightDoor.transform.localEulerAngles.z);
 			}
 		}
 		else
 		{
-			if (this.RightDoor.transform.localEulerAngles.y == (float)0)
+			if (this.RightDoor.transform.localEulerAngles.y == 0f)
 			{
-				this.audio.clip = this.IncineratorOpen;
-				this.audio.Play();
+				component.clip = this.IncineratorOpen;
+				component.Play();
 			}
-			float y3 = Mathf.Lerp(this.RightDoor.transform.localEulerAngles.y, (float)135, Time.deltaTime * (float)10);
-			Vector3 localEulerAngles4 = this.RightDoor.transform.localEulerAngles;
-			float num5 = localEulerAngles4.y = y3;
-			Vector3 vector4 = this.RightDoor.transform.localEulerAngles = localEulerAngles4;
-			float y4 = Mathf.Lerp(this.LeftDoor.transform.localEulerAngles.y, (float)135, Time.deltaTime * (float)10);
-			Vector3 localEulerAngles5 = this.LeftDoor.transform.localEulerAngles;
-			float num6 = localEulerAngles5.y = y4;
-			Vector3 vector5 = this.LeftDoor.transform.localEulerAngles = localEulerAngles5;
-			if (this.RightDoor.transform.localEulerAngles.y > (float)134)
+			this.RightDoor.transform.localEulerAngles = new Vector3(this.RightDoor.transform.localEulerAngles.x, Mathf.Lerp(this.RightDoor.transform.localEulerAngles.y, 135f, Time.deltaTime * 10f), this.RightDoor.transform.localEulerAngles.z);
+			this.LeftDoor.transform.localEulerAngles = new Vector3(this.LeftDoor.transform.localEulerAngles.x, Mathf.Lerp(this.LeftDoor.transform.localEulerAngles.y, 135f, Time.deltaTime * 10f), this.LeftDoor.transform.localEulerAngles.z);
+			if (this.RightDoor.transform.localEulerAngles.y > 134f)
 			{
-				int num7 = 135;
-				Vector3 localEulerAngles6 = this.RightDoor.transform.localEulerAngles;
-				float num8 = localEulerAngles6.y = (float)num7;
-				Vector3 vector6 = this.RightDoor.transform.localEulerAngles = localEulerAngles6;
+				this.RightDoor.transform.localEulerAngles = new Vector3(this.RightDoor.transform.localEulerAngles.x, 135f, this.RightDoor.transform.localEulerAngles.z);
 			}
 		}
-		if (this.OpenTimer > (float)0)
+		if (this.OpenTimer > 0f)
 		{
 			this.OpenTimer -= Time.deltaTime;
-			if (this.OpenTimer <= (float)1)
+			if (this.OpenTimer <= 1f)
 			{
 				this.Open = false;
 			}
-			if (this.OpenTimer <= (float)0)
+			if (this.OpenTimer <= 0f)
 			{
 				this.Prompt.enabled = true;
 			}
 		}
 		else if (!this.Smoke.isPlaying)
 		{
-			if (this.Yandere.Ragdoll != null)
-			{
-				this.YandereHoldingEvidence = true;
-			}
-			else
-			{
-				this.YandereHoldingEvidence = false;
-			}
+			this.YandereHoldingEvidence = (this.Yandere.Ragdoll != null);
 			if (!this.YandereHoldingEvidence)
 			{
 				if (this.Yandere.PickUp != null)
 				{
-					if (this.Yandere.PickUp.Evidence)
-					{
-						this.YandereHoldingEvidence = true;
-					}
-					else if (this.Yandere.PickUp.Garbage)
-					{
-						this.YandereHoldingEvidence = true;
-					}
-					else
-					{
-						this.YandereHoldingEvidence = false;
-					}
+					this.YandereHoldingEvidence = (this.Yandere.PickUp.Evidence || this.Yandere.PickUp.Garbage);
 				}
 				else
 				{
@@ -167,14 +131,7 @@ public class IncineratorScript : MonoBehaviour
 			{
 				if (this.Yandere.Weapon[this.Yandere.Equipped] != null)
 				{
-					if (this.Yandere.Weapon[this.Yandere.Equipped].Evidence)
-					{
-						this.YandereHoldingEvidence = true;
-					}
-					else
-					{
-						this.YandereHoldingEvidence = false;
-					}
+					this.YandereHoldingEvidence = this.Yandere.Weapon[this.Yandere.Equipped].Evidence;
 				}
 				else
 				{
@@ -219,26 +176,19 @@ public class IncineratorScript : MonoBehaviour
 				this.Prompt.enabled = true;
 			}
 		}
-		if (this.Prompt.Circle[3].fillAmount <= (float)0)
+		if (this.Prompt.Circle[3].fillAmount <= 0f)
 		{
-			Time.timeScale = (float)1;
+			Time.timeScale = 1f;
 			if (this.Yandere.Ragdoll != null)
 			{
-				if (!this.Yandere.Carrying)
-				{
-					this.Yandere.Character.animation.CrossFade("f02_dragIdle_00");
-				}
-				else
-				{
-					this.Yandere.Character.animation.CrossFade("f02_carryIdleA_00");
-				}
+				this.Yandere.Character.GetComponent<Animation>().CrossFade((!this.Yandere.Carrying) ? "f02_dragIdle_00" : "f02_carryIdleA_00");
 				this.Yandere.YandereVision = false;
 				this.Yandere.CanMove = false;
 				this.Yandere.Dumping = true;
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
 				this.Victims++;
-				this.VictimList[this.Victims] = ((RagdollScript)this.Yandere.Ragdoll.GetComponent(typeof(RagdollScript))).StudentID;
+				this.VictimList[this.Victims] = this.Yandere.Ragdoll.GetComponent<RagdollScript>().StudentID;
 				this.Open = true;
 			}
 			if (this.Yandere.PickUp != null)
@@ -246,50 +196,51 @@ public class IncineratorScript : MonoBehaviour
 				if (this.Yandere.PickUp.BodyPart)
 				{
 					this.Limbs++;
-					this.LimbList[this.Limbs] = ((BodyPartScript)this.Yandere.PickUp.GetComponent(typeof(BodyPartScript))).StudentID;
+					this.LimbList[this.Limbs] = this.Yandere.PickUp.GetComponent<BodyPartScript>().StudentID;
 				}
 				this.Yandere.PickUp.Incinerator = this;
 				this.Yandere.PickUp.Dumped = true;
 				this.Yandere.PickUp.Drop();
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
-				this.OpenTimer = (float)2;
+				this.OpenTimer = 2f;
 				this.Ready = true;
 				this.Open = true;
 			}
-			if (this.Yandere.Weapon[this.Yandere.Equipped] != null)
+			WeaponScript weaponScript = this.Yandere.Weapon[this.Yandere.Equipped];
+			if (weaponScript != null)
 			{
 				this.DestroyedEvidence++;
-				this.EvidenceList[this.DestroyedEvidence] = this.Yandere.Weapon[this.Yandere.Equipped].WeaponID;
-				this.Yandere.Weapon[this.Yandere.Equipped].Incinerator = this;
-				this.Yandere.Weapon[this.Yandere.Equipped].Dumped = true;
-				this.Yandere.Weapon[this.Yandere.Equipped].Drop();
+				this.EvidenceList[this.DestroyedEvidence] = weaponScript.WeaponID;
+				weaponScript.Incinerator = this;
+				weaponScript.Dumped = true;
+				weaponScript.Drop();
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
-				this.OpenTimer = (float)2;
+				this.OpenTimer = 2f;
 				this.Ready = true;
 				this.Open = true;
 			}
 		}
-		if (this.Prompt.Circle[0].fillAmount <= (float)0)
+		if (this.Prompt.Circle[0].fillAmount <= 0f)
 		{
-			for (int i = 0; i < this.CorpseList.Length; i++)
+			foreach (int num in this.CorpseList)
 			{
-				PlayerPrefs.SetInt("Student_" + this.CorpseList[i] + "_Missing", 1);
+				PlayerPrefs.SetInt("Student_" + num.ToString() + "_Missing", 1);
 			}
-			this.Panel.active = true;
+			this.Panel.SetActive(true);
 			this.Timer = 60f;
-			this.audio.clip = this.IncineratorActivate;
-			this.audio.Play();
+			component.clip = this.IncineratorActivate;
+			component.Play();
 			this.Flames.Play();
 			this.Smoke.Play();
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
-			this.Yandere.Police.IncineratedWeapons = this.Yandere.Police.IncineratedWeapons + this.MurderWeapons;
-			this.Yandere.Police.BloodyClothing = this.Yandere.Police.BloodyClothing - this.BloodyClothing;
-			this.Yandere.Police.BloodyWeapons = this.Yandere.Police.BloodyWeapons - this.MurderWeapons;
-			this.Yandere.Police.BodyParts = this.Yandere.Police.BodyParts - this.BodyParts;
-			this.Yandere.Police.Corpses = this.Yandere.Police.Corpses - this.Corpses;
+			this.Yandere.Police.IncineratedWeapons += this.MurderWeapons;
+			this.Yandere.Police.BloodyClothing -= this.BloodyClothing;
+			this.Yandere.Police.BloodyWeapons -= this.MurderWeapons;
+			this.Yandere.Police.BodyParts -= this.BodyParts;
+			this.Yandere.Police.Corpses -= this.Corpses;
 			if (this.Yandere.Police.SuicideScene && this.Yandere.Police.Corpses == 1)
 			{
 				this.Yandere.Police.MurderScene = false;
@@ -305,14 +256,14 @@ public class IncineratorScript : MonoBehaviour
 		}
 		if (this.Smoke.isPlaying)
 		{
-			this.Timer -= Time.deltaTime * (this.Clock.TimeSpeed / (float)60);
-			this.FlameSound.volume = this.FlameSound.volume + Time.deltaTime;
-			this.Circle.fillAmount = (float)1 - this.Timer / (float)60;
-			if (this.Timer <= (float)0)
+			this.Timer -= Time.deltaTime * (this.Clock.TimeSpeed / 60f);
+			this.FlameSound.volume += Time.deltaTime;
+			this.Circle.fillAmount = 1f - this.Timer / 60f;
+			if (this.Timer <= 0f)
 			{
 				this.Prompt.HideButton[0] = true;
 				this.Prompt.enabled = true;
-				this.Panel.active = false;
+				this.Panel.SetActive(false);
 				this.Ready = false;
 				this.Flames.Stop();
 				this.Smoke.Stop();
@@ -320,18 +271,14 @@ public class IncineratorScript : MonoBehaviour
 		}
 		else
 		{
-			this.FlameSound.volume = this.FlameSound.volume - Time.deltaTime;
+			this.FlameSound.volume -= Time.deltaTime;
 		}
-		if (this.Panel.active)
+		if (this.Panel.activeInHierarchy)
 		{
-			int num9 = Mathf.CeilToInt(this.Timer * (float)60);
-			int num10 = num9 / 60;
-			int num11 = num9 % 60;
-			this.TimeLabel.text = string.Format("{0:00}:{1:00}", num10, num11);
+			float num2 = (float)Mathf.CeilToInt(this.Timer * 60f);
+			float num3 = num2 / 60f;
+			float num4 = num2 % 60f;
+			this.TimeLabel.text = string.Format("{0:00}:{1:00}", num3, num4);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

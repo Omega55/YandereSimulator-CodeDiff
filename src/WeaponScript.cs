@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class WeaponScript : MonoBehaviour
 {
 	public ParticleSystem[] ShortBloodSpray;
@@ -91,7 +89,7 @@ public class WeaponScript : MonoBehaviour
 
 	public int AnimID;
 
-	public int Type;
+	public int Type = 1;
 
 	public bool[] Victims;
 
@@ -101,15 +99,10 @@ public class WeaponScript : MonoBehaviour
 
 	public GameObject HeartBurst;
 
-	public WeaponScript()
+	private void Start()
 	{
-		this.Type = 1;
-	}
-
-	public virtual void Start()
-	{
-		this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent(typeof(YandereScript));
-		Physics.IgnoreCollision(this.Yandere.collider, this.MyCollider);
+		this.Yandere = GameObject.Find("YandereChan").GetComponent<YandereScript>();
+		Physics.IgnoreCollision(this.Yandere.GetComponent<Collider>(), this.MyCollider);
 		this.OriginalColor = this.Outline[0].color;
 		if (this.StartLow)
 		{
@@ -120,36 +113,35 @@ public class WeaponScript : MonoBehaviour
 		{
 			this.MyCollider.enabled = false;
 		}
-		if (this.audio != null)
+		AudioSource component = base.GetComponent<AudioSource>();
+		if (component != null)
 		{
-			this.OriginalClip = this.audio.clip;
+			this.OriginalClip = component.clip;
 		}
-		this.rigidbody.isKinematic = true;
+		base.GetComponent<Rigidbody>().isKinematic = true;
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.Dismembering)
 		{
+			AudioSource component = base.GetComponent<AudioSource>();
 			if (this.DismemberPhase < 4)
 			{
-				if (this.audio.time > 0.75f)
+				if (component.time > 0.75f)
 				{
-					if (this.Speed < (float)36)
+					if (this.Speed < 36f)
 					{
-						this.Speed += Time.deltaTime + (float)10;
+						this.Speed += Time.deltaTime + 10f;
 					}
 					this.Rotation += this.Speed;
-					float rotation = this.Rotation;
-					Vector3 localEulerAngles = this.Blade.localEulerAngles;
-					float num = localEulerAngles.x = rotation;
-					Vector3 vector = this.Blade.localEulerAngles = localEulerAngles;
+					this.Blade.localEulerAngles = new Vector3(this.Rotation, this.Blade.localEulerAngles.y, this.Blade.localEulerAngles.z);
 				}
-				if (this.audio.time > this.SoundTime[this.DismemberPhase])
+				if (component.time > this.SoundTime[this.DismemberPhase])
 				{
-					this.Yandere.Sanity = this.Yandere.Sanity - (float)5 * this.Yandere.Numbness;
+					this.Yandere.Sanity -= 5f * this.Yandere.Numbness;
 					this.Yandere.UpdateSanity();
-					this.Yandere.Bloodiness = this.Yandere.Bloodiness + (float)25;
+					this.Yandere.Bloodiness += 25f;
 					this.Yandere.UpdateBlood();
 					this.ShortBloodSpray[0].Play();
 					this.ShortBloodSpray[1].Play();
@@ -159,19 +151,16 @@ public class WeaponScript : MonoBehaviour
 			}
 			else
 			{
-				this.Rotation = Mathf.Lerp(this.Rotation, (float)0, Time.deltaTime * (float)2);
-				float rotation2 = this.Rotation;
-				Vector3 localEulerAngles2 = this.Blade.localEulerAngles;
-				float num2 = localEulerAngles2.x = rotation2;
-				Vector3 vector2 = this.Blade.localEulerAngles = localEulerAngles2;
-				if (!this.audio.isPlaying)
+				this.Rotation = Mathf.Lerp(this.Rotation, 0f, Time.deltaTime * 2f);
+				this.Blade.localEulerAngles = new Vector3(this.Rotation, this.Blade.localEulerAngles.y, this.Blade.localEulerAngles.z);
+				if (!component.isPlaying)
 				{
-					this.audio.clip = this.OriginalClip;
+					component.clip = this.OriginalClip;
 					this.Yandere.StainWeapon();
 					this.Dismembering = false;
 					this.DismemberPhase = 0;
-					this.Rotation = (float)0;
-					this.Speed = (float)0;
+					this.Rotation = 0f;
+					this.Speed = 0f;
 				}
 			}
 		}
@@ -181,68 +170,53 @@ public class WeaponScript : MonoBehaviour
 			{
 				if (this.Type == 1)
 				{
-					if (this.Flip)
-					{
-						float y = Mathf.Lerp(this.transform.localEulerAngles.y, (float)180, Time.deltaTime * (float)10);
-						Vector3 localEulerAngles3 = this.transform.localEulerAngles;
-						float num3 = localEulerAngles3.y = y;
-						Vector3 vector3 = this.transform.localEulerAngles = localEulerAngles3;
-					}
-					else
-					{
-						float y2 = Mathf.Lerp(this.transform.localEulerAngles.y, (float)0, Time.deltaTime * (float)10);
-						Vector3 localEulerAngles4 = this.transform.localEulerAngles;
-						float num4 = localEulerAngles4.y = y2;
-						Vector3 vector4 = this.transform.localEulerAngles = localEulerAngles4;
-					}
+					base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, Mathf.Lerp(base.transform.localEulerAngles.y, (!this.Flip) ? 0f : 180f, Time.deltaTime * 10f), base.transform.localEulerAngles.z);
 				}
 				else if (this.Type == 4 && this.Spin)
 				{
-					float x = this.Blade.transform.localEulerAngles.x + Time.deltaTime * (float)360;
-					Vector3 localEulerAngles5 = this.Blade.transform.localEulerAngles;
-					float num5 = localEulerAngles5.x = x;
-					Vector3 vector5 = this.Blade.transform.localEulerAngles = localEulerAngles5;
+					this.Blade.transform.localEulerAngles = new Vector3(this.Blade.transform.localEulerAngles.x + Time.deltaTime * 360f, this.Blade.transform.localEulerAngles.y, this.Blade.transform.localEulerAngles.z);
 				}
 			}
 		}
 		else
 		{
-			if (!this.rigidbody.isKinematic)
+			Rigidbody component2 = base.GetComponent<Rigidbody>();
+			if (!component2.isKinematic)
 			{
-				this.KinematicTimer = Mathf.MoveTowards(this.KinematicTimer, (float)5, Time.deltaTime);
-				if (this.KinematicTimer == (float)5)
+				this.KinematicTimer = Mathf.MoveTowards(this.KinematicTimer, 5f, Time.deltaTime);
+				if (this.KinematicTimer == 5f)
 				{
-					this.rigidbody.isKinematic = true;
-					this.KinematicTimer = (float)0;
+					component2.isKinematic = true;
+					this.KinematicTimer = 0f;
 				}
 			}
-			if ((this.transform.position.x > (float)-89 & this.transform.position.x < (float)-79) && this.transform.position.z > -13.5f && this.transform.position.z < -3.5f)
+			if ((base.transform.position.x > -89f & base.transform.position.x < -79f) && base.transform.position.z > -13.5f && base.transform.position.z < -3.5f)
 			{
-				this.transform.position = new Vector3(-80.75f, (float)1, -2.75f);
+				base.transform.position = new Vector3(-80.75f, 1f, -2.75f);
 			}
 		}
 	}
 
-	public virtual void LateUpdate()
+	private void LateUpdate()
 	{
-		if (this.Prompt.Circle[3].fillAmount <= (float)0)
+		if (this.Prompt.Circle[3].fillAmount <= 0f)
 		{
-			this.Prompt.Circle[3].fillAmount = (float)1;
+			this.Prompt.Circle[3].fillAmount = 1f;
 			if (!this.Yandere.Gloved)
 			{
 				this.FingerprintID = 100;
 			}
 			this.ID = 0;
-			while (this.ID < Extensions.get_length(this.Outline))
+			while (this.ID < this.Outline.Length)
 			{
-				this.Outline[this.ID].color = new Color((float)0, (float)0, (float)0, (float)1);
+				this.Outline[this.ID].color = new Color(0f, 0f, 0f, 1f);
 				this.ID++;
 			}
-			this.transform.parent = this.Yandere.ItemParent;
-			this.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
-			this.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+			base.transform.parent = this.Yandere.ItemParent;
+			base.transform.localPosition = Vector3.zero;
+			base.transform.localEulerAngles = Vector3.zero;
 			this.MyCollider.enabled = false;
-			this.rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+			base.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
 			if (this.Yandere.Equipped == 3)
 			{
 				this.Yandere.Weapon[3].Drop();
@@ -253,7 +227,7 @@ public class WeaponScript : MonoBehaviour
 			}
 			if (this.Yandere.Dragging)
 			{
-				((RagdollScript)this.Yandere.Ragdoll.GetComponent(typeof(RagdollScript))).StopDragging();
+				this.Yandere.Ragdoll.GetComponent<RagdollScript>().StopDragging();
 			}
 			if (this.Yandere.Carrying)
 			{
@@ -265,7 +239,7 @@ public class WeaponScript : MonoBehaviour
 				{
 					if (this.Yandere.Weapon[2] != null)
 					{
-						this.Yandere.Weapon[2].active = false;
+						this.Yandere.Weapon[2].gameObject.SetActive(false);
 					}
 					this.Yandere.Weapon[1] = this;
 					this.Yandere.Equipped = 1;
@@ -274,12 +248,12 @@ public class WeaponScript : MonoBehaviour
 				{
 					if (this.Yandere.Weapon[1] != null)
 					{
-						this.Yandere.Weapon[1].active = false;
+						this.Yandere.Weapon[1].gameObject.SetActive(false);
 					}
 					this.Yandere.Weapon[2] = this;
 					this.Yandere.Equipped = 2;
 				}
-				else if (this.Yandere.Weapon[2].active)
+				else if (this.Yandere.Weapon[2].gameObject.activeInHierarchy)
 				{
 					this.Yandere.Weapon[2].Drop();
 					this.Yandere.Weapon[2] = this;
@@ -296,11 +270,11 @@ public class WeaponScript : MonoBehaviour
 			{
 				if (this.Yandere.Weapon[1] != null)
 				{
-					this.Yandere.Weapon[1].active = false;
+					this.Yandere.Weapon[1].gameObject.SetActive(false);
 				}
 				if (this.Yandere.Weapon[2] != null)
 				{
-					this.Yandere.Weapon[2].active = false;
+					this.Yandere.Weapon[2].gameObject.SetActive(false);
 				}
 				this.Yandere.Weapon[3] = this;
 				this.Yandere.Equipped = 3;
@@ -330,7 +304,7 @@ public class WeaponScript : MonoBehaviour
 			this.Yandere.WeaponManager.UpdateLabels();
 			if (this.Evidence)
 			{
-				this.Yandere.Police.BloodyWeapons = this.Yandere.Police.BloodyWeapons - 1;
+				this.Yandere.Police.BloodyWeapons--;
 			}
 			if (this.WeaponID == 11)
 			{
@@ -338,40 +312,40 @@ public class WeaponScript : MonoBehaviour
 				this.Yandere.WalkAnim = "CyborgNinja_Walk_Armed";
 				this.Yandere.RunAnim = "CyborgNinja_Run_Armed";
 			}
-			this.KinematicTimer = (float)0;
+			this.KinematicTimer = 0f;
 		}
 		if (this.Yandere.Weapon[this.Yandere.Equipped] == this && this.Yandere.Armed)
 		{
-			this.transform.localScale = new Vector3((float)1, (float)1, (float)1);
+			base.transform.localScale = new Vector3(1f, 1f, 1f);
 			if (!this.Yandere.Struggling)
 			{
 				if (this.Yandere.CanMove)
 				{
-					this.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
-					this.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+					base.transform.localPosition = Vector3.zero;
+					base.transform.localEulerAngles = Vector3.zero;
 				}
 			}
 			else
 			{
-				this.transform.localPosition = new Vector3(-0.01f, 0.005f, -0.01f);
+				base.transform.localPosition = new Vector3(-0.01f, 0.005f, -0.01f);
 			}
 		}
 		if (this.Dumped)
 		{
 			this.DumpTimer += Time.deltaTime;
-			if (this.DumpTimer > (float)1)
+			if (this.DumpTimer > 1f)
 			{
-				this.Yandere.Incinerator.MurderWeapons = this.Yandere.Incinerator.MurderWeapons + 1;
-				UnityEngine.Object.Destroy(this.gameObject);
+				this.Yandere.Incinerator.MurderWeapons++;
+				UnityEngine.Object.Destroy(base.gameObject);
 			}
 		}
-		if (this.transform.parent == this.Yandere.ItemParent && this.Concealable && this.Yandere.Weapon[1] != this && this.Yandere.Weapon[2] != this)
+		if (base.transform.parent == this.Yandere.ItemParent && this.Concealable && this.Yandere.Weapon[1] != this && this.Yandere.Weapon[2] != this)
 		{
 			this.Drop();
 		}
 	}
 
-	public virtual void Drop()
+	public void Drop()
 	{
 		if (this.WeaponID == 11)
 		{
@@ -387,50 +361,44 @@ public class WeaponScript : MonoBehaviour
 		this.Yandere.Armed = false;
 		this.Yandere.Equipped = 0;
 		this.Yandere.StudentManager.UpdateStudents();
-		this.active = true;
-		this.transform.parent = null;
-		this.rigidbody.constraints = RigidbodyConstraints.None;
-		this.rigidbody.isKinematic = false;
-		this.rigidbody.useGravity = true;
+		base.gameObject.SetActive(true);
+		base.transform.parent = null;
+		Rigidbody component = base.GetComponent<Rigidbody>();
+		component.constraints = RigidbodyConstraints.None;
+		component.isKinematic = false;
+		component.useGravity = true;
 		if (this.Dumped)
 		{
-			this.transform.position = this.Incinerator.DumpPoint.position;
+			base.transform.position = this.Incinerator.DumpPoint.position;
 		}
 		else
 		{
 			this.Prompt.enabled = true;
 			this.MyCollider.enabled = true;
-			if (this.Yandere.collider.enabled)
+			if (this.Yandere.GetComponent<Collider>().enabled)
 			{
-				Physics.IgnoreCollision(this.Yandere.collider, this.MyCollider);
+				Physics.IgnoreCollision(this.Yandere.GetComponent<Collider>(), this.MyCollider);
 			}
 		}
 		if (this.Evidence)
 		{
-			this.Yandere.Police.BloodyWeapons = this.Yandere.Police.BloodyWeapons + 1;
+			this.Yandere.Police.BloodyWeapons++;
 		}
 		this.ID = 0;
-		while (this.ID < Extensions.get_length(this.Outline))
+		while (this.ID < this.Outline.Length)
 		{
-			if (!this.Evidence)
-			{
-				this.Outline[this.ID].color = this.OriginalColor;
-			}
-			else
-			{
-				this.Outline[this.ID].color = this.EvidenceColor;
-			}
+			this.Outline[this.ID].color = ((!this.Evidence) ? this.OriginalColor : this.EvidenceColor);
 			this.ID++;
 		}
-		if (this.transform.position.y > (float)1000)
+		if (base.transform.position.y > 1000f)
 		{
-			this.transform.position = new Vector3((float)12, (float)0, (float)28);
+			base.transform.position = new Vector3(12f, 0f, 28f);
 		}
 	}
 
-	public virtual void UpdateLabel()
+	public void UpdateLabel()
 	{
-		if (this != null && this.active)
+		if (this != null && base.gameObject.activeInHierarchy)
 		{
 			if (this.Yandere.Weapon[1] != null && this.Yandere.Weapon[2] != null && this.Concealable)
 			{
@@ -438,11 +406,11 @@ public class WeaponScript : MonoBehaviour
 				{
 					if (!this.Yandere.Armed || this.Yandere.Equipped == 3)
 					{
-						this.Prompt.Label[3].text = "     " + "Swap " + this.Yandere.Weapon[1].Name + " for " + this.Name;
+						this.Prompt.Label[3].text = "     Swap " + this.Yandere.Weapon[1].Name + " for " + this.Name;
 					}
 					else
 					{
-						this.Prompt.Label[3].text = "     " + "Swap " + this.Yandere.Weapon[this.Yandere.Equipped].Name + " for " + this.Name;
+						this.Prompt.Label[3].text = "     Swap " + this.Yandere.Weapon[this.Yandere.Equipped].Name + " for " + this.Name;
 					}
 				}
 			}
@@ -453,7 +421,7 @@ public class WeaponScript : MonoBehaviour
 		}
 	}
 
-	public virtual void Effect()
+	public void Effect()
 	{
 		if (this.WeaponID == 7)
 		{
@@ -462,39 +430,32 @@ public class WeaponScript : MonoBehaviour
 		}
 		else if (this.WeaponID == 8)
 		{
-			((ParticleSystem)this.gameObject.GetComponent(typeof(ParticleSystem))).Play();
-			this.audio.clip = this.OriginalClip;
-			this.audio.Play();
+			base.gameObject.GetComponent<ParticleSystem>().Play();
+			base.GetComponent<AudioSource>().clip = this.OriginalClip;
+			base.GetComponent<AudioSource>().Play();
 		}
 		else if (this.WeaponID == 2 || this.WeaponID == 9 || this.WeaponID == 10 || this.WeaponID == 12 || this.WeaponID == 13)
 		{
-			this.audio.Play();
+			base.GetComponent<AudioSource>().Play();
 		}
 		else if (this.WeaponID == 14)
 		{
-			UnityEngine.Object.Instantiate(this.HeartBurst, this.Yandere.TargetStudent.Head.position, Quaternion.identity);
-			this.audio.Play();
+			UnityEngine.Object.Instantiate<GameObject>(this.HeartBurst, this.Yandere.TargetStudent.Head.position, Quaternion.identity);
+			base.GetComponent<AudioSource>().Play();
 		}
 	}
 
-	public virtual void Dismember()
+	public void Dismember()
 	{
-		this.audio.clip = this.DismemberClip;
-		this.audio.Play();
+		AudioSource component = base.GetComponent<AudioSource>();
+		component.clip = this.DismemberClip;
+		component.Play();
 		this.Dismembering = true;
 	}
 
-	public virtual void SuspicionCheck()
+	public void SuspicionCheck()
 	{
-		if (this.WeaponID == 9 && PlayerPrefs.GetInt("Club") == 9)
-		{
-			this.Suspicious = false;
-		}
-		else if (this.WeaponID == 10 && PlayerPrefs.GetInt("Club") == 10)
-		{
-			this.Suspicious = false;
-		}
-		else if (this.WeaponID == 12 && PlayerPrefs.GetInt("Club") == 9)
+		if ((this.WeaponID == 9 && PlayerPrefs.GetInt("Club") == 9) || (this.WeaponID == 10 && PlayerPrefs.GetInt("Club") == 10) || (this.WeaponID == 12 && PlayerPrefs.GetInt("Club") == 9))
 		{
 			this.Suspicious = false;
 		}
@@ -502,9 +463,5 @@ public class WeaponScript : MonoBehaviour
 		{
 			this.Suspicious = true;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

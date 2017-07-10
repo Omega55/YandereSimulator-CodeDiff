@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class HatredScript : MonoBehaviour
 {
 	public DepthOfFieldScatter DepthOfField;
@@ -52,12 +51,8 @@ public class HatredScript : MonoBehaviour
 
 	public Texture[] CrackTexture;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.Character.active = false;
-	}
-
-	public virtual void Main()
-	{
+		this.Character.SetActive(false);
 	}
 }

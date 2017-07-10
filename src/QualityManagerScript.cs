@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class QualityManagerScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
@@ -51,7 +49,7 @@ public class QualityManagerScript : MonoBehaviour
 
 	public SSAOEffect ExperimentalSSAOEffect;
 
-	public virtual void Start()
+	private void Start()
 	{
 		DepthOfField34[] components = Camera.main.GetComponents<DepthOfField34>();
 		this.ExperimentalDepthOfField34 = components[1];
@@ -74,7 +72,7 @@ public class QualityManagerScript : MonoBehaviour
 		this.UpdateLowDetailStudents();
 	}
 
-	public virtual void UpdateParticles()
+	public void UpdateParticles()
 	{
 		if (PlayerPrefs.GetInt("ParticleCount") == 4)
 		{
@@ -84,58 +82,68 @@ public class QualityManagerScript : MonoBehaviour
 		{
 			PlayerPrefs.SetInt("ParticleCount", 3);
 		}
-		this.EastRomanceBlossoms.enableEmission = true;
-		this.WestRomanceBlossoms.enableEmission = true;
-		this.CorridorBlossoms.enableEmission = true;
-		this.PlazaBlossoms.enableEmission = true;
-		this.MythBlossoms.enableEmission = true;
-		this.Steam.enableEmission = true;
-		this.Fountains[1].enableEmission = true;
-		this.Fountains[2].enableEmission = true;
-		this.Fountains[3].enableEmission = true;
+		ParticleSystem.EmissionModule emission = this.EastRomanceBlossoms.emission;
+		ParticleSystem.EmissionModule emission2 = this.WestRomanceBlossoms.emission;
+		ParticleSystem.EmissionModule emission3 = this.CorridorBlossoms.emission;
+		ParticleSystem.EmissionModule emission4 = this.PlazaBlossoms.emission;
+		ParticleSystem.EmissionModule emission5 = this.MythBlossoms.emission;
+		ParticleSystem.EmissionModule emission6 = this.Steam.emission;
+		ParticleSystem.EmissionModule emission7 = this.Fountains[1].emission;
+		ParticleSystem.EmissionModule emission8 = this.Fountains[2].emission;
+		ParticleSystem.EmissionModule emission9 = this.Fountains[3].emission;
+		emission.enabled = true;
+		emission2.enabled = true;
+		emission3.enabled = true;
+		emission4.enabled = true;
+		emission5.enabled = true;
+		emission6.enabled = true;
+		emission7.enabled = true;
+		emission8.enabled = true;
+		emission9.enabled = true;
 		if (PlayerPrefs.GetInt("ParticleCount") == 3)
 		{
-			this.EastRomanceBlossoms.emissionRate = (float)100;
-			this.WestRomanceBlossoms.emissionRate = (float)100;
-			this.CorridorBlossoms.emissionRate = (float)1000;
-			this.PlazaBlossoms.emissionRate = (float)400;
-			this.MythBlossoms.emissionRate = (float)100;
-			this.Steam.emissionRate = (float)100;
-			this.Fountains[1].emissionRate = (float)100;
-			this.Fountains[2].emissionRate = (float)100;
-			this.Fountains[3].emissionRate = (float)100;
+			emission.rateOverTime = 100f;
+			emission2.rateOverTime = 100f;
+			emission3.rateOverTime = 1000f;
+			emission4.rateOverTime = 400f;
+			emission5.rateOverTime = 100f;
+			emission6.rateOverTime = 100f;
+			emission7.rateOverTime = 100f;
+			emission8.rateOverTime = 100f;
+			emission9.rateOverTime = 100f;
 		}
 		else if (PlayerPrefs.GetInt("ParticleCount") == 2)
 		{
-			this.EastRomanceBlossoms.emissionRate = (float)10;
-			this.WestRomanceBlossoms.emissionRate = (float)10;
-			this.CorridorBlossoms.emissionRate = (float)100;
-			this.PlazaBlossoms.emissionRate = (float)40;
-			this.MythBlossoms.emissionRate = (float)10;
-			this.Steam.emissionRate = (float)10;
-			this.Fountains[1].emissionRate = (float)10;
-			this.Fountains[2].emissionRate = (float)10;
-			this.Fountains[3].emissionRate = (float)10;
+			emission.rateOverTime = 10f;
+			emission2.rateOverTime = 10f;
+			emission3.rateOverTime = 100f;
+			emission4.rateOverTime = 40f;
+			emission5.rateOverTime = 10f;
+			emission6.rateOverTime = 10f;
+			emission7.rateOverTime = 10f;
+			emission8.rateOverTime = 10f;
+			emission9.rateOverTime = 10f;
 		}
 		else if (PlayerPrefs.GetInt("ParticleCount") == 1)
 		{
-			this.EastRomanceBlossoms.enableEmission = false;
-			this.WestRomanceBlossoms.enableEmission = false;
-			this.CorridorBlossoms.enableEmission = false;
-			this.PlazaBlossoms.enableEmission = false;
-			this.MythBlossoms.enableEmission = false;
-			this.Steam.enableEmission = false;
-			this.Fountains[1].enableEmission = false;
-			this.Fountains[2].enableEmission = false;
-			this.Fountains[3].enableEmission = false;
+			emission.enabled = false;
+			emission2.enabled = false;
+			emission3.enabled = false;
+			emission4.enabled = false;
+			emission5.enabled = false;
+			emission6.enabled = false;
+			emission7.enabled = false;
+			emission8.enabled = false;
+			emission9.enabled = false;
 		}
 	}
 
-	public virtual void UpdateOutlines()
+	public void UpdateOutlines()
 	{
-		for (int i = 1; i < Extensions.get_length(this.StudentManager.Students); i++)
+		for (int i = 1; i < this.StudentManager.Students.Length; i++)
 		{
-			if (this.StudentManager.Students[i] != null && this.StudentManager.Students[i].active)
+			StudentScript studentScript = this.StudentManager.Students[i];
+			if (studentScript != null && studentScript.gameObject.activeInHierarchy)
 			{
 				if (PlayerPrefs.GetInt("DisableOutlines") == 1)
 				{
@@ -147,60 +155,60 @@ public class QualityManagerScript : MonoBehaviour
 					this.NewHairShader = this.ToonOutline;
 					this.NewBodyShader = this.ToonOutlineOverlay;
 				}
-				if (!this.StudentManager.Students[i].Male)
+				if (!studentScript.Male)
 				{
-					this.StudentManager.Students[i].MyRenderer.materials[0].shader = this.NewBodyShader;
-					this.StudentManager.Students[i].MyRenderer.materials[1].shader = this.NewBodyShader;
-					this.StudentManager.Students[i].MyRenderer.materials[2].shader = this.NewBodyShader;
+					studentScript.MyRenderer.materials[0].shader = this.NewBodyShader;
+					studentScript.MyRenderer.materials[1].shader = this.NewBodyShader;
+					studentScript.MyRenderer.materials[2].shader = this.NewBodyShader;
 				}
 				else
 				{
-					this.StudentManager.Students[i].MyRenderer.materials[0].shader = this.NewHairShader;
-					this.StudentManager.Students[i].MyRenderer.materials[1].shader = this.NewHairShader;
-					this.StudentManager.Students[i].MyRenderer.materials[2].shader = this.NewBodyShader;
+					studentScript.MyRenderer.materials[0].shader = this.NewHairShader;
+					studentScript.MyRenderer.materials[1].shader = this.NewHairShader;
+					studentScript.MyRenderer.materials[2].shader = this.NewBodyShader;
 				}
-				if (!this.StudentManager.Students[i].Male)
+				if (!studentScript.Male)
 				{
-					if (!this.StudentManager.Students[i].Teacher)
+					if (!studentScript.Teacher)
 					{
-						if (this.StudentManager.Students[i].Cosmetic.FemaleHairRenderers[this.StudentManager.Students[i].Cosmetic.Hairstyle] != null)
+						if (studentScript.Cosmetic.FemaleHairRenderers[studentScript.Cosmetic.Hairstyle] != null)
 						{
-							this.StudentManager.Students[i].Cosmetic.FemaleHairRenderers[this.StudentManager.Students[i].Cosmetic.Hairstyle].material.shader = this.NewHairShader;
+							studentScript.Cosmetic.FemaleHairRenderers[studentScript.Cosmetic.Hairstyle].material.shader = this.NewHairShader;
 						}
-						if (this.StudentManager.Students[i].Cosmetic.Accessory > 0)
+						if (studentScript.Cosmetic.Accessory > 0)
 						{
-							((Renderer)this.StudentManager.Students[i].Cosmetic.FemaleAccessories[this.StudentManager.Students[i].Cosmetic.Accessory].GetComponent(typeof(Renderer))).material.shader = this.NewHairShader;
+							studentScript.Cosmetic.FemaleAccessories[studentScript.Cosmetic.Accessory].GetComponent<Renderer>().material.shader = this.NewHairShader;
 						}
 					}
 					else
 					{
-						this.StudentManager.Students[i].Cosmetic.TeacherHairRenderers[this.StudentManager.Students[i].Cosmetic.Hairstyle].material.shader = this.NewHairShader;
-						if (this.StudentManager.Students[i].Cosmetic.Accessory > 0)
+						studentScript.Cosmetic.TeacherHairRenderers[studentScript.Cosmetic.Hairstyle].material.shader = this.NewHairShader;
+						if (studentScript.Cosmetic.Accessory > 0)
 						{
 						}
 					}
 				}
 				else
 				{
-					if (this.StudentManager.Students[i].Cosmetic.Hairstyle > 0)
+					if (studentScript.Cosmetic.Hairstyle > 0)
 					{
-						this.StudentManager.Students[i].Cosmetic.MaleHairRenderers[this.StudentManager.Students[i].Cosmetic.Hairstyle].material.shader = this.NewHairShader;
+						studentScript.Cosmetic.MaleHairRenderers[studentScript.Cosmetic.Hairstyle].material.shader = this.NewHairShader;
 					}
-					if (this.StudentManager.Students[i].Cosmetic.Accessory > 0)
+					if (studentScript.Cosmetic.Accessory > 0)
 					{
-						Renderer renderer = (Renderer)this.StudentManager.Students[i].Cosmetic.MaleAccessories[this.StudentManager.Students[i].Cosmetic.Accessory].GetComponent(typeof(Renderer));
-						if (renderer != null)
+						Renderer component = studentScript.Cosmetic.MaleAccessories[studentScript.Cosmetic.Accessory].GetComponent<Renderer>();
+						if (component != null)
 						{
-							renderer.material.shader = this.NewHairShader;
+							component.material.shader = this.NewHairShader;
 						}
 					}
 				}
-				if (!this.StudentManager.Students[i].Teacher && this.StudentManager.Students[i].Cosmetic.Club > 0 && this.StudentManager.Students[i].Cosmetic.ClubAccessories[this.StudentManager.Students[i].Cosmetic.Club] != null)
+				if (!studentScript.Teacher && studentScript.Cosmetic.Club > 0 && studentScript.Cosmetic.ClubAccessories[studentScript.Cosmetic.Club] != null)
 				{
-					Renderer renderer2 = (Renderer)this.StudentManager.Students[i].Cosmetic.ClubAccessories[this.StudentManager.Students[i].Cosmetic.Club].GetComponent(typeof(Renderer));
-					if (renderer2 != null)
+					Renderer component2 = studentScript.Cosmetic.ClubAccessories[studentScript.Cosmetic.Club].GetComponent<Renderer>();
+					if (component2 != null)
 					{
-						renderer2.material.shader = this.NewHairShader;
+						component2.material.shader = this.NewHairShader;
 					}
 				}
 			}
@@ -208,46 +216,32 @@ public class QualityManagerScript : MonoBehaviour
 		this.Yandere.MyRenderer.materials[0].shader = this.NewBodyShader;
 		this.Yandere.MyRenderer.materials[1].shader = this.NewBodyShader;
 		this.Yandere.MyRenderer.materials[2].shader = this.NewBodyShader;
-		for (int i = 1; i < Extensions.get_length(this.Yandere.Hairstyles); i++)
+		for (int j = 1; j < this.Yandere.Hairstyles.Length; j++)
 		{
-			Renderer renderer3 = (Renderer)this.Yandere.Hairstyles[i].GetComponent(typeof(Renderer));
-			if (renderer3 != null)
+			Renderer component3 = this.Yandere.Hairstyles[j].GetComponent<Renderer>();
+			if (component3 != null)
 			{
 				this.YandereHairRenderer.material.shader = this.NewHairShader;
-				renderer3.material.shader = this.NewHairShader;
+				component3.material.shader = this.NewHairShader;
 			}
 		}
 		this.Nemesis.Cosmetic.MyRenderer.materials[0].shader = this.NewHairShader;
 		this.Nemesis.Cosmetic.MyRenderer.materials[1].shader = this.NewHairShader;
 		this.Nemesis.Cosmetic.MyRenderer.materials[2].shader = this.NewHairShader;
-		((Renderer)this.Nemesis.NemesisHair.GetComponent(typeof(Renderer))).material.shader = this.NewHairShader;
+		this.Nemesis.NemesisHair.GetComponent<Renderer>().material.shader = this.NewHairShader;
 	}
 
-	public virtual void UpdatePostAliasing()
+	public void UpdatePostAliasing()
 	{
-		if (PlayerPrefs.GetInt("DisablePostAliasing") == 1)
-		{
-			this.PostAliasing.enabled = false;
-		}
-		else
-		{
-			this.PostAliasing.enabled = true;
-		}
+		this.PostAliasing.enabled = (PlayerPrefs.GetInt("DisablePostAliasing") == 0);
 	}
 
-	public virtual void UpdateBloom()
+	public void UpdateBloom()
 	{
-		if (PlayerPrefs.GetInt("DisableBloom") == 1)
-		{
-			this.BloomEffect.enabled = false;
-		}
-		else
-		{
-			this.BloomEffect.enabled = true;
-		}
+		this.BloomEffect.enabled = (PlayerPrefs.GetInt("DisableBloom") == 0);
 	}
 
-	public virtual void UpdateLowDetailStudents()
+	public void UpdateLowDetailStudents()
 	{
 		if (PlayerPrefs.GetInt("LowDetailStudents") == 11)
 		{
@@ -260,7 +254,7 @@ public class QualityManagerScript : MonoBehaviour
 		this.StudentManager.LowDetailThreshold = PlayerPrefs.GetInt("LowDetailStudents") * 10;
 	}
 
-	public virtual void UpdateDrawDistance()
+	public void UpdateDrawDistance()
 	{
 		if (PlayerPrefs.GetInt("DrawDistance") == 360)
 		{
@@ -275,7 +269,7 @@ public class QualityManagerScript : MonoBehaviour
 		this.Yandere.Smartphone.farClipPlane = (float)PlayerPrefs.GetInt("DrawDistance");
 	}
 
-	public virtual void UpdateFog()
+	public void UpdateFog()
 	{
 		if (PlayerPrefs.GetInt("Fog") == 0)
 		{
@@ -290,31 +284,17 @@ public class QualityManagerScript : MonoBehaviour
 		}
 	}
 
-	public virtual void UpdateShadows()
+	public void UpdateShadows()
 	{
-		if (PlayerPrefs.GetInt("DisableShadows") == 1)
-		{
-			this.Sun.shadows = LightShadows.None;
-		}
-		else
-		{
-			this.Sun.shadows = LightShadows.Soft;
-		}
+		this.Sun.shadows = ((PlayerPrefs.GetInt("DisableShadows") != 1) ? LightShadows.Soft : LightShadows.None);
 	}
 
-	public virtual void UpdateAnims()
+	public void UpdateAnims()
 	{
-		if (PlayerPrefs.GetInt("DisableFarAnimations") == 1)
-		{
-			this.StudentManager.DisableFarAnims = true;
-		}
-		else
-		{
-			this.StudentManager.DisableFarAnims = false;
-		}
+		this.StudentManager.DisableFarAnims = (PlayerPrefs.GetInt("DisableFarAnimations") == 1);
 	}
 
-	public virtual void ToggleExperiment()
+	public void ToggleExperiment()
 	{
 		if (!this.ExperimentalSSAOEffect.enabled)
 		{
@@ -329,9 +309,5 @@ public class QualityManagerScript : MonoBehaviour
 			this.ExperimentalDepthOfField34.enabled = false;
 			this.ExperimentalSSAOEffect.enabled = false;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

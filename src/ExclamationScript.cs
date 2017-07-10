@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class ExclamationScript : MonoBehaviour
 {
 	public Renderer Graphic;
@@ -10,41 +9,37 @@ public class ExclamationScript : MonoBehaviour
 
 	public float Timer;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.transform.localScale = new Vector3((float)0, (float)0, (float)0);
-		this.Graphic.material.SetColor("_TintColor", new Color(0.5f, 0.5f, 0.5f, (float)0));
+		base.transform.localScale = Vector3.zero;
+		this.Graphic.material.SetColor("_TintColor", new Color(0.5f, 0.5f, 0.5f, 0f));
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		this.Timer -= Time.deltaTime;
-		if (this.Timer > (float)0)
+		if (this.Timer > 0f)
 		{
-			this.transform.LookAt(Camera.main.transform);
+			base.transform.LookAt(Camera.main.transform);
 			if (this.Timer > 1.5f)
 			{
-				this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-				this.Alpha = Mathf.Lerp(this.Alpha, 0.5f, Time.deltaTime * (float)10);
+				base.transform.localScale = Vector3.Lerp(base.transform.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+				this.Alpha = Mathf.Lerp(this.Alpha, 0.5f, Time.deltaTime * 10f);
 				this.Graphic.material.SetColor("_TintColor", new Color(0.5f, 0.5f, 0.5f, this.Alpha));
 			}
 			else
 			{
-				if (this.transform.localScale.x > 0.1f)
+				if (base.transform.localScale.x > 0.1f)
 				{
-					this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+					base.transform.localScale = Vector3.Lerp(base.transform.localScale, Vector3.zero, Time.deltaTime * 10f);
 				}
 				else
 				{
-					this.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+					base.transform.localScale = Vector3.zero;
 				}
-				this.Alpha = Mathf.Lerp(this.Alpha, (float)0, Time.deltaTime * (float)10);
+				this.Alpha = Mathf.Lerp(this.Alpha, 0f, Time.deltaTime * 10f);
 				this.Graphic.material.SetColor("_TintColor", new Color(0.5f, 0.5f, 0.5f, this.Alpha));
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

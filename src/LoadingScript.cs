@@ -1,15 +1,11 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-[Serializable]
 public class LoadingScript : MonoBehaviour
 {
-	public virtual void Start()
+	private void Start()
 	{
-		Application.LoadLevel("SchoolScene");
-	}
-
-	public virtual void Main()
-	{
+		SceneManager.LoadScene("SchoolScene");
 	}
 }

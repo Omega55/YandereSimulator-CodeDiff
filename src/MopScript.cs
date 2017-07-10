@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class MopScript : MonoBehaviour
 {
 	public YandereScript Yandere;
@@ -20,14 +19,14 @@ public class MopScript : MonoBehaviour
 
 	public float Bloodiness;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent(typeof(YandereScript));
+		this.Yandere = GameObject.Find("YandereChan").GetComponent<YandereScript>();
 		this.HeadCollider.enabled = false;
 		this.UpdateBlood();
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (!this.Prompt.PauseScreen.Show)
 		{
@@ -41,9 +40,9 @@ public class MopScript : MonoBehaviour
 				}
 				if (this.Yandere.Bucket == null)
 				{
-					if (this.Prompt.Button[0].color.a > (float)0)
+					if (this.Prompt.Button[0].color.a > 0f)
 					{
-						this.Prompt.Label[0].text = "     " + "Sweep";
+						this.Prompt.Label[0].text = "     Sweep";
 						if (Input.GetButtonDown("A"))
 						{
 							this.Yandere.Mopping = true;
@@ -51,15 +50,15 @@ public class MopScript : MonoBehaviour
 						}
 					}
 				}
-				else if (this.Prompt.Button[0].color.a > (float)0)
+				else if (this.Prompt.Button[0].color.a > 0f)
 				{
 					if (this.Yandere.Bucket.Full)
 					{
 						if (!this.Yandere.Bucket.Gasoline)
 						{
-							if (this.Yandere.Bucket.Bloodiness < (float)100)
+							if (this.Yandere.Bucket.Bloodiness < 100f)
 							{
-								this.Prompt.Label[0].text = "     " + "Dip";
+								this.Prompt.Label[0].text = "     Dip";
 								if (Input.GetButtonDown("A"))
 								{
 									this.Yandere.YandereVision = false;
@@ -71,34 +70,27 @@ public class MopScript : MonoBehaviour
 							}
 							else
 							{
-								this.Prompt.Label[0].text = "     " + "Water Too Bloody!";
+								this.Prompt.Label[0].text = "     Water Too Bloody!";
 							}
 						}
 						else
 						{
-							this.Prompt.Label[0].text = "     " + "Can't Use Gasoline!";
+							this.Prompt.Label[0].text = "     Can't Use Gasoline!";
 						}
 					}
 					else
 					{
-						this.Prompt.Label[0].text = "     " + "Fill Bucket First!";
+						this.Prompt.Label[0].text = "     Fill Bucket First!";
 					}
 				}
 				if (this.Yandere.Mopping)
 				{
 					this.Head.LookAt(this.Head.position + Vector3.down);
-					float x = this.Head.localEulerAngles.x + (float)90;
-					Vector3 localEulerAngles = this.Head.localEulerAngles;
-					float num = localEulerAngles.x = x;
-					Vector3 vector = this.Head.localEulerAngles = localEulerAngles;
-					int num2 = 0;
-					Vector3 localEulerAngles2 = this.Head.localEulerAngles;
-					float num3 = localEulerAngles2.z = (float)num2;
-					Vector3 vector2 = this.Head.localEulerAngles = localEulerAngles2;
+					this.Head.localEulerAngles = new Vector3(this.Head.localEulerAngles.x + 90f, this.Head.localEulerAngles.y, 180f);
 				}
 				else
 				{
-					this.Rotation = Vector3.Lerp(this.Head.localEulerAngles, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+					this.Rotation = Vector3.Lerp(this.Head.localEulerAngles, Vector3.zero, Time.deltaTime * 10f);
 					this.Head.localEulerAngles = this.Rotation;
 				}
 			}
@@ -118,19 +110,12 @@ public class MopScript : MonoBehaviour
 		}
 	}
 
-	public virtual void UpdateBlood()
+	public void UpdateBlood()
 	{
-		if (this.Bloodiness > (float)100)
+		if (this.Bloodiness > 100f)
 		{
-			this.Bloodiness = (float)100;
+			this.Bloodiness = 100f;
 		}
-		float a = this.Bloodiness / (float)100 * 0.9f;
-		Color color = this.Blood.material.color;
-		float num = color.a = a;
-		Color color2 = this.Blood.material.color = color;
-	}
-
-	public virtual void Main()
-	{
+		this.Blood.material.color = new Color(this.Blood.material.color.r, this.Blood.material.color.g, this.Blood.material.color.b, this.Bloodiness / 100f * 0.9f);
 	}
 }

@@ -1,30 +1,23 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class FalconPunchScript : MonoBehaviour
 {
 	public GameObject FalconExplosion;
 
 	public Collider MyCollider;
 
-	public float Strength;
+	public float Strength = 100f;
 
 	public bool IgnoreTime;
 
 	public bool Falcon;
 
-	public float TimeLimit;
+	public float TimeLimit = 0.5f;
 
 	public float Timer;
 
-	public FalconPunchScript()
-	{
-		this.Strength = 100f;
-		this.TimeLimit = 0.5f;
-	}
-
-	public virtual void Update()
+	private void Update()
 	{
 		if (!this.IgnoreTime)
 		{
@@ -36,31 +29,28 @@ public class FalconPunchScript : MonoBehaviour
 		}
 	}
 
-	public virtual void OnTriggerEnter(Collider other)
+	private void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.layer == 9)
 		{
-			StudentScript studentScript = (StudentScript)other.gameObject.GetComponent(typeof(StudentScript));
-			if (studentScript != null && studentScript.StudentID > 1)
+			StudentScript component = other.gameObject.GetComponent<StudentScript>();
+			if (component != null && component.StudentID > 1)
 			{
-				UnityEngine.Object.Instantiate(this.FalconExplosion, studentScript.transform.position + new Vector3((float)0, (float)1, (float)0), Quaternion.identity);
-				studentScript.Dead = true;
-				studentScript.BecomeRagdoll();
-				studentScript.Ragdoll.AllRigidbodies[0].isKinematic = false;
+				UnityEngine.Object.Instantiate<GameObject>(this.FalconExplosion, component.transform.position + new Vector3(0f, 1f, 0f), Quaternion.identity);
+				component.Dead = true;
+				component.BecomeRagdoll();
+				Rigidbody rigidbody = component.Ragdoll.AllRigidbodies[0];
+				rigidbody.isKinematic = false;
 				if (this.Falcon)
 				{
-					studentScript.Ragdoll.AllRigidbodies[0].AddForce((studentScript.Ragdoll.AllRigidbodies[0].transform.position - this.transform.position) * this.Strength);
+					rigidbody.AddForce((rigidbody.transform.position - base.transform.position) * this.Strength);
 				}
 				else
 				{
-					studentScript.Ragdoll.AllRigidbodies[0].AddForce((studentScript.Ragdoll.AllRigidbodies[0].transform.root.position - this.transform.root.position) * this.Strength);
-					studentScript.Ragdoll.AllRigidbodies[0].AddForce(Vector3.up * (float)10000);
+					rigidbody.AddForce((rigidbody.transform.root.position - base.transform.root.position) * this.Strength);
+					rigidbody.AddForce(Vector3.up * 10000f);
 				}
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

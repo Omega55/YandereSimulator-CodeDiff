@@ -1,31 +1,9 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Boo.Lang;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class TaskListScript : MonoBehaviour
 {
-	[CompilerGenerated]
-	[Serializable]
-	internal sealed class $UpdateTaskInfo$3159 : GenericGenerator<WWW>
-	{
-		internal TaskListScript $self_$3165;
-
-		public $UpdateTaskInfo$3159(TaskListScript self_)
-		{
-			this.$self_$3165 = self_;
-		}
-
-		public override IEnumerator<WWW> GetEnumerator()
-		{
-			return new TaskListScript.$UpdateTaskInfo$3159.$(this.$self_$3165);
-		}
-	}
-
 	public InputManagerScript InputManager;
 
 	public PauseScreenScript PauseScreen;
@@ -54,14 +32,9 @@ public class TaskListScript : MonoBehaviour
 
 	public string[] TaskNames;
 
-	public int ID;
+	public int ID = 1;
 
-	public TaskListScript()
-	{
-		this.ID = 1;
-	}
-
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.InputManager.TappedUp)
 		{
@@ -70,7 +43,7 @@ public class TaskListScript : MonoBehaviour
 			{
 				this.ID = 16;
 			}
-			this.StartCoroutine_Auto(this.UpdateTaskInfo());
+			base.StartCoroutine(this.UpdateTaskInfo());
 		}
 		if (this.InputManager.TappedDown)
 		{
@@ -79,46 +52,51 @@ public class TaskListScript : MonoBehaviour
 			{
 				this.ID = 1;
 			}
-			this.StartCoroutine_Auto(this.UpdateTaskInfo());
+			base.StartCoroutine(this.UpdateTaskInfo());
 		}
 		if (Input.GetButtonDown("B"))
 		{
 			this.PauseScreen.Sideways = false;
 			this.PauseScreen.PressedB = true;
-			this.MainMenu.active = true;
-			this.active = false;
+			this.MainMenu.SetActive(true);
+			base.gameObject.SetActive(false);
 		}
 	}
 
-	public virtual void UpdateTaskList()
+	public void UpdateTaskList()
 	{
-		for (int i = 1; i < Extensions.get_length(this.TaskNames); i++)
+		for (int i = 1; i < this.TaskNames.Length; i++)
 		{
-			if (PlayerPrefs.GetInt("Task_" + i + "_Status") == 0)
-			{
-				this.TaskNameLabels[i].text = "?????";
-			}
-			else
-			{
-				this.TaskNameLabels[i].text = this.TaskNames[i];
-			}
-			if (PlayerPrefs.GetInt("Task_" + i + "_Status") == 3)
-			{
-				this.Checkmarks[i].enabled = true;
-			}
-			else
-			{
-				this.Checkmarks[i].enabled = false;
-			}
+			this.TaskNameLabels[i].text = ((PlayerPrefs.GetInt("Task_" + i.ToString() + "_Status") != 0) ? this.TaskNames[i] : "?????");
+			this.Checkmarks[i].enabled = (PlayerPrefs.GetInt("Task_" + i + "_Status") == 3);
 		}
 	}
 
-	public virtual IEnumerator UpdateTaskInfo()
+	public IEnumerator UpdateTaskInfo()
 	{
-		return new TaskListScript.$UpdateTaskInfo$3159(this).GetEnumerator();
-	}
-
-	public virtual void Main()
-	{
+		this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 200f - 25f * (float)this.ID, this.Highlight.localPosition.z);
+		if (PlayerPrefs.GetInt("Task_" + this.ID.ToString() + "_Status") == 0)
+		{
+			this.StudentIcon.mainTexture = this.Silhouette;
+			this.TaskIcon.mainTexture = this.QuestionMark;
+			this.TaskDesc.text = "This task has not been discovered yet.";
+		}
+		else
+		{
+			string path = string.Concat(new string[]
+			{
+				"file:///",
+				Application.streamingAssetsPath,
+				"/Portraits/Student_",
+				this.ID.ToString(),
+				".png"
+			});
+			WWW www = new WWW(path);
+			yield return www;
+			this.StudentIcon.mainTexture = www.texture;
+			this.TaskIcon.mainTexture = this.TaskIcons[this.ID];
+			this.TaskDesc.text = this.TaskDescs[this.ID];
+		}
+		yield break;
 	}
 }

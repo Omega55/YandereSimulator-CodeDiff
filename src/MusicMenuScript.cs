@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class MusicMenuScript : MonoBehaviour
 {
 	public InputManagerScript InputManager;
@@ -12,23 +11,17 @@ public class MusicMenuScript : MonoBehaviour
 
 	public JukeboxScript Jukebox;
 
-	public int SelectionLimit;
+	public int SelectionLimit = 9;
 
 	public int Selected;
 
 	public Transform Highlight;
 
-	public string path;
+	public string path = string.Empty;
 
 	public AudioClip[] CustomMusic;
 
-	public MusicMenuScript()
-	{
-		this.SelectionLimit = 9;
-		this.path = string.Empty;
-	}
-
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.InputManager.TappedUp)
 		{
@@ -51,20 +44,20 @@ public class MusicMenuScript : MonoBehaviour
 			this.PromptBar.Label[1].text = "Exit";
 			this.PromptBar.Label[4].text = "Choose";
 			this.PromptBar.UpdateButtons();
-			this.PauseScreen.MainMenu.active = true;
+			this.PauseScreen.MainMenu.SetActive(true);
 			this.PauseScreen.Sideways = false;
 			this.PauseScreen.PressedB = true;
-			this.active = false;
+			base.gameObject.SetActive(false);
 		}
 	}
 
-	public virtual void PlayMusic()
+	private void PlayMusic()
 	{
 		this.Jukebox.Custom.clip = this.CustomMusic[this.Selected];
 		this.Jukebox.PlayCustom();
 	}
 
-	public virtual void UpdateHighlight()
+	private void UpdateHighlight()
 	{
 		if (this.Selected < 0)
 		{
@@ -74,13 +67,6 @@ public class MusicMenuScript : MonoBehaviour
 		{
 			this.Selected = 0;
 		}
-		int num = 365 - 80 * this.Selected;
-		Vector3 localPosition = this.Highlight.localPosition;
-		float num2 = localPosition.y = (float)num;
-		Vector3 vector = this.Highlight.localPosition = localPosition;
-	}
-
-	public virtual void Main()
-	{
+		this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 365f - 80f * (float)this.Selected, this.Highlight.localPosition.z);
 	}
 }

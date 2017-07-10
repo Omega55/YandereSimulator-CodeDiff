@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class StruggleBarScript : MonoBehaviour
 {
 	public ShoulderCameraScript ShoulderCamera;
@@ -16,7 +15,7 @@ public class StruggleBarScript : MonoBehaviour
 
 	public Transform Spikes;
 
-	public string CurrentButton;
+	public string CurrentButton = string.Empty;
 
 	public bool Struggling;
 
@@ -26,7 +25,7 @@ public class StruggleBarScript : MonoBehaviour
 
 	public float Intensity;
 
-	public float Strength;
+	public float Strength = 1f;
 
 	public float Struggle;
 
@@ -34,65 +33,51 @@ public class StruggleBarScript : MonoBehaviour
 
 	public int ButtonID;
 
-	public StruggleBarScript()
+	private void Start()
 	{
-		this.CurrentButton = string.Empty;
-		this.Strength = 1f;
-	}
-
-	public virtual void Start()
-	{
-		this.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+		base.transform.localScale = Vector3.zero;
 		this.ChooseButton();
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.Struggling)
 		{
 			this.Intensity = Mathf.MoveTowards(this.Intensity, 1f, Time.deltaTime);
-			this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-			float z = this.Spikes.localEulerAngles.z - Time.deltaTime * (float)360;
-			Vector3 localEulerAngles = this.Spikes.localEulerAngles;
-			float num = localEulerAngles.z = z;
-			Vector3 vector = this.Spikes.localEulerAngles = localEulerAngles;
-			this.Victory -= Time.deltaTime * (float)20 * this.Strength * this.Intensity;
+			base.transform.localScale = Vector3.Lerp(base.transform.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+			this.Spikes.localEulerAngles = new Vector3(this.Spikes.localEulerAngles.x, this.Spikes.localEulerAngles.y, this.Spikes.localEulerAngles.z - Time.deltaTime * 360f);
+			this.Victory -= Time.deltaTime * 20f * this.Strength * this.Intensity;
 			if (PlayerPrefs.GetInt("Club") == 6)
 			{
-				this.Victory = (float)100;
+				this.Victory = 100f;
 			}
 			if (Input.GetButtonDown(this.CurrentButton))
 			{
 				if (this.Invincible)
 				{
-					this.Victory += (float)100;
+					this.Victory += 100f;
 				}
-				this.Victory += Time.deltaTime * (float)(500 + (PlayerPrefs.GetInt("PhysicalGrade") + PlayerPrefs.GetInt("PhysicalBonus")) * 150) * this.Intensity;
+				this.Victory += Time.deltaTime * (500f + (float)(PlayerPrefs.GetInt("PhysicalGrade") + PlayerPrefs.GetInt("PhysicalBonus")) * 150f) * this.Intensity;
 			}
-			if (this.Victory >= (float)100)
+			if (this.Victory >= 100f)
 			{
-				this.Victory = (float)100;
+				this.Victory = 100f;
 			}
-			if (this.Victory <= (float)-100)
+			if (this.Victory <= -100f)
 			{
-				this.Victory = (float)-100;
+				this.Victory = -100f;
 			}
-			float x = Mathf.Lerp(this.ButtonPrompts[this.ButtonID].transform.localPosition.x, this.Victory * 6.5f, Time.deltaTime * (float)10);
-			Vector3 localPosition = this.ButtonPrompts[this.ButtonID].transform.localPosition;
-			float num2 = localPosition.x = x;
-			Vector3 vector2 = this.ButtonPrompts[this.ButtonID].transform.localPosition = localPosition;
-			float x2 = this.ButtonPrompts[this.ButtonID].transform.localPosition.x;
-			Vector3 localPosition2 = this.Spikes.localPosition;
-			float num3 = localPosition2.x = x2;
-			Vector3 vector3 = this.Spikes.localPosition = localPosition2;
-			if (this.Victory == (float)100)
+			UISprite uisprite = this.ButtonPrompts[this.ButtonID];
+			uisprite.transform.localPosition = new Vector3(Mathf.Lerp(uisprite.transform.localPosition.x, this.Victory * 6.5f, Time.deltaTime * 10f), uisprite.transform.localPosition.y, uisprite.transform.localPosition.z);
+			this.Spikes.localPosition = new Vector3(uisprite.transform.localPosition.x, this.Spikes.localPosition.y, this.Spikes.localPosition.z);
+			if (this.Victory == 100f)
 			{
 				this.Yandere.Won = true;
 				this.Student.Lost = true;
 				this.Struggling = false;
-				this.Victory = (float)0;
+				this.Victory = 0f;
 			}
-			else if (this.Victory == (float)-100)
+			else if (this.Victory == -100f)
 			{
 				if (!this.Invincible)
 				{
@@ -102,25 +87,25 @@ public class StruggleBarScript : MonoBehaviour
 			else
 			{
 				this.ButtonTimer += Time.deltaTime;
-				if (this.ButtonTimer >= (float)1)
+				if (this.ButtonTimer >= 1f)
 				{
 					this.ChooseButton();
-					this.ButtonTimer = (float)0;
+					this.ButtonTimer = 0f;
 				}
 			}
 		}
-		else if (this.transform.localScale.x > 0.1f)
+		else if (base.transform.localScale.x > 0.1f)
 		{
-			this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+			base.transform.localScale = Vector3.Lerp(base.transform.localScale, Vector3.zero, Time.deltaTime * 10f);
 		}
 		else
 		{
-			this.transform.localScale = new Vector3((float)0, (float)0, (float)0);
-			this.active = false;
+			base.transform.localScale = Vector3.zero;
+			base.gameObject.SetActive(false);
 		}
 	}
 
-	public virtual void HeroWins()
+	public void HeroWins()
 	{
 		if (this.Yandere.Armed)
 		{
@@ -129,10 +114,10 @@ public class StruggleBarScript : MonoBehaviour
 		this.Yandere.Lost = true;
 		this.Student.Won = true;
 		this.Struggling = false;
-		this.Victory = (float)0;
+		this.Victory = 0f;
 	}
 
-	public virtual void ChooseButton()
+	private void ChooseButton()
 	{
 		this.ButtonPrompts[1].enabled = false;
 		this.ButtonPrompts[2].enabled = false;
@@ -160,9 +145,5 @@ public class StruggleBarScript : MonoBehaviour
 			this.CurrentButton = "Y";
 		}
 		this.ButtonPrompts[this.ButtonID].enabled = true;
-	}
-
-	public virtual void Main()
-	{
 	}
 }

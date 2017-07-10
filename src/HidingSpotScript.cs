@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class HidingSpotScript : MonoBehaviour
 {
 	public PromptBarScript PromptBar;
@@ -12,15 +11,12 @@ public class HidingSpotScript : MonoBehaviour
 
 	public Transform Spot;
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Prompt.Circle[0].fillAmount == (float)0)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			this.Prompt.Circle[0].fillAmount = (float)1;
-			float y = 0.3f;
-			Vector3 center = this.Prompt.Yandere.MyController.center;
-			float num = center.y = y;
-			Vector3 vector = this.Prompt.Yandere.MyController.center = center;
+			this.Prompt.Circle[0].fillAmount = 1f;
+			this.Prompt.Yandere.MyController.center = new Vector3(this.Prompt.Yandere.MyController.center.x, 0.3f, this.Prompt.Yandere.MyController.center.z);
 			this.Prompt.Yandere.MyController.height = 0.5f;
 			this.Prompt.Yandere.HidingSpot = this.Spot;
 			this.Prompt.Yandere.ExitSpot = this.Exit;
@@ -31,9 +27,5 @@ public class HidingSpotScript : MonoBehaviour
 			this.PromptBar.UpdateButtons();
 			this.PromptBar.Show = true;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

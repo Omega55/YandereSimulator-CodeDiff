@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class YanvaniaJukeboxScript : MonoBehaviour
 {
 	public AudioClip BossIntro;
@@ -14,35 +13,24 @@ public class YanvaniaJukeboxScript : MonoBehaviour
 
 	public bool Boss;
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Boss)
+		AudioSource component = base.GetComponent<AudioSource>();
+		if (component.time + Time.deltaTime > component.clip.length)
 		{
-			if (this.audio.time + Time.deltaTime * (float)1 > this.audio.clip.length)
-			{
-				this.audio.clip = this.BossMain;
-				this.audio.loop = true;
-				this.audio.Play();
-			}
-		}
-		else if (this.audio.time + Time.deltaTime * (float)1 > this.audio.clip.length)
-		{
-			this.audio.clip = this.ApproachMain;
-			this.audio.loop = true;
-			this.audio.Play();
+			component.clip = ((!this.Boss) ? this.ApproachMain : this.BossMain);
+			component.loop = true;
+			component.Play();
 		}
 	}
 
-	public virtual void BossBattle()
+	public void BossBattle()
 	{
-		this.audio.clip = this.BossIntro;
-		this.audio.loop = false;
-		this.audio.volume = 0.25f;
-		this.audio.Play();
+		AudioSource component = base.GetComponent<AudioSource>();
+		component.clip = this.BossIntro;
+		component.loop = false;
+		component.volume = 0.25f;
+		component.Play();
 		this.Boss = true;
-	}
-
-	public virtual void Main()
-	{
 	}
 }

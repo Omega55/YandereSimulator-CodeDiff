@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class FunScript : MonoBehaviour
 {
 	public TypewriterEffect Typewriter;
@@ -25,46 +23,40 @@ public class FunScript : MonoBehaviour
 
 	public int ID;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.Controls.active = false;
-		int num = 0;
-		Color color = this.Girl.color;
-		float num2 = color.a = (float)num;
-		Color color2 = this.Girl.color = color;
+		this.Controls.SetActive(false);
+		this.Girl.color = new Color(this.Girl.color.r, this.Girl.color.g, this.Girl.color.b, 0f);
 		this.Label.text = this.Lines[this.ID];
-		this.Label.gameObject.active = false;
+		this.Label.gameObject.SetActive(false);
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		this.Timer += Time.deltaTime;
-		if (this.Timer > (float)3)
+		if (this.Timer > 3f)
 		{
 			if (!this.Typewriter.mActive)
 			{
-				this.Controls.active = true;
+				this.Controls.SetActive(true);
 			}
 		}
-		else if (this.Timer > (float)2)
+		else if (this.Timer > 2f)
 		{
-			this.Label.gameObject.active = true;
+			this.Label.gameObject.SetActive(true);
 		}
-		else if (this.Timer > (float)1)
+		else if (this.Timer > 1f)
 		{
-			float a = Mathf.MoveTowards(this.Girl.color.a, (float)1, Time.deltaTime);
-			Color color = this.Girl.color;
-			float num = color.a = a;
-			Color color2 = this.Girl.color = color;
+			this.Girl.color = new Color(this.Girl.color.r, this.Girl.color.g, this.Girl.color.b, Mathf.MoveTowards(this.Girl.color.a, 1f, Time.deltaTime));
 		}
-		if (this.Controls.active)
+		if (this.Controls.activeInHierarchy)
 		{
 			if (Input.GetButtonDown("B"))
 			{
-				if (this.Skip.active)
+				if (this.Skip.activeInHierarchy)
 				{
 					this.ID = 19;
-					this.Skip.active = false;
+					this.Skip.SetActive(false);
 					this.Girl.mainTexture = this.Portraits[this.ID];
 					this.Typewriter.ResetToBeginning();
 					this.Typewriter.mLabel.text = this.Lines[this.ID];
@@ -72,7 +64,7 @@ public class FunScript : MonoBehaviour
 			}
 			else if (Input.GetButtonDown("A"))
 			{
-				if (this.ID < Extensions.get_length(this.Lines) - 1)
+				if (this.ID < this.Lines.Length - 1)
 				{
 					if (this.Typewriter.mCurrentOffset < this.Typewriter.mFullText.Length)
 					{
@@ -83,7 +75,7 @@ public class FunScript : MonoBehaviour
 						this.ID++;
 						if (this.ID == 19)
 						{
-							this.Skip.active = false;
+							this.Skip.SetActive(false);
 						}
 						this.Girl.mainTexture = this.Portraits[this.ID];
 						this.Typewriter.ResetToBeginning();
@@ -96,9 +88,5 @@ public class FunScript : MonoBehaviour
 				}
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

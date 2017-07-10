@@ -1,14 +1,13 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class HomeClockScript : MonoBehaviour
 {
 	public UILabel HourLabel;
 
 	public UILabel DayLabel;
 
-	public virtual void Start()
+	private void Start()
 	{
 		if (PlayerPrefs.GetInt("Weekday") == 1)
 		{
@@ -34,17 +33,9 @@ public class HomeClockScript : MonoBehaviour
 		{
 			this.HourLabel.text = "8:00 PM";
 		}
-		else if (PlayerPrefs.GetInt("Late") == 1)
-		{
-			this.HourLabel.text = "7:30 AM";
-		}
 		else
 		{
-			this.HourLabel.text = "6:30 AM";
+			this.HourLabel.text = ((PlayerPrefs.GetInt("Late") != 1) ? "6:30 AM" : "7:30 AM");
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

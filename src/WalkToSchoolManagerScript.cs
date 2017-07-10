@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class WalkToSchoolManagerScript : MonoBehaviour
 {
 	public CosmeticScript Yandere;
@@ -42,60 +41,46 @@ public class WalkToSchoolManagerScript : MonoBehaviour
 
 	public Transform YandereEyeL;
 
-	public float ScrollSpeed;
+	public float ScrollSpeed = 1f;
 
-	public float TimerLimit;
+	public float TimerLimit = 0.1f;
 
-	public float TalkSpeed;
+	public float TalkSpeed = 10f;
 
-	public float LipStrength;
+	public float LipStrength = 0.0001f;
 
-	public float MouthExtent;
+	public float MouthExtent = 5f;
 
 	public float MouthTarget;
 
 	public float MouthTimer;
 
-	public WalkToSchoolManagerScript()
+	private void Start()
 	{
-		this.ScrollSpeed = 1f;
-		this.TimerLimit = 0.1f;
-		this.TalkSpeed = 10f;
-		this.LipStrength = 0.0001f;
-		this.MouthExtent = 5f;
-	}
-
-	public virtual void Start()
-	{
-		this.Yandere.Character.animation["f02_newWalk_00"].time = UnityEngine.Random.Range((float)0, this.Yandere.Character.animation["f02_newWalk_00"].length);
+		this.Yandere.Character.GetComponent<Animation>()["f02_newWalk_00"].time = UnityEngine.Random.Range(0f, this.Yandere.Character.GetComponent<Animation>()["f02_newWalk_00"].length);
 		this.Yandere.WearOutdoorShoes();
 		this.Senpai.WearOutdoorShoes();
 		this.Rival.WearOutdoorShoes();
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		for (int i = 1; i < 3; i++)
 		{
-			float x = this.Neighborhood[i].position.x - Time.deltaTime * this.ScrollSpeed;
-			Vector3 position = this.Neighborhood[i].position;
-			float num = position.x = x;
-			Vector3 vector = this.Neighborhood[i].position = position;
-			if (this.Neighborhood[i].position.x < (float)-160)
+			Transform transform = this.Neighborhood[i];
+			transform.position = new Vector3(transform.position.x - Time.deltaTime * this.ScrollSpeed, transform.position.y, transform.position.z);
+			if (transform.position.x < -160f)
 			{
-				float x2 = this.Neighborhood[i].position.x + (float)320;
-				Vector3 position2 = this.Neighborhood[i].position;
-				float num2 = position2.x = x2;
-				Vector3 vector2 = this.Neighborhood[i].position = position2;
+				transform.position = new Vector3(transform.position.x + 320f, transform.position.y, transform.position.z);
 			}
 		}
 		if (Input.GetKeyDown("="))
 		{
-			Time.timeScale += (float)10;
+			Time.timeScale += 10f;
 		}
 		if (Input.GetKeyDown("-"))
 		{
-			Time.timeScale -= (float)10;
+			Time.timeScale -= 10f;
 		}
 		if (Input.GetKeyDown("space"))
 		{
@@ -105,69 +90,26 @@ public class WalkToSchoolManagerScript : MonoBehaviour
 		}
 	}
 
-	public virtual void LateUpdate()
+	private void LateUpdate()
 	{
-		int num = 15;
-		Vector3 localEulerAngles = this.RivalNeck.localEulerAngles;
-		float num2 = localEulerAngles.y = (float)num;
-		Vector3 vector = this.RivalNeck.localEulerAngles = localEulerAngles;
-		int num3 = 15;
-		Vector3 localEulerAngles2 = this.RivalHead.localEulerAngles;
-		float num4 = localEulerAngles2.y = (float)num3;
-		Vector3 vector2 = this.RivalHead.localEulerAngles = localEulerAngles2;
-		int num5 = 95;
-		Vector3 localEulerAngles3 = this.RivalEyeR.localEulerAngles;
-		float num6 = localEulerAngles3.y = (float)num5;
-		Vector3 vector3 = this.RivalEyeR.localEulerAngles = localEulerAngles3;
-		int num7 = -85;
-		Vector3 localEulerAngles4 = this.RivalEyeL.localEulerAngles;
-		float num8 = localEulerAngles4.y = (float)num7;
-		Vector3 vector4 = this.RivalEyeL.localEulerAngles = localEulerAngles4;
-		int num9 = -15;
-		Vector3 localEulerAngles5 = this.SenpaiNeck.localEulerAngles;
-		float num10 = localEulerAngles5.y = (float)num9;
-		Vector3 vector5 = this.SenpaiNeck.localEulerAngles = localEulerAngles5;
-		int num11 = -15;
-		Vector3 localEulerAngles6 = this.SenpaiHead.localEulerAngles;
-		float num12 = localEulerAngles6.y = (float)num11;
-		Vector3 vector6 = this.SenpaiHead.localEulerAngles = localEulerAngles6;
-		int num13 = 85;
-		Vector3 localEulerAngles7 = this.SenpaiEyeR.localEulerAngles;
-		float num14 = localEulerAngles7.y = (float)num13;
-		Vector3 vector7 = this.SenpaiEyeR.localEulerAngles = localEulerAngles7;
-		int num15 = -95;
-		Vector3 localEulerAngles8 = this.SenpaiEyeL.localEulerAngles;
-		float num16 = localEulerAngles8.y = (float)num15;
-		Vector3 vector8 = this.SenpaiEyeL.localEulerAngles = localEulerAngles8;
-		float y = 7.5f;
-		Vector3 localEulerAngles9 = this.YandereNeck.localEulerAngles;
-		float num17 = localEulerAngles9.y = y;
-		Vector3 vector9 = this.YandereNeck.localEulerAngles = localEulerAngles9;
-		float y2 = 7.5f;
-		Vector3 localEulerAngles10 = this.YandereHead.localEulerAngles;
-		float num18 = localEulerAngles10.y = y2;
-		Vector3 vector10 = this.YandereHead.localEulerAngles = localEulerAngles10;
+		this.RivalNeck.localEulerAngles = new Vector3(this.RivalNeck.localEulerAngles.x, 15f, this.RivalNeck.localEulerAngles.z);
+		this.RivalHead.localEulerAngles = new Vector3(this.RivalHead.localEulerAngles.x, 15f, this.RivalHead.localEulerAngles.z);
+		this.RivalEyeR.localEulerAngles = new Vector3(this.RivalEyeR.localEulerAngles.x, 95f, this.RivalEyeR.localEulerAngles.z);
+		this.RivalEyeL.localEulerAngles = new Vector3(this.RivalEyeL.localEulerAngles.x, -85f, this.RivalEyeL.localEulerAngles.z);
+		this.SenpaiNeck.localEulerAngles = new Vector3(this.SenpaiNeck.localEulerAngles.x, -15f, this.SenpaiNeck.localEulerAngles.z);
+		this.SenpaiHead.localEulerAngles = new Vector3(this.SenpaiHead.localEulerAngles.x, -15f, this.SenpaiHead.localEulerAngles.z);
+		this.SenpaiEyeR.localEulerAngles = new Vector3(this.SenpaiEyeR.localEulerAngles.x, 85f, this.SenpaiEyeR.localEulerAngles.z);
+		this.SenpaiEyeL.localEulerAngles = new Vector3(this.SenpaiEyeL.localEulerAngles.x, -95f, this.SenpaiEyeL.localEulerAngles.z);
+		this.YandereNeck.localEulerAngles = new Vector3(this.YandereNeck.localEulerAngles.x, 7.5f, this.YandereNeck.localEulerAngles.z);
+		this.YandereHead.localEulerAngles = new Vector3(this.YandereHead.localEulerAngles.x, 7.5f, this.YandereHead.localEulerAngles.z);
 		this.MouthTimer += Time.deltaTime;
 		if (this.MouthTimer > this.TimerLimit)
 		{
 			this.MouthTarget = UnityEngine.Random.Range(40f, 40f + this.MouthExtent);
-			this.MouthTimer = (float)0;
+			this.MouthTimer = 0f;
 		}
-		float z = Mathf.Lerp(this.RivalJaw.localEulerAngles.z, this.MouthTarget, Time.deltaTime * this.TalkSpeed);
-		Vector3 localEulerAngles11 = this.RivalJaw.localEulerAngles;
-		float num19 = localEulerAngles11.z = z;
-		Vector3 vector11 = this.RivalJaw.localEulerAngles = localEulerAngles11;
-		float y3 = Mathf.Lerp(this.RivalLipL.localPosition.y, 0.02632812f + this.MouthTarget * this.LipStrength, Time.deltaTime * this.TalkSpeed);
-		Vector3 localPosition = this.RivalLipL.localPosition;
-		float num20 = localPosition.y = y3;
-		Vector3 vector12 = this.RivalLipL.localPosition = localPosition;
-		float y4 = Mathf.Lerp(this.RivalLipR.localPosition.y, 0.02632812f + this.MouthTarget * this.LipStrength, Time.deltaTime * this.TalkSpeed);
-		Vector3 localPosition2 = this.RivalLipR.localPosition;
-		float num21 = localPosition2.y = y4;
-		Vector3 vector13 = this.RivalLipR.localPosition = localPosition2;
-	}
-
-	public virtual void Main()
-	{
+		this.RivalJaw.localEulerAngles = new Vector3(this.RivalJaw.localEulerAngles.x, this.RivalJaw.localEulerAngles.y, Mathf.Lerp(this.RivalJaw.localEulerAngles.z, this.MouthTarget, Time.deltaTime * this.TalkSpeed));
+		this.RivalLipL.localPosition = new Vector3(this.RivalLipL.localPosition.x, Mathf.Lerp(this.RivalLipL.localPosition.y, 0.02632812f + this.MouthTarget * this.LipStrength, Time.deltaTime * this.TalkSpeed), this.RivalLipL.localPosition.z);
+		this.RivalLipR.localPosition = new Vector3(this.RivalLipR.localPosition.x, Mathf.Lerp(this.RivalLipR.localPosition.y, 0.02632812f + this.MouthTarget * this.LipStrength, Time.deltaTime * this.TalkSpeed), this.RivalLipR.localPosition.z);
 	}
 }

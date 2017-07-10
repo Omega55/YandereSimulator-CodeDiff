@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class InfoChanWindowScript : MonoBehaviour
 {
 	public Transform DropPoint;
@@ -22,49 +21,31 @@ public class InfoChanWindowScript : MonoBehaviour
 
 	public bool Drop;
 
-	public bool Open;
+	public bool Open = true;
 
 	public bool Test;
 
-	public InfoChanWindowScript()
-	{
-		this.Open = true;
-	}
-
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.Drop)
 		{
-			if (this.Open)
-			{
-				this.Rotation = Mathf.Lerp(this.Rotation, (float)-90, Time.deltaTime * (float)10);
-			}
-			else
-			{
-				this.Rotation = Mathf.Lerp(this.Rotation, (float)0, Time.deltaTime * (float)10);
-			}
-			float rotation = this.Rotation;
-			Vector3 localEulerAngles = this.transform.localEulerAngles;
-			float num = localEulerAngles.y = rotation;
-			Vector3 vector = this.transform.localEulerAngles = localEulerAngles;
+			this.Rotation = Mathf.Lerp(this.Rotation, (!this.Drop) ? 0f : -90f, Time.deltaTime * 10f);
+			base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, this.Rotation, base.transform.localEulerAngles.z);
 			this.Timer += Time.deltaTime;
-			if (this.Timer > (float)1)
+			if (this.Timer > 1f)
 			{
-				if (this.Orders > 0)
+				if ((float)this.Orders > 0f)
 				{
-					UnityEngine.Object.Instantiate(this.Drops[this.ItemsToDrop[this.Orders]], this.DropPoint.position, Quaternion.identity);
-					this.Timer = (float)0;
+					UnityEngine.Object.Instantiate<GameObject>(this.Drops[this.ItemsToDrop[this.Orders]], this.DropPoint.position, Quaternion.identity);
+					this.Timer = 0f;
 					this.Orders--;
 				}
 				else
 				{
 					this.Open = false;
-					if (this.Timer > (float)3)
+					if (this.Timer > 3f)
 					{
-						int num2 = 0;
-						Vector3 localEulerAngles2 = this.transform.localEulerAngles;
-						float num3 = localEulerAngles2.y = (float)num2;
-						Vector3 vector2 = this.transform.localEulerAngles = localEulerAngles2;
+						base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, 0f, base.transform.localEulerAngles.z);
 						this.Drop = false;
 					}
 				}
@@ -76,17 +57,13 @@ public class InfoChanWindowScript : MonoBehaviour
 		}
 	}
 
-	public virtual void DropObject()
+	public void DropObject()
 	{
-		this.Rotation = (float)0;
-		this.Timer = (float)0;
+		this.Rotation = 0f;
+		this.Timer = 0f;
 		this.Dropped = false;
 		this.Test = false;
 		this.Drop = true;
 		this.Open = true;
-	}
-
-	public virtual void Main()
-	{
 	}
 }

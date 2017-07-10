@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class PrayScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
@@ -58,23 +57,20 @@ public class PrayScript : MonoBehaviour
 
 	public bool Show;
 
-	public virtual void Start()
+	private void Start()
 	{
 		if (PlayerPrefs.GetInt("Student_16_Dead") == 1)
 		{
-			float a = 0.5f;
-			Color color = this.VictimLabel.color;
-			float num = color.a = a;
-			Color color2 = this.VictimLabel.color = color;
+			this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, 0.5f);
 		}
-		this.PrayWindow.localScale = new Vector3((float)0, (float)0, (float)0);
+		this.PrayWindow.localScale = Vector3.zero;
 		if (PlayerPrefs.GetInt("MissionMode") == 1)
 		{
-			this.enabled = false;
+			base.enabled = false;
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (!this.FemaleVictimChecked)
 		{
@@ -107,54 +103,28 @@ public class PrayScript : MonoBehaviour
 			this.StudentManager.UpdateMe(this.StudentID);
 			this.JustSummoned = false;
 		}
-		if (this.GenderPrompt.Circle[0].fillAmount <= (float)0)
+		if (this.GenderPrompt.Circle[0].fillAmount <= 0f)
 		{
-			this.GenderPrompt.Circle[0].fillAmount = (float)1;
+			this.GenderPrompt.Circle[0].fillAmount = 1f;
 			if (!this.SpawnMale)
 			{
-				if (PlayerPrefs.GetInt("Student_15_Dead") == 1)
-				{
-					float a = 0.5f;
-					Color color = this.VictimLabel.color;
-					float num = color.a = a;
-					Color color2 = this.VictimLabel.color = color;
-				}
-				else
-				{
-					int num2 = 1;
-					Color color3 = this.VictimLabel.color;
-					float num3 = color3.a = (float)num2;
-					Color color4 = this.VictimLabel.color = color3;
-				}
-				this.GenderPrompt.Label[0].text = "     " + "Male Victim";
+				this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, (PlayerPrefs.GetInt("Student_15_Dead") != 1) ? 1f : 0.5f);
+				this.GenderPrompt.Label[0].text = "     Male Victim";
 				this.SpawnMale = true;
 			}
 			else
 			{
-				if (PlayerPrefs.GetInt("Student_16_Dead") == 1)
-				{
-					float a2 = 0.5f;
-					Color color5 = this.VictimLabel.color;
-					float num4 = color5.a = a2;
-					Color color6 = this.VictimLabel.color = color5;
-				}
-				else
-				{
-					int num5 = 1;
-					Color color7 = this.VictimLabel.color;
-					float num6 = color7.a = (float)num5;
-					Color color8 = this.VictimLabel.color = color7;
-				}
-				this.GenderPrompt.Label[0].text = "     " + "Female Victim";
+				this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, (PlayerPrefs.GetInt("Student_16_Dead") != 1) ? 1f : 0.5f);
+				this.GenderPrompt.Label[0].text = "     Female Victim";
 				this.SpawnMale = false;
 			}
 		}
-		if (this.Prompt.Circle[0].fillAmount <= (float)0)
+		if (this.Prompt.Circle[0].fillAmount <= 0f)
 		{
-			this.Prompt.Circle[0].fillAmount = (float)1;
+			this.Prompt.Circle[0].fillAmount = 1f;
 			this.Yandere.TargetStudent = this.Student;
 			this.StudentManager.DisablePrompts();
-			this.PrayWindow.gameObject.active = true;
+			this.PrayWindow.gameObject.SetActive(true);
 			this.Show = true;
 			this.Yandere.ShoulderCamera.OverShoulder = true;
 			this.Yandere.WeaponMenu.KeyboardShow = false;
@@ -168,47 +138,34 @@ public class PrayScript : MonoBehaviour
 			this.PromptBar.Label[4].text = "Choose";
 			this.PromptBar.UpdateButtons();
 			this.PromptBar.Show = true;
-			if (!this.SpawnMale)
+			this.StudentNumber = ((!this.SpawnMale) ? 16 : 17);
+			if (this.StudentManager.Students[16] != null && !this.StudentManager.Students[16].gameObject.activeInHierarchy)
 			{
-				this.StudentNumber = 16;
+				this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, 0.5f);
 			}
-			else
+			if (this.StudentManager.Students[17] != null && !this.StudentManager.Students[17].gameObject.activeInHierarchy)
 			{
-				this.StudentNumber = 17;
-			}
-			if (this.StudentManager.Students[16] != null && !this.StudentManager.Students[16].active)
-			{
-				float a3 = 0.5f;
-				Color color9 = this.VictimLabel.color;
-				float num7 = color9.a = a3;
-				Color color10 = this.VictimLabel.color = color9;
-			}
-			if (this.StudentManager.Students[17] != null && !this.StudentManager.Students[17].active)
-			{
-				float a4 = 0.5f;
-				Color color11 = this.VictimLabel.color;
-				float num8 = color11.a = a4;
-				Color color12 = this.VictimLabel.color = color11;
+				this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, 0.5f);
 			}
 		}
 		if (!this.Show)
 		{
-			if (this.PrayWindow.gameObject.active)
+			if (this.PrayWindow.gameObject.activeInHierarchy)
 			{
 				if (this.PrayWindow.localScale.x > 0.1f)
 				{
-					this.PrayWindow.localScale = Vector3.Lerp(this.PrayWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+					this.PrayWindow.localScale = Vector3.Lerp(this.PrayWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
 				}
 				else
 				{
-					this.PrayWindow.localScale = new Vector3((float)0, (float)0, (float)0);
-					this.PrayWindow.gameObject.active = false;
+					this.PrayWindow.localScale = Vector3.zero;
+					this.PrayWindow.gameObject.SetActive(false);
 				}
 			}
 		}
 		else
 		{
-			this.PrayWindow.localScale = Vector3.Lerp(this.PrayWindow.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+			this.PrayWindow.localScale = Vector3.Lerp(this.PrayWindow.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 			if (this.InputManager.TappedUp)
 			{
 				this.Selected--;
@@ -245,13 +202,13 @@ public class PrayScript : MonoBehaviour
 				}
 				else if (this.Selected == 2)
 				{
-					this.Yandere.Sanity = this.Yandere.Sanity - (float)50;
+					this.Yandere.Sanity -= 50f;
 					this.Yandere.UpdateSanity();
 					this.Exit();
 				}
 				else if (this.Selected == 3)
 				{
-					if (this.VictimLabel.color.a == (float)1 && this.StudentManager.NPCsSpawned >= this.StudentManager.NPCsTotal)
+					if (this.VictimLabel.color.a == 1f && this.StudentManager.NPCsSpawned >= this.StudentManager.NPCsTotal)
 					{
 						if (this.SpawnMale)
 						{
@@ -273,7 +230,7 @@ public class PrayScript : MonoBehaviour
 						this.StudentManager.SpawnID = this.StudentID;
 						this.StudentManager.SpawnStudent();
 						this.StudentManager.SpawnID = 0;
-						this.Police.Corpses = this.Police.Corpses - this.Victims;
+						this.Police.Corpses -= this.Victims;
 						this.Victims = 0;
 						this.JustSummoned = true;
 						this.Exit();
@@ -287,8 +244,8 @@ public class PrayScript : MonoBehaviour
 				else if (this.Selected == 5)
 				{
 					this.Police.BloodyClothing = 0;
-					this.Yandere.Bloodiness = (float)0;
-					this.Yandere.Sanity = (float)100;
+					this.Yandere.Bloodiness = 0f;
+					this.Yandere.Sanity = 100f;
 					this.WeaponManager.CleanWeapons();
 					this.Yandere.UpdateSanity();
 					this.Yandere.UpdateBlood();
@@ -302,7 +259,7 @@ public class PrayScript : MonoBehaviour
 		}
 	}
 
-	public virtual void UpdateHighlight()
+	private void UpdateHighlight()
 	{
 		if (this.Selected < 1)
 		{
@@ -312,13 +269,10 @@ public class PrayScript : MonoBehaviour
 		{
 			this.Selected = 1;
 		}
-		int num = 200 - 50 * this.Selected;
-		Vector3 localPosition = this.Highlight.transform.localPosition;
-		float num2 = localPosition.y = (float)num;
-		Vector3 vector = this.Highlight.transform.localPosition = localPosition;
+		this.Highlight.transform.localPosition = new Vector3(this.Highlight.transform.localPosition.x, 200f - 50f * (float)this.Selected, this.Highlight.transform.localPosition.z);
 	}
 
-	public virtual void Exit()
+	private void Exit()
 	{
 		this.Selected = 1;
 		this.UpdateHighlight();
@@ -331,11 +285,11 @@ public class PrayScript : MonoBehaviour
 		this.Uses++;
 		if (this.Uses > 9)
 		{
-			this.FemaleTurtle.active = true;
+			this.FemaleTurtle.SetActive(true);
 		}
 	}
 
-	public virtual void SpawnWeapons()
+	public void SpawnWeapons()
 	{
 		for (int i = 1; i < 5; i++)
 		{
@@ -344,9 +298,5 @@ public class PrayScript : MonoBehaviour
 				this.Weapon[i].transform.position = this.WeaponSpot[i].position;
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

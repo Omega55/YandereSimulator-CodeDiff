@@ -1,9 +1,6 @@
 ﻿using System;
-using Boo.Lang.Runtime;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class NemesisScript : MonoBehaviour
 {
 	public MissionModeScript MissionMode;
@@ -42,57 +39,46 @@ public class NemesisScript : MonoBehaviour
 
 	public int ID;
 
-	public float ScanTimer;
+	public float ScanTimer = 6f;
 
-	public NemesisScript()
+	private void Start()
 	{
-		this.ScanTimer = 6f;
-	}
-
-	public virtual void Start()
-	{
-		this.ID = 0;
-		while (this.ID < Extensions.get_length(this.Cosmetic.FemaleHair))
+		foreach (GameObject gameObject in this.Cosmetic.FemaleHair)
 		{
-			if (this.Cosmetic.FemaleHair[this.ID] != null)
+			if (gameObject != null)
 			{
-				this.Cosmetic.FemaleHair[this.ID].active = false;
+				gameObject.SetActive(false);
 			}
-			this.ID++;
 		}
-		this.ID = 0;
-		while (this.ID < Extensions.get_length(this.Cosmetic.FemaleAccessories))
+		foreach (GameObject gameObject2 in this.Cosmetic.FemaleAccessories)
 		{
-			if (this.Cosmetic.FemaleAccessories[this.ID] != null)
+			if (gameObject2 != null)
 			{
-				this.Cosmetic.FemaleAccessories[this.ID].active = false;
+				gameObject2.SetActive(false);
 			}
-			this.ID++;
 		}
-		this.ID = 0;
-		while (this.ID < Extensions.get_length(this.Cosmetic.ClubAccessories))
+		foreach (GameObject gameObject3 in this.Cosmetic.ClubAccessories)
 		{
-			if (this.Cosmetic.ClubAccessories[this.ID] != null)
+			if (gameObject3 != null)
 			{
-				this.Cosmetic.ClubAccessories[this.ID].active = false;
+				gameObject3.SetActive(false);
 			}
-			this.ID++;
 		}
 		this.Difficulty = PlayerPrefs.GetInt("NemesisDifficulty");
-		this.Student.StudentManager = (StudentManagerScript)GameObject.Find("StudentManager").GetComponent(typeof(StudentManagerScript));
-		this.Student.WitnessCamera = (WitnessCameraScript)GameObject.Find("WitnessCamera").GetComponent(typeof(WitnessCameraScript));
-		this.Student.Reputation = (ReputationScript)GameObject.Find("Reputation").GetComponent(typeof(ReputationScript));
-		this.Student.Police = (PoliceScript)GameObject.Find("Police").GetComponent(typeof(PoliceScript));
-		this.Student.JSON = (JsonScript)GameObject.Find("JSON").GetComponent(typeof(JsonScript));
-		this.Student.CharacterAnimation = this.Student.Character.animation;
+		this.Student.StudentManager = GameObject.Find("StudentManager").GetComponent<StudentManagerScript>();
+		this.Student.WitnessCamera = GameObject.Find("WitnessCamera").GetComponent<WitnessCameraScript>();
+		this.Student.Reputation = GameObject.Find("Reputation").GetComponent<ReputationScript>();
+		this.Student.Police = GameObject.Find("Police").GetComponent<PoliceScript>();
+		this.Student.JSON = GameObject.Find("JSON").GetComponent<JsonScript>();
+		this.Student.CharacterAnimation = this.Student.Character.GetComponent<Animation>();
 		this.Student.Ragdoll.Nemesis = true;
 		this.Student.Yandere = this.Yandere;
-		this.Student.ShoeRemoval.RightCasualShoe.gameObject.active = false;
-		this.Student.ShoeRemoval.LeftCasualShoe.gameObject.active = false;
+		this.Student.ShoeRemoval.RightCasualShoe.gameObject.SetActive(false);
+		this.Student.ShoeRemoval.LeftCasualShoe.gameObject.SetActive(false);
 		if (this.Difficulty < 3)
 		{
-			this.Student.Character.animation["f02_nemesisEyes_00"].layer = 2;
-			this.Student.Character.animation.Play("f02_nemesisEyes_00");
+			this.Student.Character.GetComponent<Animation>()["f02_nemesisEyes_00"].layer = 2;
+			this.Student.Character.GetComponent<Animation>().Play("f02_nemesisEyes_00");
 			this.Cosmetic.MyRenderer.sharedMesh = this.Cosmetic.FemaleUniforms[5];
 			this.Cosmetic.MyRenderer.materials[0].mainTexture = this.NemesisUniform;
 			this.Cosmetic.MyRenderer.materials[1].mainTexture = this.NemesisUniform;
@@ -100,11 +86,11 @@ public class NemesisScript : MonoBehaviour
 			this.Cosmetic.RightEyeRenderer.material.mainTexture = this.NemesisEyes;
 			this.Cosmetic.LeftEyeRenderer.material.mainTexture = this.NemesisEyes;
 			this.Student.FaceCollider.tag = "Nemesis";
-			this.NemesisHair.active = true;
+			this.NemesisHair.SetActive(true);
 		}
 		else
 		{
-			this.NemesisHair.active = false;
+			this.NemesisHair.SetActive(false);
 			this.PutOnDisguise = true;
 		}
 		this.Student.LowPoly.enabled = false;
@@ -121,12 +107,12 @@ public class NemesisScript : MonoBehaviour
 		this.Student.Prompt.HideButton[0] = true;
 		this.Student.Prompt.HideButton[2] = true;
 		UnityEngine.Object.Destroy(this.Student.MyRigidbody);
-		this.transform.position = this.MissionMode.SpawnPoints[UnityEngine.Random.Range(0, 4)].position;
-		this.MissionMode.LastKnownPosition.position = new Vector3((float)0, (float)0, (float)-36);
+		base.transform.position = this.MissionMode.SpawnPoints[UnityEngine.Random.Range(0, 4)].position;
+		this.MissionMode.LastKnownPosition.position = new Vector3(0f, 0f, -36f);
 		this.UpdateLKP();
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.PutOnDisguise)
 		{
@@ -135,12 +121,13 @@ public class NemesisScript : MonoBehaviour
 			{
 				num = UnityEngine.Random.Range(2, 33);
 			}
-			this.Student.StudentManager.Students[num].active = false;
+			this.Student.StudentManager.Students[num].gameObject.SetActive(false);
 			this.Cosmetic.StudentID = num;
 			this.Cosmetic.Start();
-			if (this.Cosmetic.FemaleHair[this.Cosmetic.Hairstyle].GetComponent("OutlineScript") != null)
+			OutlineScript component = this.Cosmetic.FemaleHair[this.Cosmetic.Hairstyle].GetComponent<OutlineScript>();
+			if (component != null)
 			{
-				RuntimeServices.SetProperty(this.Cosmetic.FemaleHair[this.Cosmetic.Hairstyle].GetComponent("OutlineScript"), "enabled", false);
+				component.enabled = false;
 			}
 			this.Student.FaceCollider.tag = "Disguise";
 			this.PutOnDisguise = false;
@@ -149,7 +136,7 @@ public class NemesisScript : MonoBehaviour
 		{
 			if (!this.Attacking)
 			{
-				if (this.Yandere.Laughing && Vector3.Distance(this.transform.position, this.Yandere.transform.position) < (float)10)
+				if (this.Yandere.Laughing && Vector3.Distance(base.transform.position, this.Yandere.transform.position) < 10f)
 				{
 					this.MissionMode.LastKnownPosition.position = this.Yandere.transform.position;
 					this.UpdateLKP();
@@ -158,78 +145,65 @@ public class NemesisScript : MonoBehaviour
 				{
 					if (this.Student.Pathfinding.enabled)
 					{
-						this.Student.Character.animation.CrossFade(this.Student.IdleAnim);
+						this.Student.Character.GetComponent<Animation>().CrossFade(this.Student.IdleAnim);
 						this.Student.Pathfinding.enabled = false;
-						this.Student.Pathfinding.speed = (float)0;
+						this.Student.Pathfinding.speed = 0f;
 					}
 				}
 				else
 				{
-					if (!this.Yandere.Crouching && !this.Yandere.Crawling && Vector3.Distance(this.transform.position, this.Yandere.transform.position) < (float)10 && Input.GetButton("LB"))
+					if (!this.Yandere.Crouching && !this.Yandere.Crawling && Vector3.Distance(base.transform.position, this.Yandere.transform.position) < 10f && Input.GetButton("LB"))
 					{
 						this.MissionMode.LastKnownPosition.position = this.Yandere.transform.position;
 						this.UpdateLKP();
 					}
 					if (!this.Student.Pathfinding.enabled)
 					{
-						this.Student.Character.animation.CrossFade(this.Student.WalkAnim);
+						this.Student.Character.GetComponent<Animation>().CrossFade(this.Student.WalkAnim);
 						this.Student.Pathfinding.enabled = true;
-						this.Student.Pathfinding.speed = (float)1;
+						this.Student.Pathfinding.speed = 1f;
 					}
 					this.InView = false;
 					this.LookForYandere();
-					if (this.InView)
-					{
-						this.Student.Pathfinding.speed = Mathf.MoveTowards(this.Student.Pathfinding.speed, (float)2, Time.deltaTime * 0.1f);
-					}
-					else
-					{
-						this.Student.Pathfinding.speed = Mathf.MoveTowards(this.Student.Pathfinding.speed, (float)1, Time.deltaTime * 0.1f);
-					}
-					this.Student.Character.animation[this.Student.WalkAnim].speed = this.Student.Pathfinding.speed;
-					if (Vector3.Distance(this.transform.position, this.Yandere.transform.position) < (float)1)
+					this.Student.Pathfinding.speed = Mathf.MoveTowards(this.Student.Pathfinding.speed, (!this.InView) ? 1f : 2f, Time.deltaTime * 0.1f);
+					this.Student.Character.GetComponent<Animation>()[this.Student.WalkAnim].speed = this.Student.Pathfinding.speed;
+					if (Vector3.Distance(base.transform.position, this.Yandere.transform.position) < 1f)
 					{
 						if (this.InView)
 						{
-							this.Student.Character.animation.CrossFade("f02_knifeLowSanityA_00");
+							this.Student.Character.GetComponent<Animation>().CrossFade("f02_knifeLowSanityA_00");
 							this.Yandere.CharacterAnimation.CrossFade("f02_knifeLowSanityB_00");
-							AudioSource.PlayClipAtPoint(this.YandereDeath, this.transform.position);
+							AudioSource.PlayClipAtPoint(this.YandereDeath, base.transform.position);
 							this.Student.Pathfinding.enabled = false;
-							this.Knife.active = true;
+							this.Knife.SetActive(true);
 							this.Attacking = true;
-							this.audio.Play();
+							AudioSource component2 = base.GetComponent<AudioSource>();
+							component2.Play();
 							this.Yandere.FollowHips = true;
 							this.Yandere.Laughing = false;
 							this.Yandere.CanMove = false;
-							this.Yandere.EyeShrink = (float)1;
+							this.Yandere.EyeShrink = 1f;
 							this.Yandere.StopAiming();
 							this.Yandere.EmptyHands();
 						}
 					}
-					else if (Vector3.Distance(this.transform.position, this.MissionMode.LastKnownPosition.position) < (float)1)
+					else if (Vector3.Distance(base.transform.position, this.MissionMode.LastKnownPosition.position) < 1f)
 					{
-						this.Student.Character.animation.CrossFade("f02_nemesisScan_00");
-						this.Student.Pathfinding.speed = (float)0;
+						this.Student.Character.GetComponent<Animation>().CrossFade("f02_nemesisScan_00");
+						this.Student.Pathfinding.speed = 0f;
 						this.ScanTimer += Time.deltaTime;
-						if (this.ScanTimer > (float)6)
+						if (this.ScanTimer > 6f)
 						{
-							if (this.MissionMode.LastKnownPosition.position == new Vector3((float)0, (float)0, -2.5f))
-							{
-								this.MissionMode.LastKnownPosition.position = this.Yandere.transform.position;
-								this.UpdateLKP();
-							}
-							else
-							{
-								this.MissionMode.LastKnownPosition.position = new Vector3((float)0, (float)0, -2.5f);
-								this.UpdateLKP();
-							}
+							Vector3 vector = new Vector3(0f, 0f, -2.5f);
+							this.MissionMode.LastKnownPosition.position = ((!(this.MissionMode.LastKnownPosition.position == vector)) ? vector : this.Yandere.transform.position);
+							this.UpdateLKP();
 						}
 					}
 				}
 				if (this.Difficulty == 1 || this.Difficulty == 3)
 				{
-					float f = Vector3.Angle(this.transform.forward * (float)-1, this.Yandere.transform.position - this.transform.position);
-					if (Mathf.Abs(f) > (float)45)
+					float f = Vector3.Angle(-base.transform.forward, this.Yandere.transform.position - base.transform.position);
+					if (Mathf.Abs(f) > 45f)
 					{
 						this.Student.Prompt.HideButton[2] = true;
 					}
@@ -241,7 +215,7 @@ public class NemesisScript : MonoBehaviour
 					{
 						this.Student.Prompt.HideButton[2] = true;
 					}
-					if (this.Student.Prompt.Circle[2].fillAmount < (float)1)
+					if (this.Student.Prompt.Circle[2].fillAmount < 1f)
 					{
 						this.Yandere.TargetStudent = this.Student;
 						this.Yandere.AttackManager.Stealth = true;
@@ -255,18 +229,19 @@ public class NemesisScript : MonoBehaviour
 			else
 			{
 				this.SpecialEffect();
-				this.Yandere.targetRotation = Quaternion.LookRotation(this.transform.position - this.Yandere.transform.position);
-				this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, this.Yandere.targetRotation, Time.deltaTime * (float)10);
-				this.Yandere.MoveTowardsTarget(this.transform.position + this.transform.forward * 0.5f);
-				this.Yandere.EyeShrink = (float)1;
-				Quaternion to = Quaternion.LookRotation(this.Yandere.transform.position - this.transform.position);
-				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, to, Time.deltaTime * (float)10);
-				if (this.Student.Character.animation["f02_knifeLowSanityA_00"].time >= this.Student.Character.animation["f02_knifeLowSanityA_00"].length)
+				this.Yandere.targetRotation = Quaternion.LookRotation(base.transform.position - this.Yandere.transform.position);
+				this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, this.Yandere.targetRotation, Time.deltaTime * 10f);
+				this.Yandere.MoveTowardsTarget(base.transform.position + base.transform.forward * 0.5f);
+				this.Yandere.EyeShrink = 1f;
+				Quaternion b = Quaternion.LookRotation(this.Yandere.transform.position - base.transform.position);
+				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, b, Time.deltaTime * 10f);
+				Animation component3 = this.Student.Character.GetComponent<Animation>();
+				if (component3["f02_knifeLowSanityA_00"].time >= component3["f02_knifeLowSanityA_00"].length)
 				{
 					this.MissionMode.GameOverID = 13;
 					this.MissionMode.GameOver();
 					this.MissionMode.Phase = 4;
-					this.enabled = false;
+					base.enabled = false;
 				}
 			}
 		}
@@ -274,23 +249,24 @@ public class NemesisScript : MonoBehaviour
 		{
 			this.Student.DeltaTime = Time.deltaTime;
 			this.Student.MoveTowardsTarget(this.Yandere.transform.position + this.Yandere.transform.forward * this.Yandere.AttackManager.Distance);
-			Quaternion to = Quaternion.LookRotation(this.transform.position - new Vector3(this.Yandere.transform.position.x, this.transform.position.y, this.Yandere.transform.position.z));
-			this.transform.rotation = Quaternion.Slerp(this.transform.rotation, to, Time.deltaTime * (float)10);
+			Quaternion b2 = Quaternion.LookRotation(base.transform.position - new Vector3(this.Yandere.transform.position.x, base.transform.position.y, this.Yandere.transform.position.z));
+			base.transform.rotation = Quaternion.Slerp(base.transform.rotation, b2, Time.deltaTime * 10f);
 		}
 		else
 		{
-			this.enabled = false;
+			base.enabled = false;
 		}
 	}
 
-	public virtual void LookForYandere()
+	private void LookForYandere()
 	{
 		Plane[] planes = GeometryUtility.CalculateFrustumPlanes(this.Student.VisionCone);
-		if (GeometryUtility.TestPlanesAABB(planes, this.Yandere.collider.bounds))
+		if (GeometryUtility.TestPlanesAABB(planes, this.Yandere.GetComponent<Collider>().bounds))
 		{
-			RaycastHit raycastHit = default(RaycastHit);
-			Debug.DrawLine(this.Student.Eyes.transform.position, new Vector3(this.Yandere.transform.position.x, this.Yandere.Head.position.y, this.Yandere.transform.position.z), Color.green);
-			if (Physics.Linecast(this.Student.Eyes.transform.position, new Vector3(this.Yandere.transform.position.x, this.Yandere.Head.position.y, this.Yandere.transform.position.z), out raycastHit) && raycastHit.collider.gameObject == this.Yandere.gameObject)
+			Vector3 end = new Vector3(this.Yandere.transform.position.x, this.Yandere.Head.position.y, this.Yandere.transform.position.z);
+			Debug.DrawLine(this.Student.Eyes.transform.position, end, Color.green);
+			RaycastHit raycastHit;
+			if (Physics.Linecast(this.Student.Eyes.transform.position, end, out raycastHit) && raycastHit.collider.gameObject == this.Yandere.gameObject)
 			{
 				this.MissionMode.LastKnownPosition.position = this.Yandere.transform.position;
 				this.InView = true;
@@ -299,54 +275,51 @@ public class NemesisScript : MonoBehaviour
 		}
 	}
 
-	public virtual void UpdateLKP()
+	private void UpdateLKP()
 	{
-		this.Student.Character.animation.CrossFade(this.Student.WalkAnim);
-		if (this.Student.Pathfinding.speed == (float)0)
+		this.Student.Character.GetComponent<Animation>().CrossFade(this.Student.WalkAnim);
+		if (this.Student.Pathfinding.speed == 0f)
 		{
-			this.Student.Pathfinding.speed = (float)1;
+			this.Student.Pathfinding.speed = 1f;
 		}
-		this.ScanTimer = (float)0;
+		this.ScanTimer = 0f;
 		this.InView = true;
 	}
 
-	public virtual void SpecialEffect()
+	private void SpecialEffect()
 	{
+		Animation component = this.Student.Character.GetComponent<Animation>();
 		if (this.EffectPhase == 0)
 		{
-			if (this.Student.Character.animation["f02_knifeLowSanityA_00"].time > 2.76666665f)
+			if (component["f02_knifeLowSanityA_00"].time > 2.76666665f)
 			{
-				UnityEngine.Object.Instantiate(this.BloodEffect, this.Knife.transform.position + this.Knife.transform.forward * 0.1f, Quaternion.identity);
+				UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Knife.transform.position + this.Knife.transform.forward * 0.1f, Quaternion.identity);
 				this.EffectPhase++;
 			}
 		}
 		else if (this.EffectPhase == 1)
 		{
-			if (this.Student.Character.animation["f02_knifeLowSanityA_00"].time > 3.5333333f)
+			if (component["f02_knifeLowSanityA_00"].time > 3.5333333f)
 			{
-				UnityEngine.Object.Instantiate(this.BloodEffect, this.Knife.transform.position + this.Knife.transform.forward * 0.1f, Quaternion.identity);
+				UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Knife.transform.position + this.Knife.transform.forward * 0.1f, Quaternion.identity);
 				this.EffectPhase++;
 			}
 		}
-		else if (this.EffectPhase == 2 && this.Student.Character.animation["f02_knifeLowSanityA_00"].time > 4.16666651f)
+		else if (this.EffectPhase == 2 && component["f02_knifeLowSanityA_00"].time > 4.16666651f)
 		{
-			UnityEngine.Object.Instantiate(this.BloodEffect, this.Knife.transform.position + this.Knife.transform.forward * 0.1f, Quaternion.identity);
+			UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Knife.transform.position + this.Knife.transform.forward * 0.1f, Quaternion.identity);
 			this.EffectPhase++;
 		}
 	}
 
-	public virtual void HideObjects()
+	private void HideObjects()
 	{
-		this.Student.Chopsticks[0].active = false;
-		this.Student.Chopsticks[1].active = false;
-		this.Student.OccultBook.active = false;
-		this.Student.EventBook.active = false;
-		this.Student.Bento.active = false;
-		this.Student.Pen.active = false;
+		this.Student.Chopsticks[0].SetActive(false);
+		this.Student.Chopsticks[1].SetActive(false);
+		this.Student.OccultBook.SetActive(false);
+		this.Student.EventBook.SetActive(false);
+		this.Student.Bento.SetActive(false);
+		this.Student.Pen.SetActive(false);
 		this.Student.SpeechLines.Stop();
-	}
-
-	public virtual void Main()
-	{
 	}
 }

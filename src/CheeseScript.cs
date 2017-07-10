@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class CheeseScript : MonoBehaviour
 {
 	public GameObject GlowingEye;
@@ -12,28 +11,24 @@ public class CheeseScript : MonoBehaviour
 
 	public float Timer;
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Prompt.Circle[0].fillAmount <= (float)0)
+		if (this.Prompt.Circle[0].fillAmount <= 0f)
 		{
 			this.Subtitle.text = "Knowing the mouse might one day leave its hole and get the cheese...It fills you with determination.";
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
-			this.GlowingEye.active = true;
-			this.Timer = (float)5;
+			this.GlowingEye.SetActive(true);
+			this.Timer = 5f;
 		}
-		if (this.Timer > (float)0)
+		if (this.Timer > 0f)
 		{
 			this.Timer -= Time.deltaTime;
-			if (this.Timer <= (float)0)
+			if (this.Timer <= 0f)
 			{
 				this.Prompt.enabled = true;
 				this.Subtitle.text = string.Empty;
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

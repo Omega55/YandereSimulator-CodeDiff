@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class BentoScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
@@ -14,17 +13,10 @@ public class BentoScript : MonoBehaviour
 
 	public int ID;
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (!this.Prompt.Yandere.Inventory.EmeticPoison && !this.Prompt.Yandere.Inventory.RatPoison)
-		{
-			this.Prompt.HideButton[0] = true;
-		}
-		else
-		{
-			this.Prompt.HideButton[0] = false;
-		}
-		if (this.Prompt.Circle[0].fillAmount == (float)0)
+		this.Prompt.HideButton[0] = (!this.Prompt.Yandere.Inventory.EmeticPoison && !this.Prompt.Yandere.Inventory.RatPoison);
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			if (this.Prompt.Yandere.Inventory.EmeticPoison)
 			{
@@ -40,7 +32,7 @@ public class BentoScript : MonoBehaviour
 			this.Prompt.Yandere.PoisonSpot = this.PoisonSpot;
 			this.Prompt.Yandere.Poisoning = true;
 			this.Prompt.Yandere.CanMove = false;
-			this.enabled = false;
+			base.enabled = false;
 			this.Poison = 1;
 			if (this.ID != 1)
 			{
@@ -51,15 +43,8 @@ public class BentoScript : MonoBehaviour
 		}
 		if (this.ID == 33)
 		{
-			if (this.Prompt.Yandere.Inventory.LethalPoison)
-			{
-				this.Prompt.HideButton[1] = false;
-			}
-			else
-			{
-				this.Prompt.HideButton[1] = true;
-			}
-			if (this.Prompt.Circle[1].fillAmount == (float)0)
+			this.Prompt.HideButton[1] = !this.Prompt.Yandere.Inventory.LethalPoison;
+			if (this.Prompt.Circle[1].fillAmount == 0f)
 			{
 				this.Prompt.Yandere.CharacterAnimation.CrossFade("f02_poisoning_00");
 				this.Prompt.Yandere.Inventory.LethalPoison = false;
@@ -68,15 +53,11 @@ public class BentoScript : MonoBehaviour
 				this.Prompt.Yandere.Poisoning = true;
 				this.Prompt.Yandere.CanMove = false;
 				this.Prompt.Yandere.PoisonType = 2;
-				this.enabled = false;
+				base.enabled = false;
 				this.Poison = 2;
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

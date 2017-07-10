@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-[Serializable]
 public class WelcomeScript : MonoBehaviour
 {
 	public JsonScript JSON;
@@ -29,18 +29,12 @@ public class WelcomeScript : MonoBehaviour
 
 	public float Timer;
 
-	public virtual void Start()
+	private void Start()
 	{
-		int num = 0;
-		Color color = this.BeginLabel.color;
-		float num2 = color.a = (float)num;
-		Color color2 = this.BeginLabel.color = color;
-		int num3 = 2;
-		Color color3 = this.Darkness.color;
-		float num4 = color3.a = (float)num3;
-		Color color4 = this.Darkness.color = color3;
-		Screen.lockCursor = true;
-		Screen.showCursor = false;
+		this.BeginLabel.color = new Color(this.BeginLabel.color.r, this.BeginLabel.color.g, this.BeginLabel.color.b, 0f);
+		this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 2f);
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
 		if (PlayerPrefs.GetFloat("VersionNumber") < this.VersionNumber)
 		{
 			PlayerPrefs.DeleteAll();
@@ -52,48 +46,42 @@ public class WelcomeScript : MonoBehaviour
 		}
 		if (!this.InEditor && this.JSON.StudentNames[33] != "Reserved")
 		{
-			Application.LoadLevel("FunScene");
+			SceneManager.LoadScene("FunScene");
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (Input.GetKeyDown("y"))
 		{
-			Application.LoadLevel("YanvaniaScene");
+			SceneManager.LoadScene("YanvaniaScene");
 		}
 		if (!this.Continue)
 		{
-			float a = this.Darkness.color.a - Time.deltaTime;
-			Color color = this.Darkness.color;
-			float num = color.a = a;
-			Color color2 = this.Darkness.color = color;
-			if (this.Darkness.color.a <= (float)0)
+			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a - Time.deltaTime);
+			if (this.Darkness.color.a <= 0f)
 			{
 				if (Input.GetKeyDown("w"))
 				{
 				}
 				if (Input.anyKeyDown)
 				{
-					this.Timer = (float)5;
+					this.Timer = 5f;
 				}
 				this.Timer += Time.deltaTime;
-				if (this.Timer > (float)5)
+				if (this.Timer > 5f)
 				{
-					float a2 = this.BeginLabel.color.a + Time.deltaTime;
-					Color color3 = this.BeginLabel.color;
-					float num2 = color3.a = a2;
-					Color color4 = this.BeginLabel.color = color3;
-					if (this.BeginLabel.color.a >= (float)1)
+					this.BeginLabel.color = new Color(this.BeginLabel.color.r, this.BeginLabel.color.g, this.BeginLabel.color.b, this.BeginLabel.color.a + Time.deltaTime);
+					if (this.BeginLabel.color.a >= 1f)
 					{
-						if (this.WelcomePanel.active && Input.anyKeyDown)
+						if (this.WelcomePanel.activeInHierarchy && Input.anyKeyDown)
 						{
-							this.Darkness.color = new Color((float)1, (float)1, (float)1, (float)0);
+							this.Darkness.color = new Color(1f, 1f, 1f, 0f);
 							this.Continue = true;
 						}
-						if (this.WarningPanel.active && !Input.GetKeyDown("w") && Input.anyKeyDown)
+						if (this.WarningPanel.activeInHierarchy && !Input.GetKeyDown("w") && Input.anyKeyDown)
 						{
-							this.Darkness.color = new Color((float)1, (float)1, (float)1, (float)0);
+							this.Darkness.color = new Color(1f, 1f, 1f, 0f);
 							this.Continue = true;
 						}
 					}
@@ -102,41 +90,28 @@ public class WelcomeScript : MonoBehaviour
 		}
 		else
 		{
-			this.Music.volume = this.Music.volume - Time.deltaTime;
-			float a3 = this.Darkness.color.a + Time.deltaTime;
-			Color color5 = this.Darkness.color;
-			float num3 = color5.a = a3;
-			Color color6 = this.Darkness.color = color5;
-			if (this.Darkness.color.a >= (float)1)
+			this.Music.volume -= Time.deltaTime;
+			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a + Time.deltaTime);
+			if (this.Darkness.color.a >= 1f)
 			{
-				Application.LoadLevel("SponsorScene");
+				SceneManager.LoadScene("SponsorScene");
 			}
 		}
 		if (!this.FlashRed)
 		{
-			float r = this.FlashingLabel.color.r + Time.deltaTime * (float)10;
-			Color color7 = this.FlashingLabel.color;
-			float num4 = color7.r = r;
-			Color color8 = this.FlashingLabel.color = color7;
-			if (this.FlashingLabel.color.r > (float)1)
+			this.FlashingLabel.color = new Color(this.FlashingLabel.color.r + Time.deltaTime * 10f, this.FlashingLabel.color.g, this.FlashingLabel.color.b, this.FlashingLabel.color.a);
+			if (this.FlashingLabel.color.r > 1f)
 			{
 				this.FlashRed = true;
 			}
 		}
 		else
 		{
-			float r2 = this.FlashingLabel.color.r - Time.deltaTime * (float)10;
-			Color color9 = this.FlashingLabel.color;
-			float num5 = color9.r = r2;
-			Color color10 = this.FlashingLabel.color = color9;
-			if (this.FlashingLabel.color.r < (float)0)
+			this.FlashingLabel.color = new Color(this.FlashingLabel.color.r - Time.deltaTime * 10f, this.FlashingLabel.color.g, this.FlashingLabel.color.b, this.FlashingLabel.color.a);
+			if (this.FlashingLabel.color.r < 0f)
 			{
 				this.FlashRed = false;
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

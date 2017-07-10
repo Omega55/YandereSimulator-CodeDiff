@@ -1,18 +1,14 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class BloodyScreamScript : MonoBehaviour
 {
 	public AudioClip[] Screams;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.audio.clip = this.Screams[UnityEngine.Random.Range(0, this.Screams.Length)];
-		this.audio.Play();
-	}
-
-	public virtual void Main()
-	{
+		AudioSource component = base.GetComponent<AudioSource>();
+		component.clip = this.Screams[UnityEngine.Random.Range(0, this.Screams.Length)];
+		component.Play();
 	}
 }

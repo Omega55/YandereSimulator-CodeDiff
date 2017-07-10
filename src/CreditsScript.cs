@@ -1,8 +1,7 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
+using UnityEngine.SceneManagement;
 
-[Serializable]
 public class CreditsScript : MonoBehaviour
 {
 	public JsonScript JSON;
@@ -39,16 +38,16 @@ public class CreditsScript : MonoBehaviour
 
 	public bool Begin;
 
-	public virtual void Start()
+	private void Start()
 	{
 		this.ID = 1;
-		while (this.ID < Extensions.get_length(this.Lines))
+		while (this.ID < this.Lines.Length)
 		{
 			this.Lines[this.ID] = this.JSON.CreditsNames[this.ID];
 			this.ID++;
 		}
 		this.ID = 1;
-		while (this.ID < Extensions.get_length(this.Sizes))
+		while (this.ID < this.Sizes.Length)
 		{
 			this.Sizes[this.ID] = this.JSON.CreditsSizes[this.ID];
 			this.ID++;
@@ -56,39 +55,40 @@ public class CreditsScript : MonoBehaviour
 		this.ID = 1;
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
+		AudioSource component = base.GetComponent<AudioSource>();
 		if (!this.Begin)
 		{
 			this.Timer += Time.deltaTime;
-			if (this.Timer > (float)1)
+			if (this.Timer > 1f)
 			{
 				this.Begin = true;
-				this.audio.Play();
-				this.Timer = (float)0;
+				component.Play();
+				this.Timer = 0f;
 			}
 		}
 		else
 		{
 			if (!this.StopCredits)
 			{
-				if (this.Timer == (float)0)
+				if (this.Timer == 0f)
 				{
 					if (this.Sizes[this.ID] == 1)
 					{
-						this.NewCreditsLabel = (GameObject)UnityEngine.Object.Instantiate(this.SmallCreditsLabel, this.SpawnPoint.position, Quaternion.identity);
-						this.TimerLimit = (float)1 * this.SpeedUpFactor;
+						this.NewCreditsLabel = UnityEngine.Object.Instantiate<GameObject>(this.SmallCreditsLabel, this.SpawnPoint.position, Quaternion.identity);
+						this.TimerLimit = this.SpeedUpFactor;
 					}
 					else
 					{
-						this.NewCreditsLabel = (GameObject)UnityEngine.Object.Instantiate(this.BigCreditsLabel, this.SpawnPoint.position, Quaternion.identity);
+						this.NewCreditsLabel = UnityEngine.Object.Instantiate<GameObject>(this.BigCreditsLabel, this.SpawnPoint.position, Quaternion.identity);
 						this.TimerLimit = (float)this.Sizes[this.ID] * this.SpeedUpFactor;
 					}
 					this.NewCreditsLabel.transform.parent = this.Panel;
-					this.NewCreditsLabel.transform.localScale = new Vector3((float)1, (float)1, (float)1);
-					((UILabel)this.NewCreditsLabel.GetComponent(typeof(UILabel))).text = this.Lines[this.ID];
+					this.NewCreditsLabel.transform.localScale = new Vector3(1f, 1f, 1f);
+					this.NewCreditsLabel.GetComponent<UILabel>().text = this.Lines[this.ID];
 					this.ID++;
-					if (this.ID > Extensions.get_length(this.Sizes) - 1)
+					if (this.ID > this.Sizes.Length - 1)
 					{
 						this.StopCredits = true;
 					}
@@ -96,39 +96,32 @@ public class CreditsScript : MonoBehaviour
 				this.Timer = Mathf.MoveTowards(this.Timer, this.TimerLimit, Time.deltaTime);
 				if (this.Timer >= this.TimerLimit)
 				{
-					this.Timer = (float)0;
+					this.Timer = 0f;
 				}
 			}
-			if (Input.GetButtonDown("B") || !this.audio.isPlaying)
+			if (Input.GetButtonDown("B") || !component.isPlaying)
 			{
 				this.FadeOut = true;
 			}
 		}
 		if (this.FadeOut)
 		{
-			float a = Mathf.MoveTowards(this.Darkness.color.a, (float)1, Time.deltaTime);
-			Color color = this.Darkness.color;
-			float num = color.a = a;
-			Color color2 = this.Darkness.color = color;
-			this.audio.volume = this.audio.volume - Time.deltaTime;
-			if (this.Darkness.color.a == (float)1)
+			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 1f, Time.deltaTime));
+			component.volume -= Time.deltaTime;
+			if (this.Darkness.color.a == 1f)
 			{
-				Application.LoadLevel("TitleScene");
+				SceneManager.LoadScene("TitleScene");
 			}
 		}
 		if (Input.GetKeyDown("-"))
 		{
-			Time.timeScale -= (float)1;
-			this.audio.pitch = Time.timeScale;
+			Time.timeScale -= 1f;
+			component.pitch = Time.timeScale;
 		}
 		if (Input.GetKeyDown("="))
 		{
-			Time.timeScale += (float)1;
-			this.audio.pitch = Time.timeScale;
+			Time.timeScale += 1f;
+			component.pitch = Time.timeScale;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-[Serializable]
 public class YanvaniaTryAgainScript : MonoBehaviour
 {
 	public InputManagerScript InputManager;
@@ -14,23 +14,18 @@ public class YanvaniaTryAgainScript : MonoBehaviour
 
 	public bool FadeOut;
 
-	public int Selected;
+	public int Selected = 1;
 
-	public YanvaniaTryAgainScript()
+	private void Start()
 	{
-		this.Selected = 1;
+		base.transform.localScale = Vector3.zero;
 	}
 
-	public virtual void Start()
-	{
-		this.transform.localScale = new Vector3((float)0, (float)0, (float)0);
-	}
-
-	public virtual void Update()
+	private void Update()
 	{
 		if (!this.FadeOut)
 		{
-			if (this.transform.localScale.x > 0.9f)
+			if (base.transform.localScale.x > 0.9f)
 			{
 				if (this.InputManager.TappedLeft)
 				{
@@ -42,56 +37,37 @@ public class YanvaniaTryAgainScript : MonoBehaviour
 				}
 				if (this.Selected == 1)
 				{
-					float x = Mathf.Lerp(this.Highlight.localPosition.x, (float)-100, Time.deltaTime * (float)10);
-					Vector3 localPosition = this.Highlight.localPosition;
-					float num = localPosition.x = x;
-					Vector3 vector = this.Highlight.localPosition = localPosition;
-					float x2 = Mathf.Lerp(this.Highlight.localScale.x, (float)-1, Time.deltaTime * (float)10);
-					Vector3 localScale = this.Highlight.localScale;
-					float num2 = localScale.x = x2;
-					Vector3 vector2 = this.Highlight.localScale = localScale;
+					this.Highlight.localPosition = new Vector3(Mathf.Lerp(this.Highlight.localPosition.x, -100f, Time.deltaTime * 10f), this.Highlight.localPosition.y, this.Highlight.localPosition.z);
+					this.Highlight.localScale = new Vector3(Mathf.Lerp(this.Highlight.localScale.x, -1f, Time.deltaTime * 10f), this.Highlight.localScale.y, this.Highlight.localScale.z);
 				}
 				else
 				{
-					float x3 = Mathf.Lerp(this.Highlight.localPosition.x, (float)100, Time.deltaTime * (float)10);
-					Vector3 localPosition2 = this.Highlight.localPosition;
-					float num3 = localPosition2.x = x3;
-					Vector3 vector3 = this.Highlight.localPosition = localPosition2;
-					float x4 = Mathf.Lerp(this.Highlight.localScale.x, (float)1, Time.deltaTime * (float)10);
-					Vector3 localScale2 = this.Highlight.localScale;
-					float num4 = localScale2.x = x4;
-					Vector3 vector4 = this.Highlight.localScale = localScale2;
+					this.Highlight.localPosition = new Vector3(Mathf.Lerp(this.Highlight.localPosition.x, 100f, Time.deltaTime * 10f), this.Highlight.localPosition.y, this.Highlight.localPosition.z);
+					this.Highlight.localScale = new Vector3(Mathf.Lerp(this.Highlight.localScale.x, 1f, Time.deltaTime * 10f), this.Highlight.localScale.y, this.Highlight.localScale.z);
 				}
 				if (Input.GetButtonDown("A"))
 				{
-					GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.ButtonEffect, this.Highlight.position, Quaternion.identity);
+					GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.ButtonEffect, this.Highlight.position, Quaternion.identity);
 					gameObject.transform.parent = this.Highlight;
-					gameObject.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
+					gameObject.transform.localPosition = Vector3.zero;
 					this.FadeOut = true;
 				}
 			}
 		}
 		else
 		{
-			float a = this.Darkness.color.a + Time.deltaTime;
-			Color color = this.Darkness.color;
-			float num5 = color.a = a;
-			Color color2 = this.Darkness.color = color;
-			if (this.Darkness.color.a >= (float)1)
+			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a + Time.deltaTime);
+			if (this.Darkness.color.a >= 1f)
 			{
 				if (this.Selected == 1)
 				{
-					Application.LoadLevel(Application.loadedLevel);
+					SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 				}
 				else
 				{
-					Application.LoadLevel("YanvaniaTitleScene");
+					SceneManager.LoadScene("YanvaniaTitleScene");
 				}
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

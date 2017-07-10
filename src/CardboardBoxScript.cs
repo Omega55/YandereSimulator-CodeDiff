@@ -1,47 +1,39 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class CardboardBoxScript : MonoBehaviour
 {
 	public PromptScript Prompt;
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Prompt.Circle[0].fillAmount == (float)0)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.MyCollider.enabled = false;
-			this.Prompt.Circle[0].fillAmount = (float)1;
-			this.rigidbody.isKinematic = true;
-			this.rigidbody.useGravity = false;
+			this.Prompt.Circle[0].fillAmount = 1f;
+			base.GetComponent<Rigidbody>().isKinematic = true;
+			base.GetComponent<Rigidbody>().useGravity = false;
 			this.Prompt.enabled = false;
 			this.Prompt.Hide();
-			this.transform.parent = this.Prompt.Yandere.Hips;
-			this.transform.localPosition = new Vector3((float)0, -0.3f, 0.21f);
-			this.transform.localEulerAngles = new Vector3(-13.333f, (float)0, (float)0);
+			base.transform.parent = this.Prompt.Yandere.Hips;
+			base.transform.localPosition = new Vector3(0f, -0.3f, 0.21f);
+			base.transform.localEulerAngles = new Vector3(-13.333f, 0f, 0f);
 		}
-		if (this.transform.parent == this.Prompt.Yandere.Hips)
+		if (base.transform.parent == this.Prompt.Yandere.Hips)
 		{
-			this.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+			base.transform.localEulerAngles = Vector3.zero;
 			if (!this.Prompt.Yandere.Crawling)
 			{
-				int num = 0;
-				Vector3 eulerAngles = this.transform.eulerAngles;
-				float num2 = eulerAngles.x = (float)num;
-				Vector3 vector = this.transform.eulerAngles = eulerAngles;
+				base.transform.eulerAngles = new Vector3(0f, base.transform.eulerAngles.y, base.transform.eulerAngles.z);
 			}
 			if (Input.GetButtonDown("RB"))
 			{
 				this.Prompt.MyCollider.enabled = true;
-				this.rigidbody.isKinematic = false;
-				this.rigidbody.useGravity = true;
-				this.transform.parent = null;
+				base.GetComponent<Rigidbody>().isKinematic = false;
+				base.GetComponent<Rigidbody>().useGravity = true;
+				base.transform.parent = null;
 				this.Prompt.enabled = true;
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

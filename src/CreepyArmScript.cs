@@ -1,18 +1,10 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class CreepyArmScript : MonoBehaviour
 {
-	public virtual void Update()
+	private void Update()
 	{
-		float y = this.transform.position.y + Time.deltaTime * 0.1f;
-		Vector3 position = this.transform.position;
-		float num = position.y = y;
-		Vector3 vector = this.transform.position = position;
-	}
-
-	public virtual void Main()
-	{
+		base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y + Time.deltaTime * 0.1f, base.transform.position.z);
 	}
 }

@@ -1,8 +1,7 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
+using UnityEngine.SceneManagement;
 
-[Serializable]
 public class HomePrisonerScript : MonoBehaviour
 {
 	public InputManagerScript InputManager;
@@ -41,11 +40,11 @@ public class HomePrisonerScript : MonoBehaviour
 
 	public bool ZoomIn;
 
-	public float Sanity;
+	public float Sanity = 100f;
 
 	public float Timer;
 
-	public int ID;
+	public int ID = 1;
 
 	public AudioClip FirstTorture;
 
@@ -81,29 +80,23 @@ public class HomePrisonerScript : MonoBehaviour
 
 	public int BanterID;
 
-	public HomePrisonerScript()
-	{
-		this.Sanity = 100f;
-		this.ID = 1;
-	}
-
-	public virtual void Start()
+	private void Start()
 	{
 		this.Sanity = PlayerPrefs.GetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Sanity");
-		this.SanityLabel.text = "Sanity: " + this.Sanity + "%";
+		this.SanityLabel.text = "Sanity: " + this.Sanity.ToString() + "%";
 		this.Prisoner.Sanity = this.Sanity;
 		this.Subtitle.text = string.Empty;
-		if (this.Sanity == (float)100)
+		if (this.Sanity == 100f)
 		{
 			this.BanterText = this.FullSanityBanterText;
 			this.Banter = this.FullSanityBanter;
 		}
-		else if (this.Sanity >= (float)50)
+		else if (this.Sanity >= 50f)
 		{
 			this.BanterText = this.HighSanityBanterText;
 			this.Banter = this.HighSanityBanter;
 		}
-		else if (this.Sanity == (float)0)
+		else if (this.Sanity == 0f)
 		{
 			this.BanterText = this.NoSanityBanterText;
 			this.Banter = this.NoSanityBanter;
@@ -115,112 +108,84 @@ public class HomePrisonerScript : MonoBehaviour
 		}
 		if (PlayerPrefs.GetInt("Night") == 0)
 		{
-			float a = 0.5f;
-			Color color = this.OptionLabels[2].color;
-			float num = color.a = a;
-			Color color2 = this.OptionLabels[2].color = color;
+			UILabel uilabel = this.OptionLabels[2];
+			uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, 0.5f);
 			if (PlayerPrefs.GetInt("Late") == 1)
 			{
-				float a2 = 0.5f;
-				Color color3 = this.OptionLabels[1].color;
-				float num2 = color3.a = a2;
-				Color color4 = this.OptionLabels[1].color = color3;
+				UILabel uilabel2 = this.OptionLabels[1];
+				uilabel2.color = new Color(uilabel2.color.r, uilabel2.color.g, uilabel2.color.b, 0.5f);
 			}
 			if (PlayerPrefs.GetInt("Weekday") == 5)
 			{
-				float a3 = 0.5f;
-				Color color5 = this.OptionLabels[3].color;
-				float num3 = color5.a = a3;
-				Color color6 = this.OptionLabels[3].color = color5;
-				float a4 = 0.5f;
-				Color color7 = this.OptionLabels[4].color;
-				float num4 = color7.a = a4;
-				Color color8 = this.OptionLabels[4].color = color7;
+				UILabel uilabel3 = this.OptionLabels[3];
+				uilabel3.color = new Color(uilabel3.color.r, uilabel3.color.g, uilabel3.color.b, 0.5f);
+				UILabel uilabel4 = this.OptionLabels[4];
+				uilabel4.color = new Color(uilabel4.color.r, uilabel4.color.g, uilabel4.color.b, 0.5f);
 			}
 		}
 		else
 		{
-			float a5 = 0.5f;
-			Color color9 = this.OptionLabels[1].color;
-			float num5 = color9.a = a5;
-			Color color10 = this.OptionLabels[1].color = color9;
-			float a6 = 0.5f;
-			Color color11 = this.OptionLabels[3].color;
-			float num6 = color11.a = a6;
-			Color color12 = this.OptionLabels[3].color = color11;
-			float a7 = 0.5f;
-			Color color13 = this.OptionLabels[4].color;
-			float num7 = color13.a = a7;
-			Color color14 = this.OptionLabels[4].color = color13;
+			UILabel uilabel5 = this.OptionLabels[1];
+			uilabel5.color = new Color(uilabel5.color.r, uilabel5.color.g, uilabel5.color.b, 0.5f);
+			UILabel uilabel6 = this.OptionLabels[3];
+			uilabel6.color = new Color(uilabel6.color.r, uilabel6.color.g, uilabel6.color.b, 0.5f);
+			UILabel uilabel7 = this.OptionLabels[4];
+			uilabel7.color = new Color(uilabel7.color.r, uilabel7.color.g, uilabel7.color.b, 0.5f);
 		}
-		if (this.Sanity > (float)0)
+		if (this.Sanity > 0f)
 		{
 			this.OptionLabels[5].text = "?????";
-			float a8 = 0.5f;
-			Color color15 = this.OptionLabels[5].color;
-			float num8 = color15.a = a8;
-			Color color16 = this.OptionLabels[5].color = color15;
+			UILabel uilabel8 = this.OptionLabels[5];
+			uilabel8.color = new Color(uilabel8.color.r, uilabel8.color.g, uilabel8.color.b, 0.5f);
 		}
 		else
 		{
 			this.OptionLabels[5].text = "Bring to School";
-			float a9 = 0.5f;
-			Color color17 = this.OptionLabels[1].color;
-			float num9 = color17.a = a9;
-			Color color18 = this.OptionLabels[1].color = color17;
-			float a10 = 0.5f;
-			Color color19 = this.OptionLabels[2].color;
-			float num10 = color19.a = a10;
-			Color color20 = this.OptionLabels[2].color = color19;
-			float a11 = 0.5f;
-			Color color21 = this.OptionLabels[3].color;
-			float num11 = color21.a = a11;
-			Color color22 = this.OptionLabels[3].color = color21;
-			float a12 = 0.5f;
-			Color color23 = this.OptionLabels[4].color;
-			float num12 = color23.a = a12;
-			Color color24 = this.OptionLabels[4].color = color23;
-			int num13 = 1;
-			Color color25 = this.OptionLabels[5].color;
-			float num14 = color25.a = (float)num13;
-			Color color26 = this.OptionLabels[5].color = color25;
+			UILabel uilabel9 = this.OptionLabels[1];
+			uilabel9.color = new Color(uilabel9.color.r, uilabel9.color.g, uilabel9.color.b, 0.5f);
+			UILabel uilabel10 = this.OptionLabels[2];
+			uilabel10.color = new Color(uilabel10.color.r, uilabel10.color.g, uilabel10.color.b, 0.5f);
+			UILabel uilabel11 = this.OptionLabels[3];
+			uilabel11.color = new Color(uilabel11.color.r, uilabel11.color.g, uilabel11.color.b, 0.5f);
+			UILabel uilabel12 = this.OptionLabels[4];
+			uilabel12.color = new Color(uilabel12.color.r, uilabel12.color.g, uilabel12.color.b, 0.5f);
+			UILabel uilabel13 = this.OptionLabels[5];
+			uilabel13.color = new Color(uilabel13.color.r, uilabel13.color.g, uilabel13.color.b, 1f);
 			if (PlayerPrefs.GetInt("Night") == 1)
 			{
-				float a13 = 0.5f;
-				Color color27 = this.OptionLabels[5].color;
-				float num15 = color27.a = a13;
-				Color color28 = this.OptionLabels[5].color = color27;
+				uilabel13.color = new Color(uilabel13.color.r, uilabel13.color.g, uilabel13.color.b, 0.5f);
 			}
 		}
 		this.UpdateDesc();
 		if (PlayerPrefs.GetInt("KidnapVictim") == 0)
 		{
-			this.enabled = false;
+			base.enabled = false;
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (Vector3.Distance(this.HomeYandere.transform.position, this.Prisoner.transform.position) < (float)2 && this.HomeYandere.CanMove)
+		AudioSource component = base.GetComponent<AudioSource>();
+		if (Vector3.Distance(this.HomeYandere.transform.position, this.Prisoner.transform.position) < 2f && this.HomeYandere.CanMove)
 		{
 			this.BanterTimer += Time.deltaTime;
-			if (this.BanterTimer > (float)5 && !this.Bantering)
+			if (this.BanterTimer > 5f && !this.Bantering)
 			{
 				this.Bantering = true;
-				if (this.BanterID < Extensions.get_length(this.Banter) - 1)
+				if (this.BanterID < this.Banter.Length - 1)
 				{
 					this.BanterID++;
 					this.Subtitle.text = this.BanterText[this.BanterID];
-					this.audio.clip = this.Banter[this.BanterID];
-					this.audio.Play();
+					component.clip = this.Banter[this.BanterID];
+					component.Play();
 				}
 			}
 		}
-		if (this.Bantering && !this.audio.isPlaying)
+		if (this.Bantering && !component.isPlaying)
 		{
 			this.Subtitle.text = string.Empty;
 			this.Bantering = false;
-			this.BanterTimer = (float)0;
+			this.BanterTimer = 0f;
 		}
 		if (!this.HomeYandere.CanMove && (this.HomeCamera.Destination == this.HomeCamera.Destinations[10] || this.HomeCamera.Destination == this.TortureDestination))
 		{
@@ -231,10 +196,7 @@ public class HomePrisonerScript : MonoBehaviour
 				{
 					this.ID = 1;
 				}
-				int num = 465 - this.ID * 40;
-				Vector3 localPosition = this.Highlight.localPosition;
-				float num2 = localPosition.y = (float)num;
-				Vector3 vector = this.Highlight.localPosition = localPosition;
+				this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 465f - (float)this.ID * 40f, this.Highlight.localPosition.z);
 				this.UpdateDesc();
 			}
 			if (this.InputManager.TappedUp)
@@ -244,59 +206,46 @@ public class HomePrisonerScript : MonoBehaviour
 				{
 					this.ID = 5;
 				}
-				int num3 = 465 - this.ID * 40;
-				Vector3 localPosition2 = this.Highlight.localPosition;
-				float num4 = localPosition2.y = (float)num3;
-				Vector3 vector2 = this.Highlight.localPosition = localPosition2;
+				this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 465f - (float)this.ID * 40f, this.Highlight.localPosition.z);
 				this.UpdateDesc();
 			}
 			if (Input.GetKeyDown("x"))
 			{
-				this.Sanity -= (float)10;
-				if (this.Sanity < (float)0)
+				this.Sanity -= 10f;
+				if (this.Sanity < 0f)
 				{
-					this.Sanity = (float)100;
+					this.Sanity = 100f;
 				}
 				PlayerPrefs.SetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Sanity", this.Sanity);
-				this.SanityLabel.text = "Sanity: " + this.Sanity + "%";
+				this.SanityLabel.text = "Sanity: " + this.Sanity.ToString("f0") + "%";
 				this.Prisoner.UpdateSanity();
 			}
 			if (!this.ZoomIn)
 			{
-				if (Input.GetButtonDown("A") && this.OptionLabels[this.ID].color.a == (float)1)
+				if (Input.GetButtonDown("A") && this.OptionLabels[this.ID].color.a == 1f)
 				{
-					if (this.Sanity > (float)0)
+					if (this.Sanity > 0f)
 					{
-						if (this.Sanity == (float)100)
+						if (this.Sanity == 100f)
 						{
-							this.Prisoner.Character.animation.CrossFade("f02_kidnapTorture_01");
+							this.Prisoner.Character.GetComponent<Animation>().CrossFade("f02_kidnapTorture_01");
 						}
-						else if (this.Sanity >= (float)50)
+						else if (this.Sanity >= 50f)
 						{
-							this.Prisoner.Character.animation.CrossFade("f02_kidnapTorture_02");
+							this.Prisoner.Character.GetComponent<Animation>().CrossFade("f02_kidnapTorture_02");
 						}
 						else
 						{
-							this.Prisoner.Character.animation.CrossFade("f02_kidnapSurrender_00");
-							int num5 = 1;
-							Vector3 localPosition3 = this.TortureDestination.localPosition;
-							float num6 = localPosition3.z = (float)num5;
-							Vector3 vector3 = this.TortureDestination.localPosition = localPosition3;
-							int num7 = 0;
-							Vector3 localPosition4 = this.TortureDestination.localPosition;
-							float num8 = localPosition4.y = (float)num7;
-							Vector3 vector4 = this.TortureDestination.localPosition = localPosition4;
-							float y = 1.1f;
-							Vector3 localPosition5 = this.TortureTarget.localPosition;
-							float num9 = localPosition5.y = y;
-							Vector3 vector5 = this.TortureTarget.localPosition = localPosition5;
+							this.Prisoner.Character.GetComponent<Animation>().CrossFade("f02_kidnapSurrender_00");
+							this.TortureDestination.localPosition = new Vector3(this.TortureDestination.localPosition.x, 0f, 1f);
+							this.TortureTarget.localPosition = new Vector3(this.TortureTarget.localPosition.x, 1.1f, this.TortureTarget.localPosition.z);
 						}
 						this.HomeCamera.Destination = this.TortureDestination;
 						this.HomeCamera.Target = this.TortureTarget;
 						this.HomeCamera.Torturing = true;
 						this.Prisoner.Tortured = true;
-						this.Prisoner.RightEyeRotOrigin.x = (float)-6;
-						this.Prisoner.LeftEyeRotOrigin.x = (float)6;
+						this.Prisoner.RightEyeRotOrigin.x = -6f;
+						this.Prisoner.LeftEyeRotOrigin.x = 6f;
 						this.ZoomIn = true;
 					}
 					else
@@ -306,7 +255,7 @@ public class HomePrisonerScript : MonoBehaviour
 					this.HomeWindow.Show = false;
 					this.HomeCamera.PromptBar.ClearButtons();
 					this.HomeCamera.PromptBar.Show = false;
-					this.Jukebox.volume = this.Jukebox.volume - 0.5f;
+					this.Jukebox.volume -= 0.5f;
 				}
 				if (Input.GetButtonDown("B"))
 				{
@@ -315,95 +264,89 @@ public class HomePrisonerScript : MonoBehaviour
 					this.HomeCamera.PromptBar.ClearButtons();
 					this.HomeCamera.PromptBar.Show = false;
 					this.HomeYandere.CanMove = true;
-					this.HomeYandere.active = true;
+					this.HomeYandere.gameObject.SetActive(true);
 					this.HomeWindow.Show = false;
 				}
 			}
 			else
 			{
-				this.TortureDestination.Translate(Vector3.forward * Time.deltaTime * 0.02f);
-				this.Jukebox.volume = this.Jukebox.volume - Time.deltaTime * 0.05f;
+				this.TortureDestination.Translate(Vector3.forward * (Time.deltaTime * 0.02f));
+				this.Jukebox.volume -= Time.deltaTime * 0.05f;
 				this.Timer += Time.deltaTime;
-				if (this.Sanity >= (float)50)
+				if (this.Sanity >= 50f)
 				{
-					float y2 = this.TortureDestination.localPosition.y + Time.deltaTime * 0.05f;
-					Vector3 localPosition6 = this.TortureDestination.localPosition;
-					float num10 = localPosition6.y = y2;
-					Vector3 vector6 = this.TortureDestination.localPosition = localPosition6;
-					if (this.Sanity == (float)100)
+					this.TortureDestination.localPosition = new Vector3(this.TortureDestination.localPosition.x, this.TortureDestination.localPosition.y + Time.deltaTime * 0.05f, this.TortureDestination.localPosition.z);
+					if (this.Sanity == 100f)
 					{
-						if (this.Timer > (float)2 && !this.PlayedAudio)
+						if (this.Timer > 2f && !this.PlayedAudio)
 						{
-							this.audio.clip = this.FirstTorture;
+							component.clip = this.FirstTorture;
 							this.PlayedAudio = true;
-							this.audio.Play();
+							component.Play();
 						}
 					}
 					else if (this.Timer > 1.5f && !this.PlayedAudio)
 					{
-						this.audio.clip = this.Over50Torture;
+						component.clip = this.Over50Torture;
 						this.PlayedAudio = true;
-						this.audio.Play();
+						component.Play();
 					}
 				}
-				else if (this.Timer > (float)5 && !this.PlayedAudio)
+				else if (this.Timer > 5f && !this.PlayedAudio)
 				{
-					this.audio.clip = this.Under50Torture;
+					component.clip = this.Under50Torture;
 					this.PlayedAudio = true;
-					this.audio.Play();
+					component.Play();
 				}
-				if (this.Timer > (float)10 && this.Darkness.Sprite.color.a != (float)1)
+				if (this.Timer > 10f && this.Darkness.Sprite.color.a != 1f)
 				{
 					this.Darkness.enabled = false;
-					int num11 = 1;
-					Color color = this.Darkness.Sprite.color;
-					float num12 = color.a = (float)num11;
-					Color color2 = this.Darkness.Sprite.color = color;
-					this.audio.clip = this.TortureHit;
-					this.audio.Play();
+					this.Darkness.Sprite.color = new Color(this.Darkness.Sprite.color.r, this.Darkness.Sprite.color.g, this.Darkness.Sprite.color.b, 1f);
+					component.clip = this.TortureHit;
+					component.Play();
 				}
-				if (this.Timer > (float)15)
+				if (this.Timer > 15f)
 				{
 					if (this.ID == 1)
 					{
-						Time.timeScale = (float)1;
-						this.NowLoading.active = true;
+						Time.timeScale = 1f;
+						this.NowLoading.SetActive(true);
 						PlayerPrefs.SetInt("Late", 1);
-						Application.LoadLevel("SchoolScene");
-						PlayerPrefs.SetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Sanity", this.Sanity - 2.5f);
+						SceneManager.LoadScene("SchoolScene");
+						PlayerPrefs.SetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim").ToString() + "_Sanity", this.Sanity - 2.5f);
 					}
 					else if (this.ID == 2)
 					{
-						Application.LoadLevel("CalendarScene");
-						PlayerPrefs.SetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Sanity", this.Sanity - (float)10);
-						PlayerPrefs.SetFloat("Reputation", PlayerPrefs.GetFloat("Reputation") - (float)20);
+						SceneManager.LoadScene("CalendarScene");
+						PlayerPrefs.SetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim").ToString() + "_Sanity", this.Sanity - 10f);
+						PlayerPrefs.SetFloat("Reputation", PlayerPrefs.GetFloat("Reputation") - 20f);
 					}
 					else if (this.ID == 3)
 					{
 						PlayerPrefs.SetInt("Night", 1);
-						Application.LoadLevel("HomeScene");
-						PlayerPrefs.SetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Sanity", this.Sanity - (float)30);
-						PlayerPrefs.SetFloat("Reputation", PlayerPrefs.GetFloat("Reputation") - (float)20);
+						SceneManager.LoadScene("HomeScene");
+						PlayerPrefs.SetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim").ToString() + "_Sanity", this.Sanity - 30f);
+						PlayerPrefs.SetFloat("Reputation", PlayerPrefs.GetFloat("Reputation") - 20f);
 					}
 					else if (this.ID == 4)
 					{
-						Application.LoadLevel("CalendarScene");
-						PlayerPrefs.SetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Sanity", this.Sanity - (float)45);
-						PlayerPrefs.SetFloat("Reputation", PlayerPrefs.GetFloat("Reputation") - (float)20);
+						SceneManager.LoadScene("CalendarScene");
+						PlayerPrefs.SetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim").ToString() + "_Sanity", this.Sanity - 45f);
+						PlayerPrefs.SetFloat("Reputation", PlayerPrefs.GetFloat("Reputation") - 20f);
 					}
-					if (PlayerPrefs.GetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Sanity") < (float)0)
+					if (PlayerPrefs.GetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim").ToString() + "_Sanity") < 0f)
 					{
-						PlayerPrefs.SetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Sanity", (float)0);
+						PlayerPrefs.SetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim").ToString() + "_Sanity", 0f);
 					}
 				}
 			}
 		}
 	}
 
-	public virtual void UpdateDesc()
+	public void UpdateDesc()
 	{
 		this.HomeCamera.PromptBar.Label[0].text = "Accept";
-		this.DescLabel.text = string.Empty + this.Descriptions[this.ID];
+		this.DescLabel.text = this.Descriptions[this.ID];
 		if (PlayerPrefs.GetInt("Night") == 0)
 		{
 			if (PlayerPrefs.GetInt("Late") == 1 && this.ID == 1)
@@ -429,7 +372,7 @@ public class HomePrisonerScript : MonoBehaviour
 		}
 		if (this.ID == 5)
 		{
-			if (this.Sanity > (float)0)
+			if (this.Sanity > 0f)
 			{
 				this.DescLabel.text = "This option is unavailable until your prisoner's Sanity has reached zero.";
 			}
@@ -440,9 +383,5 @@ public class HomePrisonerScript : MonoBehaviour
 			}
 		}
 		this.HomeCamera.PromptBar.UpdateButtons();
-	}
-
-	public virtual void Main()
-	{
 	}
 }

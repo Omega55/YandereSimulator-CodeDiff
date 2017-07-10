@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class LowPolyStudentScript : MonoBehaviour
 {
 	public StudentScript Student;
@@ -12,11 +11,12 @@ public class LowPolyStudentScript : MonoBehaviour
 
 	public Renderer MyMesh;
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Student.StudentManager.LowDetailThreshold > 0)
+		if ((float)this.Student.StudentManager.LowDetailThreshold > 0f)
 		{
-			if (Vector3.Distance(this.Student.Yandere.MainCamera.transform.position, this.transform.position) > (float)this.Student.StudentManager.LowDetailThreshold)
+			float num = Vector3.Distance(this.Student.Yandere.MainCamera.transform.position, base.transform.position);
+			if (num > (float)this.Student.StudentManager.LowDetailThreshold)
 			{
 				if (!this.MyMesh.enabled)
 				{
@@ -35,9 +35,5 @@ public class LowPolyStudentScript : MonoBehaviour
 			this.CharacterMesh.enabled = true;
 			this.MyMesh.enabled = false;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

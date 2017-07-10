@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class FavorMenuScript : MonoBehaviour
 {
 	public InputManagerScript InputManager;
@@ -18,14 +17,9 @@ public class FavorMenuScript : MonoBehaviour
 
 	public Transform Highlight;
 
-	public int ID;
+	public int ID = 1;
 
-	public FavorMenuScript()
-	{
-		this.ID = 1;
-	}
-
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.InputManager.TappedRight)
 		{
@@ -49,24 +43,24 @@ public class FavorMenuScript : MonoBehaviour
 				this.SchemesMenu.UpdatePantyCount();
 				this.SchemesMenu.UpdateSchemeList();
 				this.SchemesMenu.UpdateSchemeInfo();
-				this.SchemesMenu.gameObject.active = true;
-				this.active = false;
+				this.SchemesMenu.gameObject.SetActive(true);
+				base.gameObject.SetActive(false);
 			}
 			else if (this.ID == 2)
 			{
 				this.ServicesMenu.UpdatePantyCount();
 				this.ServicesMenu.UpdateList();
 				this.ServicesMenu.UpdateDesc();
-				this.ServicesMenu.gameObject.active = true;
-				this.active = false;
+				this.ServicesMenu.gameObject.SetActive(true);
+				base.gameObject.SetActive(false);
 			}
 			else if (this.ID == 3)
 			{
 				this.DropsMenu.UpdatePantyCount();
 				this.DropsMenu.UpdateList();
 				this.DropsMenu.UpdateDesc();
-				this.DropsMenu.gameObject.active = true;
-				this.active = false;
+				this.DropsMenu.gameObject.SetActive(true);
+				base.gameObject.SetActive(false);
 			}
 		}
 		if (Input.GetButtonDown("B"))
@@ -76,14 +70,14 @@ public class FavorMenuScript : MonoBehaviour
 			this.PromptBar.Label[1].text = "Exit";
 			this.PromptBar.Label[4].text = "Choose";
 			this.PromptBar.UpdateButtons();
-			this.PauseScreen.MainMenu.active = true;
+			this.PauseScreen.MainMenu.SetActive(true);
 			this.PauseScreen.Sideways = false;
 			this.PauseScreen.PressedB = true;
-			this.active = false;
+			base.gameObject.SetActive(false);
 		}
 	}
 
-	public virtual void UpdateHighlight()
+	private void UpdateHighlight()
 	{
 		if (this.ID > 3)
 		{
@@ -93,13 +87,6 @@ public class FavorMenuScript : MonoBehaviour
 		{
 			this.ID = 3;
 		}
-		int num = -500 + 250 * this.ID;
-		Vector3 localPosition = this.Highlight.transform.localPosition;
-		float num2 = localPosition.x = (float)num;
-		Vector3 vector = this.Highlight.transform.localPosition = localPosition;
-	}
-
-	public virtual void Main()
-	{
+		this.Highlight.transform.localPosition = new Vector3(-500f + 250f * (float)this.ID, this.Highlight.transform.localPosition.y, this.Highlight.transform.localPosition.z);
 	}
 }

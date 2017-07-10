@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class HomeInternetScript : MonoBehaviour
 {
 	public StudentInfoMenuScript StudentInfoMenu;
@@ -81,11 +79,11 @@ public class HomeInternetScript : MonoBehaviour
 
 	public bool Posted;
 
-	public int MenuSelected;
+	public int MenuSelected = 1;
 
-	public int Selected;
+	public int Selected = 1;
 
-	public int ID;
+	public int ID = 1;
 
 	public int Location;
 
@@ -95,110 +93,77 @@ public class HomeInternetScript : MonoBehaviour
 
 	public float Timer;
 
-	public HomeInternetScript()
-	{
-		this.MenuSelected = 1;
-		this.Selected = 1;
-		this.ID = 1;
-	}
+	public UITexture StudentPost1Portrait;
 
-	public virtual void Start()
+	public UITexture StudentPost2Portrait;
+
+	public UITexture LamePostPortrait;
+
+	public Texture CurrentPortrait;
+
+	public UITexture[] Portraits;
+
+	private void Start()
 	{
-		int num = -180;
-		Vector3 localPosition = this.StudentPost1.localPosition;
-		float num2 = localPosition.y = (float)num;
-		Vector3 vector = this.StudentPost1.localPosition = localPosition;
-		int num3 = -365;
-		Vector3 localPosition2 = this.StudentPost2.localPosition;
-		float num4 = localPosition2.y = (float)num3;
-		Vector3 vector2 = this.StudentPost2.localPosition = localPosition2;
-		int num5 = -88;
-		Vector3 localPosition3 = this.YandereReply.localPosition;
-		float num6 = localPosition3.y = (float)num5;
-		Vector3 vector3 = this.YandereReply.localPosition = localPosition3;
-		int num7 = -2;
-		Vector3 localPosition4 = this.YanderePost.localPosition;
-		float num8 = localPosition4.y = (float)num7;
-		Vector3 vector4 = this.YanderePost.localPosition = localPosition4;
-		int num9 = -40;
-		Vector3 localPosition5 = this.StudentReplies[1].localPosition;
-		float num10 = localPosition5.y = (float)num9;
-		Vector3 vector5 = this.StudentReplies[1].localPosition = localPosition5;
-		int num11 = -40;
-		Vector3 localPosition6 = this.StudentReplies[2].localPosition;
-		float num12 = localPosition6.y = (float)num11;
-		Vector3 vector6 = this.StudentReplies[2].localPosition = localPosition6;
-		int num13 = -40;
-		Vector3 localPosition7 = this.StudentReplies[3].localPosition;
-		float num14 = localPosition7.y = (float)num13;
-		Vector3 vector7 = this.StudentReplies[3].localPosition = localPosition7;
-		int num15 = -40;
-		Vector3 localPosition8 = this.StudentReplies[4].localPosition;
-		float num16 = localPosition8.y = (float)num15;
-		Vector3 vector8 = this.StudentReplies[4].localPosition = localPosition8;
-		int num17 = -40;
-		Vector3 localPosition9 = this.StudentReplies[5].localPosition;
-		float num18 = localPosition9.y = (float)num17;
-		Vector3 vector9 = this.StudentReplies[5].localPosition = localPosition9;
-		int num19 = -40;
-		Vector3 localPosition10 = this.LameReply.localPosition;
-		float num20 = localPosition10.y = (float)num19;
-		Vector3 vector10 = this.LameReply.localPosition = localPosition10;
+		this.StudentPost1.localPosition = new Vector3(this.StudentPost1.localPosition.x, -180f, this.StudentPost1.localPosition.z);
+		this.StudentPost2.localPosition = new Vector3(this.StudentPost2.localPosition.x, -365f, this.StudentPost2.localPosition.z);
+		this.YandereReply.localPosition = new Vector3(this.YandereReply.localPosition.x, -88f, this.YandereReply.localPosition.z);
+		this.YanderePost.localPosition = new Vector3(this.YanderePost.localPosition.x, -2f, this.YanderePost.localPosition.z);
+		for (int i = 1; i < 6; i++)
+		{
+			Transform transform = this.StudentReplies[i];
+			transform.localPosition = new Vector3(transform.localPosition.x, -40f, transform.localPosition.z);
+		}
+		this.LameReply.localPosition = new Vector3(this.LameReply.localPosition.x, -40f, this.LameReply.localPosition.z);
 		this.Highlights[1].enabled = false;
 		this.Highlights[2].enabled = false;
 		this.Highlights[3].enabled = false;
-		this.YanderePost.active = false;
-		this.ChangeLabel.active = false;
-		this.ChangeIcon.active = false;
-		this.PostLabel.active = false;
-		this.PostIcon.active = false;
-		this.NewPostText.active = false;
-		this.BG.active = false;
+		this.YanderePost.gameObject.SetActive(false);
+		this.ChangeLabel.SetActive(false);
+		this.ChangeIcon.SetActive(false);
+		this.PostLabel.SetActive(false);
+		this.PostIcon.SetActive(false);
+		this.NewPostText.SetActive(false);
+		this.BG.SetActive(false);
 		if (PlayerPrefs.GetInt("Event2") == 0 || PlayerPrefs.GetInt("Student_7_Exposed") == 1)
 		{
-			this.WriteLabel.active = false;
-			this.WriteIcon.active = false;
+			this.WriteLabel.SetActive(false);
+			this.WriteIcon.SetActive(false);
+		}
+		this.GetPortrait(1);
+		this.StudentPost1Portrait.mainTexture = this.CurrentPortrait;
+		this.GetPortrait(16);
+		this.StudentPost2Portrait.mainTexture = this.CurrentPortrait;
+		this.GetPortrait(6);
+		this.LamePostPortrait.mainTexture = this.CurrentPortrait;
+		this.ID = 1;
+		while (this.ID < 6)
+		{
+			this.GetPortrait(1 + this.ID);
+			this.Portraits[this.ID].mainTexture = this.CurrentPortrait;
+			this.ID++;
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (!this.HomeYandere.CanMove && !this.PauseScreen.Show)
 		{
-			if (!this.ShowMenu)
-			{
-				this.Menu.localScale = Vector3.Lerp(this.Menu.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-			}
-			else
-			{
-				this.Menu.localScale = Vector3.Lerp(this.Menu.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-			}
+			this.Menu.localScale = Vector3.Lerp(this.Menu.localScale, (!this.ShowMenu) ? Vector3.zero : new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 			if (this.WritingPost)
 			{
-				this.NewPost.transform.localPosition = Vector3.Lerp(this.NewPost.transform.localPosition, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-				this.NewPost.transform.localScale = Vector3.Lerp(this.NewPost.transform.localScale, new Vector3(2.43f, 2.43f, 2.43f), Time.deltaTime * (float)10);
-				for (int i = 1; i < Extensions.get_length(this.Highlights); i++)
+				this.NewPost.transform.localPosition = Vector3.Lerp(this.NewPost.transform.localPosition, Vector3.zero, Time.deltaTime * 10f);
+				this.NewPost.transform.localScale = Vector3.Lerp(this.NewPost.transform.localScale, new Vector3(2.43f, 2.43f, 2.43f), Time.deltaTime * 10f);
+				for (int i = 1; i < this.Highlights.Length; i++)
 				{
-					if (!this.FadeOut)
-					{
-						float a = Mathf.MoveTowards(this.Highlights[i].color.a, (float)1, Time.deltaTime);
-						Color color = this.Highlights[i].color;
-						float num = color.a = a;
-						Color color2 = this.Highlights[i].color = color;
-					}
-					else
-					{
-						float a2 = Mathf.MoveTowards(this.Highlights[i].color.a, (float)0, Time.deltaTime);
-						Color color3 = this.Highlights[i].color;
-						float num2 = color3.a = a2;
-						Color color4 = this.Highlights[i].color = color3;
-					}
+					UISprite uisprite = this.Highlights[i];
+					uisprite.color = new Color(uisprite.color.r, uisprite.color.g, uisprite.color.b, Mathf.MoveTowards(uisprite.color.a, (!this.FadeOut) ? 1f : 0f, Time.deltaTime));
 				}
-				if (this.Highlights[this.Selected].color.a == (float)1)
+				if (this.Highlights[this.Selected].color.a == 1f)
 				{
 					this.FadeOut = true;
 				}
-				else if (this.Highlights[this.Selected].color.a == (float)0)
+				else if (this.Highlights[this.Selected].color.a == 0f)
 				{
 					this.FadeOut = false;
 				}
@@ -231,35 +196,35 @@ public class HomeInternetScript : MonoBehaviour
 			}
 			else
 			{
-				this.NewPost.transform.localPosition = Vector3.Lerp(this.NewPost.transform.localPosition, new Vector3((float)175, (float)-10, (float)0), Time.deltaTime * (float)10);
-				this.NewPost.transform.localScale = Vector3.Lerp(this.NewPost.transform.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+				this.NewPost.transform.localPosition = Vector3.Lerp(this.NewPost.transform.localPosition, new Vector3(175f, -10f, 0f), Time.deltaTime * 10f);
+				this.NewPost.transform.localScale = Vector3.Lerp(this.NewPost.transform.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 			}
 			if (!this.PostSequence)
 			{
-				if (Input.GetButtonDown("A") && this.WriteIcon.active && !this.Posted)
+				if (Input.GetButtonDown("A") && this.WriteIcon.activeInHierarchy && !this.Posted)
 				{
 					if (!this.ShowMenu)
 					{
 						if (!this.WritingPost)
 						{
 							this.AcceptLabel.text = "Select";
-							this.ChangeLabel.active = true;
-							this.ChangeIcon.active = true;
-							this.NewPostText.active = true;
-							this.BG.active = true;
+							this.ChangeLabel.SetActive(true);
+							this.ChangeIcon.SetActive(true);
+							this.NewPostText.SetActive(true);
+							this.BG.SetActive(true);
 							this.WritingPost = true;
 							this.Selected = 1;
 							this.UpdateHighlight();
 						}
 						else if (this.Selected == 1)
 						{
-							this.PauseScreen.MainMenu.active = false;
+							this.PauseScreen.MainMenu.SetActive(false);
 							this.PauseScreen.Panel.enabled = true;
 							this.PauseScreen.Sideways = true;
 							this.PauseScreen.Show = true;
-							this.StudentInfoMenu.gameObject.active = true;
+							this.StudentInfoMenu.gameObject.SetActive(true);
 							this.StudentInfoMenu.CyberBullying = true;
-							this.StartCoroutine_Auto(this.StudentInfoMenu.UpdatePortraits());
+							base.StartCoroutine(this.StudentInfoMenu.UpdatePortraits());
 							this.PromptBar.ClearButtons();
 							this.PromptBar.Label[0].text = "View Info";
 							this.PromptBar.Label[1].text = "Back";
@@ -271,9 +236,9 @@ public class HomeInternetScript : MonoBehaviour
 							this.MenuSelected = 1;
 							this.UpdateMenuHighlight();
 							this.ShowMenu = true;
-							for (int i = 1; i < this.MenuLabels.Length; i++)
+							for (int j = 1; j < this.MenuLabels.Length; j++)
 							{
-								this.MenuLabels[i].text = this.Locations[i];
+								this.MenuLabels[j].text = this.Locations[j];
 							}
 						}
 						else if (this.Selected == 3)
@@ -281,9 +246,9 @@ public class HomeInternetScript : MonoBehaviour
 							this.MenuSelected = 1;
 							this.UpdateMenuHighlight();
 							this.ShowMenu = true;
-							for (int i = 1; i < this.MenuLabels.Length; i++)
+							for (int k = 1; k < this.MenuLabels.Length; k++)
 							{
-								this.MenuLabels[i].text = this.Actions[i];
+								this.MenuLabels[k].text = this.Actions[k];
 							}
 						}
 					}
@@ -292,13 +257,13 @@ public class HomeInternetScript : MonoBehaviour
 						if (this.Selected == 2)
 						{
 							this.Location = this.MenuSelected;
-							this.PostLabels[2].text = string.Empty + this.Locations[this.MenuSelected];
+							this.PostLabels[2].text = this.Locations[this.MenuSelected];
 							this.ShowMenu = false;
 						}
 						else if (this.Selected == 3)
 						{
 							this.Action = this.MenuSelected;
-							this.PostLabels[3].text = string.Empty + this.Actions[this.MenuSelected];
+							this.PostLabels[3].text = this.Actions[this.MenuSelected];
 							this.ShowMenu = false;
 						}
 						this.CheckForCompletion();
@@ -314,15 +279,15 @@ public class HomeInternetScript : MonoBehaviour
 							this.HomeCamera.Target = this.HomeCamera.Targets[0];
 							this.HomeYandere.CanMove = true;
 							this.HomeWindow.Show = false;
-							this.enabled = false;
+							base.enabled = false;
 						}
 						else
 						{
 							this.AcceptLabel.text = "Write";
-							this.ChangeLabel.active = false;
-							this.ChangeIcon.active = false;
-							this.PostLabel.active = false;
-							this.PostIcon.active = false;
+							this.ChangeLabel.SetActive(false);
+							this.ChangeIcon.SetActive(false);
+							this.PostLabel.SetActive(false);
+							this.PostIcon.SetActive(false);
 							this.ExitPost();
 						}
 					}
@@ -331,17 +296,26 @@ public class HomeInternetScript : MonoBehaviour
 						this.ShowMenu = false;
 					}
 				}
-				if (Input.GetButtonDown("X") && this.PostIcon.active)
+				if (Input.GetButtonDown("X") && this.PostIcon.activeInHierarchy)
 				{
-					this.YanderePostLabel.text = "Today, I saw " + this.PostLabels[1].text + " in " + this.PostLabels[2].text + ". She was " + this.PostLabels[3].text + ".";
+					this.YanderePostLabel.text = string.Concat(new string[]
+					{
+						"Today, I saw ",
+						this.PostLabels[1].text,
+						" in ",
+						this.PostLabels[2].text,
+						". She was ",
+						this.PostLabels[3].text,
+						"."
+					});
 					this.ExitPost();
-					this.InternetPrompts.active = false;
-					this.ChangeLabel.active = false;
-					this.ChangeIcon.active = false;
-					this.WriteLabel.active = false;
-					this.WriteIcon.active = false;
-					this.PostLabel.active = false;
-					this.PostIcon.active = false;
+					this.InternetPrompts.SetActive(false);
+					this.ChangeLabel.SetActive(false);
+					this.ChangeIcon.SetActive(false);
+					this.WriteLabel.SetActive(false);
+					this.WriteIcon.SetActive(false);
+					this.PostLabel.SetActive(false);
+					this.PostIcon.SetActive(false);
 					this.PostSequence = true;
 					this.Posted = true;
 					if (this.Student == 7 && this.Location == 7 && this.Action == 9)
@@ -354,188 +328,117 @@ public class HomeInternetScript : MonoBehaviour
 			{
 				if (Input.GetButtonDown("A"))
 				{
-					this.Timer += (float)2;
+					this.Timer += 2f;
 				}
 				this.Timer += Time.deltaTime;
-				if (this.Timer > (float)1 && this.Timer < (float)3)
+				if (this.Timer > 1f && this.Timer < 3f)
 				{
-					this.YanderePost.active = true;
-					float y = Mathf.Lerp(this.YanderePost.transform.localPosition.y, (float)-155, Time.deltaTime * (float)10);
-					Vector3 localPosition = this.YanderePost.transform.localPosition;
-					float num3 = localPosition.y = y;
-					Vector3 vector = this.YanderePost.transform.localPosition = localPosition;
-					float y2 = Mathf.Lerp(this.StudentPost1.transform.localPosition.y, (float)-365, Time.deltaTime * (float)10);
-					Vector3 localPosition2 = this.StudentPost1.transform.localPosition;
-					float num4 = localPosition2.y = y2;
-					Vector3 vector2 = this.StudentPost1.transform.localPosition = localPosition2;
-					float y3 = Mathf.Lerp(this.StudentPost2.transform.localPosition.y, (float)-550, Time.deltaTime * (float)10);
-					Vector3 localPosition3 = this.StudentPost2.transform.localPosition;
-					float num5 = localPosition3.y = y3;
-					Vector3 vector3 = this.StudentPost2.transform.localPosition = localPosition3;
+					this.YanderePost.gameObject.SetActive(true);
+					this.YanderePost.transform.localPosition = new Vector3(this.YanderePost.transform.localPosition.x, Mathf.Lerp(this.YanderePost.transform.localPosition.y, -155f, Time.deltaTime * 10f), this.YanderePost.transform.localPosition.z);
+					this.StudentPost1.transform.localPosition = new Vector3(this.StudentPost1.transform.localPosition.x, Mathf.Lerp(this.StudentPost1.transform.localPosition.y, -365f, Time.deltaTime * 10f), this.StudentPost1.transform.localPosition.z);
+					this.StudentPost2.transform.localPosition = new Vector3(this.StudentPost2.transform.localPosition.x, Mathf.Lerp(this.StudentPost2.transform.localPosition.y, -550f, Time.deltaTime * 10f), this.StudentPost2.transform.localPosition.z);
 				}
 				if (!this.Success)
 				{
-					if (this.Timer > (float)3 && this.Timer < (float)5)
+					if (this.Timer > 3f && this.Timer < 5f)
 					{
-						float y4 = Mathf.Lerp(this.LameReply.transform.localPosition.y, (float)-88, Time.deltaTime * (float)10);
-						Vector3 localPosition4 = this.LameReply.localPosition;
-						float num6 = localPosition4.y = y4;
-						Vector3 vector4 = this.LameReply.localPosition = localPosition4;
-						float y5 = Mathf.Lerp(this.YandereReply.transform.localPosition.y, (float)-137, Time.deltaTime * (float)10);
-						Vector3 localPosition5 = this.YandereReply.localPosition;
-						float num7 = localPosition5.y = y5;
-						Vector3 vector5 = this.YandereReply.localPosition = localPosition5;
-						float y6 = Mathf.Lerp(this.StudentPost1.transform.localPosition.y, (float)-415, Time.deltaTime * (float)10);
-						Vector3 localPosition6 = this.StudentPost1.localPosition;
-						float num8 = localPosition6.y = y6;
-						Vector3 vector6 = this.StudentPost1.localPosition = localPosition6;
+						this.LameReply.localPosition = new Vector3(this.LameReply.localPosition.x, Mathf.Lerp(this.LameReply.transform.localPosition.y, -88f, Time.deltaTime * 10f), this.LameReply.localPosition.z);
+						this.YandereReply.localPosition = new Vector3(this.YandereReply.localPosition.x, Mathf.Lerp(this.YandereReply.transform.localPosition.y, -137f, Time.deltaTime * 10f), this.YandereReply.localPosition.z);
+						this.StudentPost1.localPosition = new Vector3(this.StudentPost1.localPosition.x, Mathf.Lerp(this.StudentPost1.transform.localPosition.y, -415f, Time.deltaTime * 10f), this.StudentPost1.localPosition.z);
 					}
-					if (this.Timer > (float)5)
+					if (this.Timer > 5f)
 					{
-						PlayerPrefs.SetFloat("Reputation", PlayerPrefs.GetFloat("Reputation") - (float)5);
-						this.InternetPrompts.active = true;
+						PlayerPrefs.SetFloat("Reputation", PlayerPrefs.GetFloat("Reputation") - 5f);
+						this.InternetPrompts.SetActive(true);
 						this.PostSequence = false;
 					}
 				}
 				else
 				{
-					if (this.Timer > (float)3 && this.Timer < (float)5)
+					if (this.Timer > 3f && this.Timer < 5f)
 					{
-						float y7 = Mathf.Lerp(this.StudentReplies[1].transform.localPosition.y, (float)-88, Time.deltaTime * (float)10);
-						Vector3 localPosition7 = this.StudentReplies[1].localPosition;
-						float num9 = localPosition7.y = y7;
-						Vector3 vector7 = this.StudentReplies[1].localPosition = localPosition7;
-						float y8 = Mathf.Lerp(this.YandereReply.transform.localPosition.y, (float)-137, Time.deltaTime * (float)10);
-						Vector3 localPosition8 = this.YandereReply.localPosition;
-						float num10 = localPosition8.y = y8;
-						Vector3 vector8 = this.YandereReply.localPosition = localPosition8;
-						float y9 = Mathf.Lerp(this.StudentPost1.transform.localPosition.y, (float)-415, Time.deltaTime * (float)10);
-						Vector3 localPosition9 = this.StudentPost1.localPosition;
-						float num11 = localPosition9.y = y9;
-						Vector3 vector9 = this.StudentPost1.localPosition = localPosition9;
+						Transform transform = this.StudentReplies[1];
+						transform.localPosition = new Vector3(transform.localPosition.x, Mathf.Lerp(transform.transform.localPosition.y, -88f, Time.deltaTime * 10f), transform.localPosition.z);
+						this.YandereReply.localPosition = new Vector3(this.YandereReply.localPosition.x, Mathf.Lerp(this.YandereReply.transform.localPosition.y, -137f, Time.deltaTime * 10f), this.YandereReply.localPosition.z);
+						this.StudentPost1.localPosition = new Vector3(this.StudentPost1.localPosition.x, Mathf.Lerp(this.StudentPost1.transform.localPosition.y, -415f, Time.deltaTime * 10f), this.StudentPost1.localPosition.z);
 					}
-					if (this.Timer > (float)5 && this.Timer < (float)7)
+					if (this.Timer > 5f && this.Timer < 7f)
 					{
-						float y10 = Mathf.Lerp(this.StudentReplies[2].transform.localPosition.y, (float)-88, Time.deltaTime * (float)10);
-						Vector3 localPosition10 = this.StudentReplies[2].localPosition;
-						float num12 = localPosition10.y = y10;
-						Vector3 vector10 = this.StudentReplies[2].localPosition = localPosition10;
-						float y11 = Mathf.Lerp(this.StudentReplies[1].transform.localPosition.y, (float)-136, Time.deltaTime * (float)10);
-						Vector3 localPosition11 = this.StudentReplies[1].localPosition;
-						float num13 = localPosition11.y = y11;
-						Vector3 vector11 = this.StudentReplies[1].localPosition = localPosition11;
-						float y12 = Mathf.Lerp(this.YandereReply.transform.localPosition.y, (float)-185, Time.deltaTime * (float)10);
-						Vector3 localPosition12 = this.YandereReply.localPosition;
-						float num14 = localPosition12.y = y12;
-						Vector3 vector12 = this.YandereReply.localPosition = localPosition12;
-						float y13 = Mathf.Lerp(this.StudentPost1.transform.localPosition.y, (float)-465, Time.deltaTime * (float)10);
-						Vector3 localPosition13 = this.StudentPost1.localPosition;
-						float num15 = localPosition13.y = y13;
-						Vector3 vector13 = this.StudentPost1.localPosition = localPosition13;
+						Transform transform2 = this.StudentReplies[2];
+						transform2.localPosition = new Vector3(transform2.localPosition.x, Mathf.Lerp(transform2.transform.localPosition.y, -88f, Time.deltaTime * 10f), transform2.localPosition.z);
+						Transform transform3 = this.StudentReplies[1];
+						transform3.localPosition = new Vector3(transform3.localPosition.x, Mathf.Lerp(transform3.transform.localPosition.y, -136f, Time.deltaTime * 10f), transform3.localPosition.z);
+						this.YandereReply.localPosition = new Vector3(this.YandereReply.localPosition.x, Mathf.Lerp(this.YandereReply.transform.localPosition.y, -185f, Time.deltaTime * 10f), this.YandereReply.localPosition.z);
+						this.StudentPost1.localPosition = new Vector3(this.StudentPost1.localPosition.x, Mathf.Lerp(this.StudentPost1.transform.localPosition.y, -465f, Time.deltaTime * 10f), this.StudentPost1.localPosition.z);
 					}
-					if (this.Timer > (float)7 && this.Timer < (float)9)
+					if (this.Timer > 7f && this.Timer < 9f)
 					{
-						float y14 = Mathf.Lerp(this.StudentReplies[3].transform.localPosition.y, (float)-88, Time.deltaTime * (float)10);
-						Vector3 localPosition14 = this.StudentReplies[3].localPosition;
-						float num16 = localPosition14.y = y14;
-						Vector3 vector14 = this.StudentReplies[3].localPosition = localPosition14;
-						float y15 = Mathf.Lerp(this.StudentReplies[2].transform.localPosition.y, (float)-136, Time.deltaTime * (float)10);
-						Vector3 localPosition15 = this.StudentReplies[2].localPosition;
-						float num17 = localPosition15.y = y15;
-						Vector3 vector15 = this.StudentReplies[2].localPosition = localPosition15;
-						float y16 = Mathf.Lerp(this.StudentReplies[1].transform.localPosition.y, (float)-184, Time.deltaTime * (float)10);
-						Vector3 localPosition16 = this.StudentReplies[1].localPosition;
-						float num18 = localPosition16.y = y16;
-						Vector3 vector16 = this.StudentReplies[1].localPosition = localPosition16;
-						float y17 = Mathf.Lerp(this.YandereReply.transform.localPosition.y, (float)-233, Time.deltaTime * (float)10);
-						Vector3 localPosition17 = this.YandereReply.localPosition;
-						float num19 = localPosition17.y = y17;
-						Vector3 vector17 = this.YandereReply.localPosition = localPosition17;
-						float y18 = Mathf.Lerp(this.StudentPost1.transform.localPosition.y, (float)-510, Time.deltaTime * (float)10);
-						Vector3 localPosition18 = this.StudentPost1.localPosition;
-						float num20 = localPosition18.y = y18;
-						Vector3 vector18 = this.StudentPost1.localPosition = localPosition18;
+						Transform transform4 = this.StudentReplies[3];
+						transform4.localPosition = new Vector3(transform4.localPosition.x, Mathf.Lerp(transform4.transform.localPosition.y, -88f, Time.deltaTime * 10f), transform4.localPosition.z);
+						Transform transform5 = this.StudentReplies[2];
+						transform5.localPosition = new Vector3(transform5.localPosition.x, Mathf.Lerp(transform5.transform.localPosition.y, -136f, Time.deltaTime * 10f), transform5.localPosition.z);
+						Transform transform6 = this.StudentReplies[1];
+						transform6.localPosition = new Vector3(transform6.localPosition.x, Mathf.Lerp(transform6.transform.localPosition.y, -184f, Time.deltaTime * 10f), transform6.localPosition.z);
+						this.YandereReply.localPosition = new Vector3(this.YandereReply.localPosition.x, Mathf.Lerp(this.YandereReply.transform.localPosition.y, -233f, Time.deltaTime * 10f), this.YandereReply.localPosition.z);
+						this.StudentPost1.localPosition = new Vector3(this.StudentPost1.localPosition.x, Mathf.Lerp(this.StudentPost1.transform.localPosition.y, -510f, Time.deltaTime * 10f), this.StudentPost1.localPosition.z);
 					}
-					if (this.Timer > (float)9 && this.Timer < (float)11)
+					if (this.Timer > 9f && this.Timer < 11f)
 					{
-						float y19 = Mathf.Lerp(this.StudentReplies[4].transform.localPosition.y, (float)-88, Time.deltaTime * (float)10);
-						Vector3 localPosition19 = this.StudentReplies[4].localPosition;
-						float num21 = localPosition19.y = y19;
-						Vector3 vector19 = this.StudentReplies[4].localPosition = localPosition19;
-						float y20 = Mathf.Lerp(this.StudentReplies[3].transform.localPosition.y, (float)-136, Time.deltaTime * (float)10);
-						Vector3 localPosition20 = this.StudentReplies[3].localPosition;
-						float num22 = localPosition20.y = y20;
-						Vector3 vector20 = this.StudentReplies[3].localPosition = localPosition20;
-						float y21 = Mathf.Lerp(this.StudentReplies[2].transform.localPosition.y, (float)-184, Time.deltaTime * (float)10);
-						Vector3 localPosition21 = this.StudentReplies[2].localPosition;
-						float num23 = localPosition21.y = y21;
-						Vector3 vector21 = this.StudentReplies[2].localPosition = localPosition21;
-						float y22 = Mathf.Lerp(this.StudentReplies[1].transform.localPosition.y, (float)-232, Time.deltaTime * (float)10);
-						Vector3 localPosition22 = this.StudentReplies[1].localPosition;
-						float num24 = localPosition22.y = y22;
-						Vector3 vector22 = this.StudentReplies[1].localPosition = localPosition22;
-						float y23 = Mathf.Lerp(this.YandereReply.transform.localPosition.y, (float)-281, Time.deltaTime * (float)10);
-						Vector3 localPosition23 = this.YandereReply.localPosition;
-						float num25 = localPosition23.y = y23;
-						Vector3 vector23 = this.YandereReply.localPosition = localPosition23;
-						float y24 = Mathf.Lerp(this.StudentPost1.transform.localPosition.y, (float)-560, Time.deltaTime * (float)10);
-						Vector3 localPosition24 = this.StudentPost1.localPosition;
-						float num26 = localPosition24.y = y24;
-						Vector3 vector24 = this.StudentPost1.localPosition = localPosition24;
+						Transform transform7 = this.StudentReplies[4];
+						transform7.localPosition = new Vector3(transform7.localPosition.x, Mathf.Lerp(transform7.transform.localPosition.y, -88f, Time.deltaTime * 10f), transform7.localPosition.z);
+						Transform transform8 = this.StudentReplies[3];
+						transform8.localPosition = new Vector3(transform8.localPosition.x, Mathf.Lerp(transform8.transform.localPosition.y, -136f, Time.deltaTime * 10f), transform8.localPosition.z);
+						Transform transform9 = this.StudentReplies[2];
+						transform9.localPosition = new Vector3(transform9.localPosition.x, Mathf.Lerp(transform9.transform.localPosition.y, -184f, Time.deltaTime * 10f), transform9.localPosition.z);
+						Transform transform10 = this.StudentReplies[1];
+						transform10.localPosition = new Vector3(transform10.localPosition.x, Mathf.Lerp(transform10.transform.localPosition.y, -232f, Time.deltaTime * 10f), transform10.localPosition.z);
+						this.YandereReply.localPosition = new Vector3(this.YandereReply.localPosition.x, Mathf.Lerp(this.YandereReply.transform.localPosition.y, -281f, Time.deltaTime * 10f), this.YandereReply.localPosition.z);
+						this.StudentPost1.localPosition = new Vector3(this.StudentPost1.localPosition.x, Mathf.Lerp(this.StudentPost1.transform.localPosition.y, -560f, Time.deltaTime * 10f), this.StudentPost1.localPosition.z);
 					}
-					if (this.Timer > (float)11 && this.Timer < (float)13)
+					if (this.Timer > 11f && this.Timer < 13f)
 					{
-						float y25 = Mathf.Lerp(this.StudentReplies[5].transform.localPosition.y, (float)-88, Time.deltaTime * (float)10);
-						Vector3 localPosition25 = this.StudentReplies[5].localPosition;
-						float num27 = localPosition25.y = y25;
-						Vector3 vector25 = this.StudentReplies[5].localPosition = localPosition25;
-						float y26 = Mathf.Lerp(this.StudentReplies[4].transform.localPosition.y, (float)-136, Time.deltaTime * (float)10);
-						Vector3 localPosition26 = this.StudentReplies[4].localPosition;
-						float num28 = localPosition26.y = y26;
-						Vector3 vector26 = this.StudentReplies[4].localPosition = localPosition26;
-						float y27 = Mathf.Lerp(this.StudentReplies[3].transform.localPosition.y, (float)-184, Time.deltaTime * (float)10);
-						Vector3 localPosition27 = this.StudentReplies[3].localPosition;
-						float num29 = localPosition27.y = y27;
-						Vector3 vector27 = this.StudentReplies[3].localPosition = localPosition27;
-						float y28 = Mathf.Lerp(this.StudentReplies[2].transform.localPosition.y, (float)-232, Time.deltaTime * (float)10);
-						Vector3 localPosition28 = this.StudentReplies[2].localPosition;
-						float num30 = localPosition28.y = y28;
-						Vector3 vector28 = this.StudentReplies[2].localPosition = localPosition28;
-						float y29 = Mathf.Lerp(this.StudentReplies[1].transform.localPosition.y, (float)-280, Time.deltaTime * (float)10);
-						Vector3 localPosition29 = this.StudentReplies[1].localPosition;
-						float num31 = localPosition29.y = y29;
-						Vector3 vector29 = this.StudentReplies[1].localPosition = localPosition29;
-						float y30 = Mathf.Lerp(this.YandereReply.transform.localPosition.y, (float)-329, Time.deltaTime * (float)10);
-						Vector3 localPosition30 = this.YandereReply.localPosition;
-						float num32 = localPosition30.y = y30;
-						Vector3 vector30 = this.YandereReply.localPosition = localPosition30;
+						Transform transform11 = this.StudentReplies[5];
+						transform11.localPosition = new Vector3(transform11.localPosition.x, Mathf.Lerp(transform11.transform.localPosition.y, -88f, Time.deltaTime * 10f), transform11.localPosition.z);
+						Transform transform12 = this.StudentReplies[4];
+						transform12.localPosition = new Vector3(transform12.localPosition.x, Mathf.Lerp(transform12.transform.localPosition.y, -136f, Time.deltaTime * 10f), transform12.localPosition.z);
+						Transform transform13 = this.StudentReplies[3];
+						transform13.localPosition = new Vector3(transform13.localPosition.x, Mathf.Lerp(transform13.transform.localPosition.y, -184f, Time.deltaTime * 10f), transform13.localPosition.z);
+						Transform transform14 = this.StudentReplies[2];
+						transform14.localPosition = new Vector3(transform14.localPosition.x, Mathf.Lerp(transform14.transform.localPosition.y, -232f, Time.deltaTime * 10f), transform14.localPosition.z);
+						Transform transform15 = this.StudentReplies[1];
+						transform15.localPosition = new Vector3(transform15.localPosition.x, Mathf.Lerp(transform15.transform.localPosition.y, -280f, Time.deltaTime * 10f), transform15.localPosition.z);
+						this.YandereReply.localPosition = new Vector3(this.YandereReply.localPosition.x, Mathf.Lerp(this.YandereReply.transform.localPosition.y, -329f, Time.deltaTime * 10f), this.YandereReply.localPosition.z);
 					}
-					if (this.Timer > (float)13)
+					if (this.Timer > 13f)
 					{
 						PlayerPrefs.SetInt("Student_7_Exposed", 1);
 						PlayerPrefs.SetInt("Student_7_Reputation", PlayerPrefs.GetInt("Student_7_Reputation") - 50);
-						this.InternetPrompts.active = true;
+						this.InternetPrompts.SetActive(true);
 						this.PostSequence = false;
 					}
 				}
 			}
 		}
+		if (Input.GetKeyDown("space"))
+		{
+			PlayerPrefs.SetInt("Student_7_Exposed", 0);
+		}
 	}
 
-	public virtual void ExitPost()
+	private void ExitPost()
 	{
 		this.Highlights[1].enabled = false;
 		this.Highlights[2].enabled = false;
 		this.Highlights[3].enabled = false;
-		this.NewPostText.active = false;
-		this.BG.active = false;
+		this.NewPostText.SetActive(false);
+		this.BG.SetActive(false);
 		this.PostLabels[1].text = string.Empty;
 		this.PostLabels[2].text = string.Empty;
 		this.PostLabels[3].text = string.Empty;
 		this.WritingPost = false;
 	}
 
-	public virtual void UpdateHighlight()
+	private void UpdateHighlight()
 	{
 		if (this.Selected > 3)
 		{
@@ -551,7 +454,7 @@ public class HomeInternetScript : MonoBehaviour
 		this.Highlights[this.Selected].enabled = true;
 	}
 
-	public virtual void UpdateMenuHighlight()
+	private void UpdateMenuHighlight()
 	{
 		if (this.MenuSelected > 10)
 		{
@@ -561,22 +464,29 @@ public class HomeInternetScript : MonoBehaviour
 		{
 			this.MenuSelected = 10;
 		}
-		int num = 220 - 40 * this.MenuSelected;
-		Vector3 localPosition = this.MenuHighlight.transform.localPosition;
-		float num2 = localPosition.y = (float)num;
-		Vector3 vector = this.MenuHighlight.transform.localPosition = localPosition;
+		this.MenuHighlight.transform.localPosition = new Vector3(this.MenuHighlight.transform.localPosition.x, 220f - 40f * (float)this.MenuSelected, this.MenuHighlight.transform.localPosition.z);
 	}
 
-	public virtual void CheckForCompletion()
+	private void CheckForCompletion()
 	{
-		if (this.PostLabels[1].text != string.Empty && this.PostLabels[2].text != string.Empty && this.PostLabels[3].text != string.Empty)
+		if (!this.PostLabels[1].text.Equals(string.Empty) && !this.PostLabels[2].text.Equals(string.Empty) && !this.PostLabels[3].text.Equals(string.Empty))
 		{
-			this.PostLabel.active = true;
-			this.PostIcon.active = true;
+			this.PostLabel.SetActive(true);
+			this.PostIcon.SetActive(true);
 		}
 	}
 
-	public virtual void Main()
+	private void GetPortrait(int ID)
 	{
+		string url = string.Concat(new string[]
+		{
+			"file:///",
+			Application.streamingAssetsPath,
+			"/Portraits/Student_",
+			ID.ToString(),
+			".png"
+		});
+		WWW www = new WWW(url);
+		this.CurrentPortrait = www.texture;
 	}
 }

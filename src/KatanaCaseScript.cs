@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class KatanaCaseScript : MonoBehaviour
 {
 	public PromptScript CasePrompt;
@@ -16,20 +15,20 @@ public class KatanaCaseScript : MonoBehaviour
 
 	public bool Open;
 
-	public virtual void Start()
+	private void Start()
 	{
 		this.CasePrompt.enabled = false;
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Key.active && this.KeyPrompt.Circle[0].fillAmount == (float)0)
+		if (this.Key.activeInHierarchy && this.KeyPrompt.Circle[0].fillAmount == 0f)
 		{
 			this.KeyPrompt.Yandere.Inventory.CaseKey = true;
 			this.CasePrompt.enabled = true;
-			this.Key.active = false;
+			this.Key.SetActive(false);
 		}
-		if (this.CasePrompt.Circle[0].fillAmount == (float)0)
+		if (this.CasePrompt.Circle[0].fillAmount == 0f)
 		{
 			this.KeyPrompt.Yandere.Inventory.CaseKey = false;
 			this.Open = true;
@@ -38,19 +37,12 @@ public class KatanaCaseScript : MonoBehaviour
 		}
 		if (this.Open)
 		{
-			this.Rotation = Mathf.Lerp(this.Rotation, (float)-180, Time.deltaTime * (float)10);
-			float rotation = this.Rotation;
-			Vector3 eulerAngles = this.Door.eulerAngles;
-			float num = eulerAngles.z = rotation;
-			Vector3 vector = this.Door.eulerAngles = eulerAngles;
+			this.Rotation = Mathf.Lerp(this.Rotation, -180f, Time.deltaTime * 10f);
+			this.Door.eulerAngles = new Vector3(this.Door.eulerAngles.x, this.Door.eulerAngles.y, this.Rotation);
 			if (this.Rotation < -179.9f)
 			{
-				this.enabled = false;
+				base.enabled = false;
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

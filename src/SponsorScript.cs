@@ -1,8 +1,7 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
+using UnityEngine.SceneManagement;
 
-[Serializable]
 public class SponsorScript : MonoBehaviour
 {
 	public GameObject[] Set;
@@ -13,66 +12,47 @@ public class SponsorScript : MonoBehaviour
 
 	public int ID;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.Set[1].active = true;
-		this.Set[2].active = false;
-		int num = 1;
-		Color color = this.Darkness.color;
-		float num2 = color.a = (float)num;
-		Color color2 = this.Darkness.color = color;
-		this.audio.Play();
+		this.Set[1].SetActive(true);
+		this.Set[2].SetActive(false);
+		this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 1f);
+		base.GetComponent<AudioSource>().Play();
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		this.Timer += Time.deltaTime * 1.33333f;
-		if (this.Timer < (float)6)
+		this.Timer += Time.deltaTime * 1.33333337f;
+		if (this.Timer < 6f)
 		{
-			float a = this.Darkness.color.a - Time.deltaTime * 1.33333f;
-			Color color = this.Darkness.color;
-			float num = color.a = a;
-			Color color2 = this.Darkness.color = color;
-			if (this.Darkness.color.a < (float)0)
+			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a - Time.deltaTime * 1.33333337f);
+			if (this.Darkness.color.a < 0f)
 			{
-				int num2 = 0;
-				Color color3 = this.Darkness.color;
-				float num3 = color3.a = (float)num2;
-				Color color4 = this.Darkness.color = color3;
+				this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 0f);
 				if (Input.anyKeyDown)
 				{
-					this.Timer = (float)6;
+					this.Timer = 6f;
 				}
 			}
 		}
 		else
 		{
-			float a2 = this.Darkness.color.a + Time.deltaTime * 1.33333f;
-			Color color5 = this.Darkness.color;
-			float num4 = color5.a = a2;
-			Color color6 = this.Darkness.color = color5;
-			if (this.Darkness.color.a >= (float)1)
+			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a + Time.deltaTime * 1.33333337f);
+			if (this.Darkness.color.a >= 1f)
 			{
-				int num5 = 1;
-				Color color7 = this.Darkness.color;
-				float num6 = color7.a = (float)num5;
-				Color color8 = this.Darkness.color = color7;
-				this.Set[this.ID].active = false;
+				this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 1f);
+				this.Set[this.ID].SetActive(false);
 				this.ID++;
-				if (this.ID < Extensions.get_length(this.Set))
+				if (this.ID < this.Set.Length)
 				{
-					this.Set[this.ID].active = true;
-					this.Timer = (float)0;
+					this.Set[this.ID].SetActive(true);
+					this.Timer = 0f;
 				}
 				else
 				{
-					Application.LoadLevel("TitleScene");
+					SceneManager.LoadScene("TitleScene");
 				}
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

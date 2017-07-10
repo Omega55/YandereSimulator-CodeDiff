@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class RummageSpotScript : MonoBehaviour
 {
 	public GameObject AlarmDisc;
@@ -22,7 +21,7 @@ public class RummageSpotScript : MonoBehaviour
 
 	public int ID;
 
-	public virtual void Start()
+	private void Start()
 	{
 		if (this.ID == 1)
 		{
@@ -30,7 +29,7 @@ public class RummageSpotScript : MonoBehaviour
 			{
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
-				this.active = false;
+				base.gameObject.SetActive(false);
 			}
 			else
 			{
@@ -43,44 +42,38 @@ public class RummageSpotScript : MonoBehaviour
 				{
 					this.Prompt.Hide();
 					this.Prompt.enabled = false;
-					this.active = false;
+					base.gameObject.SetActive(false);
 				}
 			}
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Prompt.Circle[0].fillAmount == (float)0)
+		AudioSource component = base.GetComponent<AudioSource>();
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			this.Prompt.Circle[0].fillAmount = (float)1;
+			this.Prompt.Circle[0].fillAmount = 1f;
 			this.Yandere.CharacterAnimation.CrossFade("f02_rummage_00");
-			this.Yandere.ProgressBar.transform.parent.gameObject.active = true;
+			this.Yandere.ProgressBar.transform.parent.gameObject.SetActive(true);
 			this.Yandere.RummageSpot = this;
 			this.Yandere.Rummaging = true;
 			this.Yandere.CanMove = false;
-			this.audio.Play();
+			component.Play();
 		}
 		if (this.Yandere.Rummaging)
 		{
-			GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.AlarmDisc, this.transform.position, Quaternion.identity);
-			((AlarmDiscScript)gameObject.GetComponent(typeof(AlarmDiscScript))).NoScream = true;
-			int num = 750;
-			Vector3 localScale = gameObject.transform.localScale;
-			float num2 = localScale.x = (float)num;
-			Vector3 vector = gameObject.transform.localScale = localScale;
-			int num3 = 750;
-			Vector3 localScale2 = gameObject.transform.localScale;
-			float num4 = localScale2.z = (float)num3;
-			Vector3 vector2 = gameObject.transform.localScale = localScale2;
+			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position, Quaternion.identity);
+			gameObject.GetComponent<AlarmDiscScript>().NoScream = true;
+			gameObject.transform.localScale = new Vector3(750f, gameObject.transform.localScale.y, 750f);
 		}
 		if (this.Yandere.Noticed)
 		{
-			this.audio.Stop();
+			component.Stop();
 		}
 	}
 
-	public virtual void GetReward()
+	public void GetReward()
 	{
 		if (this.ID == 1)
 		{
@@ -101,13 +94,9 @@ public class RummageSpotScript : MonoBehaviour
 				this.Prompt.Yandere.Inventory.AnswerSheet = false;
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
-				this.active = false;
+				base.gameObject.SetActive(false);
 				this.Phase++;
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

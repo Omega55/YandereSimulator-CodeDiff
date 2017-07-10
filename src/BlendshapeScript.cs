@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class BlendshapeScript : MonoBehaviour
 {
 	public SkinnedMeshRenderer MyMesh;
@@ -10,15 +9,11 @@ public class BlendshapeScript : MonoBehaviour
 
 	public float Blink;
 
-	public virtual void LateUpdate()
+	private void LateUpdate()
 	{
-		this.Happiness += Time.deltaTime * (float)10;
+		this.Happiness += Time.deltaTime * 10f;
 		this.MyMesh.SetBlendShapeWeight(0, this.Happiness);
-		this.Blink += Time.deltaTime * (float)10;
-		this.MyMesh.SetBlendShapeWeight(8, (float)100);
-	}
-
-	public virtual void Main()
-	{
+		this.Blink += Time.deltaTime * 10f;
+		this.MyMesh.SetBlendShapeWeight(8, 100f);
 	}
 }

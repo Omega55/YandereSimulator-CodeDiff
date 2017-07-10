@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class BlowtorchScript : MonoBehaviour
 {
 	public YandereScript Yandere;
@@ -16,29 +15,25 @@ public class BlowtorchScript : MonoBehaviour
 
 	public float Timer;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.Flame.localScale = new Vector3((float)0, (float)0, (float)0);
-		this.enabled = false;
+		this.Flame.localScale = Vector3.zero;
+		base.enabled = false;
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		this.Timer = Mathf.MoveTowards(this.Timer, (float)5, Time.deltaTime);
+		this.Timer = Mathf.MoveTowards(this.Timer, 5f, Time.deltaTime);
 		float num = UnityEngine.Random.Range(0.9f, 1f);
 		this.Flame.localScale = new Vector3(num, num, num);
-		if (this.Timer == (float)5)
+		if (this.Timer == 5f)
 		{
-			this.Flame.localScale = new Vector3((float)0, (float)0, (float)0);
+			this.Flame.localScale = Vector3.zero;
 			this.Yandere.Cauterizing = false;
 			this.Yandere.CanMove = true;
-			this.enabled = false;
-			this.audio.Stop();
-			this.Timer = (float)0;
+			base.enabled = false;
+			base.GetComponent<AudioSource>().Stop();
+			this.Timer = 0f;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

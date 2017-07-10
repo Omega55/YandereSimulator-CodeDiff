@@ -1,33 +1,24 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class GasterBeamScript : MonoBehaviour
 {
-	public float Strength;
+	public float Strength = 1000f;
 
-	public GasterBeamScript()
-	{
-		this.Strength = 1000f;
-	}
-
-	public virtual void OnTriggerEnter(Collider other)
+	private void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.layer == 9)
 		{
-			StudentScript studentScript = (StudentScript)other.gameObject.GetComponent(typeof(StudentScript));
-			if (studentScript != null)
+			StudentScript component = other.gameObject.GetComponent<StudentScript>();
+			if (component != null)
 			{
-				studentScript.Dead = true;
-				studentScript.BecomeRagdoll();
-				studentScript.Ragdoll.AllRigidbodies[0].isKinematic = false;
-				studentScript.Ragdoll.AllRigidbodies[0].AddForce((studentScript.Ragdoll.AllRigidbodies[0].transform.root.position - this.transform.root.position) * this.Strength);
-				studentScript.Ragdoll.AllRigidbodies[0].AddForce(Vector3.up * (float)1000);
+				component.Dead = true;
+				component.BecomeRagdoll();
+				Rigidbody rigidbody = component.Ragdoll.AllRigidbodies[0];
+				rigidbody.isKinematic = false;
+				rigidbody.AddForce((rigidbody.transform.root.position - base.transform.root.position) * this.Strength);
+				rigidbody.AddForce(Vector3.up * 1000f);
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

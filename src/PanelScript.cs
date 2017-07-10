@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class PanelScript : MonoBehaviour
 {
 	public UILabel BuildingLabel;
@@ -10,7 +9,7 @@ public class PanelScript : MonoBehaviour
 
 	public Transform Player;
 
-	public string Floor;
+	public string Floor = string.Empty;
 
 	public float PracticeBuildingZ;
 
@@ -22,14 +21,9 @@ public class PanelScript : MonoBehaviour
 
 	public float Floor3Height;
 
-	public PanelScript()
+	private void Update()
 	{
-		this.Floor = string.Empty;
-	}
-
-	public virtual void Update()
-	{
-		if (this.Player.position.z > this.StairsZ || this.Player.position.z < this.StairsZ * (float)-1)
+		if (this.Player.position.z > this.StairsZ || this.Player.position.z < -this.StairsZ)
 		{
 			this.Floor = "Stairs";
 		}
@@ -58,9 +52,5 @@ public class PanelScript : MonoBehaviour
 			this.BuildingLabel.text = "Classroom Building, " + this.Floor;
 		}
 		this.DoorBox.Show = false;
-	}
-
-	public virtual void Main()
-	{
 	}
 }

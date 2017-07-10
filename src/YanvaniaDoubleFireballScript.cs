@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class YanvaniaDoubleFireballScript : MonoBehaviour
 {
 	public GameObject Lavaball;
@@ -28,58 +27,38 @@ public class YanvaniaDoubleFireballScript : MonoBehaviour
 
 	public float Speed;
 
-	public virtual void Start()
+	private void Start()
 	{
-		UnityEngine.Object.Instantiate(this.LightningEffect, new Vector3(this.transform.position.x, (float)8, (float)0), Quaternion.identity);
-		if (this.Dracula.position.x > this.transform.position.x)
-		{
-			this.Direction = -1;
-		}
-		else
-		{
-			this.Direction = 1;
-		}
+		UnityEngine.Object.Instantiate<GameObject>(this.LightningEffect, new Vector3(base.transform.position.x, 8f, 0f), Quaternion.identity);
+		this.Direction = ((this.Dracula.position.x <= base.transform.position.x) ? 1 : -1);
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Timer > (float)1 && !this.SpawnedFirst)
+		if (this.Timer > 1f && !this.SpawnedFirst)
 		{
-			UnityEngine.Object.Instantiate(this.LightningEffect, new Vector3(this.transform.position.x, (float)7, (float)0), Quaternion.identity);
-			this.FirstLavaball = (GameObject)UnityEngine.Object.Instantiate(this.Lavaball, new Vector3(this.transform.position.x, (float)8, (float)0), Quaternion.identity);
-			this.FirstLavaball.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+			UnityEngine.Object.Instantiate<GameObject>(this.LightningEffect, new Vector3(base.transform.position.x, 7f, 0f), Quaternion.identity);
+			this.FirstLavaball = UnityEngine.Object.Instantiate<GameObject>(this.Lavaball, new Vector3(base.transform.position.x, 8f, 0f), Quaternion.identity);
+			this.FirstLavaball.transform.localScale = Vector3.zero;
 			this.SpawnedFirst = true;
 		}
 		if (this.FirstLavaball != null)
 		{
-			this.FirstLavaball.transform.localScale = Vector3.Lerp(this.FirstLavaball.transform.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-			if (this.FirstPosition == (float)0)
-			{
-				this.FirstPosition += Time.deltaTime;
-			}
-			else
-			{
-				this.FirstPosition += this.FirstPosition * this.Speed;
-			}
-			float x = this.FirstLavaball.transform.position.x + this.FirstPosition * (float)this.Direction;
-			Vector3 position = this.FirstLavaball.transform.position;
-			float num = position.x = x;
-			Vector3 vector = this.FirstLavaball.transform.position = position;
-			float z = this.FirstLavaball.transform.eulerAngles.z - this.FirstPosition * (float)this.Direction * (float)36;
-			Vector3 eulerAngles = this.FirstLavaball.transform.eulerAngles;
-			float num2 = eulerAngles.z = z;
-			Vector3 vector2 = this.FirstLavaball.transform.eulerAngles = eulerAngles;
+			this.FirstLavaball.transform.localScale = Vector3.Lerp(this.FirstLavaball.transform.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+			this.FirstPosition += ((this.FirstPosition != 0f) ? (this.FirstPosition * this.Speed) : Time.deltaTime);
+			this.FirstLavaball.transform.position = new Vector3(this.FirstLavaball.transform.position.x + this.FirstPosition * (float)this.Direction, this.FirstLavaball.transform.position.y, this.FirstLavaball.transform.position.z);
+			this.FirstLavaball.transform.eulerAngles = new Vector3(this.FirstLavaball.transform.eulerAngles.x, this.FirstLavaball.transform.eulerAngles.y, this.FirstLavaball.transform.eulerAngles.z - this.FirstPosition * (float)this.Direction * 36f);
 		}
-		if (this.Timer > (float)2 && !this.SpawnedSecond)
+		if (this.Timer > 2f && !this.SpawnedSecond)
 		{
-			this.SecondLavaball = (GameObject)UnityEngine.Object.Instantiate(this.Lavaball, new Vector3(this.transform.position.x, (float)7, (float)0), Quaternion.identity);
-			this.SecondLavaball.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+			this.SecondLavaball = UnityEngine.Object.Instantiate<GameObject>(this.Lavaball, new Vector3(base.transform.position.x, 7f, 0f), Quaternion.identity);
+			this.SecondLavaball.transform.localScale = Vector3.zero;
 			this.SpawnedSecond = true;
 		}
 		if (this.SecondLavaball != null)
 		{
-			this.SecondLavaball.transform.localScale = Vector3.Lerp(this.SecondLavaball.transform.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-			if (this.SecondPosition == (float)0)
+			this.SecondLavaball.transform.localScale = Vector3.Lerp(this.SecondLavaball.transform.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+			if (this.SecondPosition == 0f)
 			{
 				this.SecondPosition += Time.deltaTime;
 			}
@@ -87,17 +66,11 @@ public class YanvaniaDoubleFireballScript : MonoBehaviour
 			{
 				this.SecondPosition += this.SecondPosition * this.Speed;
 			}
-			float x2 = this.SecondLavaball.transform.position.x + this.SecondPosition * (float)this.Direction;
-			Vector3 position2 = this.SecondLavaball.transform.position;
-			float num3 = position2.x = x2;
-			Vector3 vector3 = this.SecondLavaball.transform.position = position2;
-			float z2 = this.SecondLavaball.transform.eulerAngles.z - this.SecondPosition * (float)this.Direction * (float)36;
-			Vector3 eulerAngles2 = this.SecondLavaball.transform.eulerAngles;
-			float num4 = eulerAngles2.z = z2;
-			Vector3 vector4 = this.SecondLavaball.transform.eulerAngles = eulerAngles2;
+			this.SecondLavaball.transform.position = new Vector3(this.SecondLavaball.transform.position.x + this.SecondPosition * (float)this.Direction, this.SecondLavaball.transform.position.y, this.SecondLavaball.transform.position.z);
+			this.SecondLavaball.transform.eulerAngles = new Vector3(this.SecondLavaball.transform.eulerAngles.x, this.SecondLavaball.transform.eulerAngles.y, this.SecondLavaball.transform.eulerAngles.z - this.SecondPosition * (float)this.Direction * 36f);
 		}
 		this.Timer += Time.deltaTime;
-		if (this.Timer > (float)10)
+		if (this.Timer > 10f)
 		{
 			if (this.FirstLavaball != null)
 			{
@@ -107,11 +80,7 @@ public class YanvaniaDoubleFireballScript : MonoBehaviour
 			{
 				UnityEngine.Object.Destroy(this.SecondLavaball);
 			}
-			UnityEngine.Object.Destroy(this.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

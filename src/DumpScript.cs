@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class DumpScript : MonoBehaviour
 {
 	public SkinnedMeshRenderer MyRenderer;
@@ -10,17 +9,13 @@ public class DumpScript : MonoBehaviour
 
 	public float Timer;
 
-	public virtual void Update()
+	private void Update()
 	{
 		this.Timer += Time.deltaTime;
-		if (this.Timer > (float)5)
+		if (this.Timer > 5f)
 		{
-			this.Incinerator.Corpses = this.Incinerator.Corpses + 1;
-			UnityEngine.Object.Destroy(this.gameObject);
+			this.Incinerator.Corpses++;
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

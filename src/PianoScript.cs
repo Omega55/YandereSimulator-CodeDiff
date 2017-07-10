@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class PianoScript : MonoBehaviour
 {
 	public PromptScript Prompt;
@@ -10,11 +9,11 @@ public class PianoScript : MonoBehaviour
 
 	public int ID;
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Prompt.Circle[0].fillAmount < (float)1 && this.Prompt.Circle[0].fillAmount > (float)0)
+		if (this.Prompt.Circle[0].fillAmount < 1f && this.Prompt.Circle[0].fillAmount > 0f)
 		{
-			this.Prompt.Circle[0].fillAmount = (float)0;
+			this.Prompt.Circle[0].fillAmount = 0f;
 			this.Notes[this.ID].Play();
 			this.ID++;
 			if (this.ID == this.Notes.Length)
@@ -22,9 +21,5 @@ public class PianoScript : MonoBehaviour
 				this.ID = 0;
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

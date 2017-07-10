@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class CounselorScript : MonoBehaviour
 {
 	public CutsceneManagerScript CutsceneManager;
@@ -79,11 +77,11 @@ public class CounselorScript : MonoBehaviour
 
 	public bool Busy;
 
-	public int Selected;
+	public int Selected = 1;
 
-	public int LecturePhase;
+	public int LecturePhase = 1;
 
-	public int LectureID;
+	public int LectureID = 5;
 
 	public float Anger;
 
@@ -101,26 +99,16 @@ public class CounselorScript : MonoBehaviour
 
 	public Transform Head;
 
-	public CounselorScript()
+	private void Start()
 	{
-		this.Selected = 1;
-		this.LecturePhase = 1;
-		this.LectureID = 5;
+		this.CounselorWindow.localScale = Vector3.zero;
+		this.CounselorWindow.gameObject.SetActive(false);
+		this.ExpelProgress.color = new Color(this.ExpelProgress.color.r, this.ExpelProgress.color.g, this.ExpelProgress.color.b, 0f);
 	}
 
-	public virtual void Start()
+	private void Update()
 	{
-		this.CounselorWindow.localScale = new Vector3((float)0, (float)0, (float)0);
-		this.CounselorWindow.gameObject.active = false;
-		int num = 0;
-		Color color = this.ExpelProgress.color;
-		float num2 = color.a = (float)num;
-		Color color2 = this.ExpelProgress.color = color;
-	}
-
-	public virtual void Update()
-	{
-		if (this.Yandere.transform.position.x < this.transform.position.x)
+		if (this.Yandere.transform.position.x < base.transform.position.x)
 		{
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
@@ -129,20 +117,22 @@ public class CounselorScript : MonoBehaviour
 		{
 			this.Prompt.enabled = true;
 		}
-		if (this.Prompt.Circle[0].fillAmount <= (float)0)
+		Animation component = base.GetComponent<Animation>();
+		AudioSource component2 = base.GetComponent<AudioSource>();
+		if (this.Prompt.Circle[0].fillAmount <= 0f)
 		{
-			this.Prompt.Circle[0].fillAmount = (float)1;
+			this.Prompt.Circle[0].fillAmount = 1f;
 			if (!this.Busy)
 			{
-				this.animation.CrossFade("CounselorComputerAttention", (float)1);
-				this.ChinTimer = (float)0;
+				component.CrossFade("CounselorComputerAttention", 1f);
+				this.ChinTimer = 0f;
 				this.Yandere.TargetStudent = this.Student;
 				int num = UnityEngine.Random.Range(1, 3);
 				this.CounselorSubtitle.text = this.CounselorGreetingText[num];
-				this.audio.clip = this.CounselorGreetingClips[num];
-				this.audio.Play();
+				component2.clip = this.CounselorGreetingClips[num];
+				component2.Play();
 				this.StudentManager.DisablePrompts();
-				this.CounselorWindow.gameObject.active = true;
+				this.CounselorWindow.gameObject.SetActive(true);
 				this.LookAtPlayer = true;
 				this.ShowWindow = true;
 				this.Yandere.ShoulderCamera.OverShoulder = true;
@@ -162,8 +152,8 @@ public class CounselorScript : MonoBehaviour
 			else
 			{
 				this.CounselorSubtitle.text = this.CounselorBusyText;
-				this.audio.clip = this.CounselorBusyClip;
-				this.audio.Play();
+				component2.clip = this.CounselorBusyClip;
+				component2.Play();
 			}
 		}
 		if (this.LookAtPlayer)
@@ -192,19 +182,19 @@ public class CounselorScript : MonoBehaviour
 				{
 					if (this.Selected == 7)
 					{
-						this.animation.CrossFade("CounselorComputerLoop", (float)1);
+						component.CrossFade("CounselorComputerLoop", 1f);
 						this.Yandere.ShoulderCamera.OverShoulder = false;
 						this.StudentManager.EnablePrompts();
 						this.Yandere.TargetStudent = null;
 						this.LookAtPlayer = false;
 						this.ShowWindow = false;
 						this.CounselorSubtitle.text = this.CounselorFarewellText;
-						this.audio.clip = this.CounselorFarewellClip;
-						this.audio.Play();
+						component2.clip = this.CounselorFarewellClip;
+						component2.Play();
 						this.PromptBar.ClearButtons();
 						this.PromptBar.Show = false;
 					}
-					else if (this.Labels[this.Selected].color.a == (float)1)
+					else if (this.Labels[this.Selected].color.a == 1f)
 					{
 						if (this.Selected == 1)
 						{
@@ -232,8 +222,8 @@ public class CounselorScript : MonoBehaviour
 							this.Schemes.UpdateInstructions();
 						}
 						this.CounselorSubtitle.text = this.CounselorReportText[this.Selected];
-						this.audio.clip = this.CounselorReportClips[this.Selected];
-						this.audio.Play();
+						component2.clip = this.CounselorReportClips[this.Selected];
+						component2.Play();
 						this.ShowWindow = false;
 						this.Angry = true;
 						this.LectureID = this.Selected;
@@ -247,14 +237,14 @@ public class CounselorScript : MonoBehaviour
 			{
 				if (Input.GetButtonDown("A"))
 				{
-					this.audio.Stop();
+					component2.Stop();
 				}
-				if (!this.audio.isPlaying)
+				if (!component2.isPlaying)
 				{
 					this.Timer += Time.deltaTime;
 					if (this.Timer > 0.5f)
 					{
-						this.animation.CrossFade("CounselorComputerLoop", (float)1);
+						component.CrossFade("CounselorComputerLoop", 1f);
 						this.Yandere.ShoulderCamera.OverShoulder = false;
 						this.StudentManager.EnablePrompts();
 						this.Yandere.TargetStudent = null;
@@ -268,43 +258,37 @@ public class CounselorScript : MonoBehaviour
 		else
 		{
 			this.ChinTimer += Time.deltaTime;
-			if (this.ChinTimer > (float)10)
+			if (this.ChinTimer > 10f)
 			{
-				this.animation.CrossFade("CounselorComputerChin");
-				if (this.animation["CounselorComputerChin"].time > this.animation["CounselorComputerChin"].length)
+				component.CrossFade("CounselorComputerChin");
+				if (component["CounselorComputerChin"].time > component["CounselorComputerChin"].length)
 				{
-					this.animation.CrossFade("CounselorComputerLoop");
-					this.ChinTimer = (float)0;
+					component.CrossFade("CounselorComputerLoop");
+					this.ChinTimer = 0f;
 				}
 			}
 		}
 		if (this.ShowWindow)
 		{
-			this.CounselorWindow.localScale = Vector3.Lerp(this.CounselorWindow.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+			this.CounselorWindow.localScale = Vector3.Lerp(this.CounselorWindow.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 		}
 		else if (this.CounselorWindow.localScale.x > 0.1f)
 		{
-			this.CounselorWindow.localScale = Vector3.Lerp(this.CounselorWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+			this.CounselorWindow.localScale = Vector3.Lerp(this.CounselorWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
 		}
 		else
 		{
-			this.CounselorWindow.localScale = new Vector3((float)0, (float)0, (float)0);
-			this.CounselorWindow.gameObject.active = false;
+			this.CounselorWindow.localScale = Vector3.zero;
+			this.CounselorWindow.gameObject.SetActive(false);
 		}
 		if (this.Lecturing)
 		{
-			float y = Mathf.Lerp(this.Chibi.localPosition.y, (float)(250 + PlayerPrefs.GetInt("ExpelProgress") * -100), Time.deltaTime * (float)2);
-			Vector3 localPosition = this.Chibi.localPosition;
-			float num2 = localPosition.y = y;
-			Vector3 vector = this.Chibi.localPosition = localPosition;
+			this.Chibi.localPosition = new Vector3(this.Chibi.localPosition.x, Mathf.Lerp(this.Chibi.localPosition.y, 250f + (float)PlayerPrefs.GetInt("ExpelProgress") * -100f, Time.deltaTime * 2f), this.Chibi.localPosition.z);
 			if (this.LecturePhase == 1)
 			{
 				this.LectureLabel.text = this.LectureIntro[this.LectureID];
-				float a = Mathf.MoveTowards(this.EndOfDayDarkness.color.a, (float)0, Time.deltaTime);
-				Color color = this.EndOfDayDarkness.color;
-				float num3 = color.a = a;
-				Color color2 = this.EndOfDayDarkness.color = color;
-				if (this.EndOfDayDarkness.color.a == (float)0)
+				this.EndOfDayDarkness.color = new Color(this.EndOfDayDarkness.color.r, this.EndOfDayDarkness.color.g, this.EndOfDayDarkness.color.b, Mathf.MoveTowards(this.EndOfDayDarkness.color.a, 0f, Time.deltaTime));
+				if (this.EndOfDayDarkness.color.a == 0f)
 				{
 					this.PromptBar.ClearButtons();
 					this.PromptBar.Label[0].text = "Continue";
@@ -320,31 +304,28 @@ public class CounselorScript : MonoBehaviour
 			}
 			else if (this.LecturePhase == 2)
 			{
-				float a2 = Mathf.MoveTowards(this.LectureLabel.color.a, (float)0, Time.deltaTime);
-				Color color3 = this.LectureLabel.color;
-				float num4 = color3.a = a2;
-				Color color4 = this.LectureLabel.color = color3;
-				if (this.LectureLabel.color.a == (float)0)
+				this.LectureLabel.color = new Color(this.LectureLabel.color.r, this.LectureLabel.color.g, this.LectureLabel.color.b, Mathf.MoveTowards(this.LectureLabel.color.a, 0f, Time.deltaTime));
+				if (this.LectureLabel.color.a == 0f)
 				{
 					this.LectureSubtitle.text = this.CounselorLectureText[this.LectureID];
-					this.audio.clip = this.CounselorLectureClips[this.LectureID];
-					this.audio.Play();
+					component2.clip = this.CounselorLectureClips[this.LectureID];
+					component2.Play();
 					this.LecturePhase++;
 				}
 			}
 			else if (this.LecturePhase == 3)
 			{
-				if (!this.audio.isPlaying || Input.GetButtonDown("A"))
+				if (!component2.isPlaying || Input.GetButtonDown("A"))
 				{
 					this.LectureSubtitle.text = this.RivalText[this.LectureID];
-					this.audio.clip = this.RivalClips[this.LectureID];
-					this.audio.Play();
+					component2.clip = this.RivalClips[this.LectureID];
+					component2.Play();
 					this.LecturePhase++;
 				}
 			}
 			else if (this.LecturePhase == 4)
 			{
-				if (!this.audio.isPlaying || Input.GetButtonDown("A"))
+				if (!component2.isPlaying || Input.GetButtonDown("A"))
 				{
 					this.LectureSubtitle.text = string.Empty;
 					if (PlayerPrefs.GetInt("ExpelProgress") < 5)
@@ -354,18 +335,15 @@ public class CounselorScript : MonoBehaviour
 					else
 					{
 						this.LecturePhase = 7;
-						this.ExpelTimer = (float)11;
+						this.ExpelTimer = 11f;
 					}
 				}
 			}
 			else if (this.LecturePhase == 5)
 			{
-				float a3 = Mathf.MoveTowards(this.ExpelProgress.color.a, (float)1, Time.deltaTime);
-				Color color5 = this.ExpelProgress.color;
-				float num5 = color5.a = a3;
-				Color color6 = this.ExpelProgress.color = color5;
+				this.ExpelProgress.color = new Color(this.ExpelProgress.color.r, this.ExpelProgress.color.g, this.ExpelProgress.color.b, Mathf.MoveTowards(this.ExpelProgress.color.a, 1f, Time.deltaTime));
 				this.ExpelTimer += Time.deltaTime;
-				if (this.ExpelTimer > (float)2)
+				if (this.ExpelTimer > 2f)
 				{
 					PlayerPrefs.SetInt("ExpelProgress", PlayerPrefs.GetInt("ExpelProgress") + 1);
 					this.LecturePhase++;
@@ -374,106 +352,85 @@ public class CounselorScript : MonoBehaviour
 			else if (this.LecturePhase == 6)
 			{
 				this.ExpelTimer += Time.deltaTime;
-				if (this.ExpelTimer > (float)4)
+				if (this.ExpelTimer > 4f)
 				{
 					this.LecturePhase++;
 				}
 			}
 			else if (this.LecturePhase == 7)
 			{
-				float a4 = Mathf.MoveTowards(this.ExpelProgress.color.a, (float)0, Time.deltaTime);
-				Color color7 = this.ExpelProgress.color;
-				float num6 = color7.a = a4;
-				Color color8 = this.ExpelProgress.color = color7;
+				this.ExpelProgress.color = new Color(this.ExpelProgress.color.r, this.ExpelProgress.color.g, this.ExpelProgress.color.b, Mathf.MoveTowards(this.ExpelProgress.color.a, 0f, Time.deltaTime));
 				this.ExpelTimer += Time.deltaTime;
-				if (this.ExpelTimer > (float)6)
+				if (this.ExpelTimer > 6f)
 				{
 					if (PlayerPrefs.GetInt("ExpelProgress") == 5 && PlayerPrefs.GetInt("Student_7_Expelled") == 0)
 					{
 						PlayerPrefs.SetInt("Student_7_Expelled", 1);
-						int num7 = 0;
-						Color color9 = this.EndOfDayDarkness.color;
-						float num8 = color9.a = (float)num7;
-						Color color10 = this.EndOfDayDarkness.color = color9;
-						int num9 = 0;
-						Color color11 = this.LectureLabel.color;
-						float num10 = color11.a = (float)num9;
-						Color color12 = this.LectureLabel.color = color11;
+						this.EndOfDayDarkness.color = new Color(this.EndOfDayDarkness.color.r, this.EndOfDayDarkness.color.g, this.EndOfDayDarkness.color.b, 0f);
+						this.LectureLabel.color = new Color(this.LectureLabel.color.r, this.LectureLabel.color.g, this.LectureLabel.color.b, 0f);
 						this.LecturePhase = 2;
-						this.ExpelTimer = (float)0;
+						this.ExpelTimer = 0f;
 						this.LectureID = 6;
 					}
 					else if (this.LectureID < 6)
 					{
 						this.EndOfDay.enabled = true;
-						this.EndOfDay.Phase = this.EndOfDay.Phase + 1;
+						this.EndOfDay.Phase++;
 						this.EndOfDay.UpdateScene();
-						this.enabled = false;
+						base.enabled = false;
 					}
 					else
 					{
-						this.EndOfDay.active = false;
+						this.EndOfDay.gameObject.SetActive(false);
 						this.EndOfDay.Phase = 1;
-						this.CutsceneManager.Phase = this.CutsceneManager.Phase + 1;
+						this.CutsceneManager.Phase++;
 						this.Lecturing = false;
 						this.LectureID = 0;
 					}
 				}
 			}
 		}
-		if (!this.audio.isPlaying)
+		if (!component2.isPlaying)
 		{
 			this.CounselorSubtitle.text = string.Empty;
 		}
 	}
 
-	public virtual void UpdateList()
+	private void UpdateList()
 	{
-		for (int i = 1; i < Extensions.get_length(this.Labels); i++)
+		for (int i = 1; i < this.Labels.Length; i++)
 		{
-			float a = 0.5f;
-			Color color = this.Labels[i].color;
-			float num = color.a = a;
-			Color color2 = this.Labels[i].color = color;
+			UILabel uilabel = this.Labels[i];
+			uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, 0.5f);
 		}
 		if (PlayerPrefs.GetInt("Scheme_1_Stage") == 2)
 		{
-			int num2 = 1;
-			Color color3 = this.Labels[1].color;
-			float num3 = color3.a = (float)num2;
-			Color color4 = this.Labels[1].color = color3;
+			UILabel uilabel2 = this.Labels[1];
+			uilabel2.color = new Color(uilabel2.color.r, uilabel2.color.g, uilabel2.color.b, 1f);
 		}
 		if (PlayerPrefs.GetInt("Scheme_2_Stage") == 3)
 		{
-			int num4 = 1;
-			Color color5 = this.Labels[2].color;
-			float num5 = color5.a = (float)num4;
-			Color color6 = this.Labels[2].color = color5;
+			UILabel uilabel3 = this.Labels[2];
+			uilabel3.color = new Color(uilabel3.color.r, uilabel3.color.g, uilabel3.color.b, 1f);
 		}
 		if (PlayerPrefs.GetInt("Scheme_3_Stage") == 4)
 		{
-			int num6 = 1;
-			Color color7 = this.Labels[3].color;
-			float num7 = color7.a = (float)num6;
-			Color color8 = this.Labels[3].color = color7;
+			UILabel uilabel4 = this.Labels[3];
+			uilabel4.color = new Color(uilabel4.color.r, uilabel4.color.g, uilabel4.color.b, 1f);
 		}
 		if (PlayerPrefs.GetInt("Scheme_4_Stage") == 5)
 		{
-			int num8 = 1;
-			Color color9 = this.Labels[4].color;
-			float num9 = color9.a = (float)num8;
-			Color color10 = this.Labels[4].color = color9;
+			UILabel uilabel5 = this.Labels[4];
+			uilabel5.color = new Color(uilabel5.color.r, uilabel5.color.g, uilabel5.color.b, 1f);
 		}
 		if (PlayerPrefs.GetInt("Scheme_5_Stage") == 6)
 		{
-			int num10 = 1;
-			Color color11 = this.Labels[5].color;
-			float num11 = color11.a = (float)num10;
-			Color color12 = this.Labels[5].color = color11;
+			UILabel uilabel6 = this.Labels[5];
+			uilabel6.color = new Color(uilabel6.color.r, uilabel6.color.g, uilabel6.color.b, 1f);
 		}
 	}
 
-	public virtual void UpdateHighlight()
+	private void UpdateHighlight()
 	{
 		if (this.Selected < 1)
 		{
@@ -483,40 +440,26 @@ public class CounselorScript : MonoBehaviour
 		{
 			this.Selected = 1;
 		}
-		int num = 200 - 50 * this.Selected;
-		Vector3 localPosition = this.Highlight.transform.localPosition;
-		float num2 = localPosition.y = (float)num;
-		Vector3 vector = this.Highlight.transform.localPosition = localPosition;
+		this.Highlight.transform.localPosition = new Vector3(this.Highlight.transform.localPosition.x, 200f - 50f * (float)this.Selected, this.Highlight.transform.localPosition.z);
 	}
 
-	public virtual void LateUpdate()
+	private void LateUpdate()
 	{
 		if (this.Angry)
 		{
-			this.Anger = Mathf.Lerp(this.Anger, (float)100, Time.deltaTime);
+			this.Anger = Mathf.Lerp(this.Anger, 100f, Time.deltaTime);
 			this.Face.SetBlendShapeWeight(1, this.Anger);
 			this.Face.SetBlendShapeWeight(5, this.Anger);
 			this.Face.SetBlendShapeWeight(9, this.Anger);
 		}
 		else
 		{
-			this.Anger = Mathf.Lerp(this.Anger, (float)0, Time.deltaTime);
+			this.Anger = Mathf.Lerp(this.Anger, 0f, Time.deltaTime);
 			this.Face.SetBlendShapeWeight(1, this.Anger);
 			this.Face.SetBlendShapeWeight(5, this.Anger);
 			this.Face.SetBlendShapeWeight(9, this.Anger);
 		}
-		if (!this.LookAtPlayer)
-		{
-			this.LookAtTarget = Vector3.Lerp(this.LookAtTarget, this.Default.position, Time.deltaTime * (float)2);
-		}
-		else
-		{
-			this.LookAtTarget = Vector3.Lerp(this.LookAtTarget, this.Yandere.Head.position, Time.deltaTime * (float)2);
-		}
+		this.LookAtTarget = Vector3.Lerp(this.LookAtTarget, (!this.LookAtPlayer) ? this.Default.position : this.Yandere.Head.position, Time.deltaTime * 2f);
 		this.Head.LookAt(this.LookAtTarget);
-	}
-
-	public virtual void Main()
-	{
 	}
 }

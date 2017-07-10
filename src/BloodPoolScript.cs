@@ -1,61 +1,52 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class BloodPoolScript : MonoBehaviour
 {
 	public float TargetSize;
 
-	public bool Blood;
+	public bool Blood = true;
 
 	public bool Grow;
 
-	public BloodPoolScript()
-	{
-		this.Blood = true;
-	}
-
-	public virtual void Start()
+	private void Start()
 	{
 		if (PlayerPrefs.GetInt("PantiesEquipped") == 7)
 		{
 			this.TargetSize *= 0.5f;
 		}
-		this.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-		if (this.transform.position.x > (float)125 || this.transform.position.x < (float)-125 || this.transform.position.z > (float)200 || this.transform.position.z < (float)-100)
+		base.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+		Vector3 position = base.transform.position;
+		if (position.x > 125f || position.x < -125f || position.z > 200f || position.z < -100f)
 		{
-			UnityEngine.Object.Destroy(this.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.Grow)
 		{
-			this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3(this.TargetSize, this.TargetSize, this.TargetSize), Time.deltaTime * (float)1);
-			if (this.transform.localScale.x > this.TargetSize * 0.99f)
+			base.transform.localScale = Vector3.Lerp(base.transform.localScale, new Vector3(this.TargetSize, this.TargetSize, this.TargetSize), Time.deltaTime);
+			if (base.transform.localScale.x > this.TargetSize * 0.99f)
 			{
 				this.Grow = false;
 			}
 		}
 	}
 
-	public virtual void OnTriggerEnter(Collider other)
+	private void OnTriggerEnter(Collider other)
 	{
-		if (other.gameObject.name == "BloodSpawner")
+		if (other.gameObject.name.Equals("BloodSpawner"))
 		{
 			this.Grow = true;
 		}
 	}
 
-	public virtual void OnTriggerExit(Collider other)
+	private void OnTriggerExit(Collider other)
 	{
-		if (other.gameObject.name == "BloodSpawner")
+		if (other.gameObject.name.Equals("BloodSpawner"))
 		{
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

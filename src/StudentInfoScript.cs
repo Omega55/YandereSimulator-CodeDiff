@@ -1,10 +1,7 @@
 ﻿using System;
 using System.IO;
-using Boo.Lang.Runtime;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class StudentInfoScript : MonoBehaviour
 {
 	public StudentInfoMenuScript StudentInfoMenu;
@@ -67,51 +64,42 @@ public class StudentInfoScript : MonoBehaviour
 
 	public UISprite[] TopicOpinionIcons;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.Topics.active = false;
+		this.Topics.SetActive(false);
 		if (File.Exists(Application.streamingAssetsPath + "/CustomPortraits.txt"))
 		{
-			string a = File.ReadAllText(Application.streamingAssetsPath + "/CustomPortraits.txt");
-			if (a == "1")
+			string text = File.ReadAllText(Application.streamingAssetsPath + "/CustomPortraits.txt");
+			if (text.Equals("1"))
 			{
 				this.CustomPortraits = true;
 			}
 		}
 	}
 
-	public virtual void UpdateInfo(int ID)
+	public void UpdateInfo(int ID)
 	{
 		this.NameLabel.text = this.JSON.StudentNames[ID];
-		if (PlayerPrefs.GetInt("Student_" + ID + "_Reputation") < 0)
+		if (PlayerPrefs.GetInt("Student_" + ID.ToString() + "_Reputation") < 0)
 		{
-			this.ReputationLabel.text = string.Empty + PlayerPrefs.GetInt("Student_" + ID + "_Reputation");
+			this.ReputationLabel.text = PlayerPrefs.GetInt("Student_" + ID.ToString() + "_Reputation").ToString();
 		}
-		else if (PlayerPrefs.GetInt("Student_" + ID + "_Reputation") > 0)
+		else if (PlayerPrefs.GetInt("Student_" + ID.ToString() + "_Reputation") > 0)
 		{
-			this.ReputationLabel.text = "+" + PlayerPrefs.GetInt("Student_" + ID + "_Reputation");
+			this.ReputationLabel.text = "+" + PlayerPrefs.GetInt("Student_" + ID.ToString() + "_Reputation").ToString();
 		}
 		else
 		{
 			this.ReputationLabel.text = "0";
 		}
-		float x = (float)PlayerPrefs.GetInt("Student_" + ID + "_Reputation") * 0.96f;
-		Vector3 localPosition = this.ReputationBar.localPosition;
-		float num = localPosition.x = x;
-		Vector3 vector = this.ReputationBar.localPosition = localPosition;
-		if (this.ReputationBar.localPosition.x > (float)96)
+		this.ReputationBar.localPosition = new Vector3((float)PlayerPrefs.GetInt("Student_" + ID.ToString() + "_Reputation") * 0.96f, this.ReputationBar.localPosition.y, this.ReputationBar.localPosition.z);
+		if (this.ReputationBar.localPosition.x > 96f)
 		{
-			int num2 = 96;
-			Vector3 localPosition2 = this.ReputationBar.localPosition;
-			float num3 = localPosition2.x = (float)num2;
-			Vector3 vector2 = this.ReputationBar.localPosition = localPosition2;
+			this.ReputationBar.localPosition = new Vector3(96f, this.ReputationBar.localPosition.y, this.ReputationBar.localPosition.z);
 		}
-		if (this.ReputationBar.localPosition.x < (float)-96)
+		if (this.ReputationBar.localPosition.x < -96f)
 		{
-			int num4 = -96;
-			Vector3 localPosition3 = this.ReputationBar.localPosition;
-			float num5 = localPosition3.x = (float)num4;
-			Vector3 vector3 = this.ReputationBar.localPosition = localPosition3;
+			this.ReputationBar.localPosition = new Vector3(-96f, this.ReputationBar.localPosition.y, this.ReputationBar.localPosition.z);
 		}
 		if (this.JSON.StudentPersonas[ID] == 1)
 		{
@@ -163,7 +151,7 @@ public class StudentInfoScript : MonoBehaviour
 		}
 		else
 		{
-			this.CrushLabel.text = string.Empty + this.JSON.StudentNames[this.JSON.StudentCrushes[ID]];
+			this.CrushLabel.text = this.JSON.StudentNames[this.JSON.StudentCrushes[ID]];
 		}
 		if (this.JSON.StudentClubs[ID] < 100)
 		{
@@ -264,58 +252,59 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.ClubLabel.text = "Gym Teacher";
 		}
-		if (PlayerPrefs.GetInt("Club_" + this.JSON.StudentClubs[ID] + "_Closed") == 1)
+		if (PlayerPrefs.GetInt("Club_" + this.JSON.StudentClubs[ID].ToString() + "_Closed") == 1)
 		{
 			this.ClubLabel.text = "No Club";
 		}
-		if (this.JSON.StudentStrengths[ID] == 0)
+		if (this.JSON.StudentStrengths[ID] == 0f)
 		{
 			this.StrengthLabel.text = "Incapable";
 		}
-		else if (this.JSON.StudentStrengths[ID] == 1)
+		else if (this.JSON.StudentStrengths[ID] == 1f)
 		{
 			this.StrengthLabel.text = "Very Weak";
 		}
-		else if (this.JSON.StudentStrengths[ID] == 2)
+		else if (this.JSON.StudentStrengths[ID] == 2f)
 		{
 			this.StrengthLabel.text = "Weak";
 		}
-		else if (this.JSON.StudentStrengths[ID] == 3)
+		else if (this.JSON.StudentStrengths[ID] == 3f)
 		{
 			this.StrengthLabel.text = "Strong";
 		}
-		else if (this.JSON.StudentStrengths[ID] == 4)
+		else if (this.JSON.StudentStrengths[ID] == 4f)
 		{
 			this.StrengthLabel.text = "Very Strong";
 		}
-		else if (this.JSON.StudentStrengths[ID] == 5)
+		else if (this.JSON.StudentStrengths[ID] == 5f)
 		{
 			this.StrengthLabel.text = "Martial Arts Master";
 		}
-		else if (this.JSON.StudentStrengths[ID] == 6)
+		else if (this.JSON.StudentStrengths[ID] == 6f)
 		{
 			this.StrengthLabel.text = "Extensive Training";
 		}
-		else if (this.JSON.StudentStrengths[ID] == 99)
+		else if (this.JSON.StudentStrengths[ID] == 99f)
 		{
 			this.StrengthLabel.text = "?????";
 		}
+		AudioSource component = base.GetComponent<AudioSource>();
 		if (ID > 0)
 		{
-			string url = "file:///" + Application.streamingAssetsPath + "/Portraits/Student_" + ID + ".png";
+			string url = string.Concat(new string[]
+			{
+				"file:///",
+				Application.streamingAssetsPath,
+				"/Portraits/Student_",
+				ID.ToString(),
+				".png"
+			});
 			WWW www = new WWW(url);
-			if (PlayerPrefs.GetInt("Student_" + ID + "_Replaced") == 0)
+			if (PlayerPrefs.GetInt("Student_" + ID.ToString() + "_Replaced") == 0)
 			{
 				if (!this.CustomPortraits)
 				{
-					if (ID < 33 || ID > 93)
-					{
-						this.Portrait.mainTexture = www.texture;
-					}
-					else
-					{
-						this.Portrait.mainTexture = this.BlankPortrait;
-					}
+					this.Portrait.mainTexture = ((ID >= 33 && ID <= 93) ? this.BlankPortrait : www.texture);
 				}
 				else
 				{
@@ -326,47 +315,47 @@ public class StudentInfoScript : MonoBehaviour
 			{
 				this.Portrait.mainTexture = this.BlankPortrait;
 			}
-			this.Static.active = false;
-			this.audio.volume = (float)0;
+			this.Static.SetActive(false);
+			component.volume = 0f;
 		}
 		else
 		{
 			this.Portrait.mainTexture = this.InfoChan;
-			this.Static.active = true;
+			this.Static.SetActive(true);
 			if (!this.StudentInfoMenu.Gossiping && !this.StudentInfoMenu.Distracting && !this.StudentInfoMenu.CyberBullying)
 			{
-				this.audio.enabled = true;
-				this.audio.volume = (float)1;
-				this.audio.Play();
+				component.enabled = true;
+				component.volume = 1f;
+				component.Play();
 			}
 		}
 		this.UpdateAdditionalInfo(ID);
 		this.CurrentStudent = ID;
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (Input.GetButtonDown("A"))
 		{
 			if (this.StudentInfoMenu.Gossiping)
 			{
-				this.StudentInfoMenu.PauseScreen.MainMenu.active = true;
+				this.StudentInfoMenu.PauseScreen.MainMenu.SetActive(true);
 				this.StudentInfoMenu.PauseScreen.Show = false;
 				this.DialogueWheel.Victim = this.CurrentStudent;
 				this.StudentInfoMenu.Gossiping = false;
-				this.gameObject.active = false;
-				Time.timeScale = (float)1;
+				base.gameObject.SetActive(false);
+				Time.timeScale = 1f;
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Show = false;
 			}
 			else if (this.StudentInfoMenu.Distracting)
 			{
-				this.StudentInfoMenu.PauseScreen.MainMenu.active = true;
+				this.StudentInfoMenu.PauseScreen.MainMenu.SetActive(true);
 				this.StudentInfoMenu.PauseScreen.Show = false;
 				this.DialogueWheel.Victim = this.CurrentStudent;
 				this.StudentInfoMenu.Gossiping = false;
-				this.gameObject.active = false;
-				Time.timeScale = (float)1;
+				base.gameObject.SetActive(false);
+				Time.timeScale = 1f;
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Show = false;
 			}
@@ -374,32 +363,32 @@ public class StudentInfoScript : MonoBehaviour
 			{
 				this.HomeInternet.PostLabels[1].text = this.JSON.StudentNames[this.CurrentStudent];
 				this.HomeInternet.Student = this.CurrentStudent;
-				this.StudentInfoMenu.PauseScreen.MainMenu.active = true;
+				this.StudentInfoMenu.PauseScreen.MainMenu.SetActive(true);
 				this.StudentInfoMenu.PauseScreen.Show = false;
 				this.StudentInfoMenu.CyberBullying = false;
-				this.gameObject.active = false;
+				base.gameObject.SetActive(false);
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Show = false;
 			}
 			else if (this.StudentInfoMenu.MatchMaking)
 			{
-				this.StudentInfoMenu.PauseScreen.MainMenu.active = true;
+				this.StudentInfoMenu.PauseScreen.MainMenu.SetActive(true);
 				this.StudentInfoMenu.PauseScreen.Show = false;
 				this.DialogueWheel.Victim = this.CurrentStudent;
 				this.StudentInfoMenu.MatchMaking = false;
-				this.gameObject.active = false;
-				Time.timeScale = (float)1;
+				base.gameObject.SetActive(false);
+				Time.timeScale = 1f;
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Show = false;
 			}
 		}
 		if (Input.GetButtonDown("B"))
 		{
-			this.Topics.active = false;
-			this.audio.Stop();
+			this.Topics.SetActive(false);
+			base.GetComponent<AudioSource>().Stop();
 			if (this.Shutter != null)
 			{
-				if (!this.Shutter.PhotoIcons.active)
+				if (!this.Shutter.PhotoIcons.activeInHierarchy)
 				{
 					this.Back = true;
 				}
@@ -410,11 +399,11 @@ public class StudentInfoScript : MonoBehaviour
 			}
 			if (this.Back)
 			{
-				this.StudentInfoMenu.gameObject.active = true;
-				this.gameObject.active = false;
+				this.StudentInfoMenu.gameObject.SetActive(true);
+				base.gameObject.SetActive(false);
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Label[0].text = "View Info";
-				if (RuntimeServices.EqualityOperator(UnityRuntimeServices.GetProperty(this.StudentInfoMenu, "Gossipping"), false))
+				if (!this.StudentInfoMenu.Gossiping)
 				{
 					this.PromptBar.Label[1].text = "Back";
 				}
@@ -424,33 +413,33 @@ public class StudentInfoScript : MonoBehaviour
 		}
 		if (Input.GetButtonDown("Y") && this.PromptBar.Button[3].enabled)
 		{
-			if (!this.Topics.active)
+			if (!this.Topics.activeInHierarchy)
 			{
 				this.PromptBar.Label[3].text = "Basic Info";
 				this.PromptBar.UpdateButtons();
-				this.Topics.active = true;
+				this.Topics.SetActive(true);
 				this.UpdateTopics();
 			}
 			else
 			{
 				this.PromptBar.Label[3].text = "Interests";
 				this.PromptBar.UpdateButtons();
-				this.Topics.active = false;
+				this.Topics.SetActive(false);
 			}
 		}
 		if (Input.GetKeyDown("="))
 		{
-			PlayerPrefs.SetInt("Student_" + this.CurrentStudent + "_Reputation", PlayerPrefs.GetInt("Student_" + this.CurrentStudent + "_Reputation") + 10);
+			PlayerPrefs.SetInt("Student_" + this.CurrentStudent.ToString() + "_Reputation", PlayerPrefs.GetInt("Student_" + this.CurrentStudent.ToString() + "_Reputation") + 10);
 			this.UpdateInfo(this.CurrentStudent);
 		}
 		if (Input.GetKeyDown("-"))
 		{
-			PlayerPrefs.SetInt("Student_" + this.CurrentStudent + "_Reputation", PlayerPrefs.GetInt("Student_" + this.CurrentStudent + "_Reputation") - 10);
+			PlayerPrefs.SetInt("Student_" + this.CurrentStudent.ToString() + "_Reputation", PlayerPrefs.GetInt("Student_" + this.CurrentStudent.ToString() + "_Reputation") - 10);
 			this.UpdateInfo(this.CurrentStudent);
 		}
 	}
 
-	public virtual void UpdateAdditionalInfo(int ID)
+	private void UpdateAdditionalInfo(int ID)
 	{
 		if (ID == 0)
 		{
@@ -462,23 +451,9 @@ public class StudentInfoScript : MonoBehaviour
 		}
 		else if (ID == 7)
 		{
-			if (PlayerPrefs.GetInt("Event1") == 1)
-			{
-				this.Strings[1] = "May be a victim of domestic abuse.";
-			}
-			else
-			{
-				this.Strings[1] = "?????";
-			}
-			if (PlayerPrefs.GetInt("Event2") == 1)
-			{
-				this.Strings[2] = "May be engaging in compensated dating in Shisuta Town.";
-			}
-			else
-			{
-				this.Strings[2] = "?????";
-			}
-			this.InfoLabel.text = this.Strings[1] + "\n" + "\n" + this.Strings[2];
+			this.Strings[1] = ((PlayerPrefs.GetInt("Event1") != 1) ? "?????" : "May be a victim of domestic abuse.");
+			this.Strings[2] = ((PlayerPrefs.GetInt("Event2") != 1) ? "?????" : "May be engaging in compensated dating in Shisuta Town.");
+			this.InfoLabel.text = this.Strings[1] + "\n\n" + this.Strings[2];
 		}
 		else if (ID == 13)
 		{
@@ -501,14 +476,28 @@ public class StudentInfoScript : MonoBehaviour
 			this.Strings[1] = "Wears contact lenses.";
 			this.Strings[2] = "Enjoys spending time with her younger sister.";
 			this.Strings[3] = "Rumored to be a succubus disguised as a high school student...but only a fool would believe something like that.";
-			this.InfoLabel.text = this.Strings[1] + "\n" + "\n" + this.Strings[2] + "\n" + "\n" + this.Strings[3];
+			this.InfoLabel.text = string.Concat(new string[]
+			{
+				this.Strings[1],
+				"\n\n",
+				this.Strings[2],
+				"\n\n",
+				this.Strings[3]
+			});
 		}
 		else if (ID == 18)
 		{
 			this.Strings[1] = "Wears contact lenses.";
 			this.Strings[2] = "Enjoys spending time with her older sister.";
 			this.Strings[3] = "Rumored to be a vampire disguised as a high school student...but only a fool would believe something like that.";
-			this.InfoLabel.text = this.Strings[1] + "\n" + "\n" + this.Strings[2] + "\n" + "\n" + this.Strings[3];
+			this.InfoLabel.text = string.Concat(new string[]
+			{
+				this.Strings[1],
+				"\n\n",
+				this.Strings[2],
+				"\n\n",
+				this.Strings[3]
+			});
 		}
 		else if (ID == 19)
 		{
@@ -519,14 +508,28 @@ public class StudentInfoScript : MonoBehaviour
 			this.Strings[1] = "Described as 'kawaii' 'moe' and 'deredere' by her admirers.";
 			this.Strings[2] = "Has sworn her heart to an independent game developer living overseas.";
 			this.Strings[3] = "Prefers to spend her time alone, fantasizing about her loved one.";
-			this.InfoLabel.text = this.Strings[1] + "\n" + "\n" + this.Strings[2] + "\n" + "\n" + this.Strings[3];
+			this.InfoLabel.text = string.Concat(new string[]
+			{
+				this.Strings[1],
+				"\n\n",
+				this.Strings[2],
+				"\n\n",
+				this.Strings[3]
+			});
 		}
 		else if (ID == 21)
 		{
 			this.Strings[1] = "President of the Martial Arts Club. Inherited the club after defeating the previous president.";
 			this.Strings[2] = "Seems to be incapable of turning down a challenge.";
 			this.Strings[3] = "Always gung ho and enthusiastic. Sometimes a bit overzealous, especially about martial arts.";
-			this.InfoLabel.text = this.Strings[1] + "\n" + "\n" + this.Strings[2] + "\n" + "\n" + this.Strings[3];
+			this.InfoLabel.text = string.Concat(new string[]
+			{
+				this.Strings[1],
+				"\n\n",
+				this.Strings[2],
+				"\n\n",
+				this.Strings[3]
+			});
 		}
 		else if (ID == 22)
 		{
@@ -549,7 +552,14 @@ public class StudentInfoScript : MonoBehaviour
 			this.Strings[1] = "Founder and President of the Occult Club.";
 			this.Strings[2] = "Seems to have absolutely no interest in anything that is not paranormal.";
 			this.Strings[3] = "Stalks the Basu sisters daily in a futile search for evidence that they are supernatural beings.";
-			this.InfoLabel.text = this.Strings[1] + "\n" + "\n" + this.Strings[2] + "\n" + "\n" + this.Strings[3];
+			this.InfoLabel.text = string.Concat(new string[]
+			{
+				this.Strings[1],
+				"\n\n",
+				this.Strings[2],
+				"\n\n",
+				this.Strings[3]
+			});
 		}
 		else if (ID == 27)
 		{
@@ -559,32 +569,39 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.Strings[1] = "Claims to be wearing a medical eyepatch to correct a problem with her vision.";
 			this.Strings[2] = "Refuses to provide details regarding her eye condition, leading to rumors that she is lying about the reason she wears an eyepatch.";
-			this.InfoLabel.text = this.Strings[1] + "\n" + "\n" + this.Strings[2];
+			this.InfoLabel.text = this.Strings[1] + "\n\n" + this.Strings[2];
 		}
 		else if (ID == 29)
 		{
 			this.Strings[1] = "No student has ever seen the right side of his face.";
 			this.Strings[2] = "Some students suspect that he is using his hair to hide an unsightly scar or missing eye.";
-			this.InfoLabel.text = this.Strings[1] + "\n" + "\n" + this.Strings[2];
+			this.InfoLabel.text = this.Strings[1] + "\n\n" + this.Strings[2];
 		}
 		else if (ID == 30)
 		{
 			this.Strings[1] = "Claims that the bandages on her face are the result of being attacked by a wild animal shortly before the school year began.";
 			this.Strings[2] = "There are rumors that the true reason she wears bandages is because she is regularly beaten by a family member, and was blinded in one eye during a domestic dispute.";
-			this.InfoLabel.text = this.Strings[1] + "\n" + "\n" + this.Strings[2];
+			this.InfoLabel.text = this.Strings[1] + "\n\n" + this.Strings[2];
 		}
 		else if (ID == 31)
 		{
 			this.Strings[1] = "One of the lenses of his glasses is completely opaque. No student has ever seen his right eye.";
 			this.Strings[2] = "Some students suspect that he only has one eye, and prefers to wear an opaque lense over that eye rather than an eyepatch.";
-			this.InfoLabel.text = this.Strings[1] + "\n" + "\n" + this.Strings[2];
+			this.InfoLabel.text = this.Strings[1] + "\n\n" + this.Strings[2];
 		}
 		else if (ID == 32)
 		{
 			this.Strings[1] = "The most flashy girl in school.";
 			this.Strings[2] = "She is spoiled rotten by her doting father, who buys his daughter anything she wants.";
 			this.Strings[3] = "Her father runs a loan agency.";
-			this.InfoLabel.text = this.Strings[1] + "\n" + "\n" + this.Strings[2] + "\n" + "\n" + this.Strings[3];
+			this.InfoLabel.text = string.Concat(new string[]
+			{
+				this.Strings[1],
+				"\n\n",
+				this.Strings[2],
+				"\n\n",
+				this.Strings[3]
+			});
 		}
 		else
 		{
@@ -592,18 +609,11 @@ public class StudentInfoScript : MonoBehaviour
 		}
 	}
 
-	public virtual void UpdateTopics()
+	private void UpdateTopics()
 	{
-		for (int i = 1; i < Extensions.get_length(this.TopicIcons); i++)
+		for (int i = 1; i < this.TopicIcons.Length; i++)
 		{
-			if (PlayerPrefs.GetInt("Topic_" + i + "_Discovered") == 0)
-			{
-				this.TopicIcons[i].spriteName = string.Empty + 0;
-			}
-			else
-			{
-				this.TopicIcons[i].spriteName = string.Empty + i;
-			}
+			this.TopicIcons[i].spriteName = ((PlayerPrefs.GetInt("Topic_" + i.ToString() + "_Discovered") != 0) ? i : 0).ToString();
 		}
 		if (PlayerPrefs.GetInt("Topic_1_Student_" + this.CurrentStudent + "_Learned") == 0)
 		{
@@ -805,9 +815,5 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.TopicOpinionIcons[25].spriteName = this.OpinionSpriteNames[this.JSON.Topic25[this.CurrentStudent]];
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

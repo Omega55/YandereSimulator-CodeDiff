@@ -1,14 +1,13 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class GraphUpdaterScript : MonoBehaviour
 {
 	public AstarPath Graph;
 
 	public int Frames;
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.Frames > 0)
 		{
@@ -16,9 +15,5 @@ public class GraphUpdaterScript : MonoBehaviour
 			UnityEngine.Object.Destroy(this);
 		}
 		this.Frames++;
-	}
-
-	public virtual void Main()
-	{
 	}
 }

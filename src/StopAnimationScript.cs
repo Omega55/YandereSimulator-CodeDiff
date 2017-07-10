@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class StopAnimationScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
@@ -10,17 +9,17 @@ public class StopAnimationScript : MonoBehaviour
 
 	private Animation Anim;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.StudentManager = (StudentManagerScript)GameObject.Find("StudentManager").GetComponent(typeof(StudentManagerScript));
-		this.Anim = this.animation;
+		this.StudentManager = GameObject.Find("StudentManager").GetComponent<StudentManagerScript>();
+		this.Anim = base.GetComponent<Animation>();
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.StudentManager.DisableFarAnims)
 		{
-			if (Vector3.Distance(this.Yandere.position, this.transform.position) > (float)15)
+			if (Vector3.Distance(this.Yandere.position, base.transform.position) > 15f)
 			{
 				if (this.Anim.enabled)
 				{
@@ -36,9 +35,5 @@ public class StopAnimationScript : MonoBehaviour
 		{
 			this.Anim.enabled = true;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

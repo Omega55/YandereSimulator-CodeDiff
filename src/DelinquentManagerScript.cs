@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class DelinquentManagerScript : MonoBehaviour
 {
 	public GameObject Delinquents;
@@ -31,106 +29,91 @@ public class DelinquentManagerScript : MonoBehaviour
 
 	public bool Aggro;
 
-	public int Phase;
+	public int Phase = 1;
 
-	public DelinquentManagerScript()
+	private void Start()
 	{
-		this.Phase = 1;
-	}
-
-	public virtual void Start()
-	{
-		this.Delinquents.active = false;
-		this.TimerMax = (float)15;
-		this.Timer = (float)15;
+		this.Delinquents.SetActive(false);
+		this.TimerMax = 15f;
+		this.Timer = 15f;
 		this.Phase++;
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		this.SpeechTimer = Mathf.MoveTowards(this.SpeechTimer, (float)0, Time.deltaTime);
+		this.SpeechTimer = Mathf.MoveTowards(this.SpeechTimer, 0f, Time.deltaTime);
 		if (this.Attacker != null && !this.Attacker.Attacking && this.Attacker.ExpressedSurprise && this.Attacker.Run && !this.Aggro)
 		{
-			this.audio.clip = this.Attacker.AggroClips[UnityEngine.Random.Range(0, Extensions.get_length(this.Attacker.AggroClips))];
-			this.audio.Play();
+			AudioSource component = base.GetComponent<AudioSource>();
+			component.clip = this.Attacker.AggroClips[UnityEngine.Random.Range(0, this.Attacker.AggroClips.Length)];
+			component.Play();
 			this.Aggro = true;
 		}
-		if (this.Panel.active && this.Clock.HourTime > this.NextTime[this.Phase])
+		if (this.Panel.activeInHierarchy && this.Clock.HourTime > this.NextTime[this.Phase])
 		{
 			if (this.Phase == 3 && this.Clock.HourTime > 7.25f)
 			{
-				this.TimerMax = (float)75;
-				this.Timer = (float)75;
+				this.TimerMax = 75f;
+				this.Timer = 75f;
 				this.Phase++;
 			}
 			else if (this.Phase == 5 && this.Clock.HourTime > 8.5f)
 			{
-				this.TimerMax = (float)285;
-				this.Timer = (float)285;
+				this.TimerMax = 285f;
+				this.Timer = 285f;
 				this.Phase++;
 			}
 			else if (this.Phase == 7 && this.Clock.HourTime > 13.25f)
 			{
-				this.TimerMax = (float)15;
-				this.Timer = (float)15;
+				this.TimerMax = 15f;
+				this.Timer = 15f;
 				this.Phase++;
 			}
 			else if (this.Phase == 9 && this.Clock.HourTime > 13.5f)
 			{
-				this.TimerMax = (float)135;
-				this.Timer = (float)135;
+				this.TimerMax = 135f;
+				this.Timer = 135f;
 				this.Phase++;
 			}
-			this.Timer -= Time.deltaTime * (this.Clock.TimeSpeed / (float)60);
-			this.Circle.fillAmount = (float)1 - this.Timer / this.TimerMax;
-			if (this.Timer <= (float)0)
+			this.Timer -= Time.deltaTime * (this.Clock.TimeSpeed / 60f);
+			this.Circle.fillAmount = 1f - this.Timer / this.TimerMax;
+			if (this.Timer <= 0f)
 			{
-				if (this.Delinquents.active)
-				{
-					this.Delinquents.active = false;
-				}
-				else
-				{
-					this.Delinquents.active = true;
-				}
+				this.Delinquents.SetActive(!this.Delinquents.activeInHierarchy);
 				if (this.Phase < 8)
 				{
 					this.Phase++;
 				}
 				else
 				{
-					this.Delinquents.active = false;
-					this.Panel.active = false;
+					this.Delinquents.SetActive(false);
+					this.Panel.SetActive(false);
 				}
 			}
 		}
 	}
 
-	public virtual void CheckTime()
+	public void CheckTime()
 	{
-		if (this.Clock.HourTime < (float)13)
+		if (this.Clock.HourTime < 13f)
 		{
-			this.Delinquents.active = false;
-			this.TimerMax = (float)15;
-			this.Timer = (float)15;
+			this.Delinquents.SetActive(false);
+			this.TimerMax = 15f;
+			this.Timer = 15f;
 			this.Phase = 6;
 		}
 		else if (this.Clock.HourTime < 15.5f)
 		{
-			this.Delinquents.active = false;
-			this.TimerMax = (float)15;
-			this.Timer = (float)15;
+			this.Delinquents.SetActive(false);
+			this.TimerMax = 15f;
+			this.Timer = 15f;
 			this.Phase = 8;
 		}
 	}
 
-	public virtual void EasterEgg()
+	public void EasterEgg()
 	{
-		this.RapBeat.active = true;
-		this.Mirror.Limit = this.Mirror.Limit + 1;
-	}
-
-	public virtual void Main()
-	{
+		this.RapBeat.SetActive(true);
+		this.Mirror.Limit++;
 	}
 }

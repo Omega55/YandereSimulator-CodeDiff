@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class DemonArmScript : MonoBehaviour
 {
 	public GameObject DismembermentCollider;
@@ -12,60 +11,53 @@ public class DemonArmScript : MonoBehaviour
 
 	public bool Attacked;
 
-	public bool Rising;
+	public bool Rising = true;
 
-	public string IdleAnim;
+	public string IdleAnim = "DemonArmIdle";
 
 	public AudioClip Whoosh;
 
-	public DemonArmScript()
+	private void Update()
 	{
-		this.Rising = true;
-		this.IdleAnim = "DemonArmIdle";
-	}
-
-	public virtual void Update()
-	{
+		Animation component = base.GetComponent<Animation>();
 		if (!this.Rising)
 		{
 			if (!this.Attacking)
 			{
-				this.animation.CrossFade(this.IdleAnim);
+				component.CrossFade(this.IdleAnim);
 			}
 			else if (!this.Attacked)
 			{
-				if (this.animation["DemonArmAttack"].time >= this.animation["DemonArmAttack"].length * 0.25f)
+				if (component["DemonArmAttack"].time >= component["DemonArmAttack"].length * 0.25f)
 				{
 					this.ClawCollider.enabled = true;
 					this.Attacked = true;
 				}
 			}
-			else if (this.animation["DemonArmAttack"].time >= this.animation["DemonArmAttack"].length)
+			else if (component["DemonArmAttack"].time >= component["DemonArmAttack"].length)
 			{
-				this.animation.CrossFade(this.IdleAnim);
+				component.CrossFade(this.IdleAnim);
 				this.Attacking = false;
 				this.Attacked = false;
 			}
 		}
-		else if (this.animation["DemonArmRise"].time > this.animation["DemonArmRise"].length)
+		else if (component["DemonArmRise"].time > component["DemonArmRise"].length)
 		{
 			this.Rising = false;
 		}
 	}
 
-	public virtual void OnTriggerEnter(Collider other)
+	private void OnTriggerEnter(Collider other)
 	{
-		if ((StudentScript)other.gameObject.GetComponent(typeof(StudentScript)) != null && ((StudentScript)other.gameObject.GetComponent(typeof(StudentScript))).StudentID > 1)
+		StudentScript component = other.gameObject.GetComponent<StudentScript>();
+		if (component != null && component.StudentID > 1)
 		{
-			this.audio.clip = this.Whoosh;
-			this.audio.pitch = UnityEngine.Random.Range(-0.9f, 1.1f);
-			this.audio.Play();
-			this.animation.CrossFade("DemonArmAttack");
+			AudioSource component2 = base.GetComponent<AudioSource>();
+			component2.clip = this.Whoosh;
+			component2.pitch = UnityEngine.Random.Range(-0.9f, 1.1f);
+			component2.Play();
+			base.GetComponent<Animation>().CrossFade("DemonArmAttack");
 			this.Attacking = true;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

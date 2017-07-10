@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class HomeSleepScript : MonoBehaviour
 {
 	public HomeDarknessScript HomeDarkness;
@@ -12,16 +11,16 @@ public class HomeSleepScript : MonoBehaviour
 
 	public HomeWindowScript HomeWindow;
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (!this.HomeYandere.CanMove && !this.HomeDarkness.FadeOut)
 		{
 			if (Input.GetButtonDown("A"))
 			{
-				this.HomeDarkness.Sprite.color = new Color((float)0, (float)0, (float)0, (float)0);
+				this.HomeDarkness.Sprite.color = new Color(0f, 0f, 0f, 0f);
 				this.HomeDarkness.FadeOut = true;
 				this.HomeWindow.Show = false;
-				this.enabled = false;
+				base.enabled = false;
 			}
 			if (Input.GetButtonDown("B"))
 			{
@@ -29,12 +28,8 @@ public class HomeSleepScript : MonoBehaviour
 				this.HomeCamera.Target = this.HomeCamera.Targets[0];
 				this.HomeYandere.CanMove = true;
 				this.HomeWindow.Show = false;
-				this.enabled = false;
+				base.enabled = false;
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

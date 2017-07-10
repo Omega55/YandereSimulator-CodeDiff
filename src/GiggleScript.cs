@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class GiggleScript : MonoBehaviour
 {
 	public GameObject EmptyGameObject;
@@ -14,43 +13,37 @@ public class GiggleScript : MonoBehaviour
 
 	public int Frame;
 
-	public virtual void Start()
+	private void Start()
 	{
-		float x = (float)500 * ((float)2 - PlayerPrefs.GetFloat("SchoolAtmosphere") * 0.01f);
-		Vector3 localScale = this.transform.localScale;
-		float num = localScale.x = x;
-		Vector3 vector = this.transform.localScale = localScale;
-		float x2 = this.transform.localScale.x;
-		Vector3 localScale2 = this.transform.localScale;
-		float num2 = localScale2.z = x2;
-		Vector3 vector2 = this.transform.localScale = localScale2;
+		float num = 500f * (2f - PlayerPrefs.GetFloat("SchoolAtmosphere") * 0.01f);
+		base.transform.localScale = new Vector3(num, base.transform.localScale.y, num);
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.Frame > 0)
 		{
-			UnityEngine.Object.Destroy(this.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 		this.Frame++;
 	}
 
-	public virtual void OnTriggerEnter(Collider other)
+	private void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.layer == 9 && !this.Distracted)
 		{
-			this.Student = (StudentScript)other.gameObject.GetComponent(typeof(StudentScript));
+			this.Student = other.gameObject.GetComponent<StudentScript>();
 			if (this.Student != null && this.Student.Giggle == null && !this.Student.YandereVisible && !this.Student.Alarmed && !this.Student.Distracted && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.Student.Investigating && !this.Student.InEvent && !this.Student.Following && !this.Student.Confessing && !this.Student.Meeting)
 			{
-				this.Student.Character.animation.CrossFade(this.Student.IdleAnim);
-				this.Giggle = (GameObject)UnityEngine.Object.Instantiate(this.EmptyGameObject, new Vector3(this.transform.position.x, this.Student.transform.position.y, this.transform.position.z), Quaternion.identity);
+				this.Student.Character.GetComponent<Animation>().CrossFade(this.Student.IdleAnim);
+				this.Giggle = UnityEngine.Object.Instantiate<GameObject>(this.EmptyGameObject, new Vector3(base.transform.position.x, this.Student.transform.position.y, base.transform.position.z), Quaternion.identity);
 				this.Student.Giggle = this.Giggle;
 				if (this.Student.Pathfinding != null && !this.Student.Nemesis)
 				{
 					this.Student.Pathfinding.canSearch = false;
 					this.Student.Pathfinding.canMove = false;
 					this.Student.InvestigationPhase = 0;
-					this.Student.InvestigationTimer = (float)0;
+					this.Student.InvestigationTimer = 0f;
 					this.Student.Investigating = true;
 					this.Student.DiscCheck = true;
 					this.Student.Routine = false;
@@ -59,9 +52,5 @@ public class GiggleScript : MonoBehaviour
 				this.Distracted = true;
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

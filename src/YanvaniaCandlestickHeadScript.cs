@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class YanvaniaCandlestickHeadScript : MonoBehaviour
 {
 	public GameObject Fire;
@@ -10,25 +9,22 @@ public class YanvaniaCandlestickHeadScript : MonoBehaviour
 
 	public float Value;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.rigidbody.AddForce(this.transform.up * (float)100);
-		this.rigidbody.AddForce(this.transform.right * (float)100);
+		Rigidbody component = base.GetComponent<Rigidbody>();
+		component.AddForce(base.transform.up * 100f);
+		component.AddForce(base.transform.right * 100f);
 		this.Value = UnityEngine.Random.Range(-1f, 1f);
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		this.Rotation += new Vector3(this.Value, this.Value, this.Value);
-		this.transform.localEulerAngles = this.Rotation;
-		if (this.transform.localPosition.y < 0.23f)
+		base.transform.localEulerAngles = this.Rotation;
+		if (base.transform.localPosition.y < 0.23f)
 		{
-			UnityEngine.Object.Instantiate(this.Fire, this.transform.position, Quaternion.identity);
-			UnityEngine.Object.Destroy(this.gameObject);
+			UnityEngine.Object.Instantiate<GameObject>(this.Fire, base.transform.position, Quaternion.identity);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

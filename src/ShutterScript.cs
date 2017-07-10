@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class ShutterScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
@@ -101,62 +99,51 @@ public class ShutterScript : MonoBehaviour
 
 	public int ID;
 
-	public int OnlyPhotography;
+	public int OnlyPhotography = 65537;
 
-	public int OnlyCharacters;
+	public int OnlyCharacters = 513;
 
-	public int OnlyRagdolls;
+	public int OnlyRagdolls = 2049;
 
-	public int OnlyBlood;
+	public int OnlyBlood = 16385;
 
-	public ShutterScript()
-	{
-		this.OnlyPhotography = 65537;
-		this.OnlyCharacters = 513;
-		this.OnlyRagdolls = 2049;
-		this.OnlyBlood = 16385;
-	}
-
-	public virtual void Start()
+	private void Start()
 	{
 		if (PlayerPrefs.GetInt("MissionMode") == 1)
 		{
 			this.MissionMode = true;
 		}
-		this.ErrorWindow.transform.localScale = new Vector3((float)0, (float)0, (float)0);
-		this.CameraButtons.active = false;
-		this.PhotoIcons.active = false;
-		int num = 0;
-		Color color = this.Sprite.color;
-		float num2 = color.a = (float)num;
-		Color color2 = this.Sprite.color = color;
+		this.ErrorWindow.transform.localScale = Vector3.zero;
+		this.CameraButtons.SetActive(false);
+		this.PhotoIcons.SetActive(false);
+		this.Sprite.color = new Color(this.Sprite.color.r, this.Sprite.color.g, this.Sprite.color.b, 0f);
 		this.OnlyPhotography = 65537;
 		this.OnlyCharacters = 513;
 		this.OnlyRagdolls = 2049;
 		this.OnlyBlood = 16385;
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.Snapping)
 		{
 			if (this.Close)
 			{
 				this.Frame++;
-				this.Sprite.spriteName = "Shutter" + this.Frame;
+				this.Sprite.spriteName = "Shutter" + this.Frame.ToString();
 				if (this.Frame == 8)
 				{
-					this.StudentManager.GhostChan.active = true;
+					this.StudentManager.GhostChan.gameObject.SetActive(true);
 					this.StudentManager.GhostChan.Look();
 					this.CheckPhoto();
 					this.SmartphoneCamera.targetTexture = null;
 					this.Yandere.PhonePromptBar.Show = false;
-					this.NotificationManager.active = false;
-					this.HeartbeatCamera.active = false;
+					this.NotificationManager.SetActive(false);
+					this.HeartbeatCamera.SetActive(false);
 					this.MainCamera.enabled = false;
-					this.PhotoIcons.active = true;
-					this.SubPanel.active = false;
-					this.Panel.active = false;
+					this.PhotoIcons.SetActive(true);
+					this.SubPanel.SetActive(false);
+					this.Panel.SetActive(false);
 					this.Close = false;
 					this.PromptBar.ClearButtons();
 					this.PromptBar.Label[0].text = "Save";
@@ -167,19 +154,16 @@ public class ShutterScript : MonoBehaviour
 					}
 					this.PromptBar.UpdateButtons();
 					this.PromptBar.Show = true;
-					Time.timeScale = (float)0;
+					Time.timeScale = 0f;
 				}
 			}
 			else
 			{
 				this.Frame--;
-				this.Sprite.spriteName = "Shutter" + this.Frame;
+				this.Sprite.spriteName = "Shutter" + this.Frame.ToString();
 				if (this.Frame == 1)
 				{
-					int num = 0;
-					Color color = this.Sprite.color;
-					float num2 = color.a = (float)num;
-					Color color2 = this.Sprite.color = color;
+					this.Sprite.color = new Color(this.Sprite.color.r, this.Sprite.color.g, this.Sprite.color.b, 0f);
 					this.Snapping = false;
 				}
 			}
@@ -192,25 +176,25 @@ public class ShutterScript : MonoBehaviour
 			{
 				if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyPhotography))
 				{
-					if (this.hit.collider.gameObject.name == "Face")
+					if (this.hit.collider.gameObject.name.Equals("Face"))
 					{
 						GameObject gameObject = this.hit.collider.gameObject.transform.root.gameObject;
-						this.FaceStudent = (StudentScript)this.hit.collider.gameObject.transform.root.gameObject.GetComponent(typeof(StudentScript));
+						this.FaceStudent = gameObject.GetComponent<StudentScript>();
 						if (this.FaceStudent != null)
 						{
 							this.TargetStudent = this.FaceStudent.StudentID;
-							if (!this.FaceStudent.Male && !this.FaceStudent.Alarmed && !this.FaceStudent.Distracted && !this.FaceStudent.InEvent && !this.FaceStudent.Wet && !this.FaceStudent.CensorSteam[0].active && !this.FaceStudent.Fleeing && !this.FaceStudent.Following && !this.FaceStudent.ShoeRemoval.enabled && !this.FaceStudent.HoldingHands && this.FaceStudent.Actions[this.FaceStudent.Phase] != 16 && Vector3.Distance(this.Yandere.transform.position, gameObject.transform.position) < 1.66666f)
+							if (!this.FaceStudent.Male && !this.FaceStudent.Alarmed && !this.FaceStudent.Distracted && !this.FaceStudent.InEvent && !this.FaceStudent.Wet && !this.FaceStudent.CensorSteam[0].activeInHierarchy && !this.FaceStudent.Fleeing && !this.FaceStudent.Following && !this.FaceStudent.ShoeRemoval.enabled && !this.FaceStudent.HoldingHands && this.FaceStudent.Actions[this.FaceStudent.Phase] != 16 && Vector3.Distance(this.Yandere.transform.position, gameObject.transform.position) < 1.66666f)
 							{
 								Plane[] planes = GeometryUtility.CalculateFrustumPlanes(this.FaceStudent.VisionCone);
-								if (GeometryUtility.TestPlanesAABB(planes, this.Yandere.collider.bounds) && Physics.Linecast(this.FaceStudent.Eyes.position, this.Yandere.transform.position + Vector3.up * (float)1, out this.hit) && this.hit.collider.gameObject == this.Yandere.gameObject)
+								if (GeometryUtility.TestPlanesAABB(planes, this.Yandere.GetComponent<Collider>().bounds) && Physics.Linecast(this.FaceStudent.Eyes.position, this.Yandere.transform.position + Vector3.up, out this.hit) && this.hit.collider.gameObject == this.Yandere.gameObject)
 								{
 									if (this.MissionMode)
 									{
 										this.PenaltyTimer += Time.deltaTime;
-										if (this.PenaltyTimer > (float)1)
+										if (this.PenaltyTimer > 1f)
 										{
-											this.FaceStudent.Reputation.PendingRep = this.FaceStudent.Reputation.PendingRep - (float)10;
-											this.PenaltyTimer = (float)0;
+											this.FaceStudent.Reputation.PendingRep -= 10f;
+											this.PenaltyTimer = 0f;
 										}
 									}
 									if (!this.FaceStudent.CameraReacting)
@@ -222,18 +206,18 @@ public class ShutterScript : MonoBehaviour
 									}
 									else
 									{
-										this.FaceStudent.CameraPoseTimer = (float)1;
+										this.FaceStudent.CameraPoseTimer = 1f;
 									}
 								}
 							}
 						}
 					}
-					else if (this.hit.collider.gameObject.name == "Panties" || this.hit.collider.gameObject.name == "Skirt")
+					else if (this.hit.collider.gameObject.name.Equals("Panties") || this.hit.collider.gameObject.name.Equals("Skirt"))
 					{
 						GameObject gameObject2 = this.hit.collider.gameObject.transform.root.gameObject;
 						if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyCharacters))
 						{
-							if (Vector3.Distance(this.Yandere.transform.position, gameObject2.transform.position) < (float)5)
+							if (Vector3.Distance(this.Yandere.transform.position, gameObject2.transform.position) < 5f)
 							{
 								if (this.hit.collider.gameObject == gameObject2)
 								{
@@ -267,7 +251,7 @@ public class ShutterScript : MonoBehaviour
 		}
 		else
 		{
-			this.Timer = (float)0;
+			this.Timer = 0f;
 		}
 		if (this.TookPhoto)
 		{
@@ -275,30 +259,23 @@ public class ShutterScript : MonoBehaviour
 		}
 		if (!this.DisplayError)
 		{
-			if (this.PhotoIcons.active && !this.Snapping && !this.TextMessages.active)
+			if (this.PhotoIcons.activeInHierarchy && !this.Snapping && !this.TextMessages.gameObject.activeInHierarchy)
 			{
 				if (Input.GetButtonDown("A"))
 				{
 					if (!this.Yandere.RivalPhone)
 					{
-						bool flag = false;
-						if (!this.SenpaiX.active)
-						{
-							flag = true;
-						}
-						int num3 = -627;
-						Vector3 localPosition = this.PromptBar.transform.localPosition;
-						float num4 = localPosition.y = (float)num3;
-						Vector3 vector = this.PromptBar.transform.localPosition = localPosition;
+						bool flag = !this.SenpaiX.activeInHierarchy;
+						this.PromptBar.transform.localPosition = new Vector3(this.PromptBar.transform.localPosition.x, -627f, this.PromptBar.transform.localPosition.z);
 						this.PromptBar.ClearButtons();
 						this.PromptBar.Show = false;
-						this.PhotoIcons.active = false;
+						this.PhotoIcons.SetActive(false);
 						this.ID = 0;
 						this.FreeSpace = false;
 						while (this.ID < 26)
 						{
 							this.ID++;
-							if (PlayerPrefs.GetInt("Photo_" + this.ID) == 0)
+							if (PlayerPrefs.GetInt("Photo_" + this.ID.ToString()) == 0)
 							{
 								this.FreeSpace = true;
 								this.Slot = this.ID;
@@ -307,16 +284,16 @@ public class ShutterScript : MonoBehaviour
 						}
 						if (this.FreeSpace)
 						{
-							Application.CaptureScreenshot(Application.streamingAssetsPath + "/Photographs/" + "Photo_" + this.Slot + ".png");
+							Application.CaptureScreenshot(Application.streamingAssetsPath + "/Photographs/Photo_" + this.Slot.ToString() + ".png");
 							this.TookPhoto = true;
-							PlayerPrefs.SetInt("Photo_" + this.Slot, 1);
+							PlayerPrefs.SetInt("Photo_" + this.Slot.ToString(), 1);
 							if (flag)
 							{
-								PlayerPrefs.SetInt("SenpaiPhoto_" + this.Slot, 1);
+								PlayerPrefs.SetInt("SenpaiPhoto_" + this.Slot.ToString(), 1);
 							}
 							if (this.KittenShot)
 							{
-								PlayerPrefs.SetInt("KittenPhoto_" + this.Slot, 1);
+								PlayerPrefs.SetInt("KittenPhoto_" + this.Slot.ToString(), 1);
 								this.TaskManager.UpdateTaskStatus();
 							}
 						}
@@ -325,7 +302,7 @@ public class ShutterScript : MonoBehaviour
 							this.DisplayError = true;
 						}
 					}
-					else if (!this.PantiesX.active)
+					else if (!this.PantiesX.activeInHierarchy)
 					{
 						PlayerPrefs.SetInt("Scheme_4_Stage", 3);
 						this.Schemes.UpdateInstructions();
@@ -334,31 +311,31 @@ public class ShutterScript : MonoBehaviour
 				}
 				if (!this.Yandere.RivalPhone && Input.GetButtonDown("X"))
 				{
-					this.Panel.active = true;
-					this.MainMenu.active = false;
+					this.Panel.SetActive(true);
+					this.MainMenu.SetActive(false);
 					this.PauseScreen.Show = true;
 					this.PauseScreen.Panel.enabled = true;
 					this.PromptBar.ClearButtons();
 					this.PromptBar.Label[1].text = "Exit";
 					this.PromptBar.Label[3].text = "Interests";
 					this.PromptBar.UpdateButtons();
-					if (!this.InfoX.active)
+					if (!this.InfoX.activeInHierarchy)
 					{
 						this.PauseScreen.Sideways = true;
-						PlayerPrefs.SetInt("Student_" + this.Student.StudentID + "_Photographed", 1);
+						PlayerPrefs.SetInt("Student_" + this.Student.StudentID.ToString() + "_Photographed", 1);
 						this.ID = 0;
-						while (this.ID < Extensions.get_length(this.Student.Outlines))
+						while (this.ID < this.Student.Outlines.Length)
 						{
 							this.Student.Outlines[this.ID].enabled = true;
 							this.ID++;
 						}
 						this.StudentInfo.UpdateInfo(this.Student.StudentID);
-						this.StudentInfo.active = true;
+						this.StudentInfo.gameObject.SetActive(true);
 					}
-					else if (!this.TextMessages.active)
+					else if (!this.TextMessages.gameObject.activeInHierarchy)
 					{
 						this.PauseScreen.Sideways = false;
-						this.TextMessages.active = true;
+						this.TextMessages.gameObject.SetActive(true);
 						this.SpawnMessage();
 					}
 				}
@@ -367,14 +344,14 @@ public class ShutterScript : MonoBehaviour
 					this.ResumeGameplay();
 				}
 			}
-			else if (this.PhotoIcons.active && Input.GetButtonDown("B"))
+			else if (this.PhotoIcons.activeInHierarchy && Input.GetButtonDown("B"))
 			{
 				this.ResumeGameplay();
 			}
 		}
 		else
 		{
-			this.ErrorWindow.transform.localScale = Vector3.Lerp(this.ErrorWindow.transform.localScale, new Vector3((float)1, (float)1, (float)1), 0.166666672f);
+			this.ErrorWindow.transform.localScale = Vector3.Lerp(this.ErrorWindow.transform.localScale, new Vector3(1f, 1f, 1f), 0.166666672f);
 			if (Input.GetButtonDown("A"))
 			{
 				this.ResumeGameplay();
@@ -382,69 +359,66 @@ public class ShutterScript : MonoBehaviour
 		}
 	}
 
-	public virtual void Snap()
+	public void Snap()
 	{
-		this.ErrorWindow.transform.localScale = new Vector3((float)0, (float)0, (float)0);
-		this.Yandere.HandCamera.active = false;
-		int num = 1;
-		Color color = this.Sprite.color;
-		float num2 = color.a = (float)num;
-		Color color2 = this.Sprite.color = color;
+		this.ErrorWindow.transform.localScale = Vector3.zero;
+		this.Yandere.HandCamera.SetActive(false);
+		this.Sprite.color = new Color(this.Sprite.color.r, this.Sprite.color.g, this.Sprite.color.b, 1f);
 		this.Snapping = true;
 		this.Close = true;
 		this.Frame = 0;
 	}
 
-	public virtual void CheckPhoto()
+	private void CheckPhoto()
 	{
-		this.InfoX.active = true;
-		this.PantiesX.active = true;
-		this.SenpaiX.active = true;
-		this.ViolenceX.active = true;
+		this.InfoX.SetActive(true);
+		this.PantiesX.SetActive(true);
+		this.SenpaiX.SetActive(true);
+		this.ViolenceX.SetActive(true);
 		this.KittenShot = false;
 		this.Nemesis = false;
 		this.NotFace = false;
 		this.Skirt = false;
 		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyPhotography))
 		{
-			if (this.hit.collider.gameObject.name == "Panties")
+			if (this.hit.collider.gameObject.name.Equals("Panties"))
 			{
-				this.Student = (StudentScript)this.hit.collider.gameObject.transform.root.gameObject.GetComponent(typeof(StudentScript));
-				this.PantiesX.active = false;
+				this.Student = this.hit.collider.gameObject.transform.root.gameObject.GetComponent<StudentScript>();
+				this.PantiesX.SetActive(false);
 			}
-			else if (this.hit.collider.gameObject.name == "Face")
+			else if (this.hit.collider.gameObject.name.Equals("Face"))
 			{
-				if (this.hit.collider.gameObject.tag == "Nemesis")
+				if (this.hit.collider.gameObject.tag.Equals("Nemesis"))
 				{
 					this.Nemesis = true;
 					this.NemesisShots++;
 				}
-				else if (this.hit.collider.gameObject.tag == "Disguise")
+				else if (this.hit.collider.gameObject.tag.Equals("Disguise"))
 				{
 					this.Disguise = true;
 				}
 				else
 				{
-					this.Student = (StudentScript)this.hit.collider.gameObject.transform.root.gameObject.GetComponent(typeof(StudentScript));
+					this.Student = this.hit.collider.gameObject.transform.root.gameObject.GetComponent<StudentScript>();
 					if (this.Student.StudentID == 1)
 					{
-						this.SenpaiX.active = false;
+						this.SenpaiX.SetActive(false);
 					}
 					else
 					{
-						this.InfoX.active = false;
+						this.InfoX.SetActive(false);
 					}
 				}
 			}
-			else if (this.hit.collider.gameObject.name == "NotFace")
+			else if (this.hit.collider.gameObject.name.Equals("NotFace"))
 			{
 				this.NotFace = true;
 			}
-			else if (this.hit.collider.gameObject.name == "Skirt")
+			else if (this.hit.collider.gameObject.name.Equals("Skirt"))
 			{
 				this.Skirt = true;
 			}
-			if (this.hit.collider.gameObject.name == "Kitten")
+			if (this.hit.collider.gameObject.name.Equals("Kitten"))
 			{
 				this.KittenShot = true;
 				if (PlayerPrefs.GetInt("Topic_20_Discovered") == 0)
@@ -456,43 +430,43 @@ public class ShutterScript : MonoBehaviour
 		}
 		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyRagdolls) && this.hit.collider.gameObject.layer == 11)
 		{
-			this.ViolenceX.active = false;
+			this.ViolenceX.SetActive(false);
 		}
 		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyBlood) && this.hit.collider.gameObject.layer == 14)
 		{
-			this.ViolenceX.active = false;
+			this.ViolenceX.SetActive(false);
 		}
 	}
 
-	public virtual void SpawnMessage()
+	private void SpawnMessage()
 	{
 		if (this.NewMessage != null)
 		{
 			UnityEngine.Object.Destroy(this.NewMessage);
 		}
-		this.NewMessage = (GameObject)UnityEngine.Object.Instantiate(this.Message);
+		this.NewMessage = UnityEngine.Object.Instantiate<GameObject>(this.Message);
 		this.NewMessage.transform.parent = this.TextMessages;
-		this.NewMessage.transform.localPosition = new Vector3((float)-225, (float)-275, (float)0);
-		this.NewMessage.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
-		this.NewMessage.transform.localScale = new Vector3((float)1, (float)1, (float)1);
-		bool flag;
-		if (this.hit.collider != null && this.hit.collider.gameObject.name == "Kitten")
+		this.NewMessage.transform.localPosition = new Vector3(-225f, -275f, 0f);
+		this.NewMessage.transform.localEulerAngles = Vector3.zero;
+		this.NewMessage.transform.localScale = new Vector3(1f, 1f, 1f);
+		bool flag = false;
+		if (this.hit.collider != null && this.hit.collider.gameObject.name.Equals("Kitten"))
 		{
 			flag = true;
 		}
-		string text;
+		string text = string.Empty;
 		int num;
 		if (flag)
 		{
 			text = "Why are you showing me this? I don't care.";
 			num = 2;
 		}
-		else if (!this.InfoX.active)
+		else if (!this.InfoX.activeInHierarchy)
 		{
 			text = "I recognize this person. Here's some information about them.";
 			num = 3;
 		}
-		else if (!this.PantiesX.active)
+		else if (!this.PantiesX.activeInHierarchy)
 		{
 			if (this.Student != null)
 			{
@@ -523,12 +497,12 @@ public class ShutterScript : MonoBehaviour
 				num = 2;
 			}
 		}
-		else if (!this.ViolenceX.active)
+		else if (!this.ViolenceX.activeInHierarchy)
 		{
 			text = "Good work, but don't send me this stuff. I have no use for it.";
 			num = 3;
 		}
-		else if (!this.SenpaiX.active)
+		else if (!this.SenpaiX.activeInHierarchy)
 		{
 			if (PlayerPrefs.GetInt("SenpaiShots") == 0)
 			{
@@ -605,30 +579,30 @@ public class ShutterScript : MonoBehaviour
 			text = "I don't get it. What are you trying to show me? Make sure the subject is in the EXACT center of the photo.";
 			num = 5;
 		}
-		((UISprite)this.NewMessage.GetComponent(typeof(UISprite))).height = 36 + 36 * num;
-		((TextMessageScript)this.NewMessage.GetComponent(typeof(TextMessageScript))).Label.text = text;
+		this.NewMessage.GetComponent<UISprite>().height = 36 + 36 * num;
+		this.NewMessage.GetComponent<TextMessageScript>().Label.text = text;
 	}
 
-	public virtual void ResumeGameplay()
+	private void ResumeGameplay()
 	{
-		this.ErrorWindow.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+		this.ErrorWindow.transform.localScale = Vector3.zero;
 		this.SmartphoneCamera.targetTexture = this.SmartphoneScreen;
-		this.StudentManager.GhostChan.active = false;
-		this.NotificationManager.active = true;
+		this.StudentManager.GhostChan.gameObject.SetActive(false);
+		this.NotificationManager.SetActive(true);
 		this.PauseScreen.CorrectingTime = true;
-		this.Yandere.HandCamera.active = true;
-		this.HeartbeatCamera.active = true;
-		this.TextMessages.active = false;
-		this.StudentInfo.active = false;
+		this.Yandere.HandCamera.SetActive(true);
+		this.HeartbeatCamera.SetActive(true);
+		this.TextMessages.gameObject.SetActive(false);
+		this.StudentInfo.gameObject.SetActive(false);
 		this.MainCamera.enabled = true;
-		this.PhotoIcons.active = false;
+		this.PhotoIcons.SetActive(false);
 		this.PauseScreen.Show = false;
-		this.SubPanel.active = true;
-		this.MainMenu.active = true;
+		this.SubPanel.SetActive(true);
+		this.MainMenu.SetActive(true);
 		this.Yandere.CanMove = true;
 		this.DisplayError = false;
-		this.Panel.active = true;
-		Time.timeScale = (float)1;
+		this.Panel.SetActive(true);
+		Time.timeScale = 1f;
 		this.TakePhoto = false;
 		this.TookPhoto = false;
 		this.PromptBar.ClearButtons();
@@ -642,9 +616,5 @@ public class ShutterScript : MonoBehaviour
 			this.Yandere.MainCamera.clearFlags = CameraClearFlags.Skybox;
 			this.Yandere.MainCamera.farClipPlane = 325f;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

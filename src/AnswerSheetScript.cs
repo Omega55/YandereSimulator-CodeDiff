@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class AnswerSheetScript : MonoBehaviour
 {
 	public SchemesScript Schemes;
@@ -16,21 +15,16 @@ public class AnswerSheetScript : MonoBehaviour
 
 	public MeshFilter MyMesh;
 
-	public int Phase;
+	public int Phase = 1;
 
-	public AnswerSheetScript()
-	{
-		this.Phase = 1;
-	}
-
-	public virtual void Start()
+	private void Start()
 	{
 		this.OriginalMesh = this.MyMesh.mesh;
 		if (PlayerPrefs.GetInt("Scheme_5_Stage") == 100)
 		{
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
-			this.active = false;
+			base.gameObject.SetActive(false);
 		}
 		else
 		{
@@ -43,14 +37,14 @@ public class AnswerSheetScript : MonoBehaviour
 			{
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
-				this.active = false;
+				base.gameObject.SetActive(false);
 			}
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Prompt.Circle[0].fillAmount == (float)0)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			if (this.Phase == 1)
 			{
@@ -74,9 +68,5 @@ public class AnswerSheetScript : MonoBehaviour
 				this.Phase++;
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

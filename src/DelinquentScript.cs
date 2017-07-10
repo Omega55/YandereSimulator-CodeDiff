@@ -1,9 +1,6 @@
 ﻿using System;
-using Boo.Lang.Runtime;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class DelinquentScript : MonoBehaviour
 {
 	private Quaternion targetRotation;
@@ -18,7 +15,7 @@ public class DelinquentScript : MonoBehaviour
 
 	public GameObject Character;
 
-	public Renderer MyRenderer;
+	public SkinnedMeshRenderer MyRenderer;
 
 	public GameObject MyWeapon;
 
@@ -42,21 +39,21 @@ public class DelinquentScript : MonoBehaviour
 
 	public Plane[] Planes;
 
-	public string CooldownAnim;
+	public string CooldownAnim = "f02_idleShort_00";
 
-	public string ThreatenAnim;
+	public string ThreatenAnim = "f02_threaten_00";
 
-	public string SurpriseAnim;
+	public string SurpriseAnim = "f02_surprise_00";
 
-	public string ShoveAnim;
+	public string ShoveAnim = "f02_shoveB_00";
 
-	public string SwingAnim;
+	public string SwingAnim = "f02_swingA_00";
 
-	public string RunAnim;
+	public string RunAnim = "f02_spring_00";
 
-	public string IdleAnim;
+	public string IdleAnim = string.Empty;
 
-	public string Prefix;
+	public string Prefix = "f02_";
 
 	public bool ExpressedSurprise;
 
@@ -86,7 +83,7 @@ public class DelinquentScript : MonoBehaviour
 
 	public float Timer;
 
-	public int AudioPhase;
+	public int AudioPhase = 1;
 
 	public int Spaces;
 
@@ -124,49 +121,31 @@ public class DelinquentScript : MonoBehaviour
 
 	public Color HairColor;
 
-	public DelinquentScript()
+	private void Start()
 	{
-		this.CooldownAnim = "f02_idleShort_00";
-		this.ThreatenAnim = "f02_threaten_00";
-		this.SurpriseAnim = "f02_surprise_00";
-		this.ShoveAnim = "f02_shoveB_00";
-		this.SwingAnim = "f02_swingA_00";
-		this.RunAnim = "f02_spring_00";
-		this.IdleAnim = string.Empty;
-		this.Prefix = "f02_";
-		this.AudioPhase = 1;
-	}
-
-	public virtual void Start()
-	{
-		this.EasterHair.active = false;
-		this.Bandanas.active = false;
-		this.OriginalRotation = this.transform.rotation;
+		this.EasterHair.SetActive(false);
+		this.Bandanas.SetActive(false);
+		this.OriginalRotation = base.transform.rotation;
 		this.LookAtTarget = this.Default.position;
 		if (this.Weapon != null)
 		{
-			float y = -0.145f;
-			Vector3 localPosition = this.Weapon.localPosition;
-			float num = localPosition.y = y;
-			Vector3 vector = this.Weapon.localPosition = localPosition;
-			this.Rotation = (float)90;
-			float rotation = this.Rotation;
-			Vector3 localEulerAngles = this.Weapon.localEulerAngles;
-			float num2 = localEulerAngles.x = rotation;
-			Vector3 vector2 = this.Weapon.localEulerAngles = localEulerAngles;
+			this.Weapon.localPosition = new Vector3(this.Weapon.localPosition.x, -0.145f, this.Weapon.localPosition.z);
+			this.Rotation = 90f;
+			this.Weapon.localEulerAngles = new Vector3(this.Rotation, this.Weapon.localEulerAngles.y, this.Weapon.localEulerAngles.z);
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		this.DistanceToPlayer = Vector3.Distance(this.transform.position, this.Yandere.transform.position);
-		if (this.DistanceToPlayer < (float)7)
+		this.DistanceToPlayer = Vector3.Distance(base.transform.position, this.Yandere.transform.position);
+		AudioSource component = base.GetComponent<AudioSource>();
+		if (this.DistanceToPlayer < 7f)
 		{
 			this.Planes = GeometryUtility.CalculateFrustumPlanes(this.Eyes);
-			if (GeometryUtility.TestPlanesAABB(this.Planes, this.Yandere.collider.bounds))
+			if (GeometryUtility.TestPlanesAABB(this.Planes, this.Yandere.GetComponent<Collider>().bounds))
 			{
-				RaycastHit raycastHit = default(RaycastHit);
-				if (Physics.Linecast(this.Eyes.transform.position, this.Yandere.transform.position + Vector3.up * (float)1, out raycastHit))
+				RaycastHit raycastHit;
+				if (Physics.Linecast(this.Eyes.transform.position, this.Yandere.transform.position + Vector3.up, out raycastHit))
 				{
 					if (raycastHit.collider.gameObject == this.Yandere.gameObject)
 					{
@@ -175,15 +154,15 @@ public class DelinquentScript : MonoBehaviour
 						{
 							if (!this.Threatening)
 							{
-								this.audio.clip = this.SurpriseClips[UnityEngine.Random.Range(0, this.SurpriseClips.Length)];
-								this.audio.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
-								this.audio.Play();
+								component.clip = this.SurpriseClips[UnityEngine.Random.Range(0, this.SurpriseClips.Length)];
+								component.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+								component.Play();
 							}
 							this.Threatening = true;
 							if (this.Cooldown)
 							{
 								this.Cooldown = false;
-								this.Timer = (float)0;
+								this.Timer = 0f;
 							}
 						}
 						else
@@ -192,9 +171,9 @@ public class DelinquentScript : MonoBehaviour
 							{
 								if (!this.Threatening)
 								{
-									this.audio.clip = this.SurpriseClips[UnityEngine.Random.Range(0, this.SurpriseClips.Length)];
-									this.audio.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
-									this.audio.Play();
+									component.clip = this.SurpriseClips[UnityEngine.Random.Range(0, this.SurpriseClips.Length)];
+									component.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+									component.Play();
 								}
 								this.Threatening = true;
 								if (!this.Yandere.Chased)
@@ -204,18 +183,11 @@ public class DelinquentScript : MonoBehaviour
 								}
 								this.Yandere.Chased = true;
 							}
-							else if (!this.Threatening && this.DelinquentManager.SpeechTimer == (float)0)
+							else if (!this.Threatening && this.DelinquentManager.SpeechTimer == 0f)
 							{
-								if (this.Yandere.Container == null)
-								{
-									this.audio.clip = this.ProximityClips[UnityEngine.Random.Range(0, Extensions.get_length(this.ProximityClips))];
-								}
-								else
-								{
-									this.audio.clip = this.CaseClips[UnityEngine.Random.Range(0, Extensions.get_length(this.CaseClips))];
-								}
-								this.audio.Play();
-								this.DelinquentManager.SpeechTimer = (float)10;
+								component.clip = ((!(this.Yandere.Container == null)) ? this.CaseClips[UnityEngine.Random.Range(0, this.CaseClips.Length)] : this.ProximityClips[UnityEngine.Random.Range(0, this.ProximityClips.Length)]);
+								component.Play();
+								this.DelinquentManager.SpeechTimer = 10f;
 							}
 							this.LookAtPlayer = true;
 						}
@@ -235,64 +207,46 @@ public class DelinquentScript : MonoBehaviour
 		{
 			if (this.Shoving)
 			{
-				this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - this.transform.position);
-				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
-				this.targetRotation = Quaternion.LookRotation(this.transform.position - this.Yandere.transform.position);
-				this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
-				if (this.Character.animation[this.ShoveAnim].time >= this.Character.animation[this.ShoveAnim].length)
+				this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - base.transform.position);
+				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
+				this.targetRotation = Quaternion.LookRotation(base.transform.position - this.Yandere.transform.position);
+				this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
+				if (this.Character.GetComponent<Animation>()[this.ShoveAnim].time >= this.Character.GetComponent<Animation>()[this.ShoveAnim].length)
 				{
 					this.LookAtTarget = this.Neck.position + this.Neck.forward;
-					this.Character.animation.CrossFade(this.IdleAnim, (float)1);
+					this.Character.GetComponent<Animation>().CrossFade(this.IdleAnim, 1f);
 					this.Shoving = false;
 				}
 				if (this.Weapon != null)
 				{
-					float y = Mathf.Lerp(this.Weapon.localPosition.y, (float)0, Time.deltaTime * (float)10);
-					Vector3 localPosition = this.Weapon.localPosition;
-					float num = localPosition.y = y;
-					Vector3 vector = this.Weapon.localPosition = localPosition;
-					this.Rotation = Mathf.Lerp(this.Rotation, (float)0, Time.deltaTime * (float)10);
-					float rotation = this.Rotation;
-					Vector3 localEulerAngles = this.Weapon.localEulerAngles;
-					float num2 = localEulerAngles.x = rotation;
-					Vector3 vector2 = this.Weapon.localEulerAngles = localEulerAngles;
+					this.Weapon.localPosition = new Vector3(this.Weapon.localPosition.x, Mathf.Lerp(this.Weapon.localPosition.y, 0f, Time.deltaTime * 10f), this.Weapon.localPosition.z);
+					this.Rotation = Mathf.Lerp(this.Rotation, 0f, Time.deltaTime * 10f);
+					this.Weapon.localEulerAngles = new Vector3(this.Rotation, this.Weapon.localEulerAngles.y, this.Weapon.localEulerAngles.z);
 				}
 			}
 			else
 			{
 				this.Shove();
-				this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.OriginalRotation, Time.deltaTime);
+				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.OriginalRotation, Time.deltaTime);
 				if (this.Weapon != null)
 				{
-					float y2 = Mathf.Lerp(this.Weapon.localPosition.y, -0.145f, Time.deltaTime * (float)10);
-					Vector3 localPosition2 = this.Weapon.localPosition;
-					float num3 = localPosition2.y = y2;
-					Vector3 vector3 = this.Weapon.localPosition = localPosition2;
-					this.Rotation = Mathf.Lerp(this.Rotation, (float)90, Time.deltaTime * (float)10);
-					float rotation2 = this.Rotation;
-					Vector3 localEulerAngles2 = this.Weapon.localEulerAngles;
-					float num4 = localEulerAngles2.x = rotation2;
-					Vector3 vector4 = this.Weapon.localEulerAngles = localEulerAngles2;
+					this.Weapon.localPosition = new Vector3(this.Weapon.localPosition.x, Mathf.Lerp(this.Weapon.localPosition.y, -0.145f, Time.deltaTime * 10f), this.Weapon.localPosition.z);
+					this.Rotation = Mathf.Lerp(this.Rotation, 90f, Time.deltaTime * 10f);
+					this.Weapon.localEulerAngles = new Vector3(this.Rotation, this.Weapon.localEulerAngles.y, this.Weapon.localEulerAngles.z);
 				}
 			}
 		}
 		else
 		{
-			this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - this.transform.position);
-			this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
+			this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - base.transform.position);
+			base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
 			if (this.Weapon != null)
 			{
-				float y3 = Mathf.Lerp(this.Weapon.localPosition.y, (float)0, Time.deltaTime * (float)10);
-				Vector3 localPosition3 = this.Weapon.localPosition;
-				float num5 = localPosition3.y = y3;
-				Vector3 vector5 = this.Weapon.localPosition = localPosition3;
-				this.Rotation = Mathf.Lerp(this.Rotation, (float)0, Time.deltaTime * (float)10);
-				float rotation3 = this.Rotation;
-				Vector3 localEulerAngles3 = this.Weapon.localEulerAngles;
-				float num6 = localEulerAngles3.x = rotation3;
-				Vector3 vector6 = this.Weapon.localEulerAngles = localEulerAngles3;
+				this.Weapon.localPosition = new Vector3(this.Weapon.localPosition.x, Mathf.Lerp(this.Weapon.localPosition.y, 0f, Time.deltaTime * 10f), this.Weapon.localPosition.z);
+				this.Rotation = Mathf.Lerp(this.Rotation, 0f, Time.deltaTime * 10f);
+				this.Weapon.localEulerAngles = new Vector3(this.Rotation, this.Weapon.localEulerAngles.y, this.Weapon.localEulerAngles.z);
 			}
-			if (this.DistanceToPlayer < (float)1)
+			if (this.DistanceToPlayer < 1f)
 			{
 				if (this.Yandere.Armed || this.Run)
 				{
@@ -300,10 +254,11 @@ public class DelinquentScript : MonoBehaviour
 					{
 						if (this.Yandere.CanMove && (!this.Yandere.Chased || (this.Yandere.Chased && this.DelinquentManager.Attacker == this)))
 						{
-							if (!this.DelinquentManager.audio.isPlaying)
+							AudioSource component2 = this.DelinquentManager.GetComponent<AudioSource>();
+							if (!component2.isPlaying)
 							{
-								this.DelinquentManager.audio.clip = this.AttackClip;
-								this.DelinquentManager.audio.Play();
+								component2.clip = this.AttackClip;
+								component2.Play();
 								this.DelinquentManager.enabled = false;
 							}
 							if (this.Yandere.Laughing)
@@ -314,10 +269,10 @@ public class DelinquentScript : MonoBehaviour
 							{
 								this.Yandere.StopAiming();
 							}
-							this.Character.animation.CrossFade(this.SwingAnim);
-							this.MyWeapon.active = true;
+							this.Character.GetComponent<Animation>().CrossFade(this.SwingAnim);
+							this.MyWeapon.SetActive(true);
 							this.Attacking = true;
-							this.Yandere.Character.animation.CrossFade("f02_swingB_00");
+							this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_swingB_00");
 							this.Yandere.RPGCamera.enabled = false;
 							this.Yandere.CanMove = false;
 							this.Yandere.Attacked = true;
@@ -328,24 +283,24 @@ public class DelinquentScript : MonoBehaviour
 					{
 						if (this.AudioPhase == 1)
 						{
-							if (this.Character.animation[this.SwingAnim].time >= this.Character.animation[this.SwingAnim].length * 0.3f)
+							if (this.Character.GetComponent<Animation>()[this.SwingAnim].time >= this.Character.GetComponent<Animation>()[this.SwingAnim].length * 0.3f)
 							{
-								this.Jukebox.active = false;
+								this.Jukebox.SetActive(false);
 								this.AudioPhase++;
-								this.audio.pitch = (float)1;
-								this.audio.clip = this.Strike;
-								this.audio.Play();
+								component.pitch = 1f;
+								component.clip = this.Strike;
+								component.Play();
 							}
 						}
-						else if (this.AudioPhase == 2 && this.Character.animation[this.SwingAnim].time >= this.Character.animation[this.SwingAnim].length * 0.85f)
+						else if (this.AudioPhase == 2 && this.Character.GetComponent<Animation>()[this.SwingAnim].time >= this.Character.GetComponent<Animation>()[this.SwingAnim].length * 0.85f)
 						{
 							this.AudioPhase++;
-							this.audio.pitch = (float)1;
-							this.audio.clip = this.Crumple;
-							this.audio.Play();
+							component.pitch = 1f;
+							component.clip = this.Crumple;
+							component.Play();
 						}
-						this.targetRotation = Quaternion.LookRotation(this.transform.position - this.Yandere.transform.position);
-						this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, this.targetRotation, (float)10 * Time.deltaTime);
+						this.targetRotation = Quaternion.LookRotation(base.transform.position - this.Yandere.transform.position);
+						this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
 					}
 				}
 				else
@@ -355,31 +310,31 @@ public class DelinquentScript : MonoBehaviour
 			}
 			else if (!this.ExpressedSurprise)
 			{
-				this.Character.animation.CrossFade(this.SurpriseAnim);
-				if (this.Character.animation[this.SurpriseAnim].time >= this.Character.animation[this.SurpriseAnim].length)
+				this.Character.GetComponent<Animation>().CrossFade(this.SurpriseAnim);
+				if (this.Character.GetComponent<Animation>()[this.SurpriseAnim].time >= this.Character.GetComponent<Animation>()[this.SurpriseAnim].length)
 				{
 					this.ExpressedSurprise = true;
 				}
 			}
 			else if (this.Run)
 			{
-				if (this.DistanceToPlayer > (float)1)
+				if (this.DistanceToPlayer > 1f)
 				{
-					this.transform.position = Vector3.MoveTowards(this.transform.position, this.Yandere.transform.position, Time.deltaTime * this.RunSpeed);
-					this.Character.animation.CrossFade(this.RunAnim);
+					base.transform.position = Vector3.MoveTowards(base.transform.position, this.Yandere.transform.position, Time.deltaTime * this.RunSpeed);
+					this.Character.GetComponent<Animation>().CrossFade(this.RunAnim);
 					this.RunSpeed += Time.deltaTime;
 				}
 			}
 			else if (!this.Cooldown)
 			{
-				this.Character.animation.CrossFade(this.ThreatenAnim);
+				this.Character.GetComponent<Animation>().CrossFade(this.ThreatenAnim);
 				if (!this.Yandere.Armed)
 				{
 					this.Timer += Time.deltaTime;
 					if (this.Timer > 2.5f)
 					{
 						this.Cooldown = true;
-						if (!this.DelinquentManager.audio.isPlaying)
+						if (!this.DelinquentManager.GetComponent<AudioSource>().isPlaying)
 						{
 							this.DelinquentManager.SpeechTimer = Time.deltaTime;
 						}
@@ -387,54 +342,59 @@ public class DelinquentScript : MonoBehaviour
 				}
 				else
 				{
-					this.Timer = (float)0;
-					if (this.DelinquentManager.SpeechTimer == (float)0)
+					this.Timer = 0f;
+					if (this.DelinquentManager.SpeechTimer == 0f)
 					{
-						this.DelinquentManager.audio.clip = this.ThreatenClips[UnityEngine.Random.Range(0, Extensions.get_length(this.ThreatenClips))];
-						this.DelinquentManager.audio.Play();
-						this.DelinquentManager.SpeechTimer = (float)10;
+						this.DelinquentManager.GetComponent<AudioSource>().clip = this.ThreatenClips[UnityEngine.Random.Range(0, this.ThreatenClips.Length)];
+						this.DelinquentManager.GetComponent<AudioSource>().Play();
+						this.DelinquentManager.SpeechTimer = 10f;
 					}
 				}
 			}
 			else
 			{
-				if (this.DelinquentManager.SpeechTimer == (float)0 && !this.DelinquentManager.audio.isPlaying)
+				if (this.DelinquentManager.SpeechTimer == 0f)
 				{
-					this.DelinquentManager.audio.clip = this.SurrenderClips[UnityEngine.Random.Range(0, Extensions.get_length(this.SurrenderClips))];
-					this.DelinquentManager.audio.Play();
-					this.DelinquentManager.SpeechTimer = (float)5;
+					AudioSource component3 = this.DelinquentManager.GetComponent<AudioSource>();
+					if (!component3.isPlaying)
+					{
+						component3.clip = this.SurrenderClips[UnityEngine.Random.Range(0, this.SurrenderClips.Length)];
+						component3.Play();
+						this.DelinquentManager.SpeechTimer = 5f;
+					}
 				}
-				this.Character.animation.CrossFade(this.CooldownAnim, 2.5f);
+				this.Character.GetComponent<Animation>().CrossFade(this.CooldownAnim, 2.5f);
 				this.Timer += Time.deltaTime;
-				if (this.Timer > (float)5)
+				if (this.Timer > 5f)
 				{
-					this.Character.animation.CrossFade(this.IdleAnim, (float)1);
+					this.Character.GetComponent<Animation>().CrossFade(this.IdleAnim, 1f);
 					this.ExpressedSurprise = false;
 					this.Threatening = false;
 					this.Cooldown = false;
-					this.Timer = (float)0;
+					this.Timer = 0f;
 				}
 				this.Shove();
 			}
 		}
 		if (Input.GetKeyDown("v") && this.LongSkirt != null)
 		{
-			RuntimeServices.SetProperty(this.MyRenderer, "sharedMesh", this.LongSkirt);
+			this.MyRenderer.sharedMesh = this.LongSkirt;
 		}
-		if (Input.GetKeyDown("space") && Vector3.Distance(this.Yandere.transform.position, this.DelinquentManager.transform.position) < (float)10)
+		if (Input.GetKeyDown("space") && Vector3.Distance(this.Yandere.transform.position, this.DelinquentManager.transform.position) < 10f)
 		{
 			this.Spaces++;
 			if (this.Spaces == 10)
 			{
 				this.Rapping = true;
-				this.MyWeapon.active = false;
+				this.MyWeapon.SetActive(false);
 				this.IdleAnim = this.Prefix + "gruntIdle_00";
-				this.Character.animation.CrossFade(this.IdleAnim);
-				this.Character.animation[this.IdleAnim].time = UnityEngine.Random.Range((float)0, this.Character.animation[this.IdleAnim].length);
-				this.DefaultHair.active = false;
-				this.Mask.active = false;
-				this.EasterHair.active = true;
-				this.Bandanas.active = true;
+				Animation component4 = this.Character.GetComponent<Animation>();
+				component4.CrossFade(this.IdleAnim);
+				component4[this.IdleAnim].time = UnityEngine.Random.Range(0f, component4[this.IdleAnim].length);
+				this.DefaultHair.SetActive(false);
+				this.Mask.SetActive(false);
+				this.EasterHair.SetActive(true);
+				this.Bandanas.SetActive(true);
 				if (this.HairRenderer != null)
 				{
 					this.HairRenderer.material.color = this.HairColor;
@@ -444,66 +404,54 @@ public class DelinquentScript : MonoBehaviour
 		}
 	}
 
-	public virtual void Shove()
+	private void Shove()
 	{
 		if (!this.Yandere.Shoved && !this.Yandere.Tripping && this.DistanceToPlayer < 0.5f)
 		{
-			this.DelinquentManager.audio.clip = this.ShoveClips[UnityEngine.Random.Range(0, Extensions.get_length(this.ShoveClips))];
-			this.DelinquentManager.audio.Play();
-			this.DelinquentManager.SpeechTimer = (float)5;
-			if (this.Yandere.transform.position.x > this.transform.position.x)
+			AudioSource component = this.DelinquentManager.GetComponent<AudioSource>();
+			component.clip = this.ShoveClips[UnityEngine.Random.Range(0, this.ShoveClips.Length)];
+			component.Play();
+			this.DelinquentManager.SpeechTimer = 5f;
+			if (this.Yandere.transform.position.x > base.transform.position.x)
 			{
-				float x = this.transform.position.x - 0.001f;
-				Vector3 position = this.Yandere.transform.position;
-				float num = position.x = x;
-				Vector3 vector = this.Yandere.transform.position = position;
+				this.Yandere.transform.position = new Vector3(base.transform.position.x - 0.001f, this.Yandere.transform.position.y, this.Yandere.transform.position.z);
 			}
 			if (this.Yandere.Aiming)
 			{
 				this.Yandere.StopAiming();
 			}
-			this.Character.animation[this.ShoveAnim].time = (float)0;
-			this.Character.animation.CrossFade(this.ShoveAnim);
+			Animation component2 = this.Character.GetComponent<Animation>();
+			component2[this.ShoveAnim].time = 0f;
+			component2.CrossFade(this.ShoveAnim);
 			this.Shoving = true;
-			this.Yandere.Character.animation.CrossFade("f02_shoveA_00");
+			this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_shoveA_00");
 			this.Yandere.CanMove = false;
 			this.Yandere.Shoved = true;
 			this.ExpressedSurprise = false;
 			this.Threatening = false;
 			this.Cooldown = false;
-			this.Timer = (float)0;
+			this.Timer = 0f;
 		}
 	}
 
-	public virtual void LateUpdate()
+	private void LateUpdate()
 	{
 		if (!this.Threatening)
 		{
 			if (!this.Shoving && !this.Rapping)
 			{
-				if (!this.LookAtPlayer)
-				{
-					this.LookAtTarget = Vector3.Lerp(this.LookAtTarget, this.Default.position, Time.deltaTime * (float)2);
-				}
-				else
-				{
-					this.LookAtTarget = Vector3.Lerp(this.LookAtTarget, this.Yandere.Head.position, Time.deltaTime * (float)2);
-				}
+				this.LookAtTarget = Vector3.Lerp(this.LookAtTarget, (!this.LookAtPlayer) ? this.Default.position : this.Yandere.Head.position, Time.deltaTime * 2f);
 				this.Neck.LookAt(this.LookAtTarget);
 			}
 			if (this.HeadStill)
 			{
-				this.Head.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+				this.Head.transform.localEulerAngles = Vector3.zero;
 			}
 		}
-		if (this.BustSize > (float)0)
+		if (this.BustSize > 0f)
 		{
 			this.RightBreast.localScale = new Vector3(this.BustSize, this.BustSize, this.BustSize);
 			this.LeftBreast.localScale = new Vector3(this.BustSize, this.BustSize, this.BustSize);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class IntroCircleScript : MonoBehaviour
 {
 	public UISprite Sprite;
@@ -22,7 +21,7 @@ public class IntroCircleScript : MonoBehaviour
 
 	public int ID;
 
-	public virtual void Update()
+	private void Update()
 	{
 		this.Timer += Time.deltaTime;
 		if (this.ID < this.StartTime.Length && this.Timer > this.StartTime[this.ID])
@@ -32,26 +31,22 @@ public class IntroCircleScript : MonoBehaviour
 			this.Label.text = this.Text[this.ID];
 			this.ID++;
 		}
-		if (this.CurrentTime > (float)0)
+		if (this.CurrentTime > 0f)
 		{
 			this.CurrentTime -= Time.deltaTime;
 		}
-		if (this.Timer > (float)1)
+		if (this.Timer > 1f)
 		{
 			this.Sprite.fillAmount = this.CurrentTime / this.LastTime;
-			if (this.Sprite.fillAmount <= (float)0)
+			if (this.Sprite.fillAmount <= 0f)
 			{
 				this.Label.text = string.Empty;
 			}
 		}
 		if (Input.GetKeyDown("space"))
 		{
-			this.CurrentTime -= (float)5;
-			this.Timer += (float)5;
+			this.CurrentTime -= 5f;
+			this.Timer += 5f;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

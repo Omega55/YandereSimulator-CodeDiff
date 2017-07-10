@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class YandereKunScript : MonoBehaviour
 {
 	public Transform ChanItemParent;
@@ -244,7 +243,7 @@ public class YandereKunScript : MonoBehaviour
 
 	public int ID;
 
-	public virtual void Start()
+	private void Start()
 	{
 		if (!this.Kizuna)
 		{
@@ -311,10 +310,10 @@ public class YandereKunScript : MonoBehaviour
 		{
 			this.SecondRenderer.enabled = true;
 		}
-		this.active = false;
+		base.gameObject.SetActive(false);
 	}
 
-	public virtual void LateUpdate()
+	private void LateUpdate()
 	{
 		if (this.Kizuna)
 		{
@@ -384,20 +383,16 @@ public class YandereKunScript : MonoBehaviour
 				{
 					for (int i = 0; i < 32; i++)
 					{
-						this.SecondRenderer.SetBlendShapeWeight(i, (float)0);
+						this.SecondRenderer.SetBlendShapeWeight(i, 0f);
 					}
 					if (this.ID > 32)
 					{
 						this.ID = 0;
 					}
-					this.SecondRenderer.SetBlendShapeWeight(this.ID, (float)100);
+					this.SecondRenderer.SetBlendShapeWeight(this.ID, 100f);
 				}
 				this.ID++;
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

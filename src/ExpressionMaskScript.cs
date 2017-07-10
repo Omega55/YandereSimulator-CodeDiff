@@ -1,14 +1,13 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class ExpressionMaskScript : MonoBehaviour
 {
 	public Renderer Mask;
 
 	public int ID;
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (Input.GetKeyDown("space"))
 		{
@@ -20,27 +19,21 @@ public class ExpressionMaskScript : MonoBehaviour
 			{
 				this.ID = 0;
 			}
-			int id = this.ID;
-			if (id == 0)
+			switch (this.ID)
 			{
-				this.Mask.material.mainTextureOffset = new Vector2((float)0, (float)0);
-			}
-			else if (id == 1)
-			{
-				this.Mask.material.mainTextureOffset = new Vector2((float)0, 0.5f);
-			}
-			else if (id == 2)
-			{
-				this.Mask.material.mainTextureOffset = new Vector2(0.5f, (float)0);
-			}
-			else if (id == 3)
-			{
+			case 0:
+				this.Mask.material.mainTextureOffset = Vector2.zero;
+				break;
+			case 1:
+				this.Mask.material.mainTextureOffset = new Vector2(0f, 0.5f);
+				break;
+			case 2:
+				this.Mask.material.mainTextureOffset = new Vector2(0.5f, 0f);
+				break;
+			case 3:
 				this.Mask.material.mainTextureOffset = new Vector2(0.5f, 0.5f);
+				break;
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

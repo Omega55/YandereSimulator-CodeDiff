@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class HomeVideoGamesScript : MonoBehaviour
 {
 	public InputManagerScript InputManager;
@@ -28,32 +27,25 @@ public class HomeVideoGamesScript : MonoBehaviour
 
 	public Transform TV;
 
-	public int ID;
+	public int ID = 1;
 
-	public HomeVideoGamesScript()
-	{
-		this.ID = 1;
-	}
-
-	public virtual void Start()
+	private void Start()
 	{
 		if (PlayerPrefs.GetInt("Task_14_Status") == 0)
 		{
 			this.TitleScreens[1] = this.TitleScreens[2];
-			this.GameTitles[1].text = this.GameTitles[2].text;
-			float a = 0.5f;
-			Color color = this.GameTitles[1].color;
-			float num = color.a = a;
-			Color color2 = this.GameTitles[1].color = color;
+			UILabel uilabel = this.GameTitles[1];
+			uilabel.text = this.GameTitles[2].text;
+			uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, 0.5f);
 		}
 		this.TitleScreen.mainTexture = this.TitleScreens[1];
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.HomeCamera.Destination == this.HomeCamera.Destinations[5])
 		{
-			this.TV.localScale = Vector3.Lerp(this.TV.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+			this.TV.localScale = Vector3.Lerp(this.TV.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 			if (!this.HomeYandere.CanMove)
 			{
 				if (!this.HomeDarkness.FadeOut)
@@ -66,10 +58,7 @@ public class HomeVideoGamesScript : MonoBehaviour
 							this.ID = 1;
 						}
 						this.TitleScreen.mainTexture = this.TitleScreens[this.ID];
-						int num = 150 - this.ID * 50;
-						Vector3 localPosition = this.Highlight.localPosition;
-						float num2 = localPosition.y = (float)num;
-						Vector3 vector = this.Highlight.localPosition = localPosition;
+						this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 150f - (float)this.ID * 50f, this.Highlight.localPosition.z);
 					}
 					if (this.InputManager.TappedUp)
 					{
@@ -79,21 +68,13 @@ public class HomeVideoGamesScript : MonoBehaviour
 							this.ID = 5;
 						}
 						this.TitleScreen.mainTexture = this.TitleScreens[this.ID];
-						int num3 = 150 - this.ID * 50;
-						Vector3 localPosition2 = this.Highlight.localPosition;
-						float num4 = localPosition2.y = (float)num3;
-						Vector3 vector2 = this.Highlight.localPosition = localPosition2;
+						this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 150f - (float)this.ID * 50f, this.Highlight.localPosition.z);
 					}
-					if (Input.GetButtonDown("A") && this.GameTitles[this.ID].color.a == (float)1)
+					if (Input.GetButtonDown("A") && this.GameTitles[this.ID].color.a == 1f)
 					{
-						float y = 1.153333f;
-						Vector3 localPosition3 = this.HomeCamera.Targets[5].localPosition;
-						float num5 = localPosition3.y = y;
-						Vector3 vector3 = this.HomeCamera.Targets[5].localPosition = localPosition3;
-						int num6 = -1;
-						Color color = this.HomeDarkness.Sprite.color;
-						float num7 = color.a = (float)num6;
-						Color color2 = this.HomeDarkness.Sprite.color = color;
+						Transform transform = this.HomeCamera.Targets[5];
+						transform.localPosition = new Vector3(transform.localPosition.x, 1.153333f, transform.localPosition.z);
+						this.HomeDarkness.Sprite.color = new Color(this.HomeDarkness.Sprite.color.r, this.HomeDarkness.Sprite.color.g, this.HomeDarkness.Sprite.color.b, -1f);
 						this.HomeDarkness.FadeOut = true;
 						this.HomeWindow.Show = false;
 						this.PromptBar.Show = false;
@@ -106,28 +87,19 @@ public class HomeVideoGamesScript : MonoBehaviour
 				}
 				else
 				{
-					float x = Mathf.Lerp(this.HomeCamera.Destinations[5].position.x, this.HomeCamera.Targets[5].position.x, Time.deltaTime * 0.75f);
-					Vector3 position = this.HomeCamera.Destinations[5].position;
-					float num8 = position.x = x;
-					Vector3 vector4 = this.HomeCamera.Destinations[5].position = position;
-					float y2 = Mathf.Lerp(this.HomeCamera.Destinations[5].position.y, this.HomeCamera.Targets[5].position.y, Time.deltaTime * (float)10);
-					Vector3 position2 = this.HomeCamera.Destinations[5].position;
-					float num9 = position2.y = y2;
-					Vector3 vector5 = this.HomeCamera.Destinations[5].position = position2;
-					float z = Mathf.Lerp(this.HomeCamera.Destinations[5].position.z, this.HomeCamera.Targets[5].position.z, Time.deltaTime * (float)10);
-					Vector3 position3 = this.HomeCamera.Destinations[5].position;
-					float num10 = position3.z = z;
-					Vector3 vector6 = this.HomeCamera.Destinations[5].position = position3;
+					Transform transform2 = this.HomeCamera.Destinations[5];
+					Transform transform3 = this.HomeCamera.Targets[5];
+					transform2.position = new Vector3(Mathf.Lerp(transform2.position.x, transform3.position.x, Time.deltaTime * 0.75f), Mathf.Lerp(transform2.position.y, transform3.position.y, Time.deltaTime * 10f), Mathf.Lerp(transform2.position.z, transform3.position.z, Time.deltaTime * 10f));
 				}
 			}
 		}
 		else
 		{
-			this.TV.localScale = Vector3.Lerp(this.TV.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+			this.TV.localScale = Vector3.Lerp(this.TV.localScale, Vector3.zero, Time.deltaTime * 10f);
 		}
 	}
 
-	public virtual void Quit()
+	public void Quit()
 	{
 		this.Controller.transform.localPosition = new Vector3(0.203f, 0.0595f, 0.0215f);
 		this.HomeCamera.Destination = this.HomeCamera.Destinations[0];
@@ -138,9 +110,5 @@ public class HomeVideoGamesScript : MonoBehaviour
 		this.HomeCamera.PlayMusic();
 		this.PromptBar.ClearButtons();
 		this.PromptBar.Show = false;
-	}
-
-	public virtual void Main()
-	{
 	}
 }

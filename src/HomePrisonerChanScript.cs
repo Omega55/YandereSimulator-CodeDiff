@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class HomePrisonerChanScript : MonoBehaviour
 {
 	public HomeYandereDetectorScript YandereDetector;
@@ -86,14 +85,14 @@ public class HomePrisonerChanScript : MonoBehaviour
 
 	public int StudentID;
 
-	public virtual void Start()
+	private void Start()
 	{
 		if (PlayerPrefs.GetInt("KidnapVictim") > 0)
 		{
 			this.PermanentAngleR = this.TwintailR.eulerAngles;
 			this.PermanentAngleL = this.TwintailL.eulerAngles;
 			this.StudentID = PlayerPrefs.GetInt("KidnapVictim");
-			if (PlayerPrefs.GetInt("Student_" + this.StudentID + "_Arrested") == 0 && PlayerPrefs.GetInt("Student_" + this.StudentID + "_Dead") == 0)
+			if (PlayerPrefs.GetInt("Student_" + this.StudentID.ToString() + "_Arrested") == 0 && PlayerPrefs.GetInt("Student_" + this.StudentID.ToString() + "_Dead") == 0)
 			{
 				this.Cosmetic.StudentID = this.StudentID;
 				this.Cosmetic.enabled = true;
@@ -103,127 +102,105 @@ public class HomePrisonerChanScript : MonoBehaviour
 				this.RightEyeOrigin = this.RightEye.localPosition;
 				this.LeftEyeOrigin = this.LeftEye.localPosition;
 				this.UpdateSanity();
-				this.TwintailR.transform.localEulerAngles = new Vector3((float)0, (float)180, (float)-90);
-				this.TwintailL.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)-90);
-				this.Blindfold.active = false;
-				this.Tripod.active = false;
+				this.TwintailR.transform.localEulerAngles = new Vector3(0f, 180f, -90f);
+				this.TwintailL.transform.localEulerAngles = new Vector3(0f, 0f, -90f);
+				this.Blindfold.SetActive(false);
+				this.Tripod.SetActive(false);
 				if (this.StudentID == 32 && PlayerPrefs.GetInt("Scheme_6_Stage") > 4)
 				{
-					this.Blindfold.active = true;
-					this.Tripod.active = true;
+					this.Blindfold.SetActive(true);
+					this.Tripod.SetActive(true);
 				}
 			}
 			else
 			{
 				PlayerPrefs.SetInt("KidnapVictim", 0);
-				this.active = false;
+				base.gameObject.SetActive(false);
 			}
 		}
 		else
 		{
-			this.active = false;
+			base.gameObject.SetActive(false);
 		}
 	}
 
-	public virtual void LateUpdate()
+	private void LateUpdate()
 	{
-		this.Skirt.transform.localPosition = new Vector3((float)0, -0.135f, 0.01f);
-		float y = 1.2f;
-		Vector3 localScale = this.Skirt.transform.localScale;
-		float num = localScale.y = y;
-		Vector3 vector = this.Skirt.transform.localScale = localScale;
+		this.Skirt.transform.localPosition = new Vector3(0f, -0.135f, 0.01f);
+		this.Skirt.transform.localScale = new Vector3(this.Skirt.transform.localScale.x, 1.2f, this.Skirt.transform.localScale.z);
 		if (!this.Tortured)
 		{
-			if (this.Sanity > (float)0)
+			if (this.Sanity > 0f)
 			{
 				if (this.LookAhead)
 				{
-					float x = this.Neck.localEulerAngles.x - (float)45;
-					Vector3 localEulerAngles = this.Neck.localEulerAngles;
-					float num2 = localEulerAngles.x = x;
-					Vector3 vector2 = this.Neck.localEulerAngles = localEulerAngles;
+					this.Neck.localEulerAngles = new Vector3(this.Neck.localEulerAngles.x - 45f, this.Neck.localEulerAngles.y, this.Neck.localEulerAngles.z);
 				}
-				else if (this.YandereDetector.YandereDetected && Vector3.Distance(this.transform.position, this.HomeYandere.position) < (float)2)
+				else if (this.YandereDetector.YandereDetected && Vector3.Distance(base.transform.position, this.HomeYandere.position) < 2f)
 				{
-					Quaternion to;
+					Quaternion b;
 					if (this.HomeCamera.Target == this.HomeCamera.Targets[10])
 					{
-						to = Quaternion.LookRotation(this.HomeCamera.transform.position + Vector3.down * 1.5f * ((float)100 - this.Sanity) / (float)100 - this.Neck.position);
-						this.HairRotation = Mathf.Lerp(this.HairRotation, this.HairRot1, Time.deltaTime * (float)2);
+						b = Quaternion.LookRotation(this.HomeCamera.transform.position + Vector3.down * (1.5f * ((100f - this.Sanity) / 100f)) - this.Neck.position);
+						this.HairRotation = Mathf.Lerp(this.HairRotation, this.HairRot1, Time.deltaTime * 2f);
 					}
 					else
 					{
-						to = Quaternion.LookRotation(this.HomeYandere.position + Vector3.up * 1.5f - this.Neck.position);
-						this.HairRotation = Mathf.Lerp(this.HairRotation, this.HairRot2, Time.deltaTime * (float)2);
+						b = Quaternion.LookRotation(this.HomeYandere.position + Vector3.up * 1.5f - this.Neck.position);
+						this.HairRotation = Mathf.Lerp(this.HairRotation, this.HairRot2, Time.deltaTime * 2f);
 					}
-					this.Neck.rotation = Quaternion.Slerp(this.LastRotation, to, Time.deltaTime * (float)2);
-					this.TwintailR.transform.localEulerAngles = new Vector3(this.HairRotation, (float)180, (float)-90);
-					this.TwintailL.transform.localEulerAngles = new Vector3((float)-1 * this.HairRotation, (float)0, (float)-90);
+					this.Neck.rotation = Quaternion.Slerp(this.LastRotation, b, Time.deltaTime * 2f);
+					this.TwintailR.transform.localEulerAngles = new Vector3(this.HairRotation, 180f, -90f);
+					this.TwintailL.transform.localEulerAngles = new Vector3(-this.HairRotation, 0f, -90f);
 				}
 				else
 				{
 					if (this.HomeCamera.Target == this.HomeCamera.Targets[10])
 					{
-						Quaternion to = Quaternion.LookRotation(this.HomeCamera.transform.position + Vector3.down * 1.5f * ((float)100 - this.Sanity) / (float)100 - this.Neck.position);
-						this.HairRotation = Mathf.Lerp(this.HairRotation, this.HairRot3, Time.deltaTime * (float)2);
+						Quaternion b2 = Quaternion.LookRotation(this.HomeCamera.transform.position + Vector3.down * (1.5f * ((100f - this.Sanity) / 100f)) - this.Neck.position);
+						this.HairRotation = Mathf.Lerp(this.HairRotation, this.HairRot3, Time.deltaTime * 2f);
 					}
 					else
 					{
-						Quaternion to = Quaternion.LookRotation(this.transform.position + this.transform.forward - this.Neck.position);
-						this.Neck.rotation = Quaternion.Slerp(this.LastRotation, to, Time.deltaTime * (float)2);
+						Quaternion b2 = Quaternion.LookRotation(base.transform.position + base.transform.forward - this.Neck.position);
+						this.Neck.rotation = Quaternion.Slerp(this.LastRotation, b2, Time.deltaTime * 2f);
 					}
-					this.HairRotation = Mathf.Lerp(this.HairRotation, this.HairRot4, Time.deltaTime * (float)2);
-					this.TwintailR.transform.localEulerAngles = new Vector3(this.HairRotation, (float)180, (float)-90);
-					this.TwintailL.transform.localEulerAngles = new Vector3((float)-1 * this.HairRotation, (float)0, (float)-90);
+					this.HairRotation = Mathf.Lerp(this.HairRotation, this.HairRot4, Time.deltaTime * 2f);
+					this.TwintailR.transform.localEulerAngles = new Vector3(this.HairRotation, 180f, -90f);
+					this.TwintailL.transform.localEulerAngles = new Vector3(-this.HairRotation, 0f, -90f);
 				}
 			}
 			else
 			{
-				float x2 = this.Neck.localEulerAngles.x - (float)45;
-				Vector3 localEulerAngles2 = this.Neck.localEulerAngles;
-				float num3 = localEulerAngles2.x = x2;
-				Vector3 vector3 = this.Neck.localEulerAngles = localEulerAngles2;
+				this.Neck.localEulerAngles = new Vector3(this.Neck.localEulerAngles.x - 45f, this.Neck.localEulerAngles.y, this.Neck.localEulerAngles.z);
 			}
 		}
 		this.LastRotation = this.Neck.rotation;
-		if (!this.Tortured && this.Sanity < (float)100 && this.Sanity > (float)0)
+		if (!this.Tortured && this.Sanity < 100f && this.Sanity > 0f)
 		{
 			this.TwitchTimer += Time.deltaTime;
 			if (this.TwitchTimer > this.NextTwitch)
 			{
-				this.Twitch.x = ((float)1 - this.Sanity / (float)100) * UnityEngine.Random.Range(-10f, 10f);
-				this.Twitch.y = ((float)1 - this.Sanity / (float)100) * UnityEngine.Random.Range(-10f, 10f);
-				this.Twitch.z = ((float)1 - this.Sanity / (float)100) * UnityEngine.Random.Range(-10f, 10f);
-				this.NextTwitch = UnityEngine.Random.Range((float)0, 1f);
-				this.TwitchTimer = (float)0;
+				this.Twitch = new Vector3((1f - this.Sanity / 100f) * UnityEngine.Random.Range(-10f, 10f), (1f - this.Sanity / 100f) * UnityEngine.Random.Range(-10f, 10f), (1f - this.Sanity / 100f) * UnityEngine.Random.Range(-10f, 10f));
+				this.NextTwitch = UnityEngine.Random.Range(0f, 1f);
+				this.TwitchTimer = 0f;
 			}
-			this.Twitch = Vector3.Lerp(this.Twitch, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-			this.Neck.localEulerAngles = this.Neck.localEulerAngles + this.Twitch;
+			this.Twitch = Vector3.Lerp(this.Twitch, Vector3.zero, Time.deltaTime * 10f);
+			this.Neck.localEulerAngles += this.Twitch;
 		}
 		if (this.Tortured)
 		{
-			this.HairRotation = Mathf.Lerp(this.HairRotation, this.HairRot5, Time.deltaTime * (float)2);
-			this.TwintailR.transform.localEulerAngles = new Vector3(this.HairRotation, (float)180, (float)-90);
-			this.TwintailL.transform.localEulerAngles = new Vector3((float)-1 * this.HairRotation, (float)0, (float)-90);
+			this.HairRotation = Mathf.Lerp(this.HairRotation, this.HairRot5, Time.deltaTime * 2f);
+			this.TwintailR.transform.localEulerAngles = new Vector3(this.HairRotation, 180f, -90f);
+			this.TwintailL.transform.localEulerAngles = new Vector3(-this.HairRotation, 0f, -90f);
 		}
 	}
 
-	public virtual void UpdateSanity()
+	public void UpdateSanity()
 	{
-		this.Sanity = PlayerPrefs.GetFloat("Student_" + this.StudentID + "_Sanity");
-		if (this.Sanity == (float)0)
-		{
-			this.RightMindbrokenEye.active = true;
-			this.LeftMindbrokenEye.active = true;
-		}
-		else
-		{
-			this.RightMindbrokenEye.active = false;
-			this.LeftMindbrokenEye.active = false;
-		}
-	}
-
-	public virtual void Main()
-	{
+		this.Sanity = PlayerPrefs.GetFloat("Student_" + this.StudentID.ToString() + "_Sanity");
+		bool active = this.Sanity == 0f;
+		this.RightMindbrokenEye.SetActive(active);
+		this.LeftMindbrokenEye.SetActive(active);
 	}
 }

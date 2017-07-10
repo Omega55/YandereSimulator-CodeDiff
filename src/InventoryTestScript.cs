@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class InventoryTestScript : MonoBehaviour
 {
 	public GameObject Character;
@@ -12,73 +11,53 @@ public class InventoryTestScript : MonoBehaviour
 
 	public Transform LeftGrid;
 
-	public bool Open;
+	public bool Open = true;
 
-	public InventoryTestScript()
-	{
-		this.Open = true;
-	}
-
-	public virtual void Start()
+	private void Start()
 	{
 		this.RightGrid.localScale = new Vector3(0.7f, 0.7f, 0.7f);
 		this.LeftGrid.localScale = new Vector3(0.7f, 0.7f, 0.7f);
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (Input.GetButtonDown("A"))
 		{
-			if (this.Open)
-			{
-				this.Open = false;
-			}
-			else
-			{
-				this.Open = true;
-			}
+			this.Open = !this.Open;
 		}
+		AnimationState animationState = this.Character.GetComponent<Animation>()["f02_inventory_00"];
+		AnimationState animationState2 = this.InverseSkirt.GetComponent<Animation>()["InverseSkirtOpen"];
 		if (this.Open)
 		{
-			this.RightGrid.localScale = Vector3.MoveTowards(this.RightGrid.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime);
-			this.LeftGrid.localScale = Vector3.MoveTowards(this.LeftGrid.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime);
-			float z = Mathf.Lerp(this.transform.position.z, 0.5f, Time.deltaTime * 2.5f);
-			Vector3 position = this.transform.position;
-			float num = position.z = z;
-			Vector3 vector = this.transform.position = position;
-			this.Character.animation["f02_inventory_00"].speed = (float)1;
-			this.InverseSkirt.animation["InverseSkirtOpen"].speed = (float)1;
+			this.RightGrid.localScale = Vector3.MoveTowards(this.RightGrid.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime);
+			this.LeftGrid.localScale = Vector3.MoveTowards(this.LeftGrid.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime);
+			base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y, Mathf.Lerp(base.transform.position.z, 0.5f, Time.deltaTime * 2.5f));
+			animationState.speed = 1f;
+			animationState2.speed = 1f;
 		}
 		else
 		{
 			this.RightGrid.localScale = Vector3.MoveTowards(this.RightGrid.localScale, new Vector3(0.7f, 0.7f, 0.7f), Time.deltaTime);
 			this.LeftGrid.localScale = Vector3.MoveTowards(this.LeftGrid.localScale, new Vector3(0.7f, 0.7f, 0.7f), Time.deltaTime);
-			float z2 = Mathf.Lerp(this.transform.position.z, (float)1, Time.deltaTime * 2.5f);
-			Vector3 position2 = this.transform.position;
-			float num2 = position2.z = z2;
-			Vector3 vector2 = this.transform.position = position2;
-			this.Character.animation["f02_inventory_00"].speed = (float)-1;
-			this.InverseSkirt.animation["InverseSkirtOpen"].speed = (float)-1;
+			base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y, Mathf.Lerp(base.transform.position.z, 1f, Time.deltaTime * 2.5f));
+			animationState.speed = -1f;
+			animationState2.speed = -1f;
 		}
-		if (this.Character.animation["f02_inventory_00"].time > this.Character.animation["f02_inventory_00"].length)
+		if (animationState.time > animationState.length)
 		{
-			this.Character.animation["f02_inventory_00"].time = this.Character.animation["f02_inventory_00"].length;
+			animationState.time = animationState.length;
 		}
-		if (this.Character.animation["f02_inventory_00"].time < (float)0)
+		if (animationState.time < 0f)
 		{
-			this.Character.animation["f02_inventory_00"].time = (float)0;
+			animationState.time = 0f;
 		}
-		if (this.InverseSkirt.animation["InverseSkirtOpen"].time > this.InverseSkirt.animation["InverseSkirtOpen"].length)
+		if (animationState2.time > animationState2.length)
 		{
-			this.InverseSkirt.animation["InverseSkirtOpen"].time = this.InverseSkirt.animation["InverseSkirtOpen"].length;
+			animationState2.time = animationState2.length;
 		}
-		if (this.InverseSkirt.animation["InverseSkirtOpen"].time < (float)0)
+		if (animationState2.time < 0f)
 		{
-			this.InverseSkirt.animation["InverseSkirtOpen"].time = (float)0;
+			animationState2.time = 0f;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class SuitorBoostScript : MonoBehaviour
 {
 	public PromptBarScript PromptBar;
@@ -34,14 +33,9 @@ public class SuitorBoostScript : MonoBehaviour
 
 	public float Timer;
 
-	public int Phase;
+	public int Phase = 1;
 
-	public SuitorBoostScript()
-	{
-		this.Phase = 1;
-	}
-
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.Yandere.Followers > 0)
 		{
@@ -55,9 +49,9 @@ public class SuitorBoostScript : MonoBehaviour
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
 		}
-		if (this.Prompt.Circle[0].fillAmount == (float)0)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			this.Yandere.Character.animation.CrossFade(this.Yandere.IdleAnim);
+			this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
 			this.Yandere.Follower.Pathfinding.enabled = false;
 			this.Yandere.Follower.enabled = false;
 			this.Yandere.RPGCamera.enabled = false;
@@ -70,32 +64,23 @@ public class SuitorBoostScript : MonoBehaviour
 		{
 			if (this.FadeOut)
 			{
-				float a = Mathf.MoveTowards(this.Darkness.color.a, (float)1, Time.deltaTime);
-				Color color = this.Darkness.color;
-				float num = color.a = a;
-				Color color2 = this.Darkness.color = color;
-				if (this.Darkness.color.a == (float)1)
+				this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 1f, Time.deltaTime));
+				if (this.Darkness.color.a == 1f)
 				{
 					this.Timer += Time.deltaTime;
-					if (this.Timer > (float)1)
+					if (this.Timer > 1f)
 					{
 						if (this.Phase == 1)
 						{
-							Camera.main.transform.position = new Vector3((float)-26, 5.3f, 17.5f);
-							Camera.main.transform.eulerAngles = new Vector3((float)15, (float)180, (float)0);
-							this.Yandere.Follower.Character.transform.localScale = new Vector3((float)1, (float)1, (float)1);
-							float z = -0.6f;
-							Vector3 localPosition = this.YandereChair.transform.localPosition;
-							float num2 = localPosition.z = z;
-							Vector3 vector = this.YandereChair.transform.localPosition = localPosition;
-							float z2 = -0.6f;
-							Vector3 localPosition2 = this.SuitorChair.transform.localPosition;
-							float num3 = localPosition2.z = z2;
-							Vector3 vector2 = this.SuitorChair.transform.localPosition = localPosition2;
-							this.Yandere.Character.animation.Play("f02_sit_01");
-							this.Yandere.Follower.Character.animation.Play("sit_01");
-							this.Yandere.transform.eulerAngles = new Vector3((float)0, (float)0, (float)0);
-							this.Yandere.Follower.transform.eulerAngles = new Vector3((float)0, (float)0, (float)0);
+							Camera.main.transform.position = new Vector3(-26f, 5.3f, 17.5f);
+							Camera.main.transform.eulerAngles = new Vector3(15f, 180f, 0f);
+							this.Yandere.Follower.Character.transform.localScale = new Vector3(1f, 1f, 1f);
+							this.YandereChair.transform.localPosition = new Vector3(this.YandereChair.transform.localPosition.x, this.YandereChair.transform.localPosition.y, -0.6f);
+							this.SuitorChair.transform.localPosition = new Vector3(this.SuitorChair.transform.localPosition.x, this.SuitorChair.transform.localPosition.y, -0.6f);
+							this.Yandere.Character.GetComponent<Animation>().Play("f02_sit_01");
+							this.Yandere.Follower.Character.GetComponent<Animation>().Play("sit_01");
+							this.Yandere.transform.eulerAngles = Vector3.zero;
+							this.Yandere.Follower.transform.eulerAngles = Vector3.zero;
 							this.Yandere.transform.position = this.YandereSitSpot.position;
 							this.Yandere.Follower.transform.position = this.SuitorSitSpot.position;
 						}
@@ -103,16 +88,10 @@ public class SuitorBoostScript : MonoBehaviour
 						{
 							this.Yandere.FixCamera();
 							this.Yandere.Follower.Character.transform.localScale = new Vector3(0.94f, 0.94f, 0.94f);
-							float z3 = -0.33333f;
-							Vector3 localPosition3 = this.YandereChair.transform.localPosition;
-							float num4 = localPosition3.z = z3;
-							Vector3 vector3 = this.YandereChair.transform.localPosition = localPosition3;
-							float z4 = -0.33333f;
-							Vector3 localPosition4 = this.SuitorChair.transform.localPosition;
-							float num5 = localPosition4.z = z4;
-							Vector3 vector4 = this.SuitorChair.transform.localPosition = localPosition4;
-							this.Yandere.Character.animation.Play(this.Yandere.IdleAnim);
-							this.Yandere.Follower.Character.animation.Play(this.Yandere.Follower.IdleAnim);
+							this.YandereChair.transform.localPosition = new Vector3(this.YandereChair.transform.localPosition.x, this.YandereChair.transform.localPosition.y, -0.333333343f);
+							this.SuitorChair.transform.localPosition = new Vector3(this.SuitorChair.transform.localPosition.x, this.SuitorChair.transform.localPosition.y, -0.333333343f);
+							this.Yandere.Character.GetComponent<Animation>().Play(this.Yandere.IdleAnim);
+							this.Yandere.Follower.Character.GetComponent<Animation>().Play(this.Yandere.Follower.IdleAnim);
 							this.Yandere.transform.position = this.YandereSpot.position;
 							this.Yandere.Follower.transform.position = this.SuitorSpot.position;
 						}
@@ -124,16 +103,13 @@ public class SuitorBoostScript : MonoBehaviour
 			}
 			else
 			{
-				float a2 = Mathf.MoveTowards(this.Darkness.color.a, (float)0, Time.deltaTime);
-				Color color3 = this.Darkness.color;
-				float num6 = color3.a = a2;
-				Color color4 = this.Darkness.color = color3;
-				if (this.Darkness.color.a == (float)0)
+				this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 0f, Time.deltaTime));
+				if (this.Darkness.color.a == 0f)
 				{
 					if (this.Phase == 2)
 					{
-						this.TextBox.active = true;
-						this.TextBox.localScale = Vector3.Lerp(this.TextBox.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+						this.TextBox.gameObject.SetActive(true);
+						this.TextBox.localScale = Vector3.Lerp(this.TextBox.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 						if (this.TextBox.localScale.x > 0.9f)
 						{
 							if (!this.PromptBar.Show)
@@ -154,11 +130,11 @@ public class SuitorBoostScript : MonoBehaviour
 					{
 						if (this.TextBox.localScale.x > 0.1f)
 						{
-							this.TextBox.localScale = Vector3.Lerp(this.TextBox.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+							this.TextBox.localScale = Vector3.Lerp(this.TextBox.localScale, Vector3.zero, Time.deltaTime * 10f);
 						}
 						else
 						{
-							this.TextBox.active = false;
+							this.TextBox.gameObject.SetActive(false);
 							this.FadeOut = true;
 							this.Phase++;
 						}
@@ -174,23 +150,19 @@ public class SuitorBoostScript : MonoBehaviour
 						this.Yandere.Follower.enabled = true;
 						this.Prompt.Hide();
 						this.Prompt.enabled = false;
-						this.enabled = false;
+						base.enabled = false;
 					}
 				}
 			}
 		}
 	}
 
-	public virtual void LateUpdate()
+	private void LateUpdate()
 	{
 		if (this.Boosting && this.Phase > 1 && this.Phase < 5)
 		{
 			this.Yandere.Head.LookAt(this.LookTarget);
 			this.Yandere.Follower.Head.LookAt(this.LookTarget);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

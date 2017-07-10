@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class TaskWindowScript : MonoBehaviour
 {
 	public DialogueWheelScript DialogueWheel;
@@ -38,91 +37,101 @@ public class TaskWindowScript : MonoBehaviour
 
 	public float Timer;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.Window.active = false;
+		this.Window.SetActive(false);
 	}
 
-	public virtual void UpdateWindow(int ID)
+	public void UpdateWindow(int ID)
 	{
 		this.PromptBar.ClearButtons();
 		this.PromptBar.Label[0].text = "Accept";
 		this.PromptBar.Label[1].text = "Refuse";
 		this.PromptBar.UpdateButtons();
 		this.PromptBar.Show = true;
-		this.TaskDescLabel.transform.parent.gameObject.active = true;
-		this.TaskDescLabel.text = string.Empty + this.Descriptions[ID];
-		this.Portrait.mainTexture = this.Portraits[ID];
+		this.TaskDescLabel.transform.parent.gameObject.SetActive(true);
+		this.TaskDescLabel.text = this.Descriptions[ID];
 		this.Icon.mainTexture = this.Icons[ID];
-		this.Window.active = true;
+		this.Window.SetActive(true);
+		this.GetPortrait(ID);
 		this.StudentID = ID;
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Window.active)
+		if (this.Window.activeInHierarchy)
 		{
 			if (Input.GetButtonDown("A"))
 			{
-				PlayerPrefs.SetInt("Task_" + this.StudentID + "_Status", 1);
-				this.Yandere.TargetStudent.TalkTimer = (float)100;
+				PlayerPrefs.SetInt("Task_" + this.StudentID.ToString() + "_Status", 1);
+				this.Yandere.TargetStudent.TalkTimer = 100f;
 				this.Yandere.TargetStudent.Interaction = 5;
 				this.Yandere.TargetStudent.TaskPhase = 4;
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Show = false;
-				this.Window.active = false;
+				this.Window.SetActive(false);
 			}
 			else if (Input.GetButtonDown("B"))
 			{
-				this.Yandere.TargetStudent.TalkTimer = (float)100;
+				this.Yandere.TargetStudent.TalkTimer = 100f;
 				this.Yandere.TargetStudent.Interaction = 5;
 				this.Yandere.TargetStudent.TaskPhase = 0;
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Show = false;
-				this.Window.active = false;
+				this.Window.SetActive(false);
 			}
 		}
 		if (this.TaskComplete)
 		{
-			if (this.TrueTimer == (float)0)
+			if (this.TrueTimer == 0f)
 			{
-				this.audio.Play();
+				base.GetComponent<AudioSource>().Play();
 			}
 			this.TrueTimer += Time.deltaTime;
 			this.Timer += Time.deltaTime;
 			if (this.ID < this.TaskCompleteLetters.Length && this.Timer > 0.05f)
 			{
-				this.TaskCompleteLetters[this.ID].active = true;
-				this.Timer = (float)0;
+				this.TaskCompleteLetters[this.ID].SetActive(true);
+				this.Timer = 0f;
 				this.ID++;
 			}
-			if (this.TaskCompleteLetters[12].transform.localPosition.y < (float)-725)
+			if (this.TaskCompleteLetters[12].transform.localPosition.y < -725f)
 			{
 				this.ID = 0;
 				while (this.ID < this.TaskCompleteLetters.Length)
 				{
-					((GrowShrinkScript)this.TaskCompleteLetters[this.ID].GetComponent(typeof(GrowShrinkScript))).Return();
+					this.TaskCompleteLetters[this.ID].GetComponent<GrowShrinkScript>().Return();
 					this.ID++;
 				}
 				this.TaskCheck();
 				this.DialogueWheel.End();
 				this.TaskComplete = false;
-				this.TrueTimer = (float)0;
-				this.Timer = (float)0;
+				this.TrueTimer = 0f;
+				this.Timer = 0f;
 				this.ID = 0;
 			}
 		}
 	}
 
-	public virtual void TaskCheck()
+	private void TaskCheck()
 	{
 		if (this.Yandere.TargetStudent.StudentID == 15)
 		{
-			this.DialogueWheel.Yandere.TargetStudent.Cosmetic.MaleAccessories[1].active = true;
+			this.DialogueWheel.Yandere.TargetStudent.Cosmetic.MaleAccessories[1].SetActive(true);
 		}
 	}
 
-	public virtual void Main()
+	private void GetPortrait(int ID)
 	{
+		string url = string.Concat(new string[]
+		{
+			"file:///",
+			Application.streamingAssetsPath,
+			"/Portraits/Student_",
+			ID.ToString(),
+			".png"
+		});
+		WWW www = new WWW(url);
+		this.Portrait.mainTexture = www.texture;
 	}
 }

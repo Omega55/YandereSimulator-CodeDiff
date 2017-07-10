@@ -1,9 +1,38 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class HomeMangaScript : MonoBehaviour
 {
+	private static readonly string[] SeductionStrings = new string[]
+	{
+		"Innocent",
+		"Flirty",
+		"Charming",
+		"Sensual",
+		"Seductive",
+		"Succubus"
+	};
+
+	private static readonly string[] NumbnessStrings = new string[]
+	{
+		"Stoic",
+		"Somber",
+		"Detatched",
+		"Unemotional",
+		"Desensitized",
+		"Dead Inside"
+	};
+
+	private static readonly string[] EnlightenmentStrings = new string[]
+	{
+		"Asleep",
+		"Awoken",
+		"Mindful",
+		"Informed",
+		"Eyes Open",
+		"Omniscient"
+	};
+
 	public InputManagerScript InputManager;
 
 	public HomeYandereScript HomeYandere;
@@ -50,9 +79,7 @@ public class HomeMangaScript : MonoBehaviour
 
 	public int Selected;
 
-	public string Title;
-
-	private int ID;
+	public string Title = string.Empty;
 
 	public GameObject[] MangaModels;
 
@@ -62,60 +89,45 @@ public class HomeMangaScript : MonoBehaviour
 
 	public string[] MangaBuffs;
 
-	public HomeMangaScript()
-	{
-		this.Title = string.Empty;
-	}
-
-	public virtual void Start()
+	private void Start()
 	{
 		this.UpdateCurrentLabel();
-		while (this.ID < this.TotalManga)
+		for (int i = 0; i < this.TotalManga; i++)
 		{
-			if (PlayerPrefs.GetInt("Manga_" + (this.ID + 1) + "_Collected") == 1)
+			if (PlayerPrefs.GetInt("Manga_" + (i + 1).ToString() + "_Collected") == 1)
 			{
-				this.NewManga = (GameObject)UnityEngine.Object.Instantiate(this.MangaModels[this.ID], new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z - (float)1), Quaternion.identity);
+				this.NewManga = UnityEngine.Object.Instantiate<GameObject>(this.MangaModels[i], new Vector3(base.transform.position.x, base.transform.position.y, base.transform.position.z - 1f), Quaternion.identity);
 			}
 			else
 			{
-				this.NewManga = (GameObject)UnityEngine.Object.Instantiate(this.MysteryManga, new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z - (float)1), Quaternion.identity);
+				this.NewManga = UnityEngine.Object.Instantiate<GameObject>(this.MysteryManga, new Vector3(base.transform.position.x, base.transform.position.y, base.transform.position.z - 1f), Quaternion.identity);
 			}
 			this.NewManga.transform.parent = this.MangaParent;
-			((HomeMangaBookScript)this.NewManga.GetComponent(typeof(HomeMangaBookScript))).Manga = this;
-			((HomeMangaBookScript)this.NewManga.GetComponent(typeof(HomeMangaBookScript))).ID = this.ID;
+			this.NewManga.GetComponent<HomeMangaBookScript>().Manga = this;
+			this.NewManga.GetComponent<HomeMangaBookScript>().ID = i;
 			this.NewManga.transform.localScale = new Vector3(1.45f, 1.45f, 1.45f);
-			float y = this.MangaParent.transform.localEulerAngles.y + (float)(360 / this.TotalManga);
-			Vector3 localEulerAngles = this.MangaParent.transform.localEulerAngles;
-			float num = localEulerAngles.y = y;
-			Vector3 vector = this.MangaParent.transform.localEulerAngles = localEulerAngles;
-			this.MangaList[this.ID] = this.NewManga;
-			this.ID++;
+			this.MangaParent.transform.localEulerAngles = new Vector3(this.MangaParent.transform.localEulerAngles.x, this.MangaParent.transform.localEulerAngles.y + 360f / (float)this.TotalManga, this.MangaParent.transform.localEulerAngles.z);
+			this.MangaList[i] = this.NewManga;
 		}
-		int num2 = 0;
-		Vector3 localEulerAngles2 = this.MangaParent.transform.localEulerAngles;
-		float num3 = localEulerAngles2.y = (float)num2;
-		Vector3 vector2 = this.MangaParent.transform.localEulerAngles = localEulerAngles2;
-		float z = 1.8f;
-		Vector3 localPosition = this.MangaParent.transform.localPosition;
-		float num4 = localPosition.z = z;
-		Vector3 vector3 = this.MangaParent.transform.localPosition = localPosition;
+		this.MangaParent.transform.localEulerAngles = new Vector3(this.MangaParent.transform.localEulerAngles.x, 0f, this.MangaParent.transform.localEulerAngles.z);
+		this.MangaParent.transform.localPosition = new Vector3(this.MangaParent.transform.localPosition.x, this.MangaParent.transform.localPosition.y, 1.8f);
 		this.UpdateMangaLabels();
-		this.MangaParent.transform.localScale = new Vector3((float)0, (float)0, (float)0);
-		this.MangaParent.gameObject.active = false;
+		this.MangaParent.transform.localScale = Vector3.zero;
+		this.MangaParent.gameObject.SetActive(false);
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.HomeWindow.Show)
 		{
-			if (!this.AreYouSure.active)
+			if (!this.AreYouSure.activeInHierarchy)
 			{
-				this.MangaParent.localScale = Vector3.Lerp(this.MangaParent.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-				this.MangaParent.gameObject.active = true;
+				this.MangaParent.localScale = Vector3.Lerp(this.MangaParent.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+				this.MangaParent.gameObject.SetActive(true);
 				if (this.InputManager.TappedRight)
 				{
 					this.DestinationReached = false;
-					this.TargetRotation += (float)(360 / this.TotalManga);
+					this.TargetRotation += 360f / (float)this.TotalManga;
 					this.Selected++;
 					if (this.Selected > this.TotalManga - 1)
 					{
@@ -127,7 +139,7 @@ public class HomeMangaScript : MonoBehaviour
 				if (this.InputManager.TappedLeft)
 				{
 					this.DestinationReached = false;
-					this.TargetRotation -= (float)(360 / this.TotalManga);
+					this.TargetRotation -= 360f / (float)this.TotalManga;
 					this.Selected--;
 					if (this.Selected < 0)
 					{
@@ -136,15 +148,12 @@ public class HomeMangaScript : MonoBehaviour
 					this.UpdateMangaLabels();
 					this.UpdateCurrentLabel();
 				}
-				this.Rotation = Mathf.Lerp(this.Rotation, this.TargetRotation, Time.deltaTime * (float)10);
-				float rotation = this.Rotation;
-				Vector3 localEulerAngles = this.MangaParent.localEulerAngles;
-				float num = localEulerAngles.y = rotation;
-				Vector3 vector = this.MangaParent.localEulerAngles = localEulerAngles;
-				if (Input.GetButtonDown("A") && this.ReadButtonGroup.active)
+				this.Rotation = Mathf.Lerp(this.Rotation, this.TargetRotation, Time.deltaTime * 10f);
+				this.MangaParent.localEulerAngles = new Vector3(this.MangaParent.localEulerAngles.x, this.Rotation, this.MangaParent.localEulerAngles.z);
+				if (Input.GetButtonDown("A") && this.ReadButtonGroup.activeInHierarchy)
 				{
-					this.MangaGroup.active = false;
-					this.AreYouSure.active = true;
+					this.MangaGroup.SetActive(false);
+					this.AreYouSure.SetActive(true);
 				}
 				if (Input.GetKeyDown("s"))
 				{
@@ -169,11 +178,9 @@ public class HomeMangaScript : MonoBehaviour
 				}
 				if (Input.GetKeyDown("space"))
 				{
-					this.ID = 0;
-					while (this.ID < this.TotalManga)
+					for (int i = 0; i < this.TotalManga; i++)
 					{
-						PlayerPrefs.SetInt("Manga_" + (this.ID + 1) + "_Collected", 1);
-						this.ID++;
+						PlayerPrefs.SetInt("Manga_" + (i + 1).ToString() + "_Collected", 1);
 					}
 				}
 			}
@@ -194,39 +201,32 @@ public class HomeMangaScript : MonoBehaviour
 						PlayerPrefs.SetInt("Enlightenment", PlayerPrefs.GetInt("Enlightenment") + 1);
 					}
 					PlayerPrefs.SetInt("Late", 1);
-					this.AreYouSure.active = false;
+					this.AreYouSure.SetActive(false);
 					this.Darkness.FadeOut = true;
 				}
 				if (Input.GetButtonDown("B"))
 				{
-					this.MangaGroup.active = true;
-					this.AreYouSure.active = false;
+					this.MangaGroup.SetActive(true);
+					this.AreYouSure.SetActive(false);
 				}
 			}
 		}
 		else
 		{
-			this.MangaParent.localScale = Vector3.Lerp(this.MangaParent.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+			this.MangaParent.localScale = Vector3.Lerp(this.MangaParent.localScale, Vector3.zero, Time.deltaTime * 10f);
 			if (this.MangaParent.localScale.x < 0.01f)
 			{
-				this.MangaParent.gameObject.active = false;
+				this.MangaParent.gameObject.SetActive(false);
 			}
 		}
 	}
 
-	public virtual void UpdateMangaLabels()
+	private void UpdateMangaLabels()
 	{
 		if (this.Selected < 5)
 		{
-			if (PlayerPrefs.GetInt("Seduction") != this.Selected)
-			{
-				this.ReadButtonGroup.active = false;
-			}
-			else
-			{
-				this.ReadButtonGroup.active = true;
-			}
-			if (PlayerPrefs.GetInt("Manga_" + (this.Selected + 1) + "_Collected") == 1)
+			this.ReadButtonGroup.SetActive(PlayerPrefs.GetInt("Seduction") == this.Selected);
+			if (PlayerPrefs.GetInt("Manga_" + (this.Selected + 1).ToString() + "_Collected") == 1)
 			{
 				if (PlayerPrefs.GetInt("Seduction") > this.Selected)
 				{
@@ -234,26 +234,19 @@ public class HomeMangaScript : MonoBehaviour
 				}
 				else
 				{
-					this.RequiredLabel.text = "Required Seduction Level: " + this.Selected;
+					this.RequiredLabel.text = "Required Seduction Level: " + this.Selected.ToString();
 				}
 			}
 			else
 			{
 				this.RequiredLabel.text = "You have not yet collected this manga.";
-				this.ReadButtonGroup.active = false;
+				this.ReadButtonGroup.SetActive(false);
 			}
 		}
 		else if (this.Selected < 10)
 		{
-			if (PlayerPrefs.GetInt("Numbness") != this.Selected - 5)
-			{
-				this.ReadButtonGroup.active = false;
-			}
-			else
-			{
-				this.ReadButtonGroup.active = true;
-			}
-			if (PlayerPrefs.GetInt("Manga_" + (this.Selected + 1) + "_Collected") == 1)
+			this.ReadButtonGroup.SetActive(PlayerPrefs.GetInt("Numbness") == this.Selected - 5);
+			if (PlayerPrefs.GetInt("Manga_" + (this.Selected + 1).ToString() + "_Collected") == 1)
 			{
 				if (PlayerPrefs.GetInt("Numbness") > this.Selected - 5)
 				{
@@ -261,26 +254,19 @@ public class HomeMangaScript : MonoBehaviour
 				}
 				else
 				{
-					this.RequiredLabel.text = "Required Numbness Level: " + (this.Selected - 5);
+					this.RequiredLabel.text = "Required Numbness Level: " + (this.Selected - 5).ToString();
 				}
 			}
 			else
 			{
 				this.RequiredLabel.text = "You have not yet collected this manga.";
-				this.ReadButtonGroup.active = false;
+				this.ReadButtonGroup.SetActive(false);
 			}
 		}
 		else
 		{
-			if (PlayerPrefs.GetInt("Enlightenment") != this.Selected - 10)
-			{
-				this.ReadButtonGroup.active = false;
-			}
-			else
-			{
-				this.ReadButtonGroup.active = true;
-			}
-			if (PlayerPrefs.GetInt("Manga_" + (this.Selected + 1) + "_Collected") == 1)
+			this.ReadButtonGroup.SetActive(PlayerPrefs.GetInt("Enlightenment") == this.Selected - 10);
+			if (PlayerPrefs.GetInt("Manga_" + (this.Selected + 1).ToString() + "_Collected") == 1)
 			{
 				if (PlayerPrefs.GetInt("Enlightenment") > this.Selected - 10)
 				{
@@ -288,16 +274,16 @@ public class HomeMangaScript : MonoBehaviour
 				}
 				else
 				{
-					this.RequiredLabel.text = "Required Enlightenment Level: " + (this.Selected - 10);
+					this.RequiredLabel.text = "Required Enlightenment Level: " + (this.Selected - 10).ToString();
 				}
 			}
 			else
 			{
 				this.RequiredLabel.text = "You have not yet collected this manga.";
-				this.ReadButtonGroup.active = false;
+				this.ReadButtonGroup.SetActive(false);
 			}
 		}
-		if (PlayerPrefs.GetInt("Manga_" + (this.Selected + 1) + "_Collected") == 1)
+		if (PlayerPrefs.GetInt("Manga_" + (this.Selected + 1).ToString() + "_Collected") == 1)
 		{
 			this.MangaNameLabel.text = this.MangaNames[this.Selected];
 			this.MangaDescLabel.text = this.MangaDescs[this.Selected];
@@ -311,95 +297,43 @@ public class HomeMangaScript : MonoBehaviour
 		}
 	}
 
-	public virtual void UpdateCurrentLabel()
+	private void UpdateCurrentLabel()
 	{
 		if (this.Selected < 5)
 		{
-			if (PlayerPrefs.GetInt("Seduction") == 0)
+			this.Title = HomeMangaScript.SeductionStrings[PlayerPrefs.GetInt("Seduction")];
+			this.CurrentLabel.text = string.Concat(new object[]
 			{
-				this.Title = "Innocent";
-			}
-			else if (PlayerPrefs.GetInt("Seduction") == 1)
-			{
-				this.Title = "Flirty";
-			}
-			else if (PlayerPrefs.GetInt("Seduction") == 2)
-			{
-				this.Title = "Charming";
-			}
-			else if (PlayerPrefs.GetInt("Seduction") == 3)
-			{
-				this.Title = "Sensual";
-			}
-			else if (PlayerPrefs.GetInt("Seduction") == 4)
-			{
-				this.Title = "Seductive";
-			}
-			else if (PlayerPrefs.GetInt("Seduction") == 5)
-			{
-				this.Title = "Succubus";
-			}
-			this.CurrentLabel.text = "Current Seduction Level: " + PlayerPrefs.GetInt("Seduction") + " (" + this.Title + ")";
+				"Current Seduction Level: ",
+				PlayerPrefs.GetInt("Seduction"),
+				" (",
+				this.Title,
+				")"
+			});
 		}
 		else if (this.Selected < 10)
 		{
-			if (PlayerPrefs.GetInt("Numbness") == 0)
+			this.Title = HomeMangaScript.NumbnessStrings[PlayerPrefs.GetInt("Numbness")];
+			this.CurrentLabel.text = string.Concat(new object[]
 			{
-				this.Title = "Stoic";
-			}
-			else if (PlayerPrefs.GetInt("Numbness") == 1)
-			{
-				this.Title = "Somber";
-			}
-			else if (PlayerPrefs.GetInt("Numbness") == 2)
-			{
-				this.Title = "Detatched";
-			}
-			else if (PlayerPrefs.GetInt("Numbness") == 3)
-			{
-				this.Title = "Unemotional";
-			}
-			else if (PlayerPrefs.GetInt("Numbness") == 4)
-			{
-				this.Title = "Desensitized";
-			}
-			else if (PlayerPrefs.GetInt("Numbness") == 5)
-			{
-				this.Title = "Dead Inside";
-			}
-			this.CurrentLabel.text = "Current Numbness Level: " + PlayerPrefs.GetInt("Numbness") + " (" + this.Title + ")";
+				"Current Numbness Level: ",
+				PlayerPrefs.GetInt("Numbness"),
+				" (",
+				this.Title,
+				")"
+			});
 		}
 		else
 		{
-			if (PlayerPrefs.GetInt("Enlightenment") == 0)
+			this.Title = HomeMangaScript.EnlightenmentStrings[PlayerPrefs.GetInt("Enlightenment")];
+			this.CurrentLabel.text = string.Concat(new object[]
 			{
-				this.Title = "Asleep";
-			}
-			else if (PlayerPrefs.GetInt("Enlightenment") == 1)
-			{
-				this.Title = "Awoken";
-			}
-			else if (PlayerPrefs.GetInt("Enlightenment") == 2)
-			{
-				this.Title = "Mindful";
-			}
-			else if (PlayerPrefs.GetInt("Enlightenment") == 3)
-			{
-				this.Title = "Informed";
-			}
-			else if (PlayerPrefs.GetInt("Enlightenment") == 4)
-			{
-				this.Title = "Eyes Open";
-			}
-			else if (PlayerPrefs.GetInt("Enlightenment") == 5)
-			{
-				this.Title = "Omniscient";
-			}
-			this.CurrentLabel.text = "Current Enlightenment Level: " + PlayerPrefs.GetInt("Enlightenment") + " (" + this.Title + ")";
+				"Current Enlightenment Level: ",
+				PlayerPrefs.GetInt("Enlightenment"),
+				" (",
+				this.Title,
+				")"
+			});
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

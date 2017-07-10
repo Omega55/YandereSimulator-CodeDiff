@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class GridScript : MonoBehaviour
 {
 	public GameObject Tile;
@@ -10,24 +9,18 @@ public class GridScript : MonoBehaviour
 
 	public int Column;
 
-	public int Rows;
+	public int Rows = 25;
 
-	public int Columns;
+	public int Columns = 25;
 
 	public int ID;
 
-	public GridScript()
-	{
-		this.Rows = 25;
-		this.Columns = 25;
-	}
-
-	public virtual void Start()
+	private void Start()
 	{
 		while (this.ID < this.Rows * this.Columns)
 		{
-			GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.Tile, new Vector3((float)this.Row, (float)0, (float)this.Column), Quaternion.identity);
-			gameObject.transform.parent = this.transform;
+			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Tile, new Vector3((float)this.Row, 0f, (float)this.Column), Quaternion.identity);
+			gameObject.transform.parent = base.transform;
 			this.Row++;
 			if (this.Row > this.Rows)
 			{
@@ -36,11 +29,7 @@ public class GridScript : MonoBehaviour
 			}
 			this.ID++;
 		}
-		this.transform.localScale = new Vector3((float)4, (float)4, (float)4);
-		this.transform.position = new Vector3((float)-52, (float)0, (float)-52);
-	}
-
-	public virtual void Main()
-	{
+		base.transform.localScale = new Vector3(4f, 4f, 4f);
+		base.transform.position = new Vector3(-52f, 0f, -52f);
 	}
 }

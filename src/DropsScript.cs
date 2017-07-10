@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class DropsScript : MonoBehaviour
 {
 	public InfoChanWindowScript InfoChanWindow;
@@ -37,9 +35,9 @@ public class DropsScript : MonoBehaviour
 
 	public string[] DropNames;
 
-	public int Selected;
+	public int Selected = 1;
 
-	public int ID;
+	public int ID = 1;
 
 	public AudioClip InfoUnavailable;
 
@@ -47,35 +45,31 @@ public class DropsScript : MonoBehaviour
 
 	public AudioClip InfoAfford;
 
-	public DropsScript()
+	private void Start()
 	{
-		this.Selected = 1;
 		this.ID = 1;
-	}
-
-	public virtual void Start()
-	{
-		for (int i = 1; i < Extensions.get_length(this.DropNames); i++)
+		while (this.ID < this.DropNames.Length)
 		{
-			this.NameLabels[i].text = this.DropNames[i];
+			this.NameLabels[this.ID].text = this.DropNames[this.ID];
+			this.ID++;
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.InputManager.TappedUp)
 		{
 			this.Selected--;
 			if (this.Selected < 1)
 			{
-				this.Selected = Extensions.get_length(this.DropNames) - 1;
+				this.Selected = this.DropNames.Length - 1;
 			}
 			this.UpdateDesc();
 		}
 		if (this.InputManager.TappedDown)
 		{
 			this.Selected++;
-			if (this.Selected > Extensions.get_length(this.DropNames) - 1)
+			if (this.Selected > this.DropNames.Length - 1)
 			{
 				this.Selected = 1;
 			}
@@ -83,21 +77,22 @@ public class DropsScript : MonoBehaviour
 		}
 		if (Input.GetButtonDown("A"))
 		{
+			AudioSource component = base.GetComponent<AudioSource>();
 			if (!this.Purchased[this.Selected])
 			{
-				if (this.PromptBar.Label[0].text != string.Empty)
+				if (!this.PromptBar.Label[0].text.Equals(string.Empty))
 				{
 					if (PlayerPrefs.GetInt("PantyShots") >= this.DropCosts[this.Selected])
 					{
 						PlayerPrefs.SetInt("PantyShots", PlayerPrefs.GetInt("PantyShots") - this.DropCosts[this.Selected]);
 						this.Purchased[this.Selected] = true;
-						this.InfoChanWindow.Orders = this.InfoChanWindow.Orders + 1;
+						this.InfoChanWindow.Orders++;
 						this.InfoChanWindow.ItemsToDrop[this.InfoChanWindow.Orders] = this.Selected;
 						this.InfoChanWindow.DropObject();
 						this.UpdateList();
 						this.UpdateDesc();
-						this.audio.clip = this.InfoPurchase;
-						this.audio.Play();
+						component.clip = this.InfoPurchase;
+						component.Play();
 						if (this.Selected == 2)
 						{
 							PlayerPrefs.SetInt("Scheme_3_Stage", 2);
@@ -107,59 +102,54 @@ public class DropsScript : MonoBehaviour
 				}
 				else if (PlayerPrefs.GetInt("PantyShots") < this.DropCosts[this.Selected])
 				{
-					this.audio.clip = this.InfoAfford;
-					this.audio.Play();
+					component.clip = this.InfoAfford;
+					component.Play();
 				}
 				else
 				{
-					this.audio.clip = this.InfoUnavailable;
-					this.audio.Play();
+					component.clip = this.InfoUnavailable;
+					component.Play();
 				}
 			}
 			else
 			{
-				this.audio.clip = this.InfoUnavailable;
-				this.audio.Play();
+				component.clip = this.InfoUnavailable;
+				component.Play();
 			}
 		}
-		if (Input.GetButtonDown("B") && Input.GetButtonDown("B"))
+		if (Input.GetButtonDown("B"))
 		{
 			this.PromptBar.ClearButtons();
 			this.PromptBar.Label[0].text = "Accept";
 			this.PromptBar.Label[1].text = "Exit";
 			this.PromptBar.Label[5].text = "Choose";
 			this.PromptBar.UpdateButtons();
-			this.FavorMenu.active = true;
-			this.active = false;
+			this.FavorMenu.SetActive(true);
+			base.gameObject.SetActive(false);
 		}
 	}
 
-	public virtual void UpdateList()
+	public void UpdateList()
 	{
 		this.ID = 1;
-		while (this.ID < Extensions.get_length(this.DropNames))
+		while (this.ID < this.DropNames.Length)
 		{
+			UILabel uilabel = this.NameLabels[this.ID];
 			if (!this.Purchased[this.ID])
 			{
-				this.CostLabels[this.ID].text = string.Empty + this.DropCosts[this.ID];
-				int num = 1;
-				Color color = this.NameLabels[this.ID].color;
-				float num2 = color.a = (float)num;
-				Color color2 = this.NameLabels[this.ID].color = color;
+				this.CostLabels[this.ID].text = this.DropCosts[this.ID].ToString();
+				uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, 1f);
 			}
 			else
 			{
 				this.CostLabels[this.ID].text = string.Empty;
-				float a = 0.5f;
-				Color color3 = this.NameLabels[this.ID].color;
-				float num3 = color3.a = a;
-				Color color4 = this.NameLabels[this.ID].color = color3;
+				uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, 0.5f);
 			}
 			this.ID++;
 		}
 	}
 
-	public virtual void UpdateDesc()
+	public void UpdateDesc()
 	{
 		if (!this.Purchased[this.Selected])
 		{
@@ -179,21 +169,14 @@ public class DropsScript : MonoBehaviour
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
-		int num = 200 - 25 * this.Selected;
-		Vector3 localPosition = this.Highlight.localPosition;
-		float num2 = localPosition.y = (float)num;
-		Vector3 vector = this.Highlight.localPosition = localPosition;
+		this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 200f - 25f * (float)this.Selected, this.Highlight.localPosition.z);
 		this.DropIcon.mainTexture = this.DropIcons[this.Selected];
 		this.DropDesc.text = this.DropDescs[this.Selected];
 		this.UpdatePantyCount();
 	}
 
-	public virtual void UpdatePantyCount()
+	public void UpdatePantyCount()
 	{
-		this.PantyCount.text = string.Empty + PlayerPrefs.GetInt("PantyShots");
-	}
-
-	public virtual void Main()
-	{
+		this.PantyCount.text = PlayerPrefs.GetInt("PantyShots").ToString();
 	}
 }

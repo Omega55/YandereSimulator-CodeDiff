@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class RivalPoseScript : MonoBehaviour
 {
 	public GameObject Character;
@@ -19,74 +17,66 @@ public class RivalPoseScript : MonoBehaviour
 
 	public string[] AnimNames;
 
-	public int ID;
+	public int ID = -1;
 
-	public RivalPoseScript()
+	private void Start()
 	{
-		this.ID = -1;
-	}
-
-	public virtual void Start()
-	{
-		this.MyRenderer.sharedMesh = this.FemaleUniforms[PlayerPrefs.GetInt("FemaleUniform")];
-		if (PlayerPrefs.GetInt("FemaleUniform") == 1)
+		int @int = PlayerPrefs.GetInt("FemaleUniform");
+		this.MyRenderer.sharedMesh = this.FemaleUniforms[@int];
+		if (@int == 1)
 		{
-			this.MyRenderer.materials[0].mainTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.MyRenderer.materials[0].mainTexture = this.FemaleUniformTextures[@int];
 			this.MyRenderer.materials[1].mainTexture = this.HairTexture;
 			this.MyRenderer.materials[2].mainTexture = this.HairTexture;
-			this.MyRenderer.materials[3].mainTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.MyRenderer.materials[3].mainTexture = this.FemaleUniformTextures[@int];
 		}
-		else if (PlayerPrefs.GetInt("FemaleUniform") == 2)
+		else if (@int == 2)
 		{
-			this.MyRenderer.materials[0].mainTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
-			this.MyRenderer.materials[1].mainTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.MyRenderer.materials[0].mainTexture = this.FemaleUniformTextures[@int];
+			this.MyRenderer.materials[1].mainTexture = this.FemaleUniformTextures[@int];
 			this.MyRenderer.materials[2].mainTexture = this.HairTexture;
 			this.MyRenderer.materials[3].mainTexture = this.HairTexture;
 		}
-		else if (PlayerPrefs.GetInt("FemaleUniform") == 3)
+		else if (@int == 3)
 		{
 			this.MyRenderer.materials[0].mainTexture = this.HairTexture;
 			this.MyRenderer.materials[1].mainTexture = this.HairTexture;
-			this.MyRenderer.materials[2].mainTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
-			this.MyRenderer.materials[3].mainTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.MyRenderer.materials[2].mainTexture = this.FemaleUniformTextures[@int];
+			this.MyRenderer.materials[3].mainTexture = this.FemaleUniformTextures[@int];
 		}
-		else if (PlayerPrefs.GetInt("FemaleUniform") == 4)
+		else if (@int == 4)
 		{
 			this.MyRenderer.materials[0].mainTexture = this.HairTexture;
 			this.MyRenderer.materials[1].mainTexture = this.HairTexture;
-			this.MyRenderer.materials[2].mainTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
-			this.MyRenderer.materials[3].mainTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.MyRenderer.materials[2].mainTexture = this.FemaleUniformTextures[@int];
+			this.MyRenderer.materials[3].mainTexture = this.FemaleUniformTextures[@int];
 		}
-		else if (PlayerPrefs.GetInt("FemaleUniform") == 5)
+		else if (@int == 5)
 		{
 			this.MyRenderer.materials[0].mainTexture = this.HairTexture;
 			this.MyRenderer.materials[1].mainTexture = this.HairTexture;
-			this.MyRenderer.materials[2].mainTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
-			this.MyRenderer.materials[3].mainTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.MyRenderer.materials[2].mainTexture = this.FemaleUniformTextures[@int];
+			this.MyRenderer.materials[3].mainTexture = this.FemaleUniformTextures[@int];
 		}
-		else if (PlayerPrefs.GetInt("FemaleUniform") == 6)
+		else if (@int == 6)
 		{
-			this.MyRenderer.materials[0].mainTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
-			this.MyRenderer.materials[1].mainTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.MyRenderer.materials[0].mainTexture = this.FemaleUniformTextures[@int];
+			this.MyRenderer.materials[1].mainTexture = this.FemaleUniformTextures[@int];
 			this.MyRenderer.materials[2].mainTexture = this.HairTexture;
 			this.MyRenderer.materials[3].mainTexture = this.HairTexture;
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (Input.GetKeyDown("space"))
 		{
 			this.ID++;
-			if (this.ID > Extensions.get_length(this.AnimNames) - 1)
+			if (this.ID > this.AnimNames.Length - 1)
 			{
 				this.ID = 0;
 			}
-			this.Character.animation.Play(this.AnimNames[this.ID]);
+			this.Character.GetComponent<Animation>().Play(this.AnimNames[this.ID]);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

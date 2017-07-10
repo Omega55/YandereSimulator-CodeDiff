@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class WeaponManagerScript : MonoBehaviour
 {
 	public WeaponScript[] Weapons;
@@ -17,35 +15,35 @@ public class WeaponManagerScript : MonoBehaviour
 
 	public bool YandereGuilty;
 
-	public virtual void UpdateLabels()
+	public void UpdateLabels()
 	{
-		for (int i = 0; i < Extensions.get_length(this.Weapons); i++)
+		foreach (WeaponScript weaponScript in this.Weapons)
 		{
-			this.Weapons[i].UpdateLabel();
+			weaponScript.UpdateLabel();
 		}
 	}
 
-	public virtual void CheckWeapons()
+	public void CheckWeapons()
 	{
 		this.MurderWeapons = 0;
 		this.Fingerprints = 0;
-		for (int i = 0; i < Extensions.get_length(this.Victims); i++)
+		for (int i = 0; i < this.Victims.Length; i++)
 		{
 			this.Victims[i] = 0;
 		}
-		for (int i = 0; i < Extensions.get_length(this.Weapons); i++)
+		foreach (WeaponScript weaponScript in this.Weapons)
 		{
-			if (this.Weapons[i] != null && this.Weapons[i].Blood.enabled)
+			if (weaponScript != null && weaponScript.Blood.enabled)
 			{
 				this.MurderWeapons++;
-				if (this.Weapons[i].FingerprintID > 0)
+				if (weaponScript.FingerprintID > 0)
 				{
 					this.Fingerprints++;
-					for (int j = 0; j < Extensions.get_length(this.Weapons[i].Victims); j++)
+					for (int k = 0; k < weaponScript.Victims.Length; k++)
 					{
-						if (this.Weapons[i].Victims[j])
+						if (weaponScript.Victims[k])
 						{
-							this.Victims[j] = this.Weapons[i].FingerprintID;
+							this.Victims[k] = weaponScript.FingerprintID;
 						}
 					}
 				}
@@ -53,24 +51,24 @@ public class WeaponManagerScript : MonoBehaviour
 		}
 	}
 
-	public virtual void CleanWeapons()
+	public void CleanWeapons()
 	{
-		for (int i = 0; i < Extensions.get_length(this.Weapons); i++)
+		foreach (WeaponScript weaponScript in this.Weapons)
 		{
-			if (this.Weapons[i] != null)
+			if (weaponScript != null)
 			{
-				this.Weapons[i].Blood.enabled = false;
-				this.Weapons[i].FingerprintID = 0;
+				weaponScript.Blood.enabled = false;
+				weaponScript.FingerprintID = 0;
 			}
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (Input.GetKeyDown("z"))
 		{
 			this.CheckWeapons();
-			for (int i = 0; i < Extensions.get_length(this.Victims); i++)
+			for (int i = 0; i < this.Victims.Length; i++)
 			{
 				if (this.Victims[i] != 0)
 				{
@@ -80,14 +78,17 @@ public class WeaponManagerScript : MonoBehaviour
 					}
 					else
 					{
-						Debug.Log("The student named " + this.JSON.StudentNames[i] + " was killed by " + this.JSON.StudentNames[this.Victims[i]] + "!");
+						Debug.Log(string.Concat(new string[]
+						{
+							"The student named ",
+							this.JSON.StudentNames[i],
+							" was killed by ",
+							this.JSON.StudentNames[this.Victims[i]],
+							"!"
+						}));
 					}
 				}
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

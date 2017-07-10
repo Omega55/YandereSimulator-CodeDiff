@@ -2,28 +2,22 @@
 using HighlightingSystem;
 using UnityEngine;
 
-[Serializable]
 public class OutlineScript : MonoBehaviour
 {
 	public Highlighter h;
 
-	public Color color;
+	public Color color = new Color(1f, 1f, 1f, 1f);
 
-	public OutlineScript()
+	public void Awake()
 	{
-		this.color = new Color((float)1, (float)1, (float)1, (float)1);
-	}
-
-	public virtual void Awake()
-	{
-		this.h = (Highlighter)this.GetComponent(typeof(Highlighter));
+		this.h = base.GetComponent<Highlighter>();
 		if (this.h == null)
 		{
-			this.h = (Highlighter)this.gameObject.AddComponent(typeof(Highlighter));
+			this.h = base.gameObject.AddComponent<Highlighter>();
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		this.h.ConstantOnImmediate(this.color);
 	}

@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class RooftopScript : MonoBehaviour
 {
 	public GameObject[] DumpPoints;
@@ -10,20 +9,16 @@ public class RooftopScript : MonoBehaviour
 
 	public GameObject Fence;
 
-	public virtual void Start()
+	private void Start()
 	{
 		if (PlayerPrefs.GetInt("RoofFence") == 1)
 		{
-			for (int i = 0; i < this.DumpPoints.Length; i++)
+			foreach (GameObject gameObject in this.DumpPoints)
 			{
-				this.DumpPoints[i].active = false;
+				gameObject.SetActive(false);
 			}
-			this.Railing.active = false;
-			this.Fence.active = true;
+			this.Railing.SetActive(false);
+			this.Fence.SetActive(true);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

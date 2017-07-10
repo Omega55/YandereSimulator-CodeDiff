@@ -1,10 +1,9 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class FramerateScript : MonoBehaviour
 {
-	public float updateInterval;
+	public float updateInterval = 0.5f;
 
 	private float accum;
 
@@ -14,40 +13,29 @@ public class FramerateScript : MonoBehaviour
 
 	public float FPS;
 
-	public FramerateScript()
+	private void Start()
 	{
-		this.updateInterval = 0.5f;
+		if (base.GetComponent<GUIText>() == null)
+		{
+			Debug.Log("FramerateScript: FramesPerSecond needs a GUIText component!");
+			base.enabled = false;
+			return;
+		}
+		this.timeleft = this.updateInterval;
 	}
 
-	public virtual void Start()
-	{
-		if (!this.guiText)
-		{
-			MonoBehaviour.print("FramesPerSecond needs a GUIText component!");
-			this.enabled = false;
-		}
-		else
-		{
-			this.timeleft = this.updateInterval;
-		}
-	}
-
-	public virtual void Update()
+	private void Update()
 	{
 		this.timeleft -= Time.deltaTime;
 		this.accum += Time.timeScale / Time.deltaTime;
 		this.frames++;
-		if (this.timeleft <= (float)0)
+		if (this.timeleft <= 0f)
 		{
 			this.FPS = this.accum / (float)this.frames;
-			this.guiText.text = "FPS: " + (this.accum / (float)this.frames).ToString("f0");
+			base.GetComponent<GUIText>().text = "FPS: " + this.FPS.ToString("f0");
 			this.timeleft = this.updateInterval;
-			this.accum = (float)0;
+			this.accum = 0f;
 			this.frames = 0;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

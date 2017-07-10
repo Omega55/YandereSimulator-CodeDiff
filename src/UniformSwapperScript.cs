@@ -1,8 +1,6 @@
 ﻿using System;
-using Boo.Lang.Runtime;
 using UnityEngine;
 
-[Serializable]
 public class UniformSwapperScript : MonoBehaviour
 {
 	public Texture[] UniformTextures;
@@ -11,7 +9,7 @@ public class UniformSwapperScript : MonoBehaviour
 
 	public Texture FaceTexture;
 
-	public Renderer MyRenderer;
+	public SkinnedMeshRenderer MyRenderer;
 
 	public int UniformID;
 
@@ -23,41 +21,42 @@ public class UniformSwapperScript : MonoBehaviour
 
 	public Transform Head;
 
-	public virtual void Start()
+	private void Start()
 	{
-		RuntimeServices.SetProperty(this.MyRenderer, "sharedMesh", this.UniformMeshes[PlayerPrefs.GetInt("MaleUniform")]);
-		Texture mainTexture = this.UniformTextures[PlayerPrefs.GetInt("MaleUniform")];
-		if (PlayerPrefs.GetInt("MaleUniform") == 1)
+		int @int = PlayerPrefs.GetInt("MaleUniform");
+		this.MyRenderer.sharedMesh = this.UniformMeshes[@int];
+		Texture mainTexture = this.UniformTextures[@int];
+		if (@int == 1)
 		{
 			this.SkinID = 0;
 			this.UniformID = 1;
 			this.FaceID = 2;
 		}
-		else if (PlayerPrefs.GetInt("MaleUniform") == 2)
+		else if (@int == 2)
 		{
 			this.UniformID = 0;
 			this.FaceID = 1;
 			this.SkinID = 2;
 		}
-		else if (PlayerPrefs.GetInt("MaleUniform") == 3)
+		else if (@int == 3)
 		{
 			this.UniformID = 0;
 			this.FaceID = 1;
 			this.SkinID = 2;
 		}
-		else if (PlayerPrefs.GetInt("MaleUniform") == 4)
+		else if (@int == 4)
 		{
 			this.FaceID = 0;
 			this.SkinID = 1;
 			this.UniformID = 2;
 		}
-		else if (PlayerPrefs.GetInt("MaleUniform") == 5)
+		else if (@int == 5)
 		{
 			this.FaceID = 0;
 			this.SkinID = 1;
 			this.UniformID = 2;
 		}
-		else if (PlayerPrefs.GetInt("MaleUniform") == 6)
+		else if (@int == 6)
 		{
 			this.FaceID = 0;
 			this.SkinID = 1;
@@ -68,15 +67,11 @@ public class UniformSwapperScript : MonoBehaviour
 		this.MyRenderer.materials[this.UniformID].mainTexture = mainTexture;
 	}
 
-	public virtual void LateUpdate()
+	private void LateUpdate()
 	{
 		if (this.LookTarget != null)
 		{
 			this.Head.LookAt(this.LookTarget);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

@@ -1,32 +1,28 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-[Serializable]
 public class AntiCheatScript : MonoBehaviour
 {
 	public GameObject Jukebox;
 
 	public bool Check;
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Check && !this.audio.isPlaying)
+		if (this.Check && !base.GetComponent<AudioSource>().isPlaying)
 		{
-			Application.LoadLevel(Application.loadedLevel);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 	}
 
-	public virtual void OnTriggerEnter(Collider other)
+	private void OnTriggerEnter(Collider other)
 	{
-		if (other.gameObject.name == "YandereChan")
+		if (other.gameObject.name.Equals("YandereChan"))
 		{
-			this.Jukebox.active = false;
+			this.Jukebox.SetActive(false);
 			this.Check = true;
-			this.audio.Play();
+			base.GetComponent<AudioSource>().Play();
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

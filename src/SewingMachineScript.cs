@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class SewingMachineScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
@@ -22,21 +21,21 @@ public class SewingMachineScript : MonoBehaviour
 
 	public float Timer;
 
-	public virtual void Start()
+	private void Start()
 	{
 		if (PlayerPrefs.GetInt("Task_7_Status") > 2)
 		{
-			this.enabled = false;
+			base.enabled = false;
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (PlayerPrefs.GetInt("Task_7_Status") == 1)
 		{
 			if (this.Yandere.PickUp != null)
 			{
-				if (this.Yandere.PickUp.Clothing && ((FoldedUniformScript)this.Yandere.PickUp.GetComponent(typeof(FoldedUniformScript))).Clean && ((FoldedUniformScript)this.Yandere.PickUp.GetComponent(typeof(FoldedUniformScript))).Type == 1 && ((FoldedUniformScript)this.Yandere.PickUp.gameObject.GetComponent(typeof(FoldedUniformScript))).Type == 1)
+				if (this.Yandere.PickUp.Clothing && this.Yandere.PickUp.GetComponent<FoldedUniformScript>().Clean && this.Yandere.PickUp.GetComponent<FoldedUniformScript>().Type == 1 && this.Yandere.PickUp.gameObject.GetComponent<FoldedUniformScript>().Type == 1)
 				{
 					this.Prompt.enabled = true;
 				}
@@ -47,31 +46,31 @@ public class SewingMachineScript : MonoBehaviour
 				this.Prompt.enabled = false;
 			}
 		}
-		if (this.Prompt.Circle[0].fillAmount <= (float)0)
+		if (this.Prompt.Circle[0].fillAmount <= 0f)
 		{
-			this.Yandere.Character.animation.CrossFade("f02_sewing_00");
+			this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_sewing_00");
 			this.Yandere.MyController.radius = 0.1f;
-			this.Prompt.Circle[0].fillAmount = (float)1;
+			this.Prompt.Circle[0].fillAmount = 1f;
 			this.Yandere.CanMove = false;
 			this.Chair.enabled = false;
 			this.Sewing = true;
-			this.audio.Play();
+			base.GetComponent<AudioSource>().Play();
 			this.Uniform = this.Yandere.PickUp.gameObject;
 			this.Yandere.EmptyHands();
 		}
 		if (this.Sewing)
 		{
 			this.Timer += Time.deltaTime;
-			if (this.Timer < (float)5)
+			if (this.Timer < 5f)
 			{
 				this.Uniform.transform.position = this.Yandere.RightHand.position;
-				this.targetRotation = Quaternion.LookRotation(this.transform.parent.transform.parent.position - this.Yandere.transform.position);
-				this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
+				this.targetRotation = Quaternion.LookRotation(base.transform.parent.transform.parent.position - this.Yandere.transform.position);
+				this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
 				this.Yandere.MoveTowardsTarget(this.Chair.transform.position);
 			}
 			else if (!this.MoveAway)
 			{
-				this.Yandere.Character.animation.CrossFade(this.Yandere.IdleAnim);
+				this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
 				this.Yandere.Inventory.ModifiedUniform = true;
 				this.StudentManager.Students[7].TaskPhase = 5;
 				PlayerPrefs.SetInt("Task_7_Status", 2);
@@ -80,22 +79,18 @@ public class SewingMachineScript : MonoBehaviour
 			}
 			else
 			{
-				this.Yandere.MoveTowardsTarget(this.Chair.gameObject.transform.position + new Vector3(-0.5f, (float)0, (float)0));
-				if (this.Timer > (float)6)
+				this.Yandere.MoveTowardsTarget(this.Chair.gameObject.transform.position + new Vector3(-0.5f, 0f, 0f));
+				if (this.Timer > 6f)
 				{
 					this.Yandere.MyController.radius = 0.2f;
 					this.Yandere.CanMove = true;
 					this.Chair.enabled = true;
-					this.enabled = false;
+					base.enabled = false;
 					this.Sewing = false;
 					this.Prompt.Hide();
 					this.Prompt.enabled = false;
 				}
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

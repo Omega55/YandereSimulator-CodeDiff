@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class ToiletEventScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
@@ -42,11 +41,11 @@ public class ToiletEventScript : MonoBehaviour
 
 	public bool EventOver;
 
-	public float EventTime;
+	public float EventTime = 7f;
 
-	public int EventPhase;
+	public int EventPhase = 1;
 
-	public int EventDay;
+	public int EventDay = 4;
 
 	public float ToiletCountdown;
 
@@ -54,23 +53,16 @@ public class ToiletEventScript : MonoBehaviour
 
 	public float Timer;
 
-	public ToiletEventScript()
+	private void Start()
 	{
-		this.EventTime = 7f;
-		this.EventPhase = 1;
-		this.EventDay = 4;
-	}
-
-	public virtual void Start()
-	{
-		this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+		this.EventSubtitle.transform.localScale = Vector3.zero;
 		if (PlayerPrefs.GetInt("Weekday") == this.EventDay)
 		{
 			this.EventCheck = true;
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (!this.Clock.StopTime && this.EventCheck && this.Clock.HourTime > this.EventTime)
 		{
@@ -84,7 +76,7 @@ public class ToiletEventScript : MonoBehaviour
 					this.EventStudent.Pathfinding.canSearch = true;
 					this.EventStudent.Pathfinding.canMove = true;
 					this.EventStudent.LightSwitch = this.LightSwitch;
-					this.EventStudent.Obstacle.checkTime = (float)99;
+					this.EventStudent.Obstacle.checkTime = 99f;
 					this.EventStudent.ToiletEvent = this;
 					this.EventStudent.InEvent = true;
 					this.EventStudent.Prompt.Hide();
@@ -93,29 +85,29 @@ public class ToiletEventScript : MonoBehaviour
 					this.EventActive = true;
 					if (this.EventStudent.Following)
 					{
-						this.EventStudent.Pathfinding.speed = (float)1;
+						this.EventStudent.Pathfinding.speed = 1f;
 						this.EventStudent.Following = false;
 						this.EventStudent.Routine = true;
-						this.Yandere.Followers = this.Yandere.Followers - 1;
-						this.EventStudent.Subtitle.UpdateLabel("Stop Follow Apology", 0, (float)3);
-						this.EventStudent.Prompt.Label[0].text = "     " + "Talk";
+						this.Yandere.Followers--;
+						this.EventStudent.Subtitle.UpdateLabel("Stop Follow Apology", 0, 3f);
+						this.EventStudent.Prompt.Label[0].text = "     Talk";
 					}
 				}
 				else
 				{
-					this.enabled = false;
+					base.enabled = false;
 				}
 			}
 		}
 		if (this.EventActive)
 		{
-			if (this.Prompt.Circle[0].fillAmount <= (float)0)
+			if (this.Prompt.Circle[0].fillAmount <= 0f)
 			{
 				this.Yandere.EmptyHands();
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
 				this.EventPhase = 5;
-				this.Timer = (float)0;
+				this.Timer = 0f;
 				this.PlayClip(this.EventClip[1], this.EventStudent.transform.position + Vector3.up * 1.5f);
 				this.EventSubtitle.text = this.EventSpeech[1];
 				this.EventStudent.MyController.enabled = false;
@@ -128,7 +120,7 @@ public class ToiletEventScript : MonoBehaviour
 				this.Yandere.Drown = true;
 				this.Yandere.DrownAnim = "f02_toiletDrownA_00";
 				this.EventStudent.DrownAnim = "f02_toiletDrownB_00";
-				this.EventStudent.Character.animation.CrossFade(this.EventStudent.DrownAnim);
+				this.EventStudent.Character.GetComponent<Animation>().CrossFade(this.EventStudent.DrownAnim);
 			}
 			if (this.Clock.HourTime > this.EventTime + 0.5f || this.EventStudent.WitnessedMurder || this.EventStudent.Splashed || this.EventStudent.Dying)
 			{
@@ -138,9 +130,9 @@ public class ToiletEventScript : MonoBehaviour
 			{
 				if (this.EventPhase == 1)
 				{
-					if (this.Timer == (float)0)
+					if (this.Timer == 0f)
 					{
-						this.EventStudent.Character.animation.CrossFade(this.EventStudent.IdleAnim);
+						this.EventStudent.Character.GetComponent<Animation>().CrossFade(this.EventStudent.IdleAnim);
 						this.Prompt.HideButton[0] = false;
 						this.EventStudent.Prompt.Hide();
 						this.EventStudent.Prompt.enabled = false;
@@ -148,7 +140,7 @@ public class ToiletEventScript : MonoBehaviour
 						this.StallDoor.Prompt.Hide();
 					}
 					this.Timer += Time.deltaTime;
-					if (this.Timer > (float)3)
+					if (this.Timer > 3f)
 					{
 						this.StallDoor.Locked = true;
 						this.StallDoor.CloseDoor();
@@ -157,46 +149,46 @@ public class ToiletEventScript : MonoBehaviour
 						this.Prompt.enabled = false;
 						this.EventStudent.CurrentDestination = this.EventLocation[2];
 						this.EventStudent.Pathfinding.target = this.EventLocation[2];
-						this.EventStudent.TargetDistance = (float)2;
+						this.EventStudent.TargetDistance = 2f;
 						this.EventPhase++;
-						this.Timer = (float)0;
+						this.Timer = 0f;
 					}
 				}
 				else if (this.EventPhase == 2)
 				{
-					if (this.Timer == (float)0)
+					if (this.Timer == 0f)
 					{
-						this.EventStudent.Character.animation.CrossFade(this.EventAnim[1]);
+						this.EventStudent.Character.GetComponent<Animation>().CrossFade(this.EventAnim[1]);
 						this.BucketPour.enabled = true;
 					}
 					this.Timer += Time.deltaTime;
-					if (this.Timer > (float)10)
+					if (this.Timer > 10f)
 					{
 						this.PlayClip(this.EventClip[2], this.Toilet.transform.position);
 						this.EventPhase++;
-						this.Timer = (float)0;
+						this.Timer = 0f;
 					}
 				}
 				else if (this.EventPhase == 3)
 				{
 					this.Timer += Time.deltaTime;
-					if (this.Timer > (float)4)
+					if (this.Timer > 4f)
 					{
 						this.EventStudent.CurrentDestination = this.EventLocation[3];
 						this.EventStudent.Pathfinding.target = this.EventLocation[3];
-						this.EventStudent.TargetDistance = (float)2;
-						this.StallDoor.gameObject.active = true;
+						this.EventStudent.TargetDistance = 2f;
+						this.StallDoor.gameObject.SetActive(true);
 						this.StallDoor.Prompt.enabled = true;
 						this.StallDoor.Locked = false;
 						this.EventPhase++;
-						this.Timer = (float)0;
+						this.Timer = 0f;
 					}
 				}
 				else if (this.EventPhase == 4)
 				{
-					this.EventStudent.Character.animation.CrossFade("f02_washHands_00");
+					this.EventStudent.Character.GetComponent<Animation>().CrossFade("f02_washHands_00");
 					this.Timer += Time.deltaTime;
-					if (this.Timer > (float)5)
+					if (this.Timer > 5f)
 					{
 						this.EndEvent();
 					}
@@ -204,63 +196,63 @@ public class ToiletEventScript : MonoBehaviour
 				else if (this.EventPhase == 5)
 				{
 					this.Timer += Time.deltaTime;
-					if (this.Timer > (float)9)
+					if (this.Timer > 9f)
 					{
 						this.Splashes.Stop();
 						this.EventOver = true;
 						this.EndEvent();
 					}
-					else if (this.Timer > (float)3)
+					else if (this.Timer > 3f)
 					{
 						this.EventSubtitle.text = string.Empty;
 						this.Splashes.Play();
 					}
 				}
 				this.Distance = Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position);
-				if (this.Distance < (float)10)
+				if (this.Distance < 10f)
 				{
-					float num = Mathf.Abs((this.Distance - (float)10) * 0.2f);
-					if (num < (float)0)
+					float num = Mathf.Abs((this.Distance - 10f) * 0.2f);
+					if (num < 0f)
 					{
-						num = (float)0;
+						num = 0f;
 					}
-					if (num > (float)1)
+					if (num > 1f)
 					{
-						num = (float)1;
+						num = 1f;
 					}
 					this.EventSubtitle.transform.localScale = new Vector3(num, num, num);
 				}
 				else
 				{
-					this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+					this.EventSubtitle.transform.localScale = Vector3.zero;
 				}
 			}
 		}
-		if (this.ToiletCountdown > (float)0)
+		if (this.ToiletCountdown > 0f)
 		{
 			this.ToiletCountdown -= Time.deltaTime;
-			if (this.ToiletCountdown < (float)0)
+			if (this.ToiletCountdown < 0f)
 			{
 				this.Toilet.enabled = true;
 			}
 		}
 	}
 
-	public virtual void PlayClip(AudioClip clip, Vector3 pos)
+	public void PlayClip(AudioClip clip, Vector3 pos)
 	{
 		GameObject gameObject = new GameObject("TempAudio");
 		gameObject.transform.position = pos;
-		AudioSource audioSource = (AudioSource)gameObject.AddComponent(typeof(AudioSource));
+		AudioSource audioSource = gameObject.AddComponent<AudioSource>();
 		audioSource.clip = clip;
 		audioSource.Play();
 		UnityEngine.Object.Destroy(gameObject, clip.length);
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
-		audioSource.minDistance = (float)5;
-		audioSource.maxDistance = (float)10;
+		audioSource.minDistance = 5f;
+		audioSource.maxDistance = 10f;
 		this.VoiceClip = gameObject;
 	}
 
-	public virtual void EndEvent()
+	public void EndEvent()
 	{
 		if (!this.EventOver)
 		{
@@ -270,19 +262,19 @@ public class ToiletEventScript : MonoBehaviour
 			}
 			this.EventStudent.CurrentDestination = this.EventStudent.Destinations[this.EventStudent.Phase];
 			this.EventStudent.Pathfinding.target = this.EventStudent.Destinations[this.EventStudent.Phase];
-			this.EventStudent.Obstacle.checkTime = (float)1;
+			this.EventStudent.Obstacle.checkTime = 1f;
 			if (!this.EventStudent.Dying)
 			{
 				this.EventStudent.Prompt.enabled = true;
 			}
-			this.EventStudent.TargetDistance = (float)1;
+			this.EventStudent.TargetDistance = 1f;
 			this.EventStudent.ToiletEvent = null;
 			this.EventStudent.InEvent = false;
 			this.EventStudent.Private = false;
 			this.EventSubtitle.text = string.Empty;
 			this.StudentManager.UpdateStudents();
 		}
-		this.StallDoor.gameObject.active = true;
+		this.StallDoor.gameObject.SetActive(true);
 		this.StallDoor.Prompt.enabled = true;
 		this.StallDoor.Locked = false;
 		this.BucketPour.enabled = false;
@@ -292,10 +284,6 @@ public class ToiletEventScript : MonoBehaviour
 		this.EventCheck = false;
 		this.Prompt.Hide();
 		this.Prompt.enabled = false;
-		this.ToiletCountdown = (float)1;
-	}
-
-	public virtual void Main()
-	{
+		this.ToiletCountdown = 1f;
 	}
 }

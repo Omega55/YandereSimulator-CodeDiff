@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class TornadoScript : MonoBehaviour
 {
 	public GameObject FemaleBloodyScream;
@@ -12,54 +11,36 @@ public class TornadoScript : MonoBehaviour
 
 	public Collider MyCollider;
 
-	public float Strength;
+	public float Strength = 10000f;
 
 	public float Timer;
 
-	public TornadoScript()
-	{
-		this.Strength = 10000f;
-	}
-
-	public virtual void Update()
+	private void Update()
 	{
 		this.Timer += Time.deltaTime;
 		if (this.Timer > 0.5f)
 		{
-			float y = this.transform.position.y + Time.deltaTime;
-			Vector3 position = this.transform.position;
-			float num = position.y = y;
-			Vector3 vector = this.transform.position = position;
+			base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y + Time.deltaTime, base.transform.position.z);
 			this.MyCollider.enabled = true;
 		}
 	}
 
-	public virtual void OnTriggerEnter(Collider other)
+	private void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.layer == 9)
 		{
-			StudentScript studentScript = (StudentScript)other.gameObject.GetComponent(typeof(StudentScript));
-			if (studentScript != null && studentScript.StudentID > 1)
+			StudentScript component = other.gameObject.GetComponent<StudentScript>();
+			if (component != null && component.StudentID > 1)
 			{
-				if (!studentScript.Male)
-				{
-					this.Scream = (GameObject)UnityEngine.Object.Instantiate(this.FemaleBloodyScream, studentScript.transform.position + Vector3.up, Quaternion.identity);
-				}
-				else
-				{
-					this.Scream = (GameObject)UnityEngine.Object.Instantiate(this.MaleBloodyScream, studentScript.transform.position + Vector3.up, Quaternion.identity);
-				}
-				this.Scream.transform.parent = studentScript.HipCollider.transform;
-				this.Scream.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
-				studentScript.Dead = true;
-				studentScript.BecomeRagdoll();
-				studentScript.Ragdoll.AllRigidbodies[0].isKinematic = false;
-				studentScript.Ragdoll.AllRigidbodies[0].AddForce(Vector3.up * this.Strength);
+				this.Scream = UnityEngine.Object.Instantiate<GameObject>((!component.Male) ? this.FemaleBloodyScream : this.MaleBloodyScream, component.transform.position + Vector3.up, Quaternion.identity);
+				this.Scream.transform.parent = component.HipCollider.transform;
+				this.Scream.transform.localPosition = Vector3.zero;
+				component.Dead = true;
+				component.BecomeRagdoll();
+				Rigidbody rigidbody = component.Ragdoll.AllRigidbodies[0];
+				rigidbody.isKinematic = false;
+				rigidbody.AddForce(Vector3.up * this.Strength);
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

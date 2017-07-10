@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class AccessoryScript : MonoBehaviour
 {
 	public PromptScript Prompt;
@@ -14,21 +13,17 @@ public class AccessoryScript : MonoBehaviour
 
 	public float Z;
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Prompt.Circle[0].fillAmount == (float)0)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
 			this.Prompt.MyCollider.enabled = false;
-			this.transform.parent = this.Target;
-			this.transform.localPosition = new Vector3(this.X, this.Y, this.Z);
-			this.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
-			this.enabled = false;
+			base.transform.parent = this.Target;
+			base.transform.localPosition = new Vector3(this.X, this.Y, this.Z);
+			base.transform.localEulerAngles = Vector3.zero;
+			base.enabled = false;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

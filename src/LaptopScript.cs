@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class LaptopScript : MonoBehaviour
 {
 	public Camera LaptopCamera;
@@ -33,23 +31,24 @@ public class LaptopScript : MonoBehaviour
 
 	public UILabel EventSubtitle;
 
-	public virtual void Start()
+	private void Start()
 	{
 		if (PlayerPrefs.GetInt("SCP") == 1)
 		{
-			this.LaptopScreen.localScale = new Vector3((float)0, (float)0, (float)0);
+			this.LaptopScreen.localScale = Vector3.zero;
 			this.LaptopCamera.enabled = false;
-			this.SCP.active = false;
-			this.enabled = false;
+			this.SCP.SetActive(false);
+			base.enabled = false;
 		}
 		else
 		{
-			this.SCP.animation["f02_scp_00"].speed = (float)0;
-			this.SCP.animation["f02_scp_00"].time = (float)0;
+			Animation component = this.SCP.GetComponent<Animation>();
+			component["f02_scp_00"].speed = 0f;
+			component["f02_scp_00"].time = 0f;
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.FirstFrame == 2)
 		{
@@ -58,56 +57,54 @@ public class LaptopScript : MonoBehaviour
 		this.FirstFrame++;
 		if (!this.Off)
 		{
+			AudioSource component = base.GetComponent<AudioSource>();
+			Animation component2 = this.SCP.GetComponent<Animation>();
 			if (!this.React)
 			{
-				if (this.Yandere.transform.position.x > this.transform.position.x + (float)1 && Vector3.Distance(this.Yandere.transform.position, new Vector3(this.transform.position.x, (float)4, this.transform.position.z)) < (float)2 && this.Yandere.Followers == 0)
+				if (this.Yandere.transform.position.x > base.transform.position.x + 1f && Vector3.Distance(this.Yandere.transform.position, new Vector3(base.transform.position.x, 4f, base.transform.position.z)) < 2f && this.Yandere.Followers == 0)
 				{
-					this.EventSubtitle.transform.localScale = new Vector3((float)1, (float)1, (float)1);
-					this.SCP.animation["f02_scp_00"].time = (float)0;
+					this.EventSubtitle.transform.localScale = new Vector3(1f, 1f, 1f);
+					component2["f02_scp_00"].time = 0f;
 					this.LaptopCamera.enabled = true;
-					this.SCP.animation.Play();
+					component2.Play();
 					this.Hair.enabled = true;
 					this.Jukebox.Dip = 0.5f;
-					this.audio.Play();
+					component.Play();
 					this.React = true;
 				}
 			}
 			else
 			{
-				this.audio.pitch = Time.timeScale;
-				this.audio.volume = (float)1;
-				if (this.Yandere.transform.position.y > this.transform.position.y + (float)3)
+				component.pitch = Time.timeScale;
+				component.volume = 1f;
+				if (this.Yandere.transform.position.y > base.transform.position.y + 3f || this.Yandere.transform.position.y < base.transform.position.y - 3f)
 				{
-					this.audio.volume = (float)0;
+					component.volume = 0f;
 				}
-				else if (this.Yandere.transform.position.y < this.transform.position.y - (float)3)
+				for (int i = 0; i < this.Cues.Length; i++)
 				{
-					this.audio.volume = (float)0;
-				}
-				for (int i = 0; i < Extensions.get_length(this.Cues); i++)
-				{
-					if (this.audio.time > this.Cues[i])
+					if (component.time > this.Cues[i])
 					{
 						this.EventSubtitle.text = this.Subs[i];
 					}
 				}
-				if (this.audio.time >= this.audio.clip.length - (float)1 || this.audio.time == (float)0)
+				if (component.time >= component.clip.length - 1f || component.time == 0f)
 				{
-					this.SCP.animation["f02_scp_00"].speed = (float)1;
+					component2["f02_scp_00"].speed = 1f;
 					this.Timer += Time.deltaTime;
 				}
 				else
 				{
-					this.SCP.animation["f02_scp_00"].time = this.audio.time;
+					component2["f02_scp_00"].time = component.time;
 				}
-				if (this.Timer > (float)1)
+				if (this.Timer > 1f)
 				{
-					this.audio.clip = this.ShutDown;
-					this.audio.Play();
+					component.clip = this.ShutDown;
+					component.Play();
 					this.EventSubtitle.text = string.Empty;
 					PlayerPrefs.SetInt("SCP", 1);
 					this.LaptopCamera.enabled = false;
-					this.Jukebox.Dip = (float)1;
+					this.Jukebox.Dip = 1f;
 					this.React = false;
 					this.Off = true;
 				}
@@ -115,17 +112,13 @@ public class LaptopScript : MonoBehaviour
 		}
 		else if (this.LaptopScreen.localScale.x > 0.1f)
 		{
-			this.LaptopScreen.localScale = Vector3.Lerp(this.LaptopScreen.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+			this.LaptopScreen.localScale = Vector3.Lerp(this.LaptopScreen.localScale, Vector3.zero, Time.deltaTime * 10f);
 		}
-		else if (this.enabled)
+		else if (base.enabled)
 		{
-			this.LaptopScreen.localScale = new Vector3((float)0, (float)0, (float)0);
+			this.LaptopScreen.localScale = Vector3.zero;
 			this.Hair.enabled = false;
-			this.enabled = false;
+			base.enabled = false;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

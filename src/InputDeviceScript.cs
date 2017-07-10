@@ -1,10 +1,9 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class InputDeviceScript : MonoBehaviour
 {
-	public int Type;
+	public int Type = 1;
 
 	public Vector3 MousePrevious;
 
@@ -14,16 +13,11 @@ public class InputDeviceScript : MonoBehaviour
 
 	public float Vertical;
 
-	public InputDeviceScript()
-	{
-		this.Type = 1;
-	}
-
-	public virtual void Update()
+	private void Update()
 	{
 		this.MouseDelta = Input.mousePosition - this.MousePrevious;
 		this.MousePrevious = Input.mousePosition;
-		if (Input.anyKey || Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButton(2) || this.MouseDelta != new Vector3((float)0, (float)0, (float)0))
+		if (Input.anyKey || Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButton(2) || this.MouseDelta != Vector3.zero)
 		{
 			this.Type = 2;
 		}
@@ -31,15 +25,11 @@ public class InputDeviceScript : MonoBehaviour
 		{
 			this.Type = 1;
 		}
-		if (!Input.GetKey("w") && !Input.GetKey("a") && !Input.GetKey("s") && !Input.GetKey("d") && (Input.GetAxis("Vertical") == (float)1 || Input.GetAxis("Vertical") == (float)-1 || Input.GetAxis("Horizontal") == (float)1 || Input.GetAxis("Horizontal") == (float)-1))
+		if (!Input.GetKey("w") && !Input.GetKey("a") && !Input.GetKey("s") && !Input.GetKey("d") && (Input.GetAxis("Vertical") == 1f || Input.GetAxis("Vertical") == -1f || Input.GetAxis("Horizontal") == 1f || Input.GetAxis("Horizontal") == -1f))
 		{
 			this.Type = 1;
 		}
 		this.Horizontal = Input.GetAxis("Horizontal");
 		this.Vertical = Input.GetAxis("Vertical");
-	}
-
-	public virtual void Main()
-	{
 	}
 }

@@ -1,20 +1,16 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class StandPunchScript : MonoBehaviour
 {
 	public Collider MyCollider;
 
-	public virtual void OnTriggerEnter(Collider other)
+	private void OnTriggerEnter(Collider other)
 	{
-		if ((StudentScript)other.gameObject.GetComponent(typeof(StudentScript)) != null && ((StudentScript)other.gameObject.GetComponent(typeof(StudentScript))).StudentID > 1)
+		StudentScript component = other.gameObject.GetComponent<StudentScript>();
+		if (component != null && component.StudentID > 1)
 		{
-			((StudentScript)other.gameObject.GetComponent(typeof(StudentScript))).JojoReact();
+			component.JojoReact();
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

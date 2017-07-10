@@ -1,13 +1,11 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class ClockScript : MonoBehaviour
 {
-	private string MinuteNumber;
+	private string MinuteNumber = string.Empty;
 
-	private string HourNumber;
+	private string HourNumber = string.Empty;
 
 	public Collider[] TrespassZones;
 
@@ -67,7 +65,7 @@ public class ClockScript : MonoBehaviour
 
 	public int ID;
 
-	public string TimeText;
+	public string TimeText = string.Empty;
 
 	public bool StopTime;
 
@@ -79,66 +77,53 @@ public class ClockScript : MonoBehaviour
 
 	public Color SkyboxColor;
 
-	public ClockScript()
-	{
-		this.MinuteNumber = string.Empty;
-		this.HourNumber = string.Empty;
-		this.TimeText = string.Empty;
-	}
-
-	public virtual void Start()
+	private void Start()
 	{
 		this.PeriodLabel.text = "BEFORE CLASS";
-		this.PresentTime = this.StartHour * (float)60;
+		this.PresentTime = this.StartHour * 60f;
 		if (PlayerPrefs.GetInt("Weekday") == 0)
 		{
 			PlayerPrefs.SetInt("Weekday", 1);
 		}
-		if (PlayerPrefs.GetFloat("SchoolAtmosphere") < (float)50)
+		if (PlayerPrefs.GetFloat("SchoolAtmosphere") < 50f)
 		{
 			this.BloomEffect.bloomIntensity = 0.25f;
 			this.BloomEffect.bloomThreshhold = 0.5f;
 			this.Police.Darkness.enabled = true;
-			int num = 1;
-			Color color = this.Police.Darkness.color;
-			float num2 = color.a = (float)num;
-			Color color2 = this.Police.Darkness.color = color;
+			this.Police.Darkness.color = new Color(this.Police.Darkness.color.r, this.Police.Darkness.color.g, this.Police.Darkness.color.b, 1f);
 			this.FadeIn = true;
-			this.Timer = (float)5;
+			this.Timer = 5f;
 		}
 		else
 		{
-			this.BloomEffect.bloomIntensity = (float)10;
-			this.BloomEffect.bloomThreshhold = (float)0;
+			this.BloomEffect.bloomIntensity = 10f;
+			this.BloomEffect.bloomThreshhold = 0f;
 		}
-		this.BloomEffect.bloomThreshhold = (float)0;
+		this.BloomEffect.bloomThreshhold = 0f;
 		this.UpdateWeekdayText(PlayerPrefs.GetInt("Weekday"));
-		this.MainLight.color = new Color((float)1, (float)1, (float)1, (float)1);
-		RenderSettings.ambientLight = new Color(0.75f, 0.75f, 0.75f, (float)1);
+		this.MainLight.color = new Color(1f, 1f, 1f, 1f);
+		RenderSettings.ambientLight = new Color(0.75f, 0.75f, 0.75f, 1f);
 		RenderSettings.skybox.SetColor("_Tint", new Color(0.5f, 0.5f, 0.5f));
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.FadeIn && Time.deltaTime < (float)1)
+		if (this.FadeIn && Time.deltaTime < 1f)
 		{
-			float a = Mathf.MoveTowards(this.Police.Darkness.color.a, (float)0, Time.deltaTime);
-			Color color = this.Police.Darkness.color;
-			float num = color.a = a;
-			Color color2 = this.Police.Darkness.color = color;
-			if (this.Police.Darkness.color.a == (float)0)
+			this.Police.Darkness.color = new Color(this.Police.Darkness.color.r, this.Police.Darkness.color.g, this.Police.Darkness.color.b, Mathf.MoveTowards(this.Police.Darkness.color.a, 0f, Time.deltaTime));
+			if (this.Police.Darkness.color.a == 0f)
 			{
 				this.Police.Darkness.enabled = false;
 				this.FadeIn = false;
 			}
 		}
-		if (this.PresentTime < (float)1080)
+		if (this.PresentTime < 1080f)
 		{
-			if (this.Timer < (float)5)
+			if (this.Timer < 5f)
 			{
 				this.Timer += Time.deltaTime;
-				this.BloomEffect.bloomIntensity = this.BloomEffect.bloomIntensity - Time.deltaTime * 9.75f;
-				this.BloomEffect.bloomThreshhold = this.BloomEffect.bloomThreshhold + Time.deltaTime * 0.5f;
+				this.BloomEffect.bloomIntensity -= Time.deltaTime * 9.75f;
+				this.BloomEffect.bloomThreshhold += Time.deltaTime * 0.5f;
 				if (this.BloomEffect.bloomThreshhold > 0.5f)
 				{
 					this.BloomEffect.bloomIntensity = 0.25f;
@@ -155,52 +140,39 @@ public class ClockScript : MonoBehaviour
 		}
 		if (!this.StopTime)
 		{
-			this.PresentTime += Time.deltaTime * 0.01666667f * this.TimeSpeed;
+			this.PresentTime += Time.deltaTime * 0.0166666675f * this.TimeSpeed;
 		}
-		if (this.PresentTime > (float)1440)
+		if (this.PresentTime > 1440f)
 		{
-			this.PresentTime -= (float)1440;
+			this.PresentTime -= 1440f;
 		}
-		this.HourTime = this.PresentTime / (float)60;
-		this.Hour = Mathf.Floor(this.PresentTime / (float)60);
-		this.Minute = Mathf.Floor((this.PresentTime / (float)60 - this.Hour) * (float)60);
-		if (this.Hour == (float)0 || this.Hour == (float)12)
+		this.HourTime = this.PresentTime / 60f;
+		this.Hour = Mathf.Floor(this.PresentTime / 60f);
+		this.Minute = Mathf.Floor((this.PresentTime / 60f - this.Hour) * 60f);
+		if (this.Hour == 0f || this.Hour == 12f)
 		{
 			this.HourNumber = "12";
 		}
-		else if (this.Hour < (float)12)
+		else if (this.Hour < 12f)
 		{
-			this.HourNumber = string.Empty + this.Hour;
+			this.HourNumber = this.Hour.ToString("f0");
 		}
 		else
 		{
-			this.HourNumber = string.Empty + (this.Hour - (float)12);
+			this.HourNumber = (this.Hour - 12f).ToString("f0");
 		}
-		if (this.Minute < (float)10)
+		if (this.Minute < 10f)
 		{
-			this.MinuteNumber = "0" + this.Minute;
+			this.MinuteNumber = "0" + this.Minute.ToString("f0");
 		}
 		else
 		{
-			this.MinuteNumber = string.Empty + this.Minute;
+			this.MinuteNumber = this.Minute.ToString("f0");
 		}
-		if (this.Hour < (float)12)
-		{
-			this.TimeText = this.HourNumber + ":" + this.MinuteNumber + " AM";
-		}
-		else
-		{
-			this.TimeText = this.HourNumber + ":" + this.MinuteNumber + " PM";
-		}
+		this.TimeText = this.HourNumber + ":" + this.MinuteNumber + ((this.Hour >= 12f) ? " PM" : " AM");
 		this.TimeLabel.text = this.TimeText;
-		float z = this.Minute * (float)6;
-		Vector3 localEulerAngles = this.MinuteHand.localEulerAngles;
-		float num2 = localEulerAngles.z = z;
-		Vector3 vector = this.MinuteHand.localEulerAngles = localEulerAngles;
-		float z2 = this.Hour * (float)30;
-		Vector3 localEulerAngles2 = this.HourHand.localEulerAngles;
-		float num3 = localEulerAngles2.z = z2;
-		Vector3 vector2 = this.HourHand.localEulerAngles = localEulerAngles2;
+		this.MinuteHand.localEulerAngles = new Vector3(this.MinuteHand.localEulerAngles.x, this.MinuteHand.localEulerAngles.y, this.Minute * 6f);
+		this.HourHand.localEulerAngles = new Vector3(this.HourHand.localEulerAngles.x, this.HourHand.localEulerAngles.y, this.Hour * 30f);
 		if (this.HourTime < 8.5f)
 		{
 			if (this.Period < 1)
@@ -210,7 +182,7 @@ public class ClockScript : MonoBehaviour
 				this.Period++;
 			}
 		}
-		else if (this.HourTime < (float)13)
+		else if (this.HourTime < 13f)
 		{
 			if (this.Period < 2)
 			{
@@ -243,11 +215,8 @@ public class ClockScript : MonoBehaviour
 			this.DeactivateTrespassZones();
 			this.Period++;
 		}
-		float z3 = (float)-45 + (float)90 * (this.PresentTime - (float)420) / (float)660;
-		Vector3 eulerAngles = this.Sun.eulerAngles;
-		float num4 = eulerAngles.z = z3;
-		Vector3 vector3 = this.Sun.eulerAngles = eulerAngles;
-		if ((this.Yandere.transform.position.y < (float)11 && this.Yandere.transform.position.x > (float)-30 && this.Yandere.transform.position.z > (float)-38 && this.Yandere.transform.position.x < (float)-22 && this.Yandere.transform.position.z < (float)-26) || (this.Yandere.transform.position.y < (float)11 && this.Yandere.transform.position.x > (float)22 && this.Yandere.transform.position.z > (float)-38 && this.Yandere.transform.position.x < (float)30 && this.Yandere.transform.position.z < (float)-26))
+		this.Sun.eulerAngles = new Vector3(this.Sun.eulerAngles.x, this.Sun.eulerAngles.y, -45f + 90f * (this.PresentTime - 420f) / 660f);
+		if ((this.Yandere.transform.position.y < 11f && this.Yandere.transform.position.x > -30f && this.Yandere.transform.position.z > -38f && this.Yandere.transform.position.x < -22f && this.Yandere.transform.position.z < -26f) || (this.Yandere.transform.position.y < 11f && this.Yandere.transform.position.x > 22f && this.Yandere.transform.position.z > -38f && this.Yandere.transform.position.x < 30f && this.Yandere.transform.position.z < -26f))
 		{
 			this.AmbientLightDim -= Time.deltaTime;
 			if (this.AmbientLightDim < 0.1f)
@@ -263,60 +232,25 @@ public class ClockScript : MonoBehaviour
 				this.AmbientLightDim = 0.75f;
 			}
 		}
-		if (this.PresentTime > (float)930)
+		if (this.PresentTime > 930f)
 		{
-			this.DayProgress = (this.PresentTime - (float)930) / (float)150;
-			float r = (float)1 - 0.149019614f * this.DayProgress;
-			Color color3 = this.MainLight.color;
-			float num5 = color3.r = r;
-			Color color4 = this.MainLight.color = color3;
-			float g = (float)1 - 0.403921574f * this.DayProgress;
-			Color color5 = this.MainLight.color;
-			float num6 = color5.g = g;
-			Color color6 = this.MainLight.color = color5;
-			float b = (float)1 - 0.709803939f * this.DayProgress;
-			Color color7 = this.MainLight.color;
-			float num7 = color7.b = b;
-			Color color8 = this.MainLight.color = color7;
-			float r2 = (float)1 - 0.149019614f * this.DayProgress - ((float)1 - this.AmbientLightDim) * ((float)1 - this.DayProgress);
-			Color ambientLight = RenderSettings.ambientLight;
-			float num8 = ambientLight.r = r2;
-			Color color9 = RenderSettings.ambientLight = ambientLight;
-			float g2 = (float)1 - 0.403921574f * this.DayProgress - ((float)1 - this.AmbientLightDim) * ((float)1 - this.DayProgress);
-			Color ambientLight2 = RenderSettings.ambientLight;
-			float num9 = ambientLight2.g = g2;
-			Color color10 = RenderSettings.ambientLight = ambientLight2;
-			float b2 = (float)1 - 0.709803939f * this.DayProgress - ((float)1 - this.AmbientLightDim) * ((float)1 - this.DayProgress);
-			Color ambientLight3 = RenderSettings.ambientLight;
-			float num10 = ambientLight3.b = b2;
-			Color color11 = RenderSettings.ambientLight = ambientLight3;
-			this.SkyboxColor.r = (float)1 - 0.149019614f * this.DayProgress - 0.5f * ((float)1 - this.DayProgress);
-			this.SkyboxColor.g = (float)1 - 0.403921574f * this.DayProgress - 0.5f * ((float)1 - this.DayProgress);
-			this.SkyboxColor.b = (float)1 - 0.709803939f * this.DayProgress - 0.5f * ((float)1 - this.DayProgress);
+			this.DayProgress = (this.PresentTime - 930f) / 150f;
+			this.MainLight.color = new Color(1f - 0.149019614f * this.DayProgress, 1f - 0.403921574f * this.DayProgress, 1f - 0.709803939f * this.DayProgress);
+			RenderSettings.ambientLight = new Color(1f - 0.149019614f * this.DayProgress - (1f - this.AmbientLightDim) * (1f - this.DayProgress), 1f - 0.403921574f * this.DayProgress - (1f - this.AmbientLightDim) * (1f - this.DayProgress), 1f - 0.709803939f * this.DayProgress - (1f - this.AmbientLightDim) * (1f - this.DayProgress));
+			this.SkyboxColor = new Color(1f - 0.149019614f * this.DayProgress - 0.5f * (1f - this.DayProgress), 1f - 0.403921574f * this.DayProgress - 0.5f * (1f - this.DayProgress), 1f - 0.709803939f * this.DayProgress - 0.5f * (1f - this.DayProgress));
 			RenderSettings.skybox.SetColor("_Tint", new Color(this.SkyboxColor.r, this.SkyboxColor.g, this.SkyboxColor.b));
 		}
 		else
 		{
-			float ambientLightDim = this.AmbientLightDim;
-			Color ambientLight4 = RenderSettings.ambientLight;
-			float num11 = ambientLight4.r = ambientLightDim;
-			Color color12 = RenderSettings.ambientLight = ambientLight4;
-			float ambientLightDim2 = this.AmbientLightDim;
-			Color ambientLight5 = RenderSettings.ambientLight;
-			float num12 = ambientLight5.g = ambientLightDim2;
-			Color color13 = RenderSettings.ambientLight = ambientLight5;
-			float ambientLightDim3 = this.AmbientLightDim;
-			Color ambientLight6 = RenderSettings.ambientLight;
-			float num13 = ambientLight6.b = ambientLightDim3;
-			Color color14 = RenderSettings.ambientLight = ambientLight6;
+			RenderSettings.ambientLight = new Color(this.AmbientLightDim, this.AmbientLightDim, this.AmbientLightDim);
 		}
 		if (this.TimeSkip)
 		{
-			if (this.HalfwayTime == (float)0)
+			if (this.HalfwayTime == 0f)
 			{
 				this.HalfwayTime = this.PresentTime + (this.TargetTime - this.PresentTime) * 0.5f;
 				this.Yandere.TimeSkipHeight = this.Yandere.transform.position.y;
-				this.Yandere.Phone.active = true;
+				this.Yandere.Phone.SetActive(true);
 				this.Yandere.TimeSkipping = true;
 				this.Yandere.CanMove = false;
 				this.Blur.enabled = true;
@@ -325,39 +259,39 @@ public class ClockScript : MonoBehaviour
 					this.Yandere.Unequip();
 				}
 			}
-			if (Time.timeScale < (float)25)
+			if (Time.timeScale < 25f)
 			{
-				Time.timeScale += (float)1;
+				Time.timeScale += 1f;
 			}
-			this.Yandere.Character.animation["f02_timeSkip_00"].speed = (float)1 / Time.timeScale;
-			this.Blur.blurAmount = 0.92f * (Time.timeScale / (float)100);
+			this.Yandere.Character.GetComponent<Animation>()["f02_timeSkip_00"].speed = 1f / Time.timeScale;
+			this.Blur.blurAmount = 0.92f * (Time.timeScale / 100f);
 			if (this.PresentTime > this.TargetTime)
 			{
 				this.EndTimeSkip();
 			}
-			if (this.Yandere.CameraEffects.Streaks.color.a > (float)0 || this.Yandere.CameraEffects.MurderStreaks.color.a > (float)0 || this.Yandere.NearSenpai || Input.GetButtonDown("Start"))
+			if (this.Yandere.CameraEffects.Streaks.color.a > 0f || this.Yandere.CameraEffects.MurderStreaks.color.a > 0f || this.Yandere.NearSenpai || Input.GetButtonDown("Start"))
 			{
 				this.EndTimeSkip();
 			}
 		}
 	}
 
-	public virtual void EndTimeSkip()
+	public void EndTimeSkip()
 	{
-		this.PromptParent.localScale = new Vector3((float)1, (float)1, (float)1);
-		this.Yandere.Phone.active = false;
+		this.PromptParent.localScale = new Vector3(1f, 1f, 1f);
+		this.Yandere.Phone.SetActive(false);
 		this.Yandere.TimeSkipping = false;
 		this.Blur.enabled = false;
-		Time.timeScale = (float)1;
+		Time.timeScale = 1f;
 		this.TimeSkip = false;
-		this.HalfwayTime = (float)0;
+		this.HalfwayTime = 0f;
 		if (!this.Yandere.Noticed && !this.Police.FadeOut)
 		{
 			this.Yandere.CanMove = true;
 		}
 	}
 
-	public virtual void UpdateWeekdayText(int Weekday)
+	private void UpdateWeekdayText(int Weekday)
 	{
 		if (Weekday == 1)
 		{
@@ -381,30 +315,22 @@ public class ClockScript : MonoBehaviour
 		}
 	}
 
-	public virtual void ActivateTrespassZones()
+	private void ActivateTrespassZones()
 	{
 		this.SchoolBell.Play();
-		this.ID = 0;
-		while (this.ID < Extensions.get_length(this.TrespassZones))
+		foreach (Collider collider in this.TrespassZones)
 		{
-			this.TrespassZones[this.ID].enabled = true;
-			this.ID++;
+			collider.enabled = true;
 		}
 	}
 
-	public virtual void DeactivateTrespassZones()
+	public void DeactivateTrespassZones()
 	{
 		this.Yandere.Trespassing = false;
 		this.SchoolBell.Play();
-		this.ID = 0;
-		while (this.ID < Extensions.get_length(this.TrespassZones))
+		foreach (Collider collider in this.TrespassZones)
 		{
-			this.TrespassZones[this.ID].enabled = false;
-			this.ID++;
+			collider.enabled = false;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

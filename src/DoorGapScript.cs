@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class DoorGapScript : MonoBehaviour
 {
 	public RummageSpotScript RummageSpot;
@@ -14,31 +13,26 @@ public class DoorGapScript : MonoBehaviour
 
 	public float Timer;
 
-	public int Phase;
+	public int Phase = 1;
 
-	public DoorGapScript()
+	private void Start()
 	{
-		this.Phase = 1;
+		this.Papers[1].gameObject.SetActive(false);
 	}
 
-	public virtual void Start()
+	private void Update()
 	{
-		this.Papers[1].active = false;
-	}
-
-	public virtual void Update()
-	{
-		if (this.Prompt.Circle[0].fillAmount == (float)0)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			if (this.Phase == 1)
 			{
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
 				this.Prompt.Yandere.Inventory.AnswerSheet = false;
-				this.Papers[1].gameObject.active = true;
+				this.Papers[1].gameObject.SetActive(true);
 				PlayerPrefs.SetInt("Scheme_5_Stage", 3);
 				this.Schemes.UpdateInstructions();
-				this.audio.Play();
+				base.GetComponent<AudioSource>().Play();
 			}
 			else
 			{
@@ -46,8 +40,8 @@ public class DoorGapScript : MonoBehaviour
 				this.Prompt.enabled = false;
 				this.Prompt.Yandere.Inventory.AnswerSheet = true;
 				this.Prompt.Yandere.Inventory.DuplicateSheet = true;
-				this.Papers[2].gameObject.active = false;
-				this.RummageSpot.Prompt.Label[0].text = "     " + "Return Answer Sheet";
+				this.Papers[2].gameObject.SetActive(false);
+				this.RummageSpot.Prompt.Label[0].text = "     Return Answer Sheet";
 				this.RummageSpot.Prompt.enabled = true;
 				PlayerPrefs.SetInt("Scheme_5_Stage", 4);
 				this.Schemes.UpdateInstructions();
@@ -57,30 +51,22 @@ public class DoorGapScript : MonoBehaviour
 		if (this.Phase == 2)
 		{
 			this.Timer += Time.deltaTime;
-			if (this.Timer > (float)4)
+			if (this.Timer > 4f)
 			{
-				this.Prompt.Label[0].text = "     " + "Pick Up Sheets";
+				this.Prompt.Label[0].text = "     Pick Up Sheets";
 				this.Prompt.enabled = true;
 				this.Phase = 2;
 			}
-			else if (this.Timer > (float)3)
+			else if (this.Timer > 3f)
 			{
-				float z = Mathf.Lerp(this.Papers[2].localPosition.z, -0.166f, Time.deltaTime * (float)10);
-				Vector3 localPosition = this.Papers[2].localPosition;
-				float num = localPosition.z = z;
-				Vector3 vector = this.Papers[2].localPosition = localPosition;
+				Transform transform = this.Papers[2];
+				transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, Mathf.Lerp(transform.localPosition.z, -0.166f, Time.deltaTime * 10f));
 			}
-			else if (this.Timer > (float)1)
+			else if (this.Timer > 1f)
 			{
-				float z2 = Mathf.Lerp(this.Papers[1].localPosition.z, 0.166f, Time.deltaTime * (float)10);
-				Vector3 localPosition2 = this.Papers[1].localPosition;
-				float num2 = localPosition2.z = z2;
-				Vector3 vector2 = this.Papers[1].localPosition = localPosition2;
+				Transform transform2 = this.Papers[1];
+				transform2.localPosition = new Vector3(transform2.localPosition.x, transform2.localPosition.y, Mathf.Lerp(transform2.localPosition.z, 0.166f, Time.deltaTime * 10f));
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

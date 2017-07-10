@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class HomeTriggerScript : MonoBehaviour
 {
 	public HomeCameraScript HomeCamera;
@@ -12,60 +11,37 @@ public class HomeTriggerScript : MonoBehaviour
 
 	public int ID;
 
-	public virtual void Start()
+	private void Start()
 	{
-		int num = 0;
-		Color color = this.Label.color;
-		float num2 = color.a = (float)num;
-		Color color2 = this.Label.color = color;
+		this.Label.color = new Color(this.Label.color.r, this.Label.color.g, this.Label.color.b, 0f);
 	}
 
-	public virtual void OnTriggerEnter(Collider other)
+	private void OnTriggerEnter(Collider other)
 	{
-		if (other.tag == "Player")
+		if (other.tag.Equals("Player"))
 		{
 			this.HomeCamera.ID = this.ID;
 			this.FadeIn = true;
 		}
 	}
 
-	public virtual void OnTriggerExit(Collider other)
+	private void OnTriggerExit(Collider other)
 	{
-		if (other.tag == "Player")
+		if (other.tag.Equals("Player"))
 		{
 			this.HomeCamera.ID = 0;
 			this.FadeIn = false;
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.FadeIn)
-		{
-			float a = Mathf.MoveTowards(this.Label.color.a, (float)1, Time.deltaTime * (float)10);
-			Color color = this.Label.color;
-			float num = color.a = a;
-			Color color2 = this.Label.color = color;
-		}
-		else
-		{
-			float a2 = Mathf.MoveTowards(this.Label.color.a, (float)0, Time.deltaTime * (float)10);
-			Color color3 = this.Label.color;
-			float num2 = color3.a = a2;
-			Color color4 = this.Label.color = color3;
-		}
+		this.Label.color = new Color(this.Label.color.r, this.Label.color.g, this.Label.color.b, Mathf.MoveTowards(this.Label.color.a, (!this.FadeIn) ? 0f : 1f, Time.deltaTime * 10f));
 	}
 
-	public virtual void Disable()
+	public void Disable()
 	{
-		int num = 0;
-		Color color = this.Label.color;
-		float num2 = color.a = (float)num;
-		Color color2 = this.Label.color = color;
-		this.active = false;
-	}
-
-	public virtual void Main()
-	{
+		this.Label.color = new Color(this.Label.color.r, this.Label.color.g, this.Label.color.b, 0f);
+		base.gameObject.SetActive(false);
 	}
 }

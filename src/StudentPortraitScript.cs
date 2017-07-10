@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class StudentPortraitScript : MonoBehaviour
 {
 	public GameObject DeathShadow;
@@ -14,15 +13,11 @@ public class StudentPortraitScript : MonoBehaviour
 
 	public UITexture Portrait;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.DeathShadow.active = false;
-		this.PrisonBars.active = false;
-		this.Panties.active = false;
-		this.Friend.active = false;
-	}
-
-	public virtual void Main()
-	{
+		this.DeathShadow.SetActive(false);
+		this.PrisonBars.SetActive(false);
+		this.Panties.SetActive(false);
+		this.Friend.SetActive(false);
 	}
 }

@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class SubtitleScript : MonoBehaviour
 {
 	public JukeboxScript Jukebox;
@@ -405,91 +403,91 @@ public class SubtitleScript : MonoBehaviour
 
 	public GameObject CurrentClip;
 
-	public virtual void Start()
+	private void Start()
 	{
 		this.Label.text = string.Empty;
 	}
 
-	public virtual void UpdateLabel(string ReactionType, int ID, float Duration)
+	public void UpdateLabel(string ReactionType, int ID, float Duration)
 	{
 		if (ReactionType == "Weapon and Blood and Insanity Reaction")
 		{
-			this.Label.text = this.WeaponBloodInsanityReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.WeaponBloodInsanityReactions))];
+			this.Label.text = this.WeaponBloodInsanityReactions[UnityEngine.Random.Range(0, this.WeaponBloodInsanityReactions.Length)];
 		}
 		else if (ReactionType == "Weapon and Blood Reaction")
 		{
-			this.Label.text = this.WeaponBloodReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.WeaponBloodReactions))];
+			this.Label.text = this.WeaponBloodReactions[UnityEngine.Random.Range(0, this.WeaponBloodReactions.Length)];
 		}
 		else if (ReactionType == "Weapon and Insanity Reaction")
 		{
-			this.Label.text = this.WeaponInsanityReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.WeaponInsanityReactions))];
+			this.Label.text = this.WeaponInsanityReactions[UnityEngine.Random.Range(0, this.WeaponInsanityReactions.Length)];
 		}
 		else if (ReactionType == "Blood and Insanity Reaction")
 		{
-			this.Label.text = this.BloodInsanityReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.BloodInsanityReactions))];
+			this.Label.text = this.BloodInsanityReactions[UnityEngine.Random.Range(0, this.BloodInsanityReactions.Length)];
 		}
 		else if (ReactionType == "Weapon Reaction")
 		{
 			if (ID == 1)
 			{
-				this.Label.text = this.KnifeReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.KnifeReactions))];
+				this.Label.text = this.KnifeReactions[UnityEngine.Random.Range(0, this.KnifeReactions.Length)];
 			}
 			else if (ID == 2)
 			{
-				this.Label.text = this.KatanaReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.KatanaReactions))];
+				this.Label.text = this.KatanaReactions[UnityEngine.Random.Range(0, this.KatanaReactions.Length)];
 			}
 			else if (ID == 3)
 			{
-				this.Label.text = this.SyringeReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.SyringeReactions))];
+				this.Label.text = this.SyringeReactions[UnityEngine.Random.Range(0, this.SyringeReactions.Length)];
 			}
 			else if (ID == 7)
 			{
-				this.Label.text = this.SawReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.SawReactions))];
+				this.Label.text = this.SawReactions[UnityEngine.Random.Range(0, this.SawReactions.Length)];
 			}
 			else if (ID == 8)
 			{
-				this.Label.text = this.RitualReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.RitualReactions))];
+				this.Label.text = this.RitualReactions[UnityEngine.Random.Range(0, this.RitualReactions.Length)];
 			}
 			else if (ID == 9)
 			{
-				this.Label.text = this.BatReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.BatReactions))];
+				this.Label.text = this.BatReactions[UnityEngine.Random.Range(0, this.BatReactions.Length)];
 			}
 			else if (ID == 10)
 			{
-				this.Label.text = this.ShovelReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.ShovelReactions))];
+				this.Label.text = this.ShovelReactions[UnityEngine.Random.Range(0, this.ShovelReactions.Length)];
 			}
 			else if (ID == 12)
 			{
-				this.Label.text = this.DumbbellReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.DumbbellReactions))];
+				this.Label.text = this.DumbbellReactions[UnityEngine.Random.Range(0, this.DumbbellReactions.Length)];
 			}
 			else if (ID == 13)
 			{
-				this.Label.text = this.AxeReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.AxeReactions))];
+				this.Label.text = this.AxeReactions[UnityEngine.Random.Range(0, this.AxeReactions.Length)];
 			}
 		}
 		else if (ReactionType == "Blood Reaction")
 		{
-			this.Label.text = this.BloodReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.BloodReactions))];
+			this.Label.text = this.BloodReactions[UnityEngine.Random.Range(0, this.BloodReactions.Length)];
 		}
 		else if (ReactionType == "Wet Blood Reaction")
 		{
-			this.Label.text = this.WetBloodReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.WetBloodReactions))];
+			this.Label.text = this.WetBloodReactions[UnityEngine.Random.Range(0, this.WetBloodReactions.Length)];
 		}
 		else if (ReactionType == "Insanity Reaction")
 		{
-			this.Label.text = this.InsanityReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.InsanityReactions))];
+			this.Label.text = this.InsanityReactions[UnityEngine.Random.Range(0, this.InsanityReactions.Length)];
 		}
 		else if (ReactionType == "Lewd Reaction")
 		{
-			this.Label.text = this.LewdReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.LewdReactions))];
+			this.Label.text = this.LewdReactions[UnityEngine.Random.Range(0, this.LewdReactions.Length)];
 		}
 		else if (ReactionType == "Prank Reaction")
 		{
-			this.Label.text = this.PrankReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.PrankReactions))];
+			this.Label.text = this.PrankReactions[UnityEngine.Random.Range(0, this.PrankReactions.Length)];
 		}
 		else if (ReactionType == "Interruption Reaction")
 		{
-			this.Label.text = this.InterruptReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.InterruptReactions))];
+			this.Label.text = this.InterruptReactions[UnityEngine.Random.Range(0, this.InterruptReactions.Length)];
 		}
 		else if (ReactionType == "Note Reaction")
 		{
@@ -498,94 +496,93 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (ReactionType == "Accept Food")
 		{
-			this.Label.text = this.FoodAccepts[UnityEngine.Random.Range(0, Extensions.get_length(this.FoodAccepts))];
+			this.Label.text = this.FoodAccepts[UnityEngine.Random.Range(0, this.FoodAccepts.Length)];
 		}
 		else if (ReactionType == "Reject Food")
 		{
-			this.Label.text = this.FoodRejects[UnityEngine.Random.Range(0, Extensions.get_length(this.FoodRejects))];
+			this.Label.text = this.FoodRejects[UnityEngine.Random.Range(0, this.FoodRejects.Length)];
 		}
 		else if (ReactionType == "Eavesdrop Reaction")
 		{
-			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.EavesdropReactions));
+			this.RandomID = UnityEngine.Random.Range(0, this.EavesdropReactions.Length);
 			this.Label.text = this.EavesdropReactions[this.RandomID];
 			this.PlayVoice(ReactionType, this.RandomID);
 		}
 		else if (ReactionType == "Pickpocket Reaction")
 		{
-			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.PickpocketReactions));
+			this.RandomID = UnityEngine.Random.Range(0, this.PickpocketReactions.Length);
 			this.Label.text = this.PickpocketReactions[this.RandomID];
 			this.PlayVoice(ReactionType, this.RandomID);
 		}
 		else if (ReactionType == "Drown Reaction")
 		{
-			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.DrownReactions));
+			this.RandomID = UnityEngine.Random.Range(0, this.DrownReactions.Length);
 			this.Label.text = this.DrownReactions[this.RandomID];
 			this.PlayVoice(ReactionType, this.RandomID);
-			Debug.Log("Playing this reaction.");
 		}
 		else if (ReactionType == "Teacher Weapon Reaction")
 		{
-			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.TeacherWeaponReactions));
+			this.RandomID = UnityEngine.Random.Range(0, this.TeacherWeaponReactions.Length);
 			this.Label.text = this.TeacherWeaponReactions[this.RandomID];
 			this.PlayVoice(ReactionType, this.RandomID);
 		}
 		else if (ReactionType == "Teacher Blood Reaction")
 		{
-			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.TeacherBloodReactions));
+			this.RandomID = UnityEngine.Random.Range(0, this.TeacherBloodReactions.Length);
 			this.Label.text = this.TeacherBloodReactions[this.RandomID];
 			this.PlayVoice(ReactionType, this.RandomID);
 		}
 		else if (ReactionType == "Teacher Insanity Reaction")
 		{
-			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.TeacherInsanityReactions));
+			this.RandomID = UnityEngine.Random.Range(0, this.TeacherInsanityReactions.Length);
 			this.Label.text = this.TeacherInsanityReactions[this.RandomID];
 			this.PlayVoice(ReactionType, this.RandomID);
 		}
 		else if (ReactionType == "Teacher Weapon Hostile")
 		{
-			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.TeacherWeaponHostiles));
+			this.RandomID = UnityEngine.Random.Range(0, this.TeacherWeaponHostiles.Length);
 			this.Label.text = this.TeacherWeaponHostiles[this.RandomID];
 			this.PlayVoice(ReactionType, this.RandomID);
 		}
 		else if (ReactionType == "Teacher Blood Hostile")
 		{
-			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.TeacherBloodHostiles));
+			this.RandomID = UnityEngine.Random.Range(0, this.TeacherBloodHostiles.Length);
 			this.Label.text = this.TeacherBloodHostiles[this.RandomID];
 			this.PlayVoice(ReactionType, this.RandomID);
 		}
 		else if (ReactionType == "Teacher Insanity Hostile")
 		{
-			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.TeacherInsanityHostiles));
+			this.RandomID = UnityEngine.Random.Range(0, this.TeacherInsanityHostiles.Length);
 			this.Label.text = this.TeacherInsanityHostiles[this.RandomID];
 			this.PlayVoice(ReactionType, this.RandomID);
 		}
 		else if (ReactionType == "Teacher Lewd Reaction")
 		{
-			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.TeacherLewdReactions));
+			this.RandomID = UnityEngine.Random.Range(0, this.TeacherLewdReactions.Length);
 			this.Label.text = this.TeacherLewdReactions[this.RandomID];
 			this.PlayVoice(ReactionType, this.RandomID);
 		}
 		else if (ReactionType == "Teacher Trespassing Reaction")
 		{
-			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.TeacherTrespassReactions));
+			this.RandomID = UnityEngine.Random.Range(0, this.TeacherTrespassReactions.Length);
 			this.Label.text = this.TeacherTrespassReactions[ID];
 			this.PlayVoice(ReactionType, ID);
 		}
 		else if (ReactionType == "Teacher Late Reaction")
 		{
-			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.TeacherLateReactions));
+			this.RandomID = UnityEngine.Random.Range(0, this.TeacherLateReactions.Length);
 			this.Label.text = this.TeacherLateReactions[ID];
 			this.PlayVoice(ReactionType, ID);
 		}
 		else if (ReactionType == "Teacher Report Reaction")
 		{
-			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.TeacherReportReactions));
+			this.RandomID = UnityEngine.Random.Range(0, this.TeacherReportReactions.Length);
 			this.Label.text = this.TeacherReportReactions[this.RandomID];
 			this.PlayVoice(ReactionType, this.RandomID);
 		}
 		else if (ReactionType == "Teacher Corpse Reaction")
 		{
-			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.TeacherCorpseReactions));
+			this.RandomID = UnityEngine.Random.Range(0, this.TeacherCorpseReactions.Length);
 			this.Label.text = this.TeacherCorpseReactions[this.RandomID];
 			this.PlayVoice(ReactionType, this.RandomID);
 		}
@@ -596,13 +593,13 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (ReactionType == "Teacher Police Report")
 		{
-			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.TeacherPoliceReports));
+			this.RandomID = UnityEngine.Random.Range(0, this.TeacherPoliceReports.Length);
 			this.Label.text = this.TeacherPoliceReports[this.RandomID];
 			this.PlayVoice(ReactionType, this.RandomID);
 		}
 		else if (ReactionType == "Teacher Attack Reaction")
 		{
-			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.TeacherAttackReactions));
+			this.RandomID = UnityEngine.Random.Range(0, this.TeacherAttackReactions.Length);
 			this.Label.text = this.TeacherAttackReactions[this.RandomID];
 			this.PlayVoice(ReactionType, this.RandomID);
 		}
@@ -613,31 +610,31 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (ReactionType == "Teacher Prank Reaction")
 		{
-			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.TeacherPrankReactions));
+			this.RandomID = UnityEngine.Random.Range(0, this.TeacherPrankReactions.Length);
 			this.Label.text = this.TeacherPrankReactions[this.RandomID];
 			this.PlayVoice(ReactionType, this.RandomID);
 		}
 		else if (ReactionType == "Teacher Theft Reaction")
 		{
-			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.TeacherTheftReactions));
+			this.RandomID = UnityEngine.Random.Range(0, this.TeacherTheftReactions.Length);
 			this.Label.text = this.TeacherTheftReactions[this.RandomID];
 			this.PlayVoice(ReactionType, this.RandomID);
 		}
 		else if (ReactionType == "Murder Reaction")
 		{
-			this.Label.text = this.MurderReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.MurderReactions))];
+			this.Label.text = this.MurderReactions[UnityEngine.Random.Range(0, this.MurderReactions.Length)];
 		}
 		else if (ReactionType == "Corpse Reaction")
 		{
-			this.Label.text = this.CorpseReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.CorpseReactions))];
+			this.Label.text = this.CorpseReactions[UnityEngine.Random.Range(0, this.CorpseReactions.Length)];
 		}
 		else if (ReactionType == "Loner Murder Reaction")
 		{
-			this.Label.text = this.LonerMurderReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.LonerMurderReactions))];
+			this.Label.text = this.LonerMurderReactions[UnityEngine.Random.Range(0, this.LonerMurderReactions.Length)];
 		}
 		else if (ReactionType == "Loner Corpse Reaction")
 		{
-			this.Label.text = this.LonerCorpseReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.LonerCorpseReactions))];
+			this.Label.text = this.LonerCorpseReactions[UnityEngine.Random.Range(0, this.LonerCorpseReactions.Length)];
 		}
 		else if (ReactionType == "Pet Murder Report")
 		{
@@ -645,7 +642,7 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (ReactionType == "Pet Murder Reaction")
 		{
-			this.Label.text = this.PetMurderReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.PetMurderReactions))];
+			this.Label.text = this.PetMurderReactions[UnityEngine.Random.Range(0, this.PetMurderReactions.Length)];
 		}
 		else if (ReactionType == "Pet Corpse Report")
 		{
@@ -653,175 +650,175 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (ReactionType == "Pet Corpse Reaction")
 		{
-			this.Label.text = this.PetCorpseReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.PetCorpseReactions))];
+			this.Label.text = this.PetCorpseReactions[UnityEngine.Random.Range(0, this.PetCorpseReactions.Length)];
 		}
 		else if (ReactionType == "Hero Murder Reaction")
 		{
-			this.Label.text = this.HeroMurderReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.HeroMurderReactions))];
+			this.Label.text = this.HeroMurderReactions[UnityEngine.Random.Range(0, this.HeroMurderReactions.Length)];
 		}
 		else if (ReactionType == "Coward Murder Reaction")
 		{
-			this.Label.text = this.CowardMurderReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.CowardMurderReactions))];
+			this.Label.text = this.CowardMurderReactions[UnityEngine.Random.Range(0, this.CowardMurderReactions.Length)];
 		}
 		else if (ReactionType == "Evil Murder Reaction")
 		{
-			this.Label.text = this.EvilMurderReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.EvilMurderReactions))];
+			this.Label.text = this.EvilMurderReactions[UnityEngine.Random.Range(0, this.EvilMurderReactions.Length)];
 		}
 		else if (ReactionType == "Social Death Reaction")
 		{
-			this.Label.text = this.SocialDeathReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.SocialDeathReactions))];
+			this.Label.text = this.SocialDeathReactions[UnityEngine.Random.Range(0, this.SocialDeathReactions.Length)];
 		}
 		else if (ReactionType == "Social Report")
 		{
-			this.Label.text = this.SocialReports[UnityEngine.Random.Range(0, Extensions.get_length(this.SocialReports))];
+			this.Label.text = this.SocialReports[UnityEngine.Random.Range(0, this.SocialReports.Length)];
 		}
 		else if (ReactionType == "Social Fear")
 		{
-			this.Label.text = this.SocialFears[UnityEngine.Random.Range(0, Extensions.get_length(this.SocialFears))];
+			this.Label.text = this.SocialFears[UnityEngine.Random.Range(0, this.SocialFears.Length)];
 		}
 		else if (ReactionType == "Social Terror")
 		{
-			this.Label.text = this.SocialTerrors[UnityEngine.Random.Range(0, Extensions.get_length(this.SocialTerrors))];
+			this.Label.text = this.SocialTerrors[UnityEngine.Random.Range(0, this.SocialTerrors.Length)];
 		}
 		else if (ReactionType == "Repeat Reaction")
 		{
-			this.Label.text = this.RepeatReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.RepeatReactions))];
+			this.Label.text = this.RepeatReactions[UnityEngine.Random.Range(0, this.RepeatReactions.Length)];
 		}
 		else if (ReactionType == "Greeting")
 		{
-			this.Label.text = this.Greetings[UnityEngine.Random.Range(0, Extensions.get_length(this.Greetings))];
+			this.Label.text = this.Greetings[UnityEngine.Random.Range(0, this.Greetings.Length)];
 		}
 		else if (ReactionType == "Player Farewell")
 		{
-			this.Label.text = this.PlayerFarewells[UnityEngine.Random.Range(0, Extensions.get_length(this.PlayerFarewells))];
+			this.Label.text = this.PlayerFarewells[UnityEngine.Random.Range(0, this.PlayerFarewells.Length)];
 		}
 		else if (ReactionType == "Student Farewell")
 		{
-			this.Label.text = this.StudentFarewells[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentFarewells))];
+			this.Label.text = this.StudentFarewells[UnityEngine.Random.Range(0, this.StudentFarewells.Length)];
 		}
 		else if (ReactionType == "Insanity Apology")
 		{
-			this.Label.text = this.InsanityApologies[UnityEngine.Random.Range(0, Extensions.get_length(this.InsanityApologies))];
+			this.Label.text = this.InsanityApologies[UnityEngine.Random.Range(0, this.InsanityApologies.Length)];
 		}
 		else if (ReactionType == "Weapon and Blood Apology")
 		{
-			this.Label.text = this.WeaponBloodApologies[UnityEngine.Random.Range(0, Extensions.get_length(this.WeaponBloodApologies))];
+			this.Label.text = this.WeaponBloodApologies[UnityEngine.Random.Range(0, this.WeaponBloodApologies.Length)];
 		}
 		else if (ReactionType == "Weapon Apology")
 		{
-			this.Label.text = this.WeaponApologies[UnityEngine.Random.Range(0, Extensions.get_length(this.WeaponApologies))];
+			this.Label.text = this.WeaponApologies[UnityEngine.Random.Range(0, this.WeaponApologies.Length)];
 		}
 		else if (ReactionType == "Blood Apology")
 		{
-			this.Label.text = this.BloodApologies[UnityEngine.Random.Range(0, Extensions.get_length(this.BloodApologies))];
+			this.Label.text = this.BloodApologies[UnityEngine.Random.Range(0, this.BloodApologies.Length)];
 		}
 		else if (ReactionType == "Lewd Apology")
 		{
-			this.Label.text = this.LewdApologies[UnityEngine.Random.Range(0, Extensions.get_length(this.LewdApologies))];
+			this.Label.text = this.LewdApologies[UnityEngine.Random.Range(0, this.LewdApologies.Length)];
 		}
 		else if (ReactionType == "Event Apology")
 		{
-			this.Label.text = this.EventApologies[UnityEngine.Random.Range(0, Extensions.get_length(this.EventApologies))];
+			this.Label.text = this.EventApologies[UnityEngine.Random.Range(0, this.EventApologies.Length)];
 		}
 		else if (ReactionType == "Class Apology")
 		{
-			this.Label.text = this.ClassApologies[UnityEngine.Random.Range(0, Extensions.get_length(this.ClassApologies))];
+			this.Label.text = this.ClassApologies[UnityEngine.Random.Range(0, this.ClassApologies.Length)];
 		}
 		else if (ReactionType == "Accident Apology")
 		{
-			this.Label.text = this.AccidentApologies[UnityEngine.Random.Range(0, Extensions.get_length(this.AccidentApologies))];
+			this.Label.text = this.AccidentApologies[UnityEngine.Random.Range(0, this.AccidentApologies.Length)];
 		}
 		else if (ReactionType == "Forgiving")
 		{
-			this.Label.text = this.Forgivings[UnityEngine.Random.Range(0, Extensions.get_length(this.Forgivings))];
+			this.Label.text = this.Forgivings[UnityEngine.Random.Range(0, this.Forgivings.Length)];
 		}
 		else if (ReactionType == "Forgiving Accident")
 		{
-			this.Label.text = this.AccidentForgivings[UnityEngine.Random.Range(0, Extensions.get_length(this.AccidentForgivings))];
+			this.Label.text = this.AccidentForgivings[UnityEngine.Random.Range(0, this.AccidentForgivings.Length)];
 		}
 		else if (ReactionType == "Forgiving Insanity")
 		{
-			this.Label.text = this.InsanityForgivings[UnityEngine.Random.Range(0, Extensions.get_length(this.InsanityForgivings))];
+			this.Label.text = this.InsanityForgivings[UnityEngine.Random.Range(0, this.InsanityForgivings.Length)];
 		}
 		else if (ReactionType == "Impatience")
 		{
 			if (ID == 1)
 			{
-				this.Label.text = this.Impatiences[UnityEngine.Random.Range(0, Extensions.get_length(this.Impatiences))];
+				this.Label.text = this.Impatiences[UnityEngine.Random.Range(0, this.Impatiences.Length)];
 			}
 			else
 			{
-				this.Label.text = this.ImpatientFarewells[UnityEngine.Random.Range(0, Extensions.get_length(this.ImpatientFarewells))];
+				this.Label.text = this.ImpatientFarewells[UnityEngine.Random.Range(0, this.ImpatientFarewells.Length)];
 			}
 		}
 		else if (ReactionType == "Player Compliment")
 		{
-			this.Label.text = this.PlayerCompliments[UnityEngine.Random.Range(0, Extensions.get_length(this.PlayerCompliments))];
+			this.Label.text = this.PlayerCompliments[UnityEngine.Random.Range(0, this.PlayerCompliments.Length)];
 		}
 		else if (ReactionType == "Student Compliment")
 		{
-			this.Label.text = this.StudentCompliments[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentCompliments))];
+			this.Label.text = this.StudentCompliments[UnityEngine.Random.Range(0, this.StudentCompliments.Length)];
 		}
 		else if (ReactionType == "Player Gossip")
 		{
-			this.Label.text = this.PlayerGossip[UnityEngine.Random.Range(0, Extensions.get_length(this.PlayerGossip))];
+			this.Label.text = this.PlayerGossip[UnityEngine.Random.Range(0, this.PlayerGossip.Length)];
 		}
 		else if (ReactionType == "Student Gossip")
 		{
-			this.Label.text = this.StudentGossip[UnityEngine.Random.Range(0, Extensions.get_length(this.PlayerGossip))];
+			this.Label.text = this.StudentGossip[UnityEngine.Random.Range(0, this.PlayerGossip.Length)];
 		}
 		else if (ReactionType == "Player Follow")
 		{
-			this.Label.text = this.PlayerFollows[UnityEngine.Random.Range(0, Extensions.get_length(this.PlayerFollows))];
+			this.Label.text = this.PlayerFollows[UnityEngine.Random.Range(0, this.PlayerFollows.Length)];
 		}
 		else if (ReactionType == "Student Follow")
 		{
-			this.Label.text = this.StudentFollows[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentFollows))];
+			this.Label.text = this.StudentFollows[UnityEngine.Random.Range(0, this.StudentFollows.Length)];
 		}
 		else if (ReactionType == "Player Leave")
 		{
-			this.Label.text = this.PlayerLeaves[UnityEngine.Random.Range(0, Extensions.get_length(this.PlayerLeaves))];
+			this.Label.text = this.PlayerLeaves[UnityEngine.Random.Range(0, this.PlayerLeaves.Length)];
 		}
 		else if (ReactionType == "Student Leave")
 		{
-			this.Label.text = this.StudentLeaves[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentLeaves))];
+			this.Label.text = this.StudentLeaves[UnityEngine.Random.Range(0, this.StudentLeaves.Length)];
 		}
 		else if (ReactionType == "Student Stay")
 		{
-			this.Label.text = this.StudentStays[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentStays))];
+			this.Label.text = this.StudentStays[UnityEngine.Random.Range(0, this.StudentStays.Length)];
 		}
 		else if (ReactionType == "Player Distract")
 		{
-			this.Label.text = this.PlayerDistracts[UnityEngine.Random.Range(0, Extensions.get_length(this.PlayerDistracts))];
+			this.Label.text = this.PlayerDistracts[UnityEngine.Random.Range(0, this.PlayerDistracts.Length)];
 		}
 		else if (ReactionType == "Student Distract")
 		{
-			this.Label.text = this.StudentDistracts[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentDistracts))];
+			this.Label.text = this.StudentDistracts[UnityEngine.Random.Range(0, this.StudentDistracts.Length)];
 		}
 		else if (ReactionType == "Student Distract Refuse")
 		{
-			this.Label.text = this.StudentDistractRefuses[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentDistractRefuses))];
+			this.Label.text = this.StudentDistractRefuses[UnityEngine.Random.Range(0, this.StudentDistractRefuses.Length)];
 		}
 		else if (ReactionType == "Stop Follow Apology")
 		{
-			this.Label.text = this.StopFollowApologies[UnityEngine.Random.Range(0, Extensions.get_length(this.StopFollowApologies))];
+			this.Label.text = this.StopFollowApologies[UnityEngine.Random.Range(0, this.StopFollowApologies.Length)];
 		}
 		else if (ReactionType == "Grudge Warning")
 		{
-			this.Label.text = this.GrudgeWarnings[UnityEngine.Random.Range(0, Extensions.get_length(this.GrudgeWarnings))];
+			this.Label.text = this.GrudgeWarnings[UnityEngine.Random.Range(0, this.GrudgeWarnings.Length)];
 			this.PlayVoice(ReactionType, ID);
 		}
 		else if (ReactionType == "Grudge Refusal")
 		{
-			this.Label.text = this.GrudgeRefusals[UnityEngine.Random.Range(0, Extensions.get_length(this.GrudgeRefusals))];
+			this.Label.text = this.GrudgeRefusals[UnityEngine.Random.Range(0, this.GrudgeRefusals.Length)];
 		}
 		else if (ReactionType == "Coward Grudge")
 		{
-			this.Label.text = this.CowardGrudges[UnityEngine.Random.Range(0, Extensions.get_length(this.CowardGrudges))];
+			this.Label.text = this.CowardGrudges[UnityEngine.Random.Range(0, this.CowardGrudges.Length)];
 		}
 		else if (ReactionType == "Evil Grudge")
 		{
-			this.Label.text = this.EvilGrudges[UnityEngine.Random.Range(0, Extensions.get_length(this.EvilGrudges))];
+			this.Label.text = this.EvilGrudges[UnityEngine.Random.Range(0, this.EvilGrudges.Length)];
 		}
 		else if (ReactionType == "Player Love")
 		{
@@ -837,29 +834,29 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (ReactionType == "Dying")
 		{
-			this.Label.text = this.Deaths[UnityEngine.Random.Range(0, Extensions.get_length(this.Deaths))];
+			this.Label.text = this.Deaths[UnityEngine.Random.Range(0, this.Deaths.Length)];
 		}
 		else if (ReactionType == "Senpai Insanity Reaction")
 		{
-			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.SenpaiInsanityReactions));
+			this.RandomID = UnityEngine.Random.Range(0, this.SenpaiInsanityReactions.Length);
 			this.Label.text = this.SenpaiInsanityReactions[this.RandomID];
 			this.PlayVoice(ReactionType, this.RandomID);
 		}
 		else if (ReactionType == "Senpai Weapon Reaction")
 		{
-			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.SenpaiWeaponReactions));
+			this.RandomID = UnityEngine.Random.Range(0, this.SenpaiWeaponReactions.Length);
 			this.Label.text = this.SenpaiWeaponReactions[this.RandomID];
 			this.PlayVoice(ReactionType, this.RandomID);
 		}
 		else if (ReactionType == "Senpai Blood Reaction")
 		{
-			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.SenpaiBloodReactions));
+			this.RandomID = UnityEngine.Random.Range(0, this.SenpaiBloodReactions.Length);
 			this.Label.text = this.SenpaiBloodReactions[this.RandomID];
 			this.PlayVoice(ReactionType, this.RandomID);
 		}
 		else if (ReactionType == "Senpai Lewd Reaction")
 		{
-			this.Label.text = this.SenpaiLewdReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.SenpaiLewdReactions))];
+			this.Label.text = this.SenpaiLewdReactions[UnityEngine.Random.Range(0, this.SenpaiLewdReactions.Length)];
 			this.PlayVoice(ReactionType, this.RandomID);
 		}
 		else if (ReactionType == "Senpai Stalking Reaction")
@@ -874,11 +871,11 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (ReactionType == "Senpai Corpse Reaction")
 		{
-			this.Label.text = this.SenpaiCorpseReactions[UnityEngine.Random.Range(0, Extensions.get_length(this.SenpaiCorpseReactions))];
+			this.Label.text = this.SenpaiCorpseReactions[UnityEngine.Random.Range(0, this.SenpaiCorpseReactions.Length)];
 		}
 		else if (ReactionType == "Yandere Whimper")
 		{
-			this.RandomID = UnityEngine.Random.Range(0, Extensions.get_length(this.YandereWhimpers));
+			this.RandomID = UnityEngine.Random.Range(0, this.YandereWhimpers.Length);
 			this.Label.text = this.YandereWhimpers[this.RandomID];
 			this.PlayVoice(ReactionType, this.RandomID);
 		}
@@ -1047,21 +1044,21 @@ public class SubtitleScript : MonoBehaviour
 		this.Timer = Duration;
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Timer > (float)0)
+		if (this.Timer > 0f)
 		{
 			this.Timer -= Time.deltaTime;
-			if (this.Timer <= (float)0)
+			if (this.Timer <= 0f)
 			{
-				this.Jukebox.Dip = (float)1;
+				this.Jukebox.Dip = 1f;
 				this.Label.text = string.Empty;
-				this.Timer = (float)0;
+				this.Timer = 0f;
 			}
 		}
 	}
 
-	public virtual void PlayVoice(string ReactionType, int ID)
+	private void PlayVoice(string ReactionType, int ID)
 	{
 		if (this.CurrentClip != null)
 		{
@@ -1070,279 +1067,308 @@ public class SubtitleScript : MonoBehaviour
 		this.Jukebox.Dip = 0.5f;
 		if (ReactionType == "Note Reaction")
 		{
-			this.PlayClip(this.NoteReactionClips[ID], this.transform.position);
+			this.PlayClip(this.NoteReactionClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Grudge Warning")
 		{
-			this.PlayClip(this.GrudgeWarningClips[ID], this.transform.position);
+			this.PlayClip(this.GrudgeWarningClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Senpai Insanity Reaction")
 		{
-			this.PlayClip(this.SenpaiInsanityReactionClips[ID], this.transform.position);
+			this.PlayClip(this.SenpaiInsanityReactionClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Senpai Weapon Reaction")
 		{
-			this.PlayClip(this.SenpaiWeaponReactionClips[ID], this.transform.position);
+			this.PlayClip(this.SenpaiWeaponReactionClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Senpai Blood Reaction")
 		{
-			this.PlayClip(this.SenpaiBloodReactionClips[ID], this.transform.position);
+			this.PlayClip(this.SenpaiBloodReactionClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Senpai Lewd Reaction")
 		{
-			this.PlayClip(this.SenpaiLewdReactionClips[ID], this.transform.position);
+			this.PlayClip(this.SenpaiLewdReactionClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Senpai Stalking Reaction")
 		{
-			this.PlayClip(this.SenpaiStalkingReactionClips[ID], this.transform.position);
+			this.PlayClip(this.SenpaiStalkingReactionClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Senpai Murder Reaction")
 		{
-			this.PlayClip(this.SenpaiMurderReactionClips[ID], this.transform.position);
+			this.PlayClip(this.SenpaiMurderReactionClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Yandere Whimper")
 		{
-			this.PlayClip(this.YandereWhimperClips[ID], this.transform.position);
+			this.PlayClip(this.YandereWhimperClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Teacher Weapon Reaction")
 		{
-			this.PlayClip(this.TeacherWeaponClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherWeaponClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Teacher Blood Reaction")
 		{
-			this.PlayClip(this.TeacherBloodClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherBloodClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Teacher Insanity Reaction")
 		{
-			this.PlayClip(this.TeacherInsanityClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherInsanityClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Teacher Weapon Hostile")
 		{
-			this.PlayClip(this.TeacherWeaponHostileClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherWeaponHostileClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Teacher Blood Hostile")
 		{
-			this.PlayClip(this.TeacherBloodHostileClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherBloodHostileClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Teacher Insanity Hostile")
 		{
-			this.PlayClip(this.TeacherInsanityHostileClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherInsanityHostileClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Teacher Lewd Reaction")
 		{
-			this.PlayClip(this.TeacherLewdClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherLewdClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Teacher Trespassing Reaction")
 		{
-			this.PlayClip(this.TeacherTrespassClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherTrespassClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Teacher Late Reaction")
 		{
-			this.PlayClip(this.TeacherLateClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherLateClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Teacher Report Reaction")
 		{
-			this.PlayClip(this.TeacherReportClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherReportClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Teacher Corpse Reaction")
 		{
-			this.PlayClip(this.TeacherCorpseClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherCorpseClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Teacher Corpse Inspection")
 		{
-			this.PlayClip(this.TeacherInspectClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherInspectClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Teacher Police Report")
 		{
-			this.PlayClip(this.TeacherPoliceClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherPoliceClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Teacher Attack Reaction")
 		{
-			this.PlayClip(this.TeacherAttackClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherAttackClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Teacher Murder Reaction")
 		{
-			this.PlayClip(this.TeacherMurderClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherMurderClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Teacher Prank Reaction")
 		{
-			this.PlayClip(this.TeacherPrankClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherPrankClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Teacher Theft Reaction")
 		{
-			this.PlayClip(this.TeacherTheftClips[ID], this.transform.position);
+			this.PlayClip(this.TeacherTheftClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Pickpocket Reaction")
 		{
-			this.PlayClip(this.PickpocketReactionClips[ID], this.transform.position);
+			this.PlayClip(this.PickpocketReactionClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Splash Reaction")
 		{
-			this.PlayClip(this.SplashReactionClips[ID], this.transform.position);
+			this.PlayClip(this.SplashReactionClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Drown Reaction")
 		{
-			this.PlayClip(this.DrownReactionClips[ID], this.transform.position);
+			this.PlayClip(this.DrownReactionClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Light Switch Reaction")
 		{
-			this.PlayClip(this.LightSwitchClips[ID], this.transform.position);
+			this.PlayClip(this.LightSwitchClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Task 6 Line")
 		{
-			this.PlayClip(this.Task6Clips[ID], this.transform.position);
+			this.PlayClip(this.Task6Clips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Task 7 Line")
 		{
-			this.PlayClip(this.Task7Clips[ID], this.transform.position);
+			this.PlayClip(this.Task7Clips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Task 13 Line")
 		{
-			this.PlayClip(this.Task13Clips[ID], this.transform.position);
+			this.PlayClip(this.Task13Clips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Task 14 Line")
 		{
-			this.PlayClip(this.Task14Clips[ID], this.transform.position);
+			this.PlayClip(this.Task14Clips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Task 15 Line")
 		{
-			this.PlayClip(this.Task15Clips[ID], this.transform.position);
+			this.PlayClip(this.Task15Clips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Task 32 Line")
 		{
-			this.PlayClip(this.Task32Clips[ID], this.transform.position);
+			this.PlayClip(this.Task32Clips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Task 33 Line")
 		{
-			this.PlayClip(this.Task33Clips[ID], this.transform.position);
+			this.PlayClip(this.Task33Clips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Task 34 Line")
 		{
-			this.PlayClip(this.Task34Clips[ID], this.transform.position);
+			this.PlayClip(this.Task34Clips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Club Greeting")
 		{
-			this.PlayClip(this.ClubGreetingClips[ID], this.transform.position);
+			this.PlayClip(this.ClubGreetingClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Club Unwelcome")
 		{
-			this.PlayClip(this.ClubUnwelcomeClips[ID], this.transform.position);
+			this.PlayClip(this.ClubUnwelcomeClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Club Kick")
 		{
-			this.PlayClip(this.ClubKickClips[ID], this.transform.position);
+			this.PlayClip(this.ClubKickClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Club Join")
 		{
-			this.PlayClip(this.ClubJoinClips[ID], this.transform.position);
+			this.PlayClip(this.ClubJoinClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Club Accept")
 		{
-			this.PlayClip(this.ClubAcceptClips[ID], this.transform.position);
+			this.PlayClip(this.ClubAcceptClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Club Refuse")
 		{
-			this.PlayClip(this.ClubRefuseClips[ID], this.transform.position);
+			this.PlayClip(this.ClubRefuseClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Club Exclusive")
 		{
-			this.PlayClip(this.ClubExclusiveClips[ID], this.transform.position);
+			this.PlayClip(this.ClubExclusiveClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Club Grudge")
 		{
-			this.PlayClip(this.ClubGrudgeClips[ID], this.transform.position);
+			this.PlayClip(this.ClubGrudgeClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Club Rejoin")
 		{
-			this.PlayClip(this.ClubRejoinClips[ID], this.transform.position);
+			this.PlayClip(this.ClubRejoinClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Club Quit")
 		{
-			this.PlayClip(this.ClubQuitClips[ID], this.transform.position);
+			this.PlayClip(this.ClubQuitClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Club Confirm")
 		{
-			this.PlayClip(this.ClubConfirmClips[ID], this.transform.position);
+			this.PlayClip(this.ClubConfirmClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Club Deny")
 		{
-			this.PlayClip(this.ClubDenyClips[ID], this.transform.position);
+			this.PlayClip(this.ClubDenyClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Club Farewell")
 		{
-			this.PlayClip(this.ClubFarewellClips[ID], this.transform.position);
+			this.PlayClip(this.ClubFarewellClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Club Activity")
 		{
-			this.PlayClip(this.ClubActivityClips[ID], this.transform.position);
+			this.PlayClip(this.ClubActivityClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Club Early")
 		{
-			this.PlayClip(this.ClubEarlyClips[ID], this.transform.position);
+			this.PlayClip(this.ClubEarlyClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Club Late")
 		{
-			this.PlayClip(this.ClubLateClips[ID], this.transform.position);
+			this.PlayClip(this.ClubLateClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Club Yes")
 		{
-			this.PlayClip(this.ClubYesClips[ID], this.transform.position);
+			this.PlayClip(this.ClubYesClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Club No")
 		{
-			this.PlayClip(this.ClubNoClips[ID], this.transform.position);
+			this.PlayClip(this.ClubNoClips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Club 3 Info")
 		{
-			this.PlayClip(this.Club3Clips[ID], this.transform.position);
+			this.PlayClip(this.Club3Clips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Club 6 Info")
 		{
-			this.PlayClip(this.Club6Clips[ID], this.transform.position);
+			this.PlayClip(this.Club6Clips[ID], base.transform.position);
 		}
 		else if (ReactionType == "Eavesdrop Reaction")
 		{
-			this.PlayClip(this.RivalEavesdropClips[ID], this.transform.position);
+			this.PlayClip(this.RivalEavesdropClips[ID], base.transform.position);
 		}
 	}
 
-	public virtual float GetClipLength(int StudentID, int TaskPhase)
+	public float GetClipLength(int StudentID, int TaskPhase)
 	{
-		return (StudentID != 6) ? ((StudentID != 7) ? ((StudentID != 13) ? ((StudentID != 14) ? ((StudentID != 15) ? ((StudentID != 32) ? ((StudentID != 33) ? ((StudentID != 34) ? ((float)0) : this.Task34Clips[TaskPhase].length) : this.Task33Clips[TaskPhase].length) : this.Task32Clips[TaskPhase].length) : this.Task15Clips[TaskPhase].length) : this.Task14Clips[TaskPhase].length) : this.Task13Clips[TaskPhase].length) : this.Task7Clips[TaskPhase].length) : this.Task6Clips[TaskPhase].length;
+		if (StudentID == 6)
+		{
+			return this.Task6Clips[TaskPhase].length;
+		}
+		if (StudentID == 7)
+		{
+			return this.Task7Clips[TaskPhase].length;
+		}
+		if (StudentID == 13)
+		{
+			return this.Task13Clips[TaskPhase].length;
+		}
+		if (StudentID == 14)
+		{
+			return this.Task14Clips[TaskPhase].length;
+		}
+		if (StudentID == 15)
+		{
+			return this.Task15Clips[TaskPhase].length;
+		}
+		if (StudentID == 32)
+		{
+			return this.Task32Clips[TaskPhase].length;
+		}
+		if (StudentID == 33)
+		{
+			return this.Task33Clips[TaskPhase].length;
+		}
+		if (StudentID == 34)
+		{
+			return this.Task34Clips[TaskPhase].length;
+		}
+		return 0f;
 	}
 
-	public virtual float GetClubClipLength(int Club, int ClubPhase)
+	public float GetClubClipLength(int Club, int ClubPhase)
 	{
-		return (Club != 3) ? ((Club != 6) ? ((float)0) : this.Club6Clips[ClubPhase].length) : this.Club3Clips[ClubPhase].length;
+		if (Club == 3)
+		{
+			return this.Club3Clips[ClubPhase].length;
+		}
+		if (Club == 6)
+		{
+			return this.Club6Clips[ClubPhase].length;
+		}
+		return 0f;
 	}
 
-	public virtual void PlayClip(AudioClip clip, Vector3 pos)
+	private void PlayClip(AudioClip clip, Vector3 pos)
 	{
 		if (clip != null)
 		{
 			GameObject gameObject = new GameObject("TempAudio");
-			gameObject.transform.position = this.Yandere.transform.position + this.transform.up;
+			gameObject.transform.position = this.Yandere.transform.position + base.transform.up;
 			gameObject.transform.parent = this.Yandere.transform;
-			AudioSource audioSource = (AudioSource)gameObject.AddComponent(typeof(AudioSource));
+			AudioSource audioSource = gameObject.AddComponent<AudioSource>();
 			audioSource.clip = clip;
 			audioSource.Play();
 			UnityEngine.Object.Destroy(gameObject, clip.length);
 			audioSource.rolloffMode = AudioRolloffMode.Linear;
-			audioSource.minDistance = (float)5;
-			audioSource.maxDistance = (float)10;
+			audioSource.minDistance = 5f;
+			audioSource.maxDistance = 10f;
 			this.CurrentClip = gameObject;
-			if (this.Yandere.position.y < gameObject.transform.position.y - (float)2)
-			{
-				audioSource.volume = (float)0;
-			}
-			else
-			{
-				audioSource.volume = (float)1;
-			}
+			audioSource.volume = ((this.Yandere.position.y >= gameObject.transform.position.y - 2f) ? 1f : 0f);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

@@ -1,22 +1,21 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class GrowShrinkScript : MonoBehaviour
 {
 	public float FallSpeed;
 
-	public float Threshold;
+	public float Threshold = 1f;
 
-	public float Slowdown;
+	public float Slowdown = 0.5f;
 
-	public float Strength;
+	public float Strength = 1f;
 
-	public float Target;
+	public float Target = 1f;
 
 	public float Scale;
 
-	public float Speed;
+	public float Speed = 5f;
 
 	public float Timer;
 
@@ -24,25 +23,16 @@ public class GrowShrinkScript : MonoBehaviour
 
 	public Vector3 OriginalPosition;
 
-	public GrowShrinkScript()
+	private void Start()
 	{
-		this.Threshold = 1f;
-		this.Slowdown = 0.5f;
-		this.Strength = 1f;
-		this.Target = 1f;
-		this.Speed = 5f;
+		this.OriginalPosition = base.transform.localPosition;
+		base.transform.localScale = Vector3.zero;
 	}
 
-	public virtual void Start()
-	{
-		this.OriginalPosition = this.transform.localPosition;
-		this.transform.localScale = new Vector3((float)0, (float)0, (float)0);
-	}
-
-	public virtual void Update()
+	private void Update()
 	{
 		this.Timer += Time.deltaTime;
-		this.Scale += Time.deltaTime * this.Strength * this.Speed;
+		this.Scale += Time.deltaTime * (this.Strength * this.Speed);
 		if (!this.Shrink)
 		{
 			this.Strength += Time.deltaTime * this.Speed;
@@ -59,9 +49,10 @@ public class GrowShrinkScript : MonoBehaviour
 		else
 		{
 			this.Strength -= Time.deltaTime * this.Speed;
-			if (this.Strength < this.Threshold * (float)-1)
+			float num = this.Threshold * -1f;
+			if (this.Strength < num)
 			{
-				this.Strength = this.Threshold * (float)-1;
+				this.Strength = num;
 			}
 			if (this.Scale < this.Target)
 			{
@@ -71,31 +62,24 @@ public class GrowShrinkScript : MonoBehaviour
 		}
 		if (this.Timer > 3.33333f)
 		{
-			this.FallSpeed += Time.deltaTime * (float)10;
-			float y = this.transform.localPosition.y - this.FallSpeed * this.FallSpeed;
-			Vector3 localPosition = this.transform.localPosition;
-			float num = localPosition.y = y;
-			Vector3 vector = this.transform.localPosition = localPosition;
+			this.FallSpeed += Time.deltaTime * 10f;
+			base.transform.localPosition = new Vector3(base.transform.localPosition.x, base.transform.localPosition.y - this.FallSpeed * this.FallSpeed, base.transform.localPosition.z);
 		}
-		this.transform.localScale = new Vector3(this.Scale, this.Scale, this.Scale);
+		base.transform.localScale = new Vector3(this.Scale, this.Scale, this.Scale);
 	}
 
-	public virtual void Return()
+	public void Return()
 	{
-		this.transform.localPosition = this.OriginalPosition;
-		this.transform.localScale = new Vector3((float)0, (float)0, (float)0);
-		this.FallSpeed = (float)0;
+		base.transform.localPosition = this.OriginalPosition;
+		base.transform.localScale = Vector3.zero;
+		this.FallSpeed = 0f;
 		this.Threshold = 1f;
 		this.Slowdown = 0.5f;
 		this.Strength = 1f;
 		this.Target = 1f;
-		this.Scale = (float)0;
+		this.Scale = 0f;
 		this.Speed = 5f;
-		this.Timer = (float)0;
-		this.active = false;
-	}
-
-	public virtual void Main()
-	{
+		this.Timer = 0f;
+		base.gameObject.SetActive(false);
 	}
 }

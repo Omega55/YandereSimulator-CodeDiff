@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class GradingPaperScript : MonoBehaviour
 {
 	public StudentScript Teacher;
@@ -36,37 +35,31 @@ public class GradingPaperScript : MonoBehaviour
 
 	public Vector3 PickUpRotation2;
 
-	public int Phase;
+	public int Phase = 1;
 
-	public float Speed;
+	public float Speed = 1f;
 
 	public bool Writing;
 
-	public GradingPaperScript()
-	{
-		this.Phase = 1;
-		this.Speed = 1f;
-	}
-
-	public virtual void Start()
+	private void Start()
 	{
 		this.OriginalPosition = this.Chair.position;
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (!this.Writing)
 		{
-			this.Chair.position = Vector3.Lerp(this.Chair.position, this.OriginalPosition, Time.deltaTime * (float)10);
+			this.Chair.position = Vector3.Lerp(this.Chair.position, this.OriginalPosition, Time.deltaTime * 10f);
 		}
 		else if (this.Character != null)
 		{
-			this.Chair.position = Vector3.Lerp(this.Chair.position, this.Character.transform.position + this.Character.transform.forward * 0.1f, Time.deltaTime * (float)10);
+			this.Chair.position = Vector3.Lerp(this.Chair.position, this.Character.transform.position + this.Character.transform.forward * 0.1f, Time.deltaTime * 10f);
 			if (this.Phase == 1)
 			{
-				if (this.Character.animation["f02_deskWrite"].time > this.PickUpTime1)
+				if (this.Character.GetComponent<Animation>()["f02_deskWrite"].time > this.PickUpTime1)
 				{
-					this.Character.animation["f02_deskWrite"].speed = this.Speed;
+					this.Character.GetComponent<Animation>()["f02_deskWrite"].speed = this.Speed;
 					this.Paper.parent = this.LeftHand;
 					this.Paper.localPosition = this.PickUpPosition1;
 					this.Paper.localEulerAngles = this.PickUpRotation1;
@@ -76,7 +69,7 @@ public class GradingPaperScript : MonoBehaviour
 			}
 			else if (this.Phase == 2)
 			{
-				if (this.Character.animation["f02_deskWrite"].time > this.SetDownTime1)
+				if (this.Character.GetComponent<Animation>()["f02_deskWrite"].time > this.SetDownTime1)
 				{
 					this.Paper.parent = this.Character.transform;
 					this.Paper.localPosition = this.SetDownPosition1;
@@ -86,7 +79,7 @@ public class GradingPaperScript : MonoBehaviour
 			}
 			else if (this.Phase == 3)
 			{
-				if (this.Character.animation["f02_deskWrite"].time > this.PickUpTime2)
+				if (this.Character.GetComponent<Animation>()["f02_deskWrite"].time > this.PickUpTime2)
 				{
 					this.Paper.parent = this.LeftHand;
 					this.Paper.localPosition = this.PickUpPosition2;
@@ -96,31 +89,27 @@ public class GradingPaperScript : MonoBehaviour
 			}
 			else if (this.Phase == 4)
 			{
-				if (this.Character.animation["f02_deskWrite"].time > this.SetDownTime2)
+				if (this.Character.GetComponent<Animation>()["f02_deskWrite"].time > this.SetDownTime2)
 				{
 					this.Paper.parent = this.Character.transform;
-					this.Paper.localScale = new Vector3((float)0, (float)0, (float)0);
+					this.Paper.localScale = Vector3.zero;
 					this.Phase++;
 				}
 			}
-			else if (this.Phase == 5 && this.Character.animation["f02_deskWrite"].time >= this.Character.animation["f02_deskWrite"].length)
+			else if (this.Phase == 5 && this.Character.GetComponent<Animation>()["f02_deskWrite"].time >= this.Character.GetComponent<Animation>()["f02_deskWrite"].length)
 			{
-				this.Character.animation["f02_deskWrite"].time = (float)0;
-				this.Character.animation.Play("f02_deskWrite");
+				this.Character.GetComponent<Animation>()["f02_deskWrite"].time = 0f;
+				this.Character.GetComponent<Animation>().Play("f02_deskWrite");
 				this.Phase = 1;
 			}
 			if (this.Teacher.Actions[this.Teacher.Phase] != 12 || !this.Teacher.Routine || this.Teacher.Stop)
 			{
-				this.Paper.localScale = new Vector3((float)0, (float)0, (float)0);
+				this.Paper.localScale = Vector3.zero;
 				this.Teacher.Obstacle.enabled = false;
-				this.Teacher.Pen.active = false;
+				this.Teacher.Pen.SetActive(false);
 				this.Writing = false;
 				this.Phase = 1;
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

@@ -1,29 +1,23 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class AccessoryGroupScript : MonoBehaviour
 {
 	public GameObject[] Parts;
 
-	public virtual void ActivateParts()
+	public void ActivateParts()
 	{
-		for (int i = 0; i < Extensions.get_length(this.Parts); i++)
+		foreach (GameObject gameObject in this.Parts)
 		{
-			this.Parts[i].active = true;
+			gameObject.SetActive(true);
 		}
 	}
 
-	public virtual void DeactivateParts()
+	public void DeactivateParts()
 	{
-		for (int i = 0; i < Extensions.get_length(this.Parts); i++)
+		foreach (GameObject gameObject in this.Parts)
 		{
-			this.Parts[i].active = false;
+			gameObject.SetActive(false);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

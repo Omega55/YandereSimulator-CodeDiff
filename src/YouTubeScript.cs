@@ -1,22 +1,17 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class YouTubeScript : MonoBehaviour
 {
 	public float Timer;
 
-	public virtual void Update()
+	private void Update()
 	{
 		this.Timer += Time.deltaTime;
-		if (this.Timer > (float)1)
+		if (this.Timer > 1f)
 		{
-			this.audio.Play();
+			base.GetComponent<AudioSource>().Play();
 			UnityEngine.Object.Destroy(this);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

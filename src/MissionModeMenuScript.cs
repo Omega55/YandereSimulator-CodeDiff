@@ -1,8 +1,7 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
+using UnityEngine.SceneManagement;
 
-[Serializable]
 public class MissionModeMenuScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
@@ -97,25 +96,25 @@ public class MissionModeMenuScript : MonoBehaviour
 
 	public Texture BlankPortrait;
 
-	public string MissionIDString;
+	public string MissionIDString = string.Empty;
 
-	public string TargetName;
+	public string TargetName = string.Empty;
 
 	public int NemesisDifficulty;
 
-	public int CustomSelected;
+	public int CustomSelected = 1;
 
-	public int Difficulty;
+	public int Difficulty = 1;
 
-	public int Selected;
+	public int Selected = 1;
 
 	public int TargetID;
 
 	public int Phase;
 
-	public int Column;
+	public int Column = 1;
 
-	public int Row;
+	public int Row = 1;
 
 	public float Rotation;
 
@@ -163,95 +162,52 @@ public class MissionModeMenuScript : MonoBehaviour
 
 	public int Condition15Number;
 
-	public string TargetString;
+	public string TargetString = string.Empty;
 
-	public string WeaponString;
+	public string WeaponString = string.Empty;
 
-	public string ClothingString;
+	public string ClothingString = string.Empty;
 
-	public string DisposalString;
+	public string DisposalString = string.Empty;
 
-	public string MissionID;
+	public string MissionID = string.Empty;
 
 	public string[] ConditionString;
 
 	public UILabel MissionIDLabel;
 
-	public MissionModeMenuScript()
+	private void Start()
 	{
-		this.MissionIDString = string.Empty;
-		this.TargetName = string.Empty;
-		this.CustomSelected = 1;
-		this.Difficulty = 1;
-		this.Selected = 1;
-		this.Column = 1;
-		this.Row = 1;
-		this.TargetString = string.Empty;
-		this.WeaponString = string.Empty;
-		this.ClothingString = string.Empty;
-		this.DisposalString = string.Empty;
-		this.MissionID = string.Empty;
-	}
-
-	public virtual void Start()
-	{
-		this.NemesisPortrait.transform.parent.localScale = new Vector3((float)0, (float)0, (float)0);
-		this.CustomMissionWindow.transform.localScale = new Vector3((float)0, (float)0, (float)0);
-		this.LoadMissionWindow.transform.localScale = new Vector3((float)0, (float)0, (float)0);
-		this.MissionWindow.transform.localScale = new Vector3((float)0, (float)0, (float)0);
-		int num = -700;
-		Vector3 localPosition = this.Options.transform.localPosition;
-		float num2 = localPosition.x = (float)num;
-		Vector3 vector = this.Options.transform.localPosition = localPosition;
-		int num3 = 0;
-		Color color = this.Highlight.color;
-		float num4 = color.a = (float)num3;
-		Color color2 = this.Highlight.color = color;
-		int num5 = 1;
-		Color color3 = this.Darkness.color;
-		float num6 = color3.a = (float)num5;
-		Color color4 = this.Darkness.color = color3;
-		int num7 = 0;
-		Color color5 = this.Header.color;
-		float num8 = color5.a = (float)num7;
-		Color color6 = this.Header.color = color5;
-		Time.timeScale = (float)1;
+		this.NemesisPortrait.transform.parent.localScale = Vector3.zero;
+		this.CustomMissionWindow.transform.localScale = Vector3.zero;
+		this.LoadMissionWindow.transform.localScale = Vector3.zero;
+		this.MissionWindow.transform.localScale = Vector3.zero;
+		this.Options.transform.localPosition = new Vector3(-700f, this.Options.transform.localPosition.y, this.Options.transform.localPosition.z);
+		this.Highlight.color = new Color(this.Highlight.color.r, this.Highlight.color.g, this.Highlight.color.b, 0f);
+		this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 1f);
+		this.Header.color = new Color(this.Header.color.r, this.Header.color.g, this.Header.color.b, 0f);
+		Time.timeScale = 1f;
 		this.CustomDescs[2].text = this.ConditionDescs[1] + " " + this.WeaponNames[1];
 		this.CustomDescs[3].text = this.ConditionDescs[2] + " " + this.ClothingNames[1];
 		this.CustomDescs[4].text = this.ConditionDescs[3] + " " + this.DisposalNames[1];
-		int num9 = -800;
-		Vector3 localPosition2 = this.Option[1].transform.localPosition;
-		float num10 = localPosition2.x = (float)num9;
-		Vector3 vector2 = this.Option[1].transform.localPosition = localPosition2;
-		int num11 = -800;
-		Vector3 localPosition3 = this.Option[2].transform.localPosition;
-		float num12 = localPosition3.x = (float)num11;
-		Vector3 vector3 = this.Option[2].transform.localPosition = localPosition3;
-		int num13 = -800;
-		Vector3 localPosition4 = this.Option[3].transform.localPosition;
-		float num14 = localPosition4.x = (float)num13;
-		Vector3 vector4 = this.Option[3].transform.localPosition = localPosition4;
-		int num15 = -800;
-		Vector3 localPosition5 = this.Option[4].transform.localPosition;
-		float num16 = localPosition5.x = (float)num15;
-		Vector3 vector5 = this.Option[4].transform.localPosition = localPosition5;
-		int num17 = -800;
-		Vector3 localPosition6 = this.Option[5].transform.localPosition;
-		float num18 = localPosition6.x = (float)num17;
-		Vector3 vector6 = this.Option[5].transform.localPosition = localPosition6;
-		for (int i = 1; i < Extensions.get_length(this.Objectives); i++)
+		for (int i = 1; i < 6; i++)
 		{
-			this.Objectives[i].localScale = new Vector3((float)0, (float)0, (float)0);
+			Transform transform = this.Option[i].transform;
+			transform.localPosition = new Vector3(-800f, transform.localPosition.y, transform.localPosition.z);
 		}
-		for (int i = 1; i < Extensions.get_length(this.NemesisObjectives); i++)
+		for (int j = 1; j < this.Objectives.Length; j++)
 		{
-			this.NemesisObjectives[i].localScale = new Vector3((float)0, (float)0, (float)0);
+			this.Objectives[j].localScale = Vector3.zero;
 		}
-		for (int i = 1; i < Extensions.get_length(this.CustomObjectives); i++)
+		for (int k = 1; k < this.NemesisObjectives.Length; k++)
 		{
-			if (this.CustomObjectives[i] != null)
+			this.NemesisObjectives[k].localScale = Vector3.zero;
+		}
+		for (int l = 1; l < this.CustomObjectives.Length; l++)
+		{
+			if (this.CustomObjectives[l] != null)
 			{
-				this.CustomObjectives[i].alpha = 0.5f;
+				this.CustomObjectives[l].alpha = 0.5f;
 			}
 		}
 		if (PlayerPrefs.GetInt("HighPopulation") == 0)
@@ -266,65 +222,44 @@ public class MissionModeMenuScript : MonoBehaviour
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
+		AudioSource component = base.GetComponent<AudioSource>();
 		if (this.Phase == 1)
 		{
 			this.Speed += Time.deltaTime;
-			float z = Mathf.Lerp(this.transform.position.z, (float)2, this.Speed * Time.deltaTime * 0.25f);
-			Vector3 position = this.transform.position;
-			float num = position.z = z;
-			Vector3 vector = this.transform.position = position;
-			float a = Mathf.MoveTowards(this.Darkness.color.a, (float)0, Time.deltaTime * (float)1 / (float)3);
-			Color color = this.Darkness.color;
-			float num2 = color.a = a;
-			Color color2 = this.Darkness.color = color;
-			if (this.Speed > (float)1)
+			base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y, Mathf.Lerp(base.transform.position.z, 2f, this.Speed * Time.deltaTime * 0.25f));
+			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 0f, Time.deltaTime / 3f));
+			if (this.Speed > 1f)
 			{
-				float a2 = Mathf.MoveTowards(this.Header.color.a, (float)1, Time.deltaTime);
-				Color color3 = this.Header.color;
-				float num3 = color3.a = a2;
-				Color color4 = this.Header.color = color3;
-				if (this.Speed > (float)3)
+				this.Header.color = new Color(this.Header.color.r, this.Header.color.g, this.Header.color.b, Mathf.MoveTowards(this.Header.color.a, 1f, Time.deltaTime));
+				if (this.Speed > 3f)
 				{
 					if (!this.InfoSpoke[0])
 					{
-						this.audio.PlayOneShot(this.InfoLines[0]);
+						component.PlayOneShot(this.InfoLines[0]);
 						this.InfoSpoke[0] = true;
 					}
-					float y = Mathf.Lerp(this.InfoChan.localEulerAngles.y, (float)180, Time.deltaTime * (this.Speed - (float)3));
-					Vector3 localEulerAngles = this.InfoChan.localEulerAngles;
-					float num4 = localEulerAngles.y = y;
-					Vector3 vector2 = this.InfoChan.localEulerAngles = localEulerAngles;
-					float x = Mathf.Lerp(this.Option[1].localPosition.x, (float)0, Time.deltaTime * (float)10);
-					Vector3 localPosition = this.Option[1].localPosition;
-					float num5 = localPosition.x = x;
-					Vector3 vector3 = this.Option[1].localPosition = localPosition;
-					if (this.Speed > 3.25f)
+					this.InfoChan.localEulerAngles = new Vector3(this.InfoChan.localEulerAngles.x, Mathf.Lerp(this.InfoChan.localEulerAngles.y, 180f, Time.deltaTime * (this.Speed - 3f)), this.InfoChan.localEulerAngles.z);
+					Transform transform = this.Option[1];
+					transform.localPosition = new Vector3(Mathf.Lerp(transform.localPosition.x, 0f, Time.deltaTime * 10f), transform.localPosition.y, transform.localPosition.z);
+					if ((double)this.Speed > 3.25)
 					{
-						float x2 = Mathf.Lerp(this.Option[2].localPosition.x, (float)0, Time.deltaTime * (float)10);
-						Vector3 localPosition2 = this.Option[2].localPosition;
-						float num6 = localPosition2.x = x2;
-						Vector3 vector4 = this.Option[2].localPosition = localPosition2;
+						Transform transform2 = this.Option[2];
+						transform2.localPosition = new Vector3(Mathf.Lerp(transform2.localPosition.x, 0f, Time.deltaTime * 10f), transform2.localPosition.y, transform2.localPosition.z);
 						if (this.Speed > 3.5f)
 						{
-							float x3 = Mathf.Lerp(this.Option[3].localPosition.x, (float)0, Time.deltaTime * (float)10);
-							Vector3 localPosition3 = this.Option[3].localPosition;
-							float num7 = localPosition3.x = x3;
-							Vector3 vector5 = this.Option[3].localPosition = localPosition3;
-							if (this.Speed > 3.75f)
+							Transform transform3 = this.Option[3];
+							transform3.localPosition = new Vector3(Mathf.Lerp(transform3.localPosition.x, 0f, Time.deltaTime * 10f), transform3.localPosition.y, transform3.localPosition.z);
+							if ((double)this.Speed > 3.75)
 							{
-								float x4 = Mathf.Lerp(this.Option[4].localPosition.x, (float)0, Time.deltaTime * (float)10);
-								Vector3 localPosition4 = this.Option[4].localPosition;
-								float num8 = localPosition4.x = x4;
-								Vector3 vector6 = this.Option[4].localPosition = localPosition4;
-								if (this.Speed > (float)4)
+								Transform transform4 = this.Option[4];
+								transform4.localPosition = new Vector3(Mathf.Lerp(transform4.localPosition.x, 0f, Time.deltaTime * 10f), transform4.localPosition.y, transform4.localPosition.z);
+								if (this.Speed > 4f)
 								{
-									float x5 = Mathf.Lerp(this.Option[5].localPosition.x, (float)0, Time.deltaTime * (float)10);
-									Vector3 localPosition5 = this.Option[5].localPosition;
-									float num9 = localPosition5.x = x5;
-									Vector3 vector7 = this.Option[5].localPosition = localPosition5;
-									if (this.Speed > (float)5)
+									Transform transform5 = this.Option[5];
+									transform5.localPosition = new Vector3(Mathf.Lerp(transform5.localPosition.x, 0f, Time.deltaTime * 10f), transform5.localPosition.y, transform5.localPosition.z);
+									if (this.Speed > 5f)
 									{
 										this.PromptBar.Label[0].text = "Accept";
 										this.PromptBar.Label[4].text = "Choose";
@@ -342,46 +277,19 @@ public class MissionModeMenuScript : MonoBehaviour
 			{
 				if (!this.InfoSpoke[0])
 				{
-					this.audio.PlayOneShot(this.InfoLines[0]);
+					component.PlayOneShot(this.InfoLines[0]);
 					this.InfoSpoke[0] = true;
 				}
-				int num10 = 180;
-				Vector3 localEulerAngles2 = this.InfoChan.localEulerAngles;
-				float num11 = localEulerAngles2.y = (float)num10;
-				Vector3 vector8 = this.InfoChan.localEulerAngles = localEulerAngles2;
-				int num12 = 2;
-				Vector3 position2 = this.transform.position;
-				float num13 = position2.z = (float)num12;
-				Vector3 vector9 = this.transform.position = position2;
-				int num14 = 0;
-				Color color5 = this.Darkness.color;
-				float num15 = color5.a = (float)num14;
-				Color color6 = this.Darkness.color = color5;
-				int num16 = 1;
-				Color color7 = this.Header.color;
-				float num17 = color7.a = (float)num16;
-				Color color8 = this.Header.color = color7;
-				this.Rotation = (float)0;
-				int num18 = 0;
-				Vector3 localPosition6 = this.Option[1].localPosition;
-				float num19 = localPosition6.x = (float)num18;
-				Vector3 vector10 = this.Option[1].localPosition = localPosition6;
-				int num20 = 0;
-				Vector3 localPosition7 = this.Option[2].localPosition;
-				float num21 = localPosition7.x = (float)num20;
-				Vector3 vector11 = this.Option[2].localPosition = localPosition7;
-				int num22 = 0;
-				Vector3 localPosition8 = this.Option[3].localPosition;
-				float num23 = localPosition8.x = (float)num22;
-				Vector3 vector12 = this.Option[3].localPosition = localPosition8;
-				int num24 = 0;
-				Vector3 localPosition9 = this.Option[4].localPosition;
-				float num25 = localPosition9.x = (float)num24;
-				Vector3 vector13 = this.Option[4].localPosition = localPosition9;
-				int num26 = 0;
-				Vector3 localPosition10 = this.Option[5].localPosition;
-				float num27 = localPosition10.x = (float)num26;
-				Vector3 vector14 = this.Option[5].localPosition = localPosition10;
+				this.InfoChan.localEulerAngles = new Vector3(this.InfoChan.localEulerAngles.x, 180f, this.InfoChan.localEulerAngles.z);
+				base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y, 2f);
+				this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 0f);
+				this.Header.color = new Color(this.Header.color.r, this.Header.color.g, this.Header.color.b, 1f);
+				this.Rotation = 0f;
+				for (int i = 1; i < 6; i++)
+				{
+					Transform transform6 = this.Option[i];
+					transform6.localPosition = new Vector3(0f, transform6.localPosition.y, transform6.localPosition.z);
+				}
 				this.PromptBar.Label[0].text = "Accept";
 				this.PromptBar.Label[4].text = "Choose";
 				this.PromptBar.UpdateButtons();
@@ -391,25 +299,13 @@ public class MissionModeMenuScript : MonoBehaviour
 		}
 		else if (this.Phase == 2)
 		{
-			float y2 = Mathf.Lerp(this.InfoChan.localEulerAngles.y, (float)180, Time.deltaTime * (this.Speed - (float)3));
-			Vector3 localEulerAngles3 = this.InfoChan.localEulerAngles;
-			float num28 = localEulerAngles3.y = y2;
-			Vector3 vector15 = this.InfoChan.localEulerAngles = localEulerAngles3;
-			float z2 = Mathf.Lerp(this.transform.position.z, (float)2, this.Speed * Time.deltaTime * 0.25f);
-			Vector3 position3 = this.transform.position;
-			float num29 = position3.z = z2;
-			Vector3 vector16 = this.transform.position = position3;
-			this.CustomMissionWindow.localScale = Vector3.Lerp(this.CustomMissionWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-			this.LoadMissionWindow.localScale = Vector3.Lerp(this.LoadMissionWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-			this.MissionWindow.localScale = Vector3.Lerp(this.MissionWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-			float x6 = Mathf.Lerp(this.Options.localPosition.x, (float)-700, Time.deltaTime * (float)10);
-			Vector3 localPosition11 = this.Options.localPosition;
-			float num30 = localPosition11.x = x6;
-			Vector3 vector17 = this.Options.localPosition = localPosition11;
-			float z3 = Mathf.Lerp(this.transform.position.z, (float)2, this.Speed * Time.deltaTime * 0.25f);
-			Vector3 position4 = this.transform.position;
-			float num31 = position4.z = z3;
-			Vector3 vector18 = this.transform.position = position4;
+			this.InfoChan.localEulerAngles = new Vector3(this.InfoChan.localEulerAngles.x, Mathf.Lerp(this.InfoChan.localEulerAngles.y, 180f, Time.deltaTime * (this.Speed - 3f)), this.InfoChan.localEulerAngles.z);
+			base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y, Mathf.Lerp(base.transform.position.z, 2f, this.Speed * Time.deltaTime * 0.25f));
+			this.CustomMissionWindow.localScale = Vector3.Lerp(this.CustomMissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
+			this.LoadMissionWindow.localScale = Vector3.Lerp(this.LoadMissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
+			this.MissionWindow.localScale = Vector3.Lerp(this.MissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
+			this.Options.localPosition = new Vector3(Mathf.Lerp(this.Options.localPosition.x, -700f, Time.deltaTime * 10f), this.Options.localPosition.y, this.Options.localPosition.z);
+			base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y, Mathf.Lerp(base.transform.position.z, 2f, this.Speed * Time.deltaTime * 0.25f));
 			if (this.InputManager.TappedUp)
 			{
 				this.Selected--;
@@ -420,33 +316,23 @@ public class MissionModeMenuScript : MonoBehaviour
 				this.Selected++;
 				this.UpdateHighlight();
 			}
-			float y3 = Mathf.Lerp(this.Highlight.transform.localPosition.y, (float)(150 - 50 * this.Selected), Time.deltaTime * (float)10);
-			Vector3 localPosition12 = this.Highlight.transform.localPosition;
-			float num32 = localPosition12.y = y3;
-			Vector3 vector19 = this.Highlight.transform.localPosition = localPosition12;
-			float a3 = Mathf.MoveTowards(this.Highlight.color.a, (float)1, Time.deltaTime);
-			Color color9 = this.Highlight.color;
-			float num33 = color9.a = a3;
-			Color color10 = this.Highlight.color = color9;
-			for (int i = 1; i < 6; i++)
+			this.Highlight.transform.localPosition = new Vector3(this.Highlight.transform.localPosition.x, Mathf.Lerp(this.Highlight.transform.localPosition.y, 150f - 50f * (float)this.Selected, Time.deltaTime * 10f), this.Highlight.transform.localPosition.z);
+			this.Highlight.color = new Color(this.Highlight.color.r, this.Highlight.color.g, this.Highlight.color.b, Mathf.MoveTowards(this.Highlight.color.a, 1f, Time.deltaTime));
+			for (int j = 1; j < 6; j++)
 			{
-				if (i != this.Selected)
+				if (j != this.Selected)
 				{
-					float x7 = Mathf.Lerp(this.Option[i].transform.localPosition.x, (float)0, Time.deltaTime * (float)10);
-					Vector3 localPosition13 = this.Option[i].localPosition;
-					float num34 = localPosition13.x = x7;
-					Vector3 vector20 = this.Option[i].localPosition = localPosition13;
+					Transform transform7 = this.Option[j];
+					transform7.localPosition = new Vector3(Mathf.Lerp(transform7.transform.localPosition.x, 0f, Time.deltaTime * 10f), transform7.localPosition.y, transform7.localPosition.z);
 				}
 			}
-			float x8 = Mathf.Lerp(this.Option[this.Selected].transform.localPosition.x, (float)50, Time.deltaTime * (float)10);
-			Vector3 localPosition14 = this.Option[this.Selected].localPosition;
-			float num35 = localPosition14.x = x8;
-			Vector3 vector21 = this.Option[this.Selected].localPosition = localPosition14;
+			Transform transform8 = this.Option[this.Selected];
+			transform8.localPosition = new Vector3(Mathf.Lerp(transform8.transform.localPosition.x, 50f, Time.deltaTime * 10f), transform8.localPosition.y, transform8.localPosition.z);
 			if (Input.GetButtonDown("A"))
 			{
 				if (!this.InfoSpoke[this.Selected])
 				{
-					this.audio.PlayOneShot(this.InfoLines[this.Selected]);
+					component.PlayOneShot(this.InfoLines[this.Selected]);
 					this.InfoSpoke[this.Selected] = true;
 				}
 				if (this.Selected == 1)
@@ -459,9 +345,9 @@ public class MissionModeMenuScript : MonoBehaviour
 					this.PromptBar.Label[4].text = "Nemesis";
 					this.PromptBar.Label[5].text = "Change Difficulty";
 					this.PromptBar.UpdateButtons();
-					for (int i = 1; i < Extensions.get_length(this.Conditions); i++)
+					for (int k = 1; k < this.Conditions.Length; k++)
 					{
-						this.Conditions[i] = 0;
+						this.Conditions[k] = 0;
 					}
 					if (this.TargetID == 0)
 					{
@@ -512,27 +398,18 @@ public class MissionModeMenuScript : MonoBehaviour
 				{
 					this.PromptBar.Show = false;
 					this.Phase = 4;
-					this.Speed = (float)0;
+					this.Speed = 0f;
 				}
 			}
 		}
 		else if (this.Phase == 3)
 		{
-			float y4 = Mathf.Lerp(this.InfoChan.localEulerAngles.y, (float)180, Time.deltaTime * (this.Speed - (float)3));
-			Vector3 localEulerAngles4 = this.InfoChan.localEulerAngles;
-			float num36 = localEulerAngles4.y = y4;
-			Vector3 vector22 = this.InfoChan.localEulerAngles = localEulerAngles4;
-			float z4 = Mathf.Lerp(this.transform.position.z, (float)2, this.Speed * Time.deltaTime * 0.25f);
-			Vector3 position5 = this.transform.position;
-			float num37 = position5.z = z4;
-			Vector3 vector23 = this.transform.position = position5;
-			this.CustomMissionWindow.localScale = Vector3.Lerp(this.CustomMissionWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-			this.LoadMissionWindow.localScale = Vector3.Lerp(this.LoadMissionWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-			this.MissionWindow.localScale = Vector3.Lerp(this.MissionWindow.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-			float x9 = Mathf.Lerp(this.Options.localPosition.x, (float)-1550, Time.deltaTime * (float)10);
-			Vector3 localPosition15 = this.Options.localPosition;
-			float num38 = localPosition15.x = x9;
-			Vector3 vector24 = this.Options.localPosition = localPosition15;
+			this.InfoChan.localEulerAngles = new Vector3(this.InfoChan.localEulerAngles.x, Mathf.Lerp(this.InfoChan.localEulerAngles.y, 180f, Time.deltaTime * (this.Speed - 3f)), this.InfoChan.localEulerAngles.z);
+			base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y, Mathf.Lerp(base.transform.position.z, 2f, this.Speed * Time.deltaTime * 0.25f));
+			this.CustomMissionWindow.localScale = Vector3.Lerp(this.CustomMissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
+			this.LoadMissionWindow.localScale = Vector3.Lerp(this.LoadMissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
+			this.MissionWindow.localScale = Vector3.Lerp(this.MissionWindow.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+			this.Options.localPosition = new Vector3(Mathf.Lerp(this.Options.localPosition.x, -1550f, Time.deltaTime * 10f), this.Options.localPosition.y, this.Options.localPosition.z);
 			if (this.InputManager.TappedLeft)
 			{
 				this.Difficulty--;
@@ -553,51 +430,45 @@ public class MissionModeMenuScript : MonoBehaviour
 				this.NemesisDifficulty++;
 				this.UpdateNemesisDifficulty();
 			}
-			for (int i = 1; i < Extensions.get_length(this.Objectives); i++)
+			for (int l = 1; l < this.Objectives.Length; l++)
 			{
-				if (i > this.Difficulty)
-				{
-					this.Objectives[i].localScale = Vector3.Lerp(this.Objectives[i].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-				}
-				else
-				{
-					this.Objectives[i].localScale = Vector3.Lerp(this.Objectives[i].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-				}
+				Transform transform9 = this.Objectives[l];
+				transform9.localScale = Vector3.Lerp(transform9.localScale, (l <= this.Difficulty) ? Vector3.one : Vector3.zero, Time.deltaTime * 10f);
 			}
 			if (this.NemesisDifficulty == 0)
 			{
-				this.NemesisPortrait.transform.parent.localScale = Vector3.Lerp(this.NemesisPortrait.transform.parent.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-				this.NemesisObjectives[1].localScale = Vector3.Lerp(this.NemesisObjectives[1].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-				this.NemesisObjectives[2].localScale = Vector3.Lerp(this.NemesisObjectives[2].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-				this.NemesisObjectives[3].localScale = Vector3.Lerp(this.NemesisObjectives[3].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+				this.NemesisPortrait.transform.parent.localScale = Vector3.Lerp(this.NemesisPortrait.transform.parent.localScale, Vector3.zero, Time.deltaTime * 10f);
+				this.NemesisObjectives[1].localScale = Vector3.Lerp(this.NemesisObjectives[1].localScale, Vector3.zero, Time.deltaTime * 10f);
+				this.NemesisObjectives[2].localScale = Vector3.Lerp(this.NemesisObjectives[2].localScale, Vector3.zero, Time.deltaTime * 10f);
+				this.NemesisObjectives[3].localScale = Vector3.Lerp(this.NemesisObjectives[3].localScale, Vector3.zero, Time.deltaTime * 10f);
 			}
 			else
 			{
-				this.NemesisPortrait.transform.parent.localScale = Vector3.Lerp(this.NemesisPortrait.transform.parent.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+				this.NemesisPortrait.transform.parent.localScale = Vector3.Lerp(this.NemesisPortrait.transform.parent.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 			}
 			if (this.NemesisDifficulty == 1)
 			{
-				this.NemesisObjectives[1].localScale = Vector3.Lerp(this.NemesisObjectives[1].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-				this.NemesisObjectives[2].localScale = Vector3.Lerp(this.NemesisObjectives[2].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-				this.NemesisObjectives[3].localScale = Vector3.Lerp(this.NemesisObjectives[3].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+				this.NemesisObjectives[1].localScale = Vector3.Lerp(this.NemesisObjectives[1].localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+				this.NemesisObjectives[2].localScale = Vector3.Lerp(this.NemesisObjectives[2].localScale, Vector3.zero, Time.deltaTime * 10f);
+				this.NemesisObjectives[3].localScale = Vector3.Lerp(this.NemesisObjectives[3].localScale, Vector3.zero, Time.deltaTime * 10f);
 			}
 			else if (this.NemesisDifficulty == 2)
 			{
-				this.NemesisObjectives[1].localScale = Vector3.Lerp(this.NemesisObjectives[1].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-				this.NemesisObjectives[2].localScale = Vector3.Lerp(this.NemesisObjectives[2].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-				this.NemesisObjectives[3].localScale = Vector3.Lerp(this.NemesisObjectives[3].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+				this.NemesisObjectives[1].localScale = Vector3.Lerp(this.NemesisObjectives[1].localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+				this.NemesisObjectives[2].localScale = Vector3.Lerp(this.NemesisObjectives[2].localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+				this.NemesisObjectives[3].localScale = Vector3.Lerp(this.NemesisObjectives[3].localScale, Vector3.zero, Time.deltaTime * 10f);
 			}
 			else if (this.NemesisDifficulty == 3)
 			{
-				this.NemesisObjectives[1].localScale = Vector3.Lerp(this.NemesisObjectives[1].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-				this.NemesisObjectives[2].localScale = Vector3.Lerp(this.NemesisObjectives[2].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-				this.NemesisObjectives[3].localScale = Vector3.Lerp(this.NemesisObjectives[3].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+				this.NemesisObjectives[1].localScale = Vector3.Lerp(this.NemesisObjectives[1].localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+				this.NemesisObjectives[2].localScale = Vector3.Lerp(this.NemesisObjectives[2].localScale, Vector3.zero, Time.deltaTime * 10f);
+				this.NemesisObjectives[3].localScale = Vector3.Lerp(this.NemesisObjectives[3].localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 			}
 			else if (this.NemesisDifficulty == 4)
 			{
-				this.NemesisObjectives[1].localScale = Vector3.Lerp(this.NemesisObjectives[1].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-				this.NemesisObjectives[2].localScale = Vector3.Lerp(this.NemesisObjectives[2].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-				this.NemesisObjectives[3].localScale = Vector3.Lerp(this.NemesisObjectives[3].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+				this.NemesisObjectives[1].localScale = Vector3.Lerp(this.NemesisObjectives[1].localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+				this.NemesisObjectives[2].localScale = Vector3.Lerp(this.NemesisObjectives[2].localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+				this.NemesisObjectives[3].localScale = Vector3.Lerp(this.NemesisObjectives[3].localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 			}
 			if (Input.GetButtonDown("A"))
 			{
@@ -635,60 +506,37 @@ public class MissionModeMenuScript : MonoBehaviour
 		else if (this.Phase == 4)
 		{
 			this.Speed += Time.deltaTime;
-			this.CustomMissionWindow.localScale = Vector3.Lerp(this.CustomMissionWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-			this.LoadMissionWindow.localScale = Vector3.Lerp(this.LoadMissionWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-			this.MissionWindow.localScale = Vector3.Lerp(this.MissionWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-			float y5 = Mathf.Lerp(this.InfoChan.localEulerAngles.y, (float)0, Time.deltaTime * this.Speed);
-			Vector3 localEulerAngles5 = this.InfoChan.localEulerAngles;
-			float num39 = localEulerAngles5.y = y5;
-			Vector3 vector25 = this.InfoChan.localEulerAngles = localEulerAngles5;
-			float a4 = Mathf.MoveTowards(this.Darkness.color.a, (float)1, Time.deltaTime * 0.5f);
-			Color color11 = this.Darkness.color;
-			float num40 = color11.a = a4;
-			Color color12 = this.Darkness.color = color11;
-			float x10 = this.Option[1].parent.localPosition.x - this.Speed * (float)1000 * Time.deltaTime;
-			Vector3 localPosition16 = this.Option[1].parent.localPosition;
-			float num41 = localPosition16.x = x10;
-			Vector3 vector26 = this.Option[1].parent.localPosition = localPosition16;
-			float z5 = this.transform.position.z - this.Speed * Time.deltaTime;
-			Vector3 position6 = this.transform.position;
-			float num42 = position6.z = z5;
-			Vector3 vector27 = this.transform.position = position6;
-			this.Jukebox.audio.volume = this.Jukebox.audio.volume - Time.deltaTime;
-			float a5 = this.Header.color.a - Time.deltaTime;
-			Color color13 = this.Header.color;
-			float num43 = color13.a = a5;
-			Color color14 = this.Header.color = color13;
-			if (this.Darkness.color.a == (float)1)
+			this.CustomMissionWindow.localScale = Vector3.Lerp(this.CustomMissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
+			this.LoadMissionWindow.localScale = Vector3.Lerp(this.LoadMissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
+			this.MissionWindow.localScale = Vector3.Lerp(this.MissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
+			this.InfoChan.localEulerAngles = new Vector3(this.InfoChan.localEulerAngles.x, Mathf.Lerp(this.InfoChan.localEulerAngles.y, 0f, Time.deltaTime * this.Speed), this.InfoChan.localEulerAngles.z);
+			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 1f, Time.deltaTime * 0.5f));
+			Transform parent = this.Option[1].parent;
+			parent.localPosition = new Vector3(parent.localPosition.x - this.Speed * 1000f * Time.deltaTime, parent.localPosition.y, parent.localPosition.z);
+			base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y, base.transform.position.z - this.Speed * Time.deltaTime);
+			this.Jukebox.GetComponent<AudioSource>().volume -= Time.deltaTime;
+			this.Header.color = new Color(this.Header.color.r, this.Header.color.g, this.Header.color.b, this.Header.color.a - Time.deltaTime);
+			if (this.Darkness.color.a == 1f)
 			{
 				if (this.TargetID == 0)
 				{
-					Application.LoadLevel("TitleScene");
+					SceneManager.LoadScene("TitleScene");
 				}
 				else
 				{
-					this.NowLoading.active = true;
-					Application.LoadLevel("SchoolScene");
+					this.NowLoading.SetActive(true);
+					SceneManager.LoadScene("SchoolScene");
 				}
 			}
 		}
 		else if (this.Phase == 5)
 		{
-			float y6 = Mathf.Lerp(this.InfoChan.localEulerAngles.y, (float)180, Time.deltaTime * (this.Speed - (float)3));
-			Vector3 localEulerAngles6 = this.InfoChan.localEulerAngles;
-			float num44 = localEulerAngles6.y = y6;
-			Vector3 vector28 = this.InfoChan.localEulerAngles = localEulerAngles6;
-			float z6 = Mathf.Lerp(this.transform.position.z, (float)2, this.Speed * Time.deltaTime * 0.25f);
-			Vector3 position7 = this.transform.position;
-			float num45 = position7.z = z6;
-			Vector3 vector29 = this.transform.position = position7;
-			this.CustomMissionWindow.localScale = Vector3.Lerp(this.CustomMissionWindow.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-			this.LoadMissionWindow.localScale = Vector3.Lerp(this.LoadMissionWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-			this.MissionWindow.localScale = Vector3.Lerp(this.MissionWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-			float x11 = Mathf.Lerp(this.Options.localPosition.x, (float)-1550, Time.deltaTime * (float)10);
-			Vector3 localPosition17 = this.Options.localPosition;
-			float num46 = localPosition17.x = x11;
-			Vector3 vector30 = this.Options.localPosition = localPosition17;
+			this.InfoChan.localEulerAngles = new Vector3(this.InfoChan.localEulerAngles.x, Mathf.Lerp(this.InfoChan.localEulerAngles.y, 180f, Time.deltaTime * (this.Speed - 3f)), this.InfoChan.localEulerAngles.z);
+			base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y, Mathf.Lerp(base.transform.position.z, 2f, this.Speed * Time.deltaTime * 0.25f));
+			this.CustomMissionWindow.localScale = Vector3.Lerp(this.CustomMissionWindow.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+			this.LoadMissionWindow.localScale = Vector3.Lerp(this.LoadMissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
+			this.MissionWindow.localScale = Vector3.Lerp(this.MissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
+			this.Options.localPosition = new Vector3(Mathf.Lerp(this.Options.localPosition.x, -1550f, Time.deltaTime * 10f), this.Options.localPosition.y, this.Options.localPosition.z);
 			if (this.InputManager.TappedUp)
 			{
 				this.Row--;
@@ -718,32 +566,29 @@ public class MissionModeMenuScript : MonoBehaviour
 				}
 				else if (this.CustomSelected == 6)
 				{
-					int i;
-					for (i = 1; i < Extensions.get_length(this.Conditions); i++)
+					for (int m = 1; m < this.Conditions.Length; m++)
 					{
-						this.Conditions[i] = 0;
+						this.Conditions[m] = 0;
 					}
-					i = 2;
-					int num47 = 2;
-					while (i < Extensions.get_length(this.CustomObjectives))
+					int num = 2;
+					for (int n = 2; n < this.CustomObjectives.Length; n++)
 					{
-						if (this.CustomObjectives[i] != null && this.CustomObjectives[i].alpha == (float)1)
+						if (this.CustomObjectives[n] != null && this.CustomObjectives[n].alpha == 1f)
 						{
-							if (i < 6)
+							if (n < 6)
 							{
-								this.Conditions[num47] = i - 1;
+								this.Conditions[num] = n - 1;
 							}
-							else if (i < 12)
+							else if (n < 12)
 							{
-								this.Conditions[num47] = i - 2;
+								this.Conditions[num] = n - 2;
 							}
 							else
 							{
-								this.Conditions[num47] = i - 3;
+								this.Conditions[num] = n - 3;
 							}
-							num47++;
+							num++;
 						}
-						i++;
 					}
 					this.StartMission();
 				}
@@ -752,7 +597,7 @@ public class MissionModeMenuScript : MonoBehaviour
 					this.NemesisDifficulty++;
 					this.UpdateNemesisDifficulty();
 				}
-				if (this.PromptBar.Label[0].text == "Toggle")
+				if (this.PromptBar.Label[0].text.Equals("Toggle"))
 				{
 					if (this.CustomObjectives[this.CustomSelected].alpha == 0.5f)
 					{
@@ -760,7 +605,7 @@ public class MissionModeMenuScript : MonoBehaviour
 						{
 							this.Difficulty++;
 							this.UpdateDifficultyLabel();
-							this.CustomObjectives[this.CustomSelected].alpha = (float)1;
+							this.CustomObjectives[this.CustomSelected].alpha = 1f;
 						}
 					}
 					else
@@ -779,11 +624,11 @@ public class MissionModeMenuScript : MonoBehaviour
 				this.PromptBar.Label[4].text = "Choose";
 				this.PromptBar.UpdateButtons();
 				this.PromptBar.Show = true;
-				for (int i = 1; i < Extensions.get_length(this.CustomObjectives); i++)
+				for (int num2 = 1; num2 < this.CustomObjectives.Length; num2++)
 				{
-					if (this.CustomObjectives[i] != null)
+					if (this.CustomObjectives[num2] != null)
 					{
-						this.CustomObjectives[i].alpha = 0.5f;
+						this.CustomObjectives[num2].alpha = 0.5f;
 					}
 				}
 				this.NemesisDifficulty = 0;
@@ -807,7 +652,7 @@ public class MissionModeMenuScript : MonoBehaviour
 					{
 						this.RequiredWeaponID++;
 					}
-					if (this.RequiredWeaponID > Extensions.get_length(this.WeaponNames) - 1)
+					if (this.RequiredWeaponID > this.WeaponNames.Length - 1)
 					{
 						this.RequiredWeaponID = 1;
 					}
@@ -816,7 +661,7 @@ public class MissionModeMenuScript : MonoBehaviour
 				else if (this.CustomSelected == 3)
 				{
 					this.RequiredClothingID++;
-					if (this.RequiredClothingID > Extensions.get_length(this.ClothingNames) - 1)
+					if (this.RequiredClothingID > this.ClothingNames.Length - 1)
 					{
 						this.RequiredClothingID = 1;
 					}
@@ -825,7 +670,7 @@ public class MissionModeMenuScript : MonoBehaviour
 				else if (this.CustomSelected == 4)
 				{
 					this.RequiredDisposalID++;
-					if (this.RequiredDisposalID > Extensions.get_length(this.DisposalNames) - 1)
+					if (this.RequiredDisposalID > this.DisposalNames.Length - 1)
 					{
 						this.RequiredDisposalID = 1;
 					}
@@ -845,53 +690,44 @@ public class MissionModeMenuScript : MonoBehaviour
 			}
 			if (this.NemesisDifficulty == 0)
 			{
-				this.CustomNemesisObjectives[1].localScale = Vector3.Lerp(this.CustomNemesisObjectives[1].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-				this.CustomNemesisObjectives[2].localScale = Vector3.Lerp(this.CustomNemesisObjectives[2].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-				this.CustomNemesisObjectives[3].localScale = Vector3.Lerp(this.CustomNemesisObjectives[3].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+				this.CustomNemesisObjectives[1].localScale = Vector3.Lerp(this.CustomNemesisObjectives[1].localScale, Vector3.zero, Time.deltaTime * 10f);
+				this.CustomNemesisObjectives[2].localScale = Vector3.Lerp(this.CustomNemesisObjectives[2].localScale, Vector3.zero, Time.deltaTime * 10f);
+				this.CustomNemesisObjectives[3].localScale = Vector3.Lerp(this.CustomNemesisObjectives[3].localScale, Vector3.zero, Time.deltaTime * 10f);
 			}
 			else if (this.NemesisDifficulty == 1)
 			{
-				this.CustomNemesisObjectives[1].localScale = Vector3.Lerp(this.CustomNemesisObjectives[1].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-				this.CustomNemesisObjectives[2].localScale = Vector3.Lerp(this.CustomNemesisObjectives[2].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-				this.CustomNemesisObjectives[3].localScale = Vector3.Lerp(this.CustomNemesisObjectives[3].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+				this.CustomNemesisObjectives[1].localScale = Vector3.Lerp(this.CustomNemesisObjectives[1].localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+				this.CustomNemesisObjectives[2].localScale = Vector3.Lerp(this.CustomNemesisObjectives[2].localScale, Vector3.zero, Time.deltaTime * 10f);
+				this.CustomNemesisObjectives[3].localScale = Vector3.Lerp(this.CustomNemesisObjectives[3].localScale, Vector3.zero, Time.deltaTime * 10f);
 			}
 			else if (this.NemesisDifficulty == 2)
 			{
-				this.CustomNemesisObjectives[1].localScale = Vector3.Lerp(this.CustomNemesisObjectives[1].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-				this.CustomNemesisObjectives[2].localScale = Vector3.Lerp(this.CustomNemesisObjectives[2].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-				this.CustomNemesisObjectives[3].localScale = Vector3.Lerp(this.CustomNemesisObjectives[3].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+				this.CustomNemesisObjectives[1].localScale = Vector3.Lerp(this.CustomNemesisObjectives[1].localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+				this.CustomNemesisObjectives[2].localScale = Vector3.Lerp(this.CustomNemesisObjectives[2].localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+				this.CustomNemesisObjectives[3].localScale = Vector3.Lerp(this.CustomNemesisObjectives[3].localScale, Vector3.zero, Time.deltaTime * 10f);
 			}
 			else if (this.NemesisDifficulty == 3)
 			{
-				this.CustomNemesisObjectives[1].localScale = Vector3.Lerp(this.CustomNemesisObjectives[1].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-				this.CustomNemesisObjectives[2].localScale = Vector3.Lerp(this.CustomNemesisObjectives[2].localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-				this.CustomNemesisObjectives[3].localScale = Vector3.Lerp(this.CustomNemesisObjectives[3].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+				this.CustomNemesisObjectives[1].localScale = Vector3.Lerp(this.CustomNemesisObjectives[1].localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+				this.CustomNemesisObjectives[2].localScale = Vector3.Lerp(this.CustomNemesisObjectives[2].localScale, Vector3.zero, Time.deltaTime * 10f);
+				this.CustomNemesisObjectives[3].localScale = Vector3.Lerp(this.CustomNemesisObjectives[3].localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 			}
 			else if (this.NemesisDifficulty == 4)
 			{
-				this.CustomNemesisObjectives[1].localScale = Vector3.Lerp(this.CustomNemesisObjectives[1].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-				this.CustomNemesisObjectives[2].localScale = Vector3.Lerp(this.CustomNemesisObjectives[2].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-				this.CustomNemesisObjectives[3].localScale = Vector3.Lerp(this.CustomNemesisObjectives[3].localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+				this.CustomNemesisObjectives[1].localScale = Vector3.Lerp(this.CustomNemesisObjectives[1].localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+				this.CustomNemesisObjectives[2].localScale = Vector3.Lerp(this.CustomNemesisObjectives[2].localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+				this.CustomNemesisObjectives[3].localScale = Vector3.Lerp(this.CustomNemesisObjectives[3].localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 			}
-			((UIInput)this.MissionIDLabel.gameObject.GetComponent(typeof(UIInput))).text = this.MissionID;
+			this.MissionIDLabel.gameObject.GetComponent<UIInput>().value = this.MissionID;
 		}
 		else if (this.Phase == 6)
 		{
-			float y7 = Mathf.Lerp(this.InfoChan.localEulerAngles.y, (float)180, Time.deltaTime * (this.Speed - (float)3));
-			Vector3 localEulerAngles7 = this.InfoChan.localEulerAngles;
-			float num48 = localEulerAngles7.y = y7;
-			Vector3 vector31 = this.InfoChan.localEulerAngles = localEulerAngles7;
-			float z7 = Mathf.Lerp(this.transform.position.z, (float)2, this.Speed * Time.deltaTime * 0.25f);
-			Vector3 position8 = this.transform.position;
-			float num49 = position8.z = z7;
-			Vector3 vector32 = this.transform.position = position8;
-			this.CustomMissionWindow.localScale = Vector3.Lerp(this.CustomMissionWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-			this.LoadMissionWindow.localScale = Vector3.Lerp(this.LoadMissionWindow.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-			this.MissionWindow.localScale = Vector3.Lerp(this.MissionWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-			float x12 = Mathf.Lerp(this.Options.localPosition.x, (float)-1550, Time.deltaTime * (float)10);
-			Vector3 localPosition18 = this.Options.localPosition;
-			float num50 = localPosition18.x = x12;
-			Vector3 vector33 = this.Options.localPosition = localPosition18;
+			this.InfoChan.localEulerAngles = new Vector3(this.InfoChan.localEulerAngles.x, Mathf.Lerp(this.InfoChan.localEulerAngles.y, 180f, Time.deltaTime * (this.Speed - 3f)), this.InfoChan.localEulerAngles.z);
+			base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y, Mathf.Lerp(base.transform.position.z, 2f, this.Speed * Time.deltaTime * 0.25f));
+			this.CustomMissionWindow.localScale = Vector3.Lerp(this.CustomMissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
+			this.LoadMissionWindow.localScale = Vector3.Lerp(this.LoadMissionWindow.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+			this.MissionWindow.localScale = Vector3.Lerp(this.MissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
+			this.Options.localPosition = new Vector3(Mathf.Lerp(this.Options.localPosition.x, -1550f, Time.deltaTime * 10f), this.Options.localPosition.y, this.Options.localPosition.z);
 			if (!Input.anyKey)
 			{
 				this.MissionIDString = this.LoadMissionLabel.text;
@@ -899,7 +735,7 @@ public class MissionModeMenuScript : MonoBehaviour
 				{
 					this.ErrorLabel.text = "A Mission ID must be 19 numbers long.";
 				}
-				else if (this.MissionIDString[0] != "-")
+				else if (this.MissionIDString[0] != '-')
 				{
 					this.GetNumbers();
 					if (this.TargetNumber == 0)
@@ -956,14 +792,14 @@ public class MissionModeMenuScript : MonoBehaviour
 			{
 				if (this.ErrorLabel.text == "Valid Mission ID!")
 				{
-					Debug.Log("Target ID is: " + this.TargetNumber + " and Weapon ID is: " + this.WeaponNumber);
+					Debug.Log("Target ID is: " + this.TargetNumber.ToString() + " and Weapon ID is: " + this.WeaponNumber.ToString());
 					this.TargetID = this.TargetNumber;
 					this.Difficulty = 1;
 					if (this.WeaponNumber > 0)
 					{
 						this.Difficulty++;
 						this.Conditions[this.Difficulty] = 2;
-						this.CustomObjectives[2].alpha = (float)1;
+						this.CustomObjectives[2].alpha = 1f;
 						this.RequiredWeaponID = this.WeaponNumber;
 						this.CustomDescs[2].text = this.ConditionDescs[1] + " " + this.WeaponNames[this.RequiredWeaponID];
 					}
@@ -976,7 +812,7 @@ public class MissionModeMenuScript : MonoBehaviour
 					{
 						this.Difficulty++;
 						this.Conditions[this.Difficulty] = 3;
-						this.CustomObjectives[3].alpha = (float)1;
+						this.CustomObjectives[3].alpha = 1f;
 						this.RequiredClothingID = this.ClothingNumber;
 						this.CustomDescs[3].text = this.ConditionDescs[2] + " " + this.ClothingNames[this.RequiredClothingID];
 					}
@@ -989,7 +825,7 @@ public class MissionModeMenuScript : MonoBehaviour
 					{
 						this.Difficulty++;
 						this.Conditions[this.Difficulty] = 4;
-						this.CustomObjectives[4].alpha = (float)1;
+						this.CustomObjectives[4].alpha = 1f;
 						this.RequiredDisposalID = this.DisposalNumber;
 						this.CustomDescs[4].text = this.ConditionDescs[3] + " " + this.DisposalNames[this.RequiredDisposalID];
 					}
@@ -1002,67 +838,67 @@ public class MissionModeMenuScript : MonoBehaviour
 					{
 						this.Difficulty++;
 						this.Conditions[this.Difficulty] = 5;
-						this.CustomObjectives[5].alpha = (float)1;
+						this.CustomObjectives[5].alpha = 1f;
 					}
 					if (this.Difficulty < 10 && this.Condition6Number == 1)
 					{
 						this.Difficulty++;
 						this.Conditions[this.Difficulty] = 6;
-						this.CustomObjectives[7].alpha = (float)1;
+						this.CustomObjectives[7].alpha = 1f;
 					}
 					if (this.Difficulty < 10 && this.Condition7Number == 1)
 					{
 						this.Difficulty++;
 						this.Conditions[this.Difficulty] = 7;
-						this.CustomObjectives[8].alpha = (float)1;
+						this.CustomObjectives[8].alpha = 1f;
 					}
 					if (this.Difficulty < 10 && this.Condition8Number == 1)
 					{
 						this.Difficulty++;
 						this.Conditions[this.Difficulty] = 8;
-						this.CustomObjectives[9].alpha = (float)1;
+						this.CustomObjectives[9].alpha = 1f;
 					}
 					if (this.Difficulty < 10 && this.Condition9Number == 1)
 					{
 						this.Difficulty++;
 						this.Conditions[this.Difficulty] = 9;
-						this.CustomObjectives[10].alpha = (float)1;
+						this.CustomObjectives[10].alpha = 1f;
 					}
 					if (this.Difficulty < 10 && this.Condition10Number == 1)
 					{
 						this.Difficulty++;
 						this.Conditions[this.Difficulty] = 10;
-						this.CustomObjectives[11].alpha = (float)1;
+						this.CustomObjectives[11].alpha = 1f;
 					}
 					if (this.Difficulty < 10 && this.Condition11Number == 1)
 					{
 						this.Difficulty++;
 						this.Conditions[this.Difficulty] = 11;
-						this.CustomObjectives[13].alpha = (float)1;
+						this.CustomObjectives[13].alpha = 1f;
 					}
 					if (this.Difficulty < 10 && this.Condition12Number == 1)
 					{
 						this.Difficulty++;
 						this.Conditions[this.Difficulty] = 12;
-						this.CustomObjectives[14].alpha = (float)1;
+						this.CustomObjectives[14].alpha = 1f;
 					}
 					if (this.Difficulty < 10 && this.Condition13Number == 1)
 					{
 						this.Difficulty++;
 						this.Conditions[this.Difficulty] = 13;
-						this.CustomObjectives[15].alpha = (float)1;
+						this.CustomObjectives[15].alpha = 1f;
 					}
 					if (this.Difficulty < 10 && this.Condition14Number == 1)
 					{
 						this.Difficulty++;
 						this.Conditions[this.Difficulty] = 14;
-						this.CustomObjectives[16].alpha = (float)1;
+						this.CustomObjectives[16].alpha = 1f;
 					}
 					if (this.Difficulty < 10 && this.Condition15Number == 1)
 					{
 						this.Difficulty++;
 						this.Conditions[this.Difficulty] = 15;
-						this.CustomObjectives[17].alpha = (float)1;
+						this.CustomObjectives[17].alpha = 1f;
 					}
 					this.NemesisDifficulty = this.NemesisNumber;
 					PlayerPrefs.SetInt("Population", this.PopulationNumber);
@@ -1095,40 +931,37 @@ public class MissionModeMenuScript : MonoBehaviour
 		}
 	}
 
-	public virtual void GetNumbers()
+	private void GetNumbers()
 	{
-		this.TargetNumber = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[0]) * 10 + UnityBuiltins.parseInt(string.Empty + this.MissionIDString[1]);
-		this.WeaponNumber = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[2]) * 10 + UnityBuiltins.parseInt(string.Empty + this.MissionIDString[3]);
-		this.ClothingNumber = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[4]);
-		this.DisposalNumber = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[5]);
-		this.Condition5Number = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[6]);
-		this.Condition6Number = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[7]);
-		this.Condition7Number = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[8]);
-		this.Condition8Number = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[9]);
-		this.Condition9Number = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[10]);
-		this.Condition10Number = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[11]);
-		this.Condition11Number = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[12]);
-		this.Condition12Number = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[13]);
-		this.Condition13Number = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[14]);
-		this.Condition14Number = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[15]);
-		this.Condition15Number = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[16]);
-		this.NemesisNumber = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[17]);
-		this.PopulationNumber = UnityBuiltins.parseInt(string.Empty + this.MissionIDString[18]);
+		this.TargetNumber = (int)char.GetNumericValue(this.MissionIDString[0]) * 10 + (int)char.GetNumericValue(this.MissionIDString[1]);
+		this.WeaponNumber = (int)char.GetNumericValue(this.MissionIDString[2]) * 10 + (int)char.GetNumericValue(this.MissionIDString[3]);
+		this.ClothingNumber = (int)char.GetNumericValue(this.MissionIDString[4]);
+		this.DisposalNumber = (int)char.GetNumericValue(this.MissionIDString[5]);
+		this.Condition5Number = (int)char.GetNumericValue(this.MissionIDString[6]);
+		this.Condition6Number = (int)char.GetNumericValue(this.MissionIDString[7]);
+		this.Condition7Number = (int)char.GetNumericValue(this.MissionIDString[8]);
+		this.Condition8Number = (int)char.GetNumericValue(this.MissionIDString[9]);
+		this.Condition9Number = (int)char.GetNumericValue(this.MissionIDString[10]);
+		this.Condition10Number = (int)char.GetNumericValue(this.MissionIDString[11]);
+		this.Condition11Number = (int)char.GetNumericValue(this.MissionIDString[12]);
+		this.Condition12Number = (int)char.GetNumericValue(this.MissionIDString[13]);
+		this.Condition13Number = (int)char.GetNumericValue(this.MissionIDString[14]);
+		this.Condition14Number = (int)char.GetNumericValue(this.MissionIDString[15]);
+		this.Condition15Number = (int)char.GetNumericValue(this.MissionIDString[16]);
+		this.NemesisNumber = (int)char.GetNumericValue(this.MissionIDString[17]);
+		this.PopulationNumber = (int)char.GetNumericValue(this.MissionIDString[18]);
 	}
 
-	public virtual void LateUpdate()
+	private void LateUpdate()
 	{
-		if (this.Speed > (float)3)
+		if (this.Speed > 3f)
 		{
-			this.Rotation = Mathf.Lerp(this.Rotation, (float)0, Time.deltaTime * (this.Speed - (float)3));
+			this.Rotation = Mathf.Lerp(this.Rotation, 0f, Time.deltaTime * (this.Speed - 3f));
 		}
-		float x = this.Neck.transform.localEulerAngles.x + this.Rotation;
-		Vector3 localEulerAngles = this.Neck.transform.localEulerAngles;
-		float num = localEulerAngles.x = x;
-		Vector3 vector = this.Neck.transform.localEulerAngles = localEulerAngles;
+		this.Neck.transform.localEulerAngles = new Vector3(this.Neck.transform.localEulerAngles.x + this.Rotation, this.Neck.transform.localEulerAngles.y, this.Neck.transform.localEulerAngles.z);
 	}
 
-	public virtual void UpdateHighlight()
+	private void UpdateHighlight()
 	{
 		if (this.Selected == 0)
 		{
@@ -1140,18 +973,11 @@ public class MissionModeMenuScript : MonoBehaviour
 		}
 	}
 
-	public virtual void ChooseTarget()
+	private void ChooseTarget()
 	{
 		if (this.Phase != 5)
 		{
-			if (PlayerPrefs.GetInt("HighPopulation") == 0)
-			{
-				this.TargetID = UnityEngine.Random.Range(2, 33);
-			}
-			else
-			{
-				this.TargetID = UnityEngine.Random.Range(2, 90);
-			}
+			this.TargetID = ((PlayerPrefs.GetInt("HighPopulation") != 0) ? UnityEngine.Random.Range(2, 90) : UnityEngine.Random.Range(2, 33));
 		}
 		else if (PlayerPrefs.GetInt("HighPopulation") == 0)
 		{
@@ -1172,20 +998,20 @@ public class MissionModeMenuScript : MonoBehaviour
 		{
 			this.TargetID = 89;
 		}
-		string url = "file:///" + Application.streamingAssetsPath + "/Portraits/Student_" + this.TargetID + ".png";
+		string url = string.Concat(new object[]
+		{
+			"file:///",
+			Application.streamingAssetsPath,
+			"/Portraits/Student_",
+			this.TargetID,
+			".png"
+		});
 		WWW www = new WWW(url);
-		if (this.TargetID < 33)
-		{
-			this.TargetPortrait.mainTexture = www.texture;
-		}
-		else
-		{
-			this.TargetPortrait.mainTexture = this.BlankPortrait;
-		}
+		this.TargetPortrait.mainTexture = ((this.TargetID >= 33) ? this.BlankPortrait : www.texture);
 		this.CustomTargetPortrait.mainTexture = this.TargetPortrait.mainTexture;
-		if (this.JSON.StudentNames[this.TargetID] == "Random" || this.JSON.StudentNames[this.TargetID] == "Unknown")
+		if (this.JSON.StudentNames[this.TargetID].Equals("Random") || this.JSON.StudentNames[this.TargetID].Equals("Unknown"))
 		{
-			this.TargetName = string.Empty + this.StudentManager.FirstNames[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentManager.FirstNames))] + " " + this.StudentManager.LastNames[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentManager.LastNames))];
+			this.TargetName = this.StudentManager.FirstNames[UnityEngine.Random.Range(0, this.StudentManager.FirstNames.Length)] + " " + this.StudentManager.LastNames[UnityEngine.Random.Range(0, this.StudentManager.LastNames.Length)];
 		}
 		else
 		{
@@ -1197,20 +1023,13 @@ public class MissionModeMenuScript : MonoBehaviour
 		{
 			if (this.Phase == 5)
 			{
-				if (Input.GetButtonDown("A"))
-				{
-					this.TargetID++;
-				}
-				else
-				{
-					this.TargetID--;
-				}
+				this.TargetID += ((!Input.GetButtonDown("A")) ? -1 : 1);
 			}
 			this.ChooseTarget();
 		}
 	}
 
-	public virtual void UpdateDifficulty()
+	private void UpdateDifficulty()
 	{
 		if (this.Difficulty < 1)
 		{
@@ -1230,42 +1049,51 @@ public class MissionModeMenuScript : MonoBehaviour
 		}
 	}
 
-	public virtual void UpdateDifficultyLabel()
+	private void UpdateDifficultyLabel()
 	{
-		this.CustomDifficultyLabel.text = "Difficulty Level - " + this.Difficulty;
-		this.DifficultyLabel.text = "Difficulty Level - " + this.Difficulty;
-		string lhs = "Kill " + this.TargetName + ".";
-		string rhs;
+		this.CustomDifficultyLabel.text = "Difficulty Level - " + this.Difficulty.ToString();
+		this.DifficultyLabel.text = "Difficulty Level - " + this.Difficulty.ToString();
+		string text = "Kill " + this.TargetName + ".";
+		string text2 = string.Empty;
+		string text3 = string.Empty;
+		string text4 = string.Empty;
 		if (this.RequiredWeaponID == 0)
 		{
-			rhs = "You can kill the target with any weapon.";
+			text2 = "You can kill the target with any weapon.";
 		}
 		else
 		{
-			rhs = "You must kill the target with a " + this.WeaponNames[this.RequiredWeaponID];
+			text2 = "You must kill the target with a " + this.WeaponNames[this.RequiredWeaponID];
 		}
-		string rhs2;
 		if (this.RequiredClothingID == 0)
 		{
-			rhs2 = "You can kill the target wearing any clothing.";
+			text3 = "You can kill the target wearing any clothing.";
 		}
 		else
 		{
-			rhs2 = "You must kill the target while wearing " + this.ClothingNames[this.RequiredClothingID];
+			text3 = "You must kill the target while wearing " + this.ClothingNames[this.RequiredClothingID];
 		}
-		string rhs3;
 		if (this.RequiredDisposalID == 0)
 		{
-			rhs3 = "It is not necessary to dispose of the target's corpse.";
+			text4 = "It is not necessary to dispose of the target's corpse.";
 		}
 		else
 		{
-			rhs3 = "You must dispose of the target's corpse by " + this.DisposalNames[this.RequiredDisposalID];
+			text4 = "You must dispose of the target's corpse by " + this.DisposalNames[this.RequiredDisposalID];
 		}
-		this.DescriptionLabel.text = lhs + "\n" + "\n" + rhs + "\n" + "\n" + rhs2 + "\n" + "\n" + rhs3;
+		this.DescriptionLabel.text = string.Concat(new string[]
+		{
+			text,
+			"\n\n",
+			text2,
+			"\n\n",
+			text3,
+			"\n\n",
+			text4
+		});
 	}
 
-	public virtual void UpdateNemesisDifficulty()
+	private void UpdateNemesisDifficulty()
 	{
 		if (this.NemesisDifficulty < 0)
 		{
@@ -1284,20 +1112,13 @@ public class MissionModeMenuScript : MonoBehaviour
 		{
 			this.CustomNemesisLabel.text = "Nemesis: On";
 			this.NemesisLabel.text = "Nemesis: On";
-			if (this.NemesisDifficulty > 2)
-			{
-				this.NemesisPortrait.mainTexture = this.BlankPortrait;
-			}
-			else
-			{
-				this.NemesisPortrait.mainTexture = this.NemesisGraphic;
-			}
+			this.NemesisPortrait.mainTexture = ((this.NemesisDifficulty <= 2) ? this.NemesisGraphic : this.BlankPortrait);
 		}
 	}
 
-	public virtual void PickNewCondition()
+	private void PickNewCondition()
 	{
-		int num = UnityEngine.Random.Range(1, Extensions.get_length(this.ConditionDescs));
+		int num = UnityEngine.Random.Range(1, this.ConditionDescs.Length);
 		this.Conditions[this.Difficulty] = num;
 		this.Descs[this.Difficulty].text = this.ConditionDescs[num];
 		this.Icons[this.Difficulty].mainTexture = this.ConditionIcons[num];
@@ -1322,24 +1143,24 @@ public class MissionModeMenuScript : MonoBehaviour
 			this.RequiredWeaponID = 11;
 			while (this.RequiredWeaponID == 11)
 			{
-				this.RequiredWeaponID = UnityEngine.Random.Range(1, Extensions.get_length(this.WeaponNames));
+				this.RequiredWeaponID = UnityEngine.Random.Range(1, this.WeaponNames.Length);
 			}
 			this.Descs[this.Difficulty].text = this.ConditionDescs[num] + " " + this.WeaponNames[this.RequiredWeaponID];
 		}
 		else if (num == 2)
 		{
-			this.RequiredClothingID = UnityEngine.Random.Range(1, Extensions.get_length(this.ClothingNames));
+			this.RequiredClothingID = UnityEngine.Random.Range(1, this.ClothingNames.Length);
 			this.Descs[this.Difficulty].text = this.ConditionDescs[num] + " " + this.ClothingNames[this.RequiredClothingID];
 		}
 		else if (num == 3)
 		{
-			this.RequiredDisposalID = UnityEngine.Random.Range(1, Extensions.get_length(this.DisposalNames));
+			this.RequiredDisposalID = UnityEngine.Random.Range(1, this.DisposalNames.Length);
 			this.Descs[this.Difficulty].text = this.ConditionDescs[num] + " " + this.DisposalNames[this.RequiredDisposalID];
 		}
 		this.UpdateDifficultyLabel();
 	}
 
-	public virtual void ErasePreviousCondition()
+	private void ErasePreviousCondition()
 	{
 		if (this.Conditions[this.Difficulty + 1] == 1)
 		{
@@ -1357,11 +1178,18 @@ public class MissionModeMenuScript : MonoBehaviour
 		this.UpdateDifficultyLabel();
 	}
 
-	public virtual void UpdateGraphics()
+	public void UpdateGraphics()
 	{
 		if (PlayerPrefs.GetInt("MissionTarget") < 33)
 		{
-			string url = "file:///" + Application.streamingAssetsPath + "/Portraits/Student_" + PlayerPrefs.GetInt("MissionTarget") + ".png";
+			string url = string.Concat(new string[]
+			{
+				"file:///",
+				Application.streamingAssetsPath,
+				"/Portraits/Student_",
+				PlayerPrefs.GetInt("MissionTarget").ToString(),
+				".png"
+			});
 			WWW www = new WWW(url);
 			this.Icons[1].mainTexture = www.texture;
 			this.TargetName = this.JSON.StudentNames[PlayerPrefs.GetInt("MissionTarget")];
@@ -1372,44 +1200,44 @@ public class MissionModeMenuScript : MonoBehaviour
 			this.TargetName = PlayerPrefs.GetString("MissionTargetName");
 		}
 		this.Descs[1].text = "Kill " + this.TargetName + ".";
-		for (int i = 2; i < Extensions.get_length(this.Objectives); i++)
+		for (int i = 2; i < this.Objectives.Length; i++)
 		{
-			this.Objectives[i].gameObject.active = false;
+			this.Objectives[i].gameObject.SetActive(false);
 		}
 		if (PlayerPrefs.GetInt("MissionDifficulty") > 1)
 		{
-			for (int i = 2; i < PlayerPrefs.GetInt("MissionDifficulty") + 1; i++)
+			for (int j = 2; j < PlayerPrefs.GetInt("MissionDifficulty") + 1; j++)
 			{
-				this.Objectives[i].gameObject.active = true;
-				this.Icons[i].mainTexture = this.ConditionIcons[PlayerPrefs.GetInt("MissionCondition_" + i)];
-				if (PlayerPrefs.GetInt("MissionCondition_" + i) > 3)
+				this.Objectives[j].gameObject.SetActive(true);
+				this.Icons[j].mainTexture = this.ConditionIcons[PlayerPrefs.GetInt("MissionCondition_" + j.ToString())];
+				if (PlayerPrefs.GetInt("MissionCondition_" + j.ToString()) > 3)
 				{
-					this.Descs[i].text = this.ConditionDescs[PlayerPrefs.GetInt("MissionCondition_" + i)];
+					this.Descs[j].text = this.ConditionDescs[PlayerPrefs.GetInt("MissionCondition_" + j.ToString())];
 				}
-				else if (PlayerPrefs.GetInt("MissionCondition_" + i) == 1)
+				else if (PlayerPrefs.GetInt("MissionCondition_" + j.ToString()) == 1)
 				{
 					this.RequiredWeaponID = 11;
 					while (this.RequiredWeaponID == 11)
 					{
-						this.RequiredWeaponID = UnityEngine.Random.Range(1, Extensions.get_length(this.WeaponNames));
+						this.RequiredWeaponID = UnityEngine.Random.Range(1, this.WeaponNames.Length);
 					}
-					this.Descs[i].text = this.ConditionDescs[PlayerPrefs.GetInt("MissionCondition_" + i)] + " " + this.WeaponNames[PlayerPrefs.GetInt("MissionRequiredWeapon")];
+					this.Descs[j].text = this.ConditionDescs[PlayerPrefs.GetInt("MissionCondition_" + j.ToString())] + " " + this.WeaponNames[PlayerPrefs.GetInt("MissionRequiredWeapon")];
 				}
-				else if (PlayerPrefs.GetInt("MissionCondition_" + i) == 2)
+				else if (PlayerPrefs.GetInt("MissionCondition_" + j.ToString()) == 2)
 				{
-					this.RequiredClothingID = UnityEngine.Random.Range(0, Extensions.get_length(this.ClothingNames));
-					this.Descs[i].text = this.ConditionDescs[PlayerPrefs.GetInt("MissionCondition_" + i)] + " " + this.ClothingNames[PlayerPrefs.GetInt("MissionRequiredClothing")];
+					this.RequiredClothingID = UnityEngine.Random.Range(0, this.ClothingNames.Length);
+					this.Descs[j].text = this.ConditionDescs[PlayerPrefs.GetInt("MissionCondition_" + j.ToString())] + " " + this.ClothingNames[PlayerPrefs.GetInt("MissionRequiredClothing")];
 				}
-				else if (PlayerPrefs.GetInt("MissionCondition_" + i) == 3)
+				else if (PlayerPrefs.GetInt("MissionCondition_" + j.ToString()) == 3)
 				{
-					this.RequiredDisposalID = UnityEngine.Random.Range(1, Extensions.get_length(this.DisposalNames));
-					this.Descs[i].text = this.ConditionDescs[PlayerPrefs.GetInt("MissionCondition_" + i)] + " " + this.DisposalNames[PlayerPrefs.GetInt("MissionRequiredDisposal")];
+					this.RequiredDisposalID = UnityEngine.Random.Range(1, this.DisposalNames.Length);
+					this.Descs[j].text = this.ConditionDescs[PlayerPrefs.GetInt("MissionCondition_" + j.ToString())] + " " + this.DisposalNames[PlayerPrefs.GetInt("MissionRequiredDisposal")];
 				}
 			}
 		}
 	}
 
-	public virtual void UpdatePopulation()
+	private void UpdatePopulation()
 	{
 		if (PlayerPrefs.GetInt("HighPopulation") == 0)
 		{
@@ -1429,9 +1257,8 @@ public class MissionModeMenuScript : MonoBehaviour
 		}
 	}
 
-	public virtual void UpdateObjectiveHighlight()
+	private void UpdateObjectiveHighlight()
 	{
-		int num = 0;
 		if (this.Row < 1)
 		{
 			this.Row = 6;
@@ -1452,26 +1279,13 @@ public class MissionModeMenuScript : MonoBehaviour
 		{
 			this.Column = 1;
 		}
+		int num = 0;
 		if (this.Row == 6)
 		{
 			num = 75;
 		}
-		if ((this.Column == 1 && this.Row < 5) || (this.Column == 2 && this.Row == 6))
-		{
-			this.PromptBar.Label[2].text = "Change";
-		}
-		else
-		{
-			this.PromptBar.Label[2].text = string.Empty;
-		}
-		int num2 = -1050 + 650 * this.Column;
-		Vector3 localPosition = this.ObjectiveHighlight.localPosition;
-		float num3 = localPosition.x = (float)num2;
-		Vector3 vector = this.ObjectiveHighlight.localPosition = localPosition;
-		int num4 = 450 - 150 * this.Row - num;
-		Vector3 localPosition2 = this.ObjectiveHighlight.localPosition;
-		float num5 = localPosition2.y = (float)num4;
-		Vector3 vector2 = this.ObjectiveHighlight.localPosition = localPosition2;
+		this.PromptBar.Label[2].text = (((this.Column != 1 || this.Row >= 5) && (this.Column != 2 || this.Row != 6)) ? string.Empty : "Change");
+		this.ObjectiveHighlight.localPosition = new Vector3(-1050f + 650f * (float)this.Column, 450f - 150f * (float)this.Row - (float)num, this.ObjectiveHighlight.localPosition.z);
 		this.CustomSelected = this.Row + (this.Column - 1) * 6;
 		if (this.CustomSelected == 1 || this.CustomSelected == 12)
 		{
@@ -1500,71 +1314,57 @@ public class MissionModeMenuScript : MonoBehaviour
 		this.PromptBar.UpdateButtons();
 	}
 
-	public virtual void CalculateMissionID()
+	private void CalculateMissionID()
 	{
-		if (this.TargetID < 10)
+		this.TargetString = ((this.TargetID >= 10) ? string.Empty : "0") + this.TargetID.ToString();
+		if (this.CustomObjectives[2].alpha == 1f)
 		{
-			this.TargetString = "0" + this.TargetID;
-		}
-		else
-		{
-			this.TargetString = string.Empty + this.TargetID;
-		}
-		if (this.CustomObjectives[2].alpha == (float)1)
-		{
-			if (this.RequiredWeaponID < 10)
-			{
-				this.WeaponString = "0" + this.RequiredWeaponID;
-			}
-			else
-			{
-				this.WeaponString = string.Empty + this.RequiredWeaponID;
-			}
+			this.WeaponString = ((this.RequiredWeaponID >= 10) ? string.Empty : "0") + this.RequiredWeaponID.ToString();
 		}
 		else
 		{
 			this.WeaponString = "00";
 		}
-		if (this.CustomObjectives[3].alpha == (float)1)
-		{
-			this.ClothingString = string.Empty + this.RequiredClothingID;
-		}
-		else
-		{
-			this.ClothingString = "0";
-		}
-		if (this.CustomObjectives[4].alpha == (float)1)
-		{
-			this.DisposalString = string.Empty + this.RequiredDisposalID;
-		}
-		else
-		{
-			this.DisposalString = "0";
-		}
-		for (int i = 1; i < Extensions.get_length(this.CustomObjectives); i++)
+		this.ClothingString = ((this.CustomObjectives[3].alpha != 1f) ? "0" : this.RequiredClothingID.ToString());
+		this.DisposalString = ((this.CustomObjectives[4].alpha != 1f) ? "0" : this.RequiredDisposalID.ToString());
+		for (int i = 1; i < this.CustomObjectives.Length; i++)
 		{
 			if (this.CustomObjectives[i] != null)
 			{
-				if (this.CustomObjectives[i].alpha == (float)1)
-				{
-					this.ConditionString[i] = "1";
-				}
-				else
-				{
-					this.ConditionString[i] = "0";
-				}
+				this.ConditionString[i] = ((this.CustomObjectives[i].alpha != 1f) ? "0" : "1");
 			}
 		}
-		this.MissionID = this.TargetString + this.WeaponString + this.ClothingString + this.DisposalString + this.ConditionString[5] + this.ConditionString[6] + this.ConditionString[7] + this.ConditionString[8] + this.ConditionString[9] + this.ConditionString[10] + this.ConditionString[11] + this.ConditionString[12] + this.ConditionString[13] + this.ConditionString[14] + this.ConditionString[15] + this.ConditionString[16] + this.ConditionString[17] + this.NemesisDifficulty + PlayerPrefs.GetInt("HighPopulation");
+		this.MissionID = string.Concat(new string[]
+		{
+			this.TargetString,
+			this.WeaponString,
+			this.ClothingString,
+			this.DisposalString,
+			this.ConditionString[5],
+			this.ConditionString[6],
+			this.ConditionString[7],
+			this.ConditionString[8],
+			this.ConditionString[9],
+			this.ConditionString[10],
+			this.ConditionString[11],
+			this.ConditionString[12],
+			this.ConditionString[13],
+			this.ConditionString[14],
+			this.ConditionString[15],
+			this.ConditionString[16],
+			this.ConditionString[17],
+			this.NemesisDifficulty.ToString(),
+			PlayerPrefs.GetInt("HighPopulation").ToString()
+		});
 		this.MissionIDLabel.text = this.MissionID;
 	}
 
-	public virtual void StartMission()
+	private void StartMission()
 	{
-		this.audio.PlayOneShot(this.InfoLines[6]);
+		base.GetComponent<AudioSource>().PlayOneShot(this.InfoLines[6]);
 		int @int = PlayerPrefs.GetInt("HighPopulation");
 		PlayerPrefs.DeleteAll();
-		PlayerPrefs.SetFloat("SchoolAtmosphere", (float)100 - (float)this.Difficulty * 1f / 10f * (float)100);
+		PlayerPrefs.SetFloat("SchoolAtmosphere", 100f - (float)this.Difficulty / 10f * 100f);
 		PlayerPrefs.SetInt("NemesisDifficulty", this.NemesisDifficulty);
 		PlayerPrefs.SetString("MissionTargetName", this.TargetName);
 		PlayerPrefs.SetInt("MissionDifficulty", this.Difficulty);
@@ -1593,15 +1393,11 @@ public class MissionModeMenuScript : MonoBehaviour
 				{
 					PlayerPrefs.SetInt("MissionRequiredDisposal", this.RequiredDisposalID);
 				}
-				PlayerPrefs.SetInt("MissionCondition_" + i, this.Conditions[i]);
+				PlayerPrefs.SetInt("MissionCondition_" + i.ToString(), this.Conditions[i]);
 			}
 		}
 		this.PromptBar.Show = false;
-		this.Speed = (float)0;
+		this.Speed = 0f;
 		this.Phase = 4;
-	}
-
-	public virtual void Main()
-	{
 	}
 }

@@ -1,8 +1,7 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
+using UnityEngine.SceneManagement;
 
-[Serializable]
 public class MissionModeScript : MonoBehaviour
 {
 	public NotificationManagerScript NotificationManager;
@@ -117,9 +116,9 @@ public class MissionModeScript : MonoBehaviour
 
 	public int TargetID;
 
-	public int MusicID;
+	public int MusicID = 1;
 
-	public int Phase;
+	public int Phase = 1;
 
 	public int ID;
 
@@ -163,9 +162,9 @@ public class MissionModeScript : MonoBehaviour
 
 	public bool FadeOut;
 
-	public string CauseOfFailure;
+	public string CauseOfFailure = string.Empty;
 
-	public float TimeRemaining;
+	public float TimeRemaining = 300f;
 
 	public float TargetHeight;
 
@@ -191,51 +190,43 @@ public class MissionModeScript : MonoBehaviour
 
 	public int Frame;
 
-	public MissionModeScript()
+	private void Start()
 	{
-		this.MusicID = 1;
-		this.Phase = 1;
-		this.CauseOfFailure = string.Empty;
-		this.TimeRemaining = 300f;
-	}
-
-	public virtual void Start()
-	{
-		this.SecurityCameraGroup.active = false;
-		this.MetalDetectorGroup.active = false;
-		this.MissionModeHUD.active = false;
-		this.ExitPortal.active = false;
-		this.Safe.active = false;
+		this.SecurityCameraGroup.SetActive(false);
+		this.MetalDetectorGroup.SetActive(false);
+		this.MissionModeHUD.SetActive(false);
+		this.ExitPortal.SetActive(false);
+		this.Safe.SetActive(false);
 		if (PlayerPrefs.GetInt("MissionMode") == 1)
 		{
-			this.Yandere.HeartRate.MediumColour = new Color((float)1, 0.5f, 0.5f, (float)1);
-			this.Yandere.HeartRate.NormalColour = new Color((float)1, (float)1, (float)1, (float)1);
-			this.Clock.PeriodLabel.color = new Color((float)1, (float)1, (float)1, (float)1);
-			this.Clock.TimeLabel.color = new Color((float)1, (float)1, (float)1, (float)1);
+			this.Yandere.HeartRate.MediumColour = new Color(1f, 0.5f, 0.5f, 1f);
+			this.Yandere.HeartRate.NormalColour = new Color(1f, 1f, 1f, 1f);
+			this.Clock.PeriodLabel.color = new Color(1f, 1f, 1f, 1f);
+			this.Clock.TimeLabel.color = new Color(1f, 1f, 1f, 1f);
 			this.Clock.DayLabel.enabled = false;
-			((UISprite)this.Reputation.PendingRepMarker.GetComponent(typeof(UISprite))).color = new Color((float)1, (float)1, (float)1, (float)1);
-			this.Reputation.CurrentRepMarker.gameObject.active = false;
-			this.Reputation.PendingRepLabel.color = new Color((float)1, (float)1, (float)1, (float)1);
+			this.Reputation.PendingRepMarker.GetComponent<UISprite>().color = new Color(1f, 1f, 1f, 1f);
+			this.Reputation.CurrentRepMarker.gameObject.SetActive(false);
+			this.Reputation.PendingRepLabel.color = new Color(1f, 1f, 1f, 1f);
 			this.ReputationLabel.fontStyle = FontStyle.Bold;
 			this.ReputationLabel.trueTypeFont = this.Arial;
-			this.ReputationLabel.color = new Color((float)1, (float)1, (float)1, (float)1);
+			this.ReputationLabel.color = new Color(1f, 1f, 1f, 1f);
 			this.ReputationLabel.text = "AWARENESS";
-			this.ReputationIcons[0].active = true;
-			this.ReputationIcons[1].active = false;
-			this.ReputationIcons[2].active = false;
-			this.ReputationIcons[3].active = false;
-			this.ReputationIcons[4].active = false;
-			this.ReputationIcons[5].active = false;
+			this.ReputationIcons[0].SetActive(true);
+			this.ReputationIcons[1].SetActive(false);
+			this.ReputationIcons[2].SetActive(false);
+			this.ReputationIcons[3].SetActive(false);
+			this.ReputationIcons[4].SetActive(false);
+			this.ReputationIcons[5].SetActive(false);
 			this.Clock.TimeLabel.fontStyle = FontStyle.Bold;
 			this.Clock.TimeLabel.trueTypeFont = this.Arial;
 			this.Clock.PeriodLabel.fontStyle = FontStyle.Bold;
 			this.Clock.PeriodLabel.trueTypeFont = this.Arial;
 			this.Watermark.fontStyle = FontStyle.Bold;
-			this.Watermark.color = new Color((float)1, (float)1, (float)1, (float)1);
+			this.Watermark.color = new Color(1f, 1f, 1f, 1f);
 			this.Watermark.trueTypeFont = this.Arial;
-			this.SubtitleLabel.color = new Color((float)1, (float)1, (float)1, (float)1);
-			this.CautionSign.color = new Color((float)1, (float)1, (float)1, (float)1);
-			this.FPS.color = new Color((float)1, (float)1, (float)1, (float)1);
+			this.SubtitleLabel.color = new Color(1f, 1f, 1f, 1f);
+			this.CautionSign.color = new Color(1f, 1f, 1f, 1f);
+			this.FPS.color = new Color(1f, 1f, 1f, 1f);
 			this.ColorCorrections = Camera.main.GetComponents<ColorCorrectionCurves>();
 			this.StudentManager.MissionMode = true;
 			this.NemesisDifficulty = PlayerPrefs.GetInt("NemesisDifficulty");
@@ -246,63 +237,63 @@ public class MissionModeScript : MonoBehaviour
 				this.ID = 2;
 				while (this.ID < this.Difficulty + 1)
 				{
-					if (PlayerPrefs.GetInt("MissionCondition_" + this.ID) == 1)
+					if (PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString()) == 1)
 					{
 						this.RequiredWeaponID = PlayerPrefs.GetInt("MissionRequiredWeapon");
 					}
-					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID) == 2)
+					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString()) == 2)
 					{
 						this.RequiredClothingID = PlayerPrefs.GetInt("MissionRequiredClothing");
 					}
-					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID) == 3)
+					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString()) == 3)
 					{
 						this.RequiredDisposalID = PlayerPrefs.GetInt("MissionRequiredDisposal");
 					}
-					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID) == 4)
+					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString()) == 4)
 					{
 						this.NoCollateral = true;
 					}
-					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID) == 5)
+					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString()) == 5)
 					{
 						this.NoWitnesses = true;
 					}
-					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID) == 6)
+					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString()) == 6)
 					{
 						this.NoCorpses = true;
 					}
-					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID) == 7)
+					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString()) == 7)
 					{
 						this.NoWeapon = true;
 					}
-					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID) == 8)
+					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString()) == 8)
 					{
 						this.NoBlood = true;
 					}
-					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID) == 9)
+					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString()) == 9)
 					{
 						this.TimeLimit = true;
 					}
-					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID) == 10)
+					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString()) == 10)
 					{
 						this.NoSuspicion = true;
 					}
-					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID) == 11)
+					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString()) == 11)
 					{
 						this.SecurityCameras = true;
 					}
-					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID) == 12)
+					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString()) == 12)
 					{
 						this.MetalDetectors = true;
 					}
-					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID) == 13)
+					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString()) == 13)
 					{
 						this.NoSpeech = true;
 					}
-					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID) == 14)
+					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString()) == 14)
 					{
 						this.StealDocuments = true;
 					}
-					this.Conditions[this.ID] = PlayerPrefs.GetInt("MissionCondition_" + this.ID);
+					this.Conditions[this.ID] = PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString());
 					this.ID++;
 				}
 			}
@@ -312,19 +303,19 @@ public class MissionModeScript : MonoBehaviour
 			}
 			else
 			{
-				this.Safe.active = true;
+				this.Safe.SetActive(true);
 			}
 			if (this.SecurityCameras)
 			{
-				this.SecurityCameraGroup.active = true;
+				this.SecurityCameraGroup.SetActive(true);
 			}
 			if (this.MetalDetectors)
 			{
-				this.MetalDetectorGroup.active = true;
+				this.MetalDetectorGroup.SetActive(true);
 			}
 			if (!this.TimeLimit)
 			{
-				this.TimeLabel.gameObject.active = false;
+				this.TimeLabel.gameObject.SetActive(false);
 			}
 			if (this.NoSpeech)
 			{
@@ -336,7 +327,7 @@ public class MissionModeScript : MonoBehaviour
 			}
 			if (this.NemesisDifficulty > 0)
 			{
-				this.Nemesis.active = true;
+				this.Nemesis.SetActive(true);
 			}
 			if (!this.NoWeapon)
 			{
@@ -349,68 +340,46 @@ public class MissionModeScript : MonoBehaviour
 			this.Jukebox.Egg = true;
 			this.Jukebox.KillVolume();
 			this.Jukebox.MissionMode.enabled = true;
-			this.Jukebox.MissionMode.volume = (float)0;
+			this.Jukebox.MissionMode.volume = 0f;
 			this.Yandere.FixCamera();
-			float y = 6.51505f;
-			Vector3 position = Camera.main.transform.position;
-			float num = position.y = y;
-			Vector3 vector = Camera.main.transform.position = position;
-			float z = -76.9222f;
-			Vector3 position2 = Camera.main.transform.position;
-			float num2 = position2.z = z;
-			Vector3 vector2 = Camera.main.transform.position = position2;
-			int num3 = 15;
-			Vector3 eulerAngles = Camera.main.transform.eulerAngles;
-			float num4 = eulerAngles.x = (float)num3;
-			Vector3 vector3 = Camera.main.transform.eulerAngles = eulerAngles;
+			Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, 6.51505f, -76.9222f);
+			Camera.main.transform.eulerAngles = new Vector3(15f, Camera.main.transform.eulerAngles.y, Camera.main.transform.eulerAngles.z);
 			this.Yandere.RPGCamera.enabled = false;
 			this.Yandere.SanityBased = true;
 			this.Yandere.CanMove = false;
-			this.HeartbeatCamera.active = false;
-			this.TranqDetector.active = false;
-			this.MurderKit.active = false;
+			this.HeartbeatCamera.SetActive(false);
+			this.TranqDetector.SetActive(false);
+			this.MurderKit.SetActive(false);
 			this.TargetHeight = 1.51505f;
-			this.Yandere.HUD.alpha = (float)0;
-			int num5 = 1;
-			Color color = this.MusicIcon.color;
-			float num6 = color.a = (float)num5;
-			Color color2 = this.MusicIcon.color = color;
-			int num7 = 1;
-			Color color3 = this.Darkness.color;
-			float num8 = color3.a = (float)num7;
-			Color color4 = this.Darkness.color = color3;
+			this.Yandere.HUD.alpha = 0f;
+			this.MusicIcon.color = new Color(this.MusicIcon.color.r, this.MusicIcon.color.g, this.MusicIcon.color.b, 1f);
+			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 1f);
 			this.MissionModeMenu.UpdateGraphics();
 		}
 		else
 		{
-			this.MissionModeMenu.gameObject.active = false;
-			this.TimeLabel.gameObject.active = false;
-			this.enabled = false;
+			this.MissionModeMenu.gameObject.SetActive(false);
+			this.TimeLabel.gameObject.SetActive(false);
+			base.enabled = false;
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.Phase == 1)
 		{
-			float a = Mathf.MoveTowards(this.Darkness.color.a, (float)0, Time.deltaTime * (float)1 / (float)3);
-			Color color = this.Darkness.color;
-			float num = color.a = a;
-			Color color2 = this.Darkness.color = color;
-			if (this.Darkness.color.a == (float)0)
+			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 0f, Time.deltaTime / 3f));
+			if (this.Darkness.color.a == 0f)
 			{
-				this.Speed += Time.deltaTime * (float)1 / (float)3;
-				float y = Mathf.Lerp(Camera.main.transform.position.y, this.TargetHeight, Time.deltaTime * this.Speed);
-				Vector3 position = Camera.main.transform.position;
-				float num2 = position.y = y;
-				Vector3 vector = Camera.main.transform.position = position;
+				this.Speed += Time.deltaTime / 3f;
+				Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, Mathf.Lerp(Camera.main.transform.position.y, this.TargetHeight, Time.deltaTime * this.Speed), Camera.main.transform.position.z);
 				if (Camera.main.transform.position.y < this.TargetHeight + 0.1f)
 				{
-					this.Yandere.HUD.alpha = Mathf.MoveTowards(this.Yandere.HUD.alpha, (float)1, Time.deltaTime * (float)1 / (float)3);
-					if (this.Yandere.HUD.alpha == (float)1)
+					this.Yandere.HUD.alpha = Mathf.MoveTowards(this.Yandere.HUD.alpha, 1f, Time.deltaTime / 3f);
+					if (this.Yandere.HUD.alpha == 1f)
 					{
 						this.Yandere.RPGCamera.enabled = true;
-						this.HeartbeatCamera.active = true;
+						this.HeartbeatCamera.SetActive(true);
 						this.Yandere.CanMove = true;
 						this.Phase++;
 					}
@@ -418,18 +387,12 @@ public class MissionModeScript : MonoBehaviour
 			}
 			if (Input.GetButtonDown("A"))
 			{
-				float targetHeight = this.TargetHeight;
-				Vector3 position2 = Camera.main.transform.position;
-				float num3 = position2.y = targetHeight;
-				Vector3 vector2 = Camera.main.transform.position = position2;
+				Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, this.TargetHeight, Camera.main.transform.position.z);
 				this.Yandere.RPGCamera.enabled = true;
-				this.HeartbeatCamera.active = true;
+				this.HeartbeatCamera.SetActive(true);
 				this.Yandere.CanMove = true;
-				this.Yandere.HUD.alpha = (float)1;
-				int num4 = 0;
-				Color color3 = this.Darkness.color;
-				float num5 = color3.a = (float)num4;
-				Color color4 = this.Darkness.color = color3;
+				this.Yandere.HUD.alpha = 1f;
+				this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 0f);
 				this.Phase++;
 			}
 		}
@@ -445,7 +408,7 @@ public class MissionModeScript : MonoBehaviour
 					}
 					this.TargetDead = true;
 				}
-				if (this.StudentManager.Students[this.TargetID].transform.position.y < (float)-2)
+				if (this.StudentManager.Students[this.TargetID].transform.position.y < -2f)
 				{
 					this.GameOverID = 1;
 					this.GameOver();
@@ -484,15 +447,15 @@ public class MissionModeScript : MonoBehaviour
 					}
 					this.ID++;
 				}
+				int num = 0;
 				this.ID = 1;
-				int num6 = 0;
 				while (this.ID < this.Incinerator.Limbs + 1)
 				{
 					if (this.Incinerator.LimbList[this.ID] == this.TargetID)
 					{
-						num6++;
+						num++;
 					}
-					if (num6 == 6)
+					if (num == 6)
 					{
 						this.DisposalMethod = 1;
 					}
@@ -508,7 +471,7 @@ public class MissionModeScript : MonoBehaviour
 					this.ID++;
 				}
 				this.ID = 1;
-				while (this.ID < Extensions.get_length(this.GardenHoles))
+				while (this.ID < this.GardenHoles.Length)
 				{
 					if (this.GardenHoles[this.ID].VictimID == this.TargetID)
 					{
@@ -553,7 +516,7 @@ public class MissionModeScript : MonoBehaviour
 			if (this.NoWitnesses)
 			{
 				this.ID = 1;
-				while (this.ID < Extensions.get_length(this.StudentManager.Students))
+				while (this.ID < this.StudentManager.Students.Length)
 				{
 					if (this.StudentManager.Students[this.ID] != null && this.StudentManager.Students[this.ID].WitnessedMurder)
 					{
@@ -568,7 +531,7 @@ public class MissionModeScript : MonoBehaviour
 			if (this.NoCorpses)
 			{
 				this.ID = 1;
-				while (this.ID < Extensions.get_length(this.StudentManager.Students))
+				while (this.ID < this.StudentManager.Students.Length)
 				{
 					if (this.StudentManager.Students[this.ID] != null && this.StudentManager.Students[this.ID].WitnessedCorpse)
 					{
@@ -582,16 +545,9 @@ public class MissionModeScript : MonoBehaviour
 			}
 			if (this.NoBlood)
 			{
-				if (this.Police.BloodParent.childCount == 0)
-				{
-					this.BloodCleaned = true;
-				}
-				else
-				{
-					this.BloodCleaned = false;
-				}
+				this.BloodCleaned = (this.Police.BloodParent.childCount == 0);
 			}
-			if (this.NoWeapon && !this.WeaponDisposed && this.Incinerator.Timer > (float)0)
+			if (this.NoWeapon && !this.WeaponDisposed && this.Incinerator.Timer > 0f)
 			{
 				this.ID = 1;
 				while (this.ID < this.Incinerator.DestroyedEvidence + 1)
@@ -607,13 +563,13 @@ public class MissionModeScript : MonoBehaviour
 			{
 				if (!this.Yandere.PauseScreen.Show)
 				{
-					this.TimeRemaining = Mathf.MoveTowards(this.TimeRemaining, (float)0, 0.0166666675f);
+					this.TimeRemaining = Mathf.MoveTowards(this.TimeRemaining, 0f, 0.0166666675f);
 				}
-				int num7 = Mathf.CeilToInt(this.TimeRemaining);
-				int num8 = num7 / 60;
-				int num9 = num7 % 60;
-				this.TimeLabel.text = string.Format("{0:00}:{1:00}", num8, num9);
-				if (this.TimeRemaining == (float)0)
+				int num2 = Mathf.CeilToInt(this.TimeRemaining);
+				int num3 = num2 / 60;
+				int num4 = num2 % 60;
+				this.TimeLabel.text = string.Format("{0:00}:{1:00}", num3, num4);
+				if (this.TimeRemaining == 0f)
 				{
 					this.Chastise = true;
 					this.GameOverID = 10;
@@ -621,26 +577,26 @@ public class MissionModeScript : MonoBehaviour
 					this.Phase = 4;
 				}
 			}
-			if (this.Reputation.Reputation + this.Reputation.PendingRep <= (float)-100)
+			if (this.Reputation.Reputation + this.Reputation.PendingRep <= -100f)
 			{
 				this.GameOverID = 14;
 				this.GameOver();
 				this.Phase = 4;
 			}
-			if (this.NoSuspicion && this.Reputation.Reputation + this.Reputation.PendingRep < (float)0)
+			if (this.NoSuspicion && this.Reputation.Reputation + this.Reputation.PendingRep < 0f)
 			{
 				this.GameOverID = 14;
 				this.GameOver();
 				this.Phase = 4;
 			}
-			if (this.HeartbrokenCamera.active)
+			if (this.HeartbrokenCamera.activeInHierarchy)
 			{
-				this.HeartbrokenCamera.active = false;
+				this.HeartbrokenCamera.SetActive(false);
 				this.GameOverID = 0;
 				this.GameOver();
 				this.Phase = 4;
 			}
-			if (this.Clock.PresentTime > (float)1080)
+			if (this.Clock.PresentTime > 1080f)
 			{
 				this.GameOverID = 11;
 				this.GameOver();
@@ -652,71 +608,66 @@ public class MissionModeScript : MonoBehaviour
 				this.GameOver();
 				this.Phase = 4;
 			}
-			if (this.ExitPortal.active)
+			if (this.ExitPortal.activeInHierarchy)
 			{
 				if (this.Yandere.Chased)
 				{
-					this.ExitPortalPrompt.Label[0].text = "     " + "Cannot Exfiltrate!";
-					this.ExitPortalPrompt.Circle[0].fillAmount = (float)1;
+					this.ExitPortalPrompt.Label[0].text = "     Cannot Exfiltrate!";
+					this.ExitPortalPrompt.Circle[0].fillAmount = 1f;
 				}
 				else
 				{
-					this.ExitPortalPrompt.Label[0].text = "     " + "Exfiltrate";
-					if (this.ExitPortalPrompt.Circle[0].fillAmount == (float)0)
+					this.ExitPortalPrompt.Label[0].text = "     Exfiltrate";
+					if (this.ExitPortalPrompt.Circle[0].fillAmount == 0f)
 					{
 						Camera.main.transform.position = new Vector3(0.5f, 2.25f, -100.5f);
-						Camera.main.transform.eulerAngles = new Vector3((float)0, (float)0, (float)0);
-						this.Yandere.transform.eulerAngles = new Vector3((float)0, (float)180, (float)0);
-						this.Yandere.transform.position = new Vector3((float)0, (float)0, -94.5f);
-						this.Yandere.Character.animation.Play(this.Yandere.WalkAnim);
+						Camera.main.transform.eulerAngles = Vector3.zero;
+						this.Yandere.transform.eulerAngles = new Vector3(0f, 180f, 0f);
+						this.Yandere.transform.position = new Vector3(0f, 0f, -94.5f);
+						this.Yandere.Character.GetComponent<Animation>().Play(this.Yandere.WalkAnim);
 						this.Yandere.RPGCamera.enabled = false;
-						this.Yandere.HUD.active = false;
+						this.Yandere.HUD.gameObject.SetActive(false);
 						this.Yandere.CanMove = false;
-						this.Jukebox.MissionMode.audio.clip = this.StealthMusic[7];
-						this.Jukebox.MissionMode.audio.loop = false;
-						this.Jukebox.MissionMode.audio.Play();
-						this.audio.PlayOneShot(this.InfoAccomplished);
-						this.HeartbeatCamera.active = false;
+						AudioSource component = this.Jukebox.MissionMode.GetComponent<AudioSource>();
+						component.clip = this.StealthMusic[7];
+						component.loop = false;
+						component.Play();
+						base.GetComponent<AudioSource>().PlayOneShot(this.InfoAccomplished);
+						this.HeartbeatCamera.SetActive(false);
 						this.Boundary.enabled = false;
 						this.Phase++;
 					}
 				}
 			}
-			if (this.TargetDead && this.CorpseDisposed && this.BloodCleaned && this.WeaponDisposed && this.DocumentsStolen && this.GameOverID == 0 && !this.ExitPortal.active)
+			if (this.TargetDead && this.CorpseDisposed && this.BloodCleaned && this.WeaponDisposed && this.DocumentsStolen && this.GameOverID == 0 && !this.ExitPortal.activeInHierarchy)
 			{
 				this.NotificationManager.DisplayNotification("Complete");
 				this.NotificationManager.DisplayNotification("Exfiltrate");
-				this.audio.PlayOneShot(this.InfoExfiltrate);
-				this.ExitPortal.active = true;
+				base.GetComponent<AudioSource>().PlayOneShot(this.InfoExfiltrate);
+				this.ExitPortal.SetActive(true);
 			}
 			if (!this.InfoRemark && this.GameOverID == 0 && this.TargetDead && (!this.CorpseDisposed || !this.BloodCleaned || !this.WeaponDisposed))
 			{
-				this.audio.PlayOneShot(this.InfoObjective);
+				base.GetComponent<AudioSource>().PlayOneShot(this.InfoObjective);
 				this.InfoRemark = true;
 			}
 		}
 		else if (this.Phase == 3)
 		{
 			this.Timer += Time.deltaTime;
-			float y2 = Camera.main.transform.position.y - Time.deltaTime * 0.2f;
-			Vector3 position3 = Camera.main.transform.position;
-			float num10 = position3.y = y2;
-			Vector3 vector3 = Camera.main.transform.position = position3;
-			float z = this.Yandere.transform.position.z - Time.deltaTime;
-			Vector3 position4 = this.Yandere.transform.position;
-			float num11 = position4.z = z;
-			Vector3 vector4 = this.Yandere.transform.position = position4;
-			if (this.Timer > (float)5)
+			Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y - Time.deltaTime * 0.2f, Camera.main.transform.position.z);
+			this.Yandere.transform.position = new Vector3(this.Yandere.transform.position.x, this.Yandere.transform.position.y, this.Yandere.transform.position.z - Time.deltaTime);
+			if (this.Timer > 5f)
 			{
 				this.Success();
-				this.Timer = (float)0;
+				this.Timer = 0f;
 				this.Phase++;
 			}
 		}
 		else if (this.Phase == 4)
 		{
 			this.Timer += 0.0166666675f;
-			if (this.Timer > (float)1)
+			if (this.Timer > 1f)
 			{
 				if (!this.FadeOut)
 				{
@@ -745,27 +696,24 @@ public class MissionModeScript : MonoBehaviour
 				}
 				else
 				{
-					float a2 = Mathf.MoveTowards(this.Darkness.color.a, (float)1, 0.0166666675f);
-					Color color5 = this.Darkness.color;
-					float num12 = color5.a = a2;
-					Color color6 = this.Darkness.color = color5;
-					this.Jukebox.Dip = Mathf.MoveTowards(this.Jukebox.Dip, (float)0, 0.0166666675f);
+					this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 1f, 0.0166666675f));
+					this.Jukebox.Dip = Mathf.MoveTowards(this.Jukebox.Dip, 0f, 0.0166666675f);
 					if (this.Darkness.color.a > 0.9921875f)
 					{
 						if (this.Destination == 1)
 						{
 							this.ResetPlayerPrefs();
-							Application.LoadLevel(Application.loadedLevel);
+							SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 						}
 						else if (this.Destination == 2)
 						{
 							PlayerPrefs.DeleteAll();
-							Application.LoadLevel("MissionModeScene");
+							SceneManager.LoadScene("MissionModeScene");
 						}
 						else if (this.Destination == 3)
 						{
 							PlayerPrefs.DeleteAll();
-							Application.LoadLevel("TitleScene");
+							SceneManager.LoadScene("TitleScene");
 						}
 					}
 				}
@@ -776,27 +724,27 @@ public class MissionModeScript : MonoBehaviour
 				{
 					if (this.Chastise)
 					{
-						this.audio.PlayOneShot(this.InfoFailure);
+						base.GetComponent<AudioSource>().PlayOneShot(this.InfoFailure);
 						this.GameOverPhase++;
 					}
 					else
 					{
 						this.GameOverPhase++;
-						this.Timer += (float)5;
+						this.Timer += 5f;
 					}
 				}
 			}
 			else if (this.GameOverPhase == 2 && this.Timer > 7.5f)
 			{
-				this.Jukebox.MissionMode.audio.clip = this.StealthMusic[0];
-				this.Jukebox.MissionMode.audio.Play();
+				this.Jukebox.MissionMode.GetComponent<AudioSource>().clip = this.StealthMusic[0];
+				this.Jukebox.MissionMode.GetComponent<AudioSource>().Play();
 				this.Jukebox.Volume = 0.5f;
 				this.GameOverPhase++;
 			}
 		}
 	}
 
-	public virtual void GameOver()
+	public void GameOver()
 	{
 		if (this.Yandere.Aiming)
 		{
@@ -805,48 +753,45 @@ public class MissionModeScript : MonoBehaviour
 		}
 		this.GameOverReason.text = this.GameOverReasons[this.GameOverID];
 		this.ColorCorrections[2].enabled = true;
-		this.audio.PlayOneShot(this.GameOverSound);
-		this.DetectionCamera.active = false;
-		this.HeartbeatCamera.active = false;
-		this.WitnessCamera.active = false;
-		this.GameOverText.active = true;
-		this.Yandere.HUD.active = false;
-		this.Subtitle.active = false;
-		Time.timeScale = (float)0;
+		base.GetComponent<AudioSource>().PlayOneShot(this.GameOverSound);
+		this.DetectionCamera.SetActive(false);
+		this.HeartbeatCamera.SetActive(false);
+		this.WitnessCamera.SetActive(false);
+		this.GameOverText.SetActive(true);
+		this.Yandere.HUD.gameObject.SetActive(false);
+		this.Subtitle.SetActive(false);
+		Time.timeScale = 0f;
 		this.GameOverPhase = 1;
-		this.Jukebox.MissionMode.audio.Stop();
+		this.Jukebox.MissionMode.GetComponent<AudioSource>().Stop();
 	}
 
-	public virtual void Success()
+	private void Success()
 	{
-		int num = 0;
-		Vector3 localPosition = this.GameOverHeader.transform.localPosition;
-		float num2 = localPosition.y = (float)num;
-		Vector3 vector = this.GameOverHeader.transform.localPosition = localPosition;
+		this.GameOverHeader.transform.localPosition = new Vector3(this.GameOverHeader.transform.localPosition.x, 0f, this.GameOverHeader.transform.localPosition.z);
 		this.GameOverHeader.text = "MISSION ACCOMPLISHED";
-		this.GameOverReason.gameObject.active = false;
+		this.GameOverReason.gameObject.SetActive(false);
 		this.ColorCorrections[2].enabled = true;
-		this.DetectionCamera.active = false;
-		this.WitnessCamera.active = false;
-		this.GameOverText.active = true;
+		this.DetectionCamera.SetActive(false);
+		this.WitnessCamera.SetActive(false);
+		this.GameOverText.SetActive(true);
 		this.GameOverReason.text = string.Empty;
-		this.Subtitle.active = false;
-		this.Jukebox.Volume = (float)1;
-		Time.timeScale = (float)0;
+		this.Subtitle.SetActive(false);
+		this.Jukebox.Volume = 1f;
+		Time.timeScale = 0f;
 	}
 
-	public virtual void ChangeMusic()
+	public void ChangeMusic()
 	{
 		this.MusicID++;
 		if (this.MusicID > 5)
 		{
 			this.MusicID = 1;
 		}
-		this.Jukebox.MissionMode.audio.clip = this.StealthMusic[this.MusicID];
-		this.Jukebox.MissionMode.audio.Play();
+		this.Jukebox.MissionMode.GetComponent<AudioSource>().clip = this.StealthMusic[this.MusicID];
+		this.Jukebox.MissionMode.GetComponent<AudioSource>().Play();
 	}
 
-	public virtual void ResetPlayerPrefs()
+	private void ResetPlayerPrefs()
 	{
 		int @int = PlayerPrefs.GetInt("DisableFarAnimations");
 		int int2 = PlayerPrefs.GetInt("DisablePostAliasing");
@@ -860,7 +805,7 @@ public class MissionModeScript : MonoBehaviour
 		string @string = PlayerPrefs.GetString("MissionTargetName");
 		int int10 = PlayerPrefs.GetInt("HighPopulation");
 		PlayerPrefs.DeleteAll();
-		PlayerPrefs.SetFloat("SchoolAtmosphere", (float)100 - (float)this.Difficulty * 1f / 10f * (float)100);
+		PlayerPrefs.SetFloat("SchoolAtmosphere", 100f - (float)this.Difficulty / 10f * 100f);
 		PlayerPrefs.SetString("MissionTargetName", @string);
 		PlayerPrefs.SetInt("MissionDifficulty", this.Difficulty);
 		PlayerPrefs.SetInt("HighPopulation", int10);
@@ -893,35 +838,23 @@ public class MissionModeScript : MonoBehaviour
 		PlayerPrefs.SetInt("Fog", int9);
 	}
 
-	public virtual void ChangeAllText()
+	private void ChangeAllText()
 	{
-		UILabel[] array = ((UILabel[])UnityEngine.Object.FindObjectsOfType(typeof(UILabel))) as UILabel[];
-		int i = 0;
-		UILabel[] array2 = array;
-		int length = array2.Length;
-		while (i < length)
+		UILabel[] array = UnityEngine.Object.FindObjectsOfType<UILabel>();
+		foreach (UILabel uilabel in array)
 		{
-			float a = array2[i].color.a;
-			array2[i].color = new Color((float)1, (float)1, (float)1, a);
-			array2[i].trueTypeFont = this.Arial;
-			i++;
+			float a = uilabel.color.a;
+			uilabel.color = new Color(1f, 1f, 1f, a);
+			uilabel.trueTypeFont = this.Arial;
 		}
-		UISprite[] array3 = ((UISprite[])UnityEngine.Object.FindObjectsOfType(typeof(UISprite))) as UISprite[];
-		int j = 0;
-		UISprite[] array4 = array3;
-		int length2 = array4.Length;
-		while (j < length2)
+		UISprite[] array3 = UnityEngine.Object.FindObjectsOfType<UISprite>();
+		foreach (UISprite uisprite in array3)
 		{
-			float a2 = array4[j].color.a;
-			if (array4[j].color != new Color((float)0, (float)0, (float)0, a2))
+			float a2 = uisprite.color.a;
+			if (uisprite.color != new Color(0f, 0f, 0f, a2))
 			{
-				array4[j].color = new Color((float)1, (float)1, (float)1, a2);
+				uisprite.color = new Color(1f, 1f, 1f, a2);
 			}
-			j++;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

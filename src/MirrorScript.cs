@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class MirrorScript : MonoBehaviour
 {
 	public PromptScript Prompt;
@@ -13,16 +11,16 @@ public class MirrorScript : MonoBehaviour
 
 	public int Limit;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.Limit = Extensions.get_length(this.Idles) - 1;
+		this.Limit = this.Idles.Length - 1;
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Prompt.Circle[0].fillAmount == (float)0)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			this.Prompt.Circle[0].fillAmount = (float)1;
+			this.Prompt.Circle[0].fillAmount = 1f;
 			this.ID++;
 			if (this.ID == this.Limit)
 			{
@@ -34,9 +32,5 @@ public class MirrorScript : MonoBehaviour
 			}
 			this.Prompt.Yandere.OriginalIdleAnim = this.Idles[this.ID];
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

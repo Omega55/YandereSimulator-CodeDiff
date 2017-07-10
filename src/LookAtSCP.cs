@@ -1,26 +1,21 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class LookAtSCP : MonoBehaviour
 {
 	public Transform SCP;
 
-	public virtual void Start()
+	private void Start()
 	{
 		if (this.SCP == null)
 		{
 			this.SCP = GameObject.Find("SCPTarget").transform;
 		}
-		this.transform.LookAt(this.SCP);
+		base.transform.LookAt(this.SCP);
 	}
 
-	public virtual void LateUpdate()
+	private void LateUpdate()
 	{
-		this.transform.LookAt(this.SCP);
-	}
-
-	public virtual void Main()
-	{
+		base.transform.LookAt(this.SCP);
 	}
 }

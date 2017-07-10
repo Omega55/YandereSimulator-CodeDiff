@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class EventManagerScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
@@ -43,10 +41,10 @@ public class EventManagerScript : MonoBehaviour
 
 	public float Scale;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
-		this.InterruptZone.active = false;
+		this.EventSubtitle.transform.localScale = Vector3.zero;
+		this.InterruptZone.SetActive(false);
 		if (PlayerPrefs.GetInt("Weekday") == 1)
 		{
 			this.EventCheck = true;
@@ -55,7 +53,7 @@ public class EventManagerScript : MonoBehaviour
 		this.NoteLocker.CanLeaveNote = true;
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (!this.Clock.StopTime && this.EventCheck)
 		{
@@ -66,7 +64,7 @@ public class EventManagerScript : MonoBehaviour
 			else if (this.EventStudent[1].Dead)
 			{
 				this.EventCheck = false;
-				this.enabled = false;
+				base.enabled = false;
 			}
 			if (this.EventStudent[2] == null)
 			{
@@ -75,7 +73,7 @@ public class EventManagerScript : MonoBehaviour
 			else if (this.EventStudent[2].Dead)
 			{
 				this.EventCheck = false;
-				this.enabled = false;
+				base.enabled = false;
 			}
 			if (this.Clock.HourTime > 13.01f && this.EventStudent[1] != null && this.EventStudent[2] != null && this.EventStudent[1].Pathfinding.canMove && this.EventStudent[1].Pathfinding.canMove)
 			{
@@ -102,26 +100,26 @@ public class EventManagerScript : MonoBehaviour
 			{
 				if (!this.EventStudent[1].Pathfinding.canMove && !this.EventStudent[1].Private)
 				{
-					this.EventStudent[1].Character.animation.CrossFade(this.EventStudent[1].IdleAnim);
+					this.EventStudent[1].Character.GetComponent<Animation>().CrossFade(this.EventStudent[1].IdleAnim);
 					this.EventStudent[1].Private = true;
 					this.StudentManager.UpdateStudents();
 				}
 				if (!this.EventStudent[2].Pathfinding.canMove && !this.EventStudent[2].Private)
 				{
-					this.EventStudent[2].Character.animation.CrossFade(this.EventStudent[2].IdleAnim);
+					this.EventStudent[2].Character.GetComponent<Animation>().CrossFade(this.EventStudent[2].IdleAnim);
 					this.EventStudent[2].Private = true;
 					this.StudentManager.UpdateStudents();
 				}
 				if (!this.EventStudent[1].Pathfinding.canMove && !this.EventStudent[2].Pathfinding.canMove)
 				{
-					if (!this.InterruptZone.active)
+					if (!this.InterruptZone.activeInHierarchy)
 					{
-						this.InterruptZone.active = true;
+						this.InterruptZone.SetActive(true);
 					}
 					if (!this.Spoken)
 					{
-						this.EventStudent[this.EventSpeaker[this.EventPhase]].Character.animation.CrossFade(this.EventAnim[this.EventPhase]);
-						if (num < (float)10)
+						this.EventStudent[this.EventSpeaker[this.EventPhase]].Character.GetComponent<Animation>().CrossFade(this.EventAnim[this.EventPhase]);
+						if (num < 10f)
 						{
 							this.EventSubtitle.text = this.EventSpeech[this.EventPhase];
 						}
@@ -130,43 +128,44 @@ public class EventManagerScript : MonoBehaviour
 					}
 					else
 					{
-						if (this.Yandere.transform.position.z > (float)0)
+						if (this.Yandere.transform.position.z > 0f)
 						{
 							this.Timer += Time.deltaTime;
 							if (this.Timer > this.EventClip[this.EventPhase].length)
 							{
 								this.EventSubtitle.text = string.Empty;
 							}
-							if (this.Yandere.transform.position.y < this.EventStudent[1].transform.position.y - (float)1)
+							if (this.Yandere.transform.position.y < this.EventStudent[1].transform.position.y - 1f)
 							{
-								this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+								this.EventSubtitle.transform.localScale = Vector3.zero;
 							}
-							else if (num < (float)10)
+							else if (num < 10f)
 							{
-								this.Scale = Mathf.Abs((num - (float)10) * 0.2f);
-								if (this.Scale < (float)0)
+								this.Scale = Mathf.Abs((num - 10f) * 0.2f);
+								if (this.Scale < 0f)
 								{
-									this.Scale = (float)0;
+									this.Scale = 0f;
 								}
-								if (this.Scale > (float)1)
+								if (this.Scale > 1f)
 								{
-									this.Scale = (float)1;
+									this.Scale = 1f;
 								}
 								this.EventSubtitle.transform.localScale = new Vector3(this.Scale, this.Scale, this.Scale);
 							}
 							else
 							{
-								this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+								this.EventSubtitle.transform.localScale = Vector3.zero;
 							}
-							if (this.EventStudent[this.EventSpeaker[this.EventPhase]].Character.animation[this.EventAnim[this.EventPhase]].time >= this.EventStudent[this.EventSpeaker[this.EventPhase]].Character.animation[this.EventAnim[this.EventPhase]].length)
+							Animation component = this.EventStudent[this.EventSpeaker[this.EventPhase]].Character.GetComponent<Animation>();
+							if (component[this.EventAnim[this.EventPhase]].time >= component[this.EventAnim[this.EventPhase]].length)
 							{
-								this.EventStudent[this.EventSpeaker[this.EventPhase]].Character.animation.CrossFade(this.EventStudent[this.EventSpeaker[this.EventPhase]].IdleAnim);
+								component.CrossFade(this.EventStudent[this.EventSpeaker[this.EventPhase]].IdleAnim);
 							}
-							if (this.Timer > this.EventClip[this.EventPhase].length + (float)1)
+							if (this.Timer > this.EventClip[this.EventPhase].length + 1f)
 							{
 								this.Spoken = false;
 								this.EventPhase++;
-								this.Timer = (float)0;
+								this.Timer = 0f;
 								if (this.EventPhase == 4)
 								{
 									if (PlayerPrefs.GetInt("Topic_22_Discovered") == 0)
@@ -180,13 +179,13 @@ public class EventManagerScript : MonoBehaviour
 										PlayerPrefs.SetInt("Topic_22_Student_7_Learned", 1);
 									}
 								}
-								if (this.EventPhase == Extensions.get_length(this.EventSpeech))
+								if (this.EventPhase == this.EventSpeech.Length)
 								{
 									this.EndEvent();
 								}
 							}
 						}
-						if (this.Yandere.transform.position.y > this.EventStudent[1].transform.position.y - (float)1 && this.EventPhase == 7 && num < (float)5 && PlayerPrefs.GetInt("Event1") == 0)
+						if (this.Yandere.transform.position.y > this.EventStudent[1].transform.position.y - 1f && this.EventPhase == 7 && num < 5f && PlayerPrefs.GetInt("Event1") == 0)
 						{
 							this.Yandere.NotificationManager.DisplayNotification("Info");
 							PlayerPrefs.SetInt("Event1", 1);
@@ -197,29 +196,22 @@ public class EventManagerScript : MonoBehaviour
 		}
 	}
 
-	public virtual void PlayClip(AudioClip clip, Vector3 pos)
+	private void PlayClip(AudioClip clip, Vector3 pos)
 	{
 		GameObject gameObject = new GameObject("TempAudio");
 		gameObject.transform.position = pos;
-		AudioSource audioSource = (AudioSource)gameObject.AddComponent(typeof(AudioSource));
+		AudioSource audioSource = gameObject.AddComponent<AudioSource>();
 		audioSource.clip = clip;
 		audioSource.Play();
 		UnityEngine.Object.Destroy(gameObject, clip.length);
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
-		audioSource.minDistance = (float)5;
-		audioSource.maxDistance = (float)10;
+		audioSource.minDistance = 5f;
+		audioSource.maxDistance = 10f;
 		this.VoiceClip = gameObject;
-		if (this.Yandere.transform.position.y < gameObject.transform.position.y - (float)2)
-		{
-			audioSource.volume = (float)0;
-		}
-		else
-		{
-			audioSource.volume = (float)1;
-		}
+		audioSource.volume = ((this.Yandere.transform.position.y >= gameObject.transform.position.y - 2f) ? 1f : 0f);
 	}
 
-	public virtual void EndEvent()
+	public void EndEvent()
 	{
 		if (this.VoiceClip != null)
 		{
@@ -239,14 +231,10 @@ public class EventManagerScript : MonoBehaviour
 		{
 			this.StudentManager.UpdateStudents();
 		}
-		this.InterruptZone.active = false;
+		this.InterruptZone.SetActive(false);
 		this.Yandere.Trespassing = false;
 		this.EventSubtitle.text = string.Empty;
 		this.EventCheck = false;
 		this.EventOn = false;
-	}
-
-	public virtual void Main()
-	{
 	}
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class YanvaniaZombieSpawnerScript : MonoBehaviour
 {
 	public YanvaniaZombieScript NewZombieScript;
@@ -26,24 +25,24 @@ public class YanvaniaZombieSpawnerScript : MonoBehaviour
 
 	public Vector3[] SpawnPoints;
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Yanmont.transform.position.y > (float)0)
+		if (this.Yanmont.transform.position.y > 0f)
 		{
 			this.ID = 0;
 			this.SpawnTimer += Time.deltaTime;
-			if (this.SpawnTimer > (float)1)
+			if (this.SpawnTimer > 1f)
 			{
 				while (this.ID < 4)
 				{
 					if (this.Zombies[this.ID] == null)
 					{
 						this.SpawnSide = UnityEngine.Random.Range(1, 3);
-						if (this.Yanmont.transform.position.x < this.LeftBoundary + (float)5)
+						if (this.Yanmont.transform.position.x < this.LeftBoundary + 5f)
 						{
 							this.SpawnSide = 2;
 						}
-						if (this.Yanmont.transform.position.x > this.RightBoundary - (float)5)
+						if (this.Yanmont.transform.position.x > this.RightBoundary - 5f)
 						{
 							this.SpawnSide = 1;
 						}
@@ -73,8 +72,8 @@ public class YanvaniaZombieSpawnerScript : MonoBehaviour
 							this.SpawnPoints[2].x = this.RelativePoint + 4.5f;
 							this.SpawnPoints[3].x = this.RelativePoint + 5.5f;
 						}
-						this.Zombies[this.ID] = (GameObject)UnityEngine.Object.Instantiate(this.Zombie, this.SpawnPoints[this.ID], Quaternion.identity);
-						this.NewZombieScript = (YanvaniaZombieScript)this.Zombies[this.ID].GetComponent(typeof(YanvaniaZombieScript));
+						this.Zombies[this.ID] = UnityEngine.Object.Instantiate<GameObject>(this.Zombie, this.SpawnPoints[this.ID], Quaternion.identity);
+						this.NewZombieScript = this.Zombies[this.ID].GetComponent<YanvaniaZombieScript>();
 						this.NewZombieScript.LeftBoundary = this.LeftBoundary;
 						this.NewZombieScript.RightBoundary = this.RightBoundary;
 						this.NewZombieScript.Yanmont = this.Yanmont;
@@ -82,12 +81,8 @@ public class YanvaniaZombieSpawnerScript : MonoBehaviour
 					}
 					this.ID++;
 				}
-				this.SpawnTimer = (float)0;
+				this.SpawnTimer = 0f;
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

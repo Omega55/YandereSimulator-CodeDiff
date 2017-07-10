@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class RainbowScript : MonoBehaviour
 {
 	public Renderer MyRenderer;
@@ -10,18 +9,18 @@ public class RainbowScript : MonoBehaviour
 
 	public int ID;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.Colors[0] = new Color((float)1, (float)0, (float)0, (float)1);
-		this.Colors[1] = new Color((float)1, (float)1, (float)0, (float)1);
-		this.Colors[2] = new Color((float)0, (float)1, (float)0, (float)1);
-		this.Colors[3] = new Color((float)0, (float)1, (float)1, (float)1);
-		this.Colors[4] = new Color((float)0, (float)0, (float)1, (float)1);
-		this.Colors[5] = new Color((float)1, (float)0, (float)1, (float)1);
+		this.Colors[0] = new Color(1f, 0f, 0f, 1f);
+		this.Colors[1] = new Color(1f, 1f, 0f, 1f);
+		this.Colors[2] = new Color(0f, 1f, 0f, 1f);
+		this.Colors[3] = new Color(0f, 1f, 1f, 1f);
+		this.Colors[4] = new Color(0f, 0f, 1f, 1f);
+		this.Colors[5] = new Color(1f, 0f, 1f, 1f);
 		this.MyRenderer.material.color = this.Colors[0];
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		this.MyRenderer.material.color = Vector4.MoveTowards(this.MyRenderer.material.color, this.Colors[this.ID], Time.deltaTime);
 		if (this.MyRenderer.material.color == this.Colors[this.ID])
@@ -32,9 +31,5 @@ public class RainbowScript : MonoBehaviour
 				this.ID = 0;
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

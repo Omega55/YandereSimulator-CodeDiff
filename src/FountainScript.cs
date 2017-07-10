@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class FountainScript : MonoBehaviour
 {
 	public ParticleSystem Splashes;
@@ -20,48 +19,44 @@ public class FountainScript : MonoBehaviour
 
 	public float Timer;
 
-	public virtual void Start()
+	private void Start()
 	{
 		this.SpraySFX.volume = 0.1f;
 		this.DropsSFX.volume = 0.1f;
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.StartTimer < (float)1)
+		if (this.StartTimer < 1f)
 		{
 			this.StartTimer += Time.deltaTime;
-			if (this.StartTimer > (float)1)
+			if (this.StartTimer > 1f)
 			{
-				this.SpraySFX.gameObject.active = true;
-				this.DropsSFX.gameObject.active = true;
+				this.SpraySFX.gameObject.SetActive(true);
+				this.DropsSFX.gameObject.SetActive(true);
 			}
 		}
 		if (this.Drowning)
 		{
-			if (this.Timer == (float)0 && this.EventSubtitle.transform.localScale.x < (float)1)
+			if (this.Timer == 0f && this.EventSubtitle.transform.localScale.x < 1f)
 			{
-				this.EventSubtitle.transform.localScale = new Vector3((float)1, (float)1, (float)1);
+				this.EventSubtitle.transform.localScale = new Vector3(1f, 1f, 1f);
 				this.EventSubtitle.text = "Hey, what are you -";
-				this.audio.Play();
+				base.GetComponent<AudioSource>().Play();
 			}
 			this.Timer += Time.deltaTime;
-			if (this.Timer > (float)3 && this.EventSubtitle.transform.localScale.x > (float)0)
+			if (this.Timer > 3f && this.EventSubtitle.transform.localScale.x > 0f)
 			{
-				this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+				this.EventSubtitle.transform.localScale = Vector3.zero;
 				this.EventSubtitle.text = string.Empty;
 				this.Splashes.Play();
 			}
-			if (this.Timer > (float)9)
+			if (this.Timer > 9f)
 			{
 				this.Drowning = false;
 				this.Splashes.Stop();
-				this.Timer = (float)0;
+				this.Timer = 0f;
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

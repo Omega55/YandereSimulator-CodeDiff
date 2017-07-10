@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class DumpsterLidScript : MonoBehaviour
 {
 	public Transform GarbageDebris;
@@ -22,48 +21,41 @@ public class DumpsterLidScript : MonoBehaviour
 
 	public bool Open;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.FallChecker.active = false;
+		this.FallChecker.SetActive(false);
 		this.Prompt.HideButton[3] = true;
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Prompt.Circle[0].fillAmount <= (float)0)
+		if (this.Prompt.Circle[0].fillAmount <= 0f)
 		{
-			this.Prompt.Circle[0].fillAmount = (float)1;
+			this.Prompt.Circle[0].fillAmount = 1f;
 			if (!this.Open)
 			{
-				this.Prompt.Label[0].text = "     " + "Close";
+				this.Prompt.Label[0].text = "     Close";
 				this.Open = true;
 			}
 			else
 			{
-				this.Prompt.Label[0].text = "     " + "Open";
+				this.Prompt.Label[0].text = "     Open";
 				this.Open = false;
 			}
 		}
 		if (!this.Open)
 		{
-			this.Rotation = Mathf.Lerp(this.Rotation, (float)0, Time.deltaTime * (float)10);
+			this.Rotation = Mathf.Lerp(this.Rotation, 0f, Time.deltaTime * 10f);
 			this.Prompt.HideButton[3] = true;
 		}
 		else
 		{
-			this.Rotation = Mathf.Lerp(this.Rotation, (float)-115, Time.deltaTime * (float)10);
+			this.Rotation = Mathf.Lerp(this.Rotation, -115f, Time.deltaTime * 10f);
 			if (this.Corpse != null)
 			{
 				if (this.Prompt.Yandere.PickUp != null)
 				{
-					if (this.Prompt.Yandere.PickUp.Garbage)
-					{
-						this.Prompt.HideButton[3] = false;
-					}
-					else
-					{
-						this.Prompt.HideButton[3] = true;
-					}
+					this.Prompt.HideButton[3] = !this.Prompt.Yandere.PickUp.Garbage;
 				}
 				else
 				{
@@ -74,54 +66,37 @@ public class DumpsterLidScript : MonoBehaviour
 			{
 				this.Prompt.HideButton[3] = true;
 			}
-			if (this.Prompt.Circle[3].fillAmount <= (float)0)
+			if (this.Prompt.Circle[3].fillAmount <= 0f)
 			{
 				UnityEngine.Object.Destroy(this.Prompt.Yandere.PickUp.gameObject);
-				this.Prompt.Circle[3].fillAmount = (float)1;
+				this.Prompt.Circle[3].fillAmount = 1f;
 				this.Prompt.HideButton[3] = false;
 				this.Fill = true;
 			}
-			if (this.transform.position.z > this.DisposalSpot - 0.05f && this.transform.position.z < this.DisposalSpot + 0.05f)
+			if (base.transform.position.z > this.DisposalSpot - 0.05f && base.transform.position.z < this.DisposalSpot + 0.05f)
 			{
-				if (this.Prompt.Yandere.RoofPush)
-				{
-					this.FallChecker.active = true;
-				}
-				else
-				{
-					this.FallChecker.active = false;
-				}
+				this.FallChecker.SetActive(this.Prompt.Yandere.RoofPush);
 			}
 			else
 			{
-				this.FallChecker.active = false;
+				this.FallChecker.SetActive(false);
 			}
 		}
-		this.Hinge.localEulerAngles = new Vector3(this.Rotation, (float)0, (float)0);
+		this.Hinge.localEulerAngles = new Vector3(this.Rotation, 0f, 0f);
 		if (this.Fill)
 		{
-			float y = Mathf.Lerp(this.GarbageDebris.localPosition.y, (float)1, Time.deltaTime * (float)10);
-			Vector3 localPosition = this.GarbageDebris.localPosition;
-			float num = localPosition.y = y;
-			Vector3 vector = this.GarbageDebris.localPosition = localPosition;
+			this.GarbageDebris.localPosition = new Vector3(this.GarbageDebris.localPosition.x, Mathf.Lerp(this.GarbageDebris.localPosition.y, 1f, Time.deltaTime * 10f), this.GarbageDebris.localPosition.z);
 			if (this.GarbageDebris.localPosition.y > 0.99f)
 			{
 				this.Prompt.Yandere.Police.SuicideScene = false;
 				this.Prompt.Yandere.Police.Suicide = false;
-				this.Prompt.Yandere.Police.HiddenCorpses = this.Prompt.Yandere.Police.HiddenCorpses - 1;
-				this.Prompt.Yandere.Police.Corpses = this.Prompt.Yandere.Police.Corpses - 1;
-				this.Prompt.Yandere.NearBodies = this.Prompt.Yandere.NearBodies - 1;
-				int num2 = 1;
-				Vector3 localPosition2 = this.GarbageDebris.localPosition;
-				float num3 = localPosition2.y = (float)num2;
-				Vector3 vector2 = this.GarbageDebris.localPosition = localPosition2;
+				this.Prompt.Yandere.Police.HiddenCorpses--;
+				this.Prompt.Yandere.Police.Corpses--;
+				this.Prompt.Yandere.NearBodies--;
+				this.GarbageDebris.localPosition = new Vector3(this.GarbageDebris.localPosition.x, 1f, this.GarbageDebris.localPosition.z);
 				UnityEngine.Object.Destroy(this.Corpse);
 				this.Fill = false;
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

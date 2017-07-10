@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class HomeMangaBookScript : MonoBehaviour
 {
 	public HomeMangaScript Manga;
@@ -10,33 +9,14 @@ public class HomeMangaBookScript : MonoBehaviour
 
 	public int ID;
 
-	public virtual void Start()
+	private void Start()
 	{
-		int num = 90;
-		Vector3 eulerAngles = this.transform.eulerAngles;
-		float num2 = eulerAngles.x = (float)num;
-		Vector3 vector = this.transform.eulerAngles = eulerAngles;
+		base.transform.eulerAngles = new Vector3(90f, base.transform.eulerAngles.y, base.transform.eulerAngles.z);
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Manga.Selected == this.ID)
-		{
-			float y = this.transform.eulerAngles.y + Time.deltaTime * this.RotationSpeed;
-			Vector3 eulerAngles = this.transform.eulerAngles;
-			float num = eulerAngles.y = y;
-			Vector3 vector = this.transform.eulerAngles = eulerAngles;
-		}
-		else
-		{
-			int num2 = 0;
-			Vector3 eulerAngles2 = this.transform.eulerAngles;
-			float num3 = eulerAngles2.y = (float)num2;
-			Vector3 vector2 = this.transform.eulerAngles = eulerAngles2;
-		}
-	}
-
-	public virtual void Main()
-	{
+		float y = (this.Manga.Selected != this.ID) ? 0f : (base.transform.eulerAngles.y + Time.deltaTime * this.RotationSpeed);
+		base.transform.eulerAngles = new Vector3(base.transform.eulerAngles.x, y, base.transform.eulerAngles.z);
 	}
 }

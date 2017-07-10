@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class MovingEventScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
@@ -38,40 +37,34 @@ public class MovingEventScript : MonoBehaviour
 
 	public bool Poisoned;
 
-	public int EventPhase;
+	public int EventPhase = 1;
 
-	public int EventDay;
+	public int EventDay = 3;
 
 	public float Distance;
 
 	public float Timer;
 
-	public MovingEventScript()
+	private void Start()
 	{
-		this.EventPhase = 1;
-		this.EventDay = 3;
-	}
-
-	public virtual void Start()
-	{
-		this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+		this.EventSubtitle.transform.localScale = Vector3.zero;
 		if (PlayerPrefs.GetInt("Weekday") == this.EventDay)
 		{
 			this.EventCheck = true;
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (!this.Clock.StopTime && this.EventCheck && this.Clock.HourTime > (float)13)
+		if (!this.Clock.StopTime && this.EventCheck && this.Clock.HourTime > 13f)
 		{
 			this.EventStudent = this.StudentManager.Students[7];
 			if (this.EventStudent != null)
 			{
-				this.EventStudent.Character.animation[this.EventStudent.BentoAnim].weight = (float)1;
+				this.EventStudent.Character.GetComponent<Animation>()[this.EventStudent.BentoAnim].weight = 1f;
 				this.EventStudent.CurrentDestination = this.EventLocation[0];
 				this.EventStudent.Pathfinding.target = this.EventLocation[0];
-				this.EventStudent.Bento.active = true;
+				this.EventStudent.Bento.SetActive(true);
 				this.EventStudent.MovingEvent = this;
 				this.EventStudent.InEvent = true;
 				this.EventStudent.Private = true;
@@ -81,7 +74,7 @@ public class MovingEventScript : MonoBehaviour
 		}
 		if (this.EventActive)
 		{
-			if (this.Prompt.Circle[0].fillAmount <= (float)0)
+			if (this.Prompt.Circle[0].fillAmount <= 0f)
 			{
 				this.Portal.InEvent = true;
 				this.Poisoned = true;
@@ -99,7 +92,7 @@ public class MovingEventScript : MonoBehaviour
 				{
 					if (this.EventPhase == 0)
 					{
-						this.EventStudent.Character.animation.CrossFade(this.EventStudent.IdleAnim);
+						this.EventStudent.Character.GetComponent<Animation>().CrossFade(this.EventStudent.IdleAnim);
 						if (this.Clock.HourTime > 13.05f)
 						{
 							this.EventStudent.CurrentDestination = this.EventLocation[1];
@@ -111,11 +104,11 @@ public class MovingEventScript : MonoBehaviour
 					{
 						if (!this.StudentManager.Students[1].WitnessedCorpse)
 						{
-							if (this.Timer == (float)0)
+							if (this.Timer == 0f)
 							{
 								this.PlayClip(this.EventClip[1], this.EventStudent.transform.position + Vector3.up * 1.5f);
-								this.EventStudent.Character.animation.CrossFade(this.EventStudent.IdleAnim);
-								if (this.Distance < (float)10)
+								this.EventStudent.Character.GetComponent<Animation>().CrossFade(this.EventStudent.IdleAnim);
+								if (this.Distance < 10f)
 								{
 									this.EventSubtitle.text = this.EventSpeech[1];
 								}
@@ -123,40 +116,41 @@ public class MovingEventScript : MonoBehaviour
 								this.EventStudent.Prompt.enabled = false;
 							}
 							this.Timer += Time.deltaTime;
-							if (this.Timer > (float)2)
+							if (this.Timer > 2f)
 							{
 								this.EventStudent.CurrentDestination = this.EventLocation[2];
 								this.EventStudent.Pathfinding.target = this.EventLocation[2];
-								if (this.Distance < (float)10)
+								if (this.Distance < 10f)
 								{
 									this.EventSubtitle.text = string.Empty;
 								}
 								this.EventPhase++;
-								this.Timer = (float)0;
+								this.Timer = 0f;
 							}
 						}
 						else
 						{
 							this.EventPhase = 7;
-							this.Timer = (float)3;
+							this.Timer = 3f;
 						}
 					}
 					else if (this.EventPhase == 2)
 					{
-						this.EventStudent.Character.animation[this.EventStudent.BentoAnim].weight = this.EventStudent.Character.animation[this.EventStudent.BentoAnim].weight - Time.deltaTime;
-						if (this.Timer == (float)0)
+						Animation component = this.EventStudent.Character.GetComponent<Animation>();
+						component[this.EventStudent.BentoAnim].weight -= Time.deltaTime;
+						if (this.Timer == 0f)
 						{
-							this.EventStudent.Character.animation.CrossFade("f02_bentoPlace_00");
+							component.CrossFade("f02_bentoPlace_00");
 						}
 						this.Timer += Time.deltaTime;
-						if (this.Timer > (float)1 && this.EventStudent.Bento.transform.parent != null)
+						if (this.Timer > 1f && this.EventStudent.Bento.transform.parent != null)
 						{
 							this.EventStudent.Bento.transform.parent = null;
-							this.EventStudent.Bento.transform.position = new Vector3((float)8, 0.5f, -2.2965f);
-							this.EventStudent.Bento.transform.eulerAngles = new Vector3((float)0, (float)0, (float)0);
+							this.EventStudent.Bento.transform.position = new Vector3(8f, 0.5f, -2.2965f);
+							this.EventStudent.Bento.transform.eulerAngles = new Vector3(0f, 0f, 0f);
 							this.EventStudent.Bento.transform.localScale = new Vector3(1.4f, 1.5f, 1.4f);
 						}
-						if (this.Timer > (float)2)
+						if (this.Timer > 2f)
 						{
 							if (this.Yandere.PossessPoison)
 							{
@@ -165,14 +159,14 @@ public class MovingEventScript : MonoBehaviour
 							this.EventStudent.CurrentDestination = this.EventLocation[3];
 							this.EventStudent.Pathfinding.target = this.EventLocation[3];
 							this.EventPhase++;
-							this.Timer = (float)0;
+							this.Timer = 0f;
 						}
 					}
 					else if (this.EventPhase == 3)
 					{
 						this.PlayClip(this.EventClip[2], this.EventStudent.transform.position + Vector3.up * 1.5f);
-						this.EventStudent.Character.animation.CrossFade("f02_cornerPeek_00");
-						if (this.Distance < (float)10)
+						this.EventStudent.Character.GetComponent<Animation>().CrossFade("f02_cornerPeek_00");
+						if (this.Distance < 10f)
 						{
 							this.EventSubtitle.text = this.EventSpeech[2];
 						}
@@ -184,12 +178,12 @@ public class MovingEventScript : MonoBehaviour
 						if (this.Timer > 5.5f)
 						{
 							this.PlayClip(this.EventClip[3], this.EventStudent.transform.position + Vector3.up * 1.5f);
-							if (this.Distance < (float)10)
+							if (this.Distance < 10f)
 							{
 								this.EventSubtitle.text = this.EventSpeech[3];
 							}
 							this.EventPhase++;
-							this.Timer = (float)0;
+							this.Timer = 0f;
 						}
 					}
 					else if (this.EventPhase == 5)
@@ -198,82 +192,84 @@ public class MovingEventScript : MonoBehaviour
 						if (this.Timer > 5.5f)
 						{
 							this.PlayClip(this.EventClip[4], this.EventStudent.transform.position + Vector3.up * 1.5f);
-							if (this.Distance < (float)10)
+							if (this.Distance < 10f)
 							{
 								this.EventSubtitle.text = this.EventSpeech[4];
 							}
 							this.EventPhase++;
-							this.Timer = (float)0;
+							this.Timer = 0f;
 						}
 					}
 					else if (this.EventPhase == 6)
 					{
 						this.Timer += Time.deltaTime;
-						if (this.Timer > (float)3)
+						if (this.Timer > 3f)
 						{
 							this.EventStudent.CurrentDestination = this.EventLocation[2];
 							this.EventStudent.Pathfinding.target = this.EventLocation[2];
-							if (this.Distance < (float)10)
+							if (this.Distance < 10f)
 							{
 								this.EventSubtitle.text = string.Empty;
 							}
 							this.EventPhase++;
 							this.Prompt.Hide();
 							this.Prompt.enabled = false;
-							this.Timer = (float)0;
+							this.Timer = 0f;
 						}
 					}
 					else if (this.EventPhase == 7)
 					{
-						if (this.Timer == (float)0)
+						if (this.Timer == 0f)
 						{
-							this.EventStudent.Character.animation["f02_bentoPlace_00"].time = this.EventStudent.Character.animation["f02_bentoPlace_00"].length;
-							this.EventStudent.Character.animation["f02_bentoPlace_00"].speed = (float)-1;
-							this.EventStudent.Character.animation.CrossFade("f02_bentoPlace_00");
+							Animation component2 = this.EventStudent.Character.GetComponent<Animation>();
+							component2["f02_bentoPlace_00"].time = component2["f02_bentoPlace_00"].length;
+							component2["f02_bentoPlace_00"].speed = -1f;
+							component2.CrossFade("f02_bentoPlace_00");
 						}
 						this.Timer += Time.deltaTime;
-						if (this.Timer > (float)1 && this.EventStudent.Bento.transform.parent == null)
+						if (this.Timer > 1f && this.EventStudent.Bento.transform.parent == null)
 						{
 							this.EventStudent.Bento.transform.parent = this.EventStudent.LeftHand;
-							this.EventStudent.Bento.transform.localPosition = new Vector3((float)0, -0.0906f, -0.032f);
-							this.EventStudent.Bento.transform.localEulerAngles = new Vector3((float)0, (float)90, (float)90);
+							this.EventStudent.Bento.transform.localPosition = new Vector3(0f, -0.0906f, -0.032f);
+							this.EventStudent.Bento.transform.localEulerAngles = new Vector3(0f, 90f, 90f);
 							this.EventStudent.Bento.transform.localScale = new Vector3(1.4f, 1.5f, 1.4f);
 						}
-						if (this.Timer > (float)2)
+						if (this.Timer > 2f)
 						{
-							this.EventStudent.Bento.transform.localPosition = new Vector3(-0.025f, -0.105f, (float)0);
-							this.EventStudent.Bento.transform.localEulerAngles = new Vector3((float)0, (float)165, 82.5f);
+							this.EventStudent.Bento.transform.localPosition = new Vector3(-0.025f, -0.105f, 0f);
+							this.EventStudent.Bento.transform.localEulerAngles = new Vector3(0f, 165f, 82.5f);
 							this.EventStudent.CurrentDestination = this.EventLocation[4];
 							this.EventStudent.Pathfinding.target = this.EventLocation[4];
 							this.EventStudent.Prompt.Hide();
 							this.EventStudent.Prompt.enabled = false;
 							this.EventPhase++;
-							this.Timer = (float)0;
+							this.Timer = 0f;
 						}
 					}
 					else if (this.EventPhase == 8)
 					{
+						Animation component3 = this.EventStudent.Character.GetComponent<Animation>();
 						if (!this.Poisoned)
 						{
-							this.EventStudent.Character.animation[this.EventStudent.BentoAnim].weight = (float)0;
-							this.EventStudent.Character.animation.CrossFade(this.EventStudent.EatAnim);
-							if (!this.EventStudent.Chopsticks[0].active)
+							component3[this.EventStudent.BentoAnim].weight = 0f;
+							component3.CrossFade(this.EventStudent.EatAnim);
+							if (!this.EventStudent.Chopsticks[0].activeInHierarchy)
 							{
-								this.EventStudent.Chopsticks[0].active = true;
-								this.EventStudent.Chopsticks[1].active = true;
+								this.EventStudent.Chopsticks[0].SetActive(true);
+								this.EventStudent.Chopsticks[1].SetActive(true);
 							}
 						}
 						else
 						{
-							this.EventStudent.Character.animation.CrossFade("f02_poisonDeath_00");
+							component3.CrossFade("f02_poisonDeath_00");
 							this.Timer += Time.deltaTime;
 							if (this.Timer < 13.55f)
 							{
-								if (!this.EventStudent.Chopsticks[0].active)
+								if (!this.EventStudent.Chopsticks[0].activeInHierarchy)
 								{
-									this.PlayClip(this.EventClip[5], this.EventStudent.transform.position + Vector3.up * (float)1);
-									this.EventStudent.Chopsticks[0].active = true;
-									this.EventStudent.Chopsticks[1].active = true;
+									this.PlayClip(this.EventClip[5], this.EventStudent.transform.position + Vector3.up);
+									this.EventStudent.Chopsticks[0].SetActive(true);
+									this.EventStudent.Chopsticks[1].SetActive(true);
 									this.EventStudent.Distracted = true;
 								}
 							}
@@ -284,7 +280,7 @@ public class MovingEventScript : MonoBehaviour
 									this.EventStudent.Chopsticks[0].transform.parent = this.EventStudent.Bento.transform;
 									this.EventStudent.Chopsticks[1].transform.parent = this.EventStudent.Bento.transform;
 								}
-								this.EventStudent.EyeShrink = this.EventStudent.EyeShrink + Time.deltaTime;
+								this.EventStudent.EyeShrink += Time.deltaTime;
 								if (this.EventStudent.EyeShrink > 0.9f)
 								{
 									this.EventStudent.EyeShrink = 0.9f;
@@ -293,13 +289,14 @@ public class MovingEventScript : MonoBehaviour
 							else if (this.EventStudent.Bento.transform.parent != null)
 							{
 								this.EventStudent.Bento.transform.parent = null;
-								((Collider)this.EventStudent.Bento.GetComponent(typeof(Collider))).isTrigger = false;
-								this.EventStudent.Bento.AddComponent(typeof(Rigidbody));
-								this.EventStudent.Bento.rigidbody.AddRelativeForce(Vector3.up * (float)100);
-								this.EventStudent.Bento.rigidbody.AddRelativeForce(Vector3.left * (float)100);
-								this.EventStudent.Bento.rigidbody.AddRelativeForce(Vector3.forward * (float)-100);
+								this.EventStudent.Bento.GetComponent<Collider>().isTrigger = false;
+								this.EventStudent.Bento.AddComponent<Rigidbody>();
+								Rigidbody component4 = this.EventStudent.Bento.GetComponent<Rigidbody>();
+								component4.AddRelativeForce(Vector3.up * 100f);
+								component4.AddRelativeForce(Vector3.left * 100f);
+								component4.AddRelativeForce(Vector3.forward * -100f);
 							}
-							if (this.EventStudent.Character.animation["f02_poisonDeath_00"].time > this.EventStudent.Character.animation["f02_poisonDeath_00"].length)
+							if (component3["f02_poisonDeath_00"].time > component3["f02_poisonDeath_00"].length)
 							{
 								this.EventStudent.Ragdoll.Poisoned = true;
 								this.EventStudent.BecomeRagdoll();
@@ -309,24 +306,24 @@ public class MovingEventScript : MonoBehaviour
 							}
 						}
 					}
-					if (this.Distance < (float)11)
+					if (this.Distance < 11f)
 					{
-						if (this.Distance < (float)10)
+						if (this.Distance < 10f)
 						{
-							float num = Mathf.Abs((this.Distance - (float)10) * 0.2f);
-							if (num < (float)0)
+							float num = Mathf.Abs((this.Distance - 10f) * 0.2f);
+							if (num < 0f)
 							{
-								num = (float)0;
+								num = 0f;
 							}
-							if (num > (float)1)
+							if (num > 1f)
 							{
-								num = (float)1;
+								num = 1f;
 							}
 							this.EventSubtitle.transform.localScale = new Vector3(num, num, num);
 						}
 						else
 						{
-							this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+							this.EventSubtitle.transform.localScale = Vector3.zero;
 						}
 					}
 				}
@@ -334,21 +331,21 @@ public class MovingEventScript : MonoBehaviour
 		}
 	}
 
-	public virtual void PlayClip(AudioClip clip, Vector3 pos)
+	private void PlayClip(AudioClip clip, Vector3 pos)
 	{
 		GameObject gameObject = new GameObject("TempAudio");
 		gameObject.transform.position = pos;
-		AudioSource audioSource = (AudioSource)gameObject.AddComponent(typeof(AudioSource));
+		AudioSource audioSource = gameObject.AddComponent<AudioSource>();
 		audioSource.clip = clip;
 		audioSource.Play();
 		UnityEngine.Object.Destroy(gameObject, clip.length);
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
-		audioSource.minDistance = (float)5;
-		audioSource.maxDistance = (float)10;
+		audioSource.minDistance = 5f;
+		audioSource.maxDistance = 10f;
 		this.VoiceClip = gameObject;
 	}
 
-	public virtual void EndEvent()
+	private void EndEvent()
 	{
 		if (!this.EventOver)
 		{
@@ -358,10 +355,11 @@ public class MovingEventScript : MonoBehaviour
 			}
 			this.EventStudent.CurrentDestination = this.EventStudent.Destinations[this.EventStudent.Phase];
 			this.EventStudent.Pathfinding.target = this.EventStudent.Destinations[this.EventStudent.Phase];
-			this.EventStudent.Character.animation[this.EventStudent.BentoAnim].weight = (float)0;
-			this.EventStudent.Chopsticks[0].active = false;
-			this.EventStudent.Chopsticks[1].active = false;
-			this.EventStudent.Bento.active = false;
+			Animation component = this.EventStudent.Character.GetComponent<Animation>();
+			component[this.EventStudent.BentoAnim].weight = 0f;
+			this.EventStudent.Chopsticks[0].SetActive(false);
+			this.EventStudent.Chopsticks[1].SetActive(false);
+			this.EventStudent.Bento.SetActive(false);
 			this.EventStudent.Prompt.enabled = true;
 			this.EventStudent.MovingEvent = null;
 			this.EventStudent.InEvent = false;
@@ -374,9 +372,5 @@ public class MovingEventScript : MonoBehaviour
 		this.EventCheck = false;
 		this.Prompt.Hide();
 		this.Prompt.enabled = false;
-	}
-
-	public virtual void Main()
-	{
 	}
 }

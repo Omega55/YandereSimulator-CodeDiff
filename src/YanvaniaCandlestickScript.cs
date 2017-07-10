@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class YanvaniaCandlestickScript : MonoBehaviour
 {
 	public GameObject DestroyedCandlestick;
@@ -10,29 +9,25 @@ public class YanvaniaCandlestickScript : MonoBehaviour
 
 	public AudioClip Break;
 
-	public virtual void OnTriggerEnter(Collider other)
+	private void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.layer == 19 && !this.Destroyed)
 		{
-			GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.DestroyedCandlestick, this.transform.position, Quaternion.identity);
-			gameObject.transform.localScale = this.transform.localScale;
+			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.DestroyedCandlestick, base.transform.position, Quaternion.identity);
+			gameObject.transform.localScale = base.transform.localScale;
 			this.Destroyed = true;
-			this.PlayClip(this.Break, this.transform.position);
-			UnityEngine.Object.Destroy(this.gameObject);
+			this.PlayClip(this.Break, base.transform.position);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 
-	public virtual void PlayClip(AudioClip clip, Vector3 pos)
+	private void PlayClip(AudioClip clip, Vector3 pos)
 	{
 		GameObject gameObject = new GameObject("TempAudio");
 		gameObject.transform.position = pos;
-		AudioSource audioSource = (AudioSource)gameObject.AddComponent(typeof(AudioSource));
+		AudioSource audioSource = gameObject.AddComponent<AudioSource>();
 		audioSource.clip = clip;
 		audioSource.Play();
 		UnityEngine.Object.Destroy(gameObject, clip.length);
-	}
-
-	public virtual void Main()
-	{
 	}
 }

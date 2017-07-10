@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class TrespassScript : MonoBehaviour
 {
 	public GameObject YandereObject;
@@ -10,12 +9,12 @@ public class TrespassScript : MonoBehaviour
 
 	public bool HideNotification;
 
-	public virtual void OnTriggerEnter(Collider other)
+	private void OnTriggerEnter(Collider other)
 	{
-		if (this.enabled && other.gameObject.layer == 13)
+		if (base.enabled && other.gameObject.layer == 13)
 		{
 			this.YandereObject = other.gameObject;
-			this.Yandere = (YandereScript)other.gameObject.GetComponent(typeof(YandereScript));
+			this.Yandere = other.gameObject.GetComponent<YandereScript>();
 			if (this.Yandere != null)
 			{
 				if (!this.Yandere.Trespassing)
@@ -27,15 +26,11 @@ public class TrespassScript : MonoBehaviour
 		}
 	}
 
-	public virtual void OnTriggerExit(Collider other)
+	private void OnTriggerExit(Collider other)
 	{
 		if (this.Yandere != null && other.gameObject == this.YandereObject)
 		{
 			this.Yandere.Trespassing = false;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

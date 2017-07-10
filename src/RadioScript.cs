@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class RadioScript : MonoBehaviour
 {
 	public GameObject AlarmDisc;
@@ -18,15 +17,16 @@ public class RadioScript : MonoBehaviour
 
 	public bool On;
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Prompt.Circle[0].fillAmount == (float)0)
+		UISprite uisprite = this.Prompt.Circle[0];
+		if (uisprite.fillAmount == 0f)
 		{
-			this.Prompt.Circle[0].fillAmount = (float)1;
+			uisprite.fillAmount = 1f;
 			if (!this.On)
 			{
 				this.MyRenderer.material.mainTexture = this.OnTexture;
-				this.audio.Play();
+				base.GetComponent<AudioSource>().Play();
 				this.On = true;
 			}
 			else
@@ -36,22 +36,19 @@ public class RadioScript : MonoBehaviour
 		}
 		if (this.On && this.Victim == null)
 		{
-			GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.AlarmDisc, this.transform.position + Vector3.up, Quaternion.identity);
-			((AlarmDiscScript)gameObject.GetComponent(typeof(AlarmDiscScript))).SourceRadio = this;
-			((AlarmDiscScript)gameObject.GetComponent(typeof(AlarmDiscScript))).NoScream = true;
-			((AlarmDiscScript)gameObject.GetComponent(typeof(AlarmDiscScript))).Radio = true;
+			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + Vector3.up, Quaternion.identity);
+			AlarmDiscScript component = gameObject.GetComponent<AlarmDiscScript>();
+			component.SourceRadio = this;
+			component.NoScream = true;
+			component.Radio = true;
 		}
 	}
 
-	public virtual void TurnOff()
+	public void TurnOff()
 	{
 		this.MyRenderer.material.mainTexture = this.OffTexture;
 		this.Victim = null;
-		this.audio.Stop();
+		base.GetComponent<AudioSource>().Stop();
 		this.On = false;
-	}
-
-	public virtual void Main()
-	{
 	}
 }

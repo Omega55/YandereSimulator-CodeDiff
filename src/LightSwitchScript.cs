@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class LightSwitchScript : MonoBehaviour
 {
 	public ToiletEventScript ToiletEvent;
@@ -34,56 +33,43 @@ public class LightSwitchScript : MonoBehaviour
 
 	public bool Flicker;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent(typeof(YandereScript));
+		this.Yandere = GameObject.Find("YandereChan").GetComponent<YandereScript>();
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.Flicker)
 		{
 			this.FlickerTimer += Time.deltaTime;
 			if (this.FlickerTimer > 0.1f)
 			{
-				this.FlickerTimer = (float)0;
-				if (!this.BathroomLight.active)
-				{
-					this.BathroomLight.active = true;
-				}
-				else
-				{
-					this.BathroomLight.active = false;
-				}
+				this.FlickerTimer = 0f;
+				this.BathroomLight.SetActive(!this.BathroomLight.activeInHierarchy);
 			}
 		}
 		if (!this.Panel.useGravity)
 		{
 			if (this.Yandere.Armed)
 			{
-				if (this.Yandere.Weapon[this.Yandere.Equipped].WeaponID == 6)
-				{
-					this.Prompt.HideButton[3] = false;
-				}
-				else
-				{
-					this.Prompt.HideButton[3] = true;
-				}
+				this.Prompt.HideButton[3] = (this.Yandere.Weapon[this.Yandere.Equipped].WeaponID != 6);
 			}
 			else
 			{
 				this.Prompt.HideButton[3] = true;
 			}
 		}
-		if (this.Prompt.Circle[0].fillAmount <= (float)0)
+		if (this.Prompt.Circle[0].fillAmount <= 0f)
 		{
-			this.Prompt.Circle[0].fillAmount = (float)1;
-			if (this.BathroomLight.active)
+			this.Prompt.Circle[0].fillAmount = 1f;
+			AudioSource component = base.GetComponent<AudioSource>();
+			if (this.BathroomLight.activeInHierarchy)
 			{
-				this.Prompt.Label[0].text = "     " + "Turn On";
-				this.BathroomLight.active = false;
-				this.audio.clip = this.Flick[1];
-				this.audio.Play();
+				this.Prompt.Label[0].text = "     Turn On";
+				this.BathroomLight.SetActive(false);
+				component.clip = this.Flick[1];
+				component.Play();
 				if (this.ToiletEvent.EventActive && (this.ToiletEvent.EventPhase == 2 || this.ToiletEvent.EventPhase == 3))
 				{
 					this.ReactionID = UnityEngine.Random.Range(1, 4);
@@ -94,34 +80,27 @@ public class LightSwitchScript : MonoBehaviour
 			}
 			else
 			{
-				this.Prompt.Label[0].text = "     " + "Turn Off";
-				this.BathroomLight.active = true;
-				this.audio.clip = this.Flick[0];
-				this.audio.Play();
+				this.Prompt.Label[0].text = "     Turn Off";
+				this.BathroomLight.SetActive(true);
+				component.clip = this.Flick[0];
+				component.Play();
 			}
 		}
-		if (this.SubtitleTimer > (float)0)
+		if (this.SubtitleTimer > 0f)
 		{
 			this.SubtitleTimer += Time.deltaTime;
-			if (this.SubtitleTimer > (float)3)
+			if (this.SubtitleTimer > 3f)
 			{
 				this.ToiletEvent.EventSubtitle.text = string.Empty;
-				this.SubtitleTimer = (float)0;
+				this.SubtitleTimer = 0f;
 			}
 		}
-		if (this.Prompt.Circle[3].fillAmount <= (float)0)
+		if (this.Prompt.Circle[3].fillAmount <= 0f)
 		{
 			this.Prompt.HideButton[3] = true;
-			int num = 1;
-			Vector3 localScale = this.Wires.localScale;
-			float num2 = localScale.z = (float)num;
-			Vector3 vector = this.Wires.localScale = localScale;
+			this.Wires.localScale = new Vector3(this.Wires.localScale.x, this.Wires.localScale.y, 1f);
 			this.Panel.useGravity = true;
-			this.Panel.AddForce((float)0, (float)0, (float)10);
+			this.Panel.AddForce(0f, 0f, 10f);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

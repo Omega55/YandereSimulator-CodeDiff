@@ -1,18 +1,13 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class TopicManagerScript : MonoBehaviour
 {
-	public virtual void Start()
+	private void Start()
 	{
 	}
 
-	public virtual void Update()
-	{
-	}
-
-	public virtual void Main()
+	private void Update()
 	{
 	}
 }

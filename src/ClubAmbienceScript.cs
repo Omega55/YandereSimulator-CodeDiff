@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class ClubAmbienceScript : MonoBehaviour
 {
 	public JukeboxScript Jukebox;
@@ -16,11 +15,11 @@ public class ClubAmbienceScript : MonoBehaviour
 
 	public float MaxVolume;
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Yandere.position.y > this.transform.position.y - 0.1f && this.Yandere.position.y < this.transform.position.y + 0.1f)
+		if (this.Yandere.position.y > base.transform.position.y - 0.1f && this.Yandere.position.y < base.transform.position.y + 0.1f)
 		{
-			if (Vector3.Distance(this.transform.position, this.Yandere.position) < (float)4)
+			if (Vector3.Distance(base.transform.position, this.Yandere.position) < 4f)
 			{
 				this.CreateAmbience = true;
 				this.EffectJukebox = true;
@@ -32,24 +31,21 @@ public class ClubAmbienceScript : MonoBehaviour
 		}
 		if (this.EffectJukebox)
 		{
+			AudioSource component = base.GetComponent<AudioSource>();
 			if (this.CreateAmbience)
 			{
-				this.audio.volume = Mathf.MoveTowards(this.audio.volume, this.MaxVolume, Time.deltaTime * 0.1f);
+				component.volume = Mathf.MoveTowards(component.volume, this.MaxVolume, Time.deltaTime * 0.1f);
 				this.Jukebox.ClubDip = Mathf.MoveTowards(this.Jukebox.ClubDip, this.ClubDip, Time.deltaTime * 0.1f);
 			}
 			else
 			{
-				this.audio.volume = Mathf.MoveTowards(this.audio.volume, (float)0, Time.deltaTime * 0.1f);
-				this.Jukebox.ClubDip = Mathf.MoveTowards(this.Jukebox.ClubDip, (float)0, Time.deltaTime * 0.1f);
-				if (this.Jukebox.ClubDip == (float)0)
+				component.volume = Mathf.MoveTowards(component.volume, 0f, Time.deltaTime * 0.1f);
+				this.Jukebox.ClubDip = Mathf.MoveTowards(this.Jukebox.ClubDip, 0f, Time.deltaTime * 0.1f);
+				if (this.Jukebox.ClubDip == 0f)
 				{
 					this.EffectJukebox = false;
 				}
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

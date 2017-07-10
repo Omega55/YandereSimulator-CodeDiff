@@ -1,34 +1,30 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class PoisonBottleScript : MonoBehaviour
 {
 	public PromptScript Prompt;
 
 	public int ID;
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Prompt.Circle[0].fillAmount == (float)0)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
+			InventoryScript inventory = this.Prompt.Yandere.Inventory;
 			if (this.ID == 1)
 			{
-				this.Prompt.Yandere.Inventory.EmeticPoison = true;
+				inventory.EmeticPoison = true;
 			}
 			else if (this.ID == 2)
 			{
-				this.Prompt.Yandere.Inventory.LethalPoison = true;
+				inventory.LethalPoison = true;
 			}
 			else if (this.ID == 3)
 			{
-				this.Prompt.Yandere.Inventory.RatPoison = true;
+				inventory.RatPoison = true;
 			}
-			UnityEngine.Object.Destroy(this.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

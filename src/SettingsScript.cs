@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class SettingsScript : MonoBehaviour
 {
 	public QualityManagerScript QualityManager;
@@ -32,19 +31,13 @@ public class SettingsScript : MonoBehaviour
 
 	public UILabel FarAnimsLabel;
 
-	public int SelectionLimit;
+	public int SelectionLimit = 2;
 
-	public int Selected;
+	public int Selected = 1;
 
 	public Transform Highlight;
 
-	public SettingsScript()
-	{
-		this.SelectionLimit = 2;
-		this.Selected = 1;
-	}
-
-	public virtual void Update()
+	private void Update()
 	{
 		if (Input.GetKeyDown("space"))
 		{
@@ -79,16 +72,8 @@ public class SettingsScript : MonoBehaviour
 		{
 			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
 			{
-				if (PlayerPrefs.GetInt("DisableOutlines") == 1)
-				{
-					PlayerPrefs.SetInt("DisableOutlines", 0);
-					this.UpdateText();
-				}
-				else
-				{
-					PlayerPrefs.SetInt("DisableOutlines", 1);
-					this.UpdateText();
-				}
+				PlayerPrefs.SetInt("DisableOutlines", (PlayerPrefs.GetInt("DisableOutlines") != 1) ? 1 : 0);
+				this.UpdateText();
 				this.QualityManager.UpdateOutlines();
 			}
 		}
@@ -123,16 +108,8 @@ public class SettingsScript : MonoBehaviour
 		{
 			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
 			{
-				if (PlayerPrefs.GetInt("DisablePostAliasing") == 1)
-				{
-					PlayerPrefs.SetInt("DisablePostAliasing", 0);
-					this.UpdateText();
-				}
-				else
-				{
-					PlayerPrefs.SetInt("DisablePostAliasing", 1);
-					this.UpdateText();
-				}
+				PlayerPrefs.SetInt("DisablePostAliasing", (PlayerPrefs.GetInt("DisablePostAliasing") != 1) ? 1 : 0);
+				this.UpdateText();
 				this.QualityManager.UpdatePostAliasing();
 			}
 		}
@@ -140,16 +117,8 @@ public class SettingsScript : MonoBehaviour
 		{
 			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
 			{
-				if (PlayerPrefs.GetInt("DisableBloom") == 1)
-				{
-					PlayerPrefs.SetInt("DisableBloom", 0);
-					this.UpdateText();
-				}
-				else
-				{
-					PlayerPrefs.SetInt("DisableBloom", 1);
-					this.UpdateText();
-				}
+				PlayerPrefs.SetInt("DisableBloom", (PlayerPrefs.GetInt("DisableBloom") != 1) ? 1 : 0);
+				this.UpdateText();
 				this.QualityManager.UpdateBloom();
 			}
 		}
@@ -187,16 +156,8 @@ public class SettingsScript : MonoBehaviour
 		{
 			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
 			{
-				if (PlayerPrefs.GetInt("Fog") == 1)
-				{
-					PlayerPrefs.SetInt("Fog", 0);
-					this.UpdateText();
-				}
-				else
-				{
-					PlayerPrefs.SetInt("Fog", 1);
-					this.UpdateText();
-				}
+				PlayerPrefs.SetInt("Fog", (PlayerPrefs.GetInt("Fog") != 1) ? 1 : 0);
+				this.UpdateText();
 				this.QualityManager.UpdateFog();
 			}
 		}
@@ -204,31 +165,15 @@ public class SettingsScript : MonoBehaviour
 		{
 			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
 			{
-				if (PlayerPrefs.GetInt("DisableShadows") == 1)
-				{
-					PlayerPrefs.SetInt("DisableShadows", 0);
-					this.UpdateText();
-				}
-				else
-				{
-					PlayerPrefs.SetInt("DisableShadows", 1);
-					this.UpdateText();
-				}
+				PlayerPrefs.SetInt("DisableShadows", (PlayerPrefs.GetInt("DisableShadows") != 1) ? 1 : 0);
+				this.UpdateText();
 				this.QualityManager.UpdateShadows();
 			}
 		}
 		else if (this.Selected == 10 && (this.InputManager.TappedRight || this.InputManager.TappedLeft))
 		{
-			if (PlayerPrefs.GetInt("DisableFarAnimations") == 1)
-			{
-				PlayerPrefs.SetInt("DisableFarAnimations", 0);
-				this.UpdateText();
-			}
-			else
-			{
-				PlayerPrefs.SetInt("DisableFarAnimations", 1);
-				this.UpdateText();
-			}
+			PlayerPrefs.SetInt("DisableFarAnimations", (PlayerPrefs.GetInt("DisableFarAnimations") != 1) ? 1 : 0);
+			this.UpdateText();
 			this.QualityManager.UpdateAnims();
 		}
 		if (Input.GetButtonDown("B"))
@@ -239,14 +184,14 @@ public class SettingsScript : MonoBehaviour
 			this.PromptBar.Label[4].text = "Choose";
 			this.PromptBar.UpdateButtons();
 			this.PauseScreen.ScreenBlur.enabled = true;
-			this.PauseScreen.MainMenu.active = true;
+			this.PauseScreen.MainMenu.SetActive(true);
 			this.PauseScreen.Sideways = false;
 			this.PauseScreen.PressedB = true;
-			this.active = false;
+			base.gameObject.SetActive(false);
 		}
 	}
 
-	public virtual void UpdateText()
+	public void UpdateText()
 	{
 		if (PlayerPrefs.GetInt("ParticleCount") == 3)
 		{
@@ -260,39 +205,11 @@ public class SettingsScript : MonoBehaviour
 		{
 			this.ParticleLabel.text = "None";
 		}
-		if (PlayerPrefs.GetInt("DisableOutlines") == 1)
-		{
-			this.OutlinesLabel.text = "Off";
-		}
-		else
-		{
-			this.OutlinesLabel.text = "On";
-		}
+		this.OutlinesLabel.text = ((PlayerPrefs.GetInt("DisableOutlines") != 1) ? "On" : "Off");
 		this.AliasingLabel.text = QualitySettings.antiAliasing + "x";
-		if (PlayerPrefs.GetInt("DisablePostAliasing") == 1)
-		{
-			this.PostAliasingLabel.text = "Off";
-		}
-		else
-		{
-			this.PostAliasingLabel.text = "On";
-		}
-		if (PlayerPrefs.GetInt("DisableBloom") == 1)
-		{
-			this.BloomLabel.text = "Off";
-		}
-		else
-		{
-			this.BloomLabel.text = "On";
-		}
-		if (PlayerPrefs.GetInt("LowDetailStudents") == 0)
-		{
-			this.LowDetailLabel.text = "Off";
-		}
-		else
-		{
-			this.LowDetailLabel.text = PlayerPrefs.GetInt("LowDetailStudents") * 10 + "m";
-		}
+		this.PostAliasingLabel.text = ((PlayerPrefs.GetInt("DisablePostAliasing") != 1) ? "On" : "Off");
+		this.BloomLabel.text = ((PlayerPrefs.GetInt("DisableBloom") != 1) ? "On" : "Off");
+		this.LowDetailLabel.text = ((PlayerPrefs.GetInt("LowDetailStudents") != 0) ? ((PlayerPrefs.GetInt("LowDetailStudents") * 10).ToString() + "m") : "Off");
 		this.DrawDistanceLabel.text = PlayerPrefs.GetInt("DrawDistance") + "m";
 		if (PlayerPrefs.GetInt("Fog") == 0)
 		{
@@ -320,7 +237,7 @@ public class SettingsScript : MonoBehaviour
 		}
 	}
 
-	public virtual void UpdateHighlight()
+	private void UpdateHighlight()
 	{
 		if (this.Selected == 0)
 		{
@@ -330,13 +247,6 @@ public class SettingsScript : MonoBehaviour
 		{
 			this.Selected = 1;
 		}
-		int num = 445 - 80 * this.Selected;
-		Vector3 localPosition = this.Highlight.localPosition;
-		float num2 = localPosition.y = (float)num;
-		Vector3 vector = this.Highlight.localPosition = localPosition;
-	}
-
-	public virtual void Main()
-	{
+		this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 445f - 80f * (float)this.Selected, this.Highlight.localPosition.z);
 	}
 }

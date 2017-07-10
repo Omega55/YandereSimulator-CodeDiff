@@ -1,47 +1,10 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Boo.Lang;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-[Serializable]
 public class HomeYandereScript : MonoBehaviour
 {
-	[CompilerGenerated]
-	[Serializable]
-	internal sealed class $ApplyCustomCostume$3134 : GenericGenerator<WWW>
-	{
-		internal HomeYandereScript $self_$3140;
-
-		public $ApplyCustomCostume$3134(HomeYandereScript self_)
-		{
-			this.$self_$3140 = self_;
-		}
-
-		public override IEnumerator<WWW> GetEnumerator()
-		{
-			return new HomeYandereScript.$ApplyCustomCostume$3134.$(this.$self_$3140);
-		}
-	}
-
-	[CompilerGenerated]
-	[Serializable]
-	internal sealed class $ApplyCustomFace$3141 : GenericGenerator<WWW>
-	{
-		internal HomeYandereScript $self_$3146;
-
-		public $ApplyCustomFace$3141(HomeYandereScript self_)
-		{
-			this.$self_$3146 = self_;
-		}
-
-		public override IEnumerator<WWW> GetEnumerator()
-		{
-			return new HomeYandereScript.$ApplyCustomFace$3141.$(this.$self_$3146);
-		}
-	}
-
 	public CharacterController MyController;
 
 	public HomeVideoGamesScript HomeVideoGames;
@@ -100,22 +63,22 @@ public class HomeYandereScript : MonoBehaviour
 
 	public Mesh PajamaMesh;
 
-	public virtual void Start()
+	private void Start()
 	{
 		if (this.CutsceneYandere != null)
 		{
-			this.CutsceneYandere.animation["f02_texting_00"].speed = 0.1f;
+			this.CutsceneYandere.GetComponent<Animation>()["f02_texting_00"].speed = 0.1f;
 		}
-		if (Application.loadedLevelName == "HomeScene")
+		if (SceneManager.GetActiveScene().name.Equals("HomeScene"))
 		{
 			if (PlayerPrefs.GetInt("DraculaDefeated") == 0)
 			{
-				this.transform.position = new Vector3((float)0, (float)0, (float)0);
-				this.transform.eulerAngles = new Vector3((float)0, (float)0, (float)0);
+				base.transform.position = Vector3.zero;
+				base.transform.eulerAngles = Vector3.zero;
 				if (PlayerPrefs.GetInt("Night") == 0)
 				{
 					this.ChangeSchoolwear();
-					this.StartCoroutine_Auto(this.ApplyCustomCostume());
+					base.StartCoroutine(this.ApplyCustomCostume());
 				}
 				else
 				{
@@ -125,89 +88,88 @@ public class HomeYandereScript : MonoBehaviour
 			else if (PlayerPrefs.GetInt("StartInBasement") == 1)
 			{
 				PlayerPrefs.SetInt("StartInBasement", 0);
-				this.transform.position = new Vector3((float)0, (float)-135, (float)0);
-				this.transform.eulerAngles = new Vector3((float)0, (float)0, (float)0);
+				base.transform.position = new Vector3(0f, -135f, 0f);
+				base.transform.eulerAngles = Vector3.zero;
 			}
 			else
 			{
-				this.transform.position = new Vector3((float)1, (float)0, (float)0);
-				this.transform.eulerAngles = new Vector3((float)0, (float)90, (float)0);
-				this.Character.animation.Play("f02_discScratch_00");
+				base.transform.position = new Vector3(1f, 0f, 0f);
+				base.transform.eulerAngles = new Vector3(0f, 90f, 0f);
+				this.Character.GetComponent<Animation>().Play("f02_discScratch_00");
 				this.Controller.transform.localPosition = new Vector3(0.09425f, 0.0095f, 0.01878f);
-				this.Controller.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)-180);
+				this.Controller.transform.localEulerAngles = new Vector3(0f, 0f, -180f);
 				this.HomeCamera.Destination = this.HomeCamera.Destinations[5];
 				this.HomeCamera.Target = this.HomeCamera.Targets[5];
-				this.Disc.active = true;
+				this.Disc.SetActive(true);
 				this.WearPajamas();
 			}
 		}
-		Time.timeScale = (float)1;
+		Time.timeScale = 1f;
 		this.UpdateHair();
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (!this.Disc.active)
+		if (!this.Disc.activeInHierarchy)
 		{
+			Animation component = this.Character.GetComponent<Animation>();
 			if (this.CanMove)
 			{
 				this.MyController.Move(Physics.gravity * 0.01f);
 				float axis = Input.GetAxis("Vertical");
 				float axis2 = Input.GetAxis("Horizontal");
 				Vector3 a = Camera.main.transform.TransformDirection(Vector3.forward);
-				a.y = (float)0;
+				a.y = 0f;
 				a = a.normalized;
-				Vector3 a2 = new Vector3(a.z, (float)0, -a.x);
+				Vector3 a2 = new Vector3(a.z, 0f, -a.x);
 				Vector3 vector = axis2 * a2 + axis * a;
 				if (vector != Vector3.zero)
 				{
-					Quaternion to = Quaternion.LookRotation(vector);
-					this.transform.rotation = Quaternion.Lerp(this.transform.rotation, to, Time.deltaTime * (float)10);
+					Quaternion b = Quaternion.LookRotation(vector);
+					base.transform.rotation = Quaternion.Lerp(base.transform.rotation, b, Time.deltaTime * 10f);
 				}
-				else
-				{
-					Quaternion to = new Quaternion((float)0, (float)0, (float)0, (float)0);
-				}
-				if (axis != (float)0 || axis2 != (float)0)
+				if (axis != 0f || axis2 != 0f)
 				{
 					if (Input.GetButton("LB"))
 					{
-						this.Character.animation.CrossFade("f02_run_00");
-						this.MyController.Move(this.transform.forward * this.RunSpeed * Time.deltaTime);
+						component.CrossFade("f02_run_00");
+						this.MyController.Move(base.transform.forward * this.RunSpeed * Time.deltaTime);
 					}
 					else
 					{
-						this.Character.animation.CrossFade("f02_walk_00");
-						this.MyController.Move(this.transform.forward * this.WalkSpeed * Time.deltaTime);
+						component.CrossFade("f02_walk_00");
+						this.MyController.Move(base.transform.forward * this.WalkSpeed * Time.deltaTime);
 					}
 				}
 				else
 				{
-					this.Character.animation.CrossFade("f02_idleShort_00");
+					component.CrossFade("f02_idleShort_00");
 				}
 			}
 			else
 			{
-				this.Character.animation.CrossFade("f02_idleShort_00");
+				component.CrossFade("f02_idleShort_00");
 			}
 		}
-		else if (this.HomeDarkness.color.a == (float)0)
+		else if (this.HomeDarkness.color.a == 0f)
 		{
-			if (this.Timer == (float)0)
+			AudioSource component2 = base.GetComponent<AudioSource>();
+			if (this.Timer == 0f)
 			{
-				this.audio.Play();
+				component2.Play();
 			}
-			else if (this.Timer > this.audio.clip.length + (float)1)
+			else if (this.Timer > component2.clip.length + 1f)
 			{
 				PlayerPrefs.SetInt("DraculaDefeated", 0);
-				this.Disc.active = false;
+				this.Disc.SetActive(false);
 				this.HomeVideoGames.Quit();
 			}
 			this.Timer += Time.deltaTime;
 		}
-		if (this.rigidbody != null)
+		Rigidbody component3 = base.GetComponent<Rigidbody>();
+		if (component3 != null)
 		{
-			this.rigidbody.velocity = new Vector3((float)0, (float)0, (float)0);
+			component3.velocity = Vector3.zero;
 		}
 		if (Input.GetKeyDown("h"))
 		{
@@ -216,60 +178,60 @@ public class HomeYandereScript : MonoBehaviour
 		if (Input.GetKeyDown("k"))
 		{
 			PlayerPrefs.SetInt("KidnapVictim", this.VictimID);
-			PlayerPrefs.SetFloat("Student_" + this.VictimID + "_Sanity", 100f);
+			PlayerPrefs.SetFloat("Student_" + this.VictimID.ToString() + "_Sanity", 100f);
 			PlayerPrefs.SetInt("Scheme_6_Stage", 5);
-			Application.LoadLevel(Application.loadedLevel);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
 		if (Input.GetKeyDown(KeyCode.F1))
 		{
 			PlayerPrefs.SetInt("FemaleUniform", 1);
-			Application.LoadLevel(Application.loadedLevel);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
 		else if (Input.GetKeyDown(KeyCode.F2))
 		{
 			PlayerPrefs.SetInt("FemaleUniform", 2);
-			Application.LoadLevel(Application.loadedLevel);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
 		else if (Input.GetKeyDown(KeyCode.F3))
 		{
 			PlayerPrefs.SetInt("FemaleUniform", 3);
-			Application.LoadLevel(Application.loadedLevel);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
 		else if (Input.GetKeyDown(KeyCode.F4))
 		{
 			PlayerPrefs.SetInt("FemaleUniform", 4);
-			Application.LoadLevel(Application.loadedLevel);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
 		else if (Input.GetKeyDown(KeyCode.F5))
 		{
 			PlayerPrefs.SetInt("FemaleUniform", 5);
-			Application.LoadLevel(Application.loadedLevel);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
 		else if (Input.GetKeyDown(KeyCode.F6))
 		{
 			PlayerPrefs.SetInt("FemaleUniform", 6);
-			Application.LoadLevel(Application.loadedLevel);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
 	}
 
-	public virtual void LateUpdate()
+	private void LateUpdate()
 	{
 		if (this.HidePony)
 		{
-			this.Ponytail.parent.transform.localScale = new Vector3((float)1, (float)1, 0.93f);
+			this.Ponytail.parent.transform.localScale = new Vector3(1f, 1f, 0.93f);
 			this.Ponytail.localScale = new Vector3(0.0001f, 0.0001f, 0.0001f);
 			this.HairR.localScale = new Vector3(0.0001f, 0.0001f, 0.0001f);
 			this.HairL.localScale = new Vector3(0.0001f, 0.0001f, 0.0001f);
 		}
 	}
 
-	public virtual void UpdateHair()
+	private void UpdateHair()
 	{
-		this.PigtailR.transform.parent.transform.parent.transform.localScale = new Vector3((float)1, 0.75f, (float)1);
-		this.PigtailL.transform.parent.transform.parent.transform.localScale = new Vector3((float)1, 0.75f, (float)1);
-		this.PigtailR.active = false;
-		this.PigtailL.active = false;
-		this.Drills.active = false;
+		this.PigtailR.transform.parent.transform.parent.transform.localScale = new Vector3(1f, 0.75f, 1f);
+		this.PigtailL.transform.parent.transform.parent.transform.localScale = new Vector3(1f, 0.75f, 1f);
+		this.PigtailR.gameObject.SetActive(false);
+		this.PigtailL.gameObject.SetActive(false);
+		this.Drills.gameObject.SetActive(false);
 		this.HidePony = true;
 		this.Hairstyle++;
 		if (this.Hairstyle > 7)
@@ -279,74 +241,134 @@ public class HomeYandereScript : MonoBehaviour
 		if (this.Hairstyle == 1)
 		{
 			this.HidePony = false;
-			this.Ponytail.localScale = new Vector3((float)1, (float)1, (float)1);
-			this.HairR.localScale = new Vector3((float)1, (float)1, (float)1);
-			this.HairL.localScale = new Vector3((float)1, (float)1, (float)1);
+			this.Ponytail.localScale = new Vector3(1f, 1f, 1f);
+			this.HairR.localScale = new Vector3(1f, 1f, 1f);
+			this.HairL.localScale = new Vector3(1f, 1f, 1f);
 		}
 		else if (this.Hairstyle == 2)
 		{
-			this.PigtailR.active = true;
+			this.PigtailR.gameObject.SetActive(true);
 		}
 		else if (this.Hairstyle == 3)
 		{
-			this.PigtailL.active = true;
+			this.PigtailL.gameObject.SetActive(true);
 		}
 		else if (this.Hairstyle == 4)
 		{
-			this.PigtailR.active = true;
-			this.PigtailL.active = true;
+			this.PigtailR.gameObject.SetActive(true);
+			this.PigtailL.gameObject.SetActive(true);
 		}
 		else if (this.Hairstyle == 5)
 		{
-			this.PigtailR.active = true;
-			this.PigtailL.active = true;
+			this.PigtailR.gameObject.SetActive(true);
+			this.PigtailL.gameObject.SetActive(true);
 			this.HidePony = false;
-			this.Ponytail.localScale = new Vector3((float)1, (float)1, (float)1);
-			this.HairR.localScale = new Vector3((float)1, (float)1, (float)1);
-			this.HairL.localScale = new Vector3((float)1, (float)1, (float)1);
+			this.Ponytail.localScale = new Vector3(1f, 1f, 1f);
+			this.HairR.localScale = new Vector3(1f, 1f, 1f);
+			this.HairL.localScale = new Vector3(1f, 1f, 1f);
 		}
 		else if (this.Hairstyle == 6)
 		{
-			this.PigtailR.active = true;
-			this.PigtailL.active = true;
-			this.PigtailR.transform.parent.transform.parent.transform.localScale = new Vector3((float)2, (float)2, (float)2);
-			this.PigtailL.transform.parent.transform.parent.transform.localScale = new Vector3((float)2, (float)2, (float)2);
+			this.PigtailR.gameObject.SetActive(true);
+			this.PigtailL.gameObject.SetActive(true);
+			this.PigtailR.transform.parent.transform.parent.transform.localScale = new Vector3(2f, 2f, 2f);
+			this.PigtailL.transform.parent.transform.parent.transform.localScale = new Vector3(2f, 2f, 2f);
 		}
 		else if (this.Hairstyle == 7)
 		{
-			this.Drills.active = true;
+			this.Drills.gameObject.SetActive(true);
 		}
 	}
 
-	public virtual void ChangeSchoolwear()
+	private void ChangeSchoolwear()
 	{
 		this.MyRenderer.sharedMesh = this.Uniforms[PlayerPrefs.GetInt("FemaleUniform")];
 		this.MyRenderer.materials[0].mainTexture = this.UniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
 		this.MyRenderer.materials[1].mainTexture = this.UniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
 		this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
-		this.StartCoroutine_Auto(this.ApplyCustomCostume());
+		base.StartCoroutine(this.ApplyCustomCostume());
 	}
 
-	public virtual void WearPajamas()
+	private void WearPajamas()
 	{
 		this.MyRenderer.sharedMesh = this.PajamaMesh;
 		this.MyRenderer.materials[0].mainTexture = this.PajamaTexture;
 		this.MyRenderer.materials[1].mainTexture = this.PajamaTexture;
 		this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
-		this.StartCoroutine_Auto(this.ApplyCustomFace());
+		base.StartCoroutine(this.ApplyCustomFace());
 	}
 
-	public virtual IEnumerator ApplyCustomCostume()
+	private IEnumerator ApplyCustomCostume()
 	{
-		return new HomeYandereScript.$ApplyCustomCostume$3134(this).GetEnumerator();
+		if (PlayerPrefs.GetInt("FemaleUniform") == 1)
+		{
+			WWW CustomUniform = new WWW("file:///" + Application.streamingAssetsPath + "/CustomUniform.png");
+			yield return CustomUniform;
+			if (CustomUniform.error == null)
+			{
+				this.MyRenderer.materials[0].mainTexture = CustomUniform.texture;
+				this.MyRenderer.materials[1].mainTexture = CustomUniform.texture;
+			}
+		}
+		else if (PlayerPrefs.GetInt("FemaleUniform") == 2)
+		{
+			WWW CustomLong = new WWW("file:///" + Application.streamingAssetsPath + "/CustomLong.png");
+			yield return CustomLong;
+			if (CustomLong.error == null)
+			{
+				this.MyRenderer.materials[0].mainTexture = CustomLong.texture;
+				this.MyRenderer.materials[1].mainTexture = CustomLong.texture;
+			}
+		}
+		else if (PlayerPrefs.GetInt("FemaleUniform") == 3)
+		{
+			WWW CustomSweater = new WWW("file:///" + Application.streamingAssetsPath + "/CustomSweater.png");
+			yield return CustomSweater;
+			if (CustomSweater.error == null)
+			{
+				this.MyRenderer.materials[0].mainTexture = CustomSweater.texture;
+				this.MyRenderer.materials[1].mainTexture = CustomSweater.texture;
+			}
+		}
+		else if (PlayerPrefs.GetInt("FemaleUniform") == 4 || PlayerPrefs.GetInt("FemaleUniform") == 5)
+		{
+			WWW CustomBlazer = new WWW("file:///" + Application.streamingAssetsPath + "/CustomBlazer.png");
+			yield return CustomBlazer;
+			if (CustomBlazer.error == null)
+			{
+				this.MyRenderer.materials[0].mainTexture = CustomBlazer.texture;
+				this.MyRenderer.materials[1].mainTexture = CustomBlazer.texture;
+			}
+		}
+		base.StartCoroutine(this.ApplyCustomFace());
+		yield break;
 	}
 
-	public virtual IEnumerator ApplyCustomFace()
+	private IEnumerator ApplyCustomFace()
 	{
-		return new HomeYandereScript.$ApplyCustomFace$3141(this).GetEnumerator();
-	}
-
-	public virtual void Main()
-	{
+		WWW CustomFace = new WWW("file:///" + Application.streamingAssetsPath + "/CustomFace.png");
+		yield return CustomFace;
+		if (CustomFace.error == null)
+		{
+			this.MyRenderer.materials[2].mainTexture = CustomFace.texture;
+			this.FaceTexture = CustomFace.texture;
+		}
+		WWW CustomHair = new WWW("file:///" + Application.streamingAssetsPath + "/CustomHair.png");
+		yield return CustomHair;
+		if (CustomHair.error == null)
+		{
+			this.PonytailRenderer.material.mainTexture = CustomHair.texture;
+			this.PigtailR.material.mainTexture = CustomHair.texture;
+			this.PigtailL.material.mainTexture = CustomHair.texture;
+		}
+		WWW CustomDrills = new WWW("file:///" + Application.streamingAssetsPath + "/CustomDrills.png");
+		yield return CustomDrills;
+		if (CustomDrills.error == null)
+		{
+			this.Drills.materials[0].mainTexture = CustomDrills.texture;
+			this.Drills.materials[1].mainTexture = CustomDrills.texture;
+			this.Drills.materials[2].mainTexture = CustomDrills.texture;
+		}
+		yield break;
 	}
 }

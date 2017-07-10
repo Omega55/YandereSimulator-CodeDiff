@@ -1,20 +1,15 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class ParticleDeathScript : MonoBehaviour
 {
 	public ParticleSystem Particles;
 
-	public virtual void LateUpdate()
+	private void LateUpdate()
 	{
 		if (this.Particles.isPlaying && this.Particles.particleCount == 0)
 		{
-			UnityEngine.Object.Destroy(this.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

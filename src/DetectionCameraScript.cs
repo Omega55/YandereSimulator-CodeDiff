@@ -1,21 +1,13 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class DetectionCameraScript : MonoBehaviour
 {
 	public Transform YandereChan;
 
-	public virtual void Update()
+	private void Update()
 	{
-		this.transform.position = this.YandereChan.transform.position + Vector3.up * (float)100;
-		int num = 90;
-		Vector3 eulerAngles = this.transform.eulerAngles;
-		float num2 = eulerAngles.x = (float)num;
-		Vector3 vector = this.transform.eulerAngles = eulerAngles;
-	}
-
-	public virtual void Main()
-	{
+		base.transform.position = this.YandereChan.transform.position + Vector3.up * 100f;
+		base.transform.eulerAngles = new Vector3(90f, base.transform.eulerAngles.y, base.transform.eulerAngles.z);
 	}
 }

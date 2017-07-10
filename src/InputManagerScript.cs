@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class InputManagerScript : MonoBehaviour
 {
 	public bool TappedUp;
@@ -28,7 +27,7 @@ public class InputManagerScript : MonoBehaviour
 
 	public bool StickLeft;
 
-	public virtual void Update()
+	private void Update()
 	{
 		this.TappedUp = false;
 		this.TappedDown = false;
@@ -36,26 +35,12 @@ public class InputManagerScript : MonoBehaviour
 		this.TappedLeft = false;
 		if (Input.GetAxis("DpadY") > 0.5f)
 		{
-			if (!this.DPadUp)
-			{
-				this.TappedUp = true;
-			}
-			else
-			{
-				this.TappedUp = false;
-			}
+			this.TappedUp = !this.DPadUp;
 			this.DPadUp = true;
 		}
 		else if (Input.GetAxis("DpadY") < -0.5f)
 		{
-			if (!this.DPadDown)
-			{
-				this.TappedDown = true;
-			}
-			else
-			{
-				this.TappedDown = false;
-			}
+			this.TappedDown = !this.DPadDown;
 			this.DPadDown = true;
 		}
 		else
@@ -67,41 +52,13 @@ public class InputManagerScript : MonoBehaviour
 		{
 			if (Input.GetAxis("Vertical") > 0.5f)
 			{
-				if (!this.StickUp)
-				{
-					this.TappedUp = true;
-				}
-				else
-				{
-					this.TappedUp = false;
-				}
-				if (!this.TappedDown)
-				{
-					this.StickUp = true;
-				}
-				else
-				{
-					this.StickUp = false;
-				}
+				this.TappedUp = !this.StickUp;
+				this.StickUp = !this.TappedDown;
 			}
 			else if (Input.GetAxis("Vertical") < -0.5f)
 			{
-				if (!this.StickDown)
-				{
-					this.TappedDown = true;
-				}
-				else
-				{
-					this.TappedDown = false;
-				}
-				if (!this.TappedUp)
-				{
-					this.StickDown = true;
-				}
-				else
-				{
-					this.StickDown = false;
-				}
+				this.TappedDown = !this.StickDown;
+				this.StickDown = !this.TappedUp;
 			}
 			else
 			{
@@ -111,26 +68,12 @@ public class InputManagerScript : MonoBehaviour
 		}
 		if (Input.GetAxis("DpadX") > 0.5f)
 		{
-			if (!this.DPadRight)
-			{
-				this.TappedRight = true;
-			}
-			else
-			{
-				this.TappedRight = false;
-			}
+			this.TappedRight = !this.DPadRight;
 			this.DPadRight = true;
 		}
 		else if (Input.GetAxis("DpadX") < -0.5f)
 		{
-			if (!this.DPadLeft)
-			{
-				this.TappedLeft = true;
-			}
-			else
-			{
-				this.TappedLeft = false;
-			}
+			this.TappedLeft = !this.DPadLeft;
 			this.DPadLeft = true;
 		}
 		else
@@ -142,26 +85,12 @@ public class InputManagerScript : MonoBehaviour
 		{
 			if (Input.GetAxis("Horizontal") > 0.5f)
 			{
-				if (!this.StickRight)
-				{
-					this.TappedRight = true;
-				}
-				else
-				{
-					this.TappedRight = false;
-				}
+				this.TappedRight = !this.StickRight;
 				this.StickRight = true;
 			}
 			else if (Input.GetAxis("Horizontal") < -0.5f)
 			{
-				if (!this.StickLeft)
-				{
-					this.TappedLeft = true;
-				}
-				else
-				{
-					this.TappedLeft = false;
-				}
+				this.TappedLeft = !this.StickLeft;
 				this.StickLeft = true;
 			}
 			else
@@ -202,15 +131,11 @@ public class InputManagerScript : MonoBehaviour
 		}
 	}
 
-	public virtual void NoStick()
+	private void NoStick()
 	{
 		this.StickUp = false;
 		this.StickDown = false;
 		this.StickLeft = false;
 		this.StickRight = false;
-	}
-
-	public virtual void Main()
-	{
 	}
 }

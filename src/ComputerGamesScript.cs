@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class ComputerGamesScript : MonoBehaviour
 {
 	public PromptScript[] ComputerGames;
@@ -33,23 +31,17 @@ public class ComputerGamesScript : MonoBehaviour
 
 	public float Timer;
 
-	public int Subject;
+	public int Subject = 1;
 
 	public int GameID;
 
-	public int ID;
+	public int ID = 1;
 
 	public Color OriginalColor;
 
-	public ComputerGamesScript()
+	private void Start()
 	{
-		this.Subject = 1;
-		this.ID = 1;
-	}
-
-	public virtual void Start()
-	{
-		this.GameWindow.gameObject.active = false;
+		this.GameWindow.gameObject.SetActive(false);
 		this.DeactivateAllBenefits();
 		this.OriginalColor = this.Yandere.PowerUp.color;
 		if (PlayerPrefs.GetInt("Club") == 11)
@@ -62,11 +54,11 @@ public class ComputerGamesScript : MonoBehaviour
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.ShowWindow)
 		{
-			this.GameWindow.localScale = Vector3.Lerp(this.GameWindow.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+			this.GameWindow.localScale = Vector3.Lerp(this.GameWindow.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 			if (this.InputManager.TappedUp)
 			{
 				this.Subject--;
@@ -96,22 +88,22 @@ public class ComputerGamesScript : MonoBehaviour
 		}
 		else if (this.GameWindow.localScale.x > 0.1f)
 		{
-			this.GameWindow.localScale = Vector3.Lerp(this.GameWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+			this.GameWindow.localScale = Vector3.Lerp(this.GameWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
 		}
 		else
 		{
-			this.GameWindow.localScale = new Vector3((float)0, (float)0, (float)0);
-			this.GameWindow.gameObject.active = false;
+			this.GameWindow.localScale = Vector3.zero;
+			this.GameWindow.gameObject.SetActive(false);
 		}
 		if (this.Gaming)
 		{
 			this.targetRotation = Quaternion.LookRotation(new Vector3(this.ComputerGames[this.GameID].transform.position.x, this.Yandere.transform.position.y, this.ComputerGames[this.GameID].transform.position.z) - this.Yandere.transform.position);
-			this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, this.targetRotation, Time.deltaTime * (float)10);
+			this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
 			this.Yandere.MoveTowardsTarget(new Vector3(-25.155f, this.Chairs[this.GameID].transform.position.y, this.Chairs[this.GameID].transform.position.z));
 			this.Timer += Time.deltaTime;
-			if (this.Timer > (float)5)
+			if (this.Timer > 5f)
 			{
-				this.Yandere.PowerUp.gameObject.active = true;
+				this.Yandere.PowerUp.gameObject.SetActive(true);
 				this.Yandere.MyController.radius = 0.2f;
 				this.Yandere.CanMove = true;
 				this.Gaming = false;
@@ -119,14 +111,15 @@ public class ComputerGamesScript : MonoBehaviour
 				this.EnableChairs();
 			}
 		}
-		else if (this.Timer < (float)5)
+		else if (this.Timer < 5f)
 		{
 			this.ID = 1;
-			while (this.ID < Extensions.get_length(this.ComputerGames))
+			while (this.ID < this.ComputerGames.Length)
 			{
-				if (this.ComputerGames[this.ID].Circle[0].fillAmount == (float)0)
+				PromptScript promptScript = this.ComputerGames[this.ID];
+				if (promptScript.Circle[0].fillAmount == 0f)
 				{
-					this.ComputerGames[this.ID].Circle[0].fillAmount = (float)1;
+					promptScript.Circle[0].fillAmount = 1f;
 					this.GameID = this.ID;
 					if (this.ID == 1)
 					{
@@ -136,9 +129,9 @@ public class ComputerGamesScript : MonoBehaviour
 						this.PromptBar.Label[4].text = "Select";
 						this.PromptBar.UpdateButtons();
 						this.PromptBar.Show = true;
-						this.Yandere.Character.animation.Play(this.Yandere.IdleAnim);
+						this.Yandere.Character.GetComponent<Animation>().Play(this.Yandere.IdleAnim);
 						this.Yandere.CanMove = false;
-						this.GameWindow.gameObject.active = true;
+						this.GameWindow.gameObject.SetActive(true);
 						this.ShowWindow = true;
 					}
 					else
@@ -149,46 +142,40 @@ public class ComputerGamesScript : MonoBehaviour
 				this.ID++;
 			}
 		}
-		if (this.Yandere.PowerUp.gameObject.active)
+		if (this.Yandere.PowerUp.gameObject.activeInHierarchy)
 		{
 			this.Timer += Time.deltaTime;
-			float y = this.Yandere.PowerUp.transform.localPosition.y + Time.deltaTime;
-			Vector3 localPosition = this.Yandere.PowerUp.transform.localPosition;
-			float num = localPosition.y = y;
-			Vector3 vector = this.Yandere.PowerUp.transform.localPosition = localPosition;
+			this.Yandere.PowerUp.transform.localPosition = new Vector3(this.Yandere.PowerUp.transform.localPosition.x, this.Yandere.PowerUp.transform.localPosition.y + Time.deltaTime, this.Yandere.PowerUp.transform.localPosition.z);
 			this.Yandere.PowerUp.transform.LookAt(this.MainCamera.position);
-			float y2 = this.Yandere.PowerUp.transform.localEulerAngles.y + (float)180;
-			Vector3 localEulerAngles = this.Yandere.PowerUp.transform.localEulerAngles;
-			float num2 = localEulerAngles.y = y2;
-			Vector3 vector2 = this.Yandere.PowerUp.transform.localEulerAngles = localEulerAngles;
-			if (this.Yandere.PowerUp.color != new Color((float)1, (float)1, (float)1, (float)1))
+			this.Yandere.PowerUp.transform.localEulerAngles = new Vector3(this.Yandere.PowerUp.transform.localEulerAngles.x, this.Yandere.PowerUp.transform.localEulerAngles.y + 180f, this.Yandere.PowerUp.transform.localEulerAngles.z);
+			if (this.Yandere.PowerUp.color != new Color(1f, 1f, 1f, 1f))
 			{
 				this.Yandere.PowerUp.color = this.OriginalColor;
 			}
 			else
 			{
-				this.Yandere.PowerUp.color = new Color((float)1, (float)1, (float)1, (float)1);
+				this.Yandere.PowerUp.color = new Color(1f, 1f, 1f, 1f);
 			}
-			if (this.Timer > (float)6)
+			if (this.Timer > 6f)
 			{
-				this.Yandere.PowerUp.gameObject.active = false;
-				this.gameObject.active = false;
+				this.Yandere.PowerUp.gameObject.SetActive(false);
+				base.gameObject.SetActive(false);
 			}
 		}
 	}
 
-	public virtual void EnableGames()
+	public void EnableGames()
 	{
-		for (int i = 1; i < Extensions.get_length(this.ComputerGames); i++)
+		for (int i = 1; i < this.ComputerGames.Length; i++)
 		{
 			this.ComputerGames[i].enabled = true;
 		}
-		this.gameObject.active = true;
+		base.gameObject.SetActive(true);
 	}
 
-	public virtual void PlayGames()
+	private void PlayGames()
 	{
-		this.Yandere.Character.animation.CrossFade("f02_playingGames_01");
+		this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_playingGames_01");
 		this.Yandere.MyController.radius = 0.1f;
 		this.Yandere.CanMove = false;
 		this.Gaming = true;
@@ -196,37 +183,37 @@ public class ComputerGamesScript : MonoBehaviour
 		this.DisableGames();
 	}
 
-	public virtual void DisableGames()
+	public void DisableGames()
 	{
-		for (int i = 1; i < Extensions.get_length(this.ComputerGames); i++)
+		for (int i = 1; i < this.ComputerGames.Length; i++)
 		{
 			this.ComputerGames[i].enabled = false;
 			this.ComputerGames[i].Hide();
 		}
 		if (!this.Gaming)
 		{
-			this.gameObject.active = false;
+			base.gameObject.SetActive(false);
 		}
 	}
 
-	public virtual void EnableChairs()
+	private void EnableChairs()
 	{
-		for (int i = 1; i < Extensions.get_length(this.Chairs); i++)
+		for (int i = 1; i < this.Chairs.Length; i++)
 		{
 			this.Chairs[i].enabled = true;
 		}
-		this.gameObject.active = true;
+		base.gameObject.SetActive(true);
 	}
 
-	public virtual void DisableChairs()
+	private void DisableChairs()
 	{
-		for (int i = 1; i < Extensions.get_length(this.Chairs); i++)
+		for (int i = 1; i < this.Chairs.Length; i++)
 		{
 			this.Chairs[i].enabled = false;
 		}
 	}
 
-	public virtual void ActivateBenefit()
+	private void ActivateBenefit()
 	{
 		if (this.GameID == 1)
 		{
@@ -283,7 +270,7 @@ public class ComputerGamesScript : MonoBehaviour
 		this.Yandere.UpdateNumbness();
 	}
 
-	public virtual void DeactivateBenefit()
+	private void DeactivateBenefit()
 	{
 		if (this.GameID == 1)
 		{
@@ -340,7 +327,7 @@ public class ComputerGamesScript : MonoBehaviour
 		this.Yandere.UpdateNumbness();
 	}
 
-	public virtual void DeactivateAllBenefits()
+	public void DeactivateAllBenefits()
 	{
 		PlayerPrefs.SetInt("BiologyBonus", 0);
 		PlayerPrefs.SetInt("ChemistryBonus", 0);
@@ -359,7 +346,7 @@ public class ComputerGamesScript : MonoBehaviour
 		}
 	}
 
-	public virtual void UpdateHighlight()
+	private void UpdateHighlight()
 	{
 		if (this.Subject < 1)
 		{
@@ -369,13 +356,6 @@ public class ComputerGamesScript : MonoBehaviour
 		{
 			this.Subject = 1;
 		}
-		int num = 200 - this.Subject * 100;
-		Vector3 localPosition = this.Highlight.localPosition;
-		float num2 = localPosition.y = (float)num;
-		Vector3 vector = this.Highlight.localPosition = localPosition;
-	}
-
-	public virtual void Main()
-	{
+		this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 200f - (float)this.Subject * 100f, this.Highlight.localPosition.z);
 	}
 }

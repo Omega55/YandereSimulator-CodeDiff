@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class MythTreeScript : MonoBehaviour
 {
 	public UILabel EventSubtitle;
@@ -12,7 +11,7 @@ public class MythTreeScript : MonoBehaviour
 
 	public bool Spoken;
 
-	public virtual void Start()
+	private void Start()
 	{
 		if (PlayerPrefs.GetInt("Scheme_2_Stage") > 2)
 		{
@@ -20,29 +19,26 @@ public class MythTreeScript : MonoBehaviour
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
+		AudioSource component = base.GetComponent<AudioSource>();
 		if (!this.Spoken)
 		{
-			if (PlayerPrefs.GetInt("Scheme_2_Stage") == 2 && Vector3.Distance(this.Yandere.position, this.transform.position) < (float)5)
+			if (PlayerPrefs.GetInt("Scheme_2_Stage") == 2 && Vector3.Distance(this.Yandere.position, base.transform.position) < 5f)
 			{
-				this.EventSubtitle.transform.localScale = new Vector3((float)1, (float)1, (float)1);
+				this.EventSubtitle.transform.localScale = new Vector3(1f, 1f, 1f);
 				this.EventSubtitle.text = "...that...ring...";
 				this.Jukebox.Dip = 0.5f;
 				this.Spoken = true;
-				this.audio.Play();
+				component.Play();
 			}
 		}
-		else if (!this.audio.isPlaying)
+		else if (!component.isPlaying)
 		{
-			this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+			this.EventSubtitle.transform.localScale = Vector3.zero;
 			this.EventSubtitle.text = string.Empty;
-			this.Jukebox.Dip = (float)1;
+			this.Jukebox.Dip = 1f;
 			UnityEngine.Object.Destroy(this);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

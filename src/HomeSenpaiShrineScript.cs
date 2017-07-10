@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class HomeSenpaiShrineScript : MonoBehaviour
 {
 	public InputManagerScript InputManager;
@@ -32,35 +31,24 @@ public class HomeSenpaiShrineScript : MonoBehaviour
 
 	public float Rotation;
 
-	public int Selected;
+	public int Selected = 1;
 
 	public int ID;
 
-	public HomeSenpaiShrineScript()
-	{
-		this.Selected = 1;
-	}
-
-	public virtual void Start()
+	private void Start()
 	{
 		this.UpdateText();
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (!this.HomeYandere.CanMove && !this.PauseScreen.Show)
 		{
 			if (this.HomeCamera.ID == 6)
 			{
-				this.Rotation = Mathf.Lerp(this.Rotation, (float)135, Time.deltaTime * (float)10);
-				float rotation = this.Rotation;
-				Vector3 localEulerAngles = this.RightDoor.localEulerAngles;
-				float num = localEulerAngles.y = rotation;
-				Vector3 vector = this.RightDoor.localEulerAngles = localEulerAngles;
-				float y = this.Rotation * (float)-1;
-				Vector3 localEulerAngles2 = this.LeftDoor.localEulerAngles;
-				float num2 = localEulerAngles2.y = y;
-				Vector3 vector2 = this.LeftDoor.localEulerAngles = localEulerAngles2;
+				this.Rotation = Mathf.Lerp(this.Rotation, 135f, Time.deltaTime * 10f);
+				this.RightDoor.localEulerAngles = new Vector3(this.RightDoor.localEulerAngles.x, this.Rotation, this.RightDoor.localEulerAngles.z);
+				this.LeftDoor.localEulerAngles = new Vector3(this.LeftDoor.localEulerAngles.x, -this.Rotation, this.LeftDoor.localEulerAngles.z);
 				if (this.InputManager.TappedRight)
 				{
 					this.Selected++;
@@ -78,26 +66,20 @@ public class HomeSenpaiShrineScript : MonoBehaviour
 					this.HomeCamera.Destination = this.HomeCamera.Destinations[0];
 					this.HomeCamera.Target = this.HomeCamera.Targets[0];
 					this.HomeYandere.CanMove = true;
-					this.HomeYandere.active = true;
+					this.HomeYandere.gameObject.SetActive(true);
 					this.HomeWindow.Show = false;
 				}
 			}
 		}
 		else
 		{
-			this.Rotation = Mathf.Lerp(this.Rotation, (float)0, Time.deltaTime * (float)10);
-			float rotation2 = this.Rotation;
-			Vector3 localEulerAngles3 = this.RightDoor.localEulerAngles;
-			float num3 = localEulerAngles3.y = rotation2;
-			Vector3 vector3 = this.RightDoor.localEulerAngles = localEulerAngles3;
-			float rotation3 = this.Rotation;
-			Vector3 localEulerAngles4 = this.LeftDoor.localEulerAngles;
-			float num4 = localEulerAngles4.y = rotation3;
-			Vector3 vector4 = this.LeftDoor.localEulerAngles = localEulerAngles4;
+			this.Rotation = Mathf.Lerp(this.Rotation, 0f, Time.deltaTime * 10f);
+			this.RightDoor.localEulerAngles = new Vector3(this.RightDoor.localEulerAngles.x, this.Rotation, this.RightDoor.localEulerAngles.z);
+			this.LeftDoor.localEulerAngles = new Vector3(this.LeftDoor.localEulerAngles.x, this.Rotation, this.LeftDoor.localEulerAngles.z);
 		}
 	}
 
-	public virtual void UpdateText()
+	private void UpdateText()
 	{
 		if (this.Selected > 11)
 		{
@@ -109,9 +91,5 @@ public class HomeSenpaiShrineScript : MonoBehaviour
 		}
 		this.NameLabel.text = this.Names[this.Selected];
 		this.DescLabel.text = this.Descs[this.Selected];
-	}
-
-	public virtual void Main()
-	{
 	}
 }

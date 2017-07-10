@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-[Serializable]
 public class YanvaniaTitleScript : MonoBehaviour
 {
 	public InputManagerScript InputManager;
@@ -46,117 +46,99 @@ public class YanvaniaTitleScript : MonoBehaviour
 
 	public float ScrollSpeed;
 
-	public int Selected;
+	public int Selected = 1;
 
-	public YanvaniaTitleScript()
+	private void Start()
 	{
-		this.Selected = 1;
-	}
-
-	public virtual void Start()
-	{
-		this.Midori.transform.localPosition = new Vector3((float)1540, (float)0, (float)0);
-		this.Midori.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
-		this.Midori.gameObject.active = false;
+		this.Midori.transform.localPosition = new Vector3(1540f, 0f, 0f);
+		this.Midori.transform.localEulerAngles = Vector3.zero;
+		this.Midori.gameObject.SetActive(false);
 		if (PlayerPrefs.GetInt("DraculaDefeated") == 1)
 		{
 			PlayerPrefs.SetInt("Task_14_Status", 2);
-			this.SkipButton.active = true;
-			this.Logo.active = false;
+			this.SkipButton.SetActive(true);
+			this.Logo.gameObject.SetActive(false);
 		}
 		else
 		{
-			this.SkipButton.active = false;
+			this.SkipButton.SetActive(false);
 		}
-		this.Prologue.gameObject.active = false;
-		int num = -2665;
-		Vector3 localPosition = this.Prologue.localPosition;
-		float num2 = localPosition.y = (float)num;
-		Vector3 vector = this.Prologue.localPosition = localPosition;
-		int num3 = 1;
-		Color color = this.Darkness.color;
-		float num4 = color.a = (float)num3;
-		Color color2 = this.Darkness.color = color;
-		this.Buttons.alpha = (float)0;
-		int num5 = 0;
-		Color color3 = this.Logo.color;
-		float num6 = color3.a = (float)num5;
-		Color color4 = this.Logo.color = color3;
+		this.Prologue.gameObject.SetActive(false);
+		this.Prologue.localPosition = new Vector3(this.Prologue.localPosition.x, -2665f, this.Prologue.localPosition.z);
+		this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 1f);
+		this.Buttons.alpha = 0f;
+		this.Logo.color = new Color(this.Logo.color.r, this.Logo.color.g, this.Logo.color.b, 0f);
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (!this.Logo.active && Input.GetKeyDown("m"))
+		if (!this.Logo.gameObject.activeInHierarchy && Input.GetKeyDown("m"))
 		{
 			PlayerPrefs.SetInt("DraculaDefeated", 1);
 			PlayerPrefs.SetInt("MidoriEasterEgg", 1);
-			Application.LoadLevel(Application.loadedLevel);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
 		if (Input.GetKeyDown("end"))
 		{
 			PlayerPrefs.SetInt("DraculaDefeated", 1);
-			Application.LoadLevel(Application.loadedLevel);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
 		if (Input.GetKeyDown("`"))
 		{
 			PlayerPrefs.SetInt("DraculaDefeated", 0);
-			Application.LoadLevel(Application.loadedLevel);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
+		AudioSource component = base.GetComponent<AudioSource>();
 		if (!this.FadeOut)
 		{
-			if (this.Darkness.color.a > (float)0)
+			if (this.Darkness.color.a > 0f)
 			{
 				if (Input.GetButtonDown("A"))
 				{
 					this.Skip();
 				}
-				if (!this.ErrorWindow.active)
+				if (!this.ErrorWindow.activeInHierarchy)
 				{
-					float a = this.Darkness.color.a - Time.deltaTime;
-					Color color = this.Darkness.color;
-					float num = color.a = a;
-					Color color2 = this.Darkness.color = color;
+					this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a - Time.deltaTime);
 				}
 			}
-			else if (this.Darkness.color.a <= (float)0)
+			else if (this.Darkness.color.a <= 0f)
 			{
 				if (PlayerPrefs.GetInt("MidoriEasterEgg") == 0)
 				{
 					if (PlayerPrefs.GetInt("DraculaDefeated") == 1)
 					{
-						if (!this.Prologue.gameObject.active)
+						if (!this.Prologue.gameObject.activeInHierarchy)
 						{
-							this.Prologue.active = true;
-							this.audio.volume = 0.5f;
-							this.audio.loop = true;
-							this.audio.clip = this.BGM;
-							this.audio.Play();
+							this.Prologue.gameObject.SetActive(true);
+							component.volume = 0.5f;
+							component.loop = true;
+							component.clip = this.BGM;
+							component.Play();
 						}
 						if (Input.GetButtonDown("B"))
 						{
-							int num2 = 2501;
-							Vector3 localPosition = this.Prologue.localPosition;
-							float num3 = localPosition.y = (float)num2;
-							Vector3 vector = this.Prologue.localPosition = localPosition;
-							this.Prologue.audio.Stop();
+							this.Prologue.localPosition = new Vector3(this.Prologue.localPosition.x, 2501f, this.Prologue.localPosition.z);
+							this.Prologue.GetComponent<AudioSource>().Stop();
 						}
-						if (this.Prologue.localPosition.y > (float)2500)
+						if (this.Prologue.localPosition.y > 2500f)
 						{
-							if (this.audio.isPlaying)
+							if (component.isPlaying)
 							{
 								this.Midori.mainTexture = this.SadMidori;
-								Time.timeScale = (float)1;
-								this.Midori.gameObject.audio.Stop();
-								this.audio.Stop();
+								Time.timeScale = 1f;
+								this.Midori.gameObject.GetComponent<AudioSource>().Stop();
+								component.Stop();
 							}
 							if (!this.ErrorLeave)
 							{
-								this.ErrorWindow.active = true;
-								this.ErrorWindow.transform.localScale = Vector3.Lerp(this.ErrorWindow.transform.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+								this.ErrorWindow.SetActive(true);
+								this.ErrorWindow.transform.localScale = Vector3.Lerp(this.ErrorWindow.transform.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 								if (this.ErrorWindow.transform.localScale.x > 0.9f && Input.anyKeyDown)
 								{
-									this.ErrorWindow.audio.clip = this.ExitSound;
-									this.ErrorWindow.audio.Play();
+									AudioSource component2 = this.ErrorWindow.GetComponent<AudioSource>();
+									component2.clip = this.ExitSound;
+									component2.Play();
 									this.ErrorLeave = true;
 								}
 							}
@@ -167,39 +149,33 @@ public class YanvaniaTitleScript : MonoBehaviour
 						}
 						else
 						{
-							float y = this.Prologue.localPosition.y + Time.deltaTime * this.ScrollSpeed;
-							Vector3 localPosition2 = this.Prologue.localPosition;
-							float num4 = localPosition2.y = y;
-							Vector3 vector2 = this.Prologue.localPosition = localPosition2;
+							this.Prologue.localPosition = new Vector3(this.Prologue.localPosition.x, this.Prologue.localPosition.y + Time.deltaTime * this.ScrollSpeed, this.Prologue.localPosition.z);
 							if (Input.GetKeyDown("="))
 							{
-								Time.timeScale = (float)100;
+								Time.timeScale = 100f;
 							}
 							if (Input.GetKeyDown("-"))
 							{
-								Time.timeScale = (float)1;
+								Time.timeScale = 1f;
 							}
 						}
 					}
-					else if (!this.audio.isPlaying)
+					else if (!component.isPlaying)
 					{
-						if (this.Logo.color.a == (float)0)
+						if (this.Logo.color.a == 0f)
 						{
-							this.audio.Play();
+							component.Play();
 						}
 						else
 						{
-							this.audio.loop = true;
-							this.audio.clip = this.BGM;
-							this.audio.Play();
+							component.loop = true;
+							component.clip = this.BGM;
+							component.Play();
 						}
 					}
-					else if (this.audio.clip != this.BGM)
+					else if (component.clip != this.BGM)
 					{
-						float a2 = this.Logo.color.a + Time.deltaTime;
-						Color color3 = this.Logo.color;
-						float num5 = color3.a = a2;
-						Color color4 = this.Logo.color = color3;
+						this.Logo.color = new Color(this.Logo.color.r, this.Logo.color.g, this.Logo.color.b, this.Logo.color.a + Time.deltaTime);
 						if (Input.GetButtonDown("A"))
 						{
 							this.Skip();
@@ -207,20 +183,17 @@ public class YanvaniaTitleScript : MonoBehaviour
 					}
 					else if (!this.FadeButtons)
 					{
-						this.Controls.alpha = Mathf.MoveTowards(this.Controls.alpha, (float)0, Time.deltaTime);
-						this.Credits.alpha = Mathf.MoveTowards(this.Credits.alpha, (float)0, Time.deltaTime);
-						if (this.Controls.alpha == (float)0 && this.Credits.alpha == (float)0)
+						this.Controls.alpha = Mathf.MoveTowards(this.Controls.alpha, 0f, Time.deltaTime);
+						this.Credits.alpha = Mathf.MoveTowards(this.Credits.alpha, 0f, Time.deltaTime);
+						if (this.Controls.alpha == 0f && this.Credits.alpha == 0f)
 						{
-							int num6 = -100 - 100 * this.Selected;
-							Vector3 localPosition3 = this.Highlight.localPosition;
-							float num7 = localPosition3.y = (float)num6;
-							Vector3 vector3 = this.Highlight.localPosition = localPosition3;
-							this.Buttons.alpha = this.Buttons.alpha + Time.deltaTime;
-							if (this.Buttons.alpha >= (float)1)
+							this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, -100f - 100f * (float)this.Selected, this.Highlight.localPosition.z);
+							this.Buttons.alpha += Time.deltaTime;
+							if (this.Buttons.alpha >= 1f)
 							{
 								if (Input.GetButtonDown("A"))
 								{
-									UnityEngine.Object.Instantiate(this.ButtonEffect, this.Highlight.position, Quaternion.identity);
+									UnityEngine.Object.Instantiate<GameObject>(this.ButtonEffect, this.Highlight.position, Quaternion.identity);
 									if (this.Selected == 1 || this.Selected == 4)
 									{
 										this.FadeOut = true;
@@ -230,9 +203,10 @@ public class YanvaniaTitleScript : MonoBehaviour
 										this.FadeButtons = true;
 									}
 								}
+								AudioSource component3 = this.Highlight.gameObject.GetComponent<AudioSource>();
 								if (this.InputManager.TappedUp)
 								{
-									this.Highlight.gameObject.audio.Play();
+									component3.Play();
 									this.Selected--;
 									if (this.Selected < 1)
 									{
@@ -241,7 +215,7 @@ public class YanvaniaTitleScript : MonoBehaviour
 								}
 								if (this.InputManager.TappedDown)
 								{
-									this.Highlight.gameObject.audio.Play();
+									component3.Play();
 									this.Selected++;
 									if (this.Selected > 4)
 									{
@@ -253,39 +227,33 @@ public class YanvaniaTitleScript : MonoBehaviour
 					}
 					else
 					{
-						this.Buttons.alpha = this.Buttons.alpha - Time.deltaTime;
-						if (this.Buttons.alpha == (float)0)
+						this.Buttons.alpha -= Time.deltaTime;
+						if (this.Buttons.alpha == 0f)
 						{
 							if (this.Selected == 2)
 							{
-								this.Controls.alpha = Mathf.MoveTowards(this.Controls.alpha, (float)1, Time.deltaTime);
+								this.Controls.alpha = Mathf.MoveTowards(this.Controls.alpha, 1f, Time.deltaTime);
 							}
 							else
 							{
-								this.Credits.alpha = Mathf.MoveTowards(this.Credits.alpha, (float)1, Time.deltaTime);
+								this.Credits.alpha = Mathf.MoveTowards(this.Credits.alpha, 1f, Time.deltaTime);
 							}
 						}
-						if ((this.Controls.alpha == (float)1 || this.Credits.alpha == (float)1) && Input.GetButtonDown("B"))
+						if ((this.Controls.alpha == 1f || this.Credits.alpha == 1f) && Input.GetButtonDown("B"))
 						{
-							UnityEngine.Object.Instantiate(this.ButtonEffect, this.BackButtons[this.Selected].position, Quaternion.identity);
+							UnityEngine.Object.Instantiate<GameObject>(this.ButtonEffect, this.BackButtons[this.Selected].position, Quaternion.identity);
 							this.FadeButtons = false;
 						}
 					}
 				}
 				else
 				{
-					this.Prologue.audio.enabled = false;
-					this.Midori.gameObject.active = true;
-					this.ScrollSpeed = (float)60;
-					float x = Mathf.Lerp(this.Midori.transform.localPosition.x, (float)875, Time.deltaTime * (float)2);
-					Vector3 localPosition4 = this.Midori.transform.localPosition;
-					float num8 = localPosition4.x = x;
-					Vector3 vector4 = this.Midori.transform.localPosition = localPosition4;
-					float z = Mathf.Lerp(this.Midori.transform.localEulerAngles.z, (float)45, Time.deltaTime * (float)2);
-					Vector3 localEulerAngles = this.Midori.transform.localEulerAngles;
-					float num9 = localEulerAngles.z = z;
-					Vector3 vector5 = this.Midori.transform.localEulerAngles = localEulerAngles;
-					if (this.Midori.gameObject.audio.time > (float)3)
+					this.Prologue.GetComponent<AudioSource>().enabled = false;
+					this.Midori.gameObject.SetActive(true);
+					this.ScrollSpeed = 60f;
+					this.Midori.transform.localPosition = new Vector3(Mathf.Lerp(this.Midori.transform.localPosition.x, 875f, Time.deltaTime * 2f), this.Midori.transform.localPosition.y, this.Midori.transform.localPosition.z);
+					this.Midori.transform.localEulerAngles = new Vector3(this.Midori.transform.localEulerAngles.x, this.Midori.transform.localEulerAngles.y, Mathf.Lerp(this.Midori.transform.localEulerAngles.z, 45f, Time.deltaTime * 2f));
+					if (this.Midori.gameObject.GetComponent<AudioSource>().time > 3f)
 					{
 						PlayerPrefs.SetInt("MidoriEasterEgg", 0);
 					}
@@ -294,46 +262,34 @@ public class YanvaniaTitleScript : MonoBehaviour
 		}
 		else
 		{
-			this.ErrorWindow.transform.localScale = Vector3.Lerp(this.ErrorWindow.transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-			float a3 = this.Darkness.color.a + Time.deltaTime;
-			Color color5 = this.Darkness.color;
-			float num10 = color5.a = a3;
-			Color color6 = this.Darkness.color = color5;
-			this.audio.volume = this.audio.volume - Time.deltaTime;
-			if (this.Darkness.color.a >= (float)1)
+			this.ErrorWindow.transform.localScale = Vector3.Lerp(this.ErrorWindow.transform.localScale, Vector3.zero, Time.deltaTime * 10f);
+			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a + Time.deltaTime);
+			component.volume -= Time.deltaTime;
+			if (this.Darkness.color.a >= 1f)
 			{
 				if (PlayerPrefs.GetInt("DraculaDefeated") == 1)
 				{
-					Application.LoadLevel("HomeScene");
+					SceneManager.LoadScene("HomeScene");
 				}
 				else if (this.Selected == 1)
 				{
-					Application.LoadLevel("YanvaniaScene");
+					SceneManager.LoadScene("YanvaniaScene");
 				}
 				else
 				{
-					Application.LoadLevel("HomeScene");
+					SceneManager.LoadScene("HomeScene");
 				}
 			}
 		}
 	}
 
-	public virtual void Skip()
+	private void Skip()
 	{
-		int num = 0;
-		Color color = this.Darkness.color;
-		float num2 = color.a = (float)num;
-		Color color2 = this.Darkness.color = color;
-		int num3 = 1;
-		Color color3 = this.Logo.color;
-		float num4 = color3.a = (float)num3;
-		Color color4 = this.Logo.color = color3;
-		this.audio.loop = true;
-		this.audio.clip = this.BGM;
-		this.audio.Play();
-	}
-
-	public virtual void Main()
-	{
+		this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 0f);
+		this.Logo.color = new Color(this.Logo.color.r, this.Logo.color.g, this.Logo.color.b, 1f);
+		AudioSource component = base.GetComponent<AudioSource>();
+		component.loop = true;
+		component.clip = this.BGM;
+		component.Play();
 	}
 }

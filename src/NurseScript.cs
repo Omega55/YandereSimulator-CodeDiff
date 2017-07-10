@@ -1,24 +1,21 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class NurseScript : MonoBehaviour
 {
 	public GameObject Character;
 
 	public Transform SkirtCenter;
 
-	public virtual void LateUpdate()
+	private void Awake()
 	{
-		int num = -15;
-		Vector3 localEulerAngles = this.SkirtCenter.localEulerAngles;
-		float num2 = localEulerAngles.x = (float)num;
-		Vector3 vector = this.SkirtCenter.localEulerAngles = localEulerAngles;
+		Animation component = this.Character.GetComponent<Animation>();
+		component["f02_noBlink_00"].layer = 1;
+		component.Blend("f02_noBlink_00");
 	}
 
-	public virtual void Main()
+	private void LateUpdate()
 	{
-		this.Character.animation["f02_noBlink_00"].layer = 1;
-		this.Character.animation.Blend("f02_noBlink_00");
+		this.SkirtCenter.localEulerAngles = new Vector3(-15f, this.SkirtCenter.localEulerAngles.y, this.SkirtCenter.localEulerAngles.z);
 	}
 }

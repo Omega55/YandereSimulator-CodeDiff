@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Boo.Lang.Runtime;
 using JsonFx.Json;
 using UnityEngine;
-using UnityScript.Lang;
+using UnityEngine.SceneManagement;
 
-[Serializable]
 public class JsonScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
@@ -33,7 +31,7 @@ public class JsonScript : MonoBehaviour
 
 	public float[] StudentBreasts;
 
-	public int[] StudentStrengths;
+	public float[] StudentStrengths;
 
 	public string[] StudentHairstyles;
 
@@ -47,11 +45,11 @@ public class JsonScript : MonoBehaviour
 
 	public bool[] StudentSuccess;
 
-	public UnityScript.Lang.Array[] StudentTimes;
+	public float[][] StudentTimes;
 
-	public UnityScript.Lang.Array[] StudentDestinations;
+	public string[][] StudentDestinations;
 
-	public UnityScript.Lang.Array[] StudentActions;
+	public string[][] StudentActions;
 
 	public int TotalStudents;
 
@@ -60,14 +58,6 @@ public class JsonScript : MonoBehaviour
 	private float[] TempFloatArray;
 
 	private int[] TempIntArray;
-
-	private string TempString;
-
-	private float TempFloat;
-
-	private int TempInt;
-
-	private int ID;
 
 	public string[] CreditsNames;
 
@@ -123,140 +113,122 @@ public class JsonScript : MonoBehaviour
 
 	public int[] Topic25;
 
-	public virtual Dictionary<string, object>[] StudentData()
+	private Dictionary<string, object>[] StudentData()
 	{
-		string text = Path.Combine("JSON", this.StudentFileName + ".json");
-		text = Path.Combine(Application.streamingAssetsPath, text);
-		string value = File.ReadAllText(text);
-		return JsonReader.Deserialize(value) as Dictionary<string, object>[];
+		string path = Path.Combine(Application.streamingAssetsPath, Path.Combine("JSON", this.StudentFileName + ".json"));
+		string value = File.ReadAllText(path);
+		return JsonReader.Deserialize<Dictionary<string, object>[]>(value);
 	}
 
-	public virtual Dictionary<string, object>[] TopicData()
+	private Dictionary<string, object>[] TopicData()
 	{
-		string text = Path.Combine("JSON", this.TopicFileName + ".json");
-		text = Path.Combine(Application.streamingAssetsPath, text);
-		string value = File.ReadAllText(text);
-		return JsonReader.Deserialize(value) as Dictionary<string, object>[];
+		string path = Path.Combine(Application.streamingAssetsPath, Path.Combine("JSON", this.TopicFileName + ".json"));
+		string value = File.ReadAllText(path);
+		return JsonReader.Deserialize<Dictionary<string, object>[]>(value);
 	}
 
-	public virtual Dictionary<string, object>[] CreditsData()
+	private Dictionary<string, object>[] CreditsData()
 	{
-		string text = Path.Combine("JSON", this.CreditsFileName + ".json");
-		text = Path.Combine(Application.streamingAssetsPath, text);
-		string value = File.ReadAllText(text);
-		return JsonReader.Deserialize(value) as Dictionary<string, object>[];
+		string path = Path.Combine(Application.streamingAssetsPath, Path.Combine("JSON", this.CreditsFileName + ".json"));
+		string value = File.ReadAllText(path);
+		return JsonReader.Deserialize<Dictionary<string, object>[]>(value);
 	}
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.StudentTimes = new UnityScript.Lang.Array[this.TotalStudents + 1];
-		this.StudentDestinations = new UnityScript.Lang.Array[this.TotalStudents + 1];
-		this.StudentActions = new UnityScript.Lang.Array[this.TotalStudents + 1];
-		int i = 0;
-		Dictionary<string, object>[] array = this.StudentData();
-		int length = array.Length;
-		while (i < length)
+		this.StudentTimes = new float[this.TotalStudents + 1][];
+		this.StudentDestinations = new string[this.TotalStudents + 1][];
+		this.StudentActions = new string[this.TotalStudents + 1][];
+		foreach (Dictionary<string, object> dictionary in this.StudentData())
 		{
-			this.ID = TFUtils.LoadInt(array[i], "ID");
-			if (RuntimeServices.EqualityOperator(this.ID, null) || this.ID == 0)
+			int num = TFUtils.LoadInt(dictionary, "ID");
+			if (num == 0)
 			{
 				break;
 			}
-			this.StudentNames[this.ID] = TFUtils.LoadString(array[i], "Name");
-			this.StudentGenders[this.ID] = TFUtils.LoadInt(array[i], "Gender");
-			this.StudentClasses[this.ID] = TFUtils.LoadInt(array[i], "Class");
-			this.StudentSeats[this.ID] = TFUtils.LoadInt(array[i], "Seat");
-			this.StudentClubs[this.ID] = TFUtils.LoadInt(array[i], "Club");
-			this.StudentPersonas[this.ID] = TFUtils.LoadInt(array[i], "Persona");
-			this.StudentCrushes[this.ID] = TFUtils.LoadInt(array[i], "Crush");
-			this.StudentBreasts[this.ID] = TFUtils.LoadFloat(array[i], "BreastSize");
-			this.StudentStrengths[this.ID] = (int)TFUtils.LoadFloat(array[i], "Strength");
-			this.StudentHairstyles[this.ID] = TFUtils.LoadString(array[i], "Hairstyle");
-			this.StudentColors[this.ID] = TFUtils.LoadString(array[i], "Color");
-			this.StudentEyes[this.ID] = TFUtils.LoadString(array[i], "Eyes");
-			this.StudentStockings[this.ID] = TFUtils.LoadString(array[i], "Stockings");
-			this.StudentAccessories[this.ID] = TFUtils.LoadString(array[i], "Accessory");
-			this.StudentSuccess[this.ID] = true;
-			if (PlayerPrefs.GetInt("HighPopulation") == 1 && this.StudentNames[this.ID] == "Unknown")
+			this.StudentNames[num] = TFUtils.LoadString(dictionary, "Name");
+			this.StudentGenders[num] = TFUtils.LoadInt(dictionary, "Gender");
+			this.StudentClasses[num] = TFUtils.LoadInt(dictionary, "Class");
+			this.StudentSeats[num] = TFUtils.LoadInt(dictionary, "Seat");
+			this.StudentClubs[num] = TFUtils.LoadInt(dictionary, "Club");
+			this.StudentPersonas[num] = TFUtils.LoadInt(dictionary, "Persona");
+			this.StudentCrushes[num] = TFUtils.LoadInt(dictionary, "Crush");
+			this.StudentBreasts[num] = TFUtils.LoadFloat(dictionary, "BreastSize");
+			this.StudentStrengths[num] = TFUtils.LoadFloat(dictionary, "Strength");
+			this.StudentHairstyles[num] = TFUtils.LoadString(dictionary, "Hairstyle");
+			this.StudentColors[num] = TFUtils.LoadString(dictionary, "Color");
+			this.StudentEyes[num] = TFUtils.LoadString(dictionary, "Eyes");
+			this.StudentStockings[num] = TFUtils.LoadString(dictionary, "Stockings");
+			this.StudentAccessories[num] = TFUtils.LoadString(dictionary, "Accessory");
+			this.StudentSuccess[num] = true;
+			if (PlayerPrefs.GetInt("HighPopulation") == 1 && this.StudentNames[num].Equals("Unknown"))
 			{
-				this.StudentNames[this.ID] = "Random";
+				this.StudentNames[num] = "Random";
 			}
-			this.TempString = TFUtils.LoadString(array[i], "ScheduleTime");
-			this.ConstructTempFloatArray();
-			this.StudentTimes[this.ID] = this.TempFloatArray;
-			this.TempString = TFUtils.LoadString(array[i], "ScheduleDestination");
-			this.ConstructTempStringArray();
-			this.StudentDestinations[this.ID] = this.TempStringArray;
-			this.TempString = TFUtils.LoadString(array[i], "ScheduleAction");
-			this.ConstructTempStringArray();
-			this.StudentActions[this.ID] = this.TempStringArray;
-			i++;
+			this.ConstructTempFloatArray(TFUtils.LoadString(dictionary, "ScheduleTime"));
+			this.StudentTimes[num] = this.TempFloatArray;
+			this.ConstructTempStringArray(TFUtils.LoadString(dictionary, "ScheduleDestination"));
+			this.StudentDestinations[num] = this.TempStringArray;
+			this.ConstructTempStringArray(TFUtils.LoadString(dictionary, "ScheduleAction"));
+			this.StudentActions[num] = this.TempStringArray;
 		}
-		if (Application.loadedLevelName == "SchoolScene")
+		if (SceneManager.GetActiveScene().name.Equals("SchoolScene"))
 		{
-			int j = 0;
-			Dictionary<string, object>[] array2 = this.TopicData();
-			int length2 = array2.Length;
-			while (j < length2)
+			foreach (Dictionary<string, object> d in this.TopicData())
 			{
-				this.ID = TFUtils.LoadInt(array2[j], "ID");
-				if (RuntimeServices.EqualityOperator(this.ID, null) || this.ID == 0)
+				int num2 = TFUtils.LoadInt(d, "ID");
+				if (num2 == 0)
 				{
 					break;
 				}
-				this.Topic1[this.ID] = TFUtils.LoadInt(array2[j], "1");
-				this.Topic2[this.ID] = TFUtils.LoadInt(array2[j], "2");
-				this.Topic3[this.ID] = TFUtils.LoadInt(array2[j], "3");
-				this.Topic4[this.ID] = TFUtils.LoadInt(array2[j], "4");
-				this.Topic5[this.ID] = TFUtils.LoadInt(array2[j], "5");
-				this.Topic6[this.ID] = TFUtils.LoadInt(array2[j], "6");
-				this.Topic7[this.ID] = TFUtils.LoadInt(array2[j], "7");
-				this.Topic8[this.ID] = TFUtils.LoadInt(array2[j], "8");
-				this.Topic9[this.ID] = TFUtils.LoadInt(array2[j], "9");
-				this.Topic10[this.ID] = TFUtils.LoadInt(array2[j], "10");
-				this.Topic11[this.ID] = TFUtils.LoadInt(array2[j], "11");
-				this.Topic12[this.ID] = TFUtils.LoadInt(array2[j], "12");
-				this.Topic13[this.ID] = TFUtils.LoadInt(array2[j], "13");
-				this.Topic14[this.ID] = TFUtils.LoadInt(array2[j], "14");
-				this.Topic15[this.ID] = TFUtils.LoadInt(array2[j], "15");
-				this.Topic16[this.ID] = TFUtils.LoadInt(array2[j], "16");
-				this.Topic17[this.ID] = TFUtils.LoadInt(array2[j], "17");
-				this.Topic18[this.ID] = TFUtils.LoadInt(array2[j], "18");
-				this.Topic19[this.ID] = TFUtils.LoadInt(array2[j], "19");
-				this.Topic20[this.ID] = TFUtils.LoadInt(array2[j], "20");
-				this.Topic21[this.ID] = TFUtils.LoadInt(array2[j], "21");
-				this.Topic22[this.ID] = TFUtils.LoadInt(array2[j], "22");
-				this.Topic23[this.ID] = TFUtils.LoadInt(array2[j], "23");
-				this.Topic24[this.ID] = TFUtils.LoadInt(array2[j], "24");
-				this.Topic25[this.ID] = TFUtils.LoadInt(array2[j], "25");
-				j++;
+				this.Topic1[num2] = TFUtils.LoadInt(d, "1");
+				this.Topic2[num2] = TFUtils.LoadInt(d, "2");
+				this.Topic3[num2] = TFUtils.LoadInt(d, "3");
+				this.Topic4[num2] = TFUtils.LoadInt(d, "4");
+				this.Topic5[num2] = TFUtils.LoadInt(d, "5");
+				this.Topic6[num2] = TFUtils.LoadInt(d, "6");
+				this.Topic7[num2] = TFUtils.LoadInt(d, "7");
+				this.Topic8[num2] = TFUtils.LoadInt(d, "8");
+				this.Topic9[num2] = TFUtils.LoadInt(d, "9");
+				this.Topic10[num2] = TFUtils.LoadInt(d, "10");
+				this.Topic11[num2] = TFUtils.LoadInt(d, "11");
+				this.Topic12[num2] = TFUtils.LoadInt(d, "12");
+				this.Topic13[num2] = TFUtils.LoadInt(d, "13");
+				this.Topic14[num2] = TFUtils.LoadInt(d, "14");
+				this.Topic15[num2] = TFUtils.LoadInt(d, "15");
+				this.Topic16[num2] = TFUtils.LoadInt(d, "16");
+				this.Topic17[num2] = TFUtils.LoadInt(d, "17");
+				this.Topic18[num2] = TFUtils.LoadInt(d, "18");
+				this.Topic19[num2] = TFUtils.LoadInt(d, "19");
+				this.Topic20[num2] = TFUtils.LoadInt(d, "20");
+				this.Topic21[num2] = TFUtils.LoadInt(d, "21");
+				this.Topic22[num2] = TFUtils.LoadInt(d, "22");
+				this.Topic23[num2] = TFUtils.LoadInt(d, "23");
+				this.Topic24[num2] = TFUtils.LoadInt(d, "24");
+				this.Topic25[num2] = TFUtils.LoadInt(d, "25");
 			}
 			this.ReplaceDeadTeachers();
 		}
-		if (Application.loadedLevelName == "CreditsScene")
+		if (SceneManager.GetActiveScene().name.Equals("CreditsScene"))
 		{
-			int k = 0;
-			Dictionary<string, object>[] array3 = this.CreditsData();
-			int length3 = array3.Length;
-			while (k < length3)
+			foreach (Dictionary<string, object> dictionary2 in this.CreditsData())
 			{
-				this.ID = TFUtils.LoadInt(array3[k], "ID");
-				if (RuntimeServices.EqualityOperator(this.ID, null) || this.ID == 0)
+				int num3 = TFUtils.LoadInt(dictionary2, "ID");
+				if (num3 == 0)
 				{
 					break;
 				}
-				this.CreditsNames[this.ID] = TFUtils.LoadString(array3[k], "Name");
-				this.CreditsSizes[this.ID] = TFUtils.LoadInt(array3[k], "Size");
-				k++;
+				this.CreditsNames[num3] = TFUtils.LoadString(dictionary2, "Name");
+				this.CreditsSizes[num3] = TFUtils.LoadInt(dictionary2, "Size");
 			}
 		}
 	}
 
-	public virtual void ConstructTempFloatArray()
+	private void ConstructTempFloatArray(string tempString)
 	{
-		this.TempStringArray = this.TempString.Split(new char[]
+		this.TempStringArray = tempString.Split(new char[]
 		{
-			"_"[0]
+			'_'
 		});
 		this.TempFloatArray = new float[this.TempStringArray.Length];
 		for (int i = 0; i < this.TempStringArray.Length; i++)
@@ -265,62 +237,54 @@ public class JsonScript : MonoBehaviour
 		}
 	}
 
-	public virtual void ConstructTempStringArray()
+	private void ConstructTempStringArray(string tempString)
 	{
-		this.TempStringArray = this.TempString.Split(new char[]
+		this.TempStringArray = tempString.Split(new char[]
 		{
-			"_"[0]
+			'_'
 		});
 	}
 
-	public virtual void ReplaceDeadTeachers()
+	private void ReplaceDeadTeachers()
 	{
-		this.ID = 94;
-		while (this.ID < 101)
+		for (int i = 94; i < 101; i++)
 		{
-			if (PlayerPrefs.GetInt("Student_" + this.ID + "_Dead") == 1)
+			if (PlayerPrefs.GetInt("Student_" + i.ToString() + "_Dead") == 1)
 			{
-				PlayerPrefs.SetInt("Student_" + this.ID + "_Replaced", 1);
-				PlayerPrefs.SetInt("Student_" + this.ID + "_Dead", 0);
-				string value = string.Empty + this.StudentManager.FirstNames[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentManager.FirstNames))] + " " + this.StudentManager.LastNames[UnityEngine.Random.Range(0, Extensions.get_length(this.StudentManager.LastNames))];
-				PlayerPrefs.SetString("Student_" + this.ID + "_Name", value);
-				PlayerPrefs.SetFloat("Student_" + this.ID + "_BustSize", UnityEngine.Random.Range(1f, 1.5f));
-				PlayerPrefs.SetString("Student_" + this.ID + "_Hairstyle", string.Empty + UnityEngine.Random.Range(1, 8));
-				float value2 = UnityEngine.Random.Range((float)0, 1f);
-				float value3 = UnityEngine.Random.Range((float)0, 1f);
-				float value4 = UnityEngine.Random.Range((float)0, 1f);
-				PlayerPrefs.SetFloat("Student_" + this.ID + "_ColorR", value2);
-				PlayerPrefs.SetFloat("Student_" + this.ID + "_ColorG", value3);
-				PlayerPrefs.SetFloat("Student_" + this.ID + "_ColorB", value4);
-				value2 = UnityEngine.Random.Range((float)0, 1f);
-				value3 = UnityEngine.Random.Range((float)0, 1f);
-				value4 = UnityEngine.Random.Range((float)0, 1f);
-				PlayerPrefs.SetFloat("Student_" + this.ID + "_EyeColorR", value2);
-				PlayerPrefs.SetFloat("Student_" + this.ID + "_EyeColorG", value3);
-				PlayerPrefs.SetFloat("Student_" + this.ID + "_EyeColorB", value4);
-				PlayerPrefs.SetString("Student_" + this.ID + "_Accessory", string.Empty + UnityEngine.Random.Range(1, 7));
+				PlayerPrefs.SetInt("Student_" + i.ToString() + "_Replaced", 1);
+				PlayerPrefs.SetInt("Student_" + i.ToString() + "_Dead", 0);
+				string value = this.StudentManager.FirstNames[UnityEngine.Random.Range(0, this.StudentManager.FirstNames.Length)] + " " + this.StudentManager.LastNames[UnityEngine.Random.Range(0, this.StudentManager.LastNames.Length)];
+				PlayerPrefs.SetString("Student_" + i.ToString() + "_Name", value);
+				PlayerPrefs.SetFloat("Student_" + i.ToString() + "_BustSize", UnityEngine.Random.Range(1f, 1.5f));
+				PlayerPrefs.SetString("Student_" + i.ToString() + "_Hairstyle", UnityEngine.Random.Range(1, 8).ToString());
+				float value2 = UnityEngine.Random.Range(0f, 1f);
+				float value3 = UnityEngine.Random.Range(0f, 1f);
+				float value4 = UnityEngine.Random.Range(0f, 1f);
+				PlayerPrefs.SetFloat("Student_" + i.ToString() + "_ColorR", value2);
+				PlayerPrefs.SetFloat("Student_" + i.ToString() + "_ColorG", value3);
+				PlayerPrefs.SetFloat("Student_" + i.ToString() + "_ColorB", value4);
+				value2 = UnityEngine.Random.Range(0f, 1f);
+				value3 = UnityEngine.Random.Range(0f, 1f);
+				value4 = UnityEngine.Random.Range(0f, 1f);
+				PlayerPrefs.SetFloat("Student_" + i.ToString() + "_EyeColorR", value2);
+				PlayerPrefs.SetFloat("Student_" + i.ToString() + "_EyeColorG", value3);
+				PlayerPrefs.SetFloat("Student_" + i.ToString() + "_EyeColorB", value4);
+				PlayerPrefs.SetString("Student_" + i.ToString() + "_Accessory", UnityEngine.Random.Range(1, 7).ToString());
 			}
-			this.ID++;
 		}
-		this.ID = 94;
-		while (this.ID < 100)
+		for (int j = 94; j < 100; j++)
 		{
-			if (PlayerPrefs.GetInt("Student_" + this.ID + "_Replaced") == 1)
+			if (PlayerPrefs.GetInt("Student_" + j.ToString() + "_Replaced") == 1)
 			{
-				this.StudentNames[this.ID] = PlayerPrefs.GetString("Student_" + this.ID + "_Name");
-				this.StudentBreasts[this.ID] = PlayerPrefs.GetFloat("Student_" + this.ID + "_BustSize");
-				this.StudentHairstyles[this.ID] = PlayerPrefs.GetString("Student_" + this.ID + "_Hairstyle");
-				this.StudentAccessories[this.ID] = PlayerPrefs.GetString("Student_" + this.ID + "_Accessory");
-				if (this.ID == 100)
+				this.StudentNames[j] = PlayerPrefs.GetString("Student_" + j.ToString() + "_Name");
+				this.StudentBreasts[j] = PlayerPrefs.GetFloat("Student_" + j.ToString() + "_BustSize");
+				this.StudentHairstyles[j] = PlayerPrefs.GetString("Student_" + j.ToString() + "_Hairstyle");
+				this.StudentAccessories[j] = PlayerPrefs.GetString("Student_" + j.ToString() + "_Accessory");
+				if (j == 100)
 				{
 					this.StudentAccessories[100] = "7";
 				}
 			}
-			this.ID++;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

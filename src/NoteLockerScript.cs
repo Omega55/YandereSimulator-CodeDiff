@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class NoteLockerScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
@@ -36,7 +35,7 @@ public class NoteLockerScript : MonoBehaviour
 
 	public bool CheckingNote;
 
-	public bool CanLeaveNote;
+	public bool CanLeaveNote = true;
 
 	public bool NoteLeft;
 
@@ -50,35 +49,30 @@ public class NoteLockerScript : MonoBehaviour
 
 	public int MeetID;
 
-	public int Phase;
+	public int Phase = 1;
 
-	public NoteLockerScript()
+	private void Start()
 	{
-		this.CanLeaveNote = true;
-		this.Phase = 1;
-	}
-
-	public virtual void Start()
-	{
-		if (PlayerPrefs.GetInt("Student_" + this.LockerOwner + "_Dead") == 1)
+		if (PlayerPrefs.GetInt("Student_" + this.LockerOwner.ToString() + "_Dead") == 1)
 		{
-			this.active = false;
+			base.gameObject.SetActive(false);
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.Student != null)
 		{
+			Vector3 b = new Vector3(base.transform.position.x, this.Student.transform.position.y, base.transform.position.z);
 			if (this.Prompt.enabled)
 			{
-				if (Vector3.Distance(this.Student.transform.position, new Vector3(this.transform.position.x, this.Student.transform.position.y, this.transform.position.z)) < (float)1 || this.Yandere.Armed)
+				if (Vector3.Distance(this.Student.transform.position, b) < 1f || this.Yandere.Armed)
 				{
 					this.Prompt.Hide();
 					this.Prompt.enabled = false;
 				}
 			}
-			else if (this.CanLeaveNote && Vector3.Distance(this.Student.transform.position, new Vector3(this.transform.position.x, this.Student.transform.position.y, this.transform.position.z)) > (float)1 && !this.Yandere.Armed)
+			else if (this.CanLeaveNote && Vector3.Distance(this.Student.transform.position, b) > 1f && !this.Yandere.Armed)
 			{
 				this.Prompt.enabled = true;
 			}
@@ -87,17 +81,17 @@ public class NoteLockerScript : MonoBehaviour
 		{
 			this.Student = this.StudentManager.Students[this.LockerOwner];
 		}
-		if (this.Prompt != null && this.Prompt.Circle[0].fillAmount <= (float)0)
+		if (this.Prompt != null && this.Prompt.Circle[0].fillAmount <= 0f)
 		{
-			this.Prompt.Circle[0].fillAmount = (float)1;
+			this.Prompt.Circle[0].fillAmount = 1f;
 			this.NoteWindow.NoteLocker = this;
 			this.Yandere.Blur.enabled = true;
-			this.NoteWindow.active = true;
+			this.NoteWindow.gameObject.SetActive(true);
 			this.Yandere.CanMove = false;
 			this.NoteWindow.Show = true;
-			this.Yandere.HUD.alpha = (float)0;
+			this.Yandere.HUD.alpha = 0f;
 			this.PromptBar.Show = true;
-			Time.timeScale = (float)0;
+			Time.timeScale = 0f;
 			this.PromptBar.Label[0].text = "Confirm";
 			this.PromptBar.Label[1].text = "Cancel";
 			this.PromptBar.Label[4].text = "Select";
@@ -105,18 +99,18 @@ public class NoteLockerScript : MonoBehaviour
 		}
 		if (this.NoteLeft)
 		{
-			if (this.Student != null && (this.Student.Phase == 2 || this.Student.Phase == 7) && this.Student.Routine && Vector3.Distance(this.transform.position, this.Student.transform.position) < (float)2 && !this.Student.InEvent)
+			if (this.Student != null && (this.Student.Phase == 2 || this.Student.Phase == 7) && this.Student.Routine && Vector3.Distance(base.transform.position, this.Student.transform.position) < 2f && !this.Student.InEvent)
 			{
-				this.Student.Character.animation.cullingType = AnimationCullingType.AlwaysAnimate;
+				this.Student.Character.GetComponent<Animation>().cullingType = AnimationCullingType.AlwaysAnimate;
 				if (!this.Success)
 				{
-					this.Student.Character.animation.CrossFade("f02_tossNote_00");
-					this.Locker.animation.CrossFade("lockerTossNote");
+					this.Student.Character.GetComponent<Animation>().CrossFade("f02_tossNote_00");
+					this.Locker.GetComponent<Animation>().CrossFade("lockerTossNote");
 				}
 				else
 				{
-					this.Student.Character.animation.CrossFade("f02_keepNote_00");
-					this.Locker.animation.CrossFade("lockerKeepNote");
+					this.Student.Character.GetComponent<Animation>().CrossFade("f02_keepNote_00");
+					this.Locker.GetComponent<Animation>().CrossFade("lockerKeepNote");
 				}
 				this.Student.Pathfinding.canSearch = false;
 				this.Student.Pathfinding.canMove = false;
@@ -128,14 +122,15 @@ public class NoteLockerScript : MonoBehaviour
 			{
 				this.Timer += Time.deltaTime;
 				this.Student.MoveTowardsTarget(this.Student.MyLocker.position);
-				this.Student.transform.rotation = Quaternion.Slerp(this.Student.transform.rotation, this.Student.MyLocker.rotation, (float)10 * Time.deltaTime);
+				this.Student.transform.rotation = Quaternion.Slerp(this.Student.transform.rotation, this.Student.MyLocker.rotation, 10f * Time.deltaTime);
 				if (this.Student != null)
 				{
-					if (this.Student.Character.animation["f02_tossNote_00"].time >= this.Student.Character.animation["f02_tossNote_00"].length)
+					Animation component = this.Student.Character.GetComponent<Animation>();
+					if (component["f02_tossNote_00"].time >= component["f02_tossNote_00"].length)
 					{
 						this.Finish();
 					}
-					if (this.Student.Character.animation["f02_keepNote_00"].time >= this.Student.Character.animation["f02_keepNote_00"].length)
+					if (component["f02_keepNote_00"].time >= component["f02_keepNote_00"].length)
 					{
 						this.DetermineSchedule();
 						this.Finish();
@@ -143,42 +138,36 @@ public class NoteLockerScript : MonoBehaviour
 				}
 				if (this.Timer > 4.66666651f && this.NewNote == null)
 				{
-					this.NewNote = (GameObject)UnityEngine.Object.Instantiate(this.Note, this.transform.position, Quaternion.identity);
+					this.NewNote = UnityEngine.Object.Instantiate<GameObject>(this.Note, base.transform.position, Quaternion.identity);
 					this.NewNote.transform.parent = this.Student.LeftHand;
-					this.NewNote.transform.localPosition = new Vector3(-0.06f, -0.01f, (float)0);
-					this.NewNote.transform.localEulerAngles = new Vector3((float)-75, (float)-90, (float)180);
-					this.NewNote.transform.localScale = new Vector3(0.1f, 0.2f, (float)1);
+					this.NewNote.transform.localPosition = new Vector3(-0.06f, -0.01f, 0f);
+					this.NewNote.transform.localEulerAngles = new Vector3(-75f, -90f, 180f);
+					this.NewNote.transform.localScale = new Vector3(0.1f, 0.2f, 1f);
 				}
 				if (!this.Success)
 				{
 					if (this.Timer > 11.666667f)
 					{
-						if (this.NewNote.transform.localScale.x > 0.1f)
-						{
-							this.NewNote.transform.localScale = Vector3.Lerp(this.NewNote.transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime);
-						}
-						else
-						{
-							this.NewNote.transform.localScale = new Vector3((float)0, (float)0, (float)0);
-						}
+						this.NewNote.transform.localScale = ((this.NewNote.transform.localScale.x <= 0.1f) ? Vector3.zero : Vector3.Lerp(this.NewNote.transform.localScale, Vector3.zero, Time.deltaTime));
 					}
 					if (this.Timer > 13.333333f && this.NewBall == null)
 					{
-						this.NewBall = (GameObject)UnityEngine.Object.Instantiate(this.Ball, this.Student.LeftHand.position, Quaternion.identity);
-						this.NewBall.rigidbody.AddRelativeForce(Vector3.right * (float)100);
-						this.NewBall.rigidbody.AddRelativeForce(Vector3.up * (float)100);
+						this.NewBall = UnityEngine.Object.Instantiate<GameObject>(this.Ball, this.Student.LeftHand.position, Quaternion.identity);
+						Rigidbody component2 = this.NewBall.GetComponent<Rigidbody>();
+						component2.AddRelativeForce(Vector3.right * 100f);
+						component2.AddRelativeForce(Vector3.up * 100f);
 						this.Phase++;
 					}
 				}
 				else if (this.Timer > 12.833333f)
 				{
-					this.NewNote.transform.localScale = Vector3.Lerp(this.NewNote.transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime);
+					this.NewNote.transform.localScale = Vector3.Lerp(this.NewNote.transform.localScale, Vector3.zero, Time.deltaTime);
 				}
 				if (this.Phase == 1)
 				{
 					if (this.Timer > 2.33333325f)
 					{
-						this.Yandere.Subtitle.UpdateLabel("Note Reaction", 1, (float)3);
+						this.Yandere.Subtitle.UpdateLabel("Note Reaction", 1, 3f);
 						this.Phase++;
 					}
 				}
@@ -188,13 +177,13 @@ public class NoteLockerScript : MonoBehaviour
 					{
 						if (this.Timer > 9.666667f)
 						{
-							this.Yandere.Subtitle.UpdateLabel("Note Reaction", 2, (float)3);
+							this.Yandere.Subtitle.UpdateLabel("Note Reaction", 2, 3f);
 							this.Phase++;
 						}
 					}
 					else if (this.Timer > 10.166667f)
 					{
-						this.Yandere.Subtitle.UpdateLabel("Note Reaction", 3, (float)3);
+						this.Yandere.Subtitle.UpdateLabel("Note Reaction", 3, 3f);
 						this.Phase++;
 					}
 				}
@@ -202,7 +191,7 @@ public class NoteLockerScript : MonoBehaviour
 		}
 	}
 
-	public virtual void Finish()
+	private void Finish()
 	{
 		if (this.Success && this.Student.Clock.HourTime > this.Student.MeetTime)
 		{
@@ -211,11 +200,12 @@ public class NoteLockerScript : MonoBehaviour
 			this.Student.Pathfinding.canSearch = true;
 			this.Student.Pathfinding.canMove = true;
 			this.Student.Meeting = true;
-			this.Student.MeetTime = (float)0;
+			this.Student.MeetTime = 0f;
 		}
-		this.Student.Character.animation.cullingType = AnimationCullingType.BasedOnRenderers;
-		this.Student.Character.animation.CrossFade(this.Student.IdleAnim);
-		this.Student.DistanceToDestination = (float)100;
+		Animation component = this.Student.Character.GetComponent<Animation>();
+		component.cullingType = AnimationCullingType.BasedOnRenderers;
+		component.CrossFade(this.Student.IdleAnim);
+		this.Student.DistanceToDestination = 100f;
 		this.Student.InEvent = false;
 		this.Student.Routine = true;
 		this.CheckingNote = false;
@@ -223,13 +213,9 @@ public class NoteLockerScript : MonoBehaviour
 		this.Phase++;
 	}
 
-	public virtual void DetermineSchedule()
+	private void DetermineSchedule()
 	{
 		this.Student.MeetSpot = this.MeetSpots.List[this.MeetID];
 		this.Student.MeetTime = this.MeetTime;
-	}
-
-	public virtual void Main()
-	{
 	}
 }

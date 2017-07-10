@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class CreditsLabelScript : MonoBehaviour
 {
 	public float RotationSpeed;
@@ -10,33 +9,20 @@ public class CreditsLabelScript : MonoBehaviour
 
 	public float Rotation;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.Rotation = (float)-90;
-		float rotation = this.Rotation;
-		Vector3 localEulerAngles = this.transform.localEulerAngles;
-		float num = localEulerAngles.y = rotation;
-		Vector3 vector = this.transform.localEulerAngles = localEulerAngles;
+		this.Rotation = -90f;
+		base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, this.Rotation, base.transform.localEulerAngles.z);
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		this.Rotation += Time.deltaTime * this.RotationSpeed;
-		float rotation = this.Rotation;
-		Vector3 localEulerAngles = this.transform.localEulerAngles;
-		float num = localEulerAngles.y = rotation;
-		Vector3 vector = this.transform.localEulerAngles = localEulerAngles;
-		float y = this.transform.localPosition.y + Time.deltaTime * this.MovementSpeed;
-		Vector3 localPosition = this.transform.localPosition;
-		float num2 = localPosition.y = y;
-		Vector3 vector2 = this.transform.localPosition = localPosition;
-		if (this.Rotation > (float)90)
+		base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, this.Rotation, base.transform.localEulerAngles.z);
+		base.transform.localPosition = new Vector3(base.transform.localPosition.x, base.transform.localPosition.y + Time.deltaTime * this.MovementSpeed, base.transform.localPosition.z);
+		if (this.Rotation > 90f)
 		{
-			UnityEngine.Object.Destroy(this.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

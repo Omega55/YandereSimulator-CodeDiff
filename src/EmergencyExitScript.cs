@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class EmergencyExitScript : MonoBehaviour
 {
 	public StudentScript Student;
@@ -12,23 +11,17 @@ public class EmergencyExitScript : MonoBehaviour
 
 	public float Timer;
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (!this.Open)
 		{
-			float y = Mathf.Lerp(this.Pivot.localEulerAngles.y, (float)0, Time.deltaTime * (float)10);
-			Vector3 localEulerAngles = this.Pivot.localEulerAngles;
-			float num = localEulerAngles.y = y;
-			Vector3 vector = this.Pivot.localEulerAngles = localEulerAngles;
+			this.Pivot.localEulerAngles = new Vector3(this.Pivot.localEulerAngles.x, Mathf.Lerp(this.Pivot.localEulerAngles.y, 0f, Time.deltaTime * 10f), this.Pivot.localEulerAngles.z);
 		}
 		else
 		{
-			float y2 = Mathf.Lerp(this.Pivot.localEulerAngles.y, (float)90, Time.deltaTime * (float)10);
-			Vector3 localEulerAngles2 = this.Pivot.localEulerAngles;
-			float num2 = localEulerAngles2.y = y2;
-			Vector3 vector2 = this.Pivot.localEulerAngles = localEulerAngles2;
+			this.Pivot.localEulerAngles = new Vector3(this.Pivot.localEulerAngles.x, Mathf.Lerp(this.Pivot.localEulerAngles.y, 90f, Time.deltaTime * 10f), this.Pivot.localEulerAngles.z);
 			this.Timer -= Time.deltaTime;
-			if (this.Timer <= (float)0)
+			if (this.Timer <= 0f)
 			{
 				this.Student = null;
 				this.Open = false;
@@ -36,17 +29,13 @@ public class EmergencyExitScript : MonoBehaviour
 		}
 	}
 
-	public virtual void OnTriggerStay(Collider other)
+	private void OnTriggerStay(Collider other)
 	{
-		this.Student = (StudentScript)other.gameObject.GetComponent(typeof(StudentScript));
+		this.Student = other.gameObject.GetComponent<StudentScript>();
 		if (this.Student != null && this.Student.Fleeing)
 		{
 			this.Open = true;
-			this.Timer = (float)1;
+			this.Timer = 1f;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

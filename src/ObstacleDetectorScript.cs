@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class ObstacleDetectorScript : MonoBehaviour
 {
 	public YandereScript Yandere;
@@ -18,13 +17,9 @@ public class ObstacleDetectorScript : MonoBehaviour
 
 	public int ID;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.ControllerX.active = false;
-		this.KeyboardX.active = false;
-	}
-
-	public virtual void Main()
-	{
+		this.ControllerX.SetActive(false);
+		this.KeyboardX.SetActive(false);
 	}
 }

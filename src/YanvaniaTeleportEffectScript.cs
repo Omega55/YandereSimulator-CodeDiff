@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class YanvaniaTeleportEffectScript : MonoBehaviour
 {
 	public YanvaniaDraculaScript Dracula;
@@ -16,35 +15,15 @@ public class YanvaniaTeleportEffectScript : MonoBehaviour
 
 	public float Timer;
 
-	public virtual void Start()
+	private void Start()
 	{
-		int num = 0;
-		Color color = this.FirstBeam.material.color;
-		float num2 = color.a = (float)num;
-		Color color2 = this.FirstBeam.material.color = color;
-		int num3 = 0;
-		Color color3 = this.SecondBeam.material.color;
-		float num4 = color3.a = (float)num3;
-		Color color4 = this.SecondBeam.material.color = color3;
-		int num5 = 0;
-		Vector3 localScale = this.FirstBeam.transform.localScale;
-		float num6 = localScale.x = (float)num5;
-		Vector3 vector = this.FirstBeam.transform.localScale = localScale;
-		int num7 = 0;
-		Vector3 localScale2 = this.FirstBeam.transform.localScale;
-		float num8 = localScale2.z = (float)num7;
-		Vector3 vector2 = this.FirstBeam.transform.localScale = localScale2;
-		int num9 = 0;
-		Vector3 localScale3 = this.SecondBeamParent.transform.localScale;
-		float num10 = localScale3.y = (float)num9;
-		Vector3 vector3 = this.SecondBeamParent.transform.localScale = localScale3;
+		this.FirstBeam.material.color = new Color(this.FirstBeam.material.color.r, this.FirstBeam.material.color.g, this.FirstBeam.material.color.b, 0f);
+		this.SecondBeam.material.color = new Color(this.SecondBeam.material.color.r, this.SecondBeam.material.color.g, this.SecondBeam.material.color.b, 0f);
+		this.FirstBeam.transform.localScale = new Vector3(0f, this.FirstBeam.transform.localScale.y, 0f);
+		this.SecondBeamParent.transform.localScale = new Vector3(this.SecondBeamParent.transform.localScale.x, 0f, this.SecondBeamParent.transform.localScale.z);
 	}
 
-	public virtual void Update()
-	{
-	}
-
-	public virtual void Main()
+	private void Update()
 	{
 	}
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class ClassScript : MonoBehaviour
 {
 	public CutsceneManagerScript CutsceneManager;
@@ -70,9 +69,9 @@ public class ClassScript : MonoBehaviour
 
 	public bool Show;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.GradeUpWindow.localScale = new Vector3((float)0, (float)0, (float)0);
+		this.GradeUpWindow.localScale = Vector3.zero;
 		this.Subject[1] = PlayerPrefs.GetInt("Biology");
 		this.Subject[2] = PlayerPrefs.GetInt("Chemistry");
 		this.Subject[3] = PlayerPrefs.GetInt("Language");
@@ -80,22 +79,16 @@ public class ClassScript : MonoBehaviour
 		this.Subject[5] = PlayerPrefs.GetInt("Psychology");
 		this.DescLabel.text = this.Desc[this.Selected];
 		this.UpdateSubjectLabels();
-		int num = 1;
-		Color color = this.Darkness.color;
-		float num2 = color.a = (float)num;
-		Color color2 = this.Darkness.color = color;
+		this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 1f);
 		this.UpdateBars();
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.Show)
 		{
-			float a = this.Darkness.color.a - Time.deltaTime;
-			Color color = this.Darkness.color;
-			float num = color.a = a;
-			Color color2 = this.Darkness.color = color;
-			if (this.Darkness.color.a <= (float)0)
+			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a - Time.deltaTime);
+			if (this.Darkness.color.a <= 0f)
 			{
 				if (Input.GetKeyDown(KeyCode.Backslash))
 				{
@@ -105,10 +98,7 @@ public class ClassScript : MonoBehaviour
 				{
 					this.MaxPhysical();
 				}
-				int num2 = 0;
-				Color color3 = this.Darkness.color;
-				float num3 = color3.a = (float)num2;
-				Color color4 = this.Darkness.color = color3;
+				this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 0f);
 				if (this.InputManager.TappedDown)
 				{
 					this.Selected++;
@@ -116,10 +106,7 @@ public class ClassScript : MonoBehaviour
 					{
 						this.Selected = 1;
 					}
-					int num4 = 375 - 125 * this.Selected;
-					Vector3 localPosition = this.Highlight.localPosition;
-					float num5 = localPosition.y = (float)num4;
-					Vector3 vector = this.Highlight.localPosition = localPosition;
+					this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 375f - 125f * (float)this.Selected, this.Highlight.localPosition.z);
 					this.DescLabel.text = this.Desc[this.Selected];
 					this.UpdateSubjectLabels();
 				}
@@ -130,23 +117,20 @@ public class ClassScript : MonoBehaviour
 					{
 						this.Selected = 5;
 					}
-					int num6 = 375 - 125 * this.Selected;
-					Vector3 localPosition2 = this.Highlight.localPosition;
-					float num7 = localPosition2.y = (float)num6;
-					Vector3 vector2 = this.Highlight.localPosition = localPosition2;
+					this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 375f - 125f * (float)this.Selected, this.Highlight.localPosition.z);
 					this.DescLabel.text = this.Desc[this.Selected];
 					this.UpdateSubjectLabels();
 				}
 				if (this.InputManager.TappedRight && this.StudyPoints > 0 && this.Subject[this.Selected] + this.SubjectTemp[this.Selected] < 100)
 				{
-					this.SubjectTemp[this.Selected] = this.SubjectTemp[this.Selected] + 1;
+					this.SubjectTemp[this.Selected]++;
 					this.StudyPoints--;
 					this.UpdateLabel();
 					this.UpdateBars();
 				}
 				if (this.InputManager.TappedLeft && this.SubjectTemp[this.Selected] > 0)
 				{
-					this.SubjectTemp[this.Selected] = this.SubjectTemp[this.Selected] - 1;
+					this.SubjectTemp[this.Selected]--;
 					this.StudyPoints++;
 					this.UpdateLabel();
 					this.UpdateBars();
@@ -163,7 +147,7 @@ public class ClassScript : MonoBehaviour
 					PlayerPrefs.SetInt("Psychology", this.Subject[5] + this.SubjectTemp[5]);
 					for (int i = 0; i < 6; i++)
 					{
-						this.Subject[i] = this.Subject[i] + this.SubjectTemp[i];
+						this.Subject[i] += this.SubjectTemp[i];
 						this.SubjectTemp[i] = 0;
 					}
 					this.CheckForGradeUp();
@@ -172,35 +156,29 @@ public class ClassScript : MonoBehaviour
 		}
 		else
 		{
-			float a2 = this.Darkness.color.a + Time.deltaTime;
-			Color color5 = this.Darkness.color;
-			float num8 = color5.a = a2;
-			Color color6 = this.Darkness.color = color5;
-			if (this.Darkness.color.a >= (float)1)
+			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a + Time.deltaTime);
+			if (this.Darkness.color.a >= 1f)
 			{
-				int num9 = 1;
-				Color color7 = this.Darkness.color;
-				float num10 = color7.a = (float)num9;
-				Color color8 = this.Darkness.color = color7;
+				this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 1f);
 				if (!this.GradeUp)
 				{
 					if (this.GradeUpWindow.localScale.x > 0.1f)
 					{
-						this.GradeUpWindow.localScale = Vector3.Lerp(this.GradeUpWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+						this.GradeUpWindow.localScale = Vector3.Lerp(this.GradeUpWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
 					}
 					else
 					{
-						this.GradeUpWindow.localScale = new Vector3((float)0, (float)0, (float)0);
+						this.GradeUpWindow.localScale = Vector3.zero;
 					}
 					if (this.GradeUpWindow.localScale.x < 0.01f)
 					{
-						this.GradeUpWindow.localScale = new Vector3((float)0, (float)0, (float)0);
+						this.GradeUpWindow.localScale = Vector3.zero;
 						this.CheckForGradeUp();
 						if (!this.GradeUp)
 						{
 							if (PlayerPrefs.GetInt("ChemistryGrade") > 0 && this.Poison != null)
 							{
-								this.Poison.active = true;
+								this.Poison.SetActive(true);
 							}
 							if (PlayerPrefs.GetInt("Scheme_5_Stage") == 7)
 							{
@@ -208,47 +186,47 @@ public class ClassScript : MonoBehaviour
 								this.PromptBar.ClearButtons();
 								this.PromptBar.Label[0].text = "Continue";
 								this.PromptBar.UpdateButtons();
-								this.CutsceneManager.active = true;
+								this.CutsceneManager.gameObject.SetActive(true);
 								this.Schemes.UpdateInstructions();
-								this.active = false;
+								base.gameObject.SetActive(false);
 							}
 							else
 							{
 								this.PromptBar.Show = false;
 								this.Portal.Proceed = true;
-								this.active = false;
+								base.gameObject.SetActive(false);
 							}
 						}
 					}
 				}
 				else
 				{
-					if (this.GradeUpWindow.localScale.x == (float)0)
+					if (this.GradeUpWindow.localScale.x == 0f)
 					{
 						if (this.GradeUpSubject == 1)
 						{
 							this.GradeUpName.text = "BIOLOGY RANK UP";
-							this.GradeUpDesc.text = string.Empty + this.Subject1GradeText[this.Grade];
+							this.GradeUpDesc.text = this.Subject1GradeText[this.Grade];
 						}
 						else if (this.GradeUpSubject == 2)
 						{
 							this.GradeUpName.text = "CHEMISTRY RANK UP";
-							this.GradeUpDesc.text = string.Empty + this.Subject2GradeText[this.Grade];
+							this.GradeUpDesc.text = this.Subject2GradeText[this.Grade];
 						}
 						else if (this.GradeUpSubject == 3)
 						{
 							this.GradeUpName.text = "LANGUAGE RANK UP";
-							this.GradeUpDesc.text = string.Empty + this.Subject3GradeText[this.Grade];
+							this.GradeUpDesc.text = this.Subject3GradeText[this.Grade];
 						}
 						else if (this.GradeUpSubject == 4)
 						{
 							this.GradeUpName.text = "PHYSICAL RANK UP";
-							this.GradeUpDesc.text = string.Empty + this.Subject4GradeText[this.Grade];
+							this.GradeUpDesc.text = this.Subject4GradeText[this.Grade];
 						}
 						else if (this.GradeUpSubject == 5)
 						{
 							this.GradeUpName.text = "PSYCHOLOGY RANK UP";
-							this.GradeUpDesc.text = string.Empty + this.Subject5GradeText[this.Grade];
+							this.GradeUpDesc.text = this.Subject5GradeText[this.Grade];
 						}
 						this.PromptBar.ClearButtons();
 						this.PromptBar.Label[0].text = "Continue";
@@ -260,22 +238,22 @@ public class ClassScript : MonoBehaviour
 						this.PromptBar.ClearButtons();
 						this.GradeUp = false;
 					}
-					this.GradeUpWindow.localScale = Vector3.Lerp(this.GradeUpWindow.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+					this.GradeUpWindow.localScale = Vector3.Lerp(this.GradeUpWindow.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 				}
 			}
 		}
 	}
 
-	public virtual void UpdateSubjectLabels()
+	private void UpdateSubjectLabels()
 	{
 		for (int i = 1; i < 6; i++)
 		{
-			this.SubjectLabels[i].color = new Color((float)0, (float)0, (float)0, (float)1);
+			this.SubjectLabels[i].color = new Color(0f, 0f, 0f, 1f);
 		}
-		this.SubjectLabels[this.Selected].color = new Color((float)1, (float)1, (float)1, (float)1);
+		this.SubjectLabels[this.Selected].color = new Color(1f, 1f, 1f, 1f);
 	}
 
-	public virtual void UpdateLabel()
+	public void UpdateLabel()
 	{
 		this.StudyPointsLabel.text = "STUDY POINTS: " + this.StudyPoints;
 		if (this.StudyPoints == 0)
@@ -290,131 +268,91 @@ public class ClassScript : MonoBehaviour
 		}
 	}
 
-	public virtual void UpdateBars()
+	private void UpdateBars()
 	{
 		for (int i = 1; i < 6; i++)
 		{
+			Transform transform = this.Subject1Bars[i];
 			if (this.Subject[1] + this.SubjectTemp[1] > (i - 1) * 20)
 			{
-				float x = (float)((i - 1) * 20 - (this.Subject[1] + this.SubjectTemp[1])) / 20f * (float)-1;
-				Vector3 localScale = this.Subject1Bars[i].localScale;
-				float num = localScale.x = x;
-				Vector3 vector = this.Subject1Bars[i].localScale = localScale;
-				if (this.Subject1Bars[i].localScale.x > (float)1)
+				transform.localScale = new Vector3(-((float)((i - 1) * 20 - (this.Subject[1] + this.SubjectTemp[1])) / 20f), transform.localScale.y, transform.localScale.z);
+				if (transform.localScale.x > 1f)
 				{
-					int num2 = 1;
-					Vector3 localScale2 = this.Subject1Bars[i].localScale;
-					float num3 = localScale2.x = (float)num2;
-					Vector3 vector2 = this.Subject1Bars[i].localScale = localScale2;
+					transform.localScale = new Vector3(1f, transform.localScale.y, transform.localScale.z);
 				}
 			}
 			else
 			{
-				int num4 = 0;
-				Vector3 localScale3 = this.Subject1Bars[i].localScale;
-				float num5 = localScale3.x = (float)num4;
-				Vector3 vector3 = this.Subject1Bars[i].localScale = localScale3;
+				transform.localScale = new Vector3(0f, transform.localScale.y, transform.localScale.z);
 			}
 		}
-		for (int i = 1; i < 6; i++)
+		for (int j = 1; j < 6; j++)
 		{
-			if (this.Subject[2] + this.SubjectTemp[2] > (i - 1) * 20)
+			Transform transform2 = this.Subject2Bars[j];
+			if (this.Subject[2] + this.SubjectTemp[2] > (j - 1) * 20)
 			{
-				float x2 = (float)((i - 1) * 20 - (this.Subject[2] + this.SubjectTemp[2])) / 20f * (float)-1;
-				Vector3 localScale4 = this.Subject2Bars[i].localScale;
-				float num6 = localScale4.x = x2;
-				Vector3 vector4 = this.Subject2Bars[i].localScale = localScale4;
-				if (this.Subject2Bars[i].localScale.x > (float)1)
+				transform2.localScale = new Vector3(-((float)((j - 1) * 20 - (this.Subject[2] + this.SubjectTemp[2])) / 20f), transform2.localScale.y, transform2.localScale.z);
+				if (transform2.localScale.x > 1f)
 				{
-					int num7 = 1;
-					Vector3 localScale5 = this.Subject2Bars[i].localScale;
-					float num8 = localScale5.x = (float)num7;
-					Vector3 vector5 = this.Subject2Bars[i].localScale = localScale5;
+					transform2.localScale = new Vector3(1f, transform2.localScale.y, transform2.localScale.z);
 				}
 			}
 			else
 			{
-				int num9 = 0;
-				Vector3 localScale6 = this.Subject2Bars[i].localScale;
-				float num10 = localScale6.x = (float)num9;
-				Vector3 vector6 = this.Subject2Bars[i].localScale = localScale6;
+				transform2.localScale = new Vector3(0f, transform2.localScale.y, transform2.localScale.z);
 			}
 		}
-		for (int i = 1; i < 6; i++)
+		for (int k = 1; k < 6; k++)
 		{
-			if (this.Subject[3] + this.SubjectTemp[3] > (i - 1) * 20)
+			Transform transform3 = this.Subject3Bars[k];
+			if (this.Subject[3] + this.SubjectTemp[3] > (k - 1) * 20)
 			{
-				float x3 = (float)((i - 1) * 20 - (this.Subject[3] + this.SubjectTemp[3])) / 20f * (float)-1;
-				Vector3 localScale7 = this.Subject3Bars[i].localScale;
-				float num11 = localScale7.x = x3;
-				Vector3 vector7 = this.Subject3Bars[i].localScale = localScale7;
-				if (this.Subject3Bars[i].localScale.x > (float)1)
+				transform3.localScale = new Vector3(-((float)((k - 1) * 20 - (this.Subject[3] + this.SubjectTemp[3])) / 20f), transform3.localScale.y, transform3.localScale.z);
+				if (transform3.localScale.x > 1f)
 				{
-					int num12 = 1;
-					Vector3 localScale8 = this.Subject3Bars[i].localScale;
-					float num13 = localScale8.x = (float)num12;
-					Vector3 vector8 = this.Subject3Bars[i].localScale = localScale8;
+					transform3.localScale = new Vector3(1f, transform3.localScale.y, transform3.localScale.z);
 				}
 			}
 			else
 			{
-				int num14 = 0;
-				Vector3 localScale9 = this.Subject3Bars[i].localScale;
-				float num15 = localScale9.x = (float)num14;
-				Vector3 vector9 = this.Subject3Bars[i].localScale = localScale9;
+				transform3.localScale = new Vector3(0f, transform3.localScale.y, transform3.localScale.z);
 			}
 		}
-		for (int i = 1; i < 6; i++)
+		for (int l = 1; l < 6; l++)
 		{
-			if (this.Subject[4] + this.SubjectTemp[4] > (i - 1) * 20)
+			Transform transform4 = this.Subject4Bars[l];
+			if (this.Subject[4] + this.SubjectTemp[4] > (l - 1) * 20)
 			{
-				float x4 = (float)((i - 1) * 20 - (this.Subject[4] + this.SubjectTemp[4])) / 20f * (float)-1;
-				Vector3 localScale10 = this.Subject4Bars[i].localScale;
-				float num16 = localScale10.x = x4;
-				Vector3 vector10 = this.Subject4Bars[i].localScale = localScale10;
-				if (this.Subject4Bars[i].localScale.x > (float)1)
+				transform4.localScale = new Vector3(-((float)((l - 1) * 20 - (this.Subject[4] + this.SubjectTemp[4])) / 20f), transform4.localScale.y, transform4.localScale.z);
+				if (transform4.localScale.x > 1f)
 				{
-					int num17 = 1;
-					Vector3 localScale11 = this.Subject4Bars[i].localScale;
-					float num18 = localScale11.x = (float)num17;
-					Vector3 vector11 = this.Subject4Bars[i].localScale = localScale11;
+					transform4.localScale = new Vector3(1f, transform4.localScale.y, transform4.localScale.z);
 				}
 			}
 			else
 			{
-				int num19 = 0;
-				Vector3 localScale12 = this.Subject4Bars[i].localScale;
-				float num20 = localScale12.x = (float)num19;
-				Vector3 vector12 = this.Subject4Bars[i].localScale = localScale12;
+				transform4.localScale = new Vector3(0f, transform4.localScale.y, transform4.localScale.z);
 			}
 		}
-		for (int i = 1; i < 6; i++)
+		for (int m = 1; m < 6; m++)
 		{
-			if (this.Subject[5] + this.SubjectTemp[5] > (i - 1) * 20)
+			Transform transform5 = this.Subject5Bars[m];
+			if (this.Subject[5] + this.SubjectTemp[5] > (m - 1) * 20)
 			{
-				float x5 = (float)((i - 1) * 20 - (this.Subject[5] + this.SubjectTemp[5])) / 20f * (float)-1;
-				Vector3 localScale13 = this.Subject5Bars[i].localScale;
-				float num21 = localScale13.x = x5;
-				Vector3 vector13 = this.Subject5Bars[i].localScale = localScale13;
-				if (this.Subject5Bars[i].localScale.x > (float)1)
+				transform5.localScale = new Vector3(-((float)((m - 1) * 20 - (this.Subject[5] + this.SubjectTemp[5])) / 20f), transform5.localScale.y, transform5.localScale.z);
+				if (transform5.localScale.x > 1f)
 				{
-					int num22 = 1;
-					Vector3 localScale14 = this.Subject5Bars[i].localScale;
-					float num23 = localScale14.x = (float)num22;
-					Vector3 vector14 = this.Subject5Bars[i].localScale = localScale14;
+					transform5.localScale = new Vector3(1f, transform5.localScale.y, transform5.localScale.z);
 				}
 			}
 			else
 			{
-				int num24 = 0;
-				Vector3 localScale15 = this.Subject5Bars[i].localScale;
-				float num25 = localScale15.x = (float)num24;
-				Vector3 vector15 = this.Subject5Bars[i].localScale = localScale15;
+				transform5.localScale = new Vector3(0f, transform5.localScale.y, transform5.localScale.z);
 			}
 		}
 	}
 
-	public virtual void CheckForGradeUp()
+	private void CheckForGradeUp()
 	{
 		if (PlayerPrefs.GetInt("Biology") >= 20 && PlayerPrefs.GetInt("BiologyGrade") < 1)
 		{
@@ -481,7 +419,7 @@ public class ClassScript : MonoBehaviour
 		}
 	}
 
-	public virtual void GivePoints()
+	private void GivePoints()
 	{
 		PlayerPrefs.SetInt("BiologyGrade", 0);
 		PlayerPrefs.SetInt("ChemistryGrade", 0);
@@ -501,15 +439,11 @@ public class ClassScript : MonoBehaviour
 		this.UpdateBars();
 	}
 
-	public virtual void MaxPhysical()
+	private void MaxPhysical()
 	{
 		PlayerPrefs.SetInt("PhysicalGrade", 0);
 		PlayerPrefs.SetInt("Physical", 99);
 		this.Subject[4] = PlayerPrefs.GetInt("Physical");
 		this.UpdateBars();
-	}
-
-	public virtual void Main()
-	{
 	}
 }

@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class BrokenScript : MonoBehaviour
 {
 	public DynamicBone[] HairPhysics;
@@ -43,29 +41,24 @@ public class BrokenScript : MonoBehaviour
 
 	public float Timer;
 
-	public int ID;
+	public int ID = 1;
 
-	public BrokenScript()
-	{
-		this.ID = 1;
-	}
-
-	public virtual void Start()
+	private void Start()
 	{
 		this.HairPhysics[0].enabled = false;
 		this.HairPhysics[1].enabled = false;
 		this.PermanentAngleR = this.TwintailR.eulerAngles;
 		this.PermanentAngleL = this.TwintailL.eulerAngles;
-		this.Subtitle = (UILabel)GameObject.Find("EventSubtitle").GetComponent(typeof(UILabel));
+		this.Subtitle = GameObject.Find("EventSubtitle").GetComponent<UILabel>();
 		this.Yandere = GameObject.Find("YandereChan");
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (!this.Done)
 		{
-			float num = Vector3.Distance(this.Yandere.transform.position, this.transform.root.position);
-			if (num < (float)5)
+			float num = Vector3.Distance(this.Yandere.transform.position, base.transform.root.position);
+			if (num < 5f)
 			{
 				if (!this.Hunting)
 				{
@@ -74,13 +67,13 @@ public class BrokenScript : MonoBehaviour
 					{
 						this.Subtitle.text = string.Empty;
 					}
-					if (this.Timer > (float)5)
+					if (this.Timer > 5f)
 					{
-						this.Timer = (float)0;
+						this.Timer = 0f;
 						this.Subtitle.text = this.MutterTexts[this.ID];
-						this.PlayClip(this.Mutters[this.ID], this.transform.position);
+						this.PlayClip(this.Mutters[this.ID], base.transform.position);
 						this.ID++;
-						if (this.ID == Extensions.get_length(this.Mutters))
+						if (this.ID == this.Mutters.Length)
 						{
 							this.ID = 1;
 						}
@@ -93,72 +86,55 @@ public class BrokenScript : MonoBehaviour
 						UnityEngine.Object.Destroy(this.VoiceClip);
 					}
 					this.Subtitle.text = "Do it.";
-					this.PlayClip(this.DoIt, this.transform.position);
+					this.PlayClip(this.DoIt, base.transform.position);
 					this.Began = true;
 				}
 				else if (this.VoiceClip == null)
 				{
 					this.Subtitle.text = "...kill...kill...kill...";
-					this.PlayClip(this.KillKillKill, this.transform.position);
+					this.PlayClip(this.KillKillKill, base.transform.position);
 				}
-				float num2 = Mathf.Abs((num - (float)5) * 0.2f);
-				if (num2 < (float)0)
+				float num2 = Mathf.Abs((num - 5f) * 0.2f);
+				if (num2 < 0f)
 				{
-					num2 = (float)0;
+					num2 = 0f;
 				}
-				if (num2 > (float)1)
+				if (num2 > 1f)
 				{
-					num2 = (float)1;
+					num2 = 1f;
 				}
 				this.Subtitle.transform.localScale = new Vector3(num2, num2, num2);
 			}
 			else
 			{
-				this.Subtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+				this.Subtitle.transform.localScale = Vector3.zero;
 			}
 		}
-		float x = this.PermanentAngleR.x;
 		Vector3 eulerAngles = this.TwintailR.eulerAngles;
-		float num3 = eulerAngles.x = x;
-		Vector3 vector = this.TwintailR.eulerAngles = eulerAngles;
-		float x2 = this.PermanentAngleL.x;
 		Vector3 eulerAngles2 = this.TwintailL.eulerAngles;
-		float num4 = eulerAngles2.x = x2;
-		Vector3 vector2 = this.TwintailL.eulerAngles = eulerAngles2;
-		float z = this.PermanentAngleR.z;
-		Vector3 eulerAngles3 = this.TwintailR.eulerAngles;
-		float num5 = eulerAngles3.z = z;
-		Vector3 vector3 = this.TwintailR.eulerAngles = eulerAngles3;
-		float z2 = this.PermanentAngleL.z;
-		Vector3 eulerAngles4 = this.TwintailL.eulerAngles;
-		float num6 = eulerAngles4.z = z2;
-		Vector3 vector4 = this.TwintailL.eulerAngles = eulerAngles4;
+		eulerAngles.x = this.PermanentAngleR.x;
+		eulerAngles.z = this.PermanentAngleR.z;
+		eulerAngles2.x = this.PermanentAngleL.x;
+		eulerAngles2.z = this.PermanentAngleL.z;
+		this.TwintailR.eulerAngles = eulerAngles;
+		this.TwintailL.eulerAngles = eulerAngles2;
 	}
 
-	public virtual void PlayClip(AudioClip clip, Vector3 pos)
+	private void PlayClip(AudioClip clip, Vector3 pos)
 	{
 		GameObject gameObject = new GameObject("TempAudio");
 		gameObject.transform.position = pos;
-		gameObject.transform.parent = this.transform;
-		AudioSource audioSource = (AudioSource)gameObject.AddComponent(typeof(AudioSource));
+		gameObject.transform.parent = base.transform;
+		AudioSource audioSource = gameObject.AddComponent<AudioSource>();
 		audioSource.clip = clip;
 		audioSource.Play();
 		UnityEngine.Object.Destroy(gameObject, clip.length);
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
-		audioSource.minDistance = (float)1;
-		audioSource.maxDistance = (float)5;
+		audioSource.minDistance = 1f;
+		audioSource.maxDistance = 5f;
 		this.VoiceClip = gameObject;
-		if (this.Yandere.transform.position.y < gameObject.transform.position.y - (float)2)
-		{
-			audioSource.volume = (float)0;
-		}
-		else
-		{
-			audioSource.volume = (float)1;
-		}
-	}
-
-	public virtual void Main()
-	{
+		float y = this.Yandere.transform.position.y;
+		float y2 = gameObject.transform.position.y;
+		audioSource.volume = ((y >= y2 - 2f) ? 1f : 0f);
 	}
 }

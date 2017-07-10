@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class PickUpScript : MonoBehaviour
 {
 	public RigidbodyConstraints OriginalConstraints;
@@ -73,38 +71,33 @@ public class PickUpScript : MonoBehaviour
 
 	public float DumpTimer;
 
-	public bool Empty;
+	public bool Empty = true;
 
 	public GameObject[] FoodPieces;
 
-	public PickUpScript()
+	private void Start()
 	{
-		this.Empty = true;
-	}
-
-	public virtual void Start()
-	{
-		this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent(typeof(YandereScript));
+		this.Yandere = GameObject.Find("YandereChan").GetComponent<YandereScript>();
 		if (!this.CanCollide)
 		{
-			Physics.IgnoreCollision(this.Yandere.collider, this.MyCollider);
+			Physics.IgnoreCollision(this.Yandere.GetComponent<Collider>(), this.MyCollider);
 		}
 		this.OriginalColor = this.Outline[0].color;
-		this.OriginalScale = this.transform.localScale;
-		this.MyRigidbody = this.rigidbody;
+		this.OriginalScale = base.transform.localScale;
+		this.MyRigidbody = base.GetComponent<Rigidbody>();
 	}
 
-	public virtual void LateUpdate()
+	private void LateUpdate()
 	{
-		if (this.Prompt.Circle[3].fillAmount <= (float)0)
+		if (this.Prompt.Circle[3].fillAmount <= 0f)
 		{
 			if (this.Weight)
 			{
-				this.transform.parent = this.Yandere.transform;
-				this.transform.localPosition = new Vector3((float)0, (float)0, 0.75f);
-				this.transform.localEulerAngles = new Vector3((float)0, (float)90, (float)0);
-				this.transform.parent = null;
-				this.Yandere.Character.animation.Play("f02_heavyWeightLift_00");
+				base.transform.parent = this.Yandere.transform;
+				base.transform.localPosition = new Vector3(0f, 0f, 0.75f);
+				base.transform.localEulerAngles = new Vector3(0f, 90f, 0f);
+				base.transform.parent = null;
+				this.Yandere.Character.GetComponent<Animation>().Play("f02_heavyWeightLift_00");
 				this.Yandere.HeavyWeight = true;
 				this.Yandere.CanMove = false;
 				this.Yandere.Lifting = true;
@@ -117,43 +110,43 @@ public class PickUpScript : MonoBehaviour
 		}
 		if (this.Yandere.PickUp == this)
 		{
-			this.transform.localPosition = this.HoldPosition;
-			this.transform.localEulerAngles = this.HoldRotation;
+			base.transform.localPosition = this.HoldPosition;
+			base.transform.localEulerAngles = this.HoldRotation;
 		}
 		if (this.Dumped)
 		{
 			this.DumpTimer += Time.deltaTime;
-			if (this.DumpTimer > (float)1)
+			if (this.DumpTimer > 1f)
 			{
 				if (this.Clothing)
 				{
-					this.Yandere.Incinerator.BloodyClothing = this.Yandere.Incinerator.BloodyClothing + 1;
+					this.Yandere.Incinerator.BloodyClothing++;
 				}
 				else if (this.BodyPart)
 				{
-					this.Yandere.Incinerator.BodyParts = this.Yandere.Incinerator.BodyParts + 1;
+					this.Yandere.Incinerator.BodyParts++;
 				}
-				UnityEngine.Object.Destroy(this.gameObject);
+				UnityEngine.Object.Destroy(base.gameObject);
 			}
 		}
 		if (this.MyRigidbody != null && !this.MyRigidbody.isKinematic)
 		{
-			this.KinematicTimer = Mathf.MoveTowards(this.KinematicTimer, (float)5, Time.deltaTime);
-			if (this.KinematicTimer == (float)5)
+			this.KinematicTimer = Mathf.MoveTowards(this.KinematicTimer, 5f, Time.deltaTime);
+			if (this.KinematicTimer == 5f)
 			{
 				this.MyRigidbody.isKinematic = true;
-				this.KinematicTimer = (float)0;
+				this.KinematicTimer = 0f;
 			}
 		}
 		if (this.Weight && this.BeingLifted)
 		{
 			if (this.Yandere.Lifting)
 			{
-				if (this.Yandere.CharacterAnimation["f02_heavyWeightLift_00"].time >= (float)2)
+				if (this.Yandere.CharacterAnimation["f02_heavyWeightLift_00"].time >= 2f)
 				{
-					this.transform.parent = this.Yandere.LeftItemParent;
-					this.transform.localPosition = this.HoldPosition;
-					this.transform.localEulerAngles = this.HoldRotation;
+					base.transform.parent = this.Yandere.LeftItemParent;
+					base.transform.localPosition = this.HoldPosition;
+					base.transform.localEulerAngles = this.HoldRotation;
 				}
 			}
 			else
@@ -164,9 +157,9 @@ public class PickUpScript : MonoBehaviour
 		}
 	}
 
-	public virtual void BePickedUp()
+	private void BePickedUp()
 	{
-		this.Prompt.Circle[3].fillAmount = (float)1;
+		this.Prompt.Circle[3].fillAmount = 1f;
 		if (this.Yandere.PickUp != null)
 		{
 			this.Yandere.PickUp.Drop();
@@ -181,7 +174,7 @@ public class PickUpScript : MonoBehaviour
 		}
 		if (this.Yandere.Dragging)
 		{
-			((RagdollScript)this.Yandere.Ragdoll.GetComponent(typeof(RagdollScript))).StopDragging();
+			this.Yandere.Ragdoll.GetComponent<RagdollScript>().StopDragging();
 		}
 		if (this.Yandere.Carrying)
 		{
@@ -189,18 +182,18 @@ public class PickUpScript : MonoBehaviour
 		}
 		if (!this.LeftHand)
 		{
-			this.transform.parent = this.Yandere.ItemParent;
+			base.transform.parent = this.Yandere.ItemParent;
 		}
 		else
 		{
-			this.transform.parent = this.Yandere.LeftItemParent;
+			base.transform.parent = this.Yandere.LeftItemParent;
 		}
-		if ((RadioScript)this.GetComponent(typeof(RadioScript)) != null)
+		if (base.GetComponent<RadioScript>() != null)
 		{
-			((RadioScript)this.GetComponent(typeof(RadioScript))).TurnOff();
+			base.GetComponent<RadioScript>().TurnOff();
 		}
-		this.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
-		this.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+		base.transform.localPosition = new Vector3(0f, 0f, 0f);
+		base.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
 		this.MyCollider.enabled = false;
 		if (this.MyRigidbody != null)
 		{
@@ -218,19 +211,19 @@ public class PickUpScript : MonoBehaviour
 		}
 		this.Yandere.PickUp = this;
 		this.Yandere.CarryAnimID = this.CarryAnimID;
-		for (int i = 0; i < Extensions.get_length(this.Outline); i++)
+		foreach (OutlineScript outlineScript in this.Outline)
 		{
-			this.Outline[i].color = new Color((float)0, (float)0, (float)0, (float)1);
+			outlineScript.color = new Color(0f, 0f, 0f, 1f);
 		}
 		if (this.BodyPart)
 		{
-			this.Yandere.NearBodies = this.Yandere.NearBodies + 1;
+			this.Yandere.NearBodies++;
 		}
 		this.Yandere.StudentManager.UpdateStudents();
-		this.KinematicTimer = (float)0;
+		this.KinematicTimer = 0f;
 	}
 
-	public virtual void Drop()
+	public void Drop()
 	{
 		if (this.BloodCleaner != null)
 		{
@@ -238,17 +231,10 @@ public class PickUpScript : MonoBehaviour
 			this.BloodCleaner.Pathfinding.enabled = true;
 		}
 		this.Yandere.PickUp = null;
-		this.transform.parent = null;
+		base.transform.parent = null;
 		if (this.LockRotation)
 		{
-			int num = 0;
-			Vector3 localEulerAngles = this.transform.localEulerAngles;
-			float num2 = localEulerAngles.x = (float)num;
-			Vector3 vector = this.transform.localEulerAngles = localEulerAngles;
-			int num3 = 0;
-			Vector3 localEulerAngles2 = this.transform.localEulerAngles;
-			float num4 = localEulerAngles2.z = (float)num3;
-			Vector3 vector2 = this.transform.localEulerAngles = localEulerAngles2;
+			base.transform.localEulerAngles = new Vector3(0f, base.transform.localEulerAngles.y, 0f);
 		}
 		if (this.MyRigidbody != null)
 		{
@@ -258,7 +244,7 @@ public class PickUpScript : MonoBehaviour
 		}
 		if (this.Dumped)
 		{
-			this.transform.position = this.Incinerator.DumpPoint.position;
+			base.transform.position = this.Incinerator.DumpPoint.position;
 		}
 		else
 		{
@@ -267,30 +253,19 @@ public class PickUpScript : MonoBehaviour
 			this.MyCollider.isTrigger = false;
 			if (!this.CanCollide)
 			{
-				Physics.IgnoreCollision(this.Yandere.collider, this.MyCollider);
+				Physics.IgnoreCollision(this.Yandere.GetComponent<Collider>(), this.MyCollider);
 			}
 		}
 		this.Prompt.Carried = false;
-		for (int i = 0; i < Extensions.get_length(this.Outline); i++)
+		foreach (OutlineScript outlineScript in this.Outline)
 		{
-			if (!this.Evidence)
-			{
-				this.Outline[i].color = this.OriginalColor;
-			}
-			else
-			{
-				this.Outline[i].color = this.EvidenceColor;
-			}
+			outlineScript.color = ((!this.Evidence) ? this.OriginalColor : this.EvidenceColor);
 		}
-		this.transform.localScale = this.OriginalScale;
+		base.transform.localScale = this.OriginalScale;
 		if (this.BodyPart)
 		{
-			this.Yandere.NearBodies = this.Yandere.NearBodies - 1;
+			this.Yandere.NearBodies--;
 		}
 		this.Yandere.StudentManager.UpdateStudents();
-	}
-
-	public virtual void Main()
-	{
 	}
 }

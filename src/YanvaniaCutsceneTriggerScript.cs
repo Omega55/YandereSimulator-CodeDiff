@@ -1,24 +1,19 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class YanvaniaCutsceneTriggerScript : MonoBehaviour
 {
 	public YanvaniaYanmontScript Yanmont;
 
 	public GameObject BossBattleWall;
 
-	public virtual void OnTriggerEnter(Collider other)
+	private void OnTriggerEnter(Collider other)
 	{
-		if (other.gameObject.name == "YanmontChan")
+		if (other.gameObject.name.Equals("YanmontChan"))
 		{
-			this.BossBattleWall.active = true;
+			this.BossBattleWall.SetActive(true);
 			this.Yanmont.EnterCutscene = true;
-			UnityEngine.Object.Destroy(this.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

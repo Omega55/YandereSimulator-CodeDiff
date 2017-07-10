@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class TextMessageScript : MonoBehaviour
 {
 	public UILabel Label;
@@ -10,20 +9,16 @@ public class TextMessageScript : MonoBehaviour
 
 	public bool Attachment;
 
-	public virtual void Start()
+	private void Start()
 	{
 		if (!this.Attachment && this.Image != null)
 		{
-			this.Image.active = false;
+			this.Image.SetActive(false);
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-	}
-
-	public virtual void Main()
-	{
+		base.transform.localScale = Vector3.Lerp(base.transform.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 	}
 }

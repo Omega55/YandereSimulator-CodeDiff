@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class DatingMinigameScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
@@ -127,15 +125,15 @@ public class DatingMinigameScript : MonoBehaviour
 
 	public float Timer;
 
-	public int ComplimentSelected;
+	public int ComplimentSelected = 1;
 
-	public int TraitSelected;
+	public int TraitSelected = 1;
 
-	public int TopicSelected;
+	public int TopicSelected = 1;
 
-	public int GiftSelected;
+	public int GiftSelected = 1;
 
-	public int Selected;
+	public int Selected = 1;
 
 	public int AffectionLevel;
 
@@ -143,74 +141,50 @@ public class DatingMinigameScript : MonoBehaviour
 
 	public int Opinion;
 
-	public int Phase;
+	public int Phase = 1;
 
-	public int GiftColumn;
+	public int GiftColumn = 1;
 
-	public int GiftRow;
+	public int GiftRow = 1;
 
-	public int Column;
+	public int Column = 1;
 
-	public int Row;
+	public int Row = 1;
 
-	public int Side;
+	public int Side = 1;
 
-	public int Line;
+	public int Line = 1;
 
-	public string CurrentAnim;
+	public string CurrentAnim = string.Empty;
 
 	public Color OriginalColor;
 
-	public DatingMinigameScript()
-	{
-		this.ComplimentSelected = 1;
-		this.TraitSelected = 1;
-		this.TopicSelected = 1;
-		this.GiftSelected = 1;
-		this.Selected = 1;
-		this.Phase = 1;
-		this.GiftColumn = 1;
-		this.GiftRow = 1;
-		this.Column = 1;
-		this.Row = 1;
-		this.Side = 1;
-		this.Line = 1;
-		this.CurrentAnim = string.Empty;
-	}
-
-	public virtual void Start()
+	private void Start()
 	{
 		this.Affection = PlayerPrefs.GetFloat("Affection");
-		float x = this.Affection / 100f;
-		Vector3 localScale = this.AffectionBar.localScale;
-		float num = localScale.x = x;
-		Vector3 vector = this.AffectionBar.localScale = localScale;
+		this.AffectionBar.localScale = new Vector3(this.Affection / 100f, this.AffectionBar.localScale.y, this.AffectionBar.localScale.z);
 		this.CalculateAffection();
 		this.OriginalColor = this.ComplimentBGs[1].color;
-		this.ComplimentSet.localScale = new Vector3((float)0, (float)0, (float)0);
-		this.GiveGift.localScale = new Vector3((float)0, (float)0, (float)0);
-		this.ShowOff.localScale = new Vector3((float)0, (float)0, (float)0);
-		this.Topics.localScale = new Vector3((float)0, (float)0, (float)0);
-		this.DatingSimHUD.active = false;
-		this.DatingSimHUD.alpha = (float)0;
+		this.ComplimentSet.localScale = Vector3.zero;
+		this.GiveGift.localScale = Vector3.zero;
+		this.ShowOff.localScale = Vector3.zero;
+		this.Topics.localScale = Vector3.zero;
+		this.DatingSimHUD.gameObject.SetActive(false);
+		this.DatingSimHUD.alpha = 0f;
 		for (int i = 1; i < 26; i++)
 		{
-			if (PlayerPrefs.GetInt("Topic_" + i + "_Discussed") == 1)
+			if (PlayerPrefs.GetInt("Topic_" + i.ToString() + "_Discussed") == 1)
 			{
-				float a = 0.5f;
-				Color color = this.TopicIcons[i].color;
-				float num2 = color.a = a;
-				Color color2 = this.TopicIcons[i].color = color;
+				UISprite uisprite = this.TopicIcons[i];
+				uisprite.color = new Color(uisprite.color.r, uisprite.color.g, uisprite.color.b, 0.5f);
 			}
 		}
-		for (int i = 1; i < 11; i++)
+		for (int j = 1; j < 11; j++)
 		{
-			if (PlayerPrefs.GetInt("Compliment_" + i + "_Given") == 1)
+			if (PlayerPrefs.GetInt("Compliment_" + j.ToString() + "_Given") == 1)
 			{
-				float a2 = 0.5f;
-				Color color3 = this.ComplimentLabels[i].color;
-				float num3 = color3.a = a2;
-				Color color4 = this.ComplimentLabels[i].color = color3;
+				UILabel uilabel = this.ComplimentLabels[j];
+				uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, 0.5f);
 			}
 		}
 		this.UpdateComplimentHighlight();
@@ -218,25 +192,25 @@ public class DatingMinigameScript : MonoBehaviour
 		this.UpdateGiftHighlight();
 	}
 
-	public virtual void CalculateAffection()
+	private void CalculateAffection()
 	{
-		if (this.Affection == (float)0)
+		if (this.Affection == 0f)
 		{
 			this.AffectionLevel = 0;
 		}
-		else if (this.Affection < (float)25)
+		else if (this.Affection < 25f)
 		{
 			this.AffectionLevel = 1;
 		}
-		else if (this.Affection < (float)50)
+		else if (this.Affection < 50f)
 		{
 			this.AffectionLevel = 2;
 		}
-		else if (this.Affection < (float)75)
+		else if (this.Affection < 75f)
 		{
 			this.AffectionLevel = 3;
 		}
-		else if (this.Affection < (float)100)
+		else if (this.Affection < 100f)
 		{
 			this.AffectionLevel = 4;
 		}
@@ -246,7 +220,7 @@ public class DatingMinigameScript : MonoBehaviour
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.Testing)
 		{
@@ -259,7 +233,7 @@ public class DatingMinigameScript : MonoBehaviour
 				this.Suitor = this.StudentManager.Students[13];
 				this.Rival = this.StudentManager.Students[7];
 			}
-			if (this.Rival.MeetTimer > (float)0 && this.Suitor.MeetTimer > (float)0)
+			if (this.Rival.MeetTimer > 0f && this.Suitor.MeetTimer > 0f)
 			{
 				this.Prompt.enabled = true;
 			}
@@ -269,24 +243,24 @@ public class DatingMinigameScript : MonoBehaviour
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
 		}
-		if (this.Prompt.Circle[0].fillAmount == (float)0)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Suitor.enabled = false;
 			this.Rival.enabled = false;
-			this.Rival.Character.animation["f02_smile_00"].layer = 1;
-			this.Rival.Character.animation.Play("f02_smile_00");
-			this.Rival.Character.animation["f02_smile_00"].weight = (float)0;
+			this.Rival.Character.GetComponent<Animation>()["f02_smile_00"].layer = 1;
+			this.Rival.Character.GetComponent<Animation>().Play("f02_smile_00");
+			this.Rival.Character.GetComponent<Animation>()["f02_smile_00"].weight = 0f;
 			this.StudentManager.Clock.StopTime = true;
 			this.Yandere.RPGCamera.enabled = false;
-			this.HeartbeatCamera.active = false;
-			this.Yandere.Headset.active = true;
+			this.HeartbeatCamera.SetActive(false);
+			this.Yandere.Headset.SetActive(true);
 			this.Yandere.CanMove = false;
 			this.Yandere.transform.position = this.PeekSpot.position;
 			this.Yandere.transform.eulerAngles = this.PeekSpot.eulerAngles;
-			this.Yandere.Character.animation.Play("f02_treePeeking_00");
-			Camera.main.transform.position = new Vector3((float)48, (float)3, (float)-44);
-			Camera.main.transform.eulerAngles = new Vector3((float)15, (float)90, (float)0);
-			this.WisdomLabel.text = "Wisdom: " + PlayerPrefs.GetInt("SuitorTrait2");
+			this.Yandere.Character.GetComponent<Animation>().Play("f02_treePeeking_00");
+			Camera.main.transform.position = new Vector3(48f, 3f, -44f);
+			Camera.main.transform.eulerAngles = new Vector3(15f, 90f, 0f);
+			this.WisdomLabel.text = "Wisdom: " + PlayerPrefs.GetInt("SuitorTrait2").ToString();
 			if (!this.Suitor.Rose)
 			{
 				this.RoseIcon.enabled = false;
@@ -296,73 +270,64 @@ public class DatingMinigameScript : MonoBehaviour
 		}
 		if (this.Matchmaking)
 		{
-			if (this.CurrentAnim != string.Empty && this.Rival.Character.animation[this.CurrentAnim].time >= this.Rival.Character.animation[this.CurrentAnim].length)
+			if (!this.CurrentAnim.Equals(string.Empty) && this.Rival.Character.GetComponent<Animation>()[this.CurrentAnim].time >= this.Rival.Character.GetComponent<Animation>()[this.CurrentAnim].length)
 			{
-				this.Rival.Character.animation.Play(this.Rival.IdleAnim);
+				this.Rival.Character.GetComponent<Animation>().Play(this.Rival.IdleAnim);
 			}
 			if (this.Phase == 1)
 			{
-				this.Panel.alpha = Mathf.MoveTowards(this.Panel.alpha, (float)0, Time.deltaTime);
+				this.Panel.alpha = Mathf.MoveTowards(this.Panel.alpha, 0f, Time.deltaTime);
 				this.Timer += Time.deltaTime;
-				Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3((float)54, 1.25f, -45.25f), this.Timer * 0.02f);
-				Camera.main.transform.eulerAngles = Vector3.Lerp(Camera.main.transform.eulerAngles, new Vector3((float)0, (float)45, (float)0), this.Timer * 0.02f);
-				if (this.Timer > (float)5)
+				Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(54f, 1.25f, -45.25f), this.Timer * 0.02f);
+				Camera.main.transform.eulerAngles = Vector3.Lerp(Camera.main.transform.eulerAngles, new Vector3(0f, 45f, 0f), this.Timer * 0.02f);
+				if (this.Timer > 5f)
 				{
-					this.Suitor.Character.animation.Play("insertEarpiece_00");
-					this.Suitor.Character.animation["insertEarpiece_00"].time = (float)0;
-					this.Suitor.Character.animation.Play("insertEarpiece_00");
-					this.Suitor.Earpiece.active = true;
+					this.Suitor.Character.GetComponent<Animation>().Play("insertEarpiece_00");
+					this.Suitor.Character.GetComponent<Animation>()["insertEarpiece_00"].time = 0f;
+					this.Suitor.Character.GetComponent<Animation>().Play("insertEarpiece_00");
+					this.Suitor.Earpiece.SetActive(true);
 					Camera.main.transform.position = new Vector3(45.5f, 1.25f, -44.5f);
-					Camera.main.transform.eulerAngles = new Vector3((float)0, (float)-45, (float)0);
-					this.Rotation = (float)-45;
-					this.Timer = (float)0;
+					Camera.main.transform.eulerAngles = new Vector3(0f, -45f, 0f);
+					this.Rotation = -45f;
+					this.Timer = 0f;
 					this.Phase++;
 				}
 			}
 			else if (this.Phase == 2)
 			{
 				this.Timer += Time.deltaTime;
-				if (this.Timer > (float)4)
+				if (this.Timer > 4f)
 				{
 					this.Suitor.Earpiece.transform.parent = this.Suitor.Head;
-					this.Suitor.Earpiece.transform.localPosition = new Vector3((float)0, -1.12f, 1.14f);
-					this.Suitor.Earpiece.transform.localEulerAngles = new Vector3((float)45, (float)-180, (float)0);
-					Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(45.11f, 1.375f, (float)-44), (this.Timer - (float)4) * 0.02f);
-					this.Rotation = Mathf.Lerp(this.Rotation, (float)90, (this.Timer - (float)4) * 0.02f);
-					float rotation = this.Rotation;
-					Vector3 eulerAngles = Camera.main.transform.eulerAngles;
-					float num = eulerAngles.y = rotation;
-					Vector3 vector = Camera.main.transform.eulerAngles = eulerAngles;
+					this.Suitor.Earpiece.transform.localPosition = new Vector3(0f, -1.12f, 1.14f);
+					this.Suitor.Earpiece.transform.localEulerAngles = new Vector3(45f, -180f, 0f);
+					Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(45.11f, 1.375f, -44f), (this.Timer - 4f) * 0.02f);
+					this.Rotation = Mathf.Lerp(this.Rotation, 90f, (this.Timer - 4f) * 0.02f);
+					Camera.main.transform.eulerAngles = new Vector3(Camera.main.transform.eulerAngles.x, this.Rotation, Camera.main.transform.eulerAngles.z);
 					if (this.Rotation > 89.9f)
 					{
-						this.Rival.Character.animation["f02_turnAround_00"].time = (float)0;
-						this.Rival.Character.animation.CrossFade("f02_turnAround_00");
-						float x = this.Affection / (float)100;
-						Vector3 localScale = this.AffectionBar.localScale;
-						float num2 = localScale.x = x;
-						Vector3 vector2 = this.AffectionBar.localScale = localScale;
+						this.Rival.Character.GetComponent<Animation>()["f02_turnAround_00"].time = 0f;
+						this.Rival.Character.GetComponent<Animation>().CrossFade("f02_turnAround_00");
+						this.AffectionBar.localScale = new Vector3(this.Affection / 100f, this.AffectionBar.localScale.y, this.AffectionBar.localScale.z);
 						this.DialogueLabel.text = this.Greetings[this.AffectionLevel];
 						this.CalculateMultiplier();
-						this.DatingSimHUD.active = true;
-						this.Timer = (float)0;
+						this.DatingSimHUD.gameObject.SetActive(true);
+						this.Timer = 0f;
 						this.Phase++;
 					}
 				}
 			}
 			else if (this.Phase == 3)
 			{
-				this.DatingSimHUD.alpha = Mathf.MoveTowards(this.DatingSimHUD.alpha, (float)1, Time.deltaTime);
-				if (this.Rival.Character.animation["f02_turnAround_00"].time >= this.Rival.Character.animation["f02_turnAround_00"].length)
+				this.DatingSimHUD.alpha = Mathf.MoveTowards(this.DatingSimHUD.alpha, 1f, Time.deltaTime);
+				if (this.Rival.Character.GetComponent<Animation>()["f02_turnAround_00"].time >= this.Rival.Character.GetComponent<Animation>()["f02_turnAround_00"].length)
 				{
-					int num3 = -90;
-					Vector3 eulerAngles2 = this.Rival.transform.eulerAngles;
-					float num4 = eulerAngles2.y = (float)num3;
-					Vector3 vector3 = this.Rival.transform.eulerAngles = eulerAngles2;
-					this.Rival.Character.animation.Play("f02_turnAround_00");
-					this.Rival.Character.animation["f02_turnAround_00"].time = (float)0;
-					this.Rival.Character.animation["f02_turnAround_00"].speed = (float)0;
-					this.Rival.Character.animation.Play("f02_turnAround_00");
-					this.Rival.Character.animation.CrossFade(this.Rival.IdleAnim);
+					this.Rival.transform.eulerAngles = new Vector3(this.Rival.transform.eulerAngles.x, -90f, this.Rival.transform.eulerAngles.z);
+					this.Rival.Character.GetComponent<Animation>().Play("f02_turnAround_00");
+					this.Rival.Character.GetComponent<Animation>()["f02_turnAround_00"].time = 0f;
+					this.Rival.Character.GetComponent<Animation>()["f02_turnAround_00"].speed = 0f;
+					this.Rival.Character.GetComponent<Animation>().Play("f02_turnAround_00");
+					this.Rival.Character.GetComponent<Animation>().CrossFade(this.Rival.IdleAnim);
 					this.PromptBar.ClearButtons();
 					this.PromptBar.Label[0].text = "Confirm";
 					this.PromptBar.Label[1].text = "Back";
@@ -376,42 +341,24 @@ public class DatingMinigameScript : MonoBehaviour
 			{
 				if (this.AffectionGrow)
 				{
-					this.Affection = Mathf.MoveTowards(this.Affection, (float)100, Time.deltaTime * (float)10);
+					this.Affection = Mathf.MoveTowards(this.Affection, 100f, Time.deltaTime * 10f);
 					this.CalculateAffection();
 				}
 				this.Rival.Cosmetic.MyRenderer.materials[2].SetFloat("_BlendAmount", this.Affection * 0.01f);
 				this.Rival.CharacterAnimation["f02_smile_00"].weight = this.Affection * 0.01f;
-				float y = Mathf.Lerp(this.Highlight.localPosition.y, this.HighlightTarget, Time.deltaTime * (float)10);
-				Vector3 localPosition = this.Highlight.localPosition;
-				float num5 = localPosition.y = y;
-				Vector3 vector4 = this.Highlight.localPosition = localPosition;
-				for (int i = 1; i < Extensions.get_length(this.Options); i++)
+				this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, Mathf.Lerp(this.Highlight.localPosition.y, this.HighlightTarget, Time.deltaTime * 10f), this.Highlight.localPosition.z);
+				for (int i = 1; i < this.Options.Length; i++)
 				{
-					if (i == this.Selected)
-					{
-						float x2 = Mathf.Lerp(this.Options[i].localPosition.x, (float)750, Time.deltaTime * (float)10);
-						Vector3 localPosition2 = this.Options[i].localPosition;
-						float num6 = localPosition2.x = x2;
-						Vector3 vector5 = this.Options[i].localPosition = localPosition2;
-					}
-					else
-					{
-						float x3 = Mathf.Lerp(this.Options[i].localPosition.x, (float)800, Time.deltaTime * (float)10);
-						Vector3 localPosition3 = this.Options[i].localPosition;
-						float num7 = localPosition3.x = x3;
-						Vector3 vector6 = this.Options[i].localPosition = localPosition3;
-					}
+					Transform transform = this.Options[i];
+					transform.localPosition = new Vector3(Mathf.Lerp(transform.localPosition.x, (i != this.Selected) ? 800f : 750f, Time.deltaTime * 10f), transform.localPosition.y, transform.localPosition.z);
 				}
-				float x4 = Mathf.Lerp(this.AffectionBar.localScale.x, this.Affection / 100f, Time.deltaTime * (float)10);
-				Vector3 localScale2 = this.AffectionBar.localScale;
-				float num8 = localScale2.x = x4;
-				Vector3 vector7 = this.AffectionBar.localScale = localScale2;
+				this.AffectionBar.localScale = new Vector3(Mathf.Lerp(this.AffectionBar.localScale.x, this.Affection / 100f, Time.deltaTime * 10f), this.AffectionBar.localScale.y, this.AffectionBar.localScale.z);
 				if (!this.SelectingTopic && !this.Complimenting && !this.ShowingOff && !this.GivingGift)
 				{
-					this.Topics.localScale = Vector3.Lerp(this.Topics.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-					this.ComplimentSet.localScale = Vector3.Lerp(this.ComplimentSet.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-					this.ShowOff.localScale = Vector3.Lerp(this.ShowOff.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-					this.GiveGift.localScale = Vector3.Lerp(this.GiveGift.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+					this.Topics.localScale = Vector3.Lerp(this.Topics.localScale, Vector3.zero, Time.deltaTime * 10f);
+					this.ComplimentSet.localScale = Vector3.Lerp(this.ComplimentSet.localScale, Vector3.zero, Time.deltaTime * 10f);
+					this.ShowOff.localScale = Vector3.Lerp(this.ShowOff.localScale, Vector3.zero, Time.deltaTime * 10f);
+					this.GiveGift.localScale = Vector3.Lerp(this.GiveGift.localScale, Vector3.zero, Time.deltaTime * 10f);
 					if (this.InputManager.TappedUp)
 					{
 						this.Selected--;
@@ -422,7 +369,7 @@ public class DatingMinigameScript : MonoBehaviour
 						this.Selected++;
 						this.UpdateHighlight();
 					}
-					if (Input.GetButtonDown("A") && this.Labels[this.Selected].color.a == (float)1)
+					if (Input.GetButtonDown("A") && this.Labels[this.Selected].color.a == 1f)
 					{
 						if (this.Selected == 1)
 						{
@@ -459,7 +406,7 @@ public class DatingMinigameScript : MonoBehaviour
 				}
 				else if (this.SelectingTopic)
 				{
-					this.Topics.localScale = Vector3.Lerp(this.Topics.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+					this.Topics.localScale = Vector3.Lerp(this.Topics.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 					if (this.InputManager.TappedUp)
 					{
 						this.Row--;
@@ -480,37 +427,33 @@ public class DatingMinigameScript : MonoBehaviour
 						this.Column++;
 						this.UpdateTopicHighlight();
 					}
-					if (Input.GetButtonDown("A") && this.TopicIcons[this.TopicSelected].color.a == (float)1)
+					if (Input.GetButtonDown("A") && this.TopicIcons[this.TopicSelected].color.a == 1f)
 					{
 						this.SelectingTopic = false;
-						float a = 0.5f;
-						Color color = this.TopicIcons[this.TopicSelected].color;
-						float num9 = color.a = a;
-						Color color2 = this.TopicIcons[this.TopicSelected].color = color;
-						PlayerPrefs.SetInt("Topic_" + this.TopicSelected + "_Discussed", 1);
+						UISprite uisprite = this.TopicIcons[this.TopicSelected];
+						uisprite.color = new Color(uisprite.color.r, uisprite.color.g, uisprite.color.b, 0.5f);
+						PlayerPrefs.SetInt("Topic_" + this.TopicSelected.ToString() + "_Discussed", 1);
 						this.DetermineOpinion();
-						if (PlayerPrefs.GetInt("Topic_" + this.Opinion + "_Student_7_Learned") == 0)
+						if (PlayerPrefs.GetInt("Topic_" + this.Opinion.ToString() + "_Student_7_Learned") == 0)
 						{
-							PlayerPrefs.SetInt("Topic_" + this.Opinion + "_Student_7_Learned", 1);
+							PlayerPrefs.SetInt("Topic_" + this.Opinion.ToString() + "_Student_7_Learned", 1);
 						}
 						if (this.Negative)
 						{
-							float a2 = 0.5f;
-							Color color3 = this.Labels[1].color;
-							float num10 = color3.a = a2;
-							Color color4 = this.Labels[1].color = color3;
+							UILabel uilabel = this.Labels[1];
+							uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, 0.5f);
 							if (this.Opinion == 2)
 							{
 								this.DialogueLabel.text = "Hey! Just so you know, I take offense to that...";
-								this.Rival.Character.animation.CrossFade("f02_refuse_00");
+								this.Rival.Character.GetComponent<Animation>().CrossFade("f02_refuse_00");
 								this.CurrentAnim = "f02_refuse_00";
-								this.Affection -= (float)1;
+								this.Affection -= 1f;
 								this.CalculateAffection();
 							}
 							else if (this.Opinion == 1)
 							{
 								this.DialogueLabel.text = this.Negatives[this.AffectionLevel];
-								this.Rival.Character.animation.CrossFade("f02_lookdown_00");
+								this.Rival.Character.GetComponent<Animation>().CrossFade("f02_lookdown_00");
 								this.CurrentAnim = "f02_lookdown_00";
 								this.Affection += (float)this.Multiplier;
 								this.CalculateAffection();
@@ -522,14 +465,12 @@ public class DatingMinigameScript : MonoBehaviour
 						}
 						else
 						{
-							float a3 = 0.5f;
-							Color color5 = this.Labels[2].color;
-							float num11 = color5.a = a3;
-							Color color6 = this.Labels[2].color = color5;
+							UILabel uilabel2 = this.Labels[2];
+							uilabel2.color = new Color(uilabel2.color.r, uilabel2.color.g, uilabel2.color.b, 0.5f);
 							if (this.Opinion == 2)
 							{
 								this.DialogueLabel.text = this.Positives[this.AffectionLevel];
-								this.Rival.Character.animation.CrossFade("f02_lookdown_00");
+								this.Rival.Character.GetComponent<Animation>().CrossFade("f02_lookdown_00");
 								this.CurrentAnim = "f02_lookdown_00";
 								this.Affection += (float)this.Multiplier;
 								this.CalculateAffection();
@@ -537,9 +478,9 @@ public class DatingMinigameScript : MonoBehaviour
 							else if (this.Opinion == 1)
 							{
 								this.DialogueLabel.text = "To be honest with you, I strongly disagree...";
-								this.Rival.Character.animation.CrossFade("f02_refuse_00");
+								this.Rival.Character.GetComponent<Animation>().CrossFade("f02_refuse_00");
 								this.CurrentAnim = "f02_refuse_00";
-								this.Affection -= (float)1;
+								this.Affection -= 1f;
 								this.CalculateAffection();
 							}
 							else if (this.Opinion == 0)
@@ -547,13 +488,13 @@ public class DatingMinigameScript : MonoBehaviour
 								this.DialogueLabel.text = "Um...all right.";
 							}
 						}
-						if (this.Affection > (float)100)
+						if (this.Affection > 100f)
 						{
-							this.Affection = (float)100;
+							this.Affection = 100f;
 						}
-						else if (this.Affection < (float)0)
+						else if (this.Affection < 0f)
 						{
-							this.Affection = (float)0;
+							this.Affection = 0f;
 						}
 					}
 					if (Input.GetButtonDown("B"))
@@ -563,7 +504,7 @@ public class DatingMinigameScript : MonoBehaviour
 				}
 				else if (this.Complimenting)
 				{
-					this.ComplimentSet.localScale = Vector3.Lerp(this.ComplimentSet.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+					this.ComplimentSet.localScale = Vector3.Lerp(this.ComplimentSet.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 					if (this.InputManager.TappedUp)
 					{
 						this.Line--;
@@ -584,36 +525,34 @@ public class DatingMinigameScript : MonoBehaviour
 						this.Side++;
 						this.UpdateComplimentHighlight();
 					}
-					if (Input.GetButtonDown("A") && this.ComplimentLabels[this.ComplimentSelected].color.a == (float)1)
+					if (Input.GetButtonDown("A") && this.ComplimentLabels[this.ComplimentSelected].color.a == 1f)
 					{
-						float a4 = 0.5f;
-						Color color7 = this.Labels[3].color;
-						float num12 = color7.a = a4;
-						Color color8 = this.Labels[3].color = color7;
+						UILabel uilabel3 = this.Labels[3];
+						uilabel3.color = new Color(uilabel3.color.r, uilabel3.color.g, uilabel3.color.b, 0.5f);
 						this.Complimenting = false;
 						this.DialogueLabel.text = this.Compliments[this.ComplimentSelected];
-						PlayerPrefs.SetInt("Compliment_" + this.ComplimentSelected + "_Given", 1);
+						PlayerPrefs.SetInt("Compliment_" + this.ComplimentSelected.ToString() + "_Given", 1);
 						if (this.ComplimentSelected == 1 || this.ComplimentSelected == 4 || this.ComplimentSelected == 5 || this.ComplimentSelected == 8 || this.ComplimentSelected == 9)
 						{
-							this.Rival.Character.animation.CrossFade("f02_lookdown_00");
+							this.Rival.Character.GetComponent<Animation>().CrossFade("f02_lookdown_00");
 							this.CurrentAnim = "f02_lookdown_00";
 							this.Affection += (float)this.Multiplier;
 							this.CalculateAffection();
 						}
 						else
 						{
-							this.Rival.Character.animation.CrossFade("f02_refuse_00");
+							this.Rival.Character.GetComponent<Animation>().CrossFade("f02_refuse_00");
 							this.CurrentAnim = "f02_refuse_00";
-							this.Affection -= (float)1;
+							this.Affection -= 1f;
 							this.CalculateAffection();
 						}
-						if (this.Affection > (float)100)
+						if (this.Affection > 100f)
 						{
-							this.Affection = (float)100;
+							this.Affection = 100f;
 						}
-						else if (this.Affection < (float)0)
+						else if (this.Affection < 0f)
 						{
-							this.Affection = (float)0;
+							this.Affection = 0f;
 						}
 					}
 					if (Input.GetButtonDown("B"))
@@ -623,7 +562,7 @@ public class DatingMinigameScript : MonoBehaviour
 				}
 				else if (this.ShowingOff)
 				{
-					this.ShowOff.localScale = Vector3.Lerp(this.ShowOff.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+					this.ShowOff.localScale = Vector3.Lerp(this.ShowOff.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 					if (this.InputManager.TappedUp)
 					{
 						this.TraitSelected--;
@@ -636,10 +575,8 @@ public class DatingMinigameScript : MonoBehaviour
 					}
 					if (Input.GetButtonDown("A"))
 					{
-						float a5 = 0.5f;
-						Color color9 = this.Labels[4].color;
-						float num13 = color9.a = a5;
-						Color color10 = this.Labels[4].color = color9;
+						UILabel uilabel4 = this.Labels[4];
+						uilabel4.color = new Color(uilabel4.color.r, uilabel4.color.g, uilabel4.color.b, 0.5f);
 						this.ShowingOff = false;
 						if (this.TraitSelected == 2)
 						{
@@ -647,7 +584,7 @@ public class DatingMinigameScript : MonoBehaviour
 							{
 								PlayerPrefs.SetInt("Trait_2_Demonstrated", PlayerPrefs.GetInt("Trait_2_Demonstrated") + 1);
 								this.DialogueLabel.text = this.ShowOffs[this.AffectionLevel];
-								this.Rival.Character.animation.CrossFade("f02_lookdown_00");
+								this.Rival.Character.GetComponent<Animation>().CrossFade("f02_lookdown_00");
 								this.CurrentAnim = "f02_lookdown_00";
 								this.Affection += (float)this.Multiplier;
 								this.CalculateAffection();
@@ -661,13 +598,13 @@ public class DatingMinigameScript : MonoBehaviour
 						{
 							this.DialogueLabel.text = "Um...well...that sort of thing doesn't really matter to me...";
 						}
-						if (this.Affection > (float)100)
+						if (this.Affection > 100f)
 						{
-							this.Affection = (float)100;
+							this.Affection = 100f;
 						}
-						else if (this.Affection < (float)0)
+						else if (this.Affection < 0f)
 						{
-							this.Affection = (float)0;
+							this.Affection = 0f;
 						}
 					}
 					if (Input.GetButtonDown("B"))
@@ -677,7 +614,7 @@ public class DatingMinigameScript : MonoBehaviour
 				}
 				else if (this.GivingGift)
 				{
-					this.GiveGift.localScale = Vector3.Lerp(this.GiveGift.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+					this.GiveGift.localScale = Vector3.Lerp(this.GiveGift.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 					if (this.InputManager.TappedUp)
 					{
 						this.GiftRow--;
@@ -702,24 +639,22 @@ public class DatingMinigameScript : MonoBehaviour
 					{
 						if (this.GiftSelected == 1 && this.RoseIcon.enabled)
 						{
-							float a6 = 0.5f;
-							Color color11 = this.Labels[5].color;
-							float num14 = color11.a = a6;
-							Color color12 = this.Labels[5].color = color11;
+							UILabel uilabel5 = this.Labels[5];
+							uilabel5.color = new Color(uilabel5.color.r, uilabel5.color.g, uilabel5.color.b, 0.5f);
 							this.GivingGift = false;
 							this.DialogueLabel.text = this.GiveGifts[this.AffectionLevel];
-							this.Rival.Character.animation.CrossFade("f02_lookdown_00");
+							this.Rival.Character.GetComponent<Animation>().CrossFade("f02_lookdown_00");
 							this.CurrentAnim = "f02_lookdown_00";
 							this.Affection += (float)this.Multiplier;
 							this.CalculateAffection();
 						}
-						if (this.Affection > (float)100)
+						if (this.Affection > 100f)
 						{
-							this.Affection = (float)100;
+							this.Affection = 100f;
 						}
-						else if (this.Affection < (float)0)
+						else if (this.Affection < 0f)
 						{
-							this.Affection = (float)0;
+							this.Affection = 0f;
 						}
 					}
 					if (Input.GetButtonDown("B"))
@@ -730,32 +665,26 @@ public class DatingMinigameScript : MonoBehaviour
 			}
 			else if (this.Phase == 5)
 			{
-				this.Speed += Time.deltaTime * (float)100;
-				float y2 = this.AffectionSet.localPosition.y + this.Speed;
-				Vector3 localPosition4 = this.AffectionSet.localPosition;
-				float num15 = localPosition4.y = y2;
-				Vector3 vector8 = this.AffectionSet.localPosition = localPosition4;
-				float x5 = this.OptionSet.localPosition.x + this.Speed;
-				Vector3 localPosition5 = this.OptionSet.localPosition;
-				float num16 = localPosition5.x = x5;
-				Vector3 vector9 = this.OptionSet.localPosition = localPosition5;
-				if (this.Speed > (float)100 && Input.GetButtonDown("A"))
+				this.Speed += Time.deltaTime * 100f;
+				this.AffectionSet.localPosition = new Vector3(this.AffectionSet.localPosition.x, this.AffectionSet.localPosition.y + this.Speed, this.AffectionSet.localPosition.z);
+				this.OptionSet.localPosition = new Vector3(this.OptionSet.localPosition.x + this.Speed, this.OptionSet.localPosition.y, this.OptionSet.localPosition.z);
+				if (this.Speed > 100f && Input.GetButtonDown("A"))
 				{
 					this.Phase++;
 				}
 			}
 			else if (this.Phase == 6)
 			{
-				this.DatingSimHUD.alpha = Mathf.MoveTowards(this.DatingSimHUD.alpha, (float)0, Time.deltaTime);
-				if (this.DatingSimHUD.alpha == (float)0)
+				this.DatingSimHUD.alpha = Mathf.MoveTowards(this.DatingSimHUD.alpha, 0f, Time.deltaTime);
+				if (this.DatingSimHUD.alpha == 0f)
 				{
-					this.DatingSimHUD.active = false;
+					this.DatingSimHUD.gameObject.SetActive(false);
 					this.Phase++;
 				}
 			}
 			else if (this.Phase == 7)
 			{
-				if (this.Panel.alpha == (float)0)
+				if (this.Panel.alpha == 0f)
 				{
 					this.LoveManager.RivalWaiting = false;
 					this.LoveManager.Courted = true;
@@ -769,91 +698,91 @@ public class DatingMinigameScript : MonoBehaviour
 					this.Suitor.Pushable = false;
 					this.Suitor.Meeting = false;
 					this.Suitor.Routine = true;
-					this.Suitor.MeetTimer = (float)0;
-					this.Rival.Cosmetic.MyRenderer.materials[2].SetFloat("_BlendAmount", (float)0);
+					this.Suitor.MeetTimer = 0f;
+					this.Rival.Cosmetic.MyRenderer.materials[2].SetFloat("_BlendAmount", 0f);
 					this.Rival.CurrentDestination = this.Rival.Destinations[this.Rival.Phase];
 					this.Rival.Pathfinding.target = this.Rival.Destinations[this.Rival.Phase];
-					this.Rival.CharacterAnimation["f02_smile_00"].weight = (float)0;
+					this.Rival.CharacterAnimation["f02_smile_00"].weight = 0f;
 					this.Rival.Prompt.Label[0].text = "     Talk";
 					this.Rival.Pathfinding.canSearch = true;
 					this.Rival.Pathfinding.canMove = true;
 					this.Rival.Pushable = false;
 					this.Rival.Meeting = false;
 					this.Rival.Routine = true;
-					this.Rival.MeetTimer = (float)0;
+					this.Rival.MeetTimer = 0f;
 					this.StudentManager.Clock.StopTime = false;
 					this.Yandere.RPGCamera.enabled = true;
-					this.Suitor.Earpiece.active = false;
-					this.HeartbeatCamera.active = true;
-					this.Yandere.Headset.active = false;
+					this.Suitor.Earpiece.SetActive(false);
+					this.HeartbeatCamera.SetActive(true);
+					this.Yandere.Headset.SetActive(false);
 					PlayerPrefs.SetFloat("Affection", this.Affection);
 					this.PromptBar.ClearButtons();
 					this.PromptBar.Show = false;
 				}
-				else if (this.Panel.alpha == (float)1)
+				else if (this.Panel.alpha == 1f)
 				{
 					this.Matchmaking = false;
 					this.Yandere.CanMove = true;
-					this.gameObject.active = false;
+					base.gameObject.SetActive(false);
 				}
-				this.Panel.alpha = Mathf.MoveTowards(this.Panel.alpha, (float)1, Time.deltaTime);
+				this.Panel.alpha = Mathf.MoveTowards(this.Panel.alpha, 1f, Time.deltaTime);
 			}
 		}
 	}
 
-	public virtual void LateUpdate()
+	private void LateUpdate()
 	{
 		if (this.Phase == 4)
 		{
 		}
 	}
 
-	public virtual void CalculateMultiplier()
+	private void CalculateMultiplier()
 	{
 		this.Multiplier = 5;
-		if (!this.Suitor.Cosmetic.Eyewear[6].active)
+		if (!this.Suitor.Cosmetic.Eyewear[6].activeInHierarchy)
 		{
 			this.MultiplierIcons[1].mainTexture = this.X;
 			this.Multiplier--;
 		}
-		if (!this.Suitor.Cosmetic.MaleAccessories[3].active)
+		if (!this.Suitor.Cosmetic.MaleAccessories[3].activeInHierarchy)
 		{
 			this.MultiplierIcons[2].mainTexture = this.X;
 			this.Multiplier--;
 		}
-		if (!this.Suitor.Cosmetic.MaleHair[22].active)
+		if (!this.Suitor.Cosmetic.MaleHair[22].activeInHierarchy)
 		{
 			this.MultiplierIcons[3].mainTexture = this.X;
 			this.Multiplier--;
 		}
-		if (this.Suitor.Cosmetic.HairColor != "Purple")
+		if (!this.Suitor.Cosmetic.HairColor.Equals("Purple"))
 		{
 			this.MultiplierIcons[4].mainTexture = this.X;
 			this.Multiplier--;
 		}
 		if (PlayerPrefs.GetInt("PantiesEquipped") == 2)
 		{
-			this.PantyIcon.active = true;
+			this.PantyIcon.SetActive(true);
 			this.Multiplier++;
 		}
 		else
 		{
-			this.PantyIcon.active = false;
+			this.PantyIcon.SetActive(false);
 		}
 		if (PlayerPrefs.GetInt("Seduction") + PlayerPrefs.GetInt("SeductionBonus") > 0)
 		{
-			this.SeductionLabel.text = string.Empty + (PlayerPrefs.GetInt("Seduction") + PlayerPrefs.GetInt("SeductionBonus"));
+			this.SeductionLabel.text = (PlayerPrefs.GetInt("Seduction") + PlayerPrefs.GetInt("SeductionBonus")).ToString();
 			this.Multiplier += PlayerPrefs.GetInt("Seduction") + PlayerPrefs.GetInt("SeductionBonus");
-			this.SeductionIcon.active = true;
+			this.SeductionIcon.SetActive(true);
 		}
 		else
 		{
-			this.SeductionIcon.active = false;
+			this.SeductionIcon.SetActive(false);
 		}
-		this.MultiplierLabel.text = "Multiplier: " + this.Multiplier + "x";
+		this.MultiplierLabel.text = "Multiplier: " + this.Multiplier.ToString() + "x";
 	}
 
-	public virtual void UpdateHighlight()
+	private void UpdateHighlight()
 	{
 		if (this.Selected < 1)
 		{
@@ -863,10 +792,10 @@ public class DatingMinigameScript : MonoBehaviour
 		{
 			this.Selected = 1;
 		}
-		this.HighlightTarget = (float)(450 - 100 * this.Selected);
+		this.HighlightTarget = 450f - 100f * (float)this.Selected;
 	}
 
-	public virtual void UpdateTopicHighlight()
+	private void UpdateTopicHighlight()
 	{
 		if (this.Row < 1)
 		{
@@ -884,26 +813,12 @@ public class DatingMinigameScript : MonoBehaviour
 		{
 			this.Column = 1;
 		}
-		int num = 375 - 125 * this.Row;
-		Vector3 localPosition = this.TopicHighlight.localPosition;
-		float num2 = localPosition.y = (float)num;
-		Vector3 vector = this.TopicHighlight.localPosition = localPosition;
-		int num3 = -375 + 125 * this.Column;
-		Vector3 localPosition2 = this.TopicHighlight.localPosition;
-		float num4 = localPosition2.x = (float)num3;
-		Vector3 vector2 = this.TopicHighlight.localPosition = localPosition2;
+		this.TopicHighlight.localPosition = new Vector3((float)(-375 + 125 * this.Column), (float)(375 - 125 * this.Row), this.TopicHighlight.localPosition.z);
 		this.TopicSelected = (this.Row - 1) * 5 + this.Column;
-		if (PlayerPrefs.GetInt("Topic_" + this.TopicSelected + "_Discovered") == 1)
-		{
-			this.TopicNameLabel.text = this.TopicNames[this.TopicSelected];
-		}
-		else
-		{
-			this.TopicNameLabel.text = "??????????";
-		}
+		this.TopicNameLabel.text = ((PlayerPrefs.GetInt("Topic_" + this.TopicSelected.ToString() + "_Discovered") != 1) ? "??????????" : this.TopicNames[this.TopicSelected]);
 	}
 
-	public virtual void DetermineOpinion()
+	private void DetermineOpinion()
 	{
 		if (this.TopicSelected == 1)
 		{
@@ -1007,28 +922,26 @@ public class DatingMinigameScript : MonoBehaviour
 		}
 	}
 
-	public virtual void UpdateTopics()
+	private void UpdateTopics()
 	{
-		for (int i = 1; i < Extensions.get_length(this.TopicIcons); i++)
+		for (int i = 1; i < this.TopicIcons.Length; i++)
 		{
-			if (PlayerPrefs.GetInt("Topic_" + i + "_Discovered") == 0)
+			UISprite uisprite = this.TopicIcons[i];
+			if (PlayerPrefs.GetInt("Topic_" + i.ToString() + "_Discovered") == 0)
 			{
-				this.TopicIcons[i].spriteName = string.Empty + 0;
-				float a = 0.5f;
-				Color color = this.TopicIcons[i].color;
-				float num = color.a = a;
-				Color color2 = this.TopicIcons[i].color = color;
+				uisprite.spriteName = 0.ToString();
+				uisprite.color = new Color(uisprite.color.r, uisprite.color.g, uisprite.color.b, 0.5f);
 			}
 			else
 			{
-				this.TopicIcons[i].spriteName = string.Empty + i;
+				uisprite.spriteName = i.ToString();
 			}
 		}
 	}
 
-	public virtual void UpdateComplimentHighlight()
+	private void UpdateComplimentHighlight()
 	{
-		for (int i = 1; i < Extensions.get_length(this.TopicIcons); i++)
+		for (int i = 1; i < this.TopicIcons.Length; i++)
 		{
 			this.ComplimentBGs[this.ComplimentSelected].color = this.OriginalColor;
 		}
@@ -1052,7 +965,7 @@ public class DatingMinigameScript : MonoBehaviour
 		this.ComplimentBGs[this.ComplimentSelected].color = Color.white;
 	}
 
-	public virtual void UpdateTraitHighlight()
+	private void UpdateTraitHighlight()
 	{
 		if (this.TraitSelected < 1)
 		{
@@ -1062,16 +975,16 @@ public class DatingMinigameScript : MonoBehaviour
 		{
 			this.TraitSelected = 1;
 		}
-		for (int i = 1; i < Extensions.get_length(this.TraitBGs); i++)
+		for (int i = 1; i < this.TraitBGs.Length; i++)
 		{
 			this.TraitBGs[i].color = this.OriginalColor;
 		}
 		this.TraitBGs[this.TraitSelected].color = Color.white;
 	}
 
-	public virtual void UpdateGiftHighlight()
+	private void UpdateGiftHighlight()
 	{
-		for (int i = 1; i < Extensions.get_length(this.GiftBGs); i++)
+		for (int i = 1; i < this.GiftBGs.Length; i++)
 		{
 			this.GiftBGs[i].color = this.OriginalColor;
 		}
@@ -1093,9 +1006,5 @@ public class DatingMinigameScript : MonoBehaviour
 		}
 		this.GiftSelected = (this.GiftRow - 1) * 2 + this.GiftColumn;
 		this.GiftBGs[this.GiftSelected].color = Color.white;
-	}
-
-	public virtual void Main()
-	{
 	}
 }

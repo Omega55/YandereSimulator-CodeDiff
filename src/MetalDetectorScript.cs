@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class MetalDetectorScript : MonoBehaviour
 {
 	public MissionModeScript MissionMode;
@@ -12,20 +11,20 @@ public class MetalDetectorScript : MonoBehaviour
 
 	public Collider MyCollider;
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.Yandere.Armed)
 		{
 			if (this.Yandere.Weapon[this.Yandere.Equipped].WeaponID == 6)
 			{
 				this.Prompt.enabled = true;
-				if (this.Prompt.Circle[0].fillAmount == (float)0)
+				if (this.Prompt.Circle[0].fillAmount == 0f)
 				{
-					this.audio.Play();
+					base.GetComponent<AudioSource>().Play();
 					this.MyCollider.enabled = false;
 					this.Prompt.Hide();
 					this.Prompt.enabled = false;
-					this.enabled = false;
+					base.enabled = false;
 				}
 			}
 			else if (this.Prompt.enabled)
@@ -41,34 +40,23 @@ public class MetalDetectorScript : MonoBehaviour
 		}
 	}
 
-	public virtual void OnTriggerStay(Collider other)
+	private void OnTriggerStay(Collider other)
 	{
 		bool flag = false;
 		if (this.MissionMode.GameOverID == 0 && other.gameObject.layer == 13)
 		{
-			if (this.Yandere.Weapon[1] != null && this.Yandere.Weapon[1].Metal)
+			for (int i = 1; i < 4; i++)
 			{
-				flag = true;
-			}
-			if (this.Yandere.Weapon[2] != null && this.Yandere.Weapon[2].Metal)
-			{
-				flag = true;
-			}
-			if (this.Yandere.Weapon[3] != null && this.Yandere.Weapon[3].Metal)
-			{
-				flag = true;
+				WeaponScript weaponScript = this.Yandere.Weapon[i];
+				flag |= (weaponScript != null && weaponScript.Metal);
 			}
 			if (flag)
 			{
 				this.MissionMode.GameOverID = 16;
 				this.MissionMode.GameOver();
 				this.MissionMode.Phase = 4;
-				this.enabled = false;
+				base.enabled = false;
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

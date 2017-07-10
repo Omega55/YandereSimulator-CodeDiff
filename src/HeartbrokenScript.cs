@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class HeartbrokenScript : MonoBehaviour
 {
 	public ShoulderCameraScript ShoulderCamera;
@@ -39,13 +37,13 @@ public class HeartbrokenScript : MonoBehaviour
 
 	public bool Arrested;
 
-	public bool Noticed;
+	public bool Noticed = true;
 
 	public float AudioTimer;
 
 	public float Timer;
 
-	public int Phase;
+	public int Phase = 1;
 
 	public int LetterID;
 
@@ -57,13 +55,7 @@ public class HeartbrokenScript : MonoBehaviour
 
 	public int ID;
 
-	public HeartbrokenScript()
-	{
-		this.Noticed = true;
-		this.Phase = 1;
-	}
-
-	public virtual void Start()
+	private void Start()
 	{
 		if (this.Yandere.Attacked)
 		{
@@ -78,16 +70,12 @@ public class HeartbrokenScript : MonoBehaviour
 			this.Letters[8].text = "E";
 			this.Letters[9].text = string.Empty;
 			this.Letters[10].text = string.Empty;
-			while (this.ID < Extensions.get_length(this.Letters))
+			foreach (UILabel uilabel in this.Letters)
 			{
-				float x = this.Letters[this.ID].transform.localPosition.x + (float)100;
-				Vector3 localPosition = this.Letters[this.ID].transform.localPosition;
-				float num = localPosition.x = x;
-				Vector3 vector = this.Letters[this.ID].transform.localPosition = localPosition;
-				this.ID++;
+				uilabel.transform.localPosition = new Vector3(uilabel.transform.localPosition.x + 100f, uilabel.transform.localPosition.y, uilabel.transform.localPosition.z);
 			}
 			this.Letters[3].fontSize = 250;
-			this.SNAP.active = false;
+			this.SNAP.SetActive(false);
 			this.Cursor.Options = 3;
 			this.LetterID = 1;
 			this.StopID = 9;
@@ -108,7 +96,7 @@ public class HeartbrokenScript : MonoBehaviour
 			this.LetterID = 0;
 			this.StopID = 11;
 		}
-		else if (((StudentScript)this.Yandere.Senpai.GetComponent(typeof(StudentScript))).Teacher)
+		else if (this.Yandere.Senpai.GetComponent<StudentScript>().Teacher)
 		{
 			this.Letters[0].text = string.Empty;
 			this.Letters[1].text = "E";
@@ -121,13 +109,9 @@ public class HeartbrokenScript : MonoBehaviour
 			this.Letters[8].text = "D";
 			this.Letters[9].text = string.Empty;
 			this.Letters[10].text = string.Empty;
-			while (this.ID < Extensions.get_length(this.Letters))
+			foreach (UILabel uilabel2 in this.Letters)
 			{
-				float x2 = this.Letters[this.ID].transform.localPosition.x + (float)100;
-				Vector3 localPosition2 = this.Letters[this.ID].transform.localPosition;
-				float num2 = localPosition2.x = x2;
-				Vector3 vector2 = this.Letters[this.ID].transform.localPosition = localPosition2;
-				this.ID++;
+				uilabel2.transform.localPosition = new Vector3(uilabel2.transform.localPosition.x + 100f, uilabel2.transform.localPosition.y, uilabel2.transform.localPosition.z);
 			}
 			this.LetterID = 1;
 			this.StopID = 9;
@@ -145,13 +129,9 @@ public class HeartbrokenScript : MonoBehaviour
 			this.Letters[8].text = "D";
 			this.Letters[9].text = string.Empty;
 			this.Letters[10].text = string.Empty;
-			while (this.ID < Extensions.get_length(this.Letters))
+			foreach (UILabel uilabel3 in this.Letters)
 			{
-				float x3 = this.Letters[this.ID].transform.localPosition.x + (float)100;
-				Vector3 localPosition3 = this.Letters[this.ID].transform.localPosition;
-				float num3 = localPosition3.x = x3;
-				Vector3 vector3 = this.Letters[this.ID].transform.localPosition = localPosition3;
-				this.ID++;
+				uilabel3.transform.localPosition = new Vector3(uilabel3.transform.localPosition.x + 100f, uilabel3.transform.localPosition.y, uilabel3.transform.localPosition.z);
 			}
 			this.LetterID = 1;
 			this.StopID = 9;
@@ -162,63 +142,44 @@ public class HeartbrokenScript : MonoBehaviour
 			this.StopID = 11;
 		}
 		this.ID = 0;
-		while (this.ID < Extensions.get_length(this.Letters))
+		while (this.ID < this.Letters.Length)
 		{
-			this.Letters[this.ID].transform.localScale = new Vector3((float)10, (float)10, (float)1);
-			int num4 = 0;
-			Color color = this.Letters[this.ID].color;
-			float num5 = color.a = (float)num4;
-			Color color2 = this.Letters[this.ID].color = color;
-			this.Origins[this.ID] = this.Letters[this.ID].transform.localPosition;
+			UILabel uilabel4 = this.Letters[this.ID];
+			uilabel4.transform.localScale = new Vector3(10f, 10f, 1f);
+			uilabel4.color = new Color(uilabel4.color.r, uilabel4.color.g, uilabel4.color.b, 0f);
+			this.Origins[this.ID] = uilabel4.transform.localPosition;
 			this.ID++;
 		}
 		this.ID = 0;
-		while (this.ID < Extensions.get_length(this.Options))
+		while (this.ID < this.Options.Length)
 		{
-			int num6 = 0;
-			Color color3 = this.Options[this.ID].color;
-			float num7 = color3.a = (float)num6;
-			Color color4 = this.Options[this.ID].color = color3;
+			UILabel uilabel5 = this.Options[this.ID];
+			uilabel5.color = new Color(uilabel5.color.r, uilabel5.color.g, uilabel5.color.b, 0f);
 			this.ID++;
 		}
 		this.ID = 0;
-		int num8 = 0;
-		Color color5 = this.Subtitle.color;
-		float num9 = color5.a = (float)num8;
-		Color color6 = this.Subtitle.color = color5;
+		this.Subtitle.color = new Color(this.Subtitle.color.r, this.Subtitle.color.g, this.Subtitle.color.b, 0f);
 		if (this.Noticed)
 		{
-			int num10 = 0;
-			Color color7 = this.Background.color;
-			float num11 = color7.a = (float)num10;
-			Color color8 = this.Background.color = color7;
-			int num12 = 0;
-			Color color9 = this.Ground.color;
-			float num13 = color9.a = (float)num12;
-			Color color10 = this.Ground.color = color9;
+			this.Background.color = new Color(this.Background.color.r, this.Background.color.g, this.Background.color.b, 0f);
+			this.Ground.color = new Color(this.Ground.color.r, this.Ground.color.g, this.Ground.color.b, 0f);
 		}
 		else
 		{
-			int num14 = 100;
-			Vector3 position = this.transform.parent.transform.position;
-			float num15 = position.y = (float)num14;
-			Vector3 vector4 = this.transform.parent.transform.position = position;
+			base.transform.parent.transform.position = new Vector3(base.transform.parent.transform.position.x, 100f, base.transform.parent.transform.position.z);
 		}
 		this.Clock.StopTime = true;
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.Noticed)
 		{
-			this.Ground.transform.eulerAngles = new Vector3((float)90, (float)0, (float)0);
-			float y = this.Yandere.transform.position.y;
-			Vector3 position = this.Ground.transform.position;
-			float num = position.y = y;
-			Vector3 vector = this.Ground.transform.position = position;
+			this.Ground.transform.eulerAngles = new Vector3(90f, 0f, 0f);
+			this.Ground.transform.position = new Vector3(this.Ground.transform.position.x, this.Yandere.transform.position.y, this.Ground.transform.position.z);
 		}
 		this.Timer += Time.deltaTime;
-		if (this.Timer > (float)3)
+		if (this.Timer > 3f)
 		{
 			if (this.Phase == 1)
 			{
@@ -226,49 +187,35 @@ public class HeartbrokenScript : MonoBehaviour
 				{
 					this.UpdateSubtitle();
 				}
-				if (this.Subtitle.color.a > (float)0)
-				{
-					this.Phase++;
-				}
-				else
-				{
-					this.Phase += 2;
-				}
+				this.Phase += ((this.Subtitle.color.a <= 0f) ? 2 : 1);
 			}
 			else if (this.Phase == 2)
 			{
 				this.AudioTimer += Time.deltaTime;
-				if (this.AudioTimer > this.Subtitle.audio.clip.length)
+				if (this.AudioTimer > this.Subtitle.GetComponent<AudioSource>().clip.length)
 				{
 					this.Phase++;
 				}
 			}
 		}
-		if (this.Background.color.a < (float)1)
+		if (this.Background.color.a < 1f)
 		{
-			float a = this.Background.color.a + Time.deltaTime;
-			Color color = this.Background.color;
-			float num2 = color.a = a;
-			Color color2 = this.Background.color = color;
-			float a2 = this.Ground.color.a + Time.deltaTime;
-			Color color3 = this.Ground.color;
-			float num3 = color3.a = a2;
-			Color color4 = this.Ground.color = color3;
-			if (this.Background.color.a >= (float)1)
+			this.Background.color = new Color(this.Background.color.r, this.Background.color.g, this.Background.color.b, this.Background.color.a + Time.deltaTime);
+			this.Ground.color = new Color(this.Ground.color.r, this.Ground.color.g, this.Ground.color.b, this.Ground.color.a + Time.deltaTime);
+			if (this.Background.color.a >= 1f)
 			{
 				this.MainCamera.enabled = false;
 			}
 		}
+		AudioSource component = base.GetComponent<AudioSource>();
 		if (this.LetterID < this.StopID)
 		{
-			this.Letters[this.LetterID].transform.localScale = Vector3.MoveTowards(this.Letters[this.LetterID].transform.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)100);
-			float a3 = this.Letters[this.LetterID].color.a + Time.deltaTime * (float)10;
-			Color color5 = this.Letters[this.LetterID].color;
-			float num4 = color5.a = a3;
-			Color color6 = this.Letters[this.LetterID].color = color5;
-			if (this.Letters[this.LetterID].transform.localScale == new Vector3((float)1, (float)1, (float)1))
+			UILabel uilabel = this.Letters[this.LetterID];
+			uilabel.transform.localScale = Vector3.MoveTowards(uilabel.transform.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 100f);
+			uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, uilabel.color.a + Time.deltaTime * 10f);
+			if (uilabel.transform.localScale == new Vector3(1f, 1f, 1f))
 			{
-				this.audio.PlayOneShot(this.Slam);
+				component.PlayOneShot(this.Slam);
 				this.LetterID++;
 				if (this.LetterID == this.StopID)
 				{
@@ -278,96 +225,73 @@ public class HeartbrokenScript : MonoBehaviour
 		}
 		else if (this.Phase == 3)
 		{
-			if (this.Options[0].color.a == (float)0)
+			if (this.Options[0].color.a == 0f)
 			{
-				int num5 = 0;
-				Color color7 = this.Subtitle.color;
-				float num6 = color7.a = (float)num5;
-				Color color8 = this.Subtitle.color = color7;
-				this.audio.Play();
+				this.Subtitle.color = new Color(this.Subtitle.color.r, this.Subtitle.color.g, this.Subtitle.color.b, 0f);
+				component.Play();
 			}
-			if (this.ID < Extensions.get_length(this.Options) && this.ID < Extensions.get_length(this.Options))
+			if (this.ID < this.Options.Length)
 			{
-				float a4 = this.Options[this.ID].color.a + Time.deltaTime * (float)2;
-				Color color9 = this.Options[this.ID].color;
-				float num7 = color9.a = a4;
-				Color color10 = this.Options[this.ID].color = color9;
-				if (this.Options[this.ID].color.a >= (float)1)
+				UILabel uilabel2 = this.Options[this.ID];
+				uilabel2.color = new Color(uilabel2.color.r, uilabel2.color.g, uilabel2.color.b, uilabel2.color.a + Time.deltaTime * 2f);
+				if (uilabel2.color.a >= 1f)
 				{
 					this.ID++;
 				}
 			}
 		}
 		this.ShakeID = 0;
-		while (this.ShakeID < Extensions.get_length(this.Letters))
+		while (this.ShakeID < this.Letters.Length)
 		{
-			float x = this.Origins[this.ShakeID].x + UnityEngine.Random.Range(-5f, 5f);
-			Vector3 localPosition = this.Letters[this.ShakeID].transform.localPosition;
-			float num8 = localPosition.x = x;
-			Vector3 vector2 = this.Letters[this.ShakeID].transform.localPosition = localPosition;
-			float y2 = this.Origins[this.ShakeID].y + UnityEngine.Random.Range(-5f, 5f);
-			Vector3 localPosition2 = this.Letters[this.ShakeID].transform.localPosition;
-			float num9 = localPosition2.y = y2;
-			Vector3 vector3 = this.Letters[this.ShakeID].transform.localPosition = localPosition2;
+			UILabel uilabel3 = this.Letters[this.ShakeID];
+			Vector3 vector = this.Origins[this.ShakeID];
+			uilabel3.transform.localPosition = new Vector3(vector.x + UnityEngine.Random.Range(-5f, 5f), vector.y + UnityEngine.Random.Range(-5f, 5f), uilabel3.transform.localPosition.z);
 			this.ShakeID++;
 		}
 		this.GrowID = 0;
 		while (this.GrowID < 4)
 		{
-			if (this.Cursor.Selected - 1 != this.GrowID)
-			{
-				this.Options[this.GrowID].transform.localScale = Vector3.Lerp(this.Options[this.GrowID].transform.localScale, new Vector3(0.5f, 0.5f, 0.5f), Time.deltaTime * (float)10);
-			}
-			else
-			{
-				this.Options[this.GrowID].transform.localScale = Vector3.Lerp(this.Options[this.GrowID].transform.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-			}
+			UILabel uilabel4 = this.Options[this.GrowID];
+			uilabel4.transform.localScale = Vector3.Lerp(uilabel4.transform.localScale, (this.Cursor.Selected - 1 == this.GrowID) ? new Vector3(1f, 1f, 1f) : new Vector3(0.5f, 0.5f, 0.5f), Time.deltaTime * 10f);
 			this.GrowID++;
 		}
 	}
 
-	public virtual void UpdateSubtitle()
+	private void UpdateSubtitle()
 	{
-		StudentScript studentScript = (StudentScript)this.Yandere.Senpai.GetComponent(typeof(StudentScript));
-		int num = 0;
-		if (!studentScript.Teacher && this.Yandere.Noticed)
+		StudentScript component = this.Yandere.Senpai.GetComponent<StudentScript>();
+		if (!component.Teacher && this.Yandere.Noticed)
 		{
-			int num2 = 1;
-			Color color = this.Subtitle.color;
-			float num3 = color.a = (float)num2;
-			Color color2 = this.Subtitle.color = color;
-			string gameOverCause = studentScript.GameOverCause;
-			if (gameOverCause == "Stalking")
+			this.Subtitle.color = new Color(this.Subtitle.color.r, this.Subtitle.color.g, this.Subtitle.color.b, 1f);
+			string gameOverCause = component.GameOverCause;
+			int num = 0;
+			if (gameOverCause.Equals("Stalking"))
 			{
 				num = 4;
 			}
-			else if (gameOverCause == "Insanity")
+			else if (gameOverCause.Equals("Insanity"))
 			{
 				num = 3;
 			}
-			else if (gameOverCause == "Weapon")
+			else if (gameOverCause.Equals("Weapon"))
 			{
 				num = 2;
 			}
-			else if (gameOverCause == "Murder")
+			else if (gameOverCause.Equals("Murder"))
 			{
 				num = 5;
 			}
-			else if (gameOverCause == "Blood")
+			else if (gameOverCause.Equals("Blood"))
 			{
 				num = 1;
 			}
-			else if (gameOverCause == "Lewd")
+			else if (gameOverCause.Equals("Lewd"))
 			{
 				num = 6;
 			}
 			this.Subtitle.text = this.NoticedLines[num];
-			this.Subtitle.audio.clip = this.NoticedClips[num];
-			this.Subtitle.audio.Play();
+			this.Subtitle.GetComponent<AudioSource>().clip = this.NoticedClips[num];
+			this.Subtitle.GetComponent<AudioSource>().Play();
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

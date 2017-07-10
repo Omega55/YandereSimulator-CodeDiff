@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class ClubWindowScript : MonoBehaviour
 {
 	public ClubManagerScript ClubManager;
@@ -46,22 +45,22 @@ public class ClubWindowScript : MonoBehaviour
 
 	public int Club;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.Window.active = false;
-		if (PlayerPrefs.GetFloat("SchoolAtmosphere") < 33.33333f)
+		this.Window.SetActive(false);
+		if (PlayerPrefs.GetFloat("SchoolAtmosphere") < 33.3333321f)
 		{
 			this.ActivityDescs[7] = this.LowAtmosphereDesc;
 		}
-		else if (PlayerPrefs.GetFloat("SchoolAtmosphere") < 66.66666f)
+		else if (PlayerPrefs.GetFloat("SchoolAtmosphere") < 66.6666641f)
 		{
 			this.ActivityDescs[7] = this.MedAtmosphereDesc;
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Window.active)
+		if (this.Window.activeInHierarchy)
 		{
 			if (this.Timer > 0.5f)
 			{
@@ -77,7 +76,7 @@ public class ClubWindowScript : MonoBehaviour
 					else if (this.Quitting)
 					{
 						this.ClubManager.DeactivateClubBenefit();
-						PlayerPrefs.SetInt("QuitClub_" + this.Club, 1);
+						PlayerPrefs.SetInt("QuitClub_" + this.Club.ToString(), 1);
 						PlayerPrefs.SetInt("Club", 0);
 						this.Yandere.ClubAccessory();
 						this.Yandere.TargetStudent.Interaction = 12;
@@ -87,11 +86,11 @@ public class ClubWindowScript : MonoBehaviour
 					{
 						this.Yandere.TargetStudent.Interaction = 14;
 					}
-					this.Yandere.TargetStudent.TalkTimer = (float)100;
+					this.Yandere.TargetStudent.TalkTimer = 100f;
 					this.Yandere.TargetStudent.ClubPhase = 2;
 					this.PromptBar.ClearButtons();
 					this.PromptBar.Show = false;
-					this.Window.active = false;
+					this.Window.SetActive(false);
 				}
 				if (Input.GetButtonDown("B"))
 				{
@@ -109,23 +108,23 @@ public class ClubWindowScript : MonoBehaviour
 						this.Yandere.TargetStudent.Interaction = 14;
 						this.Activity = false;
 					}
-					this.Yandere.TargetStudent.TalkTimer = (float)100;
+					this.Yandere.TargetStudent.TalkTimer = 100f;
 					this.Yandere.TargetStudent.ClubPhase = 3;
 					this.PromptBar.ClearButtons();
 					this.PromptBar.Show = false;
-					this.Window.active = false;
+					this.Window.SetActive(false);
 				}
 				if (Input.GetButtonDown("X") && !this.Quitting && !this.Activity)
 				{
-					if (!this.Warning.active)
+					if (!this.Warning.activeInHierarchy)
 					{
-						this.ClubInfo.active = false;
-						this.Warning.active = true;
+						this.ClubInfo.SetActive(false);
+						this.Warning.SetActive(true);
 					}
 					else
 					{
-						this.ClubInfo.active = true;
-						this.Warning.active = false;
+						this.ClubInfo.SetActive(true);
+						this.Warning.SetActive(false);
 					}
 				}
 			}
@@ -133,19 +132,19 @@ public class ClubWindowScript : MonoBehaviour
 		}
 		if (this.PerformingActivity)
 		{
-			this.ActivityWindow.localScale = Vector3.Lerp(this.ActivityWindow.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+			this.ActivityWindow.localScale = Vector3.Lerp(this.ActivityWindow.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 		}
 		else if (this.ActivityWindow.localScale.x > 0.1f)
 		{
-			this.ActivityWindow.localScale = Vector3.Lerp(this.ActivityWindow.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+			this.ActivityWindow.localScale = Vector3.Lerp(this.ActivityWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
 		}
-		else if (this.ActivityWindow.localScale.x != (float)0)
+		else if (this.ActivityWindow.localScale.x != 0f)
 		{
-			this.ActivityWindow.localScale = new Vector3((float)0, (float)0, (float)0);
+			this.ActivityWindow.localScale = Vector3.zero;
 		}
 	}
 
-	public virtual void UpdateWindow()
+	public void UpdateWindow()
 	{
 		this.ClubName.text = this.ClubNames[this.Club];
 		if (!this.Quitting && !this.Activity)
@@ -161,7 +160,7 @@ public class ClubWindowScript : MonoBehaviour
 		}
 		else if (this.Activity)
 		{
-			this.ClubDesc.text = "Club activities last until 6:00 PM. If you choose to participate in club activities now, the day will end." + "\n" + "\n" + "If you don't join by 5:30 PM, you won't be able to participate in club activities today." + "\n" + "\n" + "If you don't participate in club activities at least once a week, you will be removed from the club.";
+			this.ClubDesc.text = "Club activities last until 6:00 PM. If you choose to participate in club activities now, the day will end.\n\nIf you don't join by 5:30 PM, you won't be able to participate in club activities today.\n\nIf you don't participate in club activities at least once a week, you will be removed from the club.";
 			this.PromptBar.ClearButtons();
 			this.PromptBar.Label[0].text = "Yes";
 			this.PromptBar.Label[1].text = "No";
@@ -179,13 +178,9 @@ public class ClubWindowScript : MonoBehaviour
 			this.PromptBar.Show = true;
 			this.BottomLabel.text = "Will you quit the " + this.ClubNames[this.Club] + "?";
 		}
-		this.ClubInfo.active = true;
-		this.Warning.active = false;
-		this.Window.active = true;
-		this.Timer = (float)0;
-	}
-
-	public virtual void Main()
-	{
+		this.ClubInfo.SetActive(true);
+		this.Warning.SetActive(false);
+		this.Window.SetActive(true);
+		this.Timer = 0f;
 	}
 }

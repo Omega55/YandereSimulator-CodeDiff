@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class WoodChipperScript : MonoBehaviour
 {
 	public ParticleSystem BloodSpray;
@@ -44,7 +43,7 @@ public class WoodChipperScript : MonoBehaviour
 
 	public int[] VictimList;
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.Yandere.PickUp != null)
 		{
@@ -53,13 +52,13 @@ public class WoodChipperScript : MonoBehaviour
 				if (!this.Yandere.PickUp.Bucket.Full)
 				{
 					this.BucketPrompt.HideButton[0] = false;
-					if (this.BucketPrompt.Circle[0].fillAmount == (float)0)
+					if (this.BucketPrompt.Circle[0].fillAmount == 0f)
 					{
 						this.Bucket = this.Yandere.PickUp;
 						this.Yandere.EmptyHands();
 						this.Bucket.transform.eulerAngles = this.BucketPoint.eulerAngles;
 						this.Bucket.transform.position = this.BucketPoint.position;
-						this.Bucket.rigidbody.useGravity = false;
+						this.Bucket.GetComponent<Rigidbody>().useGravity = false;
 						this.Bucket.MyCollider.enabled = false;
 					}
 				}
@@ -77,35 +76,30 @@ public class WoodChipperScript : MonoBehaviour
 		{
 			this.BucketPrompt.HideButton[0] = true;
 		}
+		AudioSource component = base.GetComponent<AudioSource>();
 		if (!this.Open)
 		{
-			this.Rotation = Mathf.MoveTowards(this.Rotation, (float)0, Time.deltaTime * (float)360);
-			if (this.Rotation > (float)-36)
+			this.Rotation = Mathf.MoveTowards(this.Rotation, 0f, Time.deltaTime * 360f);
+			if (this.Rotation > -36f)
 			{
-				if (this.Rotation < (float)0)
+				if (this.Rotation < 0f)
 				{
-					this.audio.clip = this.CloseAudio;
-					this.audio.Play();
+					component.clip = this.CloseAudio;
+					component.Play();
 				}
-				this.Rotation = (float)0;
+				this.Rotation = 0f;
 			}
-			float rotation = this.Rotation;
-			Vector3 localEulerAngles = this.Lid.transform.localEulerAngles;
-			float num = localEulerAngles.x = rotation;
-			Vector3 vector = this.Lid.transform.localEulerAngles = localEulerAngles;
+			this.Lid.transform.localEulerAngles = new Vector3(this.Rotation, this.Lid.transform.localEulerAngles.y, this.Lid.transform.localEulerAngles.z);
 		}
 		else
 		{
-			if (this.Lid.transform.localEulerAngles.x == (float)0)
+			if (this.Lid.transform.localEulerAngles.x == 0f)
 			{
-				this.audio.clip = this.OpenAudio;
-				this.audio.Play();
+				component.clip = this.OpenAudio;
+				component.Play();
 			}
-			this.Rotation = Mathf.MoveTowards(this.Rotation, (float)-90, Time.deltaTime * (float)360);
-			float rotation2 = this.Rotation;
-			Vector3 localEulerAngles2 = this.Lid.transform.localEulerAngles;
-			float num2 = localEulerAngles2.x = rotation2;
-			Vector3 vector2 = this.Lid.transform.localEulerAngles = localEulerAngles2;
+			this.Rotation = Mathf.MoveTowards(this.Rotation, -90f, Time.deltaTime * 360f);
+			this.Lid.transform.localEulerAngles = new Vector3(this.Rotation, this.Lid.transform.localEulerAngles.y, this.Lid.transform.localEulerAngles.z);
 		}
 		if (!this.BloodSpray.isPlaying)
 		{
@@ -133,37 +127,37 @@ public class WoodChipperScript : MonoBehaviour
 				this.Prompt.HideButton[0] = false;
 			}
 		}
-		if (this.Prompt.Circle[3].fillAmount <= (float)0)
+		if (this.Prompt.Circle[3].fillAmount <= 0f)
 		{
-			Time.timeScale = (float)1;
+			Time.timeScale = 1f;
 			if (this.Yandere.Ragdoll != null)
 			{
 				if (!this.Yandere.Carrying)
 				{
-					this.Yandere.Character.animation.CrossFade("f02_dragIdle_00");
+					this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_dragIdle_00");
 				}
 				else
 				{
-					this.Yandere.Character.animation.CrossFade("f02_carryIdleA_00");
+					this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_carryIdleA_00");
 				}
 				this.Yandere.YandereVision = false;
 				this.Yandere.Chipping = true;
 				this.Yandere.CanMove = false;
 				this.Victims++;
-				this.VictimList[this.Victims] = ((RagdollScript)this.Yandere.Ragdoll.GetComponent(typeof(RagdollScript))).StudentID;
+				this.VictimList[this.Victims] = this.Yandere.Ragdoll.GetComponent<RagdollScript>().StudentID;
 				this.Open = true;
 			}
 		}
-		if (this.Prompt.Circle[0].fillAmount <= (float)0)
+		if (this.Prompt.Circle[0].fillAmount <= 0f)
 		{
-			PlayerPrefs.SetInt("Student_" + this.VictimID + "_Missing", 1);
-			this.audio.clip = this.ShredAudio;
-			this.audio.Play();
+			PlayerPrefs.SetInt("Student_" + this.VictimID.ToString() + "_Missing", 1);
+			component.clip = this.ShredAudio;
+			component.Play();
 			this.Prompt.HideButton[3] = false;
 			this.Prompt.HideButton[0] = true;
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
-			this.Yandere.Police.Corpses = this.Yandere.Police.Corpses - 1;
+			this.Yandere.Police.Corpses--;
 			if (this.Yandere.Police.SuicideScene && this.Yandere.Police.Corpses == 1)
 			{
 				this.Yandere.Police.MurderScene = false;
@@ -177,34 +171,30 @@ public class WoodChipperScript : MonoBehaviour
 		if (this.Shredding)
 		{
 			this.Timer += Time.deltaTime;
-			if (this.Timer >= (float)10)
+			if (this.Timer >= 10f)
 			{
 				this.Prompt.enabled = true;
 				this.Shredding = false;
 				this.Occupied = false;
-				this.Timer = (float)0;
+				this.Timer = 0f;
 			}
-			else if (this.Timer >= (float)9)
+			else if (this.Timer >= 9f)
 			{
 				if (this.Bucket != null)
 				{
 					this.Bucket.MyCollider.enabled = true;
-					this.Bucket.Bucket.FillSpeed = (float)1;
+					this.Bucket.Bucket.FillSpeed = 1f;
 					this.Bucket = null;
 					this.BloodSpray.Stop();
 				}
 			}
-			else if (this.Timer >= 0.33333f)
+			else if (this.Timer >= 0.333333343f)
 			{
-				this.Bucket.Bucket.Bloodiness = (float)100;
+				this.Bucket.Bucket.Bloodiness = 100f;
 				this.Bucket.Bucket.FillSpeed = 0.05f;
 				this.Bucket.Bucket.Full = true;
 				this.BloodSpray.Play();
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

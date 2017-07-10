@@ -1,8 +1,6 @@
 ﻿using System;
-using Boo.Lang.Runtime;
 using UnityEngine;
 
-[Serializable]
 public class BunnyScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
@@ -21,7 +19,7 @@ public class BunnyScript : MonoBehaviour
 
 	public float Speed;
 
-	public virtual void Start()
+	private void Start()
 	{
 		if (!this.InEditor)
 		{
@@ -29,23 +27,26 @@ public class BunnyScript : MonoBehaviour
 			{
 				this.BakeCookies();
 			}
-			for (int i = 1; i < 101; i++)
+			else
 			{
-				if (RuntimeServices.EqualityOperator(this.JSON.StudentHairstyles[i], 20))
+				for (int i = 1; i < 101; i++)
 				{
-					this.BakeCookies();
+					if (this.JSON.StudentHairstyles[i] == "20" && this.StudentManager.Students[i] != null)
+					{
+						this.StudentManager.Students[i].gameObject.SetActive(false);
+					}
 				}
 			}
 		}
 		else
 		{
-			this.enabled = false;
+			base.enabled = false;
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Fun.active)
+		if (this.Fun.gameObject.activeInHierarchy)
 		{
 			this.Speed += Time.deltaTime * 0.01f;
 			this.Fun.position = Vector3.MoveTowards(this.Fun.position, this.Yandere.position, Time.deltaTime * this.Speed);
@@ -57,28 +58,24 @@ public class BunnyScript : MonoBehaviour
 		}
 	}
 
-	public virtual void BakeCookies()
+	private void BakeCookies()
 	{
-		if (!this.Fun.gameObject.active)
+		if (!this.Fun.gameObject.activeInHierarchy)
 		{
 			PlayerPrefs.SetInt("SchoolAtmosphereSet", 1);
-			PlayerPrefs.SetFloat("SchoolAtmosphere", (float)0);
+			PlayerPrefs.SetFloat("SchoolAtmosphere", 0f);
 			this.StudentManager.SetAtmosphere();
-			for (int i = 0; i < 101; i++)
+			foreach (StudentScript studentScript in this.StudentManager.Students)
 			{
-				if (this.StudentManager.Students[i] != null)
+				if (studentScript != null)
 				{
-					this.StudentManager.Students[i].active = false;
+					studentScript.gameObject.SetActive(false);
 				}
 			}
-			((YandereScript)this.Yandere.gameObject.GetComponent(typeof(YandereScript))).NoDebug = true;
-			this.Fun.gameObject.active = true;
-			this.Jukebox.active = false;
+			this.Yandere.gameObject.GetComponent<YandereScript>().NoDebug = true;
+			this.Fun.gameObject.SetActive(true);
+			this.Jukebox.SetActive(false);
 			this.HUD.enabled = false;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

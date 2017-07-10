@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class BlasterScript : MonoBehaviour
 {
 	public Transform Skull;
@@ -12,39 +11,30 @@ public class BlasterScript : MonoBehaviour
 
 	public float Size;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.Skull.localScale = new Vector3((float)0, (float)0, (float)0);
-		this.Beam.localScale = new Vector3((float)0, (float)0, (float)0);
+		this.Skull.localScale = Vector3.zero;
+		this.Beam.localScale = Vector3.zero;
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.animation["Blast"].time > (float)1)
+		AnimationState animationState = base.GetComponent<Animation>()["Blast"];
+		if (animationState.time > 1f)
 		{
-			this.Beam.localScale = Vector3.Lerp(this.Beam.localScale, new Vector3((float)15, (float)1, (float)1), Time.deltaTime * (float)10);
-			this.Eyes.material.color = new Color((float)1, (float)0, (float)0, (float)1);
+			this.Beam.localScale = Vector3.Lerp(this.Beam.localScale, new Vector3(15f, 1f, 1f), Time.deltaTime * 10f);
+			this.Eyes.material.color = new Color(1f, 0f, 0f, 1f);
 		}
-		if (this.animation["Blast"].time >= this.animation["Blast"].length)
+		if (animationState.time >= animationState.length)
 		{
-			UnityEngine.Object.Destroy(this.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 
-	public virtual void LateUpdate()
+	private void LateUpdate()
 	{
-		if (this.animation["Blast"].time < 1.5f)
-		{
-			this.Size = Mathf.Lerp(this.Size, (float)2, Time.deltaTime * (float)5);
-		}
-		else
-		{
-			this.Size = Mathf.Lerp(this.Size, (float)0, Time.deltaTime * (float)10);
-		}
+		AnimationState animationState = base.GetComponent<Animation>()["Blast"];
+		this.Size = ((animationState.time >= 1.5f) ? Mathf.Lerp(this.Size, 0f, Time.deltaTime * 10f) : Mathf.Lerp(this.Size, 2f, Time.deltaTime * 5f));
 		this.Skull.localScale = new Vector3(this.Size, this.Size, this.Size);
-	}
-
-	public virtual void Main()
-	{
 	}
 }

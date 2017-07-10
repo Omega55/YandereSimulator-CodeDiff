@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class BatheEventScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
@@ -28,11 +27,11 @@ public class BatheEventScript : MonoBehaviour
 
 	public bool EventOver;
 
-	public float EventTime;
+	public float EventTime = 15.1f;
 
-	public int EventPhase;
+	public int EventPhase = 1;
 
-	public int EventDay;
+	public int EventDay = 4;
 
 	public Vector3 OriginalPosition;
 
@@ -40,23 +39,16 @@ public class BatheEventScript : MonoBehaviour
 
 	public float Timer;
 
-	public BatheEventScript()
+	private void Start()
 	{
-		this.EventTime = 15.1f;
-		this.EventPhase = 1;
-		this.EventDay = 4;
-	}
-
-	public virtual void Start()
-	{
-		this.RivalPhone.active = false;
+		this.RivalPhone.SetActive(false);
 		if (PlayerPrefs.GetInt("Weekday") != this.EventDay)
 		{
-			this.enabled = false;
+			base.enabled = false;
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (!this.Clock.StopTime && !this.EventActive && this.Clock.HourTime > this.EventTime)
 		{
@@ -68,12 +60,12 @@ public class BatheEventScript : MonoBehaviour
 					this.OriginalPosition = this.EventStudent.Cosmetic.FemaleAccessories[3].transform.localPosition;
 					this.EventStudent.CurrentDestination = this.StudentManager.StripSpot;
 					this.EventStudent.Pathfinding.target = this.StudentManager.StripSpot;
-					this.EventStudent.Character.animation.CrossFade(this.EventStudent.WalkAnim);
+					this.EventStudent.Character.GetComponent<Animation>().CrossFade(this.EventStudent.WalkAnim);
 					this.EventStudent.Pathfinding.canSearch = true;
 					this.EventStudent.Pathfinding.canMove = true;
-					this.EventStudent.Pathfinding.speed = (float)1;
-					this.EventStudent.DistanceToDestination = (float)100;
-					this.EventStudent.Obstacle.checkTime = (float)99;
+					this.EventStudent.Pathfinding.speed = 1f;
+					this.EventStudent.DistanceToDestination = 100f;
+					this.EventStudent.Obstacle.checkTime = 99f;
 					this.EventStudent.InEvent = true;
 					this.EventStudent.Private = true;
 					this.EventStudent.Prompt.Hide();
@@ -81,23 +73,23 @@ public class BatheEventScript : MonoBehaviour
 					if (this.EventStudent.Following)
 					{
 						this.EventStudent.Pathfinding.canMove = true;
-						this.EventStudent.Pathfinding.speed = (float)1;
+						this.EventStudent.Pathfinding.speed = 1f;
 						this.EventStudent.Following = false;
 						this.EventStudent.Routine = true;
-						this.Yandere.Followers = this.Yandere.Followers - 1;
-						this.EventStudent.Subtitle.UpdateLabel("Stop Follow Apology", 0, (float)3);
-						this.EventStudent.Prompt.Label[0].text = "     " + "Talk";
+						this.Yandere.Followers--;
+						this.EventStudent.Subtitle.UpdateLabel("Stop Follow Apology", 0, 3f);
+						this.EventStudent.Prompt.Label[0].text = "     Talk";
 					}
 				}
 				else
 				{
-					this.enabled = false;
+					base.enabled = false;
 				}
 			}
 		}
 		if (this.EventActive)
 		{
-			if (this.Clock.HourTime > this.EventTime + (float)1 || this.EventStudent.WitnessedMurder || this.EventStudent.Splashed || this.EventStudent.Alarmed || this.EventStudent.Dying || this.EventStudent.Dead)
+			if (this.Clock.HourTime > this.EventTime + 1f || this.EventStudent.WitnessedMurder || this.EventStudent.Splashed || this.EventStudent.Alarmed || this.EventStudent.Dying || this.EventStudent.Dead)
 			{
 				this.EndEvent();
 			}
@@ -116,15 +108,15 @@ public class BatheEventScript : MonoBehaviour
 					{
 						if (this.EventStudent.BathePhase == 4)
 						{
-							this.RivalPhone.active = true;
+							this.RivalPhone.SetActive(true);
 							this.EventPhase++;
 						}
 					}
 					else if (this.EventPhase == 3 && !this.EventStudent.Wet)
 					{
-						if (!this.RivalPhone.active)
+						if (!this.RivalPhone.activeInHierarchy)
 						{
-							this.EventStudent.Character.animation.CrossFade(this.EventAnim[0]);
+							this.EventStudent.Character.GetComponent<Animation>().CrossFade(this.EventAnim[0]);
 							this.EventStudent.Pathfinding.canSearch = false;
 							this.EventStudent.Pathfinding.canMove = false;
 							this.EventStudent.Routine = false;
@@ -142,53 +134,53 @@ public class BatheEventScript : MonoBehaviour
 				if (this.EventPhase == 4)
 				{
 					this.Timer += Time.deltaTime;
-					if (this.Timer > this.CurrentClipLength + (float)1)
+					if (this.Timer > this.CurrentClipLength + 1f)
 					{
 						this.EventStudent.Routine = true;
 						this.EndEvent();
 					}
 				}
 				float num = Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position);
-				if (num < (float)11)
+				if (num < 11f)
 				{
-					if (num < (float)10)
+					if (num < 10f)
 					{
-						float num2 = Mathf.Abs((num - (float)10) * 0.2f);
-						if (num2 < (float)0)
+						float num2 = Mathf.Abs((num - 10f) * 0.2f);
+						if (num2 < 0f)
 						{
-							num2 = (float)0;
+							num2 = 0f;
 						}
-						if (num2 > (float)1)
+						if (num2 > 1f)
 						{
-							num2 = (float)1;
+							num2 = 1f;
 						}
 						this.EventSubtitle.transform.localScale = new Vector3(num2, num2, num2);
 					}
 					else
 					{
-						this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+						this.EventSubtitle.transform.localScale = Vector3.zero;
 					}
 				}
 			}
 		}
 	}
 
-	public virtual void PlayClip(AudioClip clip, Vector3 pos)
+	private void PlayClip(AudioClip clip, Vector3 pos)
 	{
 		GameObject gameObject = new GameObject("TempAudio");
 		gameObject.transform.position = pos;
-		AudioSource audioSource = (AudioSource)gameObject.AddComponent(typeof(AudioSource));
+		AudioSource audioSource = gameObject.AddComponent<AudioSource>();
 		audioSource.clip = clip;
 		audioSource.Play();
 		UnityEngine.Object.Destroy(gameObject, clip.length);
 		this.CurrentClipLength = clip.length;
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
-		audioSource.minDistance = (float)5;
-		audioSource.maxDistance = (float)10;
+		audioSource.minDistance = 5f;
+		audioSource.maxDistance = 10f;
 		this.VoiceClip = gameObject;
 	}
 
-	public virtual void EndEvent()
+	private void EndEvent()
 	{
 		if (!this.EventOver)
 		{
@@ -198,14 +190,14 @@ public class BatheEventScript : MonoBehaviour
 			}
 			this.EventStudent.CurrentDestination = this.EventStudent.Destinations[this.EventStudent.Phase];
 			this.EventStudent.Pathfinding.target = this.EventStudent.Destinations[this.EventStudent.Phase];
-			this.EventStudent.Obstacle.checkTime = (float)1;
+			this.EventStudent.Obstacle.checkTime = 1f;
 			if (!this.EventStudent.Dying)
 			{
 				this.EventStudent.Prompt.enabled = true;
 				this.EventStudent.Pathfinding.canSearch = true;
 				this.EventStudent.Pathfinding.canMove = true;
-				this.EventStudent.Pathfinding.speed = (float)1;
-				this.EventStudent.TargetDistance = (float)1;
+				this.EventStudent.Pathfinding.speed = 1f;
+				this.EventStudent.TargetDistance = 1f;
 				this.EventStudent.Private = false;
 			}
 			this.EventStudent.InEvent = false;
@@ -213,10 +205,6 @@ public class BatheEventScript : MonoBehaviour
 			this.StudentManager.UpdateStudents();
 		}
 		this.EventActive = false;
-		this.enabled = false;
-	}
-
-	public virtual void Main()
-	{
+		base.enabled = false;
 	}
 }

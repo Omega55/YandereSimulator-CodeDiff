@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class NodeSetterScript : MonoBehaviour
 {
 	public GameObject[] Nodes;
@@ -18,11 +17,7 @@ public class NodeSetterScript : MonoBehaviour
 
 	public int Row;
 
-	public virtual void Start()
-	{
-	}
-
-	public virtual void Main()
+	private void Start()
 	{
 	}
 }

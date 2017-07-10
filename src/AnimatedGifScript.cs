@@ -1,12 +1,11 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class AnimatedGifScript : MonoBehaviour
 {
 	public UISprite Sprite;
 
-	public string SpriteName;
+	public string SpriteName = string.Empty;
 
 	public int Start;
 
@@ -18,27 +17,18 @@ public class AnimatedGifScript : MonoBehaviour
 
 	public float Timer;
 
-	public AnimatedGifScript()
-	{
-		this.SpriteName = string.Empty;
-	}
-
-	public virtual void Update()
+	private void Update()
 	{
 		this.Timer += Time.deltaTime;
 		if (this.Timer > this.Framerate)
 		{
-			this.Sprite.spriteName = this.SpriteName + this.Frame;
-			this.Timer = (float)0;
+			this.Sprite.spriteName = this.SpriteName + this.Frame.ToString();
+			this.Timer = 0f;
 			this.Frame++;
 			if (this.Frame > this.Limit)
 			{
 				this.Frame = this.Start;
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

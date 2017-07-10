@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class OfferHelpScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
@@ -31,23 +29,18 @@ public class OfferHelpScript : MonoBehaviour
 
 	public bool Spoken;
 
-	public int EventPhase;
+	public int EventPhase = 1;
 
 	public float Timer;
 
-	public OfferHelpScript()
-	{
-		this.EventPhase = 1;
-	}
-
-	public virtual void Start()
+	private void Start()
 	{
 		this.Prompt.enabled = true;
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Prompt.Circle[0].fillAmount == (float)0)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Jukebox.Dip = 0.1f;
 			this.Yandere.EmptyHands();
@@ -57,60 +50,63 @@ public class OfferHelpScript : MonoBehaviour
 			this.Student.Pushable = false;
 			this.Student.Meeting = false;
 			this.Student.Routine = false;
-			this.Student.MeetTimer = (float)0;
+			this.Student.MeetTimer = 0f;
 			this.Offering = true;
 		}
 		if (this.Offering)
 		{
-			this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, this.transform.rotation, Time.deltaTime * (float)10);
-			this.Yandere.MoveTowardsTarget(this.transform.position + Vector3.down);
-			Quaternion to = Quaternion.LookRotation(this.Yandere.transform.position - this.Student.transform.position);
-			this.Student.transform.rotation = Quaternion.Slerp(this.Student.transform.rotation, to, Time.deltaTime * (float)10);
+			this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, base.transform.rotation, Time.deltaTime * 10f);
+			this.Yandere.MoveTowardsTarget(base.transform.position + Vector3.down);
+			Quaternion b = Quaternion.LookRotation(this.Yandere.transform.position - this.Student.transform.position);
+			this.Student.transform.rotation = Quaternion.Slerp(this.Student.transform.rotation, b, Time.deltaTime * 10f);
+			Animation component = this.Yandere.Character.GetComponent<Animation>();
+			Animation component2 = this.Student.Character.GetComponent<Animation>();
 			if (!this.Spoken)
 			{
 				if (this.EventSpeaker[this.EventPhase] == 1)
 				{
-					this.Yandere.Character.animation.CrossFade(this.EventAnim[this.EventPhase]);
-					this.Student.Character.animation.CrossFade(this.Student.IdleAnim, (float)1);
+					component.CrossFade(this.EventAnim[this.EventPhase]);
+					component2.CrossFade(this.Student.IdleAnim, 1f);
 				}
 				else
 				{
-					this.Student.Character.animation.CrossFade(this.EventAnim[this.EventPhase]);
-					this.Yandere.Character.animation.CrossFade(this.Yandere.IdleAnim, (float)1);
+					component2.CrossFade(this.EventAnim[this.EventPhase]);
+					component.CrossFade(this.Yandere.IdleAnim, 1f);
 				}
-				this.EventSubtitle.transform.localScale = new Vector3((float)1, (float)1, (float)1);
+				this.EventSubtitle.transform.localScale = new Vector3(1f, 1f, 1f);
 				this.EventSubtitle.text = this.EventSpeech[this.EventPhase];
-				this.audio.clip = this.EventClip[this.EventPhase];
-				this.audio.Play();
+				AudioSource component3 = base.GetComponent<AudioSource>();
+				component3.clip = this.EventClip[this.EventPhase];
+				component3.Play();
 				this.Spoken = true;
 			}
 			else
 			{
 				if (Input.GetButtonDown("A"))
 				{
-					this.Timer += this.EventClip[this.EventPhase].length + (float)1;
+					this.Timer += this.EventClip[this.EventPhase].length + 1f;
 				}
 				if (this.EventSpeaker[this.EventPhase] == 1)
 				{
-					if (this.Yandere.Character.animation[this.EventAnim[this.EventPhase]].time >= this.Yandere.Character.animation[this.EventAnim[this.EventPhase]].length)
+					if (component[this.EventAnim[this.EventPhase]].time >= component[this.EventAnim[this.EventPhase]].length)
 					{
-						this.Yandere.Character.animation.CrossFade(this.Yandere.IdleAnim);
+						component.CrossFade(this.Yandere.IdleAnim);
 					}
 				}
-				else if (this.Student.Character.animation[this.EventAnim[this.EventPhase]].time >= this.Student.Character.animation[this.EventAnim[this.EventPhase]].length)
+				else if (component2[this.EventAnim[this.EventPhase]].time >= component2[this.EventAnim[this.EventPhase]].length)
 				{
-					this.Student.Character.animation.CrossFade(this.Student.IdleAnim);
+					component2.CrossFade(this.Student.IdleAnim);
 				}
 				this.Timer += Time.deltaTime;
 				if (this.Timer > this.EventClip[this.EventPhase].length)
 				{
 					this.EventSubtitle.text = string.Empty;
 				}
-				if (this.Timer > this.EventClip[this.EventPhase].length + (float)1)
+				if (this.Timer > this.EventClip[this.EventPhase].length + 1f)
 				{
 					this.Spoken = false;
 					this.EventPhase++;
-					this.Timer = (float)0;
+					this.Timer = 0f;
 					if (this.EventPhase == 14)
 					{
 						if (PlayerPrefs.GetInt("Topic_23_Discovered") == 0)
@@ -124,7 +120,7 @@ public class OfferHelpScript : MonoBehaviour
 							PlayerPrefs.SetInt("Topic_23_Student_7_Learned", 1);
 						}
 					}
-					if (this.EventPhase == Extensions.get_length(this.EventSpeech))
+					if (this.EventPhase == this.EventSpeech.Length)
 					{
 						PlayerPrefs.SetInt("Scheme_6_Stage", 5);
 						this.Student.CurrentDestination = this.Student.Destinations[this.Student.Phase];
@@ -132,41 +128,37 @@ public class OfferHelpScript : MonoBehaviour
 						this.Student.Pathfinding.canSearch = true;
 						this.Student.Pathfinding.canMove = true;
 						this.Student.Routine = true;
-						this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+						this.EventSubtitle.transform.localScale = Vector3.zero;
 						this.Yandere.CanMove = true;
-						this.Jukebox.Dip = (float)1;
-						UnityEngine.Object.Destroy(this.gameObject);
+						this.Jukebox.Dip = 1f;
+						UnityEngine.Object.Destroy(base.gameObject);
 					}
 				}
 			}
 		}
 		else if (this.StudentManager.Students[7].Pushed || this.StudentManager.Students[7].Dead)
 		{
-			this.active = false;
+			base.gameObject.SetActive(false);
 		}
 	}
 
-	public virtual void UpdateLocation()
+	public void UpdateLocation()
 	{
 		this.Student = this.StudentManager.Students[7];
 		if (this.Student.CurrentDestination == this.StudentManager.MeetSpots.List[8])
 		{
-			this.transform.position = this.Locations[1].position;
-			this.transform.eulerAngles = this.Locations[1].eulerAngles;
+			base.transform.position = this.Locations[1].position;
+			base.transform.eulerAngles = this.Locations[1].eulerAngles;
 		}
 		else if (this.Student.CurrentDestination == this.StudentManager.MeetSpots.List[9])
 		{
-			this.transform.position = this.Locations[2].position;
-			this.transform.eulerAngles = this.Locations[2].eulerAngles;
+			base.transform.position = this.Locations[2].position;
+			base.transform.eulerAngles = this.Locations[2].eulerAngles;
 		}
 		else if (this.Student.CurrentDestination == this.StudentManager.MeetSpots.List[10])
 		{
-			this.transform.position = this.Locations[3].position;
-			this.transform.eulerAngles = this.Locations[3].eulerAngles;
+			base.transform.position = this.Locations[3].position;
+			base.transform.eulerAngles = this.Locations[3].eulerAngles;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

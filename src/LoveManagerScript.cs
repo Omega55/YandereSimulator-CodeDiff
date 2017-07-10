@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class LoveManagerScript : MonoBehaviour
 {
 	public ConfessionSceneScript ConfessionScene;
@@ -22,7 +21,7 @@ public class LoveManagerScript : MonoBehaviour
 
 	public int TotalTargets;
 
-	public int Phase;
+	public int Phase = 1;
 
 	public int ID;
 
@@ -36,125 +35,127 @@ public class LoveManagerScript : MonoBehaviour
 
 	public bool Courted;
 
-	public LoveManagerScript()
-	{
-		this.Phase = 1;
-	}
-
-	public virtual void Start()
+	private void Start()
 	{
 		this.SuitorProgress = PlayerPrefs.GetInt("SuitorProgress");
 	}
 
-	public virtual void LateUpdate()
+	private void LateUpdate()
 	{
 		if (this.Follower != null && !this.Follower.Dead)
 		{
 			this.ID = 0;
 			while (this.ID < this.TotalTargets)
 			{
-				if (this.Targets[this.ID] != null && this.Follower.transform.position.y > this.Targets[this.ID].position.y - (float)2 && this.Follower.transform.position.y < this.Targets[this.ID].position.y + (float)2 && Vector3.Distance(this.Follower.transform.position, new Vector3(this.Targets[this.ID].position.x, this.Follower.transform.position.y, this.Targets[this.ID].position.z)) < 2.5f)
+				Transform transform = this.Targets[this.ID];
+				if (transform != null && this.Follower.transform.position.y > transform.position.y - 2f && this.Follower.transform.position.y < transform.position.y + 2f && Vector3.Distance(this.Follower.transform.position, new Vector3(transform.position.x, this.Follower.transform.position.y, transform.position.z)) < 2.5f)
 				{
-					float f = Vector3.Angle(this.Follower.transform.forward, this.Follower.transform.position - new Vector3(this.Targets[this.ID].position.x, this.Follower.transform.position.y, this.Targets[this.ID].position.z));
+					float f = Vector3.Angle(this.Follower.transform.forward, this.Follower.transform.position - new Vector3(transform.position.x, this.Follower.transform.position.y, transform.position.z));
 					if (Mathf.Abs(f) > this.AngleLimit)
 					{
 						if (!this.Follower.Gush)
 						{
-							this.Follower.Cosmetic.MyRenderer.materials[2].SetFloat("_BlendAmount", (float)1);
-							this.Follower.GushTarget = this.Targets[this.ID];
-							this.Follower.Hearts.enableEmission = true;
-							this.Follower.Hearts.emissionRate = (float)5;
+							this.Follower.Cosmetic.MyRenderer.materials[2].SetFloat("_BlendAmount", 1f);
+							this.Follower.GushTarget = transform;
+							ParticleSystem.EmissionModule emission = this.Follower.Hearts.emission;
+							emission.enabled = true;
+							emission.rateOverTime = 5f;
 							this.Follower.Hearts.Play();
 							this.Follower.Gush = true;
 						}
 					}
 					else
 					{
-						this.Follower.Cosmetic.MyRenderer.materials[2].SetFloat("_BlendAmount", (float)0);
-						this.Follower.Hearts.enableEmission = false;
+						this.Follower.Cosmetic.MyRenderer.materials[2].SetFloat("_BlendAmount", 0f);
+						this.Follower.Hearts.emission.enabled = false;
 						this.Follower.Gush = false;
 					}
 				}
 				this.ID++;
 			}
 		}
-		if (this.LeftNote && this.StudentManager.Students[7] != null && this.StudentManager.Students[13] != null && !this.StudentManager.Students[7].Dead && !this.StudentManager.Students[13].Dead && this.StudentManager.Students[7].ConfessPhase == 7 && this.StudentManager.Students[13].ConfessPhase == 4 && Vector3.Distance(this.Yandere.transform.position, this.MythHill.position) > (float)10 && Vector3.Distance(this.Yandere.transform.position, this.MythHill.position) < (float)25)
+		StudentScript studentScript = this.StudentManager.Students[7];
+		StudentScript studentScript2 = this.StudentManager.Students[13];
+		if (this.LeftNote && studentScript != null && studentScript2 != null && !studentScript.Dead && !studentScript2.Dead && studentScript.ConfessPhase == 7 && studentScript2.ConfessPhase == 4)
 		{
-			this.Yandere.Character.animation.CrossFade(this.Yandere.IdleAnim);
-			this.Yandere.RPGCamera.enabled = false;
-			this.Yandere.CanMove = false;
-			this.StudentManager.Students[13].enabled = false;
-			this.StudentManager.Students[7].enabled = false;
-			this.ConfessionScene.enabled = true;
-			this.Clock.StopTime = true;
-			this.LeftNote = false;
+			float num = Vector3.Distance(this.Yandere.transform.position, this.MythHill.position);
+			if (num > 10f && num < 25f)
+			{
+				this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
+				this.Yandere.RPGCamera.enabled = false;
+				this.Yandere.CanMove = false;
+				studentScript2.enabled = false;
+				studentScript.enabled = false;
+				this.ConfessionScene.enabled = true;
+				this.Clock.StopTime = true;
+				this.LeftNote = false;
+			}
 		}
 		if (this.HoldingHands)
 		{
-			this.StudentManager.Students[7].MyController.Move(this.transform.forward * Time.deltaTime);
-			this.StudentManager.Students[13].transform.position = this.StudentManager.Students[7].transform.position;
-			float x = this.StudentManager.Students[13].transform.position.x - 0.5f;
-			Vector3 position = this.StudentManager.Students[13].transform.position;
-			float num = position.x = x;
-			Vector3 vector = this.StudentManager.Students[13].transform.position = position;
-			if (this.StudentManager.Students[7].transform.position.z > (float)-50)
+			studentScript.MyController.Move(base.transform.forward * Time.deltaTime);
+			studentScript2.transform.position = new Vector3(studentScript.transform.position.x - 0.5f, studentScript.transform.position.y, studentScript.transform.position.z);
+			if (studentScript.transform.position.z > -50f)
 			{
-				this.StudentManager.Students[13].MyController.radius = 0.12f;
-				this.StudentManager.Students[13].enabled = true;
-				this.StudentManager.Students[13].Cosmetic.MyRenderer.materials[this.StudentManager.Students[13].Cosmetic.FaceID].SetFloat("_BlendAmount", (float)0);
-				this.StudentManager.Students[13].Hearts.enableEmission = false;
-				this.StudentManager.Students[7].MyController.radius = 0.12f;
-				this.StudentManager.Students[7].enabled = true;
-				this.StudentManager.Students[7].Cosmetic.MyRenderer.materials[2].SetFloat("_BlendAmount", (float)0);
-				this.StudentManager.Students[7].Hearts.enableEmission = false;
-				this.StudentManager.Students[13].HoldingHands = false;
-				this.StudentManager.Students[7].HoldingHands = false;
+				studentScript2.MyController.radius = 0.12f;
+				studentScript2.enabled = true;
+				studentScript2.Cosmetic.MyRenderer.materials[studentScript2.Cosmetic.FaceID].SetFloat("_BlendAmount", 0f);
+				studentScript2.Hearts.emission.enabled = false;
+				studentScript.MyController.radius = 0.12f;
+				studentScript.enabled = true;
+				studentScript.Cosmetic.MyRenderer.materials[2].SetFloat("_BlendAmount", 0f);
+				studentScript.Hearts.emission.enabled = false;
+				studentScript2.HoldingHands = false;
+				studentScript.HoldingHands = false;
 				this.HoldingHands = false;
 			}
 		}
 	}
 
-	public virtual void CoupleCheck()
+	public void CoupleCheck()
 	{
-		if (this.SuitorProgress == 2 && this.StudentManager.Students[7] != null && this.StudentManager.Students[13] != null)
+		if (this.SuitorProgress == 2)
 		{
-			this.StudentManager.Students[13].CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
-			this.StudentManager.Students[7].CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
-			this.StudentManager.Students[13].Character.animation.enabled = true;
-			this.StudentManager.Students[7].Character.animation.enabled = true;
-			this.StudentManager.Students[13].Character.animation.Play("walkHands_00");
-			this.StudentManager.Students[13].transform.eulerAngles = new Vector3((float)0, (float)0, (float)0);
-			this.StudentManager.Students[13].transform.position = new Vector3(-0.25f, (float)0, (float)-100);
-			this.StudentManager.Students[13].Pathfinding.canSearch = false;
-			this.StudentManager.Students[13].Pathfinding.canMove = false;
-			this.StudentManager.Students[13].MyController.radius = (float)0;
-			this.StudentManager.Students[13].enabled = false;
-			this.StudentManager.Students[7].Character.animation.Play("f02_walkHands_00");
-			this.StudentManager.Students[7].transform.eulerAngles = new Vector3((float)0, (float)0, (float)0);
-			this.StudentManager.Students[7].transform.position = new Vector3(0.25f, (float)0, (float)-100);
-			this.StudentManager.Students[7].Pathfinding.canSearch = false;
-			this.StudentManager.Students[7].Pathfinding.canMove = false;
-			this.StudentManager.Students[7].MyController.radius = (float)0;
-			this.StudentManager.Students[7].enabled = false;
-			this.StudentManager.Students[13].Cosmetic.MyRenderer.materials[this.StudentManager.Students[13].Cosmetic.FaceID].SetFloat("_BlendAmount", (float)1);
-			this.StudentManager.Students[13].Hearts.enableEmission = true;
-			this.StudentManager.Students[13].Hearts.emissionRate = (float)5;
-			this.StudentManager.Students[13].Hearts.Play();
-			this.StudentManager.Students[7].Cosmetic.MyRenderer.materials[2].SetFloat("_BlendAmount", (float)1);
-			this.StudentManager.Students[7].Hearts.enableEmission = true;
-			this.StudentManager.Students[7].Hearts.emissionRate = (float)5;
-			this.StudentManager.Students[7].Hearts.Play();
-			this.StudentManager.Students[13].HoldingHands = true;
-			this.StudentManager.Students[7].HoldingHands = true;
-			this.StudentManager.Students[13].CoupleID = 7;
-			this.StudentManager.Students[13].Couple = true;
-			this.StudentManager.Students[7].CoupleID = 13;
-			this.StudentManager.Students[7].Couple = true;
-			this.HoldingHands = true;
+			StudentScript studentScript = this.StudentManager.Students[7];
+			StudentScript studentScript2 = this.StudentManager.Students[13];
+			if (studentScript != null && studentScript2 != null)
+			{
+				studentScript2.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
+				studentScript.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
+				studentScript2.Character.GetComponent<Animation>().enabled = true;
+				studentScript.Character.GetComponent<Animation>().enabled = true;
+				studentScript2.Character.GetComponent<Animation>().Play("walkHands_00");
+				studentScript2.transform.eulerAngles = Vector3.zero;
+				studentScript2.transform.position = new Vector3(-0.25f, 0f, -100f);
+				studentScript2.Pathfinding.canSearch = false;
+				studentScript2.Pathfinding.canMove = false;
+				studentScript2.MyController.radius = 0f;
+				studentScript2.enabled = false;
+				studentScript.Character.GetComponent<Animation>().Play("f02_walkHands_00");
+				studentScript.transform.eulerAngles = Vector3.zero;
+				studentScript.transform.position = new Vector3(0.25f, 0f, -100f);
+				studentScript.Pathfinding.canSearch = false;
+				studentScript.Pathfinding.canMove = false;
+				studentScript.MyController.radius = 0f;
+				studentScript.enabled = false;
+				studentScript2.Cosmetic.MyRenderer.materials[studentScript2.Cosmetic.FaceID].SetFloat("_BlendAmount", 1f);
+				ParticleSystem.EmissionModule emission = studentScript2.Hearts.emission;
+				emission.enabled = true;
+				emission.rateOverTime = 5f;
+				studentScript2.Hearts.Play();
+				studentScript.Cosmetic.MyRenderer.materials[2].SetFloat("_BlendAmount", 1f);
+				ParticleSystem.EmissionModule emission2 = studentScript.Hearts.emission;
+				emission2.enabled = true;
+				emission2.rateOverTime = 5f;
+				studentScript.Hearts.Play();
+				studentScript2.HoldingHands = true;
+				studentScript.HoldingHands = true;
+				studentScript2.CoupleID = 7;
+				studentScript2.Couple = true;
+				studentScript.CoupleID = 13;
+				studentScript.Couple = true;
+				this.HoldingHands = true;
+			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

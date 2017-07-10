@@ -1,21 +1,17 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class AudioListenerScript : MonoBehaviour
 {
 	public Transform Target;
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (Camera.main != null)
+		Camera main = Camera.main;
+		if (main != null)
 		{
-			this.transform.position = this.Target.position;
-			this.transform.eulerAngles = Camera.main.transform.eulerAngles;
+			base.transform.position = this.Target.position;
+			base.transform.eulerAngles = main.transform.eulerAngles;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

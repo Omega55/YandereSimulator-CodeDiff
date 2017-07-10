@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class ClothingScript : MonoBehaviour
 {
 	public YandereScript Yandere;
@@ -12,37 +11,33 @@ public class ClothingScript : MonoBehaviour
 
 	public bool CanPickUp;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent(typeof(YandereScript));
+		this.Yandere = GameObject.Find("YandereChan").GetComponent<YandereScript>();
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.CanPickUp)
 		{
-			if (this.Yandere.Bloodiness == (float)0)
+			if (this.Yandere.Bloodiness == 0f)
 			{
 				this.CanPickUp = false;
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
 			}
 		}
-		else if (this.Yandere.Bloodiness > (float)0)
+		else if (this.Yandere.Bloodiness > 0f)
 		{
 			this.CanPickUp = true;
 			this.Prompt.enabled = true;
 		}
-		if (this.Prompt.Circle[0].fillAmount <= (float)0)
+		if (this.Prompt.Circle[0].fillAmount <= 0f)
 		{
-			this.Prompt.Yandere.Bloodiness = (float)0;
+			this.Prompt.Yandere.Bloodiness = 0f;
 			this.Prompt.Yandere.UpdateBlood();
-			UnityEngine.Object.Instantiate(this.FoldedUniform, this.transform.position + Vector3.up * (float)1, Quaternion.identity);
-			UnityEngine.Object.Destroy(this.gameObject);
+			UnityEngine.Object.Instantiate<GameObject>(this.FoldedUniform, base.transform.position + Vector3.up, Quaternion.identity);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

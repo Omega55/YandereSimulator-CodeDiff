@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class YanvaniaBlackHoleScript : MonoBehaviour
 {
 	public GameObject BlackHoleAttack;
@@ -12,22 +11,18 @@ public class YanvaniaBlackHoleScript : MonoBehaviour
 
 	public float Timer;
 
-	public virtual void Update()
+	private void Update()
 	{
 		this.Timer += Time.deltaTime;
-		if (this.Timer > (float)1)
+		if (this.Timer > 1f)
 		{
 			this.SpawnTimer -= Time.deltaTime;
-			if (this.SpawnTimer <= (float)0 && this.Attacks < 5)
+			if (this.SpawnTimer <= 0f && this.Attacks < 5)
 			{
-				UnityEngine.Object.Instantiate(this.BlackHoleAttack, this.transform.position, Quaternion.identity);
+				UnityEngine.Object.Instantiate<GameObject>(this.BlackHoleAttack, base.transform.position, Quaternion.identity);
 				this.SpawnTimer = 0.5f;
 				this.Attacks++;
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class ShowerStoolScript : MonoBehaviour
 {
 	public YandereScript Yandere;
@@ -12,12 +11,12 @@ public class ShowerStoolScript : MonoBehaviour
 
 	public ParticleSystem Water;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.Yandere = (YandereScript)GameObject.Find("YandereChan").GetComponent(typeof(YandereScript));
+		this.Yandere = GameObject.Find("YandereChan").GetComponent<YandereScript>();
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.Yandere.Schoolwear > 0 || this.Yandere.PickUp != null || this.Yandere.Dragging)
 		{
@@ -27,7 +26,7 @@ public class ShowerStoolScript : MonoBehaviour
 		else
 		{
 			this.Prompt.enabled = true;
-			if (this.Prompt.Circle[0].fillAmount <= (float)0)
+			if (this.Prompt.Circle[0].fillAmount <= 0f)
 			{
 				this.Yandere.EmptyHands();
 				this.Yandere.Stool = this.StoolSpot;
@@ -36,9 +35,5 @@ public class ShowerStoolScript : MonoBehaviour
 				this.Water.Play();
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

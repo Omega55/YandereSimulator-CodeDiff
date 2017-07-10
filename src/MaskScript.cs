@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class MaskScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
@@ -26,52 +25,50 @@ public class MaskScript : MonoBehaviour
 
 	public int ID;
 
-	public virtual void Start()
+	private void Start()
 	{
 		if (PlayerPrefs.GetInt("MasksBanned") == 1)
 		{
-			this.active = false;
+			base.gameObject.SetActive(false);
 		}
 		else
 		{
 			this.MyFilter.mesh = this.Meshes[this.ID];
 			this.MyRenderer.material.mainTexture = this.Textures[this.ID];
 		}
-		this.enabled = false;
+		base.enabled = false;
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Prompt.Circle[0].fillAmount == (float)0)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			this.rigidbody.useGravity = false;
-			this.rigidbody.isKinematic = true;
+			Rigidbody component = base.GetComponent<Rigidbody>();
+			component.useGravity = false;
+			component.isKinematic = true;
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
 			this.Prompt.MyCollider.enabled = false;
-			this.transform.parent = this.Yandere.Head;
-			this.transform.localPosition = new Vector3((float)0, 0.033333f, 0.1f);
-			this.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+			base.transform.parent = this.Yandere.Head;
+			base.transform.localPosition = new Vector3(0f, 0.033333f, 0.1f);
+			base.transform.localEulerAngles = Vector3.zero;
 			this.Yandere.Mask = this;
 			this.ClubManager.UpdateMasks();
 			this.StudentManager.UpdateStudents();
 		}
 	}
 
-	public virtual void Drop()
+	public void Drop()
 	{
 		this.Prompt.MyCollider.isTrigger = false;
 		this.Prompt.MyCollider.enabled = true;
-		this.rigidbody.useGravity = true;
-		this.rigidbody.isKinematic = false;
+		Rigidbody component = base.GetComponent<Rigidbody>();
+		component.useGravity = true;
+		component.isKinematic = false;
 		this.Prompt.enabled = true;
-		this.transform.parent = null;
+		base.transform.parent = null;
 		this.Yandere.Mask = null;
 		this.ClubManager.UpdateMasks();
 		this.StudentManager.UpdateStudents();
-	}
-
-	public virtual void Main()
-	{
 	}
 }

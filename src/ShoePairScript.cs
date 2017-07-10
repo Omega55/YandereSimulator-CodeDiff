@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class ShoePairScript : MonoBehaviour
 {
 	public PoliceScript Police;
@@ -10,28 +9,24 @@ public class ShoePairScript : MonoBehaviour
 
 	public GameObject Note;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.Police = (PoliceScript)GameObject.Find("Police").GetComponent(typeof(PoliceScript));
+		this.Police = GameObject.Find("Police").GetComponent<PoliceScript>();
 		if (PlayerPrefs.GetInt("LanguageGrade") + PlayerPrefs.GetInt("LanguageBonus") < 1)
 		{
 			this.Prompt.enabled = false;
 		}
-		this.Note.active = false;
+		this.Note.SetActive(false);
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Prompt.Circle[0].fillAmount <= (float)0)
+		if (this.Prompt.Circle[0].fillAmount <= 0f)
 		{
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
 			this.Police.Suicide = true;
-			this.Note.active = true;
+			this.Note.SetActive(true);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-[Serializable]
 public class PhoneScript : MonoBehaviour
 {
 	public GameObject[] RightMessage;
@@ -60,16 +60,10 @@ public class PhoneScript : MonoBehaviour
 
 	public int ID;
 
-	public virtual void Start()
+	private void Start()
 	{
-		int num = -135;
-		Vector3 localPosition = this.Buttons.localPosition;
-		float num2 = localPosition.y = (float)num;
-		Vector3 vector = this.Buttons.localPosition = localPosition;
-		int num3 = 1;
-		Color color = this.Darkness.color;
-		float num4 = color.a = (float)num3;
-		Color color2 = this.Darkness.color = color;
+		this.Buttons.localPosition = new Vector3(this.Buttons.localPosition.x, -135f, this.Buttons.localPosition.z);
+		this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 1f);
 		if (PlayerPrefs.GetInt("KidnapConversation") == 1)
 		{
 			this.VoiceClips = this.KidnapClip;
@@ -90,17 +84,14 @@ public class PhoneScript : MonoBehaviour
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (!this.FadeOut)
 		{
-			if (this.Timer > (float)0)
+			if (this.Timer > 0f)
 			{
-				float a = Mathf.MoveTowards(this.Darkness.color.a, (float)0, Time.deltaTime);
-				Color color = this.Darkness.color;
-				float num = color.a = a;
-				Color color2 = this.Darkness.color = color;
-				if (this.Darkness.color.a == (float)0)
+				this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 0f, Time.deltaTime));
+				if (this.Darkness.color.a == 0f)
 				{
 					if (!this.Jukebox.isPlaying)
 					{
@@ -114,14 +105,11 @@ public class PhoneScript : MonoBehaviour
 			}
 			if (this.NewMessage != null)
 			{
-				float y = Mathf.Lerp(this.Buttons.localPosition.y, (float)0, Time.deltaTime * (float)10);
-				Vector3 localPosition = this.Buttons.localPosition;
-				float num2 = localPosition.y = y;
-				Vector3 vector = this.Buttons.localPosition = localPosition;
+				this.Buttons.localPosition = new Vector3(this.Buttons.localPosition.x, Mathf.Lerp(this.Buttons.localPosition.y, 0f, Time.deltaTime * 10f), this.Buttons.localPosition.z);
 				this.AutoTimer += Time.deltaTime;
-				if ((this.Auto && this.AutoTimer > this.VoiceClips[this.ID].length + (float)1) || Input.GetButtonDown("A"))
+				if ((this.Auto && this.AutoTimer > this.VoiceClips[this.ID].length + 1f) || Input.GetButtonDown("A"))
 				{
-					this.AutoTimer = (float)0;
+					this.AutoTimer = 0f;
 					if (this.ID < this.Text.Length - 1)
 					{
 						this.ID++;
@@ -129,7 +117,7 @@ public class PhoneScript : MonoBehaviour
 					}
 					else
 					{
-						this.Darkness.color = new Color((float)0, (float)0, (float)0, (float)0);
+						this.Darkness.color = new Color(0f, 0f, 0f, 0f);
 						this.FadeOut = true;
 					}
 				}
@@ -141,70 +129,58 @@ public class PhoneScript : MonoBehaviour
 		}
 		else
 		{
-			float y2 = Mathf.Lerp(this.Buttons.localPosition.y, (float)-135, Time.deltaTime * (float)10);
-			Vector3 localPosition2 = this.Buttons.localPosition;
-			float num3 = localPosition2.y = y2;
-			Vector3 vector2 = this.Buttons.localPosition = localPosition2;
-			float a2 = this.Darkness.color.a + Time.deltaTime;
-			Color color3 = this.Darkness.color;
-			float num4 = color3.a = a2;
-			Color color4 = this.Darkness.color = color3;
-			this.audio.volume = (float)1 - this.Darkness.color.a;
-			this.Jukebox.volume = (float)1 - this.Darkness.color.a;
-			if (this.Darkness.color.a >= (float)1)
+			this.Buttons.localPosition = new Vector3(this.Buttons.localPosition.x, Mathf.Lerp(this.Buttons.localPosition.y, -135f, Time.deltaTime * 10f), this.Buttons.localPosition.z);
+			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a + Time.deltaTime);
+			base.GetComponent<AudioSource>().volume = 1f - this.Darkness.color.a;
+			this.Jukebox.volume = 1f - this.Darkness.color.a;
+			if (this.Darkness.color.a >= 1f)
 			{
 				if (PlayerPrefs.GetInt("BefriendConversation") == 0 && PlayerPrefs.GetInt("LivingRoom") == 0)
 				{
-					Application.LoadLevel("CalendarScene");
+					SceneManager.LoadScene("CalendarScene");
 				}
 				else if (PlayerPrefs.GetInt("LivingRoom") == 1)
 				{
-					Application.LoadLevel("LivingRoomScene");
+					SceneManager.LoadScene("LivingRoomScene");
 				}
 				else
 				{
-					Application.LoadLevel(Application.loadedLevel);
+					SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 				}
 			}
 		}
 		this.Timer += Time.deltaTime;
 	}
 
-	public virtual void SpawnMessage()
+	private void SpawnMessage()
 	{
 		if (this.NewMessage != null)
 		{
 			this.NewMessage.transform.parent = this.OldMessages;
-			float y = this.OldMessages.localPosition.y + (float)(72 + this.Height[this.ID] * 32);
-			Vector3 localPosition = this.OldMessages.localPosition;
-			float num = localPosition.y = y;
-			Vector3 vector = this.OldMessages.localPosition = localPosition;
+			this.OldMessages.localPosition = new Vector3(this.OldMessages.localPosition.x, this.OldMessages.localPosition.y + (72f + (float)this.Height[this.ID] * 32f), this.OldMessages.localPosition.z);
 		}
-		this.audio.clip = this.VoiceClips[this.ID];
-		this.audio.Play();
+		AudioSource component = base.GetComponent<AudioSource>();
+		component.clip = this.VoiceClips[this.ID];
+		component.Play();
 		if (this.Speaker[this.ID] == 1)
 		{
-			this.NewMessage = (GameObject)UnityEngine.Object.Instantiate(this.LeftMessage[this.Height[this.ID]]);
+			this.NewMessage = UnityEngine.Object.Instantiate<GameObject>(this.LeftMessage[this.Height[this.ID]]);
 			this.NewMessage.transform.parent = this.Panel;
-			this.NewMessage.transform.localPosition = new Vector3((float)-225, (float)-375, (float)0);
-			this.NewMessage.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+			this.NewMessage.transform.localPosition = new Vector3(-225f, -375f, 0f);
+			this.NewMessage.transform.localScale = Vector3.zero;
 		}
 		else
 		{
-			this.NewMessage = (GameObject)UnityEngine.Object.Instantiate(this.RightMessage[this.Height[this.ID]]);
+			this.NewMessage = UnityEngine.Object.Instantiate<GameObject>(this.RightMessage[this.Height[this.ID]]);
 			this.NewMessage.transform.parent = this.Panel;
-			this.NewMessage.transform.localPosition = new Vector3((float)225, (float)-375, (float)0);
-			this.NewMessage.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+			this.NewMessage.transform.localPosition = new Vector3(225f, -375f, 0f);
+			this.NewMessage.transform.localScale = Vector3.zero;
 			if (this.Speaker == this.KidnapSpeaker && this.Height[this.ID] == 8)
 			{
-				((TextMessageScript)this.NewMessage.GetComponent(typeof(TextMessageScript))).Attachment = true;
+				this.NewMessage.GetComponent<TextMessageScript>().Attachment = true;
 			}
 		}
 		this.AutoLimit = (float)(this.Height[this.ID] + 1);
-		((TextMessageScript)this.NewMessage.GetComponent(typeof(TextMessageScript))).Label.text = this.Text[this.ID];
-	}
-
-	public virtual void Main()
-	{
+		this.NewMessage.GetComponent<TextMessageScript>().Label.text = this.Text[this.ID];
 	}
 }

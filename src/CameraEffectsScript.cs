@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class CameraEffectsScript : MonoBehaviour
 {
 	public YandereScript Yandere;
@@ -30,73 +29,48 @@ public class CameraEffectsScript : MonoBehaviour
 
 	public AudioClip Noticed;
 
-	public virtual void Start()
+	private void Start()
 	{
-		int num = 0;
-		Color color = this.MurderStreaks.color;
-		float num2 = color.a = (float)num;
-		Color color2 = this.MurderStreaks.color = color;
-		int num3 = 0;
-		Color color3 = this.Streaks.color;
-		float num4 = color3.a = (float)num3;
-		Color color4 = this.Streaks.color = color3;
+		this.MurderStreaks.color = new Color(this.MurderStreaks.color.r, this.MurderStreaks.color.g, this.MurderStreaks.color.b, 0f);
+		this.Streaks.color = new Color(this.Streaks.color.r, this.Streaks.color.g, this.Streaks.color.b, 0f);
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Streaks.color.a > (float)0)
+		if (this.Streaks.color.a > 0f)
 		{
-			this.AlarmBloom.bloomIntensity = this.AlarmBloom.bloomIntensity - Time.deltaTime;
-			float a = this.Streaks.color.a - Time.deltaTime;
-			Color color = this.Streaks.color;
-			float num = color.a = a;
-			Color color2 = this.Streaks.color = color;
-			if (this.Streaks.color.a <= (float)0)
+			this.AlarmBloom.bloomIntensity -= Time.deltaTime;
+			this.Streaks.color = new Color(this.Streaks.color.r, this.Streaks.color.g, this.Streaks.color.b, this.Streaks.color.a - Time.deltaTime);
+			if (this.Streaks.color.a <= 0f)
 			{
 				this.AlarmBloom.enabled = false;
 			}
 		}
-		if (this.MurderStreaks.color.a > (float)0)
+		if (this.MurderStreaks.color.a > 0f)
 		{
-			float a2 = this.MurderStreaks.color.a - Time.deltaTime;
-			Color color3 = this.MurderStreaks.color;
-			float num2 = color3.a = a2;
-			Color color4 = this.MurderStreaks.color = color3;
+			this.MurderStreaks.color = new Color(this.MurderStreaks.color.r, this.MurderStreaks.color.g, this.MurderStreaks.color.b, this.MurderStreaks.color.a - Time.deltaTime);
 		}
-		this.EffectStrength = (float)1 - this.Yandere.Sanity * 0.01f;
-		this.Vignette.intensity = Mathf.Lerp(this.Vignette.intensity, this.EffectStrength * (float)5, Time.deltaTime);
+		this.EffectStrength = 1f - this.Yandere.Sanity * 0.01f;
+		this.Vignette.intensity = Mathf.Lerp(this.Vignette.intensity, this.EffectStrength * 5f, Time.deltaTime);
 		this.Vignette.blur = Mathf.Lerp(this.Vignette.blur, this.EffectStrength, Time.deltaTime);
-		this.Vignette.chromaticAberration = Mathf.Lerp(this.Vignette.chromaticAberration, this.EffectStrength * (float)5, Time.deltaTime);
+		this.Vignette.chromaticAberration = Mathf.Lerp(this.Vignette.chromaticAberration, this.EffectStrength * 5f, Time.deltaTime);
 	}
 
-	public virtual void Alarm()
+	public void Alarm()
 	{
-		this.AlarmBloom.bloomIntensity = (float)1;
-		int num = 1;
-		Color color = this.Streaks.color;
-		float num2 = color.a = (float)num;
-		Color color2 = this.Streaks.color = color;
+		this.AlarmBloom.bloomIntensity = 1f;
+		this.Streaks.color = new Color(this.Streaks.color.r, this.Streaks.color.g, this.Streaks.color.b, 1f);
 		this.AlarmBloom.enabled = true;
 		this.Yandere.Jukebox.SFX.PlayOneShot(this.Noticed);
 	}
 
-	public virtual void MurderWitnessed()
+	public void MurderWitnessed()
 	{
-		int num = 1;
-		Color color = this.MurderStreaks.color;
-		float num2 = color.a = (float)num;
-		Color color2 = this.MurderStreaks.color = color;
-		if (!this.Yandere.Noticed)
-		{
-			this.Yandere.Jukebox.SFX.PlayOneShot(this.MurderNoticed);
-		}
-		else
-		{
-			this.Yandere.Jukebox.SFX.PlayOneShot(this.SenpaiNoticed);
-		}
+		this.MurderStreaks.color = new Color(this.MurderStreaks.color.r, this.MurderStreaks.color.g, this.MurderStreaks.color.b, 1f);
+		this.Yandere.Jukebox.SFX.PlayOneShot((!this.Yandere.Noticed) ? this.MurderNoticed : this.SenpaiNoticed);
 	}
 
-	public virtual void DisableCamera()
+	public void DisableCamera()
 	{
 		if (!this.OneCamera)
 		{
@@ -116,9 +90,5 @@ public class CameraEffectsScript : MonoBehaviour
 				this.Yandere.MainCamera.farClipPlane = (float)PlayerPrefs.GetInt("DrawDistance");
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

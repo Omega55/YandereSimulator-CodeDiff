@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class PoliceScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
@@ -57,9 +55,9 @@ public class PoliceScript : MonoBehaviour
 
 	public UISprite PartsIcon;
 
-	public string ElectrocutedStudentName;
+	public string ElectrocutedStudentName = string.Empty;
 
-	public string DrownedStudentName;
+	public string DrownedStudentName = string.Empty;
 
 	public bool BloodDisposed;
 
@@ -129,60 +127,36 @@ public class PoliceScript : MonoBehaviour
 
 	public int Seconds;
 
-	public PoliceScript()
+	private void Start()
 	{
-		this.ElectrocutedStudentName = string.Empty;
-		this.DrownedStudentName = string.Empty;
-	}
-
-	public virtual void Start()
-	{
-		if (PlayerPrefs.GetFloat("SchoolAtmosphere") > (float)50)
+		if (PlayerPrefs.GetFloat("SchoolAtmosphere") > 50f)
 		{
-			int num = 0;
-			Color color = this.Darkness.color;
-			float num2 = color.a = (float)num;
-			Color color2 = this.Darkness.color = color;
+			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 0f);
 			this.Darkness.enabled = false;
 		}
-		int num3 = -260;
-		Vector3 localPosition = this.transform.localPosition;
-		float num4 = localPosition.x = (float)num3;
-		Vector3 vector = this.transform.localPosition = localPosition;
-		for (int i = 0; i < Extensions.get_length(this.ResultsLabels); i++)
+		base.transform.localPosition = new Vector3(-260f, base.transform.localPosition.y, base.transform.localPosition.z);
+		foreach (UILabel uilabel in this.ResultsLabels)
 		{
-			int num5 = 0;
-			Color color3 = this.ResultsLabels[i].color;
-			float num6 = color3.a = (float)num5;
-			Color color4 = this.ResultsLabels[i].color = color3;
+			uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, 0f);
 		}
-		int num7 = 0;
-		Color color5 = this.ContinueLabel.color;
-		float num8 = color5.a = (float)num7;
-		Color color6 = this.ContinueLabel.color = color5;
-		int num9 = 0;
-		Color color7 = this.ContinueButton.color;
-		float num10 = color7.a = (float)num9;
-		Color color8 = this.ContinueButton.color = color7;
-		this.Icons.active = false;
+		this.ContinueLabel.color = new Color(this.ContinueLabel.color.r, this.ContinueLabel.color.g, this.ContinueLabel.color.b, 0f);
+		this.ContinueButton.color = new Color(this.ContinueButton.color.r, this.ContinueButton.color.g, this.ContinueButton.color.b, 0f);
+		this.Icons.SetActive(false);
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.Show)
 		{
 			if (this.PoisonScene)
 			{
-				this.Panel.alpha = (float)0;
+				this.Panel.alpha = 0f;
 			}
-			if (!this.Icons.active)
+			if (!this.Icons.activeInHierarchy)
 			{
-				this.Icons.active = true;
+				this.Icons.SetActive(true);
 			}
-			float x = Mathf.Lerp(this.transform.localPosition.x, (float)0, Time.deltaTime * (float)10);
-			Vector3 localPosition = this.transform.localPosition;
-			float num = localPosition.x = x;
-			Vector3 vector = this.transform.localPosition = localPosition;
+			base.transform.localPosition = new Vector3(Mathf.Lerp(base.transform.localPosition.x, 0f, Time.deltaTime * 10f), base.transform.localPosition.y, base.transform.localPosition.z);
 			if (this.BloodParent.childCount == 0)
 			{
 				if (!this.BloodDisposed)
@@ -249,9 +223,9 @@ public class PoliceScript : MonoBehaviour
 				this.PartsDisposed = false;
 			}
 			this.Timer -= Time.deltaTime;
-			if (this.Timer <= (float)0)
+			if (this.Timer <= 0f)
 			{
-				this.Timer = (float)0;
+				this.Timer = 0f;
 				if (!this.Yandere.Attacking && !this.Yandere.Struggling && !this.FadeOut)
 				{
 					this.StudentManager.StopMoving();
@@ -259,15 +233,15 @@ public class PoliceScript : MonoBehaviour
 					this.Yandere.StopLaughing();
 					this.Clock.StopTime = true;
 					this.FadeOut = true;
-					if (!this.EndOfDay.gameObject.active)
+					if (!this.EndOfDay.gameObject.activeInHierarchy)
 					{
-						Time.timeScale = (float)1;
+						Time.timeScale = 1f;
 					}
 				}
 			}
-			int num2 = Mathf.CeilToInt(this.Timer);
-			this.Minutes = num2 / 60;
-			this.Seconds = num2 % 60;
+			int num = Mathf.CeilToInt(this.Timer);
+			this.Minutes = num / 60;
+			this.Seconds = num % 60;
 			this.TimeLabel.text = string.Format("{0:00}:{1:00}", this.Minutes, this.Seconds);
 		}
 		if (this.FadeOut)
@@ -283,7 +257,7 @@ public class PoliceScript : MonoBehaviour
 				this.Yandere.CanMove = false;
 				this.Yandere.YandereVision = false;
 				this.Yandere.PauseScreen.enabled = false;
-				this.Yandere.Character.animation.CrossFade("f02_idleShort_00");
+				this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_idleShort_00");
 				for (int i = 1; i < 4; i++)
 				{
 					if (this.Yandere.Weapon[i] != null)
@@ -291,15 +265,12 @@ public class PoliceScript : MonoBehaviour
 					}
 				}
 			}
-			this.PauseScreen.Panel.alpha = Mathf.MoveTowards(this.PauseScreen.Panel.alpha, (float)0, Time.deltaTime);
-			float a = this.Darkness.color.a + Time.deltaTime;
-			Color color = this.Darkness.color;
-			float num3 = color.a = a;
-			Color color2 = this.Darkness.color = color;
-			if (this.Darkness.color.a >= (float)1 && !this.ShowResults)
+			this.PauseScreen.Panel.alpha = Mathf.MoveTowards(this.PauseScreen.Panel.alpha, 0f, Time.deltaTime);
+			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a + Time.deltaTime);
+			if (this.Darkness.color.a >= 1f && !this.ShowResults)
 			{
-				this.HeartbeatCamera.active = false;
-				this.DetectionCamera.active = false;
+				this.HeartbeatCamera.SetActive(false);
+				this.DetectionCamera.SetActive(false);
 				if (this.ClubActivity)
 				{
 					this.ClubManager.Club = PlayerPrefs.GetInt("Club");
@@ -311,139 +282,104 @@ public class PoliceScript : MonoBehaviour
 					this.Yandere.enabled = false;
 					this.DetermineResults();
 					this.ShowResults = true;
-					Time.timeScale = (float)2;
-					this.Jukebox.Volume = (float)0;
+					Time.timeScale = 2f;
+					this.Jukebox.Volume = 0f;
 				}
 			}
 		}
 		if (this.ShowResults)
 		{
 			this.ResultsTimer += Time.deltaTime;
-			if (this.ResultsTimer > (float)1)
+			if (this.ResultsTimer > 1f)
 			{
-				float a2 = this.ResultsLabels[0].color.a + Time.deltaTime;
-				Color color3 = this.ResultsLabels[0].color;
-				float num4 = color3.a = a2;
-				Color color4 = this.ResultsLabels[0].color = color3;
+				UILabel uilabel = this.ResultsLabels[0];
+				uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, uilabel.color.a + Time.deltaTime);
 			}
-			if (this.ResultsTimer > (float)2)
+			if (this.ResultsTimer > 2f)
 			{
-				float a3 = this.ResultsLabels[1].color.a + Time.deltaTime;
-				Color color5 = this.ResultsLabels[1].color;
-				float num5 = color5.a = a3;
-				Color color6 = this.ResultsLabels[1].color = color5;
+				UILabel uilabel2 = this.ResultsLabels[1];
+				uilabel2.color = new Color(uilabel2.color.r, uilabel2.color.g, uilabel2.color.b, uilabel2.color.a + Time.deltaTime);
 			}
-			if (this.ResultsTimer > (float)3)
+			if (this.ResultsTimer > 3f)
 			{
-				float a4 = this.ResultsLabels[2].color.a + Time.deltaTime;
-				Color color7 = this.ResultsLabels[2].color;
-				float num6 = color7.a = a4;
-				Color color8 = this.ResultsLabels[2].color = color7;
+				UILabel uilabel3 = this.ResultsLabels[2];
+				uilabel3.color = new Color(uilabel3.color.r, uilabel3.color.g, uilabel3.color.b, uilabel3.color.a + Time.deltaTime);
 			}
-			if (this.ResultsTimer > (float)4)
+			if (this.ResultsTimer > 4f)
 			{
-				float a5 = this.ResultsLabels[3].color.a + Time.deltaTime;
-				Color color9 = this.ResultsLabels[3].color;
-				float num7 = color9.a = a5;
-				Color color10 = this.ResultsLabels[3].color = color9;
+				UILabel uilabel4 = this.ResultsLabels[3];
+				uilabel4.color = new Color(uilabel4.color.r, uilabel4.color.g, uilabel4.color.b, uilabel4.color.a + Time.deltaTime);
 			}
-			if (this.ResultsTimer > (float)5)
+			if (this.ResultsTimer > 5f)
 			{
-				float a6 = this.ResultsLabels[4].color.a + Time.deltaTime;
-				Color color11 = this.ResultsLabels[4].color;
-				float num8 = color11.a = a6;
-				Color color12 = this.ResultsLabels[4].color = color11;
+				UILabel uilabel5 = this.ResultsLabels[4];
+				uilabel5.color = new Color(uilabel5.color.r, uilabel5.color.g, uilabel5.color.b, uilabel5.color.a + Time.deltaTime);
 			}
-			if (this.ResultsTimer > (float)6)
+			if (this.ResultsTimer > 6f)
 			{
-				float a7 = this.ContinueButton.color.a + Time.deltaTime;
-				Color color13 = this.ContinueButton.color;
-				float num9 = color13.a = a7;
-				Color color14 = this.ContinueButton.color = color13;
-				float a8 = this.ContinueLabel.color.a + Time.deltaTime;
-				Color color15 = this.ContinueLabel.color;
-				float num10 = color15.a = a8;
-				Color color16 = this.ContinueLabel.color = color15;
-				if (this.ContinueButton.color.a > (float)1)
+				this.ContinueButton.color = new Color(this.ContinueButton.color.r, this.ContinueButton.color.g, this.ContinueButton.color.b, this.ContinueButton.color.a + Time.deltaTime);
+				this.ContinueLabel.color = new Color(this.ContinueLabel.color.r, this.ContinueLabel.color.g, this.ContinueLabel.color.b, this.ContinueLabel.color.a + Time.deltaTime);
+				if (this.ContinueButton.color.a > 1f)
 				{
-					int num11 = 1;
-					Color color17 = this.ContinueButton.color;
-					float num12 = color17.a = (float)num11;
-					Color color18 = this.ContinueButton.color = color17;
+					this.ContinueButton.color = new Color(this.ContinueButton.color.r, this.ContinueButton.color.g, this.ContinueButton.color.b, 1f);
 				}
-				if (this.ContinueLabel.color.a > (float)1)
+				if (this.ContinueLabel.color.a > 1f)
 				{
-					int num13 = 1;
-					Color color19 = this.ContinueLabel.color;
-					float num14 = color19.a = (float)num13;
-					Color color20 = this.ContinueLabel.color = color19;
+					this.ContinueLabel.color = new Color(this.ContinueLabel.color.r, this.ContinueLabel.color.g, this.ContinueLabel.color.b, 1f);
 				}
 			}
-			if (this.ResultsTimer > (float)7 && Input.GetButtonDown("A"))
+			if (this.ResultsTimer > 7f && Input.GetButtonDown("A"))
 			{
 				this.ShowResults = false;
 				this.FadeResults = true;
 				this.FadeOut = false;
-				this.ResultsTimer = (float)0;
+				this.ResultsTimer = 0f;
 			}
 		}
-		for (int i = 0; i < Extensions.get_length(this.ResultsLabels); i++)
+		foreach (UILabel uilabel6 in this.ResultsLabels)
 		{
-			if (this.ResultsLabels[i].color.a > (float)1)
+			if (uilabel6.color.a > 1f)
 			{
-				int num15 = 1;
-				Color color21 = this.ResultsLabels[i].color;
-				float num16 = color21.a = (float)num15;
-				Color color22 = this.ResultsLabels[i].color = color21;
+				uilabel6.color = new Color(uilabel6.color.r, uilabel6.color.g, uilabel6.color.b, 1f);
 			}
 		}
 		if (this.FadeResults)
 		{
-			for (int i = 0; i < Extensions.get_length(this.ResultsLabels); i++)
+			foreach (UILabel uilabel7 in this.ResultsLabels)
 			{
-				float a9 = this.ResultsLabels[i].color.a - Time.deltaTime;
-				Color color23 = this.ResultsLabels[i].color;
-				float num17 = color23.a = a9;
-				Color color24 = this.ResultsLabels[i].color = color23;
+				uilabel7.color = new Color(uilabel7.color.r, uilabel7.color.g, uilabel7.color.b, uilabel7.color.a - Time.deltaTime);
 			}
-			float a10 = this.ContinueButton.color.a - Time.deltaTime;
-			Color color25 = this.ContinueButton.color;
-			float num18 = color25.a = a10;
-			Color color26 = this.ContinueButton.color = color25;
-			float a11 = this.ContinueLabel.color.a - Time.deltaTime;
-			Color color27 = this.ContinueLabel.color;
-			float num19 = color27.a = a11;
-			Color color28 = this.ContinueLabel.color = color27;
-			if (this.ResultsLabels[0].color.a <= (float)0)
+			this.ContinueButton.color = new Color(this.ContinueButton.color.r, this.ContinueButton.color.g, this.ContinueButton.color.b, this.ContinueButton.color.a - Time.deltaTime);
+			this.ContinueLabel.color = new Color(this.ContinueLabel.color.r, this.ContinueLabel.color.g, this.ContinueLabel.color.b, this.ContinueLabel.color.a - Time.deltaTime);
+			if (this.ResultsLabels[0].color.a <= 0f)
 			{
 				if (this.GameOver)
 				{
 					this.Heartbroken.transform.parent.transform.parent = null;
-					this.Heartbroken.transform.parent.active = true;
+					this.Heartbroken.transform.parent.gameObject.SetActive(true);
 					this.Heartbroken.Noticed = false;
-					this.transform.parent.transform.parent.gameObject.active = false;
-					if (!this.EndOfDay.gameObject.active)
+					base.transform.parent.transform.parent.gameObject.SetActive(false);
+					if (!this.EndOfDay.gameObject.activeInHierarchy)
 					{
-						Time.timeScale = (float)1;
+						Time.timeScale = 1f;
 					}
 				}
 				else if (!this.TeacherReport)
 				{
 					if (this.EndOfDay.Phase == 1)
 					{
-						this.EndOfDay.gameObject.active = true;
+						this.EndOfDay.gameObject.SetActive(true);
 						this.EndOfDay.enabled = true;
 						this.EndOfDay.Phase = 10;
 						if (this.EndOfDay.PreviouslyActivated)
 						{
 							this.EndOfDay.Start();
 						}
-						this.ResultsLabels[0].text = string.Empty;
-						this.ResultsLabels[1].text = string.Empty;
-						this.ResultsLabels[2].text = string.Empty;
-						this.ResultsLabels[3].text = string.Empty;
-						this.ResultsLabels[4].text = string.Empty;
-						this.enabled = false;
+						for (int l = 0; l < 5; l++)
+						{
+							this.ResultsLabels[l].text = string.Empty;
+						}
+						base.enabled = false;
 					}
 				}
 				else
@@ -457,18 +393,17 @@ public class PoliceScript : MonoBehaviour
 		}
 	}
 
-	public virtual void DetermineResults()
+	private void DetermineResults()
 	{
-		this.ResultsLabels[0].transform.parent.gameObject.active = true;
+		this.ResultsLabels[0].transform.parent.gameObject.SetActive(true);
 		if (this.Show)
 		{
-			this.EndOfDay.gameObject.active = true;
-			this.enabled = false;
-			this.ResultsLabels[0].text = string.Empty;
-			this.ResultsLabels[1].text = string.Empty;
-			this.ResultsLabels[2].text = string.Empty;
-			this.ResultsLabels[3].text = string.Empty;
-			this.ResultsLabels[4].text = string.Empty;
+			this.EndOfDay.gameObject.SetActive(true);
+			base.enabled = false;
+			for (int i = 0; i < 5; i++)
+			{
+				this.ResultsLabels[i].text = string.Empty;
+			}
 		}
 		else if (PlayerPrefs.GetInt("Weekday") == 5)
 		{
@@ -481,7 +416,7 @@ public class PoliceScript : MonoBehaviour
 		}
 		else if (!this.Suicide && !this.PoisonScene)
 		{
-			if (this.Clock.HourTime < (float)18)
+			if (this.Clock.HourTime < 18f)
 			{
 				if (!this.Yandere.InClass)
 				{
@@ -498,9 +433,9 @@ public class PoliceScript : MonoBehaviour
 			}
 			if (this.Corpses == 0 && this.BloodParent.childCount == 0 && this.BloodyWeapons == 0 && this.BloodyClothing == 0 && !this.SuicideScene)
 			{
-				if (this.Yandere.Sanity > 66.66666f && this.Yandere.Bloodiness == (float)0)
+				if (this.Yandere.Sanity > 66.66666f && this.Yandere.Bloodiness == 0f)
 				{
-					if (this.Clock.HourTime < (float)18)
+					if (this.Clock.HourTime < 18f)
 					{
 						this.ResultsLabels[1].text = "Finally, Senpai exits the school.";
 						this.ResultsLabels[2].text = "Yandere-chan's heart skips a beat when she sees him.";
@@ -518,7 +453,7 @@ public class PoliceScript : MonoBehaviour
 				else
 				{
 					this.ResultsLabels[1].text = "Yandere-chan is approached by a teacher.";
-					if (this.Yandere.Bloodiness > (float)0)
+					if (this.Yandere.Bloodiness > 0f)
 					{
 						this.ResultsLabels[2].text = "The teacher immediately notices the blood staining her clothing.";
 						this.ResultsLabels[3].text = "Yandere-chan is not able to convince the teacher that nothing is wrong.";
@@ -613,45 +548,42 @@ public class PoliceScript : MonoBehaviour
 		}
 	}
 
-	public virtual void KillStudents()
+	public void KillStudents()
 	{
 		float num = PlayerPrefs.GetFloat("SchoolAtmosphere");
 		if (this.Deaths > 0)
 		{
 			for (int i = 2; i < this.StudentManager.NPCsTotal + 1; i++)
 			{
-				if (PlayerPrefs.GetInt("Student_" + i + "_Dying") == 1)
+				if (PlayerPrefs.GetInt("Student_" + i.ToString() + "_Dying") == 1)
 				{
-					PlayerPrefs.SetInt("Student_" + i + "_Dead", 1);
+					PlayerPrefs.SetInt("Student_" + i.ToString() + "_Dead", 1);
 				}
 			}
-			num -= (float)(this.Deaths * 5);
-			num -= (float)(this.Corpses * 5);
+			num -= (float)this.Deaths * 5f;
+			num -= (float)this.Corpses * 5f;
 			PlayerPrefs.SetFloat("SchoolAtmosphere", num);
 		}
 		else
 		{
-			num += (float)20;
+			num += 20f;
 			PlayerPrefs.SetFloat("SchoolAtmosphere", num);
 		}
-		if (PlayerPrefs.GetFloat("SchoolAtmosphere") < (float)0)
+		if (PlayerPrefs.GetFloat("SchoolAtmosphere") < 0f)
 		{
-			PlayerPrefs.SetFloat("SchoolAtmosphere", (float)0);
+			PlayerPrefs.SetFloat("SchoolAtmosphere", 0f);
 		}
-		if (PlayerPrefs.GetFloat("SchoolAtmosphere") > (float)100)
+		if (PlayerPrefs.GetFloat("SchoolAtmosphere") > 100f)
 		{
-			PlayerPrefs.SetFloat("SchoolAtmosphere", (float)100);
+			PlayerPrefs.SetFloat("SchoolAtmosphere", 100f);
 		}
-		for (int i = 1; i < this.StudentManager.StudentsTotal; i++)
+		for (int j = 1; j < this.StudentManager.StudentsTotal; j++)
 		{
-			if (this.StudentManager.Students[i] != null && this.StudentManager.Students[i].Grudge)
+			StudentScript studentScript = this.StudentManager.Students[j];
+			if (studentScript != null && studentScript.Grudge)
 			{
-				PlayerPrefs.SetInt("Student_" + i + "_Grudge", 1);
+				PlayerPrefs.SetInt("Student_" + j.ToString() + "_Grudge", 1);
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

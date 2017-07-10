@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class NotificationManagerScript : MonoBehaviour
 {
 	public YandereScript Yandere;
@@ -14,23 +13,15 @@ public class NotificationManagerScript : MonoBehaviour
 
 	public int NotificationsSpawned;
 
-	public int Phase;
+	public int Phase = 1;
 
 	public ClockScript Clock;
 
-	public NotificationManagerScript()
-	{
-		this.Phase = 1;
-	}
-
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.NotificationParent.localPosition.y > 0.001f + -0.049f * (float)this.NotificationsSpawned)
 		{
-			float y = Mathf.Lerp(this.NotificationParent.localPosition.y, -0.049f * (float)this.NotificationsSpawned, Time.deltaTime * (float)10);
-			Vector3 localPosition = this.NotificationParent.localPosition;
-			float num = localPosition.y = y;
-			Vector3 vector = this.NotificationParent.localPosition = localPosition;
+			this.NotificationParent.localPosition = new Vector3(this.NotificationParent.localPosition.x, Mathf.Lerp(this.NotificationParent.localPosition.y, -0.049f * (float)this.NotificationsSpawned, Time.deltaTime * 10f), this.NotificationParent.localPosition.z);
 		}
 		if (this.Phase == 1)
 		{
@@ -63,78 +54,74 @@ public class NotificationManagerScript : MonoBehaviour
 		}
 	}
 
-	public virtual void DisplayNotification(string Type)
+	public void DisplayNotification(string Type)
 	{
 		if (!this.Yandere.Egg)
 		{
-			GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.Notification);
-			NotificationScript notificationScript = (NotificationScript)gameObject.GetComponent(typeof(NotificationScript));
+			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Notification);
+			NotificationScript component = gameObject.GetComponent<NotificationScript>();
 			gameObject.transform.parent = this.NotificationParent;
-			gameObject.transform.localPosition = new Vector3((float)0, 0.60275f + 0.049f * (float)this.NotificationsSpawned, (float)0);
-			gameObject.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
-			notificationScript.NotificationManager = this;
+			gameObject.transform.localPosition = new Vector3(0f, 0.60275f + 0.049f * (float)this.NotificationsSpawned, 0f);
+			gameObject.transform.localEulerAngles = Vector3.zero;
+			component.NotificationManager = this;
 			if (Type == "Bloody")
 			{
-				notificationScript.Label.text = "Visibly Bloody";
+				component.Label.text = "Visibly Bloody";
 			}
 			else if (Type == "Body")
 			{
-				notificationScript.Label.text = "Near Body";
+				component.Label.text = "Near Body";
 			}
 			else if (Type == "Insane")
 			{
-				notificationScript.Label.text = "Visibly Insane";
+				component.Label.text = "Visibly Insane";
 			}
 			else if (Type == "Armed")
 			{
-				notificationScript.Label.text = "Visibly Armed";
+				component.Label.text = "Visibly Armed";
 			}
 			else if (Type == "Lewd")
 			{
-				notificationScript.Label.text = "Visibly Lewd";
+				component.Label.text = "Visibly Lewd";
 			}
 			else if (Type == "Intrude")
 			{
-				notificationScript.Label.text = "Intruding";
+				component.Label.text = "Intruding";
 			}
 			else if (Type == "Late")
 			{
-				notificationScript.Label.text = "Late For Class";
+				component.Label.text = "Late For Class";
 			}
 			else if (Type == "Info")
 			{
-				notificationScript.Label.text = "Learned New Info";
+				component.Label.text = "Learned New Info";
 			}
 			else if (Type == "Topic")
 			{
-				notificationScript.Label.text = "Learned New Topic";
+				component.Label.text = "Learned New Topic";
 			}
 			else if (Type == "Opinion")
 			{
-				notificationScript.Label.text = "Learned Opinion";
+				component.Label.text = "Learned Opinion";
 			}
 			else if (Type == "Complete")
 			{
-				notificationScript.Label.text = "Mission Complete";
+				component.Label.text = "Mission Complete";
 			}
 			else if (Type == "Exfiltrate")
 			{
-				notificationScript.Label.text = "Leave School";
+				component.Label.text = "Leave School";
 			}
 			else if (Type == "Class Soon")
 			{
-				notificationScript.Label.text = "Class Begins Soon";
+				component.Label.text = "Class Begins Soon";
 			}
 			else if (Type == "Class Now")
 			{
-				notificationScript.Label.text = "Class Begins Now";
+				component.Label.text = "Class Begins Now";
 			}
 			this.NotificationsSpawned++;
-			notificationScript.ID = this.NotificationsSpawned;
+			component.ID = this.NotificationsSpawned;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

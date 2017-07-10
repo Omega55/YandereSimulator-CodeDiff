@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class PickpocketMinigameScript : MonoBehaviour
 {
 	public Transform PickpocketSpot;
@@ -14,7 +13,7 @@ public class PickpocketMinigameScript : MonoBehaviour
 
 	public YandereScript Yandere;
 
-	public string CurrentButton;
+	public string CurrentButton = string.Empty;
 
 	public bool Failure;
 
@@ -30,14 +29,9 @@ public class PickpocketMinigameScript : MonoBehaviour
 
 	public float Timer;
 
-	public PickpocketMinigameScript()
+	private void Start()
 	{
-		this.CurrentButton = string.Empty;
-	}
-
-	public virtual void Start()
-	{
-		this.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+		base.transform.localScale = Vector3.zero;
 		this.ButtonPrompts[1].enabled = false;
 		this.ButtonPrompts[2].enabled = false;
 		this.ButtonPrompts[3].enabled = false;
@@ -46,20 +40,20 @@ public class PickpocketMinigameScript : MonoBehaviour
 		this.BG.enabled = false;
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.Show)
 		{
 			this.Yandere.MoveTowardsTarget(this.PickpocketSpot.position);
-			this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, this.PickpocketSpot.rotation, Time.deltaTime * (float)10);
-			this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+			this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, this.PickpocketSpot.rotation, Time.deltaTime * 10f);
+			base.transform.localScale = Vector3.Lerp(base.transform.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 			this.Timer += Time.deltaTime;
-			if (this.Timer > (float)1)
+			if (this.Timer > 1f)
 			{
 				if (this.ButtonID == 0)
 				{
 					this.ChooseButton();
-					this.Timer = (float)0;
+					this.Timer = 0f;
 				}
 				else
 				{
@@ -69,23 +63,8 @@ public class PickpocketMinigameScript : MonoBehaviour
 			}
 			else if (this.ButtonID > 0)
 			{
-				this.Circle.fillAmount = (float)1 - this.Timer / 1f;
-				if (Input.GetButtonDown("A") && this.CurrentButton != "A")
-				{
-					this.End();
-					this.Failure = true;
-				}
-				else if (Input.GetButtonDown("B") && this.CurrentButton != "B")
-				{
-					this.End();
-					this.Failure = true;
-				}
-				else if (Input.GetButtonDown("X") && this.CurrentButton != "X")
-				{
-					this.End();
-					this.Failure = true;
-				}
-				else if (Input.GetButtonDown("Y") && this.CurrentButton != "Y")
+				this.Circle.fillAmount = 1f - this.Timer / 1f;
+				if ((Input.GetButtonDown("A") && this.CurrentButton != "A") || (Input.GetButtonDown("B") && this.CurrentButton != "B") || (Input.GetButtonDown("X") && this.CurrentButton != "X") || (Input.GetButtonDown("Y") && this.CurrentButton != "Y"))
 				{
 					this.End();
 					this.Failure = true;
@@ -96,7 +75,7 @@ public class PickpocketMinigameScript : MonoBehaviour
 					this.Circle.enabled = false;
 					this.BG.enabled = false;
 					this.ButtonID = 0;
-					this.Timer = (float)0;
+					this.Timer = 0f;
 					this.Progress++;
 					if (this.Progress == 5)
 					{
@@ -106,17 +85,17 @@ public class PickpocketMinigameScript : MonoBehaviour
 				}
 			}
 		}
-		else if (this.transform.localScale.x > 0.1f)
+		else if (base.transform.localScale.x > 0.1f)
 		{
-			this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-			if (this.transform.localScale.x < 0.1f)
+			base.transform.localScale = Vector3.Lerp(base.transform.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+			if (base.transform.localScale.x < 0.1f)
 			{
-				this.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+				base.transform.localScale = Vector3.zero;
 			}
 		}
 	}
 
-	public virtual void ChooseButton()
+	private void ChooseButton()
 	{
 		this.ButtonPrompts[1].enabled = false;
 		this.ButtonPrompts[2].enabled = false;
@@ -148,7 +127,7 @@ public class PickpocketMinigameScript : MonoBehaviour
 		this.BG.enabled = true;
 	}
 
-	public virtual void End()
+	public void End()
 	{
 		this.ButtonPrompts[1].enabled = false;
 		this.ButtonPrompts[2].enabled = false;
@@ -161,10 +140,6 @@ public class PickpocketMinigameScript : MonoBehaviour
 		this.Progress = 0;
 		this.ButtonID = 0;
 		this.Show = false;
-		this.Timer = (float)0;
-	}
-
-	public virtual void Main()
-	{
+		this.Timer = 0f;
 	}
 }

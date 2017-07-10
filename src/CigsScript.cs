@@ -1,23 +1,18 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class CigsScript : MonoBehaviour
 {
 	public PromptScript Prompt;
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Prompt.Circle[0].fillAmount == (float)0)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			PlayerPrefs.SetInt("Scheme_3_Stage", 3);
 			this.Prompt.Yandere.Inventory.Schemes.UpdateInstructions();
 			this.Prompt.Yandere.Inventory.Cigs = true;
-			UnityEngine.Object.Destroy(this.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class SchemesScript : MonoBehaviour
 {
 	public InputManagerScript InputManager;
@@ -45,7 +43,7 @@ public class SchemesScript : MonoBehaviour
 
 	public string[] SchemeSteps;
 
-	public int ID;
+	public int ID = 1;
 
 	public string[] Steps;
 
@@ -57,14 +55,9 @@ public class SchemesScript : MonoBehaviour
 
 	public UILabel HUDInstructions;
 
-	public SchemesScript()
+	private void Start()
 	{
-		this.ID = 1;
-	}
-
-	public virtual void Start()
-	{
-		for (int i = 1; i < Extensions.get_length(this.SchemeNames); i++)
+		for (int i = 1; i < this.SchemeNames.Length; i++)
 		{
 			if (PlayerPrefs.GetInt("Scheme_" + i + "_Status") == 0)
 			{
@@ -74,21 +67,21 @@ public class SchemesScript : MonoBehaviour
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.InputManager.TappedUp)
 		{
 			this.ID--;
 			if (this.ID < 1)
 			{
-				this.ID = Extensions.get_length(this.SchemeNames) - 1;
+				this.ID = this.SchemeNames.Length - 1;
 			}
 			this.UpdateSchemeInfo();
 		}
 		if (this.InputManager.TappedDown)
 		{
 			this.ID++;
-			if (this.ID > Extensions.get_length(this.SchemeNames) - 1)
+			if (this.ID > this.SchemeNames.Length - 1)
 			{
 				this.ID = 1;
 			}
@@ -96,24 +89,25 @@ public class SchemesScript : MonoBehaviour
 		}
 		if (Input.GetButtonDown("A"))
 		{
-			if (this.PromptBar.Label[0].text != string.Empty)
+			AudioSource component = base.GetComponent<AudioSource>();
+			if (!this.PromptBar.Label[0].text.Equals(string.Empty))
 			{
-				if (PlayerPrefs.GetInt("Scheme_" + this.ID + "_Unlocked") == 0)
+				if (PlayerPrefs.GetInt("Scheme_" + this.ID.ToString() + "_Unlocked") == 0)
 				{
 					if (PlayerPrefs.GetInt("PantyShots") >= this.SchemeCosts[this.ID])
 					{
 						PlayerPrefs.SetInt("PantyShots", PlayerPrefs.GetInt("PantyShots") - this.SchemeCosts[this.ID]);
-						PlayerPrefs.SetInt("Scheme_" + this.ID + "_Unlocked", 1);
+						PlayerPrefs.SetInt("Scheme_" + this.ID.ToString() + "_Unlocked", 1);
 						PlayerPrefs.SetInt("CurrentScheme", this.ID);
-						if (PlayerPrefs.GetInt("Scheme_" + this.ID + "_Stage") == 0)
+						if (PlayerPrefs.GetInt("Scheme_" + this.ID.ToString() + "_Stage") == 0)
 						{
-							PlayerPrefs.SetInt("Scheme_" + this.ID + "_Stage", 1);
+							PlayerPrefs.SetInt("Scheme_" + this.ID.ToString() + "_Stage", 1);
 						}
 						this.UpdateInstructions();
 						this.UpdateSchemeList();
 						this.UpdateSchemeInfo();
-						this.audio.clip = this.InfoPurchase;
-						this.audio.Play();
+						component.clip = this.InfoPurchase;
+						component.Play();
 					}
 				}
 				else
@@ -130,50 +124,41 @@ public class SchemesScript : MonoBehaviour
 					this.UpdateInstructions();
 				}
 			}
-			else if (PlayerPrefs.GetInt("Scheme_" + this.ID + "_Stage") != 100 && PlayerPrefs.GetInt("PantyShots") < this.SchemeCosts[this.ID])
+			else if (PlayerPrefs.GetInt("Scheme_" + this.ID.ToString() + "_Stage") != 100 && PlayerPrefs.GetInt("PantyShots") < this.SchemeCosts[this.ID])
 			{
-				this.audio.clip = this.InfoAfford;
-				this.audio.Play();
+				component.clip = this.InfoAfford;
+				component.Play();
 			}
 		}
-		if (Input.GetButtonDown("B") && Input.GetButtonDown("B"))
+		if (Input.GetButtonDown("B"))
 		{
 			this.PromptBar.ClearButtons();
 			this.PromptBar.Label[0].text = "Accept";
 			this.PromptBar.Label[1].text = "Exit";
 			this.PromptBar.Label[5].text = "Choose";
 			this.PromptBar.UpdateButtons();
-			this.FavorMenu.active = true;
-			this.active = false;
+			this.FavorMenu.SetActive(true);
+			base.gameObject.SetActive(false);
 		}
 	}
 
-	public virtual void UpdateSchemeList()
+	public void UpdateSchemeList()
 	{
-		for (int i = 1; i < Extensions.get_length(this.SchemeNames); i++)
+		for (int i = 1; i < this.SchemeNames.Length; i++)
 		{
-			if (PlayerPrefs.GetInt("Scheme_" + i + "_Stage") == 100)
+			if (PlayerPrefs.GetInt("Scheme_" + i.ToString() + "_Stage") == 100)
 			{
-				float a = 0.5f;
-				Color color = this.SchemeNameLabels[i].color;
-				float num = color.a = a;
-				Color color2 = this.SchemeNameLabels[i].color = color;
+				UILabel uilabel = this.SchemeNameLabels[i];
+				uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, 0.5f);
 				this.Exclamations[i].enabled = false;
 				this.SchemeCostLabels[i].text = string.Empty;
 			}
 			else
 			{
-				if (PlayerPrefs.GetInt("Scheme_" + i + "_Unlocked") == 0)
+				this.SchemeCostLabels[i].text = ((PlayerPrefs.GetInt("Scheme_" + i.ToString() + "_Unlocked") != 0) ? string.Empty : this.SchemeCosts[i].ToString());
+				if (PlayerPrefs.GetInt("Scheme_" + i.ToString() + "_Stage") > PlayerPrefs.GetInt("Scheme_" + i.ToString() + "_PreviousStage"))
 				{
-					this.SchemeCostLabels[i].text = string.Empty + this.SchemeCosts[i];
-				}
-				else
-				{
-					this.SchemeCostLabels[i].text = string.Empty;
-				}
-				if (PlayerPrefs.GetInt("Scheme_" + i + "_Stage") > PlayerPrefs.GetInt("Scheme_" + i + "_PreviousStage"))
-				{
-					PlayerPrefs.SetInt("Scheme_" + i + "_PreviousStage", PlayerPrefs.GetInt("Scheme_" + i + "_Stage"));
+					PlayerPrefs.SetInt("Scheme_" + i.ToString() + "_PreviousStage", PlayerPrefs.GetInt("Scheme_" + i.ToString() + "_Stage"));
 					this.Exclamations[i].enabled = true;
 				}
 				else
@@ -184,37 +169,26 @@ public class SchemesScript : MonoBehaviour
 		}
 	}
 
-	public virtual void UpdateSchemeInfo()
+	public void UpdateSchemeInfo()
 	{
-		if (PlayerPrefs.GetInt("Scheme_" + this.ID + "_Stage") != 100)
+		if (PlayerPrefs.GetInt("Scheme_" + this.ID.ToString() + "_Stage") != 100)
 		{
-			if (PlayerPrefs.GetInt("Scheme_" + this.ID + "_Unlocked") == 0)
+			if (PlayerPrefs.GetInt("Scheme_" + this.ID.ToString() + "_Unlocked") == 0)
 			{
-				this.Arrow.gameObject.active = false;
-				if (PlayerPrefs.GetInt("PantyShots") >= this.SchemeCosts[this.ID])
-				{
-					this.PromptBar.Label[0].text = "Purchase";
-					this.PromptBar.UpdateButtons();
-				}
-				else
-				{
-					this.PromptBar.Label[0].text = string.Empty;
-					this.PromptBar.UpdateButtons();
-				}
+				this.Arrow.gameObject.SetActive(false);
+				this.PromptBar.Label[0].text = ((PlayerPrefs.GetInt("PantyShots") < this.SchemeCosts[this.ID]) ? string.Empty : "Purchase");
+				this.PromptBar.UpdateButtons();
 			}
 			else if (PlayerPrefs.GetInt("CurrentScheme") == this.ID)
 			{
-				this.Arrow.gameObject.active = true;
-				int num = -17 - 28 * PlayerPrefs.GetInt("Scheme_" + this.ID + "_Stage");
-				Vector3 localPosition = this.Arrow.localPosition;
-				float num2 = localPosition.y = (float)num;
-				Vector3 vector = this.Arrow.localPosition = localPosition;
+				this.Arrow.gameObject.SetActive(true);
+				this.Arrow.localPosition = new Vector3(this.Arrow.localPosition.x, -17f - 28f * (float)PlayerPrefs.GetInt("Scheme_" + this.ID.ToString() + "_Stage"), this.Arrow.localPosition.z);
 				this.PromptBar.Label[0].text = "Stop Tracking";
 				this.PromptBar.UpdateButtons();
 			}
 			else
 			{
-				this.Arrow.gameObject.active = false;
+				this.Arrow.gameObject.SetActive(false);
 				this.PromptBar.Label[0].text = "Start Tracking";
 				this.PromptBar.UpdateButtons();
 			}
@@ -224,61 +198,50 @@ public class SchemesScript : MonoBehaviour
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
-		int num3 = 200 - 25 * this.ID;
-		Vector3 localPosition2 = this.Highlight.localPosition;
-		float num4 = localPosition2.y = (float)num3;
-		Vector3 vector2 = this.Highlight.localPosition = localPosition2;
+		this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 200f - 25f * (float)this.ID, this.Highlight.localPosition.z);
 		this.SchemeIcon.mainTexture = this.SchemeIcons[this.ID];
 		this.SchemeDesc.text = this.SchemeDescs[this.ID];
-		if (PlayerPrefs.GetInt("Scheme_" + this.ID + "_Stage") == 100)
+		if (PlayerPrefs.GetInt("Scheme_" + this.ID.ToString() + "_Stage") == 100)
 		{
 			this.SchemeInstructions.text = "This scheme is no longer available.";
 		}
-		else if (PlayerPrefs.GetInt("Scheme_" + this.ID + "_Unlocked") == 0)
-		{
-			this.SchemeInstructions.text = "Skills Required:" + "\n" + this.SchemeSkills[this.ID];
-		}
 		else
 		{
-			this.SchemeInstructions.text = this.SchemeSteps[this.ID];
+			this.SchemeInstructions.text = ((PlayerPrefs.GetInt("Scheme_" + this.ID.ToString() + "_Unlocked") != 0) ? this.SchemeSteps[this.ID] : ("Skills Required:\n" + this.SchemeSkills[this.ID]));
 		}
 		this.UpdatePantyCount();
 	}
 
-	public virtual void UpdatePantyCount()
+	public void UpdatePantyCount()
 	{
-		this.PantyCount.text = string.Empty + PlayerPrefs.GetInt("PantyShots");
+		this.PantyCount.text = PlayerPrefs.GetInt("PantyShots").ToString();
 	}
 
-	public virtual void UpdateInstructions()
+	public void UpdateInstructions()
 	{
 		this.Steps = this.SchemeSteps[PlayerPrefs.GetInt("CurrentScheme")].Split(new char[]
 		{
-			"\n"[0]
+			'\n'
 		});
 		if (PlayerPrefs.GetInt("CurrentScheme") > 0)
 		{
-			if (PlayerPrefs.GetInt("Scheme_" + PlayerPrefs.GetInt("CurrentScheme") + "_Stage") < 100)
+			if (PlayerPrefs.GetInt("Scheme_" + PlayerPrefs.GetInt("CurrentScheme").ToString() + "_Stage") < 100)
 			{
-				this.HUDIcon.active = true;
-				this.HUDInstructions.text = string.Empty + this.Steps[PlayerPrefs.GetInt("Scheme_" + PlayerPrefs.GetInt("CurrentScheme") + "_Stage") - 1];
+				this.HUDIcon.SetActive(true);
+				this.HUDInstructions.text = this.Steps[PlayerPrefs.GetInt("Scheme_" + PlayerPrefs.GetInt("CurrentScheme") + "_Stage") - 1].ToString();
 			}
 			else
 			{
-				this.Arrow.gameObject.active = false;
-				this.HUDIcon.gameObject.active = false;
+				this.Arrow.gameObject.SetActive(false);
+				this.HUDIcon.gameObject.SetActive(false);
 				this.HUDInstructions.text = string.Empty;
 				PlayerPrefs.SetInt("CurrentScheme", 0);
 			}
 		}
 		else
 		{
-			this.HUDIcon.active = false;
+			this.HUDIcon.SetActive(false);
 			this.HUDInstructions.text = string.Empty;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

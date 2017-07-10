@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class YanvaniaTripleFireballScript : MonoBehaviour
 {
 	public Transform[] Fireballs;
@@ -14,59 +13,40 @@ public class YanvaniaTripleFireballScript : MonoBehaviour
 
 	public float Timer;
 
-	public virtual void Start()
+	private void Start()
 	{
-		if (this.Dracula.position.x > this.transform.position.x)
-		{
-			this.Direction = -1;
-		}
-		else
-		{
-			this.Direction = 1;
-		}
+		this.Direction = ((this.Dracula.position.x <= base.transform.position.x) ? 1 : -1);
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Fireballs[1] != null)
+		Transform transform = this.Fireballs[1];
+		Transform transform2 = this.Fireballs[2];
+		Transform transform3 = this.Fireballs[3];
+		if (transform != null)
 		{
-			float y = Mathf.MoveTowards(this.Fireballs[1].position.y, 7.5f, Time.deltaTime * this.Speed);
-			Vector3 position = this.Fireballs[1].position;
-			float num = position.y = y;
-			Vector3 vector = this.Fireballs[1].position = position;
+			transform.position = new Vector3(transform.position.x, Mathf.MoveTowards(transform.position.y, 7.5f, Time.deltaTime * this.Speed), transform.position.z);
 		}
-		if (this.Fireballs[2] != null)
+		if (transform2 != null)
 		{
-			float y2 = Mathf.MoveTowards(this.Fireballs[2].position.y, 7.16666f, Time.deltaTime * this.Speed);
-			Vector3 position2 = this.Fireballs[2].position;
-			float num2 = position2.y = y2;
-			Vector3 vector2 = this.Fireballs[2].position = position2;
+			transform2.position = new Vector3(transform2.position.x, Mathf.MoveTowards(transform2.position.y, 7.16666f, Time.deltaTime * this.Speed), transform2.position.z);
 		}
-		if (this.Fireballs[3] != null)
+		if (transform3 != null)
 		{
-			float y3 = Mathf.MoveTowards(this.Fireballs[3].position.y, 6.83333f, Time.deltaTime * this.Speed);
-			Vector3 position3 = this.Fireballs[3].position;
-			float num3 = position3.y = y3;
-			Vector3 vector3 = this.Fireballs[3].position = position3;
+			transform3.position = new Vector3(transform3.position.x, Mathf.MoveTowards(transform3.position.y, 6.83333f, Time.deltaTime * this.Speed), transform3.position.z);
 		}
 		for (int i = 1; i < 4; i++)
 		{
-			if (this.Fireballs[i] != null)
+			Transform transform4 = this.Fireballs[i];
+			if (transform4 != null)
 			{
-				float x = this.Fireballs[i].position.x + (float)this.Direction * Time.deltaTime * this.Speed;
-				Vector3 position4 = this.Fireballs[i].position;
-				float num4 = position4.x = x;
-				Vector3 vector4 = this.Fireballs[i].position = position4;
+				transform4.position = new Vector3(transform4.position.x + (float)this.Direction * Time.deltaTime * this.Speed, transform4.position.y, transform4.position.z);
 			}
 		}
 		this.Timer += Time.deltaTime;
-		if (this.Timer > (float)10)
+		if (this.Timer > 10f)
 		{
-			UnityEngine.Object.Destroy(this.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

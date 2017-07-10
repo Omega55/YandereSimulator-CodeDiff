@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class YanvaniaBossHeadScript : MonoBehaviour
 {
 	public YanvaniaDraculaScript Dracula;
@@ -10,22 +9,18 @@ public class YanvaniaBossHeadScript : MonoBehaviour
 
 	public float Timer;
 
-	public virtual void Update()
+	private void Update()
 	{
 		this.Timer -= Time.deltaTime;
 	}
 
-	public virtual void OnTriggerEnter(Collider other)
+	private void OnTriggerEnter(Collider other)
 	{
-		if (this.Timer <= (float)0 && this.Dracula.NewTeleportEffect == null && other.gameObject.name == "Heart")
+		if (this.Timer <= 0f && this.Dracula.NewTeleportEffect == null && other.gameObject.name.Equals("Heart"))
 		{
-			UnityEngine.Object.Instantiate(this.HitEffect, this.transform.position, Quaternion.identity);
-			this.Timer = (float)1;
+			UnityEngine.Object.Instantiate<GameObject>(this.HitEffect, base.transform.position, Quaternion.identity);
+			this.Timer = 1f;
 			this.Dracula.TakeDamage();
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class TextMessageManagerScript : MonoBehaviour
 {
 	public PauseScreenScript PauseScreen;
@@ -16,14 +15,9 @@ public class TextMessageManagerScript : MonoBehaviour
 
 	public int MessageHeight;
 
-	public string MessageText;
+	public string MessageText = string.Empty;
 
-	public TextMessageManagerScript()
-	{
-		this.MessageText = string.Empty;
-	}
-
-	public virtual void Update()
+	private void Update()
 	{
 		if (Input.GetButtonDown("B"))
 		{
@@ -34,35 +28,31 @@ public class TextMessageManagerScript : MonoBehaviour
 			this.PromptBar.Label[5].text = "Choose";
 			this.PromptBar.UpdateButtons();
 			this.PauseScreen.Sideways = true;
-			this.ServicesMenu.active = true;
-			this.active = false;
+			this.ServicesMenu.SetActive(true);
+			base.gameObject.SetActive(false);
 		}
 	}
 
-	public virtual void SpawnMessage()
+	public void SpawnMessage()
 	{
 		this.PromptBar.ClearButtons();
 		this.PromptBar.Label[1].text = "Exit";
 		this.PromptBar.UpdateButtons();
 		this.PauseScreen.Sideways = false;
-		this.ServicesMenu.active = false;
-		this.active = true;
+		this.ServicesMenu.SetActive(false);
+		base.gameObject.SetActive(true);
 		if (this.NewMessage != null)
 		{
 			UnityEngine.Object.Destroy(this.NewMessage);
 		}
-		this.NewMessage = (GameObject)UnityEngine.Object.Instantiate(this.Message);
-		this.NewMessage.transform.parent = this.transform;
-		this.NewMessage.transform.localPosition = new Vector3((float)-225, (float)-275, (float)0);
-		this.NewMessage.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
-		this.NewMessage.transform.localScale = new Vector3((float)1, (float)1, (float)1);
+		this.NewMessage = UnityEngine.Object.Instantiate<GameObject>(this.Message);
+		this.NewMessage.transform.parent = base.transform;
+		this.NewMessage.transform.localPosition = new Vector3(-225f, -275f, 0f);
+		this.NewMessage.transform.localEulerAngles = Vector3.zero;
+		this.NewMessage.transform.localScale = new Vector3(1f, 1f, 1f);
 		this.MessageText = "You're going to love this. I've got video footage of Kokona selling used panties to a boy from another school. Enjoy.";
 		this.MessageHeight = 5;
-		((UISprite)this.NewMessage.GetComponent(typeof(UISprite))).height = 36 + 36 * this.MessageHeight;
-		((TextMessageScript)this.NewMessage.GetComponent(typeof(TextMessageScript))).Label.text = this.MessageText;
-	}
-
-	public virtual void Main()
-	{
+		this.NewMessage.GetComponent<UISprite>().height = 36 + 36 * this.MessageHeight;
+		this.NewMessage.GetComponent<TextMessageScript>().Label.text = this.MessageText;
 	}
 }

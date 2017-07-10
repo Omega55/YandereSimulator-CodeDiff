@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class DumpsterHandleScript : MonoBehaviour
 {
 	public DumpsterLidScript DumpsterLid;
@@ -22,24 +21,17 @@ public class DumpsterHandleScript : MonoBehaviour
 
 	public float PushLimit;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.Panel.active = false;
+		this.Panel.SetActive(false);
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Prompt.Yandere.PickUp == null && !this.Prompt.Yandere.Dragging && !this.Prompt.Yandere.Carrying)
+		this.Prompt.HideButton[3] = (this.Prompt.Yandere.PickUp != null || this.Prompt.Yandere.Dragging || this.Prompt.Yandere.Carrying);
+		if (this.Prompt.Circle[3].fillAmount <= 0f)
 		{
-			this.Prompt.HideButton[3] = false;
-		}
-		else
-		{
-			this.Prompt.HideButton[3] = true;
-		}
-		if (this.Prompt.Circle[3].fillAmount <= (float)0)
-		{
-			this.Prompt.Circle[3].fillAmount = (float)1;
+			this.Prompt.Circle[3].fillAmount = 1f;
 			this.Prompt.Yandere.DumpsterGrabbing = true;
 			this.Prompt.Yandere.DumpsterHandle = this;
 			this.Prompt.Yandere.CanMove = false;
@@ -52,7 +44,7 @@ public class DumpsterHandleScript : MonoBehaviour
 		}
 		if (this.Grabbed)
 		{
-			this.Prompt.Yandere.transform.rotation = Quaternion.Lerp(this.Prompt.Yandere.transform.rotation, this.GrabSpot.rotation, Time.deltaTime * (float)10);
+			this.Prompt.Yandere.transform.rotation = Quaternion.Lerp(this.Prompt.Yandere.transform.rotation, this.GrabSpot.rotation, Time.deltaTime * 10f);
 			if (Vector3.Distance(this.Prompt.Yandere.transform.position, this.GrabSpot.position) > 0.1f)
 			{
 				this.Prompt.Yandere.MoveTowardsTarget(this.GrabSpot.position);
@@ -63,70 +55,41 @@ public class DumpsterHandleScript : MonoBehaviour
 			}
 			if (Input.GetAxis("Horizontal") > 0.5f || Input.GetAxis("DpadX") > 0.5f)
 			{
-				float z = this.transform.parent.transform.position.z - Time.deltaTime;
-				Vector3 position = this.transform.parent.transform.position;
-				float num = position.z = z;
-				Vector3 vector = this.transform.parent.transform.position = position;
+				base.transform.parent.transform.position = new Vector3(base.transform.parent.transform.position.x, base.transform.parent.transform.position.y, base.transform.parent.transform.position.z - Time.deltaTime);
 			}
 			else if (Input.GetAxis("Horizontal") < -0.5f || Input.GetAxis("DpadX") < -0.5f)
 			{
-				float z2 = this.transform.parent.transform.position.z + Time.deltaTime;
-				Vector3 position2 = this.transform.parent.transform.position;
-				float num2 = position2.z = z2;
-				Vector3 vector2 = this.transform.parent.transform.position = position2;
+				base.transform.parent.transform.position = new Vector3(base.transform.parent.transform.position.x, base.transform.parent.transform.position.y, base.transform.parent.transform.position.z + Time.deltaTime);
 			}
 			if (this.PullLimit < this.PushLimit)
 			{
-				if (this.transform.parent.transform.position.z < this.PullLimit)
+				if (base.transform.parent.transform.position.z < this.PullLimit)
 				{
-					float pullLimit = this.PullLimit;
-					Vector3 position3 = this.transform.parent.transform.position;
-					float num3 = position3.z = pullLimit;
-					Vector3 vector3 = this.transform.parent.transform.position = position3;
+					base.transform.parent.transform.position = new Vector3(base.transform.parent.transform.position.x, base.transform.parent.transform.position.y, this.PullLimit);
 				}
-				else if (this.transform.parent.transform.position.z > this.PushLimit)
+				else if (base.transform.parent.transform.position.z > this.PushLimit)
 				{
-					float pushLimit = this.PushLimit;
-					Vector3 position4 = this.transform.parent.transform.position;
-					float num4 = position4.z = pushLimit;
-					Vector3 vector4 = this.transform.parent.transform.position = position4;
+					base.transform.parent.transform.position = new Vector3(base.transform.parent.transform.position.x, base.transform.parent.transform.position.y, this.PushLimit);
 				}
 			}
-			else if (this.transform.parent.transform.position.z > this.PullLimit)
+			else if (base.transform.parent.transform.position.z > this.PullLimit)
 			{
-				float pullLimit2 = this.PullLimit;
-				Vector3 position5 = this.transform.parent.transform.position;
-				float num5 = position5.z = pullLimit2;
-				Vector3 vector5 = this.transform.parent.transform.position = position5;
+				base.transform.parent.transform.position = new Vector3(base.transform.parent.transform.position.x, base.transform.parent.transform.position.y, this.PullLimit);
 			}
-			else if (this.transform.parent.transform.position.z < this.PushLimit)
+			else if (base.transform.parent.transform.position.z < this.PushLimit)
 			{
-				float pushLimit2 = this.PushLimit;
-				Vector3 position6 = this.transform.parent.transform.position;
-				float num6 = position6.z = pushLimit2;
-				Vector3 vector6 = this.transform.parent.transform.position = position6;
+				base.transform.parent.transform.position = new Vector3(base.transform.parent.transform.position.x, base.transform.parent.transform.position.y, this.PushLimit);
 			}
-			if (this.DumpsterLid.transform.position.z > this.DumpsterLid.DisposalSpot - 0.05f && this.DumpsterLid.transform.position.z < this.DumpsterLid.DisposalSpot + 0.05f)
-			{
-				this.Panel.active = true;
-			}
-			else
-			{
-				this.Panel.active = false;
-			}
+			this.Panel.SetActive(this.DumpsterLid.transform.position.z > this.DumpsterLid.DisposalSpot - 0.05f && this.DumpsterLid.transform.position.z < this.DumpsterLid.DisposalSpot + 0.05f);
 			if (Input.GetButtonDown("B"))
 			{
 				this.Prompt.Yandere.DumpsterGrabbing = false;
 				this.Prompt.Yandere.CanMove = true;
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Show = false;
-				this.Panel.active = false;
+				this.Panel.SetActive(false);
 				this.Grabbed = false;
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

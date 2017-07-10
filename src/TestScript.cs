@@ -1,14 +1,13 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class TestScript : MonoBehaviour
 {
 	public float Speed;
 
 	public bool Go;
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (Input.GetKeyDown("e"))
 		{
@@ -16,18 +15,7 @@ public class TestScript : MonoBehaviour
 		}
 		if (this.Go)
 		{
-			float z = this.transform.position.z - Time.deltaTime * this.Speed;
-			Vector3 position = this.transform.position;
-			float num = position.z = z;
-			Vector3 vector = this.transform.position = position;
-			float y = this.transform.position.y + Time.deltaTime * this.Speed;
-			Vector3 position2 = this.transform.position;
-			float num2 = position2.y = y;
-			Vector3 vector2 = this.transform.position = position2;
+			base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y + Time.deltaTime * this.Speed, base.transform.position.z - Time.deltaTime * this.Speed);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

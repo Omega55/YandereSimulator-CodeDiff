@@ -1,9 +1,8 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CharacterController))]
-[Serializable]
 public class YanvaniaYanmontScript : MonoBehaviour
 {
 	private GameObject NewBlood;
@@ -47,6 +46,8 @@ public class YanvaniaYanmontScript : MonoBehaviour
 	public UILabel LevelLabel;
 
 	public UISprite Darkness;
+
+	public Collider[] WhipCollider;
 
 	public Transform[] WhipChain;
 
@@ -100,9 +101,9 @@ public class YanvaniaYanmontScript : MonoBehaviour
 
 	public float PreviousY;
 
-	public float MaxHealth;
+	public float MaxHealth = 100f;
 
-	public float Health;
+	public float Health = 100f;
 
 	public float EXP;
 
@@ -112,33 +113,33 @@ public class YanvaniaYanmontScript : MonoBehaviour
 
 	public int Taps;
 
-	public float walkSpeed;
+	public float walkSpeed = 6f;
 
-	public float runSpeed;
+	public float runSpeed = 11f;
 
-	public bool limitDiagonalSpeed;
+	public bool limitDiagonalSpeed = true;
 
 	public bool toggleRun;
 
-	public float jumpSpeed;
+	public float jumpSpeed = 8f;
 
-	public float gravity;
+	public float gravity = 20f;
 
-	public float fallingDamageThreshold;
+	public float fallingDamageThreshold = 10f;
 
 	public bool slideWhenOverSlopeLimit;
 
 	public bool slideOnTaggedObjects;
 
-	public float slideSpeed;
+	public float slideSpeed = 12f;
 
 	public bool airControl;
 
-	public float antiBumpFactor;
+	public float antiBumpFactor = 0.75f;
 
-	public int antiBunnyHopFactor;
+	public int antiBunnyHopFactor = 1;
 
-	private Vector3 moveDirection;
+	private Vector3 moveDirection = Vector3.zero;
 
 	public bool grounded;
 
@@ -168,38 +169,41 @@ public class YanvaniaYanmontScript : MonoBehaviour
 
 	public float inputX;
 
-	public YanvaniaYanmontScript()
+	private void Awake()
 	{
-		this.MaxHealth = 100f;
-		this.Health = 100f;
-		this.walkSpeed = 6f;
-		this.runSpeed = 11f;
-		this.limitDiagonalSpeed = true;
-		this.jumpSpeed = 8f;
-		this.gravity = 20f;
-		this.fallingDamageThreshold = 10f;
-		this.slideSpeed = 12f;
-		this.antiBumpFactor = 0.75f;
-		this.antiBunnyHopFactor = 1;
-		this.moveDirection = Vector3.zero;
+		Animation component = this.Character.GetComponent<Animation>();
+		component["f02_yanvaniaDeath_00"].speed = 0.25f;
+		component["f02_yanvaniaAttack_00"].speed = 2f;
+		component["f02_yanvaniaCrouchAttack_00"].speed = 2f;
+		component["f02_yanvaniaWalk_00"].speed = 0.6666667f;
+		component["f02_yanvaniaWhip_Neutral"].speed = 0f;
+		component["f02_yanvaniaWhip_Up"].speed = 0f;
+		component["f02_yanvaniaWhip_Right"].speed = 0f;
+		component["f02_yanvaniaWhip_Down"].speed = 0f;
+		component["f02_yanvaniaWhip_Left"].speed = 0f;
+		component["f02_yanvaniaCrouchPose_00"].layer = 1;
+		component.Play("f02_yanvaniaCrouchPose_00");
+		component["f02_yanvaniaCrouchPose_00"].weight = 0f;
+		Physics.IgnoreLayerCollision(19, 13, true);
+		Physics.IgnoreLayerCollision(19, 19, true);
 	}
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.WhipChain[0].transform.localScale = new Vector3((float)0, (float)0, (float)0);
-		this.Character.animation.Play("f02_yanvaniaIdle_00");
-		this.controller = (CharacterController)this.GetComponent(typeof(CharacterController));
-		this.myTransform = this.transform;
+		this.WhipChain[0].transform.localScale = Vector3.zero;
+		this.Character.GetComponent<Animation>().Play("f02_yanvaniaIdle_00");
+		this.controller = base.GetComponent<CharacterController>();
+		this.myTransform = base.transform;
 		this.speed = this.walkSpeed;
 		this.rayDistance = this.controller.height * 0.5f + this.controller.radius;
 		this.slideLimit = this.controller.slopeLimit - 0.1f;
 		this.jumpTimer = this.antiBunnyHopFactor;
-		Vector3 position = this.transform.position;
 		this.originalThreshold = this.fallingDamageThreshold;
 	}
 
-	public virtual void FixedUpdate()
+	private void FixedUpdate()
 	{
+		Animation component = this.Character.GetComponent<Animation>();
 		if (this.CanMove)
 		{
 			if (!this.Injured)
@@ -212,72 +216,60 @@ public class YanvaniaYanmontScript : MonoBehaviour
 						{
 							if (!this.Crouching)
 							{
-								if (Input.GetAxis("VaniaHorizontal") > (float)0)
+								if (Input.GetAxis("VaniaHorizontal") > 0f)
 								{
-									this.inputX = (float)1;
+									this.inputX = 1f;
 								}
-								else if (Input.GetAxis("VaniaHorizontal") < (float)0)
+								else if (Input.GetAxis("VaniaHorizontal") < 0f)
 								{
-									this.inputX = (float)-1;
+									this.inputX = -1f;
 								}
 								else
 								{
-									this.inputX = (float)0;
+									this.inputX = 0f;
 								}
 							}
 						}
 						else if (this.grounded)
 						{
-							this.fallingDamageThreshold = (float)100;
-							this.moveDirection.x = (float)0;
-							this.inputX = (float)0;
-							this.speed = (float)0;
+							this.fallingDamageThreshold = 100f;
+							this.moveDirection.x = 0f;
+							this.inputX = 0f;
+							this.speed = 0f;
 						}
 					}
-					else if (Input.GetAxis("VaniaHorizontal") != (float)0)
+					else if (Input.GetAxis("VaniaHorizontal") != 0f)
 					{
-						if (Input.GetAxis("VaniaHorizontal") > (float)0)
+						if (Input.GetAxis("VaniaHorizontal") > 0f)
 						{
-							this.inputX = (float)1;
+							this.inputX = 1f;
 						}
-						else if (Input.GetAxis("VaniaHorizontal") < (float)0)
+						else if (Input.GetAxis("VaniaHorizontal") < 0f)
 						{
-							this.inputX = (float)-1;
+							this.inputX = -1f;
 						}
 						else
 						{
-							this.inputX = (float)0;
+							this.inputX = 0f;
 						}
 					}
 					else
 					{
-						this.inputX = Mathf.MoveTowards(this.inputX, (float)0, Time.deltaTime * (float)10);
+						this.inputX = Mathf.MoveTowards(this.inputX, 0f, Time.deltaTime * 10f);
 					}
-					int num = 0;
-					float num2 = (this.inputX == (float)0 || num == 0 || !this.limitDiagonalSpeed) ? 1f : 0.7071f;
+					float num = 0f;
+					float num2 = (this.inputX == 0f || num == 0f || !this.limitDiagonalSpeed) ? 1f : 0.707106769f;
 					if (!this.Attacking)
 					{
-						if (Input.GetAxis("VaniaHorizontal") < (float)0)
+						if (Input.GetAxis("VaniaHorizontal") < 0f)
 						{
-							int num3 = -90;
-							Vector3 localEulerAngles = this.Character.transform.localEulerAngles;
-							float num4 = localEulerAngles.y = (float)num3;
-							Vector3 vector = this.Character.transform.localEulerAngles = localEulerAngles;
-							int num5 = 1;
-							Vector3 localScale = this.Character.transform.localScale;
-							float num6 = localScale.x = (float)num5;
-							Vector3 vector2 = this.Character.transform.localScale = localScale;
+							this.Character.transform.localEulerAngles = new Vector3(this.Character.transform.localEulerAngles.x, -90f, this.Character.transform.localEulerAngles.z);
+							this.Character.transform.localScale = new Vector3(1f, this.Character.transform.localScale.y, this.Character.transform.localScale.z);
 						}
-						else if (Input.GetAxis("VaniaHorizontal") > (float)0)
+						else if (Input.GetAxis("VaniaHorizontal") > 0f)
 						{
-							int num7 = 90;
-							Vector3 localEulerAngles2 = this.Character.transform.localEulerAngles;
-							float num8 = localEulerAngles2.y = (float)num7;
-							Vector3 vector3 = this.Character.transform.localEulerAngles = localEulerAngles2;
-							int num9 = -1;
-							Vector3 localScale2 = this.Character.transform.localScale;
-							float num10 = localScale2.x = (float)num9;
-							Vector3 vector4 = this.Character.transform.localScale = localScale2;
+							this.Character.transform.localEulerAngles = new Vector3(this.Character.transform.localEulerAngles.x, 90f, this.Character.transform.localEulerAngles.z);
+							this.Character.transform.localScale = new Vector3(-1f, this.Character.transform.localScale.y, this.Character.transform.localScale.z);
 						}
 					}
 					if (this.grounded)
@@ -286,69 +278,53 @@ public class YanvaniaYanmontScript : MonoBehaviour
 						{
 							if (Input.GetAxis("VaniaVertical") < -0.5f)
 							{
-								float y = 0.5f;
-								Vector3 center = this.MyController.center;
-								float num11 = center.y = y;
-								Vector3 vector5 = this.MyController.center = center;
-								this.MyController.height = (float)1;
+								this.MyController.center = new Vector3(this.MyController.center.x, 0.5f, this.MyController.center.z);
+								this.MyController.height = 1f;
 								this.Crouching = true;
-								this.IdleTimer = (float)10;
-								this.inputX = (float)0;
+								this.IdleTimer = 10f;
+								this.inputX = 0f;
 							}
 							if (this.Crouching)
 							{
-								this.Character.animation.CrossFade("f02_yanvaniaCrouch_00", 0.1f);
+								component.CrossFade("f02_yanvaniaCrouch_00", 0.1f);
 								if (!this.Attacking)
 								{
 									if (!this.Dangling)
 									{
 										if (Input.GetAxis("VaniaVertical") > -0.5f)
 										{
-											this.Character.animation["f02_yanvaniaCrouchPose_00"].weight = (float)0;
-											float y2 = 0.75f;
-											Vector3 center2 = this.MyController.center;
-											float num12 = center2.y = y2;
-											Vector3 vector6 = this.MyController.center = center2;
+											component["f02_yanvaniaCrouchPose_00"].weight = 0f;
+											this.MyController.center = new Vector3(this.MyController.center.x, 0.75f, this.MyController.center.z);
 											this.MyController.height = 1.5f;
 											this.Crouching = false;
 										}
 									}
 									else if (Input.GetAxis("VaniaVertical") > -0.5f && Input.GetButton("X"))
 									{
-										this.Character.animation["f02_yanvaniaCrouchPose_00"].weight = (float)0;
-										float y3 = 0.75f;
-										Vector3 center3 = this.MyController.center;
-										float num13 = center3.y = y3;
-										Vector3 vector7 = this.MyController.center = center3;
+										component["f02_yanvaniaCrouchPose_00"].weight = 0f;
+										this.MyController.center = new Vector3(this.MyController.center.x, 0.75f, this.MyController.center.z);
 										this.MyController.height = 1.5f;
 										this.Crouching = false;
 									}
 								}
 							}
-							else if (this.inputX == (float)0)
+							else if (this.inputX == 0f)
 							{
-								if (this.IdleTimer > (float)0)
+								if (this.IdleTimer > 0f)
 								{
-									this.Character.animation.CrossFade("f02_yanvaniaIdle_00", 0.1f);
-									this.Character.animation["f02_yanvaniaIdle_00"].speed = this.IdleTimer / (float)10;
+									component.CrossFade("f02_yanvaniaIdle_00", 0.1f);
+									component["f02_yanvaniaIdle_00"].speed = this.IdleTimer / 10f;
 								}
 								else
 								{
-									this.Character.animation.CrossFade("f02_yanvaniaDramaticIdle_00", (float)1);
+									component.CrossFade("f02_yanvaniaDramaticIdle_00", 1f);
 								}
 								this.IdleTimer -= Time.deltaTime;
 							}
 							else
 							{
-								this.IdleTimer = (float)10;
-								if (this.speed == this.walkSpeed)
-								{
-									this.Character.animation.CrossFade("f02_yanvaniaWalk_00", 0.1f);
-								}
-								else
-								{
-									this.Character.animation.CrossFade("f02_yanvaniaRun_00", 0.1f);
-								}
+								this.IdleTimer = 10f;
+								component.CrossFade((this.speed != this.walkSpeed) ? "f02_yanvaniaRun_00" : "f02_yanvaniaWalk_00", 0.1f);
 							}
 						}
 						bool flag = false;
@@ -380,7 +356,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 						{
 							this.speed = ((!Input.GetKey("left shift")) ? this.walkSpeed : this.runSpeed);
 						}
-						if ((flag && this.slideWhenOverSlopeLimit) || (this.slideOnTaggedObjects && this.hit.collider.tag == "Slide"))
+						if ((flag && this.slideWhenOverSlopeLimit) || (this.slideOnTaggedObjects && this.hit.collider.tag.Equals("Slide")))
 						{
 							Vector3 normal = this.hit.normal;
 							this.moveDirection = new Vector3(normal.x, -normal.y, normal.z);
@@ -390,7 +366,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 						}
 						else
 						{
-							this.moveDirection = new Vector3(this.inputX * num2, -this.antiBumpFactor, (float)num * num2);
+							this.moveDirection = new Vector3(this.inputX * num2, -this.antiBumpFactor, num * num2);
 							this.moveDirection = this.myTransform.TransformDirection(this.moveDirection) * this.speed;
 							this.playerControl = true;
 						}
@@ -401,28 +377,22 @@ public class YanvaniaYanmontScript : MonoBehaviour
 						else if (this.jumpTimer >= this.antiBunnyHopFactor && !this.Attacking)
 						{
 							this.Crouching = false;
-							this.fallingDamageThreshold = (float)0;
+							this.fallingDamageThreshold = 0f;
 							this.moveDirection.y = this.jumpSpeed;
-							this.IdleTimer = (float)10;
+							this.IdleTimer = 10f;
 							this.jumpTimer = 0;
-							this.audio.clip = this.Voices[UnityEngine.Random.Range(0, Extensions.get_length(this.Voices))];
-							this.audio.Play();
+							AudioSource component2 = base.GetComponent<AudioSource>();
+							component2.clip = this.Voices[UnityEngine.Random.Range(0, this.Voices.Length)];
+							component2.Play();
 						}
 					}
 					else
 					{
 						if (!this.Attacking)
 						{
-							if (this.transform.position.y > this.PreviousY)
-							{
-								this.Character.animation.CrossFade("f02_yanvaniaJump_00", 0.4f);
-							}
-							else
-							{
-								this.Character.animation.CrossFade("f02_yanvaniaFall_00", 0.4f);
-							}
+							component.CrossFade((base.transform.position.y <= this.PreviousY) ? "f02_yanvaniaFall_00" : "f02_yanvaniaJump_00", 0.4f);
 						}
-						this.PreviousY = this.transform.position.y;
+						this.PreviousY = base.transform.position.y;
 						if (!this.falling)
 						{
 							this.falling = true;
@@ -431,75 +401,51 @@ public class YanvaniaYanmontScript : MonoBehaviour
 						if (this.airControl && this.playerControl)
 						{
 							this.moveDirection.x = this.inputX * this.speed * num2;
-							this.moveDirection.z = (float)num * this.speed * num2;
+							this.moveDirection.z = num * this.speed * num2;
 							this.moveDirection = this.myTransform.TransformDirection(this.moveDirection);
 						}
 					}
 				}
 				else
 				{
-					this.moveDirection.x = (float)0;
+					this.moveDirection.x = 0f;
 					if (this.grounded)
 					{
-						if (this.transform.position.x > (float)-34)
+						if (base.transform.position.x > -34f)
 						{
-							int num14 = -90;
-							Vector3 localEulerAngles3 = this.Character.transform.localEulerAngles;
-							float num15 = localEulerAngles3.y = (float)num14;
-							Vector3 vector8 = this.Character.transform.localEulerAngles = localEulerAngles3;
-							int num16 = 1;
-							Vector3 localScale3 = this.Character.transform.localScale;
-							float num17 = localScale3.x = (float)num16;
-							Vector3 vector9 = this.Character.transform.localScale = localScale3;
-							float x = Mathf.MoveTowards(this.transform.position.x, (float)-34, Time.deltaTime * this.walkSpeed);
-							Vector3 position = this.transform.position;
-							float num18 = position.x = x;
-							Vector3 vector10 = this.transform.position = position;
-							this.Character.animation.CrossFade("f02_yanvaniaWalk_00");
+							this.Character.transform.localEulerAngles = new Vector3(this.Character.transform.localEulerAngles.x, -90f, this.Character.transform.localEulerAngles.z);
+							this.Character.transform.localScale = new Vector3(1f, this.Character.transform.localScale.y, this.Character.transform.localScale.z);
+							base.transform.position = new Vector3(Mathf.MoveTowards(base.transform.position.x, -34f, Time.deltaTime * this.walkSpeed), base.transform.position.y, base.transform.position.z);
+							component.CrossFade("f02_yanvaniaWalk_00");
 						}
-						else if (this.transform.position.x < (float)-34)
+						else if (base.transform.position.x < -34f)
 						{
-							int num19 = 90;
-							Vector3 localEulerAngles4 = this.Character.transform.localEulerAngles;
-							float num20 = localEulerAngles4.y = (float)num19;
-							Vector3 vector11 = this.Character.transform.localEulerAngles = localEulerAngles4;
-							int num21 = -1;
-							Vector3 localScale4 = this.Character.transform.localScale;
-							float num22 = localScale4.x = (float)num21;
-							Vector3 vector12 = this.Character.transform.localScale = localScale4;
-							float x2 = Mathf.MoveTowards(this.transform.position.x, (float)-34, Time.deltaTime * this.walkSpeed);
-							Vector3 position2 = this.transform.position;
-							float num23 = position2.x = x2;
-							Vector3 vector13 = this.transform.position = position2;
-							this.Character.animation.CrossFade("f02_yanvaniaWalk_00");
+							this.Character.transform.localEulerAngles = new Vector3(this.Character.transform.localEulerAngles.x, 90f, this.Character.transform.localEulerAngles.z);
+							this.Character.transform.localScale = new Vector3(-1f, this.Character.transform.localScale.y, this.Character.transform.localScale.z);
+							base.transform.position = new Vector3(Mathf.MoveTowards(base.transform.position.x, -34f, Time.deltaTime * this.walkSpeed), base.transform.position.y, base.transform.position.z);
+							component.CrossFade("f02_yanvaniaWalk_00");
 						}
 						else
 						{
-							this.Character.animation.CrossFade("f02_yanvaniaDramaticIdle_00", (float)1);
-							int num24 = -90;
-							Vector3 localEulerAngles5 = this.Character.transform.localEulerAngles;
-							float num25 = localEulerAngles5.y = (float)num24;
-							Vector3 vector14 = this.Character.transform.localEulerAngles = localEulerAngles5;
-							int num26 = 1;
-							Vector3 localScale5 = this.Character.transform.localScale;
-							float num27 = localScale5.x = (float)num26;
-							Vector3 vector15 = this.Character.transform.localScale = localScale5;
-							this.WhipChain[0].transform.localScale = new Vector3((float)0, (float)0, (float)0);
-							this.fallingDamageThreshold = (float)100;
-							this.TextBox.active = true;
+							component.CrossFade("f02_yanvaniaDramaticIdle_00", 1f);
+							this.Character.transform.localEulerAngles = new Vector3(this.Character.transform.localEulerAngles.x, -90f, this.Character.transform.localEulerAngles.z);
+							this.Character.transform.localScale = new Vector3(1f, this.Character.transform.localScale.y, this.Character.transform.localScale.z);
+							this.WhipChain[0].transform.localScale = Vector3.zero;
+							this.fallingDamageThreshold = 100f;
+							this.TextBox.SetActive(true);
 							this.Attacking = false;
-							this.enabled = false;
+							base.enabled = false;
 						}
 					}
 				}
 			}
 			else
 			{
-				this.Character.animation.CrossFade("f02_damage_25");
+				component.CrossFade("f02_damage_25");
 				this.RecoveryTimer += Time.deltaTime;
-				if (this.RecoveryTimer > (float)1)
+				if (this.RecoveryTimer > 1f)
 				{
-					this.RecoveryTimer = (float)0;
+					this.RecoveryTimer = 0f;
 					this.Injured = false;
 				}
 			}
@@ -510,38 +456,36 @@ public class YanvaniaYanmontScript : MonoBehaviour
 				this.YanvaniaCamera.Cutscene = true;
 				this.Cutscene = true;
 			}
-			if ((this.controller.collisionFlags & CollisionFlags.Above) != CollisionFlags.None && this.moveDirection.y > (float)0)
+			if ((this.controller.collisionFlags & CollisionFlags.Above) != CollisionFlags.None && this.moveDirection.y > 0f)
 			{
-				this.moveDirection.y = (float)0;
+				this.moveDirection.y = 0f;
 			}
 		}
-		else if (this.Health == (float)0)
+		else if (this.Health == 0f)
 		{
 			this.DeathTimer += Time.deltaTime;
-			if (this.DeathTimer > (float)5)
+			if (this.DeathTimer > 5f)
 			{
-				float a = this.Darkness.color.a + Time.deltaTime * 0.2f;
-				Color color = this.Darkness.color;
-				float num28 = color.a = a;
-				Color color2 = this.Darkness.color = color;
-				if (this.Darkness.color.a >= (float)1)
+				this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a + Time.deltaTime * 0.2f);
+				if (this.Darkness.color.a >= 1f)
 				{
-					if (this.Darkness.gameObject.active)
+					if (this.Darkness.gameObject.activeInHierarchy)
 					{
-						this.HealthBar.parent.gameObject.active = false;
-						this.EXPBar.parent.gameObject.active = false;
-						this.Darkness.gameObject.active = false;
-						this.BossHealthBar.active = false;
-						this.BlackBG.active = true;
+						this.HealthBar.parent.gameObject.SetActive(false);
+						this.EXPBar.parent.gameObject.SetActive(false);
+						this.Darkness.gameObject.SetActive(false);
+						this.BossHealthBar.SetActive(false);
+						this.BlackBG.SetActive(true);
 					}
-					this.TryAgainWindow.transform.localScale = Vector3.Lerp(this.TryAgainWindow.transform.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+					this.TryAgainWindow.transform.localScale = Vector3.Lerp(this.TryAgainWindow.transform.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 				}
 			}
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
+		Animation component = this.Character.GetComponent<Animation>();
 		if (!this.Injured && this.CanMove && !this.Cutscene)
 		{
 			if (this.grounded)
@@ -556,55 +500,60 @@ public class YanvaniaYanmontScript : MonoBehaviour
 					this.speed = this.runSpeed;
 				}
 			}
-			if (this.inputX == (float)0)
+			if (this.inputX == 0f)
 			{
 				this.speed = this.walkSpeed;
 			}
 			this.TapTimer -= Time.deltaTime;
-			if (this.TapTimer < (float)0)
+			if (this.TapTimer < 0f)
 			{
 				this.Taps = 0;
 			}
 			if (Input.GetButtonDown("VaniaAttack") && !this.Attacking)
 			{
-				AudioSource.PlayClipAtPoint(this.WhipSound, this.transform.position);
-				this.audio.clip = this.Voices[UnityEngine.Random.Range(0, Extensions.get_length(this.Voices))];
-				this.audio.Play();
-				this.WhipChain[0].transform.localScale = new Vector3((float)0, (float)0, (float)0);
+				AudioSource.PlayClipAtPoint(this.WhipSound, base.transform.position);
+				AudioSource component2 = base.GetComponent<AudioSource>();
+				component2.clip = this.Voices[UnityEngine.Random.Range(0, this.Voices.Length)];
+				component2.Play();
+				this.WhipChain[0].transform.localScale = Vector3.zero;
 				this.Attacking = true;
-				this.IdleTimer = (float)10;
+				this.IdleTimer = 10f;
 				if (this.Crouching)
 				{
-					this.Character.animation["f02_yanvaniaCrouchAttack_00"].time = (float)0;
-					this.Character.animation.Play("f02_yanvaniaCrouchAttack_00");
+					component["f02_yanvaniaCrouchAttack_00"].time = 0f;
+					component.Play("f02_yanvaniaCrouchAttack_00");
 				}
 				else
 				{
-					this.Character.animation["f02_yanvaniaAttack_00"].time = (float)0;
-					this.Character.animation.Play("f02_yanvaniaAttack_00");
+					component["f02_yanvaniaAttack_00"].time = 0f;
+					component.Play("f02_yanvaniaAttack_00");
 				}
 				if (this.grounded)
 				{
-					this.moveDirection.x = (float)0;
-					this.inputX = (float)0;
-					this.speed = (float)0;
+					this.moveDirection.x = 0f;
+					this.inputX = 0f;
+					this.speed = 0f;
 				}
 			}
 			if (this.Attacking)
 			{
 				if (!this.Dangling)
 				{
-					this.WhipChain[0].transform.localScale = Vector3.MoveTowards(this.WhipChain[0].transform.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)5);
+					this.WhipChain[0].transform.localScale = Vector3.MoveTowards(this.WhipChain[0].transform.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 5f);
 					this.StraightenWhip();
 				}
 				else
 				{
+					for (int i = 1; i < this.WhipChain.Length; i++)
+					{
+						this.WhipCollider[i].enabled = false;
+					}
 					if (Input.GetAxis("VaniaHorizontal") > -0.5f && Input.GetAxis("VaniaHorizontal") < 0.5f && Input.GetAxis("VaniaVertical") > -0.5f && Input.GetAxis("VaniaVertical") < 0.5f)
 					{
-						this.Character.animation.CrossFade("f02_yanvaniaWhip_Neutral");
+						component.CrossFade("f02_yanvaniaWhip_Neutral");
 						if (this.Crouching)
 						{
-							this.Character.animation["f02_yanvaniaCrouchPose_00"].weight = (float)1;
+							component["f02_yanvaniaCrouchPose_00"].weight = 1f;
 						}
 						this.SpunUp = false;
 						this.SpunDown = false;
@@ -617,13 +566,13 @@ public class YanvaniaYanmontScript : MonoBehaviour
 						{
 							if (!this.SpunUp)
 							{
-								this.PlayClip(this.WhipSound, this.transform.position);
+								this.PlayClip(this.WhipSound, base.transform.position);
 								this.StraightenWhip();
-								this.TargetRotation = (float)-360;
-								this.Rotation = (float)0;
+								this.TargetRotation = -360f;
+								this.Rotation = 0f;
 								this.SpunUp = true;
 							}
-							this.Character.animation.CrossFade("f02_yanvaniaWhip_Up", 0.1f);
+							component.CrossFade("f02_yanvaniaWhip_Up", 0.1f);
 						}
 						else
 						{
@@ -633,13 +582,13 @@ public class YanvaniaYanmontScript : MonoBehaviour
 						{
 							if (!this.SpunDown)
 							{
-								this.PlayClip(this.WhipSound, this.transform.position);
+								this.PlayClip(this.WhipSound, base.transform.position);
 								this.StraightenWhip();
-								this.TargetRotation = (float)360;
-								this.Rotation = (float)0;
+								this.TargetRotation = 360f;
+								this.Rotation = 0f;
 								this.SpunDown = true;
 							}
-							this.Character.animation.CrossFade("f02_yanvaniaWhip_Down", 0.1f);
+							component.CrossFade("f02_yanvaniaWhip_Down", 0.1f);
 						}
 						else
 						{
@@ -647,7 +596,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 						}
 						if (Input.GetAxis("VaniaHorizontal") > 0.5f)
 						{
-							if (this.Character.transform.localScale.x == (float)1)
+							if (this.Character.transform.localScale.x == 1f)
 							{
 								this.SpinRight();
 							}
@@ -656,7 +605,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 								this.SpinLeft();
 							}
 						}
-						else if (this.Character.transform.localScale.x == (float)1)
+						else if (this.Character.transform.localScale.x == 1f)
 						{
 							this.SpunRight = false;
 						}
@@ -666,7 +615,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 						}
 						if (Input.GetAxis("VaniaHorizontal") < -0.5f)
 						{
-							if (this.Character.transform.localScale.x == (float)1)
+							if (this.Character.transform.localScale.x == 1f)
 							{
 								this.SpinLeft();
 							}
@@ -675,7 +624,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 								this.SpinRight();
 							}
 						}
-						else if (this.Character.transform.localScale.x == (float)1)
+						else if (this.Character.transform.localScale.x == 1f)
 						{
 							this.SpunLeft = false;
 						}
@@ -684,8 +633,8 @@ public class YanvaniaYanmontScript : MonoBehaviour
 							this.SpunRight = false;
 						}
 					}
-					this.Rotation = Mathf.MoveTowards(this.Rotation, this.TargetRotation, Time.deltaTime * (float)3600 * 0.5f);
-					this.WhipChain[1].transform.localEulerAngles = new Vector3((float)0, (float)0, this.Rotation);
+					this.Rotation = Mathf.MoveTowards(this.Rotation, this.TargetRotation, Time.deltaTime * 3600f * 0.5f);
+					this.WhipChain[1].transform.localEulerAngles = new Vector3(0f, 0f, this.Rotation);
 					if (!Input.GetButton("VaniaAttack"))
 					{
 						this.StopAttacking();
@@ -694,15 +643,15 @@ public class YanvaniaYanmontScript : MonoBehaviour
 			}
 			else
 			{
-				this.WhipChain[0].transform.localScale = Vector3.MoveTowards(this.WhipChain[0].transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+				this.WhipChain[0].transform.localScale = Vector3.MoveTowards(this.WhipChain[0].transform.localScale, Vector3.zero, Time.deltaTime * 10f);
 			}
-			if ((!this.Crouching && this.Character.animation["f02_yanvaniaAttack_00"].time >= this.Character.animation["f02_yanvaniaAttack_00"].length) || (this.Crouching && this.Character.animation["f02_yanvaniaCrouchAttack_00"].time >= this.Character.animation["f02_yanvaniaCrouchAttack_00"].length))
+			if ((!this.Crouching && component["f02_yanvaniaAttack_00"].time >= component["f02_yanvaniaAttack_00"].length) || (this.Crouching && component["f02_yanvaniaCrouchAttack_00"].time >= component["f02_yanvaniaCrouchAttack_00"].length))
 			{
 				if (Input.GetButton("VaniaAttack"))
 				{
 					if (this.Crouching)
 					{
-						this.Character.animation["f02_yanvaniaCrouchPose_00"].weight = (float)1;
+						component["f02_yanvaniaCrouchPose_00"].weight = 1f;
 					}
 					this.Dangling = true;
 				}
@@ -712,16 +661,14 @@ public class YanvaniaYanmontScript : MonoBehaviour
 				}
 			}
 		}
-		if (this.FlashTimer > (float)0)
+		if (this.FlashTimer > 0f)
 		{
 			this.FlashTimer -= Time.deltaTime;
-			int i = 0;
 			if (!this.Red)
 			{
-				while (i < Extensions.get_length(this.MyRenderer.materials))
+				foreach (Material material in this.MyRenderer.materials)
 				{
-					this.MyRenderer.materials[i].color = new Color((float)1, (float)0, (float)0, (float)1);
-					i++;
+					material.color = new Color(1f, 0f, 0f, 1f);
 				}
 				this.Frames++;
 				if (this.Frames == 5)
@@ -732,10 +679,9 @@ public class YanvaniaYanmontScript : MonoBehaviour
 			}
 			else
 			{
-				while (i < Extensions.get_length(this.MyRenderer.materials))
+				foreach (Material material2 in this.MyRenderer.materials)
 				{
-					this.MyRenderer.materials[i].color = new Color((float)1, (float)1, (float)1, (float)1);
-					i++;
+					material2.color = new Color(1f, 1f, 1f, 1f);
 				}
 				this.Frames++;
 				if (this.Frames == 5)
@@ -747,22 +693,19 @@ public class YanvaniaYanmontScript : MonoBehaviour
 		}
 		else
 		{
-			this.FlashTimer = (float)0;
-			if (this.MyRenderer.materials[0].color != new Color((float)1, (float)1, (float)1, (float)1))
+			this.FlashTimer = 0f;
+			if (this.MyRenderer.materials[0].color != new Color(1f, 1f, 1f, 1f))
 			{
-				for (int i = 0; i < Extensions.get_length(this.MyRenderer.materials); i++)
+				foreach (Material material3 in this.MyRenderer.materials)
 				{
-					this.MyRenderer.materials[i].color = new Color((float)1, (float)1, (float)1, (float)1);
+					material3.color = new Color(1f, 1f, 1f, 1f);
 				}
 			}
 		}
-		float y = Mathf.Lerp(this.HealthBar.localScale.y, this.Health / this.MaxHealth, Time.deltaTime * (float)10);
-		Vector3 localScale = this.HealthBar.localScale;
-		float num = localScale.y = y;
-		Vector3 vector = this.HealthBar.localScale = localScale;
-		if (this.Health > (float)0)
+		this.HealthBar.localScale = new Vector3(this.HealthBar.localScale.x, Mathf.Lerp(this.HealthBar.localScale.y, this.Health / this.MaxHealth, Time.deltaTime * 10f), this.HealthBar.localScale.z);
+		if (this.Health > 0f)
 		{
-			if (this.EXP >= (float)100)
+			if (this.EXP >= 100f)
 			{
 				this.Level++;
 				if (this.Level >= 99)
@@ -771,107 +714,103 @@ public class YanvaniaYanmontScript : MonoBehaviour
 				}
 				else
 				{
-					GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.LevelUpEffect, this.LevelLabel.transform.position, Quaternion.identity);
+					GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.LevelUpEffect, this.LevelLabel.transform.position, Quaternion.identity);
 					gameObject.transform.parent = this.LevelLabel.transform;
-					this.MaxHealth += (float)20;
+					this.MaxHealth += 20f;
 					this.Health = this.MaxHealth;
-					this.EXP -= (float)100;
+					this.EXP -= 100f;
 				}
-				this.LevelLabel.text = string.Empty + this.Level;
+				this.LevelLabel.text = this.Level.ToString();
 			}
-			float y2 = Mathf.Lerp(this.EXPBar.localScale.y, this.EXP / 100f, Time.deltaTime * (float)10);
-			Vector3 localScale2 = this.EXPBar.localScale;
-			float num2 = localScale2.y = y2;
-			Vector3 vector2 = this.EXPBar.localScale = localScale2;
+			this.EXPBar.localScale = new Vector3(this.EXPBar.localScale.x, Mathf.Lerp(this.EXPBar.localScale.y, this.EXP / 100f, Time.deltaTime * 10f), this.EXPBar.localScale.z);
 		}
-		int num3 = 0;
-		Vector3 position = this.transform.position;
-		float num4 = position.z = (float)num3;
-		Vector3 vector3 = this.transform.position = position;
+		base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y, 0f);
 		if (Input.GetKeyDown("`"))
 		{
-			Application.LoadLevel(Application.loadedLevel);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
 		if (Input.GetKeyDown("2"))
 		{
-			this.transform.position = new Vector3(-31.75f, 6.51f, (float)0);
+			base.transform.position = new Vector3(-31.75f, 6.51f, 0f);
 		}
 		if (Input.GetKeyDown("5"))
 		{
 			this.Level = 5;
-			this.LevelLabel.text = string.Empty + this.Level;
+			this.LevelLabel.text = this.Level.ToString();
 		}
 		if (Input.GetKeyDown("="))
 		{
-			Time.timeScale += (float)10;
+			Time.timeScale += 10f;
 		}
 		if (Input.GetKeyDown("-"))
 		{
-			Time.timeScale -= (float)10;
-			if (Time.timeScale < (float)0)
+			Time.timeScale -= 10f;
+			if (Time.timeScale < 0f)
 			{
-				Time.timeScale = (float)1;
+				Time.timeScale = 1f;
 			}
 		}
 	}
 
-	public virtual void LateUpdate()
+	private void LateUpdate()
 	{
 	}
 
-	public virtual void OnControllerColliderHit(ControllerColliderHit hit)
+	private void OnControllerColliderHit(ControllerColliderHit hit)
 	{
-		this.contactPoint = hit.point;
+		this.contactPoint = this.hit.point;
 	}
 
-	public virtual void FallingDamageAlert(float fallDistance)
+	private void FallingDamageAlert(float fallDistance)
 	{
-		this.PlayClip(this.LandSound, this.transform.position);
-		this.Character.animation.Play("f02_yanvaniaCrouch_00");
+		this.PlayClip(this.LandSound, base.transform.position);
+		this.Character.GetComponent<Animation>().Play("f02_yanvaniaCrouch_00");
 		this.fallingDamageThreshold = this.originalThreshold;
 	}
 
-	public virtual void SpinRight()
+	private void SpinRight()
 	{
 		if (!this.SpunRight)
 		{
-			this.PlayClip(this.WhipSound, this.transform.position);
+			this.PlayClip(this.WhipSound, base.transform.position);
 			this.StraightenWhip();
-			this.TargetRotation = (float)360;
-			this.Rotation = (float)0;
+			this.TargetRotation = 360f;
+			this.Rotation = 0f;
 			this.SpunRight = true;
 		}
-		this.Character.animation.CrossFade("f02_yanvaniaWhip_Right", 0.1f);
+		this.Character.GetComponent<Animation>().CrossFade("f02_yanvaniaWhip_Right", 0.1f);
 	}
 
-	public virtual void SpinLeft()
+	private void SpinLeft()
 	{
 		if (!this.SpunLeft)
 		{
-			this.PlayClip(this.WhipSound, this.transform.position);
+			this.PlayClip(this.WhipSound, base.transform.position);
 			this.StraightenWhip();
-			this.TargetRotation = (float)-360;
-			this.Rotation = (float)0;
+			this.TargetRotation = -360f;
+			this.Rotation = 0f;
 			this.SpunLeft = true;
 		}
-		this.Character.animation.CrossFade("f02_yanvaniaWhip_Left", 0.1f);
+		this.Character.GetComponent<Animation>().CrossFade("f02_yanvaniaWhip_Left", 0.1f);
 	}
 
-	public virtual void StraightenWhip()
+	private void StraightenWhip()
 	{
-		for (int i = 1; i < Extensions.get_length(this.WhipChain); i++)
+		for (int i = 1; i < this.WhipChain.Length; i++)
 		{
-			this.WhipChain[i].transform.localPosition = new Vector3((float)0, -0.03f, (float)0);
-			this.WhipChain[i].transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+			this.WhipCollider[i].enabled = true;
+			Transform transform = this.WhipChain[i].transform;
+			transform.localPosition = new Vector3(0f, -0.03f, 0f);
+			transform.localEulerAngles = Vector3.zero;
 		}
-		this.WhipChain[1].transform.localPosition = new Vector3((float)0, -0.1f, (float)0);
+		this.WhipChain[1].transform.localPosition = new Vector3(0f, -0.1f, 0f);
 	}
 
-	public virtual void StopAttacking()
+	private void StopAttacking()
 	{
-		this.Character.animation["f02_yanvaniaCrouchPose_00"].weight = (float)0;
-		this.TargetRotation = (float)0;
-		this.Rotation = (float)0;
+		this.Character.GetComponent<Animation>()["f02_yanvaniaCrouchPose_00"].weight = 0f;
+		this.TargetRotation = 0f;
+		this.Rotation = 0f;
 		this.Attacking = false;
 		this.Dangling = false;
 		this.SpunUp = false;
@@ -880,67 +819,51 @@ public class YanvaniaYanmontScript : MonoBehaviour
 		this.SpunLeft = false;
 	}
 
-	public virtual void TakeDamage(int Damage)
+	public void TakeDamage(int Damage)
 	{
-		this.audio.clip = this.Injuries[UnityEngine.Random.Range(0, Extensions.get_length(this.Injuries))];
-		this.audio.Play();
-		this.WhipChain[0].transform.localScale = new Vector3((float)0, (float)0, (float)0);
-		this.Character.animation["f02_damage_25"].time = (float)0;
-		this.fallingDamageThreshold = (float)100;
-		this.moveDirection.x = (float)0;
-		this.RecoveryTimer = (float)0;
-		this.FlashTimer = (float)2;
+		AudioSource component = base.GetComponent<AudioSource>();
+		component.clip = this.Injuries[UnityEngine.Random.Range(0, this.Injuries.Length)];
+		component.Play();
+		this.WhipChain[0].transform.localScale = Vector3.zero;
+		Animation component2 = this.Character.GetComponent<Animation>();
+		component2["f02_damage_25"].time = 0f;
+		this.fallingDamageThreshold = 100f;
+		this.moveDirection.x = 0f;
+		this.RecoveryTimer = 0f;
+		this.FlashTimer = 2f;
 		this.Injured = true;
 		this.StopAttacking();
 		this.Health -= (float)Damage;
-		if (this.Dracula.Health <= (float)0)
+		if (this.Dracula.Health <= 0f)
 		{
-			this.Health = (float)1;
+			this.Health = 1f;
 		}
-		if (this.Dracula.Health > (float)0 && this.Health <= (float)0)
+		if (this.Dracula.Health > 0f && this.Health <= 0f)
 		{
 			if (this.NewBlood == null)
 			{
 				this.MyController.enabled = false;
 				this.YanvaniaCamera.StopMusic = true;
-				this.audio.clip = this.DeathSound;
-				this.audio.Play();
-				this.NewBlood = (GameObject)UnityEngine.Object.Instantiate(this.DeathBlood, this.transform.position, Quaternion.identity);
+				component.clip = this.DeathSound;
+				component.Play();
+				this.NewBlood = UnityEngine.Object.Instantiate<GameObject>(this.DeathBlood, base.transform.position, Quaternion.identity);
 				this.NewBlood.transform.parent = this.Hips;
-				this.NewBlood.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
-				this.Character.animation.CrossFade("f02_yanvaniaDeath_00");
+				this.NewBlood.transform.localPosition = Vector3.zero;
+				component2.CrossFade("f02_yanvaniaDeath_00");
 				this.CanMove = false;
 			}
-			this.Health = (float)0;
+			this.Health = 0f;
 		}
 	}
 
-	public virtual void PlayClip(AudioClip clip, Vector3 pos)
+	private void PlayClip(AudioClip clip, Vector3 pos)
 	{
 		GameObject gameObject = new GameObject("TempAudio");
 		gameObject.transform.position = pos;
-		AudioSource audioSource = (AudioSource)gameObject.AddComponent(typeof(AudioSource));
+		AudioSource audioSource = gameObject.AddComponent<AudioSource>();
 		audioSource.clip = clip;
 		audioSource.Play();
 		UnityEngine.Object.Destroy(gameObject, clip.length);
 		audioSource.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
-	}
-
-	public virtual void Main()
-	{
-		this.Character.animation["f02_yanvaniaDeath_00"].speed = 0.25f;
-		this.Character.animation["f02_yanvaniaAttack_00"].speed = (float)2;
-		this.Character.animation["f02_yanvaniaCrouchAttack_00"].speed = (float)2;
-		this.Character.animation["f02_yanvaniaWalk_00"].speed = 0.66666f;
-		this.Character.animation["f02_yanvaniaWhip_Neutral"].speed = (float)0;
-		this.Character.animation["f02_yanvaniaWhip_Up"].speed = (float)0;
-		this.Character.animation["f02_yanvaniaWhip_Right"].speed = (float)0;
-		this.Character.animation["f02_yanvaniaWhip_Down"].speed = (float)0;
-		this.Character.animation["f02_yanvaniaWhip_Left"].speed = (float)0;
-		this.Character.animation["f02_yanvaniaCrouchPose_00"].layer = 1;
-		this.Character.animation.Play("f02_yanvaniaCrouchPose_00");
-		this.Character.animation["f02_yanvaniaCrouchPose_00"].weight = (float)0;
-		Physics.IgnoreLayerCollision(19, 13, true);
-		Physics.IgnoreLayerCollision(19, 19, true);
 	}
 }

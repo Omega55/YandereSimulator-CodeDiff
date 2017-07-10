@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class RooftopCorpseDisposalScript : MonoBehaviour
 {
 	public YandereScript Yandere;
@@ -12,15 +11,15 @@ public class RooftopCorpseDisposalScript : MonoBehaviour
 
 	public Transform DropSpot;
 
-	public virtual void Start()
+	private void Start()
 	{
 		if (PlayerPrefs.GetInt("RoofFence") == 1)
 		{
-			UnityEngine.Object.Destroy(this.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.MyCollider.bounds.Contains(this.Yandere.transform.position))
 		{
@@ -30,20 +29,10 @@ public class RooftopCorpseDisposalScript : MonoBehaviour
 				{
 					this.Prompt.enabled = true;
 					this.Prompt.transform.position = new Vector3(this.Yandere.transform.position.x, this.Yandere.transform.position.y + 1.66666f, this.Yandere.transform.position.z);
-					if (this.Prompt.Circle[0].fillAmount == (float)0)
+					if (this.Prompt.Circle[0].fillAmount == 0f)
 					{
-						float z = this.Yandere.transform.position.z;
-						Vector3 position = this.DropSpot.position;
-						float num = position.z = z;
-						Vector3 vector = this.DropSpot.position = position;
-						if (!this.Yandere.Carrying)
-						{
-							this.Yandere.Character.animation.CrossFade("f02_dragIdle_00");
-						}
-						else
-						{
-							this.Yandere.Character.animation.CrossFade("f02_carryIdleA_00");
-						}
+						this.DropSpot.position = new Vector3(this.DropSpot.position.x, this.DropSpot.position.y, this.Yandere.transform.position.z);
+						this.Yandere.Character.GetComponent<Animation>().CrossFade((!this.Yandere.Carrying) ? "f02_dragIdle_00" : "f02_carryIdleA_00");
 						this.Yandere.DropSpot = this.DropSpot;
 						this.Yandere.Dropping = true;
 						this.Yandere.CanMove = false;
@@ -63,9 +52,5 @@ public class RooftopCorpseDisposalScript : MonoBehaviour
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

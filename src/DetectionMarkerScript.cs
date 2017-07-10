@@ -1,33 +1,25 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class DetectionMarkerScript : MonoBehaviour
 {
 	public Transform Target;
 
 	public UITexture Tex;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.transform.LookAt(new Vector3(this.Target.position.x, this.transform.position.y, this.Target.position.z));
-		this.Tex.transform.localScale = new Vector3((float)1, (float)0, (float)1);
-		this.transform.localScale = new Vector3((float)1, (float)1, (float)1);
-		int num = 0;
-		Color color = this.Tex.color;
-		float num2 = color.a = (float)num;
-		Color color2 = this.Tex.color = color;
+		base.transform.LookAt(new Vector3(this.Target.position.x, base.transform.position.y, this.Target.position.z));
+		this.Tex.transform.localScale = new Vector3(1f, 0f, 1f);
+		base.transform.localScale = new Vector3(1f, 1f, 1f);
+		this.Tex.color = new Color(this.Tex.color.r, this.Tex.color.g, this.Tex.color.b, 0f);
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Tex.color.a > (float)0 && this.transform != null && this.Target != null)
+		if (this.Tex.color.a > 0f && base.transform != null && this.Target != null)
 		{
-			this.transform.LookAt(new Vector3(this.Target.position.x, this.transform.position.y, this.Target.position.z));
+			base.transform.LookAt(new Vector3(this.Target.position.x, base.transform.position.y, this.Target.position.z));
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

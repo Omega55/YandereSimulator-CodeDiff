@@ -1,15 +1,10 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class DrillScript : MonoBehaviour
 {
-	public virtual void LateUpdate()
+	private void LateUpdate()
 	{
-		this.transform.Rotate(Vector3.up * Time.deltaTime * (float)3600);
-	}
-
-	public virtual void Main()
-	{
+		base.transform.Rotate(Vector3.up * Time.deltaTime * 3600f);
 	}
 }

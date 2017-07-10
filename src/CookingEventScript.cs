@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class CookingEventScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
@@ -59,11 +57,11 @@ public class CookingEventScript : MonoBehaviour
 
 	public int EventStudentID;
 
-	public float EventTime;
+	public float EventTime = 7f;
 
-	public int EventPhase;
+	public int EventPhase = 1;
 
-	public int EventDay;
+	public int EventDay = 2;
 
 	public int Loop;
 
@@ -73,27 +71,20 @@ public class CookingEventScript : MonoBehaviour
 
 	public float Timer;
 
-	public CookingEventScript()
+	private void Start()
 	{
-		this.EventTime = 7f;
-		this.EventPhase = 1;
-		this.EventDay = 2;
-	}
-
-	public virtual void Start()
-	{
-		this.Octodog.active = false;
-		this.Sausage.active = false;
-		this.Rotation = (float)-90;
-		for (int i = 0; i < Extensions.get_length(this.Octodogs); i++)
+		this.Octodog.SetActive(false);
+		this.Sausage.SetActive(false);
+		this.Rotation = -90f;
+		foreach (Transform transform in this.Octodogs)
 		{
-			this.Octodogs[i].active = false;
+			transform.gameObject.SetActive(false);
 		}
-		this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+		this.EventSubtitle.transform.localScale = Vector3.zero;
 		this.EventCheck = true;
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (Input.GetKeyDown("space"))
 		{
@@ -110,7 +101,7 @@ public class CookingEventScript : MonoBehaviour
 					this.Snacks.enabled = false;
 					this.EventStudent.CurrentDestination = this.EventLocations[0];
 					this.EventStudent.Pathfinding.target = this.EventLocations[0];
-					this.EventStudent.Obstacle.checkTime = (float)99;
+					this.EventStudent.Obstacle.checkTime = 99f;
 					this.EventStudent.CookingEvent = this;
 					this.EventStudent.InEvent = true;
 					this.EventStudent.Private = true;
@@ -120,17 +111,17 @@ public class CookingEventScript : MonoBehaviour
 					if (this.EventStudent.Following)
 					{
 						this.EventStudent.Pathfinding.canMove = true;
-						this.EventStudent.Pathfinding.speed = (float)1;
+						this.EventStudent.Pathfinding.speed = 1f;
 						this.EventStudent.Following = false;
 						this.EventStudent.Routine = true;
-						this.Yandere.Followers = this.Yandere.Followers - 1;
-						this.EventStudent.Subtitle.UpdateLabel("Stop Follow Apology", 0, (float)3);
-						this.EventStudent.Prompt.Label[0].text = "     " + "Talk";
+						this.Yandere.Followers--;
+						this.EventStudent.Subtitle.UpdateLabel("Stop Follow Apology", 0, 3f);
+						this.EventStudent.Prompt.Label[0].text = "     Talk";
 					}
 				}
 				else
 				{
-					this.enabled = false;
+					base.enabled = false;
 				}
 			}
 		}
@@ -142,7 +133,7 @@ public class CookingEventScript : MonoBehaviour
 			}
 			else if (!this.EventStudent.Pathfinding.canMove)
 			{
-				if (PlayerPrefs.GetInt("Topic_1_Student_7_Learned") == 0 && Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position) < (float)5)
+				if (PlayerPrefs.GetInt("Topic_1_Student_7_Learned") == 0 && Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position) < 5f)
 				{
 					if (PlayerPrefs.GetInt("Topic_1_Discovered") == 0)
 					{
@@ -155,48 +146,48 @@ public class CookingEventScript : MonoBehaviour
 				if (this.EventPhase == -1)
 				{
 					this.Timer += Time.deltaTime;
-					if (this.Timer > (float)5)
+					if (this.Timer > 5f)
 					{
 						PlayerPrefs.SetInt("Scheme_4_Stage", 5);
 						this.Schemes.UpdateInstructions();
-						this.RivalPhone.active = false;
+						this.RivalPhone.SetActive(false);
 						this.EventSubtitle.text = string.Empty;
 						this.EventPhase++;
-						this.Timer = (float)0;
+						this.Timer = 0f;
 					}
 				}
 				else if (this.EventPhase == 0)
 				{
-					if (!this.RivalPhone.active)
+					if (!this.RivalPhone.activeInHierarchy)
 					{
-						this.EventStudent.Character.animation.Play("f02_prepareFood_00");
+						this.EventStudent.Character.GetComponent<Animation>().Play("f02_prepareFood_00");
 						this.Octodog.transform.parent = this.EventStudent.RightHand;
 						this.Octodog.transform.localPosition = new Vector3(0.0129f, -0.02475f, 0.0316f);
-						this.Octodog.transform.localEulerAngles = new Vector3((float)-90, (float)0, (float)0);
+						this.Octodog.transform.localEulerAngles = new Vector3(-90f, 0f, 0f);
 						this.Sausage.transform.parent = this.EventStudent.RightHand;
 						this.Sausage.transform.localPosition = new Vector3(0.013f, -0.038f, 0.015f);
-						this.Sausage.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+						this.Sausage.transform.localEulerAngles = Vector3.zero;
 						this.EventPhase++;
 					}
 					else
 					{
 						this.PlayClip(this.EventClip[0], this.EventStudent.transform.position + Vector3.up);
-						this.EventStudent.Character.animation.CrossFade(this.EventAnim[0]);
+						this.EventStudent.Character.GetComponent<Animation>().CrossFade(this.EventAnim[0]);
 						this.EventSubtitle.text = this.EventSpeech[0];
 						this.EventPhase--;
 					}
 				}
 				else if (this.EventPhase == 1)
 				{
-					if (this.EventStudent.Character.animation["f02_prepareFood_00"].time > (float)1)
+					if (this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].time > 1f)
 					{
 						this.EventPhase++;
 					}
 				}
 				else if (this.EventPhase == 2)
 				{
-					this.Refrigerator.animation.Play("FridgeOpen");
-					if (this.EventStudent.Character.animation["f02_prepareFood_00"].time > (float)3)
+					this.Refrigerator.GetComponent<Animation>().Play("FridgeOpen");
+					if (this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].time > 3f)
 					{
 						this.Jar.transform.parent = this.EventStudent.RightHand;
 						this.EventPhase++;
@@ -204,7 +195,7 @@ public class CookingEventScript : MonoBehaviour
 				}
 				else if (this.EventPhase == 3)
 				{
-					if (this.EventStudent.Character.animation["f02_prepareFood_00"].time > (float)5)
+					if (this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].time > 5f)
 					{
 						this.JarLid.transform.parent = this.EventStudent.LeftHand;
 						this.EventPhase++;
@@ -212,110 +203,98 @@ public class CookingEventScript : MonoBehaviour
 				}
 				else if (this.EventPhase == 4)
 				{
-					if (this.EventStudent.Character.animation["f02_prepareFood_00"].time > (float)6)
+					if (this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].time > 6f)
 					{
 						this.JarLid.transform.parent = this.CookingClub;
-						this.JarLid.transform.localPosition = new Vector3(0.334585f, (float)1, -0.2528915f);
-						this.JarLid.transform.localEulerAngles = new Vector3((float)0, (float)30, (float)0);
+						this.JarLid.transform.localPosition = new Vector3(0.334585f, 1f, -0.2528915f);
+						this.JarLid.transform.localEulerAngles = new Vector3(0f, 30f, 0f);
 						this.Jar.transform.parent = this.CookingClub;
-						this.Jar.transform.localPosition = new Vector3(0.29559f, (float)1, 0.2029152f);
-						this.Jar.transform.localEulerAngles = new Vector3((float)0, (float)-150, (float)0);
+						this.Jar.transform.localPosition = new Vector3(0.29559f, 1f, 0.2029152f);
+						this.Jar.transform.localEulerAngles = new Vector3(0f, -150f, 0f);
 						this.EventPhase++;
 					}
 				}
 				else if (this.EventPhase == 5)
 				{
-					if (this.EventStudent.Character.animation["f02_prepareFood_00"].time > (float)7)
+					if (this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].time > 7f)
 					{
-						((WeaponScript)this.Knife.GetComponent(typeof(WeaponScript))).FingerprintID = this.EventStudent.StudentID;
+						this.Knife.GetComponent<WeaponScript>().FingerprintID = this.EventStudent.StudentID;
 						this.Knife.parent = this.EventStudent.LeftHand;
-						this.Knife.localPosition = new Vector3((float)0, -0.01f, (float)0);
-						this.Knife.localEulerAngles = new Vector3((float)0, (float)0, (float)-90);
+						this.Knife.localPosition = new Vector3(0f, -0.01f, 0f);
+						this.Knife.localEulerAngles = new Vector3(0f, 0f, -90f);
 						this.EventPhase++;
 					}
 				}
 				else if (this.EventPhase == 6)
 				{
-					if (this.EventStudent.Character.animation["f02_prepareFood_00"].time >= this.EventStudent.Character.animation["f02_prepareFood_00"].length)
+					if (this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].time >= this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].length)
 					{
-						this.EventStudent.Character.animation.CrossFade("f02_cutFood_00");
-						this.Sausage.active = true;
+						this.EventStudent.Character.GetComponent<Animation>().CrossFade("f02_cutFood_00");
+						this.Sausage.SetActive(true);
 						this.EventPhase++;
 					}
 				}
 				else if (this.EventPhase == 7)
 				{
-					if (this.EventStudent.Character.animation["f02_cutFood_00"].time > 2.66666f)
+					if (this.EventStudent.Character.GetComponent<Animation>()["f02_cutFood_00"].time > 2.66666f)
 					{
-						this.Octodog.active = true;
-						this.Sausage.active = false;
+						this.Octodog.SetActive(true);
+						this.Sausage.SetActive(false);
 						this.EventPhase++;
 					}
 				}
 				else if (this.EventPhase == 8)
 				{
-					if (this.EventStudent.Character.animation["f02_cutFood_00"].time > (float)3)
+					if (this.EventStudent.Character.GetComponent<Animation>()["f02_cutFood_00"].time > 3f)
 					{
-						this.Rotation = Mathf.MoveTowards(this.Rotation, (float)90, Time.deltaTime * (float)360);
-						float rotation = this.Rotation;
-						Vector3 localEulerAngles = this.Octodog.transform.localEulerAngles;
-						float num = localEulerAngles.x = rotation;
-						Vector3 vector = this.Octodog.transform.localEulerAngles = localEulerAngles;
-						float z = Mathf.MoveTowards(this.Octodog.transform.localPosition.z, 0.012f, Time.deltaTime);
-						Vector3 localPosition = this.Octodog.transform.localPosition;
-						float num2 = localPosition.z = z;
-						Vector3 vector2 = this.Octodog.transform.localPosition = localPosition;
+						this.Rotation = Mathf.MoveTowards(this.Rotation, 90f, Time.deltaTime * 360f);
+						this.Octodog.transform.localEulerAngles = new Vector3(this.Rotation, this.Octodog.transform.localEulerAngles.y, this.Octodog.transform.localEulerAngles.z);
+						this.Octodog.transform.localPosition = new Vector3(this.Octodog.transform.localPosition.x, this.Octodog.transform.localPosition.y, Mathf.MoveTowards(this.Octodog.transform.localPosition.z, 0.012f, Time.deltaTime));
 					}
-					if (this.EventStudent.Character.animation["f02_cutFood_00"].time > (float)6)
+					if (this.EventStudent.Character.GetComponent<Animation>()["f02_cutFood_00"].time > 6f)
 					{
-						this.Octodog.active = false;
-						this.Octodogs[this.Loop].active = true;
+						this.Octodog.SetActive(false);
+						this.Octodogs[this.Loop].gameObject.SetActive(true);
 						this.EventPhase++;
 					}
 				}
 				else if (this.EventPhase == 9)
 				{
-					if (this.EventStudent.Character.animation["f02_cutFood_00"].time >= this.EventStudent.Character.animation["f02_cutFood_00"].length)
+					if (this.EventStudent.Character.GetComponent<Animation>()["f02_cutFood_00"].time >= this.EventStudent.Character.GetComponent<Animation>()["f02_cutFood_00"].length)
 					{
-						if (this.Loop < Extensions.get_length(this.Octodogs) - 1)
+						if (this.Loop < this.Octodogs.Length - 1)
 						{
-							int num3 = -90;
-							Vector3 localEulerAngles2 = this.Octodog.transform.localEulerAngles;
-							float num4 = localEulerAngles2.x = (float)num3;
-							Vector3 vector3 = this.Octodog.transform.localEulerAngles = localEulerAngles2;
-							float z2 = 0.0316f;
-							Vector3 localPosition2 = this.Octodog.transform.localPosition;
-							float num5 = localPosition2.z = z2;
-							Vector3 vector4 = this.Octodog.transform.localPosition = localPosition2;
-							this.EventStudent.Character.animation["f02_cutFood_00"].time = (float)0;
-							this.EventStudent.Character.animation.Play("f02_cutFood_00");
-							this.Sausage.active = true;
+							this.Octodog.transform.localEulerAngles = new Vector3(-90f, this.Octodog.transform.localEulerAngles.y, this.Octodog.transform.localEulerAngles.z);
+							this.Octodog.transform.localPosition = new Vector3(this.Octodog.transform.localPosition.x, this.Octodog.transform.localPosition.y, 0.0316f);
+							this.EventStudent.Character.GetComponent<Animation>()["f02_cutFood_00"].time = 0f;
+							this.EventStudent.Character.GetComponent<Animation>().Play("f02_cutFood_00");
+							this.Sausage.SetActive(true);
 							this.EventPhase = 7;
-							this.Rotation = (float)-90;
+							this.Rotation = -90f;
 							this.Loop++;
 						}
 						else
 						{
-							this.EventStudent.Character.animation.Play("f02_prepareFood_00");
-							this.EventStudent.Character.animation["f02_prepareFood_00"].time = this.EventStudent.Character.animation["f02_prepareFood_00"].length;
-							this.EventStudent.Character.animation["f02_prepareFood_00"].speed = (float)-1;
+							this.EventStudent.Character.GetComponent<Animation>().Play("f02_prepareFood_00");
+							this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].time = this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].length;
+							this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].speed = -1f;
 							this.EventPhase++;
 						}
 					}
 				}
 				else if (this.EventPhase == 10)
 				{
-					if (this.EventStudent.Character.animation["f02_prepareFood_00"].time < this.EventStudent.Character.animation["f02_prepareFood_00"].length - (float)1)
+					if (this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].time < this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].length - 1f)
 					{
 						this.Knife.parent = this.CookingClub;
 						this.Knife.localPosition = new Vector3(0.197f, 1.1903f, -0.33333f);
-						this.Knife.localEulerAngles = new Vector3((float)45, (float)-90, (float)-90);
+						this.Knife.localEulerAngles = new Vector3(45f, -90f, -90f);
 						this.EventPhase++;
 					}
 				}
 				else if (this.EventPhase == 11)
 				{
-					if (this.EventStudent.Character.animation["f02_prepareFood_00"].time < this.EventStudent.Character.animation["f02_prepareFood_00"].length - (float)2)
+					if (this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].time < this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].length - 2f)
 					{
 						this.JarLid.parent = this.EventStudent.LeftHand;
 						this.Jar.parent = this.EventStudent.RightHand;
@@ -324,38 +303,38 @@ public class CookingEventScript : MonoBehaviour
 				}
 				else if (this.EventPhase == 12)
 				{
-					if (this.EventStudent.Character.animation["f02_prepareFood_00"].time < this.EventStudent.Character.animation["f02_prepareFood_00"].length - (float)3)
+					if (this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].time < this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].length - 3f)
 					{
 						this.JarLid.parent = this.Jar;
-						this.JarLid.localPosition = new Vector3((float)0, 0.175f, (float)0);
-						this.JarLid.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
-						this.Refrigerator.animation.Play("FridgeOpen");
-						this.Refrigerator.animation["FridgeOpen"].time = this.Refrigerator.animation["FridgeOpen"].length;
-						this.Refrigerator.animation["FridgeOpen"].speed = (float)-1;
+						this.JarLid.localPosition = new Vector3(0f, 0.175f, 0f);
+						this.JarLid.localEulerAngles = Vector3.zero;
+						this.Refrigerator.GetComponent<Animation>().Play("FridgeOpen");
+						this.Refrigerator.GetComponent<Animation>()["FridgeOpen"].time = this.Refrigerator.GetComponent<Animation>()["FridgeOpen"].length;
+						this.Refrigerator.GetComponent<Animation>()["FridgeOpen"].speed = -1f;
 						this.EventPhase++;
 					}
 				}
 				else if (this.EventPhase == 13)
 				{
-					if (this.EventStudent.Character.animation["f02_prepareFood_00"].time < this.EventStudent.Character.animation["f02_prepareFood_00"].length - (float)5)
+					if (this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].time < this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].length - 5f)
 					{
 						this.Jar.parent = this.CookingClub;
 						this.Jar.localPosition = new Vector3(0.1f, 0.941f, 0.75f);
-						this.Jar.localEulerAngles = new Vector3((float)0, (float)90, (float)0);
+						this.Jar.localEulerAngles = new Vector3(0f, 90f, 0f);
 						this.EventPhase++;
 					}
 				}
 				else if (this.EventPhase == 14)
 				{
-					if (this.EventStudent.Character.animation["f02_prepareFood_00"].time <= (float)0)
+					if (this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].time <= 0f)
 					{
-						((Collider)this.Knife.GetComponent(typeof(Collider))).enabled = true;
+						this.Knife.GetComponent<Collider>().enabled = true;
 						this.Plate.parent = this.EventStudent.RightHand;
-						this.Plate.localPosition = new Vector3((float)0, 0.011f, -0.156765f);
-						this.Plate.localEulerAngles = new Vector3((float)0, (float)-90, (float)-180);
+						this.Plate.localPosition = new Vector3(0f, 0.011f, -0.156765f);
+						this.Plate.localEulerAngles = new Vector3(0f, -90f, -180f);
 						this.EventStudent.CurrentDestination = this.EventLocations[1];
 						this.EventStudent.Pathfinding.target = this.EventLocations[1];
-						this.EventStudent.Character.animation[this.EventStudent.CarryAnim].weight = (float)1;
+						this.EventStudent.Character.GetComponent<Animation>()[this.EventStudent.CarryAnim].weight = 1f;
 						this.EventPhase++;
 					}
 				}
@@ -363,47 +342,47 @@ public class CookingEventScript : MonoBehaviour
 				{
 					this.Plate.parent = this.CookingClub;
 					this.Plate.localPosition = new Vector3(-3.66666f, 0.9066666f, -2.379f);
-					this.Plate.localEulerAngles = new Vector3((float)0, (float)-90, (float)0);
+					this.Plate.localEulerAngles = new Vector3(0f, -90f, 0f);
 					this.EndEvent();
 				}
-				float num6 = Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position);
-				if (num6 < (float)10)
+				float num = Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position);
+				if (num < 10f)
 				{
-					float num7 = Mathf.Abs((num6 - (float)10) * 0.2f);
-					if (num7 < (float)0)
+					float num2 = Mathf.Abs((num - 10f) * 0.2f);
+					if (num2 < 0f)
 					{
-						num7 = (float)0;
+						num2 = 0f;
 					}
-					if (num7 > (float)1)
+					if (num2 > 1f)
 					{
-						num7 = (float)1;
+						num2 = 1f;
 					}
-					this.EventSubtitle.transform.localScale = new Vector3(num7, num7, num7);
+					this.EventSubtitle.transform.localScale = new Vector3(num2, num2, num2);
 				}
 				else
 				{
-					this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+					this.EventSubtitle.transform.localScale = Vector3.zero;
 				}
 			}
 		}
 	}
 
-	public virtual void PlayClip(AudioClip clip, Vector3 pos)
+	private void PlayClip(AudioClip clip, Vector3 pos)
 	{
 		GameObject gameObject = new GameObject("TempAudio");
 		gameObject.transform.position = pos;
-		AudioSource audioSource = (AudioSource)gameObject.AddComponent(typeof(AudioSource));
+		AudioSource audioSource = gameObject.AddComponent<AudioSource>();
 		audioSource.clip = clip;
 		audioSource.Play();
 		UnityEngine.Object.Destroy(gameObject, clip.length);
 		this.CurrentClipLength = clip.length;
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
-		audioSource.minDistance = (float)5;
-		audioSource.maxDistance = (float)10;
+		audioSource.minDistance = 5f;
+		audioSource.maxDistance = 10f;
 		this.VoiceClip = gameObject;
 	}
 
-	public virtual void EndEvent()
+	private void EndEvent()
 	{
 		if (!this.EventOver)
 		{
@@ -413,7 +392,7 @@ public class CookingEventScript : MonoBehaviour
 			}
 			this.EventStudent.CurrentDestination = this.EventStudent.Destinations[this.EventStudent.Phase];
 			this.EventStudent.Pathfinding.target = this.EventStudent.Destinations[this.EventStudent.Phase];
-			this.EventStudent.Obstacle.checkTime = (float)1;
+			this.EventStudent.Obstacle.checkTime = 1f;
 			if (!this.EventStudent.Dying)
 			{
 				this.EventStudent.Prompt.enabled = true;
@@ -421,13 +400,13 @@ public class CookingEventScript : MonoBehaviour
 			if (this.Plate.parent == this.EventStudent.RightHand)
 			{
 				this.Plate.parent = null;
-				this.Plate.rigidbody.useGravity = true;
-				((BoxCollider)this.Plate.GetComponent(typeof(BoxCollider))).enabled = true;
+				this.Plate.GetComponent<Rigidbody>().useGravity = true;
+				this.Plate.GetComponent<BoxCollider>().enabled = true;
 			}
-			this.EventStudent.Character.animation[this.EventStudent.CarryAnim].weight = (float)0;
-			this.EventStudent.Pathfinding.speed = (float)1;
-			this.EventStudent.Phone.active = false;
-			this.EventStudent.TargetDistance = (float)1;
+			this.EventStudent.Character.GetComponent<Animation>()[this.EventStudent.CarryAnim].weight = 0f;
+			this.EventStudent.Pathfinding.speed = 1f;
+			this.EventStudent.Phone.SetActive(false);
+			this.EventStudent.TargetDistance = 1f;
 			this.EventStudent.PhoneEvent = null;
 			this.EventStudent.InEvent = false;
 			this.EventStudent.Private = false;
@@ -436,16 +415,12 @@ public class CookingEventScript : MonoBehaviour
 			{
 				this.Knife.parent = this.CookingClub;
 				this.Knife.localPosition = new Vector3(0.197f, 1.1903f, -0.33333f);
-				this.Knife.localEulerAngles = new Vector3((float)45, (float)-90, (float)-90);
-				((Collider)this.Knife.GetComponent(typeof(Collider))).enabled = true;
+				this.Knife.localEulerAngles = new Vector3(45f, -90f, -90f);
+				this.Knife.GetComponent<Collider>().enabled = true;
 			}
 			this.StudentManager.UpdateStudents();
 		}
 		this.EventActive = false;
 		this.EventCheck = false;
-	}
-
-	public virtual void Main()
-	{
 	}
 }

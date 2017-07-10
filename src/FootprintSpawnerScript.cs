@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class FootprintSpawnerScript : MonoBehaviour
 {
 	public YandereScript Yandere;
@@ -41,82 +39,74 @@ public class FootprintSpawnerScript : MonoBehaviour
 
 	public int Collisions;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.GardenArea = (Collider)GameObject.Find("GardenArea").GetComponent(typeof(Collider));
-		this.NEStairs = (Collider)GameObject.Find("NEStairs").GetComponent(typeof(Collider));
-		this.NWStairs = (Collider)GameObject.Find("NWStairs").GetComponent(typeof(Collider));
-		this.SEStairs = (Collider)GameObject.Find("SEStairs").GetComponent(typeof(Collider));
-		this.SWStairs = (Collider)GameObject.Find("SWStairs").GetComponent(typeof(Collider));
+		this.GardenArea = GameObject.Find("GardenArea").GetComponent<Collider>();
+		this.NEStairs = GameObject.Find("NEStairs").GetComponent<Collider>();
+		this.NWStairs = GameObject.Find("NWStairs").GetComponent<Collider>();
+		this.SEStairs = GameObject.Find("SEStairs").GetComponent<Collider>();
+		this.SWStairs = GameObject.Find("SWStairs").GetComponent<Collider>();
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.Debugging)
 		{
-			Debug.Log("UpThreshold: " + (this.Yandere.transform.position.y + this.UpThreshold) + " | DownThreshold: " + (this.Yandere.transform.position.y + this.DownThreshold) + " | CurrentHeight: " + this.transform.position.y);
+			Debug.Log(string.Concat(new string[]
+			{
+				"UpThreshold: ",
+				(this.Yandere.transform.position.y + this.UpThreshold).ToString(),
+				" | DownThreshold: ",
+				(this.Yandere.transform.position.y + this.DownThreshold).ToString(),
+				" | CurrentHeight: ",
+				base.transform.position.y.ToString()
+			}));
 		}
-		if (this.GardenArea.bounds.Contains(this.transform.position) || this.NEStairs.bounds.Contains(this.transform.position) || this.NWStairs.bounds.Contains(this.transform.position) || this.SEStairs.bounds.Contains(this.transform.position) || this.SWStairs.bounds.Contains(this.transform.position))
-		{
-			this.CanSpawn = false;
-		}
-		else
-		{
-			this.CanSpawn = true;
-		}
+		this.CanSpawn = (!this.GardenArea.bounds.Contains(base.transform.position) && !this.NEStairs.bounds.Contains(base.transform.position) && !this.NWStairs.bounds.Contains(base.transform.position) && !this.SEStairs.bounds.Contains(base.transform.position) && !this.SWStairs.bounds.Contains(base.transform.position));
 		if (!this.FootUp)
 		{
-			if (this.transform.position.y > this.Yandere.transform.position.y + this.UpThreshold)
+			if (base.transform.position.y > this.Yandere.transform.position.y + this.UpThreshold)
 			{
 				this.FootUp = true;
 			}
 		}
-		else if (this.transform.position.y < this.Yandere.transform.position.y + this.DownThreshold)
+		else if (base.transform.position.y < this.Yandere.transform.position.y + this.DownThreshold)
 		{
 			if (!this.Yandere.Crouching && !this.Yandere.Crawling && this.Yandere.CanMove && Input.GetButton("LB") && this.FootUp)
 			{
-				this.audio.clip = this.Footsteps[UnityEngine.Random.Range(0, Extensions.get_length(this.Footsteps))];
-				this.audio.Play();
+				AudioSource component = base.GetComponent<AudioSource>();
+				component.clip = this.Footsteps[UnityEngine.Random.Range(0, this.Footsteps.Length)];
+				component.Play();
 			}
 			this.FootUp = false;
 			if (this.CanSpawn && this.Bloodiness > 0)
 			{
-				if (this.transform.position.y > (float)-1 && this.transform.position.y < (float)1)
+				if (base.transform.position.y > -1f && base.transform.position.y < 1f)
 				{
-					this.Height = (float)0;
+					this.Height = 0f;
 				}
-				else if (this.transform.position.y > (float)3 && this.transform.position.y < (float)5)
+				else if (base.transform.position.y > 3f && base.transform.position.y < 5f)
 				{
-					this.Height = (float)4;
+					this.Height = 4f;
 				}
-				else if (this.transform.position.y > (float)7 && this.transform.position.y < (float)9)
+				else if (base.transform.position.y > 7f && base.transform.position.y < 9f)
 				{
-					this.Height = (float)8;
+					this.Height = 8f;
 				}
-				else if (this.transform.position.y > (float)11 && this.transform.position.y < (float)13)
+				else if (base.transform.position.y > 11f && base.transform.position.y < 13f)
 				{
-					this.Height = (float)12;
+					this.Height = 12f;
 				}
-				GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.BloodyFootprint, new Vector3(this.transform.position.x, this.Height + 0.012f, this.transform.position.z), Quaternion.identity);
-				float y = this.transform.eulerAngles.y;
-				Vector3 eulerAngles = gameObject.transform.eulerAngles;
-				float num = eulerAngles.y = y;
-				Vector3 vector = gameObject.transform.eulerAngles = eulerAngles;
-				((FootprintScript)gameObject.transform.GetChild(0).GetComponent(typeof(FootprintScript))).Yandere = this.Yandere;
+				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.BloodyFootprint, new Vector3(base.transform.position.x, this.Height + 0.012f, base.transform.position.z), Quaternion.identity);
+				gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, base.transform.eulerAngles.y, gameObject.transform.eulerAngles.z);
+				gameObject.transform.GetChild(0).GetComponent<FootprintScript>().Yandere = this.Yandere;
 				gameObject.transform.parent = this.BloodParent;
 				if (this.LeftFoot)
 				{
-					int num2 = -1;
-					Vector3 localScale = gameObject.transform.localScale;
-					float num3 = localScale.x = (float)num2;
-					Vector3 vector2 = gameObject.transform.localScale = localScale;
+					gameObject.transform.localScale = new Vector3(-1f, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
 				}
 				this.Bloodiness--;
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

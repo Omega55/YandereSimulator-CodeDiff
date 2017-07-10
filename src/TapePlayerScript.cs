@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class TapePlayerScript : MonoBehaviour
 {
 	public TapePlayerMenuScript TapePlayerMenu;
@@ -32,26 +31,26 @@ public class TapePlayerScript : MonoBehaviour
 
 	public float SpinSpeed;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.Tape.active = false;
+		this.Tape.SetActive(false);
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Prompt.Circle[0].fillAmount <= (float)0)
+		if (this.Prompt.Circle[0].fillAmount <= 0f)
 		{
 			this.Yandere.HeartCamera.enabled = false;
 			this.Yandere.RPGCamera.enabled = false;
-			this.TapePlayerMenu.TimeBar.gameObject.active = true;
-			this.TapePlayerMenu.List.gameObject.active = true;
+			this.TapePlayerMenu.TimeBar.gameObject.SetActive(true);
+			this.TapePlayerMenu.List.gameObject.SetActive(true);
 			this.TapePlayerCamera.enabled = true;
 			this.TapePlayerMenu.UpdateLabels();
 			this.TapePlayerMenu.Show = true;
-			this.NoteWindow.active = false;
+			this.NoteWindow.SetActive(false);
 			this.Yandere.CanMove = false;
-			this.Yandere.HUD.alpha = (float)0;
-			Time.timeScale = (float)0;
+			this.Yandere.HUD.alpha = 0f;
+			Time.timeScale = 0f;
 			this.PromptBar.ClearButtons();
 			this.PromptBar.Label[1].text = "EXIT";
 			this.PromptBar.Label[4].text = "CHOOSE";
@@ -63,49 +62,29 @@ public class TapePlayerScript : MonoBehaviour
 		}
 		if (this.Spin)
 		{
-			float y = this.Rolls[0].localEulerAngles.y + 6f * this.SpinSpeed;
-			Vector3 localEulerAngles = this.Rolls[0].localEulerAngles;
-			float num = localEulerAngles.y = y;
-			Vector3 vector = this.Rolls[0].localEulerAngles = localEulerAngles;
-			float y2 = this.Rolls[1].localEulerAngles.y + 6f * this.SpinSpeed;
-			Vector3 localEulerAngles2 = this.Rolls[1].localEulerAngles;
-			float num2 = localEulerAngles2.y = y2;
-			Vector3 vector2 = this.Rolls[1].localEulerAngles = localEulerAngles2;
+			Transform transform = this.Rolls[0];
+			transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y + 0.0166666675f * (360f * this.SpinSpeed), transform.localEulerAngles.z);
+			Transform transform2 = this.Rolls[1];
+			transform2.localEulerAngles = new Vector3(transform2.localEulerAngles.x, transform2.localEulerAngles.y + 0.0166666675f * (360f * this.SpinSpeed), transform2.localEulerAngles.z);
 		}
 		if (this.FastForward)
 		{
-			float x = Mathf.MoveTowards(this.FFButton.localEulerAngles.x, 6.25f, 1.66666663f);
-			Vector3 localEulerAngles3 = this.FFButton.localEulerAngles;
-			float num3 = localEulerAngles3.x = x;
-			Vector3 vector3 = this.FFButton.localEulerAngles = localEulerAngles3;
-			this.SpinSpeed = (float)2;
+			this.FFButton.localEulerAngles = new Vector3(Mathf.MoveTowards(this.FFButton.localEulerAngles.x, 6.25f, 1.66666663f), this.FFButton.localEulerAngles.y, this.FFButton.localEulerAngles.z);
+			this.SpinSpeed = 2f;
 		}
 		else
 		{
-			float x2 = Mathf.MoveTowards(this.FFButton.localEulerAngles.x, (float)0, 1.66666663f);
-			Vector3 localEulerAngles4 = this.FFButton.localEulerAngles;
-			float num4 = localEulerAngles4.x = x2;
-			Vector3 vector4 = this.FFButton.localEulerAngles = localEulerAngles4;
-			this.SpinSpeed = (float)1;
+			this.FFButton.localEulerAngles = new Vector3(Mathf.MoveTowards(this.FFButton.localEulerAngles.x, 0f, 1.66666663f), this.FFButton.localEulerAngles.y, this.FFButton.localEulerAngles.z);
+			this.SpinSpeed = 1f;
 		}
 		if (this.Rewind)
 		{
-			float x3 = Mathf.MoveTowards(this.RWButton.localEulerAngles.x, 6.25f, 1.66666663f);
-			Vector3 localEulerAngles5 = this.RWButton.localEulerAngles;
-			float num5 = localEulerAngles5.x = x3;
-			Vector3 vector5 = this.RWButton.localEulerAngles = localEulerAngles5;
-			this.SpinSpeed = (float)-2;
+			this.RWButton.localEulerAngles = new Vector3(Mathf.MoveTowards(this.RWButton.localEulerAngles.x, 6.25f, 1.66666663f), this.RWButton.localEulerAngles.y, this.RWButton.localEulerAngles.z);
+			this.SpinSpeed = -2f;
 		}
 		else
 		{
-			float x4 = Mathf.MoveTowards(this.RWButton.localEulerAngles.x, (float)0, 1.66666663f);
-			Vector3 localEulerAngles6 = this.RWButton.localEulerAngles;
-			float num6 = localEulerAngles6.x = x4;
-			Vector3 vector6 = this.RWButton.localEulerAngles = localEulerAngles6;
+			this.RWButton.localEulerAngles = new Vector3(Mathf.MoveTowards(this.RWButton.localEulerAngles.x, 0f, 1.66666663f), this.RWButton.localEulerAngles.y, this.RWButton.localEulerAngles.z);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

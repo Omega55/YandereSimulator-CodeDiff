@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class ContainerScript : MonoBehaviour
 {
 	public Transform[] BodyPartPositions;
@@ -18,7 +17,7 @@ public class ContainerScript : MonoBehaviour
 
 	public PromptScript Prompt;
 
-	public string SpriteName;
+	public string SpriteName = string.Empty;
 
 	public bool Open;
 
@@ -26,37 +25,25 @@ public class ContainerScript : MonoBehaviour
 
 	public int ID;
 
-	public ContainerScript()
+	private void Update()
 	{
-		this.SpriteName = string.Empty;
-	}
-
-	public virtual void Update()
-	{
-		if (this.Prompt.Circle[0].fillAmount <= (float)0)
+		if (this.Prompt.Circle[0].fillAmount <= 0f)
 		{
-			this.Prompt.Circle[0].fillAmount = (float)1;
-			if (!this.Open)
-			{
-				this.Open = true;
-			}
-			else
-			{
-				this.Open = false;
-			}
+			this.Prompt.Circle[0].fillAmount = 1f;
+			this.Open = !this.Open;
 			this.UpdatePrompts();
 		}
-		if (this.Prompt.Circle[1].fillAmount <= (float)0)
+		if (this.Prompt.Circle[1].fillAmount <= 0f)
 		{
-			this.Prompt.Circle[1].fillAmount = (float)1;
+			this.Prompt.Circle[1].fillAmount = 1f;
 			if (this.Prompt.Yandere.Armed)
 			{
-				this.Weapon = (WeaponScript)this.Prompt.Yandere.Weapon[this.Prompt.Yandere.Equipped].gameObject.GetComponent(typeof(WeaponScript));
+				this.Weapon = this.Prompt.Yandere.Weapon[this.Prompt.Yandere.Equipped].gameObject.GetComponent<WeaponScript>();
 				this.Prompt.Yandere.EmptyHands();
 				this.Weapon.transform.parent = this.WeaponSpot;
-				this.Weapon.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
-				this.Weapon.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
-				this.Weapon.gameObject.rigidbody.useGravity = false;
+				this.Weapon.transform.localPosition = Vector3.zero;
+				this.Weapon.transform.localEulerAngles = Vector3.zero;
+				this.Weapon.gameObject.GetComponent<Rigidbody>().useGravity = false;
 				this.Weapon.MyCollider.enabled = false;
 				this.Weapon.Prompt.Hide();
 				this.Weapon.Prompt.enabled = false;
@@ -65,38 +52,39 @@ public class ContainerScript : MonoBehaviour
 			{
 				this.BodyPart = this.Prompt.Yandere.PickUp;
 				this.Prompt.Yandere.EmptyHands();
-				this.BodyPart.transform.parent = this.BodyPartPositions[((BodyPartScript)this.BodyPart.GetComponent(typeof(BodyPartScript))).Type];
-				this.BodyPart.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
-				this.BodyPart.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
-				this.BodyPart.gameObject.rigidbody.useGravity = false;
+				this.BodyPart.transform.parent = this.BodyPartPositions[this.BodyPart.GetComponent<BodyPartScript>().Type];
+				this.BodyPart.transform.localPosition = Vector3.zero;
+				this.BodyPart.transform.localEulerAngles = Vector3.zero;
+				this.BodyPart.gameObject.GetComponent<Rigidbody>().useGravity = false;
 				this.BodyPart.MyCollider.enabled = false;
-				this.BodyParts[((BodyPartScript)this.BodyPart.GetComponent(typeof(BodyPartScript))).Type] = this.BodyPart;
+				this.BodyParts[this.BodyPart.GetComponent<BodyPartScript>().Type] = this.BodyPart;
 			}
 			this.Contents++;
 			this.UpdatePrompts();
 		}
-		if (this.Prompt.Circle[3].fillAmount <= (float)0)
+		if (this.Prompt.Circle[3].fillAmount <= 0f)
 		{
-			this.Prompt.Circle[3].fillAmount = (float)1;
+			this.Prompt.Circle[3].fillAmount = 1f;
 			if (!this.Open)
 			{
-				this.transform.parent = this.Prompt.Yandere.Backpack;
-				this.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
-				this.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+				base.transform.parent = this.Prompt.Yandere.Backpack;
+				base.transform.localPosition = Vector3.zero;
+				base.transform.localEulerAngles = Vector3.zero;
 				this.Prompt.Yandere.Container = this;
 				this.Prompt.Yandere.WeaponMenu.UpdateSprites();
-				this.Prompt.Yandere.ObstacleDetector.gameObject.active = true;
+				this.Prompt.Yandere.ObstacleDetector.gameObject.SetActive(true);
 				this.Prompt.MyCollider.enabled = false;
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
-				this.rigidbody.isKinematic = true;
-				this.rigidbody.useGravity = false;
+				Rigidbody component = base.GetComponent<Rigidbody>();
+				component.isKinematic = true;
+				component.useGravity = false;
 			}
 			else
 			{
 				if (this.Weapon != null)
 				{
-					this.Weapon.Prompt.Circle[3].fillAmount = (float)-1;
+					this.Weapon.Prompt.Circle[3].fillAmount = -1f;
 					this.Weapon.Prompt.enabled = true;
 					this.Weapon = null;
 				}
@@ -110,56 +98,44 @@ public class ContainerScript : MonoBehaviour
 						this.BodyParts[this.ID] = null;
 						this.ID++;
 					}
-					this.BodyPart.Prompt.Circle[3].fillAmount = (float)-1;
+					this.BodyPart.Prompt.Circle[3].fillAmount = -1f;
 				}
 				this.Contents--;
 				this.UpdatePrompts();
 			}
 		}
-		if (this.Open)
-		{
-			float z = Mathf.Lerp(this.Lid.localEulerAngles.z, (float)90, Time.deltaTime * (float)10);
-			Vector3 localEulerAngles = this.Lid.localEulerAngles;
-			float num = localEulerAngles.z = z;
-			Vector3 vector = this.Lid.localEulerAngles = localEulerAngles;
-		}
-		else
-		{
-			float z2 = Mathf.Lerp(this.Lid.localEulerAngles.z, (float)0, Time.deltaTime * (float)10);
-			Vector3 localEulerAngles2 = this.Lid.localEulerAngles;
-			float num2 = localEulerAngles2.z = z2;
-			Vector3 vector2 = this.Lid.localEulerAngles = localEulerAngles2;
-		}
+		this.Lid.localEulerAngles = new Vector3(this.Lid.localEulerAngles.x, this.Lid.localEulerAngles.y, Mathf.Lerp(this.Lid.localEulerAngles.z, (!this.Open) ? 0f : 90f, Time.deltaTime * 10f));
 		if (this.Weapon != null)
 		{
-			this.Weapon.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
-			this.Weapon.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+			this.Weapon.transform.localPosition = Vector3.zero;
+			this.Weapon.transform.localEulerAngles = Vector3.zero;
 		}
 		this.ID = 1;
 		while (this.ID < this.BodyParts.Length)
 		{
 			if (this.BodyParts[this.ID] != null)
 			{
-				this.BodyParts[this.ID].transform.localPosition = new Vector3((float)0, (float)0, (float)0);
-				this.BodyParts[this.ID].transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+				this.BodyParts[this.ID].transform.localPosition = Vector3.zero;
+				this.BodyParts[this.ID].transform.localEulerAngles = Vector3.zero;
 			}
 			this.ID++;
 		}
 	}
 
-	public virtual void Drop()
+	public void Drop()
 	{
-		this.transform.parent = null;
-		this.transform.position = this.Prompt.Yandere.ObstacleDetector.transform.position;
-		this.transform.eulerAngles = this.Prompt.Yandere.ObstacleDetector.transform.eulerAngles;
+		base.transform.parent = null;
+		base.transform.position = this.Prompt.Yandere.ObstacleDetector.transform.position;
+		base.transform.eulerAngles = this.Prompt.Yandere.ObstacleDetector.transform.eulerAngles;
 		this.Prompt.Yandere.Container = null;
 		this.Prompt.MyCollider.enabled = true;
 		this.Prompt.enabled = true;
-		this.rigidbody.isKinematic = false;
-		this.rigidbody.useGravity = true;
+		Rigidbody component = base.GetComponent<Rigidbody>();
+		component.isKinematic = false;
+		component.useGravity = true;
 	}
 
-	public virtual void UpdatePrompts()
+	public void UpdatePrompts()
 	{
 		if (this.Open)
 		{
@@ -196,7 +172,7 @@ public class ContainerScript : MonoBehaviour
 			{
 				if (this.Prompt.Yandere.PickUp.BodyPart)
 				{
-					if (this.BodyParts[((BodyPartScript)this.Prompt.Yandere.PickUp.gameObject.GetComponent(typeof(BodyPartScript))).Type] == null)
+					if (this.BodyParts[this.Prompt.Yandere.PickUp.gameObject.GetComponent<BodyPartScript>().Type] == null)
 					{
 						this.Prompt.Label[1].text = "     Insert";
 						this.Prompt.HideButton[1] = false;
@@ -223,9 +199,5 @@ public class ContainerScript : MonoBehaviour
 			this.Prompt.Label[3].text = "     Wear";
 			this.Prompt.HideButton[3] = false;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

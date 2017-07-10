@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class GloveScript : MonoBehaviour
 {
 	public PromptScript Prompt;
@@ -12,37 +11,26 @@ public class GloveScript : MonoBehaviour
 
 	public Projector Blood;
 
-	public virtual void Start()
+	private void Start()
 	{
-		YandereScript yandereScript = (YandereScript)GameObject.Find("YandereChan").GetComponent(typeof(YandereScript));
-		Physics.IgnoreCollision(yandereScript.collider, this.MyCollider);
-		if (this.transform.position.y > (float)1000)
+		YandereScript component = GameObject.Find("YandereChan").GetComponent<YandereScript>();
+		Physics.IgnoreCollision(component.GetComponent<Collider>(), this.MyCollider);
+		if (base.transform.position.y > 1000f)
 		{
-			this.transform.position = new Vector3((float)12, (float)0, (float)28);
+			base.transform.position = new Vector3(12f, 0f, 28f);
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Prompt.Circle[0].fillAmount == (float)0)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			this.transform.parent = this.Prompt.Yandere.transform;
-			this.transform.localPosition = new Vector3((float)0, (float)1, 0.25f);
+			base.transform.parent = this.Prompt.Yandere.transform;
+			base.transform.localPosition = new Vector3(0f, 1f, 0.25f);
 			this.Prompt.Yandere.Gloves = this;
 			this.Prompt.Yandere.WearGloves();
-			this.active = false;
+			base.gameObject.SetActive(false);
 		}
-		if (this.Prompt.Yandere.Schoolwear == 1 && !this.Prompt.Yandere.ClubAttire)
-		{
-			this.Prompt.HideButton[0] = false;
-		}
-		else
-		{
-			this.Prompt.HideButton[0] = true;
-		}
-	}
-
-	public virtual void Main()
-	{
+		this.Prompt.HideButton[0] = (this.Prompt.Yandere.Schoolwear != 1 || this.Prompt.Yandere.ClubAttire);
 	}
 }

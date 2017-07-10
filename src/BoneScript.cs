@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class BoneScript : MonoBehaviour
 {
 	public float Height;
@@ -10,26 +9,20 @@ public class BoneScript : MonoBehaviour
 
 	public bool Drop;
 
-	public virtual void Start()
+	private void Start()
 	{
-		float y = UnityEngine.Random.Range((float)0, 360f);
-		Vector3 eulerAngles = this.transform.eulerAngles;
-		float num = eulerAngles.y = y;
-		Vector3 vector = this.transform.eulerAngles = eulerAngles;
-		this.Origin = this.transform.position.y;
-		this.audio.pitch = (float)NGUITools.RandomRange((int)0.9f, (int)1.1f);
+		base.transform.eulerAngles = new Vector3(base.transform.eulerAngles.x, UnityEngine.Random.Range(0f, 360f), base.transform.eulerAngles.z);
+		this.Origin = base.transform.position.y;
+		base.GetComponent<AudioSource>().pitch = UnityEngine.Random.Range(0.9f, 1.1f);
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (!this.Drop)
 		{
-			if (this.transform.position.y < this.Origin + (float)2 - 0.0001f)
+			if (base.transform.position.y < this.Origin + 2f - 0.0001f)
 			{
-				float y = Mathf.Lerp(this.transform.position.y, this.Origin + (float)2, Time.deltaTime * (float)10);
-				Vector3 position = this.transform.position;
-				float num = position.y = y;
-				Vector3 vector = this.transform.position = position;
+				base.transform.position = new Vector3(base.transform.position.x, Mathf.Lerp(base.transform.position.y, this.Origin + 2f, Time.deltaTime * 10f), base.transform.position.z);
 			}
 			else
 			{
@@ -39,33 +32,27 @@ public class BoneScript : MonoBehaviour
 		else
 		{
 			this.Height -= Time.deltaTime;
-			float y2 = this.transform.position.y + this.Height;
-			Vector3 position2 = this.transform.position;
-			float num2 = position2.y = y2;
-			Vector3 vector2 = this.transform.position = position2;
-			if (this.transform.position.y < this.Origin - 2.155f)
+			base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y + this.Height, base.transform.position.z);
+			if (base.transform.position.y < this.Origin - 2.155f)
 			{
-				UnityEngine.Object.Destroy(this.gameObject);
+				UnityEngine.Object.Destroy(base.gameObject);
 			}
 		}
 	}
 
-	public virtual void OnTriggerEnter(Collider other)
+	private void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.layer == 9)
 		{
-			StudentScript studentScript = (StudentScript)other.gameObject.GetComponent(typeof(StudentScript));
-			if (studentScript != null)
+			StudentScript component = other.gameObject.GetComponent<StudentScript>();
+			if (component != null)
 			{
-				studentScript.Dead = true;
-				studentScript.BecomeRagdoll();
-				studentScript.Ragdoll.AllRigidbodies[0].isKinematic = false;
-				studentScript.Ragdoll.AllRigidbodies[0].AddForce(this.transform.up);
+				component.Dead = true;
+				component.BecomeRagdoll();
+				Rigidbody rigidbody = component.Ragdoll.AllRigidbodies[0];
+				rigidbody.isKinematic = false;
+				rigidbody.AddForce(base.transform.up);
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-[Serializable]
 public class HomeCameraScript : MonoBehaviour
 {
 	public HomeWindowScript[] HomeWindows;
@@ -80,19 +80,16 @@ public class HomeCameraScript : MonoBehaviour
 
 	public bool Torturing;
 
-	public virtual void Start()
+	private void Start()
 	{
-		int num = 0;
-		Color color = this.Button.color;
-		float num2 = color.a = (float)num;
-		Color color2 = this.Button.color = color;
+		this.Button.color = new Color(this.Button.color.r, this.Button.color.g, this.Button.color.b, 0f);
 		this.Focus.position = this.Target.position;
-		this.transform.position = this.Destination.position;
+		base.transform.position = this.Destination.position;
 		if (PlayerPrefs.GetInt("Night") == 1)
 		{
-			this.CeilingLight.active = true;
-			this.NightLight.active = true;
-			this.DayLight.active = false;
+			this.CeilingLight.SetActive(true);
+			this.NightLight.SetActive(true);
+			this.DayLight.SetActive(false);
 			this.Triggers[7].Disable();
 			this.BasementJukebox.clip = this.NightBasement;
 			this.RoomJukebox.clip = this.NightRoom;
@@ -103,7 +100,7 @@ public class HomeCameraScript : MonoBehaviour
 		{
 			this.BasementJukebox.Play();
 			this.RoomJukebox.Play();
-			this.ComputerScreen.active = false;
+			this.ComputerScreen.SetActive(false);
 			this.Triggers[2].Disable();
 			this.Triggers[3].Disable();
 			this.Triggers[5].Disable();
@@ -111,36 +108,34 @@ public class HomeCameraScript : MonoBehaviour
 		}
 		if (PlayerPrefs.GetInt("KidnapVictim") == 0)
 		{
-			this.RopeGroup.active = false;
-			this.Tripod.active = false;
-			this.Victim.active = false;
+			this.RopeGroup.SetActive(false);
+			this.Tripod.SetActive(false);
+			this.Victim.SetActive(false);
 			this.Triggers[10].Disable();
 		}
 		else
 		{
 			int @int = PlayerPrefs.GetInt("KidnapVictim");
-			if (PlayerPrefs.GetInt("Student_" + @int + "_Arrested") == 1 || PlayerPrefs.GetInt("Student_" + @int + "_Dead") == 1)
+			if (PlayerPrefs.GetInt("Student_" + @int.ToString() + "_Arrested") == 1 || PlayerPrefs.GetInt("Student_" + @int.ToString() + "_Dead") == 1)
 			{
-				this.RopeGroup.active = false;
-				this.Victim.active = false;
+				this.RopeGroup.SetActive(false);
+				this.Victim.SetActive(false);
 				this.Triggers[10].Disable();
 			}
 		}
-		Time.timeScale = (float)1;
+		Time.timeScale = 1f;
 	}
 
-	public virtual void LateUpdate()
+	private void LateUpdate()
 	{
-		if (this.HomeYandere.transform.position.y > (float)-5)
+		if (this.HomeYandere.transform.position.y > -5f)
 		{
-			float x = this.HomeYandere.transform.position.x * (float)-1;
-			Vector3 position = this.Destinations[0].position;
-			float num = position.x = x;
-			Vector3 vector = this.Destinations[0].position = position;
+			Transform transform = this.Destinations[0];
+			transform.position = new Vector3(-this.HomeYandere.transform.position.x, transform.position.y, transform.position.z);
 		}
-		this.Focus.position = Vector3.Lerp(this.Focus.position, this.Target.position, Time.deltaTime * (float)10);
-		this.transform.position = Vector3.Lerp(this.transform.position, this.Destination.position, Time.deltaTime * (float)10);
-		this.transform.LookAt(this.Focus.position);
+		this.Focus.position = Vector3.Lerp(this.Focus.position, this.Target.position, Time.deltaTime * 10f);
+		base.transform.position = Vector3.Lerp(base.transform.position, this.Destination.position, Time.deltaTime * 10f);
+		base.transform.LookAt(this.Focus.position);
 		if (this.ID < 11 && Input.GetButtonDown("A") && this.HomeYandere.CanMove && this.ID != 0)
 		{
 			this.Destination = this.Destinations[this.ID];
@@ -161,18 +156,18 @@ public class HomeCameraScript : MonoBehaviour
 			}
 			else if (this.ID == 4)
 			{
-				this.CorkboardLabel.active = false;
+				this.CorkboardLabel.SetActive(false);
 				this.HomeCorkboard.enabled = true;
-				this.LoadingScreen.active = true;
-				this.HomeYandere.active = false;
+				this.LoadingScreen.SetActive(true);
+				this.HomeYandere.gameObject.SetActive(false);
 			}
 			else if (this.ID == 5)
 			{
 				this.HomeYandere.enabled = false;
-				this.Controller.transform.localPosition = new Vector3(0.1245f, 0.032f, (float)0);
-				this.HomeYandere.transform.position = new Vector3((float)1, (float)0, (float)0);
-				this.HomeYandere.transform.eulerAngles = new Vector3((float)0, (float)90, (float)0);
-				this.HomeYandere.Character.animation.Play("f02_gaming_00");
+				this.Controller.transform.localPosition = new Vector3(0.1245f, 0.032f, 0f);
+				this.HomeYandere.transform.position = new Vector3(1f, 0f, 0f);
+				this.HomeYandere.transform.eulerAngles = new Vector3(0f, 90f, 0f);
+				this.HomeYandere.Character.GetComponent<Animation>().Play("f02_gaming_00");
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Label[0].text = "Play";
 				this.PromptBar.Label[1].text = "Back";
@@ -183,7 +178,7 @@ public class HomeCameraScript : MonoBehaviour
 			else if (this.ID == 6)
 			{
 				this.HomeSenpaiShrine.enabled = true;
-				this.HomeYandere.active = false;
+				this.HomeYandere.gameObject.SetActive(false);
 			}
 			else if (this.ID == 7)
 			{
@@ -201,63 +196,36 @@ public class HomeCameraScript : MonoBehaviour
 				this.PromptBar.UpdateButtons();
 				this.PromptBar.Show = true;
 				this.HomePrisoner.UpdateDesc();
-				this.HomeYandere.active = false;
+				this.HomeYandere.gameObject.SetActive(false);
 			}
 		}
 		if (this.Destination == this.Destinations[0])
 		{
-			if (this.HomeYandere.transform.position.y > (float)-1)
-			{
-				this.Vignette.intensity = Mathf.MoveTowards(this.Vignette.intensity, (float)1, Time.deltaTime);
-			}
-			else
-			{
-				this.Vignette.intensity = Mathf.MoveTowards(this.Vignette.intensity, (float)5, Time.deltaTime * (float)5);
-			}
-			this.Vignette.chromaticAberration = Mathf.MoveTowards(this.Vignette.chromaticAberration, (float)1, Time.deltaTime);
-			this.Vignette.blur = Mathf.MoveTowards(this.Vignette.blur, (float)1, Time.deltaTime);
+			this.Vignette.intensity = ((this.HomeYandere.transform.position.y <= -1f) ? Mathf.MoveTowards(this.Vignette.intensity, 5f, Time.deltaTime * 5f) : Mathf.MoveTowards(this.Vignette.intensity, 1f, Time.deltaTime));
+			this.Vignette.chromaticAberration = Mathf.MoveTowards(this.Vignette.chromaticAberration, 1f, Time.deltaTime);
+			this.Vignette.blur = Mathf.MoveTowards(this.Vignette.blur, 1f, Time.deltaTime);
 		}
 		else
 		{
-			if (this.HomeYandere.transform.position.y > (float)-1)
-			{
-				this.Vignette.intensity = Mathf.MoveTowards(this.Vignette.intensity, (float)0, Time.deltaTime);
-			}
-			else
-			{
-				this.Vignette.intensity = Mathf.MoveTowards(this.Vignette.intensity, (float)0, Time.deltaTime * (float)5);
-			}
-			this.Vignette.chromaticAberration = Mathf.MoveTowards(this.Vignette.chromaticAberration, (float)0, Time.deltaTime);
-			this.Vignette.blur = Mathf.MoveTowards(this.Vignette.blur, (float)0, Time.deltaTime);
+			this.Vignette.intensity = ((this.HomeYandere.transform.position.y <= -1f) ? Mathf.MoveTowards(this.Vignette.intensity, 0f, Time.deltaTime * 5f) : Mathf.MoveTowards(this.Vignette.intensity, 0f, Time.deltaTime));
+			this.Vignette.chromaticAberration = Mathf.MoveTowards(this.Vignette.chromaticAberration, 0f, Time.deltaTime);
+			this.Vignette.blur = Mathf.MoveTowards(this.Vignette.blur, 0f, Time.deltaTime);
 		}
-		if (this.ID > 0 && this.HomeYandere.CanMove)
-		{
-			float a = Mathf.MoveTowards(this.Button.color.a, (float)1, Time.deltaTime * (float)10);
-			Color color = this.Button.color;
-			float num2 = color.a = a;
-			Color color2 = this.Button.color = color;
-		}
-		else
-		{
-			float a2 = Mathf.MoveTowards(this.Button.color.a, (float)0, Time.deltaTime * (float)10);
-			Color color3 = this.Button.color;
-			float num3 = color3.a = a2;
-			Color color4 = this.Button.color = color3;
-		}
+		this.Button.color = new Color(this.Button.color.r, this.Button.color.g, this.Button.color.b, Mathf.MoveTowards(this.Button.color.a, (this.ID <= 0 || !this.HomeYandere.CanMove) ? 0f : 1f, Time.deltaTime * 10f));
 		if (this.HomeDarkness.FadeOut)
 		{
-			this.BasementJukebox.volume = Mathf.MoveTowards(this.BasementJukebox.volume, (float)0, Time.deltaTime);
-			this.RoomJukebox.volume = Mathf.MoveTowards(this.RoomJukebox.volume, (float)0, Time.deltaTime);
+			this.BasementJukebox.volume = Mathf.MoveTowards(this.BasementJukebox.volume, 0f, Time.deltaTime);
+			this.RoomJukebox.volume = Mathf.MoveTowards(this.RoomJukebox.volume, 0f, Time.deltaTime);
 		}
-		else if (this.HomeYandere.transform.position.y > (float)-1)
+		else if (this.HomeYandere.transform.position.y > -1f)
 		{
-			this.BasementJukebox.volume = Mathf.MoveTowards(this.BasementJukebox.volume, (float)0, Time.deltaTime);
-			this.RoomJukebox.volume = Mathf.MoveTowards(this.RoomJukebox.volume, (float)1, Time.deltaTime);
+			this.BasementJukebox.volume = Mathf.MoveTowards(this.BasementJukebox.volume, 0f, Time.deltaTime);
+			this.RoomJukebox.volume = Mathf.MoveTowards(this.RoomJukebox.volume, 1f, Time.deltaTime);
 		}
 		else if (!this.Torturing)
 		{
-			this.BasementJukebox.volume = Mathf.MoveTowards(this.BasementJukebox.volume, (float)1, Time.deltaTime);
-			this.RoomJukebox.volume = Mathf.MoveTowards(this.RoomJukebox.volume, (float)0, Time.deltaTime);
+			this.BasementJukebox.volume = Mathf.MoveTowards(this.BasementJukebox.volume, 1f, Time.deltaTime);
+			this.RoomJukebox.volume = Mathf.MoveTowards(this.RoomJukebox.volume, 0f, Time.deltaTime);
 		}
 		if (Input.GetKeyDown("y"))
 		{
@@ -273,15 +241,15 @@ public class HomeCameraScript : MonoBehaviour
 			{
 				PlayerPrefs.SetInt("Night", 0);
 			}
-			Application.LoadLevel(Application.loadedLevel);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
 		if (Input.GetKeyDown("="))
 		{
-			Time.timeScale = (float)100;
+			Time.timeScale = 100f;
 		}
 	}
 
-	public virtual void PlayMusic()
+	public void PlayMusic()
 	{
 		if (PlayerPrefs.GetInt("DraculaDefeated") == 0)
 		{
@@ -294,9 +262,5 @@ public class HomeCameraScript : MonoBehaviour
 				this.RoomJukebox.Play();
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

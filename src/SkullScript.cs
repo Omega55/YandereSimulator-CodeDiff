@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class SkullScript : MonoBehaviour
 {
 	public JukeboxScript Jukebox;
@@ -38,13 +37,13 @@ public class SkullScript : MonoBehaviour
 
 	public float Timer;
 
-	public virtual void Start()
+	private void Start()
 	{
 		this.OriginalPosition = this.RitualKnife.transform.position;
 		this.OriginalRotation = this.RitualKnife.transform.eulerAngles;
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.Yandere.Armed)
 		{
@@ -63,86 +62,81 @@ public class SkullScript : MonoBehaviour
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
 		}
-		if (this.Prompt.Circle[0].fillAmount <= (float)0)
+		AudioSource component = base.GetComponent<AudioSource>();
+		if (this.Prompt.Circle[0].fillAmount <= 0f)
 		{
 			this.Yandere.Weapon[this.Yandere.Equipped].Drop();
 			this.Yandere.Weapon[this.Yandere.Equipped] = null;
 			this.Yandere.Unequip();
-			this.Yandere.DropTimer[this.Yandere.Equipped] = (float)0;
+			this.Yandere.DropTimer[this.Yandere.Equipped] = 0f;
 			this.RitualKnife.transform.position = this.OriginalPosition;
 			this.RitualKnife.transform.eulerAngles = this.OriginalRotation;
-			this.RitualKnife.rigidbody.useGravity = false;
-			if (((WeaponScript)this.RitualKnife.GetComponent(typeof(WeaponScript))).Heated && !((WeaponScript)this.RitualKnife.GetComponent(typeof(WeaponScript))).Flaming)
+			this.RitualKnife.GetComponent<Rigidbody>().useGravity = false;
+			if (this.RitualKnife.GetComponent<WeaponScript>().Heated && !this.RitualKnife.GetComponent<WeaponScript>().Flaming)
 			{
-				this.audio.clip = this.FlameDemonVoice;
-				this.audio.Play();
-				this.FlameTimer = (float)10;
-				((WeaponScript)this.RitualKnife.GetComponent(typeof(WeaponScript))).Prompt.Hide();
-				((WeaponScript)this.RitualKnife.GetComponent(typeof(WeaponScript))).Prompt.enabled = false;
+				component.clip = this.FlameDemonVoice;
+				component.Play();
+				this.FlameTimer = 10f;
+				this.RitualKnife.GetComponent<WeaponScript>().Prompt.Hide();
+				this.RitualKnife.GetComponent<WeaponScript>().Prompt.enabled = false;
 			}
-			else if (((WeaponScript)this.RitualKnife.GetComponent(typeof(WeaponScript))).Blood.enabled)
+			else if (this.RitualKnife.GetComponent<WeaponScript>().Blood.enabled)
 			{
-				this.DebugMenu.active = false;
-				this.Yandere.Character.animation.CrossFade(this.Yandere.IdleAnim);
+				this.DebugMenu.SetActive(false);
+				this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
 				this.Yandere.CanMove = false;
-				UnityEngine.Object.Instantiate(this.DarkAura, this.Yandere.transform.position + Vector3.up * 0.81f, Quaternion.identity);
+				UnityEngine.Object.Instantiate<GameObject>(this.DarkAura, this.Yandere.transform.position + Vector3.up * 0.81f, Quaternion.identity);
 				this.Timer += Time.deltaTime;
 				this.Clock.StopTime = true;
 			}
 		}
-		if (this.FlameTimer > (float)0)
+		if (this.FlameTimer > 0f)
 		{
-			this.FlameTimer = Mathf.MoveTowards(this.FlameTimer, (float)0, Time.deltaTime);
-			if (this.FlameTimer == (float)0)
+			this.FlameTimer = Mathf.MoveTowards(this.FlameTimer, 0f, Time.deltaTime);
+			if (this.FlameTimer == 0f)
 			{
-				((WeaponScript)this.RitualKnife.GetComponent(typeof(WeaponScript))).FireEffect.active = true;
-				((WeaponScript)this.RitualKnife.GetComponent(typeof(WeaponScript))).Prompt.enabled = true;
-				((WeaponScript)this.RitualKnife.GetComponent(typeof(WeaponScript))).Flaming = true;
+				this.RitualKnife.GetComponent<WeaponScript>().FireEffect.SetActive(true);
+				this.RitualKnife.GetComponent<WeaponScript>().Prompt.enabled = true;
+				this.RitualKnife.GetComponent<WeaponScript>().Flaming = true;
 				this.Prompt.enabled = true;
-				this.audio.clip = this.FlameActivation;
-				this.audio.Play();
+				component.clip = this.FlameActivation;
+				component.Play();
 			}
 		}
-		if (this.Timer > (float)0)
+		if (this.Timer > 0f)
 		{
-			if (this.Yandere.transform.position.y < (float)1000)
+			if (this.Yandere.transform.position.y < 1000f)
 			{
 				this.Timer += Time.deltaTime;
-				if (this.Timer > (float)4)
+				if (this.Timer > 4f)
 				{
 					this.Darkness.enabled = true;
-					float a = Mathf.MoveTowards(this.Darkness.color.a, (float)1, Time.deltaTime);
-					Color color = this.Darkness.color;
-					float num = color.a = a;
-					Color color2 = this.Darkness.color = color;
-					if (this.Darkness.color.a == (float)1)
+					this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 1f, Time.deltaTime));
+					if (this.Darkness.color.a == 1f)
 					{
-						this.Yandere.transform.position = new Vector3((float)0, (float)2000, (float)0);
-						this.Yandere.Character.active = true;
+						this.Yandere.transform.position = new Vector3(0f, 2000f, 0f);
+						this.Yandere.Character.SetActive(true);
 						this.Yandere.SetAnimationLayers();
-						this.HeartbeatCamera.active = false;
-						this.FPS.active = false;
-						this.HUD.active = false;
+						this.HeartbeatCamera.SetActive(false);
+						this.FPS.SetActive(false);
+						this.HUD.SetActive(false);
 					}
 				}
-				else if (this.Timer > (float)1)
+				else if (this.Timer > 1f)
 				{
-					this.Yandere.Character.active = false;
+					this.Yandere.Character.SetActive(false);
 				}
 			}
 			else
 			{
-				this.Jukebox.Volume = Mathf.MoveTowards(this.Jukebox.Volume, (float)0, Time.deltaTime * 0.5f);
-				if (this.Jukebox.Volume == (float)0)
+				this.Jukebox.Volume = Mathf.MoveTowards(this.Jukebox.Volume, 0f, Time.deltaTime * 0.5f);
+				if (this.Jukebox.Volume == 0f)
 				{
-					float a2 = Mathf.MoveTowards(this.Darkness.color.a, (float)0, Time.deltaTime);
-					Color color3 = this.Darkness.color;
-					float num2 = color3.a = a2;
-					Color color4 = this.Darkness.color = color3;
-					if (this.Darkness.color.a == (float)0)
+					this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 0f, Time.deltaTime));
+					if (this.Darkness.color.a == 0f)
 					{
 						this.Yandere.CanMove = true;
-						this.Timer = (float)0;
+						this.Timer = 0f;
 					}
 				}
 			}
@@ -151,11 +145,7 @@ public class SkullScript : MonoBehaviour
 		{
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
-			this.enabled = false;
+			base.enabled = false;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class ClubManagerScript : MonoBehaviour
 {
 	public ShoulderCameraScript ShoulderCamera;
@@ -63,7 +61,7 @@ public class ClubManagerScript : MonoBehaviour
 
 	public int ClubPhase;
 
-	public int Phase;
+	public int Phase = 1;
 
 	public int Club;
 
@@ -89,30 +87,23 @@ public class ClubManagerScript : MonoBehaviour
 
 	public bool ClubGrudge;
 
-	public ClubManagerScript()
+	private void Start()
 	{
-		this.Phase = 1;
-	}
-
-	public virtual void Start()
-	{
-		this.ClubWindow.ActivityWindow.localScale = new Vector3((float)0, (float)0, (float)0);
-		this.ClubWindow.ActivityWindow.gameObject.active = false;
+		this.ClubWindow.ActivityWindow.localScale = Vector3.zero;
+		this.ClubWindow.ActivityWindow.gameObject.SetActive(false);
 		this.ActivateClubBenefit();
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.Club != 0)
 		{
 			if (this.Phase == 1)
 			{
-				float a = Mathf.MoveTowards(this.Darkness.color.a, (float)0, Time.deltaTime);
-				Color color = this.Darkness.color;
-				float num = color.a = a;
-				Color color2 = this.Darkness.color = color;
+				this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 0f, Time.deltaTime));
 			}
-			if (this.Darkness.color.a == (float)0)
+			AudioSource component = base.GetComponent<AudioSource>();
+			if (this.Darkness.color.a == 0f)
 			{
 				if (this.Phase == 1)
 				{
@@ -121,7 +112,7 @@ public class ClubManagerScript : MonoBehaviour
 					this.PromptBar.UpdateButtons();
 					this.PromptBar.Show = true;
 					this.ClubWindow.PerformingActivity = true;
-					this.ClubWindow.ActivityWindow.gameObject.active = true;
+					this.ClubWindow.ActivityWindow.gameObject.SetActive(true);
 					this.ClubWindow.ActivityLabel.text = this.ClubWindow.ActivityDescs[this.Club];
 					this.Phase++;
 				}
@@ -133,11 +124,11 @@ public class ClubManagerScript : MonoBehaviour
 						{
 							if (this.ClubPhase == 0)
 							{
-								this.audio.clip = this.MotivationalQuotes[UnityEngine.Random.Range(0, Extensions.get_length(this.MotivationalQuotes))];
-								this.audio.Play();
+								component.clip = this.MotivationalQuotes[UnityEngine.Random.Range(0, this.MotivationalQuotes.Length)];
+								component.Play();
 								this.ClubEffect = true;
 								this.ClubPhase++;
-								this.TimeLimit = this.audio.clip.length;
+								this.TimeLimit = component.clip.length;
 							}
 							else if (this.ClubPhase == 1)
 							{
@@ -145,11 +136,11 @@ public class ClubManagerScript : MonoBehaviour
 								if (this.Timer > this.TimeLimit)
 								{
 									this.ID = 0;
-									while (this.ID < Extensions.get_length(this.Club6Students))
+									while (this.ID < this.Club6Students.Length)
 									{
 										if (this.StudentManager.Students[this.ID] != null && !this.StudentManager.Students[this.ID].Tranquil)
 										{
-											this.StudentManager.Students[this.Club6Students[this.ID]].audio.volume = (float)1;
+											this.StudentManager.Students[this.Club6Students[this.ID]].GetComponent<AudioSource>().volume = 1f;
 										}
 										this.ID++;
 									}
@@ -174,12 +165,12 @@ public class ClubManagerScript : MonoBehaviour
 			}
 			if (this.Club == 3)
 			{
-				this.audio.volume = (float)1 - this.Darkness.color.a;
+				component.volume = 1f - this.Darkness.color.a;
 			}
 		}
 	}
 
-	public virtual void ClubActivity()
+	public void ClubActivity()
 	{
 		this.StudentManager.StopMoving();
 		this.ShoulderCamera.enabled = false;
@@ -189,36 +180,39 @@ public class ClubManagerScript : MonoBehaviour
 		if (this.Club == 3)
 		{
 			this.ID = 0;
-			while (this.ID < Extensions.get_length(this.Club3Students))
+			while (this.ID < this.Club3Students.Length)
 			{
-				if (this.StudentManager.Students[this.Club3Students[this.ID]] != null && !this.StudentManager.Students[this.Club3Students[this.ID]].Tranquil)
+				StudentScript studentScript = this.StudentManager.Students[this.Club3Students[this.ID]];
+				if (studentScript != null && !studentScript.Tranquil)
 				{
-					this.StudentManager.Students[this.Club3Students[this.ID]].active = false;
+					studentScript.gameObject.SetActive(false);
 				}
 				this.ID++;
 			}
-			((AudioListener)this.MainCamera.GetComponent(typeof(AudioListener))).enabled = true;
-			this.audio.clip = this.OccultAmbience;
-			this.audio.loop = true;
-			this.audio.volume = (float)0;
-			this.audio.Play();
-			this.Yandere.active = false;
-			this.Ritual.active = true;
+			this.MainCamera.GetComponent<AudioListener>().enabled = true;
+			AudioSource component = base.GetComponent<AudioSource>();
+			component.clip = this.OccultAmbience;
+			component.loop = true;
+			component.volume = 0f;
+			component.Play();
+			this.Yandere.gameObject.SetActive(false);
+			this.Ritual.SetActive(true);
 		}
 		else if (this.Club == 6)
 		{
 			this.ID = 0;
-			while (this.ID < Extensions.get_length(this.Club6Students))
+			while (this.ID < this.Club6Students.Length)
 			{
-				if (this.StudentManager.Students[this.Club6Students[this.ID]] != null && !this.StudentManager.Students[this.Club6Students[this.ID]].Tranquil && !this.StudentManager.Students[this.Club6Students[this.ID]].Dead)
+				StudentScript studentScript2 = this.StudentManager.Students[this.Club6Students[this.ID]];
+				if (studentScript2 != null && !studentScript2.Tranquil && !studentScript2.Dead)
 				{
-					this.StudentManager.Students[this.Club6Students[this.ID]].transform.position = this.Club6ActivitySpots[this.ID].position;
-					this.StudentManager.Students[this.Club6Students[this.ID]].transform.rotation = this.Club6ActivitySpots[this.ID].rotation;
-					this.StudentManager.Students[this.Club6Students[this.ID]].ClubActivity = true;
-					this.StudentManager.Students[this.Club6Students[this.ID]].audio.volume = 0.1f;
-					if (!this.StudentManager.Students[this.Club6Students[this.ID]].ClubAttire)
+					studentScript2.transform.position = this.Club6ActivitySpots[this.ID].position;
+					studentScript2.transform.rotation = this.Club6ActivitySpots[this.ID].rotation;
+					studentScript2.ClubActivity = true;
+					studentScript2.GetComponent<AudioSource>().volume = 0.1f;
+					if (!studentScript2.ClubAttire)
 					{
-						this.StudentManager.Students[this.Club6Students[this.ID]].ChangeClubwear();
+						studentScript2.ChangeClubwear();
 					}
 				}
 				this.ID++;
@@ -232,13 +226,13 @@ public class ClubManagerScript : MonoBehaviour
 				this.Yandere.ChangeClubwear();
 			}
 		}
-		this.Clock.active = false;
-		this.Reputation.active = false;
-		this.Heartrate.active = false;
-		this.Watermark.active = false;
+		this.Clock.SetActive(false);
+		this.Reputation.SetActive(false);
+		this.Heartrate.SetActive(false);
+		this.Watermark.SetActive(false);
 	}
 
-	public virtual void CheckClub(int Check)
+	public void CheckClub(int Check)
 	{
 		if (Check == 3)
 		{
@@ -252,9 +246,9 @@ public class ClubManagerScript : MonoBehaviour
 		this.LeaderDead = false;
 		this.ClubMembers = 0;
 		this.ID = 1;
-		while (this.ID < Extensions.get_length(this.ClubIDs))
+		while (this.ID < this.ClubIDs.Length)
 		{
-			if (PlayerPrefs.GetInt("Student_" + this.ClubIDs[this.ID] + "_Dead") == 0 && PlayerPrefs.GetInt("Student_" + this.ClubIDs[this.ID] + "_Dying") == 0 && PlayerPrefs.GetInt("Student_" + this.ClubIDs[this.ID] + "_Kidnapped") == 0 && PlayerPrefs.GetInt("Student_" + this.ClubIDs[this.ID] + "_Arrested") == 0 && PlayerPrefs.GetInt("Student_" + this.ClubIDs[this.ID] + "_Reputation") > -100)
+			if (PlayerPrefs.GetInt("Student_" + this.ClubIDs[this.ID].ToString() + "_Dead") == 0 && PlayerPrefs.GetInt("Student_" + this.ClubIDs[this.ID].ToString() + "_Dying") == 0 && PlayerPrefs.GetInt("Student_" + this.ClubIDs[this.ID].ToString() + "_Kidnapped") == 0 && PlayerPrefs.GetInt("Student_" + this.ClubIDs[this.ID].ToString() + "_Arrested") == 0 && PlayerPrefs.GetInt("Student_" + this.ClubIDs[this.ID].ToString() + "_Reputation") > -100)
 			{
 				this.ClubMembers++;
 			}
@@ -266,29 +260,31 @@ public class ClubManagerScript : MonoBehaviour
 		}
 		if (Check == 3)
 		{
-			if (PlayerPrefs.GetInt("Student_" + 26 + "_Dead") == 1 || PlayerPrefs.GetInt("Student_" + 26 + "_Dying") == 1 || PlayerPrefs.GetInt("Student_" + 26 + "_Arrested") == 1 || PlayerPrefs.GetInt("Student_" + 26 + "_Reputation") <= -100)
+			int num = 26;
+			if (PlayerPrefs.GetInt("Student_" + num.ToString() + "_Dead") == 1 || PlayerPrefs.GetInt("Student_" + num.ToString() + "_Dying") == 1 || PlayerPrefs.GetInt("Student_" + num.ToString() + "_Arrested") == 1 || PlayerPrefs.GetInt("Student_" + num.ToString() + "_Reputation") <= -100)
 			{
 				this.LeaderDead = true;
 			}
-			if (PlayerPrefs.GetInt("Student_" + 26 + "_Missing") == 1 || PlayerPrefs.GetInt("Student_" + 26 + "_Kidnapped") == 1 || this.TranqCase.VictimID == 26)
+			if (PlayerPrefs.GetInt("Student_" + num.ToString() + "_Missing") == 1 || PlayerPrefs.GetInt("Student_" + num.ToString() + "_Kidnapped") == 1 || this.TranqCase.VictimID == num)
 			{
 				this.LeaderMissing = true;
 			}
 		}
 		else if (Check == 6)
 		{
-			if (PlayerPrefs.GetInt("Student_" + 21 + "_Dead") == 1 || PlayerPrefs.GetInt("Student_" + 21 + "_Dying") == 1 || PlayerPrefs.GetInt("Student_" + 21 + "_Arrested") == 1 || PlayerPrefs.GetInt("Student_" + 21 + "_Reputation") <= -100)
+			int num2 = 21;
+			if (PlayerPrefs.GetInt("Student_" + num2.ToString() + "_Dead") == 1 || PlayerPrefs.GetInt("Student_" + num2.ToString() + "_Dying") == 1 || PlayerPrefs.GetInt("Student_" + num2.ToString() + "_Arrested") == 1 || PlayerPrefs.GetInt("Student_" + num2.ToString() + "_Reputation") <= -100)
 			{
 				this.LeaderDead = true;
 			}
-			if (PlayerPrefs.GetInt("Student_" + 21 + "_Missing") == 1 || PlayerPrefs.GetInt("Student_" + 21 + "_Kidnapped") == 1 || this.TranqCase.VictimID == 21)
+			if (PlayerPrefs.GetInt("Student_" + num2.ToString() + "_Missing") == 1 || PlayerPrefs.GetInt("Student_" + num2.ToString() + "_Kidnapped") == 1 || this.TranqCase.VictimID == num2)
 			{
 				this.LeaderMissing = true;
 			}
 		}
 	}
 
-	public virtual void CheckGrudge(int Check)
+	public void CheckGrudge(int Check)
 	{
 		if (Check == 3)
 		{
@@ -301,7 +297,7 @@ public class ClubManagerScript : MonoBehaviour
 		this.LeaderGrudge = false;
 		this.ClubGrudge = false;
 		this.ID = 1;
-		while (this.ID < Extensions.get_length(this.ClubIDs))
+		while (this.ID < this.ClubIDs.Length)
 		{
 			if (this.StudentManager.Students[this.ClubIDs[this.ID]] != null && this.StudentManager.Students[this.ClubIDs[this.ID]].Grudge)
 			{
@@ -322,7 +318,7 @@ public class ClubManagerScript : MonoBehaviour
 		}
 	}
 
-	public virtual void ActivateClubBenefit()
+	public void ActivateClubBenefit()
 	{
 		if (PlayerPrefs.GetInt("Club") == 1)
 		{
@@ -332,7 +328,7 @@ public class ClubManagerScript : MonoBehaviour
 		else if (PlayerPrefs.GetInt("Club") == 2)
 		{
 			this.ID = 1;
-			while (this.ID < Extensions.get_length(this.Masks))
+			while (this.ID < this.Masks.Length)
 			{
 				this.Masks[this.ID].enabled = true;
 				this.Masks[this.ID].Prompt.enabled = true;
@@ -344,7 +340,7 @@ public class ClubManagerScript : MonoBehaviour
 		else if (PlayerPrefs.GetInt("Club") == 3)
 		{
 			this.StudentManager.UpdatePerception();
-			this.Yandere.Numbness = this.Yandere.Numbness - 0.5f;
+			this.Yandere.Numbness -= 0.5f;
 		}
 		else if (PlayerPrefs.GetInt("Club") == 4)
 		{
@@ -367,7 +363,7 @@ public class ClubManagerScript : MonoBehaviour
 			}
 			else if (PlayerPrefs.GetInt("Club") == 9)
 			{
-				this.Yandere.RunSpeed = this.Yandere.RunSpeed + (float)1;
+				this.Yandere.RunSpeed += 1f;
 				if (this.Yandere.Armed)
 				{
 					this.Yandere.Weapon[this.Yandere.Equipped].SuspicionCheck();
@@ -375,7 +371,7 @@ public class ClubManagerScript : MonoBehaviour
 			}
 			else if (PlayerPrefs.GetInt("Club") == 10)
 			{
-				this.ShedDoor.Prompt.Label[0].text = "     " + "Open";
+				this.ShedDoor.Prompt.Label[0].text = "     Open";
 				this.ShedDoor.Locked = false;
 				if (this.Yandere.Armed)
 				{
@@ -389,7 +385,7 @@ public class ClubManagerScript : MonoBehaviour
 		}
 	}
 
-	public virtual void DeactivateClubBenefit()
+	public void DeactivateClubBenefit()
 	{
 		if (PlayerPrefs.GetInt("Club") == 1)
 		{
@@ -400,7 +396,7 @@ public class ClubManagerScript : MonoBehaviour
 		else if (PlayerPrefs.GetInt("Club") == 2)
 		{
 			this.ID = 1;
-			while (this.ID < Extensions.get_length(this.Masks))
+			while (this.ID < this.Masks.Length)
 			{
 				if (this.Masks[this.ID] != null)
 				{
@@ -418,7 +414,7 @@ public class ClubManagerScript : MonoBehaviour
 		{
 			PlayerPrefs.SetInt("Club", 0);
 			this.StudentManager.UpdatePerception();
-			this.Yandere.Numbness = this.Yandere.Numbness + 0.5f;
+			this.Yandere.Numbness += 0.5f;
 		}
 		else if (PlayerPrefs.GetInt("Club") == 4)
 		{
@@ -444,7 +440,7 @@ public class ClubManagerScript : MonoBehaviour
 			}
 			else if (PlayerPrefs.GetInt("Club") == 9)
 			{
-				this.Yandere.RunSpeed = this.Yandere.RunSpeed - (float)1;
+				this.Yandere.RunSpeed -= 1f;
 				if (this.Yandere.Armed)
 				{
 					PlayerPrefs.SetInt("Club", 0);
@@ -455,7 +451,7 @@ public class ClubManagerScript : MonoBehaviour
 			{
 				if (!this.Yandere.Inventory.ShedKey)
 				{
-					this.ShedDoor.Prompt.Label[0].text = "     " + "Locked";
+					this.ShedDoor.Prompt.Label[0].text = "     Locked";
 					this.ShedDoor.Locked = true;
 				}
 				if (this.Yandere.Armed)
@@ -472,29 +468,14 @@ public class ClubManagerScript : MonoBehaviour
 		}
 	}
 
-	public virtual void UpdateMasks()
+	public void UpdateMasks()
 	{
-		if (this.Yandere.Mask != null)
+		bool flag = this.Yandere.Mask != null;
+		this.ID = 1;
+		while (this.ID < this.Masks.Length)
 		{
-			this.ID = 1;
-			while (this.ID < Extensions.get_length(this.Masks))
-			{
-				this.Masks[this.ID].Prompt.HideButton[0] = true;
-				this.ID++;
-			}
+			this.Masks[this.ID].Prompt.HideButton[0] = flag;
+			this.ID++;
 		}
-		else
-		{
-			this.ID = 1;
-			while (this.ID < Extensions.get_length(this.Masks))
-			{
-				this.Masks[this.ID].Prompt.HideButton[0] = false;
-				this.ID++;
-			}
-		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

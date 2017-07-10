@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class GhostScript : MonoBehaviour
 {
 	public Transform SmartphoneCamera;
@@ -14,26 +13,22 @@ public class GhostScript : MonoBehaviour
 
 	public int Frame;
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (Time.timeScale > (float)0)
+		if (Time.timeScale > 0f)
 		{
 			if (this.Frame > 0)
 			{
-				((Animation)this.GetComponent(typeof(Animation))).enabled = false;
-				this.active = false;
+				base.GetComponent<Animation>().enabled = false;
+				base.gameObject.SetActive(false);
 				this.Frame = 0;
 			}
 			this.Frame++;
 		}
 	}
 
-	public virtual void Look()
+	public void Look()
 	{
 		this.Neck.LookAt(this.SmartphoneCamera.position);
-	}
-
-	public virtual void Main()
-	{
 	}
 }

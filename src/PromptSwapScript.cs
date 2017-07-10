@@ -1,58 +1,39 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class PromptSwapScript : MonoBehaviour
 {
 	public InputDeviceScript InputDevice;
 
 	public UISprite MySprite;
 
-	public string KeyboardName;
+	public string KeyboardName = string.Empty;
 
-	public string GamepadName;
+	public string GamepadName = string.Empty;
 
-	private int LastType;
+	private int LastType = 1;
 
-	public PromptSwapScript()
-	{
-		this.KeyboardName = string.Empty;
-		this.GamepadName = string.Empty;
-		this.LastType = 1;
-	}
-
-	public virtual void Start()
+	private void Start()
 	{
 		if (this.InputDevice == null)
 		{
-			this.InputDevice = (InputDeviceScript)this.transform.parent.gameObject.GetComponent("InputDeviceScript");
+			this.InputDevice = base.transform.parent.gameObject.GetComponent<InputDeviceScript>();
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.InputDevice != null)
 		{
 			if (this.InputDevice.Type != this.LastType)
 			{
-				if (this.InputDevice.Type == 1)
-				{
-					this.MySprite.spriteName = this.GamepadName;
-				}
-				else
-				{
-					this.MySprite.spriteName = this.KeyboardName;
-				}
+				this.MySprite.spriteName = ((this.InputDevice.Type != 1) ? this.KeyboardName : this.GamepadName);
 			}
 			this.LastType = this.InputDevice.Type;
 		}
 		else
 		{
-			Debug.Log("My name is " + this.gameObject.name);
+			Debug.Log("My name is " + base.gameObject.name);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

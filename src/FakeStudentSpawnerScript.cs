@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class FakeStudentSpawnerScript : MonoBehaviour
 {
 	public Transform FakeStudentParent;
@@ -30,7 +29,7 @@ public class FakeStudentSpawnerScript : MonoBehaviour
 
 	public int NESW;
 
-	public virtual void Spawn()
+	public void Spawn()
 	{
 		if (!this.AlreadySpawned)
 		{
@@ -40,21 +39,21 @@ public class FakeStudentSpawnerScript : MonoBehaviour
 			{
 				if (this.NESW == 1)
 				{
-					this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.Student, new Vector3(UnityEngine.Random.Range(-21f, 21f), (float)this.Height, UnityEngine.Random.Range(21f, 19f)), Quaternion.identity);
+					this.NewStudent = UnityEngine.Object.Instantiate<GameObject>(this.Student, new Vector3(UnityEngine.Random.Range(-21f, 21f), (float)this.Height, UnityEngine.Random.Range(21f, 19f)), Quaternion.identity);
 				}
 				else if (this.NESW == 2)
 				{
-					this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.Student, new Vector3(UnityEngine.Random.Range(19f, 21f), (float)this.Height, UnityEngine.Random.Range(29f, -37f)), Quaternion.identity);
+					this.NewStudent = UnityEngine.Object.Instantiate<GameObject>(this.Student, new Vector3(UnityEngine.Random.Range(19f, 21f), (float)this.Height, UnityEngine.Random.Range(29f, -37f)), Quaternion.identity);
 				}
 				else if (this.NESW == 3)
 				{
-					this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.Student, new Vector3(UnityEngine.Random.Range(-21f, 21f), (float)this.Height, UnityEngine.Random.Range(-21f, -19f)), Quaternion.identity);
+					this.NewStudent = UnityEngine.Object.Instantiate<GameObject>(this.Student, new Vector3(UnityEngine.Random.Range(-21f, 21f), (float)this.Height, UnityEngine.Random.Range(-21f, -19f)), Quaternion.identity);
 				}
 				else if (this.NESW == 4)
 				{
-					this.NewStudent = (GameObject)UnityEngine.Object.Instantiate(this.Student, new Vector3(UnityEngine.Random.Range(-19f, -21f), (float)this.Height, UnityEngine.Random.Range(29f, -37f)), Quaternion.identity);
+					this.NewStudent = UnityEngine.Object.Instantiate<GameObject>(this.Student, new Vector3(UnityEngine.Random.Range(-19f, -21f), (float)this.Height, UnityEngine.Random.Range(29f, -37f)), Quaternion.identity);
 				}
-				((PlaceholderStudentScript)this.NewStudent.GetComponent(typeof(PlaceholderStudentScript))).NESW = this.NESW;
+				this.NewStudent.GetComponent<PlaceholderStudentScript>().NESW = this.NESW;
 				this.NewStudent.transform.parent = this.FakeStudentParent;
 				this.CurrentFloor++;
 				this.CurrentRow++;
@@ -73,28 +72,13 @@ public class FakeStudentSpawnerScript : MonoBehaviour
 						this.NESW = 1;
 					}
 				}
-				if (this.Student == this.FakeFemale)
-				{
-					this.Student = this.FakeMale;
-				}
-				else
-				{
-					this.Student = this.FakeFemale;
-				}
+				this.Student = ((!(this.Student == this.FakeFemale)) ? this.FakeFemale : this.FakeMale);
 			}
 			this.AlreadySpawned = true;
 		}
-		else if (this.FakeStudentParent.active)
-		{
-			this.FakeStudentParent.active = false;
-		}
 		else
 		{
-			this.FakeStudentParent.active = true;
+			this.FakeStudentParent.gameObject.SetActive(!this.FakeStudentParent.gameObject.activeInHierarchy);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

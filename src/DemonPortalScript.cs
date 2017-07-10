@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class DemonPortalScript : MonoBehaviour
 {
 	public YandereScript Yandere;
@@ -26,47 +25,37 @@ public class DemonPortalScript : MonoBehaviour
 
 	public float Timer;
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Prompt.Circle[0].fillAmount <= (float)0)
+		if (this.Prompt.Circle[0].fillAmount <= 0f)
 		{
-			this.Yandere.Character.animation.CrossFade(this.Yandere.IdleAnim);
+			this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
 			this.Yandere.CanMove = false;
-			UnityEngine.Object.Instantiate(this.DarkAura, this.Yandere.transform.position + Vector3.up * 0.81f, Quaternion.identity);
+			UnityEngine.Object.Instantiate<GameObject>(this.DarkAura, this.Yandere.transform.position + Vector3.up * 0.81f, Quaternion.identity);
 			this.Timer += Time.deltaTime;
 		}
-		if (this.Yandere.transform.position.y > (float)1000)
+		this.DemonRealmAudio.volume = Mathf.MoveTowards(this.DemonRealmAudio.volume, (this.Yandere.transform.position.y <= 1000f) ? 0f : 0.5f, Time.deltaTime * 0.1f);
+		if (this.Timer > 0f)
 		{
-			this.DemonRealmAudio.volume = Mathf.MoveTowards(this.DemonRealmAudio.volume, 0.5f, Time.deltaTime * 0.1f);
-		}
-		else
-		{
-			this.DemonRealmAudio.volume = Mathf.MoveTowards(this.DemonRealmAudio.volume, (float)0, Time.deltaTime * 0.1f);
-		}
-		if (this.Timer > (float)0)
-		{
-			if (this.Yandere.transform.position.y > (float)1000)
+			if (this.Yandere.transform.position.y > 1000f)
 			{
 				this.Timer += Time.deltaTime;
-				if (this.Timer > (float)4)
+				if (this.Timer > 4f)
 				{
-					float a = Mathf.MoveTowards(this.Darkness.color.a, (float)1, Time.deltaTime);
-					Color color = this.Darkness.color;
-					float num = color.a = a;
-					Color color2 = this.Darkness.color = color;
-					if (this.Darkness.color.a == (float)1)
+					this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 1f, Time.deltaTime));
+					if (this.Darkness.color.a == 1f)
 					{
-						this.Yandere.transform.position = new Vector3((float)12, (float)0, (float)28);
-						this.Yandere.Character.active = true;
+						this.Yandere.transform.position = new Vector3(12f, 0f, 28f);
+						this.Yandere.Character.SetActive(true);
 						this.Yandere.SetAnimationLayers();
-						this.HeartbeatCamera.active = true;
-						this.FPS.active = true;
-						this.HUD.active = true;
+						this.HeartbeatCamera.SetActive(true);
+						this.FPS.SetActive(true);
+						this.HUD.SetActive(true);
 					}
 				}
-				else if (this.Timer > (float)1)
+				else if (this.Timer > 1f)
 				{
-					this.Yandere.Character.active = false;
+					this.Yandere.Character.SetActive(false);
 				}
 			}
 			else
@@ -74,23 +63,16 @@ public class DemonPortalScript : MonoBehaviour
 				this.Jukebox.Volume = Mathf.MoveTowards(this.Jukebox.Volume, 0.5f, Time.deltaTime * 0.5f);
 				if (this.Jukebox.Volume == 0.5f)
 				{
-					float a2 = Mathf.MoveTowards(this.Darkness.color.a, (float)0, Time.deltaTime);
-					Color color3 = this.Darkness.color;
-					float num2 = color3.a = a2;
-					Color color4 = this.Darkness.color = color3;
-					if (this.Darkness.color.a == (float)0)
+					this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 0f, Time.deltaTime));
+					if (this.Darkness.color.a == 0f)
 					{
 						this.Darkness.enabled = false;
 						this.Yandere.CanMove = true;
 						this.Clock.StopTime = false;
-						this.Timer = (float)0;
+						this.Timer = 0f;
 					}
 				}
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

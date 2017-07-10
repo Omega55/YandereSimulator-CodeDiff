@@ -1,24 +1,19 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class BloodSprayColliderScript : MonoBehaviour
 {
-	public virtual void OnTriggerEnter(Collider other)
+	private void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.layer == 13)
 		{
-			YandereScript yandereScript = (YandereScript)other.gameObject.GetComponent(typeof(YandereScript));
-			if (yandereScript != null)
+			YandereScript component = other.gameObject.GetComponent<YandereScript>();
+			if (component != null)
 			{
-				yandereScript.Bloodiness = (float)100;
-				yandereScript.UpdateBlood();
-				UnityEngine.Object.Destroy(this.gameObject);
+				component.Bloodiness = 100f;
+				component.UpdateBlood();
+				UnityEngine.Object.Destroy(base.gameObject);
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

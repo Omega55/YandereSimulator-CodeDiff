@@ -1,38 +1,30 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class MatchScript : MonoBehaviour
 {
 	public float Timer;
 
 	public Collider MyCollider;
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.rigidbody.useGravity)
+		if (base.GetComponent<Rigidbody>().useGravity)
 		{
-			this.transform.Rotate(Vector3.right * Time.deltaTime * (float)360);
-			if (this.Timer > (float)0 && this.MyCollider.isTrigger)
+			base.transform.Rotate(Vector3.right * (Time.deltaTime * 360f));
+			if (this.Timer > 0f && this.MyCollider.isTrigger)
 			{
 				this.MyCollider.isTrigger = false;
 			}
 			this.Timer += Time.deltaTime;
-			if (this.Timer > (float)5)
+			if (this.Timer > 5f)
 			{
-				float z = this.transform.localScale.z - Time.deltaTime;
-				Vector3 localScale = this.transform.localScale;
-				float num = localScale.z = z;
-				Vector3 vector = this.transform.localScale = localScale;
-				if (this.transform.localScale.z < (float)0)
+				base.transform.localScale = new Vector3(base.transform.localScale.x, base.transform.localScale.y, base.transform.localScale.z - Time.deltaTime);
+				if (base.transform.localScale.z < 0f)
 				{
-					UnityEngine.Object.Destroy(this.gameObject);
+					UnityEngine.Object.Destroy(base.gameObject);
 				}
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

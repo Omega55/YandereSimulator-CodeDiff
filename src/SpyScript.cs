@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class SpyScript : MonoBehaviour
 {
 	public PromptBarScript PromptBar;
@@ -20,27 +19,27 @@ public class SpyScript : MonoBehaviour
 
 	public int Phase;
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Prompt.Circle[0].fillAmount == (float)0)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			this.Yandere.Character.animation.CrossFade("f02_spying_00");
+			this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_spying_00");
 			this.Yandere.CanMove = false;
 			this.Phase++;
 		}
 		if (this.Phase == 1)
 		{
-			Quaternion to = Quaternion.LookRotation(this.SpyTarget.transform.position - this.Yandere.transform.position);
-			this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, to, Time.deltaTime * (float)10);
+			Quaternion b = Quaternion.LookRotation(this.SpyTarget.transform.position - this.Yandere.transform.position);
+			this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, b, Time.deltaTime * 10f);
 			this.Yandere.MoveTowardsTarget(this.SpySpot.position);
 			this.Timer += Time.deltaTime;
-			if (this.Timer > (float)1)
+			if (this.Timer > 1f)
 			{
 				this.PromptBar.Label[1].text = "Stop";
 				this.PromptBar.UpdateButtons();
 				this.PromptBar.Show = true;
 				this.Yandere.MainCamera.enabled = false;
-				this.SpyCamera.active = true;
+				this.SpyCamera.SetActive(true);
 				this.Phase++;
 			}
 		}
@@ -50,18 +49,14 @@ public class SpyScript : MonoBehaviour
 		}
 	}
 
-	public virtual void End()
+	public void End()
 	{
 		this.PromptBar.ClearButtons();
 		this.PromptBar.Show = false;
 		this.Yandere.MainCamera.enabled = true;
 		this.Yandere.CanMove = true;
-		this.SpyCamera.active = false;
-		this.Timer = (float)0;
+		this.SpyCamera.SetActive(false);
+		this.Timer = 0f;
 		this.Phase = 0;
-	}
-
-	public virtual void Main()
-	{
 	}
 }

@@ -1,26 +1,24 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class GentlemanScript : MonoBehaviour
 {
 	public YandereScript Yandere;
 
 	public AudioClip[] Clips;
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (Input.GetButtonDown("RB") && !this.audio.isPlaying)
+		if (Input.GetButtonDown("RB"))
 		{
-			this.audio.clip = this.Clips[NGUITools.RandomRange(0, Extensions.get_length(this.Clips) - 1)];
-			this.audio.Play();
-			this.Yandere.Sanity = this.Yandere.Sanity + (float)10;
-			this.Yandere.UpdateSanity();
+			AudioSource component = base.GetComponent<AudioSource>();
+			if (!component.isPlaying)
+			{
+				component.clip = this.Clips[UnityEngine.Random.Range(0, this.Clips.Length - 1)];
+				component.Play();
+				this.Yandere.Sanity += 10f;
+				this.Yandere.UpdateSanity();
+			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

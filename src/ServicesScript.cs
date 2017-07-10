@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class ServicesScript : MonoBehaviour
 {
 	public TextMessageManagerScript TextMessageManager;
@@ -41,9 +39,9 @@ public class ServicesScript : MonoBehaviour
 
 	public string[] ServiceNames;
 
-	public int Selected;
+	public int Selected = 1;
 
-	public int ID;
+	public int ID = 1;
 
 	public AudioClip InfoUnavailable;
 
@@ -51,52 +49,47 @@ public class ServicesScript : MonoBehaviour
 
 	public AudioClip InfoAfford;
 
-	public ServicesScript()
+	private void Start()
 	{
-		this.Selected = 1;
-		this.ID = 1;
-	}
-
-	public virtual void Start()
-	{
-		for (int i = 1; i < Extensions.get_length(this.ServiceNames); i++)
+		for (int i = 1; i < this.ServiceNames.Length; i++)
 		{
-			PlayerPrefs.SetInt("Service_" + i + "_Purchased", 0);
+			PlayerPrefs.SetInt("Service_" + i.ToString() + "_Purchased", 0);
 			this.NameLabels[i].text = this.ServiceNames[i];
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.InputManager.TappedUp)
 		{
 			this.Selected--;
 			if (this.Selected < 1)
 			{
-				this.Selected = Extensions.get_length(this.ServiceNames) - 1;
+				this.Selected = this.ServiceNames.Length - 1;
 			}
 			this.UpdateDesc();
 		}
 		if (this.InputManager.TappedDown)
 		{
 			this.Selected++;
-			if (this.Selected > Extensions.get_length(this.ServiceNames) - 1)
+			if (this.Selected > this.ServiceNames.Length - 1)
 			{
 				this.Selected = 1;
 			}
 			this.UpdateDesc();
 		}
+		AudioSource component = base.GetComponent<AudioSource>();
 		if (Input.GetButtonDown("A"))
 		{
-			if (PlayerPrefs.GetInt("Service_" + this.Selected + "_Purchased") == 0)
+			if (PlayerPrefs.GetInt("Service_" + this.Selected.ToString() + "_Purchased") == 0)
 			{
-				if (this.PromptBar.Label[0].text != string.Empty)
+				if (!this.PromptBar.Label[0].text.Equals(string.Empty))
 				{
 					if (PlayerPrefs.GetInt("PantyShots") >= this.ServiceCosts[this.Selected])
 					{
 						PlayerPrefs.SetInt("PantyShots", PlayerPrefs.GetInt("PantyShots") - this.ServiceCosts[this.Selected]);
-						PlayerPrefs.SetInt("Service_" + this.Selected + "_Purchased", 1);
-						AudioSource.PlayClipAtPoint(this.InfoPurchase, this.transform.position);
+						PlayerPrefs.SetInt("Service_" + this.Selected.ToString() + "_Purchased", 1);
+						AudioSource.PlayClipAtPoint(this.InfoPurchase, base.transform.position);
 						if (this.Selected == 4)
 						{
 							PlayerPrefs.SetInt("Scheme_1_Stage", 2);
@@ -110,93 +103,67 @@ public class ServicesScript : MonoBehaviour
 				}
 				else if (PlayerPrefs.GetInt("PantyShots") < this.ServiceCosts[this.Selected])
 				{
-					this.audio.clip = this.InfoAfford;
-					this.audio.Play();
+					component.clip = this.InfoAfford;
+					component.Play();
 				}
 				else
 				{
-					this.audio.clip = this.InfoUnavailable;
-					this.audio.Play();
+					component.clip = this.InfoUnavailable;
+					component.Play();
 				}
 			}
 			else
 			{
-				this.audio.clip = this.InfoUnavailable;
-				this.audio.Play();
+				component.clip = this.InfoUnavailable;
+				component.Play();
 			}
 		}
-		if (Input.GetButtonDown("B") && Input.GetButtonDown("B"))
+		if (Input.GetButtonDown("B"))
 		{
 			this.PromptBar.ClearButtons();
 			this.PromptBar.Label[0].text = "Accept";
 			this.PromptBar.Label[1].text = "Exit";
 			this.PromptBar.Label[5].text = "Choose";
 			this.PromptBar.UpdateButtons();
-			this.FavorMenu.active = true;
-			this.active = false;
+			this.FavorMenu.SetActive(true);
+			base.gameObject.SetActive(false);
 		}
 	}
 
-	public virtual void UpdateList()
+	public void UpdateList()
 	{
 		this.ID = 1;
-		while (this.ID < Extensions.get_length(this.ServiceNames))
+		while (this.ID < this.ServiceNames.Length)
 		{
-			this.CostLabels[this.ID].text = string.Empty + this.ServiceCosts[this.ID];
-			if (this.ServiceActive[this.ID] && PlayerPrefs.GetInt("Service_" + this.ID + "_Purchased") == 0)
-			{
-				int num = 1;
-				Color color = this.NameLabels[this.ID].color;
-				float num2 = color.a = (float)num;
-				Color color2 = this.NameLabels[this.ID].color = color;
-			}
-			else
-			{
-				float a = 0.5f;
-				Color color3 = this.NameLabels[this.ID].color;
-				float num3 = color3.a = a;
-				Color color4 = this.NameLabels[this.ID].color = color3;
-			}
+			this.CostLabels[this.ID].text = this.ServiceCosts[this.ID].ToString();
+			int @int = PlayerPrefs.GetInt("Service_" + this.ID.ToString() + "_Purchased");
+			UILabel uilabel = this.NameLabels[this.ID];
+			uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, (!this.ServiceActive[this.ID] || @int != 0) ? 0.5f : 1f);
 			this.ID++;
 		}
 	}
 
-	public virtual void UpdateDesc()
+	public void UpdateDesc()
 	{
-		if (this.ServiceActive[this.Selected] && PlayerPrefs.GetInt("Service_" + this.Selected + "_Purchased") == 0)
+		if (this.ServiceActive[this.Selected] && PlayerPrefs.GetInt("Service_" + this.Selected.ToString() + "_Purchased") == 0)
 		{
-			if (PlayerPrefs.GetInt("PantyShots") >= this.ServiceCosts[this.Selected])
-			{
-				this.PromptBar.Label[0].text = "Purchase";
-				this.PromptBar.UpdateButtons();
-			}
-			else
-			{
-				this.PromptBar.Label[0].text = string.Empty;
-				this.PromptBar.UpdateButtons();
-			}
+			this.PromptBar.Label[0].text = ((PlayerPrefs.GetInt("PantyShots") < this.ServiceCosts[this.Selected]) ? string.Empty : "Purchase");
+			this.PromptBar.UpdateButtons();
 		}
 		else
 		{
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
-		int num = 200 - 25 * this.Selected;
-		Vector3 localPosition = this.Highlight.localPosition;
-		float num2 = localPosition.y = (float)num;
-		Vector3 vector = this.Highlight.localPosition = localPosition;
+		this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 200f - 25f * (float)this.Selected, this.Highlight.localPosition.z);
 		this.ServiceIcon.mainTexture = this.ServiceIcons[this.Selected];
 		this.ServiceLimit.text = this.ServiceLimits[this.Selected];
 		this.ServiceDesc.text = this.ServiceDescs[this.Selected];
 		this.UpdatePantyCount();
 	}
 
-	public virtual void UpdatePantyCount()
+	public void UpdatePantyCount()
 	{
-		this.PantyCount.text = string.Empty + PlayerPrefs.GetInt("PantyShots");
-	}
-
-	public virtual void Main()
-	{
+		this.PantyCount.text = PlayerPrefs.GetInt("PantyShots").ToString();
 	}
 }

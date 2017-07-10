@@ -1,18 +1,16 @@
 ﻿using System;
-using Boo.Lang.Runtime;
 using UnityEngine;
-using UnityScript.Lang;
+using UnityEngine.SceneManagement;
 
-[Serializable]
 public class CustomizationScript : MonoBehaviour
 {
 	public InputManagerScript InputManager;
 
 	public Renderer FacialHairRenderer;
 
-	public Renderer YandereRenderer;
+	public SkinnedMeshRenderer YandereRenderer;
 
-	public Renderer SenpaiRenderer;
+	public SkinnedMeshRenderer SenpaiRenderer;
 
 	public Renderer HairRenderer;
 
@@ -70,25 +68,25 @@ public class CustomizationScript : MonoBehaviour
 
 	public float Timer;
 
-	public int FemaleUniform;
+	public int FemaleUniform = 1;
 
-	public int MaleUniform;
+	public int MaleUniform = 1;
 
 	public int FacialHair;
 
-	public int SkinColor;
+	public int SkinColor = 3;
 
-	public int HairStyle;
+	public int HairStyle = 1;
 
-	public int HairColor;
+	public int HairColor = 1;
 
-	public int EyeColor;
+	public int EyeColor = 1;
 
 	public int EyeWear;
 
-	public int Selected;
+	public int Selected = 1;
 
-	public int Phase;
+	public int Phase = 1;
 
 	public Texture[] FemaleUniformTextures;
 
@@ -110,56 +108,39 @@ public class CustomizationScript : MonoBehaviour
 
 	public Texture FemaleFace;
 
-	public string HairColorName;
+	public string HairColorName = string.Empty;
 
-	public string EyeColorName;
+	public string EyeColorName = string.Empty;
 
-	public CustomizationScript()
+	private void Start()
 	{
-		this.FemaleUniform = 1;
-		this.MaleUniform = 1;
-		this.SkinColor = 3;
-		this.HairStyle = 1;
-		this.HairColor = 1;
-		this.EyeColor = 1;
-		this.Selected = 1;
-		this.Phase = 1;
-		this.HairColorName = string.Empty;
-		this.EyeColorName = string.Empty;
-	}
-
-	public virtual void Start()
-	{
-		this.Senpai.gameObject.active = false;
-		this.Senpai.position = new Vector3((float)0, (float)-3, 2.1f);
-		this.Yandere.position = new Vector3(0.5f, (float)-3, 2.1f);
-		int num = 1360;
-		Vector3 localPosition = this.ApologyWindow.localPosition;
-		float num2 = localPosition.x = (float)num;
-		Vector3 vector = this.ApologyWindow.localPosition = localPosition;
-		this.CustomizePanel.alpha = (float)0;
-		this.UniformPanel.alpha = (float)0;
-		this.Yandere.active = false;
-		this.FinishPanel.alpha = (float)0;
-		this.GenderPanel.alpha = (float)0;
-		this.WhitePanel.alpha = (float)1;
+		this.Senpai.gameObject.SetActive(false);
+		this.Senpai.position = new Vector3(0f, -3f, 2.1f);
+		this.Yandere.position = new Vector3(0.5f, -3f, 2.1f);
+		this.ApologyWindow.localPosition = new Vector3(1360f, this.ApologyWindow.localPosition.y, this.ApologyWindow.localPosition.z);
+		this.CustomizePanel.alpha = 0f;
+		this.UniformPanel.alpha = 0f;
+		this.Yandere.gameObject.SetActive(false);
+		this.FinishPanel.alpha = 0f;
+		this.GenderPanel.alpha = 0f;
+		this.WhitePanel.alpha = 1f;
 		this.UpdateFacialHair();
 		this.UpdateHairStyle();
 		this.UpdateEyes();
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.Phase == 1)
 		{
-			if (this.WhitePanel.alpha == (float)0)
+			if (this.WhitePanel.alpha == 0f)
 			{
-				this.GenderPanel.alpha = Mathf.MoveTowards(this.GenderPanel.alpha, (float)1, Time.deltaTime * (float)2);
-				if (this.GenderPanel.alpha == (float)1)
+				this.GenderPanel.alpha = Mathf.MoveTowards(this.GenderPanel.alpha, 1f, Time.deltaTime * 2f);
+				if (this.GenderPanel.alpha == 1f)
 				{
 					if (Input.GetButtonDown("A"))
 					{
-						this.Cloud.active = true;
+						this.Cloud.SetActive(true);
 						this.Phase++;
 					}
 					if (Input.GetButtonDown("B"))
@@ -168,7 +149,7 @@ public class CustomizationScript : MonoBehaviour
 					}
 					if (Input.GetButtonDown("X"))
 					{
-						this.White.color = new Color((float)0, (float)0, (float)0, (float)1);
+						this.White.color = new Color(0f, 0f, 0f, 1f);
 						this.FadeOut = true;
 						this.Phase = 0;
 					}
@@ -177,32 +158,22 @@ public class CustomizationScript : MonoBehaviour
 		}
 		else if (this.Phase == 2)
 		{
-			this.GenderPanel.alpha = Mathf.MoveTowards(this.GenderPanel.alpha, (float)0, Time.deltaTime * (float)2);
-			if (this.GenderPanel.alpha == (float)0)
+			this.GenderPanel.alpha = Mathf.MoveTowards(this.GenderPanel.alpha, 0f, Time.deltaTime * 2f);
+			if (this.GenderPanel.alpha == 0f)
 			{
-				this.Senpai.gameObject.active = true;
+				this.Senpai.gameObject.SetActive(true);
 				this.Phase++;
 			}
 		}
 		else if (this.Phase == 3)
 		{
-			this.CustomizePanel.alpha = Mathf.MoveTowards(this.CustomizePanel.alpha, (float)1, Time.deltaTime * (float)2);
-			if (this.CustomizePanel.alpha == (float)1)
+			this.CustomizePanel.alpha = Mathf.MoveTowards(this.CustomizePanel.alpha, 1f, Time.deltaTime * 2f);
+			if (this.CustomizePanel.alpha == 1f)
 			{
-				float y = this.Senpai.localEulerAngles.y - Input.GetAxis("RS");
-				Vector3 localEulerAngles = this.Senpai.localEulerAngles;
-				float num = localEulerAngles.y = y;
-				Vector3 vector = this.Senpai.localEulerAngles = localEulerAngles;
-				float y2 = this.Senpai.localEulerAngles.y - Input.GetAxis("Mouse X");
-				Vector3 localEulerAngles2 = this.Senpai.localEulerAngles;
-				float num2 = localEulerAngles2.y = y2;
-				Vector3 vector2 = this.Senpai.localEulerAngles = localEulerAngles2;
+				this.Senpai.localEulerAngles = new Vector3(this.Senpai.localEulerAngles.x, this.Senpai.localEulerAngles.y - Input.GetAxis("RS") - Input.GetAxis("Mouse X"), this.Senpai.localEulerAngles.z);
 				if (Input.GetButtonDown("A"))
 				{
-					int num3 = 180;
-					Vector3 localEulerAngles3 = this.Senpai.localEulerAngles;
-					float num4 = localEulerAngles3.y = (float)num3;
-					Vector3 vector3 = this.Senpai.localEulerAngles = localEulerAngles3;
+					this.Senpai.localEulerAngles = new Vector3(this.Senpai.localEulerAngles.x, 180f, this.Senpai.localEulerAngles.z);
 					this.Phase++;
 				}
 				if (this.InputManager.TappedDown)
@@ -212,10 +183,7 @@ public class CustomizationScript : MonoBehaviour
 					{
 						this.Selected = 1;
 					}
-					int num5 = 650 - this.Selected * 150;
-					Vector3 localPosition = this.Highlight.localPosition;
-					float num6 = localPosition.y = (float)num5;
-					Vector3 vector4 = this.Highlight.localPosition = localPosition;
+					this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 650f - (float)this.Selected * 150f, this.Highlight.localPosition.z);
 				}
 				else if (this.InputManager.TappedUp)
 				{
@@ -224,10 +192,7 @@ public class CustomizationScript : MonoBehaviour
 					{
 						this.Selected = 6;
 					}
-					int num7 = 650 - this.Selected * 150;
-					Vector3 localPosition2 = this.Highlight.localPosition;
-					float num8 = localPosition2.y = (float)num7;
-					Vector3 vector5 = this.Highlight.localPosition = localPosition2;
+					this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 650f - (float)this.Selected * 150f, this.Highlight.localPosition.z);
 				}
 				if (this.InputManager.TappedRight)
 				{
@@ -298,146 +263,78 @@ public class CustomizationScript : MonoBehaviour
 			}
 			if (this.Selected == 1)
 			{
-				float y3 = Mathf.Lerp(this.Senpai.position.y, (float)-1, Time.deltaTime * (float)10);
-				Vector3 position = this.Senpai.position;
-				float num9 = position.y = y3;
-				Vector3 vector6 = this.Senpai.position = position;
-				float z = Mathf.Lerp(this.Senpai.position.z, 2.1f, Time.deltaTime * (float)10);
-				Vector3 position2 = this.Senpai.position;
-				float num10 = position2.z = z;
-				Vector3 vector7 = this.Senpai.position = position2;
+				this.Senpai.position = new Vector3(this.Senpai.position.x, Mathf.Lerp(this.Senpai.position.y, -1f, Time.deltaTime * 10f), Mathf.Lerp(this.Senpai.position.z, 2.1f, Time.deltaTime * 10f));
 			}
 			else
 			{
-				float y4 = Mathf.Lerp(this.Senpai.position.y, -1.6f, Time.deltaTime * (float)10);
-				Vector3 position3 = this.Senpai.position;
-				float num11 = position3.y = y4;
-				Vector3 vector8 = this.Senpai.position = position3;
-				float z2 = Mathf.Lerp(this.Senpai.position.z, 0.4f, Time.deltaTime * (float)10);
-				Vector3 position4 = this.Senpai.position;
-				float num12 = position4.z = z2;
-				Vector3 vector9 = this.Senpai.position = position4;
+				this.Senpai.position = new Vector3(this.Senpai.position.x, Mathf.Lerp(this.Senpai.position.y, -1.6f, Time.deltaTime * 10f), Mathf.Lerp(this.Senpai.position.z, 0.4f, Time.deltaTime * 10f));
 			}
 		}
 		else if (this.Phase == 4)
 		{
-			float y5 = Mathf.Lerp(this.Senpai.position.y, -0.6333333f, Time.deltaTime * (float)10);
-			Vector3 position5 = this.Senpai.position;
-			float num13 = position5.y = y5;
-			Vector3 vector10 = this.Senpai.position = position5;
-			float z3 = Mathf.Lerp(this.Senpai.position.z, 2.1f, Time.deltaTime * (float)10);
-			Vector3 position6 = this.Senpai.position;
-			float num14 = position6.z = z3;
-			Vector3 vector11 = this.Senpai.position = position6;
-			this.CustomizePanel.alpha = Mathf.MoveTowards(this.CustomizePanel.alpha, (float)0, Time.deltaTime * (float)2);
-			if (this.CustomizePanel.alpha == (float)0)
+			this.Senpai.position = new Vector3(this.Senpai.position.x, Mathf.Lerp(this.Senpai.position.y, -0.6333333f, Time.deltaTime * 10f), Mathf.Lerp(this.Senpai.position.z, 2.1f, Time.deltaTime * 10f));
+			this.CustomizePanel.alpha = Mathf.MoveTowards(this.CustomizePanel.alpha, 0f, Time.deltaTime * 2f);
+			if (this.CustomizePanel.alpha == 0f)
 			{
 				this.Phase++;
 			}
 		}
 		else if (this.Phase == 5)
 		{
-			this.FinishPanel.alpha = Mathf.MoveTowards(this.FinishPanel.alpha, (float)1, Time.deltaTime * (float)2);
-			if (this.FinishPanel.alpha == (float)1)
+			this.FinishPanel.alpha = Mathf.MoveTowards(this.FinishPanel.alpha, 1f, Time.deltaTime * 2f);
+			if (this.FinishPanel.alpha == 1f)
 			{
 				if (Input.GetButtonDown("A"))
 				{
-					this.BigCloud.active = true;
+					this.BigCloud.SetActive(true);
 					this.Phase++;
 				}
 				if (Input.GetButtonDown("B"))
 				{
 					this.Selected = 1;
-					int num15 = 650 - this.Selected * 150;
-					Vector3 localPosition3 = this.Highlight.localPosition;
-					float num16 = localPosition3.y = (float)num15;
-					Vector3 vector12 = this.Highlight.localPosition = localPosition3;
+					this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 650f - (float)this.Selected * 150f, this.Highlight.localPosition.z);
 					this.Phase = 100;
 				}
 			}
 		}
 		else if (this.Phase == 6)
 		{
-			this.FinishPanel.alpha = Mathf.MoveTowards(this.FinishPanel.alpha, (float)0, Time.deltaTime * (float)2);
-			if (this.FinishPanel.alpha == (float)0)
+			this.FinishPanel.alpha = Mathf.MoveTowards(this.FinishPanel.alpha, 0f, Time.deltaTime * 2f);
+			if (this.FinishPanel.alpha == 0f)
 			{
 				this.UpdateFemaleUniform();
 				this.UpdateMaleUniform();
-				this.CensorCloud.active = false;
-				this.Yandere.active = true;
+				this.CensorCloud.SetActive(false);
+				this.Yandere.gameObject.SetActive(true);
 				this.Selected = 1;
 				this.Phase++;
 			}
 		}
 		else if (this.Phase == 7)
 		{
-			this.UniformPanel.alpha = Mathf.MoveTowards(this.UniformPanel.alpha, (float)1, Time.deltaTime * (float)2);
-			float x = Mathf.Lerp(this.Senpai.position.x, -0.5f, Time.deltaTime * (float)10);
-			Vector3 position7 = this.Senpai.position;
-			float num17 = position7.x = x;
-			Vector3 vector13 = this.Senpai.position = position7;
-			float y6 = Mathf.Lerp(this.Senpai.position.y, (float)-1, Time.deltaTime * (float)10);
-			Vector3 position8 = this.Senpai.position;
-			float num18 = position8.y = y6;
-			Vector3 vector14 = this.Senpai.position = position8;
-			float x2 = Mathf.Lerp(this.Yandere.position.x, 0.5f, Time.deltaTime * (float)10);
-			Vector3 position9 = this.Yandere.position;
-			float num19 = position9.x = x2;
-			Vector3 vector15 = this.Yandere.position = position9;
-			float y7 = Mathf.Lerp(this.Yandere.position.y, (float)-1, Time.deltaTime * (float)10);
-			Vector3 position10 = this.Yandere.position;
-			float num20 = position10.y = y7;
-			Vector3 vector16 = this.Yandere.position = position10;
-			if (this.UniformPanel.alpha == (float)1)
+			this.UniformPanel.alpha = Mathf.MoveTowards(this.UniformPanel.alpha, 1f, Time.deltaTime * 2f);
+			this.Senpai.position = new Vector3(Mathf.Lerp(this.Senpai.position.x, -0.5f, Time.deltaTime * 10f), Mathf.Lerp(this.Senpai.position.y, -1f, Time.deltaTime * 10f), this.Senpai.position.z);
+			this.Yandere.position = new Vector3(Mathf.Lerp(this.Yandere.position.x, 0.5f, Time.deltaTime * 10f), Mathf.Lerp(this.Yandere.position.y, -1f, Time.deltaTime * 10f), this.Yandere.position.z);
+			if (this.UniformPanel.alpha == 1f)
 			{
 				if (this.Selected == 1)
 				{
-					float y8 = this.Senpai.localEulerAngles.y - Input.GetAxis("RS");
-					Vector3 localEulerAngles4 = this.Senpai.localEulerAngles;
-					float num21 = localEulerAngles4.y = y8;
-					Vector3 vector17 = this.Senpai.localEulerAngles = localEulerAngles4;
-					float y9 = this.Senpai.localEulerAngles.y - Input.GetAxis("Mouse X");
-					Vector3 localEulerAngles5 = this.Senpai.localEulerAngles;
-					float num22 = localEulerAngles5.y = y9;
-					Vector3 vector18 = this.Senpai.localEulerAngles = localEulerAngles5;
+					this.Senpai.localEulerAngles = new Vector3(this.Senpai.localEulerAngles.x, this.Senpai.localEulerAngles.y - Input.GetAxis("RS") - Input.GetAxis("Mouse X"), this.Senpai.localEulerAngles.z);
 				}
 				else
 				{
-					float y10 = this.Yandere.localEulerAngles.y - Input.GetAxis("RS");
-					Vector3 localEulerAngles6 = this.Yandere.localEulerAngles;
-					float num23 = localEulerAngles6.y = y10;
-					Vector3 vector19 = this.Yandere.localEulerAngles = localEulerAngles6;
-					float y11 = this.Yandere.localEulerAngles.y - Input.GetAxis("Mouse X");
-					Vector3 localEulerAngles7 = this.Yandere.localEulerAngles;
-					float num24 = localEulerAngles7.y = y11;
-					Vector3 vector20 = this.Yandere.localEulerAngles = localEulerAngles7;
+					this.Yandere.localEulerAngles = new Vector3(this.Yandere.localEulerAngles.x, this.Yandere.localEulerAngles.y - Input.GetAxis("RS") - Input.GetAxis("Mouse X"), this.Yandere.localEulerAngles.z);
 				}
 				if (Input.GetButtonDown("A"))
 				{
-					int num25 = 180;
-					Vector3 localEulerAngles8 = this.Yandere.localEulerAngles;
-					float num26 = localEulerAngles8.y = (float)num25;
-					Vector3 vector21 = this.Yandere.localEulerAngles = localEulerAngles8;
-					int num27 = 180;
-					Vector3 localEulerAngles9 = this.Senpai.localEulerAngles;
-					float num28 = localEulerAngles9.y = (float)num27;
-					Vector3 vector22 = this.Senpai.localEulerAngles = localEulerAngles9;
+					this.Yandere.localEulerAngles = new Vector3(this.Yandere.localEulerAngles.x, 180f, this.Yandere.localEulerAngles.z);
+					this.Senpai.localEulerAngles = new Vector3(this.Senpai.localEulerAngles.x, 180f, this.Senpai.localEulerAngles.z);
 					this.Phase++;
 				}
 				if (this.InputManager.TappedDown || this.InputManager.TappedUp)
 				{
-					if (this.Selected == 1)
-					{
-						this.Selected = 2;
-					}
-					else
-					{
-						this.Selected = 1;
-					}
-					int num29 = 650 - this.Selected * 150;
-					Vector3 localPosition4 = this.UniformHighlight.localPosition;
-					float num30 = localPosition4.y = (float)num29;
-					Vector3 vector23 = this.UniformHighlight.localPosition = localPosition4;
+					this.Selected = ((this.Selected != 1) ? 1 : 2);
+					this.UniformHighlight.localPosition = new Vector3(this.UniformHighlight.localPosition.x, 650f - (float)this.Selected * 150f, this.UniformHighlight.localPosition.z);
 				}
 				if (this.InputManager.TappedRight)
 				{
@@ -469,32 +366,20 @@ public class CustomizationScript : MonoBehaviour
 		}
 		else if (this.Phase == 8)
 		{
-			float y12 = Mathf.Lerp(this.Senpai.position.y, -0.6333333f, Time.deltaTime * (float)10);
-			Vector3 position11 = this.Senpai.position;
-			float num31 = position11.y = y12;
-			Vector3 vector24 = this.Senpai.position = position11;
-			float y13 = Mathf.Lerp(this.Yandere.position.y, -0.6333333f, Time.deltaTime * (float)10);
-			Vector3 position12 = this.Yandere.position;
-			float num32 = position12.y = y13;
-			Vector3 vector25 = this.Yandere.position = position12;
-			this.UniformPanel.alpha = Mathf.MoveTowards(this.UniformPanel.alpha, (float)0, Time.deltaTime * (float)2);
-			if (this.UniformPanel.alpha == (float)0)
+			this.Senpai.position = new Vector3(this.Senpai.position.x, Mathf.Lerp(this.Senpai.position.y, -0.6333333f, Time.deltaTime * 10f), this.Senpai.position.z);
+			this.Yandere.position = new Vector3(this.Yandere.position.x, Mathf.Lerp(this.Yandere.position.y, -0.6333333f, Time.deltaTime * 10f), this.Yandere.position.z);
+			this.UniformPanel.alpha = Mathf.MoveTowards(this.UniformPanel.alpha, 0f, Time.deltaTime * 2f);
+			if (this.UniformPanel.alpha == 0f)
 			{
 				this.Phase++;
 			}
 		}
 		else if (this.Phase == 9)
 		{
-			float y14 = Mathf.Lerp(this.Senpai.position.y, -0.6333333f, Time.deltaTime * (float)10);
-			Vector3 position13 = this.Senpai.position;
-			float num33 = position13.y = y14;
-			Vector3 vector26 = this.Senpai.position = position13;
-			float y15 = Mathf.Lerp(this.Yandere.position.y, -0.6333333f, Time.deltaTime * (float)10);
-			Vector3 position14 = this.Yandere.position;
-			float num34 = position14.y = y15;
-			Vector3 vector27 = this.Yandere.position = position14;
-			this.FinishPanel.alpha = Mathf.MoveTowards(this.FinishPanel.alpha, (float)1, Time.deltaTime * (float)2);
-			if (this.FinishPanel.alpha == (float)1)
+			this.Senpai.position = new Vector3(this.Senpai.position.x, Mathf.Lerp(this.Senpai.position.y, -0.6333333f, Time.deltaTime * 10f), this.Senpai.position.z);
+			this.Yandere.position = new Vector3(this.Yandere.position.x, Mathf.Lerp(this.Yandere.position.y, -0.6333333f, Time.deltaTime * 10f), this.Yandere.position.z);
+			this.FinishPanel.alpha = Mathf.MoveTowards(this.FinishPanel.alpha, 1f, Time.deltaTime * 2f);
+			if (this.FinishPanel.alpha == 1f)
 			{
 				if (Input.GetButtonDown("A"))
 				{
@@ -503,45 +388,42 @@ public class CustomizationScript : MonoBehaviour
 				if (Input.GetButtonDown("B"))
 				{
 					this.Selected = 1;
-					int num35 = 650 - this.Selected * 150;
-					Vector3 localPosition5 = this.UniformHighlight.localPosition;
-					float num36 = localPosition5.y = (float)num35;
-					Vector3 vector28 = this.UniformHighlight.localPosition = localPosition5;
+					this.UniformHighlight.localPosition = new Vector3(this.UniformHighlight.localPosition.x, 650f - (float)this.Selected * 150f, this.UniformHighlight.localPosition.z);
 					this.Phase = 99;
 				}
 			}
 		}
 		else if (this.Phase == 10)
 		{
-			this.FinishPanel.alpha = Mathf.MoveTowards(this.FinishPanel.alpha, (float)0, Time.deltaTime * (float)2);
-			if (this.FinishPanel.alpha == (float)0)
+			this.FinishPanel.alpha = Mathf.MoveTowards(this.FinishPanel.alpha, 0f, Time.deltaTime * 2f);
+			if (this.FinishPanel.alpha == 0f)
 			{
-				this.White.color = new Color((float)0, (float)0, (float)0, (float)1);
+				this.White.color = new Color(0f, 0f, 0f, 1f);
 				this.FadeOut = true;
 				this.Phase = 0;
 			}
 		}
 		else if (this.Phase == 99)
 		{
-			this.FinishPanel.alpha = Mathf.MoveTowards(this.FinishPanel.alpha, (float)0, Time.deltaTime * (float)2);
-			if (this.FinishPanel.alpha == (float)0)
+			this.FinishPanel.alpha = Mathf.MoveTowards(this.FinishPanel.alpha, 0f, Time.deltaTime * 2f);
+			if (this.FinishPanel.alpha == 0f)
 			{
 				this.Phase = 7;
 			}
 		}
 		else if (this.Phase == 100)
 		{
-			this.FinishPanel.alpha = Mathf.MoveTowards(this.FinishPanel.alpha, (float)0, Time.deltaTime * (float)2);
-			if (this.FinishPanel.alpha == (float)0)
+			this.FinishPanel.alpha = Mathf.MoveTowards(this.FinishPanel.alpha, 0f, Time.deltaTime * 2f);
+			if (this.FinishPanel.alpha == 0f)
 			{
 				this.Phase = 3;
 			}
 		}
 		if (this.FadeOut)
 		{
-			this.WhitePanel.alpha = Mathf.MoveTowards(this.WhitePanel.alpha, (float)1, Time.deltaTime);
-			this.audio.volume = (float)1 - this.WhitePanel.alpha;
-			if (this.WhitePanel.alpha == (float)1)
+			this.WhitePanel.alpha = Mathf.MoveTowards(this.WhitePanel.alpha, 1f, Time.deltaTime);
+			base.GetComponent<AudioSource>().volume = 1f - this.WhitePanel.alpha;
+			if (this.WhitePanel.alpha == 1f)
 			{
 				PlayerPrefs.SetInt("CustomSenpai", 1);
 				PlayerPrefs.SetInt("SenpaiSkinColor", this.SkinColor);
@@ -552,53 +434,40 @@ public class CustomizationScript : MonoBehaviour
 				PlayerPrefs.SetInt("SenpaiFacialHair", this.FacialHair);
 				PlayerPrefs.SetInt("MaleUniform", this.MaleUniform);
 				PlayerPrefs.SetInt("FemaleUniform", this.FemaleUniform);
-				Application.LoadLevel("IntroScene");
+				SceneManager.LoadScene("IntroScene");
 			}
 		}
 		else
 		{
-			this.WhitePanel.alpha = Mathf.MoveTowards(this.WhitePanel.alpha, (float)0, Time.deltaTime);
+			this.WhitePanel.alpha = Mathf.MoveTowards(this.WhitePanel.alpha, 0f, Time.deltaTime);
 		}
 		if (this.Apologize)
 		{
 			this.Timer += Time.deltaTime;
-			if (this.Timer < (float)1)
+			if (this.Timer < 1f)
 			{
-				float x3 = Mathf.Lerp(this.ApologyWindow.localPosition.x, (float)0, Time.deltaTime * (float)10);
-				Vector3 localPosition6 = this.ApologyWindow.localPosition;
-				float num37 = localPosition6.x = x3;
-				Vector3 vector29 = this.ApologyWindow.localPosition = localPosition6;
+				this.ApologyWindow.localPosition = new Vector3(Mathf.Lerp(this.ApologyWindow.localPosition.x, 0f, Time.deltaTime * 10f), this.ApologyWindow.localPosition.y, this.ApologyWindow.localPosition.z);
 			}
 			else
 			{
-				float x4 = this.ApologyWindow.localPosition.x - Time.deltaTime;
-				Vector3 localPosition7 = this.ApologyWindow.localPosition;
-				float num38 = localPosition7.x = x4;
-				Vector3 vector30 = this.ApologyWindow.localPosition = localPosition7;
-				float x5 = this.ApologyWindow.localPosition.x - Mathf.Abs(this.ApologyWindow.localPosition.x * 0.01f) * Time.deltaTime * (float)1000;
-				Vector3 localPosition8 = this.ApologyWindow.localPosition;
-				float num39 = localPosition8.x = x5;
-				Vector3 vector31 = this.ApologyWindow.localPosition = localPosition8;
-				if (this.ApologyWindow.localPosition.x < (float)-1360)
+				this.ApologyWindow.localPosition = new Vector3(Mathf.Abs((this.ApologyWindow.localPosition.x - Time.deltaTime) * 0.01f) * (Time.deltaTime * 1000f), this.ApologyWindow.localPosition.y, this.ApologyWindow.localPosition.z);
+				if (this.ApologyWindow.localPosition.x < -1360f)
 				{
-					int num40 = 1360;
-					Vector3 localPosition9 = this.ApologyWindow.localPosition;
-					float num41 = localPosition9.x = (float)num40;
-					Vector3 vector32 = this.ApologyWindow.localPosition = localPosition9;
+					this.ApologyWindow.localPosition = new Vector3(1360f, this.ApologyWindow.localPosition.y, this.ApologyWindow.localPosition.z);
 					this.Apologize = false;
-					this.Timer = (float)0;
+					this.Timer = 0f;
 				}
 			}
 		}
 		if (Input.GetKeyDown("left ctrl"))
 		{
-			this.GenderPanel.alpha = (float)0;
-			this.Senpai.active = true;
+			this.GenderPanel.alpha = 0f;
+			this.Senpai.gameObject.SetActive(true);
 			this.Phase = 6;
 		}
 	}
 
-	public virtual void UpdateSkin()
+	private void UpdateSkin()
 	{
 		if (this.SkinColor > 5)
 		{
@@ -608,58 +477,58 @@ public class CustomizationScript : MonoBehaviour
 		{
 			this.SkinColor = 5;
 		}
-		this.SenpaiRenderer.materials[2].mainTexture = this.FaceTextures[this.SkinColor];
+		this.SenpaiRenderer.materials[1].mainTexture = this.FaceTextures[this.SkinColor];
 		this.SenpaiRenderer.materials[0].mainTexture = this.SkinTextures[this.SkinColor];
-		this.SkinColorLabel.text = "Skin Color " + this.SkinColor;
+		this.SkinColorLabel.text = "Skin Color " + this.SkinColor.ToString();
 	}
 
-	public virtual void UpdateHairStyle()
+	private void UpdateHairStyle()
 	{
-		if (this.HairStyle > Extensions.get_length(this.Hairstyles) - 1)
+		if (this.HairStyle > this.Hairstyles.Length - 1)
 		{
 			this.HairStyle = 0;
 		}
 		else if (this.HairStyle < 0)
 		{
-			this.HairStyle = Extensions.get_length(this.Hairstyles) - 1;
+			this.HairStyle = this.Hairstyles.Length - 1;
 		}
-		for (int i = 1; i < Extensions.get_length(this.Hairstyles); i++)
+		for (int i = 1; i < this.Hairstyles.Length; i++)
 		{
-			this.Hairstyles[i].active = false;
+			this.Hairstyles[i].SetActive(false);
 		}
 		if (this.HairStyle > 0)
 		{
-			this.HairRenderer = (Renderer)this.Hairstyles[this.HairStyle].GetComponent(typeof(Renderer));
-			this.Hairstyles[this.HairStyle].active = true;
+			this.HairRenderer = this.Hairstyles[this.HairStyle].GetComponent<Renderer>();
+			this.Hairstyles[this.HairStyle].SetActive(true);
 		}
-		this.HairStyleLabel.text = "Hair Style " + this.HairStyle;
+		this.HairStyleLabel.text = "Hair Style " + this.HairStyle.ToString();
 		this.UpdateColor();
 	}
 
-	public virtual void UpdateFacialHair()
+	private void UpdateFacialHair()
 	{
-		if (this.FacialHair > Extensions.get_length(this.FacialHairstyles) - 1)
+		if (this.FacialHair > this.FacialHairstyles.Length - 1)
 		{
 			this.FacialHair = 0;
 		}
 		else if (this.FacialHair < 0)
 		{
-			this.FacialHair = Extensions.get_length(this.FacialHairstyles) - 1;
+			this.FacialHair = this.FacialHairstyles.Length - 1;
 		}
-		for (int i = 1; i < Extensions.get_length(this.FacialHairstyles); i++)
+		for (int i = 1; i < this.FacialHairstyles.Length; i++)
 		{
-			this.FacialHairstyles[i].active = false;
+			this.FacialHairstyles[i].SetActive(false);
 		}
 		if (this.FacialHair > 0)
 		{
-			this.FacialHairRenderer = (Renderer)this.FacialHairstyles[this.FacialHair].GetComponent(typeof(Renderer));
-			this.FacialHairstyles[this.FacialHair].active = true;
+			this.FacialHairRenderer = this.FacialHairstyles[this.FacialHair].GetComponent<Renderer>();
+			this.FacialHairstyles[this.FacialHair].SetActive(true);
 		}
-		this.FacialHairStyleLabel.text = "Facial Hair " + this.FacialHair;
+		this.FacialHairStyleLabel.text = "Facial Hair " + this.FacialHair.ToString();
 		this.UpdateColor();
 	}
 
-	public virtual void UpdateColor()
+	private void UpdateColor()
 	{
 		if (this.HairColor > 10)
 		{
@@ -669,7 +538,7 @@ public class CustomizationScript : MonoBehaviour
 		{
 			this.HairColor = 10;
 		}
-		Color color;
+		Color color = default(Color);
 		if (this.HairColor == 1)
 		{
 			color = new Color(0.5f, 0.5f, 0.5f);
@@ -677,67 +546,67 @@ public class CustomizationScript : MonoBehaviour
 		}
 		else if (this.HairColor == 2)
 		{
-			color = new Color((float)1, (float)0, (float)0);
+			color = new Color(1f, 0f, 0f);
 			this.HairColorName = "Red";
 		}
 		else if (this.HairColor == 3)
 		{
-			color = new Color((float)1, (float)1, (float)0);
+			color = new Color(1f, 1f, 0f);
 			this.HairColorName = "Yellow";
 		}
 		else if (this.HairColor == 4)
 		{
-			color = new Color((float)0, (float)1, (float)0);
+			color = new Color(0f, 1f, 0f);
 			this.HairColorName = "Green";
 		}
 		else if (this.HairColor == 5)
 		{
-			color = new Color((float)0, (float)1, (float)1);
+			color = new Color(0f, 1f, 1f);
 			this.HairColorName = "Cyan";
 		}
 		else if (this.HairColor == 6)
 		{
-			color = new Color((float)0, (float)0, (float)1);
+			color = new Color(0f, 0f, 1f);
 			this.HairColorName = "Blue";
 		}
 		else if (this.HairColor == 7)
 		{
-			color = new Color((float)1, (float)0, (float)1);
+			color = new Color(1f, 0f, 1f);
 			this.HairColorName = "Purple";
 		}
 		else if (this.HairColor == 8)
 		{
-			color = new Color((float)1, 0.5f, (float)0);
+			color = new Color(1f, 0.5f, 0f);
 			this.HairColorName = "Orange";
 		}
 		else if (this.HairColor == 9)
 		{
-			color = new Color(0.5f, 0.25f, (float)0);
+			color = new Color(0.5f, 0.25f, 0f);
 			this.HairColorName = "Brown";
 		}
 		else if (this.HairColor == 10)
 		{
-			color = new Color((float)1, (float)1, (float)1);
+			color = new Color(1f, 1f, 1f);
 			this.HairColorName = "White";
 		}
 		if (this.HairStyle > 0)
 		{
-			this.HairRenderer = (Renderer)this.Hairstyles[this.HairStyle].GetComponent(typeof(Renderer));
+			this.HairRenderer = this.Hairstyles[this.HairStyle].GetComponent<Renderer>();
 			this.HairRenderer.material.color = color;
 		}
 		if (this.FacialHair > 0)
 		{
-			this.FacialHairRenderer = (Renderer)this.FacialHairstyles[this.FacialHair].GetComponent(typeof(Renderer));
+			this.FacialHairRenderer = this.FacialHairstyles[this.FacialHair].GetComponent<Renderer>();
 			this.FacialHairRenderer.material.color = color;
-			if (Extensions.get_length(this.FacialHairRenderer.materials) > 1)
+			if (this.FacialHairRenderer.materials.Length > 1)
 			{
 				this.FacialHairRenderer.materials[1].color = color;
 			}
 		}
-		this.HairColorLabel.text = "Hair Color " + this.HairColor;
+		this.HairColorLabel.text = "Hair Color " + this.HairColor.ToString();
 	}
 
-	public virtual void UpdateEyes()
+	private void UpdateEyes()
 	{
 		if (this.EyeColor > 10)
 		{
@@ -755,55 +624,55 @@ public class CustomizationScript : MonoBehaviour
 		}
 		else if (this.EyeColor == 2)
 		{
-			color = new Color((float)1, (float)0, (float)0);
+			color = new Color(1f, 0f, 0f);
 			this.EyeColorName = "Red";
 		}
 		else if (this.EyeColor == 3)
 		{
-			color = new Color((float)1, (float)1, (float)0);
+			color = new Color(1f, 1f, 0f);
 			this.EyeColorName = "Yellow";
 		}
 		else if (this.EyeColor == 4)
 		{
-			color = new Color((float)0, (float)1, (float)0);
+			color = new Color(0f, 1f, 0f);
 			this.EyeColorName = "Green";
 		}
 		else if (this.EyeColor == 5)
 		{
-			color = new Color((float)0, (float)1, (float)1);
+			color = new Color(0f, 1f, 1f);
 			this.EyeColorName = "Cyan";
 		}
 		else if (this.EyeColor == 6)
 		{
-			color = new Color((float)0, (float)0, (float)1);
+			color = new Color(0f, 0f, 1f);
 			this.EyeColorName = "Blue";
 		}
 		else if (this.EyeColor == 7)
 		{
-			color = new Color((float)1, (float)0, (float)1);
+			color = new Color(1f, 0f, 1f);
 			this.EyeColorName = "Purple";
 		}
 		else if (this.EyeColor == 8)
 		{
-			color = new Color((float)1, 0.5f, (float)0);
+			color = new Color(1f, 0.5f, 0f);
 			this.EyeColorName = "Orange";
 		}
 		else if (this.EyeColor == 9)
 		{
-			color = new Color(0.5f, 0.25f, (float)0);
+			color = new Color(0.5f, 0.25f, 0f);
 			this.EyeColorName = "Brown";
 		}
 		else if (this.EyeColor == 10)
 		{
-			color = new Color((float)1, (float)1, (float)1);
+			color = new Color(1f, 1f, 1f);
 			this.EyeColorName = "White";
 		}
 		this.EyeR.material.color = color;
 		this.EyeL.material.color = color;
-		this.EyeColorLabel.text = "Eye Color " + this.EyeColor;
+		this.EyeColorLabel.text = "Eye Color " + this.EyeColor.ToString();
 	}
 
-	public virtual void UpdateEyewear()
+	private void UpdateEyewear()
 	{
 		if (this.EyeWear > 5)
 		{
@@ -815,26 +684,26 @@ public class CustomizationScript : MonoBehaviour
 		}
 		for (int i = 1; i < this.Eyewears.Length; i++)
 		{
-			this.Eyewears[i].active = false;
+			this.Eyewears[i].SetActive(false);
 		}
 		if (this.EyeWear > 0)
 		{
-			this.Eyewears[this.EyeWear].active = true;
+			this.Eyewears[this.EyeWear].SetActive(true);
 		}
-		this.EyeWearLabel.text = "Eye Wear " + this.EyeWear;
+		this.EyeWearLabel.text = "Eye Wear " + this.EyeWear.ToString();
 	}
 
-	public virtual void UpdateMaleUniform()
+	private void UpdateMaleUniform()
 	{
-		if (this.MaleUniform > Extensions.get_length(this.MaleUniforms) - 1)
+		if (this.MaleUniform > this.MaleUniforms.Length - 1)
 		{
 			this.MaleUniform = 1;
 		}
 		else if (this.MaleUniform < 1)
 		{
-			this.MaleUniform = Extensions.get_length(this.MaleUniforms) - 1;
+			this.MaleUniform = this.MaleUniforms.Length - 1;
 		}
-		RuntimeServices.SetProperty(this.SenpaiRenderer, "sharedMesh", this.MaleUniforms[this.MaleUniform]);
+		this.SenpaiRenderer.sharedMesh = this.MaleUniforms[this.MaleUniform];
 		if (this.MaleUniform == 1)
 		{
 			this.SenpaiRenderer.materials[0].mainTexture = this.SkinTextures[this.SkinColor];
@@ -871,28 +740,24 @@ public class CustomizationScript : MonoBehaviour
 			this.SenpaiRenderer.materials[1].mainTexture = this.SkinTextures[this.SkinColor];
 			this.SenpaiRenderer.materials[2].mainTexture = this.MaleUniformTextures[this.MaleUniform];
 		}
-		this.MaleUniformLabel.text = "Male Uniform " + this.MaleUniform;
+		this.MaleUniformLabel.text = "Male Uniform " + this.MaleUniform.ToString();
 	}
 
-	public virtual void UpdateFemaleUniform()
+	private void UpdateFemaleUniform()
 	{
-		if (this.FemaleUniform > Extensions.get_length(this.FemaleUniforms) - 1)
+		if (this.FemaleUniform > this.FemaleUniforms.Length - 1)
 		{
 			this.FemaleUniform = 1;
 		}
 		else if (this.FemaleUniform < 1)
 		{
-			this.FemaleUniform = Extensions.get_length(this.FemaleUniforms) - 1;
+			this.FemaleUniform = this.FemaleUniforms.Length - 1;
 		}
-		RuntimeServices.SetProperty(this.YandereRenderer, "sharedMesh", this.FemaleUniforms[this.FemaleUniform]);
+		this.YandereRenderer.sharedMesh = this.FemaleUniforms[this.FemaleUniform];
 		this.YandereRenderer.materials[0].mainTexture = this.FemaleUniformTextures[this.FemaleUniform];
 		this.YandereRenderer.materials[1].mainTexture = this.FemaleUniformTextures[this.FemaleUniform];
 		this.YandereRenderer.materials[2].mainTexture = this.FemaleFace;
 		this.YandereRenderer.materials[3].mainTexture = this.FemaleFace;
-		this.FemaleUniformLabel.text = "Female Uniform " + this.FemaleUniform;
-	}
-
-	public virtual void Main()
-	{
+		this.FemaleUniformLabel.text = "Female Uniform " + this.FemaleUniform.ToString();
 	}
 }

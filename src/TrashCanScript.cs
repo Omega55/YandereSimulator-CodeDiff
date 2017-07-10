@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class TrashCanScript : MonoBehaviour
 {
 	public YandereScript Yandere;
@@ -16,13 +15,13 @@ public class TrashCanScript : MonoBehaviour
 
 	public bool Weapon;
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (!this.Occupied)
 		{
-			if (this.Prompt.Circle[0].fillAmount <= (float)0)
+			if (this.Prompt.Circle[0].fillAmount <= 0f)
 			{
-				this.Prompt.Circle[0].fillAmount = (float)1;
+				this.Prompt.Circle[0].fillAmount = 1f;
 				if (this.Yandere.PickUp != null)
 				{
 					this.Item = this.Yandere.PickUp.gameObject;
@@ -36,19 +35,19 @@ public class TrashCanScript : MonoBehaviour
 					this.Weapon = true;
 				}
 				this.Item.transform.parent = this.TrashPosition;
-				this.Item.rigidbody.useGravity = false;
-				((Collider)this.Item.GetComponent(typeof(Collider))).enabled = false;
-				((PromptScript)this.Item.GetComponent(typeof(PromptScript))).Hide();
-				((PromptScript)this.Item.GetComponent(typeof(PromptScript))).enabled = false;
+				this.Item.GetComponent<Rigidbody>().useGravity = false;
+				this.Item.GetComponent<Collider>().enabled = false;
+				this.Item.GetComponent<PromptScript>().Hide();
+				this.Item.GetComponent<PromptScript>().enabled = false;
 				this.Occupied = true;
 				this.UpdatePrompt();
 			}
 		}
-		else if (this.Prompt.Circle[0].fillAmount <= (float)0)
+		else if (this.Prompt.Circle[0].fillAmount <= 0f)
 		{
-			this.Prompt.Circle[0].fillAmount = (float)1;
-			((PromptScript)this.Item.GetComponent(typeof(PromptScript))).Circle[3].fillAmount = (float)-1;
-			((PromptScript)this.Item.GetComponent(typeof(PromptScript))).enabled = true;
+			this.Prompt.Circle[0].fillAmount = 1f;
+			this.Item.GetComponent<PromptScript>().Circle[3].fillAmount = -1f;
+			this.Item.GetComponent<PromptScript>().enabled = true;
 			this.Item = null;
 			this.Occupied = false;
 			this.Weapon = false;
@@ -58,31 +57,31 @@ public class TrashCanScript : MonoBehaviour
 		{
 			if (this.Weapon)
 			{
-				this.Item.transform.localPosition = new Vector3((float)0, 0.29f, (float)0);
-				this.Item.transform.localEulerAngles = new Vector3((float)90, (float)0, (float)0);
+				this.Item.transform.localPosition = new Vector3(0f, 0.29f, 0f);
+				this.Item.transform.localEulerAngles = new Vector3(90f, 0f, 0f);
 			}
 			else
 			{
-				this.Item.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
-				this.Item.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
+				this.Item.transform.localPosition = Vector3.zero;
+				this.Item.transform.localEulerAngles = Vector3.zero;
 			}
 		}
 	}
 
-	public virtual void UpdatePrompt()
+	public void UpdatePrompt()
 	{
 		if (!this.Occupied)
 		{
 			if (this.Yandere.Armed)
 			{
-				this.Prompt.Label[0].text = "     " + "Insert";
+				this.Prompt.Label[0].text = "     Insert";
 				this.Prompt.HideButton[0] = false;
 			}
 			else if (this.Yandere.PickUp != null)
 			{
 				if (this.Yandere.PickUp.Evidence || this.Yandere.PickUp.Suspicious)
 				{
-					this.Prompt.Label[0].text = "     " + "Insert";
+					this.Prompt.Label[0].text = "     Insert";
 					this.Prompt.HideButton[0] = false;
 				}
 				else
@@ -97,12 +96,8 @@ public class TrashCanScript : MonoBehaviour
 		}
 		else
 		{
-			this.Prompt.Label[0].text = "     " + "Remove";
+			this.Prompt.Label[0].text = "     Remove";
 			this.Prompt.HideButton[0] = false;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

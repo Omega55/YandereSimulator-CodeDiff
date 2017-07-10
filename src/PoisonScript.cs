@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class PoisonScript : MonoBehaviour
 {
 	public YandereScript Yandere;
@@ -10,29 +9,18 @@ public class PoisonScript : MonoBehaviour
 
 	public GameObject Bottle;
 
-	public virtual void Start()
+	public void Start()
 	{
-		if (PlayerPrefs.GetInt("ChemistryGrade") + PlayerPrefs.GetInt("ChemistryBonus") < 1)
-		{
-			this.gameObject.active = false;
-		}
-		else
-		{
-			this.gameObject.active = true;
-		}
+		base.gameObject.SetActive(PlayerPrefs.GetInt("ChemistryGrade") + PlayerPrefs.GetInt("ChemistryBonus") >= 1);
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (this.Prompt.Circle[0].fillAmount == (float)0)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Yandere.PossessPoison = true;
-			UnityEngine.Object.Destroy(this.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 			UnityEngine.Object.Destroy(this.Bottle);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

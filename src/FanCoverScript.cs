@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class FanCoverScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
@@ -42,13 +41,13 @@ public class FanCoverScript : MonoBehaviour
 
 	public int Phase;
 
-	public virtual void Start()
+	private void Start()
 	{
 		if (this.StudentManager.Students[33] == null)
 		{
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
-			this.enabled = false;
+			base.enabled = false;
 		}
 		else
 		{
@@ -56,49 +55,40 @@ public class FanCoverScript : MonoBehaviour
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
-		if (Vector3.Distance(this.transform.position, this.Yandere.transform.position) < (float)2)
+		if (Vector3.Distance(base.transform.position, this.Yandere.transform.position) < 2f)
 		{
 			if (this.Yandere.Armed)
 			{
-				if (this.Yandere.Weapon[this.Yandere.Equipped].WeaponID == 6 && this.Rival.Meeting)
-				{
-					this.Prompt.HideButton[0] = false;
-				}
-				else
-				{
-					this.Prompt.HideButton[0] = true;
-				}
+				this.Prompt.HideButton[0] = (this.Yandere.Weapon[this.Yandere.Equipped].WeaponID != 6 || !this.Rival.Meeting);
 			}
 			else
 			{
 				this.Prompt.HideButton[0] = true;
 			}
 		}
-		if (this.Prompt.Circle[0].fillAmount <= (float)0)
+		if (this.Prompt.Circle[0].fillAmount <= 0f)
 		{
 			this.Yandere.CharacterAnimation.CrossFade("f02_fanMurderA_00");
 			this.Rival.CharacterAnimation.CrossFade("f02_fanMurderB_00");
-			this.Rival.OsanaHair.animation.CrossFade("fanMurderHair");
+			this.Rival.OsanaHair.GetComponent<Animation>().CrossFade("fanMurderHair");
 			this.Yandere.EmptyHands();
 			this.Rival.OsanaHair.transform.parent = this.Rival.transform;
-			this.Rival.OsanaHair.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
-			this.Rival.OsanaHair.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
-			this.Rival.OsanaHair.transform.localScale = new Vector3((float)1, (float)1, (float)1);
+			this.Rival.OsanaHair.transform.localEulerAngles = Vector3.zero;
+			this.Rival.OsanaHair.transform.localPosition = Vector3.zero;
+			this.Rival.OsanaHair.transform.localScale = new Vector3(1f, 1f, 1f);
 			this.Rival.OsanaHairL.enabled = false;
 			this.Rival.OsanaHairR.enabled = false;
 			this.Rival.Distracted = true;
 			this.Yandere.CanMove = false;
 			this.Rival.Meeting = false;
 			this.FanSFX.enabled = false;
-			this.audio.Play();
-			float z = this.transform.localEulerAngles.z + (float)15;
-			Vector3 localEulerAngles = this.transform.localEulerAngles;
-			float num = localEulerAngles.z = z;
-			Vector3 vector = this.transform.localEulerAngles = localEulerAngles;
-			this.rigidbody.isKinematic = false;
-			this.rigidbody.useGravity = true;
+			base.GetComponent<AudioSource>().Play();
+			base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, base.transform.localEulerAngles.y, base.transform.localEulerAngles.z + 15f);
+			Rigidbody component = base.GetComponent<Rigidbody>();
+			component.isKinematic = false;
+			component.useGravity = true;
 			this.Prompt.enabled = false;
 			this.Prompt.Hide();
 			this.Phase++;
@@ -107,25 +97,25 @@ public class FanCoverScript : MonoBehaviour
 		{
 			if (this.Phase == 1)
 			{
-				this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, this.MurderSpot.rotation, Time.deltaTime * (float)10);
+				this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, this.MurderSpot.rotation, Time.deltaTime * 10f);
 				this.Yandere.MoveTowardsTarget(this.MurderSpot.position);
 				if (this.Yandere.CharacterAnimation["f02_fanMurderA_00"].time > 3.5f && !this.Reacted)
 				{
-					AudioSource.PlayClipAtPoint(this.RivalReaction, new Vector3((float)0, (float)0, (float)0));
+					AudioSource.PlayClipAtPoint(this.RivalReaction, Vector3.zero);
 					this.Reacted = true;
 				}
-				if (this.Yandere.CharacterAnimation["f02_fanMurderA_00"].time > (float)5)
+				if (this.Yandere.CharacterAnimation["f02_fanMurderA_00"].time > 5f)
 				{
 					this.Rival.LiquidProjector.material.mainTexture = this.Rival.BloodTexture;
 					this.Rival.LiquidProjector.enabled = true;
-					this.Rival.EyeShrink = (float)1;
+					this.Rival.EyeShrink = 1f;
 					this.Yandere.BloodTextures = this.YandereBloodTextures;
-					this.Yandere.Bloodiness = this.Yandere.Bloodiness + (float)20;
+					this.Yandere.Bloodiness += 20f;
 					this.Yandere.UpdateBlood();
-					this.BloodProjector.active = true;
+					this.BloodProjector.gameObject.SetActive(true);
 					this.BloodProjector.material.mainTexture = this.BloodTexture[1];
 					this.BloodEffects.transform.parent = this.Rival.Head;
-					this.BloodEffects.transform.localPosition = new Vector3((float)0, 0.1f, (float)0);
+					this.BloodEffects.transform.localPosition = new Vector3(0f, 0.1f, 0f);
 					this.BloodEffects.Play();
 					this.Phase++;
 				}
@@ -135,44 +125,40 @@ public class FanCoverScript : MonoBehaviour
 				if (this.Phase < 6)
 				{
 					this.Timer += Time.deltaTime;
-					if (this.Timer > (float)1)
+					if (this.Timer > 1f)
 					{
 						this.Phase++;
 						if (this.Phase - 1 < 5)
 						{
 							this.BloodProjector.material.mainTexture = this.BloodTexture[this.Phase - 1];
-							this.Yandere.Bloodiness = this.Yandere.Bloodiness + (float)20;
+							this.Yandere.Bloodiness += 20f;
 							this.Yandere.UpdateBlood();
-							this.Timer = (float)0;
+							this.Timer = 0f;
 						}
 					}
 				}
 				if (this.Rival.CharacterAnimation["f02_fanMurderB_00"].time >= this.Rival.CharacterAnimation["f02_fanMurderB_00"].length)
 				{
 					this.BloodProjector.material.mainTexture = this.BloodTexture[5];
-					this.Yandere.Bloodiness = this.Yandere.Bloodiness + (float)20;
+					this.Yandere.Bloodiness += 20f;
 					this.Yandere.UpdateBlood();
 					this.Rival.Ragdoll.Decapitated = true;
-					this.Rival.OsanaHair.active = false;
+					this.Rival.OsanaHair.SetActive(false);
 					this.Rival.Dead = true;
 					this.Rival.BecomeRagdoll();
 					this.BloodEffects.Stop();
-					this.Explosion.active = true;
-					this.Smoke.active = true;
+					this.Explosion.SetActive(true);
+					this.Smoke.SetActive(true);
 					this.Fan.enabled = false;
 					this.Phase = 10;
 				}
 			}
 			else if (this.Yandere.CharacterAnimation["f02_fanMurderA_00"].time >= this.Yandere.CharacterAnimation["f02_fanMurderA_00"].length)
 			{
-				this.OfferHelp.active = false;
+				this.OfferHelp.SetActive(false);
 				this.Yandere.CanMove = true;
-				this.enabled = false;
+				base.enabled = false;
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

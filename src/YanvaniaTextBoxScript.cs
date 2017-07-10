@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class YanvaniaTextBoxScript : MonoBehaviour
 {
 	private TypewriterEffect NewTypewriter;
@@ -49,7 +47,7 @@ public class YanvaniaTextBoxScript : MonoBehaviour
 
 	public string[] Lines;
 
-	public int PortraitID;
+	public int PortraitID = 1;
 
 	public int LineID;
 
@@ -59,69 +57,40 @@ public class YanvaniaTextBoxScript : MonoBehaviour
 
 	public float Timer;
 
-	public YanvaniaTextBoxScript()
-	{
-		this.PortraitID = 1;
-	}
-
-	public virtual void Start()
+	private void Start()
 	{
 		Application.targetFrameRate = 60;
-		this.Portrait.transform.localScale = new Vector3((float)0, (float)0, (float)0);
-		int num = 0;
-		Vector3 localScale = this.BloodWipe.transform.localScale;
-		float num2 = localScale.x = (float)num;
-		Vector3 vector = this.BloodWipe.transform.localScale = localScale;
+		this.Portrait.transform.localScale = Vector3.zero;
+		this.BloodWipe.transform.localScale = new Vector3(0f, this.BloodWipe.transform.localScale.y, this.BloodWipe.transform.localScale.z);
 		this.SpeakerLabel.text = string.Empty;
-		int num3 = 0;
-		Color color = this.Border.color;
-		float num4 = color.a = (float)num3;
-		Color color2 = this.Border.color = color;
-		int num5 = 0;
-		Color color3 = this.BG.color;
-		float num6 = color3.a = (float)num5;
-		Color color4 = this.BG.color = color3;
-		this.active = false;
+		this.Border.color = new Color(this.Border.color.r, this.Border.color.g, this.Border.color.b, 0f);
+		this.BG.color = new Color(this.BG.color.r, this.BG.color.g, this.BG.color.b, 0f);
+		base.gameObject.SetActive(false);
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (!this.Leave)
 		{
-			if (this.BloodWipe.transform.localScale.x == (float)0)
+			if (this.BloodWipe.transform.localScale.x == 0f)
 			{
-				float x = this.BloodWipe.transform.localScale.x + Time.deltaTime;
-				Vector3 localScale = this.BloodWipe.transform.localScale;
-				float num = localScale.x = x;
-				Vector3 vector = this.BloodWipe.transform.localScale = localScale;
+				this.BloodWipe.transform.localScale = new Vector3(this.BloodWipe.transform.localScale.x + Time.deltaTime, this.BloodWipe.transform.localScale.y, this.BloodWipe.transform.localScale.z);
 			}
-			if (this.BloodWipe.transform.localScale.x > (float)50)
+			if (this.BloodWipe.transform.localScale.x > 50f)
 			{
-				float a = this.BloodWipe.color.a - Time.deltaTime;
-				Color color = this.BloodWipe.color;
-				float num2 = color.a = a;
-				Color color2 = this.BloodWipe.color = color;
-				float a2 = this.Border.color.a + Time.deltaTime;
-				Color color3 = this.Border.color;
-				float num3 = color3.a = a2;
-				Color color4 = this.Border.color = color3;
-				float a3 = 0.5f;
-				Color color5 = this.BG.color;
-				float num4 = color5.a = a3;
-				Color color6 = this.BG.color = color5;
+				this.BloodWipe.color = new Color(this.BloodWipe.color.r, this.BloodWipe.color.g, this.BloodWipe.color.b, this.BloodWipe.color.a - Time.deltaTime);
+				this.Border.color = new Color(this.Border.color.r, this.Border.color.g, this.Border.color.b, this.Border.color.a + Time.deltaTime);
+				this.BG.color = new Color(this.BG.color.r, this.BG.color.g, this.BG.color.b, 0.5f);
 			}
 			else
 			{
-				float x2 = this.BloodWipe.transform.localScale.x + this.BloodWipe.transform.localScale.x * 0.1f;
-				Vector3 localScale2 = this.BloodWipe.transform.localScale;
-				float num5 = localScale2.x = x2;
-				Vector3 vector2 = this.BloodWipe.transform.localScale = localScale2;
+				this.BloodWipe.transform.localScale = new Vector3(this.BloodWipe.transform.localScale.x + this.BloodWipe.transform.localScale.x * 0.1f, this.BloodWipe.transform.localScale.y, this.BloodWipe.transform.localScale.z);
 			}
-			if (this.BloodWipe.color.a <= (float)0)
+			if (this.BloodWipe.color.a <= 0f)
 			{
 				if (!this.Display)
 				{
-					if (this.LineID < Extensions.get_length(this.Lines) - 1)
+					if (this.LineID < this.Lines.Length - 1)
 					{
 						if (this.NewLabel != null)
 						{
@@ -129,31 +98,24 @@ public class YanvaniaTextBoxScript : MonoBehaviour
 						}
 						this.UpdatePortrait = true;
 						this.Display = true;
-						if (this.PortraitID == 1)
-						{
-							this.SpeakerLabel.text = string.Empty;
-							this.PortraitID = 2;
-						}
-						else
-						{
-							this.SpeakerLabel.text = string.Empty;
-							this.PortraitID = 1;
-						}
+						this.PortraitID = ((this.PortraitID != 1) ? 1 : 2);
+						this.SpeakerLabel.text = string.Empty;
 					}
 				}
 				else if (this.NewLabelScript != null)
 				{
+					AudioSource component = base.GetComponent<AudioSource>();
 					if (!this.NewLabelScript.enabled)
 					{
 						this.NewLabelScript.enabled = true;
-						this.audio.clip = this.Voices[this.LineID];
-						this.NewLineTimer = (float)0;
-						this.audio.Play();
+						component.clip = this.Voices[this.LineID];
+						this.NewLineTimer = 0f;
+						component.Play();
 					}
 					else
 					{
 						this.NewLineTimer += Time.deltaTime;
-						if (this.NewLineTimer > this.audio.clip.length + 0.5f || Input.GetButtonDown("A"))
+						if (this.NewLineTimer > component.clip.length + 0.5f || Input.GetButtonDown("A"))
 						{
 							this.Display = false;
 						}
@@ -164,8 +126,8 @@ public class YanvaniaTextBoxScript : MonoBehaviour
 			{
 				if (!this.Grow)
 				{
-					this.Portrait.transform.localScale = Vector3.MoveTowards(this.Portrait.transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-					if (this.Portrait.transform.localScale.x == (float)0)
+					this.Portrait.transform.localScale = Vector3.MoveTowards(this.Portrait.transform.localScale, Vector3.zero, Time.deltaTime * 10f);
+					if (this.Portrait.transform.localScale.x == 0f)
 					{
 						this.Portrait.mainTexture = this.Portraits[this.PortraitID];
 						this.Grow = true;
@@ -173,12 +135,12 @@ public class YanvaniaTextBoxScript : MonoBehaviour
 				}
 				else
 				{
-					this.Portrait.transform.localScale = Vector3.MoveTowards(this.Portrait.transform.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
-					if (this.Portrait.transform.localScale.x == (float)1)
+					this.Portrait.transform.localScale = Vector3.MoveTowards(this.Portrait.transform.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+					if (this.Portrait.transform.localScale.x == 1f)
 					{
 						this.SpeakerLabel.text = this.SpeakerNames[this.PortraitID];
 						this.UpdatePortrait = false;
-						this.AnimTimer = (float)0;
+						this.AnimTimer = 0f;
 						this.Grow = false;
 						this.LineID++;
 						this.SpawnLabel();
@@ -195,70 +157,76 @@ public class YanvaniaTextBoxScript : MonoBehaviour
 					this.NewTypewriter.delayOnComma = true;
 				}
 			}
+			Animation component2 = this.Yanmont.Character.GetComponent<Animation>();
 			if (this.LineID == 3)
 			{
 				this.NewTypewriter.delayOnComma = true;
 				this.NewTypewriter.delayOnPeriod = 0.75f;
-				if (this.AnimTimer < (float)1)
+				if (this.AnimTimer < 1f)
 				{
-					this.Yanmont.Character.animation.CrossFade("f02_yanvaniaCutsceneAction1_00");
+					component2.CrossFade("f02_yanvaniaCutsceneAction1_00");
 				}
-				if (this.Yanmont.Character.animation["f02_yanvaniaCutsceneAction1_00"].time >= this.Yanmont.Character.animation["f02_yanvaniaCutsceneAction1_00"].length)
+				if (component2["f02_yanvaniaCutsceneAction1_00"].time >= component2["f02_yanvaniaCutsceneAction1_00"].length)
 				{
-					this.Yanmont.Character.animation.CrossFade("f02_yanvaniaDramaticIdle_00");
+					component2.CrossFade("f02_yanvaniaDramaticIdle_00");
 				}
 			}
+			Animation component3 = this.Dracula.Character.GetComponent<Animation>();
 			if (this.LineID == 5)
 			{
 				this.NewTypewriter.charsPerSecond = 15;
-				this.Yanmont.Character.animation.CrossFade("f02_yanvaniaCutsceneAction2_00");
-				if (this.Yanmont.Character.animation["f02_yanvaniaCutsceneAction2_00"].time >= this.Yanmont.Character.animation["f02_yanvaniaCutsceneAction2_00"].length)
+				component2.CrossFade("f02_yanvaniaCutsceneAction2_00");
+				if (component2["f02_yanvaniaCutsceneAction2_00"].time >= component2["f02_yanvaniaCutsceneAction2_00"].length)
 				{
-					this.Yanmont.Character.animation.CrossFade("f02_yanvaniaDramaticIdle_00");
+					component2.CrossFade("f02_yanvaniaDramaticIdle_00");
 				}
-				if (this.AnimTimer > (float)4)
+				if (this.AnimTimer > 4f)
 				{
-					this.Dracula.Character.animation.CrossFade("DraculaDrink");
+					component3.CrossFade("DraculaDrink");
 				}
 				if (this.AnimTimer > 4.5f)
 				{
-					this.Glass.renderer.materials[0].color = new Color((float)1, (float)1, (float)1, 0.5f);
+					this.Glass.GetComponent<Renderer>().materials[0].color = new Color(1f, 1f, 1f, 0.5f);
 				}
-				if (this.AnimTimer > (float)5 && this.Dracula.Character.animation["DraculaDrink"].time >= this.Dracula.Character.animation["DraculaDrink"].length)
+				if (this.AnimTimer > 5f && component3["DraculaDrink"].time >= component3["DraculaDrink"].length)
 				{
-					this.Dracula.Character.animation.CrossFade("DraculaIdle");
+					component3.CrossFade("DraculaIdle");
 				}
 			}
 			if (this.LineID == 6)
 			{
-				this.Yanmont.Character.animation.CrossFade("f02_yanvaniaDramaticIdle_00");
-				if (this.AnimTimer < (float)1)
+				component2.CrossFade("f02_yanvaniaDramaticIdle_00");
+				if (this.AnimTimer < 1f)
 				{
 					this.NewTypewriter.delayOnPeriod = 2.25f;
 				}
-				if (this.AnimTimer > (float)1 && this.AnimTimer < (float)2)
+				if (this.AnimTimer > 1f && this.AnimTimer < 2f)
 				{
-					this.Dracula.Character.animation.CrossFade("DraculaToss");
+					component3.CrossFade("DraculaToss");
 				}
-				if (this.Glass != null && this.AnimTimer > 1.4f && !this.Glass.rigidbody.useGravity)
+				if (this.Glass != null)
 				{
-					this.Glass.rigidbody.useGravity = true;
-					this.Glass.transform.parent = null;
-					this.Glass.rigidbody.AddForce((float)-100, (float)100, (float)-200);
+					Rigidbody component4 = this.Glass.GetComponent<Rigidbody>();
+					if (this.AnimTimer > 1.4f && !component4.useGravity)
+					{
+						component4.useGravity = true;
+						this.Glass.transform.parent = null;
+						component4.AddForce(-100f, 100f, -200f);
+					}
 				}
-				if (this.AnimTimer > (float)2 + this.Dracula.Character.animation["DraculaToss"].length && this.AnimTimer < (float)6)
+				if (this.AnimTimer > 2f + component3["DraculaToss"].length && this.AnimTimer < 6f)
 				{
-					this.Dracula.Character.animation.CrossFade("DraculaIdle");
+					component3.CrossFade("DraculaIdle");
 				}
-				if (this.AnimTimer > (float)4)
+				if (this.AnimTimer > 4f)
 				{
-					this.NewTypewriter.delayOnPeriod = (float)1;
+					this.NewTypewriter.delayOnPeriod = 1f;
 					this.NewTypewriter.charsPerSecond = 15;
 				}
-				if (this.AnimTimer > (float)6 && this.AnimTimer < 9.5f)
+				if (this.AnimTimer > 6f && this.AnimTimer < 9.5f)
 				{
-					this.Dracula.transform.position = Vector3.Lerp(this.Dracula.transform.position, new Vector3(-34.675f, 7.5f, 2.8f), Time.deltaTime * (float)10);
-					this.Dracula.Character.animation.CrossFade("succubus_a_idle_01");
+					this.Dracula.transform.position = Vector3.Lerp(this.Dracula.transform.position, new Vector3(-34.675f, 7.5f, 2.8f), Time.deltaTime * 10f);
+					component3.CrossFade("succubus_a_idle_01");
 				}
 				if (this.AnimTimer > 9.5f)
 				{
@@ -291,17 +259,11 @@ public class YanvaniaTextBoxScript : MonoBehaviour
 		}
 		else
 		{
-			this.Portrait.transform.localScale = Vector3.MoveTowards(this.Portrait.transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
-			if (this.Portrait.transform.localScale.x == (float)0)
+			this.Portrait.transform.localScale = Vector3.MoveTowards(this.Portrait.transform.localScale, Vector3.zero, Time.deltaTime * 10f);
+			if (this.Portrait.transform.localScale.x == 0f)
 			{
-				float y = this.Border.transform.position.y + Time.deltaTime;
-				Vector3 position = this.Border.transform.position;
-				float num6 = position.y = y;
-				Vector3 vector3 = this.Border.transform.position = position;
-				float y2 = this.BG.transform.position.y + Time.deltaTime;
-				Vector3 position2 = this.BG.transform.position;
-				float num7 = position2.y = y2;
-				Vector3 vector4 = this.BG.transform.position = position2;
+				this.Border.transform.position = new Vector3(this.Border.transform.position.x, this.Border.transform.position.y + Time.deltaTime, this.Border.transform.position.z);
+				this.BG.transform.position = new Vector3(this.BG.transform.position.x, this.BG.transform.position.y + Time.deltaTime, this.BG.transform.position.z);
 				if (!this.Yanmont.enabled)
 				{
 					this.Yanmont.EnterCutscene = false;
@@ -312,20 +274,16 @@ public class YanvaniaTextBoxScript : MonoBehaviour
 		}
 	}
 
-	public virtual void SpawnLabel()
+	private void SpawnLabel()
 	{
-		this.NewLabel = (GameObject)UnityEngine.Object.Instantiate(this.Label, this.transform.position, Quaternion.identity);
+		this.NewLabel = UnityEngine.Object.Instantiate<GameObject>(this.Label, base.transform.position, Quaternion.identity);
 		this.NewLabel.transform.parent = this.NewLabelSpawnPoint;
-		this.NewLabel.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)0);
-		this.NewLabel.transform.localPosition = new Vector3((float)0, (float)0, (float)0);
-		this.NewLabel.transform.localScale = new Vector3((float)1, (float)1, (float)1);
-		this.NewTypewriter = (TypewriterEffect)this.NewLabel.GetComponent(typeof(TypewriterEffect));
-		this.NewLabelScript = (UILabel)this.NewLabel.GetComponent(typeof(UILabel));
+		this.NewLabel.transform.localEulerAngles = Vector3.zero;
+		this.NewLabel.transform.localPosition = Vector3.zero;
+		this.NewLabel.transform.localScale = new Vector3(1f, 1f, 1f);
+		this.NewTypewriter = this.NewLabel.GetComponent<TypewriterEffect>();
+		this.NewLabelScript = this.NewLabel.GetComponent<UILabel>();
 		this.NewLabelScript.text = this.Lines[this.LineID];
 		this.NewLabelScript.enabled = false;
-	}
-
-	public virtual void Main()
-	{
 	}
 }

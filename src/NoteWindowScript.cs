@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class NoteWindowScript : MonoBehaviour
 {
 	public InputManagerScript InputManager;
@@ -41,7 +39,7 @@ public class NoteWindowScript : MonoBehaviour
 
 	public int MeetID;
 
-	public int Slot;
+	public int Slot = 1;
 
 	public float Rotation;
 
@@ -55,16 +53,11 @@ public class NoteWindowScript : MonoBehaviour
 
 	public bool Show;
 
-	public NoteWindowScript()
+	private void Start()
 	{
-		this.Slot = 1;
-	}
-
-	public virtual void Start()
-	{
-		this.SubMenu.transform.localScale = new Vector3((float)0, (float)0, (float)0);
-		this.transform.localPosition = new Vector3((float)455, (float)-965, (float)0);
-		this.transform.localEulerAngles = new Vector3((float)0, (float)0, (float)-90);
+		this.SubMenu.transform.localScale = Vector3.zero;
+		base.transform.localPosition = new Vector3(455f, -965f, 0f);
+		base.transform.localEulerAngles = new Vector3(0f, 0f, -90f);
 		this.OriginalText[1] = this.SlotLabels[1].text;
 		this.OriginalText[2] = this.SlotLabels[2].text;
 		this.OriginalText[3] = this.SlotLabels[3].text;
@@ -72,41 +65,35 @@ public class NoteWindowScript : MonoBehaviour
 		this.UpdateSubLabels();
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (!this.Show)
 		{
-			if (this.Rotation > (float)-90)
+			if (this.Rotation > -90f)
 			{
-				this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3((float)455, (float)-965, (float)0), 0.166666672f);
-				this.Rotation = Mathf.Lerp(this.Rotation, (float)-91, 0.166666672f);
-				float rotation = this.Rotation;
-				Vector3 localEulerAngles = this.transform.localEulerAngles;
-				float num = localEulerAngles.z = rotation;
-				Vector3 vector = this.transform.localEulerAngles = localEulerAngles;
+				base.transform.localPosition = Vector3.Lerp(base.transform.localPosition, new Vector3(455f, -965f, 0f), 0.166666672f);
+				this.Rotation = Mathf.Lerp(this.Rotation, -91f, 0.166666672f);
+				base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, base.transform.localEulerAngles.y, this.Rotation);
 			}
 			else
 			{
-				this.gameObject.active = false;
+				base.gameObject.SetActive(false);
 			}
 		}
 		else
 		{
-			this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3((float)0, (float)0, (float)0), 0.166666672f);
-			this.Rotation = Mathf.Lerp(this.Rotation, (float)0, 0.166666672f);
-			float rotation2 = this.Rotation;
-			Vector3 localEulerAngles2 = this.transform.localEulerAngles;
-			float num2 = localEulerAngles2.z = rotation2;
-			Vector3 vector2 = this.transform.localEulerAngles = localEulerAngles2;
+			base.transform.localPosition = Vector3.Lerp(base.transform.localPosition, Vector3.zero, 0.166666672f);
+			this.Rotation = Mathf.Lerp(this.Rotation, 0f, 0.166666672f);
+			base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, base.transform.localEulerAngles.y, this.Rotation);
 			if (!this.Selecting)
 			{
 				if (this.SubMenu.transform.localScale.x > 0.1f)
 				{
-					this.SubMenu.transform.localScale = Vector3.Lerp(this.SubMenu.transform.localScale, new Vector3((float)0, (float)0, (float)0), 0.166666672f);
+					this.SubMenu.transform.localScale = Vector3.Lerp(this.SubMenu.transform.localScale, Vector3.zero, 0.166666672f);
 				}
 				else
 				{
-					this.SubMenu.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+					this.SubMenu.transform.localScale = Vector3.zero;
 				}
 				if (this.InputManager.TappedDown)
 				{
@@ -161,7 +148,7 @@ public class NoteWindowScript : MonoBehaviour
 			}
 			else
 			{
-				this.SubMenu.transform.localScale = Vector3.Lerp(this.SubMenu.transform.localScale, new Vector3((float)1, (float)1, (float)1), 0.166666672f);
+				this.SubMenu.transform.localScale = Vector3.Lerp(this.SubMenu.transform.localScale, new Vector3(1f, 1f, 1f), 0.166666672f);
 				if (this.InputManager.TappedDown)
 				{
 					this.SubSlot++;
@@ -169,10 +156,7 @@ public class NoteWindowScript : MonoBehaviour
 					{
 						this.SubSlot = 1;
 					}
-					int num3 = 550 - 100 * this.SubSlot;
-					Vector3 localPosition = this.SubHighlight.localPosition;
-					float num4 = localPosition.y = (float)num3;
-					Vector3 vector3 = this.SubHighlight.localPosition = localPosition;
+					this.SubHighlight.localPosition = new Vector3(this.SubHighlight.localPosition.x, 550f - 100f * (float)this.SubSlot, this.SubHighlight.localPosition.z);
 				}
 				if (this.InputManager.TappedUp)
 				{
@@ -181,12 +165,9 @@ public class NoteWindowScript : MonoBehaviour
 					{
 						this.SubSlot = 10;
 					}
-					int num5 = 550 - 100 * this.SubSlot;
-					Vector3 localPosition2 = this.SubHighlight.localPosition;
-					float num6 = localPosition2.y = (float)num5;
-					Vector3 vector4 = this.SubHighlight.localPosition = localPosition2;
+					this.SubHighlight.localPosition = new Vector3(this.SubHighlight.localPosition.x, 550f - 100f * (float)this.SubSlot, this.SubHighlight.localPosition.z);
 				}
-				if (Input.GetButtonDown("A") && this.SubLabels[this.SubSlot].color.a > 0.5f && this.SubLabels[this.SubSlot].text != string.Empty && this.SubLabels[this.SubSlot].text != "??????????")
+				if (Input.GetButtonDown("A") && this.SubLabels[this.SubSlot].color.a > 0.5f && !this.SubLabels[this.SubSlot].text.Equals(string.Empty) && !this.SubLabels[this.SubSlot].text.Equals("??????????"))
 				{
 					this.SlotLabels[this.Slot].text = this.SubLabels[this.SubSlot].text;
 					this.SlotsFilled[this.Slot] = true;
@@ -201,40 +182,29 @@ public class NoteWindowScript : MonoBehaviour
 					this.CheckForCompletion();
 					this.Selecting = false;
 					this.SubSlot = 1;
-					int num7 = 450;
-					Vector3 localPosition3 = this.SubHighlight.localPosition;
-					float num8 = localPosition3.y = (float)num7;
-					Vector3 vector5 = this.SubHighlight.localPosition = localPosition3;
+					this.SubHighlight.localPosition = new Vector3(this.SubHighlight.localPosition.x, 450f, this.SubHighlight.localPosition.z);
 				}
 				if (Input.GetButtonDown("B"))
 				{
 					this.CheckForCompletion();
 					this.Selecting = false;
 					this.SubSlot = 1;
-					int num9 = 450;
-					Vector3 localPosition4 = this.SubHighlight.localPosition;
-					float num10 = localPosition4.y = (float)num9;
-					Vector3 vector6 = this.SubHighlight.localPosition = localPosition4;
+					this.SubHighlight.localPosition = new Vector3(this.SubHighlight.localPosition.x, 450f, this.SubHighlight.localPosition.z);
 				}
 			}
+			UISprite uisprite = this.SlotHighlights[this.Slot];
 			if (!this.Fade)
 			{
-				float a = this.SlotHighlights[this.Slot].color.a + 0.0166666675f;
-				Color color = this.SlotHighlights[this.Slot].color;
-				float num11 = color.a = a;
-				Color color2 = this.SlotHighlights[this.Slot].color = color;
-				if (this.SlotHighlights[this.Slot].color.a >= 0.5f)
+				uisprite.color = new Color(uisprite.color.r, uisprite.color.g, uisprite.color.b, uisprite.color.a + 0.0166666675f);
+				if (uisprite.color.a >= 0.5f)
 				{
 					this.Fade = true;
 				}
 			}
 			else
 			{
-				float a2 = this.SlotHighlights[this.Slot].color.a - 0.0166666675f;
-				Color color3 = this.SlotHighlights[this.Slot].color;
-				float num12 = color3.a = a2;
-				Color color4 = this.SlotHighlights[this.Slot].color = color3;
-				if (this.SlotHighlights[this.Slot].color.a <= (float)0)
+				uisprite.color = new Color(uisprite.color.r, uisprite.color.g, uisprite.color.b, uisprite.color.a - 0.0166666675f);
+				if (uisprite.color.a <= 0f)
 				{
 					this.Fade = false;
 				}
@@ -242,29 +212,25 @@ public class NoteWindowScript : MonoBehaviour
 		}
 	}
 
-	public virtual void UpdateHighlights()
+	private void UpdateHighlights()
 	{
-		for (int i = 1; i < Extensions.get_length(this.SlotHighlights); i++)
+		for (int i = 1; i < this.SlotHighlights.Length; i++)
 		{
-			int num = 0;
-			Color color = this.SlotHighlights[i].color;
-			float num2 = color.a = (float)num;
-			Color color2 = this.SlotHighlights[i].color = color;
+			UISprite uisprite = this.SlotHighlights[i];
+			uisprite.color = new Color(uisprite.color.r, uisprite.color.g, uisprite.color.b, 0f);
 		}
 	}
 
-	public virtual void UpdateSubLabels()
+	private void UpdateSubLabels()
 	{
-		this.ID = 1;
 		if (this.Slot == 1)
 		{
-			while (this.ID < Extensions.get_length(this.SubLabels))
+			this.ID = 1;
+			while (this.ID < this.SubLabels.Length)
 			{
-				this.SubLabels[this.ID].text = this.Subjects[this.ID];
-				int num = 1;
-				Color color = this.SubLabels[this.ID].color;
-				float num2 = color.a = (float)num;
-				Color color2 = this.SubLabels[this.ID].color = color;
+				UILabel uilabel = this.SubLabels[this.ID];
+				uilabel.text = this.Subjects[this.ID];
+				uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, 1f);
 				this.ID++;
 			}
 			if (PlayerPrefs.GetInt("Event1") == 0)
@@ -274,32 +240,30 @@ public class NoteWindowScript : MonoBehaviour
 		}
 		else if (this.Slot == 2)
 		{
-			while (this.ID < Extensions.get_length(this.SubLabels))
+			this.ID = 1;
+			while (this.ID < this.SubLabels.Length)
 			{
-				this.SubLabels[this.ID].text = this.Locations[this.ID];
-				int num3 = 1;
-				Color color3 = this.SubLabels[this.ID].color;
-				float num4 = color3.a = (float)num3;
-				Color color4 = this.SubLabels[this.ID].color = color3;
+				UILabel uilabel2 = this.SubLabels[this.ID];
+				uilabel2.text = this.Locations[this.ID];
+				uilabel2.color = new Color(uilabel2.color.r, uilabel2.color.g, uilabel2.color.b, 1f);
 				this.ID++;
 			}
 		}
 		else if (this.Slot == 3)
 		{
-			while (this.ID < Extensions.get_length(this.SubLabels))
+			this.ID = 1;
+			while (this.ID < this.SubLabels.Length)
 			{
-				this.SubLabels[this.ID].text = this.Times[this.ID];
-				int num5 = 1;
-				Color color5 = this.SubLabels[this.ID].color;
-				float num6 = color5.a = (float)num5;
-				Color color6 = this.SubLabels[this.ID].color = color5;
+				UILabel uilabel3 = this.SubLabels[this.ID];
+				uilabel3.text = this.Times[this.ID];
+				uilabel3.color = new Color(uilabel3.color.r, uilabel3.color.g, uilabel3.color.b, 1f);
 				this.ID++;
 			}
 			this.DisableOptions();
 		}
 	}
 
-	public virtual void CheckForCompletion()
+	private void CheckForCompletion()
 	{
 		if (this.SlotsFilled[1] && this.SlotsFilled[2] && this.SlotsFilled[3])
 		{
@@ -308,13 +272,13 @@ public class NoteWindowScript : MonoBehaviour
 		}
 	}
 
-	public virtual void Exit()
+	private void Exit()
 	{
 		this.Yandere.Blur.enabled = false;
 		this.Yandere.CanMove = true;
 		this.Show = false;
-		this.Yandere.HUD.alpha = (float)1;
-		Time.timeScale = (float)1;
+		this.Yandere.HUD.alpha = 1f;
+		Time.timeScale = 1f;
 		this.PromptBar.Label[0].text = string.Empty;
 		this.PromptBar.Label[1].text = string.Empty;
 		this.PromptBar.Label[2].text = string.Empty;
@@ -323,81 +287,57 @@ public class NoteWindowScript : MonoBehaviour
 		this.PromptBar.UpdateButtons();
 	}
 
-	public virtual void DisableOptions()
+	private void DisableOptions()
 	{
 		if (this.Clock.HourTime >= 7.25f)
 		{
-			float a = 0.5f;
-			Color color = this.SubLabels[1].color;
-			float num = color.a = a;
-			Color color2 = this.SubLabels[1].color = color;
+			UILabel uilabel = this.SubLabels[1];
+			uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, 0.5f);
 		}
 		if (this.Clock.HourTime >= 7.5f)
 		{
-			float a2 = 0.5f;
-			Color color3 = this.SubLabels[2].color;
-			float num2 = color3.a = a2;
-			Color color4 = this.SubLabels[2].color = color3;
+			UILabel uilabel2 = this.SubLabels[2];
+			uilabel2.color = new Color(uilabel2.color.r, uilabel2.color.g, uilabel2.color.b, 0.5f);
 		}
 		if (this.Clock.HourTime >= 7.75f)
 		{
-			float a3 = 0.5f;
-			Color color5 = this.SubLabels[3].color;
-			float num3 = color5.a = a3;
-			Color color6 = this.SubLabels[3].color = color5;
+			UILabel uilabel3 = this.SubLabels[3];
+			uilabel3.color = new Color(uilabel3.color.r, uilabel3.color.g, uilabel3.color.b, 0.5f);
 		}
 		if (this.Clock.HourTime >= 8f)
 		{
-			float a4 = 0.5f;
-			Color color7 = this.SubLabels[4].color;
-			float num4 = color7.a = a4;
-			Color color8 = this.SubLabels[4].color = color7;
+			UILabel uilabel4 = this.SubLabels[4];
+			uilabel4.color = new Color(uilabel4.color.r, uilabel4.color.g, uilabel4.color.b, 0.5f);
 		}
 		if (this.Clock.HourTime >= 8.25f)
 		{
-			float a5 = 0.5f;
-			Color color9 = this.SubLabels[5].color;
-			float num5 = color9.a = a5;
-			Color color10 = this.SubLabels[5].color = color9;
+			UILabel uilabel5 = this.SubLabels[5];
+			uilabel5.color = new Color(uilabel5.color.r, uilabel5.color.g, uilabel5.color.b, 0.5f);
 		}
 		if (this.Clock.HourTime >= 15.5f)
 		{
-			float a6 = 0.5f;
-			Color color11 = this.SubLabels[6].color;
-			float num6 = color11.a = a6;
-			Color color12 = this.SubLabels[6].color = color11;
+			UILabel uilabel6 = this.SubLabels[6];
+			uilabel6.color = new Color(uilabel6.color.r, uilabel6.color.g, uilabel6.color.b, 0.5f);
 		}
 		if (this.Clock.HourTime >= 16f)
 		{
-			float a7 = 0.5f;
-			Color color13 = this.SubLabels[7].color;
-			float num7 = color13.a = a7;
-			Color color14 = this.SubLabels[7].color = color13;
+			UILabel uilabel7 = this.SubLabels[7];
+			uilabel7.color = new Color(uilabel7.color.r, uilabel7.color.g, uilabel7.color.b, 0.5f);
 		}
 		if (this.Clock.HourTime >= 16.5f)
 		{
-			float a8 = 0.5f;
-			Color color15 = this.SubLabels[8].color;
-			float num8 = color15.a = a8;
-			Color color16 = this.SubLabels[8].color = color15;
+			UILabel uilabel8 = this.SubLabels[8];
+			uilabel8.color = new Color(uilabel8.color.r, uilabel8.color.g, uilabel8.color.b, 0.5f);
 		}
 		if (this.Clock.HourTime >= 17f)
 		{
-			float a9 = 0.5f;
-			Color color17 = this.SubLabels[9].color;
-			float num9 = color17.a = a9;
-			Color color18 = this.SubLabels[9].color = color17;
+			UILabel uilabel9 = this.SubLabels[9];
+			uilabel9.color = new Color(uilabel9.color.r, uilabel9.color.g, uilabel9.color.b, 0.5f);
 		}
 		if (this.Clock.HourTime >= 17.5f)
 		{
-			float a10 = 0.5f;
-			Color color19 = this.SubLabels[10].color;
-			float num10 = color19.a = a10;
-			Color color20 = this.SubLabels[10].color = color19;
+			UILabel uilabel10 = this.SubLabels[10];
+			uilabel10.color = new Color(uilabel10.color.r, uilabel10.color.g, uilabel10.color.b, 0.5f);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

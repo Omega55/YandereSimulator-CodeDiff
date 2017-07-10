@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class TextureManagerScript : MonoBehaviour
 {
 	public Texture[] UniformTextures;
@@ -18,7 +17,7 @@ public class TextureManagerScript : MonoBehaviour
 
 	public Texture2D Overlay2D;
 
-	public virtual Texture2D MergeTextures(Texture2D BackgroundTex, Texture2D TopTex)
+	public Texture2D MergeTextures(Texture2D BackgroundTex, Texture2D TopTex)
 	{
 		Texture2D texture2D = new Texture2D(1024, 1024);
 		Color32[] pixels = BackgroundTex.GetPixels32();
@@ -33,9 +32,5 @@ public class TextureManagerScript : MonoBehaviour
 		texture2D.SetPixels32(pixels);
 		texture2D.Apply();
 		return texture2D;
-	}
-
-	public virtual void Main()
-	{
 	}
 }

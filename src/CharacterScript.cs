@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class CharacterScript : MonoBehaviour
 {
 	public Transform RightBreast;
@@ -28,39 +27,36 @@ public class CharacterScript : MonoBehaviour
 
 	public Renderer LeftYandereEye;
 
-	public virtual void SetAnimations()
+	private void SetAnimations()
 	{
-		this.animation["f02_yanderePose_00"].layer = 1;
-		this.animation["f02_yanderePose_00"].weight = (float)0;
-		this.animation.Play("f02_yanderePose_00");
-		this.animation["f02_shy_00"].layer = 2;
-		this.animation["f02_shy_00"].weight = (float)0;
-		this.animation.Play("f02_shy_00");
-		this.animation["f02_fist_00"].layer = 3;
-		this.animation["f02_fist_00"].weight = (float)0;
-		this.animation.Play("f02_fist_00");
-		this.animation["f02_mopping_00"].layer = 4;
-		this.animation["f02_mopping_00"].weight = (float)0;
-		this.animation["f02_mopping_00"].speed = (float)2;
-		this.animation.Play("f02_mopping_00");
-		this.animation["f02_carry_00"].layer = 5;
-		this.animation["f02_carry_00"].weight = (float)0;
-		this.animation.Play("f02_carry_00");
-		this.animation["f02_mopCarry_00"].layer = 6;
-		this.animation["f02_mopCarry_00"].weight = (float)0;
-		this.animation.Play("f02_mopCarry_00");
-		this.animation["f02_bucketCarry_00"].layer = 7;
-		this.animation["f02_bucketCarry_00"].weight = (float)0;
-		this.animation.Play("f02_bucketCarry_00");
-		this.animation["f02_cameraPose_00"].layer = 8;
-		this.animation["f02_cameraPose_00"].weight = (float)0;
-		this.animation.Play("f02_cameraPose_00");
-		this.animation["f02_dipping_00"].speed = (float)2;
-		this.animation["f02_cameraPose_00"].weight = (float)0;
-		this.animation["f02_shy_00"].weight = (float)0;
-	}
-
-	public virtual void Main()
-	{
+		Animation component = base.GetComponent<Animation>();
+		component["f02_yanderePose_00"].layer = 1;
+		component["f02_yanderePose_00"].weight = 0f;
+		component.Play("f02_yanderePose_00");
+		component["f02_shy_00"].layer = 2;
+		component["f02_shy_00"].weight = 0f;
+		component.Play("f02_shy_00");
+		component["f02_fist_00"].layer = 3;
+		component["f02_fist_00"].weight = 0f;
+		component.Play("f02_fist_00");
+		component["f02_mopping_00"].layer = 4;
+		component["f02_mopping_00"].weight = 0f;
+		component["f02_mopping_00"].speed = 2f;
+		component.Play("f02_mopping_00");
+		component["f02_carry_00"].layer = 5;
+		component["f02_carry_00"].weight = 0f;
+		component.Play("f02_carry_00");
+		component["f02_mopCarry_00"].layer = 6;
+		component["f02_mopCarry_00"].weight = 0f;
+		component.Play("f02_mopCarry_00");
+		component["f02_bucketCarry_00"].layer = 7;
+		component["f02_bucketCarry_00"].weight = 0f;
+		component.Play("f02_bucketCarry_00");
+		component["f02_cameraPose_00"].layer = 8;
+		component["f02_cameraPose_00"].weight = 0f;
+		component.Play("f02_cameraPose_00");
+		component["f02_dipping_00"].speed = 2f;
+		component["f02_cameraPose_00"].weight = 0f;
+		component["f02_shy_00"].weight = 0f;
 	}
 }

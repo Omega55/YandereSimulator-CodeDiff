@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class CutsceneManagerScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
@@ -22,25 +21,17 @@ public class CutsceneManagerScript : MonoBehaviour
 
 	public string[] Text;
 
-	public int Phase;
+	public int Phase = 1;
 
-	public int Line;
+	public int Line = 1;
 
-	public CutsceneManagerScript()
+	private void Update()
 	{
-		this.Phase = 1;
-		this.Line = 1;
-	}
-
-	public virtual void Update()
-	{
+		AudioSource component = base.GetComponent<AudioSource>();
 		if (this.Phase == 1)
 		{
-			float a = Mathf.MoveTowards(this.Darkness.color.a, (float)1, Time.deltaTime);
-			Color color = this.Darkness.color;
-			float num = color.a = a;
-			Color color2 = this.Darkness.color = color;
-			if (this.Darkness.color.a == (float)1)
+			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 1f, Time.deltaTime));
+			if (this.Darkness.color.a == 1f)
 			{
 				this.Phase++;
 			}
@@ -48,13 +39,13 @@ public class CutsceneManagerScript : MonoBehaviour
 		else if (this.Phase == 2)
 		{
 			this.Subtitle.text = this.Text[this.Line];
-			this.audio.clip = this.Voice[this.Line];
-			this.audio.Play();
+			component.clip = this.Voice[this.Line];
+			component.Play();
 			this.Phase++;
 		}
 		else if (this.Phase == 3)
 		{
-			if (!this.audio.isPlaying || Input.GetButtonDown("A"))
+			if (!component.isPlaying || Input.GetButtonDown("A"))
 			{
 				if (this.Line < 2)
 				{
@@ -70,18 +61,15 @@ public class CutsceneManagerScript : MonoBehaviour
 		}
 		else if (this.Phase == 4)
 		{
-			this.EndOfDay.gameObject.active = true;
+			this.EndOfDay.gameObject.SetActive(true);
 			this.EndOfDay.Phase = 10;
 			this.Counselor.LecturePhase = 5;
 			this.Phase++;
 		}
 		else if (this.Phase == 6)
 		{
-			float a2 = Mathf.MoveTowards(this.Darkness.color.a, (float)0, Time.deltaTime);
-			Color color3 = this.Darkness.color;
-			float num2 = color3.a = a2;
-			Color color4 = this.Darkness.color = color3;
-			if (this.Darkness.color.a == (float)0)
+			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 0f, Time.deltaTime));
+			if (this.Darkness.color.a == 0f)
 			{
 				this.Phase++;
 			}
@@ -95,11 +83,7 @@ public class CutsceneManagerScript : MonoBehaviour
 			this.PromptBar.ClearButtons();
 			this.PromptBar.Show = false;
 			this.Portal.Proceed = true;
-			this.active = false;
+			base.gameObject.SetActive(false);
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

@@ -1,9 +1,6 @@
 ﻿using System;
-using CompilerGenerated;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class MusicTest : MonoBehaviour
 {
 	public float[] freqData;
@@ -14,18 +11,11 @@ public class MusicTest : MonoBehaviour
 
 	public GameObject[] g;
 
-	private __MusicTest$callable0$51_28__ sqrt;
-
-	public MusicTest()
+	private void Start()
 	{
-		this.sqrt = new __MusicTest$callable0$51_28__(Mathf.Sqrt);
-	}
-
-	public virtual void Start()
-	{
-		int num = Extensions.get_length(this.freqData);
+		int num = this.freqData.Length;
 		int num2 = 0;
-		for (int i = 0; i < Extensions.get_length(this.freqData); i++)
+		for (int i = 0; i < this.freqData.Length; i++)
 		{
 			num /= 2;
 			if (num == 0)
@@ -36,21 +26,21 @@ public class MusicTest : MonoBehaviour
 		}
 		this.band = new float[num2 + 1];
 		this.g = new GameObject[num2 + 1];
-		for (int j = 0; j < Extensions.get_length(this.band); j++)
+		for (int j = 0; j < this.band.Length; j++)
 		{
-			this.band[j] = (float)0;
+			this.band[j] = 0f;
 			this.g[j] = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-			this.g[j].transform.position = new Vector3((float)j, (float)0, (float)0);
+			this.g[j].transform.position = new Vector3((float)j, 0f, 0f);
 		}
-		this.InvokeRepeating("check", (float)0, 0.0333333351f);
+		base.InvokeRepeating("check", 0f, 0.0333333351f);
 	}
 
-	public virtual void check()
+	private void check()
 	{
-		this.audio.GetSpectrumData(this.freqData, 0, FFTWindow.Rectangular);
+		base.GetComponent<AudioSource>().GetSpectrumData(this.freqData, 0, FFTWindow.Rectangular);
 		int num = 0;
 		int num2 = 2;
-		for (int i = 0; i < Extensions.get_length(this.freqData); i++)
+		for (int i = 0; i < this.freqData.Length; i++)
 		{
 			float num3 = this.freqData[i];
 			float num4 = this.band[num];
@@ -59,16 +49,10 @@ public class MusicTest : MonoBehaviour
 			{
 				num++;
 				num2 *= 2;
-				float y = this.band[num] * (float)32;
-				Vector3 position = this.g[num].transform.position;
-				float num5 = position.y = y;
-				Vector3 vector = this.g[num].transform.position = position;
-				this.band[num] = (float)0;
+				Transform transform = this.g[num].transform;
+				transform.position = new Vector3(transform.position.x, this.band[num] * 32f, transform.position.z);
+				this.band[num] = 0f;
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

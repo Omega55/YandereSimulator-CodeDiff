@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class PortraitScript : MonoBehaviour
 {
 	public GameObject[] StudentObject;
@@ -23,41 +21,41 @@ public class PortraitScript : MonoBehaviour
 
 	public int CurrentHair;
 
-	public virtual void Start()
+	private void Start()
 	{
-		this.StudentObject[1].active = false;
-		this.StudentObject[2].active = false;
+		this.StudentObject[1].SetActive(false);
+		this.StudentObject[2].SetActive(false);
 		this.Selected = 1;
 		this.UpdateHair();
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (Input.GetKeyDown("1"))
 		{
-			this.StudentObject[0].active = true;
-			this.StudentObject[1].active = false;
-			this.StudentObject[2].active = false;
+			this.StudentObject[0].SetActive(true);
+			this.StudentObject[1].SetActive(false);
+			this.StudentObject[2].SetActive(false);
 			this.Selected = 1;
 		}
 		else if (Input.GetKeyDown("2"))
 		{
-			this.StudentObject[0].active = false;
-			this.StudentObject[1].active = true;
-			this.StudentObject[2].active = false;
+			this.StudentObject[0].SetActive(false);
+			this.StudentObject[1].SetActive(true);
+			this.StudentObject[2].SetActive(false);
 			this.Selected = 2;
 		}
 		else if (Input.GetKeyDown("3"))
 		{
-			this.StudentObject[0].active = false;
-			this.StudentObject[1].active = false;
-			this.StudentObject[2].active = true;
+			this.StudentObject[0].SetActive(false);
+			this.StudentObject[1].SetActive(false);
+			this.StudentObject[2].SetActive(true);
 			this.Selected = 3;
 		}
 		if (Input.GetKeyDown("space"))
 		{
 			this.CurrentHair++;
-			if (this.CurrentHair > Extensions.get_length(this.HairSet1) - 1)
+			if (this.CurrentHair > this.HairSet1.Length - 1)
 			{
 				this.CurrentHair = 0;
 			}
@@ -65,17 +63,14 @@ public class PortraitScript : MonoBehaviour
 		}
 	}
 
-	public virtual void UpdateHair()
+	private void UpdateHair()
 	{
-		this.Renderer1.materials[0].mainTexture = this.HairSet2[this.CurrentHair];
-		this.Renderer1.materials[3].mainTexture = this.HairSet2[this.CurrentHair];
-		this.Renderer2.materials[2].mainTexture = this.HairSet2[this.CurrentHair];
-		this.Renderer2.materials[3].mainTexture = this.HairSet2[this.CurrentHair];
-		this.Renderer3.materials[0].mainTexture = this.HairSet2[this.CurrentHair];
-		this.Renderer3.materials[1].mainTexture = this.HairSet2[this.CurrentHair];
-	}
-
-	public virtual void Main()
-	{
+		Texture mainTexture = this.HairSet2[this.CurrentHair];
+		this.Renderer1.materials[0].mainTexture = mainTexture;
+		this.Renderer1.materials[3].mainTexture = mainTexture;
+		this.Renderer2.materials[2].mainTexture = mainTexture;
+		this.Renderer2.materials[3].mainTexture = mainTexture;
+		this.Renderer3.materials[0].mainTexture = mainTexture;
+		this.Renderer3.materials[1].mainTexture = mainTexture;
 	}
 }

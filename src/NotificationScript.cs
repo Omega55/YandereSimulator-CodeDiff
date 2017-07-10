@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class NotificationScript : MonoBehaviour
 {
 	public NotificationManagerScript NotificationManager;
@@ -18,37 +17,30 @@ public class NotificationScript : MonoBehaviour
 
 	public int ID;
 
-	public virtual void Start()
+	private void Start()
 	{
 		if (PlayerPrefs.GetInt("MissionMode") == 1)
 		{
-			this.Icon[0].color = new Color((float)1, (float)1, (float)1, (float)1);
-			this.Icon[1].color = new Color((float)1, (float)1, (float)1, (float)1);
-			this.Label.color = new Color((float)1, (float)1, (float)1, (float)1);
+			this.Icon[0].color = new Color(1f, 1f, 1f, 1f);
+			this.Icon[1].color = new Color(1f, 1f, 1f, 1f);
+			this.Label.color = new Color(1f, 1f, 1f, 1f);
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (!this.Display)
 		{
-			if (this.NotificationManager.NotificationsSpawned > this.ID + 2)
+			this.Panel.alpha -= Time.deltaTime * ((this.NotificationManager.NotificationsSpawned <= this.ID + 2) ? 1f : 3f);
+			if (this.Panel.alpha <= 0f)
 			{
-				this.Panel.alpha = this.Panel.alpha - Time.deltaTime * (float)3;
-			}
-			else
-			{
-				this.Panel.alpha = this.Panel.alpha - Time.deltaTime;
-			}
-			if (this.Panel.alpha <= (float)0)
-			{
-				UnityEngine.Object.Destroy(this.gameObject);
+				UnityEngine.Object.Destroy(base.gameObject);
 			}
 		}
 		else
 		{
 			this.Timer += Time.deltaTime;
-			if (this.Timer > (float)4)
+			if (this.Timer > 4f)
 			{
 				this.Display = false;
 			}
@@ -57,9 +49,5 @@ public class NotificationScript : MonoBehaviour
 				this.Display = false;
 			}
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }

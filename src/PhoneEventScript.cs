@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class PhoneEventScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
@@ -34,13 +33,13 @@ public class PhoneEventScript : MonoBehaviour
 
 	public bool EventOver;
 
-	public int EventStudentID;
+	public int EventStudentID = 7;
 
-	public float EventTime;
+	public float EventTime = 7.5f;
 
-	public int EventPhase;
+	public int EventPhase = 1;
 
-	public int EventDay;
+	public int EventDay = 1;
 
 	public float CurrentClipLength;
 
@@ -48,30 +47,22 @@ public class PhoneEventScript : MonoBehaviour
 
 	public float Timer;
 
-	public PhoneEventScript()
+	private void Start()
 	{
-		this.EventStudentID = 7;
-		this.EventTime = 7.5f;
-		this.EventPhase = 1;
-		this.EventDay = 1;
-	}
-
-	public virtual void Start()
-	{
-		this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+		this.EventSubtitle.transform.localScale = Vector3.zero;
 		if (PlayerPrefs.GetInt("Weekday") == this.EventDay)
 		{
 			this.EventCheck = true;
 		}
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (!this.Clock.StopTime && this.EventCheck)
 		{
 			if (this.Clock.HourTime > this.EventTime + 0.5f)
 			{
-				this.enabled = false;
+				base.enabled = false;
 			}
 			else if (this.Clock.HourTime > this.EventTime)
 			{
@@ -82,7 +73,7 @@ public class PhoneEventScript : MonoBehaviour
 					{
 						this.EventStudent.CurrentDestination = this.EventStudent.Destinations[this.EventStudent.Phase];
 						this.EventStudent.Pathfinding.target = this.EventStudent.Destinations[this.EventStudent.Phase];
-						this.EventStudent.Obstacle.checkTime = (float)99;
+						this.EventStudent.Obstacle.checkTime = 99f;
 						this.EventStudent.SpeechLines.Stop();
 						this.EventStudent.PhoneEvent = this;
 						this.EventStudent.CanTalk = false;
@@ -94,17 +85,17 @@ public class PhoneEventScript : MonoBehaviour
 						if (this.EventStudent.Following)
 						{
 							this.EventStudent.Pathfinding.canMove = true;
-							this.EventStudent.Pathfinding.speed = (float)1;
+							this.EventStudent.Pathfinding.speed = 1f;
 							this.EventStudent.Following = false;
 							this.EventStudent.Routine = true;
-							this.Yandere.Followers = this.Yandere.Followers - 1;
-							this.EventStudent.Subtitle.UpdateLabel("Stop Follow Apology", 0, (float)3);
-							this.EventStudent.Prompt.Label[0].text = "     " + "Talk";
+							this.Yandere.Followers--;
+							this.EventStudent.Subtitle.UpdateLabel("Stop Follow Apology", 0, 3f);
+							this.EventStudent.Prompt.Label[0].text = "     Talk";
 						}
 					}
 					else
 					{
-						this.enabled = false;
+						base.enabled = false;
 					}
 				}
 			}
@@ -125,7 +116,7 @@ public class PhoneEventScript : MonoBehaviour
 				if (this.EventPhase == 1)
 				{
 					this.Timer += Time.deltaTime;
-					this.EventStudent.Character.animation.CrossFade(this.EventAnim[0]);
+					this.EventStudent.Character.GetComponent<Animation>().CrossFade(this.EventAnim[0]);
 					this.PlayClip(this.EventClip[0], this.EventStudent.transform.position);
 					this.EventPhase++;
 				}
@@ -136,18 +127,18 @@ public class PhoneEventScript : MonoBehaviour
 					{
 						if (this.EventStudent.StudentID == 33)
 						{
-							this.EventStudent.SmartPhone.active = true;
+							this.EventStudent.SmartPhone.SetActive(true);
 						}
 						else
 						{
-							this.EventStudent.Phone.active = true;
+							this.EventStudent.Phone.SetActive(true);
 						}
 					}
-					if (this.Timer > (float)3)
+					if (this.Timer > 3f)
 					{
 						this.PlayClip(this.EventClip[1], this.EventStudent.transform.position);
 						this.EventSubtitle.text = this.EventSpeech[1];
-						this.Timer = (float)0;
+						this.Timer = 0f;
 						this.EventPhase++;
 					}
 				}
@@ -156,21 +147,21 @@ public class PhoneEventScript : MonoBehaviour
 					this.Timer += Time.deltaTime;
 					if (this.Timer > this.CurrentClipLength)
 					{
-						this.EventStudent.Character.animation.CrossFade(this.EventStudent.RunAnim);
+						this.EventStudent.Character.GetComponent<Animation>().CrossFade(this.EventStudent.RunAnim);
 						this.EventStudent.CurrentDestination = this.EventLocation;
 						this.EventStudent.Pathfinding.target = this.EventLocation;
 						this.EventStudent.Pathfinding.canSearch = true;
 						this.EventStudent.Pathfinding.canMove = true;
-						this.EventStudent.Pathfinding.speed = (float)4;
+						this.EventStudent.Pathfinding.speed = 4f;
 						this.EventSubtitle.text = string.Empty;
-						this.Timer = (float)0;
+						this.Timer = 0f;
 						this.EventPhase++;
 					}
 				}
 				else if (this.EventPhase == 4)
 				{
 					this.DumpPoint.enabled = true;
-					this.EventStudent.Character.animation.CrossFade(this.EventAnim[2]);
+					this.EventStudent.Character.GetComponent<Animation>().CrossFade(this.EventAnim[2]);
 					this.PlayClip(this.EventClip[2], this.EventStudent.transform.position);
 					this.EventPhase++;
 				}
@@ -178,9 +169,9 @@ public class PhoneEventScript : MonoBehaviour
 				{
 					if (this.VoiceClip != null)
 					{
-						this.VoiceClip.audio.pitch = Time.timeScale;
-						this.EventStudent.Character.animation[this.EventAnim[2]].time = this.VoiceClip.audio.time;
-						if (this.VoiceClip.audio.time > this.SpeechTimes[this.EventPhase - 3])
+						this.VoiceClip.GetComponent<AudioSource>().pitch = Time.timeScale;
+						this.EventStudent.Character.GetComponent<Animation>()[this.EventAnim[2]].time = this.VoiceClip.GetComponent<AudioSource>().time;
+						if (this.VoiceClip.GetComponent<AudioSource>().time > this.SpeechTimes[this.EventPhase - 3])
 						{
 							this.EventSubtitle.text = this.EventSpeech[this.EventPhase - 3];
 							this.EventPhase++;
@@ -189,69 +180,69 @@ public class PhoneEventScript : MonoBehaviour
 				}
 				else
 				{
-					if (this.EventStudent.Character.animation[this.EventAnim[2]].time >= this.EventStudent.Character.animation[this.EventAnim[2]].length * 90.33333f)
+					if (this.EventStudent.Character.GetComponent<Animation>()[this.EventAnim[2]].time >= this.EventStudent.Character.GetComponent<Animation>()[this.EventAnim[2]].length * 90.33333f)
 					{
 						if (this.EventStudent.StudentID == 33)
 						{
-							this.EventStudent.SmartPhone.active = true;
+							this.EventStudent.SmartPhone.SetActive(true);
 						}
 						else
 						{
-							this.EventStudent.Phone.active = true;
+							this.EventStudent.Phone.SetActive(true);
 						}
 					}
-					if (this.EventStudent.Character.animation[this.EventAnim[2]].time >= this.EventStudent.Character.animation[this.EventAnim[2]].length)
+					if (this.EventStudent.Character.GetComponent<Animation>()[this.EventAnim[2]].time >= this.EventStudent.Character.GetComponent<Animation>()[this.EventAnim[2]].length)
 					{
 						this.EndEvent();
 					}
 				}
 				float num = Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position);
-				if (num < (float)10)
+				if (num < 10f)
 				{
-					float num2 = Mathf.Abs((num - (float)10) * 0.2f);
-					if (num2 < (float)0)
+					float num2 = Mathf.Abs((num - 10f) * 0.2f);
+					if (num2 < 0f)
 					{
-						num2 = (float)0;
+						num2 = 0f;
 					}
-					if (num2 > (float)1)
+					if (num2 > 1f)
 					{
-						num2 = (float)1;
+						num2 = 1f;
 					}
 					this.EventSubtitle.transform.localScale = new Vector3(num2, num2, num2);
 				}
 				else
 				{
-					this.EventSubtitle.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+					this.EventSubtitle.transform.localScale = Vector3.zero;
 				}
-				if (this.EventPhase == 11 && num < (float)5 && PlayerPrefs.GetInt("Event2") == 0)
+				if (this.EventPhase == 11 && num < 5f && PlayerPrefs.GetInt("Event2") == 0)
 				{
 					PlayerPrefs.SetInt("Event2", 1);
 					this.Yandere.NotificationManager.DisplayNotification("Info");
 					PlayerPrefs.SetInt("Topic_25_Discovered", 1);
 					this.Yandere.NotificationManager.DisplayNotification("Topic");
 					this.Yandere.NotificationManager.DisplayNotification("Opinion");
-					PlayerPrefs.SetInt("Topic_25_Student_" + this.EventStudentID + "_Learned", 1);
+					PlayerPrefs.SetInt("Topic_25_Student_" + this.EventStudentID.ToString() + "_Learned", 1);
 				}
 			}
 		}
 	}
 
-	public virtual void PlayClip(AudioClip clip, Vector3 pos)
+	private void PlayClip(AudioClip clip, Vector3 pos)
 	{
 		GameObject gameObject = new GameObject("TempAudio");
 		gameObject.transform.position = pos;
-		AudioSource audioSource = (AudioSource)gameObject.AddComponent(typeof(AudioSource));
+		AudioSource audioSource = gameObject.AddComponent<AudioSource>();
 		audioSource.clip = clip;
 		audioSource.Play();
 		UnityEngine.Object.Destroy(gameObject, clip.length);
 		this.CurrentClipLength = clip.length;
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
-		audioSource.minDistance = (float)5;
-		audioSource.maxDistance = (float)10;
+		audioSource.minDistance = 5f;
+		audioSource.maxDistance = 10f;
 		this.VoiceClip = gameObject;
 	}
 
-	public virtual void EndEvent()
+	private void EndEvent()
 	{
 		Debug.Log("Osana's phone event ended.");
 		if (!this.EventOver)
@@ -262,15 +253,15 @@ public class PhoneEventScript : MonoBehaviour
 			}
 			this.EventStudent.CurrentDestination = this.EventStudent.Destinations[this.EventStudent.Phase];
 			this.EventStudent.Pathfinding.target = this.EventStudent.Destinations[this.EventStudent.Phase];
-			this.EventStudent.Obstacle.checkTime = (float)1;
+			this.EventStudent.Obstacle.checkTime = 1f;
 			if (!this.EventStudent.Dying)
 			{
 				this.EventStudent.Prompt.enabled = true;
 			}
-			this.EventStudent.SmartPhone.active = false;
-			this.EventStudent.Pathfinding.speed = (float)1;
-			this.EventStudent.Phone.active = false;
-			this.EventStudent.TargetDistance = (float)1;
+			this.EventStudent.SmartPhone.SetActive(false);
+			this.EventStudent.Pathfinding.speed = 1f;
+			this.EventStudent.Phone.SetActive(false);
+			this.EventStudent.TargetDistance = 1f;
 			this.EventStudent.PhoneEvent = null;
 			this.EventStudent.InEvent = false;
 			this.EventStudent.Private = false;
@@ -283,9 +274,5 @@ public class PhoneEventScript : MonoBehaviour
 		}
 		this.EventActive = false;
 		this.EventCheck = false;
-	}
-
-	public virtual void Main()
-	{
 	}
 }

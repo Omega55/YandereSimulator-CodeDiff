@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class InventoryScript : MonoBehaviour
 {
 	public SchemesScript Schemes;
@@ -39,8 +38,4 @@ public class InventoryScript : MonoBehaviour
 	public bool SafeKey;
 
 	public bool ShedKey;
-
-	public virtual void Main()
-	{
-	}
 }

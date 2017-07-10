@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
 public class RoseSpawnerScript : MonoBehaviour
 {
 	public Transform DramaGirl;
@@ -16,12 +15,12 @@ public class RoseSpawnerScript : MonoBehaviour
 
 	public float UpwardForce;
 
-	public virtual void Start()
+	private void Start()
 	{
 		this.SpawnRose();
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		this.Timer += Time.deltaTime;
 		if (this.Timer > 0.1f)
@@ -30,21 +29,14 @@ public class RoseSpawnerScript : MonoBehaviour
 		}
 	}
 
-	public virtual void SpawnRose()
+	private void SpawnRose()
 	{
-		GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(this.Rose, this.transform.position, Quaternion.identity);
-		gameObject.rigidbody.AddForce(this.transform.forward * this.ForwardForce);
-		gameObject.rigidbody.AddForce(this.transform.up * this.UpwardForce);
-		gameObject.transform.localEulerAngles = new Vector3(UnityEngine.Random.Range((float)0, 360f), UnityEngine.Random.Range((float)0, 360f), UnityEngine.Random.Range((float)0, 360f));
-		float x = UnityEngine.Random.Range(-5f, 5f);
-		Vector3 localPosition = this.transform.localPosition;
-		float num = localPosition.x = x;
-		Vector3 vector = this.transform.localPosition = localPosition;
-		this.transform.LookAt(this.DramaGirl);
-		this.Timer = (float)0;
-	}
-
-	public virtual void Main()
-	{
+		GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Rose, base.transform.position, Quaternion.identity);
+		gameObject.GetComponent<Rigidbody>().AddForce(base.transform.forward * this.ForwardForce);
+		gameObject.GetComponent<Rigidbody>().AddForce(base.transform.up * this.UpwardForce);
+		gameObject.transform.localEulerAngles = new Vector3(UnityEngine.Random.Range(0f, 360f), UnityEngine.Random.Range(0f, 360f), UnityEngine.Random.Range(0f, 360f));
+		base.transform.localPosition = new Vector3(UnityEngine.Random.Range(-5f, 5f), base.transform.localPosition.y, base.transform.localPosition.z);
+		base.transform.LookAt(this.DramaGirl);
+		this.Timer = 0f;
 	}
 }

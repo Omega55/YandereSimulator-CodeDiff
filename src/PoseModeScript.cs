@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections;
-using Boo.Lang.Runtime;
 using UnityEngine;
-using UnityScript.Lang;
 
-[Serializable]
 public class PoseModeScript : MonoBehaviour
 {
 	public InputManagerScript InputManager;
@@ -31,9 +28,9 @@ public class PoseModeScript : MonoBehaviour
 
 	public bool ChoosingBodyRegion;
 
-	public bool ChoosingAction;
+	public bool ChoosingAction = true;
 
-	public bool ChoosingBone;
+	public bool ChoosingBone = true;
 
 	public bool Customizing;
 
@@ -45,13 +42,13 @@ public class PoseModeScript : MonoBehaviour
 
 	public bool Show;
 
-	public int Selected;
+	public int Selected = 1;
 
-	public int Region;
+	public int Region = 1;
 
-	public int AnimID;
+	public int AnimID = 1;
 
-	public int Degree;
+	public int Degree = 1;
 
 	public int Offset;
 
@@ -65,27 +62,17 @@ public class PoseModeScript : MonoBehaviour
 
 	public string[] AnimationArray;
 
-	public PoseModeScript()
+	private void Start()
 	{
-		this.ChoosingAction = true;
-		this.ChoosingBone = true;
-		this.Selected = 1;
-		this.Region = 1;
-		this.AnimID = 1;
-		this.Degree = 1;
-	}
-
-	public virtual void Start()
-	{
-		this.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+		base.transform.localScale = Vector3.zero;
 		this.Panel.enabled = false;
 	}
 
-	public virtual void Update()
+	private void Update()
 	{
 		if (this.Show)
 		{
-			this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)1, (float)1, (float)1), Time.deltaTime * (float)10);
+			base.transform.localScale = Vector3.Lerp(base.transform.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 			if (this.InputManager.TappedUp)
 			{
 				this.Selected--;
@@ -111,7 +98,7 @@ public class PoseModeScript : MonoBehaviour
 						this.PromptBar.ClearButtons();
 						this.PromptBar.Label[0].text = "Place";
 						this.PromptBar.UpdateButtons();
-						this.Marker.enableEmission = true;
+						this.Marker.emission.enabled = true;
 						this.Marker.Play();
 						this.Yandere.CanMove = true;
 						this.ChoosingAction = true;
@@ -156,7 +143,7 @@ public class PoseModeScript : MonoBehaviour
 			}
 			else if (this.ChoosingBodyRegion)
 			{
-				if (Input.GetButtonDown("A") && this.OptionLabels[this.Selected].color.a == (float)1)
+				if (Input.GetButtonDown("A") && this.OptionLabels[this.Selected].color.a == 1f)
 				{
 					this.ChoosingBodyRegion = false;
 					if (this.Selected == 1)
@@ -247,57 +234,39 @@ public class PoseModeScript : MonoBehaviour
 					this.CalculateValue();
 					if (this.Selected == 1)
 					{
-						float x = this.Bone.localPosition.x + Time.deltaTime * (float)this.Value * (float)this.Degree * 0.1f;
-						Vector3 localPosition = this.Bone.localPosition;
-						float num = localPosition.x = x;
-						Vector3 vector = this.Bone.localPosition = localPosition;
+						this.Bone.localPosition = new Vector3(this.Bone.localPosition.x + Time.deltaTime * (float)this.Value * (float)this.Degree * 0.1f, this.Bone.localPosition.y, this.Bone.localPosition.z);
 					}
 					else if (this.Selected == 2)
 					{
-						float y = this.Bone.localPosition.y + Time.deltaTime * (float)this.Value * (float)this.Degree * 0.1f;
-						Vector3 localPosition2 = this.Bone.localPosition;
-						float num2 = localPosition2.y = y;
-						Vector3 vector2 = this.Bone.localPosition = localPosition2;
+						this.Bone.localPosition = new Vector3(this.Bone.localPosition.x, this.Bone.localPosition.y + Time.deltaTime * (float)this.Value * (float)this.Degree * 0.1f, this.Bone.localPosition.z);
 					}
 					else if (this.Selected == 3)
 					{
-						float z = this.Bone.localPosition.z + Time.deltaTime * (float)this.Value * (float)this.Degree * 0.1f;
-						Vector3 localPosition3 = this.Bone.localPosition;
-						float num3 = localPosition3.z = z;
-						Vector3 vector3 = this.Bone.localPosition = localPosition3;
+						this.Bone.localPosition = new Vector3(this.Bone.localPosition.x, this.Bone.localPosition.y, this.Bone.localPosition.z + Time.deltaTime * (float)this.Value * (float)this.Degree * 0.1f);
 					}
 					else if (this.Selected == 4)
 					{
-						this.Bone.Rotate(Vector3.right * Time.deltaTime * (float)this.Value * (float)this.Degree * 36f);
+						this.Bone.Rotate(Vector3.right * (Time.deltaTime * (float)this.Value * (float)this.Degree * 36f));
 					}
 					else if (this.Selected == 5)
 					{
-						this.Bone.Rotate(Vector3.up * Time.deltaTime * (float)this.Value * (float)this.Degree * 36f);
+						this.Bone.Rotate(Vector3.up * (Time.deltaTime * (float)this.Value * (float)this.Degree * 36f));
 					}
 					else if (this.Selected == 6)
 					{
-						this.Bone.Rotate(Vector3.forward * Time.deltaTime * (float)this.Value * (float)this.Degree * 36f);
+						this.Bone.Rotate(Vector3.forward * (Time.deltaTime * (float)this.Value * (float)this.Degree * 36f));
 					}
 					else if (this.Selected == 7)
 					{
-						float x2 = this.Bone.localScale.x + Time.deltaTime * (float)this.Value * (float)this.Degree * 0.1f;
-						Vector3 localScale = this.Bone.localScale;
-						float num4 = localScale.x = x2;
-						Vector3 vector4 = this.Bone.localScale = localScale;
+						this.Bone.localScale = new Vector3(this.Bone.localScale.x + Time.deltaTime * (float)this.Value * (float)this.Degree * 0.1f, this.Bone.localScale.y, this.Bone.localScale.z);
 					}
 					else if (this.Selected == 8)
 					{
-						float y2 = this.Bone.localScale.y + Time.deltaTime * (float)this.Value * (float)this.Degree * 0.1f;
-						Vector3 localScale2 = this.Bone.localScale;
-						float num5 = localScale2.y = y2;
-						Vector3 vector5 = this.Bone.localScale = localScale2;
+						this.Bone.localScale = new Vector3(this.Bone.localScale.x, this.Bone.localScale.y + Time.deltaTime * (float)this.Value * (float)this.Degree * 0.1f, this.Bone.localScale.z);
 					}
 					else if (this.Selected == 9)
 					{
-						float z2 = this.Bone.localScale.z + Time.deltaTime * (float)this.Value * (float)this.Degree * 0.1f;
-						Vector3 localScale3 = this.Bone.localScale;
-						float num6 = localScale3.z = z2;
-						Vector3 vector6 = this.Bone.localScale = localScale3;
+						this.Bone.localScale = new Vector3(this.Bone.localScale.x, this.Bone.localScale.y, this.Bone.localScale.z + Time.deltaTime * (float)this.Value * (float)this.Degree * 0.1f);
 					}
 				}
 				if (this.Selected == 10)
@@ -345,22 +314,22 @@ public class PoseModeScript : MonoBehaviour
 				{
 					if (this.InputManager.TappedRight)
 					{
-						this.Student.Cosmetic.Hairstyle = this.Student.Cosmetic.Hairstyle + 1;
+						this.Student.Cosmetic.Hairstyle++;
 						if (!this.Student.Male)
 						{
 							if (!this.Student.Teacher)
 							{
-								if (this.Student.Cosmetic.Hairstyle == Extensions.get_length(this.Student.Cosmetic.FemaleHair))
+								if (this.Student.Cosmetic.Hairstyle == this.Student.Cosmetic.FemaleHair.Length)
 								{
 									this.Student.Cosmetic.Hairstyle = 1;
 								}
 							}
-							else if (this.Student.Cosmetic.Hairstyle == Extensions.get_length(this.Student.Cosmetic.TeacherHair))
+							else if (this.Student.Cosmetic.Hairstyle == this.Student.Cosmetic.TeacherHair.Length)
 							{
 								this.Student.Cosmetic.Hairstyle = 1;
 							}
 						}
-						else if (this.Student.Cosmetic.Hairstyle == Extensions.get_length(this.Student.Cosmetic.MaleHair))
+						else if (this.Student.Cosmetic.Hairstyle == this.Student.Cosmetic.MaleHair.Length)
 						{
 							this.Student.Cosmetic.Hairstyle = 1;
 						}
@@ -369,16 +338,16 @@ public class PoseModeScript : MonoBehaviour
 					}
 					if (this.InputManager.TappedLeft)
 					{
-						this.Student.Cosmetic.Hairstyle = this.Student.Cosmetic.Hairstyle - 1;
+						this.Student.Cosmetic.Hairstyle--;
 						if (this.Student.Cosmetic.Hairstyle == 0)
 						{
 							if (!this.Student.Male)
 							{
-								this.Student.Cosmetic.Hairstyle = Extensions.get_length(this.Student.Cosmetic.FemaleHair) - 1;
+								this.Student.Cosmetic.Hairstyle = this.Student.Cosmetic.FemaleHair.Length - 1;
 							}
 							else
 							{
-								this.Student.Cosmetic.Hairstyle = Extensions.get_length(this.Student.Cosmetic.MaleHair) - 1;
+								this.Student.Cosmetic.Hairstyle = this.Student.Cosmetic.MaleHair.Length - 1;
 							}
 						}
 						this.Student.Cosmetic.Start();
@@ -389,15 +358,15 @@ public class PoseModeScript : MonoBehaviour
 				{
 					if (this.InputManager.TappedRight)
 					{
-						this.Student.Cosmetic.Accessory = this.Student.Cosmetic.Accessory + 1;
+						this.Student.Cosmetic.Accessory++;
 						if (!this.Student.Male)
 						{
-							if (this.Student.Cosmetic.Accessory == Extensions.get_length(this.Student.Cosmetic.FemaleAccessories))
+							if (this.Student.Cosmetic.Accessory == this.Student.Cosmetic.FemaleAccessories.Length)
 							{
 								this.Student.Cosmetic.Accessory = 0;
 							}
 						}
-						else if (this.Student.Cosmetic.Accessory == Extensions.get_length(this.Student.Cosmetic.MaleAccessories))
+						else if (this.Student.Cosmetic.Accessory == this.Student.Cosmetic.MaleAccessories.Length)
 						{
 							this.Student.Cosmetic.Accessory = 0;
 						}
@@ -406,17 +375,10 @@ public class PoseModeScript : MonoBehaviour
 					}
 					if (this.InputManager.TappedLeft)
 					{
-						this.Student.Cosmetic.Accessory = this.Student.Cosmetic.Accessory - 1;
+						this.Student.Cosmetic.Accessory--;
 						if (this.Student.Cosmetic.Accessory < 0)
 						{
-							if (!this.Student.Male)
-							{
-								this.Student.Cosmetic.Accessory = Extensions.get_length(this.Student.Cosmetic.FemaleAccessories) - 1;
-							}
-							else
-							{
-								this.Student.Cosmetic.Accessory = Extensions.get_length(this.Student.Cosmetic.MaleAccessories) - 1;
-							}
+							this.Student.Cosmetic.Accessory = ((!this.Student.Male) ? (this.Student.Cosmetic.FemaleAccessories.Length - 1) : (this.Student.Cosmetic.MaleAccessories.Length - 1));
 						}
 						this.Student.Cosmetic.Start();
 						this.UpdateLabels();
@@ -428,7 +390,7 @@ public class PoseModeScript : MonoBehaviour
 					{
 						if (this.InputManager.TappedRight)
 						{
-							this.Student.Schoolwear = this.Student.Schoolwear + 1;
+							this.Student.Schoolwear++;
 							if (this.Student.Schoolwear > 3)
 							{
 								this.Student.Schoolwear = 1;
@@ -438,7 +400,7 @@ public class PoseModeScript : MonoBehaviour
 						}
 						if (this.InputManager.TappedLeft)
 						{
-							this.Student.Schoolwear = this.Student.Schoolwear - 1;
+							this.Student.Schoolwear--;
 							if (this.Student.Schoolwear < 1)
 							{
 								this.Student.Schoolwear = 3;
@@ -474,12 +436,12 @@ public class PoseModeScript : MonoBehaviour
 						if (this.InputManager.TappedRight)
 						{
 							this.StockingID++;
-							if (this.StockingID == Extensions.get_length(this.StockingNames))
+							if (this.StockingID == this.StockingNames.Length)
 							{
 								this.StockingID = 0;
 							}
 							this.Student.Cosmetic.Stockings = this.StockingNames[this.StockingID];
-							this.StartCoroutine_Auto(this.Student.Cosmetic.PutOnStockings());
+							base.StartCoroutine(this.Student.Cosmetic.PutOnStockings());
 							this.UpdateLabels();
 						}
 						else if (this.InputManager.TappedLeft)
@@ -487,10 +449,10 @@ public class PoseModeScript : MonoBehaviour
 							this.StockingID--;
 							if (this.StockingID < 0)
 							{
-								this.StockingID = Extensions.get_length(this.StockingNames) - 1;
+								this.StockingID = this.StockingNames.Length - 1;
 							}
 							this.Student.Cosmetic.Stockings = this.StockingNames[this.StockingID];
-							this.StartCoroutine_Auto(this.Student.Cosmetic.PutOnStockings());
+							base.StartCoroutine(this.Student.Cosmetic.PutOnStockings());
 							this.UpdateLabels();
 						}
 					}
@@ -498,26 +460,18 @@ public class PoseModeScript : MonoBehaviour
 				else if (Input.GetAxis("Horizontal") > 0.5f || Input.GetAxis("Horizontal") < -0.5f || Input.GetAxis("DpadX") > 0.5f || Input.GetAxis("DpadX") < -0.5f || Input.GetKey("right") || Input.GetKey("left"))
 				{
 					this.CalculateValue();
+					Material material = this.Student.Cosmetic.HairRenderer.material;
 					if (this.Selected == 4)
 					{
-						float r = this.Student.Cosmetic.HairRenderer.material.color.r + (float)this.Degree * 0.003921569f * (float)this.Value;
-						Color color = this.Student.Cosmetic.HairRenderer.material.color;
-						float num7 = color.r = r;
-						Color color2 = this.Student.Cosmetic.HairRenderer.material.color = color;
+						material.color = new Color(material.color.r + (float)this.Degree * 0.003921569f * (float)this.Value, material.color.g, material.color.b, material.color.a);
 					}
 					else if (this.Selected == 5)
 					{
-						float g = this.Student.Cosmetic.HairRenderer.material.color.g + (float)this.Degree * 0.003921569f * (float)this.Value;
-						Color color3 = this.Student.Cosmetic.HairRenderer.material.color;
-						float num8 = color3.g = g;
-						Color color4 = this.Student.Cosmetic.HairRenderer.material.color = color3;
+						material.color = new Color(material.color.r, material.color.g + (float)this.Degree * 0.003921569f * (float)this.Value, material.color.b, material.color.a);
 					}
 					else if (this.Selected == 6)
 					{
-						float b = this.Student.Cosmetic.HairRenderer.material.color.b + (float)this.Degree * 0.003921569f * (float)this.Value;
-						Color color5 = this.Student.Cosmetic.HairRenderer.material.color;
-						float num9 = color5.b = b;
-						Color color6 = this.Student.Cosmetic.HairRenderer.material.color = color5;
+						material.color = new Color(material.color.r, material.color.g, material.color.b + (float)this.Degree * 0.003921569f * (float)this.Value, material.color.a);
 					}
 					this.CapColors();
 					this.UpdateLabels();
@@ -563,19 +517,19 @@ public class PoseModeScript : MonoBehaviour
 		}
 		else
 		{
-			if (this.transform.localScale.x > 0.1f)
+			if (base.transform.localScale.x > 0.1f)
 			{
-				this.transform.localScale = Vector3.Lerp(this.transform.localScale, new Vector3((float)0, (float)0, (float)0), Time.deltaTime * (float)10);
+				base.transform.localScale = Vector3.Lerp(base.transform.localScale, Vector3.zero, Time.deltaTime * 10f);
 			}
 			else if (this.Panel.enabled)
 			{
-				this.transform.localScale = new Vector3((float)0, (float)0, (float)0);
+				base.transform.localScale = Vector3.zero;
 				this.Panel.enabled = false;
 			}
 			if (this.Placing && Input.GetButtonDown("A"))
 			{
 				this.Student.transform.position = this.Marker.transform.position;
-				this.Marker.enableEmission = false;
+				this.Marker.emission.enabled = false;
 				this.Placing = false;
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Show = false;
@@ -583,7 +537,7 @@ public class PoseModeScript : MonoBehaviour
 		}
 	}
 
-	public virtual void UpdateHighlight()
+	private void UpdateHighlight()
 	{
 		if (!this.Animating)
 		{
@@ -620,26 +574,21 @@ public class PoseModeScript : MonoBehaviour
 			}
 			this.UpdateLabels();
 		}
-		int num = 350 - this.Selected * 50;
-		Vector3 localPosition = this.Highlight.localPosition;
-		float num2 = localPosition.y = (float)num;
-		Vector3 vector = this.Highlight.localPosition = localPosition;
+		this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 350f - (float)this.Selected * 50f, this.Highlight.localPosition.z);
 	}
 
-	public virtual void UpdateLabels()
+	public void UpdateLabels()
 	{
-		for (int i = 1; i < Extensions.get_length(this.OptionLabels); i++)
+		for (int i = 1; i < this.OptionLabels.Length; i++)
 		{
-			float a = 1f;
-			Color color = this.OptionLabels[i].color;
-			float num = color.a = a;
-			Color color2 = this.OptionLabels[i].color = color;
-			this.OptionLabels[i].text = string.Empty;
+			UILabel uilabel = this.OptionLabels[i];
+			uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, 1f);
+			uilabel.text = string.Empty;
 		}
-		this.Warning.active = false;
+		this.Warning.SetActive(false);
 		if (this.ChoosingAction)
 		{
-			this.Warning.active = true;
+			this.Warning.SetActive(true);
 			this.HeaderLabel.text = "Choose Action";
 			this.OptionLabels[1].text = "Pose";
 			this.OptionLabels[2].text = "Re-Position";
@@ -662,20 +611,8 @@ public class PoseModeScript : MonoBehaviour
 			this.OptionLabels[9].text = "Face";
 			this.OptionLabels[10].text = "Female Only";
 			this.Limit = 10;
-			if (!this.Student.Male)
-			{
-				float a2 = 1f;
-				Color color3 = this.OptionLabels[10].color;
-				float num2 = color3.a = a2;
-				Color color4 = this.OptionLabels[10].color = color3;
-			}
-			else
-			{
-				float a3 = 0.5f;
-				Color color5 = this.OptionLabels[10].color;
-				float num3 = color5.a = a3;
-				Color color6 = this.OptionLabels[10].color = color5;
-			}
+			UILabel uilabel2 = this.OptionLabels[10];
+			uilabel2.color = new Color(uilabel2.color.r, uilabel2.color.g, uilabel2.color.b, (!this.Student.Male) ? 1f : 0.5f);
 		}
 		else if (this.ChoosingBone)
 		{
@@ -803,69 +740,55 @@ public class PoseModeScript : MonoBehaviour
 			this.OptionLabels[7].text = "Scale X";
 			this.OptionLabels[8].text = "Scale Y";
 			this.OptionLabels[9].text = "Scale Z";
-			this.OptionLabels[10].text = "Degree of Change: " + this.Degree;
+			this.OptionLabels[10].text = "Degree of Change: " + this.Degree.ToString();
 			this.OptionLabels[11].text = "Reset";
 			this.Limit = 11;
 		}
 		else if (this.Customizing)
 		{
 			this.HeaderLabel.text = "Customize";
-			this.OptionLabels[1].text = "Hairstyle: " + this.Student.Cosmetic.Hairstyle;
-			this.OptionLabels[2].text = "Accessory: " + this.Student.Cosmetic.Accessory;
-			this.OptionLabels[3].text = "Clothing: " + this.Student.Schoolwear;
-			this.OptionLabels[4].text = "Hair R: " + this.Student.Cosmetic.HairRenderer.material.color.r * (float)255;
-			this.OptionLabels[5].text = "Hair G: " + this.Student.Cosmetic.HairRenderer.material.color.g * (float)255;
-			this.OptionLabels[6].text = "Hair B: " + this.Student.Cosmetic.HairRenderer.material.color.b * (float)255;
-			this.OptionLabels[7].text = "Degree of Change: " + this.Degree;
+			this.OptionLabels[1].text = "Hairstyle: " + this.Student.Cosmetic.Hairstyle.ToString();
+			this.OptionLabels[2].text = "Accessory: " + this.Student.Cosmetic.Accessory.ToString();
+			this.OptionLabels[3].text = "Clothing: " + this.Student.Schoolwear.ToString();
+			this.OptionLabels[4].text = "Hair R: " + (this.Student.Cosmetic.HairRenderer.material.color.r * 255f).ToString();
+			this.OptionLabels[5].text = "Hair G: " + (this.Student.Cosmetic.HairRenderer.material.color.g * 255f).ToString();
+			this.OptionLabels[6].text = "Hair B: " + (this.Student.Cosmetic.HairRenderer.material.color.b * 255f).ToString();
+			this.OptionLabels[7].text = "Degree of Change: " + this.Degree.ToString();
 			this.OptionLabels[8].text = "Stockings: " + this.Student.Cosmetic.Stockings;
 			this.Limit = 8;
+			UILabel uilabel3 = this.OptionLabels[3];
+			UILabel uilabel4 = this.OptionLabels[8];
 			if (!this.Student.Male)
 			{
-				float a4 = 1f;
-				Color color7 = this.OptionLabels[3].color;
-				float num4 = color7.a = a4;
-				Color color8 = this.OptionLabels[3].color = color7;
-				float a5 = 1f;
-				Color color9 = this.OptionLabels[8].color;
-				float num5 = color9.a = a5;
-				Color color10 = this.OptionLabels[8].color = color9;
+				uilabel3.color = new Color(uilabel3.color.r, uilabel3.color.g, uilabel3.color.b, 1f);
+				uilabel4.color = new Color(uilabel4.color.r, uilabel4.color.g, uilabel4.color.b, 1f);
 			}
 			else
 			{
-				float a6 = 0.5f;
-				Color color11 = this.OptionLabels[3].color;
-				float num6 = color11.a = a6;
-				Color color12 = this.OptionLabels[3].color = color11;
-				float a7 = 0.5f;
-				Color color13 = this.OptionLabels[8].color;
-				float num7 = color13.a = a7;
-				Color color14 = this.OptionLabels[8].color = color13;
+				uilabel3.color = new Color(uilabel3.color.r, uilabel3.color.g, uilabel3.color.b, 0.5f);
+				uilabel4.color = new Color(uilabel4.color.r, uilabel4.color.g, uilabel4.color.b, 0.5f);
 			}
 		}
 		else if (this.Animating)
 		{
 			this.HeaderLabel.text = "Choose Animation";
-			this.OptionLabels[1].text = "(" + (1 + this.Offset) + "/" + this.AnimID + ") " + this.AnimationArray[1 + this.Offset];
-			this.OptionLabels[2].text = "(" + (2 + this.Offset) + "/" + this.AnimID + ") " + this.AnimationArray[2 + this.Offset];
-			this.OptionLabels[3].text = "(" + (3 + this.Offset) + "/" + this.AnimID + ") " + this.AnimationArray[3 + this.Offset];
-			this.OptionLabels[4].text = "(" + (4 + this.Offset) + "/" + this.AnimID + ") " + this.AnimationArray[4 + this.Offset];
-			this.OptionLabels[5].text = "(" + (5 + this.Offset) + "/" + this.AnimID + ") " + this.AnimationArray[5 + this.Offset];
-			this.OptionLabels[6].text = "(" + (6 + this.Offset) + "/" + this.AnimID + ") " + this.AnimationArray[6 + this.Offset];
-			this.OptionLabels[7].text = "(" + (7 + this.Offset) + "/" + this.AnimID + ") " + this.AnimationArray[7 + this.Offset];
-			this.OptionLabels[8].text = "(" + (8 + this.Offset) + "/" + this.AnimID + ") " + this.AnimationArray[8 + this.Offset];
-			this.OptionLabels[9].text = "(" + (9 + this.Offset) + "/" + this.AnimID + ") " + this.AnimationArray[9 + this.Offset];
-			this.OptionLabels[10].text = "(" + (10 + this.Offset) + "/" + this.AnimID + ") " + this.AnimationArray[10 + this.Offset];
-			this.OptionLabels[11].text = "(" + (11 + this.Offset) + "/" + this.AnimID + ") " + this.AnimationArray[11 + this.Offset];
-			this.OptionLabels[12].text = "(" + (12 + this.Offset) + "/" + this.AnimID + ") " + this.AnimationArray[12 + this.Offset];
-			this.OptionLabels[13].text = "(" + (13 + this.Offset) + "/" + this.AnimID + ") " + this.AnimationArray[13 + this.Offset];
-			this.OptionLabels[14].text = "(" + (14 + this.Offset) + "/" + this.AnimID + ") " + this.AnimationArray[14 + this.Offset];
-			this.OptionLabels[15].text = "(" + (15 + this.Offset) + "/" + this.AnimID + ") " + this.AnimationArray[15 + this.Offset];
-			this.OptionLabels[16].text = "(" + (16 + this.Offset) + "/" + this.AnimID + ") " + this.AnimationArray[16 + this.Offset];
+			for (int j = 1; j < 17; j++)
+			{
+				this.OptionLabels[j].text = string.Concat(new string[]
+				{
+					"(",
+					(j + this.Offset).ToString(),
+					"/",
+					this.AnimID.ToString(),
+					") ",
+					this.AnimationArray[j + this.Offset]
+				});
+			}
 			this.Limit = 16;
 		}
 	}
 
-	public virtual void RememberPose()
+	private void RememberPose()
 	{
 		PlayerPrefs.SetFloat("Position X", this.Bone.localPosition.x);
 		PlayerPrefs.SetFloat("Position Y", this.Bone.localPosition.y);
@@ -878,114 +801,68 @@ public class PoseModeScript : MonoBehaviour
 		PlayerPrefs.SetFloat("Scale Z", this.Bone.localScale.z);
 	}
 
-	public virtual void ResetPose()
+	private void ResetPose()
 	{
-		float @float = PlayerPrefs.GetFloat("Position X");
-		Vector3 localPosition = this.Bone.localPosition;
-		float num = localPosition.x = @float;
-		Vector3 vector = this.Bone.localPosition = localPosition;
-		float float2 = PlayerPrefs.GetFloat("Position Y");
-		Vector3 localPosition2 = this.Bone.localPosition;
-		float num2 = localPosition2.y = float2;
-		Vector3 vector2 = this.Bone.localPosition = localPosition2;
-		float float3 = PlayerPrefs.GetFloat("Position Z");
-		Vector3 localPosition3 = this.Bone.localPosition;
-		float num3 = localPosition3.z = float3;
-		Vector3 vector3 = this.Bone.localPosition = localPosition3;
-		float float4 = PlayerPrefs.GetFloat("Rotation X");
-		Vector3 localEulerAngles = this.Bone.localEulerAngles;
-		float num4 = localEulerAngles.x = float4;
-		Vector3 vector4 = this.Bone.localEulerAngles = localEulerAngles;
-		float float5 = PlayerPrefs.GetFloat("Rotation Y");
-		Vector3 localEulerAngles2 = this.Bone.localEulerAngles;
-		float num5 = localEulerAngles2.y = float5;
-		Vector3 vector5 = this.Bone.localEulerAngles = localEulerAngles2;
-		float float6 = PlayerPrefs.GetFloat("Rotation Z");
-		Vector3 localEulerAngles3 = this.Bone.localEulerAngles;
-		float num6 = localEulerAngles3.z = float6;
-		Vector3 vector6 = this.Bone.localEulerAngles = localEulerAngles3;
-		float float7 = PlayerPrefs.GetFloat("Scale X");
-		Vector3 localScale = this.Bone.localScale;
-		float num7 = localScale.x = float7;
-		Vector3 vector7 = this.Bone.localScale = localScale;
-		float float8 = PlayerPrefs.GetFloat("Scale Y");
-		Vector3 localScale2 = this.Bone.localScale;
-		float num8 = localScale2.y = float8;
-		Vector3 vector8 = this.Bone.localScale = localScale2;
-		float float9 = PlayerPrefs.GetFloat("Scale Z");
-		Vector3 localScale3 = this.Bone.localScale;
-		float num9 = localScale3.z = float9;
-		Vector3 vector9 = this.Bone.localScale = localScale3;
+		this.Bone.localPosition = new Vector3(PlayerPrefs.GetFloat("Position X"), PlayerPrefs.GetFloat("Position Y"), PlayerPrefs.GetFloat("Position Z"));
+		this.Bone.localEulerAngles = new Vector3(PlayerPrefs.GetFloat("Rotation X"), PlayerPrefs.GetFloat("Rotation Y"), PlayerPrefs.GetFloat("Rotation Z"));
+		this.Bone.localScale = new Vector3(PlayerPrefs.GetFloat("Scale X"), PlayerPrefs.GetFloat("Scale Y"), PlayerPrefs.GetFloat("Scale Z"));
 	}
 
-	public virtual void CapColors()
+	private void CapColors()
 	{
-		if (this.Student.Cosmetic.HairRenderer.material.color.r < (float)0)
+		Material material = this.Student.Cosmetic.HairRenderer.material;
+		if (material.color.r < 0f)
 		{
-			int num = 0;
-			Color color = this.Student.Cosmetic.HairRenderer.material.color;
-			float num2 = color.r = (float)num;
-			Color color2 = this.Student.Cosmetic.HairRenderer.material.color = color;
+			material.color = new Color(0f, material.color.g, material.color.b, material.color.a);
 		}
-		if (this.Student.Cosmetic.HairRenderer.material.color.g < (float)0)
+		if (material.color.g < 0f)
 		{
-			int num3 = 0;
-			Color color3 = this.Student.Cosmetic.HairRenderer.material.color;
-			float num4 = color3.g = (float)num3;
-			Color color4 = this.Student.Cosmetic.HairRenderer.material.color = color3;
+			material.color = new Color(material.color.r, 0f, material.color.b, material.color.a);
 		}
-		if (this.Student.Cosmetic.HairRenderer.material.color.b < (float)0)
+		if (material.color.b < 0f)
 		{
-			int num5 = 0;
-			Color color5 = this.Student.Cosmetic.HairRenderer.material.color;
-			float num6 = color5.b = (float)num5;
-			Color color6 = this.Student.Cosmetic.HairRenderer.material.color = color5;
+			material.color = new Color(material.color.r, material.color.g, 0f, material.color.a);
 		}
-		if (this.Student.Cosmetic.HairRenderer.material.color.r > (float)1)
+		if (material.color.r > 1f)
 		{
-			int num7 = 1;
-			Color color7 = this.Student.Cosmetic.HairRenderer.material.color;
-			float num8 = color7.r = (float)num7;
-			Color color8 = this.Student.Cosmetic.HairRenderer.material.color = color7;
+			material.color = new Color(1f, material.color.g, material.color.b, material.color.a);
 		}
-		if (this.Student.Cosmetic.HairRenderer.material.color.g > (float)1)
+		if (material.color.g > 1f)
 		{
-			int num9 = 1;
-			Color color9 = this.Student.Cosmetic.HairRenderer.material.color;
-			float num10 = color9.g = (float)num9;
-			Color color10 = this.Student.Cosmetic.HairRenderer.material.color = color9;
+			material.color = new Color(material.color.r, 1f, material.color.b, material.color.a);
 		}
-		if (this.Student.Cosmetic.HairRenderer.material.color.b > (float)1)
+		if (material.color.b > 1f)
 		{
-			int num11 = 1;
-			Color color11 = this.Student.Cosmetic.HairRenderer.material.color;
-			float num12 = color11.b = (float)num11;
-			Color color12 = this.Student.Cosmetic.HairRenderer.material.color = color11;
+			material.color = new Color(material.color.r, material.color.g, 1f, material.color.a);
 		}
 	}
 
-	public virtual void CreateAnimationArray()
+	private void CreateAnimationArray()
 	{
 		this.AnimID = 1;
-		IEnumerator enumerator = UnityRuntimeServices.GetEnumerator(this.Student.CharacterAnimation);
-		while (enumerator.MoveNext())
+		IEnumerator enumerator = this.Student.CharacterAnimation.GetEnumerator();
+		try
 		{
-			object obj = enumerator.Current;
-			object obj3;
-			object obj2 = obj3 = obj;
-			if (!(obj2 is AnimationState))
+			while (enumerator.MoveNext())
 			{
-				obj3 = RuntimeServices.Coerce(obj2, typeof(AnimationState));
+				object obj = enumerator.Current;
+				AnimationState animationState = (AnimationState)obj;
+				this.AnimationArray[this.AnimID] = animationState.name;
+				this.AnimID++;
 			}
-			AnimationState animationState = (AnimationState)obj3;
-			this.AnimationArray[this.AnimID] = animationState.name;
-			UnityRuntimeServices.Update(enumerator, animationState);
-			this.AnimID++;
+		}
+		finally
+		{
+			IDisposable disposable;
+			if ((disposable = (enumerator as IDisposable)) != null)
+			{
+				disposable.Dispose();
+			}
 		}
 		this.AnimID--;
 	}
 
-	public virtual void CalculateValue()
+	private void CalculateValue()
 	{
 		if (Input.GetAxis("Horizontal") > 0.5f || Input.GetAxis("Horizontal") < -0.5f)
 		{
@@ -1017,9 +894,5 @@ public class PoseModeScript : MonoBehaviour
 		{
 			this.Value = -1;
 		}
-	}
-
-	public virtual void Main()
-	{
 	}
 }
