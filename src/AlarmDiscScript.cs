@@ -110,7 +110,7 @@ public class AlarmDiscScript : MonoBehaviour
 						this.Student.Alarm = 200f;
 					}
 				}
-				else if (!this.Student.Nemesis && !this.Student.Male && !this.Student.Dead && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.Student.InEvent && this.Student.CharacterAnimation != null && this.SourceRadio.Victim == null)
+				else if (!this.Student.Nemesis && !this.Student.Dead && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.Student.InEvent && this.Student.Routine && this.Student.CharacterAnimation != null && this.SourceRadio.Victim == null)
 				{
 					this.Student.CharacterAnimation.CrossFade(this.Student.LeanAnim);
 					this.Student.Pathfinding.canSearch = false;
@@ -118,6 +118,11 @@ public class AlarmDiscScript : MonoBehaviour
 					this.Student.Radio = this.SourceRadio;
 					this.Student.TurnOffRadio = true;
 					this.Student.Routine = false;
+					this.Student.GoAway = false;
+					this.Student.OccultBook.SetActive(false);
+					this.Student.Pen.SetActive(false);
+					this.Student.SpeechLines.Stop();
+					this.Student.ReadPhase = 0;
 					this.SourceRadio.Victim = this.Student;
 				}
 			}
@@ -135,6 +140,7 @@ public class AlarmDiscScript : MonoBehaviour
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
 		audioSource.minDistance = 5f;
 		audioSource.maxDistance = 10f;
+		audioSource.spatialBlend = 1f;
 		audioSource.volume = 0.5f;
 		if (this.Student != null)
 		{

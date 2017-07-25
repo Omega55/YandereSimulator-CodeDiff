@@ -75,7 +75,10 @@ public class DelinquentManagerScript : MonoBehaviour
 				this.Timer = 135f;
 				this.Phase++;
 			}
-			this.Timer -= Time.deltaTime * (this.Clock.TimeSpeed / 60f);
+			if (this.Attacker == null)
+			{
+				this.Timer -= Time.deltaTime * (this.Clock.TimeSpeed / 60f);
+			}
 			this.Circle.fillAmount = 1f - this.Timer / this.TimerMax;
 			if (this.Timer <= 0f)
 			{

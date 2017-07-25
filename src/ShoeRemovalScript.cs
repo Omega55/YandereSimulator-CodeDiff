@@ -122,7 +122,7 @@ public class ShoeRemovalScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (!this.Student.DiscCheck && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Splashed)
+		if (!this.Student.DiscCheck && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Splashed && !this.Student.TurnOffRadio)
 		{
 			this.Student.MoveTowardsTarget(this.Student.CurrentDestination.position);
 			base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.Student.CurrentDestination.rotation, 10f * Time.deltaTime);
@@ -255,6 +255,7 @@ public class ShoeRemovalScript : MonoBehaviour
 					this.Locker.gameObject.GetComponent<Animation>().Stop();
 					this.Student.CanTalk = false;
 					this.Student.Leaving = true;
+					this.Student.Phase++;
 					base.enabled = false;
 					this.Phase++;
 				}

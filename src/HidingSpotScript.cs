@@ -22,6 +22,7 @@ public class HidingSpotScript : MonoBehaviour
 			this.Prompt.Yandere.ExitSpot = this.Exit;
 			this.Prompt.Yandere.CanMove = false;
 			this.Prompt.Yandere.Hiding = true;
+			this.Prompt.Yandere.EmptyHands();
 			this.PromptBar.ClearButtons();
 			this.PromptBar.Label[1].text = "Stop Hiding";
 			this.PromptBar.UpdateButtons();

@@ -255,6 +255,7 @@ public class DatingMinigameScript : MonoBehaviour
 			this.HeartbeatCamera.SetActive(false);
 			this.Yandere.Headset.SetActive(true);
 			this.Yandere.CanMove = false;
+			this.Yandere.EmptyHands();
 			this.Yandere.transform.position = this.PeekSpot.position;
 			this.Yandere.transform.eulerAngles = this.PeekSpot.eulerAngles;
 			this.Yandere.Character.GetComponent<Animation>().Play("f02_treePeeking_00");
@@ -270,7 +271,7 @@ public class DatingMinigameScript : MonoBehaviour
 		}
 		if (this.Matchmaking)
 		{
-			if (!this.CurrentAnim.Equals(string.Empty) && this.Rival.Character.GetComponent<Animation>()[this.CurrentAnim].time >= this.Rival.Character.GetComponent<Animation>()[this.CurrentAnim].length)
+			if (this.CurrentAnim != string.Empty && this.Rival.Character.GetComponent<Animation>()[this.CurrentAnim].time >= this.Rival.Character.GetComponent<Animation>()[this.CurrentAnim].length)
 			{
 				this.Rival.Character.GetComponent<Animation>().Play(this.Rival.IdleAnim);
 			}
@@ -755,7 +756,7 @@ public class DatingMinigameScript : MonoBehaviour
 			this.MultiplierIcons[3].mainTexture = this.X;
 			this.Multiplier--;
 		}
-		if (!this.Suitor.Cosmetic.HairColor.Equals("Purple"))
+		if (this.Suitor.Cosmetic.HairColor != "Purple")
 		{
 			this.MultiplierIcons[4].mainTexture = this.X;
 			this.Multiplier--;

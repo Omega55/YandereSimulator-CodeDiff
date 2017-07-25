@@ -222,7 +222,7 @@ public class WeaponMenuScript : MonoBehaviour
 		else
 		{
 			base.transform.localScale = Vector3.Lerp(base.transform.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
-			if (!this.Yandere.CanMove || this.Yandere.Aiming || this.PauseScreen.Show || this.InputDevice.Type == 2)
+			if (!this.Yandere.CanMove || this.Yandere.Aiming || this.PauseScreen.Show || this.InputDevice.Type == InputDeviceType.MouseAndKeyboard)
 			{
 				this.Show = false;
 			}
@@ -247,7 +247,7 @@ public class WeaponMenuScript : MonoBehaviour
 			{
 				this.KeyboardShow = false;
 			}
-			if (!this.Yandere.CanMove || this.Yandere.Aiming || this.PauseScreen.Show || this.InputDevice.Type == 1 || Input.GetButton("Y"))
+			if (!this.Yandere.CanMove || this.Yandere.Aiming || this.PauseScreen.Show || this.InputDevice.Type == InputDeviceType.Gamepad || Input.GetButton("Y"))
 			{
 				this.KeyboardShow = false;
 			}
@@ -287,7 +287,7 @@ public class WeaponMenuScript : MonoBehaviour
 			{
 				if (!this.Yandere.WeaponWarning)
 				{
-					this.Yandere.NotificationManager.DisplayNotification("Armed");
+					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Armed);
 					this.Yandere.WeaponWarning = true;
 				}
 			}

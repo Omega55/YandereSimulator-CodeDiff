@@ -69,8 +69,8 @@ public class StudentInfoScript : MonoBehaviour
 		this.Topics.SetActive(false);
 		if (File.Exists(Application.streamingAssetsPath + "/CustomPortraits.txt"))
 		{
-			string text = File.ReadAllText(Application.streamingAssetsPath + "/CustomPortraits.txt");
-			if (text.Equals("1"))
+			string a = File.ReadAllText(Application.streamingAssetsPath + "/CustomPortraits.txt");
+			if (a == "1")
 			{
 				this.CustomPortraits = true;
 			}
@@ -101,45 +101,45 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.ReputationBar.localPosition = new Vector3(-96f, this.ReputationBar.localPosition.y, this.ReputationBar.localPosition.z);
 		}
-		if (this.JSON.StudentPersonas[ID] == 1)
+		if (this.JSON.StudentPersonas[ID] == PersonaType.Loner)
 		{
 			this.PersonaLabel.text = "Loner";
 		}
-		else if (this.JSON.StudentPersonas[ID] == 2)
+		else if (this.JSON.StudentPersonas[ID] == PersonaType.TeachersPet)
 		{
 			this.PersonaLabel.text = "Teacher's Pet";
 		}
-		else if (this.JSON.StudentPersonas[ID] == 3)
+		else if (this.JSON.StudentPersonas[ID] == PersonaType.Heroic)
 		{
 			this.PersonaLabel.text = "Heroic";
 		}
-		else if (this.JSON.StudentPersonas[ID] == 4)
+		else if (this.JSON.StudentPersonas[ID] == PersonaType.Coward)
 		{
 			this.PersonaLabel.text = "Coward";
 		}
-		else if (this.JSON.StudentPersonas[ID] == 5)
+		else if (this.JSON.StudentPersonas[ID] == PersonaType.Evil)
 		{
 			this.PersonaLabel.text = "Evil";
 		}
-		else if (this.JSON.StudentPersonas[ID] == 6)
+		else if (this.JSON.StudentPersonas[ID] == PersonaType.SocialButterfly)
 		{
 			this.PersonaLabel.text = "Social Butterfly";
 		}
-		else if (this.JSON.StudentPersonas[ID] == 7)
+		else if (this.JSON.StudentPersonas[ID] == PersonaType.Tsundere)
 		{
 			this.PersonaLabel.text = "Tsundere";
 		}
-		else if (this.JSON.StudentPersonas[ID] == 9)
+		else if (this.JSON.StudentPersonas[ID] == PersonaType.Strict)
 		{
 			this.PersonaLabel.text = "Strict";
+			if (this.JSON.StudentClubs[ID] == 101 && PlayerPrefs.GetInt("Student_" + ID.ToString() + "_Replaced") == 0)
+			{
+				this.PersonaLabel.text = "Friendly but Strict";
+			}
 		}
-		else if (this.JSON.StudentPersonas[ID] == 99)
+		else if (this.JSON.StudentPersonas[ID] == PersonaType.Nemesis)
 		{
 			this.PersonaLabel.text = "?????";
-		}
-		if (this.JSON.StudentClubs[ID] == 101)
-		{
-			this.PersonaLabel.text = "Friendly but Strict";
 		}
 		if (this.JSON.StudentCrushes[ID] == 0)
 		{
@@ -441,167 +441,22 @@ public class StudentInfoScript : MonoBehaviour
 
 	private void UpdateAdditionalInfo(int ID)
 	{
-		if (ID == 0)
-		{
-			this.InfoLabel.text = "Trying to look up my information? Don't bother. There is nothing that you need to know about me. You're a client, and I'm a provider. That's all we need to know about each other.";
-		}
-		else if (ID == 6)
-		{
-			this.InfoLabel.text = "Kokona Haruka's best friend and closest confidant. Kokona is likely to discuss personal matters with this girl.";
-		}
-		else if (ID == 7)
+		if (ID == 7)
 		{
 			this.Strings[1] = ((PlayerPrefs.GetInt("Event1") != 1) ? "?????" : "May be a victim of domestic abuse.");
 			this.Strings[2] = ((PlayerPrefs.GetInt("Event2") != 1) ? "?????" : "May be engaging in compensated dating in Shisuta Town.");
 			this.InfoLabel.text = this.Strings[1] + "\n\n" + this.Strings[2];
 		}
-		else if (ID == 13)
+		else if (PlayerPrefs.GetInt("Student_" + ID.ToString() + "_Replaced") == 0)
 		{
-			this.InfoLabel.text = "Comes from a rich family. He tries to hide this fact from others, but his affluent origins are very obvious because of his unusual way of speaking.";
-		}
-		else if (ID == 14)
-		{
-			this.InfoLabel.text = "Extremely unlikely to witness murder unless it takes place in the computer lab.";
-		}
-		else if (ID == 15)
-		{
-			this.InfoLabel.text = "Secretly has a crush on Pippi Osu. Neither of them realize that they both share feelings for each other.";
-		}
-		else if (ID == 16)
-		{
-			this.InfoLabel.text = "Known for irritating her classmates and teachers by constantly asking foolish questions.";
-		}
-		else if (ID == 17)
-		{
-			this.Strings[1] = "Wears contact lenses.";
-			this.Strings[2] = "Enjoys spending time with her younger sister.";
-			this.Strings[3] = "Rumored to be a succubus disguised as a high school student...but only a fool would believe something like that.";
-			this.InfoLabel.text = string.Concat(new string[]
+			if (this.JSON.StudentInfos[ID] == string.Empty)
 			{
-				this.Strings[1],
-				"\n\n",
-				this.Strings[2],
-				"\n\n",
-				this.Strings[3]
-			});
-		}
-		else if (ID == 18)
-		{
-			this.Strings[1] = "Wears contact lenses.";
-			this.Strings[2] = "Enjoys spending time with her older sister.";
-			this.Strings[3] = "Rumored to be a vampire disguised as a high school student...but only a fool would believe something like that.";
-			this.InfoLabel.text = string.Concat(new string[]
+				this.InfoLabel.text = "No additional information is available at this time.";
+			}
+			else
 			{
-				this.Strings[1],
-				"\n\n",
-				this.Strings[2],
-				"\n\n",
-				this.Strings[3]
-			});
-		}
-		else if (ID == 19)
-		{
-			this.InfoLabel.text = "Has never been witnessed exhibiting emotions.";
-		}
-		else if (ID == 20)
-		{
-			this.Strings[1] = "Described as 'kawaii' 'moe' and 'deredere' by her admirers.";
-			this.Strings[2] = "Has sworn her heart to an independent game developer living overseas.";
-			this.Strings[3] = "Prefers to spend her time alone, fantasizing about her loved one.";
-			this.InfoLabel.text = string.Concat(new string[]
-			{
-				this.Strings[1],
-				"\n\n",
-				this.Strings[2],
-				"\n\n",
-				this.Strings[3]
-			});
-		}
-		else if (ID == 21)
-		{
-			this.Strings[1] = "President of the Martial Arts Club. Inherited the club after defeating the previous president.";
-			this.Strings[2] = "Seems to be incapable of turning down a challenge.";
-			this.Strings[3] = "Always gung ho and enthusiastic. Sometimes a bit overzealous, especially about martial arts.";
-			this.InfoLabel.text = string.Concat(new string[]
-			{
-				this.Strings[1],
-				"\n\n",
-				this.Strings[2],
-				"\n\n",
-				this.Strings[3]
-			});
-		}
-		else if (ID == 22)
-		{
-			this.InfoLabel.text = "Journeyman-level disciple of Budo Masuta.";
-		}
-		else if (ID == 23)
-		{
-			this.InfoLabel.text = "Apprentice-level disciple of Budo Masuta.";
-		}
-		else if (ID == 24)
-		{
-			this.InfoLabel.text = "Journeyman-level disciple of Budo Masuta.";
-		}
-		else if (ID == 25)
-		{
-			this.InfoLabel.text = "Apprentice-level disciple of Budo Masuta.";
-		}
-		else if (ID == 26)
-		{
-			this.Strings[1] = "Founder and President of the Occult Club.";
-			this.Strings[2] = "Seems to have absolutely no interest in anything that is not paranormal.";
-			this.Strings[3] = "Stalks the Basu sisters daily in a futile search for evidence that they are supernatural beings.";
-			this.InfoLabel.text = string.Concat(new string[]
-			{
-				this.Strings[1],
-				"\n\n",
-				this.Strings[2],
-				"\n\n",
-				this.Strings[3]
-			});
-		}
-		else if (ID == 27)
-		{
-			this.InfoLabel.text = "Trusted by Oka Ruto to operate the Occult Club when she is not present.";
-		}
-		else if (ID == 28)
-		{
-			this.Strings[1] = "Claims to be wearing a medical eyepatch to correct a problem with her vision.";
-			this.Strings[2] = "Refuses to provide details regarding her eye condition, leading to rumors that she is lying about the reason she wears an eyepatch.";
-			this.InfoLabel.text = this.Strings[1] + "\n\n" + this.Strings[2];
-		}
-		else if (ID == 29)
-		{
-			this.Strings[1] = "No student has ever seen the right side of his face.";
-			this.Strings[2] = "Some students suspect that he is using his hair to hide an unsightly scar or missing eye.";
-			this.InfoLabel.text = this.Strings[1] + "\n\n" + this.Strings[2];
-		}
-		else if (ID == 30)
-		{
-			this.Strings[1] = "Claims that the bandages on her face are the result of being attacked by a wild animal shortly before the school year began.";
-			this.Strings[2] = "There are rumors that the true reason she wears bandages is because she is regularly beaten by a family member, and was blinded in one eye during a domestic dispute.";
-			this.InfoLabel.text = this.Strings[1] + "\n\n" + this.Strings[2];
-		}
-		else if (ID == 31)
-		{
-			this.Strings[1] = "One of the lenses of his glasses is completely opaque. No student has ever seen his right eye.";
-			this.Strings[2] = "Some students suspect that he only has one eye, and prefers to wear an opaque lense over that eye rather than an eyepatch.";
-			this.InfoLabel.text = this.Strings[1] + "\n\n" + this.Strings[2];
-		}
-		else if (ID == 32)
-		{
-			this.Strings[1] = "The most flashy girl in school.";
-			this.Strings[2] = "She is spoiled rotten by her doting father, who buys his daughter anything she wants.";
-			this.Strings[3] = "Her father runs a loan agency.";
-			this.InfoLabel.text = string.Concat(new string[]
-			{
-				this.Strings[1],
-				"\n\n",
-				this.Strings[2],
-				"\n\n",
-				this.Strings[3]
-			});
+				this.InfoLabel.text = this.JSON.StudentInfos[ID];
+			}
 		}
 		else
 		{

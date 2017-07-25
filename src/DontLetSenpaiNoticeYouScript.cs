@@ -41,7 +41,7 @@ public class DontLetSenpaiNoticeYouScript : MonoBehaviour
 				UILabel uilabel = this.Letters[this.ID];
 				uilabel.transform.localScale = Vector3.MoveTowards(uilabel.transform.localScale, Vector3.one, Time.deltaTime * 100f);
 				uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, uilabel.color.a + Time.deltaTime * 10f);
-				if (uilabel.transform.localScale.Equals(Vector3.one))
+				if (uilabel.transform.localScale == Vector3.one)
 				{
 					base.GetComponent<AudioSource>().PlayOneShot(this.Slam);
 					this.ID++;

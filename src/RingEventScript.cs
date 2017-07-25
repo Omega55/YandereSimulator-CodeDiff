@@ -130,6 +130,7 @@ public class RingEventScript : MonoBehaviour
 						this.EventStudent.Chopsticks[1].SetActive(true);
 						this.EventStudent.Bento.SetActive(true);
 						this.EventStudent.Lid.SetActive(false);
+						this.RingCollider.enabled = true;
 						this.EventPhase++;
 						this.Timer = 0f;
 					}
@@ -140,7 +141,6 @@ public class RingEventScript : MonoBehaviour
 							this.EventStudent.Cosmetic.FemaleAccessories[3].transform.parent = null;
 							this.EventStudent.Cosmetic.FemaleAccessories[3].transform.position = new Vector3(-2.712f, 12.47f, -31.136f);
 							this.EventStudent.Cosmetic.FemaleAccessories[3].transform.eulerAngles = new Vector3(-20f, 180f, 0f);
-							this.RingCollider.enabled = true;
 						}
 					}
 					else if (this.Timer > 2.5f)
@@ -246,6 +246,7 @@ public class RingEventScript : MonoBehaviour
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
 		audioSource.minDistance = 5f;
 		audioSource.maxDistance = 10f;
+		audioSource.spatialBlend = 1f;
 		this.VoiceClip = gameObject;
 	}
 

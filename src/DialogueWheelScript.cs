@@ -267,7 +267,7 @@ public class DialogueWheelScript : MonoBehaviour
 						if (this.Selected == 1)
 						{
 							this.Impatience.fillAmount = 0f;
-							this.Yandere.TargetStudent.Interaction = 10;
+							this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubInfo;
 							this.Yandere.TargetStudent.TalkTimer = 100f;
 							this.Yandere.TargetStudent.ClubPhase = 1;
 							this.Show = false;
@@ -275,7 +275,7 @@ public class DialogueWheelScript : MonoBehaviour
 						if (this.Selected == 2)
 						{
 							this.Impatience.fillAmount = 0f;
-							this.Yandere.TargetStudent.Interaction = 11;
+							this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubJoin;
 							this.Yandere.TargetStudent.TalkTimer = 100f;
 							this.Show = false;
 							this.ClubManager.CheckGrudge(this.Yandere.TargetStudent.Club);
@@ -299,7 +299,7 @@ public class DialogueWheelScript : MonoBehaviour
 						if (this.Selected == 3)
 						{
 							this.Impatience.fillAmount = 0f;
-							this.Yandere.TargetStudent.Interaction = 12;
+							this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubQuit;
 							this.Yandere.TargetStudent.TalkTimer = 100f;
 							this.Yandere.TargetStudent.ClubPhase = 1;
 							this.Show = false;
@@ -307,14 +307,14 @@ public class DialogueWheelScript : MonoBehaviour
 						if (this.Selected == 4)
 						{
 							this.Impatience.fillAmount = 0f;
-							this.Yandere.TargetStudent.Interaction = 13;
+							this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubBye;
 							this.Yandere.TargetStudent.TalkTimer = this.Yandere.Subtitle.ClubFarewellClips[this.Yandere.TargetStudent.Club].length;
 							this.Show = false;
 						}
 						if (this.Selected == 5)
 						{
 							this.Impatience.fillAmount = 0f;
-							this.Yandere.TargetStudent.Interaction = 14;
+							this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubActivity;
 							this.Yandere.TargetStudent.TalkTimer = 100f;
 							if (this.Clock.HourTime < 17f)
 							{
@@ -344,14 +344,14 @@ public class DialogueWheelScript : MonoBehaviour
 							if (this.Selected == 1)
 							{
 								this.Impatience.fillAmount = 0f;
-								this.Yandere.Interaction = 6;
+								this.Yandere.Interaction = YandereInteractionType.FollowMe;
 								this.Yandere.TalkTimer = 3f;
 								this.Show = false;
 							}
 							if (this.Selected == 2)
 							{
 								this.Impatience.fillAmount = 0f;
-								this.Yandere.Interaction = 7;
+								this.Yandere.Interaction = YandereInteractionType.GoAway;
 								this.Yandere.TalkTimer = 3f;
 								this.Show = false;
 							}
@@ -373,7 +373,7 @@ public class DialogueWheelScript : MonoBehaviour
 								this.PromptBar.UpdateButtons();
 								this.PromptBar.Show = true;
 								this.Impatience.fillAmount = 0f;
-								this.Yandere.Interaction = 8;
+								this.Yandere.Interaction = YandereInteractionType.DistractThem;
 								this.Yandere.TalkTimer = 3f;
 								this.Show = false;
 							}
@@ -404,14 +404,14 @@ public class DialogueWheelScript : MonoBehaviour
 							if (this.Selected == 2)
 							{
 								this.Impatience.fillAmount = 0f;
-								this.Yandere.Interaction = 19;
+								this.Yandere.Interaction = YandereInteractionType.Court;
 								this.Yandere.TalkTimer = 5f;
 								this.Show = false;
 							}
 							if (this.Selected == 4)
 							{
 								this.Impatience.fillAmount = 0f;
-								this.Yandere.Interaction = 20;
+								this.Yandere.Interaction = YandereInteractionType.Confess;
 								this.Yandere.TalkTimer = 5f;
 								this.Show = false;
 							}
@@ -427,14 +427,14 @@ public class DialogueWheelScript : MonoBehaviour
 					if (this.Selected == 1)
 					{
 						this.Impatience.fillAmount = 0f;
-						this.Yandere.Interaction = 1;
+						this.Yandere.Interaction = YandereInteractionType.Apologizing;
 						this.Yandere.TalkTimer = 3f;
 						this.Show = false;
 					}
 					if (this.Selected == 2)
 					{
 						this.Impatience.fillAmount = 0f;
-						this.Yandere.Interaction = 2;
+						this.Yandere.Interaction = YandereInteractionType.Compliment;
 						this.Yandere.TalkTimer = 3f;
 						this.Show = false;
 					}
@@ -457,14 +457,14 @@ public class DialogueWheelScript : MonoBehaviour
 						this.PromptBar.UpdateButtons();
 						this.PromptBar.Show = true;
 						this.Impatience.fillAmount = 0f;
-						this.Yandere.Interaction = 3;
+						this.Yandere.Interaction = YandereInteractionType.Gossip;
 						this.Yandere.TalkTimer = 3f;
 						this.Show = false;
 					}
 					if (this.Selected == 4)
 					{
 						this.Impatience.fillAmount = 0f;
-						this.Yandere.Interaction = 4;
+						this.Yandere.Interaction = YandereInteractionType.Bye;
 						this.Yandere.TalkTimer = 2f;
 						this.Show = false;
 					}
@@ -476,14 +476,14 @@ public class DialogueWheelScript : MonoBehaviour
 							if (this.Yandere.TargetStudent.TaskPhase == 0)
 							{
 								this.Impatience.fillAmount = 0f;
-								this.Yandere.TargetStudent.Interaction = 5;
+								this.Yandere.TargetStudent.Interaction = StudentInteractionType.GivingTask;
 								this.Yandere.TargetStudent.TalkTimer = 100f;
 								this.Yandere.TargetStudent.TaskPhase = 1;
 							}
 							else
 							{
 								this.Impatience.fillAmount = 0f;
-								this.Yandere.TargetStudent.Interaction = 5;
+								this.Yandere.TargetStudent.Interaction = StudentInteractionType.GivingTask;
 								this.Yandere.TargetStudent.TalkTimer = 100f;
 							}
 							this.Show = false;
@@ -507,7 +507,7 @@ public class DialogueWheelScript : MonoBehaviour
 							this.PromptBar.UpdateButtons();
 							this.PromptBar.Show = true;
 							this.Impatience.fillAmount = 0f;
-							this.Yandere.Interaction = 17;
+							this.Yandere.Interaction = YandereInteractionType.NamingCrush;
 							this.Yandere.TalkTimer = 3f;
 							this.Show = false;
 						}
@@ -692,7 +692,7 @@ public class DialogueWheelScript : MonoBehaviour
 	{
 		if (this.Yandere.TargetStudent != null)
 		{
-			this.Yandere.TargetStudent.Interaction = 0;
+			this.Yandere.TargetStudent.Interaction = StudentInteractionType.Idle;
 			this.Yandere.TargetStudent.WaitTimer = 1f;
 			if (this.Yandere.TargetStudent.enabled)
 			{

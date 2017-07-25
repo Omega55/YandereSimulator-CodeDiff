@@ -3,6 +3,14 @@ using UnityEngine;
 
 public class TalkingScript : MonoBehaviour
 {
+	private const float LongestTime = 100f;
+
+	private const float LongTime = 5f;
+
+	private const float MediumTime = 3f;
+
+	private const float ShortTime = 2f;
+
 	public StudentScript S;
 
 	public bool Follow;
@@ -13,7 +21,7 @@ public class TalkingScript : MonoBehaviour
 	{
 		if (this.S.Talking)
 		{
-			if (this.S.Interaction == 0)
+			if (this.S.Interaction == StudentInteractionType.Idle)
 			{
 				if (!this.Fake)
 				{
@@ -37,7 +45,7 @@ public class TalkingScript : MonoBehaviour
 					}
 				}
 			}
-			else if (this.S.Interaction == 1)
+			else if (this.S.Interaction == StudentInteractionType.Forgiving)
 			{
 				if (this.S.TalkTimer == 3f)
 				{
@@ -91,7 +99,7 @@ public class TalkingScript : MonoBehaviour
 				}
 				this.S.TalkTimer -= Time.deltaTime;
 			}
-			else if (this.S.Interaction == 2)
+			else if (this.S.Interaction == StudentInteractionType.ReceivingCompliment)
 			{
 				if (this.S.TalkTimer == 3f)
 				{
@@ -124,7 +132,7 @@ public class TalkingScript : MonoBehaviour
 					this.S.DialogueWheel.End();
 				}
 			}
-			else if (this.S.Interaction == 3)
+			else if (this.S.Interaction == StudentInteractionType.Gossiping)
 			{
 				if (this.S.TalkTimer == 3f)
 				{
@@ -161,12 +169,12 @@ public class TalkingScript : MonoBehaviour
 					this.S.Gossiped = true;
 					if (PlayerPrefs.GetInt("Topic_15_Discovered") == 0)
 					{
-						this.S.Yandere.NotificationManager.DisplayNotification("Topic");
+						this.S.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 						PlayerPrefs.SetInt("Topic_15_Discovered", 1);
 					}
 					if (PlayerPrefs.GetInt("Topic_15_Student_" + this.S.StudentID.ToString() + "_Learned") == 0)
 					{
-						this.S.Yandere.NotificationManager.DisplayNotification("Opinion");
+						this.S.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
 						PlayerPrefs.SetInt("Topic_15_Student_" + this.S.StudentID.ToString() + "_Learned", 1);
 					}
 				}
@@ -187,7 +195,7 @@ public class TalkingScript : MonoBehaviour
 				}
 				this.S.TalkTimer -= Time.deltaTime;
 			}
-			else if (this.S.Interaction == 4)
+			else if (this.S.Interaction == StudentInteractionType.Bye)
 			{
 				if (this.S.TalkTimer == 2f)
 				{
@@ -204,7 +212,7 @@ public class TalkingScript : MonoBehaviour
 					this.S.DialogueWheel.End();
 				}
 			}
-			else if (this.S.Interaction == 5)
+			else if (this.S.Interaction == StudentInteractionType.GivingTask)
 			{
 				if (this.S.TalkTimer == 100f)
 				{
@@ -231,7 +239,7 @@ public class TalkingScript : MonoBehaviour
 						this.S.DialogueWheel.TaskWindow.TaskComplete = true;
 						PlayerPrefs.SetInt("Task_" + this.S.StudentID.ToString() + "_Status", 3);
 						PlayerPrefs.SetInt(this.S.StudentID.ToString() + "_Friend", 1);
-						this.S.Interaction = 0;
+						this.S.Interaction = StudentInteractionType.Idle;
 					}
 					else if (this.S.TaskPhase == 4 || this.S.TaskPhase == 0)
 					{
@@ -241,7 +249,7 @@ public class TalkingScript : MonoBehaviour
 					else if (this.S.TaskPhase == 3)
 					{
 						this.S.DialogueWheel.TaskWindow.UpdateWindow(this.S.StudentID);
-						this.S.Interaction = 0;
+						this.S.Interaction = StudentInteractionType.Idle;
 					}
 					else
 					{
@@ -253,7 +261,7 @@ public class TalkingScript : MonoBehaviour
 					}
 				}
 			}
-			else if (this.S.Interaction == 6)
+			else if (this.S.Interaction == StudentInteractionType.FollowingPlayer)
 			{
 				if (this.S.TalkTimer == 2f)
 				{
@@ -300,7 +308,7 @@ public class TalkingScript : MonoBehaviour
 				}
 				this.S.TalkTimer -= Time.deltaTime;
 			}
-			else if (this.S.Interaction == 7)
+			else if (this.S.Interaction == StudentInteractionType.GoingAway)
 			{
 				if (this.S.TalkTimer == 3f)
 				{
@@ -338,7 +346,7 @@ public class TalkingScript : MonoBehaviour
 				}
 				this.S.TalkTimer -= Time.deltaTime;
 			}
-			else if (this.S.Interaction == 8)
+			else if (this.S.Interaction == StudentInteractionType.DistractingTarget)
 			{
 				if (this.S.TalkTimer == 3f)
 				{
@@ -351,7 +359,7 @@ public class TalkingScript : MonoBehaviour
 					{
 						this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod1Anim);
 						StudentScript studentScript = this.S.StudentManager.Students[this.S.DialogueWheel.Victim];
-						if (!studentScript.InEvent && !studentScript.Slave && !studentScript.Wet && !studentScript.Meeting && !studentScript.TargetedForDistraction)
+						if (studentScript.Routine && !studentScript.TargetedForDistraction)
 						{
 							this.S.Subtitle.UpdateLabel("Student Distract", 0, 3f);
 						}
@@ -391,17 +399,17 @@ public class TalkingScript : MonoBehaviour
 				}
 				this.S.TalkTimer -= Time.deltaTime;
 			}
-			else if (this.S.Interaction == 9)
+			else if (this.S.Interaction == StudentInteractionType.PersonalGrudge)
 			{
 				if (this.S.TalkTimer == 5f)
 				{
-					if (this.S.Persona == 4)
+					if (this.S.Persona == PersonaType.Coward)
 					{
 						this.S.Subtitle.UpdateLabel("Coward Grudge", 0, 5f);
 						this.S.Character.GetComponent<Animation>().CrossFade(this.S.CowardAnim);
 						this.S.TalkTimer = 5f;
 					}
-					else if (this.S.Persona == 5)
+					else if (this.S.Persona == PersonaType.Evil)
 					{
 						this.S.Subtitle.UpdateLabel("Evil Grudge", 0, 5f);
 						this.S.Character.GetComponent<Animation>().CrossFade(this.S.EvilAnim);
@@ -434,7 +442,7 @@ public class TalkingScript : MonoBehaviour
 				}
 				this.S.TalkTimer -= Time.deltaTime;
 			}
-			else if (this.S.Interaction == 10)
+			else if (this.S.Interaction == StudentInteractionType.ClubInfo)
 			{
 				if (this.S.TalkTimer == 100f)
 				{
@@ -455,7 +463,7 @@ public class TalkingScript : MonoBehaviour
 						this.S.DialogueWheel.Panel.enabled = true;
 						this.S.DialogueWheel.Show = true;
 						this.S.Subtitle.Label.text = string.Empty;
-						this.S.Interaction = 0;
+						this.S.Interaction = StudentInteractionType.Idle;
 						this.S.TalkTimer = 0f;
 					}
 					else
@@ -466,7 +474,7 @@ public class TalkingScript : MonoBehaviour
 					}
 				}
 			}
-			else if (this.S.Interaction == 11)
+			else if (this.S.Interaction == StudentInteractionType.ClubJoin)
 			{
 				if (this.S.TalkTimer == 100f)
 				{
@@ -515,7 +523,7 @@ public class TalkingScript : MonoBehaviour
 						this.S.DialogueWheel.ClubWindow.Club = this.S.Club;
 						this.S.DialogueWheel.ClubWindow.UpdateWindow();
 						this.S.Subtitle.Label.text = string.Empty;
-						this.S.Interaction = 0;
+						this.S.Interaction = StudentInteractionType.Idle;
 					}
 					else
 					{
@@ -527,7 +535,7 @@ public class TalkingScript : MonoBehaviour
 					}
 				}
 			}
-			else if (this.S.Interaction == 12)
+			else if (this.S.Interaction == StudentInteractionType.ClubQuit)
 			{
 				if (this.S.TalkTimer == 100f)
 				{
@@ -562,7 +570,7 @@ public class TalkingScript : MonoBehaviour
 						this.S.DialogueWheel.ClubWindow.Quitting = true;
 						this.S.DialogueWheel.ClubWindow.UpdateWindow();
 						this.S.Subtitle.Label.text = string.Empty;
-						this.S.Interaction = 0;
+						this.S.Interaction = StudentInteractionType.Idle;
 					}
 					else
 					{
@@ -574,7 +582,7 @@ public class TalkingScript : MonoBehaviour
 					}
 				}
 			}
-			else if (this.S.Interaction == 13)
+			else if (this.S.Interaction == StudentInteractionType.ClubBye)
 			{
 				if (this.S.TalkTimer == this.S.Subtitle.ClubFarewellClips[this.S.Club].length)
 				{
@@ -590,7 +598,7 @@ public class TalkingScript : MonoBehaviour
 					this.S.DialogueWheel.End();
 				}
 			}
-			else if (this.S.Interaction == 14)
+			else if (this.S.Interaction == StudentInteractionType.ClubActivity)
 			{
 				if (this.S.TalkTimer == 100f)
 				{
@@ -635,7 +643,7 @@ public class TalkingScript : MonoBehaviour
 						this.S.DialogueWheel.ClubWindow.Activity = true;
 						this.S.DialogueWheel.ClubWindow.UpdateWindow();
 						this.S.Subtitle.Label.text = string.Empty;
-						this.S.Interaction = 0;
+						this.S.Interaction = StudentInteractionType.Idle;
 					}
 					else if (this.S.ClubPhase == 2)
 					{
@@ -643,7 +651,7 @@ public class TalkingScript : MonoBehaviour
 						this.S.Police.ClubActivity = true;
 						this.S.Police.FadeOut = true;
 						this.S.Subtitle.Label.text = string.Empty;
-						this.S.Interaction = 0;
+						this.S.Interaction = StudentInteractionType.Idle;
 					}
 					else
 					{
@@ -651,7 +659,7 @@ public class TalkingScript : MonoBehaviour
 					}
 				}
 			}
-			else if (this.S.Interaction == 15)
+			else if (this.S.Interaction == StudentInteractionType.ClubUnwelcome)
 			{
 				if (this.S.TalkTimer == 5f)
 				{
@@ -671,7 +679,7 @@ public class TalkingScript : MonoBehaviour
 				}
 				this.S.TalkTimer -= Time.deltaTime;
 			}
-			else if (this.S.Interaction == 16)
+			else if (this.S.Interaction == StudentInteractionType.ClubKick)
 			{
 				if (this.S.TalkTimer == 5f)
 				{
@@ -692,7 +700,7 @@ public class TalkingScript : MonoBehaviour
 				}
 				this.S.TalkTimer -= Time.deltaTime;
 			}
-			else if (this.S.Interaction == 17)
+			else if (this.S.Interaction == StudentInteractionType.NamingCrush)
 			{
 				if (this.S.TalkTimer == 3f)
 				{
@@ -728,7 +736,7 @@ public class TalkingScript : MonoBehaviour
 				}
 				this.S.TalkTimer -= Time.deltaTime;
 			}
-			else if (this.S.Interaction == 18)
+			else if (this.S.Interaction == StudentInteractionType.ChangingAppearance)
 			{
 				if (this.S.TalkTimer == 3f)
 				{
@@ -752,7 +760,7 @@ public class TalkingScript : MonoBehaviour
 				}
 				this.S.TalkTimer -= Time.deltaTime;
 			}
-			else if (this.S.Interaction == 19)
+			else if (this.S.Interaction == StudentInteractionType.Court)
 			{
 				if (this.S.TalkTimer == 3f)
 				{
@@ -793,7 +801,7 @@ public class TalkingScript : MonoBehaviour
 				}
 				this.S.TalkTimer -= Time.deltaTime;
 			}
-			else if (this.S.Interaction == 20)
+			else if (this.S.Interaction == StudentInteractionType.Gift)
 			{
 				if (this.S.TalkTimer == 5f)
 				{
@@ -818,7 +826,7 @@ public class TalkingScript : MonoBehaviour
 				}
 				this.S.TalkTimer -= Time.deltaTime;
 			}
-			else if (this.S.Interaction == 21)
+			else if (this.S.Interaction == StudentInteractionType.Feeding)
 			{
 				if (this.S.TalkTimer == 3f)
 				{

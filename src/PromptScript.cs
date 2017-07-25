@@ -45,9 +45,9 @@ public class PromptScript : MonoBehaviour
 
 	public string[] Text;
 
-	public bool DisableAtStart;
+	public PromptOwnerType OwnerType;
 
-	public bool Initialized;
+	public bool DisableAtStart;
 
 	public bool Suspicious;
 
@@ -91,109 +91,118 @@ public class PromptScript : MonoBehaviour
 
 	public bool Hidden;
 
-	private void OnApplicationQuit()
+	private void Awake()
 	{
-		this.Initialized = true;
+		this.Distance = float.PositiveInfinity;
+		this.OwnerType = this.DecideOwnerType();
+		if (this.RaycastTarget == null)
+		{
+			this.RaycastTarget = base.transform;
+		}
+		if (this.OffsetZ.Length == 0)
+		{
+			this.OffsetZ = new float[4];
+		}
+		if (this.Yandere == null)
+		{
+			this.YandereObject = GameObject.Find("YandereChan");
+			if (this.YandereObject != null)
+			{
+				this.Yandere = this.YandereObject.GetComponent<YandereScript>();
+			}
+		}
+		if (this.Yandere != null)
+		{
+			this.PauseScreen = GameObject.Find("PauseScreen").GetComponent<PauseScreenScript>();
+			this.PromptParent = GameObject.Find("PromptParent").GetComponent<PromptParentScript>();
+			this.UICamera = GameObject.Find("UI Camera").GetComponent<Camera>();
+			if (this.Noisy)
+			{
+				this.Speaker = UnityEngine.Object.Instantiate<GameObject>(this.SpeakerObject, base.transform.position, Quaternion.identity).GetComponent<UISprite>();
+				this.Speaker.transform.parent = this.PromptParent.transform;
+				this.Speaker.transform.localScale = new Vector3(1f, 1f, 1f);
+				this.Speaker.transform.localEulerAngles = Vector3.zero;
+				this.Speaker.enabled = false;
+			}
+			this.Square = UnityEngine.Object.Instantiate<GameObject>(this.PromptParent.SquareObject, base.transform.position, Quaternion.identity).GetComponent<UISprite>();
+			this.Square.transform.parent = this.PromptParent.transform;
+			this.Square.transform.localScale = new Vector3(1f, 1f, 1f);
+			this.Square.transform.localEulerAngles = Vector3.zero;
+			Color color = this.Square.color;
+			color.a = 0f;
+			this.Square.color = color;
+			this.Square.enabled = false;
+			this.ID = 0;
+			while (this.ID < 4)
+			{
+				if (this.ButtonActive[this.ID])
+				{
+					this.Button[this.ID] = UnityEngine.Object.Instantiate<GameObject>(this.ButtonObject[this.ID], base.transform.position, Quaternion.identity).GetComponent<UISprite>();
+					UISprite uisprite = this.Button[this.ID];
+					uisprite.transform.parent = this.PromptParent.transform;
+					uisprite.transform.localScale = new Vector3(1f, 1f, 1f);
+					uisprite.transform.localEulerAngles = Vector3.zero;
+					uisprite.color = new Color(uisprite.color.r, uisprite.color.g, uisprite.color.b, 0f);
+					uisprite.enabled = false;
+					this.Circle[this.ID] = UnityEngine.Object.Instantiate<GameObject>(this.CircleObject, base.transform.position, Quaternion.identity).GetComponent<UISprite>();
+					UISprite uisprite2 = this.Circle[this.ID];
+					uisprite2.transform.parent = this.PromptParent.transform;
+					uisprite2.transform.localScale = new Vector3(1f, 1f, 1f);
+					uisprite2.transform.localEulerAngles = Vector3.zero;
+					uisprite2.color = new Color(uisprite2.color.r, uisprite2.color.g, uisprite2.color.b, 0f);
+					uisprite2.enabled = false;
+					this.Label[this.ID] = UnityEngine.Object.Instantiate<GameObject>(this.LabelObject, base.transform.position, Quaternion.identity).GetComponent<UILabel>();
+					UILabel uilabel = this.Label[this.ID];
+					uilabel.transform.parent = this.PromptParent.transform;
+					uilabel.transform.localScale = new Vector3(1f, 1f, 1f);
+					uilabel.transform.localEulerAngles = Vector3.zero;
+					uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, 0f);
+					uilabel.enabled = false;
+					if (this.Suspicious)
+					{
+						uilabel.color = new Color(1f, 0f, 0f, 0f);
+					}
+					uilabel.text = "     " + this.Text[this.ID];
+				}
+				this.AcceptingInput[this.ID] = true;
+				this.ID++;
+			}
+			this.BloodMask = 2;
+			this.BloodMask |= 512;
+			this.BloodMask |= 8192;
+			this.BloodMask |= 16384;
+			this.BloodMask |= 65536;
+			this.BloodMask |= 2097152;
+			this.BloodMask = ~this.BloodMask;
+		}
 	}
 
 	private void Start()
 	{
-		this.Distance = 99999f;
-		if (!this.Initialized)
+		if (this.DisableAtStart)
 		{
-			if (this.RaycastTarget == null)
-			{
-				this.RaycastTarget = base.transform;
-			}
-			if (this.OffsetZ.Length == 0)
-			{
-				this.OffsetZ = new float[4];
-			}
-			if (this.Yandere == null)
-			{
-				this.YandereObject = GameObject.Find("YandereChan");
-				if (this.YandereObject != null)
-				{
-					this.Yandere = this.YandereObject.GetComponent<YandereScript>();
-				}
-			}
-			if (this.Yandere != null)
-			{
-				this.PauseScreen = GameObject.Find("PauseScreen").GetComponent<PauseScreenScript>();
-				this.PromptParent = GameObject.Find("PromptParent").GetComponent<PromptParentScript>();
-				this.UICamera = GameObject.Find("UI Camera").GetComponent<Camera>();
-				if (this.Noisy)
-				{
-					this.Speaker = UnityEngine.Object.Instantiate<GameObject>(this.SpeakerObject, base.transform.position, Quaternion.identity).GetComponent<UISprite>();
-					this.Speaker.transform.parent = this.PromptParent.transform;
-					this.Speaker.transform.localScale = new Vector3(1f, 1f, 1f);
-					this.Speaker.transform.localEulerAngles = Vector3.zero;
-					this.Speaker.enabled = false;
-				}
-				this.Square = UnityEngine.Object.Instantiate<GameObject>(this.PromptParent.SquareObject, base.transform.position, Quaternion.identity).GetComponent<UISprite>();
-				this.Square.transform.parent = this.PromptParent.transform;
-				this.Square.transform.localScale = new Vector3(1f, 1f, 1f);
-				this.Square.transform.localEulerAngles = Vector3.zero;
-				Color color = this.Square.color;
-				color.a = 0f;
-				this.Square.color = color;
-				this.Square.enabled = false;
-				this.ID = 0;
-				while (this.ID < 4)
-				{
-					if (this.ButtonActive[this.ID])
-					{
-						this.Button[this.ID] = UnityEngine.Object.Instantiate<GameObject>(this.ButtonObject[this.ID], base.transform.position, Quaternion.identity).GetComponent<UISprite>();
-						UISprite uisprite = this.Button[this.ID];
-						uisprite.transform.parent = this.PromptParent.transform;
-						uisprite.transform.localScale = new Vector3(1f, 1f, 1f);
-						uisprite.transform.localEulerAngles = Vector3.zero;
-						Color color2 = uisprite.color;
-						color2.a = 0f;
-						uisprite.color = color2;
-						uisprite.enabled = false;
-						this.Circle[this.ID] = UnityEngine.Object.Instantiate<GameObject>(this.CircleObject, base.transform.position, Quaternion.identity).GetComponent<UISprite>();
-						UISprite uisprite2 = this.Circle[this.ID];
-						uisprite2.transform.parent = this.PromptParent.transform;
-						uisprite2.transform.localScale = new Vector3(1f, 1f, 1f);
-						uisprite2.transform.localEulerAngles = Vector3.zero;
-						Color color3 = uisprite2.color;
-						color3.a = 0f;
-						uisprite2.color = color3;
-						uisprite2.enabled = false;
-						this.Label[this.ID] = UnityEngine.Object.Instantiate<GameObject>(this.LabelObject, base.transform.position, Quaternion.identity).GetComponent<UILabel>();
-						UILabel uilabel = this.Label[this.ID];
-						uilabel.transform.parent = this.PromptParent.transform;
-						uilabel.transform.localScale = new Vector3(1f, 1f, 1f);
-						uilabel.transform.localEulerAngles = Vector3.zero;
-						Color color4 = uilabel.color;
-						color4.a = 0f;
-						uilabel.color = color4;
-						uilabel.enabled = false;
-						if (this.Suspicious)
-						{
-							uilabel.color = new Color(1f, 0f, 0f, 0f);
-						}
-						uilabel.text = "     " + this.Text[this.ID];
-					}
-					this.AcceptingInput[this.ID] = true;
-					this.ID++;
-				}
-				this.BloodMask = 2;
-				this.BloodMask |= 512;
-				this.BloodMask |= 8192;
-				this.BloodMask |= 16384;
-				this.BloodMask |= 65536;
-				this.BloodMask |= 2097152;
-				this.BloodMask = ~this.BloodMask;
-				this.Initialized = true;
-				if (this.DisableAtStart)
-				{
-					this.Hide();
-					base.enabled = false;
-				}
-			}
+			this.Hide();
+			base.enabled = false;
 		}
+	}
+
+	private PromptOwnerType DecideOwnerType()
+	{
+		if (base.GetComponent<DoorScript>() != null)
+		{
+			return PromptOwnerType.Door;
+		}
+		return PromptOwnerType.Unknown;
+	}
+
+	private bool AllowedWhenCrouching(PromptOwnerType ownerType)
+	{
+		return ownerType == PromptOwnerType.Door;
+	}
+
+	private bool AllowedWhenCrawling(PromptOwnerType ownerType)
+	{
+		return false;
 	}
 
 	private void Update()
@@ -205,7 +214,9 @@ public class PromptScript : MonoBehaviour
 				this.Distance = Vector3.Distance(this.Yandere.transform.position, new Vector3(base.transform.position.x, this.Yandere.transform.position.y, base.transform.position.z));
 				if (this.Distance < this.MaximumDistance)
 				{
-					if (this.Yandere.CanMove && !this.Yandere.Crouching && !this.Yandere.Crawling && !this.Yandere.Aiming && !this.Yandere.Mopping && !this.Yandere.NearSenpai)
+					bool flag = this.Yandere.Stance == StanceType.Crouching;
+					bool flag2 = this.Yandere.Stance == StanceType.Crawling;
+					if (this.Yandere.CanMove && (!flag || this.AllowedWhenCrouching(this.OwnerType)) && (!flag2 || this.AllowedWhenCrawling(this.OwnerType)) && !this.Yandere.Aiming && !this.Yandere.Mopping && !this.Yandere.NearSenpai)
 					{
 						Debug.DrawLine(this.Yandere.Eyes.position + Vector3.down * this.Height, this.RaycastTarget.position, Color.green);
 						RaycastHit raycastHit;
@@ -497,7 +508,7 @@ public class PromptScript : MonoBehaviour
 				{
 					Debug.Log("4.");
 				}
-				this.Distance = 99999f;
+				this.Distance = float.PositiveInfinity;
 				this.Hide();
 			}
 		}
@@ -531,10 +542,6 @@ public class PromptScript : MonoBehaviour
 		if (!this.Hidden)
 		{
 			this.Hidden = true;
-			if (!this.Initialized)
-			{
-				this.Start();
-			}
 			if (this.YandereObject != null)
 			{
 				if (this.Yandere.NearestPrompt == this)

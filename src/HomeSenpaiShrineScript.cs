@@ -31,13 +31,31 @@ public class HomeSenpaiShrineScript : MonoBehaviour
 
 	public float Rotation;
 
-	public int Selected = 1;
+	private int Rows = 5;
 
-	public int ID;
+	private int Columns = 3;
+
+	private int X = 1;
+
+	private int Y = 3;
 
 	private void Start()
 	{
-		this.UpdateText();
+		this.UpdateText(this.GetCurrentIndex());
+	}
+
+	private bool InUpperHalf()
+	{
+		return this.Y < 2;
+	}
+
+	private int GetCurrentIndex()
+	{
+		if (this.InUpperHalf())
+		{
+			return this.Y;
+		}
+		return 2 + (this.X + (this.Y - 2) * this.Columns);
 	}
 
 	private void Update()
@@ -49,18 +67,34 @@ public class HomeSenpaiShrineScript : MonoBehaviour
 				this.Rotation = Mathf.Lerp(this.Rotation, 135f, Time.deltaTime * 10f);
 				this.RightDoor.localEulerAngles = new Vector3(this.RightDoor.localEulerAngles.x, this.Rotation, this.RightDoor.localEulerAngles.z);
 				this.LeftDoor.localEulerAngles = new Vector3(this.LeftDoor.localEulerAngles.x, -this.Rotation, this.LeftDoor.localEulerAngles.z);
-				if (this.InputManager.TappedRight)
+				if (this.InputManager.TappedUp)
 				{
-					this.Selected++;
-					this.UpdateText();
+					this.Y = ((this.Y <= 0) ? (this.Rows - 1) : (this.Y - 1));
 				}
-				if (this.InputManager.TappedLeft)
+				if (this.InputManager.TappedDown)
 				{
-					this.Selected--;
-					this.UpdateText();
+					this.Y = ((this.Y >= this.Rows - 1) ? 0 : (this.Y + 1));
 				}
-				this.HomeCamera.Destination = this.Destinations[this.Selected];
-				this.HomeCamera.Target = this.Targets[this.Selected];
+				if (this.InputManager.TappedRight && !this.InUpperHalf())
+				{
+					this.X = ((this.X >= this.Columns - 1) ? 0 : (this.X + 1));
+				}
+				if (this.InputManager.TappedLeft && !this.InUpperHalf())
+				{
+					this.X = ((this.X <= 0) ? (this.Columns - 1) : (this.X - 1));
+				}
+				if (this.InUpperHalf())
+				{
+					this.X = 1;
+				}
+				int currentIndex = this.GetCurrentIndex();
+				this.HomeCamera.Destination = this.Destinations[currentIndex];
+				this.HomeCamera.Target = this.Targets[currentIndex];
+				bool flag = this.InputManager.TappedUp || this.InputManager.TappedDown || this.InputManager.TappedRight || this.InputManager.TappedLeft;
+				if (flag)
+				{
+					this.UpdateText(currentIndex);
+				}
 				if (Input.GetButtonDown("B"))
 				{
 					this.HomeCamera.Destination = this.HomeCamera.Destinations[0];
@@ -79,17 +113,9 @@ public class HomeSenpaiShrineScript : MonoBehaviour
 		}
 	}
 
-	private void UpdateText()
+	private void UpdateText(int newIndex)
 	{
-		if (this.Selected > 11)
-		{
-			this.Selected = 1;
-		}
-		else if (this.Selected < 1)
-		{
-			this.Selected = 11;
-		}
-		this.NameLabel.text = this.Names[this.Selected];
-		this.DescLabel.text = this.Descs[this.Selected];
+		this.NameLabel.text = this.Names[newIndex];
+		this.DescLabel.text = this.Descs[newIndex];
 	}
 }

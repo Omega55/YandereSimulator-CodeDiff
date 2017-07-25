@@ -116,7 +116,7 @@ public class ShoulderCameraScript : MonoBehaviour
 						this.NoticedHeight = 1.6f;
 						this.NoticedLimit = 6;
 					}
-					else if (this.Yandere.Senpai.GetComponent<StudentScript>().Witnessed.Equals("Stalking"))
+					else if (this.Yandere.Senpai.GetComponent<StudentScript>().Witnessed == "Stalking")
 					{
 						this.NoticedHeight = 1.481275f;
 						this.NoticedLimit = 6;
@@ -313,7 +313,7 @@ public class ShoulderCameraScript : MonoBehaviour
 			{
 				if (this.Phase == 1)
 				{
-					this.NoticedPOV.position = this.Yandere.transform.position + this.Yandere.transform.forward + this.Yandere.transform.right * -0.15f + Vector3.up * 1.375f;
+					this.NoticedPOV.position = this.Yandere.transform.position + this.Yandere.transform.forward * 1.7f + this.Yandere.transform.right * 0.15f + Vector3.up * 1.375f;
 					this.NoticedFocus.position = base.transform.position + base.transform.forward;
 					this.NoticedSpeed = 10f;
 					this.Phase++;
@@ -321,12 +321,12 @@ public class ShoulderCameraScript : MonoBehaviour
 				else if (this.Phase == 2)
 				{
 					this.NoticedPOV.Translate(this.NoticedPOV.forward * (Time.deltaTime * -0.1f));
-					this.NoticedFocus.position = Vector3.Lerp(this.NoticedFocus.position, this.Yandere.transform.position + this.Yandere.transform.right * -0.15f + Vector3.up * 1.375f, Time.deltaTime * 10f);
+					this.NoticedFocus.position = Vector3.Lerp(this.NoticedFocus.position, this.Yandere.transform.position + this.Yandere.transform.right * 0.15f + Vector3.up * 1.375f, Time.deltaTime * 10f);
 					this.Timer += Time.deltaTime;
 					if (this.Timer > 2f)
 					{
 						this.Yandere.Stand.Spawn();
-						this.NoticedPOV.position = this.Yandere.transform.position + this.Yandere.transform.forward * 2f + Vector3.up * 2f;
+						this.NoticedPOV.position = this.Yandere.transform.position + this.Yandere.transform.forward * 2f + Vector3.up * 2.4f;
 						this.Timer = 0f;
 						this.Phase++;
 					}
@@ -334,7 +334,7 @@ public class ShoulderCameraScript : MonoBehaviour
 				else if (this.Phase == 3)
 				{
 					this.NoticedPOV.Translate(this.NoticedPOV.forward * (Time.deltaTime * -0.1f));
-					this.NoticedFocus.position = this.Yandere.transform.position + Vector3.up * 2f;
+					this.NoticedFocus.position = this.Yandere.transform.position + Vector3.up * 2.4f;
 					this.Yandere.Stand.Stand.SetActive(true);
 					this.Timer += Time.deltaTime;
 					if (this.Timer > 5f)

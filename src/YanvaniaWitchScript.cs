@@ -66,11 +66,11 @@ public class YanvaniaWitchScript : MonoBehaviour
 	{
 		if (this.HP > 0f)
 		{
-			if (other.gameObject.tag.Equals("Player"))
+			if (other.gameObject.tag == "Player")
 			{
 				this.Yanmont.TakeDamage(5);
 			}
-			if (other.gameObject.name.Equals("Heart"))
+			if (other.gameObject.name == "Heart")
 			{
 				Animation component = this.Character.GetComponent<Animation>();
 				if (!this.Casting)

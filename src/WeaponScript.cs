@@ -23,9 +23,11 @@ public class WeaponScript : MonoBehaviour
 
 	public AudioClip[] Clips3;
 
+	public ParticleSystem FireEffect;
+
 	public AudioClip DismemberClip;
 
-	public GameObject FireEffect;
+	public AudioSource FireAudio;
 
 	public Collider MyCollider;
 
@@ -89,7 +91,7 @@ public class WeaponScript : MonoBehaviour
 
 	public int AnimID;
 
-	public int Type = 1;
+	public WeaponType Type = WeaponType.Knife;
 
 	public bool[] Victims;
 
@@ -119,6 +121,59 @@ public class WeaponScript : MonoBehaviour
 			this.OriginalClip = component.clip;
 		}
 		base.GetComponent<Rigidbody>().isKinematic = true;
+	}
+
+	public string GetTypePrefix()
+	{
+		if (this.Type == WeaponType.Knife)
+		{
+			return "knife";
+		}
+		if (this.Type == WeaponType.Katana)
+		{
+			return "katana";
+		}
+		if (this.Type == WeaponType.Bat)
+		{
+			return "bat";
+		}
+		if (this.Type == WeaponType.Saw)
+		{
+			return "saw";
+		}
+		if (this.Type == WeaponType.Syringe)
+		{
+			return "syringe";
+		}
+		Debug.LogError("Weapon type \"" + this.Type.ToString() + "\" not implemented.");
+		return string.Empty;
+	}
+
+	public AudioClip GetClip(float sanity, bool stealth)
+	{
+		AudioClip[] array;
+		if (this.Clips2.Length == 0)
+		{
+			array = this.Clips;
+		}
+		else
+		{
+			int num = UnityEngine.Random.Range(2, 4);
+			array = ((num != 2) ? this.Clips3 : this.Clips2);
+		}
+		if (stealth)
+		{
+			return array[0];
+		}
+		if (sanity > 0.6666667f)
+		{
+			return array[1];
+		}
+		if (sanity > 0.333333343f)
+		{
+			return array[2];
+		}
+		return array[3];
 	}
 
 	private void Update()
@@ -166,13 +221,13 @@ public class WeaponScript : MonoBehaviour
 		}
 		else if (this.Yandere.Weapon[this.Yandere.Equipped] == this)
 		{
-			if (this.Yandere.AttackManager.Attacking)
+			if (this.Yandere.AttackManager.IsAttacking())
 			{
-				if (this.Type == 1)
+				if (this.Type == WeaponType.Knife)
 				{
 					base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, Mathf.Lerp(base.transform.localEulerAngles.y, (!this.Flip) ? 0f : 180f, Time.deltaTime * 10f), base.transform.localEulerAngles.z);
 				}
-				else if (this.Type == 4 && this.Spin)
+				else if (this.Type == WeaponType.Saw && this.Spin)
 				{
 					this.Blade.transform.localEulerAngles = new Vector3(this.Blade.transform.localEulerAngles.x + Time.deltaTime * 360f, this.Blade.transform.localEulerAngles.y, this.Blade.transform.localEulerAngles.z);
 				}
@@ -190,9 +245,13 @@ public class WeaponScript : MonoBehaviour
 					this.KinematicTimer = 0f;
 				}
 			}
-			if ((base.transform.position.x > -89f & base.transform.position.x < -79f) && base.transform.position.z > -13.5f && base.transform.position.z < -3.5f)
+			if (base.transform.position.x > -89f && base.transform.position.x < -79f && base.transform.position.z > -13.5f && base.transform.position.z < -3.5f)
 			{
 				base.transform.position = new Vector3(-80.75f, 1f, -2.75f);
+			}
+			if (base.transform.position.x > -21f && base.transform.position.x < 21f && base.transform.position.z > 79f && base.transform.position.z < 121f)
+			{
+				base.transform.position = new Vector3(0f, 1f, 79f);
 			}
 		}
 	}
@@ -292,7 +351,7 @@ public class WeaponScript : MonoBehaviour
 			{
 				if (!this.Yandere.WeaponWarning)
 				{
-					this.Yandere.NotificationManager.DisplayNotification("Armed");
+					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Armed);
 					this.Yandere.WeaponWarning = true;
 				}
 			}

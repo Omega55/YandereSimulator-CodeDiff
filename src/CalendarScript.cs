@@ -140,7 +140,7 @@ public class CalendarScript : MonoBehaviour
 							{
 								PlayerPrefs.SetFloat("SchoolAtmosphere", 0f);
 							}
-							SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+							SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 						}
 					}
 				}
@@ -155,7 +155,7 @@ public class CalendarScript : MonoBehaviour
 				if (this.Reset)
 				{
 					PlayerPrefs.DeleteAll();
-					SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+					SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 				}
 				else
 				{

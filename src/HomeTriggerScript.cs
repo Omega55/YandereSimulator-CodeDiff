@@ -18,7 +18,7 @@ public class HomeTriggerScript : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.tag.Equals("Player"))
+		if (other.tag == "Player")
 		{
 			this.HomeCamera.ID = this.ID;
 			this.FadeIn = true;
@@ -27,7 +27,7 @@ public class HomeTriggerScript : MonoBehaviour
 
 	private void OnTriggerExit(Collider other)
 	{
-		if (other.tag.Equals("Player"))
+		if (other.tag == "Player")
 		{
 			this.HomeCamera.ID = 0;
 			this.FadeIn = false;

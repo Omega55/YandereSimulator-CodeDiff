@@ -76,17 +76,17 @@ public class YanvaniaTitleScript : MonoBehaviour
 		{
 			PlayerPrefs.SetInt("DraculaDefeated", 1);
 			PlayerPrefs.SetInt("MidoriEasterEgg", 1);
-			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		if (Input.GetKeyDown("end"))
 		{
 			PlayerPrefs.SetInt("DraculaDefeated", 1);
-			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		if (Input.GetKeyDown("`"))
 		{
 			PlayerPrefs.SetInt("DraculaDefeated", 0);
-			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		AudioSource component = base.GetComponent<AudioSource>();
 		if (!this.FadeOut)

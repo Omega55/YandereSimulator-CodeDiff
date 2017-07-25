@@ -37,7 +37,7 @@ public class BloodPoolScript : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.gameObject.name.Equals("BloodSpawner"))
+		if (other.gameObject.name == "BloodSpawner")
 		{
 			this.Grow = true;
 		}
@@ -45,7 +45,7 @@ public class BloodPoolScript : MonoBehaviour
 
 	private void OnTriggerExit(Collider other)
 	{
-		if (other.gameObject.name.Equals("BloodSpawner"))
+		if (other.gameObject.name == "BloodSpawner")
 		{
 		}
 	}

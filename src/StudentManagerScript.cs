@@ -169,6 +169,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform StripSpot;
 
+	public Transform Papers;
+
 	public Transform Exit;
 
 	public GameObject PortraitChan;
@@ -222,6 +224,8 @@ public class StudentManagerScript : MonoBehaviour
 	public bool TeachersSpawned;
 
 	public bool DisableFarAnims;
+
+	public bool YandereDying;
 
 	public bool FirstUpdate;
 
@@ -580,10 +584,10 @@ public class StudentManagerScript : MonoBehaviour
 
 	public void SpawnStudent()
 	{
-		if (this.Students[this.SpawnID] == null && PlayerPrefs.GetInt("Student_" + this.SpawnID.ToString() + "_Dead") == 0 && PlayerPrefs.GetInt("Student_" + this.SpawnID.ToString() + "_Kidnapped") == 0 && PlayerPrefs.GetInt("Student_" + this.SpawnID.ToString() + "_Arrested") == 0 && PlayerPrefs.GetInt("Student_" + this.SpawnID.ToString() + "_Expelled") == 0 && !this.JSON.StudentNames[this.SpawnID].Equals("Unknown") && !this.JSON.StudentNames[this.SpawnID].Equals("Reserved") && PlayerPrefs.GetInt("Student_" + this.SpawnID.ToString() + "_Reputation") > -100)
+		if (this.Students[this.SpawnID] == null && PlayerPrefs.GetInt("Student_" + this.SpawnID.ToString() + "_Dead") == 0 && PlayerPrefs.GetInt("Student_" + this.SpawnID.ToString() + "_Kidnapped") == 0 && PlayerPrefs.GetInt("Student_" + this.SpawnID.ToString() + "_Arrested") == 0 && PlayerPrefs.GetInt("Student_" + this.SpawnID.ToString() + "_Expelled") == 0 && this.JSON.StudentNames[this.SpawnID] != "Unknown" && this.JSON.StudentNames[this.SpawnID] != "Reserved" && PlayerPrefs.GetInt("Student_" + this.SpawnID.ToString() + "_Reputation") > -100)
 		{
 			int num;
-			if (this.JSON.StudentNames[this.SpawnID].Equals("Random"))
+			if (this.JSON.StudentNames[this.SpawnID] == "Random")
 			{
 				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.EmptyObject, new Vector3(UnityEngine.Random.Range(-17f, 17f), 0f, UnityEngine.Random.Range(-17f, 17f)), Quaternion.identity);
 				gameObject.transform.parent = this.HidingSpots.transform;
@@ -830,7 +834,7 @@ public class StudentManagerScript : MonoBehaviour
 					studentScript.Phone.SetActive(false);
 					studentScript.Distracted = false;
 					studentScript.OnPhone = false;
-					studentScript.Routine = false;
+					studentScript.Routine = true;
 					studentScript.Safe = false;
 					if (studentScript.Wet)
 					{
@@ -892,6 +896,10 @@ public class StudentManagerScript : MonoBehaviour
 			{
 				if (!studentScript.Dying)
 				{
+					if (this.YandereDying)
+					{
+						studentScript.IdleAnim = studentScript.ScaredAnim;
+					}
 					if (this.Yandere.Attacking)
 					{
 						if (studentScript.MurderReaction == 0)

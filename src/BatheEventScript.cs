@@ -177,6 +177,7 @@ public class BatheEventScript : MonoBehaviour
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
 		audioSource.minDistance = 5f;
 		audioSource.maxDistance = 10f;
+		audioSource.spatialBlend = 1f;
 		this.VoiceClip = gameObject;
 	}
 

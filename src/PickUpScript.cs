@@ -93,6 +93,15 @@ public class PickUpScript : MonoBehaviour
 		{
 			if (this.Weight)
 			{
+				if (this.Yandere.PickUp != null)
+				{
+					this.Yandere.CharacterAnimation[this.Yandere.CarryAnims[this.Yandere.PickUp.CarryAnimID]].weight = 0f;
+				}
+				if (this.Yandere.Armed)
+				{
+					this.Yandere.CharacterAnimation[this.Yandere.ArmedAnims[this.Yandere.Weapon[this.Yandere.Equipped].AnimID]].weight = 0f;
+				}
+				this.Yandere.EmptyHands();
 				base.transform.parent = this.Yandere.transform;
 				base.transform.localPosition = new Vector3(0f, 0f, 0.75f);
 				base.transform.localEulerAngles = new Vector3(0f, 90f, 0f);
@@ -225,6 +234,12 @@ public class PickUpScript : MonoBehaviour
 
 	public void Drop()
 	{
+		if (this.Weight)
+		{
+			this.Yandere.IdleAnim = this.Yandere.OriginalIdleAnim;
+			this.Yandere.WalkAnim = this.Yandere.OriginalWalkAnim;
+			this.Yandere.RunAnim = this.Yandere.OriginalRunAnim;
+		}
 		if (this.BloodCleaner != null)
 		{
 			this.BloodCleaner.enabled = true;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -34,12 +35,69 @@ public class StatsScript : MonoBehaviour
 
 	public UITexture Portrait;
 
+	private Dictionary<int, string> ClubLabels;
+
+	private void Awake()
+	{
+		this.ClubLabels = new Dictionary<int, string>
+		{
+			{
+				0,
+				"None"
+			},
+			{
+				1,
+				"Cooking"
+			},
+			{
+				2,
+				"Drama"
+			},
+			{
+				3,
+				"Occult"
+			},
+			{
+				4,
+				"Art"
+			},
+			{
+				5,
+				"Light Music"
+			},
+			{
+				6,
+				"Martial Arts"
+			},
+			{
+				7,
+				"Photography"
+			},
+			{
+				8,
+				"Science"
+			},
+			{
+				9,
+				"Sports"
+			},
+			{
+				10,
+				"Gardening"
+			},
+			{
+				11,
+				"Gaming"
+			}
+		};
+	}
+
 	private void Start()
 	{
 		if (File.Exists(Application.streamingAssetsPath + "/CustomPortraits.txt"))
 		{
-			string text = File.ReadAllText(Application.streamingAssetsPath + "/CustomPortraits.txt");
-			if (text.Equals("1"))
+			string a = File.ReadAllText(Application.streamingAssetsPath + "/CustomPortraits.txt");
+			if (a == "1")
 			{
 				string url = "file:///" + Application.streamingAssetsPath + "/CustomPortrait.png";
 				WWW www = new WWW(url);
@@ -247,53 +305,8 @@ public class StatsScript : MonoBehaviour
 		this.Ranks[7].text = "Rank: " + PlayerPrefs.GetInt("Numbness").ToString();
 		this.Ranks[8].text = "Rank: " + PlayerPrefs.GetInt("Enlightenment").ToString();
 		int @int = PlayerPrefs.GetInt("Club");
-		if (@int == 0)
-		{
-			this.ClubLabel.text = "Club: None";
-		}
-		else if (@int == 1)
-		{
-			this.ClubLabel.text = "Club: Cooking";
-		}
-		else if (@int == 2)
-		{
-			this.ClubLabel.text = "Club: Drama";
-		}
-		else if (@int == 3)
-		{
-			this.ClubLabel.text = "Club: Occult";
-		}
-		else if (@int == 4)
-		{
-			this.ClubLabel.text = "Club: Art";
-		}
-		else if (@int == 5)
-		{
-			this.ClubLabel.text = "Club: Light Music";
-		}
-		else if (@int == 6)
-		{
-			this.ClubLabel.text = "Club: Martial Arts";
-		}
-		else if (@int == 7)
-		{
-			this.ClubLabel.text = "Club: Photography";
-		}
-		else if (@int == 8)
-		{
-			this.ClubLabel.text = "Club: Science";
-		}
-		else if (@int == 9)
-		{
-			this.ClubLabel.text = "Club: Sports";
-		}
-		else if (@int == 10)
-		{
-			this.ClubLabel.text = "Club: Gardening";
-		}
-		else if (@int == 11)
-		{
-			this.ClubLabel.text = "Club: Gaming";
-		}
+		string str;
+		bool flag = this.ClubLabels.TryGetValue(@int, out str);
+		this.ClubLabel.text = "Club: " + str;
 	}
 }

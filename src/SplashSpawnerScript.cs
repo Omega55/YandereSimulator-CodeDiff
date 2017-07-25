@@ -40,7 +40,7 @@ public class SplashSpawnerScript : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.gameObject.name.Equals("BloodPool(Clone)"))
+		if (other.gameObject.name == "BloodPool(Clone)")
 		{
 			this.Bloody = true;
 		}

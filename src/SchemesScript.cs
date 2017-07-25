@@ -90,7 +90,7 @@ public class SchemesScript : MonoBehaviour
 		if (Input.GetButtonDown("A"))
 		{
 			AudioSource component = base.GetComponent<AudioSource>();
-			if (!this.PromptBar.Label[0].text.Equals(string.Empty))
+			if (this.PromptBar.Label[0].text != string.Empty)
 			{
 				if (PlayerPrefs.GetInt("Scheme_" + this.ID.ToString() + "_Unlocked") == 0)
 				{

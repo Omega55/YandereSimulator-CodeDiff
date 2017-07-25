@@ -135,7 +135,7 @@ public class RagdollScript : MonoBehaviour
 
 	public int StudentID;
 
-	public int DumpType;
+	public RagdollDumpType DumpType;
 
 	public int LimbID;
 
@@ -214,7 +214,7 @@ public class RagdollScript : MonoBehaviour
 			}
 			if (!Input.GetButtonDown("LB"))
 			{
-				if (!this.Cauterized)
+				if (this.BloodPoolSpawner.gameObject.active && !this.Cauterized)
 				{
 					if (this.Yandere.PickUp != null)
 					{
@@ -344,7 +344,7 @@ public class RagdollScript : MonoBehaviour
 					this.FallTimer = 0f;
 				}
 			}
-			else if (!this.Yandere.Dumping && this.Dragged)
+			else if (this.Yandere.CanMove && this.Dragged)
 			{
 				this.StopDragging();
 			}
@@ -370,13 +370,13 @@ public class RagdollScript : MonoBehaviour
 			{
 				flag = true;
 			}
-			if (!this.Cauterized && this.Yandere.PickUp != null && this.Yandere.PickUp.Blowtorch)
+			if (!this.Cauterized && this.Yandere.PickUp != null && this.Yandere.PickUp.Blowtorch && this.BloodPoolSpawner.gameObject.active)
 			{
 				flag = true;
 			}
 			this.Prompt.HideButton[0] = (this.Dragged || this.Carried || this.Tranquil || !flag || this.Nemesis);
 		}
-		else if (this.DumpType == 1)
+		else if (this.DumpType == RagdollDumpType.Incinerator)
 		{
 			if (this.DumpTimer == 0f && this.Yandere.Carrying)
 			{
@@ -391,7 +391,7 @@ public class RagdollScript : MonoBehaviour
 				this.Remove();
 			}
 		}
-		else if (this.DumpType == 2)
+		else if (this.DumpType == RagdollDumpType.TranqCase)
 		{
 			if (this.DumpTimer == 0f && this.Yandere.Carrying)
 			{
@@ -408,7 +408,7 @@ public class RagdollScript : MonoBehaviour
 				}
 			}
 		}
-		else if (this.DumpType == 3)
+		else if (this.DumpType == RagdollDumpType.WoodChipper)
 		{
 			if (this.DumpTimer == 0f && this.Yandere.Carrying)
 			{
@@ -554,18 +554,18 @@ public class RagdollScript : MonoBehaviour
 
 	public void Dump()
 	{
-		if (this.DumpType == 1)
+		if (this.DumpType == RagdollDumpType.Incinerator)
 		{
 			base.transform.eulerAngles = this.Yandere.transform.eulerAngles;
 			base.transform.position = this.Yandere.transform.position;
 			this.Incinerator = this.Yandere.Incinerator;
 			this.BloodPoolSpawner.enabled = false;
 		}
-		else if (this.DumpType == 2)
+		else if (this.DumpType == RagdollDumpType.TranqCase)
 		{
 			this.TranqCase = this.Yandere.TranqCase;
 		}
-		else if (this.DumpType == 3)
+		else if (this.DumpType == RagdollDumpType.WoodChipper)
 		{
 			this.WoodChipper = this.Yandere.WoodChipper;
 		}

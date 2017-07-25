@@ -11,29 +11,16 @@ public class PromptSwapScript : MonoBehaviour
 
 	public string GamepadName = string.Empty;
 
-	private int LastType = 1;
-
-	private void Start()
+	private void Awake()
 	{
 		if (this.InputDevice == null)
 		{
-			this.InputDevice = base.transform.parent.gameObject.GetComponent<InputDeviceScript>();
+			this.InputDevice = UnityEngine.Object.FindObjectOfType<InputDeviceScript>();
 		}
 	}
 
-	private void Update()
+	public void UpdateSpriteType(InputDeviceType deviceType)
 	{
-		if (this.InputDevice != null)
-		{
-			if (this.InputDevice.Type != this.LastType)
-			{
-				this.MySprite.spriteName = ((this.InputDevice.Type != 1) ? this.KeyboardName : this.GamepadName);
-			}
-			this.LastType = this.InputDevice.Type;
-		}
-		else
-		{
-			Debug.Log("My name is " + base.gameObject.name);
-		}
+		this.MySprite.spriteName = ((deviceType != InputDeviceType.Gamepad) ? this.KeyboardName : this.GamepadName);
 	}
 }

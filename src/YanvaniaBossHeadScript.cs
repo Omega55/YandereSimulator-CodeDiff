@@ -16,7 +16,7 @@ public class YanvaniaBossHeadScript : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (this.Timer <= 0f && this.Dracula.NewTeleportEffect == null && other.gameObject.name.Equals("Heart"))
+		if (this.Timer <= 0f && this.Dracula.NewTeleportEffect == null && other.gameObject.name == "Heart")
 		{
 			UnityEngine.Object.Instantiate<GameObject>(this.HitEffect, base.transform.position, Quaternion.identity);
 			this.Timer = 1f;

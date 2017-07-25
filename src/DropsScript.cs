@@ -80,7 +80,7 @@ public class DropsScript : MonoBehaviour
 			AudioSource component = base.GetComponent<AudioSource>();
 			if (!this.Purchased[this.Selected])
 			{
-				if (!this.PromptBar.Label[0].text.Equals(string.Empty))
+				if (this.PromptBar.Label[0].text != string.Empty)
 				{
 					if (PlayerPrefs.GetInt("PantyShots") >= this.DropCosts[this.Selected])
 					{

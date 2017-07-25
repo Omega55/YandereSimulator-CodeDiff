@@ -469,7 +469,7 @@ public class HomeInternetScript : MonoBehaviour
 
 	private void CheckForCompletion()
 	{
-		if (!this.PostLabels[1].text.Equals(string.Empty) && !this.PostLabels[2].text.Equals(string.Empty) && !this.PostLabels[3].text.Equals(string.Empty))
+		if (this.PostLabels[1].text != string.Empty && this.PostLabels[2].text != string.Empty && this.PostLabels[3].text != string.Empty)
 		{
 			this.PostLabel.SetActive(true);
 			this.PostIcon.SetActive(true);

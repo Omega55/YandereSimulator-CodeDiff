@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CrushCrushScript : MonoBehaviour
 {
-	public Renderer MyRenderer;
+	public SkinnedMeshRenderer MyRenderer;
 
 	public Mesh[] Meshes;
 
@@ -11,5 +11,14 @@ public class CrushCrushScript : MonoBehaviour
 
 	private void Update()
 	{
+		if (Input.GetKeyDown("space"))
+		{
+			this.ID++;
+			if (this.ID == this.Meshes.Length)
+			{
+				this.ID = 1;
+			}
+			this.MyRenderer.sharedMesh = this.Meshes[this.ID];
+		}
 	}
 }

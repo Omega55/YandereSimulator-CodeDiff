@@ -18,7 +18,7 @@ public class HomeCursorScript : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (!other.gameObject.name.Equals("SouthWall"))
+		if (other.gameObject.name != "SouthWall")
 		{
 			this.Photograph = other.gameObject;
 			this.Highlight.localEulerAngles = this.Photograph.transform.localEulerAngles;

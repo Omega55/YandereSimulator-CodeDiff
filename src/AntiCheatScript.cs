@@ -18,7 +18,7 @@ public class AntiCheatScript : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.gameObject.name.Equals("YandereChan"))
+		if (other.gameObject.name == "YandereChan")
 		{
 			this.Jukebox.SetActive(false);
 			this.Check = true;

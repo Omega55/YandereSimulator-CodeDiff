@@ -11,7 +11,7 @@ public class SewingMachineScript : MonoBehaviour
 
 	public Quaternion targetRotation;
 
-	public GameObject Uniform;
+	public PickUpScript Uniform;
 
 	public Collider Chair;
 
@@ -55,15 +55,19 @@ public class SewingMachineScript : MonoBehaviour
 			this.Chair.enabled = false;
 			this.Sewing = true;
 			base.GetComponent<AudioSource>().Play();
-			this.Uniform = this.Yandere.PickUp.gameObject;
+			this.Uniform = this.Yandere.PickUp;
 			this.Yandere.EmptyHands();
+			this.Uniform.transform.parent = this.Yandere.RightHand;
+			this.Uniform.transform.localPosition = new Vector3(0f, 0f, 0.09f);
+			this.Uniform.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+			this.Uniform.MyRigidbody.useGravity = false;
+			this.Uniform.MyCollider.enabled = false;
 		}
 		if (this.Sewing)
 		{
 			this.Timer += Time.deltaTime;
 			if (this.Timer < 5f)
 			{
-				this.Uniform.transform.position = this.Yandere.RightHand.position;
 				this.targetRotation = Quaternion.LookRotation(base.transform.parent.transform.parent.position - this.Yandere.transform.position);
 				this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
 				this.Yandere.MoveTowardsTarget(this.Chair.transform.position);
@@ -74,7 +78,7 @@ public class SewingMachineScript : MonoBehaviour
 				this.Yandere.Inventory.ModifiedUniform = true;
 				this.StudentManager.Students[7].TaskPhase = 5;
 				PlayerPrefs.SetInt("Task_7_Status", 2);
-				UnityEngine.Object.Destroy(this.Uniform);
+				UnityEngine.Object.Destroy(this.Uniform.gameObject);
 				this.MoveAway = true;
 			}
 			else

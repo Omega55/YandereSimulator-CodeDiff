@@ -31,6 +31,8 @@ public class StandScript : MonoBehaviour
 
 	public AudioClip SummonSFX;
 
+	public bool ReadyForFinisher;
+
 	public bool SFX;
 
 	private void Update()
@@ -93,29 +95,34 @@ public class StandScript : MonoBehaviour
 					}
 					this.Stand.GetComponent<Animation>().CrossFade("StandAttack");
 					this.StandPunch.MyCollider.enabled = true;
+					this.ReadyForFinisher = true;
 				}
-				else if (this.Phase == 1)
+				else if (this.ReadyForFinisher)
 				{
-					base.GetComponent<AudioSource>().Play();
-					this.Finisher = UnityEngine.Random.Range(1, 3);
-					this.Stand.GetComponent<Animation>().CrossFade("StandFinisher" + this.Finisher.ToString());
-					this.Phase++;
-				}
-				else if (this.Phase == 2)
-				{
-					if (this.Stand.GetComponent<Animation>()["StandFinisher" + this.Finisher.ToString()].time >= 0.5f)
+					if (this.Phase == 1)
 					{
-						this.FalconPunch.MyCollider.enabled = true;
-						this.StandPunch.MyCollider.enabled = false;
+						base.GetComponent<AudioSource>().Play();
+						this.Finisher = UnityEngine.Random.Range(1, 3);
+						this.Stand.GetComponent<Animation>().CrossFade("StandFinisher" + this.Finisher.ToString());
 						this.Phase++;
 					}
-				}
-				else if (this.Phase == 3 && (this.StandPunch.MyCollider.enabled || this.Stand.GetComponent<Animation>()["StandFinisher" + this.Finisher.ToString()].time >= this.Stand.GetComponent<Animation>()["StandFinisher" + this.Finisher.ToString()].length))
-				{
-					this.Stand.GetComponent<Animation>().CrossFade("StandIdle");
-					this.FalconPunch.MyCollider.enabled = false;
-					this.Yandere.CanMove = true;
-					this.Phase = 1;
+					else if (this.Phase == 2)
+					{
+						if (this.Stand.GetComponent<Animation>()["StandFinisher" + this.Finisher.ToString()].time >= 0.5f)
+						{
+							this.FalconPunch.MyCollider.enabled = true;
+							this.StandPunch.MyCollider.enabled = false;
+							this.Phase++;
+						}
+					}
+					else if (this.Phase == 3 && (this.StandPunch.MyCollider.enabled || this.Stand.GetComponent<Animation>()["StandFinisher" + this.Finisher.ToString()].time >= this.Stand.GetComponent<Animation>()["StandFinisher" + this.Finisher.ToString()].length))
+					{
+						this.Stand.GetComponent<Animation>().CrossFade("StandIdle");
+						this.FalconPunch.MyCollider.enabled = false;
+						this.ReadyForFinisher = false;
+						this.Yandere.CanMove = true;
+						this.Phase = 1;
+					}
 				}
 			}
 		}

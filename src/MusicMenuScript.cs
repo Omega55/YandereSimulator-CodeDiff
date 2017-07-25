@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class MusicMenuScript : MonoBehaviour
@@ -19,7 +20,7 @@ public class MusicMenuScript : MonoBehaviour
 
 	public string path = string.Empty;
 
-	public AudioClip[] CustomMusic;
+	public AudioClip CustomMusic;
 
 	private void Update()
 	{
@@ -35,7 +36,7 @@ public class MusicMenuScript : MonoBehaviour
 		}
 		if (Input.GetButtonDown("A"))
 		{
-			this.PlayMusic();
+			base.StartCoroutine(this.DownloadCoroutine());
 		}
 		if (Input.GetButtonDown("B"))
 		{
@@ -51,10 +52,21 @@ public class MusicMenuScript : MonoBehaviour
 		}
 	}
 
-	private void PlayMusic()
+	private IEnumerator DownloadCoroutine()
 	{
-		this.Jukebox.Custom.clip = this.CustomMusic[this.Selected];
+		WWW CurrentDownload = new WWW(string.Concat(new object[]
+		{
+			"File:///",
+			Application.streamingAssetsPath,
+			"/Music/track",
+			this.Selected,
+			".ogg"
+		}));
+		yield return CurrentDownload;
+		this.CustomMusic = CurrentDownload.GetAudioClipCompressed();
+		this.Jukebox.Custom.clip = this.CustomMusic;
 		this.Jukebox.PlayCustom();
+		yield break;
 	}
 
 	private void UpdateHighlight()

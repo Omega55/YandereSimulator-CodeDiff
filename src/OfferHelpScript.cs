@@ -111,12 +111,12 @@ public class OfferHelpScript : MonoBehaviour
 					{
 						if (PlayerPrefs.GetInt("Topic_23_Discovered") == 0)
 						{
-							this.Yandere.NotificationManager.DisplayNotification("Topic");
+							this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 							PlayerPrefs.SetInt("Topic_23_Discovered", 1);
 						}
 						if (PlayerPrefs.GetInt("Topic_23_Student_7_Learned") == 0)
 						{
-							this.Yandere.NotificationManager.DisplayNotification("Opinion");
+							this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
 							PlayerPrefs.SetInt("Topic_23_Student_7_Learned", 1);
 						}
 					}

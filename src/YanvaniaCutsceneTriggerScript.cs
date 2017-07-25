@@ -9,7 +9,7 @@ public class YanvaniaCutsceneTriggerScript : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.gameObject.name.Equals("YanmontChan"))
+		if (other.gameObject.name == "YanmontChan")
 		{
 			this.BossBattleWall.SetActive(true);
 			this.Yanmont.EnterCutscene = true;

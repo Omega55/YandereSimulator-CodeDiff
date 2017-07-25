@@ -85,7 +85,7 @@ public class BucketPourScript : MonoBehaviour
 		}
 		if (this.Yandere.Pouring)
 		{
-			if (this.PourHeight.Equals("Low") && Input.GetButtonDown("B"))
+			if (this.PourHeight == "Low" && Input.GetButtonDown("B"))
 			{
 				this.SplashCamera.Show = true;
 				this.SplashCamera.MyCamera.enabled = true;

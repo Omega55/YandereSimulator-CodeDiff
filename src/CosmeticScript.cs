@@ -236,7 +236,7 @@ public class CosmeticScript : MonoBehaviour
 			this.OriginalStockings = this.Stockings;
 			this.Initialized = true;
 		}
-		if (text.Equals("Random"))
+		if (text == "Random")
 		{
 			this.Randomize = true;
 			if (!this.Male)
@@ -282,7 +282,7 @@ public class CosmeticScript : MonoBehaviour
 		{
 			this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 			this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
-			if (this.StudentID == 32 && !this.Kidnapped && SceneManager.GetActiveScene().name.Equals("PortraitScene"))
+			if (this.StudentID == 32 && !this.Kidnapped && SceneManager.GetActiveScene().name == "PortraitScene")
 			{
 				this.Character.GetComponent<Animation>().Play("f02_socialCameraPose_00");
 			}
@@ -505,45 +505,45 @@ public class CosmeticScript : MonoBehaviour
 		}
 		if (!this.Randomize)
 		{
-			if (!this.EyeColor.Equals(string.Empty))
+			if (this.EyeColor != string.Empty)
 			{
-				if (this.EyeColor.Equals("White"))
+				if (this.EyeColor == "White")
 				{
 					this.CorrectColor = new Color(1f, 1f, 1f);
 				}
-				else if (this.EyeColor.Equals("Black"))
+				else if (this.EyeColor == "Black")
 				{
 					this.CorrectColor = new Color(0.5f, 0.5f, 0.5f);
 				}
-				else if (this.EyeColor.Equals("Red"))
+				else if (this.EyeColor == "Red")
 				{
 					this.CorrectColor = new Color(1f, 0f, 0f);
 				}
-				else if (this.EyeColor.Equals("Yellow"))
+				else if (this.EyeColor == "Yellow")
 				{
 					this.CorrectColor = new Color(1f, 1f, 0f);
 				}
-				else if (this.EyeColor.Equals("Green"))
+				else if (this.EyeColor == "Green")
 				{
 					this.CorrectColor = new Color(0f, 1f, 0f);
 				}
-				else if (this.EyeColor.Equals("Cyan"))
+				else if (this.EyeColor == "Cyan")
 				{
 					this.CorrectColor = new Color(0f, 1f, 1f);
 				}
-				else if (this.EyeColor.Equals("Blue"))
+				else if (this.EyeColor == "Blue")
 				{
 					this.CorrectColor = new Color(0f, 0f, 1f);
 				}
-				else if (this.EyeColor.Equals("Purple"))
+				else if (this.EyeColor == "Purple")
 				{
 					this.CorrectColor = new Color(1f, 0f, 1f);
 				}
-				else if (this.EyeColor.Equals("Orange"))
+				else if (this.EyeColor == "Orange")
 				{
 					this.CorrectColor = new Color(1f, 0.5f, 0f);
 				}
-				else if (this.EyeColor.Equals("Brown"))
+				else if (this.EyeColor == "Brown")
 				{
 					this.CorrectColor = new Color(0.5f, 0.25f, 0f);
 				}
@@ -568,43 +568,43 @@ public class CosmeticScript : MonoBehaviour
 		}
 		if (!this.Randomize)
 		{
-			if (this.HairColor.Equals("White"))
+			if (this.HairColor == "White")
 			{
 				this.ColorValue = new Color(1f, 1f, 1f);
 			}
-			else if (this.HairColor.Equals("Black"))
+			else if (this.HairColor == "Black")
 			{
 				this.ColorValue = new Color(0.5f, 0.5f, 0.5f);
 			}
-			else if (this.HairColor.Equals("Red"))
+			else if (this.HairColor == "Red")
 			{
 				this.ColorValue = new Color(1f, 0f, 0f);
 			}
-			else if (this.HairColor.Equals("Yellow"))
+			else if (this.HairColor == "Yellow")
 			{
 				this.ColorValue = new Color(1f, 1f, 0f);
 			}
-			else if (this.HairColor.Equals("Green"))
+			else if (this.HairColor == "Green")
 			{
 				this.ColorValue = new Color(0f, 1f, 0f);
 			}
-			else if (this.HairColor.Equals("Cyan"))
+			else if (this.HairColor == "Cyan")
 			{
 				this.ColorValue = new Color(0f, 1f, 1f);
 			}
-			else if (this.HairColor.Equals("Blue"))
+			else if (this.HairColor == "Blue")
 			{
 				this.ColorValue = new Color(0f, 0f, 1f);
 			}
-			else if (this.HairColor.Equals("Purple"))
+			else if (this.HairColor == "Purple")
 			{
 				this.ColorValue = new Color(1f, 0f, 1f);
 			}
-			else if (this.HairColor.Equals("Orange"))
+			else if (this.HairColor == "Orange")
 			{
 				this.ColorValue = new Color(1f, 0.5f, 0f);
 			}
-			else if (this.HairColor.Equals("Brown"))
+			else if (this.HairColor == "Brown")
 			{
 				this.ColorValue = new Color(0.5f, 0.25f, 0f);
 			}
@@ -659,7 +659,12 @@ public class CosmeticScript : MonoBehaviour
 			float @float = PlayerPrefs.GetFloat("Student_" + this.StudentID.ToString() + "_ColorR");
 			float float2 = PlayerPrefs.GetFloat("Student_" + this.StudentID.ToString() + "_ColorG");
 			float float3 = PlayerPrefs.GetFloat("Student_" + this.StudentID.ToString() + "_ColorB");
+			float float4 = PlayerPrefs.GetFloat("Student_" + this.StudentID.ToString() + "_EyeColorR");
+			float float5 = PlayerPrefs.GetFloat("Student_" + this.StudentID.ToString() + "_EyeColorG");
+			float float6 = PlayerPrefs.GetFloat("Student_" + this.StudentID.ToString() + "_EyeColorB");
 			this.HairRenderer.material.color = new Color(@float, float2, float3);
+			this.RightEyeRenderer.material.color = new Color(float4, float5, float6);
+			this.LeftEyeRenderer.material.color = new Color(float4, float5, float6);
 		}
 		if (this.Male)
 		{
@@ -668,7 +673,7 @@ public class CosmeticScript : MonoBehaviour
 				this.RightIrisLight.SetActive(false);
 				this.LeftIrisLight.SetActive(false);
 			}
-			if (SceneManager.GetActiveScene().name.Equals("PortraitScene"))
+			if (SceneManager.GetActiveScene().name == "PortraitScene")
 			{
 				this.Character.transform.localScale = new Vector3(0.93f, 0.93f, 0.93f);
 			}
@@ -871,7 +876,7 @@ public class CosmeticScript : MonoBehaviour
 	{
 		if (!this.TakingPortrait && this.Male)
 		{
-			if (this.HairColor.Equals("Purple"))
+			if (this.HairColor == "Purple")
 			{
 				this.LoveManager.Targets[this.LoveManager.TotalTargets] = this.Student.Head;
 				this.LoveManager.TotalTargets++;
@@ -974,47 +979,47 @@ public class CosmeticScript : MonoBehaviour
 	{
 		this.RightStockings[0].SetActive(false);
 		this.LeftStockings[0].SetActive(false);
-		if (this.Stockings.Equals(string.Empty))
+		if (this.Stockings == string.Empty)
 		{
 			this.MyStockings = null;
 		}
-		else if (this.Stockings.Equals("Red"))
+		else if (this.Stockings == "Red")
 		{
 			this.MyStockings = this.RedStockings;
 		}
-		else if (this.Stockings.Equals("Yellow"))
+		else if (this.Stockings == "Yellow")
 		{
 			this.MyStockings = this.YellowStockings;
 		}
-		else if (this.Stockings.Equals("Green"))
+		else if (this.Stockings == "Green")
 		{
 			this.MyStockings = this.GreenStockings;
 		}
-		else if (this.Stockings.Equals("Cyan"))
+		else if (this.Stockings == "Cyan")
 		{
 			this.MyStockings = this.CyanStockings;
 		}
-		else if (this.Stockings.Equals("Blue"))
+		else if (this.Stockings == "Blue")
 		{
 			this.MyStockings = this.BlueStockings;
 		}
-		else if (this.Stockings.Equals("Purple"))
+		else if (this.Stockings == "Purple")
 		{
 			this.MyStockings = this.PurpleStockings;
 		}
-		else if (this.Stockings.Equals("Black"))
+		else if (this.Stockings == "Black")
 		{
 			this.MyStockings = this.BlackStockings;
 		}
-		else if (this.Stockings.Equals("Osana"))
+		else if (this.Stockings == "Osana")
 		{
 			this.MyStockings = this.OsanaStockings;
 		}
-		else if (this.Stockings.Equals("Kizana"))
+		else if (this.Stockings == "Kizana")
 		{
 			this.MyStockings = this.KizanaStockings;
 		}
-		else if (this.Stockings.Equals("Custom"))
+		else if (this.Stockings == "Custom")
 		{
 			WWW NewCustomStockings = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings.png");
 			yield return NewCustomStockings;
@@ -1024,7 +1029,7 @@ public class CosmeticScript : MonoBehaviour
 			}
 			this.MyStockings = this.CustomStockings;
 		}
-		else if (this.Stockings.Equals("Loose"))
+		else if (this.Stockings == "Loose")
 		{
 			this.MyStockings = null;
 			this.RightStockings[0].SetActive(true);

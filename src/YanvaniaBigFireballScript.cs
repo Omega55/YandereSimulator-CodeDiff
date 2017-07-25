@@ -7,7 +7,7 @@ public class YanvaniaBigFireballScript : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.gameObject.name.Equals("YanmontChan"))
+		if (other.gameObject.name == "YanmontChan")
 		{
 			other.gameObject.GetComponent<YanvaniaYanmontScript>().TakeDamage(15);
 			UnityEngine.Object.Instantiate<GameObject>(this.Explosion, base.transform.position, Quaternion.identity);

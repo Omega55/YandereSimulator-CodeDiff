@@ -37,6 +37,8 @@ public class HeartbrokenScript : MonoBehaviour
 
 	public bool Arrested;
 
+	public bool Exposed;
+
 	public bool Noticed = true;
 
 	public float AudioTimer;
@@ -136,6 +138,26 @@ public class HeartbrokenScript : MonoBehaviour
 			this.LetterID = 1;
 			this.StopID = 9;
 		}
+		else if (this.Exposed)
+		{
+			this.Letters[0].text = string.Empty;
+			this.Letters[1].text = string.Empty;
+			this.Letters[2].text = "E";
+			this.Letters[3].text = "X";
+			this.Letters[4].text = "P";
+			this.Letters[5].text = "O";
+			this.Letters[6].text = "S";
+			this.Letters[7].text = "E";
+			this.Letters[8].text = "D";
+			this.Letters[9].text = string.Empty;
+			this.Letters[10].text = string.Empty;
+			foreach (UILabel uilabel4 in this.Letters)
+			{
+				uilabel4.transform.localPosition = new Vector3(uilabel4.transform.localPosition.x + 100f, uilabel4.transform.localPosition.y, uilabel4.transform.localPosition.z);
+			}
+			this.LetterID = 1;
+			this.StopID = 9;
+		}
 		else
 		{
 			this.LetterID = 0;
@@ -144,17 +166,17 @@ public class HeartbrokenScript : MonoBehaviour
 		this.ID = 0;
 		while (this.ID < this.Letters.Length)
 		{
-			UILabel uilabel4 = this.Letters[this.ID];
-			uilabel4.transform.localScale = new Vector3(10f, 10f, 1f);
-			uilabel4.color = new Color(uilabel4.color.r, uilabel4.color.g, uilabel4.color.b, 0f);
-			this.Origins[this.ID] = uilabel4.transform.localPosition;
+			UILabel uilabel5 = this.Letters[this.ID];
+			uilabel5.transform.localScale = new Vector3(10f, 10f, 1f);
+			uilabel5.color = new Color(uilabel5.color.r, uilabel5.color.g, uilabel5.color.b, 0f);
+			this.Origins[this.ID] = uilabel5.transform.localPosition;
 			this.ID++;
 		}
 		this.ID = 0;
 		while (this.ID < this.Options.Length)
 		{
-			UILabel uilabel5 = this.Options[this.ID];
-			uilabel5.color = new Color(uilabel5.color.r, uilabel5.color.g, uilabel5.color.b, 0f);
+			UILabel uilabel6 = this.Options[this.ID];
+			uilabel6.color = new Color(uilabel6.color.r, uilabel6.color.g, uilabel6.color.b, 0f);
 			this.ID++;
 		}
 		this.ID = 0;
@@ -265,27 +287,27 @@ public class HeartbrokenScript : MonoBehaviour
 			this.Subtitle.color = new Color(this.Subtitle.color.r, this.Subtitle.color.g, this.Subtitle.color.b, 1f);
 			string gameOverCause = component.GameOverCause;
 			int num = 0;
-			if (gameOverCause.Equals("Stalking"))
+			if (gameOverCause == "Stalking")
 			{
 				num = 4;
 			}
-			else if (gameOverCause.Equals("Insanity"))
+			else if (gameOverCause == "Insanity")
 			{
 				num = 3;
 			}
-			else if (gameOverCause.Equals("Weapon"))
+			else if (gameOverCause == "Weapon")
 			{
 				num = 2;
 			}
-			else if (gameOverCause.Equals("Murder"))
+			else if (gameOverCause == "Murder")
 			{
 				num = 5;
 			}
-			else if (gameOverCause.Equals("Blood"))
+			else if (gameOverCause == "Blood")
 			{
 				num = 1;
 			}
-			else if (gameOverCause.Equals("Lewd"))
+			else if (gameOverCause == "Lewd")
 			{
 				num = 6;
 			}

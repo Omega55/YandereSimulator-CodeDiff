@@ -44,7 +44,7 @@ public class PromptBarScript : MonoBehaviour
 		}
 		else
 		{
-			base.transform.localPosition = new Vector3(base.transform.localPosition.x, Mathf.Lerp(base.transform.localPosition.y, -527f, 0.166666672f), base.transform.localPosition.z);
+			base.transform.localPosition = new Vector3(base.transform.localPosition.x, Mathf.Lerp(base.transform.localPosition.y, -528.5f, 0.166666672f), base.transform.localPosition.z);
 		}
 	}
 

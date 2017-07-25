@@ -33,21 +33,60 @@ public class CounselorScript : MonoBehaviour
 
 	public AudioClip CounselorFarewellClip;
 
-	public string CounselorFarewellText;
+	public readonly string CounselorFarewellText = "Don't misbehave.";
 
 	public AudioClip CounselorBusyClip;
 
-	public string CounselorBusyText;
+	public readonly string CounselorBusyText = "I'm sorry, I've got my hands full for the rest of today. I won't be available until tomorrow.";
 
-	public string[] CounselorGreetingText;
+	public readonly string[] CounselorGreetingText = new string[]
+	{
+		string.Empty,
+		"What can I help you with?",
+		"Can I help you?"
+	};
 
-	public string[] CounselorLectureText;
+	public readonly string[] CounselorLectureText = new string[]
+	{
+		string.Empty,
+		"Your \"after-school activities\" are completely unacceptable. You should not be conducting yourself in such a manner. This kind of behavior could cause a scandal! You could run the school's reputation into the ground!",
+		"May I take a look inside your bag? ...this doesn't belong to you, does it?! What are you doing with someone else's property?",
+		"I need to take a look in your bag. ...cigarettes?! You have absolutely no excuse to be carrying something like this around!",
+		"May I see your phone for a moment? ...what is THIS?! Would you care to explain why something like this is on your phone?",
+		"Obviously, we need to have a long talk about the kind of behavior that will not tolerated at this school!",
+		"That's it! I've given you enough second chances. You have repeatedly broken school rules and ignored every warning that I have given you. You have left me with no choice but to permanently expel you!"
+	};
 
-	public string[] CounselorReportText;
+	public readonly string[] CounselorReportText = new string[]
+	{
+		string.Empty,
+		"This is...! Thank you for bringing this to my attention. This kind of conduct will definitely harm the school's reputation. I'll have to have a word with her later today.",
+		"Is that true? I'd hate to think we have a thief here at school. Don't worry - I'll get to the bottom of this.",
+		"That's a clear violation of school rules, not to mention completely illegal. If what you're saying is true, she will face serious consequences. I'll confront her about this.",
+		"That's a very serious accusation. I hope you're not lying to me. Hopefully, it's just a misunderstanding. I'll investigate the matter.",
+		"That's a bold claim. Are you certain? I'll investigate the matter. If she is cheating, I'll catch her in the act."
+	};
 
-	public string[] LectureIntro;
+	public readonly string[] LectureIntro = new string[]
+	{
+		string.Empty,
+		"The guidance counselor asks Kokona to visit her office after school ends...",
+		"The guidance counselor asks Kokona to visit her office after school ends...",
+		"The guidance counselor asks Kokona to visit her office after school ends...",
+		"The guidance counselor asks Kokona to visit her office after school ends...",
+		"The guidance counselor asks Kokona to visit her office after school ends..."
+	};
 
-	public string[] RivalText;
+	public readonly string[] RivalText = new string[]
+	{
+		string.Empty,
+		"It...it's not what you think...I was just...um...",
+		"No! I'm not the one who did this! I would never steal from anyone!",
+		"Huh? I don't smoke! I don't know why something like this was in my bag!",
+		"What?! I've never taken any pictures like that! How did this get on my phone?!",
+		"I'm telling the truth! I didn't steal the answer sheet! I don't know why it was in my desk!",
+		"No! Please! Don't do this!"
+	};
 
 	public UILabel[] Labels;
 

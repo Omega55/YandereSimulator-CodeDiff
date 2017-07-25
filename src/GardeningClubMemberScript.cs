@@ -9,6 +9,8 @@ public class GardeningClubMemberScript : MonoBehaviour
 
 	public CameraEffectsScript CameraEffects;
 
+	public CharacterController MyController;
+
 	public CabinetDoorScript CabinetDoor;
 
 	public ReputationScript Reputation;
@@ -34,6 +36,8 @@ public class GardeningClubMemberScript : MonoBehaviour
 	public GameObject Marker;
 
 	public GameObject Key;
+
+	public bool Moving;
 
 	public bool Leader;
 
@@ -89,7 +93,7 @@ public class GardeningClubMemberScript : MonoBehaviour
 					}
 				}
 				base.GetComponent<Animation>().CrossFade(this.WalkAnim);
-				this.Pathfinding.enabled = true;
+				this.Moving = true;
 				if (this.Leader)
 				{
 					this.Prompt.Hide();
@@ -98,16 +102,21 @@ public class GardeningClubMemberScript : MonoBehaviour
 				}
 				this.Phase++;
 			}
-			else if (this.Pathfinding.enabled)
+			else if (this.Moving)
 			{
+				if (Vector3.Distance(base.transform.position, this.Destination.position) >= 1f)
+				{
+					Quaternion b = Quaternion.LookRotation(this.Destination.transform.position - base.transform.position);
+					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, b, 1f * Time.deltaTime);
+					this.MyController.Move(base.transform.forward * Time.deltaTime);
+				}
 				if (Vector3.Distance(base.transform.position, this.Destination.position) < 1f)
 				{
 					base.GetComponent<Animation>().CrossFade(this.IdleAnim);
-					this.Pathfinding.enabled = false;
+					this.Moving = false;
 					if (this.Leader)
 					{
 						this.PickpocketPanel.enabled = true;
-						this.Prompt.enabled = true;
 					}
 				}
 			}
@@ -176,8 +185,8 @@ public class GardeningClubMemberScript : MonoBehaviour
 		}
 		else
 		{
-			Quaternion b = Quaternion.LookRotation(this.Yandere.transform.position - base.transform.position);
-			base.transform.rotation = Quaternion.Slerp(base.transform.rotation, b, 10f * Time.deltaTime);
+			Quaternion b2 = Quaternion.LookRotation(this.Yandere.transform.position - base.transform.position);
+			base.transform.rotation = Quaternion.Slerp(base.transform.rotation, b2, 10f * Time.deltaTime);
 			this.Timer += Time.deltaTime;
 			if (this.Timer > 10f)
 			{
@@ -189,6 +198,17 @@ public class GardeningClubMemberScript : MonoBehaviour
 			{
 				this.Subtitle.UpdateLabel("Pickpocket Reaction", 0, 8f);
 				this.Phase++;
+			}
+		}
+		if (this.Leader && this.PickpocketPanel.enabled)
+		{
+			if (this.Yandere.PickUp == null)
+			{
+				this.Prompt.enabled = true;
+			}
+			else
+			{
+				this.Prompt.enabled = false;
 			}
 		}
 	}

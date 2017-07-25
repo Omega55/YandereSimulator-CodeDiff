@@ -176,14 +176,14 @@ public class ShutterScript : MonoBehaviour
 			{
 				if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyPhotography))
 				{
-					if (this.hit.collider.gameObject.name.Equals("Face"))
+					if (this.hit.collider.gameObject.name == "Face")
 					{
 						GameObject gameObject = this.hit.collider.gameObject.transform.root.gameObject;
 						this.FaceStudent = gameObject.GetComponent<StudentScript>();
 						if (this.FaceStudent != null)
 						{
 							this.TargetStudent = this.FaceStudent.StudentID;
-							if (!this.FaceStudent.Male && !this.FaceStudent.Alarmed && !this.FaceStudent.Distracted && !this.FaceStudent.InEvent && !this.FaceStudent.Wet && !this.FaceStudent.CensorSteam[0].activeInHierarchy && !this.FaceStudent.Fleeing && !this.FaceStudent.Following && !this.FaceStudent.ShoeRemoval.enabled && !this.FaceStudent.HoldingHands && this.FaceStudent.Actions[this.FaceStudent.Phase] != 16 && Vector3.Distance(this.Yandere.transform.position, gameObject.transform.position) < 1.66666f)
+							if (!this.FaceStudent.Male && !this.FaceStudent.Alarmed && !this.FaceStudent.Distracted && !this.FaceStudent.InEvent && !this.FaceStudent.Wet && !this.FaceStudent.CensorSteam[0].activeInHierarchy && !this.FaceStudent.Fleeing && !this.FaceStudent.Following && !this.FaceStudent.ShoeRemoval.enabled && !this.FaceStudent.HoldingHands && this.FaceStudent.Actions[this.FaceStudent.Phase] != StudentActionType.Mourn && !this.FaceStudent.Guarding && Vector3.Distance(this.Yandere.transform.position, gameObject.transform.position) < 1.66666f)
 							{
 								Plane[] planes = GeometryUtility.CalculateFrustumPlanes(this.FaceStudent.VisionCone);
 								if (GeometryUtility.TestPlanesAABB(planes, this.Yandere.GetComponent<Collider>().bounds) && Physics.Linecast(this.FaceStudent.Eyes.position, this.Yandere.transform.position + Vector3.up, out this.hit) && this.hit.collider.gameObject == this.Yandere.gameObject)
@@ -212,7 +212,7 @@ public class ShutterScript : MonoBehaviour
 							}
 						}
 					}
-					else if (this.hit.collider.gameObject.name.Equals("Panties") || this.hit.collider.gameObject.name.Equals("Skirt"))
+					else if (this.hit.collider.gameObject.name == "Panties" || this.hit.collider.gameObject.name == "Skirt")
 					{
 						GameObject gameObject2 = this.hit.collider.gameObject.transform.root.gameObject;
 						if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyCharacters))
@@ -223,7 +223,7 @@ public class ShutterScript : MonoBehaviour
 								{
 									if (!this.Yandere.Lewd)
 									{
-										this.Yandere.NotificationManager.DisplayNotification("Lewd");
+										this.Yandere.NotificationManager.DisplayNotification(NotificationType.Lewd);
 									}
 									this.Yandere.Lewd = true;
 								}
@@ -381,19 +381,19 @@ public class ShutterScript : MonoBehaviour
 		this.Skirt = false;
 		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyPhotography))
 		{
-			if (this.hit.collider.gameObject.name.Equals("Panties"))
+			if (this.hit.collider.gameObject.name == "Panties")
 			{
 				this.Student = this.hit.collider.gameObject.transform.root.gameObject.GetComponent<StudentScript>();
 				this.PantiesX.SetActive(false);
 			}
-			else if (this.hit.collider.gameObject.name.Equals("Face"))
+			else if (this.hit.collider.gameObject.name == "Face")
 			{
-				if (this.hit.collider.gameObject.tag.Equals("Nemesis"))
+				if (this.hit.collider.gameObject.tag == "Nemesis")
 				{
 					this.Nemesis = true;
 					this.NemesisShots++;
 				}
-				else if (this.hit.collider.gameObject.tag.Equals("Disguise"))
+				else if (this.hit.collider.gameObject.tag == "Disguise")
 				{
 					this.Disguise = true;
 				}
@@ -410,21 +410,21 @@ public class ShutterScript : MonoBehaviour
 					}
 				}
 			}
-			else if (this.hit.collider.gameObject.name.Equals("NotFace"))
+			else if (this.hit.collider.gameObject.name == "NotFace")
 			{
 				this.NotFace = true;
 			}
-			else if (this.hit.collider.gameObject.name.Equals("Skirt"))
+			else if (this.hit.collider.gameObject.name == "Skirt")
 			{
 				this.Skirt = true;
 			}
-			if (this.hit.collider.gameObject.name.Equals("Kitten"))
+			if (this.hit.collider.gameObject.name == "Kitten")
 			{
 				this.KittenShot = true;
 				if (PlayerPrefs.GetInt("Topic_20_Discovered") == 0)
 				{
 					PlayerPrefs.SetInt("Topic_20_Discovered", 1);
-					this.Yandere.NotificationManager.DisplayNotification("Topic");
+					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 				}
 			}
 		}
@@ -450,7 +450,7 @@ public class ShutterScript : MonoBehaviour
 		this.NewMessage.transform.localEulerAngles = Vector3.zero;
 		this.NewMessage.transform.localScale = new Vector3(1f, 1f, 1f);
 		bool flag = false;
-		if (this.hit.collider != null && this.hit.collider.gameObject.name.Equals("Kitten"))
+		if (this.hit.collider != null && this.hit.collider.gameObject.name == "Kitten")
 		{
 			flag = true;
 		}
@@ -473,7 +473,11 @@ public class ShutterScript : MonoBehaviour
 				if (PlayerPrefs.GetInt(this.Student.Name + "PantyShot") == 0)
 				{
 					PlayerPrefs.SetInt(this.Student.Name + "PantyShot", 1);
-					if (this.Student.StudentID != 32)
+					if (this.Student.Nemesis)
+					{
+						text = "Wait...I recognize those panties! This person is extremely dangerous! Avoid her at all costs!";
+					}
+					else if (this.Student.StudentID != 32)
 					{
 						text = "Excellent! Now I have a picture of " + this.Student.Name + "'s panties. I owe you a favor for this one.";
 						PlayerPrefs.SetInt("PantyShots", PlayerPrefs.GetInt("PantyShots") + 1);
@@ -485,10 +489,15 @@ public class ShutterScript : MonoBehaviour
 					}
 					num = 5;
 				}
-				else
+				else if (!this.Student.Nemesis)
 				{
 					text = "I already have a picture of " + this.Student.Name + "'s panties. I don't need this shot.";
 					num = 4;
+				}
+				else
+				{
+					text = "You are in danger. Avoid her.";
+					num = 2;
 				}
 			}
 			else

@@ -77,6 +77,7 @@ public class ToiletEventScript : MonoBehaviour
 					this.EventStudent.Pathfinding.canMove = true;
 					this.EventStudent.LightSwitch = this.LightSwitch;
 					this.EventStudent.Obstacle.checkTime = 99f;
+					this.EventStudent.SpeechLines.Stop();
 					this.EventStudent.ToiletEvent = this;
 					this.EventStudent.InEvent = true;
 					this.EventStudent.Prompt.Hide();
@@ -249,6 +250,7 @@ public class ToiletEventScript : MonoBehaviour
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
 		audioSource.minDistance = 5f;
 		audioSource.maxDistance = 10f;
+		audioSource.spatialBlend = 1f;
 		this.VoiceClip = gameObject;
 	}
 

@@ -83,7 +83,7 @@ public class ServicesScript : MonoBehaviour
 		{
 			if (PlayerPrefs.GetInt("Service_" + this.Selected.ToString() + "_Purchased") == 0)
 			{
-				if (!this.PromptBar.Label[0].text.Equals(string.Empty))
+				if (this.PromptBar.Label[0].text != string.Empty)
 				{
 					if (PlayerPrefs.GetInt("PantyShots") >= this.ServiceCosts[this.Selected])
 					{

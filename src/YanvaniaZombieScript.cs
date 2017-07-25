@@ -190,11 +190,11 @@ public class YanvaniaZombieScript : MonoBehaviour
 	{
 		if (!this.Dying)
 		{
-			if (other.gameObject.tag.Equals("Player"))
+			if (other.gameObject.tag == "Player")
 			{
 				this.Yanmont.TakeDamage(5);
 			}
-			if (other.gameObject.name.Equals("Heart") && this.HitReactTimer >= 1f)
+			if (other.gameObject.name == "Heart" && this.HitReactTimer >= 1f)
 			{
 				UnityEngine.Object.Instantiate<GameObject>(this.HitEffect, other.transform.position, Quaternion.identity);
 				AudioSource component = base.GetComponent<AudioSource>();

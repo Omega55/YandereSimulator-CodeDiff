@@ -168,7 +168,7 @@ public class BucketScript : MonoBehaviour
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Circle[0].fillAmount = 1f;
-			if (this.Prompt.Label[0].text.Equals("     Place Dumbbell"))
+			if (this.Prompt.Label[0].text == "     Place Dumbbell")
 			{
 				this.Dumbbells++;
 				this.Dumbbell[this.Dumbbells] = this.Yandere.Weapon[this.Yandere.Equipped].gameObject;
@@ -184,7 +184,7 @@ public class BucketScript : MonoBehaviour
 				this.Dumbbell[this.Dumbbells].transform.localPosition = this.Positions[this.Dumbbells].localPosition;
 				this.Dumbbell[this.Dumbbells].transform.localEulerAngles = new Vector3(90f, 0f, 0f);
 			}
-			else if (this.Prompt.Label[0].text.Equals("     Remove Dumbbell"))
+			else if (this.Prompt.Label[0].text == "     Remove Dumbbell")
 			{
 				this.Yandere.EmptyHands();
 				this.Dumbbell[this.Dumbbells].GetComponent<WeaponScript>().enabled = true;

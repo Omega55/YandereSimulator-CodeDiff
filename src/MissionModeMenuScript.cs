@@ -597,7 +597,7 @@ public class MissionModeMenuScript : MonoBehaviour
 					this.NemesisDifficulty++;
 					this.UpdateNemesisDifficulty();
 				}
-				if (this.PromptBar.Label[0].text.Equals("Toggle"))
+				if (this.PromptBar.Label[0].text == "Toggle")
 				{
 					if (this.CustomObjectives[this.CustomSelected].alpha == 0.5f)
 					{
@@ -1009,7 +1009,7 @@ public class MissionModeMenuScript : MonoBehaviour
 		WWW www = new WWW(url);
 		this.TargetPortrait.mainTexture = ((this.TargetID >= 33) ? this.BlankPortrait : www.texture);
 		this.CustomTargetPortrait.mainTexture = this.TargetPortrait.mainTexture;
-		if (this.JSON.StudentNames[this.TargetID].Equals("Random") || this.JSON.StudentNames[this.TargetID].Equals("Unknown"))
+		if (this.JSON.StudentNames[this.TargetID] == "Random" || this.JSON.StudentNames[this.TargetID] == "Unknown")
 		{
 			this.TargetName = this.StudentManager.FirstNames[UnityEngine.Random.Range(0, this.StudentManager.FirstNames.Length)] + " " + this.StudentManager.LastNames[UnityEngine.Random.Range(0, this.StudentManager.LastNames.Length)];
 		}

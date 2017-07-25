@@ -167,7 +167,7 @@ public class NoteWindowScript : MonoBehaviour
 					}
 					this.SubHighlight.localPosition = new Vector3(this.SubHighlight.localPosition.x, 550f - 100f * (float)this.SubSlot, this.SubHighlight.localPosition.z);
 				}
-				if (Input.GetButtonDown("A") && this.SubLabels[this.SubSlot].color.a > 0.5f && !this.SubLabels[this.SubSlot].text.Equals(string.Empty) && !this.SubLabels[this.SubSlot].text.Equals("??????????"))
+				if (Input.GetButtonDown("A") && this.SubLabels[this.SubSlot].color.a > 0.5f && this.SubLabels[this.SubSlot].text != string.Empty && this.SubLabels[this.SubSlot].text != "??????????")
 				{
 					this.SlotLabels[this.Slot].text = this.SubLabels[this.SubSlot].text;
 					this.SlotsFilled[this.Slot] = true;

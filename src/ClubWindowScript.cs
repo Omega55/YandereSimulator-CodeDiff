@@ -70,7 +70,7 @@ public class ClubWindowScript : MonoBehaviour
 					{
 						PlayerPrefs.SetInt("Club", this.Club);
 						this.Yandere.ClubAccessory();
-						this.Yandere.TargetStudent.Interaction = 11;
+						this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubJoin;
 						this.ClubManager.ActivateClubBenefit();
 					}
 					else if (this.Quitting)
@@ -79,12 +79,12 @@ public class ClubWindowScript : MonoBehaviour
 						PlayerPrefs.SetInt("QuitClub_" + this.Club.ToString(), 1);
 						PlayerPrefs.SetInt("Club", 0);
 						this.Yandere.ClubAccessory();
-						this.Yandere.TargetStudent.Interaction = 12;
+						this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubQuit;
 						this.Quitting = false;
 					}
 					else if (this.Activity)
 					{
-						this.Yandere.TargetStudent.Interaction = 14;
+						this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubActivity;
 					}
 					this.Yandere.TargetStudent.TalkTimer = 100f;
 					this.Yandere.TargetStudent.ClubPhase = 2;
@@ -96,16 +96,16 @@ public class ClubWindowScript : MonoBehaviour
 				{
 					if (!this.Quitting && !this.Activity)
 					{
-						this.Yandere.TargetStudent.Interaction = 11;
+						this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubJoin;
 					}
 					else if (this.Quitting)
 					{
-						this.Yandere.TargetStudent.Interaction = 12;
+						this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubQuit;
 						this.Quitting = false;
 					}
 					else if (this.Activity)
 					{
-						this.Yandere.TargetStudent.Interaction = 14;
+						this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubActivity;
 						this.Activity = false;
 					}
 					this.Yandere.TargetStudent.TalkTimer = 100f;

@@ -410,7 +410,7 @@ public class PoseModeScript : MonoBehaviour
 						}
 					}
 				}
-				else if (this.Selected == 7)
+				else if (this.Selected == 10)
 				{
 					if (this.InputManager.TappedRight)
 					{
@@ -429,7 +429,7 @@ public class PoseModeScript : MonoBehaviour
 						this.UpdateLabels();
 					}
 				}
-				else if (this.Selected == 8)
+				else if (this.Selected == 11)
 				{
 					if (!this.Student.Male)
 					{
@@ -461,6 +461,7 @@ public class PoseModeScript : MonoBehaviour
 				{
 					this.CalculateValue();
 					Material material = this.Student.Cosmetic.HairRenderer.material;
+					Material material2 = this.Student.Cosmetic.RightEyeRenderer.material;
 					if (this.Selected == 4)
 					{
 						material.color = new Color(material.color.r + (float)this.Degree * 0.003921569f * (float)this.Value, material.color.g, material.color.b, material.color.a);
@@ -472,6 +473,18 @@ public class PoseModeScript : MonoBehaviour
 					else if (this.Selected == 6)
 					{
 						material.color = new Color(material.color.r, material.color.g, material.color.b + (float)this.Degree * 0.003921569f * (float)this.Value, material.color.a);
+					}
+					else if (this.Selected == 7)
+					{
+						material2.color = new Color(material2.color.r + (float)this.Degree * 0.003921569f * (float)this.Value, material2.color.g, material2.color.b, material2.color.a);
+					}
+					else if (this.Selected == 8)
+					{
+						material2.color = new Color(material2.color.r, material2.color.g + (float)this.Degree * 0.003921569f * (float)this.Value, material2.color.b, material2.color.a);
+					}
+					else if (this.Selected == 9)
+					{
+						material2.color = new Color(material2.color.r, material2.color.g, material2.color.b + (float)this.Degree * 0.003921569f * (float)this.Value, material2.color.a);
 					}
 					this.CapColors();
 					this.UpdateLabels();
@@ -753,9 +766,12 @@ public class PoseModeScript : MonoBehaviour
 			this.OptionLabels[4].text = "Hair R: " + (this.Student.Cosmetic.HairRenderer.material.color.r * 255f).ToString();
 			this.OptionLabels[5].text = "Hair G: " + (this.Student.Cosmetic.HairRenderer.material.color.g * 255f).ToString();
 			this.OptionLabels[6].text = "Hair B: " + (this.Student.Cosmetic.HairRenderer.material.color.b * 255f).ToString();
-			this.OptionLabels[7].text = "Degree of Change: " + this.Degree.ToString();
-			this.OptionLabels[8].text = "Stockings: " + this.Student.Cosmetic.Stockings;
-			this.Limit = 8;
+			this.OptionLabels[7].text = "Eye R: " + (this.Student.Cosmetic.RightEyeRenderer.material.color.r * 255f).ToString();
+			this.OptionLabels[8].text = "Eye G: " + (this.Student.Cosmetic.RightEyeRenderer.material.color.g * 255f).ToString();
+			this.OptionLabels[9].text = "Eye B: " + (this.Student.Cosmetic.RightEyeRenderer.material.color.b * 255f).ToString();
+			this.OptionLabels[10].text = "Degree of Change: " + this.Degree.ToString();
+			this.OptionLabels[11].text = "Stockings: " + this.Student.Cosmetic.Stockings;
+			this.Limit = 11;
 			UILabel uilabel3 = this.OptionLabels[3];
 			UILabel uilabel4 = this.OptionLabels[8];
 			if (!this.Student.Male)
@@ -835,6 +851,32 @@ public class PoseModeScript : MonoBehaviour
 		{
 			material.color = new Color(material.color.r, material.color.g, 1f, material.color.a);
 		}
+		Material material2 = this.Student.Cosmetic.RightEyeRenderer.material;
+		if (material2.color.r < 0f)
+		{
+			material2.color = new Color(0f, material2.color.g, material2.color.b, material2.color.a);
+		}
+		if (material2.color.g < 0f)
+		{
+			material2.color = new Color(material2.color.r, 0f, material2.color.b, material2.color.a);
+		}
+		if (material2.color.b < 0f)
+		{
+			material2.color = new Color(material2.color.r, material2.color.g, 0f, material2.color.a);
+		}
+		if (material2.color.r > 1f)
+		{
+			material2.color = new Color(1f, material2.color.g, material2.color.b, material2.color.a);
+		}
+		if (material2.color.g > 1f)
+		{
+			material2.color = new Color(material2.color.r, 1f, material2.color.b, material2.color.a);
+		}
+		if (material2.color.b > 1f)
+		{
+			material2.color = new Color(material2.color.r, material2.color.g, 1f, material2.color.a);
+		}
+		this.Student.Cosmetic.LeftEyeRenderer.material.color = material2.color;
 	}
 
 	private void CreateAnimationArray()

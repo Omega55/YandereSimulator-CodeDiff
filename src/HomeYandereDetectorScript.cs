@@ -7,7 +7,7 @@ public class HomeYandereDetectorScript : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.tag.Equals("Player"))
+		if (other.tag == "Player")
 		{
 			this.YandereDetected = true;
 		}
@@ -15,7 +15,7 @@ public class HomeYandereDetectorScript : MonoBehaviour
 
 	private void OnTriggerExit(Collider other)
 	{
-		if (other.tag.Equals("Player"))
+		if (other.tag == "Player")
 		{
 			this.YandereDetected = false;
 		}

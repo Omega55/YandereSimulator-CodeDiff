@@ -170,12 +170,12 @@ public class EventManagerScript : MonoBehaviour
 								{
 									if (PlayerPrefs.GetInt("Topic_22_Discovered") == 0)
 									{
-										this.Yandere.NotificationManager.DisplayNotification("Topic");
+										this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 										PlayerPrefs.SetInt("Topic_22_Discovered", 1);
 									}
 									if (PlayerPrefs.GetInt("Topic_22_Student_7_Learned") == 0)
 									{
-										this.Yandere.NotificationManager.DisplayNotification("Opinion");
+										this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
 										PlayerPrefs.SetInt("Topic_22_Student_7_Learned", 1);
 									}
 								}
@@ -187,7 +187,7 @@ public class EventManagerScript : MonoBehaviour
 						}
 						if (this.Yandere.transform.position.y > this.EventStudent[1].transform.position.y - 1f && this.EventPhase == 7 && num < 5f && PlayerPrefs.GetInt("Event1") == 0)
 						{
-							this.Yandere.NotificationManager.DisplayNotification("Info");
+							this.Yandere.NotificationManager.DisplayNotification(NotificationType.Info);
 							PlayerPrefs.SetInt("Event1", 1);
 						}
 					}
@@ -207,6 +207,7 @@ public class EventManagerScript : MonoBehaviour
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
 		audioSource.minDistance = 5f;
 		audioSource.maxDistance = 10f;
+		audioSource.spatialBlend = 1f;
 		this.VoiceClip = gameObject;
 		audioSource.volume = ((this.Yandere.transform.position.y >= gameObject.transform.position.y - 2f) ? 1f : 0f);
 	}

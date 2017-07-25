@@ -31,7 +31,7 @@ public class BunnyScript : MonoBehaviour
 			{
 				for (int i = 1; i < 101; i++)
 				{
-					if (this.JSON.StudentHairstyles[i] == "20" && this.StudentManager.Students[i] != null)
+					if (this.JSON.StudentGenders[i] == 0 && this.JSON.StudentHairstyles[i] == "20" && this.StudentManager.Students[i] != null)
 					{
 						this.StudentManager.Students[i].gameObject.SetActive(false);
 					}

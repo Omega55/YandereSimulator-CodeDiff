@@ -425,6 +425,7 @@ public class DelinquentScript : MonoBehaviour
 			component2.CrossFade(this.ShoveAnim);
 			this.Shoving = true;
 			this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_shoveA_00");
+			this.Yandere.Punching = false;
 			this.Yandere.CanMove = false;
 			this.Yandere.Shoved = true;
 			this.ExpressedSurprise = false;

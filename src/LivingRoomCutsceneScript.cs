@@ -95,6 +95,7 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 			}
 			this.ID++;
 		}
+		this.ID = 0;
 		this.YandereCosmetic.FemaleHair[1].SetActive(true);
 		this.Subtitle.text = string.Empty;
 		this.RightEyeRenderer.material.color = new Color(0.33f, 0.33f, 0.33f, 1f);
@@ -186,10 +187,14 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 				this.Yandere.GetComponent<Animation>()["FriendshipYandere"].time = component.time + this.AnimOffset;
 				this.Rival.GetComponent<Animation>()["FriendshipRival"].time = component.time + this.AnimOffset;
 			}
-			if (this.ID < this.Times.Length && component.time > this.Times[this.ID])
+			if (this.ID < this.Times.Length)
 			{
-				this.Subtitle.text = this.Lines[this.ID];
-				this.ID++;
+				Debug.Log(component.time);
+				if (component.time > this.Times[this.ID])
+				{
+					this.Subtitle.text = this.Lines[this.ID];
+					this.ID++;
+				}
 			}
 			if (component.time > 54f)
 			{

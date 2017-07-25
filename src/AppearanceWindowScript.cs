@@ -227,7 +227,7 @@ public class AppearanceWindowScript : MonoBehaviour
 						this.PromptBar.ClearButtons();
 						this.PromptBar.UpdateButtons();
 						this.PromptBar.Show = false;
-						this.Yandere.Interaction = 18;
+						this.Yandere.Interaction = YandereInteractionType.ChangingAppearance;
 						this.Yandere.TalkTimer = 3f;
 						this.Ready = false;
 						this.Show = false;

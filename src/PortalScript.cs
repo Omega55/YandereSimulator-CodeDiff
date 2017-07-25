@@ -51,12 +51,12 @@ public class PortalScript : MonoBehaviour
 		if (this.Clock.HourTime > 8.52f && this.Clock.HourTime < 8.53f && !this.Yandere.InClass && !this.LateReport1)
 		{
 			this.LateReport1 = true;
-			this.Yandere.NotificationManager.DisplayNotification("Late");
+			this.Yandere.NotificationManager.DisplayNotification(NotificationType.Late);
 		}
 		if (this.Clock.HourTime > 13.52f && this.Clock.HourTime < 13.53f && !this.Yandere.InClass && !this.LateReport2)
 		{
 			this.LateReport2 = true;
-			this.Yandere.NotificationManager.DisplayNotification("Late");
+			this.Yandere.NotificationManager.DisplayNotification(NotificationType.Late);
 		}
 		if (this.Prompt.Circle[0].fillAmount <= 0f)
 		{

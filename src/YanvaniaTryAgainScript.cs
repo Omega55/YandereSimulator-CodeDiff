@@ -61,7 +61,7 @@ public class YanvaniaTryAgainScript : MonoBehaviour
 			{
 				if (this.Selected == 1)
 				{
-					SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+					SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 				}
 				else
 				{

@@ -57,15 +57,13 @@ public class TitleMenuScript : MonoBehaviour
 
 	public UISprite Darkness;
 
-	public bool FirstCute;
-
-	public bool Inactive;
-
 	public bool FadeOut;
 
 	public bool Fading = true;
 
-	public int Selected = 1;
+	private int SelectionCount = 9;
+
+	private int Selected;
 
 	public float Volume;
 
@@ -97,49 +95,43 @@ public class TitleMenuScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (!this.Inactive)
+		if (!this.Sponsors.Show)
 		{
 			if (!this.Fading)
 			{
 				if (this.InputManager.TappedDown)
 				{
-					this.Selected++;
-					if (this.Selected > 9)
-					{
-						this.Selected = 1;
-					}
-					this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 300f - 75f * (float)this.Selected, this.Highlight.localPosition.z);
+					this.Selected = ((this.Selected >= this.SelectionCount - 1) ? 0 : (this.Selected + 1));
 				}
 				if (this.InputManager.TappedUp)
 				{
-					this.Selected--;
-					if (this.Selected < 1)
-					{
-						this.Selected = 9;
-					}
-					this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 300f - 75f * (float)this.Selected, this.Highlight.localPosition.z);
+					this.Selected = ((this.Selected <= 0) ? (this.SelectionCount - 1) : (this.Selected - 1));
+				}
+				bool flag = this.InputManager.TappedUp || this.InputManager.TappedDown;
+				if (flag)
+				{
+					this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 225f - 75f * (float)this.Selected, this.Highlight.localPosition.z);
 				}
 				if (Input.GetButtonDown("A"))
 				{
-					if (this.Selected == 1 || this.Selected == 4 || this.Selected == 7 || this.Selected == 9)
+					if (this.Selected == 0 || this.Selected == 3 || this.Selected == 6 || this.Selected == 8)
 					{
 						this.Darkness.color = new Color(0f, 0f, 0f, 0f);
 						this.FadeOut = true;
 						this.Fading = true;
 					}
-					if (this.Selected == 3)
+					if (this.Selected == 2)
 					{
 						this.Darkness.color = new Color(1f, 1f, 1f, 0f);
 						this.FadeOut = true;
 						this.Fading = true;
 					}
-					if (this.Selected == 5)
+					if (this.Selected == 4)
 					{
 						this.PromptBar.Label[0].text = "Visit";
 						this.PromptBar.Label[1].text = "Back";
 						this.PromptBar.UpdateButtons();
 						this.Sponsors.Show = true;
-						this.Inactive = true;
 					}
 					this.TurnCute();
 				}
@@ -174,25 +166,25 @@ public class TitleMenuScript : MonoBehaviour
 				this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a + Time.deltaTime);
 				if (this.Darkness.color.a >= 1f)
 				{
-					if (this.Selected == 1)
+					if (this.Selected == 0)
 					{
 						PlayerPrefs.SetInt("MissionMode", 0);
 						SceneManager.LoadScene("CalendarScene");
 					}
-					else if (this.Selected == 3)
+					else if (this.Selected == 2)
 					{
 						PlayerPrefs.DeleteAll();
 						SceneManager.LoadScene("SenpaiScene");
 					}
-					else if (this.Selected == 4)
+					else if (this.Selected == 3)
 					{
 						SceneManager.LoadScene("MissionModeScene");
 					}
-					else if (this.Selected == 7)
+					else if (this.Selected == 6)
 					{
 						SceneManager.LoadScene("CreditsScene");
 					}
-					else if (this.Selected == 9)
+					else if (this.Selected == 8)
 					{
 						Application.Quit();
 					}
@@ -200,13 +192,26 @@ public class TitleMenuScript : MonoBehaviour
 				this.Jukebox.volume -= Time.deltaTime;
 			}
 		}
-		else if (Input.GetButtonDown("B"))
+		else
 		{
-			this.Sponsors.Show = false;
-			this.PromptBar.Label[0].text = "Confirm";
-			this.PromptBar.Label[1].text = string.Empty;
-			this.PromptBar.UpdateButtons();
-			this.Inactive = false;
+			int sponsorIndex = this.Sponsors.GetSponsorIndex();
+			if (this.Sponsors.SponsorHasWebsite(sponsorIndex))
+			{
+				this.PromptBar.Label[0].text = "Visit";
+				this.PromptBar.UpdateButtons();
+			}
+			else
+			{
+				this.PromptBar.Label[0].text = string.Empty;
+				this.PromptBar.UpdateButtons();
+			}
+			if (Input.GetButtonDown("B"))
+			{
+				this.Sponsors.Show = false;
+				this.PromptBar.Label[0].text = "Confirm";
+				this.PromptBar.Label[1].text = string.Empty;
+				this.PromptBar.UpdateButtons();
+			}
 		}
 		if (this.Timer < 10f)
 		{

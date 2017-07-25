@@ -137,10 +137,10 @@ public class CookingEventScript : MonoBehaviour
 				{
 					if (PlayerPrefs.GetInt("Topic_1_Discovered") == 0)
 					{
-						this.Yandere.NotificationManager.DisplayNotification("Topic");
+						this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 						PlayerPrefs.SetInt("Topic_1_Discovered", 1);
 					}
-					this.Yandere.NotificationManager.DisplayNotification("Opinion");
+					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
 					PlayerPrefs.SetInt("Topic_1_Student_7_Learned", 1);
 				}
 				if (this.EventPhase == -1)
@@ -379,6 +379,7 @@ public class CookingEventScript : MonoBehaviour
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
 		audioSource.minDistance = 5f;
 		audioSource.maxDistance = 10f;
+		audioSource.spatialBlend = 1f;
 		this.VoiceClip = gameObject;
 	}
 

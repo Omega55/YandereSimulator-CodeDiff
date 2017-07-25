@@ -39,6 +39,8 @@ public class NemesisScript : MonoBehaviour
 
 	public int ID;
 
+	public float OriginalYPosition;
+
 	public float ScanTimer = 6f;
 
 	private void Start()
@@ -152,7 +154,7 @@ public class NemesisScript : MonoBehaviour
 				}
 				else
 				{
-					if (!this.Yandere.Crouching && !this.Yandere.Crawling && Vector3.Distance(base.transform.position, this.Yandere.transform.position) < 10f && Input.GetButton("LB"))
+					if (this.Yandere.Stance != StanceType.Crouching && this.Yandere.Stance != StanceType.Crawling && Vector3.Distance(base.transform.position, this.Yandere.transform.position) < 10f && Input.GetButton("LB"))
 					{
 						this.MissionMode.LastKnownPosition.position = this.Yandere.transform.position;
 						this.UpdateLKP();
@@ -177,6 +179,9 @@ public class NemesisScript : MonoBehaviour
 							this.Student.Pathfinding.enabled = false;
 							this.Knife.SetActive(true);
 							this.Attacking = true;
+							this.OriginalYPosition = this.Yandere.transform.position.y;
+							this.Yandere.StudentManager.YandereDying = true;
+							this.Yandere.StudentManager.StopMoving();
 							AudioSource component2 = base.GetComponent<AudioSource>();
 							component2.Play();
 							this.Yandere.FollowHips = true;
@@ -233,6 +238,7 @@ public class NemesisScript : MonoBehaviour
 				this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, this.Yandere.targetRotation, Time.deltaTime * 10f);
 				this.Yandere.MoveTowardsTarget(base.transform.position + base.transform.forward * 0.5f);
 				this.Yandere.EyeShrink = 1f;
+				this.Yandere.transform.position = new Vector3(this.Yandere.transform.position.x, this.OriginalYPosition, this.Yandere.transform.position.z);
 				Quaternion b = Quaternion.LookRotation(this.Yandere.transform.position - base.transform.position);
 				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, b, Time.deltaTime * 10f);
 				Animation component3 = this.Student.Character.GetComponent<Animation>();

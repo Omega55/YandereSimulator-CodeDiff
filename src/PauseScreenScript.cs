@@ -116,7 +116,7 @@ public class PauseScreenScript : MonoBehaviour
 		this.StudentInfo.SetActive(false);
 		this.DropsMenu.SetActive(false);
 		this.MainMenu.SetActive(true);
-		if (SceneManager.GetActiveScene().name.Equals("SchoolScene"))
+		if (SceneManager.GetActiveScene().name == "SchoolScene")
 		{
 			this.Schemes.UpdateInstructions();
 		}
@@ -130,6 +130,8 @@ public class PauseScreenScript : MonoBehaviour
 		}
 		if (PlayerPrefs.GetInt("MissionMode") == 1)
 		{
+			UISprite uisprite3 = this.PhoneIcons[10];
+			uisprite3.color = new Color(uisprite3.color.r, uisprite3.color.g, uisprite3.color.b, 1f);
 		}
 		this.UpdateSelection();
 		this.CorrectingTime = false;

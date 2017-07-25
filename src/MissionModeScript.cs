@@ -62,6 +62,10 @@ public class MissionModeScript : MonoBehaviour
 
 	public Transform[] SpawnPoints;
 
+	public UISprite[] PoliceIcon;
+
+	public UILabel[] PoliceLabel;
+
 	public int[] Conditions;
 
 	public GameObject SecurityCameraGroup;
@@ -232,6 +236,20 @@ public class MissionModeScript : MonoBehaviour
 			this.NemesisDifficulty = PlayerPrefs.GetInt("NemesisDifficulty");
 			this.Difficulty = PlayerPrefs.GetInt("MissionDifficulty");
 			this.TargetID = PlayerPrefs.GetInt("MissionTarget");
+			this.ID = 1;
+			while (this.ID < this.PoliceLabel.Length)
+			{
+				this.PoliceLabel[this.ID].fontStyle = FontStyle.Bold;
+				this.PoliceLabel[this.ID].color = new Color(1f, 1f, 1f, 1f);
+				this.PoliceLabel[this.ID].trueTypeFont = this.Arial;
+				this.ID++;
+			}
+			this.ID = 1;
+			while (this.ID < this.PoliceIcon.Length)
+			{
+				this.PoliceIcon[this.ID].color = new Color(1f, 1f, 1f, 1f);
+				this.ID++;
+			}
 			if (this.Difficulty > 1)
 			{
 				this.ID = 2;
@@ -533,7 +551,7 @@ public class MissionModeScript : MonoBehaviour
 				this.ID = 1;
 				while (this.ID < this.StudentManager.Students.Length)
 				{
-					if (this.StudentManager.Students[this.ID] != null && this.StudentManager.Students[this.ID].WitnessedCorpse)
+					if (this.StudentManager.Students[this.ID] != null && (this.StudentManager.Students[this.ID].WitnessedCorpse || this.StudentManager.Students[this.ID].WitnessedMurder))
 					{
 						this.Chastise = true;
 						this.GameOverID = 7;
@@ -641,8 +659,8 @@ public class MissionModeScript : MonoBehaviour
 			}
 			if (this.TargetDead && this.CorpseDisposed && this.BloodCleaned && this.WeaponDisposed && this.DocumentsStolen && this.GameOverID == 0 && !this.ExitPortal.activeInHierarchy)
 			{
-				this.NotificationManager.DisplayNotification("Complete");
-				this.NotificationManager.DisplayNotification("Exfiltrate");
+				this.NotificationManager.DisplayNotification(NotificationType.Complete);
+				this.NotificationManager.DisplayNotification(NotificationType.Exfiltrate);
 				base.GetComponent<AudioSource>().PlayOneShot(this.InfoExfiltrate);
 				this.ExitPortal.SetActive(true);
 			}
@@ -703,7 +721,7 @@ public class MissionModeScript : MonoBehaviour
 						if (this.Destination == 1)
 						{
 							this.ResetPlayerPrefs();
-							SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+							SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 						}
 						else if (this.Destination == 2)
 						{

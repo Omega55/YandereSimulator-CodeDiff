@@ -102,7 +102,7 @@ public class GradingPaperScript : MonoBehaviour
 				this.Character.GetComponent<Animation>().Play("f02_deskWrite");
 				this.Phase = 1;
 			}
-			if (this.Teacher.Actions[this.Teacher.Phase] != 12 || !this.Teacher.Routine || this.Teacher.Stop)
+			if (this.Teacher.Actions[this.Teacher.Phase] != StudentActionType.GradePapers || !this.Teacher.Routine || this.Teacher.Stop)
 			{
 				this.Paper.localScale = Vector3.zero;
 				this.Teacher.Obstacle.enabled = false;

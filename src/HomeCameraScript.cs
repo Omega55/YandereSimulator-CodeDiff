@@ -241,7 +241,7 @@ public class HomeCameraScript : MonoBehaviour
 			{
 				PlayerPrefs.SetInt("Night", 0);
 			}
-			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		if (Input.GetKeyDown("="))
 		{

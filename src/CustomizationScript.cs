@@ -127,6 +127,7 @@ public class CustomizationScript : MonoBehaviour
 		this.UpdateFacialHair();
 		this.UpdateHairStyle();
 		this.UpdateEyes();
+		this.UpdateSkin();
 	}
 
 	private void Update()

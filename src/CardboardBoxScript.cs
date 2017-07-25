@@ -22,7 +22,7 @@ public class CardboardBoxScript : MonoBehaviour
 		if (base.transform.parent == this.Prompt.Yandere.Hips)
 		{
 			base.transform.localEulerAngles = Vector3.zero;
-			if (!this.Prompt.Yandere.Crawling)
+			if (this.Prompt.Yandere.Stance != StanceType.Crawling)
 			{
 				base.transform.eulerAngles = new Vector3(0f, base.transform.eulerAngles.y, base.transform.eulerAngles.z);
 			}

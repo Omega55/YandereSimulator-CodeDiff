@@ -132,6 +132,7 @@ public class BrokenScript : MonoBehaviour
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
 		audioSource.minDistance = 1f;
 		audioSource.maxDistance = 5f;
+		audioSource.spatialBlend = 1f;
 		this.VoiceClip = gameObject;
 		float y = this.Yandere.transform.position.y;
 		float y2 = gameObject.transform.position.y;

@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class BloodPoolSpawnerScript : MonoBehaviour
 {
+	public RagdollScript Ragdoll;
+
 	public GameObject LastBloodPool;
 
 	public GameObject BloodPool;
@@ -57,7 +59,7 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.gameObject.name.Equals("BloodPool(Clone)"))
+		if (other.gameObject.name == "BloodPool(Clone)")
 		{
 			this.LastBloodPool = other.gameObject;
 			this.NearbyBlood++;
@@ -66,7 +68,7 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 
 	private void OnTriggerExit(Collider other)
 	{
-		if (other.gameObject.name.Equals("BloodPool(Clone)"))
+		if (other.gameObject.name == "BloodPool(Clone)")
 		{
 			this.NearbyBlood--;
 		}
@@ -113,6 +115,10 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 						gameObject2.transform.parent = this.BloodParent;
 						this.PoolsSpawned++;
 						gameObject2.GetComponent<BloodPoolScript>().TargetSize = 1f - (float)(this.PoolsSpawned - 10) * 0.1f;
+						if (this.PoolsSpawned == 20)
+						{
+							base.gameObject.SetActive(false);
+						}
 					}
 				}
 			}

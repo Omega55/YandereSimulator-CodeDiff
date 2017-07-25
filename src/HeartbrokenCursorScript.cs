@@ -90,7 +90,7 @@ public class HeartbrokenCursorScript : MonoBehaviour
 							PlayerPrefs.SetInt("Student_" + i.ToString() + "_Dying", 0);
 						}
 					}
-					SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+					SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 				}
 				else if (this.Selected == 2)
 				{

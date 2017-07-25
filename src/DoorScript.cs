@@ -183,28 +183,28 @@ public class DoorScript : MonoBehaviour
 	{
 		this.North = false;
 		this.RelativeCharacter = ((!(this.Student != null)) ? this.Yandere.transform : this.Student.transform);
-		if (this.Facing.Equals("North"))
+		if (this.Facing == "North")
 		{
 			if (this.RelativeCharacter.position.z < base.transform.position.z)
 			{
 				this.North = true;
 			}
 		}
-		else if (this.Facing.Equals("South"))
+		else if (this.Facing == "South")
 		{
 			if (this.RelativeCharacter.position.z > base.transform.position.z)
 			{
 				this.North = true;
 			}
 		}
-		else if (this.Facing.Equals("East"))
+		else if (this.Facing == "East")
 		{
 			if (this.RelativeCharacter.position.x < base.transform.position.x)
 			{
 				this.North = true;
 			}
 		}
-		else if (this.Facing.Equals("West") && this.RelativeCharacter.position.x > base.transform.position.x)
+		else if (this.Facing == "West" && this.RelativeCharacter.position.x > base.transform.position.x)
 		{
 			this.North = true;
 		}
@@ -377,14 +377,14 @@ public class DoorScript : MonoBehaviour
 			if (PlayerPrefs.GetInt("Topic_12_Discovered") == 0)
 			{
 				PlayerPrefs.SetInt("Topic_12_Discovered", 1);
-				this.Yandere.NotificationManager.DisplayNotification("Topic");
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		case 13:
 			if (PlayerPrefs.GetInt("Topic_21_Discovered") == 0)
 			{
 				PlayerPrefs.SetInt("Topic_21_Discovered", 1);
-				this.Yandere.NotificationManager.DisplayNotification("Topic");
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		case 15:
@@ -394,66 +394,66 @@ public class DoorScript : MonoBehaviour
 				PlayerPrefs.SetInt("Topic_17_Discovered", 1);
 				PlayerPrefs.SetInt("Topic_18_Discovered", 1);
 				PlayerPrefs.SetInt("Topic_19_Discovered", 1);
-				this.Yandere.NotificationManager.DisplayNotification("Topic");
-				this.Yandere.NotificationManager.DisplayNotification("Topic");
-				this.Yandere.NotificationManager.DisplayNotification("Topic");
-				this.Yandere.NotificationManager.DisplayNotification("Topic");
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		case 26:
 			if (PlayerPrefs.GetInt("Topic_1_Discovered") == 0)
 			{
 				PlayerPrefs.SetInt("Topic_1_Discovered", 1);
-				this.Yandere.NotificationManager.DisplayNotification("Topic");
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		case 27:
 			if (PlayerPrefs.GetInt("Topic_2_Discovered") == 0)
 			{
 				PlayerPrefs.SetInt("Topic_2_Discovered", 1);
-				this.Yandere.NotificationManager.DisplayNotification("Topic");
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		case 28:
 			if (PlayerPrefs.GetInt("Topic_3_Discovered") == 0)
 			{
 				PlayerPrefs.SetInt("Topic_3_Discovered", 1);
-				this.Yandere.NotificationManager.DisplayNotification("Topic");
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		case 29:
 			if (PlayerPrefs.GetInt("Topic_4_Discovered") == 0)
 			{
 				PlayerPrefs.SetInt("Topic_4_Discovered", 1);
-				this.Yandere.NotificationManager.DisplayNotification("Topic");
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		case 30:
 			if (PlayerPrefs.GetInt("Topic_5_Discovered") == 0)
 			{
 				PlayerPrefs.SetInt("Topic_5_Discovered", 1);
-				this.Yandere.NotificationManager.DisplayNotification("Topic");
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		case 31:
 			if (PlayerPrefs.GetInt("Topic_6_Discovered") == 0)
 			{
 				PlayerPrefs.SetInt("Topic_6_Discovered", 1);
-				this.Yandere.NotificationManager.DisplayNotification("Topic");
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		case 32:
 			if (PlayerPrefs.GetInt("Topic_7_Discovered") == 0)
 			{
 				PlayerPrefs.SetInt("Topic_7_Discovered", 1);
-				this.Yandere.NotificationManager.DisplayNotification("Topic");
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		case 34:
 			if (PlayerPrefs.GetInt("Topic_8_Discovered") == 0)
 			{
 				PlayerPrefs.SetInt("Topic_8_Discovered", 1);
-				this.Yandere.NotificationManager.DisplayNotification("Topic");
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		}

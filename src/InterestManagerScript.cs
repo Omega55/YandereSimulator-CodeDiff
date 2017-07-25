@@ -23,10 +23,10 @@ public class InterestManagerScript : MonoBehaviour
 			{
 				if (PlayerPrefs.GetInt("Topic_3_Discovered") == 0)
 				{
-					this.Yandere.NotificationManager.DisplayNotification("Topic");
+					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 					PlayerPrefs.SetInt("Topic_3_Discovered", 1);
 				}
-				this.Yandere.NotificationManager.DisplayNotification("Opinion");
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
 				PlayerPrefs.SetInt("Topic_3_Student_7_Learned", 1);
 			}
 			if (PlayerPrefs.GetInt("Topic_14_Student_7_Learned") == 0)
@@ -34,14 +34,14 @@ public class InterestManagerScript : MonoBehaviour
 				StudentScript studentScript = this.StudentManager.Students[22];
 				StudentScript studentScript2 = this.StudentManager.Students[24];
 				StudentScript x = this.StudentManager.Students[25];
-				if (studentScript != null && x != null && studentScript.Actions[studentScript.Phase] == 8 && studentScript.DistanceToDestination < 1f && studentScript2.Actions[studentScript2.Phase] == 8 && studentScript2.DistanceToDestination < 1f && Vector3.Distance(this.Yandere.Follower.transform.position, this.MartialArts.position) < 5f)
+				if (studentScript != null && x != null && studentScript.Actions[studentScript.Phase] == StudentActionType.ClubAction && studentScript.DistanceToDestination < 1f && studentScript2.Actions[studentScript2.Phase] == StudentActionType.ClubAction && studentScript2.DistanceToDestination < 1f && Vector3.Distance(this.Yandere.Follower.transform.position, this.MartialArts.position) < 5f)
 				{
 					if (PlayerPrefs.GetInt("Topic_14_Discovered") == 0)
 					{
-						this.Yandere.NotificationManager.DisplayNotification("Topic");
+						this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 						PlayerPrefs.SetInt("Topic_14_Discovered", 1);
 					}
-					this.Yandere.NotificationManager.DisplayNotification("Opinion");
+					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
 					PlayerPrefs.SetInt("Topic_14_Student_7_Learned", 1);
 				}
 			}
@@ -53,10 +53,10 @@ public class InterestManagerScript : MonoBehaviour
 				{
 					if (PlayerPrefs.GetInt("Topic_16_Discovered") == 0)
 					{
-						this.Yandere.NotificationManager.DisplayNotification("Topic");
+						this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 						PlayerPrefs.SetInt("Topic_16_Discovered", 1);
 					}
-					this.Yandere.NotificationManager.DisplayNotification("Opinion");
+					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
 					PlayerPrefs.SetInt("Topic_16_Student_7_Learned", 1);
 				}
 			}
@@ -64,10 +64,10 @@ public class InterestManagerScript : MonoBehaviour
 			{
 				if (PlayerPrefs.GetInt("Topic_20_Discovered") == 0)
 				{
-					this.Yandere.NotificationManager.DisplayNotification("Topic");
+					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 					PlayerPrefs.SetInt("Topic_20_Discovered", 1);
 				}
-				this.Yandere.NotificationManager.DisplayNotification("Opinion");
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
 				PlayerPrefs.SetInt("Topic_20_Student_7_Learned", 1);
 			}
 		}

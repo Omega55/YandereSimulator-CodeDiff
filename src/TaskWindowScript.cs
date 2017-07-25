@@ -65,7 +65,7 @@ public class TaskWindowScript : MonoBehaviour
 			{
 				PlayerPrefs.SetInt("Task_" + this.StudentID.ToString() + "_Status", 1);
 				this.Yandere.TargetStudent.TalkTimer = 100f;
-				this.Yandere.TargetStudent.Interaction = 5;
+				this.Yandere.TargetStudent.Interaction = StudentInteractionType.GivingTask;
 				this.Yandere.TargetStudent.TaskPhase = 4;
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Show = false;
@@ -74,7 +74,7 @@ public class TaskWindowScript : MonoBehaviour
 			else if (Input.GetButtonDown("B"))
 			{
 				this.Yandere.TargetStudent.TalkTimer = 100f;
-				this.Yandere.TargetStudent.Interaction = 5;
+				this.Yandere.TargetStudent.Interaction = StudentInteractionType.GivingTask;
 				this.Yandere.TargetStudent.TaskPhase = 0;
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Show = false;

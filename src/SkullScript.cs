@@ -95,8 +95,9 @@ public class SkullScript : MonoBehaviour
 			this.FlameTimer = Mathf.MoveTowards(this.FlameTimer, 0f, Time.deltaTime);
 			if (this.FlameTimer == 0f)
 			{
-				this.RitualKnife.GetComponent<WeaponScript>().FireEffect.SetActive(true);
 				this.RitualKnife.GetComponent<WeaponScript>().Prompt.enabled = true;
+				this.RitualKnife.GetComponent<WeaponScript>().FireEffect.Play();
+				this.RitualKnife.GetComponent<WeaponScript>().FireAudio.Play();
 				this.RitualKnife.GetComponent<WeaponScript>().Flaming = true;
 				this.Prompt.enabled = true;
 				component.clip = this.FlameActivation;

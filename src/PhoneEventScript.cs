@@ -217,10 +217,10 @@ public class PhoneEventScript : MonoBehaviour
 				if (this.EventPhase == 11 && num < 5f && PlayerPrefs.GetInt("Event2") == 0)
 				{
 					PlayerPrefs.SetInt("Event2", 1);
-					this.Yandere.NotificationManager.DisplayNotification("Info");
+					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Info);
 					PlayerPrefs.SetInt("Topic_25_Discovered", 1);
-					this.Yandere.NotificationManager.DisplayNotification("Topic");
-					this.Yandere.NotificationManager.DisplayNotification("Opinion");
+					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
 					PlayerPrefs.SetInt("Topic_25_Student_" + this.EventStudentID.ToString() + "_Learned", 1);
 				}
 			}
@@ -239,6 +239,7 @@ public class PhoneEventScript : MonoBehaviour
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
 		audioSource.minDistance = 5f;
 		audioSource.maxDistance = 10f;
+		audioSource.spatialBlend = 1f;
 		this.VoiceClip = gameObject;
 	}
 

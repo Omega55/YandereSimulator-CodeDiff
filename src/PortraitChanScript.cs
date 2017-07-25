@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PortraitChanScript : MonoBehaviour
@@ -107,6 +108,8 @@ public class PortraitChanScript : MonoBehaviour
 
 	public GameObject[] MaleHairstyles;
 
+	private Dictionary<string, Color> HairColors;
+
 	public Mesh TeacherMesh;
 
 	public Texture TeacherTexture;
@@ -152,6 +155,49 @@ public class PortraitChanScript : MonoBehaviour
 	public Mesh[] FemaleUniforms;
 
 	public Texture[] FemaleUniformTextures;
+
+	private void Awake()
+	{
+		this.HairColors = new Dictionary<string, Color>
+		{
+			{
+				"Black",
+				new Color(0.5f, 0.5f, 0.5f)
+			},
+			{
+				"Red",
+				new Color(1f, 0f, 0f)
+			},
+			{
+				"Yellow",
+				new Color(1f, 1f, 0f)
+			},
+			{
+				"Green",
+				new Color(0f, 1f, 0f)
+			},
+			{
+				"Cyan",
+				new Color(0f, 1f, 1f)
+			},
+			{
+				"Blue",
+				new Color(0f, 0f, 1f)
+			},
+			{
+				"Purple",
+				new Color(1f, 0f, 1f)
+			},
+			{
+				"Orange",
+				new Color(1f, 0.5f, 0f)
+			},
+			{
+				"Brown",
+				new Color(0.5f, 0.25f, 0f)
+			}
+		};
+	}
 
 	private void Start()
 	{
@@ -228,7 +274,7 @@ public class PortraitChanScript : MonoBehaviour
 				this.Drills.materials[1].mainTexture = this.DrillTexture;
 				this.Drills.materials[2].mainTexture = this.DrillTexture;
 			}
-			else if (text.Equals("Brown"))
+			else if (text == "Brown")
 			{
 				this.TeacherHair[1].GetComponent<Renderer>().material.color = new Color(0.5f, 0.25f, 0f, 1f);
 				this.TeacherHair[2].GetComponent<Renderer>().material.color = new Color(0.5f, 0.25f, 0f, 1f);
@@ -237,11 +283,11 @@ public class PortraitChanScript : MonoBehaviour
 				this.TeacherHair[5].GetComponent<Renderer>().material.color = new Color(0.5f, 0.25f, 0f, 1f);
 				this.TeacherHair[6].GetComponent<Renderer>().material.color = new Color(0.5f, 0.25f, 0f, 1f);
 			}
-			if (this.Accessory.Equals("Bandage"))
+			if (this.Accessory == "Bandage")
 			{
 				this.Bandage.SetActive(true);
 			}
-			else if (this.Accessory.Equals("Eyepatch"))
+			else if (this.Accessory == "Eyepatch")
 			{
 				this.Eyepatch.SetActive(true);
 			}
@@ -252,42 +298,9 @@ public class PortraitChanScript : MonoBehaviour
 			if (int.Parse(this.Hairstyle) < 8)
 			{
 				this.MaleHairRenderer = this.MaleHairstyles[int.Parse(this.Hairstyle)].GetComponent<Renderer>();
-				if (text.Equals("Black"))
-				{
-					this.MaleHairRenderer.material.color = new Color(0.5f, 0.5f, 0.5f);
-				}
-				else if (text.Equals("Red"))
-				{
-					this.MaleHairRenderer.material.color = new Color(1f, 0f, 0f);
-				}
-				else if (text.Equals("Yellow"))
-				{
-					this.MaleHairRenderer.material.color = new Color(1f, 1f, 0f);
-				}
-				else if (text.Equals("Green"))
-				{
-					this.MaleHairRenderer.material.color = new Color(0f, 1f, 0f);
-				}
-				else if (text.Equals("Cyan"))
-				{
-					this.MaleHairRenderer.material.color = new Color(0f, 1f, 1f);
-				}
-				else if (text.Equals("Blue"))
-				{
-					this.MaleHairRenderer.material.color = new Color(0f, 0f, 1f);
-				}
-				else if (text.Equals("Purple"))
-				{
-					this.MaleHairRenderer.material.color = new Color(1f, 0f, 1f);
-				}
-				else if (text.Equals("Orange"))
-				{
-					this.MaleHairRenderer.material.color = new Color(1f, 0.5f, 0f);
-				}
-				else if (text.Equals("Brown"))
-				{
-					this.MaleHairRenderer.material.color = new Color(0.5f, 0.25f, 0f);
-				}
+				Color color;
+				bool flag = this.HairColors.TryGetValue(text, out color);
+				this.MaleHairRenderer.material.color = color;
 				this.EyeR.material.color = this.MaleHairRenderer.material.color;
 				this.EyeL.material.color = this.MaleHairRenderer.material.color;
 				if (this.Club == 6)
@@ -297,14 +310,14 @@ public class PortraitChanScript : MonoBehaviour
 					this.Bandana.SetActive(true);
 				}
 			}
-			else if (text.Equals("Occult2") || text.Equals("Occult4") || text.Equals("Occult6"))
+			else if (text == "Occult2" || text == "Occult4" || text == "Occult6")
 			{
 				this.MaleHairRenderer = this.MaleHairstyles[int.Parse(this.Hairstyle)].GetComponent<Renderer>();
 				this.MyRenderer.materials[2].mainTexture = this.MaleHairRenderer.material.mainTexture;
 				this.EyeR.material.mainTexture = this.MaleHairRenderer.material.mainTexture;
 				this.EyeL.material.mainTexture = this.MaleHairRenderer.material.mainTexture;
 			}
-			if (this.Accessory.Equals("ShinyGlasses"))
+			if (this.Accessory == "ShinyGlasses")
 			{
 				this.ShinyGlasses.SetActive(true);
 				this.IrisLight[0].SetActive(false);
@@ -339,12 +352,12 @@ public class PortraitChanScript : MonoBehaviour
 		this.CirnoHair.SetActive(false);
 		this.PippiHair.SetActive(false);
 		this.ShortHair.gameObject.SetActive(false);
-		if (this.Hairstyle.Equals("PonyTail"))
+		if (this.Hairstyle == "PonyTail")
 		{
 			this.PonyRenderer.transform.parent.gameObject.SetActive(true);
 			this.PonyRenderer.gameObject.SetActive(true);
 		}
-		else if (this.Hairstyle.Equals("RightTail"))
+		else if (this.Hairstyle == "RightTail")
 		{
 			this.PonyRenderer.transform.parent.gameObject.SetActive(true);
 			this.PonyRenderer.gameObject.SetActive(true);
@@ -352,7 +365,7 @@ public class PortraitChanScript : MonoBehaviour
 			this.PigtailR.gameObject.SetActive(true);
 			this.HidePony = true;
 		}
-		else if (this.Hairstyle.Equals("LeftTail"))
+		else if (this.Hairstyle == "LeftTail")
 		{
 			this.PonyRenderer.transform.parent.gameObject.SetActive(true);
 			this.PonyRenderer.gameObject.SetActive(true);
@@ -360,7 +373,7 @@ public class PortraitChanScript : MonoBehaviour
 			this.PigtailL.gameObject.SetActive(true);
 			this.HidePony = true;
 		}
-		else if (this.Hairstyle.Equals("PigTails"))
+		else if (this.Hairstyle == "PigTails")
 		{
 			this.PonyRenderer.transform.parent.gameObject.SetActive(true);
 			this.PonyRenderer.gameObject.SetActive(true);
@@ -370,7 +383,7 @@ public class PortraitChanScript : MonoBehaviour
 			this.PigtailL.gameObject.SetActive(true);
 			this.HidePony = true;
 		}
-		else if (this.Hairstyle.Equals("TriTails"))
+		else if (this.Hairstyle == "TriTails")
 		{
 			this.PonyRenderer.transform.parent.gameObject.SetActive(true);
 			this.PonyRenderer.gameObject.SetActive(true);
@@ -381,7 +394,7 @@ public class PortraitChanScript : MonoBehaviour
 			this.PigtailR.transform.localScale = new Vector3(1f, 1f, 1f);
 			this.PigtailL.transform.localScale = new Vector3(1f, 1f, 1f);
 		}
-		else if (this.Hairstyle.Equals("TwinTails"))
+		else if (this.Hairstyle == "TwinTails")
 		{
 			this.PonyRenderer.transform.parent.gameObject.SetActive(true);
 			this.PonyRenderer.gameObject.SetActive(true);
@@ -393,7 +406,7 @@ public class PortraitChanScript : MonoBehaviour
 			this.PigtailL.transform.parent.transform.parent.transform.localScale = new Vector3(2f, 2f, 2f);
 			this.HidePony = true;
 		}
-		else if (this.Hairstyle.Equals("Drills"))
+		else if (this.Hairstyle == "Drills")
 		{
 			this.PonyRenderer.transform.parent.gameObject.SetActive(true);
 			this.PonyRenderer.gameObject.SetActive(true);
@@ -401,78 +414,78 @@ public class PortraitChanScript : MonoBehaviour
 			this.Drills.gameObject.SetActive(true);
 			this.HidePony = true;
 		}
-		else if (this.Hairstyle.Equals("Short"))
+		else if (this.Hairstyle == "Short")
 		{
 			this.ShortHair.gameObject.SetActive(true);
 		}
-		else if (this.Hairstyle.Equals("Pippi"))
+		else if (this.Hairstyle == "Pippi")
 		{
 			this.PippiHair.SetActive(true);
 		}
-		else if (this.Hairstyle.Equals("Cirno"))
+		else if (this.Hairstyle == "Cirno")
 		{
 			this.CirnoHair.SetActive(true);
 		}
-		else if (this.Hairstyle.Equals("Long"))
+		else if (this.Hairstyle == "Long")
 		{
 			this.LongHair.transform.parent.gameObject.SetActive(true);
 			this.LongHair.gameObject.SetActive(true);
 		}
-		else if (this.Hairstyle.Equals("NewLong"))
+		else if (this.Hairstyle == "NewLong")
 		{
 			this.NewLongHair.transform.parent.gameObject.SetActive(true);
 			this.NewLongHair.gameObject.SetActive(true);
 			this.VeryLongHair = false;
 		}
-		else if (this.Hairstyle.Equals("VeryLong"))
+		else if (this.Hairstyle == "VeryLong")
 		{
 			this.NewLongHair.transform.parent.gameObject.SetActive(true);
 			this.NewLongHair.gameObject.SetActive(true);
 			this.VeryLongHair = true;
 		}
-		else if (this.Hairstyle.Equals("TwinPony"))
+		else if (this.Hairstyle == "TwinPony")
 		{
 			this.TwinPony.transform.parent.transform.parent.gameObject.SetActive(true);
 			this.TwinPony.gameObject.SetActive(true);
 		}
-		else if (this.Hairstyle.Equals("Occult1"))
+		else if (this.Hairstyle == "Occult1")
 		{
 			this.OccultHair[1].SetActive(true);
 		}
-		else if (this.Hairstyle.Equals("Occult3"))
+		else if (this.Hairstyle == "Occult3")
 		{
 			this.OccultHair[3].SetActive(true);
 		}
-		else if (this.Hairstyle.Equals("Occult5"))
+		else if (this.Hairstyle == "Occult5")
 		{
 			this.OccultHair[5].SetActive(true);
 		}
-		else if (this.Hairstyle.Equals("Teacher1"))
+		else if (this.Hairstyle == "Teacher1")
 		{
 			this.TeacherHair[1].SetActive(true);
 			this.TeacherGlasses[1].SetActive(true);
 		}
-		else if (this.Hairstyle.Equals("Teacher2"))
+		else if (this.Hairstyle == "Teacher2")
 		{
 			this.TeacherHair[2].SetActive(true);
 			this.TeacherGlasses[2].SetActive(true);
 		}
-		else if (this.Hairstyle.Equals("Teacher3"))
+		else if (this.Hairstyle == "Teacher3")
 		{
 			this.TeacherHair[3].SetActive(true);
 			this.TeacherGlasses[3].SetActive(true);
 		}
-		else if (this.Hairstyle.Equals("Teacher4"))
+		else if (this.Hairstyle == "Teacher4")
 		{
 			this.TeacherHair[4].SetActive(true);
 			this.TeacherGlasses[4].SetActive(true);
 		}
-		else if (this.Hairstyle.Equals("Teacher5"))
+		else if (this.Hairstyle == "Teacher5")
 		{
 			this.TeacherHair[5].SetActive(true);
 			this.TeacherGlasses[5].SetActive(true);
 		}
-		else if (this.Hairstyle.Equals("Teacher6"))
+		else if (this.Hairstyle == "Teacher6")
 		{
 			this.TeacherHair[6].SetActive(true);
 			this.TeacherGlasses[6].SetActive(true);

@@ -30,7 +30,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	public Transform Highlight;
 
-	public Transform Scollbar;
+	public Transform Scrollbar;
 
 	public StudentPortraitScript[] StudentPortraits;
 
@@ -103,7 +103,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetButtonDown("A") && !this.PromptBar.Label[0].text.Equals(string.Empty) && PlayerPrefs.GetInt("Student_" + this.StudentID.ToString() + "_Photographed") == 1)
+		if (Input.GetButtonDown("A") && this.PromptBar.Label[0].text != string.Empty && PlayerPrefs.GetInt("Student_" + this.StudentID.ToString() + "_Photographed") == 1)
 		{
 			this.StudentInfo.gameObject.SetActive(true);
 			this.StudentInfo.UpdateInfo(this.StudentID);
@@ -134,7 +134,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 		{
 			if (this.Gossiping || this.Distracting || this.MatchMaking)
 			{
-				this.PauseScreen.Yandere.Interaction = 4;
+				this.PauseScreen.Yandere.Interaction = YandereInteractionType.Bye;
 				this.PauseScreen.Yandere.TalkTimer = 2f;
 				this.PauseScreen.MainMenu.SetActive(true);
 				this.PauseScreen.Sideways = false;
@@ -210,7 +210,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 		{
 			this.PortraitGrid.localPosition = new Vector3(this.PortraitGrid.localPosition.x, Mathf.Lerp(this.PortraitGrid.localPosition.y, 2880f, 0.166666672f), this.PortraitGrid.localPosition.z);
 		}
-		this.Scollbar.localPosition = new Vector3(this.Scollbar.localPosition.x, Mathf.Lerp(this.Scollbar.localPosition.y, 175f - 350f * (this.PortraitGrid.localPosition.y / 2880f), 0.166666672f), this.Scollbar.localPosition.z);
+		this.Scrollbar.localPosition = new Vector3(this.Scrollbar.localPosition.x, Mathf.Lerp(this.Scrollbar.localPosition.y, 175f - 350f * (this.PortraitGrid.localPosition.y / 2880f), 0.166666672f), this.Scrollbar.localPosition.z);
 		if (this.InputManager.TappedUp)
 		{
 			this.Row--;
@@ -280,6 +280,11 @@ public class StudentInfoMenuScript : MonoBehaviour
 				this.PromptBar.Label[0].text = string.Empty;
 				this.PromptBar.UpdateButtons();
 			}
+		}
+		if (this.MatchMaking && (this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || PlayerPrefs.GetInt("Student_" + this.StudentID.ToString() + "_Dead") == 1))
+		{
+			this.PromptBar.Label[0].text = string.Empty;
+			this.PromptBar.UpdateButtons();
 		}
 		this.Highlight.localPosition = new Vector3(-300f + (float)this.Column * 150f, 80f - (float)this.Row * 160f, this.Highlight.localPosition.z);
 		this.UpdateNameLabel();
@@ -357,7 +362,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 			{
 				this.StudentPortraits[ID].DeathShadow.SetActive(true);
 			}
-			if (SceneManager.GetActiveScene().name.Equals("SchoolScene") && this.StudentManager.Students[ID] != null && this.StudentManager.Students[ID].Tranquil)
+			if (SceneManager.GetActiveScene().name == "SchoolScene" && this.StudentManager.Students[ID] != null && this.StudentManager.Students[ID].Tranquil)
 			{
 				this.StudentPortraits[ID].DeathShadow.SetActive(true);
 			}

@@ -25,7 +25,7 @@ public class JsonScript : MonoBehaviour
 
 	public int[] StudentClubs;
 
-	public int[] StudentPersonas;
+	public PersonaType[] StudentPersonas;
 
 	public int[] StudentCrushes;
 
@@ -42,6 +42,8 @@ public class JsonScript : MonoBehaviour
 	public string[] StudentStockings;
 
 	public string[] StudentAccessories;
+
+	public string[] StudentInfos;
 
 	public bool[] StudentSuccess;
 
@@ -151,7 +153,7 @@ public class JsonScript : MonoBehaviour
 			this.StudentClasses[num] = TFUtils.LoadInt(dictionary, "Class");
 			this.StudentSeats[num] = TFUtils.LoadInt(dictionary, "Seat");
 			this.StudentClubs[num] = TFUtils.LoadInt(dictionary, "Club");
-			this.StudentPersonas[num] = TFUtils.LoadInt(dictionary, "Persona");
+			this.StudentPersonas[num] = (PersonaType)TFUtils.LoadInt(dictionary, "Persona");
 			this.StudentCrushes[num] = TFUtils.LoadInt(dictionary, "Crush");
 			this.StudentBreasts[num] = TFUtils.LoadFloat(dictionary, "BreastSize");
 			this.StudentStrengths[num] = TFUtils.LoadFloat(dictionary, "Strength");
@@ -160,8 +162,9 @@ public class JsonScript : MonoBehaviour
 			this.StudentEyes[num] = TFUtils.LoadString(dictionary, "Eyes");
 			this.StudentStockings[num] = TFUtils.LoadString(dictionary, "Stockings");
 			this.StudentAccessories[num] = TFUtils.LoadString(dictionary, "Accessory");
+			this.StudentInfos[num] = TFUtils.LoadString(dictionary, "Info");
 			this.StudentSuccess[num] = true;
-			if (PlayerPrefs.GetInt("HighPopulation") == 1 && this.StudentNames[num].Equals("Unknown"))
+			if (PlayerPrefs.GetInt("HighPopulation") == 1 && this.StudentNames[num] == "Unknown")
 			{
 				this.StudentNames[num] = "Random";
 			}
@@ -172,7 +175,7 @@ public class JsonScript : MonoBehaviour
 			this.ConstructTempStringArray(TFUtils.LoadString(dictionary, "ScheduleAction"));
 			this.StudentActions[num] = this.TempStringArray;
 		}
-		if (SceneManager.GetActiveScene().name.Equals("SchoolScene"))
+		if (SceneManager.GetActiveScene().name == "SchoolScene")
 		{
 			foreach (Dictionary<string, object> d in this.TopicData())
 			{
@@ -209,7 +212,7 @@ public class JsonScript : MonoBehaviour
 			}
 			this.ReplaceDeadTeachers();
 		}
-		if (SceneManager.GetActiveScene().name.Equals("CreditsScene"))
+		if (SceneManager.GetActiveScene().name == "CreditsScene")
 		{
 			foreach (Dictionary<string, object> dictionary2 in this.CreditsData())
 			{
@@ -272,7 +275,7 @@ public class JsonScript : MonoBehaviour
 				PlayerPrefs.SetString("Student_" + i.ToString() + "_Accessory", UnityEngine.Random.Range(1, 7).ToString());
 			}
 		}
-		for (int j = 94; j < 100; j++)
+		for (int j = 94; j < 101; j++)
 		{
 			if (PlayerPrefs.GetInt("Student_" + j.ToString() + "_Replaced") == 1)
 			{

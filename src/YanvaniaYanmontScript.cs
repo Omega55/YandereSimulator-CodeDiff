@@ -356,7 +356,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 						{
 							this.speed = ((!Input.GetKey("left shift")) ? this.walkSpeed : this.runSpeed);
 						}
-						if ((flag && this.slideWhenOverSlopeLimit) || (this.slideOnTaggedObjects && this.hit.collider.tag.Equals("Slide")))
+						if ((flag && this.slideWhenOverSlopeLimit) || (this.slideOnTaggedObjects && this.hit.collider.tag == "Slide"))
 						{
 							Vector3 normal = this.hit.normal;
 							this.moveDirection = new Vector3(normal.x, -normal.y, normal.z);
@@ -727,7 +727,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 		base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y, 0f);
 		if (Input.GetKeyDown("`"))
 		{
-			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		if (Input.GetKeyDown("2"))
 		{

@@ -279,8 +279,7 @@ public class ArmDetectorScript : MonoBehaviour
 					this.Yandere.MyRenderer.sharedMesh = this.FlameDemonMesh;
 					this.RiggedAccessory.SetActive(true);
 					this.Yandere.FlameDemonic = true;
-					this.Yandere.Crouching = false;
-					this.Yandere.Crawling = false;
+					this.Yandere.Stance = StanceType.Standing;
 					this.Yandere.Sanity = 100f;
 					this.Yandere.UpdateSanity();
 					this.Yandere.MyRenderer.materials[0].mainTexture = this.Yandere.FaceTexture;
@@ -337,7 +336,7 @@ public class ArmDetectorScript : MonoBehaviour
 			if (component != null && component.BodyPart)
 			{
 				BodyPartScript component2 = other.gameObject.GetComponent<BodyPartScript>();
-				if (component2.Sacrifice && (other.gameObject.name.Equals("FemaleRightArm(Clone)") || other.gameObject.name.Equals("FemaleLeftArm(Clone)") || other.gameObject.name.Equals("MaleRightArm(Clone)") || other.gameObject.name.Equals("MaleLeftArm(Clone)") || other.gameObject.name.Equals("SacrificialArm(Clone)")))
+				if (component2.Sacrifice && (other.gameObject.name == "FemaleRightArm(Clone)" || other.gameObject.name == "FemaleLeftArm(Clone)" || other.gameObject.name == "MaleRightArm(Clone)" || other.gameObject.name == "MaleLeftArm(Clone)" || other.gameObject.name == "SacrificialArm(Clone)"))
 				{
 					bool flag = true;
 					for (int i = 1; i < 11; i++)
@@ -366,7 +365,7 @@ public class ArmDetectorScript : MonoBehaviour
 		if (component != null && component.BodyPart)
 		{
 			BodyPartScript component2 = other.gameObject.GetComponent<BodyPartScript>();
-			if (component2.Sacrifice && (other.gameObject.name.Equals("FemaleRightArm(Clone)") || other.gameObject.name.Equals("FemaleLeftArm(Clone)") || other.gameObject.name.Equals("MaleRightArm(Clone)") || other.gameObject.name.Equals("MaleLeftArm(Clone)") || other.gameObject.name.Equals("SacrificialArm(Clone)")))
+			if (component2.Sacrifice && (other.gameObject.name == "FemaleRightArm(Clone)" || other.gameObject.name == "FemaleLeftArm(Clone)" || other.gameObject.name == "MaleRightArm(Clone)" || other.gameObject.name == "MaleLeftArm(Clone)" || other.gameObject.name == "SacrificialArm(Clone)"))
 			{
 				this.Arms--;
 			}

@@ -19,7 +19,7 @@ public class TrespassScript : MonoBehaviour
 			{
 				if (!this.Yandere.Trespassing)
 				{
-					this.Yandere.NotificationManager.DisplayNotification("Intrude");
+					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Intrude);
 				}
 				this.Yandere.Trespassing = true;
 			}

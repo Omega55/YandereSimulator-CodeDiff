@@ -3,35 +3,23 @@ using UnityEngine;
 
 public class AttackManagerScript : MonoBehaviour
 {
-	private GameObject OriginalBloodEffect;
-
 	public GameObject BloodEffect;
 
-	public GameObject Victim;
+	private GameObject OriginalBloodEffect;
 
-	public YandereScript Yandere;
+	private GameObject Victim;
 
-	public WeaponScript Weapon;
+	private YandereScript Yandere;
 
-	public string VictimAnimName = string.Empty;
+	private string VictimAnimName = string.Empty;
 
-	public string AnimName = string.Empty;
-
-	public string Gender = string.Empty;
-
-	public string Prefix = string.Empty;
-
-	public string Sanity = string.Empty;
-
-	public bool Attacking;
+	private string AnimName = string.Empty;
 
 	public bool PingPong;
 
 	public bool Stealth;
 
 	public bool Loop;
-
-	public int CurrentWeapon = 1;
 
 	public int EffectPhase;
 
@@ -47,56 +35,97 @@ public class AttackManagerScript : MonoBehaviour
 
 	public float LoopEnd;
 
-	public AudioClip[] Clips;
+	private void Awake()
+	{
+		this.Yandere = base.GetComponent<YandereScript>();
+	}
 
 	private void Start()
 	{
 		this.OriginalBloodEffect = this.BloodEffect;
 	}
 
-	public void Attack()
+	public bool IsAttacking()
 	{
-		this.Weapon = this.Yandere.Weapon[this.Yandere.Equipped];
-		this.Clips = this.Weapon.Clips;
-		if (this.Weapon.Clips2.Length > 0)
+		return this.Victim != null;
+	}
+
+	private float GetReachDistance(WeaponType weaponType, SanityType sanityType)
+	{
+		if (weaponType == WeaponType.Knife)
 		{
-			int num = UnityEngine.Random.Range(2, 4);
-			this.Clips = ((num != 2) ? this.Weapon.Clips3 : this.Weapon.Clips2);
-		}
-		this.Yandere.FollowHips = true;
-		this.AttackTimer = 0f;
-		this.EffectPhase = 0;
-		this.SanityCheck();
-		if (this.Weapon.Type == 1)
-		{
-			this.Prefix = "knife";
-		}
-		else if (this.Weapon.Type == 2)
-		{
-			this.Prefix = "katana";
-		}
-		else if (this.Weapon.Type == 3)
-		{
-			this.Prefix = "bat";
-		}
-		else if (this.Weapon.Type == 4)
-		{
-			this.Prefix = "saw";
-		}
-		else if (this.Weapon.Type == 5)
-		{
-			this.Prefix = "syringe";
-		}
-		this.Gender = ((!this.Yandere.TargetStudent.Male) ? "f02_" : string.Empty);
-		if (!this.Stealth)
-		{
-			this.AnimName = "f02_" + this.Prefix + this.Sanity + "SanityA_00";
-			this.VictimAnimName = this.Gender + this.Prefix + this.Sanity + "SanityB_00";
+			if (this.Stealth)
+			{
+				return 0.75f;
+			}
+			if (sanityType == SanityType.High)
+			{
+				return 1f;
+			}
+			if (sanityType == SanityType.Medium)
+			{
+				return 0.75f;
+			}
+			return 0.5f;
 		}
 		else
 		{
-			this.AnimName = "f02_" + this.Prefix + "StealthA_00";
-			this.VictimAnimName = this.Gender + this.Prefix + "StealthB_00";
+			if (weaponType == WeaponType.Katana)
+			{
+				return (!this.Stealth) ? 1f : 0.5f;
+			}
+			if (weaponType == WeaponType.Bat)
+			{
+				if (this.Stealth)
+				{
+					return 0.5f;
+				}
+				if (sanityType == SanityType.High)
+				{
+					return 0.75f;
+				}
+				if (sanityType == SanityType.Medium)
+				{
+					return 1f;
+				}
+				return 1f;
+			}
+			else
+			{
+				if (weaponType == WeaponType.Saw)
+				{
+					return (!this.Stealth) ? 1f : 0.7f;
+				}
+				if (weaponType == WeaponType.Syringe)
+				{
+					return 0.5f;
+				}
+				Debug.LogError("Weapon type \"" + weaponType.ToString() + "\" not implemented.");
+				return 0f;
+			}
+		}
+	}
+
+	public void Attack(GameObject victim, WeaponScript weapon)
+	{
+		this.Victim = victim;
+		this.Yandere.FollowHips = true;
+		this.AttackTimer = 0f;
+		this.EffectPhase = 0;
+		this.Yandere.Sanity = Mathf.Clamp(this.Yandere.Sanity, 0f, 100f);
+		SanityType sanityType = this.Yandere.GetSanityType();
+		string sanityString = this.Yandere.GetSanityString(sanityType);
+		string typePrefix = weapon.GetTypePrefix();
+		string str = (!this.Yandere.TargetStudent.Male) ? "f02_" : string.Empty;
+		if (!this.Stealth)
+		{
+			this.AnimName = "f02_" + typePrefix + sanityString + "SanityA_00";
+			this.VictimAnimName = str + typePrefix + sanityString + "SanityB_00";
+		}
+		else
+		{
+			this.AnimName = "f02_" + typePrefix + "StealthA_00";
+			this.VictimAnimName = str + typePrefix + "StealthB_00";
 		}
 		Animation component = this.Yandere.Character.GetComponent<Animation>();
 		component[this.AnimName].time = 0f;
@@ -104,49 +133,35 @@ public class AttackManagerScript : MonoBehaviour
 		Animation component2 = this.Victim.GetComponent<Animation>();
 		component2[this.VictimAnimName].time = 0f;
 		component2.CrossFade(this.VictimAnimName);
-		AudioSource component3 = this.Weapon.gameObject.GetComponent<AudioSource>();
-		if (this.Stealth)
-		{
-			component3.clip = this.Clips[0];
-		}
-		else if (this.Yandere.Sanity / 100f > 0.6666667f)
-		{
-			component3.clip = this.Clips[1];
-		}
-		else if (this.Yandere.Sanity / 100f > 0.333333343f)
-		{
-			component3.clip = this.Clips[2];
-		}
-		else
-		{
-			component3.clip = this.Clips[3];
-		}
+		AudioSource component3 = weapon.gameObject.GetComponent<AudioSource>();
+		component3.clip = weapon.GetClip(this.Yandere.Sanity / 100f, this.Stealth);
 		component3.time = 0f;
 		component3.Play();
-		if (this.Weapon.Type == 1)
+		if (weapon.Type == WeaponType.Knife)
 		{
-			this.Weapon.Flip = true;
+			weapon.Flip = true;
 		}
-		this.GetDistance();
-		this.Attacking = true;
+		this.Distance = this.GetReachDistance(weapon.Type, sanityType);
 	}
 
 	private void Update()
 	{
-		if (this.Attacking)
+		if (this.IsAttacking())
 		{
 			this.AttackTimer += Time.deltaTime;
-			this.SpecialEffect();
-			if (this.Yandere.Sanity <= 0.333333343f && !this.Yandere.Chased)
+			WeaponScript weaponScript = this.Yandere.Weapon[this.Yandere.Equipped];
+			SanityType sanityType = this.Yandere.GetSanityType();
+			this.SpecialEffect(weaponScript, sanityType);
+			if (sanityType == SanityType.Low && !this.Yandere.Chased)
 			{
-				this.LoopCheck();
+				this.LoopCheck(weaponScript);
 			}
-			this.SpecialEffect();
+			this.SpecialEffect(weaponScript, sanityType);
 			Animation component = this.Yandere.Character.GetComponent<Animation>();
 			if (component[this.AnimName].time > component[this.AnimName].length - 0.333333343f)
 			{
 				component.CrossFade("f02_idle_00");
-				this.Weapon.Flip = false;
+				weaponScript.Flip = false;
 			}
 			if (this.AttackTimer > component[this.AnimName].length)
 			{
@@ -166,144 +181,68 @@ public class AttackManagerScript : MonoBehaviour
 					this.Yandere.TargetStudent.Tranquil = true;
 					this.Yandere.CanTranq = false;
 					this.Yandere.Followers--;
-					this.Weapon.Type = 1;
+					weaponScript.Type = WeaponType.Knife;
 				}
-				this.Yandere.TargetStudent.DeathCause = this.Yandere.Weapon[this.Yandere.Equipped].WeaponID;
+				this.Yandere.TargetStudent.DeathCause = weaponScript.WeaponID;
 				this.Yandere.TargetStudent.BecomeRagdoll();
 				this.Yandere.Sanity -= 20f * this.Yandere.Numbness;
 				this.Yandere.UpdateSanity();
 				this.Yandere.Attacking = false;
 				this.Yandere.FollowHips = false;
 				this.Yandere.MyController.radius = 0.2f;
-				this.Attacking = false;
+				this.Victim = null;
+				this.VictimAnimName = null;
+				this.AnimName = null;
 				this.Stealth = false;
 				this.EffectPhase = 0;
 				this.AttackTimer = 0f;
 				this.Timer = 0f;
-				this.CheckForSpecialCase();
+				this.CheckForSpecialCase(weaponScript);
 				if (!this.Yandere.Noticed)
 				{
 					this.Yandere.CanMove = true;
 				}
 				else
 				{
-					this.Yandere.Weapon[this.Yandere.Equipped].Drop();
+					weaponScript.Drop();
 				}
 			}
 		}
 	}
 
-	private void SanityCheck()
-	{
-		if (this.Yandere.Sanity > 100f)
-		{
-			this.Yandere.Sanity = 100f;
-		}
-		else if (this.Yandere.Sanity < 0f)
-		{
-			this.Yandere.Sanity = 0f;
-		}
-		if (this.Yandere.Sanity / 100f > 0.6666667f)
-		{
-			this.Sanity = "High";
-		}
-		else if (this.Yandere.Sanity / 100f > 0.333333343f)
-		{
-			this.Sanity = "Med";
-		}
-		else
-		{
-			this.Sanity = "Low";
-		}
-	}
-
-	private void GetDistance()
-	{
-		if (this.Weapon.Type == 1)
-		{
-			if (this.Stealth)
-			{
-				this.Distance = 0.75f;
-			}
-			else if (this.Yandere.Sanity / 100f > 0.6666667f)
-			{
-				this.Distance = 1f;
-			}
-			else if (this.Yandere.Sanity / 100f > 0.333333343f)
-			{
-				this.Distance = 0.75f;
-			}
-			else
-			{
-				this.Distance = 0.5f;
-			}
-		}
-		else if (this.Weapon.Type == 2)
-		{
-			this.Distance = ((!this.Stealth) ? 1f : 0.5f);
-		}
-		else if (this.Weapon.Type == 3)
-		{
-			if (this.Stealth)
-			{
-				this.Distance = 0.5f;
-			}
-			else if (this.Yandere.Sanity / 100f > 0.6666667f)
-			{
-				this.Distance = 0.75f;
-			}
-			else if (this.Yandere.Sanity / 100f > 0.333333343f)
-			{
-				this.Distance = 1f;
-			}
-			else
-			{
-				this.Distance = 1f;
-			}
-		}
-		else if (this.Weapon.Type == 4)
-		{
-			this.Distance = ((!this.Stealth) ? 1f : 0.7f);
-		}
-		else if (this.Weapon.Type == 5)
-		{
-			this.Distance = 0.5f;
-		}
-	}
-
-	private void SpecialEffect()
+	private void SpecialEffect(WeaponScript weapon, SanityType sanityType)
 	{
 		this.BloodEffect = this.OriginalBloodEffect;
-		if (this.Weapon.WeaponID == 14)
+		if (weapon.WeaponID == 14)
 		{
-			this.BloodEffect = this.Weapon.HeartBurst;
+			this.BloodEffect = weapon.HeartBurst;
 		}
 		Animation component = this.Yandere.Character.GetComponent<Animation>();
-		if (this.Weapon.Type == 1)
+		if (weapon.Type == WeaponType.Knife)
 		{
 			if (!this.Stealth)
 			{
-				if (this.Yandere.Sanity / 100f > 0.6666667f)
+				if (sanityType == SanityType.High)
 				{
 					if (this.EffectPhase == 0 && component[this.AnimName].time > 1.06666672f)
 					{
-						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.1f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
 						this.EffectPhase++;
 					}
 				}
-				else if (this.Yandere.Sanity / 100f > 0.333333343f)
+				else if (sanityType == SanityType.Medium)
 				{
 					if (this.EffectPhase == 0)
 					{
 						if (component[this.AnimName].time > 2.16666675f)
 						{
-							UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.1f, Quaternion.identity);
+							UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
 							this.EffectPhase++;
 						}
 					}
 					else if (this.EffectPhase == 1 && component[this.AnimName].time > 3.0333333f)
 					{
-						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.1f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
 						this.EffectPhase++;
 					}
 				}
@@ -311,7 +250,7 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					if (component[this.AnimName].time > 2.76666665f)
 					{
-						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.1f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
 						this.EffectPhase++;
 					}
 				}
@@ -319,47 +258,47 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					if (component[this.AnimName].time > 3.5333333f)
 					{
-						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.1f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
 						this.EffectPhase++;
 					}
 				}
 				else if (this.EffectPhase == 2 && component[this.AnimName].time > 4.16666651f)
 				{
-					UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.1f, Quaternion.identity);
+					UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
 					this.EffectPhase++;
 				}
 			}
 			else if (this.EffectPhase == 0 && component[this.AnimName].time > 0.966666639f)
 			{
-				UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.1f, Quaternion.identity);
+				UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
 				this.EffectPhase++;
 			}
 		}
-		else if (this.Weapon.Type == 2)
+		else if (weapon.Type == WeaponType.Katana)
 		{
 			if (!this.Stealth)
 			{
-				if (this.Yandere.Sanity / 100f > 0.6666667f)
+				if (sanityType == SanityType.High)
 				{
 					if (this.EffectPhase == 0 && component[this.AnimName].time > 0.483333319f)
 					{
-						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.5f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
 						this.EffectPhase++;
 					}
 				}
-				else if (this.Yandere.Sanity / 100f > 0.333333343f)
+				else if (sanityType == SanityType.Medium)
 				{
 					if (this.EffectPhase == 0)
 					{
 						if (component[this.AnimName].time > 0.55f)
 						{
-							UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.5f, Quaternion.identity);
+							UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
 							this.EffectPhase++;
 						}
 					}
 					else if (this.EffectPhase == 1 && component[this.AnimName].time > 1.51666665f)
 					{
-						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.5f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
 						this.EffectPhase++;
 					}
 				}
@@ -367,7 +306,7 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					if (component[this.AnimName].time > 0.5f)
 					{
-						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.6666667f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.6666667f, Quaternion.identity);
 						this.EffectPhase++;
 					}
 				}
@@ -375,7 +314,7 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					if (component[this.AnimName].time > 1f)
 					{
-						this.Weapon.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
+						weapon.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
 						this.EffectPhase++;
 					}
 				}
@@ -383,7 +322,7 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					if (component[this.AnimName].time > 2.33333325f)
 					{
-						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.6666667f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.6666667f, Quaternion.identity);
 						this.EffectPhase++;
 					}
 				}
@@ -391,7 +330,7 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					if (component[this.AnimName].time > 2.73333335f)
 					{
-						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.6666667f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.6666667f, Quaternion.identity);
 						this.EffectPhase++;
 					}
 				}
@@ -399,7 +338,7 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					if (component[this.AnimName].time > 3.13333344f)
 					{
-						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.6666667f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.6666667f, Quaternion.identity);
 						this.EffectPhase++;
 					}
 				}
@@ -407,7 +346,7 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					if (component[this.AnimName].time > 3.5333333f)
 					{
-						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.6666667f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.6666667f, Quaternion.identity);
 						this.EffectPhase++;
 					}
 				}
@@ -415,13 +354,13 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					if (component[this.AnimName].time > 4.133333f)
 					{
-						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.6666667f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.6666667f, Quaternion.identity);
 						this.EffectPhase++;
 					}
 				}
 				else if (this.EffectPhase == 8 && component[this.AnimName].time > 5f)
 				{
-					this.Weapon.transform.localEulerAngles = Vector3.zero;
+					weapon.transform.localEulerAngles = Vector3.zero;
 					this.EffectPhase++;
 				}
 			}
@@ -429,41 +368,41 @@ public class AttackManagerScript : MonoBehaviour
 			{
 				if (component[this.AnimName].time > 0.366666675f)
 				{
-					UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.6666667f, Quaternion.identity);
+					UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.6666667f, Quaternion.identity);
 					this.EffectPhase++;
 				}
 			}
 			else if (this.EffectPhase == 1 && component[this.AnimName].time > 1f)
 			{
-				UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.333333343f, Quaternion.identity);
+				UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.333333343f, Quaternion.identity);
 				this.EffectPhase++;
 			}
 		}
-		else if (this.Weapon.Type == 3)
+		else if (weapon.Type == WeaponType.Bat)
 		{
 			if (!this.Stealth)
 			{
-				if (this.Yandere.Sanity / 100f > 0.6666667f)
+				if (sanityType == SanityType.High)
 				{
 					if (this.EffectPhase == 0 && component[this.AnimName].time > 0.733333349f)
 					{
-						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.5f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
 						this.EffectPhase++;
 					}
 				}
-				else if (this.Yandere.Sanity / 100f > 0.333333343f)
+				else if (sanityType == SanityType.Medium)
 				{
 					if (this.EffectPhase == 0)
 					{
 						if (component[this.AnimName].time > 1f)
 						{
-							UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.5f, Quaternion.identity);
+							UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
 							this.EffectPhase++;
 						}
 					}
 					else if (this.EffectPhase == 1 && component[this.AnimName].time > 2.9666667f)
 					{
-						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.5f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
 						this.EffectPhase++;
 					}
 				}
@@ -471,7 +410,7 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					if (component[this.AnimName].time > 0.7f)
 					{
-						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.5f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
 						this.EffectPhase++;
 					}
 				}
@@ -479,7 +418,7 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					if (component[this.AnimName].time > 3.1f)
 					{
-						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.5f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
 						this.EffectPhase++;
 					}
 				}
@@ -487,28 +426,28 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					if (component[this.AnimName].time > 3.76666665f)
 					{
-						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.5f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
 						this.EffectPhase++;
 					}
 				}
 				else if (this.EffectPhase == 3 && component[this.AnimName].time > 4.4f)
 				{
-					UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.forward * 0.5f, Quaternion.identity);
+					UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
 					this.EffectPhase++;
 				}
 			}
 		}
-		else if (this.Weapon.Type == 4)
+		else if (weapon.Type == WeaponType.Saw)
 		{
 			if (!this.Stealth)
 			{
-				if (this.Yandere.Sanity / 100f > 0.6666667f)
+				if (sanityType == SanityType.High)
 				{
 					if (this.EffectPhase == 0)
 					{
 						if (component[this.AnimName].time > 0f)
 						{
-							this.Weapon.Spin = true;
+							weapon.Spin = true;
 							this.EffectPhase++;
 						}
 					}
@@ -516,26 +455,26 @@ public class AttackManagerScript : MonoBehaviour
 					{
 						if (component[this.AnimName].time > 0.733333349f)
 						{
-							this.Weapon.BloodSpray[0].Play();
-							this.Weapon.BloodSpray[1].Play();
+							weapon.BloodSpray[0].Play();
+							weapon.BloodSpray[1].Play();
 							this.EffectPhase++;
 						}
 					}
 					else if (this.EffectPhase == 2 && component[this.AnimName].time > 1.43333328f)
 					{
-						this.Weapon.Spin = false;
-						this.Weapon.BloodSpray[0].Stop();
-						this.Weapon.BloodSpray[1].Stop();
+						weapon.Spin = false;
+						weapon.BloodSpray[0].Stop();
+						weapon.BloodSpray[1].Stop();
 						this.EffectPhase++;
 					}
 				}
-				else if (this.Yandere.Sanity / 100f > 0.333333343f)
+				else if (sanityType == SanityType.Medium)
 				{
 					if (this.EffectPhase == 0)
 					{
 						if (component[this.AnimName].time > 0f)
 						{
-							this.Weapon.Spin = true;
+							weapon.Spin = true;
 							this.EffectPhase++;
 						}
 					}
@@ -543,8 +482,8 @@ public class AttackManagerScript : MonoBehaviour
 					{
 						if (component[this.AnimName].time > 1.1f)
 						{
-							this.Weapon.BloodSpray[0].Play();
-							this.Weapon.BloodSpray[1].Play();
+							weapon.BloodSpray[0].Play();
+							weapon.BloodSpray[1].Play();
 							this.EffectPhase++;
 						}
 					}
@@ -552,8 +491,8 @@ public class AttackManagerScript : MonoBehaviour
 					{
 						if (component[this.AnimName].time > 1.43333328f)
 						{
-							this.Weapon.BloodSpray[0].Stop();
-							this.Weapon.BloodSpray[1].Stop();
+							weapon.BloodSpray[0].Stop();
+							weapon.BloodSpray[1].Stop();
 							this.EffectPhase++;
 						}
 					}
@@ -561,16 +500,16 @@ public class AttackManagerScript : MonoBehaviour
 					{
 						if (component[this.AnimName].time > 2.36666656f)
 						{
-							this.Weapon.BloodSpray[0].Play();
-							this.Weapon.BloodSpray[1].Play();
+							weapon.BloodSpray[0].Play();
+							weapon.BloodSpray[1].Play();
 							this.EffectPhase++;
 						}
 					}
 					else if (this.EffectPhase == 4 && component[this.AnimName].time > 2.4f)
 					{
-						this.Weapon.Spin = true;
-						this.Weapon.BloodSpray[0].Stop();
-						this.Weapon.BloodSpray[1].Stop();
+						weapon.Spin = true;
+						weapon.BloodSpray[0].Stop();
+						weapon.BloodSpray[1].Stop();
 						this.EffectPhase++;
 					}
 				}
@@ -578,7 +517,7 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					if (component[this.AnimName].time > 0f)
 					{
-						this.Weapon.Spin = true;
+						weapon.Spin = true;
 						this.EffectPhase++;
 					}
 				}
@@ -586,8 +525,8 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					if (component[this.AnimName].time > 0.6666667f)
 					{
-						this.Weapon.BloodSpray[0].Play();
-						this.Weapon.BloodSpray[1].Play();
+						weapon.BloodSpray[0].Play();
+						weapon.BloodSpray[1].Play();
 						this.EffectPhase++;
 					}
 				}
@@ -595,8 +534,8 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					if (component[this.AnimName].time > 0.733333349f)
 					{
-						this.Weapon.BloodSpray[0].Stop();
-						this.Weapon.BloodSpray[1].Stop();
+						weapon.BloodSpray[0].Stop();
+						weapon.BloodSpray[1].Stop();
 						this.EffectPhase++;
 					}
 				}
@@ -604,33 +543,33 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					if (component[this.AnimName].time > 3f)
 					{
-						this.Weapon.BloodSpray[0].Play();
-						this.Weapon.BloodSpray[1].Play();
+						weapon.BloodSpray[0].Play();
+						weapon.BloodSpray[1].Play();
 						this.EffectPhase++;
 					}
 				}
 				else if (this.EffectPhase == 4 && component[this.AnimName].time > 4.866667f)
 				{
-					this.Weapon.Spin = false;
-					this.Weapon.BloodSpray[0].Stop();
-					this.Weapon.BloodSpray[1].Stop();
+					weapon.Spin = false;
+					weapon.BloodSpray[0].Stop();
+					weapon.BloodSpray[1].Stop();
 					this.EffectPhase++;
 				}
 			}
 			else if (this.EffectPhase == 0 && component[this.AnimName].time > 1f)
 			{
-				UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Weapon.transform.position + this.Weapon.transform.right * 0.2f + this.Weapon.transform.forward * -0.06666667f, Quaternion.identity);
+				UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.right * 0.2f + weapon.transform.forward * -0.06666667f, Quaternion.identity);
 				this.EffectPhase++;
 			}
 		}
 	}
 
-	private void LoopCheck()
+	private void LoopCheck(WeaponScript weapon)
 	{
 		Animation component = this.Yandere.Character.GetComponent<Animation>();
 		if (Input.GetButtonDown("X"))
 		{
-			if (this.Weapon.Type == 1)
+			if (weapon.Type == WeaponType.Knife)
 			{
 				if (component[this.AnimName].time > 3.5333333f && component[this.AnimName].time < 4.16666651f)
 				{
@@ -640,7 +579,7 @@ public class AttackManagerScript : MonoBehaviour
 					this.Loop = true;
 				}
 			}
-			else if (this.Weapon.Type == 2)
+			else if (weapon.Type == WeaponType.Katana)
 			{
 				if (component[this.AnimName].time > 3.36666656f && component[this.AnimName].time < 3.9f)
 				{
@@ -650,7 +589,7 @@ public class AttackManagerScript : MonoBehaviour
 					this.Loop = true;
 				}
 			}
-			else if (this.Weapon.Type == 3)
+			else if (weapon.Type == WeaponType.Bat)
 			{
 				if (component[this.AnimName].time > 3.76666665f && component[this.AnimName].time < 4.4f)
 				{
@@ -660,7 +599,7 @@ public class AttackManagerScript : MonoBehaviour
 					this.Loop = true;
 				}
 			}
-			else if (this.Weapon.Type == 4 && component[this.AnimName].time > 3.0333333f && component[this.AnimName].time < 4.5666666f)
+			else if (weapon.Type == WeaponType.Saw && component[this.AnimName].time > 3.0333333f && component[this.AnimName].time < 4.5666666f)
 			{
 				this.LoopStart = 91f;
 				this.LoopEnd = 137f;
@@ -668,7 +607,7 @@ public class AttackManagerScript : MonoBehaviour
 				this.PingPong = true;
 			}
 		}
-		AudioSource component2 = this.Weapon.gameObject.GetComponent<AudioSource>();
+		AudioSource component2 = weapon.gameObject.GetComponent<AudioSource>();
 		Animation component3 = this.Victim.GetComponent<Animation>();
 		if (this.PingPong)
 		{
@@ -705,14 +644,14 @@ public class AttackManagerScript : MonoBehaviour
 		}
 	}
 
-	private void CheckForSpecialCase()
+	private void CheckForSpecialCase(WeaponScript weapon)
 	{
-		if (this.Yandere.Weapon[this.Yandere.Equipped].WeaponID == 8)
+		if (weapon.WeaponID == 8)
 		{
 			this.Yandere.TargetStudent.Ragdoll.Sacrifice = true;
 			if (PlayerPrefs.GetInt("Paranormal") == 1)
 			{
-				this.Yandere.Weapon[this.Yandere.Equipped].Effect();
+				weapon.Effect();
 			}
 		}
 	}

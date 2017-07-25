@@ -23,12 +23,12 @@ public class YanvaniaBlackHoleAttackScript : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.gameObject.tag.Equals("Player"))
+		if (other.gameObject.tag == "Player")
 		{
 			UnityEngine.Object.Instantiate<GameObject>(this.BlackExplosion, base.transform.position, Quaternion.identity);
 			this.Yanmont.TakeDamage(20);
 		}
-		if (other.gameObject.name.Equals("Heart"))
+		if (other.gameObject.name == "Heart")
 		{
 			UnityEngine.Object.Instantiate<GameObject>(this.BlackExplosion, base.transform.position, Quaternion.identity);
 			UnityEngine.Object.Destroy(base.gameObject);

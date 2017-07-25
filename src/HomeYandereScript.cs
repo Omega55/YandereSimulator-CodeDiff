@@ -69,7 +69,7 @@ public class HomeYandereScript : MonoBehaviour
 		{
 			this.CutsceneYandere.GetComponent<Animation>()["f02_texting_00"].speed = 0.1f;
 		}
-		if (SceneManager.GetActiveScene().name.Equals("HomeScene"))
+		if (SceneManager.GetActiveScene().name == "HomeScene")
 		{
 			if (PlayerPrefs.GetInt("DraculaDefeated") == 0)
 			{
@@ -180,37 +180,37 @@ public class HomeYandereScript : MonoBehaviour
 			PlayerPrefs.SetInt("KidnapVictim", this.VictimID);
 			PlayerPrefs.SetFloat("Student_" + this.VictimID.ToString() + "_Sanity", 100f);
 			PlayerPrefs.SetInt("Scheme_6_Stage", 5);
-			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		if (Input.GetKeyDown(KeyCode.F1))
 		{
 			PlayerPrefs.SetInt("FemaleUniform", 1);
-			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		else if (Input.GetKeyDown(KeyCode.F2))
 		{
 			PlayerPrefs.SetInt("FemaleUniform", 2);
-			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		else if (Input.GetKeyDown(KeyCode.F3))
 		{
 			PlayerPrefs.SetInt("FemaleUniform", 3);
-			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		else if (Input.GetKeyDown(KeyCode.F4))
 		{
 			PlayerPrefs.SetInt("FemaleUniform", 4);
-			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		else if (Input.GetKeyDown(KeyCode.F5))
 		{
 			PlayerPrefs.SetInt("FemaleUniform", 5);
-			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		else if (Input.GetKeyDown(KeyCode.F6))
 		{
 			PlayerPrefs.SetInt("FemaleUniform", 6);
-			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 	}
 
