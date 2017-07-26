@@ -43,6 +43,8 @@ public class GardeningClubMemberScript : MonoBehaviour
 
 	public bool Angry;
 
+	public string AngryAnim = "idle_01";
+
 	public string IdleAnim = string.Empty;
 
 	public string WalkAnim = string.Empty;
@@ -85,7 +87,7 @@ public class GardeningClubMemberScript : MonoBehaviour
 				{
 					if (this.ID == 1)
 					{
-						this.Destination.position = new Vector3(UnityEngine.Random.Range(-60.75f, -73.25f), this.Destination.position.y, UnityEngine.Random.Range(-14.25f, 14.25f));
+						this.Destination.position = new Vector3(UnityEngine.Random.Range(-60f, -72f), this.Destination.position.y, UnityEngine.Random.Range(-15f, 15f));
 					}
 					else
 					{
@@ -217,7 +219,7 @@ public class GardeningClubMemberScript : MonoBehaviour
 	{
 		Animation component = base.GetComponent<Animation>();
 		component["f02_angryFace_00"].weight = 1f;
-		component.CrossFade("idle_01");
+		component.CrossFade(this.AngryAnim);
 		this.Reputation.PendingRep -= 10f;
 		this.CameraEffects.Alarm();
 		this.Angry = true;

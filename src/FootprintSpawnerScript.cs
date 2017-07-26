@@ -25,8 +25,6 @@ public class FootprintSpawnerScript : MonoBehaviour
 
 	public bool CanSpawn;
 
-	public bool LeftFoot;
-
 	public bool FootUp;
 
 	public float DownThreshold;
@@ -101,10 +99,6 @@ public class FootprintSpawnerScript : MonoBehaviour
 				gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, base.transform.eulerAngles.y, gameObject.transform.eulerAngles.z);
 				gameObject.transform.GetChild(0).GetComponent<FootprintScript>().Yandere = this.Yandere;
 				gameObject.transform.parent = this.BloodParent;
-				if (this.LeftFoot)
-				{
-					gameObject.transform.localScale = new Vector3(-1f, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
-				}
 				this.Bloodiness--;
 			}
 		}

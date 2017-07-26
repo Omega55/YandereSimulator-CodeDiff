@@ -40,7 +40,7 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 
 	public void Start()
 	{
-		if (SceneManager.GetActiveScene().buildIndex == 9)
+		if (SceneManager.GetActiveScene().name == "SchoolScene")
 		{
 			this.GardenArea = GameObject.Find("GardenArea").GetComponent<Collider>();
 			this.NEStairs = GameObject.Find("NEStairs").GetComponent<Collider>();
@@ -84,7 +84,7 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 			}
 			this.SetHeight();
 			Vector3 position = base.transform.position;
-			if (SceneManager.GetActiveScene().buildIndex == 9)
+			if (SceneManager.GetActiveScene().name == "SchoolScene")
 			{
 				this.CanSpawn = (!this.GardenArea.bounds.Contains(position) && !this.NEStairs.bounds.Contains(position) && !this.NWStairs.bounds.Contains(position) && !this.SEStairs.bounds.Contains(position) && !this.SWStairs.bounds.Contains(position));
 			}

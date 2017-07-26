@@ -5988,18 +5988,22 @@ public class StudentScript : MonoBehaviour
 		}
 		this.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
 		this.Ragdoll.AllColliders[10].isTrigger = false;
-		this.MyRenderer.updateWhenOffscreen = true;
 		this.NotFaceCollider.enabled = false;
-		emission.enabled = false;
 		this.FaceCollider.enabled = false;
 		this.MyController.enabled = false;
+		emission.enabled = false;
 		this.SpeechLines.Stop();
+		if (this.MyRenderer.enabled)
+		{
+			this.MyRenderer.updateWhenOffscreen = true;
+		}
 		this.Pathfinding.enabled = false;
 		this.HipCollider.enabled = true;
-		this.Prompt.Hide();
-		this.Prompt.enabled = false;
 		base.enabled = false;
 		this.UnWet();
+		this.Prompt.Hide();
+		this.Prompt.enabled = false;
+		this.Prompt.Hide();
 		this.Ragdoll.CharacterAnimation = this.CharacterAnimation;
 		this.Ragdoll.DetectionMarker = this.DetectionMarker;
 		this.Ragdoll.RightEyeOrigin = this.RightEyeOrigin;

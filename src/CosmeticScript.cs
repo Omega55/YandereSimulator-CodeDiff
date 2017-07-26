@@ -861,7 +861,7 @@ public class CosmeticScript : MonoBehaviour
 	{
 		if (this.StudentID == 15)
 		{
-			if (PlayerPrefs.GetInt("Task_15_Status") < 3)
+			if (PlayerPrefs.GetInt("Task_15_Status") < 3 && !this.TakingPortrait)
 			{
 				this.MaleAccessories[1].SetActive(false);
 			}

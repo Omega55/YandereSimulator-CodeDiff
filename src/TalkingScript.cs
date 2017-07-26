@@ -15,6 +15,8 @@ public class TalkingScript : MonoBehaviour
 
 	public bool Follow;
 
+	public bool Refuse;
+
 	public bool Fake;
 
 	private void Update()
@@ -357,15 +359,18 @@ public class TalkingScript : MonoBehaviour
 					}
 					else
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod1Anim);
 						StudentScript studentScript = this.S.StudentManager.Students[this.S.DialogueWheel.Victim];
 						if (studentScript.Routine && !studentScript.TargetedForDistraction)
 						{
+							this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod1Anim);
 							this.S.Subtitle.UpdateLabel("Student Distract", 0, 3f);
+							this.Refuse = false;
 						}
 						else
 						{
+							this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
 							this.S.Subtitle.UpdateLabel("Student Distract Refuse", 0, 3f);
+							this.Refuse = true;
 						}
 					}
 				}
@@ -382,7 +387,7 @@ public class TalkingScript : MonoBehaviour
 					if (this.S.TalkTimer <= 0f)
 					{
 						this.S.DialogueWheel.End();
-						if ((this.S.Clock.HourTime < 8f || (this.S.Clock.HourTime > 13f && this.S.Clock.HourTime < 13.375f) || this.S.Clock.HourTime > 15.5f) && !this.S.Distracting)
+						if (!this.Refuse && (this.S.Clock.HourTime < 8f || (this.S.Clock.HourTime > 13f && this.S.Clock.HourTime < 13.375f) || this.S.Clock.HourTime > 15.5f) && !this.S.Distracting)
 						{
 							this.S.DistractionTarget = this.S.StudentManager.Students[this.S.DialogueWheel.Victim];
 							this.S.DistractionTarget.TargetedForDistraction = true;
