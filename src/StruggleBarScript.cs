@@ -109,7 +109,7 @@ public class StruggleBarScript : MonoBehaviour
 	{
 		if (this.Yandere.Armed)
 		{
-			this.Yandere.Weapon[this.Yandere.Equipped].Drop();
+			this.Yandere.EquippedWeapon.Drop();
 		}
 		this.Yandere.Lost = true;
 		this.Student.Won = true;

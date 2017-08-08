@@ -77,7 +77,7 @@ public class AlarmDiscScript : MonoBehaviour
 			{
 				if (!this.Radio)
 				{
-					if (this.Student != this.Originator && !this.Student.TurnOffRadio && !this.Student.Dead && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse)
+					if (this.Student != this.Originator && !this.Student.TurnOffRadio && this.Student.Alive && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse)
 					{
 						if (this.Student.Male)
 						{
@@ -110,7 +110,7 @@ public class AlarmDiscScript : MonoBehaviour
 						this.Student.Alarm = 200f;
 					}
 				}
-				else if (!this.Student.Nemesis && !this.Student.Dead && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.Student.InEvent && this.Student.Routine && this.Student.CharacterAnimation != null && this.SourceRadio.Victim == null)
+				else if (!this.Student.Nemesis && this.Student.Alive && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.Student.InEvent && this.Student.Routine && this.Student.CharacterAnimation != null && this.SourceRadio.Victim == null)
 				{
 					this.Student.CharacterAnimation.CrossFade(this.Student.LeanAnim);
 					this.Student.Pathfinding.canSearch = false;

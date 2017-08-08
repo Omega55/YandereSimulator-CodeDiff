@@ -64,7 +64,7 @@ public class TranqDetectorScript : MonoBehaviour
 					{
 						this.SyringeIcon.spriteName = "No";
 					}
-					else if (this.Yandere.Weapon[this.Yandere.Equipped].WeaponID != 3)
+					else if (this.Yandere.EquippedWeapon.WeaponID != 3)
 					{
 						this.SyringeIcon.spriteName = "No";
 					}
@@ -110,7 +110,7 @@ public class TranqDetectorScript : MonoBehaviour
 			this.Door.enabled = false;
 			this.Yandere.Inventory.Tranquilizer = false;
 			this.Yandere.CanTranq = true;
-			this.Yandere.Weapon[this.Yandere.Equipped].Type = WeaponType.Syringe;
+			this.Yandere.EquippedWeapon.Type = WeaponType.Syringe;
 			this.Yandere.AttackManager.Stealth = true;
 			this.StopChecking = true;
 		}

@@ -190,6 +190,7 @@ public class ShoulderCameraScript : MonoBehaviour
 				this.Timer += Time.deltaTime;
 				if (this.Timer > 6f)
 				{
+					this.Portal.ClassDarkness.enabled = true;
 					this.Portal.Transition = true;
 					this.Portal.FadeOut = true;
 				}
@@ -222,7 +223,7 @@ public class ShoulderCameraScript : MonoBehaviour
 				}
 				if (this.Timer > 6f && this.Yandere.Armed)
 				{
-					this.Yandere.Weapon[this.Yandere.Equipped].Drop();
+					this.Yandere.EquippedWeapon.Drop();
 				}
 				if (this.Timer > 6.66666f && this.Phase < 4)
 				{

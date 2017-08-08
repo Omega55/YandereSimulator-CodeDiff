@@ -47,7 +47,7 @@ public class SkullScript : MonoBehaviour
 	{
 		if (this.Yandere.Armed)
 		{
-			if (this.Yandere.Weapon[this.Yandere.Equipped].WeaponID == 8)
+			if (this.Yandere.EquippedWeapon.WeaponID == 8)
 			{
 				this.Prompt.enabled = true;
 			}
@@ -65,8 +65,8 @@ public class SkullScript : MonoBehaviour
 		AudioSource component = base.GetComponent<AudioSource>();
 		if (this.Prompt.Circle[0].fillAmount <= 0f)
 		{
-			this.Yandere.Weapon[this.Yandere.Equipped].Drop();
-			this.Yandere.Weapon[this.Yandere.Equipped] = null;
+			this.Yandere.EquippedWeapon.Drop();
+			this.Yandere.EquippedWeapon = null;
 			this.Yandere.Unequip();
 			this.Yandere.DropTimer[this.Yandere.Equipped] = 0f;
 			this.RitualKnife.transform.position = this.OriginalPosition;

@@ -106,6 +106,7 @@ public class ComputerGamesScript : MonoBehaviour
 				this.Yandere.PowerUp.gameObject.SetActive(true);
 				this.Yandere.MyController.radius = 0.2f;
 				this.Yandere.CanMove = true;
+				this.Yandere.EmptyHands();
 				this.Gaming = false;
 				this.ActivateBenefit();
 				this.EnableChairs();

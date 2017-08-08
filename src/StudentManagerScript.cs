@@ -255,8 +255,6 @@ public class StudentManagerScript : MonoBehaviour
 
 	public bool DK;
 
-	public float DefaultRunSpeed;
-
 	public float ChangeTimer;
 
 	public float PinTimer;
@@ -464,7 +462,7 @@ public class StudentManagerScript : MonoBehaviour
 			while (this.ID < this.WitnessList.Length)
 			{
 				StudentScript studentScript = this.WitnessList[this.ID];
-				if (studentScript != null && (studentScript.Dead || studentScript.Attacked || (studentScript.Fleeing && !studentScript.PinningDown)))
+				if (studentScript != null && (!studentScript.Alive || studentScript.Attacked || (studentScript.Fleeing && !studentScript.PinningDown)))
 				{
 					studentScript.PinDownWitness = false;
 					if (this.ID != this.WitnessList.Length - 1)
@@ -477,16 +475,17 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			if (this.PinningDown && this.Witnesses < 4)
 			{
-				this.Yandere.RunSpeed = this.DefaultRunSpeed;
 				this.PinningDown = false;
 				this.PinPhase = 0;
 			}
 		}
 		if (this.PinningDown)
 		{
-			if (!this.Yandere.Attacking)
+			if (!this.Yandere.Attacking && this.Yandere.CanMove)
 			{
-				this.Yandere.Chased = true;
+				this.Yandere.CharacterAnimation.CrossFade("f02_pinDownPanic_00");
+				this.Yandere.Unequip();
+				this.Yandere.CanMove = false;
 			}
 			if (this.PinPhase == 1)
 			{
@@ -524,7 +523,7 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			else if (this.WitnessList[1].PinPhase == 0)
 			{
-				if (this.Yandere.CanMove && this.WitnessList[1].DistanceToDestination < 1f && this.WitnessList[2].DistanceToDestination < 1f && this.WitnessList[3].DistanceToDestination < 1f && this.WitnessList[4].DistanceToDestination < 1f)
+				if (this.WitnessList[1].DistanceToDestination < 1f && this.WitnessList[2].DistanceToDestination < 1f && this.WitnessList[3].DistanceToDestination < 1f && this.WitnessList[4].DistanceToDestination < 1f)
 				{
 					this.Clock.StopTime = true;
 					if (this.Yandere.Aiming)
@@ -541,6 +540,7 @@ public class StudentManagerScript : MonoBehaviour
 					this.Yandere.CanMove = false;
 					this.Yandere.ShoulderCamera.LookDown = true;
 					this.Yandere.RPGCamera.enabled = false;
+					this.StopMoving();
 					this.ID = 1;
 					while (this.ID < 5)
 					{
@@ -631,10 +631,6 @@ public class StudentManagerScript : MonoBehaviour
 			{
 				studentScript.BadTime = true;
 			}
-			if (this.SpawnID == 7)
-			{
-				this.CommunalLocker.Student = studentScript;
-			}
 			this.OccupySeat();
 		}
 		this.NPCsSpawned++;
@@ -701,7 +697,7 @@ public class StudentManagerScript : MonoBehaviour
 					}
 					else if (this.Yandere.Armed)
 					{
-						if (this.Yandere.Weapon[this.Yandere.Equipped].Concealable)
+						if (this.Yandere.EquippedWeapon.Concealable)
 						{
 							studentScript.Prompt.HideButton[0] = false;
 							studentScript.Prompt.Label[0].text = "     Give Weapon";
@@ -808,7 +804,7 @@ public class StudentManagerScript : MonoBehaviour
 		while (this.ID < this.Students.Length)
 		{
 			StudentScript studentScript = this.Students[this.ID];
-			if (studentScript != null && !studentScript.Dead && !studentScript.Slave && !studentScript.Tranquil)
+			if (studentScript != null && studentScript.Alive && !studentScript.Slave && !studentScript.Tranquil)
 			{
 				if (!studentScript.Started)
 				{
@@ -894,7 +890,7 @@ public class StudentManagerScript : MonoBehaviour
 			StudentScript studentScript = this.Students[this.ID];
 			if (studentScript != null)
 			{
-				if (!studentScript.Dying)
+				if (!studentScript.Dying && !studentScript.PinningDown)
 				{
 					if (this.YandereDying)
 					{
@@ -920,7 +916,7 @@ public class StudentManagerScript : MonoBehaviour
 						studentScript.EventManager.EndEvent();
 					}
 				}
-				if (!studentScript.Dead && studentScript.SawMask)
+				if (studentScript.Alive && studentScript.SawMask)
 				{
 					this.Police.MaskReported = true;
 				}
@@ -1317,7 +1313,7 @@ public class StudentManagerScript : MonoBehaviour
 			while (this.ID < this.WitnessList.Length)
 			{
 				StudentScript studentScript = this.WitnessList[this.ID];
-				if (studentScript != null && (studentScript.Dead || studentScript.Attacked || studentScript.Fleeing))
+				if (studentScript != null && (!studentScript.Alive || studentScript.Attacked || studentScript.Fleeing))
 				{
 					if (this.ID != this.WitnessList.Length - 1)
 					{
@@ -1329,8 +1325,6 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			if (this.Witnesses > 3)
 			{
-				this.DefaultRunSpeed = this.Yandere.RunSpeed;
-				this.Yandere.RunSpeed = 2f;
 				this.PinningDown = true;
 				this.PinPhase = 1;
 			}

@@ -61,7 +61,7 @@ public class EventManagerScript : MonoBehaviour
 			{
 				this.EventStudent[1] = this.StudentManager.Students[6];
 			}
-			else if (this.EventStudent[1].Dead)
+			else if (!this.EventStudent[1].Alive)
 			{
 				this.EventCheck = false;
 				base.enabled = false;
@@ -70,7 +70,7 @@ public class EventManagerScript : MonoBehaviour
 			{
 				this.EventStudent[2] = this.StudentManager.Students[7];
 			}
-			else if (this.EventStudent[2].Dead)
+			else if (!this.EventStudent[2].Alive)
 			{
 				this.EventCheck = false;
 				base.enabled = false;

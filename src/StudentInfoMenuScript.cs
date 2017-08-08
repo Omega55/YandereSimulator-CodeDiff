@@ -274,7 +274,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 		}
 		if (this.Distracting)
 		{
-			bool flag = this.StudentManager.Students[this.StudentID] != null && this.StudentManager.Students[this.StudentID].Dead;
+			bool flag = this.StudentManager.Students[this.StudentID] != null && !this.StudentManager.Students[this.StudentID].Alive;
 			if (this.StudentID == 0 || this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || flag)
 			{
 				this.PromptBar.Label[0].text = string.Empty;

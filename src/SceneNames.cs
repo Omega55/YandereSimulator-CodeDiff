@@ -8,6 +8,8 @@ public static class SceneNames
 
 	public const string FunScene = "FunScene";
 
+	public const string MoreFunScene = "MoreFunScene";
+
 	public const string HomeScene = "HomeScene";
 
 	public const string IntroScene = "IntroScene";

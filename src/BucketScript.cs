@@ -23,6 +23,8 @@ public class BucketScript : MonoBehaviour
 
 	public GameObject SpillEffect;
 
+	public GameObject Effect;
+
 	public GameObject[] Dumbbell;
 
 	public Transform[] Positions;
@@ -52,6 +54,8 @@ public class BucketScript : MonoBehaviour
 	public bool Poured;
 
 	public bool Full;
+
+	public bool Trap;
 
 	public bool Fly;
 
@@ -127,7 +131,7 @@ public class BucketScript : MonoBehaviour
 		}
 		else if (this.Yandere.Equipped > 0)
 		{
-			if (this.Yandere.Weapon[this.Yandere.Equipped].WeaponID == 12)
+			if (this.Yandere.EquippedWeapon.WeaponID == 12)
 			{
 				if (this.Dumbbells < 5)
 				{
@@ -171,7 +175,7 @@ public class BucketScript : MonoBehaviour
 			if (this.Prompt.Label[0].text == "     Place Dumbbell")
 			{
 				this.Dumbbells++;
-				this.Dumbbell[this.Dumbbells] = this.Yandere.Weapon[this.Yandere.Equipped].gameObject;
+				this.Dumbbell[this.Dumbbells] = this.Yandere.EquippedWeapon.gameObject;
 				this.Yandere.EmptyHands();
 				this.Dumbbell[this.Dumbbells].GetComponent<WeaponScript>().enabled = false;
 				this.Dumbbell[this.Dumbbells].GetComponent<PromptScript>().enabled = false;
@@ -236,7 +240,7 @@ public class BucketScript : MonoBehaviour
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
 			}
-			else
+			else if (!this.Trap)
 			{
 				this.Prompt.enabled = true;
 			}
@@ -254,23 +258,30 @@ public class BucketScript : MonoBehaviour
 						{
 							if (!this.Gasoline)
 							{
-								UnityEngine.Object.Instantiate<GameObject>(this.SpillEffect, base.transform.position + base.transform.forward * 0.5f + base.transform.up * 0.5f, base.transform.rotation);
+								this.Effect = UnityEngine.Object.Instantiate<GameObject>(this.SpillEffect, base.transform.position + base.transform.forward * 0.5f + base.transform.up * 0.5f, base.transform.rotation);
 							}
 							else
 							{
-								UnityEngine.Object.Instantiate<GameObject>(this.GasSpillEffect, base.transform.position + base.transform.forward * 0.5f + base.transform.up * 0.5f, base.transform.rotation);
+								this.Effect = UnityEngine.Object.Instantiate<GameObject>(this.GasSpillEffect, base.transform.position + base.transform.forward * 0.5f + base.transform.up * 0.5f, base.transform.rotation);
 								this.Gasoline = false;
 							}
 						}
 						else
 						{
-							UnityEngine.Object.Instantiate<GameObject>(this.BloodSpillEffect, base.transform.position + base.transform.forward * 0.5f + base.transform.up * 0.5f, base.transform.rotation);
+							this.Effect = UnityEngine.Object.Instantiate<GameObject>(this.BloodSpillEffect, base.transform.position + base.transform.forward * 0.5f + base.transform.up * 0.5f, base.transform.rotation);
 							this.Bloodiness = 0f;
 						}
-						Rigidbody component3 = base.GetComponent<Rigidbody>();
-						component3.AddRelativeForce(Vector3.forward * 150f);
-						component3.AddRelativeForce(Vector3.up * 250f);
-						base.transform.Translate(Vector3.forward * 0.5f);
+						if (this.Trap)
+						{
+							this.Effect.transform.LookAt(new Vector3(0f, -1E+10f, 0f));
+						}
+						else
+						{
+							Rigidbody component3 = base.GetComponent<Rigidbody>();
+							component3.AddRelativeForce(Vector3.forward * 150f);
+							component3.AddRelativeForce(Vector3.up * 250f);
+							base.transform.Translate(Vector3.forward * 0.5f);
+						}
 					}
 					this.Rotate += Time.deltaTime * 360f;
 					base.transform.Rotate(Vector3.right * Time.deltaTime * 360f);
@@ -278,10 +289,14 @@ public class BucketScript : MonoBehaviour
 				else
 				{
 					this.Fly = false;
+					this.Trap = false;
 					this.Rotate = 0f;
 				}
 			}
-			this.Prompt.enabled = true;
+			if (!this.Trap)
+			{
+				this.Prompt.enabled = true;
+			}
 		}
 		if (Input.GetKeyDown("b"))
 		{
@@ -322,7 +337,7 @@ public class BucketScript : MonoBehaviour
 					this.Dumbbells--;
 				}
 				this.Dropped = false;
-				component.Dead = true;
+				component.DeathType = DeathType.Weapon;
 				component.BecomeRagdoll();
 			}
 		}

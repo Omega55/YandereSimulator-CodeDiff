@@ -149,19 +149,19 @@ public class AttackManagerScript : MonoBehaviour
 		if (this.IsAttacking())
 		{
 			this.AttackTimer += Time.deltaTime;
-			WeaponScript weaponScript = this.Yandere.Weapon[this.Yandere.Equipped];
+			WeaponScript equippedWeapon = this.Yandere.EquippedWeapon;
 			SanityType sanityType = this.Yandere.GetSanityType();
-			this.SpecialEffect(weaponScript, sanityType);
+			this.SpecialEffect(equippedWeapon, sanityType);
 			if (sanityType == SanityType.Low && !this.Yandere.Chased)
 			{
-				this.LoopCheck(weaponScript);
+				this.LoopCheck(equippedWeapon);
 			}
-			this.SpecialEffect(weaponScript, sanityType);
+			this.SpecialEffect(equippedWeapon, sanityType);
 			Animation component = this.Yandere.Character.GetComponent<Animation>();
 			if (component[this.AnimName].time > component[this.AnimName].length - 0.333333343f)
 			{
 				component.CrossFade("f02_idle_00");
-				weaponScript.Flip = false;
+				equippedWeapon.Flip = false;
 			}
 			if (this.AttackTimer > component[this.AnimName].length)
 			{
@@ -171,7 +171,7 @@ public class AttackManagerScript : MonoBehaviour
 				}
 				if (!this.Yandere.CanTranq)
 				{
-					this.Yandere.TargetStudent.Dead = true;
+					this.Yandere.TargetStudent.DeathType = DeathType.Weapon;
 					this.Yandere.Bloodiness += 20f;
 					this.Yandere.UpdateBlood();
 					this.Yandere.StainWeapon();
@@ -181,9 +181,9 @@ public class AttackManagerScript : MonoBehaviour
 					this.Yandere.TargetStudent.Tranquil = true;
 					this.Yandere.CanTranq = false;
 					this.Yandere.Followers--;
-					weaponScript.Type = WeaponType.Knife;
+					equippedWeapon.Type = WeaponType.Knife;
 				}
-				this.Yandere.TargetStudent.DeathCause = weaponScript.WeaponID;
+				this.Yandere.TargetStudent.DeathCause = equippedWeapon.WeaponID;
 				this.Yandere.TargetStudent.BecomeRagdoll();
 				this.Yandere.Sanity -= 20f * this.Yandere.Numbness;
 				this.Yandere.UpdateSanity();
@@ -197,14 +197,14 @@ public class AttackManagerScript : MonoBehaviour
 				this.EffectPhase = 0;
 				this.AttackTimer = 0f;
 				this.Timer = 0f;
-				this.CheckForSpecialCase(weaponScript);
+				this.CheckForSpecialCase(equippedWeapon);
 				if (!this.Yandere.Noticed)
 				{
 					this.Yandere.CanMove = true;
 				}
 				else
 				{
-					weaponScript.Drop();
+					equippedWeapon.Drop();
 				}
 			}
 		}

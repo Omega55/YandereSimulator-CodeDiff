@@ -125,7 +125,7 @@ public class CosmeticScript : MonoBehaviour
 
 	public Texture OsanaStockings;
 
-	public Texture CustomStockings;
+	public Texture[] CustomStockings;
 
 	public Texture MyStockings;
 
@@ -159,11 +159,15 @@ public class CosmeticScript : MonoBehaviour
 
 	public bool CustomHair;
 
+	public bool HomeScene;
+
 	public bool Kidnapped;
 
 	public bool Randomize;
 
 	public bool Cutscene;
+
+	public bool TurnedOn;
 
 	public bool Teacher;
 
@@ -704,6 +708,11 @@ public class CosmeticScript : MonoBehaviour
 		{
 			this.Student.AttackOnTitan();
 		}
+		if (this.HomeScene)
+		{
+			this.Student.CharacterAnimation["idle_00"].time = 9f;
+			this.Student.CharacterAnimation["idle_00"].speed = 0f;
+		}
 		this.TaskCheck();
 		this.TurnOnCheck();
 	}
@@ -874,7 +883,7 @@ public class CosmeticScript : MonoBehaviour
 
 	private void TurnOnCheck()
 	{
-		if (!this.TakingPortrait && this.Male)
+		if (!this.TurnedOn && !this.TakingPortrait && this.Male)
 		{
 			if (this.HairColor == "Purple")
 			{
@@ -892,6 +901,7 @@ public class CosmeticScript : MonoBehaviour
 				this.LoveManager.TotalTargets++;
 			}
 		}
+		this.TurnedOn = true;
 	}
 
 	private void DestroyUnneccessaryObjects()
@@ -1019,15 +1029,105 @@ public class CosmeticScript : MonoBehaviour
 		{
 			this.MyStockings = this.KizanaStockings;
 		}
-		else if (this.Stockings == "Custom")
+		else if (this.Stockings == "Custom1")
 		{
-			WWW NewCustomStockings = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings.png");
+			WWW NewCustomStockings = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings1.png");
 			yield return NewCustomStockings;
 			if (NewCustomStockings.error == null)
 			{
-				this.CustomStockings = NewCustomStockings.texture;
+				this.CustomStockings[1] = NewCustomStockings.texture;
 			}
-			this.MyStockings = this.CustomStockings;
+			this.MyStockings = this.CustomStockings[1];
+		}
+		else if (this.Stockings == "Custom2")
+		{
+			WWW NewCustomStockings2 = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings2.png");
+			yield return NewCustomStockings2;
+			if (NewCustomStockings2.error == null)
+			{
+				this.CustomStockings[2] = NewCustomStockings2.texture;
+			}
+			this.MyStockings = this.CustomStockings[2];
+		}
+		else if (this.Stockings == "Custom3")
+		{
+			WWW NewCustomStockings3 = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings3.png");
+			yield return NewCustomStockings3;
+			if (NewCustomStockings3.error == null)
+			{
+				this.CustomStockings[3] = NewCustomStockings3.texture;
+			}
+			this.MyStockings = this.CustomStockings[3];
+		}
+		else if (this.Stockings == "Custom4")
+		{
+			WWW NewCustomStockings4 = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings4.png");
+			yield return NewCustomStockings4;
+			if (NewCustomStockings4.error == null)
+			{
+				this.CustomStockings[4] = NewCustomStockings4.texture;
+			}
+			this.MyStockings = this.CustomStockings[4];
+		}
+		else if (this.Stockings == "Custom5")
+		{
+			WWW NewCustomStockings5 = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings5.png");
+			yield return NewCustomStockings5;
+			if (NewCustomStockings5.error == null)
+			{
+				this.CustomStockings[5] = NewCustomStockings5.texture;
+			}
+			this.MyStockings = this.CustomStockings[5];
+		}
+		else if (this.Stockings == "Custom6")
+		{
+			WWW NewCustomStockings6 = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings6.png");
+			yield return NewCustomStockings6;
+			if (NewCustomStockings6.error == null)
+			{
+				this.CustomStockings[6] = NewCustomStockings6.texture;
+			}
+			this.MyStockings = this.CustomStockings[6];
+		}
+		else if (this.Stockings == "Custom7")
+		{
+			WWW NewCustomStockings7 = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings7.png");
+			yield return NewCustomStockings7;
+			if (NewCustomStockings7.error == null)
+			{
+				this.CustomStockings[7] = NewCustomStockings7.texture;
+			}
+			this.MyStockings = this.CustomStockings[7];
+		}
+		else if (this.Stockings == "Custom8")
+		{
+			WWW NewCustomStockings8 = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings8.png");
+			yield return NewCustomStockings8;
+			if (NewCustomStockings8.error == null)
+			{
+				this.CustomStockings[8] = NewCustomStockings8.texture;
+			}
+			this.MyStockings = this.CustomStockings[8];
+		}
+		else if (this.Stockings == "Custom9")
+		{
+			WWW NewCustomStockings9 = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings9.png");
+			yield return NewCustomStockings9;
+			if (NewCustomStockings9.error == null)
+			{
+				this.CustomStockings[9] = NewCustomStockings9.texture;
+			}
+			this.MyStockings = this.CustomStockings[9];
+		}
+		else if (this.Stockings == "Custom10")
+		{
+			WWW NewCustomStockings10 = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings10.png");
+			yield return NewCustomStockings10;
+			if (NewCustomStockings10.error == null)
+			{
+				this.CustomStockings[10] = NewCustomStockings10.texture;
+			}
+			this.MyStockings = this.CustomStockings[10];
 		}
 		else if (this.Stockings == "Loose")
 		{

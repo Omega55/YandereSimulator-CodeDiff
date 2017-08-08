@@ -37,7 +37,7 @@ public class FalconPunchScript : MonoBehaviour
 			if (component != null && component.StudentID > 1)
 			{
 				UnityEngine.Object.Instantiate<GameObject>(this.FalconExplosion, component.transform.position + new Vector3(0f, 1f, 0f), Quaternion.identity);
-				component.Dead = true;
+				component.DeathType = DeathType.EasterEgg;
 				component.BecomeRagdoll();
 				Rigidbody rigidbody = component.Ragdoll.AllRigidbodies[0];
 				rigidbody.isKinematic = false;

@@ -7,6 +7,8 @@ public class KnifeDetectorScript : MonoBehaviour
 
 	public Transform HeatingSpot;
 
+	public Transform Torches;
+
 	public YandereScript Yandere;
 
 	public PromptScript Prompt;
@@ -20,13 +22,15 @@ public class KnifeDetectorScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (!this.Blowtorches[1].GetComponent<Rigidbody>().useGravity || !this.Blowtorches[2].GetComponent<Rigidbody>().useGravity || !this.Blowtorches[3].GetComponent<Rigidbody>().useGravity)
+		if (this.Blowtorches[1].transform.parent != this.Torches || this.Blowtorches[2].transform.parent != this.Torches || this.Blowtorches[3].transform.parent != this.Torches)
 		{
+			this.Prompt.Hide();
+			this.Prompt.enabled = true;
 			base.enabled = false;
 		}
 		if (this.Yandere.Armed)
 		{
-			if (this.Yandere.Weapon[this.Yandere.Equipped].WeaponID == 8)
+			if (this.Yandere.EquippedWeapon.WeaponID == 8)
 			{
 				this.Prompt.MyCollider.enabled = true;
 				this.Prompt.enabled = true;
@@ -56,13 +60,13 @@ public class KnifeDetectorScript : MonoBehaviour
 		{
 			this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, this.HeatingSpot.rotation, Time.deltaTime * 10f);
 			this.Yandere.MoveTowardsTarget(this.HeatingSpot.position);
-			WeaponScript weaponScript = this.Yandere.Weapon[this.Yandere.Equipped];
-			Material material = weaponScript.MyRenderer.material;
+			WeaponScript equippedWeapon = this.Yandere.EquippedWeapon;
+			Material material = equippedWeapon.MyRenderer.material;
 			material.color = new Color(material.color.r, Mathf.MoveTowards(material.color.g, 0.5f, Time.deltaTime * 0.2f), Mathf.MoveTowards(material.color.b, 0.5f, Time.deltaTime * 0.2f), material.color.a);
 			this.Timer = Mathf.MoveTowards(this.Timer, 0f, Time.deltaTime);
 			if (this.Timer == 0f)
 			{
-				weaponScript.Heated = true;
+				equippedWeapon.Heated = true;
 				base.enabled = false;
 				this.Disable();
 			}

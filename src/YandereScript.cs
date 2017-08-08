@@ -393,7 +393,7 @@ public class YandereScript : MonoBehaviour
 
 	public bool Attacking;
 
-	public StanceType Stance;
+	public Stance Stance = new Stance(StanceType.Standing);
 
 	public bool Degloving;
 
@@ -507,8 +507,6 @@ public class YandereScript : MonoBehaviour
 
 	public bool Shoved;
 
-	public bool Armed;
-
 	public bool Drown;
 
 	public bool Xtan;
@@ -584,6 +582,8 @@ public class YandereScript : MonoBehaviour
 	public string DrownAnim = string.Empty;
 
 	public string LaughAnim = string.Empty;
+
+	public string HideAnim = string.Empty;
 
 	public string IdleAnim = string.Empty;
 
@@ -995,6 +995,26 @@ public class YandereScript : MonoBehaviour
 		}
 	}
 
+	public WeaponScript EquippedWeapon
+	{
+		get
+		{
+			return this.Weapon[this.Equipped];
+		}
+		set
+		{
+			this.Weapon[this.Equipped] = value;
+		}
+	}
+
+	public bool Armed
+	{
+		get
+		{
+			return this.EquippedWeapon != null;
+		}
+	}
+
 	public SanityType GetSanityType()
 	{
 		if (this.Sanity / 100f > 0.6666667f)
@@ -1112,7 +1132,7 @@ public class YandereScript : MonoBehaviour
 					{
 						if (Input.GetButton("LB") && Vector3.Distance(base.transform.position, this.Senpai.position) > 1f)
 						{
-							if (this.Stance == StanceType.Crouching)
+							if (this.Stance.Current == StanceType.Crouching)
 							{
 								this.CharacterAnimation.CrossFade(this.CrouchRunAnim);
 								this.MyController.Move(base.transform.forward * (2f + (float)(PlayerPrefs.GetInt("PhysicalGrade") + PlayerPrefs.GetInt("SpeedBonus")) * 0.25f) * Time.deltaTime);
@@ -1127,23 +1147,23 @@ public class YandereScript : MonoBehaviour
 								this.CharacterAnimation.CrossFade(this.WalkAnim);
 								this.MyController.Move(base.transform.forward * (this.WalkSpeed * Time.deltaTime));
 							}
-							if (this.Stance == StanceType.Crouching)
+							if (this.Stance.Current == StanceType.Crouching)
 							{
 							}
-							if (this.Stance == StanceType.Crawling)
+							if (this.Stance.Current == StanceType.Crawling)
 							{
-								this.Stance = StanceType.Crouching;
+								this.Stance.Current = StanceType.Crouching;
 								this.Crouch();
 							}
 						}
 						else if (!this.Dragging)
 						{
-							if (this.Stance == StanceType.Crawling)
+							if (this.Stance.Current == StanceType.Crawling)
 							{
 								this.CharacterAnimation.CrossFade(this.CrawlWalkAnim);
 								this.MyController.Move(base.transform.forward * (this.CrawlSpeed * Time.deltaTime));
 							}
-							else if (this.Stance == StanceType.Crouching)
+							else if (this.Stance.Current == StanceType.Crouching)
 							{
 								this.CharacterAnimation[this.CrouchWalkAnim].speed = 1f;
 								this.CharacterAnimation.CrossFade(this.CrouchWalkAnim);
@@ -1163,11 +1183,11 @@ public class YandereScript : MonoBehaviour
 					}
 					else if (!this.Dragging)
 					{
-						if (this.Stance == StanceType.Crawling)
+						if (this.Stance.Current == StanceType.Crawling)
 						{
 							this.CharacterAnimation.CrossFade(this.CrawlIdleAnim);
 						}
-						else if (this.Stance == StanceType.Crouching)
+						else if (this.Stance.Current == StanceType.Crouching)
 						{
 							this.CharacterAnimation.CrossFade(this.CrouchIdleAnim);
 						}
@@ -1185,13 +1205,13 @@ public class YandereScript : MonoBehaviour
 				{
 					if (this.v != 0f || this.h != 0f)
 					{
-						if (this.Stance == StanceType.Crawling)
+						if (this.Stance.Current == StanceType.Crawling)
 						{
 							this.CharacterAnimation.CrossFade(this.CrawlWalkAnim);
 							this.MyController.Move(base.transform.forward * (this.CrawlSpeed * Time.deltaTime * this.v));
 							this.MyController.Move(base.transform.right * (this.CrawlSpeed * Time.deltaTime * this.h));
 						}
-						else if (this.Stance == StanceType.Crouching)
+						else if (this.Stance.Current == StanceType.Crouching)
 						{
 							this.CharacterAnimation.CrossFade(this.CrouchWalkAnim);
 							this.MyController.Move(base.transform.forward * (this.CrouchSpeed * Time.deltaTime * this.v));
@@ -1204,11 +1224,11 @@ public class YandereScript : MonoBehaviour
 							this.MyController.Move(base.transform.right * (this.WalkSpeed * Time.deltaTime * this.h));
 						}
 					}
-					else if (this.Stance == StanceType.Crawling)
+					else if (this.Stance.Current == StanceType.Crawling)
 					{
 						this.CharacterAnimation.CrossFade(this.CrawlIdleAnim);
 					}
-					else if (this.Stance == StanceType.Crouching)
+					else if (this.Stance.Current == StanceType.Crouching)
 					{
 						this.CharacterAnimation.CrossFade(this.CrouchIdleAnim);
 					}
@@ -1217,14 +1237,14 @@ public class YandereScript : MonoBehaviour
 						this.CharacterAnimation.CrossFade(this.IdleAnim);
 					}
 					this.Bend += Input.GetAxis("Mouse Y") * 8f;
-					if (this.Stance == StanceType.Crawling)
+					if (this.Stance.Current == StanceType.Crawling)
 					{
 						if (this.Bend < 0f)
 						{
 							this.Bend = 0f;
 						}
 					}
-					else if (this.Stance == StanceType.Crouching)
+					else if (this.Stance.Current == StanceType.Crouching)
 					{
 						if (this.Bend < -45f)
 						{
@@ -1289,7 +1309,7 @@ public class YandereScript : MonoBehaviour
 							Time.timeScale = 1f;
 						}
 					}
-					if (!this.Aiming && this.Stance != StanceType.Crouching && this.Stance != StanceType.Crawling && !this.Accessories[9].activeInHierarchy && !this.Accessories[16].activeInHierarchy)
+					if (!this.Aiming && this.Stance.Current != StanceType.Crouching && this.Stance.Current != StanceType.Crawling && !this.Accessories[9].activeInHierarchy && !this.Accessories[16].activeInHierarchy)
 					{
 						if (Input.GetButton("RB"))
 						{
@@ -1402,21 +1422,21 @@ public class YandereScript : MonoBehaviour
 					}
 					if (!Input.GetButton("LB"))
 					{
-						if (this.Stance != StanceType.Crouching && this.Stance != StanceType.Crawling)
+						if (this.Stance.Current != StanceType.Crouching && this.Stance.Current != StanceType.Crawling)
 						{
 							if (Input.GetButtonDown("RS"))
 							{
 								this.Obscurance.enabled = false;
 								this.CrouchButtonDown = true;
 								this.YandereVision = false;
-								this.Stance = StanceType.Crouching;
+								this.Stance.Current = StanceType.Crouching;
 								this.Crouch();
 								this.EmptyHands();
 							}
 						}
 						else
 						{
-							if (this.Stance == StanceType.Crouching)
+							if (this.Stance.Current == StanceType.Crouching)
 							{
 								if (Input.GetButton("RS") && !this.CameFromCrouch)
 								{
@@ -1427,13 +1447,13 @@ public class YandereScript : MonoBehaviour
 									this.EmptyHands();
 									this.Obscurance.enabled = false;
 									this.YandereVision = false;
-									this.Stance = StanceType.Crawling;
+									this.Stance.Current = StanceType.Crawling;
 									this.CrawlTimer = 0f;
 									this.Uncrouch();
 								}
 								else if (Input.GetButtonUp("RS") && !this.CrouchButtonDown && !this.CameFromCrouch)
 								{
-									this.Stance = StanceType.Standing;
+									this.Stance.Current = StanceType.Standing;
 									this.CrawlTimer = 0f;
 									this.Uncrouch();
 								}
@@ -1441,7 +1461,7 @@ public class YandereScript : MonoBehaviour
 							else if (Input.GetButtonDown("RS"))
 							{
 								this.CameFromCrouch = true;
-								this.Stance = StanceType.Crouching;
+								this.Stance.Current = StanceType.Crouching;
 								this.Crouch();
 							}
 							if (Input.GetButtonUp("RS"))
@@ -1594,7 +1614,7 @@ public class YandereScript : MonoBehaviour
 					while (this.ID < this.ArmedAnims.Length)
 					{
 						string name = this.ArmedAnims[this.ID];
-						this.CharacterAnimation[name].weight = Mathf.Lerp(this.CharacterAnimation[name].weight, (this.Weapon[this.Equipped].AnimID != this.ID) ? 0f : 1f, Time.deltaTime * 10f);
+						this.CharacterAnimation[name].weight = Mathf.Lerp(this.CharacterAnimation[name].weight, (this.EquippedWeapon.AnimID != this.ID) ? 0f : 1f, Time.deltaTime * 10f);
 						this.ID++;
 					}
 				}
@@ -1987,19 +2007,19 @@ public class YandereScript : MonoBehaviour
 							this.CharacterAnimation.CrossFade("f02_struggleWinA_00");
 							if (this.CharacterAnimation["f02_struggleWinA_00"].time > this.CharacterAnimation["f02_struggleWinA_00"].length - 1f)
 							{
-								this.Weapon[this.Equipped].transform.localEulerAngles = Vector3.Lerp(this.Weapon[this.Equipped].transform.localEulerAngles, Vector3.zero, Time.deltaTime * 3.33333f);
+								this.EquippedWeapon.transform.localEulerAngles = Vector3.Lerp(this.EquippedWeapon.transform.localEulerAngles, Vector3.zero, Time.deltaTime * 3.33333f);
 							}
 						}
 						else
 						{
 							this.CharacterAnimation.CrossFade("f02_teacherStruggleWinA_00");
-							this.Weapon[this.Equipped].transform.localEulerAngles = Vector3.Lerp(this.Weapon[this.Equipped].transform.localEulerAngles, Vector3.zero, Time.deltaTime);
+							this.EquippedWeapon.transform.localEulerAngles = Vector3.Lerp(this.EquippedWeapon.transform.localEulerAngles, Vector3.zero, Time.deltaTime);
 						}
 						if (this.StrugglePhase == 0)
 						{
 							if ((!this.TargetStudent.Teacher && this.CharacterAnimation["f02_struggleWinA_00"].time > 1.3f) || (this.TargetStudent.Teacher && this.CharacterAnimation["f02_teacherStruggleWinA_00"].time > 0.8f))
 							{
-								UnityEngine.Object.Instantiate<GameObject>(this.TargetStudent.StabBloodEffect, (!this.TargetStudent.Teacher) ? this.TargetStudent.Head.position : this.Weapon[this.Equipped].transform.position, Quaternion.identity);
+								UnityEngine.Object.Instantiate<GameObject>(this.TargetStudent.StabBloodEffect, (!this.TargetStudent.Teacher) ? this.TargetStudent.Head.position : this.EquippedWeapon.transform.position, Quaternion.identity);
 								this.Bloodiness += 20f;
 								this.UpdateBlood();
 								this.Sanity -= 20f * this.Numbness;
@@ -2012,13 +2032,13 @@ public class YandereScript : MonoBehaviour
 						{
 							if (this.TargetStudent.Teacher && this.CharacterAnimation["f02_teacherStruggleWinA_00"].time > 1.3f)
 							{
-								UnityEngine.Object.Instantiate<GameObject>(this.TargetStudent.StabBloodEffect, this.Weapon[this.Equipped].transform.position, Quaternion.identity);
+								UnityEngine.Object.Instantiate<GameObject>(this.TargetStudent.StabBloodEffect, this.EquippedWeapon.transform.position, Quaternion.identity);
 								this.StrugglePhase++;
 							}
 						}
 						else if (this.StrugglePhase == 2 && this.TargetStudent.Teacher && this.CharacterAnimation["f02_teacherStruggleWinA_00"].time > 2.1f)
 						{
-							UnityEngine.Object.Instantiate<GameObject>(this.TargetStudent.StabBloodEffect, this.Weapon[this.Equipped].transform.position, Quaternion.identity);
+							UnityEngine.Object.Instantiate<GameObject>(this.TargetStudent.StabBloodEffect, this.EquippedWeapon.transform.position, Quaternion.identity);
 							this.StrugglePhase++;
 						}
 						if ((!this.TargetStudent.Teacher && this.CharacterAnimation["f02_struggleWinA_00"].time > this.CharacterAnimation["f02_struggleWinA_00"].length) || (this.TargetStudent.Teacher && this.CharacterAnimation["f02_teacherStruggleWinA_00"].time > this.CharacterAnimation["f02_teacherStruggleWinA_00"].length))
@@ -2028,8 +2048,13 @@ public class YandereScript : MonoBehaviour
 							this.ShoulderCamera.Struggle = false;
 							this.Struggling = false;
 							this.StrugglePhase = 0;
+							if (this.TargetStudent == this.Pursuer)
+							{
+								this.Pursuer = null;
+								this.Chased = false;
+							}
 							this.TargetStudent.BecomeRagdoll();
-							this.TargetStudent.Dead = true;
+							this.TargetStudent.DeathType = DeathType.Weapon;
 						}
 					}
 					else if (this.Lost)
@@ -2322,7 +2347,7 @@ public class YandereScript : MonoBehaviour
 					{
 						base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.HidingSpot.rotation, Time.deltaTime * 10f);
 						this.MoveTowardsTarget(this.HidingSpot.position);
-						this.CharacterAnimation.CrossFade("f02_hiding_00");
+						this.CharacterAnimation.CrossFade(this.HideAnim);
 					}
 					else
 					{
@@ -2332,6 +2357,7 @@ public class YandereScript : MonoBehaviour
 						if (this.ExitTimer > 1f || Vector3.Distance(base.transform.position, this.ExitSpot.position) < 0.1f)
 						{
 							this.MyController.center = new Vector3(this.MyController.center.x, 0.825f, this.MyController.center.z);
+							this.MyController.radius = 0.2f;
 							this.MyController.height = 1.45f;
 							this.ExitTimer = 0f;
 							this.Exiting = false;
@@ -2452,7 +2478,7 @@ public class YandereScript : MonoBehaviour
 					}
 					else if (this.DigPhase == 4 && this.CharacterAnimation["f02_shovelDig_00"].time >= this.CharacterAnimation["f02_shovelDig_00"].length)
 					{
-						this.Weapon[this.Equipped].gameObject.SetActive(true);
+						this.EquippedWeapon.gameObject.SetActive(true);
 						this.FloatingShovel.SetActive(false);
 						this.RPGCamera.enabled = true;
 						this.Digging = false;
@@ -2482,7 +2508,7 @@ public class YandereScript : MonoBehaviour
 					}
 					else if (this.CharacterAnimation["f02_shovelBury_00"].time >= this.CharacterAnimation["f02_shovelBury_00"].length)
 					{
-						this.Weapon[this.Equipped].gameObject.SetActive(true);
+						this.EquippedWeapon.gameObject.SetActive(true);
 						this.FloatingShovel.SetActive(false);
 						this.RPGCamera.enabled = true;
 						this.Burying = false;
@@ -2576,7 +2602,7 @@ public class YandereScript : MonoBehaviour
 						}
 						this.Obscurance.enabled = false;
 						this.YandereVision = false;
-						this.Stance = StanceType.Standing;
+						this.Stance.Current = StanceType.Standing;
 						this.Mopping = false;
 						this.Uncrouch();
 						this.YandereTimer = 0f;
@@ -3038,7 +3064,7 @@ public class YandereScript : MonoBehaviour
 					this.CharacterAnimation.CrossFade(this.DrownAnim);
 					if (this.CharacterAnimation[this.DrownAnim].time > this.CharacterAnimation[this.DrownAnim].length)
 					{
-						this.TargetStudent.Dead = true;
+						this.TargetStudent.DeathType = DeathType.Drowning;
 						this.Attacking = false;
 						this.CanMove = true;
 						this.Drown = false;
@@ -3077,7 +3103,7 @@ public class YandereScript : MonoBehaviour
 					if (this.CharacterAnimation["f02_roofPushA_00"].time > this.CharacterAnimation["f02_roofPushA_00"].length)
 					{
 						this.CameraTarget.localPosition = new Vector3(0f, 1f, 0f);
-						this.TargetStudent.Dead = true;
+						this.TargetStudent.DeathType = DeathType.Falling;
 						this.Attacking = false;
 						this.RoofPush = false;
 						this.CanMove = true;
@@ -3098,13 +3124,13 @@ public class YandereScript : MonoBehaviour
 				}
 				else if (!this.SanityBased)
 				{
-					if (this.Weapon[this.Equipped].WeaponID == 11)
+					if (this.EquippedWeapon.WeaponID == 11)
 					{
 						this.CharacterAnimation.CrossFade("CyborgNinja_Slash");
 						if (this.CharacterAnimation["CyborgNinja_Slash"].time == 0f)
 						{
 							this.TargetStudent.CharacterAnimation[this.TargetStudent.PhoneAnim].weight = 0f;
-							this.Weapon[this.Equipped].gameObject.GetComponent<AudioSource>().Play();
+							this.EquippedWeapon.gameObject.GetComponent<AudioSource>().Play();
 						}
 						if (this.CharacterAnimation["CyborgNinja_Slash"].time >= this.CharacterAnimation["CyborgNinja_Slash"].length)
 						{
@@ -3121,24 +3147,24 @@ public class YandereScript : MonoBehaviour
 							}
 							else
 							{
-								this.Weapon[this.Equipped].Drop();
+								this.EquippedWeapon.Drop();
 							}
 						}
 					}
-					else if (this.Weapon[this.Equipped].WeaponID == 7)
+					else if (this.EquippedWeapon.WeaponID == 7)
 					{
 						this.CharacterAnimation.CrossFade("f02_buzzSawKill_A_00");
 						if (this.CharacterAnimation["f02_buzzSawKill_A_00"].time == 0f)
 						{
 							this.TargetStudent.CharacterAnimation[this.TargetStudent.PhoneAnim].weight = 0f;
-							this.Weapon[this.Equipped].gameObject.GetComponent<AudioSource>().Play();
+							this.EquippedWeapon.gameObject.GetComponent<AudioSource>().Play();
 						}
 						if (this.AttackPhase == 1)
 						{
 							if (this.CharacterAnimation["f02_buzzSawKill_A_00"].time > 0.333333343f)
 							{
 								this.TargetStudent.LiquidProjector.enabled = true;
-								this.Weapon[this.Equipped].Effect();
+								this.EquippedWeapon.Effect();
 								this.StainWeapon();
 								this.TargetStudent.LiquidProjector.material.mainTexture = this.BloodTextures[1];
 								this.Bloodiness += 20f;
@@ -3167,7 +3193,7 @@ public class YandereScript : MonoBehaviour
 							this.AttackPhase = 1;
 							this.Sanity -= 20f * this.Numbness;
 							this.UpdateSanity();
-							this.TargetStudent.Dead = true;
+							this.TargetStudent.DeathType = DeathType.Weapon;
 							this.TargetStudent.BecomeRagdoll();
 							if (!this.Noticed)
 							{
@@ -3175,11 +3201,11 @@ public class YandereScript : MonoBehaviour
 							}
 							else
 							{
-								this.Weapon[this.Equipped].Drop();
+								this.EquippedWeapon.Drop();
 							}
 						}
 					}
-					else if (!this.Weapon[this.Equipped].Concealable)
+					else if (!this.EquippedWeapon.Concealable)
 					{
 						if (this.AttackPhase == 1)
 						{
@@ -3191,7 +3217,7 @@ public class YandereScript : MonoBehaviour
 									this.StudentManager.Reporter = null;
 								}
 								UnityEngine.Object.Destroy(this.TargetStudent.DeathScream);
-								this.Weapon[this.Equipped].Effect();
+								this.EquippedWeapon.Effect();
 								this.AttackPhase = 2;
 								this.Bloodiness += 20f;
 								this.UpdateBlood();
@@ -3203,7 +3229,7 @@ public class YandereScript : MonoBehaviour
 						else if (this.CharacterAnimation["f02_swingA_00"].time >= this.CharacterAnimation["f02_swingA_00"].length * 0.9f)
 						{
 							this.CharacterAnimation.CrossFade(this.IdleAnim);
-							this.TargetStudent.Dead = true;
+							this.TargetStudent.DeathType = DeathType.Weapon;
 							this.TargetStudent.BecomeRagdoll();
 							this.MyController.radius = 0.2f;
 							this.Attacking = false;
@@ -3215,7 +3241,7 @@ public class YandereScript : MonoBehaviour
 							}
 							else
 							{
-								this.Weapon[this.Equipped].Drop();
+								this.EquippedWeapon.Drop();
 							}
 						}
 					}
@@ -3225,7 +3251,7 @@ public class YandereScript : MonoBehaviour
 						if (this.CharacterAnimation["f02_stab_00"].time > this.CharacterAnimation["f02_stab_00"].length * 0.35f)
 						{
 							this.CharacterAnimation.CrossFade(this.IdleAnim);
-							if (this.Weapon[this.Equipped].Flaming)
+							if (this.EquippedWeapon.Flaming)
 							{
 								this.TargetStudent.Combust();
 							}
@@ -3238,7 +3264,7 @@ public class YandereScript : MonoBehaviour
 							else
 							{
 								this.TargetStudent.BloodSpray.SetActive(true);
-								this.TargetStudent.Dead = true;
+								this.TargetStudent.DeathType = DeathType.Weapon;
 								this.Bloodiness += 20f;
 								this.UpdateBlood();
 							}
@@ -3251,12 +3277,12 @@ public class YandereScript : MonoBehaviour
 							this.AttackPhase = 2;
 							this.Sanity -= 20f * this.Numbness;
 							this.UpdateSanity();
-							if (this.Weapon[this.Equipped].WeaponID == 8)
+							if (this.EquippedWeapon.WeaponID == 8)
 							{
 								this.TargetStudent.Ragdoll.Sacrifice = true;
 								if (PlayerPrefs.GetInt("Paranormal") == 1)
 								{
-									this.Weapon[this.Equipped].Effect();
+									this.EquippedWeapon.Effect();
 								}
 							}
 						}
@@ -3281,16 +3307,16 @@ public class YandereScript : MonoBehaviour
 							}
 							else
 							{
-								this.Weapon[this.Equipped].Drop();
+								this.EquippedWeapon.Drop();
 							}
 						}
 					}
 				}
 			}
-			if (this.CanMove && !this.Attacking && !this.Dragging && this.PickUp == null && !this.Aiming && this.Stance != StanceType.Crawling && !this.Possessed && !this.Carrying && !this.CirnoWings.activeInHierarchy && this.LaughIntensity < 16f)
+			if (this.CanMove && !this.Attacking && !this.Dragging && this.PickUp == null && !this.Aiming && this.Stance.Current != StanceType.Crawling && !this.Possessed && !this.Carrying && !this.CirnoWings.activeInHierarchy && this.LaughIntensity < 16f)
 			{
 				this.CharacterAnimation["f02_yanderePose_00"].weight = Mathf.Lerp(this.CharacterAnimation["f02_yanderePose_00"].weight, 1f - this.Sanity / 100f, Time.deltaTime * 10f);
-				if (this.Hairstyle == 2 && this.Stance == StanceType.Crouching)
+				if (this.Hairstyle == 2 && this.Stance.Current == StanceType.Crouching)
 				{
 					this.Slouch = Mathf.Lerp(this.Slouch, 0f, Time.deltaTime * 20f);
 				}
@@ -3678,11 +3704,11 @@ public class YandereScript : MonoBehaviour
 		}
 		if (this.Aiming)
 		{
-			if (this.Stance == StanceType.Crawling)
+			if (this.Stance.Current == StanceType.Crawling)
 			{
 				this.TargetHeight = -1.4f;
 			}
-			else if (this.Stance == StanceType.Crouching)
+			else if (this.Stance.Current == StanceType.Crouching)
 			{
 				this.TargetHeight = -0.6f;
 			}
@@ -3769,13 +3795,13 @@ public class YandereScript : MonoBehaviour
 
 	public void StainWeapon()
 	{
-		if (this.Weapon[this.Equipped] != null)
+		if (this.EquippedWeapon != null)
 		{
-			if (this.TargetStudent != null && this.TargetStudent.StudentID < this.Weapon[this.Equipped].Victims.Length)
+			if (this.TargetStudent != null && this.TargetStudent.StudentID < this.EquippedWeapon.Victims.Length)
 			{
-				this.Weapon[this.Equipped].Victims[this.TargetStudent.StudentID] = true;
+				this.EquippedWeapon.Victims[this.TargetStudent.StudentID] = true;
 			}
-			this.Weapon[this.Equipped].Blood.enabled = true;
+			this.EquippedWeapon.Blood.enabled = true;
 			if (this.Gloved && !this.Gloves.Blood.enabled)
 			{
 				this.Gloves.PickUp.Evidence = true;
@@ -3788,9 +3814,9 @@ public class YandereScript : MonoBehaviour
 				this.Mask.Blood.enabled = true;
 				this.Police.BloodyClothing++;
 			}
-			if (!this.Weapon[this.Equipped].Evidence)
+			if (!this.EquippedWeapon.Evidence)
 			{
-				this.Weapon[this.Equipped].Evidence = true;
+				this.EquippedWeapon.Evidence = true;
 				this.Police.MurderWeapons++;
 			}
 		}
@@ -3910,9 +3936,9 @@ public class YandereScript : MonoBehaviour
 		{
 			if (this.Equipped < 3)
 			{
-				if (this.Weapon[this.Equipped] != null)
+				if (this.EquippedWeapon != null)
 				{
-					this.Weapon[this.Equipped].gameObject.SetActive(false);
+					this.EquippedWeapon.gameObject.SetActive(false);
 				}
 			}
 			else
@@ -3921,7 +3947,6 @@ public class YandereScript : MonoBehaviour
 			}
 			this.Equipped = 0;
 			this.Mopping = false;
-			this.Armed = false;
 			this.StudentManager.UpdateStudents();
 			this.WeaponManager.UpdateLabels();
 			this.WeaponMenu.UpdateSprites();
@@ -4435,7 +4460,7 @@ public class YandereScript : MonoBehaviour
 		this.WalkAnim = "f02_cirnoWalk_00";
 		this.RunAnim = "f02_cirnoRun_00";
 		this.EasterEggMenu.SetActive(false);
-		this.Stance = StanceType.Standing;
+		this.Stance.Current = StanceType.Standing;
 		this.Uncrouch();
 		this.Egg = true;
 		this.Hairstyle = 0;
@@ -4598,7 +4623,14 @@ public class YandereScript : MonoBehaviour
 
 	private void Pose()
 	{
-		this.StudentManager.Pose = true;
+		if (!this.StudentManager.Pose)
+		{
+			this.StudentManager.Pose = true;
+		}
+		else
+		{
+			this.StudentManager.Pose = false;
+		}
 		this.StudentManager.UpdateStudents();
 	}
 
@@ -4627,7 +4659,7 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.materials[1].mainTexture = this.NudePanties;
 		this.MyRenderer.materials[2].mainTexture = this.NudePanties;
 		this.TheDebugMenuScript.UpdateCensor();
-		this.Stance = StanceType.Standing;
+		this.Stance.Current = StanceType.Standing;
 		this.Egg = true;
 	}
 
@@ -4789,6 +4821,7 @@ public class YandereScript : MonoBehaviour
 		{
 			this.Ragdoll.GetComponent<RagdollScript>().Fall();
 		}
+		this.HeavyWeight = false;
 		this.Carrying = false;
 		this.IdleAnim = this.OriginalIdleAnim;
 		this.WalkAnim = this.OriginalWalkAnim;

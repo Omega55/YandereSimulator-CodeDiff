@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class NotificationManagerScript : MonoBehaviour
@@ -18,11 +17,11 @@ public class NotificationManagerScript : MonoBehaviour
 
 	public ClockScript Clock;
 
-	private Dictionary<NotificationType, string> NotificationMessages;
+	private NotificationTypeAndStringDictionary NotificationMessages;
 
 	private void Awake()
 	{
-		this.NotificationMessages = new Dictionary<NotificationType, string>
+		this.NotificationMessages = new NotificationTypeAndStringDictionary
 		{
 			{
 				NotificationType.Bloody,

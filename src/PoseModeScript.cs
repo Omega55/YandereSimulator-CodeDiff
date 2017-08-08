@@ -133,12 +133,7 @@ public class PoseModeScript : MonoBehaviour
 				}
 				if (Input.GetButtonDown("B"))
 				{
-					this.PromptBar.ClearButtons();
-					this.PromptBar.Show = false;
-					this.Yandere.CanMove = true;
-					this.Show = false;
-					this.Selected = 1;
-					this.UpdateHighlight();
+					this.Exit();
 				}
 			}
 			else if (this.ChoosingBodyRegion)
@@ -773,7 +768,7 @@ public class PoseModeScript : MonoBehaviour
 			this.OptionLabels[11].text = "Stockings: " + this.Student.Cosmetic.Stockings;
 			this.Limit = 11;
 			UILabel uilabel3 = this.OptionLabels[3];
-			UILabel uilabel4 = this.OptionLabels[8];
+			UILabel uilabel4 = this.OptionLabels[11];
 			if (!this.Student.Male)
 			{
 				uilabel3.color = new Color(uilabel3.color.r, uilabel3.color.g, uilabel3.color.b, 1f);
@@ -936,5 +931,15 @@ public class PoseModeScript : MonoBehaviour
 		{
 			this.Value = -1;
 		}
+	}
+
+	private void Exit()
+	{
+		this.PromptBar.ClearButtons();
+		this.PromptBar.Show = false;
+		this.Yandere.CanMove = true;
+		this.Show = false;
+		this.Selected = 1;
+		this.UpdateHighlight();
 	}
 }

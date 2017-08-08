@@ -61,7 +61,7 @@ public class FanCoverScript : MonoBehaviour
 		{
 			if (this.Yandere.Armed)
 			{
-				this.Prompt.HideButton[0] = (this.Yandere.Weapon[this.Yandere.Equipped].WeaponID != 6 || !this.Rival.Meeting);
+				this.Prompt.HideButton[0] = (this.Yandere.EquippedWeapon.WeaponID != 6 || !this.Rival.Meeting);
 			}
 			else
 			{
@@ -144,7 +144,7 @@ public class FanCoverScript : MonoBehaviour
 					this.Yandere.UpdateBlood();
 					this.Rival.Ragdoll.Decapitated = true;
 					this.Rival.OsanaHair.SetActive(false);
-					this.Rival.Dead = true;
+					this.Rival.DeathType = DeathType.Weapon;
 					this.Rival.BecomeRagdoll();
 					this.BloodEffects.Stop();
 					this.Explosion.SetActive(true);

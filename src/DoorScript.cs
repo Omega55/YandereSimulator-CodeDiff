@@ -11,6 +11,8 @@ public class DoorScript : MonoBehaviour
 
 	public YandereScript Yandere;
 
+	public BucketScript Bucket;
+
 	public PromptScript Prompt;
 
 	public float[] ClosedPositions;
@@ -25,7 +27,11 @@ public class DoorScript : MonoBehaviour
 
 	public float[] OriginX;
 
+	public bool CanSetBucket;
+
 	public bool HidingSpot;
+
+	public bool BucketSet;
 
 	public bool Swinging;
 
@@ -43,9 +49,11 @@ public class DoorScript : MonoBehaviour
 
 	public float Rotation;
 
-	public float Swing = 150f;
-
 	public float Timer;
+
+	public float TrapSwing = 12.15f;
+
+	public float Swing = 150f;
 
 	public Renderer Sign;
 
@@ -59,6 +67,7 @@ public class DoorScript : MonoBehaviour
 
 	private void Start()
 	{
+		this.TrapSwing = 12.15f;
 		this.Yandere = GameObject.Find("YandereChan").GetComponent<YandereScript>();
 		if (this.Swinging)
 		{
@@ -102,49 +111,89 @@ public class DoorScript : MonoBehaviour
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Circle[0].fillAmount = 1f;
-			if (!this.Open)
+			if (!this.CanSetBucket)
 			{
-				this.OpenDoor();
+				if (!this.Open)
+				{
+					this.OpenDoor();
+				}
+				else
+				{
+					this.CloseDoor();
+				}
 			}
 			else
 			{
-				this.CloseDoor();
+				this.Bucket = this.Yandere.PickUp.Bucket;
+				this.Yandere.EmptyHands();
+				this.Bucket.transform.parent = base.transform;
+				this.Bucket.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+				this.Bucket.Trap = true;
+				this.Bucket.Prompt.Hide();
+				this.Bucket.Prompt.enabled = false;
+				this.CheckDirection();
+				if (this.North)
+				{
+					this.Bucket.transform.localPosition = new Vector3(0f, 2.25f, 0.2975f);
+				}
+				else
+				{
+					this.Bucket.transform.localPosition = new Vector3(0f, 2.25f, -0.2975f);
+				}
+				this.Bucket.GetComponent<Rigidbody>().isKinematic = true;
+				this.Bucket.GetComponent<Rigidbody>().useGravity = false;
+				this.CanSetBucket = false;
+				this.BucketSet = true;
+				this.Open = false;
+				this.Timer = 0f;
+				this.Prompt.enabled = false;
+				this.Prompt.Hide();
 			}
 		}
 		if (this.Timer < 2f)
 		{
 			this.Timer += Time.deltaTime;
-			if (!this.Open)
+			if (this.BucketSet)
 			{
 				for (int i = 0; i < this.Doors.Length; i++)
 				{
 					Transform transform = this.Doors[i];
-					if (!this.Swinging)
-					{
-						transform.localPosition = new Vector3(Mathf.Lerp(transform.localPosition.x, this.ClosedPositions[i], Time.deltaTime * 3.6f), transform.localPosition.y, transform.localPosition.z);
-					}
-					else
-					{
-						this.Rotation = Mathf.Lerp(this.Rotation, 0f, Time.deltaTime * 3.6f);
-						transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, Mathf.Lerp(transform.localPosition.z, this.OriginX[i], Time.deltaTime * 3.6f));
-						transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, (i != 0) ? (-this.Rotation) : this.Rotation, transform.localEulerAngles.z);
-					}
+					transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, Mathf.Lerp(transform.localPosition.z, this.OriginX[i] + ((!this.North) ? this.ShiftNorth : this.ShiftSouth), Time.deltaTime * 3.6f));
+					this.Rotation = Mathf.Lerp(this.Rotation, (!this.North) ? this.TrapSwing : (-this.TrapSwing), Time.deltaTime * 3.6f);
+					transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, (i != 0) ? (-this.Rotation) : this.Rotation, transform.localEulerAngles.z);
 				}
 			}
-			else
+			else if (!this.Open)
 			{
 				for (int j = 0; j < this.Doors.Length; j++)
 				{
 					Transform transform2 = this.Doors[j];
 					if (!this.Swinging)
 					{
-						transform2.localPosition = new Vector3(Mathf.Lerp(transform2.localPosition.x, this.OpenPositions[j], Time.deltaTime * 3.6f), transform2.localPosition.y, transform2.localPosition.z);
+						transform2.localPosition = new Vector3(Mathf.Lerp(transform2.localPosition.x, this.ClosedPositions[j], Time.deltaTime * 3.6f), transform2.localPosition.y, transform2.localPosition.z);
 					}
 					else
 					{
-						transform2.localPosition = new Vector3(transform2.localPosition.x, transform2.localPosition.y, Mathf.Lerp(transform2.localPosition.z, this.OriginX[j] + ((!this.North) ? this.ShiftSouth : this.ShiftNorth), Time.deltaTime * 3.6f));
-						this.Rotation = Mathf.Lerp(this.Rotation, (!this.North) ? (-this.Swing) : this.Swing, Time.deltaTime * 3.6f);
+						this.Rotation = Mathf.Lerp(this.Rotation, 0f, Time.deltaTime * 3.6f);
+						transform2.localPosition = new Vector3(transform2.localPosition.x, transform2.localPosition.y, Mathf.Lerp(transform2.localPosition.z, this.OriginX[j], Time.deltaTime * 3.6f));
 						transform2.localEulerAngles = new Vector3(transform2.localEulerAngles.x, (j != 0) ? (-this.Rotation) : this.Rotation, transform2.localEulerAngles.z);
+					}
+				}
+			}
+			else
+			{
+				for (int k = 0; k < this.Doors.Length; k++)
+				{
+					Transform transform3 = this.Doors[k];
+					if (!this.Swinging)
+					{
+						transform3.localPosition = new Vector3(Mathf.Lerp(transform3.localPosition.x, this.OpenPositions[k], Time.deltaTime * 3.6f), transform3.localPosition.y, transform3.localPosition.z);
+					}
+					else
+					{
+						transform3.localPosition = new Vector3(transform3.localPosition.x, transform3.localPosition.y, Mathf.Lerp(transform3.localPosition.z, this.OriginX[k] + ((!this.North) ? this.ShiftSouth : this.ShiftNorth), Time.deltaTime * 3.6f));
+						this.Rotation = Mathf.Lerp(this.Rotation, (!this.North) ? (-this.Swing) : this.Swing, Time.deltaTime * 3.6f);
+						transform3.localEulerAngles = new Vector3(transform3.localEulerAngles.x, (k != 0) ? (-this.Rotation) : this.Rotation, transform3.localEulerAngles.z);
 					}
 				}
 			}
@@ -154,22 +203,57 @@ public class DoorScript : MonoBehaviour
 			this.Prompt.Label[0].text = "     Locked";
 			this.Prompt.Circle[0].fillAmount = 1f;
 		}
-		if (Input.GetKeyDown("space"))
+		if (this.Swinging)
 		{
-			this.UpdatePlate();
+			if (this.Yandere.PickUp != null)
+			{
+				if (this.Yandere.PickUp.Bucket != null)
+				{
+					if (this.Yandere.PickUp.GetComponent<BucketScript>().Full)
+					{
+						this.Prompt.Label[0].text = "     Set Trap";
+						this.CanSetBucket = true;
+					}
+					else if (this.CanSetBucket)
+					{
+						this.CanSetBucket = false;
+						this.UpdateLabel();
+					}
+				}
+				else if (this.CanSetBucket)
+				{
+					this.CanSetBucket = false;
+					this.UpdateLabel();
+				}
+			}
+			else if (this.CanSetBucket)
+			{
+				this.CanSetBucket = false;
+				this.UpdateLabel();
+			}
 		}
 	}
 
 	public void OpenDoor()
 	{
-		this.Prompt.Label[0].text = "     Close";
 		this.Open = true;
 		this.Timer = 0f;
+		this.UpdateLabel();
 		if (this.HidingSpot)
 		{
 			UnityEngine.Object.Destroy(this.HideCollider.GetComponent<BoxCollider>());
 		}
 		this.CheckDirection();
+		if (this.BucketSet)
+		{
+			this.Bucket.GetComponent<Rigidbody>().isKinematic = false;
+			this.Bucket.GetComponent<Rigidbody>().useGravity = true;
+			this.Bucket.Prompt.enabled = true;
+			this.Bucket.Full = false;
+			this.Bucket.Fly = true;
+			this.Prompt.enabled = true;
+			this.BucketSet = false;
+		}
 	}
 
 	private void LockDoor()
@@ -213,9 +297,9 @@ public class DoorScript : MonoBehaviour
 
 	public void CloseDoor()
 	{
-		this.Prompt.Label[0].text = "     Open";
 		this.Open = false;
 		this.Timer = 0f;
+		this.UpdateLabel();
 		if (this.HidingSpot)
 		{
 			this.HideCollider.gameObject.AddComponent<BoxCollider>();
@@ -223,6 +307,18 @@ public class DoorScript : MonoBehaviour
 			component.size = new Vector3(component.size.x, component.size.y, 2f);
 			component.isTrigger = true;
 			this.HideCollider.MyCollider = component;
+		}
+	}
+
+	private void UpdateLabel()
+	{
+		if (this.Open)
+		{
+			this.Prompt.Label[0].text = "     Close";
+		}
+		else
+		{
+			this.Prompt.Label[0].text = "     Open";
 		}
 	}
 

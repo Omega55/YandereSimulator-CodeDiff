@@ -13,6 +13,8 @@ public class LiquidColliderScript : MonoBehaviour
 
 	public GameObject Pool;
 
+	public bool Static;
+
 	public bool Bucket;
 
 	public bool Blood;
@@ -29,23 +31,26 @@ public class LiquidColliderScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (!this.Bucket)
+		if (!this.Static)
 		{
-			if (base.transform.position.y < 0f)
+			if (!this.Bucket)
 			{
-				UnityEngine.Object.Instantiate<GameObject>(this.GroundSplash, new Vector3(base.transform.position.x, 0f, base.transform.position.z), Quaternion.identity);
-				this.NewPool = UnityEngine.Object.Instantiate<GameObject>(this.Pool, new Vector3(base.transform.position.x, 0.012f, base.transform.position.z), Quaternion.identity);
-				this.NewPool.transform.localEulerAngles = new Vector3(90f, UnityEngine.Random.Range(0f, 360f), 0f);
-				if (this.Blood)
+				if (base.transform.position.y < 0f)
 				{
-					this.NewPool.transform.parent = GameObject.Find("BloodParent").transform;
+					UnityEngine.Object.Instantiate<GameObject>(this.GroundSplash, new Vector3(base.transform.position.x, 0f, base.transform.position.z), Quaternion.identity);
+					this.NewPool = UnityEngine.Object.Instantiate<GameObject>(this.Pool, new Vector3(base.transform.position.x, 0.012f, base.transform.position.z), Quaternion.identity);
+					this.NewPool.transform.localEulerAngles = new Vector3(90f, UnityEngine.Random.Range(0f, 360f), 0f);
+					if (this.Blood)
+					{
+						this.NewPool.transform.parent = GameObject.Find("BloodParent").transform;
+					}
+					UnityEngine.Object.Destroy(base.gameObject);
 				}
-				UnityEngine.Object.Destroy(base.gameObject);
 			}
-		}
-		else
-		{
-			base.transform.localScale = new Vector3(base.transform.localScale.x + Time.deltaTime * 2f, base.transform.localScale.y + Time.deltaTime * 2f, base.transform.localScale.z + Time.deltaTime * 2f);
+			else
+			{
+				base.transform.localScale = new Vector3(base.transform.localScale.x + Time.deltaTime * 2f, base.transform.localScale.y + Time.deltaTime * 2f, base.transform.localScale.z + Time.deltaTime * 2f);
+			}
 		}
 	}
 
@@ -54,7 +59,7 @@ public class LiquidColliderScript : MonoBehaviour
 		if (other.gameObject.layer == 9)
 		{
 			StudentScript component = other.gameObject.GetComponent<StudentScript>();
-			if (component != null && component.StudentID == 7)
+			if (component != null && (component.StudentID == 7 || component.StudentID == component.StudentManager.RivalID))
 			{
 				AudioSource.PlayClipAtPoint(this.SplashSound, base.transform.position);
 				UnityEngine.Object.Instantiate<GameObject>(this.Splash, new Vector3(base.transform.position.x, 1.5f, base.transform.position.z), Quaternion.identity);

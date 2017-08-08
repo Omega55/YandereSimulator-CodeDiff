@@ -361,14 +361,7 @@ public class DebugMenuScript : MonoBehaviour
 						}
 						else if (Input.GetKeyDown("y"))
 						{
-							if (!this.DelinquentManager.Delinquents.active)
-							{
-								this.DelinquentManager.Delinquents.SetActive(true);
-							}
-							else
-							{
-								this.DelinquentManager.Delinquents.SetActive(false);
-							}
+							this.DelinquentManager.Delinquents.SetActive(!this.DelinquentManager.Delinquents.activeInHierarchy);
 							this.Window.SetActive(false);
 						}
 						else if (Input.GetKeyDown("z"))
@@ -381,7 +374,7 @@ public class DebugMenuScript : MonoBehaviour
 								{
 									studentScript5.SpawnAlarmDisc();
 									studentScript5.BecomeRagdoll();
-									studentScript5.Dead = true;
+									studentScript5.DeathType = DeathType.EasterEgg;
 									PlayerPrefs.SetInt("Student_" + this.ID.ToString() + "_Dead", 1);
 								}
 								this.ID++;

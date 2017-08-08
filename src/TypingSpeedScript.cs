@@ -26,7 +26,7 @@ public class TypingSpeedScript : MonoBehaviour
 			if (this.Phase == 1)
 			{
 				this.CharacterAnimation.Play("YandereDevType");
-				this.YouTube.active = false;
+				this.YouTube.SetActive(false);
 				this.Phase++;
 			}
 			else if (this.Phase == 2)
@@ -36,7 +36,7 @@ public class TypingSpeedScript : MonoBehaviour
 			}
 			else if (this.Phase == 3)
 			{
-				this.Mail.active = true;
+				this.Mail.SetActive(true);
 				this.Phase++;
 			}
 			else if (this.Phase == 4)

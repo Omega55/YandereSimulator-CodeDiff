@@ -19,7 +19,7 @@ public class GateScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (this.Clock.PresentTime / 60f > 8.5f && this.Clock.PresentTime / 60f < 15.5f)
+		if (this.Clock.PresentTime / 60f > 8f && this.Clock.PresentTime / 60f < 15.5f)
 		{
 			this.Closed = true;
 			if (this.EmergencyDoor.enabled)

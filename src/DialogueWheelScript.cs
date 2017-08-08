@@ -642,8 +642,6 @@ public class DialogueWheelScript : MonoBehaviour
 		}
 		if (PlayerPrefs.GetInt("Club") != this.Yandere.TargetStudent.Club)
 		{
-			Debug.Log("Player's club is " + PlayerPrefs.GetInt("Club"));
-			Debug.Log("Target club is " + this.Yandere.TargetStudent.Club);
 			UISprite uisprite23 = this.ClubShadow[2];
 			uisprite23.color = new Color(uisprite23.color.r, uisprite23.color.g, uisprite23.color.b, 0f);
 			UISprite uisprite24 = this.ClubShadow[3];

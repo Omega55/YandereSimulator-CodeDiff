@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FunScript : MonoBehaviour
 {
@@ -23,12 +24,25 @@ public class FunScript : MonoBehaviour
 
 	public int ID;
 
+	public float R = 1f;
+
+	public float G = 1f;
+
+	public float B = 1f;
+
 	private void Start()
 	{
+		if (SceneManager.GetActiveScene().name == "MoreFunScene")
+		{
+			this.G = 0f;
+			this.B = 0f;
+			this.Label.color = new Color(this.R, this.G, this.B, 1f);
+			this.Skip.SetActive(false);
+		}
 		this.Controls.SetActive(false);
-		this.Girl.color = new Color(this.Girl.color.r, this.Girl.color.g, this.Girl.color.b, 0f);
 		this.Label.text = this.Lines[this.ID];
 		this.Label.gameObject.SetActive(false);
+		this.Girl.color = new Color(this.R, this.G, this.B, 0f);
 	}
 
 	private void Update()
@@ -47,7 +61,7 @@ public class FunScript : MonoBehaviour
 		}
 		else if (this.Timer > 1f)
 		{
-			this.Girl.color = new Color(this.Girl.color.r, this.Girl.color.g, this.Girl.color.b, Mathf.MoveTowards(this.Girl.color.a, 1f, Time.deltaTime));
+			this.Girl.color = new Color(this.R, this.G, this.B, Mathf.MoveTowards(this.Girl.color.a, 1f, Time.deltaTime));
 		}
 		if (this.Controls.activeInHierarchy)
 		{

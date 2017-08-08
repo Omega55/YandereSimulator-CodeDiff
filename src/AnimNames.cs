@@ -430,6 +430,8 @@ public static class AnimNames
 
 	public const string FemaleYanvaniaWhipLeft = "f02_yanvaniaWhip_Left";
 
+	public const string TeacherPodium = "f02_teacherPodium_00";
+
 	public const string FridgeOpen = "FridgeOpen";
 
 	public const string InverseSkirtOpen = "InverseSkirtOpen";

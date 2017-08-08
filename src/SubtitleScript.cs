@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SubtitleScript : MonoBehaviour
@@ -404,249 +403,249 @@ public class SubtitleScript : MonoBehaviour
 
 	public AudioClip[] RivalEavesdropClips;
 
-	private Dictionary<string, AudioClip[]> ReactionClipArrays;
+	private StringAndAudioClipArrayDictionary ReactionClipArrays;
 
 	public GameObject CurrentClip;
 
 	private void Awake()
 	{
-		this.ReactionClipArrays = new Dictionary<string, AudioClip[]>
+		this.ReactionClipArrays = new StringAndAudioClipArrayDictionary
 		{
 			{
 				"Note Reaction",
-				this.NoteReactionClips
+				new AudioClipArrayWrapper(this.NoteReactionClips)
 			},
 			{
 				"Grudge Warning",
-				this.GrudgeWarningClips
+				new AudioClipArrayWrapper(this.GrudgeWarningClips)
 			},
 			{
 				"Senpai Insanity Reaction",
-				this.SenpaiInsanityReactionClips
+				new AudioClipArrayWrapper(this.SenpaiInsanityReactionClips)
 			},
 			{
 				"Senpai Weapon Reaction",
-				this.SenpaiWeaponReactionClips
+				new AudioClipArrayWrapper(this.SenpaiWeaponReactionClips)
 			},
 			{
 				"Senpai Blood Reaction",
-				this.SenpaiBloodReactionClips
+				new AudioClipArrayWrapper(this.SenpaiBloodReactionClips)
 			},
 			{
 				"Senpai Lewd Reaction",
-				this.SenpaiLewdReactionClips
+				new AudioClipArrayWrapper(this.SenpaiLewdReactionClips)
 			},
 			{
 				"Senpai Stalking Reaction",
-				this.SenpaiStalkingReactionClips
+				new AudioClipArrayWrapper(this.SenpaiStalkingReactionClips)
 			},
 			{
 				"Senpai Murder Reaction",
-				this.SenpaiMurderReactionClips
+				new AudioClipArrayWrapper(this.SenpaiMurderReactionClips)
 			},
 			{
 				"Yandere Whimper",
-				this.YandereWhimperClips
+				new AudioClipArrayWrapper(this.YandereWhimperClips)
 			},
 			{
 				"Teacher Weapon Reaction",
-				this.TeacherWeaponClips
+				new AudioClipArrayWrapper(this.TeacherWeaponClips)
 			},
 			{
 				"Teacher Blood Reaction",
-				this.TeacherBloodClips
+				new AudioClipArrayWrapper(this.TeacherBloodClips)
 			},
 			{
 				"Teacher Insanity Reaction",
-				this.TeacherInsanityClips
+				new AudioClipArrayWrapper(this.TeacherInsanityClips)
 			},
 			{
 				"Teacher Weapon Hostile",
-				this.TeacherWeaponHostileClips
+				new AudioClipArrayWrapper(this.TeacherWeaponHostileClips)
 			},
 			{
 				"Teacher Blood Hostile",
-				this.TeacherBloodHostileClips
+				new AudioClipArrayWrapper(this.TeacherBloodHostileClips)
 			},
 			{
 				"Teacher Insanity Hostile",
-				this.TeacherInsanityHostileClips
+				new AudioClipArrayWrapper(this.TeacherInsanityHostileClips)
 			},
 			{
 				"Teacher Lewd Reaction",
-				this.TeacherLewdClips
+				new AudioClipArrayWrapper(this.TeacherLewdClips)
 			},
 			{
 				"Teacher Trespassing Reaction",
-				this.TeacherTrespassClips
+				new AudioClipArrayWrapper(this.TeacherTrespassClips)
 			},
 			{
 				"Teacher Late Reaction",
-				this.TeacherLateClips
+				new AudioClipArrayWrapper(this.TeacherLateClips)
 			},
 			{
 				"Teacher Report Reaction",
-				this.TeacherReportClips
+				new AudioClipArrayWrapper(this.TeacherReportClips)
 			},
 			{
 				"Teacher Corpse Reaction",
-				this.TeacherCorpseClips
+				new AudioClipArrayWrapper(this.TeacherCorpseClips)
 			},
 			{
 				"Teacher Corpse Inspection",
-				this.TeacherInspectClips
+				new AudioClipArrayWrapper(this.TeacherInspectClips)
 			},
 			{
 				"Teacher Police Report",
-				this.TeacherPoliceClips
+				new AudioClipArrayWrapper(this.TeacherPoliceClips)
 			},
 			{
 				"Teacher Attack Reaction",
-				this.TeacherAttackClips
+				new AudioClipArrayWrapper(this.TeacherAttackClips)
 			},
 			{
 				"Teacher Murder Reaction",
-				this.TeacherMurderClips
+				new AudioClipArrayWrapper(this.TeacherMurderClips)
 			},
 			{
 				"Teacher Prank Reaction",
-				this.TeacherPrankClips
+				new AudioClipArrayWrapper(this.TeacherPrankClips)
 			},
 			{
 				"Teacher Theft Reaction",
-				this.TeacherTheftClips
+				new AudioClipArrayWrapper(this.TeacherTheftClips)
 			},
 			{
 				"Pickpocket Reaction",
-				this.PickpocketReactionClips
+				new AudioClipArrayWrapper(this.PickpocketReactionClips)
 			},
 			{
 				"Splash Reaction",
-				this.SplashReactionClips
+				new AudioClipArrayWrapper(this.SplashReactionClips)
 			},
 			{
 				"Drown Reaction",
-				this.DrownReactionClips
+				new AudioClipArrayWrapper(this.DrownReactionClips)
 			},
 			{
 				"Light Switch Reaction",
-				this.LightSwitchClips
+				new AudioClipArrayWrapper(this.LightSwitchClips)
 			},
 			{
 				"Task 6 Line",
-				this.Task6Clips
+				new AudioClipArrayWrapper(this.Task6Clips)
 			},
 			{
 				"Task 7 Line",
-				this.Task7Clips
+				new AudioClipArrayWrapper(this.Task7Clips)
 			},
 			{
 				"Task 13 Line",
-				this.Task13Clips
+				new AudioClipArrayWrapper(this.Task13Clips)
 			},
 			{
 				"Task 14 Line",
-				this.Task14Clips
+				new AudioClipArrayWrapper(this.Task14Clips)
 			},
 			{
 				"Task 15 Line",
-				this.Task15Clips
+				new AudioClipArrayWrapper(this.Task15Clips)
 			},
 			{
 				"Task 32 Line",
-				this.Task32Clips
+				new AudioClipArrayWrapper(this.Task32Clips)
 			},
 			{
 				"Task 33 Line",
-				this.Task33Clips
+				new AudioClipArrayWrapper(this.Task33Clips)
 			},
 			{
 				"Task 34 Line",
-				this.Task34Clips
+				new AudioClipArrayWrapper(this.Task34Clips)
 			},
 			{
 				"Club Greeting",
-				this.ClubGreetingClips
+				new AudioClipArrayWrapper(this.ClubGreetingClips)
 			},
 			{
 				"Club Unwelcome",
-				this.ClubUnwelcomeClips
+				new AudioClipArrayWrapper(this.ClubUnwelcomeClips)
 			},
 			{
 				"Club Kick",
-				this.ClubKickClips
+				new AudioClipArrayWrapper(this.ClubKickClips)
 			},
 			{
 				"Club Join",
-				this.ClubJoinClips
+				new AudioClipArrayWrapper(this.ClubJoinClips)
 			},
 			{
 				"Club Accept",
-				this.ClubAcceptClips
+				new AudioClipArrayWrapper(this.ClubAcceptClips)
 			},
 			{
 				"Club Refuse",
-				this.ClubRefuseClips
+				new AudioClipArrayWrapper(this.ClubRefuseClips)
 			},
 			{
 				"Club Exclusive",
-				this.ClubExclusiveClips
+				new AudioClipArrayWrapper(this.ClubExclusiveClips)
 			},
 			{
 				"Club Grudge",
-				this.ClubGrudgeClips
+				new AudioClipArrayWrapper(this.ClubGrudgeClips)
 			},
 			{
 				"Club Rejoin",
-				this.ClubRejoinClips
+				new AudioClipArrayWrapper(this.ClubRejoinClips)
 			},
 			{
 				"Club Quit",
-				this.ClubQuitClips
+				new AudioClipArrayWrapper(this.ClubQuitClips)
 			},
 			{
 				"Club Confirm",
-				this.ClubConfirmClips
+				new AudioClipArrayWrapper(this.ClubConfirmClips)
 			},
 			{
 				"Club Deny",
-				this.ClubDenyClips
+				new AudioClipArrayWrapper(this.ClubDenyClips)
 			},
 			{
 				"Club Farewell",
-				this.ClubFarewellClips
+				new AudioClipArrayWrapper(this.ClubFarewellClips)
 			},
 			{
 				"Club Activity",
-				this.ClubActivityClips
+				new AudioClipArrayWrapper(this.ClubActivityClips)
 			},
 			{
 				"Club Early",
-				this.ClubEarlyClips
+				new AudioClipArrayWrapper(this.ClubEarlyClips)
 			},
 			{
 				"Club Late",
-				this.ClubLateClips
+				new AudioClipArrayWrapper(this.ClubLateClips)
 			},
 			{
 				"Club Yes",
-				this.ClubYesClips
+				new AudioClipArrayWrapper(this.ClubYesClips)
 			},
 			{
 				"Club No",
-				this.ClubNoClips
+				new AudioClipArrayWrapper(this.ClubNoClips)
 			},
 			{
 				"Club 3 Info",
-				this.Club3Clips
+				new AudioClipArrayWrapper(this.Club3Clips)
 			},
 			{
 				"Club 6 Info",
-				this.Club6Clips
+				new AudioClipArrayWrapper(this.Club6Clips)
 			},
 			{
 				"Eavesdrop Reaction",
-				this.RivalEavesdropClips
+				new AudioClipArrayWrapper(this.RivalEavesdropClips)
 			}
 		};
 	}
@@ -1322,9 +1321,9 @@ public class SubtitleScript : MonoBehaviour
 			UnityEngine.Object.Destroy(this.CurrentClip);
 		}
 		this.Jukebox.Dip = 0.5f;
-		AudioClip[] array;
-		bool flag = this.ReactionClipArrays.TryGetValue(ReactionType, out array);
-		this.PlayClip(array[ID], base.transform.position);
+		AudioClipArrayWrapper audioClipArrayWrapper;
+		bool flag = this.ReactionClipArrays.TryGetValue(ReactionType, out audioClipArrayWrapper);
+		this.PlayClip(audioClipArrayWrapper[ID], base.transform.position);
 	}
 
 	public float GetClipLength(int StudentID, int TaskPhase)

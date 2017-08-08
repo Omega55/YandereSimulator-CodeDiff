@@ -460,12 +460,6 @@ public class CustomizationScript : MonoBehaviour
 				}
 			}
 		}
-		if (Input.GetKeyDown("left ctrl"))
-		{
-			this.GenderPanel.alpha = 0f;
-			this.Senpai.gameObject.SetActive(true);
-			this.Phase = 6;
-		}
 	}
 
 	private void UpdateSkin()

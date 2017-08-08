@@ -87,11 +87,11 @@ public class GardeningClubMemberScript : MonoBehaviour
 				{
 					if (this.ID == 1)
 					{
-						this.Destination.position = new Vector3(UnityEngine.Random.Range(-60f, -72f), this.Destination.position.y, UnityEngine.Random.Range(-15f, 15f));
+						this.Destination.position = new Vector3(UnityEngine.Random.Range(-61f, -72f), this.Destination.position.y, UnityEngine.Random.Range(-15f, 15f));
 					}
 					else
 					{
-						this.Destination.position = new Vector3(-25.5f + UnityEngine.Random.Range(-2.5f, 2.5f), this.Destination.position.y, -11f + UnityEngine.Random.Range(-4f, 4f));
+						this.Destination.position = new Vector3(UnityEngine.Random.Range(-28f, -23f), this.Destination.position.y, UnityEngine.Random.Range(-16f, -7f));
 					}
 				}
 				base.GetComponent<Animation>().CrossFade(this.WalkAnim);
@@ -112,7 +112,7 @@ public class GardeningClubMemberScript : MonoBehaviour
 					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, b, 1f * Time.deltaTime);
 					this.MyController.Move(base.transform.forward * Time.deltaTime);
 				}
-				if (Vector3.Distance(base.transform.position, this.Destination.position) < 1f)
+				else
 				{
 					base.GetComponent<Animation>().CrossFade(this.IdleAnim);
 					this.Moving = false;
@@ -150,6 +150,7 @@ public class GardeningClubMemberScript : MonoBehaviour
 					this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_pickpocketing_00");
 					this.Yandere.Pickpocketing = true;
 					this.Yandere.CanMove = false;
+					this.Yandere.EmptyHands();
 				}
 				if (this.PickpocketMinigame.ID == this.ID)
 				{
@@ -211,6 +212,7 @@ public class GardeningClubMemberScript : MonoBehaviour
 			else
 			{
 				this.Prompt.enabled = false;
+				this.Prompt.Hide();
 			}
 		}
 	}

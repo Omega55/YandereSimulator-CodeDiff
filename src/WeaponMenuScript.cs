@@ -274,16 +274,15 @@ public class WeaponMenuScript : MonoBehaviour
 			{
 				this.Yandere.Weapon[2].gameObject.SetActive(false);
 			}
-			this.Yandere.Weapon[this.Selected].gameObject.SetActive(true);
 			this.Yandere.Equipped = this.Selected;
-			this.Yandere.Armed = true;
+			this.Yandere.EquippedWeapon.gameObject.SetActive(true);
 			if (!this.Yandere.Gloved)
 			{
-				this.Yandere.Weapon[this.Selected].FingerprintID = 100;
+				this.Yandere.EquippedWeapon.FingerprintID = 100;
 			}
 			this.Yandere.StudentManager.UpdateStudents();
 			this.Yandere.WeaponManager.UpdateLabels();
-			if (this.Yandere.Weapon[this.Yandere.Equipped].Suspicious)
+			if (this.Yandere.EquippedWeapon.Suspicious)
 			{
 				if (!this.Yandere.WeaponWarning)
 				{

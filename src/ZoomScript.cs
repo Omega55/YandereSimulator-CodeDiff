@@ -31,11 +31,11 @@ public class ZoomScript : MonoBehaviour
 		{
 			base.transform.position = new Vector3(Mathf.MoveTowards(base.transform.position.x, this.Yandere.Hips.position.x, Time.deltaTime), base.transform.position.y, Mathf.MoveTowards(base.transform.position.z, this.Yandere.Hips.position.z, Time.deltaTime));
 		}
-		if (this.Yandere.Stance == StanceType.Crawling)
+		if (this.Yandere.Stance.Current == StanceType.Crawling)
 		{
 			base.transform.localPosition = new Vector3(base.transform.localPosition.x, Mathf.Lerp(base.transform.localPosition.y, 0.05f + this.Zoom + this.Slender, Time.deltaTime * 10f), base.transform.localPosition.z);
 		}
-		else if (this.Yandere.Stance == StanceType.Crouching)
+		else if (this.Yandere.Stance.Current == StanceType.Crouching)
 		{
 			base.transform.localPosition = new Vector3(base.transform.localPosition.x, Mathf.Lerp(base.transform.localPosition.y, 0.4f + this.Zoom + this.Slender, Time.deltaTime * 10f), base.transform.localPosition.z);
 		}
@@ -78,7 +78,7 @@ public class ZoomScript : MonoBehaviour
 		{
 			this.TargetZoom = 0f;
 		}
-		if (this.Yandere.Stance == StanceType.Crawling)
+		if (this.Yandere.Stance.Current == StanceType.Crawling)
 		{
 			if (this.TargetZoom > 0.3f)
 			{

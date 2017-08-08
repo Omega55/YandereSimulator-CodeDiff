@@ -106,7 +106,7 @@ public class RingEventScript : MonoBehaviour
 				this.EventStudent.Pathfinding.canSearch = false;
 				this.EventStudent.Pathfinding.canMove = false;
 			}
-			if (this.Clock.HourTime > this.EventTime + 0.5f || this.EventStudent.WitnessedMurder || this.EventStudent.Splashed || this.EventStudent.Alarmed || this.EventStudent.Dying || this.EventStudent.Dead)
+			if (this.Clock.HourTime > this.EventTime + 0.5f || this.EventStudent.WitnessedMurder || this.EventStudent.Splashed || this.EventStudent.Alarmed || this.EventStudent.Dying || !this.EventStudent.Alive)
 			{
 				this.EndEvent();
 			}

@@ -129,9 +129,9 @@ public class IncineratorScript : MonoBehaviour
 			}
 			if (!this.YandereHoldingEvidence)
 			{
-				if (this.Yandere.Weapon[this.Yandere.Equipped] != null)
+				if (this.Yandere.EquippedWeapon != null)
 				{
-					this.YandereHoldingEvidence = this.Yandere.Weapon[this.Yandere.Equipped].Evidence;
+					this.YandereHoldingEvidence = this.Yandere.EquippedWeapon.Evidence;
 				}
 				else
 				{
@@ -207,14 +207,14 @@ public class IncineratorScript : MonoBehaviour
 				this.Ready = true;
 				this.Open = true;
 			}
-			WeaponScript weaponScript = this.Yandere.Weapon[this.Yandere.Equipped];
-			if (weaponScript != null)
+			WeaponScript equippedWeapon = this.Yandere.EquippedWeapon;
+			if (equippedWeapon != null)
 			{
 				this.DestroyedEvidence++;
-				this.EvidenceList[this.DestroyedEvidence] = weaponScript.WeaponID;
-				weaponScript.Incinerator = this;
-				weaponScript.Dumped = true;
-				weaponScript.Drop();
+				this.EvidenceList[this.DestroyedEvidence] = equippedWeapon.WeaponID;
+				equippedWeapon.Incinerator = this;
+				equippedWeapon.Dumped = true;
+				equippedWeapon.Drop();
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
 				this.OpenTimer = 2f;

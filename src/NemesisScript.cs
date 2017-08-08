@@ -145,24 +145,26 @@ public class NemesisScript : MonoBehaviour
 				}
 				if (!this.Yandere.CanMove && !this.Yandere.Laughing)
 				{
-					if (this.Student.Pathfinding.enabled)
+					if (this.Student.Pathfinding.canSearch)
 					{
 						this.Student.Character.GetComponent<Animation>().CrossFade(this.Student.IdleAnim);
-						this.Student.Pathfinding.enabled = false;
+						this.Student.Pathfinding.canSearch = false;
+						this.Student.Pathfinding.canMove = false;
 						this.Student.Pathfinding.speed = 0f;
 					}
 				}
 				else
 				{
-					if (this.Yandere.Stance != StanceType.Crouching && this.Yandere.Stance != StanceType.Crawling && Vector3.Distance(base.transform.position, this.Yandere.transform.position) < 10f && Input.GetButton("LB"))
+					if (this.Yandere.Stance.Current != StanceType.Crouching && this.Yandere.Stance.Current != StanceType.Crawling && Vector3.Distance(base.transform.position, this.Yandere.transform.position) < 10f && Input.GetButton("LB"))
 					{
 						this.MissionMode.LastKnownPosition.position = this.Yandere.transform.position;
 						this.UpdateLKP();
 					}
-					if (!this.Student.Pathfinding.enabled)
+					if (!this.Student.Pathfinding.canSearch)
 					{
 						this.Student.Character.GetComponent<Animation>().CrossFade(this.Student.WalkAnim);
-						this.Student.Pathfinding.enabled = true;
+						this.Student.Pathfinding.canSearch = true;
+						this.Student.Pathfinding.canMove = true;
 						this.Student.Pathfinding.speed = 1f;
 					}
 					this.InView = false;
@@ -176,7 +178,8 @@ public class NemesisScript : MonoBehaviour
 							this.Student.Character.GetComponent<Animation>().CrossFade("f02_knifeLowSanityA_00");
 							this.Yandere.CharacterAnimation.CrossFade("f02_knifeLowSanityB_00");
 							AudioSource.PlayClipAtPoint(this.YandereDeath, base.transform.position);
-							this.Student.Pathfinding.enabled = false;
+							this.Student.Pathfinding.canSearch = false;
+							this.Student.Pathfinding.canMove = false;
 							this.Knife.SetActive(true);
 							this.Attacking = true;
 							this.OriginalYPosition = this.Yandere.transform.position.y;
@@ -225,7 +228,8 @@ public class NemesisScript : MonoBehaviour
 						this.Yandere.TargetStudent = this.Student;
 						this.Yandere.AttackManager.Stealth = true;
 						this.Student.AttackReaction();
-						this.Student.Pathfinding.enabled = false;
+						this.Student.Pathfinding.canSearch = false;
+						this.Student.Pathfinding.canMove = false;
 						this.Student.Prompt.HideButton[2] = true;
 						this.Dying = true;
 					}
@@ -251,9 +255,8 @@ public class NemesisScript : MonoBehaviour
 				}
 			}
 		}
-		else if (!this.Student.Dead)
+		else if (this.Student.Alive)
 		{
-			this.Student.DeltaTime = Time.deltaTime;
 			this.Student.MoveTowardsTarget(this.Yandere.transform.position + this.Yandere.transform.forward * this.Yandere.AttackManager.Distance);
 			Quaternion b2 = Quaternion.LookRotation(base.transform.position - new Vector3(this.Yandere.transform.position.x, base.transform.position.y, this.Yandere.transform.position.z));
 			base.transform.rotation = Quaternion.Slerp(base.transform.rotation, b2, Time.deltaTime * 10f);

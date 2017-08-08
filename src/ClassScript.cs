@@ -190,7 +190,7 @@ public class ClassScript : MonoBehaviour
 								this.Schemes.UpdateInstructions();
 								base.gameObject.SetActive(false);
 							}
-							else
+							else if (!this.Portal.FadeOut)
 							{
 								this.PromptBar.Show = false;
 								this.Portal.Proceed = true;

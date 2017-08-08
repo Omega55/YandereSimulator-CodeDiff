@@ -12,7 +12,7 @@ public class HideColliderScript : MonoBehaviour
 		if (other.gameObject.layer == 11)
 		{
 			GameObject gameObject = other.gameObject.transform.root.gameObject;
-			if (gameObject.GetComponent<StudentScript>().Dead)
+			if (!gameObject.GetComponent<StudentScript>().Alive)
 			{
 				this.Corpse = gameObject.GetComponent<RagdollScript>();
 				if (!this.Corpse.Hidden)

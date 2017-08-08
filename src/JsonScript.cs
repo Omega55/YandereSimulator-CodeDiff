@@ -31,7 +31,7 @@ public class JsonScript : MonoBehaviour
 
 	public float[] StudentBreasts;
 
-	public float[] StudentStrengths;
+	public int[] StudentStrengths;
 
 	public string[] StudentHairstyles;
 
@@ -47,19 +47,9 @@ public class JsonScript : MonoBehaviour
 
 	public bool[] StudentSuccess;
 
-	public float[][] StudentTimes;
-
-	public string[][] StudentDestinations;
-
-	public string[][] StudentActions;
+	public ScheduleBlockArrayWrapper[] StudentScheduleBlocks;
 
 	public int TotalStudents;
-
-	private string[] TempStringArray;
-
-	private float[] TempFloatArray;
-
-	private int[] TempIntArray;
 
 	public string[] CreditsNames;
 
@@ -138,9 +128,7 @@ public class JsonScript : MonoBehaviour
 
 	private void Start()
 	{
-		this.StudentTimes = new float[this.TotalStudents + 1][];
-		this.StudentDestinations = new string[this.TotalStudents + 1][];
-		this.StudentActions = new string[this.TotalStudents + 1][];
+		this.StudentScheduleBlocks = new ScheduleBlockArrayWrapper[this.TotalStudents + 1];
 		foreach (Dictionary<string, object> dictionary in this.StudentData())
 		{
 			int num = TFUtils.LoadInt(dictionary, "ID");
@@ -156,7 +144,7 @@ public class JsonScript : MonoBehaviour
 			this.StudentPersonas[num] = (PersonaType)TFUtils.LoadInt(dictionary, "Persona");
 			this.StudentCrushes[num] = TFUtils.LoadInt(dictionary, "Crush");
 			this.StudentBreasts[num] = TFUtils.LoadFloat(dictionary, "BreastSize");
-			this.StudentStrengths[num] = TFUtils.LoadFloat(dictionary, "Strength");
+			this.StudentStrengths[num] = TFUtils.LoadInt(dictionary, "Strength");
 			this.StudentHairstyles[num] = TFUtils.LoadString(dictionary, "Hairstyle");
 			this.StudentColors[num] = TFUtils.LoadString(dictionary, "Color");
 			this.StudentEyes[num] = TFUtils.LoadString(dictionary, "Eyes");
@@ -168,12 +156,14 @@ public class JsonScript : MonoBehaviour
 			{
 				this.StudentNames[num] = "Random";
 			}
-			this.ConstructTempFloatArray(TFUtils.LoadString(dictionary, "ScheduleTime"));
-			this.StudentTimes[num] = this.TempFloatArray;
-			this.ConstructTempStringArray(TFUtils.LoadString(dictionary, "ScheduleDestination"));
-			this.StudentDestinations[num] = this.TempStringArray;
-			this.ConstructTempStringArray(TFUtils.LoadString(dictionary, "ScheduleAction"));
-			this.StudentActions[num] = this.TempStringArray;
+			float[] array2 = this.ConstructTempFloatArray(TFUtils.LoadString(dictionary, "ScheduleTime"));
+			string[] array3 = this.ConstructTempStringArray(TFUtils.LoadString(dictionary, "ScheduleDestination"));
+			string[] array4 = this.ConstructTempStringArray(TFUtils.LoadString(dictionary, "ScheduleAction"));
+			this.StudentScheduleBlocks[num] = new ScheduleBlockArrayWrapper(array2.Length);
+			for (int j = 0; j < this.StudentScheduleBlocks[num].Length; j++)
+			{
+				this.StudentScheduleBlocks[num][j] = new ScheduleBlock(array2[j], array3[j], array4[j]);
+			}
 		}
 		if (SceneManager.GetActiveScene().name == "SchoolScene")
 		{
@@ -227,22 +217,23 @@ public class JsonScript : MonoBehaviour
 		}
 	}
 
-	private void ConstructTempFloatArray(string tempString)
+	private float[] ConstructTempFloatArray(string str)
 	{
-		this.TempStringArray = tempString.Split(new char[]
+		string[] array = str.Split(new char[]
 		{
 			'_'
 		});
-		this.TempFloatArray = new float[this.TempStringArray.Length];
-		for (int i = 0; i < this.TempStringArray.Length; i++)
+		float[] array2 = new float[array.Length];
+		for (int i = 0; i < array.Length; i++)
 		{
-			this.TempFloatArray[i] = float.Parse(this.TempStringArray[i]);
+			array2[i] = float.Parse(array[i]);
 		}
+		return array2;
 	}
 
-	private void ConstructTempStringArray(string tempString)
+	private string[] ConstructTempStringArray(string str)
 	{
-		this.TempStringArray = tempString.Split(new char[]
+		return str.Split(new char[]
 		{
 			'_'
 		});

@@ -214,7 +214,7 @@ public class RagdollScript : MonoBehaviour
 			}
 			if (!Input.GetButtonDown("LB"))
 			{
-				if (this.BloodPoolSpawner.gameObject.active && !this.Cauterized)
+				if (this.BloodPoolSpawner.gameObject.activeInHierarchy && !this.Cauterized)
 				{
 					if (this.Yandere.PickUp != null)
 					{
@@ -258,7 +258,7 @@ public class RagdollScript : MonoBehaviour
 						this.Yandere.transform.LookAt(base.transform);
 						this.Yandere.RPGCamera.transform.position = this.Yandere.DismemberSpot.position;
 						this.Yandere.RPGCamera.transform.eulerAngles = this.Yandere.DismemberSpot.eulerAngles;
-						this.Yandere.Weapon[this.Yandere.Equipped].Dismember();
+						this.Yandere.EquippedWeapon.Dismember();
 						this.Yandere.RPGCamera.enabled = false;
 						this.Yandere.TargetStudent = this.Student;
 						this.Yandere.Ragdoll = base.gameObject;
@@ -366,11 +366,11 @@ public class RagdollScript : MonoBehaviour
 				this.Prompt.AcceptingInput[1] = true;
 			}
 			bool flag = false;
-			if (this.Yandere.Armed && this.Yandere.Weapon[this.Yandere.Equipped].WeaponID == 7)
+			if (this.Yandere.Armed && this.Yandere.EquippedWeapon.WeaponID == 7)
 			{
 				flag = true;
 			}
-			if (!this.Cauterized && this.Yandere.PickUp != null && this.Yandere.PickUp.Blowtorch && this.BloodPoolSpawner.gameObject.active)
+			if (!this.Cauterized && this.Yandere.PickUp != null && this.Yandere.PickUp.Blowtorch && this.BloodPoolSpawner.gameObject.activeInHierarchy)
 			{
 				flag = true;
 			}

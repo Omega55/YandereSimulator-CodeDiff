@@ -13,7 +13,7 @@ public class PromptBarScript : MonoBehaviour
 
 	public int ID;
 
-	private void Start()
+	private void Awake()
 	{
 		base.transform.localPosition = new Vector3(base.transform.localPosition.x, -627f, base.transform.localPosition.z);
 		this.ID = 0;
@@ -22,6 +22,10 @@ public class PromptBarScript : MonoBehaviour
 			this.Label[this.ID].text = string.Empty;
 			this.ID++;
 		}
+	}
+
+	private void Start()
+	{
 		this.UpdateButtons();
 	}
 

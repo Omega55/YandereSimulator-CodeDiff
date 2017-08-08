@@ -19,6 +19,8 @@ public class TallLockerScript : MonoBehaviour
 
 	public StudentManagerScript StudentManager;
 
+	public RivalPhoneScript RivalPhone;
+
 	public StudentScript Student;
 
 	public YandereScript Yandere;
@@ -245,6 +247,11 @@ public class TallLockerScript : MonoBehaviour
 					}
 					else
 					{
+						if (this.Student.Schoolwear == 0 && this.Student.StudentID == this.StudentManager.RivalID)
+						{
+							this.RivalPhone.gameObject.SetActive(true);
+							this.RivalPhone.MyRenderer.material.mainTexture = this.Student.SmartPhone.GetComponent<Renderer>().material.mainTexture;
+						}
 						this.Student.ChangeSchoolwear();
 					}
 					this.UpdateSchoolwear();

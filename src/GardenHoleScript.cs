@@ -43,7 +43,7 @@ public class GardenHoleScript : MonoBehaviour
 		{
 			if (this.Yandere.Equipped > 0)
 			{
-				if (this.Yandere.Weapon[this.Yandere.Equipped].WeaponID == 10)
+				if (this.Yandere.EquippedWeapon.WeaponID == 10)
 				{
 					this.Prompt.enabled = true;
 				}
@@ -73,7 +73,7 @@ public class GardenHoleScript : MonoBehaviour
 			this.Yandere.transform.rotation = Quaternion.LookRotation(new Vector3(base.transform.position.x, this.Yandere.transform.position.y, base.transform.position.z) - this.Yandere.transform.position);
 			this.Yandere.RPGCamera.transform.eulerAngles = this.Yandere.DigSpot.eulerAngles;
 			this.Yandere.RPGCamera.transform.position = this.Yandere.DigSpot.position;
-			this.Yandere.Weapon[this.Yandere.Equipped].gameObject.SetActive(false);
+			this.Yandere.EquippedWeapon.gameObject.SetActive(false);
 			this.Yandere.CharacterAnimation["f02_shovelBury_00"].time = 0f;
 			this.Yandere.CharacterAnimation["f02_shovelDig_00"].time = 0f;
 			this.Yandere.FloatingShovel.SetActive(true);

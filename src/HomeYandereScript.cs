@@ -137,7 +137,7 @@ public class HomeYandereScript : MonoBehaviour
 					}
 					else
 					{
-						component.CrossFade("f02_walk_00");
+						component.CrossFade("f02_newWalk_00");
 						this.MyController.Move(base.transform.forward * this.WalkSpeed * Time.deltaTime);
 					}
 				}
@@ -184,31 +184,37 @@ public class HomeYandereScript : MonoBehaviour
 		}
 		if (Input.GetKeyDown(KeyCode.F1))
 		{
+			PlayerPrefs.SetInt("MaleUniform", 1);
 			PlayerPrefs.SetInt("FemaleUniform", 1);
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		else if (Input.GetKeyDown(KeyCode.F2))
 		{
+			PlayerPrefs.SetInt("MaleUniform", 2);
 			PlayerPrefs.SetInt("FemaleUniform", 2);
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		else if (Input.GetKeyDown(KeyCode.F3))
 		{
+			PlayerPrefs.SetInt("MaleUniform", 3);
 			PlayerPrefs.SetInt("FemaleUniform", 3);
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		else if (Input.GetKeyDown(KeyCode.F4))
 		{
+			PlayerPrefs.SetInt("MaleUniform", 4);
 			PlayerPrefs.SetInt("FemaleUniform", 4);
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		else if (Input.GetKeyDown(KeyCode.F5))
 		{
+			PlayerPrefs.SetInt("MaleUniform", 5);
 			PlayerPrefs.SetInt("FemaleUniform", 5);
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		else if (Input.GetKeyDown(KeyCode.F6))
 		{
+			PlayerPrefs.SetInt("MaleUniform", 6);
 			PlayerPrefs.SetInt("FemaleUniform", 6);
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}

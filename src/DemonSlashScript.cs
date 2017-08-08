@@ -28,9 +28,9 @@ public class DemonSlashScript : MonoBehaviour
 	{
 		Transform root = other.gameObject.transform.root;
 		StudentScript component = root.gameObject.GetComponent<StudentScript>();
-		if (component != null && component.StudentID != 1 && !component.Dead)
+		if (component != null && component.StudentID != 1 && component.Alive)
 		{
-			component.Dead = true;
+			component.DeathType = DeathType.EasterEgg;
 			if (!component.Male)
 			{
 				UnityEngine.Object.Instantiate<GameObject>(this.FemaleBloodyScream, root.transform.position + Vector3.up, Quaternion.identity);

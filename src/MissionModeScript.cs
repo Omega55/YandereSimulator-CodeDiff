@@ -418,11 +418,11 @@ public class MissionModeScript : MonoBehaviour
 		{
 			if (!this.TargetDead && this.StudentManager.Students[this.TargetID] != null)
 			{
-				if (this.StudentManager.Students[this.TargetID].Dead)
+				if (!this.StudentManager.Students[this.TargetID].Alive)
 				{
 					if (this.Yandere.Equipped > 0)
 					{
-						this.MurderWeaponID = this.Yandere.Weapon[this.Yandere.Equipped].WeaponID;
+						this.MurderWeaponID = this.Yandere.EquippedWeapon.WeaponID;
 					}
 					this.TargetDead = true;
 				}
@@ -433,14 +433,14 @@ public class MissionModeScript : MonoBehaviour
 					this.Phase = 4;
 				}
 			}
-			if (this.RequiredWeaponID > 0 && this.StudentManager.Students[this.TargetID] != null && this.StudentManager.Students[this.TargetID].Dead && this.StudentManager.Students[this.TargetID].DeathCause != this.RequiredWeaponID)
+			if (this.RequiredWeaponID > 0 && this.StudentManager.Students[this.TargetID] != null && !this.StudentManager.Students[this.TargetID].Alive && this.StudentManager.Students[this.TargetID].DeathCause != this.RequiredWeaponID)
 			{
 				this.Chastise = true;
 				this.GameOverID = 2;
 				this.GameOver();
 				this.Phase = 4;
 			}
-			if (!this.CorrectClothingConfirmed && this.RequiredClothingID > 0 && this.StudentManager.Students[this.TargetID] != null && this.StudentManager.Students[this.TargetID].Dead)
+			if (!this.CorrectClothingConfirmed && this.RequiredClothingID > 0 && this.StudentManager.Students[this.TargetID] != null && !this.StudentManager.Students[this.TargetID].Alive)
 			{
 				if (this.Yandere.Schoolwear != this.RequiredClothingID)
 				{
@@ -516,7 +516,7 @@ public class MissionModeScript : MonoBehaviour
 			{
 				if (this.Police.Corpses == 1)
 				{
-					if (this.StudentManager.Students[this.TargetID] != null && !this.StudentManager.Students[this.TargetID].Dead)
+					if (this.StudentManager.Students[this.TargetID] != null && this.StudentManager.Students[this.TargetID].Alive)
 					{
 						this.Chastise = true;
 						this.GameOverID = 5;

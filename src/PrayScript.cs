@@ -74,7 +74,7 @@ public class PrayScript : MonoBehaviour
 	{
 		if (!this.FemaleVictimChecked)
 		{
-			if (this.StudentManager.Students[16] != null && this.StudentManager.Students[16].Dead)
+			if (this.StudentManager.Students[16] != null && !this.StudentManager.Students[16].Alive)
 			{
 				this.FemaleVictimChecked = true;
 				this.Victims++;
@@ -87,7 +87,7 @@ public class PrayScript : MonoBehaviour
 		}
 		if (!this.MaleVictimChecked)
 		{
-			if (this.StudentManager.Students[15] != null && this.StudentManager.Students[15].Dead)
+			if (this.StudentManager.Students[15] != null && !this.StudentManager.Students[15].Alive)
 			{
 				this.MaleVictimChecked = true;
 				this.Victims++;

@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class RivalPhoneScript : MonoBehaviour
 {
+	public Renderer MyRenderer;
+
 	public PromptScript Prompt;
 
 	private void Update()

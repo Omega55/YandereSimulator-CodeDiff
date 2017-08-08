@@ -15,7 +15,7 @@ public class MetalDetectorScript : MonoBehaviour
 	{
 		if (this.Yandere.Armed)
 		{
-			if (this.Yandere.Weapon[this.Yandere.Equipped].WeaponID == 6)
+			if (this.Yandere.EquippedWeapon.WeaponID == 6)
 			{
 				this.Prompt.enabled = true;
 				if (this.Prompt.Circle[0].fillAmount == 0f)

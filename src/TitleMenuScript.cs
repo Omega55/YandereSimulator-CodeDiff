@@ -21,7 +21,7 @@ public class TitleMenuScript : MonoBehaviour
 
 	public UILabel SimulatorLabel;
 
-	public UILabel[] Labels;
+	public UILabel[] ColoredLabels;
 
 	public Color MediumColor;
 
@@ -268,7 +268,7 @@ public class TitleMenuScript : MonoBehaviour
 		{
 			uisprite3.color = new Color(0f, 0f, 0f, uisprite3.color.a);
 		}
-		foreach (UILabel uilabel in this.Labels)
+		foreach (UILabel uilabel in this.ColoredLabels)
 		{
 			uilabel.color = new Color(0f, 0f, 0f, uilabel.color.a);
 		}
@@ -308,7 +308,7 @@ public class TitleMenuScript : MonoBehaviour
 		{
 			uisprite3.color = new Color(this.DarkColor.r, this.DarkColor.g, this.DarkColor.b, uisprite3.color.a);
 		}
-		foreach (UILabel uilabel in this.Labels)
+		foreach (UILabel uilabel in this.ColoredLabels)
 		{
 			uilabel.color = new Color(1f, 1f, 1f, uilabel.color.a);
 		}

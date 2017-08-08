@@ -46,6 +46,8 @@ public class HomeCameraScript : MonoBehaviour
 
 	public GameObject CeilingLight;
 
+	public GameObject SenpaiLight;
+
 	public GameObject Controller;
 
 	public GameObject NightLight;
@@ -88,6 +90,7 @@ public class HomeCameraScript : MonoBehaviour
 		if (PlayerPrefs.GetInt("Night") == 1)
 		{
 			this.CeilingLight.SetActive(true);
+			this.SenpaiLight.SetActive(true);
 			this.NightLight.SetActive(true);
 			this.DayLight.SetActive(false);
 			this.Triggers[7].Disable();

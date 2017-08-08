@@ -99,7 +99,7 @@ public class PickUpScript : MonoBehaviour
 				}
 				if (this.Yandere.Armed)
 				{
-					this.Yandere.CharacterAnimation[this.Yandere.ArmedAnims[this.Yandere.Weapon[this.Yandere.Equipped].AnimID]].weight = 0f;
+					this.Yandere.CharacterAnimation[this.Yandere.ArmedAnims[this.Yandere.EquippedWeapon.AnimID]].weight = 0f;
 				}
 				this.Yandere.EmptyHands();
 				base.transform.parent = this.Yandere.transform;

@@ -55,6 +55,8 @@ public class PoliceScript : MonoBehaviour
 
 	public UISprite PartsIcon;
 
+	public UISprite SanityIcon;
+
 	public string ElectrocutedStudentName = string.Empty;
 
 	public string DrownedStudentName = string.Empty;
@@ -68,6 +70,8 @@ public class PoliceScript : MonoBehaviour
 	public bool CorpseDisposed;
 
 	public bool PartsDisposed;
+
+	public bool SanityRestored;
 
 	public bool MurderSuicideScene;
 
@@ -221,6 +225,19 @@ public class PoliceScript : MonoBehaviour
 			{
 				this.PartsIcon.spriteName = "No";
 				this.PartsDisposed = false;
+			}
+			if (this.Yandere.Sanity == 100f)
+			{
+				if (!this.SanityRestored)
+				{
+					this.SanityIcon.spriteName = "Yes";
+					this.SanityRestored = true;
+				}
+			}
+			else if (this.SanityRestored)
+			{
+				this.SanityIcon.spriteName = "No";
+				this.SanityRestored = false;
 			}
 			this.Timer -= Time.deltaTime;
 			if (this.Timer <= 0f)

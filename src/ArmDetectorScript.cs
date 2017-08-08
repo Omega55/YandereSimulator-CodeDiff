@@ -279,7 +279,7 @@ public class ArmDetectorScript : MonoBehaviour
 					this.Yandere.MyRenderer.sharedMesh = this.FlameDemonMesh;
 					this.RiggedAccessory.SetActive(true);
 					this.Yandere.FlameDemonic = true;
-					this.Yandere.Stance = StanceType.Standing;
+					this.Yandere.Stance.Current = StanceType.Standing;
 					this.Yandere.Sanity = 100f;
 					this.Yandere.UpdateSanity();
 					this.Yandere.MyRenderer.materials[0].mainTexture = this.Yandere.FaceTexture;

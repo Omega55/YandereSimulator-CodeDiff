@@ -59,6 +59,7 @@ public class RummageSpotScript : MonoBehaviour
 			this.Yandere.RummageSpot = this;
 			this.Yandere.Rummaging = true;
 			this.Yandere.CanMove = false;
+			this.Yandere.EmptyHands();
 			component.Play();
 		}
 		if (this.Yandere.Rummaging)

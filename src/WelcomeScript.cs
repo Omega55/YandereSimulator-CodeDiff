@@ -46,12 +46,27 @@ public class WelcomeScript : MonoBehaviour
 		}
 		if (!this.InEditor && this.JSON.StudentNames[33] != "Reserved")
 		{
-			SceneManager.LoadScene("FunScene");
+			if (Application.CanStreamedLevelBeLoaded("FunScene"))
+			{
+				SceneManager.LoadScene("FunScene");
+			}
+			else if (Application.CanStreamedLevelBeLoaded("MoreFunScene"))
+			{
+				SceneManager.LoadScene("MoreFunScene");
+			}
+			else
+			{
+				Application.Quit();
+			}
 		}
 	}
 
 	private void Update()
 	{
+		if (Input.GetKeyDown("s"))
+		{
+			SceneManager.LoadScene("SchoolScene");
+		}
 		if (Input.GetKeyDown("y"))
 		{
 			SceneManager.LoadScene("YanvaniaScene");
@@ -79,7 +94,7 @@ public class WelcomeScript : MonoBehaviour
 							this.Darkness.color = new Color(1f, 1f, 1f, 0f);
 							this.Continue = true;
 						}
-						if (this.WarningPanel.activeInHierarchy && !Input.GetKeyDown("w") && Input.anyKeyDown)
+						if (this.WarningPanel.activeInHierarchy && Input.anyKeyDown)
 						{
 							this.Darkness.color = new Color(1f, 1f, 1f, 0f);
 							this.Continue = true;

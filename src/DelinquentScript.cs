@@ -455,4 +455,9 @@ public class DelinquentScript : MonoBehaviour
 			this.LeftBreast.localScale = new Vector3(this.BustSize, this.BustSize, this.BustSize);
 		}
 	}
+
+	private void OnEnable()
+	{
+		this.Character.GetComponent<Animation>().CrossFade(this.IdleAnim, 1f);
+	}
 }

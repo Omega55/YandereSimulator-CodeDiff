@@ -35,7 +35,7 @@ public class TornadoScript : MonoBehaviour
 				this.Scream = UnityEngine.Object.Instantiate<GameObject>((!component.Male) ? this.FemaleBloodyScream : this.MaleBloodyScream, component.transform.position + Vector3.up, Quaternion.identity);
 				this.Scream.transform.parent = component.HipCollider.transform;
 				this.Scream.transform.localPosition = Vector3.zero;
-				component.Dead = true;
+				component.DeathType = DeathType.EasterEgg;
 				component.BecomeRagdoll();
 				Rigidbody rigidbody = component.Ragdoll.AllRigidbodies[0];
 				rigidbody.isKinematic = false;

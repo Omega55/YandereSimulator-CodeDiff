@@ -53,7 +53,7 @@ public class LightSwitchScript : MonoBehaviour
 		{
 			if (this.Yandere.Armed)
 			{
-				this.Prompt.HideButton[3] = (this.Yandere.Weapon[this.Yandere.Equipped].WeaponID != 6);
+				this.Prompt.HideButton[3] = (this.Yandere.EquippedWeapon.WeaponID != 6);
 			}
 			else
 			{

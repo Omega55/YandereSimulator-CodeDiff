@@ -219,7 +219,7 @@ public class WeaponScript : MonoBehaviour
 				}
 			}
 		}
-		else if (this.Yandere.Weapon[this.Yandere.Equipped] == this)
+		else if (this.Yandere.EquippedWeapon == this)
 		{
 			if (this.Yandere.AttackManager.IsAttacking())
 			{
@@ -300,8 +300,8 @@ public class WeaponScript : MonoBehaviour
 					{
 						this.Yandere.Weapon[2].gameObject.SetActive(false);
 					}
-					this.Yandere.Weapon[1] = this;
 					this.Yandere.Equipped = 1;
+					this.Yandere.EquippedWeapon = this;
 				}
 				else if (this.Yandere.Weapon[2] == null)
 				{
@@ -309,20 +309,20 @@ public class WeaponScript : MonoBehaviour
 					{
 						this.Yandere.Weapon[1].gameObject.SetActive(false);
 					}
-					this.Yandere.Weapon[2] = this;
 					this.Yandere.Equipped = 2;
+					this.Yandere.EquippedWeapon = this;
 				}
 				else if (this.Yandere.Weapon[2].gameObject.activeInHierarchy)
 				{
 					this.Yandere.Weapon[2].Drop();
-					this.Yandere.Weapon[2] = this;
 					this.Yandere.Equipped = 2;
+					this.Yandere.EquippedWeapon = this;
 				}
 				else
 				{
 					this.Yandere.Weapon[1].Drop();
-					this.Yandere.Weapon[1] = this;
 					this.Yandere.Equipped = 1;
+					this.Yandere.EquippedWeapon = this;
 				}
 			}
 			else
@@ -335,10 +335,9 @@ public class WeaponScript : MonoBehaviour
 				{
 					this.Yandere.Weapon[2].gameObject.SetActive(false);
 				}
-				this.Yandere.Weapon[3] = this;
 				this.Yandere.Equipped = 3;
+				this.Yandere.EquippedWeapon = this;
 			}
-			this.Yandere.Armed = true;
 			this.Yandere.StudentManager.UpdateStudents();
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
@@ -347,7 +346,7 @@ public class WeaponScript : MonoBehaviour
 			{
 				this.SuspicionCheck();
 			}
-			if (this.Yandere.Weapon[this.Yandere.Equipped].Suspicious)
+			if (this.Yandere.EquippedWeapon.Suspicious)
 			{
 				if (!this.Yandere.WeaponWarning)
 				{
@@ -373,7 +372,7 @@ public class WeaponScript : MonoBehaviour
 			}
 			this.KinematicTimer = 0f;
 		}
-		if (this.Yandere.Weapon[this.Yandere.Equipped] == this && this.Yandere.Armed)
+		if (this.Yandere.EquippedWeapon == this && this.Yandere.Armed)
 		{
 			base.transform.localScale = new Vector3(1f, 1f, 1f);
 			if (!this.Yandere.Struggling)
@@ -416,8 +415,7 @@ public class WeaponScript : MonoBehaviour
 		{
 			this.Prompt.OffsetY[3] = this.OriginalOffset;
 		}
-		this.Yandere.Weapon[this.Yandere.Equipped] = null;
-		this.Yandere.Armed = false;
+		this.Yandere.EquippedWeapon = null;
 		this.Yandere.Equipped = 0;
 		this.Yandere.StudentManager.UpdateStudents();
 		base.gameObject.SetActive(true);
@@ -469,7 +467,7 @@ public class WeaponScript : MonoBehaviour
 					}
 					else
 					{
-						this.Prompt.Label[3].text = "     Swap " + this.Yandere.Weapon[this.Yandere.Equipped].Name + " for " + this.Name;
+						this.Prompt.Label[3].text = "     Swap " + this.Yandere.EquippedWeapon.Name + " for " + this.Name;
 					}
 				}
 			}

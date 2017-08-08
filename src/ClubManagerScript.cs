@@ -204,7 +204,7 @@ public class ClubManagerScript : MonoBehaviour
 			while (this.ID < this.Club6Students.Length)
 			{
 				StudentScript studentScript2 = this.StudentManager.Students[this.Club6Students[this.ID]];
-				if (studentScript2 != null && !studentScript2.Tranquil && !studentScript2.Dead)
+				if (studentScript2 != null && !studentScript2.Tranquil && studentScript2.Alive)
 				{
 					studentScript2.transform.position = this.Club6ActivitySpots[this.ID].position;
 					studentScript2.transform.rotation = this.Club6ActivitySpots[this.ID].rotation;
@@ -366,7 +366,7 @@ public class ClubManagerScript : MonoBehaviour
 				this.Yandere.RunSpeed += 1f;
 				if (this.Yandere.Armed)
 				{
-					this.Yandere.Weapon[this.Yandere.Equipped].SuspicionCheck();
+					this.Yandere.EquippedWeapon.SuspicionCheck();
 				}
 			}
 			else if (PlayerPrefs.GetInt("Club") == 10)
@@ -375,7 +375,7 @@ public class ClubManagerScript : MonoBehaviour
 				this.ShedDoor.Locked = false;
 				if (this.Yandere.Armed)
 				{
-					this.Yandere.Weapon[this.Yandere.Equipped].SuspicionCheck();
+					this.Yandere.EquippedWeapon.SuspicionCheck();
 				}
 			}
 			else if (PlayerPrefs.GetInt("Club") == 11)
@@ -444,7 +444,7 @@ public class ClubManagerScript : MonoBehaviour
 				if (this.Yandere.Armed)
 				{
 					PlayerPrefs.SetInt("Club", 0);
-					this.Yandere.Weapon[this.Yandere.Equipped].SuspicionCheck();
+					this.Yandere.EquippedWeapon.SuspicionCheck();
 				}
 			}
 			else if (PlayerPrefs.GetInt("Club") == 10)
@@ -457,7 +457,7 @@ public class ClubManagerScript : MonoBehaviour
 				if (this.Yandere.Armed)
 				{
 					PlayerPrefs.SetInt("Club", 0);
-					this.Yandere.Weapon[this.Yandere.Equipped].SuspicionCheck();
+					this.Yandere.EquippedWeapon.SuspicionCheck();
 				}
 			}
 			else if (PlayerPrefs.GetInt("Club") == 11)

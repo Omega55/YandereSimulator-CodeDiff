@@ -136,7 +136,7 @@ public class OfferHelpScript : MonoBehaviour
 				}
 			}
 		}
-		else if (this.StudentManager.Students[7].Pushed || this.StudentManager.Students[7].Dead)
+		else if (this.StudentManager.Students[7].Pushed || !this.StudentManager.Students[7].Alive)
 		{
 			base.gameObject.SetActive(false);
 		}

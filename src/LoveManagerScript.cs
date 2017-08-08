@@ -42,7 +42,7 @@ public class LoveManagerScript : MonoBehaviour
 
 	private void LateUpdate()
 	{
-		if (this.Follower != null && !this.Follower.Dead)
+		if (this.Follower != null && this.Follower.Alive)
 		{
 			this.ID = 0;
 			while (this.ID < this.TotalTargets)
@@ -76,7 +76,7 @@ public class LoveManagerScript : MonoBehaviour
 		}
 		StudentScript studentScript = this.StudentManager.Students[7];
 		StudentScript studentScript2 = this.StudentManager.Students[13];
-		if (this.LeftNote && studentScript != null && studentScript2 != null && !studentScript.Dead && !studentScript2.Dead && studentScript.ConfessPhase == 7 && studentScript2.ConfessPhase == 4)
+		if (this.LeftNote && studentScript != null && studentScript2 != null && studentScript.Alive && studentScript2.Alive && studentScript.ConfessPhase == 7 && studentScript2.ConfessPhase == 4)
 		{
 			float num = Vector3.Distance(this.Yandere.transform.position, this.MythHill.position);
 			if (num > 10f && num < 25f)

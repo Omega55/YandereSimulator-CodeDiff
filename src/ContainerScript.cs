@@ -38,7 +38,7 @@ public class ContainerScript : MonoBehaviour
 			this.Prompt.Circle[1].fillAmount = 1f;
 			if (this.Prompt.Yandere.Armed)
 			{
-				this.Weapon = this.Prompt.Yandere.Weapon[this.Prompt.Yandere.Equipped].gameObject.GetComponent<WeaponScript>();
+				this.Weapon = this.Prompt.Yandere.EquippedWeapon.gameObject.GetComponent<WeaponScript>();
 				this.Prompt.Yandere.EmptyHands();
 				this.Weapon.transform.parent = this.WeaponSpot;
 				this.Weapon.transform.localPosition = Vector3.zero;
@@ -151,7 +151,7 @@ public class ContainerScript : MonoBehaviour
 			}
 			if (this.Prompt.Yandere.Armed)
 			{
-				if (!this.Prompt.Yandere.Weapon[this.Prompt.Yandere.Equipped].Concealable)
+				if (!this.Prompt.Yandere.EquippedWeapon.Concealable)
 				{
 					if (this.Weapon == null)
 					{

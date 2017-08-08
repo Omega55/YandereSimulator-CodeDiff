@@ -12,7 +12,7 @@ public class GasterBeamScript : MonoBehaviour
 			StudentScript component = other.gameObject.GetComponent<StudentScript>();
 			if (component != null)
 			{
-				component.Dead = true;
+				component.DeathType = DeathType.EasterEgg;
 				component.BecomeRagdoll();
 				Rigidbody rigidbody = component.Ragdoll.AllRigidbodies[0];
 				rigidbody.isKinematic = false;

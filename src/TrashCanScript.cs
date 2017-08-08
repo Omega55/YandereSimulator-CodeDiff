@@ -29,7 +29,7 @@ public class TrashCanScript : MonoBehaviour
 				}
 				else
 				{
-					this.Item = this.Yandere.Weapon[this.Yandere.Equipped].gameObject;
+					this.Item = this.Yandere.EquippedWeapon.gameObject;
 					this.Yandere.DropTimer[this.Yandere.Equipped] = 0.5f;
 					this.Yandere.DropWeapon(this.Yandere.Equipped);
 					this.Weapon = true;

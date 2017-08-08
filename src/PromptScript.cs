@@ -214,8 +214,8 @@ public class PromptScript : MonoBehaviour
 				this.Distance = Vector3.Distance(this.Yandere.transform.position, new Vector3(base.transform.position.x, this.Yandere.transform.position.y, base.transform.position.z));
 				if (this.Distance < this.MaximumDistance)
 				{
-					bool flag = this.Yandere.Stance == StanceType.Crouching;
-					bool flag2 = this.Yandere.Stance == StanceType.Crawling;
+					bool flag = this.Yandere.Stance.Current == StanceType.Crouching;
+					bool flag2 = this.Yandere.Stance.Current == StanceType.Crawling;
 					if (this.Yandere.CanMove && (!flag || this.AllowedWhenCrouching(this.OwnerType)) && (!flag2 || this.AllowedWhenCrawling(this.OwnerType)) && !this.Yandere.Aiming && !this.Yandere.Mopping && !this.Yandere.NearSenpai)
 					{
 						Debug.DrawLine(this.Yandere.Eyes.position + Vector3.down * this.Height, this.RaycastTarget.position, Color.green);

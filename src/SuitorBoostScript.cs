@@ -52,7 +52,9 @@ public class SuitorBoostScript : MonoBehaviour
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
-			this.Yandere.Follower.Pathfinding.enabled = false;
+			this.Yandere.Follower.CharacterAnimation.CrossFade(this.Yandere.Follower.IdleAnim);
+			this.Yandere.Follower.Pathfinding.canSearch = false;
+			this.Yandere.Follower.Pathfinding.canMove = false;
 			this.Yandere.Follower.enabled = false;
 			this.Yandere.RPGCamera.enabled = false;
 			this.Darkness.enabled = true;
@@ -146,7 +148,8 @@ public class SuitorBoostScript : MonoBehaviour
 						this.Darkness.enabled = false;
 						this.Yandere.CanMove = true;
 						this.Boosting = false;
-						this.Yandere.Follower.Pathfinding.enabled = true;
+						this.Yandere.Follower.Pathfinding.canSearch = true;
+						this.Yandere.Follower.Pathfinding.canMove = true;
 						this.Yandere.Follower.enabled = true;
 						this.Prompt.Hide();
 						this.Prompt.enabled = false;

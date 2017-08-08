@@ -588,7 +588,7 @@ public class EndOfDayScript : MonoBehaviour
 			{
 				int fingerprintID = this.WeaponManager.Weapons[this.WeaponID].FingerprintID;
 				StudentScript studentScript = this.StudentManager.Students[fingerprintID];
-				if (!studentScript.Dead)
+				if (studentScript.Alive)
 				{
 					if (!studentScript.Tranquil)
 					{

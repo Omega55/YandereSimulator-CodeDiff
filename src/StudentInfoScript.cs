@@ -256,35 +256,35 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.ClubLabel.text = "No Club";
 		}
-		if (this.JSON.StudentStrengths[ID] == 0f)
+		if (this.JSON.StudentStrengths[ID] == 0)
 		{
 			this.StrengthLabel.text = "Incapable";
 		}
-		else if (this.JSON.StudentStrengths[ID] == 1f)
+		else if (this.JSON.StudentStrengths[ID] == 1)
 		{
 			this.StrengthLabel.text = "Very Weak";
 		}
-		else if (this.JSON.StudentStrengths[ID] == 2f)
+		else if (this.JSON.StudentStrengths[ID] == 2)
 		{
 			this.StrengthLabel.text = "Weak";
 		}
-		else if (this.JSON.StudentStrengths[ID] == 3f)
+		else if (this.JSON.StudentStrengths[ID] == 3)
 		{
 			this.StrengthLabel.text = "Strong";
 		}
-		else if (this.JSON.StudentStrengths[ID] == 4f)
+		else if (this.JSON.StudentStrengths[ID] == 4)
 		{
 			this.StrengthLabel.text = "Very Strong";
 		}
-		else if (this.JSON.StudentStrengths[ID] == 5f)
+		else if (this.JSON.StudentStrengths[ID] == 5)
 		{
 			this.StrengthLabel.text = "Martial Arts Master";
 		}
-		else if (this.JSON.StudentStrengths[ID] == 6f)
+		else if (this.JSON.StudentStrengths[ID] == 6)
 		{
 			this.StrengthLabel.text = "Extensive Training";
 		}
-		else if (this.JSON.StudentStrengths[ID] == 99f)
+		else if (this.JSON.StudentStrengths[ID] == 99)
 		{
 			this.StrengthLabel.text = "?????";
 		}

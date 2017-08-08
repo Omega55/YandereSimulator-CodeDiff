@@ -48,6 +48,10 @@ public class GiggleScript : MonoBehaviour
 					this.Student.DiscCheck = true;
 					this.Student.Routine = false;
 					this.Student.ReadPhase = 0;
+					this.Student.OccultBook.SetActive(false);
+					this.Student.SmartPhone.SetActive(false);
+					this.Student.Phone.SetActive(false);
+					this.Student.Pen.SetActive(false);
 				}
 				this.Distracted = true;
 			}

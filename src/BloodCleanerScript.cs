@@ -27,6 +27,7 @@ public class BloodCleanerScript : MonoBehaviour
 		if (this.Blood < 100f && this.BloodParent.childCount > 0)
 		{
 			this.Pathfinding.target = this.BloodParent.GetChild(0);
+			this.Pathfinding.speed = 1f;
 			if (this.Pathfinding.target.position.y < 4f)
 			{
 				this.Label.text = "1";
