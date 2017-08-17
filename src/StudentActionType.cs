@@ -20,5 +20,6 @@ public enum StudentActionType
 	Texting,
 	Mourn,
 	Cuddle,
-	Teaching
+	Teaching,
+	SearchPatrol
 }

@@ -68,7 +68,7 @@ public class ClubWindowScript : MonoBehaviour
 				{
 					if (!this.Quitting && !this.Activity)
 					{
-						PlayerPrefs.SetInt("Club", this.Club);
+						Globals.Club = this.Club;
 						this.Yandere.ClubAccessory();
 						this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubJoin;
 						this.ClubManager.ActivateClubBenefit();
@@ -76,8 +76,8 @@ public class ClubWindowScript : MonoBehaviour
 					else if (this.Quitting)
 					{
 						this.ClubManager.DeactivateClubBenefit();
-						PlayerPrefs.SetInt("QuitClub_" + this.Club.ToString(), 1);
-						PlayerPrefs.SetInt("Club", 0);
+						Globals.SetQuitClub(this.Club, true);
+						Globals.Club = 0;
 						this.Yandere.ClubAccessory();
 						this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubQuit;
 						this.Quitting = false;

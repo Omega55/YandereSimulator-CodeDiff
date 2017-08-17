@@ -180,6 +180,7 @@ public class PauseScreenScript : MonoBehaviour
 							this.PromptBar.Label[0].text = "Accept";
 							this.PromptBar.Label[1].text = "Exit";
 							this.PromptBar.Label[4].text = "Choose";
+							this.PromptBar.Label[5].text = "Choose";
 							this.PromptBar.UpdateButtons();
 							this.PromptBar.Show = true;
 							UISprite uisprite = this.PhoneIcons[3];
@@ -320,6 +321,10 @@ public class PauseScreenScript : MonoBehaviour
 								this.TaskList.gameObject.SetActive(true);
 								this.MainMenu.SetActive(false);
 								this.Sideways = true;
+								this.PromptBar.ClearButtons();
+								this.PromptBar.Label[1].text = "Back";
+								this.PromptBar.Label[4].text = "Choose";
+								this.PromptBar.UpdateButtons();
 								this.TaskList.UpdateTaskList();
 								base.StartCoroutine(this.TaskList.UpdateTaskInfo());
 							}
@@ -471,6 +476,7 @@ public class PauseScreenScript : MonoBehaviour
 							this.PromptBar.Label[0].text = "Accept";
 							this.PromptBar.Label[1].text = "Exit";
 							this.PromptBar.Label[4].text = "Choose";
+							this.PromptBar.Label[5].text = "Choose";
 							this.PromptBar.UpdateButtons();
 							this.PromptBar.Show = true;
 							this.Quitting = false;

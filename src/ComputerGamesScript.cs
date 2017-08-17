@@ -44,7 +44,7 @@ public class ComputerGamesScript : MonoBehaviour
 		this.GameWindow.gameObject.SetActive(false);
 		this.DeactivateAllBenefits();
 		this.OriginalColor = this.Yandere.PowerUp.color;
-		if (PlayerPrefs.GetInt("Club") == 11)
+		if (Globals.Club == 11)
 		{
 			this.EnableGames();
 		}
@@ -220,48 +220,48 @@ public class ComputerGamesScript : MonoBehaviour
 		{
 			if (this.Subject == 1)
 			{
-				PlayerPrefs.SetInt("BiologyBonus", 1);
+				Globals.BiologyBonus = 1;
 			}
 			else if (this.Subject == 2)
 			{
-				PlayerPrefs.SetInt("ChemistryBonus", 1);
+				Globals.ChemistryBonus = 1;
 			}
 			else if (this.Subject == 3)
 			{
-				PlayerPrefs.SetInt("LanguageBonus", 1);
+				Globals.LanguageBonus = 1;
 			}
 			else if (this.Subject == 4)
 			{
-				PlayerPrefs.SetInt("PsychologyBonus", 1);
+				Globals.PsychologyBonus = 1;
 			}
 		}
 		else if (this.GameID == 2)
 		{
-			PlayerPrefs.SetInt("PhysicalBonus", 1);
+			Globals.PhysicalBonus = 1;
 		}
 		else if (this.GameID == 3)
 		{
-			PlayerPrefs.SetInt("SeductionBonus", 1);
+			Globals.SeductionBonus = 1;
 		}
 		else if (this.GameID == 4)
 		{
-			PlayerPrefs.SetInt("NumbnessBonus", 1);
+			Globals.NumbnessBonus = 1;
 		}
 		else if (this.GameID == 5)
 		{
-			PlayerPrefs.SetInt("SocialBonus", 1);
+			Globals.SocialBonus = 1;
 		}
 		else if (this.GameID == 6)
 		{
-			PlayerPrefs.SetInt("StealthBonus", 1);
+			Globals.StealthBonus = 1;
 		}
 		else if (this.GameID == 7)
 		{
-			PlayerPrefs.SetInt("SpeedBonus", 1);
+			Globals.SpeedBonus = 1;
 		}
 		else if (this.GameID == 8)
 		{
-			PlayerPrefs.SetInt("EnlightenmentBonus", 1);
+			Globals.EnlightenmentBonus = 1;
 		}
 		if (this.Poison != null)
 		{
@@ -277,48 +277,48 @@ public class ComputerGamesScript : MonoBehaviour
 		{
 			if (this.Subject == 1)
 			{
-				PlayerPrefs.SetInt("BiologyBonus", 0);
+				Globals.BiologyBonus = 0;
 			}
 			else if (this.Subject == 2)
 			{
-				PlayerPrefs.SetInt("ChemistryBonus", 0);
+				Globals.ChemistryBonus = 0;
 			}
 			else if (this.Subject == 3)
 			{
-				PlayerPrefs.SetInt("LanguageBonus", 0);
+				Globals.LanguageBonus = 0;
 			}
 			else if (this.Subject == 4)
 			{
-				PlayerPrefs.SetInt("PsychologyBonus", 0);
+				Globals.PsychologyBonus = 0;
 			}
 		}
 		else if (this.GameID == 2)
 		{
-			PlayerPrefs.SetInt("PhysicalBonus", 0);
+			Globals.PhysicalBonus = 0;
 		}
 		else if (this.GameID == 3)
 		{
-			PlayerPrefs.SetInt("SeductionBonus", 0);
+			Globals.SeductionBonus = 0;
 		}
 		else if (this.GameID == 4)
 		{
-			PlayerPrefs.SetInt("NumbnessBonus", 0);
+			Globals.NumbnessBonus = 0;
 		}
 		else if (this.GameID == 5)
 		{
-			PlayerPrefs.SetInt("SocialBonus", 0);
+			Globals.SocialBonus = 0;
 		}
 		else if (this.GameID == 6)
 		{
-			PlayerPrefs.SetInt("StealthBonus", 0);
+			Globals.StealthBonus = 0;
 		}
 		else if (this.GameID == 7)
 		{
-			PlayerPrefs.SetInt("SpeedBonus", 0);
+			Globals.SpeedBonus = 0;
 		}
 		else if (this.GameID == 8)
 		{
-			PlayerPrefs.SetInt("EnlightenmentBonus", 0);
+			Globals.EnlightenmentBonus = 0;
 		}
 		if (this.Poison != null)
 		{
@@ -330,17 +330,17 @@ public class ComputerGamesScript : MonoBehaviour
 
 	public void DeactivateAllBenefits()
 	{
-		PlayerPrefs.SetInt("BiologyBonus", 0);
-		PlayerPrefs.SetInt("ChemistryBonus", 0);
-		PlayerPrefs.SetInt("LanguageBonus", 0);
-		PlayerPrefs.SetInt("PsychologyBonus", 0);
-		PlayerPrefs.SetInt("PhysicalBonus", 0);
-		PlayerPrefs.SetInt("SeductionBonus", 0);
-		PlayerPrefs.SetInt("NumbnessBonus", 0);
-		PlayerPrefs.SetInt("SocialBonus", 0);
-		PlayerPrefs.SetInt("StealthBonus", 0);
-		PlayerPrefs.SetInt("SpeedBonus", 0);
-		PlayerPrefs.SetInt("EnlightenmentBonus", 0);
+		Globals.BiologyBonus = 0;
+		Globals.ChemistryBonus = 0;
+		Globals.LanguageBonus = 0;
+		Globals.PsychologyBonus = 0;
+		Globals.PhysicalBonus = 0;
+		Globals.SeductionBonus = 0;
+		Globals.NumbnessBonus = 0;
+		Globals.SocialBonus = 0;
+		Globals.StealthBonus = 0;
+		Globals.SpeedBonus = 0;
+		Globals.EnlightenmentBonus = 0;
 		if (this.Poison != null)
 		{
 			this.Poison.Start();

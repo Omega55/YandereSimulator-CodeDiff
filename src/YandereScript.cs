@@ -315,7 +315,9 @@ public class YandereScript : MonoBehaviour
 
 	public float Bend;
 
-	public float CrouchSpeed;
+	public float CrouchWalkSpeed;
+
+	public float CrouchRunSpeed;
 
 	public float CrawlSpeed;
 
@@ -635,7 +637,7 @@ public class YandereScript : MonoBehaviour
 
 	public Texture YanderePhoneTexture;
 
-	public Texture KokonaPhoneTexture;
+	public Texture RivalPhoneTexture;
 
 	public float v;
 
@@ -993,6 +995,10 @@ public class YandereScript : MonoBehaviour
 		{
 			this.NoDebug = true;
 		}
+		if (Globals.LoveSick)
+		{
+			this.NoDebug = true;
+		}
 	}
 
 	public WeaponScript EquippedWeapon
@@ -1015,17 +1021,20 @@ public class YandereScript : MonoBehaviour
 		}
 	}
 
-	public SanityType GetSanityType()
+	public SanityType SanityType
 	{
-		if (this.Sanity / 100f > 0.6666667f)
+		get
 		{
-			return SanityType.High;
+			if (this.Sanity / 100f > 0.6666667f)
+			{
+				return SanityType.High;
+			}
+			if (this.Sanity / 100f > 0.333333343f)
+			{
+				return SanityType.Medium;
+			}
+			return SanityType.Low;
 		}
-		if (this.Sanity / 100f > 0.333333343f)
-		{
-			return SanityType.Medium;
-		}
-		return SanityType.Low;
 	}
 
 	public string GetSanityString(SanityType sanityType)
@@ -1106,1434 +1115,8 @@ public class YandereScript : MonoBehaviour
 		AudioSource component = base.GetComponent<AudioSource>();
 		if (!this.PauseScreen.Show)
 		{
-			if (this.CanMove)
-			{
-				this.MyController.Move(Physics.gravity * 0.1f);
-				this.v = Input.GetAxis("Vertical");
-				this.h = Input.GetAxis("Horizontal");
-				this.FlapSpeed = Mathf.Abs(this.v) + Mathf.Abs(this.h);
-				if (!this.Aiming)
-				{
-					Vector3 a = this.MainCamera.transform.TransformDirection(Vector3.forward);
-					a.y = 0f;
-					a = a.normalized;
-					Vector3 a2 = new Vector3(a.z, 0f, -a.x);
-					this.targetDirection = this.h * a2 + this.v * a;
-					if (this.targetDirection != Vector3.zero)
-					{
-						this.targetRotation = Quaternion.LookRotation(this.targetDirection);
-						base.transform.rotation = Quaternion.Lerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
-					}
-					else
-					{
-						this.targetRotation = new Quaternion(0f, 0f, 0f, 0f);
-					}
-					if (this.v != 0f || this.h != 0f)
-					{
-						if (Input.GetButton("LB") && Vector3.Distance(base.transform.position, this.Senpai.position) > 1f)
-						{
-							if (this.Stance.Current == StanceType.Crouching)
-							{
-								this.CharacterAnimation.CrossFade(this.CrouchRunAnim);
-								this.MyController.Move(base.transform.forward * (2f + (float)(PlayerPrefs.GetInt("PhysicalGrade") + PlayerPrefs.GetInt("SpeedBonus")) * 0.25f) * Time.deltaTime);
-							}
-							else if (!this.Dragging && !this.Mopping)
-							{
-								this.CharacterAnimation.CrossFade(this.RunAnim);
-								this.MyController.Move(base.transform.forward * (this.RunSpeed + (float)(PlayerPrefs.GetInt("PhysicalGrade") + PlayerPrefs.GetInt("SpeedBonus")) * 0.25f) * Time.deltaTime);
-							}
-							else if (this.Mopping)
-							{
-								this.CharacterAnimation.CrossFade(this.WalkAnim);
-								this.MyController.Move(base.transform.forward * (this.WalkSpeed * Time.deltaTime));
-							}
-							if (this.Stance.Current == StanceType.Crouching)
-							{
-							}
-							if (this.Stance.Current == StanceType.Crawling)
-							{
-								this.Stance.Current = StanceType.Crouching;
-								this.Crouch();
-							}
-						}
-						else if (!this.Dragging)
-						{
-							if (this.Stance.Current == StanceType.Crawling)
-							{
-								this.CharacterAnimation.CrossFade(this.CrawlWalkAnim);
-								this.MyController.Move(base.transform.forward * (this.CrawlSpeed * Time.deltaTime));
-							}
-							else if (this.Stance.Current == StanceType.Crouching)
-							{
-								this.CharacterAnimation[this.CrouchWalkAnim].speed = 1f;
-								this.CharacterAnimation.CrossFade(this.CrouchWalkAnim);
-								this.MyController.Move(base.transform.forward * (this.CrouchSpeed * Time.deltaTime));
-							}
-							else
-							{
-								this.CharacterAnimation.CrossFade(this.WalkAnim);
-								this.MyController.Move(base.transform.forward * (this.WalkSpeed * Time.deltaTime));
-							}
-						}
-						else
-						{
-							this.CharacterAnimation.CrossFade("f02_dragWalk_01");
-							this.MyController.Move(base.transform.forward * (this.WalkSpeed * Time.deltaTime));
-						}
-					}
-					else if (!this.Dragging)
-					{
-						if (this.Stance.Current == StanceType.Crawling)
-						{
-							this.CharacterAnimation.CrossFade(this.CrawlIdleAnim);
-						}
-						else if (this.Stance.Current == StanceType.Crouching)
-						{
-							this.CharacterAnimation.CrossFade(this.CrouchIdleAnim);
-						}
-						else
-						{
-							this.CharacterAnimation.CrossFade(this.IdleAnim);
-						}
-					}
-					else
-					{
-						this.CharacterAnimation.CrossFade("f02_dragIdle_02");
-					}
-				}
-				else
-				{
-					if (this.v != 0f || this.h != 0f)
-					{
-						if (this.Stance.Current == StanceType.Crawling)
-						{
-							this.CharacterAnimation.CrossFade(this.CrawlWalkAnim);
-							this.MyController.Move(base.transform.forward * (this.CrawlSpeed * Time.deltaTime * this.v));
-							this.MyController.Move(base.transform.right * (this.CrawlSpeed * Time.deltaTime * this.h));
-						}
-						else if (this.Stance.Current == StanceType.Crouching)
-						{
-							this.CharacterAnimation.CrossFade(this.CrouchWalkAnim);
-							this.MyController.Move(base.transform.forward * (this.CrouchSpeed * Time.deltaTime * this.v));
-							this.MyController.Move(base.transform.right * (this.CrouchSpeed * Time.deltaTime * this.h));
-						}
-						else
-						{
-							this.CharacterAnimation.CrossFade(this.WalkAnim);
-							this.MyController.Move(base.transform.forward * (this.WalkSpeed * Time.deltaTime * this.v));
-							this.MyController.Move(base.transform.right * (this.WalkSpeed * Time.deltaTime * this.h));
-						}
-					}
-					else if (this.Stance.Current == StanceType.Crawling)
-					{
-						this.CharacterAnimation.CrossFade(this.CrawlIdleAnim);
-					}
-					else if (this.Stance.Current == StanceType.Crouching)
-					{
-						this.CharacterAnimation.CrossFade(this.CrouchIdleAnim);
-					}
-					else
-					{
-						this.CharacterAnimation.CrossFade(this.IdleAnim);
-					}
-					this.Bend += Input.GetAxis("Mouse Y") * 8f;
-					if (this.Stance.Current == StanceType.Crawling)
-					{
-						if (this.Bend < 0f)
-						{
-							this.Bend = 0f;
-						}
-					}
-					else if (this.Stance.Current == StanceType.Crouching)
-					{
-						if (this.Bend < -45f)
-						{
-							this.Bend = -45f;
-						}
-					}
-					else if (this.Bend < -85f)
-					{
-						this.Bend = -85f;
-					}
-					if (this.Bend > 85f)
-					{
-						this.Bend = 85f;
-					}
-					base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, base.transform.localEulerAngles.y + Input.GetAxis("Mouse X") * 8f, base.transform.localEulerAngles.z);
-				}
-				if (!this.NearSenpai)
-				{
-					if (!Input.GetButton("A") && !Input.GetButton("B") && !Input.GetButton("X") && !Input.GetButton("Y") && (Input.GetAxis("LT") > 0.5f || Input.GetMouseButton(1)))
-					{
-						if (this.Inventory.RivalPhone && Input.GetButtonDown("LB"))
-						{
-							this.CharacterAnimation["f02_cameraPose_00"].weight = 0f;
-							if (!this.RivalPhone)
-							{
-								this.SmartphoneRenderer.material.mainTexture = this.KokonaPhoneTexture;
-								this.RivalPhone = true;
-							}
-							else
-							{
-								this.SmartphoneRenderer.material.mainTexture = this.YanderePhoneTexture;
-								this.RivalPhone = false;
-							}
-						}
-						if (Input.GetAxis("LT") > 0.5f)
-						{
-							this.UsingController = true;
-						}
-						if (!this.Aiming)
-						{
-							if (this.CameraEffects.OneCamera)
-							{
-								this.MainCamera.clearFlags = CameraClearFlags.Color;
-								this.MainCamera.farClipPlane = 0.02f;
-							}
-							base.transform.eulerAngles = new Vector3(base.transform.eulerAngles.x, this.MainCamera.transform.eulerAngles.y, base.transform.eulerAngles.z);
-							this.CharacterAnimation.Play(this.IdleAnim);
-							this.Smartphone.transform.parent.gameObject.SetActive(true);
-							this.ShoulderCamera.AimingCamera = true;
-							this.Obscurance.enabled = false;
-							this.HandCamera.SetActive(true);
-							this.YandereVision = false;
-							this.Blur.enabled = true;
-							this.Mopping = false;
-							this.Aiming = true;
-							this.EmptyHands();
-							if (this.Inventory.RivalPhone)
-							{
-								this.PhonePromptBar.Panel.enabled = true;
-								this.PhonePromptBar.Show = true;
-							}
-							Time.timeScale = 1f;
-						}
-					}
-					if (!this.Aiming && this.Stance.Current != StanceType.Crouching && this.Stance.Current != StanceType.Crawling && !this.Accessories[9].activeInHierarchy && !this.Accessories[16].activeInHierarchy)
-					{
-						if (Input.GetButton("RB"))
-						{
-							this.YandereTimer += Time.deltaTime;
-							if (this.YandereTimer > 0.5f)
-							{
-								if (!this.Sans)
-								{
-									this.YandereVision = true;
-								}
-								else
-								{
-									this.SansEyes[0].SetActive(true);
-									this.SansEyes[1].SetActive(true);
-									this.GlowEffect.Play();
-									this.SummonBones = true;
-									this.YandereTimer = 0f;
-									this.CanMove = false;
-								}
-							}
-						}
-						else if (this.YandereVision)
-						{
-							this.Obscurance.enabled = false;
-							this.YandereVision = false;
-						}
-						if (Input.GetButtonUp("RB"))
-						{
-							if (this.YandereTimer < 0.5f && !this.Dragging && !this.Carrying && !this.Laughing)
-							{
-								if (this.Sans)
-								{
-									this.BlasterStage++;
-									if (this.BlasterStage > 5)
-									{
-										this.BlasterStage = 1;
-									}
-									GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.BlasterSet[this.BlasterStage], base.transform.position, Quaternion.identity);
-									gameObject.transform.position = base.transform.position;
-									gameObject.transform.rotation = base.transform.rotation;
-									AudioSource.PlayClipAtPoint(this.BlasterClip, base.transform.position + Vector3.up);
-									this.CharacterAnimation["f02_sansBlaster_00"].time = 0f;
-									this.CharacterAnimation.Play("f02_sansBlaster_00");
-									this.SansEyes[0].SetActive(true);
-									this.SansEyes[1].SetActive(true);
-									this.GlowEffect.Play();
-									this.Blasting = true;
-									this.CanMove = false;
-								}
-								else if (!this.FalconHelmet.activeInHierarchy && this.Barcode.activeInHierarchy)
-								{
-									if (!this.Xtan)
-									{
-										if (!this.CirnoHair.activeInHierarchy && !this.TornadoHair.activeInHierarchy && !this.BladeHair.activeInHierarchy)
-										{
-											this.LaughAnim = "f02_laugh_01";
-											this.LaughClip = this.Laugh1;
-											this.LaughIntensity += 1f;
-											component.clip = this.LaughClip;
-											component.time = 0f;
-											component.Play();
-										}
-										UnityEngine.Object.Instantiate<GameObject>(this.GiggleDisc, base.transform.position + Vector3.up, Quaternion.identity);
-										component.volume = 1f;
-										this.LaughTimer = 0.5f;
-										this.Laughing = true;
-										this.CanMove = false;
-									}
-									else if (this.LongHair[0].gameObject.activeInHierarchy)
-									{
-										this.LongHair[0].gameObject.SetActive(false);
-										this.BlackEyePatch.SetActive(false);
-										this.SlenderHair[0].transform.parent.gameObject.SetActive(true);
-										this.SlenderHair[0].SetActive(true);
-										this.SlenderHair[1].SetActive(true);
-									}
-									else
-									{
-										this.LongHair[0].gameObject.SetActive(true);
-										this.BlackEyePatch.SetActive(true);
-										this.SlenderHair[0].transform.parent.gameObject.SetActive(true);
-										this.SlenderHair[0].SetActive(false);
-										this.SlenderHair[1].SetActive(false);
-									}
-								}
-								else if (!this.Punching)
-								{
-									if (this.FalconHelmet.activeInHierarchy)
-									{
-										GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(this.FalconWindUp);
-										gameObject2.transform.parent = this.ItemParent;
-										gameObject2.transform.localPosition = Vector3.zero;
-										this.PlayClip(this.FalconPunchVoice);
-										this.CharacterAnimation["f02_falconPunch_00"].time = 0f;
-										this.CharacterAnimation.Play("f02_falconPunch_00");
-										this.FalconSpeed = 0f;
-									}
-									else
-									{
-										AudioSource.PlayClipAtPoint(this.OnePunchVoice, base.transform.position + Vector3.up);
-										this.CharacterAnimation["f02_punch_21"].time = 0f;
-										this.CharacterAnimation.CrossFade("f02_punch_21", 0.15f);
-									}
-									this.Punching = true;
-									this.CanMove = false;
-								}
-							}
-							this.YandereTimer = 0f;
-						}
-					}
-					if (!Input.GetButton("LB"))
-					{
-						if (this.Stance.Current != StanceType.Crouching && this.Stance.Current != StanceType.Crawling)
-						{
-							if (Input.GetButtonDown("RS"))
-							{
-								this.Obscurance.enabled = false;
-								this.CrouchButtonDown = true;
-								this.YandereVision = false;
-								this.Stance.Current = StanceType.Crouching;
-								this.Crouch();
-								this.EmptyHands();
-							}
-						}
-						else
-						{
-							if (this.Stance.Current == StanceType.Crouching)
-							{
-								if (Input.GetButton("RS") && !this.CameFromCrouch)
-								{
-									this.CrawlTimer += Time.deltaTime;
-								}
-								if (this.CrawlTimer > 0.5f)
-								{
-									this.EmptyHands();
-									this.Obscurance.enabled = false;
-									this.YandereVision = false;
-									this.Stance.Current = StanceType.Crawling;
-									this.CrawlTimer = 0f;
-									this.Uncrouch();
-								}
-								else if (Input.GetButtonUp("RS") && !this.CrouchButtonDown && !this.CameFromCrouch)
-								{
-									this.Stance.Current = StanceType.Standing;
-									this.CrawlTimer = 0f;
-									this.Uncrouch();
-								}
-							}
-							else if (Input.GetButtonDown("RS"))
-							{
-								this.CameFromCrouch = true;
-								this.Stance.Current = StanceType.Crouching;
-								this.Crouch();
-							}
-							if (Input.GetButtonUp("RS"))
-							{
-								this.CrouchButtonDown = false;
-								this.CameFromCrouch = false;
-								this.CrawlTimer = 0f;
-							}
-						}
-					}
-				}
-				if (this.Aiming)
-				{
-					this.CharacterAnimation["f02_cameraPose_00"].weight = Mathf.Lerp(this.CharacterAnimation["f02_cameraPose_00"].weight, 1f, Time.deltaTime * 10f);
-					if (this.ClubAccessories[7].activeInHierarchy && (Input.GetAxis("DpadY") != 0f || Input.GetAxis("Mouse ScrollWheel") != 0f))
-					{
-						this.Smartphone.fieldOfView -= Input.GetAxis("DpadY");
-						this.Smartphone.fieldOfView -= Input.GetAxis("Mouse ScrollWheel") * 10f;
-						if (this.Smartphone.fieldOfView > 60f)
-						{
-							this.Smartphone.fieldOfView = 60f;
-						}
-						if (this.Smartphone.fieldOfView < 30f)
-						{
-							this.Smartphone.fieldOfView = 30f;
-						}
-					}
-					if (Input.GetAxis("RT") != 0f || Input.GetMouseButtonDown(0) || Input.GetButtonDown("RB"))
-					{
-						this.FixCamera();
-						this.PauseScreen.CorrectingTime = false;
-						Time.timeScale = 0f;
-						this.CanMove = false;
-						this.Shutter.Snap();
-					}
-					if (Time.timeScale > 0f && ((this.UsingController && Input.GetAxis("LT") < 0.5f) || (!this.UsingController && !Input.GetMouseButton(1))))
-					{
-						this.StopAiming();
-					}
-					if (Input.GetKey("left alt"))
-					{
-						if (!this.CinematicCamera.activeInHierarchy)
-						{
-							if (this.CinematicTimer > 0f)
-							{
-								this.CinematicCamera.transform.eulerAngles = this.Smartphone.transform.eulerAngles;
-								this.CinematicCamera.transform.position = this.Smartphone.transform.position;
-								this.CinematicCamera.SetActive(true);
-								this.CinematicTimer = 0f;
-								this.StopAiming();
-							}
-							this.CinematicTimer += 1f;
-						}
-					}
-					else
-					{
-						this.CinematicTimer = 0f;
-					}
-				}
-				if (this.Gloved)
-				{
-					if (this.InputDevice.Type == InputDeviceType.Gamepad)
-					{
-						if (Input.GetAxis("DpadY") < -0.5f)
-						{
-							this.GloveTimer += Time.deltaTime;
-							if (this.GloveTimer > 0.5f)
-							{
-								this.CharacterAnimation.CrossFade("f02_removeGloves_00");
-								this.Degloving = true;
-								this.CanMove = false;
-							}
-						}
-						else
-						{
-							this.GloveTimer = 0f;
-						}
-					}
-					else if (Input.GetKey("1"))
-					{
-						this.GloveTimer += Time.deltaTime;
-						if (this.GloveTimer > 0.1f)
-						{
-							this.CharacterAnimation.CrossFade("f02_removeGloves_00");
-							this.Degloving = true;
-							this.CanMove = false;
-						}
-					}
-					else
-					{
-						this.GloveTimer = 0f;
-					}
-				}
-				if (this.Weapon[1] != null && this.DropTimer[2] == 0f)
-				{
-					if (this.InputDevice.Type == InputDeviceType.Gamepad)
-					{
-						if (Input.GetAxis("DpadX") < -0.5f)
-						{
-							this.DropWeapon(1);
-						}
-						else
-						{
-							this.DropTimer[1] = 0f;
-						}
-					}
-					else if (Input.GetKey("2"))
-					{
-						this.DropWeapon(1);
-					}
-					else
-					{
-						this.DropTimer[1] = 0f;
-					}
-				}
-				if (this.Weapon[2] != null && this.DropTimer[1] == 0f)
-				{
-					if (this.InputDevice.Type == InputDeviceType.Gamepad)
-					{
-						if (Input.GetAxis("DpadX") > 0.5f)
-						{
-							this.DropWeapon(2);
-						}
-						else
-						{
-							this.DropTimer[2] = 0f;
-						}
-					}
-					else if (Input.GetKey("3"))
-					{
-						this.DropWeapon(2);
-					}
-					else
-					{
-						this.DropTimer[2] = 0f;
-					}
-				}
-				if (Input.GetButtonDown("LS") || Input.GetKeyDown("t"))
-				{
-					if (this.NewTrail != null)
-					{
-						UnityEngine.Object.Destroy(this.NewTrail);
-					}
-					this.NewTrail = UnityEngine.Object.Instantiate<GameObject>(this.Trail, base.transform.position + base.transform.forward * 0.5f + Vector3.up * 0.1f, Quaternion.identity);
-					this.NewTrail.GetComponent<AIPath>().target = this.Homeroom;
-				}
-				if (this.Armed)
-				{
-					this.ID = 0;
-					while (this.ID < this.ArmedAnims.Length)
-					{
-						string name = this.ArmedAnims[this.ID];
-						this.CharacterAnimation[name].weight = Mathf.Lerp(this.CharacterAnimation[name].weight, (this.EquippedWeapon.AnimID != this.ID) ? 0f : 1f, Time.deltaTime * 10f);
-						this.ID++;
-					}
-				}
-				else
-				{
-					this.ID = 0;
-					while (this.ID < this.ArmedAnims.Length)
-					{
-						string name2 = this.ArmedAnims[this.ID];
-						this.CharacterAnimation[name2].weight = Mathf.Lerp(this.CharacterAnimation[name2].weight, 0f, Time.deltaTime * 10f);
-						this.ID++;
-					}
-				}
-			}
-			else
-			{
-				if (this.Dumping)
-				{
-					this.targetRotation = Quaternion.LookRotation(this.Incinerator.transform.position - base.transform.position);
-					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
-					this.MoveTowardsTarget(this.Incinerator.transform.position + Vector3.right * -2f);
-					if (this.DumpTimer == 0f && this.Carrying)
-					{
-						this.CharacterAnimation["f02_carryDisposeA_00"].time = 2.5f;
-					}
-					this.DumpTimer += Time.deltaTime;
-					if (this.DumpTimer > 1f)
-					{
-						if (!this.Ragdoll.GetComponent<RagdollScript>().Dumped)
-						{
-							this.DumpRagdoll(RagdollDumpType.Incinerator);
-						}
-						this.CharacterAnimation.CrossFade("f02_carryDisposeA_00");
-						if (this.CharacterAnimation["f02_carryDisposeA_00"].time >= this.CharacterAnimation["f02_carryDisposeA_00"].length)
-						{
-							this.Incinerator.Prompt.enabled = true;
-							this.Incinerator.Ready = true;
-							this.Incinerator.Open = false;
-							this.Dragging = false;
-							this.Dumping = false;
-							this.CanMove = true;
-							this.Ragdoll = null;
-							this.StopCarrying();
-							this.DumpTimer = 0f;
-						}
-					}
-				}
-				if (this.Chipping)
-				{
-					this.targetRotation = Quaternion.LookRotation(this.WoodChipper.gameObject.transform.position - base.transform.position);
-					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
-					this.MoveTowardsTarget(this.WoodChipper.DumpPoint.position);
-					if (this.DumpTimer == 0f && this.Carrying)
-					{
-						this.CharacterAnimation["f02_carryDisposeA_00"].time = 2.5f;
-					}
-					this.DumpTimer += Time.deltaTime;
-					if (this.DumpTimer > 1f)
-					{
-						if (!this.Ragdoll.GetComponent<RagdollScript>().Dumped)
-						{
-							this.DumpRagdoll(RagdollDumpType.WoodChipper);
-						}
-						this.CharacterAnimation.CrossFade("f02_carryDisposeA_00");
-						if (this.CharacterAnimation["f02_carryDisposeA_00"].time >= this.CharacterAnimation["f02_carryDisposeA_00"].length)
-						{
-							this.WoodChipper.Prompt.HideButton[0] = false;
-							this.WoodChipper.Prompt.HideButton[3] = true;
-							this.WoodChipper.Occupied = true;
-							this.WoodChipper.Open = false;
-							this.Dragging = false;
-							this.Chipping = false;
-							this.CanMove = true;
-							this.Ragdoll = null;
-							this.StopCarrying();
-							this.DumpTimer = 0f;
-						}
-					}
-				}
-				if (this.TranquilHiding)
-				{
-					this.targetRotation = Quaternion.LookRotation(this.TranqCase.transform.position - base.transform.position);
-					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
-					this.MoveTowardsTarget(this.TranqCase.transform.position + Vector3.right * 1.4f);
-					if (this.DumpTimer == 0f && this.Carrying)
-					{
-						this.CharacterAnimation["f02_carryDisposeA_00"].time = 2.5f;
-					}
-					this.DumpTimer += Time.deltaTime;
-					if (this.DumpTimer > 1f)
-					{
-						if (!this.Ragdoll.GetComponent<RagdollScript>().Dumped)
-						{
-							this.DumpRagdoll(RagdollDumpType.TranqCase);
-						}
-						this.CharacterAnimation.CrossFade("f02_carryDisposeA_00");
-						if (this.CharacterAnimation["f02_carryDisposeA_00"].time >= this.CharacterAnimation["f02_carryDisposeA_00"].length)
-						{
-							this.TranquilHiding = false;
-							this.Dragging = false;
-							this.Dumping = false;
-							this.CanMove = true;
-							this.Ragdoll = null;
-							this.StopCarrying();
-							this.DumpTimer = 0f;
-						}
-					}
-				}
-				if (this.Dipping)
-				{
-					if (this.Bucket != null)
-					{
-						this.targetRotation = Quaternion.LookRotation(new Vector3(this.Bucket.transform.position.x, base.transform.position.y, this.Bucket.transform.position.z) - base.transform.position);
-						base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
-					}
-					this.CharacterAnimation.CrossFade("f02_dipping_00");
-					if (this.CharacterAnimation["f02_dipping_00"].time >= this.CharacterAnimation["f02_dipping_00"].length * 0.5f && this.Mop.Bloodiness > 0f)
-					{
-						if (this.Bucket != null)
-						{
-							this.Bucket.Bloodiness += this.Mop.Bloodiness / 2f;
-						}
-						this.Mop.Bloodiness = 0f;
-						this.Mop.UpdateBlood();
-					}
-					if (this.CharacterAnimation["f02_dipping_00"].time >= this.CharacterAnimation["f02_dipping_00"].length)
-					{
-						this.CharacterAnimation["f02_dipping_00"].time = 0f;
-						this.Mop.Prompt.enabled = true;
-						this.Dipping = false;
-						this.CanMove = true;
-					}
-				}
-				if (this.Pouring)
-				{
-					this.MoveTowardsTarget(this.Stool.position);
-					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.Stool.rotation, 10f * Time.deltaTime);
-					this.CharacterAnimation.CrossFade("f02_bucketDump" + this.PourHeight + "_00", 0f);
-					if (this.CharacterAnimation["f02_bucketDump" + this.PourHeight + "_00"].time >= this.PourTime && !this.PickUp.Bucket.Poured)
-					{
-						if (this.PickUp.Bucket.Gasoline)
-						{
-							this.PickUp.Bucket.PourEffect.main.startColor = new Color(1f, 1f, 0f, 0.5f);
-							UnityEngine.Object.Instantiate<GameObject>(this.PickUp.Bucket.GasCollider, this.PickUp.Bucket.PourEffect.transform.position + this.PourDistance * base.transform.forward, Quaternion.identity);
-						}
-						else if (this.PickUp.Bucket.Bloodiness < 50f)
-						{
-							this.PickUp.Bucket.PourEffect.main.startColor = new Color(0f, 1f, 1f, 0.5f);
-							UnityEngine.Object.Instantiate<GameObject>(this.PickUp.Bucket.WaterCollider, this.PickUp.Bucket.PourEffect.transform.position + this.PourDistance * base.transform.forward, Quaternion.identity);
-						}
-						else
-						{
-							this.PickUp.Bucket.PourEffect.main.startColor = new Color(0.5f, 0f, 0f, 0.5f);
-							UnityEngine.Object.Instantiate<GameObject>(this.PickUp.Bucket.BloodCollider, this.PickUp.Bucket.PourEffect.transform.position + this.PourDistance * base.transform.forward, Quaternion.identity);
-						}
-						this.PickUp.Bucket.PourEffect.Play();
-						this.PickUp.Bucket.Poured = true;
-						this.PickUp.Bucket.Empty();
-					}
-					if (this.CharacterAnimation["f02_bucketDump" + this.PourHeight + "_00"].time >= this.CharacterAnimation["f02_bucketDump" + this.PourHeight + "_00"].length)
-					{
-						this.CharacterAnimation["f02_bucketDump" + this.PourHeight + "_00"].time = 0f;
-						this.PickUp.Bucket.Poured = false;
-						this.Pouring = false;
-						this.CanMove = true;
-					}
-				}
-				if (this.Laughing)
-				{
-					if (this.Hairstyles[14].activeInHierarchy)
-					{
-						this.LaughAnim = "storepower_20";
-						this.LaughClip = this.ChargeUp;
-					}
-					if (this.Stand.Stand.activeInHierarchy)
-					{
-						this.LaughAnim = "f02_jojoAttack_00";
-						this.LaughClip = this.YanYan;
-					}
-					else if (this.FlameDemonic)
-					{
-						float axis = Input.GetAxis("Vertical");
-						float axis2 = Input.GetAxis("Horizontal");
-						Vector3 a3 = this.MainCamera.transform.TransformDirection(Vector3.forward);
-						a3.y = 0f;
-						a3 = a3.normalized;
-						Vector3 a4 = new Vector3(a3.z, 0f, -a3.x);
-						Vector3 vector = axis2 * a4 + axis * a3;
-						if (vector != Vector3.zero)
-						{
-							this.targetRotation = Quaternion.LookRotation(vector);
-							base.transform.rotation = Quaternion.Lerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
-						}
-						this.LaughAnim = "f02_demonAttack_00";
-						this.CirnoTimer -= Time.deltaTime;
-						if (this.CirnoTimer < 0f)
-						{
-							GameObject gameObject3 = UnityEngine.Object.Instantiate<GameObject>(this.Fireball, this.RightHand.position, base.transform.rotation);
-							gameObject3.transform.localEulerAngles += new Vector3(UnityEngine.Random.Range(0f, 22.5f), UnityEngine.Random.Range(-22.5f, 22.5f), UnityEngine.Random.Range(-22.5f, 22.5f));
-							GameObject gameObject4 = UnityEngine.Object.Instantiate<GameObject>(this.Fireball, this.LeftHand.position, base.transform.rotation);
-							gameObject4.transform.localEulerAngles += new Vector3(UnityEngine.Random.Range(0f, 22.5f), UnityEngine.Random.Range(-22.5f, 22.5f), UnityEngine.Random.Range(-22.5f, 22.5f));
-							this.CirnoTimer = 0.1f;
-						}
-					}
-					else if (this.CirnoHair.activeInHierarchy)
-					{
-						float axis3 = Input.GetAxis("Vertical");
-						float axis4 = Input.GetAxis("Horizontal");
-						Vector3 a5 = this.MainCamera.transform.TransformDirection(Vector3.forward);
-						a5.y = 0f;
-						a5 = a5.normalized;
-						Vector3 a6 = new Vector3(a5.z, 0f, -a5.x);
-						Vector3 vector2 = axis4 * a6 + axis3 * a5;
-						if (vector2 != Vector3.zero)
-						{
-							this.targetRotation = Quaternion.LookRotation(vector2);
-							base.transform.rotation = Quaternion.Lerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
-						}
-						this.LaughAnim = "f02_cirnoAttack_00";
-						this.CirnoTimer -= Time.deltaTime;
-						if (this.CirnoTimer < 0f)
-						{
-							GameObject gameObject5 = UnityEngine.Object.Instantiate<GameObject>(this.CirnoIceAttack, base.transform.position + base.transform.up * 1.4f, base.transform.rotation);
-							gameObject5.transform.localEulerAngles += new Vector3(UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f));
-							component.PlayOneShot(this.CirnoIceClip);
-							this.CirnoTimer = 0.1f;
-						}
-					}
-					else if (this.TornadoHair.activeInHierarchy)
-					{
-						this.LaughAnim = "f02_tornadoAttack_00";
-						this.CirnoTimer -= Time.deltaTime;
-						if (this.CirnoTimer < 0f)
-						{
-							GameObject gameObject6 = UnityEngine.Object.Instantiate<GameObject>(this.TornadoAttack, new Vector3(base.transform.position.x + UnityEngine.Random.Range(-5f, 5f), base.transform.position.y, base.transform.position.z + UnityEngine.Random.Range(-5f, 5f)), base.transform.rotation);
-							while (Vector3.Distance(base.transform.position, gameObject6.transform.position) < 1f)
-							{
-								gameObject6.transform.position = new Vector3(base.transform.position.x + UnityEngine.Random.Range(-5f, 5f), base.transform.position.y, base.transform.position.z + UnityEngine.Random.Range(-5f, 5f));
-							}
-							this.CirnoTimer = 0.1f;
-						}
-					}
-					else if (this.BladeHair.activeInHierarchy)
-					{
-						this.LaughAnim = "f02_spin_00";
-						base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, base.transform.localEulerAngles.y + Time.deltaTime * 360f * 2f, base.transform.localEulerAngles.z);
-						this.BladeHairCollider1.enabled = true;
-						this.BladeHairCollider2.enabled = true;
-					}
-					else if (component.clip != this.LaughClip)
-					{
-						component.clip = this.LaughClip;
-						component.time = 0f;
-						component.Play();
-					}
-					this.CharacterAnimation.CrossFade(this.LaughAnim);
-					if (Input.GetButtonDown("RB"))
-					{
-						this.LaughIntensity += 1f;
-						if (this.LaughIntensity <= 5f)
-						{
-							this.LaughAnim = "f02_laugh_01";
-							this.LaughClip = this.Laugh1;
-							this.LaughTimer = 0.5f;
-						}
-						else if (this.LaughIntensity <= 10f)
-						{
-							this.LaughAnim = "f02_laugh_02";
-							this.LaughClip = this.Laugh2;
-							this.LaughTimer = 1f;
-						}
-						else if (this.LaughIntensity <= 15f)
-						{
-							this.LaughAnim = "f02_laugh_03";
-							this.LaughClip = this.Laugh3;
-							this.LaughTimer = 1.5f;
-						}
-						else if (this.LaughIntensity <= 20f)
-						{
-							GameObject gameObject7 = UnityEngine.Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + Vector3.up, Quaternion.identity);
-							gameObject7.GetComponent<AlarmDiscScript>().NoScream = true;
-							this.LaughAnim = "f02_laugh_04";
-							this.LaughClip = this.Laugh4;
-							this.LaughTimer = 2f;
-						}
-						else
-						{
-							GameObject gameObject8 = UnityEngine.Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + Vector3.up, Quaternion.identity);
-							gameObject8.GetComponent<AlarmDiscScript>().NoScream = true;
-							this.LaughAnim = "f02_laugh_04";
-							this.LaughIntensity = 20f;
-							this.LaughTimer = 2f;
-						}
-					}
-					if (this.LaughIntensity > 15f)
-					{
-						this.Sanity += Time.deltaTime * 10f;
-						this.UpdateSanity();
-					}
-					this.LaughTimer -= Time.deltaTime;
-					if (this.LaughTimer <= 0f)
-					{
-						this.StopLaughing();
-					}
-				}
-				if (this.TimeSkipping)
-				{
-					base.transform.position = new Vector3(base.transform.position.x, this.TimeSkipHeight, base.transform.position.z);
-					this.CharacterAnimation.CrossFade("f02_timeSkip_00");
-					this.MyController.Move(base.transform.up * 0.0001f);
-					this.Sanity += Time.deltaTime * 0.17f;
-					this.UpdateSanity();
-				}
-				if (this.DumpsterGrabbing)
-				{
-					if (Input.GetAxis("Horizontal") > 0.5f || Input.GetAxis("DpadX") > 0.5f)
-					{
-						this.CharacterAnimation.CrossFade((this.DumpsterHandle.Direction != -1f) ? "f02_dumpsterPush_00" : "f02_dumpsterPull_00");
-					}
-					else if (Input.GetAxis("Horizontal") < -0.5f || Input.GetAxis("DpadX") < -0.5f)
-					{
-						this.CharacterAnimation.CrossFade((this.DumpsterHandle.Direction != -1f) ? "f02_dumpsterPull_00" : "f02_dumpsterPush_00");
-					}
-					else
-					{
-						this.CharacterAnimation.CrossFade("f02_dumpsterGrab_00");
-					}
-				}
-				if (this.Stripping && this.CharacterAnimation["f02_stripping_00"].time >= this.CharacterAnimation["f02_stripping_00"].length)
-				{
-					this.Stripping = false;
-					this.CanMove = true;
-					this.MyLocker.UpdateSchoolwear();
-				}
-				if (this.Bathing)
-				{
-					this.MoveTowardsTarget(this.Stool.position);
-					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.Stool.rotation, 10f * Time.deltaTime);
-					this.CharacterAnimation.CrossFade("f02_stoolBathing_00");
-					if (this.CharacterAnimation["f02_stoolBathing_00"].time >= this.CharacterAnimation["f02_stoolBathing_00"].length)
-					{
-						this.Bloodiness = 0f;
-						this.UpdateBlood();
-						this.Bathing = false;
-						this.CanMove = true;
-					}
-				}
-				if (this.Degloving)
-				{
-					this.CharacterAnimation.CrossFade("f02_removeGloves_00");
-					if (this.CharacterAnimation["f02_removeGloves_00"].time >= this.CharacterAnimation["f02_removeGloves_00"].length)
-					{
-						this.Gloves.GetComponent<Rigidbody>().isKinematic = false;
-						this.Gloves.transform.parent = null;
-						this.Gloves.gameObject.SetActive(true);
-						this.Degloving = false;
-						this.CanMove = true;
-						this.Gloved = false;
-						this.Gloves = null;
-						this.SetUniform();
-					}
-					else if (this.InputDevice.Type == InputDeviceType.Gamepad)
-					{
-						if (Input.GetAxis("DpadY") > -0.5f)
-						{
-							this.Degloving = false;
-							this.CanMove = true;
-							this.GloveTimer = 0f;
-						}
-					}
-					else if (Input.GetKeyUp("1"))
-					{
-						this.Degloving = false;
-						this.CanMove = true;
-						this.GloveTimer = 0f;
-					}
-				}
-				if (this.Struggling)
-				{
-					if (!this.Won && !this.Lost)
-					{
-						this.CharacterAnimation.CrossFade((!this.TargetStudent.Teacher) ? "f02_struggleA_00" : "f02_teacherStruggleA_00");
-						this.targetRotation = Quaternion.LookRotation(this.TargetStudent.transform.position - base.transform.position);
-						base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
-					}
-					else if (this.Won)
-					{
-						if (!this.TargetStudent.Teacher)
-						{
-							this.CharacterAnimation.CrossFade("f02_struggleWinA_00");
-							if (this.CharacterAnimation["f02_struggleWinA_00"].time > this.CharacterAnimation["f02_struggleWinA_00"].length - 1f)
-							{
-								this.EquippedWeapon.transform.localEulerAngles = Vector3.Lerp(this.EquippedWeapon.transform.localEulerAngles, Vector3.zero, Time.deltaTime * 3.33333f);
-							}
-						}
-						else
-						{
-							this.CharacterAnimation.CrossFade("f02_teacherStruggleWinA_00");
-							this.EquippedWeapon.transform.localEulerAngles = Vector3.Lerp(this.EquippedWeapon.transform.localEulerAngles, Vector3.zero, Time.deltaTime);
-						}
-						if (this.StrugglePhase == 0)
-						{
-							if ((!this.TargetStudent.Teacher && this.CharacterAnimation["f02_struggleWinA_00"].time > 1.3f) || (this.TargetStudent.Teacher && this.CharacterAnimation["f02_teacherStruggleWinA_00"].time > 0.8f))
-							{
-								UnityEngine.Object.Instantiate<GameObject>(this.TargetStudent.StabBloodEffect, (!this.TargetStudent.Teacher) ? this.TargetStudent.Head.position : this.EquippedWeapon.transform.position, Quaternion.identity);
-								this.Bloodiness += 20f;
-								this.UpdateBlood();
-								this.Sanity -= 20f * this.Numbness;
-								this.UpdateSanity();
-								this.StainWeapon();
-								this.StrugglePhase++;
-							}
-						}
-						else if (this.StrugglePhase == 1)
-						{
-							if (this.TargetStudent.Teacher && this.CharacterAnimation["f02_teacherStruggleWinA_00"].time > 1.3f)
-							{
-								UnityEngine.Object.Instantiate<GameObject>(this.TargetStudent.StabBloodEffect, this.EquippedWeapon.transform.position, Quaternion.identity);
-								this.StrugglePhase++;
-							}
-						}
-						else if (this.StrugglePhase == 2 && this.TargetStudent.Teacher && this.CharacterAnimation["f02_teacherStruggleWinA_00"].time > 2.1f)
-						{
-							UnityEngine.Object.Instantiate<GameObject>(this.TargetStudent.StabBloodEffect, this.EquippedWeapon.transform.position, Quaternion.identity);
-							this.StrugglePhase++;
-						}
-						if ((!this.TargetStudent.Teacher && this.CharacterAnimation["f02_struggleWinA_00"].time > this.CharacterAnimation["f02_struggleWinA_00"].length) || (this.TargetStudent.Teacher && this.CharacterAnimation["f02_teacherStruggleWinA_00"].time > this.CharacterAnimation["f02_teacherStruggleWinA_00"].length))
-						{
-							this.MyController.radius = 0.2f;
-							this.CharacterAnimation.CrossFade(this.IdleAnim);
-							this.ShoulderCamera.Struggle = false;
-							this.Struggling = false;
-							this.StrugglePhase = 0;
-							if (this.TargetStudent == this.Pursuer)
-							{
-								this.Pursuer = null;
-								this.Chased = false;
-							}
-							this.TargetStudent.BecomeRagdoll();
-							this.TargetStudent.DeathType = DeathType.Weapon;
-						}
-					}
-					else if (this.Lost)
-					{
-						this.CharacterAnimation.CrossFade((!this.TargetStudent.Teacher) ? "f02_struggleLoseA_00" : "f02_teacherStruggleLoseA_00");
-					}
-				}
-				if (this.ClubActivity && PlayerPrefs.GetInt("Club") == 6)
-				{
-					this.CharacterAnimation.Play("f02_kick_23");
-					if (this.CharacterAnimation["f02_kick_23"].time >= this.CharacterAnimation["f02_kick_23"].length)
-					{
-						this.CharacterAnimation["f02_kick_23"].time = 0f;
-					}
-				}
-				if (this.Possessed)
-				{
-					this.CharacterAnimation.CrossFade("f02_possessionPose_00");
-				}
-				if (this.Punching)
-				{
-					if (this.FalconHelmet.activeInHierarchy)
-					{
-						if (this.CharacterAnimation["f02_falconPunch_00"].time >= 1f && this.CharacterAnimation["f02_falconPunch_00"].time <= 1.25f)
-						{
-							this.FalconSpeed = Mathf.MoveTowards(this.FalconSpeed, 2.5f, Time.deltaTime * 2.5f);
-						}
-						else if (this.CharacterAnimation["f02_falconPunch_00"].time >= 1.25f && this.CharacterAnimation["f02_falconPunch_00"].time <= 1.5f)
-						{
-							this.FalconSpeed = Mathf.MoveTowards(this.FalconSpeed, 0f, Time.deltaTime * 2.5f);
-						}
-						if (this.CharacterAnimation["f02_falconPunch_00"].time >= 1f && this.CharacterAnimation["f02_falconPunch_00"].time <= 1.5f)
-						{
-							if (this.NewFalconPunch == null)
-							{
-								this.NewFalconPunch = UnityEngine.Object.Instantiate<GameObject>(this.FalconPunch);
-								this.NewFalconPunch.transform.parent = this.ItemParent;
-								this.NewFalconPunch.transform.localPosition = Vector3.zero;
-							}
-							this.MyController.Move(base.transform.forward * this.FalconSpeed);
-						}
-						if (this.CharacterAnimation["f02_falconPunch_00"].time >= this.CharacterAnimation["f02_falconPunch_00"].length)
-						{
-							this.NewFalconPunch = null;
-							this.Punching = false;
-							this.CanMove = true;
-						}
-					}
-					else
-					{
-						if (this.CharacterAnimation["f02_punch_21"].time >= 0.15f && this.CharacterAnimation["f02_punch_21"].time <= 0.2f && this.NewOnePunch == null)
-						{
-							this.NewOnePunch = UnityEngine.Object.Instantiate<GameObject>(this.OnePunch);
-							this.NewOnePunch.transform.parent = this.ItemParent;
-							this.NewOnePunch.transform.localPosition = Vector3.zero;
-						}
-						if (this.CharacterAnimation["f02_punch_21"].time >= this.CharacterAnimation["f02_punch_21"].length - 0.1f)
-						{
-							this.NewOnePunch = null;
-							this.Punching = false;
-							this.CanMove = true;
-						}
-					}
-				}
-				if (this.PK)
-				{
-					if (Input.GetAxis("Vertical") > 0.5f)
-					{
-						this.CharacterAnimation.CrossFade("f02_sansUp_00");
-						this.RagdollPK.transform.localPosition = new Vector3(0f, 3f, 2f);
-						if (this.PKDir != 1)
-						{
-							AudioSource.PlayClipAtPoint(this.Slam, base.transform.position + Vector3.up);
-						}
-						this.PKDir = 1;
-					}
-					else if (Input.GetAxis("Vertical") < -0.5f)
-					{
-						this.CharacterAnimation.CrossFade("f02_sansDown_00");
-						this.RagdollPK.transform.localPosition = new Vector3(0f, 0f, 2f);
-						if (this.PKDir != 2)
-						{
-							AudioSource.PlayClipAtPoint(this.Slam, base.transform.position + Vector3.up);
-						}
-						this.PKDir = 2;
-					}
-					else if (Input.GetAxis("Horizontal") > 0.5f)
-					{
-						this.CharacterAnimation.CrossFade("f02_sansRight_00");
-						this.RagdollPK.transform.localPosition = new Vector3(1.5f, 1.5f, 2f);
-						if (this.PKDir != 3)
-						{
-							AudioSource.PlayClipAtPoint(this.Slam, base.transform.position + Vector3.up);
-						}
-						this.PKDir = 3;
-					}
-					else if (Input.GetAxis("Horizontal") < -0.5f)
-					{
-						this.CharacterAnimation.CrossFade("f02_sansLeft_00");
-						this.RagdollPK.transform.localPosition = new Vector3(-1.5f, 1.5f, 2f);
-						if (this.PKDir != 4)
-						{
-							AudioSource.PlayClipAtPoint(this.Slam, base.transform.position + Vector3.up);
-						}
-						this.PKDir = 4;
-					}
-					else
-					{
-						this.CharacterAnimation.CrossFade("f02_sansHold_00");
-						this.RagdollPK.transform.localPosition = new Vector3(0f, 1.5f, 2f);
-						this.PKDir = 0;
-					}
-					if (Input.GetButtonDown("B"))
-					{
-						this.PromptBar.ClearButtons();
-						this.PromptBar.UpdateButtons();
-						this.PromptBar.Show = false;
-						this.Ragdoll.GetComponent<RagdollScript>().StopDragging();
-						this.SansEyes[0].SetActive(false);
-						this.SansEyes[1].SetActive(false);
-						this.GlowEffect.Stop();
-						this.CanMove = true;
-						this.PK = false;
-					}
-				}
-				if (this.SummonBones)
-				{
-					this.CharacterAnimation.CrossFade("f02_sansBones_00");
-					if (this.BoneTimer == 0f)
-					{
-						UnityEngine.Object.Instantiate<GameObject>(this.Bone, base.transform.position + base.transform.right * UnityEngine.Random.Range(-2.5f, 2.5f) + base.transform.up * -2f + base.transform.forward * UnityEngine.Random.Range(1f, 6f), Quaternion.identity);
-					}
-					this.BoneTimer += Time.deltaTime;
-					if (this.BoneTimer > 0.1f)
-					{
-						this.BoneTimer = 0f;
-					}
-					if (Input.GetButtonUp("RB"))
-					{
-						this.SansEyes[0].SetActive(false);
-						this.SansEyes[1].SetActive(false);
-						this.GlowEffect.Stop();
-						this.SummonBones = false;
-						this.CanMove = true;
-					}
-					if (this.PK)
-					{
-						this.PromptBar.ClearButtons();
-						this.PromptBar.UpdateButtons();
-						this.PromptBar.Show = false;
-						this.Ragdoll.GetComponent<RagdollScript>().StopDragging();
-						this.SansEyes[0].SetActive(false);
-						this.SansEyes[1].SetActive(false);
-						this.GlowEffect.Stop();
-						this.CanMove = true;
-						this.PK = false;
-					}
-				}
-				if (this.Blasting)
-				{
-					if (this.CharacterAnimation["f02_sansBlaster_00"].time >= this.CharacterAnimation["f02_sansBlaster_00"].length - 0.25f)
-					{
-						this.SansEyes[0].SetActive(false);
-						this.SansEyes[1].SetActive(false);
-						this.GlowEffect.Stop();
-						this.Blasting = false;
-						this.CanMove = true;
-					}
-					if (this.PK)
-					{
-						this.PromptBar.ClearButtons();
-						this.PromptBar.UpdateButtons();
-						this.PromptBar.Show = false;
-						this.Ragdoll.GetComponent<RagdollScript>().StopDragging();
-						this.SansEyes[0].SetActive(false);
-						this.SansEyes[1].SetActive(false);
-						this.GlowEffect.Stop();
-						this.CanMove = true;
-						this.PK = false;
-					}
-				}
-				if (this.Lifting)
-				{
-					if (!this.HeavyWeight)
-					{
-						if (this.CharacterAnimation["f02_carryLiftA_00"].time >= this.CharacterAnimation["f02_carryLiftA_00"].length)
-						{
-							this.IdleAnim = this.CarryIdleAnim;
-							this.WalkAnim = this.CarryWalkAnim;
-							this.RunAnim = this.CarryRunAnim;
-							this.CanMove = true;
-							this.Carrying = true;
-							this.Lifting = false;
-						}
-					}
-					else if (this.CharacterAnimation["f02_heavyWeightLift_00"].time >= this.CharacterAnimation["f02_heavyWeightLift_00"].length)
-					{
-						this.CharacterAnimation[this.CarryAnims[0]].weight = 1f;
-						this.IdleAnim = this.HeavyIdleAnim;
-						this.WalkAnim = this.HeavyWalkAnim;
-						this.RunAnim = this.CarryRunAnim;
-						this.CanMove = true;
-						this.Lifting = false;
-					}
-				}
-				if (this.Dropping)
-				{
-					this.targetRotation = Quaternion.LookRotation(this.DropSpot.position + this.DropSpot.forward - base.transform.position);
-					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
-					this.MoveTowardsTarget(this.DropSpot.position);
-					if (this.Ragdoll != null)
-					{
-						this.CurrentRagdoll = this.Ragdoll.GetComponent<RagdollScript>();
-					}
-					if (this.DumpTimer == 0f && this.Carrying)
-					{
-						this.CurrentRagdoll.CharacterAnimation[this.CurrentRagdoll.DumpedAnim].time = 2.5f;
-						this.CharacterAnimation["f02_carryDisposeA_00"].time = 2.5f;
-					}
-					this.DumpTimer += Time.deltaTime;
-					if (this.DumpTimer > 1f)
-					{
-						if (this.Ragdoll != null)
-						{
-							this.CurrentRagdoll.PelvisRoot.localEulerAngles = new Vector3(this.CurrentRagdoll.PelvisRoot.localEulerAngles.x, 0f, this.CurrentRagdoll.PelvisRoot.localEulerAngles.z);
-							this.CurrentRagdoll.PelvisRoot.localPosition = new Vector3(this.CurrentRagdoll.PelvisRoot.localPosition.x, this.CurrentRagdoll.PelvisRoot.localPosition.y, 0f);
-						}
-						this.CameraTarget.position = Vector3.MoveTowards(this.CameraTarget.position, new Vector3(this.Hips.position.x, base.transform.position.y + 1f, this.Hips.position.z), Time.deltaTime * 10f);
-						if (this.CharacterAnimation["f02_carryDisposeA_00"].time >= 4.5f)
-						{
-							this.StopCarrying();
-						}
-						else
-						{
-							if (this.CurrentRagdoll.StopAnimation)
-							{
-								this.CurrentRagdoll.StopAnimation = false;
-								this.ID = 0;
-								while (this.ID < this.CurrentRagdoll.AllRigidbodies.Length)
-								{
-									this.CurrentRagdoll.AllRigidbodies[this.ID].isKinematic = true;
-									this.ID++;
-								}
-							}
-							this.CharacterAnimation.CrossFade("f02_carryDisposeA_00");
-							this.CurrentRagdoll.CharacterAnimation.CrossFade(this.CurrentRagdoll.DumpedAnim);
-							this.Ragdoll.transform.position = base.transform.position;
-							this.Ragdoll.transform.eulerAngles = base.transform.eulerAngles;
-						}
-						if (this.CharacterAnimation["f02_carryDisposeA_00"].time >= this.CharacterAnimation["f02_carryDisposeA_00"].length)
-						{
-							this.CameraTarget.localPosition = new Vector3(0f, 1f, 0f);
-							this.Dropping = false;
-							this.CanMove = true;
-							this.DumpTimer = 0f;
-						}
-					}
-				}
-				if (this.Dismembering && this.CharacterAnimation["f02_dismember_00"].time >= this.CharacterAnimation["f02_dismember_00"].length)
-				{
-					this.Ragdoll.GetComponent<RagdollScript>().Dismember();
-					this.RPGCamera.enabled = true;
-					this.TargetStudent = null;
-					this.Dismembering = false;
-					this.CanMove = true;
-				}
-				if (this.Shoved)
-				{
-					if (this.CharacterAnimation["f02_shoveA_00"].time >= this.CharacterAnimation["f02_shoveA_00"].length)
-					{
-						base.transform.position = new Vector3(this.Hips.transform.position.x, base.transform.position.y, this.Hips.transform.position.z);
-						this.CameraTarget.localPosition = new Vector3(0f, 1f, 0f);
-						this.CharacterAnimation.Play(this.IdleAnim);
-						this.Shoved = false;
-						this.CanMove = true;
-					}
-					else
-					{
-						this.CameraTarget.position = Vector3.MoveTowards(this.CameraTarget.position, new Vector3(this.Hips.position.x, base.transform.position.y + 1f, this.Hips.position.z), Time.deltaTime * 10f);
-					}
-				}
-				if (this.Attacked && this.CharacterAnimation["f02_swingB_00"].time >= this.CharacterAnimation["f02_swingB_00"].length)
-				{
-					this.ShoulderCamera.HeartbrokenCamera.SetActive(true);
-					base.enabled = false;
-				}
-				if (this.Hiding)
-				{
-					if (!this.Exiting)
-					{
-						base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.HidingSpot.rotation, Time.deltaTime * 10f);
-						this.MoveTowardsTarget(this.HidingSpot.position);
-						this.CharacterAnimation.CrossFade(this.HideAnim);
-					}
-					else
-					{
-						this.MoveTowardsTarget(this.ExitSpot.position);
-						this.CharacterAnimation.CrossFade(this.IdleAnim);
-						this.ExitTimer += Time.deltaTime;
-						if (this.ExitTimer > 1f || Vector3.Distance(base.transform.position, this.ExitSpot.position) < 0.1f)
-						{
-							this.MyController.center = new Vector3(this.MyController.center.x, 0.825f, this.MyController.center.z);
-							this.MyController.radius = 0.2f;
-							this.MyController.height = 1.45f;
-							this.ExitTimer = 0f;
-							this.Exiting = false;
-							this.CanMove = true;
-							this.Hiding = false;
-						}
-					}
-					if (Input.GetButtonDown("B"))
-					{
-						this.PromptBar.ClearButtons();
-						this.PromptBar.Show = false;
-						this.Exiting = true;
-					}
-				}
-				if (this.Tripping)
-				{
-					if (this.CharacterAnimation["f02_bucketTrip_00"].time >= this.CharacterAnimation["f02_bucketTrip_00"].length)
-					{
-						this.CharacterAnimation["f02_bucketTrip_00"].speed = 1f;
-						this.Tripping = false;
-						this.CanMove = true;
-					}
-					else if (this.CharacterAnimation["f02_bucketTrip_00"].time < 0.5f)
-					{
-						this.MyController.Move(base.transform.forward * (Time.deltaTime * 2f));
-						if (this.CharacterAnimation["f02_bucketTrip_00"].time > 0.333333343f && this.CharacterAnimation["f02_bucketTrip_00"].speed == 1f)
-						{
-							this.CharacterAnimation["f02_bucketTrip_00"].speed += 1E-06f;
-							AudioSource.PlayClipAtPoint(this.Thud, base.transform.position);
-						}
-					}
-					else if (Input.GetButtonDown("A"))
-					{
-						this.CharacterAnimation["f02_bucketTrip_00"].speed += 0.1f;
-					}
-				}
-				if (this.BucketDropping)
-				{
-					this.targetRotation = Quaternion.LookRotation(this.DropSpot.position + this.DropSpot.forward - base.transform.position);
-					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
-					this.MoveTowardsTarget(this.DropSpot.position);
-					if (this.CharacterAnimation["f02_bucketDrop_00"].time >= this.CharacterAnimation["f02_bucketDrop_00"].length)
-					{
-						this.MyController.radius = 0.2f;
-						this.BucketDropping = false;
-						this.CanMove = true;
-					}
-					else if (this.CharacterAnimation["f02_bucketDrop_00"].time >= 1f && this.PickUp != null)
-					{
-						this.PickUp.Bucket.Dropped = true;
-						this.EmptyHands();
-					}
-				}
-				if (this.Flicking)
-				{
-					if (this.CharacterAnimation["f02_flickingMatch_00"].time >= this.CharacterAnimation["f02_flickingMatch_00"].length)
-					{
-						this.PickUp.GetComponent<MatchboxScript>().Prompt.enabled = true;
-						this.Arc.SetActive(true);
-						this.Flicking = false;
-						this.CanMove = true;
-					}
-					else if (this.CharacterAnimation["f02_flickingMatch_00"].time > 1f && this.Match != null)
-					{
-						Rigidbody component2 = this.Match.GetComponent<Rigidbody>();
-						component2.isKinematic = false;
-						component2.useGravity = true;
-						component2.AddRelativeForce(Vector3.right * 250f);
-						this.Match.transform.parent = null;
-						this.Match = null;
-					}
-				}
-				if (this.Rummaging)
-				{
-					this.MoveTowardsTarget(this.RummageSpot.Target.position);
-					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.RummageSpot.Target.rotation, Time.deltaTime * 10f);
-					this.RummageTimer += Time.deltaTime;
-					this.ProgressBar.transform.localScale = new Vector3(this.RummageTimer / 10f, this.ProgressBar.transform.localScale.y, this.ProgressBar.transform.localScale.z);
-					if (this.RummageTimer > 10f)
-					{
-						this.RummageSpot.GetReward();
-						this.ProgressBar.transform.parent.gameObject.SetActive(false);
-						this.RummageSpot = null;
-						this.Rummaging = false;
-						this.RummageTimer = 0f;
-						this.CanMove = true;
-					}
-				}
-				if (this.Digging)
-				{
-					if (this.DigPhase == 1)
-					{
-						if (this.CharacterAnimation["f02_shovelDig_00"].time >= 1.66666663f)
-						{
-							component.volume = 1f;
-							component.clip = this.Dig;
-							component.Play();
-							this.DigPhase++;
-						}
-					}
-					else if (this.DigPhase == 2)
-					{
-						if (this.CharacterAnimation["f02_shovelDig_00"].time >= 3.5f)
-						{
-							component.volume = 1f;
-							component.Play();
-							this.DigPhase++;
-						}
-					}
-					else if (this.DigPhase == 3)
-					{
-						if (this.CharacterAnimation["f02_shovelDig_00"].time >= 5.66666651f)
-						{
-							component.volume = 1f;
-							component.Play();
-							this.DigPhase++;
-						}
-					}
-					else if (this.DigPhase == 4 && this.CharacterAnimation["f02_shovelDig_00"].time >= this.CharacterAnimation["f02_shovelDig_00"].length)
-					{
-						this.EquippedWeapon.gameObject.SetActive(true);
-						this.FloatingShovel.SetActive(false);
-						this.RPGCamera.enabled = true;
-						this.Digging = false;
-						this.CanMove = true;
-					}
-				}
-				if (this.Burying)
-				{
-					if (this.DigPhase == 1)
-					{
-						if (this.CharacterAnimation["f02_shovelBury_00"].time >= 2.16666675f)
-						{
-							component.volume = 1f;
-							component.clip = this.Dig;
-							component.Play();
-							this.DigPhase++;
-						}
-					}
-					else if (this.DigPhase == 2)
-					{
-						if (this.CharacterAnimation["f02_shovelBury_00"].time >= 4.66666651f)
-						{
-							component.volume = 1f;
-							component.Play();
-							this.DigPhase++;
-						}
-					}
-					else if (this.CharacterAnimation["f02_shovelBury_00"].time >= this.CharacterAnimation["f02_shovelBury_00"].length)
-					{
-						this.EquippedWeapon.gameObject.SetActive(true);
-						this.FloatingShovel.SetActive(false);
-						this.RPGCamera.enabled = true;
-						this.Burying = false;
-						this.CanMove = true;
-					}
-				}
-			}
-			if (this.Poisoning)
-			{
-				this.MoveTowardsTarget(this.PoisonSpot.position);
-				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.PoisonSpot.rotation, Time.deltaTime * 10f);
-				if (this.CharacterAnimation["f02_poisoning_00"].time >= this.CharacterAnimation["f02_poisoning_00"].length)
-				{
-					this.Poisoning = false;
-					this.CanMove = true;
-				}
-				else if (this.CharacterAnimation["f02_poisoning_00"].time >= 5.25f)
-				{
-					this.Poisons[this.PoisonType].SetActive(false);
-				}
-				else if ((double)this.CharacterAnimation["f02_poisoning_00"].time >= 0.75)
-				{
-					this.Poisons[this.PoisonType].SetActive(true);
-				}
-			}
+			this.UpdateMovement();
+			this.UpdatePoisoning();
 			if (!this.Laughing)
 			{
 				component.volume -= Time.deltaTime * 2f;
@@ -2555,14 +1138,14 @@ public class YandereScript : MonoBehaviour
 				this.ID = 0;
 				while (this.ID < this.CarryAnims.Length)
 				{
-					string name3 = this.CarryAnims[this.ID];
+					string name = this.CarryAnims[this.ID];
 					if (this.PickUp != null && this.CarryAnimID == this.ID && !this.Mopping && !this.Dipping && !this.Pouring && !this.BucketDropping && !this.Digging && !this.Burying)
 					{
-						this.CharacterAnimation[name3].weight = Mathf.Lerp(this.CharacterAnimation[name3].weight, 1f, Time.deltaTime * 10f);
+						this.CharacterAnimation[name].weight = Mathf.Lerp(this.CharacterAnimation[name].weight, 1f, Time.deltaTime * 10f);
 					}
 					else
 					{
-						this.CharacterAnimation[name3].weight = Mathf.Lerp(this.CharacterAnimation[name3].weight, 0f, Time.deltaTime * 10f);
+						this.CharacterAnimation[name].weight = Mathf.Lerp(this.CharacterAnimation[name].weight, 0f, Time.deltaTime * 10f);
 					}
 					this.ID++;
 				}
@@ -2585,1081 +1168,19 @@ public class YandereScript : MonoBehaviour
 					this.CharacterAnimation.CrossFade("f02_down_23");
 				}
 			}
-			if (!this.Attacking && !this.Lost && this.CanMove)
-			{
-				if (Vector3.Distance(base.transform.position, this.Senpai.position) < 1f)
-				{
-					if (!this.Talking)
-					{
-						if (!this.NearSenpai)
-						{
-							this.DepthOfField.focalSize = 150f;
-							this.NearSenpai = true;
-						}
-						if (this.Laughing)
-						{
-							this.StopLaughing();
-						}
-						this.Obscurance.enabled = false;
-						this.YandereVision = false;
-						this.Stance.Current = StanceType.Standing;
-						this.Mopping = false;
-						this.Uncrouch();
-						this.YandereTimer = 0f;
-						this.EmptyHands();
-						if (this.Aiming)
-						{
-							this.StopAiming();
-						}
-					}
-				}
-				else
-				{
-					this.NearSenpai = false;
-				}
-			}
-			if (this.NearSenpai && !this.Noticed)
-			{
-				this.DepthOfField.enabled = true;
-				this.DepthOfField.focalSize = Mathf.Lerp(this.DepthOfField.focalSize, 0f, Time.deltaTime * 10f);
-				this.DepthOfField.focalZStartCurve = Mathf.Lerp(this.DepthOfField.focalZStartCurve, 20f, Time.deltaTime * 10f);
-				this.DepthOfField.focalZEndCurve = Mathf.Lerp(this.DepthOfField.focalZEndCurve, 20f, Time.deltaTime * 10f);
-				this.DepthOfField.objectFocus = this.Senpai.transform;
-				this.ColorCorrection.enabled = true;
-				this.SenpaiFade = Mathf.Lerp(this.SenpaiFade, 0f, Time.deltaTime * 10f);
-				this.SenpaiTint = 1f - this.SenpaiFade / 100f;
-				this.ColorCorrection.redChannel.MoveKey(1, new Keyframe(0.5f, 0.5f + this.SenpaiTint * 0.5f));
-				this.ColorCorrection.greenChannel.MoveKey(1, new Keyframe(0.5f, 1f - this.SenpaiTint * 0.5f));
-				this.ColorCorrection.blueChannel.MoveKey(1, new Keyframe(0.5f, 0.5f + this.SenpaiTint * 0.5f));
-				this.ColorCorrection.redChannel.SmoothTangents(1, 0f);
-				this.ColorCorrection.greenChannel.SmoothTangents(1, 0f);
-				this.ColorCorrection.blueChannel.SmoothTangents(1, 0f);
-				this.ColorCorrection.UpdateTextures();
-				if (!this.Attacking)
-				{
-					this.CharacterAnimation["f02_shy_00"].weight = this.SenpaiTint;
-				}
-				this.HeartBeat.volume = this.SenpaiTint;
-				this.Sanity += Time.deltaTime * 10f;
-				this.UpdateSanity();
-			}
-			else if (this.SenpaiFade < 99f)
-			{
-				this.DepthOfField.focalSize = Mathf.Lerp(this.DepthOfField.focalSize, 150f, Time.deltaTime * 10f);
-				this.DepthOfField.focalZStartCurve = Mathf.Lerp(this.DepthOfField.focalZStartCurve, 0f, Time.deltaTime * 10f);
-				this.DepthOfField.focalZEndCurve = Mathf.Lerp(this.DepthOfField.focalZEndCurve, 0f, Time.deltaTime * 10f);
-				this.SenpaiFade = Mathf.Lerp(this.SenpaiFade, 100f, Time.deltaTime * 10f);
-				this.SenpaiTint = this.SenpaiFade / 100f;
-				this.ColorCorrection.redChannel.MoveKey(1, new Keyframe(0.5f, 1f - this.SenpaiTint * 0.5f));
-				this.ColorCorrection.greenChannel.MoveKey(1, new Keyframe(0.5f, this.SenpaiTint * 0.5f));
-				this.ColorCorrection.blueChannel.MoveKey(1, new Keyframe(0.5f, 1f - this.SenpaiTint * 0.5f));
-				this.ColorCorrection.redChannel.SmoothTangents(1, 0f);
-				this.ColorCorrection.greenChannel.SmoothTangents(1, 0f);
-				this.ColorCorrection.blueChannel.SmoothTangents(1, 0f);
-				this.ColorCorrection.UpdateTextures();
-				this.CharacterAnimation["f02_shy_00"].weight = 1f - this.SenpaiTint;
-				this.HeartBeat.volume = 1f - this.SenpaiTint;
-			}
-			else if (this.SenpaiFade < 100f)
-			{
-				this.ResetSenpaiEffects();
-			}
-			if (this.YandereVision)
-			{
-				if (!this.HighlightingR.enabled)
-				{
-					this.YandereColorCorrection.enabled = true;
-					this.HighlightingR.enabled = true;
-					this.HighlightingB.enabled = true;
-					this.Obscurance.enabled = true;
-					this.Vignette.enabled = true;
-				}
-				Time.timeScale = Mathf.Lerp(Time.timeScale, 0.5f, 0.166666672f);
-				this.YandereFade = Mathf.Lerp(this.YandereFade, 0f, Time.deltaTime * 10f);
-				this.YandereTint = 1f - this.YandereFade / 100f;
-				this.YandereColorCorrection.redChannel.MoveKey(1, new Keyframe(0.5f, 0.5f - this.YandereTint * 0.25f));
-				this.YandereColorCorrection.greenChannel.MoveKey(1, new Keyframe(0.5f, 0.5f - this.YandereTint * 0.25f));
-				this.YandereColorCorrection.blueChannel.MoveKey(1, new Keyframe(0.5f, 0.5f + this.YandereTint * 0.25f));
-				this.YandereColorCorrection.redChannel.SmoothTangents(1, 0f);
-				this.YandereColorCorrection.greenChannel.SmoothTangents(1, 0f);
-				this.YandereColorCorrection.blueChannel.SmoothTangents(1, 0f);
-				this.YandereColorCorrection.UpdateTextures();
-				this.Vignette.intensity = Mathf.Lerp(this.Vignette.intensity, this.YandereTint * 5f, Time.deltaTime * 10f);
-				this.Vignette.blur = Mathf.Lerp(this.Vignette.blur, this.YandereTint, Time.deltaTime * 10f);
-				this.Vignette.chromaticAberration = Mathf.Lerp(this.Vignette.chromaticAberration, this.YandereTint * 5f, Time.deltaTime * 10f);
-			}
-			else
-			{
-				if (this.HighlightingR.enabled)
-				{
-					this.HighlightingR.enabled = false;
-					this.HighlightingB.enabled = false;
-				}
-				if (this.YandereFade < 99f)
-				{
-					if (!this.Aiming)
-					{
-						Time.timeScale = Mathf.Lerp(Time.timeScale, 1f, 0.166666672f);
-					}
-					this.YandereFade = Mathf.Lerp(this.YandereFade, 100f, Time.deltaTime * 10f);
-					this.YandereTint = this.YandereFade / 100f;
-					this.YandereColorCorrection.redChannel.MoveKey(1, new Keyframe(0.5f, this.YandereTint * 0.5f));
-					this.YandereColorCorrection.greenChannel.MoveKey(1, new Keyframe(0.5f, this.YandereTint * 0.5f));
-					this.YandereColorCorrection.blueChannel.MoveKey(1, new Keyframe(0.5f, 1f - this.YandereTint * 0.5f));
-					this.YandereColorCorrection.redChannel.SmoothTangents(1, 0f);
-					this.YandereColorCorrection.greenChannel.SmoothTangents(1, 0f);
-					this.YandereColorCorrection.blueChannel.SmoothTangents(1, 0f);
-					this.YandereColorCorrection.UpdateTextures();
-					this.Vignette.intensity = Mathf.Lerp(this.Vignette.intensity, 0f, Time.deltaTime * 10f);
-					this.Vignette.blur = Mathf.Lerp(this.Vignette.blur, 0f, Time.deltaTime * 10f);
-					this.Vignette.chromaticAberration = Mathf.Lerp(this.Vignette.chromaticAberration, 0f, Time.deltaTime * 10f);
-				}
-				else if (this.YandereFade < 100f)
-				{
-					this.ResetYandereEffects();
-				}
-			}
-			this.RightRedEye.material.color = new Color(this.RightRedEye.material.color.r, this.RightRedEye.material.color.g, this.RightRedEye.material.color.b, 1f - this.YandereFade / 100f);
-			this.LeftRedEye.material.color = new Color(this.LeftRedEye.material.color.r, this.LeftRedEye.material.color.g, this.LeftRedEye.material.color.b, 1f - this.YandereFade / 100f);
-			this.RightYandereEye.material.color = new Color(this.RightYandereEye.material.color.r, this.YandereFade / 100f, this.YandereFade / 100f, this.RightYandereEye.material.color.a);
-			this.LeftYandereEye.material.color = new Color(this.LeftYandereEye.material.color.r, this.YandereFade / 100f, this.YandereFade / 100f, this.LeftYandereEye.material.color.a);
-			if (this.Talking)
-			{
-				if (this.TargetStudent != null)
-				{
-					this.targetRotation = Quaternion.LookRotation(new Vector3(this.TargetStudent.transform.position.x, base.transform.position.y, this.TargetStudent.transform.position.z) - base.transform.position);
-					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
-				}
-				if (this.Interaction == YandereInteractionType.Idle)
-				{
-					this.CharacterAnimation.CrossFade(this.IdleAnim);
-				}
-				else if (this.Interaction == YandereInteractionType.Apologizing)
-				{
-					if (this.TalkTimer == 3f)
-					{
-						this.CharacterAnimation.CrossFade("f02_greet_00");
-						if (this.TargetStudent.Witnessed == "Insanity" || this.TargetStudent.Witnessed == "Weapon and Blood and Insanity" || this.TargetStudent.Witnessed == "Weapon and Insanity" || this.TargetStudent.Witnessed == "Blood and Insanity")
-						{
-							this.Subtitle.UpdateLabel("Insanity Apology", 0, 3f);
-						}
-						else if (this.TargetStudent.Witnessed == "Weapon and Blood")
-						{
-							this.Subtitle.UpdateLabel("Weapon and Blood Apology", 0, 3f);
-						}
-						else if (this.TargetStudent.Witnessed == "Weapon")
-						{
-							this.Subtitle.UpdateLabel("Weapon Apology", 0, 3f);
-						}
-						else if (this.TargetStudent.Witnessed == "Blood")
-						{
-							this.Subtitle.UpdateLabel("Blood Apology", 0, 3f);
-						}
-						else if (this.TargetStudent.Witnessed == "Lewd")
-						{
-							this.Subtitle.UpdateLabel("Lewd Apology", 0, 3f);
-						}
-						else if (this.TargetStudent.Witnessed == "Accident")
-						{
-							this.Subtitle.UpdateLabel("Accident Apology", 0, 3f);
-						}
-					}
-					else
-					{
-						if (Input.GetButtonDown("A"))
-						{
-							this.TalkTimer = 0f;
-						}
-						if (this.CharacterAnimation["f02_greet_00"].time >= this.CharacterAnimation["f02_greet_00"].length)
-						{
-							this.CharacterAnimation.CrossFade(this.IdleAnim);
-						}
-						if (this.TalkTimer <= 0f)
-						{
-							this.TargetStudent.Interaction = StudentInteractionType.Forgiving;
-							this.TargetStudent.TalkTimer = 3f;
-							this.Interaction = YandereInteractionType.Idle;
-						}
-					}
-					this.TalkTimer -= Time.deltaTime;
-				}
-				else if (this.Interaction == YandereInteractionType.Compliment)
-				{
-					if (this.TalkTimer == 3f)
-					{
-						this.CharacterAnimation.CrossFade("f02_greet_01");
-						this.Subtitle.UpdateLabel("Player Compliment", 0, 3f);
-					}
-					else
-					{
-						if (Input.GetButtonDown("A"))
-						{
-							this.TalkTimer = 0f;
-						}
-						if (this.CharacterAnimation["f02_greet_01"].time >= this.CharacterAnimation["f02_greet_01"].length)
-						{
-							this.CharacterAnimation.CrossFade(this.IdleAnim);
-						}
-						if (this.TalkTimer <= 0f)
-						{
-							this.TargetStudent.Interaction = StudentInteractionType.ReceivingCompliment;
-							this.TargetStudent.TalkTimer = 3f;
-							this.Interaction = YandereInteractionType.Idle;
-						}
-					}
-					this.TalkTimer -= Time.deltaTime;
-				}
-				else if (this.Interaction == YandereInteractionType.Gossip)
-				{
-					if (this.TalkTimer == 3f)
-					{
-						this.CharacterAnimation.CrossFade("f02_lookdown_00");
-						this.Subtitle.UpdateLabel("Player Gossip", 0, 3f);
-					}
-					else
-					{
-						if (Input.GetButtonDown("A"))
-						{
-							this.TalkTimer = 0f;
-						}
-						if (this.CharacterAnimation["f02_lookdown_00"].time >= this.CharacterAnimation["f02_lookdown_00"].length)
-						{
-							this.CharacterAnimation.CrossFade(this.IdleAnim);
-						}
-						if (this.TalkTimer <= 0f)
-						{
-							this.TargetStudent.Interaction = StudentInteractionType.Gossiping;
-							this.TargetStudent.TalkTimer = 3f;
-							this.Interaction = YandereInteractionType.Idle;
-						}
-					}
-					this.TalkTimer -= Time.deltaTime;
-				}
-				else if (this.Interaction == YandereInteractionType.Bye)
-				{
-					if (this.TalkTimer == 2f)
-					{
-						this.CharacterAnimation.CrossFade("f02_greet_00");
-						this.Subtitle.UpdateLabel("Player Farewell", 0, 2f);
-					}
-					else
-					{
-						if (Input.GetButtonDown("A"))
-						{
-							this.TalkTimer = 0f;
-						}
-						if (this.CharacterAnimation["f02_greet_00"].time >= this.CharacterAnimation["f02_greet_00"].length)
-						{
-							this.CharacterAnimation.CrossFade(this.IdleAnim);
-						}
-						if (this.TalkTimer <= 0f)
-						{
-							this.TargetStudent.Interaction = StudentInteractionType.Bye;
-							this.TargetStudent.TalkTimer = 2f;
-							this.Interaction = YandereInteractionType.Idle;
-						}
-					}
-					this.TalkTimer -= Time.deltaTime;
-				}
-				else if (this.Interaction == YandereInteractionType.FollowMe)
-				{
-					if (this.TalkTimer == 3f)
-					{
-						this.CharacterAnimation.CrossFade("f02_greet_01");
-						this.Subtitle.UpdateLabel("Player Follow", 0, 3f);
-					}
-					else
-					{
-						if (Input.GetButtonDown("A"))
-						{
-							this.TalkTimer = 0f;
-						}
-						if (this.CharacterAnimation["f02_greet_01"].time >= this.CharacterAnimation["f02_greet_01"].length)
-						{
-							this.CharacterAnimation.CrossFade(this.IdleAnim);
-						}
-						if (this.TalkTimer <= 0f)
-						{
-							this.TargetStudent.Interaction = StudentInteractionType.FollowingPlayer;
-							this.TargetStudent.TalkTimer = 2f;
-							this.Interaction = YandereInteractionType.Idle;
-						}
-					}
-					this.TalkTimer -= Time.deltaTime;
-				}
-				else if (this.Interaction == YandereInteractionType.GoAway)
-				{
-					if (this.TalkTimer == 3f)
-					{
-						this.CharacterAnimation.CrossFade("f02_lookdown_00");
-						this.Subtitle.UpdateLabel("Player Leave", 0, 3f);
-					}
-					else
-					{
-						if (Input.GetButtonDown("A"))
-						{
-							this.TalkTimer = 0f;
-						}
-						if (this.CharacterAnimation["f02_lookdown_00"].time >= this.CharacterAnimation["f02_lookdown_00"].length)
-						{
-							this.CharacterAnimation.CrossFade(this.IdleAnim);
-						}
-						if (this.TalkTimer <= 0f)
-						{
-							this.TargetStudent.Interaction = StudentInteractionType.GoingAway;
-							this.TargetStudent.TalkTimer = 3f;
-							this.Interaction = YandereInteractionType.Idle;
-						}
-					}
-					this.TalkTimer -= Time.deltaTime;
-				}
-				else if (this.Interaction == YandereInteractionType.DistractThem)
-				{
-					if (this.TalkTimer == 3f)
-					{
-						this.CharacterAnimation.CrossFade("f02_lookdown_00");
-						this.Subtitle.UpdateLabel("Player Distract", 0, 3f);
-					}
-					else
-					{
-						if (Input.GetButtonDown("A"))
-						{
-							this.TalkTimer = 0f;
-						}
-						if (this.CharacterAnimation["f02_lookdown_00"].time >= this.CharacterAnimation["f02_lookdown_00"].length)
-						{
-							this.CharacterAnimation.CrossFade(this.IdleAnim);
-						}
-						if (this.TalkTimer <= 0f)
-						{
-							this.TargetStudent.Interaction = StudentInteractionType.DistractingTarget;
-							this.TargetStudent.TalkTimer = 3f;
-							this.Interaction = YandereInteractionType.Idle;
-						}
-					}
-					this.TalkTimer -= Time.deltaTime;
-				}
-				else if (this.Interaction == YandereInteractionType.NamingCrush)
-				{
-					if (this.TalkTimer == 3f)
-					{
-						this.CharacterAnimation.CrossFade("f02_greet_01");
-						this.Subtitle.UpdateLabel("Player Love", 0, 3f);
-					}
-					else
-					{
-						if (Input.GetButtonDown("A"))
-						{
-							this.TalkTimer = 0f;
-						}
-						if (this.CharacterAnimation["f02_greet_01"].time >= this.CharacterAnimation["f02_greet_01"].length)
-						{
-							this.CharacterAnimation.CrossFade(this.IdleAnim);
-						}
-						if (this.TalkTimer <= 0f)
-						{
-							this.TargetStudent.Interaction = StudentInteractionType.NamingCrush;
-							this.TargetStudent.TalkTimer = 3f;
-							this.Interaction = YandereInteractionType.Idle;
-						}
-					}
-					this.TalkTimer -= Time.deltaTime;
-				}
-				else if (this.Interaction == YandereInteractionType.ChangingAppearance)
-				{
-					if (this.TalkTimer == 3f)
-					{
-						this.CharacterAnimation.CrossFade("f02_greet_01");
-						this.Subtitle.UpdateLabel("Player Love", 2, 3f);
-					}
-					else
-					{
-						if (Input.GetButtonDown("A"))
-						{
-							this.TalkTimer = 0f;
-						}
-						if (this.CharacterAnimation["f02_greet_01"].time >= this.CharacterAnimation["f02_greet_01"].length)
-						{
-							this.CharacterAnimation.CrossFade(this.IdleAnim);
-						}
-						if (this.TalkTimer <= 0f)
-						{
-							this.TargetStudent.Interaction = StudentInteractionType.ChangingAppearance;
-							this.TargetStudent.TalkTimer = 3f;
-							this.Interaction = YandereInteractionType.Idle;
-						}
-					}
-					this.TalkTimer -= Time.deltaTime;
-				}
-				else if (this.Interaction == YandereInteractionType.Court)
-				{
-					if (this.TalkTimer == 5f)
-					{
-						this.CharacterAnimation.CrossFade("f02_greet_01");
-						if (!this.TargetStudent.Male)
-						{
-							this.Subtitle.UpdateLabel("Player Love", 3, 5f);
-						}
-						else
-						{
-							this.Subtitle.UpdateLabel("Player Love", 4, 5f);
-						}
-					}
-					else
-					{
-						if (Input.GetButtonDown("A"))
-						{
-							this.TalkTimer = 0f;
-						}
-						if (this.CharacterAnimation["f02_greet_01"].time >= this.CharacterAnimation["f02_greet_01"].length)
-						{
-							this.CharacterAnimation.CrossFade(this.IdleAnim);
-						}
-						if (this.TalkTimer <= 0f)
-						{
-							this.TargetStudent.Interaction = StudentInteractionType.Court;
-							this.TargetStudent.TalkTimer = 3f;
-							this.Interaction = YandereInteractionType.Idle;
-						}
-					}
-					this.TalkTimer -= Time.deltaTime;
-				}
-				else if (this.Interaction == YandereInteractionType.Confess)
-				{
-					if (this.TalkTimer == 5f)
-					{
-						this.CharacterAnimation.CrossFade("f02_greet_01");
-						this.Subtitle.UpdateLabel("Player Love", 5, 5f);
-					}
-					else
-					{
-						if (Input.GetButtonDown("A"))
-						{
-							this.TalkTimer = 0f;
-						}
-						if (this.CharacterAnimation["f02_greet_01"].time >= this.CharacterAnimation["f02_greet_01"].length)
-						{
-							this.CharacterAnimation.CrossFade(this.IdleAnim);
-						}
-						if (this.TalkTimer <= 0f)
-						{
-							this.TargetStudent.Interaction = StudentInteractionType.Gift;
-							this.TargetStudent.TalkTimer = 5f;
-							this.Interaction = YandereInteractionType.Idle;
-						}
-					}
-					this.TalkTimer -= Time.deltaTime;
-				}
-			}
-			if (this.Attacking)
-			{
-				if (this.TargetStudent != null)
-				{
-					this.targetRotation = Quaternion.LookRotation(new Vector3(this.TargetStudent.transform.position.x, base.transform.position.y, this.TargetStudent.transform.position.z) - base.transform.position);
-					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
-				}
-				if (this.Drown)
-				{
-					this.MoveTowardsTarget(this.TargetStudent.transform.position + this.TargetStudent.transform.forward * -0.0001f);
-					this.CharacterAnimation.CrossFade(this.DrownAnim);
-					if (this.CharacterAnimation[this.DrownAnim].time > this.CharacterAnimation[this.DrownAnim].length)
-					{
-						this.TargetStudent.DeathType = DeathType.Drowning;
-						this.Attacking = false;
-						this.CanMove = true;
-						this.Drown = false;
-						this.Sanity -= ((PlayerPrefs.GetInt("PantiesEquipped") != 10) ? 20f : 10f) * this.Numbness;
-					}
-					if (this.CharacterAnimation[this.DrownAnim].time > 9f)
-					{
-						this.StudentManager.FemaleDrownSplashes.Stop();
-					}
-					else if (this.CharacterAnimation[this.DrownAnim].time > 3f)
-					{
-						this.StudentManager.FemaleDrownSplashes.Play();
-					}
-				}
-				else if (this.RoofPush)
-				{
-					this.CameraTarget.position = Vector3.MoveTowards(this.CameraTarget.position, new Vector3(this.Hips.position.x, base.transform.position.y + 1f, this.Hips.position.z), Time.deltaTime * 10f);
-					this.MoveTowardsTarget(this.TargetStudent.transform.position - this.TargetStudent.transform.forward);
-					this.CharacterAnimation.CrossFade("f02_roofPushA_00");
-					if (this.CharacterAnimation["f02_roofPushA_00"].time > 4.33333349f)
-					{
-						if (this.Shoes[0].activeInHierarchy)
-						{
-							GameObject gameObject9 = UnityEngine.Object.Instantiate<GameObject>(this.ShoePair, base.transform.position + new Vector3(-1.6f, 0.045f, 0f), Quaternion.identity);
-							gameObject9.transform.eulerAngles = new Vector3(gameObject9.transform.eulerAngles.x, -90f, gameObject9.transform.eulerAngles.z);
-							this.Shoes[0].SetActive(false);
-							this.Shoes[1].SetActive(false);
-						}
-					}
-					else if (this.CharacterAnimation["f02_roofPushA_00"].time > 2.16666675f && !this.Shoes[0].activeInHierarchy)
-					{
-						this.TargetStudent.RemoveShoes();
-						this.Shoes[0].SetActive(true);
-						this.Shoes[1].SetActive(true);
-					}
-					if (this.CharacterAnimation["f02_roofPushA_00"].time > this.CharacterAnimation["f02_roofPushA_00"].length)
-					{
-						this.CameraTarget.localPosition = new Vector3(0f, 1f, 0f);
-						this.TargetStudent.DeathType = DeathType.Falling;
-						this.Attacking = false;
-						this.RoofPush = false;
-						this.CanMove = true;
-						this.Sanity -= 20f * this.Numbness;
-					}
-					if (Input.GetButtonDown("B"))
-					{
-						this.SplashCamera.Show = true;
-						this.SplashCamera.MyCamera.enabled = true;
-						this.SplashCamera.transform.position = new Vector3(-33f, 1.35f, 30f);
-						this.SplashCamera.transform.eulerAngles = new Vector3(0f, 135f, 0f);
-					}
-				}
-				else if (this.TargetStudent.Teacher)
-				{
-					this.CharacterAnimation.CrossFade("f02_counterA_00");
-					this.Character.transform.position = new Vector3(this.Character.transform.position.x, this.TargetStudent.transform.position.y, this.Character.transform.position.z);
-				}
-				else if (!this.SanityBased)
-				{
-					if (this.EquippedWeapon.WeaponID == 11)
-					{
-						this.CharacterAnimation.CrossFade("CyborgNinja_Slash");
-						if (this.CharacterAnimation["CyborgNinja_Slash"].time == 0f)
-						{
-							this.TargetStudent.CharacterAnimation[this.TargetStudent.PhoneAnim].weight = 0f;
-							this.EquippedWeapon.gameObject.GetComponent<AudioSource>().Play();
-						}
-						if (this.CharacterAnimation["CyborgNinja_Slash"].time >= this.CharacterAnimation["CyborgNinja_Slash"].length)
-						{
-							this.Bloodiness += 20f;
-							this.UpdateBlood();
-							this.StainWeapon();
-							this.CharacterAnimation["CyborgNinja_Slash"].time = 0f;
-							this.CharacterAnimation.Stop("CyborgNinja_Slash");
-							this.CharacterAnimation.CrossFade(this.IdleAnim);
-							this.Attacking = false;
-							if (!this.Noticed)
-							{
-								this.CanMove = true;
-							}
-							else
-							{
-								this.EquippedWeapon.Drop();
-							}
-						}
-					}
-					else if (this.EquippedWeapon.WeaponID == 7)
-					{
-						this.CharacterAnimation.CrossFade("f02_buzzSawKill_A_00");
-						if (this.CharacterAnimation["f02_buzzSawKill_A_00"].time == 0f)
-						{
-							this.TargetStudent.CharacterAnimation[this.TargetStudent.PhoneAnim].weight = 0f;
-							this.EquippedWeapon.gameObject.GetComponent<AudioSource>().Play();
-						}
-						if (this.AttackPhase == 1)
-						{
-							if (this.CharacterAnimation["f02_buzzSawKill_A_00"].time > 0.333333343f)
-							{
-								this.TargetStudent.LiquidProjector.enabled = true;
-								this.EquippedWeapon.Effect();
-								this.StainWeapon();
-								this.TargetStudent.LiquidProjector.material.mainTexture = this.BloodTextures[1];
-								this.Bloodiness += 20f;
-								this.UpdateBlood();
-								this.AttackPhase++;
-							}
-						}
-						else if (this.AttackPhase < 6 && this.CharacterAnimation["f02_buzzSawKill_A_00"].time > 0.333333343f * (float)this.AttackPhase)
-						{
-							this.TargetStudent.LiquidProjector.material.mainTexture = this.BloodTextures[this.AttackPhase];
-							this.Bloodiness += 20f;
-							this.UpdateBlood();
-							this.AttackPhase++;
-						}
-						if (this.CharacterAnimation["f02_buzzSawKill_A_00"].time > this.CharacterAnimation["f02_buzzSawKill_A_00"].length)
-						{
-							if (this.TargetStudent == this.StudentManager.Reporter)
-							{
-								this.StudentManager.Reporter = null;
-							}
-							this.CharacterAnimation["f02_buzzSawKill_A_00"].time = 0f;
-							this.CharacterAnimation.Stop("f02_buzzSawKill_A_00");
-							this.CharacterAnimation.CrossFade(this.IdleAnim);
-							this.MyController.radius = 0.2f;
-							this.Attacking = false;
-							this.AttackPhase = 1;
-							this.Sanity -= 20f * this.Numbness;
-							this.UpdateSanity();
-							this.TargetStudent.DeathType = DeathType.Weapon;
-							this.TargetStudent.BecomeRagdoll();
-							if (!this.Noticed)
-							{
-								this.CanMove = true;
-							}
-							else
-							{
-								this.EquippedWeapon.Drop();
-							}
-						}
-					}
-					else if (!this.EquippedWeapon.Concealable)
-					{
-						if (this.AttackPhase == 1)
-						{
-							this.CharacterAnimation.CrossFade("f02_swingA_00");
-							if (this.CharacterAnimation["f02_swingA_00"].time > this.CharacterAnimation["f02_swingA_00"].length * 0.3f)
-							{
-								if (this.TargetStudent == this.StudentManager.Reporter)
-								{
-									this.StudentManager.Reporter = null;
-								}
-								UnityEngine.Object.Destroy(this.TargetStudent.DeathScream);
-								this.EquippedWeapon.Effect();
-								this.AttackPhase = 2;
-								this.Bloodiness += 20f;
-								this.UpdateBlood();
-								this.StainWeapon();
-								this.Sanity -= 20f * this.Numbness;
-								this.UpdateSanity();
-							}
-						}
-						else if (this.CharacterAnimation["f02_swingA_00"].time >= this.CharacterAnimation["f02_swingA_00"].length * 0.9f)
-						{
-							this.CharacterAnimation.CrossFade(this.IdleAnim);
-							this.TargetStudent.DeathType = DeathType.Weapon;
-							this.TargetStudent.BecomeRagdoll();
-							this.MyController.radius = 0.2f;
-							this.Attacking = false;
-							this.AttackPhase = 1;
-							this.AttackTimer = 0f;
-							if (!this.Noticed)
-							{
-								this.CanMove = true;
-							}
-							else
-							{
-								this.EquippedWeapon.Drop();
-							}
-						}
-					}
-					else if (this.AttackPhase == 1)
-					{
-						this.CharacterAnimation.CrossFade("f02_stab_00");
-						if (this.CharacterAnimation["f02_stab_00"].time > this.CharacterAnimation["f02_stab_00"].length * 0.35f)
-						{
-							this.CharacterAnimation.CrossFade(this.IdleAnim);
-							if (this.EquippedWeapon.Flaming)
-							{
-								this.TargetStudent.Combust();
-							}
-							else if (this.CanTranq)
-							{
-								this.TargetStudent.Tranquil = true;
-								this.CanTranq = false;
-								this.Followers--;
-							}
-							else
-							{
-								this.TargetStudent.BloodSpray.SetActive(true);
-								this.TargetStudent.DeathType = DeathType.Weapon;
-								this.Bloodiness += 20f;
-								this.UpdateBlood();
-							}
-							if (this.TargetStudent == this.StudentManager.Reporter)
-							{
-								this.StudentManager.Reporter = null;
-							}
-							AudioSource.PlayClipAtPoint(this.Stabs[UnityEngine.Random.Range(0, this.Stabs.Length)], base.transform.position + Vector3.up);
-							UnityEngine.Object.Destroy(this.TargetStudent.DeathScream);
-							this.AttackPhase = 2;
-							this.Sanity -= 20f * this.Numbness;
-							this.UpdateSanity();
-							if (this.EquippedWeapon.WeaponID == 8)
-							{
-								this.TargetStudent.Ragdoll.Sacrifice = true;
-								if (PlayerPrefs.GetInt("Paranormal") == 1)
-								{
-									this.EquippedWeapon.Effect();
-								}
-							}
-						}
-					}
-					else
-					{
-						this.AttackTimer += Time.deltaTime;
-						if (this.AttackTimer > 0.3f)
-						{
-							if (!this.CanTranq)
-							{
-								this.StainWeapon();
-							}
-							this.MyController.radius = 0.2f;
-							this.SanityBased = true;
-							this.Attacking = false;
-							this.AttackPhase = 1;
-							this.AttackTimer = 0f;
-							if (!this.Noticed)
-							{
-								this.CanMove = true;
-							}
-							else
-							{
-								this.EquippedWeapon.Drop();
-							}
-						}
-					}
-				}
-			}
-			if (this.CanMove && !this.Attacking && !this.Dragging && this.PickUp == null && !this.Aiming && this.Stance.Current != StanceType.Crawling && !this.Possessed && !this.Carrying && !this.CirnoWings.activeInHierarchy && this.LaughIntensity < 16f)
-			{
-				this.CharacterAnimation["f02_yanderePose_00"].weight = Mathf.Lerp(this.CharacterAnimation["f02_yanderePose_00"].weight, 1f - this.Sanity / 100f, Time.deltaTime * 10f);
-				if (this.Hairstyle == 2 && this.Stance.Current == StanceType.Crouching)
-				{
-					this.Slouch = Mathf.Lerp(this.Slouch, 0f, Time.deltaTime * 20f);
-				}
-				else
-				{
-					this.Slouch = Mathf.Lerp(this.Slouch, 5f * (1f - this.Sanity / 100f), Time.deltaTime * 10f);
-				}
-			}
-			else
-			{
-				this.CharacterAnimation["f02_yanderePose_00"].weight = Mathf.Lerp(this.CharacterAnimation["f02_yanderePose_00"].weight, 0f, Time.deltaTime * 10f);
-				this.Slouch = Mathf.Lerp(this.Slouch, 0f, Time.deltaTime * 10f);
-			}
+			this.UpdateEffects();
+			this.UpdateTalking();
+			this.UpdateAttacking();
+			this.UpdateSlouch();
 			if (!this.Noticed)
 			{
 				this.RightYandereEye.material.color = new Color(this.RightYandereEye.material.color.r, this.RightYandereEye.material.color.g, this.RightYandereEye.material.color.b, 1f - this.Sanity / 100f);
 				this.LeftYandereEye.material.color = new Color(this.LeftYandereEye.material.color.r, this.LeftYandereEye.material.color.g, this.LeftYandereEye.material.color.b, 1f - this.Sanity / 100f);
 				this.EyeShrink = Mathf.Lerp(this.EyeShrink, 0.5f * (1f - this.Sanity / 100f), Time.deltaTime * 10f);
 			}
-			if (this.Sanity < 100f)
-			{
-				this.TwitchTimer += Time.deltaTime;
-				if (this.TwitchTimer > this.NextTwitch)
-				{
-					this.Twitch = new Vector3((1f - this.Sanity / 100f) * UnityEngine.Random.Range(-10f, 10f), (1f - this.Sanity / 100f) * UnityEngine.Random.Range(-10f, 10f), (1f - this.Sanity / 100f) * UnityEngine.Random.Range(-10f, 10f));
-					this.NextTwitch = UnityEngine.Random.Range(0f, 1f);
-					this.TwitchTimer = 0f;
-				}
-				this.Twitch = Vector3.Lerp(this.Twitch, Vector3.zero, Time.deltaTime * 10f);
-			}
-			if (this.NearBodies > 0)
-			{
-				if (!this.CorpseWarning)
-				{
-					this.NotificationManager.DisplayNotification(NotificationType.Body);
-					this.StudentManager.UpdateStudents();
-					this.CorpseWarning = true;
-				}
-			}
-			else if (this.CorpseWarning)
-			{
-				this.StudentManager.UpdateStudents();
-				this.CorpseWarning = false;
-			}
-			if (!this.Aiming && this.CanMove && Time.timeScale > 0f && Input.GetKeyDown("escape"))
-			{
-				this.PauseScreen.JumpToQuit();
-			}
-			if (Input.GetKeyDown("p"))
-			{
-				this.CyborgParts[1].SetActive(false);
-				this.MemeGlasses.SetActive(false);
-				this.KONGlasses.SetActive(false);
-				this.EyepatchR.SetActive(false);
-				this.EyepatchL.SetActive(false);
-				this.EyewearID++;
-				if (this.EyewearID == 1)
-				{
-					this.EyepatchR.SetActive(true);
-				}
-				else if (this.EyewearID == 2)
-				{
-					this.EyepatchL.SetActive(true);
-				}
-				else if (this.EyewearID == 3)
-				{
-					this.EyepatchR.SetActive(true);
-					this.EyepatchL.SetActive(true);
-				}
-				else if (this.EyewearID == 4)
-				{
-					this.KONGlasses.SetActive(true);
-				}
-				else if (this.EyewearID == 5)
-				{
-					this.MemeGlasses.SetActive(true);
-				}
-				else if (this.EyewearID == 6)
-				{
-					if (this.CyborgParts[2].activeInHierarchy)
-					{
-						this.CyborgParts[1].SetActive(true);
-					}
-					else
-					{
-						this.EyewearID = 0;
-					}
-				}
-				else
-				{
-					this.EyewearID = 0;
-				}
-			}
-			if (Input.GetKeyDown("h"))
-			{
-				if (Input.GetButton("LB"))
-				{
-					this.Hairstyle += 10;
-				}
-				else
-				{
-					this.Hairstyle++;
-				}
-				this.UpdateHair();
-			}
-			if (Input.GetKey("h") && Input.GetKeyDown("left"))
-			{
-				this.Hairstyle--;
-				this.UpdateHair();
-			}
-			if (Input.GetKeyDown("o") && !this.EasterEggMenu.activeInHierarchy)
-			{
-				if (this.AccessoryGroup != null)
-				{
-					this.AccessoryGroup.DeactivateParts();
-				}
-				if (this.AccessoryID > 0)
-				{
-					this.Accessories[this.AccessoryID].SetActive(false);
-				}
-				if (Input.GetButton("LB"))
-				{
-					this.AccessoryID += 10;
-				}
-				else
-				{
-					this.AccessoryID++;
-				}
-				if (this.AccessoryID > this.Accessories.Length - 1)
-				{
-					this.AccessoryID = 0;
-				}
-				if (this.AccessoryID > 0)
-				{
-					this.Accessories[this.AccessoryID].SetActive(true);
-					this.AccessoryGroup = this.Accessories[this.AccessoryID].GetComponent<AccessoryGroupScript>();
-					if (this.AccessoryGroup != null)
-					{
-						this.AccessoryGroup.ActivateParts();
-					}
-				}
-			}
-			if (!this.NoDebug && !this.DebugMenu.activeInHierarchy)
-			{
-				if (Input.GetKeyDown("-"))
-				{
-					if (Time.timeScale < 6f)
-					{
-						Time.timeScale = 1f;
-					}
-					else
-					{
-						Time.timeScale -= 5f;
-					}
-				}
-				if (Input.GetKeyDown("="))
-				{
-					if (Time.timeScale < 5f)
-					{
-						Time.timeScale = 5f;
-					}
-					else
-					{
-						Time.timeScale += 5f;
-						if (Time.timeScale > 25f)
-						{
-							Time.timeScale = 25f;
-						}
-					}
-				}
-			}
-			if (Input.GetKey("."))
-			{
-				this.BreastSize += Time.deltaTime;
-				if (this.BreastSize > 2f)
-				{
-					this.BreastSize = 2f;
-				}
-				this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
-				this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
-			}
-			if (Input.GetKey(","))
-			{
-				this.BreastSize -= Time.deltaTime;
-				if (this.BreastSize < 0.5f)
-				{
-					this.BreastSize = 0.5f;
-				}
-				this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
-				this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
-			}
-			if (!this.NoDebug)
-			{
-				if (this.CanMove && !this.Egg && base.transform.position.y < 1000f)
-				{
-					if (Input.GetKeyDown("/"))
-					{
-						this.DebugMenu.SetActive(false);
-						this.EasterEggMenu.SetActive(!this.EasterEggMenu.activeInHierarchy);
-					}
-					if (this.EasterEggMenu.activeInHierarchy && !this.Egg)
-					{
-						if (Input.GetKeyDown("p"))
-						{
-							this.Punish();
-						}
-						else if (Input.GetKeyDown("z"))
-						{
-							this.Slend();
-						}
-						else if (Input.GetKeyDown("b"))
-						{
-							this.Sukeban();
-						}
-						else if (Input.GetKeyDown("c"))
-						{
-							this.Cirno();
-						}
-						else if (Input.GetKeyDown("h"))
-						{
-							this.EmptyHands();
-							this.Hate();
-						}
-						else if (Input.GetKeyDown("t"))
-						{
-							this.StudentManager.AttackOnTitan();
-							this.AttackOnTitan();
-						}
-						else if (Input.GetKeyDown("g"))
-						{
-							this.GaloSengen();
-						}
-						else if (!Input.GetKeyDown("j"))
-						{
-							if (Input.GetKeyDown("k"))
-							{
-								this.EasterEggMenu.SetActive(false);
-								this.StudentManager.Kong();
-								this.DK = true;
-							}
-							else if (Input.GetKeyDown("l"))
-							{
-								this.Agent();
-							}
-							else if (Input.GetKeyDown("n"))
-							{
-								this.Nude();
-							}
-							else if (Input.GetKeyDown("s"))
-							{
-								this.EasterEggMenu.SetActive(false);
-								this.Egg = true;
-								this.StudentManager.Spook();
-							}
-							else if (Input.GetKeyDown("f"))
-							{
-								this.EasterEggMenu.SetActive(false);
-								this.Falcon();
-							}
-							else if (Input.GetKeyDown("x"))
-							{
-								this.EasterEggMenu.SetActive(false);
-								this.X();
-							}
-							else if (Input.GetKeyDown("o"))
-							{
-								this.EasterEggMenu.SetActive(false);
-								this.Punch();
-							}
-							else if (Input.GetKeyDown("u"))
-							{
-								this.EasterEggMenu.SetActive(false);
-								this.BadTime();
-							}
-							else if (Input.GetKeyDown("y"))
-							{
-								this.EasterEggMenu.SetActive(false);
-								this.CyborgNinja();
-							}
-							else if (Input.GetKeyDown("e"))
-							{
-								this.EasterEggMenu.SetActive(false);
-								this.Ebola();
-							}
-							else if (Input.GetKeyDown("q"))
-							{
-								this.EasterEggMenu.SetActive(false);
-								this.Samus();
-							}
-							else if (!Input.GetKeyDown("w"))
-							{
-								if (Input.GetKeyDown("r"))
-								{
-									this.EasterEggMenu.SetActive(false);
-									this.Pose();
-								}
-								else if (Input.GetKeyDown("v"))
-								{
-									this.EasterEggMenu.SetActive(false);
-									this.Long();
-								}
-								else if (Input.GetKeyDown("6"))
-								{
-									this.EasterEggMenu.SetActive(false);
-									this.HairBlades();
-								}
-								else if (Input.GetKeyDown("7"))
-								{
-									this.EasterEggMenu.SetActive(false);
-									this.Tornado();
-								}
-								else if (Input.GetKeyDown("8"))
-								{
-									this.EasterEggMenu.SetActive(false);
-									this.GenderSwap();
-								}
-								else if (Input.GetKeyDown("[5]"))
-								{
-									this.EasterEggMenu.SetActive(false);
-									this.SwapMesh();
-								}
-								else if (Input.GetKeyDown("a"))
-								{
-									this.StudentManager.ChangeOka();
-									this.EasterEggMenu.SetActive(false);
-								}
-								else if (Input.GetKeyDown("i"))
-								{
-									this.StudentManager.NoGravity = true;
-									this.EasterEggMenu.SetActive(false);
-								}
-								else if (Input.GetKeyDown("space"))
-								{
-								}
-							}
-						}
-					}
-				}
-			}
-			else if (Input.GetKeyDown("z"))
-			{
-				this.DebugMenu.transform.parent.GetComponent<DebugMenuScript>().Censor();
-			}
+			this.UpdateTwitch();
+			this.UpdateWarnings();
+			this.UpdateDebugFunctionality();
 			if (base.transform.position.y < 0f)
 			{
 				base.transform.position = new Vector3(base.transform.position.x, 0f, base.transform.position.z);
@@ -3673,6 +1194,2528 @@ public class YandereScript : MonoBehaviour
 		else
 		{
 			component.volume -= 0.333333343f;
+		}
+	}
+
+	private void UpdateMovement()
+	{
+		AudioSource component = base.GetComponent<AudioSource>();
+		if (this.CanMove)
+		{
+			this.MyController.Move(Physics.gravity * 0.1f);
+			this.v = Input.GetAxis("Vertical");
+			this.h = Input.GetAxis("Horizontal");
+			this.FlapSpeed = Mathf.Abs(this.v) + Mathf.Abs(this.h);
+			if (!this.Aiming)
+			{
+				Vector3 a = this.MainCamera.transform.TransformDirection(Vector3.forward);
+				a.y = 0f;
+				a = a.normalized;
+				Vector3 a2 = new Vector3(a.z, 0f, -a.x);
+				this.targetDirection = this.h * a2 + this.v * a;
+				if (this.targetDirection != Vector3.zero)
+				{
+					this.targetRotation = Quaternion.LookRotation(this.targetDirection);
+					base.transform.rotation = Quaternion.Lerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
+				}
+				else
+				{
+					this.targetRotation = new Quaternion(0f, 0f, 0f, 0f);
+				}
+				if (this.v != 0f || this.h != 0f)
+				{
+					if (Input.GetButton("LB") && Vector3.Distance(base.transform.position, this.Senpai.position) > 1f)
+					{
+						if (this.Stance.Current == StanceType.Crouching)
+						{
+							this.CharacterAnimation.CrossFade(this.CrouchRunAnim);
+							this.MyController.Move(base.transform.forward * (this.CrouchRunSpeed + (float)(Globals.PhysicalGrade + PlayerPrefs.GetInt("SpeedBonus")) * 0.25f) * Time.deltaTime);
+						}
+						else if (!this.Dragging && !this.Mopping)
+						{
+							this.CharacterAnimation.CrossFade(this.RunAnim);
+							this.MyController.Move(base.transform.forward * (this.RunSpeed + (float)(Globals.PhysicalGrade + PlayerPrefs.GetInt("SpeedBonus")) * 0.25f) * Time.deltaTime);
+						}
+						else if (this.Mopping)
+						{
+							this.CharacterAnimation.CrossFade(this.WalkAnim);
+							this.MyController.Move(base.transform.forward * (this.WalkSpeed * Time.deltaTime));
+						}
+						if (this.Stance.Current == StanceType.Crouching)
+						{
+						}
+						if (this.Stance.Current == StanceType.Crawling)
+						{
+							this.Stance.Current = StanceType.Crouching;
+							this.Crouch();
+						}
+					}
+					else if (!this.Dragging)
+					{
+						if (this.Stance.Current == StanceType.Crawling)
+						{
+							this.CharacterAnimation.CrossFade(this.CrawlWalkAnim);
+							this.MyController.Move(base.transform.forward * (this.CrawlSpeed * Time.deltaTime));
+						}
+						else if (this.Stance.Current == StanceType.Crouching)
+						{
+							this.CharacterAnimation[this.CrouchWalkAnim].speed = 1f;
+							this.CharacterAnimation.CrossFade(this.CrouchWalkAnim);
+							this.MyController.Move(base.transform.forward * (this.CrouchWalkSpeed * Time.deltaTime));
+						}
+						else
+						{
+							this.CharacterAnimation.CrossFade(this.WalkAnim);
+							this.MyController.Move(base.transform.forward * (this.WalkSpeed * Time.deltaTime));
+						}
+					}
+					else
+					{
+						this.CharacterAnimation.CrossFade("f02_dragWalk_01");
+						this.MyController.Move(base.transform.forward * (this.WalkSpeed * Time.deltaTime));
+					}
+				}
+				else if (!this.Dragging)
+				{
+					if (this.Stance.Current == StanceType.Crawling)
+					{
+						this.CharacterAnimation.CrossFade(this.CrawlIdleAnim);
+					}
+					else if (this.Stance.Current == StanceType.Crouching)
+					{
+						this.CharacterAnimation.CrossFade(this.CrouchIdleAnim);
+					}
+					else
+					{
+						this.CharacterAnimation.CrossFade(this.IdleAnim);
+					}
+				}
+				else
+				{
+					this.CharacterAnimation.CrossFade("f02_dragIdle_02");
+				}
+			}
+			else
+			{
+				if (this.v != 0f || this.h != 0f)
+				{
+					if (this.Stance.Current == StanceType.Crawling)
+					{
+						this.CharacterAnimation.CrossFade(this.CrawlWalkAnim);
+						this.MyController.Move(base.transform.forward * (this.CrawlSpeed * Time.deltaTime * this.v));
+						this.MyController.Move(base.transform.right * (this.CrawlSpeed * Time.deltaTime * this.h));
+					}
+					else if (this.Stance.Current == StanceType.Crouching)
+					{
+						this.CharacterAnimation.CrossFade(this.CrouchWalkAnim);
+						this.MyController.Move(base.transform.forward * (this.CrouchWalkSpeed * Time.deltaTime * this.v));
+						this.MyController.Move(base.transform.right * (this.CrouchWalkSpeed * Time.deltaTime * this.h));
+					}
+					else
+					{
+						this.CharacterAnimation.CrossFade(this.WalkAnim);
+						this.MyController.Move(base.transform.forward * (this.WalkSpeed * Time.deltaTime * this.v));
+						this.MyController.Move(base.transform.right * (this.WalkSpeed * Time.deltaTime * this.h));
+					}
+				}
+				else if (this.Stance.Current == StanceType.Crawling)
+				{
+					this.CharacterAnimation.CrossFade(this.CrawlIdleAnim);
+				}
+				else if (this.Stance.Current == StanceType.Crouching)
+				{
+					this.CharacterAnimation.CrossFade(this.CrouchIdleAnim);
+				}
+				else
+				{
+					this.CharacterAnimation.CrossFade(this.IdleAnim);
+				}
+				this.Bend += Input.GetAxis("Mouse Y") * 8f;
+				if (this.Stance.Current == StanceType.Crawling)
+				{
+					if (this.Bend < 0f)
+					{
+						this.Bend = 0f;
+					}
+				}
+				else if (this.Stance.Current == StanceType.Crouching)
+				{
+					if (this.Bend < -45f)
+					{
+						this.Bend = -45f;
+					}
+				}
+				else if (this.Bend < -85f)
+				{
+					this.Bend = -85f;
+				}
+				if (this.Bend > 85f)
+				{
+					this.Bend = 85f;
+				}
+				base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, base.transform.localEulerAngles.y + Input.GetAxis("Mouse X") * 8f, base.transform.localEulerAngles.z);
+			}
+			if (!this.NearSenpai)
+			{
+				if (!Input.GetButton("A") && !Input.GetButton("B") && !Input.GetButton("X") && !Input.GetButton("Y") && (Input.GetAxis("LT") > 0.5f || Input.GetMouseButton(1)))
+				{
+					if (this.Inventory.RivalPhone && Input.GetButtonDown("LB"))
+					{
+						this.CharacterAnimation["f02_cameraPose_00"].weight = 0f;
+						if (!this.RivalPhone)
+						{
+							this.SmartphoneRenderer.material.mainTexture = this.RivalPhoneTexture;
+							this.RivalPhone = true;
+						}
+						else
+						{
+							this.SmartphoneRenderer.material.mainTexture = this.YanderePhoneTexture;
+							this.RivalPhone = false;
+						}
+					}
+					if (Input.GetAxis("LT") > 0.5f)
+					{
+						this.UsingController = true;
+					}
+					if (!this.Aiming)
+					{
+						if (this.CameraEffects.OneCamera)
+						{
+							this.MainCamera.clearFlags = CameraClearFlags.Color;
+							this.MainCamera.farClipPlane = 0.02f;
+						}
+						base.transform.eulerAngles = new Vector3(base.transform.eulerAngles.x, this.MainCamera.transform.eulerAngles.y, base.transform.eulerAngles.z);
+						this.CharacterAnimation.Play(this.IdleAnim);
+						this.Smartphone.transform.parent.gameObject.SetActive(true);
+						this.ShoulderCamera.AimingCamera = true;
+						this.Obscurance.enabled = false;
+						this.HandCamera.SetActive(true);
+						this.YandereVision = false;
+						this.Blur.enabled = true;
+						this.Mopping = false;
+						this.Aiming = true;
+						this.EmptyHands();
+						if (this.Inventory.RivalPhone)
+						{
+							this.PhonePromptBar.Panel.enabled = true;
+							this.PhonePromptBar.Show = true;
+						}
+						Time.timeScale = 1f;
+					}
+				}
+				if (!this.Aiming && this.Stance.Current != StanceType.Crouching && this.Stance.Current != StanceType.Crawling && !this.Accessories[9].activeInHierarchy && !this.Accessories[16].activeInHierarchy)
+				{
+					if (Input.GetButton("RB"))
+					{
+						this.YandereTimer += Time.deltaTime;
+						if (this.YandereTimer > 0.5f)
+						{
+							if (!this.Sans)
+							{
+								this.YandereVision = true;
+							}
+							else
+							{
+								this.SansEyes[0].SetActive(true);
+								this.SansEyes[1].SetActive(true);
+								this.GlowEffect.Play();
+								this.SummonBones = true;
+								this.YandereTimer = 0f;
+								this.CanMove = false;
+							}
+						}
+					}
+					else if (this.YandereVision)
+					{
+						this.Obscurance.enabled = false;
+						this.YandereVision = false;
+					}
+					if (Input.GetButtonUp("RB"))
+					{
+						if (this.YandereTimer < 0.5f && !this.Dragging && !this.Carrying && !this.Laughing)
+						{
+							if (this.Sans)
+							{
+								this.BlasterStage++;
+								if (this.BlasterStage > 5)
+								{
+									this.BlasterStage = 1;
+								}
+								GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.BlasterSet[this.BlasterStage], base.transform.position, Quaternion.identity);
+								gameObject.transform.position = base.transform.position;
+								gameObject.transform.rotation = base.transform.rotation;
+								AudioSource.PlayClipAtPoint(this.BlasterClip, base.transform.position + Vector3.up);
+								this.CharacterAnimation["f02_sansBlaster_00"].time = 0f;
+								this.CharacterAnimation.Play("f02_sansBlaster_00");
+								this.SansEyes[0].SetActive(true);
+								this.SansEyes[1].SetActive(true);
+								this.GlowEffect.Play();
+								this.Blasting = true;
+								this.CanMove = false;
+							}
+							else if (!this.FalconHelmet.activeInHierarchy && this.Barcode.activeInHierarchy)
+							{
+								if (!this.Xtan)
+								{
+									if (!this.CirnoHair.activeInHierarchy && !this.TornadoHair.activeInHierarchy && !this.BladeHair.activeInHierarchy)
+									{
+										this.LaughAnim = "f02_laugh_01";
+										this.LaughClip = this.Laugh1;
+										this.LaughIntensity += 1f;
+										component.clip = this.LaughClip;
+										component.time = 0f;
+										component.Play();
+									}
+									UnityEngine.Object.Instantiate<GameObject>(this.GiggleDisc, base.transform.position + Vector3.up, Quaternion.identity);
+									component.volume = 1f;
+									this.LaughTimer = 0.5f;
+									this.Laughing = true;
+									this.CanMove = false;
+								}
+								else if (this.LongHair[0].gameObject.activeInHierarchy)
+								{
+									this.LongHair[0].gameObject.SetActive(false);
+									this.BlackEyePatch.SetActive(false);
+									this.SlenderHair[0].transform.parent.gameObject.SetActive(true);
+									this.SlenderHair[0].SetActive(true);
+									this.SlenderHair[1].SetActive(true);
+								}
+								else
+								{
+									this.LongHair[0].gameObject.SetActive(true);
+									this.BlackEyePatch.SetActive(true);
+									this.SlenderHair[0].transform.parent.gameObject.SetActive(true);
+									this.SlenderHair[0].SetActive(false);
+									this.SlenderHair[1].SetActive(false);
+								}
+							}
+							else if (!this.Punching)
+							{
+								if (this.FalconHelmet.activeInHierarchy)
+								{
+									GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(this.FalconWindUp);
+									gameObject2.transform.parent = this.ItemParent;
+									gameObject2.transform.localPosition = Vector3.zero;
+									AudioClipPlayer.PlayAttached(this.FalconPunchVoice, this.MainCamera.transform, 5f, 10f);
+									this.CharacterAnimation["f02_falconPunch_00"].time = 0f;
+									this.CharacterAnimation.Play("f02_falconPunch_00");
+									this.FalconSpeed = 0f;
+								}
+								else
+								{
+									AudioSource.PlayClipAtPoint(this.OnePunchVoice, base.transform.position + Vector3.up);
+									this.CharacterAnimation["f02_punch_21"].time = 0f;
+									this.CharacterAnimation.CrossFade("f02_punch_21", 0.15f);
+								}
+								this.Punching = true;
+								this.CanMove = false;
+							}
+						}
+						this.YandereTimer = 0f;
+					}
+				}
+				if (!Input.GetButton("LB"))
+				{
+					if (this.Stance.Current != StanceType.Crouching && this.Stance.Current != StanceType.Crawling)
+					{
+						if (Input.GetButtonDown("RS"))
+						{
+							this.Obscurance.enabled = false;
+							this.CrouchButtonDown = true;
+							this.YandereVision = false;
+							this.Stance.Current = StanceType.Crouching;
+							this.Crouch();
+							this.EmptyHands();
+						}
+					}
+					else
+					{
+						if (this.Stance.Current == StanceType.Crouching)
+						{
+							if (Input.GetButton("RS") && !this.CameFromCrouch)
+							{
+								this.CrawlTimer += Time.deltaTime;
+							}
+							if (this.CrawlTimer > 0.5f)
+							{
+								this.EmptyHands();
+								this.Obscurance.enabled = false;
+								this.YandereVision = false;
+								this.Stance.Current = StanceType.Crawling;
+								this.CrawlTimer = 0f;
+								this.Uncrouch();
+							}
+							else if (Input.GetButtonUp("RS") && !this.CrouchButtonDown && !this.CameFromCrouch)
+							{
+								this.Stance.Current = StanceType.Standing;
+								this.CrawlTimer = 0f;
+								this.Uncrouch();
+							}
+						}
+						else if (Input.GetButtonDown("RS"))
+						{
+							this.CameFromCrouch = true;
+							this.Stance.Current = StanceType.Crouching;
+							this.Crouch();
+						}
+						if (Input.GetButtonUp("RS"))
+						{
+							this.CrouchButtonDown = false;
+							this.CameFromCrouch = false;
+							this.CrawlTimer = 0f;
+						}
+					}
+				}
+			}
+			if (this.Aiming)
+			{
+				this.CharacterAnimation["f02_cameraPose_00"].weight = Mathf.Lerp(this.CharacterAnimation["f02_cameraPose_00"].weight, 1f, Time.deltaTime * 10f);
+				if (this.ClubAccessories[7].activeInHierarchy && (Input.GetAxis("DpadY") != 0f || Input.GetAxis("Mouse ScrollWheel") != 0f))
+				{
+					this.Smartphone.fieldOfView -= Input.GetAxis("DpadY");
+					this.Smartphone.fieldOfView -= Input.GetAxis("Mouse ScrollWheel") * 10f;
+					if (this.Smartphone.fieldOfView > 60f)
+					{
+						this.Smartphone.fieldOfView = 60f;
+					}
+					if (this.Smartphone.fieldOfView < 30f)
+					{
+						this.Smartphone.fieldOfView = 30f;
+					}
+				}
+				if (Input.GetAxis("RT") != 0f || Input.GetMouseButtonDown(0) || Input.GetButtonDown("RB"))
+				{
+					this.FixCamera();
+					this.PauseScreen.CorrectingTime = false;
+					Time.timeScale = 0f;
+					this.CanMove = false;
+					this.Shutter.Snap();
+				}
+				if (Time.timeScale > 0f && ((this.UsingController && Input.GetAxis("LT") < 0.5f) || (!this.UsingController && !Input.GetMouseButton(1))))
+				{
+					this.StopAiming();
+				}
+				if (Input.GetKey("left alt"))
+				{
+					if (!this.CinematicCamera.activeInHierarchy)
+					{
+						if (this.CinematicTimer > 0f)
+						{
+							this.CinematicCamera.transform.eulerAngles = this.Smartphone.transform.eulerAngles;
+							this.CinematicCamera.transform.position = this.Smartphone.transform.position;
+							this.CinematicCamera.SetActive(true);
+							this.CinematicTimer = 0f;
+							this.StopAiming();
+						}
+						this.CinematicTimer += 1f;
+					}
+				}
+				else
+				{
+					this.CinematicTimer = 0f;
+				}
+			}
+			if (this.Gloved)
+			{
+				if (this.InputDevice.Type == InputDeviceType.Gamepad)
+				{
+					if (Input.GetAxis("DpadY") < -0.5f)
+					{
+						this.GloveTimer += Time.deltaTime;
+						if (this.GloveTimer > 0.5f)
+						{
+							this.CharacterAnimation.CrossFade("f02_removeGloves_00");
+							this.Degloving = true;
+							this.CanMove = false;
+						}
+					}
+					else
+					{
+						this.GloveTimer = 0f;
+					}
+				}
+				else if (Input.GetKey("1"))
+				{
+					this.GloveTimer += Time.deltaTime;
+					if (this.GloveTimer > 0.1f)
+					{
+						this.CharacterAnimation.CrossFade("f02_removeGloves_00");
+						this.Degloving = true;
+						this.CanMove = false;
+					}
+				}
+				else
+				{
+					this.GloveTimer = 0f;
+				}
+			}
+			if (this.Weapon[1] != null && this.DropTimer[2] == 0f)
+			{
+				if (this.InputDevice.Type == InputDeviceType.Gamepad)
+				{
+					if (Input.GetAxis("DpadX") < -0.5f)
+					{
+						this.DropWeapon(1);
+					}
+					else
+					{
+						this.DropTimer[1] = 0f;
+					}
+				}
+				else if (Input.GetKey("2"))
+				{
+					this.DropWeapon(1);
+				}
+				else
+				{
+					this.DropTimer[1] = 0f;
+				}
+			}
+			if (this.Weapon[2] != null && this.DropTimer[1] == 0f)
+			{
+				if (this.InputDevice.Type == InputDeviceType.Gamepad)
+				{
+					if (Input.GetAxis("DpadX") > 0.5f)
+					{
+						this.DropWeapon(2);
+					}
+					else
+					{
+						this.DropTimer[2] = 0f;
+					}
+				}
+				else if (Input.GetKey("3"))
+				{
+					this.DropWeapon(2);
+				}
+				else
+				{
+					this.DropTimer[2] = 0f;
+				}
+			}
+			if (Input.GetButtonDown("LS") || Input.GetKeyDown("t"))
+			{
+				if (this.NewTrail != null)
+				{
+					UnityEngine.Object.Destroy(this.NewTrail);
+				}
+				this.NewTrail = UnityEngine.Object.Instantiate<GameObject>(this.Trail, base.transform.position + base.transform.forward * 0.5f + Vector3.up * 0.1f, Quaternion.identity);
+				this.NewTrail.GetComponent<AIPath>().target = this.Homeroom;
+			}
+			if (this.Armed)
+			{
+				this.ID = 0;
+				while (this.ID < this.ArmedAnims.Length)
+				{
+					string name = this.ArmedAnims[this.ID];
+					this.CharacterAnimation[name].weight = Mathf.Lerp(this.CharacterAnimation[name].weight, (this.EquippedWeapon.AnimID != this.ID) ? 0f : 1f, Time.deltaTime * 10f);
+					this.ID++;
+				}
+			}
+			else
+			{
+				this.StopArmedAnim();
+			}
+		}
+		else
+		{
+			this.StopArmedAnim();
+			if (this.Dumping)
+			{
+				this.targetRotation = Quaternion.LookRotation(this.Incinerator.transform.position - base.transform.position);
+				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
+				this.MoveTowardsTarget(this.Incinerator.transform.position + Vector3.right * -2f);
+				if (this.DumpTimer == 0f && this.Carrying)
+				{
+					this.CharacterAnimation["f02_carryDisposeA_00"].time = 2.5f;
+				}
+				this.DumpTimer += Time.deltaTime;
+				if (this.DumpTimer > 1f)
+				{
+					if (!this.Ragdoll.GetComponent<RagdollScript>().Dumped)
+					{
+						this.DumpRagdoll(RagdollDumpType.Incinerator);
+					}
+					this.CharacterAnimation.CrossFade("f02_carryDisposeA_00");
+					if (this.CharacterAnimation["f02_carryDisposeA_00"].time >= this.CharacterAnimation["f02_carryDisposeA_00"].length)
+					{
+						this.Incinerator.Prompt.enabled = true;
+						this.Incinerator.Ready = true;
+						this.Incinerator.Open = false;
+						this.Dragging = false;
+						this.Dumping = false;
+						this.CanMove = true;
+						this.Ragdoll = null;
+						this.StopCarrying();
+						this.DumpTimer = 0f;
+					}
+				}
+			}
+			if (this.Chipping)
+			{
+				this.targetRotation = Quaternion.LookRotation(this.WoodChipper.gameObject.transform.position - base.transform.position);
+				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
+				this.MoveTowardsTarget(this.WoodChipper.DumpPoint.position);
+				if (this.DumpTimer == 0f && this.Carrying)
+				{
+					this.CharacterAnimation["f02_carryDisposeA_00"].time = 2.5f;
+				}
+				this.DumpTimer += Time.deltaTime;
+				if (this.DumpTimer > 1f)
+				{
+					if (!this.Ragdoll.GetComponent<RagdollScript>().Dumped)
+					{
+						this.DumpRagdoll(RagdollDumpType.WoodChipper);
+					}
+					this.CharacterAnimation.CrossFade("f02_carryDisposeA_00");
+					if (this.CharacterAnimation["f02_carryDisposeA_00"].time >= this.CharacterAnimation["f02_carryDisposeA_00"].length)
+					{
+						this.WoodChipper.Prompt.HideButton[0] = false;
+						this.WoodChipper.Prompt.HideButton[3] = true;
+						this.WoodChipper.Occupied = true;
+						this.WoodChipper.Open = false;
+						this.Dragging = false;
+						this.Chipping = false;
+						this.CanMove = true;
+						this.Ragdoll = null;
+						this.StopCarrying();
+						this.DumpTimer = 0f;
+					}
+				}
+			}
+			if (this.TranquilHiding)
+			{
+				this.targetRotation = Quaternion.LookRotation(this.TranqCase.transform.position - base.transform.position);
+				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
+				this.MoveTowardsTarget(this.TranqCase.transform.position + Vector3.right * 1.4f);
+				if (this.DumpTimer == 0f && this.Carrying)
+				{
+					this.CharacterAnimation["f02_carryDisposeA_00"].time = 2.5f;
+				}
+				this.DumpTimer += Time.deltaTime;
+				if (this.DumpTimer > 1f)
+				{
+					if (!this.Ragdoll.GetComponent<RagdollScript>().Dumped)
+					{
+						this.DumpRagdoll(RagdollDumpType.TranqCase);
+					}
+					this.CharacterAnimation.CrossFade("f02_carryDisposeA_00");
+					if (this.CharacterAnimation["f02_carryDisposeA_00"].time >= this.CharacterAnimation["f02_carryDisposeA_00"].length)
+					{
+						this.TranquilHiding = false;
+						this.Dragging = false;
+						this.Dumping = false;
+						this.CanMove = true;
+						this.Ragdoll = null;
+						this.StopCarrying();
+						this.DumpTimer = 0f;
+					}
+				}
+			}
+			if (this.Dipping)
+			{
+				if (this.Bucket != null)
+				{
+					this.targetRotation = Quaternion.LookRotation(new Vector3(this.Bucket.transform.position.x, base.transform.position.y, this.Bucket.transform.position.z) - base.transform.position);
+					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
+				}
+				this.CharacterAnimation.CrossFade("f02_dipping_00");
+				if (this.CharacterAnimation["f02_dipping_00"].time >= this.CharacterAnimation["f02_dipping_00"].length * 0.5f && this.Mop.Bloodiness > 0f)
+				{
+					if (this.Bucket != null)
+					{
+						this.Bucket.Bloodiness += this.Mop.Bloodiness / 2f;
+					}
+					this.Mop.Bloodiness = 0f;
+					this.Mop.UpdateBlood();
+				}
+				if (this.CharacterAnimation["f02_dipping_00"].time >= this.CharacterAnimation["f02_dipping_00"].length)
+				{
+					this.CharacterAnimation["f02_dipping_00"].time = 0f;
+					this.Mop.Prompt.enabled = true;
+					this.Dipping = false;
+					this.CanMove = true;
+				}
+			}
+			if (this.Pouring)
+			{
+				this.MoveTowardsTarget(this.Stool.position);
+				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.Stool.rotation, 10f * Time.deltaTime);
+				this.CharacterAnimation.CrossFade("f02_bucketDump" + this.PourHeight + "_00", 0f);
+				if (this.CharacterAnimation["f02_bucketDump" + this.PourHeight + "_00"].time >= this.PourTime && !this.PickUp.Bucket.Poured)
+				{
+					if (this.PickUp.Bucket.Gasoline)
+					{
+						this.PickUp.Bucket.PourEffect.main.startColor = new Color(1f, 1f, 0f, 0.5f);
+						UnityEngine.Object.Instantiate<GameObject>(this.PickUp.Bucket.GasCollider, this.PickUp.Bucket.PourEffect.transform.position + this.PourDistance * base.transform.forward, Quaternion.identity);
+					}
+					else if (this.PickUp.Bucket.Bloodiness < 50f)
+					{
+						this.PickUp.Bucket.PourEffect.main.startColor = new Color(0f, 1f, 1f, 0.5f);
+						UnityEngine.Object.Instantiate<GameObject>(this.PickUp.Bucket.WaterCollider, this.PickUp.Bucket.PourEffect.transform.position + this.PourDistance * base.transform.forward, Quaternion.identity);
+					}
+					else
+					{
+						this.PickUp.Bucket.PourEffect.main.startColor = new Color(0.5f, 0f, 0f, 0.5f);
+						UnityEngine.Object.Instantiate<GameObject>(this.PickUp.Bucket.BloodCollider, this.PickUp.Bucket.PourEffect.transform.position + this.PourDistance * base.transform.forward, Quaternion.identity);
+					}
+					this.PickUp.Bucket.PourEffect.Play();
+					this.PickUp.Bucket.Poured = true;
+					this.PickUp.Bucket.Empty();
+				}
+				if (this.CharacterAnimation["f02_bucketDump" + this.PourHeight + "_00"].time >= this.CharacterAnimation["f02_bucketDump" + this.PourHeight + "_00"].length)
+				{
+					this.CharacterAnimation["f02_bucketDump" + this.PourHeight + "_00"].time = 0f;
+					this.PickUp.Bucket.Poured = false;
+					this.Pouring = false;
+					this.CanMove = true;
+				}
+			}
+			if (this.Laughing)
+			{
+				if (this.Hairstyles[14].activeInHierarchy)
+				{
+					this.LaughAnim = "storepower_20";
+					this.LaughClip = this.ChargeUp;
+				}
+				if (this.Stand.Stand.activeInHierarchy)
+				{
+					this.LaughAnim = "f02_jojoAttack_00";
+					this.LaughClip = this.YanYan;
+				}
+				else if (this.FlameDemonic)
+				{
+					float axis = Input.GetAxis("Vertical");
+					float axis2 = Input.GetAxis("Horizontal");
+					Vector3 a3 = this.MainCamera.transform.TransformDirection(Vector3.forward);
+					a3.y = 0f;
+					a3 = a3.normalized;
+					Vector3 a4 = new Vector3(a3.z, 0f, -a3.x);
+					Vector3 vector = axis2 * a4 + axis * a3;
+					if (vector != Vector3.zero)
+					{
+						this.targetRotation = Quaternion.LookRotation(vector);
+						base.transform.rotation = Quaternion.Lerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
+					}
+					this.LaughAnim = "f02_demonAttack_00";
+					this.CirnoTimer -= Time.deltaTime;
+					if (this.CirnoTimer < 0f)
+					{
+						GameObject gameObject3 = UnityEngine.Object.Instantiate<GameObject>(this.Fireball, this.RightHand.position, base.transform.rotation);
+						gameObject3.transform.localEulerAngles += new Vector3(UnityEngine.Random.Range(0f, 22.5f), UnityEngine.Random.Range(-22.5f, 22.5f), UnityEngine.Random.Range(-22.5f, 22.5f));
+						GameObject gameObject4 = UnityEngine.Object.Instantiate<GameObject>(this.Fireball, this.LeftHand.position, base.transform.rotation);
+						gameObject4.transform.localEulerAngles += new Vector3(UnityEngine.Random.Range(0f, 22.5f), UnityEngine.Random.Range(-22.5f, 22.5f), UnityEngine.Random.Range(-22.5f, 22.5f));
+						this.CirnoTimer = 0.1f;
+					}
+				}
+				else if (this.CirnoHair.activeInHierarchy)
+				{
+					float axis3 = Input.GetAxis("Vertical");
+					float axis4 = Input.GetAxis("Horizontal");
+					Vector3 a5 = this.MainCamera.transform.TransformDirection(Vector3.forward);
+					a5.y = 0f;
+					a5 = a5.normalized;
+					Vector3 a6 = new Vector3(a5.z, 0f, -a5.x);
+					Vector3 vector2 = axis4 * a6 + axis3 * a5;
+					if (vector2 != Vector3.zero)
+					{
+						this.targetRotation = Quaternion.LookRotation(vector2);
+						base.transform.rotation = Quaternion.Lerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
+					}
+					this.LaughAnim = "f02_cirnoAttack_00";
+					this.CirnoTimer -= Time.deltaTime;
+					if (this.CirnoTimer < 0f)
+					{
+						GameObject gameObject5 = UnityEngine.Object.Instantiate<GameObject>(this.CirnoIceAttack, base.transform.position + base.transform.up * 1.4f, base.transform.rotation);
+						gameObject5.transform.localEulerAngles += new Vector3(UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f));
+						component.PlayOneShot(this.CirnoIceClip);
+						this.CirnoTimer = 0.1f;
+					}
+				}
+				else if (this.TornadoHair.activeInHierarchy)
+				{
+					this.LaughAnim = "f02_tornadoAttack_00";
+					this.CirnoTimer -= Time.deltaTime;
+					if (this.CirnoTimer < 0f)
+					{
+						GameObject gameObject6 = UnityEngine.Object.Instantiate<GameObject>(this.TornadoAttack, new Vector3(base.transform.position.x + UnityEngine.Random.Range(-5f, 5f), base.transform.position.y, base.transform.position.z + UnityEngine.Random.Range(-5f, 5f)), base.transform.rotation);
+						while (Vector3.Distance(base.transform.position, gameObject6.transform.position) < 1f)
+						{
+							gameObject6.transform.position = new Vector3(base.transform.position.x + UnityEngine.Random.Range(-5f, 5f), base.transform.position.y, base.transform.position.z + UnityEngine.Random.Range(-5f, 5f));
+						}
+						this.CirnoTimer = 0.1f;
+					}
+				}
+				else if (this.BladeHair.activeInHierarchy)
+				{
+					this.LaughAnim = "f02_spin_00";
+					base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, base.transform.localEulerAngles.y + Time.deltaTime * 360f * 2f, base.transform.localEulerAngles.z);
+					this.BladeHairCollider1.enabled = true;
+					this.BladeHairCollider2.enabled = true;
+				}
+				else if (component.clip != this.LaughClip)
+				{
+					component.clip = this.LaughClip;
+					component.time = 0f;
+					component.Play();
+				}
+				this.CharacterAnimation.CrossFade(this.LaughAnim);
+				if (Input.GetButtonDown("RB"))
+				{
+					this.LaughIntensity += 1f;
+					if (this.LaughIntensity <= 5f)
+					{
+						this.LaughAnim = "f02_laugh_01";
+						this.LaughClip = this.Laugh1;
+						this.LaughTimer = 0.5f;
+					}
+					else if (this.LaughIntensity <= 10f)
+					{
+						this.LaughAnim = "f02_laugh_02";
+						this.LaughClip = this.Laugh2;
+						this.LaughTimer = 1f;
+					}
+					else if (this.LaughIntensity <= 15f)
+					{
+						this.LaughAnim = "f02_laugh_03";
+						this.LaughClip = this.Laugh3;
+						this.LaughTimer = 1.5f;
+					}
+					else if (this.LaughIntensity <= 20f)
+					{
+						GameObject gameObject7 = UnityEngine.Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + Vector3.up, Quaternion.identity);
+						gameObject7.GetComponent<AlarmDiscScript>().NoScream = true;
+						this.LaughAnim = "f02_laugh_04";
+						this.LaughClip = this.Laugh4;
+						this.LaughTimer = 2f;
+					}
+					else
+					{
+						GameObject gameObject8 = UnityEngine.Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + Vector3.up, Quaternion.identity);
+						gameObject8.GetComponent<AlarmDiscScript>().NoScream = true;
+						this.LaughAnim = "f02_laugh_04";
+						this.LaughIntensity = 20f;
+						this.LaughTimer = 2f;
+					}
+				}
+				if (this.LaughIntensity > 15f)
+				{
+					this.Sanity += Time.deltaTime * 10f;
+					this.UpdateSanity();
+				}
+				this.LaughTimer -= Time.deltaTime;
+				if (this.LaughTimer <= 0f)
+				{
+					this.StopLaughing();
+				}
+			}
+			if (this.TimeSkipping)
+			{
+				base.transform.position = new Vector3(base.transform.position.x, this.TimeSkipHeight, base.transform.position.z);
+				this.CharacterAnimation.CrossFade("f02_timeSkip_00");
+				this.MyController.Move(base.transform.up * 0.0001f);
+				this.Sanity += Time.deltaTime * 0.17f;
+				this.UpdateSanity();
+			}
+			if (this.DumpsterGrabbing)
+			{
+				if (Input.GetAxis("Horizontal") > 0.5f || Input.GetAxis("DpadX") > 0.5f)
+				{
+					this.CharacterAnimation.CrossFade((this.DumpsterHandle.Direction != -1f) ? "f02_dumpsterPush_00" : "f02_dumpsterPull_00");
+				}
+				else if (Input.GetAxis("Horizontal") < -0.5f || Input.GetAxis("DpadX") < -0.5f)
+				{
+					this.CharacterAnimation.CrossFade((this.DumpsterHandle.Direction != -1f) ? "f02_dumpsterPull_00" : "f02_dumpsterPush_00");
+				}
+				else
+				{
+					this.CharacterAnimation.CrossFade("f02_dumpsterGrab_00");
+				}
+			}
+			if (this.Stripping && this.CharacterAnimation["f02_stripping_00"].time >= this.CharacterAnimation["f02_stripping_00"].length)
+			{
+				this.Stripping = false;
+				this.CanMove = true;
+				this.MyLocker.UpdateSchoolwear();
+			}
+			if (this.Bathing)
+			{
+				this.MoveTowardsTarget(this.Stool.position);
+				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.Stool.rotation, 10f * Time.deltaTime);
+				this.CharacterAnimation.CrossFade("f02_stoolBathing_00");
+				if (this.CharacterAnimation["f02_stoolBathing_00"].time >= this.CharacterAnimation["f02_stoolBathing_00"].length)
+				{
+					this.Bloodiness = 0f;
+					this.UpdateBlood();
+					this.Bathing = false;
+					this.CanMove = true;
+				}
+			}
+			if (this.Degloving)
+			{
+				this.CharacterAnimation.CrossFade("f02_removeGloves_00");
+				if (this.CharacterAnimation["f02_removeGloves_00"].time >= this.CharacterAnimation["f02_removeGloves_00"].length)
+				{
+					this.Gloves.GetComponent<Rigidbody>().isKinematic = false;
+					this.Gloves.transform.parent = null;
+					this.Gloves.gameObject.SetActive(true);
+					this.Degloving = false;
+					this.CanMove = true;
+					this.Gloved = false;
+					this.Gloves = null;
+					this.SetUniform();
+				}
+				else if (this.InputDevice.Type == InputDeviceType.Gamepad)
+				{
+					if (Input.GetAxis("DpadY") > -0.5f)
+					{
+						this.Degloving = false;
+						this.CanMove = true;
+						this.GloveTimer = 0f;
+					}
+				}
+				else if (Input.GetKeyUp("1"))
+				{
+					this.Degloving = false;
+					this.CanMove = true;
+					this.GloveTimer = 0f;
+				}
+			}
+			if (this.Struggling)
+			{
+				if (!this.Won && !this.Lost)
+				{
+					this.CharacterAnimation.CrossFade((!this.TargetStudent.Teacher) ? "f02_struggleA_00" : "f02_teacherStruggleA_00");
+					this.targetRotation = Quaternion.LookRotation(this.TargetStudent.transform.position - base.transform.position);
+					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
+				}
+				else if (this.Won)
+				{
+					if (!this.TargetStudent.Teacher)
+					{
+						this.CharacterAnimation.CrossFade("f02_struggleWinA_00");
+						if (this.CharacterAnimation["f02_struggleWinA_00"].time > this.CharacterAnimation["f02_struggleWinA_00"].length - 1f)
+						{
+							this.EquippedWeapon.transform.localEulerAngles = Vector3.Lerp(this.EquippedWeapon.transform.localEulerAngles, Vector3.zero, Time.deltaTime * 3.33333f);
+						}
+					}
+					else
+					{
+						this.CharacterAnimation.CrossFade("f02_teacherStruggleWinA_00");
+						this.EquippedWeapon.transform.localEulerAngles = Vector3.Lerp(this.EquippedWeapon.transform.localEulerAngles, Vector3.zero, Time.deltaTime);
+					}
+					if (this.StrugglePhase == 0)
+					{
+						if ((!this.TargetStudent.Teacher && this.CharacterAnimation["f02_struggleWinA_00"].time > 1.3f) || (this.TargetStudent.Teacher && this.CharacterAnimation["f02_teacherStruggleWinA_00"].time > 0.8f))
+						{
+							UnityEngine.Object.Instantiate<GameObject>(this.TargetStudent.StabBloodEffect, (!this.TargetStudent.Teacher) ? this.TargetStudent.Head.position : this.EquippedWeapon.transform.position, Quaternion.identity);
+							this.Bloodiness += 20f;
+							this.UpdateBlood();
+							this.Sanity -= 20f * this.Numbness;
+							this.UpdateSanity();
+							this.StainWeapon();
+							this.StrugglePhase++;
+						}
+					}
+					else if (this.StrugglePhase == 1)
+					{
+						if (this.TargetStudent.Teacher && this.CharacterAnimation["f02_teacherStruggleWinA_00"].time > 1.3f)
+						{
+							UnityEngine.Object.Instantiate<GameObject>(this.TargetStudent.StabBloodEffect, this.EquippedWeapon.transform.position, Quaternion.identity);
+							this.StrugglePhase++;
+						}
+					}
+					else if (this.StrugglePhase == 2 && this.TargetStudent.Teacher && this.CharacterAnimation["f02_teacherStruggleWinA_00"].time > 2.1f)
+					{
+						UnityEngine.Object.Instantiate<GameObject>(this.TargetStudent.StabBloodEffect, this.EquippedWeapon.transform.position, Quaternion.identity);
+						this.StrugglePhase++;
+					}
+					if ((!this.TargetStudent.Teacher && this.CharacterAnimation["f02_struggleWinA_00"].time > this.CharacterAnimation["f02_struggleWinA_00"].length) || (this.TargetStudent.Teacher && this.CharacterAnimation["f02_teacherStruggleWinA_00"].time > this.CharacterAnimation["f02_teacherStruggleWinA_00"].length))
+					{
+						this.MyController.radius = 0.2f;
+						this.CharacterAnimation.CrossFade(this.IdleAnim);
+						this.ShoulderCamera.Struggle = false;
+						this.Struggling = false;
+						this.StrugglePhase = 0;
+						if (this.TargetStudent == this.Pursuer)
+						{
+							this.Pursuer = null;
+							this.Chased = false;
+						}
+						this.TargetStudent.BecomeRagdoll();
+						this.TargetStudent.DeathType = DeathType.Weapon;
+					}
+				}
+				else if (this.Lost)
+				{
+					this.CharacterAnimation.CrossFade((!this.TargetStudent.Teacher) ? "f02_struggleLoseA_00" : "f02_teacherStruggleLoseA_00");
+				}
+			}
+			if (this.ClubActivity && Globals.Club == 6)
+			{
+				this.CharacterAnimation.Play("f02_kick_23");
+				if (this.CharacterAnimation["f02_kick_23"].time >= this.CharacterAnimation["f02_kick_23"].length)
+				{
+					this.CharacterAnimation["f02_kick_23"].time = 0f;
+				}
+			}
+			if (this.Possessed)
+			{
+				this.CharacterAnimation.CrossFade("f02_possessionPose_00");
+			}
+			if (this.Punching)
+			{
+				if (this.FalconHelmet.activeInHierarchy)
+				{
+					if (this.CharacterAnimation["f02_falconPunch_00"].time >= 1f && this.CharacterAnimation["f02_falconPunch_00"].time <= 1.25f)
+					{
+						this.FalconSpeed = Mathf.MoveTowards(this.FalconSpeed, 2.5f, Time.deltaTime * 2.5f);
+					}
+					else if (this.CharacterAnimation["f02_falconPunch_00"].time >= 1.25f && this.CharacterAnimation["f02_falconPunch_00"].time <= 1.5f)
+					{
+						this.FalconSpeed = Mathf.MoveTowards(this.FalconSpeed, 0f, Time.deltaTime * 2.5f);
+					}
+					if (this.CharacterAnimation["f02_falconPunch_00"].time >= 1f && this.CharacterAnimation["f02_falconPunch_00"].time <= 1.5f)
+					{
+						if (this.NewFalconPunch == null)
+						{
+							this.NewFalconPunch = UnityEngine.Object.Instantiate<GameObject>(this.FalconPunch);
+							this.NewFalconPunch.transform.parent = this.ItemParent;
+							this.NewFalconPunch.transform.localPosition = Vector3.zero;
+						}
+						this.MyController.Move(base.transform.forward * this.FalconSpeed);
+					}
+					if (this.CharacterAnimation["f02_falconPunch_00"].time >= this.CharacterAnimation["f02_falconPunch_00"].length)
+					{
+						this.NewFalconPunch = null;
+						this.Punching = false;
+						this.CanMove = true;
+					}
+				}
+				else
+				{
+					if (this.CharacterAnimation["f02_punch_21"].time >= 0.15f && this.CharacterAnimation["f02_punch_21"].time <= 0.2f && this.NewOnePunch == null)
+					{
+						this.NewOnePunch = UnityEngine.Object.Instantiate<GameObject>(this.OnePunch);
+						this.NewOnePunch.transform.parent = this.ItemParent;
+						this.NewOnePunch.transform.localPosition = Vector3.zero;
+					}
+					if (this.CharacterAnimation["f02_punch_21"].time >= this.CharacterAnimation["f02_punch_21"].length - 0.1f)
+					{
+						this.NewOnePunch = null;
+						this.Punching = false;
+						this.CanMove = true;
+					}
+				}
+			}
+			if (this.PK)
+			{
+				if (Input.GetAxis("Vertical") > 0.5f)
+				{
+					this.CharacterAnimation.CrossFade("f02_sansUp_00");
+					this.RagdollPK.transform.localPosition = new Vector3(0f, 3f, 2f);
+					if (this.PKDir != 1)
+					{
+						AudioSource.PlayClipAtPoint(this.Slam, base.transform.position + Vector3.up);
+					}
+					this.PKDir = 1;
+				}
+				else if (Input.GetAxis("Vertical") < -0.5f)
+				{
+					this.CharacterAnimation.CrossFade("f02_sansDown_00");
+					this.RagdollPK.transform.localPosition = new Vector3(0f, 0f, 2f);
+					if (this.PKDir != 2)
+					{
+						AudioSource.PlayClipAtPoint(this.Slam, base.transform.position + Vector3.up);
+					}
+					this.PKDir = 2;
+				}
+				else if (Input.GetAxis("Horizontal") > 0.5f)
+				{
+					this.CharacterAnimation.CrossFade("f02_sansRight_00");
+					this.RagdollPK.transform.localPosition = new Vector3(1.5f, 1.5f, 2f);
+					if (this.PKDir != 3)
+					{
+						AudioSource.PlayClipAtPoint(this.Slam, base.transform.position + Vector3.up);
+					}
+					this.PKDir = 3;
+				}
+				else if (Input.GetAxis("Horizontal") < -0.5f)
+				{
+					this.CharacterAnimation.CrossFade("f02_sansLeft_00");
+					this.RagdollPK.transform.localPosition = new Vector3(-1.5f, 1.5f, 2f);
+					if (this.PKDir != 4)
+					{
+						AudioSource.PlayClipAtPoint(this.Slam, base.transform.position + Vector3.up);
+					}
+					this.PKDir = 4;
+				}
+				else
+				{
+					this.CharacterAnimation.CrossFade("f02_sansHold_00");
+					this.RagdollPK.transform.localPosition = new Vector3(0f, 1.5f, 2f);
+					this.PKDir = 0;
+				}
+				if (Input.GetButtonDown("B"))
+				{
+					this.PromptBar.ClearButtons();
+					this.PromptBar.UpdateButtons();
+					this.PromptBar.Show = false;
+					this.Ragdoll.GetComponent<RagdollScript>().StopDragging();
+					this.SansEyes[0].SetActive(false);
+					this.SansEyes[1].SetActive(false);
+					this.GlowEffect.Stop();
+					this.CanMove = true;
+					this.PK = false;
+				}
+			}
+			if (this.SummonBones)
+			{
+				this.CharacterAnimation.CrossFade("f02_sansBones_00");
+				if (this.BoneTimer == 0f)
+				{
+					UnityEngine.Object.Instantiate<GameObject>(this.Bone, base.transform.position + base.transform.right * UnityEngine.Random.Range(-2.5f, 2.5f) + base.transform.up * -2f + base.transform.forward * UnityEngine.Random.Range(1f, 6f), Quaternion.identity);
+				}
+				this.BoneTimer += Time.deltaTime;
+				if (this.BoneTimer > 0.1f)
+				{
+					this.BoneTimer = 0f;
+				}
+				if (Input.GetButtonUp("RB"))
+				{
+					this.SansEyes[0].SetActive(false);
+					this.SansEyes[1].SetActive(false);
+					this.GlowEffect.Stop();
+					this.SummonBones = false;
+					this.CanMove = true;
+				}
+				if (this.PK)
+				{
+					this.PromptBar.ClearButtons();
+					this.PromptBar.UpdateButtons();
+					this.PromptBar.Show = false;
+					this.Ragdoll.GetComponent<RagdollScript>().StopDragging();
+					this.SansEyes[0].SetActive(false);
+					this.SansEyes[1].SetActive(false);
+					this.GlowEffect.Stop();
+					this.CanMove = true;
+					this.PK = false;
+				}
+			}
+			if (this.Blasting)
+			{
+				if (this.CharacterAnimation["f02_sansBlaster_00"].time >= this.CharacterAnimation["f02_sansBlaster_00"].length - 0.25f)
+				{
+					this.SansEyes[0].SetActive(false);
+					this.SansEyes[1].SetActive(false);
+					this.GlowEffect.Stop();
+					this.Blasting = false;
+					this.CanMove = true;
+				}
+				if (this.PK)
+				{
+					this.PromptBar.ClearButtons();
+					this.PromptBar.UpdateButtons();
+					this.PromptBar.Show = false;
+					this.Ragdoll.GetComponent<RagdollScript>().StopDragging();
+					this.SansEyes[0].SetActive(false);
+					this.SansEyes[1].SetActive(false);
+					this.GlowEffect.Stop();
+					this.CanMove = true;
+					this.PK = false;
+				}
+			}
+			if (this.Lifting)
+			{
+				if (!this.HeavyWeight)
+				{
+					if (this.CharacterAnimation["f02_carryLiftA_00"].time >= this.CharacterAnimation["f02_carryLiftA_00"].length)
+					{
+						this.IdleAnim = this.CarryIdleAnim;
+						this.WalkAnim = this.CarryWalkAnim;
+						this.RunAnim = this.CarryRunAnim;
+						this.CanMove = true;
+						this.Carrying = true;
+						this.Lifting = false;
+					}
+				}
+				else if (this.CharacterAnimation["f02_heavyWeightLift_00"].time >= this.CharacterAnimation["f02_heavyWeightLift_00"].length)
+				{
+					this.CharacterAnimation[this.CarryAnims[0]].weight = 1f;
+					this.IdleAnim = this.HeavyIdleAnim;
+					this.WalkAnim = this.HeavyWalkAnim;
+					this.RunAnim = this.CarryRunAnim;
+					this.CanMove = true;
+					this.Lifting = false;
+				}
+			}
+			if (this.Dropping)
+			{
+				this.targetRotation = Quaternion.LookRotation(this.DropSpot.position + this.DropSpot.forward - base.transform.position);
+				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
+				this.MoveTowardsTarget(this.DropSpot.position);
+				if (this.Ragdoll != null)
+				{
+					this.CurrentRagdoll = this.Ragdoll.GetComponent<RagdollScript>();
+				}
+				if (this.DumpTimer == 0f && this.Carrying)
+				{
+					this.CurrentRagdoll.CharacterAnimation[this.CurrentRagdoll.DumpedAnim].time = 2.5f;
+					this.CharacterAnimation["f02_carryDisposeA_00"].time = 2.5f;
+				}
+				this.DumpTimer += Time.deltaTime;
+				if (this.DumpTimer > 1f)
+				{
+					if (this.Ragdoll != null)
+					{
+						this.CurrentRagdoll.PelvisRoot.localEulerAngles = new Vector3(this.CurrentRagdoll.PelvisRoot.localEulerAngles.x, 0f, this.CurrentRagdoll.PelvisRoot.localEulerAngles.z);
+						this.CurrentRagdoll.PelvisRoot.localPosition = new Vector3(this.CurrentRagdoll.PelvisRoot.localPosition.x, this.CurrentRagdoll.PelvisRoot.localPosition.y, 0f);
+					}
+					this.CameraTarget.position = Vector3.MoveTowards(this.CameraTarget.position, new Vector3(this.Hips.position.x, base.transform.position.y + 1f, this.Hips.position.z), Time.deltaTime * 10f);
+					if (this.CharacterAnimation["f02_carryDisposeA_00"].time >= 4.5f)
+					{
+						this.StopCarrying();
+					}
+					else
+					{
+						if (this.CurrentRagdoll.StopAnimation)
+						{
+							this.CurrentRagdoll.StopAnimation = false;
+							this.ID = 0;
+							while (this.ID < this.CurrentRagdoll.AllRigidbodies.Length)
+							{
+								this.CurrentRagdoll.AllRigidbodies[this.ID].isKinematic = true;
+								this.ID++;
+							}
+						}
+						this.CharacterAnimation.CrossFade("f02_carryDisposeA_00");
+						this.CurrentRagdoll.CharacterAnimation.CrossFade(this.CurrentRagdoll.DumpedAnim);
+						this.Ragdoll.transform.position = base.transform.position;
+						this.Ragdoll.transform.eulerAngles = base.transform.eulerAngles;
+					}
+					if (this.CharacterAnimation["f02_carryDisposeA_00"].time >= this.CharacterAnimation["f02_carryDisposeA_00"].length)
+					{
+						this.CameraTarget.localPosition = new Vector3(0f, 1f, 0f);
+						this.Dropping = false;
+						this.CanMove = true;
+						this.DumpTimer = 0f;
+					}
+				}
+			}
+			if (this.Dismembering && this.CharacterAnimation["f02_dismember_00"].time >= this.CharacterAnimation["f02_dismember_00"].length)
+			{
+				this.Ragdoll.GetComponent<RagdollScript>().Dismember();
+				this.RPGCamera.enabled = true;
+				this.TargetStudent = null;
+				this.Dismembering = false;
+				this.CanMove = true;
+			}
+			if (this.Shoved)
+			{
+				if (this.CharacterAnimation["f02_shoveA_00"].time >= this.CharacterAnimation["f02_shoveA_00"].length)
+				{
+					base.transform.position = new Vector3(this.Hips.transform.position.x, base.transform.position.y, this.Hips.transform.position.z);
+					this.CameraTarget.localPosition = new Vector3(0f, 1f, 0f);
+					this.CharacterAnimation.Play(this.IdleAnim);
+					this.Shoved = false;
+					this.CanMove = true;
+				}
+				else
+				{
+					this.CameraTarget.position = Vector3.MoveTowards(this.CameraTarget.position, new Vector3(this.Hips.position.x, base.transform.position.y + 1f, this.Hips.position.z), Time.deltaTime * 10f);
+				}
+			}
+			if (this.Attacked && this.CharacterAnimation["f02_swingB_00"].time >= this.CharacterAnimation["f02_swingB_00"].length)
+			{
+				this.ShoulderCamera.HeartbrokenCamera.SetActive(true);
+				base.enabled = false;
+			}
+			if (this.Hiding)
+			{
+				if (!this.Exiting)
+				{
+					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.HidingSpot.rotation, Time.deltaTime * 10f);
+					this.MoveTowardsTarget(this.HidingSpot.position);
+					this.CharacterAnimation.CrossFade(this.HideAnim);
+				}
+				else
+				{
+					this.MoveTowardsTarget(this.ExitSpot.position);
+					this.CharacterAnimation.CrossFade(this.IdleAnim);
+					this.ExitTimer += Time.deltaTime;
+					if (this.ExitTimer > 1f || Vector3.Distance(base.transform.position, this.ExitSpot.position) < 0.1f)
+					{
+						this.MyController.center = new Vector3(this.MyController.center.x, 0.825f, this.MyController.center.z);
+						this.MyController.radius = 0.2f;
+						this.MyController.height = 1.45f;
+						this.ExitTimer = 0f;
+						this.Exiting = false;
+						this.CanMove = true;
+						this.Hiding = false;
+					}
+				}
+				if (Input.GetButtonDown("B"))
+				{
+					this.PromptBar.ClearButtons();
+					this.PromptBar.Show = false;
+					this.Exiting = true;
+				}
+			}
+			if (this.Tripping)
+			{
+				if (this.CharacterAnimation["f02_bucketTrip_00"].time >= this.CharacterAnimation["f02_bucketTrip_00"].length)
+				{
+					this.CharacterAnimation["f02_bucketTrip_00"].speed = 1f;
+					this.Tripping = false;
+					this.CanMove = true;
+				}
+				else if (this.CharacterAnimation["f02_bucketTrip_00"].time < 0.5f)
+				{
+					this.MyController.Move(base.transform.forward * (Time.deltaTime * 2f));
+					if (this.CharacterAnimation["f02_bucketTrip_00"].time > 0.333333343f && this.CharacterAnimation["f02_bucketTrip_00"].speed == 1f)
+					{
+						this.CharacterAnimation["f02_bucketTrip_00"].speed += 1E-06f;
+						AudioSource.PlayClipAtPoint(this.Thud, base.transform.position);
+					}
+				}
+				else if (Input.GetButtonDown("A"))
+				{
+					this.CharacterAnimation["f02_bucketTrip_00"].speed += 0.1f;
+				}
+			}
+			if (this.BucketDropping)
+			{
+				this.targetRotation = Quaternion.LookRotation(this.DropSpot.position + this.DropSpot.forward - base.transform.position);
+				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
+				this.MoveTowardsTarget(this.DropSpot.position);
+				if (this.CharacterAnimation["f02_bucketDrop_00"].time >= this.CharacterAnimation["f02_bucketDrop_00"].length)
+				{
+					this.MyController.radius = 0.2f;
+					this.BucketDropping = false;
+					this.CanMove = true;
+				}
+				else if (this.CharacterAnimation["f02_bucketDrop_00"].time >= 1f && this.PickUp != null)
+				{
+					this.PickUp.Bucket.Dropped = true;
+					this.EmptyHands();
+				}
+			}
+			if (this.Flicking)
+			{
+				if (this.CharacterAnimation["f02_flickingMatch_00"].time >= this.CharacterAnimation["f02_flickingMatch_00"].length)
+				{
+					this.PickUp.GetComponent<MatchboxScript>().Prompt.enabled = true;
+					this.Arc.SetActive(true);
+					this.Flicking = false;
+					this.CanMove = true;
+				}
+				else if (this.CharacterAnimation["f02_flickingMatch_00"].time > 1f && this.Match != null)
+				{
+					Rigidbody component2 = this.Match.GetComponent<Rigidbody>();
+					component2.isKinematic = false;
+					component2.useGravity = true;
+					component2.AddRelativeForce(Vector3.right * 250f);
+					this.Match.transform.parent = null;
+					this.Match = null;
+				}
+			}
+			if (this.Rummaging)
+			{
+				this.MoveTowardsTarget(this.RummageSpot.Target.position);
+				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.RummageSpot.Target.rotation, Time.deltaTime * 10f);
+				this.RummageTimer += Time.deltaTime;
+				this.ProgressBar.transform.localScale = new Vector3(this.RummageTimer / 10f, this.ProgressBar.transform.localScale.y, this.ProgressBar.transform.localScale.z);
+				if (this.RummageTimer > 10f)
+				{
+					this.RummageSpot.GetReward();
+					this.ProgressBar.transform.parent.gameObject.SetActive(false);
+					this.RummageSpot = null;
+					this.Rummaging = false;
+					this.RummageTimer = 0f;
+					this.CanMove = true;
+				}
+			}
+			if (this.Digging)
+			{
+				if (this.DigPhase == 1)
+				{
+					if (this.CharacterAnimation["f02_shovelDig_00"].time >= 1.66666663f)
+					{
+						component.volume = 1f;
+						component.clip = this.Dig;
+						component.Play();
+						this.DigPhase++;
+					}
+				}
+				else if (this.DigPhase == 2)
+				{
+					if (this.CharacterAnimation["f02_shovelDig_00"].time >= 3.5f)
+					{
+						component.volume = 1f;
+						component.Play();
+						this.DigPhase++;
+					}
+				}
+				else if (this.DigPhase == 3)
+				{
+					if (this.CharacterAnimation["f02_shovelDig_00"].time >= 5.66666651f)
+					{
+						component.volume = 1f;
+						component.Play();
+						this.DigPhase++;
+					}
+				}
+				else if (this.DigPhase == 4 && this.CharacterAnimation["f02_shovelDig_00"].time >= this.CharacterAnimation["f02_shovelDig_00"].length)
+				{
+					this.EquippedWeapon.gameObject.SetActive(true);
+					this.FloatingShovel.SetActive(false);
+					this.RPGCamera.enabled = true;
+					this.Digging = false;
+					this.CanMove = true;
+				}
+			}
+			if (this.Burying)
+			{
+				if (this.DigPhase == 1)
+				{
+					if (this.CharacterAnimation["f02_shovelBury_00"].time >= 2.16666675f)
+					{
+						component.volume = 1f;
+						component.clip = this.Dig;
+						component.Play();
+						this.DigPhase++;
+					}
+				}
+				else if (this.DigPhase == 2)
+				{
+					if (this.CharacterAnimation["f02_shovelBury_00"].time >= 4.66666651f)
+					{
+						component.volume = 1f;
+						component.Play();
+						this.DigPhase++;
+					}
+				}
+				else if (this.CharacterAnimation["f02_shovelBury_00"].time >= this.CharacterAnimation["f02_shovelBury_00"].length)
+				{
+					this.EquippedWeapon.gameObject.SetActive(true);
+					this.FloatingShovel.SetActive(false);
+					this.RPGCamera.enabled = true;
+					this.Burying = false;
+					this.CanMove = true;
+				}
+			}
+		}
+	}
+
+	private void UpdatePoisoning()
+	{
+		if (this.Poisoning)
+		{
+			this.MoveTowardsTarget(this.PoisonSpot.position);
+			base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.PoisonSpot.rotation, Time.deltaTime * 10f);
+			if (this.CharacterAnimation["f02_poisoning_00"].time >= this.CharacterAnimation["f02_poisoning_00"].length)
+			{
+				this.Poisoning = false;
+				this.CanMove = true;
+			}
+			else if (this.CharacterAnimation["f02_poisoning_00"].time >= 5.25f)
+			{
+				this.Poisons[this.PoisonType].SetActive(false);
+			}
+			else if ((double)this.CharacterAnimation["f02_poisoning_00"].time >= 0.75)
+			{
+				this.Poisons[this.PoisonType].SetActive(true);
+			}
+		}
+	}
+
+	private void UpdateEffects()
+	{
+		if (!this.Attacking && !this.Lost && this.CanMove)
+		{
+			if (Vector3.Distance(base.transform.position, this.Senpai.position) < 1f)
+			{
+				if (!this.Talking)
+				{
+					if (!this.NearSenpai)
+					{
+						this.DepthOfField.focalSize = 150f;
+						this.NearSenpai = true;
+					}
+					if (this.Laughing)
+					{
+						this.StopLaughing();
+					}
+					this.Obscurance.enabled = false;
+					this.YandereVision = false;
+					this.Stance.Current = StanceType.Standing;
+					this.Mopping = false;
+					this.Uncrouch();
+					this.YandereTimer = 0f;
+					this.EmptyHands();
+					if (this.Aiming)
+					{
+						this.StopAiming();
+					}
+				}
+			}
+			else
+			{
+				this.NearSenpai = false;
+			}
+		}
+		if (this.NearSenpai && !this.Noticed)
+		{
+			this.DepthOfField.enabled = true;
+			this.DepthOfField.focalSize = Mathf.Lerp(this.DepthOfField.focalSize, 0f, Time.deltaTime * 10f);
+			this.DepthOfField.focalZStartCurve = Mathf.Lerp(this.DepthOfField.focalZStartCurve, 20f, Time.deltaTime * 10f);
+			this.DepthOfField.focalZEndCurve = Mathf.Lerp(this.DepthOfField.focalZEndCurve, 20f, Time.deltaTime * 10f);
+			this.DepthOfField.objectFocus = this.Senpai.transform;
+			this.ColorCorrection.enabled = true;
+			this.SenpaiFade = Mathf.Lerp(this.SenpaiFade, 0f, Time.deltaTime * 10f);
+			this.SenpaiTint = 1f - this.SenpaiFade / 100f;
+			this.ColorCorrection.redChannel.MoveKey(1, new Keyframe(0.5f, 0.5f + this.SenpaiTint * 0.5f));
+			this.ColorCorrection.greenChannel.MoveKey(1, new Keyframe(0.5f, 1f - this.SenpaiTint * 0.5f));
+			this.ColorCorrection.blueChannel.MoveKey(1, new Keyframe(0.5f, 0.5f + this.SenpaiTint * 0.5f));
+			this.ColorCorrection.redChannel.SmoothTangents(1, 0f);
+			this.ColorCorrection.greenChannel.SmoothTangents(1, 0f);
+			this.ColorCorrection.blueChannel.SmoothTangents(1, 0f);
+			this.ColorCorrection.UpdateTextures();
+			if (!this.Attacking)
+			{
+				this.CharacterAnimation["f02_shy_00"].weight = this.SenpaiTint;
+			}
+			this.HeartBeat.volume = this.SenpaiTint;
+			this.Sanity += Time.deltaTime * 10f;
+			this.UpdateSanity();
+		}
+		else if (this.SenpaiFade < 99f)
+		{
+			this.DepthOfField.focalSize = Mathf.Lerp(this.DepthOfField.focalSize, 150f, Time.deltaTime * 10f);
+			this.DepthOfField.focalZStartCurve = Mathf.Lerp(this.DepthOfField.focalZStartCurve, 0f, Time.deltaTime * 10f);
+			this.DepthOfField.focalZEndCurve = Mathf.Lerp(this.DepthOfField.focalZEndCurve, 0f, Time.deltaTime * 10f);
+			this.SenpaiFade = Mathf.Lerp(this.SenpaiFade, 100f, Time.deltaTime * 10f);
+			this.SenpaiTint = this.SenpaiFade / 100f;
+			this.ColorCorrection.redChannel.MoveKey(1, new Keyframe(0.5f, 1f - this.SenpaiTint * 0.5f));
+			this.ColorCorrection.greenChannel.MoveKey(1, new Keyframe(0.5f, this.SenpaiTint * 0.5f));
+			this.ColorCorrection.blueChannel.MoveKey(1, new Keyframe(0.5f, 1f - this.SenpaiTint * 0.5f));
+			this.ColorCorrection.redChannel.SmoothTangents(1, 0f);
+			this.ColorCorrection.greenChannel.SmoothTangents(1, 0f);
+			this.ColorCorrection.blueChannel.SmoothTangents(1, 0f);
+			this.ColorCorrection.UpdateTextures();
+			this.CharacterAnimation["f02_shy_00"].weight = 1f - this.SenpaiTint;
+			this.HeartBeat.volume = 1f - this.SenpaiTint;
+		}
+		else if (this.SenpaiFade < 100f)
+		{
+			this.ResetSenpaiEffects();
+		}
+		if (this.YandereVision)
+		{
+			if (!this.HighlightingR.enabled)
+			{
+				this.YandereColorCorrection.enabled = true;
+				this.HighlightingR.enabled = true;
+				this.HighlightingB.enabled = true;
+				this.Obscurance.enabled = true;
+				this.Vignette.enabled = true;
+			}
+			Time.timeScale = Mathf.Lerp(Time.timeScale, 0.5f, 0.166666672f);
+			this.YandereFade = Mathf.Lerp(this.YandereFade, 0f, Time.deltaTime * 10f);
+			this.YandereTint = 1f - this.YandereFade / 100f;
+			this.YandereColorCorrection.redChannel.MoveKey(1, new Keyframe(0.5f, 0.5f - this.YandereTint * 0.25f));
+			this.YandereColorCorrection.greenChannel.MoveKey(1, new Keyframe(0.5f, 0.5f - this.YandereTint * 0.25f));
+			this.YandereColorCorrection.blueChannel.MoveKey(1, new Keyframe(0.5f, 0.5f + this.YandereTint * 0.25f));
+			this.YandereColorCorrection.redChannel.SmoothTangents(1, 0f);
+			this.YandereColorCorrection.greenChannel.SmoothTangents(1, 0f);
+			this.YandereColorCorrection.blueChannel.SmoothTangents(1, 0f);
+			this.YandereColorCorrection.UpdateTextures();
+			this.Vignette.intensity = Mathf.Lerp(this.Vignette.intensity, this.YandereTint * 5f, Time.deltaTime * 10f);
+			this.Vignette.blur = Mathf.Lerp(this.Vignette.blur, this.YandereTint, Time.deltaTime * 10f);
+			this.Vignette.chromaticAberration = Mathf.Lerp(this.Vignette.chromaticAberration, this.YandereTint * 5f, Time.deltaTime * 10f);
+		}
+		else
+		{
+			if (this.HighlightingR.enabled)
+			{
+				this.HighlightingR.enabled = false;
+				this.HighlightingB.enabled = false;
+			}
+			if (this.YandereFade < 99f)
+			{
+				if (!this.Aiming)
+				{
+					Time.timeScale = Mathf.Lerp(Time.timeScale, 1f, 0.166666672f);
+				}
+				this.YandereFade = Mathf.Lerp(this.YandereFade, 100f, Time.deltaTime * 10f);
+				this.YandereTint = this.YandereFade / 100f;
+				this.YandereColorCorrection.redChannel.MoveKey(1, new Keyframe(0.5f, this.YandereTint * 0.5f));
+				this.YandereColorCorrection.greenChannel.MoveKey(1, new Keyframe(0.5f, this.YandereTint * 0.5f));
+				this.YandereColorCorrection.blueChannel.MoveKey(1, new Keyframe(0.5f, 1f - this.YandereTint * 0.5f));
+				this.YandereColorCorrection.redChannel.SmoothTangents(1, 0f);
+				this.YandereColorCorrection.greenChannel.SmoothTangents(1, 0f);
+				this.YandereColorCorrection.blueChannel.SmoothTangents(1, 0f);
+				this.YandereColorCorrection.UpdateTextures();
+				this.Vignette.intensity = Mathf.Lerp(this.Vignette.intensity, 0f, Time.deltaTime * 10f);
+				this.Vignette.blur = Mathf.Lerp(this.Vignette.blur, 0f, Time.deltaTime * 10f);
+				this.Vignette.chromaticAberration = Mathf.Lerp(this.Vignette.chromaticAberration, 0f, Time.deltaTime * 10f);
+			}
+			else if (this.YandereFade < 100f)
+			{
+				this.ResetYandereEffects();
+			}
+		}
+		this.RightRedEye.material.color = new Color(this.RightRedEye.material.color.r, this.RightRedEye.material.color.g, this.RightRedEye.material.color.b, 1f - this.YandereFade / 100f);
+		this.LeftRedEye.material.color = new Color(this.LeftRedEye.material.color.r, this.LeftRedEye.material.color.g, this.LeftRedEye.material.color.b, 1f - this.YandereFade / 100f);
+		this.RightYandereEye.material.color = new Color(this.RightYandereEye.material.color.r, this.YandereFade / 100f, this.YandereFade / 100f, this.RightYandereEye.material.color.a);
+		this.LeftYandereEye.material.color = new Color(this.LeftYandereEye.material.color.r, this.YandereFade / 100f, this.YandereFade / 100f, this.LeftYandereEye.material.color.a);
+	}
+
+	private void UpdateTalking()
+	{
+		if (this.Talking)
+		{
+			if (this.TargetStudent != null)
+			{
+				this.targetRotation = Quaternion.LookRotation(new Vector3(this.TargetStudent.transform.position.x, base.transform.position.y, this.TargetStudent.transform.position.z) - base.transform.position);
+				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
+			}
+			if (this.Interaction == YandereInteractionType.Idle)
+			{
+				this.CharacterAnimation.CrossFade(this.IdleAnim);
+			}
+			else if (this.Interaction == YandereInteractionType.Apologizing)
+			{
+				if (this.TalkTimer == 3f)
+				{
+					this.CharacterAnimation.CrossFade("f02_greet_00");
+					if (this.TargetStudent.Witnessed == "Insanity" || this.TargetStudent.Witnessed == "Weapon and Blood and Insanity" || this.TargetStudent.Witnessed == "Weapon and Insanity" || this.TargetStudent.Witnessed == "Blood and Insanity")
+					{
+						this.Subtitle.UpdateLabel("Insanity Apology", 0, 3f);
+					}
+					else if (this.TargetStudent.Witnessed == "Weapon and Blood")
+					{
+						this.Subtitle.UpdateLabel("Weapon and Blood Apology", 0, 3f);
+					}
+					else if (this.TargetStudent.Witnessed == "Weapon")
+					{
+						this.Subtitle.UpdateLabel("Weapon Apology", 0, 3f);
+					}
+					else if (this.TargetStudent.Witnessed == "Blood")
+					{
+						this.Subtitle.UpdateLabel("Blood Apology", 0, 3f);
+					}
+					else if (this.TargetStudent.Witnessed == "Lewd")
+					{
+						this.Subtitle.UpdateLabel("Lewd Apology", 0, 3f);
+					}
+					else if (this.TargetStudent.Witnessed == "Accident")
+					{
+						this.Subtitle.UpdateLabel("Accident Apology", 0, 3f);
+					}
+				}
+				else
+				{
+					if (Input.GetButtonDown("A"))
+					{
+						this.TalkTimer = 0f;
+					}
+					if (this.CharacterAnimation["f02_greet_00"].time >= this.CharacterAnimation["f02_greet_00"].length)
+					{
+						this.CharacterAnimation.CrossFade(this.IdleAnim);
+					}
+					if (this.TalkTimer <= 0f)
+					{
+						this.TargetStudent.Interaction = StudentInteractionType.Forgiving;
+						this.TargetStudent.TalkTimer = 3f;
+						this.Interaction = YandereInteractionType.Idle;
+					}
+				}
+				this.TalkTimer -= Time.deltaTime;
+			}
+			else if (this.Interaction == YandereInteractionType.Compliment)
+			{
+				if (this.TalkTimer == 3f)
+				{
+					this.CharacterAnimation.CrossFade("f02_greet_01");
+					this.Subtitle.UpdateLabel("Player Compliment", 0, 3f);
+				}
+				else
+				{
+					if (Input.GetButtonDown("A"))
+					{
+						this.TalkTimer = 0f;
+					}
+					if (this.CharacterAnimation["f02_greet_01"].time >= this.CharacterAnimation["f02_greet_01"].length)
+					{
+						this.CharacterAnimation.CrossFade(this.IdleAnim);
+					}
+					if (this.TalkTimer <= 0f)
+					{
+						this.TargetStudent.Interaction = StudentInteractionType.ReceivingCompliment;
+						this.TargetStudent.TalkTimer = 3f;
+						this.Interaction = YandereInteractionType.Idle;
+					}
+				}
+				this.TalkTimer -= Time.deltaTime;
+			}
+			else if (this.Interaction == YandereInteractionType.Gossip)
+			{
+				if (this.TalkTimer == 3f)
+				{
+					this.CharacterAnimation.CrossFade("f02_lookdown_00");
+					this.Subtitle.UpdateLabel("Player Gossip", 0, 3f);
+				}
+				else
+				{
+					if (Input.GetButtonDown("A"))
+					{
+						this.TalkTimer = 0f;
+					}
+					if (this.CharacterAnimation["f02_lookdown_00"].time >= this.CharacterAnimation["f02_lookdown_00"].length)
+					{
+						this.CharacterAnimation.CrossFade(this.IdleAnim);
+					}
+					if (this.TalkTimer <= 0f)
+					{
+						this.TargetStudent.Interaction = StudentInteractionType.Gossiping;
+						this.TargetStudent.TalkTimer = 3f;
+						this.Interaction = YandereInteractionType.Idle;
+					}
+				}
+				this.TalkTimer -= Time.deltaTime;
+			}
+			else if (this.Interaction == YandereInteractionType.Bye)
+			{
+				if (this.TalkTimer == 2f)
+				{
+					this.CharacterAnimation.CrossFade("f02_greet_00");
+					this.Subtitle.UpdateLabel("Player Farewell", 0, 2f);
+				}
+				else
+				{
+					if (Input.GetButtonDown("A"))
+					{
+						this.TalkTimer = 0f;
+					}
+					if (this.CharacterAnimation["f02_greet_00"].time >= this.CharacterAnimation["f02_greet_00"].length)
+					{
+						this.CharacterAnimation.CrossFade(this.IdleAnim);
+					}
+					if (this.TalkTimer <= 0f)
+					{
+						this.TargetStudent.Interaction = StudentInteractionType.Bye;
+						this.TargetStudent.TalkTimer = 2f;
+						this.Interaction = YandereInteractionType.Idle;
+					}
+				}
+				this.TalkTimer -= Time.deltaTime;
+			}
+			else if (this.Interaction == YandereInteractionType.FollowMe)
+			{
+				if (this.TalkTimer == 3f)
+				{
+					this.CharacterAnimation.CrossFade("f02_greet_01");
+					this.Subtitle.UpdateLabel("Player Follow", 0, 3f);
+				}
+				else
+				{
+					if (Input.GetButtonDown("A"))
+					{
+						this.TalkTimer = 0f;
+					}
+					if (this.CharacterAnimation["f02_greet_01"].time >= this.CharacterAnimation["f02_greet_01"].length)
+					{
+						this.CharacterAnimation.CrossFade(this.IdleAnim);
+					}
+					if (this.TalkTimer <= 0f)
+					{
+						this.TargetStudent.Interaction = StudentInteractionType.FollowingPlayer;
+						this.TargetStudent.TalkTimer = 2f;
+						this.Interaction = YandereInteractionType.Idle;
+					}
+				}
+				this.TalkTimer -= Time.deltaTime;
+			}
+			else if (this.Interaction == YandereInteractionType.GoAway)
+			{
+				if (this.TalkTimer == 3f)
+				{
+					this.CharacterAnimation.CrossFade("f02_lookdown_00");
+					this.Subtitle.UpdateLabel("Player Leave", 0, 3f);
+				}
+				else
+				{
+					if (Input.GetButtonDown("A"))
+					{
+						this.TalkTimer = 0f;
+					}
+					if (this.CharacterAnimation["f02_lookdown_00"].time >= this.CharacterAnimation["f02_lookdown_00"].length)
+					{
+						this.CharacterAnimation.CrossFade(this.IdleAnim);
+					}
+					if (this.TalkTimer <= 0f)
+					{
+						this.TargetStudent.Interaction = StudentInteractionType.GoingAway;
+						this.TargetStudent.TalkTimer = 3f;
+						this.Interaction = YandereInteractionType.Idle;
+					}
+				}
+				this.TalkTimer -= Time.deltaTime;
+			}
+			else if (this.Interaction == YandereInteractionType.DistractThem)
+			{
+				if (this.TalkTimer == 3f)
+				{
+					this.CharacterAnimation.CrossFade("f02_lookdown_00");
+					this.Subtitle.UpdateLabel("Player Distract", 0, 3f);
+				}
+				else
+				{
+					if (Input.GetButtonDown("A"))
+					{
+						this.TalkTimer = 0f;
+					}
+					if (this.CharacterAnimation["f02_lookdown_00"].time >= this.CharacterAnimation["f02_lookdown_00"].length)
+					{
+						this.CharacterAnimation.CrossFade(this.IdleAnim);
+					}
+					if (this.TalkTimer <= 0f)
+					{
+						this.TargetStudent.Interaction = StudentInteractionType.DistractingTarget;
+						this.TargetStudent.TalkTimer = 3f;
+						this.Interaction = YandereInteractionType.Idle;
+					}
+				}
+				this.TalkTimer -= Time.deltaTime;
+			}
+			else if (this.Interaction == YandereInteractionType.NamingCrush)
+			{
+				if (this.TalkTimer == 3f)
+				{
+					this.CharacterAnimation.CrossFade("f02_greet_01");
+					this.Subtitle.UpdateLabel("Player Love", 0, 3f);
+				}
+				else
+				{
+					if (Input.GetButtonDown("A"))
+					{
+						this.TalkTimer = 0f;
+					}
+					if (this.CharacterAnimation["f02_greet_01"].time >= this.CharacterAnimation["f02_greet_01"].length)
+					{
+						this.CharacterAnimation.CrossFade(this.IdleAnim);
+					}
+					if (this.TalkTimer <= 0f)
+					{
+						this.TargetStudent.Interaction = StudentInteractionType.NamingCrush;
+						this.TargetStudent.TalkTimer = 3f;
+						this.Interaction = YandereInteractionType.Idle;
+					}
+				}
+				this.TalkTimer -= Time.deltaTime;
+			}
+			else if (this.Interaction == YandereInteractionType.ChangingAppearance)
+			{
+				if (this.TalkTimer == 3f)
+				{
+					this.CharacterAnimation.CrossFade("f02_greet_01");
+					this.Subtitle.UpdateLabel("Player Love", 2, 3f);
+				}
+				else
+				{
+					if (Input.GetButtonDown("A"))
+					{
+						this.TalkTimer = 0f;
+					}
+					if (this.CharacterAnimation["f02_greet_01"].time >= this.CharacterAnimation["f02_greet_01"].length)
+					{
+						this.CharacterAnimation.CrossFade(this.IdleAnim);
+					}
+					if (this.TalkTimer <= 0f)
+					{
+						this.TargetStudent.Interaction = StudentInteractionType.ChangingAppearance;
+						this.TargetStudent.TalkTimer = 3f;
+						this.Interaction = YandereInteractionType.Idle;
+					}
+				}
+				this.TalkTimer -= Time.deltaTime;
+			}
+			else if (this.Interaction == YandereInteractionType.Court)
+			{
+				if (this.TalkTimer == 5f)
+				{
+					this.CharacterAnimation.CrossFade("f02_greet_01");
+					if (!this.TargetStudent.Male)
+					{
+						this.Subtitle.UpdateLabel("Player Love", 3, 5f);
+					}
+					else
+					{
+						this.Subtitle.UpdateLabel("Player Love", 4, 5f);
+					}
+				}
+				else
+				{
+					if (Input.GetButtonDown("A"))
+					{
+						this.TalkTimer = 0f;
+					}
+					if (this.CharacterAnimation["f02_greet_01"].time >= this.CharacterAnimation["f02_greet_01"].length)
+					{
+						this.CharacterAnimation.CrossFade(this.IdleAnim);
+					}
+					if (this.TalkTimer <= 0f)
+					{
+						this.TargetStudent.Interaction = StudentInteractionType.Court;
+						this.TargetStudent.TalkTimer = 3f;
+						this.Interaction = YandereInteractionType.Idle;
+					}
+				}
+				this.TalkTimer -= Time.deltaTime;
+			}
+			else if (this.Interaction == YandereInteractionType.Confess)
+			{
+				if (this.TalkTimer == 5f)
+				{
+					this.CharacterAnimation.CrossFade("f02_greet_01");
+					this.Subtitle.UpdateLabel("Player Love", 5, 5f);
+				}
+				else
+				{
+					if (Input.GetButtonDown("A"))
+					{
+						this.TalkTimer = 0f;
+					}
+					if (this.CharacterAnimation["f02_greet_01"].time >= this.CharacterAnimation["f02_greet_01"].length)
+					{
+						this.CharacterAnimation.CrossFade(this.IdleAnim);
+					}
+					if (this.TalkTimer <= 0f)
+					{
+						this.TargetStudent.Interaction = StudentInteractionType.Gift;
+						this.TargetStudent.TalkTimer = 5f;
+						this.Interaction = YandereInteractionType.Idle;
+					}
+				}
+				this.TalkTimer -= Time.deltaTime;
+			}
+		}
+	}
+
+	private void UpdateAttacking()
+	{
+		if (this.Attacking)
+		{
+			if (this.TargetStudent != null)
+			{
+				this.targetRotation = Quaternion.LookRotation(new Vector3(this.TargetStudent.transform.position.x, base.transform.position.y, this.TargetStudent.transform.position.z) - base.transform.position);
+				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
+			}
+			if (this.Drown)
+			{
+				this.MoveTowardsTarget(this.TargetStudent.transform.position + this.TargetStudent.transform.forward * -0.0001f);
+				this.CharacterAnimation.CrossFade(this.DrownAnim);
+				if (this.CharacterAnimation[this.DrownAnim].time > this.CharacterAnimation[this.DrownAnim].length)
+				{
+					this.TargetStudent.DeathType = DeathType.Drowning;
+					this.Attacking = false;
+					this.CanMove = true;
+					this.Drown = false;
+					this.Sanity -= ((PlayerPrefs.GetInt("PantiesEquipped") != 10) ? 20f : 10f) * this.Numbness;
+				}
+				if (this.CharacterAnimation[this.DrownAnim].time > 9f)
+				{
+					this.StudentManager.FemaleDrownSplashes.Stop();
+				}
+				else if (this.CharacterAnimation[this.DrownAnim].time > 3f)
+				{
+					this.StudentManager.FemaleDrownSplashes.Play();
+				}
+			}
+			else if (this.RoofPush)
+			{
+				this.CameraTarget.position = Vector3.MoveTowards(this.CameraTarget.position, new Vector3(this.Hips.position.x, base.transform.position.y + 1f, this.Hips.position.z), Time.deltaTime * 10f);
+				this.MoveTowardsTarget(this.TargetStudent.transform.position - this.TargetStudent.transform.forward);
+				this.CharacterAnimation.CrossFade("f02_roofPushA_00");
+				if (this.CharacterAnimation["f02_roofPushA_00"].time > 4.33333349f)
+				{
+					if (this.Shoes[0].activeInHierarchy)
+					{
+						GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.ShoePair, base.transform.position + new Vector3(-1.6f, 0.045f, 0f), Quaternion.identity);
+						gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, -90f, gameObject.transform.eulerAngles.z);
+						this.Shoes[0].SetActive(false);
+						this.Shoes[1].SetActive(false);
+					}
+				}
+				else if (this.CharacterAnimation["f02_roofPushA_00"].time > 2.16666675f && !this.Shoes[0].activeInHierarchy)
+				{
+					this.TargetStudent.RemoveShoes();
+					this.Shoes[0].SetActive(true);
+					this.Shoes[1].SetActive(true);
+				}
+				if (this.CharacterAnimation["f02_roofPushA_00"].time > this.CharacterAnimation["f02_roofPushA_00"].length)
+				{
+					this.CameraTarget.localPosition = new Vector3(0f, 1f, 0f);
+					this.TargetStudent.DeathType = DeathType.Falling;
+					this.Attacking = false;
+					this.RoofPush = false;
+					this.CanMove = true;
+					this.Sanity -= 20f * this.Numbness;
+				}
+				if (Input.GetButtonDown("B"))
+				{
+					this.SplashCamera.Show = true;
+					this.SplashCamera.MyCamera.enabled = true;
+					this.SplashCamera.transform.position = new Vector3(-33f, 1.35f, 30f);
+					this.SplashCamera.transform.eulerAngles = new Vector3(0f, 135f, 0f);
+				}
+			}
+			else if (this.TargetStudent.Teacher)
+			{
+				this.CharacterAnimation.CrossFade("f02_counterA_00");
+				this.Character.transform.position = new Vector3(this.Character.transform.position.x, this.TargetStudent.transform.position.y, this.Character.transform.position.z);
+			}
+			else if (!this.SanityBased)
+			{
+				if (this.EquippedWeapon.WeaponID == 11)
+				{
+					this.CharacterAnimation.CrossFade("CyborgNinja_Slash");
+					if (this.CharacterAnimation["CyborgNinja_Slash"].time == 0f)
+					{
+						this.TargetStudent.CharacterAnimation[this.TargetStudent.PhoneAnim].weight = 0f;
+						this.EquippedWeapon.gameObject.GetComponent<AudioSource>().Play();
+					}
+					if (this.CharacterAnimation["CyborgNinja_Slash"].time >= this.CharacterAnimation["CyborgNinja_Slash"].length)
+					{
+						this.Bloodiness += 20f;
+						this.UpdateBlood();
+						this.StainWeapon();
+						this.CharacterAnimation["CyborgNinja_Slash"].time = 0f;
+						this.CharacterAnimation.Stop("CyborgNinja_Slash");
+						this.CharacterAnimation.CrossFade(this.IdleAnim);
+						this.Attacking = false;
+						if (!this.Noticed)
+						{
+							this.CanMove = true;
+						}
+						else
+						{
+							this.EquippedWeapon.Drop();
+						}
+					}
+				}
+				else if (this.EquippedWeapon.WeaponID == 7)
+				{
+					this.CharacterAnimation.CrossFade("f02_buzzSawKill_A_00");
+					if (this.CharacterAnimation["f02_buzzSawKill_A_00"].time == 0f)
+					{
+						this.TargetStudent.CharacterAnimation[this.TargetStudent.PhoneAnim].weight = 0f;
+						this.EquippedWeapon.gameObject.GetComponent<AudioSource>().Play();
+					}
+					if (this.AttackPhase == 1)
+					{
+						if (this.CharacterAnimation["f02_buzzSawKill_A_00"].time > 0.333333343f)
+						{
+							this.TargetStudent.LiquidProjector.enabled = true;
+							this.EquippedWeapon.Effect();
+							this.StainWeapon();
+							this.TargetStudent.LiquidProjector.material.mainTexture = this.BloodTextures[1];
+							this.Bloodiness += 20f;
+							this.UpdateBlood();
+							this.AttackPhase++;
+						}
+					}
+					else if (this.AttackPhase < 6 && this.CharacterAnimation["f02_buzzSawKill_A_00"].time > 0.333333343f * (float)this.AttackPhase)
+					{
+						this.TargetStudent.LiquidProjector.material.mainTexture = this.BloodTextures[this.AttackPhase];
+						this.Bloodiness += 20f;
+						this.UpdateBlood();
+						this.AttackPhase++;
+					}
+					if (this.CharacterAnimation["f02_buzzSawKill_A_00"].time > this.CharacterAnimation["f02_buzzSawKill_A_00"].length)
+					{
+						if (this.TargetStudent == this.StudentManager.Reporter)
+						{
+							this.StudentManager.Reporter = null;
+						}
+						this.CharacterAnimation["f02_buzzSawKill_A_00"].time = 0f;
+						this.CharacterAnimation.Stop("f02_buzzSawKill_A_00");
+						this.CharacterAnimation.CrossFade(this.IdleAnim);
+						this.MyController.radius = 0.2f;
+						this.Attacking = false;
+						this.AttackPhase = 1;
+						this.Sanity -= 20f * this.Numbness;
+						this.UpdateSanity();
+						this.TargetStudent.DeathType = DeathType.Weapon;
+						this.TargetStudent.BecomeRagdoll();
+						if (!this.Noticed)
+						{
+							this.CanMove = true;
+						}
+						else
+						{
+							this.EquippedWeapon.Drop();
+						}
+					}
+				}
+				else if (!this.EquippedWeapon.Concealable)
+				{
+					if (this.AttackPhase == 1)
+					{
+						this.CharacterAnimation.CrossFade("f02_swingA_00");
+						if (this.CharacterAnimation["f02_swingA_00"].time > this.CharacterAnimation["f02_swingA_00"].length * 0.3f)
+						{
+							if (this.TargetStudent == this.StudentManager.Reporter)
+							{
+								this.StudentManager.Reporter = null;
+							}
+							UnityEngine.Object.Destroy(this.TargetStudent.DeathScream);
+							this.EquippedWeapon.Effect();
+							this.AttackPhase = 2;
+							this.Bloodiness += 20f;
+							this.UpdateBlood();
+							this.StainWeapon();
+							this.Sanity -= 20f * this.Numbness;
+							this.UpdateSanity();
+						}
+					}
+					else if (this.CharacterAnimation["f02_swingA_00"].time >= this.CharacterAnimation["f02_swingA_00"].length * 0.9f)
+					{
+						this.CharacterAnimation.CrossFade(this.IdleAnim);
+						this.TargetStudent.DeathType = DeathType.Weapon;
+						this.TargetStudent.BecomeRagdoll();
+						this.MyController.radius = 0.2f;
+						this.Attacking = false;
+						this.AttackPhase = 1;
+						this.AttackTimer = 0f;
+						if (!this.Noticed)
+						{
+							this.CanMove = true;
+						}
+						else
+						{
+							this.EquippedWeapon.Drop();
+						}
+					}
+				}
+				else if (this.AttackPhase == 1)
+				{
+					this.CharacterAnimation.CrossFade("f02_stab_00");
+					if (this.CharacterAnimation["f02_stab_00"].time > this.CharacterAnimation["f02_stab_00"].length * 0.35f)
+					{
+						this.CharacterAnimation.CrossFade(this.IdleAnim);
+						if (this.EquippedWeapon.Flaming)
+						{
+							this.TargetStudent.Combust();
+						}
+						else if (this.CanTranq)
+						{
+							this.TargetStudent.Tranquil = true;
+							this.CanTranq = false;
+							this.Followers--;
+						}
+						else
+						{
+							this.TargetStudent.BloodSpray.SetActive(true);
+							this.TargetStudent.DeathType = DeathType.Weapon;
+							this.Bloodiness += 20f;
+							this.UpdateBlood();
+						}
+						if (this.TargetStudent == this.StudentManager.Reporter)
+						{
+							this.StudentManager.Reporter = null;
+						}
+						AudioSource.PlayClipAtPoint(this.Stabs[UnityEngine.Random.Range(0, this.Stabs.Length)], base.transform.position + Vector3.up);
+						UnityEngine.Object.Destroy(this.TargetStudent.DeathScream);
+						this.AttackPhase = 2;
+						this.Sanity -= 20f * this.Numbness;
+						this.UpdateSanity();
+						if (this.EquippedWeapon.WeaponID == 8)
+						{
+							this.TargetStudent.Ragdoll.Sacrifice = true;
+							if (Globals.Paranormal)
+							{
+								this.EquippedWeapon.Effect();
+							}
+						}
+					}
+				}
+				else
+				{
+					this.AttackTimer += Time.deltaTime;
+					if (this.AttackTimer > 0.3f)
+					{
+						if (!this.CanTranq)
+						{
+							this.StainWeapon();
+						}
+						this.MyController.radius = 0.2f;
+						this.SanityBased = true;
+						this.Attacking = false;
+						this.AttackPhase = 1;
+						this.AttackTimer = 0f;
+						if (!this.Noticed)
+						{
+							this.CanMove = true;
+						}
+						else
+						{
+							this.EquippedWeapon.Drop();
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private void UpdateSlouch()
+	{
+		if (this.CanMove && !this.Attacking && !this.Dragging && this.PickUp == null && !this.Aiming && this.Stance.Current != StanceType.Crawling && !this.Possessed && !this.Carrying && !this.CirnoWings.activeInHierarchy && this.LaughIntensity < 16f)
+		{
+			this.CharacterAnimation["f02_yanderePose_00"].weight = Mathf.Lerp(this.CharacterAnimation["f02_yanderePose_00"].weight, 1f - this.Sanity / 100f, Time.deltaTime * 10f);
+			if (this.Hairstyle == 2 && this.Stance.Current == StanceType.Crouching)
+			{
+				this.Slouch = Mathf.Lerp(this.Slouch, 0f, Time.deltaTime * 20f);
+			}
+			else
+			{
+				this.Slouch = Mathf.Lerp(this.Slouch, 5f * (1f - this.Sanity / 100f), Time.deltaTime * 10f);
+			}
+		}
+		else
+		{
+			this.CharacterAnimation["f02_yanderePose_00"].weight = Mathf.Lerp(this.CharacterAnimation["f02_yanderePose_00"].weight, 0f, Time.deltaTime * 10f);
+			this.Slouch = Mathf.Lerp(this.Slouch, 0f, Time.deltaTime * 10f);
+		}
+	}
+
+	private void UpdateTwitch()
+	{
+		if (this.Sanity < 100f)
+		{
+			this.TwitchTimer += Time.deltaTime;
+			if (this.TwitchTimer > this.NextTwitch)
+			{
+				this.Twitch = new Vector3((1f - this.Sanity / 100f) * UnityEngine.Random.Range(-10f, 10f), (1f - this.Sanity / 100f) * UnityEngine.Random.Range(-10f, 10f), (1f - this.Sanity / 100f) * UnityEngine.Random.Range(-10f, 10f));
+				this.NextTwitch = UnityEngine.Random.Range(0f, 1f);
+				this.TwitchTimer = 0f;
+			}
+			this.Twitch = Vector3.Lerp(this.Twitch, Vector3.zero, Time.deltaTime * 10f);
+		}
+	}
+
+	private void UpdateWarnings()
+	{
+		if (this.NearBodies > 0)
+		{
+			if (!this.CorpseWarning)
+			{
+				this.NotificationManager.DisplayNotification(NotificationType.Body);
+				this.StudentManager.UpdateStudents();
+				this.CorpseWarning = true;
+			}
+		}
+		else if (this.CorpseWarning)
+		{
+			this.StudentManager.UpdateStudents();
+			this.CorpseWarning = false;
+		}
+	}
+
+	private void UpdateDebugFunctionality()
+	{
+		if (!this.Aiming && this.CanMove && Time.timeScale > 0f && Input.GetKeyDown("escape"))
+		{
+			this.PauseScreen.JumpToQuit();
+		}
+		if (Input.GetKeyDown("p"))
+		{
+			this.CyborgParts[1].SetActive(false);
+			this.MemeGlasses.SetActive(false);
+			this.KONGlasses.SetActive(false);
+			this.EyepatchR.SetActive(false);
+			this.EyepatchL.SetActive(false);
+			this.EyewearID++;
+			if (this.EyewearID == 1)
+			{
+				this.EyepatchR.SetActive(true);
+			}
+			else if (this.EyewearID == 2)
+			{
+				this.EyepatchL.SetActive(true);
+			}
+			else if (this.EyewearID == 3)
+			{
+				this.EyepatchR.SetActive(true);
+				this.EyepatchL.SetActive(true);
+			}
+			else if (this.EyewearID == 4)
+			{
+				this.KONGlasses.SetActive(true);
+			}
+			else if (this.EyewearID == 5)
+			{
+				this.MemeGlasses.SetActive(true);
+			}
+			else if (this.EyewearID == 6)
+			{
+				if (this.CyborgParts[2].activeInHierarchy)
+				{
+					this.CyborgParts[1].SetActive(true);
+				}
+				else
+				{
+					this.EyewearID = 0;
+				}
+			}
+			else
+			{
+				this.EyewearID = 0;
+			}
+		}
+		if (Input.GetKeyDown("h"))
+		{
+			if (Input.GetButton("LB"))
+			{
+				this.Hairstyle += 10;
+			}
+			else
+			{
+				this.Hairstyle++;
+			}
+			this.UpdateHair();
+		}
+		if (Input.GetKey("h") && Input.GetKeyDown("left"))
+		{
+			this.Hairstyle--;
+			this.UpdateHair();
+		}
+		if (Input.GetKeyDown("o") && !this.EasterEggMenu.activeInHierarchy)
+		{
+			if (this.AccessoryID > 0)
+			{
+				this.Accessories[this.AccessoryID].SetActive(false);
+			}
+			if (Input.GetButton("LB"))
+			{
+				this.AccessoryID += 10;
+			}
+			else
+			{
+				this.AccessoryID++;
+			}
+			this.UpdateAccessory();
+		}
+		if (Input.GetKey("o") && Input.GetKeyDown("left"))
+		{
+			if (this.AccessoryID > 0)
+			{
+				this.Accessories[this.AccessoryID].SetActive(false);
+			}
+			this.AccessoryID--;
+			this.UpdateAccessory();
+		}
+		if (!this.NoDebug && !this.DebugMenu.activeInHierarchy)
+		{
+			if (Input.GetKeyDown("-"))
+			{
+				if (Time.timeScale < 6f)
+				{
+					Time.timeScale = 1f;
+				}
+				else
+				{
+					Time.timeScale -= 5f;
+				}
+			}
+			if (Input.GetKeyDown("="))
+			{
+				if (Time.timeScale < 5f)
+				{
+					Time.timeScale = 5f;
+				}
+				else
+				{
+					Time.timeScale += 5f;
+					if (Time.timeScale > 25f)
+					{
+						Time.timeScale = 25f;
+					}
+				}
+			}
+		}
+		if (Input.GetKey("."))
+		{
+			this.BreastSize += Time.deltaTime;
+			if (this.BreastSize > 2f)
+			{
+				this.BreastSize = 2f;
+			}
+			this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
+			this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
+		}
+		if (Input.GetKey(","))
+		{
+			this.BreastSize -= Time.deltaTime;
+			if (this.BreastSize < 0.5f)
+			{
+				this.BreastSize = 0.5f;
+			}
+			this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
+			this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
+		}
+		if (!this.NoDebug)
+		{
+			if (this.CanMove && !this.Egg && base.transform.position.y < 1000f)
+			{
+				if (Input.GetKeyDown("/"))
+				{
+					this.DebugMenu.SetActive(false);
+					this.EasterEggMenu.SetActive(!this.EasterEggMenu.activeInHierarchy);
+				}
+				if (this.EasterEggMenu.activeInHierarchy && !this.Egg)
+				{
+					if (Input.GetKeyDown("p"))
+					{
+						this.Punish();
+					}
+					else if (Input.GetKeyDown("z"))
+					{
+						this.Slend();
+					}
+					else if (Input.GetKeyDown("b"))
+					{
+						this.Sukeban();
+					}
+					else if (Input.GetKeyDown("c"))
+					{
+						this.Cirno();
+					}
+					else if (Input.GetKeyDown("h"))
+					{
+						this.EmptyHands();
+						this.Hate();
+					}
+					else if (Input.GetKeyDown("t"))
+					{
+						this.StudentManager.AttackOnTitan();
+						this.AttackOnTitan();
+					}
+					else if (Input.GetKeyDown("g"))
+					{
+						this.GaloSengen();
+					}
+					else if (!Input.GetKeyDown("j"))
+					{
+						if (Input.GetKeyDown("k"))
+						{
+							this.EasterEggMenu.SetActive(false);
+							this.StudentManager.Kong();
+							this.DK = true;
+						}
+						else if (Input.GetKeyDown("l"))
+						{
+							this.Agent();
+						}
+						else if (Input.GetKeyDown("n"))
+						{
+							this.Nude();
+						}
+						else if (Input.GetKeyDown("s"))
+						{
+							this.EasterEggMenu.SetActive(false);
+							this.Egg = true;
+							this.StudentManager.Spook();
+						}
+						else if (Input.GetKeyDown("f"))
+						{
+							this.EasterEggMenu.SetActive(false);
+							this.Falcon();
+						}
+						else if (Input.GetKeyDown("x"))
+						{
+							this.EasterEggMenu.SetActive(false);
+							this.X();
+						}
+						else if (Input.GetKeyDown("o"))
+						{
+							this.EasterEggMenu.SetActive(false);
+							this.Punch();
+						}
+						else if (Input.GetKeyDown("u"))
+						{
+							this.EasterEggMenu.SetActive(false);
+							this.BadTime();
+						}
+						else if (Input.GetKeyDown("y"))
+						{
+							this.EasterEggMenu.SetActive(false);
+							this.CyborgNinja();
+						}
+						else if (Input.GetKeyDown("e"))
+						{
+							this.EasterEggMenu.SetActive(false);
+							this.Ebola();
+						}
+						else if (Input.GetKeyDown("q"))
+						{
+							this.EasterEggMenu.SetActive(false);
+							this.Samus();
+						}
+						else if (!Input.GetKeyDown("w"))
+						{
+							if (Input.GetKeyDown("r"))
+							{
+								this.EasterEggMenu.SetActive(false);
+								this.Pose();
+							}
+							else if (Input.GetKeyDown("v"))
+							{
+								this.EasterEggMenu.SetActive(false);
+								this.Long();
+							}
+							else if (Input.GetKeyDown("6"))
+							{
+								this.EasterEggMenu.SetActive(false);
+								this.HairBlades();
+							}
+							else if (Input.GetKeyDown("7"))
+							{
+								this.EasterEggMenu.SetActive(false);
+								this.Tornado();
+							}
+							else if (Input.GetKeyDown("8"))
+							{
+								this.EasterEggMenu.SetActive(false);
+								this.GenderSwap();
+							}
+							else if (Input.GetKeyDown("[5]"))
+							{
+								this.EasterEggMenu.SetActive(false);
+								this.SwapMesh();
+							}
+							else if (Input.GetKeyDown("a"))
+							{
+								this.StudentManager.ChangeOka();
+								this.EasterEggMenu.SetActive(false);
+							}
+							else if (Input.GetKeyDown("i"))
+							{
+								this.StudentManager.NoGravity = true;
+								this.EasterEggMenu.SetActive(false);
+							}
+							else if (Input.GetKeyDown("space"))
+							{
+							}
+						}
+					}
+				}
+			}
+		}
+		else if (Input.GetKeyDown("z"))
+		{
+			this.DebugMenu.transform.parent.GetComponent<DebugMenuScript>().Censor();
 		}
 	}
 
@@ -4763,7 +4806,7 @@ public class YandereScript : MonoBehaviour
 		if (!this.ClubAttire)
 		{
 			this.ClubAttire = true;
-			if (PlayerPrefs.GetInt("Club") == 4)
+			if (Globals.Club == 4)
 			{
 				this.MyRenderer.sharedMesh = this.ApronMesh;
 				this.MyRenderer.materials[0].mainTexture = this.ApronTexture;
@@ -4772,7 +4815,7 @@ public class YandereScript : MonoBehaviour
 				this.Schoolwear = 4;
 				this.Paint = true;
 			}
-			else if (PlayerPrefs.GetInt("Club") == 6)
+			else if (Globals.Club == 6)
 			{
 				this.MyRenderer.sharedMesh = this.JudoGiMesh;
 				this.MyRenderer.materials[0].mainTexture = this.JudoGiTexture;
@@ -4780,7 +4823,7 @@ public class YandereScript : MonoBehaviour
 				this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
 				this.Schoolwear = 5;
 			}
-			else if (PlayerPrefs.GetInt("Club") == 8)
+			else if (Globals.Club == 8)
 			{
 				this.MyRenderer.sharedMesh = this.LabCoatMesh;
 				this.MyRenderer.materials[0].mainTexture = this.LabCoatTexture;
@@ -4809,9 +4852,9 @@ public class YandereScript : MonoBehaviour
 			}
 			this.ID++;
 		}
-		if (!this.CensorSteam[0].activeInHierarchy && PlayerPrefs.GetInt("Club") > 0 && this.ClubAccessories[PlayerPrefs.GetInt("Club")] != null)
+		if (!this.CensorSteam[0].activeInHierarchy && Globals.Club > 0 && this.ClubAccessories[Globals.Club] != null)
 		{
-			this.ClubAccessories[PlayerPrefs.GetInt("Club")].SetActive(true);
+			this.ClubAccessories[Globals.Club].SetActive(true);
 		}
 	}
 
@@ -4840,18 +4883,39 @@ public class YandereScript : MonoBehaviour
 		this.MyController.height = 1.55f;
 	}
 
-	private void PlayClip(AudioClip clip)
+	private void StopArmedAnim()
 	{
-		GameObject gameObject = new GameObject("TempAudio");
-		gameObject.transform.parent = this.MainCamera.transform;
-		gameObject.transform.localPosition = Vector3.zero;
-		AudioSource audioSource = gameObject.AddComponent<AudioSource>();
-		audioSource.clip = clip;
-		audioSource.Play();
-		UnityEngine.Object.Destroy(gameObject, clip.length);
-		audioSource.rolloffMode = AudioRolloffMode.Linear;
-		audioSource.minDistance = 5f;
-		audioSource.maxDistance = 10f;
-		audioSource.spatialBlend = 1f;
+		this.ID = 0;
+		while (this.ID < this.ArmedAnims.Length)
+		{
+			string name = this.ArmedAnims[this.ID];
+			this.CharacterAnimation[name].weight = Mathf.Lerp(this.CharacterAnimation[name].weight, 0f, Time.deltaTime * 10f);
+			this.ID++;
+		}
+	}
+
+	private void UpdateAccessory()
+	{
+		if (this.AccessoryGroup != null)
+		{
+			this.AccessoryGroup.DeactivateParts();
+		}
+		if (this.AccessoryID > this.Accessories.Length - 1)
+		{
+			this.AccessoryID = 0;
+		}
+		if (this.AccessoryID < 0)
+		{
+			this.AccessoryID = this.Accessories.Length - 1;
+		}
+		if (this.AccessoryID > 0)
+		{
+			this.Accessories[this.AccessoryID].SetActive(true);
+			this.AccessoryGroup = this.Accessories[this.AccessoryID].GetComponent<AccessoryGroupScript>();
+			if (this.AccessoryGroup != null)
+			{
+				this.AccessoryGroup.ActivateParts();
+			}
+		}
 	}
 }

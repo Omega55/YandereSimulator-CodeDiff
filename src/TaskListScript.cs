@@ -56,6 +56,12 @@ public class TaskListScript : MonoBehaviour
 		}
 		if (Input.GetButtonDown("B"))
 		{
+			this.PauseScreen.PromptBar.ClearButtons();
+			this.PauseScreen.PromptBar.Label[0].text = "Accept";
+			this.PauseScreen.PromptBar.Label[1].text = "Back";
+			this.PauseScreen.PromptBar.Label[4].text = "Choose";
+			this.PauseScreen.PromptBar.Label[5].text = "Choose";
+			this.PauseScreen.PromptBar.UpdateButtons();
 			this.PauseScreen.Sideways = false;
 			this.PauseScreen.PressedB = true;
 			this.MainMenu.SetActive(true);

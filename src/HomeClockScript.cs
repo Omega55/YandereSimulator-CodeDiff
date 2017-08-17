@@ -29,13 +29,13 @@ public class HomeClockScript : MonoBehaviour
 		{
 			this.DayLabel.text = "FRIDAY";
 		}
-		if (PlayerPrefs.GetInt("Night") == 1)
+		if (Globals.Night)
 		{
 			this.HourLabel.text = "8:00 PM";
 		}
 		else
 		{
-			this.HourLabel.text = ((PlayerPrefs.GetInt("Late") != 1) ? "6:30 AM" : "7:30 AM");
+			this.HourLabel.text = ((!Globals.LateForSchool) ? "6:30 AM" : "7:30 AM");
 		}
 	}
 }

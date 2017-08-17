@@ -35,10 +35,10 @@ public class WelcomeScript : MonoBehaviour
 		this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 2f);
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
-		if (PlayerPrefs.GetFloat("VersionNumber") < this.VersionNumber)
+		if (Globals.VersionNumber < this.VersionNumber)
 		{
 			PlayerPrefs.DeleteAll();
-			PlayerPrefs.SetFloat("VersionNumber", this.VersionNumber);
+			Globals.VersionNumber = this.VersionNumber;
 		}
 		if (File.Exists(Application.streamingAssetsPath + "/Fun.txt"))
 		{

@@ -35,4 +35,6 @@ public static class SceneNames
 	public const string YanvaniaScene = "YanvaniaScene";
 
 	public const string YanvaniaTitleScene = "YanvaniaTitleScene";
+
+	public const string ChoiceScene = "ChoiceScene";
 }

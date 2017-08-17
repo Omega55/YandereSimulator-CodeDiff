@@ -66,8 +66,20 @@ public class PrayScript : MonoBehaviour
 		this.PrayWindow.localScale = Vector3.zero;
 		if (PlayerPrefs.GetInt("MissionMode") == 1)
 		{
-			base.enabled = false;
+			this.Disable();
 		}
+		if (Globals.LoveSick)
+		{
+			this.Disable();
+		}
+	}
+
+	private void Disable()
+	{
+		this.GenderPrompt.gameObject.SetActive(false);
+		base.enabled = false;
+		this.Prompt.enabled = false;
+		this.Prompt.Hide();
 	}
 
 	private void Update()

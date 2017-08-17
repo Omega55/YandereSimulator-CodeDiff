@@ -35,6 +35,8 @@ public class DoorScript : MonoBehaviour
 
 	public bool Swinging;
 
+	public bool Double;
+
 	public bool Locked;
 
 	public bool North;
@@ -67,6 +69,10 @@ public class DoorScript : MonoBehaviour
 
 	private void Start()
 	{
+		if (this.Doors.Length == 2)
+		{
+			this.Double = true;
+		}
 		this.TrapSwing = 12.15f;
 		this.Yandere = GameObject.Find("YandereChan").GetComponent<YandereScript>();
 		if (this.Swinging)
@@ -83,7 +89,7 @@ public class DoorScript : MonoBehaviour
 			this.Labels[1].text = this.RoomName;
 			this.UpdatePlate();
 		}
-		if (this.Club != 0 && PlayerPrefs.GetInt("Club_" + this.Club.ToString() + "_Closed") == 1)
+		if (this.Club != 0 && Globals.GetClubClosed(this.Club))
 		{
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
@@ -203,7 +209,7 @@ public class DoorScript : MonoBehaviour
 			this.Prompt.Label[0].text = "     Locked";
 			this.Prompt.Circle[0].fillAmount = 1f;
 		}
-		if (this.Swinging)
+		if (this.Swinging && this.Double)
 		{
 			if (this.Yandere.PickUp != null)
 			{
@@ -470,26 +476,26 @@ public class DoorScript : MonoBehaviour
 		switch (this.RoomID)
 		{
 		case 3:
-			if (PlayerPrefs.GetInt("Topic_12_Discovered") == 0)
+			if (!Globals.GetTopicDiscovered(12))
 			{
-				PlayerPrefs.SetInt("Topic_12_Discovered", 1);
+				Globals.SetTopicDiscovered(12, true);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		case 13:
-			if (PlayerPrefs.GetInt("Topic_21_Discovered") == 0)
+			if (!Globals.GetTopicDiscovered(21))
 			{
-				PlayerPrefs.SetInt("Topic_21_Discovered", 1);
+				Globals.SetTopicDiscovered(21, true);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		case 15:
-			if (PlayerPrefs.GetInt("Topic_16_Discovered") == 0)
+			if (!Globals.GetTopicDiscovered(16))
 			{
-				PlayerPrefs.SetInt("Topic_16_Discovered", 1);
-				PlayerPrefs.SetInt("Topic_17_Discovered", 1);
-				PlayerPrefs.SetInt("Topic_18_Discovered", 1);
-				PlayerPrefs.SetInt("Topic_19_Discovered", 1);
+				Globals.SetTopicDiscovered(16, true);
+				Globals.SetTopicDiscovered(17, true);
+				Globals.SetTopicDiscovered(18, true);
+				Globals.SetTopicDiscovered(19, true);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
@@ -497,58 +503,58 @@ public class DoorScript : MonoBehaviour
 			}
 			break;
 		case 26:
-			if (PlayerPrefs.GetInt("Topic_1_Discovered") == 0)
+			if (!Globals.GetTopicDiscovered(1))
 			{
-				PlayerPrefs.SetInt("Topic_1_Discovered", 1);
+				Globals.SetTopicDiscovered(1, true);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		case 27:
-			if (PlayerPrefs.GetInt("Topic_2_Discovered") == 0)
+			if (!Globals.GetTopicDiscovered(2))
 			{
-				PlayerPrefs.SetInt("Topic_2_Discovered", 1);
+				Globals.SetTopicDiscovered(2, true);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		case 28:
-			if (PlayerPrefs.GetInt("Topic_3_Discovered") == 0)
+			if (!Globals.GetTopicDiscovered(3))
 			{
-				PlayerPrefs.SetInt("Topic_3_Discovered", 1);
+				Globals.SetTopicDiscovered(3, true);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		case 29:
-			if (PlayerPrefs.GetInt("Topic_4_Discovered") == 0)
+			if (!Globals.GetTopicDiscovered(4))
 			{
-				PlayerPrefs.SetInt("Topic_4_Discovered", 1);
+				Globals.SetTopicDiscovered(4, true);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		case 30:
-			if (PlayerPrefs.GetInt("Topic_5_Discovered") == 0)
+			if (!Globals.GetTopicDiscovered(5))
 			{
-				PlayerPrefs.SetInt("Topic_5_Discovered", 1);
+				Globals.SetTopicDiscovered(5, true);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		case 31:
-			if (PlayerPrefs.GetInt("Topic_6_Discovered") == 0)
+			if (!Globals.GetTopicDiscovered(6))
 			{
-				PlayerPrefs.SetInt("Topic_6_Discovered", 1);
+				Globals.SetTopicDiscovered(6, true);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		case 32:
-			if (PlayerPrefs.GetInt("Topic_7_Discovered") == 0)
+			if (!Globals.GetTopicDiscovered(7))
 			{
-				PlayerPrefs.SetInt("Topic_7_Discovered", 1);
+				Globals.SetTopicDiscovered(7, true);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		case 34:
-			if (PlayerPrefs.GetInt("Topic_8_Discovered") == 0)
+			if (!Globals.GetTopicDiscovered(8))
 			{
-				PlayerPrefs.SetInt("Topic_8_Discovered", 1);
+				Globals.SetTopicDiscovered(8, true);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;

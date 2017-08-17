@@ -113,7 +113,7 @@ public class AttackManagerScript : MonoBehaviour
 		this.AttackTimer = 0f;
 		this.EffectPhase = 0;
 		this.Yandere.Sanity = Mathf.Clamp(this.Yandere.Sanity, 0f, 100f);
-		SanityType sanityType = this.Yandere.GetSanityType();
+		SanityType sanityType = this.Yandere.SanityType;
 		string sanityString = this.Yandere.GetSanityString(sanityType);
 		string typePrefix = weapon.GetTypePrefix();
 		string str = (!this.Yandere.TargetStudent.Male) ? "f02_" : string.Empty;
@@ -150,7 +150,7 @@ public class AttackManagerScript : MonoBehaviour
 		{
 			this.AttackTimer += Time.deltaTime;
 			WeaponScript equippedWeapon = this.Yandere.EquippedWeapon;
-			SanityType sanityType = this.Yandere.GetSanityType();
+			SanityType sanityType = this.Yandere.SanityType;
 			this.SpecialEffect(equippedWeapon, sanityType);
 			if (sanityType == SanityType.Low && !this.Yandere.Chased)
 			{
@@ -649,7 +649,7 @@ public class AttackManagerScript : MonoBehaviour
 		if (weapon.WeaponID == 8)
 		{
 			this.Yandere.TargetStudent.Ragdoll.Sacrifice = true;
-			if (PlayerPrefs.GetInt("Paranormal") == 1)
+			if (Globals.Paranormal)
 			{
 				weapon.Effect();
 			}

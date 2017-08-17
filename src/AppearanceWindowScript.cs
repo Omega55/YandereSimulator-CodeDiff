@@ -28,7 +28,7 @@ public class AppearanceWindowScript : MonoBehaviour
 		this.Window.localScale = Vector3.zero;
 		for (int i = 1; i < 10; i++)
 		{
-			this.Checks[i].SetActive(PlayerPrefs.GetInt("SuitorCheck" + i.ToString()) == 1);
+			this.Checks[i].SetActive(Globals.GetSuitorCheck(i));
 		}
 	}
 
@@ -78,16 +78,16 @@ public class AppearanceWindowScript : MonoBehaviour
 					{
 						if (!this.Checks[1].activeInHierarchy)
 						{
-							PlayerPrefs.SetInt("CustomSuitorHair", 22);
-							PlayerPrefs.SetInt("SuitorCheck1", 1);
-							PlayerPrefs.SetInt("SuitorCheck2", 0);
+							Globals.CustomSuitorHair = 22;
+							Globals.SetSuitorCheck(1, true);
+							Globals.SetSuitorCheck(2, false);
 							this.Checks[1].SetActive(true);
 							this.Checks[2].SetActive(false);
 						}
 						else
 						{
-							PlayerPrefs.SetInt("CustomSuitorHair", 0);
-							PlayerPrefs.SetInt("SuitorCheck1", 0);
+							Globals.CustomSuitorHair = 0;
+							Globals.SetSuitorCheck(1, false);
 							this.Checks[1].SetActive(false);
 						}
 					}
@@ -95,16 +95,16 @@ public class AppearanceWindowScript : MonoBehaviour
 					{
 						if (!this.Checks[2].activeInHierarchy)
 						{
-							PlayerPrefs.SetInt("CustomSuitorHair", 21);
-							PlayerPrefs.SetInt("SuitorCheck1", 0);
-							PlayerPrefs.SetInt("SuitorCheck2", 1);
+							Globals.CustomSuitorHair = 21;
+							Globals.SetSuitorCheck(1, false);
+							Globals.SetSuitorCheck(2, true);
 							this.Checks[1].SetActive(false);
 							this.Checks[2].SetActive(true);
 						}
 						else
 						{
-							PlayerPrefs.SetInt("CustomSuitorHair", 0);
-							PlayerPrefs.SetInt("SuitorCheck2", 0);
+							Globals.CustomSuitorHair = 0;
+							Globals.SetSuitorCheck(2, false);
 							this.Checks[2].SetActive(false);
 						}
 					}
@@ -112,16 +112,16 @@ public class AppearanceWindowScript : MonoBehaviour
 					{
 						if (!this.Checks[3].activeInHierarchy)
 						{
-							PlayerPrefs.SetInt("CustomSuitorAccessory", 3);
-							PlayerPrefs.SetInt("SuitorCheck3", 1);
-							PlayerPrefs.SetInt("SuitorCheck4", 0);
+							Globals.CustomSuitorAccessory = 3;
+							Globals.SetSuitorCheck(3, true);
+							Globals.SetSuitorCheck(4, false);
 							this.Checks[3].SetActive(true);
 							this.Checks[4].SetActive(false);
 						}
 						else
 						{
-							PlayerPrefs.SetInt("CustomSuitorAccessory", 0);
-							PlayerPrefs.SetInt("SuitorCheck3", 0);
+							Globals.CustomSuitorAccessory = 0;
+							Globals.SetSuitorCheck(3, false);
 							this.Checks[3].SetActive(false);
 						}
 					}
@@ -129,16 +129,16 @@ public class AppearanceWindowScript : MonoBehaviour
 					{
 						if (!this.Checks[4].activeInHierarchy)
 						{
-							PlayerPrefs.SetInt("CustomSuitorAccessory", 1);
-							PlayerPrefs.SetInt("SuitorCheck3", 0);
-							PlayerPrefs.SetInt("SuitorCheck4", 1);
+							Globals.CustomSuitorAccessory = 1;
+							Globals.SetSuitorCheck(3, false);
+							Globals.SetSuitorCheck(4, true);
 							this.Checks[3].SetActive(false);
 							this.Checks[4].SetActive(true);
 						}
 						else
 						{
-							PlayerPrefs.SetInt("CustomSuitorAccessory", 0);
-							PlayerPrefs.SetInt("SuitorCheck4", 0);
+							Globals.CustomSuitorAccessory = 0;
+							Globals.SetSuitorCheck(4, false);
 							this.Checks[4].SetActive(false);
 						}
 					}
@@ -146,14 +146,14 @@ public class AppearanceWindowScript : MonoBehaviour
 					{
 						if (!this.Checks[5].activeInHierarchy)
 						{
-							PlayerPrefs.SetInt("CustomSuitorBlonde", 1);
-							PlayerPrefs.SetInt("SuitorCheck5", 1);
+							Globals.CustomSuitorBlonde = 1;
+							Globals.SetSuitorCheck(5, true);
 							this.Checks[5].SetActive(true);
 						}
 						else
 						{
-							PlayerPrefs.SetInt("CustomSuitorBlonde", 0);
-							PlayerPrefs.SetInt("SuitorCheck5", 0);
+							Globals.CustomSuitorBlonde = 0;
+							Globals.SetSuitorCheck(5, false);
 							this.Checks[5].SetActive(false);
 						}
 					}
@@ -161,16 +161,16 @@ public class AppearanceWindowScript : MonoBehaviour
 					{
 						if (!this.Checks[6].activeInHierarchy)
 						{
-							PlayerPrefs.SetInt("CustomSuitorEyewear", 6);
-							PlayerPrefs.SetInt("SuitorCheck6", 1);
-							PlayerPrefs.SetInt("SuitorCheck8", 0);
+							Globals.CustomSuitorEyewear = 6;
+							Globals.SetSuitorCheck(6, true);
+							Globals.SetSuitorCheck(8, false);
 							this.Checks[6].SetActive(true);
 							this.Checks[8].SetActive(false);
 						}
 						else
 						{
-							PlayerPrefs.SetInt("CustomSuitorEyewear", 0);
-							PlayerPrefs.SetInt("SuitorCheck6", 0);
+							Globals.CustomSuitorEyewear = 0;
+							Globals.SetSuitorCheck(6, false);
 							this.Checks[6].SetActive(false);
 						}
 					}
@@ -178,14 +178,14 @@ public class AppearanceWindowScript : MonoBehaviour
 					{
 						if (!this.Checks[7].activeInHierarchy)
 						{
-							PlayerPrefs.SetInt("CustomSuitorJewelry", 1);
-							PlayerPrefs.SetInt("SuitorCheck7", 1);
+							Globals.CustomSuitorJewelery = 1;
+							Globals.SetSuitorCheck(7, true);
 							this.Checks[7].SetActive(true);
 						}
 						else
 						{
-							PlayerPrefs.SetInt("CustomSuitorJewelry", 0);
-							PlayerPrefs.SetInt("SuitorCheck7", 0);
+							Globals.CustomSuitorJewelery = 0;
+							Globals.SetSuitorCheck(7, false);
 							this.Checks[7].SetActive(false);
 						}
 					}
@@ -193,16 +193,16 @@ public class AppearanceWindowScript : MonoBehaviour
 					{
 						if (!this.Checks[8].activeInHierarchy)
 						{
-							PlayerPrefs.SetInt("CustomSuitorEyewear", 7);
-							PlayerPrefs.SetInt("SuitorCheck6", 0);
-							PlayerPrefs.SetInt("SuitorCheck8", 1);
+							Globals.CustomSuitorEyewear = 7;
+							Globals.SetSuitorCheck(6, false);
+							Globals.SetSuitorCheck(8, true);
 							this.Checks[6].SetActive(false);
 							this.Checks[8].SetActive(true);
 						}
 						else
 						{
-							PlayerPrefs.SetInt("CustomSuitorEyewear", 0);
-							PlayerPrefs.SetInt("SuitorCheck8", 0);
+							Globals.CustomSuitorEyewear = 0;
+							Globals.SetSuitorCheck(8, false);
 							this.Checks[8].SetActive(false);
 						}
 					}
@@ -210,20 +210,20 @@ public class AppearanceWindowScript : MonoBehaviour
 					{
 						if (!this.Checks[9].activeInHierarchy)
 						{
-							PlayerPrefs.SetInt("CustomSuitorTan", 1);
-							PlayerPrefs.SetInt("SuitorCheck9", 1);
+							Globals.CustomSuitorTan = true;
+							Globals.SetSuitorCheck(9, true);
 							this.Checks[9].SetActive(true);
 						}
 						else
 						{
-							PlayerPrefs.SetInt("CustomSuitorTan", 0);
-							PlayerPrefs.SetInt("SuitorCheck9", 0);
+							Globals.CustomSuitorTan = false;
+							Globals.SetSuitorCheck(9, false);
 							this.Checks[9].SetActive(false);
 						}
 					}
 					else if (this.Selected == 11)
 					{
-						PlayerPrefs.SetInt("CustomSuitor", 1);
+						Globals.CustomSuitor = true;
 						this.PromptBar.ClearButtons();
 						this.PromptBar.UpdateButtons();
 						this.PromptBar.Show = false;

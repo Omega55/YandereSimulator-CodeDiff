@@ -233,7 +233,7 @@ public class NoteWindowScript : MonoBehaviour
 				uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, 1f);
 				this.ID++;
 			}
-			if (PlayerPrefs.GetInt("Event1") == 0)
+			if (!Globals.Event1)
 			{
 				this.SubLabels[10].text = "??????????";
 			}

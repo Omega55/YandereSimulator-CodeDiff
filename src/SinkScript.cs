@@ -18,14 +18,22 @@ public class SinkScript : MonoBehaviour
 		{
 			if (this.Yandere.PickUp.Bucket != null)
 			{
-				this.Prompt.enabled = true;
-				if (!this.Yandere.PickUp.Bucket.Full)
+				if (this.Yandere.PickUp.Bucket.Dumbbells == 0)
 				{
-					this.Prompt.Label[0].text = "     Fill Bucket";
+					this.Prompt.enabled = true;
+					if (!this.Yandere.PickUp.Bucket.Full)
+					{
+						this.Prompt.Label[0].text = "     Fill Bucket";
+					}
+					else
+					{
+						this.Prompt.Label[0].text = "     Empty Bucket";
+					}
 				}
-				else
+				else if (this.Prompt.enabled)
 				{
-					this.Prompt.Label[0].text = "     Empty Bucket";
+					this.Prompt.Hide();
+					this.Prompt.enabled = false;
 				}
 			}
 			else if (this.Yandere.PickUp.BloodCleaner != null)

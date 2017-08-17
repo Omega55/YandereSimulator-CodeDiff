@@ -566,7 +566,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 						{
 							if (!this.SpunUp)
 							{
-								this.PlayClip(this.WhipSound, base.transform.position);
+								AudioClipPlayer.Play2D(this.WhipSound, base.transform.position, UnityEngine.Random.Range(0.9f, 1.1f));
 								this.StraightenWhip();
 								this.TargetRotation = -360f;
 								this.Rotation = 0f;
@@ -582,7 +582,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 						{
 							if (!this.SpunDown)
 							{
-								this.PlayClip(this.WhipSound, base.transform.position);
+								AudioClipPlayer.Play2D(this.WhipSound, base.transform.position, UnityEngine.Random.Range(0.9f, 1.1f));
 								this.StraightenWhip();
 								this.TargetRotation = 360f;
 								this.Rotation = 0f;
@@ -763,7 +763,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 
 	private void FallingDamageAlert(float fallDistance)
 	{
-		this.PlayClip(this.LandSound, base.transform.position);
+		AudioClipPlayer.Play2D(this.LandSound, base.transform.position, UnityEngine.Random.Range(0.9f, 1.1f));
 		this.Character.GetComponent<Animation>().Play("f02_yanvaniaCrouch_00");
 		this.fallingDamageThreshold = this.originalThreshold;
 	}
@@ -772,7 +772,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 	{
 		if (!this.SpunRight)
 		{
-			this.PlayClip(this.WhipSound, base.transform.position);
+			AudioClipPlayer.Play2D(this.WhipSound, base.transform.position, UnityEngine.Random.Range(0.9f, 1.1f));
 			this.StraightenWhip();
 			this.TargetRotation = 360f;
 			this.Rotation = 0f;
@@ -785,7 +785,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 	{
 		if (!this.SpunLeft)
 		{
-			this.PlayClip(this.WhipSound, base.transform.position);
+			AudioClipPlayer.Play2D(this.WhipSound, base.transform.position, UnityEngine.Random.Range(0.9f, 1.1f));
 			this.StraightenWhip();
 			this.TargetRotation = -360f;
 			this.Rotation = 0f;
@@ -854,16 +854,5 @@ public class YanvaniaYanmontScript : MonoBehaviour
 			}
 			this.Health = 0f;
 		}
-	}
-
-	private void PlayClip(AudioClip clip, Vector3 pos)
-	{
-		GameObject gameObject = new GameObject("TempAudio");
-		gameObject.transform.position = pos;
-		AudioSource audioSource = gameObject.AddComponent<AudioSource>();
-		audioSource.clip = clip;
-		audioSource.Play();
-		UnityEngine.Object.Destroy(gameObject, clip.length);
-		audioSource.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
 	}
 }

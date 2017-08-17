@@ -13,6 +13,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public SelectiveGrayscale HandSelectiveGreyscale;
 
+	public StolenPhoneSpotScript StolenPhoneSpot;
+
 	public SelectiveGrayscale SelectiveGreyscale;
 
 	public DatingMinigameScript DatingMinigame;
@@ -60,6 +62,8 @@ public class StudentManagerScript : MonoBehaviour
 	public PoliceScript Police;
 
 	public UILabel ErrorLabel;
+
+	public ListScript SearchPatrols;
 
 	public ListScript Patrols;
 
@@ -300,10 +304,11 @@ public class StudentManagerScript : MonoBehaviour
 				this.ErrorLabel.text = string.Empty;
 			}
 			this.SetAtmosphere();
-			PlayerPrefs.SetInt("Paranormal", 0);
+			Globals.Paranormal = false;
 			if (PlayerPrefs.GetInt("MissionMode") == 1)
 			{
 				PlayerPrefs.SetInt("FemaleUniform", 5);
+				PlayerPrefs.SetInt("MaleUniform", 5);
 			}
 			if (PlayerPrefs.GetInt("Student_" + PlayerPrefs.GetInt("KidnapVictim").ToString() + "_Slave") == 1)
 			{
@@ -344,9 +349,9 @@ public class StudentManagerScript : MonoBehaviour
 					this.ID++;
 				}
 			}
-			if (PlayerPrefs.GetInt("Late") == 1)
+			if (Globals.LateForSchool)
 			{
-				PlayerPrefs.SetInt("Late", 0);
+				Globals.LateForSchool = false;
 				this.Clock.PresentTime = 480f;
 				this.Clock.HourTime = 8f;
 				this.AttendClass();
@@ -408,6 +413,7 @@ public class StudentManagerScript : MonoBehaviour
 				this.QualityManager.UpdateOutlines();
 				this.FirstUpdate = true;
 				this.UpdateStudents();
+				this.AssignTeachers();
 			}
 			if (this.Frame == 3)
 			{
@@ -484,7 +490,7 @@ public class StudentManagerScript : MonoBehaviour
 			if (!this.Yandere.Attacking && this.Yandere.CanMove)
 			{
 				this.Yandere.CharacterAnimation.CrossFade("f02_pinDownPanic_00");
-				this.Yandere.Unequip();
+				this.Yandere.EmptyHands();
 				this.Yandere.CanMove = false;
 			}
 			if (this.PinPhase == 1)
@@ -506,6 +512,7 @@ public class StudentManagerScript : MonoBehaviour
 							studentScript2.Pathfinding.target = this.PinDownSpots[this.ID];
 							studentScript2.DistanceToDestination = 100f;
 							studentScript2.Pathfinding.speed = 5f;
+							studentScript2.MyController.radius = 0f;
 							studentScript2.PinningDown = true;
 							studentScript2.Alarmed = false;
 							studentScript2.Routine = false;
@@ -630,6 +637,10 @@ public class StudentManagerScript : MonoBehaviour
 			if (this.Sans)
 			{
 				studentScript.BadTime = true;
+			}
+			if (this.SpawnID == this.RivalID)
+			{
+				studentScript.Rival = true;
 			}
 			this.OccupySeat();
 		}
@@ -842,6 +853,10 @@ public class StudentManagerScript : MonoBehaviour
 						studentScript.BathePhase = 1;
 						studentScript.Wet = false;
 						studentScript.UnWet();
+						if (studentScript.Rival && this.CommunalLocker.RivalPhone.Stolen)
+						{
+							studentScript.RealizePhoneIsMissing();
+						}
 					}
 					if (studentScript.ClubAttire)
 					{
@@ -1382,6 +1397,19 @@ public class StudentManagerScript : MonoBehaviour
 			if (this.Students[this.ID] != null)
 			{
 				this.Students[this.ID].gameObject.SetActive(true);
+			}
+			this.ID++;
+		}
+	}
+
+	public void AssignTeachers()
+	{
+		this.ID = 1;
+		while (this.ID < this.Students.Length)
+		{
+			if (this.Students[this.ID] != null)
+			{
+				this.Students[this.ID].MyTeacher = this.Teachers[this.JSON.StudentClasses[this.Students[this.ID].StudentID]];
 			}
 			this.ID++;
 		}

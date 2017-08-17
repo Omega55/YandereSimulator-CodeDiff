@@ -199,7 +199,7 @@ public class ShutterScript : MonoBehaviour
 									}
 									if (!this.FaceStudent.CameraReacting)
 									{
-										if (this.FaceStudent.enabled)
+										if (this.FaceStudent.enabled && !this.FaceStudent.Stop)
 										{
 											this.FaceStudent.CameraReact();
 										}
@@ -304,6 +304,7 @@ public class ShutterScript : MonoBehaviour
 					}
 					else if (!this.PantiesX.activeInHierarchy)
 					{
+						this.StudentManager.CommunalLocker.RivalPhone.LewdPhotos = true;
 						PlayerPrefs.SetInt("Scheme_4_Stage", 3);
 						this.Schemes.UpdateInstructions();
 						this.ResumeGameplay();
@@ -421,9 +422,9 @@ public class ShutterScript : MonoBehaviour
 			if (this.hit.collider.gameObject.name == "Kitten")
 			{
 				this.KittenShot = true;
-				if (PlayerPrefs.GetInt("Topic_20_Discovered") == 0)
+				if (!Globals.GetTopicDiscovered(20))
 				{
-					PlayerPrefs.SetInt("Topic_20_Discovered", 1);
+					Globals.SetTopicDiscovered(20, true);
 					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 				}
 			}

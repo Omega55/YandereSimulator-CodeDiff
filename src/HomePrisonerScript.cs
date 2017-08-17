@@ -106,11 +106,11 @@ public class HomePrisonerScript : MonoBehaviour
 			this.BanterText = this.LowSanityBanterText;
 			this.Banter = this.LowSanityBanter;
 		}
-		if (PlayerPrefs.GetInt("Night") == 0)
+		if (!Globals.Night)
 		{
 			UILabel uilabel = this.OptionLabels[2];
 			uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, 0.5f);
-			if (PlayerPrefs.GetInt("Late") == 1)
+			if (Globals.LateForSchool)
 			{
 				UILabel uilabel2 = this.OptionLabels[1];
 				uilabel2.color = new Color(uilabel2.color.r, uilabel2.color.g, uilabel2.color.b, 0.5f);
@@ -151,7 +151,7 @@ public class HomePrisonerScript : MonoBehaviour
 			uilabel12.color = new Color(uilabel12.color.r, uilabel12.color.g, uilabel12.color.b, 0.5f);
 			UILabel uilabel13 = this.OptionLabels[5];
 			uilabel13.color = new Color(uilabel13.color.r, uilabel13.color.g, uilabel13.color.b, 1f);
-			if (PlayerPrefs.GetInt("Night") == 1)
+			if (Globals.Night)
 			{
 				uilabel13.color = new Color(uilabel13.color.r, uilabel13.color.g, uilabel13.color.b, 0.5f);
 			}
@@ -311,7 +311,7 @@ public class HomePrisonerScript : MonoBehaviour
 					{
 						Time.timeScale = 1f;
 						this.NowLoading.SetActive(true);
-						PlayerPrefs.SetInt("Late", 1);
+						Globals.LateForSchool = true;
 						SceneManager.LoadScene("SchoolScene");
 						PlayerPrefs.SetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim").ToString() + "_Sanity", this.Sanity - 2.5f);
 					}
@@ -323,7 +323,7 @@ public class HomePrisonerScript : MonoBehaviour
 					}
 					else if (this.ID == 3)
 					{
-						PlayerPrefs.SetInt("Night", 1);
+						Globals.Night = true;
 						SceneManager.LoadScene("HomeScene");
 						PlayerPrefs.SetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim").ToString() + "_Sanity", this.Sanity - 30f);
 						PlayerPrefs.SetFloat("Reputation", PlayerPrefs.GetFloat("Reputation") - 20f);
@@ -347,9 +347,9 @@ public class HomePrisonerScript : MonoBehaviour
 	{
 		this.HomeCamera.PromptBar.Label[0].text = "Accept";
 		this.DescLabel.text = this.Descriptions[this.ID];
-		if (PlayerPrefs.GetInt("Night") == 0)
+		if (!Globals.Night)
 		{
-			if (PlayerPrefs.GetInt("Late") == 1 && this.ID == 1)
+			if (Globals.LateForSchool && this.ID == 1)
 			{
 				this.DescLabel.text = "This option is unavailable if you are late for school.";
 				this.HomeCamera.PromptBar.Label[0].text = string.Empty;
@@ -376,7 +376,7 @@ public class HomePrisonerScript : MonoBehaviour
 			{
 				this.DescLabel.text = "This option is unavailable until your prisoner's Sanity has reached zero.";
 			}
-			if (PlayerPrefs.GetInt("Night") == 1)
+			if (Globals.Night)
 			{
 				this.DescLabel.text = "This option is unavailable at nighttime.";
 				this.HomeCamera.PromptBar.Label[0].text = string.Empty;

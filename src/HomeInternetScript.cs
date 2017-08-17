@@ -125,7 +125,7 @@ public class HomeInternetScript : MonoBehaviour
 		this.PostIcon.SetActive(false);
 		this.NewPostText.SetActive(false);
 		this.BG.SetActive(false);
-		if (PlayerPrefs.GetInt("Event2") == 0 || PlayerPrefs.GetInt("Student_7_Exposed") == 1)
+		if (!Globals.Event2 || PlayerPrefs.GetInt("Student_7_Exposed") == 1)
 		{
 			this.WriteLabel.SetActive(false);
 			this.WriteIcon.SetActive(false);

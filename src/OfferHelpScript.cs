@@ -109,15 +109,15 @@ public class OfferHelpScript : MonoBehaviour
 					this.Timer = 0f;
 					if (this.EventPhase == 14)
 					{
-						if (PlayerPrefs.GetInt("Topic_23_Discovered") == 0)
+						if (!Globals.GetTopicDiscovered(23))
 						{
 							this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
-							PlayerPrefs.SetInt("Topic_23_Discovered", 1);
+							Globals.SetTopicDiscovered(23, true);
 						}
-						if (PlayerPrefs.GetInt("Topic_23_Student_7_Learned") == 0)
+						if (!Globals.GetTopicLearnedByStudent(23, 7))
 						{
 							this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
-							PlayerPrefs.SetInt("Topic_23_Student_7_Learned", 1);
+							Globals.SetTopicLearnedByStudent(23, 7, true);
 						}
 					}
 					if (this.EventPhase == this.EventSpeech.Length)

@@ -272,14 +272,10 @@ public class StudentInfoMenuScript : MonoBehaviour
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
-		if (this.Distracting)
+		if (this.Distracting && (this.StudentID == 0 || this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || PlayerPrefs.GetInt("Student_" + this.StudentID.ToString() + "_Dead") == 1))
 		{
-			bool flag = this.StudentManager.Students[this.StudentID] != null && !this.StudentManager.Students[this.StudentID].Alive;
-			if (this.StudentID == 0 || this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || flag)
-			{
-				this.PromptBar.Label[0].text = string.Empty;
-				this.PromptBar.UpdateButtons();
-			}
+			this.PromptBar.Label[0].text = string.Empty;
+			this.PromptBar.UpdateButtons();
 		}
 		if (this.MatchMaking && (this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || PlayerPrefs.GetInt("Student_" + this.StudentID.ToString() + "_Dead") == 1))
 		{

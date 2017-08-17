@@ -149,8 +149,8 @@ public class GardeningClubMemberScript : MonoBehaviour
 					this.PickpocketMinigame.ID = this.ID;
 					this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_pickpocketing_00");
 					this.Yandere.Pickpocketing = true;
-					this.Yandere.CanMove = false;
 					this.Yandere.EmptyHands();
+					this.Yandere.CanMove = false;
 				}
 				if (this.PickpocketMinigame.ID == this.ID)
 				{
@@ -205,7 +205,7 @@ public class GardeningClubMemberScript : MonoBehaviour
 		}
 		if (this.Leader && this.PickpocketPanel.enabled)
 		{
-			if (this.Yandere.PickUp == null)
+			if (this.Yandere.PickUp == null && this.Yandere.Pursuer == null)
 			{
 				this.Prompt.enabled = true;
 			}

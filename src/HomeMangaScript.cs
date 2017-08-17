@@ -94,7 +94,7 @@ public class HomeMangaScript : MonoBehaviour
 		this.UpdateCurrentLabel();
 		for (int i = 0; i < this.TotalManga; i++)
 		{
-			if (PlayerPrefs.GetInt("Manga_" + (i + 1).ToString() + "_Collected") == 1)
+			if (Globals.GetMangaCollected(i + 1))
 			{
 				this.NewManga = UnityEngine.Object.Instantiate<GameObject>(this.MangaModels[i], new Vector3(base.transform.position.x, base.transform.position.y, base.transform.position.z - 1f), Quaternion.identity);
 			}
@@ -180,7 +180,7 @@ public class HomeMangaScript : MonoBehaviour
 				{
 					for (int i = 0; i < this.TotalManga; i++)
 					{
-						PlayerPrefs.SetInt("Manga_" + (i + 1).ToString() + "_Collected", 1);
+						Globals.SetMangaCollected(i + 1, true);
 					}
 				}
 			}
@@ -200,7 +200,7 @@ public class HomeMangaScript : MonoBehaviour
 					{
 						PlayerPrefs.SetInt("Enlightenment", PlayerPrefs.GetInt("Enlightenment") + 1);
 					}
-					PlayerPrefs.SetInt("Late", 1);
+					Globals.LateForSchool = true;
 					this.AreYouSure.SetActive(false);
 					this.Darkness.FadeOut = true;
 				}
@@ -226,7 +226,7 @@ public class HomeMangaScript : MonoBehaviour
 		if (this.Selected < 5)
 		{
 			this.ReadButtonGroup.SetActive(PlayerPrefs.GetInt("Seduction") == this.Selected);
-			if (PlayerPrefs.GetInt("Manga_" + (this.Selected + 1).ToString() + "_Collected") == 1)
+			if (Globals.GetMangaCollected(this.Selected + 1))
 			{
 				if (PlayerPrefs.GetInt("Seduction") > this.Selected)
 				{
@@ -246,7 +246,7 @@ public class HomeMangaScript : MonoBehaviour
 		else if (this.Selected < 10)
 		{
 			this.ReadButtonGroup.SetActive(PlayerPrefs.GetInt("Numbness") == this.Selected - 5);
-			if (PlayerPrefs.GetInt("Manga_" + (this.Selected + 1).ToString() + "_Collected") == 1)
+			if (Globals.GetMangaCollected(this.Selected + 1))
 			{
 				if (PlayerPrefs.GetInt("Numbness") > this.Selected - 5)
 				{
@@ -266,7 +266,7 @@ public class HomeMangaScript : MonoBehaviour
 		else
 		{
 			this.ReadButtonGroup.SetActive(PlayerPrefs.GetInt("Enlightenment") == this.Selected - 10);
-			if (PlayerPrefs.GetInt("Manga_" + (this.Selected + 1).ToString() + "_Collected") == 1)
+			if (Globals.GetMangaCollected(this.Selected + 1))
 			{
 				if (PlayerPrefs.GetInt("Enlightenment") > this.Selected - 10)
 				{
@@ -283,7 +283,7 @@ public class HomeMangaScript : MonoBehaviour
 				this.ReadButtonGroup.SetActive(false);
 			}
 		}
-		if (PlayerPrefs.GetInt("Manga_" + (this.Selected + 1).ToString() + "_Collected") == 1)
+		if (Globals.GetMangaCollected(this.Selected + 1))
 		{
 			this.MangaNameLabel.text = this.MangaNames[this.Selected];
 			this.MangaDescLabel.text = this.MangaDescs[this.Selected];

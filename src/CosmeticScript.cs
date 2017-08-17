@@ -499,7 +499,7 @@ public class CosmeticScript : MonoBehaviour
 		{
 			this.MaleAccessories[this.Accessory].SetActive(true);
 		}
-		if (this.Club < 11 && this.ClubAccessories[this.Club] != null && PlayerPrefs.GetInt("Club_" + this.Club.ToString() + "_Closed") == 0 && this.StudentID != 26)
+		if (this.Club < 11 && this.ClubAccessories[this.Club] != null && !Globals.GetClubClosed(this.Club) && this.StudentID != 26)
 		{
 			this.ClubAccessories[this.Club].SetActive(true);
 		}

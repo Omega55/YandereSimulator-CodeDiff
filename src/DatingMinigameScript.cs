@@ -161,7 +161,7 @@ public class DatingMinigameScript : MonoBehaviour
 
 	private void Start()
 	{
-		this.Affection = PlayerPrefs.GetFloat("Affection");
+		this.Affection = Globals.Affection;
 		this.AffectionBar.localScale = new Vector3(this.Affection / 100f, this.AffectionBar.localScale.y, this.AffectionBar.localScale.z);
 		this.CalculateAffection();
 		this.OriginalColor = this.ComplimentBGs[1].color;
@@ -173,7 +173,7 @@ public class DatingMinigameScript : MonoBehaviour
 		this.DatingSimHUD.alpha = 0f;
 		for (int i = 1; i < 26; i++)
 		{
-			if (PlayerPrefs.GetInt("Topic_" + i.ToString() + "_Discussed") == 1)
+			if (Globals.GetTopicDiscussed(i))
 			{
 				UISprite uisprite = this.TopicIcons[i];
 				uisprite.color = new Color(uisprite.color.r, uisprite.color.g, uisprite.color.b, 0.5f);
@@ -181,7 +181,7 @@ public class DatingMinigameScript : MonoBehaviour
 		}
 		for (int j = 1; j < 11; j++)
 		{
-			if (PlayerPrefs.GetInt("Compliment_" + j.ToString() + "_Given") == 1)
+			if (Globals.GetComplimentGiven(j))
 			{
 				UILabel uilabel = this.ComplimentLabels[j];
 				uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, 0.5f);
@@ -261,7 +261,7 @@ public class DatingMinigameScript : MonoBehaviour
 			this.Yandere.Character.GetComponent<Animation>().Play("f02_treePeeking_00");
 			Camera.main.transform.position = new Vector3(48f, 3f, -44f);
 			Camera.main.transform.eulerAngles = new Vector3(15f, 90f, 0f);
-			this.WisdomLabel.text = "Wisdom: " + PlayerPrefs.GetInt("SuitorTrait2").ToString();
+			this.WisdomLabel.text = "Wisdom: " + Globals.GetSuitorTrait(2).ToString();
 			if (!this.Suitor.Rose)
 			{
 				this.RoseIcon.enabled = false;
@@ -433,11 +433,11 @@ public class DatingMinigameScript : MonoBehaviour
 						this.SelectingTopic = false;
 						UISprite uisprite = this.TopicIcons[this.TopicSelected];
 						uisprite.color = new Color(uisprite.color.r, uisprite.color.g, uisprite.color.b, 0.5f);
-						PlayerPrefs.SetInt("Topic_" + this.TopicSelected.ToString() + "_Discussed", 1);
+						Globals.SetTopicDiscussed(this.TopicSelected, true);
 						this.DetermineOpinion();
-						if (PlayerPrefs.GetInt("Topic_" + this.Opinion.ToString() + "_Student_7_Learned") == 0)
+						if (!Globals.GetTopicLearnedByStudent(this.Opinion, 7))
 						{
-							PlayerPrefs.SetInt("Topic_" + this.Opinion.ToString() + "_Student_7_Learned", 1);
+							Globals.SetTopicLearnedByStudent(this.Opinion, 7, true);
 						}
 						if (this.Negative)
 						{
@@ -532,7 +532,7 @@ public class DatingMinigameScript : MonoBehaviour
 						uilabel3.color = new Color(uilabel3.color.r, uilabel3.color.g, uilabel3.color.b, 0.5f);
 						this.Complimenting = false;
 						this.DialogueLabel.text = this.Compliments[this.ComplimentSelected];
-						PlayerPrefs.SetInt("Compliment_" + this.ComplimentSelected.ToString() + "_Given", 1);
+						Globals.SetComplimentGiven(this.ComplimentSelected, true);
 						if (this.ComplimentSelected == 1 || this.ComplimentSelected == 4 || this.ComplimentSelected == 5 || this.ComplimentSelected == 8 || this.ComplimentSelected == 9)
 						{
 							this.Rival.Character.GetComponent<Animation>().CrossFade("f02_lookdown_00");
@@ -581,9 +581,9 @@ public class DatingMinigameScript : MonoBehaviour
 						this.ShowingOff = false;
 						if (this.TraitSelected == 2)
 						{
-							if (PlayerPrefs.GetInt("SuitorTrait2") > PlayerPrefs.GetInt("Trait_2_Demonstrated"))
+							if (Globals.GetSuitorTrait(2) > Globals.GetTraitDemonstrated(2))
 							{
-								PlayerPrefs.SetInt("Trait_2_Demonstrated", PlayerPrefs.GetInt("Trait_2_Demonstrated") + 1);
+								Globals.SetTraitDemonstrated(2, Globals.GetTraitDemonstrated(2) + 1);
 								this.DialogueLabel.text = this.ShowOffs[this.AffectionLevel];
 								this.Rival.Character.GetComponent<Animation>().CrossFade("f02_lookdown_00");
 								this.CurrentAnim = "f02_lookdown_00";
@@ -716,7 +716,7 @@ public class DatingMinigameScript : MonoBehaviour
 					this.Suitor.Earpiece.SetActive(false);
 					this.HeartbeatCamera.SetActive(true);
 					this.Yandere.Headset.SetActive(false);
-					PlayerPrefs.SetFloat("Affection", this.Affection);
+					Globals.Affection = this.Affection;
 					this.PromptBar.ClearButtons();
 					this.PromptBar.Show = false;
 				}
@@ -816,7 +816,7 @@ public class DatingMinigameScript : MonoBehaviour
 		}
 		this.TopicHighlight.localPosition = new Vector3((float)(-375 + 125 * this.Column), (float)(375 - 125 * this.Row), this.TopicHighlight.localPosition.z);
 		this.TopicSelected = (this.Row - 1) * 5 + this.Column;
-		this.TopicNameLabel.text = ((PlayerPrefs.GetInt("Topic_" + this.TopicSelected.ToString() + "_Discovered") != 1) ? "??????????" : this.TopicNames[this.TopicSelected]);
+		this.TopicNameLabel.text = ((!Globals.GetTopicDiscovered(this.TopicSelected)) ? "??????????" : this.TopicNames[this.TopicSelected]);
 	}
 
 	private void DetermineOpinion()
@@ -928,7 +928,7 @@ public class DatingMinigameScript : MonoBehaviour
 		for (int i = 1; i < this.TopicIcons.Length; i++)
 		{
 			UISprite uisprite = this.TopicIcons[i];
-			if (PlayerPrefs.GetInt("Topic_" + i.ToString() + "_Discovered") == 0)
+			if (!Globals.GetTopicDiscovered(i))
 			{
 				uisprite.spriteName = 0.ToString();
 				uisprite.color = new Color(uisprite.color.r, uisprite.color.g, uisprite.color.b, 0.5f);

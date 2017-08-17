@@ -277,7 +277,7 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 				PlayerPrefs.SetInt("Student_7_Kidnapped", 1);
 				PlayerPrefs.SetFloat("Student_7_Sanity", 100f);
 				PlayerPrefs.SetInt("KidnapVictim", 7);
-				PlayerPrefs.SetInt("StartInBasement", 1);
+				Globals.StartInBasement = true;
 				SceneManager.LoadScene("CalendarScene");
 			}
 		}

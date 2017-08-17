@@ -128,6 +128,12 @@ public class StudentEditorScript : MonoBehaviour
 	private UILabel bodyLabel;
 
 	[SerializeField]
+	private Transform listLabelsOrigin;
+
+	[SerializeField]
+	private UILabel studentLabelTemplate;
+
+	[SerializeField]
 	private PromptBarScript promptBar;
 
 	private StudentEditorScript.StudentData[] students;
@@ -143,6 +149,16 @@ public class StudentEditorScript : MonoBehaviour
 		for (int i = 0; i < this.students.Length; i++)
 		{
 			this.students[i] = StudentEditorScript.StudentData.Deserialize(array[i]);
+		}
+		Array.Sort<StudentEditorScript.StudentData>(this.students, (StudentEditorScript.StudentData a, StudentEditorScript.StudentData b) => a.id - b.id);
+		for (int j = 0; j < this.students.Length; j++)
+		{
+			StudentEditorScript.StudentData studentData = this.students[j];
+			UILabel uilabel = UnityEngine.Object.Instantiate<UILabel>(this.studentLabelTemplate, this.listLabelsOrigin);
+			uilabel.text = "(" + studentData.id.ToString() + ") " + studentData.name;
+			Transform transform = uilabel.transform;
+			transform.localPosition = new Vector3(transform.localPosition.x + (float)(uilabel.width / 2), transform.localPosition.y - (float)(j * uilabel.height), transform.localPosition.z);
+			uilabel.gameObject.SetActive(true);
 		}
 		this.studentIndex = 0;
 		this.bodyLabel.text = StudentEditorScript.GetStudentText(this.students[this.studentIndex]);

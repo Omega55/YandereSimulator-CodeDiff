@@ -215,14 +215,6 @@ public class StudentInfoScript : MonoBehaviour
 			{
 				this.ClubLabel.text = "?????";
 			}
-			else if (this.JSON.StudentClubs[ID] == 100)
-			{
-				this.ClubLabel.text = "Teacher";
-			}
-			else if (this.JSON.StudentClubs[ID] == 101)
-			{
-				this.ClubLabel.text = "Gym Teacher";
-			}
 		}
 		else if (this.JSON.StudentClasses[ID] == 11)
 		{
@@ -252,7 +244,7 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.ClubLabel.text = "Gym Teacher";
 		}
-		if (PlayerPrefs.GetInt("Club_" + this.JSON.StudentClubs[ID].ToString() + "_Closed") == 1)
+		if (Globals.GetClubClosed(this.JSON.StudentClubs[ID]))
 		{
 			this.ClubLabel.text = "No Club";
 		}
@@ -443,8 +435,8 @@ public class StudentInfoScript : MonoBehaviour
 	{
 		if (ID == 7)
 		{
-			this.Strings[1] = ((PlayerPrefs.GetInt("Event1") != 1) ? "?????" : "May be a victim of domestic abuse.");
-			this.Strings[2] = ((PlayerPrefs.GetInt("Event2") != 1) ? "?????" : "May be engaging in compensated dating in Shisuta Town.");
+			this.Strings[1] = ((!Globals.Event1) ? "?????" : "May be a victim of domestic abuse.");
+			this.Strings[2] = ((!Globals.Event2) ? "?????" : "May be engaging in compensated dating in Shisuta Town.");
 			this.InfoLabel.text = this.Strings[1] + "\n\n" + this.Strings[2];
 		}
 		else if (PlayerPrefs.GetInt("Student_" + ID.ToString() + "_Replaced") == 0)
@@ -468,9 +460,9 @@ public class StudentInfoScript : MonoBehaviour
 	{
 		for (int i = 1; i < this.TopicIcons.Length; i++)
 		{
-			this.TopicIcons[i].spriteName = ((PlayerPrefs.GetInt("Topic_" + i.ToString() + "_Discovered") != 0) ? i : 0).ToString();
+			this.TopicIcons[i].spriteName = (Globals.GetTopicDiscovered(i) ? i : 0).ToString();
 		}
-		if (PlayerPrefs.GetInt("Topic_1_Student_" + this.CurrentStudent + "_Learned") == 0)
+		if (!Globals.GetTopicLearnedByStudent(1, this.CurrentStudent))
 		{
 			this.TopicOpinionIcons[1].spriteName = "Unknown";
 		}
@@ -478,7 +470,7 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.TopicOpinionIcons[1].spriteName = this.OpinionSpriteNames[this.JSON.Topic1[this.CurrentStudent]];
 		}
-		if (PlayerPrefs.GetInt("Topic_2_Student_" + this.CurrentStudent + "_Learned") == 0)
+		if (!Globals.GetTopicLearnedByStudent(2, this.CurrentStudent))
 		{
 			this.TopicOpinionIcons[2].spriteName = "Unknown";
 		}
@@ -486,7 +478,7 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.TopicOpinionIcons[2].spriteName = this.OpinionSpriteNames[this.JSON.Topic2[this.CurrentStudent]];
 		}
-		if (PlayerPrefs.GetInt("Topic_3_Student_" + this.CurrentStudent + "_Learned") == 0)
+		if (!Globals.GetTopicLearnedByStudent(3, this.CurrentStudent))
 		{
 			this.TopicOpinionIcons[3].spriteName = "Unknown";
 		}
@@ -494,7 +486,7 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.TopicOpinionIcons[3].spriteName = this.OpinionSpriteNames[this.JSON.Topic3[this.CurrentStudent]];
 		}
-		if (PlayerPrefs.GetInt("Topic_4_Student_" + this.CurrentStudent + "_Learned") == 0)
+		if (!Globals.GetTopicLearnedByStudent(4, this.CurrentStudent))
 		{
 			this.TopicOpinionIcons[4].spriteName = "Unknown";
 		}
@@ -502,7 +494,7 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.TopicOpinionIcons[4].spriteName = this.OpinionSpriteNames[this.JSON.Topic4[this.CurrentStudent]];
 		}
-		if (PlayerPrefs.GetInt("Topic_5_Student_" + this.CurrentStudent + "_Learned") == 0)
+		if (!Globals.GetTopicLearnedByStudent(5, this.CurrentStudent))
 		{
 			this.TopicOpinionIcons[5].spriteName = "Unknown";
 		}
@@ -510,7 +502,7 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.TopicOpinionIcons[5].spriteName = this.OpinionSpriteNames[this.JSON.Topic5[this.CurrentStudent]];
 		}
-		if (PlayerPrefs.GetInt("Topic_6_Student_" + this.CurrentStudent + "_Learned") == 0)
+		if (!Globals.GetTopicLearnedByStudent(6, this.CurrentStudent))
 		{
 			this.TopicOpinionIcons[6].spriteName = "Unknown";
 		}
@@ -518,7 +510,7 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.TopicOpinionIcons[6].spriteName = this.OpinionSpriteNames[this.JSON.Topic6[this.CurrentStudent]];
 		}
-		if (PlayerPrefs.GetInt("Topic_7_Student_" + this.CurrentStudent + "_Learned") == 0)
+		if (!Globals.GetTopicLearnedByStudent(7, this.CurrentStudent))
 		{
 			this.TopicOpinionIcons[7].spriteName = "Unknown";
 		}
@@ -526,7 +518,7 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.TopicOpinionIcons[7].spriteName = this.OpinionSpriteNames[this.JSON.Topic7[this.CurrentStudent]];
 		}
-		if (PlayerPrefs.GetInt("Topic_8_Student_" + this.CurrentStudent + "_Learned") == 0)
+		if (!Globals.GetTopicLearnedByStudent(8, this.CurrentStudent))
 		{
 			this.TopicOpinionIcons[8].spriteName = "Unknown";
 		}
@@ -534,7 +526,7 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.TopicOpinionIcons[8].spriteName = this.OpinionSpriteNames[this.JSON.Topic8[this.CurrentStudent]];
 		}
-		if (PlayerPrefs.GetInt("Topic_9_Student_" + this.CurrentStudent + "_Learned") == 0)
+		if (!Globals.GetTopicLearnedByStudent(9, this.CurrentStudent))
 		{
 			this.TopicOpinionIcons[9].spriteName = "Unknown";
 		}
@@ -542,7 +534,7 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.TopicOpinionIcons[9].spriteName = this.OpinionSpriteNames[this.JSON.Topic9[this.CurrentStudent]];
 		}
-		if (PlayerPrefs.GetInt("Topic_10_Student_" + this.CurrentStudent + "_Learned") == 0)
+		if (!Globals.GetTopicLearnedByStudent(10, this.CurrentStudent))
 		{
 			this.TopicOpinionIcons[10].spriteName = "Unknown";
 		}
@@ -550,7 +542,7 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.TopicOpinionIcons[10].spriteName = this.OpinionSpriteNames[this.JSON.Topic10[this.CurrentStudent]];
 		}
-		if (PlayerPrefs.GetInt("Topic_11_Student_" + this.CurrentStudent + "_Learned") == 0)
+		if (!Globals.GetTopicLearnedByStudent(11, this.CurrentStudent))
 		{
 			this.TopicOpinionIcons[11].spriteName = "Unknown";
 		}
@@ -558,7 +550,7 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.TopicOpinionIcons[11].spriteName = this.OpinionSpriteNames[this.JSON.Topic11[this.CurrentStudent]];
 		}
-		if (PlayerPrefs.GetInt("Topic_12_Student_" + this.CurrentStudent + "_Learned") == 0)
+		if (!Globals.GetTopicLearnedByStudent(12, this.CurrentStudent))
 		{
 			this.TopicOpinionIcons[12].spriteName = "Unknown";
 		}
@@ -566,7 +558,7 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.TopicOpinionIcons[12].spriteName = this.OpinionSpriteNames[this.JSON.Topic12[this.CurrentStudent]];
 		}
-		if (PlayerPrefs.GetInt("Topic_13_Student_" + this.CurrentStudent + "_Learned") == 0)
+		if (!Globals.GetTopicLearnedByStudent(13, this.CurrentStudent))
 		{
 			this.TopicOpinionIcons[13].spriteName = "Unknown";
 		}
@@ -574,7 +566,7 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.TopicOpinionIcons[13].spriteName = this.OpinionSpriteNames[this.JSON.Topic13[this.CurrentStudent]];
 		}
-		if (PlayerPrefs.GetInt("Topic_14_Student_" + this.CurrentStudent + "_Learned") == 0)
+		if (!Globals.GetTopicLearnedByStudent(14, this.CurrentStudent))
 		{
 			this.TopicOpinionIcons[14].spriteName = "Unknown";
 		}
@@ -582,7 +574,7 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.TopicOpinionIcons[14].spriteName = this.OpinionSpriteNames[this.JSON.Topic14[this.CurrentStudent]];
 		}
-		if (PlayerPrefs.GetInt("Topic_15_Student_" + this.CurrentStudent + "_Learned") == 0)
+		if (!Globals.GetTopicLearnedByStudent(15, this.CurrentStudent))
 		{
 			this.TopicOpinionIcons[15].spriteName = "Unknown";
 		}
@@ -590,7 +582,7 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.TopicOpinionIcons[15].spriteName = this.OpinionSpriteNames[this.JSON.Topic15[this.CurrentStudent]];
 		}
-		if (PlayerPrefs.GetInt("Topic_16_Student_" + this.CurrentStudent + "_Learned") == 0)
+		if (!Globals.GetTopicLearnedByStudent(16, this.CurrentStudent))
 		{
 			this.TopicOpinionIcons[16].spriteName = "Unknown";
 		}
@@ -598,7 +590,7 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.TopicOpinionIcons[16].spriteName = this.OpinionSpriteNames[this.JSON.Topic16[this.CurrentStudent]];
 		}
-		if (PlayerPrefs.GetInt("Topic_17_Student_" + this.CurrentStudent + "_Learned") == 0)
+		if (!Globals.GetTopicLearnedByStudent(17, this.CurrentStudent))
 		{
 			this.TopicOpinionIcons[17].spriteName = "Unknown";
 		}
@@ -606,7 +598,7 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.TopicOpinionIcons[17].spriteName = this.OpinionSpriteNames[this.JSON.Topic17[this.CurrentStudent]];
 		}
-		if (PlayerPrefs.GetInt("Topic_18_Student_" + this.CurrentStudent + "_Learned") == 0)
+		if (!Globals.GetTopicLearnedByStudent(18, this.CurrentStudent))
 		{
 			this.TopicOpinionIcons[18].spriteName = "Unknown";
 		}
@@ -614,7 +606,7 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.TopicOpinionIcons[18].spriteName = this.OpinionSpriteNames[this.JSON.Topic18[this.CurrentStudent]];
 		}
-		if (PlayerPrefs.GetInt("Topic_19_Student_" + this.CurrentStudent + "_Learned") == 0)
+		if (!Globals.GetTopicLearnedByStudent(19, this.CurrentStudent))
 		{
 			this.TopicOpinionIcons[19].spriteName = "Unknown";
 		}
@@ -622,7 +614,7 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.TopicOpinionIcons[19].spriteName = this.OpinionSpriteNames[this.JSON.Topic19[this.CurrentStudent]];
 		}
-		if (PlayerPrefs.GetInt("Topic_20_Student_" + this.CurrentStudent + "_Learned") == 0)
+		if (!Globals.GetTopicLearnedByStudent(20, this.CurrentStudent))
 		{
 			this.TopicOpinionIcons[20].spriteName = "Unknown";
 		}
@@ -630,7 +622,7 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.TopicOpinionIcons[20].spriteName = this.OpinionSpriteNames[this.JSON.Topic20[this.CurrentStudent]];
 		}
-		if (PlayerPrefs.GetInt("Topic_21_Student_" + this.CurrentStudent + "_Learned") == 0)
+		if (!Globals.GetTopicLearnedByStudent(21, this.CurrentStudent))
 		{
 			this.TopicOpinionIcons[21].spriteName = "Unknown";
 		}
@@ -638,7 +630,7 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.TopicOpinionIcons[21].spriteName = this.OpinionSpriteNames[this.JSON.Topic21[this.CurrentStudent]];
 		}
-		if (PlayerPrefs.GetInt("Topic_22_Student_" + this.CurrentStudent + "_Learned") == 0)
+		if (!Globals.GetTopicLearnedByStudent(22, this.CurrentStudent))
 		{
 			this.TopicOpinionIcons[22].spriteName = "Unknown";
 		}
@@ -646,7 +638,7 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.TopicOpinionIcons[22].spriteName = this.OpinionSpriteNames[this.JSON.Topic22[this.CurrentStudent]];
 		}
-		if (PlayerPrefs.GetInt("Topic_23_Student_" + this.CurrentStudent + "_Learned") == 0)
+		if (!Globals.GetTopicLearnedByStudent(23, this.CurrentStudent))
 		{
 			this.TopicOpinionIcons[23].spriteName = "Unknown";
 		}
@@ -654,7 +646,7 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.TopicOpinionIcons[23].spriteName = this.OpinionSpriteNames[this.JSON.Topic23[this.CurrentStudent]];
 		}
-		if (PlayerPrefs.GetInt("Topic_24_Student_" + this.CurrentStudent + "_Learned") == 0)
+		if (!Globals.GetTopicLearnedByStudent(24, this.CurrentStudent))
 		{
 			this.TopicOpinionIcons[24].spriteName = "Unknown";
 		}
@@ -662,7 +654,7 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.TopicOpinionIcons[24].spriteName = this.OpinionSpriteNames[this.JSON.Topic24[this.CurrentStudent]];
 		}
-		if (PlayerPrefs.GetInt("Topic_25_Student_" + this.CurrentStudent + "_Learned") == 0)
+		if (!Globals.GetTopicLearnedByStudent(25, this.CurrentStudent))
 		{
 			this.TopicOpinionIcons[25].spriteName = "Unknown";
 		}

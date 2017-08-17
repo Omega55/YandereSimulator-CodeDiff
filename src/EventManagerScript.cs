@@ -123,7 +123,7 @@ public class EventManagerScript : MonoBehaviour
 						{
 							this.EventSubtitle.text = this.EventSpeech[this.EventPhase];
 						}
-						this.PlayClip(this.EventClip[this.EventPhase], this.EventStudent[this.EventSpeaker[this.EventPhase]].transform.position + Vector3.up * 1.5f);
+						AudioClipPlayer.Play(this.EventClip[this.EventPhase], this.EventStudent[this.EventSpeaker[this.EventPhase]].transform.position + Vector3.up * 1.5f, 5f, 10f, out this.VoiceClip, this.Yandere.transform.position.y);
 						this.Spoken = true;
 					}
 					else
@@ -168,15 +168,15 @@ public class EventManagerScript : MonoBehaviour
 								this.Timer = 0f;
 								if (this.EventPhase == 4)
 								{
-									if (PlayerPrefs.GetInt("Topic_22_Discovered") == 0)
+									if (!Globals.GetTopicDiscovered(22))
 									{
 										this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
-										PlayerPrefs.SetInt("Topic_22_Discovered", 1);
+										Globals.SetTopicDiscovered(22, true);
 									}
-									if (PlayerPrefs.GetInt("Topic_22_Student_7_Learned") == 0)
+									if (!Globals.GetTopicLearnedByStudent(22, 7))
 									{
 										this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
-										PlayerPrefs.SetInt("Topic_22_Student_7_Learned", 1);
+										Globals.SetTopicLearnedByStudent(22, 7, true);
 									}
 								}
 								if (this.EventPhase == this.EventSpeech.Length)
@@ -185,31 +185,15 @@ public class EventManagerScript : MonoBehaviour
 								}
 							}
 						}
-						if (this.Yandere.transform.position.y > this.EventStudent[1].transform.position.y - 1f && this.EventPhase == 7 && num < 5f && PlayerPrefs.GetInt("Event1") == 0)
+						if (this.Yandere.transform.position.y > this.EventStudent[1].transform.position.y - 1f && this.EventPhase == 7 && num < 5f && !Globals.Event1)
 						{
 							this.Yandere.NotificationManager.DisplayNotification(NotificationType.Info);
-							PlayerPrefs.SetInt("Event1", 1);
+							Globals.Event1 = true;
 						}
 					}
 				}
 			}
 		}
-	}
-
-	private void PlayClip(AudioClip clip, Vector3 pos)
-	{
-		GameObject gameObject = new GameObject("TempAudio");
-		gameObject.transform.position = pos;
-		AudioSource audioSource = gameObject.AddComponent<AudioSource>();
-		audioSource.clip = clip;
-		audioSource.Play();
-		UnityEngine.Object.Destroy(gameObject, clip.length);
-		audioSource.rolloffMode = AudioRolloffMode.Linear;
-		audioSource.minDistance = 5f;
-		audioSource.maxDistance = 10f;
-		audioSource.spatialBlend = 1f;
-		this.VoiceClip = gameObject;
-		audioSource.volume = ((this.Yandere.transform.position.y >= gameObject.transform.position.y - 2f) ? 1f : 0f);
 	}
 
 	public void EndEvent()

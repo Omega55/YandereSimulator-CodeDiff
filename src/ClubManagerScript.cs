@@ -254,7 +254,7 @@ public class ClubManagerScript : MonoBehaviour
 			}
 			this.ID++;
 		}
-		if (PlayerPrefs.GetInt("Club") == Check)
+		if (Globals.Club == Check)
 		{
 			this.ClubMembers++;
 		}
@@ -320,12 +320,12 @@ public class ClubManagerScript : MonoBehaviour
 
 	public void ActivateClubBenefit()
 	{
-		if (PlayerPrefs.GetInt("Club") == 1)
+		if (Globals.Club == 1)
 		{
 			this.Refrigerator.enabled = true;
 			this.Refrigerator.Prompt.enabled = true;
 		}
-		else if (PlayerPrefs.GetInt("Club") == 2)
+		else if (Globals.Club == 2)
 		{
 			this.ID = 1;
 			while (this.ID < this.Masks.Length)
@@ -337,31 +337,31 @@ public class ClubManagerScript : MonoBehaviour
 			this.Gloves.enabled = true;
 			this.Gloves.Prompt.enabled = true;
 		}
-		else if (PlayerPrefs.GetInt("Club") == 3)
+		else if (Globals.Club == 3)
 		{
 			this.StudentManager.UpdatePerception();
 			this.Yandere.Numbness -= 0.5f;
 		}
-		else if (PlayerPrefs.GetInt("Club") == 4)
+		else if (Globals.Club == 4)
 		{
 			this.StudentManager.UpdateBooths();
 		}
-		else if (PlayerPrefs.GetInt("Club") == 5)
+		else if (Globals.Club == 5)
 		{
 			this.Container.enabled = true;
 			this.Container.Prompt.enabled = true;
 		}
-		else if (PlayerPrefs.GetInt("Club") == 6)
+		else if (Globals.Club == 6)
 		{
 			this.StudentManager.UpdateBooths();
 		}
-		else if (PlayerPrefs.GetInt("Club") != 7)
+		else if (Globals.Club != 7)
 		{
-			if (PlayerPrefs.GetInt("Club") == 8)
+			if (Globals.Club == 8)
 			{
 				this.BloodCleaner.Prompt.enabled = true;
 			}
-			else if (PlayerPrefs.GetInt("Club") == 9)
+			else if (Globals.Club == 9)
 			{
 				this.Yandere.RunSpeed += 1f;
 				if (this.Yandere.Armed)
@@ -369,7 +369,7 @@ public class ClubManagerScript : MonoBehaviour
 					this.Yandere.EquippedWeapon.SuspicionCheck();
 				}
 			}
-			else if (PlayerPrefs.GetInt("Club") == 10)
+			else if (Globals.Club == 10)
 			{
 				this.ShedDoor.Prompt.Label[0].text = "     Open";
 				this.ShedDoor.Locked = false;
@@ -378,7 +378,7 @@ public class ClubManagerScript : MonoBehaviour
 					this.Yandere.EquippedWeapon.SuspicionCheck();
 				}
 			}
-			else if (PlayerPrefs.GetInt("Club") == 11)
+			else if (Globals.Club == 11)
 			{
 				this.ComputerGames.EnableGames();
 			}
@@ -387,13 +387,13 @@ public class ClubManagerScript : MonoBehaviour
 
 	public void DeactivateClubBenefit()
 	{
-		if (PlayerPrefs.GetInt("Club") == 1)
+		if (Globals.Club == 1)
 		{
 			this.Refrigerator.enabled = false;
 			this.Refrigerator.Prompt.Hide();
 			this.Refrigerator.Prompt.enabled = false;
 		}
-		else if (PlayerPrefs.GetInt("Club") == 2)
+		else if (Globals.Club == 2)
 		{
 			this.ID = 1;
 			while (this.ID < this.Masks.Length)
@@ -410,44 +410,44 @@ public class ClubManagerScript : MonoBehaviour
 			this.Gloves.Prompt.Hide();
 			this.Gloves.Prompt.enabled = false;
 		}
-		else if (PlayerPrefs.GetInt("Club") == 3)
+		else if (Globals.Club == 3)
 		{
-			PlayerPrefs.SetInt("Club", 0);
+			Globals.Club = 0;
 			this.StudentManager.UpdatePerception();
 			this.Yandere.Numbness += 0.5f;
 		}
-		else if (PlayerPrefs.GetInt("Club") == 4)
+		else if (Globals.Club == 4)
 		{
 			this.StudentManager.UpdateBooths();
 		}
-		else if (PlayerPrefs.GetInt("Club") == 5)
+		else if (Globals.Club == 5)
 		{
 			this.Container.enabled = false;
 			this.Container.Prompt.Hide();
 			this.Container.Prompt.enabled = false;
 		}
-		else if (PlayerPrefs.GetInt("Club") == 6)
+		else if (Globals.Club == 6)
 		{
 			this.StudentManager.UpdateBooths();
 		}
-		else if (PlayerPrefs.GetInt("Club") != 7)
+		else if (Globals.Club != 7)
 		{
-			if (PlayerPrefs.GetInt("Club") == 8)
+			if (Globals.Club == 8)
 			{
 				this.BloodCleaner.enabled = false;
 				this.BloodCleaner.Prompt.Hide();
 				this.BloodCleaner.Prompt.enabled = false;
 			}
-			else if (PlayerPrefs.GetInt("Club") == 9)
+			else if (Globals.Club == 9)
 			{
 				this.Yandere.RunSpeed -= 1f;
 				if (this.Yandere.Armed)
 				{
-					PlayerPrefs.SetInt("Club", 0);
+					Globals.Club = 0;
 					this.Yandere.EquippedWeapon.SuspicionCheck();
 				}
 			}
-			else if (PlayerPrefs.GetInt("Club") == 10)
+			else if (Globals.Club == 10)
 			{
 				if (!this.Yandere.Inventory.ShedKey)
 				{
@@ -456,11 +456,11 @@ public class ClubManagerScript : MonoBehaviour
 				}
 				if (this.Yandere.Armed)
 				{
-					PlayerPrefs.SetInt("Club", 0);
+					Globals.Club = 0;
 					this.Yandere.EquippedWeapon.SuspicionCheck();
 				}
 			}
-			else if (PlayerPrefs.GetInt("Club") == 11)
+			else if (Globals.Club == 11)
 			{
 				this.ComputerGames.DeactivateAllBenefits();
 				this.ComputerGames.DisableGames();

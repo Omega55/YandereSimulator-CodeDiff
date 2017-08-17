@@ -42,13 +42,13 @@ public class HomeDarknessScript : MonoBehaviour
 					}
 					else if (this.HomeCamera.ID == 10)
 					{
-						PlayerPrefs.SetInt("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Kidnapped", 0);
-						PlayerPrefs.SetInt("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Slave", 1);
+						PlayerPrefs.SetInt("Student_" + Globals.KidnapVictim + "_Kidnapped", 0);
+						PlayerPrefs.SetInt("Student_" + Globals.KidnapVictim + "_Slave", 1);
 						SceneManager.LoadScene("LoadingScene");
 					}
 					else if (this.HomeCamera.ID == 11)
 					{
-						PlayerPrefs.SetInt("KidnapConversation", 1);
+						Globals.KidnapConversation = true;
 						SceneManager.LoadScene("PhoneScene");
 					}
 					else if (this.HomeExit.ID == 1)
@@ -85,7 +85,7 @@ public class HomeDarknessScript : MonoBehaviour
 								this.HomeCamera.Target = this.HomeCamera.Targets[0];
 								this.HomeCamera.Focus.position = this.HomeCamera.Target.position;
 								this.BasementLabel.text = "Basement";
-								if (PlayerPrefs.GetInt("Night") == 1)
+								if (Globals.Night)
 								{
 									this.HomeCamera.DayLight.SetActive(false);
 								}

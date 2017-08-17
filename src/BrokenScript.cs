@@ -71,7 +71,7 @@ public class BrokenScript : MonoBehaviour
 					{
 						this.Timer = 0f;
 						this.Subtitle.text = this.MutterTexts[this.ID];
-						this.PlayClip(this.Mutters[this.ID], base.transform.position);
+						AudioClipPlayer.PlayAttached(this.Mutters[this.ID], base.transform.position, base.transform, 1f, 5f, out this.VoiceClip, this.Yandere.transform.position.y);
 						this.ID++;
 						if (this.ID == this.Mutters.Length)
 						{
@@ -86,23 +86,16 @@ public class BrokenScript : MonoBehaviour
 						UnityEngine.Object.Destroy(this.VoiceClip);
 					}
 					this.Subtitle.text = "Do it.";
-					this.PlayClip(this.DoIt, base.transform.position);
+					AudioClipPlayer.PlayAttached(this.DoIt, base.transform.position, base.transform, 1f, 5f, out this.VoiceClip, this.Yandere.transform.position.y);
 					this.Began = true;
 				}
 				else if (this.VoiceClip == null)
 				{
 					this.Subtitle.text = "...kill...kill...kill...";
-					this.PlayClip(this.KillKillKill, base.transform.position);
+					AudioClipPlayer.PlayAttached(this.KillKillKill, base.transform.position, base.transform, 1f, 5f, out this.VoiceClip, this.Yandere.transform.position.y);
 				}
 				float num2 = Mathf.Abs((num - 5f) * 0.2f);
-				if (num2 < 0f)
-				{
-					num2 = 0f;
-				}
-				if (num2 > 1f)
-				{
-					num2 = 1f;
-				}
+				num2 = ((num2 <= 1f) ? num2 : 1f);
 				this.Subtitle.transform.localScale = new Vector3(num2, num2, num2);
 			}
 			else
@@ -118,24 +111,5 @@ public class BrokenScript : MonoBehaviour
 		eulerAngles2.z = this.PermanentAngleL.z;
 		this.TwintailR.eulerAngles = eulerAngles;
 		this.TwintailL.eulerAngles = eulerAngles2;
-	}
-
-	private void PlayClip(AudioClip clip, Vector3 pos)
-	{
-		GameObject gameObject = new GameObject("TempAudio");
-		gameObject.transform.position = pos;
-		gameObject.transform.parent = base.transform;
-		AudioSource audioSource = gameObject.AddComponent<AudioSource>();
-		audioSource.clip = clip;
-		audioSource.Play();
-		UnityEngine.Object.Destroy(gameObject, clip.length);
-		audioSource.rolloffMode = AudioRolloffMode.Linear;
-		audioSource.minDistance = 1f;
-		audioSource.maxDistance = 5f;
-		audioSource.spatialBlend = 1f;
-		this.VoiceClip = gameObject;
-		float y = this.Yandere.transform.position.y;
-		float y2 = gameObject.transform.position.y;
-		audioSource.volume = ((y >= y2 - 2f) ? 1f : 0f);
 	}
 }

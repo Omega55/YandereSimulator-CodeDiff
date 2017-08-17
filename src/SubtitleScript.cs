@@ -215,11 +215,15 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] TeacherTheftReactions;
 
+	public string[] RivalLostPhones;
+
 	public string[] StudentMurderReports;
 
 	public string[] YandereWhimpers;
 
 	public string[] SplashReactions;
+
+	public string[] RivalSplashReactions;
 
 	public string[] LightSwitchReactions;
 
@@ -337,9 +341,13 @@ public class SubtitleScript : MonoBehaviour
 
 	public AudioClip[] TeacherTheftClips;
 
+	public AudioClip[] RivalLostPhoneClips;
+
 	public AudioClip[] PickpocketReactionClips;
 
 	public AudioClip[] SplashReactionClips;
+
+	public AudioClip[] RivalSplashReactionClips;
 
 	public AudioClip[] DrownReactionClips;
 
@@ -516,12 +524,20 @@ public class SubtitleScript : MonoBehaviour
 				new AudioClipArrayWrapper(this.TeacherTheftClips)
 			},
 			{
+				"Rival Lost Phone",
+				new AudioClipArrayWrapper(this.RivalLostPhoneClips)
+			},
+			{
 				"Pickpocket Reaction",
 				new AudioClipArrayWrapper(this.PickpocketReactionClips)
 			},
 			{
 				"Splash Reaction",
 				new AudioClipArrayWrapper(this.SplashReactionClips)
+			},
+			{
+				"Rival Splash Reaction",
+				new AudioClipArrayWrapper(this.RivalSplashReactionClips)
 			},
 			{
 				"Drown Reaction",
@@ -872,6 +888,11 @@ public class SubtitleScript : MonoBehaviour
 			this.Label.text = this.TeacherTheftReactions[this.RandomID];
 			this.PlayVoice(ReactionType, this.RandomID);
 		}
+		else if (ReactionType == "Rival Lost Phone")
+		{
+			this.Label.text = this.RivalLostPhones[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
 		else if (ReactionType == "Murder Reaction")
 		{
 			this.Label.text = this.GetRandomString(this.MurderReactions);
@@ -1146,6 +1167,11 @@ public class SubtitleScript : MonoBehaviour
 		else if (ReactionType == "Splash Reaction")
 		{
 			this.Label.text = this.SplashReactions[ID];
+			this.PlayVoice(ReactionType, ID);
+		}
+		else if (ReactionType == "Rival Splash Reaction")
+		{
+			this.Label.text = this.RivalSplashReactions[ID];
 			this.PlayVoice(ReactionType, ID);
 		}
 		else if (ReactionType == "Light Switch Reaction")

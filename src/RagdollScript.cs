@@ -173,7 +173,7 @@ public class RagdollScript : MonoBehaviour
 			}
 		}
 		this.Prompt.enabled = true;
-		if (PlayerPrefs.GetInt("PhysicalGrade") + PlayerPrefs.GetInt("PhysicalBonus") > 0 && !this.Tranquil)
+		if (Globals.PhysicalGrade + Globals.PhysicalBonus > 0 && !this.Tranquil)
 		{
 			this.Prompt.HideButton[3] = false;
 		}
@@ -520,7 +520,7 @@ public class RagdollScript : MonoBehaviour
 		{
 			rigidbody.drag = 0f;
 		}
-		if (PlayerPrefs.GetInt("PhysicalGrade") + PlayerPrefs.GetInt("PhysicalBonus") > 0 && !this.Tranquil)
+		if (Globals.PhysicalGrade + Globals.PhysicalBonus > 0 && !this.Tranquil)
 		{
 			this.Prompt.HideButton[3] = false;
 		}
@@ -584,7 +584,7 @@ public class RagdollScript : MonoBehaviour
 		this.Prompt.Label[1].text = "     Drag";
 		this.Prompt.HideButton[1] = false;
 		this.Prompt.enabled = true;
-		if (PlayerPrefs.GetInt("PhysicalGrade") + PlayerPrefs.GetInt("PhysicalBonus") > 0 && !this.Tranquil)
+		if (Globals.PhysicalGrade + Globals.PhysicalBonus > 0 && !this.Tranquil)
 		{
 			this.Prompt.HideButton[3] = false;
 		}

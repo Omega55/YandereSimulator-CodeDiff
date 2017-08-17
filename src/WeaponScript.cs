@@ -512,7 +512,7 @@ public class WeaponScript : MonoBehaviour
 
 	public void SuspicionCheck()
 	{
-		if ((this.WeaponID == 9 && PlayerPrefs.GetInt("Club") == 9) || (this.WeaponID == 10 && PlayerPrefs.GetInt("Club") == 10) || (this.WeaponID == 12 && PlayerPrefs.GetInt("Club") == 9))
+		if ((this.WeaponID == 9 && Globals.Club == 9) || (this.WeaponID == 10 && Globals.Club == 10) || (this.WeaponID == 12 && Globals.Club == 9))
 		{
 			this.Suspicious = false;
 		}

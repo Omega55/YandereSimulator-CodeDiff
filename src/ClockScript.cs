@@ -140,7 +140,14 @@ public class ClockScript : MonoBehaviour
 		}
 		if (!this.StopTime)
 		{
-			this.PresentTime += Time.deltaTime * 0.0166666675f * this.TimeSpeed;
+			if (this.Period == 3)
+			{
+				this.PresentTime += Time.deltaTime * 0.0166666675f * this.TimeSpeed * 0.5f;
+			}
+			else
+			{
+				this.PresentTime += Time.deltaTime * 0.0166666675f * this.TimeSpeed;
+			}
 		}
 		if (this.PresentTime > 1440f)
 		{

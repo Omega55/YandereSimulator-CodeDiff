@@ -46,6 +46,8 @@ public class DebugMenuScript : MonoBehaviour
 
 	public bool MissionMode;
 
+	public bool NoDebug;
+
 	public int RooftopStudent = 7;
 
 	public int ID;
@@ -60,11 +62,15 @@ public class DebugMenuScript : MonoBehaviour
 		{
 			this.MissionMode = true;
 		}
+		if (Globals.LoveSick)
+		{
+			this.NoDebug = true;
+		}
 	}
 
 	private void Update()
 	{
-		if (!this.MissionMode)
+		if (!this.MissionMode && !this.NoDebug)
 		{
 			if (!this.Yandere.InClass && !this.Yandere.Chased && this.Yandere.CanMove)
 			{
@@ -233,7 +239,7 @@ public class DebugMenuScript : MonoBehaviour
 						this.ID = 1;
 						while (this.ID < 11)
 						{
-							PlayerPrefs.SetInt("Tape_" + this.ID.ToString() + "_Collected", 1);
+							Globals.SetTapeCollected(this.ID, true);
 							this.ID++;
 						}
 						this.Window.SetActive(false);
@@ -250,7 +256,7 @@ public class DebugMenuScript : MonoBehaviour
 						{
 							PlayerPrefs.SetInt(this.RooftopStudent.ToString() + "_Friend", 1);
 							this.Yandere.transform.position = this.RooftopSpot.position + new Vector3(1f, 0f, 0f);
-							this.WeaponManager.Weapons[6].transform.position = this.Yandere.transform.position;
+							this.WeaponManager.Weapons[6].transform.position = this.Yandere.transform.position + new Vector3(0f, 0f, 1.915f);
 							if (studentScript4 != null)
 							{
 								this.StudentManager.OfferHelp.UpdateLocation();
@@ -271,6 +277,8 @@ public class DebugMenuScript : MonoBehaviour
 								studentScript4.Pathfinding.target = this.RooftopSpot;
 								studentScript4.Pathfinding.canSearch = false;
 								studentScript4.Pathfinding.canMove = false;
+								studentScript4.SpeechLines.Stop();
+								studentScript4.Pushable = true;
 								studentScript4.Routine = false;
 								studentScript4.Meeting = true;
 								studentScript4.MeetTime = 0f;
@@ -295,7 +303,7 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					else if (Input.GetKeyDown("l"))
 					{
-						PlayerPrefs.SetInt("Event1", 1);
+						Globals.Event1 = true;
 						this.Window.SetActive(false);
 					}
 					else if (!Input.GetKeyDown("m"))
@@ -331,8 +339,8 @@ public class DebugMenuScript : MonoBehaviour
 						}
 						else if (Input.GetKeyDown("s"))
 						{
-							PlayerPrefs.SetInt("PhysicalGrade", 5);
-							PlayerPrefs.SetInt("Seduction", 5);
+							Globals.PhysicalGrade = 5;
+							Globals.Seduction = 5;
 							this.ID = 1;
 							while (this.ID < 101)
 							{
@@ -353,8 +361,8 @@ public class DebugMenuScript : MonoBehaviour
 							this.ID = 1;
 							while (this.ID < 26)
 							{
-								PlayerPrefs.SetInt("Topic_" + this.ID.ToString() + "_Student_7_Learned", 1);
-								PlayerPrefs.SetInt("Topic_" + this.ID.ToString() + "_Discovered", 1);
+								Globals.SetTopicLearnedByStudent(this.ID, 7, true);
+								Globals.SetTopicDiscovered(this.ID, true);
 								this.ID++;
 							}
 							this.Window.SetActive(false);
@@ -457,8 +465,13 @@ public class DebugMenuScript : MonoBehaviour
 						}
 						else if (Input.GetKeyDown("b"))
 						{
-							PlayerPrefs.SetInt("SuitorProgress", 2);
+							Globals.SuitorProgress = 2;
 							SceneManager.LoadScene("LoadingScene");
+						}
+						else if (Input.GetKeyDown("pause"))
+						{
+							this.Clock.StopTime = !this.Clock.StopTime;
+							this.Window.SetActive(false);
 						}
 					}
 				}

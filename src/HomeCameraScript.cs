@@ -87,7 +87,7 @@ public class HomeCameraScript : MonoBehaviour
 		this.Button.color = new Color(this.Button.color.r, this.Button.color.g, this.Button.color.b, 0f);
 		this.Focus.position = this.Target.position;
 		base.transform.position = this.Destination.position;
-		if (PlayerPrefs.GetInt("Night") == 1)
+		if (Globals.Night)
 		{
 			this.CeilingLight.SetActive(true);
 			this.SenpaiLight.SetActive(true);
@@ -236,19 +236,16 @@ public class HomeCameraScript : MonoBehaviour
 		}
 		if (Input.GetKeyDown("`"))
 		{
-			if (PlayerPrefs.GetInt("Night") == 0)
-			{
-				PlayerPrefs.SetInt("Night", 1);
-			}
-			else
-			{
-				PlayerPrefs.SetInt("Night", 0);
-			}
+			Globals.Night = !Globals.Night;
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		if (Input.GetKeyDown("="))
 		{
-			Time.timeScale = 100f;
+			Time.timeScale += 1f;
+		}
+		if (Input.GetKeyDown("-") && Time.timeScale > 1f)
+		{
+			Time.timeScale += 1f;
 		}
 	}
 

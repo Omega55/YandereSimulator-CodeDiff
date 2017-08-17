@@ -69,6 +69,7 @@ public class BatheEventScript : MonoBehaviour
 					this.EventStudent.InEvent = true;
 					this.EventStudent.Private = true;
 					this.EventStudent.Prompt.Hide();
+					this.EventStudent.Hearts.Stop();
 					this.EventActive = true;
 					if (this.EventStudent.Following)
 					{
@@ -122,7 +123,7 @@ public class BatheEventScript : MonoBehaviour
 							this.EventStudent.Routine = false;
 							this.StudentManager.CommunalLocker.Open = true;
 							this.EventSubtitle.text = this.EventSpeech[0];
-							this.PlayClip(this.EventClip[0], this.EventStudent.transform.position + Vector3.up);
+							AudioClipPlayer.Play(this.EventClip[0], this.EventStudent.transform.position + Vector3.up, 5f, 10f, out this.VoiceClip, out this.CurrentClipLength);
 							this.EventPhase++;
 						}
 						else
@@ -163,22 +164,6 @@ public class BatheEventScript : MonoBehaviour
 				}
 			}
 		}
-	}
-
-	private void PlayClip(AudioClip clip, Vector3 pos)
-	{
-		GameObject gameObject = new GameObject("TempAudio");
-		gameObject.transform.position = pos;
-		AudioSource audioSource = gameObject.AddComponent<AudioSource>();
-		audioSource.clip = clip;
-		audioSource.Play();
-		UnityEngine.Object.Destroy(gameObject, clip.length);
-		this.CurrentClipLength = clip.length;
-		audioSource.rolloffMode = AudioRolloffMode.Linear;
-		audioSource.minDistance = 5f;
-		audioSource.maxDistance = 10f;
-		audioSource.spatialBlend = 1f;
-		this.VoiceClip = gameObject;
 	}
 
 	private void EndEvent()

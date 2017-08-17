@@ -5,14 +5,25 @@ public class EmergencyExitScript : MonoBehaviour
 {
 	public StudentScript Student;
 
-	public Transform Pivot;
+	public Transform Yandere;
 
-	public bool Open;
+	public Transform Pivot;
 
 	public float Timer;
 
+	public bool Open;
+
 	private void Update()
 	{
+		if (Vector3.Distance(this.Yandere.position, base.transform.position) < 2f)
+		{
+			this.Open = true;
+		}
+		else if (this.Timer == 0f)
+		{
+			this.Student = null;
+			this.Open = false;
+		}
 		if (!this.Open)
 		{
 			this.Pivot.localEulerAngles = new Vector3(this.Pivot.localEulerAngles.x, Mathf.Lerp(this.Pivot.localEulerAngles.y, 0f, Time.deltaTime * 10f), this.Pivot.localEulerAngles.z);
@@ -20,22 +31,17 @@ public class EmergencyExitScript : MonoBehaviour
 		else
 		{
 			this.Pivot.localEulerAngles = new Vector3(this.Pivot.localEulerAngles.x, Mathf.Lerp(this.Pivot.localEulerAngles.y, 90f, Time.deltaTime * 10f), this.Pivot.localEulerAngles.z);
-			this.Timer -= Time.deltaTime;
-			if (this.Timer <= 0f)
-			{
-				this.Student = null;
-				this.Open = false;
-			}
+			this.Timer = Mathf.MoveTowards(this.Timer, 0f, Time.deltaTime);
 		}
 	}
 
 	private void OnTriggerStay(Collider other)
 	{
 		this.Student = other.gameObject.GetComponent<StudentScript>();
-		if (this.Student != null && this.Student.Fleeing)
+		if (this.Student != null)
 		{
-			this.Open = true;
 			this.Timer = 1f;
+			this.Open = true;
 		}
 	}
 }

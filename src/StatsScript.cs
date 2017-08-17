@@ -110,14 +110,14 @@ public class StatsScript : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.Backslash))
 		{
-			PlayerPrefs.SetInt("BiologyGrade", 1);
-			PlayerPrefs.SetInt("ChemistryGrade", 5);
-			PlayerPrefs.SetInt("LanguageGrade", 2);
-			PlayerPrefs.SetInt("PhysicalGrade", 4);
-			PlayerPrefs.SetInt("PsychologyGrade", 3);
-			PlayerPrefs.SetInt("Seduction", 4);
-			PlayerPrefs.SetInt("Numbness", 2);
-			PlayerPrefs.SetInt("Enlightenment", 5);
+			Globals.BiologyGrade = 1;
+			Globals.ChemistryGrade = 5;
+			Globals.LanguageGrade = 2;
+			Globals.PhysicalGrade = 4;
+			Globals.PsychologyGrade = 3;
+			Globals.Seduction = 4;
+			Globals.Numbness = 2;
+			Globals.Enlightenment = 5;
 			this.UpdateStats();
 		}
 		if (Input.GetButtonDown("B"))
@@ -136,7 +136,7 @@ public class StatsScript : MonoBehaviour
 
 	public void UpdateStats()
 	{
-		this.Grade = PlayerPrefs.GetInt("BiologyGrade");
+		this.Grade = Globals.BiologyGrade;
 		this.BarID = 1;
 		while (this.BarID < 6)
 		{
@@ -152,11 +152,11 @@ public class StatsScript : MonoBehaviour
 			}
 			this.BarID++;
 		}
-		if (PlayerPrefs.GetInt("BiologyGrade") < 5)
+		if (Globals.BiologyGrade < 5)
 		{
-			this.Subject1Bars[PlayerPrefs.GetInt("BiologyGrade") + 1].color = ((PlayerPrefs.GetInt("BiologyBonus") <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
+			this.Subject1Bars[Globals.BiologyGrade + 1].color = ((Globals.BiologyBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
 		}
-		this.Grade = PlayerPrefs.GetInt("ChemistryGrade");
+		this.Grade = Globals.ChemistryGrade;
 		this.BarID = 1;
 		while (this.BarID < 6)
 		{
@@ -172,11 +172,11 @@ public class StatsScript : MonoBehaviour
 			}
 			this.BarID++;
 		}
-		if (PlayerPrefs.GetInt("ChemistryGrade") < 5)
+		if (Globals.ChemistryGrade < 5)
 		{
-			this.Subject2Bars[PlayerPrefs.GetInt("ChemistryGrade") + 1].color = ((PlayerPrefs.GetInt("ChemistryBonus") <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
+			this.Subject2Bars[Globals.ChemistryGrade + 1].color = ((Globals.ChemistryBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
 		}
-		this.Grade = PlayerPrefs.GetInt("LanguageGrade");
+		this.Grade = Globals.LanguageGrade;
 		this.BarID = 1;
 		while (this.BarID < 6)
 		{
@@ -192,11 +192,11 @@ public class StatsScript : MonoBehaviour
 			}
 			this.BarID++;
 		}
-		if (PlayerPrefs.GetInt("LanguageGrade") < 5)
+		if (Globals.LanguageGrade < 5)
 		{
-			this.Subject3Bars[PlayerPrefs.GetInt("LanguageGrade") + 1].color = ((PlayerPrefs.GetInt("LanguageBonus") <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
+			this.Subject3Bars[Globals.LanguageGrade + 1].color = ((Globals.LanguageBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
 		}
-		this.Grade = PlayerPrefs.GetInt("PhysicalGrade");
+		this.Grade = Globals.PhysicalGrade;
 		this.BarID = 1;
 		while (this.BarID < 6)
 		{
@@ -212,11 +212,11 @@ public class StatsScript : MonoBehaviour
 			}
 			this.BarID++;
 		}
-		if (PlayerPrefs.GetInt("PhysicalGrade") < 5)
+		if (Globals.PhysicalGrade < 5)
 		{
-			this.Subject4Bars[PlayerPrefs.GetInt("PhysicalGrade") + 1].color = ((PlayerPrefs.GetInt("PhysicalBonus") <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
+			this.Subject4Bars[Globals.PhysicalGrade + 1].color = ((Globals.PhysicalBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
 		}
-		this.Grade = PlayerPrefs.GetInt("PsychologyGrade");
+		this.Grade = Globals.PsychologyGrade;
 		this.BarID = 1;
 		while (this.BarID < 6)
 		{
@@ -232,11 +232,11 @@ public class StatsScript : MonoBehaviour
 			}
 			this.BarID++;
 		}
-		if (PlayerPrefs.GetInt("PsychologyGrade") < 5)
+		if (Globals.PsychologyGrade < 5)
 		{
-			this.Subject5Bars[PlayerPrefs.GetInt("PsychologyGrade") + 1].color = ((PlayerPrefs.GetInt("PsychologyBonus") <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
+			this.Subject5Bars[Globals.PsychologyGrade + 1].color = ((Globals.PsychologyBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
 		}
-		this.Grade = PlayerPrefs.GetInt("Seduction");
+		this.Grade = Globals.Seduction;
 		this.BarID = 1;
 		while (this.BarID < 6)
 		{
@@ -252,11 +252,11 @@ public class StatsScript : MonoBehaviour
 			}
 			this.BarID++;
 		}
-		if (PlayerPrefs.GetInt("Seduction") < 5)
+		if (Globals.Seduction < 5)
 		{
-			this.Subject6Bars[PlayerPrefs.GetInt("Seduction") + 1].color = ((PlayerPrefs.GetInt("SeductionBonus") <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
+			this.Subject6Bars[Globals.Seduction + 1].color = ((Globals.SeductionBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
 		}
-		this.Grade = PlayerPrefs.GetInt("Numbness");
+		this.Grade = Globals.Numbness;
 		this.BarID = 1;
 		while (this.BarID < 6)
 		{
@@ -272,11 +272,11 @@ public class StatsScript : MonoBehaviour
 			}
 			this.BarID++;
 		}
-		if (PlayerPrefs.GetInt("Numbness") < 5)
+		if (Globals.Numbness < 5)
 		{
-			this.Subject7Bars[PlayerPrefs.GetInt("Numbness") + 1].color = ((PlayerPrefs.GetInt("NumbnessBonus") <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
+			this.Subject7Bars[Globals.Numbness + 1].color = ((Globals.NumbnessBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
 		}
-		this.Grade = PlayerPrefs.GetInt("Enlightenment");
+		this.Grade = Globals.Enlightenment;
 		this.BarID = 1;
 		while (this.BarID < 6)
 		{
@@ -292,21 +292,21 @@ public class StatsScript : MonoBehaviour
 			}
 			this.BarID++;
 		}
-		if (PlayerPrefs.GetInt("Enlightenment") < 5)
+		if (Globals.Enlightenment < 5)
 		{
-			this.Subject8Bars[PlayerPrefs.GetInt("Enlightenment") + 1].color = ((PlayerPrefs.GetInt("EnlightenmentBonus") <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
+			this.Subject8Bars[Globals.Enlightenment + 1].color = ((Globals.EnlightenmentBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
 		}
-		this.Ranks[1].text = "Rank: " + PlayerPrefs.GetInt("BiologyGrade").ToString();
-		this.Ranks[2].text = "Rank: " + PlayerPrefs.GetInt("ChemistryGrade").ToString();
-		this.Ranks[3].text = "Rank: " + PlayerPrefs.GetInt("LanguageGrade").ToString();
-		this.Ranks[4].text = "Rank: " + PlayerPrefs.GetInt("PhysicalGrade").ToString();
-		this.Ranks[5].text = "Rank: " + PlayerPrefs.GetInt("PsychologyGrade").ToString();
-		this.Ranks[6].text = "Rank: " + PlayerPrefs.GetInt("Seduction").ToString();
-		this.Ranks[7].text = "Rank: " + PlayerPrefs.GetInt("Numbness").ToString();
-		this.Ranks[8].text = "Rank: " + PlayerPrefs.GetInt("Enlightenment").ToString();
-		int @int = PlayerPrefs.GetInt("Club");
+		this.Ranks[1].text = "Rank: " + Globals.BiologyGrade.ToString();
+		this.Ranks[2].text = "Rank: " + Globals.ChemistryGrade.ToString();
+		this.Ranks[3].text = "Rank: " + Globals.LanguageGrade.ToString();
+		this.Ranks[4].text = "Rank: " + Globals.PhysicalGrade.ToString();
+		this.Ranks[5].text = "Rank: " + Globals.PsychologyGrade.ToString();
+		this.Ranks[6].text = "Rank: " + Globals.Seduction.ToString();
+		this.Ranks[7].text = "Rank: " + Globals.Numbness.ToString();
+		this.Ranks[8].text = "Rank: " + Globals.Enlightenment.ToString();
+		int club = Globals.Club;
 		string str;
-		bool flag = this.ClubLabels.TryGetValue(@int, out str);
+		bool flag = this.ClubLabels.TryGetValue(club, out str);
 		this.ClubLabel.text = "Club: " + str;
 	}
 }

@@ -75,7 +75,7 @@ public class HomeYandereScript : MonoBehaviour
 			{
 				base.transform.position = Vector3.zero;
 				base.transform.eulerAngles = Vector3.zero;
-				if (PlayerPrefs.GetInt("Night") == 0)
+				if (!Globals.Night)
 				{
 					this.ChangeSchoolwear();
 					base.StartCoroutine(this.ApplyCustomCostume());
@@ -85,9 +85,9 @@ public class HomeYandereScript : MonoBehaviour
 					this.WearPajamas();
 				}
 			}
-			else if (PlayerPrefs.GetInt("StartInBasement") == 1)
+			else if (Globals.StartInBasement)
 			{
-				PlayerPrefs.SetInt("StartInBasement", 0);
+				Globals.StartInBasement = false;
 				base.transform.position = new Vector3(0f, -135f, 0f);
 				base.transform.eulerAngles = Vector3.zero;
 			}

@@ -9,9 +9,13 @@ public class TitleMenuScript : MonoBehaviour
 
 	public InputManagerScript InputManager;
 
+	public SelectiveGrayscale Grayscale;
+
 	public TitleSponsorScript Sponsors;
 
 	public PromptBarScript PromptBar;
+
+	public SSAOEffect SSAO;
 
 	public UISprite[] MediumSprites;
 
@@ -29,13 +33,31 @@ public class TitleMenuScript : MonoBehaviour
 
 	public Color DarkColor;
 
+	public Transform VictimHead;
+
+	public Transform RightHand;
+
+	public Transform TwintailL;
+
+	public Transform TwintailR;
+
+	public Animation LoveSickYandere;
+
 	public GameObject BloodProjector;
+
+	public GameObject LoveSickLogo;
 
 	public GameObject BloodCamera;
 
 	public GameObject Yandere;
 
 	public GameObject Knife;
+
+	public GameObject Logo;
+
+	public GameObject Sun;
+
+	public AudioSource LoveSickMusic;
 
 	public AudioSource CuteMusic;
 
@@ -53,17 +75,33 @@ public class TitleMenuScript : MonoBehaviour
 
 	public Transform[] Arm;
 
-	public AudioSource Jukebox;
-
 	public UISprite Darkness;
 
+	public Vector3 PermaPositionL;
+
+	public Vector3 PermaPositionR;
+
+	public bool LoveSick;
+
 	public bool FadeOut;
+
+	public bool Turning;
 
 	public bool Fading = true;
 
 	private int SelectionCount = 9;
 
 	private int Selected;
+
+	public float InputTimer;
+
+	public float FadeSpeed = 1f;
+
+	public float LateTimer;
+
+	public float RotationY;
+
+	public float RotationZ;
 
 	public float Volume;
 
@@ -80,24 +118,72 @@ public class TitleMenuScript : MonoBehaviour
 
 	private void Start()
 	{
+		if (Globals.LoveSick)
+		{
+			this.LoveSick = true;
+		}
 		this.PromptBar.Label[0].text = "Confirm";
 		this.PromptBar.Label[1].text = string.Empty;
 		this.PromptBar.UpdateButtons();
-		this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 1f);
-		Time.timeScale = 1f;
 		this.MediumColor = this.MediumSprites[0].color;
 		this.LightColor = this.LightSprites[0].color;
 		this.DarkColor = this.DarkSprites[0].color;
-		this.TurnCute();
-		RenderSettings.ambientLight = new Color(0.75f, 0.75f, 0.75f, 1f);
-		RenderSettings.skybox.SetColor("_Tint", new Color(0.5f, 0.5f, 0.5f));
+		if (!this.LoveSick)
+		{
+			base.transform.position = new Vector3(base.transform.position.x, 1.2f, base.transform.position.z);
+			this.LoveSickLogo.SetActive(false);
+			this.LoveSickMusic.volume = 0f;
+			this.Grayscale.enabled = false;
+			this.SSAO.enabled = false;
+			this.Sun.SetActive(true);
+			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 1f);
+			this.TurnCute();
+			RenderSettings.ambientLight = new Color(0.75f, 0.75f, 0.75f, 1f);
+			RenderSettings.skybox.SetColor("_Tint", new Color(0.5f, 0.5f, 0.5f));
+		}
+		else
+		{
+			base.transform.position = new Vector3(base.transform.position.x, 101.2f, base.transform.position.z);
+			this.Sun.SetActive(false);
+			this.SSAO.enabled = true;
+			this.FadeSpeed = 0.2f;
+			this.Darkness.color = new Color(0f, 0f, 0f, 1f);
+			this.TurnLoveSick();
+		}
+		Time.timeScale = 1f;
 	}
 
 	private void Update()
 	{
+		if (this.LoveSick)
+		{
+			this.Timer += Time.deltaTime * 0.001f;
+			if (base.transform.position.z > -18f)
+			{
+				this.LateTimer = Mathf.Lerp(this.LateTimer, this.Timer, Time.deltaTime);
+				this.RotationY = Mathf.Lerp(this.RotationY, -22.5f, Time.deltaTime * this.LateTimer);
+			}
+			this.RotationZ = Mathf.Lerp(this.RotationZ, 22.5f, Time.deltaTime * this.Timer);
+			base.transform.position = Vector3.Lerp(base.transform.position, new Vector3(0.33333f, 101.45f, -16.5f), Time.deltaTime * this.Timer);
+			base.transform.eulerAngles = new Vector3(0f, this.RotationY, this.RotationZ);
+			if (!this.Turning)
+			{
+				if (base.transform.position.z > -17f)
+				{
+					this.LoveSickYandere.CrossFade("f02_edgyTurn_00");
+					this.VictimHead.parent = this.RightHand;
+					this.Turning = true;
+				}
+			}
+			else if (this.LoveSickYandere["f02_edgyTurn_00"].time >= this.LoveSickYandere["f02_edgyTurn_00"].length)
+			{
+				this.LoveSickYandere.CrossFade("f02_edgyOverShoulder_00");
+			}
+		}
 		if (!this.Sponsors.Show)
 		{
-			if (!this.Fading)
+			this.InputTimer += Time.deltaTime;
+			if (this.InputTimer > 1f)
 			{
 				if (this.InputManager.TappedDown)
 				{
@@ -116,13 +202,15 @@ public class TitleMenuScript : MonoBehaviour
 				{
 					if (this.Selected == 0 || this.Selected == 3 || this.Selected == 6 || this.Selected == 8)
 					{
-						this.Darkness.color = new Color(0f, 0f, 0f, 0f);
+						this.Darkness.color = new Color(0f, 0f, 0f, this.Darkness.color.a);
+						this.InputTimer = -10f;
 						this.FadeOut = true;
 						this.Fading = true;
 					}
 					if (this.Selected == 2)
 					{
-						this.Darkness.color = new Color(1f, 1f, 1f, 0f);
+						this.Darkness.color = new Color(1f, 1f, 1f, this.Darkness.color.a);
+						this.InputTimer = -10f;
 						this.FadeOut = true;
 						this.Fading = true;
 					}
@@ -133,63 +221,77 @@ public class TitleMenuScript : MonoBehaviour
 						this.PromptBar.UpdateButtons();
 						this.Sponsors.Show = true;
 					}
-					this.TurnCute();
-				}
-				if (Input.GetKeyDown("space"))
-				{
-					this.Timer = 10f;
-				}
-				this.Timer += Time.deltaTime;
-				if (this.Timer > 10f)
-				{
-					this.TurnDark();
-				}
-				if (this.Timer > 11f)
-				{
-					this.TurnCute();
-				}
-			}
-			else if (!this.FadeOut)
-			{
-				if (this.Darkness.color.a > 0f)
-				{
-					this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a - Time.deltaTime);
-					if (this.Darkness.color.a <= 0f)
+					if (!this.LoveSick)
 					{
-						this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 0f);
-						this.Fading = false;
+						this.TurnCute();
+					}
+				}
+				if (!this.LoveSick)
+				{
+					if (Input.GetKeyDown("space"))
+					{
+						this.Timer = 10f;
+					}
+					this.Timer += Time.deltaTime;
+					if (this.Timer > 10f)
+					{
+						this.TurnDark();
+					}
+					if (this.Timer > 11f)
+					{
+						this.TurnCute();
 					}
 				}
 			}
-			else if (this.Darkness.color.a < 1f)
+			if (this.Fading)
 			{
-				this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a + Time.deltaTime);
-				if (this.Darkness.color.a >= 1f)
+				if (!this.FadeOut)
 				{
-					if (this.Selected == 0)
+					if (this.Darkness.color.a > 0f)
 					{
-						PlayerPrefs.SetInt("MissionMode", 0);
-						SceneManager.LoadScene("CalendarScene");
-					}
-					else if (this.Selected == 2)
-					{
-						PlayerPrefs.DeleteAll();
-						SceneManager.LoadScene("SenpaiScene");
-					}
-					else if (this.Selected == 3)
-					{
-						SceneManager.LoadScene("MissionModeScene");
-					}
-					else if (this.Selected == 6)
-					{
-						SceneManager.LoadScene("CreditsScene");
-					}
-					else if (this.Selected == 8)
-					{
-						Application.Quit();
+						this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a - Time.deltaTime * this.FadeSpeed);
+						if (this.Darkness.color.a <= 0f)
+						{
+							this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 0f);
+							this.Fading = false;
+						}
 					}
 				}
-				this.Jukebox.volume -= Time.deltaTime;
+				else if (this.Darkness.color.a < 1f)
+				{
+					this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a + Time.deltaTime);
+					if (this.Darkness.color.a >= 1f)
+					{
+						if (this.Selected == 0)
+						{
+							PlayerPrefs.SetInt("MissionMode", 0);
+							SceneManager.LoadScene("CalendarScene");
+						}
+						else if (this.Selected == 2)
+						{
+							PlayerPrefs.DeleteAll();
+							if (this.LoveSick)
+							{
+								Globals.LoveSick = true;
+							}
+							SceneManager.LoadScene("SenpaiScene");
+						}
+						else if (this.Selected == 3)
+						{
+							SceneManager.LoadScene("MissionModeScene");
+						}
+						else if (this.Selected == 6)
+						{
+							SceneManager.LoadScene("CreditsScene");
+						}
+						else if (this.Selected == 8)
+						{
+							Application.Quit();
+						}
+					}
+					this.LoveSickMusic.volume -= Time.deltaTime;
+					this.CuteMusic.volume -= Time.deltaTime;
+				}
 			}
 		}
 		else
@@ -218,6 +320,14 @@ public class TitleMenuScript : MonoBehaviour
 			Animation component = this.Yandere.GetComponent<Animation>();
 			component["f02_yanderePose_00"].weight = 0f;
 			component["f02_fist_00"].weight = 0f;
+		}
+		if (Input.GetKeyDown("-"))
+		{
+			Time.timeScale -= 1f;
+		}
+		if (Input.GetKeyDown("="))
+		{
+			Time.timeScale += 1f;
 		}
 	}
 
@@ -313,6 +423,32 @@ public class TitleMenuScript : MonoBehaviour
 			uilabel.color = new Color(1f, 1f, 1f, uilabel.color.a);
 		}
 		this.SimulatorLabel.color = this.MediumColor;
+	}
+
+	private void TurnLoveSick()
+	{
+		RenderSettings.ambientLight = new Color(0.25f, 0.25f, 0.25f, 1f);
+		this.CuteMusic.volume = 0f;
+		this.DarkMusic.volume = 0f;
+		this.LoveSickMusic.volume = 1f;
+		foreach (UISprite uisprite in this.MediumSprites)
+		{
+			uisprite.color = new Color(0f, 0f, 0f, uisprite.color.a);
+		}
+		foreach (UISprite uisprite2 in this.LightSprites)
+		{
+			uisprite2.color = new Color(1f, 0f, 0f, uisprite2.color.a);
+		}
+		foreach (UISprite uisprite3 in this.DarkSprites)
+		{
+			uisprite3.color = new Color(1f, 0f, 0f, uisprite3.color.a);
+		}
+		foreach (UILabel uilabel in this.ColoredLabels)
+		{
+			uilabel.color = new Color(1f, 0f, 0f, uilabel.color.a);
+		}
+		this.LoveSickLogo.SetActive(true);
+		this.Logo.SetActive(false);
 	}
 
 	private void SetLayerRecursively(GameObject obj, int newLayer)

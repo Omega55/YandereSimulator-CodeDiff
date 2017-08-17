@@ -449,15 +449,15 @@ public class TapePlayerMenuScript : MonoBehaviour
 				bool flag = false;
 				if (this.Category == 1)
 				{
-					if (PlayerPrefs.GetInt("Tape_" + this.Selected.ToString() + "_Collected") == 1)
+					if (Globals.GetTapeCollected(this.Selected))
 					{
-						PlayerPrefs.SetInt("Tape_" + this.Selected.ToString() + "_Listened", 1);
+						Globals.SetTapeListened(this.Selected, true);
 						flag = true;
 					}
 				}
-				else if (PlayerPrefs.GetInt("BasementTape_" + this.Selected.ToString() + "_Collected") == 1)
+				else if (Globals.GetBasementTapeCollected(this.Selected))
 				{
-					PlayerPrefs.SetInt("BasementTape_" + this.Selected.ToString() + "_Listened", 1);
+					Globals.SetBasementTapeListened(this.Selected, true);
 					flag = true;
 				}
 				if (flag)
@@ -513,10 +513,10 @@ public class TapePlayerMenuScript : MonoBehaviour
 			if (this.Category == 1)
 			{
 				this.HeaderLabel.text = "Mysterious Tapes";
-				if (PlayerPrefs.GetInt("Tape_" + i.ToString() + "_Collected") == 1)
+				if (Globals.GetTapeCollected(i))
 				{
 					this.TapeLabels[i].text = "Mysterious Tape " + i.ToString();
-					this.NewIcons[i].SetActive(PlayerPrefs.GetInt("Tape_" + i.ToString() + "_Listened") != 1);
+					this.NewIcons[i].SetActive(!Globals.GetTapeListened(i));
 				}
 				else
 				{
@@ -527,10 +527,10 @@ public class TapePlayerMenuScript : MonoBehaviour
 			else
 			{
 				this.HeaderLabel.text = "Basement Tapes";
-				if (PlayerPrefs.GetInt("BasementTape_" + i.ToString() + "_Collected") == 1)
+				if (Globals.GetBasementTapeCollected(i))
 				{
 					this.TapeLabels[i].text = "Basement Tape " + i.ToString();
-					this.NewIcons[i].SetActive(PlayerPrefs.GetInt("BasementTape_" + i.ToString() + "_Listened") != 1);
+					this.NewIcons[i].SetActive(!Globals.GetBasementTapeListened(i));
 				}
 				else
 				{
@@ -545,12 +545,12 @@ public class TapePlayerMenuScript : MonoBehaviour
 	{
 		if (this.Category == 1)
 		{
-			this.TapePlayer.PromptBar.Label[0].text = ((PlayerPrefs.GetInt("Tape_" + this.Selected.ToString() + "_Collected") != 1) ? string.Empty : "PLAY");
+			this.TapePlayer.PromptBar.Label[0].text = ((!Globals.GetTapeCollected(this.Selected)) ? string.Empty : "PLAY");
 			this.TapePlayer.PromptBar.UpdateButtons();
 		}
 		else
 		{
-			this.TapePlayer.PromptBar.Label[0].text = ((PlayerPrefs.GetInt("BasementTape_" + this.Selected.ToString() + "_Collected") != 1) ? string.Empty : "PLAY");
+			this.TapePlayer.PromptBar.Label[0].text = ((!Globals.GetBasementTapeCollected(this.Selected)) ? string.Empty : "PLAY");
 			this.TapePlayer.PromptBar.UpdateButtons();
 		}
 	}

@@ -72,11 +72,11 @@ public class ClassScript : MonoBehaviour
 	private void Start()
 	{
 		this.GradeUpWindow.localScale = Vector3.zero;
-		this.Subject[1] = PlayerPrefs.GetInt("Biology");
-		this.Subject[2] = PlayerPrefs.GetInt("Chemistry");
-		this.Subject[3] = PlayerPrefs.GetInt("Language");
-		this.Subject[4] = PlayerPrefs.GetInt("Physical");
-		this.Subject[5] = PlayerPrefs.GetInt("Psychology");
+		this.Subject[1] = Globals.Biology;
+		this.Subject[2] = Globals.Chemistry;
+		this.Subject[3] = Globals.Language;
+		this.Subject[4] = Globals.Physical;
+		this.Subject[5] = Globals.Psychology;
 		this.DescLabel.text = this.Desc[this.Selected];
 		this.UpdateSubjectLabels();
 		this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 1f);
@@ -140,11 +140,11 @@ public class ClassScript : MonoBehaviour
 					this.Show = false;
 					this.PromptBar.ClearButtons();
 					this.PromptBar.Show = false;
-					PlayerPrefs.SetInt("Biology", this.Subject[1] + this.SubjectTemp[1]);
-					PlayerPrefs.SetInt("Chemistry", this.Subject[2] + this.SubjectTemp[2]);
-					PlayerPrefs.SetInt("Language", this.Subject[3] + this.SubjectTemp[3]);
-					PlayerPrefs.SetInt("Physical", this.Subject[4] + this.SubjectTemp[4]);
-					PlayerPrefs.SetInt("Psychology", this.Subject[5] + this.SubjectTemp[5]);
+					Globals.Biology = this.Subject[1] + this.SubjectTemp[1];
+					Globals.Chemistry = this.Subject[2] + this.SubjectTemp[2];
+					Globals.Language = this.Subject[3] + this.SubjectTemp[3];
+					Globals.Physical = this.Subject[4] + this.SubjectTemp[4];
+					Globals.Psychology = this.Subject[5] + this.SubjectTemp[5];
 					for (int i = 0; i < 6; i++)
 					{
 						this.Subject[i] += this.SubjectTemp[i];
@@ -176,7 +176,7 @@ public class ClassScript : MonoBehaviour
 						this.CheckForGradeUp();
 						if (!this.GradeUp)
 						{
-							if (PlayerPrefs.GetInt("ChemistryGrade") > 0 && this.Poison != null)
+							if (Globals.ChemistryGrade > 0 && this.Poison != null)
 							{
 								this.Poison.SetActive(true);
 							}
@@ -354,65 +354,65 @@ public class ClassScript : MonoBehaviour
 
 	private void CheckForGradeUp()
 	{
-		if (PlayerPrefs.GetInt("Biology") >= 20 && PlayerPrefs.GetInt("BiologyGrade") < 1)
+		if (Globals.Biology >= 20 && Globals.BiologyGrade < 1)
 		{
-			PlayerPrefs.SetInt("BiologyGrade", 1);
+			Globals.BiologyGrade = 1;
 			this.GradeUpSubject = 1;
 			this.GradeUp = true;
 			this.Grade = 1;
 		}
-		else if (PlayerPrefs.GetInt("Chemistry") >= 20 && PlayerPrefs.GetInt("ChemistryGrade") < 1)
+		else if (Globals.Chemistry >= 20 && Globals.ChemistryGrade < 1)
 		{
-			PlayerPrefs.SetInt("ChemistryGrade", 1);
+			Globals.ChemistryGrade = 1;
 			this.GradeUpSubject = 2;
 			this.GradeUp = true;
 			this.Grade = 1;
 		}
-		else if (PlayerPrefs.GetInt("Language") >= 20 && PlayerPrefs.GetInt("LanguageGrade") < 1)
+		else if (Globals.Language >= 20 && Globals.LanguageGrade < 1)
 		{
-			PlayerPrefs.SetInt("LanguageGrade", 1);
+			Globals.LanguageGrade = 1;
 			this.GradeUpSubject = 3;
 			this.GradeUp = true;
 			this.Grade = 1;
 		}
-		else if (PlayerPrefs.GetInt("Physical") >= 20 && PlayerPrefs.GetInt("PhysicalGrade") < 1)
+		else if (Globals.Physical >= 20 && Globals.PhysicalGrade < 1)
 		{
-			PlayerPrefs.SetInt("PhysicalGrade", 1);
+			Globals.PhysicalGrade = 1;
 			this.GradeUpSubject = 4;
 			this.GradeUp = true;
 			this.Grade = 1;
 		}
-		else if (PlayerPrefs.GetInt("Physical") >= 40 && PlayerPrefs.GetInt("PhysicalGrade") < 2)
+		else if (Globals.Physical >= 40 && Globals.PhysicalGrade < 2)
 		{
-			PlayerPrefs.SetInt("PhysicalGrade", 2);
+			Globals.PhysicalGrade = 2;
 			this.GradeUpSubject = 4;
 			this.GradeUp = true;
 			this.Grade = 2;
 		}
-		else if (PlayerPrefs.GetInt("Physical") >= 60 && PlayerPrefs.GetInt("PhysicalGrade") < 3)
+		else if (Globals.Physical >= 60 && Globals.PhysicalGrade < 3)
 		{
-			PlayerPrefs.SetInt("PhysicalGrade", 3);
+			Globals.PhysicalGrade = 3;
 			this.GradeUpSubject = 4;
 			this.GradeUp = true;
 			this.Grade = 3;
 		}
-		else if (PlayerPrefs.GetInt("Physical") >= 80 && PlayerPrefs.GetInt("PhysicalGrade") < 4)
+		else if (Globals.Physical >= 80 && Globals.PhysicalGrade < 4)
 		{
-			PlayerPrefs.SetInt("PhysicalGrade", 4);
+			Globals.PhysicalGrade = 4;
 			this.GradeUpSubject = 4;
 			this.GradeUp = true;
 			this.Grade = 4;
 		}
-		else if (PlayerPrefs.GetInt("Physical") == 100 && PlayerPrefs.GetInt("PhysicalGrade") < 5)
+		else if (Globals.Physical == 100 && Globals.PhysicalGrade < 5)
 		{
-			PlayerPrefs.SetInt("PhysicalGrade", 5);
+			Globals.PhysicalGrade = 5;
 			this.GradeUpSubject = 4;
 			this.GradeUp = true;
 			this.Grade = 5;
 		}
-		else if (PlayerPrefs.GetInt("Psychology") >= 20 && PlayerPrefs.GetInt("PsychologyGrade") < 1)
+		else if (Globals.Psychology >= 20 && Globals.PsychologyGrade < 1)
 		{
-			PlayerPrefs.SetInt("PsychologyGrade", 1);
+			Globals.PsychologyGrade = 1;
 			this.GradeUpSubject = 5;
 			this.GradeUp = true;
 			this.Grade = 1;
@@ -421,29 +421,29 @@ public class ClassScript : MonoBehaviour
 
 	private void GivePoints()
 	{
-		PlayerPrefs.SetInt("BiologyGrade", 0);
-		PlayerPrefs.SetInt("ChemistryGrade", 0);
-		PlayerPrefs.SetInt("LanguageGrade", 0);
-		PlayerPrefs.SetInt("PhysicalGrade", 0);
-		PlayerPrefs.SetInt("PsychologyGrade", 0);
-		PlayerPrefs.SetInt("Biology", 19);
-		PlayerPrefs.SetInt("Chemistry", 19);
-		PlayerPrefs.SetInt("Language", 19);
-		PlayerPrefs.SetInt("Physical", 19);
-		PlayerPrefs.SetInt("Psychology", 19);
-		this.Subject[1] = PlayerPrefs.GetInt("Biology");
-		this.Subject[2] = PlayerPrefs.GetInt("Chemistry");
-		this.Subject[3] = PlayerPrefs.GetInt("Language");
-		this.Subject[4] = PlayerPrefs.GetInt("Physical");
-		this.Subject[5] = PlayerPrefs.GetInt("Psychology");
+		Globals.BiologyGrade = 0;
+		Globals.ChemistryGrade = 0;
+		Globals.LanguageGrade = 0;
+		Globals.PhysicalGrade = 0;
+		Globals.PsychologyGrade = 0;
+		Globals.Biology = 19;
+		Globals.Chemistry = 19;
+		Globals.Language = 19;
+		Globals.Physical = 19;
+		Globals.Psychology = 19;
+		this.Subject[1] = Globals.Biology;
+		this.Subject[2] = Globals.Chemistry;
+		this.Subject[3] = Globals.Language;
+		this.Subject[4] = Globals.Physical;
+		this.Subject[5] = Globals.Psychology;
 		this.UpdateBars();
 	}
 
 	private void MaxPhysical()
 	{
-		PlayerPrefs.SetInt("PhysicalGrade", 0);
-		PlayerPrefs.SetInt("Physical", 99);
-		this.Subject[4] = PlayerPrefs.GetInt("Physical");
+		Globals.PhysicalGrade = 0;
+		Globals.Physical = 99;
+		this.Subject[4] = Globals.Physical;
 		this.UpdateBars();
 	}
 }

@@ -197,7 +197,7 @@ public class RingEventScript : MonoBehaviour
 					else if (this.Timer > 1.5f && this.Yandere.transform.position.z < 0f)
 					{
 						this.EventSubtitle.text = this.EventSpeech[0];
-						this.PlayClip(this.EventClip[0], this.EventStudent.transform.position + Vector3.up);
+						AudioClipPlayer.Play(this.EventClip[0], this.EventStudent.transform.position + Vector3.up, 5f, 10f, out this.VoiceClip, out this.CurrentClipLength);
 						this.EventPhase++;
 					}
 				}
@@ -232,22 +232,6 @@ public class RingEventScript : MonoBehaviour
 				}
 			}
 		}
-	}
-
-	private void PlayClip(AudioClip clip, Vector3 pos)
-	{
-		GameObject gameObject = new GameObject("TempAudio");
-		gameObject.transform.position = pos;
-		AudioSource audioSource = gameObject.AddComponent<AudioSource>();
-		audioSource.clip = clip;
-		audioSource.Play();
-		UnityEngine.Object.Destroy(gameObject, clip.length);
-		this.CurrentClipLength = clip.length;
-		audioSource.rolloffMode = AudioRolloffMode.Linear;
-		audioSource.minDistance = 5f;
-		audioSource.maxDistance = 10f;
-		audioSource.spatialBlend = 1f;
-		this.VoiceClip = gameObject;
 	}
 
 	private void EndEvent()

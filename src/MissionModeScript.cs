@@ -201,6 +201,10 @@ public class MissionModeScript : MonoBehaviour
 		this.MissionModeHUD.SetActive(false);
 		this.ExitPortal.SetActive(false);
 		this.Safe.SetActive(false);
+		if (PlayerPrefs.GetInt("LoveSick") == 1)
+		{
+			this.MurderKit.SetActive(false);
+		}
 		if (PlayerPrefs.GetInt("MissionMode") == 1)
 		{
 			this.Yandere.HeartRate.MediumColour = new Color(1f, 0.5f, 0.5f, 1f);
@@ -833,11 +837,11 @@ public class MissionModeScript : MonoBehaviour
 		PlayerPrefs.SetInt("MissionRequiredWeapon", this.RequiredWeaponID);
 		PlayerPrefs.SetInt("MissionRequiredClothing", this.RequiredClothingID);
 		PlayerPrefs.SetInt("MissionRequiredDisposal", this.RequiredDisposalID);
-		PlayerPrefs.SetInt("BiologyGrade", 1);
-		PlayerPrefs.SetInt("ChemistryGrade", 1);
-		PlayerPrefs.SetInt("LanguageGrade", 1);
-		PlayerPrefs.SetInt("PhysicalGrade", 1);
-		PlayerPrefs.SetInt("PsychologyGrade", 1);
+		Globals.BiologyGrade = 1;
+		Globals.ChemistryGrade = 1;
+		Globals.LanguageGrade = 1;
+		Globals.PhysicalGrade = 1;
+		Globals.PsychologyGrade = 1;
 		this.ID = 2;
 		while (this.ID < 11)
 		{

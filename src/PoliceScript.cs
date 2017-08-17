@@ -290,7 +290,7 @@ public class PoliceScript : MonoBehaviour
 				this.DetectionCamera.SetActive(false);
 				if (this.ClubActivity)
 				{
-					this.ClubManager.Club = PlayerPrefs.GetInt("Club");
+					this.ClubManager.Club = Globals.Club;
 					this.ClubManager.ClubActivity();
 					this.FadeOut = false;
 				}

@@ -169,15 +169,15 @@ public class TalkingScript : MonoBehaviour
 					this.S.Reputation.PendingRep -= 2f;
 					this.S.PendingRep -= 2f;
 					this.S.Gossiped = true;
-					if (PlayerPrefs.GetInt("Topic_15_Discovered") == 0)
+					if (!Globals.GetTopicDiscovered(15))
 					{
 						this.S.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
-						PlayerPrefs.SetInt("Topic_15_Discovered", 1);
+						Globals.SetTopicDiscovered(15, true);
 					}
-					if (PlayerPrefs.GetInt("Topic_15_Student_" + this.S.StudentID.ToString() + "_Learned") == 0)
+					if (!Globals.GetTopicLearnedByStudent(15, this.S.StudentID))
 					{
 						this.S.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
-						PlayerPrefs.SetInt("Topic_15_Student_" + this.S.StudentID.ToString() + "_Learned", 1);
+						Globals.SetTopicLearnedByStudent(15, this.S.StudentID, true);
 					}
 				}
 				else
@@ -699,7 +699,7 @@ public class TalkingScript : MonoBehaviour
 					}
 					if (this.S.TalkTimer <= 0f)
 					{
-						PlayerPrefs.SetInt("Club", 0);
+						Globals.Club = 0;
 						this.S.DialogueWheel.End();
 					}
 				}
@@ -717,7 +717,7 @@ public class TalkingScript : MonoBehaviour
 					}
 					else
 					{
-						PlayerPrefs.SetInt("SuitorProgress", 1);
+						Globals.SuitorProgress = 1;
 						this.S.Yandere.LoveManager.SuitorProgress++;
 						this.S.Subtitle.UpdateLabel("Suitor Love", 1, 3f);
 						this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod1Anim);

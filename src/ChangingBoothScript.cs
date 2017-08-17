@@ -143,7 +143,7 @@ public class ChangingBoothScript : MonoBehaviour
 		{
 			if (!this.Occupied)
 			{
-				if (PlayerPrefs.GetInt("Club") != this.ClubID)
+				if (Globals.Club != this.ClubID)
 				{
 					this.Prompt.Hide();
 					this.Prompt.enabled = false;

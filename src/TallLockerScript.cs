@@ -229,9 +229,9 @@ public class TallLockerScript : MonoBehaviour
 						{
 							if (this.RemovingClubAttire)
 							{
-								UnityEngine.Object.Instantiate<GameObject>(this.BloodyClubUniform[PlayerPrefs.GetInt("Club")], this.Yandere.transform.position + Vector3.forward * 0.5f + Vector3.up, Quaternion.identity);
-								this.StudentManager.ChangingBooths[PlayerPrefs.GetInt("Club")].CannotChange = true;
-								this.StudentManager.ChangingBooths[PlayerPrefs.GetInt("Club")].CheckYandereClub();
+								UnityEngine.Object.Instantiate<GameObject>(this.BloodyClubUniform[Globals.Club], this.Yandere.transform.position + Vector3.forward * 0.5f + Vector3.up, Quaternion.identity);
+								this.StudentManager.ChangingBooths[Globals.Club].CannotChange = true;
+								this.StudentManager.ChangingBooths[Globals.Club].CheckYandereClub();
 								this.Prompt.HideButton[1] = true;
 								this.Prompt.HideButton[2] = true;
 								this.Prompt.HideButton[3] = true;

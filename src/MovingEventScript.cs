@@ -108,7 +108,7 @@ public class MovingEventScript : MonoBehaviour
 						{
 							if (this.Timer == 0f)
 							{
-								this.PlayClip(this.EventClip[1], this.EventStudent.transform.position + Vector3.up * 1.5f);
+								AudioClipPlayer.Play(this.EventClip[1], this.EventStudent.transform.position + Vector3.up * 1.5f, 5f, 10f, out this.VoiceClip);
 								this.EventStudent.Character.GetComponent<Animation>().CrossFade(this.EventStudent.IdleAnim);
 								if (this.Distance < 10f)
 								{
@@ -166,7 +166,7 @@ public class MovingEventScript : MonoBehaviour
 					}
 					else if (this.EventPhase == 3)
 					{
-						this.PlayClip(this.EventClip[2], this.EventStudent.transform.position + Vector3.up * 1.5f);
+						AudioClipPlayer.Play(this.EventClip[2], this.EventStudent.transform.position + Vector3.up * 1.5f, 5f, 10f, out this.VoiceClip);
 						this.EventStudent.Character.GetComponent<Animation>().CrossFade("f02_cornerPeek_00");
 						if (this.Distance < 10f)
 						{
@@ -179,7 +179,7 @@ public class MovingEventScript : MonoBehaviour
 						this.Timer += Time.deltaTime;
 						if (this.Timer > 5.5f)
 						{
-							this.PlayClip(this.EventClip[3], this.EventStudent.transform.position + Vector3.up * 1.5f);
+							AudioClipPlayer.Play(this.EventClip[3], this.EventStudent.transform.position + Vector3.up * 1.5f, 5f, 10f, out this.VoiceClip);
 							if (this.Distance < 10f)
 							{
 								this.EventSubtitle.text = this.EventSpeech[3];
@@ -193,7 +193,7 @@ public class MovingEventScript : MonoBehaviour
 						this.Timer += Time.deltaTime;
 						if (this.Timer > 5.5f)
 						{
-							this.PlayClip(this.EventClip[4], this.EventStudent.transform.position + Vector3.up * 1.5f);
+							AudioClipPlayer.Play(this.EventClip[4], this.EventStudent.transform.position + Vector3.up * 1.5f, 5f, 10f, out this.VoiceClip);
 							if (this.Distance < 10f)
 							{
 								this.EventSubtitle.text = this.EventSpeech[4];
@@ -269,7 +269,7 @@ public class MovingEventScript : MonoBehaviour
 							{
 								if (!this.EventStudent.Chopsticks[0].activeInHierarchy)
 								{
-									this.PlayClip(this.EventClip[5], this.EventStudent.transform.position + Vector3.up);
+									AudioClipPlayer.Play(this.EventClip[5], this.EventStudent.transform.position + Vector3.up, 5f, 10f, out this.VoiceClip);
 									this.EventStudent.Chopsticks[0].SetActive(true);
 									this.EventStudent.Chopsticks[1].SetActive(true);
 									this.EventStudent.Distracted = true;
@@ -331,21 +331,6 @@ public class MovingEventScript : MonoBehaviour
 				}
 			}
 		}
-	}
-
-	private void PlayClip(AudioClip clip, Vector3 pos)
-	{
-		GameObject gameObject = new GameObject("TempAudio");
-		gameObject.transform.position = pos;
-		AudioSource audioSource = gameObject.AddComponent<AudioSource>();
-		audioSource.clip = clip;
-		audioSource.Play();
-		UnityEngine.Object.Destroy(gameObject, clip.length);
-		audioSource.rolloffMode = AudioRolloffMode.Linear;
-		audioSource.minDistance = 5f;
-		audioSource.maxDistance = 10f;
-		audioSource.spatialBlend = 1f;
-		this.VoiceClip = gameObject;
 	}
 
 	private void EndEvent()

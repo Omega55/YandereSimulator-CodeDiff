@@ -11,7 +11,7 @@ public class PoisonScript : MonoBehaviour
 
 	public void Start()
 	{
-		base.gameObject.SetActive(PlayerPrefs.GetInt("ChemistryGrade") + PlayerPrefs.GetInt("ChemistryBonus") >= 1);
+		base.gameObject.SetActive(Globals.ChemistryGrade + Globals.ChemistryBonus >= 1);
 	}
 
 	private void Update()

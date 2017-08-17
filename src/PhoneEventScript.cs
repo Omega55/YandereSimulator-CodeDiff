@@ -117,7 +117,7 @@ public class PhoneEventScript : MonoBehaviour
 				{
 					this.Timer += Time.deltaTime;
 					this.EventStudent.Character.GetComponent<Animation>().CrossFade(this.EventAnim[0]);
-					this.PlayClip(this.EventClip[0], this.EventStudent.transform.position);
+					AudioClipPlayer.Play(this.EventClip[0], this.EventStudent.transform.position, 5f, 10f, out this.VoiceClip, out this.CurrentClipLength);
 					this.EventPhase++;
 				}
 				else if (this.EventPhase == 2)
@@ -136,7 +136,7 @@ public class PhoneEventScript : MonoBehaviour
 					}
 					if (this.Timer > 3f)
 					{
-						this.PlayClip(this.EventClip[1], this.EventStudent.transform.position);
+						AudioClipPlayer.Play(this.EventClip[1], this.EventStudent.transform.position, 5f, 10f, out this.VoiceClip, out this.CurrentClipLength);
 						this.EventSubtitle.text = this.EventSpeech[1];
 						this.Timer = 0f;
 						this.EventPhase++;
@@ -162,7 +162,7 @@ public class PhoneEventScript : MonoBehaviour
 				{
 					this.DumpPoint.enabled = true;
 					this.EventStudent.Character.GetComponent<Animation>().CrossFade(this.EventAnim[2]);
-					this.PlayClip(this.EventClip[2], this.EventStudent.transform.position);
+					AudioClipPlayer.Play(this.EventClip[2], this.EventStudent.transform.position, 5f, 10f, out this.VoiceClip, out this.CurrentClipLength);
 					this.EventPhase++;
 				}
 				else if (this.EventPhase < 13)
@@ -214,33 +214,17 @@ public class PhoneEventScript : MonoBehaviour
 				{
 					this.EventSubtitle.transform.localScale = Vector3.zero;
 				}
-				if (this.EventPhase == 11 && num < 5f && PlayerPrefs.GetInt("Event2") == 0)
+				if (this.EventPhase == 11 && num < 5f && !Globals.Event2)
 				{
-					PlayerPrefs.SetInt("Event2", 1);
+					Globals.Event2 = true;
 					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Info);
-					PlayerPrefs.SetInt("Topic_25_Discovered", 1);
+					Globals.SetTopicDiscovered(25, true);
 					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
-					PlayerPrefs.SetInt("Topic_25_Student_" + this.EventStudentID.ToString() + "_Learned", 1);
+					Globals.SetTopicLearnedByStudent(25, this.EventStudentID, true);
 				}
 			}
 		}
-	}
-
-	private void PlayClip(AudioClip clip, Vector3 pos)
-	{
-		GameObject gameObject = new GameObject("TempAudio");
-		gameObject.transform.position = pos;
-		AudioSource audioSource = gameObject.AddComponent<AudioSource>();
-		audioSource.clip = clip;
-		audioSource.Play();
-		UnityEngine.Object.Destroy(gameObject, clip.length);
-		this.CurrentClipLength = clip.length;
-		audioSource.rolloffMode = AudioRolloffMode.Linear;
-		audioSource.minDistance = 5f;
-		audioSource.maxDistance = 10f;
-		audioSource.spatialBlend = 1f;
-		this.VoiceClip = gameObject;
 	}
 
 	private void EndEvent()

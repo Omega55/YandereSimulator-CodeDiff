@@ -159,9 +159,9 @@ public class CalendarScript : MonoBehaviour
 				}
 				else
 				{
-					if (PlayerPrefs.GetInt("Night") == 1)
+					if (Globals.Night)
 					{
-						PlayerPrefs.SetInt("Night", 0);
+						Globals.Night = false;
 					}
 					SceneManager.LoadScene("HomeScene");
 				}

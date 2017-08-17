@@ -133,15 +133,15 @@ public class CookingEventScript : MonoBehaviour
 			}
 			else if (!this.EventStudent.Pathfinding.canMove)
 			{
-				if (PlayerPrefs.GetInt("Topic_1_Student_7_Learned") == 0 && Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position) < 5f)
+				if (!Globals.GetTopicLearnedByStudent(1, 7) && Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position) < 5f)
 				{
-					if (PlayerPrefs.GetInt("Topic_1_Discovered") == 0)
+					if (!Globals.GetTopicDiscovered(1))
 					{
 						this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
-						PlayerPrefs.SetInt("Topic_1_Discovered", 1);
+						Globals.SetTopicDiscovered(1, true);
 					}
 					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
-					PlayerPrefs.SetInt("Topic_1_Student_7_Learned", 1);
+					Globals.SetTopicLearnedByStudent(1, 7, true);
 				}
 				if (this.EventPhase == -1)
 				{
@@ -171,7 +171,7 @@ public class CookingEventScript : MonoBehaviour
 					}
 					else
 					{
-						this.PlayClip(this.EventClip[0], this.EventStudent.transform.position + Vector3.up);
+						AudioClipPlayer.Play(this.EventClip[0], this.EventStudent.transform.position + Vector3.up, 5f, 10f, out this.VoiceClip, out this.CurrentClipLength);
 						this.EventStudent.Character.GetComponent<Animation>().CrossFade(this.EventAnim[0]);
 						this.EventSubtitle.text = this.EventSpeech[0];
 						this.EventPhase--;
@@ -365,22 +365,6 @@ public class CookingEventScript : MonoBehaviour
 				}
 			}
 		}
-	}
-
-	private void PlayClip(AudioClip clip, Vector3 pos)
-	{
-		GameObject gameObject = new GameObject("TempAudio");
-		gameObject.transform.position = pos;
-		AudioSource audioSource = gameObject.AddComponent<AudioSource>();
-		audioSource.clip = clip;
-		audioSource.Play();
-		UnityEngine.Object.Destroy(gameObject, clip.length);
-		this.CurrentClipLength = clip.length;
-		audioSource.rolloffMode = AudioRolloffMode.Linear;
-		audioSource.minDistance = 5f;
-		audioSource.maxDistance = 10f;
-		audioSource.spatialBlend = 1f;
-		this.VoiceClip = gameObject;
 	}
 
 	private void EndEvent()

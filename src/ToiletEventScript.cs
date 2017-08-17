@@ -67,7 +67,7 @@ public class ToiletEventScript : MonoBehaviour
 		if (!this.Clock.StopTime && this.EventCheck && this.Clock.HourTime > this.EventTime)
 		{
 			this.EventStudent = this.StudentManager.Students[7];
-			if (this.EventStudent != null && !this.EventStudent.Distracted && !this.EventStudent.Talking && !this.EventStudent.Alarmed && !this.EventStudent.Meeting)
+			if (this.EventStudent != null && !this.EventStudent.Routine && !this.EventStudent.Distracted && !this.EventStudent.Talking && !this.EventStudent.Alarmed && !this.EventStudent.Meeting)
 			{
 				if (!this.EventStudent.WitnessedMurder)
 				{
@@ -109,7 +109,7 @@ public class ToiletEventScript : MonoBehaviour
 				this.Prompt.enabled = false;
 				this.EventPhase = 5;
 				this.Timer = 0f;
-				this.PlayClip(this.EventClip[1], this.EventStudent.transform.position + Vector3.up * 1.5f);
+				AudioClipPlayer.Play(this.EventClip[1], this.EventStudent.transform.position + Vector3.up * 1.5f, 5f, 10f, out this.VoiceClip);
 				this.EventSubtitle.text = this.EventSpeech[1];
 				this.EventStudent.MyController.enabled = false;
 				this.EventStudent.Distracted = true;
@@ -165,7 +165,7 @@ public class ToiletEventScript : MonoBehaviour
 					this.Timer += Time.deltaTime;
 					if (this.Timer > 10f)
 					{
-						this.PlayClip(this.EventClip[2], this.Toilet.transform.position);
+						AudioClipPlayer.Play(this.EventClip[2], this.Toilet.transform.position, 5f, 10f, out this.VoiceClip);
 						this.EventPhase++;
 						this.Timer = 0f;
 					}
@@ -237,21 +237,6 @@ public class ToiletEventScript : MonoBehaviour
 				this.Toilet.enabled = true;
 			}
 		}
-	}
-
-	public void PlayClip(AudioClip clip, Vector3 pos)
-	{
-		GameObject gameObject = new GameObject("TempAudio");
-		gameObject.transform.position = pos;
-		AudioSource audioSource = gameObject.AddComponent<AudioSource>();
-		audioSource.clip = clip;
-		audioSource.Play();
-		UnityEngine.Object.Destroy(gameObject, clip.length);
-		audioSource.rolloffMode = AudioRolloffMode.Linear;
-		audioSource.minDistance = 5f;
-		audioSource.maxDistance = 10f;
-		audioSource.spatialBlend = 1f;
-		this.VoiceClip = gameObject;
 	}
 
 	public void EndEvent()
