@@ -87,7 +87,7 @@ public class GardeningClubMemberScript : MonoBehaviour
 				{
 					if (this.ID == 1)
 					{
-						this.Destination.position = new Vector3(UnityEngine.Random.Range(-61f, -72f), this.Destination.position.y, UnityEngine.Random.Range(-15f, 15f));
+						this.Destination.position = new Vector3(UnityEngine.Random.Range(-61f, -71f), this.Destination.position.y, UnityEngine.Random.Range(-14f, 14f));
 					}
 					else
 					{

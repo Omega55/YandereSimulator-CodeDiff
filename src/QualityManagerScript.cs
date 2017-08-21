@@ -54,13 +54,13 @@ public class QualityManagerScript : MonoBehaviour
 		DepthOfField34[] components = Camera.main.GetComponents<DepthOfField34>();
 		this.ExperimentalDepthOfField34 = components[1];
 		this.ToggleExperiment();
-		if (PlayerPrefs.GetInt("ParticleCount") == 0)
+		if (Globals.ParticleCount == 0)
 		{
-			PlayerPrefs.SetInt("ParticleCount", 3);
+			Globals.ParticleCount = 3;
 		}
-		if (PlayerPrefs.GetInt("DrawDistance") == 0)
+		if (Globals.DrawDistance == 0)
 		{
-			PlayerPrefs.SetInt("DrawDistance", 350);
+			Globals.DrawDistance = 350;
 		}
 		this.UpdateFog();
 		this.UpdateAnims();
@@ -74,13 +74,13 @@ public class QualityManagerScript : MonoBehaviour
 
 	public void UpdateParticles()
 	{
-		if (PlayerPrefs.GetInt("ParticleCount") == 4)
+		if (Globals.ParticleCount == 4)
 		{
-			PlayerPrefs.SetInt("ParticleCount", 1);
+			Globals.ParticleCount = 1;
 		}
-		else if (PlayerPrefs.GetInt("ParticleCount") == 0)
+		else if (Globals.ParticleCount == 0)
 		{
-			PlayerPrefs.SetInt("ParticleCount", 3);
+			Globals.ParticleCount = 3;
 		}
 		ParticleSystem.EmissionModule emission = this.EastRomanceBlossoms.emission;
 		ParticleSystem.EmissionModule emission2 = this.WestRomanceBlossoms.emission;
@@ -100,7 +100,7 @@ public class QualityManagerScript : MonoBehaviour
 		emission7.enabled = true;
 		emission8.enabled = true;
 		emission9.enabled = true;
-		if (PlayerPrefs.GetInt("ParticleCount") == 3)
+		if (Globals.ParticleCount == 3)
 		{
 			emission.rateOverTime = 100f;
 			emission2.rateOverTime = 100f;
@@ -112,7 +112,7 @@ public class QualityManagerScript : MonoBehaviour
 			emission8.rateOverTime = 100f;
 			emission9.rateOverTime = 100f;
 		}
-		else if (PlayerPrefs.GetInt("ParticleCount") == 2)
+		else if (Globals.ParticleCount == 2)
 		{
 			emission.rateOverTime = 10f;
 			emission2.rateOverTime = 10f;
@@ -124,7 +124,7 @@ public class QualityManagerScript : MonoBehaviour
 			emission8.rateOverTime = 10f;
 			emission9.rateOverTime = 10f;
 		}
-		else if (PlayerPrefs.GetInt("ParticleCount") == 1)
+		else if (Globals.ParticleCount == 1)
 		{
 			emission.enabled = false;
 			emission2.enabled = false;
@@ -145,7 +145,7 @@ public class QualityManagerScript : MonoBehaviour
 			StudentScript studentScript = this.StudentManager.Students[i];
 			if (studentScript != null && studentScript.gameObject.activeInHierarchy)
 			{
-				if (PlayerPrefs.GetInt("DisableOutlines") == 1)
+				if (Globals.DisableOutlines)
 				{
 					this.NewHairShader = this.Toon;
 					this.NewBodyShader = this.ToonOverlay;
@@ -233,45 +233,45 @@ public class QualityManagerScript : MonoBehaviour
 
 	public void UpdatePostAliasing()
 	{
-		this.PostAliasing.enabled = (PlayerPrefs.GetInt("DisablePostAliasing") == 0);
+		this.PostAliasing.enabled = !Globals.DisablePostAliasing;
 	}
 
 	public void UpdateBloom()
 	{
-		this.BloomEffect.enabled = (PlayerPrefs.GetInt("DisableBloom") == 0);
+		this.BloomEffect.enabled = !Globals.DisableBloom;
 	}
 
 	public void UpdateLowDetailStudents()
 	{
-		if (PlayerPrefs.GetInt("LowDetailStudents") == 11)
+		if (Globals.LowDetailStudents == 11)
 		{
-			PlayerPrefs.SetInt("LowDetailStudents", 0);
+			Globals.LowDetailStudents = 0;
 		}
-		else if (PlayerPrefs.GetInt("LowDetailStudents") == -1)
+		else if (Globals.LowDetailStudents == -1)
 		{
-			PlayerPrefs.SetInt("LowDetailStudents", 10);
+			Globals.LowDetailStudents = 10;
 		}
-		this.StudentManager.LowDetailThreshold = PlayerPrefs.GetInt("LowDetailStudents") * 10;
+		this.StudentManager.LowDetailThreshold = Globals.LowDetailStudents * 10;
 	}
 
 	public void UpdateDrawDistance()
 	{
-		if (PlayerPrefs.GetInt("DrawDistance") == 360)
+		if (Globals.DrawDistance == 360)
 		{
-			PlayerPrefs.SetInt("DrawDistance", 10);
+			Globals.DrawDistance = 10;
 		}
-		else if (PlayerPrefs.GetInt("DrawDistance") == 0)
+		else if (Globals.DrawDistance == 0)
 		{
-			PlayerPrefs.SetInt("DrawDistance", 350);
+			Globals.DrawDistance = 350;
 		}
-		Camera.main.farClipPlane = (float)PlayerPrefs.GetInt("DrawDistance");
-		RenderSettings.fogEndDistance = (float)PlayerPrefs.GetInt("DrawDistance");
-		this.Yandere.Smartphone.farClipPlane = (float)PlayerPrefs.GetInt("DrawDistance");
+		Camera.main.farClipPlane = (float)Globals.DrawDistance;
+		RenderSettings.fogEndDistance = (float)Globals.DrawDistance;
+		this.Yandere.Smartphone.farClipPlane = (float)Globals.DrawDistance;
 	}
 
 	public void UpdateFog()
 	{
-		if (PlayerPrefs.GetInt("Fog") == 0)
+		if (!Globals.Fog)
 		{
 			this.Yandere.MainCamera.clearFlags = CameraClearFlags.Skybox;
 			RenderSettings.fogMode = FogMode.Exponential;
@@ -280,18 +280,18 @@ public class QualityManagerScript : MonoBehaviour
 		{
 			this.Yandere.MainCamera.clearFlags = CameraClearFlags.Color;
 			RenderSettings.fogMode = FogMode.Linear;
-			RenderSettings.fogEndDistance = (float)PlayerPrefs.GetInt("DrawDistance");
+			RenderSettings.fogEndDistance = (float)Globals.DrawDistance;
 		}
 	}
 
 	public void UpdateShadows()
 	{
-		this.Sun.shadows = ((PlayerPrefs.GetInt("DisableShadows") != 1) ? LightShadows.Soft : LightShadows.None);
+		this.Sun.shadows = ((!Globals.DisableShadows) ? LightShadows.Soft : LightShadows.None);
 	}
 
 	public void UpdateAnims()
 	{
-		this.StudentManager.DisableFarAnims = (PlayerPrefs.GetInt("DisableFarAnimations") == 1);
+		this.StudentManager.DisableFarAnims = Globals.DisableFarAnimations;
 	}
 
 	public void ToggleExperiment()

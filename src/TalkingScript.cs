@@ -53,11 +53,11 @@ public class TalkingScript : MonoBehaviour
 				{
 					this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod2Anim);
 					this.S.RepRecovery = 5f;
-					if (PlayerPrefs.GetInt("PantiesEquipped") == 6)
+					if (Globals.PantiesEquipped == 6)
 					{
 						this.S.RepRecovery += 2.5f;
 					}
-					if (PlayerPrefs.GetInt("SocialBonus") > 0)
+					if (Globals.SocialBonus > 0)
 					{
 						this.S.RepRecovery += 2.5f;
 					}
@@ -107,15 +107,15 @@ public class TalkingScript : MonoBehaviour
 				{
 					this.S.Subtitle.UpdateLabel("Student Compliment", 0, 3f);
 					this.S.RepBonus = 0;
-					if (PlayerPrefs.GetInt("PantiesEquipped") == 3)
+					if (Globals.PantiesEquipped == 3)
 					{
 						this.S.RepBonus++;
 					}
-					if ((this.S.Male && PlayerPrefs.GetInt("Seduction") > 0) || PlayerPrefs.GetInt("Seduction") == 5)
+					if ((this.S.Male && Globals.Seduction > 0) || Globals.Seduction == 5)
 					{
 						this.S.RepBonus++;
 					}
-					if (PlayerPrefs.GetInt("SocialBonus") > 0)
+					if (Globals.SocialBonus > 0)
 					{
 						this.S.RepBonus++;
 					}
@@ -145,27 +145,27 @@ public class TalkingScript : MonoBehaviour
 					{
 						this.S.GossipBonus++;
 					}
-					if (PlayerPrefs.GetInt("PantiesEquipped") == 9)
+					if (Globals.PantiesEquipped == 9)
 					{
 						this.S.GossipBonus++;
 					}
-					if (PlayerPrefs.GetInt("DarkSecret") == 1)
+					if (Globals.DarkSecret)
 					{
 						this.S.GossipBonus++;
 					}
-					if (PlayerPrefs.GetInt(this.S.StudentID.ToString() + "_Friend") == 1)
+					if (Globals.GetStudentFriend(this.S.StudentID))
 					{
 						this.S.GossipBonus++;
 					}
-					if ((this.S.Male && PlayerPrefs.GetInt("Seduction") > 1) || PlayerPrefs.GetInt("Seduction") == 5)
+					if ((this.S.Male && Globals.Seduction > 1) || Globals.Seduction == 5)
 					{
 						this.S.GossipBonus++;
 					}
-					if (PlayerPrefs.GetInt("SocialBonus") > 0)
+					if (Globals.SocialBonus > 0)
 					{
 						this.S.GossipBonus++;
 					}
-					PlayerPrefs.SetInt("Student_" + this.S.DialogueWheel.Victim.ToString() + "_Reputation", PlayerPrefs.GetInt("Student_" + this.S.DialogueWheel.Victim.ToString() + "_Reputation") - (1 + this.S.GossipBonus));
+					Globals.SetStudentReputation(this.S.DialogueWheel.Victim, Globals.GetStudentReputation(this.S.DialogueWheel.Victim) - (1 + this.S.GossipBonus));
 					this.S.Reputation.PendingRep -= 2f;
 					this.S.PendingRep -= 2f;
 					this.S.Gossiped = true;
@@ -239,8 +239,8 @@ public class TalkingScript : MonoBehaviour
 					if (this.S.TaskPhase == 5)
 					{
 						this.S.DialogueWheel.TaskWindow.TaskComplete = true;
-						PlayerPrefs.SetInt("Task_" + this.S.StudentID.ToString() + "_Status", 3);
-						PlayerPrefs.SetInt(this.S.StudentID.ToString() + "_Friend", 1);
+						Globals.SetTaskStatus(this.S.StudentID, 3);
+						Globals.SetStudentFriend(this.S.StudentID, true);
 						this.S.Interaction = StudentInteractionType.Idle;
 					}
 					else if (this.S.TaskPhase == 4 || this.S.TaskPhase == 0)
@@ -360,7 +360,7 @@ public class TalkingScript : MonoBehaviour
 					else
 					{
 						StudentScript studentScript = this.S.StudentManager.Students[this.S.DialogueWheel.Victim];
-						if (studentScript.Routine && !studentScript.TargetedForDistraction)
+						if (studentScript.Routine && !studentScript.TargetedForDistraction && !studentScript.InEvent)
 						{
 							this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod1Anim);
 							this.S.Subtitle.UpdateLabel("Student Distract", 0, 3f);
@@ -840,11 +840,11 @@ public class TalkingScript : MonoBehaviour
 						this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod2Anim);
 						this.S.Subtitle.UpdateLabel("Accept Food", 0, 3f);
 						this.S.RepBonus = 0;
-						if (PlayerPrefs.GetInt("PantiesEquipped") == 3)
+						if (Globals.PantiesEquipped == 3)
 						{
 							this.S.RepBonus++;
 						}
-						if ((this.S.Male && PlayerPrefs.GetInt("Seduction") > 0) || PlayerPrefs.GetInt("Seduction") == 5)
+						if ((this.S.Male && Globals.Seduction > 0) || Globals.Seduction == 5)
 						{
 							this.S.RepBonus++;
 						}

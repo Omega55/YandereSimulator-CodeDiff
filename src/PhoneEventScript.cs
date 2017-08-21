@@ -50,7 +50,7 @@ public class PhoneEventScript : MonoBehaviour
 	private void Start()
 	{
 		this.EventSubtitle.transform.localScale = Vector3.zero;
-		if (PlayerPrefs.GetInt("Weekday") == this.EventDay)
+		if (Globals.Weekday == this.EventDay)
 		{
 			this.EventCheck = true;
 		}

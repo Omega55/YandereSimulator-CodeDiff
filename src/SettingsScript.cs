@@ -57,13 +57,13 @@ public class SettingsScript : MonoBehaviour
 		{
 			if (this.InputManager.TappedRight)
 			{
-				PlayerPrefs.SetInt("ParticleCount", PlayerPrefs.GetInt("ParticleCount") + 1);
+				Globals.ParticleCount++;
 				this.QualityManager.UpdateParticles();
 				this.UpdateText();
 			}
 			else if (this.InputManager.TappedLeft)
 			{
-				PlayerPrefs.SetInt("ParticleCount", PlayerPrefs.GetInt("ParticleCount") - 1);
+				Globals.ParticleCount--;
 				this.QualityManager.UpdateParticles();
 				this.UpdateText();
 			}
@@ -72,7 +72,7 @@ public class SettingsScript : MonoBehaviour
 		{
 			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
 			{
-				PlayerPrefs.SetInt("DisableOutlines", (PlayerPrefs.GetInt("DisableOutlines") != 1) ? 1 : 0);
+				Globals.DisableOutlines = !Globals.DisableOutlines;
 				this.UpdateText();
 				this.QualityManager.UpdateOutlines();
 			}
@@ -108,7 +108,7 @@ public class SettingsScript : MonoBehaviour
 		{
 			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
 			{
-				PlayerPrefs.SetInt("DisablePostAliasing", (PlayerPrefs.GetInt("DisablePostAliasing") != 1) ? 1 : 0);
+				Globals.DisablePostAliasing = !Globals.DisablePostAliasing;
 				this.UpdateText();
 				this.QualityManager.UpdatePostAliasing();
 			}
@@ -117,7 +117,7 @@ public class SettingsScript : MonoBehaviour
 		{
 			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
 			{
-				PlayerPrefs.SetInt("DisableBloom", (PlayerPrefs.GetInt("DisableBloom") != 1) ? 1 : 0);
+				Globals.DisableBloom = !Globals.DisableBloom;
 				this.UpdateText();
 				this.QualityManager.UpdateBloom();
 			}
@@ -126,13 +126,13 @@ public class SettingsScript : MonoBehaviour
 		{
 			if (this.InputManager.TappedRight)
 			{
-				PlayerPrefs.SetInt("LowDetailStudents", PlayerPrefs.GetInt("LowDetailStudents") - 1);
+				Globals.LowDetailStudents--;
 				this.QualityManager.UpdateLowDetailStudents();
 				this.UpdateText();
 			}
 			else if (this.InputManager.TappedLeft)
 			{
-				PlayerPrefs.SetInt("LowDetailStudents", PlayerPrefs.GetInt("LowDetailStudents") + 1);
+				Globals.LowDetailStudents++;
 				this.QualityManager.UpdateLowDetailStudents();
 				this.UpdateText();
 			}
@@ -141,13 +141,13 @@ public class SettingsScript : MonoBehaviour
 		{
 			if (this.InputManager.TappedRight)
 			{
-				PlayerPrefs.SetInt("DrawDistance", PlayerPrefs.GetInt("DrawDistance") + 10);
+				Globals.DrawDistance += 10;
 				this.QualityManager.UpdateDrawDistance();
 				this.UpdateText();
 			}
 			else if (this.InputManager.TappedLeft)
 			{
-				PlayerPrefs.SetInt("DrawDistance", PlayerPrefs.GetInt("DrawDistance") - 10);
+				Globals.DrawDistance -= 10;
 				this.QualityManager.UpdateDrawDistance();
 				this.UpdateText();
 			}
@@ -156,7 +156,7 @@ public class SettingsScript : MonoBehaviour
 		{
 			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
 			{
-				PlayerPrefs.SetInt("Fog", (PlayerPrefs.GetInt("Fog") != 1) ? 1 : 0);
+				Globals.Fog = !Globals.Fog;
 				this.UpdateText();
 				this.QualityManager.UpdateFog();
 			}
@@ -165,14 +165,14 @@ public class SettingsScript : MonoBehaviour
 		{
 			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
 			{
-				PlayerPrefs.SetInt("DisableShadows", (PlayerPrefs.GetInt("DisableShadows") != 1) ? 1 : 0);
+				Globals.DisableShadows = !Globals.DisableShadows;
 				this.UpdateText();
 				this.QualityManager.UpdateShadows();
 			}
 		}
 		else if (this.Selected == 10 && (this.InputManager.TappedRight || this.InputManager.TappedLeft))
 		{
-			PlayerPrefs.SetInt("DisableFarAnimations", (PlayerPrefs.GetInt("DisableFarAnimations") != 1) ? 1 : 0);
+			Globals.DisableFarAnimations = !Globals.DisableFarAnimations;
 			this.UpdateText();
 			this.QualityManager.UpdateAnims();
 		}
@@ -193,48 +193,27 @@ public class SettingsScript : MonoBehaviour
 
 	public void UpdateText()
 	{
-		if (PlayerPrefs.GetInt("ParticleCount") == 3)
+		if (Globals.ParticleCount == 3)
 		{
 			this.ParticleLabel.text = "High";
 		}
-		else if (PlayerPrefs.GetInt("ParticleCount") == 2)
+		else if (Globals.ParticleCount == 2)
 		{
 			this.ParticleLabel.text = "Low";
 		}
-		else if (PlayerPrefs.GetInt("ParticleCount") == 1)
+		else if (Globals.ParticleCount == 1)
 		{
 			this.ParticleLabel.text = "None";
 		}
-		this.OutlinesLabel.text = ((PlayerPrefs.GetInt("DisableOutlines") != 1) ? "On" : "Off");
+		this.OutlinesLabel.text = ((!Globals.DisableOutlines) ? "On" : "Off");
 		this.AliasingLabel.text = QualitySettings.antiAliasing + "x";
-		this.PostAliasingLabel.text = ((PlayerPrefs.GetInt("DisablePostAliasing") != 1) ? "On" : "Off");
-		this.BloomLabel.text = ((PlayerPrefs.GetInt("DisableBloom") != 1) ? "On" : "Off");
-		this.LowDetailLabel.text = ((PlayerPrefs.GetInt("LowDetailStudents") != 0) ? ((PlayerPrefs.GetInt("LowDetailStudents") * 10).ToString() + "m") : "Off");
-		this.DrawDistanceLabel.text = PlayerPrefs.GetInt("DrawDistance") + "m";
-		if (PlayerPrefs.GetInt("Fog") == 0)
-		{
-			this.FogLabel.text = "Off";
-		}
-		else if (PlayerPrefs.GetInt("Fog") == 1)
-		{
-			this.FogLabel.text = "On";
-		}
-		if (PlayerPrefs.GetInt("DisableShadows") == 0)
-		{
-			this.ShadowsLabel.text = "On";
-		}
-		else if (PlayerPrefs.GetInt("DisableShadows") == 1)
-		{
-			this.ShadowsLabel.text = "Off";
-		}
-		if (PlayerPrefs.GetInt("DisableFarAnimations") == 0)
-		{
-			this.FarAnimsLabel.text = "On";
-		}
-		else if (PlayerPrefs.GetInt("DisableFarAnimations") == 1)
-		{
-			this.FarAnimsLabel.text = "Off";
-		}
+		this.PostAliasingLabel.text = ((!Globals.DisablePostAliasing) ? "On" : "Off");
+		this.BloomLabel.text = ((!Globals.DisableBloom) ? "On" : "Off");
+		this.LowDetailLabel.text = ((Globals.LowDetailStudents != 0) ? ((Globals.LowDetailStudents * 10).ToString() + "m") : "Off");
+		this.DrawDistanceLabel.text = Globals.DrawDistance + "m";
+		this.FogLabel.text = ((!Globals.Fog) ? "Off" : "On");
+		this.ShadowsLabel.text = ((!Globals.DisableShadows) ? "On" : "Off");
+		this.FarAnimsLabel.text = ((!Globals.DisableFarAnimations) ? "On" : "Off");
 	}
 
 	private void UpdateHighlight()

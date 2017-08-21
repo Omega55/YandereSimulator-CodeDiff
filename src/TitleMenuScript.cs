@@ -17,6 +17,8 @@ public class TitleMenuScript : MonoBehaviour
 
 	public SSAOEffect SSAO;
 
+	public JsonScript JSON;
+
 	public UISprite[] MediumSprites;
 
 	public UISprite[] LightSprites;
@@ -82,6 +84,8 @@ public class TitleMenuScript : MonoBehaviour
 	public Vector3 PermaPositionR;
 
 	public bool LoveSick;
+
+	public bool InEditor;
 
 	public bool FadeOut;
 
@@ -151,6 +155,21 @@ public class TitleMenuScript : MonoBehaviour
 			this.TurnLoveSick();
 		}
 		Time.timeScale = 1f;
+		if (!this.InEditor && this.JSON.StudentNames[33] != "Reserved")
+		{
+			if (Application.CanStreamedLevelBeLoaded("FunScene"))
+			{
+				SceneManager.LoadScene("FunScene");
+			}
+			else if (Application.CanStreamedLevelBeLoaded("MoreFunScene"))
+			{
+				SceneManager.LoadScene("MoreFunScene");
+			}
+			else
+			{
+				Application.Quit();
+			}
+		}
 	}
 
 	private void Update()
@@ -264,12 +283,12 @@ public class TitleMenuScript : MonoBehaviour
 					{
 						if (this.Selected == 0)
 						{
-							PlayerPrefs.SetInt("MissionMode", 0);
+							Globals.MissionMode = false;
 							SceneManager.LoadScene("CalendarScene");
 						}
 						else if (this.Selected == 2)
 						{
-							PlayerPrefs.DeleteAll();
+							Globals.DeleteAll();
 							if (this.LoveSick)
 							{
 								Globals.LoveSick = true;

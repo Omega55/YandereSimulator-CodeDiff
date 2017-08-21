@@ -59,12 +59,12 @@ public class PrayScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (PlayerPrefs.GetInt("Student_16_Dead") == 1)
+		if (Globals.GetStudentDead(16))
 		{
 			this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, 0.5f);
 		}
 		this.PrayWindow.localScale = Vector3.zero;
-		if (PlayerPrefs.GetInt("MissionMode") == 1)
+		if (Globals.MissionMode)
 		{
 			this.Disable();
 		}
@@ -120,13 +120,13 @@ public class PrayScript : MonoBehaviour
 			this.GenderPrompt.Circle[0].fillAmount = 1f;
 			if (!this.SpawnMale)
 			{
-				this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, (PlayerPrefs.GetInt("Student_15_Dead") != 1) ? 1f : 0.5f);
+				this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, (!Globals.GetStudentDead(15)) ? 1f : 0.5f);
 				this.GenderPrompt.Label[0].text = "     Male Victim";
 				this.SpawnMale = true;
 			}
 			else
 			{
-				this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, (PlayerPrefs.GetInt("Student_16_Dead") != 1) ? 1f : 0.5f);
+				this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, (!Globals.GetStudentDead(16)) ? 1f : 0.5f);
 				this.GenderPrompt.Label[0].text = "     Female Victim";
 				this.SpawnMale = false;
 			}

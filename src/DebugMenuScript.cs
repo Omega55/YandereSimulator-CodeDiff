@@ -58,7 +58,7 @@ public class DebugMenuScript : MonoBehaviour
 	{
 		base.transform.localPosition = new Vector3(base.transform.localPosition.x, 0f, base.transform.localPosition.z);
 		this.Window.SetActive(false);
-		if (PlayerPrefs.GetInt("MissionMode") == 1)
+		if (Globals.MissionMode)
 		{
 			this.MissionMode = true;
 		}
@@ -88,65 +88,65 @@ public class DebugMenuScript : MonoBehaviour
 			{
 				if (Input.GetKeyDown(KeyCode.F1))
 				{
-					PlayerPrefs.SetInt("FemaleUniform", 1);
-					PlayerPrefs.SetInt("MaleUniform", 1);
+					Globals.FemaleUniform = 1;
+					Globals.MaleUniform = 1;
 					SceneManager.LoadScene("LoadingScene");
 				}
 				else if (Input.GetKeyDown(KeyCode.F2))
 				{
-					PlayerPrefs.SetInt("FemaleUniform", 2);
-					PlayerPrefs.SetInt("MaleUniform", 2);
+					Globals.FemaleUniform = 2;
+					Globals.MaleUniform = 2;
 					SceneManager.LoadScene("LoadingScene");
 				}
 				else if (Input.GetKeyDown(KeyCode.F3))
 				{
-					PlayerPrefs.SetInt("FemaleUniform", 3);
-					PlayerPrefs.SetInt("MaleUniform", 3);
+					Globals.FemaleUniform = 3;
+					Globals.MaleUniform = 3;
 					SceneManager.LoadScene("LoadingScene");
 				}
 				else if (Input.GetKeyDown(KeyCode.F4))
 				{
-					PlayerPrefs.SetInt("FemaleUniform", 4);
-					PlayerPrefs.SetInt("MaleUniform", 4);
+					Globals.FemaleUniform = 4;
+					Globals.MaleUniform = 4;
 					SceneManager.LoadScene("LoadingScene");
 				}
 				else if (Input.GetKeyDown(KeyCode.F5))
 				{
-					PlayerPrefs.SetInt("FemaleUniform", 5);
-					PlayerPrefs.SetInt("MaleUniform", 5);
+					Globals.FemaleUniform = 5;
+					Globals.MaleUniform = 5;
 					SceneManager.LoadScene("LoadingScene");
 				}
 				else if (Input.GetKeyDown(KeyCode.F6))
 				{
-					PlayerPrefs.SetInt("FemaleUniform", 6);
-					PlayerPrefs.SetInt("MaleUniform", 6);
+					Globals.FemaleUniform = 6;
+					Globals.MaleUniform = 6;
 					SceneManager.LoadScene("LoadingScene");
 				}
 				else if (!Input.GetKeyDown(KeyCode.F12))
 				{
 					if (Input.GetKeyDown("1"))
 					{
-						PlayerPrefs.SetInt("Weekday", 1);
+						Globals.Weekday = 1;
 						SceneManager.LoadScene("LoadingScene");
 					}
 					else if (Input.GetKeyDown("2"))
 					{
-						PlayerPrefs.SetInt("Weekday", 2);
+						Globals.Weekday = 2;
 						SceneManager.LoadScene("LoadingScene");
 					}
 					else if (Input.GetKeyDown("3"))
 					{
-						PlayerPrefs.SetInt("Weekday", 3);
+						Globals.Weekday = 3;
 						SceneManager.LoadScene("LoadingScene");
 					}
 					else if (Input.GetKeyDown("4"))
 					{
-						PlayerPrefs.SetInt("Weekday", 4);
+						Globals.Weekday = 4;
 						SceneManager.LoadScene("LoadingScene");
 					}
 					else if (Input.GetKeyDown("5"))
 					{
-						PlayerPrefs.SetInt("Weekday", 5);
+						Globals.Weekday = 5;
 						SceneManager.LoadScene("LoadingScene");
 					}
 					else if (Input.GetKeyDown("6"))
@@ -220,17 +220,17 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					else if (Input.GetKeyDown("a"))
 					{
-						if (PlayerPrefs.GetFloat("SchoolAtmosphere") > 66.66666f)
+						if (Globals.SchoolAtmosphere > 66.66666f)
 						{
-							PlayerPrefs.SetFloat("SchoolAtmosphere", 50f);
+							Globals.SchoolAtmosphere = 50f;
 						}
-						else if (PlayerPrefs.GetFloat("SchoolAtmosphere") > 33.33333f)
+						else if (Globals.SchoolAtmosphere > 33.33333f)
 						{
-							PlayerPrefs.SetFloat("SchoolAtmosphere", 0f);
+							Globals.SchoolAtmosphere = 0f;
 						}
 						else
 						{
-							PlayerPrefs.SetFloat("SchoolAtmosphere", 100f);
+							Globals.SchoolAtmosphere = 100f;
 						}
 						SceneManager.LoadScene("LoadingScene");
 					}
@@ -254,7 +254,7 @@ public class DebugMenuScript : MonoBehaviour
 						StudentScript studentScript4 = this.StudentManager.Students[this.RooftopStudent];
 						if (this.Clock.HourTime < 15f)
 						{
-							PlayerPrefs.SetInt(this.RooftopStudent.ToString() + "_Friend", 1);
+							Globals.SetStudentFriend(this.RooftopStudent, true);
 							this.Yandere.transform.position = this.RooftopSpot.position + new Vector3(1f, 0f, 0f);
 							this.WeaponManager.Weapons[6].transform.position = this.Yandere.transform.position + new Vector3(0f, 0f, 1.915f);
 							if (studentScript4 != null)
@@ -297,8 +297,8 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					else if (Input.GetKeyDown("k"))
 					{
-						PlayerPrefs.SetInt("KidnapVictim", 6);
-						PlayerPrefs.SetInt("Student_6_Slave", 1);
+						Globals.KidnapVictim = 6;
+						Globals.SetStudentSlave(6, true);
 						SceneManager.LoadScene("LoadingScene");
 					}
 					else if (Input.GetKeyDown("l"))
@@ -315,7 +315,7 @@ public class DebugMenuScript : MonoBehaviour
 						}
 						else if (Input.GetKeyDown("p"))
 						{
-							PlayerPrefs.SetInt("PantyShots", PlayerPrefs.GetInt("PantyShots") + 20);
+							Globals.PantyShots += 20;
 							this.Window.SetActive(false);
 						}
 						else if (Input.GetKeyDown("q"))
@@ -325,15 +325,15 @@ public class DebugMenuScript : MonoBehaviour
 						}
 						else if (Input.GetKeyDown("r"))
 						{
-							if (PlayerPrefs.GetFloat("Reputation") != 66.66666f)
+							if (Globals.Reputation != 66.66666f)
 							{
-								PlayerPrefs.SetFloat("Reputation", 66.66666f);
-								this.Reputation.Reputation = PlayerPrefs.GetFloat("Reputation");
+								Globals.Reputation = 66.66666f;
+								this.Reputation.Reputation = Globals.Reputation;
 							}
 							else
 							{
-								PlayerPrefs.SetFloat("Reputation", -66.66666f);
-								this.Reputation.Reputation = PlayerPrefs.GetFloat("Reputation");
+								Globals.Reputation = -66.66666f;
+								this.Reputation.Reputation = Globals.Reputation;
 							}
 							this.Window.SetActive(false);
 						}
@@ -344,7 +344,7 @@ public class DebugMenuScript : MonoBehaviour
 							this.ID = 1;
 							while (this.ID < 101)
 							{
-								PlayerPrefs.SetInt("Student_" + this.ID.ToString() + "_Photographed", 1);
+								Globals.SetStudentPhotographed(this.ID, true);
 								this.ID++;
 							}
 							this.Window.SetActive(false);
@@ -356,8 +356,8 @@ public class DebugMenuScript : MonoBehaviour
 						}
 						else if (Input.GetKeyDown("u"))
 						{
-							PlayerPrefs.SetInt("7_Friend", 1);
-							PlayerPrefs.SetInt("13_Friend", 1);
+							Globals.SetStudentFriend(7, true);
+							Globals.SetStudentFriend(13, true);
 							this.ID = 1;
 							while (this.ID < 26)
 							{
@@ -383,7 +383,7 @@ public class DebugMenuScript : MonoBehaviour
 									studentScript5.SpawnAlarmDisc();
 									studentScript5.BecomeRagdoll();
 									studentScript5.DeathType = DeathType.EasterEgg;
-									PlayerPrefs.SetInt("Student_" + this.ID.ToString() + "_Dead", 1);
+									Globals.SetStudentDead(this.ID, true);
 								}
 								this.ID++;
 							}
@@ -391,7 +391,7 @@ public class DebugMenuScript : MonoBehaviour
 						}
 						else if (Input.GetKeyDown("x"))
 						{
-							PlayerPrefs.SetInt("HighPopulation", (PlayerPrefs.GetInt("HighPopulation") != 0) ? 0 : 1);
+							Globals.HighPopulation = !Globals.HighPopulation;
 							SceneManager.LoadScene("LoadingScene");
 						}
 						else if (Input.GetKeyDown("backspace"))
@@ -403,7 +403,7 @@ public class DebugMenuScript : MonoBehaviour
 						}
 						else if (Input.GetKeyDown("`"))
 						{
-							PlayerPrefs.DeleteAll();
+							Globals.DeleteAll();
 							SceneManager.LoadScene("LoadingScene");
 						}
 						else if (Input.GetKeyDown("space"))
@@ -481,9 +481,9 @@ public class DebugMenuScript : MonoBehaviour
 				this.ID = 0;
 				while (this.ID < this.StudentManager.NPCsTotal)
 				{
-					if (PlayerPrefs.GetInt("Student_" + this.ID.ToString() + "_Dying") == 1)
+					if (Globals.GetStudentDying(this.ID))
 					{
-						PlayerPrefs.SetInt("Student_" + this.ID.ToString() + "_Dying", 0);
+						Globals.SetStudentDying(this.ID, false);
 					}
 					this.ID++;
 				}

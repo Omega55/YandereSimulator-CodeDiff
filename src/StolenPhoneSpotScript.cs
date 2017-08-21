@@ -9,14 +9,14 @@ public class StolenPhoneSpotScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (PlayerPrefs.GetInt("Scheme_4_Stage") > 1)
+		if (Globals.GetSchemeStage(4) > 1)
 		{
 			this.Prompt.enabled = true;
 			if (this.Prompt.Circle[0].fillAmount == 0f)
 			{
-				if (PlayerPrefs.GetInt("Scheme_4_Stage") == 3)
+				if (Globals.GetSchemeStage(4) == 3)
 				{
-					PlayerPrefs.SetInt("Scheme_4_Stage", 4);
+					Globals.SetSchemeStage(4, 4);
 				}
 				this.Prompt.Yandere.SmartphoneRenderer.material.mainTexture = this.Prompt.Yandere.YanderePhoneTexture;
 				this.Prompt.Yandere.Inventory.Schemes.UpdateInstructions();

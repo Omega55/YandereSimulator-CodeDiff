@@ -82,7 +82,7 @@ public class HomePrisonerScript : MonoBehaviour
 
 	private void Start()
 	{
-		this.Sanity = PlayerPrefs.GetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Sanity");
+		this.Sanity = Globals.GetStudentSanity(Globals.KidnapVictim);
 		this.SanityLabel.text = "Sanity: " + this.Sanity.ToString() + "%";
 		this.Prisoner.Sanity = this.Sanity;
 		this.Subtitle.text = string.Empty;
@@ -115,7 +115,7 @@ public class HomePrisonerScript : MonoBehaviour
 				UILabel uilabel2 = this.OptionLabels[1];
 				uilabel2.color = new Color(uilabel2.color.r, uilabel2.color.g, uilabel2.color.b, 0.5f);
 			}
-			if (PlayerPrefs.GetInt("Weekday") == 5)
+			if (Globals.Weekday == 5)
 			{
 				UILabel uilabel3 = this.OptionLabels[3];
 				uilabel3.color = new Color(uilabel3.color.r, uilabel3.color.g, uilabel3.color.b, 0.5f);
@@ -157,7 +157,7 @@ public class HomePrisonerScript : MonoBehaviour
 			}
 		}
 		this.UpdateDesc();
-		if (PlayerPrefs.GetInt("KidnapVictim") == 0)
+		if (Globals.KidnapVictim == 0)
 		{
 			base.enabled = false;
 		}
@@ -216,7 +216,7 @@ public class HomePrisonerScript : MonoBehaviour
 				{
 					this.Sanity = 100f;
 				}
-				PlayerPrefs.SetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim") + "_Sanity", this.Sanity);
+				Globals.SetStudentSanity(Globals.KidnapVictim, this.Sanity);
 				this.SanityLabel.text = "Sanity: " + this.Sanity.ToString("f0") + "%";
 				this.Prisoner.UpdateSanity();
 			}
@@ -313,30 +313,30 @@ public class HomePrisonerScript : MonoBehaviour
 						this.NowLoading.SetActive(true);
 						Globals.LateForSchool = true;
 						SceneManager.LoadScene("SchoolScene");
-						PlayerPrefs.SetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim").ToString() + "_Sanity", this.Sanity - 2.5f);
+						Globals.SetStudentSanity(Globals.KidnapVictim, this.Sanity - 2.5f);
 					}
 					else if (this.ID == 2)
 					{
 						SceneManager.LoadScene("CalendarScene");
-						PlayerPrefs.SetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim").ToString() + "_Sanity", this.Sanity - 10f);
-						PlayerPrefs.SetFloat("Reputation", PlayerPrefs.GetFloat("Reputation") - 20f);
+						Globals.SetStudentSanity(Globals.KidnapVictim, this.Sanity - 10f);
+						Globals.Reputation -= 20f;
 					}
 					else if (this.ID == 3)
 					{
 						Globals.Night = true;
 						SceneManager.LoadScene("HomeScene");
-						PlayerPrefs.SetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim").ToString() + "_Sanity", this.Sanity - 30f);
-						PlayerPrefs.SetFloat("Reputation", PlayerPrefs.GetFloat("Reputation") - 20f);
+						Globals.SetStudentSanity(Globals.KidnapVictim, this.Sanity - 30f);
+						Globals.Reputation -= 20f;
 					}
 					else if (this.ID == 4)
 					{
 						SceneManager.LoadScene("CalendarScene");
-						PlayerPrefs.SetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim").ToString() + "_Sanity", this.Sanity - 45f);
-						PlayerPrefs.SetFloat("Reputation", PlayerPrefs.GetFloat("Reputation") - 20f);
+						Globals.SetStudentSanity(Globals.KidnapVictim, this.Sanity - 45f);
+						Globals.Reputation -= 20f;
 					}
-					if (PlayerPrefs.GetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim").ToString() + "_Sanity") < 0f)
+					if (Globals.GetStudentSanity(Globals.KidnapVictim) < 0f)
 					{
-						PlayerPrefs.SetFloat("Student_" + PlayerPrefs.GetInt("KidnapVictim").ToString() + "_Sanity", 0f);
+						Globals.SetStudentSanity(Globals.KidnapVictim, 0f);
 					}
 				}
 			}
@@ -359,7 +359,7 @@ public class HomePrisonerScript : MonoBehaviour
 				this.DescLabel.text = "This option is unavailable in the daytime.";
 				this.HomeCamera.PromptBar.Label[0].text = string.Empty;
 			}
-			if (PlayerPrefs.GetInt("Weekday") == 5 && (this.ID == 3 || this.ID == 4))
+			if (Globals.Weekday == 5 && (this.ID == 3 || this.ID == 4))
 			{
 				this.DescLabel.text = "This option is unavailable on Friday.";
 				this.HomeCamera.PromptBar.Label[0].text = string.Empty;

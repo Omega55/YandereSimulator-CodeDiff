@@ -148,7 +148,7 @@ public class CookingEventScript : MonoBehaviour
 					this.Timer += Time.deltaTime;
 					if (this.Timer > 5f)
 					{
-						PlayerPrefs.SetInt("Scheme_4_Stage", 5);
+						Globals.SetSchemeStage(4, 5);
 						this.Schemes.UpdateInstructions();
 						this.RivalPhone.SetActive(false);
 						this.EventSubtitle.text = string.Empty;

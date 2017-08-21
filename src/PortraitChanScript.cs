@@ -211,7 +211,7 @@ public class PortraitChanScript : MonoBehaviour
 		Animation component = this.Character.GetComponent<Animation>();
 		if (this.Kidnapped)
 		{
-			this.StudentID = PlayerPrefs.GetInt("KidnapVictim");
+			this.StudentID = Globals.KidnapVictim;
 			component.Play("f02_kidnapIdle_00");
 			this.TwintailR.transform.localEulerAngles = new Vector3(10f, -90f, 0f);
 			this.TwintailL.transform.localEulerAngles = new Vector3(10f, 90f, 0f);
@@ -603,7 +603,7 @@ public class PortraitChanScript : MonoBehaviour
 	{
 		if (this.Kidnapped)
 		{
-			this.Sanity = PlayerPrefs.GetFloat("Student_" + this.StudentID.ToString() + "_Sanity");
+			this.Sanity = Globals.GetStudentSanity(this.StudentID);
 			this.RightIris.SetActive(this.Sanity == 0f);
 			this.LeftIris.SetActive(this.Sanity == 0f);
 		}
@@ -613,9 +613,9 @@ public class PortraitChanScript : MonoBehaviour
 	{
 		if (this.Tortured)
 		{
-			this.MyRenderer.sharedMesh = this.FemaleUniforms[PlayerPrefs.GetInt("FemaleUniform")];
-			this.MyRenderer.materials[0].mainTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
-			this.MyRenderer.materials[1].mainTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.MyRenderer.sharedMesh = this.FemaleUniforms[Globals.FemaleUniform];
+			this.MyRenderer.materials[0].mainTexture = this.FemaleUniformTextures[Globals.FemaleUniform];
+			this.MyRenderer.materials[1].mainTexture = this.FemaleUniformTextures[Globals.FemaleUniform];
 			this.PonyRenderer.material.mainTexture = this.HairTexture;
 		}
 	}

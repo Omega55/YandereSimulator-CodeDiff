@@ -426,15 +426,15 @@ public class CustomizationScript : MonoBehaviour
 			base.GetComponent<AudioSource>().volume = 1f - this.WhitePanel.alpha;
 			if (this.WhitePanel.alpha == 1f)
 			{
-				PlayerPrefs.SetInt("CustomSenpai", 1);
-				PlayerPrefs.SetInt("SenpaiSkinColor", this.SkinColor);
-				PlayerPrefs.SetInt("SenpaiHairStyle", this.HairStyle);
-				PlayerPrefs.SetString("SenpaiHairColor", this.HairColorName);
-				PlayerPrefs.SetString("SenpaiEyeColor", this.EyeColorName);
-				PlayerPrefs.SetInt("SenpaiEyeWear", this.EyeWear);
-				PlayerPrefs.SetInt("SenpaiFacialHair", this.FacialHair);
-				PlayerPrefs.SetInt("MaleUniform", this.MaleUniform);
-				PlayerPrefs.SetInt("FemaleUniform", this.FemaleUniform);
+				Globals.CustomSenpai = true;
+				Globals.SenpaiSkinColor = this.SkinColor;
+				Globals.SenpaiHairStyle = this.HairStyle;
+				Globals.SenpaiHairColor = this.HairColorName;
+				Globals.SenpaiEyeColor = this.EyeColorName;
+				Globals.SenpaiEyeWear = this.EyeWear;
+				Globals.SenpaiFacialHair = this.FacialHair;
+				Globals.MaleUniform = this.MaleUniform;
+				Globals.FemaleUniform = this.FemaleUniform;
 				SceneManager.LoadScene("IntroScene");
 			}
 		}

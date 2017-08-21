@@ -355,7 +355,7 @@ public class EndOfDayScript : MonoBehaviour
 			{
 				if (this.Police.MaskReported)
 				{
-					PlayerPrefs.SetInt("MasksBanned", 1);
+					Globals.MasksBanned = true;
 					this.Label.text = "Witnesses state that the killer was wearing a mask. As a result, the police are unable to identify the murderer. To prevent this from ever happening again, the Headmaster decides to ban all masks from the school from this day forward.";
 					this.Police.MaskReported = false;
 					this.Phase++;
@@ -394,7 +394,7 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 10)
 			{
-				if (PlayerPrefs.GetInt("Student_7_Dying") == 0 && PlayerPrefs.GetInt("Student_7_Dead") == 0 && PlayerPrefs.GetInt("Student_7_Arrested") == 0)
+				if (!Globals.GetStudentDying(7) && !Globals.GetStudentDead(7) && !Globals.GetStudentArrested(7))
 				{
 					if (this.Counselor.LectureID > 0)
 					{
@@ -416,18 +416,18 @@ public class EndOfDayScript : MonoBehaviour
 			else if (this.Phase == 11)
 			{
 				Debug.Log("Phase 11.");
-				if (PlayerPrefs.GetInt("Scheme_2_Stage") == 3)
+				if (Globals.GetSchemeStage(2) == 3)
 				{
-					if (PlayerPrefs.GetInt("Student_7_Dying") == 0 && PlayerPrefs.GetInt("Student_7_Dead") == 0 && PlayerPrefs.GetInt("Student_7_Arrested") == 0)
+					if (!Globals.GetStudentDying(7) && !Globals.GetStudentDead(7) && !Globals.GetStudentArrested(7))
 					{
 						this.Label.text = "Kokona discovers Sakyu's ring inside of her book bag. She returns the ring to Sakyu, who decides to never let it out of her sight again.";
-						PlayerPrefs.SetInt("Scheme_2_Stage", 100);
+						Globals.SetSchemeStage(2, 100);
 					}
 				}
-				else if (PlayerPrefs.GetInt("Scheme_5_Stage") > 1 && PlayerPrefs.GetInt("Scheme_5_Stage") < 5)
+				else if (Globals.GetSchemeStage(5) > 1 && Globals.GetSchemeStage(5) < 5)
 				{
 					this.Label.text = "A teacher discovers that an answer sheet for an upcoming test is missing. She changes all of the questions for the test and keeps the new answer sheet with her at all times.";
-					PlayerPrefs.SetInt("Scheme_5_Stage", 100);
+					Globals.SetSchemeStage(5, 100);
 				}
 				else
 				{
@@ -553,7 +553,7 @@ public class EndOfDayScript : MonoBehaviour
 				if (this.ErectFence)
 				{
 					this.Label.text = "To prevent any other students from falling off of the school rooftop, the school erects a fence around the roof.";
-					PlayerPrefs.SetInt("RoofFence", 1);
+					Globals.RoofFence = true;
 					this.ErectFence = false;
 				}
 				else
@@ -564,7 +564,7 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 15)
 			{
-				PlayerPrefs.SetFloat("Reputation", this.Reputation.Reputation);
+				Globals.Reputation = this.Reputation.Reputation;
 				Globals.Night = true;
 				this.Police.KillStudents();
 				if (!this.TranqCase.Occupied)
@@ -573,9 +573,9 @@ public class EndOfDayScript : MonoBehaviour
 				}
 				else
 				{
-					PlayerPrefs.SetInt("KidnapVictim", this.TranqCase.VictimID);
-					PlayerPrefs.SetInt("Student_" + this.TranqCase.VictimID.ToString() + "_Kidnapped", 1);
-					PlayerPrefs.SetFloat("Student_" + this.TranqCase.VictimID.ToString() + "_Sanity", 100f);
+					Globals.KidnapVictim = this.TranqCase.VictimID;
+					Globals.SetStudentKidnapped(this.TranqCase.VictimID, true);
+					Globals.SetStudentSanity(this.TranqCase.VictimID, 100f);
 					SceneManager.LoadScene("CalendarScene");
 				}
 			}
@@ -593,13 +593,13 @@ public class EndOfDayScript : MonoBehaviour
 					if (!studentScript.Tranquil)
 					{
 						this.Label.text = this.JSON.StudentNames[fingerprintID] + " is arrested by the police.";
-						PlayerPrefs.SetInt("Student_" + fingerprintID.ToString() + "_Arrested", 1);
+						Globals.SetStudentArrested(fingerprintID, true);
 						this.Arrests++;
 					}
 					else
 					{
 						this.Label.text = this.JSON.StudentNames[fingerprintID] + " is found asleep inside of a musical instrument case. The police assume that she hid herself inside of the box after committing murder, and arrest her.";
-						PlayerPrefs.SetInt("Student_" + fingerprintID.ToString() + "_Arrested", 1);
+						Globals.SetStudentArrested(fingerprintID, true);
 						this.ArrestID = fingerprintID;
 						this.TranqCase.Occupied = false;
 						this.Arrests++;

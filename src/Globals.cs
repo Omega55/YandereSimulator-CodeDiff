@@ -130,6 +130,8 @@ public static class Globals
 
 	private const string Str_LoveSick = "LoveSick";
 
+	private const string Str_MasksBanned = "MasksBanned";
+
 	private const string Str_Paranormal = "Paranormal";
 
 	private const string Str_LateForSchool = "LateForSchool";
@@ -218,17 +220,35 @@ public static class Globals
 
 	private const string Str_PoseScale = "PoseScale";
 
+	private const string Str_CurrentScheme = "CurrentScheme";
+
+	private const string Str_DarkSecret = "DarkSecret";
+
+	private const string Str_SchemePreviousStage = "SchemePreviousStage_";
+
 	private const string Str_SchemeStage = "SchemeStage_";
+
+	private const string Str_SchemeStatus = "SchemeStatus_";
+
+	private const string Str_SchemeUnlocked = "SchemeUnlocked_";
+
+	private const string Str_ServicePurchased = "ServicePurchased_";
 
 	private const string Str_DemonActive = "DemonActive_";
 
+	private const string Str_GardenGraveOccupied = "GardenGraveOccupied_";
+
 	private const string Str_KidnapVictim = "KidnapVictim";
+
+	private const string Str_Population = "Population";
 
 	private const string Str_RoofFence = "RoofFence";
 
 	private const string Str_SchoolAtmosphere = "SchoolAtmosphere";
 
 	private const string Str_SchoolAtmosphereSet = "SchoolAtmosphereSet";
+
+	private const string Str_SCP = "SCP";
 
 	private const string Str_CustomSenpai = "CustomSenpai";
 
@@ -254,7 +274,7 @@ public static class Globals
 
 	private const string Str_CustomSuitorHair = "CustomSuitorHair";
 
-	private const string Str_CustomSuitorJewelery = "CustomSuitorJewelery";
+	private const string Str_CustomSuitorJewelry = "CustomSuitorJewelry";
 
 	private const string Str_CustomSuitorTan = "CustomSuitorTan";
 
@@ -263,6 +283,8 @@ public static class Globals
 	private const string Str_FemaleUniform = "FemaleUniform";
 
 	private const string Str_MaleUniform = "MaleUniform";
+
+	private const string Str_StudentAccessory = "StudentAccessory_";
 
 	private const string Str_StudentArrested = "StudentArrested_";
 
@@ -794,6 +816,18 @@ public static class Globals
 		}
 	}
 
+	public static bool MasksBanned
+	{
+		get
+		{
+			return Globals.GlobalsHelper.GetBool("MasksBanned");
+		}
+		set
+		{
+			Globals.GlobalsHelper.SetBool("MasksBanned", value);
+		}
+	}
+
 	public static bool Paranormal
 	{
 		get
@@ -1198,16 +1232,14 @@ public static class Globals
 		}
 	}
 
-	public static bool SenpaiPhoto
+	public static bool GetSenpaiPhoto(int photoID)
 	{
-		get
-		{
-			return Globals.GlobalsHelper.GetBool("SenpaiPhoto_");
-		}
-		set
-		{
-			Globals.GlobalsHelper.SetBool("SenpaiPhoto_", value);
-		}
+		return Globals.GlobalsHelper.GetBool("SenpaiPhoto_" + photoID.ToString());
+	}
+
+	public static void SetSenpaiPhoto(int photoID, bool value)
+	{
+		Globals.GlobalsHelper.SetBool("SenpaiPhoto_" + photoID.ToString(), value);
 	}
 
 	public static int SenpaiShots
@@ -1268,14 +1300,14 @@ public static class Globals
 		Globals.GlobalsHelper.SetBool("StudentFriend_" + studentID.ToString(), value);
 	}
 
-	public static bool GetStudentPantyShot(int studentID)
+	public static bool GetStudentPantyShot(string studentName)
 	{
-		return Globals.GlobalsHelper.GetBool("StudentPantyShot_" + studentID.ToString());
+		return Globals.GlobalsHelper.GetBool("StudentPantyShot_" + studentName);
 	}
 
-	public static void SetStudentPantyShot(int studentID, bool value)
+	public static void SetStudentPantyShot(string studentName, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("StudentPantyShot_" + studentID.ToString(), value);
+		Globals.GlobalsHelper.SetBool("StudentPantyShot_" + studentName, value);
 	}
 
 	public static Vector3 PosePosition
@@ -1314,6 +1346,40 @@ public static class Globals
 		}
 	}
 
+	public static int CurrentScheme
+	{
+		get
+		{
+			return PlayerPrefs.GetInt("CurrentScheme");
+		}
+		set
+		{
+			PlayerPrefs.SetInt("CurrentScheme", value);
+		}
+	}
+
+	public static bool DarkSecret
+	{
+		get
+		{
+			return Globals.GlobalsHelper.GetBool("DarkSecret");
+		}
+		set
+		{
+			Globals.GlobalsHelper.SetBool("DarkSecret", value);
+		}
+	}
+
+	public static int GetSchemePreviousStage(int schemeID)
+	{
+		return PlayerPrefs.GetInt("SchemePreviousStage_" + schemeID.ToString());
+	}
+
+	public static void SetSchemePreviousStage(int schemeID, int value)
+	{
+		PlayerPrefs.SetInt("SchemePreviousStage_" + schemeID.ToString(), value);
+	}
+
 	public static int GetSchemeStage(int schemeID)
 	{
 		return PlayerPrefs.GetInt("SchemeStage_" + schemeID.ToString());
@@ -1322,6 +1388,36 @@ public static class Globals
 	public static void SetSchemeStage(int schemeID, int value)
 	{
 		PlayerPrefs.SetInt("SchemeStage_" + schemeID.ToString(), value);
+	}
+
+	public static bool GetSchemeStatus(int schemeID)
+	{
+		return Globals.GlobalsHelper.GetBool("SchemeStatus_" + schemeID.ToString());
+	}
+
+	public static void SetSchemeStatus(int schemeID, bool value)
+	{
+		Globals.GlobalsHelper.SetBool("SchemeStatus_" + schemeID.ToString(), value);
+	}
+
+	public static bool GetSchemeUnlocked(int schemeID)
+	{
+		return Globals.GlobalsHelper.GetBool("SchemeUnlocked_" + schemeID.ToString());
+	}
+
+	public static void SetSchemeUnlocked(int schemeID, bool value)
+	{
+		Globals.GlobalsHelper.SetBool("SchemeUnlocked_" + schemeID.ToString(), value);
+	}
+
+	public static bool GetServicePurchased(int serviceID)
+	{
+		return Globals.GlobalsHelper.GetBool("ServicePurchased_" + serviceID.ToString());
+	}
+
+	public static void SetServicePurchased(int serviceID, bool value)
+	{
+		Globals.GlobalsHelper.SetBool("ServicePurchased_" + serviceID.ToString(), value);
 	}
 
 	public static bool GetDemonActive(int demonID)
@@ -1334,6 +1430,16 @@ public static class Globals
 		Globals.GlobalsHelper.SetBool("DemonActive_" + demonID.ToString(), value);
 	}
 
+	public static bool GetGardenGraveOccupied(int graveID)
+	{
+		return Globals.GlobalsHelper.GetBool("GardenGraveOccupied_" + graveID.ToString());
+	}
+
+	public static void SetGardenGraveOccupied(int graveID, bool value)
+	{
+		Globals.GlobalsHelper.SetBool("GardenGraveOccupied_" + graveID.ToString(), value);
+	}
+
 	public static int KidnapVictim
 	{
 		get
@@ -1343,6 +1449,18 @@ public static class Globals
 		set
 		{
 			PlayerPrefs.SetInt("KidnapVictim", value);
+		}
+	}
+
+	public static int Population
+	{
+		get
+		{
+			return PlayerPrefs.GetInt("Population");
+		}
+		set
+		{
+			PlayerPrefs.SetInt("Population", value);
 		}
 	}
 
@@ -1379,6 +1497,18 @@ public static class Globals
 		set
 		{
 			Globals.GlobalsHelper.SetBool("SchoolAtmosphereSet", value);
+		}
+	}
+
+	public static bool SCP
+	{
+		get
+		{
+			return Globals.GlobalsHelper.GetBool("SCP");
+		}
+		set
+		{
+			Globals.GlobalsHelper.SetBool("SCP", value);
 		}
 	}
 
@@ -1526,15 +1656,15 @@ public static class Globals
 		}
 	}
 
-	public static int CustomSuitorJewelery
+	public static int CustomSuitorJewelry
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("CustomSuitorJewelery");
+			return PlayerPrefs.GetInt("CustomSuitorJewelry");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("CustomSuitorJewelery", value);
+			PlayerPrefs.SetInt("CustomSuitorJewelry", value);
 		}
 	}
 
@@ -1584,6 +1714,16 @@ public static class Globals
 		{
 			PlayerPrefs.SetInt("MaleUniform", value);
 		}
+	}
+
+	public static string GetStudentAccessory(int studentID)
+	{
+		return PlayerPrefs.GetString("StudentAccessory_" + studentID.ToString());
+	}
+
+	public static void SetStudentAccessory(int studentID, string value)
+	{
+		PlayerPrefs.SetString("StudentAccessory_" + studentID.ToString(), value);
 	}
 
 	public static bool GetStudentArrested(int studentID)

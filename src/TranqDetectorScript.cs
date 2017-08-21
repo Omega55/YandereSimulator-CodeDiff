@@ -38,7 +38,7 @@ public class TranqDetectorScript : MonoBehaviour
 		{
 			if (this.MyCollider.bounds.Contains(this.Yandere.transform.position))
 			{
-				if (PlayerPrefs.GetInt("KidnapVictim") > 0)
+				if (Globals.KidnapVictim > 0)
 				{
 					this.KidnappingLabel.text = "There is no room for another prisoner in your basement.";
 				}

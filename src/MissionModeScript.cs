@@ -201,11 +201,11 @@ public class MissionModeScript : MonoBehaviour
 		this.MissionModeHUD.SetActive(false);
 		this.ExitPortal.SetActive(false);
 		this.Safe.SetActive(false);
-		if (PlayerPrefs.GetInt("LoveSick") == 1)
+		if (Globals.LoveSick)
 		{
 			this.MurderKit.SetActive(false);
 		}
-		if (PlayerPrefs.GetInt("MissionMode") == 1)
+		if (Globals.MissionMode)
 		{
 			this.Yandere.HeartRate.MediumColour = new Color(1f, 0.5f, 0.5f, 1f);
 			this.Yandere.HeartRate.NormalColour = new Color(1f, 1f, 1f, 1f);
@@ -237,9 +237,9 @@ public class MissionModeScript : MonoBehaviour
 			this.FPS.color = new Color(1f, 1f, 1f, 1f);
 			this.ColorCorrections = Camera.main.GetComponents<ColorCorrectionCurves>();
 			this.StudentManager.MissionMode = true;
-			this.NemesisDifficulty = PlayerPrefs.GetInt("NemesisDifficulty");
-			this.Difficulty = PlayerPrefs.GetInt("MissionDifficulty");
-			this.TargetID = PlayerPrefs.GetInt("MissionTarget");
+			this.NemesisDifficulty = Globals.NemesisDifficulty;
+			this.Difficulty = Globals.MissionDifficulty;
+			this.TargetID = Globals.MissionTarget;
 			this.ID = 1;
 			while (this.ID < this.PoliceLabel.Length)
 			{
@@ -259,63 +259,64 @@ public class MissionModeScript : MonoBehaviour
 				this.ID = 2;
 				while (this.ID < this.Difficulty + 1)
 				{
-					if (PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString()) == 1)
+					int missionCondition = Globals.GetMissionCondition(this.ID);
+					if (missionCondition == 1)
 					{
-						this.RequiredWeaponID = PlayerPrefs.GetInt("MissionRequiredWeapon");
+						this.RequiredWeaponID = Globals.MissionRequiredWeapon;
 					}
-					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString()) == 2)
+					else if (missionCondition == 2)
 					{
-						this.RequiredClothingID = PlayerPrefs.GetInt("MissionRequiredClothing");
+						this.RequiredClothingID = Globals.MissionRequiredClothing;
 					}
-					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString()) == 3)
+					else if (missionCondition == 3)
 					{
-						this.RequiredDisposalID = PlayerPrefs.GetInt("MissionRequiredDisposal");
+						this.RequiredDisposalID = Globals.MissionRequiredDisposal;
 					}
-					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString()) == 4)
+					else if (missionCondition == 4)
 					{
 						this.NoCollateral = true;
 					}
-					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString()) == 5)
+					else if (missionCondition == 5)
 					{
 						this.NoWitnesses = true;
 					}
-					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString()) == 6)
+					else if (missionCondition == 6)
 					{
 						this.NoCorpses = true;
 					}
-					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString()) == 7)
+					else if (missionCondition == 7)
 					{
 						this.NoWeapon = true;
 					}
-					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString()) == 8)
+					else if (missionCondition == 8)
 					{
 						this.NoBlood = true;
 					}
-					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString()) == 9)
+					else if (missionCondition == 9)
 					{
 						this.TimeLimit = true;
 					}
-					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString()) == 10)
+					else if (missionCondition == 10)
 					{
 						this.NoSuspicion = true;
 					}
-					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString()) == 11)
+					else if (missionCondition == 11)
 					{
 						this.SecurityCameras = true;
 					}
-					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString()) == 12)
+					else if (missionCondition == 12)
 					{
 						this.MetalDetectors = true;
 					}
-					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString()) == 13)
+					else if (missionCondition == 13)
 					{
 						this.NoSpeech = true;
 					}
-					else if (PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString()) == 14)
+					else if (missionCondition == 14)
 					{
 						this.StealDocuments = true;
 					}
-					this.Conditions[this.ID] = PlayerPrefs.GetInt("MissionCondition_" + this.ID.ToString());
+					this.Conditions[this.ID] = missionCondition;
 					this.ID++;
 				}
 			}
@@ -724,17 +725,17 @@ public class MissionModeScript : MonoBehaviour
 					{
 						if (this.Destination == 1)
 						{
-							this.ResetPlayerPrefs();
+							this.ResetGlobals();
 							SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 						}
 						else if (this.Destination == 2)
 						{
-							PlayerPrefs.DeleteAll();
+							Globals.DeleteAll();
 							SceneManager.LoadScene("MissionModeScene");
 						}
 						else if (this.Destination == 3)
 						{
-							PlayerPrefs.DeleteAll();
+							Globals.DeleteAll();
 							SceneManager.LoadScene("TitleScene");
 						}
 					}
@@ -813,30 +814,30 @@ public class MissionModeScript : MonoBehaviour
 		this.Jukebox.MissionMode.GetComponent<AudioSource>().Play();
 	}
 
-	private void ResetPlayerPrefs()
+	private void ResetGlobals()
 	{
-		int @int = PlayerPrefs.GetInt("DisableFarAnimations");
-		int int2 = PlayerPrefs.GetInt("DisablePostAliasing");
-		int int3 = PlayerPrefs.GetInt("DisableOutlines");
-		int int4 = PlayerPrefs.GetInt("LowDetailStudents");
-		int int5 = PlayerPrefs.GetInt("ParticleCount");
-		int int6 = PlayerPrefs.GetInt("DisableShadows");
-		int int7 = PlayerPrefs.GetInt("DrawDistance");
-		int int8 = PlayerPrefs.GetInt("DisableBloom");
-		int int9 = PlayerPrefs.GetInt("Fog");
-		string @string = PlayerPrefs.GetString("MissionTargetName");
-		int int10 = PlayerPrefs.GetInt("HighPopulation");
-		PlayerPrefs.DeleteAll();
-		PlayerPrefs.SetFloat("SchoolAtmosphere", 100f - (float)this.Difficulty / 10f * 100f);
-		PlayerPrefs.SetString("MissionTargetName", @string);
-		PlayerPrefs.SetInt("MissionDifficulty", this.Difficulty);
-		PlayerPrefs.SetInt("HighPopulation", int10);
-		PlayerPrefs.SetInt("MissionTarget", this.TargetID);
-		PlayerPrefs.SetInt("SchoolAtmosphereSet", 1);
-		PlayerPrefs.SetInt("MissionMode", 1);
-		PlayerPrefs.SetInt("MissionRequiredWeapon", this.RequiredWeaponID);
-		PlayerPrefs.SetInt("MissionRequiredClothing", this.RequiredClothingID);
-		PlayerPrefs.SetInt("MissionRequiredDisposal", this.RequiredDisposalID);
+		bool disableFarAnimations = Globals.DisableFarAnimations;
+		bool disablePostAliasing = Globals.DisablePostAliasing;
+		bool disableOutlines = Globals.DisableOutlines;
+		int lowDetailStudents = Globals.LowDetailStudents;
+		int particleCount = Globals.ParticleCount;
+		bool disableShadows = Globals.DisableShadows;
+		int drawDistance = Globals.DrawDistance;
+		bool disableBloom = Globals.DisableBloom;
+		bool fog = Globals.Fog;
+		string missionTargetName = Globals.MissionTargetName;
+		bool highPopulation = Globals.HighPopulation;
+		Globals.DeleteAll();
+		Globals.SchoolAtmosphere = 100f - (float)this.Difficulty / 10f * 100f;
+		Globals.MissionTargetName = missionTargetName;
+		Globals.MissionDifficulty = this.Difficulty;
+		Globals.HighPopulation = highPopulation;
+		Globals.MissionTarget = this.TargetID;
+		Globals.SchoolAtmosphereSet = true;
+		Globals.MissionMode = true;
+		Globals.MissionRequiredWeapon = this.RequiredWeaponID;
+		Globals.MissionRequiredClothing = this.RequiredClothingID;
+		Globals.MissionRequiredDisposal = this.RequiredDisposalID;
 		Globals.BiologyGrade = 1;
 		Globals.ChemistryGrade = 1;
 		Globals.LanguageGrade = 1;
@@ -845,19 +846,19 @@ public class MissionModeScript : MonoBehaviour
 		this.ID = 2;
 		while (this.ID < 11)
 		{
-			PlayerPrefs.SetInt("MissionCondition_" + this.ID, this.Conditions[this.ID]);
+			Globals.SetMissionCondition(this.ID, this.Conditions[this.ID]);
 			this.ID++;
 		}
-		PlayerPrefs.SetInt("NemesisDifficulty", this.NemesisDifficulty);
-		PlayerPrefs.SetInt("DisableFarAnimations", @int);
-		PlayerPrefs.SetInt("DisablePostAliasing", int2);
-		PlayerPrefs.SetInt("DisableOutlines", int3);
-		PlayerPrefs.SetInt("LowDetailStudents", int4);
-		PlayerPrefs.SetInt("ParticleCount", int5);
-		PlayerPrefs.SetInt("DisableShadows", int6);
-		PlayerPrefs.SetInt("DrawDistance", int7);
-		PlayerPrefs.SetInt("DisableBloom", int8);
-		PlayerPrefs.SetInt("Fog", int9);
+		Globals.NemesisDifficulty = this.NemesisDifficulty;
+		Globals.DisableFarAnimations = disableFarAnimations;
+		Globals.DisablePostAliasing = disablePostAliasing;
+		Globals.DisableOutlines = disableOutlines;
+		Globals.LowDetailStudents = lowDetailStudents;
+		Globals.ParticleCount = particleCount;
+		Globals.DisableShadows = disableShadows;
+		Globals.DrawDistance = drawDistance;
+		Globals.DisableBloom = disableBloom;
+		Globals.Fog = fog;
 	}
 
 	private void ChangeAllText()

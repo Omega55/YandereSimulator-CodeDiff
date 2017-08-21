@@ -71,7 +71,7 @@ public class HomeYandereScript : MonoBehaviour
 		}
 		if (SceneManager.GetActiveScene().name == "HomeScene")
 		{
-			if (PlayerPrefs.GetInt("DraculaDefeated") == 0)
+			if (!Globals.DraculaDefeated)
 			{
 				base.transform.position = Vector3.zero;
 				base.transform.eulerAngles = Vector3.zero;
@@ -160,7 +160,7 @@ public class HomeYandereScript : MonoBehaviour
 			}
 			else if (this.Timer > component2.clip.length + 1f)
 			{
-				PlayerPrefs.SetInt("DraculaDefeated", 0);
+				Globals.DraculaDefeated = false;
 				this.Disc.SetActive(false);
 				this.HomeVideoGames.Quit();
 			}
@@ -177,45 +177,45 @@ public class HomeYandereScript : MonoBehaviour
 		}
 		if (Input.GetKeyDown("k"))
 		{
-			PlayerPrefs.SetInt("KidnapVictim", this.VictimID);
-			PlayerPrefs.SetFloat("Student_" + this.VictimID.ToString() + "_Sanity", 100f);
-			PlayerPrefs.SetInt("Scheme_6_Stage", 5);
+			Globals.KidnapVictim = this.VictimID;
+			Globals.SetStudentSanity(this.VictimID, 100f);
+			Globals.SetSchemeStage(6, 5);
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		if (Input.GetKeyDown(KeyCode.F1))
 		{
-			PlayerPrefs.SetInt("MaleUniform", 1);
-			PlayerPrefs.SetInt("FemaleUniform", 1);
+			Globals.MaleUniform = 1;
+			Globals.FemaleUniform = 1;
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		else if (Input.GetKeyDown(KeyCode.F2))
 		{
-			PlayerPrefs.SetInt("MaleUniform", 2);
-			PlayerPrefs.SetInt("FemaleUniform", 2);
+			Globals.MaleUniform = 2;
+			Globals.FemaleUniform = 2;
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		else if (Input.GetKeyDown(KeyCode.F3))
 		{
-			PlayerPrefs.SetInt("MaleUniform", 3);
-			PlayerPrefs.SetInt("FemaleUniform", 3);
+			Globals.MaleUniform = 3;
+			Globals.FemaleUniform = 3;
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		else if (Input.GetKeyDown(KeyCode.F4))
 		{
-			PlayerPrefs.SetInt("MaleUniform", 4);
-			PlayerPrefs.SetInt("FemaleUniform", 4);
+			Globals.MaleUniform = 4;
+			Globals.FemaleUniform = 4;
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		else if (Input.GetKeyDown(KeyCode.F5))
 		{
-			PlayerPrefs.SetInt("MaleUniform", 5);
-			PlayerPrefs.SetInt("FemaleUniform", 5);
+			Globals.MaleUniform = 5;
+			Globals.FemaleUniform = 5;
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		else if (Input.GetKeyDown(KeyCode.F6))
 		{
-			PlayerPrefs.SetInt("MaleUniform", 6);
-			PlayerPrefs.SetInt("FemaleUniform", 6);
+			Globals.MaleUniform = 6;
+			Globals.FemaleUniform = 6;
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 	}
@@ -288,9 +288,9 @@ public class HomeYandereScript : MonoBehaviour
 
 	private void ChangeSchoolwear()
 	{
-		this.MyRenderer.sharedMesh = this.Uniforms[PlayerPrefs.GetInt("FemaleUniform")];
-		this.MyRenderer.materials[0].mainTexture = this.UniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
-		this.MyRenderer.materials[1].mainTexture = this.UniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+		this.MyRenderer.sharedMesh = this.Uniforms[Globals.FemaleUniform];
+		this.MyRenderer.materials[0].mainTexture = this.UniformTextures[Globals.FemaleUniform];
+		this.MyRenderer.materials[1].mainTexture = this.UniformTextures[Globals.FemaleUniform];
 		this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
 		base.StartCoroutine(this.ApplyCustomCostume());
 	}
@@ -306,7 +306,7 @@ public class HomeYandereScript : MonoBehaviour
 
 	private IEnumerator ApplyCustomCostume()
 	{
-		if (PlayerPrefs.GetInt("FemaleUniform") == 1)
+		if (Globals.FemaleUniform == 1)
 		{
 			WWW CustomUniform = new WWW("file:///" + Application.streamingAssetsPath + "/CustomUniform.png");
 			yield return CustomUniform;
@@ -316,7 +316,7 @@ public class HomeYandereScript : MonoBehaviour
 				this.MyRenderer.materials[1].mainTexture = CustomUniform.texture;
 			}
 		}
-		else if (PlayerPrefs.GetInt("FemaleUniform") == 2)
+		else if (Globals.FemaleUniform == 2)
 		{
 			WWW CustomLong = new WWW("file:///" + Application.streamingAssetsPath + "/CustomLong.png");
 			yield return CustomLong;
@@ -326,7 +326,7 @@ public class HomeYandereScript : MonoBehaviour
 				this.MyRenderer.materials[1].mainTexture = CustomLong.texture;
 			}
 		}
-		else if (PlayerPrefs.GetInt("FemaleUniform") == 3)
+		else if (Globals.FemaleUniform == 3)
 		{
 			WWW CustomSweater = new WWW("file:///" + Application.streamingAssetsPath + "/CustomSweater.png");
 			yield return CustomSweater;
@@ -336,7 +336,7 @@ public class HomeYandereScript : MonoBehaviour
 				this.MyRenderer.materials[1].mainTexture = CustomSweater.texture;
 			}
 		}
-		else if (PlayerPrefs.GetInt("FemaleUniform") == 4 || PlayerPrefs.GetInt("FemaleUniform") == 5)
+		else if (Globals.FemaleUniform == 4 || Globals.FemaleUniform == 5)
 		{
 			WWW CustomBlazer = new WWW("file:///" + Application.streamingAssetsPath + "/CustomBlazer.png");
 			yield return CustomBlazer;

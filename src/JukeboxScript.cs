@@ -89,17 +89,17 @@ public class JukeboxScript : MonoBehaviour
 			this.HalfSanities = this.AlternateHalf;
 			this.NoSanities = this.AlternateNo;
 		}
-		if (PlayerPrefs.GetInt("SchoolAtmosphereSet") == 0)
+		if (!Globals.SchoolAtmosphereSet)
 		{
-			PlayerPrefs.SetInt("SchoolAtmosphereSet", 1);
-			PlayerPrefs.SetFloat("SchoolAtmosphere", 100f);
+			Globals.SchoolAtmosphereSet = true;
+			Globals.SchoolAtmosphere = 100f;
 		}
 		int num;
-		if (PlayerPrefs.GetFloat("SchoolAtmosphere") >= 66.6666641f)
+		if (Globals.SchoolAtmosphere >= 66.6666641f)
 		{
 			num = 3;
 		}
-		else if (PlayerPrefs.GetFloat("SchoolAtmosphere") >= 33.3333321f)
+		else if (Globals.SchoolAtmosphere >= 33.3333321f)
 		{
 			num = 2;
 		}

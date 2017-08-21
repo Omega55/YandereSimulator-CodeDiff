@@ -53,9 +53,9 @@ public class YanvaniaTitleScript : MonoBehaviour
 		this.Midori.transform.localPosition = new Vector3(1540f, 0f, 0f);
 		this.Midori.transform.localEulerAngles = Vector3.zero;
 		this.Midori.gameObject.SetActive(false);
-		if (PlayerPrefs.GetInt("DraculaDefeated") == 1)
+		if (Globals.DraculaDefeated)
 		{
-			PlayerPrefs.SetInt("Task_14_Status", 2);
+			Globals.SetTaskStatus(14, 2);
 			this.SkipButton.SetActive(true);
 			this.Logo.gameObject.SetActive(false);
 		}
@@ -74,18 +74,18 @@ public class YanvaniaTitleScript : MonoBehaviour
 	{
 		if (!this.Logo.gameObject.activeInHierarchy && Input.GetKeyDown("m"))
 		{
-			PlayerPrefs.SetInt("DraculaDefeated", 1);
-			PlayerPrefs.SetInt("MidoriEasterEgg", 1);
+			Globals.DraculaDefeated = true;
+			Globals.MidoriEasterEgg = true;
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		if (Input.GetKeyDown("end"))
 		{
-			PlayerPrefs.SetInt("DraculaDefeated", 1);
+			Globals.DraculaDefeated = true;
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		if (Input.GetKeyDown("`"))
 		{
-			PlayerPrefs.SetInt("DraculaDefeated", 0);
+			Globals.DraculaDefeated = false;
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		AudioSource component = base.GetComponent<AudioSource>();
@@ -104,9 +104,9 @@ public class YanvaniaTitleScript : MonoBehaviour
 			}
 			else if (this.Darkness.color.a <= 0f)
 			{
-				if (PlayerPrefs.GetInt("MidoriEasterEgg") == 0)
+				if (!Globals.MidoriEasterEgg)
 				{
-					if (PlayerPrefs.GetInt("DraculaDefeated") == 1)
+					if (Globals.DraculaDefeated)
 					{
 						if (!this.Prologue.gameObject.activeInHierarchy)
 						{
@@ -255,7 +255,7 @@ public class YanvaniaTitleScript : MonoBehaviour
 					this.Midori.transform.localEulerAngles = new Vector3(this.Midori.transform.localEulerAngles.x, this.Midori.transform.localEulerAngles.y, Mathf.Lerp(this.Midori.transform.localEulerAngles.z, 45f, Time.deltaTime * 2f));
 					if (this.Midori.gameObject.GetComponent<AudioSource>().time > 3f)
 					{
-						PlayerPrefs.SetInt("MidoriEasterEgg", 0);
+						Globals.MidoriEasterEgg = false;
 					}
 				}
 			}
@@ -267,7 +267,7 @@ public class YanvaniaTitleScript : MonoBehaviour
 			component.volume -= Time.deltaTime;
 			if (this.Darkness.color.a >= 1f)
 			{
-				if (PlayerPrefs.GetInt("DraculaDefeated") == 1)
+				if (Globals.DraculaDefeated)
 				{
 					SceneManager.LoadScene("HomeScene");
 				}

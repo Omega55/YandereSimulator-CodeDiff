@@ -248,7 +248,7 @@ public class ClubManagerScript : MonoBehaviour
 		this.ID = 1;
 		while (this.ID < this.ClubIDs.Length)
 		{
-			if (PlayerPrefs.GetInt("Student_" + this.ClubIDs[this.ID].ToString() + "_Dead") == 0 && PlayerPrefs.GetInt("Student_" + this.ClubIDs[this.ID].ToString() + "_Dying") == 0 && PlayerPrefs.GetInt("Student_" + this.ClubIDs[this.ID].ToString() + "_Kidnapped") == 0 && PlayerPrefs.GetInt("Student_" + this.ClubIDs[this.ID].ToString() + "_Arrested") == 0 && PlayerPrefs.GetInt("Student_" + this.ClubIDs[this.ID].ToString() + "_Reputation") > -100)
+			if (!Globals.GetStudentDead(this.ClubIDs[this.ID]) && !Globals.GetStudentDying(this.ClubIDs[this.ID]) && !Globals.GetStudentKidnapped(this.ClubIDs[this.ID]) && !Globals.GetStudentArrested(this.ClubIDs[this.ID]) && Globals.GetStudentReputation(this.ClubIDs[this.ID]) > -100)
 			{
 				this.ClubMembers++;
 			}
@@ -261,11 +261,11 @@ public class ClubManagerScript : MonoBehaviour
 		if (Check == 3)
 		{
 			int num = 26;
-			if (PlayerPrefs.GetInt("Student_" + num.ToString() + "_Dead") == 1 || PlayerPrefs.GetInt("Student_" + num.ToString() + "_Dying") == 1 || PlayerPrefs.GetInt("Student_" + num.ToString() + "_Arrested") == 1 || PlayerPrefs.GetInt("Student_" + num.ToString() + "_Reputation") <= -100)
+			if (Globals.GetStudentDead(num) || Globals.GetStudentDying(num) || Globals.GetStudentArrested(num) || Globals.GetStudentReputation(num) <= -100)
 			{
 				this.LeaderDead = true;
 			}
-			if (PlayerPrefs.GetInt("Student_" + num.ToString() + "_Missing") == 1 || PlayerPrefs.GetInt("Student_" + num.ToString() + "_Kidnapped") == 1 || this.TranqCase.VictimID == num)
+			if (Globals.GetStudentMissing(num) || Globals.GetStudentKidnapped(num) || this.TranqCase.VictimID == num)
 			{
 				this.LeaderMissing = true;
 			}
@@ -273,11 +273,11 @@ public class ClubManagerScript : MonoBehaviour
 		else if (Check == 6)
 		{
 			int num2 = 21;
-			if (PlayerPrefs.GetInt("Student_" + num2.ToString() + "_Dead") == 1 || PlayerPrefs.GetInt("Student_" + num2.ToString() + "_Dying") == 1 || PlayerPrefs.GetInt("Student_" + num2.ToString() + "_Arrested") == 1 || PlayerPrefs.GetInt("Student_" + num2.ToString() + "_Reputation") <= -100)
+			if (Globals.GetStudentDead(num2) || Globals.GetStudentDying(num2) || Globals.GetStudentArrested(num2) || Globals.GetStudentReputation(num2) <= -100)
 			{
 				this.LeaderDead = true;
 			}
-			if (PlayerPrefs.GetInt("Student_" + num2.ToString() + "_Missing") == 1 || PlayerPrefs.GetInt("Student_" + num2.ToString() + "_Kidnapped") == 1 || this.TranqCase.VictimID == num2)
+			if (Globals.GetStudentMissing(num2) || Globals.GetStudentKidnapped(num2) || this.TranqCase.VictimID == num2)
 			{
 				this.LeaderMissing = true;
 			}

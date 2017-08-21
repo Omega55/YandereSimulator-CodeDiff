@@ -224,9 +224,9 @@ public class IncineratorScript : MonoBehaviour
 		}
 		if (this.Prompt.Circle[0].fillAmount <= 0f)
 		{
-			foreach (int num in this.CorpseList)
+			foreach (int studentID in this.CorpseList)
 			{
-				PlayerPrefs.SetInt("Student_" + num.ToString() + "_Missing", 1);
+				Globals.SetStudentMissing(studentID, true);
 			}
 			this.Panel.SetActive(true);
 			this.Timer = 60f;
@@ -275,10 +275,10 @@ public class IncineratorScript : MonoBehaviour
 		}
 		if (this.Panel.activeInHierarchy)
 		{
-			float num2 = (float)Mathf.CeilToInt(this.Timer * 60f);
-			float num3 = num2 / 60f;
-			float num4 = num2 % 60f;
-			this.TimeLabel.text = string.Format("{0:00}:{1:00}", num3, num4);
+			float num = (float)Mathf.CeilToInt(this.Timer * 60f);
+			float num2 = num / 60f;
+			float num3 = num % 60f;
+			this.TimeLabel.text = string.Format("{0:00}:{1:00}", num2, num3);
 		}
 	}
 }

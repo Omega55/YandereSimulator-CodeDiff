@@ -32,7 +32,7 @@ public class AlarmDiscScript : MonoBehaviour
 	private void Start()
 	{
 		Vector3 localScale = base.transform.localScale;
-		localScale.x *= 2f - PlayerPrefs.GetFloat("SchoolAtmosphere") * 0.01f;
+		localScale.x *= 2f - Globals.SchoolAtmosphere * 0.01f;
 		localScale.z = localScale.x;
 		base.transform.localScale = localScale;
 	}
@@ -77,7 +77,7 @@ public class AlarmDiscScript : MonoBehaviour
 			{
 				if (!this.Radio)
 				{
-					if (this.Student != this.Originator && !this.Student.TurnOffRadio && this.Student.Alive && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse)
+					if (this.Student != this.Originator && !this.Student.TurnOffRadio && this.Student.Alive && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.CheckingNote && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse)
 					{
 						if (this.Student.Male)
 						{
@@ -110,7 +110,7 @@ public class AlarmDiscScript : MonoBehaviour
 						this.Student.Alarm = 200f;
 					}
 				}
-				else if (!this.Student.Nemesis && this.Student.Alive && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.Student.InEvent && !this.Student.Following && !this.Student.Distracting && !this.Student.GoAway && this.Student.Routine && this.Student.CharacterAnimation != null && this.SourceRadio.Victim == null)
+				else if (!this.Student.Nemesis && this.Student.Alive && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.Student.InEvent && !this.Student.Following && !this.Student.Distracting && !this.Student.GoAway && this.Student.Routine && !this.Student.CheckingNote && this.Student.CharacterAnimation != null && this.SourceRadio.Victim == null)
 				{
 					this.Student.CharacterAnimation.CrossFade(this.Student.LeanAnim);
 					this.Student.Pathfinding.canSearch = false;

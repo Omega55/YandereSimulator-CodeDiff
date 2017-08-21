@@ -103,7 +103,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetButtonDown("A") && this.PromptBar.Label[0].text != string.Empty && PlayerPrefs.GetInt("Student_" + this.StudentID.ToString() + "_Photographed") == 1)
+		if (Input.GetButtonDown("A") && this.PromptBar.Label[0].text != string.Empty && Globals.GetStudentPhotographed(this.StudentID))
 		{
 			this.StudentInfo.gameObject.SetActive(true);
 			this.StudentInfo.UpdateInfo(this.StudentID);
@@ -252,7 +252,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 	public void UpdateHighlight()
 	{
 		this.StudentID = 1 + (this.Column + this.Row * this.Columns);
-		if (PlayerPrefs.GetInt("Student_" + this.StudentID.ToString() + "_Photographed") == 1)
+		if (Globals.GetStudentPhotographed(this.StudentID))
 		{
 			this.PromptBar.Label[0].text = "View Info";
 			this.PromptBar.UpdateButtons();
@@ -262,22 +262,22 @@ public class StudentInfoMenuScript : MonoBehaviour
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
-		if (this.Gossiping && (this.StudentID == 1 || this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || this.JSON.StudentClubs[this.StudentID] == 9 || PlayerPrefs.GetInt("Student_" + this.StudentID.ToString() + "_Dead") == 1))
+		if (this.Gossiping && (this.StudentID == 1 || this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || this.JSON.StudentClubs[this.StudentID] == 9 || Globals.GetStudentDead(this.StudentID)))
 		{
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
-		if (this.CyberBullying && (this.JSON.StudentGenders[this.StudentID] == 1 || PlayerPrefs.GetInt("Student_" + this.StudentID.ToString() + "_Dead") == 1))
+		if (this.CyberBullying && (this.JSON.StudentGenders[this.StudentID] == 1 || Globals.GetStudentDead(this.StudentID)))
 		{
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
-		if (this.Distracting && (this.StudentID == 0 || this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || PlayerPrefs.GetInt("Student_" + this.StudentID.ToString() + "_Dead") == 1))
+		if (this.Distracting && (this.StudentID == 0 || this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || Globals.GetStudentDead(this.StudentID)))
 		{
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
-		if (this.MatchMaking && (this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || PlayerPrefs.GetInt("Student_" + this.StudentID.ToString() + "_Dead") == 1))
+		if (this.MatchMaking && (this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || Globals.GetStudentDead(this.StudentID)))
 		{
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
@@ -288,7 +288,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	private void UpdateNameLabel()
 	{
-		if (PlayerPrefs.GetInt("Student_" + this.StudentID.ToString() + "_Photographed") == 1)
+		if (Globals.GetStudentPhotographed(this.StudentID))
 		{
 			this.NameLabel.text = this.JSON.StudentNames[this.StudentID];
 		}
@@ -308,7 +308,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 			}
 			else if (!this.PortraitLoaded[ID])
 			{
-				if (PlayerPrefs.GetInt("Student_" + ID.ToString() + "_Photographed") == 1)
+				if (Globals.GetStudentPhotographed(ID))
 				{
 					string path = string.Concat(new string[]
 					{
@@ -322,7 +322,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 					yield return www;
 					if (www.error == null)
 					{
-						if (PlayerPrefs.GetInt("Student_" + ID.ToString() + "_Replaced") == 0)
+						if (!Globals.GetStudentReplaced(ID))
 						{
 							if (!this.CustomPortraits)
 							{
@@ -349,12 +349,12 @@ public class StudentInfoMenuScript : MonoBehaviour
 					this.StudentPortraits[ID].Portrait.mainTexture = this.UnknownPortrait;
 				}
 			}
-			if (PlayerPrefs.GetInt(this.JSON.StudentNames[ID] + "PantyShot") == 1)
+			if (Globals.GetStudentPantyShot(this.JSON.StudentNames[ID]))
 			{
 				this.StudentPortraits[ID].Panties.SetActive(true);
 			}
-			this.StudentPortraits[ID].Friend.SetActive(PlayerPrefs.GetInt(ID.ToString() + "_Friend") == 1);
-			if (PlayerPrefs.GetInt("Student_" + ID.ToString() + "_Dying") == 1 || PlayerPrefs.GetInt("Student_" + ID.ToString() + "_Dead") == 1)
+			this.StudentPortraits[ID].Friend.SetActive(Globals.GetStudentFriend(ID));
+			if (Globals.GetStudentDying(ID) || Globals.GetStudentDead(ID))
 			{
 				this.StudentPortraits[ID].DeathShadow.SetActive(true);
 			}
@@ -362,7 +362,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 			{
 				this.StudentPortraits[ID].DeathShadow.SetActive(true);
 			}
-			if (PlayerPrefs.GetInt("Student_" + ID.ToString() + "_Arrested") == 1)
+			if (Globals.GetStudentArrested(ID))
 			{
 				this.StudentPortraits[ID].PrisonBars.SetActive(true);
 				this.StudentPortraits[ID].DeathShadow.SetActive(true);

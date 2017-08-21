@@ -15,7 +15,7 @@ public class RivalPhoneScript : MonoBehaviour
 	{
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			PlayerPrefs.SetInt("Scheme_4_Stage", 2);
+			Globals.SetSchemeStage(4, 2);
 			this.Prompt.Yandere.Inventory.Schemes.UpdateInstructions();
 			this.Prompt.Yandere.RivalPhoneTexture = this.MyRenderer.material.mainTexture;
 			this.Prompt.Yandere.Inventory.RivalPhone = true;

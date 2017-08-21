@@ -53,7 +53,7 @@ public class ServicesScript : MonoBehaviour
 	{
 		for (int i = 1; i < this.ServiceNames.Length; i++)
 		{
-			PlayerPrefs.SetInt("Service_" + i.ToString() + "_Purchased", 0);
+			Globals.SetServicePurchased(i, false);
 			this.NameLabels[i].text = this.ServiceNames[i];
 		}
 	}
@@ -81,27 +81,27 @@ public class ServicesScript : MonoBehaviour
 		AudioSource component = base.GetComponent<AudioSource>();
 		if (Input.GetButtonDown("A"))
 		{
-			if (PlayerPrefs.GetInt("Service_" + this.Selected.ToString() + "_Purchased") == 0)
+			if (!Globals.GetServicePurchased(this.Selected))
 			{
 				if (this.PromptBar.Label[0].text != string.Empty)
 				{
-					if (PlayerPrefs.GetInt("PantyShots") >= this.ServiceCosts[this.Selected])
+					if (Globals.PantyShots >= this.ServiceCosts[this.Selected])
 					{
-						PlayerPrefs.SetInt("PantyShots", PlayerPrefs.GetInt("PantyShots") - this.ServiceCosts[this.Selected]);
-						PlayerPrefs.SetInt("Service_" + this.Selected.ToString() + "_Purchased", 1);
+						Globals.PantyShots -= this.ServiceCosts[this.Selected];
+						Globals.SetServicePurchased(this.Selected, true);
 						AudioSource.PlayClipAtPoint(this.InfoPurchase, base.transform.position);
 						if (this.Selected == 4)
 						{
-							PlayerPrefs.SetInt("Scheme_1_Stage", 2);
+							Globals.SetSchemeStage(1, 2);
 							this.Schemes.UpdateInstructions();
-							PlayerPrefs.SetInt("DarkSecret", 1);
+							Globals.DarkSecret = true;
 							this.TextMessageManager.SpawnMessage();
 						}
 						this.UpdateList();
 						this.UpdateDesc();
 					}
 				}
-				else if (PlayerPrefs.GetInt("PantyShots") < this.ServiceCosts[this.Selected])
+				else if (Globals.PantyShots < this.ServiceCosts[this.Selected])
 				{
 					component.clip = this.InfoAfford;
 					component.Play();
@@ -136,18 +136,18 @@ public class ServicesScript : MonoBehaviour
 		while (this.ID < this.ServiceNames.Length)
 		{
 			this.CostLabels[this.ID].text = this.ServiceCosts[this.ID].ToString();
-			int @int = PlayerPrefs.GetInt("Service_" + this.ID.ToString() + "_Purchased");
+			bool servicePurchased = Globals.GetServicePurchased(this.ID);
 			UILabel uilabel = this.NameLabels[this.ID];
-			uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, (!this.ServiceActive[this.ID] || @int != 0) ? 0.5f : 1f);
+			uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, (!this.ServiceActive[this.ID] || servicePurchased) ? 0.5f : 1f);
 			this.ID++;
 		}
 	}
 
 	public void UpdateDesc()
 	{
-		if (this.ServiceActive[this.Selected] && PlayerPrefs.GetInt("Service_" + this.Selected.ToString() + "_Purchased") == 0)
+		if (this.ServiceActive[this.Selected] && !Globals.GetServicePurchased(this.Selected))
 		{
-			this.PromptBar.Label[0].text = ((PlayerPrefs.GetInt("PantyShots") < this.ServiceCosts[this.Selected]) ? string.Empty : "Purchase");
+			this.PromptBar.Label[0].text = ((Globals.PantyShots < this.ServiceCosts[this.Selected]) ? string.Empty : "Purchase");
 			this.PromptBar.UpdateButtons();
 		}
 		else
@@ -164,6 +164,6 @@ public class ServicesScript : MonoBehaviour
 
 	public void UpdatePantyCount()
 	{
-		this.PantyCount.text = PlayerPrefs.GetInt("PantyShots").ToString();
+		this.PantyCount.text = Globals.PantyShots.ToString();
 	}
 }

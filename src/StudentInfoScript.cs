@@ -80,19 +80,19 @@ public class StudentInfoScript : MonoBehaviour
 	public void UpdateInfo(int ID)
 	{
 		this.NameLabel.text = this.JSON.StudentNames[ID];
-		if (PlayerPrefs.GetInt("Student_" + ID.ToString() + "_Reputation") < 0)
+		if (Globals.GetStudentReputation(ID) < 0)
 		{
-			this.ReputationLabel.text = PlayerPrefs.GetInt("Student_" + ID.ToString() + "_Reputation").ToString();
+			this.ReputationLabel.text = Globals.GetStudentReputation(ID).ToString();
 		}
-		else if (PlayerPrefs.GetInt("Student_" + ID.ToString() + "_Reputation") > 0)
+		else if (Globals.GetStudentReputation(ID) > 0)
 		{
-			this.ReputationLabel.text = "+" + PlayerPrefs.GetInt("Student_" + ID.ToString() + "_Reputation").ToString();
+			this.ReputationLabel.text = "+" + Globals.GetStudentReputation(ID).ToString();
 		}
 		else
 		{
 			this.ReputationLabel.text = "0";
 		}
-		this.ReputationBar.localPosition = new Vector3((float)PlayerPrefs.GetInt("Student_" + ID.ToString() + "_Reputation") * 0.96f, this.ReputationBar.localPosition.y, this.ReputationBar.localPosition.z);
+		this.ReputationBar.localPosition = new Vector3((float)Globals.GetStudentReputation(ID) * 0.96f, this.ReputationBar.localPosition.y, this.ReputationBar.localPosition.z);
 		if (this.ReputationBar.localPosition.x > 96f)
 		{
 			this.ReputationBar.localPosition = new Vector3(96f, this.ReputationBar.localPosition.y, this.ReputationBar.localPosition.z);
@@ -132,7 +132,7 @@ public class StudentInfoScript : MonoBehaviour
 		else if (this.JSON.StudentPersonas[ID] == PersonaType.Strict)
 		{
 			this.PersonaLabel.text = "Strict";
-			if (this.JSON.StudentClubs[ID] == 101 && PlayerPrefs.GetInt("Student_" + ID.ToString() + "_Replaced") == 0)
+			if (this.JSON.StudentClubs[ID] == 101 && !Globals.GetStudentReplaced(ID))
 			{
 				this.PersonaLabel.text = "Friendly but Strict";
 			}
@@ -292,7 +292,7 @@ public class StudentInfoScript : MonoBehaviour
 				".png"
 			});
 			WWW www = new WWW(url);
-			if (PlayerPrefs.GetInt("Student_" + ID.ToString() + "_Replaced") == 0)
+			if (!Globals.GetStudentReplaced(ID))
 			{
 				if (!this.CustomPortraits)
 				{
@@ -421,12 +421,12 @@ public class StudentInfoScript : MonoBehaviour
 		}
 		if (Input.GetKeyDown("="))
 		{
-			PlayerPrefs.SetInt("Student_" + this.CurrentStudent.ToString() + "_Reputation", PlayerPrefs.GetInt("Student_" + this.CurrentStudent.ToString() + "_Reputation") + 10);
+			Globals.SetStudentReputation(this.CurrentStudent, Globals.GetStudentReputation(this.CurrentStudent) + 10);
 			this.UpdateInfo(this.CurrentStudent);
 		}
 		if (Input.GetKeyDown("-"))
 		{
-			PlayerPrefs.SetInt("Student_" + this.CurrentStudent.ToString() + "_Reputation", PlayerPrefs.GetInt("Student_" + this.CurrentStudent.ToString() + "_Reputation") - 10);
+			Globals.SetStudentReputation(this.CurrentStudent, Globals.GetStudentReputation(this.CurrentStudent) - 10);
 			this.UpdateInfo(this.CurrentStudent);
 		}
 	}
@@ -439,7 +439,7 @@ public class StudentInfoScript : MonoBehaviour
 			this.Strings[2] = ((!Globals.Event2) ? "?????" : "May be engaging in compensated dating in Shisuta Town.");
 			this.InfoLabel.text = this.Strings[1] + "\n\n" + this.Strings[2];
 		}
-		else if (PlayerPrefs.GetInt("Student_" + ID.ToString() + "_Replaced") == 0)
+		else if (!Globals.GetStudentReplaced(ID))
 		{
 			if (this.JSON.StudentInfos[ID] == string.Empty)
 			{

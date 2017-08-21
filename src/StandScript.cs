@@ -39,7 +39,7 @@ public class StandScript : MonoBehaviour
 	{
 		if (!this.Stand.activeInHierarchy)
 		{
-			if (this.Weapons == 8 && this.Yandere.transform.position.y > 11.9f && Input.GetButtonDown("RB") && PlayerPrefs.GetInt("MissionMode") == 0 && !this.Yandere.Laughing && this.Yandere.CanMove)
+			if (this.Weapons == 8 && this.Yandere.transform.position.y > 11.9f && Input.GetButtonDown("RB") && !Globals.MissionMode && !this.Yandere.Laughing && this.Yandere.CanMove)
 			{
 				this.Yandere.Jojo();
 			}

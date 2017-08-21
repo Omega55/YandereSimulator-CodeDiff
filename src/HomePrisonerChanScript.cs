@@ -87,12 +87,12 @@ public class HomePrisonerChanScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (PlayerPrefs.GetInt("KidnapVictim") > 0)
+		if (Globals.KidnapVictim > 0)
 		{
 			this.PermanentAngleR = this.TwintailR.eulerAngles;
 			this.PermanentAngleL = this.TwintailL.eulerAngles;
-			this.StudentID = PlayerPrefs.GetInt("KidnapVictim");
-			if (PlayerPrefs.GetInt("Student_" + this.StudentID.ToString() + "_Arrested") == 0 && PlayerPrefs.GetInt("Student_" + this.StudentID.ToString() + "_Dead") == 0)
+			this.StudentID = Globals.KidnapVictim;
+			if (!Globals.GetStudentArrested(this.StudentID) && !Globals.GetStudentDead(this.StudentID))
 			{
 				this.Cosmetic.StudentID = this.StudentID;
 				this.Cosmetic.enabled = true;
@@ -106,7 +106,7 @@ public class HomePrisonerChanScript : MonoBehaviour
 				this.TwintailL.transform.localEulerAngles = new Vector3(0f, 0f, -90f);
 				this.Blindfold.SetActive(false);
 				this.Tripod.SetActive(false);
-				if (this.StudentID == 32 && PlayerPrefs.GetInt("Scheme_6_Stage") > 4)
+				if (this.StudentID == 32 && Globals.GetSchemeStage(6) > 4)
 				{
 					this.Blindfold.SetActive(true);
 					this.Tripod.SetActive(true);
@@ -114,7 +114,7 @@ public class HomePrisonerChanScript : MonoBehaviour
 			}
 			else
 			{
-				PlayerPrefs.SetInt("KidnapVictim", 0);
+				Globals.KidnapVictim = 0;
 				base.gameObject.SetActive(false);
 			}
 		}
@@ -198,7 +198,7 @@ public class HomePrisonerChanScript : MonoBehaviour
 
 	public void UpdateSanity()
 	{
-		this.Sanity = PlayerPrefs.GetFloat("Student_" + this.StudentID.ToString() + "_Sanity");
+		this.Sanity = Globals.GetStudentSanity(this.StudentID);
 		bool active = this.Sanity == 0f;
 		this.RightMindbrokenEye.SetActive(active);
 		this.LeftMindbrokenEye.SetActive(active);

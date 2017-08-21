@@ -761,7 +761,7 @@ public class DatingMinigameScript : MonoBehaviour
 			this.MultiplierIcons[4].mainTexture = this.X;
 			this.Multiplier--;
 		}
-		if (PlayerPrefs.GetInt("PantiesEquipped") == 2)
+		if (Globals.PantiesEquipped == 2)
 		{
 			this.PantyIcon.SetActive(true);
 			this.Multiplier++;
@@ -770,10 +770,10 @@ public class DatingMinigameScript : MonoBehaviour
 		{
 			this.PantyIcon.SetActive(false);
 		}
-		if (PlayerPrefs.GetInt("Seduction") + PlayerPrefs.GetInt("SeductionBonus") > 0)
+		if (Globals.Seduction + Globals.SeductionBonus > 0)
 		{
-			this.SeductionLabel.text = (PlayerPrefs.GetInt("Seduction") + PlayerPrefs.GetInt("SeductionBonus")).ToString();
-			this.Multiplier += PlayerPrefs.GetInt("Seduction") + PlayerPrefs.GetInt("SeductionBonus");
+			this.SeductionLabel.text = (Globals.Seduction + Globals.SeductionBonus).ToString();
+			this.Multiplier += Globals.Seduction + Globals.SeductionBonus;
 			this.SeductionIcon.SetActive(true);
 		}
 		else

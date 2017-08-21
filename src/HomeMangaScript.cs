@@ -157,14 +157,14 @@ public class HomeMangaScript : MonoBehaviour
 				}
 				if (Input.GetKeyDown("s"))
 				{
-					PlayerPrefs.SetInt("Seduction", PlayerPrefs.GetInt("Seduction") + 1);
-					PlayerPrefs.SetInt("Numbness", PlayerPrefs.GetInt("Numbness") + 1);
-					PlayerPrefs.SetInt("Enlightenment", PlayerPrefs.GetInt("Enlightenment") + 1);
-					if (PlayerPrefs.GetInt("Seduction") > 5)
+					Globals.Seduction++;
+					Globals.Numbness++;
+					Globals.Enlightenment++;
+					if (Globals.Seduction > 5)
 					{
-						PlayerPrefs.SetInt("Seduction", 0);
-						PlayerPrefs.SetInt("Numbness", 0);
-						PlayerPrefs.SetInt("Enlightenment", 0);
+						Globals.Seduction = 0;
+						Globals.Numbness = 0;
+						Globals.Enlightenment = 0;
 					}
 					this.UpdateCurrentLabel();
 					this.UpdateMangaLabels();
@@ -190,15 +190,15 @@ public class HomeMangaScript : MonoBehaviour
 				{
 					if (this.Selected < 5)
 					{
-						PlayerPrefs.SetInt("Seduction", PlayerPrefs.GetInt("Seduction") + 1);
+						Globals.Seduction++;
 					}
 					else if (this.Selected < 10)
 					{
-						PlayerPrefs.SetInt("Numbness", PlayerPrefs.GetInt("Numbness") + 1);
+						Globals.Numbness++;
 					}
 					else
 					{
-						PlayerPrefs.SetInt("Enlightenment", PlayerPrefs.GetInt("Enlightenment") + 1);
+						Globals.Enlightenment++;
 					}
 					Globals.LateForSchool = true;
 					this.AreYouSure.SetActive(false);
@@ -225,10 +225,10 @@ public class HomeMangaScript : MonoBehaviour
 	{
 		if (this.Selected < 5)
 		{
-			this.ReadButtonGroup.SetActive(PlayerPrefs.GetInt("Seduction") == this.Selected);
+			this.ReadButtonGroup.SetActive(Globals.Seduction == this.Selected);
 			if (Globals.GetMangaCollected(this.Selected + 1))
 			{
-				if (PlayerPrefs.GetInt("Seduction") > this.Selected)
+				if (Globals.Seduction > this.Selected)
 				{
 					this.RequiredLabel.text = "You have already read this manga.";
 				}
@@ -245,10 +245,10 @@ public class HomeMangaScript : MonoBehaviour
 		}
 		else if (this.Selected < 10)
 		{
-			this.ReadButtonGroup.SetActive(PlayerPrefs.GetInt("Numbness") == this.Selected - 5);
+			this.ReadButtonGroup.SetActive(Globals.Numbness == this.Selected - 5);
 			if (Globals.GetMangaCollected(this.Selected + 1))
 			{
-				if (PlayerPrefs.GetInt("Numbness") > this.Selected - 5)
+				if (Globals.Numbness > this.Selected - 5)
 				{
 					this.RequiredLabel.text = "You have already read this manga.";
 				}
@@ -265,10 +265,10 @@ public class HomeMangaScript : MonoBehaviour
 		}
 		else
 		{
-			this.ReadButtonGroup.SetActive(PlayerPrefs.GetInt("Enlightenment") == this.Selected - 10);
+			this.ReadButtonGroup.SetActive(Globals.Enlightenment == this.Selected - 10);
 			if (Globals.GetMangaCollected(this.Selected + 1))
 			{
-				if (PlayerPrefs.GetInt("Enlightenment") > this.Selected - 10)
+				if (Globals.Enlightenment > this.Selected - 10)
 				{
 					this.RequiredLabel.text = "You have already read this manga.";
 				}
@@ -301,11 +301,11 @@ public class HomeMangaScript : MonoBehaviour
 	{
 		if (this.Selected < 5)
 		{
-			this.Title = HomeMangaScript.SeductionStrings[PlayerPrefs.GetInt("Seduction")];
-			this.CurrentLabel.text = string.Concat(new object[]
+			this.Title = HomeMangaScript.SeductionStrings[Globals.Seduction];
+			this.CurrentLabel.text = string.Concat(new string[]
 			{
 				"Current Seduction Level: ",
-				PlayerPrefs.GetInt("Seduction"),
+				Globals.Seduction.ToString(),
 				" (",
 				this.Title,
 				")"
@@ -313,11 +313,11 @@ public class HomeMangaScript : MonoBehaviour
 		}
 		else if (this.Selected < 10)
 		{
-			this.Title = HomeMangaScript.NumbnessStrings[PlayerPrefs.GetInt("Numbness")];
-			this.CurrentLabel.text = string.Concat(new object[]
+			this.Title = HomeMangaScript.NumbnessStrings[Globals.Numbness];
+			this.CurrentLabel.text = string.Concat(new string[]
 			{
 				"Current Numbness Level: ",
-				PlayerPrefs.GetInt("Numbness"),
+				Globals.Numbness.ToString(),
 				" (",
 				this.Title,
 				")"
@@ -325,11 +325,11 @@ public class HomeMangaScript : MonoBehaviour
 		}
 		else
 		{
-			this.Title = HomeMangaScript.EnlightenmentStrings[PlayerPrefs.GetInt("Enlightenment")];
-			this.CurrentLabel.text = string.Concat(new object[]
+			this.Title = HomeMangaScript.EnlightenmentStrings[Globals.Enlightenment];
+			this.CurrentLabel.text = string.Concat(new string[]
 			{
 				"Current Enlightenment Level: ",
-				PlayerPrefs.GetInt("Enlightenment"),
+				Globals.Enlightenment.ToString(),
 				" (",
 				this.Title,
 				")"

@@ -109,7 +109,7 @@ public class HomeCameraScript : MonoBehaviour
 			this.Triggers[5].Disable();
 			this.Triggers[9].Disable();
 		}
-		if (PlayerPrefs.GetInt("KidnapVictim") == 0)
+		if (Globals.KidnapVictim == 0)
 		{
 			this.RopeGroup.SetActive(false);
 			this.Tripod.SetActive(false);
@@ -118,8 +118,8 @@ public class HomeCameraScript : MonoBehaviour
 		}
 		else
 		{
-			int @int = PlayerPrefs.GetInt("KidnapVictim");
-			if (PlayerPrefs.GetInt("Student_" + @int.ToString() + "_Arrested") == 1 || PlayerPrefs.GetInt("Student_" + @int.ToString() + "_Dead") == 1)
+			int kidnapVictim = Globals.KidnapVictim;
+			if (Globals.GetStudentArrested(kidnapVictim) || Globals.GetStudentDead(kidnapVictim))
 			{
 				this.RopeGroup.SetActive(false);
 				this.Victim.SetActive(false);
@@ -232,7 +232,7 @@ public class HomeCameraScript : MonoBehaviour
 		}
 		if (Input.GetKeyDown("y"))
 		{
-			PlayerPrefs.SetInt("Task_14_Status", 1);
+			Globals.SetTaskStatus(14, 1);
 		}
 		if (Input.GetKeyDown("`"))
 		{
@@ -245,13 +245,13 @@ public class HomeCameraScript : MonoBehaviour
 		}
 		if (Input.GetKeyDown("-") && Time.timeScale > 1f)
 		{
-			Time.timeScale += 1f;
+			Time.timeScale -= 1f;
 		}
 	}
 
 	public void PlayMusic()
 	{
-		if (PlayerPrefs.GetInt("DraculaDefeated") == 0)
+		if (!Globals.DraculaDefeated)
 		{
 			if (!this.BasementJukebox.isPlaying)
 			{

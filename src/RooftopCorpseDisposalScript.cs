@@ -13,7 +13,7 @@ public class RooftopCorpseDisposalScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (PlayerPrefs.GetInt("RoofFence") == 1)
+		if (Globals.RoofFence)
 		{
 			UnityEngine.Object.Destroy(base.gameObject);
 		}

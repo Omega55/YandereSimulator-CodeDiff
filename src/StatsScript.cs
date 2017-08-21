@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -35,11 +34,11 @@ public class StatsScript : MonoBehaviour
 
 	public UITexture Portrait;
 
-	private Dictionary<int, string> ClubLabels;
+	private IntAndStringDictionary ClubLabels;
 
 	private void Awake()
 	{
-		this.ClubLabels = new Dictionary<int, string>
+		this.ClubLabels = new IntAndStringDictionary
 		{
 			{
 				0,

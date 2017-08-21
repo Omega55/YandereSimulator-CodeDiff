@@ -37,7 +37,7 @@ public class WelcomeScript : MonoBehaviour
 		Cursor.visible = false;
 		if (Globals.VersionNumber < this.VersionNumber)
 		{
-			PlayerPrefs.DeleteAll();
+			Globals.DeleteAll();
 			Globals.VersionNumber = this.VersionNumber;
 		}
 		if (File.Exists(Application.streamingAssetsPath + "/Fun.txt"))

@@ -66,7 +66,7 @@ public class NemesisScript : MonoBehaviour
 				gameObject3.SetActive(false);
 			}
 		}
-		this.Difficulty = PlayerPrefs.GetInt("NemesisDifficulty");
+		this.Difficulty = Globals.NemesisDifficulty;
 		this.Student.StudentManager = GameObject.Find("StudentManager").GetComponent<StudentManagerScript>();
 		this.Student.WitnessCamera = GameObject.Find("WitnessCamera").GetComponent<WitnessCameraScript>();
 		this.Student.Reputation = GameObject.Find("Reputation").GetComponent<ReputationScript>();

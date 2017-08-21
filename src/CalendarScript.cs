@@ -42,21 +42,21 @@ public class CalendarScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (PlayerPrefs.GetInt("SchoolAtmosphereSet") == 0)
+		if (!Globals.SchoolAtmosphereSet)
 		{
-			PlayerPrefs.SetInt("SchoolAtmosphereSet", 1);
-			PlayerPrefs.SetFloat("SchoolAtmosphere", 100f);
+			Globals.SchoolAtmosphereSet = true;
+			Globals.SchoolAtmosphere = 100f;
 		}
-		if (PlayerPrefs.GetInt("Weekday") > 4)
+		if (Globals.Weekday > 4)
 		{
-			PlayerPrefs.SetInt("Weekday", 0);
-			PlayerPrefs.DeleteAll();
+			Globals.Weekday = 0;
+			Globals.DeleteAll();
 		}
-		this.Sun.color = new Color(this.Sun.color.r, this.Sun.color.g, this.Sun.color.b, PlayerPrefs.GetFloat("SchoolAtmosphere") * 0.01f);
-		this.Cloud.color = new Color(this.Cloud.color.r, this.Cloud.color.g, this.Cloud.color.b, 1f - PlayerPrefs.GetFloat("SchoolAtmosphere") * 0.01f);
-		this.Atmosphere = PlayerPrefs.GetFloat("SchoolAtmosphere");
+		this.Sun.color = new Color(this.Sun.color.r, this.Sun.color.g, this.Sun.color.b, Globals.SchoolAtmosphere * 0.01f);
+		this.Cloud.color = new Color(this.Cloud.color.r, this.Cloud.color.g, this.Cloud.color.b, 1f - Globals.SchoolAtmosphere * 0.01f);
+		this.Atmosphere = Globals.SchoolAtmosphere;
 		this.AtmosphereLabel.text = this.Atmosphere.ToString("f0") + "%";
-		float num = 1f - PlayerPrefs.GetFloat("SchoolAtmosphere") * 0.01f;
+		float num = 1f - Globals.SchoolAtmosphere * 0.01f;
 		this.GrayscaleEffect.desaturation = num;
 		this.Vignette.intensity = num * 5f;
 		this.Vignette.blur = num;
@@ -70,7 +70,7 @@ public class CalendarScript : MonoBehaviour
 		this.CalendarPanel.alpha = 1f;
 		this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 1f);
 		Time.timeScale = 1f;
-		this.Highlight.localPosition = new Vector3(-600f + 200f * (float)PlayerPrefs.GetInt("Weekday"), this.Highlight.localPosition.y, this.Highlight.localPosition.z);
+		this.Highlight.localPosition = new Vector3(-600f + 200f * (float)Globals.Weekday, this.Highlight.localPosition.y, this.Highlight.localPosition.z);
 	}
 
 	private void Update()
@@ -87,13 +87,13 @@ public class CalendarScript : MonoBehaviour
 			{
 				if (!this.Incremented)
 				{
-					PlayerPrefs.SetInt("Weekday", PlayerPrefs.GetInt("Weekday") + 1);
+					Globals.Weekday++;
 					this.Incremented = true;
 					base.GetComponent<AudioSource>().Play();
 				}
 				else
 				{
-					this.Highlight.localPosition = new Vector3(Mathf.Lerp(this.Highlight.localPosition.x, -600f + 200f * (float)PlayerPrefs.GetInt("Weekday"), Time.deltaTime * 10f), this.Highlight.localPosition.y, this.Highlight.localPosition.z);
+					this.Highlight.localPosition = new Vector3(Mathf.Lerp(this.Highlight.localPosition.x, -600f + 200f * (float)Globals.Weekday, Time.deltaTime * 10f), this.Highlight.localPosition.y, this.Highlight.localPosition.z);
 				}
 				if (this.Timer > 2f)
 				{
@@ -115,30 +115,30 @@ public class CalendarScript : MonoBehaviour
 						}
 						if (Input.GetKeyDown("z"))
 						{
-							float @float = PlayerPrefs.GetFloat("SchoolAtmosphere");
-							if (@float > 80f)
+							float schoolAtmosphere = Globals.SchoolAtmosphere;
+							if (schoolAtmosphere > 80f)
 							{
-								PlayerPrefs.SetFloat("SchoolAtmosphere", 80f);
+								Globals.SchoolAtmosphere = 80f;
 							}
-							else if (@float > 60f)
+							else if (schoolAtmosphere > 60f)
 							{
-								PlayerPrefs.SetFloat("SchoolAtmosphere", 60f);
+								Globals.SchoolAtmosphere = 60f;
 							}
-							else if (@float > 50f)
+							else if (schoolAtmosphere > 50f)
 							{
-								PlayerPrefs.SetFloat("SchoolAtmosphere", 50f);
+								Globals.SchoolAtmosphere = 50f;
 							}
-							else if (@float > 40f)
+							else if (schoolAtmosphere > 40f)
 							{
-								PlayerPrefs.SetFloat("SchoolAtmosphere", 40f);
+								Globals.SchoolAtmosphere = 40f;
 							}
-							else if (@float > 20f)
+							else if (schoolAtmosphere > 20f)
 							{
-								PlayerPrefs.SetFloat("SchoolAtmosphere", 20f);
+								Globals.SchoolAtmosphere = 20f;
 							}
-							else if (@float > 0f)
+							else if (schoolAtmosphere > 0f)
 							{
-								PlayerPrefs.SetFloat("SchoolAtmosphere", 0f);
+								Globals.SchoolAtmosphere = 0f;
 							}
 							SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 						}
@@ -154,7 +154,7 @@ public class CalendarScript : MonoBehaviour
 			{
 				if (this.Reset)
 				{
-					PlayerPrefs.DeleteAll();
+					Globals.DeleteAll();
 					SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 				}
 				else
@@ -191,23 +191,23 @@ public class CalendarScript : MonoBehaviour
 		}
 		if (Input.GetKeyDown("1"))
 		{
-			PlayerPrefs.SetInt("Weekday", 1);
+			Globals.Weekday = 1;
 		}
 		if (Input.GetKeyDown("2"))
 		{
-			PlayerPrefs.SetInt("Weekday", 2);
+			Globals.Weekday = 2;
 		}
 		if (Input.GetKeyDown("3"))
 		{
-			PlayerPrefs.SetInt("Weekday", 3);
+			Globals.Weekday = 3;
 		}
 		if (Input.GetKeyDown("4"))
 		{
-			PlayerPrefs.SetInt("Weekday", 4);
+			Globals.Weekday = 4;
 		}
 		if (Input.GetKeyDown("5"))
 		{
-			PlayerPrefs.SetInt("Weekday", 5);
+			Globals.Weekday = 5;
 		}
 	}
 }

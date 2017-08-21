@@ -62,8 +62,8 @@ public class HappyScript : MonoBehaviour
 	{
 		if (!this.Fun.gameObject.activeInHierarchy)
 		{
-			PlayerPrefs.SetInt("SchoolAtmosphereSet", 1);
-			PlayerPrefs.SetFloat("SchoolAtmosphere", 0f);
+			Globals.SchoolAtmosphereSet = true;
+			Globals.SchoolAtmosphere = 0f;
 			this.StudentManager.SetAtmosphere();
 			foreach (StudentScript studentScript in this.StudentManager.Students)
 			{

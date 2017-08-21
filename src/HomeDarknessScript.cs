@@ -42,8 +42,8 @@ public class HomeDarknessScript : MonoBehaviour
 					}
 					else if (this.HomeCamera.ID == 10)
 					{
-						PlayerPrefs.SetInt("Student_" + Globals.KidnapVictim + "_Kidnapped", 0);
-						PlayerPrefs.SetInt("Student_" + Globals.KidnapVictim + "_Slave", 1);
+						Globals.SetStudentKidnapped(Globals.KidnapVictim, false);
+						Globals.SetStudentSlave(Globals.KidnapVictim, true);
 						SceneManager.LoadScene("LoadingScene");
 					}
 					else if (this.HomeCamera.ID == 11)

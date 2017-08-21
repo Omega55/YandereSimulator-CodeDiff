@@ -11,9 +11,31 @@ public class CollectibleScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (PlayerPrefs.GetInt(this.Name + "_" + this.ID.ToString() + "_Collected") == 1)
+		bool flag = (this.CollectibleType == CollectibleType.BasementTape && Globals.GetBasementTapeCollected(this.ID)) || (this.CollectibleType == CollectibleType.Manga && Globals.GetMangaCollected(this.ID)) || (this.CollectibleType == CollectibleType.Tape && Globals.GetTapeCollected(this.ID));
+		if (flag)
 		{
 			UnityEngine.Object.Destroy(base.gameObject);
+		}
+	}
+
+	public CollectibleType CollectibleType
+	{
+		get
+		{
+			if (this.Name == "BasementTape")
+			{
+				return CollectibleType.BasementTape;
+			}
+			if (this.Name == "Manga")
+			{
+				return CollectibleType.Manga;
+			}
+			if (this.Name == "Tape")
+			{
+				return CollectibleType.Tape;
+			}
+			Debug.LogError("Unrecognized collectible \"" + this.Name + "\".", base.gameObject);
+			return CollectibleType.Tape;
 		}
 	}
 
@@ -21,7 +43,22 @@ public class CollectibleScript : MonoBehaviour
 	{
 		if (this.Prompt.Circle[0].fillAmount <= 0f)
 		{
-			PlayerPrefs.SetInt(this.Name + "_" + this.ID.ToString() + "_Collected", 1);
+			if (this.CollectibleType == CollectibleType.BasementTape)
+			{
+				Globals.SetBasementTapeCollected(this.ID, true);
+			}
+			else if (this.CollectibleType == CollectibleType.Manga)
+			{
+				Globals.SetMangaCollected(this.ID, true);
+			}
+			else if (this.CollectibleType == CollectibleType.Tape)
+			{
+				Globals.SetTapeCollected(this.ID, true);
+			}
+			else
+			{
+				Debug.LogError("Collectible \"" + this.Name + "\" not implemented.", base.gameObject);
+			}
 			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}

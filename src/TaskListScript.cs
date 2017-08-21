@@ -73,15 +73,15 @@ public class TaskListScript : MonoBehaviour
 	{
 		for (int i = 1; i < this.TaskNames.Length; i++)
 		{
-			this.TaskNameLabels[i].text = ((PlayerPrefs.GetInt("Task_" + i.ToString() + "_Status") != 0) ? this.TaskNames[i] : "?????");
-			this.Checkmarks[i].enabled = (PlayerPrefs.GetInt("Task_" + i + "_Status") == 3);
+			this.TaskNameLabels[i].text = ((Globals.GetTaskStatus(i) != 0) ? this.TaskNames[i] : "?????");
+			this.Checkmarks[i].enabled = (Globals.GetTaskStatus(i) == 3);
 		}
 	}
 
 	public IEnumerator UpdateTaskInfo()
 	{
 		this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 200f - 25f * (float)this.ID, this.Highlight.localPosition.z);
-		if (PlayerPrefs.GetInt("Task_" + this.ID.ToString() + "_Status") == 0)
+		if (Globals.GetTaskStatus(this.ID) == 0)
 		{
 			this.StudentIcon.mainTexture = this.Silhouette;
 			this.TaskIcon.mainTexture = this.QuestionMark;

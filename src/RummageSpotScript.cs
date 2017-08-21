@@ -25,7 +25,7 @@ public class RummageSpotScript : MonoBehaviour
 	{
 		if (this.ID == 1)
 		{
-			if (PlayerPrefs.GetInt("Scheme_5_Stage") == 100)
+			if (Globals.GetSchemeStage(5) == 100)
 			{
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
@@ -33,12 +33,12 @@ public class RummageSpotScript : MonoBehaviour
 			}
 			else
 			{
-				if (PlayerPrefs.GetInt("Scheme_5_Stage") > 4)
+				if (Globals.GetSchemeStage(5) > 4)
 				{
 					this.Prompt.Hide();
 					this.Prompt.enabled = false;
 				}
-				if (PlayerPrefs.GetInt("Weekday") == 5 && this.Clock.HourTime > 13.5f)
+				if (Globals.Weekday == 5 && this.Clock.HourTime > 13.5f)
 				{
 					this.Prompt.Hide();
 					this.Prompt.enabled = false;
@@ -80,7 +80,7 @@ public class RummageSpotScript : MonoBehaviour
 		{
 			if (this.Phase == 1)
 			{
-				PlayerPrefs.SetInt("Scheme_5_Stage", 2);
+				Globals.SetSchemeStage(5, 2);
 				this.Schemes.UpdateInstructions();
 				this.Yandere.Inventory.AnswerSheet = true;
 				this.Prompt.Hide();
@@ -90,7 +90,7 @@ public class RummageSpotScript : MonoBehaviour
 			}
 			else
 			{
-				PlayerPrefs.SetInt("Scheme_5_Stage", 5);
+				Globals.SetSchemeStage(5, 5);
 				this.Schemes.UpdateInstructions();
 				this.Prompt.Yandere.Inventory.AnswerSheet = false;
 				this.Prompt.Hide();

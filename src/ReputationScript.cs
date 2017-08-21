@@ -27,11 +27,11 @@ public class ReputationScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (PlayerPrefs.GetInt("MissionMode") == 1)
+		if (Globals.MissionMode)
 		{
 			this.MissionMode = true;
 		}
-		this.Reputation = PlayerPrefs.GetFloat("Reputation");
+		this.Reputation = Globals.Reputation;
 		this.Bully();
 	}
 
@@ -116,16 +116,16 @@ public class ReputationScript : MonoBehaviour
 
 	private void Bully()
 	{
-		int @int = PlayerPrefs.GetInt("Student_7_Reputation");
+		int studentReputation = Globals.GetStudentReputation(7);
 		this.FlowerVase.SetActive(false);
 		this.Grafitti.SetActive(false);
-		if (PlayerPrefs.GetInt("Student_7_Dead") == 0)
+		if (!Globals.GetStudentDead(7))
 		{
-			if ((float)@int < -33.33333f && (float)@int > -66.66666f)
+			if ((float)studentReputation < -33.33333f && (float)studentReputation > -66.66666f)
 			{
 				this.FlowerVase.SetActive(true);
 			}
-			else if ((float)@int < -66.66666f)
+			else if ((float)studentReputation < -66.66666f)
 			{
 				this.Grafitti.SetActive(true);
 			}

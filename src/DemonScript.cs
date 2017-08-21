@@ -100,7 +100,7 @@ public class DemonScript : MonoBehaviour
 					this.Communing = false;
 					this.Phase = 1;
 					this.ID = 0;
-					PlayerPrefs.SetInt("Demon_" + this.DemonID.ToString() + "_Active", 1);
+					Globals.SetDemonActive(this.DemonID, true);
 					Globals.Paranormal = true;
 				}
 			}

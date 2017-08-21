@@ -133,7 +133,7 @@ public class PoliceScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (PlayerPrefs.GetFloat("SchoolAtmosphere") > 50f)
+		if (Globals.SchoolAtmosphere > 50f)
 		{
 			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 0f);
 			this.Darkness.enabled = false;
@@ -422,7 +422,7 @@ public class PoliceScript : MonoBehaviour
 				this.ResultsLabels[i].text = string.Empty;
 			}
 		}
-		else if (PlayerPrefs.GetInt("Weekday") == 5)
+		else if (Globals.Weekday == 5)
 		{
 			this.ResultsLabels[0].text = "This is the part where the game will determine whether or not the player has eliminated their rival.";
 			this.ResultsLabels[1].text = "This game is still in development.";
@@ -567,39 +567,32 @@ public class PoliceScript : MonoBehaviour
 
 	public void KillStudents()
 	{
-		float num = PlayerPrefs.GetFloat("SchoolAtmosphere");
+		float num = Globals.SchoolAtmosphere;
 		if (this.Deaths > 0)
 		{
 			for (int i = 2; i < this.StudentManager.NPCsTotal + 1; i++)
 			{
-				if (PlayerPrefs.GetInt("Student_" + i.ToString() + "_Dying") == 1)
+				if (Globals.GetStudentDying(i))
 				{
-					PlayerPrefs.SetInt("Student_" + i.ToString() + "_Dead", 1);
+					Globals.SetStudentDead(i, true);
 				}
 			}
 			num -= (float)this.Deaths * 5f;
 			num -= (float)this.Corpses * 5f;
-			PlayerPrefs.SetFloat("SchoolAtmosphere", num);
+			Globals.SchoolAtmosphere = num;
 		}
 		else
 		{
 			num += 20f;
-			PlayerPrefs.SetFloat("SchoolAtmosphere", num);
+			Globals.SchoolAtmosphere = num;
 		}
-		if (PlayerPrefs.GetFloat("SchoolAtmosphere") < 0f)
-		{
-			PlayerPrefs.SetFloat("SchoolAtmosphere", 0f);
-		}
-		if (PlayerPrefs.GetFloat("SchoolAtmosphere") > 100f)
-		{
-			PlayerPrefs.SetFloat("SchoolAtmosphere", 100f);
-		}
+		Globals.SchoolAtmosphere = Mathf.Clamp(Globals.SchoolAtmosphere, 0f, 100f);
 		for (int j = 1; j < this.StudentManager.StudentsTotal; j++)
 		{
 			StudentScript studentScript = this.StudentManager.Students[j];
 			if (studentScript != null && studentScript.Grudge)
 			{
-				PlayerPrefs.SetInt("Student_" + j.ToString() + "_Grudge", 1);
+				Globals.SetStudentGrudge(j, true);
 			}
 		}
 	}

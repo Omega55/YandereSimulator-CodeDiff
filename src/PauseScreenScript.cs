@@ -98,8 +98,8 @@ public class PauseScreenScript : MonoBehaviour
 
 	private void Start()
 	{
-		PlayerPrefs.SetInt("Student_0_Photographed", 1);
-		PlayerPrefs.SetInt("Student_1_Photographed", 1);
+		Globals.SetStudentPhotographed(0, true);
+		Globals.SetStudentPhotographed(1, true);
 		base.transform.localPosition = new Vector3(1350f, 0f, 0f);
 		base.transform.localScale = new Vector3(0.9133334f, 0.9133334f, 0.9133334f);
 		base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, base.transform.localEulerAngles.y, 0f);
@@ -128,7 +128,7 @@ public class PauseScreenScript : MonoBehaviour
 			UISprite uisprite2 = this.PhoneIcons[8];
 			uisprite2.color = new Color(uisprite2.color.r, uisprite2.color.g, uisprite2.color.b, 0.5f);
 		}
-		if (PlayerPrefs.GetInt("MissionMode") == 1)
+		if (Globals.MissionMode)
 		{
 			UISprite uisprite3 = this.PhoneIcons[10];
 			uisprite3.color = new Color(uisprite3.color.r, uisprite3.color.g, uisprite3.color.b, 1f);
@@ -397,7 +397,7 @@ public class PauseScreenScript : MonoBehaviour
 								{
 									if (this.Selected == 10)
 									{
-										if (PlayerPrefs.GetInt("MissionMode") == 0)
+										if (!Globals.MissionMode)
 										{
 											this.MusicMenu.gameObject.SetActive(true);
 											this.Settings.UpdateText();

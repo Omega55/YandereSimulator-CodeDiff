@@ -171,6 +171,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public bool Teacher;
 
+	public bool Yandere;
+
 	public bool Male;
 
 	public float BreastSize;
@@ -237,6 +239,16 @@ public class CosmeticScript : MonoBehaviour
 			this.EyeColor = this.JSON.StudentEyes[this.StudentID];
 			this.Club = this.JSON.StudentClubs[this.StudentID];
 			text = this.JSON.StudentNames[this.StudentID];
+			if (this.Yandere)
+			{
+				this.Accessory = 0;
+				this.Hairstyle = 1;
+				this.Stockings = "Black";
+				this.BreastSize = 1f;
+				this.HairColor = "White";
+				this.EyeColor = "Black";
+				this.Club = 0;
+			}
 			this.OriginalStockings = this.Stockings;
 			this.Initialized = true;
 		}
@@ -255,11 +267,11 @@ public class CosmeticScript : MonoBehaviour
 				this.JSON.StudentNames[this.StudentID] = text;
 				this.Student.Name = text;
 			}
-			if (PlayerPrefs.GetInt("MissionMode") == 1 && PlayerPrefs.GetInt("MissionTarget") == this.StudentID)
+			if (Globals.MissionMode && Globals.MissionTarget == this.StudentID)
 			{
-				this.JSON.StudentNames[this.StudentID] = PlayerPrefs.GetString("MissionTargetName");
-				this.Student.Name = PlayerPrefs.GetString("MissionTargetName");
-				text = PlayerPrefs.GetString("MissionTargetName");
+				this.JSON.StudentNames[this.StudentID] = Globals.MissionTargetName;
+				this.Student.Name = Globals.MissionTargetName;
+				text = Globals.MissionTargetName;
 			}
 		}
 		if (this.Randomize)
@@ -303,26 +315,26 @@ public class CosmeticScript : MonoBehaviour
 				this.Character.GetComponent<Animation>().Play("sadFace_00");
 				this.Character.GetComponent<Animation>()["sadFace_00"].weight = 1f;
 			}
-			if (this.StudentID == 13 && PlayerPrefs.GetInt("CustomSuitor") == 1)
+			if (this.StudentID == 13 && Globals.CustomSuitor)
 			{
-				if (PlayerPrefs.GetInt("CustomSuitorHair") > 0)
+				if (Globals.CustomSuitorHair > 0)
 				{
-					this.Hairstyle = PlayerPrefs.GetInt("CustomSuitorHair");
+					this.Hairstyle = Globals.CustomSuitorHair;
 				}
-				if (PlayerPrefs.GetInt("CustomSuitorAccessory") > 0)
+				if (Globals.CustomSuitorAccessory > 0)
 				{
-					this.Accessory = PlayerPrefs.GetInt("CustomSuitorAccessory");
+					this.Accessory = Globals.CustomSuitorAccessory;
 					if (this.Accessory == 1)
 					{
 						Transform transform = this.MaleAccessories[1].transform;
 						transform.localScale = new Vector3(1.02f, transform.localScale.y, 1.062f);
 					}
 				}
-				if (PlayerPrefs.GetInt("CustomSuitorBlonde") > 0)
+				if (Globals.CustomSuitorBlonde > 0)
 				{
 					this.HairColor = "Yellow";
 				}
-				if (PlayerPrefs.GetInt("CustomSuitorJewelry") > 0)
+				if (Globals.CustomSuitorJewelry > 0)
 				{
 					foreach (GameObject gameObject2 in this.GaloAccessories)
 					{
@@ -338,7 +350,7 @@ public class CosmeticScript : MonoBehaviour
 		}
 		else if (this.Club == 101)
 		{
-			if (PlayerPrefs.GetInt("Student_" + this.StudentID.ToString() + "_Replaced") == 0)
+			if (!Globals.GetStudentReplaced(this.StudentID))
 			{
 				this.Character.GetComponent<Animation>()["f02_smile_00"].layer = 1;
 				this.Character.GetComponent<Animation>().Play("f02_smile_00");
@@ -426,20 +438,20 @@ public class CosmeticScript : MonoBehaviour
 				gameObject13.SetActive(false);
 			}
 		}
-		if (this.StudentID == 13 && PlayerPrefs.GetInt("CustomSuitor") == 1 && PlayerPrefs.GetInt("CustomSuitorEyewear") > 0)
+		if (this.StudentID == 13 && Globals.CustomSuitor && Globals.CustomSuitorEyewear > 0)
 		{
-			this.Eyewear[PlayerPrefs.GetInt("CustomSuitorEyewear")].SetActive(true);
+			this.Eyewear[Globals.CustomSuitorEyewear].SetActive(true);
 		}
-		if (this.StudentID == 1 && PlayerPrefs.GetInt("CustomSenpai") == 1)
+		if (this.StudentID == 1 && Globals.CustomSenpai)
 		{
-			if (PlayerPrefs.GetInt("SenpaiEyeWear") > 0)
+			if (Globals.SenpaiEyeWear > 0)
 			{
-				this.Eyewear[PlayerPrefs.GetInt("SenpaiEyeWear")].SetActive(true);
+				this.Eyewear[Globals.SenpaiEyeWear].SetActive(true);
 			}
-			this.FacialHairstyle = PlayerPrefs.GetInt("SenpaiFacialHair");
-			this.HairColor = PlayerPrefs.GetString("SenpaiHairColor");
-			this.EyeColor = PlayerPrefs.GetString("SenpaiEyeColor");
-			this.Hairstyle = PlayerPrefs.GetInt("SenpaiHairStyle");
+			this.FacialHairstyle = Globals.SenpaiFacialHair;
+			this.HairColor = Globals.SenpaiHairColor;
+			this.EyeColor = Globals.SenpaiEyeColor;
+			this.Hairstyle = Globals.SenpaiHairStyle;
 		}
 		if (!this.Male)
 		{
@@ -644,11 +656,11 @@ public class CosmeticScript : MonoBehaviour
 				{
 					this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
 				}
-				else if (PlayerPrefs.GetInt("MaleUniform") == 1)
+				else if (Globals.MaleUniform == 1)
 				{
 					this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
 				}
-				else if (PlayerPrefs.GetInt("MaleUniform") < 4)
+				else if (Globals.MaleUniform < 4)
 				{
 					this.MyRenderer.materials[1].mainTexture = this.FaceTexture;
 				}
@@ -658,17 +670,13 @@ public class CosmeticScript : MonoBehaviour
 				}
 			}
 		}
-		else if (this.Teacher && PlayerPrefs.GetInt("Student_" + this.StudentID.ToString() + "_Replaced") == 1)
+		else if (this.Teacher && Globals.GetStudentReplaced(this.StudentID))
 		{
-			float @float = PlayerPrefs.GetFloat("Student_" + this.StudentID.ToString() + "_ColorR");
-			float float2 = PlayerPrefs.GetFloat("Student_" + this.StudentID.ToString() + "_ColorG");
-			float float3 = PlayerPrefs.GetFloat("Student_" + this.StudentID.ToString() + "_ColorB");
-			float float4 = PlayerPrefs.GetFloat("Student_" + this.StudentID.ToString() + "_EyeColorR");
-			float float5 = PlayerPrefs.GetFloat("Student_" + this.StudentID.ToString() + "_EyeColorG");
-			float float6 = PlayerPrefs.GetFloat("Student_" + this.StudentID.ToString() + "_EyeColorB");
-			this.HairRenderer.material.color = new Color(@float, float2, float3);
-			this.RightEyeRenderer.material.color = new Color(float4, float5, float6);
-			this.LeftEyeRenderer.material.color = new Color(float4, float5, float6);
+			Color studentColor = Globals.GetStudentColor(this.StudentID);
+			Color studentEyeColor = Globals.GetStudentEyeColor(this.StudentID);
+			this.HairRenderer.material.color = studentColor;
+			this.RightEyeRenderer.material.color = studentEyeColor;
+			this.LeftEyeRenderer.material.color = studentEyeColor;
 		}
 		if (this.Male)
 		{
@@ -692,7 +700,7 @@ public class CosmeticScript : MonoBehaviour
 		}
 		if (this.StudentID == 17)
 		{
-			if (PlayerPrefs.GetInt("Scheme_2_Stage") == 2)
+			if (Globals.GetSchemeStage(2) == 2)
 			{
 				this.FemaleAccessories[3].SetActive(false);
 			}
@@ -721,54 +729,54 @@ public class CosmeticScript : MonoBehaviour
 	{
 		if (this.StudentID == 1)
 		{
-			this.SkinColor = PlayerPrefs.GetInt("SenpaiSkinColor");
+			this.SkinColor = Globals.SenpaiSkinColor;
 			this.FaceTexture = this.FaceTextures[this.SkinColor];
 		}
 		else
 		{
 			this.FaceTexture = ((!this.CustomHair) ? this.FaceTextures[this.SkinColor] : this.HairRenderer.material.mainTexture);
-			if (this.StudentID == 13 && PlayerPrefs.GetInt("CustomSuitor") == 1 && PlayerPrefs.GetInt("CustomSuitorTan") == 1)
+			if (this.StudentID == 13 && Globals.CustomSuitor && Globals.CustomSuitorTan)
 			{
 				this.SkinColor = 6;
 				this.FaceTexture = this.FaceTextures[6];
 			}
 		}
-		this.MyRenderer.sharedMesh = this.MaleUniforms[PlayerPrefs.GetInt("MaleUniform")];
-		this.SchoolUniform = this.MaleUniforms[PlayerPrefs.GetInt("MaleUniform")];
-		this.UniformTexture = this.MaleUniformTextures[PlayerPrefs.GetInt("MaleUniform")];
-		this.CasualTexture = this.MaleCasualTextures[PlayerPrefs.GetInt("MaleUniform")];
-		this.SocksTexture = this.MaleSocksTextures[PlayerPrefs.GetInt("MaleUniform")];
-		if (PlayerPrefs.GetInt("MaleUniform") == 1)
+		this.MyRenderer.sharedMesh = this.MaleUniforms[Globals.MaleUniform];
+		this.SchoolUniform = this.MaleUniforms[Globals.MaleUniform];
+		this.UniformTexture = this.MaleUniformTextures[Globals.MaleUniform];
+		this.CasualTexture = this.MaleCasualTextures[Globals.MaleUniform];
+		this.SocksTexture = this.MaleSocksTextures[Globals.MaleUniform];
+		if (Globals.MaleUniform == 1)
 		{
 			this.SkinID = 0;
 			this.UniformID = 1;
 			this.FaceID = 2;
 		}
-		else if (PlayerPrefs.GetInt("MaleUniform") == 2)
+		else if (Globals.MaleUniform == 2)
 		{
 			this.UniformID = 0;
 			this.FaceID = 1;
 			this.SkinID = 2;
 		}
-		else if (PlayerPrefs.GetInt("MaleUniform") == 3)
+		else if (Globals.MaleUniform == 3)
 		{
 			this.UniformID = 0;
 			this.FaceID = 1;
 			this.SkinID = 2;
 		}
-		else if (PlayerPrefs.GetInt("MaleUniform") == 4)
+		else if (Globals.MaleUniform == 4)
 		{
 			this.FaceID = 0;
 			this.SkinID = 1;
 			this.UniformID = 2;
 		}
-		else if (PlayerPrefs.GetInt("MaleUniform") == 5)
+		else if (Globals.MaleUniform == 5)
 		{
 			this.FaceID = 0;
 			this.SkinID = 1;
 			this.UniformID = 2;
 		}
-		else if (PlayerPrefs.GetInt("MaleUniform") == 6)
+		else if (Globals.MaleUniform == 6)
 		{
 			this.FaceID = 0;
 			this.SkinID = 1;
@@ -790,25 +798,25 @@ public class CosmeticScript : MonoBehaviour
 
 	public void SetFemaleUniform()
 	{
-		this.MyRenderer.sharedMesh = this.FemaleUniforms[PlayerPrefs.GetInt("FemaleUniform")];
-		this.SchoolUniform = this.FemaleUniforms[PlayerPrefs.GetInt("FemaleUniform")];
+		this.MyRenderer.sharedMesh = this.FemaleUniforms[Globals.FemaleUniform];
+		this.SchoolUniform = this.FemaleUniforms[Globals.FemaleUniform];
 		if (this.StudentID == 26)
 		{
-			this.UniformTexture = this.OccultUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
-			this.CasualTexture = this.OccultCasualTextures[PlayerPrefs.GetInt("FemaleUniform")];
-			this.SocksTexture = this.OccultSocksTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.UniformTexture = this.OccultUniformTextures[Globals.FemaleUniform];
+			this.CasualTexture = this.OccultCasualTextures[Globals.FemaleUniform];
+			this.SocksTexture = this.OccultSocksTextures[Globals.FemaleUniform];
 		}
 		else if (this.StudentID == 32)
 		{
-			this.UniformTexture = this.GanguroUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
-			this.CasualTexture = this.GanguroCasualTextures[PlayerPrefs.GetInt("FemaleUniform")];
-			this.SocksTexture = this.GanguroSocksTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.UniformTexture = this.GanguroUniformTextures[Globals.FemaleUniform];
+			this.CasualTexture = this.GanguroCasualTextures[Globals.FemaleUniform];
+			this.SocksTexture = this.GanguroSocksTextures[Globals.FemaleUniform];
 		}
 		else
 		{
-			this.UniformTexture = this.FemaleUniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
-			this.CasualTexture = this.FemaleCasualTextures[PlayerPrefs.GetInt("FemaleUniform")];
-			this.SocksTexture = this.FemaleSocksTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.UniformTexture = this.FemaleUniformTextures[Globals.FemaleUniform];
+			this.CasualTexture = this.FemaleCasualTextures[Globals.FemaleUniform];
+			this.SocksTexture = this.FemaleSocksTextures[Globals.FemaleUniform];
 		}
 		if (!this.Cutscene)
 		{
@@ -870,12 +878,12 @@ public class CosmeticScript : MonoBehaviour
 	{
 		if (this.StudentID == 15)
 		{
-			if (PlayerPrefs.GetInt("Task_15_Status") < 3 && !this.TakingPortrait)
+			if (Globals.GetTaskStatus(15) < 3 && !this.TakingPortrait)
 			{
 				this.MaleAccessories[1].SetActive(false);
 			}
 		}
-		else if (this.StudentID == 33 && PlayerPrefs.GetInt("Task_33_Status") < 3 && this.Charm != null)
+		else if (this.StudentID == 33 && Globals.GetTaskStatus(33) < 3 && this.Charm != null)
 		{
 			this.Charm.SetActive(true);
 		}
@@ -1140,7 +1148,7 @@ public class CosmeticScript : MonoBehaviour
 			this.MyRenderer.materials[0].SetTexture("_OverlayTex", this.MyStockings);
 			this.MyRenderer.materials[1].SetTexture("_OverlayTex", this.MyStockings);
 			this.MyRenderer.materials[0].SetFloat("_BlendAmount", 1f);
-			this.MyRenderer.materials[1].SetFloat("_BlendAmount", 1f);
+			this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
 		}
 		else
 		{

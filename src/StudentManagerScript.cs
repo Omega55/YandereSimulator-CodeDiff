@@ -305,35 +305,35 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			this.SetAtmosphere();
 			Globals.Paranormal = false;
-			if (PlayerPrefs.GetInt("MissionMode") == 1)
+			if (Globals.MissionMode)
 			{
-				PlayerPrefs.SetInt("FemaleUniform", 5);
-				PlayerPrefs.SetInt("MaleUniform", 5);
+				Globals.FemaleUniform = 5;
+				Globals.MaleUniform = 5;
 			}
-			if (PlayerPrefs.GetInt("Student_" + PlayerPrefs.GetInt("KidnapVictim").ToString() + "_Slave") == 1)
+			if (Globals.GetStudentSlave(Globals.KidnapVictim))
 			{
 				this.ForceSpawn = true;
-				this.SpawnPositions[PlayerPrefs.GetInt("KidnapVictim")] = this.SlaveSpot;
-				this.SpawnID = PlayerPrefs.GetInt("KidnapVictim");
-				PlayerPrefs.SetInt("Student_" + PlayerPrefs.GetInt("KidnapVictim").ToString() + "_Dead", 0);
+				this.SpawnPositions[Globals.KidnapVictim] = this.SlaveSpot;
+				this.SpawnID = Globals.KidnapVictim;
+				Globals.SetStudentDead(Globals.KidnapVictim, false);
 				this.SpawnStudent();
-				this.Students[PlayerPrefs.GetInt("KidnapVictim")].Slave = true;
+				this.Students[Globals.KidnapVictim].Slave = true;
 				this.SpawnID = 0;
-				PlayerPrefs.SetInt("Student_" + PlayerPrefs.GetInt("KidnapVictim").ToString() + "_Slave", 0);
-				PlayerPrefs.SetInt("KidnapVictim", 0);
+				Globals.SetStudentSlave(Globals.KidnapVictim, false);
+				Globals.KidnapVictim = 0;
 			}
 			this.NPCsTotal = this.StudentsTotal + this.TeachersTotal;
 			this.SpawnID = 1;
-			if (PlayerPrefs.GetInt("MaleUniform") == 0)
+			if (Globals.MaleUniform == 0)
 			{
-				PlayerPrefs.SetInt("MaleUniform", 1);
+				Globals.MaleUniform = 1;
 			}
 			this.ID = 1;
 			while (this.ID < this.NPCsTotal + 1)
 			{
-				if (PlayerPrefs.GetInt("Student_" + this.ID.ToString() + "_Dead") == 0)
+				if (!Globals.GetStudentDead(this.ID))
 				{
-					PlayerPrefs.SetInt("Student_" + this.ID.ToString() + "_Dying", 0);
+					Globals.SetStudentDying(this.ID, false);
 				}
 				this.ID++;
 			}
@@ -380,13 +380,13 @@ public class StudentManagerScript : MonoBehaviour
 
 	public void SetAtmosphere()
 	{
-		if (PlayerPrefs.GetInt("SchoolAtmosphereSet") == 0)
+		if (!Globals.SchoolAtmosphereSet)
 		{
-			PlayerPrefs.SetInt("SchoolAtmosphereSet", 1);
-			PlayerPrefs.SetFloat("SchoolAtmosphere", 100f);
+			Globals.SchoolAtmosphereSet = true;
+			Globals.SchoolAtmosphere = 100f;
 		}
 		Vignetting[] components = Camera.main.GetComponents<Vignetting>();
-		float num = 1f - PlayerPrefs.GetFloat("SchoolAtmosphere") * 0.01f;
+		float num = 1f - Globals.SchoolAtmosphere * 0.01f;
 		if (!this.TakingPortraits)
 		{
 			this.SmartphoneSelectiveGreyscale.desaturation = num;
@@ -591,7 +591,7 @@ public class StudentManagerScript : MonoBehaviour
 
 	public void SpawnStudent()
 	{
-		if (this.Students[this.SpawnID] == null && PlayerPrefs.GetInt("Student_" + this.SpawnID.ToString() + "_Dead") == 0 && PlayerPrefs.GetInt("Student_" + this.SpawnID.ToString() + "_Kidnapped") == 0 && PlayerPrefs.GetInt("Student_" + this.SpawnID.ToString() + "_Arrested") == 0 && PlayerPrefs.GetInt("Student_" + this.SpawnID.ToString() + "_Expelled") == 0 && this.JSON.StudentNames[this.SpawnID] != "Unknown" && this.JSON.StudentNames[this.SpawnID] != "Reserved" && PlayerPrefs.GetInt("Student_" + this.SpawnID.ToString() + "_Reputation") > -100)
+		if (this.Students[this.SpawnID] == null && !Globals.GetStudentDead(this.SpawnID) && !Globals.GetStudentKidnapped(this.SpawnID) && !Globals.GetStudentArrested(this.SpawnID) && !Globals.GetStudentExpelled(this.SpawnID) && this.JSON.StudentNames[this.SpawnID] != "Unknown" && this.JSON.StudentNames[this.SpawnID] != "Reserved" && Globals.GetStudentReputation(this.SpawnID) > -100)
 		{
 			int num;
 			if (this.JSON.StudentNames[this.SpawnID] == "Random")
@@ -602,7 +602,7 @@ public class StudentManagerScript : MonoBehaviour
 				GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(this.RandomPatrol, Vector3.zero, Quaternion.identity);
 				gameObject2.transform.parent = this.Patrols.transform;
 				this.Patrols.List[this.SpawnID] = gameObject2.transform;
-				num = ((PlayerPrefs.GetInt("MissionMode") != 1 || PlayerPrefs.GetInt("MissionTarget") != this.SpawnID) ? UnityEngine.Random.Range(0, 2) : 0);
+				num = ((!Globals.MissionMode || Globals.MissionTarget != this.SpawnID) ? UnityEngine.Random.Range(0, 2) : 0);
 				this.FindUnoccupiedSeat();
 			}
 			else

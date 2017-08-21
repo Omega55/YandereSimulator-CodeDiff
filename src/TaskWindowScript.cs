@@ -63,7 +63,7 @@ public class TaskWindowScript : MonoBehaviour
 		{
 			if (Input.GetButtonDown("A"))
 			{
-				PlayerPrefs.SetInt("Task_" + this.StudentID.ToString() + "_Status", 1);
+				Globals.SetTaskStatus(this.StudentID, 1);
 				this.Yandere.TargetStudent.TalkTimer = 100f;
 				this.Yandere.TargetStudent.Interaction = StudentInteractionType.GivingTask;
 				this.Yandere.TargetStudent.TaskPhase = 4;

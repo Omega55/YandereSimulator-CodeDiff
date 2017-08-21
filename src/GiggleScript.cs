@@ -15,7 +15,7 @@ public class GiggleScript : MonoBehaviour
 
 	private void Start()
 	{
-		float num = 500f * (2f - PlayerPrefs.GetFloat("SchoolAtmosphere") * 0.01f);
+		float num = 500f * (2f - Globals.SchoolAtmosphere * 0.01f);
 		base.transform.localScale = new Vector3(num, base.transform.localScale.y, num);
 	}
 

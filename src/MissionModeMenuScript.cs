@@ -210,7 +210,7 @@ public class MissionModeMenuScript : MonoBehaviour
 				this.CustomObjectives[l].alpha = 0.5f;
 			}
 		}
-		if (PlayerPrefs.GetInt("HighPopulation") == 0)
+		if (!Globals.HighPopulation)
 		{
 			this.CustomPopulationLabel.text = "High School Population: Off";
 			this.PopulationLabel.text = "High School Population: Off";
@@ -901,7 +901,7 @@ public class MissionModeMenuScript : MonoBehaviour
 						this.CustomObjectives[17].alpha = 1f;
 					}
 					this.NemesisDifficulty = this.NemesisNumber;
-					PlayerPrefs.SetInt("Population", this.PopulationNumber);
+					Globals.Population = this.PopulationNumber;
 					this.Phase = 5;
 					this.PromptBar.ClearButtons();
 					this.PromptBar.Label[0].text = "Toggle";
@@ -977,9 +977,9 @@ public class MissionModeMenuScript : MonoBehaviour
 	{
 		if (this.Phase != 5)
 		{
-			this.TargetID = ((PlayerPrefs.GetInt("HighPopulation") != 0) ? UnityEngine.Random.Range(2, 90) : UnityEngine.Random.Range(2, 33));
+			this.TargetID = (Globals.HighPopulation ? UnityEngine.Random.Range(2, 90) : UnityEngine.Random.Range(2, 33));
 		}
-		else if (PlayerPrefs.GetInt("HighPopulation") == 0)
+		else if (!Globals.HighPopulation)
 		{
 			if (this.TargetID > 32)
 			{
@@ -1180,58 +1180,58 @@ public class MissionModeMenuScript : MonoBehaviour
 
 	public void UpdateGraphics()
 	{
-		if (PlayerPrefs.GetInt("MissionTarget") < 33)
+		if (Globals.MissionTarget < 33)
 		{
 			string url = string.Concat(new string[]
 			{
 				"file:///",
 				Application.streamingAssetsPath,
 				"/Portraits/Student_",
-				PlayerPrefs.GetInt("MissionTarget").ToString(),
+				Globals.MissionTarget.ToString(),
 				".png"
 			});
 			WWW www = new WWW(url);
 			this.Icons[1].mainTexture = www.texture;
-			this.TargetName = this.JSON.StudentNames[PlayerPrefs.GetInt("MissionTarget")];
+			this.TargetName = this.JSON.StudentNames[Globals.MissionTarget];
 		}
 		else
 		{
 			this.TargetPortrait.mainTexture = this.BlankPortrait;
-			this.TargetName = PlayerPrefs.GetString("MissionTargetName");
+			this.TargetName = Globals.MissionTargetName;
 		}
 		this.Descs[1].text = "Kill " + this.TargetName + ".";
 		for (int i = 2; i < this.Objectives.Length; i++)
 		{
 			this.Objectives[i].gameObject.SetActive(false);
 		}
-		if (PlayerPrefs.GetInt("MissionDifficulty") > 1)
+		if (Globals.MissionDifficulty > 1)
 		{
-			for (int j = 2; j < PlayerPrefs.GetInt("MissionDifficulty") + 1; j++)
+			for (int j = 2; j < Globals.MissionDifficulty + 1; j++)
 			{
 				this.Objectives[j].gameObject.SetActive(true);
-				this.Icons[j].mainTexture = this.ConditionIcons[PlayerPrefs.GetInt("MissionCondition_" + j.ToString())];
-				if (PlayerPrefs.GetInt("MissionCondition_" + j.ToString()) > 3)
+				this.Icons[j].mainTexture = this.ConditionIcons[Globals.GetMissionCondition(j)];
+				if (Globals.GetMissionCondition(j) > 3)
 				{
-					this.Descs[j].text = this.ConditionDescs[PlayerPrefs.GetInt("MissionCondition_" + j.ToString())];
+					this.Descs[j].text = this.ConditionDescs[Globals.GetMissionCondition(j)];
 				}
-				else if (PlayerPrefs.GetInt("MissionCondition_" + j.ToString()) == 1)
+				else if (Globals.GetMissionCondition(j) == 1)
 				{
 					this.RequiredWeaponID = 11;
 					while (this.RequiredWeaponID == 11)
 					{
 						this.RequiredWeaponID = UnityEngine.Random.Range(1, this.WeaponNames.Length);
 					}
-					this.Descs[j].text = this.ConditionDescs[PlayerPrefs.GetInt("MissionCondition_" + j.ToString())] + " " + this.WeaponNames[PlayerPrefs.GetInt("MissionRequiredWeapon")];
+					this.Descs[j].text = this.ConditionDescs[Globals.GetMissionCondition(j)] + " " + this.WeaponNames[Globals.MissionRequiredWeapon];
 				}
-				else if (PlayerPrefs.GetInt("MissionCondition_" + j.ToString()) == 2)
+				else if (Globals.GetMissionCondition(j) == 2)
 				{
 					this.RequiredClothingID = UnityEngine.Random.Range(0, this.ClothingNames.Length);
-					this.Descs[j].text = this.ConditionDescs[PlayerPrefs.GetInt("MissionCondition_" + j.ToString())] + " " + this.ClothingNames[PlayerPrefs.GetInt("MissionRequiredClothing")];
+					this.Descs[j].text = this.ConditionDescs[Globals.GetMissionCondition(j)] + " " + this.ClothingNames[Globals.MissionRequiredClothing];
 				}
-				else if (PlayerPrefs.GetInt("MissionCondition_" + j.ToString()) == 3)
+				else if (Globals.GetMissionCondition(j) == 3)
 				{
 					this.RequiredDisposalID = UnityEngine.Random.Range(1, this.DisposalNames.Length);
-					this.Descs[j].text = this.ConditionDescs[PlayerPrefs.GetInt("MissionCondition_" + j.ToString())] + " " + this.DisposalNames[PlayerPrefs.GetInt("MissionRequiredDisposal")];
+					this.Descs[j].text = this.ConditionDescs[Globals.GetMissionCondition(j)] + " " + this.DisposalNames[Globals.MissionRequiredDisposal];
 				}
 			}
 		}
@@ -1239,17 +1239,17 @@ public class MissionModeMenuScript : MonoBehaviour
 
 	private void UpdatePopulation()
 	{
-		if (PlayerPrefs.GetInt("HighPopulation") == 0)
+		if (!Globals.HighPopulation)
 		{
 			this.CustomPopulationLabel.text = "High School Population: On";
 			this.PopulationLabel.text = "High School Population: On";
-			PlayerPrefs.SetInt("HighPopulation", 1);
+			Globals.HighPopulation = true;
 		}
 		else
 		{
 			this.CustomPopulationLabel.text = "High School Population: Off";
 			this.PopulationLabel.text = "High School Population: Off";
-			PlayerPrefs.SetInt("HighPopulation", 0);
+			Globals.HighPopulation = false;
 			if (this.TargetID > 32)
 			{
 				this.ChooseTarget();
@@ -1354,7 +1354,7 @@ public class MissionModeMenuScript : MonoBehaviour
 			this.ConditionString[16],
 			this.ConditionString[17],
 			this.NemesisDifficulty.ToString(),
-			PlayerPrefs.GetInt("HighPopulation").ToString()
+			((!Globals.HighPopulation) ? 0 : 1).ToString()
 		});
 		this.MissionIDLabel.text = this.MissionID;
 	}
@@ -1362,16 +1362,16 @@ public class MissionModeMenuScript : MonoBehaviour
 	private void StartMission()
 	{
 		base.GetComponent<AudioSource>().PlayOneShot(this.InfoLines[6]);
-		int @int = PlayerPrefs.GetInt("HighPopulation");
-		PlayerPrefs.DeleteAll();
-		PlayerPrefs.SetFloat("SchoolAtmosphere", 100f - (float)this.Difficulty / 10f * 100f);
-		PlayerPrefs.SetInt("NemesisDifficulty", this.NemesisDifficulty);
-		PlayerPrefs.SetString("MissionTargetName", this.TargetName);
-		PlayerPrefs.SetInt("MissionDifficulty", this.Difficulty);
-		PlayerPrefs.SetInt("HighPopulation", @int);
-		PlayerPrefs.SetInt("MissionTarget", this.TargetID);
-		PlayerPrefs.SetInt("SchoolAtmosphereSet", 1);
-		PlayerPrefs.SetInt("MissionMode", 1);
+		bool highPopulation = Globals.HighPopulation;
+		Globals.DeleteAll();
+		Globals.SchoolAtmosphere = 100f - (float)this.Difficulty / 10f * 100f;
+		Globals.NemesisDifficulty = this.NemesisDifficulty;
+		Globals.MissionTargetName = this.TargetName;
+		Globals.MissionDifficulty = this.Difficulty;
+		Globals.HighPopulation = highPopulation;
+		Globals.MissionTarget = this.TargetID;
+		Globals.SchoolAtmosphereSet = true;
+		Globals.MissionMode = true;
 		Globals.BiologyGrade = 1;
 		Globals.ChemistryGrade = 1;
 		Globals.LanguageGrade = 1;
@@ -1383,17 +1383,17 @@ public class MissionModeMenuScript : MonoBehaviour
 			{
 				if (this.Conditions[i] == 1)
 				{
-					PlayerPrefs.SetInt("MissionRequiredWeapon", this.RequiredWeaponID);
+					Globals.MissionRequiredWeapon = this.RequiredWeaponID;
 				}
 				else if (this.Conditions[i] == 2)
 				{
-					PlayerPrefs.SetInt("MissionRequiredClothing", this.RequiredClothingID);
+					Globals.MissionRequiredClothing = this.RequiredClothingID;
 				}
 				else if (this.Conditions[i] == 3)
 				{
-					PlayerPrefs.SetInt("MissionRequiredDisposal", this.RequiredDisposalID);
+					Globals.MissionRequiredDisposal = this.RequiredDisposalID;
 				}
-				PlayerPrefs.SetInt("MissionCondition_" + i.ToString(), this.Conditions[i]);
+				Globals.SetMissionCondition(i, this.Conditions[i]);
 			}
 		}
 		this.PromptBar.Show = false;

@@ -21,47 +21,47 @@ public class RivalPoseScript : MonoBehaviour
 
 	private void Start()
 	{
-		int @int = PlayerPrefs.GetInt("FemaleUniform");
-		this.MyRenderer.sharedMesh = this.FemaleUniforms[@int];
-		if (@int == 1)
+		int femaleUniform = Globals.FemaleUniform;
+		this.MyRenderer.sharedMesh = this.FemaleUniforms[femaleUniform];
+		if (femaleUniform == 1)
 		{
-			this.MyRenderer.materials[0].mainTexture = this.FemaleUniformTextures[@int];
+			this.MyRenderer.materials[0].mainTexture = this.FemaleUniformTextures[femaleUniform];
 			this.MyRenderer.materials[1].mainTexture = this.HairTexture;
 			this.MyRenderer.materials[2].mainTexture = this.HairTexture;
-			this.MyRenderer.materials[3].mainTexture = this.FemaleUniformTextures[@int];
+			this.MyRenderer.materials[3].mainTexture = this.FemaleUniformTextures[femaleUniform];
 		}
-		else if (@int == 2)
+		else if (femaleUniform == 2)
 		{
-			this.MyRenderer.materials[0].mainTexture = this.FemaleUniformTextures[@int];
-			this.MyRenderer.materials[1].mainTexture = this.FemaleUniformTextures[@int];
+			this.MyRenderer.materials[0].mainTexture = this.FemaleUniformTextures[femaleUniform];
+			this.MyRenderer.materials[1].mainTexture = this.FemaleUniformTextures[femaleUniform];
 			this.MyRenderer.materials[2].mainTexture = this.HairTexture;
 			this.MyRenderer.materials[3].mainTexture = this.HairTexture;
 		}
-		else if (@int == 3)
+		else if (femaleUniform == 3)
 		{
 			this.MyRenderer.materials[0].mainTexture = this.HairTexture;
 			this.MyRenderer.materials[1].mainTexture = this.HairTexture;
-			this.MyRenderer.materials[2].mainTexture = this.FemaleUniformTextures[@int];
-			this.MyRenderer.materials[3].mainTexture = this.FemaleUniformTextures[@int];
+			this.MyRenderer.materials[2].mainTexture = this.FemaleUniformTextures[femaleUniform];
+			this.MyRenderer.materials[3].mainTexture = this.FemaleUniformTextures[femaleUniform];
 		}
-		else if (@int == 4)
+		else if (femaleUniform == 4)
 		{
 			this.MyRenderer.materials[0].mainTexture = this.HairTexture;
 			this.MyRenderer.materials[1].mainTexture = this.HairTexture;
-			this.MyRenderer.materials[2].mainTexture = this.FemaleUniformTextures[@int];
-			this.MyRenderer.materials[3].mainTexture = this.FemaleUniformTextures[@int];
+			this.MyRenderer.materials[2].mainTexture = this.FemaleUniformTextures[femaleUniform];
+			this.MyRenderer.materials[3].mainTexture = this.FemaleUniformTextures[femaleUniform];
 		}
-		else if (@int == 5)
+		else if (femaleUniform == 5)
 		{
 			this.MyRenderer.materials[0].mainTexture = this.HairTexture;
 			this.MyRenderer.materials[1].mainTexture = this.HairTexture;
-			this.MyRenderer.materials[2].mainTexture = this.FemaleUniformTextures[@int];
-			this.MyRenderer.materials[3].mainTexture = this.FemaleUniformTextures[@int];
+			this.MyRenderer.materials[2].mainTexture = this.FemaleUniformTextures[femaleUniform];
+			this.MyRenderer.materials[3].mainTexture = this.FemaleUniformTextures[femaleUniform];
 		}
-		else if (@int == 6)
+		else if (femaleUniform == 6)
 		{
-			this.MyRenderer.materials[0].mainTexture = this.FemaleUniformTextures[@int];
-			this.MyRenderer.materials[1].mainTexture = this.FemaleUniformTextures[@int];
+			this.MyRenderer.materials[0].mainTexture = this.FemaleUniformTextures[femaleUniform];
+			this.MyRenderer.materials[1].mainTexture = this.FemaleUniformTextures[femaleUniform];
 			this.MyRenderer.materials[2].mainTexture = this.HairTexture;
 			this.MyRenderer.materials[3].mainTexture = this.HairTexture;
 		}

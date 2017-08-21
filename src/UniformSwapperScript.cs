@@ -23,40 +23,40 @@ public class UniformSwapperScript : MonoBehaviour
 
 	private void Start()
 	{
-		int @int = PlayerPrefs.GetInt("MaleUniform");
-		this.MyRenderer.sharedMesh = this.UniformMeshes[@int];
-		Texture mainTexture = this.UniformTextures[@int];
-		if (@int == 1)
+		int maleUniform = Globals.MaleUniform;
+		this.MyRenderer.sharedMesh = this.UniformMeshes[maleUniform];
+		Texture mainTexture = this.UniformTextures[maleUniform];
+		if (maleUniform == 1)
 		{
 			this.SkinID = 0;
 			this.UniformID = 1;
 			this.FaceID = 2;
 		}
-		else if (@int == 2)
+		else if (maleUniform == 2)
 		{
 			this.UniformID = 0;
 			this.FaceID = 1;
 			this.SkinID = 2;
 		}
-		else if (@int == 3)
+		else if (maleUniform == 3)
 		{
 			this.UniformID = 0;
 			this.FaceID = 1;
 			this.SkinID = 2;
 		}
-		else if (@int == 4)
+		else if (maleUniform == 4)
 		{
 			this.FaceID = 0;
 			this.SkinID = 1;
 			this.UniformID = 2;
 		}
-		else if (@int == 5)
+		else if (maleUniform == 5)
 		{
 			this.FaceID = 0;
 			this.SkinID = 1;
 			this.UniformID = 2;
 		}
-		else if (@int == 6)
+		else if (maleUniform == 6)
 		{
 			this.FaceID = 0;
 			this.SkinID = 1;

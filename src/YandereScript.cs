@@ -981,17 +981,17 @@ public class YandereScript : MonoBehaviour
 			this.CyborgParts[this.ID].SetActive(false);
 			this.ID++;
 		}
-		if (PlayerPrefs.GetInt("PantiesEquipped") == 5)
+		if (Globals.PantiesEquipped == 5)
 		{
 			this.RunSpeed += 1f;
 		}
-		if (PlayerPrefs.GetInt("Headset") == 1)
+		if (Globals.Headset)
 		{
 			this.Inventory.Headset = true;
 		}
 		this.UpdateHair();
 		this.ClubAccessory();
-		if (PlayerPrefs.GetInt("MissionMode") == 1)
+		if (Globals.MissionMode)
 		{
 			this.NoDebug = true;
 		}
@@ -1229,12 +1229,12 @@ public class YandereScript : MonoBehaviour
 						if (this.Stance.Current == StanceType.Crouching)
 						{
 							this.CharacterAnimation.CrossFade(this.CrouchRunAnim);
-							this.MyController.Move(base.transform.forward * (this.CrouchRunSpeed + (float)(Globals.PhysicalGrade + PlayerPrefs.GetInt("SpeedBonus")) * 0.25f) * Time.deltaTime);
+							this.MyController.Move(base.transform.forward * (this.CrouchRunSpeed + (float)(Globals.PhysicalGrade + Globals.SpeedBonus) * 0.25f) * Time.deltaTime);
 						}
 						else if (!this.Dragging && !this.Mopping)
 						{
 							this.CharacterAnimation.CrossFade(this.RunAnim);
-							this.MyController.Move(base.transform.forward * (this.RunSpeed + (float)(Globals.PhysicalGrade + PlayerPrefs.GetInt("SpeedBonus")) * 0.25f) * Time.deltaTime);
+							this.MyController.Move(base.transform.forward * (this.RunSpeed + (float)(Globals.PhysicalGrade + Globals.SpeedBonus) * 0.25f) * Time.deltaTime);
 						}
 						else if (this.Mopping)
 						{
@@ -3122,7 +3122,7 @@ public class YandereScript : MonoBehaviour
 					this.Attacking = false;
 					this.CanMove = true;
 					this.Drown = false;
-					this.Sanity -= ((PlayerPrefs.GetInt("PantiesEquipped") != 10) ? 20f : 10f) * this.Numbness;
+					this.Sanity -= ((Globals.PantiesEquipped != 10) ? 20f : 10f) * this.Numbness;
 				}
 				if (this.CharacterAnimation[this.DrownAnim].time > 9f)
 				{
@@ -3886,11 +3886,11 @@ public class YandereScript : MonoBehaviour
 		{
 			this.RPGCamera.enabled = true;
 		}
-		if (PlayerPrefs.GetInt("Fog") == 0)
+		if (!Globals.Fog)
 		{
 			this.MainCamera.clearFlags = CameraClearFlags.Skybox;
 		}
-		this.MainCamera.farClipPlane = (float)PlayerPrefs.GetInt("DrawDistance");
+		this.MainCamera.farClipPlane = (float)Globals.DrawDistance;
 		this.Smartphone.transform.parent.gameObject.SetActive(false);
 		this.PhonePromptBar.Show = false;
 		this.Smartphone.fieldOfView = 60f;
@@ -4131,14 +4131,14 @@ public class YandereScript : MonoBehaviour
 
 	public void UpdateNumbness()
 	{
-		this.Numbness = 1f - 0.1f * (float)(PlayerPrefs.GetInt("Numbness") + PlayerPrefs.GetInt("NumbnessBonus"));
+		this.Numbness = 1f - 0.1f * (float)(Globals.Numbness + Globals.NumbnessBonus);
 	}
 
 	private void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.name == "BloodPool(Clone)" && other.transform.localScale.x > 0.3f)
 		{
-			if (PlayerPrefs.GetInt("PantiesEquipped") == 8)
+			if (Globals.PantiesEquipped == 8)
 			{
 				this.RightFootprintSpawner.Bloodiness = 5;
 				this.LeftFootprintSpawner.Bloodiness = 5;
@@ -4188,18 +4188,18 @@ public class YandereScript : MonoBehaviour
 
 	private void SetUniform()
 	{
-		if (PlayerPrefs.GetInt("FemaleUniform") == 0)
+		if (Globals.FemaleUniform == 0)
 		{
-			PlayerPrefs.SetInt("FemaleUniform", 1);
+			Globals.FemaleUniform = 1;
 		}
-		this.MyRenderer.sharedMesh = this.Uniforms[PlayerPrefs.GetInt("FemaleUniform")];
+		this.MyRenderer.sharedMesh = this.Uniforms[Globals.FemaleUniform];
 		if (this.Casual)
 		{
-			this.TextureToUse = this.UniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.TextureToUse = this.UniformTextures[Globals.FemaleUniform];
 		}
 		else
 		{
-			this.TextureToUse = this.CasualTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.TextureToUse = this.CasualTextures[Globals.FemaleUniform];
 		}
 		this.MyRenderer.materials[0].mainTexture = this.TextureToUse;
 		this.MyRenderer.materials[1].mainTexture = this.TextureToUse;
@@ -4209,7 +4209,7 @@ public class YandereScript : MonoBehaviour
 
 	private IEnumerator ApplyCustomCostume()
 	{
-		if (PlayerPrefs.GetInt("FemaleUniform") == 1)
+		if (Globals.FemaleUniform == 1)
 		{
 			WWW CustomUniform = new WWW("file:///" + Application.streamingAssetsPath + "/CustomUniform.png");
 			yield return CustomUniform;
@@ -4219,7 +4219,7 @@ public class YandereScript : MonoBehaviour
 				this.MyRenderer.materials[1].mainTexture = CustomUniform.texture;
 			}
 		}
-		else if (PlayerPrefs.GetInt("FemaleUniform") == 2)
+		else if (Globals.FemaleUniform == 2)
 		{
 			WWW CustomLong = new WWW("file:///" + Application.streamingAssetsPath + "/CustomLong.png");
 			yield return CustomLong;
@@ -4229,7 +4229,7 @@ public class YandereScript : MonoBehaviour
 				this.MyRenderer.materials[1].mainTexture = CustomLong.texture;
 			}
 		}
-		else if (PlayerPrefs.GetInt("FemaleUniform") == 3)
+		else if (Globals.FemaleUniform == 3)
 		{
 			WWW CustomSweater = new WWW("file:///" + Application.streamingAssetsPath + "/CustomSweater.png");
 			yield return CustomSweater;
@@ -4239,7 +4239,7 @@ public class YandereScript : MonoBehaviour
 				this.MyRenderer.materials[1].mainTexture = CustomSweater.texture;
 			}
 		}
-		else if (PlayerPrefs.GetInt("FemaleUniform") == 4 || PlayerPrefs.GetInt("FemaleUniform") == 5)
+		else if (Globals.FemaleUniform == 4 || Globals.FemaleUniform == 5)
 		{
 			WWW CustomBlazer = new WWW("file:///" + Application.streamingAssetsPath + "/CustomBlazer.png");
 			yield return CustomBlazer;
@@ -4313,13 +4313,13 @@ public class YandereScript : MonoBehaviour
 			this.Police.BloodyClothing++;
 		}
 		this.Gloved = true;
-		if (PlayerPrefs.GetInt("FemaleUniform") == 1)
+		if (Globals.FemaleUniform == 1)
 		{
-			this.MyRenderer.materials[1].mainTexture = this.GloveTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.MyRenderer.materials[1].mainTexture = this.GloveTextures[Globals.FemaleUniform];
 		}
 		else
 		{
-			this.MyRenderer.materials[0].mainTexture = this.GloveTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.MyRenderer.materials[0].mainTexture = this.GloveTextures[Globals.FemaleUniform];
 		}
 	}
 
@@ -4751,11 +4751,11 @@ public class YandereScript : MonoBehaviour
 		}
 		if (this.Casual)
 		{
-			this.TextureToUse = this.UniformTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.TextureToUse = this.UniformTextures[Globals.FemaleUniform];
 		}
 		else
 		{
-			this.TextureToUse = this.CasualTextures[PlayerPrefs.GetInt("FemaleUniform")];
+			this.TextureToUse = this.CasualTextures[Globals.FemaleUniform];
 		}
 		if ((this.ClubAttire && this.Bloodiness > 0f) || this.Schoolwear == 0)
 		{
@@ -4763,7 +4763,7 @@ public class YandereScript : MonoBehaviour
 		}
 		else if (this.Schoolwear == 1)
 		{
-			this.MyRenderer.sharedMesh = this.Uniforms[PlayerPrefs.GetInt("FemaleUniform")];
+			this.MyRenderer.sharedMesh = this.Uniforms[Globals.FemaleUniform];
 			if (this.StudentManager.Censor)
 			{
 				this.MyRenderer.materials[0].SetFloat("_BlendAmount", 1f);

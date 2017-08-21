@@ -85,16 +85,16 @@ public class HeartbrokenCursorScript : MonoBehaviour
 				{
 					for (int i = 0; i < this.StudentManager.NPCsTotal; i++)
 					{
-						if (PlayerPrefs.GetInt("Student_" + i.ToString() + "_Dying") == 1)
+						if (Globals.GetStudentDying(i))
 						{
-							PlayerPrefs.SetInt("Student_" + i.ToString() + "_Dying", 0);
+							Globals.SetStudentDying(i, false);
 						}
 					}
 					SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 				}
 				else if (this.Selected == 2)
 				{
-					PlayerPrefs.DeleteAll();
+					Globals.DeleteAll();
 					SceneManager.LoadScene("CalendarScene");
 				}
 				else if (this.Selected == 3)

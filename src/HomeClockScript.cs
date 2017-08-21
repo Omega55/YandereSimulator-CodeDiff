@@ -9,23 +9,23 @@ public class HomeClockScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (PlayerPrefs.GetInt("Weekday") == 1)
+		if (Globals.Weekday == 1)
 		{
 			this.DayLabel.text = "MONDAY";
 		}
-		else if (PlayerPrefs.GetInt("Weekday") == 2)
+		else if (Globals.Weekday == 2)
 		{
 			this.DayLabel.text = "TUESDAY";
 		}
-		else if (PlayerPrefs.GetInt("Weekday") == 3)
+		else if (Globals.Weekday == 3)
 		{
 			this.DayLabel.text = "WEDNESDAY";
 		}
-		else if (PlayerPrefs.GetInt("Weekday") == 4)
+		else if (Globals.Weekday == 4)
 		{
 			this.DayLabel.text = "THURSDAY";
 		}
-		else if (PlayerPrefs.GetInt("Weekday") == 5)
+		else if (Globals.Weekday == 5)
 		{
 			this.DayLabel.text = "FRIDAY";
 		}

@@ -53,7 +53,7 @@ public class NoteLockerScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (PlayerPrefs.GetInt("Student_" + this.LockerOwner.ToString() + "_Dead") == 1)
+		if (Globals.GetStudentDead(this.LockerOwner))
 		{
 			base.gameObject.SetActive(false);
 		}
@@ -114,8 +114,9 @@ public class NoteLockerScript : MonoBehaviour
 				}
 				this.Student.Pathfinding.canSearch = false;
 				this.Student.Pathfinding.canMove = false;
-				this.Student.InEvent = true;
+				this.Student.CheckingNote = true;
 				this.Student.Routine = false;
+				this.Student.InEvent = true;
 				this.CheckingNote = true;
 			}
 			if (this.CheckingNote)
@@ -206,6 +207,7 @@ public class NoteLockerScript : MonoBehaviour
 		component.cullingType = AnimationCullingType.BasedOnRenderers;
 		component.CrossFade(this.Student.IdleAnim);
 		this.Student.DistanceToDestination = 100f;
+		this.Student.CheckingNote = false;
 		this.Student.InEvent = false;
 		this.Student.Routine = true;
 		this.CheckingNote = false;

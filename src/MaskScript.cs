@@ -27,7 +27,7 @@ public class MaskScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (PlayerPrefs.GetInt("MasksBanned") == 1)
+		if (Globals.MasksBanned)
 		{
 			base.gameObject.SetActive(false);
 		}

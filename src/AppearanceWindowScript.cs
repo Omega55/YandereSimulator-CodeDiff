@@ -178,13 +178,13 @@ public class AppearanceWindowScript : MonoBehaviour
 					{
 						if (!this.Checks[7].activeInHierarchy)
 						{
-							Globals.CustomSuitorJewelery = 1;
+							Globals.CustomSuitorJewelry = 1;
 							Globals.SetSuitorCheck(7, true);
 							this.Checks[7].SetActive(true);
 						}
 						else
 						{
-							Globals.CustomSuitorJewelery = 0;
+							Globals.CustomSuitorJewelry = 0;
 							Globals.SetSuitorCheck(7, false);
 							this.Checks[7].SetActive(false);
 						}

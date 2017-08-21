@@ -118,9 +118,9 @@ public class PhotoGalleryScript : MonoBehaviour
 					if (this.Photographs[num].mainTexture != this.NoPhoto)
 					{
 						this.Photographs[num].mainTexture = this.NoPhoto;
-						PlayerPrefs.SetInt("Photo_" + num.ToString(), 0);
-						PlayerPrefs.SetInt("SenpaiPhoto_" + num.ToString(), 0);
-						PlayerPrefs.SetInt("KittenPhoto_" + num.ToString(), 0);
+						Globals.SetPhoto(num, false);
+						Globals.SetSenpaiPhoto(num, false);
+						Globals.SetKittenPhoto(num, false);
 						this.Hearts[num].gameObject.SetActive(false);
 						this.TaskManager.UpdateTaskStatus();
 					}
@@ -139,7 +139,7 @@ public class PhotoGalleryScript : MonoBehaviour
 				else if (this.AdjustBox.activeInHierarchy && Input.GetButtonDown("Y"))
 				{
 					int num2 = this.Column + (this.Row - 1) * 5;
-					PlayerPrefs.SetInt("SenpaiPhoto_" + num2.ToString(), 0);
+					Globals.SetSenpaiPhoto(num2, false);
 					this.Hearts[num2].gameObject.SetActive(false);
 					this.AdjustBox.SetActive(false);
 					this.Yandere.Sanity += 20f;
@@ -229,7 +229,7 @@ public class PhotoGalleryScript : MonoBehaviour
 					{
 						for (int j = 1; j < 26; j++)
 						{
-							if (PlayerPrefs.GetInt("SenpaiPhoto_" + j.ToString()) == 1)
+							if (Globals.GetSenpaiPhoto(j))
 							{
 								this.Hearts[j].gameObject.SetActive(true);
 								this.AdjustBox.SetActive(true);
@@ -356,7 +356,7 @@ public class PhotoGalleryScript : MonoBehaviour
 		}
 		for (int ID = 1; ID < 26; ID++)
 		{
-			if (PlayerPrefs.GetInt("Photo_" + ID.ToString()) == 1)
+			if (Globals.GetPhoto(ID))
 			{
 				string path = string.Concat(new string[]
 				{
@@ -371,14 +371,14 @@ public class PhotoGalleryScript : MonoBehaviour
 				if (www.error == null)
 				{
 					this.Photographs[ID].mainTexture = www.texture;
-					if (!this.Corkboard && PlayerPrefs.GetInt("SenpaiPhoto_" + ID.ToString()) == 1)
+					if (!this.Corkboard && Globals.GetSenpaiPhoto(ID))
 					{
 						this.Hearts[ID].gameObject.SetActive(true);
 					}
 				}
 				else
 				{
-					PlayerPrefs.SetInt("Photo_" + ID.ToString(), 0);
+					Globals.SetPhoto(ID, false);
 				}
 			}
 		}
@@ -397,8 +397,8 @@ public class PhotoGalleryScript : MonoBehaviour
 	{
 		if (!this.Corkboard)
 		{
-			int num = this.Column + (this.Row - 1) * 5;
-			this.AdjustBox.SetActive(PlayerPrefs.GetInt("SenpaiPhoto_" + num.ToString()) == 1);
+			int photoID = this.Column + (this.Row - 1) * 5;
+			this.AdjustBox.SetActive(Globals.GetSenpaiPhoto(photoID));
 		}
 	}
 }

@@ -29,7 +29,7 @@ public class GardenHoleScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (PlayerPrefs.GetInt("GardenGrave_" + this.ID.ToString() + "_Occupied") == 1)
+		if (Globals.GetGardenGraveOccupied(this.ID))
 		{
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
@@ -118,7 +118,7 @@ public class GardenHoleScript : MonoBehaviour
 				}
 				this.VictimID = this.Corpse.StudentID;
 				this.Corpse.Remove();
-				PlayerPrefs.SetInt("GardenGrave_" + this.ID.ToString() + "_Occupied", 1);
+				Globals.SetGardenGraveOccupied(this.ID, true);
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
 				base.enabled = false;

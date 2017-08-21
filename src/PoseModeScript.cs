@@ -338,7 +338,14 @@ public class PoseModeScript : MonoBehaviour
 						{
 							if (!this.Student.Male)
 							{
-								this.Student.Cosmetic.Hairstyle = this.Student.Cosmetic.FemaleHair.Length - 1;
+								if (!this.Student.Teacher)
+								{
+									this.Student.Cosmetic.Hairstyle = this.Student.Cosmetic.FemaleHair.Length - 1;
+								}
+								else
+								{
+									this.Student.Cosmetic.Hairstyle = this.Student.Cosmetic.TeacherHair.Length - 1;
+								}
 							}
 							else
 							{
@@ -801,22 +808,16 @@ public class PoseModeScript : MonoBehaviour
 
 	private void RememberPose()
 	{
-		PlayerPrefs.SetFloat("Position X", this.Bone.localPosition.x);
-		PlayerPrefs.SetFloat("Position Y", this.Bone.localPosition.y);
-		PlayerPrefs.SetFloat("Position Z", this.Bone.localPosition.z);
-		PlayerPrefs.SetFloat("Rotation X", this.Bone.localEulerAngles.x);
-		PlayerPrefs.SetFloat("Rotation Y", this.Bone.localEulerAngles.y);
-		PlayerPrefs.SetFloat("Rotation Z", this.Bone.localEulerAngles.z);
-		PlayerPrefs.SetFloat("Scale X", this.Bone.localScale.x);
-		PlayerPrefs.SetFloat("Scale Y", this.Bone.localScale.y);
-		PlayerPrefs.SetFloat("Scale Z", this.Bone.localScale.z);
+		Globals.PosePosition = this.Bone.localPosition;
+		Globals.PoseRotation = this.Bone.localEulerAngles;
+		Globals.PoseScale = this.Bone.localScale;
 	}
 
 	private void ResetPose()
 	{
-		this.Bone.localPosition = new Vector3(PlayerPrefs.GetFloat("Position X"), PlayerPrefs.GetFloat("Position Y"), PlayerPrefs.GetFloat("Position Z"));
-		this.Bone.localEulerAngles = new Vector3(PlayerPrefs.GetFloat("Rotation X"), PlayerPrefs.GetFloat("Rotation Y"), PlayerPrefs.GetFloat("Rotation Z"));
-		this.Bone.localScale = new Vector3(PlayerPrefs.GetFloat("Scale X"), PlayerPrefs.GetFloat("Scale Y"), PlayerPrefs.GetFloat("Scale Z"));
+		this.Bone.localPosition = Globals.PosePosition;
+		this.Bone.localEulerAngles = Globals.PoseRotation;
+		this.Bone.localScale = Globals.PoseScale;
 	}
 
 	private void CapColors()

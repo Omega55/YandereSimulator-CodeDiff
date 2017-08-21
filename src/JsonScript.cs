@@ -152,7 +152,7 @@ public class JsonScript : MonoBehaviour
 			this.StudentAccessories[num] = TFUtils.LoadString(dictionary, "Accessory");
 			this.StudentInfos[num] = TFUtils.LoadString(dictionary, "Info");
 			this.StudentSuccess[num] = true;
-			if (PlayerPrefs.GetInt("HighPopulation") == 1 && this.StudentNames[num] == "Unknown")
+			if (Globals.HighPopulation && this.StudentNames[num] == "Unknown")
 			{
 				this.StudentNames[num] = "Random";
 			}
@@ -243,37 +243,33 @@ public class JsonScript : MonoBehaviour
 	{
 		for (int i = 94; i < 101; i++)
 		{
-			if (PlayerPrefs.GetInt("Student_" + i.ToString() + "_Dead") == 1)
+			if (Globals.GetStudentDead(i))
 			{
-				PlayerPrefs.SetInt("Student_" + i.ToString() + "_Replaced", 1);
-				PlayerPrefs.SetInt("Student_" + i.ToString() + "_Dead", 0);
+				Globals.SetStudentReplaced(i, true);
+				Globals.SetStudentDead(i, false);
 				string value = this.StudentManager.FirstNames[UnityEngine.Random.Range(0, this.StudentManager.FirstNames.Length)] + " " + this.StudentManager.LastNames[UnityEngine.Random.Range(0, this.StudentManager.LastNames.Length)];
-				PlayerPrefs.SetString("Student_" + i.ToString() + "_Name", value);
-				PlayerPrefs.SetFloat("Student_" + i.ToString() + "_BustSize", UnityEngine.Random.Range(1f, 1.5f));
-				PlayerPrefs.SetString("Student_" + i.ToString() + "_Hairstyle", UnityEngine.Random.Range(1, 8).ToString());
-				float value2 = UnityEngine.Random.Range(0f, 1f);
-				float value3 = UnityEngine.Random.Range(0f, 1f);
-				float value4 = UnityEngine.Random.Range(0f, 1f);
-				PlayerPrefs.SetFloat("Student_" + i.ToString() + "_ColorR", value2);
-				PlayerPrefs.SetFloat("Student_" + i.ToString() + "_ColorG", value3);
-				PlayerPrefs.SetFloat("Student_" + i.ToString() + "_ColorB", value4);
-				value2 = UnityEngine.Random.Range(0f, 1f);
-				value3 = UnityEngine.Random.Range(0f, 1f);
-				value4 = UnityEngine.Random.Range(0f, 1f);
-				PlayerPrefs.SetFloat("Student_" + i.ToString() + "_EyeColorR", value2);
-				PlayerPrefs.SetFloat("Student_" + i.ToString() + "_EyeColorG", value3);
-				PlayerPrefs.SetFloat("Student_" + i.ToString() + "_EyeColorB", value4);
-				PlayerPrefs.SetString("Student_" + i.ToString() + "_Accessory", UnityEngine.Random.Range(1, 7).ToString());
+				Globals.SetStudentName(i, value);
+				Globals.SetStudentBustSize(i, UnityEngine.Random.Range(1f, 1.5f));
+				Globals.SetStudentHairstyle(i, UnityEngine.Random.Range(1, 8).ToString());
+				float r = UnityEngine.Random.Range(0f, 1f);
+				float g = UnityEngine.Random.Range(0f, 1f);
+				float b = UnityEngine.Random.Range(0f, 1f);
+				Globals.SetStudentColor(i, new Color(r, g, b));
+				r = UnityEngine.Random.Range(0f, 1f);
+				g = UnityEngine.Random.Range(0f, 1f);
+				b = UnityEngine.Random.Range(0f, 1f);
+				Globals.SetStudentEyeColor(i, new Color(r, g, b));
+				Globals.SetStudentAccessory(i, UnityEngine.Random.Range(1, 7).ToString());
 			}
 		}
 		for (int j = 94; j < 101; j++)
 		{
-			if (PlayerPrefs.GetInt("Student_" + j.ToString() + "_Replaced") == 1)
+			if (Globals.GetStudentReplaced(j))
 			{
-				this.StudentNames[j] = PlayerPrefs.GetString("Student_" + j.ToString() + "_Name");
-				this.StudentBreasts[j] = PlayerPrefs.GetFloat("Student_" + j.ToString() + "_BustSize");
-				this.StudentHairstyles[j] = PlayerPrefs.GetString("Student_" + j.ToString() + "_Hairstyle");
-				this.StudentAccessories[j] = PlayerPrefs.GetString("Student_" + j.ToString() + "_Accessory");
+				this.StudentNames[j] = Globals.GetStudentName(j);
+				this.StudentBreasts[j] = Globals.GetStudentBustSize(j);
+				this.StudentHairstyles[j] = Globals.GetStudentHairstyle(j);
+				this.StudentAccessories[j] = Globals.GetStudentAccessory(j);
 				if (j == 100)
 				{
 					this.StudentAccessories[100] = "7";

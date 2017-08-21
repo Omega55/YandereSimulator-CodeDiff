@@ -39,6 +39,8 @@ public class DoorScript : MonoBehaviour
 
 	public bool Locked;
 
+	public bool NoTrap;
+
 	public bool North;
 
 	public bool Open;
@@ -209,7 +211,7 @@ public class DoorScript : MonoBehaviour
 			this.Prompt.Label[0].text = "     Locked";
 			this.Prompt.Circle[0].fillAmount = 1f;
 		}
-		if (this.Swinging && this.Double)
+		if (!this.NoTrap && this.Swinging && this.Double)
 		{
 			if (this.Yandere.PickUp != null)
 			{

@@ -122,7 +122,7 @@ public class OfferHelpScript : MonoBehaviour
 					}
 					if (this.EventPhase == this.EventSpeech.Length)
 					{
-						PlayerPrefs.SetInt("Scheme_6_Stage", 5);
+						Globals.SetSchemeStage(6, 5);
 						this.Student.CurrentDestination = this.Student.Destinations[this.Student.Phase];
 						this.Student.Pathfinding.target = this.Student.Destinations[this.Student.Phase];
 						this.Student.Pathfinding.canSearch = true;

@@ -215,6 +215,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] TeacherTheftReactions;
 
+	public string[] LostPhones;
+
 	public string[] RivalLostPhones;
 
 	public string[] StudentMurderReports;
@@ -340,6 +342,8 @@ public class SubtitleScript : MonoBehaviour
 	public AudioClip[] TeacherPrankClips;
 
 	public AudioClip[] TeacherTheftClips;
+
+	public AudioClip[] LostPhoneClips;
 
 	public AudioClip[] RivalLostPhoneClips;
 
@@ -522,6 +526,10 @@ public class SubtitleScript : MonoBehaviour
 			{
 				"Teacher Theft Reaction",
 				new AudioClipArrayWrapper(this.TeacherTheftClips)
+			},
+			{
+				"Lost Phone",
+				new AudioClipArrayWrapper(this.LostPhoneClips)
 			},
 			{
 				"Rival Lost Phone",
@@ -887,6 +895,11 @@ public class SubtitleScript : MonoBehaviour
 			this.RandomID = UnityEngine.Random.Range(0, this.TeacherTheftReactions.Length);
 			this.Label.text = this.TeacherTheftReactions[this.RandomID];
 			this.PlayVoice(ReactionType, this.RandomID);
+		}
+		else if (ReactionType == "Lost Phone")
+		{
+			this.Label.text = this.LostPhones[ID];
+			this.PlayVoice(ReactionType, ID);
 		}
 		else if (ReactionType == "Rival Lost Phone")
 		{

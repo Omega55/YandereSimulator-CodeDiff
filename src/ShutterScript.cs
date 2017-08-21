@@ -109,7 +109,7 @@ public class ShutterScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (PlayerPrefs.GetInt("MissionMode") == 1)
+		if (Globals.MissionMode)
 		{
 			this.MissionMode = true;
 		}
@@ -275,7 +275,7 @@ public class ShutterScript : MonoBehaviour
 						while (this.ID < 26)
 						{
 							this.ID++;
-							if (PlayerPrefs.GetInt("Photo_" + this.ID.ToString()) == 0)
+							if (!Globals.GetPhoto(this.ID))
 							{
 								this.FreeSpace = true;
 								this.Slot = this.ID;
@@ -286,14 +286,14 @@ public class ShutterScript : MonoBehaviour
 						{
 							Application.CaptureScreenshot(Application.streamingAssetsPath + "/Photographs/Photo_" + this.Slot.ToString() + ".png");
 							this.TookPhoto = true;
-							PlayerPrefs.SetInt("Photo_" + this.Slot.ToString(), 1);
+							Globals.SetPhoto(this.Slot, true);
 							if (flag)
 							{
-								PlayerPrefs.SetInt("SenpaiPhoto_" + this.Slot.ToString(), 1);
+								Globals.SetSenpaiPhoto(this.Slot, true);
 							}
 							if (this.KittenShot)
 							{
-								PlayerPrefs.SetInt("KittenPhoto_" + this.Slot.ToString(), 1);
+								Globals.SetKittenPhoto(this.Slot, true);
 								this.TaskManager.UpdateTaskStatus();
 							}
 						}
@@ -305,7 +305,7 @@ public class ShutterScript : MonoBehaviour
 					else if (!this.PantiesX.activeInHierarchy)
 					{
 						this.StudentManager.CommunalLocker.RivalPhone.LewdPhotos = true;
-						PlayerPrefs.SetInt("Scheme_4_Stage", 3);
+						Globals.SetSchemeStage(4, 3);
 						this.Schemes.UpdateInstructions();
 						this.ResumeGameplay();
 					}
@@ -323,7 +323,7 @@ public class ShutterScript : MonoBehaviour
 					if (!this.InfoX.activeInHierarchy)
 					{
 						this.PauseScreen.Sideways = true;
-						PlayerPrefs.SetInt("Student_" + this.Student.StudentID.ToString() + "_Photographed", 1);
+						Globals.SetStudentPhotographed(this.Student.StudentID, true);
 						this.ID = 0;
 						while (this.ID < this.Student.Outlines.Length)
 						{
@@ -471,9 +471,9 @@ public class ShutterScript : MonoBehaviour
 		{
 			if (this.Student != null)
 			{
-				if (PlayerPrefs.GetInt(this.Student.Name + "PantyShot") == 0)
+				if (!Globals.GetStudentPantyShot(this.Student.Name))
 				{
-					PlayerPrefs.SetInt(this.Student.Name + "PantyShot", 1);
+					Globals.SetStudentPantyShot(this.Student.Name, true);
 					if (this.Student.Nemesis)
 					{
 						text = "Wait...I recognize those panties! This person is extremely dangerous! Avoid her at all costs!";
@@ -481,12 +481,12 @@ public class ShutterScript : MonoBehaviour
 					else if (this.Student.StudentID != 32)
 					{
 						text = "Excellent! Now I have a picture of " + this.Student.Name + "'s panties. I owe you a favor for this one.";
-						PlayerPrefs.SetInt("PantyShots", PlayerPrefs.GetInt("PantyShots") + 1);
+						Globals.PantyShots++;
 					}
 					else
 					{
 						text = "A high value target! " + this.Student.Name + "'s panties were in high demand. I owe you a big favor for this one.";
-						PlayerPrefs.SetInt("PantyShots", PlayerPrefs.GetInt("PantyShots") + 5);
+						Globals.PantyShots += 5;
 					}
 					num = 5;
 				}
@@ -514,22 +514,22 @@ public class ShutterScript : MonoBehaviour
 		}
 		else if (!this.SenpaiX.activeInHierarchy)
 		{
-			if (PlayerPrefs.GetInt("SenpaiShots") == 0)
+			if (Globals.SenpaiShots == 0)
 			{
 				text = "I don't need any pictures of your Senpai.";
 				num = 2;
 			}
-			else if (PlayerPrefs.GetInt("SenpaiShots") == 1)
+			else if (Globals.SenpaiShots == 1)
 			{
 				text = "I know how you feel about this person, but I have no use for these pictures.";
 				num = 4;
 			}
-			else if (PlayerPrefs.GetInt("SenpaiShots") == 2)
+			else if (Globals.SenpaiShots == 2)
 			{
 				text = "Okay, I get it, you love your Senpai, and you love taking pictures of your Senpai. I still don't need these shots.";
 				num = 5;
 			}
-			else if (PlayerPrefs.GetInt("SenpaiShots") == 3)
+			else if (Globals.SenpaiShots == 3)
 			{
 				text = "You're spamming my inbox. Cut it out.";
 				num = 2;
@@ -539,7 +539,7 @@ public class ShutterScript : MonoBehaviour
 				text = "...";
 				num = 1;
 			}
-			PlayerPrefs.SetInt("SenpaiShots", PlayerPrefs.GetInt("SenpaiShots") + 1);
+			Globals.SenpaiShots++;
 		}
 		else if (this.NotFace)
 		{

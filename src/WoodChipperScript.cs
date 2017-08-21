@@ -150,7 +150,7 @@ public class WoodChipperScript : MonoBehaviour
 		}
 		if (this.Prompt.Circle[0].fillAmount <= 0f)
 		{
-			PlayerPrefs.SetInt("Student_" + this.VictimID.ToString() + "_Missing", 1);
+			Globals.SetStudentMissing(this.VictimID, true);
 			component.clip = this.ShredAudio;
 			component.Play();
 			this.Prompt.HideButton[3] = false;

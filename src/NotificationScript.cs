@@ -19,7 +19,7 @@ public class NotificationScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (PlayerPrefs.GetInt("MissionMode") == 1)
+		if (Globals.MissionMode)
 		{
 			this.Icon[0].color = new Color(1f, 1f, 1f, 1f);
 			this.Icon[1].color = new Color(1f, 1f, 1f, 1f);
