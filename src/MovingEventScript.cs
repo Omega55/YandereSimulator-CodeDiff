@@ -76,7 +76,7 @@ public class MovingEventScript : MonoBehaviour
 		}
 		if (this.EventActive)
 		{
-			if (this.Prompt.Circle[0].fillAmount <= 0f)
+			if (this.Prompt.Circle[0].fillAmount == 0f)
 			{
 				this.Portal.InEvent = true;
 				this.Poisoned = true;

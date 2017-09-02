@@ -363,6 +363,8 @@ public class YandereScript : MonoBehaviour
 
 	public int Costume;
 
+	public int Alerts;
+
 	public bool BloodyWarning;
 
 	public bool CorpseWarning;
@@ -565,10 +567,6 @@ public class YandereScript : MonoBehaviour
 
 	public Renderer LeftRedEye;
 
-	public Transform AntennaeR;
-
-	public Transform AntennaeL;
-
 	public Transform RightEye;
 
 	public Transform LeftEye;
@@ -672,10 +670,6 @@ public class YandereScript : MonoBehaviour
 	public Texture SukebanBandages;
 
 	public Texture SukebanUniform;
-
-	public Transform SlenderAntennaeR;
-
-	public Transform SlenderAntennaeL;
 
 	public GameObject[] SlenderHair;
 
@@ -991,11 +985,7 @@ public class YandereScript : MonoBehaviour
 		}
 		this.UpdateHair();
 		this.ClubAccessory();
-		if (Globals.MissionMode)
-		{
-			this.NoDebug = true;
-		}
-		if (Globals.LoveSick)
+		if (Globals.MissionMode || Globals.LoveSick)
 		{
 			this.NoDebug = true;
 		}
@@ -1820,14 +1810,19 @@ public class YandereScript : MonoBehaviour
 					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
 				}
 				this.CharacterAnimation.CrossFade("f02_dipping_00");
-				if (this.CharacterAnimation["f02_dipping_00"].time >= this.CharacterAnimation["f02_dipping_00"].length * 0.5f && this.Mop.Bloodiness > 0f)
+				if (this.CharacterAnimation["f02_dipping_00"].time >= this.CharacterAnimation["f02_dipping_00"].length * 0.5f)
 				{
-					if (this.Bucket != null)
+					this.Mop.Bleached = true;
+					this.Mop.Sparkles.Play();
+					if (this.Mop.Bloodiness > 0f)
 					{
-						this.Bucket.Bloodiness += this.Mop.Bloodiness / 2f;
+						if (this.Bucket != null)
+						{
+							this.Bucket.Bloodiness += this.Mop.Bloodiness / 2f;
+						}
+						this.Mop.Bloodiness = 0f;
+						this.Mop.UpdateBlood();
 					}
-					this.Mop.Bloodiness = 0f;
-					this.Mop.UpdateBlood();
 				}
 				if (this.CharacterAnimation["f02_dipping_00"].time >= this.CharacterAnimation["f02_dipping_00"].length)
 				{
@@ -1841,8 +1836,10 @@ public class YandereScript : MonoBehaviour
 			{
 				this.MoveTowardsTarget(this.Stool.position);
 				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.Stool.rotation, 10f * Time.deltaTime);
-				this.CharacterAnimation.CrossFade("f02_bucketDump" + this.PourHeight + "_00", 0f);
-				if (this.CharacterAnimation["f02_bucketDump" + this.PourHeight + "_00"].time >= this.PourTime && !this.PickUp.Bucket.Poured)
+				string text = "f02_bucketDump" + this.PourHeight + "_00";
+				AnimationState animationState = this.CharacterAnimation[text];
+				this.CharacterAnimation.CrossFade(text, 0f);
+				if (animationState.time >= this.PourTime && !this.PickUp.Bucket.Poured)
 				{
 					if (this.PickUp.Bucket.Gasoline)
 					{
@@ -1863,9 +1860,9 @@ public class YandereScript : MonoBehaviour
 					this.PickUp.Bucket.Poured = true;
 					this.PickUp.Bucket.Empty();
 				}
-				if (this.CharacterAnimation["f02_bucketDump" + this.PourHeight + "_00"].time >= this.CharacterAnimation["f02_bucketDump" + this.PourHeight + "_00"].length)
+				if (animationState.time >= animationState.length)
 				{
-					this.CharacterAnimation["f02_bucketDump" + this.PourHeight + "_00"].time = 0f;
+					animationState.time = 0f;
 					this.PickUp.Bucket.Poured = false;
 					this.Pouring = false;
 					this.CanMove = true;
@@ -2151,7 +2148,7 @@ public class YandereScript : MonoBehaviour
 					this.CharacterAnimation.CrossFade((!this.TargetStudent.Teacher) ? "f02_struggleLoseA_00" : "f02_teacherStruggleLoseA_00");
 				}
 			}
-			if (this.ClubActivity && Globals.Club == 6)
+			if (this.ClubActivity && Globals.Club == ClubType.MartialArts)
 			{
 				this.CharacterAnimation.Play("f02_kick_23");
 				if (this.CharacterAnimation["f02_kick_23"].time >= this.CharacterAnimation["f02_kick_23"].length)
@@ -3764,17 +3761,10 @@ public class YandereScript : MonoBehaviour
 		}
 		if (this.Hairstyles[15].activeInHierarchy)
 		{
-			this.AntennaeR.localScale = Vector3.zero;
-			this.AntennaeL.localScale = Vector3.zero;
 			Transform transform5 = this.Spine[4];
 			transform5.localEulerAngles = new Vector3(this.Spine[3].localEulerAngles.y, transform5.localEulerAngles.y, transform5.localEulerAngles.z);
 			Transform transform6 = this.Spine[5];
 			transform6.localEulerAngles = new Vector3(this.Spine[3].localEulerAngles.y, transform6.localEulerAngles.y, transform6.localEulerAngles.z);
-		}
-		if (this.SlenderHair[0].activeInHierarchy)
-		{
-			this.SlenderAntennaeR.localScale = Vector3.zero;
-			this.SlenderAntennaeL.localScale = Vector3.zero;
 		}
 		if (this.Slender)
 		{
@@ -3868,8 +3858,6 @@ public class YandereScript : MonoBehaviour
 	public void MoveTowardsTarget(Vector3 target)
 	{
 		Vector3 a = target - base.transform.position;
-		float d = Vector3.Distance(base.transform.position, target);
-		a = a.normalized * d;
 		this.MyController.Move(a * Time.deltaTime * 10f);
 	}
 
@@ -4806,7 +4794,7 @@ public class YandereScript : MonoBehaviour
 		if (!this.ClubAttire)
 		{
 			this.ClubAttire = true;
-			if (Globals.Club == 4)
+			if (Globals.Club == ClubType.Art)
 			{
 				this.MyRenderer.sharedMesh = this.ApronMesh;
 				this.MyRenderer.materials[0].mainTexture = this.ApronTexture;
@@ -4815,7 +4803,7 @@ public class YandereScript : MonoBehaviour
 				this.Schoolwear = 4;
 				this.Paint = true;
 			}
-			else if (Globals.Club == 6)
+			else if (Globals.Club == ClubType.MartialArts)
 			{
 				this.MyRenderer.sharedMesh = this.JudoGiMesh;
 				this.MyRenderer.materials[0].mainTexture = this.JudoGiTexture;
@@ -4823,7 +4811,7 @@ public class YandereScript : MonoBehaviour
 				this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
 				this.Schoolwear = 5;
 			}
-			else if (Globals.Club == 8)
+			else if (Globals.Club == ClubType.Science)
 			{
 				this.MyRenderer.sharedMesh = this.LabCoatMesh;
 				this.MyRenderer.materials[0].mainTexture = this.LabCoatTexture;
@@ -4852,9 +4840,9 @@ public class YandereScript : MonoBehaviour
 			}
 			this.ID++;
 		}
-		if (!this.CensorSteam[0].activeInHierarchy && Globals.Club > 0 && this.ClubAccessories[Globals.Club] != null)
+		if (!this.CensorSteam[0].activeInHierarchy && Globals.Club > ClubType.None && this.ClubAccessories[(int)Globals.Club] != null)
 		{
-			this.ClubAccessories[Globals.Club].SetActive(true);
+			this.ClubAccessories[(int)Globals.Club].SetActive(true);
 		}
 	}
 
@@ -4898,7 +4886,7 @@ public class YandereScript : MonoBehaviour
 	{
 		if (this.AccessoryGroup != null)
 		{
-			this.AccessoryGroup.DeactivateParts();
+			this.AccessoryGroup.SetPartsActive(false);
 		}
 		if (this.AccessoryID > this.Accessories.Length - 1)
 		{
@@ -4914,7 +4902,7 @@ public class YandereScript : MonoBehaviour
 			this.AccessoryGroup = this.Accessories[this.AccessoryID].GetComponent<AccessoryGroupScript>();
 			if (this.AccessoryGroup != null)
 			{
-				this.AccessoryGroup.ActivateParts();
+				this.AccessoryGroup.SetPartsActive(true);
 			}
 		}
 	}

@@ -288,9 +288,9 @@ public class StudentManagerScript : MonoBehaviour
 	private void Start()
 	{
 		this.ID = 1;
-		while (!this.Problem && this.ID < this.JSON.StudentSuccess.Length)
+		while (!this.Problem && this.ID < this.JSON.Students.Length)
 		{
-			if (!this.JSON.StudentSuccess[this.ID])
+			if (!this.JSON.Students[this.ID].Success)
 			{
 				this.ProblemID = this.ID;
 				this.Problem = true;
@@ -380,6 +380,11 @@ public class StudentManagerScript : MonoBehaviour
 
 	public void SetAtmosphere()
 	{
+		if (Globals.LoveSick)
+		{
+			Globals.SchoolAtmosphereSet = true;
+			Globals.SchoolAtmosphere = 0f;
+		}
 		if (!Globals.SchoolAtmosphereSet)
 		{
 			Globals.SchoolAtmosphereSet = true;
@@ -435,7 +440,7 @@ public class StudentManagerScript : MonoBehaviour
 				}
 				else
 				{
-					this.NewStudent = UnityEngine.Object.Instantiate<GameObject>((this.JSON.StudentGenders[this.NPCsSpawned + 1] != 0) ? this.PortraitKun : this.PortraitChan, Vector3.zero, Quaternion.identity);
+					this.NewStudent = UnityEngine.Object.Instantiate<GameObject>((this.JSON.Students[this.NPCsSpawned + 1].Gender != 0) ? this.PortraitKun : this.PortraitChan, Vector3.zero, Quaternion.identity);
 				}
 				this.NewStudent.GetComponent<CosmeticScript>().StudentID = this.NPCsSpawned + 1;
 				this.NewStudent.GetComponent<CosmeticScript>().StudentManager = this;
@@ -591,10 +596,10 @@ public class StudentManagerScript : MonoBehaviour
 
 	public void SpawnStudent()
 	{
-		if (this.Students[this.SpawnID] == null && !Globals.GetStudentDead(this.SpawnID) && !Globals.GetStudentKidnapped(this.SpawnID) && !Globals.GetStudentArrested(this.SpawnID) && !Globals.GetStudentExpelled(this.SpawnID) && this.JSON.StudentNames[this.SpawnID] != "Unknown" && this.JSON.StudentNames[this.SpawnID] != "Reserved" && Globals.GetStudentReputation(this.SpawnID) > -100)
+		if (this.Students[this.SpawnID] == null && !Globals.GetStudentDead(this.SpawnID) && !Globals.GetStudentKidnapped(this.SpawnID) && !Globals.GetStudentArrested(this.SpawnID) && !Globals.GetStudentExpelled(this.SpawnID) && this.JSON.Students[this.SpawnID].Name != "Unknown" && this.JSON.Students[this.SpawnID].Name != "Reserved" && Globals.GetStudentReputation(this.SpawnID) > -100)
 		{
 			int num;
-			if (this.JSON.StudentNames[this.SpawnID] == "Random")
+			if (this.JSON.Students[this.SpawnID].Name == "Random")
 			{
 				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.EmptyObject, new Vector3(UnityEngine.Random.Range(-17f, 17f), 0f, UnityEngine.Random.Range(-17f, 17f)), Quaternion.identity);
 				gameObject.transform.parent = this.HidingSpots.transform;
@@ -607,7 +612,7 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			else
 			{
-				num = this.JSON.StudentGenders[this.SpawnID];
+				num = this.JSON.Students[this.SpawnID].Gender;
 			}
 			this.NewStudent = UnityEngine.Object.Instantiate<GameObject>((num != 0) ? this.StudentKun : this.StudentChan, this.SpawnPositions[this.SpawnID].position, Quaternion.identity);
 			this.NewStudent.GetComponent<CosmeticScript>().LoveManager = this.LoveManager;
@@ -1169,31 +1174,31 @@ public class StudentManagerScript : MonoBehaviour
 
 	private void OccupySeat()
 	{
-		int num = this.JSON.StudentClasses[this.SpawnID];
-		int num2 = this.JSON.StudentSeats[this.SpawnID];
-		if (num == 11)
+		int @class = this.JSON.Students[this.SpawnID].Class;
+		int seat = this.JSON.Students[this.SpawnID].Seat;
+		if (@class == 11)
 		{
-			this.SeatsTaken11[num2] = true;
+			this.SeatsTaken11[seat] = true;
 		}
-		else if (num == 12)
+		else if (@class == 12)
 		{
-			this.SeatsTaken12[num2] = true;
+			this.SeatsTaken12[seat] = true;
 		}
-		else if (num == 21)
+		else if (@class == 21)
 		{
-			this.SeatsTaken21[num2] = true;
+			this.SeatsTaken21[seat] = true;
 		}
-		else if (num == 22)
+		else if (@class == 22)
 		{
-			this.SeatsTaken22[num2] = true;
+			this.SeatsTaken22[seat] = true;
 		}
-		else if (num == 31)
+		else if (@class == 31)
 		{
-			this.SeatsTaken31[num2] = true;
+			this.SeatsTaken31[seat] = true;
 		}
-		else if (num == 32)
+		else if (@class == 32)
 		{
-			this.SeatsTaken32[num2] = true;
+			this.SeatsTaken32[seat] = true;
 		}
 	}
 
@@ -1202,13 +1207,13 @@ public class StudentManagerScript : MonoBehaviour
 		this.SeatOccupied = false;
 		if (this.Class == 1)
 		{
-			this.JSON.StudentClasses[this.SpawnID] = 11;
+			this.JSON.Students[this.SpawnID].Class = 11;
 			this.ID = 1;
 			while (this.ID < this.SeatsTaken11.Length && !this.SeatOccupied)
 			{
 				if (!this.SeatsTaken11[this.ID])
 				{
-					this.JSON.StudentSeats[this.SpawnID] = this.ID;
+					this.JSON.Students[this.SpawnID].Seat = this.ID;
 					this.SeatsTaken11[this.ID] = true;
 					this.SeatOccupied = true;
 				}
@@ -1221,13 +1226,13 @@ public class StudentManagerScript : MonoBehaviour
 		}
 		else if (this.Class == 2)
 		{
-			this.JSON.StudentClasses[this.SpawnID] = 12;
+			this.JSON.Students[this.SpawnID].Class = 12;
 			this.ID = 1;
 			while (this.ID < this.SeatsTaken12.Length && !this.SeatOccupied)
 			{
 				if (!this.SeatsTaken12[this.ID])
 				{
-					this.JSON.StudentSeats[this.SpawnID] = this.ID;
+					this.JSON.Students[this.SpawnID].Seat = this.ID;
 					this.SeatsTaken12[this.ID] = true;
 					this.SeatOccupied = true;
 				}
@@ -1240,13 +1245,13 @@ public class StudentManagerScript : MonoBehaviour
 		}
 		else if (this.Class == 3)
 		{
-			this.JSON.StudentClasses[this.SpawnID] = 21;
+			this.JSON.Students[this.SpawnID].Class = 21;
 			this.ID = 1;
 			while (this.ID < this.SeatsTaken21.Length && !this.SeatOccupied)
 			{
 				if (!this.SeatsTaken21[this.ID])
 				{
-					this.JSON.StudentSeats[this.SpawnID] = this.ID;
+					this.JSON.Students[this.SpawnID].Seat = this.ID;
 					this.SeatsTaken21[this.ID] = true;
 					this.SeatOccupied = true;
 				}
@@ -1259,13 +1264,13 @@ public class StudentManagerScript : MonoBehaviour
 		}
 		else if (this.Class == 4)
 		{
-			this.JSON.StudentClasses[this.SpawnID] = 22;
+			this.JSON.Students[this.SpawnID].Class = 22;
 			this.ID = 1;
 			while (this.ID < this.SeatsTaken22.Length && !this.SeatOccupied)
 			{
 				if (!this.SeatsTaken22[this.ID])
 				{
-					this.JSON.StudentSeats[this.SpawnID] = this.ID;
+					this.JSON.Students[this.SpawnID].Seat = this.ID;
 					this.SeatsTaken22[this.ID] = true;
 					this.SeatOccupied = true;
 				}
@@ -1278,13 +1283,13 @@ public class StudentManagerScript : MonoBehaviour
 		}
 		else if (this.Class == 5)
 		{
-			this.JSON.StudentClasses[this.SpawnID] = 31;
+			this.JSON.Students[this.SpawnID].Class = 31;
 			this.ID = 1;
 			while (this.ID < this.SeatsTaken31.Length && !this.SeatOccupied)
 			{
 				if (!this.SeatsTaken31[this.ID])
 				{
-					this.JSON.StudentSeats[this.SpawnID] = this.ID;
+					this.JSON.Students[this.SpawnID].Seat = this.ID;
 					this.SeatsTaken31[this.ID] = true;
 					this.SeatOccupied = true;
 				}
@@ -1297,13 +1302,13 @@ public class StudentManagerScript : MonoBehaviour
 		}
 		else if (this.Class == 6)
 		{
-			this.JSON.StudentClasses[this.SpawnID] = 32;
+			this.JSON.Students[this.SpawnID].Class = 32;
 			this.ID = 1;
 			while (this.ID < this.SeatsTaken32.Length && !this.SeatOccupied)
 			{
 				if (!this.SeatsTaken32[this.ID])
 				{
-					this.JSON.StudentSeats[this.SpawnID] = this.ID;
+					this.JSON.Students[this.SpawnID].Seat = this.ID;
 					this.SeatsTaken32[this.ID] = true;
 					this.SeatOccupied = true;
 				}
@@ -1376,27 +1381,15 @@ public class StudentManagerScript : MonoBehaviour
 		}
 	}
 
-	public void HideStudents()
+	public void SetStudentsActive(bool active)
 	{
 		this.ID = 1;
 		while (this.ID < this.Students.Length)
 		{
-			if (this.Students[this.ID] != null)
+			StudentScript studentScript = this.Students[this.ID];
+			if (studentScript != null)
 			{
-				this.Students[this.ID].gameObject.SetActive(false);
-			}
-			this.ID++;
-		}
-	}
-
-	private void RestoreStudents()
-	{
-		this.ID = 1;
-		while (this.ID < this.Students.Length)
-		{
-			if (this.Students[this.ID] != null)
-			{
-				this.Students[this.ID].gameObject.SetActive(true);
+				studentScript.gameObject.SetActive(active);
 			}
 			this.ID++;
 		}
@@ -1409,7 +1402,7 @@ public class StudentManagerScript : MonoBehaviour
 		{
 			if (this.Students[this.ID] != null)
 			{
-				this.Students[this.ID].MyTeacher = this.Teachers[this.JSON.StudentClasses[this.Students[this.ID].StudentID]];
+				this.Students[this.ID].MyTeacher = this.Teachers[this.JSON.Students[this.Students[this.ID].StudentID].Class];
 			}
 			this.ID++;
 		}

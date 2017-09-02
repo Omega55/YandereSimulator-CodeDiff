@@ -74,16 +74,16 @@ public class WeaponManagerScript : MonoBehaviour
 				{
 					if (this.Victims[i] == 100)
 					{
-						Debug.Log("The student named " + this.JSON.StudentNames[i] + " was killed by Yandere-chan!");
+						Debug.Log("The student named " + this.JSON.Students[i].Name + " was killed by Yandere-chan!");
 					}
 					else
 					{
 						Debug.Log(string.Concat(new string[]
 						{
 							"The student named ",
-							this.JSON.StudentNames[i],
+							this.JSON.Students[i].Name,
 							" was killed by ",
-							this.JSON.StudentNames[this.Victims[i]],
+							this.JSON.Students[this.Victims[i]].Name,
 							"!"
 						}));
 					}

@@ -314,6 +314,11 @@ public class PauseScreenScript : MonoBehaviour
 							{
 								this.MainMenu.SetActive(false);
 								this.LoadingScreen.SetActive(true);
+								this.PromptBar.ClearButtons();
+								this.PromptBar.Label[1].text = "Back";
+								this.PromptBar.Label[4].text = "Choose";
+								this.PromptBar.Label[5].text = "Choose";
+								this.PromptBar.UpdateButtons();
 								base.StartCoroutine(this.PhotoGallery.GetPhotos());
 							}
 							else if (this.Selected == 2)
@@ -337,6 +342,12 @@ public class PauseScreenScript : MonoBehaviour
 										this.Yandere.CharacterAnimation[this.Yandere.ArmedAnims[k]].weight = 0f;
 									}
 									this.MainMenu.SetActive(false);
+									this.PromptBar.ClearButtons();
+									this.PromptBar.Label[0].text = "Begin";
+									this.PromptBar.Label[1].text = "Back";
+									this.PromptBar.Label[4].text = "Adjust";
+									this.PromptBar.Label[5].text = "Choose";
+									this.PromptBar.UpdateButtons();
 									this.PassTime.gameObject.SetActive(true);
 									this.PassTime.GetCurrentTime();
 								}
@@ -461,6 +472,12 @@ public class PauseScreenScript : MonoBehaviour
 						if (Input.GetButtonDown("B"))
 						{
 							this.MainMenu.SetActive(true);
+							this.PromptBar.ClearButtons();
+							this.PromptBar.Label[0].text = "Accept";
+							this.PromptBar.Label[1].text = "Exit";
+							this.PromptBar.Label[4].text = "Choose";
+							this.PromptBar.Label[5].text = "Choose";
+							this.PromptBar.UpdateButtons();
 							this.PassTime.gameObject.SetActive(false);
 						}
 					}

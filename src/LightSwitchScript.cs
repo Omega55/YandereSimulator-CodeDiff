@@ -60,7 +60,7 @@ public class LightSwitchScript : MonoBehaviour
 				this.Prompt.HideButton[3] = true;
 			}
 		}
-		if (this.Prompt.Circle[0].fillAmount <= 0f)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Circle[0].fillAmount = 1f;
 			AudioSource component = base.GetComponent<AudioSource>();
@@ -95,7 +95,7 @@ public class LightSwitchScript : MonoBehaviour
 				this.SubtitleTimer = 0f;
 			}
 		}
-		if (this.Prompt.Circle[3].fillAmount <= 0f)
+		if (this.Prompt.Circle[3].fillAmount == 0f)
 		{
 			this.Prompt.HideButton[3] = true;
 			this.Wires.localScale = new Vector3(this.Wires.localScale.x, this.Wires.localScale.y, 1f);

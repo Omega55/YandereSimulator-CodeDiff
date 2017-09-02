@@ -47,7 +47,7 @@ public class StruggleBarScript : MonoBehaviour
 			base.transform.localScale = Vector3.Lerp(base.transform.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 			this.Spikes.localEulerAngles = new Vector3(this.Spikes.localEulerAngles.x, this.Spikes.localEulerAngles.y, this.Spikes.localEulerAngles.z - Time.deltaTime * 360f);
 			this.Victory -= Time.deltaTime * 20f * this.Strength * this.Intensity;
-			if (Globals.Club == 6)
+			if (Globals.Club == ClubType.MartialArts)
 			{
 				this.Victory = 100f;
 			}

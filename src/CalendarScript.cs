@@ -42,6 +42,7 @@ public class CalendarScript : MonoBehaviour
 
 	private void Start()
 	{
+		this.LoveSickCheck();
 		if (!Globals.SchoolAtmosphereSet)
 		{
 			Globals.SchoolAtmosphereSet = true;
@@ -71,6 +72,7 @@ public class CalendarScript : MonoBehaviour
 		this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 1f);
 		Time.timeScale = 1f;
 		this.Highlight.localPosition = new Vector3(-600f + 200f * (float)Globals.Weekday, this.Highlight.localPosition.y, this.Highlight.localPosition.z);
+		this.LoveSickCheck();
 	}
 
 	private void Update()
@@ -97,7 +99,7 @@ public class CalendarScript : MonoBehaviour
 				}
 				if (this.Timer > 2f)
 				{
-					this.Continue.localPosition = new Vector3(this.Continue.localPosition.x, Mathf.Lerp(this.Continue.localPosition.y, -540f, Time.deltaTime * 10f), this.Continue.localPosition.z);
+					this.Continue.localPosition = new Vector3(this.Continue.localPosition.x, Mathf.Lerp(this.Continue.localPosition.y, -500f, Time.deltaTime * 10f), this.Continue.localPosition.z);
 					if (!this.Switch)
 					{
 						if (Input.GetButtonDown("A"))
@@ -208,6 +210,49 @@ public class CalendarScript : MonoBehaviour
 		if (Input.GetKeyDown("5"))
 		{
 			Globals.Weekday = 5;
+		}
+	}
+
+	public void LoveSickCheck()
+	{
+		if (Globals.LoveSick)
+		{
+			if (Globals.LoveSick)
+			{
+				Globals.SchoolAtmosphereSet = true;
+				Globals.SchoolAtmosphere = 0f;
+			}
+			Camera.main.backgroundColor = new Color(0f, 0f, 0f, 1f);
+			GameObject[] array = UnityEngine.Object.FindObjectsOfType<GameObject>();
+			foreach (GameObject gameObject in array)
+			{
+				UISprite component = gameObject.GetComponent<UISprite>();
+				if (component != null)
+				{
+					component.color = new Color(1f, 0f, 0f, component.color.a);
+				}
+				UITexture component2 = gameObject.GetComponent<UITexture>();
+				if (component2 != null)
+				{
+					component2.color = new Color(1f, 0f, 0f, component2.color.a);
+				}
+				UILabel component3 = gameObject.GetComponent<UILabel>();
+				if (component3 != null)
+				{
+					if (component3.color != Color.black)
+					{
+						component3.color = new Color(1f, 0f, 0f, component3.color.a);
+					}
+					if (component3.text == "?")
+					{
+						component3.color = new Color(1f, 0f, 0f, component3.color.a);
+					}
+				}
+			}
+			this.Darkness.color = Color.black;
+			this.AtmosphereLabel.enabled = false;
+			this.Cloud.enabled = false;
+			this.Sun.enabled = false;
 		}
 	}
 }

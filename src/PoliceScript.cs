@@ -575,6 +575,7 @@ public class PoliceScript : MonoBehaviour
 				if (Globals.GetStudentDying(i))
 				{
 					Globals.SetStudentDead(i, true);
+					Globals.Kills++;
 				}
 			}
 			num -= (float)this.Deaths * 5f;

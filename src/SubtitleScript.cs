@@ -73,6 +73,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] PickpocketReactions;
 
+	public string[] RivalPickpocketReactions;
+
 	public string[] DrownReactions;
 
 	public string[] KnifeReactions;
@@ -349,6 +351,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public AudioClip[] PickpocketReactionClips;
 
+	public AudioClip[] RivalPickpocketReactionClips;
+
 	public AudioClip[] SplashReactionClips;
 
 	public AudioClip[] RivalSplashReactionClips;
@@ -538,6 +542,10 @@ public class SubtitleScript : MonoBehaviour
 			{
 				"Pickpocket Reaction",
 				new AudioClipArrayWrapper(this.PickpocketReactionClips)
+			},
+			{
+				"Rival Pickpocket Reaction",
+				new AudioClipArrayWrapper(this.RivalPickpocketReactionClips)
 			},
 			{
 				"Splash Reaction",
@@ -788,6 +796,12 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.RandomID = UnityEngine.Random.Range(0, this.PickpocketReactions.Length);
 			this.Label.text = this.PickpocketReactions[this.RandomID];
+			this.PlayVoice(ReactionType, this.RandomID);
+		}
+		else if (ReactionType == "Rival Pickpocket Reaction")
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.RivalPickpocketReactions.Length);
+			this.Label.text = this.RivalPickpocketReactions[this.RandomID];
 			this.PlayVoice(ReactionType, this.RandomID);
 		}
 		else if (ReactionType == "Drown Reaction")
@@ -1402,13 +1416,13 @@ public class SubtitleScript : MonoBehaviour
 		return 0f;
 	}
 
-	public float GetClubClipLength(int Club, int ClubPhase)
+	public float GetClubClipLength(ClubType Club, int ClubPhase)
 	{
-		if (Club == 3)
+		if (Club == ClubType.Occult)
 		{
 			return this.Club3Clips[ClubPhase].length;
 		}
-		if (Club == 6)
+		if (Club == ClubType.MartialArts)
 		{
 			return this.Club6Clips[ClubPhase].length;
 		}

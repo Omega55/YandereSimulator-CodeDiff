@@ -46,7 +46,7 @@ public class SewingMachineScript : MonoBehaviour
 				this.Prompt.enabled = false;
 			}
 		}
-		if (this.Prompt.Circle[0].fillAmount <= 0f)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_sewing_00");
 			this.Yandere.MyController.radius = 0.1f;

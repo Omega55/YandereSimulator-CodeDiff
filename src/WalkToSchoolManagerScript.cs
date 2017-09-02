@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class WalkToSchoolManagerScript : MonoBehaviour
 {
+	public PromptBarScript PromptBar;
+
 	public CosmeticScript Yandere;
 
 	public CosmeticScript Senpai;
@@ -155,6 +157,11 @@ public class WalkToSchoolManagerScript : MonoBehaviour
 							this.SenpaiEyeRTarget = this.SenpaiEyeR.localEulerAngles.y;
 							this.SenpaiEyeLTarget = this.SenpaiEyeL.localEulerAngles.y;
 							this.ShowWindow = true;
+							this.PromptBar.ClearButtons();
+							this.PromptBar.Label[0].text = "Continue";
+							this.PromptBar.Label[2].text = "Skip";
+							this.PromptBar.UpdateButtons();
+							this.PromptBar.Show = true;
 						}
 					}
 					else
@@ -187,34 +194,39 @@ public class WalkToSchoolManagerScript : MonoBehaviour
 							base.GetComponent<AudioSource>().Play();
 						}
 					}
-					else if (Input.GetButtonDown("A"))
+					else
 					{
-						if (this.ID < this.Lines.Length - 1)
+						if (Input.GetButtonDown("A"))
 						{
-							if (this.Typewriter.mCurrentOffset < this.Typewriter.mFullText.Length)
+							if (this.ID < this.Lines.Length - 1)
+							{
+								if (this.Typewriter.mCurrentOffset < this.Typewriter.mFullText.Length)
+								{
+									this.Typewriter.Finish();
+								}
+								else
+								{
+									this.ID++;
+									this.Typewriter.ResetToBeginning();
+									this.Typewriter.mLabel.text = this.Lines[this.ID];
+									this.Typewriter.mLabel.color = new Color(1f, 1f, 1f, 0f);
+									base.GetComponent<AudioSource>().clip = this.Speech[this.ID];
+									base.GetComponent<AudioSource>().Play();
+									this.UpdateNameLabel();
+								}
+							}
+							else if (this.Typewriter.mCurrentOffset < this.Typewriter.mFullText.Length)
 							{
 								this.Typewriter.Finish();
 							}
 							else
 							{
-								this.ID++;
-								this.Typewriter.ResetToBeginning();
-								this.Typewriter.mLabel.text = this.Lines[this.ID];
-								this.Typewriter.mLabel.color = new Color(1f, 1f, 1f, 0f);
-								base.GetComponent<AudioSource>().clip = this.Speech[this.ID];
-								base.GetComponent<AudioSource>().Play();
-								this.UpdateNameLabel();
+								this.End();
 							}
 						}
-						else if (this.Typewriter.mCurrentOffset < this.Typewriter.mFullText.Length)
+						if (Input.GetButtonDown("X"))
 						{
-							this.Typewriter.Finish();
-						}
-						else
-						{
-							this.ShowWindow = false;
-							this.Ending = true;
-							this.Timer = 0f;
+							this.End();
 						}
 					}
 				}
@@ -222,6 +234,7 @@ public class WalkToSchoolManagerScript : MonoBehaviour
 		}
 		else
 		{
+			base.GetComponent<AudioSource>().volume -= Time.deltaTime;
 			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 1f, Time.deltaTime));
 			if (this.Darkness.color.a == 1f && !this.Debugging)
 			{
@@ -312,5 +325,13 @@ public class WalkToSchoolManagerScript : MonoBehaviour
 		{
 			this.NameLabel.text = "Senpai-kun";
 		}
+	}
+
+	public void End()
+	{
+		this.PromptBar.Show = false;
+		this.ShowWindow = false;
+		this.Ending = true;
+		this.Timer = 0f;
 	}
 }

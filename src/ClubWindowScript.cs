@@ -43,16 +43,16 @@ public class ClubWindowScript : MonoBehaviour
 
 	public float Timer;
 
-	public int Club;
+	public ClubType Club;
 
 	private void Start()
 	{
 		this.Window.SetActive(false);
-		if (Globals.SchoolAtmosphere < 33.3333321f)
+		if (Globals.SchoolAtmosphereType == SchoolAtmosphereType.Low)
 		{
 			this.ActivityDescs[7] = this.LowAtmosphereDesc;
 		}
-		else if (Globals.SchoolAtmosphere < 66.6666641f)
+		else if (Globals.SchoolAtmosphereType == SchoolAtmosphereType.Medium)
 		{
 			this.ActivityDescs[7] = this.MedAtmosphereDesc;
 		}
@@ -77,7 +77,7 @@ public class ClubWindowScript : MonoBehaviour
 					{
 						this.ClubManager.DeactivateClubBenefit();
 						Globals.SetQuitClub(this.Club, true);
-						Globals.Club = 0;
+						Globals.Club = ClubType.None;
 						this.Yandere.ClubAccessory();
 						this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubQuit;
 						this.Quitting = false;
@@ -146,17 +146,17 @@ public class ClubWindowScript : MonoBehaviour
 
 	public void UpdateWindow()
 	{
-		this.ClubName.text = this.ClubNames[this.Club];
+		this.ClubName.text = this.ClubNames[(int)this.Club];
 		if (!this.Quitting && !this.Activity)
 		{
-			this.ClubDesc.text = this.ClubDescs[this.Club];
+			this.ClubDesc.text = this.ClubDescs[(int)this.Club];
 			this.PromptBar.ClearButtons();
 			this.PromptBar.Label[0].text = "Accept";
 			this.PromptBar.Label[1].text = "Refuse";
 			this.PromptBar.Label[2].text = "More Info";
 			this.PromptBar.UpdateButtons();
 			this.PromptBar.Show = true;
-			this.BottomLabel.text = "Will you join the " + this.ClubNames[this.Club] + "?";
+			this.BottomLabel.text = "Will you join the " + this.ClubNames[(int)this.Club] + "?";
 		}
 		else if (this.Activity)
 		{
@@ -176,7 +176,7 @@ public class ClubWindowScript : MonoBehaviour
 			this.PromptBar.Label[1].text = "Deny";
 			this.PromptBar.UpdateButtons();
 			this.PromptBar.Show = true;
-			this.BottomLabel.text = "Will you quit the " + this.ClubNames[this.Club] + "?";
+			this.BottomLabel.text = "Will you quit the " + this.ClubNames[(int)this.Club] + "?";
 		}
 		this.ClubInfo.SetActive(true);
 		this.Warning.SetActive(false);

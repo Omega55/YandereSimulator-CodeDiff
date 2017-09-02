@@ -74,7 +74,9 @@ public class EndOfDayScript : MonoBehaviour
 
 	public int[] VictimArray;
 
-	public int[] ClubArray;
+	public ClubType[] ClubArray;
+
+	private SaveFile saveFile;
 
 	public void Start()
 	{
@@ -126,8 +128,7 @@ public class EndOfDayScript : MonoBehaviour
 		{
 			if (Input.GetKeyDown("backspace"))
 			{
-				this.Police.KillStudents();
-				SceneManager.LoadScene("HomeScene");
+				this.Finish();
 			}
 			if (this.Phase == 1)
 			{
@@ -253,7 +254,7 @@ public class EndOfDayScript : MonoBehaviour
 							{
 								this.VictimString += ", and ";
 							}
-							this.VictimString += this.JSON.StudentNames[this.ID];
+							this.VictimString += this.JSON.Students[this.ID].Name;
 							this.Victims++;
 						}
 						this.ID++;
@@ -284,7 +285,7 @@ public class EndOfDayScript : MonoBehaviour
 				}
 				else
 				{
-					this.Label.text = "The police find the fingerprints of " + this.JSON.StudentNames[this.WeaponManager.Weapons[this.WeaponID].FingerprintID] + " on the weapon.";
+					this.Label.text = "The police find the fingerprints of " + this.JSON.Students[this.WeaponManager.Weapons[this.WeaponID].FingerprintID].Name + " on the weapon.";
 					this.Phase = 101;
 				}
 			}
@@ -347,7 +348,7 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 6)
 			{
-				this.Label.text = "The police discover " + this.JSON.StudentNames[this.TranqCase.VictimID] + " inside of a musical instrument case. However, she is unable to recall how she got inside of the case. The police are unable to determine what happened.";
+				this.Label.text = "The police discover " + this.JSON.Students[this.TranqCase.VictimID].Name + " inside of a musical instrument case. However, she is unable to recall how she got inside of the case. The police are unable to determine what happened.";
 				this.TranqCase.Occupied = false;
 				this.Phase++;
 			}
@@ -452,7 +453,7 @@ public class EndOfDayScript : MonoBehaviour
 							this.ClubClosed = true;
 							if (Globals.Club == this.ClubArray[this.ClubID])
 							{
-								Globals.Club = 0;
+								Globals.Club = ClubType.None;
 							}
 						}
 						if (this.ClubManager.LeaderMissing)
@@ -469,7 +470,7 @@ public class EndOfDayScript : MonoBehaviour
 							this.ClubClosed = true;
 							if (Globals.Club == this.ClubArray[this.ClubID])
 							{
-								Globals.Club = 0;
+								Globals.Club = ClubType.None;
 							}
 						}
 						else if (this.ClubManager.LeaderDead)
@@ -479,7 +480,7 @@ public class EndOfDayScript : MonoBehaviour
 							this.ClubClosed = true;
 							if (Globals.Club == this.ClubArray[this.ClubID])
 							{
-								Globals.Club = 0;
+								Globals.Club = ClubType.None;
 							}
 						}
 					}
@@ -499,7 +500,7 @@ public class EndOfDayScript : MonoBehaviour
 								" room."
 							});
 							Globals.SetClubKicked(this.ClubArray[this.ClubID], true);
-							Globals.Club = 0;
+							Globals.Club = ClubType.None;
 							this.ClubKicked = true;
 						}
 						else if (this.ClubManager.ClubGrudge)
@@ -517,7 +518,7 @@ public class EndOfDayScript : MonoBehaviour
 								" room."
 							});
 							Globals.SetClubKicked(this.ClubArray[this.ClubID], true);
-							Globals.Club = 0;
+							Globals.Club = ClubType.None;
 							this.ClubKicked = true;
 						}
 					}
@@ -564,20 +565,7 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 15)
 			{
-				Globals.Reputation = this.Reputation.Reputation;
-				Globals.Night = true;
-				this.Police.KillStudents();
-				if (!this.TranqCase.Occupied)
-				{
-					SceneManager.LoadScene("HomeScene");
-				}
-				else
-				{
-					Globals.KidnapVictim = this.TranqCase.VictimID;
-					Globals.SetStudentKidnapped(this.TranqCase.VictimID, true);
-					Globals.SetStudentSanity(this.TranqCase.VictimID, 100f);
-					SceneManager.LoadScene("CalendarScene");
-				}
+				this.Finish();
 			}
 			else if (this.Phase == 100)
 			{
@@ -592,13 +580,13 @@ public class EndOfDayScript : MonoBehaviour
 				{
 					if (!studentScript.Tranquil)
 					{
-						this.Label.text = this.JSON.StudentNames[fingerprintID] + " is arrested by the police.";
+						this.Label.text = this.JSON.Students[fingerprintID].Name + " is arrested by the police.";
 						Globals.SetStudentArrested(fingerprintID, true);
 						this.Arrests++;
 					}
 					else
 					{
-						this.Label.text = this.JSON.StudentNames[fingerprintID] + " is found asleep inside of a musical instrument case. The police assume that she hid herself inside of the box after committing murder, and arrest her.";
+						this.Label.text = this.JSON.Students[fingerprintID].Name + " is found asleep inside of a musical instrument case. The police assume that she hid herself inside of the box after committing murder, and arrest her.";
 						Globals.SetStudentArrested(fingerprintID, true);
 						this.ArrestID = fingerprintID;
 						this.TranqCase.Occupied = false;
@@ -619,12 +607,12 @@ public class EndOfDayScript : MonoBehaviour
 					}
 					if (!flag)
 					{
-						this.Label.text = this.JSON.StudentNames[fingerprintID] + " is dead. The police cannot perform an arrest.";
+						this.Label.text = this.JSON.Students[fingerprintID].Name + " is dead. The police cannot perform an arrest.";
 						this.DeadPerps++;
 					}
 					else
 					{
-						this.Label.text = this.JSON.StudentNames[fingerprintID] + "'s fingerprints are on the same weapon that killed her. The police cannot solve this mystery.";
+						this.Label.text = this.JSON.Students[fingerprintID].Name + "'s fingerprints are on the same weapon that killed her. The police cannot solve this mystery.";
 					}
 				}
 				this.Phase = 5;
@@ -691,5 +679,26 @@ public class EndOfDayScript : MonoBehaviour
 				this.Phase = 2;
 			}
 		}
+	}
+
+	private void Finish()
+	{
+		Globals.Reputation = this.Reputation.Reputation;
+		Globals.Night = true;
+		this.Police.KillStudents();
+		if (!this.TranqCase.Occupied)
+		{
+			SceneManager.LoadScene("HomeScene");
+		}
+		else
+		{
+			Globals.KidnapVictim = this.TranqCase.VictimID;
+			Globals.SetStudentKidnapped(this.TranqCase.VictimID, true);
+			Globals.SetStudentSanity(this.TranqCase.VictimID, 100f);
+			SceneManager.LoadScene("CalendarScene");
+		}
+		this.saveFile = SaveFile.Load(Globals.CurrentSaveFile);
+		this.saveFile.Data.Kills = Globals.Kills;
+		this.saveFile.Save();
 	}
 }

@@ -19,7 +19,7 @@ public class TrashCanScript : MonoBehaviour
 	{
 		if (!this.Occupied)
 		{
-			if (this.Prompt.Circle[0].fillAmount <= 0f)
+			if (this.Prompt.Circle[0].fillAmount == 0f)
 			{
 				this.Prompt.Circle[0].fillAmount = 1f;
 				if (this.Yandere.PickUp != null)
@@ -43,7 +43,7 @@ public class TrashCanScript : MonoBehaviour
 				this.UpdatePrompt();
 			}
 		}
-		else if (this.Prompt.Circle[0].fillAmount <= 0f)
+		else if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Circle[0].fillAmount = 1f;
 			this.Item.GetComponent<PromptScript>().Circle[3].fillAmount = -1f;

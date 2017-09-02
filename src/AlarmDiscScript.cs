@@ -77,7 +77,7 @@ public class AlarmDiscScript : MonoBehaviour
 			{
 				if (!this.Radio)
 				{
-					if (this.Student != this.Originator && !this.Student.TurnOffRadio && this.Student.Alive && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.CheckingNote && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse)
+					if (this.Student != this.Originator && !this.Student.TurnOffRadio && this.Student.Alive && !this.Student.Pushed && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.CheckingNote && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse)
 					{
 						if (this.Student.Male)
 						{
@@ -122,6 +122,7 @@ public class AlarmDiscScript : MonoBehaviour
 					this.Student.OccultBook.SetActive(false);
 					this.Student.Pen.SetActive(false);
 					this.Student.SpeechLines.Stop();
+					this.Student.RadioTimer = 0f;
 					this.Student.ReadPhase = 0;
 					this.SourceRadio.Victim = this.Student;
 				}

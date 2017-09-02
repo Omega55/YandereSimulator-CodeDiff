@@ -104,7 +104,7 @@ public class PortraitChanScript : MonoBehaviour
 
 	public int StudentID;
 
-	public int Club;
+	public ClubType Club;
 
 	public GameObject[] MaleHairstyles;
 
@@ -221,28 +221,28 @@ public class PortraitChanScript : MonoBehaviour
 			this.StudentID = 7;
 			component.Play("f02_bulliedPose_00");
 		}
-		this.Club = this.JSON.StudentClubs[this.StudentID];
-		this.BreastSize = this.JSON.StudentBreasts[this.StudentID];
-		this.Hairstyle = this.JSON.StudentHairstyles[this.StudentID];
-		this.Accessory = this.JSON.StudentAccessories[this.StudentID];
+		this.Club = this.JSON.Students[this.StudentID].Club;
+		this.BreastSize = this.JSON.Students[this.StudentID].BreastSize;
+		this.Hairstyle = this.JSON.Students[this.StudentID].Hairstyle;
+		this.Accessory = this.JSON.Students[this.StudentID].Accessory;
 		if (!this.Male)
 		{
 			this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 			this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 			this.UpdateHair();
 		}
-		else if (this.Club == 3)
+		else if (this.Club == ClubType.Occult)
 		{
 			component["sadFace_00"].layer = 1;
 			component.Play("sadFace_00");
 			component["sadFace_00"].weight = 1f;
 		}
 		this.Bandana.SetActive(false);
-		if (this.Club == 100)
+		if (this.Club == ClubType.Teacher)
 		{
 			this.BecomeTeacher();
 		}
-		else if (this.Club == 6)
+		else if (this.Club == ClubType.MartialArts)
 		{
 			this.Bandana.SetActive(true);
 		}
@@ -256,7 +256,7 @@ public class PortraitChanScript : MonoBehaviour
 
 	private void SetColors()
 	{
-		string text = this.JSON.StudentColors[this.StudentID];
+		string color = this.JSON.Students[this.StudentID].Color;
 		if (!this.Male)
 		{
 			if (!this.Teacher)
@@ -274,7 +274,7 @@ public class PortraitChanScript : MonoBehaviour
 				this.Drills.materials[1].mainTexture = this.DrillTexture;
 				this.Drills.materials[2].mainTexture = this.DrillTexture;
 			}
-			else if (text == "Brown")
+			else if (color == "Brown")
 			{
 				this.TeacherHair[1].GetComponent<Renderer>().material.color = new Color(0.5f, 0.25f, 0f, 1f);
 				this.TeacherHair[2].GetComponent<Renderer>().material.color = new Color(0.5f, 0.25f, 0f, 1f);
@@ -298,19 +298,19 @@ public class PortraitChanScript : MonoBehaviour
 			if (int.Parse(this.Hairstyle) < 8)
 			{
 				this.MaleHairRenderer = this.MaleHairstyles[int.Parse(this.Hairstyle)].GetComponent<Renderer>();
-				Color color;
-				bool flag = this.HairColors.TryGetValue(text, out color);
-				this.MaleHairRenderer.material.color = color;
+				Color color2;
+				bool flag = this.HairColors.TryGetValue(color, out color2);
+				this.MaleHairRenderer.material.color = color2;
 				this.EyeR.material.color = this.MaleHairRenderer.material.color;
 				this.EyeL.material.color = this.MaleHairRenderer.material.color;
-				if (this.Club == 6)
+				if (this.Club == ClubType.MartialArts)
 				{
 					Transform transform = this.MaleHairstyles[int.Parse(this.Hairstyle)].transform;
 					transform.localScale = new Vector3(-1f, transform.localScale.y, transform.localScale.z);
 					this.Bandana.SetActive(true);
 				}
 			}
-			else if (text == "Occult2" || text == "Occult4" || text == "Occult6")
+			else if (color == "Occult2" || color == "Occult4" || color == "Occult6")
 			{
 				this.MaleHairRenderer = this.MaleHairstyles[int.Parse(this.Hairstyle)].GetComponent<Renderer>();
 				this.MyRenderer.materials[2].mainTexture = this.MaleHairRenderer.material.mainTexture;

@@ -158,7 +158,7 @@ public class CounselorScript : MonoBehaviour
 		}
 		Animation component = base.GetComponent<Animation>();
 		AudioSource component2 = base.GetComponent<AudioSource>();
-		if (this.Prompt.Circle[0].fillAmount <= 0f)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Circle[0].fillAmount = 1f;
 			if (!this.Busy)

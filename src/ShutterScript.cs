@@ -183,7 +183,7 @@ public class ShutterScript : MonoBehaviour
 						if (this.FaceStudent != null)
 						{
 							this.TargetStudent = this.FaceStudent.StudentID;
-							if (!this.FaceStudent.Male && !this.FaceStudent.Alarmed && !this.FaceStudent.Distracted && !this.FaceStudent.InEvent && !this.FaceStudent.Wet && !this.FaceStudent.CensorSteam[0].activeInHierarchy && !this.FaceStudent.Fleeing && !this.FaceStudent.Following && !this.FaceStudent.ShoeRemoval.enabled && !this.FaceStudent.HoldingHands && this.FaceStudent.Actions[this.FaceStudent.Phase] != StudentActionType.Mourn && !this.FaceStudent.Guarding && Vector3.Distance(this.Yandere.transform.position, gameObject.transform.position) < 1.66666f)
+							if (!this.FaceStudent.Alarmed && !this.FaceStudent.Distracted && !this.FaceStudent.InEvent && !this.FaceStudent.Wet && this.FaceStudent.Schoolwear > 0 && !this.FaceStudent.Fleeing && !this.FaceStudent.Following && !this.FaceStudent.ShoeRemoval.enabled && !this.FaceStudent.HoldingHands && this.FaceStudent.Actions[this.FaceStudent.Phase] != StudentActionType.Mourn && !this.FaceStudent.Guarding && Vector3.Distance(this.Yandere.transform.position, gameObject.transform.position) < 1.66666f)
 							{
 								Plane[] planes = GeometryUtility.CalculateFrustumPlanes(this.FaceStudent.VisionCone);
 								if (GeometryUtility.TestPlanesAABB(planes, this.Yandere.GetComponent<Collider>().bounds) && Physics.Linecast(this.FaceStudent.Eyes.position, this.Yandere.transform.position + Vector3.up, out this.hit) && this.hit.collider.gameObject == this.Yandere.gameObject)

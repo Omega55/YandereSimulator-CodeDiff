@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class Globals
@@ -13,6 +14,16 @@ public static class Globals
 		public static void SetBool(string key, bool value)
 		{
 			PlayerPrefs.SetInt(key, (!value) ? 0 : 1);
+		}
+
+		public static T GetEnum<T>(string key) where T : struct, IConvertible
+		{
+			return (T)((object)PlayerPrefs.GetInt(key));
+		}
+
+		public static void SetEnum<T>(string key, T value) where T : struct, IConvertible
+		{
+			PlayerPrefs.SetInt(key, (int)((object)value));
 		}
 
 		public static Vector3 GetVector3(string key)
@@ -45,6 +56,93 @@ public static class Globals
 			PlayerPrefs.SetFloat(key + "_G", value.g);
 			PlayerPrefs.SetFloat(key + "_B", value.b);
 			PlayerPrefs.SetFloat(key + "_A", value.a);
+		}
+	}
+
+	private static class KeysHelper
+	{
+		private const string KeyListPrefix = "Keys";
+
+		private const char KeyListSeparator = '|';
+
+		public const char PairSeparator = '^';
+
+		public static T[] GetKeys<T>(string key) where T : struct
+		{
+			string keyList = Globals.KeysHelper.GetKeyList(Globals.KeysHelper.GetKeyListKey(key));
+			string[] array = Globals.KeysHelper.Split(keyList);
+			return Array.ConvertAll<string, T>(array, (string str) => (T)((object)int.Parse(str)));
+		}
+
+		public static string[] GetKeys(string key)
+		{
+			string keyList = Globals.KeysHelper.GetKeyList(Globals.KeysHelper.GetKeyListKey(key));
+			return Globals.KeysHelper.Split(keyList);
+		}
+
+		public static KeyValuePair<T, U>[] GetKeys<T, U>(string key) where T : struct where U : struct
+		{
+			string keyList = Globals.KeysHelper.GetKeyList(Globals.KeysHelper.GetKeyListKey(key));
+			string[] array = Globals.KeysHelper.Split(keyList);
+			KeyValuePair<T, U>[] array2 = new KeyValuePair<T, U>[array.Length];
+			for (int i = 0; i < array.Length; i++)
+			{
+				string[] array3 = array[i].Split(new char[]
+				{
+					'^'
+				});
+				array2[i] = new KeyValuePair<T, U>((T)((object)int.Parse(array3[0])), (U)((object)int.Parse(array3[1])));
+			}
+			return array2;
+		}
+
+		public static void AddIfMissing(string key, string id)
+		{
+			string keyListKey = Globals.KeysHelper.GetKeyListKey(key);
+			string keyList = Globals.KeysHelper.GetKeyList(keyListKey);
+			string[] keyListStrings = Globals.KeysHelper.Split(keyList);
+			if (!Globals.KeysHelper.HasKey(keyListStrings, id))
+			{
+				Globals.KeysHelper.AppendKey(keyListKey, keyList, id);
+			}
+		}
+
+		private static string GetKeyListKey(string key)
+		{
+			return key + "Keys";
+		}
+
+		private static string GetKeyList(string keyListKey)
+		{
+			if (!PlayerPrefs.HasKey(keyListKey))
+			{
+				PlayerPrefs.SetString(keyListKey, string.Empty);
+			}
+			return PlayerPrefs.GetString(keyListKey);
+		}
+
+		private static string[] Split(string keyList)
+		{
+			return keyList.Split(new char[]
+			{
+				'|'
+			});
+		}
+
+		private static int FindKey(string[] keyListStrings, string key)
+		{
+			return Array.IndexOf<string>(keyListStrings, key);
+		}
+
+		private static bool HasKey(string[] keyListStrings, string key)
+		{
+			return Globals.KeysHelper.FindKey(keyListStrings, key) > -1;
+		}
+
+		private static void AppendKey(string keyListKey, string keyList, string key)
+		{
+			string value = (keyList.Length != 0) ? (keyList + '|' + key) : (keyList + key);
+			PlayerPrefs.SetString(keyListKey, value);
 		}
 	}
 
@@ -178,11 +276,15 @@ public static class Globals
 
 	private const string Str_ParticleCount = "ParticleCount";
 
+	private const string Str_Alerts = "Alerts";
+
 	private const string Str_Enlightenment = "Enlightenment";
 
 	private const string Str_EnlightenmentBonus = "EnlightenmentBonus";
 
 	private const string Str_Headset = "Headset";
+
+	private const string Str_Kills = "Kills";
 
 	private const string Str_Numbness = "Numbness";
 
@@ -219,6 +321,8 @@ public static class Globals
 	private const string Str_PoseRotation = "PoseRotation";
 
 	private const string Str_PoseScale = "PoseScale";
+
+	private const string Str_CurrentSaveFile = "CurrentSaveFile";
 
 	private const string Str_CurrentScheme = "CurrentScheme";
 
@@ -342,11 +446,6 @@ public static class Globals
 	public static void DeleteAll()
 	{
 		PlayerPrefs.DeleteAll();
-	}
-
-	public static void Delete(string key)
-	{
-		PlayerPrefs.DeleteKey(key);
 	}
 
 	public static void Save()
@@ -546,46 +645,64 @@ public static class Globals
 		}
 	}
 
-	public static int Club
+	public static ClubType Club
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("Club");
+			return Globals.GlobalsHelper.GetEnum<ClubType>("Club");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("Club", value);
+			Globals.GlobalsHelper.SetEnum<ClubType>("Club", value);
 		}
 	}
 
-	public static bool GetClubClosed(int clubID)
+	public static bool GetClubClosed(ClubType clubID)
 	{
-		return Globals.GlobalsHelper.GetBool("ClubClosed_" + clubID.ToString());
+		string str = "ClubClosed_";
+		int num = (int)clubID;
+		return Globals.GlobalsHelper.GetBool(str + num.ToString());
 	}
 
-	public static void SetClubClosed(int clubID, bool value)
+	public static void SetClubClosed(ClubType clubID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("ClubClosed_" + clubID.ToString(), value);
+		int num = (int)clubID;
+		string text = num.ToString();
+		Globals.KeysHelper.AddIfMissing("ClubClosed_", text);
+		Globals.GlobalsHelper.SetBool("ClubClosed_" + text, value);
 	}
 
-	public static bool GetClubKicked(int clubID)
+	public static ClubType[] KeysOfClubClosed()
 	{
-		return Globals.GlobalsHelper.GetBool("ClubKicked_" + clubID.ToString());
+		return Globals.KeysHelper.GetKeys<ClubType>("ClubClosed_");
 	}
 
-	public static void SetClubKicked(int clubID, bool value)
+	public static bool GetClubKicked(ClubType clubID)
 	{
-		Globals.GlobalsHelper.SetBool("ClubKicked_" + clubID.ToString(), value);
+		string str = "ClubKicked_";
+		int num = (int)clubID;
+		return Globals.GlobalsHelper.GetBool(str + num.ToString());
 	}
 
-	public static bool GetQuitClub(int clubID)
+	public static void SetClubKicked(ClubType clubID, bool value)
 	{
-		return Globals.GlobalsHelper.GetBool("QuitClub_" + clubID.ToString());
+		string str = "ClubKicked_";
+		int num = (int)clubID;
+		Globals.GlobalsHelper.SetBool(str + num.ToString(), value);
 	}
 
-	public static void SetQuitClub(int clubID, bool value)
+	public static bool GetQuitClub(ClubType clubID)
 	{
-		Globals.GlobalsHelper.SetBool("QuitClub_" + clubID.ToString(), value);
+		string str = "QuitClub_";
+		int num = (int)clubID;
+		return Globals.GlobalsHelper.GetBool(str + num.ToString());
+	}
+
+	public static void SetQuitClub(ClubType clubID, bool value)
+	{
+		string str = "QuitClub_";
+		int num = (int)clubID;
+		Globals.GlobalsHelper.SetBool(str + num.ToString(), value);
 	}
 
 	public static bool GetBasementTapeCollected(int tapeID)
@@ -1102,6 +1219,18 @@ public static class Globals
 		}
 	}
 
+	public static int Alerts
+	{
+		get
+		{
+			return PlayerPrefs.GetInt("Alerts");
+		}
+		set
+		{
+			PlayerPrefs.SetInt("Alerts", value);
+		}
+	}
+
 	public static int Enlightenment
 	{
 		get
@@ -1135,6 +1264,18 @@ public static class Globals
 		set
 		{
 			Globals.GlobalsHelper.SetBool("Headset", value);
+		}
+	}
+
+	public static int Kills
+	{
+		get
+		{
+			return PlayerPrefs.GetInt("Kills");
+		}
+		set
+		{
+			PlayerPrefs.SetInt("Kills", value);
 		}
 	}
 
@@ -1346,6 +1487,18 @@ public static class Globals
 		}
 	}
 
+	public static int CurrentSaveFile
+	{
+		get
+		{
+			return PlayerPrefs.GetInt("CurrentSaveFile");
+		}
+		set
+		{
+			PlayerPrefs.SetInt("CurrentSaveFile", value);
+		}
+	}
+
 	public static int CurrentScheme
 	{
 		get
@@ -1497,6 +1650,23 @@ public static class Globals
 		set
 		{
 			Globals.GlobalsHelper.SetBool("SchoolAtmosphereSet", value);
+		}
+	}
+
+	public static SchoolAtmosphereType SchoolAtmosphereType
+	{
+		get
+		{
+			float num = Globals.SchoolAtmosphere / 100f;
+			if (num > 0.6666667f)
+			{
+				return SchoolAtmosphereType.High;
+			}
+			if (num > 0.333333343f)
+			{
+				return SchoolAtmosphereType.Medium;
+			}
+			return SchoolAtmosphereType.Low;
 		}
 	}
 

@@ -151,9 +151,7 @@ public class LoveManagerScript : MonoBehaviour
 				studentScript2.HoldingHands = true;
 				studentScript.HoldingHands = true;
 				studentScript2.CoupleID = 7;
-				studentScript2.Couple = true;
 				studentScript.CoupleID = 13;
-				studentScript.Couple = true;
 				this.HoldingHands = true;
 			}
 		}

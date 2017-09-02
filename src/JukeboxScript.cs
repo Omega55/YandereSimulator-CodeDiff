@@ -95,11 +95,11 @@ public class JukeboxScript : MonoBehaviour
 			Globals.SchoolAtmosphere = 100f;
 		}
 		int num;
-		if (Globals.SchoolAtmosphere >= 66.6666641f)
+		if (Globals.SchoolAtmosphereType == SchoolAtmosphereType.High)
 		{
 			num = 3;
 		}
-		else if (Globals.SchoolAtmosphere >= 33.3333321f)
+		else if (Globals.SchoolAtmosphereType == SchoolAtmosphereType.Medium)
 		{
 			num = 2;
 		}

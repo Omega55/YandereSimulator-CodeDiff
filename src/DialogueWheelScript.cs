@@ -283,7 +283,7 @@ public class DialogueWheelScript : MonoBehaviour
 							{
 								this.Yandere.TargetStudent.ClubPhase = 4;
 							}
-							else if (Globals.Club != 0)
+							else if (Globals.Club != ClubType.None)
 							{
 								this.Yandere.TargetStudent.ClubPhase = 5;
 							}
@@ -308,7 +308,7 @@ public class DialogueWheelScript : MonoBehaviour
 						{
 							this.Impatience.fillAmount = 0f;
 							this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubBye;
-							this.Yandere.TargetStudent.TalkTimer = this.Yandere.Subtitle.ClubFarewellClips[this.Yandere.TargetStudent.Club].length;
+							this.Yandere.TargetStudent.TalkTimer = this.Yandere.Subtitle.ClubFarewellClips[(int)this.Yandere.TargetStudent.Club].length;
 							this.Show = false;
 						}
 						if (this.Selected == 5)

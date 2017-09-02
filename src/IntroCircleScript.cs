@@ -38,7 +38,7 @@ public class IntroCircleScript : MonoBehaviour
 		if (this.Timer > 1f)
 		{
 			this.Sprite.fillAmount = this.CurrentTime / this.LastTime;
-			if (this.Sprite.fillAmount <= 0f)
+			if (this.Sprite.fillAmount == 0f)
 			{
 				this.Label.text = string.Empty;
 			}

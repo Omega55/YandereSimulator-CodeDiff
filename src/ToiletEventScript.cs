@@ -67,10 +67,11 @@ public class ToiletEventScript : MonoBehaviour
 		if (!this.Clock.StopTime && this.EventCheck && this.Clock.HourTime > this.EventTime)
 		{
 			this.EventStudent = this.StudentManager.Students[7];
-			if (this.EventStudent != null && !this.EventStudent.Routine && !this.EventStudent.Distracted && !this.EventStudent.Talking && !this.EventStudent.Alarmed && !this.EventStudent.Meeting)
+			if (this.EventStudent != null && this.EventStudent.Routine && !this.EventStudent.Distracted && !this.EventStudent.Talking && !this.EventStudent.Alarmed && !this.EventStudent.Meeting)
 			{
 				if (!this.EventStudent.WitnessedMurder)
 				{
+					this.EventStudent.CharacterAnimation.CrossFade(this.EventStudent.WalkAnim);
 					this.EventStudent.CurrentDestination = this.EventLocation[1];
 					this.EventStudent.Pathfinding.target = this.EventLocation[1];
 					this.EventStudent.Pathfinding.canSearch = true;
@@ -102,7 +103,7 @@ public class ToiletEventScript : MonoBehaviour
 		}
 		if (this.EventActive)
 		{
-			if (this.Prompt.Circle[0].fillAmount <= 0f)
+			if (this.Prompt.Circle[0].fillAmount == 0f)
 			{
 				this.Yandere.EmptyHands();
 				this.Prompt.Hide();

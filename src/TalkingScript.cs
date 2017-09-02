@@ -39,7 +39,7 @@ public class TalkingScript : MonoBehaviour
 					{
 						this.S.Subtitle.UpdateLabel("Impatience", 1, 5f);
 					}
-					if (this.S.DialogueWheel.Impatience.fillAmount >= 1f)
+					if (this.S.DialogueWheel.Impatience.fillAmount == 1f)
 					{
 						this.S.Subtitle.UpdateLabel("Impatience", 2, 3f);
 						this.S.DialogueWheel.End();
@@ -485,32 +485,32 @@ public class TalkingScript : MonoBehaviour
 				{
 					if (this.S.ClubPhase == 1)
 					{
-						this.S.Subtitle.UpdateLabel("Club Join", this.S.Club, 99f);
+						this.S.Subtitle.UpdateLabel("Club Join", (int)this.S.Club, 99f);
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 					}
 					else if (this.S.ClubPhase == 2)
 					{
-						this.S.Subtitle.UpdateLabel("Club Accept", this.S.Club, 99f);
+						this.S.Subtitle.UpdateLabel("Club Accept", (int)this.S.Club, 99f);
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 					}
 					else if (this.S.ClubPhase == 3)
 					{
-						this.S.Subtitle.UpdateLabel("Club Refuse", this.S.Club, 99f);
+						this.S.Subtitle.UpdateLabel("Club Refuse", (int)this.S.Club, 99f);
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 					}
 					else if (this.S.ClubPhase == 4)
 					{
-						this.S.Subtitle.UpdateLabel("Club Rejoin", this.S.Club, 99f);
+						this.S.Subtitle.UpdateLabel("Club Rejoin", (int)this.S.Club, 99f);
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 					}
 					else if (this.S.ClubPhase == 5)
 					{
-						this.S.Subtitle.UpdateLabel("Club Exclusive", this.S.Club, 99f);
+						this.S.Subtitle.UpdateLabel("Club Exclusive", (int)this.S.Club, 99f);
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 					}
 					else if (this.S.ClubPhase == 6)
 					{
-						this.S.Subtitle.UpdateLabel("Club Grudge", this.S.Club, 99f);
+						this.S.Subtitle.UpdateLabel("Club Grudge", (int)this.S.Club, 99f);
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 					}
 				}
@@ -533,7 +533,7 @@ public class TalkingScript : MonoBehaviour
 					else
 					{
 						this.S.DialogueWheel.End();
-						if (this.S.Club == 6)
+						if (this.S.Club == ClubType.MartialArts)
 						{
 							this.S.ChangingBooth.CheckYandereClub();
 						}
@@ -546,17 +546,17 @@ public class TalkingScript : MonoBehaviour
 				{
 					if (this.S.ClubPhase == 1)
 					{
-						this.S.Subtitle.UpdateLabel("Club Quit", this.S.Club, 99f);
+						this.S.Subtitle.UpdateLabel("Club Quit", (int)this.S.Club, 99f);
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 					}
 					else if (this.S.ClubPhase == 2)
 					{
-						this.S.Subtitle.UpdateLabel("Club Confirm", this.S.Club, 99f);
+						this.S.Subtitle.UpdateLabel("Club Confirm", (int)this.S.Club, 99f);
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 					}
 					else if (this.S.ClubPhase == 3)
 					{
-						this.S.Subtitle.UpdateLabel("Club Deny", this.S.Club, 99f);
+						this.S.Subtitle.UpdateLabel("Club Deny", (int)this.S.Club, 99f);
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 					}
 				}
@@ -580,7 +580,7 @@ public class TalkingScript : MonoBehaviour
 					else
 					{
 						this.S.DialogueWheel.End();
-						if (this.S.Club == 6)
+						if (this.S.Club == ClubType.MartialArts)
 						{
 							this.S.ChangingBooth.CheckYandereClub();
 						}
@@ -589,9 +589,9 @@ public class TalkingScript : MonoBehaviour
 			}
 			else if (this.S.Interaction == StudentInteractionType.ClubBye)
 			{
-				if (this.S.TalkTimer == this.S.Subtitle.ClubFarewellClips[this.S.Club].length)
+				if (this.S.TalkTimer == this.S.Subtitle.ClubFarewellClips[(int)this.S.Club].length)
 				{
-					this.S.Subtitle.UpdateLabel("Club Farewell", this.S.Club, this.S.Subtitle.ClubFarewellClips[this.S.Club].length);
+					this.S.Subtitle.UpdateLabel("Club Farewell", (int)this.S.Club, this.S.Subtitle.ClubFarewellClips[(int)this.S.Club].length);
 				}
 				else if (Input.GetButtonDown("A"))
 				{
@@ -609,27 +609,27 @@ public class TalkingScript : MonoBehaviour
 				{
 					if (this.S.ClubPhase == 1)
 					{
-						this.S.Subtitle.UpdateLabel("Club Activity", this.S.Club, 99f);
+						this.S.Subtitle.UpdateLabel("Club Activity", (int)this.S.Club, 99f);
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 					}
 					else if (this.S.ClubPhase == 2)
 					{
-						this.S.Subtitle.UpdateLabel("Club Yes", this.S.Club, 99f);
+						this.S.Subtitle.UpdateLabel("Club Yes", (int)this.S.Club, 99f);
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 					}
 					else if (this.S.ClubPhase == 3)
 					{
-						this.S.Subtitle.UpdateLabel("Club No", this.S.Club, 99f);
+						this.S.Subtitle.UpdateLabel("Club No", (int)this.S.Club, 99f);
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 					}
 					else if (this.S.ClubPhase == 4)
 					{
-						this.S.Subtitle.UpdateLabel("Club Early", this.S.Club, 99f);
+						this.S.Subtitle.UpdateLabel("Club Early", (int)this.S.Club, 99f);
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 					}
 					else if (this.S.ClubPhase == 5)
 					{
-						this.S.Subtitle.UpdateLabel("Club Late", this.S.Club, 99f);
+						this.S.Subtitle.UpdateLabel("Club Late", (int)this.S.Club, 99f);
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 					}
 				}
@@ -668,7 +668,7 @@ public class TalkingScript : MonoBehaviour
 			{
 				if (this.S.TalkTimer == 5f)
 				{
-					this.S.Subtitle.UpdateLabel("Club Unwelcome", this.S.Club, 99f);
+					this.S.Subtitle.UpdateLabel("Club Unwelcome", (int)this.S.Club, 99f);
 					this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 				}
 				else
@@ -688,7 +688,7 @@ public class TalkingScript : MonoBehaviour
 			{
 				if (this.S.TalkTimer == 5f)
 				{
-					this.S.Subtitle.UpdateLabel("Club Kick", this.S.Club, 99f);
+					this.S.Subtitle.UpdateLabel("Club Kick", (int)this.S.Club, 99f);
 					this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 				}
 				else
@@ -699,7 +699,7 @@ public class TalkingScript : MonoBehaviour
 					}
 					if (this.S.TalkTimer <= 0f)
 					{
-						Globals.Club = 0;
+						Globals.Club = ClubType.None;
 						this.S.DialogueWheel.End();
 					}
 				}

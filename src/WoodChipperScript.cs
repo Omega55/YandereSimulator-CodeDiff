@@ -127,7 +127,7 @@ public class WoodChipperScript : MonoBehaviour
 				this.Prompt.HideButton[0] = false;
 			}
 		}
-		if (this.Prompt.Circle[3].fillAmount <= 0f)
+		if (this.Prompt.Circle[3].fillAmount == 0f)
 		{
 			Time.timeScale = 1f;
 			if (this.Yandere.Ragdoll != null)
@@ -148,7 +148,7 @@ public class WoodChipperScript : MonoBehaviour
 				this.Open = true;
 			}
 		}
-		if (this.Prompt.Circle[0].fillAmount <= 0f)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			Globals.SetStudentMissing(this.VictimID, true);
 			component.clip = this.ShredAudio;

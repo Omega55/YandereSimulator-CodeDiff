@@ -15,23 +15,36 @@ public class RadioScript : MonoBehaviour
 
 	public PromptScript Prompt;
 
+	public float CooldownTimer;
+
 	public bool On;
 
 	private void Update()
 	{
-		UISprite uisprite = this.Prompt.Circle[0];
-		if (uisprite.fillAmount == 0f)
+		if (this.CooldownTimer > 0f)
 		{
-			uisprite.fillAmount = 1f;
-			if (!this.On)
+			this.CooldownTimer = Mathf.MoveTowards(this.CooldownTimer, 0f, Time.deltaTime);
+			if (this.CooldownTimer == 0f)
 			{
-				this.MyRenderer.material.mainTexture = this.OnTexture;
-				base.GetComponent<AudioSource>().Play();
-				this.On = true;
+				this.Prompt.enabled = true;
 			}
-			else
+		}
+		else
+		{
+			UISprite uisprite = this.Prompt.Circle[0];
+			if (uisprite.fillAmount == 0f)
 			{
-				this.TurnOff();
+				uisprite.fillAmount = 1f;
+				if (!this.On)
+				{
+					this.MyRenderer.material.mainTexture = this.OnTexture;
+					base.GetComponent<AudioSource>().Play();
+					this.On = true;
+				}
+				else
+				{
+					this.TurnOff();
+				}
 			}
 		}
 		if (this.On && this.Victim == null)
@@ -46,9 +59,12 @@ public class RadioScript : MonoBehaviour
 
 	public void TurnOff()
 	{
+		this.Prompt.enabled = false;
+		this.Prompt.Hide();
 		this.MyRenderer.material.mainTexture = this.OffTexture;
 		this.Victim = null;
 		base.GetComponent<AudioSource>().Stop();
+		this.CooldownTimer = 1f;
 		this.On = false;
 	}
 }

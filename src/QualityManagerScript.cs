@@ -43,6 +43,8 @@ public class QualityManagerScript : MonoBehaviour
 
 	public Shader ToonOutlineOverlay;
 
+	public Shader ToonOutlineRimLight;
+
 	public BloomAndLensFlares ExperimentalBloomAndLensFlares;
 
 	public DepthOfField34 ExperimentalDepthOfField34;
@@ -203,9 +205,9 @@ public class QualityManagerScript : MonoBehaviour
 						}
 					}
 				}
-				if (!studentScript.Teacher && studentScript.Cosmetic.Club > 0 && studentScript.Cosmetic.ClubAccessories[studentScript.Cosmetic.Club] != null)
+				if (!studentScript.Teacher && studentScript.Cosmetic.Club > ClubType.None && studentScript.Cosmetic.ClubAccessories[(int)studentScript.Cosmetic.Club] != null)
 				{
-					Renderer component2 = studentScript.Cosmetic.ClubAccessories[studentScript.Cosmetic.Club].GetComponent<Renderer>();
+					Renderer component2 = studentScript.Cosmetic.ClubAccessories[(int)studentScript.Cosmetic.Club].GetComponent<Renderer>();
 					if (component2 != null)
 					{
 						component2.material.shader = this.NewHairShader;
@@ -309,5 +311,78 @@ public class QualityManagerScript : MonoBehaviour
 			this.ExperimentalDepthOfField34.enabled = false;
 			this.ExperimentalSSAOEffect.enabled = false;
 		}
+	}
+
+	public void RimLight()
+	{
+		for (int i = 1; i < this.StudentManager.Students.Length; i++)
+		{
+			StudentScript studentScript = this.StudentManager.Students[i];
+			if (studentScript != null && studentScript.gameObject.activeInHierarchy)
+			{
+				this.NewHairShader = this.ToonOutlineRimLight;
+				this.NewBodyShader = this.ToonOutlineRimLight;
+				studentScript.MyRenderer.materials[0].shader = this.ToonOutlineRimLight;
+				studentScript.MyRenderer.materials[1].shader = this.ToonOutlineRimLight;
+				studentScript.MyRenderer.materials[2].shader = this.ToonOutlineRimLight;
+				if (!studentScript.Male)
+				{
+					if (!studentScript.Teacher)
+					{
+						if (studentScript.Cosmetic.FemaleHairRenderers[studentScript.Cosmetic.Hairstyle] != null)
+						{
+							studentScript.Cosmetic.FemaleHairRenderers[studentScript.Cosmetic.Hairstyle].material.shader = this.ToonOutlineRimLight;
+						}
+						if (studentScript.Cosmetic.Accessory > 0)
+						{
+							studentScript.Cosmetic.FemaleAccessories[studentScript.Cosmetic.Accessory].GetComponent<Renderer>().material.shader = this.ToonOutlineRimLight;
+						}
+					}
+					else
+					{
+						studentScript.Cosmetic.TeacherHairRenderers[studentScript.Cosmetic.Hairstyle].material.shader = this.ToonOutlineRimLight;
+					}
+				}
+				else
+				{
+					if (studentScript.Cosmetic.Hairstyle > 0)
+					{
+						studentScript.Cosmetic.MaleHairRenderers[studentScript.Cosmetic.Hairstyle].material.shader = this.ToonOutlineRimLight;
+					}
+					if (studentScript.Cosmetic.Accessory > 0)
+					{
+						Renderer component = studentScript.Cosmetic.MaleAccessories[studentScript.Cosmetic.Accessory].GetComponent<Renderer>();
+						if (component != null)
+						{
+							component.material.shader = this.ToonOutlineRimLight;
+						}
+					}
+				}
+				if (!studentScript.Teacher && studentScript.Cosmetic.Club > ClubType.None && studentScript.Cosmetic.ClubAccessories[(int)studentScript.Cosmetic.Club] != null)
+				{
+					Renderer component2 = studentScript.Cosmetic.ClubAccessories[(int)studentScript.Cosmetic.Club].GetComponent<Renderer>();
+					if (component2 != null)
+					{
+						component2.material.shader = this.ToonOutlineRimLight;
+					}
+				}
+			}
+		}
+		this.Yandere.MyRenderer.materials[0].shader = this.ToonOutlineRimLight;
+		this.Yandere.MyRenderer.materials[1].shader = this.ToonOutlineRimLight;
+		this.Yandere.MyRenderer.materials[2].shader = this.ToonOutlineRimLight;
+		for (int j = 1; j < this.Yandere.Hairstyles.Length; j++)
+		{
+			Renderer component3 = this.Yandere.Hairstyles[j].GetComponent<Renderer>();
+			if (component3 != null)
+			{
+				this.YandereHairRenderer.material.shader = this.ToonOutlineRimLight;
+				component3.material.shader = this.ToonOutlineRimLight;
+			}
+		}
+		this.Nemesis.Cosmetic.MyRenderer.materials[0].shader = this.ToonOutlineRimLight;
+		this.Nemesis.Cosmetic.MyRenderer.materials[1].shader = this.ToonOutlineRimLight;
+		this.Nemesis.Cosmetic.MyRenderer.materials[2].shader = this.ToonOutlineRimLight;
+		this.Nemesis.NemesisHair.GetComponent<Renderer>().material.shader = this.ToonOutlineRimLight;
 	}
 }

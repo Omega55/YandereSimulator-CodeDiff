@@ -13,7 +13,7 @@ public class CheeseScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (this.Prompt.Circle[0].fillAmount <= 0f)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Subtitle.text = "Knowing the mouse might one day leave its hole and get the cheese...It fills you with determination.";
 			this.Prompt.Hide();

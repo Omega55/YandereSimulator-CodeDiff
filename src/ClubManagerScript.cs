@@ -63,7 +63,7 @@ public class ClubManagerScript : MonoBehaviour
 
 	public int Phase = 1;
 
-	public int Club;
+	public ClubType Club;
 
 	public int ID;
 
@@ -96,7 +96,7 @@ public class ClubManagerScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (this.Club != 0)
+		if (this.Club != ClubType.None)
 		{
 			if (this.Phase == 1)
 			{
@@ -113,14 +113,14 @@ public class ClubManagerScript : MonoBehaviour
 					this.PromptBar.Show = true;
 					this.ClubWindow.PerformingActivity = true;
 					this.ClubWindow.ActivityWindow.gameObject.SetActive(true);
-					this.ClubWindow.ActivityLabel.text = this.ClubWindow.ActivityDescs[this.Club];
+					this.ClubWindow.ActivityLabel.text = this.ClubWindow.ActivityDescs[(int)this.Club];
 					this.Phase++;
 				}
 				else if (this.Phase == 2)
 				{
 					if (this.ClubWindow.ActivityWindow.localScale.x > 0.9f)
 					{
-						if (this.Club == 6)
+						if (this.Club == ClubType.MartialArts)
 						{
 							if (this.ClubPhase == 0)
 							{
@@ -163,7 +163,7 @@ public class ClubManagerScript : MonoBehaviour
 					this.Police.FadeOut = true;
 				}
 			}
-			if (this.Club == 3)
+			if (this.Club == ClubType.Occult)
 			{
 				component.volume = 1f - this.Darkness.color.a;
 			}
@@ -175,9 +175,9 @@ public class ClubManagerScript : MonoBehaviour
 		this.StudentManager.StopMoving();
 		this.ShoulderCamera.enabled = false;
 		this.MainCamera.enabled = false;
-		this.MainCamera.transform.position = this.ClubVantages[this.Club].position;
-		this.MainCamera.transform.rotation = this.ClubVantages[this.Club].rotation;
-		if (this.Club == 3)
+		this.MainCamera.transform.position = this.ClubVantages[(int)this.Club].position;
+		this.MainCamera.transform.rotation = this.ClubVantages[(int)this.Club].rotation;
+		if (this.Club == ClubType.Occult)
 		{
 			this.ID = 0;
 			while (this.ID < this.Club3Students.Length)
@@ -198,7 +198,7 @@ public class ClubManagerScript : MonoBehaviour
 			this.Yandere.gameObject.SetActive(false);
 			this.Ritual.SetActive(true);
 		}
-		else if (this.Club == 6)
+		else if (this.Club == ClubType.MartialArts)
 		{
 			this.ID = 0;
 			while (this.ID < this.Club6Students.Length)
@@ -232,13 +232,13 @@ public class ClubManagerScript : MonoBehaviour
 		this.Watermark.SetActive(false);
 	}
 
-	public void CheckClub(int Check)
+	public void CheckClub(ClubType Check)
 	{
-		if (Check == 3)
+		if (Check == ClubType.Occult)
 		{
 			this.ClubIDs = this.Club3IDs;
 		}
-		else if (Check == 6)
+		else if (Check == ClubType.MartialArts)
 		{
 			this.ClubIDs = this.Club6IDs;
 		}
@@ -258,7 +258,7 @@ public class ClubManagerScript : MonoBehaviour
 		{
 			this.ClubMembers++;
 		}
-		if (Check == 3)
+		if (Check == ClubType.Occult)
 		{
 			int num = 26;
 			if (Globals.GetStudentDead(num) || Globals.GetStudentDying(num) || Globals.GetStudentArrested(num) || Globals.GetStudentReputation(num) <= -100)
@@ -270,7 +270,7 @@ public class ClubManagerScript : MonoBehaviour
 				this.LeaderMissing = true;
 			}
 		}
-		else if (Check == 6)
+		else if (Check == ClubType.MartialArts)
 		{
 			int num2 = 21;
 			if (Globals.GetStudentDead(num2) || Globals.GetStudentDying(num2) || Globals.GetStudentArrested(num2) || Globals.GetStudentReputation(num2) <= -100)
@@ -284,13 +284,13 @@ public class ClubManagerScript : MonoBehaviour
 		}
 	}
 
-	public void CheckGrudge(int Check)
+	public void CheckGrudge(ClubType Check)
 	{
-		if (Check == 3)
+		if (Check == ClubType.Occult)
 		{
 			this.ClubIDs = this.Club3IDs;
 		}
-		else if (Check == 6)
+		else if (Check == ClubType.MartialArts)
 		{
 			this.ClubIDs = this.Club6IDs;
 		}
@@ -305,14 +305,14 @@ public class ClubManagerScript : MonoBehaviour
 			}
 			this.ID++;
 		}
-		if (Check == 3)
+		if (Check == ClubType.Occult)
 		{
 			if (this.StudentManager.Students[26].Grudge)
 			{
 				this.LeaderGrudge = true;
 			}
 		}
-		else if (Check == 6 && this.StudentManager.Students[21].Grudge)
+		else if (Check == ClubType.MartialArts && this.StudentManager.Students[21].Grudge)
 		{
 			this.LeaderGrudge = true;
 		}
@@ -320,12 +320,12 @@ public class ClubManagerScript : MonoBehaviour
 
 	public void ActivateClubBenefit()
 	{
-		if (Globals.Club == 1)
+		if (Globals.Club == ClubType.Cooking)
 		{
 			this.Refrigerator.enabled = true;
 			this.Refrigerator.Prompt.enabled = true;
 		}
-		else if (Globals.Club == 2)
+		else if (Globals.Club == ClubType.Drama)
 		{
 			this.ID = 1;
 			while (this.ID < this.Masks.Length)
@@ -337,31 +337,31 @@ public class ClubManagerScript : MonoBehaviour
 			this.Gloves.enabled = true;
 			this.Gloves.Prompt.enabled = true;
 		}
-		else if (Globals.Club == 3)
+		else if (Globals.Club == ClubType.Occult)
 		{
 			this.StudentManager.UpdatePerception();
 			this.Yandere.Numbness -= 0.5f;
 		}
-		else if (Globals.Club == 4)
+		else if (Globals.Club == ClubType.Art)
 		{
 			this.StudentManager.UpdateBooths();
 		}
-		else if (Globals.Club == 5)
+		else if (Globals.Club == ClubType.LightMusic)
 		{
 			this.Container.enabled = true;
 			this.Container.Prompt.enabled = true;
 		}
-		else if (Globals.Club == 6)
+		else if (Globals.Club == ClubType.MartialArts)
 		{
 			this.StudentManager.UpdateBooths();
 		}
-		else if (Globals.Club != 7)
+		else if (Globals.Club != ClubType.Photography)
 		{
-			if (Globals.Club == 8)
+			if (Globals.Club == ClubType.Science)
 			{
 				this.BloodCleaner.Prompt.enabled = true;
 			}
-			else if (Globals.Club == 9)
+			else if (Globals.Club == ClubType.Sports)
 			{
 				this.Yandere.RunSpeed += 1f;
 				if (this.Yandere.Armed)
@@ -369,7 +369,7 @@ public class ClubManagerScript : MonoBehaviour
 					this.Yandere.EquippedWeapon.SuspicionCheck();
 				}
 			}
-			else if (Globals.Club == 10)
+			else if (Globals.Club == ClubType.Gardening)
 			{
 				this.ShedDoor.Prompt.Label[0].text = "     Open";
 				this.ShedDoor.Locked = false;
@@ -378,7 +378,7 @@ public class ClubManagerScript : MonoBehaviour
 					this.Yandere.EquippedWeapon.SuspicionCheck();
 				}
 			}
-			else if (Globals.Club == 11)
+			else if (Globals.Club == ClubType.Gaming)
 			{
 				this.ComputerGames.EnableGames();
 			}
@@ -387,13 +387,13 @@ public class ClubManagerScript : MonoBehaviour
 
 	public void DeactivateClubBenefit()
 	{
-		if (Globals.Club == 1)
+		if (Globals.Club == ClubType.Cooking)
 		{
 			this.Refrigerator.enabled = false;
 			this.Refrigerator.Prompt.Hide();
 			this.Refrigerator.Prompt.enabled = false;
 		}
-		else if (Globals.Club == 2)
+		else if (Globals.Club == ClubType.Drama)
 		{
 			this.ID = 1;
 			while (this.ID < this.Masks.Length)
@@ -410,44 +410,44 @@ public class ClubManagerScript : MonoBehaviour
 			this.Gloves.Prompt.Hide();
 			this.Gloves.Prompt.enabled = false;
 		}
-		else if (Globals.Club == 3)
+		else if (Globals.Club == ClubType.Occult)
 		{
-			Globals.Club = 0;
+			Globals.Club = ClubType.None;
 			this.StudentManager.UpdatePerception();
 			this.Yandere.Numbness += 0.5f;
 		}
-		else if (Globals.Club == 4)
+		else if (Globals.Club == ClubType.Art)
 		{
 			this.StudentManager.UpdateBooths();
 		}
-		else if (Globals.Club == 5)
+		else if (Globals.Club == ClubType.LightMusic)
 		{
 			this.Container.enabled = false;
 			this.Container.Prompt.Hide();
 			this.Container.Prompt.enabled = false;
 		}
-		else if (Globals.Club == 6)
+		else if (Globals.Club == ClubType.MartialArts)
 		{
 			this.StudentManager.UpdateBooths();
 		}
-		else if (Globals.Club != 7)
+		else if (Globals.Club != ClubType.Photography)
 		{
-			if (Globals.Club == 8)
+			if (Globals.Club == ClubType.Science)
 			{
 				this.BloodCleaner.enabled = false;
 				this.BloodCleaner.Prompt.Hide();
 				this.BloodCleaner.Prompt.enabled = false;
 			}
-			else if (Globals.Club == 9)
+			else if (Globals.Club == ClubType.Sports)
 			{
 				this.Yandere.RunSpeed -= 1f;
 				if (this.Yandere.Armed)
 				{
-					Globals.Club = 0;
+					Globals.Club = ClubType.None;
 					this.Yandere.EquippedWeapon.SuspicionCheck();
 				}
 			}
-			else if (Globals.Club == 10)
+			else if (Globals.Club == ClubType.Gardening)
 			{
 				if (!this.Yandere.Inventory.ShedKey)
 				{
@@ -456,11 +456,11 @@ public class ClubManagerScript : MonoBehaviour
 				}
 				if (this.Yandere.Armed)
 				{
-					Globals.Club = 0;
+					Globals.Club = ClubType.None;
 					this.Yandere.EquippedWeapon.SuspicionCheck();
 				}
 			}
-			else if (Globals.Club == 11)
+			else if (Globals.Club == ClubType.Gaming)
 			{
 				this.ComputerGames.DeactivateAllBenefits();
 				this.ComputerGames.DisableGames();

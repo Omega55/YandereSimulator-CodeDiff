@@ -262,12 +262,12 @@ public class StudentInfoMenuScript : MonoBehaviour
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
-		if (this.Gossiping && (this.StudentID == 1 || this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || this.JSON.StudentClubs[this.StudentID] == 9 || Globals.GetStudentDead(this.StudentID)))
+		if (this.Gossiping && (this.StudentID == 1 || this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || this.JSON.Students[this.StudentID].Club == ClubType.Sports || Globals.GetStudentDead(this.StudentID)))
 		{
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
-		if (this.CyberBullying && (this.JSON.StudentGenders[this.StudentID] == 1 || Globals.GetStudentDead(this.StudentID)))
+		if (this.CyberBullying && (this.JSON.Students[this.StudentID].Gender == 1 || Globals.GetStudentDead(this.StudentID)))
 		{
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
@@ -290,7 +290,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 	{
 		if (Globals.GetStudentPhotographed(this.StudentID))
 		{
-			this.NameLabel.text = this.JSON.StudentNames[this.StudentID];
+			this.NameLabel.text = this.JSON.Students[this.StudentID].Name;
 		}
 		else
 		{
@@ -349,7 +349,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 					this.StudentPortraits[ID].Portrait.mainTexture = this.UnknownPortrait;
 				}
 			}
-			if (Globals.GetStudentPantyShot(this.JSON.StudentNames[ID]))
+			if (Globals.GetStudentPantyShot(this.JSON.Students[ID].Name))
 			{
 				this.StudentPortraits[ID].Panties.SetActive(true);
 			}

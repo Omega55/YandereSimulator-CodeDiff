@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class MopScript : MonoBehaviour
 {
+	public ParticleSystem Sparkles;
+
 	public YandereScript Yandere;
 
 	public PromptScript Prompt;
@@ -18,6 +20,8 @@ public class MopScript : MonoBehaviour
 	public Transform Head;
 
 	public float Bloodiness;
+
+	public bool Bleached;
 
 	private void Start()
 	{
@@ -40,14 +44,22 @@ public class MopScript : MonoBehaviour
 				}
 				if (this.Yandere.Bucket == null)
 				{
-					if (this.Prompt.Button[0].color.a > 0f)
+					if (this.Bleached)
 					{
-						this.Prompt.Label[0].text = "     Sweep";
-						if (Input.GetButtonDown("A"))
+						this.Prompt.HideButton[0] = false;
+						if (this.Prompt.Button[0].color.a > 0f)
 						{
-							this.Yandere.Mopping = true;
-							this.HeadCollider.enabled = true;
+							this.Prompt.Label[0].text = "     Sweep";
+							if (Input.GetButtonDown("A"))
+							{
+								this.Yandere.Mopping = true;
+								this.HeadCollider.enabled = true;
+							}
 						}
+					}
+					else
+					{
+						this.Prompt.HideButton[0] = true;
 					}
 				}
 				else if (this.Prompt.Button[0].color.a > 0f)
@@ -56,21 +68,28 @@ public class MopScript : MonoBehaviour
 					{
 						if (!this.Yandere.Bucket.Gasoline)
 						{
-							if (this.Yandere.Bucket.Bloodiness < 100f)
+							if (this.Yandere.Bucket.Bleached)
 							{
-								this.Prompt.Label[0].text = "     Dip";
-								if (Input.GetButtonDown("A"))
+								if (this.Yandere.Bucket.Bloodiness < 100f)
 								{
-									this.Yandere.YandereVision = false;
-									this.Yandere.CanMove = false;
-									this.Yandere.Dipping = true;
-									this.Prompt.Hide();
-									this.Prompt.enabled = false;
+									this.Prompt.Label[0].text = "     Dip";
+									if (Input.GetButtonDown("A"))
+									{
+										this.Yandere.YandereVision = false;
+										this.Yandere.CanMove = false;
+										this.Yandere.Dipping = true;
+										this.Prompt.Hide();
+										this.Prompt.enabled = false;
+									}
+								}
+								else
+								{
+									this.Prompt.Label[0].text = "     Water Too Bloody!";
 								}
 							}
 							else
 							{
-								this.Prompt.Label[0].text = "     Water Too Bloody!";
+								this.Prompt.Label[0].text = "     Add Bleach First!";
 							}
 						}
 						else
@@ -94,7 +113,7 @@ public class MopScript : MonoBehaviour
 					this.Head.localEulerAngles = this.Rotation;
 				}
 			}
-			else if (!this.Prompt.HideButton[0])
+			else
 			{
 				this.Prompt.HideButton[0] = true;
 				this.Prompt.HideButton[3] = false;
@@ -115,6 +134,8 @@ public class MopScript : MonoBehaviour
 		if (this.Bloodiness > 100f)
 		{
 			this.Bloodiness = 100f;
+			this.Sparkles.Stop();
+			this.Bleached = false;
 		}
 		this.Blood.material.color = new Color(this.Blood.material.color.r, this.Blood.material.color.g, this.Blood.material.color.b, this.Bloodiness / 100f * 0.9f);
 	}

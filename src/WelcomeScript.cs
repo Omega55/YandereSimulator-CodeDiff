@@ -44,7 +44,7 @@ public class WelcomeScript : MonoBehaviour
 		{
 			string text = File.ReadAllText(Application.streamingAssetsPath + "/Fun.txt");
 		}
-		if (!this.InEditor && this.JSON.StudentNames[33] != "Reserved")
+		if (!this.InEditor && this.JSON.Students[33].Name != "Reserved")
 		{
 			if (Application.CanStreamedLevelBeLoaded("FunScene"))
 			{

@@ -68,7 +68,7 @@ public class FanCoverScript : MonoBehaviour
 				this.Prompt.HideButton[0] = true;
 			}
 		}
-		if (this.Prompt.Circle[0].fillAmount <= 0f)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Yandere.CharacterAnimation.CrossFade("f02_fanMurderA_00");
 			this.Rival.CharacterAnimation.CrossFade("f02_fanMurderB_00");

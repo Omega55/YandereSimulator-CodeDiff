@@ -18,7 +18,6 @@ public class ChoiceScript : MonoBehaviour
 
 	private void Start()
 	{
-		SceneManager.LoadScene("TitleScene");
 		this.Darkness.color = new Color(1f, 1f, 1f, 1f);
 	}
 

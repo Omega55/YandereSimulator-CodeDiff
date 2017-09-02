@@ -55,7 +55,7 @@ public class HomeExitScript : MonoBehaviour
 			}
 			if (Input.GetButtonDown("A") && this.ID != 2 && (!Globals.Night || (Globals.Night && this.ID == 3)))
 			{
-				if (this.ID < 3)
+				if (this.ID < 3 && Globals.SchoolAtmosphere >= 50f)
 				{
 					this.HomeDarkness.Sprite.color = new Color(1f, 1f, 1f, 0f);
 				}

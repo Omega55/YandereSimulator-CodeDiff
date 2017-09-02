@@ -58,7 +58,7 @@ public class PortalScript : MonoBehaviour
 			this.LateReport2 = true;
 			this.Yandere.NotificationManager.DisplayNotification(NotificationType.Late);
 		}
-		if (this.Prompt.Circle[0].fillAmount <= 0f)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Circle[0].fillAmount = 1f;
 			if (this.Police.PoisonScene || this.Police.SuicideScene || this.Police.Corpses - this.Police.HiddenCorpses > 0)

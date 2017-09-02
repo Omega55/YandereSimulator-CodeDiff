@@ -9,6 +9,8 @@ public class TitleMenuScript : MonoBehaviour
 
 	public InputManagerScript InputManager;
 
+	public TitleSaveFilesScript SaveFiles;
+
 	public SelectiveGrayscale Grayscale;
 
 	public TitleSponsorScript Sponsors;
@@ -95,7 +97,7 @@ public class TitleMenuScript : MonoBehaviour
 
 	private int SelectionCount = 9;
 
-	private int Selected;
+	public int Selected;
 
 	public float InputTimer;
 
@@ -155,7 +157,7 @@ public class TitleMenuScript : MonoBehaviour
 			this.TurnLoveSick();
 		}
 		Time.timeScale = 1f;
-		if (!this.InEditor && this.JSON.StudentNames[33] != "Reserved")
+		if (!this.InEditor && this.JSON.Students[33].Name != "Reserved")
 		{
 			if (Application.CanStreamedLevelBeLoaded("FunScene"))
 			{
@@ -199,7 +201,7 @@ public class TitleMenuScript : MonoBehaviour
 				this.LoveSickYandere.CrossFade("f02_edgyOverShoulder_00");
 			}
 		}
-		if (!this.Sponsors.Show)
+		if (!this.Sponsors.Show && !this.SaveFiles.Show)
 		{
 			this.InputTimer += Time.deltaTime;
 			if (this.InputTimer > 1f)
@@ -226,9 +228,20 @@ public class TitleMenuScript : MonoBehaviour
 						this.FadeOut = true;
 						this.Fading = true;
 					}
+					if (this.Selected == 1)
+					{
+						this.PromptBar.Label[0].text = "Load";
+						this.PromptBar.Label[1].text = "Back";
+						this.PromptBar.Label[2].text = "Delete";
+						this.PromptBar.UpdateButtons();
+						this.SaveFiles.Show = true;
+					}
 					if (this.Selected == 2)
 					{
-						this.Darkness.color = new Color(1f, 1f, 1f, this.Darkness.color.a);
+						if (!this.LoveSick)
+						{
+							this.Darkness.color = new Color(1f, 1f, 1f, this.Darkness.color.a);
+						}
 						this.InputTimer = -10f;
 						this.FadeOut = true;
 						this.Fading = true;
@@ -262,76 +275,100 @@ public class TitleMenuScript : MonoBehaviour
 					}
 				}
 			}
-			if (this.Fading)
-			{
-				if (!this.FadeOut)
-				{
-					if (this.Darkness.color.a > 0f)
-					{
-						this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a - Time.deltaTime * this.FadeSpeed);
-						if (this.Darkness.color.a <= 0f)
-						{
-							this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 0f);
-							this.Fading = false;
-						}
-					}
-				}
-				else if (this.Darkness.color.a < 1f)
-				{
-					this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a + Time.deltaTime);
-					if (this.Darkness.color.a >= 1f)
-					{
-						if (this.Selected == 0)
-						{
-							Globals.MissionMode = false;
-							SceneManager.LoadScene("CalendarScene");
-						}
-						else if (this.Selected == 2)
-						{
-							Globals.DeleteAll();
-							if (this.LoveSick)
-							{
-								Globals.LoveSick = true;
-							}
-							SceneManager.LoadScene("SenpaiScene");
-						}
-						else if (this.Selected == 3)
-						{
-							SceneManager.LoadScene("MissionModeScene");
-						}
-						else if (this.Selected == 6)
-						{
-							SceneManager.LoadScene("CreditsScene");
-						}
-						else if (this.Selected == 8)
-						{
-							Application.Quit();
-						}
-					}
-					this.LoveSickMusic.volume -= Time.deltaTime;
-					this.CuteMusic.volume -= Time.deltaTime;
-				}
-			}
 		}
 		else
 		{
-			int sponsorIndex = this.Sponsors.GetSponsorIndex();
-			if (this.Sponsors.SponsorHasWebsite(sponsorIndex))
+			if (this.Sponsors.Show)
 			{
-				this.PromptBar.Label[0].text = "Visit";
-				this.PromptBar.UpdateButtons();
+				int sponsorIndex = this.Sponsors.GetSponsorIndex();
+				if (this.Sponsors.SponsorHasWebsite(sponsorIndex))
+				{
+					this.PromptBar.Label[0].text = "Visit";
+					this.PromptBar.UpdateButtons();
+				}
+				else
+				{
+					this.PromptBar.Label[0].text = string.Empty;
+					this.PromptBar.UpdateButtons();
+				}
 			}
-			else
+			else if (this.SaveFiles.Show)
 			{
-				this.PromptBar.Label[0].text = string.Empty;
-				this.PromptBar.UpdateButtons();
+				if (this.SaveFiles.SaveDatas[this.SaveFiles.ID].EmptyFile.activeInHierarchy)
+				{
+					this.PromptBar.Label[0].text = "Create New";
+					this.PromptBar.Label[2].text = string.Empty;
+					this.PromptBar.UpdateButtons();
+				}
+				else
+				{
+					this.PromptBar.Label[0].text = "Load";
+					this.PromptBar.Label[2].text = "Delete";
+					this.PromptBar.UpdateButtons();
+				}
 			}
 			if (Input.GetButtonDown("B"))
 			{
+				this.SaveFiles.Show = false;
 				this.Sponsors.Show = false;
 				this.PromptBar.Label[0].text = "Confirm";
 				this.PromptBar.Label[1].text = string.Empty;
+				this.PromptBar.Label[2].text = string.Empty;
 				this.PromptBar.UpdateButtons();
+			}
+		}
+		if (this.Fading)
+		{
+			if (!this.FadeOut)
+			{
+				if (this.Darkness.color.a > 0f)
+				{
+					this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a - Time.deltaTime * this.FadeSpeed);
+					if (this.Darkness.color.a <= 0f)
+					{
+						this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 0f);
+						this.Fading = false;
+					}
+				}
+			}
+			else if (this.Darkness.color.a < 1f)
+			{
+				Globals.MissionMode = false;
+				this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a + Time.deltaTime);
+				if (this.Darkness.color.a >= 1f)
+				{
+					if (this.Selected == 0)
+					{
+						SceneManager.LoadScene("CalendarScene");
+					}
+					else if (this.Selected == 1)
+					{
+						SceneManager.LoadScene("CalendarScene");
+					}
+					else if (this.Selected == 2)
+					{
+						Globals.DeleteAll();
+						if (this.LoveSick)
+						{
+							Globals.LoveSick = true;
+						}
+						SceneManager.LoadScene("SenpaiScene");
+					}
+					else if (this.Selected == 3)
+					{
+						SceneManager.LoadScene("MissionModeScene");
+					}
+					else if (this.Selected == 6)
+					{
+						SceneManager.LoadScene("CreditsScene");
+					}
+					else if (this.Selected == 8)
+					{
+						Application.Quit();
+					}
+				}
+				this.LoveSickMusic.volume -= Time.deltaTime;
+				this.CuteMusic.volume -= Time.deltaTime;
 			}
 		}
 		if (this.Timer < 10f)

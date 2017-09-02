@@ -21,7 +21,7 @@ public class FakeStudentScript : MonoBehaviour
 
 	public bool Rotate;
 
-	public int Club;
+	public ClubType Club;
 
 	private void Start()
 	{
@@ -41,10 +41,10 @@ public class FakeStudentScript : MonoBehaviour
 				this.Rotate = false;
 			}
 		}
-		if (this.Prompt.Circle[0].fillAmount <= 0f && !this.Yandere.Chased)
+		if (this.Prompt.Circle[0].fillAmount == 0f && !this.Yandere.Chased)
 		{
 			this.Yandere.TargetStudent = this.Student;
-			this.Subtitle.UpdateLabel("Club Greeting", this.Student.Club, 4f);
+			this.Subtitle.UpdateLabel("Club Greeting", (int)this.Student.Club, 4f);
 			this.DialogueWheel.ClubLeader = true;
 			this.StudentManager.DisablePrompts();
 			this.DialogueWheel.HideShadows();

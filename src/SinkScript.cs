@@ -60,7 +60,7 @@ public class SinkScript : MonoBehaviour
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
 		}
-		if (this.Prompt.Circle[0].fillAmount <= 0f)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			if (this.Yandere.PickUp.Bucket != null)
 			{

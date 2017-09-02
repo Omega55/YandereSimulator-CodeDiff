@@ -238,7 +238,7 @@ public class RagdollScript : MonoBehaviour
 						this.Cauterizable = false;
 					}
 				}
-				if (this.Prompt.Circle[0].fillAmount <= 0f)
+				if (this.Prompt.Circle[0].fillAmount == 0f)
 				{
 					if (this.Cauterizable)
 					{
@@ -266,7 +266,7 @@ public class RagdollScript : MonoBehaviour
 						this.Yandere.CanMove = false;
 					}
 				}
-				if (this.Prompt.Circle[1].fillAmount <= 0f)
+				if (this.Prompt.Circle[1].fillAmount == 0f)
 				{
 					this.Prompt.Circle[1].fillAmount = 1f;
 					if (!this.Dragged)
@@ -311,7 +311,7 @@ public class RagdollScript : MonoBehaviour
 						this.StopDragging();
 					}
 				}
-				if (this.Prompt.Circle[3].fillAmount <= 0f)
+				if (this.Prompt.Circle[3].fillAmount == 0f)
 				{
 					this.Yandere.EmptyHands();
 					this.Prompt.Label[1].text = "     Drop";
@@ -660,20 +660,20 @@ public class RagdollScript : MonoBehaviour
 							this.Student.Cosmetic.TeacherAccessories[this.Student.Cosmetic.Accessory].transform.parent = gameObject.transform;
 						}
 					}
-					if (this.Student.Club < 11 && this.Student.Cosmetic.ClubAccessories[this.Student.Club] != null)
+					if (this.Student.Club < ClubType.Gaming && this.Student.Cosmetic.ClubAccessories[(int)this.Student.Club] != null)
 					{
-						this.Student.Cosmetic.ClubAccessories[this.Student.Club].transform.parent = gameObject.transform;
-						if (this.Student.Club == 3)
+						this.Student.Cosmetic.ClubAccessories[(int)this.Student.Club].transform.parent = gameObject.transform;
+						if (this.Student.Club == ClubType.Occult)
 						{
 							if (!this.Male)
 							{
-								this.Student.Cosmetic.ClubAccessories[this.Student.Club].transform.localPosition = new Vector3(0f, -1.5f, 0.01f);
-								this.Student.Cosmetic.ClubAccessories[this.Student.Club].transform.localEulerAngles = Vector3.zero;
+								this.Student.Cosmetic.ClubAccessories[(int)this.Student.Club].transform.localPosition = new Vector3(0f, -1.5f, 0.01f);
+								this.Student.Cosmetic.ClubAccessories[(int)this.Student.Club].transform.localEulerAngles = Vector3.zero;
 							}
 							else
 							{
-								this.Student.Cosmetic.ClubAccessories[this.Student.Club].transform.localPosition = new Vector3(0f, -1.42f, 0.005f);
-								this.Student.Cosmetic.ClubAccessories[this.Student.Club].transform.localEulerAngles = Vector3.zero;
+								this.Student.Cosmetic.ClubAccessories[(int)this.Student.Club].transform.localPosition = new Vector3(0f, -1.42f, 0.005f);
+								this.Student.Cosmetic.ClubAccessories[(int)this.Student.Club].transform.localEulerAngles = Vector3.zero;
 							}
 						}
 					}

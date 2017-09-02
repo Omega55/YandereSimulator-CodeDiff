@@ -63,7 +63,7 @@ public class SkullScript : MonoBehaviour
 			this.Prompt.enabled = false;
 		}
 		AudioSource component = base.GetComponent<AudioSource>();
-		if (this.Prompt.Circle[0].fillAmount <= 0f)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Yandere.EquippedWeapon.Drop();
 			this.Yandere.EquippedWeapon = null;
@@ -95,6 +95,7 @@ public class SkullScript : MonoBehaviour
 			this.FlameTimer = Mathf.MoveTowards(this.FlameTimer, 0f, Time.deltaTime);
 			if (this.FlameTimer == 0f)
 			{
+				this.RitualKnife.GetComponent<WeaponScript>().FireEffect.gameObject.SetActive(true);
 				this.RitualKnife.GetComponent<WeaponScript>().Prompt.enabled = true;
 				this.RitualKnife.GetComponent<WeaponScript>().FireEffect.Play();
 				this.RitualKnife.GetComponent<WeaponScript>().FireAudio.Play();

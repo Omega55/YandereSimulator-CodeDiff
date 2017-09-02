@@ -21,7 +21,7 @@ public class ShoePairScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (this.Prompt.Circle[0].fillAmount <= 0f)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;

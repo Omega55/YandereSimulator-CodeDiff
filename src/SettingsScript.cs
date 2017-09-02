@@ -43,6 +43,10 @@ public class SettingsScript : MonoBehaviour
 		{
 			this.QualityManager.ToggleExperiment();
 		}
+		if (Input.GetKeyDown("r"))
+		{
+			this.QualityManager.RimLight();
+		}
 		if (this.InputManager.TappedUp)
 		{
 			this.Selected--;

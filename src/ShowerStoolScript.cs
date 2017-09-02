@@ -26,7 +26,7 @@ public class ShowerStoolScript : MonoBehaviour
 		else
 		{
 			this.Prompt.enabled = true;
-			if (this.Prompt.Circle[0].fillAmount <= 0f)
+			if (this.Prompt.Circle[0].fillAmount == 0f)
 			{
 				this.Yandere.EmptyHands();
 				this.Yandere.Stool = this.StoolSpot;

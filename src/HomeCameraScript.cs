@@ -42,6 +42,8 @@ public class HomeCameraScript : MonoBehaviour
 
 	public GameObject CorkboardLabel;
 
+	public GameObject LoveSickCamera;
+
 	public GameObject LoadingScreen;
 
 	public GameObject CeilingLight;
@@ -80,7 +82,13 @@ public class HomeCameraScript : MonoBehaviour
 
 	public AudioClip NightRoom;
 
+	public AudioClip HomeLoveSick;
+
 	public bool Torturing;
+
+	public Transform PromptBarPanel;
+
+	public Transform PauseScreen;
 
 	private void Start()
 	{
@@ -125,6 +133,10 @@ public class HomeCameraScript : MonoBehaviour
 				this.Victim.SetActive(false);
 				this.Triggers[10].Disable();
 			}
+		}
+		if (Globals.LoveSick)
+		{
+			this.LoveSickColorSwap();
 		}
 		Time.timeScale = 1f;
 	}
@@ -262,5 +274,32 @@ public class HomeCameraScript : MonoBehaviour
 				this.RoomJukebox.Play();
 			}
 		}
+	}
+
+	private void LoveSickColorSwap()
+	{
+		GameObject[] array = UnityEngine.Object.FindObjectsOfType<GameObject>();
+		foreach (GameObject gameObject in array)
+		{
+			if (gameObject.transform.parent != this.PauseScreen && gameObject.transform.parent != this.PromptBarPanel)
+			{
+				UISprite component = gameObject.GetComponent<UISprite>();
+				if (component != null && component.color != Color.black)
+				{
+					component.color = new Color(1f, 0f, 0f, component.color.a);
+				}
+				UILabel component2 = gameObject.GetComponent<UILabel>();
+				if (component2 != null && component2.color != Color.black)
+				{
+					component2.color = new Color(1f, 0f, 0f, component2.color.a);
+				}
+			}
+		}
+		this.DayLight.GetComponent<Light>().color = new Color(0.5f, 0.5f, 0.5f, 1f);
+		this.HomeDarkness.Sprite.color = Color.black;
+		this.BasementJukebox.clip = this.HomeLoveSick;
+		this.RoomJukebox.clip = this.HomeLoveSick;
+		this.LoveSickCamera.SetActive(true);
+		this.PlayMusic();
 	}
 }

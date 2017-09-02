@@ -62,7 +62,7 @@ public class BucketPourScript : MonoBehaviour
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
 		}
-		if (this.Prompt.Circle[0] != null && this.Prompt.Circle[0].fillAmount <= 0f)
+		if (this.Prompt.Circle[0] != null && this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Circle[0].fillAmount = 1f;
 			if (this.Prompt.Label[0].text == "     Pour")

@@ -61,7 +61,7 @@ public class TallLockerScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (this.Prompt.Circle[0].fillAmount <= 0f)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Circle[0].fillAmount = 1f;
 			if (!this.Open)
@@ -127,7 +127,7 @@ public class TallLockerScript : MonoBehaviour
 		else
 		{
 			this.Rotation = Mathf.Lerp(this.Rotation, -180f, Time.deltaTime * 10f);
-			if (this.Prompt.Circle[1].fillAmount <= 0f)
+			if (this.Prompt.Circle[1].fillAmount == 0f)
 			{
 				this.Yandere.EmptyHands();
 				if (this.Yandere.ClubAttire)
@@ -157,7 +157,7 @@ public class TallLockerScript : MonoBehaviour
 				}
 				this.SpawnSteam();
 			}
-			else if (this.Prompt.Circle[2].fillAmount <= 0f)
+			else if (this.Prompt.Circle[2].fillAmount == 0f)
 			{
 				this.Yandere.EmptyHands();
 				if (this.Yandere.ClubAttire)
@@ -181,7 +181,7 @@ public class TallLockerScript : MonoBehaviour
 				}
 				this.SpawnSteam();
 			}
-			else if (this.Prompt.Circle[3].fillAmount <= 0f)
+			else if (this.Prompt.Circle[3].fillAmount == 0f)
 			{
 				this.Yandere.EmptyHands();
 				if (this.Yandere.ClubAttire)
@@ -229,9 +229,9 @@ public class TallLockerScript : MonoBehaviour
 						{
 							if (this.RemovingClubAttire)
 							{
-								UnityEngine.Object.Instantiate<GameObject>(this.BloodyClubUniform[Globals.Club], this.Yandere.transform.position + Vector3.forward * 0.5f + Vector3.up, Quaternion.identity);
-								this.StudentManager.ChangingBooths[Globals.Club].CannotChange = true;
-								this.StudentManager.ChangingBooths[Globals.Club].CheckYandereClub();
+								UnityEngine.Object.Instantiate<GameObject>(this.BloodyClubUniform[(int)Globals.Club], this.Yandere.transform.position + Vector3.forward * 0.5f + Vector3.up, Quaternion.identity);
+								this.StudentManager.ChangingBooths[(int)Globals.Club].CannotChange = true;
+								this.StudentManager.ChangingBooths[(int)Globals.Club].CheckYandereClub();
 								this.Prompt.HideButton[1] = true;
 								this.Prompt.HideButton[2] = true;
 								this.Prompt.HideButton[3] = true;

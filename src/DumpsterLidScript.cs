@@ -29,7 +29,7 @@ public class DumpsterLidScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (this.Prompt.Circle[0].fillAmount <= 0f)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Circle[0].fillAmount = 1f;
 			if (!this.Open)
@@ -66,7 +66,7 @@ public class DumpsterLidScript : MonoBehaviour
 			{
 				this.Prompt.HideButton[3] = true;
 			}
-			if (this.Prompt.Circle[3].fillAmount <= 0f)
+			if (this.Prompt.Circle[3].fillAmount == 0f)
 			{
 				UnityEngine.Object.Destroy(this.Prompt.Yandere.PickUp.gameObject);
 				this.Prompt.Circle[3].fillAmount = 1f;

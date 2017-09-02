@@ -29,6 +29,7 @@ public class HomeCorkboardScript : MonoBehaviour
 				this.HomeCamera.Destination = this.HomeCamera.Destinations[0];
 				this.HomeCamera.Target = this.HomeCamera.Targets[0];
 				this.HomeCamera.CorkboardLabel.SetActive(true);
+				this.PhotoGallery.PromptBar.Show = false;
 				this.PhotoGallery.enabled = false;
 				this.HomeYandere.CanMove = true;
 				this.HomeYandere.gameObject.SetActive(true);

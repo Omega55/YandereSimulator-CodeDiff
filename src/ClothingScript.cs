@@ -32,7 +32,7 @@ public class ClothingScript : MonoBehaviour
 			this.CanPickUp = true;
 			this.Prompt.enabled = true;
 		}
-		if (this.Prompt.Circle[0].fillAmount <= 0f)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Yandere.Bloodiness = 0f;
 			this.Prompt.Yandere.UpdateBlood();

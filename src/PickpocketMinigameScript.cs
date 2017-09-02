@@ -44,8 +44,11 @@ public class PickpocketMinigameScript : MonoBehaviour
 	{
 		if (this.Show)
 		{
-			this.Yandere.MoveTowardsTarget(this.PickpocketSpot.position);
-			this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, this.PickpocketSpot.rotation, Time.deltaTime * 10f);
+			if (this.PickpocketSpot != null)
+			{
+				this.Yandere.MoveTowardsTarget(this.PickpocketSpot.position);
+				this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, this.PickpocketSpot.rotation, Time.deltaTime * 10f);
+			}
 			base.transform.localScale = Vector3.Lerp(base.transform.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 			this.Timer += Time.deltaTime;
 			if (this.Timer > 1f)
@@ -136,7 +139,10 @@ public class PickpocketMinigameScript : MonoBehaviour
 		this.Circle.enabled = false;
 		this.BG.enabled = false;
 		this.Yandere.Pickpocketing = false;
-		this.Yandere.CanMove = true;
+		if (this.PickpocketSpot != null)
+		{
+			this.Yandere.CanMove = true;
+		}
 		this.Progress = 0;
 		this.ButtonID = 0;
 		this.Show = false;

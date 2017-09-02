@@ -23,7 +23,7 @@ public class HappyScript : MonoBehaviour
 	{
 		if (!this.InEditor)
 		{
-			if (this.JSON.StudentNames[33] != "Reserved")
+			if (this.JSON.Students[33].Name != "Reserved")
 			{
 				this.BakeCookies();
 			}
@@ -31,7 +31,7 @@ public class HappyScript : MonoBehaviour
 			{
 				for (int i = 1; i < 101; i++)
 				{
-					if (this.JSON.StudentGenders[i] == 0 && this.JSON.StudentHairstyles[i] == "20" && this.StudentManager.Students[i] != null)
+					if (this.JSON.Students[i].Gender == 0 && this.JSON.Students[i].Hairstyle == "20" && this.StudentManager.Students[i] != null)
 					{
 						this.StudentManager.Students[i].gameObject.SetActive(false);
 					}

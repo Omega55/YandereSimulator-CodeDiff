@@ -79,7 +79,8 @@ public class StudentInfoScript : MonoBehaviour
 
 	public void UpdateInfo(int ID)
 	{
-		this.NameLabel.text = this.JSON.StudentNames[ID];
+		StudentJson studentJson = this.JSON.Students[ID];
+		this.NameLabel.text = studentJson.Name;
 		if (Globals.GetStudentReputation(ID) < 0)
 		{
 			this.ReputationLabel.text = Globals.GetStudentReputation(ID).ToString();
@@ -101,59 +102,59 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.ReputationBar.localPosition = new Vector3(-96f, this.ReputationBar.localPosition.y, this.ReputationBar.localPosition.z);
 		}
-		if (this.JSON.StudentPersonas[ID] == PersonaType.Loner)
+		if (studentJson.Persona == PersonaType.Loner)
 		{
 			this.PersonaLabel.text = "Loner";
 		}
-		else if (this.JSON.StudentPersonas[ID] == PersonaType.TeachersPet)
+		else if (studentJson.Persona == PersonaType.TeachersPet)
 		{
 			this.PersonaLabel.text = "Teacher's Pet";
 		}
-		else if (this.JSON.StudentPersonas[ID] == PersonaType.Heroic)
+		else if (studentJson.Persona == PersonaType.Heroic)
 		{
 			this.PersonaLabel.text = "Heroic";
 		}
-		else if (this.JSON.StudentPersonas[ID] == PersonaType.Coward)
+		else if (studentJson.Persona == PersonaType.Coward)
 		{
 			this.PersonaLabel.text = "Coward";
 		}
-		else if (this.JSON.StudentPersonas[ID] == PersonaType.Evil)
+		else if (studentJson.Persona == PersonaType.Evil)
 		{
 			this.PersonaLabel.text = "Evil";
 		}
-		else if (this.JSON.StudentPersonas[ID] == PersonaType.SocialButterfly)
+		else if (studentJson.Persona == PersonaType.SocialButterfly)
 		{
 			this.PersonaLabel.text = "Social Butterfly";
 		}
-		else if (this.JSON.StudentPersonas[ID] == PersonaType.Tsundere)
+		else if (studentJson.Persona == PersonaType.Tsundere)
 		{
 			this.PersonaLabel.text = "Tsundere";
 		}
-		else if (this.JSON.StudentPersonas[ID] == PersonaType.Strict)
+		else if (studentJson.Persona == PersonaType.Strict)
 		{
 			this.PersonaLabel.text = "Strict";
-			if (this.JSON.StudentClubs[ID] == 101 && !Globals.GetStudentReplaced(ID))
+			if (studentJson.Club == ClubType.GymTeacher && !Globals.GetStudentReplaced(ID))
 			{
 				this.PersonaLabel.text = "Friendly but Strict";
 			}
 		}
-		else if (this.JSON.StudentPersonas[ID] == PersonaType.Nemesis)
+		else if (studentJson.Persona == PersonaType.Nemesis)
 		{
 			this.PersonaLabel.text = "?????";
 		}
-		if (this.JSON.StudentCrushes[ID] == 0)
+		if (studentJson.Crush == 0)
 		{
 			this.CrushLabel.text = "None";
 		}
-		else if (this.JSON.StudentCrushes[ID] == 99)
+		else if (studentJson.Crush == 99)
 		{
 			this.CrushLabel.text = "?????";
 		}
 		else
 		{
-			this.CrushLabel.text = this.JSON.StudentNames[this.JSON.StudentCrushes[ID]];
+			this.CrushLabel.text = this.JSON.Students[studentJson.Crush].Name;
 		}
-		if (this.JSON.StudentClubs[ID] < 100)
+		if (studentJson.Club < ClubType.Teacher)
 		{
 			this.OccupationLabel.text = "Club";
 		}
@@ -161,122 +162,122 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.OccupationLabel.text = "Occupation";
 		}
-		if (this.JSON.StudentClubs[ID] < 100)
+		if (studentJson.Club < ClubType.Teacher)
 		{
-			if (this.JSON.StudentClubs[ID] == 0)
+			if (studentJson.Club == ClubType.None)
 			{
 				this.ClubLabel.text = "No Club";
 			}
-			else if (this.JSON.StudentClubs[ID] == 1)
+			else if (studentJson.Club == ClubType.Cooking)
 			{
 				this.ClubLabel.text = "Cooking";
 			}
-			else if (this.JSON.StudentClubs[ID] == 2)
+			else if (studentJson.Club == ClubType.Drama)
 			{
 				this.ClubLabel.text = "Drama";
 			}
-			else if (this.JSON.StudentClubs[ID] == 3)
+			else if (studentJson.Club == ClubType.Occult)
 			{
 				this.ClubLabel.text = "Occult";
 			}
-			else if (this.JSON.StudentClubs[ID] == 4)
+			else if (studentJson.Club == ClubType.Art)
 			{
 				this.ClubLabel.text = "Art";
 			}
-			else if (this.JSON.StudentClubs[ID] == 5)
+			else if (studentJson.Club == ClubType.LightMusic)
 			{
 				this.ClubLabel.text = "Light Music";
 			}
-			else if (this.JSON.StudentClubs[ID] == 6)
+			else if (studentJson.Club == ClubType.MartialArts)
 			{
 				this.ClubLabel.text = "Martial Arts";
 			}
-			else if (this.JSON.StudentClubs[ID] == 7)
+			else if (studentJson.Club == ClubType.Photography)
 			{
 				this.ClubLabel.text = "Photography";
 			}
-			else if (this.JSON.StudentClubs[ID] == 8)
+			else if (studentJson.Club == ClubType.Science)
 			{
 				this.ClubLabel.text = "Science";
 			}
-			else if (this.JSON.StudentClubs[ID] == 9)
+			else if (studentJson.Club == ClubType.Sports)
 			{
 				this.ClubLabel.text = "Sports";
 			}
-			else if (this.JSON.StudentClubs[ID] == 10)
+			else if (studentJson.Club == ClubType.Gardening)
 			{
 				this.ClubLabel.text = "Gardening";
 			}
-			else if (this.JSON.StudentClubs[ID] == 11)
+			else if (studentJson.Club == ClubType.Gaming)
 			{
 				this.ClubLabel.text = "Gaming";
 			}
-			else if (this.JSON.StudentClubs[ID] == 99)
+			else if (studentJson.Club == ClubType.Nemesis)
 			{
 				this.ClubLabel.text = "?????";
 			}
 		}
-		else if (this.JSON.StudentClasses[ID] == 11)
+		else if (studentJson.Class == 11)
 		{
 			this.ClubLabel.text = "Teacher of Class 1-1";
 		}
-		else if (this.JSON.StudentClasses[ID] == 12)
+		else if (studentJson.Class == 12)
 		{
 			this.ClubLabel.text = "Teacher of Class 1-2";
 		}
-		else if (this.JSON.StudentClasses[ID] == 21)
+		else if (studentJson.Class == 21)
 		{
 			this.ClubLabel.text = "Teacher of Class 2-1";
 		}
-		else if (this.JSON.StudentClasses[ID] == 22)
+		else if (studentJson.Class == 22)
 		{
 			this.ClubLabel.text = "Teacher of Class 2-2";
 		}
-		else if (this.JSON.StudentClasses[ID] == 31)
+		else if (studentJson.Class == 31)
 		{
 			this.ClubLabel.text = "Teacher of Class 3-1";
 		}
-		else if (this.JSON.StudentClasses[ID] == 32)
+		else if (studentJson.Class == 32)
 		{
 			this.ClubLabel.text = "Teacher of Class 3-2";
 		}
-		else if (this.JSON.StudentClasses[ID] == 0)
+		else if (studentJson.Class == 0)
 		{
 			this.ClubLabel.text = "Gym Teacher";
 		}
-		if (Globals.GetClubClosed(this.JSON.StudentClubs[ID]))
+		if (Globals.GetClubClosed(studentJson.Club))
 		{
 			this.ClubLabel.text = "No Club";
 		}
-		if (this.JSON.StudentStrengths[ID] == 0)
+		if (studentJson.Strength == 0)
 		{
 			this.StrengthLabel.text = "Incapable";
 		}
-		else if (this.JSON.StudentStrengths[ID] == 1)
+		else if (studentJson.Strength == 1)
 		{
 			this.StrengthLabel.text = "Very Weak";
 		}
-		else if (this.JSON.StudentStrengths[ID] == 2)
+		else if (studentJson.Strength == 2)
 		{
 			this.StrengthLabel.text = "Weak";
 		}
-		else if (this.JSON.StudentStrengths[ID] == 3)
+		else if (studentJson.Strength == 3)
 		{
 			this.StrengthLabel.text = "Strong";
 		}
-		else if (this.JSON.StudentStrengths[ID] == 4)
+		else if (studentJson.Strength == 4)
 		{
 			this.StrengthLabel.text = "Very Strong";
 		}
-		else if (this.JSON.StudentStrengths[ID] == 5)
+		else if (studentJson.Strength == 5)
 		{
 			this.StrengthLabel.text = "Martial Arts Master";
 		}
-		else if (this.JSON.StudentStrengths[ID] == 6)
+		else if (studentJson.Strength == 6)
 		{
 			this.StrengthLabel.text = "Extensive Training";
 		}
-		else if (this.JSON.StudentStrengths[ID] == 99)
+		else if (studentJson.Strength == 99)
 		{
 			this.StrengthLabel.text = "?????";
 		}
@@ -353,7 +354,7 @@ public class StudentInfoScript : MonoBehaviour
 			}
 			else if (this.StudentInfoMenu.CyberBullying)
 			{
-				this.HomeInternet.PostLabels[1].text = this.JSON.StudentNames[this.CurrentStudent];
+				this.HomeInternet.PostLabels[1].text = this.JSON.Students[this.CurrentStudent].Name;
 				this.HomeInternet.Student = this.CurrentStudent;
 				this.StudentInfoMenu.PauseScreen.MainMenu.SetActive(true);
 				this.StudentInfoMenu.PauseScreen.Show = false;
@@ -441,13 +442,13 @@ public class StudentInfoScript : MonoBehaviour
 		}
 		else if (!Globals.GetStudentReplaced(ID))
 		{
-			if (this.JSON.StudentInfos[ID] == string.Empty)
+			if (this.JSON.Students[ID].Info == string.Empty)
 			{
 				this.InfoLabel.text = "No additional information is available at this time.";
 			}
 			else
 			{
-				this.InfoLabel.text = this.JSON.StudentInfos[ID];
+				this.InfoLabel.text = this.JSON.Students[ID].Info;
 			}
 		}
 		else
@@ -462,205 +463,18 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.TopicIcons[i].spriteName = (Globals.GetTopicDiscovered(i) ? i : 0).ToString();
 		}
-		if (!Globals.GetTopicLearnedByStudent(1, this.CurrentStudent))
+		for (int j = 1; j <= 25; j++)
 		{
-			this.TopicOpinionIcons[1].spriteName = "Unknown";
-		}
-		else
-		{
-			this.TopicOpinionIcons[1].spriteName = this.OpinionSpriteNames[this.JSON.Topic1[this.CurrentStudent]];
-		}
-		if (!Globals.GetTopicLearnedByStudent(2, this.CurrentStudent))
-		{
-			this.TopicOpinionIcons[2].spriteName = "Unknown";
-		}
-		else
-		{
-			this.TopicOpinionIcons[2].spriteName = this.OpinionSpriteNames[this.JSON.Topic2[this.CurrentStudent]];
-		}
-		if (!Globals.GetTopicLearnedByStudent(3, this.CurrentStudent))
-		{
-			this.TopicOpinionIcons[3].spriteName = "Unknown";
-		}
-		else
-		{
-			this.TopicOpinionIcons[3].spriteName = this.OpinionSpriteNames[this.JSON.Topic3[this.CurrentStudent]];
-		}
-		if (!Globals.GetTopicLearnedByStudent(4, this.CurrentStudent))
-		{
-			this.TopicOpinionIcons[4].spriteName = "Unknown";
-		}
-		else
-		{
-			this.TopicOpinionIcons[4].spriteName = this.OpinionSpriteNames[this.JSON.Topic4[this.CurrentStudent]];
-		}
-		if (!Globals.GetTopicLearnedByStudent(5, this.CurrentStudent))
-		{
-			this.TopicOpinionIcons[5].spriteName = "Unknown";
-		}
-		else
-		{
-			this.TopicOpinionIcons[5].spriteName = this.OpinionSpriteNames[this.JSON.Topic5[this.CurrentStudent]];
-		}
-		if (!Globals.GetTopicLearnedByStudent(6, this.CurrentStudent))
-		{
-			this.TopicOpinionIcons[6].spriteName = "Unknown";
-		}
-		else
-		{
-			this.TopicOpinionIcons[6].spriteName = this.OpinionSpriteNames[this.JSON.Topic6[this.CurrentStudent]];
-		}
-		if (!Globals.GetTopicLearnedByStudent(7, this.CurrentStudent))
-		{
-			this.TopicOpinionIcons[7].spriteName = "Unknown";
-		}
-		else
-		{
-			this.TopicOpinionIcons[7].spriteName = this.OpinionSpriteNames[this.JSON.Topic7[this.CurrentStudent]];
-		}
-		if (!Globals.GetTopicLearnedByStudent(8, this.CurrentStudent))
-		{
-			this.TopicOpinionIcons[8].spriteName = "Unknown";
-		}
-		else
-		{
-			this.TopicOpinionIcons[8].spriteName = this.OpinionSpriteNames[this.JSON.Topic8[this.CurrentStudent]];
-		}
-		if (!Globals.GetTopicLearnedByStudent(9, this.CurrentStudent))
-		{
-			this.TopicOpinionIcons[9].spriteName = "Unknown";
-		}
-		else
-		{
-			this.TopicOpinionIcons[9].spriteName = this.OpinionSpriteNames[this.JSON.Topic9[this.CurrentStudent]];
-		}
-		if (!Globals.GetTopicLearnedByStudent(10, this.CurrentStudent))
-		{
-			this.TopicOpinionIcons[10].spriteName = "Unknown";
-		}
-		else
-		{
-			this.TopicOpinionIcons[10].spriteName = this.OpinionSpriteNames[this.JSON.Topic10[this.CurrentStudent]];
-		}
-		if (!Globals.GetTopicLearnedByStudent(11, this.CurrentStudent))
-		{
-			this.TopicOpinionIcons[11].spriteName = "Unknown";
-		}
-		else
-		{
-			this.TopicOpinionIcons[11].spriteName = this.OpinionSpriteNames[this.JSON.Topic11[this.CurrentStudent]];
-		}
-		if (!Globals.GetTopicLearnedByStudent(12, this.CurrentStudent))
-		{
-			this.TopicOpinionIcons[12].spriteName = "Unknown";
-		}
-		else
-		{
-			this.TopicOpinionIcons[12].spriteName = this.OpinionSpriteNames[this.JSON.Topic12[this.CurrentStudent]];
-		}
-		if (!Globals.GetTopicLearnedByStudent(13, this.CurrentStudent))
-		{
-			this.TopicOpinionIcons[13].spriteName = "Unknown";
-		}
-		else
-		{
-			this.TopicOpinionIcons[13].spriteName = this.OpinionSpriteNames[this.JSON.Topic13[this.CurrentStudent]];
-		}
-		if (!Globals.GetTopicLearnedByStudent(14, this.CurrentStudent))
-		{
-			this.TopicOpinionIcons[14].spriteName = "Unknown";
-		}
-		else
-		{
-			this.TopicOpinionIcons[14].spriteName = this.OpinionSpriteNames[this.JSON.Topic14[this.CurrentStudent]];
-		}
-		if (!Globals.GetTopicLearnedByStudent(15, this.CurrentStudent))
-		{
-			this.TopicOpinionIcons[15].spriteName = "Unknown";
-		}
-		else
-		{
-			this.TopicOpinionIcons[15].spriteName = this.OpinionSpriteNames[this.JSON.Topic15[this.CurrentStudent]];
-		}
-		if (!Globals.GetTopicLearnedByStudent(16, this.CurrentStudent))
-		{
-			this.TopicOpinionIcons[16].spriteName = "Unknown";
-		}
-		else
-		{
-			this.TopicOpinionIcons[16].spriteName = this.OpinionSpriteNames[this.JSON.Topic16[this.CurrentStudent]];
-		}
-		if (!Globals.GetTopicLearnedByStudent(17, this.CurrentStudent))
-		{
-			this.TopicOpinionIcons[17].spriteName = "Unknown";
-		}
-		else
-		{
-			this.TopicOpinionIcons[17].spriteName = this.OpinionSpriteNames[this.JSON.Topic17[this.CurrentStudent]];
-		}
-		if (!Globals.GetTopicLearnedByStudent(18, this.CurrentStudent))
-		{
-			this.TopicOpinionIcons[18].spriteName = "Unknown";
-		}
-		else
-		{
-			this.TopicOpinionIcons[18].spriteName = this.OpinionSpriteNames[this.JSON.Topic18[this.CurrentStudent]];
-		}
-		if (!Globals.GetTopicLearnedByStudent(19, this.CurrentStudent))
-		{
-			this.TopicOpinionIcons[19].spriteName = "Unknown";
-		}
-		else
-		{
-			this.TopicOpinionIcons[19].spriteName = this.OpinionSpriteNames[this.JSON.Topic19[this.CurrentStudent]];
-		}
-		if (!Globals.GetTopicLearnedByStudent(20, this.CurrentStudent))
-		{
-			this.TopicOpinionIcons[20].spriteName = "Unknown";
-		}
-		else
-		{
-			this.TopicOpinionIcons[20].spriteName = this.OpinionSpriteNames[this.JSON.Topic20[this.CurrentStudent]];
-		}
-		if (!Globals.GetTopicLearnedByStudent(21, this.CurrentStudent))
-		{
-			this.TopicOpinionIcons[21].spriteName = "Unknown";
-		}
-		else
-		{
-			this.TopicOpinionIcons[21].spriteName = this.OpinionSpriteNames[this.JSON.Topic21[this.CurrentStudent]];
-		}
-		if (!Globals.GetTopicLearnedByStudent(22, this.CurrentStudent))
-		{
-			this.TopicOpinionIcons[22].spriteName = "Unknown";
-		}
-		else
-		{
-			this.TopicOpinionIcons[22].spriteName = this.OpinionSpriteNames[this.JSON.Topic22[this.CurrentStudent]];
-		}
-		if (!Globals.GetTopicLearnedByStudent(23, this.CurrentStudent))
-		{
-			this.TopicOpinionIcons[23].spriteName = "Unknown";
-		}
-		else
-		{
-			this.TopicOpinionIcons[23].spriteName = this.OpinionSpriteNames[this.JSON.Topic23[this.CurrentStudent]];
-		}
-		if (!Globals.GetTopicLearnedByStudent(24, this.CurrentStudent))
-		{
-			this.TopicOpinionIcons[24].spriteName = "Unknown";
-		}
-		else
-		{
-			this.TopicOpinionIcons[24].spriteName = this.OpinionSpriteNames[this.JSON.Topic24[this.CurrentStudent]];
-		}
-		if (!Globals.GetTopicLearnedByStudent(25, this.CurrentStudent))
-		{
-			this.TopicOpinionIcons[25].spriteName = "Unknown";
-		}
-		else
-		{
-			this.TopicOpinionIcons[25].spriteName = this.OpinionSpriteNames[this.JSON.Topic25[this.CurrentStudent]];
+			UISprite uisprite = this.TopicOpinionIcons[j];
+			if (!Globals.GetTopicLearnedByStudent(j, this.CurrentStudent))
+			{
+				uisprite.spriteName = "Unknown";
+			}
+			else
+			{
+				int[] topics = this.JSON.Topics[this.CurrentStudent].Topics;
+				uisprite.spriteName = this.OpinionSpriteNames[topics[j]];
+			}
 		}
 	}
 }

@@ -44,7 +44,7 @@ public class ComputerGamesScript : MonoBehaviour
 		this.GameWindow.gameObject.SetActive(false);
 		this.DeactivateAllBenefits();
 		this.OriginalColor = this.Yandere.PowerUp.color;
-		if (Globals.Club == 11)
+		if (Globals.Club == ClubType.Gaming)
 		{
 			this.EnableGames();
 		}

@@ -34,58 +34,58 @@ public class StatsScript : MonoBehaviour
 
 	public UITexture Portrait;
 
-	private IntAndStringDictionary ClubLabels;
+	private ClubTypeAndStringDictionary ClubLabels;
 
 	private void Awake()
 	{
-		this.ClubLabels = new IntAndStringDictionary
+		this.ClubLabels = new ClubTypeAndStringDictionary
 		{
 			{
-				0,
+				ClubType.None,
 				"None"
 			},
 			{
-				1,
+				ClubType.Cooking,
 				"Cooking"
 			},
 			{
-				2,
+				ClubType.Drama,
 				"Drama"
 			},
 			{
-				3,
+				ClubType.Occult,
 				"Occult"
 			},
 			{
-				4,
+				ClubType.Art,
 				"Art"
 			},
 			{
-				5,
+				ClubType.LightMusic,
 				"Light Music"
 			},
 			{
-				6,
+				ClubType.MartialArts,
 				"Martial Arts"
 			},
 			{
-				7,
+				ClubType.Photography,
 				"Photography"
 			},
 			{
-				8,
+				ClubType.Science,
 				"Science"
 			},
 			{
-				9,
+				ClubType.Sports,
 				"Sports"
 			},
 			{
-				10,
+				ClubType.Gardening,
 				"Gardening"
 			},
 			{
-				11,
+				ClubType.Gaming,
 				"Gaming"
 			}
 		};
@@ -303,7 +303,7 @@ public class StatsScript : MonoBehaviour
 		this.Ranks[6].text = "Rank: " + Globals.Seduction.ToString();
 		this.Ranks[7].text = "Rank: " + Globals.Numbness.ToString();
 		this.Ranks[8].text = "Rank: " + Globals.Enlightenment.ToString();
-		int club = Globals.Club;
+		ClubType club = Globals.Club;
 		string str;
 		bool flag = this.ClubLabels.TryGetValue(club, out str);
 		this.ClubLabel.text = "Club: " + str;

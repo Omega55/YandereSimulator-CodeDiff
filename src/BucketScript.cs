@@ -5,6 +5,8 @@ public class BucketScript : MonoBehaviour
 {
 	public ParticleSystem PourEffect;
 
+	public ParticleSystem Sparkles;
+
 	public YandereScript Yandere;
 
 	public PickUpScript PickUp;
@@ -46,6 +48,8 @@ public class BucketScript : MonoBehaviour
 	public float Rotate;
 
 	public int Dumbbells;
+
+	public bool Bleached;
 
 	public bool Gasoline;
 
@@ -112,6 +116,18 @@ public class BucketScript : MonoBehaviour
 				if (!this.Yandere.PickUp.Empty)
 				{
 					this.Prompt.Label[0].text = "     Pour Gasoline";
+					this.Prompt.HideButton[0] = false;
+				}
+				else
+				{
+					this.Prompt.HideButton[0] = true;
+				}
+			}
+			else if (this.Yandere.PickUp.Bleach)
+			{
+				if (this.Full && !this.Gasoline && !this.Bleached)
+				{
+					this.Prompt.Label[0].text = "     Pour Bleach";
 					this.Prompt.HideButton[0] = false;
 				}
 				else
@@ -206,11 +222,16 @@ public class BucketScript : MonoBehaviour
 				this.Dumbbell[this.Dumbbells] = null;
 				this.Dumbbells--;
 			}
-			else
+			else if (this.Prompt.Label[0].text == "     Pour Gasoline")
 			{
 				this.Yandere.PickUp.Empty = true;
 				this.Gasoline = true;
 				this.Full = true;
+			}
+			else
+			{
+				this.Sparkles.Play();
+				this.Bleached = true;
 			}
 		}
 		if (this.Full)
@@ -314,6 +335,8 @@ public class BucketScript : MonoBehaviour
 	public void Empty()
 	{
 		this.Bloodiness = 0f;
+		this.Bleached = false;
+		this.Sparkles.Stop();
 		this.Full = false;
 	}
 

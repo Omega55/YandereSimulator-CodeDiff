@@ -4,55 +4,60 @@ using UnityEngine.SceneManagement;
 
 public class CreditsScript : MonoBehaviour
 {
-	public JsonScript JSON;
+	[SerializeField]
+	private JsonScript JSON;
 
-	public Transform SpawnPoint;
+	[SerializeField]
+	private Transform SpawnPoint;
 
-	public Transform Panel;
+	[SerializeField]
+	private Transform Panel;
 
-	private GameObject NewCreditsLabel;
+	[SerializeField]
+	private GameObject SmallCreditsLabel;
 
-	public GameObject SmallCreditsLabel;
+	[SerializeField]
+	private GameObject BigCreditsLabel;
 
-	public GameObject BigCreditsLabel;
+	[SerializeField]
+	private UISprite Darkness;
 
-	public UISprite Darkness;
+	[SerializeField]
+	private int ID;
 
-	public string[] Lines;
+	[SerializeField]
+	private float SpeedUpFactor;
 
-	public int[] Sizes;
+	[SerializeField]
+	private float TimerLimit;
 
-	public int ID;
+	[SerializeField]
+	private float FadeTimer;
 
-	public float SpeedUpFactor;
+	[SerializeField]
+	private float Timer;
 
-	public float TimerLimit;
+	[SerializeField]
+	private bool FadeOut;
 
-	public float FadeTimer;
+	[SerializeField]
+	private bool Begin;
 
-	public float Timer;
+	private const int SmallTextSize = 1;
 
-	public bool StopCredits;
+	private const int BigTextSize = 2;
 
-	public bool FadeOut;
-
-	public bool Begin;
-
-	private void Start()
+	private bool ShouldStopCredits
 	{
-		this.ID = 1;
-		while (this.ID < this.Lines.Length)
+		get
 		{
-			this.Lines[this.ID] = this.JSON.CreditsNames[this.ID];
-			this.ID++;
+			return this.ID == this.JSON.Credits.Length;
 		}
-		this.ID = 1;
-		while (this.ID < this.Sizes.Length)
-		{
-			this.Sizes[this.ID] = this.JSON.CreditsSizes[this.ID];
-			this.ID++;
-		}
-		this.ID = 1;
+	}
+
+	private GameObject SpawnLabel(int size)
+	{
+		return UnityEngine.Object.Instantiate<GameObject>((size != 1) ? this.BigCreditsLabel : this.SmallCreditsLabel, this.SpawnPoint.position, Quaternion.identity);
 	}
 
 	private void Update()
@@ -70,30 +75,19 @@ public class CreditsScript : MonoBehaviour
 		}
 		else
 		{
-			if (!this.StopCredits)
+			if (!this.ShouldStopCredits)
 			{
 				if (this.Timer == 0f)
 				{
-					if (this.Sizes[this.ID] == 1)
-					{
-						this.NewCreditsLabel = UnityEngine.Object.Instantiate<GameObject>(this.SmallCreditsLabel, this.SpawnPoint.position, Quaternion.identity);
-						this.TimerLimit = this.SpeedUpFactor;
-					}
-					else
-					{
-						this.NewCreditsLabel = UnityEngine.Object.Instantiate<GameObject>(this.BigCreditsLabel, this.SpawnPoint.position, Quaternion.identity);
-						this.TimerLimit = (float)this.Sizes[this.ID] * this.SpeedUpFactor;
-					}
-					this.NewCreditsLabel.transform.parent = this.Panel;
-					this.NewCreditsLabel.transform.localScale = new Vector3(1f, 1f, 1f);
-					this.NewCreditsLabel.GetComponent<UILabel>().text = this.Lines[this.ID];
+					CreditJson creditJson = this.JSON.Credits[this.ID];
+					GameObject gameObject = this.SpawnLabel(creditJson.Size);
+					this.TimerLimit = (float)creditJson.Size * this.SpeedUpFactor;
+					gameObject.transform.parent = this.Panel;
+					gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+					gameObject.GetComponent<UILabel>().text = creditJson.Name;
 					this.ID++;
-					if (this.ID > this.Sizes.Length - 1)
-					{
-						this.StopCredits = true;
-					}
 				}
-				this.Timer = Mathf.MoveTowards(this.Timer, this.TimerLimit, Time.deltaTime);
+				this.Timer += Time.deltaTime;
 				if (this.Timer >= this.TimerLimit)
 				{
 					this.Timer = 0f;
@@ -113,14 +107,18 @@ public class CreditsScript : MonoBehaviour
 				SceneManager.LoadScene("TitleScene");
 			}
 		}
-		if (Input.GetKeyDown("-"))
+		bool keyDown = Input.GetKeyDown("-");
+		bool keyDown2 = Input.GetKeyDown("=");
+		if (keyDown)
 		{
 			Time.timeScale -= 1f;
-			component.pitch = Time.timeScale;
 		}
-		if (Input.GetKeyDown("="))
+		else if (keyDown2)
 		{
 			Time.timeScale += 1f;
+		}
+		if (keyDown || keyDown2)
+		{
 			component.pitch = Time.timeScale;
 		}
 	}

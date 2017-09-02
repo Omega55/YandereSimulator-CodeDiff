@@ -1009,13 +1009,13 @@ public class MissionModeMenuScript : MonoBehaviour
 		WWW www = new WWW(url);
 		this.TargetPortrait.mainTexture = ((this.TargetID >= 33) ? this.BlankPortrait : www.texture);
 		this.CustomTargetPortrait.mainTexture = this.TargetPortrait.mainTexture;
-		if (this.JSON.StudentNames[this.TargetID] == "Random" || this.JSON.StudentNames[this.TargetID] == "Unknown")
+		if (this.JSON.Students[this.TargetID].Name == "Random" || this.JSON.Students[this.TargetID].Name == "Unknown")
 		{
 			this.TargetName = this.StudentManager.FirstNames[UnityEngine.Random.Range(0, this.StudentManager.FirstNames.Length)] + " " + this.StudentManager.LastNames[UnityEngine.Random.Range(0, this.StudentManager.LastNames.Length)];
 		}
 		else
 		{
-			this.TargetName = this.JSON.StudentNames[this.TargetID];
+			this.TargetName = this.JSON.Students[this.TargetID].Name;
 		}
 		this.CustomDescs[1].text = "Kill " + this.TargetName + ".";
 		this.Descs[1].text = "Kill " + this.TargetName + ".";
@@ -1192,7 +1192,7 @@ public class MissionModeMenuScript : MonoBehaviour
 			});
 			WWW www = new WWW(url);
 			this.Icons[1].mainTexture = www.texture;
-			this.TargetName = this.JSON.StudentNames[Globals.MissionTarget];
+			this.TargetName = this.JSON.Students[Globals.MissionTarget].Name;
 		}
 		else
 		{

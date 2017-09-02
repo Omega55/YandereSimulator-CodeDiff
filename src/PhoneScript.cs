@@ -82,6 +82,11 @@ public class PhoneScript : MonoBehaviour
 			Globals.LivingRoom = true;
 			Globals.BefriendConversation = false;
 		}
+		if (Globals.LoveSick)
+		{
+			Camera.main.backgroundColor = Color.black;
+			this.LoveSickColorSwap();
+		}
 	}
 
 	private void Update()
@@ -182,5 +187,24 @@ public class PhoneScript : MonoBehaviour
 		}
 		this.AutoLimit = (float)(this.Height[this.ID] + 1);
 		this.NewMessage.GetComponent<TextMessageScript>().Label.text = this.Text[this.ID];
+	}
+
+	private void LoveSickColorSwap()
+	{
+		GameObject[] array = UnityEngine.Object.FindObjectsOfType<GameObject>();
+		foreach (GameObject gameObject in array)
+		{
+			UISprite component = gameObject.GetComponent<UISprite>();
+			if (component != null && component.color != Color.black && component.transform.parent)
+			{
+				component.color = new Color(1f, 0f, 0f, component.color.a);
+			}
+			UILabel component2 = gameObject.GetComponent<UILabel>();
+			if (component2 != null && component2.color != Color.black)
+			{
+				component2.color = new Color(1f, 0f, 0f, component2.color.a);
+			}
+			this.Darkness.color = Color.black;
+		}
 	}
 }

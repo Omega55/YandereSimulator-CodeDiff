@@ -333,10 +333,10 @@ public class ArmDetectorScript : MonoBehaviour
 		if (other.transform.parent == null)
 		{
 			PickUpScript component = other.gameObject.GetComponent<PickUpScript>();
-			if (component != null && component.BodyPart)
+			if (component != null)
 			{
-				BodyPartScript component2 = other.gameObject.GetComponent<BodyPartScript>();
-				if (component2.Sacrifice && (other.gameObject.name == "FemaleRightArm(Clone)" || other.gameObject.name == "FemaleLeftArm(Clone)" || other.gameObject.name == "MaleRightArm(Clone)" || other.gameObject.name == "MaleLeftArm(Clone)" || other.gameObject.name == "SacrificialArm(Clone)"))
+				BodyPartScript bodyPart = component.BodyPart;
+				if (bodyPart.Sacrifice && (bodyPart.Type == 3 || bodyPart.Type == 4))
 				{
 					bool flag = true;
 					for (int i = 1; i < 11; i++)

@@ -10,6 +10,8 @@ public class PhotoGalleryScript : MonoBehaviour
 
 	public TaskManagerScript TaskManager;
 
+	public PromptBarScript PromptBar;
+
 	public HomeCursorScript Cursor;
 
 	public YandereScript Yandere;
@@ -19,12 +21,6 @@ public class PhotoGalleryScript : MonoBehaviour
 	public GameObject LoadingScreen;
 
 	public GameObject Photograph;
-
-	public GameObject AdjustBox;
-
-	public GameObject DeleteBox;
-
-	public GameObject BackBox;
 
 	public Transform CorkboardPanel;
 
@@ -40,10 +36,6 @@ public class PhotoGalleryScript : MonoBehaviour
 
 	public UITexture ViewPhoto;
 
-	public UILabel DeleteLabel;
-
-	public UILabel ViewLabel;
-
 	public Texture NoPhoto;
 
 	public Vector2 PreviousPosition;
@@ -51,6 +43,8 @@ public class PhotoGalleryScript : MonoBehaviour
 	public Vector2 MouseDelta;
 
 	public bool Adjusting;
+
+	public bool CanAdjust;
 
 	public bool Corkboard;
 
@@ -89,27 +83,30 @@ public class PhotoGalleryScript : MonoBehaviour
 						this.ViewPhoto.transform.localScale = this.Photographs[i].transform.localScale;
 						this.Destination.position = this.Photographs[i].transform.position;
 						this.Viewing = true;
-						if (this.Corkboard)
-						{
-							this.ViewLabel.text = "Place";
-						}
-						else
+						if (!this.Corkboard)
 						{
 							for (i = 1; i < 26; i++)
 							{
 								this.Hearts[i].gameObject.SetActive(false);
 							}
 						}
-						this.DeleteBox.SetActive(false);
-						this.AdjustBox.SetActive(false);
+						this.CanAdjust = false;
 					}
+					this.UpdateButtonPrompts();
 				}
 				if (Input.GetButtonDown("B"))
 				{
+					this.PromptBar.ClearButtons();
+					this.PromptBar.Label[0].text = "Accept";
+					this.PromptBar.Label[1].text = "Exit";
+					this.PromptBar.Label[4].text = "Choose";
+					this.PromptBar.Label[5].text = "Choose";
+					this.PromptBar.UpdateButtons();
 					this.PauseScreen.MainMenu.SetActive(true);
 					this.PauseScreen.Sideways = false;
 					this.PauseScreen.PressedB = true;
 					base.gameObject.SetActive(false);
+					this.UpdateButtonPrompts();
 				}
 				if (Input.GetButtonDown("X"))
 				{
@@ -124,26 +121,27 @@ public class PhotoGalleryScript : MonoBehaviour
 						this.Hearts[num].gameObject.SetActive(false);
 						this.TaskManager.UpdateTaskStatus();
 					}
+					this.UpdateButtonPrompts();
 				}
 				if (this.Corkboard)
 				{
 					if (Input.GetButtonDown("Y"))
 					{
-						this.DeleteLabel.text = "Remove";
-						this.ViewLabel.text = "Select";
-						this.AdjustBox.SetActive(false);
+						this.CanAdjust = false;
 						this.Cursor.gameObject.SetActive(true);
 						this.Adjusting = true;
+						this.UpdateButtonPrompts();
 					}
 				}
-				else if (this.AdjustBox.activeInHierarchy && Input.GetButtonDown("Y"))
+				else if (this.CanAdjust && Input.GetButtonDown("Y"))
 				{
 					int num2 = this.Column + (this.Row - 1) * 5;
 					Globals.SetSenpaiPhoto(num2, false);
 					this.Hearts[num2].gameObject.SetActive(false);
-					this.AdjustBox.SetActive(false);
+					this.CanAdjust = false;
 					this.Yandere.Sanity += 20f;
 					this.Yandere.UpdateSanity();
+					this.UpdateButtonPrompts();
 				}
 				if (this.InputManager.TappedRight)
 				{
@@ -153,7 +151,7 @@ public class PhotoGalleryScript : MonoBehaviour
 						this.Column = 1;
 					}
 					this.Highlight.transform.localPosition = new Vector3(-450f + 150f * (float)this.Column, this.Highlight.transform.localPosition.y, this.Highlight.transform.localPosition.z);
-					this.UpdateUseButton();
+					this.UpdateButtonPrompts();
 				}
 				if (this.InputManager.TappedLeft)
 				{
@@ -163,7 +161,7 @@ public class PhotoGalleryScript : MonoBehaviour
 						this.Column = 5;
 					}
 					this.Highlight.transform.localPosition = new Vector3(-450f + 150f * (float)this.Column, this.Highlight.transform.localPosition.y, this.Highlight.transform.localPosition.z);
-					this.UpdateUseButton();
+					this.UpdateButtonPrompts();
 				}
 				if (this.InputManager.TappedUp)
 				{
@@ -173,7 +171,7 @@ public class PhotoGalleryScript : MonoBehaviour
 						this.Row = 5;
 					}
 					this.Highlight.transform.localPosition = new Vector3(this.Highlight.transform.localPosition.x, 225f - 75f * (float)this.Row, this.Highlight.transform.localPosition.z);
-					this.UpdateUseButton();
+					this.UpdateButtonPrompts();
 				}
 				if (this.InputManager.TappedDown)
 				{
@@ -183,7 +181,7 @@ public class PhotoGalleryScript : MonoBehaviour
 						this.Row = 1;
 					}
 					this.Highlight.transform.localPosition = new Vector3(this.Highlight.transform.localPosition.x, 225f - 75f * (float)this.Row, this.Highlight.transform.localPosition.z);
-					this.UpdateUseButton();
+					this.UpdateButtonPrompts();
 				}
 				this.ViewPhoto.transform.localScale = Vector3.Lerp(this.ViewPhoto.transform.localScale, new Vector3(1f, 1f, 1f), 0.166666672f);
 				this.ViewPhoto.transform.position = Vector3.Lerp(this.ViewPhoto.transform.position, this.Destination.position, 0.166666672f);
@@ -195,7 +193,7 @@ public class PhotoGalleryScript : MonoBehaviour
 			else
 			{
 				this.ViewPhoto.transform.localScale = Vector3.Lerp(this.ViewPhoto.transform.localScale, (!this.Corkboard) ? new Vector3(6.5f, 6.5f, 6.5f) : new Vector3(5.8f, 5.8f, 5.8f), 0.166666672f);
-				this.ViewPhoto.transform.localPosition = Vector3.Lerp(this.ViewPhoto.transform.localPosition, (!this.Corkboard) ? new Vector3(0f, -30f, 0f) : Vector3.zero, 0.166666672f);
+				this.ViewPhoto.transform.localPosition = Vector3.Lerp(this.ViewPhoto.transform.localPosition, (!this.Corkboard) ? new Vector3(0f, 0f, 0f) : Vector3.zero, 0.166666672f);
 				if (Input.GetButtonDown("A") && this.Corkboard)
 				{
 					GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Photograph, base.transform.position, Quaternion.identity);
@@ -206,24 +204,19 @@ public class PhotoGalleryScript : MonoBehaviour
 					int num3 = this.Column + (this.Row - 1) * 5;
 					gameObject.GetComponent<UITexture>().mainTexture = this.Photographs[num3].mainTexture;
 					this.MovingPhotograph = gameObject;
-					this.AdjustBox.SetActive(false);
-					this.DeleteBox.SetActive(false);
-					this.BackBox.SetActive(false);
-					this.ViewLabel.text = "Place";
+					this.CanAdjust = false;
 					this.Adjusting = true;
 					this.Viewing = false;
 					this.Moving = true;
+					this.UpdateButtonPrompts();
 				}
 				if (Input.GetButtonDown("B"))
 				{
-					this.DeleteBox.SetActive(true);
 					this.Viewing = false;
 					if (this.Corkboard)
 					{
 						this.Cursor.Highlight.transform.position = new Vector3(this.Cursor.Highlight.transform.position.x, 100f, this.Cursor.Highlight.transform.position.z);
-						this.DeleteLabel.text = "Delete";
-						this.ViewLabel.text = "View";
-						this.AdjustBox.SetActive(true);
+						this.CanAdjust = true;
 					}
 					else
 					{
@@ -232,10 +225,11 @@ public class PhotoGalleryScript : MonoBehaviour
 							if (Globals.GetSenpaiPhoto(j))
 							{
 								this.Hearts[j].gameObject.SetActive(true);
-								this.AdjustBox.SetActive(true);
+								this.CanAdjust = true;
 							}
 						}
 					}
+					this.UpdateButtonPrompts();
 				}
 			}
 		}
@@ -284,12 +278,9 @@ public class PhotoGalleryScript : MonoBehaviour
 				if (Input.GetButtonDown("A"))
 				{
 					this.Cursor.transform.localPosition = this.MovingPhotograph.transform.localPosition;
-					this.DeleteLabel.text = "Remove";
-					this.ViewLabel.text = "Select";
-					this.DeleteBox.SetActive(true);
-					this.BackBox.SetActive(true);
 					this.Cursor.gameObject.SetActive(true);
 					this.Moving = false;
+					this.UpdateButtonPrompts();
 				}
 			}
 			else
@@ -318,6 +309,7 @@ public class PhotoGalleryScript : MonoBehaviour
 					this.MovingPhotograph = this.Cursor.Photograph;
 					this.Cursor.gameObject.SetActive(false);
 					this.Moving = true;
+					this.UpdateButtonPrompts();
 				}
 				if (Input.GetButtonDown("B"))
 				{
@@ -327,18 +319,17 @@ public class PhotoGalleryScript : MonoBehaviour
 					}
 					this.Cursor.transform.localPosition = new Vector3(0f, 0f, this.Cursor.transform.localPosition.z);
 					this.Cursor.Highlight.transform.position = new Vector3(this.Cursor.Highlight.transform.position.x, 100f, this.Cursor.Highlight.transform.position.z);
-					this.DeleteLabel.text = "Delete";
-					this.ViewLabel.text = "View";
-					this.DeleteBox.SetActive(true);
-					this.AdjustBox.SetActive(true);
-					this.BackBox.SetActive(true);
+					this.CanAdjust = true;
 					this.Cursor.gameObject.SetActive(false);
 					this.Adjusting = false;
+					this.UpdateButtonPrompts();
 				}
 				if (Input.GetButtonDown("X") && this.Cursor.Photograph != null)
 				{
 					this.Cursor.Highlight.transform.position = new Vector3(this.Cursor.Highlight.transform.position.x, 100f, this.Cursor.Highlight.transform.position.z);
 					UnityEngine.Object.Destroy(this.Cursor.Photograph);
+					this.Cursor.Photograph = null;
+					this.UpdateButtonPrompts();
 				}
 			}
 		}
@@ -387,18 +378,87 @@ public class PhotoGalleryScript : MonoBehaviour
 		{
 			this.PauseScreen.Sideways = true;
 		}
-		this.UpdateUseButton();
+		this.UpdateButtonPrompts();
 		base.enabled = true;
 		base.gameObject.SetActive(true);
 		yield break;
 	}
 
-	private void UpdateUseButton()
+	public void UpdateButtonPrompts()
 	{
-		if (!this.Corkboard)
+		int num = this.Column + (this.Row - 1) * 5;
+		if (this.Moving)
 		{
-			int photoID = this.Column + (this.Row - 1) * 5;
-			this.AdjustBox.SetActive(Globals.GetSenpaiPhoto(photoID));
+			this.PromptBar.Label[0].text = "Place";
+			this.PromptBar.Label[1].text = string.Empty;
+			this.PromptBar.Label[2].text = string.Empty;
+			this.PromptBar.Label[4].text = "Move";
+			this.PromptBar.Label[5].text = "Move";
 		}
+		else if (this.Adjusting)
+		{
+			if (this.Cursor.Photograph != null)
+			{
+				this.PromptBar.Label[0].text = "Adjust";
+				this.PromptBar.Label[2].text = "Remove";
+			}
+			else
+			{
+				this.PromptBar.Label[0].text = string.Empty;
+				this.PromptBar.Label[2].text = string.Empty;
+			}
+			this.PromptBar.Label[1].text = "Back";
+			this.PromptBar.Label[3].text = string.Empty;
+			this.PromptBar.Label[4].text = "Move";
+			this.PromptBar.Label[5].text = "Move";
+		}
+		else if (!this.Viewing)
+		{
+			if (this.Photographs[num].mainTexture != this.NoPhoto)
+			{
+				this.PromptBar.Label[0].text = "View";
+				this.PromptBar.Label[2].text = "Delete";
+			}
+			else
+			{
+				this.PromptBar.Label[0].text = string.Empty;
+				this.PromptBar.Label[2].text = string.Empty;
+			}
+			if (!this.Corkboard)
+			{
+				if (Globals.GetSenpaiPhoto(num))
+				{
+					this.PromptBar.Label[3].text = "Use";
+				}
+				else
+				{
+					this.PromptBar.Label[3].text = string.Empty;
+				}
+			}
+			else
+			{
+				this.PromptBar.Label[3].text = "Corkboard";
+			}
+			this.PromptBar.Label[1].text = "Back";
+			this.PromptBar.Label[4].text = "Choose";
+			this.PromptBar.Label[5].text = "Choose";
+		}
+		else
+		{
+			if (this.Corkboard)
+			{
+				this.PromptBar.Label[0].text = "Place";
+			}
+			else
+			{
+				this.PromptBar.Label[0].text = string.Empty;
+			}
+			this.PromptBar.Label[2].text = string.Empty;
+			this.PromptBar.Label[3].text = string.Empty;
+			this.PromptBar.Label[4].text = string.Empty;
+			this.PromptBar.Label[5].text = string.Empty;
+		}
+		this.PromptBar.UpdateButtons();
+		this.PromptBar.Show = true;
 	}
 }

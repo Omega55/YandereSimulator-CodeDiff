@@ -9,7 +9,7 @@ public class FootprintScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (this.Yandere.Schoolwear == 0 || this.Yandere.Schoolwear == 2 || (this.Yandere.ClubAttire && Globals.Club == 6))
+		if (this.Yandere.Schoolwear == 0 || this.Yandere.Schoolwear == 2 || (this.Yandere.ClubAttire && Globals.Club == ClubType.MartialArts))
 		{
 			base.GetComponent<Renderer>().material.mainTexture = this.Footprint;
 		}

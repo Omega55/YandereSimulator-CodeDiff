@@ -98,11 +98,27 @@ public class Clock
 		}
 	}
 
+	public float CurrentSecond
+	{
+		get
+		{
+			return this.currentSecond;
+		}
+	}
+
 	public int TotalSeconds
 	{
 		get
 		{
 			return this.hours * 3600 + this.minutes * 60 + this.seconds;
+		}
+	}
+
+	public float PreciseTotalSeconds
+	{
+		get
+		{
+			return (float)this.TotalSeconds + this.currentSecond;
 		}
 	}
 

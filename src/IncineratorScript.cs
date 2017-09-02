@@ -176,7 +176,7 @@ public class IncineratorScript : MonoBehaviour
 				this.Prompt.enabled = true;
 			}
 		}
-		if (this.Prompt.Circle[3].fillAmount <= 0f)
+		if (this.Prompt.Circle[3].fillAmount == 0f)
 		{
 			Time.timeScale = 1f;
 			if (this.Yandere.Ragdoll != null)
@@ -193,7 +193,7 @@ public class IncineratorScript : MonoBehaviour
 			}
 			if (this.Yandere.PickUp != null)
 			{
-				if (this.Yandere.PickUp.BodyPart)
+				if (this.Yandere.PickUp.BodyPart != null)
 				{
 					this.Limbs++;
 					this.LimbList[this.Limbs] = this.Yandere.PickUp.GetComponent<BodyPartScript>().StudentID;
@@ -222,7 +222,7 @@ public class IncineratorScript : MonoBehaviour
 				this.Open = true;
 			}
 		}
-		if (this.Prompt.Circle[0].fillAmount <= 0f)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			foreach (int studentID in this.CorpseList)
 			{

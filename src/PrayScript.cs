@@ -115,7 +115,7 @@ public class PrayScript : MonoBehaviour
 			this.StudentManager.UpdateMe(this.StudentID);
 			this.JustSummoned = false;
 		}
-		if (this.GenderPrompt.Circle[0].fillAmount <= 0f)
+		if (this.GenderPrompt.Circle[0].fillAmount == 0f)
 		{
 			this.GenderPrompt.Circle[0].fillAmount = 1f;
 			if (!this.SpawnMale)
@@ -131,7 +131,7 @@ public class PrayScript : MonoBehaviour
 				this.SpawnMale = false;
 			}
 		}
-		if (this.Prompt.Circle[0].fillAmount <= 0f)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Circle[0].fillAmount = 1f;
 			this.Yandere.TargetStudent = this.Student;

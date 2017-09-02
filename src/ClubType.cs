@@ -13,5 +13,8 @@ public enum ClubType
 	Science,
 	Sports,
 	Gardening,
-	Gaming
+	Gaming,
+	Nemesis = 99,
+	Teacher,
+	GymTeacher
 }

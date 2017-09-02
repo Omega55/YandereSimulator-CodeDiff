@@ -185,6 +185,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public string EyeColor = string.Empty;
 
+	public string EyeType = string.Empty;
+
 	public int FacialHairstyle;
 
 	public int Accessory;
@@ -195,7 +197,7 @@ public class CosmeticScript : MonoBehaviour
 
 	public int StudentID;
 
-	public int Club;
+	public ClubType Club;
 
 	public int ID;
 
@@ -231,14 +233,19 @@ public class CosmeticScript : MonoBehaviour
 		string text = string.Empty;
 		if (!this.Initialized)
 		{
-			this.Accessory = int.Parse(this.JSON.StudentAccessories[this.StudentID]);
-			this.Hairstyle = int.Parse(this.JSON.StudentHairstyles[this.StudentID]);
-			this.Stockings = this.JSON.StudentStockings[this.StudentID];
-			this.BreastSize = this.JSON.StudentBreasts[this.StudentID];
-			this.HairColor = this.JSON.StudentColors[this.StudentID];
-			this.EyeColor = this.JSON.StudentEyes[this.StudentID];
-			this.Club = this.JSON.StudentClubs[this.StudentID];
-			text = this.JSON.StudentNames[this.StudentID];
+			this.Accessory = int.Parse(this.JSON.Students[this.StudentID].Accessory);
+			this.Hairstyle = int.Parse(this.JSON.Students[this.StudentID].Hairstyle);
+			this.Stockings = this.JSON.Students[this.StudentID].Stockings;
+			this.BreastSize = this.JSON.Students[this.StudentID].BreastSize;
+			this.EyeType = this.JSON.Students[this.StudentID].EyeType;
+			this.HairColor = this.JSON.Students[this.StudentID].Color;
+			this.EyeColor = this.JSON.Students[this.StudentID].Eyes;
+			this.Club = this.JSON.Students[this.StudentID].Club;
+			text = this.JSON.Students[this.StudentID].Name;
+			if (Globals.LoveSick)
+			{
+				this.HairColor = "LoveSick";
+			}
 			if (this.Yandere)
 			{
 				this.Accessory = 0;
@@ -247,7 +254,7 @@ public class CosmeticScript : MonoBehaviour
 				this.BreastSize = 1f;
 				this.HairColor = "White";
 				this.EyeColor = "Black";
-				this.Club = 0;
+				this.Club = ClubType.None;
 			}
 			this.OriginalStockings = this.Stockings;
 			this.Initialized = true;
@@ -258,18 +265,18 @@ public class CosmeticScript : MonoBehaviour
 			if (!this.Male)
 			{
 				text = this.StudentManager.FirstNames[UnityEngine.Random.Range(0, this.StudentManager.FirstNames.Length)] + " " + this.StudentManager.LastNames[UnityEngine.Random.Range(0, this.StudentManager.LastNames.Length)];
-				this.JSON.StudentNames[this.StudentID] = text;
+				this.JSON.Students[this.StudentID].Name = text;
 				this.Student.Name = text;
 			}
 			else
 			{
 				text = this.StudentManager.MaleNames[UnityEngine.Random.Range(0, this.StudentManager.MaleNames.Length)] + " " + this.StudentManager.LastNames[UnityEngine.Random.Range(0, this.StudentManager.LastNames.Length)];
-				this.JSON.StudentNames[this.StudentID] = text;
+				this.JSON.Students[this.StudentID].Name = text;
 				this.Student.Name = text;
 			}
 			if (Globals.MissionMode && Globals.MissionTarget == this.StudentID)
 			{
-				this.JSON.StudentNames[this.StudentID] = Globals.MissionTargetName;
+				this.JSON.Students[this.StudentID].Name = Globals.MissionTargetName;
 				this.Student.Name = Globals.MissionTargetName;
 				text = Globals.MissionTargetName;
 			}
@@ -279,7 +286,7 @@ public class CosmeticScript : MonoBehaviour
 			this.Teacher = false;
 			this.BreastSize = UnityEngine.Random.Range(0.5f, 2f);
 			this.Accessory = 0;
-			this.Club = 0;
+			this.Club = ClubType.None;
 			if (!this.Male)
 			{
 				this.Hairstyle = 99;
@@ -309,7 +316,7 @@ public class CosmeticScript : MonoBehaviour
 			{
 				gameObject.SetActive(false);
 			}
-			if (this.Club == 3)
+			if (this.Club == ClubType.Occult)
 			{
 				this.Character.GetComponent<Animation>()["sadFace_00"].layer = 1;
 				this.Character.GetComponent<Animation>().Play("sadFace_00");
@@ -343,12 +350,12 @@ public class CosmeticScript : MonoBehaviour
 				}
 			}
 		}
-		if (this.Club == 100)
+		if (this.Club == ClubType.Teacher)
 		{
 			this.MyRenderer.sharedMesh = this.TeacherMesh;
 			this.Teacher = true;
 		}
-		else if (this.Club == 101)
+		else if (this.Club == ClubType.GymTeacher)
 		{
 			if (!Globals.GetStudentReplaced(this.StudentID))
 			{
@@ -465,7 +472,7 @@ public class CosmeticScript : MonoBehaviour
 			{
 				this.TeacherHair[this.Hairstyle].SetActive(true);
 				this.HairRenderer = this.TeacherHairRenderers[this.Hairstyle];
-				if (this.Club == 100)
+				if (this.Club == ClubType.Teacher)
 				{
 					this.MyRenderer.materials[0].mainTexture = this.TeacherBodyTexture;
 					this.MyRenderer.materials[1].mainTexture = this.DefaultFaceTexture;
@@ -511,9 +518,9 @@ public class CosmeticScript : MonoBehaviour
 		{
 			this.MaleAccessories[this.Accessory].SetActive(true);
 		}
-		if (this.Club < 11 && this.ClubAccessories[this.Club] != null && !Globals.GetClubClosed(this.Club) && this.StudentID != 26)
+		if (this.Club < ClubType.Gaming && this.ClubAccessories[(int)this.Club] != null && !Globals.GetClubClosed(this.Club) && this.StudentID != 26)
 		{
-			this.ClubAccessories[this.Club].SetActive(true);
+			this.ClubAccessories[(int)this.Club].SetActive(true);
 		}
 		if (!this.Male)
 		{
@@ -624,6 +631,10 @@ public class CosmeticScript : MonoBehaviour
 			{
 				this.ColorValue = new Color(0.5f, 0.25f, 0f);
 			}
+			else if (this.HairColor == "LoveSick")
+			{
+				this.ColorValue = new Color(0.1f, 0.1f, 0.1f);
+			}
 			else
 			{
 				this.ColorValue = new Color(0f, 0f, 0f);
@@ -639,7 +650,7 @@ public class CosmeticScript : MonoBehaviour
 			{
 				this.HairRenderer.material.color = this.ColorValue;
 			}
-			if (!this.Male && this.Accessory == 6)
+			if (!this.Male)
 			{
 				this.FemaleAccessories[6].GetComponent<Renderer>().material.color = this.ColorValue;
 			}
@@ -698,6 +709,10 @@ public class CosmeticScript : MonoBehaviour
 				}
 			}
 		}
+		if (this.StudentID > 1 && this.StudentID < 8)
+		{
+			this.FemaleAccessories[6].SetActive(true);
+		}
 		if (this.StudentID == 17)
 		{
 			if (Globals.GetSchemeStage(2) == 2)
@@ -723,6 +738,7 @@ public class CosmeticScript : MonoBehaviour
 		}
 		this.TaskCheck();
 		this.TurnOnCheck();
+		this.EyeTypeCheck();
 	}
 
 	public void SetMaleUniform()
@@ -1148,7 +1164,7 @@ public class CosmeticScript : MonoBehaviour
 			this.MyRenderer.materials[0].SetTexture("_OverlayTex", this.MyStockings);
 			this.MyRenderer.materials[1].SetTexture("_OverlayTex", this.MyStockings);
 			this.MyRenderer.materials[0].SetFloat("_BlendAmount", 1f);
-			this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
+			this.MyRenderer.materials[1].SetFloat("_BlendAmount", 1f);
 		}
 		else
 		{
@@ -1170,6 +1186,16 @@ public class CosmeticScript : MonoBehaviour
 		else
 		{
 			this.MyRenderer.materials[this.UniformID].mainTexture = this.UniformTexture;
+		}
+	}
+
+	public void EyeTypeCheck()
+	{
+		if (Globals.FemaleUniform == 1 && this.EyeType == "Gentle")
+		{
+			this.Student.RiggedAccessory.GetComponent<RiggedAccessoryAttacher>().defaultMaterials = this.MyRenderer.materials;
+			this.Student.RiggedAccessory.GetComponent<RiggedAccessoryAttacher>().Gentle = true;
+			this.Student.AttachRiggedAccessory();
 		}
 	}
 }

@@ -67,7 +67,7 @@ public class DoorScript : MonoBehaviour
 
 	public int RoomID;
 
-	public int Club;
+	public ClubType Club;
 
 	private void Start()
 	{
@@ -91,7 +91,7 @@ public class DoorScript : MonoBehaviour
 			this.Labels[1].text = this.RoomName;
 			this.UpdatePlate();
 		}
-		if (this.Club != 0 && Globals.GetClubClosed(this.Club))
+		if (this.Club != ClubType.None && Globals.GetClubClosed(this.Club))
 		{
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;

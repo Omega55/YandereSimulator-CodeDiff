@@ -29,7 +29,7 @@ public class ChangingBoothScript : MonoBehaviour
 
 	public float Weight;
 
-	public int ClubID;
+	public ClubType ClubID;
 
 	public int Phase;
 
@@ -40,7 +40,7 @@ public class ChangingBoothScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (!this.Occupied && this.Prompt.Circle[0].fillAmount <= 0f)
+		if (!this.Occupied && this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Yandere.EmptyHands();
 			this.Yandere.CanMove = false;

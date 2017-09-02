@@ -27,13 +27,13 @@ public class ContainerScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (this.Prompt.Circle[0].fillAmount <= 0f)
+		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Circle[0].fillAmount = 1f;
 			this.Open = !this.Open;
 			this.UpdatePrompts();
 		}
-		if (this.Prompt.Circle[1].fillAmount <= 0f)
+		if (this.Prompt.Circle[1].fillAmount == 0f)
 		{
 			this.Prompt.Circle[1].fillAmount = 1f;
 			if (this.Prompt.Yandere.Armed)
@@ -62,7 +62,7 @@ public class ContainerScript : MonoBehaviour
 			this.Contents++;
 			this.UpdatePrompts();
 		}
-		if (this.Prompt.Circle[3].fillAmount <= 0f)
+		if (this.Prompt.Circle[3].fillAmount == 0f)
 		{
 			this.Prompt.Circle[3].fillAmount = 1f;
 			if (!this.Open)
@@ -170,7 +170,7 @@ public class ContainerScript : MonoBehaviour
 			}
 			else if (this.Prompt.Yandere.PickUp != null)
 			{
-				if (this.Prompt.Yandere.PickUp.BodyPart)
+				if (this.Prompt.Yandere.PickUp.BodyPart != null)
 				{
 					if (this.BodyParts[this.Prompt.Yandere.PickUp.gameObject.GetComponent<BodyPartScript>().Type] == null)
 					{

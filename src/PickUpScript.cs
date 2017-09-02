@@ -9,6 +9,8 @@ public class PickUpScript : MonoBehaviour
 
 	public IncineratorScript Incinerator;
 
+	public BodyPartScript BodyPart;
+
 	public OutlineScript[] Outline;
 
 	public YandereScript Yandere;
@@ -45,8 +47,6 @@ public class PickUpScript : MonoBehaviour
 
 	public bool Blowtorch;
 
-	public bool BodyPart;
-
 	public bool Clothing;
 
 	public bool Evidence;
@@ -56,6 +56,8 @@ public class PickUpScript : MonoBehaviour
 	public bool LeftHand;
 
 	public bool Garbage;
+
+	public bool Bleach;
 
 	public bool Dumped;
 
@@ -89,7 +91,7 @@ public class PickUpScript : MonoBehaviour
 
 	private void LateUpdate()
 	{
-		if (this.Prompt.Circle[3].fillAmount <= 0f)
+		if (this.Prompt.Circle[3].fillAmount == 0f)
 		{
 			if (this.Weight)
 			{

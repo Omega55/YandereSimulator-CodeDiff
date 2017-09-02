@@ -258,7 +258,7 @@ public class WeaponScript : MonoBehaviour
 
 	private void LateUpdate()
 	{
-		if (this.Prompt.Circle[3].fillAmount <= 0f)
+		if (this.Prompt.Circle[3].fillAmount == 0f)
 		{
 			this.Prompt.Circle[3].fillAmount = 1f;
 			if (!this.Yandere.Gloved)
@@ -512,7 +512,7 @@ public class WeaponScript : MonoBehaviour
 
 	public void SuspicionCheck()
 	{
-		if ((this.WeaponID == 9 && Globals.Club == 9) || (this.WeaponID == 10 && Globals.Club == 10) || (this.WeaponID == 12 && Globals.Club == 9))
+		if ((this.WeaponID == 9 && Globals.Club == ClubType.Sports) || (this.WeaponID == 10 && Globals.Club == ClubType.Gardening) || (this.WeaponID == 12 && Globals.Club == ClubType.Sports))
 		{
 			this.Suspicious = false;
 		}

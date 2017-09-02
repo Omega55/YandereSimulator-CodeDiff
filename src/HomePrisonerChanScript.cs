@@ -96,7 +96,7 @@ public class HomePrisonerChanScript : MonoBehaviour
 			{
 				this.Cosmetic.StudentID = this.StudentID;
 				this.Cosmetic.enabled = true;
-				this.BreastSize = this.JSON.StudentBreasts[this.StudentID];
+				this.BreastSize = this.JSON.Students[this.StudentID].BreastSize;
 				this.RightEyeRotOrigin = this.RightEye.localEulerAngles;
 				this.LeftEyeRotOrigin = this.LeftEye.localEulerAngles;
 				this.RightEyeOrigin = this.RightEye.localPosition;

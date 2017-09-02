@@ -178,9 +178,7 @@ public class ConfessionSceneScript : MonoBehaviour
 				this.Clock.StopTime = false;
 				base.enabled = false;
 				this.Suitor.CoupleID = 7;
-				this.Suitor.Couple = true;
 				this.Rival.CoupleID = 13;
-				this.Rival.Couple = true;
 			}
 		}
 		if (this.Kissing)

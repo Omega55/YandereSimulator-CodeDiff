@@ -81,7 +81,7 @@ public class NoteLockerScript : MonoBehaviour
 		{
 			this.Student = this.StudentManager.Students[this.LockerOwner];
 		}
-		if (this.Prompt != null && this.Prompt.Circle[0].fillAmount <= 0f)
+		if (this.Prompt != null && this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Circle[0].fillAmount = 1f;
 			this.NoteWindow.NoteLocker = this;

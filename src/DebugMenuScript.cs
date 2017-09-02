@@ -220,11 +220,11 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					else if (Input.GetKeyDown("a"))
 					{
-						if (Globals.SchoolAtmosphere > 66.66666f)
+						if (Globals.SchoolAtmosphereType == SchoolAtmosphereType.High)
 						{
 							Globals.SchoolAtmosphere = 50f;
 						}
-						else if (Globals.SchoolAtmosphere > 33.33333f)
+						else if (Globals.SchoolAtmosphereType == SchoolAtmosphereType.Medium)
 						{
 							Globals.SchoolAtmosphere = 0f;
 						}

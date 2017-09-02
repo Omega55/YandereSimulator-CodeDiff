@@ -5,19 +5,11 @@ public class AccessoryGroupScript : MonoBehaviour
 {
 	public GameObject[] Parts;
 
-	public void ActivateParts()
+	public void SetPartsActive(bool active)
 	{
 		foreach (GameObject gameObject in this.Parts)
 		{
-			gameObject.SetActive(true);
-		}
-	}
-
-	public void DeactivateParts()
-	{
-		foreach (GameObject gameObject in this.Parts)
-		{
-			gameObject.SetActive(false);
+			gameObject.SetActive(active);
 		}
 	}
 }

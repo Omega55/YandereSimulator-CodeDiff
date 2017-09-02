@@ -18,7 +18,7 @@ public class TaskManagerScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (Globals.GetTaskStatus(6) == 1 && this.Prompts[6].Circle[3].fillAmount <= 0f)
+		if (Globals.GetTaskStatus(6) == 1 && this.Prompts[6].Circle[3].fillAmount == 0f)
 		{
 			if (this.StudentManager.Students[6] != null)
 			{
@@ -27,7 +27,7 @@ public class TaskManagerScript : MonoBehaviour
 			Globals.SetTaskStatus(6, 2);
 			UnityEngine.Object.Destroy(this.TaskObjects[6]);
 		}
-		if (Globals.GetTaskStatus(15) == 1 && this.Prompts[15].Circle[3] != null && this.Prompts[15].Circle[3].fillAmount <= 0f)
+		if (Globals.GetTaskStatus(15) == 1 && this.Prompts[15].Circle[3] != null && this.Prompts[15].Circle[3].fillAmount == 0f)
 		{
 			if (this.StudentManager.Students[15] != null)
 			{
@@ -36,7 +36,7 @@ public class TaskManagerScript : MonoBehaviour
 			Globals.SetTaskStatus(15, 2);
 			UnityEngine.Object.Destroy(this.TaskObjects[15]);
 		}
-		if (Globals.GetTaskStatus(33) == 1 && this.Prompts[33].Circle[3] != null && this.Prompts[33].Circle[3].fillAmount <= 0f)
+		if (Globals.GetTaskStatus(33) == 1 && this.Prompts[33].Circle[3] != null && this.Prompts[33].Circle[3].fillAmount == 0f)
 		{
 			if (this.StudentManager.Students[33] != null)
 			{

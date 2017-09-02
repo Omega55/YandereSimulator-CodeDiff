@@ -23,10 +23,20 @@ public class TitleSponsorScript : MonoBehaviour
 
 	private int Row;
 
+	public UISprite BlackSprite;
+
+	public UISprite[] RedSprites;
+
+	public UILabel[] Labels;
+
 	private void Start()
 	{
 		base.transform.localPosition = new Vector3(1050f, base.transform.localPosition.y, base.transform.localPosition.z);
 		this.UpdateHighlight();
+		if (Globals.LoveSick)
+		{
+			this.TurnLoveSick();
+		}
 	}
 
 	public int GetSponsorIndex()
@@ -84,5 +94,18 @@ public class TitleSponsorScript : MonoBehaviour
 	{
 		this.Highlight.localPosition = new Vector3(-384f + (float)this.Column * 256f, 128f - (float)this.Row * 256f, this.Highlight.localPosition.z);
 		this.SponsorName.text = this.Sponsors[this.GetSponsorIndex()];
+	}
+
+	private void TurnLoveSick()
+	{
+		this.BlackSprite.color = Color.black;
+		foreach (UISprite uisprite in this.RedSprites)
+		{
+			uisprite.color = new Color(1f, 0f, 0f, uisprite.color.a);
+		}
+		foreach (UILabel uilabel in this.Labels)
+		{
+			uilabel.color = new Color(1f, 0f, 0f, uilabel.color.a);
+		}
 	}
 }

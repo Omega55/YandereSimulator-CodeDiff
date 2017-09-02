@@ -34,6 +34,14 @@ public class MissionModeScript : MonoBehaviour
 
 	public ClockScript Clock;
 
+	public UISprite ReputationFace1;
+
+	public UISprite ReputationFace2;
+
+	public UISprite ReputationBG;
+
+	public UILabel EventSubtitleLabel;
+
 	public UILabel ReputationLabel;
 
 	public UILabel GameOverHeader;
@@ -204,6 +212,35 @@ public class MissionModeScript : MonoBehaviour
 		if (Globals.LoveSick)
 		{
 			this.MurderKit.SetActive(false);
+			this.Yandere.HeartRate.MediumColour = new Color(1f, 1f, 1f, 1f);
+			this.Yandere.HeartRate.NormalColour = new Color(1f, 1f, 1f, 1f);
+			this.Clock.PeriodLabel.color = new Color(1f, 0f, 0f, 1f);
+			this.Clock.TimeLabel.color = new Color(1f, 0f, 0f, 1f);
+			this.Clock.DayLabel.enabled = false;
+			this.Reputation.PendingRepMarker.GetComponent<UISprite>().color = new Color(1f, 0f, 0f, 1f);
+			this.Reputation.CurrentRepMarker.gameObject.SetActive(false);
+			this.Reputation.PendingRepLabel.color = new Color(1f, 0f, 0f, 1f);
+			this.ReputationFace1.color = new Color(1f, 0f, 0f, 1f);
+			this.ReputationFace2.color = new Color(1f, 0f, 0f, 1f);
+			this.ReputationBG.color = new Color(1f, 0f, 0f, 1f);
+			this.ReputationLabel.color = new Color(1f, 0f, 0f, 1f);
+			this.Watermark.color = new Color(1f, 0f, 0f, 1f);
+			this.EventSubtitleLabel.color = new Color(1f, 0f, 0f, 1f);
+			this.SubtitleLabel.color = new Color(1f, 0f, 0f, 1f);
+			this.CautionSign.color = new Color(1f, 0f, 0f, 1f);
+			this.FPS.color = new Color(1f, 0f, 0f, 1f);
+			this.ID = 1;
+			while (this.ID < this.PoliceLabel.Length)
+			{
+				this.PoliceLabel[this.ID].color = new Color(1f, 0f, 0f, 1f);
+				this.ID++;
+			}
+			this.ID = 1;
+			while (this.ID < this.PoliceIcon.Length)
+			{
+				this.PoliceIcon[this.ID].color = new Color(1f, 0f, 0f, 1f);
+				this.ID++;
+			}
 		}
 		if (Globals.MissionMode)
 		{

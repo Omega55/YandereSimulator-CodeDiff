@@ -14,6 +14,8 @@ public class CustomizationScript : MonoBehaviour
 
 	public Renderer HairRenderer;
 
+	public AudioSource MyAudio;
+
 	public Renderer EyeR;
 
 	public Renderer EyeL;
@@ -22,11 +24,19 @@ public class CustomizationScript : MonoBehaviour
 
 	public Transform ApologyWindow;
 
+	public Transform YandereHead;
+
+	public Transform YandereNeck;
+
+	public Transform SenpaiHead;
+
 	public Transform Highlight;
 
 	public Transform Yandere;
 
 	public Transform Senpai;
+
+	public Transform[] Corridor;
 
 	public UIPanel CustomizePanel;
 
@@ -54,17 +64,27 @@ public class CustomizationScript : MonoBehaviour
 
 	public UILabel EyeWearLabel;
 
+	public GameObject LoveSickCamera;
+
 	public GameObject CensorCloud;
 
 	public GameObject BigCloud;
 
+	public GameObject Hearts;
+
 	public GameObject Cloud;
+
+	public UISprite Black;
 
 	public UISprite White;
 
 	public bool Apologize;
 
+	public bool LoveSick;
+
 	public bool FadeOut;
+
+	public float ScrollSpeed;
 
 	public float Timer;
 
@@ -112,8 +132,13 @@ public class CustomizationScript : MonoBehaviour
 
 	public string EyeColorName = string.Empty;
 
+	public AudioClip LoveSickIntro;
+
+	public AudioClip LoveSickLoop;
+
 	private void Start()
 	{
+		this.LoveSick = Globals.LoveSick;
 		this.Senpai.gameObject.SetActive(false);
 		this.Senpai.position = new Vector3(0f, -3f, 2.1f);
 		this.Yandere.position = new Vector3(0.5f, -3f, 2.1f);
@@ -128,10 +153,66 @@ public class CustomizationScript : MonoBehaviour
 		this.UpdateHairStyle();
 		this.UpdateEyes();
 		this.UpdateSkin();
+		if (this.LoveSick)
+		{
+			this.LoveSickColorSwap();
+			this.Black.color = Color.black;
+			this.WhitePanel.alpha = 0f;
+			this.MaleUniform = 5;
+			this.FemaleUniform = 5;
+			this.UpdateMaleUniform();
+			this.UpdateFemaleUniform();
+			this.Senpai.position = new Vector3(0f, -1f, 2f);
+			this.Senpai.gameObject.SetActive(true);
+			this.Senpai.GetComponent<Animation>().Play("newWalk_00");
+			this.Yandere.position = new Vector3(1f, -1f, 4.5f);
+			this.Yandere.gameObject.SetActive(true);
+			this.Yandere.GetComponent<Animation>().Play("f02_newWalk_00");
+			this.CensorCloud.SetActive(false);
+			this.Hearts.SetActive(false);
+			RenderSettings.fog = true;
+			this.MyAudio.loop = false;
+			this.MyAudio.clip = this.LoveSickIntro;
+			this.MyAudio.Play();
+		}
+		else
+		{
+			this.Corridor[1].gameObject.SetActive(false);
+			this.Corridor[2].gameObject.SetActive(false);
+			this.Black.color = new Color(0f, 0f, 0f, 0f);
+			this.LoveSickCamera.SetActive(false);
+			RenderSettings.fog = false;
+		}
 	}
 
 	private void Update()
 	{
+		if (this.LoveSick)
+		{
+			if (!this.MyAudio.loop && !this.MyAudio.isPlaying)
+			{
+				this.MyAudio.loop = true;
+				this.MyAudio.clip = this.LoveSickLoop;
+				this.MyAudio.Play();
+			}
+			for (int i = 1; i < 3; i++)
+			{
+				Transform transform = this.Corridor[i];
+				transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + Time.deltaTime * this.ScrollSpeed);
+				if (transform.position.z > 36f)
+				{
+					transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - 72f);
+				}
+			}
+			if (Input.GetKeyDown("="))
+			{
+				Time.timeScale += 10f;
+			}
+			if (Input.GetKeyDown("-"))
+			{
+				Time.timeScale -= 10f;
+			}
+		}
 		if (this.Phase == 1)
 		{
 			if (this.WhitePanel.alpha == 0f)
@@ -141,7 +222,10 @@ public class CustomizationScript : MonoBehaviour
 				{
 					if (Input.GetButtonDown("A"))
 					{
-						this.Cloud.SetActive(true);
+						if (!this.LoveSick)
+						{
+							this.Cloud.SetActive(true);
+						}
 						this.Phase++;
 					}
 					if (Input.GetButtonDown("B"))
@@ -160,6 +244,7 @@ public class CustomizationScript : MonoBehaviour
 		else if (this.Phase == 2)
 		{
 			this.GenderPanel.alpha = Mathf.MoveTowards(this.GenderPanel.alpha, 0f, Time.deltaTime * 2f);
+			this.Black.color = new Color(0f, 0f, 0f, Mathf.MoveTowards(this.Black.color.a, 0f, Time.deltaTime * 2f));
 			if (this.GenderPanel.alpha == 0f)
 			{
 				this.Senpai.gameObject.SetActive(true);
@@ -171,7 +256,10 @@ public class CustomizationScript : MonoBehaviour
 			this.CustomizePanel.alpha = Mathf.MoveTowards(this.CustomizePanel.alpha, 1f, Time.deltaTime * 2f);
 			if (this.CustomizePanel.alpha == 1f)
 			{
-				this.Senpai.localEulerAngles = new Vector3(this.Senpai.localEulerAngles.x, this.Senpai.localEulerAngles.y - Input.GetAxis("RS") - Input.GetAxis("Mouse X"), this.Senpai.localEulerAngles.z);
+				if (!this.LoveSick)
+				{
+					this.Senpai.localEulerAngles = new Vector3(this.Senpai.localEulerAngles.x, this.Senpai.localEulerAngles.y - Input.GetAxis("RS") - Input.GetAxis("Mouse X"), this.Senpai.localEulerAngles.z);
+				}
 				if (Input.GetButtonDown("A"))
 				{
 					this.Senpai.localEulerAngles = new Vector3(this.Senpai.localEulerAngles.x, 180f, this.Senpai.localEulerAngles.z);
@@ -262,18 +350,32 @@ public class CustomizationScript : MonoBehaviour
 					}
 				}
 			}
-			if (this.Selected == 1)
+			if (!this.LoveSick)
 			{
-				this.Senpai.position = new Vector3(this.Senpai.position.x, Mathf.Lerp(this.Senpai.position.y, -1f, Time.deltaTime * 10f), Mathf.Lerp(this.Senpai.position.z, 2.1f, Time.deltaTime * 10f));
+				if (this.Selected == 1)
+				{
+					this.Senpai.position = new Vector3(this.Senpai.position.x, Mathf.Lerp(this.Senpai.position.y, -1f, Time.deltaTime * 10f), Mathf.Lerp(this.Senpai.position.z, 2.1f, Time.deltaTime * 10f));
+				}
+				else
+				{
+					this.Senpai.position = new Vector3(this.Senpai.position.x, Mathf.Lerp(this.Senpai.position.y, -1.6f, Time.deltaTime * 10f), Mathf.Lerp(this.Senpai.position.z, 0.4f, Time.deltaTime * 10f));
+				}
+			}
+			else if (this.Selected == 1)
+			{
+				this.LoveSickCamera.transform.position = new Vector3(Mathf.Lerp(this.LoveSickCamera.transform.position.x, -1.5f, Time.deltaTime * 10f), Mathf.Lerp(this.LoveSickCamera.transform.position.y, 0f, Time.deltaTime * 10f), Mathf.Lerp(this.LoveSickCamera.transform.position.z, 0.5f, Time.deltaTime * 10f));
 			}
 			else
 			{
-				this.Senpai.position = new Vector3(this.Senpai.position.x, Mathf.Lerp(this.Senpai.position.y, -1.6f, Time.deltaTime * 10f), Mathf.Lerp(this.Senpai.position.z, 0.4f, Time.deltaTime * 10f));
+				this.LoveSickCamera.transform.position = new Vector3(Mathf.Lerp(this.LoveSickCamera.transform.position.x, -0.5f, Time.deltaTime * 10f), Mathf.Lerp(this.LoveSickCamera.transform.position.y, 0.5f, Time.deltaTime * 10f), Mathf.Lerp(this.LoveSickCamera.transform.position.z, 1.5f, Time.deltaTime * 10f));
 			}
 		}
 		else if (this.Phase == 4)
 		{
-			this.Senpai.position = new Vector3(this.Senpai.position.x, Mathf.Lerp(this.Senpai.position.y, -0.6333333f, Time.deltaTime * 10f), Mathf.Lerp(this.Senpai.position.z, 2.1f, Time.deltaTime * 10f));
+			if (!this.LoveSick)
+			{
+				this.Senpai.position = new Vector3(this.Senpai.position.x, Mathf.Lerp(this.Senpai.position.y, -0.6333333f, Time.deltaTime * 10f), Mathf.Lerp(this.Senpai.position.z, 2.1f, Time.deltaTime * 10f));
+			}
 			this.CustomizePanel.alpha = Mathf.MoveTowards(this.CustomizePanel.alpha, 0f, Time.deltaTime * 2f);
 			if (this.CustomizePanel.alpha == 0f)
 			{
@@ -287,7 +389,10 @@ public class CustomizationScript : MonoBehaviour
 			{
 				if (Input.GetButtonDown("A"))
 				{
-					this.BigCloud.SetActive(true);
+					if (!this.LoveSick)
+					{
+						this.BigCloud.SetActive(true);
+					}
 					this.Phase++;
 				}
 				if (Input.GetButtonDown("B"))
@@ -314,17 +419,23 @@ public class CustomizationScript : MonoBehaviour
 		else if (this.Phase == 7)
 		{
 			this.UniformPanel.alpha = Mathf.MoveTowards(this.UniformPanel.alpha, 1f, Time.deltaTime * 2f);
-			this.Senpai.position = new Vector3(Mathf.Lerp(this.Senpai.position.x, -0.5f, Time.deltaTime * 10f), Mathf.Lerp(this.Senpai.position.y, -1f, Time.deltaTime * 10f), this.Senpai.position.z);
-			this.Yandere.position = new Vector3(Mathf.Lerp(this.Yandere.position.x, 0.5f, Time.deltaTime * 10f), Mathf.Lerp(this.Yandere.position.y, -1f, Time.deltaTime * 10f), this.Yandere.position.z);
+			if (!this.LoveSick)
+			{
+				this.Senpai.position = new Vector3(Mathf.Lerp(this.Senpai.position.x, -0.5f, Time.deltaTime * 10f), Mathf.Lerp(this.Senpai.position.y, -1f, Time.deltaTime * 10f), this.Senpai.position.z);
+				this.Yandere.position = new Vector3(Mathf.Lerp(this.Yandere.position.x, 0.5f, Time.deltaTime * 10f), Mathf.Lerp(this.Yandere.position.y, -1f, Time.deltaTime * 10f), this.Yandere.position.z);
+			}
 			if (this.UniformPanel.alpha == 1f)
 			{
-				if (this.Selected == 1)
+				if (!this.LoveSick)
 				{
-					this.Senpai.localEulerAngles = new Vector3(this.Senpai.localEulerAngles.x, this.Senpai.localEulerAngles.y - Input.GetAxis("RS") - Input.GetAxis("Mouse X"), this.Senpai.localEulerAngles.z);
-				}
-				else
-				{
-					this.Yandere.localEulerAngles = new Vector3(this.Yandere.localEulerAngles.x, this.Yandere.localEulerAngles.y - Input.GetAxis("RS") - Input.GetAxis("Mouse X"), this.Yandere.localEulerAngles.z);
+					if (this.Selected == 1)
+					{
+						this.Senpai.localEulerAngles = new Vector3(this.Senpai.localEulerAngles.x, this.Senpai.localEulerAngles.y - Input.GetAxis("RS") - Input.GetAxis("Mouse X"), this.Senpai.localEulerAngles.z);
+					}
+					else
+					{
+						this.Yandere.localEulerAngles = new Vector3(this.Yandere.localEulerAngles.x, this.Yandere.localEulerAngles.y - Input.GetAxis("RS") - Input.GetAxis("Mouse X"), this.Yandere.localEulerAngles.z);
+					}
 				}
 				if (Input.GetButtonDown("A"))
 				{
@@ -367,8 +478,11 @@ public class CustomizationScript : MonoBehaviour
 		}
 		else if (this.Phase == 8)
 		{
-			this.Senpai.position = new Vector3(this.Senpai.position.x, Mathf.Lerp(this.Senpai.position.y, -0.6333333f, Time.deltaTime * 10f), this.Senpai.position.z);
-			this.Yandere.position = new Vector3(this.Yandere.position.x, Mathf.Lerp(this.Yandere.position.y, -0.6333333f, Time.deltaTime * 10f), this.Yandere.position.z);
+			if (!this.LoveSick)
+			{
+				this.Senpai.position = new Vector3(this.Senpai.position.x, Mathf.Lerp(this.Senpai.position.y, -0.6333333f, Time.deltaTime * 10f), this.Senpai.position.z);
+				this.Yandere.position = new Vector3(this.Yandere.position.x, Mathf.Lerp(this.Yandere.position.y, -0.6333333f, Time.deltaTime * 10f), this.Yandere.position.z);
+			}
 			this.UniformPanel.alpha = Mathf.MoveTowards(this.UniformPanel.alpha, 0f, Time.deltaTime * 2f);
 			if (this.UniformPanel.alpha == 0f)
 			{
@@ -377,8 +491,11 @@ public class CustomizationScript : MonoBehaviour
 		}
 		else if (this.Phase == 9)
 		{
-			this.Senpai.position = new Vector3(this.Senpai.position.x, Mathf.Lerp(this.Senpai.position.y, -0.6333333f, Time.deltaTime * 10f), this.Senpai.position.z);
-			this.Yandere.position = new Vector3(this.Yandere.position.x, Mathf.Lerp(this.Yandere.position.y, -0.6333333f, Time.deltaTime * 10f), this.Yandere.position.z);
+			if (!this.LoveSick)
+			{
+				this.Senpai.position = new Vector3(this.Senpai.position.x, Mathf.Lerp(this.Senpai.position.y, -0.6333333f, Time.deltaTime * 10f), this.Senpai.position.z);
+				this.Yandere.position = new Vector3(this.Yandere.position.x, Mathf.Lerp(this.Yandere.position.y, -0.6333333f, Time.deltaTime * 10f), this.Yandere.position.z);
+			}
 			this.FinishPanel.alpha = Mathf.MoveTowards(this.FinishPanel.alpha, 1f, Time.deltaTime * 2f);
 			if (this.FinishPanel.alpha == 1f)
 			{
@@ -472,8 +589,15 @@ public class CustomizationScript : MonoBehaviour
 		{
 			this.SkinColor = 5;
 		}
-		this.SenpaiRenderer.materials[1].mainTexture = this.FaceTextures[this.SkinColor];
-		this.SenpaiRenderer.materials[0].mainTexture = this.SkinTextures[this.SkinColor];
+		if (this.LoveSick)
+		{
+			this.UpdateMaleUniform();
+		}
+		else
+		{
+			this.SenpaiRenderer.materials[0].mainTexture = this.SkinTextures[this.SkinColor];
+			this.SenpaiRenderer.materials[1].mainTexture = this.FaceTextures[this.SkinColor];
+		}
 		this.SkinColorLabel.text = "Skin Color " + this.SkinColor.ToString();
 	}
 
@@ -754,5 +878,36 @@ public class CustomizationScript : MonoBehaviour
 		this.YandereRenderer.materials[2].mainTexture = this.FemaleFace;
 		this.YandereRenderer.materials[3].mainTexture = this.FemaleFace;
 		this.FemaleUniformLabel.text = "Female Uniform " + this.FemaleUniform.ToString();
+	}
+
+	private void LateUpdate()
+	{
+		if (this.LoveSick)
+		{
+			this.YandereHead.LookAt(this.SenpaiHead.position);
+		}
+	}
+
+	private void LoveSickColorSwap()
+	{
+		GameObject[] array = UnityEngine.Object.FindObjectsOfType<GameObject>();
+		foreach (GameObject gameObject in array)
+		{
+			UISprite component = gameObject.GetComponent<UISprite>();
+			if (component != null && component.color != Color.black && component.transform.parent != this.Highlight && component.transform.parent != this.UniformHighlight)
+			{
+				component.color = new Color(1f, 0f, 0f, component.color.a);
+			}
+			UITexture component2 = gameObject.GetComponent<UITexture>();
+			if (component2 != null)
+			{
+				component2.color = new Color(1f, 0f, 0f, component2.color.a);
+			}
+			UILabel component3 = gameObject.GetComponent<UILabel>();
+			if (component3 != null && component3.color != Color.black)
+			{
+				component3.color = new Color(1f, 0f, 0f, component3.color.a);
+			}
+		}
 	}
 }
