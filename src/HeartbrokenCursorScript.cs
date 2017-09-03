@@ -16,6 +16,8 @@ public class HeartbrokenCursorScript : MonoBehaviour
 
 	public UILabel MyLabel;
 
+	public bool LoveSick;
+
 	public bool FadeOut;
 
 	public bool Nudge;
@@ -94,7 +96,9 @@ public class HeartbrokenCursorScript : MonoBehaviour
 				}
 				else if (this.Selected == 2)
 				{
+					this.LoveSick = Globals.LoveSick;
 					Globals.DeleteAll();
+					Globals.LoveSick = this.LoveSick;
 					SceneManager.LoadScene("CalendarScene");
 				}
 				else if (this.Selected == 3)

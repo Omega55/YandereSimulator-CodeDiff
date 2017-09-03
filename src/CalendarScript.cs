@@ -28,6 +28,8 @@ public class CalendarScript : MonoBehaviour
 
 	public bool Incremented;
 
+	public bool LoveSick;
+
 	public bool FadeOut;
 
 	public bool Switch;
@@ -157,6 +159,7 @@ public class CalendarScript : MonoBehaviour
 				if (this.Reset)
 				{
 					Globals.DeleteAll();
+					Globals.LoveSick = this.LoveSick;
 					SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 				}
 				else
@@ -217,11 +220,9 @@ public class CalendarScript : MonoBehaviour
 	{
 		if (Globals.LoveSick)
 		{
-			if (Globals.LoveSick)
-			{
-				Globals.SchoolAtmosphereSet = true;
-				Globals.SchoolAtmosphere = 0f;
-			}
+			Globals.SchoolAtmosphereSet = true;
+			Globals.SchoolAtmosphere = 0f;
+			this.LoveSick = true;
 			Camera.main.backgroundColor = new Color(0f, 0f, 0f, 1f);
 			GameObject[] array = UnityEngine.Object.FindObjectsOfType<GameObject>();
 			foreach (GameObject gameObject in array)

@@ -258,6 +258,11 @@ public class TitleMenuScript : MonoBehaviour
 						this.TurnCute();
 					}
 				}
+				if (Input.GetKeyDown("l"))
+				{
+					Globals.LoveSick = !Globals.LoveSick;
+					SceneManager.LoadScene("TitleScene");
+				}
 				if (!this.LoveSick)
 				{
 					if (Input.GetKeyDown("space"))

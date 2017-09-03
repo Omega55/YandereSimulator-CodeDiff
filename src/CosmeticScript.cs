@@ -242,10 +242,6 @@ public class CosmeticScript : MonoBehaviour
 			this.EyeColor = this.JSON.Students[this.StudentID].Eyes;
 			this.Club = this.JSON.Students[this.StudentID].Club;
 			text = this.JSON.Students[this.StudentID].Name;
-			if (Globals.LoveSick)
-			{
-				this.HairColor = "LoveSick";
-			}
 			if (this.Yandere)
 			{
 				this.Accessory = 0;
@@ -631,10 +627,6 @@ public class CosmeticScript : MonoBehaviour
 			{
 				this.ColorValue = new Color(0.5f, 0.25f, 0f);
 			}
-			else if (this.HairColor == "LoveSick")
-			{
-				this.ColorValue = new Color(0.1f, 0.1f, 0.1f);
-			}
 			else
 			{
 				this.ColorValue = new Color(0f, 0f, 0f);
@@ -646,9 +638,23 @@ public class CosmeticScript : MonoBehaviour
 				this.FaceTexture = this.HairRenderer.material.mainTexture;
 				this.CustomHair = true;
 			}
-			if (!this.CustomHair && this.Hairstyle > 0)
+			if (!this.CustomHair)
 			{
-				this.HairRenderer.material.color = this.ColorValue;
+				if (this.Hairstyle > 0)
+				{
+					if (Globals.LoveSick)
+					{
+						this.HairRenderer.material.color = new Color(0.1f, 0.1f, 0.1f);
+					}
+					else
+					{
+						this.HairRenderer.material.color = this.ColorValue;
+					}
+				}
+			}
+			else if (Globals.LoveSick)
+			{
+				this.HairRenderer.material.color = new Color(0.1f, 0.1f, 0.1f);
 			}
 			if (!this.Male)
 			{

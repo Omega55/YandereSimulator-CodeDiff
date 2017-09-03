@@ -7,6 +7,10 @@ public class BugScript : MonoBehaviour
 
 	public Renderer MyRenderer;
 
+	public AudioSource MyAudio;
+
+	public AudioClip[] Praise;
+
 	private void Start()
 	{
 		this.MyRenderer.enabled = false;
@@ -16,6 +20,8 @@ public class BugScript : MonoBehaviour
 	{
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
+			this.MyAudio.clip = this.Praise[UnityEngine.Random.Range(0, this.Praise.Length)];
+			this.MyAudio.Play();
 			this.MyRenderer.enabled = true;
 			Globals.PantyShots += 5;
 			base.enabled = false;

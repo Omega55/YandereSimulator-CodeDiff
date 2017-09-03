@@ -50,7 +50,7 @@ public class SponsorScript : MonoBehaviour
 				}
 				else
 				{
-					SceneManager.LoadScene("ChoiceScene");
+					SceneManager.LoadScene("TitleScene");
 				}
 			}
 		}

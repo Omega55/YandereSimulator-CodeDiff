@@ -333,6 +333,8 @@ public class YandereScript : MonoBehaviour
 
 	public float SenpaiTint;
 
+	public float GreyTarget;
+
 	public int PreviousSchoolwear;
 
 	public int StrugglePhase;
@@ -898,6 +900,7 @@ public class YandereScript : MonoBehaviour
 	private void Start()
 	{
 		this.CharacterAnimation = this.Character.GetComponent<Animation>();
+		this.GreyTarget = (100f - Globals.SchoolAtmosphere) * 0.01f;
 		this.SetAnimationLayers();
 		this.UpdateNumbness();
 		Application.targetFrameRate = 60;
@@ -2682,6 +2685,7 @@ public class YandereScript : MonoBehaviour
 			{
 				this.CharacterAnimation["f02_shy_00"].weight = this.SenpaiTint;
 			}
+			this.SelectGrayscale.desaturation = Mathf.Lerp(this.SelectGrayscale.desaturation, 0f, Time.deltaTime * 10f);
 			this.HeartBeat.volume = this.SenpaiTint;
 			this.Sanity += Time.deltaTime * 10f;
 			this.UpdateSanity();
@@ -2700,6 +2704,7 @@ public class YandereScript : MonoBehaviour
 			this.ColorCorrection.greenChannel.SmoothTangents(1, 0f);
 			this.ColorCorrection.blueChannel.SmoothTangents(1, 0f);
 			this.ColorCorrection.UpdateTextures();
+			this.SelectGrayscale.desaturation = Mathf.Lerp(this.SelectGrayscale.desaturation, this.GreyTarget, Time.deltaTime * 10f);
 			this.CharacterAnimation["f02_shy_00"].weight = 1f - this.SenpaiTint;
 			this.HeartBeat.volume = 1f - this.SenpaiTint;
 		}
@@ -3919,6 +3924,7 @@ public class YandereScript : MonoBehaviour
 		this.ColorCorrection.enabled = false;
 		this.CharacterAnimation["f02_shy_00"].weight = 0f;
 		this.HeartBeat.volume = 0f;
+		this.SelectGrayscale.desaturation = this.GreyTarget;
 		this.SenpaiFade = 100f;
 	}
 

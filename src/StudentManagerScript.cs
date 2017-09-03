@@ -349,6 +349,19 @@ public class StudentManagerScript : MonoBehaviour
 					this.ID++;
 				}
 			}
+			this.ID = 1;
+			while (this.ID < this.HidingSpots.List.Length)
+			{
+				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.EmptyObject, new Vector3(UnityEngine.Random.Range(-17f, 17f), 0f, UnityEngine.Random.Range(-17f, 17f)), Quaternion.identity);
+				while ((double)gameObject.transform.position.x < 2.5 && (double)gameObject.transform.position.x > -2.5 && (double)gameObject.transform.position.z > -2.5 && (double)gameObject.transform.position.z < 2.5)
+				{
+					gameObject.transform.position = new Vector3(UnityEngine.Random.Range(-17f, 17f), 0f, UnityEngine.Random.Range(-17f, 17f));
+				}
+				gameObject.transform.parent = this.HidingSpots.transform;
+				this.HidingSpots.List[this.ID] = gameObject.transform;
+				this.ID++;
+				this.ID++;
+			}
 			if (Globals.LateForSchool)
 			{
 				Globals.LateForSchool = false;
@@ -602,6 +615,10 @@ public class StudentManagerScript : MonoBehaviour
 			if (this.JSON.Students[this.SpawnID].Name == "Random")
 			{
 				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.EmptyObject, new Vector3(UnityEngine.Random.Range(-17f, 17f), 0f, UnityEngine.Random.Range(-17f, 17f)), Quaternion.identity);
+				while ((double)gameObject.transform.position.x < 2.5 && (double)gameObject.transform.position.x > -2.5 && (double)gameObject.transform.position.z > -2.5 && (double)gameObject.transform.position.z < 2.5)
+				{
+					gameObject.transform.position = new Vector3(UnityEngine.Random.Range(-17f, 17f), 0f, UnityEngine.Random.Range(-17f, 17f));
+				}
 				gameObject.transform.parent = this.HidingSpots.transform;
 				this.HidingSpots.List[this.SpawnID] = gameObject.transform;
 				GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(this.RandomPatrol, Vector3.zero, Quaternion.identity);
