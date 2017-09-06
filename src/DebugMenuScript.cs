@@ -339,7 +339,7 @@ public class DebugMenuScript : MonoBehaviour
 						}
 						else if (Input.GetKeyDown("s"))
 						{
-							Globals.PhysicalGrade = 5;
+							ClassGlobals.PhysicalGrade = 5;
 							Globals.Seduction = 5;
 							this.ID = 1;
 							while (this.ID < 101)

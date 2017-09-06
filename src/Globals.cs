@@ -1,191 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public static class Globals
 {
-	private static class GlobalsHelper
-	{
-		public static bool GetBool(string key)
-		{
-			return PlayerPrefs.GetInt(key) == 1;
-		}
-
-		public static void SetBool(string key, bool value)
-		{
-			PlayerPrefs.SetInt(key, (!value) ? 0 : 1);
-		}
-
-		public static T GetEnum<T>(string key) where T : struct, IConvertible
-		{
-			return (T)((object)PlayerPrefs.GetInt(key));
-		}
-
-		public static void SetEnum<T>(string key, T value) where T : struct, IConvertible
-		{
-			PlayerPrefs.SetInt(key, (int)((object)value));
-		}
-
-		public static Vector3 GetVector3(string key)
-		{
-			float @float = PlayerPrefs.GetFloat(key + "_X");
-			float float2 = PlayerPrefs.GetFloat(key + "_Y");
-			float float3 = PlayerPrefs.GetFloat(key + "_Z");
-			return new Vector3(@float, float2, float3);
-		}
-
-		public static void SetVector3(string key, Vector3 value)
-		{
-			PlayerPrefs.SetFloat(key + "_X", value.x);
-			PlayerPrefs.SetFloat(key + "_Y", value.y);
-			PlayerPrefs.SetFloat(key + "_Z", value.z);
-		}
-
-		public static Color GetColor(string key)
-		{
-			float @float = PlayerPrefs.GetFloat(key + "_R");
-			float float2 = PlayerPrefs.GetFloat(key + "_G");
-			float float3 = PlayerPrefs.GetFloat(key + "_B");
-			float float4 = PlayerPrefs.GetFloat(key + "_A");
-			return new Color(@float, float2, float3, float4);
-		}
-
-		public static void SetColor(string key, Color value)
-		{
-			PlayerPrefs.SetFloat(key + "_R", value.r);
-			PlayerPrefs.SetFloat(key + "_G", value.g);
-			PlayerPrefs.SetFloat(key + "_B", value.b);
-			PlayerPrefs.SetFloat(key + "_A", value.a);
-		}
-	}
-
-	private static class KeysHelper
-	{
-		private const string KeyListPrefix = "Keys";
-
-		private const char KeyListSeparator = '|';
-
-		public const char PairSeparator = '^';
-
-		public static T[] GetKeys<T>(string key) where T : struct
-		{
-			string keyList = Globals.KeysHelper.GetKeyList(Globals.KeysHelper.GetKeyListKey(key));
-			string[] array = Globals.KeysHelper.Split(keyList);
-			return Array.ConvertAll<string, T>(array, (string str) => (T)((object)int.Parse(str)));
-		}
-
-		public static string[] GetKeys(string key)
-		{
-			string keyList = Globals.KeysHelper.GetKeyList(Globals.KeysHelper.GetKeyListKey(key));
-			return Globals.KeysHelper.Split(keyList);
-		}
-
-		public static KeyValuePair<T, U>[] GetKeys<T, U>(string key) where T : struct where U : struct
-		{
-			string keyList = Globals.KeysHelper.GetKeyList(Globals.KeysHelper.GetKeyListKey(key));
-			string[] array = Globals.KeysHelper.Split(keyList);
-			KeyValuePair<T, U>[] array2 = new KeyValuePair<T, U>[array.Length];
-			for (int i = 0; i < array.Length; i++)
-			{
-				string[] array3 = array[i].Split(new char[]
-				{
-					'^'
-				});
-				array2[i] = new KeyValuePair<T, U>((T)((object)int.Parse(array3[0])), (U)((object)int.Parse(array3[1])));
-			}
-			return array2;
-		}
-
-		public static void AddIfMissing(string key, string id)
-		{
-			string keyListKey = Globals.KeysHelper.GetKeyListKey(key);
-			string keyList = Globals.KeysHelper.GetKeyList(keyListKey);
-			string[] keyListStrings = Globals.KeysHelper.Split(keyList);
-			if (!Globals.KeysHelper.HasKey(keyListStrings, id))
-			{
-				Globals.KeysHelper.AppendKey(keyListKey, keyList, id);
-			}
-		}
-
-		private static string GetKeyListKey(string key)
-		{
-			return key + "Keys";
-		}
-
-		private static string GetKeyList(string keyListKey)
-		{
-			if (!PlayerPrefs.HasKey(keyListKey))
-			{
-				PlayerPrefs.SetString(keyListKey, string.Empty);
-			}
-			return PlayerPrefs.GetString(keyListKey);
-		}
-
-		private static string[] Split(string keyList)
-		{
-			return keyList.Split(new char[]
-			{
-				'|'
-			});
-		}
-
-		private static int FindKey(string[] keyListStrings, string key)
-		{
-			return Array.IndexOf<string>(keyListStrings, key);
-		}
-
-		private static bool HasKey(string[] keyListStrings, string key)
-		{
-			return Globals.KeysHelper.FindKey(keyListStrings, key) > -1;
-		}
-
-		private static void AppendKey(string keyListKey, string keyList, string key)
-		{
-			string value = (keyList.Length != 0) ? (keyList + '|' + key) : (keyList + key);
-			PlayerPrefs.SetString(keyListKey, value);
-		}
-	}
-
-	private const string Str_VersionNumber = "VersionNumber";
-
-	private const string Str_Biology = "Biology";
-
-	private const string Str_BiologyBonus = "BiologyBonus";
-
-	private const string Str_BiologyGrade = "BiologyGrade";
-
-	private const string Str_Chemistry = "Chemistry";
-
-	private const string Str_ChemistryBonus = "ChemistryBonus";
-
-	private const string Str_ChemistryGrade = "ChemistryGrade";
-
-	private const string Str_Language = "Language";
-
-	private const string Str_LanguageBonus = "LanguageBonus";
-
-	private const string Str_LanguageGrade = "LanguageGrade";
-
-	private const string Str_Physical = "Physical";
-
-	private const string Str_PhysicalBonus = "PhysicalBonus";
-
-	private const string Str_PhysicalGrade = "PhysicalGrade";
-
-	private const string Str_Psychology = "Psychology";
-
-	private const string Str_PsychologyBonus = "PsychologyBonus";
-
-	private const string Str_PsychologyGrade = "PsychologyGrade";
-
-	private const string Str_Club = "Club";
-
-	private const string Str_ClubClosed = "ClubClosed_";
-
-	private const string Str_ClubKicked = "ClubKicked_";
-
-	private const string Str_QuitClub = "QuitClub_";
-
 	private const string Str_BasementTapeCollected = "BasementTapeCollected_";
 
 	private const string Str_BasementTapeListened = "BasementTapeListened_";
@@ -448,331 +265,84 @@ public static class Globals
 		PlayerPrefs.DeleteAll();
 	}
 
+	public static void Delete(string key)
+	{
+		PlayerPrefs.DeleteKey(key);
+	}
+
 	public static void Save()
 	{
 		PlayerPrefs.Save();
 	}
 
-	public static float VersionNumber
-	{
-		get
-		{
-			return PlayerPrefs.GetFloat("VersionNumber");
-		}
-		set
-		{
-			PlayerPrefs.SetFloat("VersionNumber", value);
-		}
-	}
-
-	public static int Biology
-	{
-		get
-		{
-			return PlayerPrefs.GetInt("Biology");
-		}
-		set
-		{
-			PlayerPrefs.SetInt("Biology", value);
-		}
-	}
-
-	public static int BiologyBonus
-	{
-		get
-		{
-			return PlayerPrefs.GetInt("BiologyBonus");
-		}
-		set
-		{
-			PlayerPrefs.SetInt("BiologyBonus", value);
-		}
-	}
-
-	public static int BiologyGrade
-	{
-		get
-		{
-			return PlayerPrefs.GetInt("BiologyGrade");
-		}
-		set
-		{
-			PlayerPrefs.SetInt("BiologyGrade", value);
-		}
-	}
-
-	public static int Chemistry
-	{
-		get
-		{
-			return PlayerPrefs.GetInt("Chemistry");
-		}
-		set
-		{
-			PlayerPrefs.SetInt("Chemistry", value);
-		}
-	}
-
-	public static int ChemistryBonus
-	{
-		get
-		{
-			return PlayerPrefs.GetInt("ChemistryBonus");
-		}
-		set
-		{
-			PlayerPrefs.SetInt("ChemistryBonus", value);
-		}
-	}
-
-	public static int ChemistryGrade
-	{
-		get
-		{
-			return PlayerPrefs.GetInt("ChemistryGrade");
-		}
-		set
-		{
-			PlayerPrefs.SetInt("ChemistryGrade", value);
-		}
-	}
-
-	public static int Language
-	{
-		get
-		{
-			return PlayerPrefs.GetInt("Language");
-		}
-		set
-		{
-			PlayerPrefs.SetInt("Language", value);
-		}
-	}
-
-	public static int LanguageBonus
-	{
-		get
-		{
-			return PlayerPrefs.GetInt("LanguageBonus");
-		}
-		set
-		{
-			PlayerPrefs.SetInt("LanguageBonus", value);
-		}
-	}
-
-	public static int LanguageGrade
-	{
-		get
-		{
-			return PlayerPrefs.GetInt("LanguageGrade");
-		}
-		set
-		{
-			PlayerPrefs.SetInt("LanguageGrade", value);
-		}
-	}
-
-	public static int Physical
-	{
-		get
-		{
-			return PlayerPrefs.GetInt("Physical");
-		}
-		set
-		{
-			PlayerPrefs.SetInt("Physical", value);
-		}
-	}
-
-	public static int PhysicalBonus
-	{
-		get
-		{
-			return PlayerPrefs.GetInt("PhysicalBonus");
-		}
-		set
-		{
-			PlayerPrefs.SetInt("PhysicalBonus", value);
-		}
-	}
-
-	public static int PhysicalGrade
-	{
-		get
-		{
-			return PlayerPrefs.GetInt("PhysicalGrade");
-		}
-		set
-		{
-			PlayerPrefs.SetInt("PhysicalGrade", value);
-		}
-	}
-
-	public static int Psychology
-	{
-		get
-		{
-			return PlayerPrefs.GetInt("Psychology");
-		}
-		set
-		{
-			PlayerPrefs.SetInt("Psychology", value);
-		}
-	}
-
-	public static int PsychologyBonus
-	{
-		get
-		{
-			return PlayerPrefs.GetInt("PsychologyBonus");
-		}
-		set
-		{
-			PlayerPrefs.SetInt("PsychologyBonus", value);
-		}
-	}
-
-	public static int PsychologyGrade
-	{
-		get
-		{
-			return PlayerPrefs.GetInt("PsychologyGrade");
-		}
-		set
-		{
-			PlayerPrefs.SetInt("PsychologyGrade", value);
-		}
-	}
-
-	public static ClubType Club
-	{
-		get
-		{
-			return Globals.GlobalsHelper.GetEnum<ClubType>("Club");
-		}
-		set
-		{
-			Globals.GlobalsHelper.SetEnum<ClubType>("Club", value);
-		}
-	}
-
-	public static bool GetClubClosed(ClubType clubID)
-	{
-		string str = "ClubClosed_";
-		int num = (int)clubID;
-		return Globals.GlobalsHelper.GetBool(str + num.ToString());
-	}
-
-	public static void SetClubClosed(ClubType clubID, bool value)
-	{
-		int num = (int)clubID;
-		string text = num.ToString();
-		Globals.KeysHelper.AddIfMissing("ClubClosed_", text);
-		Globals.GlobalsHelper.SetBool("ClubClosed_" + text, value);
-	}
-
-	public static ClubType[] KeysOfClubClosed()
-	{
-		return Globals.KeysHelper.GetKeys<ClubType>("ClubClosed_");
-	}
-
-	public static bool GetClubKicked(ClubType clubID)
-	{
-		string str = "ClubKicked_";
-		int num = (int)clubID;
-		return Globals.GlobalsHelper.GetBool(str + num.ToString());
-	}
-
-	public static void SetClubKicked(ClubType clubID, bool value)
-	{
-		string str = "ClubKicked_";
-		int num = (int)clubID;
-		Globals.GlobalsHelper.SetBool(str + num.ToString(), value);
-	}
-
-	public static bool GetQuitClub(ClubType clubID)
-	{
-		string str = "QuitClub_";
-		int num = (int)clubID;
-		return Globals.GlobalsHelper.GetBool(str + num.ToString());
-	}
-
-	public static void SetQuitClub(ClubType clubID, bool value)
-	{
-		string str = "QuitClub_";
-		int num = (int)clubID;
-		Globals.GlobalsHelper.SetBool(str + num.ToString(), value);
-	}
-
 	public static bool GetBasementTapeCollected(int tapeID)
 	{
-		return Globals.GlobalsHelper.GetBool("BasementTapeCollected_" + tapeID.ToString());
+		return GlobalsHelper.GetBool("BasementTapeCollected_" + tapeID.ToString());
 	}
 
 	public static void SetBasementTapeCollected(int tapeID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("BasementTapeCollected_" + tapeID.ToString(), value);
+		GlobalsHelper.SetBool("BasementTapeCollected_" + tapeID.ToString(), value);
 	}
 
 	public static bool GetBasementTapeListened(int tapeID)
 	{
-		return Globals.GlobalsHelper.GetBool("BasementTapeListened_" + tapeID.ToString());
+		return GlobalsHelper.GetBool("BasementTapeListened_" + tapeID.ToString());
 	}
 
 	public static void SetBasementTapeListened(int tapeID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("BasementTapeListened_" + tapeID.ToString(), value);
+		GlobalsHelper.SetBool("BasementTapeListened_" + tapeID.ToString(), value);
 	}
 
 	public static bool GetMangaCollected(int mangaID)
 	{
-		return Globals.GlobalsHelper.GetBool("MangaCollected_" + mangaID.ToString());
+		return GlobalsHelper.GetBool("MangaCollected_" + mangaID.ToString());
 	}
 
 	public static void SetMangaCollected(int mangaID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("MangaCollected_" + mangaID.ToString(), value);
+		GlobalsHelper.SetBool("MangaCollected_" + mangaID.ToString(), value);
 	}
 
 	public static bool GetTapeCollected(int tapeID)
 	{
-		return Globals.GlobalsHelper.GetBool("TapeCollected_" + tapeID.ToString());
+		return GlobalsHelper.GetBool("TapeCollected_" + tapeID.ToString());
 	}
 
 	public static void SetTapeCollected(int tapeID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("TapeCollected_" + tapeID.ToString(), value);
+		GlobalsHelper.SetBool("TapeCollected_" + tapeID.ToString(), value);
 	}
 
 	public static bool GetTapeListened(int tapeID)
 	{
-		return Globals.GlobalsHelper.GetBool("TapeListened_" + tapeID.ToString());
+		return GlobalsHelper.GetBool("TapeListened_" + tapeID.ToString());
 	}
 
 	public static void SetTapeListened(int tapeID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("TapeListened_" + tapeID.ToString(), value);
+		GlobalsHelper.SetBool("TapeListened_" + tapeID.ToString(), value);
 	}
 
 	public static bool GetTopicDiscovered(int topicID)
 	{
-		return Globals.GlobalsHelper.GetBool("TopicDiscovered_" + topicID.ToString());
+		return GlobalsHelper.GetBool("TopicDiscovered_" + topicID.ToString());
 	}
 
 	public static void SetTopicDiscovered(int topicID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("TopicDiscovered_" + topicID.ToString(), value);
+		GlobalsHelper.SetBool("TopicDiscovered_" + topicID.ToString(), value);
 	}
 
 	public static bool GetTopicLearnedByStudent(int topicID, int studentID)
 	{
-		return Globals.GlobalsHelper.GetBool("TopicLearnedByStudent_" + topicID.ToString() + "_" + studentID.ToString());
+		return GlobalsHelper.GetBool("TopicLearnedByStudent_" + topicID.ToString() + "_" + studentID.ToString());
 	}
 
 	public static void SetTopicLearnedByStudent(int topicID, int studentID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("TopicLearnedByStudent_" + topicID.ToString() + "_" + studentID.ToString(), value);
+		GlobalsHelper.SetBool("TopicLearnedByStudent_" + topicID.ToString() + "_" + studentID.ToString(), value);
 	}
 
 	public static float Affection
@@ -801,22 +371,22 @@ public static class Globals
 
 	public static bool GetComplimentGiven(int complimentID)
 	{
-		return Globals.GlobalsHelper.GetBool("ComplimentGiven_" + complimentID.ToString());
+		return GlobalsHelper.GetBool("ComplimentGiven_" + complimentID.ToString());
 	}
 
 	public static void SetComplimentGiven(int complimentID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("ComplimentGiven_" + complimentID.ToString(), value);
+		GlobalsHelper.SetBool("ComplimentGiven_" + complimentID.ToString(), value);
 	}
 
 	public static bool GetSuitorCheck(int checkID)
 	{
-		return Globals.GlobalsHelper.GetBool("SuitorCheck_" + checkID.ToString());
+		return GlobalsHelper.GetBool("SuitorCheck_" + checkID.ToString());
 	}
 
 	public static void SetSuitorCheck(int checkID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("SuitorCheck_" + checkID.ToString(), value);
+		GlobalsHelper.SetBool("SuitorCheck_" + checkID.ToString(), value);
 	}
 
 	public static int SuitorProgress
@@ -843,12 +413,12 @@ public static class Globals
 
 	public static bool GetTopicDiscussed(int topicID)
 	{
-		return Globals.GlobalsHelper.GetBool("TopicDiscussed_" + topicID.ToString());
+		return GlobalsHelper.GetBool("TopicDiscussed_" + topicID.ToString());
 	}
 
 	public static void SetTopicDiscussed(int topicID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("TopicDiscussed_" + topicID.ToString(), value);
+		GlobalsHelper.SetBool("TopicDiscussed_" + topicID.ToString(), value);
 	}
 
 	public static int GetTraitDemonstrated(int traitID)
@@ -865,11 +435,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetBool("BefriendConversation");
+			return GlobalsHelper.GetBool("BefriendConversation");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetBool("BefriendConversation", value);
+			GlobalsHelper.SetBool("BefriendConversation", value);
 		}
 	}
 
@@ -877,11 +447,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetBool("KidnapConversation");
+			return GlobalsHelper.GetBool("KidnapConversation");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetBool("KidnapConversation", value);
+			GlobalsHelper.SetBool("KidnapConversation", value);
 		}
 	}
 
@@ -889,11 +459,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetBool("Event1");
+			return GlobalsHelper.GetBool("Event1");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetBool("Event1", value);
+			GlobalsHelper.SetBool("Event1", value);
 		}
 	}
 
@@ -901,11 +471,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetBool("Event2");
+			return GlobalsHelper.GetBool("Event2");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetBool("Event2", value);
+			GlobalsHelper.SetBool("Event2", value);
 		}
 	}
 
@@ -913,11 +483,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetBool("LivingRoom");
+			return GlobalsHelper.GetBool("LivingRoom");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetBool("LivingRoom", value);
+			GlobalsHelper.SetBool("LivingRoom", value);
 		}
 	}
 
@@ -925,11 +495,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetBool("LoveSick");
+			return GlobalsHelper.GetBool("LoveSick");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetBool("LoveSick", value);
+			GlobalsHelper.SetBool("LoveSick", value);
 		}
 	}
 
@@ -937,11 +507,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetBool("MasksBanned");
+			return GlobalsHelper.GetBool("MasksBanned");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetBool("MasksBanned", value);
+			GlobalsHelper.SetBool("MasksBanned", value);
 		}
 	}
 
@@ -949,11 +519,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetBool("Paranormal");
+			return GlobalsHelper.GetBool("Paranormal");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetBool("Paranormal", value);
+			GlobalsHelper.SetBool("Paranormal", value);
 		}
 	}
 
@@ -961,11 +531,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetBool("LateForSchool");
+			return GlobalsHelper.GetBool("LateForSchool");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetBool("LateForSchool", value);
+			GlobalsHelper.SetBool("LateForSchool", value);
 		}
 	}
 
@@ -973,11 +543,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetBool("Night");
+			return GlobalsHelper.GetBool("Night");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetBool("Night", value);
+			GlobalsHelper.SetBool("Night", value);
 		}
 	}
 
@@ -985,11 +555,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetBool("StartInBasement");
+			return GlobalsHelper.GetBool("StartInBasement");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetBool("StartInBasement", value);
+			GlobalsHelper.SetBool("StartInBasement", value);
 		}
 	}
 
@@ -1019,11 +589,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetBool("MissionMode");
+			return GlobalsHelper.GetBool("MissionMode");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetBool("MissionMode", value);
+			GlobalsHelper.SetBool("MissionMode", value);
 		}
 	}
 
@@ -1103,11 +673,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetBool("DisableBloom");
+			return GlobalsHelper.GetBool("DisableBloom");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetBool("DisableBloom", value);
+			GlobalsHelper.SetBool("DisableBloom", value);
 		}
 	}
 
@@ -1115,11 +685,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetBool("DisableFarAnimations");
+			return GlobalsHelper.GetBool("DisableFarAnimations");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetBool("DisableFarAnimations", value);
+			GlobalsHelper.SetBool("DisableFarAnimations", value);
 		}
 	}
 
@@ -1127,11 +697,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetBool("DisableOutlines");
+			return GlobalsHelper.GetBool("DisableOutlines");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetBool("DisableOutlines", value);
+			GlobalsHelper.SetBool("DisableOutlines", value);
 		}
 	}
 
@@ -1139,11 +709,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetBool("DisablePostAliasing");
+			return GlobalsHelper.GetBool("DisablePostAliasing");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetBool("DisablePostAliasing", value);
+			GlobalsHelper.SetBool("DisablePostAliasing", value);
 		}
 	}
 
@@ -1151,11 +721,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetBool("DisableShadows");
+			return GlobalsHelper.GetBool("DisableShadows");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetBool("DisableShadows", value);
+			GlobalsHelper.SetBool("DisableShadows", value);
 		}
 	}
 
@@ -1175,11 +745,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetBool("Fog");
+			return GlobalsHelper.GetBool("Fog");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetBool("Fog", value);
+			GlobalsHelper.SetBool("Fog", value);
 		}
 	}
 
@@ -1187,11 +757,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetBool("HighPopulation");
+			return GlobalsHelper.GetBool("HighPopulation");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetBool("HighPopulation", value);
+			GlobalsHelper.SetBool("HighPopulation", value);
 		}
 	}
 
@@ -1259,11 +829,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetBool("Headset");
+			return GlobalsHelper.GetBool("Headset");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetBool("Headset", value);
+			GlobalsHelper.SetBool("Headset", value);
 		}
 	}
 
@@ -1329,12 +899,12 @@ public static class Globals
 
 	public static bool GetPhoto(int photoID)
 	{
-		return Globals.GlobalsHelper.GetBool("Photo_" + photoID.ToString());
+		return GlobalsHelper.GetBool("Photo_" + photoID.ToString());
 	}
 
 	public static void SetPhoto(int photoID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("Photo_" + photoID.ToString(), value);
+		GlobalsHelper.SetBool("Photo_" + photoID.ToString(), value);
 	}
 
 	public static float Reputation
@@ -1375,12 +945,12 @@ public static class Globals
 
 	public static bool GetSenpaiPhoto(int photoID)
 	{
-		return Globals.GlobalsHelper.GetBool("SenpaiPhoto_" + photoID.ToString());
+		return GlobalsHelper.GetBool("SenpaiPhoto_" + photoID.ToString());
 	}
 
 	public static void SetSenpaiPhoto(int photoID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("SenpaiPhoto_" + photoID.ToString(), value);
+		GlobalsHelper.SetBool("SenpaiPhoto_" + photoID.ToString(), value);
 	}
 
 	public static int SenpaiShots
@@ -1433,33 +1003,33 @@ public static class Globals
 
 	public static bool GetStudentFriend(int studentID)
 	{
-		return Globals.GlobalsHelper.GetBool("StudentFriend_" + studentID.ToString());
+		return GlobalsHelper.GetBool("StudentFriend_" + studentID.ToString());
 	}
 
 	public static void SetStudentFriend(int studentID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("StudentFriend_" + studentID.ToString(), value);
+		GlobalsHelper.SetBool("StudentFriend_" + studentID.ToString(), value);
 	}
 
 	public static bool GetStudentPantyShot(string studentName)
 	{
-		return Globals.GlobalsHelper.GetBool("StudentPantyShot_" + studentName);
+		return GlobalsHelper.GetBool("StudentPantyShot_" + studentName);
 	}
 
 	public static void SetStudentPantyShot(string studentName, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("StudentPantyShot_" + studentName, value);
+		GlobalsHelper.SetBool("StudentPantyShot_" + studentName, value);
 	}
 
 	public static Vector3 PosePosition
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetVector3("PosePosition");
+			return GlobalsHelper.GetVector3("PosePosition");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetVector3("PosePosition", value);
+			GlobalsHelper.SetVector3("PosePosition", value);
 		}
 	}
 
@@ -1467,11 +1037,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetVector3("PoseRotation");
+			return GlobalsHelper.GetVector3("PoseRotation");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetVector3("PoseRotation", value);
+			GlobalsHelper.SetVector3("PoseRotation", value);
 		}
 	}
 
@@ -1479,11 +1049,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetVector3("PoseScale");
+			return GlobalsHelper.GetVector3("PoseScale");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetVector3("PoseScale", value);
+			GlobalsHelper.SetVector3("PoseScale", value);
 		}
 	}
 
@@ -1515,11 +1085,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetBool("DarkSecret");
+			return GlobalsHelper.GetBool("DarkSecret");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetBool("DarkSecret", value);
+			GlobalsHelper.SetBool("DarkSecret", value);
 		}
 	}
 
@@ -1545,52 +1115,52 @@ public static class Globals
 
 	public static bool GetSchemeStatus(int schemeID)
 	{
-		return Globals.GlobalsHelper.GetBool("SchemeStatus_" + schemeID.ToString());
+		return GlobalsHelper.GetBool("SchemeStatus_" + schemeID.ToString());
 	}
 
 	public static void SetSchemeStatus(int schemeID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("SchemeStatus_" + schemeID.ToString(), value);
+		GlobalsHelper.SetBool("SchemeStatus_" + schemeID.ToString(), value);
 	}
 
 	public static bool GetSchemeUnlocked(int schemeID)
 	{
-		return Globals.GlobalsHelper.GetBool("SchemeUnlocked_" + schemeID.ToString());
+		return GlobalsHelper.GetBool("SchemeUnlocked_" + schemeID.ToString());
 	}
 
 	public static void SetSchemeUnlocked(int schemeID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("SchemeUnlocked_" + schemeID.ToString(), value);
+		GlobalsHelper.SetBool("SchemeUnlocked_" + schemeID.ToString(), value);
 	}
 
 	public static bool GetServicePurchased(int serviceID)
 	{
-		return Globals.GlobalsHelper.GetBool("ServicePurchased_" + serviceID.ToString());
+		return GlobalsHelper.GetBool("ServicePurchased_" + serviceID.ToString());
 	}
 
 	public static void SetServicePurchased(int serviceID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("ServicePurchased_" + serviceID.ToString(), value);
+		GlobalsHelper.SetBool("ServicePurchased_" + serviceID.ToString(), value);
 	}
 
 	public static bool GetDemonActive(int demonID)
 	{
-		return Globals.GlobalsHelper.GetBool("DemonActive_" + demonID.ToString());
+		return GlobalsHelper.GetBool("DemonActive_" + demonID.ToString());
 	}
 
 	public static void SetDemonActive(int demonID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("DemonActive_" + demonID.ToString(), value);
+		GlobalsHelper.SetBool("DemonActive_" + demonID.ToString(), value);
 	}
 
 	public static bool GetGardenGraveOccupied(int graveID)
 	{
-		return Globals.GlobalsHelper.GetBool("GardenGraveOccupied_" + graveID.ToString());
+		return GlobalsHelper.GetBool("GardenGraveOccupied_" + graveID.ToString());
 	}
 
 	public static void SetGardenGraveOccupied(int graveID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("GardenGraveOccupied_" + graveID.ToString(), value);
+		GlobalsHelper.SetBool("GardenGraveOccupied_" + graveID.ToString(), value);
 	}
 
 	public static int KidnapVictim
@@ -1621,11 +1191,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetBool("RoofFence");
+			return GlobalsHelper.GetBool("RoofFence");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetBool("RoofFence", value);
+			GlobalsHelper.SetBool("RoofFence", value);
 		}
 	}
 
@@ -1645,11 +1215,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetBool("SchoolAtmosphereSet");
+			return GlobalsHelper.GetBool("SchoolAtmosphereSet");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetBool("SchoolAtmosphereSet", value);
+			GlobalsHelper.SetBool("SchoolAtmosphereSet", value);
 		}
 	}
 
@@ -1674,11 +1244,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetBool("SCP");
+			return GlobalsHelper.GetBool("SCP");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetBool("SCP", value);
+			GlobalsHelper.SetBool("SCP", value);
 		}
 	}
 
@@ -1686,11 +1256,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetBool("CustomSenpai");
+			return GlobalsHelper.GetBool("CustomSenpai");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetBool("CustomSenpai", value);
+			GlobalsHelper.SetBool("CustomSenpai", value);
 		}
 	}
 
@@ -1770,11 +1340,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetBool("CustomSuitor");
+			return GlobalsHelper.GetBool("CustomSuitor");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetBool("CustomSuitor", value);
+			GlobalsHelper.SetBool("CustomSuitor", value);
 		}
 	}
 
@@ -1842,11 +1412,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetBool("CustomSuitorTan");
+			return GlobalsHelper.GetBool("CustomSuitorTan");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetBool("CustomSuitorTan", value);
+			GlobalsHelper.SetBool("CustomSuitorTan", value);
 		}
 	}
 
@@ -1898,22 +1468,22 @@ public static class Globals
 
 	public static bool GetStudentArrested(int studentID)
 	{
-		return Globals.GlobalsHelper.GetBool("StudentArrested_" + studentID.ToString());
+		return GlobalsHelper.GetBool("StudentArrested_" + studentID.ToString());
 	}
 
 	public static void SetStudentArrested(int studentID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("StudentArrested_" + studentID.ToString(), value);
+		GlobalsHelper.SetBool("StudentArrested_" + studentID.ToString(), value);
 	}
 
 	public static bool GetStudentBroken(int studentID)
 	{
-		return Globals.GlobalsHelper.GetBool("StudentBroken_" + studentID.ToString());
+		return GlobalsHelper.GetBool("StudentBroken_" + studentID.ToString());
 	}
 
 	public static void SetStudentBroken(int studentID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("StudentBroken_" + studentID.ToString(), value);
+		GlobalsHelper.SetBool("StudentBroken_" + studentID.ToString(), value);
 	}
 
 	public static float GetStudentBustSize(int studentID)
@@ -1928,72 +1498,72 @@ public static class Globals
 
 	public static Color GetStudentColor(int studentID)
 	{
-		return Globals.GlobalsHelper.GetColor("StudentColor_" + studentID.ToString());
+		return GlobalsHelper.GetColor("StudentColor_" + studentID.ToString());
 	}
 
 	public static void SetStudentColor(int studentID, Color value)
 	{
-		Globals.GlobalsHelper.SetColor("StudentColor_" + studentID.ToString(), value);
+		GlobalsHelper.SetColor("StudentColor_" + studentID.ToString(), value);
 	}
 
 	public static bool GetStudentDead(int studentID)
 	{
-		return Globals.GlobalsHelper.GetBool("StudentDead_" + studentID.ToString());
+		return GlobalsHelper.GetBool("StudentDead_" + studentID.ToString());
 	}
 
 	public static void SetStudentDead(int studentID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("StudentDead_" + studentID.ToString(), value);
+		GlobalsHelper.SetBool("StudentDead_" + studentID.ToString(), value);
 	}
 
 	public static bool GetStudentDying(int studentID)
 	{
-		return Globals.GlobalsHelper.GetBool("StudentDying_" + studentID.ToString());
+		return GlobalsHelper.GetBool("StudentDying_" + studentID.ToString());
 	}
 
 	public static void SetStudentDying(int studentID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("StudentDying_" + studentID.ToString(), value);
+		GlobalsHelper.SetBool("StudentDying_" + studentID.ToString(), value);
 	}
 
 	public static bool GetStudentExpelled(int studentID)
 	{
-		return Globals.GlobalsHelper.GetBool("StudentExpelled_" + studentID.ToString());
+		return GlobalsHelper.GetBool("StudentExpelled_" + studentID.ToString());
 	}
 
 	public static void SetStudentExpelled(int studentID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("StudentExpelled_" + studentID.ToString(), value);
+		GlobalsHelper.SetBool("StudentExpelled_" + studentID.ToString(), value);
 	}
 
 	public static bool GetStudentExposed(int studentID)
 	{
-		return Globals.GlobalsHelper.GetBool("StudentExposed_" + studentID.ToString());
+		return GlobalsHelper.GetBool("StudentExposed_" + studentID.ToString());
 	}
 
 	public static void SetStudentExposed(int studentID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("StudentExposed_" + studentID.ToString(), value);
+		GlobalsHelper.SetBool("StudentExposed_" + studentID.ToString(), value);
 	}
 
 	public static Color GetStudentEyeColor(int studentID)
 	{
-		return Globals.GlobalsHelper.GetColor("StudentEyeColor_" + studentID.ToString());
+		return GlobalsHelper.GetColor("StudentEyeColor_" + studentID.ToString());
 	}
 
 	public static void SetStudentEyeColor(int studentID, Color value)
 	{
-		Globals.GlobalsHelper.SetColor("StudentEyeColor_" + studentID.ToString(), value);
+		GlobalsHelper.SetColor("StudentEyeColor_" + studentID.ToString(), value);
 	}
 
 	public static bool GetStudentGrudge(int studentID)
 	{
-		return Globals.GlobalsHelper.GetBool("StudentGrudge_" + studentID.ToString());
+		return GlobalsHelper.GetBool("StudentGrudge_" + studentID.ToString());
 	}
 
 	public static void SetStudentGrudge(int studentID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("StudentGrudge_" + studentID.ToString(), value);
+		GlobalsHelper.SetBool("StudentGrudge_" + studentID.ToString(), value);
 	}
 
 	public static string GetStudentHairstyle(int studentID)
@@ -2008,22 +1578,22 @@ public static class Globals
 
 	public static bool GetStudentKidnapped(int studentID)
 	{
-		return Globals.GlobalsHelper.GetBool("StudentKidnapped_" + studentID.ToString());
+		return GlobalsHelper.GetBool("StudentKidnapped_" + studentID.ToString());
 	}
 
 	public static void SetStudentKidnapped(int studentID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("StudentKidnapped_" + studentID.ToString(), value);
+		GlobalsHelper.SetBool("StudentKidnapped_" + studentID.ToString(), value);
 	}
 
 	public static bool GetStudentMissing(int studentID)
 	{
-		return Globals.GlobalsHelper.GetBool("StudentMissing_" + studentID.ToString());
+		return GlobalsHelper.GetBool("StudentMissing_" + studentID.ToString());
 	}
 
 	public static void SetStudentMissing(int studentID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("StudentMissing_" + studentID.ToString(), value);
+		GlobalsHelper.SetBool("StudentMissing_" + studentID.ToString(), value);
 	}
 
 	public static string GetStudentName(int studentID)
@@ -2038,22 +1608,22 @@ public static class Globals
 
 	public static bool GetStudentPhotographed(int studentID)
 	{
-		return Globals.GlobalsHelper.GetBool("StudentPhotographed_" + studentID.ToString());
+		return GlobalsHelper.GetBool("StudentPhotographed_" + studentID.ToString());
 	}
 
 	public static void SetStudentPhotographed(int studentID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("StudentPhotographed_" + studentID.ToString(), value);
+		GlobalsHelper.SetBool("StudentPhotographed_" + studentID.ToString(), value);
 	}
 
 	public static bool GetStudentReplaced(int studentID)
 	{
-		return Globals.GlobalsHelper.GetBool("StudentReplaced_" + studentID.ToString());
+		return GlobalsHelper.GetBool("StudentReplaced_" + studentID.ToString());
 	}
 
 	public static void SetStudentReplaced(int studentID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("StudentReplaced_" + studentID.ToString(), value);
+		GlobalsHelper.SetBool("StudentReplaced_" + studentID.ToString(), value);
 	}
 
 	public static int GetStudentReputation(int studentID)
@@ -2078,22 +1648,22 @@ public static class Globals
 
 	public static bool GetStudentSlave(int studentID)
 	{
-		return Globals.GlobalsHelper.GetBool("StudentSlave_" + studentID.ToString());
+		return GlobalsHelper.GetBool("StudentSlave_" + studentID.ToString());
 	}
 
 	public static void SetStudentSlave(int studentID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("StudentSlave_" + studentID.ToString(), value);
+		GlobalsHelper.SetBool("StudentSlave_" + studentID.ToString(), value);
 	}
 
 	public static bool GetKittenPhoto(int photoID)
 	{
-		return Globals.GlobalsHelper.GetBool("KittenPhoto_" + photoID.ToString());
+		return GlobalsHelper.GetBool("KittenPhoto_" + photoID.ToString());
 	}
 
 	public static void SetKittenPhoto(int photoID, bool value)
 	{
-		Globals.GlobalsHelper.SetBool("KittenPhoto_" + photoID.ToString(), value);
+		GlobalsHelper.SetBool("KittenPhoto_" + photoID.ToString(), value);
 	}
 
 	public static int GetTaskStatus(int taskID)
@@ -2122,11 +1692,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetBool("DraculaDefeated");
+			return GlobalsHelper.GetBool("DraculaDefeated");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetBool("DraculaDefeated", value);
+			GlobalsHelper.SetBool("DraculaDefeated", value);
 		}
 	}
 
@@ -2134,11 +1704,11 @@ public static class Globals
 	{
 		get
 		{
-			return Globals.GlobalsHelper.GetBool("MidoriEasterEgg");
+			return GlobalsHelper.GetBool("MidoriEasterEgg");
 		}
 		set
 		{
-			Globals.GlobalsHelper.SetBool("MidoriEasterEgg", value);
+			GlobalsHelper.SetBool("MidoriEasterEgg", value);
 		}
 	}
 }

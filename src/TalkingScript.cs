@@ -699,7 +699,7 @@ public class TalkingScript : MonoBehaviour
 					}
 					if (this.S.TalkTimer <= 0f)
 					{
-						Globals.Club = ClubType.None;
+						ClubGlobals.Club = ClubType.None;
 						this.S.DialogueWheel.End();
 					}
 				}

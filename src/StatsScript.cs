@@ -109,11 +109,11 @@ public class StatsScript : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.Backslash))
 		{
-			Globals.BiologyGrade = 1;
-			Globals.ChemistryGrade = 5;
-			Globals.LanguageGrade = 2;
-			Globals.PhysicalGrade = 4;
-			Globals.PsychologyGrade = 3;
+			ClassGlobals.BiologyGrade = 1;
+			ClassGlobals.ChemistryGrade = 5;
+			ClassGlobals.LanguageGrade = 2;
+			ClassGlobals.PhysicalGrade = 4;
+			ClassGlobals.PsychologyGrade = 3;
 			Globals.Seduction = 4;
 			Globals.Numbness = 2;
 			Globals.Enlightenment = 5;
@@ -135,7 +135,7 @@ public class StatsScript : MonoBehaviour
 
 	public void UpdateStats()
 	{
-		this.Grade = Globals.BiologyGrade;
+		this.Grade = ClassGlobals.BiologyGrade;
 		this.BarID = 1;
 		while (this.BarID < 6)
 		{
@@ -151,11 +151,11 @@ public class StatsScript : MonoBehaviour
 			}
 			this.BarID++;
 		}
-		if (Globals.BiologyGrade < 5)
+		if (ClassGlobals.BiologyGrade < 5)
 		{
-			this.Subject1Bars[Globals.BiologyGrade + 1].color = ((Globals.BiologyBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
+			this.Subject1Bars[ClassGlobals.BiologyGrade + 1].color = ((ClassGlobals.BiologyBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
 		}
-		this.Grade = Globals.ChemistryGrade;
+		this.Grade = ClassGlobals.ChemistryGrade;
 		this.BarID = 1;
 		while (this.BarID < 6)
 		{
@@ -171,11 +171,11 @@ public class StatsScript : MonoBehaviour
 			}
 			this.BarID++;
 		}
-		if (Globals.ChemistryGrade < 5)
+		if (ClassGlobals.ChemistryGrade < 5)
 		{
-			this.Subject2Bars[Globals.ChemistryGrade + 1].color = ((Globals.ChemistryBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
+			this.Subject2Bars[ClassGlobals.ChemistryGrade + 1].color = ((ClassGlobals.ChemistryBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
 		}
-		this.Grade = Globals.LanguageGrade;
+		this.Grade = ClassGlobals.LanguageGrade;
 		this.BarID = 1;
 		while (this.BarID < 6)
 		{
@@ -191,11 +191,11 @@ public class StatsScript : MonoBehaviour
 			}
 			this.BarID++;
 		}
-		if (Globals.LanguageGrade < 5)
+		if (ClassGlobals.LanguageGrade < 5)
 		{
-			this.Subject3Bars[Globals.LanguageGrade + 1].color = ((Globals.LanguageBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
+			this.Subject3Bars[ClassGlobals.LanguageGrade + 1].color = ((ClassGlobals.LanguageBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
 		}
-		this.Grade = Globals.PhysicalGrade;
+		this.Grade = ClassGlobals.PhysicalGrade;
 		this.BarID = 1;
 		while (this.BarID < 6)
 		{
@@ -211,11 +211,11 @@ public class StatsScript : MonoBehaviour
 			}
 			this.BarID++;
 		}
-		if (Globals.PhysicalGrade < 5)
+		if (ClassGlobals.PhysicalGrade < 5)
 		{
-			this.Subject4Bars[Globals.PhysicalGrade + 1].color = ((Globals.PhysicalBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
+			this.Subject4Bars[ClassGlobals.PhysicalGrade + 1].color = ((ClassGlobals.PhysicalBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
 		}
-		this.Grade = Globals.PsychologyGrade;
+		this.Grade = ClassGlobals.PsychologyGrade;
 		this.BarID = 1;
 		while (this.BarID < 6)
 		{
@@ -231,9 +231,9 @@ public class StatsScript : MonoBehaviour
 			}
 			this.BarID++;
 		}
-		if (Globals.PsychologyGrade < 5)
+		if (ClassGlobals.PsychologyGrade < 5)
 		{
-			this.Subject5Bars[Globals.PsychologyGrade + 1].color = ((Globals.PsychologyBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
+			this.Subject5Bars[ClassGlobals.PsychologyGrade + 1].color = ((ClassGlobals.PsychologyBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
 		}
 		this.Grade = Globals.Seduction;
 		this.BarID = 1;
@@ -295,15 +295,15 @@ public class StatsScript : MonoBehaviour
 		{
 			this.Subject8Bars[Globals.Enlightenment + 1].color = ((Globals.EnlightenmentBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
 		}
-		this.Ranks[1].text = "Rank: " + Globals.BiologyGrade.ToString();
-		this.Ranks[2].text = "Rank: " + Globals.ChemistryGrade.ToString();
-		this.Ranks[3].text = "Rank: " + Globals.LanguageGrade.ToString();
-		this.Ranks[4].text = "Rank: " + Globals.PhysicalGrade.ToString();
-		this.Ranks[5].text = "Rank: " + Globals.PsychologyGrade.ToString();
+		this.Ranks[1].text = "Rank: " + ClassGlobals.BiologyGrade.ToString();
+		this.Ranks[2].text = "Rank: " + ClassGlobals.ChemistryGrade.ToString();
+		this.Ranks[3].text = "Rank: " + ClassGlobals.LanguageGrade.ToString();
+		this.Ranks[4].text = "Rank: " + ClassGlobals.PhysicalGrade.ToString();
+		this.Ranks[5].text = "Rank: " + ClassGlobals.PsychologyGrade.ToString();
 		this.Ranks[6].text = "Rank: " + Globals.Seduction.ToString();
 		this.Ranks[7].text = "Rank: " + Globals.Numbness.ToString();
 		this.Ranks[8].text = "Rank: " + Globals.Enlightenment.ToString();
-		ClubType club = Globals.Club;
+		ClubType club = ClubGlobals.Club;
 		string str;
 		bool flag = this.ClubLabels.TryGetValue(club, out str);
 		this.ClubLabel.text = "Club: " + str;

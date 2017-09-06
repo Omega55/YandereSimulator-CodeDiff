@@ -884,7 +884,7 @@ public class StudentScript : MonoBehaviour
 			{
 				this.IdleAnim = this.ParanoidAnim;
 			}
-			if (Globals.Club == ClubType.Occult)
+			if (ClubGlobals.Club == ClubType.Occult)
 			{
 				this.Perception = 0.5f;
 			}
@@ -944,7 +944,7 @@ public class StudentScript : MonoBehaviour
 			{
 				this.CameraAnims = this.SocialAnims;
 			}
-			if (Globals.GetClubClosed(this.Club))
+			if (ClubGlobals.GetClubClosed(this.Club))
 			{
 				this.Club = ClubType.None;
 			}
@@ -1659,7 +1659,7 @@ public class StudentScript : MonoBehaviour
 							}
 							else if (this.Actions[this.Phase] == StudentActionType.Socializing)
 							{
-								if (this.Paranoia > 1.66666f)
+								if (this.Paranoia > 1.66666f && !Globals.LoveSick)
 								{
 									this.CharacterAnimation.CrossFade(this.IdleAnim);
 								}
@@ -2529,7 +2529,7 @@ public class StudentScript : MonoBehaviour
 								}
 								else if (!this.Yandere.Dumping && !this.Yandere.Attacking)
 								{
-									if (Globals.PhysicalGrade + Globals.PhysicalBonus == 0)
+									if (ClassGlobals.PhysicalGrade + ClassGlobals.PhysicalBonus == 0)
 									{
 										Debug.Log("A teacher is taking down Yandere-chan.");
 										if (this.Yandere.Aiming)
@@ -3824,6 +3824,11 @@ public class StudentScript : MonoBehaviour
 										this.Concern = 5;
 									}
 								}
+								else if (this.Yandere.Aiming)
+								{
+									this.Witnessed = "Stalking";
+									this.Concern++;
+								}
 								else
 								{
 									Debug.Log("Apparently, we didn't even see anything! 1");
@@ -4157,13 +4162,13 @@ public class StudentScript : MonoBehaviour
 						if (!this.Grudge)
 						{
 							this.ClubManager.CheckGrudge(this.Club);
-							if (Globals.GetClubKicked(this.Club) && !this.Pathfinding.canMove && this.Actions[this.Phase] == StudentActionType.ClubAction && this.Armband.activeInHierarchy)
+							if (ClubGlobals.GetClubKicked(this.Club) && !this.Pathfinding.canMove && this.Actions[this.Phase] == StudentActionType.ClubAction && this.Armband.activeInHierarchy)
 							{
 								this.Interaction = StudentInteractionType.ClubUnwelcome;
 								this.TalkTimer = 5f;
 								this.Warned = true;
 							}
-							else if (Globals.Club == this.Club && !this.Pathfinding.canMove && this.Actions[this.Phase] == StudentActionType.ClubAction && this.Armband.activeInHierarchy && this.ClubManager.ClubGrudge)
+							else if (ClubGlobals.Club == this.Club && !this.Pathfinding.canMove && this.Actions[this.Phase] == StudentActionType.ClubAction && this.Armband.activeInHierarchy && this.ClubManager.ClubGrudge)
 							{
 								this.Interaction = StudentInteractionType.ClubKick;
 								this.TalkTimer = 5f;
@@ -5456,7 +5461,7 @@ public class StudentScript : MonoBehaviour
 		}
 		if (this.Teacher)
 		{
-			if (Globals.PhysicalGrade + Globals.PhysicalBonus > 0 && this.Yandere.EquippedWeapon.Type == WeaponType.Knife)
+			if (ClassGlobals.PhysicalGrade + ClassGlobals.PhysicalBonus > 0 && this.Yandere.EquippedWeapon.Type == WeaponType.Knife)
 			{
 				Debug.Log("A teacher has entered the ''Fleeing'' protocol and called the ''BeginStruggle'' function.");
 				this.Pathfinding.target = this.Yandere.transform;
@@ -6113,7 +6118,7 @@ public class StudentScript : MonoBehaviour
 			this.Actions[2] = StudentActionType.Shamed;
 			this.Actions[4] = StudentActionType.Shamed;
 		}
-		if (this.StudentID == 26 && Globals.GetClubClosed(ClubType.Occult) && Globals.GetStudentDead(17) && Globals.GetStudentDead(18))
+		if (this.StudentID == 26 && ClubGlobals.GetClubClosed(ClubType.Occult) && Globals.GetStudentDead(17) && Globals.GetStudentDead(18))
 		{
 			this.Destinations[2] = this.StudentManager.Hangouts.List[this.StudentID];
 			this.Actions[2] = StudentActionType.Socializing;
@@ -6804,7 +6809,7 @@ public class StudentScript : MonoBehaviour
 
 	public void UpdatePerception()
 	{
-		if (Globals.Club == ClubType.Occult || Globals.StealthBonus > 0)
+		if (ClubGlobals.Club == ClubType.Occult || Globals.StealthBonus > 0)
 		{
 			this.Perception = 0.5f;
 		}

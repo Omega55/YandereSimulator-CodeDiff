@@ -1372,11 +1372,11 @@ public class MissionModeMenuScript : MonoBehaviour
 		Globals.MissionTarget = this.TargetID;
 		Globals.SchoolAtmosphereSet = true;
 		Globals.MissionMode = true;
-		Globals.BiologyGrade = 1;
-		Globals.ChemistryGrade = 1;
-		Globals.LanguageGrade = 1;
-		Globals.PhysicalGrade = 1;
-		Globals.PsychologyGrade = 1;
+		ClassGlobals.BiologyGrade = 1;
+		ClassGlobals.ChemistryGrade = 1;
+		ClassGlobals.LanguageGrade = 1;
+		ClassGlobals.PhysicalGrade = 1;
+		ClassGlobals.PsychologyGrade = 1;
 		if (this.Difficulty > 1)
 		{
 			for (int i = 2; i < this.Difficulty + 1; i++)

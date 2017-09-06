@@ -279,11 +279,11 @@ public class DialogueWheelScript : MonoBehaviour
 							this.Yandere.TargetStudent.TalkTimer = 100f;
 							this.Show = false;
 							this.ClubManager.CheckGrudge(this.Yandere.TargetStudent.Club);
-							if (Globals.GetQuitClub(this.Yandere.TargetStudent.Club))
+							if (ClubGlobals.GetQuitClub(this.Yandere.TargetStudent.Club))
 							{
 								this.Yandere.TargetStudent.ClubPhase = 4;
 							}
-							else if (Globals.Club != ClubType.None)
+							else if (ClubGlobals.Club != ClubType.None)
 							{
 								this.Yandere.TargetStudent.ClubPhase = 5;
 							}
@@ -628,7 +628,7 @@ public class DialogueWheelScript : MonoBehaviour
 			UISprite uisprite19 = this.Shadow[6];
 			uisprite19.color = new Color(uisprite19.color.r, uisprite19.color.g, uisprite19.color.b, 0f);
 		}
-		if (Globals.Club == this.Yandere.TargetStudent.Club)
+		if (ClubGlobals.Club == this.Yandere.TargetStudent.Club)
 		{
 			UISprite uisprite20 = this.ClubShadow[1];
 			uisprite20.color = new Color(uisprite20.color.r, uisprite20.color.g, uisprite20.color.b, 0.75f);
@@ -640,7 +640,7 @@ public class DialogueWheelScript : MonoBehaviour
 			UISprite uisprite22 = this.ClubShadow[3];
 			uisprite22.color = new Color(uisprite22.color.r, uisprite22.color.g, uisprite22.color.b, 0.75f);
 		}
-		if (Globals.Club != this.Yandere.TargetStudent.Club)
+		if (ClubGlobals.Club != this.Yandere.TargetStudent.Club)
 		{
 			UISprite uisprite23 = this.ClubShadow[2];
 			uisprite23.color = new Color(uisprite23.color.r, uisprite23.color.g, uisprite23.color.b, 0f);

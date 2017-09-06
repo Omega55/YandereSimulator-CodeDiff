@@ -228,14 +228,6 @@ public class TitleMenuScript : MonoBehaviour
 						this.FadeOut = true;
 						this.Fading = true;
 					}
-					if (this.Selected == 1)
-					{
-						this.PromptBar.Label[0].text = "Load";
-						this.PromptBar.Label[1].text = "Back";
-						this.PromptBar.Label[2].text = "Delete";
-						this.PromptBar.UpdateButtons();
-						this.SaveFiles.Show = true;
-					}
 					if (this.Selected == 2)
 					{
 						if (!this.LoveSick)

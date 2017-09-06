@@ -245,7 +245,7 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.ClubLabel.text = "Gym Teacher";
 		}
-		if (Globals.GetClubClosed(studentJson.Club))
+		if (ClubGlobals.GetClubClosed(studentJson.Club))
 		{
 			this.ClubLabel.text = "No Club";
 		}

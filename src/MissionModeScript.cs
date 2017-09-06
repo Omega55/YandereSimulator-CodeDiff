@@ -216,7 +216,7 @@ public class MissionModeScript : MonoBehaviour
 			this.Yandere.HeartRate.NormalColour = new Color(1f, 1f, 1f, 1f);
 			this.Clock.PeriodLabel.color = new Color(1f, 0f, 0f, 1f);
 			this.Clock.TimeLabel.color = new Color(1f, 0f, 0f, 1f);
-			this.Clock.DayLabel.enabled = false;
+			this.Clock.DayLabel.color = new Color(1f, 0f, 0f, 1f);
 			this.Reputation.PendingRepMarker.GetComponent<UISprite>().color = new Color(1f, 0f, 0f, 1f);
 			this.Reputation.CurrentRepMarker.gameObject.SetActive(false);
 			this.Reputation.PendingRepLabel.color = new Color(1f, 0f, 0f, 1f);
@@ -875,11 +875,11 @@ public class MissionModeScript : MonoBehaviour
 		Globals.MissionRequiredWeapon = this.RequiredWeaponID;
 		Globals.MissionRequiredClothing = this.RequiredClothingID;
 		Globals.MissionRequiredDisposal = this.RequiredDisposalID;
-		Globals.BiologyGrade = 1;
-		Globals.ChemistryGrade = 1;
-		Globals.LanguageGrade = 1;
-		Globals.PhysicalGrade = 1;
-		Globals.PsychologyGrade = 1;
+		ClassGlobals.BiologyGrade = 1;
+		ClassGlobals.ChemistryGrade = 1;
+		ClassGlobals.LanguageGrade = 1;
+		ClassGlobals.PhysicalGrade = 1;
+		ClassGlobals.PsychologyGrade = 1;
 		this.ID = 2;
 		while (this.ID < 11)
 		{

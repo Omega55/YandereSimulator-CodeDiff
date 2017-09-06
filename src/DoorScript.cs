@@ -91,7 +91,7 @@ public class DoorScript : MonoBehaviour
 			this.Labels[1].text = this.RoomName;
 			this.UpdatePlate();
 		}
-		if (this.Club != ClubType.None && Globals.GetClubClosed(this.Club))
+		if (this.Club != ClubType.None && ClubGlobals.GetClubClosed(this.Club))
 		{
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
@@ -119,44 +119,41 @@ public class DoorScript : MonoBehaviour
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Circle[0].fillAmount = 1f;
-			if (!this.CanSetBucket)
+			if (!this.Open)
 			{
-				if (!this.Open)
-				{
-					this.OpenDoor();
-				}
-				else
-				{
-					this.CloseDoor();
-				}
+				this.OpenDoor();
 			}
 			else
 			{
-				this.Bucket = this.Yandere.PickUp.Bucket;
-				this.Yandere.EmptyHands();
-				this.Bucket.transform.parent = base.transform;
-				this.Bucket.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
-				this.Bucket.Trap = true;
-				this.Bucket.Prompt.Hide();
-				this.Bucket.Prompt.enabled = false;
-				this.CheckDirection();
-				if (this.North)
-				{
-					this.Bucket.transform.localPosition = new Vector3(0f, 2.25f, 0.2975f);
-				}
-				else
-				{
-					this.Bucket.transform.localPosition = new Vector3(0f, 2.25f, -0.2975f);
-				}
-				this.Bucket.GetComponent<Rigidbody>().isKinematic = true;
-				this.Bucket.GetComponent<Rigidbody>().useGravity = false;
-				this.CanSetBucket = false;
-				this.BucketSet = true;
-				this.Open = false;
-				this.Timer = 0f;
-				this.Prompt.enabled = false;
-				this.Prompt.Hide();
+				this.CloseDoor();
 			}
+		}
+		if (this.Double && this.Swinging && this.Prompt.Circle[1].fillAmount == 0f)
+		{
+			this.Bucket = this.Yandere.PickUp.Bucket;
+			this.Yandere.EmptyHands();
+			this.Bucket.transform.parent = base.transform;
+			this.Bucket.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+			this.Bucket.Trap = true;
+			this.Bucket.Prompt.Hide();
+			this.Bucket.Prompt.enabled = false;
+			this.CheckDirection();
+			if (this.North)
+			{
+				this.Bucket.transform.localPosition = new Vector3(0f, 2.25f, 0.2975f);
+			}
+			else
+			{
+				this.Bucket.transform.localPosition = new Vector3(0f, 2.25f, -0.2975f);
+			}
+			this.Bucket.GetComponent<Rigidbody>().isKinematic = true;
+			this.Bucket.GetComponent<Rigidbody>().useGravity = false;
+			this.CanSetBucket = false;
+			this.BucketSet = true;
+			this.Open = false;
+			this.Timer = 0f;
+			this.Prompt.enabled = false;
+			this.Prompt.Hide();
 		}
 		if (this.Timer < 2f)
 		{
@@ -219,25 +216,25 @@ public class DoorScript : MonoBehaviour
 				{
 					if (this.Yandere.PickUp.GetComponent<BucketScript>().Full)
 					{
-						this.Prompt.Label[0].text = "     Set Trap";
+						this.Prompt.HideButton[1] = false;
 						this.CanSetBucket = true;
 					}
 					else if (this.CanSetBucket)
 					{
+						this.Prompt.HideButton[1] = true;
 						this.CanSetBucket = false;
-						this.UpdateLabel();
 					}
 				}
 				else if (this.CanSetBucket)
 				{
+					this.Prompt.HideButton[1] = true;
 					this.CanSetBucket = false;
-					this.UpdateLabel();
 				}
 			}
 			else if (this.CanSetBucket)
 			{
+				this.Prompt.HideButton[1] = true;
 				this.CanSetBucket = false;
-				this.UpdateLabel();
 			}
 		}
 	}

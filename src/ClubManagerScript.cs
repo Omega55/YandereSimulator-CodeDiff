@@ -254,7 +254,7 @@ public class ClubManagerScript : MonoBehaviour
 			}
 			this.ID++;
 		}
-		if (Globals.Club == Check)
+		if (ClubGlobals.Club == Check)
 		{
 			this.ClubMembers++;
 		}
@@ -320,12 +320,12 @@ public class ClubManagerScript : MonoBehaviour
 
 	public void ActivateClubBenefit()
 	{
-		if (Globals.Club == ClubType.Cooking)
+		if (ClubGlobals.Club == ClubType.Cooking)
 		{
 			this.Refrigerator.enabled = true;
 			this.Refrigerator.Prompt.enabled = true;
 		}
-		else if (Globals.Club == ClubType.Drama)
+		else if (ClubGlobals.Club == ClubType.Drama)
 		{
 			this.ID = 1;
 			while (this.ID < this.Masks.Length)
@@ -337,31 +337,31 @@ public class ClubManagerScript : MonoBehaviour
 			this.Gloves.enabled = true;
 			this.Gloves.Prompt.enabled = true;
 		}
-		else if (Globals.Club == ClubType.Occult)
+		else if (ClubGlobals.Club == ClubType.Occult)
 		{
 			this.StudentManager.UpdatePerception();
 			this.Yandere.Numbness -= 0.5f;
 		}
-		else if (Globals.Club == ClubType.Art)
+		else if (ClubGlobals.Club == ClubType.Art)
 		{
 			this.StudentManager.UpdateBooths();
 		}
-		else if (Globals.Club == ClubType.LightMusic)
+		else if (ClubGlobals.Club == ClubType.LightMusic)
 		{
 			this.Container.enabled = true;
 			this.Container.Prompt.enabled = true;
 		}
-		else if (Globals.Club == ClubType.MartialArts)
+		else if (ClubGlobals.Club == ClubType.MartialArts)
 		{
 			this.StudentManager.UpdateBooths();
 		}
-		else if (Globals.Club != ClubType.Photography)
+		else if (ClubGlobals.Club != ClubType.Photography)
 		{
-			if (Globals.Club == ClubType.Science)
+			if (ClubGlobals.Club == ClubType.Science)
 			{
 				this.BloodCleaner.Prompt.enabled = true;
 			}
-			else if (Globals.Club == ClubType.Sports)
+			else if (ClubGlobals.Club == ClubType.Sports)
 			{
 				this.Yandere.RunSpeed += 1f;
 				if (this.Yandere.Armed)
@@ -369,7 +369,7 @@ public class ClubManagerScript : MonoBehaviour
 					this.Yandere.EquippedWeapon.SuspicionCheck();
 				}
 			}
-			else if (Globals.Club == ClubType.Gardening)
+			else if (ClubGlobals.Club == ClubType.Gardening)
 			{
 				this.ShedDoor.Prompt.Label[0].text = "     Open";
 				this.ShedDoor.Locked = false;
@@ -378,7 +378,7 @@ public class ClubManagerScript : MonoBehaviour
 					this.Yandere.EquippedWeapon.SuspicionCheck();
 				}
 			}
-			else if (Globals.Club == ClubType.Gaming)
+			else if (ClubGlobals.Club == ClubType.Gaming)
 			{
 				this.ComputerGames.EnableGames();
 			}
@@ -387,13 +387,13 @@ public class ClubManagerScript : MonoBehaviour
 
 	public void DeactivateClubBenefit()
 	{
-		if (Globals.Club == ClubType.Cooking)
+		if (ClubGlobals.Club == ClubType.Cooking)
 		{
 			this.Refrigerator.enabled = false;
 			this.Refrigerator.Prompt.Hide();
 			this.Refrigerator.Prompt.enabled = false;
 		}
-		else if (Globals.Club == ClubType.Drama)
+		else if (ClubGlobals.Club == ClubType.Drama)
 		{
 			this.ID = 1;
 			while (this.ID < this.Masks.Length)
@@ -410,44 +410,44 @@ public class ClubManagerScript : MonoBehaviour
 			this.Gloves.Prompt.Hide();
 			this.Gloves.Prompt.enabled = false;
 		}
-		else if (Globals.Club == ClubType.Occult)
+		else if (ClubGlobals.Club == ClubType.Occult)
 		{
-			Globals.Club = ClubType.None;
+			ClubGlobals.Club = ClubType.None;
 			this.StudentManager.UpdatePerception();
 			this.Yandere.Numbness += 0.5f;
 		}
-		else if (Globals.Club == ClubType.Art)
+		else if (ClubGlobals.Club == ClubType.Art)
 		{
 			this.StudentManager.UpdateBooths();
 		}
-		else if (Globals.Club == ClubType.LightMusic)
+		else if (ClubGlobals.Club == ClubType.LightMusic)
 		{
 			this.Container.enabled = false;
 			this.Container.Prompt.Hide();
 			this.Container.Prompt.enabled = false;
 		}
-		else if (Globals.Club == ClubType.MartialArts)
+		else if (ClubGlobals.Club == ClubType.MartialArts)
 		{
 			this.StudentManager.UpdateBooths();
 		}
-		else if (Globals.Club != ClubType.Photography)
+		else if (ClubGlobals.Club != ClubType.Photography)
 		{
-			if (Globals.Club == ClubType.Science)
+			if (ClubGlobals.Club == ClubType.Science)
 			{
 				this.BloodCleaner.enabled = false;
 				this.BloodCleaner.Prompt.Hide();
 				this.BloodCleaner.Prompt.enabled = false;
 			}
-			else if (Globals.Club == ClubType.Sports)
+			else if (ClubGlobals.Club == ClubType.Sports)
 			{
 				this.Yandere.RunSpeed -= 1f;
 				if (this.Yandere.Armed)
 				{
-					Globals.Club = ClubType.None;
+					ClubGlobals.Club = ClubType.None;
 					this.Yandere.EquippedWeapon.SuspicionCheck();
 				}
 			}
-			else if (Globals.Club == ClubType.Gardening)
+			else if (ClubGlobals.Club == ClubType.Gardening)
 			{
 				if (!this.Yandere.Inventory.ShedKey)
 				{
@@ -456,11 +456,11 @@ public class ClubManagerScript : MonoBehaviour
 				}
 				if (this.Yandere.Armed)
 				{
-					Globals.Club = ClubType.None;
+					ClubGlobals.Club = ClubType.None;
 					this.Yandere.EquippedWeapon.SuspicionCheck();
 				}
 			}
-			else if (Globals.Club == ClubType.Gaming)
+			else if (ClubGlobals.Club == ClubType.Gaming)
 			{
 				this.ComputerGames.DeactivateAllBenefits();
 				this.ComputerGames.DisableGames();

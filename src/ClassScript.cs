@@ -72,11 +72,11 @@ public class ClassScript : MonoBehaviour
 	private void Start()
 	{
 		this.GradeUpWindow.localScale = Vector3.zero;
-		this.Subject[1] = Globals.Biology;
-		this.Subject[2] = Globals.Chemistry;
-		this.Subject[3] = Globals.Language;
-		this.Subject[4] = Globals.Physical;
-		this.Subject[5] = Globals.Psychology;
+		this.Subject[1] = ClassGlobals.Biology;
+		this.Subject[2] = ClassGlobals.Chemistry;
+		this.Subject[3] = ClassGlobals.Language;
+		this.Subject[4] = ClassGlobals.Physical;
+		this.Subject[5] = ClassGlobals.Psychology;
 		this.DescLabel.text = this.Desc[this.Selected];
 		this.UpdateSubjectLabels();
 		this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 1f);
@@ -140,11 +140,11 @@ public class ClassScript : MonoBehaviour
 					this.Show = false;
 					this.PromptBar.ClearButtons();
 					this.PromptBar.Show = false;
-					Globals.Biology = this.Subject[1] + this.SubjectTemp[1];
-					Globals.Chemistry = this.Subject[2] + this.SubjectTemp[2];
-					Globals.Language = this.Subject[3] + this.SubjectTemp[3];
-					Globals.Physical = this.Subject[4] + this.SubjectTemp[4];
-					Globals.Psychology = this.Subject[5] + this.SubjectTemp[5];
+					ClassGlobals.Biology = this.Subject[1] + this.SubjectTemp[1];
+					ClassGlobals.Chemistry = this.Subject[2] + this.SubjectTemp[2];
+					ClassGlobals.Language = this.Subject[3] + this.SubjectTemp[3];
+					ClassGlobals.Physical = this.Subject[4] + this.SubjectTemp[4];
+					ClassGlobals.Psychology = this.Subject[5] + this.SubjectTemp[5];
 					for (int i = 0; i < 6; i++)
 					{
 						this.Subject[i] += this.SubjectTemp[i];
@@ -176,7 +176,7 @@ public class ClassScript : MonoBehaviour
 						this.CheckForGradeUp();
 						if (!this.GradeUp)
 						{
-							if (Globals.ChemistryGrade > 0 && this.Poison != null)
+							if (ClassGlobals.ChemistryGrade > 0 && this.Poison != null)
 							{
 								this.Poison.SetActive(true);
 							}
@@ -354,65 +354,65 @@ public class ClassScript : MonoBehaviour
 
 	private void CheckForGradeUp()
 	{
-		if (Globals.Biology >= 20 && Globals.BiologyGrade < 1)
+		if (ClassGlobals.Biology >= 20 && ClassGlobals.BiologyGrade < 1)
 		{
-			Globals.BiologyGrade = 1;
+			ClassGlobals.BiologyGrade = 1;
 			this.GradeUpSubject = 1;
 			this.GradeUp = true;
 			this.Grade = 1;
 		}
-		else if (Globals.Chemistry >= 20 && Globals.ChemistryGrade < 1)
+		else if (ClassGlobals.Chemistry >= 20 && ClassGlobals.ChemistryGrade < 1)
 		{
-			Globals.ChemistryGrade = 1;
+			ClassGlobals.ChemistryGrade = 1;
 			this.GradeUpSubject = 2;
 			this.GradeUp = true;
 			this.Grade = 1;
 		}
-		else if (Globals.Language >= 20 && Globals.LanguageGrade < 1)
+		else if (ClassGlobals.Language >= 20 && ClassGlobals.LanguageGrade < 1)
 		{
-			Globals.LanguageGrade = 1;
+			ClassGlobals.LanguageGrade = 1;
 			this.GradeUpSubject = 3;
 			this.GradeUp = true;
 			this.Grade = 1;
 		}
-		else if (Globals.Physical >= 20 && Globals.PhysicalGrade < 1)
+		else if (ClassGlobals.Physical >= 20 && ClassGlobals.PhysicalGrade < 1)
 		{
-			Globals.PhysicalGrade = 1;
+			ClassGlobals.PhysicalGrade = 1;
 			this.GradeUpSubject = 4;
 			this.GradeUp = true;
 			this.Grade = 1;
 		}
-		else if (Globals.Physical >= 40 && Globals.PhysicalGrade < 2)
+		else if (ClassGlobals.Physical >= 40 && ClassGlobals.PhysicalGrade < 2)
 		{
-			Globals.PhysicalGrade = 2;
+			ClassGlobals.PhysicalGrade = 2;
 			this.GradeUpSubject = 4;
 			this.GradeUp = true;
 			this.Grade = 2;
 		}
-		else if (Globals.Physical >= 60 && Globals.PhysicalGrade < 3)
+		else if (ClassGlobals.Physical >= 60 && ClassGlobals.PhysicalGrade < 3)
 		{
-			Globals.PhysicalGrade = 3;
+			ClassGlobals.PhysicalGrade = 3;
 			this.GradeUpSubject = 4;
 			this.GradeUp = true;
 			this.Grade = 3;
 		}
-		else if (Globals.Physical >= 80 && Globals.PhysicalGrade < 4)
+		else if (ClassGlobals.Physical >= 80 && ClassGlobals.PhysicalGrade < 4)
 		{
-			Globals.PhysicalGrade = 4;
+			ClassGlobals.PhysicalGrade = 4;
 			this.GradeUpSubject = 4;
 			this.GradeUp = true;
 			this.Grade = 4;
 		}
-		else if (Globals.Physical == 100 && Globals.PhysicalGrade < 5)
+		else if (ClassGlobals.Physical == 100 && ClassGlobals.PhysicalGrade < 5)
 		{
-			Globals.PhysicalGrade = 5;
+			ClassGlobals.PhysicalGrade = 5;
 			this.GradeUpSubject = 4;
 			this.GradeUp = true;
 			this.Grade = 5;
 		}
-		else if (Globals.Psychology >= 20 && Globals.PsychologyGrade < 1)
+		else if (ClassGlobals.Psychology >= 20 && ClassGlobals.PsychologyGrade < 1)
 		{
-			Globals.PsychologyGrade = 1;
+			ClassGlobals.PsychologyGrade = 1;
 			this.GradeUpSubject = 5;
 			this.GradeUp = true;
 			this.Grade = 1;
@@ -421,29 +421,29 @@ public class ClassScript : MonoBehaviour
 
 	private void GivePoints()
 	{
-		Globals.BiologyGrade = 0;
-		Globals.ChemistryGrade = 0;
-		Globals.LanguageGrade = 0;
-		Globals.PhysicalGrade = 0;
-		Globals.PsychologyGrade = 0;
-		Globals.Biology = 19;
-		Globals.Chemistry = 19;
-		Globals.Language = 19;
-		Globals.Physical = 19;
-		Globals.Psychology = 19;
-		this.Subject[1] = Globals.Biology;
-		this.Subject[2] = Globals.Chemistry;
-		this.Subject[3] = Globals.Language;
-		this.Subject[4] = Globals.Physical;
-		this.Subject[5] = Globals.Psychology;
+		ClassGlobals.BiologyGrade = 0;
+		ClassGlobals.ChemistryGrade = 0;
+		ClassGlobals.LanguageGrade = 0;
+		ClassGlobals.PhysicalGrade = 0;
+		ClassGlobals.PsychologyGrade = 0;
+		ClassGlobals.Biology = 19;
+		ClassGlobals.Chemistry = 19;
+		ClassGlobals.Language = 19;
+		ClassGlobals.Physical = 19;
+		ClassGlobals.Psychology = 19;
+		this.Subject[1] = ClassGlobals.Biology;
+		this.Subject[2] = ClassGlobals.Chemistry;
+		this.Subject[3] = ClassGlobals.Language;
+		this.Subject[4] = ClassGlobals.Physical;
+		this.Subject[5] = ClassGlobals.Psychology;
 		this.UpdateBars();
 	}
 
 	private void MaxPhysical()
 	{
-		Globals.PhysicalGrade = 0;
-		Globals.Physical = 99;
-		this.Subject[4] = Globals.Physical;
+		ClassGlobals.PhysicalGrade = 0;
+		ClassGlobals.Physical = 99;
+		this.Subject[4] = ClassGlobals.Physical;
 		this.UpdateBars();
 	}
 }

@@ -96,6 +96,16 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 			this.ID++;
 		}
 		this.ID = 0;
+		while (this.ID < this.YandereCosmetic.FemaleAccessories.Length)
+		{
+			GameObject gameObject2 = this.YandereCosmetic.FemaleAccessories[this.ID];
+			if (gameObject2 != null)
+			{
+				gameObject2.SetActive(false);
+			}
+			this.ID++;
+		}
+		this.ID = 0;
 		this.YandereCosmetic.FemaleHair[1].SetActive(true);
 		this.Subtitle.text = string.Empty;
 		this.RightEyeRenderer.material.color = new Color(0.33f, 0.33f, 0.33f, 1f);

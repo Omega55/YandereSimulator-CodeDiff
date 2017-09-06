@@ -304,6 +304,7 @@ public class CosmeticScript : MonoBehaviour
 			if (this.StudentID == 32 && !this.Kidnapped && SceneManager.GetActiveScene().name == "PortraitScene")
 			{
 				this.Character.GetComponent<Animation>().Play("f02_socialCameraPose_00");
+				base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y + 0.05f, base.transform.position.z);
 			}
 		}
 		else
@@ -514,7 +515,7 @@ public class CosmeticScript : MonoBehaviour
 		{
 			this.MaleAccessories[this.Accessory].SetActive(true);
 		}
-		if (this.Club < ClubType.Gaming && this.ClubAccessories[(int)this.Club] != null && !Globals.GetClubClosed(this.Club) && this.StudentID != 26)
+		if (this.Club < ClubType.Gaming && this.ClubAccessories[(int)this.Club] != null && !ClubGlobals.GetClubClosed(this.Club) && this.StudentID != 26)
 		{
 			this.ClubAccessories[(int)this.Club].SetActive(true);
 		}
@@ -1197,11 +1198,5 @@ public class CosmeticScript : MonoBehaviour
 
 	public void EyeTypeCheck()
 	{
-		if (Globals.FemaleUniform == 1 && this.EyeType == "Gentle")
-		{
-			this.Student.RiggedAccessory.GetComponent<RiggedAccessoryAttacher>().defaultMaterials = this.MyRenderer.materials;
-			this.Student.RiggedAccessory.GetComponent<RiggedAccessoryAttacher>().Gentle = true;
-			this.Student.AttachRiggedAccessory();
-		}
 	}
 }

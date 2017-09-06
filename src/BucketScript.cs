@@ -182,7 +182,7 @@ public class BucketScript : MonoBehaviour
 		}
 		if (this.Dumbbells > 0)
 		{
-			if (Globals.PhysicalGrade + Globals.PhysicalBonus == 0)
+			if (ClassGlobals.PhysicalGrade + ClassGlobals.PhysicalBonus == 0)
 			{
 				this.Prompt.Label[3].text = "     Physical Stat Too Low";
 				this.Prompt.Circle[3].fillAmount = 1f;
@@ -316,9 +316,10 @@ public class BucketScript : MonoBehaviour
 				}
 				else
 				{
-					this.Fly = false;
-					this.Trap = false;
+					this.Sparkles.Stop();
 					this.Rotate = 0f;
+					this.Trap = false;
+					this.Fly = false;
 				}
 			}
 			if (!this.Trap)

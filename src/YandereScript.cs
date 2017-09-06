@@ -1222,12 +1222,12 @@ public class YandereScript : MonoBehaviour
 						if (this.Stance.Current == StanceType.Crouching)
 						{
 							this.CharacterAnimation.CrossFade(this.CrouchRunAnim);
-							this.MyController.Move(base.transform.forward * (this.CrouchRunSpeed + (float)(Globals.PhysicalGrade + Globals.SpeedBonus) * 0.25f) * Time.deltaTime);
+							this.MyController.Move(base.transform.forward * (this.CrouchRunSpeed + (float)(ClassGlobals.PhysicalGrade + Globals.SpeedBonus) * 0.25f) * Time.deltaTime);
 						}
 						else if (!this.Dragging && !this.Mopping)
 						{
 							this.CharacterAnimation.CrossFade(this.RunAnim);
-							this.MyController.Move(base.transform.forward * (this.RunSpeed + (float)(Globals.PhysicalGrade + Globals.SpeedBonus) * 0.25f) * Time.deltaTime);
+							this.MyController.Move(base.transform.forward * (this.RunSpeed + (float)(ClassGlobals.PhysicalGrade + Globals.SpeedBonus) * 0.25f) * Time.deltaTime);
 						}
 						else if (this.Mopping)
 						{
@@ -2151,7 +2151,7 @@ public class YandereScript : MonoBehaviour
 					this.CharacterAnimation.CrossFade((!this.TargetStudent.Teacher) ? "f02_struggleLoseA_00" : "f02_teacherStruggleLoseA_00");
 				}
 			}
-			if (this.ClubActivity && Globals.Club == ClubType.MartialArts)
+			if (this.ClubActivity && ClubGlobals.Club == ClubType.MartialArts)
 			{
 				this.CharacterAnimation.Play("f02_kick_23");
 				if (this.CharacterAnimation["f02_kick_23"].time >= this.CharacterAnimation["f02_kick_23"].length)
@@ -4800,7 +4800,7 @@ public class YandereScript : MonoBehaviour
 		if (!this.ClubAttire)
 		{
 			this.ClubAttire = true;
-			if (Globals.Club == ClubType.Art)
+			if (ClubGlobals.Club == ClubType.Art)
 			{
 				this.MyRenderer.sharedMesh = this.ApronMesh;
 				this.MyRenderer.materials[0].mainTexture = this.ApronTexture;
@@ -4809,7 +4809,7 @@ public class YandereScript : MonoBehaviour
 				this.Schoolwear = 4;
 				this.Paint = true;
 			}
-			else if (Globals.Club == ClubType.MartialArts)
+			else if (ClubGlobals.Club == ClubType.MartialArts)
 			{
 				this.MyRenderer.sharedMesh = this.JudoGiMesh;
 				this.MyRenderer.materials[0].mainTexture = this.JudoGiTexture;
@@ -4817,7 +4817,7 @@ public class YandereScript : MonoBehaviour
 				this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
 				this.Schoolwear = 5;
 			}
-			else if (Globals.Club == ClubType.Science)
+			else if (ClubGlobals.Club == ClubType.Science)
 			{
 				this.MyRenderer.sharedMesh = this.LabCoatMesh;
 				this.MyRenderer.materials[0].mainTexture = this.LabCoatTexture;
@@ -4846,9 +4846,9 @@ public class YandereScript : MonoBehaviour
 			}
 			this.ID++;
 		}
-		if (!this.CensorSteam[0].activeInHierarchy && Globals.Club > ClubType.None && this.ClubAccessories[(int)Globals.Club] != null)
+		if (!this.CensorSteam[0].activeInHierarchy && ClubGlobals.Club > ClubType.None && this.ClubAccessories[(int)ClubGlobals.Club] != null)
 		{
-			this.ClubAccessories[(int)Globals.Club].SetActive(true);
+			this.ClubAccessories[(int)ClubGlobals.Club].SetActive(true);
 		}
 	}
 

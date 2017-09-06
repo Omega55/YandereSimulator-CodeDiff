@@ -51,6 +51,8 @@ public class QualityManagerScript : MonoBehaviour
 
 	public SSAOEffect ExperimentalSSAOEffect;
 
+	public bool RimLightActive;
+
 	private void Start()
 	{
 		DepthOfField34[] components = Camera.main.GetComponents<DepthOfField34>();
@@ -315,74 +317,108 @@ public class QualityManagerScript : MonoBehaviour
 
 	public void RimLight()
 	{
-		for (int i = 1; i < this.StudentManager.Students.Length; i++)
+		if (!this.RimLightActive)
 		{
-			StudentScript studentScript = this.StudentManager.Students[i];
-			if (studentScript != null && studentScript.gameObject.activeInHierarchy)
+			this.RimLightActive = true;
+			for (int i = 1; i < this.StudentManager.Students.Length; i++)
 			{
-				this.NewHairShader = this.ToonOutlineRimLight;
-				this.NewBodyShader = this.ToonOutlineRimLight;
-				studentScript.MyRenderer.materials[0].shader = this.ToonOutlineRimLight;
-				studentScript.MyRenderer.materials[1].shader = this.ToonOutlineRimLight;
-				studentScript.MyRenderer.materials[2].shader = this.ToonOutlineRimLight;
-				if (!studentScript.Male)
+				StudentScript studentScript = this.StudentManager.Students[i];
+				if (studentScript != null && studentScript.gameObject.activeInHierarchy)
 				{
-					if (!studentScript.Teacher)
+					this.NewHairShader = this.ToonOutlineRimLight;
+					this.NewBodyShader = this.ToonOutlineRimLight;
+					studentScript.MyRenderer.materials[0].shader = this.ToonOutlineRimLight;
+					studentScript.MyRenderer.materials[1].shader = this.ToonOutlineRimLight;
+					studentScript.MyRenderer.materials[2].shader = this.ToonOutlineRimLight;
+					this.AdjustRimLight(studentScript.MyRenderer.materials[0]);
+					this.AdjustRimLight(studentScript.MyRenderer.materials[1]);
+					this.AdjustRimLight(studentScript.MyRenderer.materials[2]);
+					if (!studentScript.Male)
 					{
-						if (studentScript.Cosmetic.FemaleHairRenderers[studentScript.Cosmetic.Hairstyle] != null)
+						if (!studentScript.Teacher)
 						{
-							studentScript.Cosmetic.FemaleHairRenderers[studentScript.Cosmetic.Hairstyle].material.shader = this.ToonOutlineRimLight;
+							if (studentScript.Cosmetic.FemaleHairRenderers[studentScript.Cosmetic.Hairstyle] != null)
+							{
+								studentScript.Cosmetic.FemaleHairRenderers[studentScript.Cosmetic.Hairstyle].material.shader = this.ToonOutlineRimLight;
+								this.AdjustRimLight(studentScript.Cosmetic.FemaleHairRenderers[studentScript.Cosmetic.Hairstyle].material);
+							}
+							if (studentScript.Cosmetic.Accessory > 0)
+							{
+								studentScript.Cosmetic.FemaleAccessories[studentScript.Cosmetic.Accessory].GetComponent<Renderer>().material.shader = this.ToonOutlineRimLight;
+								this.AdjustRimLight(studentScript.Cosmetic.FemaleAccessories[studentScript.Cosmetic.Accessory].GetComponent<Renderer>().material);
+							}
 						}
-						if (studentScript.Cosmetic.Accessory > 0)
+						else
 						{
-							studentScript.Cosmetic.FemaleAccessories[studentScript.Cosmetic.Accessory].GetComponent<Renderer>().material.shader = this.ToonOutlineRimLight;
+							studentScript.Cosmetic.TeacherHairRenderers[studentScript.Cosmetic.Hairstyle].material.shader = this.ToonOutlineRimLight;
+							this.AdjustRimLight(studentScript.Cosmetic.TeacherHairRenderers[studentScript.Cosmetic.Hairstyle].material);
 						}
 					}
 					else
 					{
-						studentScript.Cosmetic.TeacherHairRenderers[studentScript.Cosmetic.Hairstyle].material.shader = this.ToonOutlineRimLight;
-					}
-				}
-				else
-				{
-					if (studentScript.Cosmetic.Hairstyle > 0)
-					{
-						studentScript.Cosmetic.MaleHairRenderers[studentScript.Cosmetic.Hairstyle].material.shader = this.ToonOutlineRimLight;
-					}
-					if (studentScript.Cosmetic.Accessory > 0)
-					{
-						Renderer component = studentScript.Cosmetic.MaleAccessories[studentScript.Cosmetic.Accessory].GetComponent<Renderer>();
-						if (component != null)
+						if (studentScript.Cosmetic.Hairstyle > 0)
 						{
-							component.material.shader = this.ToonOutlineRimLight;
+							studentScript.Cosmetic.MaleHairRenderers[studentScript.Cosmetic.Hairstyle].material.shader = this.ToonOutlineRimLight;
+							this.AdjustRimLight(studentScript.Cosmetic.MaleHairRenderers[studentScript.Cosmetic.Hairstyle].material);
+						}
+						if (studentScript.Cosmetic.Accessory > 0)
+						{
+							Renderer component = studentScript.Cosmetic.MaleAccessories[studentScript.Cosmetic.Accessory].GetComponent<Renderer>();
+							if (component != null)
+							{
+								component.material.shader = this.ToonOutlineRimLight;
+								this.AdjustRimLight(component.material);
+							}
+						}
+					}
+					if (!studentScript.Teacher && studentScript.Cosmetic.Club > ClubType.None && studentScript.Cosmetic.ClubAccessories[(int)studentScript.Cosmetic.Club] != null)
+					{
+						Renderer component2 = studentScript.Cosmetic.ClubAccessories[(int)studentScript.Cosmetic.Club].GetComponent<Renderer>();
+						if (component2 != null)
+						{
+							component2.material.shader = this.ToonOutlineRimLight;
+							this.AdjustRimLight(component2.material);
 						}
 					}
 				}
-				if (!studentScript.Teacher && studentScript.Cosmetic.Club > ClubType.None && studentScript.Cosmetic.ClubAccessories[(int)studentScript.Cosmetic.Club] != null)
+			}
+			this.Yandere.MyRenderer.materials[0].shader = this.ToonOutlineRimLight;
+			this.Yandere.MyRenderer.materials[1].shader = this.ToonOutlineRimLight;
+			this.Yandere.MyRenderer.materials[2].shader = this.ToonOutlineRimLight;
+			this.AdjustRimLight(this.Yandere.MyRenderer.materials[0]);
+			this.AdjustRimLight(this.Yandere.MyRenderer.materials[1]);
+			this.AdjustRimLight(this.Yandere.MyRenderer.materials[2]);
+			for (int j = 1; j < this.Yandere.Hairstyles.Length; j++)
+			{
+				Renderer component3 = this.Yandere.Hairstyles[j].GetComponent<Renderer>();
+				if (component3 != null)
 				{
-					Renderer component2 = studentScript.Cosmetic.ClubAccessories[(int)studentScript.Cosmetic.Club].GetComponent<Renderer>();
-					if (component2 != null)
-					{
-						component2.material.shader = this.ToonOutlineRimLight;
-					}
+					this.YandereHairRenderer.material.shader = this.ToonOutlineRimLight;
+					component3.material.shader = this.ToonOutlineRimLight;
+					this.AdjustRimLight(this.YandereHairRenderer.material);
+					this.AdjustRimLight(component3.material);
 				}
 			}
+			this.Nemesis.Cosmetic.MyRenderer.materials[0].shader = this.ToonOutlineRimLight;
+			this.Nemesis.Cosmetic.MyRenderer.materials[1].shader = this.ToonOutlineRimLight;
+			this.Nemesis.Cosmetic.MyRenderer.materials[2].shader = this.ToonOutlineRimLight;
+			this.Nemesis.NemesisHair.GetComponent<Renderer>().material.shader = this.ToonOutlineRimLight;
+			this.AdjustRimLight(this.Nemesis.Cosmetic.MyRenderer.materials[0]);
+			this.AdjustRimLight(this.Nemesis.Cosmetic.MyRenderer.materials[1]);
+			this.AdjustRimLight(this.Nemesis.Cosmetic.MyRenderer.materials[2]);
+			this.AdjustRimLight(this.Nemesis.NemesisHair.GetComponent<Renderer>().material);
 		}
-		this.Yandere.MyRenderer.materials[0].shader = this.ToonOutlineRimLight;
-		this.Yandere.MyRenderer.materials[1].shader = this.ToonOutlineRimLight;
-		this.Yandere.MyRenderer.materials[2].shader = this.ToonOutlineRimLight;
-		for (int j = 1; j < this.Yandere.Hairstyles.Length; j++)
+		else
 		{
-			Renderer component3 = this.Yandere.Hairstyles[j].GetComponent<Renderer>();
-			if (component3 != null)
-			{
-				this.YandereHairRenderer.material.shader = this.ToonOutlineRimLight;
-				component3.material.shader = this.ToonOutlineRimLight;
-			}
+			this.RimLightActive = false;
+			this.UpdateOutlines();
 		}
-		this.Nemesis.Cosmetic.MyRenderer.materials[0].shader = this.ToonOutlineRimLight;
-		this.Nemesis.Cosmetic.MyRenderer.materials[1].shader = this.ToonOutlineRimLight;
-		this.Nemesis.Cosmetic.MyRenderer.materials[2].shader = this.ToonOutlineRimLight;
-		this.Nemesis.NemesisHair.GetComponent<Renderer>().material.shader = this.ToonOutlineRimLight;
+	}
+
+	public void AdjustRimLight(Material mat)
+	{
+		mat.SetFloat("_RimLightIntensity", 5f);
+		mat.SetFloat("_RimCrisp", 0.35f);
+		mat.SetFloat("_RimAdditive", 0.5f);
 	}
 }

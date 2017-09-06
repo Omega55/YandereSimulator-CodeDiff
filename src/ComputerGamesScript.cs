@@ -44,7 +44,7 @@ public class ComputerGamesScript : MonoBehaviour
 		this.GameWindow.gameObject.SetActive(false);
 		this.DeactivateAllBenefits();
 		this.OriginalColor = this.Yandere.PowerUp.color;
-		if (Globals.Club == ClubType.Gaming)
+		if (ClubGlobals.Club == ClubType.Gaming)
 		{
 			this.EnableGames();
 		}
@@ -220,24 +220,24 @@ public class ComputerGamesScript : MonoBehaviour
 		{
 			if (this.Subject == 1)
 			{
-				Globals.BiologyBonus = 1;
+				ClassGlobals.BiologyBonus = 1;
 			}
 			else if (this.Subject == 2)
 			{
-				Globals.ChemistryBonus = 1;
+				ClassGlobals.ChemistryBonus = 1;
 			}
 			else if (this.Subject == 3)
 			{
-				Globals.LanguageBonus = 1;
+				ClassGlobals.LanguageBonus = 1;
 			}
 			else if (this.Subject == 4)
 			{
-				Globals.PsychologyBonus = 1;
+				ClassGlobals.PsychologyBonus = 1;
 			}
 		}
 		else if (this.GameID == 2)
 		{
-			Globals.PhysicalBonus = 1;
+			ClassGlobals.PhysicalBonus = 1;
 		}
 		else if (this.GameID == 3)
 		{
@@ -277,24 +277,24 @@ public class ComputerGamesScript : MonoBehaviour
 		{
 			if (this.Subject == 1)
 			{
-				Globals.BiologyBonus = 0;
+				ClassGlobals.BiologyBonus = 0;
 			}
 			else if (this.Subject == 2)
 			{
-				Globals.ChemistryBonus = 0;
+				ClassGlobals.ChemistryBonus = 0;
 			}
 			else if (this.Subject == 3)
 			{
-				Globals.LanguageBonus = 0;
+				ClassGlobals.LanguageBonus = 0;
 			}
 			else if (this.Subject == 4)
 			{
-				Globals.PsychologyBonus = 0;
+				ClassGlobals.PsychologyBonus = 0;
 			}
 		}
 		else if (this.GameID == 2)
 		{
-			Globals.PhysicalBonus = 0;
+			ClassGlobals.PhysicalBonus = 0;
 		}
 		else if (this.GameID == 3)
 		{
@@ -330,11 +330,11 @@ public class ComputerGamesScript : MonoBehaviour
 
 	public void DeactivateAllBenefits()
 	{
-		Globals.BiologyBonus = 0;
-		Globals.ChemistryBonus = 0;
-		Globals.LanguageBonus = 0;
-		Globals.PsychologyBonus = 0;
-		Globals.PhysicalBonus = 0;
+		ClassGlobals.BiologyBonus = 0;
+		ClassGlobals.ChemistryBonus = 0;
+		ClassGlobals.LanguageBonus = 0;
+		ClassGlobals.PsychologyBonus = 0;
+		ClassGlobals.PhysicalBonus = 0;
 		Globals.SeductionBonus = 0;
 		Globals.NumbnessBonus = 0;
 		Globals.SocialBonus = 0;

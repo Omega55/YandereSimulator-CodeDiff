@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
@@ -141,42 +139,7 @@ public class SaveFile
 
 	public void ReadFromGlobals()
 	{
-		foreach (KeyValuePair<string, string[]> keyValuePair in SaveFileData.GlobalsMappings)
-		{
-			string key = keyValuePair.Key;
-			string[] value = keyValuePair.Value;
-			bool flag = value.Length == 1;
-			if (flag)
-			{
-				PropertyInfo property = typeof(Globals).GetProperty(value[0], BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy);
-				object value2 = property.GetValue(null, null);
-				FieldInfo field = this.data.GetType().GetField(key);
-				field.SetValue(this.data, value2);
-			}
-			else
-			{
-				MethodInfo method = typeof(Globals).GetMethod(value[0], BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy);
-				ParameterInfo[] parameters = method.GetParameters();
-				object[] array = new object[parameters.Length];
-				for (int i = 0; i < array.Length; i++)
-				{
-					array[i] = ((!parameters[i].ParameterType.IsValueType) ? null : 0);
-					Debug.Log(string.Concat(new string[]
-					{
-						"Param ",
-						i.ToString(),
-						" default is ",
-						parameters[i].ParameterType.Name,
-						": [",
-						array[i].ToString(),
-						"]"
-					}));
-				}
-				object value3 = method.Invoke(null, array);
-				FieldInfo field2 = this.data.GetType().GetField(key);
-				field2.SetValue(this.data, value3);
-			}
-		}
+		throw new NotImplementedException();
 	}
 
 	public void WriteToGlobals()
