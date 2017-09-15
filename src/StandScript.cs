@@ -35,11 +35,19 @@ public class StandScript : MonoBehaviour
 
 	public bool SFX;
 
+	private void Start()
+	{
+		if (GameGlobals.LoveSick)
+		{
+			base.enabled = false;
+		}
+	}
+
 	private void Update()
 	{
 		if (!this.Stand.activeInHierarchy)
 		{
-			if (this.Weapons == 8 && this.Yandere.transform.position.y > 11.9f && Input.GetButtonDown("RB") && !Globals.MissionMode && !this.Yandere.Laughing && this.Yandere.CanMove)
+			if (this.Weapons == 8 && this.Yandere.transform.position.y > 11.9f && Input.GetButtonDown("RB") && !MissionModeGlobals.MissionMode && !this.Yandere.Laughing && this.Yandere.CanMove)
 			{
 				this.Yandere.Jojo();
 			}

@@ -133,22 +133,22 @@ public class CookingEventScript : MonoBehaviour
 			}
 			else if (!this.EventStudent.Pathfinding.canMove)
 			{
-				if (!Globals.GetTopicLearnedByStudent(1, 7) && Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position) < 5f)
+				if (!ConversationGlobals.GetTopicLearnedByStudent(1, 7) && Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position) < 5f)
 				{
-					if (!Globals.GetTopicDiscovered(1))
+					if (!ConversationGlobals.GetTopicDiscovered(1))
 					{
 						this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
-						Globals.SetTopicDiscovered(1, true);
+						ConversationGlobals.SetTopicDiscovered(1, true);
 					}
 					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
-					Globals.SetTopicLearnedByStudent(1, 7, true);
+					ConversationGlobals.SetTopicLearnedByStudent(1, 7, true);
 				}
 				if (this.EventPhase == -1)
 				{
 					this.Timer += Time.deltaTime;
 					if (this.Timer > 5f)
 					{
-						Globals.SetSchemeStage(4, 5);
+						SchemeGlobals.SetSchemeStage(4, 5);
 						this.Schemes.UpdateInstructions();
 						this.RivalPhone.SetActive(false);
 						this.EventSubtitle.text = string.Empty;

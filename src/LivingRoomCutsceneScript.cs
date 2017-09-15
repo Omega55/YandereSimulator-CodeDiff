@@ -282,12 +282,12 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 		{
 			if (!component.isPlaying)
 			{
-				Globals.SetStudentKidnapped(32, false);
-				Globals.SetStudentBroken(32, true);
-				Globals.SetStudentKidnapped(7, true);
-				Globals.SetStudentSanity(7, 100f);
-				Globals.KidnapVictim = 7;
-				Globals.StartInBasement = true;
+				StudentGlobals.SetStudentKidnapped(32, false);
+				StudentGlobals.SetStudentBroken(32, true);
+				StudentGlobals.SetStudentKidnapped(7, true);
+				StudentGlobals.SetStudentSanity(7, 100f);
+				SchoolGlobals.KidnapVictim = 7;
+				HomeGlobals.StartInBasement = true;
 				SceneManager.LoadScene("CalendarScene");
 			}
 		}
@@ -296,9 +296,9 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 			this.SubDarkness.color = new Color(this.SubDarkness.color.r, this.SubDarkness.color.g, this.SubDarkness.color.b, Mathf.MoveTowards(this.SubDarkness.color.a, 1f, Time.deltaTime * 0.2f));
 			if (this.SubDarkness.color.a == 1f)
 			{
-				Globals.SetStudentKidnapped(32, false);
-				Globals.SetStudentBroken(32, true);
-				Globals.KidnapVictim = 0;
+				StudentGlobals.SetStudentKidnapped(32, false);
+				StudentGlobals.SetStudentBroken(32, true);
+				SchoolGlobals.KidnapVictim = 0;
 				SceneManager.LoadScene("CalendarScene");
 			}
 		}

@@ -53,11 +53,11 @@ public class TalkingScript : MonoBehaviour
 				{
 					this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod2Anim);
 					this.S.RepRecovery = 5f;
-					if (Globals.PantiesEquipped == 6)
+					if (PlayerGlobals.PantiesEquipped == 6)
 					{
 						this.S.RepRecovery += 2.5f;
 					}
-					if (Globals.SocialBonus > 0)
+					if (PlayerGlobals.SocialBonus > 0)
 					{
 						this.S.RepRecovery += 2.5f;
 					}
@@ -107,15 +107,15 @@ public class TalkingScript : MonoBehaviour
 				{
 					this.S.Subtitle.UpdateLabel("Student Compliment", 0, 3f);
 					this.S.RepBonus = 0;
-					if (Globals.PantiesEquipped == 3)
+					if (PlayerGlobals.PantiesEquipped == 3)
 					{
 						this.S.RepBonus++;
 					}
-					if ((this.S.Male && Globals.Seduction > 0) || Globals.Seduction == 5)
+					if ((this.S.Male && PlayerGlobals.Seduction > 0) || PlayerGlobals.Seduction == 5)
 					{
 						this.S.RepBonus++;
 					}
-					if (Globals.SocialBonus > 0)
+					if (PlayerGlobals.SocialBonus > 0)
 					{
 						this.S.RepBonus++;
 					}
@@ -145,39 +145,39 @@ public class TalkingScript : MonoBehaviour
 					{
 						this.S.GossipBonus++;
 					}
-					if (Globals.PantiesEquipped == 9)
+					if (PlayerGlobals.PantiesEquipped == 9)
 					{
 						this.S.GossipBonus++;
 					}
-					if (Globals.DarkSecret)
+					if (SchemeGlobals.DarkSecret)
 					{
 						this.S.GossipBonus++;
 					}
-					if (Globals.GetStudentFriend(this.S.StudentID))
+					if (PlayerGlobals.GetStudentFriend(this.S.StudentID))
 					{
 						this.S.GossipBonus++;
 					}
-					if ((this.S.Male && Globals.Seduction > 1) || Globals.Seduction == 5)
+					if ((this.S.Male && PlayerGlobals.Seduction > 1) || PlayerGlobals.Seduction == 5)
 					{
 						this.S.GossipBonus++;
 					}
-					if (Globals.SocialBonus > 0)
+					if (PlayerGlobals.SocialBonus > 0)
 					{
 						this.S.GossipBonus++;
 					}
-					Globals.SetStudentReputation(this.S.DialogueWheel.Victim, Globals.GetStudentReputation(this.S.DialogueWheel.Victim) - (1 + this.S.GossipBonus));
+					StudentGlobals.SetStudentReputation(this.S.DialogueWheel.Victim, StudentGlobals.GetStudentReputation(this.S.DialogueWheel.Victim) - (1 + this.S.GossipBonus));
 					this.S.Reputation.PendingRep -= 2f;
 					this.S.PendingRep -= 2f;
 					this.S.Gossiped = true;
-					if (!Globals.GetTopicDiscovered(15))
+					if (!ConversationGlobals.GetTopicDiscovered(15))
 					{
 						this.S.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
-						Globals.SetTopicDiscovered(15, true);
+						ConversationGlobals.SetTopicDiscovered(15, true);
 					}
-					if (!Globals.GetTopicLearnedByStudent(15, this.S.StudentID))
+					if (!ConversationGlobals.GetTopicLearnedByStudent(15, this.S.StudentID))
 					{
 						this.S.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
-						Globals.SetTopicLearnedByStudent(15, this.S.StudentID, true);
+						ConversationGlobals.SetTopicLearnedByStudent(15, this.S.StudentID, true);
 					}
 				}
 				else
@@ -239,8 +239,8 @@ public class TalkingScript : MonoBehaviour
 					if (this.S.TaskPhase == 5)
 					{
 						this.S.DialogueWheel.TaskWindow.TaskComplete = true;
-						Globals.SetTaskStatus(this.S.StudentID, 3);
-						Globals.SetStudentFriend(this.S.StudentID, true);
+						TaskGlobals.SetTaskStatus(this.S.StudentID, 3);
+						PlayerGlobals.SetStudentFriend(this.S.StudentID, true);
 						this.S.Interaction = StudentInteractionType.Idle;
 					}
 					else if (this.S.TaskPhase == 4 || this.S.TaskPhase == 0)
@@ -717,7 +717,7 @@ public class TalkingScript : MonoBehaviour
 					}
 					else
 					{
-						Globals.SuitorProgress = 1;
+						DatingGlobals.SuitorProgress = 1;
 						this.S.Yandere.LoveManager.SuitorProgress++;
 						this.S.Subtitle.UpdateLabel("Suitor Love", 1, 3f);
 						this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod1Anim);
@@ -840,11 +840,11 @@ public class TalkingScript : MonoBehaviour
 						this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod2Anim);
 						this.S.Subtitle.UpdateLabel("Accept Food", 0, 3f);
 						this.S.RepBonus = 0;
-						if (Globals.PantiesEquipped == 3)
+						if (PlayerGlobals.PantiesEquipped == 3)
 						{
 							this.S.RepBonus++;
 						}
-						if ((this.S.Male && Globals.Seduction > 0) || Globals.Seduction == 5)
+						if ((this.S.Male && PlayerGlobals.Seduction > 0) || PlayerGlobals.Seduction == 5)
 						{
 							this.S.RepBonus++;
 						}

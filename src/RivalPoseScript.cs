@@ -21,7 +21,7 @@ public class RivalPoseScript : MonoBehaviour
 
 	private void Start()
 	{
-		int femaleUniform = Globals.FemaleUniform;
+		int femaleUniform = StudentGlobals.FemaleUniform;
 		this.MyRenderer.sharedMesh = this.FemaleUniforms[femaleUniform];
 		if (femaleUniform == 1)
 		{

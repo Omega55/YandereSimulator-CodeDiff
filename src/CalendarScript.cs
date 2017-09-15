@@ -45,21 +45,21 @@ public class CalendarScript : MonoBehaviour
 	private void Start()
 	{
 		this.LoveSickCheck();
-		if (!Globals.SchoolAtmosphereSet)
+		if (!SchoolGlobals.SchoolAtmosphereSet)
 		{
-			Globals.SchoolAtmosphereSet = true;
-			Globals.SchoolAtmosphere = 100f;
+			SchoolGlobals.SchoolAtmosphereSet = true;
+			SchoolGlobals.SchoolAtmosphere = 100f;
 		}
-		if (Globals.Weekday > 4)
+		if (DateGlobals.Weekday > 4)
 		{
-			Globals.Weekday = 0;
+			DateGlobals.Weekday = 0;
 			Globals.DeleteAll();
 		}
-		this.Sun.color = new Color(this.Sun.color.r, this.Sun.color.g, this.Sun.color.b, Globals.SchoolAtmosphere * 0.01f);
-		this.Cloud.color = new Color(this.Cloud.color.r, this.Cloud.color.g, this.Cloud.color.b, 1f - Globals.SchoolAtmosphere * 0.01f);
-		this.Atmosphere = Globals.SchoolAtmosphere;
+		this.Sun.color = new Color(this.Sun.color.r, this.Sun.color.g, this.Sun.color.b, SchoolGlobals.SchoolAtmosphere * 0.01f);
+		this.Cloud.color = new Color(this.Cloud.color.r, this.Cloud.color.g, this.Cloud.color.b, 1f - SchoolGlobals.SchoolAtmosphere * 0.01f);
+		this.Atmosphere = SchoolGlobals.SchoolAtmosphere;
 		this.AtmosphereLabel.text = this.Atmosphere.ToString("f0") + "%";
-		float num = 1f - Globals.SchoolAtmosphere * 0.01f;
+		float num = 1f - SchoolGlobals.SchoolAtmosphere * 0.01f;
 		this.GrayscaleEffect.desaturation = num;
 		this.Vignette.intensity = num * 5f;
 		this.Vignette.blur = num;
@@ -73,7 +73,7 @@ public class CalendarScript : MonoBehaviour
 		this.CalendarPanel.alpha = 1f;
 		this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 1f);
 		Time.timeScale = 1f;
-		this.Highlight.localPosition = new Vector3(-600f + 200f * (float)Globals.Weekday, this.Highlight.localPosition.y, this.Highlight.localPosition.z);
+		this.Highlight.localPosition = new Vector3(-600f + 200f * (float)DateGlobals.Weekday, this.Highlight.localPosition.y, this.Highlight.localPosition.z);
 		this.LoveSickCheck();
 	}
 
@@ -91,13 +91,13 @@ public class CalendarScript : MonoBehaviour
 			{
 				if (!this.Incremented)
 				{
-					Globals.Weekday++;
+					DateGlobals.Weekday++;
 					this.Incremented = true;
 					base.GetComponent<AudioSource>().Play();
 				}
 				else
 				{
-					this.Highlight.localPosition = new Vector3(Mathf.Lerp(this.Highlight.localPosition.x, -600f + 200f * (float)Globals.Weekday, Time.deltaTime * 10f), this.Highlight.localPosition.y, this.Highlight.localPosition.z);
+					this.Highlight.localPosition = new Vector3(Mathf.Lerp(this.Highlight.localPosition.x, -600f + 200f * (float)DateGlobals.Weekday, Time.deltaTime * 10f), this.Highlight.localPosition.y, this.Highlight.localPosition.z);
 				}
 				if (this.Timer > 2f)
 				{
@@ -119,30 +119,30 @@ public class CalendarScript : MonoBehaviour
 						}
 						if (Input.GetKeyDown("z"))
 						{
-							float schoolAtmosphere = Globals.SchoolAtmosphere;
+							float schoolAtmosphere = SchoolGlobals.SchoolAtmosphere;
 							if (schoolAtmosphere > 80f)
 							{
-								Globals.SchoolAtmosphere = 80f;
+								SchoolGlobals.SchoolAtmosphere = 80f;
 							}
 							else if (schoolAtmosphere > 60f)
 							{
-								Globals.SchoolAtmosphere = 60f;
+								SchoolGlobals.SchoolAtmosphere = 60f;
 							}
 							else if (schoolAtmosphere > 50f)
 							{
-								Globals.SchoolAtmosphere = 50f;
+								SchoolGlobals.SchoolAtmosphere = 50f;
 							}
 							else if (schoolAtmosphere > 40f)
 							{
-								Globals.SchoolAtmosphere = 40f;
+								SchoolGlobals.SchoolAtmosphere = 40f;
 							}
 							else if (schoolAtmosphere > 20f)
 							{
-								Globals.SchoolAtmosphere = 20f;
+								SchoolGlobals.SchoolAtmosphere = 20f;
 							}
 							else if (schoolAtmosphere > 0f)
 							{
-								Globals.SchoolAtmosphere = 0f;
+								SchoolGlobals.SchoolAtmosphere = 0f;
 							}
 							SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 						}
@@ -159,14 +159,14 @@ public class CalendarScript : MonoBehaviour
 				if (this.Reset)
 				{
 					Globals.DeleteAll();
-					Globals.LoveSick = this.LoveSick;
+					GameGlobals.LoveSick = this.LoveSick;
 					SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 				}
 				else
 				{
-					if (Globals.Night)
+					if (HomeGlobals.Night)
 					{
-						Globals.Night = false;
+						HomeGlobals.Night = false;
 					}
 					SceneManager.LoadScene("HomeScene");
 				}
@@ -196,32 +196,32 @@ public class CalendarScript : MonoBehaviour
 		}
 		if (Input.GetKeyDown("1"))
 		{
-			Globals.Weekday = 1;
+			DateGlobals.Weekday = 1;
 		}
 		if (Input.GetKeyDown("2"))
 		{
-			Globals.Weekday = 2;
+			DateGlobals.Weekday = 2;
 		}
 		if (Input.GetKeyDown("3"))
 		{
-			Globals.Weekday = 3;
+			DateGlobals.Weekday = 3;
 		}
 		if (Input.GetKeyDown("4"))
 		{
-			Globals.Weekday = 4;
+			DateGlobals.Weekday = 4;
 		}
 		if (Input.GetKeyDown("5"))
 		{
-			Globals.Weekday = 5;
+			DateGlobals.Weekday = 5;
 		}
 	}
 
 	public void LoveSickCheck()
 	{
-		if (Globals.LoveSick)
+		if (GameGlobals.LoveSick)
 		{
-			Globals.SchoolAtmosphereSet = true;
-			Globals.SchoolAtmosphere = 0f;
+			SchoolGlobals.SchoolAtmosphereSet = true;
+			SchoolGlobals.SchoolAtmosphere = 0f;
 			this.LoveSick = true;
 			Camera.main.backgroundColor = new Color(0f, 0f, 0f, 1f);
 			GameObject[] array = UnityEngine.Object.FindObjectsOfType<GameObject>();

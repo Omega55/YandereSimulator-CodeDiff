@@ -11,7 +11,7 @@ public class BloodPoolScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (Globals.PantiesEquipped == 7)
+		if (PlayerGlobals.PantiesEquipped == 7)
 		{
 			this.TargetSize *= 0.5f;
 		}

@@ -120,7 +120,7 @@ public class IntroScript : MonoBehaviour
 
 	private void LoveSickCheck()
 	{
-		if (Globals.LoveSick)
+		if (GameGlobals.LoveSick)
 		{
 			Camera.main.backgroundColor = new Color(0f, 0f, 0f, 1f);
 			GameObject[] array = UnityEngine.Object.FindObjectsOfType<GameObject>();

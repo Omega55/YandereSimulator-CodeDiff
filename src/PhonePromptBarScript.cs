@@ -15,11 +15,12 @@ public class PhonePromptBarScript : MonoBehaviour
 
 	private void Update()
 	{
+		float t = Time.unscaledDeltaTime * 10f;
 		if (!this.Show)
 		{
 			if (this.Panel.enabled)
 			{
-				base.transform.localPosition = new Vector3(base.transform.localPosition.x, Mathf.Lerp(base.transform.localPosition.y, 631f, 0.166666672f), base.transform.localPosition.z);
+				base.transform.localPosition = new Vector3(base.transform.localPosition.x, Mathf.Lerp(base.transform.localPosition.y, 631f, t), base.transform.localPosition.z);
 				if (base.transform.localPosition.y < 630f)
 				{
 					base.transform.localPosition = new Vector3(base.transform.localPosition.x, 631f, base.transform.localPosition.z);
@@ -29,7 +30,7 @@ public class PhonePromptBarScript : MonoBehaviour
 		}
 		else
 		{
-			base.transform.localPosition = new Vector3(base.transform.localPosition.x, Mathf.Lerp(base.transform.localPosition.y, 530f, 0.166666672f), base.transform.localPosition.z);
+			base.transform.localPosition = new Vector3(base.transform.localPosition.x, Mathf.Lerp(base.transform.localPosition.y, 530f, t), base.transform.localPosition.z);
 		}
 	}
 }

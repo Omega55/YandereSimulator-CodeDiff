@@ -31,11 +31,12 @@ public class PromptBarScript : MonoBehaviour
 
 	private void Update()
 	{
+		float t = Time.unscaledDeltaTime * 10f;
 		if (!this.Show)
 		{
 			if (this.Panel.enabled)
 			{
-				base.transform.localPosition = new Vector3(base.transform.localPosition.x, Mathf.Lerp(base.transform.localPosition.y, -628f, 0.166666672f), base.transform.localPosition.z);
+				base.transform.localPosition = new Vector3(base.transform.localPosition.x, Mathf.Lerp(base.transform.localPosition.y, -628f, t), base.transform.localPosition.z);
 				if (base.transform.localPosition.y < -627f)
 				{
 					base.transform.localPosition = new Vector3(base.transform.localPosition.x, -628f, base.transform.localPosition.z);
@@ -48,7 +49,7 @@ public class PromptBarScript : MonoBehaviour
 		}
 		else
 		{
-			base.transform.localPosition = new Vector3(base.transform.localPosition.x, Mathf.Lerp(base.transform.localPosition.y, -528.5f, 0.166666672f), base.transform.localPosition.z);
+			base.transform.localPosition = new Vector3(base.transform.localPosition.x, Mathf.Lerp(base.transform.localPosition.y, -528.5f, t), base.transform.localPosition.z);
 		}
 	}
 

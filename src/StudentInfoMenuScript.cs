@@ -103,7 +103,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetButtonDown("A") && this.PromptBar.Label[0].text != string.Empty && Globals.GetStudentPhotographed(this.StudentID))
+		if (Input.GetButtonDown("A") && this.PromptBar.Label[0].text != string.Empty && StudentGlobals.GetStudentPhotographed(this.StudentID))
 		{
 			this.StudentInfo.gameObject.SetActive(true);
 			this.StudentInfo.UpdateInfo(this.StudentID);
@@ -170,47 +170,11 @@ public class StudentInfoMenuScript : MonoBehaviour
 				this.PromptBar.Show = true;
 			}
 		}
-		if (this.Row == 0 || this.Row == 1)
-		{
-			this.PortraitGrid.localPosition = new Vector3(this.PortraitGrid.localPosition.x, Mathf.Lerp(this.PortraitGrid.localPosition.y, 0f, 0.166666672f), this.PortraitGrid.localPosition.z);
-		}
-		else if (this.Row == 2 || this.Row == 3)
-		{
-			this.PortraitGrid.localPosition = new Vector3(this.PortraitGrid.localPosition.x, Mathf.Lerp(this.PortraitGrid.localPosition.y, 320f, 0.166666672f), this.PortraitGrid.localPosition.z);
-		}
-		else if (this.Row == 4 || this.Row == 5)
-		{
-			this.PortraitGrid.localPosition = new Vector3(this.PortraitGrid.localPosition.x, Mathf.Lerp(this.PortraitGrid.localPosition.y, 640f, 0.166666672f), this.PortraitGrid.localPosition.z);
-		}
-		else if (this.Row == 6 || this.Row == 7)
-		{
-			this.PortraitGrid.localPosition = new Vector3(this.PortraitGrid.localPosition.x, Mathf.Lerp(this.PortraitGrid.localPosition.y, 960f, 0.166666672f), this.PortraitGrid.localPosition.z);
-		}
-		else if (this.Row == 8 || this.Row == 9)
-		{
-			this.PortraitGrid.localPosition = new Vector3(this.PortraitGrid.localPosition.x, Mathf.Lerp(this.PortraitGrid.localPosition.y, 1280f, 0.166666672f), this.PortraitGrid.localPosition.z);
-		}
-		else if (this.Row == 10 || this.Row == 11)
-		{
-			this.PortraitGrid.localPosition = new Vector3(this.PortraitGrid.localPosition.x, Mathf.Lerp(this.PortraitGrid.localPosition.y, 1600f, 0.166666672f), this.PortraitGrid.localPosition.z);
-		}
-		else if (this.Row == 12 || this.Row == 13)
-		{
-			this.PortraitGrid.localPosition = new Vector3(this.PortraitGrid.localPosition.x, Mathf.Lerp(this.PortraitGrid.localPosition.y, 1920f, 0.166666672f), this.PortraitGrid.localPosition.z);
-		}
-		else if (this.Row == 14 || this.Row == 15)
-		{
-			this.PortraitGrid.localPosition = new Vector3(this.PortraitGrid.localPosition.x, Mathf.Lerp(this.PortraitGrid.localPosition.y, 2240f, 0.166666672f), this.PortraitGrid.localPosition.z);
-		}
-		else if (this.Row == 16 || this.Row == 17)
-		{
-			this.PortraitGrid.localPosition = new Vector3(this.PortraitGrid.localPosition.x, Mathf.Lerp(this.PortraitGrid.localPosition.y, 2560f, 0.166666672f), this.PortraitGrid.localPosition.z);
-		}
-		else if (this.Row == 18 || this.Row == 19)
-		{
-			this.PortraitGrid.localPosition = new Vector3(this.PortraitGrid.localPosition.x, Mathf.Lerp(this.PortraitGrid.localPosition.y, 2880f, 0.166666672f), this.PortraitGrid.localPosition.z);
-		}
-		this.Scrollbar.localPosition = new Vector3(this.Scrollbar.localPosition.x, Mathf.Lerp(this.Scrollbar.localPosition.y, 175f - 350f * (this.PortraitGrid.localPosition.y / 2880f), 0.166666672f), this.Scrollbar.localPosition.z);
+		float t = Time.unscaledDeltaTime * 10f;
+		float num = (float)((this.Row % 2 != 0) ? ((this.Row - 1) / 2) : (this.Row / 2));
+		float b = 320f * num;
+		this.PortraitGrid.localPosition = new Vector3(this.PortraitGrid.localPosition.x, Mathf.Lerp(this.PortraitGrid.localPosition.y, b, t), this.PortraitGrid.localPosition.z);
+		this.Scrollbar.localPosition = new Vector3(this.Scrollbar.localPosition.x, Mathf.Lerp(this.Scrollbar.localPosition.y, 175f - 350f * (this.PortraitGrid.localPosition.y / 2880f), t), this.Scrollbar.localPosition.z);
 		if (this.InputManager.TappedUp)
 		{
 			this.Row--;
@@ -252,7 +216,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 	public void UpdateHighlight()
 	{
 		this.StudentID = 1 + (this.Column + this.Row * this.Columns);
-		if (Globals.GetStudentPhotographed(this.StudentID))
+		if (StudentGlobals.GetStudentPhotographed(this.StudentID))
 		{
 			this.PromptBar.Label[0].text = "View Info";
 			this.PromptBar.UpdateButtons();
@@ -262,22 +226,22 @@ public class StudentInfoMenuScript : MonoBehaviour
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
-		if (this.Gossiping && (this.StudentID == 1 || this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || this.JSON.Students[this.StudentID].Club == ClubType.Sports || Globals.GetStudentDead(this.StudentID)))
+		if (this.Gossiping && (this.StudentID == 1 || this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || this.JSON.Students[this.StudentID].Club == ClubType.Sports || StudentGlobals.GetStudentDead(this.StudentID)))
 		{
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
-		if (this.CyberBullying && (this.JSON.Students[this.StudentID].Gender == 1 || Globals.GetStudentDead(this.StudentID)))
+		if (this.CyberBullying && (this.JSON.Students[this.StudentID].Gender == 1 || StudentGlobals.GetStudentDead(this.StudentID)))
 		{
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
-		if (this.Distracting && (this.StudentID == 0 || this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || Globals.GetStudentDead(this.StudentID)))
+		if (this.Distracting && (this.StudentID == 0 || this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || StudentGlobals.GetStudentDead(this.StudentID)))
 		{
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
-		if (this.MatchMaking && (this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || Globals.GetStudentDead(this.StudentID)))
+		if (this.MatchMaking && (this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || StudentGlobals.GetStudentDead(this.StudentID)))
 		{
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
@@ -288,7 +252,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	private void UpdateNameLabel()
 	{
-		if (Globals.GetStudentPhotographed(this.StudentID))
+		if (StudentGlobals.GetStudentPhotographed(this.StudentID))
 		{
 			this.NameLabel.text = this.JSON.Students[this.StudentID].Name;
 		}
@@ -308,7 +272,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 			}
 			else if (!this.PortraitLoaded[ID])
 			{
-				if (Globals.GetStudentPhotographed(ID))
+				if (StudentGlobals.GetStudentPhotographed(ID))
 				{
 					string path = string.Concat(new string[]
 					{
@@ -322,7 +286,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 					yield return www;
 					if (www.error == null)
 					{
-						if (!Globals.GetStudentReplaced(ID))
+						if (!StudentGlobals.GetStudentReplaced(ID))
 						{
 							if (!this.CustomPortraits)
 							{
@@ -349,12 +313,12 @@ public class StudentInfoMenuScript : MonoBehaviour
 					this.StudentPortraits[ID].Portrait.mainTexture = this.UnknownPortrait;
 				}
 			}
-			if (Globals.GetStudentPantyShot(this.JSON.Students[ID].Name))
+			if (PlayerGlobals.GetStudentPantyShot(this.JSON.Students[ID].Name))
 			{
 				this.StudentPortraits[ID].Panties.SetActive(true);
 			}
-			this.StudentPortraits[ID].Friend.SetActive(Globals.GetStudentFriend(ID));
-			if (Globals.GetStudentDying(ID) || Globals.GetStudentDead(ID))
+			this.StudentPortraits[ID].Friend.SetActive(PlayerGlobals.GetStudentFriend(ID));
+			if (StudentGlobals.GetStudentDying(ID) || StudentGlobals.GetStudentDead(ID))
 			{
 				this.StudentPortraits[ID].DeathShadow.SetActive(true);
 			}
@@ -362,7 +326,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 			{
 				this.StudentPortraits[ID].DeathShadow.SetActive(true);
 			}
-			if (Globals.GetStudentArrested(ID))
+			if (StudentGlobals.GetStudentArrested(ID))
 			{
 				this.StudentPortraits[ID].PrisonBars.SetActive(true);
 				this.StudentPortraits[ID].DeathShadow.SetActive(true);

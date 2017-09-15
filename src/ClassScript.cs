@@ -180,9 +180,9 @@ public class ClassScript : MonoBehaviour
 							{
 								this.Poison.SetActive(true);
 							}
-							if (Globals.GetSchemeStage(5) == 7)
+							if (SchemeGlobals.GetSchemeStage(5) == 7)
 							{
-								Globals.SetSchemeStage(5, 100);
+								SchemeGlobals.SetSchemeStage(5, 100);
 								this.PromptBar.ClearButtons();
 								this.PromptBar.Label[0].text = "Continue";
 								this.PromptBar.UpdateButtons();

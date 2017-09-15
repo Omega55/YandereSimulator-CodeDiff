@@ -20,7 +20,7 @@ public class AnswerSheetScript : MonoBehaviour
 	private void Start()
 	{
 		this.OriginalMesh = this.MyMesh.mesh;
-		if (Globals.GetSchemeStage(5) == 100)
+		if (SchemeGlobals.GetSchemeStage(5) == 100)
 		{
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
@@ -28,12 +28,12 @@ public class AnswerSheetScript : MonoBehaviour
 		}
 		else
 		{
-			if (Globals.GetSchemeStage(5) > 4)
+			if (SchemeGlobals.GetSchemeStage(5) > 4)
 			{
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
 			}
-			if (Globals.Weekday == 5 && this.Clock.HourTime > 13.5f)
+			if (DateGlobals.Weekday == 5 && this.Clock.HourTime > 13.5f)
 			{
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
@@ -48,7 +48,7 @@ public class AnswerSheetScript : MonoBehaviour
 		{
 			if (this.Phase == 1)
 			{
-				Globals.SetSchemeStage(5, 2);
+				SchemeGlobals.SetSchemeStage(5, 2);
 				this.Schemes.UpdateInstructions();
 				this.Prompt.Yandere.Inventory.AnswerSheet = true;
 				this.Prompt.Hide();
@@ -59,7 +59,7 @@ public class AnswerSheetScript : MonoBehaviour
 			}
 			else
 			{
-				Globals.SetSchemeStage(5, 5);
+				SchemeGlobals.SetSchemeStage(5, 5);
 				this.Schemes.UpdateInstructions();
 				this.Prompt.Yandere.Inventory.AnswerSheet = false;
 				this.Prompt.Hide();

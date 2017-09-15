@@ -33,7 +33,7 @@ public class TitleSponsorScript : MonoBehaviour
 	{
 		base.transform.localPosition = new Vector3(1050f, base.transform.localPosition.y, base.transform.localPosition.z);
 		this.UpdateHighlight();
-		if (Globals.LoveSick)
+		if (GameGlobals.LoveSick)
 		{
 			this.TurnLoveSick();
 		}

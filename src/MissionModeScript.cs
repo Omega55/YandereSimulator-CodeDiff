@@ -209,7 +209,7 @@ public class MissionModeScript : MonoBehaviour
 		this.MissionModeHUD.SetActive(false);
 		this.ExitPortal.SetActive(false);
 		this.Safe.SetActive(false);
-		if (Globals.LoveSick)
+		if (GameGlobals.LoveSick)
 		{
 			this.MurderKit.SetActive(false);
 			this.Yandere.HeartRate.MediumColour = new Color(1f, 1f, 1f, 1f);
@@ -242,7 +242,7 @@ public class MissionModeScript : MonoBehaviour
 				this.ID++;
 			}
 		}
-		if (Globals.MissionMode)
+		if (MissionModeGlobals.MissionMode)
 		{
 			this.Yandere.HeartRate.MediumColour = new Color(1f, 0.5f, 0.5f, 1f);
 			this.Yandere.HeartRate.NormalColour = new Color(1f, 1f, 1f, 1f);
@@ -274,9 +274,9 @@ public class MissionModeScript : MonoBehaviour
 			this.FPS.color = new Color(1f, 1f, 1f, 1f);
 			this.ColorCorrections = Camera.main.GetComponents<ColorCorrectionCurves>();
 			this.StudentManager.MissionMode = true;
-			this.NemesisDifficulty = Globals.NemesisDifficulty;
-			this.Difficulty = Globals.MissionDifficulty;
-			this.TargetID = Globals.MissionTarget;
+			this.NemesisDifficulty = MissionModeGlobals.NemesisDifficulty;
+			this.Difficulty = MissionModeGlobals.MissionDifficulty;
+			this.TargetID = MissionModeGlobals.MissionTarget;
 			this.ID = 1;
 			while (this.ID < this.PoliceLabel.Length)
 			{
@@ -296,18 +296,18 @@ public class MissionModeScript : MonoBehaviour
 				this.ID = 2;
 				while (this.ID < this.Difficulty + 1)
 				{
-					int missionCondition = Globals.GetMissionCondition(this.ID);
+					int missionCondition = MissionModeGlobals.GetMissionCondition(this.ID);
 					if (missionCondition == 1)
 					{
-						this.RequiredWeaponID = Globals.MissionRequiredWeapon;
+						this.RequiredWeaponID = MissionModeGlobals.MissionRequiredWeapon;
 					}
 					else if (missionCondition == 2)
 					{
-						this.RequiredClothingID = Globals.MissionRequiredClothing;
+						this.RequiredClothingID = MissionModeGlobals.MissionRequiredClothing;
 					}
 					else if (missionCondition == 3)
 					{
-						this.RequiredDisposalID = Globals.MissionRequiredDisposal;
+						this.RequiredDisposalID = MissionModeGlobals.MissionRequiredDisposal;
 					}
 					else if (missionCondition == 4)
 					{
@@ -853,28 +853,28 @@ public class MissionModeScript : MonoBehaviour
 
 	private void ResetGlobals()
 	{
-		bool disableFarAnimations = Globals.DisableFarAnimations;
-		bool disablePostAliasing = Globals.DisablePostAliasing;
-		bool disableOutlines = Globals.DisableOutlines;
-		int lowDetailStudents = Globals.LowDetailStudents;
-		int particleCount = Globals.ParticleCount;
-		bool disableShadows = Globals.DisableShadows;
-		int drawDistance = Globals.DrawDistance;
-		bool disableBloom = Globals.DisableBloom;
-		bool fog = Globals.Fog;
-		string missionTargetName = Globals.MissionTargetName;
-		bool highPopulation = Globals.HighPopulation;
+		bool disableFarAnimations = OptionGlobals.DisableFarAnimations;
+		bool disablePostAliasing = OptionGlobals.DisablePostAliasing;
+		bool disableOutlines = OptionGlobals.DisableOutlines;
+		int lowDetailStudents = OptionGlobals.LowDetailStudents;
+		int particleCount = OptionGlobals.ParticleCount;
+		bool disableShadows = OptionGlobals.DisableShadows;
+		int drawDistance = OptionGlobals.DrawDistance;
+		bool disableBloom = OptionGlobals.DisableBloom;
+		bool fog = OptionGlobals.Fog;
+		string missionTargetName = MissionModeGlobals.MissionTargetName;
+		bool highPopulation = OptionGlobals.HighPopulation;
 		Globals.DeleteAll();
-		Globals.SchoolAtmosphere = 100f - (float)this.Difficulty / 10f * 100f;
-		Globals.MissionTargetName = missionTargetName;
-		Globals.MissionDifficulty = this.Difficulty;
-		Globals.HighPopulation = highPopulation;
-		Globals.MissionTarget = this.TargetID;
-		Globals.SchoolAtmosphereSet = true;
-		Globals.MissionMode = true;
-		Globals.MissionRequiredWeapon = this.RequiredWeaponID;
-		Globals.MissionRequiredClothing = this.RequiredClothingID;
-		Globals.MissionRequiredDisposal = this.RequiredDisposalID;
+		SchoolGlobals.SchoolAtmosphere = 100f - (float)this.Difficulty / 10f * 100f;
+		MissionModeGlobals.MissionTargetName = missionTargetName;
+		MissionModeGlobals.MissionDifficulty = this.Difficulty;
+		OptionGlobals.HighPopulation = highPopulation;
+		MissionModeGlobals.MissionTarget = this.TargetID;
+		SchoolGlobals.SchoolAtmosphereSet = true;
+		MissionModeGlobals.MissionMode = true;
+		MissionModeGlobals.MissionRequiredWeapon = this.RequiredWeaponID;
+		MissionModeGlobals.MissionRequiredClothing = this.RequiredClothingID;
+		MissionModeGlobals.MissionRequiredDisposal = this.RequiredDisposalID;
 		ClassGlobals.BiologyGrade = 1;
 		ClassGlobals.ChemistryGrade = 1;
 		ClassGlobals.LanguageGrade = 1;
@@ -883,19 +883,19 @@ public class MissionModeScript : MonoBehaviour
 		this.ID = 2;
 		while (this.ID < 11)
 		{
-			Globals.SetMissionCondition(this.ID, this.Conditions[this.ID]);
+			MissionModeGlobals.SetMissionCondition(this.ID, this.Conditions[this.ID]);
 			this.ID++;
 		}
-		Globals.NemesisDifficulty = this.NemesisDifficulty;
-		Globals.DisableFarAnimations = disableFarAnimations;
-		Globals.DisablePostAliasing = disablePostAliasing;
-		Globals.DisableOutlines = disableOutlines;
-		Globals.LowDetailStudents = lowDetailStudents;
-		Globals.ParticleCount = particleCount;
-		Globals.DisableShadows = disableShadows;
-		Globals.DrawDistance = drawDistance;
-		Globals.DisableBloom = disableBloom;
-		Globals.Fog = fog;
+		MissionModeGlobals.NemesisDifficulty = this.NemesisDifficulty;
+		OptionGlobals.DisableFarAnimations = disableFarAnimations;
+		OptionGlobals.DisablePostAliasing = disablePostAliasing;
+		OptionGlobals.DisableOutlines = disableOutlines;
+		OptionGlobals.LowDetailStudents = lowDetailStudents;
+		OptionGlobals.ParticleCount = particleCount;
+		OptionGlobals.DisableShadows = disableShadows;
+		OptionGlobals.DrawDistance = drawDistance;
+		OptionGlobals.DisableBloom = disableBloom;
+		OptionGlobals.Fog = fog;
 	}
 
 	private void ChangeAllText()

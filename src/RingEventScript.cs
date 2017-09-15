@@ -60,7 +60,7 @@ public class RingEventScript : MonoBehaviour
 				{
 					if (this.EventStudent.Cosmetic.FemaleAccessories[3].activeInHierarchy)
 					{
-						if (Globals.GetSchemeStage(2) < 100)
+						if (SchemeGlobals.GetSchemeStage(2) < 100)
 						{
 							this.RingPrompt = this.EventStudent.Cosmetic.FemaleAccessories[3].GetComponent<PromptScript>();
 							this.RingCollider = this.EventStudent.Cosmetic.FemaleAccessories[3].GetComponent<BoxCollider>();

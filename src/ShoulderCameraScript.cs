@@ -119,7 +119,7 @@ public class ShoulderCameraScript : MonoBehaviour
 					else if (this.Yandere.Senpai.GetComponent<StudentScript>().Witnessed == "Stalking")
 					{
 						this.NoticedHeight = 1.481275f;
-						this.NoticedLimit = 6;
+						this.NoticedLimit = 7;
 					}
 					else
 					{

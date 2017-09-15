@@ -67,12 +67,13 @@ public class NoteWindowScript : MonoBehaviour
 
 	private void Update()
 	{
+		float t = Time.unscaledDeltaTime * 10f;
 		if (!this.Show)
 		{
 			if (this.Rotation > -90f)
 			{
-				base.transform.localPosition = Vector3.Lerp(base.transform.localPosition, new Vector3(455f, -965f, 0f), 0.166666672f);
-				this.Rotation = Mathf.Lerp(this.Rotation, -91f, 0.166666672f);
+				base.transform.localPosition = Vector3.Lerp(base.transform.localPosition, new Vector3(455f, -965f, 0f), t);
+				this.Rotation = Mathf.Lerp(this.Rotation, -91f, t);
 				base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, base.transform.localEulerAngles.y, this.Rotation);
 			}
 			else
@@ -82,14 +83,14 @@ public class NoteWindowScript : MonoBehaviour
 		}
 		else
 		{
-			base.transform.localPosition = Vector3.Lerp(base.transform.localPosition, Vector3.zero, 0.166666672f);
-			this.Rotation = Mathf.Lerp(this.Rotation, 0f, 0.166666672f);
+			base.transform.localPosition = Vector3.Lerp(base.transform.localPosition, Vector3.zero, t);
+			this.Rotation = Mathf.Lerp(this.Rotation, 0f, t);
 			base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, base.transform.localEulerAngles.y, this.Rotation);
 			if (!this.Selecting)
 			{
 				if (this.SubMenu.transform.localScale.x > 0.1f)
 				{
-					this.SubMenu.transform.localScale = Vector3.Lerp(this.SubMenu.transform.localScale, Vector3.zero, 0.166666672f);
+					this.SubMenu.transform.localScale = Vector3.Lerp(this.SubMenu.transform.localScale, Vector3.zero, t);
 				}
 				else
 				{
@@ -148,7 +149,7 @@ public class NoteWindowScript : MonoBehaviour
 			}
 			else
 			{
-				this.SubMenu.transform.localScale = Vector3.Lerp(this.SubMenu.transform.localScale, new Vector3(1f, 1f, 1f), 0.166666672f);
+				this.SubMenu.transform.localScale = Vector3.Lerp(this.SubMenu.transform.localScale, new Vector3(1f, 1f, 1f), t);
 				if (this.InputManager.TappedDown)
 				{
 					this.SubSlot++;
@@ -233,7 +234,7 @@ public class NoteWindowScript : MonoBehaviour
 				uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, 1f);
 				this.ID++;
 			}
-			if (!Globals.Event1)
+			if (!EventGlobals.Event1)
 			{
 				this.SubLabels[10].text = "??????????";
 			}

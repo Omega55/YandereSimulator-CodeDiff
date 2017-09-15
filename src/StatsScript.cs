@@ -114,9 +114,9 @@ public class StatsScript : MonoBehaviour
 			ClassGlobals.LanguageGrade = 2;
 			ClassGlobals.PhysicalGrade = 4;
 			ClassGlobals.PsychologyGrade = 3;
-			Globals.Seduction = 4;
-			Globals.Numbness = 2;
-			Globals.Enlightenment = 5;
+			PlayerGlobals.Seduction = 4;
+			PlayerGlobals.Numbness = 2;
+			PlayerGlobals.Enlightenment = 5;
 			this.UpdateStats();
 		}
 		if (Input.GetButtonDown("B"))
@@ -235,7 +235,7 @@ public class StatsScript : MonoBehaviour
 		{
 			this.Subject5Bars[ClassGlobals.PsychologyGrade + 1].color = ((ClassGlobals.PsychologyBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
 		}
-		this.Grade = Globals.Seduction;
+		this.Grade = PlayerGlobals.Seduction;
 		this.BarID = 1;
 		while (this.BarID < 6)
 		{
@@ -251,11 +251,11 @@ public class StatsScript : MonoBehaviour
 			}
 			this.BarID++;
 		}
-		if (Globals.Seduction < 5)
+		if (PlayerGlobals.Seduction < 5)
 		{
-			this.Subject6Bars[Globals.Seduction + 1].color = ((Globals.SeductionBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
+			this.Subject6Bars[PlayerGlobals.Seduction + 1].color = ((PlayerGlobals.SeductionBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
 		}
-		this.Grade = Globals.Numbness;
+		this.Grade = PlayerGlobals.Numbness;
 		this.BarID = 1;
 		while (this.BarID < 6)
 		{
@@ -271,11 +271,11 @@ public class StatsScript : MonoBehaviour
 			}
 			this.BarID++;
 		}
-		if (Globals.Numbness < 5)
+		if (PlayerGlobals.Numbness < 5)
 		{
-			this.Subject7Bars[Globals.Numbness + 1].color = ((Globals.NumbnessBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
+			this.Subject7Bars[PlayerGlobals.Numbness + 1].color = ((PlayerGlobals.NumbnessBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
 		}
-		this.Grade = Globals.Enlightenment;
+		this.Grade = PlayerGlobals.Enlightenment;
 		this.BarID = 1;
 		while (this.BarID < 6)
 		{
@@ -291,18 +291,18 @@ public class StatsScript : MonoBehaviour
 			}
 			this.BarID++;
 		}
-		if (Globals.Enlightenment < 5)
+		if (PlayerGlobals.Enlightenment < 5)
 		{
-			this.Subject8Bars[Globals.Enlightenment + 1].color = ((Globals.EnlightenmentBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
+			this.Subject8Bars[PlayerGlobals.Enlightenment + 1].color = ((PlayerGlobals.EnlightenmentBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
 		}
 		this.Ranks[1].text = "Rank: " + ClassGlobals.BiologyGrade.ToString();
 		this.Ranks[2].text = "Rank: " + ClassGlobals.ChemistryGrade.ToString();
 		this.Ranks[3].text = "Rank: " + ClassGlobals.LanguageGrade.ToString();
 		this.Ranks[4].text = "Rank: " + ClassGlobals.PhysicalGrade.ToString();
 		this.Ranks[5].text = "Rank: " + ClassGlobals.PsychologyGrade.ToString();
-		this.Ranks[6].text = "Rank: " + Globals.Seduction.ToString();
-		this.Ranks[7].text = "Rank: " + Globals.Numbness.ToString();
-		this.Ranks[8].text = "Rank: " + Globals.Enlightenment.ToString();
+		this.Ranks[6].text = "Rank: " + PlayerGlobals.Seduction.ToString();
+		this.Ranks[7].text = "Rank: " + PlayerGlobals.Numbness.ToString();
+		this.Ranks[8].text = "Rank: " + PlayerGlobals.Enlightenment.ToString();
 		ClubType club = ClubGlobals.Club;
 		string str;
 		bool flag = this.ClubLabels.TryGetValue(club, out str);

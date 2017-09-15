@@ -23,7 +23,7 @@ public class UniformSwapperScript : MonoBehaviour
 
 	private void Start()
 	{
-		int maleUniform = Globals.MaleUniform;
+		int maleUniform = StudentGlobals.MaleUniform;
 		this.MyRenderer.sharedMesh = this.UniformMeshes[maleUniform];
 		Texture mainTexture = this.UniformTextures[maleUniform];
 		if (maleUniform == 1)

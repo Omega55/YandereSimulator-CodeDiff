@@ -71,11 +71,11 @@ public class HomeYandereScript : MonoBehaviour
 		}
 		if (SceneManager.GetActiveScene().name == "HomeScene")
 		{
-			if (!Globals.DraculaDefeated)
+			if (!YanvaniaGlobals.DraculaDefeated)
 			{
 				base.transform.position = Vector3.zero;
 				base.transform.eulerAngles = Vector3.zero;
-				if (!Globals.Night)
+				if (!HomeGlobals.Night)
 				{
 					this.ChangeSchoolwear();
 					base.StartCoroutine(this.ApplyCustomCostume());
@@ -85,9 +85,9 @@ public class HomeYandereScript : MonoBehaviour
 					this.WearPajamas();
 				}
 			}
-			else if (Globals.StartInBasement)
+			else if (HomeGlobals.StartInBasement)
 			{
-				Globals.StartInBasement = false;
+				HomeGlobals.StartInBasement = false;
 				base.transform.position = new Vector3(0f, -135f, 0f);
 				base.transform.eulerAngles = Vector3.zero;
 			}
@@ -160,7 +160,7 @@ public class HomeYandereScript : MonoBehaviour
 			}
 			else if (this.Timer > component2.clip.length + 1f)
 			{
-				Globals.DraculaDefeated = false;
+				YanvaniaGlobals.DraculaDefeated = false;
 				this.Disc.SetActive(false);
 				this.HomeVideoGames.Quit();
 			}
@@ -177,45 +177,45 @@ public class HomeYandereScript : MonoBehaviour
 		}
 		if (Input.GetKeyDown("k"))
 		{
-			Globals.KidnapVictim = this.VictimID;
-			Globals.SetStudentSanity(this.VictimID, 100f);
-			Globals.SetSchemeStage(6, 5);
+			SchoolGlobals.KidnapVictim = this.VictimID;
+			StudentGlobals.SetStudentSanity(this.VictimID, 100f);
+			SchemeGlobals.SetSchemeStage(6, 5);
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		if (Input.GetKeyDown(KeyCode.F1))
 		{
-			Globals.MaleUniform = 1;
-			Globals.FemaleUniform = 1;
+			StudentGlobals.MaleUniform = 1;
+			StudentGlobals.FemaleUniform = 1;
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		else if (Input.GetKeyDown(KeyCode.F2))
 		{
-			Globals.MaleUniform = 2;
-			Globals.FemaleUniform = 2;
+			StudentGlobals.MaleUniform = 2;
+			StudentGlobals.FemaleUniform = 2;
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		else if (Input.GetKeyDown(KeyCode.F3))
 		{
-			Globals.MaleUniform = 3;
-			Globals.FemaleUniform = 3;
+			StudentGlobals.MaleUniform = 3;
+			StudentGlobals.FemaleUniform = 3;
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		else if (Input.GetKeyDown(KeyCode.F4))
 		{
-			Globals.MaleUniform = 4;
-			Globals.FemaleUniform = 4;
+			StudentGlobals.MaleUniform = 4;
+			StudentGlobals.FemaleUniform = 4;
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		else if (Input.GetKeyDown(KeyCode.F5))
 		{
-			Globals.MaleUniform = 5;
-			Globals.FemaleUniform = 5;
+			StudentGlobals.MaleUniform = 5;
+			StudentGlobals.FemaleUniform = 5;
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		else if (Input.GetKeyDown(KeyCode.F6))
 		{
-			Globals.MaleUniform = 6;
-			Globals.FemaleUniform = 6;
+			StudentGlobals.MaleUniform = 6;
+			StudentGlobals.FemaleUniform = 6;
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 	}
@@ -288,9 +288,9 @@ public class HomeYandereScript : MonoBehaviour
 
 	private void ChangeSchoolwear()
 	{
-		this.MyRenderer.sharedMesh = this.Uniforms[Globals.FemaleUniform];
-		this.MyRenderer.materials[0].mainTexture = this.UniformTextures[Globals.FemaleUniform];
-		this.MyRenderer.materials[1].mainTexture = this.UniformTextures[Globals.FemaleUniform];
+		this.MyRenderer.sharedMesh = this.Uniforms[StudentGlobals.FemaleUniform];
+		this.MyRenderer.materials[0].mainTexture = this.UniformTextures[StudentGlobals.FemaleUniform];
+		this.MyRenderer.materials[1].mainTexture = this.UniformTextures[StudentGlobals.FemaleUniform];
 		this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
 		base.StartCoroutine(this.ApplyCustomCostume());
 	}
@@ -306,7 +306,7 @@ public class HomeYandereScript : MonoBehaviour
 
 	private IEnumerator ApplyCustomCostume()
 	{
-		if (Globals.FemaleUniform == 1)
+		if (StudentGlobals.FemaleUniform == 1)
 		{
 			WWW CustomUniform = new WWW("file:///" + Application.streamingAssetsPath + "/CustomUniform.png");
 			yield return CustomUniform;
@@ -316,7 +316,7 @@ public class HomeYandereScript : MonoBehaviour
 				this.MyRenderer.materials[1].mainTexture = CustomUniform.texture;
 			}
 		}
-		else if (Globals.FemaleUniform == 2)
+		else if (StudentGlobals.FemaleUniform == 2)
 		{
 			WWW CustomLong = new WWW("file:///" + Application.streamingAssetsPath + "/CustomLong.png");
 			yield return CustomLong;
@@ -326,7 +326,7 @@ public class HomeYandereScript : MonoBehaviour
 				this.MyRenderer.materials[1].mainTexture = CustomLong.texture;
 			}
 		}
-		else if (Globals.FemaleUniform == 3)
+		else if (StudentGlobals.FemaleUniform == 3)
 		{
 			WWW CustomSweater = new WWW("file:///" + Application.streamingAssetsPath + "/CustomSweater.png");
 			yield return CustomSweater;
@@ -336,7 +336,7 @@ public class HomeYandereScript : MonoBehaviour
 				this.MyRenderer.materials[1].mainTexture = CustomSweater.texture;
 			}
 		}
-		else if (Globals.FemaleUniform == 4 || Globals.FemaleUniform == 5)
+		else if (StudentGlobals.FemaleUniform == 4 || StudentGlobals.FemaleUniform == 5)
 		{
 			WWW CustomBlazer = new WWW("file:///" + Application.streamingAssetsPath + "/CustomBlazer.png");
 			yield return CustomBlazer;

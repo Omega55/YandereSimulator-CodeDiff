@@ -82,7 +82,7 @@ public class HomePrisonerScript : MonoBehaviour
 
 	private void Start()
 	{
-		this.Sanity = Globals.GetStudentSanity(Globals.KidnapVictim);
+		this.Sanity = StudentGlobals.GetStudentSanity(SchoolGlobals.KidnapVictim);
 		this.SanityLabel.text = "Sanity: " + this.Sanity.ToString() + "%";
 		this.Prisoner.Sanity = this.Sanity;
 		this.Subtitle.text = string.Empty;
@@ -106,16 +106,16 @@ public class HomePrisonerScript : MonoBehaviour
 			this.BanterText = this.LowSanityBanterText;
 			this.Banter = this.LowSanityBanter;
 		}
-		if (!Globals.Night)
+		if (!HomeGlobals.Night)
 		{
 			UILabel uilabel = this.OptionLabels[2];
 			uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, 0.5f);
-			if (Globals.LateForSchool)
+			if (HomeGlobals.LateForSchool)
 			{
 				UILabel uilabel2 = this.OptionLabels[1];
 				uilabel2.color = new Color(uilabel2.color.r, uilabel2.color.g, uilabel2.color.b, 0.5f);
 			}
-			if (Globals.Weekday == 5)
+			if (DateGlobals.Weekday == 5)
 			{
 				UILabel uilabel3 = this.OptionLabels[3];
 				uilabel3.color = new Color(uilabel3.color.r, uilabel3.color.g, uilabel3.color.b, 0.5f);
@@ -151,13 +151,13 @@ public class HomePrisonerScript : MonoBehaviour
 			uilabel12.color = new Color(uilabel12.color.r, uilabel12.color.g, uilabel12.color.b, 0.5f);
 			UILabel uilabel13 = this.OptionLabels[5];
 			uilabel13.color = new Color(uilabel13.color.r, uilabel13.color.g, uilabel13.color.b, 1f);
-			if (Globals.Night)
+			if (HomeGlobals.Night)
 			{
 				uilabel13.color = new Color(uilabel13.color.r, uilabel13.color.g, uilabel13.color.b, 0.5f);
 			}
 		}
 		this.UpdateDesc();
-		if (Globals.KidnapVictim == 0)
+		if (SchoolGlobals.KidnapVictim == 0)
 		{
 			base.enabled = false;
 		}
@@ -216,7 +216,7 @@ public class HomePrisonerScript : MonoBehaviour
 				{
 					this.Sanity = 100f;
 				}
-				Globals.SetStudentSanity(Globals.KidnapVictim, this.Sanity);
+				StudentGlobals.SetStudentSanity(SchoolGlobals.KidnapVictim, this.Sanity);
 				this.SanityLabel.text = "Sanity: " + this.Sanity.ToString("f0") + "%";
 				this.Prisoner.UpdateSanity();
 			}
@@ -311,32 +311,32 @@ public class HomePrisonerScript : MonoBehaviour
 					{
 						Time.timeScale = 1f;
 						this.NowLoading.SetActive(true);
-						Globals.LateForSchool = true;
+						HomeGlobals.LateForSchool = true;
 						SceneManager.LoadScene("SchoolScene");
-						Globals.SetStudentSanity(Globals.KidnapVictim, this.Sanity - 2.5f);
+						StudentGlobals.SetStudentSanity(SchoolGlobals.KidnapVictim, this.Sanity - 2.5f);
 					}
 					else if (this.ID == 2)
 					{
 						SceneManager.LoadScene("CalendarScene");
-						Globals.SetStudentSanity(Globals.KidnapVictim, this.Sanity - 10f);
-						Globals.Reputation -= 20f;
+						StudentGlobals.SetStudentSanity(SchoolGlobals.KidnapVictim, this.Sanity - 10f);
+						PlayerGlobals.Reputation -= 20f;
 					}
 					else if (this.ID == 3)
 					{
-						Globals.Night = true;
+						HomeGlobals.Night = true;
 						SceneManager.LoadScene("HomeScene");
-						Globals.SetStudentSanity(Globals.KidnapVictim, this.Sanity - 30f);
-						Globals.Reputation -= 20f;
+						StudentGlobals.SetStudentSanity(SchoolGlobals.KidnapVictim, this.Sanity - 30f);
+						PlayerGlobals.Reputation -= 20f;
 					}
 					else if (this.ID == 4)
 					{
 						SceneManager.LoadScene("CalendarScene");
-						Globals.SetStudentSanity(Globals.KidnapVictim, this.Sanity - 45f);
-						Globals.Reputation -= 20f;
+						StudentGlobals.SetStudentSanity(SchoolGlobals.KidnapVictim, this.Sanity - 45f);
+						PlayerGlobals.Reputation -= 20f;
 					}
-					if (Globals.GetStudentSanity(Globals.KidnapVictim) < 0f)
+					if (StudentGlobals.GetStudentSanity(SchoolGlobals.KidnapVictim) < 0f)
 					{
-						Globals.SetStudentSanity(Globals.KidnapVictim, 0f);
+						StudentGlobals.SetStudentSanity(SchoolGlobals.KidnapVictim, 0f);
 					}
 				}
 			}
@@ -347,9 +347,9 @@ public class HomePrisonerScript : MonoBehaviour
 	{
 		this.HomeCamera.PromptBar.Label[0].text = "Accept";
 		this.DescLabel.text = this.Descriptions[this.ID];
-		if (!Globals.Night)
+		if (!HomeGlobals.Night)
 		{
-			if (Globals.LateForSchool && this.ID == 1)
+			if (HomeGlobals.LateForSchool && this.ID == 1)
 			{
 				this.DescLabel.text = "This option is unavailable if you are late for school.";
 				this.HomeCamera.PromptBar.Label[0].text = string.Empty;
@@ -359,7 +359,7 @@ public class HomePrisonerScript : MonoBehaviour
 				this.DescLabel.text = "This option is unavailable in the daytime.";
 				this.HomeCamera.PromptBar.Label[0].text = string.Empty;
 			}
-			if (Globals.Weekday == 5 && (this.ID == 3 || this.ID == 4))
+			if (DateGlobals.Weekday == 5 && (this.ID == 3 || this.ID == 4))
 			{
 				this.DescLabel.text = "This option is unavailable on Friday.";
 				this.HomeCamera.PromptBar.Label[0].text = string.Empty;
@@ -376,7 +376,7 @@ public class HomePrisonerScript : MonoBehaviour
 			{
 				this.DescLabel.text = "This option is unavailable until your prisoner's Sanity has reached zero.";
 			}
-			if (Globals.Night)
+			if (HomeGlobals.Night)
 			{
 				this.DescLabel.text = "This option is unavailable at nighttime.";
 				this.HomeCamera.PromptBar.Label[0].text = string.Empty;

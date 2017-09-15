@@ -13,7 +13,7 @@ public class MythTreeScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (Globals.GetSchemeStage(2) > 2)
+		if (SchemeGlobals.GetSchemeStage(2) > 2)
 		{
 			UnityEngine.Object.Destroy(this);
 		}
@@ -24,7 +24,7 @@ public class MythTreeScript : MonoBehaviour
 		AudioSource component = base.GetComponent<AudioSource>();
 		if (!this.Spoken)
 		{
-			if (Globals.GetSchemeStage(2) == 2 && Vector3.Distance(this.Yandere.position, base.transform.position) < 5f)
+			if (SchemeGlobals.GetSchemeStage(2) == 2 && Vector3.Distance(this.Yandere.position, base.transform.position) < 5f)
 			{
 				this.EventSubtitle.transform.localScale = new Vector3(1f, 1f, 1f);
 				this.EventSubtitle.text = "...that...ring...";

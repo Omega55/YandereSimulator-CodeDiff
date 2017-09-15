@@ -32,7 +32,7 @@ public class AlarmDiscScript : MonoBehaviour
 	private void Start()
 	{
 		Vector3 localScale = base.transform.localScale;
-		localScale.x *= 2f - Globals.SchoolAtmosphere * 0.01f;
+		localScale.x *= 2f - SchoolGlobals.SchoolAtmosphere * 0.01f;
 		localScale.z = localScale.x;
 		base.transform.localScale = localScale;
 	}

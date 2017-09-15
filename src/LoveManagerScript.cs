@@ -37,7 +37,7 @@ public class LoveManagerScript : MonoBehaviour
 
 	private void Start()
 	{
-		this.SuitorProgress = Globals.SuitorProgress;
+		this.SuitorProgress = DatingGlobals.SuitorProgress;
 	}
 
 	private void LateUpdate()

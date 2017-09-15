@@ -54,21 +54,19 @@ public class TitleSaveFilesScript : MonoBehaviour
 				{
 					SaveFile saveFile = new SaveFile(this.ID);
 					SaveFileData data = saveFile.Data;
-					data.Kills = 0;
-					data.Atmosphere = 100f;
-					data.Alerts = 0;
-					data.Week = 1;
-					data.Day = "Sunday";
-					data.Rival = "Osana";
-					data.Reputation = 0f;
-					data.Club = "None";
-					data.Friends = 0;
+					data.playerData.kills = 0;
+					data.schoolData.schoolAtmosphere = 100f;
+					data.playerData.alerts = 0;
+					data.dateData.week = 1;
+					data.dateData.weekday = 0;
+					data.playerData.reputation = 0f;
+					data.clubData.club = ClubType.None;
 					saveFile.Save();
 					this.SaveDatas[this.ID].Start();
 				}
 				else
 				{
-					Globals.CurrentSaveFile = this.ID;
+					SaveFileGlobals.CurrentSaveFile = this.ID;
 					this.Menu.FadeOut = true;
 					this.Menu.Fading = true;
 				}

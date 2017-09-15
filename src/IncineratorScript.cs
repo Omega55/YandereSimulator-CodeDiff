@@ -226,7 +226,7 @@ public class IncineratorScript : MonoBehaviour
 		{
 			foreach (int studentID in this.CorpseList)
 			{
-				Globals.SetStudentMissing(studentID, true);
+				StudentGlobals.SetStudentMissing(studentID, true);
 			}
 			this.Panel.SetActive(true);
 			this.Timer = 60f;

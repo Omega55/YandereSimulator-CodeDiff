@@ -89,17 +89,17 @@ public class JukeboxScript : MonoBehaviour
 			this.HalfSanities = this.AlternateHalf;
 			this.NoSanities = this.AlternateNo;
 		}
-		if (!Globals.SchoolAtmosphereSet)
+		if (!SchoolGlobals.SchoolAtmosphereSet)
 		{
-			Globals.SchoolAtmosphereSet = true;
-			Globals.SchoolAtmosphere = 100f;
+			SchoolGlobals.SchoolAtmosphereSet = true;
+			SchoolGlobals.SchoolAtmosphere = 100f;
 		}
 		int num;
-		if (Globals.SchoolAtmosphereType == SchoolAtmosphereType.High)
+		if (SchoolAtmosphere.Type == SchoolAtmosphereType.High)
 		{
 			num = 3;
 		}
-		else if (Globals.SchoolAtmosphereType == SchoolAtmosphereType.Medium)
+		else if (SchoolAtmosphere.Type == SchoolAtmosphereType.Medium)
 		{
 			num = 2;
 		}
@@ -120,32 +120,35 @@ public class JukeboxScript : MonoBehaviour
 	private void Update()
 	{
 		this.Timer += Time.deltaTime;
-		if (Input.GetKeyDown("m"))
+		if (!this.Yandere.PauseScreen.Show)
 		{
-			if (this.Custom.isPlaying)
+			if (Input.GetKeyDown("m"))
 			{
-				this.Egg = false;
-				this.Custom.Stop();
+				if (this.Custom.isPlaying)
+				{
+					this.Egg = false;
+					this.Custom.Stop();
+				}
+				if (this.Volume == 0f)
+				{
+					this.FadeSpeed = 1f;
+					this.Volume = this.LastVolume;
+				}
+				else
+				{
+					this.LastVolume = this.Volume;
+					this.FadeSpeed = 10f;
+					this.Volume = 0f;
+				}
 			}
-			if (this.Volume == 0f)
+			if (Input.GetKeyDown("n") && this.Volume < 1f)
 			{
-				this.FadeSpeed = 1f;
-				this.Volume = this.LastVolume;
+				this.Volume += 0.1f;
 			}
-			else
+			if (Input.GetKeyDown("b") && this.Volume > 0f)
 			{
-				this.LastVolume = this.Volume;
-				this.FadeSpeed = 10f;
-				this.Volume = 0f;
+				this.Volume -= 0.1f;
 			}
-		}
-		if (Input.GetKeyDown("n") && this.Volume < 1f)
-		{
-			this.Volume += 0.1f;
-		}
-		if (Input.GetKeyDown("b") && this.Volume > 0f)
-		{
-			this.Volume -= 0.1f;
 		}
 		if (!this.Egg)
 		{

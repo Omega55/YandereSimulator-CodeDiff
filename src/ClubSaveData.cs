@@ -23,17 +23,26 @@ public class ClubSaveData
 	{
 		ClubSaveData clubSaveData = new ClubSaveData();
 		clubSaveData.club = ClubGlobals.Club;
-		foreach (ClubType item in ClubGlobals.KeysOfClubClosed())
+		foreach (ClubType clubType in ClubGlobals.KeysOfClubClosed())
 		{
-			clubSaveData.clubClosed.Add(item);
+			if (ClubGlobals.GetClubClosed(clubType))
+			{
+				clubSaveData.clubClosed.Add(clubType);
+			}
 		}
-		foreach (ClubType item2 in ClubGlobals.KeysOfClubKicked())
+		foreach (ClubType clubType2 in ClubGlobals.KeysOfClubKicked())
 		{
-			clubSaveData.clubKicked.Add(item2);
+			if (ClubGlobals.GetClubKicked(clubType2))
+			{
+				clubSaveData.clubKicked.Add(clubType2);
+			}
 		}
-		foreach (ClubType item3 in ClubGlobals.KeysOfQuitClub())
+		foreach (ClubType clubType3 in ClubGlobals.KeysOfQuitClub())
 		{
-			clubSaveData.quitClub.Add(item3);
+			if (ClubGlobals.GetQuitClub(clubType3))
+			{
+				clubSaveData.quitClub.Add(clubType3);
+			}
 		}
 		return clubSaveData;
 	}

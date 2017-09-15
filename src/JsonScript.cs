@@ -56,34 +56,34 @@ public class JsonScript : MonoBehaviour
 	{
 		for (int i = 94; i < 101; i++)
 		{
-			if (Globals.GetStudentDead(i))
+			if (StudentGlobals.GetStudentDead(i))
 			{
-				Globals.SetStudentReplaced(i, true);
-				Globals.SetStudentDead(i, false);
+				StudentGlobals.SetStudentReplaced(i, true);
+				StudentGlobals.SetStudentDead(i, false);
 				string value = firstNames[UnityEngine.Random.Range(0, firstNames.Length)] + " " + lastNames[UnityEngine.Random.Range(0, lastNames.Length)];
-				Globals.SetStudentName(i, value);
-				Globals.SetStudentBustSize(i, UnityEngine.Random.Range(1f, 1.5f));
-				Globals.SetStudentHairstyle(i, UnityEngine.Random.Range(1, 8).ToString());
+				StudentGlobals.SetStudentName(i, value);
+				StudentGlobals.SetStudentBustSize(i, UnityEngine.Random.Range(1f, 1.5f));
+				StudentGlobals.SetStudentHairstyle(i, UnityEngine.Random.Range(1, 8).ToString());
 				float r = UnityEngine.Random.Range(0f, 1f);
 				float g = UnityEngine.Random.Range(0f, 1f);
 				float b = UnityEngine.Random.Range(0f, 1f);
-				Globals.SetStudentColor(i, new Color(r, g, b));
+				StudentGlobals.SetStudentColor(i, new Color(r, g, b));
 				r = UnityEngine.Random.Range(0f, 1f);
 				g = UnityEngine.Random.Range(0f, 1f);
 				b = UnityEngine.Random.Range(0f, 1f);
-				Globals.SetStudentEyeColor(i, new Color(r, g, b));
-				Globals.SetStudentAccessory(i, UnityEngine.Random.Range(1, 7).ToString());
+				StudentGlobals.SetStudentEyeColor(i, new Color(r, g, b));
+				StudentGlobals.SetStudentAccessory(i, UnityEngine.Random.Range(1, 7).ToString());
 			}
 		}
 		for (int j = 94; j < 101; j++)
 		{
-			if (Globals.GetStudentReplaced(j))
+			if (StudentGlobals.GetStudentReplaced(j))
 			{
 				StudentJson studentJson = this.students[j];
-				studentJson.Name = Globals.GetStudentName(j);
-				studentJson.BreastSize = Globals.GetStudentBustSize(j);
-				studentJson.Hairstyle = Globals.GetStudentHairstyle(j);
-				studentJson.Accessory = Globals.GetStudentAccessory(j);
+				studentJson.Name = StudentGlobals.GetStudentName(j);
+				studentJson.BreastSize = StudentGlobals.GetStudentBustSize(j);
+				studentJson.Hairstyle = StudentGlobals.GetStudentHairstyle(j);
+				studentJson.Accessory = StudentGlobals.GetStudentAccessory(j);
 				if (j == 100)
 				{
 					studentJson.Accessory = "7";

@@ -125,7 +125,7 @@ public class HomeInternetScript : MonoBehaviour
 		this.PostIcon.SetActive(false);
 		this.NewPostText.SetActive(false);
 		this.BG.SetActive(false);
-		if (!Globals.Event2 || Globals.GetStudentExposed(7))
+		if (!EventGlobals.Event2 || StudentGlobals.GetStudentExposed(7))
 		{
 			this.WriteLabel.SetActive(false);
 			this.WriteIcon.SetActive(false);
@@ -348,7 +348,7 @@ public class HomeInternetScript : MonoBehaviour
 					}
 					if (this.Timer > 5f)
 					{
-						Globals.Reputation -= 5f;
+						PlayerGlobals.Reputation -= 5f;
 						this.InternetPrompts.SetActive(true);
 						this.PostSequence = false;
 					}
@@ -411,8 +411,8 @@ public class HomeInternetScript : MonoBehaviour
 					}
 					if (this.Timer > 13f)
 					{
-						Globals.SetStudentExposed(7, true);
-						Globals.SetStudentReputation(7, Globals.GetStudentReputation(7) - 50);
+						StudentGlobals.SetStudentExposed(7, true);
+						StudentGlobals.SetStudentReputation(7, StudentGlobals.GetStudentReputation(7) - 50);
 						this.InternetPrompts.SetActive(true);
 						this.PostSequence = false;
 					}
@@ -421,7 +421,7 @@ public class HomeInternetScript : MonoBehaviour
 		}
 		if (Input.GetKeyDown("space"))
 		{
-			Globals.SetStudentExposed(7, false);
+			StudentGlobals.SetStudentExposed(7, false);
 		}
 	}
 

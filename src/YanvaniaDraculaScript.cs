@@ -281,7 +281,7 @@ public class YanvaniaDraculaScript : MonoBehaviour
 								this.FinalTimer += Time.deltaTime;
 								if (this.FinalTimer > 1f)
 								{
-									Globals.DraculaDefeated = true;
+									YanvaniaGlobals.DraculaDefeated = true;
 									SceneManager.LoadScene("YanvaniaTitleScene");
 								}
 							}

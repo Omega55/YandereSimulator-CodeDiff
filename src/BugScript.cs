@@ -23,7 +23,7 @@ public class BugScript : MonoBehaviour
 			this.MyAudio.clip = this.Praise[UnityEngine.Random.Range(0, this.Praise.Length)];
 			this.MyAudio.Play();
 			this.MyRenderer.enabled = true;
-			Globals.PantyShots += 5;
+			PlayerGlobals.PantyShots += 5;
 			base.enabled = false;
 			this.Prompt.enabled = false;
 			this.Prompt.Hide();

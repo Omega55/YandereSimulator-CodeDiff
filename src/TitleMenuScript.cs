@@ -124,7 +124,7 @@ public class TitleMenuScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (Globals.LoveSick)
+		if (GameGlobals.LoveSick)
 		{
 			this.LoveSick = true;
 		}
@@ -252,7 +252,7 @@ public class TitleMenuScript : MonoBehaviour
 				}
 				if (Input.GetKeyDown("l"))
 				{
-					Globals.LoveSick = !Globals.LoveSick;
+					GameGlobals.LoveSick = !GameGlobals.LoveSick;
 					SceneManager.LoadScene("TitleScene");
 				}
 				if (!this.LoveSick)
@@ -330,7 +330,7 @@ public class TitleMenuScript : MonoBehaviour
 			}
 			else if (this.Darkness.color.a < 1f)
 			{
-				Globals.MissionMode = false;
+				MissionModeGlobals.MissionMode = false;
 				this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a + Time.deltaTime);
 				if (this.Darkness.color.a >= 1f)
 				{
@@ -347,7 +347,7 @@ public class TitleMenuScript : MonoBehaviour
 						Globals.DeleteAll();
 						if (this.LoveSick)
 						{
-							Globals.LoveSick = true;
+							GameGlobals.LoveSick = true;
 						}
 						SceneManager.LoadScene("SenpaiScene");
 					}

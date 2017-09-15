@@ -42,7 +42,7 @@ public class BatheEventScript : MonoBehaviour
 	private void Start()
 	{
 		this.RivalPhone.SetActive(false);
-		if (Globals.Weekday != this.EventDay)
+		if (DateGlobals.Weekday != this.EventDay)
 		{
 			base.enabled = false;
 		}

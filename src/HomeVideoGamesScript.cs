@@ -31,7 +31,7 @@ public class HomeVideoGamesScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (Globals.GetTaskStatus(14) == 0)
+		if (TaskGlobals.GetTaskStatus(14) == 0)
 		{
 			this.TitleScreens[1] = this.TitleScreens[2];
 			UILabel uilabel = this.GameTitles[1];

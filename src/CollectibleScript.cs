@@ -11,7 +11,7 @@ public class CollectibleScript : MonoBehaviour
 
 	private void Start()
 	{
-		bool flag = (this.CollectibleType == CollectibleType.BasementTape && Globals.GetBasementTapeCollected(this.ID)) || (this.CollectibleType == CollectibleType.Manga && Globals.GetMangaCollected(this.ID)) || (this.CollectibleType == CollectibleType.Tape && Globals.GetTapeCollected(this.ID));
+		bool flag = (this.CollectibleType == CollectibleType.BasementTape && CollectibleGlobals.GetBasementTapeCollected(this.ID)) || (this.CollectibleType == CollectibleType.Manga && CollectibleGlobals.GetMangaCollected(this.ID)) || (this.CollectibleType == CollectibleType.Tape && CollectibleGlobals.GetTapeCollected(this.ID));
 		if (flag)
 		{
 			UnityEngine.Object.Destroy(base.gameObject);
@@ -45,15 +45,15 @@ public class CollectibleScript : MonoBehaviour
 		{
 			if (this.CollectibleType == CollectibleType.BasementTape)
 			{
-				Globals.SetBasementTapeCollected(this.ID, true);
+				CollectibleGlobals.SetBasementTapeCollected(this.ID, true);
 			}
 			else if (this.CollectibleType == CollectibleType.Manga)
 			{
-				Globals.SetMangaCollected(this.ID, true);
+				CollectibleGlobals.SetMangaCollected(this.ID, true);
 			}
 			else if (this.CollectibleType == CollectibleType.Tape)
 			{
-				Globals.SetTapeCollected(this.ID, true);
+				CollectibleGlobals.SetTapeCollected(this.ID, true);
 			}
 			else
 			{

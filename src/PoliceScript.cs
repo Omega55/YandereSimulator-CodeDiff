@@ -133,7 +133,7 @@ public class PoliceScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (Globals.SchoolAtmosphere > 50f)
+		if (SchoolGlobals.SchoolAtmosphere > 50f)
 		{
 			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 0f);
 			this.Darkness.enabled = false;
@@ -422,7 +422,7 @@ public class PoliceScript : MonoBehaviour
 				this.ResultsLabels[i].text = string.Empty;
 			}
 		}
-		else if (Globals.Weekday == 5)
+		else if (DateGlobals.Weekday == 5)
 		{
 			this.ResultsLabels[0].text = "This is the part where the game will determine whether or not the player has eliminated their rival.";
 			this.ResultsLabels[1].text = "This game is still in development.";
@@ -567,33 +567,33 @@ public class PoliceScript : MonoBehaviour
 
 	public void KillStudents()
 	{
-		float num = Globals.SchoolAtmosphere;
+		float num = SchoolGlobals.SchoolAtmosphere;
 		if (this.Deaths > 0)
 		{
 			for (int i = 2; i < this.StudentManager.NPCsTotal + 1; i++)
 			{
-				if (Globals.GetStudentDying(i))
+				if (StudentGlobals.GetStudentDying(i))
 				{
-					Globals.SetStudentDead(i, true);
-					Globals.Kills++;
+					StudentGlobals.SetStudentDead(i, true);
+					PlayerGlobals.Kills++;
 				}
 			}
 			num -= (float)this.Deaths * 5f;
 			num -= (float)this.Corpses * 5f;
-			Globals.SchoolAtmosphere = num;
+			SchoolGlobals.SchoolAtmosphere = num;
 		}
 		else
 		{
 			num += 20f;
-			Globals.SchoolAtmosphere = num;
+			SchoolGlobals.SchoolAtmosphere = num;
 		}
-		Globals.SchoolAtmosphere = Mathf.Clamp(Globals.SchoolAtmosphere, 0f, 100f);
+		SchoolGlobals.SchoolAtmosphere = Mathf.Clamp(SchoolGlobals.SchoolAtmosphere, 0f, 100f);
 		for (int j = 1; j < this.StudentManager.StudentsTotal; j++)
 		{
 			StudentScript studentScript = this.StudentManager.Students[j];
 			if (studentScript != null && studentScript.Grudge)
 			{
-				Globals.SetStudentGrudge(j, true);
+				StudentGlobals.SetStudentGrudge(j, true);
 			}
 		}
 	}

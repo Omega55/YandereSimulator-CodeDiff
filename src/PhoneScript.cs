@@ -64,25 +64,25 @@ public class PhoneScript : MonoBehaviour
 	{
 		this.Buttons.localPosition = new Vector3(this.Buttons.localPosition.x, -135f, this.Buttons.localPosition.z);
 		this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 1f);
-		if (Globals.KidnapConversation)
+		if (EventGlobals.KidnapConversation)
 		{
 			this.VoiceClips = this.KidnapClip;
 			this.Speaker = this.KidnapSpeaker;
 			this.Text = this.KidnapText;
 			this.Height = this.KidnapHeight;
-			Globals.BefriendConversation = true;
-			Globals.KidnapConversation = false;
+			EventGlobals.BefriendConversation = true;
+			EventGlobals.KidnapConversation = false;
 		}
-		else if (Globals.BefriendConversation)
+		else if (EventGlobals.BefriendConversation)
 		{
 			this.VoiceClips = this.BefriendClip;
 			this.Speaker = this.BefriendSpeaker;
 			this.Text = this.BefriendText;
 			this.Height = this.BefriendHeight;
-			Globals.LivingRoom = true;
-			Globals.BefriendConversation = false;
+			EventGlobals.LivingRoom = true;
+			EventGlobals.BefriendConversation = false;
 		}
-		if (Globals.LoveSick)
+		if (GameGlobals.LoveSick)
 		{
 			Camera.main.backgroundColor = Color.black;
 			this.LoveSickColorSwap();
@@ -140,11 +140,11 @@ public class PhoneScript : MonoBehaviour
 			this.Jukebox.volume = 1f - this.Darkness.color.a;
 			if (this.Darkness.color.a >= 1f)
 			{
-				if (!Globals.BefriendConversation && !Globals.LivingRoom)
+				if (!EventGlobals.BefriendConversation && !EventGlobals.LivingRoom)
 				{
 					SceneManager.LoadScene("CalendarScene");
 				}
-				else if (Globals.LivingRoom)
+				else if (EventGlobals.LivingRoom)
 				{
 					SceneManager.LoadScene("LivingRoomScene");
 				}

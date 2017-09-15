@@ -237,27 +237,27 @@ public class CounselorScript : MonoBehaviour
 					{
 						if (this.Selected == 1)
 						{
-							Globals.SetSchemeStage(1, 100);
+							SchemeGlobals.SetSchemeStage(1, 100);
 							this.Schemes.UpdateInstructions();
 						}
 						else if (this.Selected == 2)
 						{
-							Globals.SetSchemeStage(2, 100);
+							SchemeGlobals.SetSchemeStage(2, 100);
 							this.Schemes.UpdateInstructions();
 						}
 						else if (this.Selected == 3)
 						{
-							Globals.SetSchemeStage(3, 100);
+							SchemeGlobals.SetSchemeStage(3, 100);
 							this.Schemes.UpdateInstructions();
 						}
 						else if (this.Selected == 4)
 						{
-							Globals.SetSchemeStage(4, 100);
+							SchemeGlobals.SetSchemeStage(4, 100);
 							this.Schemes.UpdateInstructions();
 						}
 						else if (this.Selected == 5)
 						{
-							Globals.SetSchemeStage(5, 7);
+							SchemeGlobals.SetSchemeStage(5, 7);
 							this.Schemes.UpdateInstructions();
 						}
 						this.CounselorSubtitle.text = this.CounselorReportText[this.Selected];
@@ -322,7 +322,7 @@ public class CounselorScript : MonoBehaviour
 		}
 		if (this.Lecturing)
 		{
-			this.Chibi.localPosition = new Vector3(this.Chibi.localPosition.x, Mathf.Lerp(this.Chibi.localPosition.y, 250f + (float)Globals.ExpelProgress * -100f, Time.deltaTime * 2f), this.Chibi.localPosition.z);
+			this.Chibi.localPosition = new Vector3(this.Chibi.localPosition.x, Mathf.Lerp(this.Chibi.localPosition.y, 250f + (float)StudentGlobals.ExpelProgress * -100f, Time.deltaTime * 2f), this.Chibi.localPosition.z);
 			if (this.LecturePhase == 1)
 			{
 				this.LectureLabel.text = this.LectureIntro[this.LectureID];
@@ -367,7 +367,7 @@ public class CounselorScript : MonoBehaviour
 				if (!component2.isPlaying || Input.GetButtonDown("A"))
 				{
 					this.LectureSubtitle.text = string.Empty;
-					if (Globals.ExpelProgress < 5)
+					if (StudentGlobals.ExpelProgress < 5)
 					{
 						this.LecturePhase++;
 					}
@@ -384,7 +384,7 @@ public class CounselorScript : MonoBehaviour
 				this.ExpelTimer += Time.deltaTime;
 				if (this.ExpelTimer > 2f)
 				{
-					Globals.ExpelProgress++;
+					StudentGlobals.ExpelProgress++;
 					this.LecturePhase++;
 				}
 			}
@@ -402,9 +402,9 @@ public class CounselorScript : MonoBehaviour
 				this.ExpelTimer += Time.deltaTime;
 				if (this.ExpelTimer > 6f)
 				{
-					if (Globals.ExpelProgress == 5 && !Globals.GetStudentExpelled(7))
+					if (StudentGlobals.ExpelProgress == 5 && !StudentGlobals.GetStudentExpelled(7))
 					{
-						Globals.SetStudentExpelled(7, true);
+						StudentGlobals.SetStudentExpelled(7, true);
 						this.EndOfDayDarkness.color = new Color(this.EndOfDayDarkness.color.r, this.EndOfDayDarkness.color.g, this.EndOfDayDarkness.color.b, 0f);
 						this.LectureLabel.color = new Color(this.LectureLabel.color.r, this.LectureLabel.color.g, this.LectureLabel.color.b, 0f);
 						this.LecturePhase = 2;
@@ -442,27 +442,27 @@ public class CounselorScript : MonoBehaviour
 			UILabel uilabel = this.Labels[i];
 			uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, 0.5f);
 		}
-		if (Globals.GetSchemeStage(1) == 2)
+		if (SchemeGlobals.GetSchemeStage(1) == 2)
 		{
 			UILabel uilabel2 = this.Labels[1];
 			uilabel2.color = new Color(uilabel2.color.r, uilabel2.color.g, uilabel2.color.b, 1f);
 		}
-		if (Globals.GetSchemeStage(2) == 3)
+		if (SchemeGlobals.GetSchemeStage(2) == 3)
 		{
 			UILabel uilabel3 = this.Labels[2];
 			uilabel3.color = new Color(uilabel3.color.r, uilabel3.color.g, uilabel3.color.b, 1f);
 		}
-		if (Globals.GetSchemeStage(3) == 4)
+		if (SchemeGlobals.GetSchemeStage(3) == 4)
 		{
 			UILabel uilabel4 = this.Labels[3];
 			uilabel4.color = new Color(uilabel4.color.r, uilabel4.color.g, uilabel4.color.b, 1f);
 		}
-		if (Globals.GetSchemeStage(4) == 5)
+		if (SchemeGlobals.GetSchemeStage(4) == 5)
 		{
 			UILabel uilabel5 = this.Labels[4];
 			uilabel5.color = new Color(uilabel5.color.r, uilabel5.color.g, uilabel5.color.b, 1f);
 		}
-		if (Globals.GetSchemeStage(5) == 6)
+		if (SchemeGlobals.GetSchemeStage(5) == 6)
 		{
 			UILabel uilabel6 = this.Labels[5];
 			uilabel6.color = new Color(uilabel6.color.r, uilabel6.color.g, uilabel6.color.b, 1f);

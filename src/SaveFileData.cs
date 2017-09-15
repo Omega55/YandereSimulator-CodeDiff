@@ -5,21 +5,70 @@ using System.Xml.Serialization;
 [Serializable]
 public class SaveFileData
 {
-	public int Kills;
+	public ApplicationSaveData applicationData;
 
-	public float Atmosphere;
+	public ClassSaveData classData;
 
-	public int Alerts;
+	public ClubSaveData clubData;
 
-	public int Week;
+	public CollectibleSaveData collectibleData;
 
-	public string Day;
+	public ConversationSaveData conversationData;
 
-	public string Rival;
+	public DateSaveData dateData;
 
-	public float Reputation;
+	public DatingSaveData datingData;
 
-	public string Club;
+	public EventSaveData eventData;
 
-	public int Friends;
+	public GameSaveData gameData;
+
+	public HomeSaveData homeData;
+
+	public MissionModeSaveData missionModeData;
+
+	public OptionSaveData optionData;
+
+	public PlayerSaveData playerData;
+
+	public PoseModeSaveData poseModeData;
+
+	public SaveFileSaveData saveFileData;
+
+	public SchemeSaveData schemeData;
+
+	public SchoolSaveData schoolData;
+
+	public SenpaiSaveData senpaiData;
+
+	public StudentSaveData studentData;
+
+	public TaskSaveData taskData;
+
+	public YanvaniaSaveData yanvaniaData;
+
+	public SaveFileData()
+	{
+		this.applicationData = new ApplicationSaveData();
+		this.classData = new ClassSaveData();
+		this.clubData = new ClubSaveData();
+		this.collectibleData = new CollectibleSaveData();
+		this.conversationData = new ConversationSaveData();
+		this.dateData = new DateSaveData();
+		this.datingData = new DatingSaveData();
+		this.eventData = new EventSaveData();
+		this.gameData = new GameSaveData();
+		this.homeData = new HomeSaveData();
+		this.missionModeData = new MissionModeSaveData();
+		this.optionData = new OptionSaveData();
+		this.playerData = new PlayerSaveData();
+		this.poseModeData = new PoseModeSaveData();
+		this.saveFileData = new SaveFileSaveData();
+		this.schemeData = new SchemeSaveData();
+		this.schoolData = new SchoolSaveData();
+		this.senpaiData = new SenpaiSaveData();
+		this.studentData = new StudentSaveData();
+		this.taskData = new TaskSaveData();
+		this.yanvaniaData = new YanvaniaSaveData();
+	}
 }

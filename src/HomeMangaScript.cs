@@ -94,7 +94,7 @@ public class HomeMangaScript : MonoBehaviour
 		this.UpdateCurrentLabel();
 		for (int i = 0; i < this.TotalManga; i++)
 		{
-			if (Globals.GetMangaCollected(i + 1))
+			if (CollectibleGlobals.GetMangaCollected(i + 1))
 			{
 				this.NewManga = UnityEngine.Object.Instantiate<GameObject>(this.MangaModels[i], new Vector3(base.transform.position.x, base.transform.position.y, base.transform.position.z - 1f), Quaternion.identity);
 			}
@@ -157,14 +157,14 @@ public class HomeMangaScript : MonoBehaviour
 				}
 				if (Input.GetKeyDown("s"))
 				{
-					Globals.Seduction++;
-					Globals.Numbness++;
-					Globals.Enlightenment++;
-					if (Globals.Seduction > 5)
+					PlayerGlobals.Seduction++;
+					PlayerGlobals.Numbness++;
+					PlayerGlobals.Enlightenment++;
+					if (PlayerGlobals.Seduction > 5)
 					{
-						Globals.Seduction = 0;
-						Globals.Numbness = 0;
-						Globals.Enlightenment = 0;
+						PlayerGlobals.Seduction = 0;
+						PlayerGlobals.Numbness = 0;
+						PlayerGlobals.Enlightenment = 0;
 					}
 					this.UpdateCurrentLabel();
 					this.UpdateMangaLabels();
@@ -180,7 +180,7 @@ public class HomeMangaScript : MonoBehaviour
 				{
 					for (int i = 0; i < this.TotalManga; i++)
 					{
-						Globals.SetMangaCollected(i + 1, true);
+						CollectibleGlobals.SetMangaCollected(i + 1, true);
 					}
 				}
 			}
@@ -190,17 +190,17 @@ public class HomeMangaScript : MonoBehaviour
 				{
 					if (this.Selected < 5)
 					{
-						Globals.Seduction++;
+						PlayerGlobals.Seduction++;
 					}
 					else if (this.Selected < 10)
 					{
-						Globals.Numbness++;
+						PlayerGlobals.Numbness++;
 					}
 					else
 					{
-						Globals.Enlightenment++;
+						PlayerGlobals.Enlightenment++;
 					}
-					Globals.LateForSchool = true;
+					HomeGlobals.LateForSchool = true;
 					this.AreYouSure.SetActive(false);
 					this.Darkness.FadeOut = true;
 				}
@@ -225,10 +225,10 @@ public class HomeMangaScript : MonoBehaviour
 	{
 		if (this.Selected < 5)
 		{
-			this.ReadButtonGroup.SetActive(Globals.Seduction == this.Selected);
-			if (Globals.GetMangaCollected(this.Selected + 1))
+			this.ReadButtonGroup.SetActive(PlayerGlobals.Seduction == this.Selected);
+			if (CollectibleGlobals.GetMangaCollected(this.Selected + 1))
 			{
-				if (Globals.Seduction > this.Selected)
+				if (PlayerGlobals.Seduction > this.Selected)
 				{
 					this.RequiredLabel.text = "You have already read this manga.";
 				}
@@ -245,10 +245,10 @@ public class HomeMangaScript : MonoBehaviour
 		}
 		else if (this.Selected < 10)
 		{
-			this.ReadButtonGroup.SetActive(Globals.Numbness == this.Selected - 5);
-			if (Globals.GetMangaCollected(this.Selected + 1))
+			this.ReadButtonGroup.SetActive(PlayerGlobals.Numbness == this.Selected - 5);
+			if (CollectibleGlobals.GetMangaCollected(this.Selected + 1))
 			{
-				if (Globals.Numbness > this.Selected - 5)
+				if (PlayerGlobals.Numbness > this.Selected - 5)
 				{
 					this.RequiredLabel.text = "You have already read this manga.";
 				}
@@ -265,10 +265,10 @@ public class HomeMangaScript : MonoBehaviour
 		}
 		else
 		{
-			this.ReadButtonGroup.SetActive(Globals.Enlightenment == this.Selected - 10);
-			if (Globals.GetMangaCollected(this.Selected + 1))
+			this.ReadButtonGroup.SetActive(PlayerGlobals.Enlightenment == this.Selected - 10);
+			if (CollectibleGlobals.GetMangaCollected(this.Selected + 1))
 			{
-				if (Globals.Enlightenment > this.Selected - 10)
+				if (PlayerGlobals.Enlightenment > this.Selected - 10)
 				{
 					this.RequiredLabel.text = "You have already read this manga.";
 				}
@@ -283,7 +283,7 @@ public class HomeMangaScript : MonoBehaviour
 				this.ReadButtonGroup.SetActive(false);
 			}
 		}
-		if (Globals.GetMangaCollected(this.Selected + 1))
+		if (CollectibleGlobals.GetMangaCollected(this.Selected + 1))
 		{
 			this.MangaNameLabel.text = this.MangaNames[this.Selected];
 			this.MangaDescLabel.text = this.MangaDescs[this.Selected];
@@ -301,11 +301,11 @@ public class HomeMangaScript : MonoBehaviour
 	{
 		if (this.Selected < 5)
 		{
-			this.Title = HomeMangaScript.SeductionStrings[Globals.Seduction];
+			this.Title = HomeMangaScript.SeductionStrings[PlayerGlobals.Seduction];
 			this.CurrentLabel.text = string.Concat(new string[]
 			{
 				"Current Seduction Level: ",
-				Globals.Seduction.ToString(),
+				PlayerGlobals.Seduction.ToString(),
 				" (",
 				this.Title,
 				")"
@@ -313,11 +313,11 @@ public class HomeMangaScript : MonoBehaviour
 		}
 		else if (this.Selected < 10)
 		{
-			this.Title = HomeMangaScript.NumbnessStrings[Globals.Numbness];
+			this.Title = HomeMangaScript.NumbnessStrings[PlayerGlobals.Numbness];
 			this.CurrentLabel.text = string.Concat(new string[]
 			{
 				"Current Numbness Level: ",
-				Globals.Numbness.ToString(),
+				PlayerGlobals.Numbness.ToString(),
 				" (",
 				this.Title,
 				")"
@@ -325,11 +325,11 @@ public class HomeMangaScript : MonoBehaviour
 		}
 		else
 		{
-			this.Title = HomeMangaScript.EnlightenmentStrings[Globals.Enlightenment];
+			this.Title = HomeMangaScript.EnlightenmentStrings[PlayerGlobals.Enlightenment];
 			this.CurrentLabel.text = string.Concat(new string[]
 			{
 				"Current Enlightenment Level: ",
-				Globals.Enlightenment.ToString(),
+				PlayerGlobals.Enlightenment.ToString(),
 				" (",
 				this.Title,
 				")"

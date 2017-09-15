@@ -109,20 +109,20 @@ public class OfferHelpScript : MonoBehaviour
 					this.Timer = 0f;
 					if (this.EventPhase == 14)
 					{
-						if (!Globals.GetTopicDiscovered(23))
+						if (!ConversationGlobals.GetTopicDiscovered(23))
 						{
 							this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
-							Globals.SetTopicDiscovered(23, true);
+							ConversationGlobals.SetTopicDiscovered(23, true);
 						}
-						if (!Globals.GetTopicLearnedByStudent(23, 7))
+						if (!ConversationGlobals.GetTopicLearnedByStudent(23, 7))
 						{
 							this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
-							Globals.SetTopicLearnedByStudent(23, 7, true);
+							ConversationGlobals.SetTopicLearnedByStudent(23, 7, true);
 						}
 					}
 					if (this.EventPhase == this.EventSpeech.Length)
 					{
-						Globals.SetSchemeStage(6, 5);
+						SchemeGlobals.SetSchemeStage(6, 5);
 						this.Student.CurrentDestination = this.Student.Destinations[this.Student.Phase];
 						this.Student.Pathfinding.target = this.Student.Destinations[this.Student.Phase];
 						this.Student.Pathfinding.canSearch = true;

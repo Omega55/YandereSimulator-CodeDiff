@@ -212,4 +212,23 @@ public static class ClassGlobals
 			PlayerPrefs.SetInt("PsychologyGrade", value);
 		}
 	}
+
+	public static void DeleteAll()
+	{
+		Globals.Delete("Biology");
+		Globals.Delete("BiologyBonus");
+		Globals.Delete("BiologyGrade");
+		Globals.Delete("Chemistry");
+		Globals.Delete("ChemistryBonus");
+		Globals.Delete("ChemistryGrade");
+		Globals.Delete("Language");
+		Globals.Delete("LanguageBonus");
+		Globals.Delete("LanguageGrade");
+		Globals.Delete("Physical");
+		Globals.Delete("PhysicalBonus");
+		Globals.Delete("PhysicalGrade");
+		Globals.Delete("Psychology");
+		Globals.Delete("PsychologyBonus");
+		Globals.Delete("PsychologyGrade");
+	}
 }

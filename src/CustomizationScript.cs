@@ -138,7 +138,7 @@ public class CustomizationScript : MonoBehaviour
 
 	private void Start()
 	{
-		this.LoveSick = Globals.LoveSick;
+		this.LoveSick = GameGlobals.LoveSick;
 		this.ApologyWindow.localPosition = new Vector3(1360f, this.ApologyWindow.localPosition.y, this.ApologyWindow.localPosition.z);
 		this.CustomizePanel.alpha = 0f;
 		this.UniformPanel.alpha = 0f;
@@ -493,15 +493,15 @@ public class CustomizationScript : MonoBehaviour
 			base.GetComponent<AudioSource>().volume = 1f - this.WhitePanel.alpha;
 			if (this.WhitePanel.alpha == 1f)
 			{
-				Globals.CustomSenpai = true;
-				Globals.SenpaiSkinColor = this.SkinColor;
-				Globals.SenpaiHairStyle = this.HairStyle;
-				Globals.SenpaiHairColor = this.HairColorName;
-				Globals.SenpaiEyeColor = this.EyeColorName;
-				Globals.SenpaiEyeWear = this.EyeWear;
-				Globals.SenpaiFacialHair = this.FacialHair;
-				Globals.MaleUniform = this.MaleUniform;
-				Globals.FemaleUniform = this.FemaleUniform;
+				SenpaiGlobals.CustomSenpai = true;
+				SenpaiGlobals.SenpaiSkinColor = this.SkinColor;
+				SenpaiGlobals.SenpaiHairStyle = this.HairStyle;
+				SenpaiGlobals.SenpaiHairColor = this.HairColorName;
+				SenpaiGlobals.SenpaiEyeColor = this.EyeColorName;
+				SenpaiGlobals.SenpaiEyeWear = this.EyeWear;
+				SenpaiGlobals.SenpaiFacialHair = this.FacialHair;
+				StudentGlobals.MaleUniform = this.MaleUniform;
+				StudentGlobals.FemaleUniform = this.FemaleUniform;
 				SceneManager.LoadScene("IntroScene");
 			}
 		}

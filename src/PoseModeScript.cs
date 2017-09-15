@@ -808,16 +808,16 @@ public class PoseModeScript : MonoBehaviour
 
 	private void RememberPose()
 	{
-		Globals.PosePosition = this.Bone.localPosition;
-		Globals.PoseRotation = this.Bone.localEulerAngles;
-		Globals.PoseScale = this.Bone.localScale;
+		PoseModeGlobals.PosePosition = this.Bone.localPosition;
+		PoseModeGlobals.PoseRotation = this.Bone.localEulerAngles;
+		PoseModeGlobals.PoseScale = this.Bone.localScale;
 	}
 
 	private void ResetPose()
 	{
-		this.Bone.localPosition = Globals.PosePosition;
-		this.Bone.localEulerAngles = Globals.PoseRotation;
-		this.Bone.localScale = Globals.PoseScale;
+		this.Bone.localPosition = PoseModeGlobals.PosePosition;
+		this.Bone.localEulerAngles = PoseModeGlobals.PoseRotation;
+		this.Bone.localScale = PoseModeGlobals.PoseScale;
 	}
 
 	private void CapColors()

@@ -81,19 +81,19 @@ public class StudentInfoScript : MonoBehaviour
 	{
 		StudentJson studentJson = this.JSON.Students[ID];
 		this.NameLabel.text = studentJson.Name;
-		if (Globals.GetStudentReputation(ID) < 0)
+		if (StudentGlobals.GetStudentReputation(ID) < 0)
 		{
-			this.ReputationLabel.text = Globals.GetStudentReputation(ID).ToString();
+			this.ReputationLabel.text = StudentGlobals.GetStudentReputation(ID).ToString();
 		}
-		else if (Globals.GetStudentReputation(ID) > 0)
+		else if (StudentGlobals.GetStudentReputation(ID) > 0)
 		{
-			this.ReputationLabel.text = "+" + Globals.GetStudentReputation(ID).ToString();
+			this.ReputationLabel.text = "+" + StudentGlobals.GetStudentReputation(ID).ToString();
 		}
 		else
 		{
 			this.ReputationLabel.text = "0";
 		}
-		this.ReputationBar.localPosition = new Vector3((float)Globals.GetStudentReputation(ID) * 0.96f, this.ReputationBar.localPosition.y, this.ReputationBar.localPosition.z);
+		this.ReputationBar.localPosition = new Vector3((float)StudentGlobals.GetStudentReputation(ID) * 0.96f, this.ReputationBar.localPosition.y, this.ReputationBar.localPosition.z);
 		if (this.ReputationBar.localPosition.x > 96f)
 		{
 			this.ReputationBar.localPosition = new Vector3(96f, this.ReputationBar.localPosition.y, this.ReputationBar.localPosition.z);
@@ -102,45 +102,10 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.ReputationBar.localPosition = new Vector3(-96f, this.ReputationBar.localPosition.y, this.ReputationBar.localPosition.z);
 		}
-		if (studentJson.Persona == PersonaType.Loner)
+		this.PersonaLabel.text = Persona.PersonaNames[studentJson.Persona];
+		if (studentJson.Persona == PersonaType.Strict && studentJson.Club == ClubType.GymTeacher && !StudentGlobals.GetStudentReplaced(ID))
 		{
-			this.PersonaLabel.text = "Loner";
-		}
-		else if (studentJson.Persona == PersonaType.TeachersPet)
-		{
-			this.PersonaLabel.text = "Teacher's Pet";
-		}
-		else if (studentJson.Persona == PersonaType.Heroic)
-		{
-			this.PersonaLabel.text = "Heroic";
-		}
-		else if (studentJson.Persona == PersonaType.Coward)
-		{
-			this.PersonaLabel.text = "Coward";
-		}
-		else if (studentJson.Persona == PersonaType.Evil)
-		{
-			this.PersonaLabel.text = "Evil";
-		}
-		else if (studentJson.Persona == PersonaType.SocialButterfly)
-		{
-			this.PersonaLabel.text = "Social Butterfly";
-		}
-		else if (studentJson.Persona == PersonaType.Tsundere)
-		{
-			this.PersonaLabel.text = "Tsundere";
-		}
-		else if (studentJson.Persona == PersonaType.Strict)
-		{
-			this.PersonaLabel.text = "Strict";
-			if (studentJson.Club == ClubType.GymTeacher && !Globals.GetStudentReplaced(ID))
-			{
-				this.PersonaLabel.text = "Friendly but Strict";
-			}
-		}
-		else if (studentJson.Persona == PersonaType.Nemesis)
-		{
-			this.PersonaLabel.text = "?????";
+			this.PersonaLabel.text = "Friendly but Strict";
 		}
 		if (studentJson.Crush == 0)
 		{
@@ -164,86 +129,11 @@ public class StudentInfoScript : MonoBehaviour
 		}
 		if (studentJson.Club < ClubType.Teacher)
 		{
-			if (studentJson.Club == ClubType.None)
-			{
-				this.ClubLabel.text = "No Club";
-			}
-			else if (studentJson.Club == ClubType.Cooking)
-			{
-				this.ClubLabel.text = "Cooking";
-			}
-			else if (studentJson.Club == ClubType.Drama)
-			{
-				this.ClubLabel.text = "Drama";
-			}
-			else if (studentJson.Club == ClubType.Occult)
-			{
-				this.ClubLabel.text = "Occult";
-			}
-			else if (studentJson.Club == ClubType.Art)
-			{
-				this.ClubLabel.text = "Art";
-			}
-			else if (studentJson.Club == ClubType.LightMusic)
-			{
-				this.ClubLabel.text = "Light Music";
-			}
-			else if (studentJson.Club == ClubType.MartialArts)
-			{
-				this.ClubLabel.text = "Martial Arts";
-			}
-			else if (studentJson.Club == ClubType.Photography)
-			{
-				this.ClubLabel.text = "Photography";
-			}
-			else if (studentJson.Club == ClubType.Science)
-			{
-				this.ClubLabel.text = "Science";
-			}
-			else if (studentJson.Club == ClubType.Sports)
-			{
-				this.ClubLabel.text = "Sports";
-			}
-			else if (studentJson.Club == ClubType.Gardening)
-			{
-				this.ClubLabel.text = "Gardening";
-			}
-			else if (studentJson.Club == ClubType.Gaming)
-			{
-				this.ClubLabel.text = "Gaming";
-			}
-			else if (studentJson.Club == ClubType.Nemesis)
-			{
-				this.ClubLabel.text = "?????";
-			}
+			this.ClubLabel.text = Club.ClubNames[studentJson.Club];
 		}
-		else if (studentJson.Class == 11)
+		else
 		{
-			this.ClubLabel.text = "Teacher of Class 1-1";
-		}
-		else if (studentJson.Class == 12)
-		{
-			this.ClubLabel.text = "Teacher of Class 1-2";
-		}
-		else if (studentJson.Class == 21)
-		{
-			this.ClubLabel.text = "Teacher of Class 2-1";
-		}
-		else if (studentJson.Class == 22)
-		{
-			this.ClubLabel.text = "Teacher of Class 2-2";
-		}
-		else if (studentJson.Class == 31)
-		{
-			this.ClubLabel.text = "Teacher of Class 3-1";
-		}
-		else if (studentJson.Class == 32)
-		{
-			this.ClubLabel.text = "Teacher of Class 3-2";
-		}
-		else if (studentJson.Class == 0)
-		{
-			this.ClubLabel.text = "Gym Teacher";
+			this.ClubLabel.text = Club.TeacherClubNames[studentJson.Class];
 		}
 		if (ClubGlobals.GetClubClosed(studentJson.Club))
 		{
@@ -293,7 +183,7 @@ public class StudentInfoScript : MonoBehaviour
 				".png"
 			});
 			WWW www = new WWW(url);
-			if (!Globals.GetStudentReplaced(ID))
+			if (!StudentGlobals.GetStudentReplaced(ID))
 			{
 				if (!this.CustomPortraits)
 				{
@@ -422,12 +312,12 @@ public class StudentInfoScript : MonoBehaviour
 		}
 		if (Input.GetKeyDown("="))
 		{
-			Globals.SetStudentReputation(this.CurrentStudent, Globals.GetStudentReputation(this.CurrentStudent) + 10);
+			StudentGlobals.SetStudentReputation(this.CurrentStudent, StudentGlobals.GetStudentReputation(this.CurrentStudent) + 10);
 			this.UpdateInfo(this.CurrentStudent);
 		}
 		if (Input.GetKeyDown("-"))
 		{
-			Globals.SetStudentReputation(this.CurrentStudent, Globals.GetStudentReputation(this.CurrentStudent) - 10);
+			StudentGlobals.SetStudentReputation(this.CurrentStudent, StudentGlobals.GetStudentReputation(this.CurrentStudent) - 10);
 			this.UpdateInfo(this.CurrentStudent);
 		}
 	}
@@ -436,11 +326,11 @@ public class StudentInfoScript : MonoBehaviour
 	{
 		if (ID == 7)
 		{
-			this.Strings[1] = ((!Globals.Event1) ? "?????" : "May be a victim of domestic abuse.");
-			this.Strings[2] = ((!Globals.Event2) ? "?????" : "May be engaging in compensated dating in Shisuta Town.");
+			this.Strings[1] = ((!EventGlobals.Event1) ? "?????" : "May be a victim of domestic abuse.");
+			this.Strings[2] = ((!EventGlobals.Event2) ? "?????" : "May be engaging in compensated dating in Shisuta Town.");
 			this.InfoLabel.text = this.Strings[1] + "\n\n" + this.Strings[2];
 		}
-		else if (!Globals.GetStudentReplaced(ID))
+		else if (!StudentGlobals.GetStudentReplaced(ID))
 		{
 			if (this.JSON.Students[ID].Info == string.Empty)
 			{
@@ -461,12 +351,12 @@ public class StudentInfoScript : MonoBehaviour
 	{
 		for (int i = 1; i < this.TopicIcons.Length; i++)
 		{
-			this.TopicIcons[i].spriteName = (Globals.GetTopicDiscovered(i) ? i : 0).ToString();
+			this.TopicIcons[i].spriteName = (ConversationGlobals.GetTopicDiscovered(i) ? i : 0).ToString();
 		}
 		for (int j = 1; j <= 25; j++)
 		{
 			UISprite uisprite = this.TopicOpinionIcons[j];
-			if (!Globals.GetTopicLearnedByStudent(j, this.CurrentStudent))
+			if (!ConversationGlobals.GetTopicLearnedByStudent(j, this.CurrentStudent))
 			{
 				uisprite.spriteName = "Unknown";
 			}

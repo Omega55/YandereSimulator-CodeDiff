@@ -356,7 +356,7 @@ public class EndOfDayScript : MonoBehaviour
 			{
 				if (this.Police.MaskReported)
 				{
-					Globals.MasksBanned = true;
+					GameGlobals.MasksBanned = true;
 					this.Label.text = "Witnesses state that the killer was wearing a mask. As a result, the police are unable to identify the murderer. To prevent this from ever happening again, the Headmaster decides to ban all masks from the school from this day forward.";
 					this.Police.MaskReported = false;
 					this.Phase++;
@@ -395,7 +395,7 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 10)
 			{
-				if (!Globals.GetStudentDying(7) && !Globals.GetStudentDead(7) && !Globals.GetStudentArrested(7))
+				if (!StudentGlobals.GetStudentDying(7) && !StudentGlobals.GetStudentDead(7) && !StudentGlobals.GetStudentArrested(7))
 				{
 					if (this.Counselor.LectureID > 0)
 					{
@@ -417,18 +417,18 @@ public class EndOfDayScript : MonoBehaviour
 			else if (this.Phase == 11)
 			{
 				Debug.Log("Phase 11.");
-				if (Globals.GetSchemeStage(2) == 3)
+				if (SchemeGlobals.GetSchemeStage(2) == 3)
 				{
-					if (!Globals.GetStudentDying(7) && !Globals.GetStudentDead(7) && !Globals.GetStudentArrested(7))
+					if (!StudentGlobals.GetStudentDying(7) && !StudentGlobals.GetStudentDead(7) && !StudentGlobals.GetStudentArrested(7))
 					{
 						this.Label.text = "Kokona discovers Sakyu's ring inside of her book bag. She returns the ring to Sakyu, who decides to never let it out of her sight again.";
-						Globals.SetSchemeStage(2, 100);
+						SchemeGlobals.SetSchemeStage(2, 100);
 					}
 				}
-				else if (Globals.GetSchemeStage(5) > 1 && Globals.GetSchemeStage(5) < 5)
+				else if (SchemeGlobals.GetSchemeStage(5) > 1 && SchemeGlobals.GetSchemeStage(5) < 5)
 				{
 					this.Label.text = "A teacher discovers that an answer sheet for an upcoming test is missing. She changes all of the questions for the test and keeps the new answer sheet with her at all times.";
-					Globals.SetSchemeStage(5, 100);
+					SchemeGlobals.SetSchemeStage(5, 100);
 				}
 				else
 				{
@@ -554,7 +554,7 @@ public class EndOfDayScript : MonoBehaviour
 				if (this.ErectFence)
 				{
 					this.Label.text = "To prevent any other students from falling off of the school rooftop, the school erects a fence around the roof.";
-					Globals.RoofFence = true;
+					SchoolGlobals.RoofFence = true;
 					this.ErectFence = false;
 				}
 				else
@@ -581,13 +581,13 @@ public class EndOfDayScript : MonoBehaviour
 					if (!studentScript.Tranquil)
 					{
 						this.Label.text = this.JSON.Students[fingerprintID].Name + " is arrested by the police.";
-						Globals.SetStudentArrested(fingerprintID, true);
+						StudentGlobals.SetStudentArrested(fingerprintID, true);
 						this.Arrests++;
 					}
 					else
 					{
 						this.Label.text = this.JSON.Students[fingerprintID].Name + " is found asleep inside of a musical instrument case. The police assume that she hid herself inside of the box after committing murder, and arrest her.";
-						Globals.SetStudentArrested(fingerprintID, true);
+						StudentGlobals.SetStudentArrested(fingerprintID, true);
 						this.ArrestID = fingerprintID;
 						this.TranqCase.Occupied = false;
 						this.Arrests++;
@@ -683,8 +683,8 @@ public class EndOfDayScript : MonoBehaviour
 
 	private void Finish()
 	{
-		Globals.Reputation = this.Reputation.Reputation;
-		Globals.Night = true;
+		PlayerGlobals.Reputation = this.Reputation.Reputation;
+		HomeGlobals.Night = true;
 		this.Police.KillStudents();
 		if (!this.TranqCase.Occupied)
 		{
@@ -692,13 +692,10 @@ public class EndOfDayScript : MonoBehaviour
 		}
 		else
 		{
-			Globals.KidnapVictim = this.TranqCase.VictimID;
-			Globals.SetStudentKidnapped(this.TranqCase.VictimID, true);
-			Globals.SetStudentSanity(this.TranqCase.VictimID, 100f);
+			SchoolGlobals.KidnapVictim = this.TranqCase.VictimID;
+			StudentGlobals.SetStudentKidnapped(this.TranqCase.VictimID, true);
+			StudentGlobals.SetStudentSanity(this.TranqCase.VictimID, 100f);
 			SceneManager.LoadScene("CalendarScene");
 		}
-		this.saveFile = SaveFile.Load(Globals.CurrentSaveFile);
-		this.saveFile.Data.Kills = Globals.Kills;
-		this.saveFile.Save();
 	}
 }

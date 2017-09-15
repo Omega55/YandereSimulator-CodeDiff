@@ -248,7 +248,7 @@ public class ClubManagerScript : MonoBehaviour
 		this.ID = 1;
 		while (this.ID < this.ClubIDs.Length)
 		{
-			if (!Globals.GetStudentDead(this.ClubIDs[this.ID]) && !Globals.GetStudentDying(this.ClubIDs[this.ID]) && !Globals.GetStudentKidnapped(this.ClubIDs[this.ID]) && !Globals.GetStudentArrested(this.ClubIDs[this.ID]) && Globals.GetStudentReputation(this.ClubIDs[this.ID]) > -100)
+			if (!StudentGlobals.GetStudentDead(this.ClubIDs[this.ID]) && !StudentGlobals.GetStudentDying(this.ClubIDs[this.ID]) && !StudentGlobals.GetStudentKidnapped(this.ClubIDs[this.ID]) && !StudentGlobals.GetStudentArrested(this.ClubIDs[this.ID]) && StudentGlobals.GetStudentReputation(this.ClubIDs[this.ID]) > -100)
 			{
 				this.ClubMembers++;
 			}
@@ -261,11 +261,11 @@ public class ClubManagerScript : MonoBehaviour
 		if (Check == ClubType.Occult)
 		{
 			int num = 26;
-			if (Globals.GetStudentDead(num) || Globals.GetStudentDying(num) || Globals.GetStudentArrested(num) || Globals.GetStudentReputation(num) <= -100)
+			if (StudentGlobals.GetStudentDead(num) || StudentGlobals.GetStudentDying(num) || StudentGlobals.GetStudentArrested(num) || StudentGlobals.GetStudentReputation(num) <= -100)
 			{
 				this.LeaderDead = true;
 			}
-			if (Globals.GetStudentMissing(num) || Globals.GetStudentKidnapped(num) || this.TranqCase.VictimID == num)
+			if (StudentGlobals.GetStudentMissing(num) || StudentGlobals.GetStudentKidnapped(num) || this.TranqCase.VictimID == num)
 			{
 				this.LeaderMissing = true;
 			}
@@ -273,11 +273,11 @@ public class ClubManagerScript : MonoBehaviour
 		else if (Check == ClubType.MartialArts)
 		{
 			int num2 = 21;
-			if (Globals.GetStudentDead(num2) || Globals.GetStudentDying(num2) || Globals.GetStudentArrested(num2) || Globals.GetStudentReputation(num2) <= -100)
+			if (StudentGlobals.GetStudentDead(num2) || StudentGlobals.GetStudentDying(num2) || StudentGlobals.GetStudentArrested(num2) || StudentGlobals.GetStudentReputation(num2) <= -100)
 			{
 				this.LeaderDead = true;
 			}
-			if (Globals.GetStudentMissing(num2) || Globals.GetStudentKidnapped(num2) || this.TranqCase.VictimID == num2)
+			if (StudentGlobals.GetStudentMissing(num2) || StudentGlobals.GetStudentKidnapped(num2) || this.TranqCase.VictimID == num2)
 			{
 				this.LeaderMissing = true;
 			}

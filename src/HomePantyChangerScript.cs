@@ -90,7 +90,7 @@ public class HomePantyChangerScript : MonoBehaviour
 			this.PantyParent.localEulerAngles = new Vector3(this.PantyParent.localEulerAngles.x, this.Rotation, this.PantyParent.localEulerAngles.z);
 			if (Input.GetButtonDown("A"))
 			{
-				Globals.PantiesEquipped = this.Selected;
+				PlayerGlobals.PantiesEquipped = this.Selected;
 				this.UpdatePantyLabels();
 			}
 			if (Input.GetButtonDown("B"))
@@ -116,6 +116,6 @@ public class HomePantyChangerScript : MonoBehaviour
 		this.PantyNameLabel.text = this.PantyNames[this.Selected];
 		this.PantyDescLabel.text = this.PantyDescs[this.Selected];
 		this.PantyBuffLabel.text = this.PantyBuffs[this.Selected];
-		this.ButtonLabel.text = ((this.Selected != Globals.PantiesEquipped) ? "Wear" : "Equipped");
+		this.ButtonLabel.text = ((this.Selected != PlayerGlobals.PantiesEquipped) ? "Wear" : "Equipped");
 	}
 }

@@ -148,6 +148,7 @@ public class DoorScript : MonoBehaviour
 			}
 			this.Bucket.GetComponent<Rigidbody>().isKinematic = true;
 			this.Bucket.GetComponent<Rigidbody>().useGravity = false;
+			this.Prompt.HideButton[1] = true;
 			this.CanSetBucket = false;
 			this.BucketSet = true;
 			this.Open = false;
@@ -475,26 +476,26 @@ public class DoorScript : MonoBehaviour
 		switch (this.RoomID)
 		{
 		case 3:
-			if (!Globals.GetTopicDiscovered(12))
+			if (!ConversationGlobals.GetTopicDiscovered(12))
 			{
-				Globals.SetTopicDiscovered(12, true);
+				ConversationGlobals.SetTopicDiscovered(12, true);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		case 13:
-			if (!Globals.GetTopicDiscovered(21))
+			if (!ConversationGlobals.GetTopicDiscovered(21))
 			{
-				Globals.SetTopicDiscovered(21, true);
+				ConversationGlobals.SetTopicDiscovered(21, true);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		case 15:
-			if (!Globals.GetTopicDiscovered(16))
+			if (!ConversationGlobals.GetTopicDiscovered(16))
 			{
-				Globals.SetTopicDiscovered(16, true);
-				Globals.SetTopicDiscovered(17, true);
-				Globals.SetTopicDiscovered(18, true);
-				Globals.SetTopicDiscovered(19, true);
+				ConversationGlobals.SetTopicDiscovered(16, true);
+				ConversationGlobals.SetTopicDiscovered(17, true);
+				ConversationGlobals.SetTopicDiscovered(18, true);
+				ConversationGlobals.SetTopicDiscovered(19, true);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
@@ -502,58 +503,58 @@ public class DoorScript : MonoBehaviour
 			}
 			break;
 		case 26:
-			if (!Globals.GetTopicDiscovered(1))
+			if (!ConversationGlobals.GetTopicDiscovered(1))
 			{
-				Globals.SetTopicDiscovered(1, true);
+				ConversationGlobals.SetTopicDiscovered(1, true);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		case 27:
-			if (!Globals.GetTopicDiscovered(2))
+			if (!ConversationGlobals.GetTopicDiscovered(2))
 			{
-				Globals.SetTopicDiscovered(2, true);
+				ConversationGlobals.SetTopicDiscovered(2, true);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		case 28:
-			if (!Globals.GetTopicDiscovered(3))
+			if (!ConversationGlobals.GetTopicDiscovered(3))
 			{
-				Globals.SetTopicDiscovered(3, true);
+				ConversationGlobals.SetTopicDiscovered(3, true);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		case 29:
-			if (!Globals.GetTopicDiscovered(4))
+			if (!ConversationGlobals.GetTopicDiscovered(4))
 			{
-				Globals.SetTopicDiscovered(4, true);
+				ConversationGlobals.SetTopicDiscovered(4, true);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		case 30:
-			if (!Globals.GetTopicDiscovered(5))
+			if (!ConversationGlobals.GetTopicDiscovered(5))
 			{
-				Globals.SetTopicDiscovered(5, true);
+				ConversationGlobals.SetTopicDiscovered(5, true);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		case 31:
-			if (!Globals.GetTopicDiscovered(6))
+			if (!ConversationGlobals.GetTopicDiscovered(6))
 			{
-				Globals.SetTopicDiscovered(6, true);
+				ConversationGlobals.SetTopicDiscovered(6, true);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		case 32:
-			if (!Globals.GetTopicDiscovered(7))
+			if (!ConversationGlobals.GetTopicDiscovered(7))
 			{
-				Globals.SetTopicDiscovered(7, true);
+				ConversationGlobals.SetTopicDiscovered(7, true);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		case 34:
-			if (!Globals.GetTopicDiscovered(8))
+			if (!ConversationGlobals.GetTopicDiscovered(8))
 			{
-				Globals.SetTopicDiscovered(8, true);
+				ConversationGlobals.SetTopicDiscovered(8, true);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;

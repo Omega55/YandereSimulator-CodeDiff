@@ -35,7 +35,11 @@ public class SettingsScript : MonoBehaviour
 
 	public int Selected = 1;
 
+	public Transform CloudSystem;
+
 	public Transform Highlight;
+
+	public GameObject Background;
 
 	private void Update()
 	{
@@ -46,6 +50,25 @@ public class SettingsScript : MonoBehaviour
 		if (Input.GetKeyDown("r"))
 		{
 			this.QualityManager.RimLight();
+		}
+		if (Input.GetKeyDown("b"))
+		{
+			if (!this.Background.activeInHierarchy)
+			{
+				OptionGlobals.DrawDistanceLimit = 500;
+				OptionGlobals.DrawDistance = 500;
+				this.CloudSystem.localScale = new Vector3(1000f, 1000f, 1000f);
+				this.QualityManager.UpdateDrawDistance();
+				this.Background.SetActive(true);
+			}
+			else
+			{
+				OptionGlobals.DrawDistanceLimit = 350;
+				OptionGlobals.DrawDistance = 350;
+				this.CloudSystem.localScale = new Vector3(500f, 500f, 500f);
+				this.QualityManager.UpdateDrawDistance();
+				this.Background.SetActive(false);
+			}
 		}
 		if (this.InputManager.TappedUp)
 		{
@@ -61,13 +84,13 @@ public class SettingsScript : MonoBehaviour
 		{
 			if (this.InputManager.TappedRight)
 			{
-				Globals.ParticleCount++;
+				OptionGlobals.ParticleCount++;
 				this.QualityManager.UpdateParticles();
 				this.UpdateText();
 			}
 			else if (this.InputManager.TappedLeft)
 			{
-				Globals.ParticleCount--;
+				OptionGlobals.ParticleCount--;
 				this.QualityManager.UpdateParticles();
 				this.UpdateText();
 			}
@@ -76,7 +99,7 @@ public class SettingsScript : MonoBehaviour
 		{
 			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
 			{
-				Globals.DisableOutlines = !Globals.DisableOutlines;
+				OptionGlobals.DisableOutlines = !OptionGlobals.DisableOutlines;
 				this.UpdateText();
 				this.QualityManager.UpdateOutlines();
 			}
@@ -112,7 +135,7 @@ public class SettingsScript : MonoBehaviour
 		{
 			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
 			{
-				Globals.DisablePostAliasing = !Globals.DisablePostAliasing;
+				OptionGlobals.DisablePostAliasing = !OptionGlobals.DisablePostAliasing;
 				this.UpdateText();
 				this.QualityManager.UpdatePostAliasing();
 			}
@@ -121,7 +144,7 @@ public class SettingsScript : MonoBehaviour
 		{
 			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
 			{
-				Globals.DisableBloom = !Globals.DisableBloom;
+				OptionGlobals.DisableBloom = !OptionGlobals.DisableBloom;
 				this.UpdateText();
 				this.QualityManager.UpdateBloom();
 			}
@@ -130,13 +153,13 @@ public class SettingsScript : MonoBehaviour
 		{
 			if (this.InputManager.TappedRight)
 			{
-				Globals.LowDetailStudents--;
+				OptionGlobals.LowDetailStudents--;
 				this.QualityManager.UpdateLowDetailStudents();
 				this.UpdateText();
 			}
 			else if (this.InputManager.TappedLeft)
 			{
-				Globals.LowDetailStudents++;
+				OptionGlobals.LowDetailStudents++;
 				this.QualityManager.UpdateLowDetailStudents();
 				this.UpdateText();
 			}
@@ -145,13 +168,13 @@ public class SettingsScript : MonoBehaviour
 		{
 			if (this.InputManager.TappedRight)
 			{
-				Globals.DrawDistance += 10;
+				OptionGlobals.DrawDistance += 10;
 				this.QualityManager.UpdateDrawDistance();
 				this.UpdateText();
 			}
 			else if (this.InputManager.TappedLeft)
 			{
-				Globals.DrawDistance -= 10;
+				OptionGlobals.DrawDistance -= 10;
 				this.QualityManager.UpdateDrawDistance();
 				this.UpdateText();
 			}
@@ -160,7 +183,7 @@ public class SettingsScript : MonoBehaviour
 		{
 			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
 			{
-				Globals.Fog = !Globals.Fog;
+				OptionGlobals.Fog = !OptionGlobals.Fog;
 				this.UpdateText();
 				this.QualityManager.UpdateFog();
 			}
@@ -169,14 +192,14 @@ public class SettingsScript : MonoBehaviour
 		{
 			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
 			{
-				Globals.DisableShadows = !Globals.DisableShadows;
+				OptionGlobals.DisableShadows = !OptionGlobals.DisableShadows;
 				this.UpdateText();
 				this.QualityManager.UpdateShadows();
 			}
 		}
 		else if (this.Selected == 10 && (this.InputManager.TappedRight || this.InputManager.TappedLeft))
 		{
-			Globals.DisableFarAnimations = !Globals.DisableFarAnimations;
+			OptionGlobals.DisableFarAnimations = !OptionGlobals.DisableFarAnimations;
 			this.UpdateText();
 			this.QualityManager.UpdateAnims();
 		}
@@ -197,27 +220,27 @@ public class SettingsScript : MonoBehaviour
 
 	public void UpdateText()
 	{
-		if (Globals.ParticleCount == 3)
+		if (OptionGlobals.ParticleCount == 3)
 		{
 			this.ParticleLabel.text = "High";
 		}
-		else if (Globals.ParticleCount == 2)
+		else if (OptionGlobals.ParticleCount == 2)
 		{
 			this.ParticleLabel.text = "Low";
 		}
-		else if (Globals.ParticleCount == 1)
+		else if (OptionGlobals.ParticleCount == 1)
 		{
 			this.ParticleLabel.text = "None";
 		}
-		this.OutlinesLabel.text = ((!Globals.DisableOutlines) ? "On" : "Off");
+		this.OutlinesLabel.text = ((!OptionGlobals.DisableOutlines) ? "On" : "Off");
 		this.AliasingLabel.text = QualitySettings.antiAliasing + "x";
-		this.PostAliasingLabel.text = ((!Globals.DisablePostAliasing) ? "On" : "Off");
-		this.BloomLabel.text = ((!Globals.DisableBloom) ? "On" : "Off");
-		this.LowDetailLabel.text = ((Globals.LowDetailStudents != 0) ? ((Globals.LowDetailStudents * 10).ToString() + "m") : "Off");
-		this.DrawDistanceLabel.text = Globals.DrawDistance + "m";
-		this.FogLabel.text = ((!Globals.Fog) ? "Off" : "On");
-		this.ShadowsLabel.text = ((!Globals.DisableShadows) ? "On" : "Off");
-		this.FarAnimsLabel.text = ((!Globals.DisableFarAnimations) ? "On" : "Off");
+		this.PostAliasingLabel.text = ((!OptionGlobals.DisablePostAliasing) ? "On" : "Off");
+		this.BloomLabel.text = ((!OptionGlobals.DisableBloom) ? "On" : "Off");
+		this.LowDetailLabel.text = ((OptionGlobals.LowDetailStudents != 0) ? ((OptionGlobals.LowDetailStudents * 10).ToString() + "m") : "Off");
+		this.DrawDistanceLabel.text = OptionGlobals.DrawDistance + "m";
+		this.FogLabel.text = ((!OptionGlobals.Fog) ? "Off" : "On");
+		this.ShadowsLabel.text = ((!OptionGlobals.DisableShadows) ? "On" : "Off");
+		this.FarAnimsLabel.text = ((!OptionGlobals.DisableFarAnimations) ? "On" : "Off");
 	}
 
 	private void UpdateHighlight()

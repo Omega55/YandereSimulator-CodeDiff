@@ -143,7 +143,7 @@ public class SuitorBoostScript : MonoBehaviour
 					}
 					else if (this.Phase == 5)
 					{
-						Globals.SetSuitorTrait(2, Globals.GetSuitorTrait(2) + 1);
+						DatingGlobals.SetSuitorTrait(2, DatingGlobals.GetSuitorTrait(2) + 1);
 						this.Yandere.RPGCamera.enabled = true;
 						this.Darkness.enabled = false;
 						this.Yandere.CanMove = true;

@@ -649,7 +649,7 @@ public class AttackManagerScript : MonoBehaviour
 		if (weapon.WeaponID == 8)
 		{
 			this.Yandere.TargetStudent.Ragdoll.Sacrifice = true;
-			if (Globals.Paranormal)
+			if (GameGlobals.Paranormal)
 			{
 				weapon.Effect();
 			}

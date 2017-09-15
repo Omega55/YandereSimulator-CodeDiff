@@ -7,6 +7,8 @@ public class InventoryScript : MonoBehaviour
 
 	public bool ModifiedUniform;
 
+	public bool DirectionalMic;
+
 	public bool DuplicateSheet;
 
 	public bool Tranquilizer;
@@ -14,6 +16,8 @@ public class InventoryScript : MonoBehaviour
 	public bool AnswerSheet;
 
 	public bool RivalPhone;
+
+	public bool Headset;
 
 	public bool EmeticPoison;
 
@@ -32,8 +36,6 @@ public class InventoryScript : MonoBehaviour
 	public bool CabinetKey;
 
 	public bool CaseKey;
-
-	public bool Headset;
 
 	public bool SafeKey;
 

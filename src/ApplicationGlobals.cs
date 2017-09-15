@@ -16,4 +16,9 @@ public static class ApplicationGlobals
 			PlayerPrefs.SetFloat("VersionNumber", value);
 		}
 	}
+
+	public static void DeleteAll()
+	{
+		Globals.Delete("VersionNumber");
+	}
 }

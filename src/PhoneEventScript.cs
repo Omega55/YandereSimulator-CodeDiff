@@ -50,7 +50,7 @@ public class PhoneEventScript : MonoBehaviour
 	private void Start()
 	{
 		this.EventSubtitle.transform.localScale = Vector3.zero;
-		if (Globals.Weekday == this.EventDay)
+		if (DateGlobals.Weekday == this.EventDay)
 		{
 			this.EventCheck = true;
 		}
@@ -214,14 +214,14 @@ public class PhoneEventScript : MonoBehaviour
 				{
 					this.EventSubtitle.transform.localScale = Vector3.zero;
 				}
-				if (this.EventPhase == 11 && num < 5f && !Globals.Event2)
+				if (this.EventPhase == 11 && num < 5f && !EventGlobals.Event2)
 				{
-					Globals.Event2 = true;
+					EventGlobals.Event2 = true;
 					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Info);
-					Globals.SetTopicDiscovered(25, true);
+					ConversationGlobals.SetTopicDiscovered(25, true);
 					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
-					Globals.SetTopicLearnedByStudent(25, this.EventStudentID, true);
+					ConversationGlobals.SetTopicLearnedByStudent(25, this.EventStudentID, true);
 				}
 			}
 		}

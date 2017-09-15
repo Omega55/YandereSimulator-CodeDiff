@@ -29,7 +29,7 @@ public class GardenHoleScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (Globals.GetGardenGraveOccupied(this.ID))
+		if (SchoolGlobals.GetGardenGraveOccupied(this.ID))
 		{
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
@@ -118,7 +118,7 @@ public class GardenHoleScript : MonoBehaviour
 				}
 				this.VictimID = this.Corpse.StudentID;
 				this.Corpse.Remove();
-				Globals.SetGardenGraveOccupied(this.ID, true);
+				SchoolGlobals.SetGardenGraveOccupied(this.ID, true);
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
 				base.enabled = false;

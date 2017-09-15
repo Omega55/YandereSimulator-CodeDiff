@@ -38,6 +38,22 @@ public static class GlobalsHelper
 		PlayerPrefs.SetFloat(key + "_Z", value.z);
 	}
 
+	public static void DeleteVector3(string key)
+	{
+		Globals.Delete(key + "_X");
+		Globals.Delete(key + "_Y");
+		Globals.Delete(key + "_Z");
+	}
+
+	public static void DeleteVector3Collection(string key, int[] usedKeys)
+	{
+		foreach (int num in usedKeys)
+		{
+			GlobalsHelper.DeleteVector3(key + num.ToString());
+		}
+		KeysHelper.Delete(key);
+	}
+
 	public static Color GetColor(string key)
 	{
 		float @float = PlayerPrefs.GetFloat(key + "_R");
@@ -53,5 +69,22 @@ public static class GlobalsHelper
 		PlayerPrefs.SetFloat(key + "_G", value.g);
 		PlayerPrefs.SetFloat(key + "_B", value.b);
 		PlayerPrefs.SetFloat(key + "_A", value.a);
+	}
+
+	public static void DeleteColor(string key)
+	{
+		Globals.Delete(key + "_R");
+		Globals.Delete(key + "_G");
+		Globals.Delete(key + "_B");
+		Globals.Delete(key + "_A");
+	}
+
+	public static void DeleteColorCollection(string key, int[] usedKeys)
+	{
+		foreach (int num in usedKeys)
+		{
+			GlobalsHelper.DeleteColor(key + num.ToString());
+		}
+		KeysHelper.Delete(key);
 	}
 }

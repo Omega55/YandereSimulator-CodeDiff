@@ -19,24 +19,24 @@ public class RivalBagScript : MonoBehaviour
 		{
 			this.Prompt.HideButton[1] = false;
 		}
-		if (Globals.GetSchemeStage(3) == 3)
+		if (SchemeGlobals.GetSchemeStage(3) == 3)
 		{
 			this.Prompt.HideButton[0] = (this.Clock.Period == 2 || this.Clock.Period == 4);
 			if (this.Prompt.Circle[0].fillAmount == 0f)
 			{
-				Globals.SetSchemeStage(3, 4);
+				SchemeGlobals.SetSchemeStage(3, 4);
 				this.Schemes.UpdateInstructions();
 				this.Prompt.Yandere.Inventory.Cigs = false;
 				this.Prompt.HideButton[0] = true;
 				base.enabled = false;
 			}
 		}
-		if (Globals.GetSchemeStage(2) == 2)
+		if (SchemeGlobals.GetSchemeStage(2) == 2)
 		{
 			this.Prompt.HideButton[1] = (this.Clock.Period == 2 || this.Clock.Period == 4);
 			if (this.Prompt.Circle[1].fillAmount == 0f)
 			{
-				Globals.SetSchemeStage(2, 3);
+				SchemeGlobals.SetSchemeStage(2, 3);
 				this.Schemes.UpdateInstructions();
 				this.Prompt.Yandere.Inventory.Ring = false;
 				this.Prompt.HideButton[1] = true;

@@ -54,7 +54,7 @@ public class ChoiceScript : MonoBehaviour
 			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 1f, Time.deltaTime * 2f));
 			if (this.Darkness.color.a == 1f)
 			{
-				Globals.LoveSick = (this.Selected == 1);
+				GameGlobals.LoveSick = (this.Selected == 1);
 				SceneManager.LoadScene("TitleScene");
 			}
 		}

@@ -81,11 +81,11 @@ public class ClockScript : MonoBehaviour
 	{
 		this.PeriodLabel.text = "BEFORE CLASS";
 		this.PresentTime = this.StartHour * 60f;
-		if (Globals.Weekday == 0)
+		if (DateGlobals.Weekday == 0)
 		{
-			Globals.Weekday = 1;
+			DateGlobals.Weekday = 1;
 		}
-		if (Globals.SchoolAtmosphere < 50f)
+		if (SchoolGlobals.SchoolAtmosphere < 50f)
 		{
 			this.BloomEffect.bloomIntensity = 0.25f;
 			this.BloomEffect.bloomThreshhold = 0.5f;
@@ -100,7 +100,7 @@ public class ClockScript : MonoBehaviour
 			this.BloomEffect.bloomThreshhold = 0f;
 		}
 		this.BloomEffect.bloomThreshhold = 0f;
-		this.UpdateWeekdayText(Globals.Weekday);
+		this.UpdateWeekdayText(DateGlobals.Weekday);
 		this.MainLight.color = new Color(1f, 1f, 1f, 1f);
 		RenderSettings.ambientLight = new Color(0.75f, 0.75f, 0.75f, 1f);
 		RenderSettings.skybox.SetColor("_Tint", new Color(0.5f, 0.5f, 0.5f));

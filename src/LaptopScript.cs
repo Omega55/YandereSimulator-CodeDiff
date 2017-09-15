@@ -33,7 +33,7 @@ public class LaptopScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (Globals.SCP)
+		if (SchoolGlobals.SCP)
 		{
 			this.LaptopScreen.localScale = Vector3.zero;
 			this.LaptopCamera.enabled = false;
@@ -102,7 +102,7 @@ public class LaptopScript : MonoBehaviour
 					component.clip = this.ShutDown;
 					component.Play();
 					this.EventSubtitle.text = string.Empty;
-					Globals.SCP = true;
+					SchoolGlobals.SCP = true;
 					this.LaptopCamera.enabled = false;
 					this.Jukebox.Dip = 1f;
 					this.React = false;

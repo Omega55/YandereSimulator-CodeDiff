@@ -104,11 +104,11 @@ public class StudentJson : JsonData
 			studentJson2.stockings = TFUtils.LoadString(dictionary, "Stockings");
 			studentJson2.accessory = TFUtils.LoadString(dictionary, "Accessory");
 			studentJson2.info = TFUtils.LoadString(dictionary, "Info");
-			if (Globals.LoveSick && studentJson2.name == "Mai Waifu")
+			if (GameGlobals.LoveSick && studentJson2.name == "Mai Waifu")
 			{
 				studentJson2.name = "Mai Wakabayashi";
 			}
-			if (Globals.HighPopulation && studentJson2.name == "Unknown")
+			if (OptionGlobals.HighPopulation && studentJson2.name == "Unknown")
 			{
 				studentJson2.name = "Random";
 			}

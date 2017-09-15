@@ -148,7 +148,7 @@ public class ArmDetectorScript : MonoBehaviour
 				this.Jukebox.Volume = Mathf.MoveTowards(this.Jukebox.Volume, 0f, Time.deltaTime);
 				if (this.Darkness.color.a == 1f)
 				{
-					Globals.SchoolAtmosphere = 0f;
+					SchoolGlobals.SchoolAtmosphere = 0f;
 					this.StudentManager.SetAtmosphere();
 					this.Yandere.transform.eulerAngles = new Vector3(0f, 180f, 0f);
 					this.Yandere.transform.position = new Vector3(12f, 0.1f, 26f);

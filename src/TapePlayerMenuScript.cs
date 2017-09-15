@@ -118,12 +118,13 @@ public class TapePlayerMenuScript : MonoBehaviour
 	private void Update()
 	{
 		AudioSource component = base.GetComponent<AudioSource>();
+		float t = Time.unscaledDeltaTime * 10f;
 		if (!this.Show)
 		{
 			if (this.List.localPosition.x > -955f)
 			{
-				this.List.localPosition = new Vector3(Mathf.Lerp(this.List.localPosition.x, -956f, 0.166666672f), this.List.localPosition.y, this.List.localPosition.z);
-				this.TimeBar.localPosition = new Vector3(this.TimeBar.localPosition.x, Mathf.Lerp(this.TimeBar.localPosition.y, 100f, 0.166666672f), this.TimeBar.localPosition.z);
+				this.List.localPosition = new Vector3(Mathf.Lerp(this.List.localPosition.x, -956f, t), this.List.localPosition.y, this.List.localPosition.z);
+				this.TimeBar.localPosition = new Vector3(this.TimeBar.localPosition.x, Mathf.Lerp(this.TimeBar.localPosition.y, 100f, t), this.TimeBar.localPosition.z);
 			}
 			else
 			{
@@ -133,9 +134,9 @@ public class TapePlayerMenuScript : MonoBehaviour
 		}
 		else if (this.Listening)
 		{
-			this.List.localPosition = new Vector3(Mathf.Lerp(this.List.localPosition.x, -955f, 0.166666672f), this.List.localPosition.y, this.List.localPosition.z);
-			this.TimeBar.localPosition = new Vector3(this.TimeBar.localPosition.x, Mathf.Lerp(this.TimeBar.localPosition.y, 0f, 0.166666672f), this.TimeBar.localPosition.z);
-			this.TapePlayerCamera.position = new Vector3(Mathf.Lerp(this.TapePlayerCamera.position.x, -26.15f, 0.166666672f), this.TapePlayerCamera.position.y, Mathf.Lerp(this.TapePlayerCamera.position.z, 5.35f, 0.166666672f));
+			this.List.localPosition = new Vector3(Mathf.Lerp(this.List.localPosition.x, -955f, t), this.List.localPosition.y, this.List.localPosition.z);
+			this.TimeBar.localPosition = new Vector3(this.TimeBar.localPosition.x, Mathf.Lerp(this.TimeBar.localPosition.y, 0f, t), this.TimeBar.localPosition.z);
+			this.TapePlayerCamera.position = new Vector3(Mathf.Lerp(this.TapePlayerCamera.position.x, -26.15f, t), this.TapePlayerCamera.position.y, Mathf.Lerp(this.TapePlayerCamera.position.z, 5.35f, t));
 			if (this.Phase == 1)
 			{
 				this.TapePlayer.GetComponent<Animation>()["InsertTape"].time += 0.0555555f;
@@ -416,9 +417,9 @@ public class TapePlayerMenuScript : MonoBehaviour
 		}
 		else
 		{
-			this.TapePlayerCamera.position = new Vector3(Mathf.Lerp(this.TapePlayerCamera.position.x, -26.2125f, 0.166666672f), this.TapePlayerCamera.position.y, Mathf.Lerp(this.TapePlayerCamera.position.z, 5.4125f, 0.166666672f));
-			this.List.transform.localPosition = new Vector3(Mathf.Lerp(this.List.transform.localPosition.x, 0f, 0.166666672f), this.List.transform.localPosition.y, this.List.transform.localPosition.z);
-			this.TimeBar.localPosition = new Vector3(this.TimeBar.localPosition.x, Mathf.Lerp(this.TimeBar.localPosition.y, 100f, 0.166666672f), this.TimeBar.localPosition.z);
+			this.TapePlayerCamera.position = new Vector3(Mathf.Lerp(this.TapePlayerCamera.position.x, -26.2125f, t), this.TapePlayerCamera.position.y, Mathf.Lerp(this.TapePlayerCamera.position.z, 5.4125f, t));
+			this.List.transform.localPosition = new Vector3(Mathf.Lerp(this.List.transform.localPosition.x, 0f, t), this.List.transform.localPosition.y, this.List.transform.localPosition.z);
+			this.TimeBar.localPosition = new Vector3(this.TimeBar.localPosition.x, Mathf.Lerp(this.TimeBar.localPosition.y, 100f, t), this.TimeBar.localPosition.z);
 			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
 			{
 				this.Category = ((this.Category != 1) ? 1 : 2);
@@ -449,15 +450,15 @@ public class TapePlayerMenuScript : MonoBehaviour
 				bool flag = false;
 				if (this.Category == 1)
 				{
-					if (Globals.GetTapeCollected(this.Selected))
+					if (CollectibleGlobals.GetTapeCollected(this.Selected))
 					{
-						Globals.SetTapeListened(this.Selected, true);
+						CollectibleGlobals.SetTapeListened(this.Selected, true);
 						flag = true;
 					}
 				}
-				else if (Globals.GetBasementTapeCollected(this.Selected))
+				else if (CollectibleGlobals.GetBasementTapeCollected(this.Selected))
 				{
-					Globals.SetBasementTapeListened(this.Selected, true);
+					CollectibleGlobals.SetBasementTapeListened(this.Selected, true);
 					flag = true;
 				}
 				if (flag)
@@ -513,10 +514,10 @@ public class TapePlayerMenuScript : MonoBehaviour
 			if (this.Category == 1)
 			{
 				this.HeaderLabel.text = "Mysterious Tapes";
-				if (Globals.GetTapeCollected(i))
+				if (CollectibleGlobals.GetTapeCollected(i))
 				{
 					this.TapeLabels[i].text = "Mysterious Tape " + i.ToString();
-					this.NewIcons[i].SetActive(!Globals.GetTapeListened(i));
+					this.NewIcons[i].SetActive(!CollectibleGlobals.GetTapeListened(i));
 				}
 				else
 				{
@@ -527,10 +528,10 @@ public class TapePlayerMenuScript : MonoBehaviour
 			else
 			{
 				this.HeaderLabel.text = "Basement Tapes";
-				if (Globals.GetBasementTapeCollected(i))
+				if (CollectibleGlobals.GetBasementTapeCollected(i))
 				{
 					this.TapeLabels[i].text = "Basement Tape " + i.ToString();
-					this.NewIcons[i].SetActive(!Globals.GetBasementTapeListened(i));
+					this.NewIcons[i].SetActive(!CollectibleGlobals.GetBasementTapeListened(i));
 				}
 				else
 				{
@@ -545,12 +546,12 @@ public class TapePlayerMenuScript : MonoBehaviour
 	{
 		if (this.Category == 1)
 		{
-			this.TapePlayer.PromptBar.Label[0].text = ((!Globals.GetTapeCollected(this.Selected)) ? string.Empty : "PLAY");
+			this.TapePlayer.PromptBar.Label[0].text = ((!CollectibleGlobals.GetTapeCollected(this.Selected)) ? string.Empty : "PLAY");
 			this.TapePlayer.PromptBar.UpdateButtons();
 		}
 		else
 		{
-			this.TapePlayer.PromptBar.Label[0].text = ((!Globals.GetBasementTapeCollected(this.Selected)) ? string.Empty : "PLAY");
+			this.TapePlayer.PromptBar.Label[0].text = ((!CollectibleGlobals.GetBasementTapeCollected(this.Selected)) ? string.Empty : "PLAY");
 			this.TapePlayer.PromptBar.UpdateButtons();
 		}
 	}

@@ -28,7 +28,7 @@ public class AppearanceWindowScript : MonoBehaviour
 		this.Window.localScale = Vector3.zero;
 		for (int i = 1; i < 10; i++)
 		{
-			this.Checks[i].SetActive(Globals.GetSuitorCheck(i));
+			this.Checks[i].SetActive(DatingGlobals.GetSuitorCheck(i));
 		}
 	}
 
@@ -78,16 +78,16 @@ public class AppearanceWindowScript : MonoBehaviour
 					{
 						if (!this.Checks[1].activeInHierarchy)
 						{
-							Globals.CustomSuitorHair = 22;
-							Globals.SetSuitorCheck(1, true);
-							Globals.SetSuitorCheck(2, false);
+							StudentGlobals.CustomSuitorHair = 22;
+							DatingGlobals.SetSuitorCheck(1, true);
+							DatingGlobals.SetSuitorCheck(2, false);
 							this.Checks[1].SetActive(true);
 							this.Checks[2].SetActive(false);
 						}
 						else
 						{
-							Globals.CustomSuitorHair = 0;
-							Globals.SetSuitorCheck(1, false);
+							StudentGlobals.CustomSuitorHair = 0;
+							DatingGlobals.SetSuitorCheck(1, false);
 							this.Checks[1].SetActive(false);
 						}
 					}
@@ -95,16 +95,16 @@ public class AppearanceWindowScript : MonoBehaviour
 					{
 						if (!this.Checks[2].activeInHierarchy)
 						{
-							Globals.CustomSuitorHair = 21;
-							Globals.SetSuitorCheck(1, false);
-							Globals.SetSuitorCheck(2, true);
+							StudentGlobals.CustomSuitorHair = 21;
+							DatingGlobals.SetSuitorCheck(1, false);
+							DatingGlobals.SetSuitorCheck(2, true);
 							this.Checks[1].SetActive(false);
 							this.Checks[2].SetActive(true);
 						}
 						else
 						{
-							Globals.CustomSuitorHair = 0;
-							Globals.SetSuitorCheck(2, false);
+							StudentGlobals.CustomSuitorHair = 0;
+							DatingGlobals.SetSuitorCheck(2, false);
 							this.Checks[2].SetActive(false);
 						}
 					}
@@ -112,16 +112,16 @@ public class AppearanceWindowScript : MonoBehaviour
 					{
 						if (!this.Checks[3].activeInHierarchy)
 						{
-							Globals.CustomSuitorAccessory = 3;
-							Globals.SetSuitorCheck(3, true);
-							Globals.SetSuitorCheck(4, false);
+							StudentGlobals.CustomSuitorAccessory = 3;
+							DatingGlobals.SetSuitorCheck(3, true);
+							DatingGlobals.SetSuitorCheck(4, false);
 							this.Checks[3].SetActive(true);
 							this.Checks[4].SetActive(false);
 						}
 						else
 						{
-							Globals.CustomSuitorAccessory = 0;
-							Globals.SetSuitorCheck(3, false);
+							StudentGlobals.CustomSuitorAccessory = 0;
+							DatingGlobals.SetSuitorCheck(3, false);
 							this.Checks[3].SetActive(false);
 						}
 					}
@@ -129,16 +129,16 @@ public class AppearanceWindowScript : MonoBehaviour
 					{
 						if (!this.Checks[4].activeInHierarchy)
 						{
-							Globals.CustomSuitorAccessory = 1;
-							Globals.SetSuitorCheck(3, false);
-							Globals.SetSuitorCheck(4, true);
+							StudentGlobals.CustomSuitorAccessory = 1;
+							DatingGlobals.SetSuitorCheck(3, false);
+							DatingGlobals.SetSuitorCheck(4, true);
 							this.Checks[3].SetActive(false);
 							this.Checks[4].SetActive(true);
 						}
 						else
 						{
-							Globals.CustomSuitorAccessory = 0;
-							Globals.SetSuitorCheck(4, false);
+							StudentGlobals.CustomSuitorAccessory = 0;
+							DatingGlobals.SetSuitorCheck(4, false);
 							this.Checks[4].SetActive(false);
 						}
 					}
@@ -146,14 +146,14 @@ public class AppearanceWindowScript : MonoBehaviour
 					{
 						if (!this.Checks[5].activeInHierarchy)
 						{
-							Globals.CustomSuitorBlonde = 1;
-							Globals.SetSuitorCheck(5, true);
+							StudentGlobals.CustomSuitorBlonde = 1;
+							DatingGlobals.SetSuitorCheck(5, true);
 							this.Checks[5].SetActive(true);
 						}
 						else
 						{
-							Globals.CustomSuitorBlonde = 0;
-							Globals.SetSuitorCheck(5, false);
+							StudentGlobals.CustomSuitorBlonde = 0;
+							DatingGlobals.SetSuitorCheck(5, false);
 							this.Checks[5].SetActive(false);
 						}
 					}
@@ -161,16 +161,16 @@ public class AppearanceWindowScript : MonoBehaviour
 					{
 						if (!this.Checks[6].activeInHierarchy)
 						{
-							Globals.CustomSuitorEyewear = 6;
-							Globals.SetSuitorCheck(6, true);
-							Globals.SetSuitorCheck(8, false);
+							StudentGlobals.CustomSuitorEyewear = 6;
+							DatingGlobals.SetSuitorCheck(6, true);
+							DatingGlobals.SetSuitorCheck(8, false);
 							this.Checks[6].SetActive(true);
 							this.Checks[8].SetActive(false);
 						}
 						else
 						{
-							Globals.CustomSuitorEyewear = 0;
-							Globals.SetSuitorCheck(6, false);
+							StudentGlobals.CustomSuitorEyewear = 0;
+							DatingGlobals.SetSuitorCheck(6, false);
 							this.Checks[6].SetActive(false);
 						}
 					}
@@ -178,14 +178,14 @@ public class AppearanceWindowScript : MonoBehaviour
 					{
 						if (!this.Checks[7].activeInHierarchy)
 						{
-							Globals.CustomSuitorJewelry = 1;
-							Globals.SetSuitorCheck(7, true);
+							StudentGlobals.CustomSuitorJewelry = 1;
+							DatingGlobals.SetSuitorCheck(7, true);
 							this.Checks[7].SetActive(true);
 						}
 						else
 						{
-							Globals.CustomSuitorJewelry = 0;
-							Globals.SetSuitorCheck(7, false);
+							StudentGlobals.CustomSuitorJewelry = 0;
+							DatingGlobals.SetSuitorCheck(7, false);
 							this.Checks[7].SetActive(false);
 						}
 					}
@@ -193,16 +193,16 @@ public class AppearanceWindowScript : MonoBehaviour
 					{
 						if (!this.Checks[8].activeInHierarchy)
 						{
-							Globals.CustomSuitorEyewear = 7;
-							Globals.SetSuitorCheck(6, false);
-							Globals.SetSuitorCheck(8, true);
+							StudentGlobals.CustomSuitorEyewear = 7;
+							DatingGlobals.SetSuitorCheck(6, false);
+							DatingGlobals.SetSuitorCheck(8, true);
 							this.Checks[6].SetActive(false);
 							this.Checks[8].SetActive(true);
 						}
 						else
 						{
-							Globals.CustomSuitorEyewear = 0;
-							Globals.SetSuitorCheck(8, false);
+							StudentGlobals.CustomSuitorEyewear = 0;
+							DatingGlobals.SetSuitorCheck(8, false);
 							this.Checks[8].SetActive(false);
 						}
 					}
@@ -210,20 +210,20 @@ public class AppearanceWindowScript : MonoBehaviour
 					{
 						if (!this.Checks[9].activeInHierarchy)
 						{
-							Globals.CustomSuitorTan = true;
-							Globals.SetSuitorCheck(9, true);
+							StudentGlobals.CustomSuitorTan = true;
+							DatingGlobals.SetSuitorCheck(9, true);
 							this.Checks[9].SetActive(true);
 						}
 						else
 						{
-							Globals.CustomSuitorTan = false;
-							Globals.SetSuitorCheck(9, false);
+							StudentGlobals.CustomSuitorTan = false;
+							DatingGlobals.SetSuitorCheck(9, false);
 							this.Checks[9].SetActive(false);
 						}
 					}
 					else if (this.Selected == 11)
 					{
-						Globals.CustomSuitor = true;
+						StudentGlobals.CustomSuitor = true;
 						this.PromptBar.ClearButtons();
 						this.PromptBar.UpdateButtons();
 						this.PromptBar.Show = false;

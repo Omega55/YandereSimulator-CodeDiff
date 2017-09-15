@@ -17,6 +17,10 @@ public class SpyScript : MonoBehaviour
 
 	public float Timer;
 
+	public bool CanRecord;
+
+	public bool Recording;
+
 	public int Phase;
 
 	private void Update()
@@ -35,6 +39,11 @@ public class SpyScript : MonoBehaviour
 			this.Timer += Time.deltaTime;
 			if (this.Timer > 1f)
 			{
+				if (this.Yandere.Inventory.DirectionalMic)
+				{
+					this.PromptBar.Label[0].text = "Record";
+					this.CanRecord = true;
+				}
 				this.PromptBar.Label[1].text = "Stop";
 				this.PromptBar.UpdateButtons();
 				this.PromptBar.Show = true;
@@ -43,9 +52,18 @@ public class SpyScript : MonoBehaviour
 				this.Phase++;
 			}
 		}
-		else if (this.Phase == 2 && Input.GetButtonDown("B"))
+		else if (this.Phase == 2)
 		{
-			this.End();
+			if (this.CanRecord && Input.GetButtonDown("A"))
+			{
+				this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_spyRecord_00");
+				this.Yandere.Microphone.SetActive(true);
+				this.Recording = true;
+			}
+			if (Input.GetButtonDown("B"))
+			{
+				this.End();
+			}
 		}
 	}
 
@@ -53,6 +71,7 @@ public class SpyScript : MonoBehaviour
 	{
 		this.PromptBar.ClearButtons();
 		this.PromptBar.Show = false;
+		this.Yandere.Microphone.SetActive(false);
 		this.Yandere.MainCamera.enabled = true;
 		this.Yandere.CanMove = true;
 		this.SpyCamera.SetActive(false);

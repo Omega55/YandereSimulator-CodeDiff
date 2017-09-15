@@ -25,11 +25,11 @@ public class HomeVideoCameraScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (!this.TextSet && !Globals.Night)
+		if (!this.TextSet && !HomeGlobals.Night)
 		{
 			this.Prompt.Label[0].text = "     Only Available At Night";
 		}
-		if (!Globals.Night)
+		if (!HomeGlobals.Night)
 		{
 			this.Prompt.Circle[0].fillAmount = 1f;
 		}

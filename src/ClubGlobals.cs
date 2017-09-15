@@ -39,7 +39,7 @@ public static class ClubGlobals
 
 	public static ClubType[] KeysOfClubClosed()
 	{
-		return KeysHelper.GetKeys<ClubType>("ClubClosed_");
+		return KeysHelper.GetEnumKeys<ClubType>("ClubClosed_");
 	}
 
 	public static bool GetClubKicked(ClubType clubID)
@@ -59,7 +59,7 @@ public static class ClubGlobals
 
 	public static ClubType[] KeysOfClubKicked()
 	{
-		return KeysHelper.GetKeys<ClubType>("ClubKicked_");
+		return KeysHelper.GetEnumKeys<ClubType>("ClubKicked_");
 	}
 
 	public static bool GetQuitClub(ClubType clubID)
@@ -79,7 +79,7 @@ public static class ClubGlobals
 
 	public static ClubType[] KeysOfQuitClub()
 	{
-		return KeysHelper.GetKeys<ClubType>("QuitClub_");
+		return KeysHelper.GetEnumKeys<ClubType>("QuitClub_");
 	}
 
 	public static void DeleteAll()

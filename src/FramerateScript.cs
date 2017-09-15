@@ -5,6 +5,8 @@ public class FramerateScript : MonoBehaviour
 {
 	public float updateInterval = 0.5f;
 
+	private GUIText fpsText;
+
 	private float accum;
 
 	private int frames;
@@ -15,12 +17,7 @@ public class FramerateScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (base.GetComponent<GUIText>() == null)
-		{
-			Debug.Log("FramerateScript: FramesPerSecond needs a GUIText component!");
-			base.enabled = false;
-			return;
-		}
+		this.fpsText = base.GetComponent<GUIText>();
 		this.timeleft = this.updateInterval;
 	}
 
@@ -32,7 +29,11 @@ public class FramerateScript : MonoBehaviour
 		if (this.timeleft <= 0f)
 		{
 			this.FPS = this.accum / (float)this.frames;
-			base.GetComponent<GUIText>().text = "FPS: " + this.FPS.ToString("f0");
+			int num = Mathf.Clamp((int)this.FPS, 0, Application.targetFrameRate);
+			if (num > 0)
+			{
+				this.fpsText.text = "FPS: " + num.ToString();
+			}
 			this.timeleft = this.updateInterval;
 			this.accum = 0f;
 			this.frames = 0;

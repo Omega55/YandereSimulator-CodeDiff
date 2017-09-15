@@ -114,7 +114,7 @@ public class WalkToSchoolManagerScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (Globals.SchoolAtmosphere < 50f || Globals.LoveSick)
+		if (SchoolGlobals.SchoolAtmosphere < 50f || GameGlobals.LoveSick)
 		{
 			this.Darkness.color = new Color(0f, 0f, 0f, 1f);
 		}

@@ -187,7 +187,7 @@ public class DialogueWheelScript : MonoBehaviour
 				{
 					if (this.Selected == 5)
 					{
-						this.CenterLabel.text = (Globals.GetStudentFriend(this.Yandere.TargetStudent.StudentID) ? "Love" : this.Text[this.Selected]);
+						this.CenterLabel.text = (PlayerGlobals.GetStudentFriend(this.Yandere.TargetStudent.StudentID) ? "Love" : this.Text[this.Selected]);
 					}
 					else
 					{
@@ -470,7 +470,7 @@ public class DialogueWheelScript : MonoBehaviour
 					}
 					if (this.Selected == 5)
 					{
-						if (!Globals.GetStudentFriend(this.Yandere.TargetStudent.StudentID))
+						if (!PlayerGlobals.GetStudentFriend(this.Yandere.TargetStudent.StudentID))
 						{
 							this.CheckTaskCompletion();
 							if (this.Yandere.TargetStudent.TaskPhase == 0)
@@ -528,7 +528,7 @@ public class DialogueWheelScript : MonoBehaviour
 
 	public void HideShadows()
 	{
-		this.TaskIcon.spriteName = ((!Globals.GetStudentFriend(this.Yandere.TargetStudent.StudentID)) ? "Task" : "Heart");
+		this.TaskIcon.spriteName = ((!PlayerGlobals.GetStudentFriend(this.Yandere.TargetStudent.StudentID)) ? "Task" : "Heart");
 		this.Impatience.fillAmount = 0f;
 		for (int i = 1; i < 7; i++)
 		{
@@ -579,7 +579,7 @@ public class DialogueWheelScript : MonoBehaviour
 			UISprite uisprite11 = this.Shadow[3];
 			uisprite11.color = new Color(uisprite11.color.r, uisprite11.color.g, uisprite11.color.b, 0.75f);
 		}
-		if (!Globals.GetStudentFriend(this.Yandere.TargetStudent.StudentID))
+		if (!PlayerGlobals.GetStudentFriend(this.Yandere.TargetStudent.StudentID))
 		{
 			if (this.Yandere.TargetStudent.StudentID != 6 && this.Yandere.TargetStudent.StudentID != 7 && this.Yandere.TargetStudent.StudentID != 13 && this.Yandere.TargetStudent.StudentID != 14 && this.Yandere.TargetStudent.StudentID != 15 && this.Yandere.TargetStudent.StudentID != 32 && this.Yandere.TargetStudent.StudentID != 33)
 			{
@@ -600,7 +600,7 @@ public class DialogueWheelScript : MonoBehaviour
 						UISprite uisprite14 = this.Shadow[5];
 						uisprite14.color = new Color(uisprite14.color.r, uisprite14.color.g, uisprite14.color.b, 0.75f);
 					}
-					else if (Globals.GetTaskStatus(32) == 1 && this.Yandere.Inventory.Cigs)
+					else if (TaskGlobals.GetTaskStatus(32) == 1 && this.Yandere.Inventory.Cigs)
 					{
 						UISprite uisprite15 = this.Shadow[5];
 						uisprite15.color = new Color(uisprite15.color.r, uisprite15.color.g, uisprite15.color.b, 0f);
@@ -618,12 +618,12 @@ public class DialogueWheelScript : MonoBehaviour
 			UISprite uisprite17 = this.Shadow[5];
 			uisprite17.color = new Color(uisprite17.color.r, uisprite17.color.g, uisprite17.color.b, 0.75f);
 		}
-		if (!Globals.GetStudentFriend(this.Yandere.TargetStudent.StudentID))
+		if (!PlayerGlobals.GetStudentFriend(this.Yandere.TargetStudent.StudentID))
 		{
 			UISprite uisprite18 = this.Shadow[6];
 			uisprite18.color = new Color(uisprite18.color.r, uisprite18.color.g, uisprite18.color.b, 0.75f);
 		}
-		if ((this.Yandere.TargetStudent.Male && Globals.Seduction + Globals.SeductionBonus > 3) || Globals.Seduction + Globals.SeductionBonus > 4)
+		if ((this.Yandere.TargetStudent.Male && PlayerGlobals.Seduction + PlayerGlobals.SeductionBonus > 3) || PlayerGlobals.Seduction + PlayerGlobals.SeductionBonus > 4)
 		{
 			UISprite uisprite19 = this.Shadow[6];
 			uisprite19.color = new Color(uisprite19.color.r, uisprite19.color.g, uisprite19.color.b, 0f);
@@ -680,7 +680,7 @@ public class DialogueWheelScript : MonoBehaviour
 
 	private void CheckTaskCompletion()
 	{
-		if (Globals.GetTaskStatus(this.Yandere.TargetStudent.StudentID) == 2 && this.Yandere.TargetStudent.StudentID == 32)
+		if (TaskGlobals.GetTaskStatus(this.Yandere.TargetStudent.StudentID) == 2 && this.Yandere.TargetStudent.StudentID == 32)
 		{
 			this.Yandere.Inventory.Cigs = false;
 		}

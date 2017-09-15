@@ -880,7 +880,7 @@ public class StudentScript : MonoBehaviour
 			this.CharacterAnimation = this.Character.GetComponent<Animation>();
 			this.CharacterAnimation[this.WalkAnim].time = UnityEngine.Random.Range(0f, this.CharacterAnimation[this.WalkAnim].length);
 			this.CharacterAnimation[this.LeanAnim].speed = 0.8f + (float)this.StudentID * 0.01f;
-			if (!Globals.LoveSick && Globals.SchoolAtmosphereType == SchoolAtmosphereType.Low && this.Club <= ClubType.Gaming)
+			if (!GameGlobals.LoveSick && SchoolAtmosphere.Type == SchoolAtmosphereType.Low && this.Club <= ClubType.Gaming)
 			{
 				this.IdleAnim = this.ParanoidAnim;
 			}
@@ -889,8 +889,8 @@ public class StudentScript : MonoBehaviour
 				this.Perception = 0.5f;
 			}
 			this.Hearts.emission.enabled = false;
-			this.Paranoia = 2f - Globals.SchoolAtmosphere * 0.01f;
-			this.VisionCone.farClipPlane = ((Globals.PantiesEquipped != 4) ? 10f : 5f) * this.Paranoia;
+			this.Paranoia = 2f - SchoolGlobals.SchoolAtmosphere * 0.01f;
+			this.VisionCone.farClipPlane = ((PlayerGlobals.PantiesEquipped != 4) ? 10f : 5f) * this.Paranoia;
 			if (GameObject.Find("DetectionCamera") != null)
 			{
 				this.DetectionMarker = UnityEngine.Object.Instantiate<GameObject>(this.Marker, GameObject.Find("DetectionPanel").transform.position, Quaternion.identity).GetComponent<DetectionMarkerScript>();
@@ -1033,7 +1033,7 @@ public class StudentScript : MonoBehaviour
 			}
 			if (this.StudentID == 7 || this.StudentID == 13)
 			{
-				if (Globals.SuitorProgress == 2)
+				if (DatingGlobals.SuitorProgress == 2)
 				{
 					this.Partner = ((this.StudentID != 7) ? this.StudentManager.Students[7] : this.StudentManager.Students[13]);
 					ScheduleBlock scheduleBlock = this.ScheduleBlocks[4];
@@ -1048,7 +1048,7 @@ public class StudentScript : MonoBehaviour
 			}
 			else if (this.StudentID == 17)
 			{
-				if (Globals.GetStudentDead(18))
+				if (StudentGlobals.GetStudentDead(18))
 				{
 					ScheduleBlock scheduleBlock2 = this.ScheduleBlocks[2];
 					scheduleBlock2.destination = "Mourn";
@@ -1057,7 +1057,7 @@ public class StudentScript : MonoBehaviour
 			}
 			else if (this.StudentID == 18)
 			{
-				if (Globals.GetStudentDead(17))
+				if (StudentGlobals.GetStudentDead(17))
 				{
 					ScheduleBlock scheduleBlock3 = this.ScheduleBlocks[2];
 					scheduleBlock3.destination = "Mourn";
@@ -1092,7 +1092,7 @@ public class StudentScript : MonoBehaviour
 			{
 				if (this.StudentID == 26)
 				{
-					if (Globals.GetStudentDead(17) && Globals.GetStudentDead(18))
+					if (StudentGlobals.GetStudentDead(17) && StudentGlobals.GetStudentDead(18))
 					{
 						ScheduleBlock scheduleBlock4 = this.ScheduleBlocks[2];
 						scheduleBlock4.destination = "Club";
@@ -1201,7 +1201,7 @@ public class StudentScript : MonoBehaviour
 					base.gameObject.SetActive(false);
 				}
 			}
-			else if (!Globals.GetStudentPhotographed(this.StudentID))
+			else if (!StudentGlobals.GetStudentPhotographed(this.StudentID))
 			{
 				this.ID = 0;
 				while (this.ID < this.Outlines.Length)
@@ -1211,7 +1211,7 @@ public class StudentScript : MonoBehaviour
 					this.ID++;
 				}
 			}
-			if (Globals.GetStudentGrudge(this.StudentID))
+			if (StudentGlobals.GetStudentGrudge(this.StudentID))
 			{
 				if (this.Persona != PersonaType.Coward && this.Persona != PersonaType.Evil)
 				{
@@ -1228,7 +1228,7 @@ public class StudentScript : MonoBehaviour
 				this.Grudge = true;
 				this.CameraAnims = this.EvilAnims;
 			}
-			if (Globals.GetStudentBroken(this.StudentID))
+			if (StudentGlobals.GetStudentBroken(this.StudentID))
 			{
 				this.Cosmetic.RightEyeRenderer.gameObject.SetActive(false);
 				this.Cosmetic.LeftEyeRenderer.gameObject.SetActive(false);
@@ -1256,7 +1256,7 @@ public class StudentScript : MonoBehaviour
 				this.BookRenderer.material.mainTexture = this.RedBookTexture;
 			}
 			this.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
-			if (this.StudentManager.MissionMode && this.StudentID == Globals.MissionTarget)
+			if (this.StudentManager.MissionMode && this.StudentID == MissionModeGlobals.MissionTarget)
 			{
 				this.ID = 0;
 				while (this.ID < this.Outlines.Length)
@@ -1659,7 +1659,7 @@ public class StudentScript : MonoBehaviour
 							}
 							else if (this.Actions[this.Phase] == StudentActionType.Socializing)
 							{
-								if (this.Paranoia > 1.66666f && !Globals.LoveSick)
+								if (this.Paranoia > 1.66666f && !GameGlobals.LoveSick)
 								{
 									this.CharacterAnimation.CrossFade(this.IdleAnim);
 								}
@@ -2049,7 +2049,7 @@ public class StudentScript : MonoBehaviour
 					{
 						if (this.MeetTimer == 0f)
 						{
-							if (Globals.GetStudentFriend(7) && this.Yandere.Bloodiness == 0f && (double)this.Yandere.Sanity >= 66.66666 && (this.CurrentDestination == this.StudentManager.MeetSpots.List[8] || this.CurrentDestination == this.StudentManager.MeetSpots.List[9] || this.CurrentDestination == this.StudentManager.MeetSpots.List[10]))
+							if (PlayerGlobals.GetStudentFriend(7) && this.Yandere.Bloodiness == 0f && (double)this.Yandere.Sanity >= 66.66666 && (this.CurrentDestination == this.StudentManager.MeetSpots.List[8] || this.CurrentDestination == this.StudentManager.MeetSpots.List[9] || this.CurrentDestination == this.StudentManager.MeetSpots.List[10]))
 							{
 								this.StudentManager.OfferHelp.UpdateLocation();
 								this.StudentManager.OfferHelp.enabled = true;
@@ -4190,10 +4190,10 @@ public class StudentScript : MonoBehaviour
 								{
 									this.Subtitle.UpdateLabel("Greeting", 0, 3f);
 								}
-								if ((this.Male && Globals.Seduction + Globals.SeductionBonus > 0) || Globals.Seduction + Globals.SeductionBonus > 4)
+								if ((this.Male && PlayerGlobals.Seduction + PlayerGlobals.SeductionBonus > 0) || PlayerGlobals.Seduction + PlayerGlobals.SeductionBonus > 4)
 								{
 									ParticleSystem.EmissionModule emission = this.Hearts.emission;
-									emission.rateOverTime = (float)Globals.Seduction;
+									emission.rateOverTime = (float)PlayerGlobals.Seduction;
 									emission.enabled = true;
 									this.Hearts.Play();
 								}
@@ -4220,6 +4220,7 @@ public class StudentScript : MonoBehaviour
 						this.Pathfinding.canSearch = false;
 						this.Pathfinding.canMove = false;
 						this.Obstacle.enabled = true;
+						this.Giggle = null;
 						this.Yandere.WeaponMenu.KeyboardShow = false;
 						this.Yandere.Obscurance.enabled = false;
 						this.Yandere.WeaponMenu.Show = false;
@@ -5355,27 +5356,27 @@ public class StudentScript : MonoBehaviour
 
 	private void CalculateReputationPenalty()
 	{
-		if ((this.Male && Globals.Seduction + Globals.SeductionBonus > 2) || Globals.Seduction + Globals.SeductionBonus > 4)
+		if ((this.Male && PlayerGlobals.Seduction + PlayerGlobals.SeductionBonus > 2) || PlayerGlobals.Seduction + PlayerGlobals.SeductionBonus > 4)
 		{
 			this.RepDeduction += this.RepLoss * 0.2f;
 		}
-		if (Globals.Reputation < -33.33333f)
+		if (PlayerGlobals.Reputation < -33.33333f)
 		{
 			this.RepDeduction += this.RepLoss * 0.2f;
 		}
-		if (Globals.Reputation > 33.33333f)
+		if (PlayerGlobals.Reputation > 33.33333f)
 		{
 			this.RepDeduction -= this.RepLoss * 0.2f;
 		}
-		if (Globals.GetStudentFriend(this.StudentID))
+		if (PlayerGlobals.GetStudentFriend(this.StudentID))
 		{
 			this.RepDeduction += this.RepLoss * 0.2f;
 		}
-		if (Globals.PantiesEquipped == 1)
+		if (PlayerGlobals.PantiesEquipped == 1)
 		{
 			this.RepDeduction += this.RepLoss * 0.2f;
 		}
-		if (Globals.SocialBonus > 0)
+		if (PlayerGlobals.SocialBonus > 0)
 		{
 			this.RepDeduction += this.RepLoss * 0.2f;
 		}
@@ -6111,19 +6112,19 @@ public class StudentScript : MonoBehaviour
 			}
 			this.ID++;
 		}
-		if (this.StudentID == 7 && (float)Globals.GetStudentReputation(7) < -33.33333f)
+		if (this.StudentID == 7 && (float)StudentGlobals.GetStudentReputation(7) < -33.33333f)
 		{
 			this.Destinations[2] = this.StudentManager.ShameSpot;
 			this.Destinations[4] = this.StudentManager.ShameSpot;
 			this.Actions[2] = StudentActionType.Shamed;
 			this.Actions[4] = StudentActionType.Shamed;
 		}
-		if (this.StudentID == 26 && ClubGlobals.GetClubClosed(ClubType.Occult) && Globals.GetStudentDead(17) && Globals.GetStudentDead(18))
+		if (this.StudentID == 26 && ClubGlobals.GetClubClosed(ClubType.Occult) && StudentGlobals.GetStudentDead(17) && StudentGlobals.GetStudentDead(18))
 		{
 			this.Destinations[2] = this.StudentManager.Hangouts.List[this.StudentID];
 			this.Actions[2] = StudentActionType.Socializing;
 		}
-		if (this.StudentID == 32 && Globals.GetStudentBroken(32))
+		if (this.StudentID == 32 && StudentGlobals.GetStudentBroken(32))
 		{
 			this.Destinations[2] = this.StudentManager.BrokenSpot;
 			this.Destinations[4] = this.StudentManager.BrokenSpot;
@@ -6148,15 +6149,15 @@ public class StudentScript : MonoBehaviour
 		this.RandomAnim = this.AnimationNames[UnityEngine.Random.Range(0, this.AnimationNames.Length)];
 		if (this.Actions[this.Phase] == StudentActionType.Socializing && this.DistanceToPlayer < 3f)
 		{
-			if (!Globals.GetTopicDiscovered(11))
+			if (!ConversationGlobals.GetTopicDiscovered(11))
 			{
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
-				Globals.SetTopicDiscovered(11, true);
+				ConversationGlobals.SetTopicDiscovered(11, true);
 			}
-			if (!Globals.GetTopicLearnedByStudent(11, this.StudentID))
+			if (!ConversationGlobals.GetTopicLearnedByStudent(11, this.StudentID))
 			{
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
-				Globals.SetTopicLearnedByStudent(11, this.StudentID, true);
+				ConversationGlobals.SetTopicLearnedByStudent(11, this.StudentID, true);
 			}
 		}
 	}
@@ -6196,8 +6197,8 @@ public class StudentScript : MonoBehaviour
 	{
 		if (this.Schoolwear == 1)
 		{
-			this.MyRenderer.materials[0].mainTexture = this.SocksTextures[Globals.FemaleUniform];
-			this.MyRenderer.materials[1].mainTexture = this.SocksTextures[Globals.FemaleUniform];
+			this.MyRenderer.materials[0].mainTexture = this.SocksTextures[StudentGlobals.FemaleUniform];
+			this.MyRenderer.materials[1].mainTexture = this.SocksTextures[StudentGlobals.FemaleUniform];
 		}
 		else if (this.Schoolwear == 3)
 		{
@@ -6273,7 +6274,7 @@ public class StudentScript : MonoBehaviour
 		}
 		if (!this.Tranquil)
 		{
-			Globals.SetStudentDying(this.StudentID, true);
+			StudentGlobals.SetStudentDying(this.StudentID, true);
 			if (!this.Ragdoll.Burning && !this.Ragdoll.Disturbing)
 			{
 				this.Police.CorpseList[this.Police.Corpses] = this.Ragdoll;
@@ -6809,7 +6810,7 @@ public class StudentScript : MonoBehaviour
 
 	public void UpdatePerception()
 	{
-		if (ClubGlobals.Club == ClubType.Occult || Globals.StealthBonus > 0)
+		if (ClubGlobals.Club == ClubType.Occult || PlayerGlobals.StealthBonus > 0)
 		{
 			this.Perception = 0.5f;
 		}
@@ -6847,7 +6848,9 @@ public class StudentScript : MonoBehaviour
 		bool flag3 = this.StudentID == 15 && yandereTargetID == 14;
 		bool flag4 = this.StudentID == 17 && yandereTargetID == 18;
 		bool flag5 = this.StudentID == 18 && yandereTargetID == 17;
-		return flag || flag2 || flag3 || flag4 || flag5;
+		bool flag6 = this.StudentID == 6 && yandereTargetID == 7;
+		bool flag7 = this.StudentID == 7 && yandereTargetID == 6;
+		return flag || flag2 || flag3 || flag4 || flag5 || flag6 || flag7;
 	}
 
 	private void Pose()

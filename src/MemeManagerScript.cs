@@ -8,7 +8,7 @@ public class MemeManagerScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (Globals.LoveSick)
+		if (GameGlobals.LoveSick)
 		{
 			foreach (GameObject gameObject in this.Memes)
 			{

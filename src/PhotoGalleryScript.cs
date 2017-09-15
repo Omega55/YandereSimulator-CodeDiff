@@ -71,6 +71,7 @@ public class PhotoGalleryScript : MonoBehaviour
 	{
 		if (!this.Adjusting)
 		{
+			float t = Time.unscaledDeltaTime * 10f;
 			if (!this.Viewing)
 			{
 				if (Input.GetButtonDown("A"))
@@ -115,9 +116,9 @@ public class PhotoGalleryScript : MonoBehaviour
 					if (this.Photographs[num].mainTexture != this.NoPhoto)
 					{
 						this.Photographs[num].mainTexture = this.NoPhoto;
-						Globals.SetPhoto(num, false);
-						Globals.SetSenpaiPhoto(num, false);
-						Globals.SetKittenPhoto(num, false);
+						PlayerGlobals.SetPhoto(num, false);
+						PlayerGlobals.SetSenpaiPhoto(num, false);
+						TaskGlobals.SetKittenPhoto(num, false);
 						this.Hearts[num].gameObject.SetActive(false);
 						this.TaskManager.UpdateTaskStatus();
 					}
@@ -136,7 +137,7 @@ public class PhotoGalleryScript : MonoBehaviour
 				else if (this.CanAdjust && Input.GetButtonDown("Y"))
 				{
 					int num2 = this.Column + (this.Row - 1) * 5;
-					Globals.SetSenpaiPhoto(num2, false);
+					PlayerGlobals.SetSenpaiPhoto(num2, false);
 					this.Hearts[num2].gameObject.SetActive(false);
 					this.CanAdjust = false;
 					this.Yandere.Sanity += 20f;
@@ -183,8 +184,8 @@ public class PhotoGalleryScript : MonoBehaviour
 					this.Highlight.transform.localPosition = new Vector3(this.Highlight.transform.localPosition.x, 225f - 75f * (float)this.Row, this.Highlight.transform.localPosition.z);
 					this.UpdateButtonPrompts();
 				}
-				this.ViewPhoto.transform.localScale = Vector3.Lerp(this.ViewPhoto.transform.localScale, new Vector3(1f, 1f, 1f), 0.166666672f);
-				this.ViewPhoto.transform.position = Vector3.Lerp(this.ViewPhoto.transform.position, this.Destination.position, 0.166666672f);
+				this.ViewPhoto.transform.localScale = Vector3.Lerp(this.ViewPhoto.transform.localScale, new Vector3(1f, 1f, 1f), t);
+				this.ViewPhoto.transform.position = Vector3.Lerp(this.ViewPhoto.transform.position, this.Destination.position, t);
 				if (this.Corkboard)
 				{
 					this.Gallery.transform.localPosition = new Vector3(this.Gallery.transform.localPosition.x, Mathf.Lerp(this.Gallery.transform.localPosition.y, 0f, Time.deltaTime * 10f), this.Gallery.transform.localPosition.z);
@@ -192,8 +193,8 @@ public class PhotoGalleryScript : MonoBehaviour
 			}
 			else
 			{
-				this.ViewPhoto.transform.localScale = Vector3.Lerp(this.ViewPhoto.transform.localScale, (!this.Corkboard) ? new Vector3(6.5f, 6.5f, 6.5f) : new Vector3(5.8f, 5.8f, 5.8f), 0.166666672f);
-				this.ViewPhoto.transform.localPosition = Vector3.Lerp(this.ViewPhoto.transform.localPosition, (!this.Corkboard) ? new Vector3(0f, 0f, 0f) : Vector3.zero, 0.166666672f);
+				this.ViewPhoto.transform.localScale = Vector3.Lerp(this.ViewPhoto.transform.localScale, (!this.Corkboard) ? new Vector3(6.5f, 6.5f, 6.5f) : new Vector3(5.8f, 5.8f, 5.8f), t);
+				this.ViewPhoto.transform.localPosition = Vector3.Lerp(this.ViewPhoto.transform.localPosition, (!this.Corkboard) ? new Vector3(0f, 0f, 0f) : Vector3.zero, t);
 				if (Input.GetButtonDown("A") && this.Corkboard)
 				{
 					GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Photograph, base.transform.position, Quaternion.identity);
@@ -222,7 +223,7 @@ public class PhotoGalleryScript : MonoBehaviour
 					{
 						for (int j = 1; j < 26; j++)
 						{
-							if (Globals.GetSenpaiPhoto(j))
+							if (PlayerGlobals.GetSenpaiPhoto(j))
 							{
 								this.Hearts[j].gameObject.SetActive(true);
 								this.CanAdjust = true;
@@ -347,7 +348,7 @@ public class PhotoGalleryScript : MonoBehaviour
 		}
 		for (int ID = 1; ID < 26; ID++)
 		{
-			if (Globals.GetPhoto(ID))
+			if (PlayerGlobals.GetPhoto(ID))
 			{
 				string path = string.Concat(new string[]
 				{
@@ -362,14 +363,14 @@ public class PhotoGalleryScript : MonoBehaviour
 				if (www.error == null)
 				{
 					this.Photographs[ID].mainTexture = www.texture;
-					if (!this.Corkboard && Globals.GetSenpaiPhoto(ID))
+					if (!this.Corkboard && PlayerGlobals.GetSenpaiPhoto(ID))
 					{
 						this.Hearts[ID].gameObject.SetActive(true);
 					}
 				}
 				else
 				{
-					Globals.SetPhoto(ID, false);
+					PlayerGlobals.SetPhoto(ID, false);
 				}
 			}
 		}
@@ -426,7 +427,7 @@ public class PhotoGalleryScript : MonoBehaviour
 			}
 			if (!this.Corkboard)
 			{
-				if (Globals.GetSenpaiPhoto(num))
+				if (PlayerGlobals.GetSenpaiPhoto(num))
 				{
 					this.PromptBar.Label[3].text = "Use";
 				}

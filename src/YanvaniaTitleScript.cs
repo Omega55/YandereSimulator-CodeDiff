@@ -53,9 +53,9 @@ public class YanvaniaTitleScript : MonoBehaviour
 		this.Midori.transform.localPosition = new Vector3(1540f, 0f, 0f);
 		this.Midori.transform.localEulerAngles = Vector3.zero;
 		this.Midori.gameObject.SetActive(false);
-		if (Globals.DraculaDefeated)
+		if (YanvaniaGlobals.DraculaDefeated)
 		{
-			Globals.SetTaskStatus(14, 2);
+			TaskGlobals.SetTaskStatus(14, 2);
 			this.SkipButton.SetActive(true);
 			this.Logo.gameObject.SetActive(false);
 		}
@@ -74,18 +74,18 @@ public class YanvaniaTitleScript : MonoBehaviour
 	{
 		if (!this.Logo.gameObject.activeInHierarchy && Input.GetKeyDown("m"))
 		{
-			Globals.DraculaDefeated = true;
-			Globals.MidoriEasterEgg = true;
+			YanvaniaGlobals.DraculaDefeated = true;
+			YanvaniaGlobals.MidoriEasterEgg = true;
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		if (Input.GetKeyDown("end"))
 		{
-			Globals.DraculaDefeated = true;
+			YanvaniaGlobals.DraculaDefeated = true;
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		if (Input.GetKeyDown("`"))
 		{
-			Globals.DraculaDefeated = false;
+			YanvaniaGlobals.DraculaDefeated = false;
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		AudioSource component = base.GetComponent<AudioSource>();
@@ -104,9 +104,9 @@ public class YanvaniaTitleScript : MonoBehaviour
 			}
 			else if (this.Darkness.color.a <= 0f)
 			{
-				if (!Globals.MidoriEasterEgg)
+				if (!YanvaniaGlobals.MidoriEasterEgg)
 				{
-					if (Globals.DraculaDefeated)
+					if (YanvaniaGlobals.DraculaDefeated)
 					{
 						if (!this.Prologue.gameObject.activeInHierarchy)
 						{
@@ -255,7 +255,7 @@ public class YanvaniaTitleScript : MonoBehaviour
 					this.Midori.transform.localEulerAngles = new Vector3(this.Midori.transform.localEulerAngles.x, this.Midori.transform.localEulerAngles.y, Mathf.Lerp(this.Midori.transform.localEulerAngles.z, 45f, Time.deltaTime * 2f));
 					if (this.Midori.gameObject.GetComponent<AudioSource>().time > 3f)
 					{
-						Globals.MidoriEasterEgg = false;
+						YanvaniaGlobals.MidoriEasterEgg = false;
 					}
 				}
 			}
@@ -267,7 +267,7 @@ public class YanvaniaTitleScript : MonoBehaviour
 			component.volume -= Time.deltaTime;
 			if (this.Darkness.color.a >= 1f)
 			{
-				if (Globals.DraculaDefeated)
+				if (YanvaniaGlobals.DraculaDefeated)
 				{
 					SceneManager.LoadScene("HomeScene");
 				}

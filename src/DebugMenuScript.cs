@@ -58,11 +58,11 @@ public class DebugMenuScript : MonoBehaviour
 	{
 		base.transform.localPosition = new Vector3(base.transform.localPosition.x, 0f, base.transform.localPosition.z);
 		this.Window.SetActive(false);
-		if (Globals.MissionMode)
+		if (MissionModeGlobals.MissionMode)
 		{
 			this.MissionMode = true;
 		}
-		if (Globals.LoveSick)
+		if (GameGlobals.LoveSick)
 		{
 			this.NoDebug = true;
 		}
@@ -88,65 +88,65 @@ public class DebugMenuScript : MonoBehaviour
 			{
 				if (Input.GetKeyDown(KeyCode.F1))
 				{
-					Globals.FemaleUniform = 1;
-					Globals.MaleUniform = 1;
+					StudentGlobals.FemaleUniform = 1;
+					StudentGlobals.MaleUniform = 1;
 					SceneManager.LoadScene("LoadingScene");
 				}
 				else if (Input.GetKeyDown(KeyCode.F2))
 				{
-					Globals.FemaleUniform = 2;
-					Globals.MaleUniform = 2;
+					StudentGlobals.FemaleUniform = 2;
+					StudentGlobals.MaleUniform = 2;
 					SceneManager.LoadScene("LoadingScene");
 				}
 				else if (Input.GetKeyDown(KeyCode.F3))
 				{
-					Globals.FemaleUniform = 3;
-					Globals.MaleUniform = 3;
+					StudentGlobals.FemaleUniform = 3;
+					StudentGlobals.MaleUniform = 3;
 					SceneManager.LoadScene("LoadingScene");
 				}
 				else if (Input.GetKeyDown(KeyCode.F4))
 				{
-					Globals.FemaleUniform = 4;
-					Globals.MaleUniform = 4;
+					StudentGlobals.FemaleUniform = 4;
+					StudentGlobals.MaleUniform = 4;
 					SceneManager.LoadScene("LoadingScene");
 				}
 				else if (Input.GetKeyDown(KeyCode.F5))
 				{
-					Globals.FemaleUniform = 5;
-					Globals.MaleUniform = 5;
+					StudentGlobals.FemaleUniform = 5;
+					StudentGlobals.MaleUniform = 5;
 					SceneManager.LoadScene("LoadingScene");
 				}
 				else if (Input.GetKeyDown(KeyCode.F6))
 				{
-					Globals.FemaleUniform = 6;
-					Globals.MaleUniform = 6;
+					StudentGlobals.FemaleUniform = 6;
+					StudentGlobals.MaleUniform = 6;
 					SceneManager.LoadScene("LoadingScene");
 				}
 				else if (!Input.GetKeyDown(KeyCode.F12))
 				{
 					if (Input.GetKeyDown("1"))
 					{
-						Globals.Weekday = 1;
+						DateGlobals.Weekday = 1;
 						SceneManager.LoadScene("LoadingScene");
 					}
 					else if (Input.GetKeyDown("2"))
 					{
-						Globals.Weekday = 2;
+						DateGlobals.Weekday = 2;
 						SceneManager.LoadScene("LoadingScene");
 					}
 					else if (Input.GetKeyDown("3"))
 					{
-						Globals.Weekday = 3;
+						DateGlobals.Weekday = 3;
 						SceneManager.LoadScene("LoadingScene");
 					}
 					else if (Input.GetKeyDown("4"))
 					{
-						Globals.Weekday = 4;
+						DateGlobals.Weekday = 4;
 						SceneManager.LoadScene("LoadingScene");
 					}
 					else if (Input.GetKeyDown("5"))
 					{
-						Globals.Weekday = 5;
+						DateGlobals.Weekday = 5;
 						SceneManager.LoadScene("LoadingScene");
 					}
 					else if (Input.GetKeyDown("6"))
@@ -220,17 +220,17 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					else if (Input.GetKeyDown("a"))
 					{
-						if (Globals.SchoolAtmosphereType == SchoolAtmosphereType.High)
+						if (SchoolAtmosphere.Type == SchoolAtmosphereType.High)
 						{
-							Globals.SchoolAtmosphere = 50f;
+							SchoolGlobals.SchoolAtmosphere = 50f;
 						}
-						else if (Globals.SchoolAtmosphereType == SchoolAtmosphereType.Medium)
+						else if (SchoolAtmosphere.Type == SchoolAtmosphereType.Medium)
 						{
-							Globals.SchoolAtmosphere = 0f;
+							SchoolGlobals.SchoolAtmosphere = 0f;
 						}
 						else
 						{
-							Globals.SchoolAtmosphere = 100f;
+							SchoolGlobals.SchoolAtmosphere = 100f;
 						}
 						SceneManager.LoadScene("LoadingScene");
 					}
@@ -239,7 +239,7 @@ public class DebugMenuScript : MonoBehaviour
 						this.ID = 1;
 						while (this.ID < 11)
 						{
-							Globals.SetTapeCollected(this.ID, true);
+							CollectibleGlobals.SetTapeCollected(this.ID, true);
 							this.ID++;
 						}
 						this.Window.SetActive(false);
@@ -254,7 +254,7 @@ public class DebugMenuScript : MonoBehaviour
 						StudentScript studentScript4 = this.StudentManager.Students[this.RooftopStudent];
 						if (this.Clock.HourTime < 15f)
 						{
-							Globals.SetStudentFriend(this.RooftopStudent, true);
+							PlayerGlobals.SetStudentFriend(this.RooftopStudent, true);
 							this.Yandere.transform.position = this.RooftopSpot.position + new Vector3(1f, 0f, 0f);
 							this.WeaponManager.Weapons[6].transform.position = this.Yandere.transform.position + new Vector3(0f, 0f, 1.915f);
 							if (studentScript4 != null)
@@ -297,13 +297,13 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					else if (Input.GetKeyDown("k"))
 					{
-						Globals.KidnapVictim = 6;
-						Globals.SetStudentSlave(6, true);
+						SchoolGlobals.KidnapVictim = 6;
+						StudentGlobals.SetStudentSlave(6, true);
 						SceneManager.LoadScene("LoadingScene");
 					}
 					else if (Input.GetKeyDown("l"))
 					{
-						Globals.Event1 = true;
+						EventGlobals.Event1 = true;
 						this.Window.SetActive(false);
 					}
 					else if (!Input.GetKeyDown("m"))
@@ -315,7 +315,7 @@ public class DebugMenuScript : MonoBehaviour
 						}
 						else if (Input.GetKeyDown("p"))
 						{
-							Globals.PantyShots += 20;
+							PlayerGlobals.PantyShots += 20;
 							this.Window.SetActive(false);
 						}
 						else if (Input.GetKeyDown("q"))
@@ -325,26 +325,26 @@ public class DebugMenuScript : MonoBehaviour
 						}
 						else if (Input.GetKeyDown("r"))
 						{
-							if (Globals.Reputation != 66.66666f)
+							if (PlayerGlobals.Reputation != 66.66666f)
 							{
-								Globals.Reputation = 66.66666f;
-								this.Reputation.Reputation = Globals.Reputation;
+								PlayerGlobals.Reputation = 66.66666f;
+								this.Reputation.Reputation = PlayerGlobals.Reputation;
 							}
 							else
 							{
-								Globals.Reputation = -66.66666f;
-								this.Reputation.Reputation = Globals.Reputation;
+								PlayerGlobals.Reputation = -66.66666f;
+								this.Reputation.Reputation = PlayerGlobals.Reputation;
 							}
 							this.Window.SetActive(false);
 						}
 						else if (Input.GetKeyDown("s"))
 						{
 							ClassGlobals.PhysicalGrade = 5;
-							Globals.Seduction = 5;
+							PlayerGlobals.Seduction = 5;
 							this.ID = 1;
 							while (this.ID < 101)
 							{
-								Globals.SetStudentPhotographed(this.ID, true);
+								StudentGlobals.SetStudentPhotographed(this.ID, true);
 								this.ID++;
 							}
 							this.Window.SetActive(false);
@@ -356,13 +356,13 @@ public class DebugMenuScript : MonoBehaviour
 						}
 						else if (Input.GetKeyDown("u"))
 						{
-							Globals.SetStudentFriend(7, true);
-							Globals.SetStudentFriend(13, true);
+							PlayerGlobals.SetStudentFriend(7, true);
+							PlayerGlobals.SetStudentFriend(13, true);
 							this.ID = 1;
 							while (this.ID < 26)
 							{
-								Globals.SetTopicLearnedByStudent(this.ID, 7, true);
-								Globals.SetTopicDiscovered(this.ID, true);
+								ConversationGlobals.SetTopicLearnedByStudent(this.ID, 7, true);
+								ConversationGlobals.SetTopicDiscovered(this.ID, true);
 								this.ID++;
 							}
 							this.Window.SetActive(false);
@@ -383,7 +383,7 @@ public class DebugMenuScript : MonoBehaviour
 									studentScript5.SpawnAlarmDisc();
 									studentScript5.BecomeRagdoll();
 									studentScript5.DeathType = DeathType.EasterEgg;
-									Globals.SetStudentDead(this.ID, true);
+									StudentGlobals.SetStudentDead(this.ID, true);
 								}
 								this.ID++;
 							}
@@ -391,7 +391,7 @@ public class DebugMenuScript : MonoBehaviour
 						}
 						else if (Input.GetKeyDown("x"))
 						{
-							Globals.HighPopulation = !Globals.HighPopulation;
+							OptionGlobals.HighPopulation = !OptionGlobals.HighPopulation;
 							SceneManager.LoadScene("LoadingScene");
 						}
 						else if (Input.GetKeyDown("backspace"))
@@ -465,7 +465,7 @@ public class DebugMenuScript : MonoBehaviour
 						}
 						else if (Input.GetKeyDown("b"))
 						{
-							Globals.SuitorProgress = 2;
+							DatingGlobals.SuitorProgress = 2;
 							SceneManager.LoadScene("LoadingScene");
 						}
 						else if (Input.GetKeyDown("pause"))
@@ -481,9 +481,9 @@ public class DebugMenuScript : MonoBehaviour
 				this.ID = 0;
 				while (this.ID < this.StudentManager.NPCsTotal)
 				{
-					if (Globals.GetStudentDying(this.ID))
+					if (StudentGlobals.GetStudentDying(this.ID))
 					{
-						Globals.SetStudentDying(this.ID, false);
+						StudentGlobals.SetStudentDying(this.ID, false);
 					}
 					this.ID++;
 				}

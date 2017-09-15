@@ -304,36 +304,36 @@ public class StudentManagerScript : MonoBehaviour
 				this.ErrorLabel.text = string.Empty;
 			}
 			this.SetAtmosphere();
-			Globals.Paranormal = false;
-			if (Globals.MissionMode)
+			GameGlobals.Paranormal = false;
+			if (MissionModeGlobals.MissionMode)
 			{
-				Globals.FemaleUniform = 5;
-				Globals.MaleUniform = 5;
+				StudentGlobals.FemaleUniform = 5;
+				StudentGlobals.MaleUniform = 5;
 			}
-			if (Globals.GetStudentSlave(Globals.KidnapVictim))
+			if (StudentGlobals.GetStudentSlave(SchoolGlobals.KidnapVictim))
 			{
 				this.ForceSpawn = true;
-				this.SpawnPositions[Globals.KidnapVictim] = this.SlaveSpot;
-				this.SpawnID = Globals.KidnapVictim;
-				Globals.SetStudentDead(Globals.KidnapVictim, false);
+				this.SpawnPositions[SchoolGlobals.KidnapVictim] = this.SlaveSpot;
+				this.SpawnID = SchoolGlobals.KidnapVictim;
+				StudentGlobals.SetStudentDead(SchoolGlobals.KidnapVictim, false);
 				this.SpawnStudent();
-				this.Students[Globals.KidnapVictim].Slave = true;
+				this.Students[SchoolGlobals.KidnapVictim].Slave = true;
 				this.SpawnID = 0;
-				Globals.SetStudentSlave(Globals.KidnapVictim, false);
-				Globals.KidnapVictim = 0;
+				StudentGlobals.SetStudentSlave(SchoolGlobals.KidnapVictim, false);
+				SchoolGlobals.KidnapVictim = 0;
 			}
 			this.NPCsTotal = this.StudentsTotal + this.TeachersTotal;
 			this.SpawnID = 1;
-			if (Globals.MaleUniform == 0)
+			if (StudentGlobals.MaleUniform == 0)
 			{
-				Globals.MaleUniform = 1;
+				StudentGlobals.MaleUniform = 1;
 			}
 			this.ID = 1;
 			while (this.ID < this.NPCsTotal + 1)
 			{
-				if (!Globals.GetStudentDead(this.ID))
+				if (!StudentGlobals.GetStudentDead(this.ID))
 				{
-					Globals.SetStudentDying(this.ID, false);
+					StudentGlobals.SetStudentDying(this.ID, false);
 				}
 				this.ID++;
 			}
@@ -360,11 +360,10 @@ public class StudentManagerScript : MonoBehaviour
 				gameObject.transform.parent = this.HidingSpots.transform;
 				this.HidingSpots.List[this.ID] = gameObject.transform;
 				this.ID++;
-				this.ID++;
 			}
-			if (Globals.LateForSchool)
+			if (HomeGlobals.LateForSchool)
 			{
-				Globals.LateForSchool = false;
+				HomeGlobals.LateForSchool = false;
 				this.Clock.PresentTime = 480f;
 				this.Clock.HourTime = 8f;
 				this.AttendClass();
@@ -393,18 +392,18 @@ public class StudentManagerScript : MonoBehaviour
 
 	public void SetAtmosphere()
 	{
-		if (Globals.LoveSick)
+		if (GameGlobals.LoveSick)
 		{
-			Globals.SchoolAtmosphereSet = true;
-			Globals.SchoolAtmosphere = 0f;
+			SchoolGlobals.SchoolAtmosphereSet = true;
+			SchoolGlobals.SchoolAtmosphere = 0f;
 		}
-		if (!Globals.SchoolAtmosphereSet)
+		if (!SchoolGlobals.SchoolAtmosphereSet)
 		{
-			Globals.SchoolAtmosphereSet = true;
-			Globals.SchoolAtmosphere = 100f;
+			SchoolGlobals.SchoolAtmosphereSet = true;
+			SchoolGlobals.SchoolAtmosphere = 100f;
 		}
 		Vignetting[] components = Camera.main.GetComponents<Vignetting>();
-		float num = 1f - Globals.SchoolAtmosphere * 0.01f;
+		float num = 1f - SchoolGlobals.SchoolAtmosphere * 0.01f;
 		if (!this.TakingPortraits)
 		{
 			this.SmartphoneSelectiveGreyscale.desaturation = num;
@@ -609,7 +608,7 @@ public class StudentManagerScript : MonoBehaviour
 
 	public void SpawnStudent()
 	{
-		if (this.Students[this.SpawnID] == null && !Globals.GetStudentDead(this.SpawnID) && !Globals.GetStudentKidnapped(this.SpawnID) && !Globals.GetStudentArrested(this.SpawnID) && !Globals.GetStudentExpelled(this.SpawnID) && this.JSON.Students[this.SpawnID].Name != "Unknown" && this.JSON.Students[this.SpawnID].Name != "Reserved" && Globals.GetStudentReputation(this.SpawnID) > -100)
+		if (this.Students[this.SpawnID] == null && !StudentGlobals.GetStudentDead(this.SpawnID) && !StudentGlobals.GetStudentKidnapped(this.SpawnID) && !StudentGlobals.GetStudentArrested(this.SpawnID) && !StudentGlobals.GetStudentExpelled(this.SpawnID) && this.JSON.Students[this.SpawnID].Name != "Unknown" && this.JSON.Students[this.SpawnID].Name != "Reserved" && StudentGlobals.GetStudentReputation(this.SpawnID) > -100)
 		{
 			int num;
 			if (this.JSON.Students[this.SpawnID].Name == "Random")
@@ -624,7 +623,7 @@ public class StudentManagerScript : MonoBehaviour
 				GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(this.RandomPatrol, Vector3.zero, Quaternion.identity);
 				gameObject2.transform.parent = this.Patrols.transform;
 				this.Patrols.List[this.SpawnID] = gameObject2.transform;
-				num = ((!Globals.MissionMode || Globals.MissionTarget != this.SpawnID) ? UnityEngine.Random.Range(0, 2) : 0);
+				num = ((!MissionModeGlobals.MissionMode || MissionModeGlobals.MissionTarget != this.SpawnID) ? UnityEngine.Random.Range(0, 2) : 0);
 				this.FindUnoccupiedSeat();
 			}
 			else

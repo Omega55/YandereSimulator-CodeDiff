@@ -199,7 +199,7 @@ public class PickUpScript : MonoBehaviour
 		{
 			base.transform.parent = this.Yandere.LeftItemParent;
 		}
-		if (base.GetComponent<RadioScript>() != null)
+		if (base.GetComponent<RadioScript>() != null && base.GetComponent<RadioScript>().On)
 		{
 			base.GetComponent<RadioScript>().TurnOff();
 		}

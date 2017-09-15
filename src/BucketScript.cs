@@ -19,33 +19,42 @@ public class BucketScript : MonoBehaviour
 
 	public GameObject GasCollider;
 
-	public GameObject BloodSpillEffect;
+	[SerializeField]
+	private GameObject BloodSpillEffect;
 
-	public GameObject GasSpillEffect;
+	[SerializeField]
+	private GameObject GasSpillEffect;
 
-	public GameObject SpillEffect;
+	[SerializeField]
+	private GameObject SpillEffect;
 
-	public GameObject Effect;
+	[SerializeField]
+	private GameObject Effect;
 
-	public GameObject[] Dumbbell;
+	[SerializeField]
+	private GameObject[] Dumbbell;
 
-	public Transform[] Positions;
+	[SerializeField]
+	private Transform[] Positions;
 
-	public Renderer Water;
+	[SerializeField]
+	private Renderer Water;
 
-	public Renderer Blood;
+	[SerializeField]
+	private Renderer Blood;
 
-	public Renderer Gas;
-
-	public RaycastHit hit;
+	[SerializeField]
+	private Renderer Gas;
 
 	public float Bloodiness;
 
 	public float FillSpeed = 1f;
 
-	public float Distance;
+	[SerializeField]
+	private float Distance;
 
-	public float Rotate;
+	[SerializeField]
+	private float Rotate;
 
 	public int Dumbbells;
 
@@ -82,14 +91,16 @@ public class BucketScript : MonoBehaviour
 		{
 			if (this.Yandere.Bucket == null)
 			{
-				if (base.transform.position.y > this.Yandere.transform.position.y - 0.1f && base.transform.position.y < this.Yandere.transform.position.y + 0.1f && Physics.Linecast(base.transform.position, this.Yandere.transform.position + Vector3.up, out this.hit) && this.hit.collider.gameObject == this.Yandere.gameObject)
+				RaycastHit raycastHit;
+				if (base.transform.position.y > this.Yandere.transform.position.y - 0.1f && base.transform.position.y < this.Yandere.transform.position.y + 0.1f && Physics.Linecast(base.transform.position, this.Yandere.transform.position + Vector3.up, out raycastHit) && raycastHit.collider.gameObject == this.Yandere.gameObject)
 				{
 					this.Yandere.Bucket = this;
 				}
 			}
 			else
 			{
-				if (Physics.Linecast(base.transform.position, this.Yandere.transform.position + Vector3.up, out this.hit) && this.hit.collider.gameObject != this.Yandere.gameObject)
+				RaycastHit raycastHit;
+				if (Physics.Linecast(base.transform.position, this.Yandere.transform.position + Vector3.up, out raycastHit) && raycastHit.collider.gameObject != this.Yandere.gameObject)
 				{
 					this.Yandere.Bucket = null;
 				}
@@ -301,7 +312,7 @@ public class BucketScript : MonoBehaviour
 						}
 						if (this.Trap)
 						{
-							this.Effect.transform.LookAt(new Vector3(0f, -1E+10f, 0f));
+							this.Effect.transform.LookAt(this.Effect.transform.position - Vector3.up);
 						}
 						else
 						{

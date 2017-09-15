@@ -139,11 +139,51 @@ public class SaveFile
 
 	public void ReadFromGlobals()
 	{
-		throw new NotImplementedException();
+		this.data.applicationData = ApplicationSaveData.ReadFromGlobals();
+		this.data.classData = ClassSaveData.ReadFromGlobals();
+		this.data.clubData = ClubSaveData.ReadFromGlobals();
+		this.data.collectibleData = CollectibleSaveData.ReadFromGlobals();
+		this.data.conversationData = ConversationSaveData.ReadFromGlobals();
+		this.data.dateData = DateSaveData.ReadFromGlobals();
+		this.data.datingData = DatingSaveData.ReadFromGlobals();
+		this.data.eventData = EventSaveData.ReadFromGlobals();
+		this.data.gameData = GameSaveData.ReadFromGlobals();
+		this.data.homeData = HomeSaveData.ReadFromGlobals();
+		this.data.missionModeData = MissionModeSaveData.ReadFromGlobals();
+		this.data.optionData = OptionSaveData.ReadFromGlobals();
+		this.data.playerData = PlayerSaveData.ReadFromGlobals();
+		this.data.poseModeData = PoseModeSaveData.ReadFromGlobals();
+		this.data.saveFileData = SaveFileSaveData.ReadFromGlobals();
+		this.data.schemeData = SchemeSaveData.ReadFromGlobals();
+		this.data.schoolData = SchoolSaveData.ReadFromGlobals();
+		this.data.senpaiData = SenpaiSaveData.ReadFromGlobals();
+		this.data.studentData = StudentSaveData.ReadFromGlobals();
+		this.data.taskData = TaskSaveData.ReadFromGlobals();
+		this.data.yanvaniaData = YanvaniaSaveData.ReadFromGlobals();
 	}
 
 	public void WriteToGlobals()
 	{
-		throw new NotImplementedException();
+		ApplicationSaveData.WriteToGlobals(this.data.applicationData);
+		ClassSaveData.WriteToGlobals(this.data.classData);
+		ClubSaveData.WriteToGlobals(this.data.clubData);
+		CollectibleSaveData.WriteToGlobals(this.data.collectibleData);
+		ConversationSaveData.WriteToGlobals(this.data.conversationData);
+		DateSaveData.WriteToGlobals(this.data.dateData);
+		DatingSaveData.WriteToGlobals(this.data.datingData);
+		EventSaveData.WriteToGlobals(this.data.eventData);
+		GameSaveData.WriteToGlobals(this.data.gameData);
+		HomeSaveData.WriteToGlobals(this.data.homeData);
+		MissionModeSaveData.WriteToGlobals(this.data.missionModeData);
+		OptionSaveData.WriteToGlobals(this.data.optionData);
+		PlayerSaveData.WriteToGlobals(this.data.playerData);
+		PoseModeSaveData.WriteToGlobals(this.data.poseModeData);
+		SaveFileSaveData.WriteToGlobals(this.data.saveFileData);
+		SchemeSaveData.WriteToGlobals(this.data.schemeData);
+		SchoolSaveData.WriteToGlobals(this.data.schoolData);
+		SenpaiSaveData.WriteToGlobals(this.data.senpaiData);
+		StudentSaveData.WriteToGlobals(this.data.studentData);
+		TaskSaveData.WriteToGlobals(this.data.taskData);
+		YanvaniaSaveData.WriteToGlobals(this.data.yanvaniaData);
 	}
 }

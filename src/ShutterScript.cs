@@ -91,6 +91,8 @@ public class ShutterScript : MonoBehaviour
 
 	public float Timer;
 
+	private float currentPercent;
+
 	public int TargetStudent;
 
 	public int NemesisShots;
@@ -101,17 +103,41 @@ public class ShutterScript : MonoBehaviour
 
 	public int ID;
 
-	public int OnlyPhotography = 65537;
+	public int OnlyPhotography
+	{
+		get
+		{
+			return 65537;
+		}
+	}
 
-	public int OnlyCharacters = 513;
+	public int OnlyCharacters
+	{
+		get
+		{
+			return 513;
+		}
+	}
 
-	public int OnlyRagdolls = 2049;
+	public int OnlyRagdolls
+	{
+		get
+		{
+			return 2049;
+		}
+	}
 
-	public int OnlyBlood = 16385;
+	public int OnlyBlood
+	{
+		get
+		{
+			return 16385;
+		}
+	}
 
 	private void Start()
 	{
-		if (Globals.MissionMode)
+		if (MissionModeGlobals.MissionMode)
 		{
 			this.MissionMode = true;
 		}
@@ -119,10 +145,6 @@ public class ShutterScript : MonoBehaviour
 		this.CameraButtons.SetActive(false);
 		this.PhotoIcons.SetActive(false);
 		this.Sprite.color = new Color(this.Sprite.color.r, this.Sprite.color.g, this.Sprite.color.b, 0f);
-		this.OnlyPhotography = 65537;
-		this.OnlyCharacters = 513;
-		this.OnlyRagdolls = 2049;
-		this.OnlyBlood = 16385;
 	}
 
 	private void Update()
@@ -131,7 +153,12 @@ public class ShutterScript : MonoBehaviour
 		{
 			if (this.Close)
 			{
-				this.Frame++;
+				this.currentPercent += 40f * Time.unscaledDeltaTime;
+				while (this.currentPercent >= 1f)
+				{
+					this.Frame = Mathf.Min(this.Frame + 1, 8);
+					this.currentPercent -= 1f;
+				}
 				this.Sprite.spriteName = "Shutter" + this.Frame.ToString();
 				if (this.Frame == 8)
 				{
@@ -161,7 +188,12 @@ public class ShutterScript : MonoBehaviour
 			}
 			else
 			{
-				this.Frame--;
+				this.currentPercent += 40f * Time.unscaledDeltaTime;
+				while (this.currentPercent >= 1f)
+				{
+					this.Frame = Mathf.Max(this.Frame - 1, 1);
+					this.currentPercent -= 1f;
+				}
 				this.Sprite.spriteName = "Shutter" + this.Frame.ToString();
 				if (this.Frame == 1)
 				{
@@ -293,7 +325,7 @@ public class ShutterScript : MonoBehaviour
 						while (this.ID < 26)
 						{
 							this.ID++;
-							if (!Globals.GetPhoto(this.ID))
+							if (!PlayerGlobals.GetPhoto(this.ID))
 							{
 								this.FreeSpace = true;
 								this.Slot = this.ID;
@@ -304,14 +336,14 @@ public class ShutterScript : MonoBehaviour
 						{
 							Application.CaptureScreenshot(Application.streamingAssetsPath + "/Photographs/Photo_" + this.Slot.ToString() + ".png");
 							this.TookPhoto = true;
-							Globals.SetPhoto(this.Slot, true);
+							PlayerGlobals.SetPhoto(this.Slot, true);
 							if (flag)
 							{
-								Globals.SetSenpaiPhoto(this.Slot, true);
+								PlayerGlobals.SetSenpaiPhoto(this.Slot, true);
 							}
 							if (this.KittenShot)
 							{
-								Globals.SetKittenPhoto(this.Slot, true);
+								TaskGlobals.SetKittenPhoto(this.Slot, true);
 								this.TaskManager.UpdateTaskStatus();
 							}
 						}
@@ -323,7 +355,7 @@ public class ShutterScript : MonoBehaviour
 					else if (!this.PantiesX.activeInHierarchy)
 					{
 						this.StudentManager.CommunalLocker.RivalPhone.LewdPhotos = true;
-						Globals.SetSchemeStage(4, 3);
+						SchemeGlobals.SetSchemeStage(4, 3);
 						this.Schemes.UpdateInstructions();
 						this.ResumeGameplay();
 					}
@@ -341,7 +373,7 @@ public class ShutterScript : MonoBehaviour
 					if (!this.InfoX.activeInHierarchy)
 					{
 						this.PauseScreen.Sideways = true;
-						Globals.SetStudentPhotographed(this.Student.StudentID, true);
+						StudentGlobals.SetStudentPhotographed(this.Student.StudentID, true);
 						this.ID = 0;
 						while (this.ID < this.Student.Outlines.Length)
 						{
@@ -370,7 +402,8 @@ public class ShutterScript : MonoBehaviour
 		}
 		else
 		{
-			this.ErrorWindow.transform.localScale = Vector3.Lerp(this.ErrorWindow.transform.localScale, new Vector3(1f, 1f, 1f), 0.166666672f);
+			float t = Time.unscaledDeltaTime * 10f;
+			this.ErrorWindow.transform.localScale = Vector3.Lerp(this.ErrorWindow.transform.localScale, new Vector3(1f, 1f, 1f), t);
 			if (Input.GetButtonDown("A"))
 			{
 				this.ResumeGameplay();
@@ -440,9 +473,9 @@ public class ShutterScript : MonoBehaviour
 			if (this.hit.collider.gameObject.name == "Kitten")
 			{
 				this.KittenShot = true;
-				if (!Globals.GetTopicDiscovered(20))
+				if (!ConversationGlobals.GetTopicDiscovered(20))
 				{
-					Globals.SetTopicDiscovered(20, true);
+					ConversationGlobals.SetTopicDiscovered(20, true);
 					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 				}
 			}
@@ -489,9 +522,9 @@ public class ShutterScript : MonoBehaviour
 		{
 			if (this.Student != null)
 			{
-				if (!Globals.GetStudentPantyShot(this.Student.Name))
+				if (!PlayerGlobals.GetStudentPantyShot(this.Student.Name))
 				{
-					Globals.SetStudentPantyShot(this.Student.Name, true);
+					PlayerGlobals.SetStudentPantyShot(this.Student.Name, true);
 					if (this.Student.Nemesis)
 					{
 						text = "Wait...I recognize those panties! This person is extremely dangerous! Avoid her at all costs!";
@@ -499,12 +532,12 @@ public class ShutterScript : MonoBehaviour
 					else if (this.Student.StudentID != 32)
 					{
 						text = "Excellent! Now I have a picture of " + this.Student.Name + "'s panties. I owe you a favor for this one.";
-						Globals.PantyShots++;
+						PlayerGlobals.PantyShots++;
 					}
 					else
 					{
 						text = "A high value target! " + this.Student.Name + "'s panties were in high demand. I owe you a big favor for this one.";
-						Globals.PantyShots += 5;
+						PlayerGlobals.PantyShots += 5;
 					}
 					num = 5;
 				}
@@ -532,22 +565,22 @@ public class ShutterScript : MonoBehaviour
 		}
 		else if (!this.SenpaiX.activeInHierarchy)
 		{
-			if (Globals.SenpaiShots == 0)
+			if (PlayerGlobals.SenpaiShots == 0)
 			{
 				text = "I don't need any pictures of your Senpai.";
 				num = 2;
 			}
-			else if (Globals.SenpaiShots == 1)
+			else if (PlayerGlobals.SenpaiShots == 1)
 			{
 				text = "I know how you feel about this person, but I have no use for these pictures.";
 				num = 4;
 			}
-			else if (Globals.SenpaiShots == 2)
+			else if (PlayerGlobals.SenpaiShots == 2)
 			{
 				text = "Okay, I get it, you love your Senpai, and you love taking pictures of your Senpai. I still don't need these shots.";
 				num = 5;
 			}
-			else if (Globals.SenpaiShots == 3)
+			else if (PlayerGlobals.SenpaiShots == 3)
 			{
 				text = "You're spamming my inbox. Cut it out.";
 				num = 2;
@@ -557,7 +590,7 @@ public class ShutterScript : MonoBehaviour
 				text = "...";
 				num = 1;
 			}
-			Globals.SenpaiShots++;
+			PlayerGlobals.SenpaiShots++;
 		}
 		else if (this.NotFace)
 		{

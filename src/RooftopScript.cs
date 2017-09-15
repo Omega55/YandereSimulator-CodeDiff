@@ -11,7 +11,7 @@ public class RooftopScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (Globals.RoofFence)
+		if (SchoolGlobals.RoofFence)
 		{
 			foreach (GameObject gameObject in this.DumpPoints)
 			{

@@ -272,6 +272,10 @@ public static class AnimNames
 
 	public const string FemaleSansUp = "f02_sansUp_00";
 
+	public const string FemaleSansWalk = "f02_sansWalk_00";
+
+	public const string FemaleSansRun = "f02_sansRun_00";
+
 	public const string FemaleScaredIdle = "f02_scaredIdle_00";
 
 	public const string FemaleSCP = "f02_scp_00";
@@ -303,6 +307,8 @@ public static class AnimNames
 	public const string FemaleSpring = "f02_spring_00";
 
 	public const string FemaleSpying = "f02_spying_00";
+
+	public const string FemaleSpyRecording = "f02_spyRecord_00";
 
 	public const string FemaleStab = "f02_stab_00";
 

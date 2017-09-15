@@ -23,7 +23,7 @@ public class ChallengeIconScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (Globals.LoveSick)
+		if (GameGlobals.LoveSick)
 		{
 			this.R = 1f;
 			this.G = 0f;
@@ -62,7 +62,7 @@ public class ChallengeIconScript : MonoBehaviour
 		this.IconFrame.color = new Color(this.Dark * this.R, this.Dark * this.G, this.Dark * this.B, 1f);
 		this.NameFrame.color = new Color(this.Dark * this.R, this.Dark * this.G, this.Dark * this.B, 1f);
 		this.Name.color = new Color(this.Dark * this.R, this.Dark * this.G, this.Dark * this.B, 1f);
-		if (Globals.LoveSick)
+		if (GameGlobals.LoveSick)
 		{
 			if (base.transform.position.x > -0.125f && base.transform.position.x < 0.125f)
 			{

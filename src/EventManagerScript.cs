@@ -45,7 +45,7 @@ public class EventManagerScript : MonoBehaviour
 	{
 		this.EventSubtitle.transform.localScale = Vector3.zero;
 		this.InterruptZone.SetActive(false);
-		if (Globals.Weekday == 1)
+		if (DateGlobals.Weekday == 1)
 		{
 			this.EventCheck = true;
 		}
@@ -168,15 +168,15 @@ public class EventManagerScript : MonoBehaviour
 								this.Timer = 0f;
 								if (this.EventPhase == 4)
 								{
-									if (!Globals.GetTopicDiscovered(22))
+									if (!ConversationGlobals.GetTopicDiscovered(22))
 									{
 										this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
-										Globals.SetTopicDiscovered(22, true);
+										ConversationGlobals.SetTopicDiscovered(22, true);
 									}
-									if (!Globals.GetTopicLearnedByStudent(22, 7))
+									if (!ConversationGlobals.GetTopicLearnedByStudent(22, 7))
 									{
 										this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
-										Globals.SetTopicLearnedByStudent(22, 7, true);
+										ConversationGlobals.SetTopicLearnedByStudent(22, 7, true);
 									}
 								}
 								if (this.EventPhase == this.EventSpeech.Length)
@@ -185,10 +185,10 @@ public class EventManagerScript : MonoBehaviour
 								}
 							}
 						}
-						if (this.Yandere.transform.position.y > this.EventStudent[1].transform.position.y - 1f && this.EventPhase == 7 && num < 5f && !Globals.Event1)
+						if (this.Yandere.transform.position.y > this.EventStudent[1].transform.position.y - 1f && this.EventPhase == 7 && num < 5f && !EventGlobals.Event1)
 						{
 							this.Yandere.NotificationManager.DisplayNotification(NotificationType.Info);
-							Globals.Event1 = true;
+							EventGlobals.Event1 = true;
 						}
 					}
 				}

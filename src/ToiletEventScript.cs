@@ -56,7 +56,7 @@ public class ToiletEventScript : MonoBehaviour
 	private void Start()
 	{
 		this.EventSubtitle.transform.localScale = Vector3.zero;
-		if (Globals.Weekday == this.EventDay)
+		if (DateGlobals.Weekday == this.EventDay)
 		{
 			this.EventCheck = true;
 		}

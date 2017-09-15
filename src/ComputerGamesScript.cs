@@ -241,27 +241,27 @@ public class ComputerGamesScript : MonoBehaviour
 		}
 		else if (this.GameID == 3)
 		{
-			Globals.SeductionBonus = 1;
+			PlayerGlobals.SeductionBonus = 1;
 		}
 		else if (this.GameID == 4)
 		{
-			Globals.NumbnessBonus = 1;
+			PlayerGlobals.NumbnessBonus = 1;
 		}
 		else if (this.GameID == 5)
 		{
-			Globals.SocialBonus = 1;
+			PlayerGlobals.SocialBonus = 1;
 		}
 		else if (this.GameID == 6)
 		{
-			Globals.StealthBonus = 1;
+			PlayerGlobals.StealthBonus = 1;
 		}
 		else if (this.GameID == 7)
 		{
-			Globals.SpeedBonus = 1;
+			PlayerGlobals.SpeedBonus = 1;
 		}
 		else if (this.GameID == 8)
 		{
-			Globals.EnlightenmentBonus = 1;
+			PlayerGlobals.EnlightenmentBonus = 1;
 		}
 		if (this.Poison != null)
 		{
@@ -298,27 +298,27 @@ public class ComputerGamesScript : MonoBehaviour
 		}
 		else if (this.GameID == 3)
 		{
-			Globals.SeductionBonus = 0;
+			PlayerGlobals.SeductionBonus = 0;
 		}
 		else if (this.GameID == 4)
 		{
-			Globals.NumbnessBonus = 0;
+			PlayerGlobals.NumbnessBonus = 0;
 		}
 		else if (this.GameID == 5)
 		{
-			Globals.SocialBonus = 0;
+			PlayerGlobals.SocialBonus = 0;
 		}
 		else if (this.GameID == 6)
 		{
-			Globals.StealthBonus = 0;
+			PlayerGlobals.StealthBonus = 0;
 		}
 		else if (this.GameID == 7)
 		{
-			Globals.SpeedBonus = 0;
+			PlayerGlobals.SpeedBonus = 0;
 		}
 		else if (this.GameID == 8)
 		{
-			Globals.EnlightenmentBonus = 0;
+			PlayerGlobals.EnlightenmentBonus = 0;
 		}
 		if (this.Poison != null)
 		{
@@ -335,12 +335,12 @@ public class ComputerGamesScript : MonoBehaviour
 		ClassGlobals.LanguageBonus = 0;
 		ClassGlobals.PsychologyBonus = 0;
 		ClassGlobals.PhysicalBonus = 0;
-		Globals.SeductionBonus = 0;
-		Globals.NumbnessBonus = 0;
-		Globals.SocialBonus = 0;
-		Globals.StealthBonus = 0;
-		Globals.SpeedBonus = 0;
-		Globals.EnlightenmentBonus = 0;
+		PlayerGlobals.SeductionBonus = 0;
+		PlayerGlobals.NumbnessBonus = 0;
+		PlayerGlobals.SocialBonus = 0;
+		PlayerGlobals.StealthBonus = 0;
+		PlayerGlobals.SpeedBonus = 0;
+		PlayerGlobals.EnlightenmentBonus = 0;
 		if (this.Poison != null)
 		{
 			this.Poison.Start();

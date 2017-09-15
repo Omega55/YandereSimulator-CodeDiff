@@ -164,7 +164,7 @@ public class PortalScript : MonoBehaviour
 					this.PromptBar.Label[5].text = "Allocate";
 					this.PromptBar.UpdateButtons();
 					this.PromptBar.Show = true;
-					this.Class.StudyPoints = ((Globals.PantiesEquipped != 11) ? 5 : 10);
+					this.Class.StudyPoints = ((PlayerGlobals.PantiesEquipped != 11) ? 5 : 10);
 					this.Class.StudyPoints -= this.Late;
 					this.Class.UpdateLabel();
 					this.Class.gameObject.SetActive(true);
@@ -220,7 +220,7 @@ public class PortalScript : MonoBehaviour
 			if (base.transform.position.z < 0f)
 			{
 				this.StudentManager.RemovePapersFromDesks();
-				if (!Globals.MissionMode)
+				if (!MissionModeGlobals.MissionMode)
 				{
 					base.transform.position = new Vector3(0f, 1f, -75f);
 					this.Prompt.Label[0].text = "     Go Home";

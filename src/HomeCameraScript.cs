@@ -95,7 +95,7 @@ public class HomeCameraScript : MonoBehaviour
 		this.Button.color = new Color(this.Button.color.r, this.Button.color.g, this.Button.color.b, 0f);
 		this.Focus.position = this.Target.position;
 		base.transform.position = this.Destination.position;
-		if (Globals.Night)
+		if (HomeGlobals.Night)
 		{
 			this.CeilingLight.SetActive(true);
 			this.SenpaiLight.SetActive(true);
@@ -117,7 +117,7 @@ public class HomeCameraScript : MonoBehaviour
 			this.Triggers[5].Disable();
 			this.Triggers[9].Disable();
 		}
-		if (Globals.KidnapVictim == 0)
+		if (SchoolGlobals.KidnapVictim == 0)
 		{
 			this.RopeGroup.SetActive(false);
 			this.Tripod.SetActive(false);
@@ -126,15 +126,15 @@ public class HomeCameraScript : MonoBehaviour
 		}
 		else
 		{
-			int kidnapVictim = Globals.KidnapVictim;
-			if (Globals.GetStudentArrested(kidnapVictim) || Globals.GetStudentDead(kidnapVictim))
+			int kidnapVictim = SchoolGlobals.KidnapVictim;
+			if (StudentGlobals.GetStudentArrested(kidnapVictim) || StudentGlobals.GetStudentDead(kidnapVictim))
 			{
 				this.RopeGroup.SetActive(false);
 				this.Victim.SetActive(false);
 				this.Triggers[10].Disable();
 			}
 		}
-		if (Globals.LoveSick)
+		if (GameGlobals.LoveSick)
 		{
 			this.LoveSickColorSwap();
 		}
@@ -244,11 +244,11 @@ public class HomeCameraScript : MonoBehaviour
 		}
 		if (Input.GetKeyDown("y"))
 		{
-			Globals.SetTaskStatus(14, 1);
+			TaskGlobals.SetTaskStatus(14, 1);
 		}
 		if (Input.GetKeyDown("`"))
 		{
-			Globals.Night = !Globals.Night;
+			HomeGlobals.Night = !HomeGlobals.Night;
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		if (Input.GetKeyDown("="))
@@ -263,7 +263,7 @@ public class HomeCameraScript : MonoBehaviour
 
 	public void PlayMusic()
 	{
-		if (!Globals.DraculaDefeated)
+		if (!YanvaniaGlobals.DraculaDefeated)
 		{
 			if (!this.BasementJukebox.isPlaying)
 			{

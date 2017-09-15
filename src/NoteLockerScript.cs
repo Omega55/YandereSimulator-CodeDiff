@@ -53,7 +53,7 @@ public class NoteLockerScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (Globals.GetStudentDead(this.LockerOwner))
+		if (StudentGlobals.GetStudentDead(this.LockerOwner))
 		{
 			base.gameObject.SetActive(false);
 		}

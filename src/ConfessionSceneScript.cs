@@ -154,7 +154,7 @@ public class ConfessionSceneScript : MonoBehaviour
 				this.Timer += Time.deltaTime;
 				if (this.Timer > 1f)
 				{
-					Globals.SuitorProgress = 2;
+					DatingGlobals.SuitorProgress = 2;
 					this.Suitor.Character.transform.localScale = new Vector3(0.94f, 0.94f, 0.94f);
 					this.PromptBar.ClearButtons();
 					this.PromptBar.UpdateButtons();

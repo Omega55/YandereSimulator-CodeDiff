@@ -42,13 +42,13 @@ public class HomeDarknessScript : MonoBehaviour
 					}
 					else if (this.HomeCamera.ID == 10)
 					{
-						Globals.SetStudentKidnapped(Globals.KidnapVictim, false);
-						Globals.SetStudentSlave(Globals.KidnapVictim, true);
+						StudentGlobals.SetStudentKidnapped(SchoolGlobals.KidnapVictim, false);
+						StudentGlobals.SetStudentSlave(SchoolGlobals.KidnapVictim, true);
 						SceneManager.LoadScene("LoadingScene");
 					}
 					else if (this.HomeCamera.ID == 11)
 					{
-						Globals.KidnapConversation = true;
+						EventGlobals.KidnapConversation = true;
 						SceneManager.LoadScene("PhoneScene");
 					}
 					else if (this.HomeExit.ID == 1)
@@ -85,7 +85,7 @@ public class HomeDarknessScript : MonoBehaviour
 								this.HomeCamera.Target = this.HomeCamera.Targets[0];
 								this.HomeCamera.Focus.position = this.HomeCamera.Target.position;
 								this.BasementLabel.text = "Basement";
-								if (Globals.Night)
+								if (HomeGlobals.Night)
 								{
 									this.HomeCamera.DayLight.SetActive(false);
 								}

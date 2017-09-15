@@ -48,11 +48,11 @@ public class ClubWindowScript : MonoBehaviour
 	private void Start()
 	{
 		this.Window.SetActive(false);
-		if (Globals.SchoolAtmosphereType == SchoolAtmosphereType.Low)
+		if (SchoolAtmosphere.Type == SchoolAtmosphereType.Low)
 		{
 			this.ActivityDescs[7] = this.LowAtmosphereDesc;
 		}
-		else if (Globals.SchoolAtmosphereType == SchoolAtmosphereType.Medium)
+		else if (SchoolAtmosphere.Type == SchoolAtmosphereType.Medium)
 		{
 			this.ActivityDescs[7] = this.MedAtmosphereDesc;
 		}
