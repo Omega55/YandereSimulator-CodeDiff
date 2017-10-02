@@ -377,7 +377,7 @@ public class YandereKunScript : MonoBehaviour
 			this.KunRightHandThumb1.localEulerAngles = this.ChanRightHandThumb1.localEulerAngles;
 			this.KunRightHandThumb2.localEulerAngles = this.ChanRightHandThumb2.localEulerAngles;
 			this.KunRightHandThumb3.localEulerAngles = this.ChanRightHandThumb3.localEulerAngles;
-			if (Input.GetKeyDown("space"))
+			if (Input.GetKeyDown(KeyCode.Space))
 			{
 				if (this.ID > -1)
 				{

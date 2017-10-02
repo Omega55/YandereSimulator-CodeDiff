@@ -23,7 +23,7 @@ public class PassTimeScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (this.InputManager.TappedLeft || Input.GetKeyDown("a") || Input.GetKeyDown("left"))
+		if (this.InputManager.TappedLeft || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
 		{
 			this.Selected--;
 			if (this.Selected < 1)
@@ -32,7 +32,7 @@ public class PassTimeScript : MonoBehaviour
 			}
 			this.UpdateHighlightPosition();
 		}
-		if (this.InputManager.TappedRight || Input.GetKeyDown("d") || Input.GetKeyDown("right"))
+		if (this.InputManager.TappedRight || Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
 		{
 			this.Selected++;
 			if (this.Selected > 3)
@@ -41,11 +41,11 @@ public class PassTimeScript : MonoBehaviour
 			}
 			this.UpdateHighlightPosition();
 		}
-		if (this.InputManager.TappedUp || Input.GetKeyDown("w") || Input.GetKeyDown("up"))
+		if (this.InputManager.TappedUp || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
 		{
 			this.UpdateTime(1);
 		}
-		if (this.InputManager.TappedDown || Input.GetKeyDown("s") || Input.GetKeyDown("down"))
+		if (this.InputManager.TappedDown || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
 		{
 			this.UpdateTime(-1);
 		}

@@ -3,15 +3,9 @@
 [Serializable]
 public class ConversationSaveData
 {
-	public IntHashSet topicDiscovered;
+	public IntHashSet topicDiscovered = new IntHashSet();
 
-	public IntAndIntPairHashSet topicLearnedByStudent;
-
-	public ConversationSaveData()
-	{
-		this.topicDiscovered = new IntHashSet();
-		this.topicLearnedByStudent = new IntAndIntPairHashSet();
-	}
+	public IntAndIntPairHashSet topicLearnedByStudent = new IntAndIntPairHashSet();
 
 	public static ConversationSaveData ReadFromGlobals()
 	{

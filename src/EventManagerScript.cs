@@ -45,7 +45,7 @@ public class EventManagerScript : MonoBehaviour
 	{
 		this.EventSubtitle.transform.localScale = Vector3.zero;
 		this.InterruptZone.SetActive(false);
-		if (DateGlobals.Weekday == 1)
+		if (DateGlobals.Weekday == DayOfWeek.Monday)
 		{
 			this.EventCheck = true;
 		}

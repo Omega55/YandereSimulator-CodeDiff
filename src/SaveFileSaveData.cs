@@ -5,11 +5,6 @@ public class SaveFileSaveData
 {
 	public int currentSaveFile;
 
-	public SaveFileSaveData()
-	{
-		this.currentSaveFile = 0;
-	}
-
 	public static SaveFileSaveData ReadFromGlobals()
 	{
 		return new SaveFileSaveData

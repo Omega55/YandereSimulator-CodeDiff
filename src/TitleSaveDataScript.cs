@@ -31,26 +31,5 @@ public class TitleSaveDataScript : MonoBehaviour
 
 	public void Start()
 	{
-		if (SaveFile.SaveFileExists(this.ID))
-		{
-			this.EmptyFile.SetActive(false);
-			this.Data.SetActive(true);
-			this.saveFile = SaveFile.Load(this.ID);
-			SaveFileData data = this.saveFile.Data;
-			this.Kills.text = "Kills: " + data.playerData.kills;
-			this.Mood.text = "Atm.: " + data.schoolData.schoolAtmosphere;
-			this.Alerts.text = "Alerts: " + data.playerData.alerts;
-			this.Week.text = "Week: " + data.dateData.week;
-			this.Day.text = "Day: " + data.dateData.weekday;
-			this.Rival.text = "Rival: Osana";
-			this.Rep.text = "Rep: " + data.playerData.reputation;
-			this.Club.text = "Club: " + data.clubData.club;
-			this.Friends.text = "Friends: 0";
-		}
-		else
-		{
-			this.EmptyFile.SetActive(true);
-			this.Data.SetActive(false);
-		}
 	}
 }

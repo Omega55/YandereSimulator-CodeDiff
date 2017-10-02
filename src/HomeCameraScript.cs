@@ -242,20 +242,20 @@ public class HomeCameraScript : MonoBehaviour
 			this.BasementJukebox.volume = Mathf.MoveTowards(this.BasementJukebox.volume, 1f, Time.deltaTime);
 			this.RoomJukebox.volume = Mathf.MoveTowards(this.RoomJukebox.volume, 0f, Time.deltaTime);
 		}
-		if (Input.GetKeyDown("y"))
+		if (Input.GetKeyDown(KeyCode.Y))
 		{
 			TaskGlobals.SetTaskStatus(14, 1);
 		}
-		if (Input.GetKeyDown("`"))
+		if (Input.GetKeyDown(KeyCode.BackQuote))
 		{
 			HomeGlobals.Night = !HomeGlobals.Night;
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
-		if (Input.GetKeyDown("="))
+		if (Input.GetKeyDown(KeyCode.Equals))
 		{
 			Time.timeScale += 1f;
 		}
-		if (Input.GetKeyDown("-") && Time.timeScale > 1f)
+		if (Input.GetKeyDown(KeyCode.Minus) && Time.timeScale > 1f)
 		{
 			Time.timeScale -= 1f;
 		}

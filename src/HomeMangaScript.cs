@@ -155,7 +155,7 @@ public class HomeMangaScript : MonoBehaviour
 					this.MangaGroup.SetActive(false);
 					this.AreYouSure.SetActive(true);
 				}
-				if (Input.GetKeyDown("s"))
+				if (Input.GetKeyDown(KeyCode.S))
 				{
 					PlayerGlobals.Seduction++;
 					PlayerGlobals.Numbness++;
@@ -176,7 +176,7 @@ public class HomeMangaScript : MonoBehaviour
 					this.HomeYandere.CanMove = true;
 					this.HomeWindow.Show = false;
 				}
-				if (Input.GetKeyDown("space"))
+				if (Input.GetKeyDown(KeyCode.Space))
 				{
 					for (int i = 0; i < this.TotalManga; i++)
 					{

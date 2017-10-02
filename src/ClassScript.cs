@@ -94,7 +94,7 @@ public class ClassScript : MonoBehaviour
 				{
 					this.GivePoints();
 				}
-				if (Input.GetKeyDown("p"))
+				if (Input.GetKeyDown(KeyCode.P))
 				{
 					this.MaxPhysical();
 				}

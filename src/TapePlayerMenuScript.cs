@@ -246,7 +246,7 @@ public class TapePlayerMenuScript : MonoBehaviour
 			}
 			if (this.Phase == 2)
 			{
-				if (this.InputManager.DPadRight || Input.GetKey("right"))
+				if (this.InputManager.DPadRight || Input.GetKey(KeyCode.RightArrow))
 				{
 					this.ResumeTime += 1.66666663f;
 					component.time += 1.66666663f;
@@ -256,7 +256,7 @@ public class TapePlayerMenuScript : MonoBehaviour
 				{
 					this.TapePlayer.FastForward = false;
 				}
-				if (this.InputManager.DPadLeft || Input.GetKey("left"))
+				if (this.InputManager.DPadLeft || Input.GetKey(KeyCode.LeftArrow))
 				{
 					this.ResumeTime -= 1.66666663f;
 					component.time -= 1.66666663f;

@@ -65,7 +65,7 @@ public class WeaponManagerScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown("z"))
+		if (Input.GetKeyDown(KeyCode.Z))
 		{
 			this.CheckWeapons();
 			for (int i = 0; i < this.Victims.Length; i++)

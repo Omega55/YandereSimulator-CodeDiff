@@ -23,6 +23,34 @@ public static class GlobalsHelper
 		PlayerPrefs.SetInt(key, (int)((object)value));
 	}
 
+	public static Vector2 GetVector2(string key)
+	{
+		float @float = PlayerPrefs.GetFloat(key + "_X");
+		float float2 = PlayerPrefs.GetFloat(key + "_Y");
+		return new Vector2(@float, float2);
+	}
+
+	public static void SetVector2(string key, Vector2 value)
+	{
+		PlayerPrefs.SetFloat(key + "_X", value.x);
+		PlayerPrefs.SetFloat(key + "_Y", value.y);
+	}
+
+	public static void DeleteVector2(string key)
+	{
+		Globals.Delete(key + "_X");
+		Globals.Delete(key + "_Y");
+	}
+
+	public static void DeleteVector2Collection(string key, int[] usedKeys)
+	{
+		foreach (int num in usedKeys)
+		{
+			GlobalsHelper.DeleteVector2(key + num.ToString());
+		}
+		KeysHelper.Delete(key);
+	}
+
 	public static Vector3 GetVector3(string key)
 	{
 		float @float = PlayerPrefs.GetFloat(key + "_X");

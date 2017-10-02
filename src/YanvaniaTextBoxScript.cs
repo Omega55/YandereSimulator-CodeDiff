@@ -59,7 +59,6 @@ public class YanvaniaTextBoxScript : MonoBehaviour
 
 	private void Start()
 	{
-		Application.targetFrameRate = 60;
 		this.Portrait.transform.localScale = Vector3.zero;
 		this.BloodWipe.transform.localScale = new Vector3(0f, this.BloodWipe.transform.localScale.y, this.BloodWipe.transform.localScale.z);
 		this.SpeakerLabel.text = string.Empty;
@@ -238,7 +237,7 @@ public class YanvaniaTextBoxScript : MonoBehaviour
 					this.Leave = true;
 				}
 			}
-			if (Input.GetKeyDown("3"))
+			if (Input.GetKeyDown(KeyCode.Alpha3))
 			{
 				if (this.NewLabel != null)
 				{

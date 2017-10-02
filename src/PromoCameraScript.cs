@@ -35,7 +35,7 @@ public class PromoCameraScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown("space") && this.ID < 3)
+		if (Input.GetKeyDown(KeyCode.Space) && this.ID < 3)
 		{
 			this.ID++;
 			this.UpdatePosition();

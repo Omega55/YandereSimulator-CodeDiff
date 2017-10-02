@@ -126,7 +126,7 @@ public class EndOfDayScript : MonoBehaviour
 	{
 		if (this.PoliceArrived)
 		{
-			if (Input.GetKeyDown("backspace"))
+			if (Input.GetKeyDown(KeyCode.Backspace))
 			{
 				this.Finish();
 			}
@@ -349,6 +349,8 @@ public class EndOfDayScript : MonoBehaviour
 			else if (this.Phase == 6)
 			{
 				this.Label.text = "The police discover " + this.JSON.Students[this.TranqCase.VictimID].Name + " inside of a musical instrument case. However, she is unable to recall how she got inside of the case. The police are unable to determine what happened.";
+				StudentGlobals.SetStudentMissing(this.TranqCase.VictimID, false);
+				this.TranqCase.VictimID = 0;
 				this.TranqCase.Occupied = false;
 				this.Phase++;
 			}

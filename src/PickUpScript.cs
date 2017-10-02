@@ -19,6 +19,8 @@ public class PickUpScript : MonoBehaviour
 
 	public PromptScript Prompt;
 
+	public ClockScript Clock;
+
 	public Rigidbody MyRigidbody;
 
 	public Collider MyCollider;
@@ -80,6 +82,7 @@ public class PickUpScript : MonoBehaviour
 	private void Start()
 	{
 		this.Yandere = GameObject.Find("YandereChan").GetComponent<YandereScript>();
+		this.Clock = GameObject.Find("Clock").GetComponent<ClockScript>();
 		if (!this.CanCollide)
 		{
 			Physics.IgnoreCollision(this.Yandere.GetComponent<Collider>(), this.MyCollider);
@@ -91,6 +94,14 @@ public class PickUpScript : MonoBehaviour
 
 	private void LateUpdate()
 	{
+		if (this.Clock.Period == 5)
+		{
+			this.Suspicious = false;
+		}
+		else
+		{
+			this.Suspicious = true;
+		}
 		if (this.Prompt.Circle[3].fillAmount == 0f)
 		{
 			if (this.Weight)

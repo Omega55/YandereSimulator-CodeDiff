@@ -277,22 +277,22 @@ public class PauseScreenScript : MonoBehaviour
 				}
 				if (this.MainMenu.activeInHierarchy && !this.Quitting)
 				{
-					if (this.InputManager.TappedUp || Input.GetKeyDown("w") || Input.GetKeyDown("up"))
+					if (this.InputManager.TappedUp || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
 					{
 						this.Row--;
 						this.UpdateSelection();
 					}
-					if (this.InputManager.TappedDown || Input.GetKeyDown("s") || Input.GetKeyDown("down"))
+					if (this.InputManager.TappedDown || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
 					{
 						this.Row++;
 						this.UpdateSelection();
 					}
-					if (this.InputManager.TappedRight || Input.GetKeyDown("d") || Input.GetKeyDown("right"))
+					if (this.InputManager.TappedRight || Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
 					{
 						this.Column++;
 						this.UpdateSelection();
 					}
-					if (this.InputManager.TappedLeft || Input.GetKeyDown("a") || Input.GetKeyDown("left"))
+					if (this.InputManager.TappedLeft || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
 					{
 						this.Column--;
 						this.UpdateSelection();

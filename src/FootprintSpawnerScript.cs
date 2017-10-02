@@ -13,6 +13,8 @@ public class FootprintSpawnerScript : MonoBehaviour
 
 	public Collider GardenArea;
 
+	public Collider PoolStairs;
+
 	public Collider NEStairs;
 
 	public Collider NWStairs;
@@ -40,6 +42,7 @@ public class FootprintSpawnerScript : MonoBehaviour
 	private void Start()
 	{
 		this.GardenArea = GameObject.Find("GardenArea").GetComponent<Collider>();
+		this.PoolStairs = GameObject.Find("PoolStairs").GetComponent<Collider>();
 		this.NEStairs = GameObject.Find("NEStairs").GetComponent<Collider>();
 		this.NWStairs = GameObject.Find("NWStairs").GetComponent<Collider>();
 		this.SEStairs = GameObject.Find("SEStairs").GetComponent<Collider>();
@@ -60,7 +63,7 @@ public class FootprintSpawnerScript : MonoBehaviour
 				base.transform.position.y.ToString()
 			}));
 		}
-		this.CanSpawn = (!this.GardenArea.bounds.Contains(base.transform.position) && !this.NEStairs.bounds.Contains(base.transform.position) && !this.NWStairs.bounds.Contains(base.transform.position) && !this.SEStairs.bounds.Contains(base.transform.position) && !this.SWStairs.bounds.Contains(base.transform.position));
+		this.CanSpawn = (!this.GardenArea.bounds.Contains(base.transform.position) && !this.PoolStairs.bounds.Contains(base.transform.position) && !this.NEStairs.bounds.Contains(base.transform.position) && !this.NWStairs.bounds.Contains(base.transform.position) && !this.SEStairs.bounds.Contains(base.transform.position) && !this.SWStairs.bounds.Contains(base.transform.position));
 		if (!this.FootUp)
 		{
 			if (base.transform.position.y > this.Yandere.transform.position.y + this.UpThreshold)

@@ -185,7 +185,7 @@ public class AttackManagerScript : MonoBehaviour
 				}
 				this.Yandere.TargetStudent.DeathCause = equippedWeapon.WeaponID;
 				this.Yandere.TargetStudent.BecomeRagdoll();
-				this.Yandere.Sanity -= 20f * this.Yandere.Numbness;
+				this.Yandere.Sanity -= ((PlayerGlobals.PantiesEquipped != 10) ? 20f : 10f) * this.Yandere.Numbness;
 				this.Yandere.UpdateSanity();
 				this.Yandere.Attacking = false;
 				this.Yandere.FollowHips = false;

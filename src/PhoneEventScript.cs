@@ -39,7 +39,7 @@ public class PhoneEventScript : MonoBehaviour
 
 	public int EventPhase = 1;
 
-	public int EventDay = 1;
+	public DayOfWeek EventDay = DayOfWeek.Monday;
 
 	public float CurrentClipLength;
 
@@ -53,6 +53,10 @@ public class PhoneEventScript : MonoBehaviour
 		if (DateGlobals.Weekday == this.EventDay)
 		{
 			this.EventCheck = true;
+		}
+		if (HomeGlobals.LateForSchool || this.StudentManager.YandereLate)
+		{
+			base.enabled = false;
 		}
 	}
 

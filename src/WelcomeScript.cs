@@ -1,33 +1,41 @@
 ﻿using System;
-using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class WelcomeScript : MonoBehaviour
 {
-	public JsonScript JSON;
+	[SerializeField]
+	private JsonScript JSON;
 
-	public GameObject WelcomePanel;
+	[SerializeField]
+	private GameObject WelcomePanel;
 
-	public GameObject WarningPanel;
+	[SerializeField]
+	private GameObject WarningPanel;
 
-	public UILabel FlashingLabel;
+	[SerializeField]
+	private UILabel FlashingLabel;
 
-	public UILabel BeginLabel;
+	[SerializeField]
+	private UILabel BeginLabel;
 
-	public UISprite Darkness;
+	[SerializeField]
+	private UISprite Darkness;
 
-	public AudioSource Music;
+	[SerializeField]
+	private AudioSource Music;
 
-	public bool Continue;
+	[SerializeField]
+	private bool Continue;
 
-	public bool FlashRed;
+	[SerializeField]
+	private bool FlashRed;
 
-	public bool InEditor;
+	[SerializeField]
+	private float VersionNumber;
 
-	public float VersionNumber;
-
-	public float Timer;
+	[SerializeField]
+	private float Timer;
 
 	private void Start()
 	{
@@ -35,16 +43,12 @@ public class WelcomeScript : MonoBehaviour
 		this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 2f);
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
-		if (ApplicationGlobals.VersionNumber < this.VersionNumber)
+		if (ApplicationGlobals.VersionNumber != this.VersionNumber)
 		{
 			Globals.DeleteAll();
 			ApplicationGlobals.VersionNumber = this.VersionNumber;
 		}
-		if (File.Exists(Application.streamingAssetsPath + "/Fun.txt"))
-		{
-			string text = File.ReadAllText(Application.streamingAssetsPath + "/Fun.txt");
-		}
-		if (!this.InEditor && this.JSON.Students[33].Name != "Reserved")
+		if (this.JSON.Students[33].Name != "Reserved")
 		{
 			if (Application.CanStreamedLevelBeLoaded("FunScene"))
 			{
@@ -63,11 +67,11 @@ public class WelcomeScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown("s"))
+		if (Input.GetKeyDown(KeyCode.S))
 		{
 			SceneManager.LoadScene("SchoolScene");
 		}
-		if (Input.GetKeyDown("y"))
+		if (Input.GetKeyDown(KeyCode.Y))
 		{
 			SceneManager.LoadScene("YanvaniaScene");
 		}
@@ -76,7 +80,7 @@ public class WelcomeScript : MonoBehaviour
 			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a - Time.deltaTime);
 			if (this.Darkness.color.a <= 0f)
 			{
-				if (Input.GetKeyDown("w"))
+				if (Input.GetKeyDown(KeyCode.W))
 				{
 				}
 				if (Input.anyKeyDown)

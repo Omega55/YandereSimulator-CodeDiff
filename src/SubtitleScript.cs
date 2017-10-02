@@ -25,6 +25,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] LewdReactions;
 
+	public string[] SuspiciousReactions;
+
 	public string[] MurderReactions;
 
 	public string[] CowardMurderReactions;
@@ -104,6 +106,8 @@ public class SubtitleScript : MonoBehaviour
 	public string[] InsanityApologies;
 
 	public string[] LewdApologies;
+
+	public string[] SuspiciousApologies;
 
 	public string[] EventApologies;
 
@@ -765,6 +769,10 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.Label.text = this.GetRandomString(this.LewdReactions);
 		}
+		else if (ReactionType == "Suspicious Reaction")
+		{
+			this.Label.text = this.GetRandomString(this.SuspiciousReactions);
+		}
 		else if (ReactionType == "Prank Reaction")
 		{
 			this.Label.text = this.GetRandomString(this.PrankReactions);
@@ -1019,6 +1027,10 @@ public class SubtitleScript : MonoBehaviour
 		else if (ReactionType == "Lewd Apology")
 		{
 			this.Label.text = this.GetRandomString(this.LewdApologies);
+		}
+		else if (ReactionType == "Suspicious Apology")
+		{
+			this.Label.text = this.GetRandomString(this.SuspiciousApologies);
 		}
 		else if (ReactionType == "Event Apology")
 		{

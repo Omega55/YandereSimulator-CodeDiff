@@ -21,5 +21,7 @@ public enum StudentActionType
 	Mourn,
 	Cuddle,
 	Teaching,
-	SearchPatrol
+	SearchPatrol,
+	Wait,
+	Clean
 }

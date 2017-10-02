@@ -10,7 +10,7 @@ public class HomeZoomScript : MonoBehaviour
 	private void Update()
 	{
 		AudioSource component = base.GetComponent<AudioSource>();
-		if (Input.GetKeyDown("z"))
+		if (Input.GetKeyDown(KeyCode.Z))
 		{
 			if (!this.Zoom)
 			{

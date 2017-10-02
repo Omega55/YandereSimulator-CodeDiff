@@ -8,26 +8,15 @@ public class SchemeSaveData
 
 	public bool darkSecret;
 
-	public IntAndIntDictionary schemePreviousStage;
+	public IntAndIntDictionary schemePreviousStage = new IntAndIntDictionary();
 
-	public IntAndIntDictionary schemeStage;
+	public IntAndIntDictionary schemeStage = new IntAndIntDictionary();
 
-	public IntHashSet schemeStatus;
+	public IntHashSet schemeStatus = new IntHashSet();
 
-	public IntHashSet schemeUnlocked;
+	public IntHashSet schemeUnlocked = new IntHashSet();
 
-	public IntHashSet servicePurchased;
-
-	public SchemeSaveData()
-	{
-		this.currentScheme = 0;
-		this.darkSecret = false;
-		this.schemePreviousStage = new IntAndIntDictionary();
-		this.schemeStage = new IntAndIntDictionary();
-		this.schemeStatus = new IntHashSet();
-		this.schemeUnlocked = new IntHashSet();
-		this.servicePurchased = new IntHashSet();
-	}
+	public IntHashSet servicePurchased = new IntHashSet();
 
 	public static SchemeSaveData ReadFromGlobals()
 	{

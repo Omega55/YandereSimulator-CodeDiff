@@ -4,7 +4,7 @@ using System.Collections.Generic;
 [Serializable]
 public class MissionModeSaveData
 {
-	public IntAndIntDictionary missionCondition;
+	public IntAndIntDictionary missionCondition = new IntAndIntDictionary();
 
 	public int missionDifficulty;
 
@@ -18,22 +18,9 @@ public class MissionModeSaveData
 
 	public int missionTarget;
 
-	public string missionTargetName;
+	public string missionTargetName = string.Empty;
 
 	public int nemesisDifficulty;
-
-	public MissionModeSaveData()
-	{
-		this.missionCondition = new IntAndIntDictionary();
-		this.missionDifficulty = 0;
-		this.missionMode = false;
-		this.missionRequiredClothing = 0;
-		this.missionRequiredDisposal = 0;
-		this.missionRequiredWeapon = 0;
-		this.missionTarget = 0;
-		this.missionTargetName = string.Empty;
-		this.nemesisDifficulty = 0;
-	}
 
 	public static MissionModeSaveData ReadFromGlobals()
 	{

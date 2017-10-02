@@ -55,10 +55,10 @@ public class TitleSaveFilesScript : MonoBehaviour
 					SaveFile saveFile = new SaveFile(this.ID);
 					SaveFileData data = saveFile.Data;
 					data.playerData.kills = 0;
-					data.schoolData.schoolAtmosphere = 100f;
+					data.schoolData.schoolAtmosphere = 1f;
 					data.playerData.alerts = 0;
 					data.dateData.week = 1;
-					data.dateData.weekday = 0;
+					data.dateData.weekday = DayOfWeek.Sunday;
 					data.playerData.reputation = 0f;
 					data.clubData.club = ClubType.None;
 					saveFile.Save();

@@ -91,19 +91,21 @@ public class StudentScript : MonoBehaviour
 
 	public CharacterController MyController;
 
-	public ParticleSystem BloodFountain;
-
 	public Animation CharacterAnimation;
+
+	public Projector LiquidProjector;
+
+	public Camera VisionCone;
+
+	public ParticleSystem BloodFountain;
 
 	public ParticleSystem VomitEmitter;
 
 	public ParticleSystem SpeechLines;
 
-	public Projector LiquidProjector;
+	public ParticleSystem ChalkDust;
 
 	public ParticleSystem Hearts;
-
-	public Camera VisionCone;
 
 	public Texture OsanaPhoneTexture;
 
@@ -124,6 +126,8 @@ public class StudentScript : MonoBehaviour
 	public Transform TeacherTalkPoint;
 
 	public Transform LeftMiddleFinger;
+
+	public Transform CleaningSpot;
 
 	public Transform Distraction;
 
@@ -174,8 +178,6 @@ public class StudentScript : MonoBehaviour
 	public Transform[] Arm;
 
 	public LayerMask Mask;
-
-	public Plane[] Planes;
 
 	public StudentActionType[] Actions;
 
@@ -247,6 +249,8 @@ public class StudentScript : MonoBehaviour
 
 	public GameObject Character;
 
+	public GameObject Cigarette;
+
 	public GameObject Countdown;
 
 	public GameObject EventBook;
@@ -255,9 +259,15 @@ public class StudentScript : MonoBehaviour
 
 	public GameObject Earpiece;
 
+	public GameObject Scrubber;
+
 	public GameObject Armband;
 
+	public GameObject Lighter;
+
 	public GameObject MyPaper;
+
+	public GameObject Eraser;
 
 	public GameObject Giggle;
 
@@ -505,6 +515,8 @@ public class StudentScript : MonoBehaviour
 
 	public float BatheTimer;
 
+	public float CleanTimer;
+
 	public float RadioTimer;
 
 	public float StuckTimer;
@@ -576,6 +588,8 @@ public class StudentScript : MonoBehaviour
 	public StudentInteractionType Interaction;
 
 	public float RepRecovery;
+
+	public int CleaningRole;
 
 	public int DeathCause;
 
@@ -757,6 +771,10 @@ public class StudentScript : MonoBehaviour
 
 	public string DiscoverPhoneAnim = string.Empty;
 
+	public string WaitAnim = string.Empty;
+
+	public string[] CleanAnims;
+
 	public string[] CameraAnims;
 
 	public string[] SocialAnims;
@@ -780,6 +798,8 @@ public class StudentScript : MonoBehaviour
 	public int StudentID;
 
 	public int PatrolID;
+
+	public int CleanID;
 
 	public PersonaType Persona;
 
@@ -889,7 +909,7 @@ public class StudentScript : MonoBehaviour
 				this.Perception = 0.5f;
 			}
 			this.Hearts.emission.enabled = false;
-			this.Paranoia = 2f - SchoolGlobals.SchoolAtmosphere * 0.01f;
+			this.Paranoia = 2f - SchoolGlobals.SchoolAtmosphere;
 			this.VisionCone.farClipPlane = ((PlayerGlobals.PantiesEquipped != 4) ? 10f : 5f) * this.Paranoia;
 			if (GameObject.Find("DetectionCamera") != null)
 			{
@@ -966,6 +986,8 @@ public class StudentScript : MonoBehaviour
 			this.SmartPhone.SetActive(false);
 			this.OccultBook.SetActive(false);
 			this.EventBook.SetActive(false);
+			this.Scrubber.SetActive(false);
+			this.Eraser.SetActive(false);
 			this.Bento.SetActive(false);
 			this.Pen.SetActive(false);
 			this.SpeechLines.Stop();
@@ -976,6 +998,8 @@ public class StudentScript : MonoBehaviour
 			}
 			if (!this.Male)
 			{
+				this.Cigarette.SetActive(false);
+				this.Lighter.SetActive(false);
 				this.AnimatedBook.SetActive(false);
 				this.CharacterAnimation[this.StripAnim].speed = 1.5f;
 				this.CharacterAnimation[this.GameAnim].speed = 2f;
@@ -1070,6 +1094,8 @@ public class StudentScript : MonoBehaviour
 			if (this.StudentID == this.StudentManager.RivalID)
 			{
 				this.RivalPrefix = "Rival ";
+				ScheduleBlock scheduleBlock4 = this.ScheduleBlocks[6];
+				scheduleBlock4.time = 17f;
 			}
 			if (this.Club == ClubType.None)
 			{
@@ -1094,9 +1120,9 @@ public class StudentScript : MonoBehaviour
 				{
 					if (StudentGlobals.GetStudentDead(17) && StudentGlobals.GetStudentDead(18))
 					{
-						ScheduleBlock scheduleBlock4 = this.ScheduleBlocks[2];
-						scheduleBlock4.destination = "Club";
-						scheduleBlock4.action = "Club";
+						ScheduleBlock scheduleBlock5 = this.ScheduleBlocks[2];
+						scheduleBlock5.destination = "Club";
+						scheduleBlock5.action = "Club";
 					}
 					this.ClubAnim = this.IdleAnim;
 					this.Shy = true;
@@ -1140,6 +1166,12 @@ public class StudentScript : MonoBehaviour
 			if (this.Cosmetic.Hairstyle == 20)
 			{
 				this.IdleAnim = "f02_tsunIdle_00";
+			}
+			if (!this.Teacher && this.Name != "Random")
+			{
+				this.StudentManager.CleaningManager.GetRole(this.StudentID);
+				this.CleaningSpot = this.StudentManager.CleaningManager.Spot;
+				this.CleaningRole = this.StudentManager.CleaningManager.Role;
 			}
 			this.GetDestinations();
 			if (this.AoT)
@@ -1281,6 +1313,34 @@ public class StudentScript : MonoBehaviour
 	{
 		bool flag = this.Yandere.EbolaHair != null && this.Yandere.EbolaHair.activeInHierarchy;
 		return distance <= 1f && flag;
+	}
+
+	private bool CanSeeYandere
+	{
+		get
+		{
+			Vector3 position = this.Eyes.transform.position;
+			Vector3 vector = new Vector3(this.Yandere.transform.position.x, this.Yandere.Head.position.y, this.Yandere.transform.position.z);
+			Vector3 to = vector - position;
+			float num = Vector3.Angle(this.Head.transform.forward, to);
+			float num2 = this.VisionCone.farClipPlane * this.VisionCone.farClipPlane;
+			bool flag = num <= this.VisionCone.fieldOfView * 0.5f;
+			bool flag2 = to.sqrMagnitude <= num2;
+			if (flag && flag2)
+			{
+				RaycastHit raycastHit;
+				bool flag3 = Physics.Linecast(position, vector, out raycastHit);
+				if (flag3)
+				{
+					bool flag4 = raycastHit.collider.gameObject == this.Yandere.gameObject;
+					if (flag4)
+					{
+						return true;
+					}
+				}
+			}
+			return false;
+		}
 	}
 
 	private void Update()
@@ -1447,10 +1507,18 @@ public class StudentScript : MonoBehaviour
 				}
 				this.CurrentDestination = this.Destinations[this.Phase];
 				this.Pathfinding.target = this.Destinations[this.Phase];
-				if (this.StudentID == 7 && this.Actions[this.Phase] == StudentActionType.ChangeShoes && this.StudentManager.DatingMinigame.Affection == 100f)
+				if (((this.StudentID == 7 && this.StudentManager.DatingMinigame.Affection == 100f) || (this.StudentID == this.StudentManager.RivalID && DateGlobals.Weekday == DayOfWeek.Friday)) && this.Actions[this.Phase] == StudentActionType.ChangeShoes)
 				{
-					this.CurrentDestination = this.StudentManager.SuitorLocker;
-					this.Pathfinding.target = this.StudentManager.SuitorLocker;
+					if (this.StudentID == 7)
+					{
+						this.CurrentDestination = this.StudentManager.SuitorLocker;
+						this.Pathfinding.target = this.StudentManager.SuitorLocker;
+					}
+					else
+					{
+						this.CurrentDestination = this.StudentManager.SenpaiLocker;
+						this.Pathfinding.target = this.StudentManager.SenpaiLocker;
+					}
 					this.Confessing = true;
 					this.Routine = false;
 					this.CanTalk = false;
@@ -1469,14 +1537,30 @@ public class StudentScript : MonoBehaviour
 				{
 					this.Cosmetic.MyRenderer.materials[this.Cosmetic.FaceID].SetFloat("_BlendAmount", 0f);
 				}
+				if (this.StudentID == 32)
+				{
+					this.Cigarette.SetActive(false);
+					this.Lighter.SetActive(false);
+				}
 				this.Pathfinding.canSearch = true;
 				this.Pathfinding.canMove = true;
 				this.OccultBook.SetActive(false);
+				this.Scrubber.SetActive(false);
+				this.Eraser.SetActive(false);
 				this.Phone.SetActive(false);
 				this.Pen.SetActive(false);
 				this.SpeechLines.Stop();
 				this.GoAway = false;
 				this.ReadPhase = 0;
+				if (this.Actions[this.Phase] == StudentActionType.Clean)
+				{
+					this.Scrubber.SetActive(true);
+					if (this.CleaningRole == 5)
+					{
+						this.Scrubber.GetComponent<Renderer>().material.mainTexture = this.Eraser.GetComponent<Renderer>().material.mainTexture;
+						this.Eraser.SetActive(true);
+					}
+				}
 			}
 			if (this.MeetTime > 0f && this.Clock.HourTime > this.MeetTime)
 			{
@@ -1527,7 +1611,7 @@ public class StudentScript : MonoBehaviour
 							this.Pathfinding.target = this.ChangingBooth.WaitSpots[this.ClubMemberID];
 						}
 					}
-					else if (this.Indoors)
+					else if (this.Indoors && this.Actions[this.Phase] != StudentActionType.Clean)
 					{
 						this.CurrentDestination = this.Destinations[this.Phase];
 						this.Pathfinding.target = this.Destinations[this.Phase];
@@ -1641,7 +1725,7 @@ public class StudentScript : MonoBehaviour
 							this.CharacterAnimation.CrossFade(this.IdleAnim);
 						}
 					}
-					else
+					else if (this.Actions[this.Phase] != StudentActionType.Clean)
 					{
 						this.CurrentDestination = this.Destinations[this.Phase];
 						this.Pathfinding.target = this.Destinations[this.Phase];
@@ -1709,19 +1793,22 @@ public class StudentScript : MonoBehaviour
 										{
 											this.CharacterAnimation.CrossFade(this.IdleAnim);
 										}
-										else if (!this.Phoneless)
+										else if ((double)Vector3.Distance(base.transform.position, this.Seat.position) < 0.5)
 										{
-											if (!this.Phone.activeInHierarchy)
+											if (!this.Phoneless)
 											{
-												this.Phone.transform.localPosition = new Vector3(0.02f, 0.01f, 0.02f);
-												this.Phone.transform.localEulerAngles = new Vector3(-15f, 30f, 0f);
-												this.Phone.SetActive(true);
+												if (!this.Phone.activeInHierarchy)
+												{
+													this.Phone.transform.localPosition = new Vector3(0.02f, 0.01f, 0.02f);
+													this.Phone.transform.localEulerAngles = new Vector3(-15f, 30f, 0f);
+													this.Phone.SetActive(true);
+												}
+												this.CharacterAnimation.CrossFade(this.DeskTextAnim);
 											}
-											this.CharacterAnimation.CrossFade(this.DeskTextAnim);
-										}
-										else
-										{
-											this.CharacterAnimation.CrossFade("f02_sadDeskSit_00");
+											else
+											{
+												this.CharacterAnimation.CrossFade("f02_sadDeskSit_00");
+											}
 										}
 									}
 									else if (this.MyTeacher.SpeechLines.isPlaying)
@@ -1878,7 +1965,7 @@ public class StudentScript : MonoBehaviour
 							{
 								if (this.MeetTime == 0f)
 								{
-									if (this.StudentID == 13 && this.StudentManager.LoveManager.LeftNote)
+									if (this.StudentManager.LoveManager.Suitor == this && this.StudentManager.LoveManager.LeftNote)
 									{
 										this.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
 										this.CharacterAnimation.CrossFade("keepNote_00");
@@ -2029,6 +2116,45 @@ public class StudentScript : MonoBehaviour
 										}
 										this.PatrolTimer = 0f;
 									}
+								}
+							}
+							else if (this.Actions[this.Phase] == StudentActionType.Wait)
+							{
+								this.CharacterAnimation.CrossFade(this.WaitAnim);
+							}
+							else if (this.Actions[this.Phase] == StudentActionType.Clean)
+							{
+								this.CleanTimer += Time.deltaTime;
+								if (this.CleaningRole == 5)
+								{
+									if (this.CleanID == 0)
+									{
+										this.CharacterAnimation.CrossFade(this.CleanAnims[1]);
+									}
+									else
+									{
+										this.CharacterAnimation.CrossFade(this.CleanAnims[this.CleaningRole]);
+										if ((double)this.CleanTimer >= 1.166666 && (double)this.CleanTimer <= 6.166666 && !this.ChalkDust.isPlaying)
+										{
+											this.ChalkDust.Play();
+										}
+									}
+								}
+								else
+								{
+									this.CharacterAnimation.CrossFade(this.CleanAnims[this.CleaningRole]);
+								}
+								if (this.CleanTimer >= this.CharacterAnimation[this.CleanAnims[this.CleaningRole]].length)
+								{
+									this.CleanID++;
+									if (this.CleanID == this.CleaningSpot.childCount)
+									{
+										this.CleanID = 0;
+									}
+									this.CurrentDestination = this.CleaningSpot.GetChild(this.CleanID);
+									this.Pathfinding.target = this.CurrentDestination;
+									this.DistanceToDestination = 100f;
+									this.CleanTimer = 0f;
 								}
 							}
 						}
@@ -2274,7 +2400,7 @@ public class StudentScript : MonoBehaviour
 							}
 							else if (this.Persona == PersonaType.Heroic)
 							{
-								if (!this.Yandere.Attacking)
+								if (!this.Yandere.Attacking && !this.StudentManager.PinningDown)
 								{
 									if (!this.Yandere.Struggling)
 									{
@@ -2748,7 +2874,6 @@ public class StudentScript : MonoBehaviour
 									}
 									else
 									{
-										Debug.Log("Turning it off here?");
 										this.StudentManager.CommunalLocker.RivalPhone.gameObject.SetActive(false);
 										this.BathePhase++;
 									}
@@ -3361,24 +3486,19 @@ public class StudentScript : MonoBehaviour
 			}
 			if (this.Investigating)
 			{
-				if (!this.YandereInnocent && this.InvestigationPhase < 100)
+				if (!this.YandereInnocent && this.InvestigationPhase < 100 && this.CanSeeYandere)
 				{
-					this.Planes = GeometryUtility.CalculateFrustumPlanes(this.VisionCone);
-					RaycastHit raycastHit;
-					if (GeometryUtility.TestPlanesAABB(this.Planes, this.Yandere.GetComponent<Collider>().bounds) && Physics.Linecast(this.Eyes.transform.position, new Vector3(this.Yandere.transform.position.x, this.Yandere.Head.position.y, this.Yandere.transform.position.z), out raycastHit) && raycastHit.collider.gameObject == this.Yandere.gameObject)
+					if (Vector3.Distance(this.Yandere.transform.position, this.Giggle.transform.position) > 2.5f)
 					{
-						if (Vector3.Distance(this.Yandere.transform.position, this.Giggle.transform.position) > 2.5f)
-						{
-							this.YandereInnocent = true;
-						}
-						else
-						{
-							this.CharacterAnimation.CrossFade(this.IdleAnim);
-							this.Pathfinding.canSearch = false;
-							this.Pathfinding.canMove = false;
-							this.InvestigationPhase = 100;
-							this.InvestigationTimer = 0f;
-						}
+						this.YandereInnocent = true;
+					}
+					else
+					{
+						this.CharacterAnimation.CrossFade(this.IdleAnim);
+						this.Pathfinding.canSearch = false;
+						this.Pathfinding.canMove = false;
+						this.InvestigationPhase = 100;
+						this.InvestigationTimer = 0f;
 					}
 				}
 				if (this.InvestigationPhase == 0)
@@ -3482,8 +3602,8 @@ public class StudentScript : MonoBehaviour
 					{
 						if (this.Police.CorpseList[this.ID] != null && !this.Police.CorpseList[this.ID].Hidden)
 						{
-							this.Planes = GeometryUtility.CalculateFrustumPlanes(this.VisionCone);
-							if (GeometryUtility.TestPlanesAABB(this.Planes, this.Police.CorpseList[this.ID].AllColliders[0].bounds))
+							Plane[] planes = GeometryUtility.CalculateFrustumPlanes(this.VisionCone);
+							if (GeometryUtility.TestPlanesAABB(planes, this.Police.CorpseList[this.ID].AllColliders[0].bounds))
 							{
 								Debug.DrawLine(this.Eyes.transform.position, this.Police.CorpseList[this.ID].AllColliders[0].transform.position, Color.green);
 								RaycastHit raycastHit;
@@ -3585,52 +3705,39 @@ public class StudentScript : MonoBehaviour
 							{
 								if (!this.Yandere.Chased)
 								{
-									if ((this.Yandere.Armed && this.Yandere.EquippedWeapon.Suspicious) || (this.Yandere.Bloodiness > 0f && !this.Yandere.Paint) || (this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Struggling || this.Yandere.Dragging || this.Yandere.Lewd || this.Yandere.Carrying || (this.Yandere.PickUp != null && this.Yandere.PickUp.BodyPart != null)) || (this.Yandere.Laughing && this.Yandere.LaughIntensity > 15f) || (this.Private && this.Yandere.Trespassing) || (this.Teacher && this.Yandere.Trespassing) || (this.Teacher && this.Yandere.Rummaging) || (this.StudentID == 1 && this.Yandere.NearSenpai && !this.Yandere.Talking) || (this.StudentID == 1 && this.Yandere.Eavesdropping) || (this.StudentID == 33 && this.Yandere.Eavesdropping))
+									if ((this.Yandere.Armed && this.Yandere.EquippedWeapon.Suspicious) || (!this.Teacher && this.StudentID > 1 && this.Yandere.PickUp != null && this.Yandere.PickUp.Suspicious) || (this.Yandere.Bloodiness > 0f && !this.Yandere.Paint) || (this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Struggling || this.Yandere.Dragging || this.Yandere.Lewd || this.Yandere.Carrying || (this.Yandere.PickUp != null && this.Yandere.PickUp.BodyPart != null)) || (this.Yandere.Laughing && this.Yandere.LaughIntensity > 15f) || (this.Private && this.Yandere.Trespassing) || (this.Teacher && this.Yandere.Trespassing) || (this.Teacher && this.Yandere.Rummaging) || (this.StudentID == 1 && this.Yandere.NearSenpai && !this.Yandere.Talking) || (this.StudentID == 1 && this.Yandere.Eavesdropping) || (this.StudentID == 33 && this.Yandere.Eavesdropping))
 									{
-										this.Planes = GeometryUtility.CalculateFrustumPlanes(this.VisionCone);
-										if (GeometryUtility.TestPlanesAABB(this.Planes, this.Yandere.GetComponent<Collider>().bounds))
+										if (this.CanSeeYandere)
 										{
-											Debug.DrawLine(this.Eyes.transform.position, new Vector3(this.Yandere.transform.position.x, this.Yandere.Head.position.y, this.Yandere.transform.position.z), Color.green);
-											RaycastHit raycastHit2;
-											if (Physics.Linecast(this.Eyes.transform.position, new Vector3(this.Yandere.transform.position.x, this.Yandere.Head.position.y, this.Yandere.transform.position.z), out raycastHit2))
+											this.YandereVisible = true;
+											if (this.Yandere.Attacking || this.Yandere.Struggling || (this.Yandere.NearBodies > 0 && this.Yandere.Bloodiness > 0f && !this.Yandere.Paint) || (this.Yandere.NearBodies > 0 && this.Yandere.Armed) || (this.Yandere.NearBodies > 0 && this.Yandere.Sanity < 66.66666f) || this.Yandere.Carrying || this.Yandere.Dragging)
 											{
-												if (raycastHit2.collider.gameObject == this.Yandere.gameObject)
+												if (!this.Yandere.Egg)
 												{
-													this.YandereVisible = true;
-													if (this.Yandere.Attacking || this.Yandere.Struggling || (this.Yandere.NearBodies > 0 && this.Yandere.Bloodiness > 0f && !this.Yandere.Paint) || (this.Yandere.NearBodies > 0 && this.Yandere.Armed) || (this.Yandere.NearBodies > 0 && this.Yandere.Sanity < 66.66666f) || this.Yandere.Carrying || this.Yandere.Dragging)
+													this.WitnessMurder();
+												}
+											}
+											else if (!this.Fleeing)
+											{
+												if (!this.Alarmed)
+												{
+													if (this.Teacher && this.Yandere.Rummaging)
 													{
-														if (!this.Yandere.Egg)
+														this.Alarm = 200f;
+													}
+													if (this.IgnoreTimer <= 0f)
+													{
+														this.Alarm += Time.deltaTime * (100f / this.DistanceToPlayer) * this.Paranoia * this.Perception;
+														if (this.StudentID == 1 && this.Yandere.TimeSkipping)
 														{
-															this.WitnessMurder();
+															this.Clock.EndTimeSkip();
 														}
 													}
-													else if (!this.Fleeing)
-													{
-														if (!this.Alarmed)
-														{
-															if (this.Teacher && this.Yandere.Rummaging)
-															{
-																this.Alarm = 200f;
-															}
-															if (this.IgnoreTimer <= 0f)
-															{
-																this.Alarm += Time.deltaTime * (100f / this.DistanceToPlayer) * this.Paranoia * this.Perception;
-																if (this.StudentID == 1 && this.Yandere.TimeSkipping)
-																{
-																	this.Clock.EndTimeSkip();
-																}
-															}
-														}
-													}
-													else
-													{
-														this.Alarm -= Time.deltaTime * 100f * (1f / this.Paranoia);
-													}
 												}
-												else
-												{
-													this.Alarm -= Time.deltaTime * 100f * (1f / this.Paranoia);
-												}
+											}
+											else
+											{
+												this.Alarm -= Time.deltaTime * 100f * (1f / this.Paranoia);
 											}
 										}
 										else
@@ -3699,9 +3806,14 @@ public class StudentScript : MonoBehaviour
 						this.ReadPhase = 0;
 						string witnessed = this.Witnessed;
 						bool flag = false;
+						bool flag2 = false;
 						if (this.Yandere.Armed && this.Yandere.EquippedWeapon.Suspicious)
 						{
 							flag = true;
+						}
+						if (this.Yandere.PickUp != null && this.Yandere.PickUp.Suspicious)
+						{
+							flag2 = true;
 						}
 						if (this.WitnessedCorpse && !this.WitnessedMurder)
 						{
@@ -3764,6 +3876,12 @@ public class StudentScript : MonoBehaviour
 								{
 									this.WeaponWitnessed = this.Yandere.EquippedWeapon.WeaponID;
 									this.Witnessed = "Weapon";
+									this.RepLoss = 10f;
+									this.Concern = 5;
+								}
+								else if (flag2)
+								{
+									this.Witnessed = "Suspicious";
 									this.RepLoss = 10f;
 									this.Concern = 5;
 								}
@@ -3919,7 +4037,7 @@ public class StudentScript : MonoBehaviour
 								this.Reputation.PendingRep -= this.RepLoss * this.Paranoia;
 								this.PendingRep -= this.RepLoss * this.Paranoia;
 							}
-							if (this.ToiletEvent != null && this.ToiletEvent.EventDay == 1)
+							if (this.ToiletEvent != null && this.ToiletEvent.EventDay == DayOfWeek.Monday)
 							{
 								this.ToiletEvent.EndEvent();
 							}
@@ -4706,6 +4824,10 @@ public class StudentScript : MonoBehaviour
 				{
 					this.Subtitle.UpdateLabel("Lewd Reaction", 1, 3f);
 				}
+				else if (this.Witnessed == "Suspicious")
+				{
+					this.Subtitle.UpdateLabel("Suspicious Reaction", 1, 3f);
+				}
 				else if (this.Witnessed == "Corpse")
 				{
 					if (this.Persona == PersonaType.Evil)
@@ -5120,8 +5242,8 @@ public class StudentScript : MonoBehaviour
 				{
 					if (this.CharacterAnimation["f02_insertNote_00"].time >= this.CharacterAnimation["f02_insertNote_00"].length)
 					{
-						this.CurrentDestination = this.StudentManager.EdgeOfGrid;
-						this.Pathfinding.target = this.StudentManager.EdgeOfGrid;
+						this.CurrentDestination = this.StudentManager.RivalConfessionSpot;
+						this.Pathfinding.target = this.StudentManager.RivalConfessionSpot;
 						this.Pathfinding.canSearch = true;
 						this.Pathfinding.canMove = true;
 						this.Pathfinding.speed = 4f;
@@ -5134,35 +5256,13 @@ public class StudentScript : MonoBehaviour
 				{
 					if (this.DistanceToDestination < 0.5f)
 					{
-						this.CurrentDestination = this.StudentManager.ConfessionWaypoint;
+						this.CharacterAnimation.CrossFade(this.IdleAnim);
 						this.Pathfinding.canSearch = false;
 						this.Pathfinding.canMove = false;
 						this.ConfessPhase++;
 					}
 				}
 				else if (this.ConfessPhase == 5)
-				{
-					this.targetRotation = Quaternion.LookRotation(new Vector3(this.CurrentDestination.position.x, base.transform.position.y, this.CurrentDestination.position.z) - base.transform.position);
-					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
-					this.MyController.Move(base.transform.forward * (4f * Time.deltaTime));
-					if (this.DistanceToDestination < 1f)
-					{
-						this.CurrentDestination = this.StudentManager.ConfessionSpot;
-						this.ConfessPhase++;
-					}
-				}
-				else if (this.ConfessPhase == 6)
-				{
-					this.targetRotation = Quaternion.LookRotation(new Vector3(this.CurrentDestination.position.x, base.transform.position.y, this.CurrentDestination.position.z) - base.transform.position);
-					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
-					this.MyController.Move(base.transform.forward * (4f * Time.deltaTime));
-					if (this.DistanceToDestination < 0.5f)
-					{
-						this.CharacterAnimation.CrossFade(this.IdleAnim);
-						this.ConfessPhase++;
-					}
-				}
-				else if (this.ConfessPhase == 7)
 				{
 					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.CurrentDestination.rotation, Time.deltaTime * 10f);
 					this.CharacterAnimation[this.ShyAnim].weight = Mathf.Lerp(this.CharacterAnimation[this.ShyAnim].weight, 1f, Time.deltaTime);
@@ -5183,8 +5283,8 @@ public class StudentScript : MonoBehaviour
 				}
 				if (this.CharacterAnimation["keepNote_00"].time >= this.CharacterAnimation["keepNote_00"].length)
 				{
-					this.CurrentDestination = this.StudentManager.EdgeOfGrid;
-					this.Pathfinding.target = this.StudentManager.EdgeOfGrid;
+					this.CurrentDestination = this.StudentManager.SuitorConfessionSpot;
+					this.Pathfinding.target = this.StudentManager.SuitorConfessionSpot;
 					this.Pathfinding.canSearch = true;
 					this.Pathfinding.canMove = true;
 					this.Pathfinding.speed = 4f;
@@ -5196,24 +5296,13 @@ public class StudentScript : MonoBehaviour
 			{
 				if (this.DistanceToDestination < 0.5f)
 				{
-					this.CurrentDestination = this.StudentManager.SuitorConfessionSpot;
+					this.CharacterAnimation.CrossFade("exhausted_00");
 					this.Pathfinding.canSearch = false;
 					this.Pathfinding.canMove = false;
 					this.ConfessPhase++;
 				}
 			}
 			else if (this.ConfessPhase == 3)
-			{
-				this.targetRotation = Quaternion.LookRotation(new Vector3(this.CurrentDestination.position.x, base.transform.position.y, this.CurrentDestination.position.z) - base.transform.position);
-				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
-				this.MyController.Move(base.transform.forward * (4f * Time.deltaTime));
-				if (this.DistanceToDestination < 0.5f)
-				{
-					this.CharacterAnimation.CrossFade("exhausted_00");
-					this.ConfessPhase++;
-				}
-			}
-			else if (this.ConfessPhase == 4)
 			{
 				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.CurrentDestination.rotation, Time.deltaTime * 10f);
 				this.MoveTowardsTarget(this.CurrentDestination.position);
@@ -5289,7 +5378,7 @@ public class StudentScript : MonoBehaviour
 			{
 				if (this.Routine)
 				{
-					if ((this.Phase == 2 && this.DistanceToDestination < 1f) || (this.Phase == 4 && this.DistanceToDestination < 1f))
+					if ((this.Phase == 2 && this.DistanceToDestination < 1f) || (this.Phase == 4 && this.DistanceToDestination < 1f) || (this.Actions[this.Phase] == StudentActionType.Clean && this.DistanceToDestination < 1f))
 					{
 						this.CharacterAnimation[this.ShyAnim].weight = Mathf.Lerp(this.CharacterAnimation[this.ShyAnim].weight, 0f, Time.deltaTime);
 					}
@@ -5980,6 +6069,10 @@ public class StudentScript : MonoBehaviour
 			{
 				this.Destinations[this.ID] = this.StudentManager.MournSpot;
 			}
+			else if (scheduleBlock2.destination == "Clean")
+			{
+				this.Destinations[this.ID] = this.CleaningSpot.GetChild(0);
+			}
 			else if (scheduleBlock2.destination == "Cuddle")
 			{
 				if (!this.Male)
@@ -6084,6 +6177,14 @@ public class StudentScript : MonoBehaviour
 			else if (scheduleBlock2.action == "Teach")
 			{
 				this.Actions[this.ID] = StudentActionType.Teaching;
+			}
+			else if (scheduleBlock2.action == "Wait")
+			{
+				this.Actions[this.ID] = StudentActionType.Wait;
+			}
+			else if (scheduleBlock2.action == "Clean")
+			{
+				this.Actions[this.ID] = StudentActionType.Clean;
 			}
 			else if (scheduleBlock2.action == "Club")
 			{
@@ -6795,8 +6896,8 @@ public class StudentScript : MonoBehaviour
 	{
 		if (!this.Yandere.Chased)
 		{
-			this.Planes = GeometryUtility.CalculateFrustumPlanes(this.VisionCone);
-			if (GeometryUtility.TestPlanesAABB(this.Planes, this.Yandere.GetComponent<Collider>().bounds))
+			Plane[] planes = GeometryUtility.CalculateFrustumPlanes(this.VisionCone);
+			if (GeometryUtility.TestPlanesAABB(planes, this.Yandere.GetComponent<Collider>().bounds))
 			{
 				Debug.DrawLine(this.Eyes.transform.position, new Vector3(this.Yandere.transform.position.x, this.Yandere.Head.position.y, this.Yandere.transform.position.z), Color.green);
 				RaycastHit raycastHit;
@@ -6974,5 +7075,16 @@ public class StudentScript : MonoBehaviour
 		scheduleBlock3.action = "Search Patrol";
 		this.GetDestinations();
 		this.Phoneless = true;
+	}
+
+	public void TeleportToDestination()
+	{
+		if (this.Clock.HourTime >= this.ScheduleBlocks[this.Phase].time)
+		{
+			this.Phase++;
+			this.CurrentDestination = this.Destinations[this.Phase];
+			this.Pathfinding.target = this.Destinations[this.Phase];
+			base.transform.position = this.CurrentDestination.position;
+		}
 	}
 }

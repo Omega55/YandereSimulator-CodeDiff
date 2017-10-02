@@ -59,11 +59,11 @@ public class ChallengeScript : MonoBehaviour
 					}
 				}
 				Transform transform = this.ChallengeList[this.List];
-				if (this.InputManager.DPadRight || Input.GetKey("right"))
+				if (this.InputManager.DPadRight || Input.GetKey(KeyCode.RightArrow))
 				{
 					transform.localPosition = new Vector3(transform.localPosition.x - Time.deltaTime * 1000f, transform.localPosition.y, transform.localPosition.z);
 				}
-				if (this.InputManager.DPadLeft || Input.GetKey("left"))
+				if (this.InputManager.DPadLeft || Input.GetKey(KeyCode.LeftArrow))
 				{
 					transform.localPosition = new Vector3(transform.localPosition.x + Time.deltaTime * 1000f, transform.localPosition.y, transform.localPosition.z);
 				}

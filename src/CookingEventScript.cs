@@ -61,7 +61,7 @@ public class CookingEventScript : MonoBehaviour
 
 	public int EventPhase = 1;
 
-	public int EventDay = 2;
+	public DayOfWeek EventDay = DayOfWeek.Tuesday;
 
 	public int Loop;
 
@@ -86,7 +86,7 @@ public class CookingEventScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown("space"))
+		if (Input.GetKeyDown(KeyCode.Space))
 		{
 		}
 		if (!this.Clock.StopTime && this.EventCheck && this.Clock.HourTime > this.EventTime)

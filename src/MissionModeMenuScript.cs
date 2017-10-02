@@ -1364,7 +1364,7 @@ public class MissionModeMenuScript : MonoBehaviour
 		base.GetComponent<AudioSource>().PlayOneShot(this.InfoLines[6]);
 		bool highPopulation = OptionGlobals.HighPopulation;
 		Globals.DeleteAll();
-		SchoolGlobals.SchoolAtmosphere = 100f - (float)this.Difficulty / 10f * 100f;
+		SchoolGlobals.SchoolAtmosphere = 1f - (float)this.Difficulty * 0.1f;
 		MissionModeGlobals.NemesisDifficulty = this.NemesisDifficulty;
 		MissionModeGlobals.MissionTargetName = this.TargetName;
 		MissionModeGlobals.MissionDifficulty = this.Difficulty;

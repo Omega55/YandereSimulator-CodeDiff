@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 [Serializable]
 public class PlayerSaveData
@@ -21,7 +23,13 @@ public class PlayerSaveData
 
 	public int pantyShots;
 
-	public IntHashSet photo;
+	public IntHashSet photo = new IntHashSet();
+
+	public IntHashSet photoOnCorkboard = new IntHashSet();
+
+	public IntAndVector2Dictionary photoPosition = new IntAndVector2Dictionary();
+
+	public IntAndFloatDictionary photoRotation = new IntAndFloatDictionary();
 
 	public float reputation;
 
@@ -29,7 +37,7 @@ public class PlayerSaveData
 
 	public int seductionBonus;
 
-	public IntHashSet senpaiPhoto;
+	public IntHashSet senpaiPhoto = new IntHashSet();
 
 	public int senpaiShots;
 
@@ -39,33 +47,9 @@ public class PlayerSaveData
 
 	public int stealthBonus;
 
-	public IntHashSet studentFriend;
+	public IntHashSet studentFriend = new IntHashSet();
 
-	public StringHashSet studentPantyShot;
-
-	public PlayerSaveData()
-	{
-		this.alerts = 0;
-		this.enlightenment = 0;
-		this.enlightenmentBonus = 0;
-		this.headset = false;
-		this.kills = 0;
-		this.numbness = 0;
-		this.numbnessBonus = 0;
-		this.pantiesEquipped = 0;
-		this.pantyShots = 0;
-		this.photo = new IntHashSet();
-		this.reputation = 0f;
-		this.seduction = 0;
-		this.seductionBonus = 0;
-		this.senpaiPhoto = new IntHashSet();
-		this.senpaiShots = 0;
-		this.socialBonus = 0;
-		this.speedBonus = 0;
-		this.stealthBonus = 0;
-		this.studentFriend = new IntHashSet();
-		this.studentPantyShot = new StringHashSet();
-	}
+	public StringHashSet studentPantyShot = new StringHashSet();
 
 	public static PlayerSaveData ReadFromGlobals()
 	{
@@ -86,25 +70,40 @@ public class PlayerSaveData
 				playerSaveData.photo.Add(num);
 			}
 		}
+		foreach (int num2 in PlayerGlobals.KeysOfPhotoOnCorkboard())
+		{
+			if (PlayerGlobals.GetPhotoOnCorkboard(num2))
+			{
+				playerSaveData.photoOnCorkboard.Add(num2);
+			}
+		}
+		foreach (int num3 in PlayerGlobals.KeysOfPhotoPosition())
+		{
+			playerSaveData.photoPosition.Add(num3, PlayerGlobals.GetPhotoPosition(num3));
+		}
+		foreach (int num4 in PlayerGlobals.KeysOfPhotoRotation())
+		{
+			playerSaveData.photoRotation.Add(num4, PlayerGlobals.GetPhotoRotation(num4));
+		}
 		playerSaveData.reputation = PlayerGlobals.Reputation;
 		playerSaveData.seduction = PlayerGlobals.Seduction;
 		playerSaveData.seductionBonus = PlayerGlobals.SeductionBonus;
-		foreach (int num2 in PlayerGlobals.KeysOfSenpaiPhoto())
+		foreach (int num5 in PlayerGlobals.KeysOfSenpaiPhoto())
 		{
-			if (PlayerGlobals.GetSenpaiPhoto(num2))
+			if (PlayerGlobals.GetSenpaiPhoto(num5))
 			{
-				playerSaveData.senpaiPhoto.Add(num2);
+				playerSaveData.senpaiPhoto.Add(num5);
 			}
 		}
 		playerSaveData.senpaiShots = PlayerGlobals.SenpaiShots;
 		playerSaveData.socialBonus = PlayerGlobals.SocialBonus;
 		playerSaveData.speedBonus = PlayerGlobals.SpeedBonus;
 		playerSaveData.stealthBonus = PlayerGlobals.StealthBonus;
-		foreach (int num3 in PlayerGlobals.KeysOfStudentFriend())
+		foreach (int num6 in PlayerGlobals.KeysOfStudentFriend())
 		{
-			if (PlayerGlobals.GetStudentFriend(num3))
+			if (PlayerGlobals.GetStudentFriend(num6))
 			{
-				playerSaveData.studentFriend.Add(num3);
+				playerSaveData.studentFriend.Add(num6);
 			}
 		}
 		foreach (string text in PlayerGlobals.KeysOfStudentPantyShot())
@@ -132,12 +131,24 @@ public class PlayerSaveData
 		{
 			PlayerGlobals.SetPhoto(photoID, true);
 		}
+		foreach (int photoID2 in data.photoOnCorkboard)
+		{
+			PlayerGlobals.SetPhotoOnCorkboard(photoID2, true);
+		}
+		foreach (KeyValuePair<int, Vector2> keyValuePair in data.photoPosition)
+		{
+			PlayerGlobals.SetPhotoPosition(keyValuePair.Key, keyValuePair.Value);
+		}
+		foreach (KeyValuePair<int, float> keyValuePair2 in data.photoRotation)
+		{
+			PlayerGlobals.SetPhotoRotation(keyValuePair2.Key, keyValuePair2.Value);
+		}
 		PlayerGlobals.Reputation = data.reputation;
 		PlayerGlobals.Seduction = data.seduction;
 		PlayerGlobals.SeductionBonus = data.seductionBonus;
-		foreach (int photoID2 in data.senpaiPhoto)
+		foreach (int photoID3 in data.senpaiPhoto)
 		{
-			PlayerGlobals.SetSenpaiPhoto(photoID2, true);
+			PlayerGlobals.SetSenpaiPhoto(photoID3, true);
 		}
 		PlayerGlobals.SenpaiShots = data.senpaiShots;
 		PlayerGlobals.SocialBonus = data.socialBonus;

@@ -9,6 +9,16 @@ public class ContainerScript : MonoBehaviour
 
 	public Transform Lid;
 
+	public Collider GardenArea;
+
+	public Collider NEStairs;
+
+	public Collider NWStairs;
+
+	public Collider SEStairs;
+
+	public Collider SWStairs;
+
 	public PickUpScript[] BodyParts;
 
 	public PickUpScript BodyPart;
@@ -19,11 +29,22 @@ public class ContainerScript : MonoBehaviour
 
 	public string SpriteName = string.Empty;
 
+	public bool CanDrop;
+
 	public bool Open;
 
 	public int Contents;
 
 	public int ID;
+
+	public void Start()
+	{
+		this.GardenArea = GameObject.Find("GardenArea").GetComponent<Collider>();
+		this.NEStairs = GameObject.Find("NEStairs").GetComponent<Collider>();
+		this.NWStairs = GameObject.Find("NWStairs").GetComponent<Collider>();
+		this.SEStairs = GameObject.Find("SEStairs").GetComponent<Collider>();
+		this.SWStairs = GameObject.Find("SWStairs").GetComponent<Collider>();
+	}
 
 	private void Update()
 	{
@@ -125,7 +146,7 @@ public class ContainerScript : MonoBehaviour
 	public void Drop()
 	{
 		base.transform.parent = null;
-		base.transform.position = this.Prompt.Yandere.ObstacleDetector.transform.position;
+		base.transform.position = this.Prompt.Yandere.ObstacleDetector.transform.position + new Vector3(0f, 0.5f, 0f);
 		base.transform.eulerAngles = this.Prompt.Yandere.ObstacleDetector.transform.eulerAngles;
 		this.Prompt.Yandere.Container = null;
 		this.Prompt.MyCollider.enabled = true;

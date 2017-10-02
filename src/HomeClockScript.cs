@@ -9,26 +9,7 @@ public class HomeClockScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (DateGlobals.Weekday == 1)
-		{
-			this.DayLabel.text = "MONDAY";
-		}
-		else if (DateGlobals.Weekday == 2)
-		{
-			this.DayLabel.text = "TUESDAY";
-		}
-		else if (DateGlobals.Weekday == 3)
-		{
-			this.DayLabel.text = "WEDNESDAY";
-		}
-		else if (DateGlobals.Weekday == 4)
-		{
-			this.DayLabel.text = "THURSDAY";
-		}
-		else if (DateGlobals.Weekday == 5)
-		{
-			this.DayLabel.text = "FRIDAY";
-		}
+		this.DayLabel.text = this.GetWeekdayText(DateGlobals.Weekday);
 		if (HomeGlobals.Night)
 		{
 			this.HourLabel.text = "8:00 PM";
@@ -37,5 +18,34 @@ public class HomeClockScript : MonoBehaviour
 		{
 			this.HourLabel.text = ((!HomeGlobals.LateForSchool) ? "6:30 AM" : "7:30 AM");
 		}
+	}
+
+	private string GetWeekdayText(DayOfWeek weekday)
+	{
+		if (weekday == DayOfWeek.Sunday)
+		{
+			return "SUNDAY";
+		}
+		if (weekday == DayOfWeek.Monday)
+		{
+			return "MONDAY";
+		}
+		if (weekday == DayOfWeek.Tuesday)
+		{
+			return "TUESDAY";
+		}
+		if (weekday == DayOfWeek.Wednesday)
+		{
+			return "WEDNESDAY";
+		}
+		if (weekday == DayOfWeek.Thursday)
+		{
+			return "THURSDAY";
+		}
+		if (weekday == DayOfWeek.Friday)
+		{
+			return "FRIDAY";
+		}
+		return "SATURDAY";
 	}
 }

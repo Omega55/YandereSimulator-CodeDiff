@@ -98,14 +98,14 @@ public class WeaponMenuScript : MonoBehaviour
 					}
 					this.UpdateSprites();
 				}
-				if (Input.GetKeyDown("1") || Input.GetKeyDown("2") || Input.GetKeyDown("3") || Input.GetKeyDown("4") || Input.GetKeyDown("5"))
+				if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Alpha5))
 				{
 					this.Yandere.EmptyHands();
 					this.KeyboardPanel.enabled = true;
 					this.KeyboardShow = true;
 					this.Show = false;
 					this.Timer = 0f;
-					if (Input.GetKeyDown("1"))
+					if (Input.GetKeyDown(KeyCode.Alpha1))
 					{
 						this.Selected = 4;
 						if (this.Yandere.Equipped > 0)
@@ -118,17 +118,17 @@ public class WeaponMenuScript : MonoBehaviour
 						}
 						this.Yandere.Mopping = false;
 					}
-					else if (Input.GetKeyDown("2"))
+					else if (Input.GetKeyDown(KeyCode.Alpha2))
 					{
 						this.Selected = 1;
 						this.Equip();
 					}
-					else if (Input.GetKeyDown("3"))
+					else if (Input.GetKeyDown(KeyCode.Alpha3))
 					{
 						this.Selected = 2;
 						this.Equip();
 					}
-					else if (Input.GetKeyDown("4"))
+					else if (Input.GetKeyDown(KeyCode.Alpha4))
 					{
 						this.Selected = 3;
 						if (this.Yandere.Container != null && this.Yandere.ObstacleDetector.Obstacles == 0)
@@ -138,7 +138,7 @@ public class WeaponMenuScript : MonoBehaviour
 							this.UpdateSprites();
 						}
 					}
-					else if (Input.GetKeyDown("5"))
+					else if (Input.GetKeyDown(KeyCode.Alpha5))
 					{
 						this.Selected = 5;
 						this.DropMask();
@@ -276,6 +276,10 @@ public class WeaponMenuScript : MonoBehaviour
 			}
 			this.Yandere.Equipped = this.Selected;
 			this.Yandere.EquippedWeapon.gameObject.SetActive(true);
+			if (this.Yandere.EquippedWeapon.Flaming)
+			{
+				this.Yandere.EquippedWeapon.FireEffect.Play();
+			}
 			if (!this.Yandere.Gloved)
 			{
 				this.Yandere.EquippedWeapon.FingerprintID = 100;

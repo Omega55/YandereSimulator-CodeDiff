@@ -45,7 +45,7 @@ public class ToiletEventScript : MonoBehaviour
 
 	public int EventPhase = 1;
 
-	public int EventDay = 4;
+	public DayOfWeek EventDay = DayOfWeek.Thursday;
 
 	public float ToiletCountdown;
 

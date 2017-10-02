@@ -38,8 +38,6 @@ public class CalendarScript : MonoBehaviour
 
 	public float Timer;
 
-	public float Atmosphere;
-
 	public int Phase = 1;
 
 	private void Start()
@@ -48,18 +46,17 @@ public class CalendarScript : MonoBehaviour
 		if (!SchoolGlobals.SchoolAtmosphereSet)
 		{
 			SchoolGlobals.SchoolAtmosphereSet = true;
-			SchoolGlobals.SchoolAtmosphere = 100f;
+			SchoolGlobals.SchoolAtmosphere = 1f;
 		}
-		if (DateGlobals.Weekday > 4)
+		if (DateGlobals.Weekday > DayOfWeek.Thursday)
 		{
-			DateGlobals.Weekday = 0;
+			DateGlobals.Weekday = DayOfWeek.Sunday;
 			Globals.DeleteAll();
 		}
-		this.Sun.color = new Color(this.Sun.color.r, this.Sun.color.g, this.Sun.color.b, SchoolGlobals.SchoolAtmosphere * 0.01f);
-		this.Cloud.color = new Color(this.Cloud.color.r, this.Cloud.color.g, this.Cloud.color.b, 1f - SchoolGlobals.SchoolAtmosphere * 0.01f);
-		this.Atmosphere = SchoolGlobals.SchoolAtmosphere;
-		this.AtmosphereLabel.text = this.Atmosphere.ToString("f0") + "%";
-		float num = 1f - SchoolGlobals.SchoolAtmosphere * 0.01f;
+		this.Sun.color = new Color(this.Sun.color.r, this.Sun.color.g, this.Sun.color.b, SchoolGlobals.SchoolAtmosphere);
+		this.Cloud.color = new Color(this.Cloud.color.r, this.Cloud.color.g, this.Cloud.color.b, 1f - SchoolGlobals.SchoolAtmosphere);
+		this.AtmosphereLabel.text = (SchoolGlobals.SchoolAtmosphere * 100f).ToString("f0") + "%";
+		float num = 1f - SchoolGlobals.SchoolAtmosphere;
 		this.GrayscaleEffect.desaturation = num;
 		this.Vignette.intensity = num * 5f;
 		this.Vignette.blur = num;
@@ -117,30 +114,29 @@ public class CalendarScript : MonoBehaviour
 							this.FadeOut = true;
 							this.Reset = true;
 						}
-						if (Input.GetKeyDown("z"))
+						if (Input.GetKeyDown(KeyCode.Z))
 						{
-							float schoolAtmosphere = SchoolGlobals.SchoolAtmosphere;
-							if (schoolAtmosphere > 80f)
+							if (SchoolGlobals.SchoolAtmosphere > 0.8f)
 							{
-								SchoolGlobals.SchoolAtmosphere = 80f;
+								SchoolGlobals.SchoolAtmosphere = 0.8f;
 							}
-							else if (schoolAtmosphere > 60f)
+							else if (SchoolGlobals.SchoolAtmosphere > 0.6f)
 							{
-								SchoolGlobals.SchoolAtmosphere = 60f;
+								SchoolGlobals.SchoolAtmosphere = 0.6f;
 							}
-							else if (schoolAtmosphere > 50f)
+							else if (SchoolGlobals.SchoolAtmosphere > 0.5f)
 							{
-								SchoolGlobals.SchoolAtmosphere = 50f;
+								SchoolGlobals.SchoolAtmosphere = 0.5f;
 							}
-							else if (schoolAtmosphere > 40f)
+							else if (SchoolGlobals.SchoolAtmosphere > 0.4f)
 							{
-								SchoolGlobals.SchoolAtmosphere = 40f;
+								SchoolGlobals.SchoolAtmosphere = 0.4f;
 							}
-							else if (schoolAtmosphere > 20f)
+							else if (SchoolGlobals.SchoolAtmosphere > 0.2f)
 							{
-								SchoolGlobals.SchoolAtmosphere = 20f;
+								SchoolGlobals.SchoolAtmosphere = 0.2f;
 							}
-							else if (schoolAtmosphere > 0f)
+							else
 							{
 								SchoolGlobals.SchoolAtmosphere = 0f;
 							}
@@ -194,25 +190,25 @@ public class CalendarScript : MonoBehaviour
 				}
 			}
 		}
-		if (Input.GetKeyDown("1"))
+		if (Input.GetKeyDown(KeyCode.Alpha1))
 		{
-			DateGlobals.Weekday = 1;
+			DateGlobals.Weekday = DayOfWeek.Monday;
 		}
-		if (Input.GetKeyDown("2"))
+		if (Input.GetKeyDown(KeyCode.Alpha2))
 		{
-			DateGlobals.Weekday = 2;
+			DateGlobals.Weekday = DayOfWeek.Tuesday;
 		}
-		if (Input.GetKeyDown("3"))
+		if (Input.GetKeyDown(KeyCode.Alpha3))
 		{
-			DateGlobals.Weekday = 3;
+			DateGlobals.Weekday = DayOfWeek.Wednesday;
 		}
-		if (Input.GetKeyDown("4"))
+		if (Input.GetKeyDown(KeyCode.Alpha4))
 		{
-			DateGlobals.Weekday = 4;
+			DateGlobals.Weekday = DayOfWeek.Thursday;
 		}
-		if (Input.GetKeyDown("5"))
+		if (Input.GetKeyDown(KeyCode.Alpha5))
 		{
-			DateGlobals.Weekday = 5;
+			DateGlobals.Weekday = DayOfWeek.Friday;
 		}
 	}
 

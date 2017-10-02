@@ -31,28 +31,28 @@ public class PortraitScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown("1"))
+		if (Input.GetKeyDown(KeyCode.Alpha1))
 		{
 			this.StudentObject[0].SetActive(true);
 			this.StudentObject[1].SetActive(false);
 			this.StudentObject[2].SetActive(false);
 			this.Selected = 1;
 		}
-		else if (Input.GetKeyDown("2"))
+		else if (Input.GetKeyDown(KeyCode.Alpha2))
 		{
 			this.StudentObject[0].SetActive(false);
 			this.StudentObject[1].SetActive(true);
 			this.StudentObject[2].SetActive(false);
 			this.Selected = 2;
 		}
-		else if (Input.GetKeyDown("3"))
+		else if (Input.GetKeyDown(KeyCode.Alpha3))
 		{
 			this.StudentObject[0].SetActive(false);
 			this.StudentObject[1].SetActive(false);
 			this.StudentObject[2].SetActive(true);
 			this.Selected = 3;
 		}
-		if (Input.GetKeyDown("space"))
+		if (Input.GetKeyDown(KeyCode.Space))
 		{
 			this.CurrentHair++;
 			if (this.CurrentHair > this.HairSet1.Length - 1)

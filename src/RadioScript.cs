@@ -43,6 +43,7 @@ public class RadioScript : MonoBehaviour
 				}
 				else
 				{
+					this.CooldownTimer = 1f;
 					this.TurnOff();
 				}
 			}
@@ -64,7 +65,6 @@ public class RadioScript : MonoBehaviour
 		this.MyRenderer.material.mainTexture = this.OffTexture;
 		this.Victim = null;
 		base.GetComponent<AudioSource>().Stop();
-		this.CooldownTimer = 1f;
 		this.On = false;
 	}
 }

@@ -9,13 +9,6 @@ public class HomeSaveData
 
 	public bool startInBasement;
 
-	public HomeSaveData()
-	{
-		this.lateForSchool = false;
-		this.night = false;
-		this.startInBasement = false;
-	}
-
 	public static HomeSaveData ReadFromGlobals()
 	{
 		return new HomeSaveData

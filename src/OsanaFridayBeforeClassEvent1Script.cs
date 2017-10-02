@@ -35,7 +35,7 @@ public class OsanaFridayBeforeClassEvent1Script : MonoBehaviour
 
 	public float Timer;
 
-	public int EventDay;
+	public DayOfWeek EventDay;
 
 	public int Phase;
 

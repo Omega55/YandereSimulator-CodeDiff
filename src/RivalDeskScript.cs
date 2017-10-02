@@ -13,7 +13,7 @@ public class RivalDeskScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (SchemeGlobals.GetSchemeStage(5) == 5 && DateGlobals.Weekday == 5)
+		if (SchemeGlobals.GetSchemeStage(5) == 5 && DateGlobals.Weekday == DayOfWeek.Friday)
 		{
 			if (this.Clock.HourTime > 13f)
 			{

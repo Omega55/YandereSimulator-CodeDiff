@@ -224,7 +224,7 @@ public class PoseModeScript : MonoBehaviour
 			}
 			else if (this.Posing)
 			{
-				if (Input.GetAxis("Horizontal") > 0.5f || Input.GetAxis("Horizontal") < -0.5f || Input.GetAxis("DpadX") > 0.5f || Input.GetAxis("DpadX") < -0.5f || Input.GetKey("right") || Input.GetKey("left"))
+				if (Input.GetAxis("Horizontal") > 0.5f || Input.GetAxis("Horizontal") < -0.5f || Input.GetAxis("DpadX") > 0.5f || Input.GetAxis("DpadX") < -0.5f || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow))
 				{
 					this.CalculateValue();
 					if (this.Selected == 1)
@@ -459,7 +459,15 @@ public class PoseModeScript : MonoBehaviour
 						}
 					}
 				}
-				else if (Input.GetAxis("Horizontal") > 0.5f || Input.GetAxis("Horizontal") < -0.5f || Input.GetAxis("DpadX") > 0.5f || Input.GetAxis("DpadX") < -0.5f || Input.GetKey("right") || Input.GetKey("left"))
+				else if (this.Selected == 12)
+				{
+					if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
+					{
+						this.Student.LiquidProjector.enabled = !this.Student.LiquidProjector.enabled;
+						this.UpdateLabels();
+					}
+				}
+				else if (Input.GetAxis("Horizontal") > 0.5f || Input.GetAxis("Horizontal") < -0.5f || Input.GetAxis("DpadX") > 0.5f || Input.GetAxis("DpadX") < -0.5f || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow))
 				{
 					this.CalculateValue();
 					Material material = this.Student.Cosmetic.HairRenderer.material;
@@ -773,7 +781,8 @@ public class PoseModeScript : MonoBehaviour
 			this.OptionLabels[9].text = "Eye B: " + (this.Student.Cosmetic.RightEyeRenderer.material.color.b * 255f).ToString();
 			this.OptionLabels[10].text = "Degree of Change: " + this.Degree.ToString();
 			this.OptionLabels[11].text = "Stockings: " + this.Student.Cosmetic.Stockings;
-			this.Limit = 11;
+			this.OptionLabels[12].text = "Blood: " + this.Student.LiquidProjector.enabled;
+			this.Limit = 12;
 			UILabel uilabel3 = this.OptionLabels[3];
 			UILabel uilabel4 = this.OptionLabels[11];
 			if (!this.Student.Male)
@@ -924,13 +933,9 @@ public class PoseModeScript : MonoBehaviour
 				this.Value = -1;
 			}
 		}
-		else if (Input.GetKey("right"))
-		{
-			this.Value = 1;
-		}
 		else
 		{
-			this.Value = -1;
+			this.Value = ((!Input.GetKey(KeyCode.RightArrow)) ? -1 : 1);
 		}
 	}
 

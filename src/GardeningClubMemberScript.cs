@@ -91,7 +91,7 @@ public class GardeningClubMemberScript : MonoBehaviour
 					}
 					else
 					{
-						this.Destination.position = new Vector3(UnityEngine.Random.Range(-28f, -23f), this.Destination.position.y, UnityEngine.Random.Range(-16f, -7f));
+						this.Destination.position = new Vector3(UnityEngine.Random.Range(-28f, -23f), this.Destination.position.y, UnityEngine.Random.Range(-15f, -7f));
 					}
 				}
 				base.GetComponent<Animation>().CrossFade(this.WalkAnim);

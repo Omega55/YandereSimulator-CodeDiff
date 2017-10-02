@@ -7,9 +7,11 @@ public class DialogueWheelScript : MonoBehaviour
 
 	public ClubManagerScript ClubManager;
 
+	public LoveManagerScript LoveManager;
+
 	public PauseScreenScript PauseScreen;
 
-	public LoveManagerScript LoveManager;
+	public TaskManagerScript TaskManager;
 
 	public ReputationScript Reputation;
 

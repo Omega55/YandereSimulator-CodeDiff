@@ -72,18 +72,18 @@ public class YanvaniaTitleScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (!this.Logo.gameObject.activeInHierarchy && Input.GetKeyDown("m"))
+		if (!this.Logo.gameObject.activeInHierarchy && Input.GetKeyDown(KeyCode.M))
 		{
 			YanvaniaGlobals.DraculaDefeated = true;
 			YanvaniaGlobals.MidoriEasterEgg = true;
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
-		if (Input.GetKeyDown("end"))
+		if (Input.GetKeyDown(KeyCode.End))
 		{
 			YanvaniaGlobals.DraculaDefeated = true;
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
-		if (Input.GetKeyDown("`"))
+		if (Input.GetKeyDown(KeyCode.BackQuote))
 		{
 			YanvaniaGlobals.DraculaDefeated = false;
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -150,11 +150,11 @@ public class YanvaniaTitleScript : MonoBehaviour
 						else
 						{
 							this.Prologue.localPosition = new Vector3(this.Prologue.localPosition.x, this.Prologue.localPosition.y + Time.deltaTime * this.ScrollSpeed, this.Prologue.localPosition.z);
-							if (Input.GetKeyDown("="))
+							if (Input.GetKeyDown(KeyCode.Equals))
 							{
 								Time.timeScale = 100f;
 							}
-							if (Input.GetKeyDown("-"))
+							if (Input.GetKeyDown(KeyCode.Minus))
 							{
 								Time.timeScale = 1f;
 							}

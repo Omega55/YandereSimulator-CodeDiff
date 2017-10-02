@@ -23,6 +23,12 @@ public static class PlayerGlobals
 
 	private const string Str_Photo = "Photo_";
 
+	private const string Str_PhotoOnCorkboard = "PhotoOnCorkboard_";
+
+	private const string Str_PhotoPosition = "PhotoPosition_";
+
+	private const string Str_PhotoRotation = "PhotoRotation_";
+
 	private const string Str_Reputation = "Reputation";
 
 	private const string Str_Seduction = "Seduction";
@@ -166,6 +172,57 @@ public static class PlayerGlobals
 	public static int[] KeysOfPhoto()
 	{
 		return KeysHelper.GetIntegerKeys("Photo_");
+	}
+
+	public static bool GetPhotoOnCorkboard(int photoID)
+	{
+		return GlobalsHelper.GetBool("PhotoOnCorkboard_" + photoID.ToString());
+	}
+
+	public static void SetPhotoOnCorkboard(int photoID, bool value)
+	{
+		string text = photoID.ToString();
+		KeysHelper.AddIfMissing("PhotoOnCorkboard_", text);
+		GlobalsHelper.SetBool("PhotoOnCorkboard_" + text, value);
+	}
+
+	public static int[] KeysOfPhotoOnCorkboard()
+	{
+		return KeysHelper.GetIntegerKeys("PhotoOnCorkboard_");
+	}
+
+	public static Vector2 GetPhotoPosition(int photoID)
+	{
+		return GlobalsHelper.GetVector2("PhotoPosition_" + photoID.ToString());
+	}
+
+	public static void SetPhotoPosition(int photoID, Vector2 value)
+	{
+		string text = photoID.ToString();
+		KeysHelper.AddIfMissing("PhotoPosition_", text);
+		GlobalsHelper.SetVector2("PhotoPosition_" + text, value);
+	}
+
+	public static int[] KeysOfPhotoPosition()
+	{
+		return KeysHelper.GetIntegerKeys("PhotoPosition_");
+	}
+
+	public static float GetPhotoRotation(int photoID)
+	{
+		return PlayerPrefs.GetFloat("PhotoRotation_" + photoID.ToString());
+	}
+
+	public static void SetPhotoRotation(int photoID, float value)
+	{
+		string text = photoID.ToString();
+		KeysHelper.AddIfMissing("PhotoRotation_", text);
+		PlayerPrefs.SetFloat("PhotoRotation_" + text, value);
+	}
+
+	public static int[] KeysOfPhotoRotation()
+	{
+		return KeysHelper.GetIntegerKeys("PhotoRotation_");
 	}
 
 	public static float Reputation
@@ -314,6 +371,9 @@ public static class PlayerGlobals
 		Globals.Delete("PantiesEquipped");
 		Globals.Delete("PantyShots");
 		Globals.DeleteCollection("Photo_", PlayerGlobals.KeysOfPhoto());
+		Globals.DeleteCollection("PhotoOnCorkboard_", PlayerGlobals.KeysOfPhotoOnCorkboard());
+		Globals.DeleteCollection("PhotoPosition_", PlayerGlobals.KeysOfPhotoPosition());
+		Globals.DeleteCollection("PhotoRotation_", PlayerGlobals.KeysOfPhotoRotation());
 		Globals.Delete("Reputation");
 		Globals.Delete("Seduction");
 		Globals.Delete("SeductionBonus");

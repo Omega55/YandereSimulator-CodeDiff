@@ -5,13 +5,7 @@ public class DateSaveData
 {
 	public int week;
 
-	public int weekday;
-
-	public DateSaveData()
-	{
-		this.week = 0;
-		this.weekday = 0;
-	}
+	public DayOfWeek weekday;
 
 	public static DateSaveData ReadFromGlobals()
 	{

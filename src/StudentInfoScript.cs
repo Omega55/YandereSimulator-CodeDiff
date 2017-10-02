@@ -310,12 +310,12 @@ public class StudentInfoScript : MonoBehaviour
 				this.Topics.SetActive(false);
 			}
 		}
-		if (Input.GetKeyDown("="))
+		if (Input.GetKeyDown(KeyCode.Equals))
 		{
 			StudentGlobals.SetStudentReputation(this.CurrentStudent, StudentGlobals.GetStudentReputation(this.CurrentStudent) + 10);
 			this.UpdateInfo(this.CurrentStudent);
 		}
-		if (Input.GetKeyDown("-"))
+		if (Input.GetKeyDown(KeyCode.Minus))
 		{
 			StudentGlobals.SetStudentReputation(this.CurrentStudent, StudentGlobals.GetStudentReputation(this.CurrentStudent) - 10);
 			this.UpdateInfo(this.CurrentStudent);

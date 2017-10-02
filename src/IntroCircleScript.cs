@@ -43,7 +43,7 @@ public class IntroCircleScript : MonoBehaviour
 				this.Label.text = string.Empty;
 			}
 		}
-		if (Input.GetKeyDown("space"))
+		if (Input.GetKeyDown(KeyCode.Space))
 		{
 			this.CurrentTime -= 5f;
 			this.Timer += 5f;

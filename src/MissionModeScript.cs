@@ -94,6 +94,8 @@ public class MissionModeScript : MonoBehaviour
 
 	public GameObject GameOverText;
 
+	public GameObject Headmaster;
+
 	public GameObject ExitPortal;
 
 	public GameObject MurderKit;
@@ -244,6 +246,7 @@ public class MissionModeScript : MonoBehaviour
 		}
 		if (MissionModeGlobals.MissionMode)
 		{
+			this.Headmaster.SetActive(false);
 			this.Yandere.HeartRate.MediumColour = new Color(1f, 0.5f, 0.5f, 1f);
 			this.Yandere.HeartRate.NormalColour = new Color(1f, 1f, 1f, 1f);
 			this.Clock.PeriodLabel.color = new Color(1f, 1f, 1f, 1f);
@@ -860,12 +863,13 @@ public class MissionModeScript : MonoBehaviour
 		int particleCount = OptionGlobals.ParticleCount;
 		bool disableShadows = OptionGlobals.DisableShadows;
 		int drawDistance = OptionGlobals.DrawDistance;
+		int drawDistanceLimit = OptionGlobals.DrawDistanceLimit;
 		bool disableBloom = OptionGlobals.DisableBloom;
 		bool fog = OptionGlobals.Fog;
 		string missionTargetName = MissionModeGlobals.MissionTargetName;
 		bool highPopulation = OptionGlobals.HighPopulation;
 		Globals.DeleteAll();
-		SchoolGlobals.SchoolAtmosphere = 100f - (float)this.Difficulty / 10f * 100f;
+		SchoolGlobals.SchoolAtmosphere = 1f - (float)this.Difficulty * 0.1f;
 		MissionModeGlobals.MissionTargetName = missionTargetName;
 		MissionModeGlobals.MissionDifficulty = this.Difficulty;
 		OptionGlobals.HighPopulation = highPopulation;
@@ -894,6 +898,7 @@ public class MissionModeScript : MonoBehaviour
 		OptionGlobals.ParticleCount = particleCount;
 		OptionGlobals.DisableShadows = disableShadows;
 		OptionGlobals.DrawDistance = drawDistance;
+		OptionGlobals.DrawDistanceLimit = drawDistanceLimit;
 		OptionGlobals.DisableBloom = disableBloom;
 		OptionGlobals.Fog = fog;
 	}

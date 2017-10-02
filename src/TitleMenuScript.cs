@@ -87,8 +87,6 @@ public class TitleMenuScript : MonoBehaviour
 
 	public bool LoveSick;
 
-	public bool InEditor;
-
 	public bool FadeOut;
 
 	public bool Turning;
@@ -157,7 +155,7 @@ public class TitleMenuScript : MonoBehaviour
 			this.TurnLoveSick();
 		}
 		Time.timeScale = 1f;
-		if (!this.InEditor && this.JSON.Students[33].Name != "Reserved")
+		if (this.JSON.Students[33].Name != "Reserved")
 		{
 			if (Application.CanStreamedLevelBeLoaded("FunScene"))
 			{
@@ -257,7 +255,7 @@ public class TitleMenuScript : MonoBehaviour
 				}
 				if (!this.LoveSick)
 				{
-					if (Input.GetKeyDown("space"))
+					if (Input.GetKeyDown(KeyCode.Space))
 					{
 						this.Timer = 10f;
 					}
@@ -374,11 +372,11 @@ public class TitleMenuScript : MonoBehaviour
 			component["f02_yanderePose_00"].weight = 0f;
 			component["f02_fist_00"].weight = 0f;
 		}
-		if (Input.GetKeyDown("-"))
+		if (Input.GetKeyDown(KeyCode.Minus))
 		{
 			Time.timeScale -= 1f;
 		}
-		if (Input.GetKeyDown("="))
+		if (Input.GetKeyDown(KeyCode.Equals))
 		{
 			Time.timeScale += 1f;
 		}

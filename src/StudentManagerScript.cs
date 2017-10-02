@@ -13,6 +13,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public SelectiveGrayscale HandSelectiveGreyscale;
 
+	public CleaningManagerScript CleaningManager;
+
 	public StolenPhoneSpotScript StolenPhoneSpot;
 
 	public SelectiveGrayscale SelectiveGreyscale;
@@ -64,6 +66,8 @@ public class StudentManagerScript : MonoBehaviour
 	public UILabel ErrorLabel;
 
 	public ListScript SearchPatrols;
+
+	public ListScript CleaningSpots;
 
 	public ListScript Patrols;
 
@@ -123,6 +127,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform SuitorConfessionSpot;
 
+	public Transform RivalConfessionSpot;
+
 	public Transform ConfessionWaypoint;
 
 	public Transform FemaleCoupleSpot;
@@ -150,6 +156,8 @@ public class StudentManagerScript : MonoBehaviour
 	public Transform FountainSpot;
 
 	public Transform MaleWashSpot;
+
+	public Transform SenpaiLocker;
 
 	public Transform SuitorLocker;
 
@@ -230,6 +238,8 @@ public class StudentManagerScript : MonoBehaviour
 	public bool DisableFarAnims;
 
 	public bool YandereDying;
+
+	public bool YandereLate;
 
 	public bool FirstUpdate;
 
@@ -364,9 +374,10 @@ public class StudentManagerScript : MonoBehaviour
 			if (HomeGlobals.LateForSchool)
 			{
 				HomeGlobals.LateForSchool = false;
+				this.YandereLate = true;
 				this.Clock.PresentTime = 480f;
 				this.Clock.HourTime = 8f;
-				this.AttendClass();
+				this.SkipTo8();
 			}
 			if (!this.TakingPortraits)
 			{
@@ -374,6 +385,7 @@ public class StudentManagerScript : MonoBehaviour
 				{
 					this.SpawnStudent();
 				}
+				this.UpdateStudents();
 			}
 		}
 		else
@@ -400,10 +412,10 @@ public class StudentManagerScript : MonoBehaviour
 		if (!SchoolGlobals.SchoolAtmosphereSet)
 		{
 			SchoolGlobals.SchoolAtmosphereSet = true;
-			SchoolGlobals.SchoolAtmosphere = 100f;
+			SchoolGlobals.SchoolAtmosphere = 1f;
 		}
 		Vignetting[] components = Camera.main.GetComponents<Vignetting>();
-		float num = 1f - SchoolGlobals.SchoolAtmosphere * 0.01f;
+		float num = 1f - SchoolGlobals.SchoolAtmosphere;
 		if (!this.TakingPortraits)
 		{
 			this.SmartphoneSelectiveGreyscale.desaturation = num;
@@ -623,6 +635,9 @@ public class StudentManagerScript : MonoBehaviour
 				GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(this.RandomPatrol, Vector3.zero, Quaternion.identity);
 				gameObject2.transform.parent = this.Patrols.transform;
 				this.Patrols.List[this.SpawnID] = gameObject2.transform;
+				GameObject gameObject3 = UnityEngine.Object.Instantiate<GameObject>(this.RandomPatrol, Vector3.zero, Quaternion.identity);
+				gameObject3.transform.parent = this.CleaningSpots.transform;
+				this.CleaningSpots.List[this.SpawnID] = gameObject3.transform;
 				num = ((!MissionModeGlobals.MissionMode || MissionModeGlobals.MissionTarget != this.SpawnID) ? UnityEngine.Random.Range(0, 2) : 0);
 				this.FindUnoccupiedSeat();
 			}
@@ -636,6 +651,11 @@ public class StudentManagerScript : MonoBehaviour
 			this.NewStudent.GetComponent<CosmeticScript>().Randomize = this.Randomize;
 			this.NewStudent.GetComponent<CosmeticScript>().StudentID = this.SpawnID;
 			this.NewStudent.GetComponent<CosmeticScript>().JSON = this.JSON;
+			if (this.JSON.Students[this.SpawnID].Name == "Random")
+			{
+				this.NewStudent.GetComponent<StudentScript>().CleaningSpot = this.CleaningSpots.List[this.SpawnID];
+				this.NewStudent.GetComponent<StudentScript>().CleaningRole = 3;
+			}
 			this.Students[this.SpawnID] = this.NewStudent.GetComponent<StudentScript>();
 			StudentScript studentScript = this.Students[this.SpawnID];
 			studentScript.Cosmetic.TextureManager = this.TextureManager;
@@ -894,6 +914,61 @@ public class StudentManagerScript : MonoBehaviour
 				{
 					studentScript.transform.position = studentScript.Seat.position + Vector3.up * 0.01f;
 					studentScript.transform.rotation = studentScript.Seat.rotation;
+				}
+			}
+			this.ID++;
+		}
+	}
+
+	public void SkipTo8()
+	{
+		while (this.NPCsSpawned < this.NPCsTotal)
+		{
+			this.SpawnStudent();
+		}
+		this.ID = 1;
+		while (this.ID < this.Students.Length)
+		{
+			StudentScript studentScript = this.Students[this.ID];
+			if (studentScript != null && studentScript.Alive && !studentScript.Slave && !studentScript.Tranquil)
+			{
+				if (!studentScript.Started)
+				{
+					studentScript.Start();
+				}
+				if (!studentScript.Teacher)
+				{
+					if (!studentScript.Indoors)
+					{
+						if (studentScript.ShoeRemoval.Locker == null)
+						{
+							studentScript.ShoeRemoval.Start();
+						}
+						studentScript.ShoeRemoval.PutOnShoes();
+					}
+					studentScript.transform.position = studentScript.Seat.position + Vector3.up * 0.01f;
+					studentScript.transform.rotation = studentScript.Seat.rotation;
+					studentScript.Pathfinding.canSearch = true;
+					studentScript.Pathfinding.canMove = true;
+					studentScript.OccultBook.SetActive(false);
+					studentScript.Pathfinding.speed = 1f;
+					studentScript.Phone.SetActive(false);
+					studentScript.Distracted = false;
+					studentScript.OnPhone = false;
+					studentScript.Routine = true;
+					studentScript.Safe = false;
+					if (studentScript.ClubAttire)
+					{
+						studentScript.ChangeSchoolwear();
+						studentScript.ClubAttire = true;
+					}
+					studentScript.TeleportToDestination();
+					studentScript.TeleportToDestination();
+				}
+				else
+				{
+					studentScript.TeleportToDestination();
+					studentScript.TeleportToDestination();
 				}
 			}
 			this.ID++;

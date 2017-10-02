@@ -9,13 +9,6 @@ public class GameSaveData
 
 	public bool paranormal;
 
-	public GameSaveData()
-	{
-		this.loveSick = false;
-		this.masksBanned = false;
-		this.paranormal = false;
-	}
-
 	public static GameSaveData ReadFromGlobals()
 	{
 		return new GameSaveData

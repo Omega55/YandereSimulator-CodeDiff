@@ -121,6 +121,8 @@ public class DelinquentScript : MonoBehaviour
 
 	public Color HairColor;
 
+	public Texture BlondThugHair;
+
 	private void Start()
 	{
 		this.EasterHair.SetActive(false);
@@ -376,14 +378,23 @@ public class DelinquentScript : MonoBehaviour
 				this.Shove();
 			}
 		}
-		if (Input.GetKeyDown("v") && this.LongSkirt != null)
+		if (Input.GetKeyDown(KeyCode.V) && this.LongSkirt != null)
 		{
 			this.MyRenderer.sharedMesh = this.LongSkirt;
 		}
-		if (Input.GetKeyDown("space") && Vector3.Distance(this.Yandere.transform.position, this.DelinquentManager.transform.position) < 10f)
+		if (Input.GetKeyDown(KeyCode.Space) && Vector3.Distance(this.Yandere.transform.position, this.DelinquentManager.transform.position) < 10f)
 		{
 			this.Spaces++;
-			if (this.Spaces == 10)
+			if (this.Spaces == 9)
+			{
+				if (this.HairRenderer == null)
+				{
+					this.DefaultHair.SetActive(false);
+					this.EasterHair.SetActive(true);
+					this.EasterHair.GetComponent<Renderer>().material.mainTexture = this.BlondThugHair;
+				}
+			}
+			else if (this.Spaces == 10)
 			{
 				this.Rapping = true;
 				this.MyWeapon.SetActive(false);

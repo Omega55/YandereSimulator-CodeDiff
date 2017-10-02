@@ -13,15 +13,6 @@ public class EventSaveData
 
 	public bool livingRoom;
 
-	public EventSaveData()
-	{
-		this.befriendConversation = false;
-		this.event1 = false;
-		this.event2 = false;
-		this.kidnapConversation = false;
-		this.livingRoom = false;
-	}
-
 	public static EventSaveData ReadFromGlobals()
 	{
 		return new EventSaveData

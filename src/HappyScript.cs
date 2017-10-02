@@ -15,32 +15,23 @@ public class HappyScript : MonoBehaviour
 
 	public Transform Fun;
 
-	public bool InEditor;
-
 	public float Speed;
 
 	private void Start()
 	{
-		if (!this.InEditor)
+		if (this.JSON.Students[33].Name != "Reserved")
 		{
-			if (this.JSON.Students[33].Name != "Reserved")
-			{
-				this.BakeCookies();
-			}
-			else
-			{
-				for (int i = 1; i < 101; i++)
-				{
-					if (this.JSON.Students[i].Gender == 0 && this.JSON.Students[i].Hairstyle == "20" && this.StudentManager.Students[i] != null)
-					{
-						this.StudentManager.Students[i].gameObject.SetActive(false);
-					}
-				}
-			}
+			this.BakeCookies();
 		}
 		else
 		{
-			base.enabled = false;
+			for (int i = 1; i < 101; i++)
+			{
+				if (this.JSON.Students[i].Gender == 0 && this.JSON.Students[i].Hairstyle == "20" && this.StudentManager.Students[i] != null)
+				{
+					this.StudentManager.Students[i].gameObject.SetActive(false);
+				}
+			}
 		}
 	}
 

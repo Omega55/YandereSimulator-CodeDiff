@@ -49,7 +49,7 @@ public class SaveFile
 		}
 	}
 
-	public static bool SaveFileExists(int index)
+	public static bool Exists(int index)
 	{
 		return File.Exists(SaveFile.GetSaveFileName(index));
 	}
@@ -109,7 +109,7 @@ public class SaveFile
 				Directory.CreateDirectory(SaveFile.FolderPath);
 			}
 			string saveFileName = SaveFile.GetSaveFileName(this.index);
-			if (!SaveFile.SaveFileExists(this.index))
+			if (!SaveFile.Exists(this.index))
 			{
 				FileStream fileStream = File.Create(saveFileName);
 				fileStream.Dispose();

@@ -419,7 +419,7 @@ public class HomeInternetScript : MonoBehaviour
 				}
 			}
 		}
-		if (Input.GetKeyDown("space"))
+		if (Input.GetKeyDown(KeyCode.Space))
 		{
 			StudentGlobals.SetStudentExposed(7, false);
 		}

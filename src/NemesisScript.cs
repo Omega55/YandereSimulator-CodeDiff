@@ -327,6 +327,8 @@ public class NemesisScript : MonoBehaviour
 		this.Student.Chopsticks[1].SetActive(false);
 		this.Student.OccultBook.SetActive(false);
 		this.Student.EventBook.SetActive(false);
+		this.Student.Scrubber.SetActive(false);
+		this.Student.Eraser.SetActive(false);
 		this.Student.Bento.SetActive(false);
 		this.Student.Pen.SetActive(false);
 		this.Student.SpeechLines.Stop();

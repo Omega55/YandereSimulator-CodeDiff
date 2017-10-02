@@ -8,29 +8,17 @@ public class DatingSaveData
 
 	public float affectionLevel;
 
-	public IntHashSet complimentGiven;
+	public IntHashSet complimentGiven = new IntHashSet();
 
-	public IntHashSet suitorCheck;
+	public IntHashSet suitorCheck = new IntHashSet();
 
 	public int suitorProgress;
 
-	public IntAndIntDictionary suitorTrait;
+	public IntAndIntDictionary suitorTrait = new IntAndIntDictionary();
 
-	public IntHashSet topicDiscussed;
+	public IntHashSet topicDiscussed = new IntHashSet();
 
-	public IntAndIntDictionary traitDemonstrated;
-
-	public DatingSaveData()
-	{
-		this.affection = 0f;
-		this.affectionLevel = 0f;
-		this.complimentGiven = new IntHashSet();
-		this.suitorCheck = new IntHashSet();
-		this.suitorProgress = 0;
-		this.suitorTrait = new IntAndIntDictionary();
-		this.topicDiscussed = new IntHashSet();
-		this.traitDemonstrated = new IntAndIntDictionary();
-	}
+	public IntAndIntDictionary traitDemonstrated = new IntAndIntDictionary();
 
 	public static DatingSaveData ReadFromGlobals()
 	{

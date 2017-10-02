@@ -5,70 +5,45 @@ using System.Xml.Serialization;
 [Serializable]
 public class SaveFileData
 {
-	public ApplicationSaveData applicationData;
+	public ApplicationSaveData applicationData = new ApplicationSaveData();
 
-	public ClassSaveData classData;
+	public ClassSaveData classData = new ClassSaveData();
 
-	public ClubSaveData clubData;
+	public ClubSaveData clubData = new ClubSaveData();
 
-	public CollectibleSaveData collectibleData;
+	public CollectibleSaveData collectibleData = new CollectibleSaveData();
 
-	public ConversationSaveData conversationData;
+	public ConversationSaveData conversationData = new ConversationSaveData();
 
-	public DateSaveData dateData;
+	public DateSaveData dateData = new DateSaveData();
 
-	public DatingSaveData datingData;
+	public DatingSaveData datingData = new DatingSaveData();
 
-	public EventSaveData eventData;
+	public EventSaveData eventData = new EventSaveData();
 
-	public GameSaveData gameData;
+	public GameSaveData gameData = new GameSaveData();
 
-	public HomeSaveData homeData;
+	public HomeSaveData homeData = new HomeSaveData();
 
-	public MissionModeSaveData missionModeData;
+	public MissionModeSaveData missionModeData = new MissionModeSaveData();
 
-	public OptionSaveData optionData;
+	public OptionSaveData optionData = new OptionSaveData();
 
-	public PlayerSaveData playerData;
+	public PlayerSaveData playerData = new PlayerSaveData();
 
-	public PoseModeSaveData poseModeData;
+	public PoseModeSaveData poseModeData = new PoseModeSaveData();
 
-	public SaveFileSaveData saveFileData;
+	public SaveFileSaveData saveFileData = new SaveFileSaveData();
 
-	public SchemeSaveData schemeData;
+	public SchemeSaveData schemeData = new SchemeSaveData();
 
-	public SchoolSaveData schoolData;
+	public SchoolSaveData schoolData = new SchoolSaveData();
 
-	public SenpaiSaveData senpaiData;
+	public SenpaiSaveData senpaiData = new SenpaiSaveData();
 
-	public StudentSaveData studentData;
+	public StudentSaveData studentData = new StudentSaveData();
 
-	public TaskSaveData taskData;
+	public TaskSaveData taskData = new TaskSaveData();
 
-	public YanvaniaSaveData yanvaniaData;
-
-	public SaveFileData()
-	{
-		this.applicationData = new ApplicationSaveData();
-		this.classData = new ClassSaveData();
-		this.clubData = new ClubSaveData();
-		this.collectibleData = new CollectibleSaveData();
-		this.conversationData = new ConversationSaveData();
-		this.dateData = new DateSaveData();
-		this.datingData = new DatingSaveData();
-		this.eventData = new EventSaveData();
-		this.gameData = new GameSaveData();
-		this.homeData = new HomeSaveData();
-		this.missionModeData = new MissionModeSaveData();
-		this.optionData = new OptionSaveData();
-		this.playerData = new PlayerSaveData();
-		this.poseModeData = new PoseModeSaveData();
-		this.saveFileData = new SaveFileSaveData();
-		this.schemeData = new SchemeSaveData();
-		this.schoolData = new SchoolSaveData();
-		this.senpaiData = new SenpaiSaveData();
-		this.studentData = new StudentSaveData();
-		this.taskData = new TaskSaveData();
-		this.yanvaniaData = new YanvaniaSaveData();
-	}
+	public YanvaniaSaveData yanvaniaData = new YanvaniaSaveData();
 }

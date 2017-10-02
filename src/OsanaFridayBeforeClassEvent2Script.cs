@@ -45,7 +45,7 @@ public class OsanaFridayBeforeClassEvent2Script : MonoBehaviour
 
 	public int SpeechPhase = 1;
 
-	public int EventDay;
+	public DayOfWeek EventDay;
 
 	public int Phase;
 

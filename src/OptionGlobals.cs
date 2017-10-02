@@ -19,6 +19,8 @@ public static class OptionGlobals
 
 	private const string Str_Fog = "Fog";
 
+	private const string Str_FPSIndex = "FPSIndex";
+
 	private const string Str_HighPopulation = "HighPopulation";
 
 	private const string Str_LowDetailStudents = "LowDetailStudents";
@@ -121,6 +123,18 @@ public static class OptionGlobals
 		}
 	}
 
+	public static int FPSIndex
+	{
+		get
+		{
+			return PlayerPrefs.GetInt("FPSIndex");
+		}
+		set
+		{
+			PlayerPrefs.SetInt("FPSIndex", value);
+		}
+	}
+
 	public static bool HighPopulation
 	{
 		get
@@ -167,6 +181,7 @@ public static class OptionGlobals
 		Globals.Delete("DrawDistance");
 		Globals.Delete("DrawDistanceLimit");
 		Globals.Delete("Fog");
+		Globals.Delete("FPSIndex");
 		Globals.Delete("HighPopulation");
 		Globals.Delete("LowDetailStudents");
 		Globals.Delete("ParticleCount");

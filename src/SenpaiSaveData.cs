@@ -5,28 +5,17 @@ public class SenpaiSaveData
 {
 	public bool customSenpai;
 
-	public string senpaiEyeColor;
+	public string senpaiEyeColor = string.Empty;
 
 	public int senpaiEyeWear;
 
 	public int senpaiFacialHair;
 
-	public string senpaiHairColor;
+	public string senpaiHairColor = string.Empty;
 
 	public int senpaiHairStyle;
 
 	public int senpaiSkinColor;
-
-	public SenpaiSaveData()
-	{
-		this.customSenpai = false;
-		this.senpaiEyeColor = string.Empty;
-		this.senpaiEyeWear = 0;
-		this.senpaiFacialHair = 0;
-		this.senpaiHairColor = string.Empty;
-		this.senpaiHairStyle = 0;
-		this.senpaiSkinColor = 0;
-	}
 
 	public static SenpaiSaveData ReadFromGlobals()
 	{

@@ -86,6 +86,14 @@ public class BucketScript : MonoBehaviour
 
 	private void Update()
 	{
+		if (this.PickUp.Clock.Period == 5)
+		{
+			this.PickUp.Suspicious = false;
+		}
+		else
+		{
+			this.PickUp.Suspicious = true;
+		}
 		this.Distance = Vector3.Distance(base.transform.position, this.Yandere.transform.position);
 		if (this.Distance < 1f)
 		{
@@ -338,7 +346,7 @@ public class BucketScript : MonoBehaviour
 				this.Prompt.enabled = true;
 			}
 		}
-		if (Input.GetKeyDown("b"))
+		if (Input.GetKeyDown(KeyCode.B))
 		{
 			this.Bloodiness = 100f;
 		}

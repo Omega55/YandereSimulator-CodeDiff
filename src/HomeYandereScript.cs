@@ -171,11 +171,11 @@ public class HomeYandereScript : MonoBehaviour
 		{
 			component3.velocity = Vector3.zero;
 		}
-		if (Input.GetKeyDown("h"))
+		if (Input.GetKeyDown(KeyCode.H))
 		{
 			this.UpdateHair();
 		}
-		if (Input.GetKeyDown("k"))
+		if (Input.GetKeyDown(KeyCode.K))
 		{
 			SchoolGlobals.KidnapVictim = this.VictimID;
 			StudentGlobals.SetStudentSanity(this.VictimID, 100f);

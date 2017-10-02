@@ -107,8 +107,8 @@ public class CreditsScript : MonoBehaviour
 				SceneManager.LoadScene("TitleScene");
 			}
 		}
-		bool keyDown = Input.GetKeyDown("-");
-		bool keyDown2 = Input.GetKeyDown("=");
+		bool keyDown = Input.GetKeyDown(KeyCode.Minus);
+		bool keyDown2 = Input.GetKeyDown(KeyCode.Equals);
 		if (keyDown)
 		{
 			Time.timeScale -= 1f;

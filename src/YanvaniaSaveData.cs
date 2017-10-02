@@ -7,12 +7,6 @@ public class YanvaniaSaveData
 
 	public bool midoriEasterEgg;
 
-	public YanvaniaSaveData()
-	{
-		this.draculaDefeated = false;
-		this.midoriEasterEgg = false;
-	}
-
 	public static YanvaniaSaveData ReadFromGlobals()
 	{
 		return new YanvaniaSaveData

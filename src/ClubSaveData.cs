@@ -5,19 +5,11 @@ public class ClubSaveData
 {
 	public ClubType club;
 
-	public ClubTypeHashSet clubClosed;
+	public ClubTypeHashSet clubClosed = new ClubTypeHashSet();
 
-	public ClubTypeHashSet clubKicked;
+	public ClubTypeHashSet clubKicked = new ClubTypeHashSet();
 
-	public ClubTypeHashSet quitClub;
-
-	public ClubSaveData()
-	{
-		this.club = ClubType.None;
-		this.clubClosed = new ClubTypeHashSet();
-		this.clubKicked = new ClubTypeHashSet();
-		this.quitClub = new ClubTypeHashSet();
-	}
+	public ClubTypeHashSet quitClub = new ClubTypeHashSet();
 
 	public static ClubSaveData ReadFromGlobals()
 	{

@@ -401,8 +401,6 @@ public class YandereScript : MonoBehaviour
 
 	public bool Attacking;
 
-	public Stance Stance = new Stance(StanceType.Standing);
-
 	public bool Degloving;
 
 	public bool Poisoning;
@@ -456,6 +454,8 @@ public class YandereScript : MonoBehaviour
 	public bool Aiming;
 
 	public bool Hiding;
+
+	public Stance Stance = new Stance(StanceType.Standing);
 
 	public bool CrouchButtonDown;
 
@@ -785,7 +785,7 @@ public class YandereScript : MonoBehaviour
 
 	public int BlasterStage;
 
-	public int PKDir;
+	public PKDirType PKDir;
 
 	public Texture CyborgBody;
 
@@ -902,10 +902,9 @@ public class YandereScript : MonoBehaviour
 	private void Start()
 	{
 		this.CharacterAnimation = this.Character.GetComponent<Animation>();
-		this.GreyTarget = (100f - SchoolGlobals.SchoolAtmosphere) * 0.01f;
+		this.GreyTarget = 1f - SchoolGlobals.SchoolAtmosphere;
 		this.SetAnimationLayers();
 		this.UpdateNumbness();
-		Application.targetFrameRate = 60;
 		this.RightEyeOrigin = this.RightEye.localPosition;
 		this.LeftEyeOrigin = this.LeftEye.localPosition;
 		this.CharacterAnimation["f02_yanderePose_00"].weight = 0f;
@@ -1104,7 +1103,7 @@ public class YandereScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown("left alt"))
+		if (Input.GetKeyDown(KeyCode.LeftAlt))
 		{
 			this.CinematicCamera.SetActive(false);
 		}
@@ -1124,7 +1123,7 @@ public class YandereScript : MonoBehaviour
 			else
 			{
 				this.CharacterAnimation["f02_mopping_00"].weight = Mathf.Lerp(this.CharacterAnimation["f02_mopping_00"].weight, 1f, Time.deltaTime * 10f);
-				if (Input.GetButtonUp("A") || Input.GetKeyDown("escape"))
+				if (Input.GetButtonUp("A") || Input.GetKeyDown(KeyCode.Escape))
 				{
 					this.Mopping = false;
 				}
@@ -1191,6 +1190,17 @@ public class YandereScript : MonoBehaviour
 		{
 			component.volume -= 0.333333343f;
 		}
+	}
+
+	private void GoToPKDir(PKDirType pkDir, string sansAnim, Vector3 ragdollLocalPos)
+	{
+		this.CharacterAnimation.CrossFade(sansAnim);
+		this.RagdollPK.transform.localPosition = ragdollLocalPos;
+		if (this.PKDir != pkDir)
+		{
+			AudioSource.PlayClipAtPoint(this.Slam, base.transform.position + Vector3.up);
+		}
+		this.PKDir = pkDir;
 	}
 
 	private void UpdateMovement()
@@ -1399,7 +1409,7 @@ public class YandereScript : MonoBehaviour
 						Time.timeScale = 1f;
 					}
 				}
-				if (!this.Aiming && this.Stance.Current != StanceType.Crouching && this.Stance.Current != StanceType.Crawling && !this.Accessories[9].activeInHierarchy && !this.Accessories[16].activeInHierarchy)
+				if (!this.Aiming && !this.Accessories[9].activeInHierarchy && !this.Accessories[16].activeInHierarchy)
 				{
 					if (Input.GetButton("RB"))
 					{
@@ -1428,7 +1438,7 @@ public class YandereScript : MonoBehaviour
 					}
 					if (Input.GetButtonUp("RB"))
 					{
-						if (this.YandereTimer < 0.5f && !this.Dragging && !this.Carrying && !this.Laughing)
+						if (this.Stance.Current != StanceType.Crouching && this.Stance.Current != StanceType.Crawling && this.YandereTimer < 0.5f && !this.Dragging && !this.Carrying && !this.Laughing)
 						{
 							if (this.Sans)
 							{
@@ -1591,7 +1601,7 @@ public class YandereScript : MonoBehaviour
 				{
 					this.StopAiming();
 				}
-				if (Input.GetKey("left alt"))
+				if (Input.GetKey(KeyCode.LeftAlt))
 				{
 					if (!this.CinematicCamera.activeInHierarchy)
 					{
@@ -1630,7 +1640,7 @@ public class YandereScript : MonoBehaviour
 						this.GloveTimer = 0f;
 					}
 				}
-				else if (Input.GetKey("1"))
+				else if (Input.GetKey(KeyCode.Alpha1))
 				{
 					this.GloveTimer += Time.deltaTime;
 					if (this.GloveTimer > 0.1f)
@@ -1658,7 +1668,7 @@ public class YandereScript : MonoBehaviour
 						this.DropTimer[1] = 0f;
 					}
 				}
-				else if (Input.GetKey("2"))
+				else if (Input.GetKey(KeyCode.Alpha2))
 				{
 					this.DropWeapon(1);
 				}
@@ -1680,7 +1690,7 @@ public class YandereScript : MonoBehaviour
 						this.DropTimer[2] = 0f;
 					}
 				}
-				else if (Input.GetKey("3"))
+				else if (Input.GetKey(KeyCode.Alpha3))
 				{
 					this.DropWeapon(2);
 				}
@@ -1689,7 +1699,7 @@ public class YandereScript : MonoBehaviour
 					this.DropTimer[2] = 0f;
 				}
 			}
-			if (Input.GetButtonDown("LS") || Input.GetKeyDown("t"))
+			if (Input.GetButtonDown("LS") || Input.GetKeyDown(KeyCode.T))
 			{
 				if (this.NewTrail != null)
 				{
@@ -2077,7 +2087,7 @@ public class YandereScript : MonoBehaviour
 						this.GloveTimer = 0f;
 					}
 				}
-				else if (Input.GetKeyUp("1"))
+				else if (Input.GetKeyUp(KeyCode.Alpha1))
 				{
 					this.Degloving = false;
 					this.CanMove = true;
@@ -2215,49 +2225,25 @@ public class YandereScript : MonoBehaviour
 			{
 				if (Input.GetAxis("Vertical") > 0.5f)
 				{
-					this.CharacterAnimation.CrossFade("f02_sansUp_00");
-					this.RagdollPK.transform.localPosition = new Vector3(0f, 3f, 2f);
-					if (this.PKDir != 1)
-					{
-						AudioSource.PlayClipAtPoint(this.Slam, base.transform.position + Vector3.up);
-					}
-					this.PKDir = 1;
+					this.GoToPKDir(PKDirType.Up, "f02_sansUp_00", new Vector3(0f, 3f, 2f));
 				}
 				else if (Input.GetAxis("Vertical") < -0.5f)
 				{
-					this.CharacterAnimation.CrossFade("f02_sansDown_00");
-					this.RagdollPK.transform.localPosition = new Vector3(0f, 0f, 2f);
-					if (this.PKDir != 2)
-					{
-						AudioSource.PlayClipAtPoint(this.Slam, base.transform.position + Vector3.up);
-					}
-					this.PKDir = 2;
+					this.GoToPKDir(PKDirType.Down, "f02_sansDown_00", new Vector3(0f, 0f, 2f));
 				}
 				else if (Input.GetAxis("Horizontal") > 0.5f)
 				{
-					this.CharacterAnimation.CrossFade("f02_sansRight_00");
-					this.RagdollPK.transform.localPosition = new Vector3(1.5f, 1.5f, 2f);
-					if (this.PKDir != 3)
-					{
-						AudioSource.PlayClipAtPoint(this.Slam, base.transform.position + Vector3.up);
-					}
-					this.PKDir = 3;
+					this.GoToPKDir(PKDirType.Right, "f02_sansRight_00", new Vector3(1.5f, 1.5f, 2f));
 				}
 				else if (Input.GetAxis("Horizontal") < -0.5f)
 				{
-					this.CharacterAnimation.CrossFade("f02_sansLeft_00");
-					this.RagdollPK.transform.localPosition = new Vector3(-1.5f, 1.5f, 2f);
-					if (this.PKDir != 4)
-					{
-						AudioSource.PlayClipAtPoint(this.Slam, base.transform.position + Vector3.up);
-					}
-					this.PKDir = 4;
+					this.GoToPKDir(PKDirType.Left, "f02_sansLeft_00", new Vector3(-1.5f, 1.5f, 2f));
 				}
 				else
 				{
 					this.CharacterAnimation.CrossFade("f02_sansHold_00");
 					this.RagdollPK.transform.localPosition = new Vector3(0f, 1.5f, 2f);
-					this.PKDir = 0;
+					this.PKDir = PKDirType.None;
 				}
 				if (Input.GetButtonDown("B"))
 				{
@@ -2817,6 +2803,10 @@ public class YandereScript : MonoBehaviour
 					else if (this.TargetStudent.Witnessed == "Accident")
 					{
 						this.Subtitle.UpdateLabel("Accident Apology", 0, 3f);
+					}
+					else if (this.TargetStudent.Witnessed == "Suspicious")
+					{
+						this.Subtitle.UpdateLabel("Suspicious Apology", 0, 3f);
 					}
 				}
 				else
@@ -3430,11 +3420,11 @@ public class YandereScript : MonoBehaviour
 
 	private void UpdateDebugFunctionality()
 	{
-		if (!this.Aiming && this.CanMove && Time.timeScale > 0f && Input.GetKeyDown("escape"))
+		if (!this.Aiming && this.CanMove && Time.timeScale > 0f && Input.GetKeyDown(KeyCode.Escape))
 		{
 			this.PauseScreen.JumpToQuit();
 		}
-		if (Input.GetKeyDown("p"))
+		if (Input.GetKeyDown(KeyCode.P))
 		{
 			this.CyborgParts[1].SetActive(false);
 			this.MemeGlasses.SetActive(false);
@@ -3479,7 +3469,7 @@ public class YandereScript : MonoBehaviour
 				this.EyewearID = 0;
 			}
 		}
-		if (Input.GetKeyDown("h"))
+		if (Input.GetKeyDown(KeyCode.H))
 		{
 			if (Input.GetButton("LB"))
 			{
@@ -3491,12 +3481,12 @@ public class YandereScript : MonoBehaviour
 			}
 			this.UpdateHair();
 		}
-		if (Input.GetKey("h") && Input.GetKeyDown("left"))
+		if (Input.GetKey(KeyCode.H) && Input.GetKeyDown(KeyCode.LeftArrow))
 		{
 			this.Hairstyle--;
 			this.UpdateHair();
 		}
-		if (Input.GetKeyDown("o") && !this.EasterEggMenu.activeInHierarchy)
+		if (Input.GetKeyDown(KeyCode.O) && !this.EasterEggMenu.activeInHierarchy)
 		{
 			if (this.AccessoryID > 0)
 			{
@@ -3512,7 +3502,7 @@ public class YandereScript : MonoBehaviour
 			}
 			this.UpdateAccessory();
 		}
-		if (Input.GetKey("o") && Input.GetKeyDown("left"))
+		if (Input.GetKey(KeyCode.O) && Input.GetKeyDown(KeyCode.LeftArrow))
 		{
 			if (this.AccessoryID > 0)
 			{
@@ -3523,7 +3513,7 @@ public class YandereScript : MonoBehaviour
 		}
 		if (!this.NoDebug && !this.DebugMenu.activeInHierarchy)
 		{
-			if (Input.GetKeyDown("-"))
+			if (Input.GetKeyDown(KeyCode.Minus))
 			{
 				if (Time.timeScale < 6f)
 				{
@@ -3534,7 +3524,7 @@ public class YandereScript : MonoBehaviour
 					Time.timeScale -= 5f;
 				}
 			}
-			if (Input.GetKeyDown("="))
+			if (Input.GetKeyDown(KeyCode.Equals))
 			{
 				if (Time.timeScale < 5f)
 				{
@@ -3550,7 +3540,7 @@ public class YandereScript : MonoBehaviour
 				}
 			}
 		}
-		if (Input.GetKey("."))
+		if (Input.GetKey(KeyCode.Period))
 		{
 			this.BreastSize += Time.deltaTime;
 			if (this.BreastSize > 2f)
@@ -3560,7 +3550,7 @@ public class YandereScript : MonoBehaviour
 			this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 			this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 		}
-		if (Input.GetKey(","))
+		if (Input.GetKey(KeyCode.Comma))
 		{
 			this.BreastSize -= Time.deltaTime;
 			if (this.BreastSize < 0.5f)
@@ -3574,123 +3564,123 @@ public class YandereScript : MonoBehaviour
 		{
 			if (this.CanMove && !this.Egg && base.transform.position.y < 1000f)
 			{
-				if (Input.GetKeyDown("/"))
+				if (Input.GetKeyDown(KeyCode.Slash))
 				{
 					this.DebugMenu.SetActive(false);
 					this.EasterEggMenu.SetActive(!this.EasterEggMenu.activeInHierarchy);
 				}
 				if (this.EasterEggMenu.activeInHierarchy && !this.Egg)
 				{
-					if (Input.GetKeyDown("p"))
+					if (Input.GetKeyDown(KeyCode.P))
 					{
 						this.Punish();
 					}
-					else if (Input.GetKeyDown("z"))
+					else if (Input.GetKeyDown(KeyCode.Z))
 					{
 						this.Slend();
 					}
-					else if (Input.GetKeyDown("b"))
+					else if (Input.GetKeyDown(KeyCode.B))
 					{
 						this.Sukeban();
 					}
-					else if (Input.GetKeyDown("c"))
+					else if (Input.GetKeyDown(KeyCode.C))
 					{
 						this.Cirno();
 					}
-					else if (Input.GetKeyDown("h"))
+					else if (Input.GetKeyDown(KeyCode.H))
 					{
 						this.EmptyHands();
 						this.Hate();
 					}
-					else if (Input.GetKeyDown("t"))
+					else if (Input.GetKeyDown(KeyCode.T))
 					{
 						this.StudentManager.AttackOnTitan();
 						this.AttackOnTitan();
 					}
-					else if (Input.GetKeyDown("g"))
+					else if (Input.GetKeyDown(KeyCode.G))
 					{
 						this.GaloSengen();
 					}
-					else if (!Input.GetKeyDown("j"))
+					else if (!Input.GetKeyDown(KeyCode.J))
 					{
-						if (Input.GetKeyDown("k"))
+						if (Input.GetKeyDown(KeyCode.K))
 						{
 							this.EasterEggMenu.SetActive(false);
 							this.StudentManager.Kong();
 							this.DK = true;
 						}
-						else if (Input.GetKeyDown("l"))
+						else if (Input.GetKeyDown(KeyCode.L))
 						{
 							this.Agent();
 						}
-						else if (Input.GetKeyDown("n"))
+						else if (Input.GetKeyDown(KeyCode.N))
 						{
 							this.Nude();
 						}
-						else if (Input.GetKeyDown("s"))
+						else if (Input.GetKeyDown(KeyCode.S))
 						{
 							this.EasterEggMenu.SetActive(false);
 							this.Egg = true;
 							this.StudentManager.Spook();
 						}
-						else if (Input.GetKeyDown("f"))
+						else if (Input.GetKeyDown(KeyCode.F))
 						{
 							this.EasterEggMenu.SetActive(false);
 							this.Falcon();
 						}
-						else if (Input.GetKeyDown("x"))
+						else if (Input.GetKeyDown(KeyCode.X))
 						{
 							this.EasterEggMenu.SetActive(false);
 							this.X();
 						}
-						else if (Input.GetKeyDown("o"))
+						else if (Input.GetKeyDown(KeyCode.O))
 						{
 							this.EasterEggMenu.SetActive(false);
 							this.Punch();
 						}
-						else if (Input.GetKeyDown("u"))
+						else if (Input.GetKeyDown(KeyCode.U))
 						{
 							this.EasterEggMenu.SetActive(false);
 							this.BadTime();
 						}
-						else if (Input.GetKeyDown("y"))
+						else if (Input.GetKeyDown(KeyCode.Y))
 						{
 							this.EasterEggMenu.SetActive(false);
 							this.CyborgNinja();
 						}
-						else if (Input.GetKeyDown("e"))
+						else if (Input.GetKeyDown(KeyCode.E))
 						{
 							this.EasterEggMenu.SetActive(false);
 							this.Ebola();
 						}
-						else if (Input.GetKeyDown("q"))
+						else if (Input.GetKeyDown(KeyCode.Q))
 						{
 							this.EasterEggMenu.SetActive(false);
 							this.Samus();
 						}
-						else if (!Input.GetKeyDown("w"))
+						else if (!Input.GetKeyDown(KeyCode.W))
 						{
-							if (Input.GetKeyDown("r"))
+							if (Input.GetKeyDown(KeyCode.R))
 							{
 								this.EasterEggMenu.SetActive(false);
 								this.Pose();
 							}
-							else if (Input.GetKeyDown("v"))
+							else if (Input.GetKeyDown(KeyCode.V))
 							{
 								this.EasterEggMenu.SetActive(false);
 								this.Long();
 							}
-							else if (Input.GetKeyDown("6"))
+							else if (Input.GetKeyDown(KeyCode.Alpha6))
 							{
 								this.EasterEggMenu.SetActive(false);
 								this.HairBlades();
 							}
-							else if (Input.GetKeyDown("7"))
+							else if (Input.GetKeyDown(KeyCode.Alpha7))
 							{
 								this.EasterEggMenu.SetActive(false);
 								this.Tornado();
 							}
-							else if (Input.GetKeyDown("8"))
+							else if (Input.GetKeyDown(KeyCode.Alpha8))
 							{
 								this.EasterEggMenu.SetActive(false);
 								this.GenderSwap();
@@ -3700,17 +3690,17 @@ public class YandereScript : MonoBehaviour
 								this.EasterEggMenu.SetActive(false);
 								this.SwapMesh();
 							}
-							else if (Input.GetKeyDown("a"))
+							else if (Input.GetKeyDown(KeyCode.A))
 							{
 								this.StudentManager.ChangeOka();
 								this.EasterEggMenu.SetActive(false);
 							}
-							else if (Input.GetKeyDown("i"))
+							else if (Input.GetKeyDown(KeyCode.I))
 							{
 								this.StudentManager.NoGravity = true;
 								this.EasterEggMenu.SetActive(false);
 							}
-							else if (Input.GetKeyDown("space"))
+							else if (Input.GetKeyDown(KeyCode.Space))
 							{
 							}
 						}
@@ -3718,7 +3708,7 @@ public class YandereScript : MonoBehaviour
 				}
 			}
 		}
-		else if (Input.GetKeyDown("z"))
+		else if (Input.GetKeyDown(KeyCode.Z))
 		{
 			this.DebugMenu.transform.parent.GetComponent<DebugMenuScript>().Censor();
 		}
@@ -3874,7 +3864,7 @@ public class YandereScript : MonoBehaviour
 		this.CharacterAnimation["f02_cameraPose_00"].weight = 0f;
 		this.PelvisRoot.transform.localPosition = new Vector3(this.PelvisRoot.transform.localPosition.x, 0f, this.PelvisRoot.transform.localPosition.z);
 		this.ShoulderCamera.AimingCamera = false;
-		if (!Input.GetButtonDown("Start") && !Input.GetKeyDown("escape"))
+		if (!Input.GetButtonDown("Start") && !Input.GetKeyDown(KeyCode.Escape))
 		{
 			this.FixCamera();
 		}
@@ -4148,7 +4138,7 @@ public class YandereScript : MonoBehaviour
 		}
 	}
 
-	private void UpdateHair()
+	public void UpdateHair()
 	{
 		if (this.Hairstyle > this.Hairstyles.Length - 1)
 		{

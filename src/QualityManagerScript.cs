@@ -53,6 +53,22 @@ public class QualityManagerScript : MonoBehaviour
 
 	public bool RimLightActive;
 
+	private static readonly int[] FPSValues = new int[]
+	{
+		int.MaxValue,
+		30,
+		60,
+		120
+	};
+
+	public static readonly string[] FPSStrings = new string[]
+	{
+		"Unlimited",
+		"30",
+		"60",
+		"120"
+	};
+
 	private void Start()
 	{
 		DepthOfField34[] components = Camera.main.GetComponents<DepthOfField34>();
@@ -70,6 +86,7 @@ public class QualityManagerScript : MonoBehaviour
 		this.UpdateFog();
 		this.UpdateAnims();
 		this.UpdateBloom();
+		this.UpdateFPSIndex();
 		this.UpdateShadows();
 		this.UpdateParticles();
 		this.UpdatePostAliasing();
@@ -297,6 +314,19 @@ public class QualityManagerScript : MonoBehaviour
 	public void UpdateAnims()
 	{
 		this.StudentManager.DisableFarAnims = OptionGlobals.DisableFarAnimations;
+	}
+
+	public void UpdateFPSIndex()
+	{
+		if (OptionGlobals.FPSIndex < 0)
+		{
+			OptionGlobals.FPSIndex = QualityManagerScript.FPSValues.Length - 1;
+		}
+		else if (OptionGlobals.FPSIndex >= QualityManagerScript.FPSValues.Length)
+		{
+			OptionGlobals.FPSIndex = 0;
+		}
+		Application.targetFrameRate = QualityManagerScript.FPSValues[OptionGlobals.FPSIndex];
 	}
 
 	public void ToggleExperiment()

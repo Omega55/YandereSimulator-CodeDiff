@@ -114,7 +114,7 @@ public class WalkToSchoolManagerScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (SchoolGlobals.SchoolAtmosphere < 50f || GameGlobals.LoveSick)
+		if (SchoolGlobals.SchoolAtmosphere < 0.5f || GameGlobals.LoveSick)
 		{
 			this.Darkness.color = new Color(0f, 0f, 0f, 1f);
 		}
@@ -241,11 +241,11 @@ public class WalkToSchoolManagerScript : MonoBehaviour
 				SceneManager.LoadScene("LoadingScene");
 			}
 		}
-		if (Input.GetKeyDown("="))
+		if (Input.GetKeyDown(KeyCode.Equals))
 		{
 			Time.timeScale += 10f;
 		}
-		if (Input.GetKeyDown("-"))
+		if (Input.GetKeyDown(KeyCode.Minus))
 		{
 			Time.timeScale -= 10f;
 		}

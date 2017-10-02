@@ -33,7 +33,7 @@ public class AnswerSheetScript : MonoBehaviour
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
 			}
-			if (DateGlobals.Weekday == 5 && this.Clock.HourTime > 13.5f)
+			if (DateGlobals.Weekday == DayOfWeek.Friday && this.Clock.HourTime > 13.5f)
 			{
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;

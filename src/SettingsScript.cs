@@ -31,6 +31,8 @@ public class SettingsScript : MonoBehaviour
 
 	public UILabel FarAnimsLabel;
 
+	public UILabel FPSCapLabel;
+
 	public int SelectionLimit = 2;
 
 	public int Selected = 1;
@@ -43,15 +45,15 @@ public class SettingsScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown("space"))
+		if (Input.GetKeyDown(KeyCode.Space))
 		{
 			this.QualityManager.ToggleExperiment();
 		}
-		if (Input.GetKeyDown("r"))
+		if (Input.GetKeyDown(KeyCode.R))
 		{
 			this.QualityManager.RimLight();
 		}
-		if (Input.GetKeyDown("b"))
+		if (Input.GetKeyDown(KeyCode.B))
 		{
 			if (!this.Background.activeInHierarchy)
 			{
@@ -197,11 +199,27 @@ public class SettingsScript : MonoBehaviour
 				this.QualityManager.UpdateShadows();
 			}
 		}
-		else if (this.Selected == 10 && (this.InputManager.TappedRight || this.InputManager.TappedLeft))
+		else if (this.Selected == 10)
 		{
-			OptionGlobals.DisableFarAnimations = !OptionGlobals.DisableFarAnimations;
+			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
+			{
+				OptionGlobals.DisableFarAnimations = !OptionGlobals.DisableFarAnimations;
+				this.UpdateText();
+				this.QualityManager.UpdateAnims();
+			}
+		}
+		else if (this.Selected == 11)
+		{
+			if (this.InputManager.TappedRight)
+			{
+				OptionGlobals.FPSIndex++;
+			}
+			else if (this.InputManager.TappedLeft)
+			{
+				OptionGlobals.FPSIndex--;
+			}
+			this.QualityManager.UpdateFPSIndex();
 			this.UpdateText();
-			this.QualityManager.UpdateAnims();
 		}
 		if (Input.GetButtonDown("B"))
 		{
@@ -232,6 +250,7 @@ public class SettingsScript : MonoBehaviour
 		{
 			this.ParticleLabel.text = "None";
 		}
+		this.FPSCapLabel.text = QualityManagerScript.FPSStrings[OptionGlobals.FPSIndex];
 		this.OutlinesLabel.text = ((!OptionGlobals.DisableOutlines) ? "On" : "Off");
 		this.AliasingLabel.text = QualitySettings.antiAliasing + "x";
 		this.PostAliasingLabel.text = ((!OptionGlobals.DisablePostAliasing) ? "On" : "Off");
@@ -253,6 +272,6 @@ public class SettingsScript : MonoBehaviour
 		{
 			this.Selected = 1;
 		}
-		this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 445f - 80f * (float)this.Selected, this.Highlight.localPosition.z);
+		this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 455f - 75f * (float)this.Selected, this.Highlight.localPosition.z);
 	}
 }

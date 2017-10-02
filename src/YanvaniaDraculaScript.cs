@@ -296,7 +296,7 @@ public class YanvaniaDraculaScript : MonoBehaviour
 		}
 		this.HealthBar.parent.transform.localPosition = new Vector3(Mathf.Lerp(this.HealthBar.parent.transform.localPosition.x, 1025f, Time.deltaTime * 10f), this.HealthBar.parent.transform.localPosition.y, this.HealthBar.parent.transform.localPosition.z);
 		this.HealthBar.localScale = new Vector3(this.HealthBar.localScale.x, Mathf.Lerp(this.HealthBar.localScale.y, this.Health / this.MaxHealth, Time.deltaTime * 10f), this.HealthBar.localScale.z);
-		if (Input.GetKeyDown("4"))
+		if (Input.GetKeyDown(KeyCode.Alpha4))
 		{
 			base.transform.position = new Vector3(base.transform.position.x, 6.5f, 0f);
 			this.Health = 1f;

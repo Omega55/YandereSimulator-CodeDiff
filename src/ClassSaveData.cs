@@ -33,25 +33,6 @@ public class ClassSaveData
 
 	public int psychologyGrade;
 
-	public ClassSaveData()
-	{
-		this.biology = 0;
-		this.biologyBonus = 0;
-		this.biologyGrade = 0;
-		this.chemistry = 0;
-		this.chemistryBonus = 0;
-		this.chemistryGrade = 0;
-		this.language = 0;
-		this.languageBonus = 0;
-		this.languageGrade = 0;
-		this.physical = 0;
-		this.physicalBonus = 0;
-		this.physicalGrade = 0;
-		this.psychology = 0;
-		this.psychologyBonus = 0;
-		this.psychologyGrade = 0;
-	}
-
 	public static ClassSaveData ReadFromGlobals()
 	{
 		return new ClassSaveData

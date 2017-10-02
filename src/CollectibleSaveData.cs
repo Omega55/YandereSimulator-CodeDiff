@@ -3,24 +3,15 @@
 [Serializable]
 public class CollectibleSaveData
 {
-	public IntHashSet basementTapeCollected;
+	public IntHashSet basementTapeCollected = new IntHashSet();
 
-	public IntHashSet basementTapeListened;
+	public IntHashSet basementTapeListened = new IntHashSet();
 
-	public IntHashSet mangaCollected;
+	public IntHashSet mangaCollected = new IntHashSet();
 
-	public IntHashSet tapeCollected;
+	public IntHashSet tapeCollected = new IntHashSet();
 
-	public IntHashSet tapeListened;
-
-	public CollectibleSaveData()
-	{
-		this.basementTapeCollected = new IntHashSet();
-		this.basementTapeListened = new IntHashSet();
-		this.mangaCollected = new IntHashSet();
-		this.tapeCollected = new IntHashSet();
-		this.tapeListened = new IntHashSet();
-	}
+	public IntHashSet tapeListened = new IntHashSet();
 
 	public static CollectibleSaveData ReadFromGlobals()
 	{

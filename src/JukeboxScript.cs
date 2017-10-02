@@ -92,7 +92,7 @@ public class JukeboxScript : MonoBehaviour
 		if (!SchoolGlobals.SchoolAtmosphereSet)
 		{
 			SchoolGlobals.SchoolAtmosphereSet = true;
-			SchoolGlobals.SchoolAtmosphere = 100f;
+			SchoolGlobals.SchoolAtmosphere = 1f;
 		}
 		int num;
 		if (SchoolAtmosphere.Type == SchoolAtmosphereType.High)
@@ -122,7 +122,7 @@ public class JukeboxScript : MonoBehaviour
 		this.Timer += Time.deltaTime;
 		if (!this.Yandere.PauseScreen.Show)
 		{
-			if (Input.GetKeyDown("m"))
+			if (Input.GetKeyDown(KeyCode.M))
 			{
 				if (this.Custom.isPlaying)
 				{
@@ -141,11 +141,11 @@ public class JukeboxScript : MonoBehaviour
 					this.Volume = 0f;
 				}
 			}
-			if (Input.GetKeyDown("n") && this.Volume < 1f)
+			if (Input.GetKeyDown(KeyCode.N) && this.Volume < 1f)
 			{
 				this.Volume += 0.1f;
 			}
-			if (Input.GetKeyDown("b") && this.Volume > 0f)
+			if (Input.GetKeyDown(KeyCode.B) && this.Volume > 0f)
 			{
 				this.Volume -= 0.1f;
 			}
@@ -198,97 +198,97 @@ public class JukeboxScript : MonoBehaviour
 		}
 		if (!this.Yandere.PauseScreen.Show && !this.Yandere.Noticed && this.Yandere.CanMove && this.Yandere.EasterEggMenu.activeInHierarchy && !this.Egg)
 		{
-			if (Input.GetKeyDown("t"))
+			if (Input.GetKeyDown(KeyCode.T))
 			{
 				this.Egg = true;
 				this.KillVolume();
 				this.AttackOnTitan.enabled = true;
 			}
-			else if (Input.GetKeyDown("p"))
+			else if (Input.GetKeyDown(KeyCode.P))
 			{
 				this.Egg = true;
 				this.KillVolume();
 				this.Nuclear.enabled = true;
 			}
-			else if (Input.GetKeyDown("h"))
+			else if (Input.GetKeyDown(KeyCode.H))
 			{
 				this.Egg = true;
 				this.KillVolume();
 				this.Hatred.enabled = true;
 			}
-			else if (Input.GetKeyDown("b"))
+			else if (Input.GetKeyDown(KeyCode.B))
 			{
 				this.Egg = true;
 				this.KillVolume();
 				this.Sukeban.enabled = true;
 			}
-			else if (Input.GetKeyDown("x") || Input.GetKeyDown("z"))
+			else if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.Z))
 			{
 				this.Egg = true;
 				this.KillVolume();
 				this.Slender.enabled = true;
 			}
-			else if (Input.GetKeyDown("g"))
+			else if (Input.GetKeyDown(KeyCode.G))
 			{
 				this.Egg = true;
 				this.KillVolume();
 				this.Galo.enabled = true;
 			}
-			else if (Input.GetKeyDown("l"))
+			else if (Input.GetKeyDown(KeyCode.L))
 			{
 				this.Egg = true;
 				this.KillVolume();
 				this.Hitman.enabled = true;
 			}
-			else if (Input.GetKeyDown("s"))
+			else if (Input.GetKeyDown(KeyCode.S))
 			{
 				this.Egg = true;
 				this.KillVolume();
 				this.Skeletons.enabled = true;
 			}
-			else if (Input.GetKeyDown("k"))
+			else if (Input.GetKeyDown(KeyCode.K))
 			{
 				this.Egg = true;
 				this.KillVolume();
 				this.DK.enabled = true;
 			}
-			else if (Input.GetKeyDown("c"))
+			else if (Input.GetKeyDown(KeyCode.C))
 			{
 				this.Egg = true;
 				this.KillVolume();
 				this.Touhou.enabled = true;
 			}
-			else if (Input.GetKeyDown("f"))
+			else if (Input.GetKeyDown(KeyCode.F))
 			{
 				this.Egg = true;
 				this.KillVolume();
 				this.Falcon.enabled = true;
 			}
-			else if (Input.GetKeyDown("o"))
+			else if (Input.GetKeyDown(KeyCode.O))
 			{
 				this.Egg = true;
 				this.KillVolume();
 				this.Punch.enabled = true;
 			}
-			else if (Input.GetKeyDown("u"))
+			else if (Input.GetKeyDown(KeyCode.U))
 			{
 				this.Egg = true;
 				this.KillVolume();
 				this.Megalovania.enabled = true;
 			}
-			else if (Input.GetKeyDown("q"))
+			else if (Input.GetKeyDown(KeyCode.Q))
 			{
 				this.Egg = true;
 				this.KillVolume();
 				this.Metroid.enabled = true;
 			}
-			else if (Input.GetKeyDown("y"))
+			else if (Input.GetKeyDown(KeyCode.Y))
 			{
 				this.Egg = true;
 				this.KillVolume();
 				this.Ninja.enabled = true;
 			}
-			else if (Input.GetKeyDown("e") || Input.GetKeyDown("6") || Input.GetKeyDown("7"))
+			else if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.Alpha7))
 			{
 				this.Egg = true;
 				this.KillVolume();

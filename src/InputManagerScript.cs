@@ -48,7 +48,7 @@ public class InputManagerScript : MonoBehaviour
 			this.DPadUp = false;
 			this.DPadDown = false;
 		}
-		if (!Input.GetKey("w") && !Input.GetKey("s"))
+		if (!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
 		{
 			if (Input.GetAxis("Vertical") > 0.5f)
 			{
@@ -81,7 +81,7 @@ public class InputManagerScript : MonoBehaviour
 			this.DPadRight = false;
 			this.DPadLeft = false;
 		}
-		if (!Input.GetKey("a") && !Input.GetKey("d"))
+		if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
 		{
 			if (Input.GetAxis("Horizontal") > 0.5f)
 			{
@@ -109,22 +109,22 @@ public class InputManagerScript : MonoBehaviour
 			this.TappedUp = false;
 			this.TappedDown = false;
 		}
-		if (Input.GetKeyDown("w") || Input.GetKeyDown("up"))
+		if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
 		{
 			this.TappedUp = true;
 			this.NoStick();
 		}
-		if (Input.GetKeyDown("s") || Input.GetKeyDown("down"))
+		if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
 		{
 			this.TappedDown = true;
 			this.NoStick();
 		}
-		if (Input.GetKeyDown("a") || Input.GetKeyDown("left"))
+		if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
 		{
 			this.TappedLeft = true;
 			this.NoStick();
 		}
-		if (Input.GetKeyDown("d") || Input.GetKeyDown("right"))
+		if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
 		{
 			this.TappedRight = true;
 			this.NoStick();

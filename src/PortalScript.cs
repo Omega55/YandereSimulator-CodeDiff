@@ -23,6 +23,8 @@ public class PortalScript : MonoBehaviour
 
 	public GameObject HeartbeatCamera;
 
+	public GameObject Headmaster;
+
 	public UISprite ClassDarkness;
 
 	public Transform Teacher;
@@ -212,6 +214,14 @@ public class PortalScript : MonoBehaviour
 					this.Transition = false;
 					this.Yandere.InClass = false;
 					this.StudentManager.ResumeMovement();
+					if (this.Headmaster.activeInHierarchy)
+					{
+						this.Headmaster.SetActive(false);
+					}
+					else
+					{
+						this.Headmaster.SetActive(true);
+					}
 				}
 			}
 		}

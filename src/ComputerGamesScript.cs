@@ -103,7 +103,7 @@ public class ComputerGamesScript : MonoBehaviour
 			this.Timer += Time.deltaTime;
 			if (this.Timer > 5f)
 			{
-				this.Yandere.PowerUp.gameObject.SetActive(true);
+				this.Yandere.PowerUp.transform.parent.gameObject.SetActive(true);
 				this.Yandere.MyController.radius = 0.2f;
 				this.Yandere.CanMove = true;
 				this.Yandere.EmptyHands();
@@ -159,7 +159,7 @@ public class ComputerGamesScript : MonoBehaviour
 			}
 			if (this.Timer > 6f)
 			{
-				this.Yandere.PowerUp.gameObject.SetActive(false);
+				this.Yandere.PowerUp.transform.parent.gameObject.SetActive(false);
 				base.gameObject.SetActive(false);
 			}
 		}

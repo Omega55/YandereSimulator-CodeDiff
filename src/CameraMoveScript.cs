@@ -29,7 +29,7 @@ public class CameraMoveScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown("space"))
+		if (Input.GetKeyDown(KeyCode.Space))
 		{
 			this.Begin = true;
 		}

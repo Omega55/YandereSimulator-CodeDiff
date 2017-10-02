@@ -4,15 +4,9 @@ using System.Collections.Generic;
 [Serializable]
 public class TaskSaveData
 {
-	public IntHashSet kittenPhoto;
+	public IntHashSet kittenPhoto = new IntHashSet();
 
-	public IntAndIntDictionary taskStatus;
-
-	public TaskSaveData()
-	{
-		this.kittenPhoto = new IntHashSet();
-		this.taskStatus = new IntAndIntDictionary();
-	}
+	public IntAndIntDictionary taskStatus = new IntAndIntDictionary();
 
 	public static TaskSaveData ReadFromGlobals()
 	{

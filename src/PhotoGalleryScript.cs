@@ -4,59 +4,92 @@ using UnityEngine;
 
 public class PhotoGalleryScript : MonoBehaviour
 {
-	public InputManagerScript InputManager;
+	[SerializeField]
+	private InputManagerScript InputManager;
 
-	public PauseScreenScript PauseScreen;
+	[SerializeField]
+	private PauseScreenScript PauseScreen;
 
-	public TaskManagerScript TaskManager;
+	[SerializeField]
+	private TaskManagerScript TaskManager;
 
 	public PromptBarScript PromptBar;
 
-	public HomeCursorScript Cursor;
+	[SerializeField]
+	private HomeCursorScript Cursor;
 
-	public YandereScript Yandere;
+	[SerializeField]
+	private YandereScript Yandere;
 
-	public GameObject MovingPhotograph;
+	[SerializeField]
+	private GameObject MovingPhotograph;
 
 	public GameObject LoadingScreen;
 
-	public GameObject Photograph;
+	[SerializeField]
+	private GameObject Photograph;
 
-	public Transform CorkboardPanel;
+	[SerializeField]
+	private Transform CorkboardPanel;
 
-	public Transform Destination;
+	[SerializeField]
+	private Transform Destination;
 
-	public Transform Highlight;
+	[SerializeField]
+	private Transform Highlight;
 
-	public Transform Gallery;
+	[SerializeField]
+	private Transform Gallery;
 
-	public UITexture[] Photographs;
+	[SerializeField]
+	private UITexture[] Photographs;
 
-	public UISprite[] Hearts;
+	[SerializeField]
+	private UISprite[] Hearts;
 
-	public UITexture ViewPhoto;
+	[SerializeField]
+	private UITexture ViewPhoto;
 
-	public Texture NoPhoto;
+	[SerializeField]
+	private Texture NoPhoto;
 
-	public Vector2 PreviousPosition;
+	[SerializeField]
+	private Vector2 PreviousPosition;
 
-	public Vector2 MouseDelta;
+	[SerializeField]
+	private Vector2 MouseDelta;
 
 	public bool Adjusting;
 
-	public bool CanAdjust;
+	[SerializeField]
+	private bool CanAdjust;
 
-	public bool Corkboard;
+	[SerializeField]
+	private bool Corkboard;
 
 	public bool Viewing;
 
-	public bool Moving;
+	[SerializeField]
+	private bool Moving;
 
-	public bool Reset;
+	[SerializeField]
+	private bool Reset;
 
-	public int Column;
+	[SerializeField]
+	private int Column;
 
-	public int Row;
+	[SerializeField]
+	private int Row;
+
+	private const float MaxPhotoX = 4150f;
+
+	private const float MaxPhotoY = 2500f;
+
+	private const float MaxCursorX = 4788f;
+
+	private const float MaxCursorY = 3122f;
+
+	private const float CorkboardAspectRatio = 1.53363228f;
 
 	private void Start()
 	{
@@ -64,6 +97,98 @@ public class PhotoGalleryScript : MonoBehaviour
 		{
 			this.Cursor.gameObject.SetActive(false);
 			base.enabled = false;
+		}
+	}
+
+	private int CurrentIndex
+	{
+		get
+		{
+			return this.Column + (this.Row - 1) * 5;
+		}
+	}
+
+	private float HighlightX
+	{
+		get
+		{
+			return -450f + 150f * (float)this.Column;
+		}
+	}
+
+	private float HighlightY
+	{
+		get
+		{
+			return 225f - 75f * (float)this.Row;
+		}
+	}
+
+	private float MovingPhotoXPercent
+	{
+		get
+		{
+			float num = -4150f;
+			float num2 = 4150f;
+			return (this.MovingPhotograph.transform.localPosition.x - num) / (num2 - num);
+		}
+		set
+		{
+			this.MovingPhotograph.transform.localPosition = new Vector3(-4150f + 2f * (4150f * Mathf.Clamp01(value)), this.MovingPhotograph.transform.localPosition.y, this.MovingPhotograph.transform.localPosition.z);
+		}
+	}
+
+	private float MovingPhotoYPercent
+	{
+		get
+		{
+			float num = -2500f;
+			float num2 = 2500f;
+			return (this.MovingPhotograph.transform.localPosition.y - num) / (num2 - num);
+		}
+		set
+		{
+			this.MovingPhotograph.transform.localPosition = new Vector3(this.MovingPhotograph.transform.localPosition.x, -2500f + 2f * (2500f * Mathf.Clamp01(value)), this.MovingPhotograph.transform.localPosition.z);
+		}
+	}
+
+	private float MovingPhotoRotation
+	{
+		get
+		{
+			return this.MovingPhotograph.transform.localEulerAngles.z;
+		}
+		set
+		{
+			this.MovingPhotograph.transform.localEulerAngles = new Vector3(this.MovingPhotograph.transform.localEulerAngles.x, this.MovingPhotograph.transform.localEulerAngles.y, value);
+		}
+	}
+
+	private float CursorXPercent
+	{
+		get
+		{
+			float num = -4788f;
+			float num2 = 4788f;
+			return (this.Cursor.transform.localPosition.x - num) / (num2 - num);
+		}
+		set
+		{
+			this.Cursor.transform.localPosition = new Vector3(-4788f + 2f * (4788f * Mathf.Clamp01(value)), this.Cursor.transform.localPosition.y, this.Cursor.transform.localPosition.z);
+		}
+	}
+
+	private float CursorYPercent
+	{
+		get
+		{
+			float num = -3122f;
+			float num2 = 3122f;
+			return (this.Cursor.transform.localPosition.y - num) / (num2 - num);
+		}
+		set
+		{
+			this.Cursor.transform.localPosition = new Vector3(this.Cursor.transform.localPosition.x, -3122f + 2f * (3122f * Mathf.Clamp01(value)), this.Cursor.transform.localPosition.z);
 		}
 	}
 
@@ -76,17 +201,17 @@ public class PhotoGalleryScript : MonoBehaviour
 			{
 				if (Input.GetButtonDown("A"))
 				{
-					int i = this.Column + (this.Row - 1) * 5;
-					if (this.Photographs[i].mainTexture != this.NoPhoto)
+					UITexture uitexture = this.Photographs[this.CurrentIndex];
+					if (uitexture.mainTexture != this.NoPhoto)
 					{
-						this.ViewPhoto.mainTexture = this.Photographs[i].mainTexture;
-						this.ViewPhoto.transform.position = this.Photographs[i].transform.position;
-						this.ViewPhoto.transform.localScale = this.Photographs[i].transform.localScale;
-						this.Destination.position = this.Photographs[i].transform.position;
+						this.ViewPhoto.mainTexture = uitexture.mainTexture;
+						this.ViewPhoto.transform.position = uitexture.transform.position;
+						this.ViewPhoto.transform.localScale = uitexture.transform.localScale;
+						this.Destination.position = uitexture.transform.position;
 						this.Viewing = true;
 						if (!this.Corkboard)
 						{
-							for (i = 1; i < 26; i++)
+							for (int i = 1; i < 26; i++)
 							{
 								this.Hearts[i].gameObject.SetActive(false);
 							}
@@ -112,14 +237,14 @@ public class PhotoGalleryScript : MonoBehaviour
 				if (Input.GetButtonDown("X"))
 				{
 					this.ViewPhoto.mainTexture = null;
-					int num = this.Column + (this.Row - 1) * 5;
-					if (this.Photographs[num].mainTexture != this.NoPhoto)
+					int currentIndex = this.CurrentIndex;
+					if (this.Photographs[currentIndex].mainTexture != this.NoPhoto)
 					{
-						this.Photographs[num].mainTexture = this.NoPhoto;
-						PlayerGlobals.SetPhoto(num, false);
-						PlayerGlobals.SetSenpaiPhoto(num, false);
-						TaskGlobals.SetKittenPhoto(num, false);
-						this.Hearts[num].gameObject.SetActive(false);
+						this.Photographs[currentIndex].mainTexture = this.NoPhoto;
+						PlayerGlobals.SetPhoto(currentIndex, false);
+						PlayerGlobals.SetSenpaiPhoto(currentIndex, false);
+						TaskGlobals.SetKittenPhoto(currentIndex, false);
+						this.Hearts[currentIndex].gameObject.SetActive(false);
 						this.TaskManager.UpdateTaskStatus();
 					}
 					this.UpdateButtonPrompts();
@@ -136,9 +261,9 @@ public class PhotoGalleryScript : MonoBehaviour
 				}
 				else if (this.CanAdjust && Input.GetButtonDown("Y"))
 				{
-					int num2 = this.Column + (this.Row - 1) * 5;
-					PlayerGlobals.SetSenpaiPhoto(num2, false);
-					this.Hearts[num2].gameObject.SetActive(false);
+					int currentIndex2 = this.CurrentIndex;
+					PlayerGlobals.SetSenpaiPhoto(currentIndex2, false);
+					this.Hearts[currentIndex2].gameObject.SetActive(false);
 					this.CanAdjust = false;
 					this.Yandere.Sanity += 20f;
 					this.Yandere.UpdateSanity();
@@ -146,42 +271,25 @@ public class PhotoGalleryScript : MonoBehaviour
 				}
 				if (this.InputManager.TappedRight)
 				{
-					this.Column++;
-					if (this.Column > 5)
-					{
-						this.Column = 1;
-					}
-					this.Highlight.transform.localPosition = new Vector3(-450f + 150f * (float)this.Column, this.Highlight.transform.localPosition.y, this.Highlight.transform.localPosition.z);
-					this.UpdateButtonPrompts();
+					this.Column = ((this.Column >= 5) ? 1 : (this.Column + 1));
 				}
 				if (this.InputManager.TappedLeft)
 				{
-					this.Column--;
-					if (this.Column < 1)
-					{
-						this.Column = 5;
-					}
-					this.Highlight.transform.localPosition = new Vector3(-450f + 150f * (float)this.Column, this.Highlight.transform.localPosition.y, this.Highlight.transform.localPosition.z);
-					this.UpdateButtonPrompts();
+					this.Column = ((this.Column <= 1) ? 5 : (this.Column - 1));
 				}
 				if (this.InputManager.TappedUp)
 				{
-					this.Row--;
-					if (this.Row < 1)
-					{
-						this.Row = 5;
-					}
-					this.Highlight.transform.localPosition = new Vector3(this.Highlight.transform.localPosition.x, 225f - 75f * (float)this.Row, this.Highlight.transform.localPosition.z);
-					this.UpdateButtonPrompts();
+					this.Row = ((this.Row <= 1) ? 5 : (this.Row - 1));
 				}
 				if (this.InputManager.TappedDown)
 				{
-					this.Row++;
-					if (this.Row > 5)
-					{
-						this.Row = 1;
-					}
-					this.Highlight.transform.localPosition = new Vector3(this.Highlight.transform.localPosition.x, 225f - 75f * (float)this.Row, this.Highlight.transform.localPosition.z);
+					this.Row = ((this.Row >= 5) ? 1 : (this.Row + 1));
+				}
+				bool flag = this.InputManager.TappedRight || this.InputManager.TappedLeft;
+				bool flag2 = this.InputManager.TappedUp || this.InputManager.TappedDown;
+				if (flag || flag2)
+				{
+					this.Highlight.transform.localPosition = new Vector3(this.HighlightX, this.HighlightY, this.Highlight.transform.localPosition.z);
 					this.UpdateButtonPrompts();
 				}
 				this.ViewPhoto.transform.localScale = Vector3.Lerp(this.ViewPhoto.transform.localScale, new Vector3(1f, 1f, 1f), t);
@@ -202,8 +310,7 @@ public class PhotoGalleryScript : MonoBehaviour
 					gameObject.transform.localEulerAngles = Vector3.zero;
 					gameObject.transform.localPosition = Vector3.zero;
 					gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
-					int num3 = this.Column + (this.Row - 1) * 5;
-					gameObject.GetComponent<UITexture>().mainTexture = this.Photographs[num3].mainTexture;
+					gameObject.GetComponent<UITexture>().mainTexture = this.Photographs[this.CurrentIndex].mainTexture;
 					this.MovingPhotograph = gameObject;
 					this.CanAdjust = false;
 					this.Adjusting = true;
@@ -245,19 +352,19 @@ public class PhotoGalleryScript : MonoBehaviour
 			{
 				if (Input.GetMouseButton(1))
 				{
-					this.MovingPhotograph.transform.localEulerAngles = new Vector3(this.MovingPhotograph.transform.localEulerAngles.x, this.MovingPhotograph.transform.localEulerAngles.y, this.MovingPhotograph.transform.localEulerAngles.z + this.MouseDelta.x);
+					this.MovingPhotoRotation += this.MouseDelta.x;
 				}
 				else
 				{
-					this.MovingPhotograph.transform.localPosition = new Vector3(this.MovingPhotograph.transform.localPosition.x + this.MouseDelta.x * 8.66666f, this.MovingPhotograph.transform.localPosition.y + this.MouseDelta.y * 8.66666f);
+					this.MovingPhotograph.transform.localPosition = new Vector3(this.MovingPhotograph.transform.localPosition.x + this.MouseDelta.x * 8.66666f, this.MovingPhotograph.transform.localPosition.y + this.MouseDelta.y * 8.66666f, 0f);
 				}
 				if (Input.GetButton("LB"))
 				{
-					this.MovingPhotograph.transform.localEulerAngles = new Vector3(this.MovingPhotograph.transform.localEulerAngles.x, this.MovingPhotograph.transform.localEulerAngles.y, this.MovingPhotograph.transform.localEulerAngles.z + Time.deltaTime * 100f);
+					this.MovingPhotoRotation += Time.deltaTime * 100f;
 				}
 				if (Input.GetButton("RB"))
 				{
-					this.MovingPhotograph.transform.localEulerAngles = new Vector3(this.MovingPhotograph.transform.localEulerAngles.x, this.MovingPhotograph.transform.localEulerAngles.y, this.MovingPhotograph.transform.localEulerAngles.z - Time.deltaTime * 100f);
+					this.MovingPhotoRotation -= Time.deltaTime * 100f;
 				}
 				this.MovingPhotograph.transform.localPosition = new Vector3(this.MovingPhotograph.transform.localPosition.x + Input.GetAxis("Horizontal") * 86.66666f, this.MovingPhotograph.transform.localPosition.y + Input.GetAxis("Vertical") * 86.66666f, this.MovingPhotograph.transform.localPosition.z);
 				if (this.MovingPhotograph.transform.localPosition.x > 4150f)
@@ -350,14 +457,7 @@ public class PhotoGalleryScript : MonoBehaviour
 		{
 			if (PlayerGlobals.GetPhoto(ID))
 			{
-				string path = string.Concat(new string[]
-				{
-					"file:///",
-					Application.streamingAssetsPath,
-					"/Photographs/Photo_",
-					ID.ToString(),
-					".png"
-				});
+				string path = Application.streamingAssetsPath + "/Photographs/Photo_" + ID.ToString() + ".png";
 				WWW www = new WWW(path);
 				yield return www;
 				if (www.error == null)
@@ -387,7 +487,6 @@ public class PhotoGalleryScript : MonoBehaviour
 
 	public void UpdateButtonPrompts()
 	{
-		int num = this.Column + (this.Row - 1) * 5;
 		if (this.Moving)
 		{
 			this.PromptBar.Label[0].text = "Place";
@@ -415,7 +514,8 @@ public class PhotoGalleryScript : MonoBehaviour
 		}
 		else if (!this.Viewing)
 		{
-			if (this.Photographs[num].mainTexture != this.NoPhoto)
+			int currentIndex = this.CurrentIndex;
+			if (this.Photographs[currentIndex].mainTexture != this.NoPhoto)
 			{
 				this.PromptBar.Label[0].text = "View";
 				this.PromptBar.Label[2].text = "Delete";
@@ -427,14 +527,7 @@ public class PhotoGalleryScript : MonoBehaviour
 			}
 			if (!this.Corkboard)
 			{
-				if (PlayerGlobals.GetSenpaiPhoto(num))
-				{
-					this.PromptBar.Label[3].text = "Use";
-				}
-				else
-				{
-					this.PromptBar.Label[3].text = string.Empty;
-				}
+				this.PromptBar.Label[3].text = ((!PlayerGlobals.GetSenpaiPhoto(currentIndex)) ? string.Empty : "Use");
 			}
 			else
 			{

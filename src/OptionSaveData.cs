@@ -19,26 +19,13 @@ public class OptionSaveData
 
 	public bool fog;
 
+	public int fpsIndex;
+
 	public bool highPopulation;
 
 	public int lowDetailStudents;
 
 	public int particleCount;
-
-	public OptionSaveData()
-	{
-		this.disableBloom = false;
-		this.disableFarAnimations = false;
-		this.disableOutlines = false;
-		this.disablePostAliasing = false;
-		this.disableShadows = false;
-		this.drawDistance = 0;
-		this.drawDistanceLimit = 0;
-		this.fog = false;
-		this.highPopulation = false;
-		this.lowDetailStudents = 0;
-		this.particleCount = 0;
-	}
 
 	public static OptionSaveData ReadFromGlobals()
 	{
@@ -52,6 +39,7 @@ public class OptionSaveData
 			drawDistance = OptionGlobals.DrawDistance,
 			drawDistanceLimit = OptionGlobals.DrawDistanceLimit,
 			fog = OptionGlobals.Fog,
+			fpsIndex = OptionGlobals.FPSIndex,
 			highPopulation = OptionGlobals.HighPopulation,
 			lowDetailStudents = OptionGlobals.LowDetailStudents,
 			particleCount = OptionGlobals.ParticleCount
@@ -68,6 +56,7 @@ public class OptionSaveData
 		OptionGlobals.DrawDistance = data.drawDistance;
 		OptionGlobals.DrawDistanceLimit = data.drawDistanceLimit;
 		OptionGlobals.Fog = data.fog;
+		OptionGlobals.FPSIndex = data.fpsIndex;
 		OptionGlobals.HighPopulation = data.highPopulation;
 		OptionGlobals.LowDetailStudents = data.lowDetailStudents;
 		OptionGlobals.ParticleCount = data.particleCount;

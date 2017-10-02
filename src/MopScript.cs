@@ -32,6 +32,14 @@ public class MopScript : MonoBehaviour
 
 	private void Update()
 	{
+		if (this.PickUp.Clock.Period == 5)
+		{
+			this.PickUp.Suspicious = false;
+		}
+		else
+		{
+			this.PickUp.Suspicious = true;
+		}
 		if (!this.Prompt.PauseScreen.Show)
 		{
 			if (this.Yandere.PickUp == this.PickUp)

@@ -300,6 +300,8 @@ public static class AnimNames
 
 	public const string FemaleSmile = "f02_smile_00";
 
+	public const string FemaleSmokeAttempt = "f02_smokeAttempt_00";
+
 	public const string FemaleSocialCameraPose = "f02_socialCameraPose_00";
 
 	public const string FemaleSpin = "f02_spin_00";

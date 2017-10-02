@@ -39,7 +39,7 @@ public class MovingEventScript : MonoBehaviour
 
 	public int EventPhase = 1;
 
-	public int EventDay = 3;
+	public DayOfWeek EventDay = DayOfWeek.Wednesday;
 
 	public float Distance;
 

@@ -6,12 +6,12 @@ public static class SchoolAtmosphere
 	{
 		get
 		{
-			float num = SchoolGlobals.SchoolAtmosphere / 100f;
-			if (num > 0.6666667f)
+			float schoolAtmosphere = SchoolGlobals.SchoolAtmosphere;
+			if (schoolAtmosphere > 0.6666667f)
 			{
 				return SchoolAtmosphereType.High;
 			}
-			if (num > 0.333333343f)
+			if (schoolAtmosphere > 0.333333343f)
 			{
 				return SchoolAtmosphereType.Medium;
 			}

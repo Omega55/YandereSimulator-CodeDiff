@@ -74,7 +74,7 @@ public class YanvaniaIntroScript : MonoBehaviour
 				this.BlackLeft.localPosition = new Vector3(this.BlackLeft.localPosition.x - this.Position, this.BlackLeft.localPosition.y, this.BlackLeft.localPosition.z);
 			}
 		}
-		if (Input.GetKeyDown("1"))
+		if (Input.GetKeyDown(KeyCode.Alpha1))
 		{
 			this.Finish();
 		}

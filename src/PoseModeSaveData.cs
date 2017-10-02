@@ -4,18 +4,11 @@ using UnityEngine;
 [Serializable]
 public class PoseModeSaveData
 {
-	public Vector3 posePosition;
+	public Vector3 posePosition = default(Vector3);
 
-	public Vector3 poseRotation;
+	public Vector3 poseRotation = default(Vector3);
 
-	public Vector3 poseScale;
-
-	public PoseModeSaveData()
-	{
-		this.posePosition = default(Vector3);
-		this.poseRotation = default(Vector3);
-		this.poseScale = default(Vector3);
-	}
+	public Vector3 poseScale = default(Vector3);
 
 	public static PoseModeSaveData ReadFromGlobals()
 	{

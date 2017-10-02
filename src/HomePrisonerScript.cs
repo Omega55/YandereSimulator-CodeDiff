@@ -115,7 +115,7 @@ public class HomePrisonerScript : MonoBehaviour
 				UILabel uilabel2 = this.OptionLabels[1];
 				uilabel2.color = new Color(uilabel2.color.r, uilabel2.color.g, uilabel2.color.b, 0.5f);
 			}
-			if (DateGlobals.Weekday == 5)
+			if (DateGlobals.Weekday == DayOfWeek.Friday)
 			{
 				UILabel uilabel3 = this.OptionLabels[3];
 				uilabel3.color = new Color(uilabel3.color.r, uilabel3.color.g, uilabel3.color.b, 0.5f);
@@ -209,7 +209,7 @@ public class HomePrisonerScript : MonoBehaviour
 				this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 465f - (float)this.ID * 40f, this.Highlight.localPosition.z);
 				this.UpdateDesc();
 			}
-			if (Input.GetKeyDown("x"))
+			if (Input.GetKeyDown(KeyCode.X))
 			{
 				this.Sanity -= 10f;
 				if (this.Sanity < 0f)
@@ -359,7 +359,7 @@ public class HomePrisonerScript : MonoBehaviour
 				this.DescLabel.text = "This option is unavailable in the daytime.";
 				this.HomeCamera.PromptBar.Label[0].text = string.Empty;
 			}
-			if (DateGlobals.Weekday == 5 && (this.ID == 3 || this.ID == 4))
+			if (DateGlobals.Weekday == DayOfWeek.Friday && (this.ID == 3 || this.ID == 4))
 			{
 				this.DescLabel.text = "This option is unavailable on Friday.";
 				this.HomeCamera.PromptBar.Label[0].text = string.Empty;

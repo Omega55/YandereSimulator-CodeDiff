@@ -35,6 +35,8 @@ public class HeartbrokenScript : MonoBehaviour
 
 	public AudioClip Slam;
 
+	public bool Headmaster;
+
 	public bool Arrested;
 
 	public bool Exposed;
@@ -61,26 +63,45 @@ public class HeartbrokenScript : MonoBehaviour
 	{
 		if (this.Yandere.Attacked)
 		{
-			this.Letters[0].text = string.Empty;
-			this.Letters[1].text = "C";
-			this.Letters[2].text = "O";
-			this.Letters[3].text = "M";
-			this.Letters[4].text = "A";
-			this.Letters[5].text = "T";
-			this.Letters[6].text = "O";
-			this.Letters[7].text = "S";
-			this.Letters[8].text = "E";
-			this.Letters[9].text = string.Empty;
-			this.Letters[10].text = string.Empty;
+			if (this.Yandere.Chased)
+			{
+				this.Letters[0].text = string.Empty;
+				this.Letters[1].text = "C";
+				this.Letters[2].text = "O";
+				this.Letters[3].text = "M";
+				this.Letters[4].text = "A";
+				this.Letters[5].text = "T";
+				this.Letters[6].text = "O";
+				this.Letters[7].text = "S";
+				this.Letters[8].text = "E";
+				this.Letters[9].text = string.Empty;
+				this.Letters[10].text = string.Empty;
+				this.Letters[3].fontSize = 250;
+				this.LetterID = 1;
+				this.StopID = 9;
+			}
+			else
+			{
+				this.Letters[0].text = "?";
+				this.Letters[1].text = "?";
+				this.Letters[2].text = "?";
+				this.Letters[3].text = "?";
+				this.Letters[4].text = "?";
+				this.Letters[5].text = "?";
+				this.Letters[6].text = "?";
+				this.Letters[7].text = "?";
+				this.Letters[8].text = "?";
+				this.Letters[9].text = "?";
+				this.Letters[10].text = string.Empty;
+				this.LetterID = 0;
+				this.StopID = 10;
+			}
 			foreach (UILabel uilabel in this.Letters)
 			{
 				uilabel.transform.localPosition = new Vector3(uilabel.transform.localPosition.x + 100f, uilabel.transform.localPosition.y, uilabel.transform.localPosition.z);
 			}
-			this.Letters[3].fontSize = 250;
 			this.SNAP.SetActive(false);
 			this.Cursor.Options = 3;
-			this.LetterID = 1;
-			this.StopID = 9;
 		}
 		else if (this.Yandere.Lost || this.ShoulderCamera.LookDown || this.ShoulderCamera.Counter)
 		{
@@ -313,6 +334,13 @@ public class HeartbrokenScript : MonoBehaviour
 			}
 			this.Subtitle.text = this.NoticedLines[num];
 			this.Subtitle.GetComponent<AudioSource>().clip = this.NoticedClips[num];
+			this.Subtitle.GetComponent<AudioSource>().Play();
+		}
+		else if (this.Headmaster)
+		{
+			this.Subtitle.color = new Color(this.Subtitle.color.r, this.Subtitle.color.g, this.Subtitle.color.b, 1f);
+			this.Subtitle.text = this.NoticedLines[7];
+			this.Subtitle.GetComponent<AudioSource>().clip = this.NoticedClips[7];
 			this.Subtitle.GetComponent<AudioSource>().Play();
 		}
 	}

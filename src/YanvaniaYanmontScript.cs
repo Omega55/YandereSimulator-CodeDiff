@@ -354,7 +354,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 						}
 						if (!this.toggleRun)
 						{
-							this.speed = ((!Input.GetKey("left shift")) ? this.walkSpeed : this.runSpeed);
+							this.speed = ((!Input.GetKey(KeyCode.LeftShift)) ? this.walkSpeed : this.runSpeed);
 						}
 						if ((flag && this.slideWhenOverSlopeLimit) || (this.slideOnTaggedObjects && this.hit.collider.tag == "Slide"))
 						{
@@ -725,24 +725,24 @@ public class YanvaniaYanmontScript : MonoBehaviour
 			this.EXPBar.localScale = new Vector3(this.EXPBar.localScale.x, Mathf.Lerp(this.EXPBar.localScale.y, this.EXP / 100f, Time.deltaTime * 10f), this.EXPBar.localScale.z);
 		}
 		base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y, 0f);
-		if (Input.GetKeyDown("`"))
+		if (Input.GetKeyDown(KeyCode.BackQuote))
 		{
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
-		if (Input.GetKeyDown("2"))
+		if (Input.GetKeyDown(KeyCode.Alpha2))
 		{
 			base.transform.position = new Vector3(-31.75f, 6.51f, 0f);
 		}
-		if (Input.GetKeyDown("5"))
+		if (Input.GetKeyDown(KeyCode.Alpha5))
 		{
 			this.Level = 5;
 			this.LevelLabel.text = this.Level.ToString();
 		}
-		if (Input.GetKeyDown("="))
+		if (Input.GetKeyDown(KeyCode.Equals))
 		{
 			Time.timeScale += 10f;
 		}
-		if (Input.GetKeyDown("-"))
+		if (Input.GetKeyDown(KeyCode.Minus))
 		{
 			Time.timeScale -= 10f;
 			if (Time.timeScale < 0f)

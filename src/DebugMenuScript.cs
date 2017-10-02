@@ -124,47 +124,47 @@ public class DebugMenuScript : MonoBehaviour
 				}
 				else if (!Input.GetKeyDown(KeyCode.F12))
 				{
-					if (Input.GetKeyDown("1"))
+					if (Input.GetKeyDown(KeyCode.Alpha1))
 					{
-						DateGlobals.Weekday = 1;
+						DateGlobals.Weekday = DayOfWeek.Monday;
 						SceneManager.LoadScene("LoadingScene");
 					}
-					else if (Input.GetKeyDown("2"))
+					else if (Input.GetKeyDown(KeyCode.Alpha2))
 					{
-						DateGlobals.Weekday = 2;
+						DateGlobals.Weekday = DayOfWeek.Tuesday;
 						SceneManager.LoadScene("LoadingScene");
 					}
-					else if (Input.GetKeyDown("3"))
+					else if (Input.GetKeyDown(KeyCode.Alpha3))
 					{
-						DateGlobals.Weekday = 3;
+						DateGlobals.Weekday = DayOfWeek.Wednesday;
 						SceneManager.LoadScene("LoadingScene");
 					}
-					else if (Input.GetKeyDown("4"))
+					else if (Input.GetKeyDown(KeyCode.Alpha4))
 					{
-						DateGlobals.Weekday = 4;
+						DateGlobals.Weekday = DayOfWeek.Thursday;
 						SceneManager.LoadScene("LoadingScene");
 					}
-					else if (Input.GetKeyDown("5"))
+					else if (Input.GetKeyDown(KeyCode.Alpha5))
 					{
-						DateGlobals.Weekday = 5;
+						DateGlobals.Weekday = DayOfWeek.Friday;
 						SceneManager.LoadScene("LoadingScene");
 					}
-					else if (Input.GetKeyDown("6"))
+					else if (Input.GetKeyDown(KeyCode.Alpha6))
 					{
 						this.Yandere.transform.position = this.TeleportSpot[1].position;
 						this.Window.SetActive(false);
 					}
-					else if (Input.GetKeyDown("7"))
+					else if (Input.GetKeyDown(KeyCode.Alpha7))
 					{
 						this.Yandere.transform.position = this.TeleportSpot[2].position + new Vector3(0.75f, 0f, 0f);
 						this.Window.SetActive(false);
 					}
-					else if (Input.GetKeyDown("8"))
+					else if (Input.GetKeyDown(KeyCode.Alpha8))
 					{
 						this.Yandere.transform.position = this.TeleportSpot[3].position;
 						this.Window.SetActive(false);
 					}
-					else if (Input.GetKeyDown("9"))
+					else if (Input.GetKeyDown(KeyCode.Alpha9))
 					{
 						this.Yandere.transform.position = this.TeleportSpot[4].position;
 						this.Window.SetActive(false);
@@ -213,16 +213,16 @@ public class DebugMenuScript : MonoBehaviour
 							}
 						}
 					}
-					else if (Input.GetKeyDown("0"))
+					else if (Input.GetKeyDown(KeyCode.Alpha0))
 					{
 						this.CameraEffects.DisableCamera();
 						this.Window.SetActive(false);
 					}
-					else if (Input.GetKeyDown("a"))
+					else if (Input.GetKeyDown(KeyCode.A))
 					{
 						if (SchoolAtmosphere.Type == SchoolAtmosphereType.High)
 						{
-							SchoolGlobals.SchoolAtmosphere = 50f;
+							SchoolGlobals.SchoolAtmosphere = 0.5f;
 						}
 						else if (SchoolAtmosphere.Type == SchoolAtmosphereType.Medium)
 						{
@@ -230,11 +230,11 @@ public class DebugMenuScript : MonoBehaviour
 						}
 						else
 						{
-							SchoolGlobals.SchoolAtmosphere = 100f;
+							SchoolGlobals.SchoolAtmosphere = 1f;
 						}
 						SceneManager.LoadScene("LoadingScene");
 					}
-					else if (Input.GetKeyDown("c"))
+					else if (Input.GetKeyDown(KeyCode.C))
 					{
 						this.ID = 1;
 						while (this.ID < 11)
@@ -244,12 +244,12 @@ public class DebugMenuScript : MonoBehaviour
 						}
 						this.Window.SetActive(false);
 					}
-					else if (Input.GetKeyDown("f"))
+					else if (Input.GetKeyDown(KeyCode.F))
 					{
 						this.FakeStudentSpawner.Spawn();
 						this.Window.SetActive(false);
 					}
-					else if (Input.GetKeyDown("g"))
+					else if (Input.GetKeyDown(KeyCode.G))
 					{
 						StudentScript studentScript4 = this.StudentManager.Students[this.RooftopStudent];
 						if (this.Clock.HourTime < 15f)
@@ -295,35 +295,35 @@ public class DebugMenuScript : MonoBehaviour
 						}
 						this.Window.SetActive(false);
 					}
-					else if (Input.GetKeyDown("k"))
+					else if (Input.GetKeyDown(KeyCode.K))
 					{
 						SchoolGlobals.KidnapVictim = 6;
 						StudentGlobals.SetStudentSlave(6, true);
 						SceneManager.LoadScene("LoadingScene");
 					}
-					else if (Input.GetKeyDown("l"))
+					else if (Input.GetKeyDown(KeyCode.L))
 					{
 						EventGlobals.Event1 = true;
 						this.Window.SetActive(false);
 					}
-					else if (!Input.GetKeyDown("m"))
+					else if (!Input.GetKeyDown(KeyCode.M))
 					{
-						if (Input.GetKeyDown("o"))
+						if (Input.GetKeyDown(KeyCode.O))
 						{
 							this.Yandere.Inventory.RivalPhone = true;
 							this.Window.SetActive(false);
 						}
-						else if (Input.GetKeyDown("p"))
+						else if (Input.GetKeyDown(KeyCode.P))
 						{
 							PlayerGlobals.PantyShots += 20;
 							this.Window.SetActive(false);
 						}
-						else if (Input.GetKeyDown("q"))
+						else if (Input.GetKeyDown(KeyCode.Q))
 						{
 							this.Censor();
 							this.Window.SetActive(false);
 						}
-						else if (Input.GetKeyDown("r"))
+						else if (Input.GetKeyDown(KeyCode.R))
 						{
 							if (PlayerGlobals.Reputation != 66.66666f)
 							{
@@ -337,7 +337,7 @@ public class DebugMenuScript : MonoBehaviour
 							}
 							this.Window.SetActive(false);
 						}
-						else if (Input.GetKeyDown("s"))
+						else if (Input.GetKeyDown(KeyCode.S))
 						{
 							ClassGlobals.PhysicalGrade = 5;
 							PlayerGlobals.Seduction = 5;
@@ -349,12 +349,12 @@ public class DebugMenuScript : MonoBehaviour
 							}
 							this.Window.SetActive(false);
 						}
-						else if (Input.GetKeyDown("t"))
+						else if (Input.GetKeyDown(KeyCode.T))
 						{
 							this.Zoom.OverShoulder = !this.Zoom.OverShoulder;
 							this.Window.SetActive(false);
 						}
-						else if (Input.GetKeyDown("u"))
+						else if (Input.GetKeyDown(KeyCode.U))
 						{
 							PlayerGlobals.SetStudentFriend(7, true);
 							PlayerGlobals.SetStudentFriend(13, true);
@@ -367,12 +367,12 @@ public class DebugMenuScript : MonoBehaviour
 							}
 							this.Window.SetActive(false);
 						}
-						else if (Input.GetKeyDown("y"))
+						else if (Input.GetKeyDown(KeyCode.Y))
 						{
 							this.DelinquentManager.Delinquents.SetActive(!this.DelinquentManager.Delinquents.activeInHierarchy);
 							this.Window.SetActive(false);
 						}
-						else if (Input.GetKeyDown("z"))
+						else if (Input.GetKeyDown(KeyCode.Z))
 						{
 							this.ID = 1;
 							while (this.ID < 101)
@@ -389,24 +389,24 @@ public class DebugMenuScript : MonoBehaviour
 							}
 							this.Window.SetActive(false);
 						}
-						else if (Input.GetKeyDown("x"))
+						else if (Input.GetKeyDown(KeyCode.X))
 						{
 							OptionGlobals.HighPopulation = !OptionGlobals.HighPopulation;
 							SceneManager.LoadScene("LoadingScene");
 						}
-						else if (Input.GetKeyDown("backspace"))
+						else if (Input.GetKeyDown(KeyCode.Backspace))
 						{
 							Time.timeScale = 1f;
 							this.Clock.PresentTime = 1079f;
 							this.Clock.HourTime = this.Clock.PresentTime / 60f;
 							this.Window.SetActive(false);
 						}
-						else if (Input.GetKeyDown("`"))
+						else if (Input.GetKeyDown(KeyCode.BackQuote))
 						{
 							Globals.DeleteAll();
 							SceneManager.LoadScene("LoadingScene");
 						}
-						else if (Input.GetKeyDown("space"))
+						else if (Input.GetKeyDown(KeyCode.Space))
 						{
 							this.Yandere.transform.position = this.TeleportSpot[5].position;
 							if (this.StudentManager.Students[21] != null)
@@ -417,7 +417,7 @@ public class DebugMenuScript : MonoBehaviour
 							this.Clock.HourTime = this.Clock.PresentTime / 60f;
 							this.Window.SetActive(false);
 						}
-						else if (Input.GetKeyDown("left alt"))
+						else if (Input.GetKeyDown(KeyCode.LeftAlt))
 						{
 							this.Turtle.SpawnWeapons();
 							this.Yandere.transform.position = this.TeleportSpot[6].position;
@@ -425,7 +425,7 @@ public class DebugMenuScript : MonoBehaviour
 							this.Clock.HourTime = this.Clock.PresentTime / 60f;
 							this.Window.SetActive(false);
 						}
-						else if (Input.GetKeyDown("left ctrl"))
+						else if (Input.GetKeyDown(KeyCode.LeftControl))
 						{
 							this.Yandere.transform.position = this.TeleportSpot[7].position;
 							if (this.StudentManager.Students[26] != null)
@@ -436,18 +436,18 @@ public class DebugMenuScript : MonoBehaviour
 							this.Clock.HourTime = this.Clock.PresentTime / 60f;
 							this.Window.SetActive(false);
 						}
-						else if (Input.GetKeyDown("right ctrl"))
+						else if (Input.GetKeyDown(KeyCode.RightControl))
 						{
 							this.Yandere.transform.position = this.TeleportSpot[8].position;
 							this.Window.SetActive(false);
 						}
-						else if (Input.GetKeyDown("="))
+						else if (Input.GetKeyDown(KeyCode.Equals))
 						{
 							this.DelinquentManager.Timer -= 30f;
 							this.Clock.PresentTime += 30f;
 							this.Window.SetActive(false);
 						}
-						else if (Input.GetKeyDown("enter"))
+						else if (Input.GetKeyDown(KeyCode.Return))
 						{
 							this.Yandere.transform.eulerAngles = this.TeleportSpot[10].eulerAngles;
 							this.Yandere.transform.position = this.TeleportSpot[10].position;
@@ -463,12 +463,12 @@ public class DebugMenuScript : MonoBehaviour
 							this.Clock.HourTime = this.Clock.PresentTime / 60f;
 							this.Window.SetActive(false);
 						}
-						else if (Input.GetKeyDown("b"))
+						else if (Input.GetKeyDown(KeyCode.B))
 						{
 							DatingGlobals.SuitorProgress = 2;
 							SceneManager.LoadScene("LoadingScene");
 						}
-						else if (Input.GetKeyDown("pause"))
+						else if (Input.GetKeyDown(KeyCode.Pause))
 						{
 							this.Clock.StopTime = !this.Clock.StopTime;
 							this.Window.SetActive(false);
@@ -476,7 +476,7 @@ public class DebugMenuScript : MonoBehaviour
 					}
 				}
 			}
-			else if (Input.GetKeyDown("`"))
+			else if (Input.GetKeyDown(KeyCode.BackQuote))
 			{
 				this.ID = 0;
 				while (this.ID < this.StudentManager.NPCsTotal)

@@ -185,7 +185,7 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 		}
 		else if (this.Phase == 5)
 		{
-			if (Input.GetKeyDown("space"))
+			if (Input.GetKeyDown(KeyCode.Space))
 			{
 				this.Timer += 10f;
 				component.time += 10f;
@@ -302,11 +302,11 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 				SceneManager.LoadScene("CalendarScene");
 			}
 		}
-		if (Input.GetKeyDown("-"))
+		if (Input.GetKeyDown(KeyCode.Minus))
 		{
 			Time.timeScale -= 1f;
 		}
-		if (Input.GetKeyDown("="))
+		if (Input.GetKeyDown(KeyCode.Equals))
 		{
 			Time.timeScale += 1f;
 		}

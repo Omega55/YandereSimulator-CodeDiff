@@ -887,6 +887,7 @@ public class TalkingScript : MonoBehaviour
 				this.S.WaitTimer -= Time.deltaTime;
 				if (this.S.WaitTimer <= 0f)
 				{
+					this.S.DialogueWheel.TaskManager.UpdateTaskStatus();
 					this.S.Talking = false;
 					this.S.Waiting = false;
 					if (!this.Fake)

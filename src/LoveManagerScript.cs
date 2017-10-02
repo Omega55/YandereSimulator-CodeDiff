@@ -7,11 +7,15 @@ public class LoveManagerScript : MonoBehaviour
 
 	public StudentManagerScript StudentManager;
 
-	public StudentScript Follower;
-
 	public YandereScript Yandere;
 
 	public ClockScript Clock;
+
+	public StudentScript Follower;
+
+	public StudentScript Suitor;
+
+	public StudentScript Rival;
 
 	public Transform[] Targets;
 
@@ -74,39 +78,50 @@ public class LoveManagerScript : MonoBehaviour
 				this.ID++;
 			}
 		}
-		StudentScript studentScript = this.StudentManager.Students[7];
-		StudentScript studentScript2 = this.StudentManager.Students[13];
-		if (this.LeftNote && studentScript != null && studentScript2 != null && studentScript.Alive && studentScript2.Alive && studentScript.ConfessPhase == 7 && studentScript2.ConfessPhase == 4)
+		if (this.LeftNote)
 		{
-			float num = Vector3.Distance(this.Yandere.transform.position, this.MythHill.position);
-			if (num > 10f && num < 25f)
+			this.Rival = this.StudentManager.Students[7];
+			this.Suitor = this.StudentManager.Students[13];
+			if (this.Rival != null && this.Suitor != null && this.Rival.Alive && this.Suitor.Alive && this.Rival.ConfessPhase == 5 && this.Suitor.ConfessPhase == 3)
 			{
-				this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
-				this.Yandere.RPGCamera.enabled = false;
-				this.Yandere.CanMove = false;
-				studentScript2.enabled = false;
-				studentScript.enabled = false;
-				this.ConfessionScene.enabled = true;
-				this.Clock.StopTime = true;
-				this.LeftNote = false;
+				float num = Vector3.Distance(this.Yandere.transform.position, this.MythHill.position);
+				if (num > 10f && num < 25f)
+				{
+					this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
+					this.Yandere.RPGCamera.enabled = false;
+					this.Yandere.CanMove = false;
+					this.Suitor.enabled = false;
+					this.Rival.enabled = false;
+					this.ConfessionScene.enabled = true;
+					this.Clock.StopTime = true;
+					this.LeftNote = false;
+				}
 			}
 		}
 		if (this.HoldingHands)
 		{
-			studentScript.MyController.Move(base.transform.forward * Time.deltaTime);
-			studentScript2.transform.position = new Vector3(studentScript.transform.position.x - 0.5f, studentScript.transform.position.y, studentScript.transform.position.z);
-			if (studentScript.transform.position.z > -50f)
+			if (this.Rival == null)
 			{
-				studentScript2.MyController.radius = 0.12f;
-				studentScript2.enabled = true;
-				studentScript2.Cosmetic.MyRenderer.materials[studentScript2.Cosmetic.FaceID].SetFloat("_BlendAmount", 0f);
-				studentScript2.Hearts.emission.enabled = false;
-				studentScript.MyController.radius = 0.12f;
-				studentScript.enabled = true;
-				studentScript.Cosmetic.MyRenderer.materials[2].SetFloat("_BlendAmount", 0f);
-				studentScript.Hearts.emission.enabled = false;
-				studentScript2.HoldingHands = false;
-				studentScript.HoldingHands = false;
+				this.Rival = this.StudentManager.Students[7];
+			}
+			if (this.Suitor == null)
+			{
+				this.Suitor = this.StudentManager.Students[13];
+			}
+			this.Rival.MyController.Move(base.transform.forward * Time.deltaTime);
+			this.Suitor.transform.position = new Vector3(this.Rival.transform.position.x - 0.5f, this.Rival.transform.position.y, this.Rival.transform.position.z);
+			if (this.Rival.transform.position.z > -50f)
+			{
+				this.Suitor.MyController.radius = 0.12f;
+				this.Suitor.enabled = true;
+				this.Suitor.Cosmetic.MyRenderer.materials[this.Suitor.Cosmetic.FaceID].SetFloat("_BlendAmount", 0f);
+				this.Suitor.Hearts.emission.enabled = false;
+				this.Rival.MyController.radius = 0.12f;
+				this.Rival.enabled = true;
+				this.Rival.Cosmetic.MyRenderer.materials[2].SetFloat("_BlendAmount", 0f);
+				this.Rival.Hearts.emission.enabled = false;
+				this.Suitor.HoldingHands = false;
+				this.Rival.HoldingHands = false;
 				this.HoldingHands = false;
 			}
 		}
@@ -116,42 +131,42 @@ public class LoveManagerScript : MonoBehaviour
 	{
 		if (this.SuitorProgress == 2)
 		{
-			StudentScript studentScript = this.StudentManager.Students[7];
-			StudentScript studentScript2 = this.StudentManager.Students[13];
-			if (studentScript != null && studentScript2 != null)
+			this.Rival = this.StudentManager.Students[7];
+			this.Suitor = this.StudentManager.Students[13];
+			if (this.Rival != null && this.Suitor != null)
 			{
-				studentScript2.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
-				studentScript.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
-				studentScript2.Character.GetComponent<Animation>().enabled = true;
-				studentScript.Character.GetComponent<Animation>().enabled = true;
-				studentScript2.Character.GetComponent<Animation>().Play("walkHands_00");
-				studentScript2.transform.eulerAngles = Vector3.zero;
-				studentScript2.transform.position = new Vector3(-0.25f, 0f, -100f);
-				studentScript2.Pathfinding.canSearch = false;
-				studentScript2.Pathfinding.canMove = false;
-				studentScript2.MyController.radius = 0f;
-				studentScript2.enabled = false;
-				studentScript.Character.GetComponent<Animation>().Play("f02_walkHands_00");
-				studentScript.transform.eulerAngles = Vector3.zero;
-				studentScript.transform.position = new Vector3(0.25f, 0f, -100f);
-				studentScript.Pathfinding.canSearch = false;
-				studentScript.Pathfinding.canMove = false;
-				studentScript.MyController.radius = 0f;
-				studentScript.enabled = false;
-				studentScript2.Cosmetic.MyRenderer.materials[studentScript2.Cosmetic.FaceID].SetFloat("_BlendAmount", 1f);
-				ParticleSystem.EmissionModule emission = studentScript2.Hearts.emission;
+				this.Suitor.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
+				this.Rival.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
+				this.Suitor.Character.GetComponent<Animation>().enabled = true;
+				this.Rival.Character.GetComponent<Animation>().enabled = true;
+				this.Suitor.Character.GetComponent<Animation>().Play("walkHands_00");
+				this.Suitor.transform.eulerAngles = Vector3.zero;
+				this.Suitor.transform.position = new Vector3(-0.25f, 0f, -100f);
+				this.Suitor.Pathfinding.canSearch = false;
+				this.Suitor.Pathfinding.canMove = false;
+				this.Suitor.MyController.radius = 0f;
+				this.Suitor.enabled = false;
+				this.Rival.Character.GetComponent<Animation>().Play("f02_walkHands_00");
+				this.Rival.transform.eulerAngles = Vector3.zero;
+				this.Rival.transform.position = new Vector3(0.25f, 0f, -100f);
+				this.Rival.Pathfinding.canSearch = false;
+				this.Rival.Pathfinding.canMove = false;
+				this.Rival.MyController.radius = 0f;
+				this.Rival.enabled = false;
+				this.Suitor.Cosmetic.MyRenderer.materials[this.Suitor.Cosmetic.FaceID].SetFloat("_BlendAmount", 1f);
+				ParticleSystem.EmissionModule emission = this.Suitor.Hearts.emission;
 				emission.enabled = true;
 				emission.rateOverTime = 5f;
-				studentScript2.Hearts.Play();
-				studentScript.Cosmetic.MyRenderer.materials[2].SetFloat("_BlendAmount", 1f);
-				ParticleSystem.EmissionModule emission2 = studentScript.Hearts.emission;
+				this.Suitor.Hearts.Play();
+				this.Rival.Cosmetic.MyRenderer.materials[2].SetFloat("_BlendAmount", 1f);
+				ParticleSystem.EmissionModule emission2 = this.Rival.Hearts.emission;
 				emission2.enabled = true;
 				emission2.rateOverTime = 5f;
-				studentScript.Hearts.Play();
-				studentScript2.HoldingHands = true;
-				studentScript.HoldingHands = true;
-				studentScript2.CoupleID = 7;
-				studentScript.CoupleID = 13;
+				this.Rival.Hearts.Play();
+				this.Suitor.HoldingHands = true;
+				this.Rival.HoldingHands = true;
+				this.Suitor.CoupleID = 7;
+				this.Rival.CoupleID = 13;
 				this.HoldingHands = true;
 			}
 		}

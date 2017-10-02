@@ -81,11 +81,11 @@ public class ClockScript : MonoBehaviour
 	{
 		this.PeriodLabel.text = "BEFORE CLASS";
 		this.PresentTime = this.StartHour * 60f;
-		if (DateGlobals.Weekday == 0)
+		if (DateGlobals.Weekday == DayOfWeek.Sunday)
 		{
-			DateGlobals.Weekday = 1;
+			DateGlobals.Weekday = DayOfWeek.Monday;
 		}
-		if (SchoolGlobals.SchoolAtmosphere < 50f)
+		if (SchoolGlobals.SchoolAtmosphere < 0.5f)
 		{
 			this.BloomEffect.bloomIntensity = 0.25f;
 			this.BloomEffect.bloomThreshhold = 0.5f;
@@ -100,7 +100,7 @@ public class ClockScript : MonoBehaviour
 			this.BloomEffect.bloomThreshhold = 0f;
 		}
 		this.BloomEffect.bloomThreshhold = 0f;
-		this.UpdateWeekdayText(DateGlobals.Weekday);
+		this.DayLabel.text = this.GetWeekdayText(DateGlobals.Weekday);
 		this.MainLight.color = new Color(1f, 1f, 1f, 1f);
 		RenderSettings.ambientLight = new Color(0.75f, 0.75f, 0.75f, 1f);
 		RenderSettings.skybox.SetColor("_Tint", new Color(0.5f, 0.5f, 0.5f));
@@ -216,7 +216,16 @@ public class ClockScript : MonoBehaviour
 				this.Period++;
 			}
 		}
-		else if (this.Period < 5)
+		else if (this.HourTime < 16f)
+		{
+			if (this.Period < 5)
+			{
+				this.PeriodLabel.text = "CLEANING TIME";
+				this.ActivateTrespassZones();
+				this.Period++;
+			}
+		}
+		else if (this.Period < 6)
 		{
 			this.PeriodLabel.text = "AFTER SCHOOL";
 			this.DeactivateTrespassZones();
@@ -298,28 +307,33 @@ public class ClockScript : MonoBehaviour
 		}
 	}
 
-	private void UpdateWeekdayText(int Weekday)
+	private string GetWeekdayText(DayOfWeek weekday)
 	{
-		if (Weekday == 1)
+		if (weekday == DayOfWeek.Sunday)
 		{
-			this.DayLabel.text = "MONDAY";
+			return "SUNDAY";
 		}
-		if (Weekday == 2)
+		if (weekday == DayOfWeek.Monday)
 		{
-			this.DayLabel.text = "TUESDAY";
+			return "MONDAY";
 		}
-		if (Weekday == 3)
+		if (weekday == DayOfWeek.Tuesday)
 		{
-			this.DayLabel.text = "WEDNESDAY";
+			return "TUESDAY";
 		}
-		if (Weekday == 4)
+		if (weekday == DayOfWeek.Wednesday)
 		{
-			this.DayLabel.text = "THURSDAY";
+			return "WEDNESDAY";
 		}
-		if (Weekday == 5)
+		if (weekday == DayOfWeek.Thursday)
 		{
-			this.DayLabel.text = "FRIDAY";
+			return "THURSDAY";
 		}
+		if (weekday == DayOfWeek.Friday)
+		{
+			return "FRIDAY";
+		}
+		return "SATURDAY";
 	}
 
 	private void ActivateTrespassZones()

@@ -3,32 +3,51 @@ using UnityEngine;
 
 public class AnimatedGifScript : MonoBehaviour
 {
-	public UISprite Sprite;
+	[SerializeField]
+	private UISprite Sprite;
 
-	public string SpriteName = string.Empty;
+	[SerializeField]
+	private string SpriteName;
 
-	public int Start;
+	[SerializeField]
+	private int Start;
 
-	public int Frame;
+	[SerializeField]
+	private int Frame;
 
-	public int Limit;
+	[SerializeField]
+	private int Limit;
 
-	public float Framerate;
+	[SerializeField]
+	private float FramesPerSecond;
 
-	public float Timer;
+	[SerializeField]
+	private float CurrentSeconds;
+
+	private void Awake()
+	{
+	}
+
+	private float SecondsPerFrame
+	{
+		get
+		{
+			return 1f / this.FramesPerSecond;
+		}
+	}
 
 	private void Update()
 	{
-		this.Timer += Time.deltaTime;
-		if (this.Timer > this.Framerate)
+		this.CurrentSeconds += Time.unscaledDeltaTime;
+		while (this.CurrentSeconds >= this.SecondsPerFrame)
 		{
-			this.Sprite.spriteName = this.SpriteName + this.Frame.ToString();
-			this.Timer = 0f;
+			this.CurrentSeconds -= this.SecondsPerFrame;
 			this.Frame++;
 			if (this.Frame > this.Limit)
 			{
 				this.Frame = this.Start;
 			}
 		}
+		this.Sprite.spriteName = this.SpriteName + this.Frame.ToString();
 	}
 }

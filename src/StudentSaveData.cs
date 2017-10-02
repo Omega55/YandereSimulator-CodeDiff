@@ -25,79 +25,45 @@ public class StudentSaveData
 
 	public int maleUniform;
 
-	public IntAndStringDictionary studentAccessory;
+	public IntAndStringDictionary studentAccessory = new IntAndStringDictionary();
 
-	public IntHashSet studentArrested;
+	public IntHashSet studentArrested = new IntHashSet();
 
-	public IntHashSet studentBroken;
+	public IntHashSet studentBroken = new IntHashSet();
 
-	public IntAndFloatDictionary studentBustSize;
+	public IntAndFloatDictionary studentBustSize = new IntAndFloatDictionary();
 
-	public IntAndColorDictionary studentColor;
+	public IntAndColorDictionary studentColor = new IntAndColorDictionary();
 
-	public IntHashSet studentDead;
+	public IntHashSet studentDead = new IntHashSet();
 
-	public IntHashSet studentDying;
+	public IntHashSet studentDying = new IntHashSet();
 
-	public IntHashSet studentExpelled;
+	public IntHashSet studentExpelled = new IntHashSet();
 
-	public IntHashSet studentExposed;
+	public IntHashSet studentExposed = new IntHashSet();
 
-	public IntAndColorDictionary studentEyeColor;
+	public IntAndColorDictionary studentEyeColor = new IntAndColorDictionary();
 
-	public IntHashSet studentGrudge;
+	public IntHashSet studentGrudge = new IntHashSet();
 
-	public IntAndStringDictionary studentHairstyle;
+	public IntAndStringDictionary studentHairstyle = new IntAndStringDictionary();
 
-	public IntHashSet studentKidnapped;
+	public IntHashSet studentKidnapped = new IntHashSet();
 
-	public IntHashSet studentMissing;
+	public IntHashSet studentMissing = new IntHashSet();
 
-	public IntAndStringDictionary studentName;
+	public IntAndStringDictionary studentName = new IntAndStringDictionary();
 
-	public IntHashSet studentPhotographed;
+	public IntHashSet studentPhotographed = new IntHashSet();
 
-	public IntHashSet studentReplaced;
+	public IntHashSet studentReplaced = new IntHashSet();
 
-	public IntAndIntDictionary studentReputation;
+	public IntAndIntDictionary studentReputation = new IntAndIntDictionary();
 
-	public IntAndFloatDictionary studentSanity;
+	public IntAndFloatDictionary studentSanity = new IntAndFloatDictionary();
 
-	public IntHashSet studentSlave;
-
-	public StudentSaveData()
-	{
-		this.customSuitor = false;
-		this.customSuitorAccessory = 0;
-		this.customSuitorBlonde = 0;
-		this.customSuitorEyewear = 0;
-		this.customSuitorHair = 0;
-		this.customSuitorJewelry = 0;
-		this.customSuitorTan = false;
-		this.expelProgress = 0;
-		this.femaleUniform = 0;
-		this.maleUniform = 0;
-		this.studentAccessory = new IntAndStringDictionary();
-		this.studentArrested = new IntHashSet();
-		this.studentBroken = new IntHashSet();
-		this.studentBustSize = new IntAndFloatDictionary();
-		this.studentColor = new IntAndColorDictionary();
-		this.studentDead = new IntHashSet();
-		this.studentDying = new IntHashSet();
-		this.studentExpelled = new IntHashSet();
-		this.studentExposed = new IntHashSet();
-		this.studentEyeColor = new IntAndColorDictionary();
-		this.studentGrudge = new IntHashSet();
-		this.studentHairstyle = new IntAndStringDictionary();
-		this.studentKidnapped = new IntHashSet();
-		this.studentMissing = new IntHashSet();
-		this.studentName = new IntAndStringDictionary();
-		this.studentPhotographed = new IntHashSet();
-		this.studentReplaced = new IntHashSet();
-		this.studentReputation = new IntAndIntDictionary();
-		this.studentSanity = new IntAndFloatDictionary();
-		this.studentSlave = new IntHashSet();
-	}
+	public IntHashSet studentSlave = new IntHashSet();
 
 	public static StudentSaveData ReadFromGlobals()
 	{

@@ -19,15 +19,15 @@ public static class DateGlobals
 		}
 	}
 
-	public static int Weekday
+	public static DayOfWeek Weekday
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("Weekday");
+			return GlobalsHelper.GetEnum<DayOfWeek>("Weekday");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("Weekday", value);
+			GlobalsHelper.SetEnum<DayOfWeek>("Weekday", value);
 		}
 	}
 

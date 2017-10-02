@@ -5,11 +5,6 @@ public class ApplicationSaveData
 {
 	public float versionNumber;
 
-	public ApplicationSaveData()
-	{
-		this.versionNumber = 0f;
-	}
-
 	public static ApplicationSaveData ReadFromGlobals()
 	{
 		return new ApplicationSaveData

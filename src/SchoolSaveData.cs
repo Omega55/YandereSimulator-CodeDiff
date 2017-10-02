@@ -3,9 +3,9 @@
 [Serializable]
 public class SchoolSaveData
 {
-	public IntHashSet demonActive;
+	public IntHashSet demonActive = new IntHashSet();
 
-	public IntHashSet gardenGraveOccupied;
+	public IntHashSet gardenGraveOccupied = new IntHashSet();
 
 	public int kidnapVictim;
 
@@ -18,18 +18,6 @@ public class SchoolSaveData
 	public bool schoolAtmosphereSet;
 
 	public bool scp;
-
-	public SchoolSaveData()
-	{
-		this.demonActive = new IntHashSet();
-		this.gardenGraveOccupied = new IntHashSet();
-		this.kidnapVictim = 0;
-		this.population = 0;
-		this.roofFence = false;
-		this.schoolAtmosphere = 0f;
-		this.schoolAtmosphereSet = false;
-		this.scp = false;
-	}
 
 	public static SchoolSaveData ReadFromGlobals()
 	{
