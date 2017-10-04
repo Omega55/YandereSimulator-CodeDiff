@@ -385,7 +385,6 @@ public class StudentManagerScript : MonoBehaviour
 				{
 					this.SpawnStudent();
 				}
-				this.UpdateStudents();
 			}
 		}
 		else
@@ -441,12 +440,12 @@ public class StudentManagerScript : MonoBehaviour
 			{
 				this.QualityManager.UpdateOutlines();
 				this.FirstUpdate = true;
-				this.UpdateStudents();
 				this.AssignTeachers();
 			}
 			if (this.Frame == 3)
 			{
 				this.LoveManager.CoupleCheck();
+				this.UpdateStudents();
 			}
 		}
 		else if (this.NPCsSpawned < this.StudentsTotal + this.TeachersTotal)

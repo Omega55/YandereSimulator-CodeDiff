@@ -39,6 +39,8 @@ public class PickUpScript : MonoBehaviour
 
 	public Color OriginalColor;
 
+	public bool CleaningProduct;
+
 	public bool LockRotation;
 
 	public bool BeingLifted;
@@ -94,13 +96,16 @@ public class PickUpScript : MonoBehaviour
 
 	private void LateUpdate()
 	{
-		if (this.Clock.Period == 5)
+		if (this.CleaningProduct)
 		{
-			this.Suspicious = false;
-		}
-		else
-		{
-			this.Suspicious = true;
+			if (this.Clock.Period == 5)
+			{
+				this.Suspicious = false;
+			}
+			else
+			{
+				this.Suspicious = true;
+			}
 		}
 		if (this.Prompt.Circle[3].fillAmount == 0f)
 		{

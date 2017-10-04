@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class HeadmasterScript : MonoBehaviour
 {
+	public StudentManagerScript StudentManager;
+
 	public HeartbrokenScript Heartbroken;
 
 	public YandereScript Yandere;
@@ -28,6 +30,10 @@ public class HeadmasterScript : MonoBehaviour
 	public AudioClip HeadmasterWeaponClip;
 
 	public AudioClip Crumple;
+
+	public AudioClip StandUp;
+
+	public AudioClip SitDown;
 
 	public readonly string[] HeadmasterSpeechText = new string[]
 	{
@@ -92,6 +98,10 @@ public class HeadmasterScript : MonoBehaviour
 
 	public int VoiceID;
 
+	public bool PlayedStandSound;
+
+	public bool PlayedSitSound;
+
 	public bool LostPatience;
 
 	public bool Threatened;
@@ -136,6 +146,7 @@ public class HeadmasterScript : MonoBehaviour
 			}
 			else if (this.Distance < 5f)
 			{
+				this.PlayedSitSound = false;
 				this.PatienceTimer -= Time.deltaTime;
 				if (this.PatienceTimer < 0f)
 				{
@@ -168,9 +179,11 @@ public class HeadmasterScript : MonoBehaviour
 						this.ThreatTimer = 6f;
 					}
 				}
+				this.CheckBehavior();
 			}
 			else if (this.Distance < 10f)
 			{
+				this.PlayedStandSound = false;
 				this.LostPatience = false;
 				this.targetRotation = Quaternion.LookRotation(new Vector3(0f, 8f, 0f) - base.transform.position);
 				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
@@ -203,6 +216,11 @@ public class HeadmasterScript : MonoBehaviour
 				}
 				else
 				{
+					if (!this.PlayedSitSound)
+					{
+						AudioSource.PlayClipAtPoint(this.SitDown, base.transform.position);
+						this.PlayedSitSound = true;
+					}
 					this.MyAnimation.CrossFade("HeadmasterLowerTazer");
 					this.Aiming = false;
 					if ((double)this.MyAnimation["HeadmasterLowerTazer"].time > 1.33333)
@@ -215,17 +233,7 @@ public class HeadmasterScript : MonoBehaviour
 						this.Relaxing = false;
 					}
 				}
-				if (this.Yandere.Armed)
-				{
-					if (!this.Shooting)
-					{
-						this.Shoot();
-					}
-				}
-				else if (this.Yandere.Carrying && !this.Shooting)
-				{
-					this.Shoot();
-				}
+				this.CheckBehavior();
 			}
 			else
 			{
@@ -297,6 +305,11 @@ public class HeadmasterScript : MonoBehaviour
 		if (!this.Aiming)
 		{
 			this.MyAnimation.CrossFade("HeadmasterRaiseTazer");
+			if (!this.PlayedStandSound)
+			{
+				AudioSource.PlayClipAtPoint(this.StandUp, base.transform.position);
+				this.PlayedStandSound = true;
+			}
 			if ((double)this.MyAnimation["HeadmasterRaiseTazer"].time > 1.166666)
 			{
 				this.Tazer.SetActive(true);
@@ -332,9 +345,35 @@ public class HeadmasterScript : MonoBehaviour
 			this.HeadmasterSubtitle.text = this.HeadmasterAttackText;
 			this.MyAudio.clip = this.HeadmasterAttackClip;
 		}
+		this.StudentManager.StopMoving();
 		this.Yandere.EmptyHands();
 		this.Yandere.CanMove = false;
 		this.MyAudio.Play();
 		this.Shooting = true;
+	}
+
+	private void CheckBehavior()
+	{
+		if (this.Yandere.CanMove)
+		{
+			if (this.Yandere.Chased)
+			{
+				if (!this.Shooting)
+				{
+					this.Shoot();
+				}
+			}
+			else if (this.Yandere.Armed)
+			{
+				if (!this.Shooting)
+				{
+					this.Shoot();
+				}
+			}
+			else if ((this.Yandere.Carrying || this.Yandere.Dragging) && !this.Shooting)
+			{
+				this.Shoot();
+			}
+		}
 	}
 }

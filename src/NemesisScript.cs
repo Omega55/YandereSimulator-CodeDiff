@@ -269,18 +269,11 @@ public class NemesisScript : MonoBehaviour
 
 	private void LookForYandere()
 	{
-		Plane[] planes = GeometryUtility.CalculateFrustumPlanes(this.Student.VisionCone);
-		if (GeometryUtility.TestPlanesAABB(planes, this.Yandere.GetComponent<Collider>().bounds))
+		if (this.Student.CanSeeObject(this.Yandere.gameObject, this.Yandere.HeadPosition))
 		{
-			Vector3 end = new Vector3(this.Yandere.transform.position.x, this.Yandere.Head.position.y, this.Yandere.transform.position.z);
-			Debug.DrawLine(this.Student.Eyes.transform.position, end, Color.green);
-			RaycastHit raycastHit;
-			if (Physics.Linecast(this.Student.Eyes.transform.position, end, out raycastHit) && raycastHit.collider.gameObject == this.Yandere.gameObject)
-			{
-				this.MissionMode.LastKnownPosition.position = this.Yandere.transform.position;
-				this.InView = true;
-				this.UpdateLKP();
-			}
+			this.MissionMode.LastKnownPosition.position = this.Yandere.transform.position;
+			this.InView = true;
+			this.UpdateLKP();
 		}
 	}
 

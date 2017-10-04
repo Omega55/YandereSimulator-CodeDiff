@@ -1045,6 +1045,14 @@ public class YandereScript : MonoBehaviour
 		return "Low";
 	}
 
+	public Vector3 HeadPosition
+	{
+		get
+		{
+			return new Vector3(base.transform.position.x, this.Head.position.y, base.transform.position.z);
+		}
+	}
+
 	public void SetAnimationLayers()
 	{
 		this.CharacterAnimation["f02_yanderePose_00"].layer = 1;

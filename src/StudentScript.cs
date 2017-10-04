@@ -1309,38 +1309,45 @@ public class StudentScript : MonoBehaviour
 		}
 	}
 
+	private float GetPerceptionPercent(float distance)
+	{
+		float num = Mathf.Clamp01(distance / this.VisionCone.farClipPlane);
+		return 1f - num * num;
+	}
+
+	public bool CanSeeObject(GameObject obj, Vector3 targetPoint)
+	{
+		Vector3 position = this.Eyes.transform.position;
+		Vector3 to = targetPoint - position;
+		float num = Vector3.Angle(this.Head.transform.forward, to);
+		float num2 = this.VisionCone.farClipPlane * this.VisionCone.farClipPlane;
+		bool flag = num <= this.VisionCone.fieldOfView * 0.5f;
+		bool flag2 = to.sqrMagnitude <= num2;
+		if (flag && flag2)
+		{
+			RaycastHit raycastHit;
+			bool flag3 = Physics.Linecast(position, targetPoint, out raycastHit);
+			if (flag3)
+			{
+				bool flag4 = raycastHit.collider.gameObject == obj;
+				if (flag4)
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public bool CanSeeObject(GameObject obj)
+	{
+		return this.CanSeeObject(obj, obj.transform.position);
+	}
+
 	private bool AffectedByEbola(float distance)
 	{
 		bool flag = this.Yandere.EbolaHair != null && this.Yandere.EbolaHair.activeInHierarchy;
 		return distance <= 1f && flag;
-	}
-
-	private bool CanSeeYandere
-	{
-		get
-		{
-			Vector3 position = this.Eyes.transform.position;
-			Vector3 vector = new Vector3(this.Yandere.transform.position.x, this.Yandere.Head.position.y, this.Yandere.transform.position.z);
-			Vector3 to = vector - position;
-			float num = Vector3.Angle(this.Head.transform.forward, to);
-			float num2 = this.VisionCone.farClipPlane * this.VisionCone.farClipPlane;
-			bool flag = num <= this.VisionCone.fieldOfView * 0.5f;
-			bool flag2 = to.sqrMagnitude <= num2;
-			if (flag && flag2)
-			{
-				RaycastHit raycastHit;
-				bool flag3 = Physics.Linecast(position, vector, out raycastHit);
-				if (flag3)
-				{
-					bool flag4 = raycastHit.collider.gameObject == this.Yandere.gameObject;
-					if (flag4)
-					{
-						return true;
-					}
-				}
-			}
-			return false;
-		}
 	}
 
 	private void Update()
@@ -1387,7 +1394,10 @@ public class StudentScript : MonoBehaviour
 			{
 				this.UpdateSplashed();
 			}
-			this.UpdateTurningOffRadio();
+			if (!this.Dying)
+			{
+				this.UpdateTurningOffRadio();
+			}
 			this.UpdateVomiting();
 			this.UpdateConfessing();
 			this.UpdateMisc();
@@ -3486,7 +3496,7 @@ public class StudentScript : MonoBehaviour
 			}
 			if (this.Investigating)
 			{
-				if (!this.YandereInnocent && this.InvestigationPhase < 100 && this.CanSeeYandere)
+				if (!this.YandereInnocent && this.InvestigationPhase < 100 && this.CanSeeObject(this.Yandere.gameObject, this.Yandere.HeadPosition))
 				{
 					if (Vector3.Distance(this.Yandere.transform.position, this.Giggle.transform.position) > 2.5f)
 					{
@@ -3707,7 +3717,7 @@ public class StudentScript : MonoBehaviour
 								{
 									if ((this.Yandere.Armed && this.Yandere.EquippedWeapon.Suspicious) || (!this.Teacher && this.StudentID > 1 && this.Yandere.PickUp != null && this.Yandere.PickUp.Suspicious) || (this.Yandere.Bloodiness > 0f && !this.Yandere.Paint) || (this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Struggling || this.Yandere.Dragging || this.Yandere.Lewd || this.Yandere.Carrying || (this.Yandere.PickUp != null && this.Yandere.PickUp.BodyPart != null)) || (this.Yandere.Laughing && this.Yandere.LaughIntensity > 15f) || (this.Private && this.Yandere.Trespassing) || (this.Teacher && this.Yandere.Trespassing) || (this.Teacher && this.Yandere.Rummaging) || (this.StudentID == 1 && this.Yandere.NearSenpai && !this.Yandere.Talking) || (this.StudentID == 1 && this.Yandere.Eavesdropping) || (this.StudentID == 33 && this.Yandere.Eavesdropping))
 									{
-										if (this.CanSeeYandere)
+										if (this.CanSeeObject(this.Yandere.gameObject, this.Yandere.HeadPosition))
 										{
 											this.YandereVisible = true;
 											if (this.Yandere.Attacking || this.Yandere.Struggling || (this.Yandere.NearBodies > 0 && this.Yandere.Bloodiness > 0f && !this.Yandere.Paint) || (this.Yandere.NearBodies > 0 && this.Yandere.Armed) || (this.Yandere.NearBodies > 0 && this.Yandere.Sanity < 66.66666f) || this.Yandere.Carrying || this.Yandere.Dragging)
@@ -4044,7 +4054,7 @@ public class StudentScript : MonoBehaviour
 						}
 						else
 						{
-							Debug.Log("Apparently, we didn't even see anything! 2");
+							Debug.Log("We were alarmed by something, but we didn't actually see what it was.");
 							this.DiscCheck = true;
 							this.Witness = false;
 						}

@@ -63,7 +63,7 @@ public class HeartbrokenScript : MonoBehaviour
 	{
 		if (this.Yandere.Attacked)
 		{
-			if (this.Yandere.Chased)
+			if (!this.Headmaster)
 			{
 				this.Letters[0].text = string.Empty;
 				this.Letters[1].text = "C";

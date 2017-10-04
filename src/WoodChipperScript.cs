@@ -188,12 +188,13 @@ public class WoodChipperScript : MonoBehaviour
 					this.BloodSpray.Stop();
 				}
 			}
-			else if (this.Timer >= 0.333333343f)
+			else if (this.Timer >= 0.33333f && !this.Bucket.Bucket.Full)
 			{
+				this.BloodSpray.GetComponent<AudioSource>().Play();
+				this.BloodSpray.Play();
 				this.Bucket.Bucket.Bloodiness = 100f;
 				this.Bucket.Bucket.FillSpeed = 0.05f;
 				this.Bucket.Bucket.Full = true;
-				this.BloodSpray.Play();
 			}
 		}
 	}
