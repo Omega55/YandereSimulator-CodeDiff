@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HomeVideoGamesScript : MonoBehaviour
 {
@@ -45,6 +46,11 @@ public class HomeVideoGamesScript : MonoBehaviour
 	{
 		if (this.HomeCamera.Destination == this.HomeCamera.Destinations[5])
 		{
+			if (Input.GetKeyDown("y"))
+			{
+				TaskGlobals.SetTaskStatus(14, 1);
+				SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+			}
 			this.TV.localScale = Vector3.Lerp(this.TV.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 			if (!this.HomeYandere.CanMove)
 			{

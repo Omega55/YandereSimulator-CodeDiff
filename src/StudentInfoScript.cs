@@ -18,6 +18,8 @@ public class StudentInfoScript : MonoBehaviour
 
 	public ShutterScript Shutter;
 
+	public YandereScript Yandere;
+
 	public JsonScript JSON;
 
 	public Texture DefaultPortrait;
@@ -259,6 +261,20 @@ public class StudentInfoScript : MonoBehaviour
 				this.StudentInfoMenu.PauseScreen.Show = false;
 				this.DialogueWheel.Victim = this.CurrentStudent;
 				this.StudentInfoMenu.MatchMaking = false;
+				base.gameObject.SetActive(false);
+				Time.timeScale = 1f;
+				this.PromptBar.ClearButtons();
+				this.PromptBar.Show = false;
+			}
+			else if (this.StudentInfoMenu.Targeting)
+			{
+				this.StudentInfoMenu.PauseScreen.MainMenu.SetActive(true);
+				this.StudentInfoMenu.PauseScreen.Show = false;
+				this.Yandere.TargetStudent.HuntTarget = this.StudentManager.Students[this.CurrentStudent];
+				this.Yandere.TargetStudent.GoCommitMurder();
+				this.Yandere.RPGCamera.enabled = true;
+				this.Yandere.TargetStudent = null;
+				this.StudentInfoMenu.Targeting = false;
 				base.gameObject.SetActive(false);
 				Time.timeScale = 1f;
 				this.PromptBar.ClearButtons();

@@ -84,6 +84,15 @@ public class PrayScript : MonoBehaviour
 
 	private void Update()
 	{
+		if (Input.GetKeyDown("space"))
+		{
+			this.StudentManager.Students[this.StudentID] = null;
+			this.StudentManager.ForceSpawn = true;
+			this.StudentManager.SpawnPositions[this.StudentID] = this.SummonSpot;
+			this.StudentManager.SpawnID = this.StudentID;
+			this.StudentManager.SpawnStudent(this.StudentManager.SpawnID);
+			this.StudentManager.SpawnID = 0;
+		}
 		if (!this.FemaleVictimChecked)
 		{
 			if (this.StudentManager.Students[16] != null && !this.StudentManager.Students[16].Alive)
@@ -215,7 +224,6 @@ public class PrayScript : MonoBehaviour
 				else if (this.Selected == 2)
 				{
 					this.Yandere.Sanity -= 50f;
-					this.Yandere.UpdateSanity();
 					this.Exit();
 				}
 				else if (this.Selected == 3)
@@ -240,7 +248,7 @@ public class PrayScript : MonoBehaviour
 						this.StudentManager.ForceSpawn = true;
 						this.StudentManager.SpawnPositions[this.StudentID] = this.SummonSpot;
 						this.StudentManager.SpawnID = this.StudentID;
-						this.StudentManager.SpawnStudent();
+						this.StudentManager.SpawnStudent(this.StudentManager.SpawnID);
 						this.StudentManager.SpawnID = 0;
 						this.Police.Corpses -= this.Victims;
 						this.Victims = 0;
@@ -259,8 +267,6 @@ public class PrayScript : MonoBehaviour
 					this.Yandere.Bloodiness = 0f;
 					this.Yandere.Sanity = 100f;
 					this.WeaponManager.CleanWeapons();
-					this.Yandere.UpdateSanity();
-					this.Yandere.UpdateBlood();
 					this.Exit();
 				}
 				else if (this.Selected == 7)

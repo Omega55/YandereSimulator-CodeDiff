@@ -75,20 +75,10 @@ public class CameraEffectsScript : MonoBehaviour
 		if (!this.OneCamera)
 		{
 			this.OneCamera = true;
-			if (this.Yandere.Aiming)
-			{
-				this.Yandere.MainCamera.clearFlags = CameraClearFlags.Color;
-				this.Yandere.MainCamera.farClipPlane = 0.02f;
-			}
 		}
 		else
 		{
 			this.OneCamera = false;
-			if (this.Yandere.Aiming)
-			{
-				this.Yandere.MainCamera.clearFlags = CameraClearFlags.Skybox;
-				this.Yandere.MainCamera.farClipPlane = (float)OptionGlobals.DrawDistance;
-			}
 		}
 	}
 }

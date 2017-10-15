@@ -58,6 +58,8 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	public bool Gossiping;
 
+	public bool Targeting;
+
 	public int[] SetSizes;
 
 	public int StudentID;
@@ -126,13 +128,17 @@ public class StudentInfoMenuScript : MonoBehaviour
 			{
 				this.PromptBar.Label[0].text = "Match";
 			}
+			if (this.Targeting)
+			{
+				this.PromptBar.Label[0].text = "Kill";
+			}
 			this.PromptBar.Label[1].text = "Back";
 			this.PromptBar.Label[3].text = "Interests";
 			this.PromptBar.UpdateButtons();
 		}
 		if (Input.GetButtonDown("B"))
 		{
-			if (this.Gossiping || this.Distracting || this.MatchMaking)
+			if (this.Gossiping || this.Distracting || this.MatchMaking || this.Targeting)
 			{
 				this.PauseScreen.Yandere.Interaction = YandereInteractionType.Bye;
 				this.PauseScreen.Yandere.TalkTimer = 2f;
@@ -144,6 +150,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 				this.Distracting = false;
 				this.MatchMaking = false;
 				this.Gossiping = false;
+				this.Targeting = false;
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Show = false;
 			}
@@ -242,6 +249,11 @@ public class StudentInfoMenuScript : MonoBehaviour
 			this.PromptBar.UpdateButtons();
 		}
 		if (this.MatchMaking && (this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || StudentGlobals.GetStudentDead(this.StudentID)))
+		{
+			this.PromptBar.Label[0].text = string.Empty;
+			this.PromptBar.UpdateButtons();
+		}
+		if (this.Targeting && (this.StudentID == 1 || StudentGlobals.GetStudentDead(this.StudentID)))
 		{
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();

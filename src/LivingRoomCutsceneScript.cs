@@ -96,12 +96,32 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 			this.ID++;
 		}
 		this.ID = 0;
-		while (this.ID < this.YandereCosmetic.FemaleAccessories.Length)
+		while (this.ID < this.YandereCosmetic.TeacherHair.Length)
 		{
-			GameObject gameObject2 = this.YandereCosmetic.FemaleAccessories[this.ID];
+			GameObject gameObject2 = this.YandereCosmetic.TeacherHair[this.ID];
 			if (gameObject2 != null)
 			{
 				gameObject2.SetActive(false);
+			}
+			this.ID++;
+		}
+		this.ID = 0;
+		while (this.ID < this.YandereCosmetic.FemaleAccessories.Length)
+		{
+			GameObject gameObject3 = this.YandereCosmetic.FemaleAccessories[this.ID];
+			if (gameObject3 != null)
+			{
+				gameObject3.SetActive(false);
+			}
+			this.ID++;
+		}
+		this.ID = 0;
+		while (this.ID < this.YandereCosmetic.TeacherAccessories.Length)
+		{
+			GameObject gameObject4 = this.YandereCosmetic.TeacherAccessories[this.ID];
+			if (gameObject4 != null)
+			{
+				gameObject4.SetActive(false);
 			}
 			this.ID++;
 		}
@@ -197,14 +217,10 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 				this.Yandere.GetComponent<Animation>()["FriendshipYandere"].time = component.time + this.AnimOffset;
 				this.Rival.GetComponent<Animation>()["FriendshipRival"].time = component.time + this.AnimOffset;
 			}
-			if (this.ID < this.Times.Length)
+			if (this.ID < this.Times.Length && component.time > this.Times[this.ID])
 			{
-				Debug.Log(component.time);
-				if (component.time > this.Times[this.ID])
-				{
-					this.Subtitle.text = this.Lines[this.ID];
-					this.ID++;
-				}
+				this.Subtitle.text = this.Lines[this.ID];
+				this.ID++;
 			}
 			if (component.time > 54f)
 			{

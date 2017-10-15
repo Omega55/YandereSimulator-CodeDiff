@@ -178,7 +178,9 @@ public static class AnimNames
 
 	public const string FemaleKick23 = "f02_kick_23";
 
-	public const string FemaleKidnapIdle = "f02_kidnapIdle_00";
+	public const string FemaleKidnapIdle01 = "f02_kidnapIdle_01";
+
+	public const string FemaleKidnapIdle02 = "f02_kidnapIdle_02";
 
 	public const string FemaleKidnapSurrender = "f02_kidnapSurrender_00";
 
@@ -203,6 +205,8 @@ public static class AnimNames
 	public const string FemaleLeftGrip = "f02_leftGrip_00";
 
 	public const string FemaleLookDown = "f02_lookdown_00";
+
+	public const string FemaleLosingPhone = "f02_losingPhone_00";
 
 	public const string FemaleMopCarry = "f02_mopCarry_00";
 
@@ -241,6 +245,8 @@ public static class AnimNames
 	public const string FemalePrepareFood = "f02_prepareFood_00";
 
 	public const string FemalePunch21 = "f02_punch_21";
+
+	public const string FemaleReadyToFight = "f02_readyToFight_00";
 
 	public const string FemaleRefuse = "f02_refuse_00";
 
@@ -438,9 +444,19 @@ public static class AnimNames
 
 	public const string FemaleYanvaniaWhipLeft = "f02_yanvaniaWhip_Left";
 
-	public const string TeacherPodium = "f02_teacherPodium_00";
-
 	public const string FridgeOpen = "FridgeOpen";
+
+	public const string HeadmasterAimTazer = "HeadmasterAimTazer";
+
+	public const string HeadmasterAttention = "HeadmasterAttention";
+
+	public const string HeadmasterLowerTazer = "HeadmasterLowerTazer";
+
+	public const string HeadmasterRaiseTazer = "HeadmasterRaiseTazer";
+
+	public const string HeadmasterScratch = "HeadmasterScratch";
+
+	public const string HeadmasterType = "HeadmasterType";
 
 	public const string InverseSkirtOpen = "InverseSkirtOpen";
 
@@ -465,6 +481,8 @@ public static class AnimNames
 	public const string MaleKiss = "kiss_00";
 
 	public const string MaleNewSprint = "newSprint_00";
+
+	public const string MaleNewWalk = "newWalk_00";
 
 	public const string MalePinDown01 = "pinDown_01";
 
@@ -499,4 +517,6 @@ public static class AnimNames
 	public const string MaleWalkHands = "walkHands_00";
 
 	public const string MaleWitnessPoisoning = "witnessPoisoning_00";
+
+	public const string TeacherPodium = "f02_teacherPodium_00";
 }

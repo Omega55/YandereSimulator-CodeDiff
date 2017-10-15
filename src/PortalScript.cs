@@ -7,9 +7,9 @@ public class PortalScript : MonoBehaviour
 
 	public StudentManagerScript StudentManager;
 
-	public PromptBarScript PromptBar;
+	public ReputationScript Reputation;
 
-	public ParticleSystem Particles;
+	public PromptBarScript PromptBar;
 
 	public YandereScript Yandere;
 
@@ -63,7 +63,9 @@ public class PortalScript : MonoBehaviour
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Circle[0].fillAmount = 1f;
-			if (this.Police.PoisonScene || this.Police.SuicideScene || this.Police.Corpses - this.Police.HiddenCorpses > 0)
+			this.CheckForLateness();
+			this.Reputation.UpdateRep();
+			if (this.Police.PoisonScene || (this.Police.SuicideScene && this.Police.Corpses - this.Police.HiddenCorpses > 0) || this.Police.Corpses - this.Police.HiddenCorpses > 0 || this.Reputation.Reputation <= -100f)
 			{
 				this.EndDay();
 			}
@@ -71,49 +73,6 @@ public class PortalScript : MonoBehaviour
 			{
 				if (!this.Police.Show)
 				{
-					if (this.Clock.HourTime < 13f)
-					{
-						if (this.Clock.HourTime < 8.52f)
-						{
-							this.Late = 0;
-						}
-						else if (this.Clock.HourTime < 10f)
-						{
-							this.Late = 1;
-						}
-						else if (this.Clock.HourTime < 11f)
-						{
-							this.Late = 2;
-						}
-						else if (this.Clock.HourTime < 12f)
-						{
-							this.Late = 3;
-						}
-						else if (this.Clock.HourTime < 13f)
-						{
-							this.Late = 4;
-						}
-					}
-					else if (this.Clock.HourTime < 13.52f)
-					{
-						this.Late = 0;
-					}
-					else if (this.Clock.HourTime < 14f)
-					{
-						this.Late = 1;
-					}
-					else if (this.Clock.HourTime < 14.5f)
-					{
-						this.Late = 2;
-					}
-					else if (this.Clock.HourTime < 15f)
-					{
-						this.Late = 3;
-					}
-					else if (this.Clock.HourTime < 15.5f)
-					{
-						this.Late = 4;
-					}
 					if (this.Late == 0)
 					{
 						this.ClassDarkness.enabled = true;
@@ -255,12 +214,60 @@ public class PortalScript : MonoBehaviour
 		}
 	}
 
-	private void EndDay()
+	public void EndDay()
 	{
 		this.StudentManager.StopMoving();
 		this.Yandere.StopLaughing();
 		this.Clock.StopTime = true;
 		this.Police.Darkness.enabled = true;
 		this.Police.FadeOut = true;
+	}
+
+	private void CheckForLateness()
+	{
+		if (this.Clock.HourTime < 13f)
+		{
+			if (this.Clock.HourTime < 8.52f)
+			{
+				this.Late = 0;
+			}
+			else if (this.Clock.HourTime < 10f)
+			{
+				this.Late = 1;
+			}
+			else if (this.Clock.HourTime < 11f)
+			{
+				this.Late = 2;
+			}
+			else if (this.Clock.HourTime < 12f)
+			{
+				this.Late = 3;
+			}
+			else if (this.Clock.HourTime < 13f)
+			{
+				this.Late = 4;
+			}
+		}
+		else if (this.Clock.HourTime < 13.52f)
+		{
+			this.Late = 0;
+		}
+		else if (this.Clock.HourTime < 14f)
+		{
+			this.Late = 1;
+		}
+		else if (this.Clock.HourTime < 14.5f)
+		{
+			this.Late = 2;
+		}
+		else if (this.Clock.HourTime < 15f)
+		{
+			this.Late = 3;
+		}
+		else if (this.Clock.HourTime < 15.5f)
+		{
+			this.Late = 4;
+		}
+		this.Reputation.PendingRep -= (float)(5 * this.Late);
 	}
 }

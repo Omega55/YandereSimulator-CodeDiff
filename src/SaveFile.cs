@@ -14,7 +14,9 @@ public class SaveFile
 	[SerializeField]
 	private int index;
 
-	private static readonly string FolderPath = Path.Combine(Application.persistentDataPath, "Saves");
+	private static readonly string SavesPath = Path.Combine(Application.persistentDataPath, "Saves");
+
+	private static readonly string SaveName = "Save.txt";
 
 	public SaveFile(int index)
 	{
@@ -36,22 +38,32 @@ public class SaveFile
 		}
 	}
 
-	private static string GetSaveFileName(int index)
+	public static string GetSaveFolderPath(int index)
 	{
-		return Path.Combine(SaveFile.FolderPath, "Save" + index.ToString() + ".txt");
+		return Path.Combine(SaveFile.SavesPath, "Save" + index.ToString());
 	}
 
-	private static bool SaveFolderExists
+	private static string GetFullSaveFileName(int index)
+	{
+		return Path.Combine(SaveFile.GetSaveFolderPath(index), SaveFile.SaveName);
+	}
+
+	private static bool SavesFolderExists
 	{
 		get
 		{
-			return Directory.Exists(SaveFile.FolderPath);
+			return Directory.Exists(SaveFile.SavesPath);
 		}
+	}
+
+	public static bool SaveFolderExists(int index)
+	{
+		return Directory.Exists(SaveFile.GetSaveFolderPath(index));
 	}
 
 	public static bool Exists(int index)
 	{
-		return File.Exists(SaveFile.GetSaveFileName(index));
+		return File.Exists(SaveFile.GetFullSaveFileName(index));
 	}
 
 	public static SaveFile Load(int index)
@@ -59,7 +71,7 @@ public class SaveFile
 		SaveFile result;
 		try
 		{
-			string s = File.ReadAllText(SaveFile.GetSaveFileName(index));
+			string s = File.ReadAllText(SaveFile.GetFullSaveFileName(index));
 			XmlSerializer xmlSerializer = new XmlSerializer(typeof(SaveFileData));
 			MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(s));
 			SaveFileData saveFileData = (SaveFileData)xmlSerializer.Deserialize(stream);
@@ -84,8 +96,8 @@ public class SaveFile
 	{
 		try
 		{
-			string saveFileName = SaveFile.GetSaveFileName(index);
-			File.Delete(saveFileName);
+			string fullSaveFileName = SaveFile.GetFullSaveFileName(index);
+			File.Delete(fullSaveFileName);
 		}
 		catch (Exception ex)
 		{
@@ -104,18 +116,22 @@ public class SaveFile
 	{
 		try
 		{
-			if (!SaveFile.SaveFolderExists)
+			if (!SaveFile.SavesFolderExists)
 			{
-				Directory.CreateDirectory(SaveFile.FolderPath);
+				Directory.CreateDirectory(SaveFile.SavesPath);
 			}
-			string saveFileName = SaveFile.GetSaveFileName(this.index);
+			if (!SaveFile.SaveFolderExists(this.index))
+			{
+				Directory.CreateDirectory(SaveFile.GetSaveFolderPath(this.index));
+			}
+			string fullSaveFileName = SaveFile.GetFullSaveFileName(this.index);
 			if (!SaveFile.Exists(this.index))
 			{
-				FileStream fileStream = File.Create(saveFileName);
+				FileStream fileStream = File.Create(fullSaveFileName);
 				fileStream.Dispose();
 			}
 			XmlSerializer xmlSerializer = new XmlSerializer(typeof(SaveFileData));
-			using (XmlWriter xmlWriter = XmlWriter.Create(saveFileName, new XmlWriterSettings
+			using (XmlWriter xmlWriter = XmlWriter.Create(fullSaveFileName, new XmlWriterSettings
 			{
 				Indent = true,
 				IndentChars = "\t"

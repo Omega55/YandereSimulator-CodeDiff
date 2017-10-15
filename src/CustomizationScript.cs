@@ -1,140 +1,233 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class CustomizationScript : MonoBehaviour
 {
-	public InputManagerScript InputManager;
+	private class CustomizationData
+	{
+		public global::RangeInt skinColor;
 
-	public Renderer FacialHairRenderer;
+		public global::RangeInt hairstyle;
 
-	public SkinnedMeshRenderer YandereRenderer;
+		public global::RangeInt hairColor;
 
-	public SkinnedMeshRenderer SenpaiRenderer;
+		public global::RangeInt eyeColor;
 
-	public Renderer HairRenderer;
+		public global::RangeInt eyewear;
 
-	public AudioSource MyAudio;
+		public global::RangeInt facialHair;
 
-	public Renderer EyeR;
+		public global::RangeInt maleUniform;
 
-	public Renderer EyeL;
+		public global::RangeInt femaleUniform;
+	}
 
-	public Transform UniformHighlight;
+	[SerializeField]
+	private CustomizationScript.CustomizationData Data;
 
-	public Transform ApologyWindow;
+	[SerializeField]
+	private InputManagerScript InputManager;
 
-	public Transform YandereHead;
+	[SerializeField]
+	private Renderer FacialHairRenderer;
 
-	public Transform YandereNeck;
+	[SerializeField]
+	private SkinnedMeshRenderer YandereRenderer;
 
-	public Transform SenpaiHead;
+	[SerializeField]
+	private SkinnedMeshRenderer SenpaiRenderer;
 
-	public Transform Highlight;
+	[SerializeField]
+	private Renderer HairRenderer;
 
-	public Transform Yandere;
+	[SerializeField]
+	private AudioSource MyAudio;
 
-	public Transform Senpai;
+	[SerializeField]
+	private Renderer EyeR;
 
-	public Transform[] Corridor;
+	[SerializeField]
+	private Renderer EyeL;
 
-	public UIPanel CustomizePanel;
+	[SerializeField]
+	private Transform UniformHighlight;
 
-	public UIPanel UniformPanel;
+	[SerializeField]
+	private Transform ApologyWindow;
 
-	public UIPanel FinishPanel;
+	[SerializeField]
+	private Transform YandereHead;
 
-	public UIPanel GenderPanel;
+	[SerializeField]
+	private Transform YandereNeck;
 
-	public UIPanel WhitePanel;
+	[SerializeField]
+	private Transform SenpaiHead;
 
-	public UILabel FacialHairStyleLabel;
+	[SerializeField]
+	private Transform Highlight;
 
-	public UILabel FemaleUniformLabel;
+	[SerializeField]
+	private Transform Yandere;
 
-	public UILabel MaleUniformLabel;
+	[SerializeField]
+	private Transform Senpai;
 
-	public UILabel SkinColorLabel;
+	[SerializeField]
+	private Transform[] Corridor;
 
-	public UILabel HairStyleLabel;
+	[SerializeField]
+	private UIPanel CustomizePanel;
 
-	public UILabel HairColorLabel;
+	[SerializeField]
+	private UIPanel UniformPanel;
 
-	public UILabel EyeColorLabel;
+	[SerializeField]
+	private UIPanel FinishPanel;
 
-	public UILabel EyeWearLabel;
+	[SerializeField]
+	private UIPanel GenderPanel;
 
-	public GameObject LoveSickCamera;
+	[SerializeField]
+	private UIPanel WhitePanel;
 
-	public GameObject CensorCloud;
+	[SerializeField]
+	private UILabel FacialHairStyleLabel;
 
-	public GameObject BigCloud;
+	[SerializeField]
+	private UILabel FemaleUniformLabel;
 
-	public GameObject Hearts;
+	[SerializeField]
+	private UILabel MaleUniformLabel;
 
-	public GameObject Cloud;
+	[SerializeField]
+	private UILabel SkinColorLabel;
 
-	public UISprite Black;
+	[SerializeField]
+	private UILabel HairStyleLabel;
 
-	public UISprite White;
+	[SerializeField]
+	private UILabel HairColorLabel;
 
-	public bool Apologize;
+	[SerializeField]
+	private UILabel EyeColorLabel;
 
-	public bool LoveSick;
+	[SerializeField]
+	private UILabel EyeWearLabel;
 
-	public bool FadeOut;
+	[SerializeField]
+	private GameObject LoveSickCamera;
 
-	public float ScrollSpeed;
+	[SerializeField]
+	private GameObject CensorCloud;
 
-	public float Timer;
+	[SerializeField]
+	private GameObject BigCloud;
 
-	public int FemaleUniform = 1;
+	[SerializeField]
+	private GameObject Hearts;
 
-	public int MaleUniform = 1;
+	[SerializeField]
+	private GameObject Cloud;
 
-	public int FacialHair;
+	[SerializeField]
+	private UISprite Black;
 
-	public int SkinColor = 3;
+	[SerializeField]
+	private UISprite White;
 
-	public int HairStyle = 1;
+	[SerializeField]
+	private bool Apologize;
 
-	public int HairColor = 1;
+	[SerializeField]
+	private bool LoveSick;
 
-	public int EyeColor = 1;
+	[SerializeField]
+	private bool FadeOut;
 
-	public int EyeWear;
+	[SerializeField]
+	private float ScrollSpeed;
 
-	public int Selected = 1;
+	[SerializeField]
+	private float Timer;
 
-	public int Phase = 1;
+	[SerializeField]
+	private int Selected = 1;
 
-	public Texture[] FemaleUniformTextures;
+	[SerializeField]
+	private int Phase = 1;
 
-	public Texture[] MaleUniformTextures;
+	[SerializeField]
+	private Texture[] FemaleUniformTextures;
 
-	public Texture[] FaceTextures;
+	[SerializeField]
+	private Texture[] MaleUniformTextures;
 
-	public Texture[] SkinTextures;
+	[SerializeField]
+	private Texture[] FaceTextures;
 
-	public GameObject[] FacialHairstyles;
+	[SerializeField]
+	private Texture[] SkinTextures;
 
-	public GameObject[] Hairstyles;
+	[SerializeField]
+	private GameObject[] FacialHairstyles;
 
-	public GameObject[] Eyewears;
+	[SerializeField]
+	private GameObject[] Hairstyles;
 
-	public Mesh[] FemaleUniforms;
+	[SerializeField]
+	private GameObject[] Eyewears;
 
-	public Mesh[] MaleUniforms;
+	[SerializeField]
+	private Mesh[] FemaleUniforms;
 
-	public Texture FemaleFace;
+	[SerializeField]
+	private Mesh[] MaleUniforms;
 
-	public string HairColorName = string.Empty;
+	[SerializeField]
+	private Texture FemaleFace;
 
-	public string EyeColorName = string.Empty;
+	[SerializeField]
+	private string HairColorName = string.Empty;
 
-	public AudioClip LoveSickIntro;
+	[SerializeField]
+	private string EyeColorName = string.Empty;
 
-	public AudioClip LoveSickLoop;
+	[SerializeField]
+	private AudioClip LoveSickIntro;
+
+	[SerializeField]
+	private AudioClip LoveSickLoop;
+
+	private static readonly KeyValuePair<Color, string>[] ColorPairs = new KeyValuePair<Color, string>[]
+	{
+		new KeyValuePair<Color, string>(default(Color), string.Empty),
+		new KeyValuePair<Color, string>(new Color(0.5f, 0.5f, 0.5f), "Black"),
+		new KeyValuePair<Color, string>(new Color(1f, 0f, 0f), "Red"),
+		new KeyValuePair<Color, string>(new Color(1f, 1f, 0f), "Yellow"),
+		new KeyValuePair<Color, string>(new Color(0f, 1f, 0f), "Green"),
+		new KeyValuePair<Color, string>(new Color(0f, 1f, 1f), "Cyan"),
+		new KeyValuePair<Color, string>(new Color(0f, 0f, 1f), "Blue"),
+		new KeyValuePair<Color, string>(new Color(1f, 0f, 1f), "Purple"),
+		new KeyValuePair<Color, string>(new Color(1f, 0.5f, 0f), "Orange"),
+		new KeyValuePair<Color, string>(new Color(0.5f, 0.25f, 0f), "Brown"),
+		new KeyValuePair<Color, string>(new Color(1f, 1f, 1f), "White")
+	};
+
+	private void Awake()
+	{
+		this.Data = new CustomizationScript.CustomizationData();
+		this.Data.skinColor = new global::RangeInt(3, this.MinSkinColor, this.MaxSkinColor);
+		this.Data.hairstyle = new global::RangeInt(1, this.MinHairstyle, this.MaxHairstyle);
+		this.Data.hairColor = new global::RangeInt(1, this.MinHairColor, this.MaxHairColor);
+		this.Data.eyeColor = new global::RangeInt(1, this.MinEyeColor, this.MaxEyeColor);
+		this.Data.eyewear = new global::RangeInt(0, this.MinEyewear, this.MaxEyewear);
+		this.Data.facialHair = new global::RangeInt(0, this.MinFacialHair, this.MaxFacialHair);
+		this.Data.maleUniform = new global::RangeInt(1, this.MinMaleUniform, this.MaxMaleUniform);
+		this.Data.femaleUniform = new global::RangeInt(1, this.MinFemaleUniform, this.MaxFemaleUniform);
+	}
 
 	private void Start()
 	{
@@ -145,16 +238,16 @@ public class CustomizationScript : MonoBehaviour
 		this.FinishPanel.alpha = 0f;
 		this.GenderPanel.alpha = 0f;
 		this.WhitePanel.alpha = 1f;
-		this.UpdateFacialHair();
-		this.UpdateHairStyle();
-		this.UpdateEyes();
-		this.UpdateSkin();
+		this.UpdateFacialHair(this.Data.facialHair.Value);
+		this.UpdateHairStyle(this.Data.hairstyle.Value);
+		this.UpdateEyes(this.Data.eyeColor.Value);
+		this.UpdateSkin(this.Data.skinColor.Value);
 		if (this.LoveSick)
 		{
 			this.LoveSickColorSwap();
 			this.WhitePanel.alpha = 0f;
-			this.FemaleUniform = 5;
-			this.MaleUniform = 5;
+			this.Data.femaleUniform.Value = 5;
+			this.Data.maleUniform.Value = 5;
 			RenderSettings.fogColor = new Color(0f, 0f, 0f, 1f);
 			this.LoveSickCamera.SetActive(true);
 			this.Black.color = Color.black;
@@ -164,14 +257,14 @@ public class CustomizationScript : MonoBehaviour
 		}
 		else
 		{
-			this.FemaleUniform = 1;
-			this.MaleUniform = 1;
+			this.Data.femaleUniform.Value = this.MinFemaleUniform;
+			this.Data.maleUniform.Value = this.MinMaleUniform;
 			RenderSettings.fogColor = new Color(1f, 0.5f, 1f, 1f);
 			this.Black.color = new Color(0f, 0f, 0f, 0f);
 			this.LoveSickCamera.SetActive(false);
 		}
-		this.UpdateMaleUniform();
-		this.UpdateFemaleUniform();
+		this.UpdateMaleUniform(this.Data.maleUniform.Value, this.Data.skinColor.Value);
+		this.UpdateFemaleUniform(this.Data.femaleUniform.Value);
 		this.Senpai.position = new Vector3(0f, -1f, 2f);
 		this.Senpai.gameObject.SetActive(true);
 		this.Senpai.GetComponent<Animation>().Play("newWalk_00");
@@ -180,6 +273,142 @@ public class CustomizationScript : MonoBehaviour
 		this.Yandere.GetComponent<Animation>().Play("f02_newWalk_00");
 		this.CensorCloud.SetActive(false);
 		this.Hearts.SetActive(false);
+	}
+
+	private int MinSkinColor
+	{
+		get
+		{
+			return 1;
+		}
+	}
+
+	private int MaxSkinColor
+	{
+		get
+		{
+			return 5;
+		}
+	}
+
+	private int MinHairstyle
+	{
+		get
+		{
+			return 0;
+		}
+	}
+
+	private int MaxHairstyle
+	{
+		get
+		{
+			return this.Hairstyles.Length - 1;
+		}
+	}
+
+	private int MinHairColor
+	{
+		get
+		{
+			return 1;
+		}
+	}
+
+	private int MaxHairColor
+	{
+		get
+		{
+			return CustomizationScript.ColorPairs.Length - 1;
+		}
+	}
+
+	private int MinEyeColor
+	{
+		get
+		{
+			return 1;
+		}
+	}
+
+	private int MaxEyeColor
+	{
+		get
+		{
+			return CustomizationScript.ColorPairs.Length - 1;
+		}
+	}
+
+	private int MinEyewear
+	{
+		get
+		{
+			return 0;
+		}
+	}
+
+	private int MaxEyewear
+	{
+		get
+		{
+			return 5;
+		}
+	}
+
+	private int MinFacialHair
+	{
+		get
+		{
+			return 0;
+		}
+	}
+
+	private int MaxFacialHair
+	{
+		get
+		{
+			return this.FacialHairstyles.Length - 1;
+		}
+	}
+
+	private int MinMaleUniform
+	{
+		get
+		{
+			return 1;
+		}
+	}
+
+	private int MaxMaleUniform
+	{
+		get
+		{
+			return this.MaleUniforms.Length - 1;
+		}
+	}
+
+	private int MinFemaleUniform
+	{
+		get
+		{
+			return 1;
+		}
+	}
+
+	private int MaxFemaleUniform
+	{
+		get
+		{
+			return this.FemaleUniforms.Length - 1;
+		}
+	}
+
+	private float CameraSpeed
+	{
+		get
+		{
+			return Time.deltaTime * 10f;
+		}
 	}
 
 	private void Update()
@@ -243,21 +472,17 @@ public class CustomizationScript : MonoBehaviour
 					this.Senpai.localEulerAngles = new Vector3(this.Senpai.localEulerAngles.x, 180f, this.Senpai.localEulerAngles.z);
 					this.Phase++;
 				}
-				if (this.InputManager.TappedDown)
+				bool tappedDown = this.InputManager.TappedDown;
+				bool tappedUp = this.InputManager.TappedUp;
+				if (tappedDown || tappedUp)
 				{
-					this.Selected++;
-					if (this.Selected > 6)
+					if (tappedDown)
 					{
-						this.Selected = 1;
+						this.Selected = ((this.Selected < 6) ? (this.Selected + 1) : 1);
 					}
-					this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 650f - (float)this.Selected * 150f, this.Highlight.localPosition.z);
-				}
-				else if (this.InputManager.TappedUp)
-				{
-					this.Selected--;
-					if (this.Selected < 1)
+					else if (tappedUp)
 					{
-						this.Selected = 6;
+						this.Selected = ((this.Selected > 1) ? (this.Selected - 1) : 6);
 					}
 					this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 650f - (float)this.Selected * 150f, this.Highlight.localPosition.z);
 				}
@@ -265,76 +490,76 @@ public class CustomizationScript : MonoBehaviour
 				{
 					if (this.Selected == 1)
 					{
-						this.SkinColor++;
-						this.UpdateSkin();
+						this.Data.skinColor.Value = this.Data.skinColor.Next;
+						this.UpdateSkin(this.Data.skinColor.Value);
 					}
 					else if (this.Selected == 2)
 					{
-						this.HairStyle++;
-						this.UpdateHairStyle();
+						this.Data.hairstyle.Value = this.Data.hairstyle.Next;
+						this.UpdateHairStyle(this.Data.hairstyle.Value);
 					}
 					else if (this.Selected == 3)
 					{
-						this.HairColor++;
-						this.UpdateColor();
+						this.Data.hairColor.Value = this.Data.hairColor.Next;
+						this.UpdateColor(this.Data.hairColor.Value);
 					}
 					else if (this.Selected == 4)
 					{
-						this.EyeColor++;
-						this.UpdateEyes();
+						this.Data.eyeColor.Value = this.Data.eyeColor.Next;
+						this.UpdateEyes(this.Data.eyeColor.Value);
 					}
 					else if (this.Selected == 5)
 					{
-						this.EyeWear++;
-						this.UpdateEyewear();
+						this.Data.eyewear.Value = this.Data.eyewear.Next;
+						this.UpdateEyewear(this.Data.eyewear.Value);
 					}
 					else if (this.Selected == 6)
 					{
-						this.FacialHair++;
-						this.UpdateFacialHair();
+						this.Data.facialHair.Value = this.Data.facialHair.Next;
+						this.UpdateFacialHair(this.Data.facialHair.Value);
 					}
 				}
 				if (this.InputManager.TappedLeft)
 				{
 					if (this.Selected == 1)
 					{
-						this.SkinColor--;
-						this.UpdateSkin();
+						this.Data.skinColor.Value = this.Data.skinColor.Previous;
+						this.UpdateSkin(this.Data.skinColor.Value);
 					}
 					else if (this.Selected == 2)
 					{
-						this.HairStyle--;
-						this.UpdateHairStyle();
+						this.Data.hairstyle.Value = this.Data.hairstyle.Previous;
+						this.UpdateHairStyle(this.Data.hairstyle.Value);
 					}
 					else if (this.Selected == 3)
 					{
-						this.HairColor--;
-						this.UpdateColor();
+						this.Data.hairColor.Value = this.Data.hairColor.Previous;
+						this.UpdateColor(this.Data.hairColor.Value);
 					}
 					else if (this.Selected == 4)
 					{
-						this.EyeColor--;
-						this.UpdateEyes();
+						this.Data.eyeColor.Value = this.Data.eyeColor.Previous;
+						this.UpdateEyes(this.Data.eyeColor.Value);
 					}
 					else if (this.Selected == 5)
 					{
-						this.EyeWear--;
-						this.UpdateEyewear();
+						this.Data.eyewear.Value = this.Data.eyewear.Previous;
+						this.UpdateEyewear(this.Data.eyewear.Value);
 					}
 					else if (this.Selected == 6)
 					{
-						this.FacialHair--;
-						this.UpdateFacialHair();
+						this.Data.facialHair.Value = this.Data.facialHair.Previous;
+						this.UpdateFacialHair(this.Data.facialHair.Value);
 					}
 				}
 			}
 			if (this.Selected == 1)
 			{
-				this.LoveSickCamera.transform.position = new Vector3(Mathf.Lerp(this.LoveSickCamera.transform.position.x, -1.5f, Time.deltaTime * 10f), Mathf.Lerp(this.LoveSickCamera.transform.position.y, 0f, Time.deltaTime * 10f), Mathf.Lerp(this.LoveSickCamera.transform.position.z, 0.5f, Time.deltaTime * 10f));
+				this.LoveSickCamera.transform.position = new Vector3(Mathf.Lerp(this.LoveSickCamera.transform.position.x, -1.5f, this.CameraSpeed), Mathf.Lerp(this.LoveSickCamera.transform.position.y, 0f, this.CameraSpeed), Mathf.Lerp(this.LoveSickCamera.transform.position.z, 0.5f, this.CameraSpeed));
 			}
 			else
 			{
-				this.LoveSickCamera.transform.position = new Vector3(Mathf.Lerp(this.LoveSickCamera.transform.position.x, -0.5f, Time.deltaTime * 10f), Mathf.Lerp(this.LoveSickCamera.transform.position.y, 0.5f, Time.deltaTime * 10f), Mathf.Lerp(this.LoveSickCamera.transform.position.z, 1.5f, Time.deltaTime * 10f));
+				this.LoveSickCamera.transform.position = new Vector3(Mathf.Lerp(this.LoveSickCamera.transform.position.x, -0.5f, this.CameraSpeed), Mathf.Lerp(this.LoveSickCamera.transform.position.y, 0.5f, this.CameraSpeed), Mathf.Lerp(this.LoveSickCamera.transform.position.z, 1.5f, this.CameraSpeed));
 			}
 			base.transform.position = this.LoveSickCamera.transform.position;
 		}
@@ -368,8 +593,8 @@ public class CustomizationScript : MonoBehaviour
 			this.FinishPanel.alpha = Mathf.MoveTowards(this.FinishPanel.alpha, 0f, Time.deltaTime * 2f);
 			if (this.FinishPanel.alpha == 0f)
 			{
-				this.UpdateFemaleUniform();
-				this.UpdateMaleUniform();
+				this.UpdateFemaleUniform(this.Data.femaleUniform.Value);
+				this.UpdateMaleUniform(this.Data.maleUniform.Value, this.Data.skinColor.Value);
 				this.CensorCloud.SetActive(false);
 				this.Yandere.gameObject.SetActive(true);
 				this.Selected = 1;
@@ -396,26 +621,26 @@ public class CustomizationScript : MonoBehaviour
 				{
 					if (this.Selected == 1)
 					{
-						this.MaleUniform++;
-						this.UpdateMaleUniform();
+						this.Data.maleUniform.Value = this.Data.maleUniform.Next;
+						this.UpdateMaleUniform(this.Data.maleUniform.Value, this.Data.skinColor.Value);
 					}
 					else if (this.Selected == 2)
 					{
-						this.FemaleUniform++;
-						this.UpdateFemaleUniform();
+						this.Data.femaleUniform.Value = this.Data.femaleUniform.Next;
+						this.UpdateFemaleUniform(this.Data.femaleUniform.Value);
 					}
 				}
 				if (this.InputManager.TappedLeft)
 				{
 					if (this.Selected == 1)
 					{
-						this.MaleUniform--;
-						this.UpdateMaleUniform();
+						this.Data.maleUniform.Value = this.Data.maleUniform.Previous;
+						this.UpdateMaleUniform(this.Data.maleUniform.Value, this.Data.skinColor.Value);
 					}
 					else if (this.Selected == 2)
 					{
-						this.FemaleUniform--;
-						this.UpdateFemaleUniform();
+						this.Data.femaleUniform.Value = this.Data.femaleUniform.Previous;
+						this.UpdateFemaleUniform(this.Data.femaleUniform.Value);
 					}
 				}
 			}
@@ -475,13 +700,13 @@ public class CustomizationScript : MonoBehaviour
 		{
 			if (this.Phase < 6)
 			{
-				this.LoveSickCamera.transform.position = new Vector3(Mathf.Lerp(this.LoveSickCamera.transform.position.x, -1.5f, Time.deltaTime * 10f), Mathf.Lerp(this.LoveSickCamera.transform.position.y, 0f, Time.deltaTime * 10f), Mathf.Lerp(this.LoveSickCamera.transform.position.z, 0.5f, Time.deltaTime * 10f));
+				this.LoveSickCamera.transform.position = new Vector3(Mathf.Lerp(this.LoveSickCamera.transform.position.x, -1.5f, this.CameraSpeed), Mathf.Lerp(this.LoveSickCamera.transform.position.y, 0f, this.CameraSpeed), Mathf.Lerp(this.LoveSickCamera.transform.position.z, 0.5f, this.CameraSpeed));
 				base.transform.position = this.LoveSickCamera.transform.position;
 			}
 			else
 			{
-				this.LoveSickCamera.transform.position = new Vector3(Mathf.Lerp(this.LoveSickCamera.transform.position.x, 0f, Time.deltaTime * 10f), Mathf.Lerp(this.LoveSickCamera.transform.position.y, 0.5f, Time.deltaTime * 10f), Mathf.Lerp(this.LoveSickCamera.transform.position.z, 0f, Time.deltaTime * 10f));
-				this.LoveSickCamera.transform.eulerAngles = new Vector3(Mathf.Lerp(this.LoveSickCamera.transform.eulerAngles.x, 15f, Time.deltaTime * 10f), Mathf.Lerp(this.LoveSickCamera.transform.eulerAngles.y, 0f, Time.deltaTime * 10f), Mathf.Lerp(this.LoveSickCamera.transform.eulerAngles.z, 0f, Time.deltaTime * 10f));
+				this.LoveSickCamera.transform.position = new Vector3(Mathf.Lerp(this.LoveSickCamera.transform.position.x, 0f, this.CameraSpeed), Mathf.Lerp(this.LoveSickCamera.transform.position.y, 0.5f, this.CameraSpeed), Mathf.Lerp(this.LoveSickCamera.transform.position.z, 0f, this.CameraSpeed));
+				this.LoveSickCamera.transform.eulerAngles = new Vector3(Mathf.Lerp(this.LoveSickCamera.transform.eulerAngles.x, 15f, this.CameraSpeed), Mathf.Lerp(this.LoveSickCamera.transform.eulerAngles.y, 0f, this.CameraSpeed), Mathf.Lerp(this.LoveSickCamera.transform.eulerAngles.z, 0f, this.CameraSpeed));
 				base.transform.eulerAngles = this.LoveSickCamera.transform.eulerAngles;
 				base.transform.position = this.LoveSickCamera.transform.position;
 				this.Yandere.position = new Vector3(Mathf.Lerp(this.Yandere.position.x, 1f, Time.deltaTime * 10f), Mathf.Lerp(this.Yandere.position.y, -1f, Time.deltaTime * 10f), Mathf.Lerp(this.Yandere.position.z, 3.5f, Time.deltaTime * 10f));
@@ -494,14 +719,14 @@ public class CustomizationScript : MonoBehaviour
 			if (this.WhitePanel.alpha == 1f)
 			{
 				SenpaiGlobals.CustomSenpai = true;
-				SenpaiGlobals.SenpaiSkinColor = this.SkinColor;
-				SenpaiGlobals.SenpaiHairStyle = this.HairStyle;
+				SenpaiGlobals.SenpaiSkinColor = this.Data.skinColor.Value;
+				SenpaiGlobals.SenpaiHairStyle = this.Data.hairstyle.Value;
 				SenpaiGlobals.SenpaiHairColor = this.HairColorName;
 				SenpaiGlobals.SenpaiEyeColor = this.EyeColorName;
-				SenpaiGlobals.SenpaiEyeWear = this.EyeWear;
-				SenpaiGlobals.SenpaiFacialHair = this.FacialHair;
-				StudentGlobals.MaleUniform = this.MaleUniform;
-				StudentGlobals.FemaleUniform = this.FemaleUniform;
+				SenpaiGlobals.SenpaiEyeWear = this.Data.eyewear.Value;
+				SenpaiGlobals.SenpaiFacialHair = this.Data.facialHair.Value;
+				StudentGlobals.MaleUniform = this.Data.maleUniform.Value;
+				StudentGlobals.FemaleUniform = this.Data.femaleUniform.Value;
 				SceneManager.LoadScene("IntroScene");
 			}
 		}
@@ -529,302 +754,142 @@ public class CustomizationScript : MonoBehaviour
 		}
 	}
 
-	private void UpdateSkin()
+	private void LateUpdate()
 	{
-		if (this.SkinColor > 5)
-		{
-			this.SkinColor = 1;
-		}
-		else if (this.SkinColor < 1)
-		{
-			this.SkinColor = 5;
-		}
-		this.UpdateMaleUniform();
-		this.SkinColorLabel.text = "Skin Color " + this.SkinColor.ToString();
+		this.YandereHead.LookAt(this.SenpaiHead.position);
 	}
 
-	private void UpdateHairStyle()
+	private void UpdateSkin(int skinColor)
 	{
-		if (this.HairStyle > this.Hairstyles.Length - 1)
-		{
-			this.HairStyle = 0;
-		}
-		else if (this.HairStyle < 0)
-		{
-			this.HairStyle = this.Hairstyles.Length - 1;
-		}
+		this.UpdateMaleUniform(this.Data.maleUniform.Value, skinColor);
+		this.SkinColorLabel.text = "Skin Color " + skinColor.ToString();
+	}
+
+	private void UpdateHairStyle(int hairstyle)
+	{
 		for (int i = 1; i < this.Hairstyles.Length; i++)
 		{
 			this.Hairstyles[i].SetActive(false);
 		}
-		if (this.HairStyle > 0)
+		if (hairstyle > 0)
 		{
-			this.HairRenderer = this.Hairstyles[this.HairStyle].GetComponent<Renderer>();
-			this.Hairstyles[this.HairStyle].SetActive(true);
+			this.HairRenderer = this.Hairstyles[hairstyle].GetComponent<Renderer>();
+			this.Hairstyles[hairstyle].SetActive(true);
 		}
-		this.HairStyleLabel.text = "Hair Style " + this.HairStyle.ToString();
-		this.UpdateColor();
+		this.HairStyleLabel.text = "Hair Style " + hairstyle.ToString();
+		this.UpdateColor(this.Data.hairColor.Value);
 	}
 
-	private void UpdateFacialHair()
+	private void UpdateFacialHair(int facialHair)
 	{
-		if (this.FacialHair > this.FacialHairstyles.Length - 1)
-		{
-			this.FacialHair = 0;
-		}
-		else if (this.FacialHair < 0)
-		{
-			this.FacialHair = this.FacialHairstyles.Length - 1;
-		}
 		for (int i = 1; i < this.FacialHairstyles.Length; i++)
 		{
 			this.FacialHairstyles[i].SetActive(false);
 		}
-		if (this.FacialHair > 0)
+		if (facialHair > 0)
 		{
-			this.FacialHairRenderer = this.FacialHairstyles[this.FacialHair].GetComponent<Renderer>();
-			this.FacialHairstyles[this.FacialHair].SetActive(true);
+			this.FacialHairRenderer = this.FacialHairstyles[facialHair].GetComponent<Renderer>();
+			this.FacialHairstyles[facialHair].SetActive(true);
 		}
-		this.FacialHairStyleLabel.text = "Facial Hair " + this.FacialHair.ToString();
-		this.UpdateColor();
+		this.FacialHairStyleLabel.text = "Facial Hair " + facialHair.ToString();
+		this.UpdateColor(this.Data.hairColor.Value);
 	}
 
-	private void UpdateColor()
+	private void UpdateColor(int hairColor)
 	{
-		if (this.HairColor > 10)
+		KeyValuePair<Color, string> keyValuePair = CustomizationScript.ColorPairs[hairColor];
+		Color key = keyValuePair.Key;
+		this.HairColorName = keyValuePair.Value;
+		if (this.Data.hairstyle.Value > 0)
 		{
-			this.HairColor = 1;
+			this.HairRenderer = this.Hairstyles[this.Data.hairstyle.Value].GetComponent<Renderer>();
+			this.HairRenderer.material.color = key;
 		}
-		else if (this.HairColor < 1)
+		if (this.Data.facialHair.Value > 0)
 		{
-			this.HairColor = 10;
-		}
-		Color color = default(Color);
-		if (this.HairColor == 1)
-		{
-			color = new Color(0.5f, 0.5f, 0.5f);
-			this.HairColorName = "Black";
-		}
-		else if (this.HairColor == 2)
-		{
-			color = new Color(1f, 0f, 0f);
-			this.HairColorName = "Red";
-		}
-		else if (this.HairColor == 3)
-		{
-			color = new Color(1f, 1f, 0f);
-			this.HairColorName = "Yellow";
-		}
-		else if (this.HairColor == 4)
-		{
-			color = new Color(0f, 1f, 0f);
-			this.HairColorName = "Green";
-		}
-		else if (this.HairColor == 5)
-		{
-			color = new Color(0f, 1f, 1f);
-			this.HairColorName = "Cyan";
-		}
-		else if (this.HairColor == 6)
-		{
-			color = new Color(0f, 0f, 1f);
-			this.HairColorName = "Blue";
-		}
-		else if (this.HairColor == 7)
-		{
-			color = new Color(1f, 0f, 1f);
-			this.HairColorName = "Purple";
-		}
-		else if (this.HairColor == 8)
-		{
-			color = new Color(1f, 0.5f, 0f);
-			this.HairColorName = "Orange";
-		}
-		else if (this.HairColor == 9)
-		{
-			color = new Color(0.5f, 0.25f, 0f);
-			this.HairColorName = "Brown";
-		}
-		else if (this.HairColor == 10)
-		{
-			color = new Color(1f, 1f, 1f);
-			this.HairColorName = "White";
-		}
-		if (this.HairStyle > 0)
-		{
-			this.HairRenderer = this.Hairstyles[this.HairStyle].GetComponent<Renderer>();
-			this.HairRenderer.material.color = color;
-		}
-		if (this.FacialHair > 0)
-		{
-			this.FacialHairRenderer = this.FacialHairstyles[this.FacialHair].GetComponent<Renderer>();
-			this.FacialHairRenderer.material.color = color;
+			this.FacialHairRenderer = this.FacialHairstyles[this.Data.facialHair.Value].GetComponent<Renderer>();
+			this.FacialHairRenderer.material.color = key;
 			if (this.FacialHairRenderer.materials.Length > 1)
 			{
-				this.FacialHairRenderer.materials[1].color = color;
+				this.FacialHairRenderer.materials[1].color = key;
 			}
 		}
-		this.HairColorLabel.text = "Hair Color " + this.HairColor.ToString();
+		this.HairColorLabel.text = "Hair Color " + hairColor.ToString();
 	}
 
-	private void UpdateEyes()
+	private void UpdateEyes(int eyeColor)
 	{
-		if (this.EyeColor > 10)
-		{
-			this.EyeColor = 1;
-		}
-		else if (this.EyeColor < 1)
-		{
-			this.EyeColor = 10;
-		}
-		Color color = default(Color);
-		if (this.EyeColor == 1)
-		{
-			color = new Color(0.5f, 0.5f, 0.5f);
-			this.EyeColorName = "Black";
-		}
-		else if (this.EyeColor == 2)
-		{
-			color = new Color(1f, 0f, 0f);
-			this.EyeColorName = "Red";
-		}
-		else if (this.EyeColor == 3)
-		{
-			color = new Color(1f, 1f, 0f);
-			this.EyeColorName = "Yellow";
-		}
-		else if (this.EyeColor == 4)
-		{
-			color = new Color(0f, 1f, 0f);
-			this.EyeColorName = "Green";
-		}
-		else if (this.EyeColor == 5)
-		{
-			color = new Color(0f, 1f, 1f);
-			this.EyeColorName = "Cyan";
-		}
-		else if (this.EyeColor == 6)
-		{
-			color = new Color(0f, 0f, 1f);
-			this.EyeColorName = "Blue";
-		}
-		else if (this.EyeColor == 7)
-		{
-			color = new Color(1f, 0f, 1f);
-			this.EyeColorName = "Purple";
-		}
-		else if (this.EyeColor == 8)
-		{
-			color = new Color(1f, 0.5f, 0f);
-			this.EyeColorName = "Orange";
-		}
-		else if (this.EyeColor == 9)
-		{
-			color = new Color(0.5f, 0.25f, 0f);
-			this.EyeColorName = "Brown";
-		}
-		else if (this.EyeColor == 10)
-		{
-			color = new Color(1f, 1f, 1f);
-			this.EyeColorName = "White";
-		}
-		this.EyeR.material.color = color;
-		this.EyeL.material.color = color;
-		this.EyeColorLabel.text = "Eye Color " + this.EyeColor.ToString();
+		KeyValuePair<Color, string> keyValuePair = CustomizationScript.ColorPairs[eyeColor];
+		Color key = keyValuePair.Key;
+		this.EyeColorName = keyValuePair.Value;
+		this.EyeR.material.color = key;
+		this.EyeL.material.color = key;
+		this.EyeColorLabel.text = "Eye Color " + eyeColor.ToString();
 	}
 
-	private void UpdateEyewear()
+	private void UpdateEyewear(int eyewear)
 	{
-		if (this.EyeWear > 5)
-		{
-			this.EyeWear = 0;
-		}
-		else if (this.EyeWear < 0)
-		{
-			this.EyeWear = 5;
-		}
 		for (int i = 1; i < this.Eyewears.Length; i++)
 		{
 			this.Eyewears[i].SetActive(false);
 		}
-		if (this.EyeWear > 0)
+		if (eyewear > 0)
 		{
-			this.Eyewears[this.EyeWear].SetActive(true);
+			this.Eyewears[eyewear].SetActive(true);
 		}
-		this.EyeWearLabel.text = "Eye Wear " + this.EyeWear.ToString();
+		this.EyeWearLabel.text = "Eye Wear " + eyewear.ToString();
 	}
 
-	private void UpdateMaleUniform()
+	private void UpdateMaleUniform(int maleUniform, int skinColor)
 	{
-		if (this.MaleUniform > this.MaleUniforms.Length - 1)
+		this.SenpaiRenderer.sharedMesh = this.MaleUniforms[maleUniform];
+		if (maleUniform == 1)
 		{
-			this.MaleUniform = 1;
+			this.SenpaiRenderer.materials[0].mainTexture = this.SkinTextures[skinColor];
+			this.SenpaiRenderer.materials[1].mainTexture = this.MaleUniformTextures[maleUniform];
+			this.SenpaiRenderer.materials[2].mainTexture = this.FaceTextures[skinColor];
 		}
-		else if (this.MaleUniform < 1)
+		else if (maleUniform == 2)
 		{
-			this.MaleUniform = this.MaleUniforms.Length - 1;
+			this.SenpaiRenderer.materials[0].mainTexture = this.MaleUniformTextures[maleUniform];
+			this.SenpaiRenderer.materials[1].mainTexture = this.FaceTextures[skinColor];
+			this.SenpaiRenderer.materials[2].mainTexture = this.SkinTextures[skinColor];
 		}
-		this.SenpaiRenderer.sharedMesh = this.MaleUniforms[this.MaleUniform];
-		if (this.MaleUniform == 1)
+		else if (maleUniform == 3)
 		{
-			this.SenpaiRenderer.materials[0].mainTexture = this.SkinTextures[this.SkinColor];
-			this.SenpaiRenderer.materials[1].mainTexture = this.MaleUniformTextures[this.MaleUniform];
-			this.SenpaiRenderer.materials[2].mainTexture = this.FaceTextures[this.SkinColor];
+			this.SenpaiRenderer.materials[0].mainTexture = this.MaleUniformTextures[maleUniform];
+			this.SenpaiRenderer.materials[1].mainTexture = this.FaceTextures[skinColor];
+			this.SenpaiRenderer.materials[2].mainTexture = this.SkinTextures[skinColor];
 		}
-		else if (this.MaleUniform == 2)
+		else if (maleUniform == 4)
 		{
-			this.SenpaiRenderer.materials[0].mainTexture = this.MaleUniformTextures[this.MaleUniform];
-			this.SenpaiRenderer.materials[1].mainTexture = this.FaceTextures[this.SkinColor];
-			this.SenpaiRenderer.materials[2].mainTexture = this.SkinTextures[this.SkinColor];
+			this.SenpaiRenderer.materials[0].mainTexture = this.FaceTextures[skinColor];
+			this.SenpaiRenderer.materials[1].mainTexture = this.SkinTextures[skinColor];
+			this.SenpaiRenderer.materials[2].mainTexture = this.MaleUniformTextures[maleUniform];
 		}
-		else if (this.MaleUniform == 3)
+		else if (maleUniform == 5)
 		{
-			this.SenpaiRenderer.materials[0].mainTexture = this.MaleUniformTextures[this.MaleUniform];
-			this.SenpaiRenderer.materials[1].mainTexture = this.FaceTextures[this.SkinColor];
-			this.SenpaiRenderer.materials[2].mainTexture = this.SkinTextures[this.SkinColor];
+			this.SenpaiRenderer.materials[0].mainTexture = this.FaceTextures[skinColor];
+			this.SenpaiRenderer.materials[1].mainTexture = this.SkinTextures[skinColor];
+			this.SenpaiRenderer.materials[2].mainTexture = this.MaleUniformTextures[maleUniform];
 		}
-		else if (this.MaleUniform == 4)
+		else if (maleUniform == 6)
 		{
-			this.SenpaiRenderer.materials[0].mainTexture = this.FaceTextures[this.SkinColor];
-			this.SenpaiRenderer.materials[1].mainTexture = this.SkinTextures[this.SkinColor];
-			this.SenpaiRenderer.materials[2].mainTexture = this.MaleUniformTextures[this.MaleUniform];
+			this.SenpaiRenderer.materials[0].mainTexture = this.FaceTextures[skinColor];
+			this.SenpaiRenderer.materials[1].mainTexture = this.SkinTextures[skinColor];
+			this.SenpaiRenderer.materials[2].mainTexture = this.MaleUniformTextures[maleUniform];
 		}
-		else if (this.MaleUniform == 5)
-		{
-			this.SenpaiRenderer.materials[0].mainTexture = this.FaceTextures[this.SkinColor];
-			this.SenpaiRenderer.materials[1].mainTexture = this.SkinTextures[this.SkinColor];
-			this.SenpaiRenderer.materials[2].mainTexture = this.MaleUniformTextures[this.MaleUniform];
-		}
-		else if (this.MaleUniform == 6)
-		{
-			this.SenpaiRenderer.materials[0].mainTexture = this.FaceTextures[this.SkinColor];
-			this.SenpaiRenderer.materials[1].mainTexture = this.SkinTextures[this.SkinColor];
-			this.SenpaiRenderer.materials[2].mainTexture = this.MaleUniformTextures[this.MaleUniform];
-		}
-		this.MaleUniformLabel.text = "Male Uniform " + this.MaleUniform.ToString();
+		this.MaleUniformLabel.text = "Male Uniform " + maleUniform.ToString();
 	}
 
-	private void UpdateFemaleUniform()
+	private void UpdateFemaleUniform(int femaleUniform)
 	{
-		if (this.FemaleUniform > this.FemaleUniforms.Length - 1)
-		{
-			this.FemaleUniform = 1;
-		}
-		else if (this.FemaleUniform < 1)
-		{
-			this.FemaleUniform = this.FemaleUniforms.Length - 1;
-		}
-		this.YandereRenderer.sharedMesh = this.FemaleUniforms[this.FemaleUniform];
-		this.YandereRenderer.materials[0].mainTexture = this.FemaleUniformTextures[this.FemaleUniform];
-		this.YandereRenderer.materials[1].mainTexture = this.FemaleUniformTextures[this.FemaleUniform];
+		this.YandereRenderer.sharedMesh = this.FemaleUniforms[femaleUniform];
+		this.YandereRenderer.materials[0].mainTexture = this.FemaleUniformTextures[femaleUniform];
+		this.YandereRenderer.materials[1].mainTexture = this.FemaleUniformTextures[femaleUniform];
 		this.YandereRenderer.materials[2].mainTexture = this.FemaleFace;
 		this.YandereRenderer.materials[3].mainTexture = this.FemaleFace;
-		this.FemaleUniformLabel.text = "Female Uniform " + this.FemaleUniform.ToString();
-	}
-
-	private void LateUpdate()
-	{
-		this.YandereHead.LookAt(this.SenpaiHead.position);
+		this.FemaleUniformLabel.text = "Female Uniform " + femaleUniform.ToString();
 	}
 
 	private void LoveSickColorSwap()

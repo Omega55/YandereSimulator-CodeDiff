@@ -95,6 +95,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public Texture TeacherBodyTexture;
 
+	public Texture CoachPaleBodyTexture;
+
 	public Texture CoachBodyTexture;
 
 	public Texture CoachFaceTexture;
@@ -120,6 +122,8 @@ public class CosmeticScript : MonoBehaviour
 	public Texture CyanStockings;
 
 	public Texture RedStockings;
+
+	public Texture GreenSocks;
 
 	public Texture KizanaStockings;
 
@@ -152,6 +156,8 @@ public class CosmeticScript : MonoBehaviour
 	public Mesh TeacherMesh;
 
 	public Mesh CoachMesh;
+
+	public Mesh NurseMesh;
 
 	public bool TakingPortrait;
 
@@ -203,6 +209,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public GameObject[] GaloAccessories;
 
+	public Material[] NurseMaterials;
+
 	public int FaceID;
 
 	public int SkinID;
@@ -213,12 +221,6 @@ public class CosmeticScript : MonoBehaviour
 	{
 		if (this.Kidnapped)
 		{
-			this.GanguroCasualTextures = this.GanguroUniformTextures;
-			this.GanguroSocksTextures = this.GanguroUniformTextures;
-			this.OccultCasualTextures = this.OccultUniformTextures;
-			this.OccultSocksTextures = this.OccultUniformTextures;
-			this.FemaleCasualTextures = this.FemaleUniformTextures;
-			this.FemaleSocksTextures = this.FemaleUniformTextures;
 		}
 		if (this.RightShoe != null)
 		{
@@ -365,6 +367,11 @@ public class CosmeticScript : MonoBehaviour
 			this.MyRenderer.sharedMesh = this.CoachMesh;
 			this.Teacher = true;
 		}
+		else if (this.Club == ClubType.Nurse)
+		{
+			this.MyRenderer.sharedMesh = this.NurseMesh;
+			this.Teacher = true;
+		}
 		foreach (GameObject gameObject3 in this.FemaleAccessories)
 		{
 			if (gameObject3 != null)
@@ -475,11 +482,24 @@ public class CosmeticScript : MonoBehaviour
 					this.MyRenderer.materials[1].mainTexture = this.DefaultFaceTexture;
 					this.MyRenderer.materials[2].mainTexture = this.TeacherBodyTexture;
 				}
-				else
+				else if (this.Club == ClubType.GymTeacher)
 				{
-					this.MyRenderer.materials[0].mainTexture = this.CoachFaceTexture;
-					this.MyRenderer.materials[1].mainTexture = this.CoachBodyTexture;
-					this.MyRenderer.materials[2].mainTexture = this.CoachBodyTexture;
+					if (StudentGlobals.GetStudentReplaced(this.StudentID))
+					{
+						this.MyRenderer.materials[0].mainTexture = this.DefaultFaceTexture;
+						this.MyRenderer.materials[1].mainTexture = this.CoachPaleBodyTexture;
+						this.MyRenderer.materials[2].mainTexture = this.CoachPaleBodyTexture;
+					}
+					else
+					{
+						this.MyRenderer.materials[0].mainTexture = this.CoachFaceTexture;
+						this.MyRenderer.materials[1].mainTexture = this.CoachBodyTexture;
+						this.MyRenderer.materials[2].mainTexture = this.CoachBodyTexture;
+					}
+				}
+				else if (this.Club == ClubType.Nurse)
+				{
+					this.MyRenderer.materials = this.NurseMaterials;
 				}
 			}
 		}
@@ -746,6 +766,10 @@ public class CosmeticScript : MonoBehaviour
 		this.TaskCheck();
 		this.TurnOnCheck();
 		this.EyeTypeCheck();
+		if (this.Kidnapped)
+		{
+			this.WearIndoorShoes();
+		}
 	}
 
 	public void SetMaleUniform()
@@ -1048,6 +1072,10 @@ public class CosmeticScript : MonoBehaviour
 		{
 			this.MyStockings = this.PurpleStockings;
 		}
+		else if (this.Stockings == "ShortGreen")
+		{
+			this.MyStockings = this.GreenSocks;
+		}
 		else if (this.Stockings == "Black")
 		{
 			this.MyStockings = this.BlackStockings;
@@ -1181,6 +1209,19 @@ public class CosmeticScript : MonoBehaviour
 			this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
 		}
 		yield break;
+	}
+
+	public void WearIndoorShoes()
+	{
+		if (!this.Male)
+		{
+			this.MyRenderer.materials[0].mainTexture = this.CasualTexture;
+			this.MyRenderer.materials[1].mainTexture = this.CasualTexture;
+		}
+		else
+		{
+			this.MyRenderer.materials[this.UniformID].mainTexture = this.CasualTexture;
+		}
 	}
 
 	public void WearOutdoorShoes()

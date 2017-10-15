@@ -212,7 +212,7 @@ public class PortraitChanScript : MonoBehaviour
 		if (this.Kidnapped)
 		{
 			this.StudentID = SchoolGlobals.KidnapVictim;
-			component.Play("f02_kidnapIdle_00");
+			component.Play("f02_kidnapIdle_01");
 			this.TwintailR.transform.localEulerAngles = new Vector3(10f, -90f, 0f);
 			this.TwintailL.transform.localEulerAngles = new Vector3(10f, 90f, 0f);
 		}

@@ -281,7 +281,6 @@ public class ArmDetectorScript : MonoBehaviour
 					this.Yandere.FlameDemonic = true;
 					this.Yandere.Stance.Current = StanceType.Standing;
 					this.Yandere.Sanity = 100f;
-					this.Yandere.UpdateSanity();
 					this.Yandere.MyRenderer.materials[0].mainTexture = this.Yandere.FaceTexture;
 					this.Yandere.MyRenderer.materials[1].mainTexture = this.Yandere.NudePanties;
 					this.Yandere.MyRenderer.materials[2].mainTexture = this.Yandere.NudePanties;

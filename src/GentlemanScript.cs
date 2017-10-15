@@ -17,7 +17,6 @@ public class GentlemanScript : MonoBehaviour
 				component.clip = this.Clips[UnityEngine.Random.Range(0, this.Clips.Length - 1)];
 				component.Play();
 				this.Yandere.Sanity += 10f;
-				this.Yandere.UpdateSanity();
 			}
 		}
 	}

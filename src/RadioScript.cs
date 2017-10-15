@@ -37,6 +37,7 @@ public class RadioScript : MonoBehaviour
 				uisprite.fillAmount = 1f;
 				if (!this.On)
 				{
+					this.Prompt.Label[0].text = "     Turn Off";
 					this.MyRenderer.material.mainTexture = this.OnTexture;
 					base.GetComponent<AudioSource>().Play();
 					this.On = true;
@@ -60,11 +61,13 @@ public class RadioScript : MonoBehaviour
 
 	public void TurnOff()
 	{
+		this.Prompt.Label[0].text = "     Turn On";
 		this.Prompt.enabled = false;
 		this.Prompt.Hide();
 		this.MyRenderer.material.mainTexture = this.OffTexture;
-		this.Victim = null;
 		base.GetComponent<AudioSource>().Stop();
+		this.CooldownTimer = 1f;
+		this.Victim = null;
 		this.On = false;
 	}
 }

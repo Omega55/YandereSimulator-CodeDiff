@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -47,8 +49,6 @@ public class EndOfDayScript : MonoBehaviour
 	public bool GameOver;
 
 	public bool Darken;
-
-	public string VictimString = string.Empty;
 
 	public int DeadPerps;
 
@@ -182,30 +182,43 @@ public class EndOfDayScript : MonoBehaviour
 				}
 				else
 				{
-					this.ID = 0;
-					while (this.ID < this.Police.CorpseList.Length)
+					List<string> list = new List<string>();
+					foreach (RagdollScript ragdollScript in this.Police.CorpseList)
 					{
-						RagdollScript ragdollScript = this.Police.CorpseList[this.ID];
 						if (ragdollScript != null)
 						{
 							this.VictimArray[this.Corpses] = ragdollScript.Student.StudentID;
-							if (this.Corpses > 0)
-							{
-								this.VictimString += ", and ";
-							}
-							this.VictimString += ragdollScript.Student.Name;
+							list.Add(ragdollScript.Student.Name);
 							this.Corpses++;
 						}
-						this.ID++;
 					}
-					this.Label.text = string.Concat(new string[]
+					list.Sort();
+					string text = "The police discover the corpse" + ((list.Count != 1) ? "s" : string.Empty) + " of ";
+					if (list.Count == 1)
 					{
-						"The police discover the corpse",
-						(this.Corpses <= 1) ? string.Empty : "s",
-						" of ",
-						this.VictimString,
-						"."
-					});
+						this.Label.text = text + list[0] + ".";
+					}
+					else if (list.Count == 2)
+					{
+						this.Label.text = string.Concat(new string[]
+						{
+							text,
+							list[0],
+							" and ",
+							list[1],
+							"."
+						});
+					}
+					else
+					{
+						StringBuilder stringBuilder = new StringBuilder();
+						for (int j = 0; j < list.Count - 1; j++)
+						{
+							stringBuilder.Append(list[j] + ", ");
+						}
+						stringBuilder.Append("and " + list[list.Count - 1] + ".");
+						this.Label.text = text + stringBuilder.ToString();
+					}
 					this.Phase++;
 				}
 			}
@@ -243,30 +256,46 @@ public class EndOfDayScript : MonoBehaviour
 						}
 						this.ID++;
 					}
-					this.Victims = 0;
-					this.VictimString = string.Empty;
+					List<string> list2 = new List<string>();
 					this.ID = 0;
 					while (this.ID < this.MurderWeapon.Victims.Length)
 					{
 						if (this.MurderWeapon.Victims[this.ID])
 						{
-							if (this.Victims > 0)
-							{
-								this.VictimString += ", and ";
-							}
-							this.VictimString += this.JSON.Students[this.ID].Name;
-							this.Victims++;
+							list2.Add(this.JSON.Students[this.ID].Name);
 						}
 						this.ID++;
 					}
-					this.Label.text = string.Concat(new string[]
+					list2.Sort();
+					this.Victims = list2.Count;
+					string name = this.MurderWeapon.Name;
+					string str = (name[name.Length - 1] == 's') ? (name.ToLower() + " that are") : ("a " + name.ToLower() + " that is");
+					string text2 = "The police discover " + str + " stained with the blood of ";
+					if (list2.Count == 1)
 					{
-						"The police discover a ",
-						this.MurderWeapon.Name,
-						" that is stained with the blood of ",
-						this.VictimString,
-						"."
-					});
+						this.Label.text = text2 + list2[0] + ".";
+					}
+					else if (list2.Count == 2)
+					{
+						this.Label.text = string.Concat(new string[]
+						{
+							text2,
+							list2[0],
+							" and ",
+							list2[1],
+							"."
+						});
+					}
+					else
+					{
+						StringBuilder stringBuilder2 = new StringBuilder();
+						for (int k = 0; k < list2.Count - 1; k++)
+						{
+							stringBuilder2.Append(list2[k] + ", ");
+						}
+						stringBuilder2.Append("and " + list2[list2.Count - 1] + ".");
+						this.Label.text = text2 + stringBuilder2.ToString();
+					}
 					this.Weapons++;
 					this.Phase++;
 				}

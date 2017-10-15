@@ -52,18 +52,32 @@ public class NemesisScript : MonoBehaviour
 				gameObject.SetActive(false);
 			}
 		}
-		foreach (GameObject gameObject2 in this.Cosmetic.FemaleAccessories)
+		foreach (GameObject gameObject2 in this.Cosmetic.TeacherHair)
 		{
 			if (gameObject2 != null)
 			{
 				gameObject2.SetActive(false);
 			}
 		}
-		foreach (GameObject gameObject3 in this.Cosmetic.ClubAccessories)
+		foreach (GameObject gameObject3 in this.Cosmetic.FemaleAccessories)
 		{
 			if (gameObject3 != null)
 			{
 				gameObject3.SetActive(false);
+			}
+		}
+		foreach (GameObject gameObject4 in this.Cosmetic.TeacherAccessories)
+		{
+			if (gameObject4 != null)
+			{
+				gameObject4.SetActive(false);
+			}
+		}
+		foreach (GameObject gameObject5 in this.Cosmetic.ClubAccessories)
+		{
+			if (gameObject5 != null)
+			{
+				gameObject5.SetActive(false);
 			}
 		}
 		this.Difficulty = MissionModeGlobals.NemesisDifficulty;
@@ -187,6 +201,7 @@ public class NemesisScript : MonoBehaviour
 							this.Yandere.StudentManager.StopMoving();
 							AudioSource component2 = base.GetComponent<AudioSource>();
 							component2.Play();
+							this.Yandere.YandereVision = false;
 							this.Yandere.FollowHips = true;
 							this.Yandere.Laughing = false;
 							this.Yandere.CanMove = false;
@@ -319,8 +334,10 @@ public class NemesisScript : MonoBehaviour
 		this.Student.Chopsticks[0].SetActive(false);
 		this.Student.Chopsticks[1].SetActive(false);
 		this.Student.OccultBook.SetActive(false);
+		this.Student.Cigarette.SetActive(false);
 		this.Student.EventBook.SetActive(false);
 		this.Student.Scrubber.SetActive(false);
+		this.Student.Lighter.SetActive(false);
 		this.Student.Eraser.SetActive(false);
 		this.Student.Bento.SetActive(false);
 		this.Student.Pen.SetActive(false);

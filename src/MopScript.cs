@@ -67,7 +67,8 @@ public class MopScript : MonoBehaviour
 					}
 					else
 					{
-						this.Prompt.HideButton[0] = true;
+						this.Prompt.Label[0].text = "     Dip In Bucket First!";
+						this.Prompt.HideButton[0] = false;
 					}
 				}
 				else if (this.Prompt.Button[0].color.a > 0f)

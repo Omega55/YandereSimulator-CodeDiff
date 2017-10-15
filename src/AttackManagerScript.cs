@@ -173,7 +173,6 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					this.Yandere.TargetStudent.DeathType = DeathType.Weapon;
 					this.Yandere.Bloodiness += 20f;
-					this.Yandere.UpdateBlood();
 					this.Yandere.StainWeapon();
 				}
 				else
@@ -186,7 +185,6 @@ public class AttackManagerScript : MonoBehaviour
 				this.Yandere.TargetStudent.DeathCause = equippedWeapon.WeaponID;
 				this.Yandere.TargetStudent.BecomeRagdoll();
 				this.Yandere.Sanity -= ((PlayerGlobals.PantiesEquipped != 10) ? 20f : 10f) * this.Yandere.Numbness;
-				this.Yandere.UpdateSanity();
 				this.Yandere.Attacking = false;
 				this.Yandere.FollowHips = false;
 				this.Yandere.MyController.radius = 0.2f;

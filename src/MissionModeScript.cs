@@ -166,6 +166,8 @@ public class MissionModeScript : MonoBehaviour
 
 	public bool WeaponDisposed;
 
+	public bool CheckForBlood;
+
 	public bool BloodCleaned;
 
 	public bool InfoRemark;
@@ -181,6 +183,8 @@ public class MissionModeScript : MonoBehaviour
 	public float TimeRemaining = 300f;
 
 	public float TargetHeight;
+
+	public float BloodTimer;
 
 	public float Speed;
 
@@ -608,7 +612,25 @@ public class MissionModeScript : MonoBehaviour
 			}
 			if (this.NoBlood)
 			{
-				this.BloodCleaned = (this.Police.BloodParent.childCount == 0);
+				if (this.Police.BloodParent.childCount > 0)
+				{
+					this.CheckForBlood = true;
+				}
+				if (this.CheckForBlood)
+				{
+					if (this.Police.BloodParent.childCount == 0)
+					{
+						this.BloodTimer += Time.deltaTime;
+						if (this.BloodTimer > 1f)
+						{
+							this.BloodCleaned = true;
+						}
+					}
+					else
+					{
+						this.BloodTimer = 0f;
+					}
+				}
 			}
 			if (this.NoWeapon && !this.WeaponDisposed && this.Incinerator.Timer > 0f)
 			{
@@ -708,6 +730,12 @@ public class MissionModeScript : MonoBehaviour
 				this.NotificationManager.DisplayNotification(NotificationType.Exfiltrate);
 				base.GetComponent<AudioSource>().PlayOneShot(this.InfoExfiltrate);
 				this.ExitPortal.SetActive(true);
+			}
+			if (this.NoBlood && this.BloodCleaned && this.Police.BloodParent.childCount > 0)
+			{
+				this.ExitPortal.SetActive(false);
+				this.BloodCleaned = false;
+				this.BloodTimer = 0f;
 			}
 			if (!this.InfoRemark && this.GameOverID == 0 && this.TargetDead && (!this.CorpseDisposed || !this.BloodCleaned || !this.WeaponDisposed))
 			{

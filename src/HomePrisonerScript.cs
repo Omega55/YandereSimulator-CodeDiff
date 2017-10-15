@@ -106,6 +106,10 @@ public class HomePrisonerScript : MonoBehaviour
 			this.BanterText = this.LowSanityBanterText;
 			this.Banter = this.LowSanityBanter;
 		}
+		if (this.Sanity < 100f)
+		{
+			this.Prisoner.Character.GetComponent<Animation>().CrossFade("f02_kidnapIdle_02");
+		}
 		if (!HomeGlobals.Night)
 		{
 			UILabel uilabel = this.OptionLabels[2];

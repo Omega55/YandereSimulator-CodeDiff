@@ -244,15 +244,7 @@ public class PoliceScript : MonoBehaviour
 				this.Timer = 0f;
 				if (!this.Yandere.Attacking && !this.Yandere.Struggling && !this.FadeOut)
 				{
-					this.StudentManager.StopMoving();
-					this.Darkness.enabled = true;
-					this.Yandere.StopLaughing();
-					this.Clock.StopTime = true;
-					this.FadeOut = true;
-					if (!this.EndOfDay.gameObject.activeInHierarchy)
-					{
-						Time.timeScale = 1f;
-					}
+					this.BeginFadingOut();
 				}
 			}
 			int num = Mathf.CeilToInt(this.Timer);
@@ -420,6 +412,15 @@ public class PoliceScript : MonoBehaviour
 			{
 				this.ResultsLabels[i].text = string.Empty;
 			}
+		}
+		else if (this.Reputation.Reputation <= -100f)
+		{
+			this.ResultsLabels[0].text = "Yandere-chan's bizarre conduct has been observed and discussed by many people.";
+			this.ResultsLabels[1].text = "Word of Yandere-chan's strange behavior has reached Senpai.";
+			this.ResultsLabels[2].text = "Senpai is now aware that Yandere-chan is a dangerous person.";
+			this.ResultsLabels[3].text = "From this day forward, Senpai will fear and avoid Yandere-chan.";
+			this.ResultsLabels[4].text = "Yandere-chan will never have her Senpai's love.";
+			this.GameOver = true;
 		}
 		else if (DateGlobals.Weekday == DayOfWeek.Friday)
 		{
@@ -590,6 +591,19 @@ public class PoliceScript : MonoBehaviour
 			{
 				StudentGlobals.SetStudentGrudge(j, true);
 			}
+		}
+	}
+
+	public void BeginFadingOut()
+	{
+		this.StudentManager.StopMoving();
+		this.Darkness.enabled = true;
+		this.Yandere.StopLaughing();
+		this.Clock.StopTime = true;
+		this.FadeOut = true;
+		if (!this.EndOfDay.gameObject.activeInHierarchy)
+		{
+			Time.timeScale = 1f;
 		}
 	}
 }

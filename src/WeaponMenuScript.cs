@@ -298,6 +298,7 @@ public class WeaponMenuScript : MonoBehaviour
 			{
 				this.Yandere.WeaponWarning = false;
 			}
+			AudioSource.PlayClipAtPoint(this.Yandere.EquippedWeapon.EquipClip, Camera.main.transform.position);
 			this.Show = false;
 		}
 	}

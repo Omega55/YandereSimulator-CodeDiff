@@ -5,6 +5,8 @@ public class ReputationScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
 
+	public PortalScript Portal;
+
 	public Transform CurrentRepMarker;
 
 	public Transform PendingRepMarker;
@@ -16,6 +18,8 @@ public class ReputationScript : MonoBehaviour
 	public float Reputation;
 
 	public float PendingRep;
+
+	public int CheckedRep = 1;
 
 	public int Phase;
 
@@ -41,28 +45,27 @@ public class ReputationScript : MonoBehaviour
 		{
 			if (this.Clock.PresentTime / 60f > 8.5f)
 			{
-				this.Reputation += this.PendingRep;
-				this.PendingRep = 0f;
 				this.Phase++;
-				this.StudentManager.WipePendingRep();
 			}
 		}
 		else if (this.Phase == 2)
 		{
 			if (this.Clock.PresentTime / 60f > 13.5f)
 			{
-				this.Reputation += this.PendingRep;
-				this.PendingRep = 0f;
 				this.Phase++;
-				this.StudentManager.WipePendingRep();
 			}
 		}
 		else if (this.Phase == 3 && this.Clock.PresentTime / 60f > 18f)
 		{
-			this.Reputation += this.PendingRep;
-			this.PendingRep = 0f;
 			this.Phase++;
-			this.StudentManager.WipePendingRep();
+		}
+		if (this.CheckedRep < this.Phase)
+		{
+			this.UpdateRep();
+			if (this.Reputation <= -100f)
+			{
+				this.Portal.EndDay();
+			}
 		}
 		if (!this.MissionMode)
 		{
@@ -134,5 +137,13 @@ public class ReputationScript : MonoBehaviour
 		{
 			this.FlowerVase.SetActive(true);
 		}
+	}
+
+	public void UpdateRep()
+	{
+		this.Reputation += this.PendingRep;
+		this.PendingRep = 0f;
+		this.CheckedRep++;
+		this.StudentManager.WipePendingRep();
 	}
 }

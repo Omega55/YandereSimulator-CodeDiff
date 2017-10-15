@@ -138,11 +138,8 @@ public class PickpocketMinigameScript : MonoBehaviour
 		this.ButtonPrompts[4].enabled = false;
 		this.Circle.enabled = false;
 		this.BG.enabled = false;
-		this.Yandere.Pickpocketing = false;
-		if (this.PickpocketSpot != null)
-		{
-			this.Yandere.CanMove = true;
-		}
+		this.Yandere.CharacterAnimation.CrossFade("f02_readyToFight_00");
+		this.Yandere.Caught = true;
 		this.Progress = 0;
 		this.ButtonID = 0;
 		this.Show = false;

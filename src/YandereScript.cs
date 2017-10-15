@@ -271,6 +271,8 @@ public class YandereScript : MonoBehaviour
 
 	public float AttackTimer;
 
+	public float CaughtTimer;
+
 	public float CrawlTimer;
 
 	public float GloveTimer;
@@ -285,11 +287,13 @@ public class YandereScript : MonoBehaviour
 
 	public float TalkTimer;
 
-	public float Bloodiness;
+	[SerializeField]
+	private float bloodiness;
 
 	public float PreviousSanity = 100f;
 
-	public float Sanity = 100f;
+	[SerializeField]
+	private float sanity;
 
 	public float TwitchTimer;
 
@@ -452,6 +456,8 @@ public class YandereScript : MonoBehaviour
 	public bool Talking;
 
 	public bool Aiming;
+
+	public bool Caught;
 
 	public bool Hiding;
 
@@ -915,8 +921,8 @@ public class YandereScript : MonoBehaviour
 		this.Vignette = components2[1];
 		this.ResetYandereEffects();
 		this.ResetSenpaiEffects();
-		this.UpdateSanity();
-		this.UpdateBlood();
+		this.Sanity = 100f;
+		this.Bloodiness = 0f;
 		this.SetUniform();
 		this.EasterEggMenu.transform.localPosition = new Vector3(this.EasterEggMenu.transform.localPosition.x, 0f, this.EasterEggMenu.transform.localPosition.z);
 		this.ProgressBar.transform.parent.gameObject.SetActive(false);
@@ -993,6 +999,109 @@ public class YandereScript : MonoBehaviour
 		if (MissionModeGlobals.MissionMode || GameGlobals.LoveSick)
 		{
 			this.NoDebug = true;
+		}
+	}
+
+	public float Sanity
+	{
+		get
+		{
+			return this.sanity;
+		}
+		set
+		{
+			this.sanity = Mathf.Clamp(value, 0f, 100f);
+			if (this.sanity > 66.66666f)
+			{
+				this.HeartRate.SetHeartRateColour(this.HeartRate.NormalColour);
+				this.SanityWarning = false;
+			}
+			else if (this.sanity > 33.33333f)
+			{
+				this.HeartRate.SetHeartRateColour(this.HeartRate.MediumColour);
+				this.SanityWarning = false;
+				if (this.PreviousSanity < 33.33333f)
+				{
+					this.StudentManager.UpdateStudents();
+				}
+			}
+			else
+			{
+				this.HeartRate.SetHeartRateColour(this.HeartRate.BadColour);
+				if (!this.SanityWarning)
+				{
+					this.NotificationManager.DisplayNotification(NotificationType.Insane);
+					this.SanityWarning = true;
+				}
+			}
+			this.HeartRate.BeatsPerMinute = (int)(240f - this.sanity * 1.8f);
+			if (this.MyRenderer.sharedMesh != this.NudeMesh)
+			{
+				if (!this.Slender)
+				{
+					this.MyRenderer.materials[2].SetFloat("_BlendAmount", 1f - this.sanity / 100f);
+				}
+				else
+				{
+					this.MyRenderer.materials[2].SetFloat("_BlendAmount", 0f);
+				}
+			}
+			else
+			{
+				this.MyRenderer.materials[2].SetFloat("_BlendAmount", 0f);
+			}
+			this.PreviousSanity = this.sanity;
+			this.Hairstyles[2].GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, this.Sanity);
+		}
+	}
+
+	public float Bloodiness
+	{
+		get
+		{
+			return this.bloodiness;
+		}
+		set
+		{
+			this.bloodiness = Mathf.Clamp(value, 0f, 100f);
+			if (!this.BloodyWarning && this.Bloodiness > 0f)
+			{
+				this.NotificationManager.DisplayNotification(NotificationType.Bloody);
+				this.BloodyWarning = true;
+				if (this.Schoolwear > 0)
+				{
+					this.Police.BloodyClothing++;
+				}
+			}
+			this.MyProjector.enabled = true;
+			if (this.Bloodiness == 100f)
+			{
+				this.MyProjector.material.mainTexture = this.BloodTextures[5];
+			}
+			else if (this.Bloodiness >= 80f)
+			{
+				this.MyProjector.material.mainTexture = this.BloodTextures[4];
+			}
+			else if (this.Bloodiness >= 60f)
+			{
+				this.MyProjector.material.mainTexture = this.BloodTextures[3];
+			}
+			else if (this.Bloodiness >= 40f)
+			{
+				this.MyProjector.material.mainTexture = this.BloodTextures[2];
+			}
+			else if (this.Bloodiness >= 20f)
+			{
+				this.MyProjector.material.mainTexture = this.BloodTextures[1];
+			}
+			else
+			{
+				this.MyProjector.enabled = false;
+				this.BloodyWarning = false;
+			}
+			this.StudentManager.UpdateBooths();
+			this.MyLocker.UpdateButtons();
+			this.Outline.h.ReinitMaterials();
 		}
 	}
 
@@ -1397,10 +1506,18 @@ public class YandereScript : MonoBehaviour
 						{
 							this.MainCamera.clearFlags = CameraClearFlags.Color;
 							this.MainCamera.farClipPlane = 0.02f;
+							this.HandCamera.GetComponent<Camera>().clearFlags = CameraClearFlags.Color;
+						}
+						else
+						{
+							this.MainCamera.clearFlags = CameraClearFlags.Skybox;
+							this.MainCamera.farClipPlane = (float)OptionGlobals.DrawDistance;
+							this.HandCamera.GetComponent<Camera>().clearFlags = CameraClearFlags.Depth;
 						}
 						base.transform.eulerAngles = new Vector3(base.transform.eulerAngles.x, this.MainCamera.transform.eulerAngles.y, base.transform.eulerAngles.z);
 						this.CharacterAnimation.Play(this.IdleAnim);
 						this.Smartphone.transform.parent.gameObject.SetActive(true);
+						this.DisableHairAndAccessories();
 						this.ShoulderCamera.AimingCamera = true;
 						this.Obscurance.enabled = false;
 						this.HandCamera.SetActive(true);
@@ -1843,6 +1960,7 @@ public class YandereScript : MonoBehaviour
 						if (this.Bucket != null)
 						{
 							this.Bucket.Bloodiness += this.Mop.Bloodiness / 2f;
+							this.Bucket.UpdateAppearance = true;
 						}
 						this.Mop.Bloodiness = 0f;
 						this.Mop.UpdateBlood();
@@ -2022,7 +2140,6 @@ public class YandereScript : MonoBehaviour
 				if (this.LaughIntensity > 15f)
 				{
 					this.Sanity += Time.deltaTime * 10f;
-					this.UpdateSanity();
 				}
 				this.LaughTimer -= Time.deltaTime;
 				if (this.LaughTimer <= 0f)
@@ -2036,7 +2153,6 @@ public class YandereScript : MonoBehaviour
 				this.CharacterAnimation.CrossFade("f02_timeSkip_00");
 				this.MyController.Move(base.transform.up * 0.0001f);
 				this.Sanity += Time.deltaTime * 0.17f;
-				this.UpdateSanity();
 			}
 			if (this.DumpsterGrabbing)
 			{
@@ -2067,7 +2183,6 @@ public class YandereScript : MonoBehaviour
 				if (this.CharacterAnimation["f02_stoolBathing_00"].time >= this.CharacterAnimation["f02_stoolBathing_00"].length)
 				{
 					this.Bloodiness = 0f;
-					this.UpdateBlood();
 					this.Bathing = false;
 					this.CanMove = true;
 				}
@@ -2131,9 +2246,7 @@ public class YandereScript : MonoBehaviour
 						{
 							UnityEngine.Object.Instantiate<GameObject>(this.TargetStudent.StabBloodEffect, (!this.TargetStudent.Teacher) ? this.TargetStudent.Head.position : this.EquippedWeapon.transform.position, Quaternion.identity);
 							this.Bloodiness += 20f;
-							this.UpdateBlood();
 							this.Sanity -= 20f * this.Numbness;
-							this.UpdateSanity();
 							this.StainWeapon();
 							this.StrugglePhase++;
 						}
@@ -2493,6 +2606,7 @@ public class YandereScript : MonoBehaviour
 				}
 				else if (this.CharacterAnimation["f02_bucketDrop_00"].time >= 1f && this.PickUp != null)
 				{
+					this.PickUp.Bucket.UpdateAppearance = true;
 					this.PickUp.Bucket.Dropped = true;
 					this.EmptyHands();
 				}
@@ -2601,6 +2715,17 @@ public class YandereScript : MonoBehaviour
 					this.CanMove = true;
 				}
 			}
+			if (this.Pickpocketing && !this.Noticed && this.Caught)
+			{
+				this.CaughtTimer += Time.deltaTime;
+				if (this.CaughtTimer > 1f)
+				{
+					this.Pickpocketing = false;
+					this.CaughtTimer = 0f;
+					this.CanMove = true;
+					this.Caught = false;
+				}
+			}
 		}
 	}
 
@@ -2685,7 +2810,6 @@ public class YandereScript : MonoBehaviour
 			this.SelectGrayscale.desaturation = Mathf.Lerp(this.SelectGrayscale.desaturation, 0f, Time.deltaTime * 10f);
 			this.HeartBeat.volume = this.SenpaiTint;
 			this.Sanity += Time.deltaTime * 10f;
-			this.UpdateSanity();
 		}
 		else if (this.SenpaiFade < 99f)
 		{
@@ -3192,7 +3316,6 @@ public class YandereScript : MonoBehaviour
 					if (this.CharacterAnimation["CyborgNinja_Slash"].time >= this.CharacterAnimation["CyborgNinja_Slash"].length)
 					{
 						this.Bloodiness += 20f;
-						this.UpdateBlood();
 						this.StainWeapon();
 						this.CharacterAnimation["CyborgNinja_Slash"].time = 0f;
 						this.CharacterAnimation.Stop("CyborgNinja_Slash");
@@ -3225,7 +3348,6 @@ public class YandereScript : MonoBehaviour
 							this.StainWeapon();
 							this.TargetStudent.LiquidProjector.material.mainTexture = this.BloodTextures[1];
 							this.Bloodiness += 20f;
-							this.UpdateBlood();
 							this.AttackPhase++;
 						}
 					}
@@ -3233,7 +3355,6 @@ public class YandereScript : MonoBehaviour
 					{
 						this.TargetStudent.LiquidProjector.material.mainTexture = this.BloodTextures[this.AttackPhase];
 						this.Bloodiness += 20f;
-						this.UpdateBlood();
 						this.AttackPhase++;
 					}
 					if (this.CharacterAnimation["f02_buzzSawKill_A_00"].time > this.CharacterAnimation["f02_buzzSawKill_A_00"].length)
@@ -3249,7 +3370,6 @@ public class YandereScript : MonoBehaviour
 						this.Attacking = false;
 						this.AttackPhase = 1;
 						this.Sanity -= 20f * this.Numbness;
-						this.UpdateSanity();
 						this.TargetStudent.DeathType = DeathType.Weapon;
 						this.TargetStudent.BecomeRagdoll();
 						if (!this.Noticed)
@@ -3277,10 +3397,8 @@ public class YandereScript : MonoBehaviour
 							this.EquippedWeapon.Effect();
 							this.AttackPhase = 2;
 							this.Bloodiness += 20f;
-							this.UpdateBlood();
 							this.StainWeapon();
 							this.Sanity -= 20f * this.Numbness;
-							this.UpdateSanity();
 						}
 					}
 					else if (this.CharacterAnimation["f02_swingA_00"].time >= this.CharacterAnimation["f02_swingA_00"].length * 0.9f)
@@ -3323,7 +3441,6 @@ public class YandereScript : MonoBehaviour
 							this.TargetStudent.BloodSpray.SetActive(true);
 							this.TargetStudent.DeathType = DeathType.Weapon;
 							this.Bloodiness += 20f;
-							this.UpdateBlood();
 						}
 						if (this.TargetStudent == this.StudentManager.Reporter)
 						{
@@ -3333,7 +3450,6 @@ public class YandereScript : MonoBehaviour
 						UnityEngine.Object.Destroy(this.TargetStudent.DeathScream);
 						this.AttackPhase = 2;
 						this.Sanity -= 20f * this.Numbness;
-						this.UpdateSanity();
 						if (this.EquippedWeapon.WeaponID == 8)
 						{
 							this.TargetStudent.Ragdoll.Sacrifice = true;
@@ -3765,27 +3881,20 @@ public class YandereScript : MonoBehaviour
 			this.Height = Mathf.Lerp(this.Height, this.TargetHeight, Time.deltaTime * 10f);
 			this.PelvisRoot.transform.localPosition = new Vector3(this.PelvisRoot.transform.localPosition.x, this.Height, this.PelvisRoot.transform.localPosition.z);
 		}
-		if (this.Hairstyles[15].activeInHierarchy)
-		{
-			Transform transform5 = this.Spine[4];
-			transform5.localEulerAngles = new Vector3(this.Spine[3].localEulerAngles.y, transform5.localEulerAngles.y, transform5.localEulerAngles.z);
-			Transform transform6 = this.Spine[5];
-			transform6.localEulerAngles = new Vector3(this.Spine[3].localEulerAngles.y, transform6.localEulerAngles.y, transform6.localEulerAngles.z);
-		}
 		if (this.Slender)
 		{
-			Transform transform7 = this.Leg[0];
+			Transform transform5 = this.Leg[0];
+			transform5.localScale = new Vector3(transform5.localScale.x, 2f, transform5.localScale.z);
+			Transform transform6 = this.Foot[0];
+			transform6.localScale = new Vector3(transform6.localScale.x, 0.5f, transform6.localScale.z);
+			Transform transform7 = this.Leg[1];
 			transform7.localScale = new Vector3(transform7.localScale.x, 2f, transform7.localScale.z);
-			Transform transform8 = this.Foot[0];
+			Transform transform8 = this.Foot[1];
 			transform8.localScale = new Vector3(transform8.localScale.x, 0.5f, transform8.localScale.z);
-			Transform transform9 = this.Leg[1];
-			transform9.localScale = new Vector3(transform9.localScale.x, 2f, transform9.localScale.z);
-			Transform transform10 = this.Foot[1];
-			transform10.localScale = new Vector3(transform10.localScale.x, 0.5f, transform10.localScale.z);
-			Transform transform11 = this.Arm[0];
-			transform11.localScale = new Vector3(2f, transform11.localScale.y, transform11.localScale.z);
-			Transform transform12 = this.Arm[1];
-			transform12.localScale = new Vector3(2f, transform12.localScale.y, transform12.localScale.z);
+			Transform transform9 = this.Arm[0];
+			transform9.localScale = new Vector3(2f, transform9.localScale.y, transform9.localScale.z);
+			Transform transform10 = this.Arm[1];
+			transform10.localScale = new Vector3(2f, transform10.localScale.y, transform10.localScale.z);
 		}
 		if (this.DK)
 		{
@@ -3807,13 +3916,13 @@ public class YandereScript : MonoBehaviour
 			{
 				this.FlapSpeed = 3f;
 			}
-			Transform transform13 = this.CirnoWing[0];
-			Transform transform14 = this.CirnoWing[1];
+			Transform transform11 = this.CirnoWing[0];
+			Transform transform12 = this.CirnoWing[1];
 			if (!this.FlapOut)
 			{
 				this.CirnoRotation += Time.deltaTime * 100f * this.FlapSpeed;
-				transform13.localEulerAngles = new Vector3(transform13.localEulerAngles.x, this.CirnoRotation, transform13.localEulerAngles.z);
-				transform14.localEulerAngles = new Vector3(transform14.localEulerAngles.x, -this.CirnoRotation, transform14.localEulerAngles.z);
+				transform11.localEulerAngles = new Vector3(transform11.localEulerAngles.x, this.CirnoRotation, transform11.localEulerAngles.z);
+				transform12.localEulerAngles = new Vector3(transform12.localEulerAngles.x, -this.CirnoRotation, transform12.localEulerAngles.z);
 				if (this.CirnoRotation > 15f)
 				{
 					this.FlapOut = true;
@@ -3822,8 +3931,8 @@ public class YandereScript : MonoBehaviour
 			else
 			{
 				this.CirnoRotation -= Time.deltaTime * 100f * this.FlapSpeed;
-				transform13.localEulerAngles = new Vector3(transform13.localEulerAngles.x, this.CirnoRotation, transform13.localEulerAngles.z);
-				transform14.localEulerAngles = new Vector3(transform14.localEulerAngles.x, -this.CirnoRotation, transform14.localEulerAngles.z);
+				transform11.localEulerAngles = new Vector3(transform11.localEulerAngles.x, this.CirnoRotation, transform11.localEulerAngles.z);
+				transform12.localEulerAngles = new Vector3(transform12.localEulerAngles.x, -this.CirnoRotation, transform12.localEulerAngles.z);
 				if (this.CirnoRotation < -15f)
 				{
 					this.FlapOut = false;
@@ -3864,11 +3973,13 @@ public class YandereScript : MonoBehaviour
 	public void MoveTowardsTarget(Vector3 target)
 	{
 		Vector3 a = target - base.transform.position;
-		this.MyController.Move(a * Time.deltaTime * 10f);
+		this.MyController.Move(a * (Time.deltaTime * 10f));
 	}
 
 	public void StopAiming()
 	{
+		this.UpdateAccessory();
+		this.UpdateHair();
 		this.CharacterAnimation["f02_cameraPose_00"].weight = 0f;
 		this.PelvisRoot.transform.localPosition = new Vector3(this.PelvisRoot.transform.localPosition.x, 0f, this.PelvisRoot.transform.localPosition.z);
 		this.ShoulderCamera.AimingCamera = false;
@@ -4023,105 +4134,6 @@ public class YandereScript : MonoBehaviour
 			this.Ragdoll.GetComponent<RagdollScript>().StopDragging();
 		}
 		this.Mopping = false;
-	}
-
-	public void UpdateSanity()
-	{
-		if (this.Sanity > 100f)
-		{
-			this.Sanity = 100f;
-		}
-		else if (this.Sanity < 0f)
-		{
-			this.Sanity = 0f;
-		}
-		if (this.Sanity > 66.66666f)
-		{
-			this.HeartRate.SetHeartRateColour(this.HeartRate.NormalColour);
-			this.SanityWarning = false;
-		}
-		else if (this.Sanity > 33.33333f)
-		{
-			this.HeartRate.SetHeartRateColour(this.HeartRate.MediumColour);
-			this.SanityWarning = false;
-			if (this.PreviousSanity < 33.33333f)
-			{
-				this.StudentManager.UpdateStudents();
-			}
-		}
-		else
-		{
-			this.HeartRate.SetHeartRateColour(this.HeartRate.BadColour);
-			if (!this.SanityWarning)
-			{
-				this.NotificationManager.DisplayNotification(NotificationType.Insane);
-				this.SanityWarning = true;
-			}
-		}
-		this.HeartRate.BeatsPerMinute = (int)(240f - this.Sanity * 1.8f);
-		if (this.MyRenderer.sharedMesh != this.NudeMesh)
-		{
-			if (!this.Slender)
-			{
-				this.MyRenderer.materials[2].SetFloat("_BlendAmount", 1f - this.Sanity / 100f);
-			}
-			else
-			{
-				this.MyRenderer.materials[2].SetFloat("_BlendAmount", 0f);
-			}
-		}
-		else
-		{
-			this.MyRenderer.materials[2].SetFloat("_BlendAmount", 0f);
-		}
-		this.PreviousSanity = this.Sanity;
-		this.Hairstyles[2].GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, this.Sanity);
-	}
-
-	public void UpdateBlood()
-	{
-		if (!this.BloodyWarning && this.Bloodiness > 0f)
-		{
-			this.NotificationManager.DisplayNotification(NotificationType.Bloody);
-			this.BloodyWarning = true;
-			if (this.Schoolwear > 0)
-			{
-				this.Police.BloodyClothing++;
-			}
-		}
-		if (this.Bloodiness > 100f)
-		{
-			this.Bloodiness = 100f;
-		}
-		this.MyProjector.enabled = true;
-		if (this.Bloodiness == 100f)
-		{
-			this.MyProjector.material.mainTexture = this.BloodTextures[5];
-		}
-		else if (this.Bloodiness >= 80f)
-		{
-			this.MyProjector.material.mainTexture = this.BloodTextures[4];
-		}
-		else if (this.Bloodiness >= 60f)
-		{
-			this.MyProjector.material.mainTexture = this.BloodTextures[3];
-		}
-		else if (this.Bloodiness >= 40f)
-		{
-			this.MyProjector.material.mainTexture = this.BloodTextures[2];
-		}
-		else if (this.Bloodiness >= 20f)
-		{
-			this.MyProjector.material.mainTexture = this.BloodTextures[1];
-		}
-		else
-		{
-			this.MyProjector.enabled = false;
-			this.BloodyWarning = false;
-		}
-		this.StudentManager.UpdateBooths();
-		this.MyLocker.UpdateButtons();
-		this.Outline.h.ReinitMaterials();
 	}
 
 	public void UpdateNumbness()
@@ -4417,7 +4429,6 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.materials[1].mainTexture = this.SlenderUniform;
 		this.MyRenderer.materials[2].mainTexture = this.SlenderSkin;
 		this.Sanity = 0f;
-		this.UpdateSanity();
 	}
 
 	private void X()
@@ -4694,7 +4705,6 @@ public class YandereScript : MonoBehaviour
 		this.RiggedAccessory.SetActive(true);
 		this.MyRenderer.sharedMesh = this.NoTorsoMesh;
 		this.Sanity = 100f;
-		this.UpdateSanity();
 		this.MyRenderer.materials[0].mainTexture = this.FaceTexture;
 		this.MyRenderer.materials[1].mainTexture = this.NudePanties;
 		this.MyRenderer.materials[2].mainTexture = this.NudePanties;
@@ -4792,7 +4802,6 @@ public class YandereScript : MonoBehaviour
 		this.CanMove = false;
 		this.Outline.h.ReinitMaterials();
 		this.ClubAccessory();
-		this.UpdateSanity();
 	}
 
 	public void ChangeClubwear()
@@ -4913,6 +4922,22 @@ public class YandereScript : MonoBehaviour
 			{
 				this.AccessoryGroup.SetPartsActive(true);
 			}
+		}
+	}
+
+	private void DisableHairAndAccessories()
+	{
+		this.ID = 1;
+		while (this.ID < this.Accessories.Length)
+		{
+			this.Accessories[this.ID].SetActive(false);
+			this.ID++;
+		}
+		this.ID = 1;
+		while (this.ID < this.Hairstyles.Length)
+		{
+			this.Hairstyles[this.ID].SetActive(false);
+			this.ID++;
 		}
 	}
 }

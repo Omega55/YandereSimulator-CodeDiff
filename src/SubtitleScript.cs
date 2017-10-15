@@ -129,7 +129,11 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] PlayerCompliments;
 
-	public string[] StudentCompliments;
+	public string[] StudentHighCompliments;
+
+	public string[] StudentMidCompliments;
+
+	public string[] StudentLowCompliments;
 
 	public string[] PlayerGossip;
 
@@ -1071,9 +1075,17 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.Label.text = this.GetRandomString(this.PlayerCompliments);
 		}
-		else if (ReactionType == "Student Compliment")
+		else if (ReactionType == "Student High Compliment")
 		{
-			this.Label.text = this.GetRandomString(this.StudentCompliments);
+			this.Label.text = this.GetRandomString(this.StudentHighCompliments);
+		}
+		else if (ReactionType == "Student Mid Compliment")
+		{
+			this.Label.text = this.GetRandomString(this.StudentMidCompliments);
+		}
+		else if (ReactionType == "Student Low Compliment")
+		{
+			this.Label.text = this.GetRandomString(this.StudentLowCompliments);
 		}
 		else if (ReactionType == "Player Gossip")
 		{

@@ -108,6 +108,14 @@ public class PhotoGalleryScript : MonoBehaviour
 		}
 	}
 
+	private float LerpSpeed
+	{
+		get
+		{
+			return Time.unscaledDeltaTime * 10f;
+		}
+	}
+
 	private float HighlightX
 	{
 		get
@@ -192,153 +200,227 @@ public class PhotoGalleryScript : MonoBehaviour
 		}
 	}
 
+	private void UpdatePhotoSelection()
+	{
+		if (Input.GetButtonDown("A"))
+		{
+			UITexture uitexture = this.Photographs[this.CurrentIndex];
+			if (uitexture.mainTexture != this.NoPhoto)
+			{
+				this.ViewPhoto.mainTexture = uitexture.mainTexture;
+				this.ViewPhoto.transform.position = uitexture.transform.position;
+				this.ViewPhoto.transform.localScale = uitexture.transform.localScale;
+				this.Destination.position = uitexture.transform.position;
+				this.Viewing = true;
+				if (!this.Corkboard)
+				{
+					for (int i = 1; i < 26; i++)
+					{
+						this.Hearts[i].gameObject.SetActive(false);
+					}
+				}
+				this.CanAdjust = false;
+			}
+			this.UpdateButtonPrompts();
+		}
+		if (Input.GetButtonDown("B"))
+		{
+			this.PromptBar.ClearButtons();
+			this.PromptBar.Label[0].text = "Accept";
+			this.PromptBar.Label[1].text = "Exit";
+			this.PromptBar.Label[4].text = "Choose";
+			this.PromptBar.Label[5].text = "Choose";
+			this.PromptBar.UpdateButtons();
+			this.PauseScreen.MainMenu.SetActive(true);
+			this.PauseScreen.Sideways = false;
+			this.PauseScreen.PressedB = true;
+			base.gameObject.SetActive(false);
+			this.UpdateButtonPrompts();
+		}
+		if (Input.GetButtonDown("X"))
+		{
+			this.ViewPhoto.mainTexture = null;
+			int currentIndex = this.CurrentIndex;
+			if (this.Photographs[currentIndex].mainTexture != this.NoPhoto)
+			{
+				this.Photographs[currentIndex].mainTexture = this.NoPhoto;
+				PlayerGlobals.SetPhoto(currentIndex, false);
+				PlayerGlobals.SetSenpaiPhoto(currentIndex, false);
+				TaskGlobals.SetKittenPhoto(currentIndex, false);
+				this.Hearts[currentIndex].gameObject.SetActive(false);
+				this.TaskManager.UpdateTaskStatus();
+			}
+			this.UpdateButtonPrompts();
+		}
+		if (this.Corkboard)
+		{
+			if (Input.GetButtonDown("Y"))
+			{
+				this.CanAdjust = false;
+				this.Cursor.gameObject.SetActive(true);
+				this.Adjusting = true;
+				this.UpdateButtonPrompts();
+			}
+		}
+		else if (this.CanAdjust && Input.GetButtonDown("Y"))
+		{
+			int currentIndex2 = this.CurrentIndex;
+			PlayerGlobals.SetSenpaiPhoto(currentIndex2, false);
+			this.Hearts[currentIndex2].gameObject.SetActive(false);
+			this.CanAdjust = false;
+			this.Yandere.Sanity += 20f;
+			this.UpdateButtonPrompts();
+		}
+		if (this.InputManager.TappedRight)
+		{
+			this.Column = ((this.Column >= 5) ? 1 : (this.Column + 1));
+		}
+		if (this.InputManager.TappedLeft)
+		{
+			this.Column = ((this.Column <= 1) ? 5 : (this.Column - 1));
+		}
+		if (this.InputManager.TappedUp)
+		{
+			this.Row = ((this.Row <= 1) ? 5 : (this.Row - 1));
+		}
+		if (this.InputManager.TappedDown)
+		{
+			this.Row = ((this.Row >= 5) ? 1 : (this.Row + 1));
+		}
+		bool flag = this.InputManager.TappedRight || this.InputManager.TappedLeft;
+		bool flag2 = this.InputManager.TappedUp || this.InputManager.TappedDown;
+		if (flag || flag2)
+		{
+			this.Highlight.transform.localPosition = new Vector3(this.HighlightX, this.HighlightY, this.Highlight.transform.localPosition.z);
+			this.UpdateButtonPrompts();
+		}
+		this.ViewPhoto.transform.localScale = Vector3.Lerp(this.ViewPhoto.transform.localScale, new Vector3(1f, 1f, 1f), this.LerpSpeed);
+		this.ViewPhoto.transform.position = Vector3.Lerp(this.ViewPhoto.transform.position, this.Destination.position, this.LerpSpeed);
+		if (this.Corkboard)
+		{
+			this.Gallery.transform.localPosition = new Vector3(this.Gallery.transform.localPosition.x, Mathf.Lerp(this.Gallery.transform.localPosition.y, 0f, Time.deltaTime * 10f), this.Gallery.transform.localPosition.z);
+		}
+	}
+
+	private void UpdatePhotoViewing()
+	{
+		this.ViewPhoto.transform.localScale = Vector3.Lerp(this.ViewPhoto.transform.localScale, (!this.Corkboard) ? new Vector3(6.5f, 6.5f, 6.5f) : new Vector3(5.8f, 5.8f, 5.8f), this.LerpSpeed);
+		this.ViewPhoto.transform.localPosition = Vector3.Lerp(this.ViewPhoto.transform.localPosition, Vector3.zero, this.LerpSpeed);
+		bool flag = this.Corkboard && Input.GetButtonDown("A");
+		if (flag)
+		{
+			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Photograph, base.transform.position, Quaternion.identity);
+			gameObject.transform.parent = this.CorkboardPanel;
+			gameObject.transform.localEulerAngles = Vector3.zero;
+			gameObject.transform.localPosition = Vector3.zero;
+			gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+			gameObject.GetComponent<UITexture>().mainTexture = this.Photographs[this.CurrentIndex].mainTexture;
+			this.MovingPhotograph = gameObject;
+			this.CanAdjust = false;
+			this.Adjusting = true;
+			this.Viewing = false;
+			this.Moving = true;
+			this.UpdateButtonPrompts();
+		}
+		if (Input.GetButtonDown("B"))
+		{
+			this.Viewing = false;
+			if (this.Corkboard)
+			{
+				this.Cursor.Highlight.transform.position = new Vector3(this.Cursor.Highlight.transform.position.x, 100f, this.Cursor.Highlight.transform.position.z);
+				this.CanAdjust = true;
+			}
+			else
+			{
+				for (int i = 1; i < 26; i++)
+				{
+					if (PlayerGlobals.GetSenpaiPhoto(i))
+					{
+						this.Hearts[i].gameObject.SetActive(true);
+						this.CanAdjust = true;
+					}
+				}
+			}
+			this.UpdateButtonPrompts();
+		}
+	}
+
+	private void UpdateCorkboardPhoto()
+	{
+		if (Input.GetMouseButton(1))
+		{
+			this.MovingPhotoRotation += this.MouseDelta.x;
+		}
+		else
+		{
+			this.MovingPhotograph.transform.localPosition = new Vector3(this.MovingPhotograph.transform.localPosition.x + this.MouseDelta.x * 8.66666f, this.MovingPhotograph.transform.localPosition.y + this.MouseDelta.y * 8.66666f, 0f);
+		}
+		if (Input.GetButton("LB"))
+		{
+			this.MovingPhotoRotation += Time.deltaTime * 100f;
+		}
+		if (Input.GetButton("RB"))
+		{
+			this.MovingPhotoRotation -= Time.deltaTime * 100f;
+		}
+		Vector2 vector = new Vector2(this.MovingPhotograph.transform.localPosition.x, this.MovingPhotograph.transform.localPosition.y);
+		Vector2 vector2 = new Vector2(Input.GetAxis("Horizontal") * 86.66666f, Input.GetAxis("Vertical") * 86.66666f);
+		this.MovingPhotograph.transform.localPosition = new Vector3(Mathf.Clamp(vector.x + vector2.x, -4150f, 4150f), Mathf.Clamp(vector.y + vector2.y, -2500f, 2500f), this.MovingPhotograph.transform.localPosition.z);
+		if (Input.GetButtonDown("A"))
+		{
+			this.Cursor.transform.localPosition = this.MovingPhotograph.transform.localPosition;
+			this.Cursor.gameObject.SetActive(true);
+			this.Moving = false;
+			this.UpdateButtonPrompts();
+		}
+	}
+
+	private void UpdateCorkboardCursor()
+	{
+		Vector2 vector = new Vector2(this.Cursor.transform.localPosition.x, this.Cursor.transform.localPosition.y);
+		Vector2 vector2 = new Vector2(this.MouseDelta.x * 8.66666f + Input.GetAxis("Horizontal") * 86.66666f, this.MouseDelta.y * 8.66666f + Input.GetAxis("Vertical") * 86.66666f);
+		this.Cursor.transform.localPosition = new Vector3(Mathf.Clamp(vector.x + vector2.x, -4788f, 4788f), Mathf.Clamp(vector.y + vector2.y, -3122f, 3122f), this.Cursor.transform.localPosition.z);
+		if (Input.GetButtonDown("A") && this.Cursor.Photograph != null)
+		{
+			this.Cursor.Highlight.transform.position = new Vector3(this.Cursor.Highlight.transform.position.x, 100f, this.Cursor.Highlight.transform.position.z);
+			this.MovingPhotograph = this.Cursor.Photograph;
+			this.Cursor.gameObject.SetActive(false);
+			this.Moving = true;
+			this.UpdateButtonPrompts();
+		}
+		if (Input.GetButtonDown("B"))
+		{
+			if (this.Cursor.Photograph != null)
+			{
+				this.Cursor.Photograph = null;
+			}
+			this.Cursor.transform.localPosition = new Vector3(0f, 0f, this.Cursor.transform.localPosition.z);
+			this.Cursor.Highlight.transform.position = new Vector3(this.Cursor.Highlight.transform.position.x, 100f, this.Cursor.Highlight.transform.position.z);
+			this.CanAdjust = true;
+			this.Cursor.gameObject.SetActive(false);
+			this.Adjusting = false;
+			this.UpdateButtonPrompts();
+		}
+		if (Input.GetButtonDown("X") && this.Cursor.Photograph != null)
+		{
+			this.Cursor.Highlight.transform.position = new Vector3(this.Cursor.Highlight.transform.position.x, 100f, this.Cursor.Highlight.transform.position.z);
+			UnityEngine.Object.Destroy(this.Cursor.Photograph);
+			this.Cursor.Photograph = null;
+			this.UpdateButtonPrompts();
+		}
+	}
+
 	private void Update()
 	{
 		if (!this.Adjusting)
 		{
-			float t = Time.unscaledDeltaTime * 10f;
 			if (!this.Viewing)
 			{
-				if (Input.GetButtonDown("A"))
-				{
-					UITexture uitexture = this.Photographs[this.CurrentIndex];
-					if (uitexture.mainTexture != this.NoPhoto)
-					{
-						this.ViewPhoto.mainTexture = uitexture.mainTexture;
-						this.ViewPhoto.transform.position = uitexture.transform.position;
-						this.ViewPhoto.transform.localScale = uitexture.transform.localScale;
-						this.Destination.position = uitexture.transform.position;
-						this.Viewing = true;
-						if (!this.Corkboard)
-						{
-							for (int i = 1; i < 26; i++)
-							{
-								this.Hearts[i].gameObject.SetActive(false);
-							}
-						}
-						this.CanAdjust = false;
-					}
-					this.UpdateButtonPrompts();
-				}
-				if (Input.GetButtonDown("B"))
-				{
-					this.PromptBar.ClearButtons();
-					this.PromptBar.Label[0].text = "Accept";
-					this.PromptBar.Label[1].text = "Exit";
-					this.PromptBar.Label[4].text = "Choose";
-					this.PromptBar.Label[5].text = "Choose";
-					this.PromptBar.UpdateButtons();
-					this.PauseScreen.MainMenu.SetActive(true);
-					this.PauseScreen.Sideways = false;
-					this.PauseScreen.PressedB = true;
-					base.gameObject.SetActive(false);
-					this.UpdateButtonPrompts();
-				}
-				if (Input.GetButtonDown("X"))
-				{
-					this.ViewPhoto.mainTexture = null;
-					int currentIndex = this.CurrentIndex;
-					if (this.Photographs[currentIndex].mainTexture != this.NoPhoto)
-					{
-						this.Photographs[currentIndex].mainTexture = this.NoPhoto;
-						PlayerGlobals.SetPhoto(currentIndex, false);
-						PlayerGlobals.SetSenpaiPhoto(currentIndex, false);
-						TaskGlobals.SetKittenPhoto(currentIndex, false);
-						this.Hearts[currentIndex].gameObject.SetActive(false);
-						this.TaskManager.UpdateTaskStatus();
-					}
-					this.UpdateButtonPrompts();
-				}
-				if (this.Corkboard)
-				{
-					if (Input.GetButtonDown("Y"))
-					{
-						this.CanAdjust = false;
-						this.Cursor.gameObject.SetActive(true);
-						this.Adjusting = true;
-						this.UpdateButtonPrompts();
-					}
-				}
-				else if (this.CanAdjust && Input.GetButtonDown("Y"))
-				{
-					int currentIndex2 = this.CurrentIndex;
-					PlayerGlobals.SetSenpaiPhoto(currentIndex2, false);
-					this.Hearts[currentIndex2].gameObject.SetActive(false);
-					this.CanAdjust = false;
-					this.Yandere.Sanity += 20f;
-					this.Yandere.UpdateSanity();
-					this.UpdateButtonPrompts();
-				}
-				if (this.InputManager.TappedRight)
-				{
-					this.Column = ((this.Column >= 5) ? 1 : (this.Column + 1));
-				}
-				if (this.InputManager.TappedLeft)
-				{
-					this.Column = ((this.Column <= 1) ? 5 : (this.Column - 1));
-				}
-				if (this.InputManager.TappedUp)
-				{
-					this.Row = ((this.Row <= 1) ? 5 : (this.Row - 1));
-				}
-				if (this.InputManager.TappedDown)
-				{
-					this.Row = ((this.Row >= 5) ? 1 : (this.Row + 1));
-				}
-				bool flag = this.InputManager.TappedRight || this.InputManager.TappedLeft;
-				bool flag2 = this.InputManager.TappedUp || this.InputManager.TappedDown;
-				if (flag || flag2)
-				{
-					this.Highlight.transform.localPosition = new Vector3(this.HighlightX, this.HighlightY, this.Highlight.transform.localPosition.z);
-					this.UpdateButtonPrompts();
-				}
-				this.ViewPhoto.transform.localScale = Vector3.Lerp(this.ViewPhoto.transform.localScale, new Vector3(1f, 1f, 1f), t);
-				this.ViewPhoto.transform.position = Vector3.Lerp(this.ViewPhoto.transform.position, this.Destination.position, t);
-				if (this.Corkboard)
-				{
-					this.Gallery.transform.localPosition = new Vector3(this.Gallery.transform.localPosition.x, Mathf.Lerp(this.Gallery.transform.localPosition.y, 0f, Time.deltaTime * 10f), this.Gallery.transform.localPosition.z);
-				}
+				this.UpdatePhotoSelection();
 			}
 			else
 			{
-				this.ViewPhoto.transform.localScale = Vector3.Lerp(this.ViewPhoto.transform.localScale, (!this.Corkboard) ? new Vector3(6.5f, 6.5f, 6.5f) : new Vector3(5.8f, 5.8f, 5.8f), t);
-				this.ViewPhoto.transform.localPosition = Vector3.Lerp(this.ViewPhoto.transform.localPosition, (!this.Corkboard) ? new Vector3(0f, 0f, 0f) : Vector3.zero, t);
-				if (Input.GetButtonDown("A") && this.Corkboard)
-				{
-					GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Photograph, base.transform.position, Quaternion.identity);
-					gameObject.transform.parent = this.CorkboardPanel;
-					gameObject.transform.localEulerAngles = Vector3.zero;
-					gameObject.transform.localPosition = Vector3.zero;
-					gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
-					gameObject.GetComponent<UITexture>().mainTexture = this.Photographs[this.CurrentIndex].mainTexture;
-					this.MovingPhotograph = gameObject;
-					this.CanAdjust = false;
-					this.Adjusting = true;
-					this.Viewing = false;
-					this.Moving = true;
-					this.UpdateButtonPrompts();
-				}
-				if (Input.GetButtonDown("B"))
-				{
-					this.Viewing = false;
-					if (this.Corkboard)
-					{
-						this.Cursor.Highlight.transform.position = new Vector3(this.Cursor.Highlight.transform.position.x, 100f, this.Cursor.Highlight.transform.position.z);
-						this.CanAdjust = true;
-					}
-					else
-					{
-						for (int j = 1; j < 26; j++)
-						{
-							if (PlayerGlobals.GetSenpaiPhoto(j))
-							{
-								this.Hearts[j].gameObject.SetActive(true);
-								this.CanAdjust = true;
-							}
-						}
-					}
-					this.UpdateButtonPrompts();
-				}
+				this.UpdatePhotoViewing();
 			}
 		}
 		else
@@ -350,95 +432,11 @@ public class PhotoGalleryScript : MonoBehaviour
 			this.MouseDelta = new Vector2(Input.mousePosition.x - this.PreviousPosition.x, Input.mousePosition.y - this.PreviousPosition.y);
 			if (this.Moving)
 			{
-				if (Input.GetMouseButton(1))
-				{
-					this.MovingPhotoRotation += this.MouseDelta.x;
-				}
-				else
-				{
-					this.MovingPhotograph.transform.localPosition = new Vector3(this.MovingPhotograph.transform.localPosition.x + this.MouseDelta.x * 8.66666f, this.MovingPhotograph.transform.localPosition.y + this.MouseDelta.y * 8.66666f, 0f);
-				}
-				if (Input.GetButton("LB"))
-				{
-					this.MovingPhotoRotation += Time.deltaTime * 100f;
-				}
-				if (Input.GetButton("RB"))
-				{
-					this.MovingPhotoRotation -= Time.deltaTime * 100f;
-				}
-				this.MovingPhotograph.transform.localPosition = new Vector3(this.MovingPhotograph.transform.localPosition.x + Input.GetAxis("Horizontal") * 86.66666f, this.MovingPhotograph.transform.localPosition.y + Input.GetAxis("Vertical") * 86.66666f, this.MovingPhotograph.transform.localPosition.z);
-				if (this.MovingPhotograph.transform.localPosition.x > 4150f)
-				{
-					this.MovingPhotograph.transform.localPosition = new Vector3(4150f, this.MovingPhotograph.transform.localPosition.y, this.MovingPhotograph.transform.localPosition.z);
-				}
-				if (this.MovingPhotograph.transform.localPosition.x < -4150f)
-				{
-					this.MovingPhotograph.transform.localPosition = new Vector3(-4150f, this.MovingPhotograph.transform.localPosition.y, this.MovingPhotograph.transform.localPosition.z);
-				}
-				if (this.MovingPhotograph.transform.localPosition.y > 2500f)
-				{
-					this.MovingPhotograph.transform.localPosition = new Vector3(this.MovingPhotograph.transform.localPosition.x, 2500f, this.MovingPhotograph.transform.localPosition.z);
-				}
-				if (this.MovingPhotograph.transform.localPosition.y < -2500f)
-				{
-					this.MovingPhotograph.transform.localPosition = new Vector3(this.MovingPhotograph.transform.localPosition.x, -2500f, this.MovingPhotograph.transform.localPosition.z);
-				}
-				if (Input.GetButtonDown("A"))
-				{
-					this.Cursor.transform.localPosition = this.MovingPhotograph.transform.localPosition;
-					this.Cursor.gameObject.SetActive(true);
-					this.Moving = false;
-					this.UpdateButtonPrompts();
-				}
+				this.UpdateCorkboardPhoto();
 			}
 			else
 			{
-				this.Cursor.transform.localPosition = new Vector3(this.Cursor.transform.localPosition.x + this.MouseDelta.x * 8.66666f, this.Cursor.transform.localPosition.y + this.MouseDelta.y * 8.66666f, this.Cursor.transform.localPosition.z);
-				this.Cursor.transform.localPosition = new Vector3(this.Cursor.transform.localPosition.x + Input.GetAxis("Horizontal") * 86.66666f, this.Cursor.transform.localPosition.y + Input.GetAxis("Vertical") * 86.66666f, this.Cursor.transform.localPosition.z);
-				if (this.Cursor.transform.localPosition.x > 4788f)
-				{
-					this.Cursor.transform.localPosition = new Vector3(4788f, this.Cursor.transform.localPosition.y, this.Cursor.transform.localPosition.z);
-				}
-				if (this.Cursor.transform.localPosition.x < -4788f)
-				{
-					this.Cursor.transform.localPosition = new Vector3(-4788f, this.Cursor.transform.localPosition.y, this.Cursor.transform.localPosition.z);
-				}
-				if (this.Cursor.transform.localPosition.y > 3122f)
-				{
-					this.Cursor.transform.localPosition = new Vector3(this.Cursor.transform.localPosition.x, 3122f, this.Cursor.transform.localPosition.z);
-				}
-				if (this.Cursor.transform.localPosition.y < -3122f)
-				{
-					this.Cursor.transform.localPosition = new Vector3(this.Cursor.transform.localPosition.x, -3122f, this.Cursor.transform.localPosition.z);
-				}
-				if (Input.GetButtonDown("A") && this.Cursor.Photograph != null)
-				{
-					this.Cursor.Highlight.transform.position = new Vector3(this.Cursor.Highlight.transform.position.x, 100f, this.Cursor.Highlight.transform.position.z);
-					this.MovingPhotograph = this.Cursor.Photograph;
-					this.Cursor.gameObject.SetActive(false);
-					this.Moving = true;
-					this.UpdateButtonPrompts();
-				}
-				if (Input.GetButtonDown("B"))
-				{
-					if (this.Cursor.Photograph != null)
-					{
-						this.Cursor.Photograph = null;
-					}
-					this.Cursor.transform.localPosition = new Vector3(0f, 0f, this.Cursor.transform.localPosition.z);
-					this.Cursor.Highlight.transform.position = new Vector3(this.Cursor.Highlight.transform.position.x, 100f, this.Cursor.Highlight.transform.position.z);
-					this.CanAdjust = true;
-					this.Cursor.gameObject.SetActive(false);
-					this.Adjusting = false;
-					this.UpdateButtonPrompts();
-				}
-				if (Input.GetButtonDown("X") && this.Cursor.Photograph != null)
-				{
-					this.Cursor.Highlight.transform.position = new Vector3(this.Cursor.Highlight.transform.position.x, 100f, this.Cursor.Highlight.transform.position.z);
-					UnityEngine.Object.Destroy(this.Cursor.Photograph);
-					this.Cursor.Photograph = null;
-					this.UpdateButtonPrompts();
-				}
+				this.UpdateCorkboardCursor();
 			}
 		}
 		this.PreviousPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);

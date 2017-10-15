@@ -675,7 +675,7 @@ public class ShutterScript : MonoBehaviour
 		if (!this.Yandere.CameraEffects.OneCamera)
 		{
 			this.Yandere.MainCamera.clearFlags = CameraClearFlags.Skybox;
-			this.Yandere.MainCamera.farClipPlane = 325f;
+			this.Yandere.MainCamera.farClipPlane = (float)OptionGlobals.DrawDistance;
 		}
 	}
 }

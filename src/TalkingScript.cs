@@ -105,7 +105,18 @@ public class TalkingScript : MonoBehaviour
 			{
 				if (this.S.TalkTimer == 3f)
 				{
-					this.S.Subtitle.UpdateLabel("Student Compliment", 0, 3f);
+					if (PlayerGlobals.Reputation < -33.33333f)
+					{
+						this.S.Subtitle.UpdateLabel("Student Low Compliment", 0, 3f);
+					}
+					else if (PlayerGlobals.Reputation > 33.33333f)
+					{
+						this.S.Subtitle.UpdateLabel("Student High Compliment", 0, 3f);
+					}
+					else
+					{
+						this.S.Subtitle.UpdateLabel("Student Mid Compliment", 0, 3f);
+					}
 					this.S.RepBonus = 0;
 					if (PlayerGlobals.PantiesEquipped == 3)
 					{

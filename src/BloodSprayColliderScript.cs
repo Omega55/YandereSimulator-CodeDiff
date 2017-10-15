@@ -11,7 +11,6 @@ public class BloodSprayColliderScript : MonoBehaviour
 			if (component != null)
 			{
 				component.Bloodiness = 100f;
-				component.UpdateBlood();
 				UnityEngine.Object.Destroy(base.gameObject);
 			}
 		}

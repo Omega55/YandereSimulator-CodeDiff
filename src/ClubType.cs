@@ -16,5 +16,6 @@ public enum ClubType
 	Gaming,
 	Nemesis = 99,
 	Teacher,
-	GymTeacher
+	GymTeacher,
+	Nurse
 }

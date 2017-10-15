@@ -15,6 +15,8 @@ public class HeadmasterScript : MonoBehaviour
 
 	public AudioClip[] HeadmasterThreatClips;
 
+	public AudioClip[] HeadmasterBoxClips;
+
 	public AudioClip HeadmasterRelaxClip;
 
 	public AudioClip HeadmasterAttackClip;
@@ -51,7 +53,18 @@ public class HeadmasterScript : MonoBehaviour
 		"Not another step!",
 		"You're up to no good! I know it!",
 		"I'm not going to let you harm me!",
-		"I'll use self-defense if I deem it necessary!"
+		"I'll use self-defense if I deem it necessary!",
+		"This is your final warning. Get out of here...or else."
+	};
+
+	public readonly string[] HeadmasterBoxText = new string[]
+	{
+		string.Empty,
+		"What...in...blazes are you doing?",
+		"Are you trying to re-enact something you saw in a video game?",
+		"Ugh, do you really think such a stupid ploy is going to work?",
+		"I know who you are. It's obvious. You're not fooling anyone.",
+		"I don't have time for this tomfoolery. Leave at once!"
 	};
 
 	public readonly string HeadmasterRelaxText = "Hmm...a wise decision.";
@@ -78,6 +91,8 @@ public class HeadmasterScript : MonoBehaviour
 
 	public Transform TazerEffectTarget;
 
+	public Transform CardboardBox;
+
 	public Transform Chair;
 
 	public Quaternion targetRotation;
@@ -97,6 +112,8 @@ public class HeadmasterScript : MonoBehaviour
 	public int ThreatID;
 
 	public int VoiceID;
+
+	public int BoxID;
 
 	public bool PlayedStandSound;
 
@@ -133,10 +150,12 @@ public class HeadmasterScript : MonoBehaviour
 			this.Distance = Vector3.Distance(base.transform.position, this.Yandere.transform.position);
 			if (this.Shooting)
 			{
+				this.targetRotation = Quaternion.LookRotation(base.transform.position - this.Yandere.transform.position);
+				this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
 				this.AimWeaponAtYandere();
 				this.AimBodyAtYandere();
 			}
-			else if ((double)this.Distance < 1.4)
+			else if ((double)this.Distance < 1.2)
 			{
 				this.AimBodyAtYandere();
 				if (this.Yandere.CanMove && !this.Shooting)
@@ -144,7 +163,7 @@ public class HeadmasterScript : MonoBehaviour
 					this.Shoot();
 				}
 			}
-			else if (this.Distance < 5f)
+			else if ((double)this.Distance < 2.8)
 			{
 				this.PlayedSitSound = false;
 				this.PatienceTimer -= Time.deltaTime;
@@ -176,7 +195,7 @@ public class HeadmasterScript : MonoBehaviour
 						this.HeadmasterSubtitle.text = this.HeadmasterThreatText[this.ThreatID];
 						this.MyAudio.clip = this.HeadmasterThreatClips[this.ThreatID];
 						this.MyAudio.Play();
-						this.ThreatTimer = 6f;
+						this.ThreatTimer = this.HeadmasterThreatClips[this.ThreatID].length + 1f;
 					}
 				}
 				this.CheckBehavior();
@@ -187,7 +206,7 @@ public class HeadmasterScript : MonoBehaviour
 				this.LostPatience = false;
 				this.targetRotation = Quaternion.LookRotation(new Vector3(0f, 8f, 0f) - base.transform.position);
 				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
-				this.Chair.localPosition = Vector3.Lerp(this.Chair.localPosition, new Vector3(this.Chair.localPosition.x, this.Chair.localPosition.y, -0.466666f), Time.deltaTime * 1f);
+				this.Chair.localPosition = Vector3.Lerp(this.Chair.localPosition, new Vector3(this.Chair.localPosition.x, this.Chair.localPosition.y, -4.66666f), Time.deltaTime * 1f);
 				this.LookAtPlayer = true;
 				if (!this.Threatened)
 				{
@@ -196,13 +215,27 @@ public class HeadmasterScript : MonoBehaviour
 					this.SpeechTimer = Mathf.MoveTowards(this.SpeechTimer, 0f, Time.deltaTime);
 					if (this.SpeechTimer == 0f)
 					{
-						this.VoiceID++;
-						if (this.VoiceID < 6)
+						if (this.CardboardBox.parent == null && this.Yandere.Mask == null)
 						{
-							this.HeadmasterSubtitle.text = this.HeadmasterSpeechText[this.VoiceID];
-							this.MyAudio.clip = this.HeadmasterSpeechClips[this.VoiceID];
-							this.MyAudio.Play();
-							this.SpeechTimer = 6f;
+							this.VoiceID++;
+							if (this.VoiceID < 6)
+							{
+								this.HeadmasterSubtitle.text = this.HeadmasterSpeechText[this.VoiceID];
+								this.MyAudio.clip = this.HeadmasterSpeechClips[this.VoiceID];
+								this.MyAudio.Play();
+								this.SpeechTimer = this.HeadmasterSpeechClips[this.VoiceID].length + 1f;
+							}
+						}
+						else
+						{
+							this.BoxID++;
+							if (this.BoxID < 6)
+							{
+								this.HeadmasterSubtitle.text = this.HeadmasterBoxText[this.BoxID];
+								this.MyAudio.clip = this.HeadmasterBoxClips[this.BoxID];
+								this.MyAudio.Play();
+								this.SpeechTimer = this.HeadmasterBoxClips[this.BoxID].length + 1f;
+							}
 						}
 					}
 				}
@@ -211,7 +244,6 @@ public class HeadmasterScript : MonoBehaviour
 					this.HeadmasterSubtitle.text = this.HeadmasterRelaxText;
 					this.MyAudio.clip = this.HeadmasterRelaxClip;
 					this.MyAudio.Play();
-					this.SpeechTimer = 10f;
 					this.Relaxing = true;
 				}
 				else
@@ -289,7 +321,7 @@ public class HeadmasterScript : MonoBehaviour
 
 	private void LateUpdate()
 	{
-		this.LookAtTarget = Vector3.Lerp(this.LookAtTarget, (!this.LookAtPlayer) ? this.Default.position : this.Yandere.Head.position, Time.deltaTime * 2f);
+		this.LookAtTarget = Vector3.Lerp(this.LookAtTarget, (!this.LookAtPlayer) ? this.Default.position : this.Yandere.Head.position, Time.deltaTime * 1f);
 		this.Head.LookAt(this.LookAtTarget);
 	}
 
@@ -297,7 +329,7 @@ public class HeadmasterScript : MonoBehaviour
 	{
 		this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - base.transform.position);
 		base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
-		this.Chair.localPosition = Vector3.Lerp(this.Chair.localPosition, new Vector3(this.Chair.localPosition.x, this.Chair.localPosition.y, -0.52f), Time.deltaTime * 1f);
+		this.Chair.localPosition = Vector3.Lerp(this.Chair.localPosition, new Vector3(this.Chair.localPosition.x, this.Chair.localPosition.y, -5.2f), Time.deltaTime * 1f);
 	}
 
 	private void AimWeaponAtYandere()
@@ -324,6 +356,8 @@ public class HeadmasterScript : MonoBehaviour
 
 	private void Shoot()
 	{
+		this.Yandere.StopAiming();
+		this.Yandere.StopLaughing();
 		this.Yandere.CharacterAnimation.CrossFade("f02_readyToFight_00");
 		if (this.Patience < 1)
 		{

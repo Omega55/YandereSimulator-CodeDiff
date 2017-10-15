@@ -35,7 +35,6 @@ public class ClothingScript : MonoBehaviour
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Yandere.Bloodiness = 0f;
-			this.Prompt.Yandere.UpdateBlood();
 			UnityEngine.Object.Instantiate<GameObject>(this.FoldedUniform, base.transform.position + Vector3.up, Quaternion.identity);
 			UnityEngine.Object.Destroy(base.gameObject);
 		}

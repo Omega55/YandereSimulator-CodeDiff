@@ -53,15 +53,19 @@ public class Clock
 		}
 	};
 
-	public Clock(int hours, int minutes, int seconds)
+	public Clock(int hours, int minutes, int seconds, float currentSecond)
 	{
 		this.hours = hours;
 		this.minutes = minutes;
 		this.seconds = seconds;
-		this.currentSecond = 0f;
+		this.currentSecond = currentSecond;
 	}
 
-	public Clock() : this(0, 0, 0)
+	public Clock(int hours, int minutes, int seconds) : this(hours, minutes, seconds, 0f)
+	{
+	}
+
+	public Clock() : this(0, 0, 0, 0f)
 	{
 	}
 

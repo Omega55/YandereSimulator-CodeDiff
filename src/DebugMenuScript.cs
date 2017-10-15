@@ -374,18 +374,34 @@ public class DebugMenuScript : MonoBehaviour
 						}
 						else if (Input.GetKeyDown(KeyCode.Z))
 						{
-							this.ID = 1;
-							while (this.ID < 101)
+							if (Input.GetKey(KeyCode.LeftShift))
 							{
-								StudentScript studentScript5 = this.StudentManager.Students[this.ID];
-								if (studentScript5 != null)
+								this.ID = 2;
+								while (this.ID < 93)
 								{
-									studentScript5.SpawnAlarmDisc();
-									studentScript5.BecomeRagdoll();
-									studentScript5.DeathType = DeathType.EasterEgg;
-									StudentGlobals.SetStudentDead(this.ID, true);
+									StudentScript x = this.StudentManager.Students[this.ID];
+									if (x != null)
+									{
+										StudentGlobals.SetStudentMissing(this.ID, true);
+									}
+									this.ID++;
 								}
-								this.ID++;
+							}
+							else
+							{
+								this.ID = 1;
+								while (this.ID < 101)
+								{
+									StudentScript studentScript5 = this.StudentManager.Students[this.ID];
+									if (studentScript5 != null)
+									{
+										studentScript5.SpawnAlarmDisc();
+										studentScript5.BecomeRagdoll();
+										studentScript5.DeathType = DeathType.EasterEgg;
+										StudentGlobals.SetStudentDead(this.ID, true);
+									}
+									this.ID++;
+								}
 							}
 							this.Window.SetActive(false);
 						}

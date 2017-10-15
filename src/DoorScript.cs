@@ -254,6 +254,7 @@ public class DoorScript : MonoBehaviour
 		{
 			this.Bucket.GetComponent<Rigidbody>().isKinematic = false;
 			this.Bucket.GetComponent<Rigidbody>().useGravity = true;
+			this.Bucket.UpdateAppearance = true;
 			this.Bucket.Prompt.enabled = true;
 			this.Bucket.Full = false;
 			this.Bucket.Fly = true;

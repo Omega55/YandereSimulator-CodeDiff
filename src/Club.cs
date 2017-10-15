@@ -70,6 +70,10 @@ public class Club
 			"Gym Teacher"
 		},
 		{
+			1,
+			"School Nurse"
+		},
+		{
 			11,
 			"Teacher of Class 1-1"
 		},

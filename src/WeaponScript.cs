@@ -23,9 +23,11 @@ public class WeaponScript : MonoBehaviour
 
 	public AudioClip[] Clips3;
 
-	public ParticleSystem FireEffect;
-
 	public AudioClip DismemberClip;
+
+	public AudioClip EquipClip;
+
+	public ParticleSystem FireEffect;
 
 	public AudioSource FireAudio;
 
@@ -195,9 +197,7 @@ public class WeaponScript : MonoBehaviour
 				if (component.time > this.SoundTime[this.DismemberPhase])
 				{
 					this.Yandere.Sanity -= 5f * this.Yandere.Numbness;
-					this.Yandere.UpdateSanity();
 					this.Yandere.Bloodiness += 25f;
-					this.Yandere.UpdateBlood();
 					this.ShortBloodSpray[0].Play();
 					this.ShortBloodSpray[1].Play();
 					this.Blood.enabled = true;
@@ -371,6 +371,7 @@ public class WeaponScript : MonoBehaviour
 				this.Yandere.RunAnim = "CyborgNinja_Run_Armed";
 			}
 			this.KinematicTimer = 0f;
+			AudioSource.PlayClipAtPoint(this.EquipClip, Camera.main.transform.position);
 		}
 		if (this.Yandere.EquippedWeapon == this && this.Yandere.Armed)
 		{

@@ -111,7 +111,6 @@ public class FanCoverScript : MonoBehaviour
 					this.Rival.EyeShrink = 1f;
 					this.Yandere.BloodTextures = this.YandereBloodTextures;
 					this.Yandere.Bloodiness += 20f;
-					this.Yandere.UpdateBlood();
 					this.BloodProjector.gameObject.SetActive(true);
 					this.BloodProjector.material.mainTexture = this.BloodTexture[1];
 					this.BloodEffects.transform.parent = this.Rival.Head;
@@ -132,7 +131,6 @@ public class FanCoverScript : MonoBehaviour
 						{
 							this.BloodProjector.material.mainTexture = this.BloodTexture[this.Phase - 1];
 							this.Yandere.Bloodiness += 20f;
-							this.Yandere.UpdateBlood();
 							this.Timer = 0f;
 						}
 					}
@@ -141,7 +139,6 @@ public class FanCoverScript : MonoBehaviour
 				{
 					this.BloodProjector.material.mainTexture = this.BloodTexture[5];
 					this.Yandere.Bloodiness += 20f;
-					this.Yandere.UpdateBlood();
 					this.Rival.Ragdoll.Decapitated = true;
 					this.Rival.OsanaHair.SetActive(false);
 					this.Rival.DeathType = DeathType.Weapon;
