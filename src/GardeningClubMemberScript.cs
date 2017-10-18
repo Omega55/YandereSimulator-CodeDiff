@@ -199,7 +199,7 @@ public class GardeningClubMemberScript : MonoBehaviour
 			}
 			else if (this.Timer > 1f && this.Phase == 0)
 			{
-				this.Subtitle.UpdateLabel("Pickpocket Reaction", 0, 8f);
+				this.Subtitle.UpdateLabel(ReactionType.PickpocketReaction, 0, 8f);
 				this.Phase++;
 			}
 		}

@@ -40,7 +40,7 @@ public class PeekScript : MonoBehaviour
 			this.Timer += Time.deltaTime;
 			if (this.Timer > 5f && !this.Spoke)
 			{
-				this.Subtitle.UpdateLabel("Info Notice", 0, 6.5f);
+				this.Subtitle.UpdateLabel(ReactionType.InfoNotice, 0, 6.5f);
 				this.Spoke = true;
 				base.GetComponent<AudioSource>().Play();
 			}

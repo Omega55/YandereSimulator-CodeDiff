@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -399,7 +398,7 @@ public class TitleMenuScript : MonoBehaviour
 
 	private void TurnDark()
 	{
-		this.SetLayerRecursively(this.Yandere.transform.parent.gameObject, 14);
+		GameObjectUtils.SetLayerRecursively(this.Yandere.transform.parent.gameObject, 14);
 		Animation component = this.Yandere.GetComponent<Animation>();
 		component["f02_yanderePose_00"].weight = 1f;
 		component["f02_fist_00"].weight = 1f;
@@ -438,7 +437,7 @@ public class TitleMenuScript : MonoBehaviour
 
 	private void TurnCute()
 	{
-		this.SetLayerRecursively(this.Yandere.transform.parent.gameObject, 9);
+		GameObjectUtils.SetLayerRecursively(this.Yandere.transform.parent.gameObject, 9);
 		Animation component = this.Yandere.GetComponent<Animation>();
 		component["f02_yanderePose_00"].weight = 0f;
 		component["f02_fist_00"].weight = 0f;
@@ -500,28 +499,5 @@ public class TitleMenuScript : MonoBehaviour
 		}
 		this.LoveSickLogo.SetActive(true);
 		this.Logo.SetActive(false);
-	}
-
-	private void SetLayerRecursively(GameObject obj, int newLayer)
-	{
-		obj.layer = newLayer;
-		IEnumerator enumerator = obj.transform.GetEnumerator();
-		try
-		{
-			while (enumerator.MoveNext())
-			{
-				object obj2 = enumerator.Current;
-				Transform transform = (Transform)obj2;
-				this.SetLayerRecursively(transform.gameObject, newLayer);
-			}
-		}
-		finally
-		{
-			IDisposable disposable;
-			if ((disposable = (enumerator as IDisposable)) != null)
-			{
-				disposable.Dispose();
-			}
-		}
 	}
 }

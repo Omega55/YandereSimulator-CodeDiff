@@ -306,29 +306,29 @@ public class HeartbrokenScript : MonoBehaviour
 		if (!component.Teacher && this.Yandere.Noticed)
 		{
 			this.Subtitle.color = new Color(this.Subtitle.color.r, this.Subtitle.color.g, this.Subtitle.color.b, 1f);
-			string gameOverCause = component.GameOverCause;
+			GameOverType gameOverCause = component.GameOverCause;
 			int num = 0;
-			if (gameOverCause == "Stalking")
+			if (gameOverCause == GameOverType.Stalking)
 			{
 				num = 4;
 			}
-			else if (gameOverCause == "Insanity")
+			else if (gameOverCause == GameOverType.Insanity)
 			{
 				num = 3;
 			}
-			else if (gameOverCause == "Weapon")
+			else if (gameOverCause == GameOverType.Weapon)
 			{
 				num = 2;
 			}
-			else if (gameOverCause == "Murder")
+			else if (gameOverCause == GameOverType.Murder)
 			{
 				num = 5;
 			}
-			else if (gameOverCause == "Blood")
+			else if (gameOverCause == GameOverType.Blood)
 			{
 				num = 1;
 			}
-			else if (gameOverCause == "Lewd")
+			else if (gameOverCause == GameOverType.Lewd)
 			{
 				num = 6;
 			}

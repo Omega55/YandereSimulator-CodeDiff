@@ -518,5 +518,7 @@ public static class AnimNames
 
 	public const string MaleWitnessPoisoning = "witnessPoisoning_00";
 
+	public const string MaleMurderSuicide01 = "murderSuicide_01";
+
 	public const string TeacherPodium = "f02_teacherPodium_00";
 }

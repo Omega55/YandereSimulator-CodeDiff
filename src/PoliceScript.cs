@@ -573,11 +573,18 @@ public class PoliceScript : MonoBehaviour
 			{
 				if (StudentGlobals.GetStudentDying(i))
 				{
+					if (i < 90)
+					{
+						SchoolGlobals.SchoolAtmosphere -= 0.05f;
+					}
+					else
+					{
+						SchoolGlobals.SchoolAtmosphere -= 0.1f;
+					}
 					StudentGlobals.SetStudentDead(i, true);
 					PlayerGlobals.Kills++;
 				}
 			}
-			SchoolGlobals.SchoolAtmosphere -= (float)this.Deaths * 0.05f + (float)this.Corpses * 0.05f;
 		}
 		else
 		{

@@ -21,41 +21,49 @@ public class RadioScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (this.CooldownTimer > 0f)
+		if (base.transform.parent == null)
 		{
-			this.CooldownTimer = Mathf.MoveTowards(this.CooldownTimer, 0f, Time.deltaTime);
-			if (this.CooldownTimer == 0f)
+			if (this.CooldownTimer > 0f)
 			{
-				this.Prompt.enabled = true;
-			}
-		}
-		else
-		{
-			UISprite uisprite = this.Prompt.Circle[0];
-			if (uisprite.fillAmount == 0f)
-			{
-				uisprite.fillAmount = 1f;
-				if (!this.On)
+				this.CooldownTimer = Mathf.MoveTowards(this.CooldownTimer, 0f, Time.deltaTime);
+				if (this.CooldownTimer == 0f)
 				{
-					this.Prompt.Label[0].text = "     Turn Off";
-					this.MyRenderer.material.mainTexture = this.OnTexture;
-					base.GetComponent<AudioSource>().Play();
-					this.On = true;
-				}
-				else
-				{
-					this.CooldownTimer = 1f;
-					this.TurnOff();
+					this.Prompt.enabled = true;
 				}
 			}
+			else
+			{
+				UISprite uisprite = this.Prompt.Circle[0];
+				if (uisprite.fillAmount == 0f)
+				{
+					uisprite.fillAmount = 1f;
+					if (!this.On)
+					{
+						this.Prompt.Label[0].text = "     Turn Off";
+						this.MyRenderer.material.mainTexture = this.OnTexture;
+						base.GetComponent<AudioSource>().Play();
+						this.On = true;
+					}
+					else
+					{
+						this.CooldownTimer = 1f;
+						this.TurnOff();
+					}
+				}
+			}
+			if (this.On && this.Victim == null)
+			{
+				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + Vector3.up, Quaternion.identity);
+				AlarmDiscScript component = gameObject.GetComponent<AlarmDiscScript>();
+				component.SourceRadio = this;
+				component.NoScream = true;
+				component.Radio = true;
+			}
 		}
-		if (this.On && this.Victim == null)
+		else if (this.Prompt.enabled)
 		{
-			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + Vector3.up, Quaternion.identity);
-			AlarmDiscScript component = gameObject.GetComponent<AlarmDiscScript>();
-			component.SourceRadio = this;
-			component.NoScream = true;
-			component.Radio = true;
+			this.Prompt.enabled = false;
+			this.Prompt.Hide();
 		}
 	}
 

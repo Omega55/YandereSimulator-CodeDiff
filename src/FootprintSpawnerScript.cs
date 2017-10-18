@@ -73,7 +73,7 @@ public class FootprintSpawnerScript : MonoBehaviour
 		}
 		else if (base.transform.position.y < this.Yandere.transform.position.y + this.DownThreshold)
 		{
-			if (this.Yandere.Stance.Current != StanceType.Crouching && this.Yandere.Stance.Current != StanceType.Crawling && this.Yandere.CanMove && Input.GetButton("LB") && this.FootUp)
+			if (this.Yandere.Stance.Current != StanceType.Crouching && this.Yandere.Stance.Current != StanceType.Crawling && this.Yandere.CanMove && !this.Yandere.NearSenpai && Input.GetButton("LB") && this.FootUp)
 			{
 				AudioSource component = base.GetComponent<AudioSource>();
 				component.clip = this.Footsteps[UnityEngine.Random.Range(0, this.Footsteps.Length)];

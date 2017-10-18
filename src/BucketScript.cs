@@ -164,6 +164,7 @@ public class BucketScript : MonoBehaviour
 				this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_bucketTrip_00");
 				this.Yandere.Tripping = true;
 				this.Yandere.CanMove = false;
+				this.UpdateAppearance = true;
 				this.Full = false;
 				this.Fly = true;
 			}
@@ -286,7 +287,7 @@ public class BucketScript : MonoBehaviour
 			this.Blood.material.color = new Color(this.Blood.material.color.r, this.Blood.material.color.g, this.Blood.material.color.b, Mathf.Lerp(this.Blood.material.color.a, this.Bloodiness / 100f, Time.deltaTime));
 			this.Blood.transform.localPosition = new Vector3(this.Blood.transform.localPosition.x, this.Water.transform.localPosition.y + 0.001f, this.Blood.transform.localPosition.z);
 			this.Blood.transform.localScale = this.Water.transform.localScale;
-			this.Timer = Mathf.MoveTowards(this.Timer, 1f, Time.deltaTime);
+			this.Timer = Mathf.MoveTowards(this.Timer, 2f, Time.deltaTime);
 			if (this.Timer == 2f)
 			{
 				this.UpdateAppearance = false;

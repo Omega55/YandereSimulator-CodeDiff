@@ -223,41 +223,37 @@ public class ShutterScript : MonoBehaviour
 							}
 							else
 							{
-								this.ReactionDistance = this.FaceStudent.VisionCone.farClipPlane;
+								this.ReactionDistance = this.FaceStudent.VisionDistance;
 							}
-							if (!this.FaceStudent.Alarmed && !this.FaceStudent.Distracted && !this.FaceStudent.InEvent && !this.FaceStudent.Wet && this.FaceStudent.Schoolwear > 0 && !this.FaceStudent.Fleeing && !this.FaceStudent.Following && !this.FaceStudent.ShoeRemoval.enabled && !this.FaceStudent.HoldingHands && this.FaceStudent.Actions[this.FaceStudent.Phase] != StudentActionType.Mourn && !this.FaceStudent.Guarding && Vector3.Distance(this.Yandere.transform.position, gameObject.transform.position) < this.ReactionDistance)
+							if (!this.FaceStudent.Alarmed && !this.FaceStudent.Distracted && !this.FaceStudent.InEvent && !this.FaceStudent.Wet && this.FaceStudent.Schoolwear > 0 && !this.FaceStudent.Fleeing && !this.FaceStudent.Following && !this.FaceStudent.ShoeRemoval.enabled && !this.FaceStudent.HoldingHands && this.FaceStudent.Actions[this.FaceStudent.Phase] != StudentActionType.Mourn && !this.FaceStudent.Guarding && Vector3.Distance(this.Yandere.transform.position, gameObject.transform.position) < this.ReactionDistance && this.FaceStudent.CanSeeObject(this.Yandere.gameObject, this.Yandere.transform.position + Vector3.up))
 							{
-								Plane[] planes = GeometryUtility.CalculateFrustumPlanes(this.FaceStudent.VisionCone);
-								if (GeometryUtility.TestPlanesAABB(planes, this.Yandere.GetComponent<Collider>().bounds) && Physics.Linecast(this.FaceStudent.Eyes.position, this.Yandere.transform.position + Vector3.up, out this.hit) && this.hit.collider.gameObject == this.Yandere.gameObject)
+								if (this.MissionMode)
 								{
-									if (this.MissionMode)
+									this.PenaltyTimer += Time.deltaTime;
+									if (this.PenaltyTimer > 1f)
 									{
-										this.PenaltyTimer += Time.deltaTime;
-										if (this.PenaltyTimer > 1f)
+										this.FaceStudent.Reputation.PendingRep -= 10f;
+										this.PenaltyTimer = 0f;
+									}
+								}
+								if (!this.FaceStudent.CameraReacting)
+								{
+									if (this.FaceStudent.enabled && !this.FaceStudent.Stop)
+									{
+										if (this.FaceStudent.StudentID > 1)
 										{
-											this.FaceStudent.Reputation.PendingRep -= 10f;
-											this.PenaltyTimer = 0f;
+											this.FaceStudent.CameraReact();
+										}
+										else
+										{
+											this.FaceStudent.Alarm += Time.deltaTime * (100f / this.FaceStudent.DistanceToPlayer) * this.FaceStudent.Paranoia * this.FaceStudent.Perception * this.FaceStudent.DistanceToPlayer * 2f;
+											this.FaceStudent.YandereVisible = true;
 										}
 									}
-									if (!this.FaceStudent.CameraReacting)
-									{
-										if (this.FaceStudent.enabled && !this.FaceStudent.Stop)
-										{
-											if (this.FaceStudent.StudentID > 1)
-											{
-												this.FaceStudent.CameraReact();
-											}
-											else
-											{
-												this.FaceStudent.Alarm += Time.deltaTime * (100f / this.FaceStudent.DistanceToPlayer) * this.FaceStudent.Paranoia * this.FaceStudent.Perception * this.FaceStudent.DistanceToPlayer * 2f;
-												this.FaceStudent.YandereVisible = true;
-											}
-										}
-									}
-									else
-									{
-										this.FaceStudent.CameraPoseTimer = 1f;
-									}
+								}
+								else
+								{
+									this.FaceStudent.CameraPoseTimer = 1f;
 								}
 							}
 						}

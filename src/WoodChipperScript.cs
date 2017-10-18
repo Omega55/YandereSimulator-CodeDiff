@@ -170,6 +170,10 @@ public class WoodChipperScript : MonoBehaviour
 		}
 		if (this.Shredding)
 		{
+			if (this.Bucket != null)
+			{
+				this.Bucket.Bucket.UpdateAppearance = true;
+			}
 			this.Timer += Time.deltaTime;
 			if (this.Timer >= 10f)
 			{

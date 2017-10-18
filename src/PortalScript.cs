@@ -81,7 +81,7 @@ public class PortalScript : MonoBehaviour
 					}
 					else
 					{
-						this.Yandere.Subtitle.UpdateLabel("Teacher Late Reaction", this.Late, 5.5f);
+						this.Yandere.Subtitle.UpdateLabel(ReactionType.TeacherLateReaction, this.Late, 5.5f);
 						this.Yandere.RPGCamera.enabled = false;
 						this.Yandere.ShoulderCamera.Scolding = true;
 						this.Yandere.ShoulderCamera.Teacher = this.Teacher;

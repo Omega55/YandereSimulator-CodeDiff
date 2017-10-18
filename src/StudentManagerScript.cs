@@ -591,7 +591,7 @@ public class StudentManagerScript : MonoBehaviour
 					while (this.ID < 5)
 					{
 						StudentScript studentScript3 = this.WitnessList[this.ID];
-						studentScript3.SetLayerRecursively(studentScript3.gameObject, 13);
+						GameObjectUtils.SetLayerRecursively(studentScript3.gameObject, 13);
 						studentScript3.CharacterAnimation.CrossFade((((!studentScript3.Male) ? "f02_pinDown_0" : "pinDown_0") + this.ID).ToString());
 						studentScript3.PinPhase++;
 						this.ID++;
@@ -1233,7 +1233,7 @@ public class StudentManagerScript : MonoBehaviour
 		}
 	}
 
-	public void LowerCorpsePostion()
+	public void LowerCorpsePosition()
 	{
 		if (this.CorpseLocation.position.y < 4f)
 		{

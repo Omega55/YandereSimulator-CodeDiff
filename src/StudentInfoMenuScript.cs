@@ -140,6 +140,10 @@ public class StudentInfoMenuScript : MonoBehaviour
 		{
 			if (this.Gossiping || this.Distracting || this.MatchMaking || this.Targeting)
 			{
+				if (this.Targeting)
+				{
+					this.PauseScreen.Yandere.RPGCamera.enabled = true;
+				}
 				this.PauseScreen.Yandere.Interaction = YandereInteractionType.Bye;
 				this.PauseScreen.Yandere.TalkTimer = 2f;
 				this.PauseScreen.MainMenu.SetActive(true);
@@ -302,7 +306,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 						{
 							if (!this.CustomPortraits)
 							{
-								this.StudentPortraits[ID].Portrait.mainTexture = ((ID >= 33 && ID <= 93) ? this.BlankPortrait : www.texture);
+								this.StudentPortraits[ID].Portrait.mainTexture = ((ID >= 33 && ID <= 92) ? this.BlankPortrait : www.texture);
 							}
 							else
 							{

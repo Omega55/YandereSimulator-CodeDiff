@@ -84,15 +84,6 @@ public class PrayScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown("space"))
-		{
-			this.StudentManager.Students[this.StudentID] = null;
-			this.StudentManager.ForceSpawn = true;
-			this.StudentManager.SpawnPositions[this.StudentID] = this.SummonSpot;
-			this.StudentManager.SpawnID = this.StudentID;
-			this.StudentManager.SpawnStudent(this.StudentManager.SpawnID);
-			this.StudentManager.SpawnID = 0;
-		}
 		if (!this.FemaleVictimChecked)
 		{
 			if (this.StudentManager.Students[16] != null && !this.StudentManager.Students[16].Alive)

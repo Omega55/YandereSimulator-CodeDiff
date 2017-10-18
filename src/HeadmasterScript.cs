@@ -77,7 +77,7 @@ public class HeadmasterScript : MonoBehaviour
 
 	public readonly string HeadmasterPatienceText = "Enough of this nonsense!";
 
-	public readonly string HeadmasterCorpseText = "Murderer!";
+	public readonly string HeadmasterCorpseText = "You...you murderer!";
 
 	public UILabel HeadmasterSubtitle;
 
@@ -369,7 +369,7 @@ public class HeadmasterScript : MonoBehaviour
 			this.HeadmasterSubtitle.text = this.HeadmasterWeaponText;
 			this.MyAudio.clip = this.HeadmasterWeaponClip;
 		}
-		else if (this.Yandere.Carrying)
+		else if (this.Yandere.Carrying || this.Yandere.Dragging || (this.Yandere.PickUp != null && this.Yandere.PickUp.BodyPart))
 		{
 			this.HeadmasterSubtitle.text = this.HeadmasterCorpseText;
 			this.MyAudio.clip = this.HeadmasterCorpseClip;
@@ -404,7 +404,7 @@ public class HeadmasterScript : MonoBehaviour
 					this.Shoot();
 				}
 			}
-			else if ((this.Yandere.Carrying || this.Yandere.Dragging) && !this.Shooting)
+			else if ((this.Yandere.Carrying || this.Yandere.Dragging || (this.Yandere.PickUp != null && this.Yandere.PickUp.BodyPart)) && !this.Shooting)
 			{
 				this.Shoot();
 			}

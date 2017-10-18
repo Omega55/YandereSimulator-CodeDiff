@@ -66,6 +66,42 @@ public class StudentInfoScript : MonoBehaviour
 
 	public UISprite[] TopicOpinionIcons;
 
+	private static readonly IntAndStringDictionary StrengthStrings = new IntAndStringDictionary
+	{
+		{
+			0,
+			"Incapable"
+		},
+		{
+			1,
+			"Very Weak"
+		},
+		{
+			2,
+			"Weak"
+		},
+		{
+			3,
+			"Strong"
+		},
+		{
+			4,
+			"Very Strong"
+		},
+		{
+			5,
+			"Martial Arts Master"
+		},
+		{
+			6,
+			"Extensive Training"
+		},
+		{
+			99,
+			"?????"
+		}
+	};
+
 	private void Start()
 	{
 		this.Topics.SetActive(false);
@@ -141,38 +177,7 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.ClubLabel.text = "No Club";
 		}
-		if (studentJson.Strength == 0)
-		{
-			this.StrengthLabel.text = "Incapable";
-		}
-		else if (studentJson.Strength == 1)
-		{
-			this.StrengthLabel.text = "Very Weak";
-		}
-		else if (studentJson.Strength == 2)
-		{
-			this.StrengthLabel.text = "Weak";
-		}
-		else if (studentJson.Strength == 3)
-		{
-			this.StrengthLabel.text = "Strong";
-		}
-		else if (studentJson.Strength == 4)
-		{
-			this.StrengthLabel.text = "Very Strong";
-		}
-		else if (studentJson.Strength == 5)
-		{
-			this.StrengthLabel.text = "Martial Arts Master";
-		}
-		else if (studentJson.Strength == 6)
-		{
-			this.StrengthLabel.text = "Extensive Training";
-		}
-		else if (studentJson.Strength == 99)
-		{
-			this.StrengthLabel.text = "?????";
-		}
+		this.StrengthLabel.text = StudentInfoScript.StrengthStrings[studentJson.Strength];
 		AudioSource component = base.GetComponent<AudioSource>();
 		if (ID > 0)
 		{
@@ -189,7 +194,7 @@ public class StudentInfoScript : MonoBehaviour
 			{
 				if (!this.CustomPortraits)
 				{
-					this.Portrait.mainTexture = ((ID >= 33 && ID <= 93) ? this.BlankPortrait : www.texture);
+					this.Portrait.mainTexture = ((ID >= 33 && ID <= 92) ? this.BlankPortrait : www.texture);
 				}
 				else
 				{

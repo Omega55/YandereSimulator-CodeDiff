@@ -110,7 +110,7 @@ public class AlarmDiscScript : MonoBehaviour
 						this.Student.Alarm = 200f;
 					}
 				}
-				else if (!this.Student.Nemesis && this.Student.Alive && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.Student.InEvent && !this.Student.Following && !this.Student.Distracting && !this.Student.GoAway && this.Student.Routine && !this.Student.CheckingNote && this.Student.CharacterAnimation != null && this.SourceRadio.Victim == null)
+				else if (!this.Student.Nemesis && this.Student.Alive && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.Student.InEvent && !this.Student.Following && !this.Student.Distracting && this.Student.Actions[this.Student.Phase] != StudentActionType.Teaching && this.Student.Actions[this.Student.Phase] != StudentActionType.SitAndTakeNotes && !this.Student.GoAway && this.Student.Routine && !this.Student.CheckingNote && this.Student.CharacterAnimation != null && this.SourceRadio.Victim == null)
 				{
 					this.Student.CharacterAnimation.CrossFade(this.Student.LeanAnim);
 					this.Student.Pathfinding.canSearch = false;

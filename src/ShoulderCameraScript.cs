@@ -111,12 +111,13 @@ public class ShoulderCameraScript : MonoBehaviour
 				if (this.NoticedTimer == 0f)
 				{
 					base.GetComponent<Camera>().cullingMask &= -8193;
-					if (this.Yandere.Senpai.GetComponent<StudentScript>().Teacher)
+					StudentScript component = this.Yandere.Senpai.GetComponent<StudentScript>();
+					if (component.Teacher)
 					{
 						this.NoticedHeight = 1.6f;
 						this.NoticedLimit = 6;
 					}
-					else if (this.Yandere.Senpai.GetComponent<StudentScript>().Witnessed == "Stalking")
+					else if (component.Witnessed == StudentWitnessType.Stalking)
 					{
 						this.NoticedHeight = 1.481275f;
 						this.NoticedLimit = 7;
@@ -145,7 +146,7 @@ public class ShoulderCameraScript : MonoBehaviour
 					{
 						this.Yandere.Senpai.GetComponent<StudentScript>().Character.SetActive(false);
 						base.GetComponent<Camera>().cullingMask |= 8192;
-						this.Yandere.Subtitle.UpdateLabel("Yandere Whimper", 1, 3.5f);
+						this.Yandere.Subtitle.UpdateLabel(ReactionType.YandereWhimper, 1, 3.5f);
 						this.NoticedPOV.position = this.Yandere.transform.position + this.Yandere.transform.forward + Vector3.up * 1.375f;
 						this.NoticedPOV.LookAt(this.Yandere.transform.position + Vector3.up * 1.375f);
 						this.NoticedFocus.position = this.Yandere.transform.position + Vector3.up * 1.375f;
@@ -218,7 +219,7 @@ public class ShoulderCameraScript : MonoBehaviour
 				}
 				if (this.Timer > 1.4f && this.Phase < 3)
 				{
-					this.Yandere.Subtitle.UpdateLabel("Teacher Attack Reaction", 1, 4f);
+					this.Yandere.Subtitle.UpdateLabel(ReactionType.TeacherAttackReaction, 1, 4f);
 					this.Phase++;
 				}
 				if (this.Timer > 6f && this.Yandere.Armed)
@@ -270,9 +271,9 @@ public class ShoulderCameraScript : MonoBehaviour
 					this.StrugglePOV.localPosition = Vector3.MoveTowards(this.StrugglePOV.localPosition, this.LossPOV, Time.deltaTime);
 					if (this.Timer == 0f)
 					{
-						AudioSource component = base.GetComponent<AudioSource>();
-						component.clip = this.StruggleLose;
-						component.Play();
+						AudioSource component2 = base.GetComponent<AudioSource>();
+						component2.clip = this.StruggleLose;
+						component2.Play();
 					}
 					this.Timer += Time.deltaTime;
 					if (this.Timer < 3f)
