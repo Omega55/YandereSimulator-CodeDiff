@@ -182,6 +182,11 @@ public class HomeYandereScript : MonoBehaviour
 			SchemeGlobals.SetSchemeStage(6, 5);
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
+		if (Input.GetKeyDown(KeyCode.Y))
+		{
+			YanvaniaGlobals.DraculaDefeated = true;
+			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+		}
 		if (Input.GetKeyDown(KeyCode.F1))
 		{
 			StudentGlobals.MaleUniform = 1;

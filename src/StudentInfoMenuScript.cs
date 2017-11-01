@@ -24,6 +24,10 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	public Texture BlankPortrait;
 
+	public Texture Headmaster;
+
+	public Texture Counselor;
+
 	public Texture InfoChan;
 
 	public Transform PortraitGrid;
@@ -105,7 +109,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetButtonDown("A") && this.PromptBar.Label[0].text != string.Empty && StudentGlobals.GetStudentPhotographed(this.StudentID))
+		if (Input.GetButtonDown("A") && this.PromptBar.Label[0].text != string.Empty && (StudentGlobals.GetStudentPhotographed(this.StudentID) || this.StudentID > 97))
 		{
 			this.StudentInfo.gameObject.SetActive(true);
 			this.StudentInfo.UpdateInfo(this.StudentID);
@@ -227,7 +231,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 	public void UpdateHighlight()
 	{
 		this.StudentID = 1 + (this.Column + this.Row * this.Columns);
-		if (StudentGlobals.GetStudentPhotographed(this.StudentID))
+		if (StudentGlobals.GetStudentPhotographed(this.StudentID) || this.StudentID > 97)
 		{
 			this.PromptBar.Label[0].text = "View Info";
 			this.PromptBar.UpdateButtons();
@@ -237,27 +241,27 @@ public class StudentInfoMenuScript : MonoBehaviour
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
-		if (this.Gossiping && (this.StudentID == 1 || this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || this.JSON.Students[this.StudentID].Club == ClubType.Sports || StudentGlobals.GetStudentDead(this.StudentID)))
+		if (this.Gossiping && (this.StudentID == 1 || this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || this.JSON.Students[this.StudentID].Club == ClubType.Sports || StudentGlobals.GetStudentDead(this.StudentID) || this.StudentID > 97))
 		{
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
-		if (this.CyberBullying && (this.JSON.Students[this.StudentID].Gender == 1 || StudentGlobals.GetStudentDead(this.StudentID)))
+		if (this.CyberBullying && (this.JSON.Students[this.StudentID].Gender == 1 || StudentGlobals.GetStudentDead(this.StudentID) || this.StudentID > 97))
 		{
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
-		if (this.Distracting && (this.StudentID == 0 || this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || StudentGlobals.GetStudentDead(this.StudentID)))
+		if (this.Distracting && (this.StudentID == 0 || this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || StudentGlobals.GetStudentDead(this.StudentID) || this.StudentID > 97))
 		{
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
-		if (this.MatchMaking && (this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || StudentGlobals.GetStudentDead(this.StudentID)))
+		if (this.MatchMaking && (this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || StudentGlobals.GetStudentDead(this.StudentID) || this.StudentID > 97))
 		{
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
-		if (this.Targeting && (this.StudentID == 1 || StudentGlobals.GetStudentDead(this.StudentID)))
+		if (this.Targeting && (this.StudentID == 1 || StudentGlobals.GetStudentDead(this.StudentID) || this.StudentID > 97))
 		{
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
@@ -288,45 +292,60 @@ public class StudentInfoMenuScript : MonoBehaviour
 			}
 			else if (!this.PortraitLoaded[ID])
 			{
-				if (StudentGlobals.GetStudentPhotographed(ID))
+				if (ID < 98)
 				{
-					string path = string.Concat(new string[]
+					if (StudentGlobals.GetStudentPhotographed(ID))
 					{
-						"file:///",
-						Application.streamingAssetsPath,
-						"/Portraits/Student_",
-						ID.ToString(),
-						".png"
-					});
-					WWW www = new WWW(path);
-					yield return www;
-					if (www.error == null)
-					{
-						if (!StudentGlobals.GetStudentReplaced(ID))
+						string path = string.Concat(new string[]
 						{
-							if (!this.CustomPortraits)
+							"file:///",
+							Application.streamingAssetsPath,
+							"/Portraits/Student_",
+							ID.ToString(),
+							".png"
+						});
+						WWW www = new WWW(path);
+						yield return www;
+						if (www.error == null)
+						{
+							if (!StudentGlobals.GetStudentReplaced(ID))
 							{
-								this.StudentPortraits[ID].Portrait.mainTexture = ((ID >= 33 && ID <= 92) ? this.BlankPortrait : www.texture);
+								if (!this.CustomPortraits)
+								{
+									this.StudentPortraits[ID].Portrait.mainTexture = ((ID >= 33 && ID <= 89) ? this.BlankPortrait : www.texture);
+								}
+								else
+								{
+									this.StudentPortraits[ID].Portrait.mainTexture = www.texture;
+								}
 							}
 							else
 							{
-								this.StudentPortraits[ID].Portrait.mainTexture = www.texture;
+								this.StudentPortraits[ID].Portrait.mainTexture = this.BlankPortrait;
 							}
 						}
 						else
 						{
-							this.StudentPortraits[ID].Portrait.mainTexture = this.BlankPortrait;
+							this.StudentPortraits[ID].Portrait.mainTexture = this.UnknownPortrait;
 						}
+						this.PortraitLoaded[ID] = true;
 					}
 					else
 					{
 						this.StudentPortraits[ID].Portrait.mainTexture = this.UnknownPortrait;
 					}
-					this.PortraitLoaded[ID] = true;
 				}
-				else
+				else if (ID == 98)
 				{
-					this.StudentPortraits[ID].Portrait.mainTexture = this.UnknownPortrait;
+					this.StudentPortraits[ID].Portrait.mainTexture = this.Counselor;
+				}
+				else if (ID == 99)
+				{
+					this.StudentPortraits[ID].Portrait.mainTexture = this.Headmaster;
+				}
+				else if (ID == 100)
+				{
+					this.StudentPortraits[ID].Portrait.mainTexture = this.InfoChan;
 				}
 			}
 			if (PlayerGlobals.GetStudentPantyShot(this.JSON.Students[ID].Name))

@@ -119,11 +119,12 @@ public class StruggleBarScript : MonoBehaviour
 
 	private void ChooseButton()
 	{
-		this.ButtonPrompts[1].enabled = false;
-		this.ButtonPrompts[2].enabled = false;
-		this.ButtonPrompts[3].enabled = false;
-		this.ButtonPrompts[4].enabled = false;
 		int buttonID = this.ButtonID;
+		for (int i = 1; i < 5; i++)
+		{
+			this.ButtonPrompts[i].enabled = false;
+			this.ButtonPrompts[i].transform.localPosition = this.ButtonPrompts[buttonID].transform.localPosition;
+		}
 		while (this.ButtonID == buttonID)
 		{
 			this.ButtonID = UnityEngine.Random.Range(1, 5);

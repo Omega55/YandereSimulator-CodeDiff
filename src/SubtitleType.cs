@@ -1,6 +1,6 @@
 ﻿using System;
 
-public enum ReactionType
+public enum SubtitleType
 {
 	AcceptFood,
 	AccidentApology,
@@ -56,12 +56,15 @@ public enum ReactionType
 	LonerCorpseReaction,
 	LonerMurderReaction,
 	LostPhone,
+	LovestruckDeathReaction,
+	LovestruckCorpseReport,
 	MurderReaction,
 	NoteReaction,
 	PetCorpseReaction,
 	PetCorpseReport,
 	PetMurderReaction,
 	PetMurderReport,
+	LovestruckMurderReport,
 	PickpocketReaction,
 	PlayerCompliment,
 	PlayerDistract,

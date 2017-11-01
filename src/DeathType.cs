@@ -10,5 +10,6 @@ public enum DeathType
 	Electrocution,
 	Falling,
 	Poison,
-	Weapon
+	Weapon,
+	Mystery
 }

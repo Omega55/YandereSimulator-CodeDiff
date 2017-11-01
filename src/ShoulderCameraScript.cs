@@ -146,7 +146,7 @@ public class ShoulderCameraScript : MonoBehaviour
 					{
 						this.Yandere.Senpai.GetComponent<StudentScript>().Character.SetActive(false);
 						base.GetComponent<Camera>().cullingMask |= 8192;
-						this.Yandere.Subtitle.UpdateLabel(ReactionType.YandereWhimper, 1, 3.5f);
+						this.Yandere.Subtitle.UpdateLabel(SubtitleType.YandereWhimper, 1, 3.5f);
 						this.NoticedPOV.position = this.Yandere.transform.position + this.Yandere.transform.forward + Vector3.up * 1.375f;
 						this.NoticedPOV.LookAt(this.Yandere.transform.position + Vector3.up * 1.375f);
 						this.NoticedFocus.position = this.Yandere.transform.position + Vector3.up * 1.375f;
@@ -219,7 +219,7 @@ public class ShoulderCameraScript : MonoBehaviour
 				}
 				if (this.Timer > 1.4f && this.Phase < 3)
 				{
-					this.Yandere.Subtitle.UpdateLabel(ReactionType.TeacherAttackReaction, 1, 4f);
+					this.Yandere.Subtitle.UpdateLabel(SubtitleType.TeacherAttackReaction, 1, 4f);
 					this.Phase++;
 				}
 				if (this.Timer > 6f && this.Yandere.Armed)

@@ -37,11 +37,11 @@ public class TalkingScript : MonoBehaviour
 					}
 					if (this.S.DialogueWheel.Impatience.fillAmount > 0.5f && this.S.Subtitle.Timer == 0f)
 					{
-						this.S.Subtitle.UpdateLabel(ReactionType.Impatience, 1, 5f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.Impatience, 1, 5f);
 					}
 					if (this.S.DialogueWheel.Impatience.fillAmount == 1f)
 					{
-						this.S.Subtitle.UpdateLabel(ReactionType.Impatience, 2, 3f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.Impatience, 2, 3f);
 						this.S.DialogueWheel.End();
 						this.S.WaitTimer = 0f;
 					}
@@ -72,15 +72,15 @@ public class TalkingScript : MonoBehaviour
 					this.S.Forgave = true;
 					if (this.S.Witnessed == StudentWitnessType.Insanity || this.S.Witnessed == StudentWitnessType.WeaponAndBloodAndInsanity || this.S.Witnessed == StudentWitnessType.WeaponAndInsanity || this.S.Witnessed == StudentWitnessType.BloodAndInsanity)
 					{
-						this.S.Subtitle.UpdateLabel(ReactionType.ForgivingInsanity, 0, 3f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.ForgivingInsanity, 0, 3f);
 					}
 					else if (this.S.Witnessed == StudentWitnessType.Accident)
 					{
-						this.S.Subtitle.UpdateLabel(ReactionType.ForgivingAccident, 0, 5f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.ForgivingAccident, 0, 5f);
 					}
 					else
 					{
-						this.S.Subtitle.UpdateLabel(ReactionType.Forgiving, 0, 3f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.Forgiving, 0, 3f);
 					}
 				}
 				else
@@ -107,15 +107,15 @@ public class TalkingScript : MonoBehaviour
 				{
 					if (PlayerGlobals.Reputation < -33.33333f)
 					{
-						this.S.Subtitle.UpdateLabel(ReactionType.StudentLowCompliment, 0, 3f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.StudentLowCompliment, 0, 3f);
 					}
 					else if (PlayerGlobals.Reputation > 33.33333f)
 					{
-						this.S.Subtitle.UpdateLabel(ReactionType.StudentHighCompliment, 0, 3f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.StudentHighCompliment, 0, 3f);
 					}
 					else
 					{
-						this.S.Subtitle.UpdateLabel(ReactionType.StudentMidCompliment, 0, 3f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.StudentMidCompliment, 0, 3f);
 					}
 					this.S.RepBonus = 0;
 					if (PlayerGlobals.PantiesEquipped == 3)
@@ -150,7 +150,7 @@ public class TalkingScript : MonoBehaviour
 				if (this.S.TalkTimer == 3f)
 				{
 					this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
-					this.S.Subtitle.UpdateLabel(ReactionType.StudentGossip, 0, 3f);
+					this.S.Subtitle.UpdateLabel(SubtitleType.StudentGossip, 0, 3f);
 					this.S.GossipBonus = 0;
 					if (this.S.Reputation.Reputation > 33.33333f)
 					{
@@ -212,7 +212,7 @@ public class TalkingScript : MonoBehaviour
 			{
 				if (this.S.TalkTimer == 2f)
 				{
-					this.S.Subtitle.UpdateLabel(ReactionType.StudentFarewell, 0, 2f);
+					this.S.Subtitle.UpdateLabel(SubtitleType.StudentFarewell, 0, 2f);
 				}
 				else if (Input.GetButtonDown("A"))
 				{
@@ -281,12 +281,12 @@ public class TalkingScript : MonoBehaviour
 					if ((this.S.Clock.HourTime > 8f && this.S.Clock.HourTime < 13f) || (this.S.Clock.HourTime > 13.375f && this.S.Clock.HourTime < 15.5f))
 					{
 						this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
-						this.S.Subtitle.UpdateLabel(ReactionType.StudentStay, 0, 5f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.StudentStay, 0, 5f);
 					}
 					else
 					{
 						this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod1Anim);
-						this.S.Subtitle.UpdateLabel(ReactionType.StudentFollow, 0, 2f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.StudentFollow, 0, 2f);
 						this.Follow = true;
 					}
 				}
@@ -328,12 +328,12 @@ public class TalkingScript : MonoBehaviour
 					if ((this.S.Clock.HourTime > 8f && this.S.Clock.HourTime < 13f) || (this.S.Clock.HourTime > 13.375f && this.S.Clock.HourTime < 15.5f))
 					{
 						this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
-						this.S.Subtitle.UpdateLabel(ReactionType.StudentStay, 0, 5f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.StudentStay, 0, 5f);
 					}
 					else
 					{
 						this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod1Anim);
-						this.S.Subtitle.UpdateLabel(ReactionType.StudentLeave, 0, 3f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.StudentLeave, 0, 3f);
 						this.S.GoAway = true;
 					}
 				}
@@ -366,7 +366,7 @@ public class TalkingScript : MonoBehaviour
 					if ((this.S.Clock.HourTime > 8f && this.S.Clock.HourTime < 13f) || (this.S.Clock.HourTime > 13.375f && this.S.Clock.HourTime < 15.5f))
 					{
 						this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
-						this.S.Subtitle.UpdateLabel(ReactionType.StudentStay, 0, 5f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.StudentStay, 0, 5f);
 					}
 					else
 					{
@@ -374,13 +374,13 @@ public class TalkingScript : MonoBehaviour
 						if (studentScript.Routine && !studentScript.TargetedForDistraction && !studentScript.InEvent)
 						{
 							this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod1Anim);
-							this.S.Subtitle.UpdateLabel(ReactionType.StudentDistract, 0, 3f);
+							this.S.Subtitle.UpdateLabel(SubtitleType.StudentDistract, 0, 3f);
 							this.Refuse = false;
 						}
 						else
 						{
 							this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
-							this.S.Subtitle.UpdateLabel(ReactionType.StudentDistractRefuse, 0, 3f);
+							this.S.Subtitle.UpdateLabel(SubtitleType.StudentDistractRefuse, 0, 3f);
 							this.Refuse = true;
 						}
 					}
@@ -421,13 +421,13 @@ public class TalkingScript : MonoBehaviour
 				{
 					if (this.S.Persona == PersonaType.Coward)
 					{
-						this.S.Subtitle.UpdateLabel(ReactionType.CowardGrudge, 0, 5f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.CowardGrudge, 0, 5f);
 						this.S.Character.GetComponent<Animation>().CrossFade(this.S.CowardAnim);
 						this.S.TalkTimer = 5f;
 					}
 					else if (this.S.Persona == PersonaType.Evil)
 					{
-						this.S.Subtitle.UpdateLabel(ReactionType.EvilGrudge, 0, 5f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.EvilGrudge, 0, 5f);
 						this.S.Character.GetComponent<Animation>().CrossFade(this.S.EvilAnim);
 						this.S.TalkTimer = 5f;
 					}
@@ -435,11 +435,11 @@ public class TalkingScript : MonoBehaviour
 					{
 						if (!this.S.Male)
 						{
-							this.S.Subtitle.UpdateLabel(ReactionType.GrudgeWarning, 0, 99f);
+							this.S.Subtitle.UpdateLabel(SubtitleType.GrudgeWarning, 0, 99f);
 						}
 						else
 						{
-							this.S.Subtitle.UpdateLabel(ReactionType.GrudgeWarning, 1, 99f);
+							this.S.Subtitle.UpdateLabel(SubtitleType.GrudgeWarning, 1, 99f);
 						}
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 						this.S.Character.GetComponent<Animation>().CrossFade(this.S.GrudgeAnim);
@@ -496,32 +496,32 @@ public class TalkingScript : MonoBehaviour
 				{
 					if (this.S.ClubPhase == 1)
 					{
-						this.S.Subtitle.UpdateLabel(ReactionType.ClubJoin, (int)this.S.Club, 99f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.ClubJoin, (int)this.S.Club, 99f);
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 					}
 					else if (this.S.ClubPhase == 2)
 					{
-						this.S.Subtitle.UpdateLabel(ReactionType.ClubAccept, (int)this.S.Club, 99f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.ClubAccept, (int)this.S.Club, 99f);
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 					}
 					else if (this.S.ClubPhase == 3)
 					{
-						this.S.Subtitle.UpdateLabel(ReactionType.ClubRefuse, (int)this.S.Club, 99f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.ClubRefuse, (int)this.S.Club, 99f);
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 					}
 					else if (this.S.ClubPhase == 4)
 					{
-						this.S.Subtitle.UpdateLabel(ReactionType.ClubRejoin, (int)this.S.Club, 99f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.ClubRejoin, (int)this.S.Club, 99f);
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 					}
 					else if (this.S.ClubPhase == 5)
 					{
-						this.S.Subtitle.UpdateLabel(ReactionType.ClubExclusive, (int)this.S.Club, 99f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.ClubExclusive, (int)this.S.Club, 99f);
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 					}
 					else if (this.S.ClubPhase == 6)
 					{
-						this.S.Subtitle.UpdateLabel(ReactionType.ClubGrudge, (int)this.S.Club, 99f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.ClubGrudge, (int)this.S.Club, 99f);
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 					}
 				}
@@ -557,17 +557,17 @@ public class TalkingScript : MonoBehaviour
 				{
 					if (this.S.ClubPhase == 1)
 					{
-						this.S.Subtitle.UpdateLabel(ReactionType.ClubQuit, (int)this.S.Club, 99f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.ClubQuit, (int)this.S.Club, 99f);
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 					}
 					else if (this.S.ClubPhase == 2)
 					{
-						this.S.Subtitle.UpdateLabel(ReactionType.ClubConfirm, (int)this.S.Club, 99f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.ClubConfirm, (int)this.S.Club, 99f);
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 					}
 					else if (this.S.ClubPhase == 3)
 					{
-						this.S.Subtitle.UpdateLabel(ReactionType.ClubDeny, (int)this.S.Club, 99f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.ClubDeny, (int)this.S.Club, 99f);
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 					}
 				}
@@ -602,7 +602,7 @@ public class TalkingScript : MonoBehaviour
 			{
 				if (this.S.TalkTimer == this.S.Subtitle.ClubFarewellClips[(int)this.S.Club].length)
 				{
-					this.S.Subtitle.UpdateLabel(ReactionType.ClubFarewell, (int)this.S.Club, this.S.Subtitle.ClubFarewellClips[(int)this.S.Club].length);
+					this.S.Subtitle.UpdateLabel(SubtitleType.ClubFarewell, (int)this.S.Club, this.S.Subtitle.ClubFarewellClips[(int)this.S.Club].length);
 				}
 				else if (Input.GetButtonDown("A"))
 				{
@@ -620,27 +620,27 @@ public class TalkingScript : MonoBehaviour
 				{
 					if (this.S.ClubPhase == 1)
 					{
-						this.S.Subtitle.UpdateLabel(ReactionType.ClubActivity, (int)this.S.Club, 99f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.ClubActivity, (int)this.S.Club, 99f);
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 					}
 					else if (this.S.ClubPhase == 2)
 					{
-						this.S.Subtitle.UpdateLabel(ReactionType.ClubYes, (int)this.S.Club, 99f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.ClubYes, (int)this.S.Club, 99f);
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 					}
 					else if (this.S.ClubPhase == 3)
 					{
-						this.S.Subtitle.UpdateLabel(ReactionType.ClubNo, (int)this.S.Club, 99f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.ClubNo, (int)this.S.Club, 99f);
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 					}
 					else if (this.S.ClubPhase == 4)
 					{
-						this.S.Subtitle.UpdateLabel(ReactionType.ClubEarly, (int)this.S.Club, 99f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.ClubEarly, (int)this.S.Club, 99f);
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 					}
 					else if (this.S.ClubPhase == 5)
 					{
-						this.S.Subtitle.UpdateLabel(ReactionType.ClubLate, (int)this.S.Club, 99f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.ClubLate, (int)this.S.Club, 99f);
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 					}
 				}
@@ -679,7 +679,7 @@ public class TalkingScript : MonoBehaviour
 			{
 				if (this.S.TalkTimer == 5f)
 				{
-					this.S.Subtitle.UpdateLabel(ReactionType.ClubUnwelcome, (int)this.S.Club, 99f);
+					this.S.Subtitle.UpdateLabel(SubtitleType.ClubUnwelcome, (int)this.S.Club, 99f);
 					this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 				}
 				else
@@ -699,7 +699,7 @@ public class TalkingScript : MonoBehaviour
 			{
 				if (this.S.TalkTimer == 5f)
 				{
-					this.S.Subtitle.UpdateLabel(ReactionType.ClubKick, (int)this.S.Club, 99f);
+					this.S.Subtitle.UpdateLabel(SubtitleType.ClubKick, (int)this.S.Club, 99f);
 					this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
 				}
 				else
@@ -722,7 +722,7 @@ public class TalkingScript : MonoBehaviour
 				{
 					if (this.S.DialogueWheel.Victim != this.S.Crush)
 					{
-						this.S.Subtitle.UpdateLabel(ReactionType.SuitorLove, 0, 3f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.SuitorLove, 0, 3f);
 						this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
 						this.S.CurrentAnim = this.S.GossipAnim;
 					}
@@ -730,7 +730,7 @@ public class TalkingScript : MonoBehaviour
 					{
 						DatingGlobals.SuitorProgress = 1;
 						this.S.Yandere.LoveManager.SuitorProgress++;
-						this.S.Subtitle.UpdateLabel(ReactionType.SuitorLove, 1, 3f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.SuitorLove, 1, 3f);
 						this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod1Anim);
 						this.S.CurrentAnim = this.S.Nod1Anim;
 					}
@@ -756,7 +756,7 @@ public class TalkingScript : MonoBehaviour
 			{
 				if (this.S.TalkTimer == 3f)
 				{
-					this.S.Subtitle.UpdateLabel(ReactionType.SuitorLove, 2, 3f);
+					this.S.Subtitle.UpdateLabel(SubtitleType.SuitorLove, 2, 3f);
 					this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod1Anim);
 				}
 				else
@@ -782,11 +782,11 @@ public class TalkingScript : MonoBehaviour
 				{
 					if (this.S.Male)
 					{
-						this.S.Subtitle.UpdateLabel(ReactionType.SuitorLove, 3, 5f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.SuitorLove, 3, 5f);
 					}
 					else
 					{
-						this.S.Subtitle.UpdateLabel(ReactionType.SuitorLove, 4, 5f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.SuitorLove, 4, 5f);
 					}
 					this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod1Anim);
 				}
@@ -821,7 +821,7 @@ public class TalkingScript : MonoBehaviour
 			{
 				if (this.S.TalkTimer == 5f)
 				{
-					this.S.Subtitle.UpdateLabel(ReactionType.SuitorLove, 5, 99f);
+					this.S.Subtitle.UpdateLabel(SubtitleType.SuitorLove, 5, 99f);
 					this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod1Anim);
 				}
 				else
@@ -849,7 +849,7 @@ public class TalkingScript : MonoBehaviour
 					if (!this.S.Fed)
 					{
 						this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod2Anim);
-						this.S.Subtitle.UpdateLabel(ReactionType.AcceptFood, 0, 3f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.AcceptFood, 0, 3f);
 						this.S.RepBonus = 0;
 						if (PlayerGlobals.PantiesEquipped == 3)
 						{
@@ -865,7 +865,7 @@ public class TalkingScript : MonoBehaviour
 					else
 					{
 						this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
-						this.S.Subtitle.UpdateLabel(ReactionType.RejectFood, 0, 3f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.RejectFood, 0, 3f);
 					}
 				}
 				else if (Input.GetButtonDown("A"))

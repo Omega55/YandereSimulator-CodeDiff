@@ -602,7 +602,7 @@ public class DialogueWheelScript : MonoBehaviour
 				}
 				if (this.Yandere.TargetStudent.StudentID == 32)
 				{
-					if (this.Clock.Period != 3)
+					if (this.Clock.Period != 3 || this.Yandere.TargetStudent.DistanceToDestination > 1f)
 					{
 						UISprite uisprite15 = this.Shadow[5];
 						uisprite15.color = new Color(uisprite15.color.r, uisprite15.color.g, uisprite15.color.b, 0.75f);

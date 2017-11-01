@@ -182,6 +182,8 @@ public class QualityManagerScript : MonoBehaviour
 					studentScript.MyRenderer.materials[0].shader = this.NewBodyShader;
 					studentScript.MyRenderer.materials[1].shader = this.NewBodyShader;
 					studentScript.MyRenderer.materials[2].shader = this.NewBodyShader;
+					studentScript.Cosmetic.RightStockings[0].GetComponent<Renderer>().material.shader = this.NewBodyShader;
+					studentScript.Cosmetic.LeftStockings[0].GetComponent<Renderer>().material.shader = this.NewBodyShader;
 				}
 				else
 				{

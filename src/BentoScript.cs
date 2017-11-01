@@ -15,7 +15,14 @@ public class BentoScript : MonoBehaviour
 
 	private void Update()
 	{
-		this.Prompt.HideButton[0] = (!this.Prompt.Yandere.Inventory.EmeticPoison && !this.Prompt.Yandere.Inventory.RatPoison);
+		if (!this.Prompt.Yandere.Inventory.EmeticPoison && !this.Prompt.Yandere.Inventory.RatPoison)
+		{
+			this.Prompt.HideButton[0] = true;
+		}
+		else
+		{
+			this.Prompt.HideButton[0] = false;
+		}
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			if (this.Prompt.Yandere.Inventory.EmeticPoison)

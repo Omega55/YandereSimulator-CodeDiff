@@ -22,9 +22,13 @@ public class StudentInfoScript : MonoBehaviour
 
 	public JsonScript JSON;
 
+	public Texture GuidanceCounselor;
+
 	public Texture DefaultPortrait;
 
 	public Texture BlankPortrait;
+
+	public Texture Headmaster;
 
 	public Texture InfoChan;
 
@@ -179,7 +183,9 @@ public class StudentInfoScript : MonoBehaviour
 		}
 		this.StrengthLabel.text = StudentInfoScript.StrengthStrings[studentJson.Strength];
 		AudioSource component = base.GetComponent<AudioSource>();
-		if (ID > 0)
+		this.Static.SetActive(false);
+		component.volume = 0f;
+		if (ID < 98)
 		{
 			string url = string.Concat(new string[]
 			{
@@ -194,7 +200,7 @@ public class StudentInfoScript : MonoBehaviour
 			{
 				if (!this.CustomPortraits)
 				{
-					this.Portrait.mainTexture = ((ID >= 33 && ID <= 92) ? this.BlankPortrait : www.texture);
+					this.Portrait.mainTexture = ((ID >= 33 && ID <= 89) ? this.BlankPortrait : www.texture);
 				}
 				else
 				{
@@ -205,10 +211,16 @@ public class StudentInfoScript : MonoBehaviour
 			{
 				this.Portrait.mainTexture = this.BlankPortrait;
 			}
-			this.Static.SetActive(false);
-			component.volume = 0f;
 		}
-		else
+		else if (ID == 98)
+		{
+			this.Portrait.mainTexture = this.GuidanceCounselor;
+		}
+		else if (ID == 99)
+		{
+			this.Portrait.mainTexture = this.Headmaster;
+		}
+		else if (ID == 100)
 		{
 			this.Portrait.mainTexture = this.InfoChan;
 			this.Static.SetActive(true);
@@ -243,7 +255,7 @@ public class StudentInfoScript : MonoBehaviour
 				this.StudentInfoMenu.PauseScreen.MainMenu.SetActive(true);
 				this.StudentInfoMenu.PauseScreen.Show = false;
 				this.DialogueWheel.Victim = this.CurrentStudent;
-				this.StudentInfoMenu.Gossiping = false;
+				this.StudentInfoMenu.Distracting = false;
 				base.gameObject.SetActive(false);
 				Time.timeScale = 1f;
 				this.PromptBar.ClearButtons();

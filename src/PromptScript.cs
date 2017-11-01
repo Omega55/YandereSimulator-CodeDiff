@@ -7,19 +7,25 @@ public class PromptScript : MonoBehaviour
 
 	public YandereScript Yandere;
 
-	public GameObject[] ButtonObject;
+	[SerializeField]
+	private GameObject[] ButtonObject;
 
-	public GameObject SpeakerObject;
+	[SerializeField]
+	private GameObject SpeakerObject;
 
-	public GameObject CircleObject;
+	[SerializeField]
+	private GameObject CircleObject;
 
-	public GameObject LabelObject;
+	[SerializeField]
+	private GameObject LabelObject;
 
-	public PromptParentScript PromptParent;
+	[SerializeField]
+	private PromptParentScript PromptParent;
 
 	public Collider MyCollider;
 
-	public Camera UICamera;
+	[SerializeField]
+	private Camera UICamera;
 
 	public bool[] AcceptingInput;
 
@@ -33,9 +39,11 @@ public class PromptScript : MonoBehaviour
 
 	public UILabel[] Label;
 
-	public UISprite Speaker;
+	[SerializeField]
+	private UISprite Speaker;
 
-	public UISprite Square;
+	[SerializeField]
+	private UISprite Square;
 
 	public float[] OffsetX;
 
@@ -43,59 +51,79 @@ public class PromptScript : MonoBehaviour
 
 	public float[] OffsetZ;
 
-	public string[] Text;
+	[SerializeField]
+	private string[] Text;
 
 	public PromptOwnerType OwnerType;
 
-	public bool DisableAtStart;
+	[SerializeField]
+	private bool DisableAtStart;
 
 	public bool Suspicious;
 
-	public bool Debugging;
+	[SerializeField]
+	private bool Debugging;
 
-	public bool SquareSet;
+	[SerializeField]
+	private bool SquareSet;
 
 	public bool Carried;
 
-	public bool InSight;
+	[SerializeField]
+	private bool InSight;
 
 	public bool Attack;
 
-	public bool InView;
+	[SerializeField]
+	private bool InView;
 
-	public bool Weapon;
+	[SerializeField]
+	private bool Weapon;
 
-	public bool Noisy;
+	[SerializeField]
+	private bool Noisy;
 
-	public bool Local = true;
+	[SerializeField]
+	private bool Local = true;
 
-	public float RelativePosition;
+	[SerializeField]
+	private float RelativePosition;
 
-	public float MaximumDistance = 5f;
+	[SerializeField]
+	private float MaximumDistance = 5f;
 
-	public float MinimumDistance;
+	[SerializeField]
+	private float MinimumDistance;
 
-	public float Distance;
+	[SerializeField]
+	private float DistanceSqr;
 
-	public float Height;
+	[SerializeField]
+	private float Height;
 
-	public int ButtonHeld;
+	[SerializeField]
+	private int ButtonHeld;
 
-	public int BloodMask;
+	[SerializeField]
+	private int BloodMask;
 
-	public int Priority;
+	[SerializeField]
+	private int Priority;
 
-	public int ID;
+	[SerializeField]
+	private int ID;
 
-	public GameObject YandereObject;
+	[SerializeField]
+	private GameObject YandereObject;
 
-	public Transform RaycastTarget;
+	[SerializeField]
+	private Transform RaycastTarget;
 
 	public bool Hidden;
 
 	private void Awake()
 	{
-		this.Distance = float.PositiveInfinity;
+		this.DistanceSqr = float.PositiveInfinity;
 		this.OwnerType = this.DecideOwnerType();
 		if (this.RaycastTarget == null)
 		{
@@ -188,6 +216,22 @@ public class PromptScript : MonoBehaviour
 		}
 	}
 
+	private float MinimumDistanceSqr
+	{
+		get
+		{
+			return this.MinimumDistance * this.MinimumDistance;
+		}
+	}
+
+	private float MaximumDistanceSqr
+	{
+		get
+		{
+			return this.MaximumDistance * this.MaximumDistance;
+		}
+	}
+
 	private PromptOwnerType DecideOwnerType()
 	{
 		if (base.GetComponent<DoorScript>() != null)
@@ -213,8 +257,10 @@ public class PromptScript : MonoBehaviour
 		{
 			if (this.InView)
 			{
-				this.Distance = Vector3.Distance(this.Yandere.transform.position, new Vector3(base.transform.position.x, this.Yandere.transform.position.y, base.transform.position.z));
-				if (this.Distance < this.MaximumDistance)
+				Vector3 position = this.Yandere.transform.position;
+				Vector3 a = new Vector3(base.transform.position.x, this.Yandere.transform.position.y, base.transform.position.z);
+				this.DistanceSqr = (a - position).sqrMagnitude;
+				if (this.DistanceSqr < this.MaximumDistanceSqr)
 				{
 					bool flag = this.Yandere.Stance.Current == StanceType.Crouching;
 					bool flag2 = this.Yandere.Stance.Current == StanceType.Crawling;
@@ -280,7 +326,7 @@ public class PromptScript : MonoBehaviour
 							{
 								this.Speaker.transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector.x, vector.y + 40f, 1f));
 							}
-							if (this.Distance < this.MinimumDistance)
+							if (this.DistanceSqr < this.MinimumDistanceSqr)
 							{
 								if (this.Yandere.NearestPrompt == null)
 								{
@@ -519,7 +565,7 @@ public class PromptScript : MonoBehaviour
 				{
 					Debug.Log("4.");
 				}
-				this.Distance = float.PositiveInfinity;
+				this.DistanceSqr = float.PositiveInfinity;
 				this.Hide();
 			}
 		}

@@ -736,7 +736,7 @@ public class CosmeticScript : MonoBehaviour
 				}
 			}
 		}
-		if (this.StudentID > 1 && this.StudentID < 8)
+		if (this.StudentID > 1 && this.StudentID < 8 && (float)StudentGlobals.GetStudentReputation(7) > -33.33333f)
 		{
 			this.FemaleAccessories[6].SetActive(true);
 		}

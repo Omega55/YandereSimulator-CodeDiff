@@ -44,7 +44,7 @@ public class FakeStudentScript : MonoBehaviour
 		if (this.Prompt.Circle[0].fillAmount == 0f && !this.Yandere.Chased)
 		{
 			this.Yandere.TargetStudent = this.Student;
-			this.Subtitle.UpdateLabel(ReactionType.ClubGreeting, (int)this.Student.Club, 4f);
+			this.Subtitle.UpdateLabel(SubtitleType.ClubGreeting, (int)this.Student.Club, 4f);
 			this.DialogueWheel.ClubLeader = true;
 			this.StudentManager.DisablePrompts();
 			this.DialogueWheel.HideShadows();

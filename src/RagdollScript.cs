@@ -678,6 +678,10 @@ public class RagdollScript : MonoBehaviour
 						}
 					}
 					gameObject.GetComponent<Renderer>().materials[0].mainTexture = this.Student.Cosmetic.FaceTexture;
+					if (i == 0)
+					{
+						gameObject.transform.position += new Vector3(0f, 1f, 0f);
+					}
 				}
 				else if (i == 2 && this.Student.Cosmetic.Accessory == 6)
 				{

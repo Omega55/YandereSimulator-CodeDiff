@@ -349,7 +349,7 @@ public class EndOfDayScript : MonoBehaviour
 					}
 					else
 					{
-						this.Label.text = "The police question Yandere-chan, but cannot link her to any crimes.";
+						this.Label.text = "The police question all students in the school, including Yandere-chan. The police are unable to link Yandere-chan to any crimes.";
 						if (!this.TranqCase.Occupied)
 						{
 							this.Phase = 7;
@@ -458,7 +458,7 @@ public class EndOfDayScript : MonoBehaviour
 				}
 				else if (SchemeGlobals.GetSchemeStage(5) > 1 && SchemeGlobals.GetSchemeStage(5) < 5)
 				{
-					this.Label.text = "A teacher discovers that an answer sheet for an upcoming test is missing. She changes all of the questions for the test and keeps the new answer sheet with her at all times.";
+					this.Label.text = "A faculty member discovers that an answer sheet for an upcoming test is missing. She changes all of the questions for the test and keeps the new answer sheet with her at all times.";
 					SchemeGlobals.SetSchemeStage(5, 100);
 				}
 				else

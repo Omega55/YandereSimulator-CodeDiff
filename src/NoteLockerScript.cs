@@ -168,7 +168,7 @@ public class NoteLockerScript : MonoBehaviour
 				{
 					if (this.Timer > 2.33333325f)
 					{
-						this.Yandere.Subtitle.UpdateLabel(ReactionType.NoteReaction, 1, 3f);
+						this.Yandere.Subtitle.UpdateLabel(SubtitleType.NoteReaction, 1, 3f);
 						this.Phase++;
 					}
 				}
@@ -178,13 +178,13 @@ public class NoteLockerScript : MonoBehaviour
 					{
 						if (this.Timer > 9.666667f)
 						{
-							this.Yandere.Subtitle.UpdateLabel(ReactionType.NoteReaction, 2, 3f);
+							this.Yandere.Subtitle.UpdateLabel(SubtitleType.NoteReaction, 2, 3f);
 							this.Phase++;
 						}
 					}
 					else if (this.Timer > 10.166667f)
 					{
-						this.Yandere.Subtitle.UpdateLabel(ReactionType.NoteReaction, 3, 3f);
+						this.Yandere.Subtitle.UpdateLabel(SubtitleType.NoteReaction, 3, 3f);
 						this.Phase++;
 					}
 				}

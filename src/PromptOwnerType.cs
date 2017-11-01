@@ -3,5 +3,6 @@
 public enum PromptOwnerType
 {
 	Unknown,
-	Door
+	Door,
+	Person
 }

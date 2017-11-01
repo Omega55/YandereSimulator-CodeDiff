@@ -279,6 +279,8 @@ public class YandereScript : MonoBehaviour
 
 	public float LaughTimer;
 
+	public float TheftTimer;
+
 	public float BoneTimer;
 
 	public float DumpTimer;
@@ -1847,6 +1849,10 @@ public class YandereScript : MonoBehaviour
 			{
 				this.StopArmedAnim();
 			}
+			if (this.TheftTimer > 0f)
+			{
+				this.TheftTimer = Mathf.MoveTowards(this.TheftTimer, 0f, Time.deltaTime);
+			}
 		}
 		else
 		{
@@ -2547,6 +2553,12 @@ public class YandereScript : MonoBehaviour
 					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.HidingSpot.rotation, Time.deltaTime * 10f);
 					this.MoveTowardsTarget(this.HidingSpot.position);
 					this.CharacterAnimation.CrossFade(this.HideAnim);
+					if (Input.GetButtonDown("B"))
+					{
+						this.PromptBar.ClearButtons();
+						this.PromptBar.Show = false;
+						this.Exiting = true;
+					}
 				}
 				else
 				{
@@ -2555,20 +2567,14 @@ public class YandereScript : MonoBehaviour
 					this.ExitTimer += Time.deltaTime;
 					if (this.ExitTimer > 1f || Vector3.Distance(base.transform.position, this.ExitSpot.position) < 0.1f)
 					{
-						this.MyController.center = new Vector3(this.MyController.center.x, 0.825f, this.MyController.center.z);
+						this.MyController.center = new Vector3(this.MyController.center.x, 0.875f, this.MyController.center.z);
 						this.MyController.radius = 0.2f;
-						this.MyController.height = 1.45f;
+						this.MyController.height = 1.55f;
 						this.ExitTimer = 0f;
 						this.Exiting = false;
 						this.CanMove = true;
 						this.Hiding = false;
 					}
-				}
-				if (Input.GetButtonDown("B"))
-				{
-					this.PromptBar.ClearButtons();
-					this.PromptBar.Show = false;
-					this.Exiting = true;
 				}
 			}
 			if (this.Tripping)
@@ -2914,31 +2920,31 @@ public class YandereScript : MonoBehaviour
 					this.CharacterAnimation.CrossFade("f02_greet_00");
 					if (this.TargetStudent.Witnessed == StudentWitnessType.Insanity || this.TargetStudent.Witnessed == StudentWitnessType.WeaponAndBloodAndInsanity || this.TargetStudent.Witnessed == StudentWitnessType.WeaponAndInsanity || this.TargetStudent.Witnessed == StudentWitnessType.BloodAndInsanity)
 					{
-						this.Subtitle.UpdateLabel(ReactionType.InsanityApology, 0, 3f);
+						this.Subtitle.UpdateLabel(SubtitleType.InsanityApology, 0, 3f);
 					}
 					else if (this.TargetStudent.Witnessed == StudentWitnessType.WeaponAndBlood)
 					{
-						this.Subtitle.UpdateLabel(ReactionType.WeaponAndBloodApology, 0, 3f);
+						this.Subtitle.UpdateLabel(SubtitleType.WeaponAndBloodApology, 0, 3f);
 					}
 					else if (this.TargetStudent.Witnessed == StudentWitnessType.Weapon)
 					{
-						this.Subtitle.UpdateLabel(ReactionType.WeaponApology, 0, 3f);
+						this.Subtitle.UpdateLabel(SubtitleType.WeaponApology, 0, 3f);
 					}
 					else if (this.TargetStudent.Witnessed == StudentWitnessType.Blood)
 					{
-						this.Subtitle.UpdateLabel(ReactionType.BloodApology, 0, 3f);
+						this.Subtitle.UpdateLabel(SubtitleType.BloodApology, 0, 3f);
 					}
 					else if (this.TargetStudent.Witnessed == StudentWitnessType.Lewd)
 					{
-						this.Subtitle.UpdateLabel(ReactionType.LewdApology, 0, 3f);
+						this.Subtitle.UpdateLabel(SubtitleType.LewdApology, 0, 3f);
 					}
 					else if (this.TargetStudent.Witnessed == StudentWitnessType.Accident)
 					{
-						this.Subtitle.UpdateLabel(ReactionType.AccidentApology, 0, 3f);
+						this.Subtitle.UpdateLabel(SubtitleType.AccidentApology, 0, 3f);
 					}
 					else if (this.TargetStudent.Witnessed == StudentWitnessType.Suspicious)
 					{
-						this.Subtitle.UpdateLabel(ReactionType.SuspiciousApology, 0, 3f);
+						this.Subtitle.UpdateLabel(SubtitleType.SuspiciousApology, 0, 3f);
 					}
 				}
 				else
@@ -2965,7 +2971,7 @@ public class YandereScript : MonoBehaviour
 				if (this.TalkTimer == 3f)
 				{
 					this.CharacterAnimation.CrossFade("f02_greet_01");
-					this.Subtitle.UpdateLabel(ReactionType.PlayerCompliment, 0, 3f);
+					this.Subtitle.UpdateLabel(SubtitleType.PlayerCompliment, 0, 3f);
 				}
 				else
 				{
@@ -2991,7 +2997,7 @@ public class YandereScript : MonoBehaviour
 				if (this.TalkTimer == 3f)
 				{
 					this.CharacterAnimation.CrossFade("f02_lookdown_00");
-					this.Subtitle.UpdateLabel(ReactionType.PlayerGossip, 0, 3f);
+					this.Subtitle.UpdateLabel(SubtitleType.PlayerGossip, 0, 3f);
 				}
 				else
 				{
@@ -3017,7 +3023,7 @@ public class YandereScript : MonoBehaviour
 				if (this.TalkTimer == 2f)
 				{
 					this.CharacterAnimation.CrossFade("f02_greet_00");
-					this.Subtitle.UpdateLabel(ReactionType.PlayerFarewell, 0, 2f);
+					this.Subtitle.UpdateLabel(SubtitleType.PlayerFarewell, 0, 2f);
 				}
 				else
 				{
@@ -3043,7 +3049,7 @@ public class YandereScript : MonoBehaviour
 				if (this.TalkTimer == 3f)
 				{
 					this.CharacterAnimation.CrossFade("f02_greet_01");
-					this.Subtitle.UpdateLabel(ReactionType.PlayerFollow, 0, 3f);
+					this.Subtitle.UpdateLabel(SubtitleType.PlayerFollow, 0, 3f);
 				}
 				else
 				{
@@ -3069,7 +3075,7 @@ public class YandereScript : MonoBehaviour
 				if (this.TalkTimer == 3f)
 				{
 					this.CharacterAnimation.CrossFade("f02_lookdown_00");
-					this.Subtitle.UpdateLabel(ReactionType.PlayerLeave, 0, 3f);
+					this.Subtitle.UpdateLabel(SubtitleType.PlayerLeave, 0, 3f);
 				}
 				else
 				{
@@ -3095,7 +3101,7 @@ public class YandereScript : MonoBehaviour
 				if (this.TalkTimer == 3f)
 				{
 					this.CharacterAnimation.CrossFade("f02_lookdown_00");
-					this.Subtitle.UpdateLabel(ReactionType.PlayerDistract, 0, 3f);
+					this.Subtitle.UpdateLabel(SubtitleType.PlayerDistract, 0, 3f);
 				}
 				else
 				{
@@ -3121,7 +3127,7 @@ public class YandereScript : MonoBehaviour
 				if (this.TalkTimer == 3f)
 				{
 					this.CharacterAnimation.CrossFade("f02_greet_01");
-					this.Subtitle.UpdateLabel(ReactionType.PlayerLove, 0, 3f);
+					this.Subtitle.UpdateLabel(SubtitleType.PlayerLove, 0, 3f);
 				}
 				else
 				{
@@ -3147,7 +3153,7 @@ public class YandereScript : MonoBehaviour
 				if (this.TalkTimer == 3f)
 				{
 					this.CharacterAnimation.CrossFade("f02_greet_01");
-					this.Subtitle.UpdateLabel(ReactionType.PlayerLove, 2, 3f);
+					this.Subtitle.UpdateLabel(SubtitleType.PlayerLove, 2, 3f);
 				}
 				else
 				{
@@ -3175,11 +3181,11 @@ public class YandereScript : MonoBehaviour
 					this.CharacterAnimation.CrossFade("f02_greet_01");
 					if (!this.TargetStudent.Male)
 					{
-						this.Subtitle.UpdateLabel(ReactionType.PlayerLove, 3, 5f);
+						this.Subtitle.UpdateLabel(SubtitleType.PlayerLove, 3, 5f);
 					}
 					else
 					{
-						this.Subtitle.UpdateLabel(ReactionType.PlayerLove, 4, 5f);
+						this.Subtitle.UpdateLabel(SubtitleType.PlayerLove, 4, 5f);
 					}
 				}
 				else
@@ -3206,7 +3212,7 @@ public class YandereScript : MonoBehaviour
 				if (this.TalkTimer == 5f)
 				{
 					this.CharacterAnimation.CrossFade("f02_greet_01");
-					this.Subtitle.UpdateLabel(ReactionType.PlayerLove, 5, 5f);
+					this.Subtitle.UpdateLabel(SubtitleType.PlayerLove, 5, 5f);
 				}
 				else
 				{

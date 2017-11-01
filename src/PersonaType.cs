@@ -9,7 +9,7 @@ public enum PersonaType
 	Coward,
 	Evil,
 	SocialButterfly,
-	Tsundere,
+	Lovestruck,
 	Strict = 9,
 	Nemesis = 99
 }

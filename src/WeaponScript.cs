@@ -261,6 +261,10 @@ public class WeaponScript : MonoBehaviour
 		if (this.Prompt.Circle[3].fillAmount == 0f)
 		{
 			this.Prompt.Circle[3].fillAmount = 1f;
+			if (this.Prompt.Suspicious)
+			{
+				this.Yandere.TheftTimer = 1f;
+			}
 			if (!this.Yandere.Gloved)
 			{
 				this.FingerprintID = 100;

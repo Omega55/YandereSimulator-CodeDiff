@@ -356,6 +356,7 @@ public class HeadmasterScript : MonoBehaviour
 
 	private void Shoot()
 	{
+		this.StudentManager.YandereDying = true;
 		this.Yandere.StopAiming();
 		this.Yandere.StopLaughing();
 		this.Yandere.CharacterAnimation.CrossFade("f02_readyToFight_00");

@@ -74,6 +74,18 @@ public class Club
 			"School Nurse"
 		},
 		{
+			2,
+			"Guidance Counselor"
+		},
+		{
+			3,
+			"Headmaster"
+		},
+		{
+			4,
+			"?????"
+		},
+		{
 			11,
 			"Teacher of Class 1-1"
 		},

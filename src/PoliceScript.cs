@@ -446,7 +446,7 @@ public class PoliceScript : MonoBehaviour
 			}
 			else
 			{
-				this.ResultsLabels[0].text = "The school day has ended. Teachers must walk through the school and tell any lingering students to leave.";
+				this.ResultsLabels[0].text = "The school day has ended. Faculty members must walk through the school and tell any lingering students to leave.";
 			}
 			if (this.Corpses == 0 && this.BloodParent.childCount == 0 && this.BloodyWeapons == 0 && this.BloodyClothing == 0 && !this.SuicideScene)
 			{
@@ -469,19 +469,19 @@ public class PoliceScript : MonoBehaviour
 				}
 				else
 				{
-					this.ResultsLabels[1].text = "Yandere-chan is approached by a teacher.";
+					this.ResultsLabels[1].text = "Yandere-chan is approached by a faculty member.";
 					if (this.Yandere.Bloodiness > 0f)
 					{
-						this.ResultsLabels[2].text = "The teacher immediately notices the blood staining her clothing.";
-						this.ResultsLabels[3].text = "Yandere-chan is not able to convince the teacher that nothing is wrong.";
-						this.ResultsLabels[4].text = "The teacher calls the police.";
+						this.ResultsLabels[2].text = "The faculty member immediately notices the blood staining her clothing.";
+						this.ResultsLabels[3].text = "Yandere-chan is not able to convince the faculty member that nothing is wrong.";
+						this.ResultsLabels[4].text = "The faculty member calls the police.";
 						this.TeacherReport = true;
 						this.Show = true;
 					}
 					else
 					{
-						this.ResultsLabels[2].text = "Yandere-chan exhibited extremely erratic behavior, frightening the teacher.";
-						this.ResultsLabels[3].text = "The teacher becomes angry with Yandere-chan, but Yandere-chan leaves before the situation gets worse.";
+						this.ResultsLabels[2].text = "Yandere-chan exhibited extremely erratic behavior, frightening the faculty member.";
+						this.ResultsLabels[3].text = "The faculty member becomes angry with Yandere-chan, but Yandere-chan leaves before the situation gets worse.";
 						this.ResultsLabels[4].text = "Yandere-chan returns home.";
 					}
 				}
@@ -490,8 +490,8 @@ public class PoliceScript : MonoBehaviour
 			{
 				if (this.SuicideScene)
 				{
-					this.ResultsLabels[1].text = "While walking around the school, a teacher discovers a pair of shoes on the rooftop.";
-					this.ResultsLabels[2].text = "The teachers fears that there has been a suicide, but cannot find a corpse anywhere. The teacher does not take any action.";
+					this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a pair of shoes on the rooftop.";
+					this.ResultsLabels[2].text = "The faculty member fears that there has been a suicide, but cannot find a corpse anywhere. The faculty member does not take any action.";
 					this.ResultsLabels[3].text = "Yandere-chan leaves school and watches Senpai walk home.";
 					this.ResultsLabels[4].text = "Once he is safely home, Yandere-chan returns to her own home.";
 				}
@@ -499,18 +499,18 @@ public class PoliceScript : MonoBehaviour
 				{
 					if (this.BloodyWeapons == 0)
 					{
-						this.ResultsLabels[1].text = "While walking around the school, a teacher discovers a mysterious blood stain.";
-						this.ResultsLabels[2].text = "The teacher decides to call the police.";
-						this.ResultsLabels[3].text = "The teacher informs the rest of the faculty about her discovery.";
+						this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a mysterious blood stain.";
+						this.ResultsLabels[2].text = "The faculty member decides to call the police.";
+						this.ResultsLabels[3].text = "The faculty member informs the rest of the faculty about her discovery.";
 						this.ResultsLabels[4].text = "The faculty do not allow any students to leave the school until a police investigation has taken place.";
 						this.TeacherReport = true;
 						this.Show = true;
 					}
 					else
 					{
-						this.ResultsLabels[1].text = "While walking around the school, a teacher discovers a mysterious bloody weapon.";
-						this.ResultsLabels[2].text = "The teacher decides to call the police.";
-						this.ResultsLabels[3].text = "The teacher informs the rest of the faculty about her discovery.";
+						this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a mysterious bloody weapon.";
+						this.ResultsLabels[2].text = "The faculty member decides to call the police.";
+						this.ResultsLabels[3].text = "The faculty member informs the rest of the faculty about her discovery.";
 						this.ResultsLabels[4].text = "The faculty do not allow any students to leave the school until a police investigation has taken place.";
 						this.TeacherReport = true;
 						this.Show = true;
@@ -518,9 +518,9 @@ public class PoliceScript : MonoBehaviour
 				}
 				else
 				{
-					this.ResultsLabels[1].text = "While walking around the school, a teacher discovers a mysterious bloody weapon.";
-					this.ResultsLabels[2].text = "The teacher decides to call the police.";
-					this.ResultsLabels[3].text = "The teacher informs the rest of the faculty about her discovery.";
+					this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a mysterious bloody weapon.";
+					this.ResultsLabels[2].text = "The faculty member decides to call the police.";
+					this.ResultsLabels[3].text = "The faculty member informs the rest of the faculty about her discovery.";
 					this.ResultsLabels[4].text = "The faculty do not allow any students to leave the school until a police investigation has taken place.";
 					this.TeacherReport = true;
 					this.Show = true;
@@ -528,9 +528,9 @@ public class PoliceScript : MonoBehaviour
 			}
 			else
 			{
-				this.ResultsLabels[1].text = "While walking around the school, a teacher discovers a corpse.";
-				this.ResultsLabels[2].text = "The teacher immediately calls the police.";
-				this.ResultsLabels[3].text = "The teacher informs the rest of the faculty about her discovery.";
+				this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a corpse.";
+				this.ResultsLabels[2].text = "The faculty member immediately calls the police.";
+				this.ResultsLabels[3].text = "The faculty member informs the rest of the faculty about her discovery.";
 				this.ResultsLabels[4].text = "The faculty do not allow any students to leave the school until a police investigation has taken place.";
 				this.TeacherReport = true;
 				this.Show = true;
@@ -540,25 +540,25 @@ public class PoliceScript : MonoBehaviour
 		{
 			if (!this.Yandere.InClass)
 			{
-				this.ResultsLabels[0].text = "The school day has ended. Teachers must walk through the school and tell any lingering students to leave.";
+				this.ResultsLabels[0].text = "The school day has ended. Faculty members must walk through the school and tell any lingering students to leave.";
 			}
 			else
 			{
 				this.ResultsLabels[0].text = "Yandere-chan attempts to attend class without disposing of a corpse.";
 			}
-			this.ResultsLabels[1].text = "While walking around the school, a teacher discovers a corpse.";
+			this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a corpse.";
 			this.ResultsLabels[2].text = "It appears as though a student has committed suicide.";
-			this.ResultsLabels[3].text = "The teacher informs the rest of the faculty about her discovery.";
+			this.ResultsLabels[3].text = "The faculty member informs the rest of the faculty about her discovery.";
 			this.ResultsLabels[4].text = "The faculty members agree to call the police and report the student's death.";
 			this.TeacherReport = true;
 			this.Show = true;
 		}
 		else if (this.PoisonScene)
 		{
-			this.ResultsLabels[0].text = "A teacher discovers the student who Yandere-chan poisoned.";
-			this.ResultsLabels[1].text = "The teacher calls for an ambulance immediately.";
-			this.ResultsLabels[2].text = "The teacher suspects that the student's death was a murder.";
-			this.ResultsLabels[3].text = "The teacher also calls for the police.";
+			this.ResultsLabels[0].text = "A faculty member discovers the student who Yandere-chan poisoned.";
+			this.ResultsLabels[1].text = "The faculty member calls for an ambulance immediately.";
+			this.ResultsLabels[2].text = "The faculty member suspects that the student's death was a murder.";
+			this.ResultsLabels[3].text = "The faculty member also calls for the police.";
 			this.ResultsLabels[4].text = "The school's students are not allowed to leave until a police investigation has taken place.";
 			this.TeacherReport = true;
 			this.Show = true;

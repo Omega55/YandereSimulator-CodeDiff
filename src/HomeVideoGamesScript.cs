@@ -107,7 +107,8 @@ public class HomeVideoGamesScript : MonoBehaviour
 
 	public void Quit()
 	{
-		this.Controller.transform.localPosition = new Vector3(0.203f, 0.0595f, 0.0215f);
+		this.Controller.transform.localPosition = new Vector3(0.20385f, 0.0595f, 0.0215f);
+		this.Controller.transform.localEulerAngles = new Vector3(-90f, -90f, 0f);
 		this.HomeCamera.Destination = this.HomeCamera.Destinations[0];
 		this.HomeCamera.Target = this.HomeCamera.Targets[0];
 		this.HomeYandere.CanMove = true;

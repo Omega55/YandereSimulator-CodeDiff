@@ -193,6 +193,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform Exit;
 
+	public GameObject LovestruckCamera;
+
 	public GameObject PortraitChan;
 
 	public GameObject RandomPatrol;
@@ -706,62 +708,70 @@ public class StudentManagerScript : MonoBehaviour
 		while (this.ID < this.Students.Length)
 		{
 			StudentScript studentScript = this.Students[this.ID];
-			if (studentScript != null && studentScript.gameObject.activeInHierarchy)
+			if (studentScript != null)
 			{
-				if (!studentScript.Safe)
+				if (studentScript.gameObject.activeInHierarchy)
 				{
-					if (!studentScript.Slave)
+					if (!studentScript.Safe)
 					{
-						if (!studentScript.Following)
+						if (!studentScript.Slave)
 						{
-							studentScript.Prompt.Label[0].text = "     Talk";
-						}
-						studentScript.Prompt.HideButton[0] = false;
-						studentScript.Prompt.HideButton[2] = false;
-						studentScript.Prompt.Attack = false;
-						if (this.Yandere.Mask != null)
-						{
-							studentScript.Prompt.HideButton[0] = true;
-						}
-						if (this.Yandere.Dragging || this.Yandere.PickUp != null || this.Yandere.Chased)
-						{
-							studentScript.Prompt.HideButton[0] = true;
-							studentScript.Prompt.HideButton[2] = true;
-							if (this.Yandere.PickUp != null && this.Yandere.PickUp.Food > 0)
+							if (!studentScript.Following)
 							{
-								studentScript.Prompt.Label[0].text = "     Feed";
-								studentScript.Prompt.HideButton[0] = false;
-								studentScript.Prompt.HideButton[2] = true;
+								studentScript.Prompt.Label[0].text = "     Talk";
 							}
-						}
-						if (this.Yandere.Armed)
-						{
-							studentScript.Prompt.HideButton[0] = true;
-							studentScript.Prompt.Attack = true;
-						}
-						else
-						{
-							studentScript.Prompt.HideButton[2] = true;
-							if (studentScript.WitnessedMurder || studentScript.WitnessedCorpse || studentScript.Private)
+							studentScript.Prompt.HideButton[0] = false;
+							studentScript.Prompt.HideButton[2] = false;
+							studentScript.Prompt.Attack = false;
+							if (this.Yandere.Mask != null)
+							{
+								studentScript.Prompt.HideButton[0] = true;
+							}
+							if (this.Yandere.Dragging || this.Yandere.PickUp != null || this.Yandere.Chased)
+							{
+								studentScript.Prompt.HideButton[0] = true;
+								studentScript.Prompt.HideButton[2] = true;
+								if (this.Yandere.PickUp != null && this.Yandere.PickUp.Food > 0)
+								{
+									studentScript.Prompt.Label[0].text = "     Feed";
+									studentScript.Prompt.HideButton[0] = false;
+									studentScript.Prompt.HideButton[2] = true;
+								}
+							}
+							if (this.Yandere.Armed)
+							{
+								studentScript.Prompt.HideButton[0] = true;
+								studentScript.Prompt.Attack = true;
+							}
+							else
+							{
+								studentScript.Prompt.HideButton[2] = true;
+								if (studentScript.WitnessedMurder || studentScript.WitnessedCorpse || studentScript.Private)
+								{
+									studentScript.Prompt.HideButton[0] = true;
+								}
+							}
+							if (this.Yandere.NearBodies > 0 || this.Yandere.Sanity < 33.33333f)
+							{
+								studentScript.Prompt.HideButton[0] = true;
+							}
+							if (studentScript.Teacher)
 							{
 								studentScript.Prompt.HideButton[0] = true;
 							}
 						}
-						if (this.Yandere.NearBodies > 0 || this.Yandere.Sanity < 33.33333f)
+						else if (this.Yandere.Armed)
 						{
-							studentScript.Prompt.HideButton[0] = true;
-						}
-						if (studentScript.Teacher)
-						{
-							studentScript.Prompt.HideButton[0] = true;
-						}
-					}
-					else if (this.Yandere.Armed)
-					{
-						if (this.Yandere.EquippedWeapon.Concealable)
-						{
-							studentScript.Prompt.HideButton[0] = false;
-							studentScript.Prompt.Label[0].text = "     Give Weapon";
+							if (this.Yandere.EquippedWeapon.Concealable)
+							{
+								studentScript.Prompt.HideButton[0] = false;
+								studentScript.Prompt.Label[0].text = "     Give Weapon";
+							}
+							else
+							{
+								studentScript.Prompt.HideButton[0] = true;
+								studentScript.Prompt.Label[0].text = string.Empty;
+							}
 						}
 						else
 						{
@@ -769,26 +779,24 @@ public class StudentManagerScript : MonoBehaviour
 							studentScript.Prompt.Label[0].text = string.Empty;
 						}
 					}
-					else
+					if (this.NoSpeech && !studentScript.Armband.activeInHierarchy)
 					{
 						studentScript.Prompt.HideButton[0] = true;
-						studentScript.Prompt.Label[0].text = string.Empty;
 					}
 				}
-				if (this.NoSpeech && !studentScript.Armband.activeInHierarchy)
+				if (studentScript.Prompt.Label[0] != null)
 				{
-					studentScript.Prompt.HideButton[0] = true;
+					if (this.Sans)
+					{
+						studentScript.Prompt.HideButton[0] = false;
+						studentScript.Prompt.Label[0].text = "     Psychokinesis";
+					}
+					if (this.Pose)
+					{
+						studentScript.Prompt.HideButton[0] = false;
+						studentScript.Prompt.Label[0].text = "     Pose";
+					}
 				}
-			}
-			if (this.Sans && studentScript != null && studentScript.Prompt.Label[0] != null)
-			{
-				studentScript.Prompt.HideButton[0] = false;
-				studentScript.Prompt.Label[0].text = "     Psychokinesis";
-			}
-			if (this.Pose && studentScript != null && studentScript.Prompt.Label[0] != null)
-			{
-				studentScript.Prompt.HideButton[0] = false;
-				studentScript.Prompt.Label[0].text = "     Pose";
 			}
 			this.ID++;
 		}
@@ -1041,6 +1049,16 @@ public class StudentManagerScript : MonoBehaviour
 				if (studentScript.Alive && studentScript.SawMask)
 				{
 					this.Police.MaskReported = true;
+				}
+				if (studentScript.Slave)
+				{
+					studentScript.Broken.Subtitle.text = string.Empty;
+					studentScript.Broken.Done = true;
+					UnityEngine.Object.Destroy(studentScript.Broken);
+					studentScript.Slave = false;
+					studentScript.BecomeRagdoll();
+					studentScript.DeathType = DeathType.Mystery;
+					StudentGlobals.SetStudentSlave(studentScript.StudentID, false);
 				}
 			}
 			this.ID++;

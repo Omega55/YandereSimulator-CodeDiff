@@ -49,6 +49,8 @@ public class HomePrisonerChanScript : MonoBehaviour
 
 	public GameObject LeftMindbrokenEye;
 
+	public GameObject AnkleRopes;
+
 	public GameObject Blindfold;
 
 	public GameObject Character;
@@ -89,9 +91,13 @@ public class HomePrisonerChanScript : MonoBehaviour
 	{
 		if (SchoolGlobals.KidnapVictim > 0)
 		{
+			this.StudentID = SchoolGlobals.KidnapVictim;
+			if (StudentGlobals.GetStudentSanity(this.StudentID) == 100f)
+			{
+				this.AnkleRopes.SetActive(false);
+			}
 			this.PermanentAngleR = this.TwintailR.eulerAngles;
 			this.PermanentAngleL = this.TwintailL.eulerAngles;
-			this.StudentID = SchoolGlobals.KidnapVictim;
 			if (!StudentGlobals.GetStudentArrested(this.StudentID) && !StudentGlobals.GetStudentDead(this.StudentID))
 			{
 				this.Cosmetic.StudentID = this.StudentID;

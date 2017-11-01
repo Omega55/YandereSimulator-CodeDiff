@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class PortalScript : MonoBehaviour
 {
+	public RivalMorningEventManagerScript[] MorningEvents;
+
 	public DelinquentManagerScript DelinquentManager;
 
 	public StudentManagerScript StudentManager;
@@ -81,7 +83,7 @@ public class PortalScript : MonoBehaviour
 					}
 					else
 					{
-						this.Yandere.Subtitle.UpdateLabel(ReactionType.TeacherLateReaction, this.Late, 5.5f);
+						this.Yandere.Subtitle.UpdateLabel(SubtitleType.TeacherLateReaction, this.Late, 5.5f);
 						this.Yandere.RPGCamera.enabled = false;
 						this.Yandere.ShoulderCamera.Scolding = true;
 						this.Yandere.ShoulderCamera.Teacher = this.Teacher;
@@ -103,6 +105,13 @@ public class PortalScript : MonoBehaviour
 			if (this.Clock.HourTime < 15.5f)
 			{
 				this.Yandere.InClass = true;
+				for (int i = 0; i < this.MorningEvents.Length; i++)
+				{
+					if (this.MorningEvents[i].enabled)
+					{
+						this.MorningEvents[i].EndEvent();
+					}
+				}
 			}
 		}
 		if (this.Transition)
@@ -173,13 +182,16 @@ public class PortalScript : MonoBehaviour
 					this.Transition = false;
 					this.Yandere.InClass = false;
 					this.StudentManager.ResumeMovement();
-					if (this.Headmaster.activeInHierarchy)
+					if (!MissionModeGlobals.MissionMode)
 					{
-						this.Headmaster.SetActive(false);
-					}
-					else
-					{
-						this.Headmaster.SetActive(true);
+						if (this.Headmaster.activeInHierarchy)
+						{
+							this.Headmaster.SetActive(false);
+						}
+						else
+						{
+							this.Headmaster.SetActive(true);
+						}
 					}
 				}
 			}

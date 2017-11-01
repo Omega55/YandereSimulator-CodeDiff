@@ -79,7 +79,7 @@ public class RingEventScript : MonoBehaviour
 								this.EventStudent.Following = false;
 								this.EventStudent.Routine = true;
 								this.Yandere.Followers--;
-								this.EventStudent.Subtitle.UpdateLabel(ReactionType.StopFollowApology, 0, 3f);
+								this.EventStudent.Subtitle.UpdateLabel(SubtitleType.StopFollowApology, 0, 3f);
 								this.EventStudent.Prompt.Label[0].text = "     Talk";
 							}
 						}

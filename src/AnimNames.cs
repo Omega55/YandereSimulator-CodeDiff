@@ -508,6 +508,10 @@ public static class AnimNames
 
 	public const string MaleStorePower20 = "storepower_20";
 
+	public const string MaleSurprised = "surprised_00";
+
+	public const string MaleSuspicious = "suspicious_00";
+
 	public const string MaleThinking = "thinking_00";
 
 	public const string MaleWait = "waiting_00";

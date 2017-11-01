@@ -3,78 +3,108 @@ using UnityEngine;
 
 public class DoorScript : MonoBehaviour
 {
-	public Transform RelativeCharacter;
+	[SerializeField]
+	private Transform RelativeCharacter;
 
-	public HideColliderScript HideCollider;
+	[SerializeField]
+	private HideColliderScript HideCollider;
 
 	public StudentScript Student;
 
-	public YandereScript Yandere;
+	[SerializeField]
+	private YandereScript Yandere;
 
-	public BucketScript Bucket;
+	[SerializeField]
+	private BucketScript Bucket;
 
 	public PromptScript Prompt;
 
-	public float[] ClosedPositions;
+	[SerializeField]
+	private float[] ClosedPositions;
 
-	public float[] OpenPositions;
+	[SerializeField]
+	private float[] OpenPositions;
 
-	public Transform[] Doors;
+	[SerializeField]
+	private Transform[] Doors;
 
-	public Texture[] Plates;
+	[SerializeField]
+	private Texture[] Plates;
 
-	public UILabel[] Labels;
+	[SerializeField]
+	private UILabel[] Labels;
 
-	public float[] OriginX;
+	[SerializeField]
+	private float[] OriginX;
 
-	public bool CanSetBucket;
+	[SerializeField]
+	private bool CanSetBucket;
 
-	public bool HidingSpot;
+	[SerializeField]
+	private bool HidingSpot;
 
-	public bool BucketSet;
+	[SerializeField]
+	private bool BucketSet;
 
-	public bool Swinging;
-
-	public bool Double;
+	[SerializeField]
+	private bool Swinging;
 
 	public bool Locked;
 
-	public bool NoTrap;
+	[SerializeField]
+	private bool NoTrap;
 
-	public bool North;
+	[SerializeField]
+	private bool North;
 
 	public bool Open;
 
-	public bool Near;
+	[SerializeField]
+	private bool Near;
 
-	public float ShiftNorth = -0.1f;
+	[SerializeField]
+	private float ShiftNorth = -0.1f;
 
-	public float ShiftSouth = 0.1f;
+	[SerializeField]
+	private float ShiftSouth = 0.1f;
 
-	public float Rotation;
+	[SerializeField]
+	private float Rotation;
 
-	public float Timer;
+	[SerializeField]
+	private float Timer;
 
-	public float TrapSwing = 12.15f;
+	[SerializeField]
+	private float TrapSwing = 12.15f;
 
-	public float Swing = 150f;
+	[SerializeField]
+	private float Swing = 150f;
 
-	public Renderer Sign;
+	[SerializeField]
+	private Renderer Sign;
 
-	public string RoomName = string.Empty;
+	[SerializeField]
+	private string RoomName = string.Empty;
 
-	public string Facing = string.Empty;
+	[SerializeField]
+	private string Facing = string.Empty;
 
-	public int RoomID;
+	[SerializeField]
+	private int RoomID;
 
-	public ClubType Club;
+	[SerializeField]
+	private ClubType Club;
+
+	private bool Double
+	{
+		get
+		{
+			return this.Doors.Length == 2;
+		}
+	}
 
 	private void Start()
 	{
-		if (this.Doors.Length == 2)
-		{
-			this.Double = true;
-		}
 		this.TrapSwing = 12.15f;
 		this.Yandere = GameObject.Find("YandereChan").GetComponent<YandereScript>();
 		if (this.Swinging)
@@ -101,7 +131,7 @@ public class DoorScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (Vector3.Distance(this.Yandere.transform.position, base.transform.position) < 1f)
+		if ((base.transform.position - this.Yandere.transform.position).sqrMagnitude <= 1f)
 		{
 			if (!this.Near)
 			{

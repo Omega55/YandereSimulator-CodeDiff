@@ -38,8 +38,8 @@ public class Persona
 			"Social Butterfly"
 		},
 		{
-			PersonaType.Tsundere,
-			"Tsundere"
+			PersonaType.Lovestruck,
+			"Lovestruck"
 		},
 		{
 			PersonaType.Strict,

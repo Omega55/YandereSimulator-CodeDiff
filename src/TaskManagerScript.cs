@@ -127,11 +127,8 @@ public class TaskManagerScript : MonoBehaviour
 		{
 			this.TaskObjects[15].SetActive(false);
 		}
-		if (TaskGlobals.GetTaskStatus(32) == 3 && this.StudentManager.Students[32] != null)
+		if (TaskGlobals.GetTaskStatus(32) == 3)
 		{
-			this.StudentManager.Students[32].WaitAnim = "f02_smokeAttempt_00";
-			this.StudentManager.Students[32].Cigarette.SetActive(true);
-			this.StudentManager.Students[32].Lighter.SetActive(true);
 		}
 		if (TaskGlobals.GetTaskStatus(33) == 1)
 		{

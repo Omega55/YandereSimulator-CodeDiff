@@ -19,6 +19,8 @@ public static class DatingGlobals
 
 	private const string Str_TraitDemonstrated = "TraitDemonstrated_";
 
+	private const string Str_RivalSabotaged = "RivalSabotaged";
+
 	public static float Affection
 	{
 		get
@@ -140,6 +142,18 @@ public static class DatingGlobals
 		return KeysHelper.GetIntegerKeys("TraitDemonstrated_");
 	}
 
+	public static int RivalSabotaged
+	{
+		get
+		{
+			return PlayerPrefs.GetInt("RivalSabotaged");
+		}
+		set
+		{
+			PlayerPrefs.SetInt("RivalSabotaged", value);
+		}
+	}
+
 	public static void DeleteAll()
 	{
 		Globals.Delete("Affection");
@@ -147,6 +161,7 @@ public static class DatingGlobals
 		Globals.DeleteCollection("ComplimentGiven_", DatingGlobals.KeysOfComplimentGiven());
 		Globals.DeleteCollection("SuitorCheck_", DatingGlobals.KeysOfSuitorCheck());
 		Globals.Delete("SuitorProgress");
+		Globals.Delete("RivalSabotaged");
 		Globals.DeleteCollection("SuitorTrait_", DatingGlobals.KeysOfSuitorTrait());
 		Globals.DeleteCollection("TopicDiscussed_", DatingGlobals.KeysOfTopicDiscussed());
 		Globals.DeleteCollection("TraitDemonstrated_", DatingGlobals.KeysOfTraitDemonstrated());
