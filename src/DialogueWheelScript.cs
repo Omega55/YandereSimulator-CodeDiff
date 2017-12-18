@@ -77,6 +77,8 @@ public class DialogueWheelScript : MonoBehaviour
 
 	public bool ClubLeader;
 
+	public bool Pestered;
+
 	public bool Show;
 
 	public Vector3 PreviousPosition;
@@ -552,22 +554,22 @@ public class DialogueWheelScript : MonoBehaviour
 			UISprite uisprite4 = this.LoveShadow[l];
 			uisprite4.color = new Color(uisprite4.color.r, uisprite4.color.g, uisprite4.color.b, 0f);
 		}
-		if (!this.Yandere.TargetStudent.Witness || this.Yandere.TargetStudent.Forgave)
+		if (!this.Yandere.TargetStudent.Witness || this.Yandere.TargetStudent.Forgave || this.Yandere.TargetStudent.Club == ClubType.Council)
 		{
 			UISprite uisprite5 = this.Shadow[1];
 			uisprite5.color = new Color(uisprite5.color.r, uisprite5.color.g, uisprite5.color.b, 0.75f);
 		}
-		if (this.Yandere.TargetStudent.Complimented)
+		if (this.Yandere.TargetStudent.Complimented || this.Yandere.TargetStudent.Club == ClubType.Council)
 		{
 			UISprite uisprite6 = this.Shadow[2];
 			uisprite6.color = new Color(uisprite6.color.r, uisprite6.color.g, uisprite6.color.b, 0.75f);
 		}
-		if (this.Yandere.TargetStudent.Gossiped)
+		if (this.Yandere.TargetStudent.Gossiped || this.Yandere.TargetStudent.Club == ClubType.Council)
 		{
 			UISprite uisprite7 = this.Shadow[3];
 			uisprite7.color = new Color(uisprite7.color.r, uisprite7.color.g, uisprite7.color.b, 0.75f);
 		}
-		if (this.Yandere.Bloodiness > 0f || this.Yandere.Sanity < 33.33333f)
+		if (this.Yandere.Bloodiness > 0f || this.Yandere.Sanity < 33.33333f || this.Yandere.TargetStudent.Club == ClubType.Council)
 		{
 			UISprite uisprite8 = this.Shadow[3];
 			uisprite8.color = new Color(uisprite8.color.r, uisprite8.color.g, uisprite8.color.b, 0.75f);
@@ -581,7 +583,7 @@ public class DialogueWheelScript : MonoBehaviour
 			UISprite uisprite11 = this.Shadow[3];
 			uisprite11.color = new Color(uisprite11.color.r, uisprite11.color.g, uisprite11.color.b, 0.75f);
 		}
-		if (!this.Yandere.TargetStudent.Indoors)
+		if (!this.Yandere.TargetStudent.Indoors || this.Yandere.TargetStudent.Club == ClubType.Council)
 		{
 			UISprite uisprite12 = this.Shadow[5];
 			uisprite12.color = new Color(uisprite12.color.r, uisprite12.color.g, uisprite12.color.b, 0.75f);
@@ -625,7 +627,7 @@ public class DialogueWheelScript : MonoBehaviour
 			UISprite uisprite18 = this.Shadow[5];
 			uisprite18.color = new Color(uisprite18.color.r, uisprite18.color.g, uisprite18.color.b, 0.75f);
 		}
-		if (!this.Yandere.TargetStudent.Indoors)
+		if (!this.Yandere.TargetStudent.Indoors || this.Yandere.TargetStudent.Club == ClubType.Council)
 		{
 			UISprite uisprite19 = this.Shadow[6];
 			uisprite19.color = new Color(uisprite19.color.r, uisprite19.color.g, uisprite19.color.b, 0.75f);
@@ -705,21 +707,30 @@ public class DialogueWheelScript : MonoBehaviour
 	{
 		if (this.Yandere.TargetStudent != null)
 		{
+			if (!this.Pestered)
+			{
+				this.Yandere.Subtitle.Label.text = string.Empty;
+			}
 			this.Yandere.TargetStudent.Interaction = StudentInteractionType.Idle;
 			this.Yandere.TargetStudent.WaitTimer = 1f;
 			if (this.Yandere.TargetStudent.enabled)
 			{
 				this.Yandere.TargetStudent.CurrentDestination = this.Yandere.TargetStudent.Destinations[this.Yandere.TargetStudent.Phase];
 				this.Yandere.TargetStudent.Pathfinding.target = this.Yandere.TargetStudent.Destinations[this.Yandere.TargetStudent.Phase];
+				if (this.Yandere.TargetStudent.Actions[this.Yandere.TargetStudent.Phase] == StudentActionType.Patrol)
+				{
+					this.Yandere.TargetStudent.CurrentDestination = this.Yandere.TargetStudent.StudentManager.Patrols.List[this.Yandere.TargetStudent.StudentID].GetChild(this.Yandere.TargetStudent.PatrolID);
+					this.Yandere.TargetStudent.Pathfinding.target = this.Yandere.TargetStudent.CurrentDestination;
+				}
 			}
 			this.Yandere.TargetStudent.ShoulderCamera.OverShoulder = false;
 			this.Yandere.TargetStudent.Waiting = true;
 			this.Yandere.TargetStudent = null;
 		}
-		this.Yandere.Subtitle.Label.text = string.Empty;
 		this.AskingFavor = false;
 		this.Matchmaking = false;
 		this.ClubLeader = false;
+		this.Pestered = false;
 		this.Show = false;
 	}
 }

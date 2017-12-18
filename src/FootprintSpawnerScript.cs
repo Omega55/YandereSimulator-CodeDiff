@@ -7,7 +7,9 @@ public class FootprintSpawnerScript : MonoBehaviour
 
 	public GameObject BloodyFootprint;
 
-	public AudioClip[] Footsteps;
+	public AudioClip[] WalkFootsteps;
+
+	public AudioClip[] RunFootsteps;
 
 	public Transform BloodParent;
 
@@ -73,11 +75,21 @@ public class FootprintSpawnerScript : MonoBehaviour
 		}
 		else if (base.transform.position.y < this.Yandere.transform.position.y + this.DownThreshold)
 		{
-			if (this.Yandere.Stance.Current != StanceType.Crouching && this.Yandere.Stance.Current != StanceType.Crawling && this.Yandere.CanMove && !this.Yandere.NearSenpai && Input.GetButton("LB") && this.FootUp)
+			if (this.Yandere.Stance.Current != StanceType.Crouching && this.Yandere.Stance.Current != StanceType.Crawling && this.Yandere.CanMove && !this.Yandere.NearSenpai && this.FootUp)
 			{
 				AudioSource component = base.GetComponent<AudioSource>();
-				component.clip = this.Footsteps[UnityEngine.Random.Range(0, this.Footsteps.Length)];
-				component.Play();
+				if (Input.GetButton("LB"))
+				{
+					component.clip = this.RunFootsteps[UnityEngine.Random.Range(0, this.RunFootsteps.Length)];
+					component.volume = 0.5f;
+					component.Play();
+				}
+				else
+				{
+					component.clip = this.WalkFootsteps[UnityEngine.Random.Range(0, this.WalkFootsteps.Length)];
+					component.volume = 0.25f;
+					component.Play();
+				}
 			}
 			this.FootUp = false;
 			if (this.CanSpawn && this.Bloodiness > 0)

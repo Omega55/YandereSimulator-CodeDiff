@@ -186,6 +186,7 @@ public class AttackManagerScript : MonoBehaviour
 				this.Yandere.Attacking = false;
 				this.Yandere.FollowHips = false;
 				this.Yandere.MyController.radius = 0.2f;
+				this.Yandere.EquippedWeapon.Evidence = true;
 				this.Victim = null;
 				this.VictimAnimName = null;
 				this.AnimName = null;

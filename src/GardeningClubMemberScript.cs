@@ -33,6 +33,8 @@ public class GardeningClubMemberScript : MonoBehaviour
 
 	public Transform Destination;
 
+	public GameObject Padlock;
+
 	public GameObject Marker;
 
 	public GameObject Key;
@@ -161,6 +163,7 @@ public class GardeningClubMemberScript : MonoBehaviour
 						if (this.ID == 1)
 						{
 							this.ShedDoor.Prompt.Label[0].text = "     Open";
+							this.Padlock.SetActive(false);
 							this.ShedDoor.Locked = false;
 							this.Yandere.Inventory.ShedKey = true;
 						}

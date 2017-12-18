@@ -67,6 +67,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] CorpseReactions;
 
+	public string[] CouncilCorpseReactions;
+
 	public string[] PrankReactions;
 
 	public string[] InterruptReactions;
@@ -84,6 +86,8 @@ public class SubtitleScript : MonoBehaviour
 	public string[] RivalPickpocketReactions;
 
 	public string[] DrownReactions;
+
+	public string[] HmmReactions;
 
 	public string[] KnifeReactions;
 
@@ -245,6 +249,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] LightSwitchReactions;
 
+	public string[] PhotoAnnoyances;
+
 	public string[] Task6Lines;
 
 	public string[] Task7Lines;
@@ -260,6 +266,8 @@ public class SubtitleScript : MonoBehaviour
 	public string[] Task33Lines;
 
 	public string[] Task34Lines;
+
+	public string[] Club0Info;
 
 	public string[] Club3Info;
 
@@ -300,6 +308,20 @@ public class SubtitleScript : MonoBehaviour
 	public string[] ClubYeses;
 
 	public string[] ClubNoes;
+
+	public string[] StrictReaction;
+
+	public string[] CasualReaction;
+
+	public string[] GraceReaction;
+
+	public string[] EdgyReaction;
+
+	public string[] Spraying;
+
+	public string[] Shoving;
+
+	public string[] Chasing;
 
 	public string InfoNotice;
 
@@ -390,6 +412,8 @@ public class SubtitleScript : MonoBehaviour
 	public AudioClip[] Task33Clips;
 
 	public AudioClip[] Task34Clips;
+
+	public AudioClip[] Club0Clips;
 
 	public AudioClip[] Club3Clips;
 
@@ -500,6 +524,10 @@ public class SubtitleScript : MonoBehaviour
 			{
 				SubtitleType.ClubOccultInfo,
 				new AudioClipArrayWrapper(this.Club3Clips)
+			},
+			{
+				SubtitleType.ClubPlaceholderInfo,
+				new AudioClipArrayWrapper(this.Club0Clips)
 			},
 			{
 				SubtitleType.ClubQuit,
@@ -828,6 +856,11 @@ public class SubtitleScript : MonoBehaviour
 			this.Label.text = this.DrownReactions[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
+		else if (subtitleType == SubtitleType.HmmReaction)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.HmmReactions.Length);
+			this.Label.text = this.HmmReactions[this.RandomID];
+		}
 		else if (subtitleType == SubtitleType.TeacherWeaponReaction)
 		{
 			this.RandomID = UnityEngine.Random.Range(0, this.TeacherWeaponReactions.Length);
@@ -945,6 +978,10 @@ public class SubtitleScript : MonoBehaviour
 		else if (subtitleType == SubtitleType.CorpseReaction)
 		{
 			this.Label.text = this.GetRandomString(this.CorpseReactions);
+		}
+		else if (subtitleType == SubtitleType.CouncilCorpseReaction)
+		{
+			this.Label.text = this.GetRandomString(this.CouncilCorpseReactions);
 		}
 		else if (subtitleType == SubtitleType.LonerMurderReaction)
 		{
@@ -1080,14 +1117,7 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (subtitleType == SubtitleType.Impatience)
 		{
-			if (ID == 1)
-			{
-				this.Label.text = this.GetRandomString(this.Impatiences);
-			}
-			else
-			{
-				this.Label.text = this.GetRandomString(this.ImpatientFarewells);
-			}
+			this.Label.text = this.Impatiences[ID];
 		}
 		else if (subtitleType == SubtitleType.PlayerCompliment)
 		{
@@ -1244,6 +1274,11 @@ public class SubtitleScript : MonoBehaviour
 			this.Label.text = this.LightSwitchReactions[ID];
 			this.PlayVoice(subtitleType, ID);
 		}
+		else if (subtitleType == SubtitleType.PhotoAnnoyance)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.PhotoAnnoyances.Length);
+			this.Label.text = this.PhotoAnnoyances[this.RandomID];
+		}
 		else if (subtitleType == SubtitleType.Task6Line)
 		{
 			this.Label.text = this.Task6Lines[ID];
@@ -1297,6 +1332,11 @@ public class SubtitleScript : MonoBehaviour
 		else if (subtitleType == SubtitleType.ClubKick)
 		{
 			this.Label.text = this.ClubKicks[ID];
+			this.PlayVoice(subtitleType, ID);
+		}
+		else if (subtitleType == SubtitleType.ClubPlaceholderInfo)
+		{
+			this.Label.text = this.Club0Info[ID];
 			this.PlayVoice(subtitleType, ID);
 		}
 		else if (subtitleType == SubtitleType.ClubOccultInfo)
@@ -1387,6 +1427,34 @@ public class SubtitleScript : MonoBehaviour
 		else if (subtitleType == SubtitleType.InfoNotice)
 		{
 			this.Label.text = this.InfoNotice;
+		}
+		else if (subtitleType == SubtitleType.StrictReaction)
+		{
+			this.Label.text = this.StrictReaction[ID];
+		}
+		else if (subtitleType == SubtitleType.CasualReaction)
+		{
+			this.Label.text = this.CasualReaction[ID];
+		}
+		else if (subtitleType == SubtitleType.GraceReaction)
+		{
+			this.Label.text = this.GraceReaction[ID];
+		}
+		else if (subtitleType == SubtitleType.EdgyReaction)
+		{
+			this.Label.text = this.EdgyReaction[ID];
+		}
+		else if (subtitleType == SubtitleType.Shoving)
+		{
+			this.Label.text = this.Shoving[ID];
+		}
+		else if (subtitleType == SubtitleType.Spraying)
+		{
+			this.Label.text = this.Spraying[ID];
+		}
+		else if (subtitleType == SubtitleType.Chasing)
+		{
+			this.Label.text = this.Chasing[ID];
 		}
 		this.Timer = Duration;
 	}

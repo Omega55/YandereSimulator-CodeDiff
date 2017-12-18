@@ -235,11 +235,11 @@ public class HomeCameraScript : MonoBehaviour
 		else if (this.HomeYandere.transform.position.y > -1f)
 		{
 			this.BasementJukebox.volume = Mathf.MoveTowards(this.BasementJukebox.volume, 0f, Time.deltaTime);
-			this.RoomJukebox.volume = Mathf.MoveTowards(this.RoomJukebox.volume, 1f, Time.deltaTime);
+			this.RoomJukebox.volume = Mathf.MoveTowards(this.RoomJukebox.volume, 0.5f, Time.deltaTime);
 		}
 		else if (!this.Torturing)
 		{
-			this.BasementJukebox.volume = Mathf.MoveTowards(this.BasementJukebox.volume, 1f, Time.deltaTime);
+			this.BasementJukebox.volume = Mathf.MoveTowards(this.BasementJukebox.volume, 0.5f, Time.deltaTime);
 			this.RoomJukebox.volume = Mathf.MoveTowards(this.RoomJukebox.volume, 0f, Time.deltaTime);
 		}
 		if (Input.GetKeyDown(KeyCode.Y))

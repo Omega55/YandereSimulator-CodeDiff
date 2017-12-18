@@ -37,6 +37,8 @@ public class HeartbrokenScript : MonoBehaviour
 
 	public bool Headmaster;
 
+	public bool Confessed;
+
 	public bool Arrested;
 
 	public bool Exposed;
@@ -61,7 +63,23 @@ public class HeartbrokenScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (this.Yandere.Attacked)
+		if (this.Confessed)
+		{
+			this.Letters[0].text = "S";
+			this.Letters[1].text = "E";
+			this.Letters[2].text = "N";
+			this.Letters[3].text = "P";
+			this.Letters[4].text = "A";
+			this.Letters[5].text = "I";
+			this.Letters[6].text = string.Empty;
+			this.Letters[7].text = "L";
+			this.Letters[8].text = "O";
+			this.Letters[9].text = "S";
+			this.Letters[10].text = "T";
+			this.LetterID = 0;
+			this.StopID = 11;
+		}
+		else if (this.Yandere.Attacked)
 		{
 			if (!this.Headmaster)
 			{
@@ -119,7 +137,7 @@ public class HeartbrokenScript : MonoBehaviour
 			this.LetterID = 0;
 			this.StopID = 11;
 		}
-		else if (this.Yandere.Senpai.GetComponent<StudentScript>().Teacher)
+		else if ((this.Yandere.Senpai != null && this.Yandere.Senpai.GetComponent<StudentScript>().Teacher) || this.Yandere.Sprayed)
 		{
 			this.Letters[0].text = string.Empty;
 			this.Letters[1].text = "E";

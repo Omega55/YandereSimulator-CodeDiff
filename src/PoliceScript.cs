@@ -23,6 +23,8 @@ public class PoliceScript : MonoBehaviour
 
 	public ClockScript Clock;
 
+	public JsonScript JSON;
+
 	public UIPanel Panel;
 
 	public GameObject HeartbeatCamera;
@@ -88,6 +90,8 @@ public class PoliceScript : MonoBehaviour
 	public bool TeacherReport;
 
 	public bool ClubActivity;
+
+	public bool CouncilDeath;
 
 	public bool MaskReported;
 
@@ -378,7 +382,7 @@ public class PoliceScript : MonoBehaviour
 					{
 						this.EndOfDay.gameObject.SetActive(true);
 						this.EndOfDay.enabled = true;
-						this.EndOfDay.Phase = 10;
+						this.EndOfDay.Phase = 11;
 						if (this.EndOfDay.PreviouslyActivated)
 						{
 							this.EndOfDay.Start();
@@ -581,12 +585,17 @@ public class PoliceScript : MonoBehaviour
 					{
 						SchoolGlobals.SchoolAtmosphere -= 0.1f;
 					}
+					if (this.JSON.Students[i].Club == ClubType.Council)
+					{
+						SchoolGlobals.SchoolAtmosphere -= 1f;
+						SchoolGlobals.HighSecurity = true;
+					}
 					StudentGlobals.SetStudentDead(i, true);
 					PlayerGlobals.Kills++;
 				}
 			}
 		}
-		else
+		else if (!SchoolGlobals.HighSecurity)
 		{
 			SchoolGlobals.SchoolAtmosphere += 0.2f;
 		}

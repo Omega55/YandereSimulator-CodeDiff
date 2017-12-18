@@ -7,6 +7,8 @@ public class LoveManagerScript : MonoBehaviour
 
 	public StudentManagerScript StudentManager;
 
+	public GameObject ConfessionManager;
+
 	public YandereScript Yandere;
 
 	public ClockScript Clock;
@@ -97,7 +99,14 @@ public class LoveManagerScript : MonoBehaviour
 					this.Yandere.CanMove = false;
 					this.Suitor.enabled = false;
 					this.Rival.enabled = false;
-					this.ConfessionScene.enabled = true;
+					if (this.StudentManager.Students[this.StudentManager.RivalID] != null)
+					{
+						this.ConfessionManager.SetActive(true);
+					}
+					else
+					{
+						this.ConfessionScene.enabled = true;
+					}
 					this.Clock.StopTime = true;
 					this.LeftNote = false;
 				}

@@ -155,6 +155,7 @@ public class PickpocketScript : MonoBehaviour
 		{
 			this.Student.StudentManager.ShedDoor.Prompt.Label[0].text = "     Open";
 			this.Student.StudentManager.ShedDoor.Locked = false;
+			this.Student.ClubManager.Padlock.SetActive(false);
 			this.Student.Yandere.Inventory.ShedKey = true;
 		}
 		else

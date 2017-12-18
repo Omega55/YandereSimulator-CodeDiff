@@ -28,7 +28,7 @@ public class MissingPosterManagerScript : MonoBehaviour
 					".png"
 				});
 				WWW www = new WWW(url);
-				gameObject.GetComponent<UITexture>().mainTexture = www.texture;
+				gameObject.GetComponent<MissingPosterScript>().MyRenderer.material.mainTexture = www.texture;
 				this.RandomID = UnityEngine.Random.Range(1, 3);
 				gameObject.transform.localPosition = new Vector3(-16300f + (float)(this.ID * 500), UnityEngine.Random.Range(1300f, 2000f), 0f);
 				if (gameObject.transform.localPosition.x > -3700f)

@@ -29,6 +29,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public ParticleSystem FemaleDrownSplashes;
 
+	public ComputerGamesScript ComputerGames;
+
 	public EmergencyExitScript EmergencyExit;
 
 	public TranqDetectorScript TranqDetector;
@@ -104,6 +106,8 @@ public class StudentManagerScript : MonoBehaviour
 	public ChangingBoothScript[] ChangingBooths;
 
 	public GradingPaperScript[] FacultyDesks;
+
+	public Transform[] CorpseGuardLocation;
 
 	public Transform[] LockerPositions;
 
@@ -741,11 +745,13 @@ public class StudentManagerScript : MonoBehaviour
 							if (this.Yandere.Armed)
 							{
 								studentScript.Prompt.HideButton[0] = true;
+								studentScript.Prompt.MinimumDistance = 1f;
 								studentScript.Prompt.Attack = true;
 							}
 							else
 							{
 								studentScript.Prompt.HideButton[2] = true;
+								studentScript.Prompt.MinimumDistance = 2f;
 								if (studentScript.WitnessedMurder || studentScript.WitnessedCorpse || studentScript.Private)
 								{
 									studentScript.Prompt.HideButton[0] = true;
@@ -818,11 +824,13 @@ public class StudentManagerScript : MonoBehaviour
 				if (this.Yandere.Armed)
 				{
 					studentScript.Prompt.HideButton[0] = true;
+					studentScript.Prompt.MinimumDistance = 1f;
 					studentScript.Prompt.Attack = true;
 				}
 				else
 				{
 					studentScript.Prompt.HideButton[2] = true;
+					studentScript.Prompt.MinimumDistance = 2f;
 					if (studentScript.WitnessedMurder || studentScript.WitnessedCorpse || studentScript.Private)
 					{
 						studentScript.Prompt.HideButton[0] = true;
@@ -1020,9 +1028,9 @@ public class StudentManagerScript : MonoBehaviour
 			StudentScript studentScript = this.Students[this.ID];
 			if (studentScript != null)
 			{
-				if (!studentScript.Dying && !studentScript.PinningDown)
+				if (!studentScript.Dying && !studentScript.PinningDown && !studentScript.Spraying)
 				{
-					if (this.YandereDying)
+					if (this.YandereDying && studentScript.Club != ClubType.Council)
 					{
 						studentScript.IdleAnim = studentScript.ScaredAnim;
 					}
@@ -1525,6 +1533,20 @@ public class StudentManagerScript : MonoBehaviour
 			if (studentScript != null)
 			{
 				studentScript.MyTeacher = this.Teachers[this.JSON.Students[studentScript.StudentID].Class];
+			}
+			this.ID++;
+		}
+	}
+
+	public void ToggleBookBags()
+	{
+		this.ID = 1;
+		while (this.ID < this.Students.Length)
+		{
+			StudentScript studentScript = this.Students[this.ID];
+			if (studentScript != null)
+			{
+				studentScript.BookBag.SetActive(!studentScript.BookBag.activeInHierarchy);
 			}
 			this.ID++;
 		}

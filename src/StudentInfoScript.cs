@@ -101,6 +101,10 @@ public class StudentInfoScript : MonoBehaviour
 			"Extensive Training"
 		},
 		{
+			7,
+			"Carries Pepper Spray"
+		},
+		{
 			99,
 			"?????"
 		}
@@ -200,7 +204,7 @@ public class StudentInfoScript : MonoBehaviour
 			{
 				if (!this.CustomPortraits)
 				{
-					this.Portrait.mainTexture = ((ID >= 33 && ID <= 89) ? this.BlankPortrait : www.texture);
+					this.Portrait.mainTexture = ((ID >= 33 && ID <= 85) ? this.BlankPortrait : www.texture);
 				}
 				else
 				{

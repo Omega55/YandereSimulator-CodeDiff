@@ -118,6 +118,12 @@ public static class AnimNames
 
 	public const string FemaleEbolaIdle = "f02_ebolaIdle_00";
 
+	public const string FemaleSithIdle = "f02_sithIdle_00";
+
+	public const string FemaleSithRun = "f02_sithRun_00";
+
+	public const string FemaleSithWalk = "f02_sithWalk_00";
+
 	public const string FemaleElectrocution = "f02_electrocution_00";
 
 	public const string FemaleFalconIdle = "f02_falconIdle_00";
@@ -223,6 +229,8 @@ public static class AnimNames
 	public const string FemaleNewWalk = "f02_newWalk_00";
 
 	public const string FemaleNoBlink = "f02_noBlink_00";
+
+	public const string FemaleOnePunch = "f02_onePunch_00";
 
 	public const string FemalePickpocketing = "f02_pickpocketing_00";
 

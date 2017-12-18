@@ -199,7 +199,7 @@ public class QualityManagerScript : MonoBehaviour
 						{
 							studentScript.Cosmetic.FemaleHairRenderers[studentScript.Cosmetic.Hairstyle].material.shader = this.NewHairShader;
 						}
-						if (studentScript.Cosmetic.Accessory > 0)
+						if (studentScript.Cosmetic.Accessory > 0 && studentScript.Cosmetic.FemaleAccessories[studentScript.Cosmetic.Accessory].GetComponent<Renderer>() != null)
 						{
 							studentScript.Cosmetic.FemaleAccessories[studentScript.Cosmetic.Accessory].GetComponent<Renderer>().material.shader = this.NewHairShader;
 						}
@@ -227,7 +227,7 @@ public class QualityManagerScript : MonoBehaviour
 						}
 					}
 				}
-				if (!studentScript.Teacher && studentScript.Cosmetic.Club > ClubType.None && studentScript.Cosmetic.ClubAccessories[(int)studentScript.Cosmetic.Club] != null)
+				if (!studentScript.Teacher && studentScript.Cosmetic.Club > ClubType.None && studentScript.Cosmetic.Club != ClubType.Council && studentScript.Cosmetic.ClubAccessories[(int)studentScript.Cosmetic.Club] != null)
 				{
 					Renderer component2 = studentScript.Cosmetic.ClubAccessories[(int)studentScript.Cosmetic.Club].GetComponent<Renderer>();
 					if (component2 != null)
@@ -249,9 +249,9 @@ public class QualityManagerScript : MonoBehaviour
 				component3.material.shader = this.NewHairShader;
 			}
 		}
-		this.Nemesis.Cosmetic.MyRenderer.materials[0].shader = this.NewHairShader;
-		this.Nemesis.Cosmetic.MyRenderer.materials[1].shader = this.NewHairShader;
-		this.Nemesis.Cosmetic.MyRenderer.materials[2].shader = this.NewHairShader;
+		this.Nemesis.Cosmetic.MyRenderer.materials[0].shader = this.NewBodyShader;
+		this.Nemesis.Cosmetic.MyRenderer.materials[1].shader = this.NewBodyShader;
+		this.Nemesis.Cosmetic.MyRenderer.materials[2].shader = this.NewBodyShader;
 		this.Nemesis.NemesisHair.GetComponent<Renderer>().material.shader = this.NewHairShader;
 	}
 

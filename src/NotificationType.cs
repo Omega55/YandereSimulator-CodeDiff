@@ -14,6 +14,7 @@ public enum NotificationType
 	Opinion,
 	Complete,
 	Exfiltrate,
+	Evidence,
 	ClassSoon,
 	ClassNow
 }

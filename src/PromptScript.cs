@@ -92,8 +92,7 @@ public class PromptScript : MonoBehaviour
 	[SerializeField]
 	private float MaximumDistance = 5f;
 
-	[SerializeField]
-	private float MinimumDistance;
+	public float MinimumDistance;
 
 	[SerializeField]
 	private float DistanceSqr;

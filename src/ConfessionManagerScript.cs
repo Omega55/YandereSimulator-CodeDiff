@@ -3,13 +3,29 @@ using UnityEngine;
 
 public class ConfessionManagerScript : MonoBehaviour
 {
+	public ShoulderCameraScript ShoulderCamera;
+
 	public StudentManagerScript StudentManager;
+
+	public HeartbrokenScript Heartbroken;
+
+	public JukeboxScript OriginalJukebox;
+
+	public CosmeticScript OsanaCosmetic;
 
 	public AudioClip ConfessionAccepted;
 
 	public AudioClip ConfessionRejected;
 
+	public AudioClip ConfessionGiggle;
+
 	public AudioClip[] ConfessionMusic;
+
+	public GameObject OriginalBlossoms;
+
+	public GameObject HeartBeatCamera;
+
+	public GameObject MainCamera;
 
 	public Transform ConfessionCamera;
 
@@ -33,13 +49,17 @@ public class ConfessionManagerScript : MonoBehaviour
 
 	public float[] RejectTimes;
 
-	public AudioSource MyAudio;
-
-	public AudioSource Jukebox;
+	public UISprite TimelessDarkness;
 
 	public UILabel SubtitleLabel;
 
 	public UISprite Darkness;
+
+	public UIPanel Panel;
+
+	public AudioSource MyAudio;
+
+	public AudioSource Jukebox;
 
 	public Animation Yandere;
 
@@ -73,7 +93,8 @@ public class ConfessionManagerScript : MonoBehaviour
 
 	private void Start()
 	{
-		this.Senpai["SenpaiConfession"].speed = 0.9f;
+		this.ConfessionCamera.gameObject.SetActive(false);
+		this.TimelessDarkness.color = new Color(0f, 0f, 0f, 0f);
 		this.Darkness.color = new Color(0f, 0f, 0f, 1f);
 		this.SubtitleLabel.text = string.Empty;
 	}
@@ -81,16 +102,45 @@ public class ConfessionManagerScript : MonoBehaviour
 	private void Update()
 	{
 		this.Timer += Time.deltaTime;
-		if (this.Phase == 0)
+		if (this.Phase == -1)
 		{
-			if (this.Osana == null)
+			this.TimelessDarkness.color = new Color(this.TimelessDarkness.color.r, this.TimelessDarkness.color.g, this.TimelessDarkness.color.b, Mathf.MoveTowards(this.TimelessDarkness.color.a, 1f, Time.deltaTime));
+			this.Panel.alpha = Mathf.MoveTowards(this.Panel.alpha, 0f, Time.deltaTime);
+			this.OriginalJukebox.Volume = Mathf.MoveTowards(this.OriginalJukebox.Volume, 0f, Time.deltaTime);
+			if (this.TimelessDarkness.color.a == 1f && this.Timer > 2f)
 			{
+				this.TimelessDarkness.color = new Color(0f, 0f, 0f, 0f);
+				this.Darkness.color = new Color(0f, 0f, 0f, 1f);
+				this.ConfessionCamera.gameObject.SetActive(true);
+				this.MainCamera.SetActive(false);
+				this.OsanaCosmetic = this.StudentManager.Students[this.StudentManager.RivalID].Cosmetic;
 				this.Osana = this.StudentManager.Students[this.StudentManager.RivalID].CharacterAnimation;
 				this.Tears = this.StudentManager.Students[this.StudentManager.RivalID].Tears;
 				this.Senpai = this.StudentManager.Students[1].CharacterAnimation;
 				this.SenpaiNeck = this.StudentManager.Students[1].Neck;
+				this.Osana[this.OsanaCosmetic.Student.ShyAnim].weight = 0f;
+				this.Senpai["SenpaiConfession"].speed = 0.9f;
+				this.OriginalBlossoms.SetActive(false);
 				this.Tears.gameObject.SetActive(true);
+				this.Osana.transform.position = new Vector3(0f, 6f, 98.5f);
+				this.Senpai.transform.position = new Vector3(0f, 6f, 98.5f);
+				this.Osana.transform.eulerAngles = new Vector3(0f, 180f, 0f);
+				this.Senpai.transform.eulerAngles = new Vector3(0f, 180f, 0f);
+				this.OsanaCosmetic.MyRenderer.materials[this.OsanaCosmetic.FaceID].SetFloat("_BlendAmount", 1f);
+				this.Senpai.Play("SenpaiConfession");
+				this.Osana.Play("OsanaConfession");
+				this.OriginalBlossoms.SetActive(false);
+				this.HeartBeatCamera.SetActive(false);
+				base.GetComponent<AudioSource>().Play();
+				this.Jukebox.Play();
+				this.Timer = 0f;
+				this.Phase++;
+				this.Yandere.transform.parent.position = new Vector3(5f, 5.73f, 98f);
+				this.Yandere.transform.parent.eulerAngles = new Vector3(0f, -90f, 0f);
 			}
+		}
+		else if (this.Phase == 0)
+		{
 			if (this.Timer > 11f)
 			{
 				this.FadeOut = true;
@@ -123,13 +173,12 @@ public class ConfessionManagerScript : MonoBehaviour
 			this.RotateSpeed += Time.deltaTime * 0.2f;
 			this.ConfessionCamera.eulerAngles = Vector3.Lerp(this.ConfessionCamera.eulerAngles, new Vector3(0f, 0f, 0f), Time.deltaTime * this.RotateSpeed);
 			this.ConfessionCamera.position = Vector3.Lerp(this.ConfessionCamera.position, new Vector3(0f, 7.25f, 97f), Time.deltaTime * this.RotateSpeed);
-			if (Input.GetKeyDown("space"))
-			{
-				this.Osana["OsanaConfession"].time = this.Osana["OsanaConfession"].length - 1f;
-				this.MyAudio.time = this.MyAudio.clip.length - 1f;
-			}
 			if (this.Osana["OsanaConfession"].time >= this.Osana["OsanaConfession"].length)
 			{
+				if (DatingGlobals.RivalSabotaged > 4)
+				{
+					this.Reject = true;
+				}
 				if (!this.Reject)
 				{
 					this.Osana.CrossFade("OsanaConfessionAccepted");
@@ -315,6 +364,10 @@ public class ConfessionManagerScript : MonoBehaviour
 				this.ConfessionCamera.position = Vector3.Lerp(this.ConfessionCamera.position, new Vector3(7f, 7f, 97.5f), Time.deltaTime * this.RotateSpeed);
 				if (this.Timer > 10f)
 				{
+					if (this.Reject)
+					{
+						AudioSource.PlayClipAtPoint(this.ConfessionGiggle, this.Yandere.transform.position);
+					}
 					this.ConfessionCamera.eulerAngles = this.ReactionPOV.eulerAngles;
 					this.ConfessionCamera.position = this.ReactionPOV.position;
 					this.RotateSpeed = 0f;
@@ -326,11 +379,26 @@ public class ConfessionManagerScript : MonoBehaviour
 		else if (this.Phase == 6)
 		{
 			this.Jukebox.pitch = Mathf.MoveTowards(this.Jukebox.pitch, 0f, Time.deltaTime * 0.1f);
-			this.RotateSpeed += Time.deltaTime * 0.5f;
-			this.ConfessionCamera.position = Vector3.Lerp(this.ConfessionCamera.position, new Vector3(4f, 7f, 98f), Time.deltaTime * this.RotateSpeed);
-			if (this.Timer > 5f)
+			if (!this.Reject)
 			{
-				if (this.Reject)
+				if (!this.Heartbroken.Confessed)
+				{
+					this.MainCamera.transform.eulerAngles = this.ConfessionCamera.eulerAngles;
+					this.MainCamera.transform.position = this.ConfessionCamera.position;
+					this.Heartbroken.Confessed = true;
+					this.MainCamera.SetActive(true);
+					Camera.main.enabled = false;
+					this.ShoulderCamera.enabled = true;
+					this.ShoulderCamera.Noticed = true;
+					this.ShoulderCamera.Skip = true;
+				}
+				this.ConfessionCamera.position = this.MainCamera.transform.position;
+			}
+			else
+			{
+				this.RotateSpeed += Time.deltaTime * 0.5f;
+				this.ConfessionCamera.position = Vector3.Lerp(this.ConfessionCamera.position, new Vector3(4f, 7f, 98f), Time.deltaTime * this.RotateSpeed);
+				if (this.Timer > 5f)
 				{
 					this.FadeOut = true;
 				}

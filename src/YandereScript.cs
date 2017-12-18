@@ -279,6 +279,8 @@ public class YandereScript : MonoBehaviour
 
 	public float LaughTimer;
 
+	public float SprayTimer;
+
 	public float TheftTimer;
 
 	public float BoneTimer;
@@ -358,6 +360,8 @@ public class YandereScript : MonoBehaviour
 	public int PoisonType;
 
 	public int Schoolwear;
+
+	public int SprayPhase;
 
 	public int DragState;
 
@@ -471,6 +475,8 @@ public class YandereScript : MonoBehaviour
 
 	public bool CameFromCrouch;
 
+	public bool CannotRecover;
+
 	public bool PossessPoison;
 
 	public bool YandereVision;
@@ -515,6 +521,8 @@ public class YandereScript : MonoBehaviour
 
 	public bool Slender;
 
+	public bool Sprayed;
+
 	public bool CanMove = true;
 
 	public bool Chased;
@@ -548,6 +556,8 @@ public class YandereScript : MonoBehaviour
 	public Texture[] BloodTextures;
 
 	public WeaponScript[] Weapon;
+
+	public GameObject[] ZipTie;
 
 	public string[] ArmedAnims;
 
@@ -763,7 +773,7 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject FalconGun;
 
-	public AudioClip OnePunchVoice;
+	public AudioClip[] OnePunchVoices;
 
 	public GameObject NewOnePunch;
 
@@ -877,6 +887,34 @@ public class YandereScript : MonoBehaviour
 
 	public bool Casual = true;
 
+	public GameObject BlackRobe;
+
+	public Mesh NoUpperBodyMesh;
+
+	public ParticleSystem[] Beam;
+
+	public bool SithRecovering;
+
+	public bool SithAttacking;
+
+	public bool SithLord;
+
+	public string SithPrefix;
+
+	public int SithComboLength;
+
+	public int SithCombo;
+
+	public GameObject SithTrail1;
+
+	public GameObject SithTrail2;
+
+	public Transform SithTrailEnd1;
+
+	public Transform SithTrailEnd2;
+
+	public ZoomScript Zoom;
+
 	public Mesh JudoGiMesh;
 
 	public Texture JudoGiTexture;
@@ -962,6 +1000,8 @@ public class YandereScript : MonoBehaviour
 		this.FalconGun.SetActive(false);
 		this.EyepatchL.SetActive(false);
 		this.EyepatchR.SetActive(false);
+		this.ZipTie[0].SetActive(false);
+		this.ZipTie[1].SetActive(false);
 		this.Shoes[0].SetActive(false);
 		this.Shoes[1].SetActive(false);
 		this.Cape.SetActive(false);
@@ -1540,14 +1580,37 @@ public class YandereScript : MonoBehaviour
 				{
 					if (Input.GetButton("RB"))
 					{
+						if (this.BlackRobe.activeInHierarchy)
+						{
+							this.SithTrailEnd1.localPosition = new Vector3(-1f, 0f, 0f);
+							this.SithTrailEnd2.localPosition = new Vector3(1f, 0f, 0f);
+							this.Beam[0].Play();
+							this.Beam[1].Play();
+							this.Beam[2].Play();
+							this.Beam[3].Play();
+							if (Input.GetButtonDown("X"))
+							{
+								this.CharacterAnimation.Play("f02_sithAttack_00");
+								this.SithAttacking = true;
+								this.CanMove = false;
+								this.SithPrefix = string.Empty;
+							}
+							if (Input.GetButtonDown("Y"))
+							{
+								this.CharacterAnimation.Play("f02_sithAttackHard_00");
+								this.SithAttacking = true;
+								this.CanMove = false;
+								this.SithPrefix = "Hard";
+							}
+						}
 						this.YandereTimer += Time.deltaTime;
 						if (this.YandereTimer > 0.5f)
 						{
-							if (!this.Sans)
+							if (!this.Sans && !this.BlackRobe.activeInHierarchy)
 							{
 								this.YandereVision = true;
 							}
-							else
+							else if (this.Sans)
 							{
 								this.SansEyes[0].SetActive(true);
 								this.SansEyes[1].SetActive(true);
@@ -1558,10 +1621,22 @@ public class YandereScript : MonoBehaviour
 							}
 						}
 					}
-					else if (this.YandereVision)
+					else
 					{
-						this.Obscurance.enabled = false;
-						this.YandereVision = false;
+						if (this.BlackRobe.activeInHierarchy)
+						{
+							this.SithTrailEnd1.localPosition = new Vector3(0f, 0f, 0f);
+							this.SithTrailEnd2.localPosition = new Vector3(0f, 0f, 0f);
+							this.Beam[0].Stop();
+							this.Beam[1].Stop();
+							this.Beam[2].Stop();
+							this.Beam[3].Stop();
+						}
+						if (this.YandereVision)
+						{
+							this.Obscurance.enabled = false;
+							this.YandereVision = false;
+						}
 					}
 					if (Input.GetButtonUp("RB"))
 					{
@@ -1586,62 +1661,68 @@ public class YandereScript : MonoBehaviour
 								this.Blasting = true;
 								this.CanMove = false;
 							}
-							else if (!this.FalconHelmet.activeInHierarchy && this.Barcode.activeInHierarchy)
+							else if (!this.BlackRobe.activeInHierarchy)
 							{
-								if (!this.Xtan)
+								if (!this.FalconHelmet.activeInHierarchy && this.Barcode.activeInHierarchy)
 								{
-									if (!this.CirnoHair.activeInHierarchy && !this.TornadoHair.activeInHierarchy && !this.BladeHair.activeInHierarchy)
+									if (!this.Xtan)
 									{
-										this.LaughAnim = "f02_laugh_01";
-										this.LaughClip = this.Laugh1;
-										this.LaughIntensity += 1f;
-										component.clip = this.LaughClip;
-										component.time = 0f;
-										component.Play();
+										if (!this.CirnoHair.activeInHierarchy && !this.TornadoHair.activeInHierarchy && !this.BladeHair.activeInHierarchy)
+										{
+											this.LaughAnim = "f02_laugh_01";
+											this.LaughClip = this.Laugh1;
+											this.LaughIntensity += 1f;
+											component.clip = this.LaughClip;
+											component.time = 0f;
+											component.Play();
+										}
+										UnityEngine.Object.Instantiate<GameObject>(this.GiggleDisc, base.transform.position + Vector3.up, Quaternion.identity);
+										component.volume = 1f;
+										this.LaughTimer = 0.5f;
+										this.Laughing = true;
+										this.CanMove = false;
 									}
-									UnityEngine.Object.Instantiate<GameObject>(this.GiggleDisc, base.transform.position + Vector3.up, Quaternion.identity);
-									component.volume = 1f;
-									this.LaughTimer = 0.5f;
-									this.Laughing = true;
+									else if (this.LongHair[0].gameObject.activeInHierarchy)
+									{
+										this.LongHair[0].gameObject.SetActive(false);
+										this.BlackEyePatch.SetActive(false);
+										this.SlenderHair[0].transform.parent.gameObject.SetActive(true);
+										this.SlenderHair[0].SetActive(true);
+										this.SlenderHair[1].SetActive(true);
+									}
+									else
+									{
+										this.LongHair[0].gameObject.SetActive(true);
+										this.BlackEyePatch.SetActive(true);
+										this.SlenderHair[0].transform.parent.gameObject.SetActive(true);
+										this.SlenderHair[0].SetActive(false);
+										this.SlenderHair[1].SetActive(false);
+									}
+								}
+								else if (!this.Punching)
+								{
+									if (this.FalconHelmet.activeInHierarchy)
+									{
+										GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(this.FalconWindUp);
+										gameObject2.transform.parent = this.ItemParent;
+										gameObject2.transform.localPosition = Vector3.zero;
+										AudioClipPlayer.PlayAttached(this.FalconPunchVoice, this.MainCamera.transform, 5f, 10f);
+										this.CharacterAnimation["f02_falconPunch_00"].time = 0f;
+										this.CharacterAnimation.Play("f02_falconPunch_00");
+										this.FalconSpeed = 0f;
+									}
+									else
+									{
+										GameObject gameObject3 = UnityEngine.Object.Instantiate<GameObject>(this.FalconWindUp);
+										gameObject3.transform.parent = this.ItemParent;
+										gameObject3.transform.localPosition = Vector3.zero;
+										AudioSource.PlayClipAtPoint(this.OnePunchVoices[UnityEngine.Random.Range(0, this.OnePunchVoices.Length)], base.transform.position + Vector3.up);
+										this.CharacterAnimation["f02_onePunch_00"].time = 0f;
+										this.CharacterAnimation.CrossFade("f02_onePunch_00", 0.15f);
+									}
+									this.Punching = true;
 									this.CanMove = false;
 								}
-								else if (this.LongHair[0].gameObject.activeInHierarchy)
-								{
-									this.LongHair[0].gameObject.SetActive(false);
-									this.BlackEyePatch.SetActive(false);
-									this.SlenderHair[0].transform.parent.gameObject.SetActive(true);
-									this.SlenderHair[0].SetActive(true);
-									this.SlenderHair[1].SetActive(true);
-								}
-								else
-								{
-									this.LongHair[0].gameObject.SetActive(true);
-									this.BlackEyePatch.SetActive(true);
-									this.SlenderHair[0].transform.parent.gameObject.SetActive(true);
-									this.SlenderHair[0].SetActive(false);
-									this.SlenderHair[1].SetActive(false);
-								}
-							}
-							else if (!this.Punching)
-							{
-								if (this.FalconHelmet.activeInHierarchy)
-								{
-									GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(this.FalconWindUp);
-									gameObject2.transform.parent = this.ItemParent;
-									gameObject2.transform.localPosition = Vector3.zero;
-									AudioClipPlayer.PlayAttached(this.FalconPunchVoice, this.MainCamera.transform, 5f, 10f);
-									this.CharacterAnimation["f02_falconPunch_00"].time = 0f;
-									this.CharacterAnimation.Play("f02_falconPunch_00");
-									this.FalconSpeed = 0f;
-								}
-								else
-								{
-									AudioSource.PlayClipAtPoint(this.OnePunchVoice, base.transform.position + Vector3.up);
-									this.CharacterAnimation["f02_punch_21"].time = 0f;
-									this.CharacterAnimation.CrossFade("f02_punch_21", 0.15f);
-								}
-								this.Punching = true;
-								this.CanMove = false;
 							}
 						}
 						this.YandereTimer = 0f;
@@ -2046,10 +2127,10 @@ public class YandereScript : MonoBehaviour
 					this.CirnoTimer -= Time.deltaTime;
 					if (this.CirnoTimer < 0f)
 					{
-						GameObject gameObject3 = UnityEngine.Object.Instantiate<GameObject>(this.Fireball, this.RightHand.position, base.transform.rotation);
-						gameObject3.transform.localEulerAngles += new Vector3(UnityEngine.Random.Range(0f, 22.5f), UnityEngine.Random.Range(-22.5f, 22.5f), UnityEngine.Random.Range(-22.5f, 22.5f));
-						GameObject gameObject4 = UnityEngine.Object.Instantiate<GameObject>(this.Fireball, this.LeftHand.position, base.transform.rotation);
+						GameObject gameObject4 = UnityEngine.Object.Instantiate<GameObject>(this.Fireball, this.RightHand.position, base.transform.rotation);
 						gameObject4.transform.localEulerAngles += new Vector3(UnityEngine.Random.Range(0f, 22.5f), UnityEngine.Random.Range(-22.5f, 22.5f), UnityEngine.Random.Range(-22.5f, 22.5f));
+						GameObject gameObject5 = UnityEngine.Object.Instantiate<GameObject>(this.Fireball, this.LeftHand.position, base.transform.rotation);
+						gameObject5.transform.localEulerAngles += new Vector3(UnityEngine.Random.Range(0f, 22.5f), UnityEngine.Random.Range(-22.5f, 22.5f), UnityEngine.Random.Range(-22.5f, 22.5f));
 						this.CirnoTimer = 0.1f;
 					}
 				}
@@ -2071,8 +2152,8 @@ public class YandereScript : MonoBehaviour
 					this.CirnoTimer -= Time.deltaTime;
 					if (this.CirnoTimer < 0f)
 					{
-						GameObject gameObject5 = UnityEngine.Object.Instantiate<GameObject>(this.CirnoIceAttack, base.transform.position + base.transform.up * 1.4f, base.transform.rotation);
-						gameObject5.transform.localEulerAngles += new Vector3(UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f));
+						GameObject gameObject6 = UnityEngine.Object.Instantiate<GameObject>(this.CirnoIceAttack, base.transform.position + base.transform.up * 1.4f, base.transform.rotation);
+						gameObject6.transform.localEulerAngles += new Vector3(UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f));
 						component.PlayOneShot(this.CirnoIceClip);
 						this.CirnoTimer = 0.1f;
 					}
@@ -2083,10 +2164,10 @@ public class YandereScript : MonoBehaviour
 					this.CirnoTimer -= Time.deltaTime;
 					if (this.CirnoTimer < 0f)
 					{
-						GameObject gameObject6 = UnityEngine.Object.Instantiate<GameObject>(this.TornadoAttack, new Vector3(base.transform.position.x + UnityEngine.Random.Range(-5f, 5f), base.transform.position.y, base.transform.position.z + UnityEngine.Random.Range(-5f, 5f)), base.transform.rotation);
-						while (Vector3.Distance(base.transform.position, gameObject6.transform.position) < 1f)
+						GameObject gameObject7 = UnityEngine.Object.Instantiate<GameObject>(this.TornadoAttack, base.transform.forward * 5f + new Vector3(base.transform.position.x + UnityEngine.Random.Range(-5f, 5f), base.transform.position.y, base.transform.position.z + UnityEngine.Random.Range(-5f, 5f)), base.transform.rotation);
+						while (Vector3.Distance(base.transform.position, gameObject7.transform.position) < 1f)
 						{
-							gameObject6.transform.position = new Vector3(base.transform.position.x + UnityEngine.Random.Range(-5f, 5f), base.transform.position.y, base.transform.position.z + UnityEngine.Random.Range(-5f, 5f));
+							gameObject7.transform.position = base.transform.forward * 5f + new Vector3(base.transform.position.x + UnityEngine.Random.Range(-5f, 5f), base.transform.position.y, base.transform.position.z + UnityEngine.Random.Range(-5f, 5f));
 						}
 						this.CirnoTimer = 0.1f;
 					}
@@ -2128,16 +2209,16 @@ public class YandereScript : MonoBehaviour
 					}
 					else if (this.LaughIntensity <= 20f)
 					{
-						GameObject gameObject7 = UnityEngine.Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + Vector3.up, Quaternion.identity);
-						gameObject7.GetComponent<AlarmDiscScript>().NoScream = true;
+						GameObject gameObject8 = UnityEngine.Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + Vector3.up, Quaternion.identity);
+						gameObject8.GetComponent<AlarmDiscScript>().NoScream = true;
 						this.LaughAnim = "f02_laugh_04";
 						this.LaughClip = this.Laugh4;
 						this.LaughTimer = 2f;
 					}
 					else
 					{
-						GameObject gameObject8 = UnityEngine.Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + Vector3.up, Quaternion.identity);
-						gameObject8.GetComponent<AlarmDiscScript>().NoScream = true;
+						GameObject gameObject9 = UnityEngine.Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + Vector3.up, Quaternion.identity);
+						gameObject9.GetComponent<AlarmDiscScript>().NoScream = true;
 						this.LaughAnim = "f02_laugh_04";
 						this.LaughIntensity = 20f;
 						this.LaughTimer = 2f;
@@ -2334,13 +2415,13 @@ public class YandereScript : MonoBehaviour
 				}
 				else
 				{
-					if (this.CharacterAnimation["f02_punch_21"].time >= 0.15f && this.CharacterAnimation["f02_punch_21"].time <= 0.2f && this.NewOnePunch == null)
+					if (this.CharacterAnimation["f02_onePunch_00"].time >= 0.833333f && this.CharacterAnimation["f02_onePunch_00"].time <= 1f && this.NewOnePunch == null)
 					{
 						this.NewOnePunch = UnityEngine.Object.Instantiate<GameObject>(this.OnePunch);
 						this.NewOnePunch.transform.parent = this.ItemParent;
 						this.NewOnePunch.transform.localPosition = Vector3.zero;
 					}
-					if (this.CharacterAnimation["f02_punch_21"].time >= this.CharacterAnimation["f02_punch_21"].length - 0.1f)
+					if (this.CharacterAnimation["f02_onePunch_00"].time >= 2f)
 					{
 						this.NewOnePunch = null;
 						this.Punching = false;
@@ -2534,7 +2615,10 @@ public class YandereScript : MonoBehaviour
 					this.CameraTarget.localPosition = new Vector3(0f, 1f, 0f);
 					this.CharacterAnimation.Play(this.IdleAnim);
 					this.Shoved = false;
-					this.CanMove = true;
+					if (!this.CannotRecover)
+					{
+						this.CanMove = true;
+					}
 				}
 				else
 				{
@@ -2730,6 +2814,126 @@ public class YandereScript : MonoBehaviour
 					this.CaughtTimer = 0f;
 					this.CanMove = true;
 					this.Caught = false;
+				}
+			}
+			if (this.Sprayed)
+			{
+				if (this.SprayPhase == 0)
+				{
+					if ((double)this.CharacterAnimation["f02_sprayed_00"].time > 0.66666)
+					{
+						this.Blur.enabled = true;
+						this.Blur.blurSize += Time.deltaTime;
+						if (this.Blur.blurSize > (float)this.Blur.blurIterations)
+						{
+							this.Blur.blurIterations++;
+						}
+					}
+					if (this.CharacterAnimation["f02_sprayed_00"].time > 5f)
+					{
+						this.Police.Darkness.enabled = true;
+						this.Police.Darkness.color = new Color(0f, 0f, 0f, Mathf.MoveTowards(this.Police.Darkness.color.a, 1f, Time.deltaTime));
+						if (this.Police.Darkness.color.a == 1f)
+						{
+							this.SprayTimer += Time.deltaTime;
+							if (this.SprayTimer > 1f)
+							{
+								this.CharacterAnimation.Play("f02_tied_00");
+								this.ZipTie[0].SetActive(true);
+								this.ZipTie[1].SetActive(true);
+								this.Blur.enabled = false;
+								this.SprayTimer = 0f;
+								this.SprayPhase++;
+							}
+						}
+					}
+				}
+				else if (this.SprayPhase == 1)
+				{
+					this.Police.Darkness.color = new Color(0f, 0f, 0f, Mathf.MoveTowards(this.Police.Darkness.color.a, 0f, Time.deltaTime));
+					if (this.Police.Darkness.color.a == 0f)
+					{
+						this.SprayTimer += Time.deltaTime;
+						if (this.SprayTimer > 1f)
+						{
+							this.ShoulderCamera.HeartbrokenCamera.SetActive(true);
+							this.SprayPhase++;
+						}
+					}
+				}
+			}
+			if (this.SithAttacking)
+			{
+				if (!this.SithRecovering)
+				{
+					if (this.CharacterAnimation[string.Concat(new object[]
+					{
+						"f02_sithAttack",
+						this.SithPrefix,
+						"_0",
+						this.SithCombo
+					})].time >= this.CharacterAnimation[string.Concat(new object[]
+					{
+						"f02_sithAttack",
+						this.SithPrefix,
+						"_0",
+						this.SithCombo
+					})].length)
+					{
+						if (this.SithCombo < this.SithComboLength)
+						{
+							this.SithCombo++;
+							this.CharacterAnimation.CrossFade(string.Concat(new object[]
+							{
+								"f02_sithAttack",
+								this.SithPrefix,
+								"_0",
+								this.SithCombo
+							}));
+						}
+						else
+						{
+							this.CharacterAnimation.CrossFade(string.Concat(new object[]
+							{
+								"f02_sithRecover",
+								this.SithPrefix,
+								"_0",
+								this.SithCombo
+							}));
+							this.SithRecovering = true;
+						}
+					}
+					else
+					{
+						if (Input.GetButtonDown("X") && this.SithComboLength < this.SithCombo + 1 && this.SithComboLength < 2)
+						{
+							this.SithComboLength++;
+						}
+						if (Input.GetButtonDown("Y") && this.SithComboLength < this.SithCombo + 1 && this.SithComboLength < 2)
+						{
+							this.SithComboLength++;
+						}
+					}
+				}
+				else if (this.CharacterAnimation[string.Concat(new object[]
+				{
+					"f02_sithRecover",
+					this.SithPrefix,
+					"_0",
+					this.SithCombo
+				})].time >= this.CharacterAnimation[string.Concat(new object[]
+				{
+					"f02_sithRecover",
+					this.SithPrefix,
+					"_0",
+					this.SithCombo
+				})].length)
+				{
+					this.SithRecovering = false;
+					this.SithAttacking = false;
+					this.SithComboLength = 0;
+					this.SithCombo = 0;
+					this.CanMove = true;
 				}
 			}
 		}
@@ -3436,7 +3640,7 @@ public class YandereScript : MonoBehaviour
 						{
 							this.TargetStudent.Combust();
 						}
-						else if (this.CanTranq)
+						else if (this.CanTranq && this.TargetStudent.Male)
 						{
 							this.TargetStudent.Tranquil = true;
 							this.CanTranq = false;
@@ -3550,145 +3754,148 @@ public class YandereScript : MonoBehaviour
 
 	private void UpdateDebugFunctionality()
 	{
-		if (!this.Aiming && this.CanMove && Time.timeScale > 0f && Input.GetKeyDown(KeyCode.Escape))
+		if (!this.EasterEggMenu.activeInHierarchy)
 		{
-			this.PauseScreen.JumpToQuit();
-		}
-		if (Input.GetKeyDown(KeyCode.P))
-		{
-			this.CyborgParts[1].SetActive(false);
-			this.MemeGlasses.SetActive(false);
-			this.KONGlasses.SetActive(false);
-			this.EyepatchR.SetActive(false);
-			this.EyepatchL.SetActive(false);
-			this.EyewearID++;
-			if (this.EyewearID == 1)
+			if (!this.Aiming && this.CanMove && Time.timeScale > 0f && Input.GetKeyDown(KeyCode.Escape))
 			{
-				this.EyepatchR.SetActive(true);
+				this.PauseScreen.JumpToQuit();
 			}
-			else if (this.EyewearID == 2)
+			if (Input.GetKeyDown(KeyCode.P))
 			{
-				this.EyepatchL.SetActive(true);
-			}
-			else if (this.EyewearID == 3)
-			{
-				this.EyepatchR.SetActive(true);
-				this.EyepatchL.SetActive(true);
-			}
-			else if (this.EyewearID == 4)
-			{
-				this.KONGlasses.SetActive(true);
-			}
-			else if (this.EyewearID == 5)
-			{
-				this.MemeGlasses.SetActive(true);
-			}
-			else if (this.EyewearID == 6)
-			{
-				if (this.CyborgParts[2].activeInHierarchy)
+				this.CyborgParts[1].SetActive(false);
+				this.MemeGlasses.SetActive(false);
+				this.KONGlasses.SetActive(false);
+				this.EyepatchR.SetActive(false);
+				this.EyepatchL.SetActive(false);
+				this.EyewearID++;
+				if (this.EyewearID == 1)
 				{
-					this.CyborgParts[1].SetActive(true);
+					this.EyepatchR.SetActive(true);
+				}
+				else if (this.EyewearID == 2)
+				{
+					this.EyepatchL.SetActive(true);
+				}
+				else if (this.EyewearID == 3)
+				{
+					this.EyepatchR.SetActive(true);
+					this.EyepatchL.SetActive(true);
+				}
+				else if (this.EyewearID == 4)
+				{
+					this.KONGlasses.SetActive(true);
+				}
+				else if (this.EyewearID == 5)
+				{
+					this.MemeGlasses.SetActive(true);
+				}
+				else if (this.EyewearID == 6)
+				{
+					if (this.CyborgParts[2].activeInHierarchy)
+					{
+						this.CyborgParts[1].SetActive(true);
+					}
+					else
+					{
+						this.EyewearID = 0;
+					}
 				}
 				else
 				{
 					this.EyewearID = 0;
 				}
 			}
-			else
+			if (Input.GetKeyDown(KeyCode.H))
 			{
-				this.EyewearID = 0;
-			}
-		}
-		if (Input.GetKeyDown(KeyCode.H))
-		{
-			if (Input.GetButton("LB"))
-			{
-				this.Hairstyle += 10;
-			}
-			else
-			{
-				this.Hairstyle++;
-			}
-			this.UpdateHair();
-		}
-		if (Input.GetKey(KeyCode.H) && Input.GetKeyDown(KeyCode.LeftArrow))
-		{
-			this.Hairstyle--;
-			this.UpdateHair();
-		}
-		if (Input.GetKeyDown(KeyCode.O) && !this.EasterEggMenu.activeInHierarchy)
-		{
-			if (this.AccessoryID > 0)
-			{
-				this.Accessories[this.AccessoryID].SetActive(false);
-			}
-			if (Input.GetButton("LB"))
-			{
-				this.AccessoryID += 10;
-			}
-			else
-			{
-				this.AccessoryID++;
-			}
-			this.UpdateAccessory();
-		}
-		if (Input.GetKey(KeyCode.O) && Input.GetKeyDown(KeyCode.LeftArrow))
-		{
-			if (this.AccessoryID > 0)
-			{
-				this.Accessories[this.AccessoryID].SetActive(false);
-			}
-			this.AccessoryID--;
-			this.UpdateAccessory();
-		}
-		if (!this.NoDebug && !this.DebugMenu.activeInHierarchy)
-		{
-			if (Input.GetKeyDown(KeyCode.Minus))
-			{
-				if (Time.timeScale < 6f)
+				if (Input.GetButton("LB"))
 				{
-					Time.timeScale = 1f;
+					this.Hairstyle += 10;
 				}
 				else
 				{
-					Time.timeScale -= 5f;
+					this.Hairstyle++;
 				}
+				this.UpdateHair();
 			}
-			if (Input.GetKeyDown(KeyCode.Equals))
+			if (Input.GetKey(KeyCode.H) && Input.GetKeyDown(KeyCode.LeftArrow))
 			{
-				if (Time.timeScale < 5f)
+				this.Hairstyle--;
+				this.UpdateHair();
+			}
+			if (Input.GetKeyDown(KeyCode.O) && !this.EasterEggMenu.activeInHierarchy)
+			{
+				if (this.AccessoryID > 0)
 				{
-					Time.timeScale = 5f;
+					this.Accessories[this.AccessoryID].SetActive(false);
+				}
+				if (Input.GetButton("LB"))
+				{
+					this.AccessoryID += 10;
 				}
 				else
 				{
-					Time.timeScale += 5f;
-					if (Time.timeScale > 25f)
+					this.AccessoryID++;
+				}
+				this.UpdateAccessory();
+			}
+			if (Input.GetKey(KeyCode.O) && Input.GetKeyDown(KeyCode.LeftArrow))
+			{
+				if (this.AccessoryID > 0)
+				{
+					this.Accessories[this.AccessoryID].SetActive(false);
+				}
+				this.AccessoryID--;
+				this.UpdateAccessory();
+			}
+			if (!this.NoDebug && !this.DebugMenu.activeInHierarchy && this.CanMove)
+			{
+				if (Input.GetKeyDown("-"))
+				{
+					if (Time.timeScale < 6f)
 					{
-						Time.timeScale = 25f;
+						Time.timeScale = 1f;
+					}
+					else
+					{
+						Time.timeScale -= 5f;
+					}
+				}
+				if (Input.GetKeyDown("="))
+				{
+					if (Time.timeScale < 5f)
+					{
+						Time.timeScale = 5f;
+					}
+					else
+					{
+						Time.timeScale += 5f;
+						if (Time.timeScale > 25f)
+						{
+							Time.timeScale = 25f;
+						}
 					}
 				}
 			}
-		}
-		if (Input.GetKey(KeyCode.Period))
-		{
-			this.BreastSize += Time.deltaTime;
-			if (this.BreastSize > 2f)
+			if (Input.GetKey(KeyCode.Period))
 			{
-				this.BreastSize = 2f;
+				this.BreastSize += Time.deltaTime;
+				if (this.BreastSize > 2f)
+				{
+					this.BreastSize = 2f;
+				}
+				this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
+				this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 			}
-			this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
-			this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
-		}
-		if (Input.GetKey(KeyCode.Comma))
-		{
-			this.BreastSize -= Time.deltaTime;
-			if (this.BreastSize < 0.5f)
+			if (Input.GetKey(KeyCode.Comma))
 			{
-				this.BreastSize = 0.5f;
+				this.BreastSize -= Time.deltaTime;
+				if (this.BreastSize < 0.5f)
+				{
+					this.BreastSize = 0.5f;
+				}
+				this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
+				this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 			}
-			this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
-			this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 		}
 		if (!this.NoDebug)
 		{
@@ -3829,6 +4036,11 @@ public class YandereScript : MonoBehaviour
 							{
 								this.StudentManager.NoGravity = true;
 								this.EasterEggMenu.SetActive(false);
+							}
+							else if (Input.GetKeyDown(KeyCode.D))
+							{
+								this.EasterEggMenu.SetActive(false);
+								this.Sith();
 							}
 							else if (Input.GetKeyDown(KeyCode.Space))
 							{
@@ -4747,6 +4959,29 @@ public class YandereScript : MonoBehaviour
 		this.OriginalRunAnim = this.RunAnim;
 		this.Hairstyle = 0;
 		this.UpdateHair();
+	}
+
+	private void Sith()
+	{
+		this.Hairstyle = 67;
+		this.UpdateHair();
+		this.SithTrail1.SetActive(true);
+		this.SithTrail2.SetActive(true);
+		this.IdleAnim = "f02_sithIdle_00";
+		this.WalkAnim = "f02_sithWalk_00";
+		this.RunAnim = "f02_sithRun_00";
+		this.BlackRobe.SetActive(true);
+		this.MyRenderer.sharedMesh = this.NoUpperBodyMesh;
+		this.MyRenderer.materials[0].mainTexture = this.NudePanties;
+		this.MyRenderer.materials[1].mainTexture = this.FaceTexture;
+		this.MyRenderer.materials[2].mainTexture = this.NudePanties;
+		this.TheDebugMenuScript.UpdateCensor();
+		this.Stance.Current = StanceType.Standing;
+		this.FollowHips = true;
+		this.SithLord = true;
+		this.Egg = true;
+		this.RunSpeed *= 2f;
+		this.Zoom.TargetZoom = 0.4f;
 	}
 
 	public void ChangeSchoolwear()

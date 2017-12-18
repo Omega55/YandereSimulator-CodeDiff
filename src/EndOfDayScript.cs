@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class EndOfDayScript : MonoBehaviour
 {
+	public SecuritySystemScript SecuritySystem;
+
 	public StudentManagerScript StudentManager;
 
 	public WeaponManagerScript WeaponManager;
@@ -320,6 +322,27 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 5)
 			{
+				if (SchoolGlobals.HighSecurity)
+				{
+					if (!this.SecuritySystem.Evidence)
+					{
+						this.Label.text = "The police investigate the security camera recordings, but cannot find anything incriminating in the footage.";
+						this.Phase++;
+					}
+					else if (this.SecuritySystem.Evidence)
+					{
+						this.Label.text = "The police investigate the security camera recordings, and find incriminating footage of Yandere-chan.";
+						this.Phase = 100;
+					}
+				}
+				else
+				{
+					this.Phase++;
+					this.UpdateScene();
+				}
+			}
+			else if (this.Phase == 6)
+			{
 				if (this.Yandere.Sanity > 33.33333f)
 				{
 					if (this.Yandere.Bloodiness > 0f || (this.Yandere.Gloved && this.Yandere.Gloves.Blood.enabled))
@@ -334,7 +357,7 @@ public class EndOfDayScript : MonoBehaviour
 							this.Label.text = "The police notice that Yandere-chan's clothing is bloody. They confirm that the blood is not hers. Yandere-chan is able to convince the police that she was splashed with blood while witnessing a murder.";
 							if (!this.TranqCase.Occupied)
 							{
-								this.Phase = 7;
+								this.Phase = 8;
 							}
 							else
 							{
@@ -352,11 +375,11 @@ public class EndOfDayScript : MonoBehaviour
 						this.Label.text = "The police question all students in the school, including Yandere-chan. The police are unable to link Yandere-chan to any crimes.";
 						if (!this.TranqCase.Occupied)
 						{
-							this.Phase = 7;
+							this.Phase = 8;
 						}
 						else if (this.TranqCase.VictimID == this.ArrestID)
 						{
-							this.Phase = 7;
+							this.Phase = 8;
 						}
 						else
 						{
@@ -375,7 +398,7 @@ public class EndOfDayScript : MonoBehaviour
 					this.Phase = 100;
 				}
 			}
-			else if (this.Phase == 6)
+			else if (this.Phase == 7)
 			{
 				this.Label.text = "The police discover " + this.JSON.Students[this.TranqCase.VictimID].Name + " inside of a musical instrument case. However, she is unable to recall how she got inside of the case. The police are unable to determine what happened.";
 				StudentGlobals.SetStudentMissing(this.TranqCase.VictimID, false);
@@ -383,7 +406,7 @@ public class EndOfDayScript : MonoBehaviour
 				this.TranqCase.Occupied = false;
 				this.Phase++;
 			}
-			else if (this.Phase == 7)
+			else if (this.Phase == 8)
 			{
 				if (this.Police.MaskReported)
 				{
@@ -398,7 +421,7 @@ public class EndOfDayScript : MonoBehaviour
 					this.UpdateScene();
 				}
 			}
-			else if (this.Phase == 8)
+			else if (this.Phase == 9)
 			{
 				if (this.Arrests == 0)
 				{
@@ -419,12 +442,12 @@ public class EndOfDayScript : MonoBehaviour
 					this.Phase++;
 				}
 			}
-			else if (this.Phase == 9)
+			else if (this.Phase == 10)
 			{
 				this.Label.text = "Yandere-chan stalks Senpai until he has returned home safely, and then returns to her own home.";
 				this.Phase++;
 			}
-			else if (this.Phase == 10)
+			else if (this.Phase == 11)
 			{
 				if (!StudentGlobals.GetStudentDying(7) && !StudentGlobals.GetStudentDead(7) && !StudentGlobals.GetStudentArrested(7))
 				{
@@ -445,9 +468,9 @@ public class EndOfDayScript : MonoBehaviour
 					this.UpdateScene();
 				}
 			}
-			else if (this.Phase == 11)
+			else if (this.Phase == 12)
 			{
-				Debug.Log("Phase 11.");
+				Debug.Log("Phase 12.");
 				if (SchemeGlobals.GetSchemeStage(2) == 3)
 				{
 					if (!StudentGlobals.GetStudentDying(7) && !StudentGlobals.GetStudentDead(7) && !StudentGlobals.GetStudentArrested(7))
@@ -467,9 +490,9 @@ public class EndOfDayScript : MonoBehaviour
 					this.UpdateScene();
 				}
 			}
-			else if (this.Phase == 12)
+			else if (this.Phase == 13)
 			{
-				Debug.Log("Phase 12.");
+				Debug.Log("Phase 13.");
 				this.ClubClosed = false;
 				this.ClubKicked = false;
 				if (this.ClubID < this.ClubArray.Length)
@@ -565,9 +588,9 @@ public class EndOfDayScript : MonoBehaviour
 					this.UpdateScene();
 				}
 			}
-			else if (this.Phase == 13)
+			else if (this.Phase == 14)
 			{
-				Debug.Log("Phase 13.");
+				Debug.Log("Phase 14.");
 				if (this.TranqCase.Occupied)
 				{
 					this.Label.text = "Yandere-chan waits until the clock strikes midnight.\n\nUnder the cover of darkness, Yandere-chan travels back to school and sneaks inside of the main school building.\n\nYandere-chan returns to the instrument case that carries her unconscious victim.\n\nShe pushes the case back to her house, pretending to be a young musician returning home from a late-night show.\n\nYandere-chan drags the case down to her basement and ties up her victim.\n\nExhausted, Yandere-chan goes to sleep.";
@@ -579,9 +602,9 @@ public class EndOfDayScript : MonoBehaviour
 					this.UpdateScene();
 				}
 			}
-			else if (this.Phase == 14)
+			else if (this.Phase == 15)
 			{
-				Debug.Log("Phase 14.");
+				Debug.Log("Phase 15.");
 				if (this.ErectFence)
 				{
 					this.Label.text = "To prevent any other students from falling off of the school rooftop, the school erects a fence around the roof.";
@@ -594,7 +617,21 @@ public class EndOfDayScript : MonoBehaviour
 					this.UpdateScene();
 				}
 			}
-			else if (this.Phase == 15)
+			else if (this.Phase == 16)
+			{
+				Debug.Log("Phase 16.");
+				if (this.Police.CouncilDeath)
+				{
+					this.Label.text = "The student council president has ordered the implementation of heightened security precautions. Security cameras and metal detectors are now present at school.";
+					this.Police.CouncilDeath = false;
+				}
+				else
+				{
+					this.Phase++;
+					this.UpdateScene();
+				}
+			}
+			else if (this.Phase == 17)
 			{
 				this.Finish();
 			}
@@ -646,7 +683,7 @@ public class EndOfDayScript : MonoBehaviour
 						this.Label.text = this.JSON.Students[fingerprintID].Name + "'s fingerprints are on the same weapon that killed her. The police cannot solve this mystery.";
 					}
 				}
-				this.Phase = 5;
+				this.Phase = 6;
 			}
 			else if (this.Phase == 102)
 			{

@@ -37,13 +37,33 @@ public class TalkingScript : MonoBehaviour
 					}
 					if (this.S.DialogueWheel.Impatience.fillAmount > 0.5f && this.S.Subtitle.Timer == 0f)
 					{
-						this.S.Subtitle.UpdateLabel(SubtitleType.Impatience, 1, 5f);
+						if (this.S.Pestered == 0)
+						{
+							this.S.Subtitle.UpdateLabel(SubtitleType.Impatience, 0, 5f);
+						}
+						else
+						{
+							this.S.Subtitle.UpdateLabel(SubtitleType.Impatience, 2, 5f);
+						}
 					}
-					if (this.S.DialogueWheel.Impatience.fillAmount == 1f)
+					if (this.S.DialogueWheel.Impatience.fillAmount == 1f && this.S.DialogueWheel.Show)
 					{
-						this.S.Subtitle.UpdateLabel(SubtitleType.Impatience, 2, 3f);
-						this.S.DialogueWheel.End();
+						if (this.S.Pestered == 0)
+						{
+							this.S.Subtitle.UpdateLabel(SubtitleType.Impatience, 1, 5f);
+						}
+						else
+						{
+							this.S.Subtitle.UpdateLabel(SubtitleType.Impatience, 3, 5f);
+						}
 						this.S.WaitTimer = 0f;
+						this.S.Pestered++;
+						if (this.S.Pestered > 1)
+						{
+							this.S.Ignoring = true;
+						}
+						this.S.DialogueWheel.Pestered = true;
+						this.S.DialogueWheel.End();
 					}
 				}
 			}
@@ -222,6 +242,7 @@ public class TalkingScript : MonoBehaviour
 				this.S.TalkTimer -= Time.deltaTime;
 				if (this.S.TalkTimer <= 0f)
 				{
+					this.S.Pestered++;
 					this.S.DialogueWheel.End();
 				}
 			}
@@ -594,6 +615,9 @@ public class TalkingScript : MonoBehaviour
 						if (this.S.Club == ClubType.MartialArts)
 						{
 							this.S.ChangingBooth.CheckYandereClub();
+						}
+						if (this.S.ClubPhase == 2)
+						{
 						}
 					}
 				}

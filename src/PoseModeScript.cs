@@ -463,6 +463,7 @@ public class PoseModeScript : MonoBehaviour
 				{
 					if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
 					{
+						this.Student.LiquidProjector.material.mainTexture = this.Student.BloodTexture;
 						this.Student.LiquidProjector.enabled = !this.Student.LiquidProjector.enabled;
 						this.UpdateLabels();
 					}

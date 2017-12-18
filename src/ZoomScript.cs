@@ -58,15 +58,23 @@ public class ZoomScript : MonoBehaviour
 				base.transform.localPosition = new Vector3(base.transform.localPosition.x, Mathf.Lerp(base.transform.localPosition.y, 1f + this.Zoom, Time.deltaTime * 10f), base.transform.localPosition.z);
 			}
 		}
-		else
+		else if (!this.Yandere.SithLord)
 		{
 			base.transform.position = new Vector3(base.transform.position.x, Mathf.MoveTowards(base.transform.position.y, this.Yandere.Hips.position.y + this.Zoom, Time.deltaTime * 10f), base.transform.position.z);
+		}
+		else
+		{
+			base.transform.position = new Vector3(base.transform.position.x, Mathf.MoveTowards(base.transform.position.y, this.Yandere.Hips.position.y, Time.deltaTime * 10f), base.transform.position.z);
 		}
 		if (!this.Yandere.Aiming)
 		{
 			this.TargetZoom += Input.GetAxis("Mouse ScrollWheel");
 		}
-		if (this.Yandere.Slender || this.Yandere.Stand.Stand.activeInHierarchy || this.Yandere.Blasting || this.Yandere.PK || this.TallHat.activeInHierarchy)
+		if (this.Yandere.SithLord)
+		{
+			this.Slender = Mathf.Lerp(this.Slender, 2.5f, Time.deltaTime);
+		}
+		else if (this.Yandere.Slender || this.Yandere.Stand.Stand.activeInHierarchy || this.Yandere.Blasting || this.Yandere.PK || this.TallHat.activeInHierarchy)
 		{
 			this.Slender = Mathf.Lerp(this.Slender, 0.5f, Time.deltaTime);
 		}

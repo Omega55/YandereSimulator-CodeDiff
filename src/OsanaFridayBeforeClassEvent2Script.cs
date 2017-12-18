@@ -9,6 +9,8 @@ public class OsanaFridayBeforeClassEvent2Script : MonoBehaviour
 
 	public AudioSoftwareScript AudioSoftware;
 
+	public JukeboxScript Jukebox;
+
 	public UILabel EventSubtitle;
 
 	public YandereScript Yandere;

@@ -14,6 +14,8 @@ public enum ClubType
 	Sports,
 	Gardening,
 	Gaming,
+	Delinquent,
+	Council,
 	Nemesis = 99,
 	Teacher,
 	GymTeacher,

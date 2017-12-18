@@ -13,6 +13,8 @@ public class ShutterScript : MonoBehaviour
 
 	public PromptBarScript PromptBar;
 
+	public SubtitleScript Subtitle;
+
 	public SchemesScript Schemes;
 
 	public StudentScript Student;
@@ -232,7 +234,7 @@ public class ShutterScript : MonoBehaviour
 									this.PenaltyTimer += Time.deltaTime;
 									if (this.PenaltyTimer > 1f)
 									{
-										this.FaceStudent.Reputation.PendingRep -= 10f;
+										this.FaceStudent.Reputation.PendingRep -= -10f;
 										this.PenaltyTimer = 0f;
 									}
 								}
@@ -240,20 +242,31 @@ public class ShutterScript : MonoBehaviour
 								{
 									if (this.FaceStudent.enabled && !this.FaceStudent.Stop)
 									{
-										if (this.FaceStudent.StudentID > 1)
+										if (this.FaceStudent.PhotoPatience > 0f)
 										{
-											this.FaceStudent.CameraReact();
+											if (this.FaceStudent.StudentID > 1)
+											{
+												this.FaceStudent.CameraReact();
+											}
+											else
+											{
+												this.FaceStudent.Alarm += Time.deltaTime * (100f / this.FaceStudent.DistanceToPlayer) * this.FaceStudent.Paranoia * this.FaceStudent.Perception * this.FaceStudent.DistanceToPlayer * 2f;
+												this.FaceStudent.YandereVisible = true;
+											}
 										}
 										else
 										{
-											this.FaceStudent.Alarm += Time.deltaTime * (100f / this.FaceStudent.DistanceToPlayer) * this.FaceStudent.Paranoia * this.FaceStudent.Perception * this.FaceStudent.DistanceToPlayer * 2f;
-											this.FaceStudent.YandereVisible = true;
+											this.Penalize();
 										}
 									}
 								}
 								else
 								{
-									this.FaceStudent.CameraPoseTimer = 1f;
+									this.FaceStudent.PhotoPatience = Mathf.MoveTowards(this.FaceStudent.PhotoPatience, 0f, Time.deltaTime);
+									if (this.FaceStudent.PhotoPatience > 0f)
+									{
+										this.FaceStudent.CameraPoseTimer = 1f;
+									}
 								}
 							}
 						}
@@ -672,6 +685,25 @@ public class ShutterScript : MonoBehaviour
 		{
 			this.Yandere.MainCamera.clearFlags = CameraClearFlags.Skybox;
 			this.Yandere.MainCamera.farClipPlane = (float)OptionGlobals.DrawDistance;
+		}
+	}
+
+	private void Penalize()
+	{
+		this.PenaltyTimer += Time.deltaTime;
+		if (this.PenaltyTimer > 1f)
+		{
+			this.Subtitle.UpdateLabel(SubtitleType.PhotoAnnoyance, 0, 3f);
+			this.FaceStudent.RepDeduction = 0f;
+			this.FaceStudent.RepLoss = 1f;
+			this.FaceStudent.CalculateReputationPenalty();
+			if (this.FaceStudent.RepDeduction >= 0f)
+			{
+				this.FaceStudent.RepLoss -= this.FaceStudent.RepDeduction;
+			}
+			this.FaceStudent.Reputation.PendingRep -= this.FaceStudent.RepLoss * this.FaceStudent.Paranoia;
+			this.FaceStudent.PendingRep -= this.FaceStudent.RepLoss * this.FaceStudent.Paranoia;
+			this.PenaltyTimer = 0f;
 		}
 	}
 }

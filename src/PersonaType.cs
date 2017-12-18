@@ -10,6 +10,7 @@ public enum PersonaType
 	Evil,
 	SocialButterfly,
 	Lovestruck,
-	Strict = 9,
+	Dangerous,
+	Strict,
 	Nemesis = 99
 }

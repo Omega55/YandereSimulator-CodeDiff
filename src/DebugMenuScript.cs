@@ -28,6 +28,12 @@ public class DebugMenuScript : MonoBehaviour
 
 	public AstarPath Astar;
 
+	public OsanaFridayBeforeClassEvent1Script OsanaEvent1;
+
+	public OsanaFridayBeforeClassEvent2Script OsanaEvent2;
+
+	public OsanaFridayLunchEventScript OsanaEvent3;
+
 	public GameObject EasterEggWindow;
 
 	public GameObject SacrificialArm;
@@ -379,8 +385,8 @@ public class DebugMenuScript : MonoBehaviour
 								this.ID = 2;
 								while (this.ID < 93)
 								{
-									StudentScript x = this.StudentManager.Students[this.ID];
-									if (x != null)
+									StudentScript studentScript5 = this.StudentManager.Students[this.ID];
+									if (studentScript5 != null && studentScript5.Club != ClubType.Council)
 									{
 										StudentGlobals.SetStudentMissing(this.ID, true);
 									}
@@ -389,15 +395,15 @@ public class DebugMenuScript : MonoBehaviour
 							}
 							else
 							{
-								this.ID = 1;
+								this.ID = 2;
 								while (this.ID < 101)
 								{
-									StudentScript studentScript5 = this.StudentManager.Students[this.ID];
-									if (studentScript5 != null)
+									StudentScript studentScript6 = this.StudentManager.Students[this.ID];
+									if (studentScript6 != null && studentScript6.Club != ClubType.Council)
 									{
-										studentScript5.SpawnAlarmDisc();
-										studentScript5.BecomeRagdoll();
-										studentScript5.DeathType = DeathType.EasterEgg;
+										studentScript6.SpawnAlarmDisc();
+										studentScript6.BecomeRagdoll();
+										studentScript6.DeathType = DeathType.EasterEgg;
 										StudentGlobals.SetStudentDead(this.ID, true);
 									}
 									this.ID++;
@@ -432,6 +438,9 @@ public class DebugMenuScript : MonoBehaviour
 							this.Clock.PresentTime = 1015f;
 							this.Clock.HourTime = this.Clock.PresentTime / 60f;
 							this.Window.SetActive(false);
+							this.OsanaEvent1.enabled = false;
+							this.OsanaEvent2.enabled = false;
+							this.OsanaEvent3.enabled = false;
 						}
 						else if (Input.GetKeyDown(KeyCode.LeftAlt))
 						{
@@ -487,6 +496,11 @@ public class DebugMenuScript : MonoBehaviour
 						else if (Input.GetKeyDown(KeyCode.Pause))
 						{
 							this.Clock.StopTime = !this.Clock.StopTime;
+							this.Window.SetActive(false);
+						}
+						else if (Input.GetKeyDown(KeyCode.W))
+						{
+							this.StudentManager.ToggleBookBags();
 							this.Window.SetActive(false);
 						}
 					}

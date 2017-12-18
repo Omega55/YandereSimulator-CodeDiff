@@ -118,6 +118,7 @@ public class GardenHoleScript : MonoBehaviour
 				}
 				this.VictimID = this.Corpse.StudentID;
 				this.Corpse.Remove();
+				StudentGlobals.SetStudentMissing(this.VictimID, true);
 				SchoolGlobals.SetGardenGraveOccupied(this.ID, true);
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;

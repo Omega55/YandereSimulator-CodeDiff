@@ -58,6 +58,10 @@ public class Club
 			"Gaming"
 		},
 		{
+			ClubType.Council,
+			"Student Council"
+		},
+		{
 			ClubType.Nemesis,
 			"?????"
 		}

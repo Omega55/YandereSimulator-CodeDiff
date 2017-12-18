@@ -42,6 +42,10 @@ public class Persona
 			"Lovestruck"
 		},
 		{
+			PersonaType.Dangerous,
+			"Dangerous"
+		},
+		{
 			PersonaType.Strict,
 			"Strict"
 		},

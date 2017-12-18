@@ -39,6 +39,8 @@ public class ClubManagerScript : MonoBehaviour
 
 	public GameObject Watermark;
 
+	public GameObject Padlock;
+
 	public GameObject Ritual;
 
 	public GameObject Clock;
@@ -372,6 +374,7 @@ public class ClubManagerScript : MonoBehaviour
 			else if (ClubGlobals.Club == ClubType.Gardening)
 			{
 				this.ShedDoor.Prompt.Label[0].text = "     Open";
+				this.Padlock.SetActive(false);
 				this.ShedDoor.Locked = false;
 				if (this.Yandere.Armed)
 				{
@@ -452,6 +455,7 @@ public class ClubManagerScript : MonoBehaviour
 				if (!this.Yandere.Inventory.ShedKey)
 				{
 					this.ShedDoor.Prompt.Label[0].text = "     Locked";
+					this.Padlock.SetActive(true);
 					this.ShedDoor.Locked = true;
 				}
 				if (this.Yandere.Armed)

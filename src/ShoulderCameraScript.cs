@@ -65,6 +65,8 @@ public class ShoulderCameraScript : MonoBehaviour
 
 	public bool Spoken;
 
+	public bool Skip;
+
 	public AudioClip StruggleLose;
 
 	public AudioClip Slam;
@@ -142,7 +144,7 @@ public class ShoulderCameraScript : MonoBehaviour
 						this.Yandere.Senpai.GetComponent<StudentScript>().DetermineSenpaiReaction();
 						this.Spoken = true;
 					}
-					if (this.NoticedTimer > (float)this.NoticedLimit)
+					if (this.NoticedTimer > (float)this.NoticedLimit || this.Skip)
 					{
 						this.Yandere.Senpai.GetComponent<StudentScript>().Character.SetActive(false);
 						base.GetComponent<Camera>().cullingMask |= 8192;
@@ -151,6 +153,7 @@ public class ShoulderCameraScript : MonoBehaviour
 						this.NoticedPOV.LookAt(this.Yandere.transform.position + Vector3.up * 1.375f);
 						this.NoticedFocus.position = this.Yandere.transform.position + Vector3.up * 1.375f;
 						base.transform.position = this.NoticedPOV.position;
+						this.NoticedTimer = (float)this.NoticedLimit;
 						this.Phase = 2;
 					}
 				}

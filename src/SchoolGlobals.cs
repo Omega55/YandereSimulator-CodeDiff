@@ -19,6 +19,8 @@ public static class SchoolGlobals
 
 	private const string Str_SCP = "SCP";
 
+	private const string Str_HighSecurity = "HighSecurity";
+
 	public static bool GetDemonActive(int demonID)
 	{
 		return GlobalsHelper.GetBool("DemonActive_" + demonID.ToString());
@@ -122,6 +124,18 @@ public static class SchoolGlobals
 		set
 		{
 			GlobalsHelper.SetBool("SCP", value);
+		}
+	}
+
+	public static bool HighSecurity
+	{
+		get
+		{
+			return GlobalsHelper.GetBool("HighSecurity");
+		}
+		set
+		{
+			GlobalsHelper.SetBool("HighSecurity", value);
 		}
 	}
 

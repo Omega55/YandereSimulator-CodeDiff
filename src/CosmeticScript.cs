@@ -129,6 +129,14 @@ public class CosmeticScript : MonoBehaviour
 
 	public Texture OsanaStockings;
 
+	public Texture TurtleStockings;
+
+	public Texture TigerStockings;
+
+	public Texture BirdStockings;
+
+	public Texture DragonStockings;
+
 	public Texture[] CustomStockings;
 
 	public Texture MyStockings;
@@ -371,6 +379,30 @@ public class CosmeticScript : MonoBehaviour
 		{
 			this.MyRenderer.sharedMesh = this.NurseMesh;
 			this.Teacher = true;
+		}
+		else if (this.Club == ClubType.Council)
+		{
+			string str = string.Empty;
+			if (this.StudentID == 86)
+			{
+				str = "Strict";
+			}
+			if (this.StudentID == 87)
+			{
+				str = "Casual";
+			}
+			if (this.StudentID == 88)
+			{
+				str = "Grace";
+			}
+			if (this.StudentID == 89)
+			{
+				str = "Edgy";
+			}
+			this.Character.GetComponent<Animation>()["f02_faceCouncil" + str + "_00"].layer = 1;
+			this.Character.GetComponent<Animation>().Play("f02_faceCouncil" + str + "_00");
+			this.Character.GetComponent<Animation>()["f02_idleCouncil" + str + "_00"].time = 1f;
+			this.Character.GetComponent<Animation>().Play("f02_idleCouncil" + str + "_00");
 		}
 		foreach (GameObject gameObject3 in this.FemaleAccessories)
 		{
@@ -845,25 +877,38 @@ public class CosmeticScript : MonoBehaviour
 
 	public void SetFemaleUniform()
 	{
-		this.MyRenderer.sharedMesh = this.FemaleUniforms[StudentGlobals.FemaleUniform];
-		this.SchoolUniform = this.FemaleUniforms[StudentGlobals.FemaleUniform];
-		if (this.StudentID == 26)
+		if (this.Club != ClubType.Council)
 		{
-			this.UniformTexture = this.OccultUniformTextures[StudentGlobals.FemaleUniform];
-			this.CasualTexture = this.OccultCasualTextures[StudentGlobals.FemaleUniform];
-			this.SocksTexture = this.OccultSocksTextures[StudentGlobals.FemaleUniform];
-		}
-		else if (this.StudentID == 32)
-		{
-			this.UniformTexture = this.GanguroUniformTextures[StudentGlobals.FemaleUniform];
-			this.CasualTexture = this.GanguroCasualTextures[StudentGlobals.FemaleUniform];
-			this.SocksTexture = this.GanguroSocksTextures[StudentGlobals.FemaleUniform];
+			this.MyRenderer.sharedMesh = this.FemaleUniforms[StudentGlobals.FemaleUniform];
+			this.SchoolUniform = this.FemaleUniforms[StudentGlobals.FemaleUniform];
+			if (this.StudentID == 26)
+			{
+				this.UniformTexture = this.OccultUniformTextures[StudentGlobals.FemaleUniform];
+				this.CasualTexture = this.OccultCasualTextures[StudentGlobals.FemaleUniform];
+				this.SocksTexture = this.OccultSocksTextures[StudentGlobals.FemaleUniform];
+			}
+			else if (this.StudentID == 32)
+			{
+				this.UniformTexture = this.GanguroUniformTextures[StudentGlobals.FemaleUniform];
+				this.CasualTexture = this.GanguroCasualTextures[StudentGlobals.FemaleUniform];
+				this.SocksTexture = this.GanguroSocksTextures[StudentGlobals.FemaleUniform];
+			}
+			else
+			{
+				this.UniformTexture = this.FemaleUniformTextures[StudentGlobals.FemaleUniform];
+				this.CasualTexture = this.FemaleCasualTextures[StudentGlobals.FemaleUniform];
+				this.SocksTexture = this.FemaleSocksTextures[StudentGlobals.FemaleUniform];
+			}
 		}
 		else
 		{
-			this.UniformTexture = this.FemaleUniformTextures[StudentGlobals.FemaleUniform];
-			this.CasualTexture = this.FemaleCasualTextures[StudentGlobals.FemaleUniform];
-			this.SocksTexture = this.FemaleSocksTextures[StudentGlobals.FemaleUniform];
+			this.RightIrisLight.SetActive(false);
+			this.LeftIrisLight.SetActive(false);
+			this.MyRenderer.sharedMesh = this.FemaleUniforms[4];
+			this.SchoolUniform = this.FemaleUniforms[4];
+			this.UniformTexture = this.FemaleUniformTextures[7];
+			this.CasualTexture = this.FemaleCasualTextures[7];
+			this.SocksTexture = this.FemaleSocksTextures[7];
 		}
 		if (!this.Cutscene)
 		{
@@ -1087,6 +1132,22 @@ public class CosmeticScript : MonoBehaviour
 		else if (this.Stockings == "Kizana")
 		{
 			this.MyStockings = this.KizanaStockings;
+		}
+		else if (this.Stockings == "Council1")
+		{
+			this.MyStockings = this.TurtleStockings;
+		}
+		else if (this.Stockings == "Council2")
+		{
+			this.MyStockings = this.TigerStockings;
+		}
+		else if (this.Stockings == "Council3")
+		{
+			this.MyStockings = this.BirdStockings;
+		}
+		else if (this.Stockings == "Council4")
+		{
+			this.MyStockings = this.DragonStockings;
 		}
 		else if (this.Stockings == "Custom1")
 		{

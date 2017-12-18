@@ -62,7 +62,7 @@ public class TrashCanScript : MonoBehaviour
 			}
 			else
 			{
-				this.Item.transform.localPosition = Vector3.zero;
+				this.Item.transform.localPosition = new Vector3(0f, 0f, -0.021f);
 				this.Item.transform.localEulerAngles = Vector3.zero;
 			}
 		}

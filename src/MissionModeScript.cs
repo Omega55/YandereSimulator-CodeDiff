@@ -210,8 +210,11 @@ public class MissionModeScript : MonoBehaviour
 
 	private void Start()
 	{
-		this.SecurityCameraGroup.SetActive(false);
-		this.MetalDetectorGroup.SetActive(false);
+		if (!SchoolGlobals.HighSecurity)
+		{
+			this.SecurityCameraGroup.SetActive(false);
+			this.MetalDetectorGroup.SetActive(false);
+		}
 		this.MissionModeHUD.SetActive(false);
 		this.ExitPortal.SetActive(false);
 		this.Safe.SetActive(false);
@@ -222,7 +225,7 @@ public class MissionModeScript : MonoBehaviour
 			this.Yandere.HeartRate.NormalColour = new Color(1f, 1f, 1f, 1f);
 			this.Clock.PeriodLabel.color = new Color(1f, 0f, 0f, 1f);
 			this.Clock.TimeLabel.color = new Color(1f, 0f, 0f, 1f);
-			this.Clock.DayLabel.color = new Color(1f, 0f, 0f, 1f);
+			this.Clock.DayLabel.enabled = false;
 			this.Reputation.PendingRepMarker.GetComponent<UISprite>().color = new Color(1f, 0f, 0f, 1f);
 			this.Reputation.CurrentRepMarker.gameObject.SetActive(false);
 			this.Reputation.PendingRepLabel.color = new Color(1f, 0f, 0f, 1f);

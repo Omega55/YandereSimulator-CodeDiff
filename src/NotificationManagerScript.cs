@@ -72,6 +72,10 @@ public class NotificationManagerScript : MonoBehaviour
 				"Leave School"
 			},
 			{
+				NotificationType.Evidence,
+				"Evidence Recorded"
+			},
+			{
 				NotificationType.ClassSoon,
 				"Class Begins Soon"
 			},

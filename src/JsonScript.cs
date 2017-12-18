@@ -54,7 +54,7 @@ public class JsonScript : MonoBehaviour
 
 	private void ReplaceDeadTeachers(string[] firstNames, string[] lastNames)
 	{
-		for (int i = 93; i < 101; i++)
+		for (int i = 90; i < 101; i++)
 		{
 			if (StudentGlobals.GetStudentDead(i))
 			{
@@ -75,7 +75,7 @@ public class JsonScript : MonoBehaviour
 				StudentGlobals.SetStudentAccessory(i, UnityEngine.Random.Range(1, 7).ToString());
 			}
 		}
-		for (int j = 93; j < 101; j++)
+		for (int j = 90; j < 101; j++)
 		{
 			if (StudentGlobals.GetStudentReplaced(j))
 			{
@@ -84,11 +84,11 @@ public class JsonScript : MonoBehaviour
 				studentJson.BreastSize = StudentGlobals.GetStudentBustSize(j);
 				studentJson.Hairstyle = StudentGlobals.GetStudentHairstyle(j);
 				studentJson.Accessory = StudentGlobals.GetStudentAccessory(j);
-				if (j == 100)
+				if (j == 97)
 				{
 					studentJson.Accessory = "7";
 				}
-				if (j == 93)
+				if (j == 90)
 				{
 					studentJson.Accessory = "8";
 				}

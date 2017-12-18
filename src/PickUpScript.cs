@@ -11,6 +11,8 @@ public class PickUpScript : MonoBehaviour
 
 	public BodyPartScript BodyPart;
 
+	public TrashCanScript TrashCan;
+
 	public OutlineScript[] Outline;
 
 	public YandereScript Yandere;

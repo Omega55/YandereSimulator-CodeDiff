@@ -7,6 +7,10 @@ public class PromptSwapScript : MonoBehaviour
 
 	public UISprite MySprite;
 
+	public UILabel MyLetter;
+
+	public string KeyboardLetter = string.Empty;
+
 	public string KeyboardName = string.Empty;
 
 	public string GamepadName = string.Empty;
@@ -21,6 +25,25 @@ public class PromptSwapScript : MonoBehaviour
 
 	public void UpdateSpriteType(InputDeviceType deviceType)
 	{
-		this.MySprite.spriteName = ((deviceType != InputDeviceType.Gamepad) ? this.KeyboardName : this.GamepadName);
+		if (this.InputDevice == null)
+		{
+			this.InputDevice = UnityEngine.Object.FindObjectOfType<InputDeviceScript>();
+		}
+		if (deviceType == InputDeviceType.Gamepad)
+		{
+			this.MySprite.spriteName = this.GamepadName;
+			if (this.MyLetter != null)
+			{
+				this.MyLetter.text = string.Empty;
+			}
+		}
+		else
+		{
+			this.MySprite.spriteName = this.KeyboardName;
+			if (this.MyLetter != null)
+			{
+				this.MyLetter.text = this.KeyboardLetter;
+			}
+		}
 	}
 }
