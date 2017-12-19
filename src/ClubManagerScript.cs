@@ -47,6 +47,8 @@ public class ClubManagerScript : MonoBehaviour
 
 	public AudioClip[] MotivationalQuotes;
 
+	public Transform[] ClubPatrolPoints;
+
 	public Transform[] ClubVantages;
 
 	public MaskScript[] Masks;
@@ -73,6 +75,8 @@ public class ClubManagerScript : MonoBehaviour
 
 	public float Timer;
 
+	public ClubType[] ClubArray;
+
 	public bool LeaderMissing;
 
 	public bool LeaderDead;
@@ -94,6 +98,16 @@ public class ClubManagerScript : MonoBehaviour
 		this.ClubWindow.ActivityWindow.localScale = Vector3.zero;
 		this.ClubWindow.ActivityWindow.gameObject.SetActive(false);
 		this.ActivateClubBenefit();
+		this.ID = 0;
+		while (this.ID < this.ClubArray.Length)
+		{
+			if (ClubGlobals.GetClubClosed(this.ClubArray[this.ID]))
+			{
+				this.ClubPatrolPoints[this.ID].transform.position = new Vector3(this.ClubPatrolPoints[this.ID].transform.position.x, this.ClubPatrolPoints[this.ID].transform.position.y, 20f);
+			}
+			this.ID++;
+		}
+		this.ID = 0;
 	}
 
 	private void Update()

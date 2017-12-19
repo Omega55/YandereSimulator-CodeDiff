@@ -11,6 +11,14 @@ public class SecuritySystemScript : MonoBehaviour
 
 	public MetalDetectorScript[] Detectors;
 
+	private void Start()
+	{
+		if (!SchoolGlobals.HighSecurity)
+		{
+			base.gameObject.SetActive(false);
+		}
+	}
+
 	private void Update()
 	{
 		if (this.Prompt.Circle[0].fillAmount == 0f)

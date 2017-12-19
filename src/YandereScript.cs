@@ -3640,7 +3640,7 @@ public class YandereScript : MonoBehaviour
 						{
 							this.TargetStudent.Combust();
 						}
-						else if (this.CanTranq && this.TargetStudent.Male)
+						else if (this.CanTranq && !this.TargetStudent.Male && this.TargetStudent.Club != ClubType.Council)
 						{
 							this.TargetStudent.Tranquil = true;
 							this.CanTranq = false;

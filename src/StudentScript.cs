@@ -1123,7 +1123,7 @@ public class StudentScript : MonoBehaviour
 			}
 			else if (this.StudentID == 17)
 			{
-				if (StudentGlobals.GetStudentDead(18) || StudentGlobals.GetStudentKidnapped(18) || StudentGlobals.GetStudentSanity(18) == 0f)
+				if (StudentGlobals.GetStudentDead(18) || StudentGlobals.GetStudentKidnapped(18) || StudentGlobals.GetStudentSlave(18))
 				{
 					ScheduleBlock scheduleBlock2 = this.ScheduleBlocks[2];
 					scheduleBlock2.destination = "Mourn";
@@ -1132,7 +1132,7 @@ public class StudentScript : MonoBehaviour
 			}
 			else if (this.StudentID == 18)
 			{
-				if (StudentGlobals.GetStudentDead(17) || StudentGlobals.GetStudentKidnapped(17) || StudentGlobals.GetStudentSanity(17) == 0f)
+				if (StudentGlobals.GetStudentDead(17) || StudentGlobals.GetStudentKidnapped(17) || StudentGlobals.GetStudentSlave(17))
 				{
 					ScheduleBlock scheduleBlock3 = this.ScheduleBlocks[2];
 					scheduleBlock3.destination = "Mourn";
@@ -4977,6 +4977,10 @@ public class StudentScript : MonoBehaviour
 				this.CharacterAnimation.CrossFade(this.IdleAnim);
 				if (this.FocusOnYandere)
 				{
+					if (this.DistanceToPlayer < 1f)
+					{
+						this.AlarmTimer = 0f;
+					}
 					this.DistractionSpot = new Vector3(this.Yandere.transform.position.x, base.transform.position.y, this.Yandere.transform.position.z);
 				}
 			}
@@ -5331,7 +5335,7 @@ public class StudentScript : MonoBehaviour
 			}
 			this.Reacted = true;
 		}
-		if (this.Club == ClubType.Council && this.DistanceToPlayer < 1f && this.Yandere.Armed)
+		if (this.Club == ClubType.Council && (double)this.DistanceToPlayer < 1.1 && this.Yandere.Armed)
 		{
 			this.Spray();
 		}
@@ -5941,6 +5945,10 @@ public class StudentScript : MonoBehaviour
 		this.StudentManager.TranqDetector.TranqCheck();
 		if (!this.Male)
 		{
+			if (this.Club != ClubType.Council)
+			{
+				this.StudentManager.TranqDetector.TranqCheck();
+			}
 			this.CharacterAnimation["f02_smile_00"].weight = 0f;
 			this.SmartPhone.SetActive(false);
 		}

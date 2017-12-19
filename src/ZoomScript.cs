@@ -17,6 +17,8 @@ public class ZoomScript : MonoBehaviour
 
 	public float Slender;
 
+	public float Height;
+
 	public float Timer;
 
 	public Vector3 Target;
@@ -33,29 +35,33 @@ public class ZoomScript : MonoBehaviour
 		}
 		if (this.Yandere.Stance.Current == StanceType.Crawling)
 		{
-			base.transform.localPosition = new Vector3(base.transform.localPosition.x, Mathf.Lerp(base.transform.localPosition.y, 0.05f + this.Zoom + this.Slender, Time.deltaTime * 10f), base.transform.localPosition.z);
+			this.Height = 0.05f;
 		}
 		else if (this.Yandere.Stance.Current == StanceType.Crouching)
 		{
-			base.transform.localPosition = new Vector3(base.transform.localPosition.x, Mathf.Lerp(base.transform.localPosition.y, 0.4f + this.Zoom + this.Slender, Time.deltaTime * 10f), base.transform.localPosition.z);
+			this.Height = 0.4f;
 		}
-		else if (!this.Yandere.FollowHips)
+		else
+		{
+			this.Height = 1f;
+		}
+		if (!this.Yandere.FollowHips)
 		{
 			if (this.Yandere.FlameDemonic)
 			{
-				base.transform.localPosition = new Vector3(base.transform.localPosition.x, Mathf.Lerp(base.transform.localPosition.y, 1f + this.Zoom + 0.4f, Time.deltaTime * 10f), base.transform.localPosition.z);
+				base.transform.localPosition = new Vector3(base.transform.localPosition.x, Mathf.Lerp(base.transform.localPosition.y, this.Height + this.Zoom + 0.4f, Time.deltaTime * 10f), base.transform.localPosition.z);
 			}
 			else if (this.Yandere.Slender)
 			{
-				base.transform.localPosition = new Vector3(base.transform.localPosition.x, Mathf.Lerp(base.transform.localPosition.y, 1f + this.Zoom + this.Slender, Time.deltaTime * 10f), base.transform.localPosition.z);
+				base.transform.localPosition = new Vector3(base.transform.localPosition.x, Mathf.Lerp(base.transform.localPosition.y, this.Height + this.Zoom + this.Slender, Time.deltaTime * 10f), base.transform.localPosition.z);
 			}
 			else if (this.Yandere.Stand.Stand.activeInHierarchy)
 			{
-				base.transform.localPosition = new Vector3(base.transform.localPosition.x, Mathf.Lerp(base.transform.localPosition.y, 1f - this.Zoom * 0.5f + this.Slender * 0.5f, Time.deltaTime * 10f), base.transform.localPosition.z);
+				base.transform.localPosition = new Vector3(base.transform.localPosition.x, Mathf.Lerp(base.transform.localPosition.y, this.Height - this.Zoom * 0.5f + this.Slender * 0.5f, Time.deltaTime * 10f), base.transform.localPosition.z);
 			}
 			else
 			{
-				base.transform.localPosition = new Vector3(base.transform.localPosition.x, Mathf.Lerp(base.transform.localPosition.y, 1f + this.Zoom, Time.deltaTime * 10f), base.transform.localPosition.z);
+				base.transform.localPosition = new Vector3(base.transform.localPosition.x, Mathf.Lerp(base.transform.localPosition.y, this.Height + this.Zoom, Time.deltaTime * 10f), base.transform.localPosition.z);
 			}
 		}
 		else if (!this.Yandere.SithLord)
