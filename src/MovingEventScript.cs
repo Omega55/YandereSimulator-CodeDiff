@@ -64,6 +64,7 @@ public class MovingEventScript : MonoBehaviour
 				this.EventStudent.Character.GetComponent<Animation>()[this.EventStudent.BentoAnim].weight = 1f;
 				this.EventStudent.CurrentDestination = this.EventLocation[0];
 				this.EventStudent.Pathfinding.target = this.EventLocation[0];
+				this.EventStudent.Scrubber.SetActive(false);
 				this.EventStudent.Phone.SetActive(false);
 				this.EventStudent.Bento.SetActive(true);
 				this.EventStudent.Pen.SetActive(false);

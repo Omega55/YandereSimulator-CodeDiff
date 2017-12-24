@@ -385,8 +385,8 @@ public class DebugMenuScript : MonoBehaviour
 								this.ID = 2;
 								while (this.ID < 93)
 								{
-									StudentScript studentScript5 = this.StudentManager.Students[this.ID];
-									if (studentScript5 != null && studentScript5.Club != ClubType.Council)
+									StudentScript x = this.StudentManager.Students[this.ID];
+									if (x != null)
 									{
 										StudentGlobals.SetStudentMissing(this.ID, true);
 									}
@@ -398,12 +398,12 @@ public class DebugMenuScript : MonoBehaviour
 								this.ID = 2;
 								while (this.ID < 101)
 								{
-									StudentScript studentScript6 = this.StudentManager.Students[this.ID];
-									if (studentScript6 != null && studentScript6.Club != ClubType.Council)
+									StudentScript studentScript5 = this.StudentManager.Students[this.ID];
+									if (studentScript5 != null && studentScript5.Club != ClubType.Council)
 									{
-										studentScript6.SpawnAlarmDisc();
-										studentScript6.BecomeRagdoll();
-										studentScript6.DeathType = DeathType.EasterEgg;
+										studentScript5.SpawnAlarmDisc();
+										studentScript5.BecomeRagdoll();
+										studentScript5.DeathType = DeathType.EasterEgg;
 										StudentGlobals.SetStudentDead(this.ID, true);
 									}
 									this.ID++;

@@ -269,6 +269,8 @@ public class AttackManagerScript : MonoBehaviour
 			}
 			else if (this.EffectPhase == 0 && component[this.AnimName].time > 0.966666639f)
 			{
+				this.Yandere.Bloodiness += 20f;
+				this.Yandere.StainWeapon();
 				UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
 				this.EffectPhase++;
 			}

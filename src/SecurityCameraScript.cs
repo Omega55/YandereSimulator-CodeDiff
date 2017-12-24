@@ -40,17 +40,25 @@ public class SecurityCameraScript : MonoBehaviour
 			{
 				if ((this.Yandere.Armed && this.Yandere.EquippedWeapon.Suspicious) || (this.Yandere.Bloodiness > 0f && !this.Yandere.Paint) || this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Struggling || this.Yandere.Dragging || this.Yandere.Lewd || this.Yandere.Dragging || this.Yandere.Carrying || (this.Yandere.Laughing && this.Yandere.LaughIntensity > 15f))
 				{
-					if (this.MissionMode.enabled)
+					if (this.Yandere.Mask == null)
 					{
-						this.MissionMode.GameOverID = 15;
-						this.MissionMode.GameOver();
-						this.MissionMode.Phase = 4;
-						base.enabled = false;
+						if (this.MissionMode.enabled)
+						{
+							this.MissionMode.GameOverID = 15;
+							this.MissionMode.GameOver();
+							this.MissionMode.Phase = 4;
+							base.enabled = false;
+						}
+						else if (!this.SecuritySystem.Evidence)
+						{
+							this.Yandere.NotificationManager.DisplayNotification(NotificationType.Evidence);
+							this.SecuritySystem.Evidence = true;
+						}
 					}
 					else if (!this.SecuritySystem.Evidence)
 					{
 						this.Yandere.NotificationManager.DisplayNotification(NotificationType.Evidence);
-						this.SecuritySystem.Evidence = true;
+						this.SecuritySystem.Masked = true;
 					}
 				}
 			}

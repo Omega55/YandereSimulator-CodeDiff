@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class DumpsterLidScript : MonoBehaviour
 {
+	public StudentScript Victim;
+
 	public Transform GarbageDebris;
 
 	public Transform Hinge;

@@ -45,7 +45,7 @@ public class HomePantyChangerScript : MonoBehaviour
 	{
 		for (int i = 0; i < this.TotalPanties; i++)
 		{
-			this.NewPanties = UnityEngine.Object.Instantiate<GameObject>(this.PantyModels[i], new Vector3(base.transform.position.x, base.transform.position.y, base.transform.position.z - 1f), Quaternion.identity);
+			this.NewPanties = UnityEngine.Object.Instantiate<GameObject>(this.PantyModels[i], new Vector3(base.transform.position.x, base.transform.position.y - 0.85f, base.transform.position.z - 1f), Quaternion.identity);
 			this.NewPanties.transform.parent = this.PantyParent;
 			this.NewPanties.GetComponent<HomePantiesScript>().PantyChanger = this;
 			this.NewPanties.GetComponent<HomePantiesScript>().ID = i;

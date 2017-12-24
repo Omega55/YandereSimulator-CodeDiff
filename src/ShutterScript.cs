@@ -538,15 +538,15 @@ public class ShutterScript : MonoBehaviour
 					{
 						text = "Wait...I recognize those panties! This person is extremely dangerous! Avoid her at all costs!";
 					}
-					else if (this.Student.StudentID != 32)
-					{
-						text = "Excellent! Now I have a picture of " + this.Student.Name + "'s panties. I owe you a favor for this one.";
-						PlayerGlobals.PantyShots++;
-					}
-					else
+					else if (this.Student.StudentID == 32 || this.Student.Club == ClubType.Council)
 					{
 						text = "A high value target! " + this.Student.Name + "'s panties were in high demand. I owe you a big favor for this one.";
 						PlayerGlobals.PantyShots += 5;
+					}
+					else
+					{
+						text = "Excellent! Now I have a picture of " + this.Student.Name + "'s panties. I owe you a favor for this one.";
+						PlayerGlobals.PantyShots++;
 					}
 					num = 5;
 				}

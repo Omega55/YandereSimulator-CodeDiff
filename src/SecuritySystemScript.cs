@@ -7,6 +7,8 @@ public class SecuritySystemScript : MonoBehaviour
 
 	public bool Evidence;
 
+	public bool Masked;
+
 	public SecurityCameraScript[] Cameras;
 
 	public MetalDetectorScript[] Detectors;

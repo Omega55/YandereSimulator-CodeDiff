@@ -15,6 +15,8 @@ public class PickpocketMinigameScript : MonoBehaviour
 
 	public string CurrentButton = string.Empty;
 
+	public bool NotNurse;
+
 	public bool Failure;
 
 	public bool Success;
@@ -147,6 +149,11 @@ public class PickpocketMinigameScript : MonoBehaviour
 		else
 		{
 			this.Yandere.Pickpocketing = false;
+		}
+		if (this.NotNurse)
+		{
+			this.Yandere.CanMove = true;
+			this.NotNurse = false;
 		}
 		this.Progress = 0;
 		this.ButtonID = 0;

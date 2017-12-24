@@ -329,6 +329,8 @@ public class YandereScript : MonoBehaviour
 
 	public float CrouchRunSpeed;
 
+	public float ShoveSpeed = 2f;
+
 	public float CrawlSpeed;
 
 	public float FlapSpeed;
@@ -2609,20 +2611,23 @@ public class YandereScript : MonoBehaviour
 			}
 			if (this.Shoved)
 			{
-				if (this.CharacterAnimation["f02_shoveA_00"].time >= this.CharacterAnimation["f02_shoveA_00"].length)
+				if (this.CharacterAnimation["f02_shoveA_01"].time >= this.CharacterAnimation["f02_shoveA_01"].length)
 				{
-					base.transform.position = new Vector3(this.Hips.transform.position.x, base.transform.position.y, this.Hips.transform.position.z);
-					this.CameraTarget.localPosition = new Vector3(0f, 1f, 0f);
-					this.CharacterAnimation.Play(this.IdleAnim);
+					this.CharacterAnimation.CrossFade(this.IdleAnim);
 					this.Shoved = false;
 					if (!this.CannotRecover)
 					{
 						this.CanMove = true;
 					}
 				}
-				else
+				else if (this.CharacterAnimation["f02_shoveA_01"].time < 0.66666f)
 				{
-					this.CameraTarget.position = Vector3.MoveTowards(this.CameraTarget.position, new Vector3(this.Hips.position.x, base.transform.position.y + 1f, this.Hips.position.z), Time.deltaTime * 10f);
+					this.MyController.Move(base.transform.forward * -1f * this.ShoveSpeed * Time.deltaTime);
+					this.MyController.Move(Physics.gravity * 0.1f);
+					if (this.ShoveSpeed > 0f)
+					{
+						this.ShoveSpeed = Mathf.MoveTowards(this.ShoveSpeed, 0f, Time.deltaTime * 3f);
+					}
 				}
 			}
 			if (this.Attacked && this.CharacterAnimation["f02_swingB_00"].time >= this.CharacterAnimation["f02_swingB_00"].length)

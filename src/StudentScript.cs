@@ -538,6 +538,8 @@ public class StudentScript : MonoBehaviour
 
 	public float ElectroTimer;
 
+	public float ThreatTimer;
+
 	public float GoAwayTimer;
 
 	public float PatrolTimer;
@@ -648,6 +650,10 @@ public class StudentScript : MonoBehaviour
 
 	public int Crush;
 
+	public StudentWitnessType PreviouslyWitnessed;
+
+	public StudentWitnessType Witnessed;
+
 	public GameOverType GameOverCause;
 
 	public string CurrentAnim = string.Empty;
@@ -659,8 +665,6 @@ public class StudentScript : MonoBehaviour
 	public string Accessory = string.Empty;
 
 	public string Hairstyle = string.Empty;
-
-	public StudentWitnessType Witnessed;
 
 	public string Name = string.Empty;
 
@@ -1123,7 +1127,7 @@ public class StudentScript : MonoBehaviour
 			}
 			else if (this.StudentID == 17)
 			{
-				if (StudentGlobals.GetStudentDead(18) || StudentGlobals.GetStudentKidnapped(18) || StudentGlobals.GetStudentSlave(18))
+				if (StudentGlobals.GetStudentDead(18) || StudentGlobals.GetStudentKidnapped(18) || this.StudentManager.Students[18].Slave)
 				{
 					ScheduleBlock scheduleBlock2 = this.ScheduleBlocks[2];
 					scheduleBlock2.destination = "Mourn";
@@ -1132,7 +1136,7 @@ public class StudentScript : MonoBehaviour
 			}
 			else if (this.StudentID == 18)
 			{
-				if (StudentGlobals.GetStudentDead(17) || StudentGlobals.GetStudentKidnapped(17) || StudentGlobals.GetStudentSlave(17))
+				if (StudentGlobals.GetStudentDead(17) || StudentGlobals.GetStudentKidnapped(17) || this.StudentManager.Students[17].Slave)
 				{
 					ScheduleBlock scheduleBlock3 = this.ScheduleBlocks[2];
 					scheduleBlock3.destination = "Mourn";
@@ -1906,6 +1910,16 @@ public class StudentScript : MonoBehaviour
 				if (this.Club == ClubType.Occult && this.Actions[this.Phase] != StudentActionType.ClubAction)
 				{
 					this.OccultBook.SetActive(false);
+				}
+				if (this.Actions[this.Phase] == StudentActionType.Clean && this.CurrentDestination != this.CleaningSpot.GetChild(this.CleanID))
+				{
+					this.CurrentDestination = this.CleaningSpot.GetChild(this.CleanID);
+					this.Pathfinding.target = this.CurrentDestination;
+				}
+				if (this.Actions[this.Phase] == StudentActionType.Patrol && this.CurrentDestination != this.StudentManager.Patrols.List[this.StudentID].GetChild(this.PatrolID))
+				{
+					this.CurrentDestination = this.StudentManager.Patrols.List[this.StudentID].GetChild(this.PatrolID);
+					this.Pathfinding.target = this.CurrentDestination;
 				}
 			}
 			else
@@ -4203,7 +4217,10 @@ public class StudentScript : MonoBehaviour
 						this.Alarmed = true;
 						this.Witness = true;
 						this.ReadPhase = 0;
-						StudentWitnessType witnessed = this.Witnessed;
+						if (this.Witnessed != StudentWitnessType.None)
+						{
+							this.PreviouslyWitnessed = this.Witnessed;
+						}
 						bool flag = this.Yandere.Armed && this.Yandere.EquippedWeapon.Suspicious;
 						bool flag2 = this.Yandere.PickUp != null && this.Yandere.PickUp.Suspicious;
 						if (this.WitnessedCorpse && !this.WitnessedMurder)
@@ -4341,6 +4358,7 @@ public class StudentScript : MonoBehaviour
 								else
 								{
 									Debug.Log("Apparently, we didn't even see anything! 1");
+									this.Witnessed = StudentWitnessType.None;
 									this.DiscCheck = true;
 									this.Witness = false;
 								}
@@ -4413,7 +4431,7 @@ public class StudentScript : MonoBehaviour
 									}
 								}
 							}
-							if (!this.Teacher && this.Witnessed == witnessed)
+							if (!this.Teacher && this.Witnessed == this.PreviouslyWitnessed)
 							{
 								this.RepeatReaction = true;
 							}
@@ -4436,6 +4454,7 @@ public class StudentScript : MonoBehaviour
 						else
 						{
 							Debug.Log("We were alarmed by something, but we didn't actually see what it was.");
+							this.Witnessed = StudentWitnessType.None;
 							this.DiscCheck = true;
 							this.Witness = false;
 						}
@@ -4980,6 +4999,12 @@ public class StudentScript : MonoBehaviour
 					if (this.DistanceToPlayer < 1f)
 					{
 						this.AlarmTimer = 0f;
+						this.ThreatTimer += Time.deltaTime;
+						if (this.ThreatTimer > 5f)
+						{
+							this.ThreatTimer = 0f;
+							this.Shove();
+						}
 					}
 					this.DistractionSpot = new Vector3(this.Yandere.transform.position.x, base.transform.position.y, this.Yandere.transform.position.z);
 				}
@@ -5761,6 +5786,7 @@ public class StudentScript : MonoBehaviour
 							this.DistractionSpot = this.Yandere.transform.position;
 							this.Alarm = 100f + Time.deltaTime * 100f * (1f / this.Paranoia);
 							this.FocusOnYandere = true;
+							this.StopInvestigating();
 						}
 					}
 					if (this.DistanceToPlayer < 1f)
@@ -7633,7 +7659,7 @@ public class StudentScript : MonoBehaviour
 
 	public void Shove()
 	{
-		if (!this.Yandere.Shoved)
+		if (!this.Yandere.Shoved && !this.Dying)
 		{
 			AudioSource component = base.GetComponent<AudioSource>();
 			if (this.StudentID == 86)
@@ -7669,10 +7695,12 @@ public class StudentScript : MonoBehaviour
 			{
 				this.Yandere.CannotRecover = true;
 			}
-			this.Yandere.CharacterAnimation.CrossFade("f02_shoveA_00");
+			this.Yandere.CharacterAnimation["f02_shoveA_01"].time = 0f;
+			this.Yandere.CharacterAnimation.CrossFade("f02_shoveA_01");
 			this.Yandere.Punching = false;
 			this.Yandere.CanMove = false;
 			this.Yandere.Shoved = true;
+			this.Yandere.ShoveSpeed = 2f;
 			this.Pathfinding.canSearch = false;
 			this.Pathfinding.canMove = false;
 		}
@@ -7680,7 +7708,7 @@ public class StudentScript : MonoBehaviour
 
 	public void Spray()
 	{
-		if (!this.Yandere.Sprayed)
+		if (!this.Yandere.Sprayed && !this.Dying)
 		{
 			AudioSource.PlayClipAtPoint(this.PepperSpraySFX, base.transform.position);
 			if (this.StudentID == 86)
@@ -7707,6 +7735,7 @@ public class StudentScript : MonoBehaviour
 			this.Yandere.transform.rotation = Quaternion.LookRotation(new Vector3(this.Hips.transform.position.x, this.Yandere.transform.position.y, this.Hips.transform.position.z) - this.Yandere.transform.position);
 			this.CharacterAnimation.CrossFade(this.SprayAnim);
 			this.PepperSpray.SetActive(true);
+			this.Distracted = true;
 			this.Spraying = true;
 			this.Alarmed = false;
 			this.Routine = false;

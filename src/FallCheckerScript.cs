@@ -22,6 +22,7 @@ public class FallCheckerScript : MonoBehaviour
 			this.Ragdoll.Police.HiddenCorpses++;
 			this.Ragdoll.Hidden = true;
 			this.Dumpster.Corpse = this.Ragdoll.gameObject;
+			this.Dumpster.Victim = this.Ragdoll.Student;
 		}
 	}
 

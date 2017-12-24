@@ -257,6 +257,7 @@ public class GardeningClubMemberScript : MonoBehaviour
 								this.Alarm = Mathf.MoveTowards(this.Alarm, 100f, Time.deltaTime * (100f / num));
 								if (this.Alarm == 100f)
 								{
+									this.PickpocketMinigame.NotNurse = true;
 									this.PickpocketMinigame.End();
 									this.ClubLeader.Punish();
 								}

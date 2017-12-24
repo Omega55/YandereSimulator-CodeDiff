@@ -720,9 +720,17 @@ public class StudentManagerScript : MonoBehaviour
 					{
 						if (!studentScript.Slave)
 						{
-							if (!studentScript.Following)
+							if (studentScript.Pushable)
+							{
+								studentScript.Prompt.Label[0].text = "     Push";
+							}
+							else if (!studentScript.Following)
 							{
 								studentScript.Prompt.Label[0].text = "     Talk";
+							}
+							else
+							{
+								studentScript.Prompt.Label[0].text = "     Stop";
 							}
 							studentScript.Prompt.HideButton[0] = false;
 							studentScript.Prompt.HideButton[2] = false;

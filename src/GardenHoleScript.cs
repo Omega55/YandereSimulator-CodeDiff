@@ -118,8 +118,6 @@ public class GardenHoleScript : MonoBehaviour
 				}
 				this.VictimID = this.Corpse.StudentID;
 				this.Corpse.Remove();
-				StudentGlobals.SetStudentMissing(this.VictimID, true);
-				SchoolGlobals.SetGardenGraveOccupied(this.ID, true);
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
 				base.enabled = false;
@@ -144,6 +142,15 @@ public class GardenHoleScript : MonoBehaviour
 			this.Prompt.Label[0].text = "     Fill";
 			this.Corpse = null;
 			this.Bury = false;
+		}
+	}
+
+	public void EndOfDayCheck()
+	{
+		if (this.VictimID > 0)
+		{
+			StudentGlobals.SetStudentMissing(this.VictimID, true);
+			SchoolGlobals.SetGardenGraveOccupied(this.ID, true);
 		}
 	}
 }

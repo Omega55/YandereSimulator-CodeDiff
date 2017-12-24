@@ -13,9 +13,22 @@ public class CleaningManagerScript : MonoBehaviour
 
 	public Transform[] Rooftops;
 
+	public Transform[] ClappingSpots;
+
 	public Transform Spot;
 
 	public int Role;
+
+	private void Start()
+	{
+		if (SchoolGlobals.RoofFence)
+		{
+			for (int i = 1; i < this.ClappingSpots.Length; i++)
+			{
+				this.ClappingSpots[i].transform.position = new Vector3(this.ClappingSpots[i].transform.position.x, this.ClappingSpots[i].transform.position.y, this.ClappingSpots[i].transform.position.z + 1f);
+			}
+		}
+	}
 
 	public void GetRole(int StudentID)
 	{

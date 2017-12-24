@@ -18,6 +18,8 @@ public class EndOfDayScript : MonoBehaviour
 
 	public ReputationScript Reputation;
 
+	public DumpsterLidScript Dumpster;
+
 	public CounselorScript Counselor;
 
 	public WeaponScript MurderWeapon;
@@ -31,6 +33,8 @@ public class EndOfDayScript : MonoBehaviour
 	public PoliceScript Police;
 
 	public JsonScript JSON;
+
+	public GardenHoleScript[] GardenHoles;
 
 	public GameObject MainCamera;
 
@@ -151,7 +155,7 @@ public class EndOfDayScript : MonoBehaviour
 				}
 				else if (this.Police.MurderSuicideScene)
 				{
-					this.Label.text = "The police arrive at school, and discover what appears to be the scene of murder-suicide.";
+					this.Label.text = "The police arrive at school, and discover what appears to be the scene of a murder-suicide.";
 					this.Phase++;
 				}
 				else
@@ -329,9 +333,15 @@ public class EndOfDayScript : MonoBehaviour
 						this.Label.text = "The police investigate the security camera recordings, but cannot find anything incriminating in the footage.";
 						this.Phase++;
 					}
-					else if (this.SecuritySystem.Evidence)
+					else if (!this.SecuritySystem.Masked)
 					{
 						this.Label.text = "The police investigate the security camera recordings, and find incriminating footage of Yandere-chan.";
+						this.Phase = 100;
+					}
+					else
+					{
+						this.Label.text = "The police investigate the security camera recordings, and find footage of a suspicious masked person.";
+						this.Police.MaskReported = true;
 						this.Phase = 100;
 					}
 				}
@@ -411,7 +421,14 @@ public class EndOfDayScript : MonoBehaviour
 				if (this.Police.MaskReported)
 				{
 					GameGlobals.MasksBanned = true;
-					this.Label.text = "Witnesses state that the killer was wearing a mask. As a result, the police are unable to identify the murderer. To prevent this from ever happening again, the Headmaster decides to ban all masks from the school from this day forward.";
+					if (this.SecuritySystem.Masked)
+					{
+						this.Label.text = "In security camera footage, the killer was wearing a mask. As a result, the police are unable to gather meaningful information about the murderer. To prevent this from ever happening again, the Headmaster decides to ban all masks from the school from this day forward.";
+					}
+					else
+					{
+						this.Label.text = "Witnesses state that the killer was wearing a mask. As a result, the police are unable to gather meaningful information about the murderer. To prevent this from ever happening again, the Headmaster decides to ban all masks from the school from this day forward.";
+					}
 					this.Police.MaskReported = false;
 					this.Phase++;
 				}
@@ -764,6 +781,16 @@ public class EndOfDayScript : MonoBehaviour
 			StudentGlobals.SetStudentKidnapped(this.TranqCase.VictimID, true);
 			StudentGlobals.SetStudentSanity(this.TranqCase.VictimID, 100f);
 			SceneManager.LoadScene("CalendarScene");
+		}
+		if (this.Dumpster.Corpse != null)
+		{
+			StudentGlobals.SetStudentMissing(this.Dumpster.Victim.StudentID, true);
+		}
+		this.ID = 0;
+		while (this.ID < this.GardenHoles.Length)
+		{
+			this.GardenHoles[this.ID].EndOfDayCheck();
+			this.ID++;
 		}
 	}
 }

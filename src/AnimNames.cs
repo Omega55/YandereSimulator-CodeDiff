@@ -296,7 +296,7 @@ public static class AnimNames
 
 	public const string FemaleSewing = "f02_sewing_00";
 
-	public const string FemaleShoveA = "f02_shoveA_00";
+	public const string FemaleShoveA = "f02_shoveA_01";
 
 	public const string FemaleShoveB = "f02_shoveB_00";
 
