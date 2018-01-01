@@ -704,8 +704,15 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 102)
 			{
-				this.Label.text = "The police inspect the corpse of a student who appears to have fallen to their death from the school rooftop. The police treat the incident as a murder case, and search the school for any other victims.";
-				this.ErectFence = true;
+				if (this.Police.SuicideStudent.activeInHierarchy)
+				{
+					this.Label.text = "The police inspect the corpse of a student who appears to have fallen to their death from the school rooftop. The police treat the incident as a murder case, and search the school for any other victims.";
+					this.ErectFence = true;
+				}
+				else
+				{
+					this.Label.text = "The police attempt to determine whether or not a student fell to their death from the school rooftop. The police are unable to reach a conclusion.";
+				}
 				this.ID = 0;
 				while (this.ID < this.Police.CorpseList.Length)
 				{

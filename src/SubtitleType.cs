@@ -30,7 +30,6 @@ public enum SubtitleType
 	ClubUnwelcome,
 	ClubYes,
 	CorpseReaction,
-	CouncilCorpseReaction,
 	CowardGrudge,
 	CowardMurderReaction,
 	DrownReaction,
@@ -150,5 +149,6 @@ public enum SubtitleType
 	EdgyReaction,
 	Spraying,
 	Shoving,
-	Chasing
+	Chasing,
+	CouncilCorpseReaction
 }

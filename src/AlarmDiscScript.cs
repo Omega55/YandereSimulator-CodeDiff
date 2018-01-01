@@ -75,9 +75,14 @@ public class AlarmDiscScript : MonoBehaviour
 			this.Student = other.gameObject.GetComponent<StudentScript>();
 			if (this.Student != null)
 			{
+				UnityEngine.Object.Destroy(this.Student.Giggle);
+				this.Student.InvestigationTimer = 0f;
+				this.Student.InvestigationPhase = 0;
+				this.Student.Investigating = false;
+				this.Student.DiscCheck = false;
 				if (!this.Radio)
 				{
-					if (this.Student != this.Originator && !this.Student.TurnOffRadio && this.Student.Alive && !this.Student.Pushed && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.CheckingNote && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse)
+					if (this.Student != this.Originator && !this.Student.TurnOffRadio && this.Student.Alive && !this.Student.Pushed && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.CheckingNote && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.Student.FocusOnYandere)
 					{
 						if (this.Student.Male)
 						{

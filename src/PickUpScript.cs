@@ -121,6 +121,8 @@ public class PickUpScript : MonoBehaviour
 				{
 					this.Yandere.CharacterAnimation[this.Yandere.ArmedAnims[this.Yandere.EquippedWeapon.AnimID]].weight = 0f;
 				}
+				this.Yandere.targetRotation = Quaternion.LookRotation(new Vector3(base.transform.position.x, this.Yandere.transform.position.y, base.transform.position.z) - this.Yandere.transform.position);
+				this.Yandere.transform.rotation = this.Yandere.targetRotation;
 				this.Yandere.EmptyHands();
 				base.transform.parent = this.Yandere.transform;
 				base.transform.localPosition = new Vector3(0f, 0f, 0.75f);
@@ -130,6 +132,7 @@ public class PickUpScript : MonoBehaviour
 				this.Yandere.HeavyWeight = true;
 				this.Yandere.CanMove = false;
 				this.Yandere.Lifting = true;
+				this.MyRigidbody.isKinematic = true;
 				this.BeingLifted = true;
 			}
 			else

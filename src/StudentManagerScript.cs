@@ -312,6 +312,10 @@ public class StudentManagerScript : MonoBehaviour
 
 	private void Start()
 	{
+		this.SeatsTaken32[3] = true;
+		this.SeatsTaken31[3] = true;
+		this.SeatsTaken22[3] = true;
+		this.SeatsTaken21[3] = true;
 		this.ID = 1;
 		while (this.ID < this.JSON.Students.Length)
 		{
@@ -915,6 +919,7 @@ public class StudentManagerScript : MonoBehaviour
 					studentScript.Pathfinding.speed = 0f;
 					studentScript.Phone.SetActive(false);
 					studentScript.Distracted = false;
+					studentScript.Pushable = false;
 					studentScript.OnPhone = false;
 					studentScript.Routine = true;
 					studentScript.Safe = false;
@@ -938,6 +943,10 @@ public class StudentManagerScript : MonoBehaviour
 						studentScript.ChangeSchoolwear();
 						studentScript.ClubAttire = false;
 					}
+					if (studentScript.Meeting && this.Clock.HourTime > studentScript.MeetTime)
+					{
+						studentScript.Meeting = false;
+					}
 				}
 				else if (this.ID != this.GymTeacherID && this.ID != this.NurseID)
 				{
@@ -952,6 +961,7 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			this.ID++;
 		}
+		this.UpdateStudents();
 	}
 
 	public void SkipTo8()
@@ -1072,6 +1082,7 @@ public class StudentManagerScript : MonoBehaviour
 					studentScript.Broken.Done = true;
 					UnityEngine.Object.Destroy(studentScript.Broken);
 					studentScript.Slave = false;
+					studentScript.Suicide = true;
 					studentScript.BecomeRagdoll();
 					studentScript.DeathType = DeathType.Mystery;
 					StudentGlobals.SetStudentSlave(studentScript.StudentID, false);

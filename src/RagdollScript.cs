@@ -350,7 +350,7 @@ public class RagdollScript : MonoBehaviour
 			}
 			if (Vector3.Distance(this.Yandere.transform.position, this.Prompt.transform.position) < 2f)
 			{
-				if (!this.AddingToCount)
+				if (!this.Suicide && !this.AddingToCount)
 				{
 					this.Yandere.NearBodies++;
 					this.AddingToCount = true;

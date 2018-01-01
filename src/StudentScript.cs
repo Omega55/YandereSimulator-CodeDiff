@@ -282,6 +282,8 @@ public class StudentScript : MonoBehaviour
 
 	public GameObject OsanaHair;
 
+	public GameObject HealthBar;
+
 	public GameObject Earpiece;
 
 	public GameObject Scrubber;
@@ -486,6 +488,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool Distracting;
 
+	public bool HitReacting;
+
 	public bool PinningDown;
 
 	public bool Struggling;
@@ -591,6 +595,8 @@ public class StudentScript : MonoBehaviour
 	public float Paranoia;
 
 	public float RepLoss;
+
+	public float Health = 100f;
 
 	public float Alarm;
 
@@ -824,6 +830,8 @@ public class StudentScript : MonoBehaviour
 
 	public string SprayAnim = string.Empty;
 
+	public string SithReactAnim = string.Empty;
+
 	public string[] CleanAnims;
 
 	public string[] CameraAnims;
@@ -1035,6 +1043,7 @@ public class StudentScript : MonoBehaviour
 			this.RightEyeOrigin = this.RightEye.localPosition;
 			this.LeftEyeOrigin = this.LeftEye.localPosition;
 			this.PickRandomAnim();
+			this.HealthBar.transform.parent.gameObject.SetActive(false);
 			this.Chopsticks[0].SetActive(false);
 			this.Chopsticks[1].SetActive(false);
 			this.SmartPhone.SetActive(false);
@@ -1381,15 +1390,15 @@ public class StudentScript : MonoBehaviour
 				{
 					str = "Strict";
 				}
-				if (this.StudentID == 87)
+				else if (this.StudentID == 87)
 				{
 					str = "Casual";
 				}
-				if (this.StudentID == 88)
+				else if (this.StudentID == 88)
 				{
 					str = "Grace";
 				}
-				if (this.StudentID == 89)
+				else if (this.StudentID == 89)
 				{
 					str = "Edgy";
 				}
@@ -3615,7 +3624,7 @@ public class StudentScript : MonoBehaviour
 											GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(this.Ragdoll.BloodPoolSpawner.BloodPool, base.transform.position + base.transform.up * 0.012f + base.transform.forward, Quaternion.identity);
 											gameObject2.transform.localEulerAngles = new Vector3(90f, UnityEngine.Random.Range(0f, 360f), 0f);
 											gameObject2.transform.parent = this.Police.BloodParent;
-											this.MyWeapon.Victims[7] = true;
+											this.MyWeapon.Victims[this.HuntTarget.StudentID] = true;
 											this.MyWeapon.Blood.enabled = true;
 											if (!this.MyWeapon.Evidence)
 											{
@@ -3996,6 +4005,12 @@ public class StudentScript : MonoBehaviour
 				this.Yandere.EmptyHands();
 				this.PepperSprayEffect.Play();
 				this.Spraying = false;
+			}
+			if (this.HitReacting && this.CharacterAnimation[this.SithReactAnim].time >= this.CharacterAnimation[this.SithReactAnim].length)
+			{
+				this.Persona = PersonaType.SocialButterfly;
+				this.PersonaReaction();
+				this.HitReacting = false;
 			}
 		}
 	}
@@ -4451,12 +4466,16 @@ public class StudentScript : MonoBehaviour
 								this.ToiletEvent.EndEvent();
 							}
 						}
-						else
+						else if (!this.WitnessedCorpse)
 						{
 							Debug.Log("We were alarmed by something, but we didn't actually see what it was.");
 							this.Witnessed = StudentWitnessType.None;
 							this.DiscCheck = true;
 							this.Witness = false;
+						}
+						else
+						{
+							Debug.Log(this.Name + " discovered a corpse.");
 						}
 					}
 				}
@@ -5261,7 +5280,22 @@ public class StudentScript : MonoBehaviour
 				{
 					if (this.Club == ClubType.Council)
 					{
-						this.Subtitle.UpdateLabel(SubtitleType.CouncilCorpseReaction, 1, 5f);
+						if (this.StudentID == 86)
+						{
+							this.Subtitle.UpdateLabel(SubtitleType.CouncilCorpseReaction, 1, 5f);
+						}
+						else if (this.StudentID == 87)
+						{
+							this.Subtitle.UpdateLabel(SubtitleType.CouncilCorpseReaction, 2, 5f);
+						}
+						else if (this.StudentID == 88)
+						{
+							this.Subtitle.UpdateLabel(SubtitleType.CouncilCorpseReaction, 3, 5f);
+						}
+						else if (this.StudentID == 89)
+						{
+							this.Subtitle.UpdateLabel(SubtitleType.CouncilCorpseReaction, 4, 5f);
+						}
 					}
 					else if (this.Persona == PersonaType.Evil)
 					{
@@ -5786,6 +5820,8 @@ public class StudentScript : MonoBehaviour
 							this.DistractionSpot = this.Yandere.transform.position;
 							this.Alarm = 100f + Time.deltaTime * 100f * (1f / this.Paranoia);
 							this.FocusOnYandere = true;
+							this.Pathfinding.canSearch = false;
+							this.Pathfinding.canMove = false;
 							this.StopInvestigating();
 						}
 					}
@@ -5968,7 +6004,10 @@ public class StudentScript : MonoBehaviour
 			float f = Vector3.Angle(-base.transform.forward, this.Yandere.transform.position - base.transform.position);
 			this.Yandere.AttackManager.Stealth = (Mathf.Abs(f) <= 45f);
 		}
-		this.StudentManager.TranqDetector.TranqCheck();
+		if (this.Club != ClubType.Council)
+		{
+			this.StudentManager.TranqDetector.TranqCheck();
+		}
 		if (!this.Male)
 		{
 			if (this.Club != ClubType.Council)
@@ -6419,6 +6458,7 @@ public class StudentScript : MonoBehaviour
 		}
 		else if (this.Persona == PersonaType.SocialButterfly)
 		{
+			Debug.Log("A social butterfly is reacting.");
 			this.CurrentDestination = this.StudentManager.HidingSpots.List[this.StudentID];
 			this.Pathfinding.target = this.StudentManager.HidingSpots.List[this.StudentID];
 			this.Subtitle.UpdateLabel(SubtitleType.SocialDeathReaction, 1, 5f);
@@ -6457,7 +6497,7 @@ public class StudentScript : MonoBehaviour
 					Debug.Log("Began fleeing because Dangerous persona reaction was called.");
 					if (this.StudentID == 86)
 					{
-						this.Subtitle.UpdateLabel(SubtitleType.Chasing, 1, 3f);
+						this.Subtitle.UpdateLabel(SubtitleType.Chasing, 1, 5f);
 					}
 					else if (this.StudentID == 87)
 					{
@@ -6913,6 +6953,7 @@ public class StudentScript : MonoBehaviour
 			}
 			if (this.Pushed)
 			{
+				this.Police.SuicideStudent = base.gameObject;
 				this.Police.SuicideScene = true;
 				this.Ragdoll.Suicide = true;
 				this.Police.Suicide = true;
@@ -7682,6 +7723,10 @@ public class StudentScript : MonoBehaviour
 			{
 				this.Yandere.StopAiming();
 			}
+			if (this.Yandere.Laughing)
+			{
+				this.Yandere.StopLaughing();
+			}
 			base.transform.rotation = Quaternion.LookRotation(new Vector3(this.Yandere.Hips.transform.position.x, base.transform.position.y, this.Yandere.Hips.transform.position.z) - base.transform.position);
 			this.Yandere.transform.rotation = Quaternion.LookRotation(new Vector3(this.Hips.transform.position.x, this.Yandere.transform.position.y, this.Hips.transform.position.z) - this.Yandere.transform.position);
 			this.CharacterAnimation[this.ShoveAnim].time = 0f;
@@ -7713,7 +7758,7 @@ public class StudentScript : MonoBehaviour
 			AudioSource.PlayClipAtPoint(this.PepperSpraySFX, base.transform.position);
 			if (this.StudentID == 86)
 			{
-				this.Subtitle.UpdateLabel(SubtitleType.Spraying, 1, 3f);
+				this.Subtitle.UpdateLabel(SubtitleType.Spraying, 1, 5f);
 			}
 			else if (this.StudentID == 87)
 			{
@@ -7730,6 +7775,10 @@ public class StudentScript : MonoBehaviour
 			if (this.Yandere.Aiming)
 			{
 				this.Yandere.StopAiming();
+			}
+			if (this.Yandere.Laughing)
+			{
+				this.Yandere.StopLaughing();
 			}
 			base.transform.rotation = Quaternion.LookRotation(new Vector3(this.Yandere.Hips.transform.position.x, base.transform.position.y, this.Yandere.Hips.transform.position.z) - base.transform.position);
 			this.Yandere.transform.rotation = Quaternion.LookRotation(new Vector3(this.Hips.transform.position.x, this.Yandere.transform.position.y, this.Hips.transform.position.z) - this.Yandere.transform.position);
@@ -7763,7 +7812,7 @@ public class StudentScript : MonoBehaviour
 			this.StudentManager.CorpseGuardLocation[2].position = this.StudentManager.CorpseLocation.position + new Vector3(1f, 0f, 0f);
 			this.StudentManager.CorpseGuardLocation[3].position = this.StudentManager.CorpseLocation.position + new Vector3(0f, 0f, -1f);
 			this.StudentManager.CorpseGuardLocation[4].position = this.StudentManager.CorpseLocation.position + new Vector3(-1f, 0f, 0f);
-			this.StudentManager.CorpseLocation.LookAt(base.transform.position);
+			this.StudentManager.CorpseLocation.LookAt(new Vector3(base.transform.position.x, this.StudentManager.CorpseLocation.position.y, base.transform.position.z));
 			this.StudentManager.CorpseLocation.Translate(this.StudentManager.CorpseLocation.forward);
 			this.StudentManager.LowerCorpsePosition();
 		}

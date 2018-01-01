@@ -895,6 +895,8 @@ public class YandereScript : MonoBehaviour
 
 	public ParticleSystem[] Beam;
 
+	public SithBeamScript[] SithBeam;
+
 	public bool SithRecovering;
 
 	public bool SithAttacking;
@@ -970,6 +972,8 @@ public class YandereScript : MonoBehaviour
 		this.ProgressBar.transform.parent.gameObject.SetActive(false);
 		this.Smartphone.transform.parent.gameObject.SetActive(false);
 		this.ObstacleDetector.gameObject.SetActive(false);
+		this.SithBeam[1].gameObject.SetActive(false);
+		this.SithBeam[2].gameObject.SetActive(false);
 		this.PunishedAccessories.SetActive(false);
 		this.SukebanAccessories.SetActive(false);
 		this.FalconShoulderpad.SetActive(false);
@@ -1593,6 +1597,10 @@ public class YandereScript : MonoBehaviour
 							if (Input.GetButtonDown("X"))
 							{
 								this.CharacterAnimation.Play("f02_sithAttack_00");
+								this.SithBeam[1].gameObject.SetActive(true);
+								this.SithBeam[2].gameObject.SetActive(true);
+								this.SithBeam[1].Damage = 10f;
+								this.SithBeam[2].Damage = 10f;
 								this.SithAttacking = true;
 								this.CanMove = false;
 								this.SithPrefix = string.Empty;
@@ -1600,6 +1608,10 @@ public class YandereScript : MonoBehaviour
 							if (Input.GetButtonDown("Y"))
 							{
 								this.CharacterAnimation.Play("f02_sithAttackHard_00");
+								this.SithBeam[1].gameObject.SetActive(true);
+								this.SithBeam[2].gameObject.SetActive(true);
+								this.SithBeam[1].Damage = 20f;
+								this.SithBeam[2].Damage = 20f;
 								this.SithAttacking = true;
 								this.CanMove = false;
 								this.SithPrefix = "Hard";
@@ -2934,6 +2946,8 @@ public class YandereScript : MonoBehaviour
 					this.SithCombo
 				})].length)
 				{
+					this.SithBeam[1].gameObject.SetActive(false);
+					this.SithBeam[2].gameObject.SetActive(false);
 					this.SithRecovering = false;
 					this.SithAttacking = false;
 					this.SithComboLength = 0;
@@ -4042,13 +4056,11 @@ public class YandereScript : MonoBehaviour
 								this.StudentManager.NoGravity = true;
 								this.EasterEggMenu.SetActive(false);
 							}
-							else if (Input.GetKeyDown(KeyCode.D))
+							else if (!Input.GetKeyDown(KeyCode.D))
 							{
-								this.EasterEggMenu.SetActive(false);
-								this.Sith();
-							}
-							else if (Input.GetKeyDown(KeyCode.Space))
-							{
+								if (Input.GetKeyDown(KeyCode.Space))
+								{
+								}
 							}
 						}
 					}

@@ -67,8 +67,6 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] CorpseReactions;
 
-	public string[] CouncilCorpseReactions;
-
 	public string[] PrankReactions;
 
 	public string[] InterruptReactions;
@@ -86,8 +84,6 @@ public class SubtitleScript : MonoBehaviour
 	public string[] RivalPickpocketReactions;
 
 	public string[] DrownReactions;
-
-	public string[] HmmReactions;
 
 	public string[] KnifeReactions;
 
@@ -322,6 +318,10 @@ public class SubtitleScript : MonoBehaviour
 	public string[] Shoving;
 
 	public string[] Chasing;
+
+	public string[] CouncilCorpseReactions;
+
+	public string[] HmmReactions;
 
 	public string InfoNotice;
 
@@ -981,7 +981,7 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (subtitleType == SubtitleType.CouncilCorpseReaction)
 		{
-			this.Label.text = this.GetRandomString(this.CouncilCorpseReactions);
+			this.Label.text = this.CouncilCorpseReactions[ID];
 		}
 		else if (subtitleType == SubtitleType.LonerMurderReaction)
 		{

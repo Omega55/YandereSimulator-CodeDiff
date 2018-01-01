@@ -31,6 +31,8 @@ public class PoliceScript : MonoBehaviour
 
 	public GameObject DetectionCamera;
 
+	public GameObject SuicideStudent;
+
 	public GameObject Icons;
 
 	public Transform BloodParent;
@@ -492,14 +494,7 @@ public class PoliceScript : MonoBehaviour
 			}
 			else if (this.Corpses == 0)
 			{
-				if (this.SuicideScene)
-				{
-					this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a pair of shoes on the rooftop.";
-					this.ResultsLabels[2].text = "The faculty member fears that there has been a suicide, but cannot find a corpse anywhere. The faculty member does not take any action.";
-					this.ResultsLabels[3].text = "Yandere-chan leaves school and watches Senpai walk home.";
-					this.ResultsLabels[4].text = "Once he is safely home, Yandere-chan returns to her own home.";
-				}
-				else if (this.BloodParent.childCount > 0 || this.BloodyClothing > 0)
+				if (this.BloodParent.childCount > 0 || this.BloodyClothing > 0)
 				{
 					if (this.BloodyWeapons == 0)
 					{
@@ -520,7 +515,7 @@ public class PoliceScript : MonoBehaviour
 						this.Show = true;
 					}
 				}
-				else
+				else if (this.BloodyWeapons > 0)
 				{
 					this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a mysterious bloody weapon.";
 					this.ResultsLabels[2].text = "The faculty member decides to call the police.";
@@ -528,6 +523,13 @@ public class PoliceScript : MonoBehaviour
 					this.ResultsLabels[4].text = "The faculty do not allow any students to leave the school until a police investigation has taken place.";
 					this.TeacherReport = true;
 					this.Show = true;
+				}
+				else if (this.SuicideScene)
+				{
+					this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a pair of shoes on the rooftop.";
+					this.ResultsLabels[2].text = "The faculty member fears that there has been a suicide, but cannot find a corpse anywhere. The faculty member does not take any action.";
+					this.ResultsLabels[3].text = "Yandere-chan leaves school and watches Senpai walk home.";
+					this.ResultsLabels[4].text = "Once he is safely home, Yandere-chan returns to her own home.";
 				}
 			}
 			else
