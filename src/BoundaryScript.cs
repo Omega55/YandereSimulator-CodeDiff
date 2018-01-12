@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class BoundaryScript : MonoBehaviour
 {
-	public AnimatedGifScript AnimatedGif;
+	public TextureCycleScript TextureCycle;
 
 	public Transform Yandere;
 
-	public UISprite Static;
+	public UITexture Static;
 
 	public UILabel Label;
 
@@ -19,8 +19,9 @@ public class BoundaryScript : MonoBehaviour
 		if (z < -94f)
 		{
 			this.Intensity = -95f + Mathf.Abs(z);
-			this.AnimatedGif.enabled = true;
-			Color color = this.Static.color;
+			this.TextureCycle.Sprite.enabled = true;
+			this.TextureCycle.enabled = true;
+			Color color = this.Static.color + new Color(0.0001f, 0.0001f, 0.0001f, 0.0001f);
 			Color color2 = this.Label.color;
 			color.a = this.Intensity / 5f;
 			color2.a = this.Intensity / 5f;
@@ -32,9 +33,10 @@ public class BoundaryScript : MonoBehaviour
 			localPosition.y = UnityEngine.Random.Range(-10f, 10f);
 			this.Label.transform.localPosition = localPosition;
 		}
-		else if (this.AnimatedGif.enabled)
+		else if (this.TextureCycle.enabled)
 		{
-			this.AnimatedGif.enabled = false;
+			this.TextureCycle.Sprite.enabled = false;
+			this.TextureCycle.enabled = false;
 			Color color3 = this.Static.color;
 			Color color4 = this.Label.color;
 			color3.a = 0f;

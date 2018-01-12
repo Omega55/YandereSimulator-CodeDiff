@@ -109,7 +109,10 @@ public class TranqDetectorScript : MonoBehaviour
 			this.Door.Prompt.enabled = false;
 			this.Door.enabled = false;
 			this.Yandere.Inventory.Tranquilizer = false;
-			this.Yandere.CanTranq = true;
+			if (!this.Yandere.TargetStudent.Male)
+			{
+				this.Yandere.CanTranq = true;
+			}
 			this.Yandere.EquippedWeapon.Type = WeaponType.Syringe;
 			this.Yandere.AttackManager.Stealth = true;
 			this.StopChecking = true;

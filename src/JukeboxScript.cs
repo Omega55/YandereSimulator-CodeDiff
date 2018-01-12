@@ -120,7 +120,7 @@ public class JukeboxScript : MonoBehaviour
 	private void Update()
 	{
 		this.Timer += Time.deltaTime;
-		if (!this.Yandere.PauseScreen.Show)
+		if (!this.Yandere.PauseScreen.Show && !this.Yandere.EasterEggMenu.activeInHierarchy)
 		{
 			if (Input.GetKeyDown(KeyCode.M))
 			{
@@ -288,7 +288,7 @@ public class JukeboxScript : MonoBehaviour
 				this.KillVolume();
 				this.Ninja.enabled = true;
 			}
-			else if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.Alpha7))
+			else if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.Alpha7))
 			{
 				this.Egg = true;
 				this.KillVolume();

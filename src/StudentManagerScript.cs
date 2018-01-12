@@ -37,6 +37,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public WitnessCameraScript WitnessCamera;
 
+	public ConvoManagerScript ConvoManager;
+
 	public TallLockerScript CommunalLocker;
 
 	public CabinetDoorScript CabinetDoor;

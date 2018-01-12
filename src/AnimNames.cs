@@ -520,6 +520,8 @@ public static class AnimNames
 
 	public const string MaleSuspicious = "suspicious_00";
 
+	public const string MaleTexting = "standTexting_00";
+
 	public const string MaleThinking = "thinking_00";
 
 	public const string MaleWait = "waiting_00";

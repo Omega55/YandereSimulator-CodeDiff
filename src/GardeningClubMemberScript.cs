@@ -135,6 +135,7 @@ public class GardeningClubMemberScript : MonoBehaviour
 				{
 					if (this.Leader && this.Yandere.Pickpocketing && this.PickpocketMinigame.ID == this.ID)
 					{
+						this.PickpocketMinigame.Failure = true;
 						this.PickpocketMinigame.End();
 						this.Punish();
 					}

@@ -875,20 +875,6 @@ public class YandereScript : MonoBehaviour
 
 	public AudioClip HaiDomo;
 
-	public Mesh SchoolSwimsuit;
-
-	public Mesh GymUniform;
-
-	public Texture FaceTexture;
-
-	public Texture SwimsuitTexture;
-
-	public Texture GymTexture;
-
-	public Texture TextureToUse;
-
-	public bool Casual = true;
-
 	public GameObject BlackRobe;
 
 	public Mesh NoUpperBodyMesh;
@@ -918,6 +904,32 @@ public class YandereScript : MonoBehaviour
 	public Transform SithTrailEnd2;
 
 	public ZoomScript Zoom;
+
+	public Texture SnakeFace;
+
+	public Texture SnakeBody;
+
+	public Texture Stone;
+
+	public AudioClip Petrify;
+
+	public GameObject Pebbles;
+
+	public bool Medusa;
+
+	public Mesh SchoolSwimsuit;
+
+	public Mesh GymUniform;
+
+	public Texture FaceTexture;
+
+	public Texture SwimsuitTexture;
+
+	public Texture GymTexture;
+
+	public Texture TextureToUse;
+
+	public bool Casual = true;
 
 	public Mesh JudoGiMesh;
 
@@ -1206,7 +1218,7 @@ public class YandereScript : MonoBehaviour
 	{
 		get
 		{
-			return new Vector3(base.transform.position.x, this.Head.position.y, base.transform.position.z);
+			return new Vector3(base.transform.position.x, this.Hips.position.y + 0.2f, base.transform.position.z);
 		}
 	}
 
@@ -1771,7 +1783,7 @@ public class YandereScript : MonoBehaviour
 								this.YandereVision = false;
 								this.Stance.Current = StanceType.Crawling;
 								this.CrawlTimer = 0f;
-								this.Uncrouch();
+								this.Crawl();
 							}
 							else if (Input.GetButtonUp("RS") && !this.CrouchButtonDown && !this.CameFromCrouch)
 							{
@@ -2856,6 +2868,7 @@ public class YandereScript : MonoBehaviour
 							if (this.SprayTimer > 1f)
 							{
 								this.CharacterAnimation.Play("f02_tied_00");
+								this.RPGCamera.enabled = false;
 								this.ZipTie[0].SetActive(true);
 								this.ZipTie[1].SetActive(true);
 								this.Blur.enabled = false;
@@ -4058,8 +4071,11 @@ public class YandereScript : MonoBehaviour
 							}
 							else if (!Input.GetKeyDown(KeyCode.D))
 							{
-								if (Input.GetKeyDown(KeyCode.Space))
+								if (!Input.GetKeyDown(KeyCode.M))
 								{
+									if (Input.GetKeyDown(KeyCode.Space))
+									{
+									}
 								}
 							}
 						}
@@ -4997,8 +5013,21 @@ public class YandereScript : MonoBehaviour
 		this.FollowHips = true;
 		this.SithLord = true;
 		this.Egg = true;
+		this.WalkSpeed = 0.5f;
 		this.RunSpeed *= 2f;
 		this.Zoom.TargetZoom = 0.4f;
+	}
+
+	private void Snake()
+	{
+		this.MyRenderer.sharedMesh = this.Uniforms[1];
+		this.MyRenderer.materials[0].mainTexture = this.SnakeBody;
+		this.MyRenderer.materials[1].mainTexture = this.SnakeBody;
+		this.MyRenderer.materials[2].mainTexture = this.SnakeFace;
+		this.Hairstyle = 162;
+		this.UpdateHair();
+		this.Medusa = true;
+		this.Egg = true;
 	}
 
 	public void ChangeSchoolwear()
@@ -5139,6 +5168,12 @@ public class YandereScript : MonoBehaviour
 	{
 		this.MyController.center = new Vector3(this.MyController.center.x, 0.55f, this.MyController.center.z);
 		this.MyController.height = 0.9f;
+	}
+
+	private void Crawl()
+	{
+		this.MyController.center = new Vector3(this.MyController.center.x, 0.25f, this.MyController.center.z);
+		this.MyController.height = 0.1f;
 	}
 
 	private void Uncrouch()

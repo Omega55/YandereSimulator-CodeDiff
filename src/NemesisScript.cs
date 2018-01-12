@@ -284,8 +284,10 @@ public class NemesisScript : MonoBehaviour
 
 	private void LookForYandere()
 	{
+		Debug.Log("Looking.");
 		if (this.Student.CanSeeObject(this.Yandere.gameObject, this.Yandere.HeadPosition))
 		{
+			Debug.Log("Spotted.");
 			this.MissionMode.LastKnownPosition.position = this.Yandere.transform.position;
 			this.InView = true;
 			this.UpdateLKP();
@@ -333,6 +335,7 @@ public class NemesisScript : MonoBehaviour
 	{
 		this.Student.Chopsticks[0].SetActive(false);
 		this.Student.Chopsticks[1].SetActive(false);
+		this.Student.PepperSpray.SetActive(false);
 		this.Student.OccultBook.SetActive(false);
 		this.Student.Cigarette.SetActive(false);
 		this.Student.EventBook.SetActive(false);

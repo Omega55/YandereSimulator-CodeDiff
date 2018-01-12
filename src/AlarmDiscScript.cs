@@ -73,7 +73,7 @@ public class AlarmDiscScript : MonoBehaviour
 		if (other.gameObject.layer == 9)
 		{
 			this.Student = other.gameObject.GetComponent<StudentScript>();
-			if (this.Student != null)
+			if (this.Student != null && this.Student.enabled)
 			{
 				UnityEngine.Object.Destroy(this.Student.Giggle);
 				this.Student.InvestigationTimer = 0f;

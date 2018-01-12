@@ -750,7 +750,7 @@ public class MissionModeMenuScript : MonoBehaviour
 					{
 						this.ErrorLabel.text = "Invalid Mission ID (Target cannot be Osana...yet.)";
 					}
-					else if (this.PopulationNumber == 0 && this.TargetNumber > 32)
+					else if ((this.PopulationNumber == 0 && this.TargetNumber > 32) || (this.PopulationNumber == 0 && this.TargetNumber < 86))
 					{
 						this.ErrorLabel.text = "Invalid Mission ID (Population too low)";
 					}
@@ -981,11 +981,26 @@ public class MissionModeMenuScript : MonoBehaviour
 		}
 		else if (!OptionGlobals.HighPopulation)
 		{
-			if (this.TargetID > 32)
+			if (this.TargetID < 86)
+			{
+				if (this.TargetID == 85)
+				{
+					this.TargetID = 32;
+				}
+				else if (this.TargetID > 32)
+				{
+					this.TargetID = 86;
+				}
+				else if (this.TargetID < 2)
+				{
+					this.TargetID = 89;
+				}
+			}
+			else if (this.TargetID > 89)
 			{
 				this.TargetID = 2;
 			}
-			else if (this.TargetID < 2)
+			else if (this.TargetID < 86)
 			{
 				this.TargetID = 32;
 			}
@@ -1007,7 +1022,14 @@ public class MissionModeMenuScript : MonoBehaviour
 			".png"
 		});
 		WWW www = new WWW(url);
-		this.TargetPortrait.mainTexture = ((this.TargetID >= 33) ? this.BlankPortrait : www.texture);
+		if (this.TargetID > 32 && this.TargetID < 86)
+		{
+			this.TargetPortrait.mainTexture = this.BlankPortrait;
+		}
+		else
+		{
+			this.TargetPortrait.mainTexture = www.texture;
+		}
 		this.CustomTargetPortrait.mainTexture = this.TargetPortrait.mainTexture;
 		if (this.JSON.Students[this.TargetID].Name == "Random" || this.JSON.Students[this.TargetID].Name == "Unknown")
 		{
@@ -1250,7 +1272,7 @@ public class MissionModeMenuScript : MonoBehaviour
 			this.CustomPopulationLabel.text = "High School Population: Off";
 			this.PopulationLabel.text = "High School Population: Off";
 			OptionGlobals.HighPopulation = false;
-			if (this.TargetID > 32)
+			if (this.TargetID > 32 && this.TargetID < 86)
 			{
 				this.ChooseTarget();
 			}

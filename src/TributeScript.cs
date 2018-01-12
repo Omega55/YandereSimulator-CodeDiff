@@ -9,6 +9,11 @@ public class TributeScript : MonoBehaviour
 
 	public int ID;
 
+	private void Start()
+	{
+		this.Rainey.SetActive(false);
+	}
+
 	private void Update()
 	{
 		if (Input.GetKeyDown(this.Letter[this.ID]))

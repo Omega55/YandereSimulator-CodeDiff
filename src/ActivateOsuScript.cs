@@ -38,7 +38,7 @@ public class ActivateOsuScript : MonoBehaviour
 		}
 		else if (!this.Osu.activeInHierarchy)
 		{
-			if (Vector3.Distance(base.transform.position, this.Student.transform.position) < 0.1f && this.Student.Routine && this.Student.Actions[this.Student.Phase] == StudentActionType.Gaming)
+			if (Vector3.Distance(base.transform.position, this.Student.transform.position) < 0.1f && this.Student.Routine && this.Student.CurrentDestination == this.Student.Destinations[this.Student.Phase] && this.Student.Actions[this.Student.Phase] == StudentActionType.Gaming)
 			{
 				this.ActivateOsu();
 			}
@@ -46,7 +46,7 @@ public class ActivateOsuScript : MonoBehaviour
 		else
 		{
 			this.Mouse.transform.eulerAngles = this.OriginalMouseRotation;
-			if (!this.Student.Routine || this.Student.Actions[this.Student.Phase] != StudentActionType.Gaming)
+			if (!this.Student.Routine || this.Student.CurrentDestination != this.Student.Destinations[this.Student.Phase] || this.Student.Actions[this.Student.Phase] != StudentActionType.Gaming)
 			{
 				this.DeactivateOsu();
 			}
