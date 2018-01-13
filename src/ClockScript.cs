@@ -351,7 +351,10 @@ public class ClockScript : MonoBehaviour
 		this.SchoolBell.Play();
 		foreach (Collider collider in this.TrespassZones)
 		{
-			collider.enabled = false;
+			if (!collider.GetComponent<TrespassScript>().OffLimits)
+			{
+				collider.enabled = true;
+			}
 		}
 	}
 }

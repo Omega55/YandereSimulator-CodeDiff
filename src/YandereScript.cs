@@ -4071,11 +4071,13 @@ public class YandereScript : MonoBehaviour
 							}
 							else if (!Input.GetKeyDown(KeyCode.D))
 							{
-								if (!Input.GetKeyDown(KeyCode.M))
+								if (Input.GetKeyDown(KeyCode.M))
 								{
-									if (Input.GetKeyDown(KeyCode.Space))
-									{
-									}
+									this.EasterEggMenu.SetActive(false);
+									this.Snake();
+								}
+								else if (Input.GetKeyDown(KeyCode.Space))
+								{
 								}
 							}
 						}

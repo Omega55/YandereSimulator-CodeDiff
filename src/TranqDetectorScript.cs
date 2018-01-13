@@ -109,7 +109,7 @@ public class TranqDetectorScript : MonoBehaviour
 			this.Door.Prompt.enabled = false;
 			this.Door.enabled = false;
 			this.Yandere.Inventory.Tranquilizer = false;
-			if (!this.Yandere.TargetStudent.Male)
+			if (!this.Yandere.Follower.Male)
 			{
 				this.Yandere.CanTranq = true;
 			}

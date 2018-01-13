@@ -707,6 +707,10 @@ public class DialogueWheelScript : MonoBehaviour
 	{
 		if (this.Yandere.TargetStudent != null)
 		{
+			if (this.Yandere.TargetStudent.Pestered >= 10)
+			{
+				this.Yandere.TargetStudent.Ignoring = true;
+			}
 			if (!this.Pestered)
 			{
 				this.Yandere.Subtitle.Label.text = string.Empty;

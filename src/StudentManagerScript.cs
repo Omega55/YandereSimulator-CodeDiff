@@ -896,7 +896,7 @@ public class StudentManagerScript : MonoBehaviour
 		while (this.ID < this.Students.Length)
 		{
 			StudentScript studentScript = this.Students[this.ID];
-			if (studentScript != null && studentScript.Alive && !studentScript.Slave && !studentScript.Tranquil)
+			if (studentScript != null && studentScript.Alive && !studentScript.Slave && !studentScript.Tranquil && studentScript.enabled)
 			{
 				if (!studentScript.Started)
 				{

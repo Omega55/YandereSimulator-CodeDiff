@@ -115,6 +115,8 @@ public class StudentScript : MonoBehaviour
 
 	public ParticleSystem Hearts;
 
+	public Texture KokonaPhoneTexture;
+
 	public Texture MidoriPhoneTexture;
 
 	public Texture OsanaPhoneTexture;
@@ -1129,6 +1131,10 @@ public class StudentScript : MonoBehaviour
 			}
 			else if (this.StudentID == 7 || this.StudentID == 13)
 			{
+				if (this.StudentID == 7)
+				{
+					this.SmartPhone.GetComponent<Renderer>().material.mainTexture = this.KokonaPhoneTexture;
+				}
 				if (DatingGlobals.SuitorProgress == 2)
 				{
 					this.Partner = ((this.StudentID != 7) ? this.StudentManager.Students[7] : this.StudentManager.Students[13]);

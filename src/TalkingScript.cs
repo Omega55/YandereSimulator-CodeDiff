@@ -57,11 +57,7 @@ public class TalkingScript : MonoBehaviour
 							this.S.Subtitle.UpdateLabel(SubtitleType.Impatience, 3, 5f);
 						}
 						this.S.WaitTimer = 0f;
-						this.S.Pestered++;
-						if (this.S.Pestered > 1)
-						{
-							this.S.Ignoring = true;
-						}
+						this.S.Pestered += 5;
 						this.S.DialogueWheel.Pestered = true;
 						this.S.DialogueWheel.End();
 					}
@@ -242,7 +238,7 @@ public class TalkingScript : MonoBehaviour
 				this.S.TalkTimer -= Time.deltaTime;
 				if (this.S.TalkTimer <= 0f)
 				{
-					this.S.Pestered++;
+					this.S.Pestered += 2;
 					this.S.DialogueWheel.End();
 				}
 			}

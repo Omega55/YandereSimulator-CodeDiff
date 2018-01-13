@@ -9,6 +9,8 @@ public class TrespassScript : MonoBehaviour
 
 	public bool HideNotification;
 
+	public bool OffLimits;
+
 	private void OnTriggerEnter(Collider other)
 	{
 		if (base.enabled && other.gameObject.layer == 13)
