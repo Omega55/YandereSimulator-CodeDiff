@@ -224,10 +224,6 @@ public class IncineratorScript : MonoBehaviour
 		}
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			foreach (int studentID in this.CorpseList)
-			{
-				StudentGlobals.SetStudentMissing(studentID, true);
-			}
 			this.Panel.SetActive(true);
 			this.Timer = 60f;
 			component.clip = this.IncineratorActivate;
@@ -279,6 +275,14 @@ public class IncineratorScript : MonoBehaviour
 			float num2 = num / 60f;
 			float num3 = num % 60f;
 			this.TimeLabel.text = string.Format("{0:00}:{1:00}", num2, num3);
+		}
+	}
+
+	public void SetVictimsMissing()
+	{
+		foreach (int studentID in this.CorpseList)
+		{
+			StudentGlobals.SetStudentMissing(studentID, true);
 		}
 	}
 }

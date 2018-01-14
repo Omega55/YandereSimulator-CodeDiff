@@ -150,7 +150,6 @@ public class WoodChipperScript : MonoBehaviour
 		}
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			StudentGlobals.SetStudentMissing(this.VictimID, true);
 			component.clip = this.ShredAudio;
 			component.Play();
 			this.Prompt.HideButton[3] = false;
@@ -200,6 +199,14 @@ public class WoodChipperScript : MonoBehaviour
 				this.Bucket.Bucket.FillSpeed = 0.05f;
 				this.Bucket.Bucket.Full = true;
 			}
+		}
+	}
+
+	public void SetVictimsMissing()
+	{
+		foreach (int studentID in this.VictimList)
+		{
+			StudentGlobals.SetStudentMissing(studentID, true);
 		}
 	}
 }

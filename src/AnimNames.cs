@@ -144,6 +144,12 @@ public static class AnimNames
 
 	public const string FemaleGaming = "f02_gaming_00";
 
+	public const string FemaleGazerIdle = "f02_gazerIdle_00";
+
+	public const string FemaleGazerWalk = "f02_gazerWalk_00";
+
+	public const string FemaleGazerRun = "f02_gazerRun_00";
+
 	public const string FemaleGreet = "f02_greet_00";
 
 	public const string FemaleGreet01 = "f02_greet_01";

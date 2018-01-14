@@ -17,6 +17,8 @@ public class TranqCaseScript : MonoBehaviour
 
 	public int VictimID;
 
+	public ClubType VictimClubType;
+
 	private void Start()
 	{
 		this.Prompt.enabled = false;
@@ -59,6 +61,7 @@ public class TranqCaseScript : MonoBehaviour
 			this.Prompt.enabled = false;
 			this.Prompt.Hide();
 			this.Yandere.Ragdoll.GetComponent<RagdollScript>().TranqCase = this;
+			this.VictimClubType = this.Yandere.Ragdoll.GetComponent<RagdollScript>().Student.Club;
 			this.VictimID = this.Yandere.Ragdoll.GetComponent<RagdollScript>().StudentID;
 			this.Door.Prompt.enabled = true;
 			this.Door.enabled = true;

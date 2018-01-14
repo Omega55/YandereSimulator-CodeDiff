@@ -16,6 +16,10 @@ public class EndOfDayScript : MonoBehaviour
 
 	public HeartbrokenScript Heartbroken;
 
+	public IncineratorScript Incinerator;
+
+	public WoodChipperScript WoodChipper;
+
 	public ReputationScript Reputation;
 
 	public DumpsterLidScript Dumpster;
@@ -799,5 +803,7 @@ public class EndOfDayScript : MonoBehaviour
 			this.GardenHoles[this.ID].EndOfDayCheck();
 			this.ID++;
 		}
+		this.Incinerator.SetVictimsMissing();
+		this.WoodChipper.SetVictimsMissing();
 	}
 }

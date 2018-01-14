@@ -270,6 +270,10 @@ public class ClubManagerScript : MonoBehaviour
 			}
 			this.ID++;
 		}
+		if (this.TranqCase.VictimClubType == Check)
+		{
+			this.ClubMembers--;
+		}
 		if (ClubGlobals.Club == Check)
 		{
 			this.ClubMembers++;

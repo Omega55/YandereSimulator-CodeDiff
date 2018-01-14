@@ -917,6 +917,12 @@ public class YandereScript : MonoBehaviour
 
 	public bool Medusa;
 
+	public Texture GazerFace;
+
+	public Texture GazerBody;
+
+	public GameObject GazerEyes;
+
 	public Mesh SchoolSwimsuit;
 
 	public Mesh GymUniform;
@@ -4076,8 +4082,11 @@ public class YandereScript : MonoBehaviour
 									this.EasterEggMenu.SetActive(false);
 									this.Snake();
 								}
-								else if (Input.GetKeyDown(KeyCode.Space))
+								else if (!Input.GetKeyDown(KeyCode.Alpha1))
 								{
+									if (Input.GetKeyDown(KeyCode.Space))
+									{
+									}
 								}
 							}
 						}
@@ -5029,6 +5038,20 @@ public class YandereScript : MonoBehaviour
 		this.Hairstyle = 162;
 		this.UpdateHair();
 		this.Medusa = true;
+		this.Egg = true;
+	}
+
+	private void Gazer()
+	{
+		this.MyRenderer.sharedMesh = this.NudeMesh;
+		this.MyRenderer.materials[0].mainTexture = this.GazerFace;
+		this.MyRenderer.materials[1].mainTexture = this.GazerBody;
+		this.MyRenderer.materials[2].mainTexture = this.GazerBody;
+		this.IdleAnim = "f02_gazerIdle_00";
+		this.WalkAnim = "f02_gazerWalk_00";
+		this.RunAnim = "f02_gazerRun_00";
+		this.Hairstyle = 158;
+		this.UpdateHair();
 		this.Egg = true;
 	}
 

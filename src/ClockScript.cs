@@ -353,7 +353,7 @@ public class ClockScript : MonoBehaviour
 		{
 			if (!collider.GetComponent<TrespassScript>().OffLimits)
 			{
-				collider.enabled = true;
+				collider.enabled = false;
 			}
 		}
 	}
