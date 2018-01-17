@@ -47,6 +47,10 @@ public class AlarmDiscScript : MonoBehaviour
 		{
 			if (!this.Long)
 			{
+				if (this.Originator != null)
+				{
+					this.Male = this.Originator.Male;
+				}
 				if (!this.Male)
 				{
 					this.PlayClip(this.FemaleScreams[UnityEngine.Random.Range(0, this.FemaleScreams.Length)], base.transform.position);

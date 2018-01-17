@@ -444,6 +444,7 @@ public class PhotoGalleryScript : MonoBehaviour
 
 	public IEnumerator GetPhotos()
 	{
+		Debug.Log("We were told to get photos.");
 		if (!this.Corkboard)
 		{
 			for (int i = 1; i < 26; i++)
@@ -455,7 +456,16 @@ public class PhotoGalleryScript : MonoBehaviour
 		{
 			if (PlayerGlobals.GetPhoto(ID))
 			{
-				string path = Application.streamingAssetsPath + "/Photographs/Photo_" + ID.ToString() + ".png";
+				Debug.Log("Photo " + ID + " is ''true''.");
+				string path = string.Concat(new object[]
+				{
+					"file:///",
+					Application.streamingAssetsPath,
+					"/Photographs/Photo_",
+					ID,
+					".png"
+				});
+				Debug.Log("Attempting to get " + path);
 				WWW www = new WWW(path);
 				yield return www;
 				if (www.error == null)
@@ -468,6 +478,14 @@ public class PhotoGalleryScript : MonoBehaviour
 				}
 				else
 				{
+					Debug.Log(string.Concat(new object[]
+					{
+						"Could not retrieve Photo ",
+						ID,
+						". Maybe it was deleted from Streaming Assets? Setting Photo ",
+						ID,
+						" to ''false''."
+					}));
 					PlayerGlobals.SetPhoto(ID, false);
 				}
 			}

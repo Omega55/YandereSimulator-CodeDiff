@@ -35,6 +35,8 @@ public class JukeboxScript : MonoBehaviour
 
 	public AudioSource Ebola;
 
+	public AudioSource Demon;
+
 	public AudioSource Ninja;
 
 	public AudioSource Punch;
@@ -189,6 +191,7 @@ public class JukeboxScript : MonoBehaviour
 			this.Hitman.volume = Mathf.MoveTowards(this.Hitman.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
 			this.Touhou.volume = Mathf.MoveTowards(this.Touhou.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
 			this.Falcon.volume = Mathf.MoveTowards(this.Falcon.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
+			this.Demon.volume = Mathf.MoveTowards(this.Demon.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
 			this.Ebola.volume = Mathf.MoveTowards(this.Ebola.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
 			this.Ninja.volume = Mathf.MoveTowards(this.Ninja.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
 			this.Punch.volume = Mathf.MoveTowards(this.Punch.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
@@ -293,6 +296,12 @@ public class JukeboxScript : MonoBehaviour
 				this.Egg = true;
 				this.KillVolume();
 				this.Ebola.enabled = true;
+			}
+			else if (Input.GetKeyDown(KeyCode.Alpha2))
+			{
+				this.Egg = true;
+				this.KillVolume();
+				this.Demon.enabled = true;
 			}
 		}
 	}

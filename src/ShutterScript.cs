@@ -352,6 +352,7 @@ public class ShutterScript : MonoBehaviour
 						{
 							Application.CaptureScreenshot(Application.streamingAssetsPath + "/Photographs/Photo_" + this.Slot.ToString() + ".png");
 							this.TookPhoto = true;
+							Debug.Log("Setting Photo " + this.Slot + " to ''true''.");
 							PlayerGlobals.SetPhoto(this.Slot, true);
 							if (flag)
 							{

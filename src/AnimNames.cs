@@ -540,5 +540,15 @@ public static class AnimNames
 
 	public const string MaleMurderSuicide01 = "murderSuicide_01";
 
+	public const string SixEat = "f02_sixEat_00";
+
+	public const string SixFastRun = "f02_sixFastRun_00";
+
+	public const string SixIdle = "f02_sixIdle_00";
+
+	public const string SixRun = "f02_sixRun_00";
+
+	public const string SixWalk = "f02_sixWalk_00";
+
 	public const string TeacherPodium = "f02_teacherPodium_00";
 }

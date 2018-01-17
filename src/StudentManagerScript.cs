@@ -283,6 +283,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public bool Stop;
 
+	public bool Six;
+
 	public bool AoT;
 
 	public bool DK;
@@ -815,6 +817,12 @@ public class StudentManagerScript : MonoBehaviour
 					{
 						studentScript.Prompt.HideButton[0] = false;
 						studentScript.Prompt.Label[0].text = "     Pose";
+					}
+					if (this.Six)
+					{
+						studentScript.Prompt.MinimumDistance = 0.75f;
+						studentScript.Prompt.HideButton[0] = false;
+						studentScript.Prompt.Label[0].text = "     Eat";
 					}
 				}
 			}

@@ -467,6 +467,8 @@ public class YandereScript : MonoBehaviour
 
 	public bool Caught;
 
+	public bool Eating;
+
 	public bool Hiding;
 
 	public Stance Stance = new Stance(StanceType.Standing);
@@ -922,6 +924,24 @@ public class YandereScript : MonoBehaviour
 	public Texture GazerBody;
 
 	public GameObject GazerEyes;
+
+	public GameObject SixRaincoat;
+
+	public Texture SixFaceTexture;
+
+	public AudioClip SixTakedown;
+
+	public Transform SixTarget;
+
+	public Mesh SixBodyMesh;
+
+	public Transform Mouth;
+
+	public int EatPhase;
+
+	public int Hunger;
+
+	public float[] BloodTimes;
 
 	public Mesh SchoolSwimsuit;
 
@@ -2974,6 +2994,34 @@ public class YandereScript : MonoBehaviour
 					this.CanMove = true;
 				}
 			}
+			if (this.Eating)
+			{
+				this.targetRotation = Quaternion.LookRotation(new Vector3(this.TargetStudent.transform.position.x, base.transform.position.y, this.TargetStudent.transform.position.z) - base.transform.position);
+				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
+				if (this.CharacterAnimation["f02_sixEat_00"].time > this.BloodTimes[this.EatPhase])
+				{
+					GameObject gameObject10 = UnityEngine.Object.Instantiate<GameObject>(this.TargetStudent.StabBloodEffect, this.Mouth.position, Quaternion.identity);
+					gameObject10.GetComponent<RandomStabScript>().Biting = true;
+					this.Bloodiness += 20f;
+					this.EatPhase++;
+				}
+				if (this.CharacterAnimation["f02_sixEat_00"].time >= this.CharacterAnimation["f02_sixEat_00"].length)
+				{
+					if (this.Hunger < 5)
+					{
+						this.CharacterAnimation["f02_sixRun_00"].speed += 0.1f;
+						this.RunSpeed += 1f;
+						this.Hunger++;
+						if (this.Hunger == 5)
+						{
+							this.RunAnim = "f02_sixFastRun_00";
+						}
+					}
+					this.FollowHips = false;
+					this.CanMove = true;
+					this.EatPhase = 0;
+				}
+			}
 		}
 	}
 
@@ -4084,7 +4132,12 @@ public class YandereScript : MonoBehaviour
 								}
 								else if (!Input.GetKeyDown(KeyCode.Alpha1))
 								{
-									if (Input.GetKeyDown(KeyCode.Space))
+									if (Input.GetKeyDown(KeyCode.Alpha2))
+									{
+										this.EasterEggMenu.SetActive(false);
+										this.Six();
+									}
+									else if (Input.GetKeyDown(KeyCode.Space))
 									{
 									}
 								}
@@ -5043,6 +5096,7 @@ public class YandereScript : MonoBehaviour
 
 	private void Gazer()
 	{
+		this.GazerEyes.SetActive(true);
 		this.MyRenderer.sharedMesh = this.NudeMesh;
 		this.MyRenderer.materials[0].mainTexture = this.GazerFace;
 		this.MyRenderer.materials[1].mainTexture = this.GazerBody;
@@ -5052,6 +5106,29 @@ public class YandereScript : MonoBehaviour
 		this.RunAnim = "f02_gazerRun_00";
 		this.Hairstyle = 158;
 		this.UpdateHair();
+		this.Egg = true;
+	}
+
+	private void Six()
+	{
+		RenderSettings.skybox = this.HatefulSkybox;
+		this.Hairstyle = 0;
+		this.UpdateHair();
+		this.IdleAnim = "f02_sixIdle_00";
+		this.WalkAnim = "f02_sixWalk_00";
+		this.RunAnim = "f02_sixRun_00";
+		this.SixRaincoat.SetActive(true);
+		this.MyRenderer.sharedMesh = this.SixBodyMesh;
+		this.MyRenderer.materials[0].mainTexture = this.SixFaceTexture;
+		this.MyRenderer.materials[1].mainTexture = this.NudeTexture;
+		this.MyRenderer.materials[2].mainTexture = this.NudeTexture;
+		this.TheDebugMenuScript.UpdateCensor();
+		SchoolGlobals.SchoolAtmosphere = 0f;
+		this.StudentManager.SetAtmosphere();
+		this.StudentManager.Six = true;
+		this.StudentManager.UpdateStudents();
+		this.WalkSpeed = 0.75f;
+		this.RunSpeed = 2f;
 		this.Egg = true;
 	}
 
