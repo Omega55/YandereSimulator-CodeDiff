@@ -237,49 +237,52 @@ public class PortalScript : MonoBehaviour
 
 	private void CheckForLateness()
 	{
-		if (this.Clock.HourTime < 13f)
+		if (this.StudentManager.Teachers[21] != null && this.StudentManager.Teachers[21].DistanceToDestination < 1f)
 		{
-			if (this.Clock.HourTime < 8.52f)
+			if (this.Clock.HourTime < 13f)
+			{
+				if (this.Clock.HourTime < 8.52f)
+				{
+					this.Late = 0;
+				}
+				else if (this.Clock.HourTime < 10f)
+				{
+					this.Late = 1;
+				}
+				else if (this.Clock.HourTime < 11f)
+				{
+					this.Late = 2;
+				}
+				else if (this.Clock.HourTime < 12f)
+				{
+					this.Late = 3;
+				}
+				else if (this.Clock.HourTime < 13f)
+				{
+					this.Late = 4;
+				}
+			}
+			else if (this.Clock.HourTime < 13.52f)
 			{
 				this.Late = 0;
 			}
-			else if (this.Clock.HourTime < 10f)
+			else if (this.Clock.HourTime < 14f)
 			{
 				this.Late = 1;
 			}
-			else if (this.Clock.HourTime < 11f)
+			else if (this.Clock.HourTime < 14.5f)
 			{
 				this.Late = 2;
 			}
-			else if (this.Clock.HourTime < 12f)
+			else if (this.Clock.HourTime < 15f)
 			{
 				this.Late = 3;
 			}
-			else if (this.Clock.HourTime < 13f)
+			else if (this.Clock.HourTime < 15.5f)
 			{
 				this.Late = 4;
 			}
+			this.Reputation.PendingRep -= (float)(5 * this.Late);
 		}
-		else if (this.Clock.HourTime < 13.52f)
-		{
-			this.Late = 0;
-		}
-		else if (this.Clock.HourTime < 14f)
-		{
-			this.Late = 1;
-		}
-		else if (this.Clock.HourTime < 14.5f)
-		{
-			this.Late = 2;
-		}
-		else if (this.Clock.HourTime < 15f)
-		{
-			this.Late = 3;
-		}
-		else if (this.Clock.HourTime < 15.5f)
-		{
-			this.Late = 4;
-		}
-		this.Reputation.PendingRep -= (float)(5 * this.Late);
 	}
 }

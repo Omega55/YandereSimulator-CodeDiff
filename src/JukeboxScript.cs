@@ -291,13 +291,13 @@ public class JukeboxScript : MonoBehaviour
 				this.KillVolume();
 				this.Ninja.enabled = true;
 			}
-			else if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.Alpha7))
+			else if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha7))
 			{
 				this.Egg = true;
 				this.KillVolume();
 				this.Ebola.enabled = true;
 			}
-			else if (Input.GetKeyDown(KeyCode.Alpha2))
+			else if (Input.GetKeyDown(KeyCode.Alpha6))
 			{
 				this.Egg = true;
 				this.KillVolume();

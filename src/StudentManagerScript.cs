@@ -43,6 +43,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public CabinetDoorScript CabinetDoor;
 
+	public LightSwitchScript LightSwitch;
+
 	public LoveManagerScript LoveManager;
 
 	public TaskManagerScript TaskManager;
@@ -276,6 +278,8 @@ public class StudentManagerScript : MonoBehaviour
 	public bool Censor;
 
 	public bool Spooky;
+
+	public bool Gaze;
 
 	public bool Pose;
 
@@ -823,6 +827,12 @@ public class StudentManagerScript : MonoBehaviour
 						studentScript.Prompt.MinimumDistance = 0.75f;
 						studentScript.Prompt.HideButton[0] = false;
 						studentScript.Prompt.Label[0].text = "     Eat";
+					}
+					if (this.Gaze)
+					{
+						studentScript.Prompt.MinimumDistance = 5f;
+						studentScript.Prompt.HideButton[0] = false;
+						studentScript.Prompt.Label[0].text = "     Gaze";
 					}
 				}
 			}

@@ -364,6 +364,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool TurnOffRadio;
 
+	public bool Electrified;
+
 	public bool ClubAttire;
 
 	public bool Confessing;
@@ -4070,6 +4072,11 @@ public class StudentScript : MonoBehaviour
 					this.BecomeRagdoll();
 				}
 			}
+			if (this.Electrified && this.CharacterAnimation["f02_electrocution_00"].time >= this.CharacterAnimation["f02_electrocution_00"].length)
+			{
+				this.BecomeRagdoll();
+				this.DeathType = DeathType.Electrocution;
+			}
 		}
 	}
 
@@ -4198,8 +4205,9 @@ public class StudentScript : MonoBehaviour
 											this.YandereVisible = true;
 											if (this.Yandere.Attacking || this.Yandere.Struggling || (this.Yandere.NearBodies > 0 && this.Yandere.Bloodiness > 0f && !this.Yandere.Paint) || (this.Yandere.NearBodies > 0 && this.Yandere.Armed) || (this.Yandere.NearBodies > 0 && this.Yandere.Sanity < 66.66666f) || (this.Yandere.Carrying || this.Yandere.Dragging || (this.Guarding && this.Yandere.Bloodiness > 0f && !this.Yandere.Paint)) || (this.Guarding && this.Yandere.Armed) || (this.Guarding && this.Yandere.Sanity < 66.66666f))
 											{
-												if (!this.Yandere.Egg)
+												if (this.Yandere.Hungry || !this.Yandere.Egg)
 												{
+													Debug.Log(base.name + " has just witnessed a murder!");
 													this.WitnessMurder();
 												}
 											}
@@ -4258,11 +4266,12 @@ public class StudentScript : MonoBehaviour
 					}
 					if (this.Alarm > 100f)
 					{
-						if (this.Yandere.Medusa)
+						if (this.Yandere.Medusa && this.YandereVisible)
 						{
 							this.TurnToStone();
+							return;
 						}
-						else if (!this.Alarmed || this.DiscCheck)
+						if (!this.Alarmed || this.DiscCheck)
 						{
 							this.Yandere.Alerts++;
 							if (this.StudentID > 1)
@@ -4616,7 +4625,7 @@ public class StudentScript : MonoBehaviour
 			{
 				this.Warned = false;
 			}
-			if ((this.Alarm > 0f || this.AlarmTimer > 0f || this.Yandere.Armed) && !this.Slave && !this.BadTime)
+			if ((this.Alarm > 0f || this.AlarmTimer > 0f || this.Yandere.Armed) && !this.Slave && !this.BadTime && !this.Yandere.Gazing)
 			{
 				this.Prompt.Circle[0].fillAmount = 1f;
 			}
@@ -4756,6 +4765,7 @@ public class StudentScript : MonoBehaviour
 					this.Yandere.CharacterAnimation.CrossFade("f02_sixEat_00");
 					this.Yandere.TargetStudent = this;
 					this.Yandere.FollowHips = true;
+					this.Yandere.Attacking = true;
 					this.Yandere.CanMove = false;
 					this.Yandere.Eating = true;
 					this.CharacterAnimation.CrossFade(this.EatVictimAnim);
@@ -4767,6 +4777,15 @@ public class StudentScript : MonoBehaviour
 					this.Yandere.SixTarget = gameObject2.transform;
 					this.Yandere.SixTarget.LookAt(this.Yandere.transform.position);
 					this.Yandere.SixTarget.Translate(this.Yandere.SixTarget.forward);
+				}
+				else if (this.StudentManager.Gaze)
+				{
+					this.Yandere.CharacterAnimation.CrossFade("f02_gazerPoint_00");
+					this.Yandere.GazerEyes.Attacking = true;
+					this.Yandere.TargetStudent = this;
+					this.Yandere.GazeAttacking = true;
+					this.Yandere.CanMove = false;
+					this.Routine = false;
 				}
 				else
 				{
@@ -5060,6 +5079,11 @@ public class StudentScript : MonoBehaviour
 
 	private void UpdateAlarmed()
 	{
+		if (this.Yandere.Medusa && this.YandereVisible)
+		{
+			this.TurnToStone();
+			return;
+		}
 		if (!this.Male)
 		{
 			this.SpeechLines.Stop();
@@ -5896,7 +5920,7 @@ public class StudentScript : MonoBehaviour
 				{
 					this.Shove();
 				}
-				if (this.Club == ClubType.Council)
+				if (!this.Dying && !this.Yandere.Egg && this.Club == ClubType.Council)
 				{
 					if (this.DistanceToPlayer < 5f)
 					{
@@ -7929,7 +7953,7 @@ public class StudentScript : MonoBehaviour
 		T1.eulerAngles = new Vector3(T1.eulerAngles.x, y, T1.eulerAngles.z);
 	}
 
-	private void TurnToStone()
+	public void TurnToStone()
 	{
 		this.Cosmetic.RightEyeRenderer.material.mainTexture = this.Yandere.Stone;
 		this.Cosmetic.LeftEyeRenderer.material.mainTexture = this.Yandere.Stone;
