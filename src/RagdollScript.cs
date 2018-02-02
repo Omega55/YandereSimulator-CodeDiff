@@ -465,7 +465,7 @@ public class RagdollScript : MonoBehaviour
 			this.RightEye.localPosition = new Vector3(this.RightEye.localPosition.x, this.RightEye.localPosition.y, this.RightEyeOrigin.z + this.EyeShrink * 0.01f);
 			this.LeftEye.localScale = new Vector3(1f - this.EyeShrink * 0.5f, 1f - this.EyeShrink * 0.5f, this.LeftEye.localScale.z);
 			this.RightEye.localScale = new Vector3(1f - this.EyeShrink * 0.5f, 1f - this.EyeShrink * 0.5f, this.RightEye.localScale.z);
-			if (this.StudentID == 32)
+			if (this.StudentID == 81)
 			{
 				for (int i = 0; i < 4; i++)
 				{

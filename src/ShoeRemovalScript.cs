@@ -245,6 +245,11 @@ public class ShoeRemovalScript : MonoBehaviour
 				base.enabled = false;
 				if (!this.Student.Indoors)
 				{
+					if (this.Student.Persona == PersonaType.PhoneAddict)
+					{
+						this.Student.SmartPhone.SetActive(true);
+						this.Student.WalkAnim = this.Student.PhoneAnims[1];
+					}
 					this.Student.Indoors = true;
 					this.Student.CanTalk = true;
 				}
@@ -326,6 +331,7 @@ public class ShoeRemovalScript : MonoBehaviour
 		this.Student.CanTalk = true;
 		base.enabled = false;
 		this.Character.GetComponent<Animation>().cullingType = AnimationCullingType.BasedOnRenderers;
+		this.Student.StopPairing();
 	}
 
 	private void UpdateShoes()

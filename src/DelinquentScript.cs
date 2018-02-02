@@ -439,6 +439,7 @@ public class DelinquentScript : MonoBehaviour
 			this.Yandere.Punching = false;
 			this.Yandere.CanMove = false;
 			this.Yandere.Shoved = true;
+			this.Yandere.ShoveSpeed = 2f;
 			this.ExpressedSurprise = false;
 			this.Threatening = false;
 			this.Cooldown = false;

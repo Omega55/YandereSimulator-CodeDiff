@@ -139,7 +139,7 @@ public class RingEventScript : MonoBehaviour
 						if (this.EventStudent.Cosmetic.FemaleAccessories[3] != null)
 						{
 							this.EventStudent.Cosmetic.FemaleAccessories[3].transform.parent = null;
-							this.EventStudent.Cosmetic.FemaleAccessories[3].transform.position = new Vector3(-2.712f, 12.47f, -31.136f);
+							this.EventStudent.Cosmetic.FemaleAccessories[3].transform.position = new Vector3(-2.707666f, 12.4695f, -31.136f);
 							this.EventStudent.Cosmetic.FemaleAccessories[3].transform.eulerAngles = new Vector3(-20f, 180f, 0f);
 						}
 					}

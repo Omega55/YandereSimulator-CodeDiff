@@ -64,6 +64,8 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	public bool Targeting;
 
+	public bool Dead;
+
 	public int[] SetSizes;
 
 	public int StudentID;
@@ -251,10 +253,23 @@ public class StudentInfoMenuScript : MonoBehaviour
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
-		if (this.Distracting && (this.StudentID == 0 || this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || StudentGlobals.GetStudentDead(this.StudentID) || this.StudentID > 97))
+		if (this.Distracting)
 		{
-			this.PromptBar.Label[0].text = string.Empty;
-			this.PromptBar.UpdateButtons();
+			this.Dead = false;
+			if (this.StudentManager.Students[this.StudentID] == null)
+			{
+				this.Dead = true;
+			}
+			if (this.Dead)
+			{
+				this.PromptBar.Label[0].text = string.Empty;
+				this.PromptBar.UpdateButtons();
+			}
+			else if (this.StudentID == 0 || !this.StudentManager.Students[this.StudentID].Alive || this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || StudentGlobals.GetStudentKidnapped(this.StudentID) || this.StudentManager.Students[this.StudentID].Tranquil || this.StudentManager.Students[this.StudentID].Slave || StudentGlobals.GetStudentDead(this.StudentID) || this.StudentID > 97)
+			{
+				this.PromptBar.Label[0].text = string.Empty;
+				this.PromptBar.UpdateButtons();
+			}
 		}
 		if (this.MatchMaking && (this.StudentID == this.PauseScreen.Yandere.TargetStudent.StudentID || StudentGlobals.GetStudentDead(this.StudentID) || this.StudentID > 97))
 		{
@@ -272,7 +287,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	private void UpdateNameLabel()
 	{
-		if (StudentGlobals.GetStudentPhotographed(this.StudentID))
+		if (this.StudentID > 97 || StudentGlobals.GetStudentPhotographed(this.StudentID))
 		{
 			this.NameLabel.text = this.JSON.Students[this.StudentID].Name;
 		}
@@ -312,7 +327,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 							{
 								if (!this.CustomPortraits)
 								{
-									this.StudentPortraits[ID].Portrait.mainTexture = ((ID >= 33 && ID <= 85) ? this.BlankPortrait : www.texture);
+									this.StudentPortraits[ID].Portrait.mainTexture = ((ID >= 33 && ID <= 80) ? this.BlankPortrait : www.texture);
 								}
 								else
 								{

@@ -47,24 +47,24 @@ public class TaskManagerScript : MonoBehaviour
 		}
 		if (!this.Yandere.Talking)
 		{
-			if (TaskGlobals.GetTaskStatus(32) == 1)
+			if (TaskGlobals.GetTaskStatus(81) == 1)
 			{
 				if (this.Yandere.Inventory.Cigs)
 				{
-					if (this.StudentManager.Students[32] != null)
+					if (this.StudentManager.Students[81] != null)
 					{
-						this.StudentManager.Students[32].TaskPhase = 5;
+						this.StudentManager.Students[81].TaskPhase = 5;
 					}
-					TaskGlobals.SetTaskStatus(32, 2);
+					TaskGlobals.SetTaskStatus(81, 2);
 				}
 			}
-			else if (TaskGlobals.GetTaskStatus(32) == 2 && !this.Yandere.Inventory.Cigs)
+			else if (TaskGlobals.GetTaskStatus(81) == 2 && !this.Yandere.Inventory.Cigs)
 			{
-				if (this.StudentManager.Students[32] != null)
+				if (this.StudentManager.Students[81] != null)
 				{
-					this.StudentManager.Students[32].TaskPhase = 4;
+					this.StudentManager.Students[81].TaskPhase = 4;
 				}
-				TaskGlobals.SetTaskStatus(32, 1);
+				TaskGlobals.SetTaskStatus(81, 1);
 			}
 		}
 	}
@@ -127,7 +127,7 @@ public class TaskManagerScript : MonoBehaviour
 		{
 			this.TaskObjects[15].SetActive(false);
 		}
-		if (TaskGlobals.GetTaskStatus(32) == 3)
+		if (TaskGlobals.GetTaskStatus(81) == 3)
 		{
 		}
 		if (TaskGlobals.GetTaskStatus(33) == 1)

@@ -112,7 +112,7 @@ public class HomePrisonerChanScript : MonoBehaviour
 				this.TwintailL.transform.localEulerAngles = new Vector3(0f, 0f, -90f);
 				this.Blindfold.SetActive(false);
 				this.Tripod.SetActive(false);
-				if (this.StudentID == 32 && SchemeGlobals.GetSchemeStage(6) > 4)
+				if (this.StudentID == 81 && SchemeGlobals.GetSchemeStage(6) > 4)
 				{
 					this.Blindfold.SetActive(true);
 					this.Tripod.SetActive(true);

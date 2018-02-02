@@ -62,6 +62,10 @@ public class Club
 			"Student Council"
 		},
 		{
+			ClubType.Bully,
+			"No Club"
+		},
+		{
 			ClubType.Nemesis,
 			"?????"
 		}

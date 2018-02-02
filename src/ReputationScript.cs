@@ -119,24 +119,7 @@ public class ReputationScript : MonoBehaviour
 
 	private void Bully()
 	{
-		int studentReputation = StudentGlobals.GetStudentReputation(7);
 		this.FlowerVase.SetActive(false);
-		this.Grafitti.SetActive(false);
-		if (!StudentGlobals.GetStudentDead(7))
-		{
-			if ((float)studentReputation < -33.33333f && (float)studentReputation > -66.66666f)
-			{
-				this.FlowerVase.SetActive(true);
-			}
-			else if ((float)studentReputation < -66.66666f)
-			{
-				this.Grafitti.SetActive(true);
-			}
-		}
-		else
-		{
-			this.FlowerVase.SetActive(true);
-		}
 	}
 
 	public void UpdateRep()

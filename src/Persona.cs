@@ -50,6 +50,10 @@ public class Persona
 			"Strict"
 		},
 		{
+			PersonaType.PhoneAddict,
+			"Phone Addict"
+		},
+		{
 			PersonaType.Nemesis,
 			"?????"
 		}

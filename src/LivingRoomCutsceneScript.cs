@@ -85,6 +85,8 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 	private void Start()
 	{
 		this.YandereCosmetic.SetFemaleUniform();
+		this.YandereCosmetic.RightWristband.SetActive(false);
+		this.YandereCosmetic.LeftWristband.SetActive(false);
 		this.ID = 0;
 		while (this.ID < this.YandereCosmetic.FemaleHair.Length)
 		{
@@ -298,8 +300,8 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 		{
 			if (!component.isPlaying)
 			{
-				StudentGlobals.SetStudentKidnapped(32, false);
-				StudentGlobals.SetStudentBroken(32, true);
+				StudentGlobals.SetStudentKidnapped(81, false);
+				StudentGlobals.SetStudentBroken(81, true);
 				StudentGlobals.SetStudentKidnapped(7, true);
 				StudentGlobals.SetStudentSanity(7, 100f);
 				SchoolGlobals.KidnapVictim = 7;
@@ -312,8 +314,8 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 			this.SubDarkness.color = new Color(this.SubDarkness.color.r, this.SubDarkness.color.g, this.SubDarkness.color.b, Mathf.MoveTowards(this.SubDarkness.color.a, 1f, Time.deltaTime * 0.2f));
 			if (this.SubDarkness.color.a == 1f)
 			{
-				StudentGlobals.SetStudentKidnapped(32, false);
-				StudentGlobals.SetStudentBroken(32, true);
+				StudentGlobals.SetStudentKidnapped(81, false);
+				StudentGlobals.SetStudentBroken(81, true);
 				SchoolGlobals.KidnapVictim = 0;
 				SceneManager.LoadScene("CalendarScene");
 			}

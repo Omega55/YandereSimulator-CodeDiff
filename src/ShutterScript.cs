@@ -105,6 +105,8 @@ public class ShutterScript : MonoBehaviour
 
 	public int ID;
 
+	public AudioSource MyAudio;
+
 	public int OnlyPhotography
 	{
 		get
@@ -227,7 +229,7 @@ public class ShutterScript : MonoBehaviour
 							{
 								this.ReactionDistance = this.FaceStudent.VisionDistance;
 							}
-							if (!this.FaceStudent.Alarmed && !this.FaceStudent.Distracted && !this.FaceStudent.InEvent && !this.FaceStudent.Wet && this.FaceStudent.Schoolwear > 0 && !this.FaceStudent.Fleeing && !this.FaceStudent.Following && !this.FaceStudent.ShoeRemoval.enabled && !this.FaceStudent.HoldingHands && this.FaceStudent.Actions[this.FaceStudent.Phase] != StudentActionType.Mourn && !this.FaceStudent.Guarding && Vector3.Distance(this.Yandere.transform.position, gameObject.transform.position) < this.ReactionDistance && this.FaceStudent.CanSeeObject(this.Yandere.gameObject, this.Yandere.transform.position + Vector3.up))
+							if (!this.FaceStudent.Alarmed && !this.FaceStudent.Dying && !this.FaceStudent.Distracted && !this.FaceStudent.InEvent && !this.FaceStudent.Wet && this.FaceStudent.Schoolwear > 0 && !this.FaceStudent.Fleeing && !this.FaceStudent.Following && !this.FaceStudent.ShoeRemoval.enabled && !this.FaceStudent.HoldingHands && this.FaceStudent.Actions[this.FaceStudent.Phase] != StudentActionType.Mourn && !this.FaceStudent.Guarding && Vector3.Distance(this.Yandere.transform.position, gameObject.transform.position) < this.ReactionDistance && this.FaceStudent.CanSeeObject(this.Yandere.gameObject, this.Yandere.transform.position + Vector3.up))
 							{
 								if (this.MissionMode)
 								{
@@ -433,6 +435,7 @@ public class ShutterScript : MonoBehaviour
 		this.ErrorWindow.transform.localScale = Vector3.zero;
 		this.Yandere.HandCamera.SetActive(false);
 		this.Sprite.color = new Color(this.Sprite.color.r, this.Sprite.color.g, this.Sprite.color.b, 1f);
+		this.MyAudio.Play();
 		this.Snapping = true;
 		this.Close = true;
 		this.Frame = 0;
@@ -546,7 +549,7 @@ public class ShutterScript : MonoBehaviour
 					{
 						text = "Wait...I recognize those panties! This person is extremely dangerous! Avoid her at all costs!";
 					}
-					else if (this.Student.StudentID == 32 || this.Student.Club == ClubType.Council)
+					else if (this.Student.Club == ClubType.Bully || this.Student.Club == ClubType.Council)
 					{
 						text = "A high value target! " + this.Student.Name + "'s panties were in high demand. I owe you a big favor for this one.";
 						PlayerGlobals.PantyShots += 5;

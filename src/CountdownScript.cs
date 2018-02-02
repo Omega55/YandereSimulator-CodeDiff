@@ -5,8 +5,10 @@ public class CountdownScript : MonoBehaviour
 {
 	public UISprite Sprite;
 
+	public float Speed = 0.05f;
+
 	private void Update()
 	{
-		this.Sprite.fillAmount -= Time.deltaTime * 0.1f;
+		this.Sprite.fillAmount = Mathf.MoveTowards(this.Sprite.fillAmount, 0f, Time.deltaTime * this.Speed);
 	}
 }

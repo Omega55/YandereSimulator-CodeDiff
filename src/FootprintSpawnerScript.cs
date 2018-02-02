@@ -81,13 +81,13 @@ public class FootprintSpawnerScript : MonoBehaviour
 				if (Input.GetButton("LB"))
 				{
 					component.clip = this.RunFootsteps[UnityEngine.Random.Range(0, this.RunFootsteps.Length)];
-					component.volume = 0.5f;
+					component.volume = 0.2f;
 					component.Play();
 				}
 				else
 				{
 					component.clip = this.WalkFootsteps[UnityEngine.Random.Range(0, this.WalkFootsteps.Length)];
-					component.volume = 0.25f;
+					component.volume = 0.1f;
 					component.Play();
 				}
 			}

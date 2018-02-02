@@ -227,7 +227,7 @@ public class QualityManagerScript : MonoBehaviour
 						}
 					}
 				}
-				if (!studentScript.Teacher && studentScript.Cosmetic.Club > ClubType.None && studentScript.Cosmetic.Club != ClubType.Council && studentScript.Cosmetic.ClubAccessories[(int)studentScript.Cosmetic.Club] != null)
+				if (!studentScript.Teacher && studentScript.Cosmetic.Club > ClubType.None && studentScript.Cosmetic.Club != ClubType.Council && studentScript.Cosmetic.Club != ClubType.Bully && studentScript.Cosmetic.ClubAccessories[(int)studentScript.Cosmetic.Club] != null)
 				{
 					Renderer component2 = studentScript.Cosmetic.ClubAccessories[(int)studentScript.Cosmetic.Club].GetComponent<Renderer>();
 					if (component2 != null)

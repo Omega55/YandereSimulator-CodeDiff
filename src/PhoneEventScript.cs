@@ -247,9 +247,12 @@ public class PhoneEventScript : MonoBehaviour
 			{
 				this.EventStudent.Prompt.enabled = true;
 			}
-			this.EventStudent.SmartPhone.SetActive(false);
+			if (!this.EventStudent.WitnessedMurder)
+			{
+				this.EventStudent.SmartPhone.SetActive(false);
+				this.EventStudent.Phone.SetActive(false);
+			}
 			this.EventStudent.Pathfinding.speed = 1f;
-			this.EventStudent.Phone.SetActive(false);
 			this.EventStudent.TargetDistance = 1f;
 			this.EventStudent.PhoneEvent = null;
 			this.EventStudent.InEvent = false;

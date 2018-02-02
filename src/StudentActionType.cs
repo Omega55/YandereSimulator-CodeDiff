@@ -23,5 +23,8 @@ public enum StudentActionType
 	Teaching,
 	SearchPatrol,
 	Wait,
-	Clean
+	Clean,
+	Gossip,
+	Graffiti,
+	Bully
 }

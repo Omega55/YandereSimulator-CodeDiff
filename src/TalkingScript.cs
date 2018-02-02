@@ -19,6 +19,8 @@ public class TalkingScript : MonoBehaviour
 
 	public bool Fake;
 
+	public string IdleAnim = string.Empty;
+
 	private void Update()
 	{
 		if (this.S.Talking)
@@ -27,7 +29,19 @@ public class TalkingScript : MonoBehaviour
 			{
 				if (!this.Fake)
 				{
-					this.S.Character.GetComponent<Animation>().CrossFade(this.S.IdleAnim);
+					if (this.S.Club != ClubType.Bully)
+					{
+						this.IdleAnim = this.S.IdleAnim;
+					}
+					else if (this.S.StudentManager.Reputation.Reputation < 33.33333f)
+					{
+						this.IdleAnim = this.S.IdleAnim;
+					}
+					else
+					{
+						this.IdleAnim = this.S.CuteAnim;
+					}
+					this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
 				}
 				if (this.S.TalkTimer == 0f)
 				{
@@ -107,7 +121,7 @@ public class TalkingScript : MonoBehaviour
 					}
 					if (this.S.Character.GetComponent<Animation>()[this.S.Nod2Anim].time >= this.S.Character.GetComponent<Animation>()[this.S.Nod2Anim].length)
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.IdleAnim);
+						this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
 					}
 					if (this.S.TalkTimer <= 0f)
 					{
@@ -215,7 +229,7 @@ public class TalkingScript : MonoBehaviour
 					}
 					if (this.S.Character.GetComponent<Animation>()[this.S.GossipAnim].time >= this.S.Character.GetComponent<Animation>()[this.S.GossipAnim].length)
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.IdleAnim);
+						this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
 					}
 					if (this.S.TalkTimer <= 0f)
 					{
@@ -234,7 +248,7 @@ public class TalkingScript : MonoBehaviour
 				{
 					this.S.TalkTimer = 0f;
 				}
-				this.S.Character.GetComponent<Animation>().CrossFade(this.S.IdleAnim);
+				this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
 				this.S.TalkTimer -= Time.deltaTime;
 				if (this.S.TalkTimer <= 0f)
 				{
@@ -259,7 +273,7 @@ public class TalkingScript : MonoBehaviour
 				}
 				if (this.S.Character.GetComponent<Animation>()[this.S.CurrentAnim].time >= this.S.Character.GetComponent<Animation>()[this.S.CurrentAnim].length)
 				{
-					this.S.Character.GetComponent<Animation>().CrossFade(this.S.IdleAnim);
+					this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
 				}
 				this.S.TalkTimer -= Time.deltaTime;
 				if (this.S.TalkTimer <= 0f)
@@ -315,7 +329,7 @@ public class TalkingScript : MonoBehaviour
 					}
 					if (this.S.Character.GetComponent<Animation>()[this.S.Nod1Anim].time >= this.S.Character.GetComponent<Animation>()[this.S.Nod1Anim].length)
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.IdleAnim);
+						this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
 					}
 					if (this.S.TalkTimer <= 0f)
 					{
@@ -362,7 +376,7 @@ public class TalkingScript : MonoBehaviour
 					}
 					if (this.S.Character.GetComponent<Animation>()[this.S.Nod1Anim].time >= this.S.Character.GetComponent<Animation>()[this.S.Nod1Anim].length)
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.IdleAnim);
+						this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
 					}
 					if (this.S.TalkTimer <= 0f)
 					{
@@ -410,7 +424,7 @@ public class TalkingScript : MonoBehaviour
 					}
 					if (this.S.Character.GetComponent<Animation>()[this.S.Nod1Anim].time >= this.S.Character.GetComponent<Animation>()[this.S.Nod1Anim].length)
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.IdleAnim);
+						this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
 					}
 					if (this.S.TalkTimer <= 0f)
 					{
@@ -763,7 +777,7 @@ public class TalkingScript : MonoBehaviour
 					}
 					if (this.S.Character.GetComponent<Animation>()[this.S.CurrentAnim].time >= this.S.Character.GetComponent<Animation>()[this.S.CurrentAnim].length)
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.IdleAnim);
+						this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
 					}
 					if (this.S.TalkTimer <= 0f)
 					{
@@ -787,7 +801,7 @@ public class TalkingScript : MonoBehaviour
 					}
 					if (this.S.Character.GetComponent<Animation>()[this.S.Nod1Anim].time >= this.S.Character.GetComponent<Animation>()[this.S.Nod1Anim].length)
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.IdleAnim);
+						this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
 					}
 					if (this.S.TalkTimer <= 0f)
 					{
@@ -818,11 +832,11 @@ public class TalkingScript : MonoBehaviour
 					}
 					if (this.S.Character.GetComponent<Animation>()[this.S.Nod1Anim].time >= this.S.Character.GetComponent<Animation>()[this.S.Nod1Anim].length)
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.IdleAnim);
+						this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
 					}
 					if (this.S.TalkTimer <= 0f)
 					{
-						this.S.MeetTime = this.S.Clock.HourTime;
+						this.S.MeetTime = this.S.Clock.HourTime - 1f;
 						if (this.S.Male)
 						{
 							this.S.MeetSpot = this.S.StudentManager.SuitorSpot;
@@ -852,7 +866,7 @@ public class TalkingScript : MonoBehaviour
 					}
 					if (this.S.Character.GetComponent<Animation>()[this.S.Nod1Anim].time >= this.S.Character.GetComponent<Animation>()[this.S.Nod1Anim].length)
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.IdleAnim);
+						this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
 					}
 					if (this.S.TalkTimer <= 0f)
 					{
@@ -894,11 +908,11 @@ public class TalkingScript : MonoBehaviour
 				}
 				if (this.S.Character.GetComponent<Animation>()[this.S.Nod2Anim].time >= this.S.Character.GetComponent<Animation>()[this.S.Nod2Anim].length)
 				{
-					this.S.Character.GetComponent<Animation>().CrossFade(this.S.IdleAnim);
+					this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
 				}
 				if (this.S.Character.GetComponent<Animation>()[this.S.GossipAnim].time >= this.S.Character.GetComponent<Animation>()[this.S.GossipAnim].length)
 				{
-					this.S.Character.GetComponent<Animation>().CrossFade(this.S.IdleAnim);
+					this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
 				}
 				this.S.TalkTimer -= Time.deltaTime;
 				if (this.S.TalkTimer <= 0f)

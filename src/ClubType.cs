@@ -16,6 +16,7 @@ public enum ClubType
 	Gaming,
 	Delinquent,
 	Council,
+	Bully,
 	Nemesis = 99,
 	Teacher,
 	GymTeacher,

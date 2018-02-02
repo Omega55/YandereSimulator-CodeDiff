@@ -45,6 +45,8 @@ public class JukeboxScript : MonoBehaviour
 
 	public AudioSource Jojo;
 
+	public AudioSource Sith;
+
 	public AudioSource DK;
 
 	public AudioSource FullSanity;
@@ -302,6 +304,12 @@ public class JukeboxScript : MonoBehaviour
 				this.Egg = true;
 				this.KillVolume();
 				this.Demon.enabled = true;
+			}
+			else if (Input.GetKeyDown(KeyCode.D))
+			{
+				this.Egg = true;
+				this.KillVolume();
+				this.Sith.enabled = true;
 			}
 		}
 	}

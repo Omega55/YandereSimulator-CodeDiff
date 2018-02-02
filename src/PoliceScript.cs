@@ -260,6 +260,10 @@ public class PoliceScript : MonoBehaviour
 		}
 		if (this.FadeOut)
 		{
+			if (this.Yandere.Laughing)
+			{
+				this.Yandere.StopLaughing();
+			}
 			if (this.Clock.TimeSkip || this.Yandere.CanMove)
 			{
 				if (this.Clock.TimeSkip)
@@ -267,7 +271,6 @@ public class PoliceScript : MonoBehaviour
 					this.Clock.EndTimeSkip();
 				}
 				this.Yandere.StopAiming();
-				this.Yandere.StopLaughing();
 				this.Yandere.CanMove = false;
 				this.Yandere.YandereVision = false;
 				this.Yandere.PauseScreen.enabled = false;

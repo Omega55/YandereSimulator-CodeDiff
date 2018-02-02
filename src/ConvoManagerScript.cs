@@ -16,7 +16,7 @@ public class ConvoManagerScript : MonoBehaviour
 			{
 				if (this.ID != StudentID && this.SM.Students[this.ID] != null)
 				{
-					if ((double)Vector3.Distance(this.SM.Students[this.ID].transform.position, this.SM.Students[StudentID].transform.position) < 2.5)
+					if (this.SM.Students[this.ID].Routine && (double)Vector3.Distance(this.SM.Students[this.ID].transform.position, this.SM.Students[StudentID].transform.position) < 2.5)
 					{
 						this.SM.Students[StudentID].Alone = false;
 						break;
@@ -28,7 +28,7 @@ public class ConvoManagerScript : MonoBehaviour
 		}
 		else if (StudentID == 17)
 		{
-			if ((double)Vector3.Distance(this.SM.Students[17].transform.position, this.SM.Students[18].transform.position) < 1.4)
+			if (this.SM.Students[18].Routine && (double)Vector3.Distance(this.SM.Students[17].transform.position, this.SM.Students[18].transform.position) < 1.4)
 			{
 				this.SM.Students[17].Alone = false;
 			}
@@ -39,13 +39,64 @@ public class ConvoManagerScript : MonoBehaviour
 		}
 		else if (StudentID == 18)
 		{
-			if ((double)Vector3.Distance(this.SM.Students[18].transform.position, this.SM.Students[17].transform.position) < 1.4)
+			if (this.SM.Students[17].Routine && (double)Vector3.Distance(this.SM.Students[18].transform.position, this.SM.Students[17].transform.position) < 1.4)
 			{
 				this.SM.Students[18].Alone = false;
 			}
 			else
 			{
 				this.SM.Students[18].Alone = true;
+			}
+		}
+		else if (StudentID > 20 && StudentID < 26)
+		{
+			this.ID = 21;
+			while (this.ID < 26)
+			{
+				if (this.ID != StudentID && this.SM.Students[this.ID] != null)
+				{
+					if (this.SM.Students[this.ID].Routine && (double)Vector3.Distance(this.SM.Students[this.ID].transform.position, this.SM.Students[StudentID].transform.position) < 2.5)
+					{
+						this.SM.Students[StudentID].Alone = false;
+						break;
+					}
+					this.SM.Students[StudentID].Alone = true;
+				}
+				this.ID++;
+			}
+		}
+		else if (StudentID > 25 && StudentID < 32)
+		{
+			this.ID = 26;
+			while (this.ID < 32)
+			{
+				if (this.ID != StudentID && this.SM.Students[this.ID] != null)
+				{
+					if (this.SM.Students[this.ID].Routine && (double)Vector3.Distance(this.SM.Students[this.ID].transform.position, this.SM.Students[StudentID].transform.position) < 2.5)
+					{
+						this.SM.Students[StudentID].Alone = false;
+						break;
+					}
+					this.SM.Students[StudentID].Alone = true;
+				}
+				this.ID++;
+			}
+		}
+		else if (StudentID > 80 && StudentID < 86)
+		{
+			this.ID = 81;
+			while (this.ID < 86)
+			{
+				if (this.ID != StudentID && this.SM.Students[this.ID] != null)
+				{
+					if (this.SM.Students[this.ID].Routine && (double)Vector3.Distance(this.SM.Students[this.ID].transform.position, this.SM.Students[StudentID].transform.position) < 2.5)
+					{
+						this.SM.Students[StudentID].Alone = false;
+						break;
+					}
+					this.SM.Students[StudentID].Alone = true;
+				}
+				this.ID++;
 			}
 		}
 	}

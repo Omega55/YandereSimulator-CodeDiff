@@ -45,11 +45,20 @@ public class GiggleScript : MonoBehaviour
 					this.Student.InvestigationPhase = 0;
 					this.Student.InvestigationTimer = 0f;
 					this.Student.Investigating = true;
+					this.Student.SpeechLines.Stop();
 					this.Student.DiscCheck = true;
 					this.Student.Routine = false;
 					this.Student.ReadPhase = 0;
+					this.Student.StopPairing();
+					if (this.Student.Persona != PersonaType.PhoneAddict)
+					{
+						this.Student.SmartPhone.SetActive(false);
+					}
+					else
+					{
+						this.Student.SmartPhone.SetActive(true);
+					}
 					this.Student.OccultBook.SetActive(false);
-					this.Student.SmartPhone.SetActive(false);
 					this.Student.Phone.SetActive(false);
 					this.Student.Pen.SetActive(false);
 				}

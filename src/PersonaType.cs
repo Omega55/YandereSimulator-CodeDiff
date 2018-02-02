@@ -12,5 +12,6 @@ public enum PersonaType
 	Lovestruck,
 	Dangerous,
 	Strict,
+	PhoneAddict,
 	Nemesis = 99
 }

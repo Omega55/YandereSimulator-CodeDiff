@@ -263,6 +263,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] Task34Lines;
 
+	public string[] Task81Lines;
+
 	public string[] Club0Info;
 
 	public string[] Club3Info;
@@ -412,6 +414,8 @@ public class SubtitleScript : MonoBehaviour
 	public AudioClip[] Task33Clips;
 
 	public AudioClip[] Task34Clips;
+
+	public AudioClip[] Task81Clips;
 
 	public AudioClip[] Club0Clips;
 
@@ -648,6 +652,10 @@ public class SubtitleScript : MonoBehaviour
 			{
 				SubtitleType.Task34Line,
 				new AudioClipArrayWrapper(this.Task34Clips)
+			},
+			{
+				SubtitleType.Task81Line,
+				new AudioClipArrayWrapper(this.Task81Clips)
 			},
 			{
 				SubtitleType.TeacherAttackReaction,
@@ -1319,6 +1327,11 @@ public class SubtitleScript : MonoBehaviour
 			this.Label.text = this.Task34Lines[ID];
 			this.PlayVoice(subtitleType, ID);
 		}
+		else if (subtitleType == SubtitleType.Task81Line)
+		{
+			this.Label.text = this.Task81Lines[ID];
+			this.PlayVoice(subtitleType, ID);
+		}
 		else if (subtitleType == SubtitleType.ClubGreeting)
 		{
 			this.Label.text = this.ClubGreetings[ID];
@@ -1518,6 +1531,10 @@ public class SubtitleScript : MonoBehaviour
 		if (StudentID == 34)
 		{
 			return this.Task34Clips[TaskPhase].length;
+		}
+		if (StudentID == 81)
+		{
+			return this.Task81Clips[TaskPhase].length;
 		}
 		return 0f;
 	}

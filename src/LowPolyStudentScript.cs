@@ -5,8 +5,6 @@ public class LowPolyStudentScript : MonoBehaviour
 {
 	public StudentScript Student;
 
-	public SkinnedMeshRenderer CharacterMesh;
-
 	public Renderer TeacherMesh;
 
 	public Renderer MyMesh;
@@ -20,19 +18,19 @@ public class LowPolyStudentScript : MonoBehaviour
 			{
 				if (!this.MyMesh.enabled)
 				{
-					this.CharacterMesh.enabled = false;
+					this.Student.MyRenderer.enabled = false;
 					this.MyMesh.enabled = true;
 				}
 			}
 			else if (this.MyMesh.enabled)
 			{
-				this.CharacterMesh.enabled = true;
+				this.Student.MyRenderer.enabled = true;
 				this.MyMesh.enabled = false;
 			}
 		}
 		else if (this.MyMesh.enabled)
 		{
-			this.CharacterMesh.enabled = true;
+			this.Student.MyRenderer.enabled = true;
 			this.MyMesh.enabled = false;
 		}
 	}

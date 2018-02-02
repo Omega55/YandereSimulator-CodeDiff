@@ -118,6 +118,7 @@ public enum SubtitleType
 	Task32Line,
 	Task33Line,
 	Task34Line,
+	Task81Line,
 	TeacherAttackReaction,
 	TeacherBloodHostile,
 	TeacherBloodReaction,

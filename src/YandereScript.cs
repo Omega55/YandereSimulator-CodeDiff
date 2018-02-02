@@ -939,6 +939,10 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject SixRaincoat;
 
+	public GameObject RisingSmoke;
+
+	public GameObject DarkHelix;
+
 	public Texture SixFaceTexture;
 
 	public AudioClip SixTakedown;
@@ -956,6 +960,8 @@ public class YandereScript : MonoBehaviour
 	public int Hunger;
 
 	public float[] BloodTimes;
+
+	public AudioClip[] Snarls;
 
 	public Mesh SchoolSwimsuit;
 
@@ -1858,8 +1864,16 @@ public class YandereScript : MonoBehaviour
 			if (this.Aiming)
 			{
 				this.CharacterAnimation["f02_cameraPose_00"].weight = Mathf.Lerp(this.CharacterAnimation["f02_cameraPose_00"].weight, 1f, Time.deltaTime * 10f);
-				if (this.ClubAccessories[7].activeInHierarchy && (Input.GetAxis("DpadY") != 0f || Input.GetAxis("Mouse ScrollWheel") != 0f))
+				if (this.ClubAccessories[7].activeInHierarchy && (Input.GetAxis("DpadY") != 0f || Input.GetAxis("Mouse ScrollWheel") != 0f || Input.GetKey(KeyCode.Tab) || Input.GetKey(KeyCode.LeftShift)))
 				{
+					if (Input.GetKey(KeyCode.Tab))
+					{
+						this.Smartphone.fieldOfView -= Time.deltaTime * 100f;
+					}
+					if (Input.GetKey(KeyCode.LeftShift))
+					{
+						this.Smartphone.fieldOfView += Time.deltaTime * 100f;
+					}
 					this.Smartphone.fieldOfView -= Input.GetAxis("DpadY");
 					this.Smartphone.fieldOfView -= Input.GetAxis("Mouse ScrollWheel") * 10f;
 					if (this.Smartphone.fieldOfView > 60f)
@@ -3036,6 +3050,7 @@ public class YandereScript : MonoBehaviour
 						this.Hunger++;
 						if (this.Hunger == 5)
 						{
+							this.RisingSmoke.SetActive(true);
 							this.RunAnim = "f02_sixFastRun_00";
 						}
 					}
@@ -4201,6 +4216,11 @@ public class YandereScript : MonoBehaviour
 									this.EasterEggMenu.SetActive(false);
 									this.Gazer();
 								}
+								else if (Input.GetKeyDown(KeyCode.Alpha3))
+								{
+									this.StudentManager.SecurityCameras();
+									this.EasterEggMenu.SetActive(false);
+								}
 								else if (Input.GetKeyDown(KeyCode.Alpha6))
 								{
 									this.EasterEggMenu.SetActive(false);
@@ -5172,6 +5192,9 @@ public class YandereScript : MonoBehaviour
 		this.IdleAnim = "f02_gazerIdle_00";
 		this.WalkAnim = "f02_gazerWalk_00";
 		this.RunAnim = "f02_gazerRun_00";
+		this.OriginalIdleAnim = this.IdleAnim;
+		this.OriginalWalkAnim = this.WalkAnim;
+		this.OriginalRunAnim = this.RunAnim;
 		this.Hairstyle = 158;
 		this.UpdateHair();
 		this.StudentManager.Gaze = true;
@@ -5188,6 +5211,9 @@ public class YandereScript : MonoBehaviour
 		this.IdleAnim = "f02_sixIdle_00";
 		this.WalkAnim = "f02_sixWalk_00";
 		this.RunAnim = "f02_sixRun_00";
+		this.OriginalIdleAnim = this.IdleAnim;
+		this.OriginalWalkAnim = this.WalkAnim;
+		this.OriginalRunAnim = this.RunAnim;
 		this.SixRaincoat.SetActive(true);
 		this.MyRenderer.sharedMesh = this.SixBodyMesh;
 		this.MyRenderer.materials[0].mainTexture = this.SixFaceTexture;
@@ -5206,6 +5232,8 @@ public class YandereScript : MonoBehaviour
 
 	public void ChangeSchoolwear()
 	{
+		this.RightFootprintSpawner.Bloodiness = 0;
+		this.LeftFootprintSpawner.Bloodiness = 0;
 		if (this.ClubAttire && this.Bloodiness == 0f)
 		{
 			this.Schoolwear = this.PreviousSchoolwear;

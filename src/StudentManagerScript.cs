@@ -111,19 +111,25 @@ public class StudentManagerScript : MonoBehaviour
 
 	public GradingPaperScript[] FacultyDesks;
 
+	public StudentScript[] WitnessList;
+
+	public StudentScript[] Teachers;
+
+	public GameObject[] Graffiti;
+
+	public ListScript[] Seats;
+
 	public Transform[] CorpseGuardLocation;
 
 	public Transform[] LockerPositions;
 
-	public StudentScript[] WitnessList;
-
 	public Transform[] SpawnPositions;
+
+	public Transform[] GraffitiSpots;
 
 	public Transform[] PinDownSpots;
 
-	public StudentScript[] Teachers;
-
-	public ListScript[] Seats;
+	public Transform[] BullySpots;
 
 	public bool[] SeatsTaken11;
 
@@ -180,6 +186,8 @@ public class StudentManagerScript : MonoBehaviour
 	public Transform RomanceSpot;
 
 	public Transform BrokenSpot;
+
+	public Transform BullyGroup;
 
 	public Transform EdgeOfGrid;
 
@@ -241,6 +249,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public int SuitorID = 13;
 
+	public int VictimID;
+
 	public int NurseID = 93;
 
 	public int RivalID = 7;
@@ -279,6 +289,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public bool Spooky;
 
+	public bool Bully;
+
 	public bool Gaze;
 
 	public bool Pose;
@@ -287,6 +299,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public bool Stop;
 
+	public bool Egg;
+
 	public bool Six;
 
 	public bool AoT;
@@ -294,6 +308,8 @@ public class StudentManagerScript : MonoBehaviour
 	public bool DK;
 
 	public float ChangeTimer;
+
+	public float LowestRep;
 
 	public float PinTimer;
 
@@ -313,6 +329,10 @@ public class StudentManagerScript : MonoBehaviour
 
 	[SerializeField]
 	private int ProblemID = -1;
+
+	public GameObject Cardigan;
+
+	public SkinnedMeshRenderer CardiganRenderer;
 
 	public bool SeatOccupied;
 
@@ -414,6 +434,11 @@ public class StudentManagerScript : MonoBehaviour
 					this.SpawnStudent(this.SpawnID);
 					this.SpawnID++;
 				}
+				this.Graffiti[1].SetActive(false);
+				this.Graffiti[2].SetActive(false);
+				this.Graffiti[3].SetActive(false);
+				this.Graffiti[4].SetActive(false);
+				this.Graffiti[5].SetActive(false);
 			}
 		}
 		else
@@ -474,6 +499,7 @@ public class StudentManagerScript : MonoBehaviour
 			if (this.Frame == 3)
 			{
 				this.LoveManager.CoupleCheck();
+				this.DetermineVictim();
 				this.UpdateStudents();
 			}
 		}
@@ -538,6 +564,7 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			if (this.PinningDown && this.Witnesses < 4)
 			{
+				this.Yandere.CanMove = true;
 				this.PinningDown = false;
 				this.PinPhase = 0;
 			}
@@ -643,6 +670,10 @@ public class StudentManagerScript : MonoBehaviour
 					this.PinningDown = false;
 				}
 			}
+		}
+		if (Input.GetKeyDown("space"))
+		{
+			this.DetermineVictim();
 		}
 	}
 
@@ -822,7 +853,7 @@ public class StudentManagerScript : MonoBehaviour
 						studentScript.Prompt.HideButton[0] = false;
 						studentScript.Prompt.Label[0].text = "     Pose";
 					}
-					if (this.Six)
+					if (!studentScript.Teacher && this.Six)
 					{
 						studentScript.Prompt.MinimumDistance = 0.75f;
 						studentScript.Prompt.HideButton[0] = false;
@@ -1586,6 +1617,62 @@ public class StudentManagerScript : MonoBehaviour
 			if (studentScript != null)
 			{
 				studentScript.BookBag.SetActive(!studentScript.BookBag.activeInHierarchy);
+			}
+			this.ID++;
+		}
+	}
+
+	public void DetermineVictim()
+	{
+		this.Bully = false;
+		this.ID = 1;
+		while (this.ID < this.Students.Length)
+		{
+			StudentScript x = this.Students[this.ID];
+			if (x != null && (float)StudentGlobals.GetStudentReputation(this.ID) < this.LowestRep)
+			{
+				this.LowestRep = (float)StudentGlobals.GetStudentReputation(this.ID);
+				this.VictimID = this.ID;
+				this.Bully = true;
+			}
+			this.ID++;
+		}
+		if (this.Bully)
+		{
+			Debug.Log("A student has been chosen to be bullied. It's Student #" + this.VictimID);
+			if (this.Students[this.VictimID].Seat.position.x > 0f)
+			{
+				this.BullyGroup.position = this.Students[this.VictimID].Seat.position + new Vector3(0.33333f, 0f, 0f);
+			}
+			else
+			{
+				this.BullyGroup.position = this.Students[this.VictimID].Seat.position - new Vector3(0.33333f, 0f, 0f);
+				this.BullyGroup.eulerAngles = new Vector3(0f, 90f, 0f);
+			}
+			StudentScript studentScript = this.Students[this.VictimID];
+			ScheduleBlock scheduleBlock = studentScript.ScheduleBlocks[2];
+			scheduleBlock.destination = "ShameSpot";
+			scheduleBlock.action = "Shamed";
+			ScheduleBlock scheduleBlock2 = studentScript.ScheduleBlocks[4];
+			scheduleBlock2.destination = "Seat";
+			scheduleBlock2.action = "Sit";
+			studentScript.IdleAnim = studentScript.BulliedIdleAnim;
+			studentScript.WalkAnim = studentScript.BulliedWalkAnim;
+			studentScript.Bullied = true;
+			studentScript.GetDestinations();
+		}
+	}
+
+	public void SecurityCameras()
+	{
+		this.Egg = true;
+		this.ID = 1;
+		while (this.ID < this.Students.Length)
+		{
+			StudentScript studentScript = this.Students[this.ID];
+			if (studentScript != null && studentScript.SecurityCamera != null)
+			{
+				studentScript.SecurityCamera.SetActive(true);
 			}
 			this.ID++;
 		}

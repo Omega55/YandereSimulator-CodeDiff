@@ -590,7 +590,7 @@ public class DialogueWheelScript : MonoBehaviour
 		}
 		else if (!PlayerGlobals.GetStudentFriend(this.Yandere.TargetStudent.StudentID))
 		{
-			if (this.Yandere.TargetStudent.StudentID != 6 && this.Yandere.TargetStudent.StudentID != 7 && this.Yandere.TargetStudent.StudentID != 13 && this.Yandere.TargetStudent.StudentID != 14 && this.Yandere.TargetStudent.StudentID != 15 && this.Yandere.TargetStudent.StudentID != 32 && this.Yandere.TargetStudent.StudentID != 33)
+			if (this.Yandere.TargetStudent.StudentID != 6 && this.Yandere.TargetStudent.StudentID != 7 && this.Yandere.TargetStudent.StudentID != 13 && this.Yandere.TargetStudent.StudentID != 14 && this.Yandere.TargetStudent.StudentID != 15 && this.Yandere.TargetStudent.StudentID != 81 && this.Yandere.TargetStudent.StudentID != 33)
 			{
 				UISprite uisprite13 = this.Shadow[5];
 				uisprite13.color = new Color(uisprite13.color.r, uisprite13.color.g, uisprite13.color.b, 0.75f);
@@ -602,14 +602,14 @@ public class DialogueWheelScript : MonoBehaviour
 					UISprite uisprite14 = this.Shadow[5];
 					uisprite14.color = new Color(uisprite14.color.r, uisprite14.color.g, uisprite14.color.b, 0.75f);
 				}
-				if (this.Yandere.TargetStudent.StudentID == 32)
+				if (this.Yandere.TargetStudent.StudentID == 81)
 				{
 					if (this.Clock.Period != 3 || this.Yandere.TargetStudent.DistanceToDestination > 1f)
 					{
 						UISprite uisprite15 = this.Shadow[5];
 						uisprite15.color = new Color(uisprite15.color.r, uisprite15.color.g, uisprite15.color.b, 0.75f);
 					}
-					else if (TaskGlobals.GetTaskStatus(32) == 1 && this.Yandere.Inventory.Cigs)
+					else if (TaskGlobals.GetTaskStatus(81) == 1 && this.Yandere.Inventory.Cigs)
 					{
 						UISprite uisprite16 = this.Shadow[5];
 						uisprite16.color = new Color(uisprite16.color.r, uisprite16.color.g, uisprite16.color.b, 0f);
@@ -697,7 +697,7 @@ public class DialogueWheelScript : MonoBehaviour
 
 	private void CheckTaskCompletion()
 	{
-		if (TaskGlobals.GetTaskStatus(this.Yandere.TargetStudent.StudentID) == 2 && this.Yandere.TargetStudent.StudentID == 32)
+		if (TaskGlobals.GetTaskStatus(this.Yandere.TargetStudent.StudentID) == 2 && this.Yandere.TargetStudent.StudentID == 81)
 		{
 			this.Yandere.Inventory.Cigs = false;
 		}
@@ -707,6 +707,10 @@ public class DialogueWheelScript : MonoBehaviour
 	{
 		if (this.Yandere.TargetStudent != null)
 		{
+			if (this.Yandere.TargetStudent.Persona == PersonaType.PhoneAddict)
+			{
+				this.Yandere.TargetStudent.SmartPhone.SetActive(true);
+			}
 			if (this.Yandere.TargetStudent.Pestered >= 10)
 			{
 				this.Yandere.TargetStudent.Ignoring = true;
@@ -726,6 +730,11 @@ public class DialogueWheelScript : MonoBehaviour
 					this.Yandere.TargetStudent.CurrentDestination = this.Yandere.TargetStudent.StudentManager.Patrols.List[this.Yandere.TargetStudent.StudentID].GetChild(this.Yandere.TargetStudent.PatrolID);
 					this.Yandere.TargetStudent.Pathfinding.target = this.Yandere.TargetStudent.CurrentDestination;
 				}
+			}
+			if (this.Yandere.TargetStudent.Persona == PersonaType.PhoneAddict)
+			{
+				this.Yandere.TargetStudent.SmartPhone.SetActive(true);
+				this.Yandere.TargetStudent.WalkAnim = this.Yandere.TargetStudent.PhoneAnims[1];
 			}
 			this.Yandere.TargetStudent.ShoulderCamera.OverShoulder = false;
 			this.Yandere.TargetStudent.Waiting = true;
