@@ -129,14 +129,7 @@ public class PhoneEventScript : MonoBehaviour
 					this.Timer += Time.deltaTime;
 					if (this.Timer > 1.5f)
 					{
-						if (this.EventStudent.StudentID == 33)
-						{
-							this.EventStudent.SmartPhone.SetActive(true);
-						}
-						else
-						{
-							this.EventStudent.Phone.SetActive(true);
-						}
+						this.EventStudent.SmartPhone.SetActive(true);
 					}
 					if (this.Timer > 3f)
 					{
@@ -186,14 +179,7 @@ public class PhoneEventScript : MonoBehaviour
 				{
 					if (this.EventStudent.Character.GetComponent<Animation>()[this.EventAnim[2]].time >= this.EventStudent.Character.GetComponent<Animation>()[this.EventAnim[2]].length * 90.33333f)
 					{
-						if (this.EventStudent.StudentID == 33)
-						{
-							this.EventStudent.SmartPhone.SetActive(true);
-						}
-						else
-						{
-							this.EventStudent.Phone.SetActive(true);
-						}
+						this.EventStudent.SmartPhone.SetActive(true);
 					}
 					if (this.EventStudent.Character.GetComponent<Animation>()[this.EventAnim[2]].time >= this.EventStudent.Character.GetComponent<Animation>()[this.EventAnim[2]].length)
 					{
@@ -250,7 +236,6 @@ public class PhoneEventScript : MonoBehaviour
 			if (!this.EventStudent.WitnessedMurder)
 			{
 				this.EventStudent.SmartPhone.SetActive(false);
-				this.EventStudent.Phone.SetActive(false);
 			}
 			this.EventStudent.Pathfinding.speed = 1f;
 			this.EventStudent.TargetDistance = 1f;

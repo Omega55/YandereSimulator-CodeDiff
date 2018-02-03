@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class LaptopScript : MonoBehaviour
 {
+	public SkinnedMeshRenderer SCPRenderer;
+
 	public Camera LaptopCamera;
 
 	public JukeboxScript Jukebox;
@@ -27,6 +29,8 @@ public class LaptopScript : MonoBehaviour
 
 	public string[] Subs;
 
+	public Mesh[] Uniforms;
+
 	public int FirstFrame;
 
 	public float Timer;
@@ -44,6 +48,7 @@ public class LaptopScript : MonoBehaviour
 		}
 		else
 		{
+			this.SCPRenderer.sharedMesh = this.Uniforms[StudentGlobals.FemaleUniform];
 			Animation component = this.SCP.GetComponent<Animation>();
 			component["f02_scp_00"].speed = 0f;
 			component["f02_scp_00"].time = 0f;

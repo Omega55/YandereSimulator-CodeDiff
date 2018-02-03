@@ -145,6 +145,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public Texture RedStockings;
 
+	public Texture BlackKneeSocks;
+
 	public Texture GreenSocks;
 
 	public Texture KizanaStockings;
@@ -358,9 +360,12 @@ public class CosmeticScript : MonoBehaviour
 			this.LeftWristband.SetActive(false);
 			if (this.Club == ClubType.Bully)
 			{
-				this.Student.SmartPhone.GetComponent<Renderer>().material.mainTexture = this.SmartphoneTextures[this.StudentID];
-				this.Student.SmartPhone.transform.localPosition = new Vector3(0.01f, 0.005f, 0.01f);
-				this.Student.SmartPhone.transform.localEulerAngles = new Vector3(0f, -160f, 165f);
+				if (!this.Kidnapped)
+				{
+					this.Student.SmartPhone.GetComponent<Renderer>().material.mainTexture = this.SmartphoneTextures[this.StudentID];
+					this.Student.SmartPhone.transform.localPosition = new Vector3(0.01f, 0.005f, 0.01f);
+					this.Student.SmartPhone.transform.localEulerAngles = new Vector3(0f, -160f, 165f);
+				}
 				this.RightWristband.GetComponent<Renderer>().material.mainTexture = this.WristwearTextures[this.StudentID];
 				this.LeftWristband.GetComponent<Renderer>().material.mainTexture = this.WristwearTextures[this.StudentID];
 				this.Bookbag.GetComponent<Renderer>().material.mainTexture = this.BookbagTextures[this.StudentID];
@@ -382,7 +387,11 @@ public class CosmeticScript : MonoBehaviour
 				}
 				if (!this.Kidnapped && SceneManager.GetActiveScene().name == "PortraitScene")
 				{
-					if (this.StudentID == 81)
+					if (this.StudentID == 32)
+					{
+						this.Character.GetComponent<Animation>().Play("f02_shy_00");
+					}
+					else if (this.StudentID == 81)
 					{
 						this.Character.GetComponent<Animation>().Play("f02_socialCameraPose_00");
 						base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y + 0.05f, base.transform.position.z);
@@ -1236,6 +1245,10 @@ public class CosmeticScript : MonoBehaviour
 		{
 			this.MyStockings = this.GreenSocks;
 		}
+		else if (this.Stockings == "ShortBlack")
+		{
+			this.MyStockings = this.BlackKneeSocks;
+		}
 		else if (this.Stockings == "Black")
 		{
 			this.MyStockings = this.BlackStockings;
@@ -1415,12 +1428,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public void EyeTypeCheck()
 	{
-		if (StudentGlobals.FemaleUniform == 1 && this.EyeType == "Gentle")
+		if (StudentGlobals.FemaleUniform != 1 || this.EyeType == "Gentle")
 		{
-			this.Student.RiggedAccessory.GetComponent<RiggedAccessoryAttacher>().defaultMaterials = this.MyRenderer.materials;
-			this.Student.RiggedAccessory.GetComponent<RiggedAccessoryAttacher>().Gentle = true;
-			this.Student.AttachRiggedAccessory();
-			this.CustomEyes = true;
 		}
 	}
 }

@@ -967,11 +967,10 @@ public class StudentManagerScript : MonoBehaviour
 					studentScript.Pathfinding.canSearch = false;
 					studentScript.Pathfinding.canMove = false;
 					studentScript.OccultBook.SetActive(false);
+					studentScript.SmartPhone.SetActive(false);
 					studentScript.Pathfinding.speed = 0f;
-					studentScript.Phone.SetActive(false);
 					studentScript.Distracted = false;
 					studentScript.Pushable = false;
-					studentScript.OnPhone = false;
 					studentScript.Routine = true;
 					studentScript.Safe = false;
 					if (studentScript.Wet)
@@ -1046,11 +1045,10 @@ public class StudentManagerScript : MonoBehaviour
 					studentScript.transform.rotation = studentScript.Seat.rotation;
 					studentScript.Pathfinding.canSearch = true;
 					studentScript.Pathfinding.canMove = true;
+					studentScript.SmartPhone.SetActive(false);
 					studentScript.OccultBook.SetActive(false);
 					studentScript.Pathfinding.speed = 1f;
-					studentScript.Phone.SetActive(false);
 					studentScript.Distracted = false;
-					studentScript.OnPhone = false;
 					studentScript.Routine = true;
 					studentScript.Safe = false;
 					if (studentScript.ClubAttire)
@@ -1625,11 +1623,11 @@ public class StudentManagerScript : MonoBehaviour
 	public void DetermineVictim()
 	{
 		this.Bully = false;
-		this.ID = 1;
+		this.ID = 2;
 		while (this.ID < this.Students.Length)
 		{
-			StudentScript x = this.Students[this.ID];
-			if (x != null && (float)StudentGlobals.GetStudentReputation(this.ID) < this.LowestRep)
+			StudentScript studentScript = this.Students[this.ID];
+			if (studentScript != null && !studentScript.Teacher && studentScript.Club != ClubType.Bully && studentScript.Club != ClubType.Council && (float)StudentGlobals.GetStudentReputation(this.ID) < this.LowestRep)
 			{
 				this.LowestRep = (float)StudentGlobals.GetStudentReputation(this.ID);
 				this.VictimID = this.ID;
@@ -1639,7 +1637,7 @@ public class StudentManagerScript : MonoBehaviour
 		}
 		if (this.Bully)
 		{
-			Debug.Log("A student has been chosen to be bullied. It's Student #" + this.VictimID);
+			Debug.Log("A student has been chosen to be bullied. It's Student #" + this.VictimID + ".");
 			if (this.Students[this.VictimID].Seat.position.x > 0f)
 			{
 				this.BullyGroup.position = this.Students[this.VictimID].Seat.position + new Vector3(0.33333f, 0f, 0f);
@@ -1649,17 +1647,17 @@ public class StudentManagerScript : MonoBehaviour
 				this.BullyGroup.position = this.Students[this.VictimID].Seat.position - new Vector3(0.33333f, 0f, 0f);
 				this.BullyGroup.eulerAngles = new Vector3(0f, 90f, 0f);
 			}
-			StudentScript studentScript = this.Students[this.VictimID];
-			ScheduleBlock scheduleBlock = studentScript.ScheduleBlocks[2];
+			StudentScript studentScript2 = this.Students[this.VictimID];
+			ScheduleBlock scheduleBlock = studentScript2.ScheduleBlocks[2];
 			scheduleBlock.destination = "ShameSpot";
 			scheduleBlock.action = "Shamed";
-			ScheduleBlock scheduleBlock2 = studentScript.ScheduleBlocks[4];
+			ScheduleBlock scheduleBlock2 = studentScript2.ScheduleBlocks[4];
 			scheduleBlock2.destination = "Seat";
 			scheduleBlock2.action = "Sit";
-			studentScript.IdleAnim = studentScript.BulliedIdleAnim;
-			studentScript.WalkAnim = studentScript.BulliedWalkAnim;
-			studentScript.Bullied = true;
-			studentScript.GetDestinations();
+			studentScript2.IdleAnim = studentScript2.BulliedIdleAnim;
+			studentScript2.WalkAnim = studentScript2.BulliedWalkAnim;
+			studentScript2.Bullied = true;
+			studentScript2.GetDestinations();
 		}
 	}
 

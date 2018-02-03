@@ -158,6 +158,10 @@ public class CleaningManagerScript : MonoBehaviour
 			this.Role = 4;
 			this.Spot = this.Toilets[1];
 			break;
+		case 32:
+			this.Role = 4;
+			this.Spot = this.Toilets[7];
+			break;
 		case 33:
 			this.Role = 4;
 			this.Spot = this.Toilets[0];

@@ -389,8 +389,8 @@ public class CookingEventScript : MonoBehaviour
 				this.Plate.GetComponent<BoxCollider>().enabled = true;
 			}
 			this.EventStudent.Character.GetComponent<Animation>()[this.EventStudent.CarryAnim].weight = 0f;
+			this.EventStudent.SmartPhone.SetActive(false);
 			this.EventStudent.Pathfinding.speed = 1f;
-			this.EventStudent.Phone.SetActive(false);
 			this.EventStudent.TargetDistance = 1f;
 			this.EventStudent.PhoneEvent = null;
 			this.EventStudent.InEvent = false;

@@ -64,8 +64,8 @@ public class MovingEventScript : MonoBehaviour
 				this.EventStudent.Character.GetComponent<Animation>()[this.EventStudent.BentoAnim].weight = 1f;
 				this.EventStudent.CurrentDestination = this.EventLocation[0];
 				this.EventStudent.Pathfinding.target = this.EventLocation[0];
+				this.EventStudent.SmartPhone.SetActive(false);
 				this.EventStudent.Scrubber.SetActive(false);
-				this.EventStudent.Phone.SetActive(false);
 				this.EventStudent.Bento.SetActive(true);
 				this.EventStudent.Pen.SetActive(false);
 				this.EventStudent.MovingEvent = this;
@@ -79,7 +79,6 @@ public class MovingEventScript : MonoBehaviour
 		{
 			if (this.Prompt.Circle[0].fillAmount == 0f)
 			{
-				this.Portal.InEvent = true;
 				this.Poisoned = true;
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
@@ -356,7 +355,6 @@ public class MovingEventScript : MonoBehaviour
 			this.EventSubtitle.text = string.Empty;
 			this.StudentManager.UpdateStudents();
 		}
-		this.Portal.InEvent = false;
 		this.EventActive = false;
 		this.EventCheck = false;
 		this.Prompt.Hide();

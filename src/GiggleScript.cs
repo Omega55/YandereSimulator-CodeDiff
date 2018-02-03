@@ -59,7 +59,8 @@ public class GiggleScript : MonoBehaviour
 						this.Student.SmartPhone.SetActive(true);
 					}
 					this.Student.OccultBook.SetActive(false);
-					this.Student.Phone.SetActive(false);
+					this.Student.Cigarette.SetActive(false);
+					this.Student.Lighter.SetActive(false);
 					this.Student.Pen.SetActive(false);
 				}
 				this.Distracted = true;
