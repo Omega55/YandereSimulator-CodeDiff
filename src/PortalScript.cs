@@ -152,6 +152,13 @@ public class PortalScript : MonoBehaviour
 					this.Yandere.RPGCamera.enabled = false;
 					if (this.Clock.HourTime < 13f)
 					{
+						foreach (GameObject gameObject in this.StudentManager.Graffiti)
+						{
+							if (gameObject != null)
+							{
+								gameObject.SetActive(true);
+							}
+						}
 						this.Yandere.Incinerator.Timer -= 780f - this.Clock.PresentTime;
 						this.DelinquentManager.CheckTime();
 						this.Clock.DeactivateTrespassZones();

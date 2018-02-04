@@ -2022,6 +2022,14 @@ public class YandereScript : MonoBehaviour
 			{
 				this.TheftTimer = Mathf.MoveTowards(this.TheftTimer, 0f, Time.deltaTime);
 			}
+			if (this.Eating)
+			{
+				this.FollowHips = false;
+				this.Attacking = false;
+				this.CanMove = true;
+				this.Eating = false;
+				this.EatPhase = 0;
+			}
 		}
 		else
 		{
@@ -3054,6 +3062,7 @@ public class YandereScript : MonoBehaviour
 							this.RunAnim = "f02_sixFastRun_00";
 						}
 					}
+					Debug.Log("Finished eating.");
 					this.FollowHips = false;
 					this.Attacking = false;
 					this.CanMove = true;

@@ -220,6 +220,13 @@ public class ClockScript : MonoBehaviour
 		{
 			if (this.Period < 5)
 			{
+				foreach (GameObject gameObject in this.StudentManager.Graffiti)
+				{
+					if (gameObject != null)
+					{
+						gameObject.SetActive(false);
+					}
+				}
 				this.PeriodLabel.text = "CLEANING TIME";
 				this.ActivateTrespassZones();
 				this.Period++;

@@ -1998,12 +1998,21 @@ public class StudentScript : MonoBehaviour
 				this.PatrolID = 0;
 				if (this.Actions[this.Phase] == StudentActionType.Clean)
 				{
+					if (this.Persona == PersonaType.PhoneAddict)
+					{
+						this.WalkAnim = this.OriginalWalkAnim;
+					}
+					this.SmartPhone.SetActive(false);
 					this.Scrubber.SetActive(true);
 					if (this.CleaningRole == 5)
 					{
 						this.Scrubber.GetComponent<Renderer>().material.mainTexture = this.Eraser.GetComponent<Renderer>().material.mainTexture;
 						this.Eraser.SetActive(true);
 					}
+				}
+				else if (this.Persona == PersonaType.PhoneAddict)
+				{
+					this.WalkAnim = this.PhoneAnims[1];
 				}
 				if (!this.Teacher && (this.Clock.Period == 2 || this.Clock.Period == 4))
 				{
@@ -2103,10 +2112,17 @@ public class StudentScript : MonoBehaviour
 				}
 				if (!this.Meeting)
 				{
-					if (this.Actions[this.Phase] == StudentActionType.Clean && this.CurrentDestination != this.CleaningSpot.GetChild(this.CleanID))
+					if (this.Actions[this.Phase] == StudentActionType.Clean)
 					{
-						this.CurrentDestination = this.CleaningSpot.GetChild(this.CleanID);
-						this.Pathfinding.target = this.CurrentDestination;
+						if (this.SmartPhone.activeInHierarchy)
+						{
+							this.SmartPhone.SetActive(false);
+						}
+						if (this.CurrentDestination != this.CleaningSpot.GetChild(this.CleanID))
+						{
+							this.CurrentDestination = this.CleaningSpot.GetChild(this.CleanID);
+							this.Pathfinding.target = this.CurrentDestination;
+						}
 					}
 					if (this.Actions[this.Phase] == StudentActionType.Patrol && this.CurrentDestination != this.StudentManager.Patrols.List[this.StudentID].GetChild(this.PatrolID))
 					{
@@ -2958,25 +2974,37 @@ public class StudentScript : MonoBehaviour
 							{
 								this.Pathfinding.speed = 4f;
 							}
-							if (this.Persona == PersonaType.PhoneAddict && this.Countdown.Sprite.fillAmount == 0f)
+							if (this.Persona == PersonaType.PhoneAddict)
 							{
-								if (this.WitnessedMurder)
+								if (this.Countdown.Sprite.fillAmount == 0f)
 								{
-									this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_down_22");
-									this.Yandere.ShoulderCamera.HeartbrokenCamera.SetActive(true);
-									this.Yandere.RPGCamera.enabled = false;
-									this.Yandere.enabled = false;
-									this.Yandere.EmptyHands();
-									this.Police.Heartbroken.Exposed = true;
-									this.Fleeing = false;
+									if (this.WitnessedMurder)
+									{
+										this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_down_22");
+										this.Yandere.ShoulderCamera.HeartbrokenCamera.SetActive(true);
+										this.Yandere.RPGCamera.enabled = false;
+										this.Yandere.enabled = false;
+										this.Yandere.EmptyHands();
+										this.Police.Heartbroken.Exposed = true;
+										this.Fleeing = false;
+									}
+									else
+									{
+										if (this.StudentManager.ChaseCamera == this)
+										{
+											this.StudentManager.ChaseCamera = null;
+										}
+										this.SprintAnim = this.OriginalSprintAnim;
+										this.Countdown.gameObject.SetActive(false);
+										this.ChaseCamera.SetActive(false);
+										this.Police.Called = true;
+										this.Police.Show = true;
+									}
 								}
-								else
+								else if (this.StudentManager.ChaseCamera == null)
 								{
-									this.SprintAnim = this.OriginalSprintAnim;
-									this.Countdown.gameObject.SetActive(false);
-									this.ChaseCamera.SetActive(false);
-									this.Police.Called = true;
-									this.Police.Show = true;
+									this.StudentManager.ChaseCamera = this.ChaseCamera;
+									this.ChaseCamera.SetActive(true);
 								}
 							}
 						}
@@ -6558,6 +6586,10 @@ public class StudentScript : MonoBehaviour
 		{
 			this.Countdown.gameObject.SetActive(false);
 			this.ChaseCamera.SetActive(false);
+			if (this.StudentManager.ChaseCamera == this.ChaseCamera)
+			{
+				this.StudentManager.ChaseCamera = null;
+			}
 		}
 		this.Investigating = false;
 		this.Pen.SetActive(false);
@@ -6901,6 +6933,8 @@ public class StudentScript : MonoBehaviour
 		{
 			if (this.StudentManager.Reporter == null && !this.Police.Called)
 			{
+				this.StudentManager.CorpseLocation.position = this.Corpse.AllColliders[0].transform.position;
+				this.StudentManager.LowerCorpsePosition();
 				Debug.Log("A student has become a ''reporter''.");
 				this.StudentManager.Reporter = this;
 				this.Reporting = true;
@@ -7072,9 +7106,13 @@ public class StudentScript : MonoBehaviour
 			this.CurrentDestination = this.StudentManager.Exit;
 			this.Pathfinding.target = this.StudentManager.Exit;
 			this.Countdown.gameObject.SetActive(true);
-			this.ChaseCamera.SetActive(true);
 			this.Routine = false;
 			this.Fleeing = true;
+			if (this.StudentManager.ChaseCamera == null)
+			{
+				this.StudentManager.ChaseCamera = this.ChaseCamera;
+				this.ChaseCamera.SetActive(true);
+			}
 		}
 		else if (this.Persona == PersonaType.Strict)
 		{

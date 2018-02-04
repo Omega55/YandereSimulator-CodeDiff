@@ -880,7 +880,7 @@ public class TalkingScript : MonoBehaviour
 			{
 				if (this.S.TalkTimer == 3f)
 				{
-					if (!this.S.Fed)
+					if (!this.S.Fed && this.S.Club != ClubType.Council)
 					{
 						this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod2Anim);
 						this.S.Subtitle.UpdateLabel(SubtitleType.AcceptFood, 0, 3f);

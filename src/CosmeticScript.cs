@@ -374,7 +374,7 @@ public class CosmeticScript : MonoBehaviour
 				{
 					this.PhoneCharms[this.StudentID].SetActive(true);
 				}
-				if (StudentGlobals.FemaleUniform == 1 || StudentGlobals.FemaleUniform == 3)
+				if (StudentGlobals.FemaleUniform < 2 || StudentGlobals.FemaleUniform == 3)
 				{
 					this.RightWristband.SetActive(true);
 					this.LeftWristband.SetActive(true);
@@ -875,9 +875,13 @@ public class CosmeticScript : MonoBehaviour
 				}
 			}
 		}
-		if (this.StudentID > 1 && this.StudentID < 8 && (float)StudentGlobals.GetStudentReputation(7) > -33.33333f)
+		if (this.StudentID > 1 && this.StudentID < 8)
 		{
 			this.FemaleAccessories[6].SetActive(true);
+			if ((float)StudentGlobals.GetStudentReputation(this.StudentID) < -33.33333f)
+			{
+				this.FemaleAccessories[6].SetActive(false);
+			}
 		}
 		if (this.StudentID == 17)
 		{

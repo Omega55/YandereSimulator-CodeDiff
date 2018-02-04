@@ -215,6 +215,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public GameObject RandomPatrol;
 
+	public GameObject ChaseCamera;
+
 	public GameObject EmptyObject;
 
 	public GameObject PortraitKun;
@@ -1658,6 +1660,7 @@ public class StudentManagerScript : MonoBehaviour
 			studentScript2.WalkAnim = studentScript2.BulliedWalkAnim;
 			studentScript2.Bullied = true;
 			studentScript2.GetDestinations();
+			studentScript2.CameraAnims = studentScript2.CowardAnims;
 		}
 	}
 
