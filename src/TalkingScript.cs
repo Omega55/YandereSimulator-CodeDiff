@@ -207,8 +207,11 @@ public class TalkingScript : MonoBehaviour
 						this.S.GossipBonus++;
 					}
 					StudentGlobals.SetStudentReputation(this.S.DialogueWheel.Victim, StudentGlobals.GetStudentReputation(this.S.DialogueWheel.Victim) - (1 + this.S.GossipBonus));
-					this.S.Reputation.PendingRep -= 2f;
-					this.S.PendingRep -= 2f;
+					if (this.S.Club != ClubType.Bully)
+					{
+						this.S.Reputation.PendingRep -= 2f;
+						this.S.PendingRep -= 2f;
+					}
 					this.S.Gossiped = true;
 					if (!ConversationGlobals.GetTopicDiscovered(15))
 					{
@@ -880,7 +883,12 @@ public class TalkingScript : MonoBehaviour
 			{
 				if (this.S.TalkTimer == 3f)
 				{
-					if (!this.S.Fed && this.S.Club != ClubType.Council)
+					if (this.S.Fed || this.S.Club == ClubType.Council)
+					{
+						this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
+						this.S.Subtitle.UpdateLabel(SubtitleType.RejectFood, 0, 3f);
+					}
+					else
 					{
 						this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod2Anim);
 						this.S.Subtitle.UpdateLabel(SubtitleType.AcceptFood, 0, 3f);
@@ -895,11 +903,6 @@ public class TalkingScript : MonoBehaviour
 						}
 						this.S.Reputation.PendingRep += 5f + (float)this.S.RepBonus;
 						this.S.PendingRep += 5f + (float)this.S.RepBonus;
-					}
-					else
-					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
-						this.S.Subtitle.UpdateLabel(SubtitleType.RejectFood, 0, 3f);
 					}
 				}
 				else if (Input.GetButtonDown("A"))

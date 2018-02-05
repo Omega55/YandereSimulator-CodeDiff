@@ -121,6 +121,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] AccidentApologies;
 
+	public string[] SadApologies;
+
 	public string[] Greetings;
 
 	public string[] PlayerFarewells;
@@ -1110,6 +1112,10 @@ public class SubtitleScript : MonoBehaviour
 		else if (subtitleType == SubtitleType.AccidentApology)
 		{
 			this.Label.text = this.GetRandomString(this.AccidentApologies);
+		}
+		else if (subtitleType == SubtitleType.SadApology)
+		{
+			this.Label.text = this.GetRandomString(this.SadApologies);
 		}
 		else if (subtitleType == SubtitleType.Forgiving)
 		{

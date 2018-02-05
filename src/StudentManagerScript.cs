@@ -245,6 +245,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public int PinPhase;
 
+	public int Bullies;
+
 	public int Frame;
 
 	public int GymTeacherID = 100;
@@ -716,6 +718,10 @@ public class StudentManagerScript : MonoBehaviour
 			{
 				this.NewStudent.GetComponent<StudentScript>().CleaningSpot = this.CleaningSpots.List[spawnID];
 				this.NewStudent.GetComponent<StudentScript>().CleaningRole = 3;
+			}
+			if (this.JSON.Students[spawnID].Club == ClubType.Bully)
+			{
+				this.Bullies++;
 			}
 			this.Students[spawnID] = this.NewStudent.GetComponent<StudentScript>();
 			StudentScript studentScript = this.Students[spawnID];
@@ -1661,6 +1667,7 @@ public class StudentManagerScript : MonoBehaviour
 			studentScript2.Bullied = true;
 			studentScript2.GetDestinations();
 			studentScript2.CameraAnims = studentScript2.CowardAnims;
+			studentScript2.BusyAtLunch = true;
 		}
 	}
 

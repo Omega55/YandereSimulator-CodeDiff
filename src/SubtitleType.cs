@@ -83,6 +83,7 @@ public enum SubtitleType
 	RivalLove,
 	RivalPickpocketReaction,
 	RivalSplashReaction,
+	SadApology,
 	SenpaiBloodReaction,
 	SenpaiCorpseReaction,
 	SenpaiInsanityReaction,

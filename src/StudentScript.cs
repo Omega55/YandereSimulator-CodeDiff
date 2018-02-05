@@ -376,6 +376,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool TurnOffRadio;
 
+	public bool BusyAtLunch;
+
 	public bool Electrified;
 
 	public bool ClubAttire;
@@ -1256,7 +1258,7 @@ public class StudentScript : MonoBehaviour
 			else if (this.StudentID == 34)
 			{
 			}
-			if (!this.Slave)
+			if (!this.Slave && this.StudentManager.Bullies > 1)
 			{
 				if (this.StudentID == 81 || this.StudentID == 83 || this.StudentID == 85)
 				{
@@ -2311,6 +2313,10 @@ public class StudentScript : MonoBehaviour
 							{
 								if (this.Bullied)
 								{
+									if (this.SmartPhone.activeInHierarchy)
+									{
+										this.SmartPhone.SetActive(false);
+									}
 									this.CharacterAnimation.CrossFade(this.SadDeskSitAnim, 1f);
 								}
 								else
@@ -2990,7 +2996,7 @@ public class StudentScript : MonoBehaviour
 									}
 									else
 									{
-										if (this.StudentManager.ChaseCamera == this)
+										if (this.StudentManager.ChaseCamera == this.ChaseCamera)
 										{
 											this.StudentManager.ChaseCamera = null;
 										}
@@ -3880,68 +3886,75 @@ public class StudentScript : MonoBehaviour
 					this.CanTalk = true;
 					this.Routine = true;
 				}
-				else if (this.DistractionTarget.InEvent || this.DistractionTarget.Talking || this.DistractionTarget.Following || this.DistractionTarget.TurnOffRadio || this.DistractionTarget.Splashed || this.DistractionTarget.Shoving || this.DistractionTarget.Spraying)
+				else if (this.DistanceToDestination < 5f)
 				{
-					this.CurrentDestination = this.Destinations[this.Phase];
-					this.Pathfinding.target = this.Destinations[this.Phase];
-					this.DistractionTarget.TargetedForDistraction = false;
-					this.Pathfinding.speed = 1f;
-					this.Distracting = false;
-					this.Distracted = false;
-					this.SpeechLines.Stop();
-					this.CanTalk = true;
-					this.Routine = true;
-				}
-				else if (this.DistanceToDestination < this.TargetDistance)
-				{
-					if (!this.DistractionTarget.Distracted)
-					{
-						this.DistractionTarget.Prompt.Label[0].text = "     Talk";
-						this.DistractionTarget.Pathfinding.canSearch = false;
-						this.DistractionTarget.Pathfinding.canMove = false;
-						this.DistractionTarget.OccultBook.SetActive(false);
-						this.DistractionTarget.Distraction = base.transform;
-						this.DistractionTarget.CameraReacting = false;
-						this.DistractionTarget.Pathfinding.speed = 0f;
-						this.DistractionTarget.Pen.SetActive(false);
-						this.DistractionTarget.Drownable = false;
-						this.DistractionTarget.Distracted = true;
-						this.DistractionTarget.Pushable = false;
-						this.DistractionTarget.Routine = false;
-						this.DistractionTarget.CanTalk = false;
-						this.DistractionTarget.ReadPhase = 0;
-						this.DistractionTarget.SpeechLines.Play();
-						this.SpeechLines.Play();
-						this.Pathfinding.speed = 0f;
-						this.Distracted = true;
-					}
-					this.targetRotation = Quaternion.LookRotation(new Vector3(this.DistractionTarget.transform.position.x, base.transform.position.y, this.DistractionTarget.transform.position.z) - base.transform.position);
-					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
-					this.CharacterAnimation.CrossFade(this.RandomAnim);
-					if (this.CharacterAnimation[this.RandomAnim].time >= this.CharacterAnimation[this.RandomAnim].length)
-					{
-						this.PickRandomAnim();
-					}
-					this.DistractTimer -= Time.deltaTime;
-					if (this.DistractTimer <= 0f)
+					if (this.DistractionTarget.InEvent || this.DistractionTarget.Talking || this.DistractionTarget.Following || this.DistractionTarget.TurnOffRadio || this.DistractionTarget.Splashed || this.DistractionTarget.Shoving || this.DistractionTarget.Spraying || this.DistractionTarget.FocusOnYandere)
 					{
 						this.CurrentDestination = this.Destinations[this.Phase];
 						this.Pathfinding.target = this.Destinations[this.Phase];
 						this.DistractionTarget.TargetedForDistraction = false;
-						this.DistractionTarget.Pathfinding.canSearch = true;
-						this.DistractionTarget.Pathfinding.canMove = true;
-						this.DistractionTarget.Pathfinding.speed = 1f;
-						this.DistractionTarget.Distraction = null;
-						this.DistractionTarget.Distracted = false;
-						this.DistractionTarget.CanTalk = true;
-						this.DistractionTarget.Routine = true;
-						this.DistractionTarget.SpeechLines.Stop();
-						this.SpeechLines.Stop();
 						this.Pathfinding.speed = 1f;
 						this.Distracting = false;
 						this.Distracted = false;
+						this.SpeechLines.Stop();
 						this.CanTalk = true;
 						this.Routine = true;
+					}
+					else if (this.DistanceToDestination < this.TargetDistance)
+					{
+						if (!this.DistractionTarget.Distracted)
+						{
+							this.DistractionTarget.Prompt.Label[0].text = "     Talk";
+							this.DistractionTarget.Pathfinding.canSearch = false;
+							this.DistractionTarget.Pathfinding.canMove = false;
+							this.DistractionTarget.OccultBook.SetActive(false);
+							this.DistractionTarget.Distraction = base.transform;
+							this.DistractionTarget.CameraReacting = false;
+							this.DistractionTarget.Pathfinding.speed = 0f;
+							this.DistractionTarget.Pen.SetActive(false);
+							this.DistractionTarget.Drownable = false;
+							this.DistractionTarget.Distracted = true;
+							this.DistractionTarget.Pushable = false;
+							this.DistractionTarget.Routine = false;
+							this.DistractionTarget.CanTalk = false;
+							this.DistractionTarget.ReadPhase = 0;
+							this.DistractionTarget.SpeechLines.Play();
+							this.SpeechLines.Play();
+							this.Pathfinding.speed = 0f;
+							this.Distracted = true;
+						}
+						this.targetRotation = Quaternion.LookRotation(new Vector3(this.DistractionTarget.transform.position.x, base.transform.position.y, this.DistractionTarget.transform.position.z) - base.transform.position);
+						base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
+						this.CharacterAnimation.CrossFade(this.RandomAnim);
+						if (this.CharacterAnimation[this.RandomAnim].time >= this.CharacterAnimation[this.RandomAnim].length)
+						{
+							this.PickRandomAnim();
+						}
+						this.DistractTimer -= Time.deltaTime;
+						if (this.DistractTimer <= 0f)
+						{
+							this.CurrentDestination = this.Destinations[this.Phase];
+							this.Pathfinding.target = this.Destinations[this.Phase];
+							this.DistractionTarget.TargetedForDistraction = false;
+							this.DistractionTarget.Pathfinding.canSearch = true;
+							this.DistractionTarget.Pathfinding.canMove = true;
+							this.DistractionTarget.Pathfinding.speed = 1f;
+							this.DistractionTarget.Distraction = null;
+							this.DistractionTarget.Distracted = false;
+							this.DistractionTarget.CanTalk = true;
+							this.DistractionTarget.Routine = true;
+							this.DistractionTarget.SpeechLines.Stop();
+							this.SpeechLines.Stop();
+							this.Pathfinding.speed = 1f;
+							this.Distracting = false;
+							this.Distracted = false;
+							this.CanTalk = true;
+							this.Routine = true;
+						}
+					}
+					else
+					{
+						this.CharacterAnimation.CrossFade(this.RunAnim);
 					}
 				}
 				else
@@ -5016,7 +5029,7 @@ public class StudentScript : MonoBehaviour
 			{
 				this.Warned = false;
 			}
-			if ((this.Alarm > 0f || this.AlarmTimer > 0f || this.Yandere.Armed) && !this.Slave && !this.BadTime && !this.Yandere.Gazing)
+			if ((this.Alarm > 0f || this.AlarmTimer > 0f || this.Yandere.Armed || this.Waiting) && !this.Slave && !this.BadTime && !this.Yandere.Gazing)
 			{
 				this.Prompt.Circle[0].fillAmount = 1f;
 			}
@@ -5049,6 +5062,37 @@ public class StudentScript : MonoBehaviour
 					this.Yandere.CanMove = false;
 					this.Yandere.PK = true;
 					this.DeathType = DeathType.EasterEgg;
+				}
+				else if (this.StudentManager.Six)
+				{
+					GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + new Vector3(0f, 1f, 0f), Quaternion.identity);
+					gameObject.GetComponent<AlarmDiscScript>().Originator = this;
+					AudioSource.PlayClipAtPoint(this.Yandere.SixTakedown, base.transform.position);
+					AudioSource.PlayClipAtPoint(this.Yandere.Snarls[UnityEngine.Random.Range(0, this.Yandere.Snarls.Length)], base.transform.position);
+					this.Yandere.CharacterAnimation.CrossFade("f02_sixEat_00");
+					this.Yandere.TargetStudent = this;
+					this.Yandere.FollowHips = true;
+					this.Yandere.Attacking = true;
+					this.Yandere.CanMove = false;
+					this.Yandere.Eating = true;
+					this.CharacterAnimation.CrossFade(this.EatVictimAnim);
+					this.Pathfinding.enabled = false;
+					this.Routine = false;
+					this.Dying = true;
+					this.Eaten = true;
+					GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(this.EmptyGameObject, base.transform.position, Quaternion.identity);
+					this.Yandere.SixTarget = gameObject2.transform;
+					this.Yandere.SixTarget.LookAt(this.Yandere.transform.position);
+					this.Yandere.SixTarget.Translate(this.Yandere.SixTarget.forward);
+				}
+				else if (this.StudentManager.Gaze)
+				{
+					this.Yandere.CharacterAnimation.CrossFade("f02_gazerPoint_00");
+					this.Yandere.GazerEyes.Attacking = true;
+					this.Yandere.TargetStudent = this;
+					this.Yandere.GazeAttacking = true;
+					this.Yandere.CanMove = false;
+					this.Routine = false;
 				}
 				else if (this.Slave)
 				{
@@ -5138,6 +5182,11 @@ public class StudentScript : MonoBehaviour
 					this.Subtitle.UpdateLabel(SubtitleType.EventApology, 1, 3f);
 					this.Prompt.Circle[0].fillAmount = 1f;
 				}
+				else if (this.Clock.Period == 3 && this.BusyAtLunch)
+				{
+					this.Subtitle.UpdateLabel(SubtitleType.SadApology, 1, 3f);
+					this.Prompt.Circle[0].fillAmount = 1f;
+				}
 				else if (this.Warned)
 				{
 					this.Subtitle.UpdateLabel(SubtitleType.GrudgeRefusal, 0, 3f);
@@ -5147,37 +5196,6 @@ public class StudentScript : MonoBehaviour
 				{
 					this.Subtitle.UpdateLabel(SubtitleType.PhotoAnnoyance, 0, 3f);
 					this.Prompt.Circle[0].fillAmount = 1f;
-				}
-				else if (this.StudentManager.Six)
-				{
-					GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + new Vector3(0f, 1f, 0f), Quaternion.identity);
-					gameObject.GetComponent<AlarmDiscScript>().Originator = this;
-					AudioSource.PlayClipAtPoint(this.Yandere.SixTakedown, base.transform.position);
-					AudioSource.PlayClipAtPoint(this.Yandere.Snarls[UnityEngine.Random.Range(0, this.Yandere.Snarls.Length)], base.transform.position);
-					this.Yandere.CharacterAnimation.CrossFade("f02_sixEat_00");
-					this.Yandere.TargetStudent = this;
-					this.Yandere.FollowHips = true;
-					this.Yandere.Attacking = true;
-					this.Yandere.CanMove = false;
-					this.Yandere.Eating = true;
-					this.CharacterAnimation.CrossFade(this.EatVictimAnim);
-					this.Pathfinding.enabled = false;
-					this.Routine = false;
-					this.Dying = true;
-					this.Eaten = true;
-					GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(this.EmptyGameObject, base.transform.position, Quaternion.identity);
-					this.Yandere.SixTarget = gameObject2.transform;
-					this.Yandere.SixTarget.LookAt(this.Yandere.transform.position);
-					this.Yandere.SixTarget.Translate(this.Yandere.SixTarget.forward);
-				}
-				else if (this.StudentManager.Gaze)
-				{
-					this.Yandere.CharacterAnimation.CrossFade("f02_gazerPoint_00");
-					this.Yandere.GazerEyes.Attacking = true;
-					this.Yandere.TargetStudent = this;
-					this.Yandere.GazeAttacking = true;
-					this.Yandere.CanMove = false;
-					this.Routine = false;
 				}
 				else
 				{
@@ -7561,6 +7579,12 @@ public class StudentScript : MonoBehaviour
 	{
 		if (!this.Ragdoll.enabled)
 		{
+			if (this.StudentManager.ChaseCamera == this.ChaseCamera)
+			{
+				this.StudentManager.ChaseCamera = null;
+			}
+			this.Countdown.gameObject.SetActive(false);
+			this.ChaseCamera.SetActive(false);
 			if (this.Club == ClubType.Council)
 			{
 				this.Police.CouncilDeath = true;

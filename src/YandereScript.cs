@@ -5185,7 +5185,7 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.materials[0].mainTexture = this.SnakeBody;
 		this.MyRenderer.materials[1].mainTexture = this.SnakeBody;
 		this.MyRenderer.materials[2].mainTexture = this.SnakeFace;
-		this.Hairstyle = 162;
+		this.Hairstyle = 161;
 		this.UpdateHair();
 		this.Medusa = true;
 		this.Egg = true;
