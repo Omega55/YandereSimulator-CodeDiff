@@ -386,6 +386,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool Distracted;
 
+	public bool KilledMood;
+
 	public bool LewdPhotos;
 
 	public bool InDarkness;
@@ -405,6 +407,8 @@ public class StudentScript : MonoBehaviour
 	public bool EndSearch;
 
 	public bool KnifeDown;
+
+	public bool LongSkirt;
 
 	public bool Phoneless;
 
@@ -1118,6 +1122,8 @@ public class StudentScript : MonoBehaviour
 			this.LeftEyeOrigin = this.LeftEye.localPosition;
 			this.PickRandomAnim();
 			this.HealthBar.transform.parent.gameObject.SetActive(false);
+			this.ChaseCamera.gameObject.SetActive(false);
+			this.Countdown.gameObject.SetActive(false);
 			this.Chopsticks[0].SetActive(false);
 			this.Chopsticks[1].SetActive(false);
 			this.SmartPhone.SetActive(false);
@@ -1152,7 +1158,6 @@ public class StudentScript : MonoBehaviour
 			if (!this.Male)
 			{
 				this.PickRandomGossipAnim();
-				this.Countdown.gameObject.SetActive(false);
 				this.AnimatedBook.SetActive(false);
 				this.PepperSpray.SetActive(false);
 				this.Cigarette.SetActive(false);
@@ -1251,8 +1256,13 @@ public class StudentScript : MonoBehaviour
 					scheduleBlock3.action = "Mourn";
 				}
 			}
-			else if (this.StudentID == 26 || this.StudentID == 32)
+			else if (this.StudentID == 26)
 			{
+				this.Shy = true;
+			}
+			else if (this.StudentID == 32)
+			{
+				this.LongSkirt = true;
 				this.Shy = true;
 			}
 			else if (this.StudentID == 34)
@@ -1527,6 +1537,10 @@ public class StudentScript : MonoBehaviour
 				this.CameraAnims[2] = this.IdleAnim;
 				this.CameraAnims[3] = this.IdleAnim;
 				this.VisionDistance *= 2f;
+			}
+			if (this.Bullied)
+			{
+				this.Shy = false;
 			}
 		}
 	}
@@ -2713,6 +2727,12 @@ public class StudentScript : MonoBehaviour
 							}
 							else if (this.Actions[this.Phase] == StudentActionType.Graffiti)
 							{
+								if (this.KilledMood)
+								{
+									this.Subtitle.UpdateLabel(SubtitleType.KilledMood, 0, 5f);
+									this.GraffitiPhase = 4;
+									this.KilledMood = false;
+								}
 								if (this.GraffitiPhase == 0)
 								{
 									AudioSource.PlayClipAtPoint(this.BullyGiggles[UnityEngine.Random.Range(0, this.BullyGiggles.Length)], this.Head.position);
@@ -2736,7 +2756,14 @@ public class StudentScript : MonoBehaviour
 										this.GraffitiPhase++;
 									}
 								}
-								else if (this.GraffitiPhase == 3 && this.CharacterAnimation["f02_bullyDesk_00"].time >= this.CharacterAnimation["f02_bullyDesk_00"].length)
+								else if (this.GraffitiPhase == 3)
+								{
+									if (this.CharacterAnimation["f02_bullyDesk_00"].time >= this.CharacterAnimation["f02_bullyDesk_00"].length)
+									{
+										this.GraffitiPhase++;
+									}
+								}
+								else if (this.GraffitiPhase == 4)
 								{
 									ScheduleBlock scheduleBlock4 = this.ScheduleBlocks[2];
 									scheduleBlock4.destination = "Patrol";
@@ -2749,6 +2776,12 @@ public class StudentScript : MonoBehaviour
 							}
 							else if (this.Actions[this.Phase] == StudentActionType.Bully)
 							{
+								if (this.KilledMood)
+								{
+									this.Subtitle.UpdateLabel(SubtitleType.KilledMood, 0, 5f);
+									this.BullyPhase = 4;
+									this.KilledMood = false;
+								}
 								if (this.StudentManager.Students[81] == null)
 								{
 									ScheduleBlock scheduleBlock5 = this.ScheduleBlocks[4];
@@ -2792,7 +2825,14 @@ public class StudentScript : MonoBehaviour
 												this.BullyPhase++;
 											}
 										}
-										else if (this.BullyPhase == 3 && this.CharacterAnimation["f02_bullyLaugh_00"].time >= this.CharacterAnimation["f02_bullyLaugh_00"].length)
+										else if (this.BullyPhase == 3)
+										{
+											if (this.CharacterAnimation["f02_bullyLaugh_00"].time >= this.CharacterAnimation["f02_bullyLaugh_00"].length)
+											{
+												this.BullyPhase++;
+											}
+										}
+										else if (this.BullyPhase == 4)
 										{
 											this.StudentManager.Students[this.StudentManager.VictimID].Routine = true;
 											ScheduleBlock scheduleBlock6 = this.ScheduleBlocks[4];
@@ -2802,7 +2842,6 @@ public class StudentScript : MonoBehaviour
 											this.CurrentDestination = this.Destinations[this.Phase];
 											this.Pathfinding.target = this.Destinations[this.Phase];
 											this.SmartPhone.SetActive(true);
-											this.BullyPhase++;
 										}
 									}
 									else
@@ -4727,6 +4766,10 @@ public class StudentScript : MonoBehaviour
 							{
 								this.PreviouslyWitnessed = this.Witnessed;
 							}
+							if (this.DistanceToDestination < 5f && (this.Actions[this.Phase] == StudentActionType.Graffiti || this.Actions[this.Phase] == StudentActionType.Bully))
+							{
+								this.KilledMood = true;
+							}
 							bool flag = this.Yandere.Armed && this.Yandere.EquippedWeapon.Suspicious;
 							bool flag2 = this.Yandere.PickUp != null && this.Yandere.PickUp.Suspicious;
 							if (this.WitnessedCorpse && !this.WitnessedMurder)
@@ -6494,20 +6537,37 @@ public class StudentScript : MonoBehaviour
 			{
 				this.Head.localScale = new Vector3(0f, 0f, 0f);
 			}
+			if (this.Club == ClubType.Bully)
+			{
+				for (int i = 0; i < 4; i++)
+				{
+					Transform transform = this.Skirt[i].transform;
+					transform.localScale = new Vector3(transform.localScale.x, 0.6666667f, transform.localScale.z);
+				}
+			}
+			else if (this.LongSkirt && this.CharacterAnimation.enabled)
+			{
+				this.Skirt[0].transform.localPosition += new Vector3(0f, 0f, 0.01f);
+				this.Skirt[1].transform.localPosition += new Vector3(0f, 0f, -0.01f);
+				this.Skirt[2].transform.localPosition += new Vector3(0.01f, 0f, 0f);
+				this.Skirt[3].transform.localPosition += new Vector3(-0.01f, 0f, 0f);
+				float num = 10f;
+				this.Skirt[0].transform.localEulerAngles += new Vector3(-1f * num, 0f, 0f);
+				this.Skirt[1].transform.localEulerAngles += new Vector3(num, 0f, 0f);
+				this.Skirt[2].transform.localEulerAngles += new Vector3(0f, 0f, num);
+				this.Skirt[3].transform.localEulerAngles += new Vector3(0f, 0f, -1f * num);
+				for (int j = 0; j < 4; j++)
+				{
+					Transform transform2 = this.Skirt[j].transform;
+					transform2.localScale = new Vector3(transform2.localScale.x, 2f, transform2.localScale.z);
+				}
+			}
 		}
 		if (this.DK)
 		{
 			this.Arm[0].localScale = new Vector3(2f, 2f, 2f);
 			this.Arm[1].localScale = new Vector3(2f, 2f, 2f);
 			this.Head.localScale = new Vector3(2f, 2f, 2f);
-		}
-		if (this.Club == ClubType.Bully)
-		{
-			for (int i = 0; i < 4; i++)
-			{
-				Transform transform = this.Skirt[i].transform;
-				transform.localScale = new Vector3(transform.localScale.x, 0.6666667f, transform.localScale.z);
-			}
 		}
 	}
 

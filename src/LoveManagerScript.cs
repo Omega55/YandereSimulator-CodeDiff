@@ -155,14 +155,14 @@ public class LoveManagerScript : MonoBehaviour
 				this.Rival.Character.GetComponent<Animation>().enabled = true;
 				this.Suitor.Character.GetComponent<Animation>().Play("walkHands_00");
 				this.Suitor.transform.eulerAngles = Vector3.zero;
-				this.Suitor.transform.position = new Vector3(-0.25f, 0f, -100f);
+				this.Suitor.transform.position = new Vector3(-0.25f, 0f, -90f);
 				this.Suitor.Pathfinding.canSearch = false;
 				this.Suitor.Pathfinding.canMove = false;
 				this.Suitor.MyController.radius = 0f;
 				this.Suitor.enabled = false;
 				this.Rival.Character.GetComponent<Animation>().Play("f02_walkHands_00");
 				this.Rival.transform.eulerAngles = Vector3.zero;
-				this.Rival.transform.position = new Vector3(0.25f, 0f, -100f);
+				this.Rival.transform.position = new Vector3(0.25f, 0f, -90f);
 				this.Rival.Pathfinding.canSearch = false;
 				this.Rival.Pathfinding.canMove = false;
 				this.Rival.MyController.radius = 0f;

@@ -344,6 +344,11 @@ public class StudentManagerScript : MonoBehaviour
 
 	private void Start()
 	{
+		this.SeatsTaken32[1] = true;
+		this.SeatsTaken31[1] = true;
+		this.SeatsTaken22[1] = true;
+		this.SeatsTaken21[1] = true;
+		this.SeatsTaken12[1] = true;
 		this.SeatsTaken32[3] = true;
 		this.SeatsTaken31[3] = true;
 		this.SeatsTaken22[3] = true;
@@ -1635,7 +1640,7 @@ public class StudentManagerScript : MonoBehaviour
 		while (this.ID < this.Students.Length)
 		{
 			StudentScript studentScript = this.Students[this.ID];
-			if (studentScript != null && !studentScript.Teacher && studentScript.Club != ClubType.Bully && studentScript.Club != ClubType.Council && (float)StudentGlobals.GetStudentReputation(this.ID) < this.LowestRep)
+			if (studentScript != null && !studentScript.Teacher && !studentScript.Slave && studentScript.Club != ClubType.Bully && studentScript.Club != ClubType.Council && (float)StudentGlobals.GetStudentReputation(this.ID) < this.LowestRep)
 			{
 				this.LowestRep = (float)StudentGlobals.GetStudentReputation(this.ID);
 				this.VictimID = this.ID;

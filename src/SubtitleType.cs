@@ -52,6 +52,7 @@ public enum SubtitleType
 	InsanityApology,
 	InsanityReaction,
 	InterruptionReaction,
+	KilledMood,
 	LewdApology,
 	LewdReaction,
 	LightSwitchReaction,

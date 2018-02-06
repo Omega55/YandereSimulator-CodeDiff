@@ -17,6 +17,8 @@ public class AlarmDiscScript : MonoBehaviour
 
 	public StudentScript Student;
 
+	public bool StudentIsBusy;
+
 	public bool NoScream;
 
 	public bool Shocking;
@@ -86,37 +88,44 @@ public class AlarmDiscScript : MonoBehaviour
 				this.Student.DiscCheck = false;
 				if (!this.Radio)
 				{
-					if (this.Student != this.Originator && !this.Student.TurnOffRadio && this.Student.Alive && !this.Student.Pushed && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.CheckingNote && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.Student.FocusOnYandere)
+					if (this.Student != this.Originator)
 					{
-						if (this.Student.Male)
+						if (this.Student.Clock.Period == 3 && this.Student.BusyAtLunch)
 						{
+							this.StudentIsBusy = true;
 						}
-						this.Student.Character.GetComponent<Animation>().CrossFade(this.Student.LeanAnim);
-						if (this.Originator != null)
+						if (!this.Student.TurnOffRadio && this.Student.Alive && !this.Student.Pushed && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.CheckingNote && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.StudentIsBusy && !this.Student.FocusOnYandere)
 						{
-							if (this.Originator.WitnessedMurder)
+							if (this.Student.Male)
 							{
-								this.Student.DistractionSpot = new Vector3(base.transform.position.x, this.Student.Yandere.transform.position.y, base.transform.position.z);
 							}
-							else if (this.Originator.Corpse == null)
+							this.Student.Character.GetComponent<Animation>().CrossFade(this.Student.LeanAnim);
+							if (this.Originator != null)
 							{
-								this.Student.DistractionSpot = new Vector3(base.transform.position.x, this.Student.transform.position.y, base.transform.position.z);
+								if (this.Originator.WitnessedMurder)
+								{
+									this.Student.DistractionSpot = new Vector3(base.transform.position.x, this.Student.Yandere.transform.position.y, base.transform.position.z);
+								}
+								else if (this.Originator.Corpse == null)
+								{
+									this.Student.DistractionSpot = new Vector3(base.transform.position.x, this.Student.transform.position.y, base.transform.position.z);
+								}
+								else
+								{
+									this.Student.DistractionSpot = new Vector3(this.Originator.Corpse.transform.position.x, this.Student.transform.position.y, this.Originator.Corpse.transform.position.z);
+								}
 							}
 							else
 							{
-								this.Student.DistractionSpot = new Vector3(this.Originator.Corpse.transform.position.x, this.Student.transform.position.y, this.Originator.Corpse.transform.position.z);
+								this.Student.DistractionSpot = new Vector3(base.transform.position.x, this.Student.transform.position.y, base.transform.position.z);
 							}
+							this.Student.DiscCheck = true;
+							if (this.Shocking)
+							{
+								this.Student.Hesitation = 0.5f;
+							}
+							this.Student.Alarm = 200f;
 						}
-						else
-						{
-							this.Student.DistractionSpot = new Vector3(base.transform.position.x, this.Student.transform.position.y, base.transform.position.z);
-						}
-						this.Student.DiscCheck = true;
-						if (this.Shocking)
-						{
-							this.Student.Hesitation = 0.5f;
-						}
-						this.Student.Alarm = 200f;
 					}
 				}
 				else if (!this.Student.Nemesis && this.Student.Alive && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.Student.InEvent && !this.Student.Following && !this.Student.Distracting && this.Student.Actions[this.Student.Phase] != StudentActionType.Teaching && this.Student.Actions[this.Student.Phase] != StudentActionType.SitAndTakeNotes && !this.Student.GoAway && this.Student.Routine && !this.Student.CheckingNote && this.Student.CharacterAnimation != null && this.SourceRadio.Victim == null)

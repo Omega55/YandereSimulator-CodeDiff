@@ -85,6 +85,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] DrownReactions;
 
+	public string[] KilledMoods;
+
 	public string[] KnifeReactions;
 
 	public string[] SyringeReactions;
@@ -828,6 +830,10 @@ public class SubtitleScript : MonoBehaviour
 		else if (subtitleType == SubtitleType.InterruptionReaction)
 		{
 			this.Label.text = this.GetRandomString(this.InterruptReactions);
+		}
+		else if (subtitleType == SubtitleType.KilledMood)
+		{
+			this.Label.text = this.GetRandomString(this.KilledMoods);
 		}
 		else if (subtitleType == SubtitleType.NoteReaction)
 		{
