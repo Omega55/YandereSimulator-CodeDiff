@@ -549,7 +549,7 @@ public class ShutterScript : MonoBehaviour
 					{
 						text = "Wait...I recognize those panties! This person is extremely dangerous! Avoid her at all costs!";
 					}
-					else if (this.Student.Club == ClubType.Bully || this.Student.Club == ClubType.Council)
+					else if (this.Student.Club == ClubType.Bully || this.Student.Club == ClubType.Council || this.Student.Club == ClubType.Nurse)
 					{
 						text = "A high value target! " + this.Student.Name + "'s panties were in high demand. I owe you a big favor for this one.";
 						PlayerGlobals.PantyShots += 5;

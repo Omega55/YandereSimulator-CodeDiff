@@ -1673,6 +1673,7 @@ public class StudentManagerScript : MonoBehaviour
 			studentScript2.GetDestinations();
 			studentScript2.CameraAnims = studentScript2.CowardAnims;
 			studentScript2.BusyAtLunch = true;
+			studentScript2.Shy = false;
 		}
 	}
 

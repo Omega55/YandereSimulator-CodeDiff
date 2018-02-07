@@ -956,6 +956,10 @@ public class StudentScript : MonoBehaviour
 
 	private const string RIVAL_PREFIX = "Rival ";
 
+	public Vector3[] SkirtPositions;
+
+	public Vector3[] SkirtRotations;
+
 	public Transform DefaultTarget;
 
 	public Transform GushTarget;
@@ -1215,58 +1219,57 @@ public class StudentScript : MonoBehaviour
 				this.CharacterAnimation[this.AngryFaceAnim].weight = 0f;
 				this.Earpiece.SetActive(false);
 			}
-			if (this.StudentID == 1)
+			if (this.StudentID != 1)
 			{
-				this.SmartPhone.GetComponent<Renderer>().material.mainTexture = this.OsanaPhoneTexture;
-			}
-			else if (this.StudentID == 7 || this.StudentID == 13)
-			{
-				if (this.StudentID == 7)
+				if (this.StudentID == 7 || this.StudentID == 13)
 				{
-					this.SmartPhone.GetComponent<Renderer>().material.mainTexture = this.KokonaPhoneTexture;
+					if (this.StudentID == 7)
+					{
+						this.SmartPhone.GetComponent<Renderer>().material.mainTexture = this.KokonaPhoneTexture;
+					}
+					if (DatingGlobals.SuitorProgress == 2)
+					{
+						this.Partner = ((this.StudentID != 7) ? this.StudentManager.Students[7] : this.StudentManager.Students[13]);
+						ScheduleBlock scheduleBlock = this.ScheduleBlocks[4];
+						scheduleBlock.destination = "Cuddle";
+						scheduleBlock.action = "Cuddle";
+					}
 				}
-				if (DatingGlobals.SuitorProgress == 2)
+				else if (this.StudentID == 16)
 				{
-					this.Partner = ((this.StudentID != 7) ? this.StudentManager.Students[7] : this.StudentManager.Students[13]);
-					ScheduleBlock scheduleBlock = this.ScheduleBlocks[4];
-					scheduleBlock.destination = "Cuddle";
-					scheduleBlock.action = "Cuddle";
+					this.SmartPhone.GetComponent<Renderer>().material.mainTexture = this.MidoriPhoneTexture;
+					this.PatrolAnim = "f02_texting_00";
 				}
-			}
-			else if (this.StudentID == 16)
-			{
-				this.SmartPhone.GetComponent<Renderer>().material.mainTexture = this.MidoriPhoneTexture;
-				this.PatrolAnim = "f02_texting_00";
-			}
-			else if (this.StudentID == 17)
-			{
-				if (StudentGlobals.GetStudentDead(18) || StudentGlobals.GetStudentKidnapped(18) || this.StudentManager.Students[18].Slave)
+				else if (this.StudentID == 17)
 				{
-					ScheduleBlock scheduleBlock2 = this.ScheduleBlocks[2];
-					scheduleBlock2.destination = "Mourn";
-					scheduleBlock2.action = "Mourn";
+					if (StudentGlobals.GetStudentDead(18) || StudentGlobals.GetStudentKidnapped(18) || this.StudentManager.Students[18].Slave)
+					{
+						ScheduleBlock scheduleBlock2 = this.ScheduleBlocks[2];
+						scheduleBlock2.destination = "Mourn";
+						scheduleBlock2.action = "Mourn";
+					}
 				}
-			}
-			else if (this.StudentID == 18)
-			{
-				if (StudentGlobals.GetStudentDead(17) || StudentGlobals.GetStudentKidnapped(17) || this.StudentManager.Students[17].Slave)
+				else if (this.StudentID == 18)
 				{
-					ScheduleBlock scheduleBlock3 = this.ScheduleBlocks[2];
-					scheduleBlock3.destination = "Mourn";
-					scheduleBlock3.action = "Mourn";
+					if (StudentGlobals.GetStudentDead(17) || StudentGlobals.GetStudentKidnapped(17) || this.StudentManager.Students[17].Slave)
+					{
+						ScheduleBlock scheduleBlock3 = this.ScheduleBlocks[2];
+						scheduleBlock3.destination = "Mourn";
+						scheduleBlock3.action = "Mourn";
+					}
 				}
-			}
-			else if (this.StudentID == 26)
-			{
-				this.Shy = true;
-			}
-			else if (this.StudentID == 32)
-			{
-				this.LongSkirt = true;
-				this.Shy = true;
-			}
-			else if (this.StudentID == 34)
-			{
+				else if (this.StudentID == 26)
+				{
+					this.Shy = true;
+				}
+				else if (this.StudentID == 32)
+				{
+					this.LongSkirt = true;
+					this.Shy = true;
+				}
+				else if (this.StudentID == 34)
+				{
+				}
 			}
 			if (!this.Slave && this.StudentManager.Bullies > 1)
 			{
@@ -1537,10 +1540,6 @@ public class StudentScript : MonoBehaviour
 				this.CameraAnims[2] = this.IdleAnim;
 				this.CameraAnims[3] = this.IdleAnim;
 				this.VisionDistance *= 2f;
-			}
-			if (this.Bullied)
-			{
-				this.Shy = false;
 			}
 		}
 	}
@@ -2026,7 +2025,7 @@ public class StudentScript : MonoBehaviour
 						this.Eraser.SetActive(true);
 					}
 				}
-				else if (this.Persona == PersonaType.PhoneAddict)
+				else if (this.Persona == PersonaType.PhoneAddict && !this.Slave)
 				{
 					this.WalkAnim = this.PhoneAnims[1];
 				}
@@ -2776,11 +2775,16 @@ public class StudentScript : MonoBehaviour
 							}
 							else if (this.Actions[this.Phase] == StudentActionType.Bully)
 							{
+								if (this.StudentManager.Students[this.StudentManager.VictimID].Distracted)
+								{
+									this.KilledMood = true;
+								}
 								if (this.KilledMood)
 								{
 									this.Subtitle.UpdateLabel(SubtitleType.KilledMood, 0, 5f);
 									this.BullyPhase = 4;
 									this.KilledMood = false;
+									this.BullyDust.Stop();
 								}
 								if (this.StudentManager.Students[81] == null)
 								{
@@ -2842,6 +2846,8 @@ public class StudentScript : MonoBehaviour
 											this.CurrentDestination = this.Destinations[this.Phase];
 											this.Pathfinding.target = this.Destinations[this.Phase];
 											this.SmartPhone.SetActive(true);
+											this.Scrubber.SetActive(false);
+											this.Eraser.SetActive(false);
 										}
 									}
 									else
@@ -2866,7 +2872,7 @@ public class StudentScript : MonoBehaviour
 											this.LaughTimer = Mathf.MoveTowards(this.LaughTimer, 0f, Time.deltaTime);
 											this.CharacterAnimation.CrossFade("f02_bullyLaugh_00");
 										}
-										if (this.CharacterAnimation["f02_bullyLaugh_00"].time >= this.CharacterAnimation["f02_bullyLaugh_00"].length || this.StudentManager.Students[81].BullyPhase == 4)
+										if (this.CharacterAnimation["f02_bullyLaugh_00"].time >= this.CharacterAnimation["f02_bullyLaugh_00"].length || this.StudentManager.Students[81].BullyPhase == 4 || this.BullyPhase == 4)
 										{
 											ScheduleBlock scheduleBlock7 = this.ScheduleBlocks[4];
 											scheduleBlock7.destination = "Patrol";
@@ -3023,7 +3029,7 @@ public class StudentScript : MonoBehaviour
 							{
 								if (this.Countdown.Sprite.fillAmount == 0f)
 								{
-									if (this.WitnessedMurder)
+									if (this.WitnessedMurder && !this.Countdown.MaskedPhoto)
 									{
 										this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_down_22");
 										this.Yandere.ShoulderCamera.HeartbrokenCamera.SetActive(true);
@@ -5491,6 +5497,10 @@ public class StudentScript : MonoBehaviour
 				if ((double)this.CharacterAnimation["f02_phoneMurderReact_00"].time > 3.66666)
 				{
 					this.CameraFlash.SetActive(true);
+					if (this.Yandere.Mask != null)
+					{
+						this.Countdown.MaskedPhoto = true;
+					}
 				}
 			}
 			this.targetRotation = Quaternion.LookRotation(new Vector3(this.Yandere.Hips.position.x, base.transform.position.y, this.Yandere.Hips.position.z) - base.transform.position);
@@ -6547,19 +6557,36 @@ public class StudentScript : MonoBehaviour
 			}
 			else if (this.LongSkirt && this.CharacterAnimation.enabled)
 			{
-				this.Skirt[0].transform.localPosition += new Vector3(0f, 0f, 0.01f);
-				this.Skirt[1].transform.localPosition += new Vector3(0f, 0f, -0.01f);
-				this.Skirt[2].transform.localPosition += new Vector3(0.01f, 0f, 0f);
-				this.Skirt[3].transform.localPosition += new Vector3(-0.01f, 0f, 0f);
-				float num = 10f;
-				this.Skirt[0].transform.localEulerAngles += new Vector3(-1f * num, 0f, 0f);
-				this.Skirt[1].transform.localEulerAngles += new Vector3(num, 0f, 0f);
-				this.Skirt[2].transform.localEulerAngles += new Vector3(0f, 0f, num);
-				this.Skirt[3].transform.localEulerAngles += new Vector3(0f, 0f, -1f * num);
+				bool flag = !this.CameraReacting || this.CameraReactPhase <= 1;
 				for (int j = 0; j < 4; j++)
 				{
 					Transform transform2 = this.Skirt[j].transform;
 					transform2.localScale = new Vector3(transform2.localScale.x, 2f, transform2.localScale.z);
+				}
+				if (flag)
+				{
+					this.Skirt[0].transform.localPosition += new Vector3(0f, 0f, 0.01f);
+					this.Skirt[1].transform.localPosition += new Vector3(0f, 0f, -0.01f);
+					this.Skirt[2].transform.localPosition += new Vector3(0.01f, 0f, 0f);
+					this.Skirt[3].transform.localPosition += new Vector3(-0.01f, 0f, 0f);
+					float num = 10f;
+					this.Skirt[0].transform.localEulerAngles += new Vector3(-1f * num, 0f, 0f);
+					this.Skirt[1].transform.localEulerAngles += new Vector3(num, 0f, 0f);
+					this.Skirt[2].transform.localEulerAngles += new Vector3(0f, 0f, num);
+					this.Skirt[3].transform.localEulerAngles += new Vector3(0f, 0f, -1f * num);
+					for (int k = 0; k < 4; k++)
+					{
+						this.SkirtPositions[k] = this.Skirt[k].transform.localPosition;
+						this.SkirtRotations[k] = this.Skirt[k].transform.localPosition;
+					}
+				}
+				else
+				{
+					for (int l = 0; l < 4; l++)
+					{
+						this.Skirt[l].transform.localPosition = this.SkirtPositions[l];
+						this.Skirt[l].transform.localPosition = this.SkirtRotations[l];
+					}
 				}
 			}
 		}
@@ -7585,15 +7612,15 @@ public class StudentScript : MonoBehaviour
 	{
 		base.transform.localScale = new Vector3(1.1f, 1.1f, 1.1f);
 		this.StudentManager.Teachers[this.Class] = this;
-		this.SkirtCollider.gameObject.SetActive(false);
-		this.LowPoly.MyMesh = this.LowPoly.TeacherMesh;
-		this.PantyCollider.enabled = false;
 		if (this.Class != 1)
 		{
 			this.GradingPaper = this.StudentManager.FacultyDesks[this.Class];
 			this.GradingPaper.LeftHand = this.LeftHand.parent;
 			this.GradingPaper.Character = this.Character;
 			this.GradingPaper.Teacher = this;
+			this.SkirtCollider.gameObject.SetActive(false);
+			this.LowPoly.MyMesh = this.LowPoly.TeacherMesh;
+			this.PantyCollider.enabled = false;
 		}
 		if (this.Class > 1)
 		{
