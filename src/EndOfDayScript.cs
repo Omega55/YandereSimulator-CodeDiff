@@ -60,6 +60,8 @@ public class EndOfDayScript : MonoBehaviour
 
 	public bool Darken;
 
+	public int FragileTarget;
+
 	public int DeadPerps;
 
 	public int Arrests;
@@ -614,6 +616,7 @@ public class EndOfDayScript : MonoBehaviour
 				Debug.Log("Phase 14.");
 				if (this.TranqCase.Occupied)
 				{
+					this.Label.color = new Color(this.Label.color.r, this.Label.color.g, this.Label.color.b, 1f);
 					this.Label.text = "Yandere-chan waits until the clock strikes midnight.\n\nUnder the cover of darkness, Yandere-chan travels back to school and sneaks inside of the main school building.\n\nYandere-chan returns to the instrument case that carries her unconscious victim.\n\nShe pushes the case back to her house, pretending to be a young musician returning home from a late-night show.\n\nYandere-chan drags the case down to her basement and ties up her victim.\n\nExhausted, Yandere-chan goes to sleep.";
 					this.Phase++;
 				}
@@ -805,5 +808,11 @@ public class EndOfDayScript : MonoBehaviour
 		}
 		this.Incinerator.SetVictimsMissing();
 		this.WoodChipper.SetVictimsMissing();
+		if (this.FragileTarget > 0)
+		{
+			Debug.Log("Setting target for Fragile student.");
+			StudentGlobals.SetFragileTarget(this.FragileTarget);
+			StudentGlobals.SetStudentFragileSlave(32);
+		}
 	}
 }

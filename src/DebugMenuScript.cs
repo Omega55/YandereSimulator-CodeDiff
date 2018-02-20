@@ -304,11 +304,12 @@ public class DebugMenuScript : MonoBehaviour
 					else if (Input.GetKeyDown(KeyCode.K))
 					{
 						SchoolGlobals.KidnapVictim = 6;
-						StudentGlobals.SetStudentSlave(6, true);
+						StudentGlobals.SetStudentSlave(6);
 						SceneManager.LoadScene("LoadingScene");
 					}
 					else if (Input.GetKeyDown(KeyCode.L))
 					{
+						SchemeGlobals.SetSchemeStage(1, 2);
 						EventGlobals.Event1 = true;
 						this.Window.SetActive(false);
 					}

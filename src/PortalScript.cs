@@ -9,6 +9,8 @@ public class PortalScript : MonoBehaviour
 
 	public StudentManagerScript StudentManager;
 
+	public LoveManagerScript LoveManager;
+
 	public ReputationScript Reputation;
 
 	public PromptBarScript PromptBar;
@@ -116,6 +118,10 @@ public class PortalScript : MonoBehaviour
 		{
 			if (this.FadeOut)
 			{
+				if (this.LoveManager.HoldingHands)
+				{
+					this.LoveManager.Rival.transform.position = new Vector3(0f, 0f, -50f);
+				}
 				this.ClassDarkness.color = new Color(this.ClassDarkness.color.r, this.ClassDarkness.color.g, this.ClassDarkness.color.b, this.ClassDarkness.color.a + Time.deltaTime);
 				if (this.ClassDarkness.color.a >= 1f)
 				{
@@ -242,6 +248,7 @@ public class PortalScript : MonoBehaviour
 
 	private void CheckForLateness()
 	{
+		this.Late = 0;
 		if (this.StudentManager.Teachers[21] != null && this.StudentManager.Teachers[21].DistanceToDestination < 1f)
 		{
 			if (this.Clock.HourTime < 13f)

@@ -29,6 +29,8 @@ public class WeaponScript : MonoBehaviour
 
 	public ParticleSystem FireEffect;
 
+	public GameObject ExtraBlade;
+
 	public AudioSource FireAudio;
 
 	public Collider MyCollider;
@@ -180,6 +182,10 @@ public class WeaponScript : MonoBehaviour
 
 	private void Update()
 	{
+		if (this.WeaponID == 16 && Input.GetButtonDown("RB"))
+		{
+			this.ExtraBlade.SetActive(!this.ExtraBlade.activeInHierarchy);
+		}
 		if (this.Dismembering)
 		{
 			AudioSource component = base.GetComponent<AudioSource>();

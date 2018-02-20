@@ -85,6 +85,8 @@ public class RagdollScript : MonoBehaviour
 
 	public bool Dismembered;
 
+	public bool NeckSnapped;
+
 	public bool Cauterized;
 
 	public bool Disturbing;
@@ -155,7 +157,7 @@ public class RagdollScript : MonoBehaviour
 	{
 		Physics.IgnoreLayerCollision(11, 13, true);
 		this.Zs.SetActive(this.Tranquil);
-		if (!this.Tranquil && !this.Poisoned && !this.Drowned && !this.Electrocuted && !this.Burning)
+		if (!this.Tranquil && !this.Poisoned && !this.Drowned && !this.Electrocuted && !this.Burning && !this.NeckSnapped)
 		{
 			this.BloodPoolSpawner.gameObject.SetActive(true);
 			if (this.Pushed)

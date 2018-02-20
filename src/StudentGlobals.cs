@@ -61,7 +61,11 @@ public static class StudentGlobals
 
 	private const string Str_StudentSanity = "StudentSanity_";
 
-	private const string Str_StudentSlave = "StudentSlave_";
+	private const string Str_StudentSlave = "StudentSlave";
+
+	private const string Str_StudentFragileSlave = "StudentFragileSlave";
+
+	private const string Str_FragileTarget = "FragileTarget";
 
 	public static bool CustomSuitor
 	{
@@ -506,21 +510,39 @@ public static class StudentGlobals
 		return KeysHelper.GetIntegerKeys("StudentSanity_");
 	}
 
-	public static bool GetStudentSlave(int studentID)
+	public static int GetStudentSlave()
 	{
-		return GlobalsHelper.GetBool("StudentSlave_" + studentID.ToString());
+		return PlayerPrefs.GetInt("StudentSlave");
 	}
 
-	public static void SetStudentSlave(int studentID, bool value)
+	public static int GetStudentFragileSlave()
 	{
-		string text = studentID.ToString();
-		KeysHelper.AddIfMissing("StudentSlave_", text);
-		GlobalsHelper.SetBool("StudentSlave_" + text, value);
+		return PlayerPrefs.GetInt("StudentFragileSlave");
+	}
+
+	public static void SetStudentSlave(int studentID)
+	{
+		PlayerPrefs.SetInt("StudentSlave", studentID);
+	}
+
+	public static void SetStudentFragileSlave(int studentID)
+	{
+		PlayerPrefs.SetInt("StudentFragileSlave", studentID);
 	}
 
 	public static int[] KeysOfStudentSlave()
 	{
-		return KeysHelper.GetIntegerKeys("StudentSlave_");
+		return KeysHelper.GetIntegerKeys("StudentSlave");
+	}
+
+	public static int GetFragileTarget()
+	{
+		return PlayerPrefs.GetInt("FragileTarget");
+	}
+
+	public static void SetFragileTarget(int value)
+	{
+		PlayerPrefs.SetInt("FragileTarget", value);
 	}
 
 	public static void DeleteAll()
@@ -554,6 +576,6 @@ public static class StudentGlobals
 		Globals.DeleteCollection("StudentReplaced_", StudentGlobals.KeysOfStudentReplaced());
 		Globals.DeleteCollection("StudentReputation_", StudentGlobals.KeysOfStudentReputation());
 		Globals.DeleteCollection("StudentSanity_", StudentGlobals.KeysOfStudentSanity());
-		Globals.DeleteCollection("StudentSlave_", StudentGlobals.KeysOfStudentSlave());
+		Globals.DeleteCollection("StudentSlave", StudentGlobals.KeysOfStudentSlave());
 	}
 }

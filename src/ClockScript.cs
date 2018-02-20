@@ -228,14 +228,13 @@ public class ClockScript : MonoBehaviour
 					}
 				}
 				this.PeriodLabel.text = "CLEANING TIME";
-				this.ActivateTrespassZones();
+				this.DeactivateTrespassZones();
 				this.Period++;
 			}
 		}
 		else if (this.Period < 6)
 		{
 			this.PeriodLabel.text = "AFTER SCHOOL";
-			this.DeactivateTrespassZones();
 			this.Period++;
 		}
 		this.Sun.eulerAngles = new Vector3(this.Sun.eulerAngles.x, this.Sun.eulerAngles.y, -45f + 90f * (this.PresentTime - 420f) / 660f);

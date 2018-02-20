@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PhotoGalleryScript : MonoBehaviour
 {
+	public StringScript String;
+
 	[SerializeField]
 	private InputManagerScript InputManager;
 
@@ -29,6 +31,8 @@ public class PhotoGalleryScript : MonoBehaviour
 	[SerializeField]
 	private GameObject Photograph;
 
+	public GameObject StringSet;
+
 	[SerializeField]
 	private Transform CorkboardPanel;
 
@@ -40,6 +44,8 @@ public class PhotoGalleryScript : MonoBehaviour
 
 	[SerializeField]
 	private Transform Gallery;
+
+	public Transform StringParent;
 
 	[SerializeField]
 	private UITexture[] Photographs;
@@ -59,6 +65,8 @@ public class PhotoGalleryScript : MonoBehaviour
 	[SerializeField]
 	private Vector2 MouseDelta;
 
+	public bool NamingBully;
+
 	public bool Adjusting;
 
 	[SerializeField]
@@ -70,10 +78,16 @@ public class PhotoGalleryScript : MonoBehaviour
 	public bool Viewing;
 
 	[SerializeField]
+	private bool MovingString;
+
+	[SerializeField]
 	private bool Moving;
 
 	[SerializeField]
 	private bool Reset;
+
+	[SerializeField]
+	private int StringPhase;
 
 	[SerializeField]
 	private int Column;
@@ -81,9 +95,9 @@ public class PhotoGalleryScript : MonoBehaviour
 	[SerializeField]
 	private int Row;
 
-	private const float MaxPhotoX = 4150f;
+	public float MaxPhotoX = 4150f;
 
-	private const float MaxPhotoY = 2500f;
+	public float MaxPhotoY = 2500f;
 
 	private const float MaxCursorX = 4788f;
 
@@ -136,13 +150,13 @@ public class PhotoGalleryScript : MonoBehaviour
 	{
 		get
 		{
-			float num = -4150f;
-			float num2 = 4150f;
-			return (this.MovingPhotograph.transform.localPosition.x - num) / (num2 - num);
+			float num = -this.MaxPhotoX;
+			float maxPhotoX = this.MaxPhotoX;
+			return (this.MovingPhotograph.transform.localPosition.x - num) / (maxPhotoX - num);
 		}
 		set
 		{
-			this.MovingPhotograph.transform.localPosition = new Vector3(-4150f + 2f * (4150f * Mathf.Clamp01(value)), this.MovingPhotograph.transform.localPosition.y, this.MovingPhotograph.transform.localPosition.z);
+			this.MovingPhotograph.transform.localPosition = new Vector3(-this.MaxPhotoX + 2f * (this.MaxPhotoX * Mathf.Clamp01(value)), this.MovingPhotograph.transform.localPosition.y, this.MovingPhotograph.transform.localPosition.z);
 		}
 	}
 
@@ -150,13 +164,13 @@ public class PhotoGalleryScript : MonoBehaviour
 	{
 		get
 		{
-			float num = -2500f;
-			float num2 = 2500f;
-			return (this.MovingPhotograph.transform.localPosition.y - num) / (num2 - num);
+			float num = -this.MaxPhotoY;
+			float maxPhotoY = this.MaxPhotoY;
+			return (this.MovingPhotograph.transform.localPosition.y - num) / (maxPhotoY - num);
 		}
 		set
 		{
-			this.MovingPhotograph.transform.localPosition = new Vector3(this.MovingPhotograph.transform.localPosition.x, -2500f + 2f * (2500f * Mathf.Clamp01(value)), this.MovingPhotograph.transform.localPosition.z);
+			this.MovingPhotograph.transform.localPosition = new Vector3(this.MovingPhotograph.transform.localPosition.x, -this.MaxPhotoY + 2f * (this.MaxPhotoY * Mathf.Clamp01(value)), this.MovingPhotograph.transform.localPosition.z);
 		}
 	}
 
@@ -204,26 +218,45 @@ public class PhotoGalleryScript : MonoBehaviour
 	{
 		if (Input.GetButtonDown("A"))
 		{
-			UITexture uitexture = this.Photographs[this.CurrentIndex];
-			if (uitexture.mainTexture != this.NoPhoto)
+			if (!this.NamingBully)
 			{
-				this.ViewPhoto.mainTexture = uitexture.mainTexture;
-				this.ViewPhoto.transform.position = uitexture.transform.position;
-				this.ViewPhoto.transform.localScale = uitexture.transform.localScale;
-				this.Destination.position = uitexture.transform.position;
-				this.Viewing = true;
-				if (!this.Corkboard)
+				UITexture uitexture = this.Photographs[this.CurrentIndex];
+				if (uitexture.mainTexture != this.NoPhoto)
 				{
-					for (int i = 1; i < 26; i++)
+					this.ViewPhoto.mainTexture = uitexture.mainTexture;
+					this.ViewPhoto.transform.position = uitexture.transform.position;
+					this.ViewPhoto.transform.localScale = uitexture.transform.localScale;
+					this.Destination.position = uitexture.transform.position;
+					this.Viewing = true;
+					if (!this.Corkboard)
 					{
-						this.Hearts[i].gameObject.SetActive(false);
+						for (int i = 1; i < 26; i++)
+						{
+							this.Hearts[i].gameObject.SetActive(false);
+						}
 					}
+					this.CanAdjust = false;
 				}
-				this.CanAdjust = false;
+				this.UpdateButtonPrompts();
 			}
-			this.UpdateButtonPrompts();
+			else
+			{
+				UITexture uitexture2 = this.Photographs[this.CurrentIndex];
+				if (uitexture2.mainTexture != this.NoPhoto)
+				{
+					this.Yandere.Police.EndOfDay.FragileTarget = PlayerGlobals.GetBullyPhoto(this.CurrentIndex);
+					this.Yandere.StudentManager.FragileOfferHelp.Continue();
+					this.PauseScreen.MainMenu.SetActive(true);
+					this.Yandere.RPGCamera.enabled = true;
+					base.gameObject.SetActive(false);
+					this.PauseScreen.Show = false;
+					this.PromptBar.Show = false;
+					this.NamingBully = false;
+					Time.timeScale = 1f;
+				}
+			}
 		}
-		if (Input.GetButtonDown("B"))
+		if (!this.NamingBully && Input.GetButtonDown("B"))
 		{
 			this.PromptBar.ClearButtons();
 			this.PromptBar.Label[0].text = "Accept";
@@ -363,15 +396,79 @@ public class PhotoGalleryScript : MonoBehaviour
 		{
 			this.MovingPhotoRotation -= Time.deltaTime * 100f;
 		}
+		if (Input.GetButton("Y"))
+		{
+			this.MovingPhotograph.transform.localScale += new Vector3(Time.deltaTime, Time.deltaTime, Time.deltaTime);
+			if (this.MovingPhotograph.transform.localScale.x > 2f)
+			{
+				this.MovingPhotograph.transform.localScale = new Vector3(2f, 2f, 2f);
+			}
+		}
+		if (Input.GetButton("X"))
+		{
+			this.MovingPhotograph.transform.localScale -= new Vector3(Time.deltaTime, Time.deltaTime, Time.deltaTime);
+			if (this.MovingPhotograph.transform.localScale.x < 1f)
+			{
+				this.MovingPhotograph.transform.localScale = new Vector3(1f, 1f, 1f);
+			}
+		}
 		Vector2 vector = new Vector2(this.MovingPhotograph.transform.localPosition.x, this.MovingPhotograph.transform.localPosition.y);
 		Vector2 vector2 = new Vector2(Input.GetAxis("Horizontal") * 86.66666f, Input.GetAxis("Vertical") * 86.66666f);
-		this.MovingPhotograph.transform.localPosition = new Vector3(Mathf.Clamp(vector.x + vector2.x, -4150f, 4150f), Mathf.Clamp(vector.y + vector2.y, -2500f, 2500f), this.MovingPhotograph.transform.localPosition.z);
+		this.MovingPhotograph.transform.localPosition = new Vector3(Mathf.Clamp(vector.x + vector2.x, -this.MaxPhotoX, this.MaxPhotoX), Mathf.Clamp(vector.y + vector2.y, -this.MaxPhotoY, this.MaxPhotoY), this.MovingPhotograph.transform.localPosition.z);
 		if (Input.GetButtonDown("A"))
 		{
 			this.Cursor.transform.localPosition = this.MovingPhotograph.transform.localPosition;
 			this.Cursor.gameObject.SetActive(true);
 			this.Moving = false;
 			this.UpdateButtonPrompts();
+		}
+	}
+
+	private void UpdateString()
+	{
+		this.MouseDelta.x = this.MouseDelta.x + Input.GetAxis("Horizontal") * 8.66666f;
+		this.MouseDelta.y = this.MouseDelta.y + Input.GetAxis("Vertical") * 8.66666f;
+		Transform transform;
+		if (this.StringPhase == 0)
+		{
+			transform = this.String.Origin;
+			this.String.Target.position = this.String.Origin.position;
+		}
+		else
+		{
+			transform = this.String.Target;
+		}
+		transform.localPosition = new Vector3(transform.localPosition.x - this.MouseDelta.x * Time.deltaTime * 0.33333f, transform.localPosition.y + this.MouseDelta.y * Time.deltaTime * 0.33333f, 0f);
+		if (transform.localPosition.x > 0.971f)
+		{
+			transform.localPosition = new Vector3(0.971f, transform.localPosition.y, transform.localPosition.z);
+		}
+		else if (transform.localPosition.x < -0.971f)
+		{
+			transform.localPosition = new Vector3(-0.971f, transform.localPosition.y, transform.localPosition.z);
+		}
+		if (transform.localPosition.y > 0.637f)
+		{
+			transform.localPosition = new Vector3(transform.localPosition.x, 0.637f, transform.localPosition.z);
+		}
+		else if (transform.localPosition.y < -0.637f)
+		{
+			transform.localPosition = new Vector3(transform.localPosition.x, -0.637f, transform.localPosition.z);
+		}
+		if (Input.GetButtonDown("A"))
+		{
+			if (this.StringPhase == 0)
+			{
+				this.StringPhase++;
+			}
+			else if (this.StringPhase == 1)
+			{
+				this.Cursor.transform.localPosition = transform.localPosition;
+				this.Cursor.gameObject.SetActive(true);
+				this.MovingString = false;
+				this.StringPhase = 0;
+				this.UpdateButtonPrompts();
+			}
 		}
 	}
 
@@ -388,6 +485,17 @@ public class PhotoGalleryScript : MonoBehaviour
 			this.Moving = true;
 			this.UpdateButtonPrompts();
 		}
+		if (Input.GetButtonDown("Y"))
+		{
+			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.StringSet, base.transform.position, Quaternion.identity);
+			gameObject.transform.parent = this.StringParent;
+			gameObject.transform.localPosition = new Vector3(0f, 0f, 0f);
+			gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+			this.String = gameObject.GetComponent<StringScript>();
+			this.Cursor.gameObject.SetActive(false);
+			this.MovingString = true;
+			this.UpdateButtonPrompts();
+		}
 		if (Input.GetButtonDown("B"))
 		{
 			if (this.Cursor.Photograph != null)
@@ -401,12 +509,22 @@ public class PhotoGalleryScript : MonoBehaviour
 			this.Adjusting = false;
 			this.UpdateButtonPrompts();
 		}
-		if (Input.GetButtonDown("X") && this.Cursor.Photograph != null)
+		if (Input.GetButtonDown("X"))
 		{
-			this.Cursor.Highlight.transform.position = new Vector3(this.Cursor.Highlight.transform.position.x, 100f, this.Cursor.Highlight.transform.position.z);
-			UnityEngine.Object.Destroy(this.Cursor.Photograph);
-			this.Cursor.Photograph = null;
-			this.UpdateButtonPrompts();
+			if (this.Cursor.Photograph != null)
+			{
+				this.Cursor.Highlight.transform.position = new Vector3(this.Cursor.Highlight.transform.position.x, 100f, this.Cursor.Highlight.transform.position.z);
+				UnityEngine.Object.Destroy(this.Cursor.Photograph);
+				this.Cursor.Photograph = null;
+				this.UpdateButtonPrompts();
+			}
+			if (this.Cursor.Tack != null)
+			{
+				this.Cursor.CircleHighlight.transform.position = new Vector3(this.Cursor.CircleHighlight.transform.position.x, 100f, this.Cursor.CircleHighlight.transform.position.z);
+				UnityEngine.Object.Destroy(this.Cursor.Tack.transform.parent.gameObject);
+				this.Cursor.Tack = null;
+				this.UpdateButtonPrompts();
+			}
 		}
 	}
 
@@ -433,6 +551,10 @@ public class PhotoGalleryScript : MonoBehaviour
 			if (this.Moving)
 			{
 				this.UpdateCorkboardPhoto();
+			}
+			else if (this.MovingString)
+			{
+				this.UpdateString();
 			}
 			else
 			{
@@ -503,19 +625,48 @@ public class PhotoGalleryScript : MonoBehaviour
 
 	public void UpdateButtonPrompts()
 	{
-		if (this.Moving)
+		if (this.NamingBully)
+		{
+			UITexture uitexture = this.Photographs[this.CurrentIndex];
+			if (uitexture.mainTexture != this.NoPhoto)
+			{
+				this.PromptBar.Label[0].text = "Name Bully";
+			}
+			else
+			{
+				this.PromptBar.Label[0].text = string.Empty;
+			}
+			this.PromptBar.Label[1].text = string.Empty;
+			this.PromptBar.Label[2].text = string.Empty;
+			this.PromptBar.Label[3].text = string.Empty;
+			this.PromptBar.Label[4].text = "Move";
+			this.PromptBar.Label[5].text = "Move";
+		}
+		else if (this.Moving || this.MovingString)
 		{
 			this.PromptBar.Label[0].text = "Place";
 			this.PromptBar.Label[1].text = string.Empty;
 			this.PromptBar.Label[2].text = string.Empty;
+			this.PromptBar.Label[3].text = string.Empty;
 			this.PromptBar.Label[4].text = "Move";
 			this.PromptBar.Label[5].text = "Move";
+			if (!this.MovingString)
+			{
+				this.PromptBar.Label[2].text = "Resize";
+				this.PromptBar.Label[3].text = "Resize";
+			}
 		}
 		else if (this.Adjusting)
 		{
 			if (this.Cursor.Photograph != null)
 			{
 				this.PromptBar.Label[0].text = "Adjust";
+				this.PromptBar.Label[1].text = string.Empty;
+				this.PromptBar.Label[2].text = "Remove";
+				this.PromptBar.Label[3].text = string.Empty;
+			}
+			else if (this.Cursor.Tack != null)
+			{
 				this.PromptBar.Label[2].text = "Remove";
 			}
 			else
@@ -524,7 +675,7 @@ public class PhotoGalleryScript : MonoBehaviour
 				this.PromptBar.Label[2].text = string.Empty;
 			}
 			this.PromptBar.Label[1].text = "Back";
-			this.PromptBar.Label[3].text = string.Empty;
+			this.PromptBar.Label[3].text = "Place Pin";
 			this.PromptBar.Label[4].text = "Move";
 			this.PromptBar.Label[5].text = "Move";
 		}

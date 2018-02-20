@@ -451,6 +451,10 @@ public class AttackManagerScript : MonoBehaviour
 					this.EffectPhase++;
 				}
 			}
+			else
+			{
+				this.Yandere.TargetStudent.Ragdoll.NeckSnapped = true;
+			}
 		}
 		else if (weapon.Type == WeaponType.Saw)
 		{

@@ -161,6 +161,7 @@ public class CookingEventScript : MonoBehaviour
 					if (!this.RivalPhone.activeInHierarchy)
 					{
 						this.EventStudent.Character.GetComponent<Animation>().Play("f02_prepareFood_00");
+						this.EventStudent.SmartPhone.SetActive(false);
 						this.Octodog.transform.parent = this.EventStudent.RightHand;
 						this.Octodog.transform.localPosition = new Vector3(0.0129f, -0.02475f, 0.0316f);
 						this.Octodog.transform.localEulerAngles = new Vector3(-90f, 0f, 0f);
@@ -179,6 +180,7 @@ public class CookingEventScript : MonoBehaviour
 				}
 				else if (this.EventPhase == 1)
 				{
+					this.EventStudent.Character.GetComponent<Animation>().Play("f02_prepareFood_00");
 					if (this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].time > 1f)
 					{
 						this.EventPhase++;

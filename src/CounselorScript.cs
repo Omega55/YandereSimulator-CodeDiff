@@ -442,30 +442,33 @@ public class CounselorScript : MonoBehaviour
 			UILabel uilabel = this.Labels[i];
 			uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, 0.5f);
 		}
-		if (SchemeGlobals.GetSchemeStage(1) == 2)
+		if (this.StudentManager.Students[7] != null)
 		{
-			UILabel uilabel2 = this.Labels[1];
-			uilabel2.color = new Color(uilabel2.color.r, uilabel2.color.g, uilabel2.color.b, 1f);
-		}
-		if (SchemeGlobals.GetSchemeStage(2) == 3)
-		{
-			UILabel uilabel3 = this.Labels[2];
-			uilabel3.color = new Color(uilabel3.color.r, uilabel3.color.g, uilabel3.color.b, 1f);
-		}
-		if (SchemeGlobals.GetSchemeStage(3) == 4)
-		{
-			UILabel uilabel4 = this.Labels[3];
-			uilabel4.color = new Color(uilabel4.color.r, uilabel4.color.g, uilabel4.color.b, 1f);
-		}
-		if (SchemeGlobals.GetSchemeStage(4) == 5)
-		{
-			UILabel uilabel5 = this.Labels[4];
-			uilabel5.color = new Color(uilabel5.color.r, uilabel5.color.g, uilabel5.color.b, 1f);
-		}
-		if (SchemeGlobals.GetSchemeStage(5) == 6)
-		{
-			UILabel uilabel6 = this.Labels[5];
-			uilabel6.color = new Color(uilabel6.color.r, uilabel6.color.g, uilabel6.color.b, 1f);
+			if (SchemeGlobals.GetSchemeStage(1) == 2)
+			{
+				UILabel uilabel2 = this.Labels[1];
+				uilabel2.color = new Color(uilabel2.color.r, uilabel2.color.g, uilabel2.color.b, 1f);
+			}
+			if (SchemeGlobals.GetSchemeStage(2) == 3)
+			{
+				UILabel uilabel3 = this.Labels[2];
+				uilabel3.color = new Color(uilabel3.color.r, uilabel3.color.g, uilabel3.color.b, 1f);
+			}
+			if (SchemeGlobals.GetSchemeStage(3) == 4)
+			{
+				UILabel uilabel4 = this.Labels[3];
+				uilabel4.color = new Color(uilabel4.color.r, uilabel4.color.g, uilabel4.color.b, 1f);
+			}
+			if (SchemeGlobals.GetSchemeStage(4) == 5)
+			{
+				UILabel uilabel5 = this.Labels[4];
+				uilabel5.color = new Color(uilabel5.color.r, uilabel5.color.g, uilabel5.color.b, 1f);
+			}
+			if (SchemeGlobals.GetSchemeStage(5) == 6)
+			{
+				UILabel uilabel6 = this.Labels[5];
+				uilabel6.color = new Color(uilabel6.color.r, uilabel6.color.g, uilabel6.color.b, 1f);
+			}
 		}
 	}
 

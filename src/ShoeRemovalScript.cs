@@ -284,8 +284,7 @@ public class ShoeRemovalScript : MonoBehaviour
 
 	public void PutOnShoes()
 	{
-		this.Locker.gameObject.GetComponent<Animation>()[this.LockerAnims[this.Height]].time = this.Locker.gameObject.GetComponent<Animation>()[this.LockerAnims[this.Height]].length;
-		this.Locker.gameObject.GetComponent<Animation>().Stop();
+		this.CloseLocker();
 		this.ShoeParent.parent = this.LeftHand;
 		this.ShoeParent.parent = this.Locker;
 		this.ShoeParent.localPosition = new Vector3(0.272f, 0f, 0.552f);
@@ -332,6 +331,11 @@ public class ShoeRemovalScript : MonoBehaviour
 		base.enabled = false;
 		this.Character.GetComponent<Animation>().cullingType = AnimationCullingType.BasedOnRenderers;
 		this.Student.StopPairing();
+	}
+
+	public void CloseLocker()
+	{
+		this.Locker.gameObject.GetComponent<Animation>()[this.LockerAnims[this.Height]].time = this.Locker.gameObject.GetComponent<Animation>()[this.LockerAnims[this.Height]].length;
 	}
 
 	private void UpdateShoes()
@@ -399,7 +403,7 @@ public class ShoeRemovalScript : MonoBehaviour
 				this.Height = 5;
 			}
 		}
-		if (this.Student.StudentID == 7 || this.Student.StudentID == this.Student.StudentManager.RivalID || this.Student.StudentID == this.Student.StudentManager.SuitorID)
+		if (this.Student.StudentID == 7 || this.Student.StudentID == 32 || this.Student.StudentID == this.Student.StudentManager.RivalID || this.Student.StudentID == this.Student.StudentManager.SuitorID)
 		{
 			this.Height = 5;
 		}

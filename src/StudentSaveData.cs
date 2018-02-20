@@ -187,13 +187,6 @@ public class StudentSaveData
 		{
 			studentSaveData.studentSanity.Add(num32, StudentGlobals.GetStudentSanity(num32));
 		}
-		foreach (int num34 in StudentGlobals.KeysOfStudentSlave())
-		{
-			if (StudentGlobals.GetStudentSlave(num34))
-			{
-				studentSaveData.studentSlave.Add(num34);
-			}
-		}
 		return studentSaveData;
 	}
 
@@ -284,10 +277,6 @@ public class StudentSaveData
 		foreach (KeyValuePair<int, float> keyValuePair8 in data.studentSanity)
 		{
 			StudentGlobals.SetStudentSanity(keyValuePair8.Key, keyValuePair8.Value);
-		}
-		foreach (int studentID12 in data.studentSlave)
-		{
-			StudentGlobals.SetStudentSlave(studentID12, true);
 		}
 	}
 }

@@ -5,6 +5,8 @@ public static class PlayerGlobals
 {
 	private const string Str_Alerts = "Alerts";
 
+	private const string Str_BullyPhoto = "BullyPhoto_";
+
 	private const string Str_Enlightenment = "Enlightenment";
 
 	private const string Str_EnlightenmentBonus = "EnlightenmentBonus";
@@ -271,6 +273,16 @@ public static class PlayerGlobals
 		string text = photoID.ToString();
 		KeysHelper.AddIfMissing("SenpaiPhoto_", text);
 		GlobalsHelper.SetBool("SenpaiPhoto_" + text, value);
+	}
+
+	public static int GetBullyPhoto(int photoID)
+	{
+		return PlayerPrefs.GetInt("BullyPhoto_" + photoID.ToString());
+	}
+
+	public static void SetBullyPhoto(int photoID, int value)
+	{
+		PlayerPrefs.SetInt("BullyPhoto_" + photoID.ToString(), value);
 	}
 
 	public static int[] KeysOfSenpaiPhoto()

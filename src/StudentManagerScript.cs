@@ -53,9 +53,9 @@ public class StudentManagerScript : MonoBehaviour
 
 	public DoorScript FemaleVomitDoor;
 
-	public ContainerScript Container;
+	public WeaponScript FragileWeapon;
 
-	public OfferHelpScript OfferHelp;
+	public ContainerScript Container;
 
 	public RingEventScript RingEvent;
 
@@ -78,6 +78,10 @@ public class StudentManagerScript : MonoBehaviour
 	public DoorScript ShedDoor;
 
 	public UILabel ErrorLabel;
+
+	public OfferHelpScript FragileOfferHelp;
+
+	public OfferHelpScript OfferHelp;
 
 	public ListScript SearchPatrols;
 
@@ -152,6 +156,8 @@ public class StudentManagerScript : MonoBehaviour
 	public Transform RivalConfessionSpot;
 
 	public Transform ConfessionWaypoint;
+
+	public Transform FragileSlaveSpot;
 
 	public Transform FemaleCoupleSpot;
 
@@ -369,6 +375,7 @@ public class StudentManagerScript : MonoBehaviour
 			if (this.ErrorLabel != null)
 			{
 				this.ErrorLabel.text = string.Empty;
+				this.ErrorLabel.enabled = false;
 			}
 			this.SetAtmosphere();
 			GameGlobals.Paranormal = false;
@@ -377,17 +384,28 @@ public class StudentManagerScript : MonoBehaviour
 				StudentGlobals.FemaleUniform = 5;
 				StudentGlobals.MaleUniform = 5;
 			}
-			if (StudentGlobals.GetStudentSlave(SchoolGlobals.KidnapVictim))
+			if (StudentGlobals.GetStudentSlave() > 0)
 			{
+				int studentSlave = StudentGlobals.GetStudentSlave();
 				this.ForceSpawn = true;
-				this.SpawnPositions[SchoolGlobals.KidnapVictim] = this.SlaveSpot;
-				this.SpawnID = SchoolGlobals.KidnapVictim;
-				StudentGlobals.SetStudentDead(SchoolGlobals.KidnapVictim, false);
+				this.SpawnPositions[studentSlave] = this.SlaveSpot;
+				this.SpawnID = studentSlave;
+				StudentGlobals.SetStudentDead(studentSlave, false);
 				this.SpawnStudent(this.SpawnID);
-				this.Students[SchoolGlobals.KidnapVictim].Slave = true;
+				this.Students[studentSlave].Slave = true;
 				this.SpawnID = 0;
-				StudentGlobals.SetStudentSlave(SchoolGlobals.KidnapVictim, false);
-				SchoolGlobals.KidnapVictim = 0;
+			}
+			if (StudentGlobals.GetStudentFragileSlave() > 0)
+			{
+				int studentFragileSlave = StudentGlobals.GetStudentFragileSlave();
+				this.ForceSpawn = true;
+				this.SpawnPositions[studentFragileSlave] = this.FragileSlaveSpot;
+				this.SpawnID = studentFragileSlave;
+				StudentGlobals.SetStudentDead(studentFragileSlave, false);
+				this.SpawnStudent(this.SpawnID);
+				this.Students[studentFragileSlave].FragileSlave = true;
+				this.Students[studentFragileSlave].Slave = true;
+				this.SpawnID = 0;
 			}
 			this.NPCsTotal = this.StudentsTotal + this.TeachersTotal;
 			this.SpawnID = 1;
@@ -460,6 +478,7 @@ public class StudentManagerScript : MonoBehaviour
 			if (this.ErrorLabel != null)
 			{
 				this.ErrorLabel.text = "The game cannot compile Students.JSON! There is a typo somewhere in the JSON file. The problem might be a missing quotation mark, a missing colon, a missing comma, or something else like that. Please find your typo and fix it, or revert to a backup of the JSON file. " + str;
+				this.ErrorLabel.enabled = true;
 			}
 		}
 	}
@@ -641,11 +660,11 @@ public class StudentManagerScript : MonoBehaviour
 					this.Yandere.ShoulderCamera.LookDown = true;
 					this.Yandere.RPGCamera.enabled = false;
 					this.StopMoving();
+					this.Yandere.ShoulderCamera.HeartbrokenCamera.GetComponent<Camera>().cullingMask |= 512;
 					this.ID = 1;
 					while (this.ID < 5)
 					{
 						StudentScript studentScript3 = this.WitnessList[this.ID];
-						GameObjectUtils.SetLayerRecursively(studentScript3.gameObject, 13);
 						studentScript3.CharacterAnimation.CrossFade((((!studentScript3.Male) ? "f02_pinDown_0" : "pinDown_0") + this.ID).ToString());
 						studentScript3.PinPhase++;
 						this.ID++;
@@ -830,23 +849,26 @@ public class StudentManagerScript : MonoBehaviour
 								studentScript.Prompt.HideButton[0] = true;
 							}
 						}
-						else if (this.Yandere.Armed)
+						else if (studentScript.Persona != PersonaType.Fragile)
 						{
-							if (this.Yandere.EquippedWeapon.Concealable)
+							if (this.Yandere.Armed)
 							{
-								studentScript.Prompt.HideButton[0] = false;
-								studentScript.Prompt.Label[0].text = "     Give Weapon";
+								if (this.Yandere.EquippedWeapon.Concealable)
+								{
+									studentScript.Prompt.HideButton[0] = false;
+									studentScript.Prompt.Label[0].text = "     Give Weapon";
+								}
+								else
+								{
+									studentScript.Prompt.HideButton[0] = true;
+									studentScript.Prompt.Label[0].text = string.Empty;
+								}
 							}
 							else
 							{
 								studentScript.Prompt.HideButton[0] = true;
 								studentScript.Prompt.Label[0].text = string.Empty;
 							}
-						}
-						else
-						{
-							studentScript.Prompt.HideButton[0] = true;
-							studentScript.Prompt.Label[0].text = string.Empty;
 						}
 					}
 					if (this.NoSpeech && !studentScript.Armband.activeInHierarchy)
@@ -1062,6 +1084,7 @@ public class StudentManagerScript : MonoBehaviour
 					studentScript.OccultBook.SetActive(false);
 					studentScript.Pathfinding.speed = 1f;
 					studentScript.Distracted = false;
+					studentScript.Spawned = true;
 					studentScript.Routine = true;
 					studentScript.Safe = false;
 					if (studentScript.ClubAttire)
@@ -1147,7 +1170,7 @@ public class StudentManagerScript : MonoBehaviour
 					studentScript.Suicide = true;
 					studentScript.BecomeRagdoll();
 					studentScript.DeathType = DeathType.Mystery;
-					StudentGlobals.SetStudentSlave(studentScript.StudentID, false);
+					StudentGlobals.SetStudentSlave(studentScript.StudentID);
 				}
 			}
 			this.ID++;

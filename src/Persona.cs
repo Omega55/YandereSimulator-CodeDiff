@@ -54,6 +54,10 @@ public class Persona
 			"Phone Addict"
 		},
 		{
+			PersonaType.Fragile,
+			"Fragile"
+		},
+		{
 			PersonaType.Nemesis,
 			"?????"
 		}

@@ -37,6 +37,8 @@ public class ShutterScript : MonoBehaviour
 
 	public GameObject NotificationManager;
 
+	public GameObject BullyPhotoCollider;
+
 	public GameObject HeartbeatCamera;
 
 	public GameObject CameraButtons;
@@ -58,6 +60,8 @@ public class ShutterScript : MonoBehaviour
 	public GameObject PantiesX;
 
 	public GameObject SenpaiX;
+
+	public GameObject BullyX;
 
 	public GameObject InfoX;
 
@@ -229,7 +233,8 @@ public class ShutterScript : MonoBehaviour
 							{
 								this.ReactionDistance = this.FaceStudent.VisionDistance;
 							}
-							if (!this.FaceStudent.Alarmed && !this.FaceStudent.Dying && !this.FaceStudent.Distracted && !this.FaceStudent.InEvent && !this.FaceStudent.Wet && this.FaceStudent.Schoolwear > 0 && !this.FaceStudent.Fleeing && !this.FaceStudent.Following && !this.FaceStudent.ShoeRemoval.enabled && !this.FaceStudent.HoldingHands && this.FaceStudent.Actions[this.FaceStudent.Phase] != StudentActionType.Mourn && !this.FaceStudent.Guarding && Vector3.Distance(this.Yandere.transform.position, gameObject.transform.position) < this.ReactionDistance && this.FaceStudent.CanSeeObject(this.Yandere.gameObject, this.Yandere.transform.position + Vector3.up))
+							bool enabled = this.FaceStudent.ShoeRemoval.enabled;
+							if (!this.FaceStudent.Alarmed && !this.FaceStudent.Dying && !this.FaceStudent.Distracted && !this.FaceStudent.InEvent && !this.FaceStudent.Wet && this.FaceStudent.Schoolwear > 0 && !this.FaceStudent.Fleeing && !this.FaceStudent.Following && !enabled && !this.FaceStudent.HoldingHands && this.FaceStudent.Actions[this.FaceStudent.Phase] != StudentActionType.Mourn && !this.FaceStudent.Guarding && !this.FaceStudent.Confessing && !this.FaceStudent.DiscCheck && Vector3.Distance(this.Yandere.transform.position, gameObject.transform.position) < this.ReactionDistance && this.FaceStudent.CanSeeObject(this.Yandere.gameObject, this.Yandere.transform.position + Vector3.up))
 							{
 								if (this.MissionMode)
 								{
@@ -333,7 +338,8 @@ public class ShutterScript : MonoBehaviour
 				{
 					if (!this.Yandere.RivalPhone)
 					{
-						bool flag = !this.SenpaiX.activeInHierarchy;
+						bool flag = !this.BullyX.activeInHierarchy;
+						bool flag2 = !this.SenpaiX.activeInHierarchy;
 						this.PromptBar.transform.localPosition = new Vector3(this.PromptBar.transform.localPosition.x, -627f, this.PromptBar.transform.localPosition.z);
 						this.PromptBar.ClearButtons();
 						this.PromptBar.Show = false;
@@ -357,6 +363,19 @@ public class ShutterScript : MonoBehaviour
 							Debug.Log("Setting Photo " + this.Slot + " to ''true''.");
 							PlayerGlobals.SetPhoto(this.Slot, true);
 							if (flag)
+							{
+								Debug.Log("Saving a bully photo!");
+								int studentID = this.BullyPhotoCollider.transform.parent.gameObject.GetComponent<StudentScript>().StudentID;
+								if (this.StudentManager.Students[studentID].Club != ClubType.Bully)
+								{
+									PlayerGlobals.SetBullyPhoto(this.Slot, studentID);
+								}
+								else
+								{
+									PlayerGlobals.SetBullyPhoto(this.Slot, this.StudentManager.Students[studentID].DistractionTarget.StudentID);
+								}
+							}
+							if (flag2)
 							{
 								PlayerGlobals.SetSenpaiPhoto(this.Slot, true);
 							}
@@ -444,8 +463,9 @@ public class ShutterScript : MonoBehaviour
 	private void CheckPhoto()
 	{
 		this.InfoX.SetActive(true);
-		this.PantiesX.SetActive(true);
+		this.BullyX.SetActive(true);
 		this.SenpaiX.SetActive(true);
+		this.PantiesX.SetActive(true);
 		this.ViolenceX.SetActive(true);
 		this.KittenShot = false;
 		this.Nemesis = false;
@@ -498,6 +518,11 @@ public class ShutterScript : MonoBehaviour
 					ConversationGlobals.SetTopicDiscovered(20, true);
 					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 				}
+			}
+			if (this.hit.collider.gameObject.tag == "Bully")
+			{
+				this.BullyPhotoCollider = this.hit.collider.gameObject;
+				this.BullyX.SetActive(false);
 			}
 		}
 		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyRagdolls) && this.hit.collider.gameObject.layer == 11)
@@ -611,6 +636,11 @@ public class ShutterScript : MonoBehaviour
 				num = 1;
 			}
 			PlayerGlobals.SenpaiShots++;
+		}
+		else if (!this.BullyX.activeInHierarchy)
+		{
+			text = "I have no interest in this.";
+			num = 2;
 		}
 		else if (this.NotFace)
 		{

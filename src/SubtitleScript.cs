@@ -273,6 +273,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] Club3Info;
 
+	public string[] Club4Info;
+
 	public string[] Club6Info;
 
 	public string[] ClubGreetings;
@@ -425,6 +427,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public AudioClip[] Club3Clips;
 
+	public AudioClip[] Club4Clips;
+
 	public AudioClip[] Club6Clips;
 
 	public AudioClip[] ClubGreetingClips;
@@ -480,6 +484,10 @@ public class SubtitleScript : MonoBehaviour
 			{
 				SubtitleType.ClubActivity,
 				new AudioClipArrayWrapper(this.ClubActivityClips)
+			},
+			{
+				SubtitleType.ClubArtInfo,
+				new AudioClipArrayWrapper(this.Club4Clips)
 			},
 			{
 				SubtitleType.ClubConfirm,
@@ -1369,6 +1377,11 @@ public class SubtitleScript : MonoBehaviour
 			this.Label.text = this.Club3Info[ID];
 			this.PlayVoice(subtitleType, ID);
 		}
+		else if (subtitleType == SubtitleType.ClubArtInfo)
+		{
+			this.Label.text = this.Club4Info[ID];
+			this.PlayVoice(subtitleType, ID);
+		}
 		else if (subtitleType == SubtitleType.ClubMartialArtsInfo)
 		{
 			this.Label.text = this.Club6Info[ID];
@@ -1556,6 +1569,10 @@ public class SubtitleScript : MonoBehaviour
 		if (Club == ClubType.Occult)
 		{
 			return this.Club3Clips[ClubPhase].length;
+		}
+		if (Club == ClubType.Art)
+		{
+			return this.Club4Clips[ClubPhase].length;
 		}
 		if (Club == ClubType.MartialArts)
 		{

@@ -140,7 +140,11 @@ public class NoteWindowScript : MonoBehaviour
 					this.NoteLocker.Prompt.enabled = false;
 					this.NoteLocker.CanLeaveNote = false;
 					this.NoteLocker.NoteLeft = true;
-					if (this.SlotLabels[1].text == this.Subjects[10])
+					if (this.NoteLocker.Student.StudentID == 7 && this.SlotLabels[1].text == this.Subjects[10])
+					{
+						this.NoteLocker.Success = true;
+					}
+					if (this.NoteLocker.Student.StudentID == 32 && this.NoteLocker.Student.Bullied && this.SlotLabels[1].text == this.Subjects[6])
 					{
 						this.NoteLocker.Success = true;
 					}

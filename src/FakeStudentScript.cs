@@ -23,6 +23,8 @@ public class FakeStudentScript : MonoBehaviour
 
 	public ClubType Club;
 
+	public string LeaderAnim;
+
 	private void Start()
 	{
 		this.targetRotation = base.transform.rotation;
@@ -31,14 +33,21 @@ public class FakeStudentScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (!this.Student.Talking && this.Rotate)
+		if (!this.Student.Talking)
 		{
-			base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
-			this.RotationTimer += Time.deltaTime;
-			if (this.RotationTimer > 1f)
+			if (this.LeaderAnim != string.Empty)
 			{
-				this.RotationTimer = 0f;
-				this.Rotate = false;
+				base.GetComponent<Animation>().CrossFade(this.LeaderAnim);
+			}
+			if (this.Rotate)
+			{
+				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
+				this.RotationTimer += Time.deltaTime;
+				if (this.RotationTimer > 1f)
+				{
+					this.RotationTimer = 0f;
+					this.Rotate = false;
+				}
 			}
 		}
 		if (this.Prompt.Circle[0].fillAmount == 0f && !this.Yandere.Chased)
@@ -59,6 +68,7 @@ public class FakeStudentScript : MonoBehaviour
 			this.Yandere.YandereVision = false;
 			this.Yandere.CanMove = false;
 			this.Yandere.Talking = true;
+			this.RotationTimer = 0f;
 			this.Rotate = true;
 		}
 	}

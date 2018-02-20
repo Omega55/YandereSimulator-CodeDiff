@@ -54,6 +54,8 @@ public static class AnimNames
 
 	public const string FemaleCarryDisposeA = "f02_carryDisposeA_00";
 
+	public const string FemaleCarryDramatic = "f02_carryDramatic_00";
+
 	public const string FemaleCarryIdleA = "f02_carryIdleA_00";
 
 	public const string FemaleCarryLiftA = "f02_carryLiftA_00";
@@ -73,6 +75,10 @@ public static class AnimNames
 	public const string FemaleCirnoRun = "f02_cirnoRun_00";
 
 	public const string FemaleCirnoWalk = "f02_cirnoWalk_00";
+
+	public const string FemaleConfidentIdle = "f02_idleConfident_00";
+
+	public const string FemaleConfidentWalk = "f02_walkConfident_00";
 
 	public const string FemaleCornerPeek = "f02_cornerPeek_00";
 
@@ -161,6 +167,8 @@ public static class AnimNames
 	public const string FemaleHeating = "f02_heating_00";
 
 	public const string FemaleHeavyWeightLift = "f02_heavyWeightLift_00";
+
+	public const string FemaleHeroicIdle = "f02_heroicIdle_00";
 
 	public const string FemaleHiding = "f02_hiding_00";
 
@@ -487,6 +495,8 @@ public static class AnimNames
 	public const string MaleIdleShort = "idleShort_00";
 
 	public const string MaleInsertEarpiece = "insertEarpiece_00";
+
+	public const string MaleJojoPose = "jojoPose_00";
 
 	public const string MaleKeepNote = "keepNote_00";
 

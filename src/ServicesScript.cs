@@ -81,7 +81,7 @@ public class ServicesScript : MonoBehaviour
 		AudioSource component = base.GetComponent<AudioSource>();
 		if (Input.GetButtonDown("A"))
 		{
-			if (!SchemeGlobals.GetServicePurchased(this.Selected))
+			if (!SchemeGlobals.GetServicePurchased(this.Selected) && (double)this.NameLabels[this.Selected].color.a == 1.0)
 			{
 				if (this.PromptBar.Label[0].text != string.Empty)
 				{

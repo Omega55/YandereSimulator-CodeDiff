@@ -43,6 +43,10 @@ public class TalkingScript : MonoBehaviour
 					}
 					this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
 				}
+				else if (this.IdleAnim != null)
+				{
+					this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
+				}
 				if (this.S.TalkTimer == 0f)
 				{
 					if (!this.S.DialogueWheel.AppearanceWindow.Show)
@@ -887,6 +891,7 @@ public class TalkingScript : MonoBehaviour
 					{
 						this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
 						this.S.Subtitle.UpdateLabel(SubtitleType.RejectFood, 0, 3f);
+						this.S.Fed = true;
 					}
 					else
 					{

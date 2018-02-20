@@ -29,6 +29,8 @@ public class OfferHelpScript : MonoBehaviour
 
 	public bool Spoken;
 
+	public int EventStudentID;
+
 	public int EventPhase = 1;
 
 	public float Timer;
@@ -45,7 +47,7 @@ public class OfferHelpScript : MonoBehaviour
 			this.Jukebox.Dip = 0.1f;
 			this.Yandere.EmptyHands();
 			this.Yandere.CanMove = false;
-			this.Student = this.StudentManager.Students[7];
+			this.Student = this.StudentManager.Students[this.EventStudentID];
 			this.Student.Prompt.Label[0].text = "     Talk";
 			this.Student.Pushable = false;
 			this.Student.Meeting = false;
@@ -82,7 +84,7 @@ public class OfferHelpScript : MonoBehaviour
 			}
 			else
 			{
-				if (Input.GetButtonDown("A"))
+				if (!this.Yandere.PauseScreen.Show && Input.GetButtonDown("A"))
 				{
 					this.Timer += this.EventClip[this.EventPhase].length + 1f;
 				}
@@ -100,43 +102,33 @@ public class OfferHelpScript : MonoBehaviour
 				this.Timer += Time.deltaTime;
 				if (this.Timer > this.EventClip[this.EventPhase].length)
 				{
+					Debug.Log("Emptying string.");
 					this.EventSubtitle.text = string.Empty;
 				}
 				if (this.Timer > this.EventClip[this.EventPhase].length + 1f)
 				{
-					this.Spoken = false;
-					this.EventPhase++;
-					this.Timer = 0f;
-					if (this.EventPhase == 14)
+					if (this.EventStudentID == 32 && this.EventPhase == 2)
 					{
-						if (!ConversationGlobals.GetTopicDiscovered(23))
-						{
-							this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
-							ConversationGlobals.SetTopicDiscovered(23, true);
-						}
-						if (!ConversationGlobals.GetTopicLearnedByStudent(23, 7))
-						{
-							this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
-							ConversationGlobals.SetTopicLearnedByStudent(23, 7, true);
-						}
+						this.Yandere.PauseScreen.StudentInfoMenu.Targeting = true;
+						base.StartCoroutine(this.Yandere.PauseScreen.PhotoGallery.GetPhotos());
+						this.Yandere.PauseScreen.PhotoGallery.gameObject.SetActive(true);
+						this.Yandere.PauseScreen.PhotoGallery.NamingBully = true;
+						this.Yandere.PauseScreen.MainMenu.SetActive(false);
+						this.Yandere.PauseScreen.Panel.enabled = true;
+						this.Yandere.PauseScreen.Sideways = true;
+						this.Yandere.PauseScreen.Show = true;
+						Time.timeScale = 0f;
+						this.Yandere.PauseScreen.PhotoGallery.UpdateButtonPrompts();
+						this.Offering = false;
 					}
-					if (this.EventPhase == this.EventSpeech.Length)
+					else
 					{
-						SchemeGlobals.SetSchemeStage(6, 5);
-						this.Student.CurrentDestination = this.Student.Destinations[this.Student.Phase];
-						this.Student.Pathfinding.target = this.Student.Destinations[this.Student.Phase];
-						this.Student.Pathfinding.canSearch = true;
-						this.Student.Pathfinding.canMove = true;
-						this.Student.Routine = true;
-						this.EventSubtitle.transform.localScale = Vector3.zero;
-						this.Yandere.CanMove = true;
-						this.Jukebox.Dip = 1f;
-						UnityEngine.Object.Destroy(base.gameObject);
+						this.Continue();
 					}
 				}
 			}
 		}
-		else if (this.StudentManager.Students[7].Pushed || !this.StudentManager.Students[7].Alive)
+		else if (this.StudentManager.Students[this.EventStudentID].Pushed || !this.StudentManager.Students[this.EventStudentID].Alive)
 		{
 			base.gameObject.SetActive(false);
 		}
@@ -144,7 +136,7 @@ public class OfferHelpScript : MonoBehaviour
 
 	public void UpdateLocation()
 	{
-		this.Student = this.StudentManager.Students[7];
+		this.Student = this.StudentManager.Students[this.EventStudentID];
 		if (this.Student.CurrentDestination == this.StudentManager.MeetSpots.List[8])
 		{
 			base.transform.position = this.Locations[1].position;
@@ -159,6 +151,44 @@ public class OfferHelpScript : MonoBehaviour
 		{
 			base.transform.position = this.Locations[3].position;
 			base.transform.eulerAngles = this.Locations[3].eulerAngles;
+		}
+	}
+
+	public void Continue()
+	{
+		Debug.Log("Proceeding to next line.");
+		this.Offering = true;
+		this.Spoken = false;
+		this.EventPhase++;
+		this.Timer = 0f;
+		if (this.EventStudentID == 7 && this.EventPhase == 14)
+		{
+			if (!ConversationGlobals.GetTopicDiscovered(23))
+			{
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+				ConversationGlobals.SetTopicDiscovered(23, true);
+			}
+			if (!ConversationGlobals.GetTopicLearnedByStudent(23, this.EventStudentID))
+			{
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
+				ConversationGlobals.SetTopicLearnedByStudent(23, this.EventStudentID, true);
+			}
+		}
+		if (this.EventPhase == this.EventSpeech.Length)
+		{
+			if (this.EventStudentID == 7)
+			{
+				SchemeGlobals.SetSchemeStage(6, 5);
+			}
+			this.Student.CurrentDestination = this.Student.Destinations[this.Student.Phase];
+			this.Student.Pathfinding.target = this.Student.Destinations[this.Student.Phase];
+			this.Student.Pathfinding.canSearch = true;
+			this.Student.Pathfinding.canMove = true;
+			this.Student.Routine = true;
+			this.EventSubtitle.transform.localScale = Vector3.zero;
+			this.Yandere.CanMove = true;
+			this.Jukebox.Dip = 1f;
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 }

@@ -296,6 +296,7 @@ public class PoliceScript : MonoBehaviour
 				}
 				else
 				{
+					this.Yandere.MyController.enabled = false;
 					this.Yandere.enabled = false;
 					this.DetermineResults();
 					this.ShowResults = true;
@@ -306,6 +307,7 @@ public class PoliceScript : MonoBehaviour
 		}
 		if (this.ShowResults)
 		{
+			this.Yandere.transform.position = new Vector3(this.Yandere.transform.position.x, this.Yandere.transform.position.y + Time.deltaTime * 10f, this.Yandere.transform.position.z);
 			this.ResultsTimer += Time.deltaTime;
 			if (this.ResultsTimer > 1f)
 			{

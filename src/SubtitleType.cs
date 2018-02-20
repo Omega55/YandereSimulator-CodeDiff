@@ -10,6 +10,7 @@ public enum SubtitleType
 	ClassApology,
 	ClubAccept,
 	ClubActivity,
+	ClubArtInfo,
 	ClubConfirm,
 	ClubDeny,
 	ClubEarly,

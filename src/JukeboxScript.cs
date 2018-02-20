@@ -49,6 +49,8 @@ public class JukeboxScript : MonoBehaviour
 
 	public AudioSource DK;
 
+	public AudioSource Confession;
+
 	public AudioSource FullSanity;
 
 	public AudioSource HalfSanity;
@@ -203,7 +205,7 @@ public class JukeboxScript : MonoBehaviour
 		}
 		if (!this.Yandere.PauseScreen.Show && !this.Yandere.Noticed && this.Yandere.CanMove && this.Yandere.EasterEggMenu.activeInHierarchy && !this.Egg)
 		{
-			if (Input.GetKeyDown(KeyCode.T))
+			if (Input.GetKeyDown(KeyCode.T) || Input.GetKeyDown(KeyCode.Alpha4))
 			{
 				this.Egg = true;
 				this.KillVolume();
@@ -342,6 +344,7 @@ public class JukeboxScript : MonoBehaviour
 		this.Ninja.Stop();
 		this.Galo.Stop();
 		this.DK.Stop();
+		this.Confession.Stop();
 		this.FullSanity.Stop();
 		this.HalfSanity.Stop();
 		this.NoSanity.Stop();
