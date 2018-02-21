@@ -81,6 +81,7 @@ public class ClubWindowScript : MonoBehaviour
 						this.Yandere.ClubAccessory();
 						this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubQuit;
 						this.Quitting = false;
+						this.Yandere.StudentManager.UpdateBooths();
 					}
 					else if (this.Activity)
 					{

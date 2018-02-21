@@ -507,6 +507,12 @@ public class DebugMenuScript : MonoBehaviour
 						this.StudentManager.ToggleBookBags();
 						this.Window.SetActive(false);
 					}
+					else if (Input.GetKeyDown(KeyCode.H))
+					{
+						StudentGlobals.SetFragileTarget(2);
+						StudentGlobals.SetStudentFragileSlave(32);
+						SceneManager.LoadScene("LoadingScene");
+					}
 				}
 			}
 			else if (Input.GetKeyDown(KeyCode.BackQuote))
@@ -537,8 +543,11 @@ public class DebugMenuScript : MonoBehaviour
 			{
 				if (!this.Yandere.FlameDemonic && !this.Yandere.TornadoHair.activeInHierarchy)
 				{
+					this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount1", 1f);
+					this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount1", 1f);
 					this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", 1f);
 					this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", 1f);
+					this.Yandere.PantyAttacher.newRenderer.enabled = false;
 				}
 				else
 				{
@@ -553,9 +562,21 @@ public class DebugMenuScript : MonoBehaviour
 		}
 		else
 		{
-			this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+			this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount1", 0f);
 			this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
 			this.Yandere.MyRenderer.materials[2].SetFloat("_BlendAmount", 0f);
+			if (this.Yandere.MyRenderer.sharedMesh != this.Yandere.NudeMesh)
+			{
+				this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount1", 1f);
+				this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", 1f);
+				this.Yandere.PantyAttacher.newRenderer.enabled = true;
+			}
+			else
+			{
+				this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount1", 0f);
+				this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+				this.Yandere.PantyAttacher.newRenderer.enabled = false;
+			}
 			this.StudentManager.Censor = false;
 			this.StudentManager.CensorStudents();
 		}

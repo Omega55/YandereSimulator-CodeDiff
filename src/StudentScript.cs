@@ -2292,7 +2292,7 @@ public class StudentScript : MonoBehaviour
 									}
 									else
 									{
-										if (!this.SpeechLines.isPlaying)
+										if (!this.InEvent && !this.SpeechLines.isPlaying)
 										{
 											this.SmartPhone.SetActive(false);
 											this.SpeechLines.Play();
@@ -2349,9 +2349,17 @@ public class StudentScript : MonoBehaviour
 							else if (this.Actions[this.Phase] == StudentActionType.Slave)
 							{
 								this.CharacterAnimation.CrossFade(this.BrokenSitAnim);
-								if (this.FragileSlave && this.HuntTarget.Indoors)
+								if (this.FragileSlave)
 								{
-									this.GoCommitMurder();
+									if (this.HuntTarget == null)
+									{
+										this.HuntTarget = this;
+										this.GoCommitMurder();
+									}
+									else if (this.HuntTarget.Indoors)
+									{
+										this.GoCommitMurder();
+									}
 								}
 							}
 							else if (this.Actions[this.Phase] == StudentActionType.Relax)
@@ -4010,7 +4018,7 @@ public class StudentScript : MonoBehaviour
 					{
 						if (!this.DistractionTarget.Distracted)
 						{
-							if ((this.Club != ClubType.Bully && this.DistractionTarget.Club == ClubType.Bully) || (this.Club == ClubType.Bully && this.DistractionTarget.Club != ClubType.Bully))
+							if (this.StudentID > 1 && this.DistractionTarget.StudentID > 1 && ((this.Club != ClubType.Bully && this.DistractionTarget.Club == ClubType.Bully) || (this.Club == ClubType.Bully && this.DistractionTarget.Club != ClubType.Bully)))
 							{
 								this.BullyPhotoCollider.SetActive(true);
 							}
@@ -8477,6 +8485,7 @@ public class StudentScript : MonoBehaviour
 			this.StudentManager.FragileWeapon.transform.localScale = Vector3.zero;
 			this.MyWeapon = this.StudentManager.FragileWeapon;
 			this.MyWeapon.FingerprintID = this.StudentID;
+			this.MyWeapon.MyCollider.enabled = false;
 		}
 		this.CharacterAnimation.CrossFade("f02_brokenStandUp_00");
 		if (this.HuntTarget != this)

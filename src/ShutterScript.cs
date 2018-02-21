@@ -406,7 +406,14 @@ public class ShutterScript : MonoBehaviour
 					this.PauseScreen.Panel.enabled = true;
 					this.PromptBar.ClearButtons();
 					this.PromptBar.Label[1].text = "Exit";
-					this.PromptBar.Label[3].text = "Interests";
+					if (this.PantiesX.activeInHierarchy)
+					{
+						this.PromptBar.Label[3].text = "Interests";
+					}
+					else
+					{
+						this.PromptBar.Label[3].text = string.Empty;
+					}
 					this.PromptBar.UpdateButtons();
 					if (!this.InfoX.activeInHierarchy)
 					{

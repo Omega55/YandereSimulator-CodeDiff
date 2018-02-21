@@ -36,6 +36,7 @@ public class HomeCorkboardScript : MonoBehaviour
 				this.HomeWindow.Show = false;
 				base.enabled = false;
 				this.Loaded = false;
+				this.PhotoGallery.SaveAllPhotographs();
 			}
 		}
 	}

@@ -139,19 +139,16 @@ public class ChangingBoothScript : MonoBehaviour
 
 	public void CheckYandereClub()
 	{
-		if (this.Yandere.Bloodiness == 0f && !this.CannotChange && this.Yandere.Schoolwear > 0)
+		if (ClubGlobals.Club != this.ClubID)
+		{
+			this.Prompt.Hide();
+			this.Prompt.enabled = false;
+		}
+		else if (this.Yandere.Bloodiness == 0f && !this.CannotChange && this.Yandere.Schoolwear > 0)
 		{
 			if (!this.Occupied)
 			{
-				if (ClubGlobals.Club != this.ClubID)
-				{
-					this.Prompt.Hide();
-					this.Prompt.enabled = false;
-				}
-				else
-				{
-					this.Prompt.enabled = true;
-				}
+				this.Prompt.enabled = true;
 			}
 			else
 			{

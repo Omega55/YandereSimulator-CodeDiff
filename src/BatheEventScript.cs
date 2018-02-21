@@ -64,6 +64,7 @@ public class BatheEventScript : MonoBehaviour
 					this.EventStudent.Pathfinding.canSearch = true;
 					this.EventStudent.Pathfinding.canMove = true;
 					this.EventStudent.Pathfinding.speed = 1f;
+					this.EventStudent.SpeechLines.Stop();
 					this.EventStudent.DistanceToDestination = 100f;
 					this.EventStudent.Obstacle.checkTime = 99f;
 					this.EventStudent.InEvent = true;

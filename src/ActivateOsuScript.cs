@@ -56,6 +56,7 @@ public class ActivateOsuScript : MonoBehaviour
 	private void ActivateOsu()
 	{
 		this.Osu.transform.parent.gameObject.SetActive(true);
+		this.Student.SmartPhone.SetActive(false);
 		this.Music.SetActive(true);
 		this.Mouse.parent = this.Student.RightHand;
 		this.Mouse.transform.localPosition = Vector3.zero;

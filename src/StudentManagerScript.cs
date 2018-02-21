@@ -384,7 +384,7 @@ public class StudentManagerScript : MonoBehaviour
 				StudentGlobals.FemaleUniform = 5;
 				StudentGlobals.MaleUniform = 5;
 			}
-			if (StudentGlobals.GetStudentSlave() > 0)
+			if (StudentGlobals.GetStudentSlave() > 0 && !StudentGlobals.GetStudentDead(StudentGlobals.GetStudentSlave()))
 			{
 				int studentSlave = StudentGlobals.GetStudentSlave();
 				this.ForceSpawn = true;
@@ -395,7 +395,7 @@ public class StudentManagerScript : MonoBehaviour
 				this.Students[studentSlave].Slave = true;
 				this.SpawnID = 0;
 			}
-			if (StudentGlobals.GetStudentFragileSlave() > 0)
+			if (StudentGlobals.GetStudentFragileSlave() > 0 && !StudentGlobals.GetStudentDead(StudentGlobals.GetStudentFragileSlave()))
 			{
 				int studentFragileSlave = StudentGlobals.GetStudentFragileSlave();
 				this.ForceSpawn = true;
@@ -1389,7 +1389,7 @@ public class StudentManagerScript : MonoBehaviour
 		while (this.ID < this.Students.Length)
 		{
 			StudentScript studentScript = this.Students[this.ID];
-			if (studentScript != null && !studentScript.Male && !studentScript.Teacher)
+			if (studentScript != null && !studentScript.Male && studentScript.Club != ClubType.Teacher && studentScript.Club != ClubType.GymTeacher && studentScript.Club != ClubType.Nurse)
 			{
 				if (this.Censor)
 				{

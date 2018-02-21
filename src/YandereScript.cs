@@ -5107,6 +5107,7 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.materials[1].mainTexture = this.CyborgBody;
 		this.MyRenderer.materials[2].mainTexture = this.CyborgBody;
 		this.PantyAttacher.newRenderer.enabled = false;
+		this.Schoolwear = 0;
 		this.ID = 1;
 		while (this.ID < this.CyborgParts.Length)
 		{
@@ -5128,6 +5129,7 @@ public class YandereScript : MonoBehaviour
 		this.Hairstyle = 45;
 		this.UpdateHair();
 		this.Egg = true;
+		this.DebugMenu.transform.parent.GetComponent<DebugMenuScript>().UpdateCensor();
 	}
 
 	private void Ebola()
@@ -5186,8 +5188,10 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.materials[0].mainTexture = this.SamusFace;
 		this.MyRenderer.materials[1].mainTexture = this.SamusBody;
 		this.PantyAttacher.newRenderer.enabled = false;
+		this.Schoolwear = 0;
 		this.PonytailRenderer.material.mainTexture = this.SamusFace;
 		this.Egg = true;
+		this.DebugMenu.transform.parent.GetComponent<DebugMenuScript>().UpdateCensor();
 	}
 
 	private void Witch()
@@ -5198,8 +5202,10 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.materials[0].mainTexture = this.WitchFace;
 		this.MyRenderer.materials[1].mainTexture = this.WitchBody;
 		this.PantyAttacher.newRenderer.enabled = false;
+		this.Schoolwear = 0;
 		this.PonytailRenderer.material.mainTexture = this.WitchFace;
 		this.Egg = true;
+		this.DebugMenu.transform.parent.GetComponent<DebugMenuScript>().UpdateCensor();
 	}
 
 	private void Pose()
@@ -5321,6 +5327,7 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.materials[1].mainTexture = this.GazerBody;
 		this.MyRenderer.materials[2].mainTexture = this.GazerBody;
 		this.PantyAttacher.newRenderer.enabled = false;
+		this.Schoolwear = 0;
 		this.IdleAnim = "f02_gazerIdle_00";
 		this.WalkAnim = "f02_gazerWalk_00";
 		this.RunAnim = "f02_gazerRun_00";
@@ -5333,6 +5340,7 @@ public class YandereScript : MonoBehaviour
 		this.StudentManager.UpdateStudents();
 		this.Gazing = true;
 		this.Egg = true;
+		this.DebugMenu.transform.parent.GetComponent<DebugMenuScript>().UpdateCensor();
 	}
 
 	private void Six()
@@ -5375,6 +5383,7 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.materials[1].mainTexture = this.KLKBody;
 		this.MyRenderer.materials[2].mainTexture = this.KLKBody;
 		this.PantyAttacher.newRenderer.enabled = false;
+		this.Schoolwear = 0;
 		this.ID = 0;
 		while (this.ID < this.KLKParts.Length)
 		{
@@ -5392,6 +5401,7 @@ public class YandereScript : MonoBehaviour
 			this.ID++;
 		}
 		this.Egg = true;
+		this.DebugMenu.transform.parent.GetComponent<DebugMenuScript>().UpdateCensor();
 	}
 
 	public void ChangeSchoolwear()
@@ -5430,6 +5440,7 @@ public class YandereScript : MonoBehaviour
 			{
 				this.MyRenderer.materials[0].SetFloat("_BlendAmount", 1f);
 				this.MyRenderer.materials[1].SetFloat("_BlendAmount", 1f);
+				this.PantyAttacher.newRenderer.enabled = false;
 			}
 			this.MyRenderer.materials[0].mainTexture = this.TextureToUse;
 			this.MyRenderer.materials[1].mainTexture = this.TextureToUse;

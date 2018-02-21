@@ -4,96 +4,77 @@ using UnityEngine;
 
 public class PhotoGalleryScript : MonoBehaviour
 {
+	public HomeCorkboardPhotoScript[] CorkboardPhotographs;
+
+	public int PhotoID;
+
 	public StringScript String;
 
-	[SerializeField]
-	private InputManagerScript InputManager;
+	public InputManagerScript InputManager;
 
-	[SerializeField]
-	private PauseScreenScript PauseScreen;
+	public PauseScreenScript PauseScreen;
 
-	[SerializeField]
-	private TaskManagerScript TaskManager;
+	public TaskManagerScript TaskManager;
+
+	public InputDeviceScript InputDevice;
 
 	public PromptBarScript PromptBar;
 
-	[SerializeField]
-	private HomeCursorScript Cursor;
+	public HomeCursorScript Cursor;
 
-	[SerializeField]
-	private YandereScript Yandere;
+	public YandereScript Yandere;
 
-	[SerializeField]
-	private GameObject MovingPhotograph;
+	public GameObject MovingPhotograph;
 
 	public GameObject LoadingScreen;
 
-	[SerializeField]
-	private GameObject Photograph;
+	public GameObject Photograph;
 
 	public GameObject StringSet;
 
-	[SerializeField]
-	private Transform CorkboardPanel;
+	public Transform CorkboardPanel;
 
-	[SerializeField]
-	private Transform Destination;
+	public Transform Destination;
 
-	[SerializeField]
-	private Transform Highlight;
+	public Transform Highlight;
 
-	[SerializeField]
-	private Transform Gallery;
+	public Transform Gallery;
 
 	public Transform StringParent;
 
-	[SerializeField]
-	private UITexture[] Photographs;
+	public UITexture[] Photographs;
 
-	[SerializeField]
-	private UISprite[] Hearts;
+	public UISprite[] Hearts;
 
-	[SerializeField]
-	private UITexture ViewPhoto;
+	public UITexture ViewPhoto;
 
-	[SerializeField]
-	private Texture NoPhoto;
+	public Texture NoPhoto;
 
-	[SerializeField]
-	private Vector2 PreviousPosition;
+	public Vector2 PreviousPosition;
 
-	[SerializeField]
-	private Vector2 MouseDelta;
+	public Vector2 MouseDelta;
 
 	public bool NamingBully;
 
 	public bool Adjusting;
 
-	[SerializeField]
-	private bool CanAdjust;
+	public bool CanAdjust;
 
-	[SerializeField]
-	private bool Corkboard;
+	public bool Corkboard;
 
 	public bool Viewing;
 
-	[SerializeField]
-	private bool MovingString;
+	public bool MovingString;
 
-	[SerializeField]
-	private bool Moving;
+	public bool Moving;
 
-	[SerializeField]
-	private bool Reset;
+	public bool Reset;
 
-	[SerializeField]
-	private int StringPhase;
+	public int StringPhase;
 
-	[SerializeField]
-	private int Column;
+	public int Column;
 
-	[SerializeField]
-	private int Row;
+	public int Row;
 
 	public float MaxPhotoX = 4150f;
 
@@ -104,6 +85,8 @@ public class PhotoGalleryScript : MonoBehaviour
 	private const float MaxCursorY = 3122f;
 
 	private const float CorkboardAspectRatio = 1.53363228f;
+
+	public float SpeedLimit;
 
 	private void Start()
 	{
@@ -242,7 +225,7 @@ public class PhotoGalleryScript : MonoBehaviour
 			else
 			{
 				UITexture uitexture2 = this.Photographs[this.CurrentIndex];
-				if (uitexture2.mainTexture != this.NoPhoto)
+				if (uitexture2.mainTexture != this.NoPhoto && PlayerGlobals.GetBullyPhoto(this.CurrentIndex) > 0)
 				{
 					this.Yandere.Police.EndOfDay.FragileTarget = PlayerGlobals.GetBullyPhoto(this.CurrentIndex);
 					this.Yandere.StudentManager.FragileOfferHelp.Continue();
@@ -375,6 +358,7 @@ public class PhotoGalleryScript : MonoBehaviour
 				}
 			}
 			this.UpdateButtonPrompts();
+			this.SaveAllPhotographs();
 		}
 	}
 
@@ -413,7 +397,7 @@ public class PhotoGalleryScript : MonoBehaviour
 			}
 		}
 		Vector2 vector = new Vector2(this.MovingPhotograph.transform.localPosition.x, this.MovingPhotograph.transform.localPosition.y);
-		Vector2 vector2 = new Vector2(Input.GetAxis("Horizontal") * 86.66666f, Input.GetAxis("Vertical") * 86.66666f);
+		Vector2 vector2 = new Vector2(Input.GetAxis("Horizontal") * 86.66666f * this.SpeedLimit, Input.GetAxis("Vertical") * 86.66666f * this.SpeedLimit);
 		this.MovingPhotograph.transform.localPosition = new Vector3(Mathf.Clamp(vector.x + vector2.x, -this.MaxPhotoX, this.MaxPhotoX), Mathf.Clamp(vector.y + vector2.y, -this.MaxPhotoY, this.MaxPhotoY), this.MovingPhotograph.transform.localPosition.z);
 		if (Input.GetButtonDown("A"))
 		{
@@ -421,13 +405,14 @@ public class PhotoGalleryScript : MonoBehaviour
 			this.Cursor.gameObject.SetActive(true);
 			this.Moving = false;
 			this.UpdateButtonPrompts();
+			this.PhotoID++;
 		}
 	}
 
 	private void UpdateString()
 	{
-		this.MouseDelta.x = this.MouseDelta.x + Input.GetAxis("Horizontal") * 8.66666f;
-		this.MouseDelta.y = this.MouseDelta.y + Input.GetAxis("Vertical") * 8.66666f;
+		this.MouseDelta.x = this.MouseDelta.x + Input.GetAxis("Horizontal") * 8.66666f * this.SpeedLimit;
+		this.MouseDelta.y = this.MouseDelta.y + Input.GetAxis("Vertical") * 8.66666f * this.SpeedLimit;
 		Transform transform;
 		if (this.StringPhase == 0)
 		{
@@ -475,7 +460,7 @@ public class PhotoGalleryScript : MonoBehaviour
 	private void UpdateCorkboardCursor()
 	{
 		Vector2 vector = new Vector2(this.Cursor.transform.localPosition.x, this.Cursor.transform.localPosition.y);
-		Vector2 vector2 = new Vector2(this.MouseDelta.x * 8.66666f + Input.GetAxis("Horizontal") * 86.66666f, this.MouseDelta.y * 8.66666f + Input.GetAxis("Vertical") * 86.66666f);
+		Vector2 vector2 = new Vector2(this.MouseDelta.x * 8.66666f + Input.GetAxis("Horizontal") * 86.66666f * this.SpeedLimit, this.MouseDelta.y * 8.66666f + Input.GetAxis("Vertical") * 86.66666f * this.SpeedLimit);
 		this.Cursor.transform.localPosition = new Vector3(Mathf.Clamp(vector.x + vector2.x, -4788f, 4788f), Mathf.Clamp(vector.y + vector2.y, -3122f, 3122f), this.Cursor.transform.localPosition.z);
 		if (Input.GetButtonDown("A") && this.Cursor.Photograph != null)
 		{
@@ -548,6 +533,14 @@ public class PhotoGalleryScript : MonoBehaviour
 				this.Gallery.transform.localPosition = new Vector3(this.Gallery.transform.localPosition.x, Mathf.Lerp(this.Gallery.transform.localPosition.y, 1000f, Time.deltaTime * 10f), this.Gallery.transform.localPosition.z);
 			}
 			this.MouseDelta = new Vector2(Input.mousePosition.x - this.PreviousPosition.x, Input.mousePosition.y - this.PreviousPosition.y);
+			if (this.InputDevice.Type == InputDeviceType.MouseAndKeyboard)
+			{
+				this.SpeedLimit = 0.1f;
+			}
+			else
+			{
+				this.SpeedLimit = 1f;
+			}
 			if (this.Moving)
 			{
 				this.UpdateCorkboardPhoto();
@@ -578,7 +571,6 @@ public class PhotoGalleryScript : MonoBehaviour
 		{
 			if (PlayerGlobals.GetPhoto(ID))
 			{
-				Debug.Log("Photo " + ID + " is ''true''.");
 				string path = string.Concat(new object[]
 				{
 					"file:///",
@@ -587,7 +579,6 @@ public class PhotoGalleryScript : MonoBehaviour
 					ID,
 					".png"
 				});
-				Debug.Log("Attempting to get " + path);
 				WWW www = new WWW(path);
 				yield return www;
 				if (www.error == null)
@@ -628,9 +619,16 @@ public class PhotoGalleryScript : MonoBehaviour
 		if (this.NamingBully)
 		{
 			UITexture uitexture = this.Photographs[this.CurrentIndex];
-			if (uitexture.mainTexture != this.NoPhoto)
+			if (uitexture.mainTexture != this.NoPhoto && PlayerGlobals.GetBullyPhoto(this.CurrentIndex) > 0)
 			{
-				this.PromptBar.Label[0].text = "Name Bully";
+				if (PlayerGlobals.GetBullyPhoto(this.CurrentIndex) > 0)
+				{
+					this.PromptBar.Label[0].text = "Name Bully";
+				}
+				else
+				{
+					this.PromptBar.Label[0].text = string.Empty;
+				}
 			}
 			else
 			{
@@ -721,5 +719,9 @@ public class PhotoGalleryScript : MonoBehaviour
 		}
 		this.PromptBar.UpdateButtons();
 		this.PromptBar.Show = true;
+	}
+
+	public void SaveAllPhotographs()
+	{
 	}
 }
