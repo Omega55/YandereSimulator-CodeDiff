@@ -94,6 +94,7 @@ public class AlarmDiscScript : MonoBehaviour
 						{
 							this.StudentIsBusy = true;
 						}
+						Debug.Log("This alarm disc has come into contact with: " + this.Student.Name);
 						if (!this.Student.TurnOffRadio && this.Student.Alive && !this.Student.Pushed && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.CheckingNote && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.StudentIsBusy && !this.Student.FocusOnYandere)
 						{
 							if (this.Student.Male)
@@ -104,6 +105,7 @@ public class AlarmDiscScript : MonoBehaviour
 							{
 								if (this.Originator.WitnessedMurder)
 								{
+									Debug.Log("Somebody witnessed murder, and is directing attention towards Yandere=chan.");
 									this.Student.DistractionSpot = new Vector3(base.transform.position.x, this.Student.Yandere.transform.position.y, base.transform.position.z);
 								}
 								else if (this.Originator.Corpse == null)

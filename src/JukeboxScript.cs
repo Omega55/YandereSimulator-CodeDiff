@@ -69,9 +69,11 @@ public class JukeboxScript : MonoBehaviour
 
 	public int Track;
 
-	public float Timer;
+	public int BGM;
 
 	public float Dip = 1f;
+
+	public bool StartMusic;
 
 	public bool Egg;
 
@@ -87,13 +89,26 @@ public class JukeboxScript : MonoBehaviour
 
 	public AudioClip[] AlternateNo;
 
+	public AudioClip[] ThirdFull;
+
+	public AudioClip[] ThirdHalf;
+
+	public AudioClip[] ThirdNo;
+
 	private void Start()
 	{
-		if (UnityEngine.Random.Range(0, 2) > 0)
+		this.BGM = UnityEngine.Random.Range(0, 3);
+		if (this.BGM == 1)
 		{
 			this.FullSanities = this.AlternateFull;
 			this.HalfSanities = this.AlternateHalf;
 			this.NoSanities = this.AlternateNo;
+		}
+		else if (this.BGM == 2)
+		{
+			this.FullSanities = this.ThirdFull;
+			this.HalfSanities = this.ThirdHalf;
+			this.NoSanities = this.ThirdNo;
 		}
 		if (!SchoolGlobals.SchoolAtmosphereSet)
 		{
@@ -116,16 +131,13 @@ public class JukeboxScript : MonoBehaviour
 		this.FullSanity.clip = this.FullSanities[num];
 		this.HalfSanity.clip = this.HalfSanities[num];
 		this.NoSanity.clip = this.NoSanities[num];
-		this.FullSanity.Play();
-		this.HalfSanity.Play();
-		this.NoSanity.Play();
 		this.Volume = 0.25f;
+		this.FullSanity.volume = 0f;
 		this.Hitman.time = 26f;
 	}
 
 	private void Update()
 	{
-		this.Timer += Time.deltaTime;
 		if (!this.Yandere.PauseScreen.Show && !this.Yandere.EasterEggMenu.activeInHierarchy)
 		{
 			if (Input.GetKeyDown(KeyCode.M))
@@ -138,7 +150,9 @@ public class JukeboxScript : MonoBehaviour
 				if (this.Volume == 0f)
 				{
 					this.FadeSpeed = 1f;
+					this.StartMusic = false;
 					this.Volume = this.LastVolume;
+					this.Start();
 				}
 				else
 				{
@@ -158,8 +172,15 @@ public class JukeboxScript : MonoBehaviour
 		}
 		if (!this.Egg)
 		{
-			if (this.Timer > 5f)
+			if (!this.Yandere.Police.Clock.SchoolBell.isPlaying)
 			{
+				if (!this.StartMusic)
+				{
+					this.FullSanity.Play();
+					this.HalfSanity.Play();
+					this.NoSanity.Play();
+					this.StartMusic = true;
+				}
 				if (this.Yandere.Sanity >= 66.6666641f)
 				{
 					this.FullSanity.volume = Mathf.MoveTowards(this.FullSanity.volume, this.Volume * this.Dip - this.ClubDip, Time.deltaTime * this.FadeSpeed);

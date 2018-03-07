@@ -246,6 +246,10 @@ public class HomeCameraScript : MonoBehaviour
 		{
 			TaskGlobals.SetTaskStatus(14, 1);
 		}
+		if (Input.GetKeyDown(KeyCode.M))
+		{
+			this.RoomJukebox.gameObject.SetActive(false);
+		}
 		if (Input.GetKeyDown(KeyCode.BackQuote))
 		{
 			HomeGlobals.Night = !HomeGlobals.Night;

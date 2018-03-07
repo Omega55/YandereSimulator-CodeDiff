@@ -17,6 +17,8 @@ public class NotificationManagerScript : MonoBehaviour
 
 	public ClockScript Clock;
 
+	public string PersonaName;
+
 	private NotificationTypeAndStringDictionary NotificationMessages;
 
 	private void Awake()
@@ -82,6 +84,10 @@ public class NotificationManagerScript : MonoBehaviour
 			{
 				NotificationType.ClassNow,
 				"Class Begins Now"
+			},
+			{
+				NotificationType.Persona,
+				"Persona"
 			}
 		};
 	}
@@ -135,7 +141,14 @@ public class NotificationManagerScript : MonoBehaviour
 			component.NotificationManager = this;
 			string text;
 			bool flag = this.NotificationMessages.TryGetValue(Type, out text);
-			component.Label.text = text;
+			if (Type != NotificationType.Persona)
+			{
+				component.Label.text = text;
+			}
+			else
+			{
+				component.Label.text = this.PersonaName + " " + text;
+			}
 			this.NotificationsSpawned++;
 			component.ID = this.NotificationsSpawned;
 		}

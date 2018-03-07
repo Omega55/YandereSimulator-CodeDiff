@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class PoliceScript : MonoBehaviour
 {
+	public LowRepGameOverScript LowRepGameOver;
+
 	public StudentManagerScript StudentManager;
 
 	public ClubManagerScript ClubManager;
@@ -33,7 +35,11 @@ public class PoliceScript : MonoBehaviour
 
 	public GameObject SuicideStudent;
 
+	public GameObject UICamera;
+
 	public GameObject Icons;
+
+	public GameObject FPS;
 
 	public Transform BloodParent;
 
@@ -108,6 +114,8 @@ public class PoliceScript : MonoBehaviour
 	public bool Suicide;
 
 	public bool Called;
+
+	public bool LowRep;
 
 	public bool Show;
 
@@ -244,11 +252,11 @@ public class PoliceScript : MonoBehaviour
 				this.SanityIcon.spriteName = "No";
 				this.SanityRestored = false;
 			}
-			this.Timer -= Time.deltaTime;
+			this.Timer = Mathf.MoveTowards(this.Timer, 0f, Time.deltaTime);
 			if (this.Timer <= 0f)
 			{
 				this.Timer = 0f;
-				if (!this.Yandere.Attacking && !this.Yandere.Struggling && !this.FadeOut)
+				if (!this.Yandere.Attacking && !this.Yandere.Struggling && !this.Yandere.Egg && !this.FadeOut)
 				{
 					this.BeginFadingOut();
 				}
@@ -283,7 +291,7 @@ public class PoliceScript : MonoBehaviour
 				}
 			}
 			this.PauseScreen.Panel.alpha = Mathf.MoveTowards(this.PauseScreen.Panel.alpha, 0f, Time.deltaTime);
-			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a + Time.deltaTime);
+			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 1f, Time.deltaTime));
 			if (this.Darkness.color.a >= 1f && !this.ShowResults)
 			{
 				this.HeartbeatCamera.SetActive(false);
@@ -307,7 +315,6 @@ public class PoliceScript : MonoBehaviour
 		}
 		if (this.ShowResults)
 		{
-			this.Yandere.transform.position = new Vector3(this.Yandere.transform.position.x, this.Yandere.transform.position.y + Time.deltaTime * 10f, this.Yandere.transform.position.z);
 			this.ResultsTimer += Time.deltaTime;
 			if (this.ResultsTimer > 1f)
 			{
@@ -383,6 +390,18 @@ public class PoliceScript : MonoBehaviour
 						Time.timeScale = 1f;
 					}
 				}
+				else if (this.LowRep)
+				{
+					this.Yandere.RPGCamera.enabled = false;
+					this.Yandere.RPGCamera.transform.parent = this.LowRepGameOver.MyCamera;
+					this.Yandere.RPGCamera.transform.localPosition = new Vector3(0f, 0f, 0f);
+					this.Yandere.RPGCamera.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+					this.LowRepGameOver.gameObject.SetActive(true);
+					this.UICamera.SetActive(false);
+					this.FPS.SetActive(false);
+					Time.timeScale = 1f;
+					base.enabled = false;
+				}
 				else if (!this.TeacherReport)
 				{
 					if (this.EndOfDay.Phase == 1)
@@ -426,12 +445,12 @@ public class PoliceScript : MonoBehaviour
 		}
 		else if (this.Reputation.Reputation <= -100f)
 		{
-			this.ResultsLabels[0].text = "Yandere-chan's bizarre conduct has been observed and discussed by many people.";
-			this.ResultsLabels[1].text = "Word of Yandere-chan's strange behavior has reached Senpai.";
-			this.ResultsLabels[2].text = "Senpai is now aware that Yandere-chan is a dangerous person.";
-			this.ResultsLabels[3].text = "From this day forward, Senpai will fear and avoid Yandere-chan.";
-			this.ResultsLabels[4].text = "Yandere-chan will never have her Senpai's love.";
-			this.GameOver = true;
+			this.ResultsLabels[0].text = "Unfortunately...";
+			this.ResultsLabels[1].text = "Yandere-chan's unusual behavior has been observed by many people.";
+			this.ResultsLabels[2].text = "Word has spread throughout the school of Yandere-chan's bizarre conduct.";
+			this.ResultsLabels[3].text = "The entire school is now aware of Yandere-chan's true nature.";
+			this.ResultsLabels[4].text = "From this day forward, nothing will be the same.";
+			this.LowRep = true;
 		}
 		else if (DateGlobals.Weekday == DayOfWeek.Friday)
 		{

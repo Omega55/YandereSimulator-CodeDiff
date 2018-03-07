@@ -331,6 +331,19 @@ public class StudentInfoScript : MonoBehaviour
 				this.Back = false;
 			}
 		}
+		if (Input.GetButtonDown("X"))
+		{
+			if (this.StudentManager.Tag.Target != this.StudentManager.Students[this.CurrentStudent].Head)
+			{
+				this.StudentManager.Tag.Target = this.StudentManager.Students[this.CurrentStudent].Head;
+				this.PromptBar.Label[2].text = "Untag";
+			}
+			else
+			{
+				this.StudentManager.Tag.Target = null;
+				this.PromptBar.Label[2].text = "Tag";
+			}
+		}
 		if (Input.GetButtonDown("Y") && this.PromptBar.Button[3].enabled)
 		{
 			if (!this.Topics.activeInHierarchy)

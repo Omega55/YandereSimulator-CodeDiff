@@ -509,7 +509,7 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					else if (Input.GetKeyDown(KeyCode.H))
 					{
-						StudentGlobals.SetFragileTarget(2);
+						StudentGlobals.SetFragileTarget(26);
 						StudentGlobals.SetStudentFragileSlave(32);
 						SceneManager.LoadScene("LoadingScene");
 					}
@@ -539,22 +539,29 @@ public class DebugMenuScript : MonoBehaviour
 	{
 		if (!this.StudentManager.Censor)
 		{
-			if (this.Yandere.Schoolwear == 1 && !this.Yandere.Sans)
+			if (this.Yandere.Schoolwear == 1)
 			{
-				if (!this.Yandere.FlameDemonic && !this.Yandere.TornadoHair.activeInHierarchy)
+				if (!this.Yandere.Sans && !this.Yandere.SithLord)
 				{
-					this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount1", 1f);
-					this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount1", 1f);
-					this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", 1f);
-					this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", 1f);
-					this.Yandere.PantyAttacher.newRenderer.enabled = false;
+					if (!this.Yandere.FlameDemonic && !this.Yandere.TornadoHair.activeInHierarchy)
+					{
+						this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount1", 1f);
+						this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount1", 1f);
+						this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", 1f);
+						this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", 1f);
+						this.Yandere.PantyAttacher.newRenderer.enabled = false;
+					}
+					else
+					{
+						this.Yandere.MyRenderer.materials[2].SetTexture("_OverlayTex", this.PantyCensorTexture);
+						this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+						this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
+						this.Yandere.MyRenderer.materials[2].SetFloat("_BlendAmount", 1f);
+					}
 				}
 				else
 				{
-					this.Yandere.MyRenderer.materials[2].SetTexture("_OverlayTex", this.PantyCensorTexture);
-					this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
-					this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
-					this.Yandere.MyRenderer.materials[2].SetFloat("_BlendAmount", 1f);
+					this.Yandere.PantyAttacher.newRenderer.enabled = false;
 				}
 			}
 			this.StudentManager.Censor = true;

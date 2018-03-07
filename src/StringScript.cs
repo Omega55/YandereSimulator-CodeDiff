@@ -9,9 +9,14 @@ public class StringScript : MonoBehaviour
 
 	public Transform String;
 
+	public int ArrayID;
+
 	private void Start()
 	{
-		this.Target.position = this.Origin.position;
+		if (this.ArrayID == 0)
+		{
+			this.Target.position = this.Origin.position;
+		}
 	}
 
 	private void Update()

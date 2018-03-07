@@ -16,5 +16,6 @@ public enum NotificationType
 	Exfiltrate,
 	Evidence,
 	ClassSoon,
-	ClassNow
+	ClassNow,
+	Persona
 }

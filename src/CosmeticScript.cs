@@ -1128,6 +1128,11 @@ public class CosmeticScript : MonoBehaviour
 				this.LoveManager.Targets[this.LoveManager.TotalTargets] = this.Student.Head;
 				this.LoveManager.TotalTargets++;
 			}
+			if (this.MaleAccessories[4].activeInHierarchy)
+			{
+				this.LoveManager.Targets[this.LoveManager.TotalTargets] = this.Student.Head;
+				this.LoveManager.TotalTargets++;
+			}
 		}
 		this.TurnedOn = true;
 	}

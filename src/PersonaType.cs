@@ -14,5 +14,7 @@ public enum PersonaType
 	Strict,
 	PhoneAddict,
 	Fragile,
+	Spiteful,
+	Vengeful,
 	Nemesis = 99
 }

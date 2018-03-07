@@ -158,11 +158,14 @@ public class PortalScript : MonoBehaviour
 					this.Yandere.RPGCamera.enabled = false;
 					if (this.Clock.HourTime < 13f)
 					{
-						foreach (GameObject gameObject in this.StudentManager.Graffiti)
+						if (this.StudentManager.Bully)
 						{
-							if (gameObject != null)
+							foreach (GameObject gameObject in this.StudentManager.Graffiti)
 							{
-								gameObject.SetActive(true);
+								if (gameObject != null)
+								{
+									gameObject.SetActive(true);
+								}
 							}
 						}
 						this.Yandere.Incinerator.Timer -= 780f - this.Clock.PresentTime;

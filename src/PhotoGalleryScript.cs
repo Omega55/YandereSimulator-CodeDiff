@@ -6,6 +6,8 @@ public class PhotoGalleryScript : MonoBehaviour
 {
 	public HomeCorkboardPhotoScript[] CorkboardPhotographs;
 
+	public StringScript[] CorkboardStrings;
+
 	public int PhotoID;
 
 	public StringScript String;
@@ -54,6 +56,12 @@ public class PhotoGalleryScript : MonoBehaviour
 
 	public Vector2 MouseDelta;
 
+	public bool DoNotRaisePromptBar;
+
+	public bool SpawnedPhotos;
+
+	public bool MovingString;
+
 	public bool NamingBully;
 
 	public bool Adjusting;
@@ -62,15 +70,19 @@ public class PhotoGalleryScript : MonoBehaviour
 
 	public bool Corkboard;
 
-	public bool Viewing;
+	public bool GotPhotos;
 
-	public bool MovingString;
+	public bool Viewing;
 
 	public bool Moving;
 
 	public bool Reset;
 
 	public int StringPhase;
+
+	public int Strings;
+
+	public int Photos;
 
 	public int Column;
 
@@ -94,6 +106,10 @@ public class PhotoGalleryScript : MonoBehaviour
 		{
 			this.Cursor.gameObject.SetActive(false);
 			base.enabled = false;
+		}
+		if (this.Corkboard)
+		{
+			base.StartCoroutine(this.GetPhotos());
 		}
 	}
 
@@ -336,6 +352,10 @@ public class PhotoGalleryScript : MonoBehaviour
 			this.Adjusting = true;
 			this.Viewing = false;
 			this.Moving = true;
+			this.CorkboardPhotographs[this.Photos] = gameObject.GetComponent<HomeCorkboardPhotoScript>();
+			this.CorkboardPhotographs[this.Photos].ID = this.CurrentIndex;
+			this.CorkboardPhotographs[this.Photos].ArrayID = this.Photos;
+			this.Photos++;
 			this.UpdateButtonPrompts();
 		}
 		if (Input.GetButtonDown("B"))
@@ -358,7 +378,6 @@ public class PhotoGalleryScript : MonoBehaviour
 				}
 			}
 			this.UpdateButtonPrompts();
-			this.SaveAllPhotographs();
 		}
 	}
 
@@ -479,6 +498,9 @@ public class PhotoGalleryScript : MonoBehaviour
 			this.String = gameObject.GetComponent<StringScript>();
 			this.Cursor.gameObject.SetActive(false);
 			this.MovingString = true;
+			this.CorkboardStrings[this.Strings] = this.String.GetComponent<StringScript>();
+			this.CorkboardStrings[this.Strings].ArrayID = this.Strings;
+			this.Strings++;
 			this.UpdateButtonPrompts();
 		}
 		if (Input.GetButtonDown("B"))
@@ -499,14 +521,18 @@ public class PhotoGalleryScript : MonoBehaviour
 			if (this.Cursor.Photograph != null)
 			{
 				this.Cursor.Highlight.transform.position = new Vector3(this.Cursor.Highlight.transform.position.x, 100f, this.Cursor.Highlight.transform.position.z);
+				this.Shuffle(this.Cursor.Photograph.GetComponent<HomeCorkboardPhotoScript>().ArrayID);
 				UnityEngine.Object.Destroy(this.Cursor.Photograph);
+				this.Photos--;
 				this.Cursor.Photograph = null;
 				this.UpdateButtonPrompts();
 			}
 			if (this.Cursor.Tack != null)
 			{
 				this.Cursor.CircleHighlight.transform.position = new Vector3(this.Cursor.CircleHighlight.transform.position.x, 100f, this.Cursor.CircleHighlight.transform.position.z);
+				this.ShuffleStrings(this.Cursor.Tack.transform.parent.GetComponent<StringScript>().ArrayID);
 				UnityEngine.Object.Destroy(this.Cursor.Tack.transform.parent.gameObject);
+				this.Strings--;
 				this.Cursor.Tack = null;
 				this.UpdateButtonPrompts();
 			}
@@ -515,6 +541,21 @@ public class PhotoGalleryScript : MonoBehaviour
 
 	private void Update()
 	{
+		if (this.GotPhotos && this.Corkboard && !this.SpawnedPhotos)
+		{
+			this.SpawnPhotographs();
+			this.SpawnStrings();
+			base.enabled = false;
+			base.gameObject.SetActive(false);
+			this.PromptBar.Label[0].text = string.Empty;
+			this.PromptBar.Label[1].text = string.Empty;
+			this.PromptBar.Label[2].text = string.Empty;
+			this.PromptBar.Label[3].text = string.Empty;
+			this.PromptBar.Label[4].text = string.Empty;
+			this.PromptBar.Label[5].text = string.Empty;
+			this.PromptBar.UpdateButtons();
+			this.PromptBar.Show = false;
+		}
 		if (!this.Adjusting)
 		{
 			if (!this.Viewing)
@@ -611,6 +652,7 @@ public class PhotoGalleryScript : MonoBehaviour
 		this.UpdateButtonPrompts();
 		base.enabled = true;
 		base.gameObject.SetActive(true);
+		this.GotPhotos = true;
 		yield break;
 	}
 
@@ -721,7 +763,119 @@ public class PhotoGalleryScript : MonoBehaviour
 		this.PromptBar.Show = true;
 	}
 
+	private void Shuffle(int Start)
+	{
+		for (int i = Start; i < this.CorkboardPhotographs.Length - 1; i++)
+		{
+			if (this.CorkboardPhotographs[i] != null)
+			{
+				this.CorkboardPhotographs[i].ArrayID--;
+				this.CorkboardPhotographs[i] = this.CorkboardPhotographs[i + 1];
+			}
+		}
+	}
+
+	private void ShuffleStrings(int Start)
+	{
+		for (int i = Start; i < this.CorkboardPhotographs.Length - 1; i++)
+		{
+			if (this.CorkboardStrings[i] != null)
+			{
+				this.CorkboardStrings[i].ArrayID--;
+				this.CorkboardStrings[i] = this.CorkboardStrings[i + 1];
+			}
+		}
+	}
+
 	public void SaveAllPhotographs()
 	{
+		for (int i = 0; i < 100; i++)
+		{
+			if (this.CorkboardPhotographs[i] != null)
+			{
+				PlayerPrefs.SetInt("CorkboardPhoto_" + i + "_Exists", 1);
+				PlayerPrefs.SetInt("CorkboardPhoto_" + i + "_PhotoID", this.CorkboardPhotographs[i].ID);
+				PlayerPrefs.SetFloat("CorkboardPhoto_" + i + "_PositionX", this.CorkboardPhotographs[i].transform.localPosition.x);
+				PlayerPrefs.SetFloat("CorkboardPhoto_" + i + "_PositionY", this.CorkboardPhotographs[i].transform.localPosition.y);
+				PlayerPrefs.SetFloat("CorkboardPhoto_" + i + "_PositionZ", this.CorkboardPhotographs[i].transform.localPosition.z);
+				PlayerPrefs.SetFloat("CorkboardPhoto_" + i + "_RotationX", this.CorkboardPhotographs[i].transform.localEulerAngles.x);
+				PlayerPrefs.SetFloat("CorkboardPhoto_" + i + "_RotationY", this.CorkboardPhotographs[i].transform.localEulerAngles.y);
+				PlayerPrefs.SetFloat("CorkboardPhoto_" + i + "_RotationZ", this.CorkboardPhotographs[i].transform.localEulerAngles.z);
+				PlayerPrefs.SetFloat("CorkboardPhoto_" + i + "_ScaleX", this.CorkboardPhotographs[i].transform.localScale.x);
+				PlayerPrefs.SetFloat("CorkboardPhoto_" + i + "_ScaleY", this.CorkboardPhotographs[i].transform.localScale.y);
+				PlayerPrefs.SetFloat("CorkboardPhoto_" + i + "_ScaleZ", this.CorkboardPhotographs[i].transform.localScale.z);
+			}
+			else
+			{
+				PlayerPrefs.SetInt("CorkboardPhoto_" + i + "_Exists", 0);
+			}
+		}
+	}
+
+	public void SpawnPhotographs()
+	{
+		for (int i = 0; i < 100; i++)
+		{
+			if (PlayerPrefs.GetInt("CorkboardPhoto_" + i + "_Exists") == 1)
+			{
+				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Photograph, base.transform.position, Quaternion.identity);
+				gameObject.transform.parent = this.CorkboardPanel;
+				gameObject.transform.localPosition = new Vector3(PlayerPrefs.GetFloat("CorkboardPhoto_" + i + "_PositionX"), PlayerPrefs.GetFloat("CorkboardPhoto_" + i + "_PositionY"), PlayerPrefs.GetFloat("CorkboardPhoto_" + i + "_PositionZ"));
+				gameObject.transform.localEulerAngles = new Vector3(PlayerPrefs.GetFloat("CorkboardPhoto_" + i + "_RotationX"), PlayerPrefs.GetFloat("CorkboardPhoto_" + i + "_RotationY"), PlayerPrefs.GetFloat("CorkboardPhoto_" + i + "_RotationZ"));
+				gameObject.transform.localScale = new Vector3(PlayerPrefs.GetFloat("CorkboardPhoto_" + i + "_ScaleX"), PlayerPrefs.GetFloat("CorkboardPhoto_" + i + "_ScaleY"), PlayerPrefs.GetFloat("CorkboardPhoto_" + i + "_ScaleZ"));
+				gameObject.GetComponent<UITexture>().mainTexture = this.Photographs[PlayerPrefs.GetInt("CorkboardPhoto_" + i + "_PhotoID")].mainTexture;
+				this.CorkboardPhotographs[this.Photos] = gameObject.GetComponent<HomeCorkboardPhotoScript>();
+				this.CorkboardPhotographs[this.Photos].ID = PlayerPrefs.GetInt("CorkboardPhoto_" + i + "_PhotoID");
+				this.CorkboardPhotographs[this.Photos].ArrayID = this.Photos;
+				this.Photos++;
+			}
+		}
+		this.SpawnedPhotos = true;
+	}
+
+	public void SaveAllStrings()
+	{
+		Debug.Log("Saved strings.");
+		for (int i = 0; i < 100; i++)
+		{
+			if (this.CorkboardStrings[i] != null)
+			{
+				PlayerPrefs.SetInt("CorkboardString_" + i + "_Exists", 1);
+				PlayerPrefs.SetFloat("CorkboardString_" + i + "_PositionX", this.CorkboardStrings[i].Origin.localPosition.x);
+				PlayerPrefs.SetFloat("CorkboardString_" + i + "_PositionY", this.CorkboardStrings[i].Origin.localPosition.y);
+				PlayerPrefs.SetFloat("CorkboardString_" + i + "_PositionZ", this.CorkboardStrings[i].Origin.localPosition.z);
+				PlayerPrefs.SetFloat("CorkboardString2_" + i + "_PositionX", this.CorkboardStrings[i].Target.localPosition.x);
+				PlayerPrefs.SetFloat("CorkboardString2_" + i + "_PositionY", this.CorkboardStrings[i].Target.localPosition.y);
+				PlayerPrefs.SetFloat("CorkboardString2_" + i + "_PositionZ", this.CorkboardStrings[i].Target.localPosition.z);
+			}
+			else
+			{
+				PlayerPrefs.SetInt("CorkboardString_" + i + "_Exists", 0);
+			}
+		}
+	}
+
+	public void SpawnStrings()
+	{
+		for (int i = 0; i < 100; i++)
+		{
+			if (PlayerPrefs.GetInt("CorkboardString_" + i + "_Exists") == 1)
+			{
+				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.StringSet, base.transform.position, Quaternion.identity);
+				gameObject.transform.parent = this.StringParent;
+				gameObject.transform.localPosition = new Vector3(0f, 0f, 0f);
+				gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+				this.String = gameObject.GetComponent<StringScript>();
+				this.String.Origin.localPosition = new Vector3(PlayerPrefs.GetFloat("CorkboardString_" + i + "_PositionX"), PlayerPrefs.GetFloat("CorkboardString_" + i + "_PositionY"), PlayerPrefs.GetFloat("CorkboardString_" + i + "_PositionZ"));
+				this.String.Target.localPosition = new Vector3(PlayerPrefs.GetFloat("CorkboardString2_" + i + "_PositionX"), PlayerPrefs.GetFloat("CorkboardString2_" + i + "_PositionY"), PlayerPrefs.GetFloat("CorkboardString2_" + i + "_PositionZ"));
+				this.CorkboardStrings[this.Strings] = this.String.GetComponent<StringScript>();
+				this.CorkboardStrings[this.Strings].ArrayID = this.Strings;
+				this.Strings++;
+			}
+			else
+			{
+				PlayerPrefs.SetInt("CorkboardString_" + i + "_Exists", 0);
+			}
+		}
 	}
 }

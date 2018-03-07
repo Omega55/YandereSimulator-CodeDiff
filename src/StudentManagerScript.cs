@@ -79,6 +79,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public UILabel ErrorLabel;
 
+	public TagScript Tag;
+
 	public OfferHelpScript FragileOfferHelp;
 
 	public OfferHelpScript OfferHelp;
@@ -980,7 +982,7 @@ public class StudentManagerScript : MonoBehaviour
 		while (this.ID < this.Students.Length)
 		{
 			StudentScript studentScript = this.Students[this.ID];
-			if (studentScript != null && studentScript.Alive && !studentScript.Slave && !studentScript.Tranquil && studentScript.enabled)
+			if (studentScript != null && studentScript.Alive && !studentScript.Slave && !studentScript.Tranquil && studentScript.enabled && studentScript.gameObject.activeInHierarchy)
 			{
 				if (!studentScript.Started)
 				{

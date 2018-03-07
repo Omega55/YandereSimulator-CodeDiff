@@ -21,7 +21,10 @@ public class HomeCorkboardScript : MonoBehaviour
 		{
 			if (!this.Loaded)
 			{
-				base.StartCoroutine(this.PhotoGallery.GetPhotos());
+				this.PhotoGallery.LoadingScreen.SetActive(false);
+				this.PhotoGallery.UpdateButtonPrompts();
+				this.PhotoGallery.enabled = true;
+				this.PhotoGallery.gameObject.SetActive(true);
 				this.Loaded = true;
 			}
 			if (!this.PhotoGallery.Adjusting && !this.PhotoGallery.Viewing && !this.PhotoGallery.LoadingScreen.activeInHierarchy && Input.GetButtonDown("B"))
@@ -37,6 +40,7 @@ public class HomeCorkboardScript : MonoBehaviour
 				base.enabled = false;
 				this.Loaded = false;
 				this.PhotoGallery.SaveAllPhotographs();
+				this.PhotoGallery.SaveAllStrings();
 			}
 		}
 	}

@@ -511,7 +511,7 @@ public class MissionModeScript : MonoBehaviour
 				this.ID = 1;
 				while (this.ID < this.Incinerator.Victims + 1)
 				{
-					if (this.Incinerator.VictimList[this.ID] == this.TargetID)
+					if (this.Incinerator.VictimList[this.ID] == this.TargetID && this.Incinerator.Smoke.isPlaying)
 					{
 						this.DisposalMethod = 1;
 					}
@@ -525,7 +525,7 @@ public class MissionModeScript : MonoBehaviour
 					{
 						num++;
 					}
-					if (num == 6)
+					if (num == 6 && this.Incinerator.Smoke.isPlaying)
 					{
 						this.DisposalMethod = 1;
 					}
@@ -534,7 +534,7 @@ public class MissionModeScript : MonoBehaviour
 				this.ID = 1;
 				while (this.ID < this.WoodChipper.Victims + 1)
 				{
-					if (this.WoodChipper.VictimList[this.ID] == this.TargetID)
+					if (this.WoodChipper.VictimList[this.ID] == this.TargetID && this.WoodChipper.Shredding)
 					{
 						this.DisposalMethod = 2;
 					}
@@ -543,7 +543,7 @@ public class MissionModeScript : MonoBehaviour
 				this.ID = 1;
 				while (this.ID < this.GardenHoles.Length)
 				{
-					if (this.GardenHoles[this.ID].VictimID == this.TargetID)
+					if (this.GardenHoles[this.ID].VictimID == this.TargetID && !this.GardenHoles[this.ID].enabled)
 					{
 						this.DisposalMethod = 3;
 					}

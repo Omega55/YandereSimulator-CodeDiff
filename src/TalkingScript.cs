@@ -151,19 +151,7 @@ public class TalkingScript : MonoBehaviour
 					{
 						this.S.Subtitle.UpdateLabel(SubtitleType.StudentMidCompliment, 0, 3f);
 					}
-					this.S.RepBonus = 0;
-					if (PlayerGlobals.PantiesEquipped == 3)
-					{
-						this.S.RepBonus++;
-					}
-					if ((this.S.Male && PlayerGlobals.Seduction > 0) || PlayerGlobals.Seduction == 5)
-					{
-						this.S.RepBonus++;
-					}
-					if (PlayerGlobals.SocialBonus > 0)
-					{
-						this.S.RepBonus++;
-					}
+					this.CalculateRepBonus();
 					this.S.Reputation.PendingRep += 1f + (float)this.S.RepBonus;
 					this.S.PendingRep += 1f + (float)this.S.RepBonus;
 					this.S.Complimented = true;
@@ -463,7 +451,7 @@ public class TalkingScript : MonoBehaviour
 						this.S.Character.GetComponent<Animation>().CrossFade(this.S.CowardAnim);
 						this.S.TalkTimer = 5f;
 					}
-					else if (this.S.Persona == PersonaType.Evil)
+					else if (this.S.Persona == PersonaType.Spiteful)
 					{
 						this.S.Subtitle.UpdateLabel(SubtitleType.EvilGrudge, 0, 5f);
 						this.S.Character.GetComponent<Animation>().CrossFade(this.S.EvilAnim);
@@ -897,17 +885,9 @@ public class TalkingScript : MonoBehaviour
 					{
 						this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod2Anim);
 						this.S.Subtitle.UpdateLabel(SubtitleType.AcceptFood, 0, 3f);
-						this.S.RepBonus = 0;
-						if (PlayerGlobals.PantiesEquipped == 3)
-						{
-							this.S.RepBonus++;
-						}
-						if ((this.S.Male && PlayerGlobals.Seduction > 0) || PlayerGlobals.Seduction == 5)
-						{
-							this.S.RepBonus++;
-						}
-						this.S.Reputation.PendingRep += 5f + (float)this.S.RepBonus;
-						this.S.PendingRep += 5f + (float)this.S.RepBonus;
+						this.CalculateRepBonus();
+						this.S.Reputation.PendingRep += 1f + (float)this.S.RepBonus;
+						this.S.PendingRep += 1f + (float)this.S.RepBonus;
 					}
 				}
 				else if (Input.GetButtonDown("A"))
@@ -966,6 +946,28 @@ public class TalkingScript : MonoBehaviour
 				this.S.targetRotation = Quaternion.LookRotation(new Vector3(this.S.Yandere.transform.position.x, base.transform.position.y, this.S.Yandere.transform.position.z) - base.transform.position);
 				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.S.targetRotation, 10f * Time.deltaTime);
 			}
+		}
+	}
+
+	private void CalculateRepBonus()
+	{
+		this.S.RepBonus = 0;
+		if (PlayerGlobals.PantiesEquipped == 3)
+		{
+			this.S.RepBonus++;
+		}
+		if ((this.S.Male && PlayerGlobals.Seduction > 0) || PlayerGlobals.Seduction == 5)
+		{
+			this.S.RepBonus++;
+		}
+		if (PlayerGlobals.SocialBonus > 0)
+		{
+			this.S.RepBonus++;
+		}
+		this.S.ChameleonCheck();
+		if (this.S.Chameleon)
+		{
+			this.S.RepBonus++;
 		}
 	}
 }

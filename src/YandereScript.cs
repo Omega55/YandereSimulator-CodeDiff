@@ -359,8 +359,6 @@ public class YandereScript : MonoBehaviour
 
 	public int AttackPhase;
 
-	public YandereInteractionType Interaction;
-
 	public int Creepiness = 1;
 
 	public int NearBodies;
@@ -386,6 +384,10 @@ public class YandereScript : MonoBehaviour
 	public int Costume;
 
 	public int Alerts;
+
+	public YandereInteractionType Interaction;
+
+	public YanderePersonaType Persona;
 
 	public bool BloodyWarning;
 
@@ -916,6 +918,14 @@ public class YandereScript : MonoBehaviour
 	public Transform SithTrailEnd2;
 
 	public ZoomScript Zoom;
+
+	public AudioClip SithOn;
+
+	public AudioClip SithOff;
+
+	public AudioClip SithSwing;
+
+	public AudioClip SithStrike;
 
 	public Texture SnakeFace;
 
@@ -1672,7 +1682,7 @@ public class YandereScript : MonoBehaviour
 			}
 			if (!this.NearSenpai)
 			{
-				if (!Input.GetButton("A") && !Input.GetButton("B") && !Input.GetButton("X") && !Input.GetButton("Y") && (Input.GetAxis("LT") > 0.5f || Input.GetMouseButton(1)))
+				if (!Input.GetButton("A") && !Input.GetButton("B") && !Input.GetButton("X") && !Input.GetButton("Y") && this.StudentManager.Clock.Timer > 1f && (Input.GetAxis("LT") > 0.5f || Input.GetMouseButton(1)))
 				{
 					if (this.Inventory.RivalPhone && Input.GetButtonDown("LB"))
 					{
@@ -1732,6 +1742,10 @@ public class YandereScript : MonoBehaviour
 					{
 						if (this.BlackRobe.activeInHierarchy)
 						{
+							if (Input.GetButtonDown("RB"))
+							{
+								AudioSource.PlayClipAtPoint(this.SithOn, base.transform.position);
+							}
 							this.SithTrailEnd1.localPosition = new Vector3(-1f, 0f, 0f);
 							this.SithTrailEnd2.localPosition = new Vector3(1f, 0f, 0f);
 							this.Beam[0].Play();
@@ -1785,6 +1799,10 @@ public class YandereScript : MonoBehaviour
 						{
 							this.SithTrailEnd1.localPosition = new Vector3(0f, 0f, 0f);
 							this.SithTrailEnd2.localPosition = new Vector3(0f, 0f, 0f);
+							if (Input.GetButtonUp("RB"))
+							{
+								AudioSource.PlayClipAtPoint(this.SithOff, base.transform.position);
+							}
 							this.Beam[0].Stop();
 							this.Beam[1].Stop();
 							this.Beam[2].Stop();
@@ -3337,6 +3355,10 @@ public class YandereScript : MonoBehaviour
 			this.Vignette.intensity = Mathf.Lerp(this.Vignette.intensity, this.YandereTint * 5f, Time.deltaTime * 10f);
 			this.Vignette.blur = Mathf.Lerp(this.Vignette.blur, this.YandereTint, Time.deltaTime * 10f);
 			this.Vignette.chromaticAberration = Mathf.Lerp(this.Vignette.chromaticAberration, this.YandereTint * 5f, Time.deltaTime * 10f);
+			if (this.StudentManager.Tag.Target != null)
+			{
+				this.StudentManager.Tag.Sprite.color = new Color(1f, 0f, 0f, Mathf.Lerp(this.StudentManager.Tag.Sprite.color.a, 1f, Time.unscaledDeltaTime * 10f));
+			}
 		}
 		else
 		{
@@ -3363,6 +3385,7 @@ public class YandereScript : MonoBehaviour
 				this.Vignette.intensity = Mathf.Lerp(this.Vignette.intensity, 0f, Time.deltaTime * 10f);
 				this.Vignette.blur = Mathf.Lerp(this.Vignette.blur, 0f, Time.deltaTime * 10f);
 				this.Vignette.chromaticAberration = Mathf.Lerp(this.Vignette.chromaticAberration, 0f, Time.deltaTime * 10f);
+				this.StudentManager.Tag.Sprite.color = new Color(1f, 0f, 0f, Mathf.Lerp(this.StudentManager.Tag.Sprite.color.a, 0f, Time.unscaledDeltaTime * 10f));
 			}
 			else if (this.YandereFade < 100f)
 			{
@@ -4574,6 +4597,7 @@ public class YandereScript : MonoBehaviour
 		this.YandereColorCorrection.enabled = false;
 		Time.timeScale = 1f;
 		this.YandereFade = 100f;
+		this.StudentManager.Tag.Sprite.color = new Color(1f, 0f, 0f, 0f);
 	}
 
 	private void DumpRagdoll(RagdollDumpType Type)
@@ -5623,6 +5647,52 @@ public class YandereScript : MonoBehaviour
 				Debug.Log("Yandere-chan has a bully photo in her photo gallery!");
 				this.BullyPhoto = true;
 			}
+		}
+	}
+
+	public void UpdatePersona(int NewPersona)
+	{
+		switch (NewPersona)
+		{
+		case 0:
+			this.Persona = YanderePersonaType.Default;
+			break;
+		case 1:
+			this.Persona = YanderePersonaType.Bookworm;
+			break;
+		case 2:
+			this.Persona = YanderePersonaType.Chill;
+			break;
+		case 3:
+			this.Persona = YanderePersonaType.Confident;
+			break;
+		case 4:
+			this.Persona = YanderePersonaType.Elegant;
+			break;
+		case 5:
+			this.Persona = YanderePersonaType.Girly;
+			break;
+		case 6:
+			this.Persona = YanderePersonaType.Graceful;
+			break;
+		case 7:
+			this.Persona = YanderePersonaType.Haughty;
+			break;
+		case 8:
+			this.Persona = YanderePersonaType.Lively;
+			break;
+		case 9:
+			this.Persona = YanderePersonaType.Shy;
+			break;
+		case 10:
+			this.Persona = YanderePersonaType.Tough;
+			break;
+		case 11:
+			this.Persona = YanderePersonaType.Aggressive;
+			break;
+		case 12:
+			this.Persona = YanderePersonaType.Grunt;
+			break;
 		}
 	}
 }

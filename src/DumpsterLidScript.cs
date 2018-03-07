@@ -23,6 +23,8 @@ public class DumpsterLidScript : MonoBehaviour
 
 	public bool Open;
 
+	public int StudentToGoMissing;
+
 	private void Start()
 	{
 		this.FallChecker.SetActive(false);
@@ -94,11 +96,21 @@ public class DumpsterLidScript : MonoBehaviour
 				this.Prompt.Yandere.Police.Suicide = false;
 				this.Prompt.Yandere.Police.HiddenCorpses--;
 				this.Prompt.Yandere.Police.Corpses--;
-				this.Prompt.Yandere.NearBodies--;
+				if (this.Corpse.GetComponent<RagdollScript>().AddingToCount)
+				{
+					this.Prompt.Yandere.NearBodies--;
+				}
 				this.GarbageDebris.localPosition = new Vector3(this.GarbageDebris.localPosition.x, 1f, this.GarbageDebris.localPosition.z);
+				this.StudentToGoMissing = this.Corpse.GetComponent<StudentScript>().StudentID;
 				UnityEngine.Object.Destroy(this.Corpse);
 				this.Fill = false;
+				this.Prompt.Yandere.StudentManager.UpdateStudents();
 			}
 		}
+	}
+
+	public void SetVictimMissing()
+	{
+		StudentGlobals.SetStudentMissing(this.StudentToGoMissing, true);
 	}
 }

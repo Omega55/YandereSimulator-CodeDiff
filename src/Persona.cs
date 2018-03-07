@@ -58,6 +58,14 @@ public class Persona
 			"Fragile"
 		},
 		{
+			PersonaType.Spiteful,
+			"Spiteful"
+		},
+		{
+			PersonaType.Vengeful,
+			"Vengeful"
+		},
+		{
 			PersonaType.Nemesis,
 			"?????"
 		}

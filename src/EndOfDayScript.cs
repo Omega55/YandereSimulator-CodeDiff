@@ -796,9 +796,9 @@ public class EndOfDayScript : MonoBehaviour
 			StudentGlobals.SetStudentSanity(this.TranqCase.VictimID, 100f);
 			SceneManager.LoadScene("CalendarScene");
 		}
-		if (this.Dumpster.Corpse != null)
+		if (this.Dumpster.StudentToGoMissing > 0)
 		{
-			StudentGlobals.SetStudentMissing(this.Dumpster.Victim.StudentID, true);
+			this.Dumpster.SetVictimMissing();
 		}
 		this.ID = 0;
 		while (this.ID < this.GardenHoles.Length)

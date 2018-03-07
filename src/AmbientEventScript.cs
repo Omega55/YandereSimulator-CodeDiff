@@ -78,7 +78,7 @@ public class AmbientEventScript : MonoBehaviour
 		else
 		{
 			float num = Vector3.Distance(this.Yandere.transform.position, this.EventLocation[1].parent.position);
-			if (this.Clock.HourTime > 13.5f || this.EventStudent[1].WitnessedCorpse || this.EventStudent[2].WitnessedCorpse || this.EventStudent[1].Dying || this.EventStudent[2].Dying)
+			if (this.Clock.HourTime > 13.5f || this.EventStudent[1].WitnessedCorpse || this.EventStudent[2].WitnessedCorpse || this.EventStudent[1].Alarmed || this.EventStudent[2].Alarmed || this.EventStudent[1].Dying || this.EventStudent[2].Dying)
 			{
 				this.EndEvent();
 			}
