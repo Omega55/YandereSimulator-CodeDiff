@@ -127,6 +127,10 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 			}
 			this.ID++;
 		}
+		for (int i = 0; i < 10; i++)
+		{
+			this.YandereCosmetic.Fingernails[i].gameObject.SetActive(false);
+		}
 		this.ID = 0;
 		this.YandereCosmetic.FemaleHair[1].SetActive(true);
 		this.Subtitle.text = string.Empty;

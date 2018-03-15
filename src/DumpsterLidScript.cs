@@ -5,6 +5,8 @@ public class DumpsterLidScript : MonoBehaviour
 {
 	public StudentScript Victim;
 
+	public Transform SlideLocation;
+
 	public Transform GarbageDebris;
 
 	public Transform Hinge;
@@ -13,11 +15,15 @@ public class DumpsterLidScript : MonoBehaviour
 
 	public GameObject Corpse;
 
+	public PromptScript[] DragPrompts;
+
 	public PromptScript Prompt;
 
 	public float DisposalSpot;
 
 	public float Rotation;
+
+	public bool Slide;
 
 	public bool Fill;
 
@@ -84,6 +90,19 @@ public class DumpsterLidScript : MonoBehaviour
 			else
 			{
 				this.FallChecker.SetActive(false);
+			}
+			if (this.Slide)
+			{
+				base.transform.eulerAngles = Vector3.Lerp(base.transform.eulerAngles, this.SlideLocation.eulerAngles, Time.deltaTime * 10f);
+				base.transform.position = Vector3.Lerp(base.transform.position, this.SlideLocation.position, Time.deltaTime * 10f);
+				this.Corpse.GetComponent<RagdollScript>().Student.Hips.position = base.transform.position + new Vector3(0f, 1f, 0f);
+				if (Vector3.Distance(base.transform.position, this.SlideLocation.position) < 0.01f)
+				{
+					this.DragPrompts[0].enabled = false;
+					this.DragPrompts[1].enabled = false;
+					this.FallChecker.SetActive(false);
+					this.Slide = false;
+				}
 			}
 		}
 		this.Hinge.localEulerAngles = new Vector3(this.Rotation, 0f, 0f);

@@ -5,17 +5,23 @@ public class ServicesScript : MonoBehaviour
 {
 	public TextMessageManagerScript TextMessageManager;
 
+	public StudentManagerScript StudentManager;
+
 	public InputManagerScript InputManager;
+
+	public ReputationScript Reputation;
 
 	public PromptBarScript PromptBar;
 
 	public SchemesScript Schemes;
 
+	public YandereScript Yandere;
+
 	public GameObject FavorMenu;
 
 	public Transform Highlight;
 
-	public UILabel PantyCount;
+	public PoliceScript Police;
 
 	public UITexture ServiceIcon;
 
@@ -23,21 +29,25 @@ public class ServicesScript : MonoBehaviour
 
 	public UILabel ServiceDesc;
 
+	public UILabel PantyCount;
+
 	public UILabel[] CostLabels;
 
 	public UILabel[] NameLabels;
 
 	public Texture[] ServiceIcons;
 
-	public int[] ServiceCosts;
-
-	public bool[] ServiceActive;
-
 	public string[] ServiceLimits;
 
 	public string[] ServiceDescs;
 
 	public string[] ServiceNames;
+
+	public bool[] ServiceAvailable;
+
+	public bool[] ServicePurchased;
+
+	public int[] ServiceCosts;
 
 	public int Selected = 1;
 
@@ -87,18 +97,60 @@ public class ServicesScript : MonoBehaviour
 				{
 					if (PlayerGlobals.PantyShots >= this.ServiceCosts[this.Selected])
 					{
-						PlayerGlobals.PantyShots -= this.ServiceCosts[this.Selected];
-						SchemeGlobals.SetServicePurchased(this.Selected, true);
-						AudioSource.PlayClipAtPoint(this.InfoPurchase, base.transform.position);
-						if (this.Selected == 4)
+						if (this.Selected == 1)
 						{
-							SchemeGlobals.SetSchemeStage(1, 2);
-							this.Schemes.UpdateInstructions();
-							SchemeGlobals.DarkSecret = true;
-							this.TextMessageManager.SpawnMessage();
+							this.Yandere.PauseScreen.StudentInfoMenu.GettingInfo = true;
+							this.Yandere.PauseScreen.StudentInfoMenu.gameObject.SetActive(true);
+							base.StartCoroutine(this.Yandere.PauseScreen.StudentInfoMenu.UpdatePortraits());
+							this.Yandere.PauseScreen.StudentInfoMenu.Column = 0;
+							this.Yandere.PauseScreen.StudentInfoMenu.Row = 0;
+							this.Yandere.PauseScreen.StudentInfoMenu.UpdateHighlight();
+							this.Yandere.PauseScreen.Sideways = true;
+							this.Yandere.PromptBar.ClearButtons();
+							this.Yandere.PromptBar.Label[1].text = "Cancel";
+							this.Yandere.PromptBar.UpdateButtons();
+							this.Yandere.PromptBar.Show = true;
+							base.gameObject.SetActive(false);
 						}
-						this.UpdateList();
-						this.UpdateDesc();
+						if (this.Selected == 2)
+						{
+							this.Reputation.PendingRep += 5f;
+							this.Purchase();
+						}
+						else if (this.Selected == 3)
+						{
+							StudentGlobals.SetStudentReputation(this.StudentManager.RivalID, StudentGlobals.GetStudentReputation(this.StudentManager.RivalID) - 5);
+							this.Purchase();
+						}
+						else if (this.Selected == 4)
+						{
+							SchemeGlobals.SetServicePurchased(this.Selected, true);
+							SchemeGlobals.SetSchemeStage(1, 2);
+							SchemeGlobals.DarkSecret = true;
+							this.Schemes.UpdateInstructions();
+							this.Purchase();
+						}
+						else if (this.Selected == 5)
+						{
+							this.Yandere.PauseScreen.StudentInfoMenu.SendingHome = true;
+							this.Yandere.PauseScreen.StudentInfoMenu.gameObject.SetActive(true);
+							base.StartCoroutine(this.Yandere.PauseScreen.StudentInfoMenu.UpdatePortraits());
+							this.Yandere.PauseScreen.StudentInfoMenu.Column = 0;
+							this.Yandere.PauseScreen.StudentInfoMenu.Row = 0;
+							this.Yandere.PauseScreen.StudentInfoMenu.UpdateHighlight();
+							this.Yandere.PauseScreen.Sideways = true;
+							this.Yandere.PromptBar.ClearButtons();
+							this.Yandere.PromptBar.Label[1].text = "Cancel";
+							this.Yandere.PromptBar.UpdateButtons();
+							this.Yandere.PromptBar.Show = true;
+							base.gameObject.SetActive(false);
+						}
+						else if (this.Selected == 6)
+						{
+							this.Police.Timer += 300f;
+							this.Police.Delayed = true;
+							this.Purchase();
+						}
 					}
 				}
 				else if (PlayerGlobals.PantyShots < this.ServiceCosts[this.Selected])
@@ -137,15 +189,37 @@ public class ServicesScript : MonoBehaviour
 		{
 			this.CostLabels[this.ID].text = this.ServiceCosts[this.ID].ToString();
 			bool servicePurchased = SchemeGlobals.GetServicePurchased(this.ID);
+			this.ServiceAvailable[this.ID] = false;
+			if (this.ID == 1 || this.ID == 2 || this.ID == 3)
+			{
+				this.ServiceAvailable[this.ID] = true;
+			}
+			else if (this.ID == 4)
+			{
+				if (!SchemeGlobals.DarkSecret)
+				{
+					this.ServiceAvailable[this.ID] = true;
+				}
+			}
+			else if (this.ID == 5)
+			{
+				if (!this.ServicePurchased[this.ID])
+				{
+				}
+			}
+			else if (this.ID == 6 && this.Police.Show && !this.Police.Delayed)
+			{
+				this.ServiceAvailable[this.ID] = true;
+			}
 			UILabel uilabel = this.NameLabels[this.ID];
-			uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, (!this.ServiceActive[this.ID] || servicePurchased) ? 0.5f : 1f);
+			uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, (!this.ServiceAvailable[this.ID] || servicePurchased) ? 0.5f : 1f);
 			this.ID++;
 		}
 	}
 
 	public void UpdateDesc()
 	{
-		if (this.ServiceActive[this.Selected] && !SchemeGlobals.GetServicePurchased(this.Selected))
+		if (this.ServiceAvailable[this.Selected] && !SchemeGlobals.GetServicePurchased(this.Selected))
 		{
 			this.PromptBar.Label[0].text = ((PlayerGlobals.PantyShots < this.ServiceCosts[this.Selected]) ? string.Empty : "Purchase");
 			this.PromptBar.UpdateButtons();
@@ -165,5 +239,18 @@ public class ServicesScript : MonoBehaviour
 	public void UpdatePantyCount()
 	{
 		this.PantyCount.text = PlayerGlobals.PantyShots.ToString();
+	}
+
+	public void Purchase()
+	{
+		this.ServicePurchased[this.Selected] = true;
+		this.TextMessageManager.SpawnMessage(this.Selected);
+		PlayerGlobals.PantyShots -= this.ServiceCosts[this.Selected];
+		AudioSource.PlayClipAtPoint(this.InfoPurchase, base.transform.position);
+		this.UpdateList();
+		this.UpdateDesc();
+		this.PromptBar.Label[0].text = string.Empty;
+		this.PromptBar.Label[1].text = "Back";
+		this.PromptBar.UpdateButtons();
 	}
 }

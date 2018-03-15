@@ -25,8 +25,6 @@ public class EventManagerScript : MonoBehaviour
 
 	public int[] EventSpeaker;
 
-	public GameObject InterruptZone;
-
 	public GameObject VoiceClip;
 
 	public bool EventCheck;
@@ -44,7 +42,6 @@ public class EventManagerScript : MonoBehaviour
 	private void Start()
 	{
 		this.EventSubtitle.transform.localScale = Vector3.zero;
-		this.InterruptZone.SetActive(false);
 		if (DateGlobals.Weekday == DayOfWeek.Monday)
 		{
 			this.EventCheck = true;
@@ -92,7 +89,7 @@ public class EventManagerScript : MonoBehaviour
 		if (this.EventOn)
 		{
 			float num = Vector3.Distance(this.Yandere.transform.position, this.EventStudent[this.EventSpeaker[this.EventPhase]].transform.position);
-			if (this.Clock.HourTime > 13.5f || this.EventStudent[1].WitnessedCorpse || this.EventStudent[2].WitnessedCorpse || this.EventStudent[1].Dying || this.EventStudent[2].Dying || this.EventStudent[1].Splashed || this.EventStudent[2].Splashed)
+			if (this.Clock.HourTime > 13.5f || this.EventStudent[1].WitnessedCorpse || this.EventStudent[2].WitnessedCorpse || this.EventStudent[1].Dying || this.EventStudent[2].Dying || this.EventStudent[1].Splashed || this.EventStudent[2].Splashed || this.EventStudent[1].Alarmed || this.EventStudent[2].Alarmed)
 			{
 				this.EndEvent();
 			}
@@ -112,10 +109,6 @@ public class EventManagerScript : MonoBehaviour
 				}
 				if (!this.EventStudent[1].Pathfinding.canMove && !this.EventStudent[2].Pathfinding.canMove)
 				{
-					if (!this.InterruptZone.activeInHierarchy)
-					{
-						this.InterruptZone.SetActive(true);
-					}
 					if (!this.Spoken)
 					{
 						this.EventStudent[this.EventSpeaker[this.EventPhase]].Character.GetComponent<Animation>().CrossFade(this.EventAnim[this.EventPhase]);
@@ -191,6 +184,14 @@ public class EventManagerScript : MonoBehaviour
 							EventGlobals.Event1 = true;
 						}
 					}
+					if (num < 5f)
+					{
+						this.Yandere.Eavesdropping = true;
+					}
+					else
+					{
+						this.Yandere.Eavesdropping = false;
+					}
 				}
 			}
 		}
@@ -216,8 +217,7 @@ public class EventManagerScript : MonoBehaviour
 		{
 			this.StudentManager.UpdateStudents();
 		}
-		this.InterruptZone.SetActive(false);
-		this.Yandere.Trespassing = false;
+		this.Yandere.Eavesdropping = false;
 		this.EventSubtitle.text = string.Empty;
 		this.EventCheck = false;
 		this.EventOn = false;

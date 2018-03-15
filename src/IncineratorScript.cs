@@ -131,7 +131,7 @@ public class IncineratorScript : MonoBehaviour
 			{
 				if (this.Yandere.EquippedWeapon != null)
 				{
-					this.YandereHoldingEvidence = this.Yandere.EquippedWeapon.Evidence;
+					this.YandereHoldingEvidence = this.Yandere.EquippedWeapon.MurderWeapon;
 				}
 				else
 				{

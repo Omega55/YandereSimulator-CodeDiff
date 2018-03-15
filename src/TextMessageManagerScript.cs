@@ -9,6 +9,8 @@ public class TextMessageManagerScript : MonoBehaviour
 
 	public GameObject ServicesMenu;
 
+	public string[] Messages;
+
 	private GameObject NewMessage;
 
 	public GameObject Message;
@@ -33,7 +35,7 @@ public class TextMessageManagerScript : MonoBehaviour
 		}
 	}
 
-	public void SpawnMessage()
+	public void SpawnMessage(int ServiceID)
 	{
 		this.PromptBar.ClearButtons();
 		this.PromptBar.Label[1].text = "Exit";
@@ -50,7 +52,7 @@ public class TextMessageManagerScript : MonoBehaviour
 		this.NewMessage.transform.localPosition = new Vector3(-225f, -275f, 0f);
 		this.NewMessage.transform.localEulerAngles = Vector3.zero;
 		this.NewMessage.transform.localScale = new Vector3(1f, 1f, 1f);
-		this.MessageText = "You're going to love this. I've got video footage of Kokona selling used panties to a boy from another school. Enjoy.";
+		this.MessageText = this.Messages[ServiceID];
 		this.MessageHeight = 5;
 		this.NewMessage.GetComponent<UISprite>().height = 36 + 36 * this.MessageHeight;
 		this.NewMessage.GetComponent<TextMessageScript>().Label.text = this.MessageText;

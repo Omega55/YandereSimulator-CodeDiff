@@ -141,6 +141,10 @@ public class YandereScript : MonoBehaviour
 
 	public Transform CameraTarget;
 
+	public Transform RightArmRoll;
+
+	public Transform LeftArmRoll;
+
 	public Transform CameraFocus;
 
 	public Transform RightBreast;
@@ -158,6 +162,10 @@ public class YandereScript : MonoBehaviour
 	public Transform CameraPOV;
 
 	public Transform RightHand;
+
+	public Transform RightKnee;
+
+	public Transform RightFoot;
 
 	public Transform ExitSpot;
 
@@ -388,6 +396,8 @@ public class YandereScript : MonoBehaviour
 	public YandereInteractionType Interaction;
 
 	public YanderePersonaType Persona;
+
+	public bool EavesdropWarning;
 
 	public bool BloodyWarning;
 
@@ -3444,6 +3454,10 @@ public class YandereScript : MonoBehaviour
 					{
 						this.Subtitle.UpdateLabel(SubtitleType.SuspiciousApology, 0, 3f);
 					}
+					else if (this.TargetStudent.Witnessed == StudentWitnessType.Eavesdropping)
+					{
+						this.Subtitle.UpdateLabel(SubtitleType.EavesdropApology, 0, 3f);
+					}
 				}
 				else
 				{
@@ -4043,6 +4057,18 @@ public class YandereScript : MonoBehaviour
 		{
 			this.StudentManager.UpdateStudents();
 			this.CorpseWarning = false;
+		}
+		if (this.Eavesdropping)
+		{
+			if (!this.EavesdropWarning)
+			{
+				this.NotificationManager.DisplayNotification(NotificationType.Eavesdropping);
+				this.EavesdropWarning = true;
+			}
+		}
+		else if (this.EavesdropWarning)
+		{
+			this.EavesdropWarning = false;
 		}
 	}
 
@@ -5279,6 +5305,7 @@ public class YandereScript : MonoBehaviour
 		this.Kun.SetActive(true);
 		this.KunHair.SetActive(true);
 		this.MyRenderer.enabled = false;
+		this.PantyAttacher.newRenderer.enabled = false;
 		this.IdleAnim = "idleShort_00";
 		this.WalkAnim = "walk_00";
 		this.RunAnim = "newSprint_00";
@@ -5658,28 +5685,28 @@ public class YandereScript : MonoBehaviour
 			this.Persona = YanderePersonaType.Default;
 			break;
 		case 1:
-			this.Persona = YanderePersonaType.Bookworm;
-			break;
-		case 2:
 			this.Persona = YanderePersonaType.Chill;
 			break;
-		case 3:
+		case 2:
 			this.Persona = YanderePersonaType.Confident;
 			break;
-		case 4:
+		case 3:
 			this.Persona = YanderePersonaType.Elegant;
 			break;
-		case 5:
+		case 4:
 			this.Persona = YanderePersonaType.Girly;
 			break;
-		case 6:
+		case 5:
 			this.Persona = YanderePersonaType.Graceful;
 			break;
-		case 7:
+		case 6:
 			this.Persona = YanderePersonaType.Haughty;
 			break;
-		case 8:
+		case 7:
 			this.Persona = YanderePersonaType.Lively;
+			break;
+		case 8:
+			this.Persona = YanderePersonaType.Scholarly;
 			break;
 		case 9:
 			this.Persona = YanderePersonaType.Shy;

@@ -12,7 +12,6 @@ public class ModelSwapScript : MonoBehaviour
 	{
 		if (Input.GetKeyDown("z"))
 		{
-			this.Attach(this.Attachment, true);
 		}
 	}
 

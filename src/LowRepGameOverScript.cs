@@ -151,7 +151,7 @@ public class LowRepGameOverScript : MonoBehaviour
 				this.Senpai.CharacterAnimation[this.Senpai.AngryFaceAnim].weight = 1f;
 				this.Senpai.transform.eulerAngles = new Vector3(0f, 180f, 0f);
 				this.Senpai.transform.position = this.SenpaiSpot.position;
-				this.Senpai.CharacterAnimation.Play(this.Senpai.IdleAnim);
+				this.Senpai.CharacterAnimation.Play(this.Senpai.OriginalIdleAnim);
 				this.GossipGroup[5].SetActive(true);
 				this.GigglePhase++;
 				this.Phase++;

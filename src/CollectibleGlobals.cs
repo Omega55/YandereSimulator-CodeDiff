@@ -2,6 +2,10 @@
 
 public static class CollectibleGlobals
 {
+	private const string Str_HeadmasterTapeCollected = "HeadmasterTapeCollected_";
+
+	private const string Str_HeadmasterTapeListened = "HeadmasterTapeListened_";
+
 	private const string Str_BasementTapeCollected = "BasementTapeCollected_";
 
 	private const string Str_BasementTapeListened = "BasementTapeListened_";
@@ -11,6 +15,30 @@ public static class CollectibleGlobals
 	private const string Str_TapeCollected = "TapeCollected_";
 
 	private const string Str_TapeListened = "TapeListened_";
+
+	public static bool GetHeadmasterTapeCollected(int tapeID)
+	{
+		return GlobalsHelper.GetBool("HeadmasterTapeCollected_" + tapeID.ToString());
+	}
+
+	public static void SetHeadmasterTapeCollected(int tapeID, bool value)
+	{
+		string text = tapeID.ToString();
+		KeysHelper.AddIfMissing("HeadmasterTapeCollected_", text);
+		GlobalsHelper.SetBool("HeadmasterTapeCollected_" + text, value);
+	}
+
+	public static bool GetHeadmasterTapeListened(int tapeID)
+	{
+		return GlobalsHelper.GetBool("HeadmasterTapeListened_" + tapeID.ToString());
+	}
+
+	public static void SetHeadmasterTapeListened(int tapeID, bool value)
+	{
+		string text = tapeID.ToString();
+		KeysHelper.AddIfMissing("HeadmasterTapeListened_", text);
+		GlobalsHelper.SetBool("HeadmasterTapeListened_" + text, value);
+	}
 
 	public static bool GetBasementTapeCollected(int tapeID)
 	{

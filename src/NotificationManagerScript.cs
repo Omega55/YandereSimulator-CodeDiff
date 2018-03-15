@@ -86,6 +86,10 @@ public class NotificationManagerScript : MonoBehaviour
 				"Class Begins Now"
 			},
 			{
+				NotificationType.Eavesdropping,
+				"Eavesdropping"
+			},
+			{
 				NotificationType.Persona,
 				"Persona"
 			}

@@ -301,6 +301,18 @@ public class StudentInfoScript : MonoBehaviour
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Show = false;
 			}
+			else if (this.StudentInfoMenu.SendingHome)
+			{
+				this.StudentManager.Students[this.CurrentStudent].SentHome = true;
+				this.StudentInfoMenu.PauseScreen.ServiceMenu.gameObject.SetActive(true);
+				this.StudentInfoMenu.PauseScreen.ServiceMenu.UpdateList();
+				this.StudentInfoMenu.PauseScreen.ServiceMenu.UpdateDesc();
+				this.StudentInfoMenu.PauseScreen.ServiceMenu.Purchase();
+				this.StudentInfoMenu.SendingHome = false;
+				base.gameObject.SetActive(false);
+				this.PromptBar.ClearButtons();
+				this.PromptBar.Show = false;
+			}
 		}
 		if (Input.GetButtonDown("B"))
 		{

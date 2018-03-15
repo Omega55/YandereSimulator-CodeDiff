@@ -17,5 +17,6 @@ public enum NotificationType
 	Evidence,
 	ClassSoon,
 	ClassNow,
+	Eavesdropping,
 	Persona
 }

@@ -152,7 +152,7 @@ public class AttackManagerScript : MonoBehaviour
 			WeaponScript equippedWeapon = this.Yandere.EquippedWeapon;
 			SanityType sanityType = this.Yandere.SanityType;
 			this.SpecialEffect(equippedWeapon, sanityType);
-			if (sanityType == SanityType.Low && !this.Yandere.Chased)
+			if (sanityType == SanityType.Low)
 			{
 				this.LoopCheck(equippedWeapon);
 			}
@@ -205,6 +205,8 @@ public class AttackManagerScript : MonoBehaviour
 				this.CheckForSpecialCase(equippedWeapon);
 				if (!this.Yandere.Noticed)
 				{
+					Debug.Log("Finished attacking.");
+					this.Yandere.EquippedWeapon.MurderWeapon = true;
 					this.Yandere.CanMove = true;
 				}
 				else
@@ -243,6 +245,8 @@ public class AttackManagerScript : MonoBehaviour
 					{
 						if (component[this.AnimName].time > 2.16666675f)
 						{
+							this.Yandere.Bloodiness += 20f;
+							this.Yandere.StainWeapon();
 							UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
 							this.EffectPhase++;
 						}
@@ -257,6 +261,8 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					if (component[this.AnimName].time > 2.76666665f)
 					{
+						this.Yandere.Bloodiness += 20f;
+						this.Yandere.StainWeapon();
 						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
 						this.EffectPhase++;
 					}
@@ -602,7 +608,7 @@ public class AttackManagerScript : MonoBehaviour
 	private void LoopCheck(WeaponScript weapon)
 	{
 		Animation component = this.Yandere.Character.GetComponent<Animation>();
-		if (Input.GetButtonDown("X"))
+		if (Input.GetButtonDown("X") && !this.Yandere.Chased)
 		{
 			if (weapon.Type == WeaponType.Knife)
 			{

@@ -11,19 +11,13 @@ public class WelcomeScript : MonoBehaviour
 	private GameObject WelcomePanel;
 
 	[SerializeField]
-	private GameObject WarningPanel;
-
-	[SerializeField]
-	private UILabel FlashingLabel;
+	private UILabel[] FlashingLabels;
 
 	[SerializeField]
 	private UILabel BeginLabel;
 
 	[SerializeField]
 	private UISprite Darkness;
-
-	[SerializeField]
-	private AudioSource Music;
 
 	[SerializeField]
 	private bool Continue;
@@ -36,6 +30,8 @@ public class WelcomeScript : MonoBehaviour
 
 	[SerializeField]
 	private float Timer;
+
+	private int ID;
 
 	private void Start()
 	{
@@ -91,25 +87,16 @@ public class WelcomeScript : MonoBehaviour
 				if (this.Timer > 5f)
 				{
 					this.BeginLabel.color = new Color(this.BeginLabel.color.r, this.BeginLabel.color.g, this.BeginLabel.color.b, this.BeginLabel.color.a + Time.deltaTime);
-					if (this.BeginLabel.color.a >= 1f)
+					if (this.BeginLabel.color.a >= 1f && this.WelcomePanel.activeInHierarchy && Input.anyKeyDown)
 					{
-						if (this.WelcomePanel.activeInHierarchy && Input.anyKeyDown)
-						{
-							this.Darkness.color = new Color(1f, 1f, 1f, 0f);
-							this.Continue = true;
-						}
-						if (this.WarningPanel.activeInHierarchy && Input.anyKeyDown)
-						{
-							this.Darkness.color = new Color(1f, 1f, 1f, 0f);
-							this.Continue = true;
-						}
+						this.Darkness.color = new Color(1f, 1f, 1f, 0f);
+						this.Continue = true;
 					}
 				}
 			}
 		}
 		else
 		{
-			this.Music.volume -= Time.deltaTime;
 			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a + Time.deltaTime);
 			if (this.Darkness.color.a >= 1f)
 			{
@@ -118,18 +105,28 @@ public class WelcomeScript : MonoBehaviour
 		}
 		if (!this.FlashRed)
 		{
-			this.FlashingLabel.color = new Color(this.FlashingLabel.color.r + Time.deltaTime * 10f, this.FlashingLabel.color.g, this.FlashingLabel.color.b, this.FlashingLabel.color.a);
-			if (this.FlashingLabel.color.r > 1f)
+			this.ID = 0;
+			while (this.ID < 3)
 			{
-				this.FlashRed = true;
+				this.ID++;
+				this.FlashingLabels[this.ID].color = new Color(this.FlashingLabels[this.ID].color.r + Time.deltaTime * 10f, this.FlashingLabels[this.ID].color.g, this.FlashingLabels[this.ID].color.b, this.FlashingLabels[this.ID].color.a);
+				if (this.FlashingLabels[this.ID].color.r > 1f)
+				{
+					this.FlashRed = true;
+				}
 			}
 		}
 		else
 		{
-			this.FlashingLabel.color = new Color(this.FlashingLabel.color.r - Time.deltaTime * 10f, this.FlashingLabel.color.g, this.FlashingLabel.color.b, this.FlashingLabel.color.a);
-			if (this.FlashingLabel.color.r < 0f)
+			this.ID = 0;
+			while (this.ID < 3)
 			{
-				this.FlashRed = false;
+				this.ID++;
+				this.FlashingLabels[this.ID].color = new Color(this.FlashingLabels[this.ID].color.r - Time.deltaTime * 10f, this.FlashingLabels[this.ID].color.g, this.FlashingLabels[this.ID].color.b, this.FlashingLabels[this.ID].color.a);
+				if (this.FlashingLabels[this.ID].color.r < 0f)
+				{
+					this.FlashRed = false;
+				}
 			}
 		}
 	}

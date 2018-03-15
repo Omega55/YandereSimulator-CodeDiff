@@ -56,9 +56,13 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	public bool CyberBullying;
 
+	public bool GettingInfo;
+
 	public bool MatchMaking;
 
 	public bool Distracting;
+
+	public bool SendingHome;
 
 	public bool Gossiping;
 
@@ -111,44 +115,61 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetButtonDown("A") && this.PromptBar.Label[0].text != string.Empty && (StudentGlobals.GetStudentPhotographed(this.StudentID) || this.StudentID > 97))
+		if (Input.GetButtonDown("A") && this.PromptBar.Label[0].text != string.Empty)
 		{
-			this.StudentInfo.gameObject.SetActive(true);
-			this.StudentInfo.UpdateInfo(this.StudentID);
-			this.StudentInfo.Topics.SetActive(false);
-			base.gameObject.SetActive(false);
-			this.PromptBar.ClearButtons();
-			if (this.Gossiping)
+			if (StudentGlobals.GetStudentPhotographed(this.StudentID) || this.StudentID > 97)
 			{
-				this.PromptBar.Label[0].text = "Gossip";
-			}
-			if (this.Distracting)
-			{
-				this.PromptBar.Label[0].text = "Distract";
-			}
-			if (this.CyberBullying)
-			{
-				this.PromptBar.Label[0].text = "Accept";
-			}
-			if (this.MatchMaking)
-			{
-				this.PromptBar.Label[0].text = "Match";
-			}
-			if (this.Targeting)
-			{
-				this.PromptBar.Label[0].text = "Kill";
-			}
-			if (this.StudentManager.Tag.Target == this.StudentManager.Students[this.StudentID].Head)
-			{
-				this.PromptBar.Label[2].text = "Untag";
+				this.StudentInfo.gameObject.SetActive(true);
+				this.StudentInfo.UpdateInfo(this.StudentID);
+				this.StudentInfo.Topics.SetActive(false);
+				base.gameObject.SetActive(false);
+				this.PromptBar.ClearButtons();
+				if (this.Gossiping)
+				{
+					this.PromptBar.Label[0].text = "Gossip";
+				}
+				if (this.Distracting)
+				{
+					this.PromptBar.Label[0].text = "Distract";
+				}
+				if (this.CyberBullying)
+				{
+					this.PromptBar.Label[0].text = "Accept";
+				}
+				if (this.MatchMaking)
+				{
+					this.PromptBar.Label[0].text = "Match";
+				}
+				if (this.Targeting)
+				{
+					this.PromptBar.Label[0].text = "Kill";
+				}
+				if (this.SendingHome)
+				{
+					this.PromptBar.Label[0].text = "Send Home";
+				}
+				if (this.StudentManager.Tag.Target == this.StudentManager.Students[this.StudentID].Head)
+				{
+					this.PromptBar.Label[2].text = "Untag";
+				}
+				else
+				{
+					this.PromptBar.Label[2].text = "Tag";
+				}
+				this.PromptBar.Label[1].text = "Back";
+				this.PromptBar.Label[3].text = "Interests";
+				this.PromptBar.UpdateButtons();
 			}
 			else
 			{
-				this.PromptBar.Label[2].text = "Tag";
+				StudentGlobals.SetStudentPhotographed(this.StudentID, true);
+				this.PauseScreen.ServiceMenu.gameObject.SetActive(true);
+				this.PauseScreen.ServiceMenu.UpdateList();
+				this.PauseScreen.ServiceMenu.UpdateDesc();
+				this.PauseScreen.ServiceMenu.Purchase();
+				this.GettingInfo = false;
+				base.gameObject.SetActive(false);
 			}
-			this.PromptBar.Label[1].text = "Back";
-			this.PromptBar.Label[3].text = "Interests";
-			this.PromptBar.UpdateButtons();
 		}
 		if (Input.GetButtonDown("B"))
 		{
@@ -180,6 +201,15 @@ public class StudentInfoMenuScript : MonoBehaviour
 				base.gameObject.SetActive(false);
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Show = false;
+			}
+			else if (this.SendingHome || this.GettingInfo)
+			{
+				this.PauseScreen.ServiceMenu.gameObject.SetActive(true);
+				this.PauseScreen.ServiceMenu.UpdateList();
+				this.PauseScreen.ServiceMenu.UpdateDesc();
+				base.gameObject.SetActive(false);
+				this.SendingHome = false;
+				this.GettingInfo = false;
 			}
 			else
 			{
@@ -289,6 +319,24 @@ public class StudentInfoMenuScript : MonoBehaviour
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
+		if (this.SendingHome && (this.StudentID == 1 || StudentGlobals.GetStudentDead(this.StudentID) || (this.StudentID < 98 && this.StudentManager.Students[this.StudentID].SentHome) || this.StudentID > 97))
+		{
+			this.PromptBar.Label[0].text = string.Empty;
+			this.PromptBar.UpdateButtons();
+		}
+		if (this.GettingInfo)
+		{
+			if (StudentGlobals.GetStudentPhotographed(this.StudentID) || this.StudentID > 97)
+			{
+				this.PromptBar.Label[0].text = string.Empty;
+				this.PromptBar.UpdateButtons();
+			}
+			else
+			{
+				this.PromptBar.Label[0].text = "Get Info";
+				this.PromptBar.UpdateButtons();
+			}
+		}
 		this.Highlight.localPosition = new Vector3(-300f + (float)this.Column * 150f, 80f - (float)this.Row * 160f, this.Highlight.localPosition.z);
 		this.UpdateNameLabel();
 	}
@@ -307,6 +355,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	public IEnumerator UpdatePortraits()
 	{
+		Debug.Log("The Student Info Menu was instructed to get photos.");
 		for (int ID = 1; ID < 101; ID++)
 		{
 			if (ID == 0)
@@ -349,6 +398,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 						}
 						else
 						{
+							Debug.Log("We got an error when trying to retrieve a student's portrait!");
 							this.StudentPortraits[ID].Portrait.mainTexture = this.UnknownPortrait;
 						}
 						this.PortraitLoaded[ID] = true;

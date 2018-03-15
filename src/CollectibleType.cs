@@ -2,6 +2,7 @@
 
 public enum CollectibleType
 {
+	HeadmasterTape,
 	BasementTape,
 	Manga,
 	Tape

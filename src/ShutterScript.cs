@@ -249,7 +249,15 @@ public class ShutterScript : MonoBehaviour
 								{
 									if (this.FaceStudent.enabled && !this.FaceStudent.Stop)
 									{
-										if (this.FaceStudent.PhotoPatience > 0f)
+										if ((this.FaceStudent.DistanceToDestination < 5f && this.FaceStudent.Actions[this.FaceStudent.Phase] == StudentActionType.Graffiti) || (this.FaceStudent.DistanceToDestination < 5f && this.FaceStudent.Actions[this.FaceStudent.Phase] == StudentActionType.Bully))
+										{
+											this.FaceStudent.PhotoPatience = 0f;
+											this.FaceStudent.KilledMood = true;
+											this.FaceStudent.Ignoring = true;
+											this.PenaltyTimer = 1f;
+											this.Penalize();
+										}
+										else if (this.FaceStudent.PhotoPatience > 0f)
 										{
 											if (this.FaceStudent.StudentID > 1)
 											{
@@ -581,7 +589,7 @@ public class ShutterScript : MonoBehaviour
 					{
 						text = "Wait...I recognize those panties! This person is extremely dangerous! Avoid her at all costs!";
 					}
-					else if (this.Student.Club == ClubType.Bully || this.Student.Club == ClubType.Council || this.Student.Club == ClubType.Nurse)
+					else if (this.Student.Club == ClubType.Bully || this.Student.Club == ClubType.Council || this.Student.Club == ClubType.Nurse || this.Student.StudentID == 20)
 					{
 						text = "A high value target! " + this.Student.Name + "'s panties were in high demand. I owe you a big favor for this one.";
 						PlayerGlobals.PantyShots += 5;
@@ -736,10 +744,10 @@ public class ShutterScript : MonoBehaviour
 		}
 	}
 
-	private void Penalize()
+	public void Penalize()
 	{
 		this.PenaltyTimer += Time.deltaTime;
-		if (this.PenaltyTimer > 1f)
+		if (this.PenaltyTimer >= 1f)
 		{
 			this.Subtitle.UpdateLabel(SubtitleType.PhotoAnnoyance, 0, 3f);
 			this.FaceStudent.RepDeduction = 0f;

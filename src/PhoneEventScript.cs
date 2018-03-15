@@ -204,6 +204,17 @@ public class PhoneEventScript : MonoBehaviour
 				{
 					this.EventSubtitle.transform.localScale = Vector3.zero;
 				}
+				if (this.EventPhase > 4)
+				{
+					if (num < 5f)
+					{
+						this.Yandere.Eavesdropping = true;
+					}
+					else
+					{
+						this.Yandere.Eavesdropping = false;
+					}
+				}
 				if (this.EventPhase == 11 && num < 5f && !EventGlobals.Event2)
 				{
 					EventGlobals.Event2 = true;
@@ -249,6 +260,7 @@ public class PhoneEventScript : MonoBehaviour
 			this.DumpPoint.Prompt.Hide();
 			this.DumpPoint.Prompt.enabled = false;
 		}
+		this.Yandere.Eavesdropping = false;
 		this.EventActive = false;
 		this.EventCheck = false;
 	}

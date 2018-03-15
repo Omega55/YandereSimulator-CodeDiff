@@ -79,6 +79,10 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] EavesdropReactions;
 
+	public string[] EventEavesdropReactions;
+
+	public string[] RivalEavesdropReactions;
+
 	public string[] PickpocketReactions;
 
 	public string[] RivalPickpocketReactions;
@@ -124,6 +128,8 @@ public class SubtitleScript : MonoBehaviour
 	public string[] AccidentApologies;
 
 	public string[] SadApologies;
+
+	public string[] EavesdropApologies;
 
 	public string[] Greetings;
 
@@ -467,6 +473,10 @@ public class SubtitleScript : MonoBehaviour
 
 	public AudioClip[] ClubNoClips;
 
+	public AudioClip[] EavesdropClips;
+
+	public AudioClip[] EventEavesdropClips;
+
 	public AudioClip[] RivalEavesdropClips;
 
 	private SubtitleTypeAndAudioClipArrayDictionary SubtitleClipArrays;
@@ -571,6 +581,14 @@ public class SubtitleScript : MonoBehaviour
 			},
 			{
 				SubtitleType.EavesdropReaction,
+				new AudioClipArrayWrapper(this.EavesdropClips)
+			},
+			{
+				SubtitleType.EventEavesdropReaction,
+				new AudioClipArrayWrapper(this.EventEavesdropClips)
+			},
+			{
+				SubtitleType.RivalEavesdropReaction,
 				new AudioClipArrayWrapper(this.RivalEavesdropClips)
 			},
 			{
@@ -860,6 +878,16 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.RandomID = UnityEngine.Random.Range(0, this.EavesdropReactions.Length);
 			this.Label.text = this.EavesdropReactions[this.RandomID];
+		}
+		else if (subtitleType == SubtitleType.EventEavesdropReaction)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.EventEavesdropReactions.Length);
+			this.Label.text = this.EventEavesdropReactions[this.RandomID];
+		}
+		else if (subtitleType == SubtitleType.RivalEavesdropReaction)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.RivalEavesdropReactions.Length);
+			this.Label.text = this.RivalEavesdropReactions[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.PickpocketReaction)
@@ -1114,6 +1142,10 @@ public class SubtitleScript : MonoBehaviour
 		else if (subtitleType == SubtitleType.SuspiciousApology)
 		{
 			this.Label.text = this.GetRandomString(this.SuspiciousApologies);
+		}
+		else if (subtitleType == SubtitleType.EavesdropApology)
+		{
+			this.Label.text = this.GetRandomString(this.EavesdropApologies);
 		}
 		else if (subtitleType == SubtitleType.EventApology)
 		{

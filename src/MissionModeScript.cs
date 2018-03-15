@@ -615,7 +615,7 @@ public class MissionModeScript : MonoBehaviour
 			}
 			if (this.NoBlood)
 			{
-				if (this.Police.BloodParent.childCount > 0)
+				if (this.Police.Deaths > 0)
 				{
 					this.CheckForBlood = true;
 				}
@@ -624,7 +624,7 @@ public class MissionModeScript : MonoBehaviour
 					if (this.Police.BloodParent.childCount == 0)
 					{
 						this.BloodTimer += Time.deltaTime;
-						if (this.BloodTimer > 1f)
+						if (this.BloodTimer > 2f)
 						{
 							this.BloodCleaned = true;
 						}

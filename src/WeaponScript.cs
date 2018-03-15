@@ -45,6 +45,8 @@ public class WeaponScript : MonoBehaviour
 
 	public bool Dismembering;
 
+	public bool MurderWeapon;
+
 	public bool WeaponEffect;
 
 	public bool Concealable;

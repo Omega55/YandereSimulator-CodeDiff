@@ -40,6 +40,7 @@ public class FallCheckerScript : MonoBehaviour
 			else
 			{
 				base.GetComponent<AudioSource>().Play();
+				this.Dumpster.Slide = true;
 				this.Ragdoll = null;
 			}
 		}

@@ -22,6 +22,10 @@ public class CollectibleScript : MonoBehaviour
 	{
 		get
 		{
+			if (this.Name == "HeadmasterTape")
+			{
+				return CollectibleType.HeadmasterTape;
+			}
 			if (this.Name == "BasementTape")
 			{
 				return CollectibleType.BasementTape;
@@ -43,7 +47,11 @@ public class CollectibleScript : MonoBehaviour
 	{
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			if (this.CollectibleType == CollectibleType.BasementTape)
+			if (this.CollectibleType == CollectibleType.HeadmasterTape)
+			{
+				CollectibleGlobals.SetHeadmasterTapeCollected(this.ID, true);
+			}
+			else if (this.CollectibleType == CollectibleType.BasementTape)
 			{
 				CollectibleGlobals.SetBasementTapeCollected(this.ID, true);
 			}

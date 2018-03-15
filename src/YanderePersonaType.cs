@@ -3,7 +3,6 @@
 public enum YanderePersonaType
 {
 	Default,
-	Bookworm,
 	Chill,
 	Confident,
 	Elegant,
@@ -11,6 +10,7 @@ public enum YanderePersonaType
 	Graceful,
 	Haughty,
 	Lively,
+	Scholarly,
 	Shy,
 	Tough,
 	Aggressive,

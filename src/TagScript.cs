@@ -7,6 +7,8 @@ public class TagScript : MonoBehaviour
 
 	public Camera UICamera;
 
+	public Transform MainCamera;
+
 	public Transform Target;
 
 	private void Start()
@@ -18,8 +20,12 @@ public class TagScript : MonoBehaviour
 	{
 		if (this.Target != null)
 		{
-			Vector2 vector = Camera.main.WorldToScreenPoint(this.Target.position);
-			base.transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector.x, vector.y, 1f));
+			float num = Vector3.Angle(this.MainCamera.forward, this.MainCamera.position - this.Target.position);
+			if (num > 90f)
+			{
+				Vector2 vector = Camera.main.WorldToScreenPoint(this.Target.position);
+				base.transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector.x, vector.y, 1f));
+			}
 		}
 	}
 }

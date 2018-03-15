@@ -511,6 +511,10 @@ public class CosmeticScript : MonoBehaviour
 			this.Character.GetComponent<Animation>()["f02_idleCouncil" + str + "_00"].time = 1f;
 			this.Character.GetComponent<Animation>().Play("f02_idleCouncil" + str + "_00");
 		}
+		if (this.TakingPortrait && (this.StudentID == 21 || this.StudentID == 26))
+		{
+			this.Armband.SetActive(true);
+		}
 		foreach (GameObject gameObject4 in this.FemaleAccessories)
 		{
 			if (gameObject4 != null)

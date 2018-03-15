@@ -23,6 +23,8 @@ public class TapePlayerMenuScript : MonoBehaviour
 
 	public AudioClip[] BasementRecordings;
 
+	public AudioClip[] HeadmasterRecordings;
+
 	public UILabel[] TapeLabels;
 
 	public GameObject[] NewIcons;
@@ -106,6 +108,10 @@ public class TapePlayerMenuScript : MonoBehaviour
 	public string[] BasementSubs1;
 
 	public string[] BasementSubs10;
+
+	public float[] HeadmasterCues1;
+
+	public string[] HeadmasterSubs1;
 
 	private void Start()
 	{
@@ -385,7 +391,7 @@ public class TapePlayerMenuScript : MonoBehaviour
 						}
 					}
 				}
-				else
+				else if (this.Category == 2)
 				{
 					if (this.Selected == 1)
 					{
@@ -408,6 +414,16 @@ public class TapePlayerMenuScript : MonoBehaviour
 						}
 					}
 				}
+				else if (this.Category == 3 && this.Selected == 1)
+				{
+					for (int num9 = 0; num9 < this.HeadmasterCues1.Length; num9++)
+					{
+						if (component.time > this.HeadmasterCues1[num9])
+						{
+							this.Subtitle.text = this.HeadmasterSubs1[num9];
+						}
+					}
+				}
 			}
 			else
 			{
@@ -420,9 +436,22 @@ public class TapePlayerMenuScript : MonoBehaviour
 			this.TapePlayerCamera.position = new Vector3(Mathf.Lerp(this.TapePlayerCamera.position.x, -26.2125f, t), this.TapePlayerCamera.position.y, Mathf.Lerp(this.TapePlayerCamera.position.z, 5.4125f, t));
 			this.List.transform.localPosition = new Vector3(Mathf.Lerp(this.List.transform.localPosition.x, 0f, t), this.List.transform.localPosition.y, this.List.transform.localPosition.z);
 			this.TimeBar.localPosition = new Vector3(this.TimeBar.localPosition.x, Mathf.Lerp(this.TimeBar.localPosition.y, 100f, t), this.TimeBar.localPosition.z);
-			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
+			if (this.InputManager.TappedRight)
 			{
-				this.Category = ((this.Category != 1) ? 1 : 2);
+				this.Category++;
+				if (this.Category > 3)
+				{
+					this.Category = 1;
+				}
+				this.UpdateLabels();
+			}
+			else if (this.InputManager.TappedLeft)
+			{
+				this.Category--;
+				if (this.Category < 1)
+				{
+					this.Category = 3;
+				}
 				this.UpdateLabels();
 			}
 			if (this.InputManager.TappedUp)
@@ -456,9 +485,17 @@ public class TapePlayerMenuScript : MonoBehaviour
 						flag = true;
 					}
 				}
-				else if (CollectibleGlobals.GetBasementTapeCollected(this.Selected))
+				else if (this.Category == 2)
 				{
-					CollectibleGlobals.SetBasementTapeListened(this.Selected, true);
+					if (CollectibleGlobals.GetBasementTapeCollected(this.Selected))
+					{
+						CollectibleGlobals.SetBasementTapeListened(this.Selected, true);
+						flag = true;
+					}
+				}
+				else if (this.Category == 3 && CollectibleGlobals.GetHeadmasterTapeCollected(this.Selected))
+				{
+					CollectibleGlobals.SetHeadmasterTapeListened(this.Selected, true);
 					flag = true;
 				}
 				if (flag)
@@ -477,15 +514,19 @@ public class TapePlayerMenuScript : MonoBehaviour
 					{
 						component.clip = this.Recordings[this.Selected];
 					}
-					else
+					else if (this.Category == 2)
 					{
 						component.clip = this.BasementRecordings[this.Selected];
 					}
+					else
+					{
+						component.clip = this.HeadmasterRecordings[this.Selected];
+					}
 					component.time = 0f;
 					this.RoundedTime = (float)Mathf.CeilToInt(component.clip.length);
-					int num9 = (int)(this.RoundedTime / 60f);
-					int num10 = (int)(this.RoundedTime % 60f);
-					this.ClipLength = string.Format("{0:00}:{1:00}", num9, num10);
+					int num10 = (int)(this.RoundedTime / 60f);
+					int num11 = (int)(this.RoundedTime % 60f);
+					this.ClipLength = string.Format("{0:00}:{1:00}", num10, num11);
 				}
 			}
 			else if (Input.GetButtonDown("B"))
@@ -525,13 +566,27 @@ public class TapePlayerMenuScript : MonoBehaviour
 					this.NewIcons[i].SetActive(false);
 				}
 			}
-			else
+			else if (this.Category == 2)
 			{
 				this.HeaderLabel.text = "Basement Tapes";
 				if (CollectibleGlobals.GetBasementTapeCollected(i))
 				{
 					this.TapeLabels[i].text = "Basement Tape " + i.ToString();
 					this.NewIcons[i].SetActive(!CollectibleGlobals.GetBasementTapeListened(i));
+				}
+				else
+				{
+					this.TapeLabels[i].text = "?????";
+					this.NewIcons[i].SetActive(false);
+				}
+			}
+			else
+			{
+				this.HeaderLabel.text = "Headmaster Tapes";
+				if (CollectibleGlobals.GetHeadmasterTapeCollected(i))
+				{
+					this.TapeLabels[i].text = "Headmaster Tape " + i.ToString();
+					this.NewIcons[i].SetActive(!CollectibleGlobals.GetHeadmasterTapeListened(i));
 				}
 				else
 				{
@@ -549,9 +604,14 @@ public class TapePlayerMenuScript : MonoBehaviour
 			this.TapePlayer.PromptBar.Label[0].text = ((!CollectibleGlobals.GetTapeCollected(this.Selected)) ? string.Empty : "PLAY");
 			this.TapePlayer.PromptBar.UpdateButtons();
 		}
-		else
+		else if (this.Category == 2)
 		{
 			this.TapePlayer.PromptBar.Label[0].text = ((!CollectibleGlobals.GetBasementTapeCollected(this.Selected)) ? string.Empty : "PLAY");
+			this.TapePlayer.PromptBar.UpdateButtons();
+		}
+		else
+		{
+			this.TapePlayer.PromptBar.Label[0].text = ((!CollectibleGlobals.GetHeadmasterTapeCollected(this.Selected)) ? string.Empty : "PLAY");
 			this.TapePlayer.PromptBar.UpdateButtons();
 		}
 	}

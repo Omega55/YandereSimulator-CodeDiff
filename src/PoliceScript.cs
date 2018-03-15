@@ -109,6 +109,8 @@ public class PoliceScript : MonoBehaviour
 
 	public bool GameOver;
 
+	public bool Delayed;
+
 	public bool FadeOut;
 
 	public bool Suicide;

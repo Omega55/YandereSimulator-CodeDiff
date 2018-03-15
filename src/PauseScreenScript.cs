@@ -16,6 +16,8 @@ public class PauseScreenScript : MonoBehaviour
 
 	public HomeCameraScript HomeCamera;
 
+	public ServicesScript ServiceMenu;
+
 	public FavorMenuScript FavorMenu;
 
 	public MusicMenuScript MusicMenu;
@@ -53,8 +55,6 @@ public class PauseScreenScript : MonoBehaviour
 	public GameObject LoadingScreen;
 
 	public GameObject SchemesMenu;
-
-	public GameObject ServiceMenu;
 
 	public GameObject StudentInfo;
 
@@ -105,6 +105,7 @@ public class PauseScreenScript : MonoBehaviour
 		base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, base.transform.localEulerAngles.y, 0f);
 		this.StudentInfoMenu.gameObject.SetActive(false);
 		this.PhotoGallery.gameObject.SetActive(false);
+		this.ServiceMenu.gameObject.SetActive(false);
 		this.FavorMenu.gameObject.SetActive(false);
 		this.MusicMenu.gameObject.SetActive(false);
 		this.PassTime.gameObject.SetActive(false);
@@ -112,7 +113,6 @@ public class PauseScreenScript : MonoBehaviour
 		this.Stats.gameObject.SetActive(false);
 		this.LoadingScreen.SetActive(false);
 		this.SchemesMenu.SetActive(false);
-		this.ServiceMenu.SetActive(false);
 		this.StudentInfo.SetActive(false);
 		this.DropsMenu.SetActive(false);
 		this.MainMenu.SetActive(true);

@@ -125,6 +125,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public ListScript[] Seats;
 
+	public Transform[] TeacherGuardLocation;
+
 	public Transform[] CorpseGuardLocation;
 
 	public Transform[] LockerPositions;
@@ -529,7 +531,10 @@ public class StudentManagerScript : MonoBehaviour
 			if (this.Frame == 3)
 			{
 				this.LoveManager.CoupleCheck();
-				this.DetermineVictim();
+				if (this.Bullies > 0)
+				{
+					this.DetermineVictim();
+				}
 				this.UpdateStudents();
 			}
 		}
@@ -594,6 +599,7 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			if (this.PinningDown && this.Witnesses < 4)
 			{
+				Debug.Log("Students were going to pin Yandere-chan down, but now there are less than 4 witnesses, so it's not going to happen.");
 				this.Yandere.CanMove = true;
 				this.PinningDown = false;
 				this.PinPhase = 0;
