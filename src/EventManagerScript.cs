@@ -184,13 +184,16 @@ public class EventManagerScript : MonoBehaviour
 							EventGlobals.Event1 = true;
 						}
 					}
-					if (num < 5f)
+					if (base.enabled)
 					{
-						this.Yandere.Eavesdropping = true;
-					}
-					else
-					{
-						this.Yandere.Eavesdropping = false;
+						if (num < 5f)
+						{
+							this.Yandere.Eavesdropping = true;
+						}
+						else
+						{
+							this.Yandere.Eavesdropping = false;
+						}
 					}
 				}
 			}
@@ -221,5 +224,6 @@ public class EventManagerScript : MonoBehaviour
 		this.EventSubtitle.text = string.Empty;
 		this.EventCheck = false;
 		this.EventOn = false;
+		base.enabled = false;
 	}
 }

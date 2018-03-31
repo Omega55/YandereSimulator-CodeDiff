@@ -60,6 +60,7 @@ public class DokiScript : MonoBehaviour
 					this.Yandere.MyRenderer.materials[0].SetTexture("_OverlayTex", this.DokiSocks[1]);
 					this.Yandere.MyRenderer.materials[1].SetTexture("_OverlayTex", this.DokiSocks[1]);
 				}
+				Debug.Log("Activating shadows on Yandere-chan.");
 				this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", 1f);
 				this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", 1f);
 				this.Yandere.MyRenderer.materials[2].mainTexture = this.DokiHair[this.ID];

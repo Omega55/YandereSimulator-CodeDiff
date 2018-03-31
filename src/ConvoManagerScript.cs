@@ -82,6 +82,28 @@ public class ConvoManagerScript : MonoBehaviour
 				this.ID++;
 			}
 		}
+		else if (StudentID == 33)
+		{
+			if (this.SM.Students[34].Routine && (double)Vector3.Distance(this.SM.Students[33].transform.position, this.SM.Students[34].transform.position) < 1.4)
+			{
+				this.SM.Students[33].Alone = false;
+			}
+			else
+			{
+				this.SM.Students[33].Alone = true;
+			}
+		}
+		else if (StudentID == 34)
+		{
+			if (this.SM.Students[33].Routine && (double)Vector3.Distance(this.SM.Students[34].transform.position, this.SM.Students[33].transform.position) < 1.4)
+			{
+				this.SM.Students[34].Alone = false;
+			}
+			else
+			{
+				this.SM.Students[34].Alone = true;
+			}
+		}
 		else if (StudentID > 80 && StudentID < 86)
 		{
 			this.ID = 81;

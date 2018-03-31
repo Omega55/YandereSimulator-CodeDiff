@@ -62,8 +62,16 @@ public class Persona
 			"Spiteful"
 		},
 		{
+			PersonaType.Sleuth,
+			"Sleuth"
+		},
+		{
 			PersonaType.Vengeful,
 			"Vengeful"
+		},
+		{
+			PersonaType.Protective,
+			"Protective"
 		},
 		{
 			PersonaType.Nemesis,

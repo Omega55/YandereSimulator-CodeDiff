@@ -753,6 +753,10 @@ public class MissionModeMenuScript : MonoBehaviour
 					{
 						this.ErrorLabel.text = "Invalid Mission ID (Target cannot be Osana...yet.)";
 					}
+					else if (this.TargetNumber == 34)
+					{
+						this.ErrorLabel.text = "Invalid Mission ID (Target cannot be Student #34...yet.)";
+					}
 					else if (this.PopulationNumber == 0 && this.TargetNumber > 32 && this.TargetNumber < 81)
 					{
 						this.ErrorLabel.text = "Invalid Mission ID (Population too low)";
@@ -1049,7 +1053,7 @@ public class MissionModeMenuScript : MonoBehaviour
 		}
 		this.CustomDescs[1].text = "Kill " + this.TargetName + ".";
 		this.Descs[1].text = "Kill " + this.TargetName + ".";
-		if (this.TargetID == 33)
+		if (this.TargetID == 33 || this.TargetID == 34)
 		{
 			if (this.Phase == 5)
 			{

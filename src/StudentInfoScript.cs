@@ -105,6 +105,10 @@ public class StudentInfoScript : MonoBehaviour
 			"Carries Pepper Spray"
 		},
 		{
+			8,
+			"Invincible"
+		},
+		{
 			99,
 			"?????"
 		}
@@ -303,6 +307,7 @@ public class StudentInfoScript : MonoBehaviour
 			}
 			else if (this.StudentInfoMenu.SendingHome)
 			{
+				this.StudentManager.Students[this.CurrentStudent].Routine = false;
 				this.StudentManager.Students[this.CurrentStudent].SentHome = true;
 				this.StudentInfoMenu.PauseScreen.ServiceMenu.gameObject.SetActive(true);
 				this.StudentInfoMenu.PauseScreen.ServiceMenu.UpdateList();

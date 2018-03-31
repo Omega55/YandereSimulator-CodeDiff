@@ -26,5 +26,6 @@ public enum StudentActionType
 	Clean,
 	Gossip,
 	Graffiti,
-	Bully
+	Bully,
+	Follow
 }

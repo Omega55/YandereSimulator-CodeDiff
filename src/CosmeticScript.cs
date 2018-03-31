@@ -165,6 +165,10 @@ public class CosmeticScript : MonoBehaviour
 
 	public Texture MyStockings;
 
+	public Texture BlackBody;
+
+	public Texture BlackFace;
+
 	public GameObject RightIrisLight;
 
 	public GameObject LeftIrisLight;
@@ -1008,6 +1012,12 @@ public class CosmeticScript : MonoBehaviour
 				this.CasualTexture = this.GanguroCasualTextures[StudentGlobals.FemaleUniform];
 				this.SocksTexture = this.GanguroSocksTextures[StudentGlobals.FemaleUniform];
 			}
+			else if (this.StudentID == 34)
+			{
+				this.UniformTexture = this.BlackBody;
+				this.CasualTexture = this.BlackBody;
+				this.SocksTexture = this.BlackBody;
+			}
 			else
 			{
 				this.UniformTexture = this.FemaleUniformTextures[StudentGlobals.FemaleUniform];
@@ -1053,6 +1063,10 @@ public class CosmeticScript : MonoBehaviour
 		}
 		if (this.Club == ClubType.Bully)
 		{
+		}
+		if (this.StudentID == 34)
+		{
+			this.FaceTexture = this.BlackFace;
 		}
 		this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
 		if (!this.TakingPortrait && this.Student != null && this.Student.StudentManager != null && this.Student.StudentManager.Censor)

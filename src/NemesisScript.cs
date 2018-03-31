@@ -284,10 +284,8 @@ public class NemesisScript : MonoBehaviour
 
 	private void LookForYandere()
 	{
-		Debug.Log("Looking.");
 		if (this.Student.CanSeeObject(this.Yandere.gameObject, this.Yandere.HeadPosition))
 		{
-			Debug.Log("Spotted.");
 			this.MissionMode.LastKnownPosition.position = this.Yandere.transform.position;
 			this.InView = true;
 			this.UpdateLKP();

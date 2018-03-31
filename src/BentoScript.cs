@@ -48,7 +48,7 @@ public class BentoScript : MonoBehaviour
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
 		}
-		if (this.ID == 33)
+		if (this.ID == 33 || this.ID == 34)
 		{
 			this.Prompt.HideButton[1] = !this.Prompt.Yandere.Inventory.LethalPoison;
 			if (this.Prompt.Circle[1].fillAmount == 0f)

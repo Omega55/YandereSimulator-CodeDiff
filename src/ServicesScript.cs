@@ -205,6 +205,7 @@ public class ServicesScript : MonoBehaviour
 			{
 				if (!this.ServicePurchased[this.ID])
 				{
+					this.ServiceAvailable[this.ID] = true;
 				}
 			}
 			else if (this.ID == 6 && this.Police.Show && !this.Police.Delayed)

@@ -383,9 +383,9 @@ public class MissionModeScript : MonoBehaviour
 			{
 				this.MetalDetectorGroup.SetActive(true);
 			}
-			if (!this.TimeLimit)
+			if (this.TimeLimit)
 			{
-				this.TimeLabel.gameObject.SetActive(false);
+				this.TimeLabel.gameObject.SetActive(true);
 			}
 			if (this.NoSpeech)
 			{

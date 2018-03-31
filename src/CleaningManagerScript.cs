@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class CleaningManagerScript : MonoBehaviour
 {
+	public StudentManagerScript StudentManager;
+
 	public Transform[] Windows;
 
 	public Transform[] Desks;
@@ -165,6 +167,10 @@ public class CleaningManagerScript : MonoBehaviour
 		case 33:
 			this.Role = 4;
 			this.Spot = this.Toilets[0];
+			break;
+		case 34:
+			this.Role = 3;
+			this.Spot = this.StudentManager.Students[34].transform;
 			break;
 		}
 	}

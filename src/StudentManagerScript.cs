@@ -27,8 +27,6 @@ public class StudentManagerScript : MonoBehaviour
 
 	public QualityManagerScript QualityManager;
 
-	public ParticleSystem FemaleDrownSplashes;
-
 	public ComputerGamesScript ComputerGames;
 
 	public EmergencyExitScript EmergencyExit;
@@ -50,8 +48,6 @@ public class StudentManagerScript : MonoBehaviour
 	public TaskManagerScript TaskManager;
 
 	public ReputationScript Reputation;
-
-	public DoorScript FemaleVomitDoor;
 
 	public WeaponScript FragileWeapon;
 
@@ -81,9 +77,21 @@ public class StudentManagerScript : MonoBehaviour
 
 	public TagScript Tag;
 
+	public DoorScript AltFemaleVomitDoor;
+
+	public DoorScript FemaleVomitDoor;
+
+	public ParticleSystem AltFemaleDrownSplashes;
+
+	public ParticleSystem FemaleDrownSplashes;
+
 	public OfferHelpScript FragileOfferHelp;
 
 	public OfferHelpScript OfferHelp;
+
+	public Transform AltFemaleVomitSpot;
+
+	public Transform FemaleVomitSpot;
 
 	public ListScript SearchPatrols;
 
@@ -167,8 +175,6 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform FemaleStalkSpot;
 
-	public Transform FemaleVomitSpot;
-
 	public Transform ConfessionSpot;
 
 	public Transform CorpseLocation;
@@ -234,6 +240,8 @@ public class StudentManagerScript : MonoBehaviour
 	public GameObject StudentChan;
 
 	public GameObject StudentKun;
+
+	public GameObject RivalChan;
 
 	public GameObject Portal;
 
@@ -470,6 +478,10 @@ public class StudentManagerScript : MonoBehaviour
 				this.Graffiti[3].SetActive(false);
 				this.Graffiti[4].SetActive(false);
 				this.Graffiti[5].SetActive(false);
+				if (this.Students[34] != null)
+				{
+					this.RivalChan.SetActive(false);
+				}
 			}
 		}
 		else
@@ -715,7 +727,12 @@ public class StudentManagerScript : MonoBehaviour
 
 	public void SpawnStudent(int spawnID)
 	{
-		if (this.Students[spawnID] == null && !StudentGlobals.GetStudentDead(spawnID) && !StudentGlobals.GetStudentKidnapped(spawnID) && !StudentGlobals.GetStudentArrested(spawnID) && !StudentGlobals.GetStudentExpelled(spawnID) && this.JSON.Students[spawnID].Name != "Unknown" && this.JSON.Students[spawnID].Name != "Reserved" && StudentGlobals.GetStudentReputation(spawnID) > -100)
+		bool flag = false;
+		if (spawnID == 33 || spawnID == 34)
+		{
+			flag = true;
+		}
+		if (!flag && this.Students[spawnID] == null && !StudentGlobals.GetStudentDead(spawnID) && !StudentGlobals.GetStudentKidnapped(spawnID) && !StudentGlobals.GetStudentArrested(spawnID) && !StudentGlobals.GetStudentExpelled(spawnID) && this.JSON.Students[spawnID].Name != "Unknown" && this.JSON.Students[spawnID].Name != "Reserved" && StudentGlobals.GetStudentReputation(spawnID) > -100)
 		{
 			int num;
 			if (this.JSON.Students[spawnID].Name == "Random")

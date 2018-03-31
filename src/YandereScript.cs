@@ -393,6 +393,8 @@ public class YandereScript : MonoBehaviour
 
 	public int Alerts;
 
+	public int Health = 5;
+
 	public YandereInteractionType Interaction;
 
 	public YanderePersonaType Persona;
@@ -3769,7 +3771,18 @@ public class YandereScript : MonoBehaviour
 					this.Drown = false;
 					this.Sanity -= ((PlayerGlobals.PantiesEquipped != 10) ? 20f : 10f) * this.Numbness;
 				}
-				if (this.CharacterAnimation[this.DrownAnim].time > 9f)
+				if (this.TargetStudent.StudentID == 34)
+				{
+					if (this.CharacterAnimation[this.DrownAnim].time > 9f)
+					{
+						this.StudentManager.AltFemaleDrownSplashes.Stop();
+					}
+					else if (this.CharacterAnimation[this.DrownAnim].time > 3f)
+					{
+						this.StudentManager.AltFemaleDrownSplashes.Play();
+					}
+				}
+				else if (this.CharacterAnimation[this.DrownAnim].time > 9f)
 				{
 					this.StudentManager.FemaleDrownSplashes.Stop();
 				}
@@ -5213,6 +5226,7 @@ public class YandereScript : MonoBehaviour
 
 	private void Nude()
 	{
+		Debug.Log("Making Yandere-chan nude.");
 		this.MyRenderer.sharedMesh = this.NudeMesh;
 		this.MyRenderer.materials[0].mainTexture = this.FaceTexture;
 		this.MyRenderer.materials[1].mainTexture = this.NudeTexture;
@@ -5224,6 +5238,8 @@ public class YandereScript : MonoBehaviour
 		}
 		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
 		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount1", 0f);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount1", 0f);
 		this.EasterEggMenu.SetActive(false);
 		this.ClubAttire = false;
 		this.Schoolwear = 0;
@@ -5487,10 +5503,12 @@ public class YandereScript : MonoBehaviour
 		{
 			this.PantyAttacher.newRenderer.enabled = true;
 			this.MyRenderer.sharedMesh = this.Uniforms[StudentGlobals.FemaleUniform];
+			this.MyRenderer.materials[1].SetFloat("_BlendAmount", 1f);
 			if (this.StudentManager.Censor)
 			{
-				this.MyRenderer.materials[0].SetFloat("_BlendAmount", 1f);
-				this.MyRenderer.materials[1].SetFloat("_BlendAmount", 1f);
+				Debug.Log("Activating shadows on Yandere-chan.");
+				this.MyRenderer.materials[0].SetFloat("_BlendAmount1", 1f);
+				this.MyRenderer.materials[1].SetFloat("_BlendAmount1", 1f);
 				this.PantyAttacher.newRenderer.enabled = false;
 			}
 			this.MyRenderer.materials[0].mainTexture = this.TextureToUse;

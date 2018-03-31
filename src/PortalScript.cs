@@ -5,6 +5,10 @@ public class PortalScript : MonoBehaviour
 {
 	public RivalMorningEventManagerScript[] MorningEvents;
 
+	public OsanaMorningFriendEventScript[] FriendEvents;
+
+	public OsanaMondayBeforeClassEventScript OsanaEvent;
+
 	public DelinquentManagerScript DelinquentManager;
 
 	public StudentManagerScript StudentManager;
@@ -244,6 +248,7 @@ public class PortalScript : MonoBehaviour
 	{
 		this.StudentManager.StopMoving();
 		this.Yandere.StopLaughing();
+		this.Yandere.EmptyHands();
 		this.Clock.StopTime = true;
 		this.Police.Darkness.enabled = true;
 		this.Police.FadeOut = true;

@@ -116,6 +116,10 @@ public static class AnimNames
 
 	public const string FemaleDragWalk01 = "f02_dragWalk_01";
 
+	public const string FemaleDramaticFrontal = "f02_dramaticFrontal_00";
+
+	public const string FemaleDramaticStealth = "f02_dramaticStealth_00";
+
 	public const string FemaleDumpsterGrab = "f02_dumpsterGrab_00";
 
 	public const string FemaleDumpsterPull = "f02_dumpsterPull_00";
@@ -155,6 +159,10 @@ public static class AnimNames
 	public const string FemaleGazerWalk = "f02_gazerWalk_00";
 
 	public const string FemaleGazerRun = "f02_gazerRun_00";
+
+	public const string FemaleGirlyIdle = "f02_idleGirly_00";
+
+	public const string FemaleGirlyWalk = "f02_walkGirly_00";
 
 	public const string FemaleGreet = "f02_greet_00";
 

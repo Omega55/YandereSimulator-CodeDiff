@@ -111,7 +111,11 @@ public class TapePlayerMenuScript : MonoBehaviour
 
 	public float[] HeadmasterCues1;
 
+	public float[] HeadmasterCues2;
+
 	public string[] HeadmasterSubs1;
+
+	public string[] HeadmasterSubs2;
 
 	private void Start()
 	{
@@ -414,13 +418,26 @@ public class TapePlayerMenuScript : MonoBehaviour
 						}
 					}
 				}
-				else if (this.Category == 3 && this.Selected == 1)
+				else if (this.Category == 3)
 				{
-					for (int num9 = 0; num9 < this.HeadmasterCues1.Length; num9++)
+					if (this.Selected == 1)
 					{
-						if (component.time > this.HeadmasterCues1[num9])
+						for (int num9 = 0; num9 < this.HeadmasterCues1.Length; num9++)
 						{
-							this.Subtitle.text = this.HeadmasterSubs1[num9];
+							if (component.time > this.HeadmasterCues1[num9])
+							{
+								this.Subtitle.text = this.HeadmasterSubs1[num9];
+							}
+						}
+					}
+					else if (this.Selected == 2)
+					{
+						for (int num10 = 0; num10 < this.HeadmasterCues2.Length; num10++)
+						{
+							if (component.time > this.HeadmasterCues2[num10])
+							{
+								this.Subtitle.text = this.HeadmasterSubs2[num10];
+							}
 						}
 					}
 				}
@@ -524,9 +541,9 @@ public class TapePlayerMenuScript : MonoBehaviour
 					}
 					component.time = 0f;
 					this.RoundedTime = (float)Mathf.CeilToInt(component.clip.length);
-					int num10 = (int)(this.RoundedTime / 60f);
-					int num11 = (int)(this.RoundedTime % 60f);
-					this.ClipLength = string.Format("{0:00}:{1:00}", num10, num11);
+					int num11 = (int)(this.RoundedTime / 60f);
+					int num12 = (int)(this.RoundedTime % 60f);
+					this.ClipLength = string.Format("{0:00}:{1:00}", num11, num12);
 				}
 			}
 			else if (Input.GetButtonDown("B"))

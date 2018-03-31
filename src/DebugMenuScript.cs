@@ -537,6 +537,7 @@ public class DebugMenuScript : MonoBehaviour
 
 	public void Censor()
 	{
+		Debug.Log("We're updating the censor.");
 		if (!this.StudentManager.Censor)
 		{
 			if (this.Yandere.Schoolwear == 1)
