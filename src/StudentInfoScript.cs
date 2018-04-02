@@ -307,16 +307,29 @@ public class StudentInfoScript : MonoBehaviour
 			}
 			else if (this.StudentInfoMenu.SendingHome)
 			{
-				this.StudentManager.Students[this.CurrentStudent].Routine = false;
-				this.StudentManager.Students[this.CurrentStudent].SentHome = true;
-				this.StudentInfoMenu.PauseScreen.ServiceMenu.gameObject.SetActive(true);
-				this.StudentInfoMenu.PauseScreen.ServiceMenu.UpdateList();
-				this.StudentInfoMenu.PauseScreen.ServiceMenu.UpdateDesc();
-				this.StudentInfoMenu.PauseScreen.ServiceMenu.Purchase();
-				this.StudentInfoMenu.SendingHome = false;
-				base.gameObject.SetActive(false);
-				this.PromptBar.ClearButtons();
-				this.PromptBar.Show = false;
+				if (this.StudentManager.Students[this.CurrentStudent].Routine)
+				{
+					this.StudentManager.Students[this.CurrentStudent].Routine = false;
+					this.StudentManager.Students[this.CurrentStudent].SentHome = true;
+					this.StudentManager.Students[this.CurrentStudent].CameraReacting = false;
+					this.StudentInfoMenu.PauseScreen.ServiceMenu.gameObject.SetActive(true);
+					this.StudentInfoMenu.PauseScreen.ServiceMenu.UpdateList();
+					this.StudentInfoMenu.PauseScreen.ServiceMenu.UpdateDesc();
+					this.StudentInfoMenu.PauseScreen.ServiceMenu.Purchase();
+					this.StudentInfoMenu.SendingHome = false;
+					base.gameObject.SetActive(false);
+					this.PromptBar.ClearButtons();
+					this.PromptBar.Show = false;
+				}
+				else
+				{
+					this.StudentInfoMenu.PauseScreen.ServiceMenu.TextMessageManager.SpawnMessage(0);
+					base.gameObject.SetActive(false);
+					this.PromptBar.ClearButtons();
+					this.PromptBar.Label[0].text = string.Empty;
+					this.PromptBar.Label[1].text = "Back";
+					this.PromptBar.UpdateButtons();
+				}
 			}
 		}
 		if (Input.GetButtonDown("B"))

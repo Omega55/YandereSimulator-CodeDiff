@@ -234,6 +234,10 @@ public class ServicesScript : MonoBehaviour
 		this.ServiceIcon.mainTexture = this.ServiceIcons[this.Selected];
 		this.ServiceLimit.text = this.ServiceLimits[this.Selected];
 		this.ServiceDesc.text = this.ServiceDescs[this.Selected];
+		if (this.Selected == 5)
+		{
+			this.ServiceDesc.text = this.ServiceDescs[this.Selected] + "\n\nIf student portraits don't appear, back out of the menu, load the Student Info menu, then return to this screen.";
+		}
 		this.UpdatePantyCount();
 	}
 

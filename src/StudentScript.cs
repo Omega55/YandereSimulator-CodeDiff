@@ -1450,8 +1450,8 @@ public class StudentScript : MonoBehaviour
 				this.SWStairs = GameObject.Find("SWStairs").GetComponent<Collider>();
 				this.IdleAnim = this.BrokenAnim;
 				this.WalkAnim = this.BrokenWalkAnim;
-				this.RightEmptyEye.SetActive(false);
-				this.LeftEmptyEye.SetActive(false);
+				this.RightEmptyEye.SetActive(true);
+				this.LeftEmptyEye.SetActive(true);
 				this.SmartPhone.SetActive(false);
 				this.Distracted = true;
 				this.Indoors = true;
@@ -4730,6 +4730,7 @@ public class StudentScript : MonoBehaviour
 					this.CharacterAnimation.CrossFade(this.PhoneAnims[3]);
 					this.Pathfinding.canSearch = false;
 					this.Pathfinding.canMove = false;
+					this.SmartPhone.SetActive(true);
 					this.SentHomePhase++;
 				}
 				else if (this.SentHomePhase == 1 && this.CharacterAnimation[this.PhoneAnims[3]].time > 5f)
@@ -7697,7 +7698,6 @@ public class StudentScript : MonoBehaviour
 			else if (scheduleBlock2.destination == "LunchSpot")
 			{
 				this.Destinations[this.ID] = this.StudentManager.LunchSpots.List[this.StudentID];
-				Debug.Log("Student " + this.StudentID + " was just told to go to a lunch spot.");
 			}
 			else if (scheduleBlock2.destination == "Slave")
 			{

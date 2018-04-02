@@ -31,24 +31,31 @@ public class FalconPunchScript : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
+		Debug.Log("A punch collided with something.");
 		if (other.gameObject.layer == 9)
 		{
+			Debug.Log("A punch collided with something on the Characters layer.");
 			StudentScript component = other.gameObject.GetComponent<StudentScript>();
-			if (component != null && component.StudentID > 1)
+			if (component != null)
 			{
-				UnityEngine.Object.Instantiate<GameObject>(this.FalconExplosion, component.transform.position + new Vector3(0f, 1f, 0f), Quaternion.identity);
-				component.DeathType = DeathType.EasterEgg;
-				component.BecomeRagdoll();
-				Rigidbody rigidbody = component.Ragdoll.AllRigidbodies[0];
-				rigidbody.isKinematic = false;
-				if (this.Falcon)
+				Debug.Log("A punch collided with a student.");
+				if (component.StudentID > 1)
 				{
-					rigidbody.AddForce((rigidbody.transform.position - base.transform.position) * this.Strength);
-				}
-				else
-				{
-					rigidbody.AddForce((rigidbody.transform.root.position - base.transform.root.position) * this.Strength);
-					rigidbody.AddForce(Vector3.up * 10000f);
+					Debug.Log("A punch collided with a student and killed them.");
+					UnityEngine.Object.Instantiate<GameObject>(this.FalconExplosion, component.transform.position + new Vector3(0f, 1f, 0f), Quaternion.identity);
+					component.DeathType = DeathType.EasterEgg;
+					component.BecomeRagdoll();
+					Rigidbody rigidbody = component.Ragdoll.AllRigidbodies[0];
+					rigidbody.isKinematic = false;
+					if (this.Falcon)
+					{
+						rigidbody.AddForce((rigidbody.transform.position - base.transform.position) * this.Strength);
+					}
+					else
+					{
+						rigidbody.AddForce((rigidbody.transform.root.position - base.transform.root.position) * this.Strength);
+						rigidbody.AddForce(Vector3.up * 10000f);
+					}
 				}
 			}
 		}

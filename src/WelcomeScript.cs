@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -31,6 +32,8 @@ public class WelcomeScript : MonoBehaviour
 	[SerializeField]
 	private float Timer;
 
+	private string Text;
+
 	private int ID;
 
 	private void Start()
@@ -44,7 +47,15 @@ public class WelcomeScript : MonoBehaviour
 			Globals.DeleteAll();
 			ApplicationGlobals.VersionNumber = this.VersionNumber;
 		}
-		if (this.JSON.Students[33].Name != "Reserved")
+		if (File.Exists(Application.streamingAssetsPath + "/Fun.txt"))
+		{
+			this.Text = File.ReadAllText(Application.streamingAssetsPath + "/Fun.txt");
+		}
+		if (this.Text == "0" || this.Text == "1" || this.Text == "2" || this.Text == "3" || this.Text == "4" || this.Text == "5" || this.Text == "6" || this.Text == "7" || this.Text == "8" || this.Text == "9" || this.Text == "10" || this.Text == "666")
+		{
+			SceneManager.LoadScene("VeryFunScene");
+		}
+		if (this.JSON.Students[33].Name != "Reserved" || this.JSON.Students[34].Name != "Reserved")
 		{
 			if (Application.CanStreamedLevelBeLoaded("FunScene"))
 			{

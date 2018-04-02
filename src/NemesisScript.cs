@@ -335,6 +335,7 @@ public class NemesisScript : MonoBehaviour
 		this.Student.Cosmetic.LeftStockings[0].SetActive(false);
 		this.Student.Cosmetic.RightWristband.SetActive(false);
 		this.Student.Cosmetic.LeftWristband.SetActive(false);
+		this.Student.DramaticCamera.gameObject.SetActive(false);
 		this.Student.Countdown.gameObject.SetActive(false);
 		this.Student.Chopsticks[0].SetActive(false);
 		this.Student.Chopsticks[1].SetActive(false);
