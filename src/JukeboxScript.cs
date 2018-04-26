@@ -83,6 +83,12 @@ public class JukeboxScript : MonoBehaviour
 
 	public AudioClip[] NoSanities;
 
+	public AudioClip[] OriginalFull;
+
+	public AudioClip[] OriginalHalf;
+
+	public AudioClip[] OriginalNo;
+
 	public AudioClip[] AlternateFull;
 
 	public AudioClip[] AlternateHalf;
@@ -95,20 +101,61 @@ public class JukeboxScript : MonoBehaviour
 
 	public AudioClip[] ThirdNo;
 
+	public AudioClip[] FourthFull;
+
+	public AudioClip[] FourthHalf;
+
+	public AudioClip[] FourthNo;
+
+	public AudioClip[] FifthFull;
+
+	public AudioClip[] FifthHalf;
+
+	public AudioClip[] FifthNo;
+
 	private void Start()
 	{
-		this.BGM = UnityEngine.Random.Range(0, 3);
+		if (this.BGM == 0)
+		{
+			this.BGM = UnityEngine.Random.Range(0, 6);
+		}
+		else
+		{
+			this.BGM++;
+			if (this.BGM > 5)
+			{
+				this.BGM = 1;
+			}
+		}
 		if (this.BGM == 1)
+		{
+			this.FullSanities = this.OriginalFull;
+			this.HalfSanities = this.OriginalHalf;
+			this.NoSanities = this.OriginalNo;
+		}
+		else if (this.BGM == 2)
 		{
 			this.FullSanities = this.AlternateFull;
 			this.HalfSanities = this.AlternateHalf;
 			this.NoSanities = this.AlternateNo;
 		}
-		else if (this.BGM == 2)
+		else if (this.BGM == 3)
 		{
 			this.FullSanities = this.ThirdFull;
 			this.HalfSanities = this.ThirdHalf;
 			this.NoSanities = this.ThirdNo;
+		}
+		else if (this.BGM == 4)
+		{
+			this.FullSanities = this.FourthFull;
+			this.HalfSanities = this.FourthHalf;
+			this.NoSanities = this.FourthNo;
+		}
+		else if (this.BGM == 5)
+		{
+			this.FullSanities = this.FifthFull;
+			this.HalfSanities = this.FifthHalf;
+			this.NoSanities = this.FifthNo;
 		}
 		if (!SchoolGlobals.SchoolAtmosphereSet)
 		{

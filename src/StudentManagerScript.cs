@@ -21,6 +21,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public SelectiveGrayscale SelectiveGreyscale;
 
+	public CombatMinigameScript CombatMinigame;
+
 	public DatingMinigameScript DatingMinigame;
 
 	public TextureManagerScript TextureManager;
@@ -74,6 +76,8 @@ public class StudentManagerScript : MonoBehaviour
 	public DoorScript ShedDoor;
 
 	public UILabel ErrorLabel;
+
+	public RestScript Rest;
 
 	public TagScript Tag;
 
@@ -146,6 +150,8 @@ public class StudentManagerScript : MonoBehaviour
 	public Transform[] PinDownSpots;
 
 	public Transform[] BullySpots;
+
+	public Transform[] SulkSpots;
 
 	public bool[] SeatsTaken11;
 
@@ -548,6 +554,7 @@ public class StudentManagerScript : MonoBehaviour
 					this.DetermineVictim();
 				}
 				this.UpdateStudents();
+				this.QualityManager.RimLight();
 			}
 		}
 		else if (this.NPCsSpawned < this.StudentsTotal + this.TeachersTotal)
@@ -912,6 +919,14 @@ public class StudentManagerScript : MonoBehaviour
 					{
 						studentScript.Prompt.HideButton[0] = false;
 						studentScript.Prompt.Label[0].text = "     Pose";
+						studentScript.Prompt.BloodMask = 1;
+						studentScript.Prompt.BloodMask |= 2;
+						studentScript.Prompt.BloodMask |= 512;
+						studentScript.Prompt.BloodMask |= 8192;
+						studentScript.Prompt.BloodMask |= 16384;
+						studentScript.Prompt.BloodMask |= 65536;
+						studentScript.Prompt.BloodMask |= 2097152;
+						studentScript.Prompt.BloodMask = ~studentScript.Prompt.BloodMask;
 					}
 					if (!studentScript.Teacher && this.Six)
 					{
@@ -1149,6 +1164,7 @@ public class StudentManagerScript : MonoBehaviour
 
 	public void StopMoving()
 	{
+		this.CombatMinigame.enabled = false;
 		this.Stop = true;
 		this.ID = 1;
 		while (this.ID < this.Students.Length)

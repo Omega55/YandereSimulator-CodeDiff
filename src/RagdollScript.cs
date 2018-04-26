@@ -354,6 +354,7 @@ public class RagdollScript : MonoBehaviour
 			{
 				if (!this.Suicide && !this.AddingToCount)
 				{
+					this.Yandere.NearestCorpseID = this.StudentID;
 					this.Yandere.NearBodies++;
 					this.AddingToCount = true;
 				}

@@ -85,36 +85,43 @@ public class TalkingScript : MonoBehaviour
 			{
 				if (this.S.TalkTimer == 3f)
 				{
-					this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod2Anim);
-					this.S.RepRecovery = 5f;
-					if (PlayerGlobals.PantiesEquipped == 6)
+					if (this.S.Club != ClubType.Delinquent)
 					{
-						this.S.RepRecovery += 2.5f;
-					}
-					if (PlayerGlobals.SocialBonus > 0)
-					{
-						this.S.RepRecovery += 2.5f;
-					}
-					this.S.PendingRep += this.S.RepRecovery;
-					this.S.Reputation.PendingRep += this.S.RepRecovery;
-					this.S.ID = 0;
-					while (this.S.ID < this.S.Outlines.Length)
-					{
-						this.S.Outlines[this.S.ID].color = new Color(0f, 1f, 0f, 1f);
-						this.S.ID++;
-					}
-					this.S.Forgave = true;
-					if (this.S.Witnessed == StudentWitnessType.Insanity || this.S.Witnessed == StudentWitnessType.WeaponAndBloodAndInsanity || this.S.Witnessed == StudentWitnessType.WeaponAndInsanity || this.S.Witnessed == StudentWitnessType.BloodAndInsanity)
-					{
-						this.S.Subtitle.UpdateLabel(SubtitleType.ForgivingInsanity, 0, 3f);
-					}
-					else if (this.S.Witnessed == StudentWitnessType.Accident)
-					{
-						this.S.Subtitle.UpdateLabel(SubtitleType.ForgivingAccident, 0, 5f);
+						this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod2Anim);
+						this.S.RepRecovery = 5f;
+						if (PlayerGlobals.PantiesEquipped == 6)
+						{
+							this.S.RepRecovery += 2.5f;
+						}
+						if (PlayerGlobals.SocialBonus > 0)
+						{
+							this.S.RepRecovery += 2.5f;
+						}
+						this.S.PendingRep += this.S.RepRecovery;
+						this.S.Reputation.PendingRep += this.S.RepRecovery;
+						this.S.ID = 0;
+						while (this.S.ID < this.S.Outlines.Length)
+						{
+							this.S.Outlines[this.S.ID].color = new Color(0f, 1f, 0f, 1f);
+							this.S.ID++;
+						}
+						this.S.Forgave = true;
+						if (this.S.Witnessed == StudentWitnessType.Insanity || this.S.Witnessed == StudentWitnessType.WeaponAndBloodAndInsanity || this.S.Witnessed == StudentWitnessType.WeaponAndInsanity || this.S.Witnessed == StudentWitnessType.BloodAndInsanity)
+						{
+							this.S.Subtitle.UpdateLabel(SubtitleType.ForgivingInsanity, 0, 3f);
+						}
+						else if (this.S.Witnessed == StudentWitnessType.Accident)
+						{
+							this.S.Subtitle.UpdateLabel(SubtitleType.ForgivingAccident, 0, 5f);
+						}
+						else
+						{
+							this.S.Subtitle.UpdateLabel(SubtitleType.Forgiving, 0, 3f);
+						}
 					}
 					else
 					{
-						this.S.Subtitle.UpdateLabel(SubtitleType.Forgiving, 0, 3f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.Dismissive, 0, 5f);
 					}
 				}
 				else
@@ -139,28 +146,35 @@ public class TalkingScript : MonoBehaviour
 			{
 				if (this.S.TalkTimer == 3f)
 				{
-					if (PlayerGlobals.Reputation < -33.33333f)
+					if (this.S.Club != ClubType.Delinquent)
 					{
-						this.S.Subtitle.UpdateLabel(SubtitleType.StudentLowCompliment, 0, 3f);
-					}
-					else if (PlayerGlobals.Reputation > 33.33333f)
-					{
-						this.S.Subtitle.UpdateLabel(SubtitleType.StudentHighCompliment, 0, 3f);
+						this.S.Character.GetComponent<Animation>().CrossFade(this.S.LookDownAnim);
+						if (PlayerGlobals.Reputation < -33.33333f)
+						{
+							this.S.Subtitle.UpdateLabel(SubtitleType.StudentLowCompliment, 0, 3f);
+						}
+						else if (PlayerGlobals.Reputation > 33.33333f)
+						{
+							this.S.Subtitle.UpdateLabel(SubtitleType.StudentHighCompliment, 0, 3f);
+						}
+						else
+						{
+							this.S.Subtitle.UpdateLabel(SubtitleType.StudentMidCompliment, 0, 3f);
+						}
+						this.CalculateRepBonus();
+						this.S.Reputation.PendingRep += 1f + (float)this.S.RepBonus;
+						this.S.PendingRep += 1f + (float)this.S.RepBonus;
+						this.S.Complimented = true;
 					}
 					else
 					{
-						this.S.Subtitle.UpdateLabel(SubtitleType.StudentMidCompliment, 0, 3f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.Dismissive, 1, 5f);
 					}
-					this.CalculateRepBonus();
-					this.S.Reputation.PendingRep += 1f + (float)this.S.RepBonus;
-					this.S.PendingRep += 1f + (float)this.S.RepBonus;
-					this.S.Complimented = true;
 				}
 				else if (Input.GetButtonDown("A"))
 				{
 					this.S.TalkTimer = 0f;
 				}
-				this.S.Character.GetComponent<Animation>().CrossFade(this.S.LookDownAnim);
 				this.S.TalkTimer -= Time.deltaTime;
 				if (this.S.TalkTimer <= 0f)
 				{
@@ -171,49 +185,56 @@ public class TalkingScript : MonoBehaviour
 			{
 				if (this.S.TalkTimer == 3f)
 				{
-					this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
-					this.S.Subtitle.UpdateLabel(SubtitleType.StudentGossip, 0, 3f);
-					this.S.GossipBonus = 0;
-					if (this.S.Reputation.Reputation > 33.33333f)
+					if (this.S.Club != ClubType.Delinquent)
 					{
-						this.S.GossipBonus++;
+						this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
+						this.S.Subtitle.UpdateLabel(SubtitleType.StudentGossip, 0, 3f);
+						this.S.GossipBonus = 0;
+						if (this.S.Reputation.Reputation > 33.33333f)
+						{
+							this.S.GossipBonus++;
+						}
+						if (PlayerGlobals.PantiesEquipped == 9)
+						{
+							this.S.GossipBonus++;
+						}
+						if (SchemeGlobals.DarkSecret)
+						{
+							this.S.GossipBonus++;
+						}
+						if (PlayerGlobals.GetStudentFriend(this.S.StudentID))
+						{
+							this.S.GossipBonus++;
+						}
+						if ((this.S.Male && PlayerGlobals.Seduction > 1) || PlayerGlobals.Seduction == 5)
+						{
+							this.S.GossipBonus++;
+						}
+						if (PlayerGlobals.SocialBonus > 0)
+						{
+							this.S.GossipBonus++;
+						}
+						StudentGlobals.SetStudentReputation(this.S.DialogueWheel.Victim, StudentGlobals.GetStudentReputation(this.S.DialogueWheel.Victim) - (1 + this.S.GossipBonus));
+						if (this.S.Club != ClubType.Bully)
+						{
+							this.S.Reputation.PendingRep -= 2f;
+							this.S.PendingRep -= 2f;
+						}
+						this.S.Gossiped = true;
+						if (!ConversationGlobals.GetTopicDiscovered(15))
+						{
+							this.S.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+							ConversationGlobals.SetTopicDiscovered(15, true);
+						}
+						if (!ConversationGlobals.GetTopicLearnedByStudent(15, this.S.StudentID))
+						{
+							this.S.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
+							ConversationGlobals.SetTopicLearnedByStudent(15, this.S.StudentID, true);
+						}
 					}
-					if (PlayerGlobals.PantiesEquipped == 9)
+					else
 					{
-						this.S.GossipBonus++;
-					}
-					if (SchemeGlobals.DarkSecret)
-					{
-						this.S.GossipBonus++;
-					}
-					if (PlayerGlobals.GetStudentFriend(this.S.StudentID))
-					{
-						this.S.GossipBonus++;
-					}
-					if ((this.S.Male && PlayerGlobals.Seduction > 1) || PlayerGlobals.Seduction == 5)
-					{
-						this.S.GossipBonus++;
-					}
-					if (PlayerGlobals.SocialBonus > 0)
-					{
-						this.S.GossipBonus++;
-					}
-					StudentGlobals.SetStudentReputation(this.S.DialogueWheel.Victim, StudentGlobals.GetStudentReputation(this.S.DialogueWheel.Victim) - (1 + this.S.GossipBonus));
-					if (this.S.Club != ClubType.Bully)
-					{
-						this.S.Reputation.PendingRep -= 2f;
-						this.S.PendingRep -= 2f;
-					}
-					this.S.Gossiped = true;
-					if (!ConversationGlobals.GetTopicDiscovered(15))
-					{
-						this.S.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
-						ConversationGlobals.SetTopicDiscovered(15, true);
-					}
-					if (!ConversationGlobals.GetTopicLearnedByStudent(15, this.S.StudentID))
-					{
-						this.S.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
-						ConversationGlobals.SetTopicLearnedByStudent(15, this.S.StudentID, true);
+						this.S.Subtitle.UpdateLabel(SubtitleType.Dismissive, 2, 3f);
 					}
 				}
 				else
@@ -237,7 +258,14 @@ public class TalkingScript : MonoBehaviour
 			{
 				if (this.S.TalkTimer == 2f)
 				{
-					this.S.Subtitle.UpdateLabel(SubtitleType.StudentFarewell, 0, 2f);
+					if (this.S.Club != ClubType.Delinquent)
+					{
+						this.S.Subtitle.UpdateLabel(SubtitleType.StudentFarewell, 0, 2f);
+					}
+					else
+					{
+						this.S.Subtitle.UpdateLabel(SubtitleType.Dismissive, 3, 3f);
+					}
 				}
 				else if (Input.GetButtonDown("A"))
 				{
@@ -304,16 +332,23 @@ public class TalkingScript : MonoBehaviour
 			{
 				if (this.S.TalkTimer == 2f)
 				{
-					if ((this.S.Clock.HourTime > 8f && this.S.Clock.HourTime < 13f) || (this.S.Clock.HourTime > 13.375f && this.S.Clock.HourTime < 15.5f))
+					if (this.S.Club != ClubType.Delinquent)
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
-						this.S.Subtitle.UpdateLabel(SubtitleType.StudentStay, 0, 5f);
+						if ((this.S.Clock.HourTime > 8f && this.S.Clock.HourTime < 13f) || (this.S.Clock.HourTime > 13.375f && this.S.Clock.HourTime < 15.5f))
+						{
+							this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
+							this.S.Subtitle.UpdateLabel(SubtitleType.StudentStay, 0, 5f);
+						}
+						else
+						{
+							this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod1Anim);
+							this.S.Subtitle.UpdateLabel(SubtitleType.StudentFollow, 0, 2f);
+							this.Follow = true;
+						}
 					}
 					else
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod1Anim);
-						this.S.Subtitle.UpdateLabel(SubtitleType.StudentFollow, 0, 2f);
-						this.Follow = true;
+						this.S.Subtitle.UpdateLabel(SubtitleType.Dismissive, 4, 5f);
 					}
 				}
 				else
@@ -351,16 +386,23 @@ public class TalkingScript : MonoBehaviour
 			{
 				if (this.S.TalkTimer == 3f)
 				{
-					if ((this.S.Clock.HourTime > 8f && this.S.Clock.HourTime < 13f) || (this.S.Clock.HourTime > 13.375f && this.S.Clock.HourTime < 15.5f))
+					if (this.S.Club != ClubType.Delinquent)
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
-						this.S.Subtitle.UpdateLabel(SubtitleType.StudentStay, 0, 5f);
+						if ((this.S.Clock.HourTime > 8f && this.S.Clock.HourTime < 13f) || (this.S.Clock.HourTime > 13.375f && this.S.Clock.HourTime < 15.5f))
+						{
+							this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
+							this.S.Subtitle.UpdateLabel(SubtitleType.StudentStay, 0, 5f);
+						}
+						else
+						{
+							this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod1Anim);
+							this.S.Subtitle.UpdateLabel(SubtitleType.StudentLeave, 0, 3f);
+							this.S.GoAway = true;
+						}
 					}
 					else
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod1Anim);
-						this.S.Subtitle.UpdateLabel(SubtitleType.StudentLeave, 0, 3f);
-						this.S.GoAway = true;
+						this.S.Subtitle.UpdateLabel(SubtitleType.Dismissive, 5, 5f);
 					}
 				}
 				else
@@ -389,26 +431,34 @@ public class TalkingScript : MonoBehaviour
 			{
 				if (this.S.TalkTimer == 3f)
 				{
-					if ((this.S.Clock.HourTime > 8f && this.S.Clock.HourTime < 13f) || (this.S.Clock.HourTime > 13.375f && this.S.Clock.HourTime < 15.5f))
+					if (this.S.Club != ClubType.Delinquent)
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
-						this.S.Subtitle.UpdateLabel(SubtitleType.StudentStay, 0, 5f);
-					}
-					else
-					{
-						StudentScript studentScript = this.S.StudentManager.Students[this.S.DialogueWheel.Victim];
-						if (studentScript.Routine && !studentScript.TargetedForDistraction && !studentScript.InEvent)
+						if ((this.S.Clock.HourTime > 8f && this.S.Clock.HourTime < 13f) || (this.S.Clock.HourTime > 13.375f && this.S.Clock.HourTime < 15.5f))
 						{
-							this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod1Anim);
-							this.S.Subtitle.UpdateLabel(SubtitleType.StudentDistract, 0, 3f);
-							this.Refuse = false;
+							this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
+							this.S.Subtitle.UpdateLabel(SubtitleType.StudentStay, 0, 5f);
 						}
 						else
 						{
-							this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
-							this.S.Subtitle.UpdateLabel(SubtitleType.StudentDistractRefuse, 0, 3f);
-							this.Refuse = true;
+							StudentScript studentScript = this.S.StudentManager.Students[this.S.DialogueWheel.Victim];
+							if (studentScript.Routine && !studentScript.TargetedForDistraction && !studentScript.InEvent)
+							{
+								this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod1Anim);
+								this.S.Subtitle.UpdateLabel(SubtitleType.StudentDistract, 0, 3f);
+								this.Refuse = false;
+							}
+							else
+							{
+								this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
+								this.S.Subtitle.UpdateLabel(SubtitleType.StudentDistractRefuse, 0, 3f);
+								this.Refuse = true;
+							}
 						}
+					}
+					else
+					{
+						this.S.Subtitle.UpdateLabel(SubtitleType.Dismissive, 6, 5f);
+						this.Refuse = true;
 					}
 				}
 				else

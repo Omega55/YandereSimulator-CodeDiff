@@ -316,7 +316,7 @@ public class HomePrisonerScript : MonoBehaviour
 						Time.timeScale = 1f;
 						this.NowLoading.SetActive(true);
 						HomeGlobals.LateForSchool = true;
-						SceneManager.LoadScene("SchoolScene");
+						SceneManager.LoadScene("LoadingScene");
 						StudentGlobals.SetStudentSanity(SchoolGlobals.KidnapVictim, this.Sanity - 2.5f);
 					}
 					else if (this.ID == 2)

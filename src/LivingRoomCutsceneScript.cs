@@ -133,6 +133,7 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 		}
 		this.ID = 0;
 		this.YandereCosmetic.FemaleHair[1].SetActive(true);
+		this.YandereCosmetic.MyRenderer.materials[2].mainTexture = this.YandereCosmetic.DefaultFaceTexture;
 		this.Subtitle.text = string.Empty;
 		this.RightEyeRenderer.material.color = new Color(0.33f, 0.33f, 0.33f, 1f);
 		this.LeftEyeRenderer.material.color = new Color(0.33f, 0.33f, 0.33f, 1f);

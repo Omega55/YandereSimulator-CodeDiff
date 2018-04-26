@@ -59,7 +59,7 @@ public class ReputationScript : MonoBehaviour
 		{
 			this.Phase++;
 		}
-		if (this.CheckedRep < this.Phase)
+		if (this.CheckedRep < this.Phase && !this.StudentManager.Yandere.Struggling && !this.StudentManager.Yandere.DelinquentFighting)
 		{
 			this.UpdateRep();
 			if (this.Reputation <= -100f)

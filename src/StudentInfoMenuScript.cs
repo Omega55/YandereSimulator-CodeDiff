@@ -319,10 +319,14 @@ public class StudentInfoMenuScript : MonoBehaviour
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
-		if (this.SendingHome && (this.StudentID == 1 || StudentGlobals.GetStudentDead(this.StudentID) || (this.StudentID < 98 && this.StudentManager.Students[this.StudentID].SentHome) || this.StudentID > 97 || StudentGlobals.GetStudentSlave() == this.StudentID))
+		if (this.SendingHome)
 		{
-			this.PromptBar.Label[0].text = string.Empty;
-			this.PromptBar.UpdateButtons();
+			Debug.Log("Highlighting student number " + this.StudentID);
+			if (this.StudentManager.Students[this.StudentID] != null && (this.StudentID == 1 || StudentGlobals.GetStudentDead(this.StudentID) || (this.StudentID < 98 && this.StudentManager.Students[this.StudentID].SentHome) || this.StudentID > 97 || StudentGlobals.GetStudentSlave() == this.StudentID))
+			{
+				this.PromptBar.Label[0].text = string.Empty;
+				this.PromptBar.UpdateButtons();
+			}
 		}
 		if (this.GettingInfo)
 		{
@@ -394,7 +398,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 								{
 									if (!this.CustomPortraits)
 									{
-										this.StudentPortraits[ID].Portrait.mainTexture = ((ID >= 33 && ID <= 80) ? this.BlankPortrait : www.texture);
+										this.StudentPortraits[ID].Portrait.mainTexture = ((ID >= 33 && ID <= 75) ? this.BlankPortrait : www.texture);
 									}
 									else
 									{

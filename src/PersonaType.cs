@@ -18,5 +18,6 @@ public enum PersonaType
 	Sleuth,
 	Vengeful,
 	Protective,
+	Violent,
 	Nemesis = 99
 }

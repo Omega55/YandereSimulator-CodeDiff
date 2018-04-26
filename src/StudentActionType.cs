@@ -27,5 +27,6 @@ public enum StudentActionType
 	Gossip,
 	Graffiti,
 	Bully,
-	Follow
+	Follow,
+	Sulk
 }

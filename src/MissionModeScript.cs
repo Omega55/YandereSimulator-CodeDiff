@@ -843,8 +843,13 @@ public class MissionModeScript : MonoBehaviour
 		if (this.Yandere.Aiming)
 		{
 			this.Yandere.StopAiming();
-			this.Yandere.enabled = false;
 		}
+		if (this.Yandere.YandereVision)
+		{
+			this.Yandere.YandereVision = false;
+			this.Yandere.ResetYandereEffects();
+		}
+		this.Yandere.enabled = false;
 		this.GameOverReason.text = this.GameOverReasons[this.GameOverID];
 		this.ColorCorrections[2].enabled = true;
 		base.GetComponent<AudioSource>().PlayOneShot(this.GameOverSound);

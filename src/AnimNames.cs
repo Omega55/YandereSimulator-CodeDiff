@@ -196,6 +196,10 @@ public static class AnimNames
 
 	public const string FemaleInventory = "f02_inventory_00";
 
+	public const string FemaleInjuredIdle = "f02_idleInjured_00";
+
+	public const string FemaleInjuredWalk = "f02_walkInjured_00";
+
 	public const string FemaleJojoAttack = "f02_jojoAttack_00";
 
 	public const string FemaleJojoPose = "f02_jojoPose_00";
@@ -502,6 +506,10 @@ public static class AnimNames
 
 	public const string MaleIdleShort = "idleShort_00";
 
+	public const string MaleInjuredIdle = "idleInjured_00";
+
+	public const string MaleInjuredWalk = "walkInjured_00";
+
 	public const string MaleInsertEarpiece = "insertEarpiece_00";
 
 	public const string MaleJojoPose = "jojoPose_00";
@@ -539,6 +547,8 @@ public static class AnimNames
 	public const string MaleSit04 = "sit_04";
 
 	public const string MaleStorePower20 = "storepower_20";
+
+	public const string MaleSulk = "delinquentSulk_00";
 
 	public const string MaleSurprised = "surprised_00";
 

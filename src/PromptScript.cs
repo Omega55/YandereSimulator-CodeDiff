@@ -103,8 +103,7 @@ public class PromptScript : MonoBehaviour
 	[SerializeField]
 	private int ButtonHeld;
 
-	[SerializeField]
-	private int BloodMask;
+	public int BloodMask;
 
 	[SerializeField]
 	private int Priority;

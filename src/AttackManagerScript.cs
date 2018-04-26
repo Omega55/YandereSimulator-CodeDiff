@@ -205,7 +205,6 @@ public class AttackManagerScript : MonoBehaviour
 				this.CheckForSpecialCase(equippedWeapon);
 				if (!this.Yandere.Noticed)
 				{
-					Debug.Log("Finished attacking.");
 					this.Yandere.EquippedWeapon.MurderWeapon = true;
 					this.Yandere.CanMove = true;
 				}

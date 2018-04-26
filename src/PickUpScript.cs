@@ -179,6 +179,10 @@ public class PickUpScript : MonoBehaviour
 					base.transform.parent = this.Yandere.LeftItemParent;
 					base.transform.localPosition = this.HoldPosition;
 					base.transform.localEulerAngles = this.HoldRotation;
+					if (this.Yandere.StudentManager.Stop)
+					{
+						this.Drop();
+					}
 				}
 			}
 			else

@@ -631,7 +631,7 @@ public class PoliceScript : MonoBehaviour
 		for (int j = 1; j < this.StudentManager.StudentsTotal; j++)
 		{
 			StudentScript studentScript = this.StudentManager.Students[j];
-			if (studentScript != null && studentScript.Grudge)
+			if (studentScript != null && studentScript.Grudge && studentScript.Persona != PersonaType.Evil)
 			{
 				StudentGlobals.SetStudentGrudge(j, true);
 			}

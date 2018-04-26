@@ -163,7 +163,7 @@ public class IncineratorScript : MonoBehaviour
 					this.Prompt.HideButton[0] = true;
 				}
 			}
-			if (!this.YandereHoldingEvidence && !this.Ready)
+			if (this.Yandere.Chased || (!this.YandereHoldingEvidence && !this.Ready))
 			{
 				if (this.Prompt.enabled)
 				{

@@ -66,17 +66,4 @@ public class RivalPoseScript : MonoBehaviour
 			this.MyRenderer.materials[3].mainTexture = this.HairTexture;
 		}
 	}
-
-	private void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.Space))
-		{
-			this.ID++;
-			if (this.ID > this.AnimNames.Length - 1)
-			{
-				this.ID = 0;
-			}
-			this.Character.GetComponent<Animation>().Play(this.AnimNames[this.ID]);
-		}
-	}
 }

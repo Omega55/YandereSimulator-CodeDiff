@@ -130,6 +130,15 @@ public class PoseModeScript : MonoBehaviour
 						this.Student.CharacterAnimation.Stop();
 						this.ChoosingAction = true;
 					}
+					else if (this.Selected == 6)
+					{
+						this.Student.MyController.enabled = true;
+						this.Student.Pathfinding.canSearch = true;
+						this.Student.Pathfinding.canMove = true;
+						this.Student.Posing = false;
+						this.Student.Stop = false;
+						this.Exit();
+					}
 				}
 				if (Input.GetButtonDown("B"))
 				{
@@ -619,7 +628,8 @@ public class PoseModeScript : MonoBehaviour
 			this.OptionLabels[3].text = "Customize Appearance";
 			this.OptionLabels[4].text = "Perform Animation";
 			this.OptionLabels[5].text = "Stop Animation";
-			this.Limit = 5;
+			this.OptionLabels[6].text = "Release Student";
+			this.Limit = 6;
 		}
 		else if (this.ChoosingBodyRegion)
 		{

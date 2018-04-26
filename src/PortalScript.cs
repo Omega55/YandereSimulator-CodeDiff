@@ -103,19 +103,13 @@ public class PortalScript : MonoBehaviour
 			{
 				this.EndDay();
 			}
-			this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_idleShort_00");
+			this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
 			this.Yandere.YandereVision = false;
 			this.Yandere.CanMove = false;
 			if (this.Clock.HourTime < 15.5f)
 			{
 				this.Yandere.InClass = true;
-				for (int i = 0; i < this.MorningEvents.Length; i++)
-				{
-					if (this.MorningEvents[i].enabled)
-					{
-						this.MorningEvents[i].EndEvent();
-					}
-				}
+				this.EndEvents();
 			}
 		}
 		if (this.Transition)
@@ -129,27 +123,41 @@ public class PortalScript : MonoBehaviour
 				this.ClassDarkness.color = new Color(this.ClassDarkness.color.r, this.ClassDarkness.color.g, this.ClassDarkness.color.b, this.ClassDarkness.color.a + Time.deltaTime);
 				if (this.ClassDarkness.color.a >= 1f)
 				{
-					if (this.Yandere.Armed)
+					if (this.Yandere.Resting)
 					{
-						this.Yandere.Unequip();
+						this.Yandere.IdleAnim = "f02_idleShort_00";
+						this.Yandere.WalkAnim = "f02_newWalk_00";
+						this.Yandere.CharacterAnimation.CrossFade(this.Yandere.IdleAnim);
+						this.Yandere.MyRenderer.materials[2].SetFloat("_BlendAmount1", 0f);
+						this.Yandere.Resting = false;
+						this.Yandere.Health = 10;
+						this.FadeOut = false;
+						this.Proceed = true;
 					}
-					this.HeartbeatCamera.SetActive(false);
-					this.ClassDarkness.color = new Color(this.ClassDarkness.color.r, this.ClassDarkness.color.g, this.ClassDarkness.color.b, 1f);
-					this.FadeOut = false;
-					this.Proceed = false;
-					this.Yandere.RPGCamera.enabled = false;
-					this.PromptBar.Label[4].text = "Choose";
-					this.PromptBar.Label[5].text = "Allocate";
-					this.PromptBar.UpdateButtons();
-					this.PromptBar.Show = true;
-					this.Class.StudyPoints = ((PlayerGlobals.PantiesEquipped != 11) ? 5 : 10);
-					this.Class.StudyPoints -= this.Late;
-					this.Class.UpdateLabel();
-					this.Class.gameObject.SetActive(true);
-					this.Class.Show = true;
-					if (this.Police.Show)
+					else
 					{
-						this.Police.Timer = 1E-06f;
+						if (this.Yandere.Armed)
+						{
+							this.Yandere.Unequip();
+						}
+						this.HeartbeatCamera.SetActive(false);
+						this.ClassDarkness.color = new Color(this.ClassDarkness.color.r, this.ClassDarkness.color.g, this.ClassDarkness.color.b, 1f);
+						this.FadeOut = false;
+						this.Proceed = false;
+						this.Yandere.RPGCamera.enabled = false;
+						this.PromptBar.Label[4].text = "Choose";
+						this.PromptBar.Label[5].text = "Allocate";
+						this.PromptBar.UpdateButtons();
+						this.PromptBar.Show = true;
+						this.Class.StudyPoints = ((PlayerGlobals.PantiesEquipped != 11) ? 5 : 10);
+						this.Class.StudyPoints -= this.Late;
+						this.Class.UpdateLabel();
+						this.Class.gameObject.SetActive(true);
+						this.Class.Show = true;
+						if (this.Police.Show)
+						{
+							this.Police.Timer = 1E-06f;
+						}
 					}
 				}
 			}
@@ -303,6 +311,17 @@ public class PortalScript : MonoBehaviour
 				this.Late = 4;
 			}
 			this.Reputation.PendingRep -= (float)(5 * this.Late);
+		}
+	}
+
+	public void EndEvents()
+	{
+		for (int i = 0; i < this.MorningEvents.Length; i++)
+		{
+			if (this.MorningEvents[i].enabled)
+			{
+				this.MorningEvents[i].EndEvent();
+			}
 		}
 	}
 }

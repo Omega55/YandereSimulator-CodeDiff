@@ -91,6 +91,16 @@ public class CosmeticScript : MonoBehaviour
 
 	public Texture[] BookbagTextures;
 
+	public Texture[] EyeTextures;
+
+	public Texture[] CheekTextures;
+
+	public Texture[] ForeheadTextures;
+
+	public Texture[] MouthTextures;
+
+	public Texture[] NoseTextures;
+
 	public Mesh[] FemaleUniforms;
 
 	public Mesh[] MaleUniforms;
@@ -110,6 +120,8 @@ public class CosmeticScript : MonoBehaviour
 	public Renderer HoodieRenderer;
 
 	public Renderer HairRenderer;
+
+	public Mesh DelinquentMesh;
 
 	public Mesh SchoolUniform;
 
@@ -168,6 +180,12 @@ public class CosmeticScript : MonoBehaviour
 	public Texture BlackBody;
 
 	public Texture BlackFace;
+
+	public Texture DelinquentUniformTexture;
+
+	public Texture DelinquentCasualTexture;
+
+	public Texture DelinquentSocksTexture;
 
 	public GameObject RightIrisLight;
 
@@ -463,6 +481,29 @@ public class CosmeticScript : MonoBehaviour
 					{
 						gameObject3.SetActive(true);
 					}
+				}
+			}
+			if (SceneManager.GetActiveScene().name == "PortraitScene")
+			{
+				if (this.StudentID == 76)
+				{
+					this.Character.GetComponent<Animation>().Play("delinquentPoseB");
+				}
+				else if (this.StudentID == 77)
+				{
+					this.Character.GetComponent<Animation>().Play("delinquentPoseA");
+				}
+				else if (this.StudentID == 78)
+				{
+					this.Character.GetComponent<Animation>().Play("delinquentPoseC");
+				}
+				else if (this.StudentID == 79)
+				{
+					this.Character.GetComponent<Animation>().Play("delinquentPoseD");
+				}
+				else if (this.StudentID == 80)
+				{
+					this.Character.GetComponent<Animation>().Play("delinquentPoseE");
 				}
 			}
 		}
@@ -980,6 +1021,40 @@ public class CosmeticScript : MonoBehaviour
 			this.SkinID = 1;
 			this.UniformID = 2;
 		}
+		if (StudentGlobals.MaleUniform < 2 && this.Club == ClubType.Delinquent)
+		{
+			this.MyRenderer.sharedMesh = this.DelinquentMesh;
+			if (this.StudentID == 76)
+			{
+				this.UniformTexture = this.EyeTextures[0];
+				this.CasualTexture = this.EyeTextures[1];
+				this.SocksTexture = this.EyeTextures[2];
+			}
+			else if (this.StudentID == 77)
+			{
+				this.UniformTexture = this.CheekTextures[0];
+				this.CasualTexture = this.CheekTextures[1];
+				this.SocksTexture = this.CheekTextures[2];
+			}
+			else if (this.StudentID == 78)
+			{
+				this.UniformTexture = this.ForeheadTextures[0];
+				this.CasualTexture = this.ForeheadTextures[1];
+				this.SocksTexture = this.ForeheadTextures[2];
+			}
+			else if (this.StudentID == 79)
+			{
+				this.UniformTexture = this.MouthTextures[0];
+				this.CasualTexture = this.MouthTextures[1];
+				this.SocksTexture = this.MouthTextures[2];
+			}
+			else if (this.StudentID == 80)
+			{
+				this.UniformTexture = this.NoseTextures[0];
+				this.CasualTexture = this.NoseTextures[1];
+				this.SocksTexture = this.NoseTextures[2];
+			}
+		}
 		if (!this.Student.Indoors)
 		{
 			this.MyRenderer.materials[this.FaceID].mainTexture = this.FaceTexture;
@@ -1058,6 +1133,8 @@ public class CosmeticScript : MonoBehaviour
 		}
 		else
 		{
+			this.UniformTexture = this.FemaleUniformTextures[StudentGlobals.FemaleUniform];
+			this.FaceTexture = this.DefaultFaceTexture;
 			this.MyRenderer.materials[0].mainTexture = this.UniformTexture;
 			this.MyRenderer.materials[1].mainTexture = this.UniformTexture;
 		}

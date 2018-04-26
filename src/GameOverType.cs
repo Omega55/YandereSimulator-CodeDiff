@@ -8,5 +8,6 @@ public enum GameOverType
 	Lewd,
 	Murder,
 	Stalking,
+	Violence,
 	Weapon
 }

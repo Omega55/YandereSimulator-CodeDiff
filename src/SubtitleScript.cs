@@ -79,6 +79,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] EavesdropReactions;
 
+	public string[] ViolenceReactions;
+
 	public string[] EventEavesdropReactions;
 
 	public string[] RivalEavesdropReactions;
@@ -130,6 +132,8 @@ public class SubtitleScript : MonoBehaviour
 	public string[] SadApologies;
 
 	public string[] EavesdropApologies;
+
+	public string[] ViolenceApologies;
 
 	public string[] Greetings;
 
@@ -207,6 +211,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] SenpaiCorpseReactions;
 
+	public string[] SenpaiViolenceReactions;
+
 	public string[] TeacherInsanityReactions;
 
 	public string[] TeacherWeaponReactions;
@@ -240,6 +246,48 @@ public class SubtitleScript : MonoBehaviour
 	public string[] TeacherPrankReactions;
 
 	public string[] TeacherTheftReactions;
+
+	public string[] DelinquentAnnoys;
+
+	public string[] DelinquentCases;
+
+	public string[] DelinquentShoves;
+
+	public string[] DelinquentReactions;
+
+	public string[] DelinquentWeaponReactions;
+
+	public string[] DelinquentThreateneds;
+
+	public string[] DelinquentTaunts;
+
+	public string[] DelinquentCalms;
+
+	public string[] DelinquentAvenges;
+
+	public string[] DelinquentWins;
+
+	public string[] DelinquentSurrenders;
+
+	public string[] DelinquentNoSurrenders;
+
+	public string[] DelinquentMurderReactions;
+
+	public string[] DelinquentCorpseReactions;
+
+	public string[] DelinquentFriendCorpseReactions;
+
+	public string[] DelinquentFlees;
+
+	public string[] DelinquentFriendFlees;
+
+	public string[] DelinquentInjuredFlees;
+
+	public string[] DelinquentCheers;
+
+	public string[] DelinquentHmms;
+
+	public string[] Dismissives;
 
 	public string[] LostPhones;
 
@@ -359,6 +407,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public AudioClip[] SenpaiMurderReactionClips;
 
+	public AudioClip[] SenpaiViolenceReactionClips;
+
 	public AudioClip[] YandereWhimperClips;
 
 	public AudioClip[] TeacherWeaponClips;
@@ -475,9 +525,53 @@ public class SubtitleScript : MonoBehaviour
 
 	public AudioClip[] EavesdropClips;
 
+	public AudioClip[] ViolenceClips;
+
 	public AudioClip[] EventEavesdropClips;
 
 	public AudioClip[] RivalEavesdropClips;
+
+	public AudioClip[] DelinquentAnnoyClips;
+
+	public AudioClip[] DelinquentCaseClips;
+
+	public AudioClip[] DelinquentShoveClips;
+
+	public AudioClip[] DelinquentReactionClips;
+
+	public AudioClip[] DelinquentWeaponReactionClips;
+
+	public AudioClip[] DelinquentThreatenedClips;
+
+	public AudioClip[] DelinquentTauntClips;
+
+	public AudioClip[] DelinquentCalmClips;
+
+	public AudioClip[] DelinquentAvengeClips;
+
+	public AudioClip[] DelinquentWinClips;
+
+	public AudioClip[] DelinquentSurrenderClips;
+
+	public AudioClip[] DelinquentNoSurrenderClips;
+
+	public AudioClip[] DelinquentMurderReactionClips;
+
+	public AudioClip[] DelinquentCorpseReactionClips;
+
+	public AudioClip[] DelinquentFriendCorpseReactionClips;
+
+	public AudioClip[] DelinquentFleeClips;
+
+	public AudioClip[] DelinquentFriendFleeClips;
+
+	public AudioClip[] DelinquentInjuredFleeClips;
+
+	public AudioClip[] DelinquentCheerClips;
+
+	public AudioClip[] DelinquentHmmClips;
+
+	public AudioClip[] DismissiveClips;
 
 	private SubtitleTypeAndAudioClipArrayDictionary SubtitleClipArrays;
 
@@ -584,6 +678,10 @@ public class SubtitleScript : MonoBehaviour
 				new AudioClipArrayWrapper(this.EavesdropClips)
 			},
 			{
+				SubtitleType.ViolenceReaction,
+				new AudioClipArrayWrapper(this.ViolenceClips)
+			},
+			{
 				SubtitleType.EventEavesdropReaction,
 				new AudioClipArrayWrapper(this.EventEavesdropClips)
 			},
@@ -646,6 +744,10 @@ public class SubtitleScript : MonoBehaviour
 			{
 				SubtitleType.SenpaiWeaponReaction,
 				new AudioClipArrayWrapper(this.SenpaiWeaponReactionClips)
+			},
+			{
+				SubtitleType.SenpaiViolenceReaction,
+				new AudioClipArrayWrapper(this.SenpaiViolenceReactionClips)
 			},
 			{
 				SubtitleType.SplashReaction,
@@ -758,6 +860,90 @@ public class SubtitleScript : MonoBehaviour
 			{
 				SubtitleType.YandereWhimper,
 				new AudioClipArrayWrapper(this.YandereWhimperClips)
+			},
+			{
+				SubtitleType.DelinquentAnnoy,
+				new AudioClipArrayWrapper(this.DelinquentAnnoyClips)
+			},
+			{
+				SubtitleType.DelinquentCase,
+				new AudioClipArrayWrapper(this.DelinquentCaseClips)
+			},
+			{
+				SubtitleType.DelinquentShove,
+				new AudioClipArrayWrapper(this.DelinquentShoveClips)
+			},
+			{
+				SubtitleType.DelinquentReaction,
+				new AudioClipArrayWrapper(this.DelinquentReactionClips)
+			},
+			{
+				SubtitleType.DelinquentWeaponReaction,
+				new AudioClipArrayWrapper(this.DelinquentWeaponReactionClips)
+			},
+			{
+				SubtitleType.DelinquentThreatened,
+				new AudioClipArrayWrapper(this.DelinquentThreatenedClips)
+			},
+			{
+				SubtitleType.DelinquentTaunt,
+				new AudioClipArrayWrapper(this.DelinquentTauntClips)
+			},
+			{
+				SubtitleType.DelinquentCalm,
+				new AudioClipArrayWrapper(this.DelinquentCalmClips)
+			},
+			{
+				SubtitleType.DelinquentAvenge,
+				new AudioClipArrayWrapper(this.DelinquentAvengeClips)
+			},
+			{
+				SubtitleType.DelinquentWin,
+				new AudioClipArrayWrapper(this.DelinquentWinClips)
+			},
+			{
+				SubtitleType.DelinquentSurrender,
+				new AudioClipArrayWrapper(this.DelinquentSurrenderClips)
+			},
+			{
+				SubtitleType.DelinquentNoSurrender,
+				new AudioClipArrayWrapper(this.DelinquentNoSurrenderClips)
+			},
+			{
+				SubtitleType.DelinquentMurderReaction,
+				new AudioClipArrayWrapper(this.DelinquentMurderReactionClips)
+			},
+			{
+				SubtitleType.DelinquentCorpseReaction,
+				new AudioClipArrayWrapper(this.DelinquentCorpseReactionClips)
+			},
+			{
+				SubtitleType.DelinquentFriendCorpseReaction,
+				new AudioClipArrayWrapper(this.DelinquentFriendCorpseReactionClips)
+			},
+			{
+				SubtitleType.DelinquentFlee,
+				new AudioClipArrayWrapper(this.DelinquentFleeClips)
+			},
+			{
+				SubtitleType.DelinquentFriendFlee,
+				new AudioClipArrayWrapper(this.DelinquentFriendFleeClips)
+			},
+			{
+				SubtitleType.DelinquentInjuredFlee,
+				new AudioClipArrayWrapper(this.DelinquentInjuredFleeClips)
+			},
+			{
+				SubtitleType.DelinquentCheer,
+				new AudioClipArrayWrapper(this.DelinquentCheerClips)
+			},
+			{
+				SubtitleType.DelinquentHmm,
+				new AudioClipArrayWrapper(this.DelinquentHmmClips)
+			},
+			{
+				SubtitleType.Dismissive,
+				new AudioClipArrayWrapper(this.DismissiveClips)
 			}
 		};
 	}
@@ -879,6 +1065,11 @@ public class SubtitleScript : MonoBehaviour
 			this.RandomID = UnityEngine.Random.Range(0, this.EavesdropReactions.Length);
 			this.Label.text = this.EavesdropReactions[this.RandomID];
 		}
+		else if (subtitleType == SubtitleType.ViolenceReaction)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.ViolenceReactions.Length);
+			this.Label.text = this.ViolenceReactions[this.RandomID];
+		}
 		else if (subtitleType == SubtitleType.EventEavesdropReaction)
 		{
 			this.RandomID = UnityEngine.Random.Range(0, this.EventEavesdropReactions.Length);
@@ -910,8 +1101,11 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (subtitleType == SubtitleType.HmmReaction)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.HmmReactions.Length);
-			this.Label.text = this.HmmReactions[this.RandomID];
+			if (this.Label.text == string.Empty)
+			{
+				this.RandomID = UnityEngine.Random.Range(0, this.HmmReactions.Length);
+				this.Label.text = this.HmmReactions[this.RandomID];
+			}
 		}
 		else if (subtitleType == SubtitleType.TeacherWeaponReaction)
 		{
@@ -1012,6 +1206,132 @@ public class SubtitleScript : MonoBehaviour
 			this.RandomID = UnityEngine.Random.Range(0, this.TeacherTheftReactions.Length);
 			this.Label.text = this.TeacherTheftReactions[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
+		}
+		else if (subtitleType == SubtitleType.DelinquentAnnoy)
+		{
+			this.Label.text = this.DelinquentAnnoys[ID];
+			this.PlayVoice(subtitleType, ID);
+		}
+		else if (subtitleType == SubtitleType.DelinquentCase)
+		{
+			this.Label.text = this.DelinquentCases[ID];
+			this.PlayVoice(subtitleType, ID);
+		}
+		else if (subtitleType == SubtitleType.DelinquentShove)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentShoves.Length);
+			this.Label.text = this.DelinquentShoves[this.RandomID];
+			this.PlayVoice(subtitleType, this.RandomID);
+		}
+		else if (subtitleType == SubtitleType.DelinquentReaction)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentReactions.Length);
+			this.Label.text = this.DelinquentReactions[this.RandomID];
+			this.PlayVoice(subtitleType, this.RandomID);
+		}
+		else if (subtitleType == SubtitleType.DelinquentWeaponReaction)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentWeaponReactions.Length);
+			this.Label.text = this.DelinquentWeaponReactions[this.RandomID];
+			this.PlayVoice(subtitleType, this.RandomID);
+		}
+		else if (subtitleType == SubtitleType.DelinquentThreatened)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentThreateneds.Length);
+			this.Label.text = this.DelinquentThreateneds[this.RandomID];
+			this.PlayVoice(subtitleType, this.RandomID);
+		}
+		else if (subtitleType == SubtitleType.DelinquentTaunt)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentTaunts.Length);
+			this.Label.text = this.DelinquentTaunts[this.RandomID];
+			this.PlayVoice(subtitleType, this.RandomID);
+		}
+		else if (subtitleType == SubtitleType.DelinquentCalm)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentCalms.Length);
+			this.Label.text = this.DelinquentCalms[this.RandomID];
+			this.PlayVoice(subtitleType, this.RandomID);
+		}
+		else if (subtitleType == SubtitleType.DelinquentAvenge)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentAvenges.Length);
+			this.Label.text = this.DelinquentAvenges[this.RandomID];
+			this.PlayVoice(subtitleType, this.RandomID);
+		}
+		else if (subtitleType == SubtitleType.DelinquentWin)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentWins.Length);
+			this.Label.text = this.DelinquentWins[this.RandomID];
+			this.PlayVoice(subtitleType, this.RandomID);
+		}
+		else if (subtitleType == SubtitleType.DelinquentSurrender)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentSurrenders.Length);
+			this.Label.text = this.DelinquentSurrenders[this.RandomID];
+			this.PlayVoice(subtitleType, this.RandomID);
+		}
+		else if (subtitleType == SubtitleType.DelinquentNoSurrender)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentNoSurrenders.Length);
+			this.Label.text = this.DelinquentNoSurrenders[this.RandomID];
+			this.PlayVoice(subtitleType, this.RandomID);
+		}
+		else if (subtitleType == SubtitleType.DelinquentMurderReaction)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentMurderReactions.Length);
+			this.Label.text = this.DelinquentMurderReactions[this.RandomID];
+			this.PlayVoice(subtitleType, this.RandomID);
+		}
+		else if (subtitleType == SubtitleType.DelinquentCorpseReaction)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentCorpseReactions.Length);
+			this.Label.text = this.DelinquentCorpseReactions[this.RandomID];
+			this.PlayVoice(subtitleType, this.RandomID);
+		}
+		else if (subtitleType == SubtitleType.DelinquentFriendCorpseReaction)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentFriendCorpseReactions.Length);
+			this.Label.text = this.DelinquentFriendCorpseReactions[this.RandomID];
+			this.PlayVoice(subtitleType, this.RandomID);
+		}
+		else if (subtitleType == SubtitleType.DelinquentFlee)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentFlees.Length);
+			this.Label.text = this.DelinquentFlees[this.RandomID];
+			this.PlayVoice(subtitleType, this.RandomID);
+		}
+		else if (subtitleType == SubtitleType.DelinquentFriendFlee)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentFriendFlees.Length);
+			this.Label.text = this.DelinquentFriendFlees[this.RandomID];
+			this.PlayVoice(subtitleType, this.RandomID);
+		}
+		else if (subtitleType == SubtitleType.DelinquentInjuredFlee)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentInjuredFlees.Length);
+			this.Label.text = this.DelinquentInjuredFlees[this.RandomID];
+			this.PlayVoice(subtitleType, this.RandomID);
+		}
+		else if (subtitleType == SubtitleType.DelinquentCheer)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentCheers.Length);
+			this.Label.text = this.DelinquentCheers[this.RandomID];
+			this.PlayVoice(subtitleType, this.RandomID);
+		}
+		else if (subtitleType == SubtitleType.DelinquentHmm)
+		{
+			if (this.Label.text == string.Empty)
+			{
+				this.RandomID = UnityEngine.Random.Range(0, this.DelinquentHmms.Length);
+				this.Label.text = this.DelinquentHmms[this.RandomID];
+				this.PlayVoice(subtitleType, this.RandomID);
+			}
+		}
+		else if (subtitleType == SubtitleType.Dismissive)
+		{
+			this.Label.text = this.Dismissives[ID];
+			this.PlayVoice(subtitleType, ID);
 		}
 		else if (subtitleType == SubtitleType.LostPhone)
 		{
@@ -1147,6 +1467,10 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.Label.text = this.GetRandomString(this.EavesdropApologies);
 		}
+		else if (subtitleType == SubtitleType.ViolenceApology)
+		{
+			this.Label.text = this.GetRandomString(this.ViolenceApologies);
+		}
 		else if (subtitleType == SubtitleType.EventApology)
 		{
 			this.Label.text = this.GetRandomString(this.EventApologies);
@@ -1162,6 +1486,10 @@ public class SubtitleScript : MonoBehaviour
 		else if (subtitleType == SubtitleType.SadApology)
 		{
 			this.Label.text = this.GetRandomString(this.SadApologies);
+		}
+		else if (subtitleType == SubtitleType.Dismissive)
+		{
+			this.Label.text = this.Dismissives[ID];
 		}
 		else if (subtitleType == SubtitleType.Forgiving)
 		{
@@ -1308,6 +1636,12 @@ public class SubtitleScript : MonoBehaviour
 		else if (subtitleType == SubtitleType.SenpaiCorpseReaction)
 		{
 			this.Label.text = this.GetRandomString(this.SenpaiCorpseReactions);
+		}
+		else if (subtitleType == SubtitleType.SenpaiViolenceReaction)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.SenpaiViolenceReactions.Length);
+			this.Label.text = this.SenpaiViolenceReactions[this.RandomID];
+			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.YandereWhimper)
 		{
@@ -1547,7 +1881,6 @@ public class SubtitleScript : MonoBehaviour
 	{
 		if (this.CurrentClip != null)
 		{
-			UnityEngine.Object.Destroy(this.CurrentClip);
 		}
 		this.Jukebox.Dip = 0.5f;
 		AudioClipArrayWrapper audioClipArrayWrapper;

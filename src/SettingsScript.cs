@@ -55,22 +55,7 @@ public class SettingsScript : MonoBehaviour
 		}
 		if (Input.GetKeyDown(KeyCode.B))
 		{
-			if (!this.Background.activeInHierarchy)
-			{
-				OptionGlobals.DrawDistanceLimit = 500;
-				OptionGlobals.DrawDistance = 500;
-				this.CloudSystem.localScale = new Vector3(1000f, 1000f, 1000f);
-				this.QualityManager.UpdateDrawDistance();
-				this.Background.SetActive(true);
-			}
-			else
-			{
-				OptionGlobals.DrawDistanceLimit = 350;
-				OptionGlobals.DrawDistance = 350;
-				this.CloudSystem.localScale = new Vector3(500f, 500f, 500f);
-				this.QualityManager.UpdateDrawDistance();
-				this.Background.SetActive(false);
-			}
+			this.ToggleBackground();
 		}
 		if (this.InputManager.TappedUp)
 		{
@@ -273,5 +258,25 @@ public class SettingsScript : MonoBehaviour
 			this.Selected = 1;
 		}
 		this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 455f - 75f * (float)this.Selected, this.Highlight.localPosition.z);
+	}
+
+	public void ToggleBackground()
+	{
+		if (!this.Background.activeInHierarchy)
+		{
+			OptionGlobals.DrawDistanceLimit = 500;
+			OptionGlobals.DrawDistance = 500;
+			this.CloudSystem.localScale = new Vector3(1000f, 1000f, 1000f);
+			this.QualityManager.UpdateDrawDistance();
+			this.Background.SetActive(true);
+		}
+		else
+		{
+			OptionGlobals.DrawDistanceLimit = 350;
+			OptionGlobals.DrawDistance = 350;
+			this.CloudSystem.localScale = new Vector3(500f, 500f, 500f);
+			this.QualityManager.UpdateDrawDistance();
+			this.Background.SetActive(false);
+		}
 	}
 }

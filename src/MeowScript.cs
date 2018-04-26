@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class HappyScript : MonoBehaviour
+public class MeowScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
 
@@ -13,7 +13,7 @@ public class HappyScript : MonoBehaviour
 
 	public Transform Yandere;
 
-	public Transform Fun;
+	public Transform Fuck;
 
 	public float Speed;
 
@@ -21,7 +21,7 @@ public class HappyScript : MonoBehaviour
 	{
 		if (this.JSON.Students[33].Name != "Reserved")
 		{
-			this.BakeCookies();
+			this.PetKittens();
 		}
 		else
 		{
@@ -37,21 +37,21 @@ public class HappyScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (this.Fun.gameObject.activeInHierarchy)
+		if (this.Fuck.gameObject.activeInHierarchy)
 		{
 			this.Speed += Time.deltaTime * 0.01f;
-			this.Fun.position = Vector3.MoveTowards(this.Fun.position, this.Yandere.position, Time.deltaTime * this.Speed);
-			this.Fun.LookAt(this.Yandere.position);
-			if (Vector3.Distance(this.Fun.position, this.Yandere.position) < 0.5f)
+			this.Fuck.position = Vector3.MoveTowards(this.Fuck.position, this.Yandere.position, Time.deltaTime * this.Speed);
+			this.Fuck.LookAt(this.Yandere.position);
+			if (Vector3.Distance(this.Fuck.position, this.Yandere.position) < 0.5f)
 			{
 				Application.Quit();
 			}
 		}
 	}
 
-	private void BakeCookies()
+	private void PetKittens()
 	{
-		if (!this.Fun.gameObject.activeInHierarchy)
+		if (!this.Fuck.gameObject.activeInHierarchy)
 		{
 			SchoolGlobals.SchoolAtmosphereSet = true;
 			SchoolGlobals.SchoolAtmosphere = 0f;
@@ -64,7 +64,7 @@ public class HappyScript : MonoBehaviour
 				}
 			}
 			this.Yandere.gameObject.GetComponent<YandereScript>().NoDebug = true;
-			this.Fun.gameObject.SetActive(true);
+			this.Fuck.gameObject.SetActive(true);
 			this.Jukebox.SetActive(false);
 			this.HUD.enabled = false;
 		}

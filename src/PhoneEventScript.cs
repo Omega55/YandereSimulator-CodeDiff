@@ -66,6 +66,10 @@ public class PhoneEventScript : MonoBehaviour
 		{
 			base.enabled = false;
 		}
+		if (this.EventStudentID == 33)
+		{
+			base.enabled = false;
+		}
 	}
 
 	private void Update()

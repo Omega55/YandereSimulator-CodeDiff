@@ -23,6 +23,8 @@ public class FunScript : MonoBehaviour
 
 	public float Timer;
 
+	public int DebugNumber;
+
 	public int ID;
 
 	public bool VeryFun;
@@ -37,9 +39,24 @@ public class FunScript : MonoBehaviour
 
 	private void Start()
 	{
+		if (PlayerPrefs.GetInt("DebugNumber") > 0)
+		{
+			if (PlayerPrefs.GetInt("DebugNumber") > 10)
+			{
+				PlayerPrefs.SetInt("DebugNumber", 0);
+			}
+			this.DebugNumber = PlayerPrefs.GetInt("DebugNumber");
+		}
 		if (this.VeryFun)
 		{
-			this.Text = File.ReadAllText(Application.streamingAssetsPath + "/Fun.txt");
+			if (this.DebugNumber != -1)
+			{
+				this.Text = string.Empty + this.DebugNumber;
+			}
+			else
+			{
+				this.Text = File.ReadAllText(Application.streamingAssetsPath + "/Fun.txt");
+			}
 			if (this.Text == "0")
 			{
 				this.ID = 0;
@@ -84,9 +101,14 @@ public class FunScript : MonoBehaviour
 			{
 				this.ID = 10;
 			}
+			else if (this.Text == "69")
+			{
+				this.Label.text = "( ͡° ͜ʖ ͡°) ";
+				this.ID = 8;
+			}
 			else if (this.Text == "666")
 			{
-				this.Label.text = "Your idea of ''fun''\nseems\nvery\nvery\ninteresting. ";
+				this.Label.text = "Sometimes, I lie. It's just too fun. You eat up everything I say. I wonder what else I can trick you into believing? ";
 				this.Girl.color = new Color(1f, 0f, 0f, 0f);
 				this.Label.color = new Color(1f, 0f, 0f, 1f);
 				this.ID = 5;
@@ -96,7 +118,7 @@ public class FunScript : MonoBehaviour
 				Application.LoadLevel("WelcomeScene");
 			}
 		}
-		if (this.Text != "666")
+		if (this.Text != "666" && this.Text != "69")
 		{
 			this.Label.text = this.Lines[this.ID];
 		}
@@ -118,6 +140,11 @@ public class FunScript : MonoBehaviour
 
 	private void Update()
 	{
+		if (Input.GetKeyDown("="))
+		{
+			PlayerPrefs.SetInt("DebugNumber", PlayerPrefs.GetInt("DebugNumber") + 1);
+			Application.LoadLevel(Application.loadedLevel);
+		}
 		this.Timer += Time.deltaTime;
 		if (this.Timer > 3f)
 		{

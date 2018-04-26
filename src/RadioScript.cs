@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class RadioScript : MonoBehaviour
 {
+	public StudentManagerScript StudentManager;
+
+	public JukeboxScript Jukebox;
+
 	public GameObject AlarmDisc;
 
 	public Renderer MyRenderer;
@@ -17,7 +21,13 @@ public class RadioScript : MonoBehaviour
 
 	public float CooldownTimer;
 
+	public bool Delinquent;
+
 	public bool On;
+
+	public int Proximity;
+
+	public int ID;
 
 	private void Update()
 	{
@@ -51,7 +61,7 @@ public class RadioScript : MonoBehaviour
 					}
 				}
 			}
-			if (this.On && this.Victim == null)
+			if (this.On && this.Victim == null && this.AlarmDisc != null)
 			{
 				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + Vector3.up, Quaternion.identity);
 				AlarmDiscScript component = gameObject.GetComponent<AlarmDiscScript>();
@@ -64,6 +74,52 @@ public class RadioScript : MonoBehaviour
 		{
 			this.Prompt.enabled = false;
 			this.Prompt.Hide();
+		}
+		if (this.Delinquent)
+		{
+			this.Proximity = 0;
+			this.ID = 1;
+			while (this.ID < 5)
+			{
+				if (this.StudentManager.Students[75 + this.ID] != null)
+				{
+					if (this.StudentManager.Students[75 + this.ID].Alarmed || this.StudentManager.Students[75 + this.ID].Fighting || this.StudentManager.Students[75 + this.ID].WitnessedMurder)
+					{
+						this.Proximity = -100;
+						this.ID = 5;
+					}
+					else if (this.StudentManager.Students[75 + this.ID].transform.position.z > 23f && this.StudentManager.Students[75 + this.ID].transform.position.x < -33f && Vector3.Distance(base.transform.position, this.StudentManager.Students[75 + this.ID].transform.position) < 1.1f)
+					{
+						this.Proximity++;
+					}
+				}
+				this.ID++;
+			}
+			if (this.Proximity > 0)
+			{
+				if (!base.GetComponent<AudioSource>().isPlaying)
+				{
+					base.GetComponent<AudioSource>().Play();
+				}
+				float num = Vector3.Distance(this.Prompt.Yandere.transform.position, base.transform.position);
+				if (num < 11f)
+				{
+					this.Jukebox.ClubDip = Mathf.MoveTowards(this.Jukebox.ClubDip, (10f - num) * 0.2f * this.Jukebox.Volume, Time.deltaTime);
+					if (this.Jukebox.ClubDip < 0f)
+					{
+						this.Jukebox.ClubDip = 0f;
+					}
+					if (this.Jukebox.ClubDip > this.Jukebox.Volume)
+					{
+						this.Jukebox.ClubDip = this.Jukebox.Volume;
+					}
+				}
+			}
+			else if (!base.GetComponent<AudioSource>().isPlaying)
+			{
+				base.GetComponent<AudioSource>().Stop();
+				this.Jukebox.ClubDip = 0f;
+			}
 		}
 	}
 

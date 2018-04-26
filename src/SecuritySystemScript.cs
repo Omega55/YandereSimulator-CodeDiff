@@ -17,7 +17,7 @@ public class SecuritySystemScript : MonoBehaviour
 	{
 		if (!SchoolGlobals.HighSecurity)
 		{
-			base.gameObject.SetActive(false);
+			base.enabled = false;
 		}
 	}
 

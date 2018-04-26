@@ -757,7 +757,7 @@ public class MissionModeMenuScript : MonoBehaviour
 					{
 						this.ErrorLabel.text = "Invalid Mission ID (Target cannot be Student #34...yet.)";
 					}
-					else if (this.PopulationNumber == 0 && this.TargetNumber > 32 && this.TargetNumber < 81)
+					else if (this.PopulationNumber == 0 && this.TargetNumber > 32 && this.TargetNumber < 76)
 					{
 						this.ErrorLabel.text = "Invalid Mission ID (Population too low)";
 					}
@@ -993,15 +993,15 @@ public class MissionModeMenuScript : MonoBehaviour
 		}
 		else if (!OptionGlobals.HighPopulation)
 		{
-			if (this.TargetID < 81)
+			if (this.TargetID < 76)
 			{
-				if (this.TargetID == 80)
+				if (this.TargetID == 75)
 				{
 					this.TargetID = 32;
 				}
 				else if (this.TargetID > 32)
 				{
-					this.TargetID = 81;
+					this.TargetID = 76;
 				}
 				else if (this.TargetID < 2)
 				{
@@ -1012,7 +1012,7 @@ public class MissionModeMenuScript : MonoBehaviour
 			{
 				this.TargetID = 2;
 			}
-			else if (this.TargetID < 81)
+			else if (this.TargetID < 76)
 			{
 				this.TargetID = 32;
 			}
@@ -1034,7 +1034,7 @@ public class MissionModeMenuScript : MonoBehaviour
 			".png"
 		});
 		WWW www = new WWW(url);
-		if (this.TargetID > 32 && this.TargetID < 81)
+		if (this.TargetID > 32 && this.TargetID < 76)
 		{
 			this.TargetPortrait.mainTexture = this.BlankPortrait;
 		}
@@ -1284,7 +1284,7 @@ public class MissionModeMenuScript : MonoBehaviour
 			this.CustomPopulationLabel.text = "High School Population: Off";
 			this.PopulationLabel.text = "High School Population: Off";
 			OptionGlobals.HighPopulation = false;
-			if (this.TargetID > 32 && this.TargetID < 81)
+			if (this.TargetID > 32 && this.TargetID < 76)
 			{
 				this.ChooseTarget();
 			}

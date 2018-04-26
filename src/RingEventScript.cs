@@ -56,7 +56,7 @@ public class RingEventScript : MonoBehaviour
 			this.EventStudent = this.StudentManager.Students[17];
 			if (this.EventStudent != null && !this.EventStudent.Distracted && !this.EventStudent.Talking)
 			{
-				if (!this.EventStudent.WitnessedMurder)
+				if (!this.EventStudent.WitnessedMurder && !this.EventStudent.Bullied)
 				{
 					if (this.EventStudent.Cosmetic.FemaleAccessories[3].activeInHierarchy)
 					{

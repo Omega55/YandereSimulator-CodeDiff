@@ -361,6 +361,8 @@ public class YandereScript : MonoBehaviour
 
 	public int PreviousSchoolwear;
 
+	public int NearestCorpseID;
+
 	public int StrugglePhase;
 
 	public int CarryAnimID;
@@ -408,6 +410,8 @@ public class YandereScript : MonoBehaviour
 	public bool SanityWarning;
 
 	public bool WeaponWarning;
+
+	public bool DelinquentFighting;
 
 	public bool DumpsterGrabbing;
 
@@ -481,7 +485,11 @@ public class YandereScript : MonoBehaviour
 
 	public bool Pouring;
 
+	public bool Resting;
+
 	public bool Talking;
+
+	public bool Testing;
 
 	public bool Aiming;
 
@@ -720,6 +728,8 @@ public class YandereScript : MonoBehaviour
 	public Texture SukebanBandages;
 
 	public Texture SukebanUniform;
+
+	public GameObject BanchoPants;
 
 	public GameObject[] SlenderHair;
 
@@ -1051,6 +1061,7 @@ public class YandereScript : MonoBehaviour
 
 	private void Start()
 	{
+		this.MyRenderer.materials[2].SetFloat("_BlendAmount1", 0f);
 		this.CharacterAnimation = this.Character.GetComponent<Animation>();
 		this.GreyTarget = 1f - SchoolGlobals.SchoolAtmosphere;
 		this.SetAnimationLayers();
@@ -3227,6 +3238,11 @@ public class YandereScript : MonoBehaviour
 					this.SnapPhase = 0;
 				}
 			}
+			if (this.Testing && this.CharacterAnimation["f02_batHighSanityA_00"].time >= this.CharacterAnimation["f02_batHighSanityA_00"].length)
+			{
+				this.Testing = false;
+				this.CanMove = true;
+			}
 		}
 	}
 
@@ -3459,6 +3475,10 @@ public class YandereScript : MonoBehaviour
 					else if (this.TargetStudent.Witnessed == StudentWitnessType.Eavesdropping)
 					{
 						this.Subtitle.UpdateLabel(SubtitleType.EavesdropApology, 0, 3f);
+					}
+					else if (this.TargetStudent.Witnessed == StudentWitnessType.Violence)
+					{
+						this.Subtitle.UpdateLabel(SubtitleType.ViolenceApology, 0, 3f);
 					}
 				}
 				else
@@ -4620,7 +4640,7 @@ public class YandereScript : MonoBehaviour
 		this.SenpaiTint = 0f;
 	}
 
-	private void ResetYandereEffects()
+	public void ResetYandereEffects()
 	{
 		this.Vignette.intensity = 0f;
 		this.Vignette.blur = 0f;
@@ -4986,6 +5006,20 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.materials[0].mainTexture = this.SukebanUniform;
 		this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
 		this.EasterEggMenu.SetActive(false);
+		this.Egg = true;
+	}
+
+	private void Bancho()
+	{
+		this.OriginalIdleAnim = this.IdleAnim;
+		this.OriginalWalkAnim = this.WalkAnim;
+		this.OriginalRunAnim = this.RunAnim;
+		this.BanchoPants.SetActive(true);
+		this.MyRenderer.sharedMesh = this.NudeMesh;
+		this.PantyAttacher.newRenderer.enabled = false;
+		this.MyRenderer.materials[1].mainTexture = this.NudeTexture;
+		this.MyRenderer.materials[2].mainTexture = this.NudeTexture;
+		this.TheDebugMenuScript.UpdateCensor();
 		this.Egg = true;
 	}
 
@@ -5358,16 +5392,15 @@ public class YandereScript : MonoBehaviour
 		this.RunAnim = "f02_sithRun_00";
 		this.BlackRobe.SetActive(true);
 		this.MyRenderer.sharedMesh = this.NoUpperBodyMesh;
-		this.PantyAttacher.newRenderer.enabled = false;
 		this.MyRenderer.materials[0].mainTexture = this.NudePanties;
 		this.MyRenderer.materials[1].mainTexture = this.FaceTexture;
 		this.MyRenderer.materials[2].mainTexture = this.NudePanties;
 		this.TheDebugMenuScript.UpdateCensor();
+		this.PantyAttacher.newRenderer.enabled = false;
 		this.Stance.Current = StanceType.Standing;
 		this.FollowHips = true;
 		this.SithLord = true;
 		this.Egg = true;
-		this.WalkSpeed = 0.5f;
 		this.RunSpeed *= 2f;
 		this.Zoom.TargetZoom = 0.4f;
 	}

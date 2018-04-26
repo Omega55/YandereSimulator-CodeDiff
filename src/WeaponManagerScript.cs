@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class WeaponManagerScript : MonoBehaviour
 {
+	public WeaponScript[] DelinquentWeapons;
+
 	public WeaponScript[] Weapons;
 
 	public JsonScript JSON;

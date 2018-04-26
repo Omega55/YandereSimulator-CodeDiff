@@ -106,6 +106,10 @@ public class StudentInfoScript : MonoBehaviour
 		},
 		{
 			8,
+			"Armed"
+		},
+		{
+			9,
 			"Invincible"
 		},
 		{
@@ -208,7 +212,7 @@ public class StudentInfoScript : MonoBehaviour
 			{
 				if (!this.CustomPortraits)
 				{
-					this.Portrait.mainTexture = ((ID >= 33 && ID <= 80) ? this.BlankPortrait : www.texture);
+					this.Portrait.mainTexture = ((ID >= 33 && ID <= 75) ? this.BlankPortrait : www.texture);
 				}
 				else
 				{
@@ -312,6 +316,7 @@ public class StudentInfoScript : MonoBehaviour
 					this.StudentManager.Students[this.CurrentStudent].Routine = false;
 					this.StudentManager.Students[this.CurrentStudent].SentHome = true;
 					this.StudentManager.Students[this.CurrentStudent].CameraReacting = false;
+					this.StudentManager.Students[this.CurrentStudent].SpeechLines.Stop();
 					this.StudentInfoMenu.PauseScreen.ServiceMenu.gameObject.SetActive(true);
 					this.StudentInfoMenu.PauseScreen.ServiceMenu.UpdateList();
 					this.StudentInfoMenu.PauseScreen.ServiceMenu.UpdateDesc();

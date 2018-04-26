@@ -123,6 +123,10 @@ public class DelinquentScript : MonoBehaviour
 
 	public Texture BlondThugHair;
 
+	public Transform TimePortal;
+
+	public bool Suck;
+
 	private void Start()
 	{
 		this.EasterHair.SetActive(false);
@@ -411,6 +415,14 @@ public class DelinquentScript : MonoBehaviour
 					this.HairRenderer.material.color = this.HairColor;
 				}
 				this.DelinquentManager.EasterEgg();
+			}
+		}
+		if (this.Suck)
+		{
+			base.transform.position = Vector3.MoveTowards(base.transform.position, this.TimePortal.position, Time.deltaTime * 10f);
+			if (base.transform.position == this.TimePortal.position)
+			{
+				UnityEngine.Object.Destroy(base.gameObject);
 			}
 		}
 	}

@@ -92,7 +92,7 @@ public class LoveManagerScript : MonoBehaviour
 			if (this.Rival != null && this.Suitor != null && this.Rival.Alive && this.Suitor.Alive && this.Rival.ConfessPhase == 5 && this.Suitor.ConfessPhase == 3)
 			{
 				float num = Vector3.Distance(this.Yandere.transform.position, this.MythHill.position);
-				if (num > 10f && num < 25f)
+				if (!this.Yandere.Chased && num > 10f && num < 25f)
 				{
 					this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
 					this.Yandere.RPGCamera.enabled = false;

@@ -74,6 +74,10 @@ public class Persona
 			"Protective"
 		},
 		{
+			PersonaType.Violent,
+			"Violent"
+		},
+		{
 			PersonaType.Nemesis,
 			"?????"
 		}

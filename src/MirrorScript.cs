@@ -24,15 +24,18 @@ public class MirrorScript : MonoBehaviour
 	{
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			this.Prompt.Circle[0].fillAmount = 1f;
-			this.ID++;
-			if (this.ID == this.Limit)
+			if (this.Prompt.Yandere.Health > 0)
 			{
-				this.ID = 0;
+				this.Prompt.Circle[0].fillAmount = 1f;
+				this.ID++;
+				if (this.ID == this.Limit)
+				{
+					this.ID = 0;
+				}
+				this.UpdatePersona();
 			}
-			this.UpdatePersona();
 		}
-		else if (this.Prompt.Circle[1].fillAmount == 0f)
+		else if (this.Prompt.Circle[1].fillAmount == 0f && this.Prompt.Yandere.Health > 0)
 		{
 			this.Prompt.Circle[1].fillAmount = 1f;
 			this.ID--;

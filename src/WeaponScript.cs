@@ -184,7 +184,7 @@ public class WeaponScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (this.WeaponID == 16 && Input.GetButtonDown("RB"))
+		if (this.WeaponID == 16 && this.Yandere.EquippedWeapon == this && Input.GetButtonDown("RB"))
 		{
 			this.ExtraBlade.SetActive(!this.ExtraBlade.activeInHierarchy);
 		}
@@ -271,7 +271,7 @@ public class WeaponScript : MonoBehaviour
 			this.Prompt.Circle[3].fillAmount = 1f;
 			if (this.Prompt.Suspicious)
 			{
-				this.Yandere.TheftTimer = 1f;
+				this.Yandere.TheftTimer = 0.1f;
 			}
 			if (!this.Yandere.Gloved)
 			{
@@ -285,7 +285,15 @@ public class WeaponScript : MonoBehaviour
 			}
 			base.transform.parent = this.Yandere.ItemParent;
 			base.transform.localPosition = Vector3.zero;
-			base.transform.localEulerAngles = Vector3.zero;
+			if (this.Type == WeaponType.Bat)
+			{
+				base.transform.localEulerAngles = new Vector3(0f, 0f, -90f);
+			}
+			else
+			{
+				base.transform.localEulerAngles = Vector3.zero;
+			}
+			Debug.Log("A weapon just deactivated its collider.");
 			this.MyCollider.enabled = false;
 			base.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
 			if (this.Yandere.Equipped == 3)
@@ -393,7 +401,14 @@ public class WeaponScript : MonoBehaviour
 				if (this.Yandere.CanMove)
 				{
 					base.transform.localPosition = Vector3.zero;
-					base.transform.localEulerAngles = Vector3.zero;
+					if (this.Type == WeaponType.Bat)
+					{
+						base.transform.localEulerAngles = new Vector3(0f, 0f, -90f);
+					}
+					else
+					{
+						base.transform.localEulerAngles = Vector3.zero;
+					}
 				}
 			}
 			else
@@ -418,6 +433,7 @@ public class WeaponScript : MonoBehaviour
 
 	public void Drop()
 	{
+		Debug.Log("Yandere-chan dropped her weapon.");
 		if (this.WeaponID == 11)
 		{
 			this.Yandere.IdleAnim = "CyborgNinja_Idle_Unarmed";

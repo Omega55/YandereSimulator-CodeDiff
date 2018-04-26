@@ -19,7 +19,7 @@ public class CabinetDoorScript : MonoBehaviour
 		{
 			if (this.Prompt.Circle[0].fillAmount == 0f)
 			{
-				this.Prompt.Yandere.TheftTimer = 1f;
+				this.Prompt.Yandere.TheftTimer = 0.1f;
 				this.Prompt.Circle[0].fillAmount = 1f;
 				this.Open = !this.Open;
 				this.UpdateLabel();

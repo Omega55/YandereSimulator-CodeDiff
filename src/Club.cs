@@ -62,6 +62,10 @@ public class Club
 			"Student Council"
 		},
 		{
+			ClubType.Delinquent,
+			"Delinquent"
+		},
+		{
 			ClubType.Bully,
 			"No Club"
 		},
