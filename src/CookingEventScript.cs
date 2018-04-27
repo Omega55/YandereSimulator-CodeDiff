@@ -101,6 +101,8 @@ public class CookingEventScript : MonoBehaviour
 					this.Snacks.enabled = false;
 					this.EventStudent.CurrentDestination = this.EventLocations[0];
 					this.EventStudent.Pathfinding.target = this.EventLocations[0];
+					this.EventStudent.Scrubber.SetActive(false);
+					this.EventStudent.Eraser.SetActive(false);
 					this.EventStudent.Obstacle.checkTime = 99f;
 					this.EventStudent.CookingEvent = this;
 					this.EventStudent.InEvent = true;
@@ -131,7 +133,7 @@ public class CookingEventScript : MonoBehaviour
 			{
 				this.EndEvent();
 			}
-			else if (!this.EventStudent.Pathfinding.canMove)
+			else if (this.EventStudent.DistanceToDestination < 1f)
 			{
 				if (!ConversationGlobals.GetTopicLearnedByStudent(1, 7) && Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position) < 5f)
 				{

@@ -686,7 +686,7 @@ public class RagdollScript : MonoBehaviour
 						gameObject.transform.position += new Vector3(0f, 1f, 0f);
 					}
 				}
-				else if (i == 2 && this.Student.Cosmetic.Accessory == 6)
+				else if (i == 2 && !this.Student.Male && this.Student.Cosmetic.Accessory == 6)
 				{
 					this.Student.Cosmetic.FemaleAccessories[this.Student.Cosmetic.Accessory].transform.parent = gameObject.transform;
 				}

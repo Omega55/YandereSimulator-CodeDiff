@@ -2291,7 +2291,7 @@ public class StudentScript : MonoBehaviour
 					{
 						this.OccultBook.SetActive(false);
 					}
-					if (!this.Meeting && !this.GoAway)
+					if (!this.Meeting && !this.GoAway && !this.InEvent)
 					{
 						if (this.Actions[this.Phase] == StudentActionType.Clean)
 						{
@@ -6214,8 +6214,10 @@ public class StudentScript : MonoBehaviour
 						}
 						else if (this.Witnessed == StudentWitnessType.Violence)
 						{
+							Debug.Log("A teacher witnessed violence.");
 							this.Subtitle.UpdateLabel(SubtitleType.TeacherTrespassingReaction, 5, 5f);
 							this.GameOverCause = GameOverType.Violence;
+							this.Concern = 5;
 						}
 						else if (this.Witnessed == StudentWitnessType.Trespassing)
 						{
@@ -6454,6 +6456,7 @@ public class StudentScript : MonoBehaviour
 				}
 				else if (!this.Yandere.Egg)
 				{
+					Debug.Log("We are now determining what Senpai saw...");
 					if (this.Witnessed == StudentWitnessType.WeaponAndBloodAndInsanity)
 					{
 						this.CharacterAnimation.CrossFade("senpaiInsanityReaction_00");
@@ -6515,6 +6518,7 @@ public class StudentScript : MonoBehaviour
 					{
 						this.CharacterAnimation.CrossFade("senpaiLewdReaction_00");
 						this.GameOverCause = GameOverType.Violence;
+						this.Concern = 5;
 					}
 					if (this.Concern == 5)
 					{
@@ -7510,6 +7514,7 @@ public class StudentScript : MonoBehaviour
 		this.Yandere.HeartRate.gameObject.SetActive(false);
 		this.ShoulderCamera.OverShoulder = false;
 		this.Yandere.Obscurance.enabled = false;
+		this.Yandere.DelinquentFighting = false;
 		this.Yandere.YandereVision = false;
 		this.Yandere.Police.Show = false;
 		this.Yandere.Stance.Current = StanceType.Standing;

@@ -18,6 +18,8 @@ public class SecuritySystemScript : MonoBehaviour
 		if (!SchoolGlobals.HighSecurity)
 		{
 			base.enabled = false;
+			this.Prompt.Hide();
+			this.Prompt.enabled = false;
 		}
 	}
 

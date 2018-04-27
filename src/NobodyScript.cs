@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class MeowScript : MonoBehaviour
+public class NobodyScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
 
@@ -13,7 +13,7 @@ public class MeowScript : MonoBehaviour
 
 	public Transform Yandere;
 
-	public Transform Fuck;
+	public Transform Nobody;
 
 	public float Speed;
 
@@ -37,12 +37,12 @@ public class MeowScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (this.Fuck.gameObject.activeInHierarchy)
+		if (this.Nobody.gameObject.activeInHierarchy)
 		{
 			this.Speed += Time.deltaTime * 0.01f;
-			this.Fuck.position = Vector3.MoveTowards(this.Fuck.position, this.Yandere.position, Time.deltaTime * this.Speed);
-			this.Fuck.LookAt(this.Yandere.position);
-			if (Vector3.Distance(this.Fuck.position, this.Yandere.position) < 0.5f)
+			this.Nobody.position = Vector3.MoveTowards(this.Nobody.position, this.Yandere.position, Time.deltaTime * this.Speed);
+			this.Nobody.LookAt(this.Yandere.position);
+			if (Vector3.Distance(this.Nobody.position, this.Yandere.position) < 0.5f)
 			{
 				Application.Quit();
 			}
@@ -51,7 +51,7 @@ public class MeowScript : MonoBehaviour
 
 	private void PetKittens()
 	{
-		if (!this.Fuck.gameObject.activeInHierarchy)
+		if (!this.Nobody.gameObject.activeInHierarchy)
 		{
 			SchoolGlobals.SchoolAtmosphereSet = true;
 			SchoolGlobals.SchoolAtmosphere = 0f;
@@ -64,7 +64,7 @@ public class MeowScript : MonoBehaviour
 				}
 			}
 			this.Yandere.gameObject.GetComponent<YandereScript>().NoDebug = true;
-			this.Fuck.gameObject.SetActive(true);
+			this.Nobody.gameObject.SetActive(true);
 			this.Jukebox.SetActive(false);
 			this.HUD.enabled = false;
 		}

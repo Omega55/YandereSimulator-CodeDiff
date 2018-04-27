@@ -9,8 +9,6 @@ public class SecurityCameraScript : MonoBehaviour
 
 	public YandereScript Yandere;
 
-	public AudioSource MyAudio;
-
 	public float Rotation;
 
 	public int Direction = 1;
@@ -62,7 +60,7 @@ public class SecurityCameraScript : MonoBehaviour
 					}
 				}
 			}
-			else if (other.gameObject.layer == 11)
+			else if (other.gameObject.layer == 11 && this.MissionMode.enabled)
 			{
 				this.MissionMode.GameOverID = 15;
 				this.MissionMode.GameOver();

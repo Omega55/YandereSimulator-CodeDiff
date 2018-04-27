@@ -109,7 +109,7 @@ public class LaptopScript : MonoBehaviour
 					this.TurnOff();
 				}
 			}
-			if (this.Yandere.StudentManager.Clock.HourTime > 16f)
+			if (this.Yandere.StudentManager.Clock.HourTime > 16f || this.Yandere.Police.FadeOut)
 			{
 				this.TurnOff();
 			}

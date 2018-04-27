@@ -1704,7 +1704,7 @@ public class StudentManagerScript : MonoBehaviour
 		while (this.ID < this.Students.Length)
 		{
 			StudentScript studentScript = this.Students[this.ID];
-			if (studentScript != null && !studentScript.Teacher && !studentScript.Slave && studentScript.Club != ClubType.Bully && studentScript.Club != ClubType.Council && (float)StudentGlobals.GetStudentReputation(this.ID) < this.LowestRep)
+			if (studentScript != null && !studentScript.Teacher && !studentScript.Slave && studentScript.Club != ClubType.Bully && studentScript.Club != ClubType.Council && studentScript.Club != ClubType.Delinquent && (float)StudentGlobals.GetStudentReputation(this.ID) < this.LowestRep)
 			{
 				this.LowestRep = (float)StudentGlobals.GetStudentReputation(this.ID);
 				this.VictimID = this.ID;

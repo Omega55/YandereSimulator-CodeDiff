@@ -7,9 +7,11 @@ public class MythTreeScript : MonoBehaviour
 
 	public JukeboxScript Jukebox;
 
-	public Transform Yandere;
+	public YandereScript Yandere;
 
 	public bool Spoken;
+
+	public AudioSource MyAudio;
 
 	private void Start()
 	{
@@ -21,19 +23,18 @@ public class MythTreeScript : MonoBehaviour
 
 	private void Update()
 	{
-		AudioSource component = base.GetComponent<AudioSource>();
 		if (!this.Spoken)
 		{
-			if (SchemeGlobals.GetSchemeStage(2) == 2 && Vector3.Distance(this.Yandere.position, base.transform.position) < 5f)
+			if (this.Yandere.Inventory.Ring && Vector3.Distance(this.Yandere.transform.position, base.transform.position) < 5f)
 			{
 				this.EventSubtitle.transform.localScale = new Vector3(1f, 1f, 1f);
 				this.EventSubtitle.text = "...that...ring...";
 				this.Jukebox.Dip = 0.5f;
 				this.Spoken = true;
-				component.Play();
+				this.MyAudio.Play();
 			}
 		}
-		else if (!component.isPlaying)
+		else if (!this.MyAudio.isPlaying)
 		{
 			this.EventSubtitle.transform.localScale = Vector3.zero;
 			this.EventSubtitle.text = string.Empty;

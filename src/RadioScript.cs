@@ -79,18 +79,20 @@ public class RadioScript : MonoBehaviour
 		{
 			this.Proximity = 0;
 			this.ID = 1;
-			while (this.ID < 5)
+			while (this.ID < 6)
 			{
-				if (this.StudentManager.Students[75 + this.ID] != null)
+				if (this.StudentManager.Students[75 + this.ID] != null && Vector3.Distance(base.transform.position, this.StudentManager.Students[75 + this.ID].transform.position) < 1.1f)
 				{
-					if (this.StudentManager.Students[75 + this.ID].Alarmed || this.StudentManager.Students[75 + this.ID].Fighting || this.StudentManager.Students[75 + this.ID].WitnessedMurder)
+					if (!this.StudentManager.Students[75 + this.ID].Alarmed && !this.StudentManager.Students[75 + this.ID].Threatened)
+					{
+						this.Proximity++;
+					}
+					else
 					{
 						this.Proximity = -100;
 						this.ID = 5;
-					}
-					else if (this.StudentManager.Students[75 + this.ID].transform.position.z > 23f && this.StudentManager.Students[75 + this.ID].transform.position.x < -33f && Vector3.Distance(base.transform.position, this.StudentManager.Students[75 + this.ID].transform.position) < 1.1f)
-					{
-						this.Proximity++;
+						base.GetComponent<AudioSource>().Stop();
+						this.Jukebox.ClubDip = 0f;
 					}
 				}
 				this.ID++;
@@ -114,11 +116,6 @@ public class RadioScript : MonoBehaviour
 						this.Jukebox.ClubDip = this.Jukebox.Volume;
 					}
 				}
-			}
-			else if (!base.GetComponent<AudioSource>().isPlaying)
-			{
-				base.GetComponent<AudioSource>().Stop();
-				this.Jukebox.ClubDip = 0f;
 			}
 		}
 	}

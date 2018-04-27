@@ -19,7 +19,10 @@ public class SpeedrunTimerScript : MonoBehaviour
 		if (!this.Police.FadeOut)
 		{
 			this.Timer += Time.deltaTime;
-			this.Label.text = string.Empty + this.FormatTime(this.Timer);
+			if (this.Label.enabled)
+			{
+				this.Label.text = string.Empty + this.FormatTime(this.Timer);
+			}
 			if (Input.GetKeyDown(KeyCode.Delete))
 			{
 				this.Label.enabled = !this.Label.enabled;

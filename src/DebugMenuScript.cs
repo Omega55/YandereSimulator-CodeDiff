@@ -250,6 +250,27 @@ public class DebugMenuScript : MonoBehaviour
 						}
 						this.Window.SetActive(false);
 					}
+					else if (Input.GetKeyDown(KeyCode.D))
+					{
+						this.ID = 0;
+						while (this.ID < 5)
+						{
+							StudentScript studentScript4 = this.StudentManager.Students[76 + this.ID];
+							if (studentScript4 != null)
+							{
+								if (studentScript4.Phase < 2)
+								{
+									studentScript4.ShoeRemoval.Start();
+									studentScript4.ShoeRemoval.PutOnShoes();
+									studentScript4.Phase = 2;
+									studentScript4.CurrentDestination = studentScript4.Destinations[2];
+									studentScript4.Pathfinding.target = studentScript4.Destinations[2];
+								}
+								studentScript4.transform.position = studentScript4.Destinations[2].position;
+							}
+							this.ID++;
+						}
+					}
 					else if (Input.GetKeyDown(KeyCode.F))
 					{
 						this.FakeStudentSpawner.Spawn();
@@ -257,37 +278,37 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					else if (Input.GetKeyDown(KeyCode.G))
 					{
-						StudentScript studentScript4 = this.StudentManager.Students[this.RooftopStudent];
+						StudentScript studentScript5 = this.StudentManager.Students[this.RooftopStudent];
 						if (this.Clock.HourTime < 15f)
 						{
 							PlayerGlobals.SetStudentFriend(this.RooftopStudent, true);
 							this.Yandere.transform.position = this.RooftopSpot.position + new Vector3(1f, 0f, 0f);
 							this.WeaponManager.Weapons[6].transform.position = this.Yandere.transform.position + new Vector3(0f, 0f, 1.915f);
-							if (studentScript4 != null)
+							if (studentScript5 != null)
 							{
 								this.StudentManager.OfferHelp.UpdateLocation();
 								this.StudentManager.OfferHelp.enabled = true;
-								if (!studentScript4.Indoors)
+								if (!studentScript5.Indoors)
 								{
-									if (studentScript4.ShoeRemoval.Locker == null)
+									if (studentScript5.ShoeRemoval.Locker == null)
 									{
-										studentScript4.ShoeRemoval.Start();
+										studentScript5.ShoeRemoval.Start();
 									}
-									studentScript4.ShoeRemoval.PutOnShoes();
+									studentScript5.ShoeRemoval.PutOnShoes();
 								}
-								studentScript4.CharacterAnimation.Play(studentScript4.IdleAnim);
-								studentScript4.transform.position = this.RooftopSpot.position;
-								studentScript4.transform.rotation = this.RooftopSpot.rotation;
-								studentScript4.Prompt.Label[0].text = "     Push";
-								studentScript4.CurrentDestination = this.RooftopSpot;
-								studentScript4.Pathfinding.target = this.RooftopSpot;
-								studentScript4.Pathfinding.canSearch = false;
-								studentScript4.Pathfinding.canMove = false;
-								studentScript4.SpeechLines.Stop();
-								studentScript4.Pushable = true;
-								studentScript4.Routine = false;
-								studentScript4.Meeting = true;
-								studentScript4.MeetTime = 0f;
+								studentScript5.CharacterAnimation.Play(studentScript5.IdleAnim);
+								studentScript5.transform.position = this.RooftopSpot.position;
+								studentScript5.transform.rotation = this.RooftopSpot.rotation;
+								studentScript5.Prompt.Label[0].text = "     Push";
+								studentScript5.CurrentDestination = this.RooftopSpot;
+								studentScript5.Pathfinding.target = this.RooftopSpot;
+								studentScript5.Pathfinding.canSearch = false;
+								studentScript5.Pathfinding.canMove = false;
+								studentScript5.SpeechLines.Stop();
+								studentScript5.Pushable = true;
+								studentScript5.Routine = false;
+								studentScript5.Meeting = true;
+								studentScript5.MeetTime = 0f;
 							}
 							if (this.Clock.HourTime < 7.1f)
 							{
@@ -297,7 +318,7 @@ public class DebugMenuScript : MonoBehaviour
 						else
 						{
 							this.Clock.PresentTime = 960f;
-							studentScript4.transform.position = this.Lockers.position;
+							studentScript5.transform.position = this.Lockers.position;
 						}
 						this.Window.SetActive(false);
 					}
@@ -377,11 +398,6 @@ public class DebugMenuScript : MonoBehaviour
 						}
 						this.Window.SetActive(false);
 					}
-					else if (Input.GetKeyDown(KeyCode.Y))
-					{
-						this.DelinquentManager.Delinquents.SetActive(!this.DelinquentManager.Delinquents.activeInHierarchy);
-						this.Window.SetActive(false);
-					}
 					else if (Input.GetKeyDown(KeyCode.Z))
 					{
 						if (Input.GetKey(KeyCode.LeftShift))
@@ -402,12 +418,12 @@ public class DebugMenuScript : MonoBehaviour
 							this.ID = 2;
 							while (this.ID < 101)
 							{
-								StudentScript studentScript5 = this.StudentManager.Students[this.ID];
-								if (studentScript5 != null && studentScript5.Club != ClubType.Council)
+								StudentScript studentScript6 = this.StudentManager.Students[this.ID];
+								if (studentScript6 != null && studentScript6.Club != ClubType.Council)
 								{
-									studentScript5.SpawnAlarmDisc();
-									studentScript5.BecomeRagdoll();
-									studentScript5.DeathType = DeathType.EasterEgg;
+									studentScript6.SpawnAlarmDisc();
+									studentScript6.BecomeRagdoll();
+									studentScript6.DeathType = DeathType.EasterEgg;
 									StudentGlobals.SetStudentDead(this.ID, true);
 								}
 								this.ID++;

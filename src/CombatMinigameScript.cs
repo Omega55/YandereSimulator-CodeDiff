@@ -193,7 +193,6 @@ public class CombatMinigameScript : MonoBehaviour
 						this.Strike++;
 						this.Yandere.Health--;
 						this.RedVignette.color = new Color(1f, 1f, 1f, 1f - (float)this.Yandere.Health * 1f / 10f);
-						this.Yandere.MyRenderer.materials[2].SetFloat("_BlendAmount1", 1f - (float)this.Yandere.Health * 1f / 10f);
 					}
 				}
 				else if (this.Strike < 2 && this.Yandere.CharacterAnimation["Yandere_CombatA"].time > 2.5f)
@@ -202,6 +201,10 @@ public class CombatMinigameScript : MonoBehaviour
 					this.Shake += this.ShakeFactor;
 					this.Strike++;
 					this.Yandere.Health--;
+					if (this.Yandere.Health < 0)
+					{
+						this.Yandere.Health = 0;
+					}
 					this.RedVignette.color = new Color(1f, 1f, 1f, 1f - (float)this.Yandere.Health * 1f / 10f);
 					this.Yandere.MyRenderer.materials[2].SetFloat("_BlendAmount1", 1f - (float)this.Yandere.Health * 1f / 10f);
 					if (this.Yandere.Health < 1)
@@ -653,9 +656,12 @@ public class CombatMinigameScript : MonoBehaviour
 
 	public void Stop()
 	{
-		this.Delinquent.CharacterAnimation.CrossFade("delinquentCombatIdle_00");
-		this.MyVocals.Stop();
-		this.MyAudio.Stop();
-		base.enabled = false;
+		if (this.Delinquent != null)
+		{
+			this.Delinquent.CharacterAnimation.CrossFade("delinquentCombatIdle_00");
+			this.MyVocals.Stop();
+			this.MyAudio.Stop();
+			base.enabled = false;
+		}
 	}
 }

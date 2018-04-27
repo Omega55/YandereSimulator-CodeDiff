@@ -5,6 +5,8 @@ public class TaskWindowScript : MonoBehaviour
 {
 	public DialogueWheelScript DialogueWheel;
 
+	public SewingMachineScript SewingMachine;
+
 	public TaskManagerScript TaskManager;
 
 	public PromptBarScript PromptBar;
@@ -40,6 +42,7 @@ public class TaskWindowScript : MonoBehaviour
 	private void Start()
 	{
 		this.Window.SetActive(false);
+		this.UpdateTaskObjects(7);
 	}
 
 	public void UpdateWindow(int ID)
@@ -70,6 +73,7 @@ public class TaskWindowScript : MonoBehaviour
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Show = false;
 				this.Window.SetActive(false);
+				this.UpdateTaskObjects(this.StudentID);
 			}
 			else if (Input.GetButtonDown("B"))
 			{
@@ -133,5 +137,13 @@ public class TaskWindowScript : MonoBehaviour
 		});
 		WWW www = new WWW(url);
 		this.Portrait.mainTexture = www.texture;
+	}
+
+	private void UpdateTaskObjects(int StudentID)
+	{
+		if (this.StudentID == 7)
+		{
+			this.SewingMachine.Check = true;
+		}
 	}
 }

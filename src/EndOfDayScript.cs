@@ -644,7 +644,7 @@ public class EndOfDayScript : MonoBehaviour
 			else if (this.Phase == 16)
 			{
 				Debug.Log("Phase 16.");
-				if (this.Police.CouncilDeath)
+				if (!SchoolGlobals.HighSecurity && this.Police.CouncilDeath)
 				{
 					this.Label.text = "The student council president has ordered the implementation of heightened security precautions. Security cameras and metal detectors are now present at school.";
 					this.Police.CouncilDeath = false;

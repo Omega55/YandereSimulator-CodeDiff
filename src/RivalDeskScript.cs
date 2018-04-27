@@ -11,9 +11,17 @@ public class RivalDeskScript : MonoBehaviour
 
 	public bool Cheating;
 
+	private void Start()
+	{
+		if (DateGlobals.Weekday != DayOfWeek.Friday)
+		{
+			base.enabled = false;
+		}
+	}
+
 	private void Update()
 	{
-		if (SchemeGlobals.GetSchemeStage(5) == 5 && DateGlobals.Weekday == DayOfWeek.Friday)
+		if (!this.Prompt.Yandere.Inventory.AnswerSheet && this.Prompt.Yandere.Inventory.DuplicateSheet)
 		{
 			if (this.Clock.HourTime > 13f)
 			{

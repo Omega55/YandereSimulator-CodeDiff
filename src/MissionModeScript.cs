@@ -178,6 +178,8 @@ public class MissionModeScript : MonoBehaviour
 
 	public bool FadeOut;
 
+	public bool Enabled;
+
 	public string CauseOfFailure = string.Empty;
 
 	public float TimeRemaining = 300f;
@@ -425,6 +427,7 @@ public class MissionModeScript : MonoBehaviour
 			this.MusicIcon.color = new Color(this.MusicIcon.color.r, this.MusicIcon.color.g, this.MusicIcon.color.b, 1f);
 			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 1f);
 			this.MissionModeMenu.UpdateGraphics();
+			this.Enabled = true;
 		}
 		else
 		{
@@ -851,7 +854,10 @@ public class MissionModeScript : MonoBehaviour
 		}
 		this.Yandere.enabled = false;
 		this.GameOverReason.text = this.GameOverReasons[this.GameOverID];
-		this.ColorCorrections[2].enabled = true;
+		if (this.ColorCorrections.Length > 0)
+		{
+			this.ColorCorrections[2].enabled = true;
+		}
 		base.GetComponent<AudioSource>().PlayOneShot(this.GameOverSound);
 		this.DetectionCamera.SetActive(false);
 		this.HeartbeatCamera.SetActive(false);

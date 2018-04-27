@@ -23,7 +23,7 @@ public class RivalBagScript : MonoBehaviour
 		{
 			this.Prompt.HideButton[0] = true;
 		}
-		if (SchemeGlobals.GetSchemeStage(3) == 3 && this.Prompt.Circle[0].fillAmount == 0f)
+		if (this.Prompt.Yandere.Inventory.Cigs && this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			SchemeGlobals.SetSchemeStage(3, 4);
 			this.Schemes.UpdateInstructions();
@@ -43,7 +43,7 @@ public class RivalBagScript : MonoBehaviour
 		{
 			this.Prompt.HideButton[1] = true;
 		}
-		if (SchemeGlobals.GetSchemeStage(2) == 2 && this.Prompt.Circle[1].fillAmount == 0f)
+		if (this.Prompt.Yandere.Inventory.Ring && this.Prompt.Circle[1].fillAmount == 0f)
 		{
 			SchemeGlobals.SetSchemeStage(2, 3);
 			this.Schemes.UpdateInstructions();

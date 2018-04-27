@@ -9,7 +9,7 @@ public class StolenPhoneSpotScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (SchemeGlobals.GetSchemeStage(4) > 1)
+		if (this.Prompt.Yandere.Inventory.RivalPhone)
 		{
 			this.Prompt.enabled = true;
 			if (this.Prompt.Circle[0].fillAmount == 0f)

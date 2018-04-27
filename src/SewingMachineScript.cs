@@ -19,6 +19,8 @@ public class SewingMachineScript : MonoBehaviour
 
 	public bool Sewing;
 
+	public bool Check;
+
 	public float Timer;
 
 	private void Start()
@@ -31,7 +33,7 @@ public class SewingMachineScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (TaskGlobals.GetTaskStatus(7) == 1)
+		if (this.Check)
 		{
 			if (this.Yandere.PickUp != null)
 			{
@@ -80,6 +82,7 @@ public class SewingMachineScript : MonoBehaviour
 				TaskGlobals.SetTaskStatus(7, 2);
 				UnityEngine.Object.Destroy(this.Uniform.gameObject);
 				this.MoveAway = true;
+				this.Check = false;
 			}
 			else
 			{
