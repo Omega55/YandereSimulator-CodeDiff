@@ -106,17 +106,26 @@ public class ConvoManagerScript : MonoBehaviour
 		}
 		else if (StudentID > 75 && StudentID < 81)
 		{
-			this.ID = 75;
+			this.ID = 76;
 			while (this.ID < 81)
 			{
 				if (this.ID != StudentID && this.SM.Students[this.ID] != null)
 				{
-					if (this.SM.Students[this.ID].Routine && (double)Vector3.Distance(this.SM.Students[this.ID].transform.position, this.SM.Students[StudentID].transform.position) < 2.5)
+					if ((double)Vector3.Distance(this.SM.Students[this.ID].transform.position, this.SM.Students[StudentID].transform.position) < 2.5)
 					{
-						this.SM.Students[StudentID].Alone = false;
-						break;
+						this.SM.Students[StudentID].TrueAlone = false;
+						if (this.SM.Students[this.ID].Routine)
+						{
+							this.SM.Students[StudentID].Alone = false;
+							break;
+						}
+						this.SM.Students[StudentID].Alone = true;
 					}
-					this.SM.Students[StudentID].Alone = true;
+					else
+					{
+						this.SM.Students[StudentID].TrueAlone = true;
+						this.SM.Students[StudentID].Alone = true;
+					}
 				}
 				this.ID++;
 			}

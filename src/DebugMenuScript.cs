@@ -270,6 +270,7 @@ public class DebugMenuScript : MonoBehaviour
 							}
 							this.ID++;
 						}
+						this.Window.SetActive(false);
 					}
 					else if (Input.GetKeyDown(KeyCode.F))
 					{

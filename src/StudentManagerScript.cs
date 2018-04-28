@@ -368,6 +368,11 @@ public class StudentManagerScript : MonoBehaviour
 
 	private void Start()
 	{
+		this.SeatsTaken31[13] = true;
+		this.SeatsTaken21[12] = true;
+		this.SeatsTaken21[14] = true;
+		this.SeatsTaken22[12] = true;
+		this.SeatsTaken22[14] = true;
 		this.SeatsTaken32[1] = true;
 		this.SeatsTaken31[1] = true;
 		this.SeatsTaken22[1] = true;

@@ -481,7 +481,7 @@ public class MissionModeScript : MonoBehaviour
 					}
 					this.TargetDead = true;
 				}
-				if (this.StudentManager.Students[this.TargetID].transform.position.y < -2f)
+				if (this.StudentManager.Students[this.TargetID].transform.position.y < -11f)
 				{
 					this.GameOverID = 1;
 					this.GameOver();

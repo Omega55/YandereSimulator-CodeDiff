@@ -15,7 +15,7 @@ public class RestScript : MonoBehaviour
 			{
 				this.Prompt.Circle[0].fillAmount = 1f;
 			}
-			else
+			else if (this.Portal.Clock.Period < 7)
 			{
 				this.Portal.Reputation.PendingRep -= 10f;
 				this.Portal.Reputation.UpdateRep();
@@ -30,6 +30,14 @@ public class RestScript : MonoBehaviour
 				this.Portal.EndEvents();
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
+			}
+			else
+			{
+				this.Prompt.Yandere.Character.GetComponent<Animation>().CrossFade(this.Prompt.Yandere.IdleAnim);
+				this.Prompt.Yandere.YandereVision = false;
+				this.Prompt.Yandere.CanMove = false;
+				this.Prompt.Yandere.Resting = true;
+				this.Portal.EndDay();
 			}
 		}
 	}

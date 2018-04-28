@@ -53,6 +53,8 @@ public class IncineratorScript : MonoBehaviour
 
 	public int Limbs;
 
+	public int ID;
+
 	public float OpenTimer;
 
 	public float Timer;
@@ -64,6 +66,8 @@ public class IncineratorScript : MonoBehaviour
 	public int[] VictimList;
 
 	public int[] LimbList;
+
+	public int[] ConfirmedDead;
 
 	private void Start()
 	{
@@ -224,6 +228,7 @@ public class IncineratorScript : MonoBehaviour
 		}
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
+			this.Prompt.Circle[0].fillAmount = 1f;
 			this.Panel.SetActive(true);
 			this.Timer = 60f;
 			component.clip = this.IncineratorActivate;
@@ -249,6 +254,12 @@ public class IncineratorScript : MonoBehaviour
 			this.MurderWeapons = 0;
 			this.BodyParts = 0;
 			this.Corpses = 0;
+			this.ID = 0;
+			while (this.ID < 101)
+			{
+				this.ConfirmedDead[this.ID] = this.CorpseList[this.ID];
+				this.ID++;
+			}
 		}
 		if (this.Smoke.isPlaying)
 		{
@@ -280,7 +291,7 @@ public class IncineratorScript : MonoBehaviour
 
 	public void SetVictimsMissing()
 	{
-		foreach (int studentID in this.CorpseList)
+		foreach (int studentID in this.ConfirmedDead)
 		{
 			StudentGlobals.SetStudentMissing(studentID, true);
 		}

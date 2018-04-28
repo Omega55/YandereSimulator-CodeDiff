@@ -9,6 +9,8 @@ public class RadioScript : MonoBehaviour
 
 	public GameObject AlarmDisc;
 
+	public AudioSource MyAudio;
+
 	public Renderer MyRenderer;
 
 	public Texture OffTexture;
@@ -91,7 +93,7 @@ public class RadioScript : MonoBehaviour
 					{
 						this.Proximity = -100;
 						this.ID = 5;
-						base.GetComponent<AudioSource>().Stop();
+						this.MyAudio.Stop();
 						this.Jukebox.ClubDip = 0f;
 					}
 				}
@@ -116,6 +118,11 @@ public class RadioScript : MonoBehaviour
 						this.Jukebox.ClubDip = this.Jukebox.Volume;
 					}
 				}
+			}
+			else if (this.MyAudio.isPlaying)
+			{
+				this.MyAudio.Stop();
+				this.Jukebox.ClubDip = 0f;
 			}
 		}
 	}

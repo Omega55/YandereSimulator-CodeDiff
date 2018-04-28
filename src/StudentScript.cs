@@ -442,6 +442,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool Phoneless;
 
+	public bool TrueAlone;
+
 	public bool Attacked;
 
 	public bool Gossiped;
@@ -1415,6 +1417,7 @@ public class StudentScript : MonoBehaviour
 					this.MyWeapon.transform.parent = this.WeaponBagParent;
 					this.MyWeapon.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
 					this.MyWeapon.transform.localPosition = new Vector3(0f, 0f, 0f);
+					this.MyWeapon.FingerprintID = this.StudentID;
 					this.MyWeapon.MyCollider.enabled = false;
 					this.CharacterAnimation["walkTough_00"].time += (float)(this.StudentID - 76);
 					this.ScaredAnim = "delinquentCombatIdle_00";
@@ -2430,7 +2433,34 @@ public class StudentScript : MonoBehaviour
 								else
 								{
 									this.StudentManager.ConvoManager.CheckMe(this.StudentID);
-									if (this.Alone)
+									if (this.Club == ClubType.Delinquent)
+									{
+										if (this.Alone)
+										{
+											if (this.TrueAlone)
+											{
+												this.CharacterAnimation.CrossFade("standTexting_00");
+											}
+											else
+											{
+												this.CharacterAnimation.CrossFade(this.IdleAnim);
+											}
+										}
+										else
+										{
+											if (!this.InEvent && !this.SpeechLines.isPlaying)
+											{
+												this.SmartPhone.SetActive(false);
+												this.SpeechLines.Play();
+											}
+											this.CharacterAnimation.CrossFade(this.RandomAnim);
+											if (this.CharacterAnimation[this.RandomAnim].time >= this.CharacterAnimation[this.RandomAnim].length)
+											{
+												this.PickRandomAnim();
+											}
+										}
+									}
+									else if (this.Alone)
 									{
 										if (!this.Male)
 										{
@@ -6630,7 +6660,6 @@ public class StudentScript : MonoBehaviour
 								this.CharacterAnimation.CrossFade(this.IdleAnim, 5f);
 								this.ThreatTimer = 5f;
 								this.ThreatPhase++;
-								this.NoTalk = false;
 							}
 						}
 						else if (this.ThreatPhase == 4)
@@ -6642,12 +6671,13 @@ public class StudentScript : MonoBehaviour
 								this.Threatened = false;
 								this.Alarmed = false;
 								this.Routine = true;
+								this.NoTalk = false;
 								this.IgnoreTimer = 5f;
 								this.AlarmTimer = 0f;
 							}
 						}
 					}
-					else
+					else if (!this.NoTalk)
 					{
 						Debug.Log("Combat is beginning.");
 						if (this.StudentManager.CombatMinigame.Delinquent == null)
@@ -6665,6 +6695,7 @@ public class StudentScript : MonoBehaviour
 							{
 								this.Yandere.EmptyHands();
 							}
+							this.Yandere.StopLaughing();
 							this.Yandere.Unequip();
 							this.Yandere.DelinquentFighting = true;
 							this.Yandere.CanMove = false;
@@ -6684,7 +6715,6 @@ public class StudentScript : MonoBehaviour
 							this.MyWeapon.transform.parent = this.ItemParent;
 							this.MyWeapon.transform.localEulerAngles = new Vector3(0f, 15f, 0f);
 							this.MyWeapon.transform.localPosition = new Vector3(0.01f, 0f, 0f);
-							this.MyWeapon.FingerprintID = this.StudentID;
 						}
 						if (this.CharacterAnimation["delinquentDrawWeapon_00"].time >= this.CharacterAnimation["delinquentDrawWeapon_00"].length)
 						{
@@ -7131,7 +7161,7 @@ public class StudentScript : MonoBehaviour
 				{
 					base.transform.position = new Vector3(base.transform.position.x, 0f, base.transform.position.z);
 				}
-				if (!this.Dying && !this.Distracted && !this.WalkBack && !this.WitnessedMurder && !this.WitnessedCorpse && !this.Yandere.Egg && !this.StudentManager.Pose && !this.ShoeRemoval.enabled && !this.Blind)
+				if (!this.Dying && !this.Distracted && !this.WalkBack && !this.Waiting && !this.WitnessedMurder && !this.WitnessedCorpse && !this.Yandere.Egg && !this.StudentManager.Pose && !this.ShoeRemoval.enabled && !this.Blind)
 				{
 					if ((this.Club == ClubType.Council || (this.Club == ClubType.Delinquent && !this.Injured)) && (double)this.DistanceToPlayer < 0.5 && (this.Yandere.h != 0f || this.Yandere.v != 0f))
 					{
@@ -7662,7 +7692,7 @@ public class StudentScript : MonoBehaviour
 		}
 		if (this.SmartPhone.activeInHierarchy)
 		{
-			if (this.Persona != PersonaType.Heroic && this.Persona != PersonaType.Dangerous && this.Persona != PersonaType.Evil && !this.Teacher)
+			if (this.Persona != PersonaType.Heroic && this.Persona != PersonaType.Dangerous && this.Persona != PersonaType.Evil && this.Persona != PersonaType.Violent && !this.Teacher)
 			{
 				this.Persona = PersonaType.PhoneAddict;
 				this.SprintAnim = this.PhoneAnims[2];
@@ -9395,6 +9425,7 @@ public class StudentScript : MonoBehaviour
 			this.Alarmed = false;
 			this.Routine = false;
 			this.Shoving = true;
+			this.NoTalk = false;
 			this.Patience--;
 			if (this.Patience < 1)
 			{
