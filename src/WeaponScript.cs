@@ -293,7 +293,6 @@ public class WeaponScript : MonoBehaviour
 			{
 				base.transform.localEulerAngles = Vector3.zero;
 			}
-			Debug.Log("A weapon just deactivated its collider.");
 			this.MyCollider.enabled = false;
 			base.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
 			if (this.Yandere.Equipped == 3)

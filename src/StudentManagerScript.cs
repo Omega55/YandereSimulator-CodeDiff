@@ -368,6 +368,16 @@ public class StudentManagerScript : MonoBehaviour
 
 	private void Start()
 	{
+		this.ID = 76;
+		while (this.ID < 81)
+		{
+			if (StudentGlobals.GetStudentReputation(this.ID) > -67)
+			{
+				StudentGlobals.SetStudentReputation(this.ID, -67);
+			}
+			this.ID++;
+		}
+		this.ID = 0;
 		this.SeatsTaken31[13] = true;
 		this.SeatsTaken21[12] = true;
 		this.SeatsTaken21[14] = true;

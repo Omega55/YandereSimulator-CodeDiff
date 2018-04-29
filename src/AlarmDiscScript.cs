@@ -86,6 +86,7 @@ public class AlarmDiscScript : MonoBehaviour
 				this.Student.InvestigationPhase = 0;
 				this.Student.Investigating = false;
 				this.Student.DiscCheck = false;
+				this.Student.VisionDistance += 1f;
 				if (!this.Radio)
 				{
 					if (this.Student != this.Originator)

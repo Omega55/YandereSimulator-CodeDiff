@@ -175,6 +175,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] StudentDistractRefuses;
 
+	public string[] StudentDistractBullyRefuses;
+
 	public string[] StopFollowApologies;
 
 	public string[] GrudgeWarnings;
@@ -278,6 +280,8 @@ public class SubtitleScript : MonoBehaviour
 	public string[] DelinquentFriendCorpseReactions;
 
 	public string[] DelinquentFlees;
+
+	public string[] DelinquentEnemyFlees;
 
 	public string[] DelinquentFriendFlees;
 
@@ -562,6 +566,8 @@ public class SubtitleScript : MonoBehaviour
 	public AudioClip[] DelinquentFriendCorpseReactionClips;
 
 	public AudioClip[] DelinquentFleeClips;
+
+	public AudioClip[] DelinquentEnemyFleeClips;
 
 	public AudioClip[] DelinquentFriendFleeClips;
 
@@ -924,6 +930,10 @@ public class SubtitleScript : MonoBehaviour
 			{
 				SubtitleType.DelinquentFlee,
 				new AudioClipArrayWrapper(this.DelinquentFleeClips)
+			},
+			{
+				SubtitleType.DelinquentEnemyFlee,
+				new AudioClipArrayWrapper(this.DelinquentEnemyFleeClips)
 			},
 			{
 				SubtitleType.DelinquentFriendFlee,
@@ -1301,6 +1311,12 @@ public class SubtitleScript : MonoBehaviour
 			this.Label.text = this.DelinquentFlees[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
+		else if (subtitleType == SubtitleType.DelinquentEnemyFlee)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentEnemyFlees.Length);
+			this.Label.text = this.DelinquentEnemyFlees[this.RandomID];
+			this.PlayVoice(subtitleType, this.RandomID);
+		}
 		else if (subtitleType == SubtitleType.DelinquentFriendFlee)
 		{
 			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentFriendFlees.Length);
@@ -1562,6 +1578,10 @@ public class SubtitleScript : MonoBehaviour
 		else if (subtitleType == SubtitleType.StudentDistractRefuse)
 		{
 			this.Label.text = this.GetRandomString(this.StudentDistractRefuses);
+		}
+		else if (subtitleType == SubtitleType.StudentDistractBullyRefuse)
+		{
+			this.Label.text = this.GetRandomString(this.StudentDistractBullyRefuses);
 		}
 		else if (subtitleType == SubtitleType.StopFollowApology)
 		{

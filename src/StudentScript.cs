@@ -360,6 +360,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool EventInterrupted;
 
+	public bool FoundEnemyCorpse;
+
 	public bool WitnessedCorpse;
 
 	public bool WitnessedMurder;
@@ -3729,10 +3731,12 @@ public class StudentScript : MonoBehaviour
 								{
 									if (!this.Yandere.DelinquentFighting)
 									{
+										Debug.Log(this.Name + " is supposed to begin the combat minigame now.");
 										this.SmartPhone.SetActive(false);
 										this.Threatened = true;
 										this.Fleeing = false;
 										this.Alarmed = true;
+										this.NoTalk = false;
 										this.Patience = 0;
 									}
 								}
@@ -4971,6 +4975,11 @@ public class StudentScript : MonoBehaviour
 				{
 					this.VisibleCorpses.Add(ragdollScript.StudentID);
 					this.Corpse = ragdollScript;
+					if (this.Club == ClubType.Delinquent && this.Corpse.Student.Club == ClubType.Bully)
+					{
+						this.ScaredAnim = this.EvilWitnessAnim;
+						this.Persona = PersonaType.Evil;
+					}
 					if (this.Persona == PersonaType.TeachersPet && this.StudentManager.Reporter == null && !this.Police.Called)
 					{
 						this.StudentManager.CorpseLocation.position = this.Corpse.AllColliders[0].transform.position;
@@ -5001,6 +5010,10 @@ public class StudentScript : MonoBehaviour
 						if (!this.WitnessedCorpse)
 						{
 							Debug.Log(this.Name + " discovered a corpse.");
+							if (this.Club == ClubType.Delinquent && this.Corpse.Student.Club == ClubType.Bully)
+							{
+								this.FoundEnemyCorpse = true;
+							}
 							this.Pathfinding.canSearch = false;
 							this.Pathfinding.canMove = false;
 							if (!this.Male)
@@ -6465,7 +6478,11 @@ public class StudentScript : MonoBehaviour
 					}
 					else if (this.Witnessed == StudentWitnessType.Corpse)
 					{
-						if (this.Corpse.Student.Club == ClubType.Delinquent)
+						if (this.FoundEnemyCorpse)
+						{
+							this.Subtitle.UpdateLabel(SubtitleType.EvilCorpseReaction, 1, 5f);
+						}
+						else if (this.Corpse.Student.Club == ClubType.Delinquent)
 						{
 							this.Subtitle.UpdateLabel(SubtitleType.DelinquentFriendCorpseReaction, 1, 5f);
 							this.FoundFriendCorpse = true;
@@ -6569,7 +6586,6 @@ public class StudentScript : MonoBehaviour
 		}
 		else
 		{
-			Debug.Log(this.Name + " feels threatened.");
 			this.Alarm -= Time.deltaTime * 100f * (1f / this.Paranoia);
 			if (this.StudentManager.CombatMinigame.Delinquent == null || this.StudentManager.CombatMinigame.Delinquent == this)
 			{
@@ -7711,6 +7727,7 @@ public class StudentScript : MonoBehaviour
 		this.Reacted = false;
 		this.Routine = false;
 		this.Alarmed = true;
+		this.NoTalk = false;
 		this.Wet = false;
 		this.StopPairing();
 		if (this.Persona != PersonaType.Heroic)
@@ -7794,6 +7811,10 @@ public class StudentScript : MonoBehaviour
 				if (this.FoundFriendCorpse)
 				{
 					this.Subtitle.UpdateLabel(SubtitleType.DelinquentFriendFlee, 1, 3f);
+				}
+				else if (this.FoundEnemyCorpse)
+				{
+					this.Subtitle.UpdateLabel(SubtitleType.DelinquentEnemyFlee, 1, 3f);
 				}
 				else
 				{
@@ -8047,7 +8068,7 @@ public class StudentScript : MonoBehaviour
 					this.StudentManager.PinDownCheck();
 					if (!this.StudentManager.PinningDown)
 					{
-						Debug.Log("Began fleeing because Violent persona reaction was called.");
+						Debug.Log(base.name + " began fleeing because Violent persona reaction was called.");
 						this.Subtitle.UpdateLabel(SubtitleType.DelinquentMurderReaction, 3, 3f);
 						this.Pathfinding.target = this.Yandere.transform;
 						this.Pathfinding.canSearch = true;
@@ -9013,7 +9034,6 @@ public class StudentScript : MonoBehaviour
 
 	public void SpawnAlarmDisc()
 	{
-		Debug.Log(base.name + " is spawning an Alarm Disc.");
 		GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + Vector3.up, Quaternion.identity);
 		gameObject.GetComponent<AlarmDiscScript>().Male = this.Male;
 		gameObject.GetComponent<AlarmDiscScript>().Originator = this;

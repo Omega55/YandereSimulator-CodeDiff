@@ -785,6 +785,10 @@ public class EndOfDayScript : MonoBehaviour
 		PlayerGlobals.Reputation = this.Reputation.Reputation;
 		HomeGlobals.Night = true;
 		this.Police.KillStudents();
+		if (this.StudentManager.Students[SchoolGlobals.KidnapVictim] != null && this.StudentManager.Students[SchoolGlobals.KidnapVictim].Ragdoll.enabled)
+		{
+			SchoolGlobals.KidnapVictim = 0;
+		}
 		if (!this.TranqCase.Occupied)
 		{
 			SceneManager.LoadScene("HomeScene");

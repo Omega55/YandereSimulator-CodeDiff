@@ -15,6 +15,8 @@ public class TalkingScript : MonoBehaviour
 
 	public bool Follow;
 
+	public bool Grudge;
+
 	public bool Refuse;
 
 	public bool Fake;
@@ -441,7 +443,12 @@ public class TalkingScript : MonoBehaviour
 						else
 						{
 							StudentScript studentScript = this.S.StudentManager.Students[this.S.DialogueWheel.Victim];
-							if (studentScript.Routine && !studentScript.TargetedForDistraction && !studentScript.InEvent)
+							this.Grudge = false;
+							if (this.S.Club == ClubType.Bully && studentScript.Club == ClubType.Delinquent)
+							{
+								this.Grudge = true;
+							}
+							if (studentScript.Routine && !studentScript.TargetedForDistraction && !studentScript.InEvent && !this.Grudge)
 							{
 								this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod1Anim);
 								this.S.Subtitle.UpdateLabel(SubtitleType.StudentDistract, 0, 3f);
@@ -450,7 +457,14 @@ public class TalkingScript : MonoBehaviour
 							else
 							{
 								this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
-								this.S.Subtitle.UpdateLabel(SubtitleType.StudentDistractRefuse, 0, 3f);
+								if (this.Grudge)
+								{
+									this.S.Subtitle.UpdateLabel(SubtitleType.StudentDistractBullyRefuse, 0, 3f);
+								}
+								else
+								{
+									this.S.Subtitle.UpdateLabel(SubtitleType.StudentDistractRefuse, 0, 3f);
+								}
 								this.Refuse = true;
 							}
 						}
