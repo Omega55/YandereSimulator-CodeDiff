@@ -945,6 +945,11 @@ public class TalkingScript : MonoBehaviour
 						this.S.Subtitle.UpdateLabel(SubtitleType.RejectFood, 0, 3f);
 						this.S.Fed = true;
 					}
+					else if (this.S.Club == ClubType.Delinquent)
+					{
+						this.S.Character.GetComponent<Animation>().CrossFade(this.S.IdleAnim);
+						this.S.Subtitle.UpdateLabel(SubtitleType.RejectFood, 1, 3f);
+					}
 					else
 					{
 						this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod2Anim);
@@ -969,7 +974,7 @@ public class TalkingScript : MonoBehaviour
 				this.S.TalkTimer -= Time.deltaTime;
 				if (this.S.TalkTimer <= 0f)
 				{
-					if (!this.S.Fed)
+					if (!this.S.Fed && this.S.Club != ClubType.Delinquent)
 					{
 						this.S.Yandere.PickUp.FoodPieces[this.S.Yandere.PickUp.Food].SetActive(false);
 						this.S.Yandere.PickUp.Food--;

@@ -209,6 +209,7 @@ public class WeaponScript : MonoBehaviour
 					this.ShortBloodSpray[0].Play();
 					this.ShortBloodSpray[1].Play();
 					this.Blood.enabled = true;
+					this.MurderWeapon = true;
 					this.DismemberPhase++;
 				}
 			}

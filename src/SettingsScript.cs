@@ -47,10 +47,12 @@ public class SettingsScript : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
+			OptionGlobals.DepthOfField = !OptionGlobals.DepthOfField;
 			this.QualityManager.ToggleExperiment();
 		}
 		if (Input.GetKeyDown(KeyCode.R))
 		{
+			OptionGlobals.RimLight = !OptionGlobals.RimLight;
 			this.QualityManager.RimLight();
 		}
 		if (Input.GetKeyDown(KeyCode.B))

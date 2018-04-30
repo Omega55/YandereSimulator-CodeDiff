@@ -1213,17 +1213,17 @@ public class CosmeticScript : MonoBehaviour
 				this.LoveManager.Targets[this.LoveManager.TotalTargets] = this.Student.Head;
 				this.LoveManager.TotalTargets++;
 			}
-			if (this.MaleAccessories[2].activeInHierarchy)
+			if (this.Hairstyle == 28)
 			{
 				this.LoveManager.Targets[this.LoveManager.TotalTargets] = this.Student.Head;
 				this.LoveManager.TotalTargets++;
 			}
-			if (this.MaleAccessories[3].activeInHierarchy)
+			if (this.Accessory > 1)
 			{
 				this.LoveManager.Targets[this.LoveManager.TotalTargets] = this.Student.Head;
 				this.LoveManager.TotalTargets++;
 			}
-			if (this.MaleAccessories[4].activeInHierarchy)
+			if (this.Student.Persona == PersonaType.TeachersPet)
 			{
 				this.LoveManager.Targets[this.LoveManager.TotalTargets] = this.Student.Head;
 				this.LoveManager.TotalTargets++;

@@ -569,7 +569,10 @@ public class StudentManagerScript : MonoBehaviour
 					this.DetermineVictim();
 				}
 				this.UpdateStudents();
-				this.QualityManager.RimLight();
+				if (!OptionGlobals.RimLight)
+				{
+					this.QualityManager.RimLight();
+				}
 			}
 		}
 		else if (this.NPCsSpawned < this.StudentsTotal + this.TeachersTotal)
@@ -1035,7 +1038,7 @@ public class StudentManagerScript : MonoBehaviour
 		while (this.ID < this.Students.Length)
 		{
 			StudentScript studentScript = this.Students[this.ID];
-			if (studentScript != null && studentScript.Alive && !studentScript.Slave && !studentScript.Tranquil && studentScript.enabled && studentScript.gameObject.activeInHierarchy)
+			if (studentScript != null && studentScript.Alive && !studentScript.Slave && !studentScript.Tranquil && !studentScript.Fleeing && studentScript.enabled && studentScript.gameObject.activeInHierarchy)
 			{
 				if (!studentScript.Started)
 				{
@@ -1166,7 +1169,7 @@ public class StudentManagerScript : MonoBehaviour
 		while (this.ID < this.Students.Length)
 		{
 			StudentScript studentScript = this.Students[this.ID];
-			if (studentScript != null)
+			if (studentScript != null && !studentScript.Fleeing)
 			{
 				studentScript.Pathfinding.canSearch = true;
 				studentScript.Pathfinding.canMove = true;

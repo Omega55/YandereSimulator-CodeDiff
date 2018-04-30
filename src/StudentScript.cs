@@ -4405,6 +4405,7 @@ public class StudentScript : MonoBehaviour
 									this.HuntTarget.Burning = false;
 									this.HuntTarget.Fleeing = false;
 									this.HuntTarget.Routine = false;
+									this.HuntTarget.Shoving = false;
 									this.HuntTarget.Wet = false;
 									this.HuntTarget.Prompt.Hide();
 									this.HuntTarget.Prompt.enabled = false;
@@ -4479,6 +4480,7 @@ public class StudentScript : MonoBehaviour
 											this.MyWeapon.Blood.enabled = true;
 											if (!this.MyWeapon.Evidence)
 											{
+												this.MyWeapon.MurderWeapon = true;
 												this.MyWeapon.Evidence = true;
 												this.Police.MurderWeapons++;
 											}
@@ -8191,6 +8193,10 @@ public class StudentScript : MonoBehaviour
 		this.Yandere.NearSenpai = false;
 		this.Yandere.Struggling = true;
 		this.Yandere.CanMove = false;
+		if (this.Yandere.DelinquentFighting)
+		{
+			this.StudentManager.CombatMinigame.Stop();
+		}
 		this.Yandere.EmptyHands();
 		this.Yandere.MyController.enabled = false;
 		this.Yandere.RPGCamera.enabled = false;

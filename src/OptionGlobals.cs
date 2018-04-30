@@ -27,6 +27,10 @@ public static class OptionGlobals
 
 	private const string Str_ParticleCount = "ParticleCount";
 
+	private const string Str_RimLight = "RimLight";
+
+	private const string Str_DepthOfField = "DepthOfField";
+
 	public static bool DisableBloom
 	{
 		get
@@ -171,6 +175,30 @@ public static class OptionGlobals
 		}
 	}
 
+	public static bool RimLight
+	{
+		get
+		{
+			return GlobalsHelper.GetBool("RimLight");
+		}
+		set
+		{
+			GlobalsHelper.SetBool("RimLight", value);
+		}
+	}
+
+	public static bool DepthOfField
+	{
+		get
+		{
+			return GlobalsHelper.GetBool("DepthOfField");
+		}
+		set
+		{
+			GlobalsHelper.SetBool("DepthOfField", value);
+		}
+	}
+
 	public static void DeleteAll()
 	{
 		Globals.Delete("DisableBloom");
@@ -185,5 +213,7 @@ public static class OptionGlobals
 		Globals.Delete("HighPopulation");
 		Globals.Delete("LowDetailStudents");
 		Globals.Delete("ParticleCount");
+		Globals.Delete("RimLight");
+		Globals.Delete("DepthOfField");
 	}
 }

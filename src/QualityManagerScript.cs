@@ -95,7 +95,10 @@ public class QualityManagerScript : MonoBehaviour
 		this.UpdateDrawDistance();
 		this.UpdateLowDetailStudents();
 		this.Settings.ToggleBackground();
-		this.ToggleExperiment();
+		if (!OptionGlobals.DepthOfField)
+		{
+			this.ToggleExperiment();
+		}
 	}
 
 	public void UpdateParticles()
