@@ -95,7 +95,11 @@ public class AlarmDiscScript : MonoBehaviour
 						{
 							this.StudentIsBusy = true;
 						}
-						if (!this.Student.TurnOffRadio && this.Student.Alive && !this.Student.Pushed && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.CheckingNote && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.StudentIsBusy && !this.Student.FocusOnYandere && this.Student.Persona != PersonaType.Protective && !this.Student.Fleeing && !this.Student.Shoving)
+						if ((this.Student.StudentID == 22 || this.Student.StudentID == 24) && this.Student.StudentManager.ConvoManager.Confirmed)
+						{
+							this.StudentIsBusy = true;
+						}
+						if (!this.Student.TurnOffRadio && this.Student.Alive && !this.Student.Pushed && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.CheckingNote && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.StudentIsBusy && !this.Student.FocusOnYandere && this.Student.Persona != PersonaType.Protective && !this.Student.Fleeing && !this.Student.Shoving && !this.StudentIsBusy)
 						{
 							if (this.Student.Male)
 							{

@@ -71,6 +71,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] InterruptReactions;
 
+	public string[] IntrusionReactions;
+
 	public string[] NoteReactions;
 
 	public string[] FoodAccepts;
@@ -1052,6 +1054,10 @@ public class SubtitleScript : MonoBehaviour
 		else if (subtitleType == SubtitleType.InterruptionReaction)
 		{
 			this.Label.text = this.GetRandomString(this.InterruptReactions);
+		}
+		else if (subtitleType == SubtitleType.IntrusionReaction)
+		{
+			this.Label.text = this.GetRandomString(this.IntrusionReactions);
 		}
 		else if (subtitleType == SubtitleType.KilledMood)
 		{

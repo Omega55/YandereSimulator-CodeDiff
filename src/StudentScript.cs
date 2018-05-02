@@ -368,6 +368,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool YandereInnocent;
 
+	public bool GetNewAnimation = true;
+
 	public bool FocusOnYandere;
 
 	public bool PinDownWitness;
@@ -2589,6 +2591,8 @@ public class StudentScript : MonoBehaviour
 													{
 														if (!this.SmartPhone.activeInHierarchy)
 														{
+															this.SmartPhone.transform.localPosition = new Vector3(0.01f, 0.01f, 0.01f);
+															this.SmartPhone.transform.localEulerAngles = new Vector3(0f, -160f, 165f);
 															this.SmartPhone.SetActive(true);
 														}
 														this.CharacterAnimation.CrossFade(this.DeskTextAnim);
@@ -2664,6 +2668,17 @@ public class StudentScript : MonoBehaviour
 								}
 								else
 								{
+									if (this.StudentID == 22 || this.StudentID == 24)
+									{
+										if (this.GetNewAnimation)
+										{
+											this.StudentManager.ConvoManager.MartialArtsCheck();
+										}
+										if (this.CharacterAnimation[this.ClubAnim].time >= this.CharacterAnimation[this.ClubAnim].length)
+										{
+											this.GetNewAnimation = true;
+										}
+									}
 									this.CharacterAnimation.CrossFade(this.ClubAnim);
 								}
 								if (this.Club == ClubType.Occult && this.StudentID != 26)
@@ -2679,14 +2694,35 @@ public class StudentScript : MonoBehaviour
 								}
 								else
 								{
-									if (!this.SpeechLines.isPlaying)
+									this.StudentManager.ConvoManager.CheckMe(this.StudentID);
+									if (this.Alone)
 									{
-										this.SpeechLines.Play();
+										if (!this.Male)
+										{
+											this.CharacterAnimation.CrossFade("f02_texting_00");
+										}
+										else
+										{
+											this.CharacterAnimation.CrossFade("standTexting_00");
+										}
+										if (!this.SmartPhone.activeInHierarchy)
+										{
+											this.SmartPhone.SetActive(true);
+											this.SpeechLines.Stop();
+										}
 									}
-									this.CharacterAnimation.CrossFade(this.RandomAnim);
-									if (this.CharacterAnimation[this.RandomAnim].time >= this.CharacterAnimation[this.RandomAnim].length)
+									else
 									{
-										this.PickRandomAnim();
+										if (!this.InEvent && !this.SpeechLines.isPlaying)
+										{
+											this.SmartPhone.SetActive(false);
+											this.SpeechLines.Play();
+										}
+										this.CharacterAnimation.CrossFade(this.RandomAnim);
+										if (this.CharacterAnimation[this.RandomAnim].time >= this.CharacterAnimation[this.RandomAnim].length)
+										{
+											this.PickRandomAnim();
+										}
 									}
 								}
 							}
@@ -3447,8 +3483,9 @@ public class StudentScript : MonoBehaviour
 											this.ReportPhase = 0;
 											this.ReportTimer = 0f;
 											this.AlarmTimer = 0f;
-											this.WitnessedCorpse = false;
+											Debug.Log("WitnessedMurder is being set to false.");
 											this.WitnessedMurder = false;
+											this.WitnessedCorpse = false;
 											this.Reporting = false;
 											this.Reacted = false;
 											this.Alarmed = false;
@@ -7278,7 +7315,7 @@ public class StudentScript : MonoBehaviour
 					this.CharacterAnimation[this.ShyAnim].weight = Mathf.Lerp(this.CharacterAnimation[this.ShyAnim].weight, 0f, Time.deltaTime);
 				}
 			}
-			if (this.Routine && !this.InEvent && !this.Meeting)
+			if (this.Routine && !this.InEvent && !this.Meeting && !this.GoAway)
 			{
 				if (this.DistanceToDestination < this.TargetDistance && this.Actions[this.Phase] == StudentActionType.SitAndSocialize)
 				{
@@ -7584,6 +7621,17 @@ public class StudentScript : MonoBehaviour
 
 	private void WitnessMurder()
 	{
+		this.OccultBook.SetActive(false);
+		this.WitnessedMurder = true;
+		this.Investigating = false;
+		this.MurdersWitnessed++;
+		this.SpeechLines.Stop();
+		this.Threatened = false;
+		this.Reacted = false;
+		this.Routine = false;
+		this.Alarmed = true;
+		this.NoTalk = false;
+		this.Wet = false;
 		if (!this.Male)
 		{
 			this.CharacterAnimation["f02_smile_00"].weight = 0f;
@@ -7599,7 +7647,7 @@ public class StudentScript : MonoBehaviour
 		}
 		if (this.OriginalPersona != PersonaType.Violent && this.Persona != this.OriginalPersona)
 		{
-			Debug.Log("This student is reverting back into their original Persona.");
+			Debug.Log(this.Name + " is reverting back into their original Persona.");
 			this.Persona = this.OriginalPersona;
 			this.SwitchBack = false;
 			this.PersonaReaction();
@@ -7720,17 +7768,6 @@ public class StudentScript : MonoBehaviour
 				this.SmartPhone.SetActive(false);
 			}
 		}
-		this.Threatened = false;
-		this.OccultBook.SetActive(false);
-		this.WitnessedMurder = true;
-		this.Investigating = false;
-		this.MurdersWitnessed++;
-		this.SpeechLines.Stop();
-		this.Reacted = false;
-		this.Routine = false;
-		this.Alarmed = true;
-		this.NoTalk = false;
-		this.Wet = false;
 		this.StopPairing();
 		if (this.Persona != PersonaType.Heroic)
 		{
@@ -8009,6 +8046,7 @@ public class StudentScript : MonoBehaviour
 		}
 		else if (this.Persona == PersonaType.Dangerous)
 		{
+			Debug.Log("A student council member's PersonaReaction has been triggered.");
 			if (this.WitnessedMurder)
 			{
 				if (!this.Yandere.Chased)
@@ -8044,6 +8082,7 @@ public class StudentScript : MonoBehaviour
 			}
 			else
 			{
+				Debug.Log("A student council member has transformed into a Teacher's Pet.");
 				this.Persona = PersonaType.TeachersPet;
 				this.PersonaReaction();
 			}
@@ -8151,6 +8190,7 @@ public class StudentScript : MonoBehaviour
 
 	private void BeginStruggle()
 	{
+		this.SpawnAlarmDisc();
 		Debug.Log("My name is " + this.Name + " and now I am fighting Yandere-chan.");
 		if (this.Yandere.Dragging)
 		{
@@ -9063,6 +9103,7 @@ public class StudentScript : MonoBehaviour
 		if (!this.ClubAttire)
 		{
 			this.Cosmetic.RemoveCensor();
+			this.DistanceToDestination = 100f;
 			this.ClubAttire = true;
 			if (this.Club == ClubType.MartialArts)
 			{
@@ -9096,6 +9137,16 @@ public class StudentScript : MonoBehaviour
 			{
 				this.Armband.transform.localPosition = new Vector3(this.Armband.transform.localPosition.x, this.Armband.transform.localPosition.y, 0.012f);
 				this.Armband.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+			}
+			else if (this.StudentID == 22)
+			{
+				this.StudentManager.ConvoManager.Confirmed = false;
+				this.ClubAnim = "idle_20";
+			}
+			else if (this.StudentID == 24)
+			{
+				this.StudentManager.ConvoManager.Confirmed = false;
+				this.ClubAnim = "f02_idle_20";
 			}
 		}
 	}

@@ -11,6 +11,8 @@ public class NyanDroidScript : MonoBehaviour
 
 	public Vector3 OriginalPosition;
 
+	public string Prefix;
+
 	private void Start()
 	{
 		this.OriginalPosition = base.transform.position;
@@ -40,24 +42,24 @@ public class NyanDroidScript : MonoBehaviour
 			}
 			if (Vector3.Distance(base.transform.position, this.Pathfinding.target.position) <= 1f)
 			{
-				this.Character.CrossFade("ND_Idle");
+				this.Character.CrossFade(this.Prefix + "_Idle");
 				this.Pathfinding.speed = 0f;
 			}
 			else if (Vector3.Distance(base.transform.position, this.Pathfinding.target.position) <= 2f)
 			{
-				this.Character.CrossFade("ND_Walk");
+				this.Character.CrossFade(this.Prefix + "_Walk");
 				this.Pathfinding.speed = 0.5f;
 			}
 			else
 			{
-				this.Character.CrossFade("ND_Run");
+				this.Character.CrossFade(this.Prefix + "_Run");
 				this.Pathfinding.speed = 5f;
 			}
 			if (this.Prompt.Circle[0].fillAmount == 0f)
 			{
 				this.Prompt.Label[0].text = "     Follow";
 				this.Prompt.Circle[0].fillAmount = 1f;
-				this.Character.CrossFade("ND_Idle");
+				this.Character.CrossFade(this.Prefix + "_Idle");
 				this.Pathfinding.canSearch = false;
 				this.Pathfinding.canMove = false;
 			}

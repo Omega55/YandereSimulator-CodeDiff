@@ -1773,4 +1773,20 @@ public class StudentManagerScript : MonoBehaviour
 			this.ID++;
 		}
 	}
+
+	public void DisableStudent(int DisableID)
+	{
+		StudentScript studentScript = this.Students[DisableID];
+		if (studentScript != null)
+		{
+			if (studentScript.gameObject.activeInHierarchy)
+			{
+				studentScript.gameObject.SetActive(false);
+			}
+			else
+			{
+				studentScript.gameObject.SetActive(true);
+			}
+		}
+	}
 }

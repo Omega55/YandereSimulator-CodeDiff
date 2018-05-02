@@ -41,6 +41,10 @@ public class GiggleScript : MonoBehaviour
 				{
 					this.StudentIsBusy = true;
 				}
+				if ((this.Student.StudentID == 22 || this.Student.StudentID == 24) && this.Student.StudentManager.ConvoManager.Confirmed)
+				{
+					this.StudentIsBusy = true;
+				}
 				if (!this.Student.YandereVisible && !this.Student.Alarmed && !this.Student.Distracted && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.Student.Investigating && !this.Student.InEvent && !this.Student.Following && !this.Student.Confessing && !this.Student.Meeting && !this.Student.TurnOffRadio && !this.Student.Fleeing && !this.Student.Distracting && !this.Student.GoAway && !this.Student.FocusOnYandere && !this.StudentIsBusy && this.Student.Actions[this.Student.Phase] != StudentActionType.Teaching && this.Student.Actions[this.Student.Phase] != StudentActionType.SitAndTakeNotes && this.Student.Actions[this.Student.Phase] != StudentActionType.Graffiti && this.Student.Actions[this.Student.Phase] != StudentActionType.Bully && this.Student.Routine && this.Student.Persona != PersonaType.Protective)
 				{
 					this.Student.Character.GetComponent<Animation>().CrossFade(this.Student.IdleAnim);

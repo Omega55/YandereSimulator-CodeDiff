@@ -381,7 +381,10 @@ public class ShoulderCameraScript : MonoBehaviour
 					this.RPGCamera.enabled = true;
 					this.Yandere.MyController.enabled = true;
 					this.Yandere.Talking = false;
-					this.Yandere.CanMove = true;
+					if (!this.Yandere.Sprayed)
+					{
+						this.Yandere.CanMove = true;
+					}
 					this.Yandere.Pursuer = null;
 					this.Yandere.Chased = false;
 					this.Yandere.Won = false;

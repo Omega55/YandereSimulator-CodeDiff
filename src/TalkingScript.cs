@@ -939,16 +939,16 @@ public class TalkingScript : MonoBehaviour
 			{
 				if (this.S.TalkTimer == 3f)
 				{
-					if (this.S.Fed || this.S.Club == ClubType.Council)
+					if (this.S.Club == ClubType.Delinquent)
+					{
+						this.S.Character.GetComponent<Animation>().CrossFade(this.S.IdleAnim);
+						this.S.Subtitle.UpdateLabel(SubtitleType.RejectFood, 1, 3f);
+					}
+					else if (this.S.Fed || this.S.Club == ClubType.Council)
 					{
 						this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
 						this.S.Subtitle.UpdateLabel(SubtitleType.RejectFood, 0, 3f);
 						this.S.Fed = true;
-					}
-					else if (this.S.Club == ClubType.Delinquent)
-					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.IdleAnim);
-						this.S.Subtitle.UpdateLabel(SubtitleType.RejectFood, 1, 3f);
 					}
 					else
 					{

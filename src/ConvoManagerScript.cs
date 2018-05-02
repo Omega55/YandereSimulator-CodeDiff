@@ -7,6 +7,16 @@ public class ConvoManagerScript : MonoBehaviour
 
 	public int ID;
 
+	public string[] FemaleCombatAnims;
+
+	public string[] MaleCombatAnims;
+
+	public int CombatAnimID;
+
+	public float CheckTimer;
+
+	public bool Confirmed;
+
 	public void CheckMe(int StudentID)
 	{
 		if (StudentID > 1 && StudentID < 14)
@@ -146,6 +156,36 @@ public class ConvoManagerScript : MonoBehaviour
 				}
 				this.ID++;
 			}
+		}
+	}
+
+	public void MartialArtsCheck()
+	{
+		this.CheckTimer += Time.deltaTime;
+		if ((this.CheckTimer > 1f || this.Confirmed) && this.SM.Students[22] != null && this.SM.Students[24] != null && this.SM.Students[22].Routine && this.SM.Students[24].Routine && this.SM.Students[22].DistanceToDestination < 0.1f && this.SM.Students[24].DistanceToDestination < 0.1f)
+		{
+			this.Confirmed = true;
+			this.CombatAnimID++;
+			if (this.CombatAnimID > 2)
+			{
+				this.CombatAnimID = 1;
+			}
+			this.SM.Students[22].ClubAnim = this.MaleCombatAnims[this.CombatAnimID];
+			this.SM.Students[24].ClubAnim = this.FemaleCombatAnims[this.CombatAnimID];
+			this.SM.Students[22].GetNewAnimation = false;
+			this.SM.Students[24].GetNewAnimation = false;
+		}
+	}
+
+	public void LateUpdate()
+	{
+		this.CheckTimer = Mathf.MoveTowards(this.CheckTimer, 0f, Time.deltaTime);
+		if (this.Confirmed && (this.SM.Students[22].DistanceToPlayer < 1.5f || this.SM.Students[24].DistanceToPlayer < 1.5f))
+		{
+			this.SM.Students[22].Subtitle.UpdateLabel(SubtitleType.IntrusionReaction, 2, 5f);
+			this.SM.Students[22].ClubAnim = "idle_20";
+			this.SM.Students[24].ClubAnim = "f02_idle_20";
+			this.Confirmed = false;
 		}
 	}
 }

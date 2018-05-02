@@ -2478,11 +2478,15 @@ public class YandereScript : MonoBehaviour
 					this.CharacterAnimation.CrossFade("f02_dumpsterGrab_00");
 				}
 			}
-			if (this.Stripping && this.CharacterAnimation["f02_stripping_00"].time >= this.CharacterAnimation["f02_stripping_00"].length)
+			if (this.Stripping)
 			{
-				this.Stripping = false;
-				this.CanMove = true;
-				this.MyLocker.UpdateSchoolwear();
+				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, Quaternion.identity, 10f * Time.deltaTime);
+				if (this.CharacterAnimation["f02_stripping_00"].time >= this.CharacterAnimation["f02_stripping_00"].length)
+				{
+					this.Stripping = false;
+					this.CanMove = true;
+					this.MyLocker.UpdateSchoolwear();
+				}
 			}
 			if (this.Bathing)
 			{
