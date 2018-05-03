@@ -1122,6 +1122,7 @@ public class YandereScript : MonoBehaviour
 		this.ZipTie[1].SetActive(false);
 		this.Shoes[0].SetActive(false);
 		this.Shoes[1].SetActive(false);
+		this.Phone.SetActive(false);
 		this.Cape.SetActive(false);
 		this.OriginalIdleAnim = this.IdleAnim;
 		this.OriginalWalkAnim = this.WalkAnim;

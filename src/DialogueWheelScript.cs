@@ -731,7 +731,7 @@ public class DialogueWheelScript : MonoBehaviour
 					this.Yandere.TargetStudent.Pathfinding.target = this.Yandere.TargetStudent.CurrentDestination;
 				}
 			}
-			if (this.Yandere.TargetStudent.Persona == PersonaType.PhoneAddict)
+			if (this.Yandere.TargetStudent.Persona == PersonaType.PhoneAddict && this.Yandere.TargetStudent.Actions[this.Yandere.TargetStudent.Phase] != StudentActionType.Clean)
 			{
 				this.Yandere.TargetStudent.SmartPhone.SetActive(true);
 				this.Yandere.TargetStudent.WalkAnim = this.Yandere.TargetStudent.PhoneAnims[1];

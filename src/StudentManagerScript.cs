@@ -165,6 +165,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public bool[] SeatsTaken32;
 
+	public bool[] NoBully;
+
 	public Collider RivalDeskCollider;
 
 	public Transform FollowerLookAtTarget;
@@ -1787,6 +1789,19 @@ public class StudentManagerScript : MonoBehaviour
 			{
 				studentScript.gameObject.SetActive(true);
 			}
+		}
+	}
+
+	public void UpdateGrafitti()
+	{
+		this.ID = 1;
+		while (this.ID < 6)
+		{
+			if (!this.NoBully[this.ID])
+			{
+				this.Graffiti[this.ID].SetActive(true);
+			}
+			this.ID++;
 		}
 	}
 }

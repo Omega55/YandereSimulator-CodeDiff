@@ -11,7 +11,7 @@ public class RestScript : MonoBehaviour
 	{
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			if (this.Prompt.Yandere.Chased)
+			if (!this.Portal.Prompt.enabled)
 			{
 				this.Prompt.Circle[0].fillAmount = 1f;
 			}

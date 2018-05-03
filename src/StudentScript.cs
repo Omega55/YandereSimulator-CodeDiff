@@ -2286,7 +2286,14 @@ public class StudentScript : MonoBehaviour
 						{
 							if (!this.CharacterAnimation.IsPlaying(this.WalkAnim))
 							{
-								this.CharacterAnimation.CrossFade(this.WalkAnim);
+								if (this.Persona == PersonaType.PhoneAddict && this.Actions[this.Phase] == StudentActionType.Clean)
+								{
+									this.CharacterAnimation.CrossFade(this.OriginalWalkAnim);
+								}
+								else
+								{
+									this.CharacterAnimation.CrossFade(this.WalkAnim);
+								}
 							}
 						}
 						else if (!this.Dying)
@@ -3069,6 +3076,7 @@ public class StudentScript : MonoBehaviour
 							{
 								if (this.StudentManager.Students[this.StudentManager.VictimID].Distracted)
 								{
+									this.StudentManager.NoBully[this.BullyID] = true;
 									this.KilledMood = true;
 								}
 								if (this.KilledMood)
@@ -4714,6 +4722,7 @@ public class StudentScript : MonoBehaviour
 			}
 			if (this.CameraReacting)
 			{
+				this.PhotoPatience = Mathf.MoveTowards(this.PhotoPatience, 0f, Time.deltaTime);
 				this.Prompt.Circle[0].fillAmount = 1f;
 				this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - base.transform.position);
 				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
@@ -5251,6 +5260,7 @@ public class StudentScript : MonoBehaviour
 							}
 							if (this.DistanceToDestination < 5f && (this.Actions[this.Phase] == StudentActionType.Graffiti || this.Actions[this.Phase] == StudentActionType.Bully))
 							{
+								this.StudentManager.NoBully[this.BullyID] = true;
 								this.KilledMood = true;
 							}
 							bool flag = this.Yandere.Armed && this.Yandere.EquippedWeapon.Suspicious;
@@ -5844,6 +5854,7 @@ public class StudentScript : MonoBehaviour
 						{
 							this.SmartPhone.SetActive(true);
 						}
+						this.ChalkDust.Stop();
 						this.StopPairing();
 					}
 				}
@@ -9526,6 +9537,11 @@ public class StudentScript : MonoBehaviour
 				this.Distraction = null;
 				this.CanTalk = true;
 			}
+			if (this.Actions[this.Phase] != StudentActionType.Patrol)
+			{
+				this.CurrentDestination = this.Destinations[this.Phase];
+				this.Pathfinding.target = this.CurrentDestination;
+			}
 			this.Pathfinding.canSearch = false;
 			this.Pathfinding.canMove = false;
 		}
@@ -9685,7 +9701,7 @@ public class StudentScript : MonoBehaviour
 
 	public void StopPairing()
 	{
-		if (this.Persona == PersonaType.PhoneAddict)
+		if (this.Actions[this.Phase] != StudentActionType.Clean && this.Persona == PersonaType.PhoneAddict)
 		{
 			this.WalkAnim = this.PhoneAnims[1];
 		}

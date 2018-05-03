@@ -172,13 +172,7 @@ public class PortalScript : MonoBehaviour
 					{
 						if (this.StudentManager.Bully)
 						{
-							foreach (GameObject gameObject in this.StudentManager.Graffiti)
-							{
-								if (gameObject != null)
-								{
-									gameObject.SetActive(true);
-								}
-							}
+							this.StudentManager.UpdateGrafitti();
 						}
 						this.Yandere.Incinerator.Timer -= 780f - this.Clock.PresentTime;
 						this.DelinquentManager.CheckTime();

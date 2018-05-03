@@ -201,6 +201,12 @@ public class CustomizationScript : MonoBehaviour
 	[SerializeField]
 	private AudioClip LoveSickLoop;
 
+	public float AbsoluteRotation;
+
+	public float Adjustment;
+
+	public float Rotation;
+
 	private static readonly KeyValuePair<Color, string>[] ColorPairs = new KeyValuePair<Color, string>[]
 	{
 		new KeyValuePair<Color, string>(default(Color), string.Empty),
@@ -464,6 +470,15 @@ public class CustomizationScript : MonoBehaviour
 		}
 		else if (this.Phase == 3)
 		{
+			this.Adjustment += Input.GetAxis("Mouse X") * Time.deltaTime * 10f;
+			if (this.Adjustment > 3f)
+			{
+				this.Adjustment = 3f;
+			}
+			else if (this.Adjustment < 0f)
+			{
+				this.Adjustment = 0f;
+			}
 			this.CustomizePanel.alpha = Mathf.MoveTowards(this.CustomizePanel.alpha, 1f, Time.deltaTime * 2f);
 			if (this.CustomizePanel.alpha == 1f)
 			{
@@ -553,14 +568,18 @@ public class CustomizationScript : MonoBehaviour
 					}
 				}
 			}
+			this.Rotation = Mathf.Lerp(this.Rotation, 45f - this.Adjustment * 30f, Time.deltaTime * 10f);
+			this.AbsoluteRotation = 45f - Mathf.Abs(this.Rotation);
 			if (this.Selected == 1)
 			{
-				this.LoveSickCamera.transform.position = new Vector3(Mathf.Lerp(this.LoveSickCamera.transform.position.x, -1.5f, this.CameraSpeed), Mathf.Lerp(this.LoveSickCamera.transform.position.y, 0f, this.CameraSpeed), Mathf.Lerp(this.LoveSickCamera.transform.position.z, 0.5f, this.CameraSpeed));
+				this.LoveSickCamera.transform.position = new Vector3(Mathf.Lerp(this.LoveSickCamera.transform.position.x, -1.5f + this.Adjustment, this.CameraSpeed), Mathf.Lerp(this.LoveSickCamera.transform.position.y, 0f, this.CameraSpeed), Mathf.Lerp(this.LoveSickCamera.transform.position.z, 0.5f - this.AbsoluteRotation * 0.015f, this.CameraSpeed));
 			}
 			else
 			{
-				this.LoveSickCamera.transform.position = new Vector3(Mathf.Lerp(this.LoveSickCamera.transform.position.x, -0.5f, this.CameraSpeed), Mathf.Lerp(this.LoveSickCamera.transform.position.y, 0.5f, this.CameraSpeed), Mathf.Lerp(this.LoveSickCamera.transform.position.z, 1.5f, this.CameraSpeed));
+				this.LoveSickCamera.transform.position = new Vector3(Mathf.Lerp(this.LoveSickCamera.transform.position.x, -0.5f + this.Adjustment * 0.33333f, this.CameraSpeed), Mathf.Lerp(this.LoveSickCamera.transform.position.y, 0.5f, this.CameraSpeed), Mathf.Lerp(this.LoveSickCamera.transform.position.z, 1.5f - this.AbsoluteRotation * 0.015f * 0.33333f, this.CameraSpeed));
 			}
+			this.LoveSickCamera.transform.eulerAngles = new Vector3(0f, this.Rotation, 0f);
+			base.transform.eulerAngles = this.LoveSickCamera.transform.eulerAngles;
 			base.transform.position = this.LoveSickCamera.transform.position;
 		}
 		else if (this.Phase == 4)

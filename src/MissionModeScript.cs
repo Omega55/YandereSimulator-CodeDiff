@@ -94,6 +94,8 @@ public class MissionModeScript : MonoBehaviour
 
 	public GameObject GameOverText;
 
+	public GameObject VoidGoddess;
+
 	public GameObject Headmaster;
 
 	public GameObject ExitPortal;
@@ -419,8 +421,10 @@ public class MissionModeScript : MonoBehaviour
 			this.Yandere.RPGCamera.enabled = false;
 			this.Yandere.SanityBased = true;
 			this.Yandere.CanMove = false;
+			this.VoidGoddess.GetComponent<VoidGoddessScript>().Window.gameObject.SetActive(false);
 			this.HeartbeatCamera.SetActive(false);
 			this.TranqDetector.SetActive(false);
+			this.VoidGoddess.SetActive(false);
 			this.MurderKit.SetActive(false);
 			this.TargetHeight = 1.51505f;
 			this.Yandere.HUD.alpha = 0f;
