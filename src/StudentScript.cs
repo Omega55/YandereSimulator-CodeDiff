@@ -756,6 +756,8 @@ public class StudentScript : MonoBehaviour
 
 	public int Concern;
 
+	public int Defeats;
+
 	public int Crush;
 
 	public StudentWitnessType PreviouslyWitnessed;
@@ -4306,7 +4308,7 @@ public class StudentScript : MonoBehaviour
 				}
 				else if (this.DistanceToDestination < 5f)
 				{
-					if (this.DistractionTarget.InEvent || this.DistractionTarget.Talking || this.DistractionTarget.Following || this.DistractionTarget.TurnOffRadio || this.DistractionTarget.Splashed || this.DistractionTarget.Shoving || this.DistractionTarget.Spraying || this.DistractionTarget.FocusOnYandere)
+					if (this.DistractionTarget.InEvent || this.DistractionTarget.Talking || this.DistractionTarget.Following || this.DistractionTarget.TurnOffRadio || this.DistractionTarget.Splashed || this.DistractionTarget.Shoving || this.DistractionTarget.Spraying || this.DistractionTarget.FocusOnYandere || this.DistractionTarget.ShoeRemoval.enabled)
 					{
 						this.CurrentDestination = this.Destinations[this.Phase];
 						this.Pathfinding.target = this.Destinations[this.Phase];
@@ -4437,6 +4439,15 @@ public class StudentScript : MonoBehaviour
 									AudioSource component = base.GetComponent<AudioSource>();
 									component.clip = this.MurderSuicideKiller;
 									component.Play();
+									if (this.HuntTarget.Shoving)
+									{
+										this.Yandere.CannotRecover = false;
+									}
+									if (this.StudentManager.CombatMinigame.Delinquent == this.HuntTarget)
+									{
+										this.StudentManager.CombatMinigame.Stop();
+										this.StudentManager.CombatMinigame.ReleaseYandere();
+									}
 									this.HuntTarget.DetectionMarker.Tex.enabled = false;
 									this.HuntTarget.TargetedForDistraction = false;
 									this.HuntTarget.Pathfinding.canSearch = false;
@@ -4890,30 +4901,34 @@ public class StudentScript : MonoBehaviour
 					this.Routine = true;
 				}
 			}
-			if (this.Shoving && this.CharacterAnimation[this.ShoveAnim].time > this.CharacterAnimation[this.ShoveAnim].length)
+			if (this.Shoving)
 			{
-				if (this.Patience > 0)
+				this.CharacterAnimation.CrossFade(this.ShoveAnim);
+				if (this.CharacterAnimation[this.ShoveAnim].time > this.CharacterAnimation[this.ShoveAnim].length)
 				{
-					this.Pathfinding.canSearch = true;
-					this.Pathfinding.canMove = true;
-					this.Distracted = false;
-					this.Shoving = false;
-					this.Routine = true;
-					this.Paired = false;
-				}
-				else if (this.Club == ClubType.Council)
-				{
-					this.Shoving = false;
-					this.Spray();
-				}
-				else
-				{
-					this.SpawnAlarmDisc();
-					this.SmartPhone.SetActive(false);
-					this.Distracted = true;
-					this.Threatened = true;
-					this.Shoving = false;
-					this.Alarmed = true;
+					if (this.Patience > 0)
+					{
+						this.Pathfinding.canSearch = true;
+						this.Pathfinding.canMove = true;
+						this.Distracted = false;
+						this.Shoving = false;
+						this.Routine = true;
+						this.Paired = false;
+					}
+					else if (this.Club == ClubType.Council)
+					{
+						this.Shoving = false;
+						this.Spray();
+					}
+					else
+					{
+						this.SpawnAlarmDisc();
+						this.SmartPhone.SetActive(false);
+						this.Distracted = true;
+						this.Threatened = true;
+						this.Shoving = false;
+						this.Alarmed = true;
+					}
 				}
 			}
 			if (this.Spraying && (double)this.CharacterAnimation[this.SprayAnim].time > 0.66666)
@@ -6040,7 +6055,7 @@ public class StudentScript : MonoBehaviour
 		{
 			this.UpdateAlarmed();
 		}
-		else if (!this.Fleeing)
+		else if (!this.Fleeing && !this.Shoving)
 		{
 			if (this.StudentID > 1 && this.Persona != PersonaType.Evil)
 			{
@@ -6761,18 +6776,28 @@ public class StudentScript : MonoBehaviour
 							{
 								this.Yandere.EmptyHands();
 							}
+							if (this.Yandere.Pickpocketing)
+							{
+								this.PickPocket.PickpocketMinigame.End();
+							}
 							this.Yandere.StopLaughing();
 							this.Yandere.Unequip();
 							this.Yandere.DelinquentFighting = true;
 							this.Yandere.CanMove = false;
+							this.Distracted = true;
 							this.Fighting = true;
 							this.ThreatTimer = 0f;
 							this.StudentManager.CombatMinigame.Delinquent = this;
+							this.StudentManager.CombatMinigame.enabled = true;
 							this.StudentManager.CombatMinigame.StartCombat();
 							this.SpawnAlarmDisc();
 							if (this.WitnessedMurder)
 							{
 								this.Subtitle.UpdateLabel(SubtitleType.DelinquentAvenge, 0, 5f);
+							}
+							else
+							{
+								this.Subtitle.UpdateLabel(SubtitleType.DelinquentFight, 0, 5f);
 							}
 						}
 						this.Yandere.transform.rotation = Quaternion.LookRotation(new Vector3(this.Hips.transform.position.x, this.Yandere.transform.position.y, this.Hips.transform.position.z) - this.Yandere.transform.position);
@@ -7834,7 +7859,7 @@ public class StudentScript : MonoBehaviour
 		if (!this.Indoors && this.WitnessedMurder && this.StudentID != this.StudentManager.RivalID)
 		{
 			Debug.Log(this.Name + "'s current Persona is: " + this.Persona);
-			if (this.Persona != PersonaType.Evil && this.Persona != PersonaType.Heroic && this.Persona != PersonaType.Coward && this.Persona != PersonaType.PhoneAddict && this.Persona != PersonaType.Protective && this.Persona != PersonaType.Violent)
+			if ((this.Persona != PersonaType.Evil && this.Persona != PersonaType.Heroic && this.Persona != PersonaType.Coward && this.Persona != PersonaType.PhoneAddict && this.Persona != PersonaType.Protective && this.Persona != PersonaType.Violent) || this.Injured)
 			{
 				Debug.Log(this.Name + " is switching to the Loner Persona.");
 				this.Persona = PersonaType.Loner;
@@ -7858,7 +7883,11 @@ public class StudentScript : MonoBehaviour
 			if (this.Club == ClubType.Delinquent)
 			{
 				Debug.Log("A delinquent turned into a loner, and now he is fleeing.");
-				if (this.FoundFriendCorpse)
+				if (this.Injured)
+				{
+					this.Subtitle.UpdateLabel(SubtitleType.DelinquentInjuredFlee, 1, 3f);
+				}
+				else if (this.FoundFriendCorpse)
 				{
 					this.Subtitle.UpdateLabel(SubtitleType.DelinquentFriendFlee, 1, 3f);
 				}
@@ -7992,6 +8021,10 @@ public class StudentScript : MonoBehaviour
 					{
 						this.Subtitle.UpdateLabel(SubtitleType.HeroMurderReaction, 3, 3f);
 					}
+					else if (this.Defeats > 0)
+					{
+						this.Subtitle.UpdateLabel(SubtitleType.DelinquentResume, 3, 3f);
+					}
 					else
 					{
 						this.Subtitle.UpdateLabel(SubtitleType.DelinquentMurderReaction, 3, 3f);
@@ -8121,7 +8154,14 @@ public class StudentScript : MonoBehaviour
 					if (!this.StudentManager.PinningDown)
 					{
 						Debug.Log(base.name + " began fleeing because Violent persona reaction was called.");
-						this.Subtitle.UpdateLabel(SubtitleType.DelinquentMurderReaction, 3, 3f);
+						if (this.Defeats > 0)
+						{
+							this.Subtitle.UpdateLabel(SubtitleType.DelinquentResume, 3, 3f);
+						}
+						else
+						{
+							this.Subtitle.UpdateLabel(SubtitleType.DelinquentMurderReaction, 3, 3f);
+						}
 						this.Pathfinding.target = this.Yandere.transform;
 						this.Pathfinding.canSearch = true;
 						this.Pathfinding.canMove = true;

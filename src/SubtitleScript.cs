@@ -267,6 +267,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] DelinquentCalms;
 
+	public string[] DelinquentFights;
+
 	public string[] DelinquentAvenges;
 
 	public string[] DelinquentWins;
@@ -280,6 +282,8 @@ public class SubtitleScript : MonoBehaviour
 	public string[] DelinquentCorpseReactions;
 
 	public string[] DelinquentFriendCorpseReactions;
+
+	public string[] DelinquentResumes;
 
 	public string[] DelinquentFlees;
 
@@ -553,6 +557,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public AudioClip[] DelinquentCalmClips;
 
+	public AudioClip[] DelinquentFightClips;
+
 	public AudioClip[] DelinquentAvengeClips;
 
 	public AudioClip[] DelinquentWinClips;
@@ -566,6 +572,8 @@ public class SubtitleScript : MonoBehaviour
 	public AudioClip[] DelinquentCorpseReactionClips;
 
 	public AudioClip[] DelinquentFriendCorpseReactionClips;
+
+	public AudioClip[] DelinquentResumeClips;
 
 	public AudioClip[] DelinquentFleeClips;
 
@@ -902,6 +910,10 @@ public class SubtitleScript : MonoBehaviour
 				new AudioClipArrayWrapper(this.DelinquentCalmClips)
 			},
 			{
+				SubtitleType.DelinquentFight,
+				new AudioClipArrayWrapper(this.DelinquentFightClips)
+			},
+			{
 				SubtitleType.DelinquentAvenge,
 				new AudioClipArrayWrapper(this.DelinquentAvengeClips)
 			},
@@ -928,6 +940,10 @@ public class SubtitleScript : MonoBehaviour
 			{
 				SubtitleType.DelinquentFriendCorpseReaction,
 				new AudioClipArrayWrapper(this.DelinquentFriendCorpseReactionClips)
+			},
+			{
+				SubtitleType.DelinquentResume,
+				new AudioClipArrayWrapper(this.DelinquentResumeClips)
 			},
 			{
 				SubtitleType.DelinquentFlee,
@@ -1269,6 +1285,12 @@ public class SubtitleScript : MonoBehaviour
 			this.Label.text = this.DelinquentCalms[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
+		else if (subtitleType == SubtitleType.DelinquentFight)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentFights.Length);
+			this.Label.text = this.DelinquentFights[this.RandomID];
+			this.PlayVoice(subtitleType, this.RandomID);
+		}
 		else if (subtitleType == SubtitleType.DelinquentAvenge)
 		{
 			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentAvenges.Length);
@@ -1309,6 +1331,12 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentFriendCorpseReactions.Length);
 			this.Label.text = this.DelinquentFriendCorpseReactions[this.RandomID];
+			this.PlayVoice(subtitleType, this.RandomID);
+		}
+		else if (subtitleType == SubtitleType.DelinquentResume)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentResumes.Length);
+			this.Label.text = this.DelinquentResumes[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.DelinquentFlee)

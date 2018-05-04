@@ -44,16 +44,20 @@ public class OfferHelpScript : MonoBehaviour
 	{
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			this.Jukebox.Dip = 0.1f;
-			this.Yandere.EmptyHands();
-			this.Yandere.CanMove = false;
-			this.Student = this.StudentManager.Students[this.EventStudentID];
-			this.Student.Prompt.Label[0].text = "     Talk";
-			this.Student.Pushable = false;
-			this.Student.Meeting = false;
-			this.Student.Routine = false;
-			this.Student.MeetTimer = 0f;
-			this.Offering = true;
+			this.Prompt.Circle[0].fillAmount = 1f;
+			if (!this.Yandere.Chased)
+			{
+				this.Jukebox.Dip = 0.1f;
+				this.Yandere.EmptyHands();
+				this.Yandere.CanMove = false;
+				this.Student = this.StudentManager.Students[this.EventStudentID];
+				this.Student.Prompt.Label[0].text = "     Talk";
+				this.Student.Pushable = false;
+				this.Student.Meeting = false;
+				this.Student.Routine = false;
+				this.Student.MeetTimer = 0f;
+				this.Offering = true;
+			}
 		}
 		if (this.Offering)
 		{

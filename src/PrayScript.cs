@@ -134,30 +134,33 @@ public class PrayScript : MonoBehaviour
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Circle[0].fillAmount = 1f;
-			this.Yandere.TargetStudent = this.Student;
-			this.StudentManager.DisablePrompts();
-			this.PrayWindow.gameObject.SetActive(true);
-			this.Show = true;
-			this.Yandere.ShoulderCamera.OverShoulder = true;
-			this.Yandere.WeaponMenu.KeyboardShow = false;
-			this.Yandere.Obscurance.enabled = false;
-			this.Yandere.WeaponMenu.Show = false;
-			this.Yandere.YandereVision = false;
-			this.Yandere.CanMove = false;
-			this.Yandere.Talking = true;
-			this.PromptBar.ClearButtons();
-			this.PromptBar.Label[0].text = "Accept";
-			this.PromptBar.Label[4].text = "Choose";
-			this.PromptBar.UpdateButtons();
-			this.PromptBar.Show = true;
-			this.StudentNumber = ((!this.SpawnMale) ? 16 : 17);
-			if (this.StudentManager.Students[16] != null && !this.StudentManager.Students[16].gameObject.activeInHierarchy)
+			if (!this.Yandere.Chased)
 			{
-				this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, 0.5f);
-			}
-			if (this.StudentManager.Students[17] != null && !this.StudentManager.Students[17].gameObject.activeInHierarchy)
-			{
-				this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, 0.5f);
+				this.Yandere.TargetStudent = this.Student;
+				this.StudentManager.DisablePrompts();
+				this.PrayWindow.gameObject.SetActive(true);
+				this.Show = true;
+				this.Yandere.ShoulderCamera.OverShoulder = true;
+				this.Yandere.WeaponMenu.KeyboardShow = false;
+				this.Yandere.Obscurance.enabled = false;
+				this.Yandere.WeaponMenu.Show = false;
+				this.Yandere.YandereVision = false;
+				this.Yandere.CanMove = false;
+				this.Yandere.Talking = true;
+				this.PromptBar.ClearButtons();
+				this.PromptBar.Label[0].text = "Accept";
+				this.PromptBar.Label[4].text = "Choose";
+				this.PromptBar.UpdateButtons();
+				this.PromptBar.Show = true;
+				this.StudentNumber = ((!this.SpawnMale) ? 16 : 17);
+				if (this.StudentManager.Students[16] != null && !this.StudentManager.Students[16].gameObject.activeInHierarchy)
+				{
+					this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, 0.5f);
+				}
+				if (this.StudentManager.Students[17] != null && !this.StudentManager.Students[17].gameObject.activeInHierarchy)
+				{
+					this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, 0.5f);
+				}
 			}
 		}
 		if (!this.Show)

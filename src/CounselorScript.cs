@@ -161,38 +161,41 @@ public class CounselorScript : MonoBehaviour
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Circle[0].fillAmount = 1f;
-			if (!this.Busy)
+			if (!this.Yandere.Chased)
 			{
-				component.CrossFade("CounselorComputerAttention", 1f);
-				this.ChinTimer = 0f;
-				this.Yandere.TargetStudent = this.Student;
-				int num = UnityEngine.Random.Range(1, 3);
-				this.CounselorSubtitle.text = this.CounselorGreetingText[num];
-				component2.clip = this.CounselorGreetingClips[num];
-				component2.Play();
-				this.StudentManager.DisablePrompts();
-				this.CounselorWindow.gameObject.SetActive(true);
-				this.LookAtPlayer = true;
-				this.ShowWindow = true;
-				this.Yandere.ShoulderCamera.OverShoulder = true;
-				this.Yandere.WeaponMenu.KeyboardShow = false;
-				this.Yandere.Obscurance.enabled = false;
-				this.Yandere.WeaponMenu.Show = false;
-				this.Yandere.YandereVision = false;
-				this.Yandere.CanMove = false;
-				this.Yandere.Talking = true;
-				this.PromptBar.ClearButtons();
-				this.PromptBar.Label[0].text = "Accept";
-				this.PromptBar.Label[4].text = "Choose";
-				this.PromptBar.UpdateButtons();
-				this.PromptBar.Show = true;
-				this.UpdateList();
-			}
-			else
-			{
-				this.CounselorSubtitle.text = this.CounselorBusyText;
-				component2.clip = this.CounselorBusyClip;
-				component2.Play();
+				if (!this.Busy)
+				{
+					component.CrossFade("CounselorComputerAttention", 1f);
+					this.ChinTimer = 0f;
+					this.Yandere.TargetStudent = this.Student;
+					int num = UnityEngine.Random.Range(1, 3);
+					this.CounselorSubtitle.text = this.CounselorGreetingText[num];
+					component2.clip = this.CounselorGreetingClips[num];
+					component2.Play();
+					this.StudentManager.DisablePrompts();
+					this.CounselorWindow.gameObject.SetActive(true);
+					this.LookAtPlayer = true;
+					this.ShowWindow = true;
+					this.Yandere.ShoulderCamera.OverShoulder = true;
+					this.Yandere.WeaponMenu.KeyboardShow = false;
+					this.Yandere.Obscurance.enabled = false;
+					this.Yandere.WeaponMenu.Show = false;
+					this.Yandere.YandereVision = false;
+					this.Yandere.CanMove = false;
+					this.Yandere.Talking = true;
+					this.PromptBar.ClearButtons();
+					this.PromptBar.Label[0].text = "Accept";
+					this.PromptBar.Label[4].text = "Choose";
+					this.PromptBar.UpdateButtons();
+					this.PromptBar.Show = true;
+					this.UpdateList();
+				}
+				else
+				{
+					this.CounselorSubtitle.text = this.CounselorBusyText;
+					component2.clip = this.CounselorBusyClip;
+					component2.Play();
+				}
 			}
 		}
 		if (this.LookAtPlayer)

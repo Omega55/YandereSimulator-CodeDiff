@@ -92,13 +92,17 @@ public class PickpocketScript : MonoBehaviour
 			}
 			if (this.Prompt.Circle[0].fillAmount == 0f)
 			{
-				this.PickpocketMinigame.PickpocketSpot = this.PickpocketSpot;
-				this.PickpocketMinigame.Show = true;
-				this.PickpocketMinigame.ID = this.ID;
-				this.Student.Yandere.CharacterAnimation.CrossFade("f02_pickpocketing_00");
-				this.Student.Yandere.Pickpocketing = true;
-				this.Student.Yandere.EmptyHands();
-				this.Student.Yandere.CanMove = false;
+				this.Prompt.Circle[0].fillAmount = 1f;
+				if (!this.Prompt.Yandere.Chased)
+				{
+					this.PickpocketMinigame.PickpocketSpot = this.PickpocketSpot;
+					this.PickpocketMinigame.Show = true;
+					this.PickpocketMinigame.ID = this.ID;
+					this.Student.Yandere.CharacterAnimation.CrossFade("f02_pickpocketing_00");
+					this.Student.Yandere.Pickpocketing = true;
+					this.Student.Yandere.EmptyHands();
+					this.Student.Yandere.CanMove = false;
+				}
 			}
 			if (this.PickpocketMinigame != null && this.PickpocketMinigame.ID == this.ID)
 			{

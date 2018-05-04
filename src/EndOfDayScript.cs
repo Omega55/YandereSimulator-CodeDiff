@@ -704,7 +704,7 @@ public class EndOfDayScript : MonoBehaviour
 					}
 					else
 					{
-						this.Label.text = this.JSON.Students[fingerprintID].Name + "'s fingerprints are on the same weapon that killed her. The police cannot solve this mystery.";
+						this.Label.text = this.JSON.Students[fingerprintID].Name + "'s fingerprints are on the same weapon that killed them. The police cannot solve this mystery.";
 					}
 				}
 				this.Phase = 6;

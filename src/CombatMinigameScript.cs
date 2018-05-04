@@ -461,7 +461,6 @@ public class CombatMinigameScript : MonoBehaviour
 					this.Delinquent.OriginalWalkAnim = this.Delinquent.WalkAnim;
 					this.Delinquent.LeanAnim = this.Delinquent.IdleAnim;
 					this.Delinquent.CharacterAnimation.CrossFade(this.Delinquent.IdleAnim);
-					this.Yandere.CharacterAnimation.CrossFade(this.Yandere.IdleAnim);
 					if (this.Delinquent.WitnessedMurder)
 					{
 						this.Yandere.Subtitle.UpdateLabel(SubtitleType.DelinquentNoSurrender, 0, 5f);
@@ -471,11 +470,7 @@ public class CombatMinigameScript : MonoBehaviour
 						this.Yandere.Subtitle.UpdateLabel(SubtitleType.DelinquentSurrender, 0, 5f);
 						this.Delinquent.Persona = PersonaType.Loner;
 					}
-					this.Yandere.DelinquentFighting = false;
-					this.Yandere.RPGCamera.enabled = true;
-					this.Yandere.CannotRecover = false;
-					this.Yandere.CanMove = true;
-					this.Yandere.Chased = false;
+					this.ReleaseYandere();
 					this.Delinquent.Threatened = true;
 					this.Delinquent.Fighting = false;
 					this.Delinquent.Alarmed = true;
@@ -485,18 +480,9 @@ public class CombatMinigameScript : MonoBehaviour
 					this.Delinquent.Shoving = false;
 					this.Delinquent.Paired = false;
 					this.Delinquent.Strength = 0;
-					this.Label.text = "State: A";
-					this.Strength = 0f;
-					this.Strike = 0;
-					this.Phase = 0;
-					this.Path = 0;
-					this.MyAudio.clip = this.CombatSFX[this.Path];
-					this.MyAudio.time = 0f;
-					this.MyAudio.Stop();
-					this.MyVocals.clip = this.Vocals[this.Path];
-					this.MyVocals.time = 0f;
-					this.MyVocals.Stop();
+					this.Delinquent.Defeats++;
 					this.Delinquent = null;
+					this.ResetValues();
 					this.Yandere.StudentManager.UpdateStudents();
 				}
 			}
@@ -562,18 +548,7 @@ public class CombatMinigameScript : MonoBehaviour
 				this.Delinquent.Shoving = false;
 				this.Delinquent.Paired = false;
 				this.Delinquent.Patience = 5;
-				this.Label.text = "State: A";
-				this.Strength = 0f;
-				this.Strike = 0;
-				this.Phase = 0;
-				this.Path = 0;
-				this.MyAudio.clip = this.CombatSFX[this.Path];
-				this.MyAudio.time = 0f;
-				this.MyAudio.Stop();
-				this.MyVocals.clip = this.Vocals[this.Path];
-				this.MyVocals.time = 0f;
-				this.MyVocals.Stop();
-				this.Delinquent = null;
+				this.ResetValues();
 				this.Yandere.StudentManager.UpdateStudents();
 				this.Yandere.StudentManager.Rest.Prompt.enabled = true;
 			}
@@ -659,9 +634,34 @@ public class CombatMinigameScript : MonoBehaviour
 		if (this.Delinquent != null)
 		{
 			this.Delinquent.CharacterAnimation.CrossFade("delinquentCombatIdle_00");
-			this.MyVocals.Stop();
-			this.MyAudio.Stop();
+			this.ResetValues();
 			base.enabled = false;
 		}
+	}
+
+	public void ResetValues()
+	{
+		this.Label.text = "State: A";
+		this.Strength = 0f;
+		this.Strike = 0;
+		this.Phase = 0;
+		this.Path = 0;
+		this.MyAudio.clip = this.CombatSFX[this.Path];
+		this.MyAudio.time = 0f;
+		this.MyAudio.Stop();
+		this.MyVocals.clip = this.Vocals[this.Path];
+		this.MyVocals.time = 0f;
+		this.MyVocals.Stop();
+		this.Delinquent = null;
+	}
+
+	public void ReleaseYandere()
+	{
+		this.Yandere.CharacterAnimation.CrossFade(this.Yandere.IdleAnim);
+		this.Yandere.DelinquentFighting = false;
+		this.Yandere.RPGCamera.enabled = true;
+		this.Yandere.CannotRecover = false;
+		this.Yandere.CanMove = true;
+		this.Yandere.Chased = false;
 	}
 }
