@@ -444,7 +444,7 @@ public class TalkingScript : MonoBehaviour
 						{
 							StudentScript studentScript = this.S.StudentManager.Students[this.S.DialogueWheel.Victim];
 							this.Grudge = false;
-							if (this.S.Club == ClubType.Bully && studentScript.Club == ClubType.Delinquent)
+							if (studentScript.Club == ClubType.Delinquent || (this.S.Bullied && studentScript.Club == ClubType.Bully))
 							{
 								this.Grudge = true;
 							}

@@ -5723,6 +5723,7 @@ public class YandereScript : MonoBehaviour
 
 	public void BullyPhotoCheck()
 	{
+		Debug.Log("We are now going to perform a bully photo check.");
 		for (int i = 1; i < 26; i++)
 		{
 			if (PlayerGlobals.GetBullyPhoto(i) > 0)

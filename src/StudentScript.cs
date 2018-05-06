@@ -1207,7 +1207,6 @@ public class StudentScript : MonoBehaviour
 			this.CameraEffects = this.MainCamera.GetComponent<CameraEffectsScript>();
 			this.RightEyeOrigin = this.RightEye.localPosition;
 			this.LeftEyeOrigin = this.LeftEye.localPosition;
-			this.PickRandomAnim();
 			this.HealthBar.transform.parent.gameObject.SetActive(false);
 			this.ChaseCamera.gameObject.SetActive(false);
 			this.Countdown.gameObject.SetActive(false);
@@ -1495,6 +1494,7 @@ public class StudentScript : MonoBehaviour
 				}
 				else if (this.StudentID == 22)
 				{
+					this.GetNewAnimation = true;
 					this.ClubAnim = "idle_20";
 					this.ActivityAnim = "kick_24";
 				}
@@ -1505,6 +1505,7 @@ public class StudentScript : MonoBehaviour
 				}
 				else if (this.StudentID == 24)
 				{
+					this.GetNewAnimation = true;
 					this.ClubAnim = "f02_idle_20";
 					this.ActivityAnim = "f02_kick_23";
 				}
@@ -1620,6 +1621,7 @@ public class StudentScript : MonoBehaviour
 				this.Grudge = true;
 				this.CameraAnims = this.EvilAnims;
 			}
+			this.PickRandomAnim();
 			if (this.Club != ClubType.None && (this.StudentID == 21 || this.StudentID == 26))
 			{
 				this.Armband.SetActive(true);
@@ -2461,7 +2463,7 @@ public class StudentScript : MonoBehaviour
 										}
 										else
 										{
-											if (!this.InEvent && !this.SpeechLines.isPlaying)
+											if (!this.InEvent && !this.Grudge && !this.SpeechLines.isPlaying)
 											{
 												this.SmartPhone.SetActive(false);
 												this.SpeechLines.Play();
@@ -2491,7 +2493,7 @@ public class StudentScript : MonoBehaviour
 									}
 									else
 									{
-										if (!this.InEvent && !this.SpeechLines.isPlaying)
+										if (!this.InEvent && !this.Grudge && !this.SpeechLines.isPlaying)
 										{
 											this.SmartPhone.SetActive(false);
 											this.SpeechLines.Play();
@@ -3483,16 +3485,19 @@ public class StudentScript : MonoBehaviour
 											if (this.StudentManager.Reporter == this)
 											{
 												this.StudentManager.Reporter = null;
-												this.StudentManager.StopFleeing();
 												this.StudentManager.UpdateStudents();
 											}
 											this.StudentManager.CorpseLocation.position = Vector3.zero;
+											this.CurrentDestination = this.Destinations[this.Phase];
 											this.Pathfinding.target = this.Destinations[this.Phase];
 											this.Pathfinding.speed = 1f;
 											this.TargetDistance = 1f;
 											this.ReportPhase = 0;
 											this.ReportTimer = 0f;
 											this.AlarmTimer = 0f;
+											this.RandomAnim = this.BulliedIdleAnim;
+											this.IdleAnim = this.BulliedIdleAnim;
+											this.WalkAnim = this.BulliedWalkAnim;
 											Debug.Log("WitnessedMurder is being set to false.");
 											this.WitnessedMurder = false;
 											this.WitnessedCorpse = false;
@@ -6230,7 +6235,7 @@ public class StudentScript : MonoBehaviour
 						{
 							this.AlarmTimer = 0f;
 							this.ThreatTimer += Time.deltaTime;
-							if (this.ThreatTimer > 5f)
+							if (this.ThreatTimer > 5f && this.Prompt.InSight)
 							{
 								this.ThreatTimer = 0f;
 								this.Shove();
@@ -6644,7 +6649,7 @@ public class StudentScript : MonoBehaviour
 				}
 				this.Reacted = true;
 			}
-			if (this.Club == ClubType.Council && (double)this.DistanceToPlayer < 1.1 && this.Yandere.Armed)
+			if (this.Club == ClubType.Council && (double)this.DistanceToPlayer < 1.1 && this.Yandere.Armed && this.Prompt.InSight)
 			{
 				this.Spray();
 			}
@@ -6673,11 +6678,14 @@ public class StudentScript : MonoBehaviour
 					{
 						this.MyController.Move(base.transform.forward * Time.deltaTime * -1f);
 					}
-					this.CheerTimer = Mathf.MoveTowards(this.CheerTimer, 0f, Time.deltaTime);
-					if (this.CheerTimer == 0f)
+					if (this.Yandere.enabled)
 					{
-						this.Subtitle.UpdateLabel(SubtitleType.DelinquentCheer, 0, 5f);
-						this.CheerTimer = UnityEngine.Random.Range(2f, 3f);
+						this.CheerTimer = Mathf.MoveTowards(this.CheerTimer, 0f, Time.deltaTime);
+						if (this.CheerTimer == 0f)
+						{
+							this.Subtitle.UpdateLabel(SubtitleType.DelinquentCheer, 0, 5f);
+							this.CheerTimer = UnityEngine.Random.Range(2f, 3f);
+						}
 					}
 					this.CharacterAnimation.CrossFade(this.RandomCheerAnim);
 					if (this.CharacterAnimation[this.RandomCheerAnim].time >= this.CharacterAnimation[this.RandomCheerAnim].length)
@@ -7280,7 +7288,7 @@ public class StudentScript : MonoBehaviour
 						if (this.DistanceToPlayer < 1f)
 						{
 							float f2 = Vector3.Angle(-base.transform.forward, this.Yandere.transform.position - base.transform.position);
-							if (Mathf.Abs(f2) > 45f && this.Yandere.Armed)
+							if (Mathf.Abs(f2) > 45f && this.Yandere.Armed && this.Prompt.InSight)
 							{
 								this.Spray();
 							}
@@ -8577,43 +8585,57 @@ public class StudentScript : MonoBehaviour
 
 	public void PickRandomAnim()
 	{
-		if (this.Club != ClubType.Delinquent)
+		if (this.Grudge)
 		{
-			this.RandomAnim = this.AnimationNames[UnityEngine.Random.Range(0, this.AnimationNames.Length)];
+			this.RandomAnim = this.BulliedIdleAnim;
 		}
 		else
 		{
-			this.RandomAnim = this.DelinquentAnims[UnityEngine.Random.Range(0, this.DelinquentAnims.Length)];
-		}
-		if (!this.InEvent && this.Actions[this.Phase] == StudentActionType.Socializing && this.DistanceToPlayer < 3f)
-		{
-			if (!ConversationGlobals.GetTopicDiscovered(11))
+			if (this.Club != ClubType.Delinquent)
 			{
-				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
-				ConversationGlobals.SetTopicDiscovered(11, true);
+				this.RandomAnim = this.AnimationNames[UnityEngine.Random.Range(0, this.AnimationNames.Length)];
 			}
-			if (!ConversationGlobals.GetTopicLearnedByStudent(11, this.StudentID))
+			else
 			{
-				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
-				ConversationGlobals.SetTopicLearnedByStudent(11, this.StudentID, true);
+				this.RandomAnim = this.DelinquentAnims[UnityEngine.Random.Range(0, this.DelinquentAnims.Length)];
+			}
+			if (!this.InEvent && this.Actions[this.Phase] == StudentActionType.Socializing && this.DistanceToPlayer < 3f)
+			{
+				if (!ConversationGlobals.GetTopicDiscovered(11))
+				{
+					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+					ConversationGlobals.SetTopicDiscovered(11, true);
+				}
+				if (!ConversationGlobals.GetTopicLearnedByStudent(11, this.StudentID))
+				{
+					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
+					ConversationGlobals.SetTopicLearnedByStudent(11, this.StudentID, true);
+				}
 			}
 		}
 	}
 
 	private void PickRandomGossipAnim()
 	{
-		this.RandomGossipAnim = this.GossipAnims[UnityEngine.Random.Range(0, this.GossipAnims.Length)];
-		if (this.Actions[this.Phase] == StudentActionType.Gossip && this.DistanceToPlayer < 3f)
+		if (this.Grudge)
 		{
-			if (!ConversationGlobals.GetTopicDiscovered(15))
+			this.RandomAnim = this.BulliedIdleAnim;
+		}
+		else
+		{
+			this.RandomGossipAnim = this.GossipAnims[UnityEngine.Random.Range(0, this.GossipAnims.Length)];
+			if (this.Actions[this.Phase] == StudentActionType.Gossip && this.DistanceToPlayer < 3f)
 			{
-				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
-				ConversationGlobals.SetTopicDiscovered(15, true);
-			}
-			if (!ConversationGlobals.GetTopicLearnedByStudent(15, this.StudentID))
-			{
-				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
-				ConversationGlobals.SetTopicLearnedByStudent(15, this.StudentID, true);
+				if (!ConversationGlobals.GetTopicDiscovered(15))
+				{
+					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+					ConversationGlobals.SetTopicDiscovered(15, true);
+				}
+				if (!ConversationGlobals.GetTopicLearnedByStudent(15, this.StudentID))
+				{
+					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
+					ConversationGlobals.SetTopicLearnedByStudent(15, this.StudentID, true);
+				}
 			}
 		}
 	}
@@ -8880,14 +8902,18 @@ public class StudentScript : MonoBehaviour
 		this.Prompt.Label[0].text = "     Talk";
 		this.Pathfinding.canSearch = true;
 		this.Pathfinding.canMove = true;
-		this.StudentManager.OfferHelp.gameObject.SetActive(false);
 		this.Drownable = false;
 		this.Pushable = false;
 		this.Meeting = false;
 		this.MeetTimer = 0f;
 		if (this.StudentID == 7)
 		{
+			this.StudentManager.OfferHelp.gameObject.SetActive(false);
 			this.StudentManager.LoveManager.RivalWaiting = false;
+		}
+		else if (this.StudentID == 32)
+		{
+			this.StudentManager.FragileOfferHelp.gameObject.SetActive(false);
 		}
 	}
 

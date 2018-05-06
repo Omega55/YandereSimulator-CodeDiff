@@ -69,8 +69,7 @@ public class PromptScript : MonoBehaviour
 
 	public bool Carried;
 
-	[SerializeField]
-	private bool InSight;
+	public bool InSight;
 
 	public bool Attack;
 
