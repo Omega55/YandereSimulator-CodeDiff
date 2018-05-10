@@ -235,7 +235,7 @@ public class PortalScript : MonoBehaviour
 				}
 			}
 		}
-		else if (this.Yandere.Armed || this.Yandere.Bloodiness > 0f || this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Dragging || this.Yandere.PickUp != null || this.Yandere.Chased || this.StudentManager.Reporter != null || this.StudentManager.MurderTakingPlace)
+		else if (this.Yandere.Armed || this.Yandere.Bloodiness > 0f || this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Dragging || this.Yandere.PickUp != null || this.Yandere.Chased || this.Yandere.Chasers > 0 || this.StudentManager.Reporter != null || this.StudentManager.MurderTakingPlace)
 		{
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;

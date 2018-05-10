@@ -112,7 +112,7 @@ public class ArmDetectorScript : MonoBehaviour
 				}
 				num++;
 			}
-			if (this.Sacrifices > 4)
+			if (this.Sacrifices > 4 && !this.Yandere.Chased && this.Yandere.Chasers == 0)
 			{
 				this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
 				this.Yandere.CanMove = false;

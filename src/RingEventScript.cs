@@ -189,7 +189,7 @@ public class RingEventScript : MonoBehaviour
 							this.EventStudent.Cosmetic.FemaleAccessories[3].transform.localPosition = this.OriginalPosition;
 							this.RingCollider.enabled = false;
 						}
-						if (this.Timer > 5f)
+						if (this.Timer > 6f)
 						{
 							this.EndEvent();
 						}
@@ -250,7 +250,7 @@ public class RingEventScript : MonoBehaviour
 				this.EventStudent.Prompt.enabled = true;
 			}
 			this.EventStudent.Pathfinding.speed = 1f;
-			this.EventStudent.TargetDistance = 1f;
+			this.EventStudent.TargetDistance = 0.5f;
 			this.EventStudent.InEvent = false;
 			this.EventStudent.Private = false;
 			this.EventSubtitle.text = string.Empty;

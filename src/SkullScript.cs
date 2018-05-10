@@ -65,29 +65,33 @@ public class SkullScript : MonoBehaviour
 		AudioSource component = base.GetComponent<AudioSource>();
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			this.Yandere.EquippedWeapon.Drop();
-			this.Yandere.EquippedWeapon = null;
-			this.Yandere.Unequip();
-			this.Yandere.DropTimer[this.Yandere.Equipped] = 0f;
-			this.RitualKnife.transform.position = this.OriginalPosition;
-			this.RitualKnife.transform.eulerAngles = this.OriginalRotation;
-			this.RitualKnife.GetComponent<Rigidbody>().useGravity = false;
-			if (this.RitualKnife.GetComponent<WeaponScript>().Heated && !this.RitualKnife.GetComponent<WeaponScript>().Flaming)
+			this.Prompt.Circle[0].fillAmount = 1f;
+			if (!this.Yandere.Chased && this.Yandere.Chasers == 0)
 			{
-				component.clip = this.FlameDemonVoice;
-				component.Play();
-				this.FlameTimer = 10f;
-				this.RitualKnife.GetComponent<WeaponScript>().Prompt.Hide();
-				this.RitualKnife.GetComponent<WeaponScript>().Prompt.enabled = false;
-			}
-			else if (this.RitualKnife.GetComponent<WeaponScript>().Blood.enabled)
-			{
-				this.DebugMenu.SetActive(false);
-				this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
-				this.Yandere.CanMove = false;
-				UnityEngine.Object.Instantiate<GameObject>(this.DarkAura, this.Yandere.transform.position + Vector3.up * 0.81f, Quaternion.identity);
-				this.Timer += Time.deltaTime;
-				this.Clock.StopTime = true;
+				this.Yandere.EquippedWeapon.Drop();
+				this.Yandere.EquippedWeapon = null;
+				this.Yandere.Unequip();
+				this.Yandere.DropTimer[this.Yandere.Equipped] = 0f;
+				this.RitualKnife.transform.position = this.OriginalPosition;
+				this.RitualKnife.transform.eulerAngles = this.OriginalRotation;
+				this.RitualKnife.GetComponent<Rigidbody>().useGravity = false;
+				if (this.RitualKnife.GetComponent<WeaponScript>().Heated && !this.RitualKnife.GetComponent<WeaponScript>().Flaming)
+				{
+					component.clip = this.FlameDemonVoice;
+					component.Play();
+					this.FlameTimer = 10f;
+					this.RitualKnife.GetComponent<WeaponScript>().Prompt.Hide();
+					this.RitualKnife.GetComponent<WeaponScript>().Prompt.enabled = false;
+				}
+				else if (this.RitualKnife.GetComponent<WeaponScript>().Blood.enabled)
+				{
+					this.DebugMenu.SetActive(false);
+					this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
+					this.Yandere.CanMove = false;
+					UnityEngine.Object.Instantiate<GameObject>(this.DarkAura, this.Yandere.transform.position + Vector3.up * 0.81f, Quaternion.identity);
+					this.Timer += Time.deltaTime;
+					this.Clock.StopTime = true;
+				}
 			}
 		}
 		if (this.FlameTimer > 0f)

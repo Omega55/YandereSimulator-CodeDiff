@@ -391,6 +391,8 @@ public class YandereScript : MonoBehaviour
 
 	public int Equipped;
 
+	public int Chasers;
+
 	public int Costume;
 
 	public int Alerts;
@@ -731,6 +733,16 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject BanchoPants;
 
+	public Mesh BanchoMesh;
+
+	public Texture BanchoBody;
+
+	public Texture BanchoFace;
+
+	public GameObject[] BanchoAccessories;
+
+	public bool BanchoActive;
+
 	public GameObject[] SlenderHair;
 
 	public Texture SlenderUniform;
@@ -929,7 +941,15 @@ public class YandereScript : MonoBehaviour
 
 	public int SithComboLength;
 
+	public int SithAttacks;
+
+	public int SithSounds;
+
 	public int SithCombo;
+
+	public GameObject SithHardHitbox;
+
+	public GameObject SithHitbox;
 
 	public GameObject SithTrail1;
 
@@ -948,6 +968,14 @@ public class YandereScript : MonoBehaviour
 	public AudioClip SithSwing;
 
 	public AudioClip SithStrike;
+
+	public AudioSource SithAudio;
+
+	public float[] SithHardSpawnTime1;
+
+	public float[] SithHardSpawnTime2;
+
+	public float[] SithSpawnTime;
 
 	public Texture SnakeFace;
 
@@ -1151,6 +1179,12 @@ public class YandereScript : MonoBehaviour
 		while (this.ID < this.KLKParts.Length)
 		{
 			this.KLKParts[this.ID].SetActive(false);
+			this.ID++;
+		}
+		this.ID = 0;
+		while (this.ID < this.BanchoAccessories.Length)
+		{
+			this.BanchoAccessories[this.ID].SetActive(false);
 			this.ID++;
 		}
 		if (PlayerGlobals.PantiesEquipped == 5)
@@ -1779,8 +1813,6 @@ public class YandereScript : MonoBehaviour
 							if (Input.GetButtonDown("X"))
 							{
 								this.CharacterAnimation.Play("f02_sithAttack_00");
-								this.SithBeam[1].gameObject.SetActive(true);
-								this.SithBeam[2].gameObject.SetActive(true);
 								this.SithBeam[1].Damage = 10f;
 								this.SithBeam[2].Damage = 10f;
 								this.SithAttacking = true;
@@ -1790,8 +1822,6 @@ public class YandereScript : MonoBehaviour
 							if (Input.GetButtonDown("Y"))
 							{
 								this.CharacterAnimation.Play("f02_sithAttackHard_00");
-								this.SithBeam[1].gameObject.SetActive(true);
-								this.SithBeam[2].gameObject.SetActive(true);
 								this.SithBeam[1].Damage = 20f;
 								this.SithBeam[2].Damage = 20f;
 								this.SithAttacking = true;
@@ -3097,6 +3127,60 @@ public class YandereScript : MonoBehaviour
 			{
 				if (!this.SithRecovering)
 				{
+					if (this.SithBeam[1].Damage == 10f)
+					{
+						if (this.SithAttacks == 0 && this.CharacterAnimation[string.Concat(new object[]
+						{
+							"f02_sithAttack",
+							this.SithPrefix,
+							"_0",
+							this.SithCombo
+						})].time >= this.SithSpawnTime[this.SithCombo])
+						{
+							UnityEngine.Object.Instantiate<GameObject>(this.SithHitbox, base.transform.position + base.transform.forward * 1f + base.transform.up, base.transform.rotation);
+							this.SithAttacks++;
+						}
+					}
+					else if (this.SithAttacks == 0)
+					{
+						if (this.CharacterAnimation[string.Concat(new object[]
+						{
+							"f02_sithAttack",
+							this.SithPrefix,
+							"_0",
+							this.SithCombo
+						})].time >= this.SithHardSpawnTime1[this.SithCombo])
+						{
+							UnityEngine.Object.Instantiate<GameObject>(this.SithHardHitbox, base.transform.position + base.transform.forward * 1f + base.transform.up, base.transform.rotation);
+							this.SithAttacks++;
+						}
+					}
+					else if (this.SithAttacks == 1)
+					{
+						if (this.CharacterAnimation[string.Concat(new object[]
+						{
+							"f02_sithAttack",
+							this.SithPrefix,
+							"_0",
+							this.SithCombo
+						})].time >= this.SithHardSpawnTime2[this.SithCombo])
+						{
+							UnityEngine.Object.Instantiate<GameObject>(this.SithHardHitbox, base.transform.position + base.transform.forward * 1f + base.transform.up, base.transform.rotation);
+							this.SithAttacks++;
+						}
+					}
+					else if (this.SithAttacks == 2 && this.SithCombo == 1 && this.CharacterAnimation[string.Concat(new object[]
+					{
+						"f02_sithAttack",
+						this.SithPrefix,
+						"_0",
+						this.SithCombo
+					})].time >= 0.933333337f)
+					{
+						UnityEngine.Object.Instantiate<GameObject>(this.SithHardHitbox, base.transform.position + base.transform.forward * 1f + base.transform.up, base.transform.rotation);
+						this.SithAttacks++;
+					}
+					this.SithSoundCheck();
 					if (this.CharacterAnimation[string.Concat(new object[]
 					{
 						"f02_sithAttack",
@@ -3114,6 +3198,8 @@ public class YandereScript : MonoBehaviour
 						if (this.SithCombo < this.SithComboLength)
 						{
 							this.SithCombo++;
+							this.SithSounds = 0;
+							this.SithAttacks = 0;
 							this.CharacterAnimation.CrossFade(string.Concat(new object[]
 							{
 								"f02_sithAttack",
@@ -3131,6 +3217,13 @@ public class YandereScript : MonoBehaviour
 								"_0",
 								this.SithCombo
 							}));
+							this.CharacterAnimation[string.Concat(new object[]
+							{
+								"f02_sithRecover",
+								this.SithPrefix,
+								"_0",
+								this.SithCombo
+							})].speed = 2f;
 							this.SithRecovering = true;
 						}
 					}
@@ -3160,11 +3253,18 @@ public class YandereScript : MonoBehaviour
 					this.SithCombo
 				})].length)
 				{
-					this.SithBeam[1].gameObject.SetActive(false);
-					this.SithBeam[2].gameObject.SetActive(false);
+					this.CharacterAnimation[string.Concat(new object[]
+					{
+						"f02_sithRecover",
+						this.SithPrefix,
+						"_0",
+						this.SithCombo
+					})].speed = 1f;
 					this.SithRecovering = false;
 					this.SithAttacking = false;
 					this.SithComboLength = 0;
+					this.SithAttacks = 0;
+					this.SithSounds = 0;
 					this.SithCombo = 0;
 					this.CanMove = true;
 				}
@@ -4395,36 +4495,38 @@ public class YandereScript : MonoBehaviour
 								this.StudentManager.NoGravity = true;
 								this.EasterEggMenu.SetActive(false);
 							}
-							else if (!Input.GetKeyDown(KeyCode.D))
+							else if (Input.GetKeyDown(KeyCode.D))
 							{
-								if (Input.GetKeyDown(KeyCode.M))
-								{
-									this.EasterEggMenu.SetActive(false);
-									this.Snake();
-								}
-								else if (Input.GetKeyDown(KeyCode.Alpha1))
-								{
-									this.EasterEggMenu.SetActive(false);
-									this.Gazer();
-								}
-								else if (Input.GetKeyDown(KeyCode.Alpha3))
-								{
-									this.StudentManager.SecurityCameras();
-									this.EasterEggMenu.SetActive(false);
-								}
-								else if (Input.GetKeyDown(KeyCode.Alpha4))
-								{
-									this.KLK();
-									this.EasterEggMenu.SetActive(false);
-								}
-								else if (Input.GetKeyDown(KeyCode.Alpha6))
-								{
-									this.EasterEggMenu.SetActive(false);
-									this.Six();
-								}
-								else if (Input.GetKeyDown(KeyCode.Space))
-								{
-								}
+								this.EasterEggMenu.SetActive(false);
+								this.Sith();
+							}
+							else if (Input.GetKeyDown(KeyCode.M))
+							{
+								this.EasterEggMenu.SetActive(false);
+								this.Snake();
+							}
+							else if (Input.GetKeyDown(KeyCode.Alpha1))
+							{
+								this.EasterEggMenu.SetActive(false);
+								this.Gazer();
+							}
+							else if (Input.GetKeyDown(KeyCode.Alpha3))
+							{
+								this.StudentManager.SecurityCameras();
+								this.EasterEggMenu.SetActive(false);
+							}
+							else if (Input.GetKeyDown(KeyCode.Alpha4))
+							{
+								this.KLK();
+								this.EasterEggMenu.SetActive(false);
+							}
+							else if (Input.GetKeyDown(KeyCode.Alpha6))
+							{
+								this.EasterEggMenu.SetActive(false);
+								this.Six();
+							}
+							else if (Input.GetKeyDown(KeyCode.Space))
+							{
 							}
 						}
 					}
@@ -5016,15 +5118,29 @@ public class YandereScript : MonoBehaviour
 
 	private void Bancho()
 	{
+		this.BanchoAccessories[0].SetActive(true);
+		this.BanchoAccessories[1].SetActive(true);
+		this.BanchoAccessories[2].SetActive(true);
+		this.BanchoAccessories[3].SetActive(true);
+		this.BanchoAccessories[4].SetActive(true);
+		this.BanchoAccessories[5].SetActive(true);
+		this.BanchoAccessories[6].SetActive(true);
+		this.BanchoAccessories[7].SetActive(true);
+		this.BanchoAccessories[8].SetActive(true);
 		this.OriginalIdleAnim = this.IdleAnim;
 		this.OriginalWalkAnim = this.WalkAnim;
 		this.OriginalRunAnim = this.RunAnim;
 		this.BanchoPants.SetActive(true);
-		this.MyRenderer.sharedMesh = this.NudeMesh;
-		this.PantyAttacher.newRenderer.enabled = false;
-		this.MyRenderer.materials[1].mainTexture = this.NudeTexture;
-		this.MyRenderer.materials[2].mainTexture = this.NudeTexture;
+		this.MyRenderer.sharedMesh = this.BanchoMesh;
+		this.MyRenderer.materials[0].mainTexture = this.BanchoFace;
+		this.MyRenderer.materials[1].mainTexture = this.BanchoBody;
+		this.MyRenderer.materials[2].mainTexture = this.BanchoBody;
+		this.BanchoActive = true;
 		this.TheDebugMenuScript.UpdateCensor();
+		this.Character.transform.localPosition = new Vector3(0f, 0.04f, 0f);
+		this.Hairstyle = 0;
+		this.UpdateHair();
+		this.EasterEggMenu.SetActive(false);
 		this.Egg = true;
 	}
 
@@ -5777,6 +5893,67 @@ public class YandereScript : MonoBehaviour
 		case 12:
 			this.Persona = YanderePersonaType.Grunt;
 			break;
+		}
+	}
+
+	private void SithSoundCheck()
+	{
+		if (this.SithBeam[1].Damage == 10f)
+		{
+			if (this.SithSounds == 0 && this.CharacterAnimation[string.Concat(new object[]
+			{
+				"f02_sithAttack",
+				this.SithPrefix,
+				"_0",
+				this.SithCombo
+			})].time >= this.SithSpawnTime[this.SithCombo] - 0.1f)
+			{
+				this.SithAudio.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+				this.SithAudio.Play();
+				this.SithSounds++;
+			}
+		}
+		else if (this.SithSounds == 0)
+		{
+			if (this.CharacterAnimation[string.Concat(new object[]
+			{
+				"f02_sithAttack",
+				this.SithPrefix,
+				"_0",
+				this.SithCombo
+			})].time >= this.SithHardSpawnTime1[this.SithCombo] - 0.1f)
+			{
+				this.SithAudio.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+				this.SithAudio.Play();
+				this.SithSounds++;
+			}
+		}
+		else if (this.SithSounds == 1)
+		{
+			if (this.CharacterAnimation[string.Concat(new object[]
+			{
+				"f02_sithAttack",
+				this.SithPrefix,
+				"_0",
+				this.SithCombo
+			})].time >= this.SithHardSpawnTime2[this.SithCombo] - 0.1f)
+			{
+				this.SithAudio.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+				this.SithAudio.Play();
+				this.SithSounds++;
+			}
+		}
+		else if (this.SithSounds == 2 && this.SithCombo == 1 && this.CharacterAnimation[string.Concat(new object[]
+		{
+			"f02_sithAttack",
+			this.SithPrefix,
+			"_0",
+			this.SithCombo
+		})].time >= 0.8333333f)
+		{
+			this.SithAudio.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+			this.SithAudio.Play();
+			this.SithSounds++;
 		}
 	}
 }

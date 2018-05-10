@@ -448,6 +448,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool TrueAlone;
 
+	public bool WillChase;
+
 	public bool Attacked;
 
 	public bool Gossiped;
@@ -6550,7 +6552,7 @@ public class StudentScript : MonoBehaviour
 					{
 						if (this.FoundEnemyCorpse)
 						{
-							this.Subtitle.UpdateLabel(SubtitleType.EvilCorpseReaction, 1, 5f);
+							this.Subtitle.UpdateLabel(SubtitleType.EvilDelinquentCorpseReaction, 1, 5f);
 						}
 						else if (this.Corpse.Student.Club == ClubType.Delinquent)
 						{
@@ -6633,7 +6635,7 @@ public class StudentScript : MonoBehaviour
 					}
 					else if (this.Witnessed == StudentWitnessType.Violence)
 					{
-						this.CharacterAnimation.CrossFade("senpaiLewdReaction_00");
+						this.CharacterAnimation.CrossFade("senpaiFightReaction_00");
 						this.GameOverCause = GameOverType.Violence;
 						this.Concern = 5;
 					}
@@ -6789,7 +6791,12 @@ public class StudentScript : MonoBehaviour
 								this.PickPocket.PickpocketMinigame.End();
 							}
 							this.Yandere.StopLaughing();
+							this.Yandere.StopAiming();
 							this.Yandere.Unequip();
+							if (this.Yandere.PickUp != null)
+							{
+								this.Yandere.EmptyHands();
+							}
 							this.Yandere.DelinquentFighting = true;
 							this.Yandere.CanMove = false;
 							this.Distracted = true;
@@ -8719,6 +8726,10 @@ public class StudentScript : MonoBehaviour
 			{
 				this.Police.CouncilDeath = true;
 			}
+			if (this.WillChase)
+			{
+				this.Yandere.Chasers--;
+			}
 			ParticleSystem.EmissionModule emission = this.Hearts.emission;
 			if (this.Following)
 			{
@@ -9168,6 +9179,10 @@ public class StudentScript : MonoBehaviour
 		if (this.Struggling || this.Shoving || this.StudentManager.CombatMinigame.Delinquent == this)
 		{
 			gameObject.GetComponent<AlarmDiscScript>().NoScream = true;
+		}
+		if (this.Club == ClubType.Delinquent)
+		{
+			gameObject.GetComponent<AlarmDiscScript>().Delinquent = true;
 		}
 		if (this.Dying && this.Yandere.Equipped > 0 && this.Yandere.EquippedWeapon.WeaponID == 7)
 		{

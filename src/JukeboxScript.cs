@@ -269,6 +269,7 @@ public class JukeboxScript : MonoBehaviour
 			this.Punch.volume = Mathf.MoveTowards(this.Punch.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
 			this.Galo.volume = Mathf.MoveTowards(this.Galo.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
 			this.Jojo.volume = Mathf.MoveTowards(this.Jojo.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
+			this.Sith.volume = Mathf.MoveTowards(this.Sith.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
 			this.DK.volume = Mathf.MoveTowards(this.DK.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
 		}
 		if (!this.Yandere.PauseScreen.Show && !this.Yandere.Noticed && this.Yandere.CanMove && this.Yandere.EasterEggMenu.activeInHierarchy && !this.Egg)
@@ -411,6 +412,7 @@ public class JukeboxScript : MonoBehaviour
 		this.Punch.Stop();
 		this.Ninja.Stop();
 		this.Galo.Stop();
+		this.Sith.Stop();
 		this.DK.Stop();
 		this.Confession.Stop();
 		this.FullSanity.Stop();

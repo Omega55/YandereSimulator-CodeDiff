@@ -607,7 +607,7 @@ public class AttackManagerScript : MonoBehaviour
 	private void LoopCheck(WeaponScript weapon)
 	{
 		Animation component = this.Yandere.Character.GetComponent<Animation>();
-		if (Input.GetButtonDown("X") && !this.Yandere.Chased)
+		if (Input.GetButtonDown("X") && !this.Yandere.Chased && this.Yandere.Chasers == 0)
 		{
 			if (weapon.Type == WeaponType.Knife)
 			{

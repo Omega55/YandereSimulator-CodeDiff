@@ -705,7 +705,7 @@ public class MissionModeScript : MonoBehaviour
 			}
 			if (this.ExitPortal.activeInHierarchy)
 			{
-				if (this.Yandere.Chased)
+				if (this.Yandere.Chased || this.Yandere.Chasers > 0)
 				{
 					this.ExitPortalPrompt.Label[0].text = "     Cannot Exfiltrate!";
 					this.ExitPortalPrompt.Circle[0].fillAmount = 1f;

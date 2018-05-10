@@ -391,7 +391,7 @@ public class HeadmasterScript : MonoBehaviour
 	{
 		if (this.Yandere.CanMove)
 		{
-			if (this.Yandere.Chased)
+			if (!this.Yandere.Chased && this.Yandere.Chasers == 0)
 			{
 				if (!this.Shooting)
 				{

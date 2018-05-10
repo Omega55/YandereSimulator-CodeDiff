@@ -245,29 +245,33 @@ public class DatingMinigameScript : MonoBehaviour
 		}
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			this.Suitor.enabled = false;
-			this.Rival.enabled = false;
-			this.Rival.Character.GetComponent<Animation>()["f02_smile_00"].layer = 1;
-			this.Rival.Character.GetComponent<Animation>().Play("f02_smile_00");
-			this.Rival.Character.GetComponent<Animation>()["f02_smile_00"].weight = 0f;
-			this.StudentManager.Clock.StopTime = true;
-			this.Yandere.RPGCamera.enabled = false;
-			this.HeartbeatCamera.SetActive(false);
-			this.Yandere.Headset.SetActive(true);
-			this.Yandere.CanMove = false;
-			this.Yandere.EmptyHands();
-			this.Yandere.transform.position = this.PeekSpot.position;
-			this.Yandere.transform.eulerAngles = this.PeekSpot.eulerAngles;
-			this.Yandere.Character.GetComponent<Animation>().Play("f02_treePeeking_00");
-			Camera.main.transform.position = new Vector3(48f, 3f, -44f);
-			Camera.main.transform.eulerAngles = new Vector3(15f, 90f, 0f);
-			this.WisdomLabel.text = "Wisdom: " + DatingGlobals.GetSuitorTrait(2).ToString();
-			if (!this.Suitor.Rose)
+			this.Prompt.Circle[0].fillAmount = 1f;
+			if (!this.Yandere.Chased && this.Yandere.Chasers == 0)
 			{
-				this.RoseIcon.enabled = false;
+				this.Suitor.enabled = false;
+				this.Rival.enabled = false;
+				this.Rival.Character.GetComponent<Animation>()["f02_smile_00"].layer = 1;
+				this.Rival.Character.GetComponent<Animation>().Play("f02_smile_00");
+				this.Rival.Character.GetComponent<Animation>()["f02_smile_00"].weight = 0f;
+				this.StudentManager.Clock.StopTime = true;
+				this.Yandere.RPGCamera.enabled = false;
+				this.HeartbeatCamera.SetActive(false);
+				this.Yandere.Headset.SetActive(true);
+				this.Yandere.CanMove = false;
+				this.Yandere.EmptyHands();
+				this.Yandere.transform.position = this.PeekSpot.position;
+				this.Yandere.transform.eulerAngles = this.PeekSpot.eulerAngles;
+				this.Yandere.Character.GetComponent<Animation>().Play("f02_treePeeking_00");
+				Camera.main.transform.position = new Vector3(48f, 3f, -44f);
+				Camera.main.transform.eulerAngles = new Vector3(15f, 90f, 0f);
+				this.WisdomLabel.text = "Wisdom: " + DatingGlobals.GetSuitorTrait(2).ToString();
+				if (!this.Suitor.Rose)
+				{
+					this.RoseIcon.enabled = false;
+				}
+				this.Matchmaking = true;
+				this.UpdateTopics();
 			}
-			this.Matchmaking = true;
-			this.UpdateTopics();
 		}
 		if (this.Matchmaking)
 		{

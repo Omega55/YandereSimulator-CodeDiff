@@ -50,20 +50,23 @@ public class SewingMachineScript : MonoBehaviour
 		}
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_sewing_00");
-			this.Yandere.MyController.radius = 0.1f;
 			this.Prompt.Circle[0].fillAmount = 1f;
-			this.Yandere.CanMove = false;
-			this.Chair.enabled = false;
-			this.Sewing = true;
-			base.GetComponent<AudioSource>().Play();
-			this.Uniform = this.Yandere.PickUp;
-			this.Yandere.EmptyHands();
-			this.Uniform.transform.parent = this.Yandere.RightHand;
-			this.Uniform.transform.localPosition = new Vector3(0f, 0f, 0.09f);
-			this.Uniform.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
-			this.Uniform.MyRigidbody.useGravity = false;
-			this.Uniform.MyCollider.enabled = false;
+			if (this.Yandere.Chased || this.Yandere.Chasers > 0)
+			{
+				this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_sewing_00");
+				this.Yandere.MyController.radius = 0.1f;
+				this.Yandere.CanMove = false;
+				this.Chair.enabled = false;
+				this.Sewing = true;
+				base.GetComponent<AudioSource>().Play();
+				this.Uniform = this.Yandere.PickUp;
+				this.Yandere.EmptyHands();
+				this.Uniform.transform.parent = this.Yandere.RightHand;
+				this.Uniform.transform.localPosition = new Vector3(0f, 0f, 0.09f);
+				this.Uniform.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+				this.Uniform.MyRigidbody.useGravity = false;
+				this.Uniform.MyCollider.enabled = false;
+			}
 		}
 		if (this.Sewing)
 		{

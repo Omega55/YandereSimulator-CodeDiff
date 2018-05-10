@@ -36,15 +36,19 @@ public class KnifeDetectorScript : MonoBehaviour
 				this.Prompt.enabled = true;
 				if (this.Prompt.Circle[0].fillAmount == 0f)
 				{
-					this.Yandere.CharacterAnimation.CrossFade("f02_heating_00");
-					this.Yandere.CanMove = false;
-					this.Timer = 5f;
-					this.Blowtorches[1].enabled = true;
-					this.Blowtorches[2].enabled = true;
-					this.Blowtorches[3].enabled = true;
-					this.Blowtorches[1].GetComponent<AudioSource>().Play();
-					this.Blowtorches[2].GetComponent<AudioSource>().Play();
-					this.Blowtorches[3].GetComponent<AudioSource>().Play();
+					this.Prompt.Circle[0].fillAmount = 1f;
+					if (!this.Yandere.Chased && this.Yandere.Chasers == 0)
+					{
+						this.Yandere.CharacterAnimation.CrossFade("f02_heating_00");
+						this.Yandere.CanMove = false;
+						this.Timer = 5f;
+						this.Blowtorches[1].enabled = true;
+						this.Blowtorches[2].enabled = true;
+						this.Blowtorches[3].enabled = true;
+						this.Blowtorches[1].GetComponent<AudioSource>().Play();
+						this.Blowtorches[2].GetComponent<AudioSource>().Play();
+						this.Blowtorches[3].GetComponent<AudioSource>().Play();
+					}
 				}
 			}
 			else

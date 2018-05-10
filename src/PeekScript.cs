@@ -27,13 +27,17 @@ public class PeekScript : MonoBehaviour
 		}
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			this.Prompt.Yandere.CanMove = false;
-			this.PeekCamera.SetActive(true);
-			this.Jukebox.Dip = 0.5f;
-			this.PromptBar.ClearButtons();
-			this.PromptBar.Label[1].text = "Stop";
-			this.PromptBar.UpdateButtons();
-			this.PromptBar.Show = true;
+			this.Prompt.Circle[0].fillAmount = 1f;
+			if (!this.Prompt.Yandere.Chased && this.Prompt.Yandere.Chasers == 0)
+			{
+				this.Prompt.Yandere.CanMove = false;
+				this.PeekCamera.SetActive(true);
+				this.Jukebox.Dip = 0.5f;
+				this.PromptBar.ClearButtons();
+				this.PromptBar.Label[1].text = "Stop";
+				this.PromptBar.UpdateButtons();
+				this.PromptBar.Show = true;
+			}
 		}
 		if (this.PeekCamera.activeInHierarchy)
 		{

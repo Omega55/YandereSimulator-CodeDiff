@@ -50,7 +50,7 @@ public class FakeStudentScript : MonoBehaviour
 				}
 			}
 		}
-		if (this.Prompt.Circle[0].fillAmount == 0f && !this.Yandere.Chased)
+		if (this.Prompt.Circle[0].fillAmount == 0f && !this.Yandere.Chased && this.Yandere.Chasers == 0)
 		{
 			this.Yandere.TargetStudent = this.Student;
 			this.Subtitle.UpdateLabel(SubtitleType.ClubGreeting, (int)this.Student.Club, 4f);

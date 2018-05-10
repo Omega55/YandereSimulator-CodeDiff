@@ -134,7 +134,7 @@ public class PrayScript : MonoBehaviour
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Circle[0].fillAmount = 1f;
-			if (!this.Yandere.Chased)
+			if (!this.Yandere.Chased && this.Yandere.Chasers == 0)
 			{
 				this.Yandere.TargetStudent = this.Student;
 				this.StudentManager.DisablePrompts();

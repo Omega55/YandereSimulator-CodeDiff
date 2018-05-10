@@ -182,7 +182,7 @@ public class DelinquentScript : MonoBehaviour
 									component.Play();
 								}
 								this.Threatening = true;
-								if (!this.Yandere.Chased)
+								if (!this.Yandere.Chased && this.Yandere.Chasers == 0)
 								{
 									this.DelinquentManager.Attacker = this;
 									this.Run = true;
@@ -258,7 +258,7 @@ public class DelinquentScript : MonoBehaviour
 				{
 					if (!this.Yandere.Attacked)
 					{
-						if (this.Yandere.CanMove && (!this.Yandere.Chased || (this.Yandere.Chased && this.DelinquentManager.Attacker == this)))
+						if (this.Yandere.CanMove && ((!this.Yandere.Chased && this.Yandere.Chasers == 0) || (this.Yandere.Chased && this.DelinquentManager.Attacker == this)))
 						{
 							AudioSource component2 = this.DelinquentManager.GetComponent<AudioSource>();
 							if (!component2.isPlaying)

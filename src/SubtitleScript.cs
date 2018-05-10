@@ -49,6 +49,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] EvilCorpseReactions;
 
+	public string[] EvilDelinquentCorpseReactions;
+
 	public string[] SocialDeathReactions;
 
 	public string[] LovestruckDeathReactions;
@@ -535,6 +537,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public AudioClip[] EavesdropClips;
 
+	public AudioClip[] FoodRejectionClips;
+
 	public AudioClip[] ViolenceClips;
 
 	public AudioClip[] EventEavesdropClips;
@@ -588,6 +592,8 @@ public class SubtitleScript : MonoBehaviour
 	public AudioClip[] DelinquentHmmClips;
 
 	public AudioClip[] DismissiveClips;
+
+	public AudioClip[] EvilDelinquentCorpseReactionClips;
 
 	private SubtitleTypeAndAudioClipArrayDictionary SubtitleClipArrays;
 
@@ -692,6 +698,10 @@ public class SubtitleScript : MonoBehaviour
 			{
 				SubtitleType.EavesdropReaction,
 				new AudioClipArrayWrapper(this.EavesdropClips)
+			},
+			{
+				SubtitleType.RejectFood,
+				new AudioClipArrayWrapper(this.FoodRejectionClips)
 			},
 			{
 				SubtitleType.ViolenceReaction,
@@ -972,6 +982,10 @@ public class SubtitleScript : MonoBehaviour
 			{
 				SubtitleType.Dismissive,
 				new AudioClipArrayWrapper(this.DismissiveClips)
+			},
+			{
+				SubtitleType.EvilDelinquentCorpseReaction,
+				new AudioClipArrayWrapper(this.EvilDelinquentCorpseReactionClips)
 			}
 		};
 	}
@@ -1090,7 +1104,8 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (subtitleType == SubtitleType.RejectFood)
 		{
-			this.Label.text = this.GetRandomString(this.FoodRejects);
+			this.Label.text = this.FoodRejects[ID];
+			this.PlayVoice(subtitleType, ID);
 		}
 		else if (subtitleType == SubtitleType.EavesdropReaction)
 		{
@@ -1432,6 +1447,12 @@ public class SubtitleScript : MonoBehaviour
 		else if (subtitleType == SubtitleType.EvilCorpseReaction)
 		{
 			this.Label.text = this.GetRandomString(this.EvilCorpseReactions);
+		}
+		else if (subtitleType == SubtitleType.EvilDelinquentCorpseReaction)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.EvilDelinquentCorpseReactions.Length);
+			this.Label.text = this.EvilDelinquentCorpseReactions[this.RandomID];
+			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.HeroMurderReaction)
 		{

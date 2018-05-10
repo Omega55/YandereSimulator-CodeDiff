@@ -93,7 +93,7 @@ public class PickpocketScript : MonoBehaviour
 			if (this.Prompt.Circle[0].fillAmount == 0f)
 			{
 				this.Prompt.Circle[0].fillAmount = 1f;
-				if (!this.Prompt.Yandere.Chased)
+				if (!this.Prompt.Yandere.Chased && this.Prompt.Yandere.Chasers == 0)
 				{
 					this.PickpocketMinigame.PickpocketSpot = this.PickpocketSpot;
 					this.PickpocketMinigame.Show = true;

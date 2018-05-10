@@ -45,7 +45,7 @@ public class TalkingScript : MonoBehaviour
 					}
 					this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
 				}
-				else if (this.IdleAnim != null)
+				else if (this.IdleAnim != string.Empty)
 				{
 					this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
 				}

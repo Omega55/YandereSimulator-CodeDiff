@@ -11,6 +11,8 @@ public class AlarmDiscScript : MonoBehaviour
 
 	public AudioClip[] MaleScreams;
 
+	public AudioClip[] DelinquentScreams;
+
 	public StudentScript Originator;
 
 	public RadioScript SourceRadio;
@@ -18,6 +20,8 @@ public class AlarmDiscScript : MonoBehaviour
 	public StudentScript Student;
 
 	public bool StudentIsBusy;
+
+	public bool Delinquent;
 
 	public bool NoScream;
 
@@ -56,6 +60,10 @@ public class AlarmDiscScript : MonoBehaviour
 				if (!this.Male)
 				{
 					this.PlayClip(this.FemaleScreams[UnityEngine.Random.Range(0, this.FemaleScreams.Length)], base.transform.position);
+				}
+				else if (this.Delinquent)
+				{
+					this.PlayClip(this.DelinquentScreams[UnityEngine.Random.Range(0, this.DelinquentScreams.Length)], base.transform.position);
 				}
 				else
 				{

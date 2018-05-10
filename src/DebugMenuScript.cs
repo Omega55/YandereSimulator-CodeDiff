@@ -78,7 +78,7 @@ public class DebugMenuScript : MonoBehaviour
 	{
 		if (!this.MissionMode && !this.NoDebug)
 		{
-			if (!this.Yandere.InClass && !this.Yandere.Chased && this.Yandere.CanMove)
+			if (!this.Yandere.InClass && !this.Yandere.Chased && this.Yandere.Chasers == 0 && this.Yandere.CanMove)
 			{
 				if (Input.GetKeyDown(KeyCode.Backslash) && this.Yandere.transform.position.y < 100f)
 				{
@@ -559,7 +559,7 @@ public class DebugMenuScript : MonoBehaviour
 		{
 			if (this.Yandere.Schoolwear == 1)
 			{
-				if (!this.Yandere.Sans && !this.Yandere.SithLord)
+				if (!this.Yandere.Sans && !this.Yandere.SithLord && !this.Yandere.BanchoActive)
 				{
 					if (!this.Yandere.FlameDemonic && !this.Yandere.TornadoHair.activeInHierarchy)
 					{
@@ -595,6 +595,7 @@ public class DebugMenuScript : MonoBehaviour
 				this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount1", 1f);
 				this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", 1f);
 				this.Yandere.PantyAttacher.newRenderer.enabled = true;
+				this.EasterEggCheck();
 			}
 			else
 			{
@@ -604,6 +605,21 @@ public class DebugMenuScript : MonoBehaviour
 			}
 			this.StudentManager.Censor = false;
 			this.StudentManager.CensorStudents();
+		}
+	}
+
+	public void EasterEggCheck()
+	{
+		if (this.Yandere.BanchoActive)
+		{
+			Debug.Log("The Bancho easter egg is active, so we're going to disable all shadows and panties.");
+			this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+			this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
+			this.Yandere.MyRenderer.materials[2].SetFloat("_BlendAmount", 0f);
+			this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount1", 0f);
+			this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount1", 0f);
+			this.Yandere.MyRenderer.materials[2].SetFloat("_BlendAmount1", 0f);
+			this.Yandere.PantyAttacher.newRenderer.enabled = false;
 		}
 	}
 

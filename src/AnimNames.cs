@@ -536,6 +536,8 @@ public static class AnimNames
 
 	public const string MaleSenpaiCreepyReaction = "senpaiCreepyReaction_00";
 
+	public const string MaleSenpaiFightReaction = "senpaiFightReaction_00";
+
 	public const string MaleSenpaiInsanityReaction = "senpaiInsanityReaction_00";
 
 	public const string MaleSenpaiLewdReaction = "senpaiLewdReaction_00";

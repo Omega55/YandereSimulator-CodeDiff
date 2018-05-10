@@ -464,6 +464,11 @@ public class CombatMinigameScript : MonoBehaviour
 					if (this.Delinquent.WitnessedMurder)
 					{
 						this.Yandere.Subtitle.UpdateLabel(SubtitleType.DelinquentNoSurrender, 0, 5f);
+						if (!this.Delinquent.WillChase)
+						{
+							this.Delinquent.WillChase = true;
+							this.Yandere.Chasers++;
+						}
 					}
 					else
 					{

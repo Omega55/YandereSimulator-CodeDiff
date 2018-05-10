@@ -994,7 +994,7 @@ public class StudentManagerScript : MonoBehaviour
 						studentScript.Prompt.HideButton[0] = true;
 					}
 				}
-				if (this.Yandere.Dragging || this.Yandere.PickUp != null || this.Yandere.Chased)
+				if (this.Yandere.Dragging || this.Yandere.PickUp != null || this.Yandere.Chased || this.Yandere.Chasers > 0)
 				{
 					studentScript.Prompt.HideButton[0] = true;
 					studentScript.Prompt.HideButton[2] = true;
