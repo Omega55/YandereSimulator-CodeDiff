@@ -584,6 +584,13 @@ public class CustomizationScript : MonoBehaviour
 		}
 		else if (this.Phase == 4)
 		{
+			this.Adjustment = Mathf.Lerp(this.Adjustment, 0f, Time.deltaTime * 10f);
+			this.Rotation = Mathf.Lerp(this.Rotation, 45f, Time.deltaTime * 10f);
+			this.AbsoluteRotation = 45f - Mathf.Abs(this.Rotation);
+			this.LoveSickCamera.transform.position = new Vector3(Mathf.Lerp(this.LoveSickCamera.transform.position.x, -1.5f + this.Adjustment, this.CameraSpeed), Mathf.Lerp(this.LoveSickCamera.transform.position.y, 0f, this.CameraSpeed), Mathf.Lerp(this.LoveSickCamera.transform.position.z, 0.5f - this.AbsoluteRotation * 0.015f, this.CameraSpeed));
+			this.LoveSickCamera.transform.eulerAngles = new Vector3(0f, this.Rotation, 0f);
+			base.transform.eulerAngles = this.LoveSickCamera.transform.eulerAngles;
+			base.transform.position = this.LoveSickCamera.transform.position;
 			this.CustomizePanel.alpha = Mathf.MoveTowards(this.CustomizePanel.alpha, 0f, Time.deltaTime * 2f);
 			if (this.CustomizePanel.alpha == 0f)
 			{

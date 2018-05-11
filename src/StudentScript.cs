@@ -1958,10 +1958,17 @@ public class StudentScript : MonoBehaviour
 			}
 			else if (!this.ClubActivity)
 			{
-				if (!this.Yandere.Talking && (this.Yandere.Noticed || this.StudentManager.YandereDying))
+				if (!this.Yandere.Talking)
 				{
-					this.targetRotation = Quaternion.LookRotation(new Vector3(this.Yandere.Hips.transform.position.x, base.transform.position.y, this.Yandere.Hips.transform.position.z) - base.transform.position);
-					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
+					if (this.Yandere.Sprayed)
+					{
+						this.CharacterAnimation.CrossFade(this.ScaredAnim);
+					}
+					if (this.Yandere.Noticed || this.StudentManager.YandereDying)
+					{
+						this.targetRotation = Quaternion.LookRotation(new Vector3(this.Yandere.Hips.transform.position.x, base.transform.position.y, this.Yandere.Hips.transform.position.z) - base.transform.position);
+						base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
+					}
 				}
 			}
 			else if (this.Police.Darkness.color.a < 1f)
@@ -4971,6 +4978,7 @@ public class StudentScript : MonoBehaviour
 				}
 				else if (this.SentHomePhase == 2 && this.CharacterAnimation[this.SentHomeAnim].time > this.CharacterAnimation[this.SentHomeAnim].length)
 				{
+					this.SprintAnim = this.OriginalSprintAnim;
 					this.CharacterAnimation.CrossFade(this.SprintAnim);
 					this.CurrentDestination = this.StudentManager.Exit;
 					this.Pathfinding.target = this.StudentManager.Exit;
@@ -5167,7 +5175,7 @@ public class StudentScript : MonoBehaviour
 					this.PreviousAlarm = this.Alarm;
 					if (this.DistanceToPlayer < this.VisionDistance - this.ChameleonBonus)
 					{
-						if (!this.Talking && !this.Spraying)
+						if (!this.Talking && !this.Spraying && !this.SentHome)
 						{
 							if (!this.Yandere.Noticed)
 							{
@@ -5544,6 +5552,7 @@ public class StudentScript : MonoBehaviour
 								}
 								else
 								{
+									Debug.Log(this.Name + " was alarmed by something, but didn't see what it was.");
 									this.Witnessed = StudentWitnessType.None;
 								}
 								this.DiscCheck = true;
@@ -6798,6 +6807,7 @@ public class StudentScript : MonoBehaviour
 								this.Yandere.EmptyHands();
 							}
 							this.Yandere.DelinquentFighting = true;
+							this.Yandere.NearSenpai = false;
 							this.Yandere.CanMove = false;
 							this.Distracted = true;
 							this.Fighting = true;
@@ -7267,7 +7277,7 @@ public class StudentScript : MonoBehaviour
 				{
 					base.transform.position = new Vector3(base.transform.position.x, 0f, base.transform.position.z);
 				}
-				if (!this.Dying && !this.Distracted && !this.WalkBack && !this.Waiting && !this.WitnessedMurder && !this.WitnessedCorpse && !this.Yandere.Egg && !this.StudentManager.Pose && !this.ShoeRemoval.enabled && !this.Blind)
+				if (!this.Dying && !this.Distracted && !this.WalkBack && !this.Waiting && !this.WitnessedMurder && !this.WitnessedCorpse && !this.Yandere.Egg && !this.StudentManager.Pose && !this.ShoeRemoval.enabled && !this.Blind && !this.SentHome)
 				{
 					if ((this.Club == ClubType.Council || (this.Club == ClubType.Delinquent && !this.Injured)) && (double)this.DistanceToPlayer < 0.5 && (this.Yandere.h != 0f || this.Yandere.v != 0f))
 					{

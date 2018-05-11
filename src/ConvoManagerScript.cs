@@ -180,7 +180,7 @@ public class ConvoManagerScript : MonoBehaviour
 	public void LateUpdate()
 	{
 		this.CheckTimer = Mathf.MoveTowards(this.CheckTimer, 0f, Time.deltaTime);
-		if (this.Confirmed && (this.SM.Students[22].DistanceToPlayer < 1.5f || this.SM.Students[24].DistanceToPlayer < 1.5f))
+		if (this.Confirmed && (this.SM.Students[22].DistanceToPlayer < 1.5f || this.SM.Students[24].DistanceToPlayer < 1.5f || this.SM.Students[22].Talking || this.SM.Students[24].Talking))
 		{
 			this.SM.Students[22].Subtitle.UpdateLabel(SubtitleType.IntrusionReaction, 2, 5f);
 			this.SM.Students[22].ClubAnim = "idle_20";

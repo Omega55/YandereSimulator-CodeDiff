@@ -666,32 +666,37 @@ public class DialogueWheelScript : MonoBehaviour
 			UISprite uisprite27 = this.ClubShadow[5];
 			uisprite27.color = new Color(uisprite27.color.r, uisprite27.color.g, uisprite27.color.b, 0.75f);
 		}
-		UISprite uisprite28 = this.ClubShadow[6];
-		uisprite28.color = new Color(uisprite28.color.r, uisprite28.color.g, uisprite28.color.b, 0.75f);
+		if (this.Yandere.StudentManager.MurderTakingPlace)
+		{
+			UISprite uisprite28 = this.ClubShadow[5];
+			uisprite28.color = new Color(uisprite28.color.r, uisprite28.color.g, uisprite28.color.b, 0.75f);
+		}
+		UISprite uisprite29 = this.ClubShadow[6];
+		uisprite29.color = new Color(uisprite29.color.r, uisprite29.color.g, uisprite29.color.b, 0.75f);
 		if (this.Yandere.Followers > 0)
 		{
-			UISprite uisprite29 = this.FavorShadow[1];
-			uisprite29.color = new Color(uisprite29.color.r, uisprite29.color.g, uisprite29.color.b, 0.75f);
+			UISprite uisprite30 = this.FavorShadow[1];
+			uisprite30.color = new Color(uisprite30.color.r, uisprite30.color.g, uisprite30.color.b, 0.75f);
 		}
 		if (this.Yandere.TargetStudent.DistanceToDestination > 0.5f)
 		{
-			UISprite uisprite30 = this.FavorShadow[2];
-			uisprite30.color = new Color(uisprite30.color.r, uisprite30.color.g, uisprite30.color.b, 0.75f);
+			UISprite uisprite31 = this.FavorShadow[2];
+			uisprite31.color = new Color(uisprite31.color.r, uisprite31.color.g, uisprite31.color.b, 0.75f);
 		}
 		if (!this.Yandere.TargetStudent.Male)
 		{
-			UISprite uisprite31 = this.LoveShadow[1];
-			uisprite31.color = new Color(uisprite31.color.r, uisprite31.color.g, uisprite31.color.b, 0.75f);
+			UISprite uisprite32 = this.LoveShadow[1];
+			uisprite32.color = new Color(uisprite32.color.r, uisprite32.color.g, uisprite32.color.b, 0.75f);
 		}
 		if (this.DatingMinigame == null || !this.Yandere.Inventory.Headset || (this.Yandere.TargetStudent.Male && !this.LoveManager.RivalWaiting) || this.LoveManager.Courted)
 		{
-			UISprite uisprite32 = this.LoveShadow[2];
-			uisprite32.color = new Color(uisprite32.color.r, uisprite32.color.g, uisprite32.color.b, 0.75f);
+			UISprite uisprite33 = this.LoveShadow[2];
+			uisprite33.color = new Color(uisprite33.color.r, uisprite33.color.g, uisprite33.color.b, 0.75f);
 		}
 		if (!this.Yandere.TargetStudent.Male || !this.Yandere.Inventory.Rose || this.Yandere.TargetStudent.Rose)
 		{
-			UISprite uisprite33 = this.LoveShadow[4];
-			uisprite33.color = new Color(uisprite33.color.r, uisprite33.color.g, uisprite33.color.b, 0.75f);
+			UISprite uisprite34 = this.LoveShadow[4];
+			uisprite34.color = new Color(uisprite34.color.r, uisprite34.color.g, uisprite34.color.b, 0.75f);
 		}
 	}
 

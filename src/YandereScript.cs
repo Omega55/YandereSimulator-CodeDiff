@@ -3375,7 +3375,7 @@ public class YandereScript : MonoBehaviour
 
 	private void UpdateEffects()
 	{
-		if (!this.Attacking && !this.Lost && this.CanMove)
+		if (!this.Attacking && !this.DelinquentFighting && !this.Lost && this.CanMove)
 		{
 			if (Vector3.Distance(base.transform.position, this.Senpai.position) < 1f)
 			{

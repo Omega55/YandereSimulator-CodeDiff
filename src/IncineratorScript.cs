@@ -72,6 +72,7 @@ public class IncineratorScript : MonoBehaviour
 	private void Start()
 	{
 		this.Panel.SetActive(false);
+		this.Prompt.enabled = true;
 	}
 
 	private void Update()
@@ -153,6 +154,10 @@ public class IncineratorScript : MonoBehaviour
 			{
 				this.Prompt.HideButton[3] = false;
 			}
+			if ((this.Yandere.Chased || this.Yandere.Chasers > 0 || !this.YandereHoldingEvidence) && !this.Prompt.HideButton[3])
+			{
+				this.Prompt.HideButton[3] = true;
+			}
 			if (this.Ready)
 			{
 				if (!this.Smoke.isPlaying)
@@ -166,18 +171,6 @@ public class IncineratorScript : MonoBehaviour
 				{
 					this.Prompt.HideButton[0] = true;
 				}
-			}
-			if ((!this.Yandere.Chased && this.Yandere.Chasers == 0) || (!this.YandereHoldingEvidence && !this.Ready))
-			{
-				if (this.Prompt.enabled)
-				{
-					this.Prompt.Hide();
-					this.Prompt.enabled = false;
-				}
-			}
-			else if (!this.Prompt.enabled)
-			{
-				this.Prompt.enabled = true;
 			}
 		}
 		if (this.Prompt.Circle[3].fillAmount == 0f)
