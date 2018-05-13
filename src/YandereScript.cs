@@ -5516,12 +5516,12 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.materials[0].mainTexture = this.NudePanties;
 		this.MyRenderer.materials[1].mainTexture = this.FaceTexture;
 		this.MyRenderer.materials[2].mainTexture = this.NudePanties;
-		this.TheDebugMenuScript.UpdateCensor();
-		this.PantyAttacher.newRenderer.enabled = false;
 		this.Stance.Current = StanceType.Standing;
 		this.FollowHips = true;
 		this.SithLord = true;
 		this.Egg = true;
+		this.TheDebugMenuScript.UpdateCensor();
+		this.PantyAttacher.newRenderer.enabled = false;
 		this.RunSpeed *= 2f;
 		this.Zoom.TargetZoom = 0.4f;
 	}
@@ -5698,6 +5698,8 @@ public class YandereScript : MonoBehaviour
 		this.PantyAttacher.newRenderer.enabled = false;
 		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
 		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount1", 0f);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount1", 0f);
 		this.Paint = false;
 		if (!this.ClubAttire)
 		{

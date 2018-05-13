@@ -51,7 +51,7 @@ public class SewingMachineScript : MonoBehaviour
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Circle[0].fillAmount = 1f;
-			if (this.Yandere.Chased || this.Yandere.Chasers > 0)
+			if (!this.Yandere.Chased && this.Yandere.Chasers == 0)
 			{
 				this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_sewing_00");
 				this.Yandere.MyController.radius = 0.1f;

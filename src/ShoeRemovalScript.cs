@@ -124,6 +124,11 @@ public class ShoeRemovalScript : MonoBehaviour
 	{
 		if (!this.Student.DiscCheck && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Splashed && !this.Student.TurnOffRadio)
 		{
+			if (this.Student.CurrentDestination == null)
+			{
+				this.Student.CurrentDestination = this.Student.Destinations[this.Student.Phase];
+				this.Student.Pathfinding.target = this.Student.CurrentDestination;
+			}
 			this.Student.MoveTowardsTarget(this.Student.CurrentDestination.position);
 			base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.Student.CurrentDestination.rotation, 10f * Time.deltaTime);
 			if (this.Phase == 1)

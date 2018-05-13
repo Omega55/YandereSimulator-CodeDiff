@@ -3837,6 +3837,7 @@ public class StudentScript : MonoBehaviour
 									{
 										if (this.WitnessedCorpse)
 										{
+											Debug.Log("A teacher has just witnessed a corpse while on their way to investigate a student's report of a corpse.");
 											this.DetermineCorpseLocation();
 											if (!this.Corpse.Poisoned)
 											{
@@ -6412,6 +6413,8 @@ public class StudentScript : MonoBehaviour
 						}
 						else if (this.Witnessed == StudentWitnessType.Corpse)
 						{
+							Debug.Log("A teacher just discovered a corpse.");
+							this.DetermineCorpseLocation();
 							this.Subtitle.UpdateLabel(SubtitleType.TeacherCorpseReaction, 1, 3f);
 							this.Police.Called = true;
 						}
@@ -6808,7 +6811,9 @@ public class StudentScript : MonoBehaviour
 							}
 							this.Yandere.DelinquentFighting = true;
 							this.Yandere.NearSenpai = false;
+							this.Yandere.Degloving = false;
 							this.Yandere.CanMove = false;
+							this.Yandere.GloveTimer = 0f;
 							this.Distracted = true;
 							this.Fighting = true;
 							this.ThreatTimer = 0f;
@@ -9614,9 +9619,11 @@ public class StudentScript : MonoBehaviour
 			this.Yandere.CharacterAnimation.CrossFade("f02_shoveA_01");
 			this.Yandere.YandereVision = false;
 			this.Yandere.NearSenpai = false;
+			this.Yandere.Degloving = false;
 			this.Yandere.Punching = false;
 			this.Yandere.CanMove = false;
 			this.Yandere.Shoved = true;
+			this.Yandere.GloveTimer = 0f;
 			this.Yandere.h = 0f;
 			this.Yandere.v = 0f;
 			this.Yandere.ShoveSpeed = 2f;
@@ -9701,7 +9708,7 @@ public class StudentScript : MonoBehaviour
 
 	private void DetermineCorpseLocation()
 	{
-		Debug.Log("Determining the location of a corpse.");
+		Debug.Log(this.Name + " has called the DetermineCorpseLocation() function.");
 		if (this.StudentManager.Reporter == null)
 		{
 			this.StudentManager.Reporter = this;
@@ -9709,10 +9716,7 @@ public class StudentScript : MonoBehaviour
 		if (this.Teacher)
 		{
 			Debug.Log("A teacher has witnessed a corpse, and they're going to try to stop 1 meter in front of the corpse.");
-			if (this.StudentManager.CorpseLocation.position == Vector3.zero)
-			{
-				this.StudentManager.CorpseLocation.position = this.Corpse.AllColliders[0].transform.position;
-			}
+			this.StudentManager.CorpseLocation.position = this.Corpse.AllColliders[0].transform.position;
 			this.StudentManager.CorpseLocation.LookAt(new Vector3(base.transform.position.x, this.StudentManager.CorpseLocation.position.y, base.transform.position.z));
 			this.StudentManager.CorpseLocation.Translate(this.StudentManager.CorpseLocation.forward);
 			this.StudentManager.LowerCorpsePosition();

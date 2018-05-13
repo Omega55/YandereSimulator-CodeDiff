@@ -355,10 +355,10 @@ public class CosmeticScript : MonoBehaviour
 			this.Club = ClubType.None;
 			if (!this.Male)
 			{
-				this.Hairstyle = 99;
-				while (this.Hairstyle > 19)
+				this.Hairstyle = 1;
+				while (this.Hairstyle == 1 || this.Hairstyle == 20 || this.Hairstyle == 21)
 				{
-					this.Hairstyle = UnityEngine.Random.Range(1, this.FemaleHair.Length - 1);
+					this.Hairstyle = UnityEngine.Random.Range(1, this.FemaleHair.Length);
 				}
 			}
 			else
