@@ -35,7 +35,7 @@ public class TalkingScript : MonoBehaviour
 					{
 						this.IdleAnim = this.S.IdleAnim;
 					}
-					else if (this.S.StudentManager.Reputation.Reputation < 33.33333f)
+					else if (this.S.StudentManager.Reputation.Reputation < 33.33333f || this.S.Persona == PersonaType.Coward)
 					{
 						this.IdleAnim = this.S.IdleAnim;
 					}

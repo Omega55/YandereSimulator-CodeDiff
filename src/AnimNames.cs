@@ -16,6 +16,8 @@ public static class AnimNames
 
 	public const string DemonArmRise = "DemonArmRise";
 
+	public const string DelinquentTexting = "delinquentTexting_00";
+
 	public const string DraculaDrink = "DraculaDrink";
 
 	public const string DraculaIdle = "DraculaIdle";

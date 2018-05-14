@@ -1177,6 +1177,10 @@ public class StudentScript : MonoBehaviour
 				")"
 			});
 			this.OriginalPersona = this.Persona;
+			if (this.StudentID == 81 && StudentGlobals.GetStudentBroken(81))
+			{
+				this.Persona = PersonaType.Coward;
+			}
 			if (this.Persona == PersonaType.Loner || this.Persona == PersonaType.Coward || this.Persona == PersonaType.Fragile)
 			{
 				this.CameraAnims = this.CowardAnims;
@@ -1234,7 +1238,7 @@ public class StudentScript : MonoBehaviour
 				this.SprintAnim = this.PhoneAnims[2];
 				this.PatrolAnim = this.PhoneAnims[3];
 			}
-			if (this.Club == ClubType.Bully)
+			if (this.Club == ClubType.Bully && !StudentGlobals.GetStudentBroken(this.StudentID))
 			{
 				this.IdleAnim = this.PhoneAnims[0];
 				this.BullyID = this.StudentID - 80;
@@ -1401,12 +1405,15 @@ public class StudentScript : MonoBehaviour
 				{
 					if (this.StudentID == 81 || this.StudentID == 83 || this.StudentID == 85)
 					{
-						this.Pathfinding.canSearch = false;
-						this.Pathfinding.canMove = false;
-						this.Paired = true;
-						this.CharacterAnimation["f02_walkTalk_00"].time += (float)(this.StudentID - 81);
-						this.WalkAnim = "f02_walkTalk_00";
-						this.SpeechLines.Play();
+						if (this.Persona != PersonaType.Coward)
+						{
+							this.Pathfinding.canSearch = false;
+							this.Pathfinding.canMove = false;
+							this.Paired = true;
+							this.CharacterAnimation["f02_walkTalk_00"].time += (float)(this.StudentID - 81);
+							this.WalkAnim = "f02_walkTalk_00";
+							this.SpeechLines.Play();
+						}
 					}
 					else if (this.StudentID == 82 || this.StudentID == 84)
 					{
@@ -1691,6 +1698,13 @@ public class StudentScript : MonoBehaviour
 				this.CameraAnims[2] = this.IdleAnim;
 				this.CameraAnims[3] = this.IdleAnim;
 				this.VisionDistance *= 2f;
+			}
+			if (this.StudentID == 81 && StudentGlobals.GetStudentBroken(81))
+			{
+				this.Destinations[2] = this.StudentManager.BrokenSpot;
+				this.Destinations[4] = this.StudentManager.BrokenSpot;
+				this.Actions[2] = StudentActionType.Shamed;
+				this.Actions[4] = StudentActionType.Shamed;
 			}
 		}
 	}
@@ -2463,7 +2477,11 @@ public class StudentScript : MonoBehaviour
 										{
 											if (this.TrueAlone)
 											{
-												this.CharacterAnimation.CrossFade("standTexting_00");
+												if (!this.SmartPhone.activeInHierarchy)
+												{
+													this.CharacterAnimation.CrossFade("delinquentTexting_00");
+													this.SmartPhone.SetActive(true);
+												}
 											}
 											else
 											{
@@ -2611,8 +2629,18 @@ public class StudentScript : MonoBehaviour
 													{
 														if (!this.SmartPhone.activeInHierarchy)
 														{
-															this.SmartPhone.transform.localPosition = new Vector3(0.01f, 0.01f, 0.01f);
-															this.SmartPhone.transform.localEulerAngles = new Vector3(0f, -160f, 165f);
+															if (this.Male)
+															{
+																this.SmartPhone.transform.localPosition = new Vector3(0.025f, 0.0025f, 0.025f);
+																this.SmartPhone.transform.localEulerAngles = new Vector3(0f, -160f, 180f);
+																this.SmartPhone.SetActive(true);
+															}
+															else
+															{
+																this.SmartPhone.transform.localPosition = new Vector3(0.01f, 0.01f, 0.01f);
+																this.SmartPhone.transform.localEulerAngles = new Vector3(0f, -160f, 165f);
+																this.SmartPhone.SetActive(true);
+															}
 															this.SmartPhone.SetActive(true);
 														}
 														this.CharacterAnimation.CrossFade(this.DeskTextAnim);
@@ -6770,6 +6798,10 @@ public class StudentScript : MonoBehaviour
 							this.ThreatTimer -= Time.deltaTime;
 							if (this.ThreatTimer < 0f)
 							{
+								if (this.CurrentDestination != this.Destinations[this.Phase])
+								{
+									this.StopInvestigating();
+								}
 								this.Distracted = false;
 								this.Threatened = false;
 								this.Alarmed = false;
@@ -8584,13 +8616,6 @@ public class StudentScript : MonoBehaviour
 		{
 			this.Destinations[2] = this.StudentManager.Hangouts.List[this.StudentID];
 			this.Actions[2] = StudentActionType.Socializing;
-		}
-		if (this.StudentID == 81 && StudentGlobals.GetStudentBroken(81))
-		{
-			this.Destinations[2] = this.StudentManager.BrokenSpot;
-			this.Destinations[4] = this.StudentManager.BrokenSpot;
-			this.Actions[2] = StudentActionType.Shamed;
-			this.Actions[4] = StudentActionType.Shamed;
 		}
 	}
 

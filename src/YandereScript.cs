@@ -731,6 +731,10 @@ public class YandereScript : MonoBehaviour
 
 	public Texture SukebanUniform;
 
+	public FalconPunchScript BanchoFinisher;
+
+	public StandPunchScript BanchoFlurry;
+
 	public GameObject BanchoPants;
 
 	public Mesh BanchoMesh;
@@ -742,6 +746,18 @@ public class YandereScript : MonoBehaviour
 	public GameObject[] BanchoAccessories;
 
 	public bool BanchoActive;
+
+	public bool Finisher;
+
+	public AudioClip BanchoYanYan;
+
+	public AudioClip BanchoFinalYan;
+
+	public AmplifyMotionObject MotionObject;
+
+	public AmplifyMotionEffect MotionBlur;
+
+	public GameObject BanchoCamera;
 
 	public GameObject[] SlenderHair;
 
@@ -2432,6 +2448,11 @@ public class YandereScript : MonoBehaviour
 					this.BladeHairCollider1.enabled = true;
 					this.BladeHairCollider2.enabled = true;
 				}
+				else if (this.BanchoActive)
+				{
+					this.BanchoFlurry.MyCollider.enabled = true;
+					this.LaughAnim = "f02_banchoFlurry_00";
+				}
 				else if (component.clip != this.LaughClip)
 				{
 					component.clip = this.LaughClip;
@@ -3343,10 +3364,22 @@ public class YandereScript : MonoBehaviour
 					this.SnapPhase = 0;
 				}
 			}
-			if (this.Testing && this.CharacterAnimation["f02_batHighSanityA_00"].time >= this.CharacterAnimation["f02_batHighSanityA_00"].length)
+			if (this.Finisher)
 			{
-				this.Testing = false;
-				this.CanMove = true;
+				if (this.CharacterAnimation["f02_banchoFinisher_00"].time >= this.CharacterAnimation["f02_banchoFinisher_00"].length)
+				{
+					this.CharacterAnimation.CrossFade(this.IdleAnim);
+					this.Finisher = false;
+					this.CanMove = true;
+				}
+				else if (this.CharacterAnimation["f02_banchoFinisher_00"].time >= 1.66666663f)
+				{
+					this.BanchoFinisher.MyCollider.enabled = false;
+				}
+				else if (this.CharacterAnimation["f02_banchoFinisher_00"].time >= 0.8333333f)
+				{
+					this.BanchoFinisher.MyCollider.enabled = true;
+				}
 			}
 		}
 	}
@@ -4376,7 +4409,7 @@ public class YandereScript : MonoBehaviour
 					}
 					else if (Input.GetKeyDown(KeyCode.B))
 					{
-						this.Sukeban();
+						this.Bancho();
 					}
 					else if (Input.GetKeyDown(KeyCode.C))
 					{
@@ -4899,6 +4932,14 @@ public class YandereScript : MonoBehaviour
 		{
 			this.CanMove = true;
 		}
+		if (this.BanchoActive)
+		{
+			AudioSource.PlayClipAtPoint(this.BanchoFinalYan, base.transform.position);
+			this.CharacterAnimation.CrossFade("f02_banchoFinisher_00");
+			this.BanchoFlurry.MyCollider.enabled = false;
+			this.Finisher = true;
+			this.CanMove = false;
+		}
 	}
 
 	private void SetUniform()
@@ -5118,6 +5159,9 @@ public class YandereScript : MonoBehaviour
 
 	private void Bancho()
 	{
+		this.BanchoCamera.SetActive(true);
+		this.MotionObject.enabled = true;
+		this.MotionBlur.enabled = true;
 		this.BanchoAccessories[0].SetActive(true);
 		this.BanchoAccessories[1].SetActive(true);
 		this.BanchoAccessories[2].SetActive(true);
@@ -5127,9 +5171,17 @@ public class YandereScript : MonoBehaviour
 		this.BanchoAccessories[6].SetActive(true);
 		this.BanchoAccessories[7].SetActive(true);
 		this.BanchoAccessories[8].SetActive(true);
+		this.Laugh1 = this.BanchoYanYan;
+		this.Laugh2 = this.BanchoYanYan;
+		this.Laugh3 = this.BanchoYanYan;
+		this.Laugh4 = this.BanchoYanYan;
+		this.IdleAnim = "f02_banchoIdle_00";
+		this.WalkAnim = "f02_banchoWalk_00";
+		this.RunAnim = "f02_banchoSprint_00";
 		this.OriginalIdleAnim = this.IdleAnim;
 		this.OriginalWalkAnim = this.WalkAnim;
 		this.OriginalRunAnim = this.RunAnim;
+		this.RunSpeed *= 2f;
 		this.BanchoPants.SetActive(true);
 		this.MyRenderer.sharedMesh = this.BanchoMesh;
 		this.MyRenderer.materials[0].mainTexture = this.BanchoFace;

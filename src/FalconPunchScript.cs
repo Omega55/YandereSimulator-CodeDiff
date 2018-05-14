@@ -11,6 +11,8 @@ public class FalconPunchScript : MonoBehaviour
 
 	public bool IgnoreTime;
 
+	public bool Bancho;
+
 	public bool Falcon;
 
 	public float TimeLimit = 0.5f;
@@ -47,14 +49,19 @@ public class FalconPunchScript : MonoBehaviour
 					component.BecomeRagdoll();
 					Rigidbody rigidbody = component.Ragdoll.AllRigidbodies[0];
 					rigidbody.isKinematic = false;
+					Vector3 vector = rigidbody.transform.position - component.Yandere.transform.position;
+					Debug.Log("Direction is: " + vector);
 					if (this.Falcon)
 					{
-						rigidbody.AddForce((rigidbody.transform.position - base.transform.position) * this.Strength);
+						rigidbody.AddForce(vector * this.Strength);
+					}
+					else if (this.Bancho)
+					{
+						rigidbody.AddForce(vector.x * this.Strength, 5000f, vector.z * this.Strength);
 					}
 					else
 					{
-						rigidbody.AddForce((rigidbody.transform.root.position - base.transform.root.position) * this.Strength);
-						rigidbody.AddForce(Vector3.up * 10000f);
+						rigidbody.AddForce(vector.x * this.Strength, 10000f, vector.z * this.Strength);
 					}
 				}
 			}

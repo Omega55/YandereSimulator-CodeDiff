@@ -712,6 +712,10 @@ public class StudentManagerScript : MonoBehaviour
 					while (this.ID < 5)
 					{
 						StudentScript studentScript3 = this.WitnessList[this.ID];
+						if (studentScript3.MyWeapon != null)
+						{
+							GameObjectUtils.SetLayerRecursively(studentScript3.MyWeapon.gameObject, 13);
+						}
 						studentScript3.CharacterAnimation.CrossFade((((!studentScript3.Male) ? "f02_pinDown_0" : "pinDown_0") + this.ID).ToString());
 						studentScript3.PinPhase++;
 						this.ID++;
