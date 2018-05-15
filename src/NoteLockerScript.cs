@@ -37,6 +37,8 @@ public class NoteLockerScript : MonoBehaviour
 
 	public bool CanLeaveNote = true;
 
+	public bool SpawnedNote;
+
 	public bool NoteLeft;
 
 	public bool Success;
@@ -137,19 +139,27 @@ public class NoteLockerScript : MonoBehaviour
 						this.Finish();
 					}
 				}
-				if (this.Timer > 4.66666651f && this.NewNote == null)
+				if (this.Timer > 4.66666651f && !this.SpawnedNote)
 				{
 					this.NewNote = UnityEngine.Object.Instantiate<GameObject>(this.Note, base.transform.position, Quaternion.identity);
 					this.NewNote.transform.parent = this.Student.LeftHand;
 					this.NewNote.transform.localPosition = new Vector3(-0.06f, -0.01f, 0f);
 					this.NewNote.transform.localEulerAngles = new Vector3(-75f, -90f, 180f);
 					this.NewNote.transform.localScale = new Vector3(0.1f, 0.2f, 1f);
+					this.SpawnedNote = true;
 				}
 				if (!this.Success)
 				{
-					if (this.Timer > 11.666667f)
+					if (this.Timer > 11.666667f && this.NewNote != null)
 					{
-						this.NewNote.transform.localScale = ((this.NewNote.transform.localScale.x <= 0.1f) ? Vector3.zero : Vector3.Lerp(this.NewNote.transform.localScale, Vector3.zero, Time.deltaTime));
+						if (this.NewNote.transform.localScale.z > 0.1f)
+						{
+							this.NewNote.transform.localScale = Vector3.MoveTowards(this.NewNote.transform.localScale, Vector3.zero, Time.deltaTime);
+						}
+						else
+						{
+							UnityEngine.Object.Destroy(this.NewNote);
+						}
 					}
 					if (this.Timer > 13.333333f && this.NewBall == null)
 					{
@@ -160,9 +170,16 @@ public class NoteLockerScript : MonoBehaviour
 						this.Phase++;
 					}
 				}
-				else if (this.Timer > 12.833333f)
+				else if (this.Timer > 12.833333f && this.NewNote != null)
 				{
-					this.NewNote.transform.localScale = Vector3.Lerp(this.NewNote.transform.localScale, Vector3.zero, Time.deltaTime);
+					if (this.NewNote.transform.localScale.z > 0.1f)
+					{
+						this.NewNote.transform.localScale = Vector3.MoveTowards(this.NewNote.transform.localScale, Vector3.zero, Time.deltaTime);
+					}
+					else
+					{
+						UnityEngine.Object.Destroy(this.NewNote);
+					}
 				}
 				if (this.Phase == 1)
 				{

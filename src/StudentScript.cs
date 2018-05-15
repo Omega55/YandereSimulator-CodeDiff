@@ -1334,7 +1334,7 @@ public class StudentScript : MonoBehaviour
 				else if (this.StudentID == 16)
 				{
 					this.SmartPhone.GetComponent<Renderer>().material.mainTexture = this.MidoriPhoneTexture;
-					this.PatrolAnim = "f02_texting_00";
+					this.PatrolAnim = "f02_midoriTexting_00";
 				}
 				else if (this.StudentID == 17)
 				{
@@ -2481,11 +2481,13 @@ public class StudentScript : MonoBehaviour
 												{
 													this.CharacterAnimation.CrossFade("delinquentTexting_00");
 													this.SmartPhone.SetActive(true);
+													this.SpeechLines.Stop();
 												}
 											}
 											else
 											{
 												this.CharacterAnimation.CrossFade(this.IdleAnim);
+												this.SpeechLines.Stop();
 											}
 										}
 										else
@@ -2506,7 +2508,7 @@ public class StudentScript : MonoBehaviour
 									{
 										if (!this.Male)
 										{
-											this.CharacterAnimation.CrossFade("f02_texting_00");
+											this.CharacterAnimation.CrossFade("f02_standTexting_00");
 										}
 										else
 										{
@@ -2544,7 +2546,7 @@ public class StudentScript : MonoBehaviour
 									this.StudentManager.ConvoManager.CheckMe(this.StudentID);
 									if (this.Alone)
 									{
-										this.CharacterAnimation.CrossFade("f02_texting_00");
+										this.CharacterAnimation.CrossFade("f02_standTexting_00");
 										if (!this.SmartPhone.activeInHierarchy)
 										{
 											this.SmartPhone.SetActive(true);
@@ -2747,7 +2749,7 @@ public class StudentScript : MonoBehaviour
 									{
 										if (!this.Male)
 										{
-											this.CharacterAnimation.CrossFade("f02_texting_00");
+											this.CharacterAnimation.CrossFade("f02_standTexting_00");
 										}
 										else
 										{
@@ -2937,7 +2939,7 @@ public class StudentScript : MonoBehaviour
 							}
 							else if (this.Actions[this.Phase] == StudentActionType.Texting)
 							{
-								this.CharacterAnimation.CrossFade("f02_texting_00");
+								this.CharacterAnimation.CrossFade("f02_midoriTexting_00");
 								if (!this.SmartPhone.activeInHierarchy && base.transform.position.y > 11f)
 								{
 									this.SmartPhone.SetActive(true);
@@ -4780,7 +4782,7 @@ public class StudentScript : MonoBehaviour
 				this.Prompt.Circle[0].fillAmount = 1f;
 				this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - base.transform.position);
 				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
-				if (!this.Yandere.ClubAccessories[7].activeInHierarchy)
+				if (!this.Yandere.ClubAccessories[7].activeInHierarchy || this.Club == ClubType.Delinquent)
 				{
 					if (this.CameraReactPhase == 1)
 					{
@@ -5299,7 +5301,6 @@ public class StudentScript : MonoBehaviour
 							{
 								this.DistractionTarget.TargetedForDistraction = false;
 							}
-							this.CharacterAnimation[this.LeanAnim].time += (float)this.StudentID * 0.1f;
 							this.CharacterAnimation.CrossFade(this.IdleAnim);
 							this.Pathfinding.canSearch = false;
 							this.Pathfinding.canMove = false;
@@ -5901,6 +5902,11 @@ public class StudentScript : MonoBehaviour
 						this.Yandere.YandereVision = false;
 						this.Yandere.CanMove = false;
 						this.Yandere.Talking = true;
+						if (!this.Male)
+						{
+							this.Cigarette.SetActive(false);
+							this.Lighter.SetActive(false);
+						}
 						this.Investigating = false;
 						this.Reacted = false;
 						this.Routine = false;
@@ -5910,7 +5916,7 @@ public class StudentScript : MonoBehaviour
 						{
 							this.SmartPhone.SetActive(false);
 						}
-						else
+						else if (!this.Scrubber.activeInHierarchy)
 						{
 							this.SmartPhone.SetActive(true);
 						}
@@ -6264,6 +6270,7 @@ public class StudentScript : MonoBehaviour
 			{
 				if (this.Witness)
 				{
+					Debug.Log(this.Name + " is leaning.");
 					this.CharacterAnimation.CrossFade(this.LeanAnim);
 				}
 				else
@@ -9317,7 +9324,7 @@ public class StudentScript : MonoBehaviour
 		this.Scrubber.SetActive(false);
 		this.Eraser.SetActive(false);
 		this.Pen.SetActive(false);
-		if (!this.Yandere.ClubAccessories[7].activeInHierarchy)
+		if (!this.Yandere.ClubAccessories[7].activeInHierarchy || this.Club == ClubType.Delinquent)
 		{
 			this.CharacterAnimation.CrossFade(this.CameraAnims[1]);
 		}

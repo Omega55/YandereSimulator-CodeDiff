@@ -95,7 +95,7 @@ public class ChallengeScript : MonoBehaviour
 			}
 		}
 		this.Shadow.color = new Color(this.Shadow.color.r, this.Shadow.color.g, this.Shadow.color.b, this.LargeIcon.color.a * 0.75f);
-		if (!this.Switch && Input.GetButtonDown("A") && this.List == 1 && this.ChallengeList[this.List].localPosition.x > -2375f)
+		if (!this.Switch && Input.GetButtonDown("A") && this.List == 1)
 		{
 			this.Viewing = true;
 		}

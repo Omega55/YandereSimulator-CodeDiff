@@ -404,7 +404,9 @@ public static class AnimNames
 
 	public const string FemaleTeacherStruggleWinB = "f02_teacherStruggleWinB_00";
 
-	public const string FemaleTexting = "f02_texting_00";
+	public const string FemaleTexting = "f02_standTexting_00";
+
+	public const string FemaleMidoriTexting = "f02_midoriTexting_00";
 
 	public const string FemaleThreaten = "f02_threaten_00";
 

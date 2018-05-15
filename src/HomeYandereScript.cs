@@ -67,7 +67,7 @@ public class HomeYandereScript : MonoBehaviour
 	{
 		if (this.CutsceneYandere != null)
 		{
-			this.CutsceneYandere.GetComponent<Animation>()["f02_texting_00"].speed = 0.1f;
+			this.CutsceneYandere.GetComponent<Animation>()["f02_midoriTexting_00"].speed = 0.1f;
 		}
 		if (SceneManager.GetActiveScene().name == "HomeScene")
 		{

@@ -712,10 +712,6 @@ public class DialogueWheelScript : MonoBehaviour
 	{
 		if (this.Yandere.TargetStudent != null)
 		{
-			if (this.Yandere.TargetStudent.Persona == PersonaType.PhoneAddict)
-			{
-				this.Yandere.TargetStudent.SmartPhone.SetActive(true);
-			}
 			if (this.Yandere.TargetStudent.Pestered >= 10)
 			{
 				this.Yandere.TargetStudent.Ignoring = true;
@@ -736,7 +732,7 @@ public class DialogueWheelScript : MonoBehaviour
 					this.Yandere.TargetStudent.Pathfinding.target = this.Yandere.TargetStudent.CurrentDestination;
 				}
 			}
-			if (this.Yandere.TargetStudent.Persona == PersonaType.PhoneAddict && this.Yandere.TargetStudent.Actions[this.Yandere.TargetStudent.Phase] != StudentActionType.Clean)
+			if (this.Yandere.TargetStudent.Persona == PersonaType.PhoneAddict && !this.Yandere.TargetStudent.Scrubber.activeInHierarchy)
 			{
 				this.Yandere.TargetStudent.SmartPhone.SetActive(true);
 				this.Yandere.TargetStudent.WalkAnim = this.Yandere.TargetStudent.PhoneAnims[1];
