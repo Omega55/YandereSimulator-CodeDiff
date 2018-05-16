@@ -65,22 +65,25 @@ public class BucketPourScript : MonoBehaviour
 		if (this.Prompt.Circle[0] != null && this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Circle[0].fillAmount = 1f;
-			if (this.Prompt.Label[0].text == "     Pour")
+			if (!this.Yandere.Chased && this.Yandere.Chasers == 0)
 			{
-				this.Yandere.Stool = base.transform;
-				this.Yandere.CanMove = false;
-				this.Yandere.Pouring = true;
-				this.Yandere.PourDistance = this.PourDistance;
-				this.Yandere.PourHeight = this.PourHeight;
-				this.Yandere.PourTime = this.PourTime;
-			}
-			else
-			{
-				this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_bucketDrop_00");
-				this.Yandere.MyController.radius = 0f;
-				this.Yandere.BucketDropping = true;
-				this.Yandere.DropSpot = base.transform;
-				this.Yandere.CanMove = false;
+				if (this.Prompt.Label[0].text == "     Pour")
+				{
+					this.Yandere.Stool = base.transform;
+					this.Yandere.CanMove = false;
+					this.Yandere.Pouring = true;
+					this.Yandere.PourDistance = this.PourDistance;
+					this.Yandere.PourHeight = this.PourHeight;
+					this.Yandere.PourTime = this.PourTime;
+				}
+				else
+				{
+					this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_bucketDrop_00");
+					this.Yandere.MyController.radius = 0f;
+					this.Yandere.BucketDropping = true;
+					this.Yandere.DropSpot = base.transform;
+					this.Yandere.CanMove = false;
+				}
 			}
 		}
 		if (this.Yandere.Pouring)

@@ -6282,7 +6282,7 @@ public class StudentScript : MonoBehaviour
 						{
 							this.AlarmTimer = 0f;
 							this.ThreatTimer += Time.deltaTime;
-							if (this.ThreatTimer > 5f && this.Prompt.InSight)
+							if (this.ThreatTimer > 5f && !this.Yandere.Struggling && !this.Yandere.DelinquentFighting && this.Prompt.InSight)
 							{
 								this.ThreatTimer = 0f;
 								this.Shove();
@@ -6698,7 +6698,7 @@ public class StudentScript : MonoBehaviour
 				}
 				this.Reacted = true;
 			}
-			if (this.Club == ClubType.Council && (double)this.DistanceToPlayer < 1.1 && this.Yandere.Armed && this.Prompt.InSight)
+			if (this.Club == ClubType.Council && (double)this.DistanceToPlayer < 1.1 && (this.Yandere.Armed || this.Yandere.Carrying || this.Yandere.Dragging) && this.Prompt.InSight)
 			{
 				this.Spray();
 			}
@@ -7349,7 +7349,7 @@ public class StudentScript : MonoBehaviour
 						if (this.DistanceToPlayer < 1f)
 						{
 							float f2 = Vector3.Angle(-base.transform.forward, this.Yandere.transform.position - base.transform.position);
-							if (Mathf.Abs(f2) > 45f && this.Yandere.Armed && this.Prompt.InSight)
+							if (Mathf.Abs(f2) > 45f && (this.Yandere.Armed || this.Yandere.Carrying || this.Yandere.Dragging) && this.Prompt.InSight)
 							{
 								this.Spray();
 							}
@@ -9605,6 +9605,7 @@ public class StudentScript : MonoBehaviour
 	{
 		if (!this.Yandere.Shoved && !this.Dying && !this.Yandere.Egg && !this.ShoeRemoval.enabled)
 		{
+			this.ForgetRadio();
 			Debug.Log(this.Name + " is shoving Yandere-chan.");
 			AudioSource component = base.GetComponent<AudioSource>();
 			if (this.StudentID == 86)

@@ -121,23 +121,26 @@ public class ComputerGamesScript : MonoBehaviour
 				if (promptScript.Circle[0].fillAmount == 0f)
 				{
 					promptScript.Circle[0].fillAmount = 1f;
-					this.GameID = this.ID;
-					if (this.ID == 1)
+					if (!this.Yandere.Chased && this.Yandere.Chasers == 0)
 					{
-						this.PromptBar.ClearButtons();
-						this.PromptBar.Label[0].text = "Confirm";
-						this.PromptBar.Label[1].text = "Back";
-						this.PromptBar.Label[4].text = "Select";
-						this.PromptBar.UpdateButtons();
-						this.PromptBar.Show = true;
-						this.Yandere.Character.GetComponent<Animation>().Play(this.Yandere.IdleAnim);
-						this.Yandere.CanMove = false;
-						this.GameWindow.gameObject.SetActive(true);
-						this.ShowWindow = true;
-					}
-					else
-					{
-						this.PlayGames();
+						this.GameID = this.ID;
+						if (this.ID == 1)
+						{
+							this.PromptBar.ClearButtons();
+							this.PromptBar.Label[0].text = "Confirm";
+							this.PromptBar.Label[1].text = "Back";
+							this.PromptBar.Label[4].text = "Select";
+							this.PromptBar.UpdateButtons();
+							this.PromptBar.Show = true;
+							this.Yandere.Character.GetComponent<Animation>().Play(this.Yandere.IdleAnim);
+							this.Yandere.CanMove = false;
+							this.GameWindow.gameObject.SetActive(true);
+							this.ShowWindow = true;
+						}
+						else
+						{
+							this.PlayGames();
+						}
 					}
 				}
 				this.ID++;

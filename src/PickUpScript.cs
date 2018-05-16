@@ -111,29 +111,33 @@ public class PickUpScript : MonoBehaviour
 		}
 		if (this.Prompt.Circle[3].fillAmount == 0f)
 		{
+			this.Prompt.Circle[3].fillAmount = 1f;
 			if (this.Weight)
 			{
-				if (this.Yandere.PickUp != null)
+				if (!this.Yandere.Chased && this.Yandere.Chasers == 0)
 				{
-					this.Yandere.CharacterAnimation[this.Yandere.CarryAnims[this.Yandere.PickUp.CarryAnimID]].weight = 0f;
+					if (this.Yandere.PickUp != null)
+					{
+						this.Yandere.CharacterAnimation[this.Yandere.CarryAnims[this.Yandere.PickUp.CarryAnimID]].weight = 0f;
+					}
+					if (this.Yandere.Armed)
+					{
+						this.Yandere.CharacterAnimation[this.Yandere.ArmedAnims[this.Yandere.EquippedWeapon.AnimID]].weight = 0f;
+					}
+					this.Yandere.targetRotation = Quaternion.LookRotation(new Vector3(base.transform.position.x, this.Yandere.transform.position.y, base.transform.position.z) - this.Yandere.transform.position);
+					this.Yandere.transform.rotation = this.Yandere.targetRotation;
+					this.Yandere.EmptyHands();
+					base.transform.parent = this.Yandere.transform;
+					base.transform.localPosition = new Vector3(0f, 0f, 0.75f);
+					base.transform.localEulerAngles = new Vector3(0f, 90f, 0f);
+					base.transform.parent = null;
+					this.Yandere.Character.GetComponent<Animation>().Play("f02_heavyWeightLift_00");
+					this.Yandere.HeavyWeight = true;
+					this.Yandere.CanMove = false;
+					this.Yandere.Lifting = true;
+					this.MyRigidbody.isKinematic = true;
+					this.BeingLifted = true;
 				}
-				if (this.Yandere.Armed)
-				{
-					this.Yandere.CharacterAnimation[this.Yandere.ArmedAnims[this.Yandere.EquippedWeapon.AnimID]].weight = 0f;
-				}
-				this.Yandere.targetRotation = Quaternion.LookRotation(new Vector3(base.transform.position.x, this.Yandere.transform.position.y, base.transform.position.z) - this.Yandere.transform.position);
-				this.Yandere.transform.rotation = this.Yandere.targetRotation;
-				this.Yandere.EmptyHands();
-				base.transform.parent = this.Yandere.transform;
-				base.transform.localPosition = new Vector3(0f, 0f, 0.75f);
-				base.transform.localEulerAngles = new Vector3(0f, 90f, 0f);
-				base.transform.parent = null;
-				this.Yandere.Character.GetComponent<Animation>().Play("f02_heavyWeightLift_00");
-				this.Yandere.HeavyWeight = true;
-				this.Yandere.CanMove = false;
-				this.Yandere.Lifting = true;
-				this.MyRigidbody.isKinematic = true;
-				this.BeingLifted = true;
 			}
 			else
 			{

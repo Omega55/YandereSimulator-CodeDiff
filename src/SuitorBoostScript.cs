@@ -56,16 +56,20 @@ public class SuitorBoostScript : MonoBehaviour
 		}
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
-			this.Yandere.Follower.CharacterAnimation.CrossFade(this.Yandere.Follower.IdleAnim);
-			this.Yandere.Follower.Pathfinding.canSearch = false;
-			this.Yandere.Follower.Pathfinding.canMove = false;
-			this.Yandere.Follower.enabled = false;
-			this.Yandere.RPGCamera.enabled = false;
-			this.Darkness.enabled = true;
-			this.Yandere.CanMove = false;
-			this.Boosting = true;
-			this.FadeOut = true;
+			this.Prompt.Circle[0].fillAmount = 1f;
+			if (!this.Yandere.Chased && this.Yandere.Chasers == 0)
+			{
+				this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
+				this.Yandere.Follower.CharacterAnimation.CrossFade(this.Yandere.Follower.IdleAnim);
+				this.Yandere.Follower.Pathfinding.canSearch = false;
+				this.Yandere.Follower.Pathfinding.canMove = false;
+				this.Yandere.Follower.enabled = false;
+				this.Yandere.RPGCamera.enabled = false;
+				this.Darkness.enabled = true;
+				this.Yandere.CanMove = false;
+				this.Boosting = true;
+				this.FadeOut = true;
+			}
 		}
 		if (this.Boosting)
 		{

@@ -32,15 +32,18 @@ public class DumpsterHandleScript : MonoBehaviour
 		if (this.Prompt.Circle[3].fillAmount == 0f)
 		{
 			this.Prompt.Circle[3].fillAmount = 1f;
-			this.Prompt.Yandere.DumpsterGrabbing = true;
-			this.Prompt.Yandere.DumpsterHandle = this;
-			this.Prompt.Yandere.CanMove = false;
-			this.PromptBar.ClearButtons();
-			this.PromptBar.Label[1].text = "STOP";
-			this.PromptBar.Label[5].text = "PUSH / PULL";
-			this.PromptBar.UpdateButtons();
-			this.PromptBar.Show = true;
-			this.Grabbed = true;
+			if (!this.Prompt.Yandere.Chased || this.Prompt.Yandere.Chasers == 0)
+			{
+				this.Prompt.Yandere.DumpsterGrabbing = true;
+				this.Prompt.Yandere.DumpsterHandle = this;
+				this.Prompt.Yandere.CanMove = false;
+				this.PromptBar.ClearButtons();
+				this.PromptBar.Label[1].text = "STOP";
+				this.PromptBar.Label[5].text = "PUSH / PULL";
+				this.PromptBar.UpdateButtons();
+				this.PromptBar.Show = true;
+				this.Grabbed = true;
+			}
 		}
 		if (this.Grabbed)
 		{

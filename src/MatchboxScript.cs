@@ -31,7 +31,7 @@ public class MatchboxScript : MonoBehaviour
 				if (this.Prompt.Circle[0].fillAmount == 0f)
 				{
 					this.Prompt.Circle[0].fillAmount = 1f;
-					if (!this.Yandere.Flicking)
+					if (!this.Yandere.Chased && this.Yandere.Chasers == 0 && this.Yandere.CanMove && !this.Yandere.Flicking)
 					{
 						GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Match, base.transform.position, Quaternion.identity);
 						gameObject.transform.parent = this.Yandere.ItemParent;

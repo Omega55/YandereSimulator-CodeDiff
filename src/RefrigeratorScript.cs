@@ -43,10 +43,14 @@ public class RefrigeratorScript : MonoBehaviour
 	{
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			this.CookingEvent.EventCheck = false;
-			this.Yandere.EmptyHands();
-			this.Yandere.CanMove = false;
-			this.Yandere.Cooking = true;
+			this.Prompt.Circle[0].fillAmount = 1f;
+			if (!this.Yandere.Chased && this.Yandere.Chasers == 0)
+			{
+				this.CookingEvent.EventCheck = false;
+				this.Yandere.EmptyHands();
+				this.Yandere.CanMove = false;
+				this.Yandere.Cooking = true;
+			}
 		}
 		if (this.Yandere.Cooking)
 		{
