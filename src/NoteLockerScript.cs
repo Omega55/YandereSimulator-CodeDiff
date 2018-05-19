@@ -101,7 +101,7 @@ public class NoteLockerScript : MonoBehaviour
 		}
 		if (this.NoteLeft)
 		{
-			if (this.Student != null && (this.Student.Phase == 2 || this.Student.Phase == 7) && this.Student.Routine && Vector3.Distance(base.transform.position, this.Student.transform.position) < 2f && !this.Student.InEvent)
+			if (this.Student != null && (this.Student.Phase == 2 || this.Student.Phase == 8) && this.Student.Routine && Vector3.Distance(base.transform.position, this.Student.transform.position) < 2f && !this.Student.InEvent)
 			{
 				this.Student.Character.GetComponent<Animation>().cullingType = AnimationCullingType.AlwaysAnimate;
 				if (!this.Success)

@@ -1031,6 +1031,7 @@ public class StudentManagerScript : MonoBehaviour
 
 	public void AttendClass()
 	{
+		this.ConvoManager.Confirmed = false;
 		if (this.RingEvent.EventActive)
 		{
 			this.RingEvent.ReturnRing();

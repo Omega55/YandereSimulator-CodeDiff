@@ -32,7 +32,7 @@ public class DumpsterHandleScript : MonoBehaviour
 		if (this.Prompt.Circle[3].fillAmount == 0f)
 		{
 			this.Prompt.Circle[3].fillAmount = 1f;
-			if (!this.Prompt.Yandere.Chased || this.Prompt.Yandere.Chasers == 0)
+			if (!this.Prompt.Yandere.Chased && this.Prompt.Yandere.Chasers == 0)
 			{
 				this.Prompt.Yandere.DumpsterGrabbing = true;
 				this.Prompt.Yandere.DumpsterHandle = this;
@@ -84,15 +84,20 @@ public class DumpsterHandleScript : MonoBehaviour
 				base.transform.parent.transform.position = new Vector3(base.transform.parent.transform.position.x, base.transform.parent.transform.position.y, this.PushLimit);
 			}
 			this.Panel.SetActive(this.DumpsterLid.transform.position.z > this.DumpsterLid.DisposalSpot - 0.05f && this.DumpsterLid.transform.position.z < this.DumpsterLid.DisposalSpot + 0.05f);
-			if (Input.GetButtonDown("B"))
+			if (this.Prompt.Yandere.Chased || this.Prompt.Yandere.Chasers > 0 || Input.GetButtonDown("B"))
 			{
-				this.Prompt.Yandere.DumpsterGrabbing = false;
-				this.Prompt.Yandere.CanMove = true;
-				this.PromptBar.ClearButtons();
-				this.PromptBar.Show = false;
-				this.Panel.SetActive(false);
-				this.Grabbed = false;
+				this.StopGrabbing();
 			}
 		}
+	}
+
+	private void StopGrabbing()
+	{
+		this.Prompt.Yandere.DumpsterGrabbing = false;
+		this.Prompt.Yandere.CanMove = true;
+		this.PromptBar.ClearButtons();
+		this.PromptBar.Show = false;
+		this.Panel.SetActive(false);
+		this.Grabbed = false;
 	}
 }

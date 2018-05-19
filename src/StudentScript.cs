@@ -5648,7 +5648,7 @@ public class StudentScript : MonoBehaviour
 			{
 				this.Warned = false;
 			}
-			if ((this.Alarm > 0f || this.AlarmTimer > 0f || this.Yandere.Armed || this.Waiting || this.InEvent || this.SentHome) && !this.Slave && !this.BadTime && !this.Yandere.Gazing)
+			if ((this.Alarm > 0f || this.AlarmTimer > 0f || this.Yandere.Armed || this.Waiting || this.InEvent || this.SentHome || this.Threatened) && !this.Slave && !this.BadTime && !this.Yandere.Gazing)
 			{
 				this.Prompt.Circle[0].fillAmount = 1f;
 			}
@@ -5868,7 +5868,7 @@ public class StudentScript : MonoBehaviour
 								if (this.Club != ClubType.Council && this.Club != ClubType.Delinquent && ((this.Male && PlayerGlobals.Seduction + PlayerGlobals.SeductionBonus > 0) || PlayerGlobals.Seduction + PlayerGlobals.SeductionBonus > 4))
 								{
 									ParticleSystem.EmissionModule emission = this.Hearts.emission;
-									emission.rateOverTime = (float)PlayerGlobals.Seduction;
+									emission.rateOverTime = (float)(PlayerGlobals.Seduction + PlayerGlobals.SeductionBonus);
 									emission.enabled = true;
 									this.Hearts.Play();
 								}
@@ -7863,7 +7863,7 @@ public class StudentScript : MonoBehaviour
 		}
 		if (this.SmartPhone.activeInHierarchy)
 		{
-			if (this.Persona != PersonaType.Heroic && this.Persona != PersonaType.Dangerous && this.Persona != PersonaType.Evil && this.Persona != PersonaType.Violent && !this.Teacher)
+			if (this.Persona != PersonaType.Heroic && this.Persona != PersonaType.Dangerous && this.Persona != PersonaType.Evil && this.Persona != PersonaType.Violent && this.Persona != PersonaType.Coward && !this.Teacher)
 			{
 				this.Persona = PersonaType.PhoneAddict;
 				this.SprintAnim = this.PhoneAnims[2];
@@ -8040,7 +8040,12 @@ public class StudentScript : MonoBehaviour
 			{
 				if (this.Club == ClubType.Council)
 				{
-					Debug.Log("A student council member has been told to travel to ''CorpseLocation''.");
+					Debug.Log("A student council member has been told to travel to ''CorpseGuardLocation''.");
+					if (this.StudentManager.CorpseLocation.position == Vector3.zero)
+					{
+						this.StudentManager.CorpseLocation.position = this.Corpse.AllColliders[0].transform.position;
+						this.AssignCorpseGuardLocations();
+					}
 					if (this.StudentID == 86)
 					{
 						this.Pathfinding.target = this.StudentManager.CorpseGuardLocation[1];
@@ -9330,6 +9335,10 @@ public class StudentScript : MonoBehaviour
 		}
 		else
 		{
+			if (this.Club == ClubType.Bully)
+			{
+				this.SmartPhone.SetActive(true);
+			}
 			this.CharacterAnimation.CrossFade(this.IdleAnim);
 		}
 	}
@@ -9653,6 +9662,7 @@ public class StudentScript : MonoBehaviour
 			this.Yandere.YandereVision = false;
 			this.Yandere.NearSenpai = false;
 			this.Yandere.Degloving = false;
+			this.Yandere.Flicking = false;
 			this.Yandere.Punching = false;
 			this.Yandere.CanMove = false;
 			this.Yandere.Shoved = true;

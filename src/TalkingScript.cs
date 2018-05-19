@@ -208,7 +208,7 @@ public class TalkingScript : MonoBehaviour
 						{
 							this.S.GossipBonus++;
 						}
-						if ((this.S.Male && PlayerGlobals.Seduction > 1) || PlayerGlobals.Seduction == 5)
+						if ((this.S.Male && PlayerGlobals.Seduction + PlayerGlobals.SeductionBonus > 0) || PlayerGlobals.Seduction == 5)
 						{
 							this.S.GossipBonus++;
 						}
@@ -1025,7 +1025,7 @@ public class TalkingScript : MonoBehaviour
 		{
 			this.S.RepBonus++;
 		}
-		if ((this.S.Male && PlayerGlobals.Seduction > 0) || PlayerGlobals.Seduction == 5)
+		if ((this.S.Male && PlayerGlobals.Seduction + PlayerGlobals.SeductionBonus > 0) || PlayerGlobals.Seduction == 5)
 		{
 			this.S.RepBonus++;
 		}

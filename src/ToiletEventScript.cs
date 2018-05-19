@@ -124,7 +124,7 @@ public class ToiletEventScript : MonoBehaviour
 				this.EventStudent.DrownAnim = "f02_toiletDrownB_00";
 				this.EventStudent.Character.GetComponent<Animation>().CrossFade(this.EventStudent.DrownAnim);
 			}
-			if (this.Clock.HourTime > this.EventTime + 0.5f || this.EventStudent.WitnessedMurder || this.EventStudent.Splashed || this.EventStudent.Dying)
+			if (this.Clock.HourTime > this.EventTime + 0.5f || this.EventStudent.WitnessedMurder || this.EventStudent.Splashed || this.EventStudent.Dying || this.EventStudent.Alarmed)
 			{
 				this.EndEvent();
 			}

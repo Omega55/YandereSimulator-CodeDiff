@@ -555,7 +555,14 @@ public class EndOfDayScript : MonoBehaviour
 						else if (this.ClubManager.LeaderDead)
 						{
 							ClubGlobals.SetClubClosed(this.ClubArray[this.ClubID], true);
-							this.Label.text = "The leader of the " + this.ClubNames[this.ClubID].ToString() + " is dead. The remaining members of the club decide to disband the club.";
+							this.Label.text = string.Concat(new string[]
+							{
+								"The leader of the ",
+								this.ClubNames[this.ClubID].ToString(),
+								" is gone. The ",
+								this.ClubNames[this.ClubID].ToString(),
+								" cannot operate without its leader. The club disbands."
+							});
 							this.ClubClosed = true;
 							if (ClubGlobals.Club == this.ClubArray[this.ClubID])
 							{
