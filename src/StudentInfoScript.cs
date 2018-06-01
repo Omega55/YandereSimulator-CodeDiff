@@ -212,7 +212,14 @@ public class StudentInfoScript : MonoBehaviour
 			{
 				if (!this.CustomPortraits)
 				{
-					this.Portrait.mainTexture = ((ID >= 33 && ID <= 75) ? this.BlankPortrait : www.texture);
+					if (ID < 33 || (ID > 55 && ID < 61) || ID > 75)
+					{
+						this.Portrait.mainTexture = www.texture;
+					}
+					else
+					{
+						this.Portrait.mainTexture = this.BlankPortrait;
+					}
 				}
 				else
 				{

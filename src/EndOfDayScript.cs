@@ -517,7 +517,7 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 13)
 			{
-				Debug.Log("Phase 13.");
+				Debug.Log("Phase 13 - checking for clubs shutting down.");
 				this.ClubClosed = false;
 				this.ClubKicked = false;
 				if (this.ClubID < this.ClubArray.Length)

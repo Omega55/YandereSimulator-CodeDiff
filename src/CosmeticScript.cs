@@ -407,40 +407,48 @@ public class CosmeticScript : MonoBehaviour
 				{
 					this.Fingernails[j].material.color = this.BullyColor[this.StudentID];
 				}
-				if (!this.Kidnapped && SceneManager.GetActiveScene().name == "PortraitScene")
-				{
-					if (this.StudentID == 32)
-					{
-						this.Character.GetComponent<Animation>().Play("f02_shy_00");
-					}
-					else if (this.StudentID == 81)
-					{
-						this.Character.GetComponent<Animation>().Play("f02_socialCameraPose_00");
-						base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y + 0.05f, base.transform.position.z);
-					}
-					else if (this.StudentID == 82)
-					{
-						this.Character.GetComponent<Animation>().Play("f02_galPose_01");
-					}
-					else if (this.StudentID == 83)
-					{
-						this.Character.GetComponent<Animation>().Play("f02_galPose_02");
-					}
-					else if (this.StudentID == 84)
-					{
-						this.Character.GetComponent<Animation>().Play("f02_galPose_03");
-					}
-					else if (this.StudentID == 85)
-					{
-						this.Character.GetComponent<Animation>().Play("f02_galPose_04");
-					}
-				}
 			}
 			else
 			{
 				for (int k = 0; k < 10; k++)
 				{
 					this.Fingernails[k].gameObject.SetActive(false);
+				}
+			}
+			if (!this.Kidnapped && SceneManager.GetActiveScene().name == "PortraitScene")
+			{
+				if (this.StudentID == 32)
+				{
+					this.Character.GetComponent<Animation>().Play("f02_shy_00");
+				}
+				else if (this.StudentID == 59)
+				{
+					this.Character.GetComponent<Animation>().Play("f02_idleGraceful_00");
+				}
+				else if (this.StudentID == 60)
+				{
+					this.Character.GetComponent<Animation>().Play("f02_idleScholarly_00");
+				}
+				else if (this.StudentID == 81)
+				{
+					this.Character.GetComponent<Animation>().Play("f02_socialCameraPose_00");
+					base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y + 0.05f, base.transform.position.z);
+				}
+				else if (this.StudentID == 82)
+				{
+					this.Character.GetComponent<Animation>().Play("f02_galPose_01");
+				}
+				else if (this.StudentID == 83)
+				{
+					this.Character.GetComponent<Animation>().Play("f02_galPose_02");
+				}
+				else if (this.StudentID == 84)
+				{
+					this.Character.GetComponent<Animation>().Play("f02_galPose_03");
+				}
+				else if (this.StudentID == 85)
+				{
+					this.Character.GetComponent<Animation>().Play("f02_galPose_04");
 				}
 			}
 		}
@@ -485,7 +493,19 @@ public class CosmeticScript : MonoBehaviour
 			}
 			if (SceneManager.GetActiveScene().name == "PortraitScene")
 			{
-				if (this.StudentID == 76)
+				if (this.StudentID == 56)
+				{
+					this.Character.GetComponent<Animation>().Play("idleConfident_00");
+				}
+				else if (this.StudentID == 57)
+				{
+					this.Character.GetComponent<Animation>().Play("idleChill_01");
+				}
+				else if (this.StudentID == 58)
+				{
+					this.Character.GetComponent<Animation>().Play("idleChill_00");
+				}
+				else if (this.StudentID == 76)
 				{
 					this.Character.GetComponent<Animation>().Play("delinquentPoseB");
 				}
@@ -939,12 +959,24 @@ public class CosmeticScript : MonoBehaviour
 				this.FemaleAccessories[3].SetActive(false);
 			}
 		}
-		else if (this.StudentID == 20 && base.transform.position != Vector3.zero)
+		else if (this.StudentID == 20)
 		{
-			this.RightEyeRenderer.material.mainTexture = this.DefaultFaceTexture;
-			this.LeftEyeRenderer.material.mainTexture = this.DefaultFaceTexture;
-			this.RightEyeRenderer.gameObject.GetComponent<RainbowScript>().enabled = true;
-			this.LeftEyeRenderer.gameObject.GetComponent<RainbowScript>().enabled = true;
+			if (base.transform.position != Vector3.zero)
+			{
+				this.RightEyeRenderer.material.mainTexture = this.DefaultFaceTexture;
+				this.LeftEyeRenderer.material.mainTexture = this.DefaultFaceTexture;
+				this.RightEyeRenderer.gameObject.GetComponent<RainbowScript>().enabled = true;
+				this.LeftEyeRenderer.gameObject.GetComponent<RainbowScript>().enabled = true;
+			}
+		}
+		else if (this.StudentID == 59)
+		{
+			this.ClubAccessories[7].transform.localPosition = new Vector3(0f, -1.04f, 0.5f);
+			this.ClubAccessories[7].transform.localEulerAngles = new Vector3(-22.5f, 0f, 0f);
+		}
+		else if (this.StudentID == 60)
+		{
+			this.FemaleAccessories[13].SetActive(true);
 		}
 		if (this.Student != null && this.Student.AoT)
 		{
@@ -1054,6 +1086,10 @@ public class CosmeticScript : MonoBehaviour
 				this.CasualTexture = this.NoseTextures[1];
 				this.SocksTexture = this.NoseTextures[2];
 			}
+		}
+		if (this.StudentID == 58)
+		{
+			this.SkinColor = 4;
 		}
 		if (!this.Student.Indoors)
 		{

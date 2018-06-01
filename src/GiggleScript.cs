@@ -62,7 +62,7 @@ public class GiggleScript : MonoBehaviour
 						this.Student.Routine = false;
 						this.Student.ReadPhase = 0;
 						this.Student.StopPairing();
-						if (this.Student.Persona != PersonaType.PhoneAddict)
+						if (this.Student.Persona != PersonaType.PhoneAddict && !this.Student.Sleuthing)
 						{
 							this.Student.SmartPhone.SetActive(false);
 						}

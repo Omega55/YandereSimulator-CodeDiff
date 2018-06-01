@@ -67,6 +67,8 @@ public class ClockScript : MonoBehaviour
 
 	public string TimeText = string.Empty;
 
+	public bool IgnorePhotographyClub;
+
 	public bool StopTime;
 
 	public bool TimeSkip;
@@ -104,6 +106,10 @@ public class ClockScript : MonoBehaviour
 		this.MainLight.color = new Color(1f, 1f, 1f, 1f);
 		RenderSettings.ambientLight = new Color(0.75f, 0.75f, 0.75f, 1f);
 		RenderSettings.skybox.SetColor("_Tint", new Color(0.5f, 0.5f, 0.5f));
+		if (ClubGlobals.GetClubClosed(ClubType.Photography) || StudentGlobals.GetStudentGrudge(56) || StudentGlobals.GetStudentGrudge(57) || StudentGlobals.GetStudentGrudge(58) || StudentGlobals.GetStudentGrudge(59) || StudentGlobals.GetStudentGrudge(60))
+		{
+			this.IgnorePhotographyClub = true;
+		}
 	}
 
 	private void Update()
@@ -236,6 +242,11 @@ public class ClockScript : MonoBehaviour
 		{
 			this.PeriodLabel.text = "AFTER SCHOOL";
 			this.Period++;
+		}
+		if (!this.IgnorePhotographyClub && this.HourTime > 16.75f && this.StudentManager.SleuthPhase < 4)
+		{
+			this.StudentManager.SleuthPhase = 3;
+			this.StudentManager.UpdateSleuths();
 		}
 		this.Sun.eulerAngles = new Vector3(this.Sun.eulerAngles.x, this.Sun.eulerAngles.y, -45f + 90f * (this.PresentTime - 420f) / 660f);
 		if ((this.Yandere.transform.position.y < 11f && this.Yandere.transform.position.x > -30f && this.Yandere.transform.position.z > -38f && this.Yandere.transform.position.x < -22f && this.Yandere.transform.position.z < -26f) || (this.Yandere.transform.position.y < 11f && this.Yandere.transform.position.x > 22f && this.Yandere.transform.position.z > -38f && this.Yandere.transform.position.x < 30f && this.Yandere.transform.position.z < -26f))

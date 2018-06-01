@@ -347,6 +347,10 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] Club6Info;
 
+	public string[] Club7InfoLight;
+
+	public string[] Club7InfoDark;
+
 	public string[] ClubGreetings;
 
 	public string[] ClubUnwelcomes;
@@ -502,6 +506,10 @@ public class SubtitleScript : MonoBehaviour
 	public AudioClip[] Club4Clips;
 
 	public AudioClip[] Club6Clips;
+
+	public AudioClip[] Club7ClipsLight;
+
+	public AudioClip[] Club7ClipsDark;
 
 	public AudioClip[] ClubGreetingClips;
 
@@ -674,6 +682,14 @@ public class SubtitleScript : MonoBehaviour
 			{
 				SubtitleType.ClubPlaceholderInfo,
 				new AudioClipArrayWrapper(this.Club0Clips)
+			},
+			{
+				SubtitleType.ClubPhotoInfoLight,
+				new AudioClipArrayWrapper(this.Club7ClipsLight)
+			},
+			{
+				SubtitleType.ClubPhotoInfoDark,
+				new AudioClipArrayWrapper(this.Club7ClipsDark)
 			},
 			{
 				SubtitleType.ClubQuit,
@@ -1840,6 +1856,16 @@ public class SubtitleScript : MonoBehaviour
 			this.Label.text = this.Club6Info[ID];
 			this.PlayVoice(subtitleType, ID);
 		}
+		else if (subtitleType == SubtitleType.ClubPhotoInfoLight)
+		{
+			this.Label.text = this.Club7InfoLight[ID];
+			this.PlayVoice(subtitleType, ID);
+		}
+		else if (subtitleType == SubtitleType.ClubPhotoInfoDark)
+		{
+			this.Label.text = this.Club7InfoDark[ID];
+			this.PlayVoice(subtitleType, ID);
+		}
 		else if (subtitleType == SubtitleType.ClubJoin)
 		{
 			this.Label.text = this.ClubJoins[ID];
@@ -2030,7 +2056,15 @@ public class SubtitleScript : MonoBehaviour
 		{
 			return this.Club6Clips[ClubPhase].length;
 		}
-		return 0f;
+		if (Club != ClubType.Photography)
+		{
+			return 0f;
+		}
+		if (SchoolGlobals.SchoolAtmosphere <= 0.8f)
+		{
+			return this.Club7ClipsDark[ClubPhase].length;
+		}
+		return this.Club7ClipsLight[ClubPhase].length;
 	}
 
 	private void PlayClip(AudioClip clip, Vector3 pos)

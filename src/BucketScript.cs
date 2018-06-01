@@ -383,28 +383,32 @@ public class BucketScript : MonoBehaviour
 
 	private void OnCollisionEnter(Collision other)
 	{
-		if (this.Dropped && other.gameObject.layer == 9)
+		if (this.Dropped)
 		{
-			StudentScript component = other.gameObject.GetComponent<StudentScript>();
-			if (component != null)
+			Debug.Log("We collided with: " + other.gameObject.name);
+			if (other.gameObject.layer == 9)
 			{
-				base.GetComponent<AudioSource>().Play();
-				while (this.Dumbbells > 0)
+				StudentScript component = other.gameObject.GetComponent<StudentScript>();
+				if (component != null)
 				{
-					this.Dumbbell[this.Dumbbells].GetComponent<WeaponScript>().enabled = true;
-					this.Dumbbell[this.Dumbbells].GetComponent<PromptScript>().enabled = true;
-					this.Dumbbell[this.Dumbbells].GetComponent<Collider>().enabled = true;
-					Rigidbody component2 = this.Dumbbell[this.Dumbbells].GetComponent<Rigidbody>();
-					component2.constraints = RigidbodyConstraints.None;
-					component2.isKinematic = false;
-					component2.useGravity = true;
-					this.Dumbbell[this.Dumbbells].transform.parent = null;
-					this.Dumbbell[this.Dumbbells] = null;
-					this.Dumbbells--;
+					base.GetComponent<AudioSource>().Play();
+					while (this.Dumbbells > 0)
+					{
+						this.Dumbbell[this.Dumbbells].GetComponent<WeaponScript>().enabled = true;
+						this.Dumbbell[this.Dumbbells].GetComponent<PromptScript>().enabled = true;
+						this.Dumbbell[this.Dumbbells].GetComponent<Collider>().enabled = true;
+						Rigidbody component2 = this.Dumbbell[this.Dumbbells].GetComponent<Rigidbody>();
+						component2.constraints = RigidbodyConstraints.None;
+						component2.isKinematic = false;
+						component2.useGravity = true;
+						this.Dumbbell[this.Dumbbells].transform.parent = null;
+						this.Dumbbell[this.Dumbbells] = null;
+						this.Dumbbells--;
+					}
+					this.Dropped = false;
+					component.DeathType = DeathType.Weapon;
+					component.BecomeRagdoll();
 				}
-				this.Dropped = false;
-				component.DeathType = DeathType.Weapon;
-				component.BecomeRagdoll();
 			}
 		}
 	}

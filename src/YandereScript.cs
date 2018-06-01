@@ -2650,12 +2650,19 @@ public class YandereScript : MonoBehaviour
 					this.CharacterAnimation.CrossFade((!this.TargetStudent.Teacher) ? "f02_struggleLoseA_00" : "f02_teacherStruggleLoseA_00");
 				}
 			}
-			if (this.ClubActivity && ClubGlobals.Club == ClubType.MartialArts)
+			if (this.ClubActivity)
 			{
-				this.CharacterAnimation.Play("f02_kick_23");
-				if (this.CharacterAnimation["f02_kick_23"].time >= this.CharacterAnimation["f02_kick_23"].length)
+				if (ClubGlobals.Club == ClubType.MartialArts)
 				{
-					this.CharacterAnimation["f02_kick_23"].time = 0f;
+					this.CharacterAnimation.Play("f02_kick_23");
+					if (this.CharacterAnimation["f02_kick_23"].time >= this.CharacterAnimation["f02_kick_23"].length)
+					{
+						this.CharacterAnimation["f02_kick_23"].time = 0f;
+					}
+				}
+				else if (ClubGlobals.Club == ClubType.Photography)
+				{
+					this.CharacterAnimation.Play("f02_sit_00");
 				}
 			}
 			if (this.Possessed)

@@ -9,7 +9,7 @@ public enum StudentActionType
 	Slave,
 	Relax,
 	SitAndTakeNotes,
-	Stalk,
+	Peek,
 	ClubAction,
 	SitAndSocialize,
 	SitAndEatBento,
@@ -28,5 +28,7 @@ public enum StudentActionType
 	Graffiti,
 	Bully,
 	Follow,
-	Sulk
+	Sulk,
+	Sleuth,
+	Stalk
 }

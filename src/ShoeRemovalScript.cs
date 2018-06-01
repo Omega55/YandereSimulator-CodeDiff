@@ -250,10 +250,13 @@ public class ShoeRemovalScript : MonoBehaviour
 				base.enabled = false;
 				if (!this.Student.Indoors)
 				{
-					if (this.Student.Persona == PersonaType.PhoneAddict)
+					if (this.Student.Persona == PersonaType.PhoneAddict || this.Student.Sleuthing)
 					{
 						this.Student.SmartPhone.SetActive(true);
-						this.Student.WalkAnim = this.Student.PhoneAnims[1];
+						if (!this.Student.Sleuthing)
+						{
+							this.Student.WalkAnim = this.Student.PhoneAnims[1];
+						}
 					}
 					this.Student.Indoors = true;
 					this.Student.CanTalk = true;

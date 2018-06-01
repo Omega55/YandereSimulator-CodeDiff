@@ -116,29 +116,13 @@ public class CalendarScript : MonoBehaviour
 						}
 						if (Input.GetKeyDown(KeyCode.Z))
 						{
-							if (SchoolGlobals.SchoolAtmosphere > 0.8f)
+							if (SchoolGlobals.SchoolAtmosphere > 0f)
 							{
-								SchoolGlobals.SchoolAtmosphere = 0.8f;
-							}
-							else if (SchoolGlobals.SchoolAtmosphere > 0.6f)
-							{
-								SchoolGlobals.SchoolAtmosphere = 0.6f;
-							}
-							else if (SchoolGlobals.SchoolAtmosphere > 0.5f)
-							{
-								SchoolGlobals.SchoolAtmosphere = 0.5f;
-							}
-							else if (SchoolGlobals.SchoolAtmosphere > 0.4f)
-							{
-								SchoolGlobals.SchoolAtmosphere = 0.4f;
-							}
-							else if (SchoolGlobals.SchoolAtmosphere > 0.2f)
-							{
-								SchoolGlobals.SchoolAtmosphere = 0.2f;
+								SchoolGlobals.SchoolAtmosphere -= 0.1f;
 							}
 							else
 							{
-								SchoolGlobals.SchoolAtmosphere = 0f;
+								SchoolGlobals.SchoolAtmosphere = 100f;
 							}
 							SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 						}

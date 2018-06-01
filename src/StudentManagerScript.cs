@@ -141,6 +141,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform[] CorpseGuardLocation;
 
+	public Transform[] SleuthDestinations;
+
 	public Transform[] LockerPositions;
 
 	public Transform[] SpawnPositions;
@@ -152,6 +154,8 @@ public class StudentManagerScript : MonoBehaviour
 	public Transform[] BullySpots;
 
 	public Transform[] SulkSpots;
+
+	public Transform[] FleeSpots;
 
 	public bool[] SeatsTaken11;
 
@@ -277,6 +281,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public int GymTeacherID = 100;
 
+	public int SleuthPhase = 1;
+
 	public int SuitorID = 13;
 
 	public int VictimID;
@@ -338,6 +344,8 @@ public class StudentManagerScript : MonoBehaviour
 	public bool DK;
 
 	public float ChangeTimer;
+
+	public float SleuthTimer;
 
 	public float LowestRep;
 
@@ -471,13 +479,16 @@ public class StudentManagerScript : MonoBehaviour
 				this.ID = 1;
 				while (this.ID < this.HidingSpots.List.Length)
 				{
-					GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.EmptyObject, new Vector3(UnityEngine.Random.Range(-17f, 17f), 0f, UnityEngine.Random.Range(-17f, 17f)), Quaternion.identity);
-					while (gameObject.transform.position.x < 2.5f && gameObject.transform.position.x > -2.5f && gameObject.transform.position.z > -2.5f && gameObject.transform.position.z < 2.5f)
+					if (this.HidingSpots.List[this.ID] == null)
 					{
-						gameObject.transform.position = new Vector3(UnityEngine.Random.Range(-17f, 17f), 0f, UnityEngine.Random.Range(-17f, 17f));
+						GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.EmptyObject, new Vector3(UnityEngine.Random.Range(-17f, 17f), 0f, UnityEngine.Random.Range(-17f, 17f)), Quaternion.identity);
+						while (gameObject.transform.position.x < 2.5f && gameObject.transform.position.x > -2.5f && gameObject.transform.position.z > -2.5f && gameObject.transform.position.z < 2.5f)
+						{
+							gameObject.transform.position = new Vector3(UnityEngine.Random.Range(-17f, 17f), 0f, UnityEngine.Random.Range(-17f, 17f));
+						}
+						gameObject.transform.parent = this.HidingSpots.transform;
+						this.HidingSpots.List[this.ID] = gameObject.transform;
 					}
-					gameObject.transform.parent = this.HidingSpots.transform;
-					this.HidingSpots.List[this.ID] = gameObject.transform;
 					this.ID++;
 				}
 			}
@@ -1032,6 +1043,7 @@ public class StudentManagerScript : MonoBehaviour
 	public void AttendClass()
 	{
 		this.ConvoManager.Confirmed = false;
+		this.SleuthPhase = 3;
 		if (this.RingEvent.EventActive)
 		{
 			this.RingEvent.ReturnRing();
@@ -1805,6 +1817,38 @@ public class StudentManagerScript : MonoBehaviour
 			if (!this.NoBully[this.ID])
 			{
 				this.Graffiti[this.ID].SetActive(true);
+			}
+			this.ID++;
+		}
+	}
+
+	public void UpdateSleuths()
+	{
+		Debug.Log("The sleuths have been updated!");
+		this.SleuthPhase++;
+		this.ID = 56;
+		while (this.ID < 61)
+		{
+			if (this.Students[this.ID] != null)
+			{
+				if (this.SleuthPhase < 3)
+				{
+					this.Students[this.ID].SleuthTarget = this.SleuthDestinations[this.ID - 55];
+					this.Students[this.ID].Pathfinding.target = this.Students[this.ID].SleuthTarget;
+					this.Students[this.ID].CurrentDestination = this.Students[this.ID].SleuthTarget;
+				}
+				else if (this.SleuthPhase == 3)
+				{
+					this.Students[this.ID].GetSleuthTarget();
+				}
+				else if (this.SleuthPhase == 4)
+				{
+					this.Students[this.ID].SleuthTarget = this.Clubs.List[this.ID];
+					this.Students[this.ID].Pathfinding.target = this.Students[this.ID].SleuthTarget;
+					this.Students[this.ID].CurrentDestination = this.Students[this.ID].SleuthTarget;
+				}
+				this.Students[this.ID].SmartPhone.SetActive(true);
+				this.Students[this.ID].SpeechLines.Stop();
 			}
 			this.ID++;
 		}

@@ -51,8 +51,9 @@ public class CurtainScript : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.gameObject.layer == 13)
+		if ((other.gameObject.layer == 13 || other.gameObject.layer == 9) && !this.Open)
 		{
+			this.MyAudio.Play();
 			this.Animate = true;
 			this.Open = true;
 		}

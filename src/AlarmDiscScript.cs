@@ -210,13 +210,16 @@ public class AlarmDiscScript : MonoBehaviour
 					this.Student.Routine = false;
 					this.Student.ReadPhase = 0;
 					this.Student.StopPairing();
-					if (this.Student.Persona != PersonaType.PhoneAddict)
+					Debug.Log(this.Student.Name + " was just alarmed by an alarm disc!");
+					if (this.Student.Persona == PersonaType.PhoneAddict || this.Student.Sleuthing)
 					{
-						this.Student.SmartPhone.SetActive(false);
+						Debug.Log(this.Student.Name + "'s phone should be active.");
+						this.Student.SmartPhone.SetActive(true);
 					}
 					else
 					{
-						this.Student.SmartPhone.SetActive(true);
+						Debug.Log(this.Student.Name + "'s phone should not be active.");
+						this.Student.SmartPhone.SetActive(false);
 					}
 					this.Student.OccultBook.SetActive(false);
 					this.Student.Pen.SetActive(false);

@@ -23,6 +23,8 @@ public enum SubtitleType
 	ClubLate,
 	ClubMartialArtsInfo,
 	ClubPlaceholderInfo,
+	ClubPhotoInfoLight,
+	ClubPhotoInfoDark,
 	ClubNo,
 	ClubOccultInfo,
 	ClubQuit,

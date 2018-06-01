@@ -611,8 +611,9 @@ public class PoliceScript : MonoBehaviour
 					}
 					else
 					{
-						SchoolGlobals.SchoolAtmosphere -= 0.1f;
+						SchoolGlobals.SchoolAtmosphere -= 0.15f;
 					}
+					SchoolGlobals.SchoolAtmosphere -= (float)this.Corpses * 0.05f;
 					if (this.JSON.Students[i].Club == ClubType.Council)
 					{
 						SchoolGlobals.SchoolAtmosphere -= 1f;
@@ -634,6 +635,14 @@ public class PoliceScript : MonoBehaviour
 			if (studentScript != null && studentScript.Grudge && studentScript.Persona != PersonaType.Evil)
 			{
 				StudentGlobals.SetStudentGrudge(j, true);
+				if (studentScript.OriginalPersona == PersonaType.Sleuth)
+				{
+					StudentGlobals.SetStudentGrudge(56, true);
+					StudentGlobals.SetStudentGrudge(57, true);
+					StudentGlobals.SetStudentGrudge(58, true);
+					StudentGlobals.SetStudentGrudge(59, true);
+					StudentGlobals.SetStudentGrudge(60, true);
+				}
 			}
 		}
 	}
