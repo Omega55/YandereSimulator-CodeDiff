@@ -723,7 +723,6 @@ public class TalkingScript : MonoBehaviour
 			}
 			else if (this.S.Interaction == StudentInteractionType.ClubActivity)
 			{
-				Debug.Log("ClubBonus is: " + this.ClubBonus);
 				if (this.S.TalkTimer == 100f)
 				{
 					if (this.S.ClubPhase == 1)

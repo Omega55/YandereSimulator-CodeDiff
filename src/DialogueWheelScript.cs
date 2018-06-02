@@ -308,11 +308,16 @@ public class DialogueWheelScript : MonoBehaviour
 							this.Yandere.TargetStudent.ClubPhase = 1;
 							this.Show = false;
 						}
+						int num = 0;
+						if (this.Yandere.TargetStudent.Sleuthing)
+						{
+							num = 5;
+						}
 						if (this.Selected == 4)
 						{
 							this.Impatience.fillAmount = 0f;
 							this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubBye;
-							this.Yandere.TargetStudent.TalkTimer = this.Yandere.Subtitle.ClubFarewellClips[(int)this.Yandere.TargetStudent.Club].length;
+							this.Yandere.TargetStudent.TalkTimer = this.Yandere.Subtitle.ClubFarewellClips[(int)(this.Yandere.TargetStudent.Club + num)].length;
 							this.Show = false;
 						}
 						if (this.Selected == 5)

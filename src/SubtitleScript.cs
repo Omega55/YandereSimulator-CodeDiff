@@ -2046,15 +2046,15 @@ public class SubtitleScript : MonoBehaviour
 	{
 		if (Club == ClubType.Occult)
 		{
-			return this.Club3Clips[ClubPhase].length;
+			return this.Club3Clips[ClubPhase].length + 0.5f;
 		}
 		if (Club == ClubType.Art)
 		{
-			return this.Club4Clips[ClubPhase].length;
+			return this.Club4Clips[ClubPhase].length + 0.5f;
 		}
 		if (Club == ClubType.MartialArts)
 		{
-			return this.Club6Clips[ClubPhase].length;
+			return this.Club6Clips[ClubPhase].length + 0.5f;
 		}
 		if (Club != ClubType.Photography)
 		{
@@ -2062,9 +2062,9 @@ public class SubtitleScript : MonoBehaviour
 		}
 		if (SchoolGlobals.SchoolAtmosphere <= 0.8f)
 		{
-			return this.Club7ClipsDark[ClubPhase].length;
+			return this.Club7ClipsDark[ClubPhase].length + 0.5f;
 		}
-		return this.Club7ClipsLight[ClubPhase].length;
+		return this.Club7ClipsLight[ClubPhase].length + 0.5f;
 	}
 
 	private void PlayClip(AudioClip clip, Vector3 pos)

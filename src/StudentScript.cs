@@ -5411,10 +5411,17 @@ public class StudentScript : MonoBehaviour
 							{
 								this.FoundEnemyCorpse = true;
 							}
-							if (this.Sleuthing)
+							if (this.Persona == PersonaType.Sleuth)
 							{
-								this.Persona = PersonaType.PhoneAddict;
-								this.SmartPhone.SetActive(true);
+								if (this.Sleuthing)
+								{
+									this.Persona = PersonaType.PhoneAddict;
+									this.SmartPhone.SetActive(true);
+								}
+								else
+								{
+									this.Persona = PersonaType.SocialButterfly;
+								}
 							}
 							this.Pathfinding.canSearch = false;
 							this.Pathfinding.canMove = false;
@@ -6153,17 +6160,6 @@ public class StudentScript : MonoBehaviour
 								{
 									this.DistanceToDestination = Vector3.Distance(base.transform.position, this.SleuthTarget.position);
 								}
-								Debug.Log(string.Concat(new object[]
-								{
-									"Pathfinding is: ",
-									this.Pathfinding.canMove,
-									", Distance is: ",
-									this.DistanceToDestination,
-									", Action is: ",
-									this.Actions[this.Phase],
-									", Armband is: ",
-									this.Armband.activeInHierarchy
-								}));
 								if ((!this.Pathfinding.canMove && this.DistanceToDestination < 1f && this.Actions[this.Phase] == StudentActionType.ClubAction && this.Armband.activeInHierarchy) || (!this.Pathfinding.canMove && this.DistanceToDestination < 1f && this.Actions[this.Phase] == StudentActionType.SitAndSocialize && this.Armband.activeInHierarchy) || (!this.Pathfinding.canMove && this.DistanceToDestination < 1f && this.Actions[this.Phase] == StudentActionType.Sleuth && this.Armband.activeInHierarchy))
 								{
 									int num;

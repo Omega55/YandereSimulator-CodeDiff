@@ -242,30 +242,34 @@ public class RagdollScript : MonoBehaviour
 				}
 				if (this.Prompt.Circle[0].fillAmount == 0f)
 				{
-					if (this.Cauterizable)
+					this.Prompt.Circle[0].fillAmount = 1f;
+					if (!this.Yandere.Chased && this.Yandere.Chasers == 0)
 					{
-						this.Prompt.Label[0].text = "     Dismember";
-						this.BloodPoolSpawner.enabled = false;
-						this.Cauterizable = false;
-						this.Cauterized = true;
-						this.Yandere.CharacterAnimation.CrossFade("f02_cauterize_00");
-						this.Yandere.Cauterizing = true;
-						this.Yandere.CanMove = false;
-						this.Yandere.PickUp.GetComponent<BlowtorchScript>().enabled = true;
-						this.Yandere.PickUp.GetComponent<AudioSource>().Play();
-					}
-					else
-					{
-						this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_dismember_00");
-						this.Yandere.transform.LookAt(base.transform);
-						this.Yandere.RPGCamera.transform.position = this.Yandere.DismemberSpot.position;
-						this.Yandere.RPGCamera.transform.eulerAngles = this.Yandere.DismemberSpot.eulerAngles;
-						this.Yandere.EquippedWeapon.Dismember();
-						this.Yandere.RPGCamera.enabled = false;
-						this.Yandere.TargetStudent = this.Student;
-						this.Yandere.Ragdoll = base.gameObject;
-						this.Yandere.Dismembering = true;
-						this.Yandere.CanMove = false;
+						if (this.Cauterizable)
+						{
+							this.Prompt.Label[0].text = "     Dismember";
+							this.BloodPoolSpawner.enabled = false;
+							this.Cauterizable = false;
+							this.Cauterized = true;
+							this.Yandere.CharacterAnimation.CrossFade("f02_cauterize_00");
+							this.Yandere.Cauterizing = true;
+							this.Yandere.CanMove = false;
+							this.Yandere.PickUp.GetComponent<BlowtorchScript>().enabled = true;
+							this.Yandere.PickUp.GetComponent<AudioSource>().Play();
+						}
+						else
+						{
+							this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_dismember_00");
+							this.Yandere.transform.LookAt(base.transform);
+							this.Yandere.RPGCamera.transform.position = this.Yandere.DismemberSpot.position;
+							this.Yandere.RPGCamera.transform.eulerAngles = this.Yandere.DismemberSpot.eulerAngles;
+							this.Yandere.EquippedWeapon.Dismember();
+							this.Yandere.RPGCamera.enabled = false;
+							this.Yandere.TargetStudent = this.Student;
+							this.Yandere.Ragdoll = base.gameObject;
+							this.Yandere.Dismembering = true;
+							this.Yandere.CanMove = false;
+						}
 					}
 				}
 				if (this.Prompt.Circle[1].fillAmount == 0f)

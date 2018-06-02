@@ -402,6 +402,11 @@ public class StudentManagerScript : MonoBehaviour
 		this.SeatsTaken31[3] = true;
 		this.SeatsTaken22[3] = true;
 		this.SeatsTaken21[3] = true;
+		this.SeatsTaken32[2] = true;
+		this.SeatsTaken31[2] = true;
+		this.SeatsTaken22[2] = true;
+		this.SeatsTaken21[2] = true;
+		this.SeatsTaken12[2] = true;
 		this.ID = 1;
 		while (this.ID < this.JSON.Students.Length)
 		{
@@ -1824,7 +1829,6 @@ public class StudentManagerScript : MonoBehaviour
 
 	public void UpdateSleuths()
 	{
-		Debug.Log("The sleuths have been updated!");
 		this.SleuthPhase++;
 		this.ID = 56;
 		while (this.ID < 61)
