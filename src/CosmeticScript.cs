@@ -287,6 +287,10 @@ public class CosmeticScript : MonoBehaviour
 
 	public void Start()
 	{
+		if (this.StudentID == 34)
+		{
+			this.StudentID = 35;
+		}
 		if (this.Kidnapped)
 		{
 		}
@@ -420,6 +424,8 @@ public class CosmeticScript : MonoBehaviour
 				if (this.StudentID == 32)
 				{
 					this.Character.GetComponent<Animation>().Play("f02_shy_00");
+					this.Character.GetComponent<Animation>().Play("f02_shy_00");
+					this.Character.GetComponent<Animation>()["f02_shy_00"].time = 1f;
 				}
 				else if (this.StudentID == 59)
 				{
@@ -1123,7 +1129,7 @@ public class CosmeticScript : MonoBehaviour
 				this.CasualTexture = this.GanguroCasualTextures[StudentGlobals.FemaleUniform];
 				this.SocksTexture = this.GanguroSocksTextures[StudentGlobals.FemaleUniform];
 			}
-			else if (this.StudentID == 34)
+			else if (this.StudentID == 35)
 			{
 				this.UniformTexture = this.BlackBody;
 				this.CasualTexture = this.BlackBody;
@@ -1177,7 +1183,7 @@ public class CosmeticScript : MonoBehaviour
 		if (this.Club == ClubType.Bully)
 		{
 		}
-		if (this.StudentID == 34)
+		if (this.StudentID == 35)
 		{
 			this.FaceTexture = this.BlackFace;
 		}

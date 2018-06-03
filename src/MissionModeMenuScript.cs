@@ -1213,7 +1213,13 @@ public class MissionModeMenuScript : MonoBehaviour
 
 	public void UpdateGraphics()
 	{
-		if (MissionModeGlobals.MissionTarget < 33)
+		this.TargetID = MissionModeGlobals.MissionTarget;
+		if ((this.TargetID > 32 && this.TargetID < 56) || (this.TargetID > 60 && this.TargetID < 76))
+		{
+			this.TargetPortrait.mainTexture = this.BlankPortrait;
+			this.TargetName = MissionModeGlobals.MissionTargetName;
+		}
+		else
 		{
 			string url = string.Concat(new string[]
 			{
@@ -1226,11 +1232,6 @@ public class MissionModeMenuScript : MonoBehaviour
 			WWW www = new WWW(url);
 			this.Icons[1].mainTexture = www.texture;
 			this.TargetName = this.JSON.Students[MissionModeGlobals.MissionTarget].Name;
-		}
-		else
-		{
-			this.TargetPortrait.mainTexture = this.BlankPortrait;
-			this.TargetName = MissionModeGlobals.MissionTargetName;
 		}
 		this.Descs[1].text = "Kill " + this.TargetName + ".";
 		for (int i = 2; i < this.Objectives.Length; i++)

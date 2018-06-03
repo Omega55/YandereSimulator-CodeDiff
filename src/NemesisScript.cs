@@ -133,9 +133,9 @@ public class NemesisScript : MonoBehaviour
 		if (this.PutOnDisguise)
 		{
 			int num = 1;
-			while (this.Student.StudentManager.Students[num].Male || num == this.MissionMode.TargetID)
+			while ((this.Student.StudentManager.Students[num] != null && this.Student.StudentManager.Students[num].Male) || (num > 32 && num < 56) || (num > 60 && num < 76) || num == this.MissionMode.TargetID)
 			{
-				num = UnityEngine.Random.Range(2, 33);
+				num = UnityEngine.Random.Range(2, 90);
 			}
 			this.Student.StudentManager.Students[num].gameObject.SetActive(false);
 			this.Cosmetic.StudentID = num;

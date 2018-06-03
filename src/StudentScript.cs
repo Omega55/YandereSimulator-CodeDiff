@@ -1323,6 +1323,7 @@ public class StudentScript : MonoBehaviour
 				this.CharacterAnimation.Play(this.AngryFaceAnim);
 				this.CharacterAnimation[this.AngryFaceAnim].weight = 0f;
 				this.CharacterAnimation["f02_wetIdle_00"].speed = 1.25f;
+				this.CharacterAnimation["f02_sleuthScan_00"].speed = 1.4f;
 				this.DisableEffects();
 			}
 			else
@@ -1344,6 +1345,7 @@ public class StudentScript : MonoBehaviour
 				this.CharacterAnimation[this.AngryFaceAnim].layer = 2;
 				this.CharacterAnimation.Play(this.AngryFaceAnim);
 				this.CharacterAnimation[this.AngryFaceAnim].weight = 0f;
+				this.CharacterAnimation["sleuthScan_00"].speed = 1.4f;
 				this.DelinquentSpeechLines.Stop();
 				this.WeaponBag.SetActive(false);
 				this.Earpiece.SetActive(false);
@@ -1500,7 +1502,6 @@ public class StudentScript : MonoBehaviour
 						this.SmartPhone.transform.localPosition = new Vector3(0.033333f, -0.015f, -0.015f);
 					}
 					this.SmartPhone.transform.localEulerAngles = new Vector3(12.5f, 120f, 180f);
-					this.PickRandomSleuthAnim();
 					if (this.Club == ClubType.None)
 					{
 						this.GetSleuthTarget();
@@ -1758,6 +1759,7 @@ public class StudentScript : MonoBehaviour
 				}
 			}
 			this.PickRandomAnim();
+			this.PickRandomSleuthAnim();
 			if (this.Club != ClubType.None && (this.StudentID == 21 || this.StudentID == 26 || this.StudentID == 56))
 			{
 				this.Armband.SetActive(true);
@@ -2160,21 +2162,10 @@ public class StudentScript : MonoBehaviour
 				}
 				else if (this.Club == ClubType.Photography)
 				{
-					if (this.Sleuthing)
+					this.CharacterAnimation.CrossFade(this.RandomSleuthAnim);
+					if (this.CharacterAnimation[this.RandomSleuthAnim].time >= this.CharacterAnimation[this.RandomSleuthAnim].length)
 					{
-						this.CharacterAnimation.CrossFade(this.RandomSleuthAnim);
-						if (this.CharacterAnimation[this.RandomSleuthAnim].time >= this.CharacterAnimation[this.RandomSleuthAnim].length)
-						{
-							this.PickRandomSleuthAnim();
-						}
-					}
-					else
-					{
-						this.CharacterAnimation.CrossFade(this.RandomAnim);
-						if (this.CharacterAnimation[this.RandomAnim].time >= this.CharacterAnimation[this.RandomAnim].length)
-						{
-							this.PickRandomAnim();
-						}
+						this.PickRandomSleuthAnim();
 					}
 				}
 			}
@@ -2743,10 +2734,21 @@ public class StudentScript : MonoBehaviour
 											this.SmartPhone.SetActive(false);
 											this.SpeechLines.Play();
 										}
-										this.CharacterAnimation.CrossFade(this.RandomAnim);
-										if (this.CharacterAnimation[this.RandomAnim].time >= this.CharacterAnimation[this.RandomAnim].length)
+										if (this.Club != ClubType.Photography)
 										{
-											this.PickRandomAnim();
+											this.CharacterAnimation.CrossFade(this.RandomAnim);
+											if (this.CharacterAnimation[this.RandomAnim].time >= this.CharacterAnimation[this.RandomAnim].length)
+											{
+												this.PickRandomAnim();
+											}
+										}
+										else
+										{
+											this.CharacterAnimation.CrossFade(this.RandomSleuthAnim);
+											if (this.CharacterAnimation[this.RandomSleuthAnim].time >= this.CharacterAnimation[this.RandomSleuthAnim].length)
+											{
+												this.PickRandomSleuthAnim();
+											}
 										}
 									}
 								}
@@ -2984,10 +2986,21 @@ public class StudentScript : MonoBehaviour
 											this.SmartPhone.SetActive(false);
 											this.SpeechLines.Play();
 										}
-										this.CharacterAnimation.CrossFade(this.RandomAnim);
-										if (this.CharacterAnimation[this.RandomAnim].time >= this.CharacterAnimation[this.RandomAnim].length)
+										if (this.Club != ClubType.Photography)
 										{
-											this.PickRandomAnim();
+											this.CharacterAnimation.CrossFade(this.RandomAnim);
+											if (this.CharacterAnimation[this.RandomAnim].time >= this.CharacterAnimation[this.RandomAnim].length)
+											{
+												this.PickRandomAnim();
+											}
+										}
+										else
+										{
+											this.CharacterAnimation.CrossFade(this.RandomSleuthAnim);
+											if (this.CharacterAnimation[this.RandomSleuthAnim].time >= this.CharacterAnimation[this.RandomSleuthAnim].length)
+											{
+												this.PickRandomSleuthAnim();
+											}
 										}
 									}
 								}
@@ -5099,7 +5112,7 @@ public class StudentScript : MonoBehaviour
 						}
 						if (this.CharacterAnimation[this.CameraAnims[3]].time >= this.CharacterAnimation[this.CameraAnims[3]].length)
 						{
-							if (this.Persona == PersonaType.PhoneAddict)
+							if (this.Persona == PersonaType.PhoneAddict || this.Sleuthing)
 							{
 								this.SmartPhone.SetActive(true);
 							}
@@ -5108,6 +5121,14 @@ public class StudentScript : MonoBehaviour
 							this.CameraReacting = false;
 							this.Routine = true;
 							this.ReadPhase = 0;
+							if (this.Actions[this.Phase] == StudentActionType.Clean)
+							{
+								this.Scrubber.SetActive(true);
+								if (this.CleaningRole == 5)
+								{
+									this.Eraser.SetActive(true);
+								}
+							}
 						}
 					}
 				}
@@ -5116,7 +5137,7 @@ public class StudentScript : MonoBehaviour
 					this.CameraPoseTimer = Mathf.MoveTowards(this.CameraPoseTimer, 0f, Time.deltaTime);
 					if (this.CameraPoseTimer == 0f)
 					{
-						if (this.Persona == PersonaType.PhoneAddict)
+						if (this.Persona == PersonaType.PhoneAddict || this.Sleuthing)
 						{
 							this.SmartPhone.SetActive(true);
 						}
@@ -5125,6 +5146,14 @@ public class StudentScript : MonoBehaviour
 						this.CameraReacting = false;
 						this.Routine = true;
 						this.ReadPhase = 0;
+						if (this.Actions[this.Phase] == StudentActionType.Clean)
+						{
+							this.Scrubber.SetActive(true);
+							if (this.CleaningRole == 5)
+							{
+								this.Eraser.SetActive(true);
+							}
+						}
 					}
 				}
 				else
@@ -8103,15 +8132,20 @@ public class StudentScript : MonoBehaviour
 				this.Persona = PersonaType.Evil;
 			}
 		}
-		if (this.Persona == PersonaType.Sleuth && this.Yandere.TargetStudent != null && !this.Sleuthing)
+		if (this.Persona == PersonaType.Sleuth)
 		{
-			if (this.StudentID == 56)
+			Debug.Log("A Sleuth is witnessing a murder.");
+			if ((this.Yandere.Attacking || this.Yandere.Struggling || this.Yandere.Carrying || this.Yandere.Lifting || (this.Yandere.PickUp != null && this.Yandere.PickUp.BodyPart)) && !this.Sleuthing)
 			{
-				this.Persona = PersonaType.Heroic;
-			}
-			else
-			{
-				this.Persona = PersonaType.SocialButterfly;
+				Debug.Log("A Sleuth is changing their Persona.");
+				if (this.StudentID == 56)
+				{
+					this.Persona = PersonaType.Heroic;
+				}
+				else
+				{
+					this.Persona = PersonaType.SocialButterfly;
+				}
 			}
 		}
 		if (this.StudentID > 1 || this.Yandere.Mask != null)
@@ -9067,7 +9101,14 @@ public class StudentScript : MonoBehaviour
 
 	private void PickRandomSleuthAnim()
 	{
-		this.RandomSleuthAnim = this.SleuthAnims[UnityEngine.Random.Range(0, this.SleuthAnims.Length)];
+		if (!this.Sleuthing)
+		{
+			this.RandomSleuthAnim = this.SleuthAnims[UnityEngine.Random.Range(0, 3)];
+		}
+		else
+		{
+			this.RandomSleuthAnim = this.SleuthAnims[UnityEngine.Random.Range(3, 6)];
+		}
 	}
 
 	private void BecomeTeacher()
@@ -10286,7 +10327,7 @@ public class StudentScript : MonoBehaviour
 
 	public void GetSleuthTarget()
 	{
-		this.TargetDistance = 1f;
+		this.TargetDistance = 2f;
 		this.SleuthID++;
 		if (this.SleuthID < 98)
 		{

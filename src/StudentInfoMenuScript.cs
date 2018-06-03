@@ -148,13 +148,20 @@ public class StudentInfoMenuScript : MonoBehaviour
 				{
 					this.PromptBar.Label[0].text = "Send Home";
 				}
-				if (this.StudentManager.Tag.Target == this.StudentManager.Students[this.StudentID].Head)
+				if (this.StudentManager.Students[this.StudentID].gameObject.activeInHierarchy)
 				{
-					this.PromptBar.Label[2].text = "Untag";
+					if (this.StudentManager.Tag.Target == this.StudentManager.Students[this.StudentID].Head)
+					{
+						this.PromptBar.Label[2].text = "Untag";
+					}
+					else
+					{
+						this.PromptBar.Label[2].text = "Tag";
+					}
 				}
 				else
 				{
-					this.PromptBar.Label[2].text = "Tag";
+					this.PromptBar.Label[2].text = string.Empty;
 				}
 				this.PromptBar.Label[1].text = "Back";
 				this.PromptBar.Label[3].text = "Interests";
