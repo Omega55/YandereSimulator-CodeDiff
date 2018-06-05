@@ -318,7 +318,7 @@ public class StudentInfoScript : MonoBehaviour
 			}
 			else if (this.StudentInfoMenu.SendingHome)
 			{
-				if (this.StudentManager.Students[this.CurrentStudent].Routine && !this.StudentManager.Students[this.CurrentStudent].InEvent)
+				if (this.StudentManager.Students[this.CurrentStudent].Routine && !this.StudentManager.Students[this.CurrentStudent].InEvent && !this.StudentManager.Students[this.CurrentStudent].TargetedForDistraction)
 				{
 					this.StudentManager.Students[this.CurrentStudent].Routine = false;
 					this.StudentManager.Students[this.CurrentStudent].SentHome = true;

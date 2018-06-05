@@ -685,6 +685,7 @@ public class StudentManagerScript : MonoBehaviour
 							studentScript2.transform.position = new Vector3(studentScript2.transform.position.x, studentScript2.transform.position.y + 0.1f, studentScript2.transform.position.z);
 							studentScript2.CurrentDestination = this.PinDownSpots[this.ID];
 							studentScript2.Pathfinding.target = this.PinDownSpots[this.ID];
+							studentScript2.SprintAnim = studentScript2.OriginalSprintAnim;
 							studentScript2.DistanceToDestination = 100f;
 							studentScript2.Pathfinding.speed = 5f;
 							studentScript2.MyController.radius = 0f;

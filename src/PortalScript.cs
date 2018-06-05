@@ -176,17 +176,13 @@ public class PortalScript : MonoBehaviour
 						}
 						this.Yandere.Incinerator.Timer -= 780f - this.Clock.PresentTime;
 						this.DelinquentManager.CheckTime();
-						this.Clock.DeactivateTrespassZones();
 						this.Clock.PresentTime = 780f;
-						this.Clock.Period++;
 					}
 					else
 					{
 						this.Yandere.Incinerator.Timer -= 930f - this.Clock.PresentTime;
 						this.DelinquentManager.CheckTime();
-						this.Clock.DeactivateTrespassZones();
 						this.Clock.PresentTime = 930f;
-						this.Clock.Period++;
 					}
 					this.Clock.HourTime = this.Clock.PresentTime / 60f;
 					this.StudentManager.AttendClass();

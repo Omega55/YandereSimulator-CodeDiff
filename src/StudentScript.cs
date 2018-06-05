@@ -388,6 +388,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool YandereVisible;
 
+	public bool CrimeReported;
+
 	public bool FleeWhenClean;
 
 	public bool MurderSuicide;
@@ -2414,6 +2416,7 @@ public class StudentScript : MonoBehaviour
 				this.Pathfinding.canSearch = true;
 				this.Pathfinding.canMove = true;
 				this.Pathfinding.speed = 4f;
+				this.SpeechLines.Stop();
 				this.Meeting = true;
 				this.MeetTime = 0f;
 			}
@@ -2721,8 +2724,10 @@ public class StudentScript : MonoBehaviour
 										{
 											this.CharacterAnimation.CrossFade("standTexting_00");
 										}
-										if (!this.SmartPhone.activeInHierarchy)
+										if (!this.SmartPhone.activeInHierarchy && !this.Shy)
 										{
+											this.SmartPhone.transform.localPosition = new Vector3(0.015f, 0.01f, 0.025f);
+											this.SmartPhone.transform.localEulerAngles = new Vector3(10f, -160f, 165f);
 											this.SmartPhone.SetActive(true);
 											this.SpeechLines.Stop();
 										}
@@ -2764,11 +2769,14 @@ public class StudentScript : MonoBehaviour
 									this.StudentManager.ConvoManager.CheckMe(this.StudentID);
 									if (this.Alone)
 									{
-										this.CharacterAnimation.CrossFade("f02_standTexting_00");
-										if (!this.SmartPhone.activeInHierarchy)
+										if (!this.Shy)
 										{
-											this.SmartPhone.SetActive(true);
-											this.SpeechLines.Stop();
+											this.CharacterAnimation.CrossFade("f02_standTexting_00");
+											if (!this.SmartPhone.activeInHierarchy)
+											{
+												this.SmartPhone.SetActive(true);
+												this.SpeechLines.Stop();
+											}
 										}
 									}
 									else
@@ -3704,10 +3712,12 @@ public class StudentScript : MonoBehaviour
 							{
 								this.Pathfinding.speed = 4f;
 							}
-							if (this.Persona == PersonaType.PhoneAddict)
+							if (this.Persona == PersonaType.PhoneAddict && !this.CrimeReported)
 							{
 								if (this.Countdown.Sprite.fillAmount == 0f)
 								{
+									this.Countdown.Sprite.fillAmount = 1f;
+									this.CrimeReported = true;
 									if (this.WitnessedMurder && !this.Countdown.MaskedPhoto)
 									{
 										this.PhoneAddictGameOver();
@@ -5116,6 +5126,10 @@ public class StudentScript : MonoBehaviour
 							{
 								this.SmartPhone.SetActive(true);
 							}
+							if (this.Cigarette.activeInHierarchy)
+							{
+								this.SmartPhone.SetActive(false);
+							}
 							this.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
 							this.Obstacle.enabled = false;
 							this.CameraReacting = false;
@@ -5551,6 +5565,11 @@ public class StudentScript : MonoBehaviour
 												if (this.Yandere.Hungry || !this.Yandere.Egg)
 												{
 													Debug.Log(this.Name + " has just witnessed a murder!");
+													if (this.Persona == PersonaType.PhoneAddict && this.CrimeReported)
+													{
+														this.CrimeReported = false;
+														this.Fleeing = false;
+													}
 													this.WitnessMurder();
 												}
 											}
@@ -6494,7 +6513,6 @@ public class StudentScript : MonoBehaviour
 			}
 			else
 			{
-				Debug.Log("1");
 				this.PhoneAddictCameraUpdate();
 			}
 			this.targetRotation = Quaternion.LookRotation(new Vector3(this.Yandere.Hips.position.x, base.transform.position.y, this.Yandere.Hips.position.z) - base.transform.position);
@@ -7201,6 +7219,7 @@ public class StudentScript : MonoBehaviour
 							this.StudentManager.CombatMinigame.Delinquent = this;
 							this.StudentManager.CombatMinigame.enabled = true;
 							this.StudentManager.CombatMinigame.StartCombat();
+							this.SpeechLines.Stop();
 							this.SpawnAlarmDisc();
 							if (this.WitnessedMurder)
 							{
@@ -7365,6 +7384,10 @@ public class StudentScript : MonoBehaviour
 					this.RadioTimer += Time.deltaTime;
 					if (this.RadioTimer > 3f)
 					{
+						if (this.Persona == PersonaType.PhoneAddict)
+						{
+							this.SmartPhone.SetActive(true);
+						}
 						this.CharacterAnimation.CrossFade(this.WalkAnim);
 						this.CurrentDestination = this.Radio.transform;
 						this.Pathfinding.target = this.Radio.transform;
@@ -7381,6 +7404,7 @@ public class StudentScript : MonoBehaviour
 						this.CharacterAnimation.CrossFade(this.RadioAnim);
 						this.Pathfinding.canSearch = false;
 						this.Pathfinding.canMove = false;
+						this.SmartPhone.SetActive(false);
 						this.RadioPhase++;
 					}
 				}
@@ -7391,6 +7415,10 @@ public class StudentScript : MonoBehaviour
 					this.RadioTimer += Time.deltaTime;
 					if (this.RadioTimer > 4f)
 					{
+						if (this.Persona == PersonaType.PhoneAddict)
+						{
+							this.SmartPhone.SetActive(true);
+						}
 						this.CurrentDestination = this.Destinations[this.Phase];
 						this.Pathfinding.target = this.Destinations[this.Phase];
 						this.Pathfinding.canSearch = true;
@@ -8098,15 +8126,6 @@ public class StudentScript : MonoBehaviour
 		{
 			this.CharacterAnimation["f02_smile_00"].weight = 0f;
 		}
-		if (this.Yandere.Mask == null)
-		{
-			this.SawMask = false;
-			this.Grudge = true;
-		}
-		else
-		{
-			this.SawMask = true;
-		}
 		if (this.OriginalPersona != PersonaType.Violent && this.Persona != this.OriginalPersona)
 		{
 			Debug.Log(this.Name + " is reverting back into their original Persona.");
@@ -8282,6 +8301,18 @@ public class StudentScript : MonoBehaviour
 		{
 			this.Pathfinding.canSearch = false;
 			this.Pathfinding.canMove = false;
+		}
+		if (this.Yandere.Mask == null)
+		{
+			this.SawMask = false;
+			if (this.Persona != PersonaType.Evil)
+			{
+				this.Grudge = true;
+			}
+		}
+		else
+		{
+			this.SawMask = true;
 		}
 		this.StudentManager.UpdateMe(this.StudentID);
 	}

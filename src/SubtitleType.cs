@@ -58,6 +58,7 @@ public enum SubtitleType
 	DelinquentInjuredFlee,
 	DelinquentCheer,
 	DelinquentHmm,
+	DelinquentGrudge,
 	Dismissive,
 	DrownReaction,
 	Dying,

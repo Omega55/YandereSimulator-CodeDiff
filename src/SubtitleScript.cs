@@ -303,6 +303,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] DelinquentHmms;
 
+	public string[] DelinquentGrudges;
+
 	public string[] Dismissives;
 
 	public string[] LostPhones;
@@ -602,6 +604,8 @@ public class SubtitleScript : MonoBehaviour
 	public AudioClip[] DelinquentCheerClips;
 
 	public AudioClip[] DelinquentHmmClips;
+
+	public AudioClip[] DelinquentGrudgeClips;
 
 	public AudioClip[] DismissiveClips;
 
@@ -998,6 +1002,10 @@ public class SubtitleScript : MonoBehaviour
 			{
 				SubtitleType.DelinquentHmm,
 				new AudioClipArrayWrapper(this.DelinquentHmmClips)
+			},
+			{
+				SubtitleType.DelinquentGrudge,
+				new AudioClipArrayWrapper(this.DelinquentGrudgeClips)
 			},
 			{
 				SubtitleType.Dismissive,
@@ -1420,6 +1428,12 @@ public class SubtitleScript : MonoBehaviour
 				this.Label.text = this.DelinquentHmms[this.RandomID];
 				this.PlayVoice(subtitleType, this.RandomID);
 			}
+		}
+		else if (subtitleType == SubtitleType.DelinquentGrudge)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentGrudges.Length);
+			this.Label.text = this.DelinquentGrudges[this.RandomID];
+			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.Dismissive)
 		{

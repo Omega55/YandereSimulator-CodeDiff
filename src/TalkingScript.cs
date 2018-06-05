@@ -523,16 +523,10 @@ public class TalkingScript : MonoBehaviour
 			{
 				if (this.S.TalkTimer == 5f)
 				{
-					if (this.S.Persona == PersonaType.Coward)
+					if (this.S.Persona == PersonaType.Coward || this.S.Persona == PersonaType.Fragile)
 					{
 						this.S.Subtitle.UpdateLabel(SubtitleType.CowardGrudge, 0, 5f);
 						this.S.Character.GetComponent<Animation>().CrossFade(this.S.CowardAnim);
-						this.S.TalkTimer = 5f;
-					}
-					else if (this.S.Persona == PersonaType.Spiteful)
-					{
-						this.S.Subtitle.UpdateLabel(SubtitleType.EvilGrudge, 0, 5f);
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.EvilAnim);
 						this.S.TalkTimer = 5f;
 					}
 					else
@@ -540,6 +534,10 @@ public class TalkingScript : MonoBehaviour
 						if (!this.S.Male)
 						{
 							this.S.Subtitle.UpdateLabel(SubtitleType.GrudgeWarning, 0, 99f);
+						}
+						else if (this.S.Club == ClubType.Delinquent)
+						{
+							this.S.Subtitle.UpdateLabel(SubtitleType.DelinquentGrudge, 1, 99f);
 						}
 						else
 						{

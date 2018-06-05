@@ -321,14 +321,14 @@ public class HeadmasterScript : MonoBehaviour
 
 	private void LateUpdate()
 	{
-		this.LookAtTarget = Vector3.Lerp(this.LookAtTarget, (!this.LookAtPlayer) ? this.Default.position : this.Yandere.Head.position, Time.deltaTime * 1f);
+		this.LookAtTarget = Vector3.Lerp(this.LookAtTarget, (!this.LookAtPlayer) ? this.Default.position : this.Yandere.Head.position, Time.deltaTime * 10f);
 		this.Head.LookAt(this.LookAtTarget);
 	}
 
 	private void AimBodyAtYandere()
 	{
 		this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - base.transform.position);
-		base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
+		base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 5f);
 		this.Chair.localPosition = Vector3.Lerp(this.Chair.localPosition, new Vector3(this.Chair.localPosition.x, this.Chair.localPosition.y, -5.2f), Time.deltaTime * 1f);
 	}
 

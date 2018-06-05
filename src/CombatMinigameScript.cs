@@ -452,6 +452,9 @@ public class CombatMinigameScript : MonoBehaviour
 					ScheduleBlock scheduleBlock3 = this.Delinquent.ScheduleBlocks[6];
 					scheduleBlock3.destination = "Sulk";
 					scheduleBlock3.action = "Sulk";
+					ScheduleBlock scheduleBlock4 = this.Delinquent.ScheduleBlocks[7];
+					scheduleBlock4.destination = "Sulk";
+					scheduleBlock4.action = "Sulk";
 					this.Delinquent.GetDestinations();
 					this.Delinquent.CurrentDestination = this.Delinquent.Destinations[this.Delinquent.Phase];
 					this.Delinquent.Pathfinding.target = this.Delinquent.Destinations[this.Delinquent.Phase];

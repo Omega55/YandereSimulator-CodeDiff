@@ -415,8 +415,11 @@ public class ClubManagerScript : MonoBehaviour
 	{
 		if (ClubGlobals.Club == ClubType.Cooking)
 		{
-			this.Refrigerator.enabled = true;
-			this.Refrigerator.Prompt.enabled = true;
+			if (!this.Refrigerator.CookingEvent.EventActive)
+			{
+				this.Refrigerator.enabled = true;
+				this.Refrigerator.Prompt.enabled = true;
+			}
 		}
 		else if (ClubGlobals.Club == ClubType.Drama)
 		{

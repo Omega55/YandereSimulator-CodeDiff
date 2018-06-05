@@ -665,7 +665,7 @@ public class RagdollScript : MonoBehaviour
 							transform.localScale *= 1.06382978f;
 							if (transform.transform.localPosition.y < -1f)
 							{
-								transform.transform.localPosition = new Vector3(transform.transform.localPosition.x, transform.transform.localPosition.y - 0.1f, transform.transform.localPosition.z);
+								transform.transform.localPosition = new Vector3(transform.transform.localPosition.x, transform.transform.localPosition.y - 0.095f, transform.transform.localPosition.z);
 							}
 							if (this.Student.Cosmetic.MaleAccessories[this.Student.Cosmetic.Accessory] != null)
 							{
@@ -681,7 +681,7 @@ public class RagdollScript : MonoBehaviour
 							this.Student.Cosmetic.TeacherAccessories[this.Student.Cosmetic.Accessory].transform.parent = gameObject.transform;
 						}
 					}
-					if (this.Student.Club < ClubType.Gaming && this.Student.Cosmetic.ClubAccessories[(int)this.Student.Club] != null)
+					if (this.Student.Club != ClubType.Photography && this.Student.Club < ClubType.Gaming && this.Student.Cosmetic.ClubAccessories[(int)this.Student.Club] != null)
 					{
 						this.Student.Cosmetic.ClubAccessories[(int)this.Student.Club].transform.parent = gameObject.transform;
 						if (this.Student.Club == ClubType.Occult)
@@ -702,6 +702,13 @@ public class RagdollScript : MonoBehaviour
 					if (i == 0)
 					{
 						gameObject.transform.position += new Vector3(0f, 1f, 0f);
+					}
+				}
+				else if (i == 1)
+				{
+					if (this.Student.Club == ClubType.Photography && this.Student.Cosmetic.ClubAccessories[(int)this.Student.Club] != null)
+					{
+						this.Student.Cosmetic.ClubAccessories[(int)this.Student.Club].transform.parent = gameObject.transform;
 					}
 				}
 				else if (i == 2 && !this.Student.Male && this.Student.Cosmetic.Accessory == 6)

@@ -155,7 +155,16 @@ public class AlarmDiscScript : MonoBehaviour
 					this.Student.TurnOffRadio = true;
 					this.Student.Routine = false;
 					this.Student.GoAway = false;
+					if (!this.Student.Male)
+					{
+						this.Student.Cigarette.SetActive(false);
+						this.Student.Lighter.SetActive(false);
+					}
+					this.Student.Chopsticks[0].SetActive(false);
+					this.Student.Chopsticks[1].SetActive(false);
+					this.Student.SmartPhone.SetActive(false);
 					this.Student.OccultBook.SetActive(false);
+					this.Student.Bento.SetActive(false);
 					this.Student.Pen.SetActive(false);
 					this.Student.SpeechLines.Stop();
 					this.Student.RadioTimer = 0f;
