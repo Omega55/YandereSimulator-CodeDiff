@@ -76,11 +76,9 @@ public class WelcomeScript : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.S))
 		{
-			SceneManager.LoadScene("SchoolScene");
 		}
 		if (Input.GetKeyDown(KeyCode.Y))
 		{
-			SceneManager.LoadScene("YanvaniaScene");
 		}
 		if (!this.Continue)
 		{

@@ -429,11 +429,11 @@ public class CosmeticScript : MonoBehaviour
 				}
 				else if (this.StudentID == 59)
 				{
-					this.Character.GetComponent<Animation>().Play("f02_idleGraceful_00");
+					this.Character.GetComponent<Animation>().Play("f02_sleuthPortrait_00");
 				}
 				else if (this.StudentID == 60)
 				{
-					this.Character.GetComponent<Animation>().Play("f02_idleScholarly_00");
+					this.Character.GetComponent<Animation>().Play("f02_sleuthPortrait_01");
 				}
 				else if (this.StudentID == 81)
 				{
@@ -505,11 +505,11 @@ public class CosmeticScript : MonoBehaviour
 				}
 				else if (this.StudentID == 57)
 				{
-					this.Character.GetComponent<Animation>().Play("idleChill_01");
+					this.Character.GetComponent<Animation>().Play("sleuthPortrait_00");
 				}
 				else if (this.StudentID == 58)
 				{
-					this.Character.GetComponent<Animation>().Play("idleChill_00");
+					this.Character.GetComponent<Animation>().Play("sleuthPortrait_01");
 				}
 				else if (this.StudentID == 76)
 				{
@@ -1134,6 +1134,7 @@ public class CosmeticScript : MonoBehaviour
 				this.UniformTexture = this.BlackBody;
 				this.CasualTexture = this.BlackBody;
 				this.SocksTexture = this.BlackBody;
+				this.HairRenderer.material.mainTexture = this.BlackBody;
 			}
 			else
 			{

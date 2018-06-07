@@ -455,6 +455,14 @@ public class DebugMenuScript : MonoBehaviour
 						if (this.StudentManager.Students[21] != null)
 						{
 							this.StudentManager.Students[21].transform.position = this.TeleportSpot[5].position;
+							if (!this.StudentManager.Students[21].Indoors)
+							{
+								if (this.StudentManager.Students[21].ShoeRemoval.Locker == null)
+								{
+									this.StudentManager.Students[21].ShoeRemoval.Start();
+								}
+								this.StudentManager.Students[21].ShoeRemoval.PutOnShoes();
+							}
 						}
 						this.Clock.PresentTime = 1015f;
 						this.Clock.HourTime = this.Clock.PresentTime / 60f;

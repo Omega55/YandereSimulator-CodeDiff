@@ -5126,7 +5126,7 @@ public class StudentScript : MonoBehaviour
 							{
 								this.SmartPhone.SetActive(true);
 							}
-							if (this.Cigarette.activeInHierarchy)
+							if (!this.Male && this.Cigarette.activeInHierarchy)
 							{
 								this.SmartPhone.SetActive(false);
 							}
@@ -5201,7 +5201,14 @@ public class StudentScript : MonoBehaviour
 				{
 					if (this.InvestigationTimer < 5f)
 					{
-						this.InvestigationTimer += Time.deltaTime;
+						if (this.Persona == PersonaType.Heroic)
+						{
+							this.InvestigationTimer += Time.deltaTime * 5f;
+						}
+						else
+						{
+							this.InvestigationTimer += Time.deltaTime;
+						}
 						this.targetRotation = Quaternion.LookRotation(new Vector3(this.Giggle.transform.position.x, base.transform.position.y, this.Giggle.transform.position.z) - base.transform.position);
 						base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
 					}
@@ -5212,7 +5219,14 @@ public class StudentScript : MonoBehaviour
 						this.CurrentDestination = this.Giggle.transform;
 						this.Pathfinding.canSearch = true;
 						this.Pathfinding.canMove = true;
-						this.Pathfinding.speed = 1f;
+						if (this.Persona == PersonaType.Heroic)
+						{
+							this.Pathfinding.speed = 4f;
+						}
+						else
+						{
+							this.Pathfinding.speed = 1f;
+						}
 						this.InvestigationPhase++;
 					}
 				}
@@ -5220,7 +5234,14 @@ public class StudentScript : MonoBehaviour
 				{
 					if (this.DistanceToDestination > 1f)
 					{
-						this.CharacterAnimation.CrossFade(this.WalkAnim);
+						if (this.Persona == PersonaType.Heroic)
+						{
+							this.CharacterAnimation.CrossFade(this.SprintAnim);
+						}
+						else
+						{
+							this.CharacterAnimation.CrossFade(this.WalkAnim);
+						}
 					}
 					else if (this.InvestigationPhase == 1)
 					{
@@ -9826,6 +9847,7 @@ public class StudentScript : MonoBehaviour
 		}
 		this.InvestigationTimer = 0f;
 		this.InvestigationPhase = 0;
+		this.Pathfinding.speed = 1f;
 		this.YandereInnocent = false;
 		this.Investigating = false;
 		this.DiscCheck = false;
