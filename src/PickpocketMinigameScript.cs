@@ -135,26 +135,15 @@ public class PickpocketMinigameScript : MonoBehaviour
 
 	public void End()
 	{
+		Debug.Log("Ending minigame.");
 		this.ButtonPrompts[1].enabled = false;
 		this.ButtonPrompts[2].enabled = false;
 		this.ButtonPrompts[3].enabled = false;
 		this.ButtonPrompts[4].enabled = false;
 		this.Circle.enabled = false;
 		this.BG.enabled = false;
-		if (this.Failure)
-		{
-			this.Yandere.CharacterAnimation.CrossFade("f02_readyToFight_00");
-			this.Yandere.Caught = true;
-		}
-		else
-		{
-			this.Yandere.Pickpocketing = false;
-		}
-		if (this.NotNurse)
-		{
-			this.Yandere.CanMove = true;
-			this.NotNurse = false;
-		}
+		this.Yandere.CharacterAnimation.CrossFade("f02_readyToFight_00");
+		this.Yandere.Caught = true;
 		this.Progress = 0;
 		this.ButtonID = 0;
 		this.Show = false;

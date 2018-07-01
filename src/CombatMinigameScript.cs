@@ -517,9 +517,56 @@ public class CombatMinigameScript : MonoBehaviour
 				}
 			}
 		}
-		else if (this.Path == 6 && this.Phase == 4)
+		else if (this.Path == 6)
 		{
-			if (this.Yandere.CharacterAnimation["Yandere_CombatF"].time > 6.33333f)
+			if (this.Phase == 4)
+			{
+				if (this.Yandere.CharacterAnimation["Yandere_CombatF"].time > 6.33333f)
+				{
+					this.MainCamera.transform.parent = null;
+					this.Strength += Time.deltaTime;
+					this.MainCamera.transform.position = Vector3.Lerp(this.MainCamera.transform.position, this.StartPoint, Time.deltaTime * this.Strength);
+					this.RedVignette.color = Vector4.Lerp(this.RedVignette.color, new Vector4(1f, 0f, 0f, 0f), Time.deltaTime * this.Strength);
+					this.Zoom = false;
+				}
+				if (this.Delinquent.CharacterAnimation["Delinquent_CombatF"].time > 7.83333f)
+				{
+					this.Delinquent.MyWeapon.transform.parent = this.Delinquent.WeaponBagParent;
+					this.Delinquent.MyWeapon.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+					this.Delinquent.MyWeapon.transform.localPosition = new Vector3(0f, 0f, 0f);
+				}
+				if (this.Yandere.CharacterAnimation["Yandere_CombatF"].time > this.Yandere.CharacterAnimation["Yandere_CombatF"].length)
+				{
+					this.Yandere.IdleAnim = "f02_idleInjured_00";
+					this.Yandere.WalkAnim = "f02_walkInjured_00";
+					this.Yandere.OriginalIdleAnim = this.Yandere.IdleAnim;
+					this.Yandere.OriginalWalkAnim = this.Yandere.WalkAnim;
+					this.Yandere.CharacterAnimation.CrossFade(this.Yandere.IdleAnim);
+					this.Yandere.Subtitle.UpdateLabel(SubtitleType.DelinquentWin, 0, 5f);
+					this.Yandere.DelinquentFighting = false;
+					this.Yandere.RPGCamera.enabled = true;
+					this.Yandere.CannotRecover = false;
+					this.Yandere.CanMove = true;
+					this.Yandere.Chased = false;
+					this.Delinquent.Threatened = false;
+					this.Delinquent.Fighting = false;
+					this.Delinquent.Injured = false;
+					this.Delinquent.Alarmed = false;
+					this.Delinquent.Routine = true;
+					this.Delinquent.enabled = true;
+					this.Delinquent.Distracted = false;
+					this.Delinquent.Shoving = false;
+					this.Delinquent.Paired = false;
+					this.Delinquent.Patience = 5;
+					this.ResetValues();
+					this.Yandere.StudentManager.UpdateStudents();
+					this.Yandere.StudentManager.Rest.Prompt.enabled = true;
+				}
+			}
+		}
+		else if (this.Path == 7)
+		{
+			if (this.Yandere.CharacterAnimation["f02_stopFighting_00"].time > 1f)
 			{
 				this.MainCamera.transform.parent = null;
 				this.Strength += Time.deltaTime;
@@ -527,38 +574,31 @@ public class CombatMinigameScript : MonoBehaviour
 				this.RedVignette.color = Vector4.Lerp(this.RedVignette.color, new Vector4(1f, 0f, 0f, 0f), Time.deltaTime * this.Strength);
 				this.Zoom = false;
 			}
-			if (this.Delinquent.CharacterAnimation["Delinquent_CombatF"].time > 7.83333f)
+			if (this.Delinquent.CharacterAnimation["stopFighting_00"].time > 3.83333f)
 			{
 				this.Delinquent.MyWeapon.transform.parent = this.Delinquent.WeaponBagParent;
 				this.Delinquent.MyWeapon.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
 				this.Delinquent.MyWeapon.transform.localPosition = new Vector3(0f, 0f, 0f);
 			}
-			if (this.Yandere.CharacterAnimation["Yandere_CombatF"].time > this.Yandere.CharacterAnimation["Yandere_CombatF"].length)
+			if (this.Yandere.CharacterAnimation["f02_stopFighting_00"].time > this.Yandere.CharacterAnimation["f02_stopFighting_00"].length)
 			{
-				this.Yandere.IdleAnim = "f02_idleInjured_00";
-				this.Yandere.WalkAnim = "f02_walkInjured_00";
-				this.Yandere.OriginalIdleAnim = this.Yandere.IdleAnim;
-				this.Yandere.OriginalWalkAnim = this.Yandere.WalkAnim;
-				this.Yandere.CharacterAnimation.CrossFade(this.Yandere.IdleAnim);
-				this.Yandere.Subtitle.UpdateLabel(SubtitleType.DelinquentWin, 0, 5f);
-				this.Yandere.DelinquentFighting = false;
-				this.Yandere.RPGCamera.enabled = true;
-				this.Yandere.CannotRecover = false;
-				this.Yandere.CanMove = true;
-				this.Yandere.Chased = false;
+				this.Delinquent.GetDestinations();
+				this.Delinquent.CurrentDestination = this.Delinquent.Destinations[this.Delinquent.Phase];
+				this.Delinquent.Pathfinding.target = this.Delinquent.Destinations[this.Delinquent.Phase];
+				this.ReleaseYandere();
 				this.Delinquent.Threatened = false;
 				this.Delinquent.Fighting = false;
-				this.Delinquent.Injured = false;
 				this.Delinquent.Alarmed = false;
-				this.Delinquent.Routine = true;
 				this.Delinquent.enabled = true;
 				this.Delinquent.Distracted = false;
 				this.Delinquent.Shoving = false;
 				this.Delinquent.Paired = false;
+				this.Delinquent.Routine = true;
 				this.Delinquent.Patience = 5;
+				this.Delinquent = null;
+				this.DisablePrompts();
 				this.ResetValues();
 				this.Yandere.StudentManager.UpdateStudents();
-				this.Yandere.StudentManager.Rest.Prompt.enabled = true;
 			}
 		}
 	}
@@ -603,7 +643,7 @@ public class CombatMinigameScript : MonoBehaviour
 		this.Timer = this.StartTime;
 	}
 
-	private void DisablePrompts()
+	public void DisablePrompts()
 	{
 		this.ButtonPrompts[1].enabled = false;
 		this.ButtonPrompts[2].enabled = false;
@@ -665,6 +705,7 @@ public class CombatMinigameScript : MonoBehaviour
 
 	public void ReleaseYandere()
 	{
+		Debug.Log("Yandere-chan has been released from combat.");
 		this.Yandere.CharacterAnimation.CrossFade(this.Yandere.IdleAnim);
 		this.Yandere.DelinquentFighting = false;
 		this.Yandere.RPGCamera.enabled = true;

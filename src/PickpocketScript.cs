@@ -23,11 +23,13 @@ public class PickpocketScript : MonoBehaviour
 
 	public int ID = 1;
 
+	public bool NotNurse;
+
 	public bool Test;
 
 	private void Start()
 	{
-		if (this.Student.StudentID != this.Student.StudentManager.NurseID)
+		if (this.Student.StudentID != this.Student.StudentManager.NurseID && this.Student.StudentID != 71)
 		{
 			this.Prompt.transform.parent.gameObject.SetActive(false);
 			base.enabled = false;
@@ -35,7 +37,20 @@ public class PickpocketScript : MonoBehaviour
 		else
 		{
 			this.PickpocketMinigame = this.Student.StudentManager.PickpocketMinigame;
-			this.ID = 2;
+			if (this.Student.StudentID == this.Student.StudentManager.NurseID)
+			{
+				this.ID = 2;
+			}
+			else if (ClubGlobals.GetClubClosed(this.Student.OriginalClub))
+			{
+				this.Prompt.transform.parent.gameObject.SetActive(false);
+				base.enabled = false;
+			}
+			else
+			{
+				this.Prompt.Label[0].text = "     Steal Shed Key";
+				this.NotNurse = true;
+			}
 		}
 	}
 
@@ -52,6 +67,11 @@ public class PickpocketScript : MonoBehaviour
 						this.Prompt.Hide();
 						this.Prompt.enabled = false;
 						this.PickpocketPanel.enabled = false;
+					}
+					if (this.Student.Yandere.Pickpocketing && this.PickpocketMinigame.ID == this.ID)
+					{
+						this.PickpocketMinigame.End();
+						this.Punish();
 					}
 				}
 				else
@@ -96,6 +116,7 @@ public class PickpocketScript : MonoBehaviour
 				if (!this.Prompt.Yandere.Chased && this.Prompt.Yandere.Chasers == 0)
 				{
 					this.PickpocketMinigame.PickpocketSpot = this.PickpocketSpot;
+					this.PickpocketMinigame.NotNurse = this.NotNurse;
 					this.PickpocketMinigame.Show = true;
 					this.PickpocketMinigame.ID = this.ID;
 					this.Student.Yandere.CharacterAnimation.CrossFade("f02_pickpocketing_00");
@@ -111,8 +132,11 @@ public class PickpocketScript : MonoBehaviour
 					this.PickpocketMinigame.Success = false;
 					this.PickpocketMinigame.ID = 0;
 					this.Succeed();
-					this.Prompt.gameObject.SetActive(false);
+					this.PickpocketPanel.enabled = false;
+					this.Prompt.enabled = false;
+					this.Prompt.Hide();
 					this.Key.SetActive(false);
+					base.enabled = false;
 				}
 				if (this.PickpocketMinigame.Failure)
 				{
@@ -135,22 +159,38 @@ public class PickpocketScript : MonoBehaviour
 		{
 			this.Succeed();
 			this.Prompt.Hide();
-			UnityEngine.Object.Destroy(base.gameObject);
+			this.PickpocketPanel.enabled = false;
+			this.Prompt.enabled = false;
+			this.Prompt.Hide();
+			this.Key.SetActive(false);
+			base.enabled = false;
 		}
 	}
 
 	private void Punish()
 	{
+		Debug.Log("Punishing Yandere-chan for pickpocketing.");
 		GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.AlarmDisc, this.Student.Yandere.transform.position + Vector3.up, Quaternion.identity);
 		gameObject.GetComponent<AlarmDiscScript>().NoScream = true;
-		this.Student.Witnessed = StudentWitnessType.Theft;
-		this.Student.Concern = 5;
-		this.Student.SenpaiNoticed();
-		this.Student.CameraEffects.MurderWitnessed();
+		if (!this.NotNurse)
+		{
+			this.Student.Witnessed = StudentWitnessType.Theft;
+			this.Student.SenpaiNoticed();
+			this.Student.CameraEffects.MurderWitnessed();
+			this.Student.Concern = 5;
+		}
+		else
+		{
+			this.Student.Witnessed = StudentWitnessType.Pickpocketing;
+			this.Student.CameraEffects.Alarm();
+			this.Student.Alarm += 200f;
+		}
 		this.Timer = 0f;
 		this.Prompt.Hide();
 		this.Prompt.enabled = false;
 		this.PickpocketPanel.enabled = false;
+		this.Student.CharacterAnimation[this.Student.PatrolAnim].time = 0f;
+		this.Student.PatrolTimer = 0f;
 	}
 
 	private void Succeed()

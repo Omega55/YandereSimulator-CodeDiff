@@ -143,6 +143,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] ViolenceApologies;
 
+	public string[] PickpocketApologies;
+
 	public string[] Greetings;
 
 	public string[] PlayerFarewells;
@@ -353,6 +355,10 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] Club7InfoDark;
 
+	public string[] Club8Info;
+
+	public string[] Club10Info;
+
 	public string[] ClubGreetings;
 
 	public string[] ClubUnwelcomes;
@@ -512,6 +518,10 @@ public class SubtitleScript : MonoBehaviour
 	public AudioClip[] Club7ClipsLight;
 
 	public AudioClip[] Club7ClipsDark;
+
+	public AudioClip[] Club8Clips;
+
+	public AudioClip[] Club10Clips;
 
 	public AudioClip[] ClubGreetingClips;
 
@@ -694,6 +704,14 @@ public class SubtitleScript : MonoBehaviour
 			{
 				SubtitleType.ClubPhotoInfoDark,
 				new AudioClipArrayWrapper(this.Club7ClipsDark)
+			},
+			{
+				SubtitleType.ClubScienceInfo,
+				new AudioClipArrayWrapper(this.Club8Clips)
+			},
+			{
+				SubtitleType.ClubGardenInfo,
+				new AudioClipArrayWrapper(this.Club10Clips)
 			},
 			{
 				SubtitleType.ClubQuit,
@@ -1169,6 +1187,11 @@ public class SubtitleScript : MonoBehaviour
 			this.RandomID = UnityEngine.Random.Range(0, this.PickpocketReactions.Length);
 			this.Label.text = this.PickpocketReactions[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
+		}
+		else if (subtitleType == SubtitleType.PickpocketApology)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.PickpocketApologies.Length);
+			this.Label.text = this.PickpocketApologies[this.RandomID];
 		}
 		else if (subtitleType == SubtitleType.RivalPickpocketReaction)
 		{
@@ -1880,6 +1903,16 @@ public class SubtitleScript : MonoBehaviour
 			this.Label.text = this.Club7InfoDark[ID];
 			this.PlayVoice(subtitleType, ID);
 		}
+		else if (subtitleType == SubtitleType.ClubScienceInfo)
+		{
+			this.Label.text = this.Club8Info[ID];
+			this.PlayVoice(subtitleType, ID);
+		}
+		else if (subtitleType == SubtitleType.ClubGardenInfo)
+		{
+			this.Label.text = this.Club10Info[ID];
+			this.PlayVoice(subtitleType, ID);
+		}
 		else if (subtitleType == SubtitleType.ClubJoin)
 		{
 			this.Label.text = this.ClubJoins[ID];
@@ -2070,15 +2103,26 @@ public class SubtitleScript : MonoBehaviour
 		{
 			return this.Club6Clips[ClubPhase].length + 0.5f;
 		}
-		if (Club != ClubType.Photography)
+		if (Club == ClubType.Photography)
 		{
+			if (SchoolGlobals.SchoolAtmosphere <= 0.8f)
+			{
+				return this.Club7ClipsDark[ClubPhase].length + 0.5f;
+			}
+			return this.Club7ClipsLight[ClubPhase].length + 0.5f;
+		}
+		else
+		{
+			if (Club == ClubType.Science)
+			{
+				return this.Club8Clips[ClubPhase].length + 0.5f;
+			}
+			if (Club == ClubType.Gardening)
+			{
+				return this.Club10Clips[ClubPhase].length + 0.5f;
+			}
 			return 0f;
 		}
-		if (SchoolGlobals.SchoolAtmosphere <= 0.8f)
-		{
-			return this.Club7ClipsDark[ClubPhase].length + 0.5f;
-		}
-		return this.Club7ClipsLight[ClubPhase].length + 0.5f;
 	}
 
 	private void PlayClip(AudioClip clip, Vector3 pos)

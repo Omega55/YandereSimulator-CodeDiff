@@ -405,7 +405,7 @@ public class CounselorScript : MonoBehaviour
 				this.ExpelTimer += Time.deltaTime;
 				if (this.ExpelTimer > 6f)
 				{
-					if (StudentGlobals.ExpelProgress == 5 && !StudentGlobals.GetStudentExpelled(7))
+					if (StudentGlobals.ExpelProgress == 5 && !StudentGlobals.GetStudentExpelled(7) && this.StudentManager.Police.TranqCase.VictimID != 7)
 					{
 						StudentGlobals.SetStudentExpelled(7, true);
 						this.EndOfDayDarkness.color = new Color(this.EndOfDayDarkness.color.r, this.EndOfDayDarkness.color.g, this.EndOfDayDarkness.color.b, 0f);

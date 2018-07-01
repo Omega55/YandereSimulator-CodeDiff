@@ -13,6 +13,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public LoveManagerScript LoveManager;
 
+	public Animation CharacterAnimation;
+
 	public ModelSwapScript ModelSwap;
 
 	public StudentScript Student;
@@ -41,7 +43,11 @@ public class CosmeticScript : MonoBehaviour
 
 	public GameObject[] MaleHair;
 
+	public GameObject[] Scanners;
+
 	public GameObject[] Eyewear;
+
+	public GameObject[] Flowers;
 
 	public Renderer[] TeacherHairRenderers;
 
@@ -104,6 +110,8 @@ public class CosmeticScript : MonoBehaviour
 	public Mesh[] FemaleUniforms;
 
 	public Mesh[] MaleUniforms;
+
+	public Mesh[] Berets;
 
 	public Color[] BullyColor;
 
@@ -287,6 +295,7 @@ public class CosmeticScript : MonoBehaviour
 
 	public void Start()
 	{
+		this.CharacterAnimation = this.Character.GetComponent<Animation>();
 		if (this.StudentID == 34)
 		{
 			this.StudentID = 35;
@@ -423,38 +432,63 @@ public class CosmeticScript : MonoBehaviour
 			{
 				if (this.StudentID == 32)
 				{
-					this.Character.GetComponent<Animation>().Play("f02_shy_00");
-					this.Character.GetComponent<Animation>().Play("f02_shy_00");
-					this.Character.GetComponent<Animation>()["f02_shy_00"].time = 1f;
+					this.CharacterAnimation.Play("f02_shy_00");
+					this.CharacterAnimation.Play("f02_shy_00");
+					this.CharacterAnimation["f02_shy_00"].time = 1f;
 				}
 				else if (this.StudentID == 59)
 				{
-					this.Character.GetComponent<Animation>().Play("f02_sleuthPortrait_00");
+					this.CharacterAnimation.Play("f02_sleuthPortrait_00");
 				}
 				else if (this.StudentID == 60)
 				{
-					this.Character.GetComponent<Animation>().Play("f02_sleuthPortrait_01");
+					this.CharacterAnimation.Play("f02_sleuthPortrait_01");
+				}
+				else if (this.StudentID == 71)
+				{
+					this.CharacterAnimation.Play("f02_idleGirly_00");
+					this.CharacterAnimation["f02_idleGirly_00"].time = 0f;
+				}
+				else if (this.StudentID == 72)
+				{
+					this.CharacterAnimation.Play("f02_idleGirly_00");
+					this.CharacterAnimation["f02_idleGirly_00"].time = 0.66666f;
+				}
+				else if (this.StudentID == 73)
+				{
+					this.CharacterAnimation.Play("f02_idleGirly_00");
+					this.CharacterAnimation["f02_idleGirly_00"].time = 1.33332f;
+				}
+				else if (this.StudentID == 74)
+				{
+					this.CharacterAnimation.Play("f02_idleGirly_00");
+					this.CharacterAnimation["f02_idleGirly_00"].time = 1.99998f;
+				}
+				else if (this.StudentID == 75)
+				{
+					this.CharacterAnimation.Play("f02_idleGirly_00");
+					this.CharacterAnimation["f02_idleGirly_00"].time = 2.66664f;
 				}
 				else if (this.StudentID == 81)
 				{
-					this.Character.GetComponent<Animation>().Play("f02_socialCameraPose_00");
+					this.CharacterAnimation.Play("f02_socialCameraPose_00");
 					base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y + 0.05f, base.transform.position.z);
 				}
 				else if (this.StudentID == 82)
 				{
-					this.Character.GetComponent<Animation>().Play("f02_galPose_01");
+					this.CharacterAnimation.Play("f02_galPose_01");
 				}
 				else if (this.StudentID == 83)
 				{
-					this.Character.GetComponent<Animation>().Play("f02_galPose_02");
+					this.CharacterAnimation.Play("f02_galPose_02");
 				}
 				else if (this.StudentID == 84)
 				{
-					this.Character.GetComponent<Animation>().Play("f02_galPose_03");
+					this.CharacterAnimation.Play("f02_galPose_03");
 				}
 				else if (this.StudentID == 85)
 				{
-					this.Character.GetComponent<Animation>().Play("f02_galPose_04");
+					this.CharacterAnimation.Play("f02_galPose_04");
 				}
 			}
 		}
@@ -466,9 +500,9 @@ public class CosmeticScript : MonoBehaviour
 			}
 			if (this.Club == ClubType.Occult)
 			{
-				this.Character.GetComponent<Animation>()["sadFace_00"].layer = 1;
-				this.Character.GetComponent<Animation>().Play("sadFace_00");
-				this.Character.GetComponent<Animation>()["sadFace_00"].weight = 1f;
+				this.CharacterAnimation["sadFace_00"].layer = 1;
+				this.CharacterAnimation.Play("sadFace_00");
+				this.CharacterAnimation["sadFace_00"].weight = 1f;
 			}
 			if (this.StudentID == 13 && StudentGlobals.CustomSuitor)
 			{
@@ -501,35 +535,35 @@ public class CosmeticScript : MonoBehaviour
 			{
 				if (this.StudentID == 56)
 				{
-					this.Character.GetComponent<Animation>().Play("idleConfident_00");
+					this.CharacterAnimation.Play("idleConfident_00");
 				}
 				else if (this.StudentID == 57)
 				{
-					this.Character.GetComponent<Animation>().Play("sleuthPortrait_00");
+					this.CharacterAnimation.Play("sleuthPortrait_00");
 				}
 				else if (this.StudentID == 58)
 				{
-					this.Character.GetComponent<Animation>().Play("sleuthPortrait_01");
+					this.CharacterAnimation.Play("sleuthPortrait_01");
 				}
 				else if (this.StudentID == 76)
 				{
-					this.Character.GetComponent<Animation>().Play("delinquentPoseB");
+					this.CharacterAnimation.Play("delinquentPoseB");
 				}
 				else if (this.StudentID == 77)
 				{
-					this.Character.GetComponent<Animation>().Play("delinquentPoseA");
+					this.CharacterAnimation.Play("delinquentPoseA");
 				}
 				else if (this.StudentID == 78)
 				{
-					this.Character.GetComponent<Animation>().Play("delinquentPoseC");
+					this.CharacterAnimation.Play("delinquentPoseC");
 				}
 				else if (this.StudentID == 79)
 				{
-					this.Character.GetComponent<Animation>().Play("delinquentPoseD");
+					this.CharacterAnimation.Play("delinquentPoseD");
 				}
 				else if (this.StudentID == 80)
 				{
-					this.Character.GetComponent<Animation>().Play("delinquentPoseE");
+					this.CharacterAnimation.Play("delinquentPoseE");
 				}
 			}
 		}
@@ -542,9 +576,9 @@ public class CosmeticScript : MonoBehaviour
 		{
 			if (!StudentGlobals.GetStudentReplaced(this.StudentID))
 			{
-				this.Character.GetComponent<Animation>()["f02_smile_00"].layer = 1;
-				this.Character.GetComponent<Animation>().Play("f02_smile_00");
-				this.Character.GetComponent<Animation>()["f02_smile_00"].weight = 1f;
+				this.CharacterAnimation["f02_smile_00"].layer = 1;
+				this.CharacterAnimation.Play("f02_smile_00");
+				this.CharacterAnimation["f02_smile_00"].weight = 1f;
 				this.RightEyeRenderer.gameObject.SetActive(false);
 				this.LeftEyeRenderer.gameObject.SetActive(false);
 			}
@@ -577,12 +611,12 @@ public class CosmeticScript : MonoBehaviour
 			{
 				str = "Edgy";
 			}
-			this.Character.GetComponent<Animation>()["f02_faceCouncil" + str + "_00"].layer = 1;
-			this.Character.GetComponent<Animation>().Play("f02_faceCouncil" + str + "_00");
-			this.Character.GetComponent<Animation>()["f02_idleCouncil" + str + "_00"].time = 1f;
-			this.Character.GetComponent<Animation>().Play("f02_idleCouncil" + str + "_00");
+			this.CharacterAnimation["f02_faceCouncil" + str + "_00"].layer = 1;
+			this.CharacterAnimation.Play("f02_faceCouncil" + str + "_00");
+			this.CharacterAnimation["f02_idleCouncil" + str + "_00"].time = 1f;
+			this.CharacterAnimation.Play("f02_idleCouncil" + str + "_00");
 		}
-		if (this.TakingPortrait && (this.StudentID == 21 || this.StudentID == 26))
+		if (this.TakingPortrait && (this.StudentID == 21 || this.StudentID == 26 || this.StudentID == 41 || this.StudentID == 56 || this.StudentID == 61 || this.StudentID == 71))
 		{
 			this.Armband.SetActive(true);
 		}
@@ -661,6 +695,20 @@ public class CosmeticScript : MonoBehaviour
 			if (gameObject14 != null)
 			{
 				gameObject14.SetActive(false);
+			}
+		}
+		foreach (GameObject gameObject15 in this.Scanners)
+		{
+			if (gameObject15 != null)
+			{
+				gameObject15.SetActive(false);
+			}
+		}
+		foreach (GameObject gameObject16 in this.Flowers)
+		{
+			if (gameObject16 != null)
+			{
+				gameObject16.SetActive(false);
 			}
 		}
 		if (this.StudentID == 13 && StudentGlobals.CustomSuitor && StudentGlobals.CustomSuitorEyewear > 0)
@@ -752,6 +800,28 @@ public class CosmeticScript : MonoBehaviour
 		if (this.Club < ClubType.Gaming && this.ClubAccessories[(int)this.Club] != null && !ClubGlobals.GetClubClosed(this.Club) && this.StudentID != 26)
 		{
 			this.ClubAccessories[(int)this.Club].SetActive(true);
+		}
+		if (this.Club == ClubType.Art)
+		{
+			this.ClubAccessories[(int)this.Club].GetComponent<MeshFilter>().sharedMesh = this.Berets[this.StudentID];
+		}
+		else if (this.Club == ClubType.Science)
+		{
+			this.ClubAccessories[(int)this.Club].SetActive(false);
+			this.ClubAccessories[(int)this.Club] = this.Scanners[this.StudentID];
+			if (!ClubGlobals.GetClubClosed(this.Club))
+			{
+				this.ClubAccessories[(int)this.Club].SetActive(true);
+			}
+		}
+		else if (this.Club == ClubType.Gardening)
+		{
+			this.ClubAccessories[(int)this.Club].SetActive(false);
+			this.ClubAccessories[(int)this.Club] = this.Flowers[this.StudentID];
+			if (!ClubGlobals.GetClubClosed(this.Club))
+			{
+				this.ClubAccessories[(int)this.Club].SetActive(true);
+			}
 		}
 		if (!this.Male)
 		{
@@ -974,6 +1044,13 @@ public class CosmeticScript : MonoBehaviour
 				this.RightEyeRenderer.gameObject.GetComponent<RainbowScript>().enabled = true;
 				this.LeftEyeRenderer.gameObject.GetComponent<RainbowScript>().enabled = true;
 			}
+		}
+		else if (this.StudentID == 41)
+		{
+			this.CharacterAnimation["moodyEyes_00"].layer = 1;
+			this.CharacterAnimation.Play("moodyEyes_00");
+			this.CharacterAnimation["moodyEyes_00"].weight = 1f;
+			this.CharacterAnimation.Play("moodyEyes_00");
 		}
 		else if (this.StudentID == 59)
 		{

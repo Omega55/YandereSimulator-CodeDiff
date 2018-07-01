@@ -1081,7 +1081,11 @@ public class YandereScript : MonoBehaviour
 
 	public Mesh LabCoatMesh;
 
+	public Mesh HeadAndHands;
+
 	public Texture LabCoatTexture;
+
+	public RiggedAccessoryAttacher LabcoatAttacher;
 
 	public bool Paint;
 
@@ -1216,6 +1220,10 @@ public class YandereScript : MonoBehaviour
 		if (MissionModeGlobals.MissionMode || GameGlobals.LoveSick)
 		{
 			this.NoDebug = true;
+		}
+		if (this.StudentManager.Students[33] != null)
+		{
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 
@@ -2652,7 +2660,11 @@ public class YandereScript : MonoBehaviour
 			}
 			if (this.ClubActivity)
 			{
-				if (ClubGlobals.Club == ClubType.MartialArts)
+				if (ClubGlobals.Club == ClubType.Art)
+				{
+					this.CharacterAnimation.Play("f02_painting_00");
+				}
+				else if (ClubGlobals.Club == ClubType.MartialArts)
 				{
 					this.CharacterAnimation.Play("f02_kick_23");
 					if (this.CharacterAnimation["f02_kick_23"].time >= this.CharacterAnimation["f02_kick_23"].length)
@@ -3624,6 +3636,10 @@ public class YandereScript : MonoBehaviour
 					else if (this.TargetStudent.Witnessed == StudentWitnessType.Violence)
 					{
 						this.Subtitle.UpdateLabel(SubtitleType.ViolenceApology, 0, 3f);
+					}
+					else if (this.TargetStudent.Witnessed == StudentWitnessType.Pickpocketing)
+					{
+						this.Subtitle.UpdateLabel(SubtitleType.PickpocketApology, 0, 3f);
 					}
 				}
 				else
@@ -4597,10 +4613,15 @@ public class YandereScript : MonoBehaviour
 			Transform transform2 = this.Spine[3].transform;
 			transform2.localEulerAngles = new Vector3(transform2.localEulerAngles.x - this.Bend, transform2.localEulerAngles.y, transform2.localEulerAngles.z);
 		}
+		float num = 1f;
+		if (this.Stance.Current == StanceType.Crouching)
+		{
+			num = 3.66666f;
+		}
 		Transform transform3 = this.Arm[0].transform;
-		transform3.localEulerAngles = new Vector3(transform3.localEulerAngles.x, transform3.localEulerAngles.y, transform3.localEulerAngles.z - this.Slouch * 3f);
+		transform3.localEulerAngles = new Vector3(transform3.localEulerAngles.x, transform3.localEulerAngles.y, transform3.localEulerAngles.z - this.Slouch * (3f + num));
 		Transform transform4 = this.Arm[1].transform;
-		transform4.localEulerAngles = new Vector3(transform4.localEulerAngles.x, transform4.localEulerAngles.y, transform4.localEulerAngles.z + this.Slouch * 3f);
+		transform4.localEulerAngles = new Vector3(transform4.localEulerAngles.x, transform4.localEulerAngles.y, transform4.localEulerAngles.z + this.Slouch * (3f + num));
 		if (!this.Aiming)
 		{
 			this.Head.localEulerAngles += this.Twitch;
@@ -5088,6 +5109,9 @@ public class YandereScript : MonoBehaviour
 
 	private void AttackOnTitan()
 	{
+		this.PantyAttacher.newRenderer.enabled = false;
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
 		this.MusicCredit.SongLabel.text = "Now Playing: This Is My Choice";
 		this.MusicCredit.BandLabel.text = "By: The Kira Justice";
 		this.MusicCredit.Panel.enabled = true;
@@ -5113,6 +5137,9 @@ public class YandereScript : MonoBehaviour
 	private void Punish()
 	{
 		this.PunishedShader = Shader.Find("Toon/Cutoff");
+		this.PantyAttacher.newRenderer.enabled = false;
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
 		this.EasterEggMenu.SetActive(false);
 		this.Egg = true;
 		this.PunishedAccessories.SetActive(true);
@@ -5138,6 +5165,9 @@ public class YandereScript : MonoBehaviour
 
 	private void Hate()
 	{
+		this.PantyAttacher.newRenderer.enabled = false;
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
 		this.MyRenderer.sharedMesh = this.Uniforms[1];
 		this.MyRenderer.materials[0].mainTexture = this.HatefulUniform;
 		this.MyRenderer.materials[1].mainTexture = this.HatefulUniform;
@@ -5166,6 +5196,9 @@ public class YandereScript : MonoBehaviour
 
 	private void Bancho()
 	{
+		this.PantyAttacher.newRenderer.enabled = false;
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
 		this.BanchoCamera.SetActive(true);
 		this.MotionObject.enabled = true;
 		this.MotionBlur.enabled = true;
@@ -5205,6 +5238,9 @@ public class YandereScript : MonoBehaviour
 
 	private void Slend()
 	{
+		this.PantyAttacher.newRenderer.enabled = false;
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
 		RenderSettings.skybox = this.SlenderSkybox;
 		this.SelectGrayscale.desaturation = 0.5f;
 		this.SelectGrayscale.enabled = true;
@@ -5228,6 +5264,9 @@ public class YandereScript : MonoBehaviour
 
 	private void X()
 	{
+		this.PantyAttacher.newRenderer.enabled = false;
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
 		this.Xtan = true;
 		this.Egg = true;
 		this.Hairstyle = 9;
@@ -5245,6 +5284,9 @@ public class YandereScript : MonoBehaviour
 
 	private void GaloSengen()
 	{
+		this.PantyAttacher.newRenderer.enabled = false;
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
 		this.IdleAnim = "f02_gruntIdle_00";
 		this.EasterEggMenu.SetActive(false);
 		this.Egg = true;
@@ -5282,6 +5324,9 @@ public class YandereScript : MonoBehaviour
 
 	private void Agent()
 	{
+		this.PantyAttacher.newRenderer.enabled = false;
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
 		this.MyRenderer.sharedMesh = this.Uniforms[4];
 		this.MyRenderer.materials[0].mainTexture = this.AgentSuit;
 		this.MyRenderer.materials[1].mainTexture = this.AgentSuit;
@@ -5294,6 +5339,9 @@ public class YandereScript : MonoBehaviour
 
 	private void Cirno()
 	{
+		this.PantyAttacher.newRenderer.enabled = false;
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
 		this.MyRenderer.sharedMesh = this.Uniforms[3];
 		this.MyRenderer.materials[0].mainTexture = this.CirnoUniform;
 		this.MyRenderer.materials[1].mainTexture = this.CirnoUniform;
@@ -5315,6 +5363,8 @@ public class YandereScript : MonoBehaviour
 	{
 		this.MyRenderer.sharedMesh = this.SchoolSwimsuit;
 		this.PantyAttacher.newRenderer.enabled = false;
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
 		this.MyRenderer.materials[0].mainTexture = this.FalconBody;
 		this.MyRenderer.materials[1].mainTexture = this.FalconBody;
 		this.MyRenderer.materials[2].mainTexture = this.FalconFace;
@@ -5340,6 +5390,8 @@ public class YandereScript : MonoBehaviour
 		this.MusicCredit.Slide = true;
 		this.MyRenderer.sharedMesh = this.SchoolSwimsuit;
 		this.PantyAttacher.newRenderer.enabled = false;
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
 		this.MyRenderer.materials[0].mainTexture = this.SaitamaSuit;
 		this.MyRenderer.materials[1].mainTexture = this.SaitamaSuit;
 		this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
@@ -5355,11 +5407,11 @@ public class YandereScript : MonoBehaviour
 	{
 		this.MyRenderer.sharedMesh = this.Jersey;
 		this.PantyAttacher.newRenderer.enabled = false;
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
 		this.MyRenderer.materials[0].mainTexture = this.SansFace;
 		this.MyRenderer.materials[1].mainTexture = this.SansTexture;
 		this.MyRenderer.materials[2].mainTexture = this.SansTexture;
-		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
-		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
 		this.EasterEggMenu.SetActive(false);
 		this.IdleAnim = "f02_sansIdle_00";
 		this.WalkAnim = "f02_sansWalk_00";
@@ -5374,6 +5426,7 @@ public class YandereScript : MonoBehaviour
 
 	private void CyborgNinja()
 	{
+		this.PantyAttacher.newRenderer.enabled = false;
 		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
 		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
 		this.EnergySword.SetActive(true);
@@ -5383,7 +5436,6 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.materials[0].mainTexture = this.CyborgFace;
 		this.MyRenderer.materials[1].mainTexture = this.CyborgBody;
 		this.MyRenderer.materials[2].mainTexture = this.CyborgBody;
-		this.PantyAttacher.newRenderer.enabled = false;
 		this.Schoolwear = 0;
 		this.ID = 1;
 		while (this.ID < this.CyborgParts.Length)
@@ -5411,6 +5463,9 @@ public class YandereScript : MonoBehaviour
 
 	private void Ebola()
 	{
+		this.PantyAttacher.newRenderer.enabled = false;
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
 		this.IdleAnim = "f02_ebolaIdle_00";
 		this.MyRenderer.sharedMesh = this.Uniforms[1];
 		this.MyRenderer.materials[0].mainTexture = this.EbolaUniform;
@@ -5521,6 +5576,8 @@ public class YandereScript : MonoBehaviour
 		this.RiggedAccessory.SetActive(true);
 		this.MyRenderer.sharedMesh = this.NoTorsoMesh;
 		this.PantyAttacher.newRenderer.enabled = false;
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
 		this.Sanity = 100f;
 		this.MyRenderer.materials[0].mainTexture = this.FaceTexture;
 		this.MyRenderer.materials[1].mainTexture = this.NudePanties;
@@ -5536,6 +5593,8 @@ public class YandereScript : MonoBehaviour
 		this.KunHair.SetActive(true);
 		this.MyRenderer.enabled = false;
 		this.PantyAttacher.newRenderer.enabled = false;
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
 		this.IdleAnim = "idleShort_00";
 		this.WalkAnim = "walk_00";
 		this.RunAnim = "newSprint_00";
@@ -5581,12 +5640,17 @@ public class YandereScript : MonoBehaviour
 		this.Egg = true;
 		this.TheDebugMenuScript.UpdateCensor();
 		this.PantyAttacher.newRenderer.enabled = false;
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
 		this.RunSpeed *= 2f;
 		this.Zoom.TargetZoom = 0.4f;
 	}
 
 	private void Snake()
 	{
+		this.PantyAttacher.newRenderer.enabled = false;
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
 		this.MyRenderer.sharedMesh = this.Uniforms[1];
 		this.MyRenderer.materials[0].mainTexture = this.SnakeBody;
 		this.MyRenderer.materials[1].mainTexture = this.SnakeBody;
@@ -5637,6 +5701,8 @@ public class YandereScript : MonoBehaviour
 		this.SixRaincoat.SetActive(true);
 		this.MyRenderer.sharedMesh = this.SixBodyMesh;
 		this.PantyAttacher.newRenderer.enabled = false;
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
 		this.MyRenderer.materials[0].mainTexture = this.SixFaceTexture;
 		this.MyRenderer.materials[1].mainTexture = this.NudeTexture;
 		this.MyRenderer.materials[2].mainTexture = this.NudeTexture;
@@ -5693,6 +5759,7 @@ public class YandereScript : MonoBehaviour
 		{
 			this.Schoolwear = this.PreviousSchoolwear;
 		}
+		this.LabcoatAttacher.RemoveAccessory();
 		this.Paint = false;
 		this.ID = 0;
 		while (this.ID < this.CensorSteam.Length)
@@ -5782,10 +5849,15 @@ public class YandereScript : MonoBehaviour
 			}
 			else if (ClubGlobals.Club == ClubType.Science)
 			{
-				this.MyRenderer.sharedMesh = this.LabCoatMesh;
-				this.MyRenderer.materials[0].mainTexture = this.LabCoatTexture;
-				this.MyRenderer.materials[1].mainTexture = this.LabCoatTexture;
-				this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
+				this.LabcoatAttacher.enabled = true;
+				this.MyRenderer.sharedMesh = this.HeadAndHands;
+				if (this.LabcoatAttacher.Initialized)
+				{
+					this.LabcoatAttacher.AttachAccessory();
+				}
+				this.MyRenderer.materials[0].mainTexture = this.FaceTexture;
+				this.MyRenderer.materials[1].mainTexture = this.NudeTexture;
+				this.MyRenderer.materials[2].mainTexture = this.NudeTexture;
 				this.Schoolwear = 6;
 			}
 		}

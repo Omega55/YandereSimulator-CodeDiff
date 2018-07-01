@@ -524,6 +524,7 @@ public class EndOfDayScript : MonoBehaviour
 				{
 					if (!ClubGlobals.GetClubClosed(this.ClubArray[this.ClubID]))
 					{
+						Debug.Log("Right now, we're checking the " + this.ClubNames[this.ClubID].ToString() + ".");
 						this.ClubManager.CheckClub(this.ClubArray[this.ClubID]);
 						if (this.ClubManager.ClubMembers < 5)
 						{

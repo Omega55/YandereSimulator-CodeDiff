@@ -56,17 +56,21 @@ public class TranqCaseScript : MonoBehaviour
 		}
 		if (this.Prompt.enabled && this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			this.Yandere.TranquilHiding = true;
-			this.Yandere.CanMove = false;
-			this.Prompt.enabled = false;
-			this.Prompt.Hide();
-			this.Yandere.Ragdoll.GetComponent<RagdollScript>().TranqCase = this;
-			this.VictimClubType = this.Yandere.Ragdoll.GetComponent<RagdollScript>().Student.Club;
-			this.VictimID = this.Yandere.Ragdoll.GetComponent<RagdollScript>().StudentID;
-			this.Door.Prompt.enabled = true;
-			this.Door.enabled = true;
-			this.Occupied = true;
-			this.Open = true;
+			this.Prompt.Circle[0].fillAmount = 1f;
+			if (!this.Yandere.Chased && this.Yandere.Chasers == 0)
+			{
+				this.Yandere.TranquilHiding = true;
+				this.Yandere.CanMove = false;
+				this.Prompt.enabled = false;
+				this.Prompt.Hide();
+				this.Yandere.Ragdoll.GetComponent<RagdollScript>().TranqCase = this;
+				this.VictimClubType = this.Yandere.Ragdoll.GetComponent<RagdollScript>().Student.Club;
+				this.VictimID = this.Yandere.Ragdoll.GetComponent<RagdollScript>().StudentID;
+				this.Door.Prompt.enabled = true;
+				this.Door.enabled = true;
+				this.Occupied = true;
+				this.Open = true;
+			}
 		}
 		this.Hinge.localEulerAngles = new Vector3(this.Hinge.localEulerAngles.x, this.Hinge.localEulerAngles.y, Mathf.Lerp(this.Hinge.localEulerAngles.z, (!this.Open) ? 0f : 135f, Time.deltaTime * 10f));
 	}

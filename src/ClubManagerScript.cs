@@ -53,15 +53,27 @@ public class ClubManagerScript : MonoBehaviour
 
 	public MaskScript[] Masks;
 
+	public Transform[] Club4ActivitySpots;
+
 	public Transform[] Club6ActivitySpots;
 
 	public Transform Club7ActivitySpot;
 
+	public Transform[] Club8ActivitySpots;
+
+	public Transform[] Club10ActivitySpots;
+
 	public int[] Club3Students;
+
+	public int[] Club4Students;
 
 	public int[] Club6Students;
 
 	public int[] Club7Students;
+
+	public int[] Club8Students;
+
+	public int[] Club10Students;
 
 	public bool ClubEffect;
 
@@ -89,9 +101,15 @@ public class ClubManagerScript : MonoBehaviour
 
 	public int[] Club3IDs;
 
+	public int[] Club4IDs;
+
 	public int[] Club6IDs;
 
 	public int[] Club7IDs;
+
+	public int[] Club8IDs;
+
+	public int[] Club10IDs;
 
 	public int[] ClubIDs;
 
@@ -109,7 +127,14 @@ public class ClubManagerScript : MonoBehaviour
 		{
 			if (ClubGlobals.GetClubClosed(this.ClubArray[this.ID]))
 			{
-				this.ClubPatrolPoints[this.ID].transform.position = new Vector3(this.ClubPatrolPoints[this.ID].transform.position.x, this.ClubPatrolPoints[this.ID].transform.position.y, 20f);
+				if (this.ClubArray[this.ID] == ClubType.Gardening)
+				{
+					this.ClubPatrolPoints[this.ID].transform.position = new Vector3(-56f, this.ClubPatrolPoints[this.ID].transform.position.y, this.ClubPatrolPoints[this.ID].transform.position.z);
+				}
+				else
+				{
+					this.ClubPatrolPoints[this.ID].transform.position = new Vector3(this.ClubPatrolPoints[this.ID].transform.position.x, this.ClubPatrolPoints[this.ID].transform.position.y, 20f);
+				}
 			}
 			this.ID++;
 		}
@@ -229,21 +254,52 @@ public class ClubManagerScript : MonoBehaviour
 			this.Yandere.gameObject.SetActive(false);
 			this.Ritual.SetActive(true);
 		}
+		else if (this.Club == ClubType.Art)
+		{
+			this.ID = 0;
+			while (this.ID < this.Club4Students.Length)
+			{
+				StudentScript studentScript2 = this.StudentManager.Students[this.Club4Students[this.ID]];
+				if (studentScript2 != null && !studentScript2.Tranquil && studentScript2.Alive)
+				{
+					studentScript2.transform.position = this.Club4ActivitySpots[this.ID].position;
+					studentScript2.transform.rotation = this.Club4ActivitySpots[this.ID].rotation;
+					studentScript2.ClubActivity = true;
+					studentScript2.Talking = false;
+					studentScript2.Routine = true;
+					studentScript2.GetComponent<AudioSource>().volume = 0.1f;
+					if (!studentScript2.ClubAttire)
+					{
+						studentScript2.ChangeClubwear();
+					}
+				}
+				this.ID++;
+			}
+			this.Yandere.Talking = false;
+			this.Yandere.CanMove = false;
+			this.Yandere.ClubActivity = true;
+			this.Yandere.transform.position = this.Club4ActivitySpots[5].position;
+			this.Yandere.transform.rotation = this.Club4ActivitySpots[5].rotation;
+			if (!this.Yandere.ClubAttire)
+			{
+				this.Yandere.ChangeClubwear();
+			}
+		}
 		else if (this.Club == ClubType.MartialArts)
 		{
 			this.ID = 0;
 			while (this.ID < this.Club6Students.Length)
 			{
-				StudentScript studentScript2 = this.StudentManager.Students[this.Club6Students[this.ID]];
-				if (studentScript2 != null && !studentScript2.Tranquil && studentScript2.Alive)
+				StudentScript studentScript3 = this.StudentManager.Students[this.Club6Students[this.ID]];
+				if (studentScript3 != null && !studentScript3.Tranquil && studentScript3.Alive)
 				{
-					studentScript2.transform.position = this.Club6ActivitySpots[this.ID].position;
-					studentScript2.transform.rotation = this.Club6ActivitySpots[this.ID].rotation;
-					studentScript2.ClubActivity = true;
-					studentScript2.GetComponent<AudioSource>().volume = 0.1f;
-					if (!studentScript2.ClubAttire)
+					studentScript3.transform.position = this.Club6ActivitySpots[this.ID].position;
+					studentScript3.transform.rotation = this.Club6ActivitySpots[this.ID].rotation;
+					studentScript3.ClubActivity = true;
+					studentScript3.GetComponent<AudioSource>().volume = 0.1f;
+					if (!studentScript3.ClubAttire)
 					{
-						studentScript2.ChangeClubwear();
+						studentScript3.ChangeClubwear();
 					}
 				}
 				this.ID++;
@@ -262,19 +318,19 @@ public class ClubManagerScript : MonoBehaviour
 			this.ID = 0;
 			while (this.ID < this.Club7Students.Length)
 			{
-				StudentScript studentScript3 = this.StudentManager.Students[this.Club7Students[this.ID]];
-				if (studentScript3 != null && !studentScript3.Tranquil && studentScript3.Alive)
+				StudentScript studentScript4 = this.StudentManager.Students[this.Club7Students[this.ID]];
+				if (studentScript4 != null && !studentScript4.Tranquil && studentScript4.Alive)
 				{
-					studentScript3.transform.position = this.StudentManager.Clubs.List[studentScript3.StudentID].position;
-					studentScript3.transform.rotation = this.StudentManager.Clubs.List[studentScript3.StudentID].rotation;
-					studentScript3.CharacterAnimation[studentScript3.SocialSitAnim].weight = 1f;
-					studentScript3.GetComponent<AudioSource>().volume = 0.1f;
-					studentScript3.SmartPhone.SetActive(false);
-					studentScript3.ClubActivity = true;
-					studentScript3.SpeechLines.Play();
-					studentScript3.Talking = false;
-					studentScript3.Routine = true;
-					studentScript3.Hearts.Stop();
+					studentScript4.transform.position = this.StudentManager.Clubs.List[studentScript4.StudentID].position;
+					studentScript4.transform.rotation = this.StudentManager.Clubs.List[studentScript4.StudentID].rotation;
+					studentScript4.CharacterAnimation[studentScript4.SocialSitAnim].weight = 1f;
+					studentScript4.GetComponent<AudioSource>().volume = 0.1f;
+					studentScript4.SmartPhone.SetActive(false);
+					studentScript4.ClubActivity = true;
+					studentScript4.SpeechLines.Play();
+					studentScript4.Talking = false;
+					studentScript4.Routine = true;
+					studentScript4.Hearts.Stop();
 				}
 				this.ID++;
 			}
@@ -283,6 +339,60 @@ public class ClubManagerScript : MonoBehaviour
 			this.Yandere.ClubActivity = true;
 			this.Yandere.transform.position = this.Club7ActivitySpot.position;
 			this.Yandere.transform.rotation = this.Club7ActivitySpot.rotation;
+			if (!this.Yandere.ClubAttire)
+			{
+				this.Yandere.ChangeClubwear();
+			}
+		}
+		else if (this.Club == ClubType.Science)
+		{
+			this.ID = 0;
+			while (this.ID < this.Club8Students.Length)
+			{
+				StudentScript studentScript5 = this.StudentManager.Students[this.Club8Students[this.ID]];
+				if (studentScript5 != null && !studentScript5.Tranquil && studentScript5.Alive)
+				{
+					studentScript5.transform.position = this.Club8ActivitySpots[this.ID].position;
+					studentScript5.transform.rotation = this.Club8ActivitySpots[this.ID].rotation;
+					studentScript5.ClubActivity = true;
+					studentScript5.Talking = false;
+					studentScript5.Routine = true;
+					studentScript5.GetComponent<AudioSource>().volume = 0.1f;
+					if (!studentScript5.ClubAttire)
+					{
+						studentScript5.ChangeClubwear();
+					}
+				}
+				this.ID++;
+			}
+			this.Yandere.Talking = false;
+			this.Yandere.CanMove = false;
+			this.Yandere.ClubActivity = true;
+			if (!this.Yandere.ClubAttire)
+			{
+				this.Yandere.ChangeClubwear();
+			}
+		}
+		else if (this.Club == ClubType.Gardening)
+		{
+			this.ID = 0;
+			while (this.ID < this.Club10Students.Length)
+			{
+				StudentScript studentScript6 = this.StudentManager.Students[this.Club10Students[this.ID]];
+				if (studentScript6 != null && !studentScript6.Tranquil && studentScript6.Alive)
+				{
+					studentScript6.transform.position = this.Club10ActivitySpots[this.ID].position;
+					studentScript6.transform.rotation = this.Club10ActivitySpots[this.ID].rotation;
+					studentScript6.ClubActivity = true;
+					studentScript6.Talking = false;
+					studentScript6.Routine = true;
+					studentScript6.GetComponent<AudioSource>().volume = 0.1f;
+				}
+				this.ID++;
+			}
+			this.Yandere.Talking = false;
+			this.Yandere.CanMove = false;
+			this.Yandere.ClubActivity = true;
 			if (!this.Yandere.ClubAttire)
 			{
 				this.Yandere.ChangeClubwear();
@@ -300,6 +410,10 @@ public class ClubManagerScript : MonoBehaviour
 		{
 			this.ClubIDs = this.Club3IDs;
 		}
+		else if (Check == ClubType.Art)
+		{
+			this.ClubIDs = this.Club4IDs;
+		}
 		else if (Check == ClubType.MartialArts)
 		{
 			this.ClubIDs = this.Club6IDs;
@@ -307,6 +421,14 @@ public class ClubManagerScript : MonoBehaviour
 		else if (Check == ClubType.Photography)
 		{
 			this.ClubIDs = this.Club7IDs;
+		}
+		else if (Check == ClubType.Science)
+		{
+			this.ClubIDs = this.Club8IDs;
+		}
+		else if (Check == ClubType.Gardening)
+		{
+			this.ClubIDs = this.Club10IDs;
 		}
 		this.LeaderMissing = false;
 		this.LeaderDead = false;
@@ -340,9 +462,9 @@ public class ClubManagerScript : MonoBehaviour
 				this.LeaderMissing = true;
 			}
 		}
-		else if (Check == ClubType.MartialArts)
+		else if (Check == ClubType.Art)
 		{
-			int num2 = 21;
+			int num2 = 41;
 			if (StudentGlobals.GetStudentDead(num2) || StudentGlobals.GetStudentDying(num2) || StudentGlobals.GetStudentArrested(num2) || StudentGlobals.GetStudentReputation(num2) <= -100)
 			{
 				this.LeaderDead = true;
@@ -352,14 +474,50 @@ public class ClubManagerScript : MonoBehaviour
 				this.LeaderMissing = true;
 			}
 		}
-		else if (Check == ClubType.Photography)
+		else if (Check == ClubType.MartialArts)
 		{
-			int num3 = 56;
+			int num3 = 21;
 			if (StudentGlobals.GetStudentDead(num3) || StudentGlobals.GetStudentDying(num3) || StudentGlobals.GetStudentArrested(num3) || StudentGlobals.GetStudentReputation(num3) <= -100)
 			{
 				this.LeaderDead = true;
 			}
 			if (StudentGlobals.GetStudentMissing(num3) || StudentGlobals.GetStudentKidnapped(num3) || this.TranqCase.VictimID == num3)
+			{
+				this.LeaderMissing = true;
+			}
+		}
+		else if (Check == ClubType.Photography)
+		{
+			int num4 = 56;
+			if (StudentGlobals.GetStudentDead(num4) || StudentGlobals.GetStudentDying(num4) || StudentGlobals.GetStudentArrested(num4) || StudentGlobals.GetStudentReputation(num4) <= -100)
+			{
+				this.LeaderDead = true;
+			}
+			if (StudentGlobals.GetStudentMissing(num4) || StudentGlobals.GetStudentKidnapped(num4) || this.TranqCase.VictimID == num4)
+			{
+				this.LeaderMissing = true;
+			}
+		}
+		else if (Check == ClubType.Science)
+		{
+			int num5 = 61;
+			if (StudentGlobals.GetStudentDead(num5) || StudentGlobals.GetStudentDying(num5) || StudentGlobals.GetStudentArrested(num5) || StudentGlobals.GetStudentReputation(num5) <= -100)
+			{
+				this.LeaderDead = true;
+			}
+			if (StudentGlobals.GetStudentMissing(num5) || StudentGlobals.GetStudentKidnapped(num5) || this.TranqCase.VictimID == num5)
+			{
+				this.LeaderMissing = true;
+			}
+		}
+		else if (Check == ClubType.Gardening)
+		{
+			int num6 = 71;
+			if (StudentGlobals.GetStudentDead(num6) || StudentGlobals.GetStudentDying(num6) || StudentGlobals.GetStudentArrested(num6) || StudentGlobals.GetStudentReputation(num6) <= -100)
+			{
+				this.LeaderDead = true;
+			}
+			if (StudentGlobals.GetStudentMissing(num6) || StudentGlobals.GetStudentKidnapped(num6) || this.TranqCase.VictimID == num6)
 			{
 				this.LeaderMissing = true;
 			}
@@ -379,6 +537,14 @@ public class ClubManagerScript : MonoBehaviour
 		else if (Check == ClubType.Photography)
 		{
 			this.ClubIDs = this.Club7IDs;
+		}
+		else if (Check == ClubType.Science)
+		{
+			this.ClubIDs = this.Club8IDs;
+		}
+		else if (Check == ClubType.Gardening)
+		{
+			this.ClubIDs = this.Club10IDs;
 		}
 		this.LeaderGrudge = false;
 		this.ClubGrudge = false;
@@ -405,7 +571,21 @@ public class ClubManagerScript : MonoBehaviour
 				this.LeaderGrudge = true;
 			}
 		}
-		else if (Check == ClubType.Photography && this.StudentManager.Students[56].Grudge)
+		else if (Check == ClubType.Photography)
+		{
+			if (this.StudentManager.Students[56].Grudge)
+			{
+				this.LeaderGrudge = true;
+			}
+		}
+		else if (Check == ClubType.Science)
+		{
+			if (this.StudentManager.Students[61].Grudge)
+			{
+				this.LeaderGrudge = true;
+			}
+		}
+		else if (Check == ClubType.Gardening && this.StudentManager.Students[71].Grudge)
 		{
 			this.LeaderGrudge = true;
 		}
@@ -547,6 +727,7 @@ public class ClubManagerScript : MonoBehaviour
 							this.ShedDoor.Prompt.Label[0].text = "     Locked";
 							this.Padlock.SetActive(true);
 							this.ShedDoor.Locked = true;
+							this.ShedDoor.CloseDoor();
 						}
 						if (this.Yandere.Armed)
 						{

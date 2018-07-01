@@ -45,6 +45,10 @@ public class TalkingScript : MonoBehaviour
 					{
 						this.IdleAnim = this.S.SleuthCalmAnim;
 					}
+					else if (this.S.Club == ClubType.Art && this.S.DialogueWheel.ClubLeader)
+					{
+						this.IdleAnim = "paintingIdle_00";
+					}
 					else if (this.S.Club != ClubType.Bully)
 					{
 						this.IdleAnim = this.S.IdleAnim;

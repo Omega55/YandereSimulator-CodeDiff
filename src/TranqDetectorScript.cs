@@ -72,7 +72,7 @@ public class TranqDetectorScript : MonoBehaviour
 					{
 						this.SyringeIcon.spriteName = "Yes";
 					}
-					if (this.Door.Open)
+					if (this.Door.Open || this.Door.Timer < 1f)
 					{
 						this.DoorIcon.spriteName = "No";
 					}

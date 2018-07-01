@@ -467,13 +467,17 @@ public class PoliceScript : MonoBehaviour
 		{
 			if (this.Clock.HourTime < 18f)
 			{
-				if (!this.Yandere.InClass)
+				if (this.Yandere.InClass)
 				{
-					this.ResultsLabels[0].text = "Yandere-chan stands near the school gate and waits for Senpai to leave school.";
+					this.ResultsLabels[0].text = "Yandere-chan attempts to attend class without disposing of a corpse.";
+				}
+				else if (this.Yandere.Resting)
+				{
+					this.ResultsLabels[0].text = "Yandere-chan rests without disposing of a corpse.";
 				}
 				else
 				{
-					this.ResultsLabels[0].text = "Yandere-chan attempts to attend class without disposing of a corpse.";
+					this.ResultsLabels[0].text = "Yandere-chan stands near the school gate and waits for Senpai to leave school.";
 				}
 			}
 			else

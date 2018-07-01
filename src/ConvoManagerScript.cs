@@ -121,7 +121,7 @@ public class ConvoManagerScript : MonoBehaviour
 			{
 				if (this.ID != StudentID && this.SM.Students[this.ID] != null)
 				{
-					if (this.SM.Students[this.ID].Routine && (double)Vector3.Distance(this.SM.Students[this.ID].transform.position, this.SM.Students[StudentID].transform.position) < 2.5)
+					if (this.SM.Students[this.ID].Routine && Vector3.Distance(this.SM.Students[this.ID].transform.position, this.SM.Students[StudentID].transform.position) < 2.66666f)
 					{
 						this.SM.Students[StudentID].Alone = false;
 						break;

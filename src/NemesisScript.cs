@@ -133,7 +133,7 @@ public class NemesisScript : MonoBehaviour
 		if (this.PutOnDisguise)
 		{
 			int num = 1;
-			while ((this.Student.StudentManager.Students[num] != null && this.Student.StudentManager.Students[num].Male) || (num > 32 && num < 56) || (num > 60 && num < 76) || num == this.MissionMode.TargetID)
+			while ((this.Student.StudentManager.Students[num] != null && this.Student.StudentManager.Students[num].Male) || (num > 32 && num < 56) || (num > 45 && num < 56) || (num > 65 && num < 71) || num == this.MissionMode.TargetID)
 			{
 				num = UnityEngine.Random.Range(2, 90);
 			}
@@ -344,6 +344,7 @@ public class NemesisScript : MonoBehaviour
 		this.Student.OccultBook.SetActive(false);
 		this.Student.Cigarette.SetActive(false);
 		this.Student.EventBook.SetActive(false);
+		this.Student.CandyBar.SetActive(false);
 		this.Student.Scrubber.SetActive(false);
 		this.Student.Lighter.SetActive(false);
 		this.Student.Eraser.SetActive(false);

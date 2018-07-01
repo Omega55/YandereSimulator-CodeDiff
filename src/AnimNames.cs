@@ -360,6 +360,8 @@ public static class AnimNames
 
 	public const string FemaleStoolBathing = "f02_stoolBathing_00";
 
+	public const string FemaleStopFighting = "f02_stopFighting_00";
+
 	public const string FemaleStretch = "f02_stretch_00";
 
 	public const string FemaleStripping = "f02_stripping_00";

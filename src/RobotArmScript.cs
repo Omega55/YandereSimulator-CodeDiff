@@ -9,6 +9,8 @@ public class RobotArmScript : MonoBehaviour
 
 	public PromptScript Prompt;
 
+	public Transform TerminalTarget;
+
 	public ParticleSystem[] Sparks;
 
 	public AudioClip ArmsOff;
@@ -35,29 +37,11 @@ public class RobotArmScript : MonoBehaviour
 	{
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			this.Prompt.Circle[0].fillAmount = 1f;
-			this.UpdateArms = true;
-			this.On[0] = !this.On[0];
-			if (this.On[0])
-			{
-				this.Prompt.HideButton[1] = false;
-				this.MyAudio.clip = this.ArmsOn;
-			}
-			else
-			{
-				this.Prompt.HideButton[1] = true;
-				this.MyAudio.clip = this.ArmsOff;
-				this.StopWorkTimer = 5f;
-				this.Work = false;
-			}
-			this.MyAudio.Play();
+			this.ActivateArms();
 		}
 		if (this.Prompt.Circle[1].fillAmount == 0f)
 		{
-			this.Prompt.Circle[1].fillAmount = 1f;
-			this.StartWorkTimer = 1f;
-			this.StopWorkTimer = 5f;
-			this.Work = !this.Work;
+			this.ToggleWork();
 		}
 		if (this.UpdateArms)
 		{
@@ -183,5 +167,33 @@ public class RobotArmScript : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	public void ActivateArms()
+	{
+		this.Prompt.Circle[0].fillAmount = 1f;
+		this.UpdateArms = true;
+		this.On[0] = !this.On[0];
+		if (this.On[0])
+		{
+			this.Prompt.HideButton[1] = false;
+			this.MyAudio.clip = this.ArmsOn;
+		}
+		else
+		{
+			this.Prompt.HideButton[1] = true;
+			this.MyAudio.clip = this.ArmsOff;
+			this.StopWorkTimer = 5f;
+			this.Work = false;
+		}
+		this.MyAudio.Play();
+	}
+
+	public void ToggleWork()
+	{
+		this.Prompt.Circle[1].fillAmount = 1f;
+		this.StartWorkTimer = 1f;
+		this.StopWorkTimer = 5f;
+		this.Work = !this.Work;
 	}
 }

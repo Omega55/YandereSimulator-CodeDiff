@@ -71,7 +71,7 @@ public class MopScript : MonoBehaviour
 						this.Prompt.HideButton[0] = false;
 					}
 				}
-				else if (this.Prompt.Button[0].color.a > 0f)
+				else if (this.Prompt.Button[0].color.a > 0f && !this.Yandere.Chased && this.Yandere.Chasers == 0)
 				{
 					if (this.Yandere.Bucket.Full)
 					{

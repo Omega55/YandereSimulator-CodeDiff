@@ -13,6 +13,8 @@ public class GhostScript : MonoBehaviour
 
 	public int Frame;
 
+	public bool Move;
+
 	private void Update()
 	{
 		if (Time.timeScale > 0f)

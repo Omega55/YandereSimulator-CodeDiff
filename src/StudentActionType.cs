@@ -30,5 +30,6 @@ public enum StudentActionType
 	Follow,
 	Sulk,
 	Sleuth,
-	Stalk
+	Stalk,
+	Sketch
 }

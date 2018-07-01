@@ -71,8 +71,7 @@ public class DoorScript : MonoBehaviour
 	[SerializeField]
 	private float Rotation;
 
-	[SerializeField]
-	private float Timer;
+	public float Timer;
 
 	[SerializeField]
 	private float TrapSwing = 12.15f;

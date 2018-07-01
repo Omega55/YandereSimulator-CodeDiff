@@ -55,7 +55,7 @@ public class VoidGoddessScript : MonoBehaviour
 			this.NewPortrait.transform.localScale = new Vector3(1f, 1f, 1f);
 			this.NewPortrait.transform.localPosition = new Vector3((float)(-450 + this.Column * 100), (float)(450 - this.Row * 100), 0f);
 			this.Portraits[this.ID] = this.NewPortrait.GetComponent<UITexture>();
-			if ((this.ID <= 32 || this.ID >= 56) && (this.ID <= 60 || this.ID >= 76) && this.ID <= 97)
+			if ((this.ID <= 32 || this.ID >= 41) && (this.ID <= 45 || this.ID >= 56) && (this.ID <= 65 || this.ID >= 71) && this.ID <= 97)
 			{
 				string url = string.Concat(new string[]
 				{
@@ -199,6 +199,16 @@ public class VoidGoddessScript : MonoBehaviour
 			}
 			else if (Input.GetKeyDown(KeyCode.Alpha5))
 			{
+				this.ID = 41;
+				while (this.ID < 46)
+				{
+					this.StudentManager.DisableStudent(this.ID);
+					this.ID++;
+				}
+				this.UpdatePortraits();
+			}
+			else if (Input.GetKeyDown(KeyCode.Alpha6))
+			{
 				this.ID = 56;
 				while (this.ID < 61)
 				{
@@ -207,7 +217,27 @@ public class VoidGoddessScript : MonoBehaviour
 				}
 				this.UpdatePortraits();
 			}
-			else if (Input.GetKeyDown(KeyCode.Alpha6))
+			else if (Input.GetKeyDown(KeyCode.Alpha7))
+			{
+				this.ID = 61;
+				while (this.ID < 66)
+				{
+					this.StudentManager.DisableStudent(this.ID);
+					this.ID++;
+				}
+				this.UpdatePortraits();
+			}
+			else if (Input.GetKeyDown(KeyCode.Alpha8))
+			{
+				this.ID = 71;
+				while (this.ID < 76)
+				{
+					this.StudentManager.DisableStudent(this.ID);
+					this.ID++;
+				}
+				this.UpdatePortraits();
+			}
+			else if (Input.GetKeyDown(KeyCode.Alpha9))
 			{
 				this.ID = 76;
 				while (this.ID < 81)
@@ -217,7 +247,7 @@ public class VoidGoddessScript : MonoBehaviour
 				}
 				this.UpdatePortraits();
 			}
-			else if (Input.GetKeyDown(KeyCode.Alpha7))
+			else if (Input.GetKeyDown(KeyCode.Alpha0))
 			{
 				this.ID = 81;
 				while (this.ID < 86)
@@ -227,7 +257,7 @@ public class VoidGoddessScript : MonoBehaviour
 				}
 				this.UpdatePortraits();
 			}
-			else if (Input.GetKeyDown(KeyCode.Alpha8))
+			else if (Input.GetKeyDown("-"))
 			{
 				this.ID = 86;
 				while (this.ID < 90)
@@ -237,7 +267,7 @@ public class VoidGoddessScript : MonoBehaviour
 				}
 				this.UpdatePortraits();
 			}
-			else if (Input.GetKeyDown(KeyCode.Alpha9))
+			else if (Input.GetKeyDown("="))
 			{
 				this.ID = 90;
 				while (this.ID < 98)
@@ -251,7 +281,12 @@ public class VoidGoddessScript : MonoBehaviour
 			{
 				this.Window.parent.gameObject.SetActive(false);
 				this.Prompt.Yandere.CanMove = true;
+				this.Prompt.Yandere.Shoved = false;
 				this.PassingJudgement = false;
+			}
+			if (Input.GetKeyDown(KeyCode.Z))
+			{
+				this.StudentManager.Students[this.Selected].transform.position = this.Prompt.Yandere.transform.position + this.Prompt.Yandere.transform.forward;
 			}
 		}
 	}

@@ -57,6 +57,10 @@ public class StudentManagerScript : MonoBehaviour
 
 	public RingEventScript RingEvent;
 
+	public HologramScript Holograms;
+
+	public RobotArmScript RobotArms;
+
 	public FountainScript Fountain;
 
 	public PoseModeScript PoseMode;
@@ -143,6 +147,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform[] SleuthDestinations;
 
+	public Transform[] GardeningPatrols;
+
 	public Transform[] LockerPositions;
 
 	public Transform[] SpawnPositions;
@@ -150,6 +156,8 @@ public class StudentManagerScript : MonoBehaviour
 	public Transform[] GraffitiSpots;
 
 	public Transform[] PinDownSpots;
+
+	public Transform[] SupplySpots;
 
 	public Transform[] BullySpots;
 
@@ -223,6 +231,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform SuitorSpot;
 
+	public Transform ToolTarget;
+
 	public Transform BatheSpot;
 
 	public Transform MournSpot;
@@ -239,6 +249,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public GameObject LovestruckCamera;
 
+	public GameObject GardenBlockade;
+
 	public GameObject PortraitChan;
 
 	public GameObject RandomPatrol;
@@ -254,6 +266,8 @@ public class StudentManagerScript : MonoBehaviour
 	public GameObject StudentKun;
 
 	public GameObject RivalChan;
+
+	public GameObject Flowers;
 
 	public GameObject Portal;
 
@@ -387,6 +401,11 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			this.ID++;
 		}
+		if (ClubGlobals.GetClubClosed(ClubType.Gardening))
+		{
+			this.GardenBlockade.SetActive(true);
+			this.Flowers.SetActive(false);
+		}
 		this.ID = 0;
 		this.SeatsTaken31[13] = true;
 		this.SeatsTaken21[12] = true;
@@ -407,6 +426,21 @@ public class StudentManagerScript : MonoBehaviour
 		this.SeatsTaken22[2] = true;
 		this.SeatsTaken21[2] = true;
 		this.SeatsTaken12[2] = true;
+		this.SeatsTaken32[4] = true;
+		this.SeatsTaken31[4] = true;
+		this.SeatsTaken22[4] = true;
+		this.SeatsTaken21[4] = true;
+		this.SeatsTaken12[4] = true;
+		this.SeatsTaken32[6] = true;
+		this.SeatsTaken31[6] = true;
+		this.SeatsTaken22[6] = true;
+		this.SeatsTaken21[6] = true;
+		this.SeatsTaken12[6] = true;
+		this.SeatsTaken31[15] = true;
+		this.SeatsTaken22[15] = true;
+		this.SeatsTaken21[15] = true;
+		this.SeatsTaken12[15] = true;
+		this.SeatsTaken11[15] = true;
 		this.ID = 1;
 		while (this.ID < this.JSON.Students.Length)
 		{
@@ -776,7 +810,7 @@ public class StudentManagerScript : MonoBehaviour
 	public void SpawnStudent(int spawnID)
 	{
 		bool flag = false;
-		if (spawnID == 33 || spawnID == 34)
+		if (spawnID == 33 || spawnID == 34 || spawnID == 35)
 		{
 			flag = true;
 		}
@@ -1791,7 +1825,7 @@ public class StudentManagerScript : MonoBehaviour
 		while (this.ID < this.Students.Length)
 		{
 			StudentScript studentScript = this.Students[this.ID];
-			if (studentScript != null && studentScript.SecurityCamera != null)
+			if (studentScript != null && studentScript.SecurityCamera != null && studentScript.Ragdoll != base.enabled)
 			{
 				studentScript.SecurityCamera.SetActive(true);
 			}
@@ -1811,6 +1845,28 @@ public class StudentManagerScript : MonoBehaviour
 			else
 			{
 				studentScript.gameObject.SetActive(true);
+				if (studentScript.Club == ClubType.Council)
+				{
+					string str = string.Empty;
+					if (studentScript.StudentID == 86)
+					{
+						str = "Strict";
+					}
+					else if (studentScript.StudentID == 87)
+					{
+						str = "Casual";
+					}
+					else if (studentScript.StudentID == 88)
+					{
+						str = "Grace";
+					}
+					else if (studentScript.StudentID == 89)
+					{
+						str = "Edgy";
+					}
+					studentScript.CharacterAnimation["f02_faceCouncil" + str + "_00"].layer = 10;
+					studentScript.CharacterAnimation.Play("f02_faceCouncil" + str + "_00");
+				}
 			}
 		}
 	}

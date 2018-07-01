@@ -72,6 +72,14 @@ public class PhoneEventScript : MonoBehaviour
 		}
 	}
 
+	private void OnAwake()
+	{
+		if (this.EventStudentID == 33)
+		{
+			base.enabled = false;
+		}
+	}
+
 	private void Update()
 	{
 		if (!this.Clock.StopTime && this.EventCheck)

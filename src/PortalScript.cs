@@ -127,6 +127,8 @@ public class PortalScript : MonoBehaviour
 					{
 						this.Yandere.IdleAnim = "f02_idleShort_00";
 						this.Yandere.WalkAnim = "f02_newWalk_00";
+						this.Yandere.OriginalIdleAnim = this.Yandere.IdleAnim;
+						this.Yandere.OriginalWalkAnim = this.Yandere.WalkAnim;
 						this.Yandere.CharacterAnimation.CrossFade(this.Yandere.IdleAnim);
 						this.Yandere.MyRenderer.materials[2].SetFloat("_BlendAmount1", 0f);
 						this.Yandere.Resting = false;
