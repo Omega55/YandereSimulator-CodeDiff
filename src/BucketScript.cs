@@ -371,6 +371,7 @@ public class BucketScript : MonoBehaviour
 		this.UpdateAppearance = true;
 		this.Bloodiness = 0f;
 		this.Bleached = false;
+		this.Gasoline = false;
 		this.Sparkles.Stop();
 		this.Full = false;
 	}

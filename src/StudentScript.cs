@@ -5739,9 +5739,11 @@ public class StudentScript : MonoBehaviour
 					this.BreakingUpFight = false;
 					this.WitnessedMurder = false;
 					this.Pathfinding.speed = 1f;
+					this.Prompt.enabled = true;
 					this.Alarmed = false;
 					this.Fleeing = false;
 					this.Routine = true;
+					this.Grudge = false;
 				}
 			}
 		}
@@ -6351,7 +6353,7 @@ public class StudentScript : MonoBehaviour
 	{
 		if (this.StudentID > 1)
 		{
-			if (!this.Pathfinding.canMove && this.Actions[this.Phase] == StudentActionType.ClubAction && this.Armband.activeInHierarchy)
+			if (this.DistanceToDestination < 5f && this.Actions[this.Phase] == StudentActionType.ClubAction && this.Armband.activeInHierarchy)
 			{
 				this.Warned = false;
 			}
@@ -6543,13 +6545,13 @@ public class StudentScript : MonoBehaviour
 						if (!this.Grudge)
 						{
 							this.ClubManager.CheckGrudge(this.Club);
-							if (ClubGlobals.GetClubKicked(this.Club) && !this.Pathfinding.canMove && this.Actions[this.Phase] == StudentActionType.ClubAction && this.Armband.activeInHierarchy)
+							if (ClubGlobals.GetClubKicked(this.Club) && this.DistanceToDestination < 10f && this.Actions[this.Phase] == StudentActionType.ClubAction && this.Armband.activeInHierarchy)
 							{
 								this.Interaction = StudentInteractionType.ClubUnwelcome;
 								this.TalkTimer = 5f;
 								this.Warned = true;
 							}
-							else if (ClubGlobals.Club == this.Club && !this.Pathfinding.canMove && this.Actions[this.Phase] == StudentActionType.ClubAction && this.Armband.activeInHierarchy && this.ClubManager.ClubGrudge)
+							else if (ClubGlobals.Club == this.Club && this.DistanceToDestination < 10f && this.Actions[this.Phase] == StudentActionType.ClubAction && this.Armband.activeInHierarchy && this.ClubManager.ClubGrudge)
 							{
 								this.Interaction = StudentInteractionType.ClubKick;
 								this.TalkTimer = 5f;
@@ -6567,7 +6569,7 @@ public class StudentScript : MonoBehaviour
 								{
 									this.DistanceToDestination = Vector3.Distance(base.transform.position, this.SleuthTarget.position);
 								}
-								if ((!this.Pathfinding.canMove && this.DistanceToDestination < 1f && this.Actions[this.Phase] == StudentActionType.ClubAction && this.Armband.activeInHierarchy) || (!this.Pathfinding.canMove && this.DistanceToDestination < 1f && this.Actions[this.Phase] == StudentActionType.SitAndSocialize && this.Armband.activeInHierarchy) || (!this.Pathfinding.canMove && this.DistanceToDestination < 1f && this.Actions[this.Phase] == StudentActionType.Sleuth && this.Armband.activeInHierarchy))
+								if ((this.DistanceToDestination < 10f && this.Actions[this.Phase] == StudentActionType.ClubAction && this.Armband.activeInHierarchy) || (this.DistanceToDestination < 10f && this.Actions[this.Phase] == StudentActionType.SitAndSocialize && this.Armband.activeInHierarchy) || (this.DistanceToDestination < 10f && this.Actions[this.Phase] == StudentActionType.Sleuth && this.Armband.activeInHierarchy))
 								{
 									int num;
 									if (this.Sleuthing)
@@ -6599,7 +6601,7 @@ public class StudentScript : MonoBehaviour
 								this.TalkTimer = 0f;
 							}
 						}
-						else if (!this.Pathfinding.canMove && this.Actions[this.Phase] == StudentActionType.ClubAction && this.Armband.activeInHierarchy)
+						else if (this.DistanceToDestination < 10f && this.Actions[this.Phase] == StudentActionType.ClubAction && this.Armband.activeInHierarchy)
 						{
 							this.Interaction = StudentInteractionType.ClubUnwelcome;
 							this.TalkTimer = 5f;
@@ -8519,10 +8521,15 @@ public class StudentScript : MonoBehaviour
 				this.Persona = PersonaType.Evil;
 			}
 		}
-		if (this.Club == ClubType.Delinquent && this.Yandere.TargetStudent != null)
+		if (this.Club == ClubType.Delinquent)
 		{
 			Debug.Log("A Delinquent witnessed a murder.");
-			if (this.Yandere.TargetStudent.Club == ClubType.Bully)
+			if (this.Yandere.TargetStudent != null && this.Yandere.TargetStudent.Club == ClubType.Bully)
+			{
+				this.ScaredAnim = this.EvilWitnessAnim;
+				this.Persona = PersonaType.Evil;
+			}
+			if ((this.Yandere.Lifting || this.Yandere.Carrying) && this.Yandere.CurrentRagdoll.Student.Club == ClubType.Bully)
 			{
 				this.ScaredAnim = this.EvilWitnessAnim;
 				this.Persona = PersonaType.Evil;
@@ -10236,6 +10243,21 @@ public class StudentScript : MonoBehaviour
 		this.Scrubber.SetActive(false);
 		this.Eraser.SetActive(false);
 		this.Pen.SetActive(false);
+		this.Pencil.SetActive(false);
+		this.Sketchbook.SetActive(false);
+		if (this.Club == ClubType.Gardening)
+		{
+			this.WateringCan.transform.parent = this.Hips;
+			this.WateringCan.transform.localPosition = new Vector3(0f, 0.0135f, -0.184f);
+			this.WateringCan.transform.localEulerAngles = new Vector3(0f, 90f, 30f);
+		}
+		foreach (GameObject gameObject in this.ScienceProps)
+		{
+			if (gameObject != null)
+			{
+				gameObject.SetActive(false);
+			}
+		}
 		if (!this.Yandere.ClubAccessories[7].activeInHierarchy || this.Club == ClubType.Delinquent)
 		{
 			this.CharacterAnimation.CrossFade(this.CameraAnims[1]);

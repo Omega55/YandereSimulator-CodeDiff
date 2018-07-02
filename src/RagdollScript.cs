@@ -348,6 +348,7 @@ public class RagdollScript : MonoBehaviour
 						this.Prompt.MyCollider.enabled = false;
 						this.PelvisRoot.localPosition = new Vector3(this.PelvisRoot.localPosition.x, this.PelvisRoot.localPosition.y, 0f);
 						this.Yandere.Ragdoll = base.gameObject;
+						this.Yandere.CurrentRagdoll = this;
 						this.Yandere.CanMove = false;
 						this.Yandere.Lifting = true;
 						this.StopAnimation = false;
