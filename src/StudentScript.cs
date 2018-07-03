@@ -5903,10 +5903,8 @@ public class StudentScript : MonoBehaviour
 							{
 								if ((this.Yandere.Armed && this.Yandere.EquippedWeapon.Suspicious) || (!this.Teacher && this.StudentID > 1 && this.Yandere.PickUp != null && this.Yandere.PickUp.Suspicious) || (this.Yandere.Bloodiness > 0f && !this.Yandere.Paint) || (this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Struggling || this.Yandere.Dragging || this.Yandere.Lewd || this.Yandere.Carrying || this.Yandere.Medusa || (this.Yandere.PickUp != null && this.Yandere.PickUp.BodyPart != null)) || (this.Yandere.Laughing && this.Yandere.LaughIntensity > 15f) || (this.Private && this.Yandere.Trespassing) || (this.Teacher && this.Yandere.Trespassing) || (this.Teacher && this.Yandere.Rummaging) || (this.Teacher && this.Yandere.TheftTimer > 0f) || (this.StudentID == 1 && this.Yandere.NearSenpai && !this.Yandere.Talking) || this.Yandere.Eavesdropping || this.Yandere.DelinquentFighting)
 								{
-									Debug.Log(this.Name + " is looking for Yandere-chan.");
 									if (this.CanSeeObject(this.Yandere.gameObject, this.Yandere.HeadPosition))
 									{
-										Debug.Log(this.Name + " can see Yandere-chan.");
 										this.YandereVisible = true;
 										if (this.Yandere.Attacking || this.Yandere.Struggling || (this.Yandere.NearBodies > 0 && this.Yandere.Bloodiness > 0f && !this.Yandere.Paint) || (this.Yandere.NearBodies > 0 && this.Yandere.Armed) || (this.Yandere.NearBodies > 0 && this.Yandere.Sanity < 66.66666f) || (this.Yandere.Carrying || this.Yandere.Dragging || (this.Guarding && this.Yandere.Bloodiness > 0f && !this.Yandere.Paint)) || (this.Guarding && this.Yandere.Armed) || (this.Guarding && this.Yandere.Sanity < 66.66666f) || (this.Club == ClubType.Council && this.Yandere.DelinquentFighting))
 										{
@@ -7425,7 +7423,6 @@ public class StudentScript : MonoBehaviour
 		}
 		else
 		{
-			Debug.Log(this.Name + " feels threatened.");
 			this.Alarm -= Time.deltaTime * 100f * (1f / this.Paranoia);
 			if (this.StudentManager.CombatMinigame.Delinquent == null || this.StudentManager.CombatMinigame.Delinquent == this)
 			{
@@ -7542,7 +7539,6 @@ public class StudentScript : MonoBehaviour
 					}
 					else if (!this.NoTalk)
 					{
-						Debug.Log("Combat is beginning.");
 						if (this.StudentManager.CombatMinigame.Delinquent == null)
 						{
 							this.Yandere.CharacterAnimation.CrossFade("Yandere_CombatIdle");
@@ -10706,6 +10702,7 @@ public class StudentScript : MonoBehaviour
 			this.StudentManager.CombatMinigame.Delinquent.CharacterAnimation.Play("stopFighting_00");
 			this.Yandere.CharacterAnimation.Play("f02_stopFighting_00");
 			this.StudentManager.CombatMinigame.DisablePrompts();
+			this.StudentManager.CombatMinigame.MyVocals.Stop();
 			this.StudentManager.CombatMinigame.MyAudio.Stop();
 			this.StudentManager.CombatMinigame.Path = 7;
 			this.CharacterAnimation.Play(this.BreakUpAnim);

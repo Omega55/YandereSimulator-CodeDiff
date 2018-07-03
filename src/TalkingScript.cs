@@ -75,7 +75,11 @@ public class TalkingScript : MonoBehaviour
 					}
 					if (this.S.DialogueWheel.Impatience.fillAmount > 0.5f && this.S.Subtitle.Timer == 0f)
 					{
-						if (this.S.Pestered == 0)
+						if (this.S.StudentID == 41)
+						{
+							this.S.Subtitle.UpdateLabel(SubtitleType.Impatience, 4, 5f);
+						}
+						else if (this.S.Pestered == 0)
 						{
 							this.S.Subtitle.UpdateLabel(SubtitleType.Impatience, 0, 5f);
 						}
@@ -86,7 +90,11 @@ public class TalkingScript : MonoBehaviour
 					}
 					if (this.S.DialogueWheel.Impatience.fillAmount == 1f && this.S.DialogueWheel.Show)
 					{
-						if (this.S.Pestered == 0)
+						if (this.S.StudentID == 41)
+						{
+							this.S.Subtitle.UpdateLabel(SubtitleType.Impatience, 4, 5f);
+						}
+						else if (this.S.Pestered == 0)
 						{
 							this.S.Subtitle.UpdateLabel(SubtitleType.Impatience, 1, 5f);
 						}
@@ -999,6 +1007,10 @@ public class TalkingScript : MonoBehaviour
 					this.S.DialogueWheel.End();
 					this.S.StudentManager.UpdateStudents();
 				}
+			}
+			if (this.S.StudentID == 41 && this.S.TalkTimer > 0f)
+			{
+				this.S.Subtitle.UpdateLabel(SubtitleType.Impatience, 5, 5f);
 			}
 			if (this.S.Waiting)
 			{
