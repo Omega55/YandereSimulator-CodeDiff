@@ -1008,7 +1008,7 @@ public class TalkingScript : MonoBehaviour
 					this.S.StudentManager.UpdateStudents();
 				}
 			}
-			if (this.S.StudentID == 41 && this.S.TalkTimer > 0f)
+			if (this.S.StudentID == 41 && !this.S.DialogueWheel.ClubLeader && this.S.TalkTimer > 0f)
 			{
 				this.S.Subtitle.UpdateLabel(SubtitleType.Impatience, 5, 5f);
 			}

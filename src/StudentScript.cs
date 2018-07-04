@@ -7194,7 +7194,11 @@ public class StudentScript : MonoBehaviour
 				}
 				else if (this.StudentID > 1 || this.Yandere.Mask != null)
 				{
-					if (this.RepeatReaction)
+					if (this.StudentID == 41)
+					{
+						this.Subtitle.UpdateLabel(SubtitleType.Impatience, 6, 5f);
+					}
+					else if (this.RepeatReaction)
 					{
 						this.Subtitle.UpdateLabel(SubtitleType.RepeatReaction, 1, 3f);
 						this.RepeatReaction = false;
