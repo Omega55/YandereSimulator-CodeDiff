@@ -35,6 +35,7 @@ public class DokiScript : MonoBehaviour
 			}
 			if (this.Prompt.Circle[0].fillAmount == 0f)
 			{
+				this.Yandere.PantyAttacher.newRenderer.enabled = false;
 				this.Prompt.Circle[0].fillAmount = 1f;
 				UnityEngine.Object.Instantiate<GameObject>(this.TransformEffect, this.Yandere.Hips.position, Quaternion.identity);
 				this.Yandere.MyRenderer.sharedMesh = this.Yandere.Uniforms[4];

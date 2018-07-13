@@ -12,6 +12,7 @@ public class TeleportScript : MonoBehaviour
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Yandere.transform.position = this.Destination.position;
+			Physics.SyncTransforms();
 		}
 	}
 }

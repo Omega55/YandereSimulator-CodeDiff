@@ -545,6 +545,11 @@ public class CosmeticScript : MonoBehaviour
 				{
 					this.CharacterAnimation.Play("sleuthPortrait_01");
 				}
+				else if (this.StudentID == 61)
+				{
+					this.CharacterAnimation.Play("scienceMad_00");
+					base.transform.position = new Vector3(0f, 0.1f, 0f);
+				}
 				else if (this.StudentID == 76)
 				{
 					this.CharacterAnimation.Play("delinquentPoseB");

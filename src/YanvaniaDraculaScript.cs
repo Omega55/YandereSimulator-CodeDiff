@@ -263,7 +263,7 @@ public class YanvaniaDraculaScript : MonoBehaviour
 							Time.timeScale = Mathf.MoveTowards(Time.timeScale, 0f, 0.0166666675f);
 							if (Time.timeScale == 0f)
 							{
-								Application.CaptureScreenshot(Application.streamingAssetsPath + "/Dracula.png");
+								ScreenCapture.CaptureScreenshot(Application.streamingAssetsPath + "/Dracula.png");
 								if (this.Frame > 0)
 								{
 									base.StartCoroutine(this.ApplyScreenshot());

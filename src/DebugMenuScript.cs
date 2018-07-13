@@ -158,16 +158,19 @@ public class DebugMenuScript : MonoBehaviour
 					else if (Input.GetKeyDown(KeyCode.Alpha6))
 					{
 						this.Yandere.transform.position = this.TeleportSpot[1].position;
+						Physics.SyncTransforms();
 						this.Window.SetActive(false);
 					}
 					else if (Input.GetKeyDown(KeyCode.Alpha7))
 					{
 						this.Yandere.transform.position = this.TeleportSpot[2].position + new Vector3(0.75f, 0f, 0f);
+						Physics.SyncTransforms();
 						this.Window.SetActive(false);
 					}
 					else if (Input.GetKeyDown(KeyCode.Alpha8))
 					{
 						this.Yandere.transform.position = this.TeleportSpot[3].position;
+						Physics.SyncTransforms();
 						this.Window.SetActive(false);
 					}
 					else if (Input.GetKeyDown(KeyCode.Alpha9))
@@ -218,6 +221,7 @@ public class DebugMenuScript : MonoBehaviour
 								studentScript3.transform.position = studentScript3.Destinations[2].position;
 							}
 						}
+						Physics.SyncTransforms();
 					}
 					else if (Input.GetKeyDown(KeyCode.Alpha0))
 					{
@@ -270,6 +274,7 @@ public class DebugMenuScript : MonoBehaviour
 							}
 							this.ID++;
 						}
+						Physics.SyncTransforms();
 						this.Window.SetActive(false);
 					}
 					else if (Input.GetKeyDown(KeyCode.F))
@@ -321,6 +326,7 @@ public class DebugMenuScript : MonoBehaviour
 							this.Clock.PresentTime = 960f;
 							studentScript5.transform.position = this.Lockers.position;
 						}
+						Physics.SyncTransforms();
 						this.Window.SetActive(false);
 					}
 					else if (Input.GetKeyDown(KeyCode.K))
@@ -470,6 +476,7 @@ public class DebugMenuScript : MonoBehaviour
 						this.OsanaEvent1.enabled = false;
 						this.OsanaEvent2.enabled = false;
 						this.OsanaEvent3.enabled = false;
+						Physics.SyncTransforms();
 					}
 					else if (Input.GetKeyDown(KeyCode.LeftAlt))
 					{
@@ -477,6 +484,7 @@ public class DebugMenuScript : MonoBehaviour
 						this.Yandere.transform.position = this.TeleportSpot[6].position;
 						this.Clock.PresentTime = 425f;
 						this.Clock.HourTime = this.Clock.PresentTime / 60f;
+						Physics.SyncTransforms();
 						this.Window.SetActive(false);
 					}
 					else if (Input.GetKeyDown(KeyCode.LeftControl))
@@ -488,11 +496,13 @@ public class DebugMenuScript : MonoBehaviour
 						}
 						this.Clock.PresentTime = 1015f;
 						this.Clock.HourTime = this.Clock.PresentTime / 60f;
+						Physics.SyncTransforms();
 						this.Window.SetActive(false);
 					}
 					else if (Input.GetKeyDown(KeyCode.RightControl))
 					{
 						this.Yandere.transform.position = this.TeleportSpot[8].position;
+						Physics.SyncTransforms();
 						this.Window.SetActive(false);
 					}
 					else if (Input.GetKeyDown(KeyCode.Equals))
@@ -515,6 +525,7 @@ public class DebugMenuScript : MonoBehaviour
 						this.StudentManager.Students[33].transform.position = new Vector3(0f, 12.1f, -25f);
 						this.Clock.PresentTime = 780f;
 						this.Clock.HourTime = this.Clock.PresentTime / 60f;
+						Physics.SyncTransforms();
 						this.Window.SetActive(false);
 					}
 					else if (Input.GetKeyDown(KeyCode.B))

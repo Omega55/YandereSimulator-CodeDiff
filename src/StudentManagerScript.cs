@@ -660,13 +660,13 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			if (this.Frame == 2)
 			{
-				Application.CaptureScreenshot(Application.streamingAssetsPath + "/Portraits/Student_" + this.NPCsSpawned.ToString() + ".png");
+				ScreenCapture.CaptureScreenshot(Application.streamingAssetsPath + "/Portraits/Student_" + this.NPCsSpawned.ToString() + ".png");
 				this.Frame = 0;
 			}
 		}
 		else
 		{
-			Application.CaptureScreenshot(Application.streamingAssetsPath + "/Portraits/Student_" + this.NPCsSpawned.ToString() + ".png");
+			ScreenCapture.CaptureScreenshot(Application.streamingAssetsPath + "/Portraits/Student_" + this.NPCsSpawned.ToString() + ".png");
 			base.gameObject.SetActive(false);
 		}
 		if (this.Witnesses > 0)

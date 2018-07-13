@@ -62,6 +62,7 @@ public class PickpocketMinigameScript : MonoBehaviour
 				}
 				else
 				{
+					this.Yandere.Caught = true;
 					this.Failure = true;
 					this.End();
 				}
@@ -71,6 +72,7 @@ public class PickpocketMinigameScript : MonoBehaviour
 				this.Circle.fillAmount = 1f - this.Timer / 1f;
 				if ((Input.GetButtonDown("A") && this.CurrentButton != "A") || (Input.GetButtonDown("B") && this.CurrentButton != "B") || (Input.GetButtonDown("X") && this.CurrentButton != "X") || (Input.GetButtonDown("Y") && this.CurrentButton != "Y"))
 				{
+					this.Yandere.Caught = true;
 					this.Failure = true;
 					this.End();
 				}
@@ -84,6 +86,7 @@ public class PickpocketMinigameScript : MonoBehaviour
 					this.Progress++;
 					if (this.Progress == 5)
 					{
+						this.Yandere.Pickpocketing = false;
 						this.Yandere.CanMove = true;
 						this.Success = true;
 						this.End();
@@ -143,7 +146,6 @@ public class PickpocketMinigameScript : MonoBehaviour
 		this.Circle.enabled = false;
 		this.BG.enabled = false;
 		this.Yandere.CharacterAnimation.CrossFade("f02_readyToFight_00");
-		this.Yandere.Caught = true;
 		this.Progress = 0;
 		this.ButtonID = 0;
 		this.Show = false;

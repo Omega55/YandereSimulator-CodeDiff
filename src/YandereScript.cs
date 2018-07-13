@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using HighlightingSystem;
+using Pathfinding;
 using UnityEngine;
 
 public class YandereScript : MonoBehaviour
@@ -1583,7 +1584,7 @@ public class YandereScript : MonoBehaviour
 		AudioSource component = base.GetComponent<AudioSource>();
 		if (this.CanMove)
 		{
-			this.MyController.Move(Physics.gravity * 0.1f);
+			this.MyController.Move(Physics.gravity * Time.deltaTime);
 			this.v = Input.GetAxis("Vertical");
 			this.h = Input.GetAxis("Horizontal");
 			this.FlapSpeed = Mathf.Abs(this.v) + Mathf.Abs(this.h);
@@ -4712,6 +4713,7 @@ public class YandereScript : MonoBehaviour
 				this.EquippedWeapon.Victims[this.TargetStudent.StudentID] = true;
 			}
 			this.EquippedWeapon.Blood.enabled = true;
+			this.EquippedWeapon.MurderWeapon = true;
 			if (this.Gloved && !this.Gloves.Blood.enabled)
 			{
 				this.Gloves.PickUp.Evidence = true;

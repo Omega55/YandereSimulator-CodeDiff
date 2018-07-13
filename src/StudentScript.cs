@@ -2193,7 +2193,10 @@ public class StudentScript : MonoBehaviour
 			this.UpdateRoutine();
 			this.UpdateVision();
 			this.UpdateDetectionMarker();
-			this.UpdateTalkInput();
+			if (this.DistanceToPlayer <= 2f)
+			{
+				this.UpdateTalkInput();
+			}
 			if (this.Dying)
 			{
 				this.UpdateDying();
@@ -3923,6 +3926,14 @@ public class StudentScript : MonoBehaviour
 			{
 				if (!this.PinningDown)
 				{
+					if (this.Persona == PersonaType.Dangerous)
+					{
+						Debug.Log("This student council member is running to pepper spray Yandere-chan.");
+						if (this.StudentManager.CombatMinigame.Path > 3 && this.StudentManager.CombatMinigame.Path < 7)
+						{
+							this.ReturnToRoutine();
+						}
+					}
 					if (this.Yandere.Chased)
 					{
 						this.Pathfinding.speed += Time.deltaTime;
@@ -5726,24 +5737,7 @@ public class StudentScript : MonoBehaviour
 				}
 				if (this.CharacterAnimation[this.BreakUpAnim].time >= this.CharacterAnimation[this.BreakUpAnim].length)
 				{
-					if (this.Actions[this.Phase] == StudentActionType.Patrol)
-					{
-						this.CurrentDestination = this.StudentManager.Patrols.List[this.StudentID].GetChild(this.PatrolID);
-						this.Pathfinding.target = this.CurrentDestination;
-					}
-					else
-					{
-						this.CurrentDestination = this.Destinations[this.Phase];
-						this.Pathfinding.target = this.Destinations[this.Phase];
-					}
-					this.BreakingUpFight = false;
-					this.WitnessedMurder = false;
-					this.Pathfinding.speed = 1f;
-					this.Prompt.enabled = true;
-					this.Alarmed = false;
-					this.Fleeing = false;
-					this.Routine = true;
-					this.Grudge = false;
+					this.ReturnToRoutine();
 				}
 			}
 		}
@@ -5901,12 +5895,12 @@ public class StudentScript : MonoBehaviour
 						{
 							if (!this.Yandere.Noticed)
 							{
-								if ((this.Yandere.Armed && this.Yandere.EquippedWeapon.Suspicious) || (!this.Teacher && this.StudentID > 1 && this.Yandere.PickUp != null && this.Yandere.PickUp.Suspicious) || (this.Yandere.Bloodiness > 0f && !this.Yandere.Paint) || (this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Struggling || this.Yandere.Dragging || this.Yandere.Lewd || this.Yandere.Carrying || this.Yandere.Medusa || (this.Yandere.PickUp != null && this.Yandere.PickUp.BodyPart != null)) || (this.Yandere.Laughing && this.Yandere.LaughIntensity > 15f) || (this.Private && this.Yandere.Trespassing) || (this.Teacher && this.Yandere.Trespassing) || (this.Teacher && this.Yandere.Rummaging) || (this.Teacher && this.Yandere.TheftTimer > 0f) || (this.StudentID == 1 && this.Yandere.NearSenpai && !this.Yandere.Talking) || this.Yandere.Eavesdropping || this.Yandere.DelinquentFighting)
+								if ((this.Yandere.Armed && this.Yandere.EquippedWeapon.Suspicious) || (!this.Teacher && this.StudentID > 1 && this.Yandere.PickUp != null && this.Yandere.PickUp.Suspicious) || (this.Yandere.Bloodiness > 0f && !this.Yandere.Paint) || (this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Struggling || this.Yandere.Dragging || this.Yandere.Lewd || this.Yandere.Carrying || this.Yandere.Medusa || (this.Yandere.PickUp != null && this.Yandere.PickUp.BodyPart != null)) || (this.Yandere.Laughing && this.Yandere.LaughIntensity > 15f) || (this.Private && this.Yandere.Trespassing) || (this.Teacher && this.Yandere.Trespassing) || (this.Teacher && this.Yandere.Rummaging) || (this.Teacher && this.Yandere.TheftTimer > 0f) || (this.StudentID == 1 && this.Yandere.NearSenpai && !this.Yandere.Talking) || this.Yandere.Eavesdropping || (this.Yandere.DelinquentFighting && this.StudentManager.CombatMinigame.Path < 4))
 								{
 									if (this.CanSeeObject(this.Yandere.gameObject, this.Yandere.HeadPosition))
 									{
 										this.YandereVisible = true;
-										if (this.Yandere.Attacking || this.Yandere.Struggling || (this.Yandere.NearBodies > 0 && this.Yandere.Bloodiness > 0f && !this.Yandere.Paint) || (this.Yandere.NearBodies > 0 && this.Yandere.Armed) || (this.Yandere.NearBodies > 0 && this.Yandere.Sanity < 66.66666f) || (this.Yandere.Carrying || this.Yandere.Dragging || (this.Guarding && this.Yandere.Bloodiness > 0f && !this.Yandere.Paint)) || (this.Guarding && this.Yandere.Armed) || (this.Guarding && this.Yandere.Sanity < 66.66666f) || (this.Club == ClubType.Council && this.Yandere.DelinquentFighting))
+										if (this.Yandere.Attacking || this.Yandere.Struggling || (this.Yandere.NearBodies > 0 && this.Yandere.Bloodiness > 0f && !this.Yandere.Paint) || (this.Yandere.NearBodies > 0 && this.Yandere.Armed) || (this.Yandere.NearBodies > 0 && this.Yandere.Sanity < 66.66666f) || (this.Yandere.Carrying || this.Yandere.Dragging || (this.Guarding && this.Yandere.Bloodiness > 0f && !this.Yandere.Paint)) || (this.Guarding && this.Yandere.Armed) || (this.Guarding && this.Yandere.Sanity < 66.66666f) || (this.Club == ClubType.Council && this.Yandere.DelinquentFighting && this.StudentManager.CombatMinigame.Path < 4))
 										{
 											Debug.Log(this.Name + " is aware that Yandere-chan is misbehaving.");
 											if (this.Yandere.Hungry || !this.Yandere.Egg)
@@ -8490,7 +8484,22 @@ public class StudentScript : MonoBehaviour
 
 	private void WitnessMurder()
 	{
+		if (!this.Male)
+		{
+			this.CharacterAnimation["f02_smile_00"].weight = 0f;
+			this.WateringCan.SetActive(false);
+		}
 		this.OccultBook.SetActive(false);
+		this.Sketchbook.SetActive(false);
+		this.Pencil.SetActive(false);
+		this.Pen.SetActive(false);
+		foreach (GameObject gameObject in this.ScienceProps)
+		{
+			if (gameObject != null)
+			{
+				gameObject.SetActive(false);
+			}
+		}
 		this.WitnessedMurder = true;
 		this.Investigating = false;
 		this.MurdersWitnessed++;
@@ -8501,10 +8510,6 @@ public class StudentScript : MonoBehaviour
 		this.Alarmed = true;
 		this.NoTalk = false;
 		this.Wet = false;
-		if (!this.Male)
-		{
-			this.CharacterAnimation["f02_smile_00"].weight = 0f;
-		}
 		if (this.OriginalPersona != PersonaType.Violent && this.Persona != this.OriginalPersona)
 		{
 			Debug.Log(this.Name + " is reverting back into their original Persona.");
@@ -10949,5 +10954,27 @@ public class StudentScript : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	private void ReturnToRoutine()
+	{
+		if (this.Actions[this.Phase] == StudentActionType.Patrol)
+		{
+			this.CurrentDestination = this.StudentManager.Patrols.List[this.StudentID].GetChild(this.PatrolID);
+			this.Pathfinding.target = this.CurrentDestination;
+		}
+		else
+		{
+			this.CurrentDestination = this.Destinations[this.Phase];
+			this.Pathfinding.target = this.Destinations[this.Phase];
+		}
+		this.BreakingUpFight = false;
+		this.WitnessedMurder = false;
+		this.Pathfinding.speed = 1f;
+		this.Prompt.enabled = true;
+		this.Alarmed = false;
+		this.Fleeing = false;
+		this.Routine = true;
+		this.Grudge = false;
 	}
 }
