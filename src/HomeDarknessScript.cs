@@ -72,6 +72,7 @@ public class HomeDarknessScript : MonoBehaviour
 								this.HomeCamera.Focus.position = this.HomeCamera.Target.position;
 								this.BasementLabel.text = "Upstairs";
 								this.HomeCamera.DayLight.SetActive(true);
+								Physics.SyncTransforms();
 							}
 							else
 							{
@@ -89,6 +90,7 @@ public class HomeDarknessScript : MonoBehaviour
 								{
 									this.HomeCamera.DayLight.SetActive(false);
 								}
+								Physics.SyncTransforms();
 							}
 						}
 					}

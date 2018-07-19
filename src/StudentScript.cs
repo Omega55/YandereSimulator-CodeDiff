@@ -7554,6 +7554,7 @@ public class StudentScript : MonoBehaviour
 							}
 							if (this.Yandere.Pickpocketing)
 							{
+								this.Yandere.Caught = true;
 								this.PickPocket.PickpocketMinigame.End();
 							}
 							this.Yandere.StopLaughing();

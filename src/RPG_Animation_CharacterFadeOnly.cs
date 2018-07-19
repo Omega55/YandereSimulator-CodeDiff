@@ -1,0 +1,12 @@
+﻿using System;
+using UnityEngine;
+
+public class RPG_Animation_CharacterFadeOnly : MonoBehaviour
+{
+	public static RPG_Animation_CharacterFadeOnly instance;
+
+	private void Awake()
+	{
+		RPG_Animation_CharacterFadeOnly.instance = this;
+	}
+}

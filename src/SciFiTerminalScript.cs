@@ -25,7 +25,7 @@ public class SciFiTerminalScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (this.RobotArms.TerminalTarget != null)
+		if (this.RobotArms != null)
 		{
 			if ((double)Vector3.Distance(this.RobotArms.TerminalTarget.position, base.transform.position) < 0.3 || (double)Vector3.Distance(this.RobotArms.TerminalTarget.position, this.OtherFinger.position) < 0.3)
 			{

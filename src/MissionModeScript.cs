@@ -34,12 +34,6 @@ public class MissionModeScript : MonoBehaviour
 
 	public ClockScript Clock;
 
-	public UISprite ReputationFace1;
-
-	public UISprite ReputationFace2;
-
-	public UISprite ReputationBG;
-
 	public UILabel EventSubtitleLabel;
 
 	public UILabel ReputationLabel;
@@ -50,11 +44,19 @@ public class MissionModeScript : MonoBehaviour
 
 	public UILabel SubtitleLabel;
 
+	public UILabel SpottedLabel;
+
+	public UILabel TimeLabel;
+
+	public UISprite ReputationFace1;
+
+	public UISprite ReputationFace2;
+
+	public UISprite ReputationBG;
+
 	public UISprite CautionSign;
 
 	public UISprite MusicIcon;
-
-	public UILabel TimeLabel;
 
 	public UISprite Darkness;
 
@@ -87,6 +89,8 @@ public class MissionModeScript : MonoBehaviour
 	public GameObject HeartbeatCamera;
 
 	public GameObject MissionModeHUD;
+
+	public GameObject SpottedWindow;
 
 	public GameObject TranqDetector;
 
@@ -220,6 +224,7 @@ public class MissionModeScript : MonoBehaviour
 			this.MetalDetectorGroup.SetActive(false);
 		}
 		this.MissionModeHUD.SetActive(false);
+		this.SpottedWindow.SetActive(false);
 		this.ExitPortal.SetActive(false);
 		this.Safe.SetActive(false);
 		if (GameGlobals.LoveSick)
@@ -597,6 +602,8 @@ public class MissionModeScript : MonoBehaviour
 				{
 					if (this.StudentManager.Students[this.ID] != null && this.StudentManager.Students[this.ID].WitnessedMurder)
 					{
+						this.SpottedLabel.text = this.StudentManager.Students[this.ID].Name;
+						this.SpottedWindow.SetActive(true);
 						this.Chastise = true;
 						this.GameOverID = 6;
 						this.GameOver();

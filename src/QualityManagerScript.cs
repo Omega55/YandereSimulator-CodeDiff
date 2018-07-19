@@ -71,7 +71,7 @@ public class QualityManagerScript : MonoBehaviour
 		"120"
 	};
 
-	private void Start()
+	public void Start()
 	{
 		DepthOfField34[] components = Camera.main.GetComponents<DepthOfField34>();
 		this.ExperimentalDepthOfField34 = components[1];
@@ -84,6 +84,10 @@ public class QualityManagerScript : MonoBehaviour
 		{
 			OptionGlobals.DrawDistanceLimit = 350;
 			OptionGlobals.DrawDistance = 350;
+		}
+		if (OptionGlobals.Sensitivity == 0)
+		{
+			OptionGlobals.Sensitivity = 5;
 		}
 		this.UpdateFog();
 		this.UpdateAnims();

@@ -33,6 +33,8 @@ public class SettingsScript : MonoBehaviour
 
 	public UILabel FPSCapLabel;
 
+	public UILabel SensitivityLabel;
+
 	public int SelectionLimit = 2;
 
 	public int Selected = 1;
@@ -208,6 +210,46 @@ public class SettingsScript : MonoBehaviour
 			this.QualityManager.UpdateFPSIndex();
 			this.UpdateText();
 		}
+		else if (this.Selected == 12)
+		{
+			if (this.InputManager.TappedRight)
+			{
+				if (OptionGlobals.Sensitivity < 10)
+				{
+					OptionGlobals.Sensitivity++;
+				}
+			}
+			else if (this.InputManager.TappedLeft && OptionGlobals.Sensitivity > 1)
+			{
+				OptionGlobals.Sensitivity--;
+			}
+			this.UpdateText();
+		}
+		if (Input.GetKeyDown("l"))
+		{
+			OptionGlobals.ParticleCount = 1;
+			OptionGlobals.DisableOutlines = true;
+			QualitySettings.antiAliasing = 0;
+			OptionGlobals.DisablePostAliasing = true;
+			OptionGlobals.DisableBloom = true;
+			OptionGlobals.LowDetailStudents = 1;
+			OptionGlobals.DrawDistance = 50;
+			OptionGlobals.DisableShadows = true;
+			OptionGlobals.DisableFarAnimations = true;
+			OptionGlobals.RimLight = false;
+			OptionGlobals.DepthOfField = false;
+			this.QualityManager.UpdateFog();
+			this.QualityManager.UpdateAnims();
+			this.QualityManager.UpdateBloom();
+			this.QualityManager.UpdateFPSIndex();
+			this.QualityManager.UpdateShadows();
+			this.QualityManager.UpdateParticles();
+			this.QualityManager.UpdatePostAliasing();
+			this.QualityManager.UpdateDrawDistance();
+			this.QualityManager.UpdateLowDetailStudents();
+			this.QualityManager.UpdateOutlines();
+			this.UpdateText();
+		}
 		if (Input.GetButtonDown("B"))
 		{
 			this.PromptBar.ClearButtons();
@@ -247,6 +289,7 @@ public class SettingsScript : MonoBehaviour
 		this.FogLabel.text = ((!OptionGlobals.Fog) ? "Off" : "On");
 		this.ShadowsLabel.text = ((!OptionGlobals.DisableShadows) ? "On" : "Off");
 		this.FarAnimsLabel.text = ((!OptionGlobals.DisableFarAnimations) ? "On" : "Off");
+		this.SensitivityLabel.text = string.Empty + OptionGlobals.Sensitivity;
 	}
 
 	private void UpdateHighlight()
@@ -259,7 +302,7 @@ public class SettingsScript : MonoBehaviour
 		{
 			this.Selected = 1;
 		}
-		this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 455f - 75f * (float)this.Selected, this.Highlight.localPosition.z);
+		this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 445f - 65f * (float)this.Selected, this.Highlight.localPosition.z);
 	}
 
 	public void ToggleBackground()

@@ -114,7 +114,7 @@ public class YanvaniaTextBoxScript : MonoBehaviour
 					else
 					{
 						this.NewLineTimer += Time.deltaTime;
-						if (this.NewLineTimer > component.clip.length + 0.5f || Input.GetButtonDown("A"))
+						if (this.NewLineTimer > component.clip.length + 0.5f || Input.GetButtonDown("A") || Input.GetKeyDown("z") || Input.GetKeyDown("x"))
 						{
 							this.Display = false;
 						}

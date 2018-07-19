@@ -1082,6 +1082,7 @@ public class StudentManagerScript : MonoBehaviour
 
 	public void AttendClass()
 	{
+		Debug.Log("All students are now being told to attend class.");
 		this.ConvoManager.Confirmed = false;
 		this.SleuthPhase = 3;
 		if (this.RingEvent.EventActive)
@@ -1164,6 +1165,7 @@ public class StudentManagerScript : MonoBehaviour
 			this.ID++;
 		}
 		this.UpdateStudents();
+		Physics.SyncTransforms();
 	}
 
 	public void SkipTo8()

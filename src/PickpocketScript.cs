@@ -70,6 +70,7 @@ public class PickpocketScript : MonoBehaviour
 					}
 					if (this.Student.Yandere.Pickpocketing && this.PickpocketMinigame.ID == this.ID)
 					{
+						this.Prompt.Yandere.Caught = true;
 						this.PickpocketMinigame.End();
 						this.Punish();
 					}
@@ -92,6 +93,7 @@ public class PickpocketScript : MonoBehaviour
 					{
 						if (this.Student.Yandere.Pickpocketing && this.PickpocketMinigame.ID == this.ID)
 						{
+							this.Prompt.Yandere.Caught = true;
 							this.PickpocketMinigame.End();
 							this.Punish();
 						}
@@ -106,6 +108,7 @@ public class PickpocketScript : MonoBehaviour
 				this.PickpocketPanel.enabled = false;
 				if (this.Student.Yandere.Pickpocketing && this.PickpocketMinigame.ID == this.ID)
 				{
+					this.Prompt.Yandere.Caught = true;
 					this.PickpocketMinigame.End();
 					this.Punish();
 				}

@@ -45,7 +45,7 @@ public class TalkingScript : MonoBehaviour
 					{
 						this.IdleAnim = this.S.SleuthCalmAnim;
 					}
-					else if (this.S.Club == ClubType.Art && this.S.DialogueWheel.ClubLeader)
+					else if (this.S.Club == ClubType.Art && this.S.DialogueWheel.ClubLeader && this.S.Paintbrush.activeInHierarchy)
 					{
 						this.IdleAnim = "paintingIdle_00";
 					}

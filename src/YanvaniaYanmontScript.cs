@@ -437,6 +437,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 							base.enabled = false;
 						}
 					}
+					Physics.SyncTransforms();
 				}
 			}
 			else
@@ -546,7 +547,6 @@ public class YanvaniaYanmontScript : MonoBehaviour
 				{
 					for (int i = 1; i < this.WhipChain.Length; i++)
 					{
-						this.WhipCollider[i].enabled = false;
 					}
 					if (Input.GetAxis("VaniaHorizontal") > -0.5f && Input.GetAxis("VaniaHorizontal") < 0.5f && Input.GetAxis("VaniaVertical") > -0.5f && Input.GetAxis("VaniaVertical") < 0.5f)
 					{

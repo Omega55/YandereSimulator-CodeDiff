@@ -56,6 +56,8 @@ public class DebugMenuScript : MonoBehaviour
 
 	public int RooftopStudent = 7;
 
+	public float Timer;
+
 	public int ID;
 
 	public Texture PantyCensorTexture;
@@ -551,18 +553,29 @@ public class DebugMenuScript : MonoBehaviour
 					}
 				}
 			}
-			else if (Input.GetKeyDown(KeyCode.BackQuote))
+			else
 			{
-				this.ID = 0;
-				while (this.ID < this.StudentManager.NPCsTotal)
+				if (Input.GetKey(KeyCode.BackQuote))
 				{
-					if (StudentGlobals.GetStudentDying(this.ID))
+					this.Timer += Time.deltaTime;
+					if (this.Timer > 1f)
 					{
-						StudentGlobals.SetStudentDying(this.ID, false);
+						this.ID = 0;
+						while (this.ID < this.StudentManager.NPCsTotal)
+						{
+							if (StudentGlobals.GetStudentDying(this.ID))
+							{
+								StudentGlobals.SetStudentDying(this.ID, false);
+							}
+							this.ID++;
+						}
+						SceneManager.LoadScene("LoadingScene");
 					}
-					this.ID++;
 				}
-				SceneManager.LoadScene("LoadingScene");
+				if (Input.GetKeyUp(KeyCode.BackQuote))
+				{
+					this.Timer = 0f;
+				}
 			}
 		}
 		else if (Input.GetKeyDown(KeyCode.Backslash))

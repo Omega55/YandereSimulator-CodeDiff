@@ -2101,12 +2101,29 @@ public class YandereScript : MonoBehaviour
 			}
 			if (this.Gloved)
 			{
-				if (this.InputDevice.Type == InputDeviceType.Gamepad)
+				if (!this.Chased && this.Chasers == 0)
 				{
-					if (Input.GetAxis("DpadY") < -0.5f)
+					if (this.InputDevice.Type == InputDeviceType.Gamepad)
+					{
+						if (Input.GetAxis("DpadY") < -0.5f)
+						{
+							this.GloveTimer += Time.deltaTime;
+							if (this.GloveTimer > 0.5f)
+							{
+								this.CharacterAnimation.CrossFade("f02_removeGloves_00");
+								this.Degloving = true;
+								this.CanMove = false;
+							}
+						}
+						else
+						{
+							this.GloveTimer = 0f;
+						}
+					}
+					else if (Input.GetKey(KeyCode.Alpha1))
 					{
 						this.GloveTimer += Time.deltaTime;
-						if (this.GloveTimer > 0.5f)
+						if (this.GloveTimer > 0.1f)
 						{
 							this.CharacterAnimation.CrossFade("f02_removeGloves_00");
 							this.Degloving = true;
@@ -2116,16 +2133,6 @@ public class YandereScript : MonoBehaviour
 					else
 					{
 						this.GloveTimer = 0f;
-					}
-				}
-				else if (Input.GetKey(KeyCode.Alpha1))
-				{
-					this.GloveTimer += Time.deltaTime;
-					if (this.GloveTimer > 0.1f)
-					{
-						this.CharacterAnimation.CrossFade("f02_removeGloves_00");
-						this.Degloving = true;
-						this.CanMove = false;
 					}
 				}
 				else
@@ -2574,6 +2581,16 @@ public class YandereScript : MonoBehaviour
 					this.Gloved = false;
 					this.Gloves = null;
 					this.SetUniform();
+					Debug.Log("Gloves removed.");
+				}
+				else if (this.Chased || this.Chasers > 0 || this.Noticed)
+				{
+					this.Degloving = false;
+					this.GloveTimer = 0f;
+					if (!this.Noticed)
+					{
+						this.CanMove = true;
+					}
 				}
 				else if (this.InputDevice.Type == InputDeviceType.Gamepad)
 				{

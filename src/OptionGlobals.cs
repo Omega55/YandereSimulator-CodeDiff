@@ -31,6 +31,8 @@ public static class OptionGlobals
 
 	private const string Str_DepthOfField = "DepthOfField";
 
+	private const string Str_Sensitivity = "Sensitivity";
+
 	public static bool DisableBloom
 	{
 		get
@@ -199,6 +201,18 @@ public static class OptionGlobals
 		}
 	}
 
+	public static int Sensitivity
+	{
+		get
+		{
+			return PlayerPrefs.GetInt("Sensitivity");
+		}
+		set
+		{
+			PlayerPrefs.SetInt("Sensitivity", value);
+		}
+	}
+
 	public static void DeleteAll()
 	{
 		Globals.Delete("DisableBloom");
@@ -215,5 +229,6 @@ public static class OptionGlobals
 		Globals.Delete("ParticleCount");
 		Globals.Delete("RimLight");
 		Globals.Delete("DepthOfField");
+		Globals.Delete("Sensitivity");
 	}
 }
