@@ -94,7 +94,7 @@ public class StudentInfoScript : MonoBehaviour
 		},
 		{
 			5,
-			"Martial Arts Master"
+			"Peak Physical Strength"
 		},
 		{
 			6,

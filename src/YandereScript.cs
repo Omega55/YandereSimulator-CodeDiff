@@ -2075,7 +2075,7 @@ public class YandereScript : MonoBehaviour
 					this.CanMove = false;
 					this.Shutter.Snap();
 				}
-				if (Time.timeScale > 0f && ((this.UsingController && Input.GetAxis("LT") < 0.5f) || (!this.UsingController && !Input.GetMouseButton(1))))
+				if (Time.timeScale > 0.0001f && ((this.UsingController && Input.GetAxis("LT") < 0.5f) || (!this.UsingController && !Input.GetMouseButton(1))))
 				{
 					this.StopAiming();
 				}
@@ -5819,6 +5819,8 @@ public class YandereScript : MonoBehaviour
 		{
 			this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
 			this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
+			this.MyRenderer.materials[0].SetFloat("_BlendAmount1", 0f);
+			this.MyRenderer.materials[1].SetFloat("_BlendAmount1", 0f);
 			this.MyRenderer.sharedMesh = this.SchoolSwimsuit;
 			this.MyRenderer.materials[0].mainTexture = this.SwimsuitTexture;
 			this.MyRenderer.materials[1].mainTexture = this.SwimsuitTexture;
@@ -5828,6 +5830,8 @@ public class YandereScript : MonoBehaviour
 		{
 			this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
 			this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
+			this.MyRenderer.materials[0].SetFloat("_BlendAmount1", 0f);
+			this.MyRenderer.materials[1].SetFloat("_BlendAmount1", 0f);
 			this.MyRenderer.sharedMesh = this.GymUniform;
 			this.MyRenderer.materials[0].mainTexture = this.GymTexture;
 			this.MyRenderer.materials[1].mainTexture = this.GymTexture;

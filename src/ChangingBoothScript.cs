@@ -128,6 +128,7 @@ public class ChangingBoothScript : MonoBehaviour
 			}
 			else
 			{
+				this.Student.WalkAnim = this.Student.OriginalWalkAnim;
 				this.Occupied = false;
 				this.OccupyTimer = 0f;
 				this.Student = null;

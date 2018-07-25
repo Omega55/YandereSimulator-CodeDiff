@@ -17,7 +17,7 @@ public class GhostScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (Time.timeScale > 0f)
+		if (Time.timeScale > 0.0001f)
 		{
 			if (this.Frame > 0)
 			{

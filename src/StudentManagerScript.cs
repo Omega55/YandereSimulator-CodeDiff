@@ -1134,7 +1134,6 @@ public class StudentManagerScript : MonoBehaviour
 					studentScript.Routine = true;
 					studentScript.Hurry = false;
 					studentScript.Safe = false;
-					studentScript.WalkAnim = studentScript.OriginalWalkAnim;
 					if (studentScript.Wet)
 					{
 						studentScript.Schoolwear = 3;
@@ -1162,6 +1161,7 @@ public class StudentManagerScript : MonoBehaviour
 					if (studentScript.Club == ClubType.Sports)
 					{
 						studentScript.SetSplashes(false);
+						studentScript.WalkAnim = studentScript.OriginalWalkAnim;
 						studentScript.Character.transform.localPosition = new Vector3(0f, 0f, 0f);
 						studentScript.Cosmetic.Goggles[studentScript.StudentID].GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, 0f);
 						studentScript.Cosmetic.MaleHair[studentScript.Cosmetic.Hairstyle].GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, 0f);

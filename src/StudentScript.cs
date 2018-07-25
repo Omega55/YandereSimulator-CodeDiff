@@ -1538,11 +1538,13 @@ public class StudentScript : MonoBehaviour
 				{
 					this.IdleAnim = "scienceIdle_00";
 					this.WalkAnim = "scienceWalk_00";
+					this.OriginalWalkAnim = "scienceWalk_00";
 				}
 				else if (this.StudentID == 66)
 				{
 					this.CharacterAnimation[this.ToughFaceAnim].weight = 1f;
 					this.IdleAnim = "pose_03";
+					this.OriginalWalkAnim = "walkConfident_00";
 					this.WalkAnim = "walkConfident_00";
 				}
 				else if (this.StudentID == 71)
@@ -6814,7 +6816,7 @@ public class StudentScript : MonoBehaviour
 					}
 				}
 			}
-			if (this.Prompt.Circle[2].fillAmount == 0f)
+			if (this.Prompt.Circle[2].fillAmount == 0f && this.ClubActivityPhase < 16)
 			{
 				float f = Vector3.Angle(-base.transform.forward, this.Yandere.transform.position - base.transform.position);
 				this.Yandere.AttackManager.Stealth = (Mathf.Abs(f) <= 45f);
@@ -8453,7 +8455,7 @@ public class StudentScript : MonoBehaviour
 
 	public void MoveTowardsTarget(Vector3 target)
 	{
-		if (Time.timeScale > 0f && this.MyController.enabled)
+		if (Time.timeScale > 0.0001f && this.MyController.enabled)
 		{
 			Vector3 a = target - base.transform.position;
 			float sqrMagnitude = a.sqrMagnitude;
@@ -8466,7 +8468,7 @@ public class StudentScript : MonoBehaviour
 
 	private void LookTowardsTarget(Vector3 target)
 	{
-		if (Time.timeScale > 0f)
+		if (Time.timeScale > 0.0001f)
 		{
 		}
 	}
