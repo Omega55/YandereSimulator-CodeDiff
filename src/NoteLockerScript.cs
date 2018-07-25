@@ -93,7 +93,7 @@ public class NoteLockerScript : MonoBehaviour
 			this.NoteWindow.Show = true;
 			this.Yandere.HUD.alpha = 0f;
 			this.PromptBar.Show = true;
-			Time.timeScale = 0f;
+			Time.timeScale = 0.0001f;
 			this.PromptBar.Label[0].text = "Confirm";
 			this.PromptBar.Label[1].text = "Cancel";
 			this.PromptBar.Label[4].text = "Select";

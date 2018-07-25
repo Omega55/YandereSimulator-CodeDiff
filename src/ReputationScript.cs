@@ -5,6 +5,8 @@ public class ReputationScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
 
+	public ArmDetectorScript ArmDetector;
+
 	public PortalScript Portal;
 
 	public Transform CurrentRepMarker;
@@ -59,7 +61,7 @@ public class ReputationScript : MonoBehaviour
 		{
 			this.Phase++;
 		}
-		if (this.CheckedRep < this.Phase && !this.StudentManager.Yandere.Struggling && !this.StudentManager.Yandere.DelinquentFighting)
+		if (this.CheckedRep < this.Phase && !this.StudentManager.Yandere.Struggling && !this.StudentManager.Yandere.DelinquentFighting && !this.StudentManager.Yandere.Pickpocketing && !this.StudentManager.Yandere.Noticed && !this.ArmDetector.SummonDemon)
 		{
 			this.UpdateRep();
 			if (this.Reputation <= -100f)

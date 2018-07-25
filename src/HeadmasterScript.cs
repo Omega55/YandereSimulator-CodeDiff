@@ -166,7 +166,10 @@ public class HeadmasterScript : MonoBehaviour
 			else if ((double)this.Distance < 2.8)
 			{
 				this.PlayedSitSound = false;
-				this.PatienceTimer -= Time.deltaTime;
+				if (!this.StudentManager.Clock.StopTime)
+				{
+					this.PatienceTimer -= Time.deltaTime;
+				}
 				if (this.PatienceTimer < 0f)
 				{
 					this.LostPatience = true;

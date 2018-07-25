@@ -55,7 +55,7 @@ public class VoidGoddessScript : MonoBehaviour
 			this.NewPortrait.transform.localScale = new Vector3(1f, 1f, 1f);
 			this.NewPortrait.transform.localPosition = new Vector3((float)(-450 + this.Column * 100), (float)(450 - this.Row * 100), 0f);
 			this.Portraits[this.ID] = this.NewPortrait.GetComponent<UITexture>();
-			if ((this.ID <= 32 || this.ID >= 41) && (this.ID <= 45 || this.ID >= 56) && (this.ID <= 65 || this.ID >= 71) && this.ID <= 97)
+			if ((this.ID <= 32 || this.ID >= 41) && (this.ID <= 45 || this.ID >= 56) && this.ID <= 97)
 			{
 				string url = string.Concat(new string[]
 				{
@@ -229,6 +229,16 @@ public class VoidGoddessScript : MonoBehaviour
 			}
 			else if (Input.GetKeyDown(KeyCode.Alpha8))
 			{
+				this.ID = 66;
+				while (this.ID < 71)
+				{
+					this.StudentManager.DisableStudent(this.ID);
+					this.ID++;
+				}
+				this.UpdatePortraits();
+			}
+			else if (Input.GetKeyDown(KeyCode.Alpha9))
+			{
 				this.ID = 71;
 				while (this.ID < 76)
 				{
@@ -237,7 +247,7 @@ public class VoidGoddessScript : MonoBehaviour
 				}
 				this.UpdatePortraits();
 			}
-			else if (Input.GetKeyDown(KeyCode.Alpha9))
+			else if (Input.GetKeyDown(KeyCode.Alpha0))
 			{
 				this.ID = 76;
 				while (this.ID < 81)
@@ -247,7 +257,7 @@ public class VoidGoddessScript : MonoBehaviour
 				}
 				this.UpdatePortraits();
 			}
-			else if (Input.GetKeyDown(KeyCode.Alpha0))
+			else if (Input.GetKeyDown("-"))
 			{
 				this.ID = 81;
 				while (this.ID < 86)
@@ -257,7 +267,7 @@ public class VoidGoddessScript : MonoBehaviour
 				}
 				this.UpdatePortraits();
 			}
-			else if (Input.GetKeyDown("-"))
+			else if (Input.GetKeyDown("="))
 			{
 				this.ID = 86;
 				while (this.ID < 90)
@@ -267,7 +277,7 @@ public class VoidGoddessScript : MonoBehaviour
 				}
 				this.UpdatePortraits();
 			}
-			else if (Input.GetKeyDown("="))
+			else if (Input.GetKeyDown(KeyCode.Backspace))
 			{
 				this.ID = 90;
 				while (this.ID < 98)

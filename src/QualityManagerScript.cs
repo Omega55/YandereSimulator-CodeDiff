@@ -87,7 +87,7 @@ public class QualityManagerScript : MonoBehaviour
 		}
 		if (OptionGlobals.Sensitivity == 0)
 		{
-			OptionGlobals.Sensitivity = 5;
+			OptionGlobals.Sensitivity = 3;
 		}
 		this.UpdateFog();
 		this.UpdateAnims();
@@ -344,17 +344,19 @@ public class QualityManagerScript : MonoBehaviour
 
 	public void ToggleExperiment()
 	{
-		if (!this.ExperimentalSSAOEffect.enabled)
+		if (!this.ExperimentalBloomAndLensFlares.enabled)
 		{
 			this.ExperimentalBloomAndLensFlares.enabled = true;
-			this.ExperimentalDepthOfField34.enabled = true;
-			this.ExperimentalSSAOEffect.enabled = true;
+			this.ExperimentalDepthOfField34.enabled = false;
+			this.ExperimentalSSAOEffect.enabled = false;
+			this.BloomEffect.enabled = true;
 		}
 		else
 		{
 			this.ExperimentalBloomAndLensFlares.enabled = false;
 			this.ExperimentalDepthOfField34.enabled = false;
 			this.ExperimentalSSAOEffect.enabled = false;
+			this.BloomEffect.enabled = false;
 		}
 	}
 

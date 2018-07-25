@@ -195,6 +195,8 @@ public class StudentScript : MonoBehaviour
 
 	public ParticleSystem[] LiquidEmitters;
 
+	public ParticleSystem[] SplashEmitters;
+
 	public ParticleSystem[] FireEmitters;
 
 	public ScheduleBlock[] ScheduleBlocks;
@@ -287,6 +289,8 @@ public class StudentScript : MonoBehaviour
 	public GameObject EmptyGameObject;
 
 	public GameObject StabBloodEffect;
+
+	public GameObject BigWaterSplash;
 
 	public GameObject SecurityCamera;
 
@@ -734,6 +738,8 @@ public class StudentScript : MonoBehaviour
 
 	public int CameraReactPhase;
 
+	public int ClubActivityPhase;
+
 	public int DramaticPhase;
 
 	public int GraffitiPhase;
@@ -847,6 +853,8 @@ public class StudentScript : MonoBehaviour
 	public string PhoneAnim = string.Empty;
 
 	public string AngryFaceAnim = string.Empty;
+
+	public string ToughFaceAnim = string.Empty;
 
 	public string InspectAnim = string.Empty;
 
@@ -1387,6 +1395,9 @@ public class StudentScript : MonoBehaviour
 			{
 				this.RandomCheerAnim = this.CheerAnims[UnityEngine.Random.Range(0, this.CheerAnims.Length)];
 				this.CharacterAnimation[this.ConfusedSitAnim].speed *= -1f;
+				this.CharacterAnimation[this.ToughFaceAnim].layer = 7;
+				this.CharacterAnimation.Play(this.ToughFaceAnim);
+				this.CharacterAnimation[this.ToughFaceAnim].weight = 0f;
 				this.CharacterAnimation[this.SocialSitAnim].layer = 6;
 				this.CharacterAnimation.Play(this.SocialSitAnim);
 				this.CharacterAnimation[this.SocialSitAnim].weight = 0f;
@@ -1406,6 +1417,7 @@ public class StudentScript : MonoBehaviour
 				this.DelinquentSpeechLines.Stop();
 				this.WeaponBag.SetActive(false);
 				this.Earpiece.SetActive(false);
+				this.SetSplashes(false);
 			}
 			if (this.StudentID != 1)
 			{
@@ -1526,6 +1538,12 @@ public class StudentScript : MonoBehaviour
 				{
 					this.IdleAnim = "scienceIdle_00";
 					this.WalkAnim = "scienceWalk_00";
+				}
+				else if (this.StudentID == 66)
+				{
+					this.CharacterAnimation[this.ToughFaceAnim].weight = 1f;
+					this.IdleAnim = "pose_03";
+					this.WalkAnim = "walkConfident_00";
 				}
 				else if (this.StudentID == 71)
 				{
@@ -1773,6 +1791,12 @@ public class StudentScript : MonoBehaviour
 					this.ClubAnim = "f02_scienceConsole_00";
 				}
 			}
+			else if (this.Club == ClubType.Sports)
+			{
+				this.ChangingBooth = this.StudentManager.ChangingBooths[9];
+				this.DressCode = true;
+				this.ClubAnim = "stretch_00";
+			}
 			else if (this.Club == ClubType.Gardening)
 			{
 				if (this.StudentID == 71)
@@ -1876,7 +1900,7 @@ public class StudentScript : MonoBehaviour
 			}
 			this.PickRandomAnim();
 			this.PickRandomSleuthAnim();
-			if (this.Club != ClubType.None && (this.StudentID == 21 || this.StudentID == 26 || this.StudentID == 41 || this.StudentID == 56 || this.StudentID == 61 || this.StudentID == 71))
+			if (this.Club != ClubType.None && (this.StudentID == 21 || this.StudentID == 26 || this.StudentID == 41 || this.StudentID == 56 || this.StudentID == 61 || this.StudentID == 66 || this.StudentID == 71))
 			{
 				this.Armband.SetActive(true);
 			}
@@ -2082,6 +2106,10 @@ public class StudentScript : MonoBehaviour
 				if (this.Club == ClubType.Science)
 				{
 					return SubtitleType.ClubScienceInfo;
+				}
+				if (this.Club == ClubType.Sports)
+				{
+					return SubtitleType.ClubSportsInfo;
 				}
 				if (this.Club == ClubType.Gardening)
 				{
@@ -2326,6 +2354,10 @@ public class StudentScript : MonoBehaviour
 						this.ScienceProps[0].SetActive(true);
 					}
 				}
+				else if (this.Club == ClubType.Sports)
+				{
+					this.Stop = false;
+				}
 				else if (this.Club == ClubType.Gardening)
 				{
 					this.CharacterAnimation.Play(this.ClubAnim);
@@ -2430,8 +2462,9 @@ public class StudentScript : MonoBehaviour
 			}
 			else if (this.Phase < this.ScheduleBlocks.Length - 1)
 			{
-				if (this.Clock.HourTime >= this.ScheduleBlocks[this.Phase].time && !this.InEvent && !this.Meeting)
+				if (this.Clock.HourTime >= this.ScheduleBlocks[this.Phase].time && !this.InEvent && !this.Meeting && this.ClubActivityPhase < 16)
 				{
+					this.Hurry = false;
 					this.Phase++;
 					if (this.StudentID == 33)
 					{
@@ -3218,6 +3251,131 @@ public class StudentScript : MonoBehaviour
 													this.Pathfinding.target.rotation = this.OriginalRotation;
 												}
 											}
+										}
+									}
+								}
+								else if (this.Club == ClubType.Sports)
+								{
+									this.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
+									if (this.ClubActivityPhase == 0)
+									{
+										if (this.CharacterAnimation[this.ClubAnim].time >= this.CharacterAnimation[this.ClubAnim].length)
+										{
+											this.ClubActivityPhase++;
+											this.ClubAnim = "stretch_01";
+											this.Destinations[this.Phase] = this.StudentManager.Clubs.List[this.StudentID].GetChild(this.ClubActivityPhase);
+										}
+									}
+									else if (this.ClubActivityPhase == 1)
+									{
+										if (this.CharacterAnimation[this.ClubAnim].time >= this.CharacterAnimation[this.ClubAnim].length)
+										{
+											this.ClubActivityPhase++;
+											this.ClubAnim = "stretch_02";
+											this.Destinations[this.Phase] = this.StudentManager.Clubs.List[this.StudentID].GetChild(this.ClubActivityPhase);
+										}
+									}
+									else if (this.ClubActivityPhase == 2)
+									{
+										if (this.CharacterAnimation[this.ClubAnim].time >= this.CharacterAnimation[this.ClubAnim].length)
+										{
+											this.WalkAnim = "trackJog_00";
+											this.Hurry = true;
+											this.ClubActivityPhase++;
+											this.CharacterAnimation[this.ClubAnim].time = 0f;
+											this.Destinations[this.Phase] = this.StudentManager.Clubs.List[this.StudentID].GetChild(this.ClubActivityPhase);
+										}
+									}
+									else if (this.ClubActivityPhase < 14)
+									{
+										if (this.CharacterAnimation[this.ClubAnim].time >= this.CharacterAnimation[this.ClubAnim].length)
+										{
+											this.ClubActivityPhase++;
+											this.CharacterAnimation[this.ClubAnim].time = 0f;
+											this.Destinations[this.Phase] = this.StudentManager.Clubs.List[this.StudentID].GetChild(this.ClubActivityPhase);
+										}
+									}
+									else if (this.ClubActivityPhase == 14)
+									{
+										if (this.CharacterAnimation[this.ClubAnim].time >= this.CharacterAnimation[this.ClubAnim].length)
+										{
+											this.WalkAnim = this.OriginalWalkAnim;
+											this.Hurry = false;
+											this.ClubActivityPhase = 0;
+											this.ClubAnim = "stretch_00";
+											this.Destinations[this.Phase] = this.StudentManager.Clubs.List[this.StudentID].GetChild(this.ClubActivityPhase);
+										}
+									}
+									else if (this.ClubActivityPhase == 15)
+									{
+										if (this.CharacterAnimation[this.ClubAnim].time >= 1f && this.MyController.radius > 0f)
+										{
+											this.MyRenderer.updateWhenOffscreen = true;
+											this.Obstacle.enabled = false;
+											this.MyController.radius = 0f;
+											this.Distracted = true;
+										}
+										if (this.CharacterAnimation[this.ClubAnim].time >= 2f)
+										{
+											float value = this.Cosmetic.Goggles[this.StudentID].GetComponent<SkinnedMeshRenderer>().GetBlendShapeWeight(0) + Time.deltaTime * 200f;
+											this.Cosmetic.Goggles[this.StudentID].GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, value);
+										}
+										if ((double)this.CharacterAnimation[this.ClubAnim].time >= 6.1)
+										{
+											this.Cosmetic.Goggles[this.StudentID].GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, 100f);
+											this.Cosmetic.MaleHair[this.Cosmetic.Hairstyle].GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, 100f);
+											GameObject gameObject3 = UnityEngine.Object.Instantiate<GameObject>(this.BigWaterSplash, this.RightHand.transform.position, Quaternion.identity);
+											gameObject3.transform.eulerAngles = new Vector3(-90f, gameObject3.transform.eulerAngles.y, gameObject3.transform.eulerAngles.z);
+											this.SetSplashes(true);
+											this.ClubActivityPhase++;
+										}
+									}
+									else if (this.ClubActivityPhase == 16)
+									{
+										if (this.CharacterAnimation[this.ClubAnim].time >= this.CharacterAnimation[this.ClubAnim].length)
+										{
+											this.WalkAnim = "poolSwim_00";
+											this.ClubAnim = "poolSwim_00";
+											this.ClubActivityPhase++;
+											this.Destinations[this.Phase] = this.StudentManager.Clubs.List[this.StudentID].GetChild(this.ClubActivityPhase - 1);
+											base.transform.position = this.Hips.transform.position;
+											this.Character.transform.localPosition = new Vector3(0f, -0.25f, 0f);
+											Physics.SyncTransforms();
+											this.CharacterAnimation.Play(this.WalkAnim);
+										}
+									}
+									else if (this.ClubActivityPhase == 17)
+									{
+										this.ClubActivityPhase++;
+										this.Destinations[this.Phase] = this.StudentManager.Clubs.List[this.StudentID].GetChild(this.ClubActivityPhase - 1);
+										this.DistanceToDestination = 100f;
+									}
+									else if (this.ClubActivityPhase == 18)
+									{
+										this.ClubAnim = "poolExit_00";
+										if (this.CharacterAnimation[this.ClubAnim].time >= 0.1f)
+										{
+											this.SetSplashes(false);
+										}
+										if (this.CharacterAnimation[this.ClubAnim].time >= 4.66666f)
+										{
+											float value2 = this.Cosmetic.Goggles[this.StudentID].GetComponent<SkinnedMeshRenderer>().GetBlendShapeWeight(0) - Time.deltaTime * 200f;
+											this.Cosmetic.Goggles[this.StudentID].GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, value2);
+										}
+										if (this.CharacterAnimation[this.ClubAnim].time >= this.CharacterAnimation[this.ClubAnim].length)
+										{
+											this.ClubActivityPhase = 15;
+											this.ClubAnim = "poolDive_00";
+											this.MyController.radius = 0.1f;
+											this.WalkAnim = this.OriginalWalkAnim;
+											this.MyRenderer.updateWhenOffscreen = false;
+											this.Character.transform.localPosition = new Vector3(0f, 0f, 0f);
+											this.Cosmetic.Goggles[this.StudentID].GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, 0f);
+											this.Destinations[this.Phase] = this.StudentManager.Clubs.List[this.StudentID].GetChild(this.ClubActivityPhase);
+											base.transform.position = new Vector3(this.Hips.position.x, 4f, this.Hips.position.z);
+											Physics.SyncTransforms();
+											this.CharacterAnimation.Play(this.IdleAnim);
+											this.Distracted = false;
 										}
 									}
 								}
@@ -4873,9 +5031,9 @@ public class StudentScript : MonoBehaviour
 									if (!this.LightSwitch.Flicker)
 									{
 										this.CharacterAnimation["f02_electrocution_00"].speed = 0.85f;
-										GameObject gameObject3 = UnityEngine.Object.Instantiate<GameObject>(this.LightSwitch.Electricity, base.transform.position, Quaternion.identity);
-										gameObject3.transform.parent = this.Bones[1].transform;
-										gameObject3.transform.localPosition = Vector3.zero;
+										GameObject gameObject4 = UnityEngine.Object.Instantiate<GameObject>(this.LightSwitch.Electricity, base.transform.position, Quaternion.identity);
+										gameObject4.transform.parent = this.Bones[1].transform;
+										gameObject4.transform.localPosition = Vector3.zero;
 										this.Subtitle.UpdateLabel(SubtitleType.LightSwitchReaction, 3, 0f);
 										this.LightSwitch.GetComponent<AudioSource>().clip = this.LightSwitch.Flick[2];
 										this.LightSwitch.Flicker = true;
@@ -5185,9 +5343,9 @@ public class StudentScript : MonoBehaviour
 									{
 										if (this.CharacterAnimation["f02_murderSuicide_00"].time >= 3.3f)
 										{
-											GameObject gameObject4 = UnityEngine.Object.Instantiate<GameObject>(this.Ragdoll.BloodPoolSpawner.BloodPool, base.transform.position + base.transform.up * 0.012f + base.transform.forward, Quaternion.identity);
-											gameObject4.transform.localEulerAngles = new Vector3(90f, UnityEngine.Random.Range(0f, 360f), 0f);
-											gameObject4.transform.parent = this.Police.BloodParent;
+											GameObject gameObject5 = UnityEngine.Object.Instantiate<GameObject>(this.Ragdoll.BloodPoolSpawner.BloodPool, base.transform.position + base.transform.up * 0.012f + base.transform.forward, Quaternion.identity);
+											gameObject5.transform.localEulerAngles = new Vector3(90f, UnityEngine.Random.Range(0f, 360f), 0f);
+											gameObject5.transform.parent = this.Police.BloodParent;
 											this.MyWeapon.Victims[this.HuntTarget.StudentID] = true;
 											this.MyWeapon.Blood.enabled = true;
 											if (!this.MyWeapon.Evidence)
@@ -5900,7 +6058,7 @@ public class StudentScript : MonoBehaviour
 									if (this.CanSeeObject(this.Yandere.gameObject, this.Yandere.HeadPosition))
 									{
 										this.YandereVisible = true;
-										if (this.Yandere.Attacking || this.Yandere.Struggling || (this.Yandere.NearBodies > 0 && this.Yandere.Bloodiness > 0f && !this.Yandere.Paint) || (this.Yandere.NearBodies > 0 && this.Yandere.Armed) || (this.Yandere.NearBodies > 0 && this.Yandere.Sanity < 66.66666f) || (this.Yandere.Carrying || this.Yandere.Dragging || (this.Guarding && this.Yandere.Bloodiness > 0f && !this.Yandere.Paint)) || (this.Guarding && this.Yandere.Armed) || (this.Guarding && this.Yandere.Sanity < 66.66666f) || (this.Club == ClubType.Council && this.Yandere.DelinquentFighting && this.StudentManager.CombatMinigame.Path < 4))
+										if (this.Yandere.Attacking || this.Yandere.Struggling || (this.Yandere.NearBodies > 0 && this.Yandere.Bloodiness > 0f && !this.Yandere.Paint) || (this.Yandere.NearBodies > 0 && this.Yandere.Armed) || (this.Yandere.NearBodies > 0 && this.Yandere.Sanity < 66.66666f) || (this.Yandere.Carrying || this.Yandere.Dragging || (this.Guarding && this.Yandere.Bloodiness > 0f && !this.Yandere.Paint)) || (this.Guarding && this.Yandere.Armed) || (this.Guarding && this.Yandere.Sanity < 66.66666f) || (this.Club == ClubType.Council && this.Yandere.DelinquentFighting && this.StudentManager.CombatMinigame.Path < 4) || (this.Teacher && this.Yandere.DelinquentFighting && this.StudentManager.CombatMinigame.Path < 4))
 										{
 											Debug.Log(this.Name + " is aware that Yandere-chan is misbehaving.");
 											if (this.Yandere.Hungry || !this.Yandere.Egg)
@@ -6349,7 +6507,7 @@ public class StudentScript : MonoBehaviour
 			{
 				this.Warned = false;
 			}
-			if ((this.Alarm > 0f || this.AlarmTimer > 0f || this.Yandere.Armed || this.Waiting || this.InEvent || this.SentHome || this.Threatened || this.Yandere.Shoved) && !this.Slave && !this.BadTime && !this.Yandere.Gazing)
+			if ((this.Alarm > 0f || this.AlarmTimer > 0f || this.Yandere.Armed || this.Waiting || this.InEvent || this.SentHome || this.Threatened || this.Yandere.Shoved || this.Distracted) && !this.Slave && !this.BadTime && !this.Yandere.Gazing)
 			{
 				this.Prompt.Circle[0].fillAmount = 1f;
 			}
@@ -6428,7 +6586,7 @@ public class StudentScript : MonoBehaviour
 					this.Yandere.PauseScreen.Panel.enabled = true;
 					this.Yandere.PauseScreen.Sideways = true;
 					this.Yandere.PauseScreen.Show = true;
-					Time.timeScale = 0f;
+					Time.timeScale = 0.0001f;
 					this.Yandere.PromptBar.ClearButtons();
 					this.Yandere.PromptBar.Label[1].text = "Cancel";
 					this.Yandere.PromptBar.UpdateButtons();
@@ -6616,6 +6774,12 @@ public class StudentScript : MonoBehaviour
 						this.Yandere.YandereVision = false;
 						this.Yandere.CanMove = false;
 						this.Yandere.Talking = true;
+						if (this.Club == ClubType.Gardening)
+						{
+							this.WateringCan.transform.parent = this.Hips;
+							this.WateringCan.transform.localPosition = new Vector3(0f, 0.0135f, -0.184f);
+							this.WateringCan.transform.localEulerAngles = new Vector3(0f, 90f, 30f);
+						}
 						if (!this.Male)
 						{
 							this.Cigarette.SetActive(false);
@@ -9284,7 +9448,14 @@ public class StudentScript : MonoBehaviour
 			{
 				if (this.Club > ClubType.None)
 				{
-					this.Destinations[this.ID] = this.StudentManager.Clubs.List[this.StudentID];
+					if (this.Club == ClubType.Sports)
+					{
+						this.Destinations[this.ID] = this.StudentManager.Clubs.List[this.StudentID].GetChild(0);
+					}
+					else
+					{
+						this.Destinations[this.ID] = this.StudentManager.Clubs.List[this.StudentID];
+					}
 				}
 				else
 				{
@@ -9427,7 +9598,7 @@ public class StudentScript : MonoBehaviour
 			{
 				if (this.Club > ClubType.None)
 				{
-					if (this.Club == ClubType.MartialArts || this.Club == ClubType.Art || this.Club == ClubType.Science || this.Club == ClubType.Gardening)
+					if (this.Club == ClubType.MartialArts || this.Club == ClubType.Art || this.Club == ClubType.Science || this.Club == ClubType.Gardening || this.Club == ClubType.Sports)
 					{
 						this.Actions[this.ID] = StudentActionType.ClubAction;
 					}
@@ -9802,6 +9973,16 @@ public class StudentScript : MonoBehaviour
 		}
 	}
 
+	public void SetSplashes(bool Bool)
+	{
+		this.ID = 0;
+		while (this.ID < this.SplashEmitters.Length)
+		{
+			this.SplashEmitters[this.ID].gameObject.SetActive(Bool);
+			this.ID++;
+		}
+	}
+
 	private void StopMeeting()
 	{
 		this.Prompt.Label[0].text = "     Talk";
@@ -10132,6 +10313,26 @@ public class StudentScript : MonoBehaviour
 			else if (this.Club == ClubType.Science)
 			{
 				this.WearLabCoat();
+			}
+			else if (this.Club == ClubType.Sports)
+			{
+				if (this.Clock.Period < 3)
+				{
+					this.MyRenderer.sharedMesh = this.GymUniform;
+					this.MyRenderer.materials[0].mainTexture = this.GymTexture;
+					this.MyRenderer.materials[1].mainTexture = this.GymTexture;
+					this.MyRenderer.materials[2].mainTexture = this.Cosmetic.FaceTexture;
+				}
+				else
+				{
+					this.MyRenderer.sharedMesh = this.SchoolSwimsuit;
+					this.MyRenderer.materials[0].mainTexture = this.Cosmetic.Trunks[this.StudentID];
+					this.MyRenderer.materials[1].mainTexture = this.Cosmetic.FaceTexture;
+					this.MyRenderer.materials[2].mainTexture = this.Cosmetic.Trunks[this.StudentID];
+					this.ClubAnim = "poolDive_00";
+					this.ClubActivityPhase = 15;
+					this.Destinations[this.Phase] = this.StudentManager.Clubs.List[this.StudentID].GetChild(this.ClubActivityPhase);
+				}
 			}
 			if (this.StudentID == 21)
 			{

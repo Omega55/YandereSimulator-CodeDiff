@@ -742,7 +742,7 @@ public class MissionModeMenuScript : MonoBehaviour
 				{
 					this.GetNumbers();
 					bool flag = false;
-					if ((this.TargetNumber > 32 && this.TargetNumber < 41) || (this.TargetNumber > 45 && this.TargetNumber < 56) || (this.TargetNumber > 65 && this.TargetNumber < 71))
+					if ((this.TargetNumber > 32 && this.TargetNumber < 41) || (this.TargetNumber > 45 && this.TargetNumber < 56) || this.TargetNumber > 97)
 					{
 						flag = true;
 					}
@@ -995,14 +995,14 @@ public class MissionModeMenuScript : MonoBehaviour
 		if (this.Phase != 5)
 		{
 			this.TargetID = UnityEngine.Random.Range(2, 90);
-			if ((this.TargetID > 32 && this.TargetID < 41) || (this.TargetID > 45 && this.TargetID < 56) || (this.TargetID > 65 && this.TargetID < 71))
+			if ((this.TargetID > 32 && this.TargetID < 41) || (this.TargetID > 45 && this.TargetID < 56))
 			{
 				this.ChooseTarget();
 			}
 		}
 		else
 		{
-			if (!OptionGlobals.HighPopulation && ((this.TargetID > 32 && this.TargetID < 41) || (this.TargetID > 45 && this.TargetID < 56) || (this.TargetID > 65 && this.TargetID < 71)))
+			if (!OptionGlobals.HighPopulation && ((this.TargetID > 32 && this.TargetID < 41) || (this.TargetID > 45 && this.TargetID < 56)))
 			{
 				if (Input.GetButtonDown("A"))
 				{
@@ -1032,7 +1032,7 @@ public class MissionModeMenuScript : MonoBehaviour
 			".png"
 		});
 		WWW www = new WWW(url);
-		if ((this.TargetID > 32 && this.TargetID < 41) || (this.TargetID > 45 && this.TargetID < 56) || (this.TargetID > 65 && this.TargetID < 71))
+		if ((this.TargetID > 32 && this.TargetID < 41) || (this.TargetID > 45 && this.TargetID < 56))
 		{
 			this.TargetPortrait.mainTexture = this.BlankPortrait;
 		}
@@ -1213,7 +1213,7 @@ public class MissionModeMenuScript : MonoBehaviour
 	public void UpdateGraphics()
 	{
 		this.TargetID = MissionModeGlobals.MissionTarget;
-		if ((this.TargetNumber > 32 && this.TargetNumber < 41) || (this.TargetNumber > 45 && this.TargetNumber < 56) || (this.TargetNumber > 65 && this.TargetNumber < 71))
+		if ((this.TargetNumber > 32 && this.TargetNumber < 41) || (this.TargetNumber > 45 && this.TargetNumber < 56))
 		{
 			this.TargetPortrait.mainTexture = this.BlankPortrait;
 			this.TargetName = MissionModeGlobals.MissionTargetName;
@@ -1283,7 +1283,7 @@ public class MissionModeMenuScript : MonoBehaviour
 			this.CustomPopulationLabel.text = "High School Population: Off";
 			this.PopulationLabel.text = "High School Population: Off";
 			OptionGlobals.HighPopulation = false;
-			if ((this.TargetNumber > 32 && this.TargetNumber < 41) || (this.TargetNumber > 45 && this.TargetNumber < 56) || (this.TargetNumber > 65 && this.TargetNumber < 71))
+			if ((this.TargetNumber > 32 && this.TargetNumber < 41) || (this.TargetNumber > 45 && this.TargetNumber < 56))
 			{
 				this.ChooseTarget();
 			}

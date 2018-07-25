@@ -2071,7 +2071,7 @@ public class YandereScript : MonoBehaviour
 				{
 					this.FixCamera();
 					this.PauseScreen.CorrectingTime = false;
-					Time.timeScale = 0f;
+					Time.timeScale = 0.0001f;
 					this.CanMove = false;
 					this.Shutter.Snap();
 				}
@@ -2548,7 +2548,7 @@ public class YandereScript : MonoBehaviour
 			}
 			if (this.Stripping)
 			{
-				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, Quaternion.identity, 10f * Time.deltaTime);
+				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.StudentManager.YandereStripSpot.rotation, 10f * Time.deltaTime);
 				if (this.CharacterAnimation["f02_stripping_00"].time >= this.CharacterAnimation["f02_stripping_00"].length)
 				{
 					this.Stripping = false;

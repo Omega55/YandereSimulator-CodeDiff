@@ -147,17 +147,17 @@ public class RPG_Camera : MonoBehaviour
 			this.camBottom = Physics.Linecast(base.transform.position, base.transform.position - Vector3.up * this.camBottomDistance);
 		}
 		bool flag = this.camBottom && base.transform.position.y - this.cameraPivot.transform.position.y <= 0f;
-		this.mouseX += Input.GetAxis("Mouse X") * this.mouseSpeed * (Time.deltaTime / Time.timeScale) * (float)OptionGlobals.Sensitivity * 10f;
+		this.mouseX += Input.GetAxis("Mouse X") * this.mouseSpeed * (Time.deltaTime / Mathf.Clamp(Time.timeScale, 1E-10f, 1E+10f)) * (float)OptionGlobals.Sensitivity * 10f;
 		if (flag)
 		{
 			if (Input.GetAxis("Mouse Y") < 0f)
 			{
-				this.mouseY -= Input.GetAxis("Mouse Y") * this.mouseSpeed * (Time.deltaTime / Time.timeScale) * 50f;
+				this.mouseY -= Input.GetAxis("Mouse Y") * this.mouseSpeed * (Time.deltaTime / Mathf.Clamp(Time.timeScale, 1E-10f, 1E+10f)) * (float)OptionGlobals.Sensitivity * 10f;
 			}
 		}
 		else
 		{
-			this.mouseY -= Input.GetAxis("Mouse Y") * this.mouseSpeed * (Time.deltaTime / Time.timeScale) * 50f;
+			this.mouseY -= Input.GetAxis("Mouse Y") * this.mouseSpeed * (Time.deltaTime / Mathf.Clamp(Time.timeScale, 1E-10f, 1E+10f)) * (float)OptionGlobals.Sensitivity * 10f;
 		}
 		this.mouseY = this.ClampAngle(this.mouseY, -89.5f, 89.5f);
 		this.mouseXSmooth = Mathf.SmoothDamp(this.mouseXSmooth, this.mouseX, ref this.mouseXVel, this.mouseSmoothingFactor);

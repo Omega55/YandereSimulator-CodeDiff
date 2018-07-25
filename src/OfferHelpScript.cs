@@ -121,7 +121,7 @@ public class OfferHelpScript : MonoBehaviour
 						this.Yandere.PauseScreen.Panel.enabled = true;
 						this.Yandere.PauseScreen.Sideways = true;
 						this.Yandere.PauseScreen.Show = true;
-						Time.timeScale = 0f;
+						Time.timeScale = 0.0001f;
 						this.Yandere.PauseScreen.PhotoGallery.UpdateButtonPrompts();
 						this.Offering = false;
 					}

@@ -876,7 +876,7 @@ public class MissionModeScript : MonoBehaviour
 		this.GameOverText.SetActive(true);
 		this.Yandere.HUD.gameObject.SetActive(false);
 		this.Subtitle.SetActive(false);
-		Time.timeScale = 0f;
+		Time.timeScale = 0.0001f;
 		this.GameOverPhase = 1;
 		this.Jukebox.MissionMode.GetComponent<AudioSource>().Stop();
 	}
@@ -893,7 +893,7 @@ public class MissionModeScript : MonoBehaviour
 		this.GameOverReason.text = string.Empty;
 		this.Subtitle.SetActive(false);
 		this.Jukebox.Volume = 1f;
-		Time.timeScale = 0f;
+		Time.timeScale = 0.0001f;
 	}
 
 	public void ChangeMusic()

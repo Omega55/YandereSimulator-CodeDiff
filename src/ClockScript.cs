@@ -128,6 +128,10 @@ public class ClockScript : MonoBehaviour
 			if (this.Timer < 5f)
 			{
 				this.Timer += Time.deltaTime;
+				if (this.Timer > 1f)
+				{
+					this.Yandere.RPGCamera.enabled = true;
+				}
 				this.BloomEffect.bloomIntensity -= Time.deltaTime * 9.75f;
 				this.BloomEffect.bloomThreshhold += Time.deltaTime * 0.5f;
 				if (this.BloomEffect.bloomThreshhold > 0.5f)
@@ -137,7 +141,7 @@ public class ClockScript : MonoBehaviour
 				}
 			}
 		}
-		else if (!this.Police.FadeOut && !this.Yandere.Attacking && !this.Yandere.Struggling)
+		else if (!this.Police.FadeOut && !this.Yandere.Attacking && !this.Yandere.Struggling && !this.Yandere.DelinquentFighting && !this.Yandere.Pickpocketing && !this.Yandere.Noticed)
 		{
 			this.Yandere.StudentManager.StopMoving();
 			this.Police.Darkness.enabled = true;

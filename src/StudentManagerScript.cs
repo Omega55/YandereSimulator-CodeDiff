@@ -193,6 +193,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform FemaleCoupleSpot;
 
+	public Transform YandereStripSpot;
+
 	public Transform FemaleStalkSpot;
 
 	public Transform ConfessionSpot;
@@ -436,6 +438,11 @@ public class StudentManagerScript : MonoBehaviour
 		this.SeatsTaken22[6] = true;
 		this.SeatsTaken21[6] = true;
 		this.SeatsTaken12[6] = true;
+		this.SeatsTaken32[11] = true;
+		this.SeatsTaken31[11] = true;
+		this.SeatsTaken22[11] = true;
+		this.SeatsTaken12[11] = true;
+		this.SeatsTaken11[11] = true;
 		this.SeatsTaken31[15] = true;
 		this.SeatsTaken22[15] = true;
 		this.SeatsTaken21[15] = true;
@@ -1125,7 +1132,9 @@ public class StudentManagerScript : MonoBehaviour
 					studentScript.Distracted = false;
 					studentScript.Pushable = false;
 					studentScript.Routine = true;
+					studentScript.Hurry = false;
 					studentScript.Safe = false;
+					studentScript.WalkAnim = studentScript.OriginalWalkAnim;
 					if (studentScript.Wet)
 					{
 						studentScript.Schoolwear = 3;
@@ -1149,6 +1158,13 @@ public class StudentManagerScript : MonoBehaviour
 					if (studentScript.Meeting && this.Clock.HourTime > studentScript.MeetTime)
 					{
 						studentScript.Meeting = false;
+					}
+					if (studentScript.Club == ClubType.Sports)
+					{
+						studentScript.SetSplashes(false);
+						studentScript.Character.transform.localPosition = new Vector3(0f, 0f, 0f);
+						studentScript.Cosmetic.Goggles[studentScript.StudentID].GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, 0f);
+						studentScript.Cosmetic.MaleHair[studentScript.Cosmetic.Hairstyle].GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, 0f);
 					}
 				}
 				else if (this.ID != this.GymTeacherID && this.ID != this.NurseID)

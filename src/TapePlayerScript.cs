@@ -50,7 +50,7 @@ public class TapePlayerScript : MonoBehaviour
 			this.NoteWindow.SetActive(false);
 			this.Yandere.CanMove = false;
 			this.Yandere.HUD.alpha = 0f;
-			Time.timeScale = 0f;
+			Time.timeScale = 0.0001f;
 			this.PromptBar.ClearButtons();
 			this.PromptBar.Label[1].text = "EXIT";
 			this.PromptBar.Label[4].text = "CHOOSE";

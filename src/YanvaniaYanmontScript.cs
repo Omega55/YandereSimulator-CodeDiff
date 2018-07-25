@@ -732,6 +732,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Alpha2))
 		{
 			base.transform.position = new Vector3(-31.75f, 6.51f, 0f);
+			Physics.SyncTransforms();
 		}
 		if (Input.GetKeyDown(KeyCode.Alpha5))
 		{

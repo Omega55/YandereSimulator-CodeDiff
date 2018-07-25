@@ -26,6 +26,7 @@ public enum SubtitleType
 	ClubPhotoInfoLight,
 	ClubPhotoInfoDark,
 	ClubScienceInfo,
+	ClubSportsInfo,
 	ClubGardenInfo,
 	ClubNo,
 	ClubOccultInfo,

@@ -73,6 +73,8 @@ public class ClubManagerScript : MonoBehaviour
 
 	public int[] Club8Students;
 
+	public int[] Club9Students;
+
 	public int[] Club10Students;
 
 	public bool ClubEffect;
@@ -108,6 +110,8 @@ public class ClubManagerScript : MonoBehaviour
 	public int[] Club7IDs;
 
 	public int[] Club8IDs;
+
+	public int[] Club9IDs;
 
 	public int[] Club10IDs;
 
@@ -373,20 +377,43 @@ public class ClubManagerScript : MonoBehaviour
 				this.Yandere.ChangeClubwear();
 			}
 		}
+		else if (this.Club == ClubType.Sports)
+		{
+			this.ID = 0;
+			while (this.ID < this.Club9Students.Length)
+			{
+				StudentScript studentScript6 = this.StudentManager.Students[this.Club9Students[this.ID]];
+				if (studentScript6 != null && !studentScript6.Tranquil && studentScript6.Alive)
+				{
+					studentScript6.transform.position = studentScript6.CurrentDestination.position;
+					studentScript6.transform.rotation = studentScript6.CurrentDestination.rotation;
+					studentScript6.ClubActivity = true;
+					studentScript6.Talking = false;
+					studentScript6.Routine = true;
+					studentScript6.GetComponent<AudioSource>().volume = 0.1f;
+				}
+				this.ID++;
+			}
+			this.Yandere.Talking = false;
+			this.Yandere.CanMove = false;
+			this.Yandere.ClubActivity = true;
+			this.Yandere.Schoolwear = 2;
+			this.Yandere.ChangeSchoolwear();
+		}
 		else if (this.Club == ClubType.Gardening)
 		{
 			this.ID = 0;
 			while (this.ID < this.Club10Students.Length)
 			{
-				StudentScript studentScript6 = this.StudentManager.Students[this.Club10Students[this.ID]];
-				if (studentScript6 != null && !studentScript6.Tranquil && studentScript6.Alive)
+				StudentScript studentScript7 = this.StudentManager.Students[this.Club10Students[this.ID]];
+				if (studentScript7 != null && !studentScript7.Tranquil && studentScript7.Alive)
 				{
-					studentScript6.transform.position = this.Club10ActivitySpots[this.ID].position;
-					studentScript6.transform.rotation = this.Club10ActivitySpots[this.ID].rotation;
-					studentScript6.ClubActivity = true;
-					studentScript6.Talking = false;
-					studentScript6.Routine = true;
-					studentScript6.GetComponent<AudioSource>().volume = 0.1f;
+					studentScript7.transform.position = studentScript7.CurrentDestination.position;
+					studentScript7.transform.rotation = studentScript7.CurrentDestination.rotation;
+					studentScript7.ClubActivity = true;
+					studentScript7.Talking = false;
+					studentScript7.Routine = true;
+					studentScript7.GetComponent<AudioSource>().volume = 0.1f;
 				}
 				this.ID++;
 			}
@@ -425,6 +452,10 @@ public class ClubManagerScript : MonoBehaviour
 		else if (Check == ClubType.Science)
 		{
 			this.ClubIDs = this.Club8IDs;
+		}
+		else if (Check == ClubType.Sports)
+		{
+			this.ClubIDs = this.Club9IDs;
 		}
 		else if (Check == ClubType.Gardening)
 		{
@@ -510,14 +541,26 @@ public class ClubManagerScript : MonoBehaviour
 				this.LeaderMissing = true;
 			}
 		}
-		else if (Check == ClubType.Gardening)
+		else if (Check == ClubType.Sports)
 		{
-			int num6 = 71;
+			int num6 = 66;
 			if (StudentGlobals.GetStudentDead(num6) || StudentGlobals.GetStudentDying(num6) || StudentGlobals.GetStudentArrested(num6) || StudentGlobals.GetStudentReputation(num6) <= -100)
 			{
 				this.LeaderDead = true;
 			}
 			if (StudentGlobals.GetStudentMissing(num6) || StudentGlobals.GetStudentKidnapped(num6) || this.TranqCase.VictimID == num6)
+			{
+				this.LeaderMissing = true;
+			}
+		}
+		else if (Check == ClubType.Gardening)
+		{
+			int num7 = 71;
+			if (StudentGlobals.GetStudentDead(num7) || StudentGlobals.GetStudentDying(num7) || StudentGlobals.GetStudentArrested(num7) || StudentGlobals.GetStudentReputation(num7) <= -100)
+			{
+				this.LeaderDead = true;
+			}
+			if (StudentGlobals.GetStudentMissing(num7) || StudentGlobals.GetStudentKidnapped(num7) || this.TranqCase.VictimID == num7)
 			{
 				this.LeaderMissing = true;
 			}
@@ -541,6 +584,10 @@ public class ClubManagerScript : MonoBehaviour
 		else if (Check == ClubType.Science)
 		{
 			this.ClubIDs = this.Club8IDs;
+		}
+		else if (Check == ClubType.Sports)
+		{
+			this.ClubIDs = this.Club9IDs;
 		}
 		else if (Check == ClubType.Gardening)
 		{
@@ -581,6 +628,13 @@ public class ClubManagerScript : MonoBehaviour
 		else if (Check == ClubType.Science)
 		{
 			if (this.StudentManager.Students[61].Grudge)
+			{
+				this.LeaderGrudge = true;
+			}
+		}
+		else if (Check == ClubType.Sports)
+		{
+			if (this.StudentManager.Students[66].Grudge)
 			{
 				this.LeaderGrudge = true;
 			}

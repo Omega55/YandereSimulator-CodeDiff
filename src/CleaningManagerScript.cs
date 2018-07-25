@@ -232,6 +232,26 @@ public class CleaningManagerScript : MonoBehaviour
 			this.Role = 3;
 			this.Spot = this.Floors[21];
 			break;
+		case 66:
+			this.Role = 3;
+			this.Spot = this.Floors[27];
+			break;
+		case 67:
+			this.Role = 3;
+			this.Spot = this.Floors[28];
+			break;
+		case 68:
+			this.Role = 3;
+			this.Spot = this.Floors[29];
+			break;
+		case 69:
+			this.Role = 3;
+			this.Spot = this.Floors[30];
+			break;
+		case 70:
+			this.Role = 3;
+			this.Spot = this.Floors[31];
+			break;
 		case 71:
 			this.Role = 3;
 			this.Spot = this.Floors[22];

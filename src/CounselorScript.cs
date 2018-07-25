@@ -220,21 +220,15 @@ public class CounselorScript : MonoBehaviour
 			}
 			if (this.ShowWindow)
 			{
-				if (Input.GetButtonDown("A"))
+				if (this.Yandere.Chased || this.Yandere.Chasers > 0)
+				{
+					this.Quit();
+				}
+				else if (Input.GetButtonDown("A"))
 				{
 					if (this.Selected == 7)
 					{
-						component.CrossFade("CounselorComputerLoop", 1f);
-						this.Yandere.ShoulderCamera.OverShoulder = false;
-						this.StudentManager.EnablePrompts();
-						this.Yandere.TargetStudent = null;
-						this.LookAtPlayer = false;
-						this.ShowWindow = false;
-						this.CounselorSubtitle.text = this.CounselorFarewellText;
-						component2.clip = this.CounselorFarewellClip;
-						component2.Play();
-						this.PromptBar.ClearButtons();
-						this.PromptBar.Show = false;
+						this.Quit();
 					}
 					else if (this.Labels[this.Selected].color.a == 1f)
 					{
@@ -506,5 +500,22 @@ public class CounselorScript : MonoBehaviour
 		}
 		this.LookAtTarget = Vector3.Lerp(this.LookAtTarget, (!this.LookAtPlayer) ? this.Default.position : this.Yandere.Head.position, Time.deltaTime * 2f);
 		this.Head.LookAt(this.LookAtTarget);
+	}
+
+	private void Quit()
+	{
+		Animation component = base.GetComponent<Animation>();
+		AudioSource component2 = base.GetComponent<AudioSource>();
+		component.CrossFade("CounselorComputerLoop", 1f);
+		this.Yandere.ShoulderCamera.OverShoulder = false;
+		this.StudentManager.EnablePrompts();
+		this.Yandere.TargetStudent = null;
+		this.LookAtPlayer = false;
+		this.ShowWindow = false;
+		this.CounselorSubtitle.text = this.CounselorFarewellText;
+		component2.clip = this.CounselorFarewellClip;
+		component2.Play();
+		this.PromptBar.ClearButtons();
+		this.PromptBar.Show = false;
 	}
 }

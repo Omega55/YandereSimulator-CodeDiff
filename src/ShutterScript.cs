@@ -191,7 +191,7 @@ public class ShutterScript : MonoBehaviour
 					}
 					this.PromptBar.UpdateButtons();
 					this.PromptBar.Show = true;
-					Time.timeScale = 0f;
+					Time.timeScale = 0.0001f;
 				}
 			}
 			else

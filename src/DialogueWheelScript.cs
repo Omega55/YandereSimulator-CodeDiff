@@ -376,7 +376,7 @@ public class DialogueWheelScript : MonoBehaviour
 								this.PauseScreen.Panel.enabled = true;
 								this.PauseScreen.Sideways = true;
 								this.PauseScreen.Show = true;
-								Time.timeScale = 0f;
+								Time.timeScale = 0.0001f;
 								this.PromptBar.ClearButtons();
 								this.PromptBar.Label[1].text = "Cancel";
 								this.PromptBar.UpdateButtons();
@@ -459,7 +459,7 @@ public class DialogueWheelScript : MonoBehaviour
 						this.PauseScreen.Panel.enabled = true;
 						this.PauseScreen.Sideways = true;
 						this.PauseScreen.Show = true;
-						Time.timeScale = 0f;
+						Time.timeScale = 0.0001f;
 						this.PromptBar.ClearButtons();
 						this.PromptBar.Label[0].text = string.Empty;
 						this.PromptBar.Label[1].text = "Cancel";
@@ -509,7 +509,7 @@ public class DialogueWheelScript : MonoBehaviour
 							this.PauseScreen.Panel.enabled = true;
 							this.PauseScreen.Sideways = true;
 							this.PauseScreen.Show = true;
-							Time.timeScale = 0f;
+							Time.timeScale = 0.0001f;
 							this.PromptBar.ClearButtons();
 							this.PromptBar.Label[0].text = "View Info";
 							this.PromptBar.Label[1].text = "Cancel";

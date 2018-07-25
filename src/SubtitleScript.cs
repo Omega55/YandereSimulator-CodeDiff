@@ -357,6 +357,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] Club8Info;
 
+	public string[] Club9Info;
+
 	public string[] Club10Info;
 
 	public string[] ClubGreetings;
@@ -520,6 +522,8 @@ public class SubtitleScript : MonoBehaviour
 	public AudioClip[] Club7ClipsDark;
 
 	public AudioClip[] Club8Clips;
+
+	public AudioClip[] Club9Clips;
 
 	public AudioClip[] Club10Clips;
 
@@ -708,6 +712,10 @@ public class SubtitleScript : MonoBehaviour
 			{
 				SubtitleType.ClubScienceInfo,
 				new AudioClipArrayWrapper(this.Club8Clips)
+			},
+			{
+				SubtitleType.ClubSportsInfo,
+				new AudioClipArrayWrapper(this.Club9Clips)
 			},
 			{
 				SubtitleType.ClubGardenInfo,
@@ -1908,6 +1916,11 @@ public class SubtitleScript : MonoBehaviour
 			this.Label.text = this.Club8Info[ID];
 			this.PlayVoice(subtitleType, ID);
 		}
+		else if (subtitleType == SubtitleType.ClubSportsInfo)
+		{
+			this.Label.text = this.Club9Info[ID];
+			this.PlayVoice(subtitleType, ID);
+		}
 		else if (subtitleType == SubtitleType.ClubGardenInfo)
 		{
 			this.Label.text = this.Club10Info[ID];
@@ -2116,6 +2129,10 @@ public class SubtitleScript : MonoBehaviour
 			if (Club == ClubType.Science)
 			{
 				return this.Club8Clips[ClubPhase].length + 0.5f;
+			}
+			if (Club == ClubType.Sports)
+			{
+				return this.Club9Clips[ClubPhase].length + 0.5f;
 			}
 			if (Club == ClubType.Gardening)
 			{
