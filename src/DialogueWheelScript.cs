@@ -27,6 +27,8 @@ public class DialogueWheelScript : MonoBehaviour
 
 	public UIPanel Panel;
 
+	public GameObject ClubLeaderWindow;
+
 	public GameObject DatingMinigame;
 
 	public Transform Interaction;
@@ -537,6 +539,11 @@ public class DialogueWheelScript : MonoBehaviour
 
 	public void HideShadows()
 	{
+		this.ClubLeaderWindow.SetActive(false);
+		if (this.Yandere.TargetStudent.Armband.activeInHierarchy && !this.ClubLeader)
+		{
+			this.ClubLeaderWindow.SetActive(true);
+		}
 		this.TaskIcon.spriteName = ((!PlayerGlobals.GetStudentFriend(this.Yandere.TargetStudent.StudentID)) ? "Task" : "Heart");
 		this.Impatience.fillAmount = 0f;
 		for (int i = 1; i < 7; i++)

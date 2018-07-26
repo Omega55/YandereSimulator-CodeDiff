@@ -276,6 +276,8 @@ public class YandereScript : MonoBehaviour
 
 	public float CinematicTimer;
 
+	public float CanMoveTimer;
+
 	public float RummageTimer;
 
 	public float YandereTimer;
@@ -3416,6 +3418,14 @@ public class YandereScript : MonoBehaviour
 				else if (this.CharacterAnimation["f02_banchoFinisher_00"].time >= 0.8333333f)
 				{
 					this.BanchoFinisher.MyCollider.enabled = true;
+				}
+			}
+			if (this.CanMoveTimer > 0f)
+			{
+				this.CanMoveTimer = Mathf.MoveTowards(this.CanMoveTimer, 0f, Time.deltaTime);
+				if (this.CanMoveTimer == 0f)
+				{
+					this.CanMove = true;
 				}
 			}
 		}

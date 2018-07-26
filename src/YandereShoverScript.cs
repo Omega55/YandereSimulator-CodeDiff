@@ -25,6 +25,15 @@ public class YandereShoverScript : MonoBehaviour
 			}
 			if (flag)
 			{
+				if (this.Yandere.Aiming)
+				{
+					this.Yandere.StopAiming();
+				}
+				if (this.Yandere.Laughing)
+				{
+					this.Yandere.StopLaughing();
+				}
+				this.Yandere.transform.rotation = Quaternion.LookRotation(new Vector3(base.transform.position.x, this.Yandere.transform.position.y, base.transform.position.z) - this.Yandere.transform.position);
 				this.Yandere.CharacterAnimation["f02_shoveA_01"].time = 0f;
 				this.Yandere.CharacterAnimation.CrossFade("f02_shoveA_01");
 				this.Yandere.YandereVision = false;
@@ -34,6 +43,7 @@ public class YandereShoverScript : MonoBehaviour
 				this.Yandere.Punching = false;
 				this.Yandere.CanMove = false;
 				this.Yandere.Shoved = true;
+				this.Yandere.EmptyHands();
 				this.Yandere.GloveTimer = 0f;
 				this.Yandere.h = 0f;
 				this.Yandere.v = 0f;

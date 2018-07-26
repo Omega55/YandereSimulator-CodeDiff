@@ -397,28 +397,25 @@ public class PoseModeScript : MonoBehaviour
 				}
 				else if (this.Selected == 3)
 				{
-					if (!this.Student.Male)
+					if (this.InputManager.TappedRight)
 					{
-						if (this.InputManager.TappedRight)
+						this.Student.Schoolwear++;
+						if (this.Student.Schoolwear > 3)
 						{
-							this.Student.Schoolwear++;
-							if (this.Student.Schoolwear > 3)
-							{
-								this.Student.Schoolwear = 1;
-							}
-							this.Student.ChangeSchoolwear();
-							this.UpdateLabels();
+							this.Student.Schoolwear = 1;
 						}
-						if (this.InputManager.TappedLeft)
+						this.Student.ChangeSchoolwear();
+						this.UpdateLabels();
+					}
+					if (this.InputManager.TappedLeft)
+					{
+						this.Student.Schoolwear--;
+						if (this.Student.Schoolwear < 1)
 						{
-							this.Student.Schoolwear--;
-							if (this.Student.Schoolwear < 1)
-							{
-								this.Student.Schoolwear = 3;
-							}
-							this.Student.ChangeSchoolwear();
-							this.UpdateLabels();
+							this.Student.Schoolwear = 3;
 						}
+						this.Student.ChangeSchoolwear();
+						this.UpdateLabels();
 					}
 				}
 				else if (this.Selected == 10)
@@ -803,7 +800,6 @@ public class PoseModeScript : MonoBehaviour
 			}
 			else
 			{
-				uilabel3.color = new Color(uilabel3.color.r, uilabel3.color.g, uilabel3.color.b, 0.5f);
 				uilabel4.color = new Color(uilabel4.color.r, uilabel4.color.g, uilabel4.color.b, 0.5f);
 			}
 		}

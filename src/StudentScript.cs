@@ -710,6 +710,8 @@ public class StudentScript : MonoBehaviour
 
 	public float PreviousAlarm;
 
+	public float ClubThreshold = 6f;
+
 	public float RepDeduction;
 
 	public float BreastSize;
@@ -1136,6 +1138,8 @@ public class StudentScript : MonoBehaviour
 
 	public Mesh NudeMesh;
 
+	public Mesh SwimmingTrunks;
+
 	public Mesh SchoolSwimsuit;
 
 	public Mesh GymUniform;
@@ -1546,6 +1550,7 @@ public class StudentScript : MonoBehaviour
 					this.IdleAnim = "pose_03";
 					this.OriginalWalkAnim = "walkConfident_00";
 					this.WalkAnim = "walkConfident_00";
+					this.ClubThreshold = 100f;
 				}
 				else if (this.StudentID == 71)
 				{
@@ -4343,7 +4348,7 @@ public class StudentScript : MonoBehaviour
 							}
 							else if (this.Persona == PersonaType.Heroic)
 							{
-								if (!this.Yandere.Attacking && !this.StudentManager.PinningDown)
+								if (!this.Yandere.Attacking && !this.StudentManager.PinningDown && !this.Yandere.Shoved)
 								{
 									if (!this.Yandere.Struggling)
 									{
@@ -6505,8 +6510,10 @@ public class StudentScript : MonoBehaviour
 	{
 		if (this.StudentID > 1)
 		{
-			if (this.DistanceToDestination < 5f && this.Actions[this.Phase] == StudentActionType.ClubAction && this.Armband.activeInHierarchy)
+			bool flag = false;
+			if (this.Armband.activeInHierarchy && (this.Actions[this.Phase] == StudentActionType.ClubAction || this.Actions[this.Phase] == StudentActionType.SitAndSocialize || this.Actions[this.Phase] == StudentActionType.Sleuth) && Vector3.Distance(base.transform.position, this.StudentManager.ClubZones[(int)this.Club].position) < this.ClubThreshold)
 			{
+				flag = true;
 				this.Warned = false;
 			}
 			if ((this.Alarm > 0f || this.AlarmTimer > 0f || this.Yandere.Armed || this.Waiting || this.InEvent || this.SentHome || this.Threatened || this.Yandere.Shoved || this.Distracted) && !this.Slave && !this.BadTime && !this.Yandere.Gazing)
@@ -6697,13 +6704,13 @@ public class StudentScript : MonoBehaviour
 						if (!this.Grudge)
 						{
 							this.ClubManager.CheckGrudge(this.Club);
-							if (ClubGlobals.GetClubKicked(this.Club) && this.DistanceToDestination < 10f && this.Actions[this.Phase] == StudentActionType.ClubAction && this.Armband.activeInHierarchy)
+							if (ClubGlobals.GetClubKicked(this.Club) && flag)
 							{
 								this.Interaction = StudentInteractionType.ClubUnwelcome;
 								this.TalkTimer = 5f;
 								this.Warned = true;
 							}
-							else if (ClubGlobals.Club == this.Club && this.DistanceToDestination < 10f && this.Actions[this.Phase] == StudentActionType.ClubAction && this.Armband.activeInHierarchy && this.ClubManager.ClubGrudge)
+							else if (ClubGlobals.Club == this.Club && flag && this.ClubManager.ClubGrudge)
 							{
 								this.Interaction = StudentInteractionType.ClubKick;
 								this.TalkTimer = 5f;
@@ -6721,7 +6728,7 @@ public class StudentScript : MonoBehaviour
 								{
 									this.DistanceToDestination = Vector3.Distance(base.transform.position, this.SleuthTarget.position);
 								}
-								if ((this.DistanceToDestination < 10f && this.Actions[this.Phase] == StudentActionType.ClubAction && this.Armband.activeInHierarchy) || (this.DistanceToDestination < 10f && this.Actions[this.Phase] == StudentActionType.SitAndSocialize && this.Armband.activeInHierarchy) || (this.DistanceToDestination < 10f && this.Actions[this.Phase] == StudentActionType.Sleuth && this.Armband.activeInHierarchy))
+								if (flag)
 								{
 									int num;
 									if (this.Sleuthing)
@@ -6753,7 +6760,7 @@ public class StudentScript : MonoBehaviour
 								this.TalkTimer = 0f;
 							}
 						}
-						else if (this.DistanceToDestination < 10f && this.Actions[this.Phase] == StudentActionType.ClubAction && this.Armband.activeInHierarchy)
+						else if (flag)
 						{
 							this.Interaction = StudentInteractionType.ClubUnwelcome;
 							this.TalkTimer = 5f;
@@ -6820,17 +6827,17 @@ public class StudentScript : MonoBehaviour
 			{
 				float f = Vector3.Angle(-base.transform.forward, this.Yandere.transform.position - base.transform.position);
 				this.Yandere.AttackManager.Stealth = (Mathf.Abs(f) <= 45f);
-				bool flag = false;
+				bool flag2 = false;
 				if (this.Club == ClubType.Delinquent && !this.Injured && !this.Yandere.AttackManager.Stealth)
 				{
 					Debug.Log(this.Name + " knows that Yandere-chan is tyring to attack him.");
-					flag = true;
+					flag2 = true;
 					this.Fleeing = false;
 					this.Patience = 1;
 					this.Shove();
 					this.SpawnAlarmDisc();
 				}
-				if (!flag && !this.Yandere.NearSenpai && !this.Yandere.Attacking && this.Yandere.Stance.Current != StanceType.Crouching)
+				if (!flag2 && !this.Yandere.NearSenpai && !this.Yandere.Attacking && this.Yandere.Stance.Current != StanceType.Crouching)
 				{
 					if (this.Yandere.EquippedWeapon.Flaming || this.Yandere.CyborgParts[1].activeInHierarchy)
 					{
@@ -10150,10 +10157,29 @@ public class StudentScript : MonoBehaviour
 		}
 		else if (this.Schoolwear == 2)
 		{
-			this.MyRenderer.sharedMesh = this.SchoolSwimsuit;
-			this.MyRenderer.materials[0].mainTexture = this.SwimsuitTexture;
-			this.MyRenderer.materials[1].mainTexture = this.SwimsuitTexture;
-			this.MyRenderer.materials[2].mainTexture = this.Cosmetic.FaceTexture;
+			if (this.Club == ClubType.Sports)
+			{
+				this.MyRenderer.sharedMesh = this.SwimmingTrunks;
+				this.MyRenderer.materials[0].mainTexture = this.Cosmetic.Trunks[this.StudentID];
+				this.MyRenderer.materials[1].mainTexture = this.Cosmetic.FaceTexture;
+				this.MyRenderer.materials[2].mainTexture = this.Cosmetic.Trunks[this.StudentID];
+			}
+			else
+			{
+				this.MyRenderer.sharedMesh = this.SchoolSwimsuit;
+				if (!this.Male)
+				{
+					this.MyRenderer.materials[0].mainTexture = this.SwimsuitTexture;
+					this.MyRenderer.materials[1].mainTexture = this.SwimsuitTexture;
+					this.MyRenderer.materials[2].mainTexture = this.Cosmetic.FaceTexture;
+				}
+				else
+				{
+					this.MyRenderer.materials[0].mainTexture = this.SwimsuitTexture;
+					this.MyRenderer.materials[1].mainTexture = this.Cosmetic.FaceTexture;
+					this.MyRenderer.materials[2].mainTexture = this.SwimsuitTexture;
+				}
+			}
 		}
 		else if (this.Schoolwear == 3)
 		{
@@ -10327,7 +10353,7 @@ public class StudentScript : MonoBehaviour
 				}
 				else
 				{
-					this.MyRenderer.sharedMesh = this.SchoolSwimsuit;
+					this.MyRenderer.sharedMesh = this.SwimmingTrunks;
 					this.MyRenderer.materials[0].mainTexture = this.Cosmetic.Trunks[this.StudentID];
 					this.MyRenderer.materials[1].mainTexture = this.Cosmetic.FaceTexture;
 					this.MyRenderer.materials[2].mainTexture = this.Cosmetic.Trunks[this.StudentID];
@@ -10814,6 +10840,7 @@ public class StudentScript : MonoBehaviour
 			this.Yandere.Punching = false;
 			this.Yandere.CanMove = false;
 			this.Yandere.Shoved = true;
+			this.Yandere.EmptyHands();
 			this.Yandere.GloveTimer = 0f;
 			this.Yandere.h = 0f;
 			this.Yandere.v = 0f;

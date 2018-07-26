@@ -324,7 +324,8 @@ public class ClockScript : MonoBehaviour
 		this.HalfwayTime = 0f;
 		if (!this.Yandere.Noticed && !this.Police.FadeOut)
 		{
-			this.Yandere.CanMove = true;
+			this.Yandere.CharacterAnimation.CrossFade(this.Yandere.IdleAnim);
+			this.Yandere.CanMoveTimer = 0.5f;
 		}
 	}
 

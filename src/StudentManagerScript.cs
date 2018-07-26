@@ -161,6 +161,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform[] BullySpots;
 
+	public Transform[] ClubZones;
+
 	public Transform[] SulkSpots;
 
 	public Transform[] FleeSpots;
