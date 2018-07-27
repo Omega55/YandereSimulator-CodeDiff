@@ -2595,6 +2595,8 @@ public class StudentScript : MonoBehaviour
 					{
 						if (this.Persona == PersonaType.PhoneAddict)
 						{
+							this.SmartPhone.transform.localPosition = new Vector3(0.01f, 0.005f, 0.01f);
+							this.SmartPhone.transform.localEulerAngles = new Vector3(0f, -160f, 165f);
 							this.WalkAnim = this.PhoneAnims[1];
 						}
 						else if (this.Sleuthing)
@@ -2628,7 +2630,7 @@ public class StudentScript : MonoBehaviour
 						}
 					}
 				}
-				if (!this.Teacher && this.Club != ClubType.Delinquent && (this.Clock.Period == 2 || this.Clock.Period == 4))
+				if (!this.Teacher && this.Club != ClubType.Delinquent && (this.Clock.Period == 2 || this.Clock.Period == 4) && this.ClubActivityPhase < 16)
 				{
 					this.Pathfinding.speed = 4f;
 				}
@@ -3383,6 +3385,10 @@ public class StudentScript : MonoBehaviour
 											Physics.SyncTransforms();
 											this.CharacterAnimation.Play(this.IdleAnim);
 											this.Distracted = false;
+											if (this.Clock.Period == 2 || this.Clock.Period == 4)
+											{
+												this.Pathfinding.speed = 4f;
+											}
 										}
 									}
 								}
@@ -3627,6 +3633,11 @@ public class StudentScript : MonoBehaviour
 							else if (this.Actions[this.Phase] == StudentActionType.Texting)
 							{
 								this.CharacterAnimation.CrossFade("f02_midoriTexting_00");
+								if (this.SmartPhone.transform.localPosition.x != 0.02f)
+								{
+									this.SmartPhone.transform.localPosition = new Vector3(0.02f, -0.0075f, 0f);
+									this.SmartPhone.transform.localEulerAngles = new Vector3(0f, -160f, -164f);
+								}
 								if (!this.SmartPhone.activeInHierarchy && base.transform.position.y > 11f)
 								{
 									this.SmartPhone.SetActive(true);
@@ -10473,8 +10484,11 @@ public class StudentScript : MonoBehaviour
 		this.SpeechLines.Stop();
 		this.Routine = false;
 		this.StopPairing();
+		if (!this.Sleuthing)
+		{
+			this.SmartPhone.SetActive(false);
+		}
 		this.OccultBook.SetActive(false);
-		this.SmartPhone.SetActive(false);
 		this.Scrubber.SetActive(false);
 		this.Eraser.SetActive(false);
 		this.Pen.SetActive(false);

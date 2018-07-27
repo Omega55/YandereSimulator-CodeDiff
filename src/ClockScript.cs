@@ -49,6 +49,8 @@ public class ClockScript : MonoBehaviour
 
 	public float AmbientLightDim;
 
+	public float CameraTimer;
+
 	public float DayProgress;
 
 	public float StartHour;
@@ -123,15 +125,19 @@ public class ClockScript : MonoBehaviour
 				this.FadeIn = false;
 			}
 		}
+		if (this.CameraTimer < 1f)
+		{
+			this.CameraTimer += Time.deltaTime;
+			if (this.CameraTimer > 1f)
+			{
+				this.Yandere.RPGCamera.enabled = true;
+			}
+		}
 		if (this.PresentTime < 1080f)
 		{
 			if (this.Timer < 5f)
 			{
 				this.Timer += Time.deltaTime;
-				if (this.Timer > 1f)
-				{
-					this.Yandere.RPGCamera.enabled = true;
-				}
 				this.BloomEffect.bloomIntensity -= Time.deltaTime * 9.75f;
 				this.BloomEffect.bloomThreshhold += Time.deltaTime * 0.5f;
 				if (this.BloomEffect.bloomThreshhold > 0.5f)

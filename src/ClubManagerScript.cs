@@ -135,7 +135,7 @@ public class ClubManagerScript : MonoBehaviour
 				{
 					this.ClubPatrolPoints[this.ID].transform.position = new Vector3(-56f, this.ClubPatrolPoints[this.ID].transform.position.y, this.ClubPatrolPoints[this.ID].transform.position.z);
 				}
-				else
+				else if (this.ClubArray[this.ID] != ClubType.Sports)
 				{
 					this.ClubPatrolPoints[this.ID].transform.position = new Vector3(this.ClubPatrolPoints[this.ID].transform.position.x, this.ClubPatrolPoints[this.ID].transform.position.y, 20f);
 				}

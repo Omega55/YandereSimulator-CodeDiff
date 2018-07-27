@@ -14,6 +14,8 @@ public class NyanDroidScript : MonoBehaviour
 
 	public string Prefix;
 
+	public float Timer;
+
 	private void Start()
 	{
 		this.OriginalPosition = base.transform.position;
@@ -33,9 +35,16 @@ public class NyanDroidScript : MonoBehaviour
 		}
 		else
 		{
-			if (base.transform.position.y < 0f)
+			this.Timer += Time.deltaTime;
+			if (this.Timer > 1f)
 			{
-				base.transform.position = new Vector3(base.transform.position.x, 0.001f, base.transform.position.z);
+				this.Timer = 0f;
+				base.transform.position += new Vector3(0f, 0.0001f, 0f);
+				if (base.transform.position.y < 0f)
+				{
+					base.transform.position = new Vector3(base.transform.position.x, 0.001f, base.transform.position.z);
+				}
+				Physics.SyncTransforms();
 			}
 			if (Input.GetButtonDown("RB"))
 			{
