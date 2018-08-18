@@ -47,6 +47,10 @@ public class OsanaMorningFriendEventScript : MonoBehaviour
 
 	public int SpeechPhase = 1;
 
+	public int FriendID = 6;
+
+	public int RivalID = 11;
+
 	public int Phase;
 
 	public int Frame;

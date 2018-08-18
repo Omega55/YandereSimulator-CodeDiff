@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using UnityEngine;
 
 public class StudentInfoScript : MonoBehaviour
@@ -62,8 +61,6 @@ public class StudentInfoScript : MonoBehaviour
 
 	public int CurrentStudent;
 
-	public bool CustomPortraits;
-
 	public bool Back;
 
 	public UISprite[] TopicIcons;
@@ -121,14 +118,6 @@ public class StudentInfoScript : MonoBehaviour
 	private void Start()
 	{
 		this.Topics.SetActive(false);
-		if (File.Exists(Application.streamingAssetsPath + "/CustomPortraits.txt"))
-		{
-			string a = File.ReadAllText(Application.streamingAssetsPath + "/CustomPortraits.txt");
-			if (a == "1")
-			{
-				this.CustomPortraits = true;
-			}
-		}
 	}
 
 	public void UpdateInfo(int ID)
@@ -210,21 +199,7 @@ public class StudentInfoScript : MonoBehaviour
 			WWW www = new WWW(url);
 			if (!StudentGlobals.GetStudentReplaced(ID))
 			{
-				if (!this.CustomPortraits)
-				{
-					if (ID < 33 || (ID > 40 && ID < 46) || ID > 55)
-					{
-						this.Portrait.mainTexture = www.texture;
-					}
-					else
-					{
-						this.Portrait.mainTexture = this.BlankPortrait;
-					}
-				}
-				else
-				{
-					this.Portrait.mainTexture = www.texture;
-				}
+				this.Portrait.mainTexture = www.texture;
 			}
 			else
 			{
@@ -416,7 +391,7 @@ public class StudentInfoScript : MonoBehaviour
 
 	private void UpdateAdditionalInfo(int ID)
 	{
-		if (ID == 7)
+		if (ID == 30)
 		{
 			this.Strings[1] = ((!EventGlobals.Event1) ? "?????" : "May be a victim of domestic abuse.");
 			this.Strings[2] = ((!EventGlobals.Event2) ? "?????" : "May be engaging in compensated dating in Shisuta Town.");

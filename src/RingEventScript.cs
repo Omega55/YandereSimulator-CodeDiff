@@ -53,7 +53,7 @@ public class RingEventScript : MonoBehaviour
 	{
 		if (!this.Clock.StopTime && !this.EventActive && this.Clock.HourTime > this.EventTime)
 		{
-			this.EventStudent = this.StudentManager.Students[17];
+			this.EventStudent = this.StudentManager.Students[2];
 			if (this.EventStudent != null && !this.EventStudent.Distracted && !this.EventStudent.Talking)
 			{
 				if (!this.EventStudent.WitnessedMurder && !this.EventStudent.Bullied)

@@ -37,6 +37,8 @@ public class OsanaMondayBeforeClassEventScript : MonoBehaviour
 
 	public int SpeechPhase = 1;
 
+	public int RivalID = 11;
+
 	public int Phase;
 
 	public int Frame;

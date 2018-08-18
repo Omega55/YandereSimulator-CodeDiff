@@ -35,6 +35,8 @@ public class OsanaThursdayAfterClassEventScript : MonoBehaviour
 
 	public DayOfWeek EventDay;
 
+	public int RivalID = 11;
+
 	public int Phase;
 
 	public int Frame;

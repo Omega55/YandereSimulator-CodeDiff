@@ -25,7 +25,7 @@ public class SewingMachineScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (TaskGlobals.GetTaskStatus(7) > 2)
+		if (TaskGlobals.GetTaskStatus(30) > 2)
 		{
 			base.enabled = false;
 		}
@@ -81,8 +81,8 @@ public class SewingMachineScript : MonoBehaviour
 			{
 				this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
 				this.Yandere.Inventory.ModifiedUniform = true;
-				this.StudentManager.Students[7].TaskPhase = 5;
-				TaskGlobals.SetTaskStatus(7, 2);
+				this.StudentManager.Students[30].TaskPhase = 5;
+				TaskGlobals.SetTaskStatus(30, 2);
 				UnityEngine.Object.Destroy(this.Uniform.gameObject);
 				this.MoveAway = true;
 				this.Check = false;

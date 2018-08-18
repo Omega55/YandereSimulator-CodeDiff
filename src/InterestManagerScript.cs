@@ -17,9 +17,9 @@ public class InterestManagerScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (this.Yandere.Follower != null && this.Yandere.Follower.StudentID == 7)
+		if (this.Yandere.Follower != null && this.Yandere.Follower.StudentID == 30)
 		{
-			if (!ConversationGlobals.GetTopicLearnedByStudent(3, 7) && Vector3.Distance(this.Yandere.Follower.transform.position, this.OccultClub.position) < 5f)
+			if (!ConversationGlobals.GetTopicLearnedByStudent(3, 30) && Vector3.Distance(this.Yandere.Follower.transform.position, this.OccultClub.position) < 5f)
 			{
 				if (!ConversationGlobals.GetTopicDiscovered(3))
 				{
@@ -27,9 +27,9 @@ public class InterestManagerScript : MonoBehaviour
 					ConversationGlobals.SetTopicDiscovered(3, true);
 				}
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
-				ConversationGlobals.SetTopicLearnedByStudent(3, 7, true);
+				ConversationGlobals.SetTopicLearnedByStudent(3, 30, true);
 			}
-			if (!ConversationGlobals.GetTopicLearnedByStudent(14, 7))
+			if (!ConversationGlobals.GetTopicLearnedByStudent(14, 30))
 			{
 				StudentScript studentScript = this.StudentManager.Students[22];
 				StudentScript studentScript2 = this.StudentManager.Students[24];
@@ -42,10 +42,10 @@ public class InterestManagerScript : MonoBehaviour
 						ConversationGlobals.SetTopicDiscovered(14, true);
 					}
 					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
-					ConversationGlobals.SetTopicLearnedByStudent(14, 7, true);
+					ConversationGlobals.SetTopicLearnedByStudent(14, 30, true);
 				}
 			}
-			if (!ConversationGlobals.GetTopicLearnedByStudent(16, 7))
+			if (!ConversationGlobals.GetTopicLearnedByStudent(16, 30))
 			{
 				StudentScript x2 = this.StudentManager.Students[22];
 				StudentScript x3 = this.StudentManager.Students[25];
@@ -57,10 +57,10 @@ public class InterestManagerScript : MonoBehaviour
 						ConversationGlobals.SetTopicDiscovered(16, true);
 					}
 					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
-					ConversationGlobals.SetTopicLearnedByStudent(16, 7, true);
+					ConversationGlobals.SetTopicLearnedByStudent(16, 30, true);
 				}
 			}
-			if (!ConversationGlobals.GetTopicLearnedByStudent(20, 7) && Vector3.Distance(this.Yandere.Follower.transform.position, this.Kitten.position) < 2.5f)
+			if (!ConversationGlobals.GetTopicLearnedByStudent(20, 30) && Vector3.Distance(this.Yandere.Follower.transform.position, this.Kitten.position) < 2.5f)
 			{
 				if (!ConversationGlobals.GetTopicDiscovered(20))
 				{
@@ -68,7 +68,7 @@ public class InterestManagerScript : MonoBehaviour
 					ConversationGlobals.SetTopicDiscovered(20, true);
 				}
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
-				ConversationGlobals.SetTopicLearnedByStudent(20, 7, true);
+				ConversationGlobals.SetTopicLearnedByStudent(20, 30, true);
 			}
 		}
 	}

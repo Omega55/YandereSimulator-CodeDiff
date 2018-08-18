@@ -59,7 +59,7 @@ public class LiquidColliderScript : MonoBehaviour
 		if (other.gameObject.layer == 9)
 		{
 			StudentScript component = other.gameObject.GetComponent<StudentScript>();
-			if (component != null && (component.StudentID == 7 || component.StudentID == component.StudentManager.RivalID))
+			if (component != null && (component.StudentID == 30 || component.StudentID == component.StudentManager.RivalID))
 			{
 				AudioSource.PlayClipAtPoint(this.SplashSound, base.transform.position);
 				UnityEngine.Object.Instantiate<GameObject>(this.Splash, new Vector3(base.transform.position.x, 1.5f, base.transform.position.z), Quaternion.identity);

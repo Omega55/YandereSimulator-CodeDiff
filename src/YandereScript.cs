@@ -498,8 +498,6 @@ public class YandereScript : MonoBehaviour
 
 	public bool Aiming;
 
-	public bool Caught;
-
 	public bool Eating;
 
 	public bool Hiding;
@@ -560,6 +558,8 @@ public class YandereScript : MonoBehaviour
 
 	public bool Sprayed;
 
+	public bool Caught;
+
 	public bool CanMove = true;
 
 	public bool Chased;
@@ -581,6 +581,8 @@ public class YandereScript : MonoBehaviour
 	public bool Egg;
 
 	public bool Won;
+
+	public bool AR;
 
 	public bool DK;
 
@@ -1122,6 +1124,7 @@ public class YandereScript : MonoBehaviour
 		this.CharacterAnimation["f02_yanderePose_00"].weight = 0f;
 		this.CharacterAnimation["f02_cameraPose_00"].weight = 0f;
 		this.CharacterAnimation["f02_gazerSnap_00"].speed = 2f;
+		this.CharacterAnimation["f02_performing_00"].speed = 0.9f;
 		ColorCorrectionCurves[] components = Camera.main.GetComponents<ColorCorrectionCurves>();
 		Vignetting[] components2 = Camera.main.GetComponents<Vignetting>();
 		this.YandereColorCorrection = components[1];
@@ -1224,7 +1227,7 @@ public class YandereScript : MonoBehaviour
 		{
 			this.NoDebug = true;
 		}
-		if (this.StudentManager.Students[33] != null)
+		if (this.StudentManager.Students[11] != null)
 		{
 			UnityEngine.Object.Destroy(base.gameObject);
 		}
@@ -1769,18 +1772,34 @@ public class YandereScript : MonoBehaviour
 			{
 				if (!Input.GetButton("A") && !Input.GetButton("B") && !Input.GetButton("X") && !Input.GetButton("Y") && this.StudentManager.Clock.Timer > 1f && (Input.GetAxis("LT") > 0.5f || Input.GetMouseButton(1)))
 				{
-					if (this.Inventory.RivalPhone && Input.GetButtonDown("LB"))
+					if (this.Inventory.RivalPhone)
 					{
-						this.CharacterAnimation["f02_cameraPose_00"].weight = 0f;
-						if (!this.RivalPhone)
+						if (Input.GetButtonDown("LB"))
 						{
-							this.SmartphoneRenderer.material.mainTexture = this.RivalPhoneTexture;
-							this.RivalPhone = true;
+							this.CharacterAnimation["f02_cameraPose_00"].weight = 0f;
+							if (!this.RivalPhone)
+							{
+								this.SmartphoneRenderer.material.mainTexture = this.RivalPhoneTexture;
+								this.RivalPhone = true;
+							}
+							else
+							{
+								this.SmartphoneRenderer.material.mainTexture = this.YanderePhoneTexture;
+								this.RivalPhone = false;
+							}
+						}
+					}
+					else if (Input.GetButtonDown("LB"))
+					{
+						if (!this.AR)
+						{
+							this.Smartphone.cullingMask |= 1 << LayerMask.NameToLayer("Miyuki");
+							this.AR = true;
 						}
 						else
 						{
-							this.SmartphoneRenderer.material.mainTexture = this.YanderePhoneTexture;
-							this.RivalPhone = false;
+							this.Smartphone.cullingMask &= ~(1 << LayerMask.NameToLayer("Miyuki"));
+							this.AR = false;
 						}
 					}
 					if (Input.GetAxis("LT") > 0.5f)
@@ -1813,10 +1832,15 @@ public class YandereScript : MonoBehaviour
 						this.Mopping = false;
 						this.Aiming = true;
 						this.EmptyHands();
+						this.PhonePromptBar.Panel.enabled = true;
+						this.PhonePromptBar.Show = true;
 						if (this.Inventory.RivalPhone)
 						{
-							this.PhonePromptBar.Panel.enabled = true;
-							this.PhonePromptBar.Show = true;
+							this.PhonePromptBar.Label.text = "SWITCH PHONE";
+						}
+						else
+						{
+							this.PhonePromptBar.Label.text = "AR GAME ON/OFF";
 						}
 						Time.timeScale = 1f;
 					}
@@ -2680,7 +2704,11 @@ public class YandereScript : MonoBehaviour
 			}
 			if (this.ClubActivity)
 			{
-				if (ClubGlobals.Club == ClubType.Art)
+				if (ClubGlobals.Club == ClubType.Drama)
+				{
+					this.CharacterAnimation.Play("f02_performing_00");
+				}
+				else if (ClubGlobals.Club == ClubType.Art)
 				{
 					this.CharacterAnimation.Play("f02_painting_00");
 				}
@@ -2695,6 +2723,10 @@ public class YandereScript : MonoBehaviour
 				else if (ClubGlobals.Club == ClubType.Photography)
 				{
 					this.CharacterAnimation.Play("f02_sit_00");
+				}
+				else if (ClubGlobals.Club == ClubType.Gaming)
+				{
+					this.CharacterAnimation.Play("f02_playingGames_00");
 				}
 			}
 			if (this.Possessed)
@@ -3956,6 +3988,32 @@ public class YandereScript : MonoBehaviour
 				}
 				this.TalkTimer -= Time.deltaTime;
 			}
+			else if (this.Interaction == YandereInteractionType.TaskInquiry)
+			{
+				if (this.TalkTimer == 5f)
+				{
+					this.CharacterAnimation.CrossFade("f02_greet_01");
+					this.Subtitle.UpdateLabel(SubtitleType.TaskInquiry, 0, 5f);
+				}
+				else
+				{
+					if (Input.GetButtonDown("A"))
+					{
+						this.TalkTimer = 0f;
+					}
+					if (this.CharacterAnimation["f02_greet_01"].time >= this.CharacterAnimation["f02_greet_01"].length)
+					{
+						this.CharacterAnimation.CrossFade(this.IdleAnim);
+					}
+					if (this.TalkTimer <= 0f)
+					{
+						this.TargetStudent.Interaction = StudentInteractionType.TaskInquiry;
+						this.TargetStudent.TalkTimer = 10f;
+						this.Interaction = YandereInteractionType.Idle;
+					}
+				}
+				this.TalkTimer -= Time.deltaTime;
+			}
 		}
 	}
 
@@ -3980,7 +4038,7 @@ public class YandereScript : MonoBehaviour
 					this.Drown = false;
 					this.Sanity -= ((PlayerGlobals.PantiesEquipped != 10) ? 20f : 10f) * this.Numbness;
 				}
-				if (this.TargetStudent.StudentID == 34)
+				if (this.TargetStudent.StudentID == 6)
 				{
 					if (this.CharacterAnimation[this.DrownAnim].time > 9f)
 					{
@@ -4571,7 +4629,6 @@ public class YandereScript : MonoBehaviour
 							}
 							else if (Input.GetKeyDown(KeyCode.A))
 							{
-								this.StudentManager.ChangeOka();
 								this.EasterEggMenu.SetActive(false);
 							}
 							else if (Input.GetKeyDown(KeyCode.I))

@@ -36,141 +36,86 @@ public class CleaningManagerScript : MonoBehaviour
 	{
 		switch (StudentID)
 		{
-		case 1:
-			this.Role = 4;
-			this.Spot = this.Toilets[0];
-			break;
-		case 2:
+		case 25:
 			this.Role = 1;
 			this.Spot = this.Windows[1];
 			break;
-		case 3:
-			this.Role = 1;
-			this.Spot = this.Windows[2];
+		default:
+			switch (StudentID)
+			{
+			case 1:
+				this.Role = 4;
+				this.Spot = this.Toilets[0];
+				break;
+			case 2:
+				this.Role = 5;
+				this.Spot = this.Rooftops[1];
+				break;
+			case 3:
+				this.Role = 5;
+				this.Spot = this.Rooftops[2];
+				break;
+			case 4:
+				this.Role = 5;
+				this.Spot = this.Rooftops[5];
+				break;
+			case 5:
+				this.Role = 5;
+				this.Spot = this.Rooftops[3];
+				break;
+			case 6:
+				this.Role = 3;
+				this.Spot = this.StudentManager.Students[StudentID].transform;
+				break;
+			case 11:
+				this.Role = 4;
+				this.Spot = this.Toilets[0];
+				break;
+			}
 			break;
-		case 4:
-			this.Role = 1;
-			this.Spot = this.Windows[3];
-			break;
-		case 5:
-			this.Role = 1;
-			this.Spot = this.Windows[4];
-			break;
-		case 6:
-			this.Role = 1;
-			this.Spot = this.Windows[5];
-			break;
-		case 7:
-			this.Role = 1;
-			this.Spot = this.Windows[6];
-			break;
-		case 8:
+		case 28:
 			this.Role = 2;
 			this.Spot = this.Desks[1];
 			break;
-		case 9:
-			this.Role = 2;
-			this.Spot = this.Desks[2];
-			break;
-		case 10:
-			this.Role = 2;
-			this.Spot = this.Desks[3];
-			break;
-		case 11:
-			this.Role = 2;
-			this.Spot = this.Desks[4];
-			break;
-		case 12:
-			this.Role = 2;
-			this.Spot = this.Desks[5];
-			break;
-		case 13:
-			this.Role = 2;
-			this.Spot = this.Desks[6];
-			break;
-		case 14:
-			this.Role = 5;
-			this.Spot = this.Rooftops[1];
-			break;
-		case 15:
-			this.Role = 5;
-			this.Spot = this.Rooftops[2];
-			break;
-		case 16:
-			this.Role = 5;
-			this.Spot = this.Rooftops[5];
-			break;
-		case 17:
-			this.Role = 5;
-			this.Spot = this.Rooftops[3];
-			break;
-		case 18:
-			this.Role = 5;
-			this.Spot = this.Rooftops[4];
-			break;
-		case 19:
-			this.Role = 5;
-			this.Spot = this.Rooftops[6];
-			break;
-		case 20:
-			this.Role = 3;
-			this.Spot = this.Floors[5];
-			break;
-		case 21:
-			this.Role = 3;
-			this.Spot = this.Floors[6];
-			break;
-		case 22:
-			this.Role = 3;
-			this.Spot = this.Floors[4];
-			break;
-		case 23:
-			this.Role = 3;
-			this.Spot = this.Floors[2];
-			break;
-		case 24:
-			this.Role = 3;
-			this.Spot = this.Floors[3];
-			break;
-		case 25:
-			this.Role = 3;
-			this.Spot = this.Floors[1];
-			break;
-		case 26:
-			this.Role = 4;
-			this.Spot = this.Toilets[6];
-			break;
-		case 27:
-			this.Role = 4;
-			this.Spot = this.Toilets[5];
-			break;
-		case 28:
-			this.Role = 4;
-			this.Spot = this.Toilets[4];
-			break;
-		case 29:
-			this.Role = 4;
-			this.Spot = this.Toilets[3];
-			break;
 		case 30:
-			this.Role = 4;
-			this.Spot = this.Toilets[2];
+			this.Role = 1;
+			this.Spot = this.Windows[2];
 			break;
 		case 31:
 			this.Role = 4;
-			this.Spot = this.Toilets[1];
+			this.Spot = this.Toilets[6];
 			break;
 		case 32:
 			this.Role = 4;
-			this.Spot = this.Toilets[7];
+			this.Spot = this.Toilets[5];
 			break;
 		case 33:
 			this.Role = 4;
-			this.Spot = this.Toilets[0];
+			this.Spot = this.Toilets[4];
 			break;
 		case 34:
+			this.Role = 4;
+			this.Spot = this.Toilets[3];
+			break;
+		case 35:
+			this.Role = 4;
+			this.Spot = this.Toilets[2];
+			break;
+		case 37:
+			this.Role = 5;
+			this.Spot = this.Rooftops[4];
+			break;
+		case 38:
+			this.Role = 5;
+			this.Spot = this.Rooftops[6];
+			break;
+		case 39:
+			this.Role = 4;
+			this.Spot = this.Toilets[1];
+			break;
+		case 40:
 			this.Role = 3;
-			this.Spot = this.StudentManager.Students[34].transform;
+			this.Spot = this.Floors[5];
 			break;
 		case 41:
 			this.Role = 3;
@@ -191,6 +136,26 @@ public class CleaningManagerScript : MonoBehaviour
 		case 45:
 			this.Role = 3;
 			this.Spot = this.Floors[16];
+			break;
+		case 46:
+			this.Role = 3;
+			this.Spot = this.Floors[6];
+			break;
+		case 47:
+			this.Role = 3;
+			this.Spot = this.Floors[4];
+			break;
+		case 48:
+			this.Role = 3;
+			this.Spot = this.Floors[2];
+			break;
+		case 49:
+			this.Role = 3;
+			this.Spot = this.Floors[3];
+			break;
+		case 50:
+			this.Role = 3;
+			this.Spot = this.Floors[1];
 			break;
 		case 56:
 			this.Role = 3;
@@ -271,6 +236,46 @@ public class CleaningManagerScript : MonoBehaviour
 		case 75:
 			this.Role = 3;
 			this.Spot = this.Floors[26];
+			break;
+		case 100:
+			this.Role = 1;
+			this.Spot = this.Windows[3];
+			break;
+		case 101:
+			this.Role = 1;
+			this.Spot = this.Windows[4];
+			break;
+		case 102:
+			this.Role = 1;
+			this.Spot = this.Windows[5];
+			break;
+		case 103:
+			this.Role = 1;
+			this.Spot = this.Windows[6];
+			break;
+		case 104:
+			this.Role = 2;
+			this.Spot = this.Desks[2];
+			break;
+		case 105:
+			this.Role = 2;
+			this.Spot = this.Desks[3];
+			break;
+		case 106:
+			this.Role = 2;
+			this.Spot = this.Desks[4];
+			break;
+		case 107:
+			this.Role = 2;
+			this.Spot = this.Desks[5];
+			break;
+		case 108:
+			this.Role = 2;
+			this.Spot = this.Desks[6];
+			break;
+		case 109:
+			this.Role = 4;
+			this.Spot = this.Toilets[7];
 			break;
 		}
 	}

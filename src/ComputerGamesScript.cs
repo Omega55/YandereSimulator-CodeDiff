@@ -39,6 +39,14 @@ public class ComputerGamesScript : MonoBehaviour
 
 	public Color OriginalColor;
 
+	public string[] Descriptions;
+
+	public UITexture MyTexture;
+
+	public Texture[] Textures;
+
+	public UILabel DescLabel;
+
 	private void Start()
 	{
 		this.GameWindow.gameObject.SetActive(false);
@@ -99,7 +107,7 @@ public class ComputerGamesScript : MonoBehaviour
 		{
 			this.targetRotation = Quaternion.LookRotation(new Vector3(this.ComputerGames[this.GameID].transform.position.x, this.Yandere.transform.position.y, this.ComputerGames[this.GameID].transform.position.z) - this.Yandere.transform.position);
 			this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
-			this.Yandere.MoveTowardsTarget(new Vector3(-25.155f, this.Chairs[this.GameID].transform.position.y, this.Chairs[this.GameID].transform.position.z));
+			this.Yandere.MoveTowardsTarget(new Vector3(24.32233f, 4f, 12.58998f));
 			this.Timer += Time.deltaTime;
 			if (this.Timer > 5f)
 			{
@@ -109,7 +117,6 @@ public class ComputerGamesScript : MonoBehaviour
 				this.Yandere.EmptyHands();
 				this.Gaming = false;
 				this.ActivateBenefit();
-				this.EnableChairs();
 			}
 		}
 		else if (this.Timer < 5f)
@@ -179,12 +186,17 @@ public class ComputerGamesScript : MonoBehaviour
 
 	private void PlayGames()
 	{
-		this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_playingGames_01");
+		this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_playingGames_00");
 		this.Yandere.MyController.radius = 0.1f;
 		this.Yandere.CanMove = false;
 		this.Gaming = true;
-		this.DisableChairs();
 		this.DisableGames();
+		this.UpdateImage();
+	}
+
+	private void UpdateImage()
+	{
+		this.MyTexture.mainTexture = this.Textures[this.Subject];
 	}
 
 	public void DisableGames()
@@ -219,50 +231,47 @@ public class ComputerGamesScript : MonoBehaviour
 
 	private void ActivateBenefit()
 	{
-		if (this.GameID == 1)
+		if (this.Subject == 1)
 		{
-			if (this.Subject == 1)
-			{
-				ClassGlobals.BiologyBonus = 1;
-			}
-			else if (this.Subject == 2)
-			{
-				ClassGlobals.ChemistryBonus = 1;
-			}
-			else if (this.Subject == 3)
-			{
-				ClassGlobals.LanguageBonus = 1;
-			}
-			else if (this.Subject == 4)
-			{
-				ClassGlobals.PsychologyBonus = 1;
-			}
+			ClassGlobals.BiologyBonus = 1;
 		}
-		else if (this.GameID == 2)
+		else if (this.Subject == 2)
+		{
+			ClassGlobals.ChemistryBonus = 1;
+		}
+		else if (this.Subject == 3)
+		{
+			ClassGlobals.LanguageBonus = 1;
+		}
+		else if (this.Subject == 4)
+		{
+			ClassGlobals.PsychologyBonus = 1;
+		}
+		else if (this.Subject == 5)
 		{
 			ClassGlobals.PhysicalBonus = 1;
 		}
-		else if (this.GameID == 3)
+		else if (this.Subject == 6)
 		{
 			PlayerGlobals.SeductionBonus = 1;
 		}
-		else if (this.GameID == 4)
+		else if (this.Subject == 7)
 		{
 			PlayerGlobals.NumbnessBonus = 1;
 		}
-		else if (this.GameID == 5)
+		else if (this.Subject == 8)
 		{
 			PlayerGlobals.SocialBonus = 1;
 		}
-		else if (this.GameID == 6)
+		else if (this.Subject == 9)
 		{
 			PlayerGlobals.StealthBonus = 1;
 		}
-		else if (this.GameID == 7)
+		else if (this.Subject == 10)
 		{
 			PlayerGlobals.SpeedBonus = 1;
 		}
-		else if (this.GameID == 8)
+		else if (this.Subject == 11)
 		{
 			PlayerGlobals.EnlightenmentBonus = 1;
 		}
@@ -276,50 +285,47 @@ public class ComputerGamesScript : MonoBehaviour
 
 	private void DeactivateBenefit()
 	{
-		if (this.GameID == 1)
+		if (this.Subject == 1)
 		{
-			if (this.Subject == 1)
-			{
-				ClassGlobals.BiologyBonus = 0;
-			}
-			else if (this.Subject == 2)
-			{
-				ClassGlobals.ChemistryBonus = 0;
-			}
-			else if (this.Subject == 3)
-			{
-				ClassGlobals.LanguageBonus = 0;
-			}
-			else if (this.Subject == 4)
-			{
-				ClassGlobals.PsychologyBonus = 0;
-			}
+			ClassGlobals.BiologyBonus = 0;
 		}
-		else if (this.GameID == 2)
+		else if (this.Subject == 2)
+		{
+			ClassGlobals.ChemistryBonus = 0;
+		}
+		else if (this.Subject == 3)
+		{
+			ClassGlobals.LanguageBonus = 0;
+		}
+		else if (this.Subject == 4)
+		{
+			ClassGlobals.PsychologyBonus = 0;
+		}
+		else if (this.Subject == 5)
 		{
 			ClassGlobals.PhysicalBonus = 0;
 		}
-		else if (this.GameID == 3)
+		else if (this.Subject == 6)
 		{
 			PlayerGlobals.SeductionBonus = 0;
 		}
-		else if (this.GameID == 4)
+		else if (this.Subject == 7)
 		{
 			PlayerGlobals.NumbnessBonus = 0;
 		}
-		else if (this.GameID == 5)
+		else if (this.Subject == 8)
 		{
 			PlayerGlobals.SocialBonus = 0;
 		}
-		else if (this.GameID == 6)
+		else if (this.Subject == 9)
 		{
 			PlayerGlobals.StealthBonus = 0;
 		}
-		else if (this.GameID == 7)
+		else if (this.Subject == 10)
 		{
 			PlayerGlobals.SpeedBonus = 0;
 		}
-		else if (this.GameID == 8)
+		else if (this.Subject == 11)
 		{
 			PlayerGlobals.EnlightenmentBonus = 0;
 		}
@@ -354,12 +360,13 @@ public class ComputerGamesScript : MonoBehaviour
 	{
 		if (this.Subject < 1)
 		{
-			this.Subject = 4;
+			this.Subject = 11;
 		}
-		else if (this.Subject > 4)
+		else if (this.Subject > 11)
 		{
 			this.Subject = 1;
 		}
-		this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 200f - (float)this.Subject * 100f, this.Highlight.localPosition.z);
+		this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 250f - (float)this.Subject * 50f, this.Highlight.localPosition.z);
+		this.DescLabel.text = this.Descriptions[this.Subject];
 	}
 }

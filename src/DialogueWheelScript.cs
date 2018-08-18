@@ -21,11 +21,17 @@ public class DialogueWheelScript : MonoBehaviour
 
 	public PromptBarScript PromptBar;
 
+	public JukeboxScript Jukebox;
+
 	public YandereScript Yandere;
 
 	public ClockScript Clock;
 
 	public UIPanel Panel;
+
+	public GameObject SwitchTopicsWindow;
+
+	public GameObject TaskDialogueWindow;
 
 	public GameObject ClubLeaderWindow;
 
@@ -533,16 +539,45 @@ public class DialogueWheelScript : MonoBehaviour
 					}
 				}
 			}
+			else if (Input.GetButtonDown("X"))
+			{
+				if (this.TaskDialogueWindow.activeInHierarchy)
+				{
+					this.Impatience.fillAmount = 0f;
+					this.Yandere.Interaction = YandereInteractionType.TaskInquiry;
+					this.Yandere.TalkTimer = 5f;
+					this.Show = false;
+				}
+				else if (this.SwitchTopicsWindow.activeInHierarchy)
+				{
+					this.ClubLeader = !this.ClubLeader;
+					this.HideShadows();
+				}
+			}
 		}
 		this.PreviousPosition = Input.mousePosition;
 	}
 
 	public void HideShadows()
 	{
+		this.Jukebox.Dip = 0.5f;
+		this.TaskDialogueWindow.SetActive(false);
 		this.ClubLeaderWindow.SetActive(false);
-		if (this.Yandere.TargetStudent.Armband.activeInHierarchy && !this.ClubLeader)
+		if (this.ClubLeader)
+		{
+			this.SwitchTopicsWindow.SetActive(true);
+		}
+		else
+		{
+			this.SwitchTopicsWindow.SetActive(false);
+		}
+		if (this.Yandere.TargetStudent.Armband.activeInHierarchy && !this.ClubLeader && this.Yandere.TargetStudent.Club != ClubType.Council)
 		{
 			this.ClubLeaderWindow.SetActive(true);
+		}
+		if (this.Yandere.TargetStudent.Club == ClubType.Bully && TaskGlobals.GetTaskStatus(36) == 1)
+		{
+			this.TaskDialogueWindow.SetActive(true);
 		}
 		this.TaskIcon.spriteName = ((!PlayerGlobals.GetStudentFriend(this.Yandere.TargetStudent.StudentID)) ? "Task" : "Heart");
 		this.Impatience.fillAmount = 0f;
@@ -602,7 +637,7 @@ public class DialogueWheelScript : MonoBehaviour
 		}
 		else if (!PlayerGlobals.GetStudentFriend(this.Yandere.TargetStudent.StudentID))
 		{
-			if (this.Yandere.TargetStudent.StudentID != 6 && this.Yandere.TargetStudent.StudentID != 7 && this.Yandere.TargetStudent.StudentID != 13 && this.Yandere.TargetStudent.StudentID != 14 && this.Yandere.TargetStudent.StudentID != 15 && this.Yandere.TargetStudent.StudentID != 81 && this.Yandere.TargetStudent.StudentID != 33)
+			if (this.Yandere.TargetStudent.StudentID != 11 && this.Yandere.TargetStudent.StudentID != 25 && this.Yandere.TargetStudent.StudentID != 28 && this.Yandere.TargetStudent.StudentID != 30 && this.Yandere.TargetStudent.StudentID != 36 && this.Yandere.TargetStudent.StudentID != 37 && this.Yandere.TargetStudent.StudentID != 38 && this.Yandere.TargetStudent.StudentID != 81)
 			{
 				UISprite uisprite13 = this.Shadow[5];
 				uisprite13.color = new Color(uisprite13.color.r, uisprite13.color.g, uisprite13.color.b, 0.75f);
@@ -616,7 +651,7 @@ public class DialogueWheelScript : MonoBehaviour
 				}
 				if (this.Yandere.TargetStudent.StudentID == 81)
 				{
-					if (this.Clock.Period != 3 || this.Yandere.TargetStudent.DistanceToDestination > 1f)
+					if (this.Yandere.TargetStudent.Actions[this.Yandere.TargetStudent.Phase] != StudentActionType.Wait || this.Yandere.TargetStudent.DistanceToDestination > 1f)
 					{
 						UISprite uisprite15 = this.Shadow[5];
 						uisprite15.color = new Color(uisprite15.color.r, uisprite15.color.g, uisprite15.color.b, 0.75f);
@@ -629,7 +664,7 @@ public class DialogueWheelScript : MonoBehaviour
 				}
 			}
 		}
-		else if (this.Yandere.TargetStudent.StudentID != 7 && this.Yandere.TargetStudent.StudentID != 13)
+		else if (this.Yandere.TargetStudent.StudentID != 28 && this.Yandere.TargetStudent.StudentID != 30)
 		{
 			UISprite uisprite17 = this.Shadow[5];
 			uisprite17.color = new Color(uisprite17.color.r, uisprite17.color.g, uisprite17.color.b, 0.75f);
@@ -736,6 +771,7 @@ public class DialogueWheelScript : MonoBehaviour
 			this.Yandere.TargetStudent.WaitTimer = 1f;
 			if (this.Yandere.TargetStudent.enabled)
 			{
+				Debug.Log(this.Yandere.TargetStudent.Name + " has been told to travel to the destination of their current phase.");
 				this.Yandere.TargetStudent.CurrentDestination = this.Yandere.TargetStudent.Destinations[this.Yandere.TargetStudent.Phase];
 				this.Yandere.TargetStudent.Pathfinding.target = this.Yandere.TargetStudent.Destinations[this.Yandere.TargetStudent.Phase];
 				if (this.Yandere.TargetStudent.Actions[this.Yandere.TargetStudent.Phase] == StudentActionType.Patrol)
@@ -758,6 +794,7 @@ public class DialogueWheelScript : MonoBehaviour
 			this.Yandere.TargetStudent.Waiting = true;
 			this.Yandere.TargetStudent = null;
 		}
+		this.Jukebox.Dip = 1f;
 		this.AskingFavor = false;
 		this.Matchmaking = false;
 		this.ClubLeader = false;

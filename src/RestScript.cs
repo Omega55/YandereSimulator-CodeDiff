@@ -15,7 +15,7 @@ public class RestScript : MonoBehaviour
 			{
 				this.Prompt.Circle[0].fillAmount = 1f;
 			}
-			else if (this.Portal.Clock.Period < 7)
+			else if (this.Portal.Clock.Period < 5)
 			{
 				this.Portal.Reputation.PendingRep -= 10f;
 				this.Portal.Reputation.UpdateRep();

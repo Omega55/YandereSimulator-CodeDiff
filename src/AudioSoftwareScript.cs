@@ -45,7 +45,7 @@ public class AudioSoftwareScript : MonoBehaviour
 		}
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_playingGames_01");
+			this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_playingGames_00");
 			this.Yandere.MyController.radius = 0.1f;
 			this.Yandere.CanMove = false;
 			base.GetComponent<AudioSource>().Play();

@@ -471,9 +471,13 @@ public class PoliceScript : MonoBehaviour
 				{
 					this.ResultsLabels[0].text = "Yandere-chan attempts to attend class without disposing of a corpse.";
 				}
-				else if (this.Yandere.Resting)
+				else if (this.Yandere.Resting && this.Corpses > 0)
 				{
 					this.ResultsLabels[0].text = "Yandere-chan rests without disposing of a corpse.";
+				}
+				else if (this.Yandere.Resting)
+				{
+					this.ResultsLabels[0].text = "Yandere-chan recovers from her injuries, then stands near the school gate and waits for Senpai to leave school.";
 				}
 				else
 				{

@@ -30,7 +30,7 @@ public class FoldedUniformScript : MonoBehaviour
 	{
 		if (this.Clean)
 		{
-			this.InPosition = (this.Yandere.transform.position.x > 43f && this.Yandere.transform.position.x < 51f && this.Yandere.transform.position.z > 2f && this.Yandere.transform.position.z < 14f);
+			this.InPosition = (this.Yandere.transform.position.x > 10f && this.Yandere.transform.position.x < 22f && this.Yandere.transform.position.z > 42f && this.Yandere.transform.position.z < 50f);
 			this.Prompt.HideButton[0] = (!this.Yandere.CensorSteam[0].activeInHierarchy || this.Yandere.Bloodiness != 0f || !this.InPosition);
 			if (this.Prompt.Circle[0].fillAmount == 0f)
 			{

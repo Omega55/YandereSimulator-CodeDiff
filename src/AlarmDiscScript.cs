@@ -103,7 +103,7 @@ public class AlarmDiscScript : MonoBehaviour
 						{
 							this.StudentIsBusy = true;
 						}
-						if ((this.Student.StudentID == 22 || this.Student.StudentID == 24) && this.Student.StudentManager.ConvoManager.Confirmed)
+						if ((this.Student.StudentID == 47 || this.Student.StudentID == 49) && this.Student.StudentManager.ConvoManager.Confirmed)
 						{
 							this.StudentIsBusy = true;
 						}

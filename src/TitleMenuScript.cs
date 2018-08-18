@@ -154,7 +154,7 @@ public class TitleMenuScript : MonoBehaviour
 			this.TurnLoveSick();
 		}
 		Time.timeScale = 1f;
-		if (this.JSON.Students[33].Name != "Reserved")
+		if (this.JSON.Students[11].Name != "Reserved")
 		{
 			if (Application.CanStreamedLevelBeLoaded("FunScene"))
 			{

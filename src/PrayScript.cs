@@ -59,7 +59,7 @@ public class PrayScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (StudentGlobals.GetStudentDead(16))
+		if (StudentGlobals.GetStudentDead(39))
 		{
 			this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, 0.5f);
 		}
@@ -86,26 +86,26 @@ public class PrayScript : MonoBehaviour
 	{
 		if (!this.FemaleVictimChecked)
 		{
-			if (this.StudentManager.Students[16] != null && !this.StudentManager.Students[16].Alive)
+			if (this.StudentManager.Students[39] != null && !this.StudentManager.Students[39].Alive)
 			{
 				this.FemaleVictimChecked = true;
 				this.Victims++;
 			}
 		}
-		else if (this.StudentManager.Students[16] == null)
+		else if (this.StudentManager.Students[39] == null)
 		{
 			this.FemaleVictimChecked = false;
 			this.Victims--;
 		}
 		if (!this.MaleVictimChecked)
 		{
-			if (this.StudentManager.Students[15] != null && !this.StudentManager.Students[15].Alive)
+			if (this.StudentManager.Students[37] != null && !this.StudentManager.Students[37].Alive)
 			{
 				this.MaleVictimChecked = true;
 				this.Victims++;
 			}
 		}
-		else if (this.StudentManager.Students[15] == null)
+		else if (this.StudentManager.Students[37] == null)
 		{
 			this.MaleVictimChecked = false;
 			this.Victims--;
@@ -120,13 +120,13 @@ public class PrayScript : MonoBehaviour
 			this.GenderPrompt.Circle[0].fillAmount = 1f;
 			if (!this.SpawnMale)
 			{
-				this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, (!StudentGlobals.GetStudentDead(15)) ? 1f : 0.5f);
+				this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, (!StudentGlobals.GetStudentDead(37)) ? 1f : 0.5f);
 				this.GenderPrompt.Label[0].text = "     Male Victim";
 				this.SpawnMale = true;
 			}
 			else
 			{
-				this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, (!StudentGlobals.GetStudentDead(16)) ? 1f : 0.5f);
+				this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, (!StudentGlobals.GetStudentDead(39)) ? 1f : 0.5f);
 				this.GenderPrompt.Label[0].text = "     Female Victim";
 				this.SpawnMale = false;
 			}
@@ -152,12 +152,12 @@ public class PrayScript : MonoBehaviour
 				this.PromptBar.Label[4].text = "Choose";
 				this.PromptBar.UpdateButtons();
 				this.PromptBar.Show = true;
-				this.StudentNumber = ((!this.SpawnMale) ? 16 : 17);
-				if (this.StudentManager.Students[16] != null && !this.StudentManager.Students[16].gameObject.activeInHierarchy)
+				this.StudentNumber = ((!this.SpawnMale) ? 39 : 37);
+				if (this.StudentManager.Students[39] != null && !this.StudentManager.Students[39].gameObject.activeInHierarchy)
 				{
 					this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, 0.5f);
 				}
-				if (this.StudentManager.Students[17] != null && !this.StudentManager.Students[17].gameObject.activeInHierarchy)
+				if (this.StudentManager.Students[37] != null && !this.StudentManager.Students[37].gameObject.activeInHierarchy)
 				{
 					this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, 0.5f);
 				}
@@ -227,12 +227,12 @@ public class PrayScript : MonoBehaviour
 						if (this.SpawnMale)
 						{
 							this.MaleVictimChecked = false;
-							this.StudentID = 15;
+							this.StudentID = 37;
 						}
 						else
 						{
 							this.FemaleVictimChecked = false;
-							this.StudentID = 16;
+							this.StudentID = 39;
 						}
 						if (this.StudentManager.Students[this.StudentID] != null)
 						{

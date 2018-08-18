@@ -63,6 +63,8 @@ public class ClockScript : MonoBehaviour
 
 	public float Hour;
 
+	public PhaseOfDay Phase;
+
 	public int Period;
 
 	public int ID;
@@ -219,6 +221,8 @@ public class ClockScript : MonoBehaviour
 			if (this.Period < 3)
 			{
 				this.PeriodLabel.text = "LUNCH TIME";
+				this.StudentManager.DramaPhase = 0;
+				this.StudentManager.UpdateDrama();
 				this.DeactivateTrespassZones();
 				this.Period++;
 			}
@@ -251,6 +255,8 @@ public class ClockScript : MonoBehaviour
 		else if (this.Period < 6)
 		{
 			this.PeriodLabel.text = "AFTER SCHOOL";
+			this.StudentManager.DramaPhase = 0;
+			this.StudentManager.UpdateDrama();
 			this.Period++;
 		}
 		if (!this.IgnorePhotographyClub && this.HourTime > 16.75f && this.StudentManager.SleuthPhase < 4)

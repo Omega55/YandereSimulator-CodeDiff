@@ -23,5 +23,6 @@ public enum StudentInteractionType
 	ChangingAppearance,
 	Court,
 	Gift,
-	Feeding
+	Feeding,
+	TaskInquiry
 }

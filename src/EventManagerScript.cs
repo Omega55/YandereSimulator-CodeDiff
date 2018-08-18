@@ -56,7 +56,7 @@ public class EventManagerScript : MonoBehaviour
 		{
 			if (this.EventStudent[1] == null)
 			{
-				this.EventStudent[1] = this.StudentManager.Students[6];
+				this.EventStudent[1] = this.StudentManager.Students[25];
 			}
 			else if (!this.EventStudent[1].Alive)
 			{
@@ -65,7 +65,7 @@ public class EventManagerScript : MonoBehaviour
 			}
 			if (this.EventStudent[2] == null)
 			{
-				this.EventStudent[2] = this.StudentManager.Students[7];
+				this.EventStudent[2] = this.StudentManager.Students[30];
 			}
 			else if (!this.EventStudent[2].Alive)
 			{

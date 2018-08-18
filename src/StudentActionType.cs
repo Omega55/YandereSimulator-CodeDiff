@@ -31,5 +31,8 @@ public enum StudentActionType
 	Sulk,
 	Sleuth,
 	Stalk,
-	Sketch
+	Sketch,
+	Sunbathe,
+	Shock,
+	Miyuki
 }

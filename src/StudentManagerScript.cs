@@ -47,6 +47,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public LoveManagerScript LoveManager;
 
+	public MiyukiEnemyScript MiyukiEnemy;
+
 	public TaskManagerScript TaskManager;
 
 	public ReputationScript Reputation;
@@ -151,13 +153,27 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform[] LockerPositions;
 
+	public Transform[] BackstageSpots;
+
 	public Transform[] SpawnPositions;
 
 	public Transform[] GraffitiSpots;
 
+	public Transform[] SunbatheSpots;
+
 	public Transform[] PinDownSpots;
 
+	public Transform[] ShockedSpots;
+
+	public Transform[] MiyukiSpots;
+
+	public Transform[] SocialSeats;
+
+	public Transform[] SocialSpots;
+
 	public Transform[] SupplySpots;
+
+	public Transform[] DramaSpots;
 
 	public Transform[] BullySpots;
 
@@ -166,6 +182,8 @@ public class StudentManagerScript : MonoBehaviour
 	public Transform[] SulkSpots;
 
 	public Transform[] FleeSpots;
+
+	public Transform[] Plates;
 
 	public bool[] SeatsTaken11;
 
@@ -180,6 +198,10 @@ public class StudentManagerScript : MonoBehaviour
 	public bool[] SeatsTaken32;
 
 	public bool[] NoBully;
+
+	public Quaternion[] OriginalClubRotations;
+
+	public Vector3[] OriginalClubPositions;
 
 	public Collider RivalDeskCollider;
 
@@ -238,6 +260,8 @@ public class StudentManagerScript : MonoBehaviour
 	public Transform ToolTarget;
 
 	public Transform BatheSpot;
+
+	public Transform MiyukiCat;
 
 	public Transform MournSpot;
 
@@ -301,6 +325,10 @@ public class StudentManagerScript : MonoBehaviour
 
 	public int SleuthPhase = 1;
 
+	public int DramaPhase = 1;
+
+	public int ObstacleID = 6;
+
 	public int SuitorID = 13;
 
 	public int VictimID;
@@ -312,6 +340,8 @@ public class StudentManagerScript : MonoBehaviour
 	public int SpawnID;
 
 	public int ID;
+
+	public bool ReactedToGameLeader;
 
 	public bool MurderTakingPlace;
 
@@ -364,6 +394,8 @@ public class StudentManagerScript : MonoBehaviour
 	public float ChangeTimer;
 
 	public float SleuthTimer;
+
+	public float DramaTimer;
 
 	public float LowestRep;
 
@@ -450,6 +482,11 @@ public class StudentManagerScript : MonoBehaviour
 		this.SeatsTaken21[15] = true;
 		this.SeatsTaken12[15] = true;
 		this.SeatsTaken11[15] = true;
+		this.SeatsTaken32[8] = true;
+		this.SeatsTaken22[8] = true;
+		this.SeatsTaken12[8] = true;
+		this.SeatsTaken21[8] = true;
+		this.SeatsTaken11[8] = true;
 		this.ID = 1;
 		while (this.ID < this.JSON.Students.Length)
 		{
@@ -560,10 +597,6 @@ public class StudentManagerScript : MonoBehaviour
 				this.Graffiti[3].SetActive(false);
 				this.Graffiti[4].SetActive(false);
 				this.Graffiti[5].SetActive(false);
-				if (this.Students[34] != null)
-				{
-					this.RivalChan.SetActive(false);
-				}
 			}
 		}
 		else
@@ -634,6 +667,20 @@ public class StudentManagerScript : MonoBehaviour
 				{
 					this.QualityManager.RimLight();
 				}
+				this.ID = 26;
+				while (this.ID < 31)
+				{
+					if (this.Students[this.ID] != null)
+					{
+						this.OriginalClubPositions[this.ID - 25] = this.Clubs.List[this.ID].position;
+						this.OriginalClubRotations[this.ID - 25] = this.Clubs.List[this.ID].rotation;
+					}
+					this.ID++;
+				}
+				if (!this.TakingPortraits)
+				{
+					this.TaskManager.UpdateTaskStatus();
+				}
 			}
 		}
 		else if (this.NPCsSpawned < this.StudentsTotal + this.TeachersTotal)
@@ -658,10 +705,6 @@ public class StudentManagerScript : MonoBehaviour
 				this.NewStudent.GetComponent<CosmeticScript>().TakingPortrait = true;
 				this.NewStudent.GetComponent<CosmeticScript>().Randomize = this.Randomize;
 				this.NewStudent.GetComponent<CosmeticScript>().JSON = this.JSON;
-				this.NewPortraitChan = this.NewStudent.GetComponent<PortraitChanScript>();
-				this.NewPortraitChan.StudentID = this.NPCsSpawned + 1;
-				this.NewPortraitChan.StudentManager = this;
-				this.NewPortraitChan.JSON = this.JSON;
 				if (!this.Randomize)
 				{
 					this.NPCsSpawned++;
@@ -698,7 +741,10 @@ public class StudentManagerScript : MonoBehaviour
 			if (this.PinningDown && this.Witnesses < 4)
 			{
 				Debug.Log("Students were going to pin Yandere-chan down, but now there are less than 4 witnesses, so it's not going to happen.");
-				this.Yandere.CanMove = true;
+				if (!this.Yandere.Chased && this.Yandere.Chasers == 0)
+				{
+					this.Yandere.CanMove = true;
+				}
 				this.PinningDown = false;
 				this.PinPhase = 0;
 			}
@@ -819,7 +865,7 @@ public class StudentManagerScript : MonoBehaviour
 	public void SpawnStudent(int spawnID)
 	{
 		bool flag = false;
-		if (spawnID == 33 || spawnID == 34 || spawnID == 35)
+		if (spawnID > 10 && spawnID < 21)
 		{
 			flag = true;
 		}
@@ -893,7 +939,6 @@ public class StudentManagerScript : MonoBehaviour
 			this.OccupySeat();
 		}
 		this.NPCsSpawned++;
-		this.TaskManager.UpdateTaskStatus();
 		this.ForceSpawn = false;
 	}
 
@@ -1131,8 +1176,12 @@ public class StudentManagerScript : MonoBehaviour
 					studentScript.OccultBook.SetActive(false);
 					studentScript.SmartPhone.SetActive(false);
 					studentScript.Pathfinding.speed = 0f;
+					studentScript.ClubActivityPhase = 0;
+					studentScript.ClubTimer = 0f;
+					studentScript.Distracting = false;
 					studentScript.Distracted = false;
 					studentScript.Pushable = false;
+					studentScript.CanTalk = true;
 					studentScript.Routine = true;
 					studentScript.Hurry = false;
 					studentScript.Safe = false;
@@ -1167,6 +1216,14 @@ public class StudentManagerScript : MonoBehaviour
 						studentScript.Character.transform.localPosition = new Vector3(0f, 0f, 0f);
 						studentScript.Cosmetic.Goggles[studentScript.StudentID].GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, 0f);
 						studentScript.Cosmetic.MaleHair[studentScript.Cosmetic.Hairstyle].GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, 0f);
+					}
+					if (studentScript.MyPlate != null && studentScript.MyPlate.transform.parent == studentScript.RightHand)
+					{
+						studentScript.MyPlate.transform.parent = null;
+						studentScript.MyPlate.transform.position = studentScript.OriginalPlatePosition;
+						studentScript.MyPlate.transform.rotation = studentScript.OriginalPlateRotation;
+						studentScript.IdleAnim = studentScript.OriginalIdleAnim;
+						studentScript.WalkAnim = studentScript.OriginalWalkAnim;
 					}
 				}
 				else if (this.ID != this.GymTeacherID && this.ID != this.NurseID)
@@ -1220,6 +1277,7 @@ public class StudentManagerScript : MonoBehaviour
 					studentScript.SmartPhone.SetActive(false);
 					studentScript.OccultBook.SetActive(false);
 					studentScript.Pathfinding.speed = 1f;
+					studentScript.ClubActivityPhase = 0;
 					studentScript.Distracted = false;
 					studentScript.Spawned = true;
 					studentScript.Routine = true;
@@ -1729,15 +1787,6 @@ public class StudentManagerScript : MonoBehaviour
 		}
 	}
 
-	public void ChangeOka()
-	{
-		StudentScript studentScript = this.Students[26];
-		if (studentScript != null)
-		{
-			studentScript.AttachRiggedAccessory();
-		}
-	}
-
 	public void RemovePapersFromDesks()
 	{
 		this.ID = 1;
@@ -1929,6 +1978,64 @@ public class StudentManagerScript : MonoBehaviour
 					this.Students[this.ID].CurrentDestination = this.Students[this.ID].SleuthTarget;
 				}
 				this.Students[this.ID].SmartPhone.SetActive(true);
+				this.Students[this.ID].SpeechLines.Stop();
+			}
+			this.ID++;
+		}
+	}
+
+	public void UpdateDrama()
+	{
+		this.DramaPhase++;
+		Debug.Log("DramaPhase is: " + this.DramaPhase);
+		this.ID = 26;
+		while (this.ID < 31)
+		{
+			if (this.Students[this.ID] != null)
+			{
+				if (this.DramaPhase == 1)
+				{
+					this.Clubs.List[this.ID].position = this.OriginalClubPositions[this.ID - 25];
+					this.Clubs.List[this.ID].rotation = this.OriginalClubRotations[this.ID - 25];
+					this.Students[this.ID].ClubAnim = this.Students[this.ID].OriginalClubAnim;
+				}
+				else if (this.DramaPhase == 2)
+				{
+					this.Clubs.List[this.ID].position = this.DramaSpots[this.ID - 25].position;
+					this.Clubs.List[this.ID].rotation = this.DramaSpots[this.ID - 25].rotation;
+					if (this.ID == 26)
+					{
+						this.Students[this.ID].ClubAnim = this.Students[this.ID].ActAnim;
+					}
+					else if (this.ID == 27)
+					{
+						this.Students[this.ID].ClubAnim = this.Students[this.ID].ThinkAnim;
+					}
+					else if (this.ID == 28)
+					{
+						this.Students[this.ID].ClubAnim = this.Students[this.ID].ThinkAnim;
+					}
+					else if (this.ID == 29)
+					{
+						this.Students[this.ID].ClubAnim = this.Students[this.ID].ActAnim;
+					}
+					else if (this.ID == 30)
+					{
+						this.Students[this.ID].ClubAnim = this.Students[this.ID].ThinkAnim;
+					}
+				}
+				else if (this.DramaPhase == 3)
+				{
+					this.Clubs.List[this.ID].position = this.BackstageSpots[this.ID - 25].position;
+					this.Clubs.List[this.ID].rotation = this.BackstageSpots[this.ID - 25].rotation;
+				}
+				else if (this.DramaPhase == 4)
+				{
+					this.DramaPhase = 1;
+					this.UpdateDrama();
+				}
+				this.Students[this.ID].DistanceToDestination = 100f;
+				this.Students[this.ID].SmartPhone.SetActive(false);
 				this.Students[this.ID].SpeechLines.Stop();
 			}
 			this.ID++;

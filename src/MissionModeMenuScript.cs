@@ -210,16 +210,8 @@ public class MissionModeMenuScript : MonoBehaviour
 				this.CustomObjectives[l].alpha = 0.5f;
 			}
 		}
-		if (!OptionGlobals.HighPopulation)
-		{
-			this.CustomPopulationLabel.text = "High School Population: Off";
-			this.PopulationLabel.text = "High School Population: Off";
-		}
-		else
-		{
-			this.CustomPopulationLabel.text = "High School Population: On";
-			this.PopulationLabel.text = "High School Population: On";
-		}
+		this.CustomPopulationLabel.text = string.Empty;
+		this.PopulationLabel.text = string.Empty;
 	}
 
 	private void Update()
@@ -341,7 +333,7 @@ public class MissionModeMenuScript : MonoBehaviour
 					this.PromptBar.Label[0].text = "Accept";
 					this.PromptBar.Label[1].text = "Return";
 					this.PromptBar.Label[2].text = "Generate";
-					this.PromptBar.Label[3].text = "Population";
+					this.PromptBar.Label[3].text = string.Empty;
 					this.PromptBar.Label[4].text = "Nemesis";
 					this.PromptBar.Label[5].text = "Change Difficulty";
 					this.PromptBar.UpdateButtons();
@@ -370,7 +362,7 @@ public class MissionModeMenuScript : MonoBehaviour
 					this.PromptBar.Label[0].text = "Toggle";
 					this.PromptBar.Label[1].text = "Return";
 					this.PromptBar.Label[2].text = "Change";
-					this.PromptBar.Label[3].text = "Population";
+					this.PromptBar.Label[3].text = string.Empty;
 					this.PromptBar.Label[4].text = "Selection";
 					this.PromptBar.Label[5].text = "Selection";
 					this.PromptBar.UpdateButtons();
@@ -742,7 +734,7 @@ public class MissionModeMenuScript : MonoBehaviour
 				{
 					this.GetNumbers();
 					bool flag = false;
-					if ((this.TargetNumber > 32 && this.TargetNumber < 41) || (this.TargetNumber > 45 && this.TargetNumber < 56) || this.TargetNumber > 97)
+					if ((this.TargetNumber > 5 && this.TargetNumber < 21) || (this.TargetNumber > 50 && this.TargetNumber < 56) || this.TargetNumber > 97)
 					{
 						flag = true;
 					}
@@ -754,17 +746,9 @@ public class MissionModeMenuScript : MonoBehaviour
 					{
 						this.ErrorLabel.text = "Invalid Mission ID (Target cannot be Senpai)";
 					}
-					else if (this.TargetNumber == 33)
+					else if (flag)
 					{
-						this.ErrorLabel.text = "Invalid Mission ID (Target cannot be Osana...yet.)";
-					}
-					else if (this.TargetNumber == 34)
-					{
-						this.ErrorLabel.text = "Invalid Mission ID (Target cannot be Student #34...yet.)";
-					}
-					else if (this.PopulationNumber == 0 && flag)
-					{
-						this.ErrorLabel.text = "Invalid Mission ID (Population too low)";
+						this.ErrorLabel.text = "Invalid Mission ID (That student has not been implemented yet)";
 					}
 					else if (this.WeaponNumber == 11)
 					{
@@ -786,9 +770,9 @@ public class MissionModeMenuScript : MonoBehaviour
 					{
 						this.ErrorLabel.text = "Invalid Mission ID (Nemesis level too high)";
 					}
-					else if (this.PopulationNumber > 1)
+					else if (this.PopulationNumber > 0)
 					{
-						this.ErrorLabel.text = "Invalid Mission ID (Final digit must be '0' or '1')";
+						this.ErrorLabel.text = "Invalid Mission ID (Final digit must be '0')";
 					}
 					else if (this.Condition5Number > 1 || this.Condition6Number > 1 || this.Condition7Number > 1 || this.Condition8Number > 1 || this.Condition9Number > 1 || this.Condition10Number > 1 || this.Condition11Number > 1 || this.Condition12Number > 1 || this.Condition13Number > 1 || this.Condition14Number > 1 || this.Condition15Number > 1)
 					{
@@ -923,7 +907,7 @@ public class MissionModeMenuScript : MonoBehaviour
 					this.PromptBar.Label[0].text = "Toggle";
 					this.PromptBar.Label[1].text = "Return";
 					this.PromptBar.Label[2].text = "Change";
-					this.PromptBar.Label[3].text = "Population";
+					this.PromptBar.Label[3].text = string.Empty;
 					this.PromptBar.Label[4].text = "Selection";
 					this.PromptBar.Label[5].text = "Selection";
 					this.PromptBar.UpdateButtons();
@@ -995,14 +979,14 @@ public class MissionModeMenuScript : MonoBehaviour
 		if (this.Phase != 5)
 		{
 			this.TargetID = UnityEngine.Random.Range(2, 90);
-			if ((this.TargetID > 32 && this.TargetID < 41) || (this.TargetID > 45 && this.TargetID < 56))
+			if ((this.TargetNumber > 5 && this.TargetNumber < 21) || (this.TargetNumber > 50 && this.TargetNumber < 56))
 			{
 				this.ChooseTarget();
 			}
 		}
 		else
 		{
-			if (!OptionGlobals.HighPopulation && ((this.TargetID > 32 && this.TargetID < 41) || (this.TargetID > 45 && this.TargetID < 56)))
+			if ((this.TargetNumber > 5 && this.TargetNumber < 21) || (this.TargetNumber > 50 && this.TargetNumber < 56))
 			{
 				if (Input.GetButtonDown("A"))
 				{
@@ -1032,7 +1016,7 @@ public class MissionModeMenuScript : MonoBehaviour
 			".png"
 		});
 		WWW www = new WWW(url);
-		if ((this.TargetID > 32 && this.TargetID < 41) || (this.TargetID > 45 && this.TargetID < 56))
+		if ((this.TargetNumber > 5 && this.TargetNumber < 21) || (this.TargetNumber > 50 && this.TargetNumber < 56))
 		{
 			this.TargetPortrait.mainTexture = this.BlankPortrait;
 		}
@@ -1051,7 +1035,7 @@ public class MissionModeMenuScript : MonoBehaviour
 		}
 		this.CustomDescs[1].text = "Kill " + this.TargetName + ".";
 		this.Descs[1].text = "Kill " + this.TargetName + ".";
-		if (this.TargetID == 33 || this.TargetID == 34 || this.TargetID == 35)
+		if (this.TargetID > 10 && this.TargetID < 21)
 		{
 			if (this.Phase == 5)
 			{
@@ -1213,7 +1197,7 @@ public class MissionModeMenuScript : MonoBehaviour
 	public void UpdateGraphics()
 	{
 		this.TargetID = MissionModeGlobals.MissionTarget;
-		if ((this.TargetNumber > 32 && this.TargetNumber < 41) || (this.TargetNumber > 45 && this.TargetNumber < 56))
+		if ((this.TargetNumber > 5 && this.TargetNumber < 21) || (this.TargetNumber > 50 && this.TargetNumber < 56))
 		{
 			this.TargetPortrait.mainTexture = this.BlankPortrait;
 			this.TargetName = MissionModeGlobals.MissionTargetName;
@@ -1272,22 +1256,9 @@ public class MissionModeMenuScript : MonoBehaviour
 
 	private void UpdatePopulation()
 	{
-		if (!OptionGlobals.HighPopulation)
-		{
-			this.CustomPopulationLabel.text = "High School Population: On";
-			this.PopulationLabel.text = "High School Population: On";
-			OptionGlobals.HighPopulation = true;
-		}
-		else
-		{
-			this.CustomPopulationLabel.text = "High School Population: Off";
-			this.PopulationLabel.text = "High School Population: Off";
-			OptionGlobals.HighPopulation = false;
-			if ((this.TargetNumber > 32 && this.TargetNumber < 41) || (this.TargetNumber > 45 && this.TargetNumber < 56))
-			{
-				this.ChooseTarget();
-			}
-		}
+		this.CustomPopulationLabel.text = string.Empty;
+		this.PopulationLabel.text = string.Empty;
+		OptionGlobals.HighPopulation = false;
 	}
 
 	private void UpdateObjectiveHighlight()
@@ -1387,7 +1358,7 @@ public class MissionModeMenuScript : MonoBehaviour
 			this.ConditionString[16],
 			this.ConditionString[17],
 			this.NemesisDifficulty.ToString(),
-			((!OptionGlobals.HighPopulation) ? 0 : 1).ToString()
+			"0"
 		});
 		this.MissionIDLabel.text = this.MissionID;
 	}
@@ -1395,13 +1366,11 @@ public class MissionModeMenuScript : MonoBehaviour
 	private void StartMission()
 	{
 		base.GetComponent<AudioSource>().PlayOneShot(this.InfoLines[6]);
-		bool highPopulation = OptionGlobals.HighPopulation;
 		Globals.DeleteAll();
 		SchoolGlobals.SchoolAtmosphere = 1f - (float)this.Difficulty * 0.1f;
 		MissionModeGlobals.NemesisDifficulty = this.NemesisDifficulty;
 		MissionModeGlobals.MissionTargetName = this.TargetName;
 		MissionModeGlobals.MissionDifficulty = this.Difficulty;
-		OptionGlobals.HighPopulation = highPopulation;
 		MissionModeGlobals.MissionTarget = this.TargetID;
 		SchoolGlobals.SchoolAtmosphereSet = true;
 		MissionModeGlobals.MissionMode = true;

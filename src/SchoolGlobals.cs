@@ -17,6 +17,8 @@ public static class SchoolGlobals
 
 	private const string Str_SchoolAtmosphereSet = "SchoolAtmosphereSet";
 
+	private const string Str_ReactedToGameLeader = "ReactedToGameLeader";
+
 	private const string Str_SCP = "SCP";
 
 	private const string Str_HighSecurity = "HighSecurity";
@@ -115,6 +117,18 @@ public static class SchoolGlobals
 		}
 	}
 
+	public static bool ReactedToGameLeader
+	{
+		get
+		{
+			return GlobalsHelper.GetBool("ReactedToGameLeader");
+		}
+		set
+		{
+			GlobalsHelper.SetBool("ReactedToGameLeader", value);
+		}
+	}
+
 	public static bool SCP
 	{
 		get
@@ -148,6 +162,7 @@ public static class SchoolGlobals
 		Globals.Delete("RoofFence");
 		Globals.Delete("SchoolAtmosphere");
 		Globals.Delete("SchoolAtmosphereSet");
+		Globals.Delete("ReactedToGameLeader");
 		Globals.Delete("SCP");
 	}
 }

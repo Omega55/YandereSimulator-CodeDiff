@@ -396,7 +396,7 @@ public class TalkingScript : MonoBehaviour
 						{
 							this.S.Pathfinding.target = this.S.Yandere.transform;
 							this.S.Prompt.Label[0].text = "     Stop";
-							if (this.S.StudentID == 7)
+							if (this.S.StudentID == 30)
 							{
 								this.S.StudentManager.FollowerLookAtTarget.position = this.S.DefaultTarget.position;
 								this.S.StudentManager.LoveManager.Follower = this.S;
@@ -446,11 +446,6 @@ public class TalkingScript : MonoBehaviour
 					if (this.S.TalkTimer <= 0f)
 					{
 						this.S.DialogueWheel.End();
-						if (this.S.GoAway)
-						{
-							this.S.CurrentDestination = this.S.StudentManager.GoAwaySpots.List[this.S.StudentID];
-							this.S.Pathfinding.target = this.S.StudentManager.GoAwaySpots.List[this.S.StudentID];
-						}
 					}
 				}
 				this.S.TalkTimer -= Time.deltaTime;
@@ -1008,6 +1003,28 @@ public class TalkingScript : MonoBehaviour
 					this.S.StudentManager.UpdateStudents();
 				}
 			}
+			else if (this.S.Interaction == StudentInteractionType.TaskInquiry)
+			{
+				if (this.S.TalkTimer == 10f)
+				{
+					this.S.CharacterAnimation.CrossFade("f02_embar_00");
+					this.S.Subtitle.UpdateLabel(SubtitleType.TaskInquiry, this.S.StudentID - 80, 10f);
+				}
+				else if (Input.GetButtonDown("A"))
+				{
+					this.S.TalkTimer = 0f;
+				}
+				if (this.S.Character.GetComponent<Animation>()["f02_embar_00"].time >= this.S.Character.GetComponent<Animation>()["f02_embar_00"].length)
+				{
+					this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
+				}
+				this.S.TalkTimer -= Time.deltaTime;
+				if (this.S.TalkTimer <= 0f)
+				{
+					this.S.StudentManager.TaskManager.GirlsQuestioned[this.S.StudentID - 80] = true;
+					this.S.DialogueWheel.End();
+				}
+			}
 			if (this.S.StudentID == 41 && !this.S.DialogueWheel.ClubLeader && this.S.TalkTimer > 0f)
 			{
 				this.S.Subtitle.UpdateLabel(SubtitleType.Impatience, 5, 5f);
@@ -1036,6 +1053,13 @@ public class TalkingScript : MonoBehaviour
 						}
 					}
 					this.S.StudentManager.EnablePrompts();
+					if (this.S.GoAway)
+					{
+						Debug.Log("This student was just told to go away.");
+						this.S.CurrentDestination = this.S.StudentManager.GoAwaySpots.List[this.S.StudentID];
+						this.S.Pathfinding.target = this.S.StudentManager.GoAwaySpots.List[this.S.StudentID];
+						this.S.DistanceToDestination = 100f;
+					}
 				}
 			}
 			else

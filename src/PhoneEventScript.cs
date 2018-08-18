@@ -66,7 +66,7 @@ public class PhoneEventScript : MonoBehaviour
 		{
 			base.enabled = false;
 		}
-		if (this.EventStudentID == 33)
+		if (this.EventStudentID == 11)
 		{
 			base.enabled = false;
 		}
@@ -74,7 +74,7 @@ public class PhoneEventScript : MonoBehaviour
 
 	private void OnAwake()
 	{
-		if (this.EventStudentID == 33)
+		if (this.EventStudentID == 11)
 		{
 			base.enabled = false;
 		}
@@ -93,7 +93,7 @@ public class PhoneEventScript : MonoBehaviour
 				this.EventStudent = this.StudentManager.Students[this.EventStudentID];
 				if (this.EventStudent != null)
 				{
-					if (this.EventStudentID == 33)
+					if (this.EventStudentID == 11 && this.EventFriend != null)
 					{
 						this.EventFriend = this.StudentManager.Students[this.EventFriendID];
 						this.EventFriend.Pathfinding.canSearch = false;
@@ -282,7 +282,7 @@ public class PhoneEventScript : MonoBehaviour
 						}
 						else
 						{
-							this.EventFriend.targetRotation = Quaternion.LookRotation(this.StudentManager.Students[33].transform.position - this.EventFriend.transform.position);
+							this.EventFriend.targetRotation = Quaternion.LookRotation(this.StudentManager.Students[this.EventStudentID].transform.position - this.EventFriend.transform.position);
 							this.EventFriend.transform.rotation = Quaternion.Slerp(this.EventFriend.transform.rotation, this.EventFriend.targetRotation, 10f * Time.deltaTime);
 						}
 					}

@@ -32,7 +32,7 @@ public class HomeVideoGamesScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (TaskGlobals.GetTaskStatus(14) == 0)
+		if (TaskGlobals.GetTaskStatus(38) == 0)
 		{
 			this.TitleScreens[1] = this.TitleScreens[2];
 			UILabel uilabel = this.GameTitles[1];
@@ -48,7 +48,7 @@ public class HomeVideoGamesScript : MonoBehaviour
 		{
 			if (Input.GetKeyDown("y"))
 			{
-				TaskGlobals.SetTaskStatus(14, 1);
+				TaskGlobals.SetTaskStatus(38, 1);
 				SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 			}
 			this.TV.localScale = Vector3.Lerp(this.TV.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);

@@ -39,11 +39,13 @@ public class FanCoverScript : MonoBehaviour
 
 	public float Timer;
 
+	public int RivalID = 11;
+
 	public int Phase;
 
 	private void Start()
 	{
-		if (this.StudentManager.Students[33] == null)
+		if (this.StudentManager.Students[this.RivalID] == null)
 		{
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
@@ -51,7 +53,7 @@ public class FanCoverScript : MonoBehaviour
 		}
 		else
 		{
-			this.Rival = this.StudentManager.Students[33];
+			this.Rival = this.StudentManager.Students[this.RivalID];
 		}
 	}
 

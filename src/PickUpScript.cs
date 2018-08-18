@@ -109,6 +109,18 @@ public class PickUpScript : MonoBehaviour
 				this.Suspicious = true;
 			}
 		}
+		if (this.Weight)
+		{
+			if (ClassGlobals.PhysicalGrade + ClassGlobals.PhysicalBonus == 0)
+			{
+				this.Prompt.Label[3].text = "     Physical Stat Too Low";
+				this.Prompt.Circle[3].fillAmount = 1f;
+			}
+			else
+			{
+				this.Prompt.Label[3].text = "     Carry";
+			}
+		}
 		if (this.Prompt.Circle[3].fillAmount == 0f)
 		{
 			this.Prompt.Circle[3].fillAmount = 1f;

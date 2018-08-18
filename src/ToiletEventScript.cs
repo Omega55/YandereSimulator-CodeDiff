@@ -66,7 +66,7 @@ public class ToiletEventScript : MonoBehaviour
 	{
 		if (!this.Clock.StopTime && this.EventCheck && this.Clock.HourTime > this.EventTime)
 		{
-			this.EventStudent = this.StudentManager.Students[7];
+			this.EventStudent = this.StudentManager.Students[30];
 			if (this.EventStudent != null && this.EventStudent.Routine && !this.EventStudent.Distracted && !this.EventStudent.Talking && !this.EventStudent.Alarmed && !this.EventStudent.Meeting)
 			{
 				if (!this.EventStudent.WitnessedMurder)

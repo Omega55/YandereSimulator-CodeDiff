@@ -111,7 +111,7 @@ public class OfferHelpScript : MonoBehaviour
 				}
 				if (this.Timer > this.EventClip[this.EventPhase].length + 1f)
 				{
-					if (this.EventStudentID == 32 && this.EventPhase == 2)
+					if (this.EventStudentID == 5 && this.EventPhase == 2)
 					{
 						this.Yandere.PauseScreen.StudentInfoMenu.Targeting = true;
 						base.StartCoroutine(this.Yandere.PauseScreen.PhotoGallery.GetPhotos());
@@ -165,7 +165,7 @@ public class OfferHelpScript : MonoBehaviour
 		this.Spoken = false;
 		this.EventPhase++;
 		this.Timer = 0f;
-		if (this.EventStudentID == 7 && this.EventPhase == 14)
+		if (this.EventStudentID == 30 && this.EventPhase == 14)
 		{
 			if (!ConversationGlobals.GetTopicDiscovered(23))
 			{
@@ -180,7 +180,7 @@ public class OfferHelpScript : MonoBehaviour
 		}
 		if (this.EventPhase == this.EventSpeech.Length)
 		{
-			if (this.EventStudentID == 7)
+			if (this.EventStudentID == 30)
 			{
 				SchemeGlobals.SetSchemeStage(6, 5);
 			}

@@ -119,7 +119,7 @@ public class TaskWindowScript : MonoBehaviour
 
 	private void TaskCheck()
 	{
-		if (this.Yandere.TargetStudent.StudentID == 15)
+		if (this.Yandere.TargetStudent.StudentID == 37)
 		{
 			this.DialogueWheel.Yandere.TargetStudent.Cosmetic.MaleAccessories[1].SetActive(true);
 		}
@@ -141,7 +141,7 @@ public class TaskWindowScript : MonoBehaviour
 
 	private void UpdateTaskObjects(int StudentID)
 	{
-		if (this.StudentID == 7)
+		if (this.StudentID == 30)
 		{
 			this.SewingMachine.Check = true;
 		}

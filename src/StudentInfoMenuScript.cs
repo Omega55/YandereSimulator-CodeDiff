@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -52,8 +51,6 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	public UILabel NameLabel;
 
-	public bool CustomPortraits;
-
 	public bool CyberBullying;
 
 	public bool GettingInfo;
@@ -103,14 +100,6 @@ public class StudentInfoMenuScript : MonoBehaviour
 		}
 		this.Column = 0;
 		this.Row = 0;
-		if (File.Exists(Application.streamingAssetsPath + "/CustomPortraits.txt"))
-		{
-			string a = File.ReadAllText(Application.streamingAssetsPath + "/CustomPortraits.txt");
-			if (a == "1")
-			{
-				this.CustomPortraits = true;
-			}
-		}
 	}
 
 	private void Update()
@@ -403,21 +392,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 								Debug.Log("6 - Error is null.");
 								if (!StudentGlobals.GetStudentReplaced(ID))
 								{
-									if (!this.CustomPortraits)
-									{
-										if (ID < 33 || (ID > 40 && ID < 46) || ID > 55)
-										{
-											this.StudentPortraits[ID].Portrait.mainTexture = www.texture;
-										}
-										else
-										{
-											this.StudentPortraits[ID].Portrait.mainTexture = this.BlankPortrait;
-										}
-									}
-									else
-									{
-										this.StudentPortraits[ID].Portrait.mainTexture = www.texture;
-									}
+									this.StudentPortraits[ID].Portrait.mainTexture = www.texture;
 								}
 								else
 								{

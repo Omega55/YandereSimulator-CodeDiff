@@ -474,7 +474,7 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 11)
 			{
-				if (!StudentGlobals.GetStudentDying(7) && !StudentGlobals.GetStudentDead(7) && !StudentGlobals.GetStudentArrested(7))
+				if (!StudentGlobals.GetStudentDying(30) && !StudentGlobals.GetStudentDead(30) && !StudentGlobals.GetStudentArrested(30))
 				{
 					if (this.Counselor.LectureID > 0)
 					{
@@ -498,7 +498,7 @@ public class EndOfDayScript : MonoBehaviour
 				Debug.Log("Phase 12.");
 				if (SchemeGlobals.GetSchemeStage(2) == 3)
 				{
-					if (!StudentGlobals.GetStudentDying(7) && !StudentGlobals.GetStudentDead(7) && !StudentGlobals.GetStudentArrested(7))
+					if (!StudentGlobals.GetStudentDying(30) && !StudentGlobals.GetStudentDead(30) && !StudentGlobals.GetStudentArrested(30))
 					{
 						this.Label.text = "Kokona discovers Sakyu's ring inside of her book bag. She returns the ring to Sakyu, who decides to never let it out of her sight again.";
 						SchemeGlobals.SetSchemeStage(2, 100);
@@ -826,7 +826,11 @@ public class EndOfDayScript : MonoBehaviour
 		{
 			Debug.Log("Setting target for Fragile student.");
 			StudentGlobals.SetFragileTarget(this.FragileTarget);
-			StudentGlobals.SetStudentFragileSlave(32);
+			StudentGlobals.SetStudentFragileSlave(5);
+		}
+		if (this.StudentManager.ReactedToGameLeader)
+		{
+			SchoolGlobals.ReactedToGameLeader = true;
 		}
 	}
 }

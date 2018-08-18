@@ -45,9 +45,13 @@ public class OsanaFridayBeforeClassEvent2Script : MonoBehaviour
 
 	public float Timer;
 
+	public DayOfWeek EventDay;
+
 	public int SpeechPhase = 1;
 
-	public DayOfWeek EventDay;
+	public int GanguroID = 81;
+
+	public int RivalID = 11;
 
 	public int Phase;
 

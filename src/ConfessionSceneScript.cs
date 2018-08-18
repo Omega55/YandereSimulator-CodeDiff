@@ -66,8 +66,8 @@ public class ConfessionSceneScript : MonoBehaviour
 					this.BloomEffect.bloomIntensity = 1f;
 					this.BloomEffect.bloomThreshhold = 0f;
 					this.BloomEffect.bloomBlurIterations = 1;
-					this.Suitor = this.StudentManager.Students[13];
-					this.Rival = this.StudentManager.Students[7];
+					this.Suitor = this.StudentManager.Students[28];
+					this.Rival = this.StudentManager.Students[30];
 					this.Rival.transform.position = this.RivalSpot.position;
 					this.Rival.transform.eulerAngles = this.RivalSpot.eulerAngles;
 					this.Suitor.Cosmetic.MyRenderer.materials[this.Suitor.Cosmetic.FaceID].SetFloat("_BlendAmount", 1f);
@@ -177,8 +177,8 @@ public class ConfessionSceneScript : MonoBehaviour
 				this.MythBlossoms.emission.rateOverTime = 20f;
 				this.Clock.StopTime = false;
 				base.enabled = false;
-				this.Suitor.CoupleID = 7;
-				this.Rival.CoupleID = 13;
+				this.Suitor.CoupleID = 28;
+				this.Rival.CoupleID = 30;
 			}
 		}
 		if (this.Kissing)

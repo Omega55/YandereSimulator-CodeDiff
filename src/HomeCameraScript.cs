@@ -244,7 +244,7 @@ public class HomeCameraScript : MonoBehaviour
 		}
 		if (Input.GetKeyDown(KeyCode.Y))
 		{
-			TaskGlobals.SetTaskStatus(14, 1);
+			TaskGlobals.SetTaskStatus(38, 1);
 		}
 		if (Input.GetKeyDown(KeyCode.M))
 		{

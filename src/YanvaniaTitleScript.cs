@@ -55,7 +55,7 @@ public class YanvaniaTitleScript : MonoBehaviour
 		this.Midori.gameObject.SetActive(false);
 		if (YanvaniaGlobals.DraculaDefeated)
 		{
-			TaskGlobals.SetTaskStatus(14, 2);
+			TaskGlobals.SetTaskStatus(38, 2);
 			this.SkipButton.SetActive(true);
 			this.Logo.gameObject.SetActive(false);
 		}

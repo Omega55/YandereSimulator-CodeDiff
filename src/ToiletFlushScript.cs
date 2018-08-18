@@ -16,7 +16,7 @@ internal class ToiletFlushScript : MonoBehaviour
 	private void Start()
 	{
 		this.StudentManager = UnityEngine.Object.FindObjectOfType<StudentManagerScript>();
-		this.Toilet = this.StudentManager.Students[33].gameObject;
+		this.Toilet = this.StudentManager.Students[11].gameObject;
 		this.toilet = this.Toilet;
 	}
 

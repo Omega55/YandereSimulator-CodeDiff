@@ -7,6 +7,8 @@ public class PhonePromptBarScript : MonoBehaviour
 
 	public bool Show;
 
+	public UILabel Label;
+
 	private void Start()
 	{
 		base.transform.localPosition = new Vector3(base.transform.localPosition.x, 630f, base.transform.localPosition.z);

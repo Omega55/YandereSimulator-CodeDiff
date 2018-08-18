@@ -268,7 +268,7 @@ public static class AnimNames
 
 	public const string FemalePinDownLoop = "f02_pinDownLoop_00";
 
-	public const string FemalePlayingGames01 = "f02_playingGames_01";
+	public const string FemalePlayingGames00 = "f02_playingGames_00";
 
 	public const string FemalePoisonDeath = "f02_poisonDeath_00";
 

@@ -5,6 +5,8 @@ public class ConvoManagerScript : MonoBehaviour
 {
 	public StudentManagerScript SM;
 
+	public int NearbyStudents;
+
 	public int ID;
 
 	public string[] FemaleCombatAnims;
@@ -19,47 +21,31 @@ public class ConvoManagerScript : MonoBehaviour
 
 	public void CheckMe(int StudentID)
 	{
-		if (StudentID > 1 && StudentID < 14)
+		if (StudentID == 2)
 		{
-			this.ID = 2;
-			while (this.ID < 14)
+			if (this.SM.Students[3].Routine && (double)Vector3.Distance(this.SM.Students[2].transform.position, this.SM.Students[3].transform.position) < 1.4)
 			{
-				if (this.ID != StudentID && this.SM.Students[this.ID] != null)
-				{
-					if (this.SM.Students[this.ID].Routine && (double)Vector3.Distance(this.SM.Students[this.ID].transform.position, this.SM.Students[StudentID].transform.position) < 2.5)
-					{
-						this.SM.Students[StudentID].Alone = false;
-						break;
-					}
-					this.SM.Students[StudentID].Alone = true;
-				}
-				this.ID++;
-			}
-		}
-		else if (StudentID == 17)
-		{
-			if (this.SM.Students[18].Routine && (double)Vector3.Distance(this.SM.Students[17].transform.position, this.SM.Students[18].transform.position) < 1.4)
-			{
-				this.SM.Students[17].Alone = false;
+				this.SM.Students[2].Alone = false;
 			}
 			else
 			{
-				this.SM.Students[17].Alone = true;
+				this.SM.Students[2].Alone = true;
 			}
 		}
-		else if (StudentID == 18)
+		else if (StudentID == 3)
 		{
-			if (this.SM.Students[17].Routine && (double)Vector3.Distance(this.SM.Students[18].transform.position, this.SM.Students[17].transform.position) < 1.4)
+			if (this.SM.Students[2].Routine && (double)Vector3.Distance(this.SM.Students[3].transform.position, this.SM.Students[2].transform.position) < 1.4)
 			{
-				this.SM.Students[18].Alone = false;
+				this.SM.Students[3].Alone = false;
 			}
 			else
 			{
-				this.SM.Students[18].Alone = true;
+				this.SM.Students[3].Alone = true;
 			}
 		}
 		else if (StudentID > 20 && StudentID < 26)
 		{
+			this.NearbyStudents = 0;
 			this.ID = 21;
 			while (this.ID < 26)
 			{
@@ -73,12 +59,16 @@ public class ConvoManagerScript : MonoBehaviour
 					this.SM.Students[StudentID].Alone = true;
 				}
 				this.ID++;
+				if (this.ID == StudentID)
+				{
+					this.SM.Students[StudentID].Alone = true;
+				}
 			}
 		}
-		else if (StudentID > 25 && StudentID < 32)
+		else if (StudentID > 25 && StudentID < 31)
 		{
 			this.ID = 26;
-			while (this.ID < 32)
+			while (this.ID < 31)
 			{
 				if (this.ID != StudentID && this.SM.Students[this.ID] != null)
 				{
@@ -92,26 +82,89 @@ public class ConvoManagerScript : MonoBehaviour
 				this.ID++;
 			}
 		}
-		else if (StudentID == 33)
+		else if (StudentID > 35 && StudentID < 41)
 		{
-			if (this.SM.Students[34].Routine && (double)Vector3.Distance(this.SM.Students[33].transform.position, this.SM.Students[34].transform.position) < 1.4)
+			this.NearbyStudents = 0;
+			this.ID = 36;
+			while (this.ID < 41)
 			{
-				this.SM.Students[33].Alone = false;
-			}
-			else
-			{
-				this.SM.Students[33].Alone = true;
+				if (this.ID != StudentID && this.SM.Students[this.ID] != null)
+				{
+					if (this.SM.Students[this.ID].Routine && (double)Vector3.Distance(this.SM.Students[this.ID].transform.position, this.SM.Students[StudentID].transform.position) < 2.5)
+					{
+						this.SM.Students[StudentID].Alone = false;
+						break;
+					}
+					this.SM.Students[StudentID].Alone = true;
+				}
+				this.ID++;
+				if (this.ID == StudentID)
+				{
+					this.SM.Students[StudentID].Alone = true;
+				}
 			}
 		}
-		else if (StudentID == 34)
+		else if (StudentID > 45 && StudentID < 51)
 		{
-			if (this.SM.Students[33].Routine && (double)Vector3.Distance(this.SM.Students[34].transform.position, this.SM.Students[33].transform.position) < 1.4)
+			this.ID = 46;
+			while (this.ID < 51)
 			{
-				this.SM.Students[34].Alone = false;
+				if (this.ID != StudentID && this.SM.Students[this.ID] != null)
+				{
+					if (this.SM.Students[this.ID].Routine && (double)Vector3.Distance(this.SM.Students[this.ID].transform.position, this.SM.Students[StudentID].transform.position) < 2.5)
+					{
+						this.SM.Students[StudentID].Alone = false;
+						break;
+					}
+					this.SM.Students[StudentID].Alone = true;
+				}
+				this.ID++;
+			}
+		}
+		else if (StudentID > 30 && StudentID < 36)
+		{
+			this.ID = 31;
+			while (this.ID < 36)
+			{
+				if (this.ID != StudentID && this.SM.Students[this.ID] != null)
+				{
+					if (this.SM.Students[this.ID].Routine && (double)Vector3.Distance(this.SM.Students[this.ID].transform.position, this.SM.Students[StudentID].transform.position) < 2.5)
+					{
+						this.SM.Students[StudentID].Alone = false;
+						break;
+					}
+					this.SM.Students[StudentID].Alone = true;
+				}
+				this.ID++;
+			}
+		}
+		else if (StudentID == 11)
+		{
+			if (this.SM.Students[6] != null)
+			{
+				if (this.SM.Students[6].Routine && (double)Vector3.Distance(this.SM.Students[11].transform.position, this.SM.Students[6].transform.position) < 1.4)
+				{
+					this.SM.Students[11].Alone = false;
+				}
+				else
+				{
+					this.SM.Students[11].Alone = true;
+				}
 			}
 			else
 			{
-				this.SM.Students[34].Alone = true;
+				this.SM.Students[11].Alone = true;
+			}
+		}
+		else if (StudentID == 6)
+		{
+			if (this.SM.Students[11].Routine && (double)Vector3.Distance(this.SM.Students[6].transform.position, this.SM.Students[11].transform.position) < 1.4)
+			{
+				this.SM.Students[6].Alone = false;
+			}
+			else
+			{
+				this.SM.Students[6].Alone = true;
 			}
 		}
 		else if (StudentID > 55 && StudentID < 61)
@@ -179,7 +232,7 @@ public class ConvoManagerScript : MonoBehaviour
 	public void MartialArtsCheck()
 	{
 		this.CheckTimer += Time.deltaTime;
-		if ((this.CheckTimer > 1f || this.Confirmed) && this.SM.Students[22] != null && this.SM.Students[24] != null && this.SM.Students[22].Routine && this.SM.Students[24].Routine && this.SM.Students[22].DistanceToDestination < 0.1f && this.SM.Students[24].DistanceToDestination < 0.1f)
+		if ((this.CheckTimer > 1f || this.Confirmed) && this.SM.Students[47] != null && this.SM.Students[49] != null && this.SM.Students[47].Routine && this.SM.Students[49].Routine && this.SM.Students[47].DistanceToDestination < 0.1f && this.SM.Students[49].DistanceToDestination < 0.1f)
 		{
 			this.Confirmed = true;
 			this.CombatAnimID++;
@@ -187,21 +240,21 @@ public class ConvoManagerScript : MonoBehaviour
 			{
 				this.CombatAnimID = 1;
 			}
-			this.SM.Students[22].ClubAnim = this.MaleCombatAnims[this.CombatAnimID];
-			this.SM.Students[24].ClubAnim = this.FemaleCombatAnims[this.CombatAnimID];
-			this.SM.Students[22].GetNewAnimation = false;
-			this.SM.Students[24].GetNewAnimation = false;
+			this.SM.Students[47].ClubAnim = this.MaleCombatAnims[this.CombatAnimID];
+			this.SM.Students[49].ClubAnim = this.FemaleCombatAnims[this.CombatAnimID];
+			this.SM.Students[47].GetNewAnimation = false;
+			this.SM.Students[49].GetNewAnimation = false;
 		}
 	}
 
 	public void LateUpdate()
 	{
 		this.CheckTimer = Mathf.MoveTowards(this.CheckTimer, 0f, Time.deltaTime);
-		if (this.Confirmed && (this.SM.Students[22].DistanceToPlayer < 1.5f || this.SM.Students[24].DistanceToPlayer < 1.5f || this.SM.Students[22].Talking || this.SM.Students[24].Talking || this.SM.Students[22].Distracted || this.SM.Students[24].Distracted))
+		if (this.Confirmed && (this.SM.Students[47].DistanceToPlayer < 1.5f || this.SM.Students[49].DistanceToPlayer < 1.5f || this.SM.Students[47].Talking || this.SM.Students[49].Talking || this.SM.Students[47].Distracted || this.SM.Students[49].Distracted))
 		{
-			this.SM.Students[22].Subtitle.UpdateLabel(SubtitleType.IntrusionReaction, 2, 5f);
-			this.SM.Students[22].ClubAnim = "idle_20";
-			this.SM.Students[24].ClubAnim = "f02_idle_20";
+			this.SM.Students[47].Subtitle.UpdateLabel(SubtitleType.IntrusionReaction, 2, 5f);
+			this.SM.Students[47].ClubAnim = "idle_20";
+			this.SM.Students[49].ClubAnim = "f02_idle_20";
 			this.Confirmed = false;
 		}
 	}

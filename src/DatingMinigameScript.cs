@@ -230,8 +230,8 @@ public class DatingMinigameScript : MonoBehaviour
 		{
 			if (this.Rival == null)
 			{
-				this.Suitor = this.StudentManager.Students[13];
-				this.Rival = this.StudentManager.Students[7];
+				this.Suitor = this.StudentManager.Students[28];
+				this.Rival = this.StudentManager.Students[30];
 			}
 			if (this.Rival.MeetTimer > 0f && this.Suitor.MeetTimer > 0f)
 			{
@@ -439,9 +439,9 @@ public class DatingMinigameScript : MonoBehaviour
 						uisprite.color = new Color(uisprite.color.r, uisprite.color.g, uisprite.color.b, 0.5f);
 						DatingGlobals.SetTopicDiscussed(this.TopicSelected, true);
 						this.DetermineOpinion();
-						if (!ConversationGlobals.GetTopicLearnedByStudent(this.Opinion, 7))
+						if (!ConversationGlobals.GetTopicLearnedByStudent(this.Opinion, 30))
 						{
-							ConversationGlobals.SetTopicLearnedByStudent(this.Opinion, 7, true);
+							ConversationGlobals.SetTopicLearnedByStudent(this.Opinion, 30, true);
 						}
 						if (this.Negative)
 						{
@@ -825,7 +825,7 @@ public class DatingMinigameScript : MonoBehaviour
 
 	private void DetermineOpinion()
 	{
-		int[] topics = this.JSON.Topics[7].Topics;
+		int[] topics = this.JSON.Topics[30].Topics;
 		this.Opinion = topics[this.TopicSelected];
 	}
 

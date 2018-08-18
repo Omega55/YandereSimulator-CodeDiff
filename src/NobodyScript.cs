@@ -19,7 +19,7 @@ public class NobodyScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (this.JSON.Students[33].Name != "Reserved")
+		if (this.JSON.Students[11].Name != "Reserved")
 		{
 			this.PetKittens();
 		}
