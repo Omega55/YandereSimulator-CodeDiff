@@ -956,7 +956,8 @@ public class TalkingScript : MonoBehaviour
 			}
 			else if (this.S.Interaction == StudentInteractionType.Feeding)
 			{
-				if (this.S.TalkTimer == 3f)
+				Debug.Log("Feeding.");
+				if (this.S.TalkTimer == 10f)
 				{
 					if (this.S.Club == ClubType.Delinquent)
 					{

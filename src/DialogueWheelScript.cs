@@ -545,7 +545,7 @@ public class DialogueWheelScript : MonoBehaviour
 				{
 					this.Impatience.fillAmount = 0f;
 					this.Yandere.Interaction = YandereInteractionType.TaskInquiry;
-					this.Yandere.TalkTimer = 5f;
+					this.Yandere.TalkTimer = 3f;
 					this.Show = false;
 				}
 				else if (this.SwitchTopicsWindow.activeInHierarchy)

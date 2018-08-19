@@ -1835,7 +1835,7 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (subtitleType == SubtitleType.StopFollowApology)
 		{
-			this.Label.text = this.GetRandomString(this.StopFollowApologies);
+			this.Label.text = this.StopFollowApologies[ID];
 		}
 		else if (subtitleType == SubtitleType.GrudgeWarning)
 		{

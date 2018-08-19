@@ -3990,7 +3990,7 @@ public class YandereScript : MonoBehaviour
 			}
 			else if (this.Interaction == YandereInteractionType.TaskInquiry)
 			{
-				if (this.TalkTimer == 5f)
+				if (this.TalkTimer == 3f)
 				{
 					this.CharacterAnimation.CrossFade("f02_greet_01");
 					this.Subtitle.UpdateLabel(SubtitleType.TaskInquiry, 0, 5f);

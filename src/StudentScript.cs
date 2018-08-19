@@ -1537,6 +1537,7 @@ public class StudentScript : MonoBehaviour
 						scheduleBlock7.action = "Mourn";
 					}
 					this.PhotoPatience = 0f;
+					UnityEngine.Object.Destroy(base.gameObject);
 				}
 				else if (this.StudentID == 11)
 				{
@@ -1806,10 +1807,7 @@ public class StudentScript : MonoBehaviour
 				this.MyPlate = this.StudentManager.Plates[this.StudentID - 20];
 				this.OriginalPlatePosition = this.MyPlate.transform.position;
 				this.OriginalPlateRotation = this.MyPlate.transform.rotation;
-				if (!this.Male)
-				{
-					this.ApronAttacher.enabled = true;
-				}
+				this.ApronAttacher.enabled = true;
 			}
 			else if (this.Club == ClubType.Drama)
 			{
@@ -1926,6 +1924,10 @@ public class StudentScript : MonoBehaviour
 						this.WateringCan.SetActive(true);
 					}
 				}
+			}
+			if (this.Club != ClubType.Gaming)
+			{
+				this.Miyuki.gameObject.SetActive(false);
 			}
 			if (this.Cosmetic.Hairstyle == 20)
 			{
@@ -5277,7 +5279,7 @@ public class StudentScript : MonoBehaviour
 					this.Pathfinding.canMove = false;
 					this.Obstacle.enabled = true;
 				}
-				if (this.Phase < this.ScheduleBlocks.Length - 1 && this.Clock.HourTime >= this.ScheduleBlocks[this.Phase].time)
+				if (this.Phase < this.ScheduleBlocks.Length - 1 && (this.Clock.HourTime >= this.ScheduleBlocks[this.Phase].time || this.StudentManager.LockerRoomArea.bounds.Contains(this.Yandere.transform.position)))
 				{
 					this.Phase++;
 					this.CurrentDestination = this.Destinations[this.Phase];
@@ -5289,7 +5291,14 @@ public class StudentScript : MonoBehaviour
 					this.Yandere.Followers--;
 					this.Following = false;
 					this.Routine = true;
-					this.Subtitle.UpdateLabel(SubtitleType.StopFollowApology, 0, 3f);
+					if (this.StudentManager.LockerRoomArea.bounds.Contains(this.Yandere.transform.position))
+					{
+						this.Subtitle.UpdateLabel(SubtitleType.StopFollowApology, 1, 3f);
+					}
+					else
+					{
+						this.Subtitle.UpdateLabel(SubtitleType.StopFollowApology, 0, 3f);
+					}
 					this.Prompt.Label[0].text = "     Talk";
 				}
 			}
@@ -9189,6 +9198,8 @@ public class StudentScript : MonoBehaviour
 
 	private void WitnessMurder()
 	{
+		this.CharacterAnimation[this.ScaredAnim].time = 0f;
+		this.CameraFlash.SetActive(false);
 		if (!this.Male)
 		{
 			this.CharacterAnimation["f02_smile_00"].weight = 0f;

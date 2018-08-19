@@ -13,6 +13,8 @@ public class ARMiyukiScript : MonoBehaviour
 
 	public Transform Enemy;
 
+	public GameObject MagicalGirl;
+
 	public bool Student;
 
 	private void Start()

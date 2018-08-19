@@ -69,6 +69,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public TrashCanScript TrashCan;
 
+	public Collider LockerRoomArea;
+
 	public StudentScript Reporter;
 
 	public GhostScript GhostChan;
@@ -443,50 +445,6 @@ public class StudentManagerScript : MonoBehaviour
 			this.Flowers.SetActive(false);
 		}
 		this.ID = 0;
-		this.SeatsTaken31[13] = true;
-		this.SeatsTaken21[12] = true;
-		this.SeatsTaken21[14] = true;
-		this.SeatsTaken22[12] = true;
-		this.SeatsTaken22[14] = true;
-		this.SeatsTaken32[1] = true;
-		this.SeatsTaken31[1] = true;
-		this.SeatsTaken22[1] = true;
-		this.SeatsTaken21[1] = true;
-		this.SeatsTaken12[1] = true;
-		this.SeatsTaken32[3] = true;
-		this.SeatsTaken31[3] = true;
-		this.SeatsTaken22[3] = true;
-		this.SeatsTaken21[3] = true;
-		this.SeatsTaken32[2] = true;
-		this.SeatsTaken31[2] = true;
-		this.SeatsTaken22[2] = true;
-		this.SeatsTaken21[2] = true;
-		this.SeatsTaken12[2] = true;
-		this.SeatsTaken32[4] = true;
-		this.SeatsTaken31[4] = true;
-		this.SeatsTaken22[4] = true;
-		this.SeatsTaken21[4] = true;
-		this.SeatsTaken12[4] = true;
-		this.SeatsTaken32[6] = true;
-		this.SeatsTaken31[6] = true;
-		this.SeatsTaken22[6] = true;
-		this.SeatsTaken21[6] = true;
-		this.SeatsTaken12[6] = true;
-		this.SeatsTaken32[11] = true;
-		this.SeatsTaken31[11] = true;
-		this.SeatsTaken22[11] = true;
-		this.SeatsTaken12[11] = true;
-		this.SeatsTaken11[11] = true;
-		this.SeatsTaken31[15] = true;
-		this.SeatsTaken22[15] = true;
-		this.SeatsTaken21[15] = true;
-		this.SeatsTaken12[15] = true;
-		this.SeatsTaken11[15] = true;
-		this.SeatsTaken32[8] = true;
-		this.SeatsTaken22[8] = true;
-		this.SeatsTaken12[8] = true;
-		this.SeatsTaken21[8] = true;
-		this.SeatsTaken11[8] = true;
 		this.ID = 1;
 		while (this.ID < this.JSON.Students.Length)
 		{
@@ -1178,8 +1136,10 @@ public class StudentManagerScript : MonoBehaviour
 					studentScript.Pathfinding.speed = 0f;
 					studentScript.ClubActivityPhase = 0;
 					studentScript.ClubTimer = 0f;
+					studentScript.Pestered = 0;
 					studentScript.Distracting = false;
 					studentScript.Distracted = false;
+					studentScript.Ignoring = false;
 					studentScript.Pushable = false;
 					studentScript.CanTalk = true;
 					studentScript.Routine = true;
