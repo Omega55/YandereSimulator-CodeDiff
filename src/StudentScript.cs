@@ -5588,6 +5588,7 @@ public class StudentScript : MonoBehaviour
 					this.DistractionTarget.Pathfinding.canSearch = true;
 					this.DistractionTarget.Pathfinding.canMove = true;
 					this.DistractionTarget.Pathfinding.speed = 1f;
+					this.DistractionTarget.Octodog.SetActive(false);
 					this.DistractionTarget.Distraction = null;
 					this.DistractionTarget.Distracted = false;
 					this.DistractionTarget.CanTalk = true;
@@ -5668,6 +5669,7 @@ public class StudentScript : MonoBehaviour
 							this.DistractionTarget.Pathfinding.canSearch = true;
 							this.DistractionTarget.Pathfinding.canMove = true;
 							this.DistractionTarget.Pathfinding.speed = 1f;
+							this.DistractionTarget.Octodog.SetActive(false);
 							this.DistractionTarget.Distraction = null;
 							this.DistractionTarget.Distracted = false;
 							this.DistractionTarget.CanTalk = true;
@@ -9087,6 +9089,7 @@ public class StudentScript : MonoBehaviour
 		if (this.Distracting)
 		{
 			this.DistractionTarget.TargetedForDistraction = false;
+			this.DistractionTarget.Octodog.SetActive(false);
 			this.DistractionTarget.Distracted = false;
 			this.Distracting = false;
 		}
@@ -10514,6 +10517,7 @@ public class StudentScript : MonoBehaviour
 			if (this.Distracting)
 			{
 				this.DistractionTarget.TargetedForDistraction = false;
+				this.DistractionTarget.Octodog.SetActive(false);
 				this.DistractionTarget.Distracted = false;
 				this.Distracting = false;
 				this.CanTalk = true;

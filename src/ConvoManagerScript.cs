@@ -252,7 +252,10 @@ public class ConvoManagerScript : MonoBehaviour
 		this.CheckTimer = Mathf.MoveTowards(this.CheckTimer, 0f, Time.deltaTime);
 		if (this.Confirmed && (this.SM.Students[47].DistanceToPlayer < 1.5f || this.SM.Students[49].DistanceToPlayer < 1.5f || this.SM.Students[47].Talking || this.SM.Students[49].Talking || this.SM.Students[47].Distracted || this.SM.Students[49].Distracted))
 		{
-			this.SM.Students[47].Subtitle.UpdateLabel(SubtitleType.IntrusionReaction, 2, 5f);
+			if (this.SM.Students[47].DistanceToPlayer < 1.5f || this.SM.Students[49].DistanceToPlayer < 1.5f)
+			{
+				this.SM.Students[47].Subtitle.UpdateLabel(SubtitleType.IntrusionReaction, 2, 5f);
+			}
 			this.SM.Students[47].ClubAnim = "idle_20";
 			this.SM.Students[49].ClubAnim = "f02_idle_20";
 			this.Confirmed = false;

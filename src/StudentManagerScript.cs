@@ -1165,6 +1165,11 @@ public class StudentManagerScript : MonoBehaviour
 						studentScript.ChangeSchoolwear();
 						studentScript.ClubAttire = false;
 					}
+					if (studentScript.Schoolwear != 1)
+					{
+						studentScript.Schoolwear = 1;
+						studentScript.ChangeSchoolwear();
+					}
 					if (studentScript.Meeting && this.Clock.HourTime > studentScript.MeetTime)
 					{
 						studentScript.Meeting = false;

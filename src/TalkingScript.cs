@@ -985,11 +985,11 @@ public class TalkingScript : MonoBehaviour
 				}
 				if (this.S.Character.GetComponent<Animation>()[this.S.Nod2Anim].time >= this.S.Character.GetComponent<Animation>()[this.S.Nod2Anim].length)
 				{
-					this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
+					this.S.Character.GetComponent<Animation>().CrossFade(this.S.IdleAnim);
 				}
 				if (this.S.Character.GetComponent<Animation>()[this.S.GossipAnim].time >= this.S.Character.GetComponent<Animation>()[this.S.GossipAnim].length)
 				{
-					this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
+					this.S.Character.GetComponent<Animation>().CrossFade(this.S.IdleAnim);
 				}
 				this.S.TalkTimer -= Time.deltaTime;
 				if (this.S.TalkTimer <= 0f)

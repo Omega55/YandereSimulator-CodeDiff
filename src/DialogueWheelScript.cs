@@ -784,6 +784,11 @@ public class DialogueWheelScript : MonoBehaviour
 					this.Yandere.TargetStudent.CurrentDestination = this.Yandere.TargetStudent.SleuthTarget;
 					this.Yandere.TargetStudent.Pathfinding.target = this.Yandere.TargetStudent.SleuthTarget;
 				}
+				if (this.Yandere.TargetStudent.Actions[this.Yandere.TargetStudent.Phase] == StudentActionType.Sunbathe && this.Yandere.TargetStudent.SunbathePhase > 1)
+				{
+					this.Yandere.TargetStudent.CurrentDestination = this.Yandere.StudentManager.SunbatheSpots[this.Yandere.TargetStudent.StudentID - 80];
+					this.Yandere.TargetStudent.Pathfinding.target = this.Yandere.StudentManager.SunbatheSpots[this.Yandere.TargetStudent.StudentID - 80];
+				}
 			}
 			if (this.Yandere.TargetStudent.Persona == PersonaType.PhoneAddict && !this.Yandere.TargetStudent.Scrubber.activeInHierarchy)
 			{

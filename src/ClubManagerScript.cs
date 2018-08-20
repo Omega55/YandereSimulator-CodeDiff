@@ -121,6 +121,8 @@ public class ClubManagerScript : MonoBehaviour
 
 	public int[] Club4IDs;
 
+	public int[] Club5IDs;
+
 	public int[] Club6IDs;
 
 	public int[] Club7IDs;
@@ -552,6 +554,10 @@ public class ClubManagerScript : MonoBehaviour
 		{
 			this.ClubIDs = this.Club4IDs;
 		}
+		else if (Check == ClubType.LightMusic)
+		{
+			this.ClubIDs = this.Club5IDs;
+		}
 		else if (Check == ClubType.MartialArts)
 		{
 			this.ClubIDs = this.Club6IDs;
@@ -632,9 +638,9 @@ public class ClubManagerScript : MonoBehaviour
 				this.LeaderMissing = true;
 			}
 		}
-		else if (Check == ClubType.Art)
+		else if (Check == ClubType.Gaming)
 		{
-			int num4 = 41;
+			int num4 = 36;
 			if (StudentGlobals.GetStudentDead(num4) || StudentGlobals.GetStudentDying(num4) || StudentGlobals.GetStudentArrested(num4) || StudentGlobals.GetStudentReputation(num4) <= -100)
 			{
 				this.LeaderDead = true;
@@ -644,9 +650,9 @@ public class ClubManagerScript : MonoBehaviour
 				this.LeaderMissing = true;
 			}
 		}
-		else if (Check == ClubType.MartialArts)
+		else if (Check == ClubType.Art)
 		{
-			int num5 = 46;
+			int num5 = 41;
 			if (StudentGlobals.GetStudentDead(num5) || StudentGlobals.GetStudentDying(num5) || StudentGlobals.GetStudentArrested(num5) || StudentGlobals.GetStudentReputation(num5) <= -100)
 			{
 				this.LeaderDead = true;
@@ -656,9 +662,9 @@ public class ClubManagerScript : MonoBehaviour
 				this.LeaderMissing = true;
 			}
 		}
-		else if (Check == ClubType.Photography)
+		else if (Check == ClubType.MartialArts)
 		{
-			int num6 = 56;
+			int num6 = 46;
 			if (StudentGlobals.GetStudentDead(num6) || StudentGlobals.GetStudentDying(num6) || StudentGlobals.GetStudentArrested(num6) || StudentGlobals.GetStudentReputation(num6) <= -100)
 			{
 				this.LeaderDead = true;
@@ -668,9 +674,9 @@ public class ClubManagerScript : MonoBehaviour
 				this.LeaderMissing = true;
 			}
 		}
-		else if (Check == ClubType.Science)
+		else if (Check == ClubType.LightMusic)
 		{
-			int num7 = 61;
+			int num7 = 51;
 			if (StudentGlobals.GetStudentDead(num7) || StudentGlobals.GetStudentDying(num7) || StudentGlobals.GetStudentArrested(num7) || StudentGlobals.GetStudentReputation(num7) <= -100)
 			{
 				this.LeaderDead = true;
@@ -680,9 +686,9 @@ public class ClubManagerScript : MonoBehaviour
 				this.LeaderMissing = true;
 			}
 		}
-		else if (Check == ClubType.Sports)
+		else if (Check == ClubType.Photography)
 		{
-			int num8 = 66;
+			int num8 = 56;
 			if (StudentGlobals.GetStudentDead(num8) || StudentGlobals.GetStudentDying(num8) || StudentGlobals.GetStudentArrested(num8) || StudentGlobals.GetStudentReputation(num8) <= -100)
 			{
 				this.LeaderDead = true;
@@ -692,9 +698,9 @@ public class ClubManagerScript : MonoBehaviour
 				this.LeaderMissing = true;
 			}
 		}
-		else if (Check == ClubType.Gardening)
+		else if (Check == ClubType.Science)
 		{
-			int num9 = 71;
+			int num9 = 61;
 			if (StudentGlobals.GetStudentDead(num9) || StudentGlobals.GetStudentDying(num9) || StudentGlobals.GetStudentArrested(num9) || StudentGlobals.GetStudentReputation(num9) <= -100)
 			{
 				this.LeaderDead = true;
@@ -704,14 +710,26 @@ public class ClubManagerScript : MonoBehaviour
 				this.LeaderMissing = true;
 			}
 		}
-		else if (Check == ClubType.Gaming)
+		else if (Check == ClubType.Sports)
 		{
-			int num10 = 36;
+			int num10 = 66;
 			if (StudentGlobals.GetStudentDead(num10) || StudentGlobals.GetStudentDying(num10) || StudentGlobals.GetStudentArrested(num10) || StudentGlobals.GetStudentReputation(num10) <= -100)
 			{
 				this.LeaderDead = true;
 			}
 			if (StudentGlobals.GetStudentMissing(num10) || StudentGlobals.GetStudentKidnapped(num10) || this.TranqCase.VictimID == num10)
+			{
+				this.LeaderMissing = true;
+			}
+		}
+		else if (Check == ClubType.Gardening)
+		{
+			int num11 = 71;
+			if (StudentGlobals.GetStudentDead(num11) || StudentGlobals.GetStudentDying(num11) || StudentGlobals.GetStudentArrested(num11) || StudentGlobals.GetStudentReputation(num11) <= -100)
+			{
+				this.LeaderDead = true;
+			}
+			if (StudentGlobals.GetStudentMissing(num11) || StudentGlobals.GetStudentKidnapped(num11) || this.TranqCase.VictimID == num11)
 			{
 				this.LeaderMissing = true;
 			}
