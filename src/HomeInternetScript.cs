@@ -125,21 +125,21 @@ public class HomeInternetScript : MonoBehaviour
 		this.PostIcon.SetActive(false);
 		this.NewPostText.SetActive(false);
 		this.BG.SetActive(false);
-		if (!EventGlobals.Event2 || StudentGlobals.GetStudentExposed(7))
+		if (!EventGlobals.Event2 || StudentGlobals.GetStudentExposed(30))
 		{
 			this.WriteLabel.SetActive(false);
 			this.WriteIcon.SetActive(false);
 		}
-		this.GetPortrait(1);
+		this.GetPortrait(2);
 		this.StudentPost1Portrait.mainTexture = this.CurrentPortrait;
-		this.GetPortrait(16);
+		this.GetPortrait(39);
 		this.StudentPost2Portrait.mainTexture = this.CurrentPortrait;
-		this.GetPortrait(6);
+		this.GetPortrait(25);
 		this.LamePostPortrait.mainTexture = this.CurrentPortrait;
 		this.ID = 1;
 		while (this.ID < 6)
 		{
-			this.GetPortrait(1 + this.ID);
+			this.GetPortrait(86 - this.ID);
 			this.Portraits[this.ID].mainTexture = this.CurrentPortrait;
 			this.ID++;
 		}
@@ -318,10 +318,15 @@ public class HomeInternetScript : MonoBehaviour
 					this.PostIcon.SetActive(false);
 					this.PostSequence = true;
 					this.Posted = true;
-					if (this.Student == 7 && this.Location == 7 && this.Action == 9)
+					if (this.Student == 30 && this.Location == 7 && this.Action == 9)
 					{
 						this.Success = true;
 					}
+				}
+				if (Input.GetKeyDown("space"))
+				{
+					this.WriteLabel.SetActive(true);
+					this.WriteIcon.SetActive(true);
 				}
 			}
 			if (this.PostSequence)

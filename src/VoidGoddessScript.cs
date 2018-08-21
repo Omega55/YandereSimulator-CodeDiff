@@ -82,7 +82,7 @@ public class VoidGoddessScript : MonoBehaviour
 			{
 				this.NewPortrait.GetComponent<UITexture>().mainTexture = this.Headmaster;
 			}
-			else if (this.ID == 10)
+			else if (this.ID == 100)
 			{
 				this.NewPortrait.GetComponent<UITexture>().mainTexture = this.Infochan;
 			}

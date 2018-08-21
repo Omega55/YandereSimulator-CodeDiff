@@ -27,9 +27,9 @@ public class QualityManagerScript : MonoBehaviour
 
 	public ParticleSystem MythBlossoms;
 
-	public ParticleSystem Steam;
-
 	public ParticleSystem[] Fountains;
+
+	public ParticleSystem[] Steam;
 
 	public Renderer YandereHairRenderer;
 
@@ -120,10 +120,11 @@ public class QualityManagerScript : MonoBehaviour
 		ParticleSystem.EmissionModule emission3 = this.CorridorBlossoms.emission;
 		ParticleSystem.EmissionModule emission4 = this.PlazaBlossoms.emission;
 		ParticleSystem.EmissionModule emission5 = this.MythBlossoms.emission;
-		ParticleSystem.EmissionModule emission6 = this.Steam.emission;
-		ParticleSystem.EmissionModule emission7 = this.Fountains[1].emission;
-		ParticleSystem.EmissionModule emission8 = this.Fountains[2].emission;
-		ParticleSystem.EmissionModule emission9 = this.Fountains[3].emission;
+		ParticleSystem.EmissionModule emission6 = this.Steam[1].emission;
+		ParticleSystem.EmissionModule emission7 = this.Steam[2].emission;
+		ParticleSystem.EmissionModule emission8 = this.Fountains[1].emission;
+		ParticleSystem.EmissionModule emission9 = this.Fountains[2].emission;
+		ParticleSystem.EmissionModule emission10 = this.Fountains[3].emission;
 		emission.enabled = true;
 		emission2.enabled = true;
 		emission3.enabled = true;
@@ -133,6 +134,7 @@ public class QualityManagerScript : MonoBehaviour
 		emission7.enabled = true;
 		emission8.enabled = true;
 		emission9.enabled = true;
+		emission10.enabled = true;
 		if (OptionGlobals.ParticleCount == 3)
 		{
 			emission.rateOverTime = 100f;
@@ -144,6 +146,7 @@ public class QualityManagerScript : MonoBehaviour
 			emission7.rateOverTime = 100f;
 			emission8.rateOverTime = 100f;
 			emission9.rateOverTime = 100f;
+			emission10.rateOverTime = 100f;
 		}
 		else if (OptionGlobals.ParticleCount == 2)
 		{
@@ -156,6 +159,7 @@ public class QualityManagerScript : MonoBehaviour
 			emission7.rateOverTime = 10f;
 			emission8.rateOverTime = 10f;
 			emission9.rateOverTime = 10f;
+			emission10.rateOverTime = 10f;
 		}
 		else if (OptionGlobals.ParticleCount == 1)
 		{
@@ -168,6 +172,7 @@ public class QualityManagerScript : MonoBehaviour
 			emission7.enabled = false;
 			emission8.enabled = false;
 			emission9.enabled = false;
+			emission10.enabled = false;
 		}
 	}
 

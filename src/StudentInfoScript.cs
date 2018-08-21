@@ -299,6 +299,7 @@ public class StudentInfoScript : MonoBehaviour
 					this.StudentManager.Students[this.CurrentStudent].SentHome = true;
 					this.StudentManager.Students[this.CurrentStudent].CameraReacting = false;
 					this.StudentManager.Students[this.CurrentStudent].SpeechLines.Stop();
+					this.StudentManager.Students[this.CurrentStudent].EmptyHands();
 					this.StudentInfoMenu.PauseScreen.ServiceMenu.gameObject.SetActive(true);
 					this.StudentInfoMenu.PauseScreen.ServiceMenu.UpdateList();
 					this.StudentInfoMenu.PauseScreen.ServiceMenu.UpdateDesc();

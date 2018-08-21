@@ -789,6 +789,7 @@ public class TalkingScript : MonoBehaviour
 			}
 			else if (this.S.Interaction == StudentInteractionType.ClubUnwelcome)
 			{
+				this.S.CharacterAnimation.CrossFade(this.S.IdleAnim);
 				if (this.S.TalkTimer == 5f)
 				{
 					this.S.Subtitle.UpdateLabel(SubtitleType.ClubUnwelcome, (int)(this.S.Club + this.ClubBonus), 99f);

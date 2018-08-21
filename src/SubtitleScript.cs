@@ -681,7 +681,7 @@ public class SubtitleScript : MonoBehaviour
 	{
 		this.Club3Info = this.SubClub3Info;
 		this.ClubGreetings[3] = this.ClubGreetings[13];
-		this.ClubUnwelcomes[3] = this.ClubGreetings[13];
+		this.ClubUnwelcomes[3] = this.ClubUnwelcomes[13];
 		this.ClubKicks[3] = this.ClubKicks[13];
 		this.ClubJoins[3] = this.ClubJoins[13];
 		this.ClubAccepts[3] = this.ClubAccepts[13];

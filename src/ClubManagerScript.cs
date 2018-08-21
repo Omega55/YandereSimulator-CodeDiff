@@ -146,7 +146,7 @@ public class ClubManagerScript : MonoBehaviour
 		this.ClubWindow.ActivityWindow.localScale = Vector3.zero;
 		this.ClubWindow.ActivityWindow.gameObject.SetActive(false);
 		this.ActivateClubBenefit();
-		this.ID = 0;
+		this.ID = 1;
 		while (this.ID < this.ClubArray.Length)
 		{
 			if (ClubGlobals.GetClubClosed(this.ClubArray[this.ID]))

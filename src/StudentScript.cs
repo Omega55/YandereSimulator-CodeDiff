@@ -1222,6 +1222,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool Chameleon;
 
+	public int Attempts;
+
 	public RiggedAccessoryAttacher LabcoatAttacher;
 
 	public RiggedAccessoryAttacher ApronAttacher;
@@ -9227,6 +9229,7 @@ public class StudentScript : MonoBehaviour
 		}
 		this.MurdersWitnessed++;
 		this.SpeechLines.Stop();
+		this.CameraReacting = false;
 		this.WitnessedMurder = true;
 		this.Investigating = false;
 		this.Distracting = false;
@@ -11132,11 +11135,17 @@ public class StudentScript : MonoBehaviour
 
 	public void StopInvestigating()
 	{
+		Debug.Log("This character decided to stop investigating a giggle.");
 		this.Giggle = null;
 		if (!this.Sleuthing)
 		{
 			this.CurrentDestination = this.Destinations[this.Phase];
 			this.Pathfinding.target = this.Destinations[this.Phase];
+			if (this.Actions[this.Phase] == StudentActionType.Sunbathe && this.SunbathePhase > 1)
+			{
+				this.CurrentDestination = this.StudentManager.SunbatheSpots[this.StudentID - 80];
+				this.Pathfinding.target = this.StudentManager.SunbatheSpots[this.StudentID - 80];
+			}
 		}
 		else
 		{
@@ -11145,7 +11154,14 @@ public class StudentScript : MonoBehaviour
 		}
 		this.InvestigationTimer = 0f;
 		this.InvestigationPhase = 0;
-		this.Pathfinding.speed = 1f;
+		if (!this.Hurry)
+		{
+			this.Pathfinding.speed = 1f;
+		}
+		else
+		{
+			this.Pathfinding.speed = 4f;
+		}
 		this.YandereInnocent = false;
 		this.Investigating = false;
 		this.DiscCheck = false;
@@ -11751,54 +11767,63 @@ public class StudentScript : MonoBehaviour
 
 	public void GetFoodTarget()
 	{
-		this.SleuthID++;
-		if (this.SleuthID < 90)
+		this.Attempts++;
+		if (this.Attempts >= 100)
 		{
-			if (this.SleuthID == this.StudentID)
-			{
-				this.GetFoodTarget();
-			}
-			else if (this.StudentManager.Students[this.SleuthID] == null)
-			{
-				this.GetFoodTarget();
-			}
-			else if (!this.StudentManager.Students[this.SleuthID].gameObject.activeInHierarchy)
-			{
-				this.GetFoodTarget();
-			}
-			else if (this.StudentManager.Students[this.SleuthID].Club == ClubType.Cooking || this.StudentManager.Students[this.SleuthID].Club == ClubType.Delinquent || this.StudentManager.Students[this.SleuthID].Club == ClubType.Sports || this.StudentManager.Students[this.SleuthID].TargetedForDistraction)
-			{
-				Debug.Log(this.Name + " can't use this student! This student is part of the Cooking Club.");
-				this.GetFoodTarget();
-			}
-			else
-			{
-				Debug.Log(string.Concat(new object[]
-				{
-					this.Name,
-					" is choosing Student #",
-					this.SleuthID,
-					" as their target. This student is in the ",
-					this.StudentManager.Students[this.SleuthID].Club,
-					" Club."
-				}));
-				this.CharacterAnimation.CrossFade(this.WalkAnim);
-				this.DistractionTarget = this.StudentManager.Students[this.SleuthID];
-				this.DistractionTarget.TargetedForDistraction = true;
-				this.SleuthTarget = this.StudentManager.Students[this.SleuthID].transform;
-				this.Pathfinding.target = this.SleuthTarget;
-				this.CurrentDestination = this.SleuthTarget;
-				this.TargetDistance = 0.75f;
-				this.DistractTimer = 8f;
-				this.Distracting = true;
-				this.CanTalk = false;
-				this.Routine = false;
-			}
+			this.Phase++;
 		}
 		else
 		{
-			this.SleuthID = 0;
-			this.GetSleuthTarget();
+			this.SleuthID++;
+			if (this.SleuthID < 90)
+			{
+				if (this.SleuthID == this.StudentID)
+				{
+					this.GetFoodTarget();
+				}
+				else if (this.StudentManager.Students[this.SleuthID] == null)
+				{
+					this.GetFoodTarget();
+				}
+				else if (!this.StudentManager.Students[this.SleuthID].gameObject.activeInHierarchy)
+				{
+					this.GetFoodTarget();
+				}
+				else if (this.StudentManager.Students[this.SleuthID].Club == ClubType.Cooking || this.StudentManager.Students[this.SleuthID].Club == ClubType.Delinquent || this.StudentManager.Students[this.SleuthID].Club == ClubType.Sports || this.StudentManager.Students[this.SleuthID].TargetedForDistraction)
+				{
+					Debug.Log(this.Name + " can't use this student! This student is part of the Cooking Club.");
+					this.GetFoodTarget();
+				}
+				else
+				{
+					Debug.Log(string.Concat(new object[]
+					{
+						this.Name,
+						" is choosing Student #",
+						this.SleuthID,
+						" as their target. This student is in the ",
+						this.StudentManager.Students[this.SleuthID].Club,
+						" Club."
+					}));
+					this.CharacterAnimation.CrossFade(this.WalkAnim);
+					this.DistractionTarget = this.StudentManager.Students[this.SleuthID];
+					this.DistractionTarget.TargetedForDistraction = true;
+					this.SleuthTarget = this.StudentManager.Students[this.SleuthID].transform;
+					this.Pathfinding.target = this.SleuthTarget;
+					this.CurrentDestination = this.SleuthTarget;
+					this.TargetDistance = 0.75f;
+					this.DistractTimer = 8f;
+					this.Distracting = true;
+					this.CanTalk = false;
+					this.Routine = false;
+					this.Attempts = 0;
+				}
+			}
+			else
+			{
+				this.SleuthID = 0;
+				this.GetFoodTarget();
+			}
 		}
 	}
 
@@ -11859,5 +11884,40 @@ public class StudentScript : MonoBehaviour
 		this.Fleeing = false;
 		this.Routine = true;
 		this.Grudge = false;
+	}
+
+	public void EmptyHands()
+	{
+		if (this.MyPlate != null)
+		{
+			this.MyPlate.gameObject.SetActive(false);
+		}
+		if (this.Club == ClubType.Gardening)
+		{
+			this.WateringCan.transform.parent = this.Hips;
+			this.WateringCan.transform.localPosition = new Vector3(0f, 0.0135f, -0.184f);
+			this.WateringCan.transform.localEulerAngles = new Vector3(0f, 90f, 30f);
+		}
+		this.Chopsticks[0].SetActive(false);
+		this.Chopsticks[1].SetActive(false);
+		this.Sketchbook.SetActive(false);
+		this.SmartPhone.SetActive(false);
+		this.OccultBook.SetActive(false);
+		this.Paintbrush.SetActive(false);
+		this.EventBook.SetActive(false);
+		this.Scrubber.SetActive(false);
+		this.Octodog.SetActive(false);
+		this.Palette.SetActive(false);
+		this.Eraser.SetActive(false);
+		this.Pencil.SetActive(false);
+		this.Bento.SetActive(false);
+		this.Pen.SetActive(false);
+		foreach (GameObject gameObject in this.ScienceProps)
+		{
+			if (gameObject != null)
+			{
+				gameObject.SetActive(false);
+			}
+		}
 	}
 }

@@ -496,13 +496,10 @@ public class EndOfDayScript : MonoBehaviour
 			else if (this.Phase == 12)
 			{
 				Debug.Log("Phase 12.");
-				if (SchemeGlobals.GetSchemeStage(2) == 3)
+				if (SchemeGlobals.GetSchemeStage(2) == 3 && !StudentGlobals.GetStudentDying(30) && !StudentGlobals.GetStudentDead(30) && !StudentGlobals.GetStudentArrested(30))
 				{
-					if (!StudentGlobals.GetStudentDying(30) && !StudentGlobals.GetStudentDead(30) && !StudentGlobals.GetStudentArrested(30))
-					{
-						this.Label.text = "Kokona discovers Sakyu's ring inside of her book bag. She returns the ring to Sakyu, who decides to never let it out of her sight again.";
-						SchemeGlobals.SetSchemeStage(2, 100);
-					}
+					this.Label.text = "Kokona discovers Sakyu's ring inside of her book bag. She returns the ring to Sakyu, who decides to never let it out of her sight again.";
+					SchemeGlobals.SetSchemeStage(2, 100);
 				}
 				else if (SchemeGlobals.GetSchemeStage(5) > 1 && SchemeGlobals.GetSchemeStage(5) < 5)
 				{

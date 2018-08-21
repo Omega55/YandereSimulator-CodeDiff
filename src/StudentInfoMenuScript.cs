@@ -137,15 +137,22 @@ public class StudentInfoMenuScript : MonoBehaviour
 				{
 					this.PromptBar.Label[0].text = "Send Home";
 				}
-				if (this.StudentManager.Students[this.StudentID].gameObject.activeInHierarchy)
+				if (this.StudentManager.Students[this.StudentID] != null)
 				{
-					if (this.StudentManager.Tag.Target == this.StudentManager.Students[this.StudentID].Head)
+					if (this.StudentManager.Students[this.StudentID].gameObject.activeInHierarchy)
 					{
-						this.PromptBar.Label[2].text = "Untag";
+						if (this.StudentManager.Tag.Target == this.StudentManager.Students[this.StudentID].Head)
+						{
+							this.PromptBar.Label[2].text = "Untag";
+						}
+						else
+						{
+							this.PromptBar.Label[2].text = "Tag";
+						}
 					}
 					else
 					{
-						this.PromptBar.Label[2].text = "Tag";
+						this.PromptBar.Label[2].text = string.Empty;
 					}
 				}
 				else
@@ -318,10 +325,14 @@ public class StudentInfoMenuScript : MonoBehaviour
 		if (this.SendingHome)
 		{
 			Debug.Log("Highlighting student number " + this.StudentID);
-			if (this.StudentManager.Students[this.StudentID] != null && (this.StudentID == 1 || StudentGlobals.GetStudentDead(this.StudentID) || (this.StudentID < 98 && this.StudentManager.Students[this.StudentID].SentHome) || this.StudentID > 97 || StudentGlobals.GetStudentSlave() == this.StudentID))
+			if (this.StudentManager.Students[this.StudentID] != null)
 			{
-				this.PromptBar.Label[0].text = string.Empty;
-				this.PromptBar.UpdateButtons();
+				StudentScript studentScript = this.StudentManager.Students[this.StudentID];
+				if (this.StudentID == 1 || StudentGlobals.GetStudentDead(this.StudentID) || (this.StudentID < 98 && studentScript.SentHome) || (this.StudentID > 97 || StudentGlobals.GetStudentSlave() == this.StudentID || (studentScript.Club == ClubType.MartialArts && studentScript.ClubAttire)) || (studentScript.Club == ClubType.Sports && studentScript.ClubAttire))
+				{
+					this.PromptBar.Label[0].text = string.Empty;
+					this.PromptBar.UpdateButtons();
+				}
 			}
 		}
 		if (this.GettingInfo)
