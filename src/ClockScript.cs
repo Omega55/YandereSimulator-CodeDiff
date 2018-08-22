@@ -133,6 +133,7 @@ public class ClockScript : MonoBehaviour
 			if (this.CameraTimer > 1f)
 			{
 				this.Yandere.RPGCamera.enabled = true;
+				this.Yandere.CanMove = true;
 			}
 		}
 		if (this.PresentTime < 1080f)

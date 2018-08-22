@@ -93,9 +93,9 @@ public class StatsScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (File.Exists(Application.streamingAssetsPath + "/CustomPortraits.txt"))
+		if (File.Exists(Application.streamingAssetsPath + "/CustomPortrait.txt"))
 		{
-			string a = File.ReadAllText(Application.streamingAssetsPath + "/CustomPortraits.txt");
+			string a = File.ReadAllText(Application.streamingAssetsPath + "/CustomPortrait.txt");
 			if (a == "1")
 			{
 				string url = "file:///" + Application.streamingAssetsPath + "/CustomPortrait.png";

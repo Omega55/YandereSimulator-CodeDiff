@@ -562,7 +562,7 @@ public class CosmeticScript : MonoBehaviour
 				this.CharacterAnimation.Play("sadFace_00");
 				this.CharacterAnimation["sadFace_00"].weight = 1f;
 			}
-			if (this.StudentID == 13 && StudentGlobals.CustomSuitor)
+			if (this.StudentID == 28 && StudentGlobals.CustomSuitor)
 			{
 				if (StudentGlobals.CustomSuitorHair > 0)
 				{
@@ -820,7 +820,7 @@ public class CosmeticScript : MonoBehaviour
 				gameObject20.SetActive(false);
 			}
 		}
-		if (this.StudentID == 13 && StudentGlobals.CustomSuitor && StudentGlobals.CustomSuitorEyewear > 0)
+		if (this.StudentID == 28 && StudentGlobals.CustomSuitor && StudentGlobals.CustomSuitorEyewear > 0)
 		{
 			this.Eyewear[StudentGlobals.CustomSuitorEyewear].SetActive(true);
 		}
@@ -1122,7 +1122,14 @@ public class CosmeticScript : MonoBehaviour
 			}
 			if (!this.Male)
 			{
-				this.FemaleAccessories[6].GetComponent<Renderer>().material.color = this.ColorValue;
+				if (this.StudentID == 25)
+				{
+					this.FemaleAccessories[6].GetComponent<Renderer>().material.color = new Color(0f, 1f, 1f);
+				}
+				else if (this.StudentID == 30)
+				{
+					this.FemaleAccessories[6].GetComponent<Renderer>().material.color = new Color(1f, 0f, 1f);
+				}
 			}
 		}
 		else
@@ -1177,6 +1184,14 @@ public class CosmeticScript : MonoBehaviour
 				{
 					this.FacialHairRenderer.materials[1].color = this.ColorValue;
 				}
+			}
+		}
+		if (this.StudentID == 25 || this.StudentID == 30)
+		{
+			this.FemaleAccessories[6].SetActive(true);
+			if ((float)StudentGlobals.GetStudentReputation(this.StudentID) < -33.33333f)
+			{
+				this.FemaleAccessories[6].SetActive(false);
 			}
 		}
 		if (this.StudentID == 2)
@@ -1240,7 +1255,7 @@ public class CosmeticScript : MonoBehaviour
 		else
 		{
 			this.FaceTexture = ((!this.CustomHair) ? this.FaceTextures[this.SkinColor] : this.HairRenderer.material.mainTexture);
-			if (this.StudentID == 13 && StudentGlobals.CustomSuitor && StudentGlobals.CustomSuitorTan)
+			if (this.StudentID == 28 && StudentGlobals.CustomSuitor && StudentGlobals.CustomSuitorTan)
 			{
 				this.SkinColor = 6;
 				this.FaceTexture = this.FaceTextures[6];

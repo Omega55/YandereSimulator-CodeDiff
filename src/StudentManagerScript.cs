@@ -73,6 +73,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public StudentScript Reporter;
 
+	public DoorScript GamingDoor;
+
 	public GhostScript GhostChan;
 
 	public YandereScript Yandere;

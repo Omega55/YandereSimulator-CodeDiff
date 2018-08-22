@@ -246,6 +246,8 @@ public class StudentScript : MonoBehaviour
 	[SerializeField]
 	private LayerMask Mask;
 
+	public StudentActionType CurrentAction;
+
 	public StudentActionType[] Actions;
 
 	public StudentActionType[] OriginalActions;
@@ -2672,6 +2674,7 @@ public class StudentScript : MonoBehaviour
 					{
 						this.Phase++;
 					}
+					this.CurrentAction = this.Actions[this.Phase];
 					if (this.Actions[this.Phase] == StudentActionType.Graffiti && !this.StudentManager.Bully)
 					{
 						ScheduleBlock scheduleBlock = this.ScheduleBlocks[2];
@@ -4436,17 +4439,37 @@ public class StudentScript : MonoBehaviour
 							}
 							else if (this.Actions[this.Phase] == StudentActionType.Shock)
 							{
-								ParticleSystem.EmissionModule emission2 = this.Hearts.emission;
-								if (this.SmartPhone.activeInHierarchy)
+								if (this.StudentManager.Students[36] == null)
 								{
-									this.Cosmetic.MyRenderer.materials[2].SetFloat("_BlendAmount", 1f);
-									this.SmartPhone.SetActive(false);
-									this.MyController.radius = 0f;
-									emission2.rateOverTime = 5f;
-									emission2.enabled = true;
-									this.Hearts.Play();
+									this.Phase++;
 								}
-								this.CharacterAnimation.CrossFade("f02_peeking_0" + (this.StudentID - 80));
+								else if (this.StudentManager.Students[36].DistanceToDestination < 1f)
+								{
+									if (!this.StudentManager.GamingDoor.Open)
+									{
+										this.StudentManager.GamingDoor.OpenDoor();
+									}
+									ParticleSystem.EmissionModule emission2 = this.Hearts.emission;
+									if (this.SmartPhone.activeInHierarchy)
+									{
+										this.Cosmetic.MyRenderer.materials[2].SetFloat("_BlendAmount", 1f);
+										this.SmartPhone.SetActive(false);
+										this.MyController.radius = 0f;
+										emission2.rateOverTime = 5f;
+										emission2.enabled = true;
+										this.Hearts.Play();
+									}
+									this.CharacterAnimation.CrossFade("f02_peeking_0" + (this.StudentID - 80));
+								}
+								else
+								{
+									this.CharacterAnimation.CrossFade(this.PatrolAnim);
+									if (!this.SmartPhone.activeInHierarchy)
+									{
+										this.SmartPhone.SetActive(true);
+										this.MyController.radius = 0.1f;
+									}
+								}
 							}
 							else if (this.Actions[this.Phase] == StudentActionType.Miyuki)
 							{
@@ -5603,7 +5626,7 @@ public class StudentScript : MonoBehaviour
 				}
 				else if (this.DistanceToDestination < 5f)
 				{
-					if (this.DistractionTarget.InEvent || this.DistractionTarget.Talking || this.DistractionTarget.Following || this.DistractionTarget.TurnOffRadio || this.DistractionTarget.Splashed || this.DistractionTarget.Shoving || this.DistractionTarget.Spraying || this.DistractionTarget.FocusOnYandere || this.DistractionTarget.ShoeRemoval.enabled)
+					if (this.DistractionTarget.InEvent || this.DistractionTarget.Talking || this.DistractionTarget.Following || this.DistractionTarget.TurnOffRadio || this.DistractionTarget.Splashed || this.DistractionTarget.Shoving || this.DistractionTarget.Spraying || this.DistractionTarget.FocusOnYandere || this.DistractionTarget.ShoeRemoval.enabled || this.DistractionTarget.Posing)
 					{
 						this.CurrentDestination = this.Destinations[this.Phase];
 						this.Pathfinding.target = this.Destinations[this.Phase];
@@ -11789,7 +11812,7 @@ public class StudentScript : MonoBehaviour
 				{
 					this.GetFoodTarget();
 				}
-				else if (this.StudentManager.Students[this.SleuthID].Club == ClubType.Cooking || this.StudentManager.Students[this.SleuthID].Club == ClubType.Delinquent || this.StudentManager.Students[this.SleuthID].Club == ClubType.Sports || this.StudentManager.Students[this.SleuthID].TargetedForDistraction)
+				else if (this.StudentManager.Students[this.SleuthID].CurrentAction == StudentActionType.SitAndEatBento || this.StudentManager.Students[this.SleuthID].Club == ClubType.Cooking || this.StudentManager.Students[this.SleuthID].Club == ClubType.Delinquent || this.StudentManager.Students[this.SleuthID].Club == ClubType.Sports || this.StudentManager.Students[this.SleuthID].TargetedForDistraction || this.StudentManager.Students[this.SleuthID].Posing)
 				{
 					Debug.Log(this.Name + " can't use this student! This student is part of the Cooking Club.");
 					this.GetFoodTarget();
