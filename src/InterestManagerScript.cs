@@ -7,68 +7,87 @@ public class InterestManagerScript : MonoBehaviour
 
 	public YandereScript Yandere;
 
-	public Transform MartialArts;
+	public Transform[] Clubs;
 
-	public Transform OccultClub;
+	public Transform DelinquentZone;
 
-	public Transform VideoGames;
+	public Transform Library;
 
 	public Transform Kitten;
 
 	private void Update()
 	{
-		if (this.Yandere.Follower != null && this.Yandere.Follower.StudentID == 30)
+		if (this.Yandere.Follower != null)
 		{
-			if (!ConversationGlobals.GetTopicLearnedByStudent(3, 30) && Vector3.Distance(this.Yandere.Follower.transform.position, this.OccultClub.position) < 5f)
+			int studentID = this.Yandere.Follower.StudentID;
+			for (int i = 1; i < 11; i++)
 			{
-				if (!ConversationGlobals.GetTopicDiscovered(3))
+				if (!ConversationGlobals.GetTopicLearnedByStudent(i, studentID) && Vector3.Distance(this.Yandere.Follower.transform.position, this.Clubs[i].position) < 5f)
 				{
-					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
-					ConversationGlobals.SetTopicDiscovered(3, true);
-				}
-				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
-				ConversationGlobals.SetTopicLearnedByStudent(3, 30, true);
-			}
-			if (!ConversationGlobals.GetTopicLearnedByStudent(14, 30))
-			{
-				StudentScript studentScript = this.StudentManager.Students[22];
-				StudentScript studentScript2 = this.StudentManager.Students[24];
-				StudentScript x = this.StudentManager.Students[25];
-				if (studentScript != null && x != null && studentScript.Actions[studentScript.Phase] == StudentActionType.ClubAction && studentScript.DistanceToDestination < 1f && studentScript2.Actions[studentScript2.Phase] == StudentActionType.ClubAction && studentScript2.DistanceToDestination < 1f && Vector3.Distance(this.Yandere.Follower.transform.position, this.MartialArts.position) < 5f)
-				{
-					if (!ConversationGlobals.GetTopicDiscovered(14))
+					if (!ConversationGlobals.GetTopicDiscovered(i))
 					{
 						this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
-						ConversationGlobals.SetTopicDiscovered(14, true);
+						ConversationGlobals.SetTopicDiscovered(i, true);
 					}
 					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
-					ConversationGlobals.SetTopicLearnedByStudent(14, 30, true);
+					ConversationGlobals.SetTopicLearnedByStudent(i, studentID, true);
 				}
 			}
-			if (!ConversationGlobals.GetTopicLearnedByStudent(16, 30))
+			if (!ConversationGlobals.GetTopicLearnedByStudent(11, studentID) && Vector3.Distance(this.Yandere.Follower.transform.position, this.Clubs[11].position) < 5f)
 			{
-				StudentScript x2 = this.StudentManager.Students[22];
-				StudentScript x3 = this.StudentManager.Students[25];
-				if (x2 != null && x3 != null && this.VideoGames.gameObject.activeInHierarchy && Vector3.Distance(this.Yandere.Follower.transform.position, this.VideoGames.position) < 2.5f)
-				{
-					if (!ConversationGlobals.GetTopicDiscovered(16))
-					{
-						this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
-						ConversationGlobals.SetTopicDiscovered(16, true);
-					}
-					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
-					ConversationGlobals.SetTopicLearnedByStudent(16, 30, true);
-				}
-			}
-			if (!ConversationGlobals.GetTopicLearnedByStudent(20, 30) && Vector3.Distance(this.Yandere.Follower.transform.position, this.Kitten.position) < 2.5f)
-			{
-				if (!ConversationGlobals.GetTopicDiscovered(20))
+				if (!ConversationGlobals.GetTopicDiscovered(11))
 				{
 					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
-					ConversationGlobals.SetTopicDiscovered(20, true);
+					ConversationGlobals.SetTopicDiscovered(11, true);
+					ConversationGlobals.SetTopicDiscovered(12, true);
+					ConversationGlobals.SetTopicDiscovered(13, true);
+					ConversationGlobals.SetTopicDiscovered(14, true);
 				}
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
-				ConversationGlobals.SetTopicLearnedByStudent(20, 30, true);
+				ConversationGlobals.SetTopicLearnedByStudent(11, studentID, true);
+				ConversationGlobals.SetTopicLearnedByStudent(12, studentID, true);
+				ConversationGlobals.SetTopicLearnedByStudent(13, studentID, true);
+				ConversationGlobals.SetTopicLearnedByStudent(14, studentID, true);
+			}
+			if (!ConversationGlobals.GetTopicLearnedByStudent(15, studentID) && Vector3.Distance(this.Yandere.Follower.transform.position, this.Kitten.position) < 2.5f)
+			{
+				if (!ConversationGlobals.GetTopicDiscovered(15))
+				{
+					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+					ConversationGlobals.SetTopicDiscovered(15, true);
+				}
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
+				ConversationGlobals.SetTopicLearnedByStudent(15, studentID, true);
+			}
+			if (!ConversationGlobals.GetTopicLearnedByStudent(16, studentID) && Vector3.Distance(this.Yandere.Follower.transform.position, this.Clubs[6].position) < 5f)
+			{
+				if (!ConversationGlobals.GetTopicDiscovered(16))
+				{
+					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+					ConversationGlobals.SetTopicDiscovered(16, true);
+				}
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
+				ConversationGlobals.SetTopicLearnedByStudent(16, studentID, true);
+			}
+			if (!ConversationGlobals.GetTopicLearnedByStudent(17, studentID) && Vector3.Distance(this.Yandere.Follower.transform.position, this.DelinquentZone.position) < 5f)
+			{
+				if (!ConversationGlobals.GetTopicDiscovered(17))
+				{
+					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+					ConversationGlobals.SetTopicDiscovered(17, true);
+				}
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
+				ConversationGlobals.SetTopicLearnedByStudent(17, studentID, true);
+			}
+			if (!ConversationGlobals.GetTopicLearnedByStudent(18, studentID) && Vector3.Distance(this.Yandere.Follower.transform.position, this.Library.position) < 5f)
+			{
+				if (!ConversationGlobals.GetTopicDiscovered(18))
+				{
+					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+					ConversationGlobals.SetTopicDiscovered(18, true);
+				}
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
+				ConversationGlobals.SetTopicLearnedByStudent(18, studentID, true);
 			}
 		}
 	}

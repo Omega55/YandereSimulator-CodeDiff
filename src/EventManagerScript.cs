@@ -159,19 +159,6 @@ public class EventManagerScript : MonoBehaviour
 								this.Spoken = false;
 								this.EventPhase++;
 								this.Timer = 0f;
-								if (this.EventPhase == 4)
-								{
-									if (!ConversationGlobals.GetTopicDiscovered(22))
-									{
-										this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
-										ConversationGlobals.SetTopicDiscovered(22, true);
-									}
-									if (!ConversationGlobals.GetTopicLearnedByStudent(22, 7))
-									{
-										this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
-										ConversationGlobals.SetTopicLearnedByStudent(22, 7, true);
-									}
-								}
 								if (this.EventPhase == this.EventSpeech.Length)
 								{
 									this.EndEvent();

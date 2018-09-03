@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class HomeDarknessScript : MonoBehaviour
 {
+	public HomeVideoGamesScript HomeVideoGames;
+
 	public HomeYandereScript HomeYandere;
 
 	public HomeCameraScript HomeCamera;
@@ -34,7 +36,14 @@ public class HomeDarknessScript : MonoBehaviour
 				{
 					if (this.HomeCamera.ID == 5)
 					{
-						SceneManager.LoadScene("YanvaniaTitleScene");
+						if (this.HomeVideoGames.ID == 1)
+						{
+							SceneManager.LoadScene("YanvaniaTitleScene");
+						}
+						else
+						{
+							SceneManager.LoadScene("MiyukiTitleScene");
+						}
 					}
 					else if (this.HomeCamera.ID == 9)
 					{

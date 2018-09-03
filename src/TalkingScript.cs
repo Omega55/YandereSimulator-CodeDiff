@@ -249,15 +249,15 @@ public class TalkingScript : MonoBehaviour
 							this.S.PendingRep -= 2f;
 						}
 						this.S.Gossiped = true;
-						if (!ConversationGlobals.GetTopicDiscovered(15))
+						if (!ConversationGlobals.GetTopicDiscovered(19))
 						{
 							this.S.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
-							ConversationGlobals.SetTopicDiscovered(15, true);
+							ConversationGlobals.SetTopicDiscovered(19, true);
 						}
-						if (!ConversationGlobals.GetTopicLearnedByStudent(15, this.S.StudentID))
+						if (!ConversationGlobals.GetTopicLearnedByStudent(19, this.S.StudentID))
 						{
 							this.S.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
-							ConversationGlobals.SetTopicLearnedByStudent(15, this.S.StudentID, true);
+							ConversationGlobals.SetTopicLearnedByStudent(19, this.S.StudentID, true);
 						}
 					}
 					else
@@ -469,7 +469,7 @@ public class TalkingScript : MonoBehaviour
 							{
 								this.Grudge = true;
 							}
-							if (studentScript.Routine && !studentScript.TargetedForDistraction && !studentScript.InEvent && !this.Grudge)
+							if (studentScript.Routine && !studentScript.TargetedForDistraction && !studentScript.InEvent && !this.Grudge && studentScript.ClubActivityPhase < 16)
 							{
 								this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod1Anim);
 								this.S.Subtitle.UpdateLabel(SubtitleType.StudentDistract, 0, 3f);

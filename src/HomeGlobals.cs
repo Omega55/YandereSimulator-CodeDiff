@@ -8,6 +8,8 @@ public static class HomeGlobals
 
 	private const string Str_StartInBasement = "StartInBasement";
 
+	private const string Str_MiyukiDefeated = "MiyukiDefeated";
+
 	public static bool LateForSchool
 	{
 		get
@@ -44,10 +46,23 @@ public static class HomeGlobals
 		}
 	}
 
+	public static bool MiyukiDefeated
+	{
+		get
+		{
+			return GlobalsHelper.GetBool("MiyukiDefeated");
+		}
+		set
+		{
+			GlobalsHelper.SetBool("MiyukiDefeated", value);
+		}
+	}
+
 	public static void DeleteAll()
 	{
 		Globals.Delete("LateForSchool");
 		Globals.Delete("Night");
 		Globals.Delete("StartInBasement");
+		Globals.Delete("MiyukiDefeated");
 	}
 }

@@ -29,6 +29,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public GameObject[] ClubAccessories;
 
+	public GameObject[] PunkAccessories;
+
 	public GameObject[] RightStockings;
 
 	public GameObject[] LeftStockings;
@@ -40,6 +42,8 @@ public class CosmeticScript : MonoBehaviour
 	public GameObject[] FacialHair;
 
 	public GameObject[] FemaleHair;
+
+	public GameObject[] MusicNotes;
 
 	public GameObject[] Kerchiefs;
 
@@ -116,6 +120,8 @@ public class CosmeticScript : MonoBehaviour
 	public Texture[] NoseTextures;
 
 	public Texture[] Trunks;
+
+	public Texture[] MusicStockings;
 
 	public Mesh[] FemaleUniforms;
 
@@ -820,6 +826,20 @@ public class CosmeticScript : MonoBehaviour
 				gameObject20.SetActive(false);
 			}
 		}
+		foreach (GameObject gameObject21 in this.PunkAccessories)
+		{
+			if (gameObject21 != null)
+			{
+				gameObject21.SetActive(false);
+			}
+		}
+		foreach (GameObject gameObject22 in this.MusicNotes)
+		{
+			if (gameObject22 != null)
+			{
+				gameObject22.SetActive(false);
+			}
+		}
 		if (this.StudentID == 28 && StudentGlobals.CustomSuitor && StudentGlobals.CustomSuitorEyewear > 0)
 		{
 			this.Eyewear[StudentGlobals.CustomSuitorEyewear].SetActive(true);
@@ -944,6 +964,15 @@ public class CosmeticScript : MonoBehaviour
 		{
 			this.ClubAccessories[(int)this.Club].SetActive(false);
 			this.ClubAccessories[(int)this.Club] = this.Scanners[this.StudentID];
+			if (!ClubGlobals.GetClubClosed(this.Club))
+			{
+				this.ClubAccessories[(int)this.Club].SetActive(true);
+			}
+		}
+		else if (this.Club == ClubType.LightMusic)
+		{
+			this.ClubAccessories[(int)this.Club].SetActive(false);
+			this.ClubAccessories[(int)this.Club] = this.MusicNotes[this.StudentID - 50];
 			if (!ClubGlobals.GetClubClosed(this.Club))
 			{
 				this.ClubAccessories[(int)this.Club].SetActive(true);
@@ -1217,6 +1246,12 @@ public class CosmeticScript : MonoBehaviour
 			this.CharacterAnimation.Play("moodyEyes_00");
 			this.CharacterAnimation["moodyEyes_00"].weight = 1f;
 			this.CharacterAnimation.Play("moodyEyes_00");
+		}
+		else if (this.StudentID == 51)
+		{
+			this.PunkAccessories[1].SetActive(true);
+			this.PunkAccessories[2].SetActive(true);
+			this.PunkAccessories[3].SetActive(true);
 		}
 		else if (this.StudentID == 59)
 		{
@@ -1664,6 +1699,26 @@ public class CosmeticScript : MonoBehaviour
 		else if (this.Stockings == "Council4")
 		{
 			this.MyStockings = this.DragonStockings;
+		}
+		else if (this.Stockings == "Music1")
+		{
+			this.MyStockings = this.MusicStockings[1];
+		}
+		else if (this.Stockings == "Music2")
+		{
+			this.MyStockings = this.MusicStockings[2];
+		}
+		else if (this.Stockings == "Music3")
+		{
+			this.MyStockings = this.MusicStockings[3];
+		}
+		else if (this.Stockings == "Music4")
+		{
+			this.MyStockings = this.MusicStockings[4];
+		}
+		else if (this.Stockings == "Music5")
+		{
+			this.MyStockings = this.MusicStockings[5];
 		}
 		else if (this.Stockings == "Custom1")
 		{

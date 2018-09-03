@@ -135,16 +135,6 @@ public class CookingEventScript : MonoBehaviour
 			}
 			else if (this.EventStudent.DistanceToDestination < 1f)
 			{
-				if (!ConversationGlobals.GetTopicLearnedByStudent(1, 7) && Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position) < 5f)
-				{
-					if (!ConversationGlobals.GetTopicDiscovered(1))
-					{
-						this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
-						ConversationGlobals.SetTopicDiscovered(1, true);
-					}
-					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
-					ConversationGlobals.SetTopicLearnedByStudent(1, 7, true);
-				}
 				if (this.EventPhase == -1)
 				{
 					this.Timer += Time.deltaTime;

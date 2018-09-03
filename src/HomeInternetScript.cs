@@ -103,7 +103,7 @@ public class HomeInternetScript : MonoBehaviour
 
 	public UITexture[] Portraits;
 
-	private void Start()
+	private void Awake()
 	{
 		this.StudentPost1.localPosition = new Vector3(this.StudentPost1.localPosition.x, -180f, this.StudentPost1.localPosition.z);
 		this.StudentPost2.localPosition = new Vector3(this.StudentPost2.localPosition.x, -365f, this.StudentPost2.localPosition.z);
@@ -416,8 +416,8 @@ public class HomeInternetScript : MonoBehaviour
 					}
 					if (this.Timer > 13f)
 					{
-						StudentGlobals.SetStudentExposed(7, true);
-						StudentGlobals.SetStudentReputation(7, StudentGlobals.GetStudentReputation(7) - 50);
+						StudentGlobals.SetStudentExposed(30, true);
+						StudentGlobals.SetStudentReputation(30, StudentGlobals.GetStudentReputation(30) - 50);
 						this.InternetPrompts.SetActive(true);
 						this.PostSequence = false;
 					}

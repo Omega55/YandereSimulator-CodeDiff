@@ -3611,6 +3611,7 @@ public class YandereScript : MonoBehaviour
 			{
 				this.HighlightingR.enabled = false;
 				this.HighlightingB.enabled = false;
+				this.Obscurance.enabled = false;
 			}
 			if (this.YandereFade < 99f)
 			{
@@ -4896,6 +4897,7 @@ public class YandereScript : MonoBehaviour
 
 	public void ResetYandereEffects()
 	{
+		this.Obscurance.enabled = false;
 		this.Vignette.intensity = 0f;
 		this.Vignette.blur = 0f;
 		this.Vignette.chromaticAberration = 0f;

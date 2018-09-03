@@ -380,7 +380,6 @@ public class ClubManagerScript : MonoBehaviour
 					studentScript5.transform.rotation = this.Club6ActivitySpots[this.ID].rotation;
 					studentScript5.ClubActivity = true;
 					studentScript5.GetComponent<AudioSource>().volume = 0.1f;
-					studentScript5.ClubManager.GameScreens[this.ID - 35].SetActive(true);
 					if (!studentScript5.ClubAttire)
 					{
 						studentScript5.ChangeClubwear();

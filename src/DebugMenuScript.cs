@@ -445,114 +445,117 @@ public class DebugMenuScript : MonoBehaviour
 						}
 						this.Window.SetActive(false);
 					}
-					else if (!Input.GetKeyDown(KeyCode.X))
+					else if (Input.GetKeyDown(KeyCode.X))
 					{
-						if (Input.GetKeyDown(KeyCode.Backspace))
+						TaskGlobals.SetTaskStatus(36, 3);
+						SchoolGlobals.ReactedToGameLeader = false;
+						SceneManager.LoadScene("LoadingScene");
+					}
+					else if (Input.GetKeyDown(KeyCode.Backspace))
+					{
+						Time.timeScale = 1f;
+						this.Clock.PresentTime = 1079f;
+						this.Clock.HourTime = this.Clock.PresentTime / 60f;
+						this.Window.SetActive(false);
+					}
+					else if (Input.GetKeyDown(KeyCode.BackQuote))
+					{
+						Globals.DeleteAll();
+						SceneManager.LoadScene("LoadingScene");
+					}
+					else if (Input.GetKeyDown(KeyCode.Space))
+					{
+						this.Yandere.transform.position = this.TeleportSpot[5].position;
+						if (this.StudentManager.Students[46] != null)
 						{
-							Time.timeScale = 1f;
-							this.Clock.PresentTime = 1079f;
-							this.Clock.HourTime = this.Clock.PresentTime / 60f;
-							this.Window.SetActive(false);
-						}
-						else if (Input.GetKeyDown(KeyCode.BackQuote))
-						{
-							Globals.DeleteAll();
-							SceneManager.LoadScene("LoadingScene");
-						}
-						else if (Input.GetKeyDown(KeyCode.Space))
-						{
-							this.Yandere.transform.position = this.TeleportSpot[5].position;
-							if (this.StudentManager.Students[46] != null)
+							this.StudentManager.Students[46].transform.position = this.TeleportSpot[5].position;
+							if (!this.StudentManager.Students[46].Indoors)
 							{
-								this.StudentManager.Students[46].transform.position = this.TeleportSpot[5].position;
-								if (!this.StudentManager.Students[46].Indoors)
+								if (this.StudentManager.Students[46].ShoeRemoval.Locker == null)
 								{
-									if (this.StudentManager.Students[46].ShoeRemoval.Locker == null)
-									{
-										this.StudentManager.Students[46].ShoeRemoval.Start();
-									}
-									this.StudentManager.Students[46].ShoeRemoval.PutOnShoes();
+									this.StudentManager.Students[46].ShoeRemoval.Start();
 								}
+								this.StudentManager.Students[46].ShoeRemoval.PutOnShoes();
 							}
-							this.Clock.PresentTime = 1015f;
-							this.Clock.HourTime = this.Clock.PresentTime / 60f;
-							this.Window.SetActive(false);
-							this.OsanaEvent1.enabled = false;
-							this.OsanaEvent2.enabled = false;
-							this.OsanaEvent3.enabled = false;
-							Physics.SyncTransforms();
 						}
-						else if (Input.GetKeyDown(KeyCode.LeftAlt))
+						this.Clock.PresentTime = 1015f;
+						this.Clock.HourTime = this.Clock.PresentTime / 60f;
+						this.Window.SetActive(false);
+						this.OsanaEvent1.enabled = false;
+						this.OsanaEvent2.enabled = false;
+						this.OsanaEvent3.enabled = false;
+						Physics.SyncTransforms();
+					}
+					else if (Input.GetKeyDown(KeyCode.LeftAlt))
+					{
+						this.Turtle.SpawnWeapons();
+						this.Yandere.transform.position = this.TeleportSpot[6].position;
+						this.Clock.PresentTime = 425f;
+						this.Clock.HourTime = this.Clock.PresentTime / 60f;
+						Physics.SyncTransforms();
+						this.Window.SetActive(false);
+					}
+					else if (Input.GetKeyDown(KeyCode.LeftControl))
+					{
+						this.Yandere.transform.position = this.TeleportSpot[30].position;
+						if (this.StudentManager.Students[31] != null)
 						{
-							this.Turtle.SpawnWeapons();
-							this.Yandere.transform.position = this.TeleportSpot[6].position;
-							this.Clock.PresentTime = 425f;
-							this.Clock.HourTime = this.Clock.PresentTime / 60f;
-							Physics.SyncTransforms();
-							this.Window.SetActive(false);
+							this.StudentManager.Students[31].transform.position = this.TeleportSpot[30].position;
 						}
-						else if (Input.GetKeyDown(KeyCode.LeftControl))
-						{
-							this.Yandere.transform.position = this.TeleportSpot[30].position;
-							if (this.StudentManager.Students[31] != null)
-							{
-								this.StudentManager.Students[31].transform.position = this.TeleportSpot[30].position;
-							}
-							this.Clock.PresentTime = 1015f;
-							this.Clock.HourTime = this.Clock.PresentTime / 60f;
-							Physics.SyncTransforms();
-							this.Window.SetActive(false);
-						}
-						else if (Input.GetKeyDown(KeyCode.RightControl))
-						{
-							this.Yandere.transform.position = this.TeleportSpot[8].position;
-							Physics.SyncTransforms();
-							this.Window.SetActive(false);
-						}
-						else if (Input.GetKeyDown(KeyCode.Equals))
-						{
-							this.DelinquentManager.Timer -= 30f;
-							this.Clock.PresentTime += 30f;
-							this.Window.SetActive(false);
-						}
-						else if (Input.GetKeyDown(KeyCode.Return))
-						{
-							this.Yandere.transform.eulerAngles = this.TeleportSpot[10].eulerAngles;
-							this.Yandere.transform.position = this.TeleportSpot[10].position;
-							this.StudentManager.Students[1].ShoeRemoval.Start();
-							this.StudentManager.Students[1].ShoeRemoval.PutOnShoes();
-							this.StudentManager.Students[1].transform.position = new Vector3(0f, 12.1f, -25f);
-							this.StudentManager.Students[1].Alarmed = true;
-							this.StudentManager.Students[11].Lethal = true;
-							this.StudentManager.Students[11].ShoeRemoval.Start();
-							this.StudentManager.Students[11].ShoeRemoval.PutOnShoes();
-							this.StudentManager.Students[11].transform.position = new Vector3(0f, 12.1f, -25f);
-							this.Clock.PresentTime = 780f;
-							this.Clock.HourTime = this.Clock.PresentTime / 60f;
-							Physics.SyncTransforms();
-							this.Window.SetActive(false);
-						}
-						else if (Input.GetKeyDown(KeyCode.B))
-						{
-							DatingGlobals.SuitorProgress = 2;
-							SceneManager.LoadScene("LoadingScene");
-						}
-						else if (Input.GetKeyDown(KeyCode.Pause))
-						{
-							this.Clock.StopTime = !this.Clock.StopTime;
-							this.Window.SetActive(false);
-						}
-						else if (Input.GetKeyDown(KeyCode.W))
-						{
-							this.StudentManager.ToggleBookBags();
-							this.Window.SetActive(false);
-						}
-						else if (Input.GetKeyDown(KeyCode.H))
-						{
-							StudentGlobals.SetFragileTarget(31);
-							StudentGlobals.SetStudentFragileSlave(5);
-							SceneManager.LoadScene("LoadingScene");
-						}
+						this.Clock.PresentTime = 1015f;
+						this.Clock.HourTime = this.Clock.PresentTime / 60f;
+						Physics.SyncTransforms();
+						this.Window.SetActive(false);
+					}
+					else if (Input.GetKeyDown(KeyCode.RightControl))
+					{
+						this.Yandere.transform.position = this.TeleportSpot[8].position;
+						Physics.SyncTransforms();
+						this.Window.SetActive(false);
+					}
+					else if (Input.GetKeyDown(KeyCode.Equals))
+					{
+						this.DelinquentManager.Timer -= 30f;
+						this.Clock.PresentTime += 30f;
+						this.Window.SetActive(false);
+					}
+					else if (Input.GetKeyDown(KeyCode.Return))
+					{
+						this.Yandere.transform.eulerAngles = this.TeleportSpot[10].eulerAngles;
+						this.Yandere.transform.position = this.TeleportSpot[10].position;
+						this.StudentManager.Students[1].ShoeRemoval.Start();
+						this.StudentManager.Students[1].ShoeRemoval.PutOnShoes();
+						this.StudentManager.Students[1].transform.position = new Vector3(0f, 12.1f, -25f);
+						this.StudentManager.Students[1].Alarmed = true;
+						this.StudentManager.Students[11].Lethal = true;
+						this.StudentManager.Students[11].ShoeRemoval.Start();
+						this.StudentManager.Students[11].ShoeRemoval.PutOnShoes();
+						this.StudentManager.Students[11].transform.position = new Vector3(0f, 12.1f, -25f);
+						this.Clock.PresentTime = 780f;
+						this.Clock.HourTime = this.Clock.PresentTime / 60f;
+						Physics.SyncTransforms();
+						this.Window.SetActive(false);
+					}
+					else if (Input.GetKeyDown(KeyCode.B))
+					{
+						DatingGlobals.SuitorProgress = 2;
+						SceneManager.LoadScene("LoadingScene");
+					}
+					else if (Input.GetKeyDown(KeyCode.Pause))
+					{
+						this.Clock.StopTime = !this.Clock.StopTime;
+						this.Window.SetActive(false);
+					}
+					else if (Input.GetKeyDown(KeyCode.W))
+					{
+						this.StudentManager.ToggleBookBags();
+						this.Window.SetActive(false);
+					}
+					else if (Input.GetKeyDown(KeyCode.H))
+					{
+						StudentGlobals.SetFragileTarget(31);
+						StudentGlobals.SetStudentFragileSlave(5);
+						SceneManager.LoadScene("LoadingScene");
 					}
 				}
 			}

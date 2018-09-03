@@ -184,8 +184,10 @@ public class StudentInfoScript : MonoBehaviour
 		}
 		this.StrengthLabel.text = StudentInfoScript.StrengthStrings[studentJson.Strength];
 		AudioSource component = base.GetComponent<AudioSource>();
+		component.enabled = false;
 		this.Static.SetActive(false);
 		component.volume = 0f;
+		component.Stop();
 		if (ID < 98)
 		{
 			string url = string.Concat(new string[]

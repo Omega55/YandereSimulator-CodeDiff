@@ -42,7 +42,7 @@ public class TaskWindowScript : MonoBehaviour
 	private void Start()
 	{
 		this.Window.SetActive(false);
-		this.UpdateTaskObjects(7);
+		this.UpdateTaskObjects(30);
 	}
 
 	public void UpdateWindow(int ID)

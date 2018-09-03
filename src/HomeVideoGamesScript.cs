@@ -34,9 +34,9 @@ public class HomeVideoGamesScript : MonoBehaviour
 	{
 		if (TaskGlobals.GetTaskStatus(38) == 0)
 		{
-			this.TitleScreens[1] = this.TitleScreens[2];
+			this.TitleScreens[1] = this.TitleScreens[5];
 			UILabel uilabel = this.GameTitles[1];
-			uilabel.text = this.GameTitles[2].text;
+			uilabel.text = this.GameTitles[5].text;
 			uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, 0.5f);
 		}
 		this.TitleScreen.mainTexture = this.TitleScreens[1];

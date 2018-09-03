@@ -7,6 +7,8 @@ public class HomeYandereScript : MonoBehaviour
 {
 	public CharacterController MyController;
 
+	public AudioSource MyAudio;
+
 	public HomeVideoGamesScript HomeVideoGames;
 
 	public HomeCameraScript HomeCamera;
@@ -26,6 +28,8 @@ public class HomeYandereScript : MonoBehaviour
 	public float RunSpeed;
 
 	public bool CanMove;
+
+	public AudioClip MiyukiReaction;
 
 	public AudioClip DiscScratch;
 
@@ -71,7 +75,7 @@ public class HomeYandereScript : MonoBehaviour
 		}
 		if (SceneManager.GetActiveScene().name == "HomeScene")
 		{
-			if (!YanvaniaGlobals.DraculaDefeated)
+			if (!YanvaniaGlobals.DraculaDefeated && !HomeGlobals.MiyukiDefeated)
 			{
 				base.transform.position = Vector3.zero;
 				base.transform.eulerAngles = Vector3.zero;
@@ -90,6 +94,19 @@ public class HomeYandereScript : MonoBehaviour
 				HomeGlobals.StartInBasement = false;
 				base.transform.position = new Vector3(0f, -135f, 0f);
 				base.transform.eulerAngles = Vector3.zero;
+			}
+			else if (HomeGlobals.MiyukiDefeated)
+			{
+				base.transform.position = new Vector3(1f, 0f, 0f);
+				base.transform.eulerAngles = new Vector3(0f, 90f, 0f);
+				this.Character.GetComponent<Animation>().Play("f02_discScratch_00");
+				this.Controller.transform.localPosition = new Vector3(0.09425f, 0.0095f, 0.01878f);
+				this.Controller.transform.localEulerAngles = new Vector3(0f, 0f, -180f);
+				this.HomeCamera.Destination = this.HomeCamera.Destinations[5];
+				this.HomeCamera.Target = this.HomeCamera.Targets[5];
+				this.Disc.SetActive(true);
+				this.WearPajamas();
+				this.MyAudio.clip = this.MiyukiReaction;
 			}
 			else
 			{
@@ -153,23 +170,23 @@ public class HomeYandereScript : MonoBehaviour
 		}
 		else if (this.HomeDarkness.color.a == 0f)
 		{
-			AudioSource component2 = base.GetComponent<AudioSource>();
 			if (this.Timer == 0f)
 			{
-				component2.Play();
+				this.MyAudio.Play();
 			}
-			else if (this.Timer > component2.clip.length + 1f)
+			else if (this.Timer > this.MyAudio.clip.length + 1f)
 			{
 				YanvaniaGlobals.DraculaDefeated = false;
+				HomeGlobals.MiyukiDefeated = false;
 				this.Disc.SetActive(false);
 				this.HomeVideoGames.Quit();
 			}
 			this.Timer += Time.deltaTime;
 		}
-		Rigidbody component3 = base.GetComponent<Rigidbody>();
-		if (component3 != null)
+		Rigidbody component2 = base.GetComponent<Rigidbody>();
+		if (component2 != null)
 		{
-			component3.velocity = Vector3.zero;
+			component2.velocity = Vector3.zero;
 		}
 		if (Input.GetKeyDown(KeyCode.H))
 		{
@@ -222,6 +239,10 @@ public class HomeYandereScript : MonoBehaviour
 			StudentGlobals.MaleUniform = 6;
 			StudentGlobals.FemaleUniform = 6;
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+		}
+		if (base.transform.position.y < -10f)
+		{
+			base.transform.position = new Vector3(base.transform.position.x, -10f, base.transform.position.z);
 		}
 	}
 

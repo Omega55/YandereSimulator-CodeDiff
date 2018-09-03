@@ -399,9 +399,9 @@ public class CounselorScript : MonoBehaviour
 				this.ExpelTimer += Time.deltaTime;
 				if (this.ExpelTimer > 6f)
 				{
-					if (StudentGlobals.ExpelProgress == 5 && !StudentGlobals.GetStudentExpelled(7) && this.StudentManager.Police.TranqCase.VictimID != 7)
+					if (StudentGlobals.ExpelProgress == 5 && !StudentGlobals.GetStudentExpelled(30) && this.StudentManager.Police.TranqCase.VictimID != 30)
 					{
-						StudentGlobals.SetStudentExpelled(7, true);
+						StudentGlobals.SetStudentExpelled(30, true);
 						this.EndOfDayDarkness.color = new Color(this.EndOfDayDarkness.color.r, this.EndOfDayDarkness.color.g, this.EndOfDayDarkness.color.b, 0f);
 						this.LectureLabel.color = new Color(this.LectureLabel.color.r, this.LectureLabel.color.g, this.LectureLabel.color.b, 0f);
 						this.LecturePhase = 2;
@@ -439,7 +439,7 @@ public class CounselorScript : MonoBehaviour
 			UILabel uilabel = this.Labels[i];
 			uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, 0.5f);
 		}
-		if (this.StudentManager.Students[7] != null)
+		if (this.StudentManager.Students[30] != null)
 		{
 			if (SchemeGlobals.GetSchemeStage(1) == 2)
 			{

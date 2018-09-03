@@ -267,7 +267,7 @@ public class HomeCameraScript : MonoBehaviour
 
 	public void PlayMusic()
 	{
-		if (!YanvaniaGlobals.DraculaDefeated)
+		if (!YanvaniaGlobals.DraculaDefeated && !HomeGlobals.MiyukiDefeated)
 		{
 			if (!this.BasementJukebox.isPlaying)
 			{

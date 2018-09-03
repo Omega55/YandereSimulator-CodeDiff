@@ -825,7 +825,7 @@ public class StudentManagerScript : MonoBehaviour
 	public void SpawnStudent(int spawnID)
 	{
 		bool flag = false;
-		if (spawnID > 10 && spawnID < 21)
+		if ((spawnID > 10 && spawnID < 21) || (spawnID > 50 && spawnID < 56))
 		{
 			flag = true;
 		}
@@ -1817,11 +1817,17 @@ public class StudentManagerScript : MonoBehaviour
 		while (this.ID < this.Students.Length)
 		{
 			StudentScript studentScript = this.Students[this.ID];
-			if (studentScript != null && !studentScript.Teacher && !studentScript.Slave && studentScript.Club != ClubType.Bully && studentScript.Club != ClubType.Council && studentScript.Club != ClubType.Delinquent && (float)StudentGlobals.GetStudentReputation(this.ID) < this.LowestRep)
+			if (studentScript != null)
 			{
-				this.LowestRep = (float)StudentGlobals.GetStudentReputation(this.ID);
-				this.VictimID = this.ID;
-				this.Bully = true;
+				if (this.ID != 36 || TaskGlobals.GetTaskStatus(36) != 3)
+				{
+					if (!studentScript.Teacher && !studentScript.Slave && studentScript.Club != ClubType.Bully && studentScript.Club != ClubType.Council && studentScript.Club != ClubType.Delinquent && (float)StudentGlobals.GetStudentReputation(this.ID) < this.LowestRep)
+					{
+						this.LowestRep = (float)StudentGlobals.GetStudentReputation(this.ID);
+						this.VictimID = this.ID;
+						this.Bully = true;
+					}
+				}
 			}
 			this.ID++;
 		}
