@@ -15,6 +15,8 @@ public class MGPMEnemyScript : MonoBehaviour
 
 	public GameObject Explosion;
 
+	public GameObject Impact;
+
 	public Renderer ExtraRenderer;
 
 	public Renderer MyRenderer;
@@ -24,8 +26,6 @@ public class MGPMEnemyScript : MonoBehaviour
 	public Transform HealthBar;
 
 	public Texture[] Sprite;
-
-	public int FlashWhite;
 
 	public int Pattern;
 
@@ -46,6 +46,8 @@ public class MGPMEnemyScript : MonoBehaviour
 	public float DeathTimer;
 
 	public float PhaseTimer;
+
+	public float FlashWhite;
 
 	public float Rotation;
 
@@ -75,6 +77,10 @@ public class MGPMEnemyScript : MonoBehaviour
 
 	private void Start()
 	{
+		if (this.Pattern != 10 && GameGlobals.HardMode)
+		{
+			this.Health += 6;
+		}
 		if (base.transform.localPosition.x < 0f)
 		{
 			this.Side = 1;
@@ -431,10 +437,10 @@ public class MGPMEnemyScript : MonoBehaviour
 				UnityEngine.Object.Destroy(base.gameObject);
 			}
 		}
-		if (this.FlashWhite > 0)
+		if (this.FlashWhite > 0f)
 		{
-			this.FlashWhite--;
-			if (this.FlashWhite == 0)
+			this.FlashWhite = Mathf.MoveTowards(this.FlashWhite, 0f, Time.deltaTime);
+			if (this.FlashWhite == 0f)
 			{
 				this.MyRenderer.material.SetColor("_EmissionColor", new Color(0f, 0f, 0f, 0f));
 				if (this.ExtraRenderer != null)
@@ -466,13 +472,17 @@ public class MGPMEnemyScript : MonoBehaviour
 	{
 		if (collision.gameObject.layer == 8)
 		{
+			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Impact, base.transform.position, Quaternion.identity);
+			gameObject.transform.parent = base.transform.parent;
+			gameObject.transform.localScale = new Vector3(32f, 32f, 32f);
+			gameObject.transform.localPosition = new Vector3(collision.gameObject.transform.localPosition.x, collision.gameObject.transform.localPosition.y, 1f);
 			this.MyRenderer.material.SetColor("_EmissionColor", new Color(1f, 1f, 1f, 1f));
 			if (this.ExtraRenderer != null)
 			{
 				this.ExtraRenderer.material.SetColor("_EmissionColor", new Color(1f, 1f, 1f, 1f));
 			}
 			UnityEngine.Object.Destroy(collision.gameObject);
-			this.FlashWhite = 5;
+			this.FlashWhite = 0.05f;
 			this.Health--;
 			if (this.HealthBar != null)
 			{

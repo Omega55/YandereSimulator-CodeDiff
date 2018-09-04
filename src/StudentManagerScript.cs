@@ -59,6 +59,10 @@ public class StudentManagerScript : MonoBehaviour
 
 	public RingEventScript RingEvent;
 
+	public Collider EastBathroomArea;
+
+	public Collider WestBathroomArea;
+
 	public HologramScript Holograms;
 
 	public RobotArmScript RobotArms;

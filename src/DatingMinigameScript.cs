@@ -51,6 +51,10 @@ public class DatingMinigameScript : MonoBehaviour
 
 	public Texture X;
 
+	public UISprite[] OpinionIcons;
+
+	public UISprite[] TopicIcons;
+
 	public UITexture[] MultiplierIcons;
 
 	public UILabel[] ComplimentLabels;
@@ -65,8 +69,6 @@ public class DatingMinigameScript : MonoBehaviour
 
 	public UILabel DialogueLabel;
 
-	public UISprite[] TopicIcons;
-
 	public UIPanel DatingSimHUD;
 
 	public UILabel WisdomLabel;
@@ -80,6 +82,8 @@ public class DatingMinigameScript : MonoBehaviour
 	public UILabel[] Labels;
 
 	public UIPanel Panel;
+
+	public string[] OpinionSpriteNames;
 
 	public string[] Compliments;
 
@@ -842,6 +846,19 @@ public class DatingMinigameScript : MonoBehaviour
 			else
 			{
 				uisprite.spriteName = i.ToString();
+			}
+		}
+		for (int j = 1; j <= 25; j++)
+		{
+			UISprite uisprite2 = this.OpinionIcons[j];
+			if (!ConversationGlobals.GetTopicLearnedByStudent(j, 30))
+			{
+				uisprite2.spriteName = "Unknown";
+			}
+			else
+			{
+				int[] topics = this.JSON.Topics[30].Topics;
+				uisprite2.spriteName = this.OpinionSpriteNames[topics[j]];
 			}
 		}
 	}

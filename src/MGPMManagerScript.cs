@@ -15,11 +15,23 @@ public class MGPMManagerScript : MonoBehaviour
 
 	public GameObject StartGraphic;
 
+	public Renderer[] WaterRenderer;
+
+	public Renderer RightArtwork;
+
+	public Renderer LeftArtwork;
+
+	public Texture RightBloody;
+
+	public Texture LeftBloody;
+
+	public AudioSource Jukebox;
+
+	public AudioClip HardModeVoice;
+
 	public AudioClip GameOverMusic;
 
 	public AudioClip VictoryMusic;
-
-	public AudioSource Jukebox;
 
 	public AudioClip FinalBoss;
 
@@ -49,6 +61,14 @@ public class MGPMManagerScript : MonoBehaviour
 
 	private void Start()
 	{
+		if (GameGlobals.HardMode)
+		{
+			this.Jukebox.clip = this.HardModeVoice;
+			this.WaterRenderer[0].material.color = Color.red;
+			this.WaterRenderer[1].material.color = Color.red;
+			this.RightArtwork.material.mainTexture = this.RightBloody;
+			this.LeftArtwork.material.mainTexture = this.LeftBloody;
+		}
 		this.Miyuki.transform.localPosition = new Vector3(0f, -300f, 0f);
 		this.Black.material.color = new Color(0f, 0f, 0f, 1f);
 		this.StartGraphic.SetActive(false);
@@ -117,6 +137,10 @@ public class MGPMManagerScript : MonoBehaviour
 							this.Jukebox.loop = true;
 							this.Jukebox.clip = this.BGM;
 							this.Jukebox.Play();
+							if (GameGlobals.HardMode)
+							{
+								this.Jukebox.pitch = 0.2f;
+							}
 						}
 						this.StartGraphic.SetActive(true);
 						this.Timer += Time.deltaTime;
@@ -149,6 +173,10 @@ public class MGPMManagerScript : MonoBehaviour
 					this.Jukebox.loop = true;
 					this.Jukebox.clip = this.BGM;
 					this.Jukebox.Play();
+					if (GameGlobals.HardMode)
+					{
+						this.Jukebox.pitch = 0.2f;
+					}
 				}
 			}
 		}

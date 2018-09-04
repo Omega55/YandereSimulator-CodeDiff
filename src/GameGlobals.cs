@@ -8,6 +8,8 @@ public static class GameGlobals
 
 	private const string Str_Paranormal = "Paranormal";
 
+	private const string Str_HardMode = "HardMode";
+
 	public static bool LoveSick
 	{
 		get
@@ -44,10 +46,23 @@ public static class GameGlobals
 		}
 	}
 
+	public static bool HardMode
+	{
+		get
+		{
+			return GlobalsHelper.GetBool("HardMode");
+		}
+		set
+		{
+			GlobalsHelper.SetBool("HardMode", value);
+		}
+	}
+
 	public static void DeleteAll()
 	{
 		Globals.Delete("LoveSick");
 		Globals.Delete("MasksBanned");
 		Globals.Delete("Paranormal");
+		Globals.Delete("HardMode");
 	}
 }

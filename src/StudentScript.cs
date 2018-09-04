@@ -1609,6 +1609,11 @@ public class StudentScript : MonoBehaviour
 					this.SmartPhone.GetComponent<Renderer>().material.mainTexture = this.MidoriPhoneTexture;
 					this.PatrolAnim = "f02_midoriTexting_00";
 				}
+				else if (this.StudentID == 51)
+				{
+					this.IdleAnim = "f02_idleConfident_01";
+					this.WalkAnim = "f02_walkConfident_01";
+				}
 				else if (this.StudentID == 56)
 				{
 					this.IdleAnim = "idleConfident_00";
@@ -2042,9 +2047,57 @@ public class StudentScript : MonoBehaviour
 			}
 			this.PickRandomAnim();
 			this.PickRandomSleuthAnim();
-			if (this.Club != ClubType.None && (this.StudentID == 21 || this.StudentID == 26 || this.StudentID == 31 || this.StudentID == 36 || this.StudentID == 41 || this.StudentID == 46 || this.StudentID == 51 || this.StudentID == 56 || this.StudentID == 61 || this.StudentID == 66 || this.StudentID == 71))
+			Renderer component = this.Armband.GetComponent<Renderer>();
+			if (this.Club != ClubType.None)
 			{
-				this.Armband.SetActive(true);
+				if (this.StudentID == 21 || this.StudentID == 26 || this.StudentID == 31 || this.StudentID == 36 || this.StudentID == 41 || this.StudentID == 46 || this.StudentID == 51 || this.StudentID == 56 || this.StudentID == 61 || this.StudentID == 66 || this.StudentID == 71)
+				{
+					this.Armband.SetActive(true);
+				}
+				if (this.StudentID == 21)
+				{
+					component.material.SetTextureOffset("_MainTex", new Vector2(-0.63f, -0.22f));
+				}
+				else if (this.StudentID == 26)
+				{
+					component.material.SetTextureOffset("_MainTex", new Vector2(0f, -0.22f));
+				}
+				else if (this.StudentID == 31)
+				{
+					component.material.SetTextureOffset("_MainTex", new Vector2(0.69f, 0.01f));
+				}
+				else if (this.StudentID == 36)
+				{
+					component.material.SetTextureOffset("_MainTex", new Vector2(-0.633333f, -0.44f));
+				}
+				else if (this.StudentID == 41)
+				{
+					component.material.SetTextureOffset("_MainTex", new Vector2(-0.62f, -0.66666f));
+				}
+				else if (this.StudentID == 46)
+				{
+					component.material.SetTextureOffset("_MainTex", new Vector2(0f, -0.66666f));
+				}
+				else if (this.StudentID == 51)
+				{
+					component.material.SetTextureOffset("_MainTex", new Vector2(0.69f, 0.5566666f));
+				}
+				else if (this.StudentID == 56)
+				{
+					component.material.SetTextureOffset("_MainTex", new Vector2(0f, 0.5533333f));
+				}
+				else if (this.StudentID == 61)
+				{
+					component.material.SetTextureOffset("_MainTex", new Vector2(0f, 0f));
+				}
+				else if (this.StudentID == 66)
+				{
+					component.material.SetTextureOffset("_MainTex", new Vector2(0.69f, -0.22f));
+				}
+				else if (this.StudentID == 71)
+				{
+					component.material.SetTextureOffset("_MainTex", new Vector2(0.69f, 0.335f));
+				}
 			}
 			if (!this.Teacher)
 			{
@@ -2074,7 +2127,7 @@ public class StudentScript : MonoBehaviour
 			this.Started = true;
 			if (this.Club == ClubType.Council)
 			{
-				this.Armband.GetComponent<Renderer>().material.SetTextureOffset("_MainTex", new Vector2(-0.64375f, 0f));
+				component.material.SetTextureOffset("_MainTex", new Vector2(-0.64375f, 0f));
 				this.Armband.SetActive(true);
 				this.Indoors = true;
 				this.Spawned = true;
@@ -5328,7 +5381,7 @@ public class StudentScript : MonoBehaviour
 					this.Pathfinding.canMove = false;
 					this.Obstacle.enabled = true;
 				}
-				if (this.Phase < this.ScheduleBlocks.Length - 1 && (this.Clock.HourTime >= this.ScheduleBlocks[this.Phase].time || this.StudentManager.LockerRoomArea.bounds.Contains(this.Yandere.transform.position)))
+				if (this.Phase < this.ScheduleBlocks.Length - 1 && (this.Clock.HourTime >= this.ScheduleBlocks[this.Phase].time || this.StudentManager.LockerRoomArea.bounds.Contains(this.Yandere.transform.position) || this.StudentManager.WestBathroomArea.bounds.Contains(this.Yandere.transform.position) || this.StudentManager.EastBathroomArea.bounds.Contains(this.Yandere.transform.position)))
 				{
 					this.Phase++;
 					this.CurrentDestination = this.Destinations[this.Phase];
@@ -5340,7 +5393,7 @@ public class StudentScript : MonoBehaviour
 					this.Yandere.Followers--;
 					this.Following = false;
 					this.Routine = true;
-					if (this.StudentManager.LockerRoomArea.bounds.Contains(this.Yandere.transform.position))
+					if (this.StudentManager.LockerRoomArea.bounds.Contains(this.Yandere.transform.position) || this.StudentManager.WestBathroomArea.bounds.Contains(this.Yandere.transform.position) || this.StudentManager.EastBathroomArea.bounds.Contains(this.Yandere.transform.position))
 					{
 						this.Subtitle.UpdateLabel(SubtitleType.StopFollowApology, 1, 3f);
 					}

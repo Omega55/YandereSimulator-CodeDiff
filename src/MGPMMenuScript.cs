@@ -8,9 +8,7 @@ public class MGPMMenuScript : MonoBehaviour
 
 	public AudioSource Jukebox;
 
-	public AudioClip MiyukiPain;
-
-	public AudioClip MiyukiDeath;
+	public AudioClip HardModeClip;
 
 	public bool WindowDisplaying;
 
@@ -24,9 +22,19 @@ public class MGPMMenuScript : MonoBehaviour
 
 	public Renderer Black;
 
+	public Renderer Logo;
+
+	public Renderer BG;
+
+	public Texture BloodyLogo;
+
 	public AudioClip BGM;
 
 	public float Rotation;
+
+	public float Vibrate;
+
+	public bool HardMode;
 
 	public bool FadeOut;
 
@@ -61,6 +69,7 @@ public class MGPMMenuScript : MonoBehaviour
 			{
 				if (this.ID == 1)
 				{
+					GameGlobals.HardMode = this.HardMode;
 					SceneManager.LoadScene("MiyukiGameplayScene");
 				}
 				else
@@ -71,6 +80,20 @@ public class MGPMMenuScript : MonoBehaviour
 		}
 		if (!this.FadeOut && !this.FadeIn)
 		{
+			if (!this.HardMode && Input.GetKeyDown("h"))
+			{
+				AudioSource.PlayClipAtPoint(this.HardModeClip, base.transform.position);
+				this.Logo.material.mainTexture = this.BloodyLogo;
+				this.HardMode = true;
+				this.Vibrate = 0.1f;
+			}
+			if (this.HardMode)
+			{
+				this.Jukebox.pitch = Mathf.MoveTowards(this.Jukebox.pitch, 0.1f, Time.deltaTime);
+				this.BG.material.color = new Color(Mathf.MoveTowards(this.BG.material.color.r, 0.5f, Time.deltaTime * 0.5f), Mathf.MoveTowards(this.BG.material.color.g, 0f, Time.deltaTime), Mathf.MoveTowards(this.BG.material.color.b, 0f, Time.deltaTime), 1f);
+				this.Logo.transform.localPosition = new Vector3(0f, 0.5f, 2f) + new Vector3(UnityEngine.Random.Range(this.Vibrate * -1f, this.Vibrate), UnityEngine.Random.Range(this.Vibrate * -1f, this.Vibrate), 0f);
+				this.Vibrate = Mathf.MoveTowards(this.Vibrate, 0f, Time.deltaTime * 0.1f);
+			}
 			if (this.Jukebox.clip != this.BGM && !this.Jukebox.isPlaying)
 			{
 				this.Jukebox.loop = true;
