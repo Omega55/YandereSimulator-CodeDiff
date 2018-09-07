@@ -1815,7 +1815,7 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (subtitleType == SubtitleType.StudentStay)
 		{
-			this.Label.text = this.GetRandomString(this.StudentStays);
+			this.Label.text = this.StudentStays[ID];
 		}
 		else if (subtitleType == SubtitleType.PlayerDistract)
 		{

@@ -186,7 +186,7 @@ public class MGPMMiyukiScript : MonoBehaviour
 				this.PositionY = -224f;
 			}
 			base.transform.localPosition = new Vector3(this.PositionX, this.PositionY, 0f);
-			if (Input.GetKey("z") || Input.GetButton("A"))
+			if (Input.GetKey("z") || Input.GetKey("y") || Input.GetButton("A"))
 			{
 				if (this.ShootTimer == 0f)
 				{
@@ -202,7 +202,7 @@ public class MGPMMiyukiScript : MonoBehaviour
 					this.ShootTimer = 0f;
 				}
 			}
-			if (Input.GetKeyUp("z") || Input.GetButtonUp("A"))
+			if (Input.GetKeyUp("z") || Input.GetKeyUp("y") || Input.GetButtonUp("A"))
 			{
 				this.ShootTimer = 0f;
 			}

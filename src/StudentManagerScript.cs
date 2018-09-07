@@ -169,6 +169,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform[] SunbatheSpots;
 
+	public Transform[] MeetingSpots;
+
 	public Transform[] PinDownSpots;
 
 	public Transform[] ShockedSpots;
@@ -327,6 +329,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public int Bullies;
 
+	public int Speaker = 21;
+
 	public int Frame;
 
 	public int GymTeacherID = 100;
@@ -377,6 +381,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public bool NoSpeech;
 
+	public bool Meeting;
+
 	public bool Censor;
 
 	public bool Spooky;
@@ -398,6 +404,8 @@ public class StudentManagerScript : MonoBehaviour
 	public bool AoT;
 
 	public bool DK;
+
+	public float MeetingTimer;
 
 	public float ChangeTimer;
 
@@ -819,6 +827,10 @@ public class StudentManagerScript : MonoBehaviour
 					this.PinningDown = false;
 				}
 			}
+		}
+		if (this.Meeting)
+		{
+			this.UpdateMeeting();
 		}
 		if (Input.GetKeyDown("space"))
 		{
@@ -2016,6 +2028,28 @@ public class StudentManagerScript : MonoBehaviour
 				this.Students[this.ID].SpeechLines.Stop();
 			}
 			this.ID++;
+		}
+	}
+
+	public void UpdateMeeting()
+	{
+		this.MeetingTimer += Time.deltaTime;
+		if (this.MeetingTimer > 5f)
+		{
+			this.Speaker += 5;
+			if (this.Speaker == 91)
+			{
+				this.Speaker = 21;
+			}
+			else if (this.Speaker == 76)
+			{
+				this.Speaker = 86;
+			}
+			else if (this.Speaker == 36)
+			{
+				this.Speaker = 41;
+			}
+			this.MeetingTimer = 0f;
 		}
 	}
 }

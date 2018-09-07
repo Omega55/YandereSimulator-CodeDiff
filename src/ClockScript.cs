@@ -67,6 +67,8 @@ public class ClockScript : MonoBehaviour
 
 	public int Period;
 
+	public int Weekday;
+
 	public int ID;
 
 	public string TimeText = string.Empty;
@@ -90,6 +92,10 @@ public class ClockScript : MonoBehaviour
 		if (DateGlobals.Weekday == DayOfWeek.Sunday)
 		{
 			DateGlobals.Weekday = DayOfWeek.Monday;
+		}
+		if (DateGlobals.Weekday == DayOfWeek.Friday)
+		{
+			this.Weekday = 5;
 		}
 		if (SchoolGlobals.SchoolAtmosphere < 0.5f)
 		{

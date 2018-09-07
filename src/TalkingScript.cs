@@ -367,6 +367,11 @@ public class TalkingScript : MonoBehaviour
 							this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
 							this.S.Subtitle.UpdateLabel(SubtitleType.StudentStay, 0, 5f);
 						}
+						else if (this.S.StudentManager.LockerRoomArea.bounds.Contains(this.S.Yandere.transform.position) || this.S.StudentManager.WestBathroomArea.bounds.Contains(this.S.Yandere.transform.position) || this.S.StudentManager.EastBathroomArea.bounds.Contains(this.S.Yandere.transform.position))
+						{
+							this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
+							this.S.Subtitle.UpdateLabel(SubtitleType.StudentStay, 1, 5f);
+						}
 						else
 						{
 							this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod1Anim);

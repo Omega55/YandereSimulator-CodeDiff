@@ -354,10 +354,13 @@ public class VoidGoddessScript : MonoBehaviour
 			}
 			else if (Input.GetKeyDown("p"))
 			{
-				this.ID = 41;
-				while (this.ID < 98)
+				this.ID = 1;
+				while (this.ID < 101)
 				{
-					this.StudentManager.DisableStudent(this.ID);
+					if (this.ID != 21 && this.ID != 26 && this.ID != 31 && this.ID != 36 && this.ID != 41 && this.ID != 46 && this.ID != 51 && this.ID != 56 && this.ID != 61 && this.ID != 66 && this.ID != 71)
+					{
+						this.StudentManager.DisableStudent(this.ID);
+					}
 					this.ID++;
 				}
 				this.UpdatePortraits();

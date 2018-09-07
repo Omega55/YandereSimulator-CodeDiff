@@ -239,6 +239,10 @@ public class CosmeticScript : MonoBehaviour
 
 	public Transform LeftBreast;
 
+	public Transform RightTemple;
+
+	public Transform LeftTemple;
+
 	public Color CorrectColor;
 
 	public Color ColorValue;
@@ -415,6 +419,7 @@ public class CosmeticScript : MonoBehaviour
 		}
 		if (!this.Male)
 		{
+			this.ThickBrows.SetActive(false);
 			foreach (GameObject gameObject in this.PhoneCharms)
 			{
 				if (gameObject != null)
@@ -426,6 +431,14 @@ public class CosmeticScript : MonoBehaviour
 			this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 			this.RightWristband.SetActive(false);
 			this.LeftWristband.SetActive(false);
+			if (this.StudentID == 51)
+			{
+				this.RightTemple.name = "RENAMED";
+				this.LeftTemple.name = "RENAMED";
+				this.RightTemple.localScale = new Vector3(0f, 1f, 1f);
+				this.LeftTemple.localScale = new Vector3(0f, 1f, 1f);
+				this.ThickBrows.SetActive(true);
+			}
 			if (this.Club == ClubType.Bully)
 			{
 				if (!this.Kidnapped)
@@ -532,24 +545,24 @@ public class CosmeticScript : MonoBehaviour
 					this.CharacterAnimation.Play("f02_idleGirly_00");
 					this.CharacterAnimation["f02_idleGirly_00"].time = 2.66664f;
 				}
-				else if (this.StudentID == 81)
+				else if (this.StudentID == 81 || this.StudentID == 51)
 				{
 					this.CharacterAnimation.Play("f02_socialCameraPose_00");
 					base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y + 0.05f, base.transform.position.z);
 				}
-				else if (this.StudentID == 82)
+				else if (this.StudentID == 82 || this.StudentID == 52)
 				{
 					this.CharacterAnimation.Play("f02_galPose_01");
 				}
-				else if (this.StudentID == 83)
+				else if (this.StudentID == 83 || this.StudentID == 53)
 				{
 					this.CharacterAnimation.Play("f02_galPose_02");
 				}
-				else if (this.StudentID == 84)
+				else if (this.StudentID == 84 || this.StudentID == 54)
 				{
 					this.CharacterAnimation.Play("f02_galPose_03");
 				}
-				else if (this.StudentID == 85)
+				else if (this.StudentID == 85 || this.StudentID == 55)
 				{
 					this.CharacterAnimation.Play("f02_galPose_04");
 				}

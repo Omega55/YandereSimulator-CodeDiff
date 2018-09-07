@@ -58,8 +58,10 @@ public class GiggleScript : MonoBehaviour
 						this.Student.InvestigationTimer = 0f;
 						this.Student.Investigating = true;
 						this.Student.SpeechLines.Stop();
+						this.Student.ChalkDust.Stop();
 						this.Student.DiscCheck = true;
 						this.Student.Routine = false;
+						this.Student.CleanTimer = 0f;
 						this.Student.ReadPhase = 0;
 						this.Student.StopPairing();
 						if (this.Student.Persona != PersonaType.PhoneAddict && !this.Student.Sleuthing)

@@ -95,6 +95,8 @@ public class AlarmDiscScript : MonoBehaviour
 				this.Student.Investigating = false;
 				this.Student.DiscCheck = false;
 				this.Student.VisionDistance += 1f;
+				this.Student.ChalkDust.Stop();
+				this.Student.CleanTimer = 0f;
 				if (!this.Radio)
 				{
 					if (this.Student != this.Originator)
@@ -155,6 +157,8 @@ public class AlarmDiscScript : MonoBehaviour
 					this.Student.TurnOffRadio = true;
 					this.Student.Routine = false;
 					this.Student.GoAway = false;
+					this.Student.ChalkDust.Stop();
+					this.Student.CleanTimer = 0f;
 					if (!this.Student.Male)
 					{
 						this.Student.Cigarette.SetActive(false);
@@ -215,10 +219,13 @@ public class AlarmDiscScript : MonoBehaviour
 					this.Student.InvestigationTimer = 0f;
 					this.Student.Investigating = true;
 					this.Student.SpeechLines.Stop();
+					this.Student.ChalkDust.Stop();
 					this.Student.DiscCheck = true;
 					this.Student.Routine = false;
+					this.Student.CleanTimer = 0f;
 					this.Student.ReadPhase = 0;
 					this.Student.StopPairing();
+					this.Student.ChalkDust.emission.enabled = false;
 					Debug.Log(this.Student.Name + " was just alarmed by an alarm disc!");
 					if (this.Student.Persona == PersonaType.PhoneAddict || this.Student.Sleuthing)
 					{
