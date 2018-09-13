@@ -1062,6 +1062,14 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject KLKSword;
 
+	public Mesh MiyukiCostume;
+
+	public Texture MiyukiSkin;
+
+	public Texture MiyukiFace;
+
+	public Texture MiyukiBody;
+
 	public Mesh SchoolSwimsuit;
 
 	public Mesh GymUniform;
@@ -1497,6 +1505,10 @@ public class YandereScript : MonoBehaviour
 			{
 				component.volume -= Time.deltaTime * 2f;
 			}
+			else if (this.PickUp != null)
+			{
+				this.CharacterAnimation[this.CarryAnims[1]].weight = Mathf.Lerp(this.CharacterAnimation[this.CarryAnims[1]].weight, 1f, Time.deltaTime * 10f);
+			}
 			if (!this.Mopping)
 			{
 				this.CharacterAnimation["f02_mopping_00"].weight = Mathf.Lerp(this.CharacterAnimation["f02_mopping_00"].weight, 0f, Time.deltaTime * 10f);
@@ -1509,7 +1521,7 @@ public class YandereScript : MonoBehaviour
 					this.Mopping = false;
 				}
 			}
-			if (this.LaughIntensity < 10f)
+			if (this.LaughIntensity == 0f)
 			{
 				this.ID = 0;
 				while (this.ID < this.CarryAnims.Length)
@@ -4669,6 +4681,7 @@ public class YandereScript : MonoBehaviour
 							}
 							else if (Input.GetKeyDown(KeyCode.Space))
 							{
+								this.EasterEggMenu.SetActive(false);
 							}
 						}
 					}
@@ -5836,6 +5849,23 @@ public class YandereScript : MonoBehaviour
 		}
 		this.Egg = true;
 		this.DebugMenu.transform.parent.GetComponent<DebugMenuScript>().UpdateCensor();
+	}
+
+	public void Miyuki()
+	{
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
+		this.MyRenderer.materials[2].SetFloat("_BlendAmount", 0f);
+		this.IdleAnim = "f02_idleGirly_00";
+		this.WalkAnim = "f02_walkGirly_00";
+		this.MyRenderer.sharedMesh = this.MiyukiCostume;
+		this.MyRenderer.materials[0].mainTexture = this.MiyukiBody;
+		this.MyRenderer.materials[1].mainTexture = this.MiyukiFace;
+		this.MyRenderer.materials[2].mainTexture = this.MiyukiSkin;
+		this.PantyAttacher.newRenderer.enabled = false;
+		this.Hairstyle = 171;
+		this.UpdateHair();
+		this.Egg = true;
 	}
 
 	public void ChangeSchoolwear()

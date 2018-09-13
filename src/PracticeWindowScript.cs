@@ -1,0 +1,273 @@
+﻿using System;
+using UnityEngine;
+
+public class PracticeWindowScript : MonoBehaviour
+{
+	public StudentManagerScript StudentManager;
+
+	public DialogueWheelScript DialogueWheel;
+
+	public InputManagerScript InputManager;
+
+	public StudentScript SparringPartner;
+
+	public PromptBarScript PromptBar;
+
+	public YandereScript Yandere;
+
+	public WeaponScript Baton;
+
+	public Transform[] KneelSpot;
+
+	public Transform[] SparSpot;
+
+	public Transform Highlight;
+
+	public GameObject Window;
+
+	public UISprite Darkness;
+
+	public ClubType Club;
+
+	public UITexture[] Texture;
+
+	public int ClubID;
+
+	public int ID = 1;
+
+	public float Timer;
+
+	public bool ButtonUp;
+
+	public bool FadeOut;
+
+	public bool FadeIn;
+
+	private void Start()
+	{
+		this.Window.SetActive(false);
+	}
+
+	private void Update()
+	{
+		if (this.Window.activeInHierarchy)
+		{
+			if (this.InputManager.TappedUp)
+			{
+				this.ID--;
+				this.UpdateHighlight();
+			}
+			else if (this.InputManager.TappedDown)
+			{
+				this.ID++;
+				this.UpdateHighlight();
+			}
+			if (this.ButtonUp)
+			{
+				if (Input.GetButtonDown("A"))
+				{
+					if (this.Texture[this.ID].color.r == 1f)
+					{
+						this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubPractice;
+						this.Yandere.TargetStudent.TalkTimer = 100f;
+						this.Yandere.TargetStudent.ClubPhase = 2;
+						this.PromptBar.ClearButtons();
+						this.PromptBar.Show = false;
+						this.Window.SetActive(false);
+						this.ButtonUp = false;
+					}
+				}
+				else if (Input.GetButtonDown("B"))
+				{
+					this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubPractice;
+					this.Yandere.TargetStudent.TalkTimer = 100f;
+					this.Yandere.TargetStudent.ClubPhase = 3;
+					this.PromptBar.ClearButtons();
+					this.PromptBar.Show = false;
+					this.Window.SetActive(false);
+					this.ButtonUp = false;
+				}
+			}
+			else if (Input.GetButtonUp("A"))
+			{
+				this.ButtonUp = true;
+			}
+		}
+		if (this.FadeOut)
+		{
+			this.Darkness.enabled = true;
+			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 1f, Time.deltaTime));
+			if (this.Darkness.color.a == 1f)
+			{
+				if (this.DialogueWheel.ClubLeader)
+				{
+					this.DialogueWheel.End();
+				}
+				if (this.Yandere.CanMove)
+				{
+					this.StudentManager.CombatMinigame.Practice = true;
+					this.StudentManager.Students[46].CharacterAnimation.CrossFade(this.StudentManager.Students[46].IdleAnim);
+					this.StudentManager.Students[46].transform.eulerAngles = new Vector3(0f, 0f, 0f);
+					this.StudentManager.Students[46].Pathfinding.canSearch = false;
+					this.StudentManager.Students[46].Pathfinding.canMove = false;
+					this.StudentManager.Students[46].Distracted = true;
+					this.StudentManager.Students[46].enabled = false;
+					this.StudentManager.Students[46].Routine = false;
+					this.StudentManager.Students[46].Hearts.Stop();
+					for (int i = 1; i < 5; i++)
+					{
+						if (this.StudentManager.Students[46 + i] != null)
+						{
+							this.StudentManager.Students[46 + i].transform.position = this.KneelSpot[i].position;
+							this.StudentManager.Students[46 + i].transform.eulerAngles = this.KneelSpot[i].eulerAngles;
+							this.StudentManager.Students[46 + i].Pathfinding.canSearch = false;
+							this.StudentManager.Students[46 + i].Pathfinding.canMove = false;
+							this.StudentManager.Students[46 + i].Distracted = true;
+							this.StudentManager.Students[46 + i].enabled = false;
+							this.StudentManager.Students[46 + i].Routine = false;
+							if (this.StudentManager.Students[46 + i].Male)
+							{
+								this.StudentManager.Students[46 + i].CharacterAnimation.CrossFade("sit_04");
+							}
+							else
+							{
+								this.StudentManager.Students[46 + i].CharacterAnimation.CrossFade("f02_sit_05");
+							}
+						}
+					}
+					this.Yandere.transform.eulerAngles = this.SparSpot[1].eulerAngles;
+					this.Yandere.transform.position = this.SparSpot[1].position;
+					this.Yandere.CanMove = false;
+					this.SparringPartner = this.StudentManager.Students[this.ClubID - this.ID];
+					this.SparringPartner.CharacterAnimation.CrossFade(this.SparringPartner.IdleAnim);
+					this.SparringPartner.transform.eulerAngles = this.SparSpot[2].eulerAngles;
+					this.SparringPartner.transform.position = this.SparSpot[2].position;
+					this.SparringPartner.MyWeapon = this.Baton;
+					this.SparringPartner.MyWeapon.transform.parent = this.SparringPartner.WeaponBagParent;
+					this.SparringPartner.MyWeapon.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+					this.SparringPartner.MyWeapon.transform.localPosition = new Vector3(0f, 0f, 0f);
+					this.SparringPartner.MyWeapon.GetComponent<Rigidbody>().useGravity = false;
+					this.SparringPartner.MyWeapon.FingerprintID = this.SparringPartner.StudentID;
+					this.SparringPartner.MyWeapon.MyCollider.enabled = false;
+					Physics.SyncTransforms();
+					this.FadeOut = false;
+					this.FadeIn = true;
+				}
+			}
+		}
+		if (this.FadeIn)
+		{
+			this.SparringPartner.Pathfinding.canSearch = false;
+			this.SparringPartner.Pathfinding.canMove = false;
+			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 0f, Time.deltaTime));
+			if (this.Darkness.color.a == 0f)
+			{
+				this.Timer += Time.deltaTime;
+				if (this.Timer > 1f)
+				{
+					if (this.ID == 1)
+					{
+						this.StudentManager.CombatMinigame.Difficulty = 0.5f;
+					}
+					else if (this.ID == 2)
+					{
+						this.StudentManager.CombatMinigame.Difficulty = 0.75f;
+					}
+					else if (this.ID == 3)
+					{
+						this.StudentManager.CombatMinigame.Difficulty = 1f;
+					}
+					else if (this.ID == 4)
+					{
+						this.StudentManager.CombatMinigame.Difficulty = 1.5f;
+					}
+					else if (this.ID == 5)
+					{
+						this.StudentManager.CombatMinigame.Difficulty = 2f;
+					}
+					this.StudentManager.Students[this.ClubID - this.ID].Threatened = true;
+					this.StudentManager.Students[this.ClubID - this.ID].Alarmed = true;
+					this.StudentManager.Students[this.ClubID - this.ID].enabled = true;
+					this.FadeIn = false;
+					this.Timer = 0f;
+				}
+			}
+		}
+	}
+
+	public void Finish()
+	{
+		for (int i = 1; i < 6; i++)
+		{
+			if (this.StudentManager.Students[45 + i] != null)
+			{
+				this.StudentManager.Students[45 + i].Pathfinding.canSearch = true;
+				this.StudentManager.Students[45 + i].Pathfinding.canMove = true;
+				this.StudentManager.Students[45 + i].Distracted = false;
+				this.StudentManager.Students[45 + i].enabled = true;
+				this.StudentManager.Students[45 + i].Routine = true;
+			}
+		}
+	}
+
+	public void UpdateWindow()
+	{
+		this.PromptBar.ClearButtons();
+		this.PromptBar.Label[0].text = "Confirm";
+		this.PromptBar.Label[1].text = "Back";
+		this.PromptBar.Label[4].text = "Choose";
+		this.PromptBar.UpdateButtons();
+		this.PromptBar.Show = true;
+		if (this.Club == ClubType.MartialArts)
+		{
+			this.ClubID = 51;
+		}
+		while (this.ID < 6)
+		{
+			string url = string.Concat(new string[]
+			{
+				"file:///",
+				Application.streamingAssetsPath,
+				"/Portraits/Student_",
+				(this.ClubID - this.ID).ToString(),
+				".png"
+			});
+			WWW www = new WWW(url);
+			this.Texture[this.ID].mainTexture = www.texture;
+			if (this.StudentManager.Students[this.ClubID - this.ID] != null)
+			{
+				if (!this.StudentManager.Students[this.ClubID - this.ID].Routine)
+				{
+					Debug.Log("A student is not doing their routine.");
+					this.Texture[this.ID].color = new Color(0.5f, 0.5f, 0.5f, 1f);
+				}
+				else
+				{
+					this.Texture[this.ID].color = new Color(1f, 1f, 1f, 1f);
+				}
+			}
+			else
+			{
+				this.Texture[this.ID].color = new Color(0.5f, 0.5f, 0.5f, 1f);
+			}
+			this.ID++;
+		}
+		this.Texture[5].color = new Color(1f, 1f, 1f, 1f);
+		this.ID = 1;
+		this.Window.SetActive(true);
+		this.UpdateHighlight();
+	}
+
+	public void UpdateHighlight()
+	{
+		if (this.ID < 1)
+		{
+			this.ID = 5;
+		}
+		else if (this.ID > 5)
+		{
+			this.ID = 1;
+		}
+		this.Highlight.localPosition = new Vector3(0f, (float)(660 - 220 * this.ID), 0f);
+	}
+}

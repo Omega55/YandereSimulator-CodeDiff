@@ -97,6 +97,8 @@ public class StudentScript : MonoBehaviour
 
 	public AIPath Pathfinding;
 
+	public TalkingScript Talk;
+
 	public ClockScript Clock;
 
 	public RadioScript Radio;
@@ -2056,53 +2058,10 @@ public class StudentScript : MonoBehaviour
 			this.PickRandomAnim();
 			this.PickRandomSleuthAnim();
 			Renderer component = this.Armband.GetComponent<Renderer>();
+			this.Armband.SetActive(false);
 			if (this.Club != ClubType.None && (this.StudentID == 21 || this.StudentID == 26 || this.StudentID == 31 || this.StudentID == 36 || this.StudentID == 41 || this.StudentID == 46 || this.StudentID == 51 || this.StudentID == 56 || this.StudentID == 61 || this.StudentID == 66 || this.StudentID == 71))
 			{
 				this.Armband.SetActive(true);
-				if (this.StudentID == 21)
-				{
-					component.material.SetTextureOffset("_MainTex", new Vector2(-0.63f, -0.22f));
-				}
-				else if (this.StudentID == 26)
-				{
-					component.material.SetTextureOffset("_MainTex", new Vector2(0f, -0.22f));
-				}
-				else if (this.StudentID == 31)
-				{
-					component.material.SetTextureOffset("_MainTex", new Vector2(0.69f, 0.01f));
-				}
-				else if (this.StudentID == 36)
-				{
-					component.material.SetTextureOffset("_MainTex", new Vector2(-0.633333f, -0.44f));
-				}
-				else if (this.StudentID == 41)
-				{
-					component.material.SetTextureOffset("_MainTex", new Vector2(-0.62f, -0.66666f));
-				}
-				else if (this.StudentID == 46)
-				{
-					component.material.SetTextureOffset("_MainTex", new Vector2(0f, -0.66666f));
-				}
-				else if (this.StudentID == 51)
-				{
-					component.material.SetTextureOffset("_MainTex", new Vector2(0.69f, 0.5566666f));
-				}
-				else if (this.StudentID == 56)
-				{
-					component.material.SetTextureOffset("_MainTex", new Vector2(0f, 0.5533333f));
-				}
-				else if (this.StudentID == 61)
-				{
-					component.material.SetTextureOffset("_MainTex", new Vector2(0f, 0f));
-				}
-				else if (this.StudentID == 66)
-				{
-					component.material.SetTextureOffset("_MainTex", new Vector2(0.69f, -0.22f));
-				}
-				else if (this.StudentID == 71)
-				{
-					component.material.SetTextureOffset("_MainTex", new Vector2(0.69f, 0.335f));
-				}
 			}
 			if (!this.Teacher)
 			{
@@ -2342,6 +2301,10 @@ public class StudentScript : MonoBehaviour
 			if (this.Club == ClubType.Art)
 			{
 				return SubtitleType.ClubArtInfo;
+			}
+			if (this.Club == ClubType.LightMusic)
+			{
+				return SubtitleType.ClubLightMusicInfo;
 			}
 			if (this.Club == ClubType.MartialArts)
 			{
@@ -4627,14 +4590,7 @@ public class StudentScript : MonoBehaviour
 						}
 						else
 						{
-							if (this.Persona == PersonaType.PhoneAddict)
-							{
-								this.CharacterAnimation.CrossFade(this.PatrolAnim);
-							}
-							else
-							{
-								this.CharacterAnimation.CrossFade(this.IdleAnim);
-							}
+							this.CharacterAnimation.CrossFade(this.IdleAnim);
 							this.GoAwayTimer += Time.deltaTime;
 							if (this.GoAwayTimer > 60f)
 							{
@@ -5051,6 +5007,8 @@ public class StudentScript : MonoBehaviour
 											this.Subtitle.UpdateLabel(SubtitleType.SocialReport, 1, 5f);
 											this.StudentManager.Reporter = this;
 											this.SmartPhone.SetActive(true);
+											this.SmartPhone.transform.localPosition = new Vector3(-0.015f, -0.01f, 0f);
+											this.SmartPhone.transform.localEulerAngles = new Vector3(0f, -170f, 165f);
 										}
 										else
 										{
@@ -6941,7 +6899,14 @@ public class StudentScript : MonoBehaviour
 										}
 										else if (flag2)
 										{
-											this.Witnessed = StudentWitnessType.Suspicious;
+											if (this.Yandere.PickUp.CleaningProduct)
+											{
+												this.Witnessed = StudentWitnessType.CleaningItem;
+											}
+											else
+											{
+												this.Witnessed = StudentWitnessType.Suspicious;
+											}
 											this.RepLoss = 10f;
 											this.Concern = 5;
 										}
@@ -8128,9 +8093,13 @@ public class StudentScript : MonoBehaviour
 						{
 							this.Subtitle.UpdateLabel(SubtitleType.LewdReaction, 1, 3f);
 						}
+						else if (this.Witnessed == StudentWitnessType.CleaningItem)
+						{
+							this.Subtitle.UpdateLabel(SubtitleType.SuspiciousReaction, 0, 5f);
+						}
 						else if (this.Witnessed == StudentWitnessType.Suspicious)
 						{
-							this.Subtitle.UpdateLabel(SubtitleType.SuspiciousReaction, 1, 3f);
+							this.Subtitle.UpdateLabel(SubtitleType.SuspiciousReaction, 1, 5f);
 						}
 						else if (this.Witnessed == StudentWitnessType.Corpse)
 						{
@@ -8425,12 +8394,23 @@ public class StudentScript : MonoBehaviour
 					}
 					else if (!this.NoTalk)
 					{
+						Debug.Log("Combat is beginning.");
+						string str = string.Empty;
+						if (!this.Male)
+						{
+							str = "Female_";
+						}
+						if (this.StudentID == 46)
+						{
+							this.CharacterAnimation.CrossFade("delinquentDrawWeapon_00");
+						}
 						if (this.StudentManager.CombatMinigame.Delinquent == null)
 						{
 							this.Yandere.CharacterAnimation.CrossFade("Yandere_CombatIdle");
 							if (this.MyWeapon.transform.parent != this.ItemParent)
 							{
-								this.CharacterAnimation.CrossFade("delinquentDrawWeapon_00");
+								Debug.Log("This character should be drawing a weapon.");
+								this.CharacterAnimation.CrossFade(str + "delinquentDrawWeapon_00");
 							}
 							else
 							{
@@ -8469,19 +8449,19 @@ public class StudentScript : MonoBehaviour
 							{
 								this.Subtitle.UpdateLabel(SubtitleType.DelinquentAvenge, 0, 5f);
 							}
-							else
+							else if (!this.StudentManager.CombatMinigame.Practice)
 							{
 								this.Subtitle.UpdateLabel(SubtitleType.DelinquentFight, 0, 5f);
 							}
 						}
 						this.Yandere.transform.rotation = Quaternion.LookRotation(new Vector3(this.Hips.transform.position.x, this.Yandere.transform.position.y, this.Hips.transform.position.z) - this.Yandere.transform.position);
-						if (this.CharacterAnimation["delinquentDrawWeapon_00"].time >= 0.5f)
+						if (this.CharacterAnimation[str + "delinquentDrawWeapon_00"].time >= 0.5f)
 						{
 							this.MyWeapon.transform.parent = this.ItemParent;
 							this.MyWeapon.transform.localEulerAngles = new Vector3(0f, 15f, 0f);
 							this.MyWeapon.transform.localPosition = new Vector3(0.01f, 0f, 0f);
 						}
-						if (this.CharacterAnimation["delinquentDrawWeapon_00"].time >= this.CharacterAnimation["delinquentDrawWeapon_00"].length)
+						if (this.CharacterAnimation[str + "delinquentDrawWeapon_00"].time >= this.CharacterAnimation[str + "delinquentDrawWeapon_00"].length)
 						{
 							this.Threatened = false;
 							this.Alarmed = false;
@@ -9336,6 +9316,16 @@ public class StudentScript : MonoBehaviour
 				Debug.Log("A reporter died before being able to report a corpse. Corpse position reset.");
 				this.StudentManager.CorpseLocation.position = Vector3.zero;
 			}
+		}
+		if (this.Club == ClubType.Delinquent && this.MyWeapon.transform.parent == this.ItemParent)
+		{
+			this.MyWeapon.transform.parent = null;
+			this.MyWeapon.MyCollider.enabled = true;
+			this.MyWeapon.Prompt.enabled = true;
+			Rigidbody component = this.MyWeapon.GetComponent<Rigidbody>();
+			component.constraints = RigidbodyConstraints.None;
+			component.isKinematic = false;
+			component.useGravity = true;
 		}
 	}
 

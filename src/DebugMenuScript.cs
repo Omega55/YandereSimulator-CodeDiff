@@ -466,16 +466,19 @@ public class DebugMenuScript : MonoBehaviour
 					else if (Input.GetKeyDown(KeyCode.Space))
 					{
 						this.Yandere.transform.position = this.TeleportSpot[5].position;
-						if (this.StudentManager.Students[46] != null)
+						for (int i = 46; i < 51; i++)
 						{
-							this.StudentManager.Students[46].transform.position = this.TeleportSpot[5].position;
-							if (!this.StudentManager.Students[46].Indoors)
+							if (this.StudentManager.Students[i] != null)
 							{
-								if (this.StudentManager.Students[46].ShoeRemoval.Locker == null)
+								this.StudentManager.Students[i].transform.position = this.TeleportSpot[5].position;
+								if (!this.StudentManager.Students[i].Indoors)
 								{
-									this.StudentManager.Students[46].ShoeRemoval.Start();
+									if (this.StudentManager.Students[i].ShoeRemoval.Locker == null)
+									{
+										this.StudentManager.Students[i].ShoeRemoval.Start();
+									}
+									this.StudentManager.Students[i].ShoeRemoval.PutOnShoes();
 								}
-								this.StudentManager.Students[46].ShoeRemoval.PutOnShoes();
 							}
 						}
 						this.Clock.PresentTime = 1015f;

@@ -37,6 +37,8 @@ public class DialogueWheelScript : MonoBehaviour
 
 	public GameObject DatingMinigame;
 
+	public PracticeWindowScript PracticeWindow;
+
 	public Transform Interaction;
 
 	public Transform Favors;
@@ -284,7 +286,7 @@ public class DialogueWheelScript : MonoBehaviour
 							this.Yandere.TargetStudent.ClubPhase = 1;
 							this.Show = false;
 						}
-						if (this.Selected == 2)
+						else if (this.Selected == 2)
 						{
 							this.Impatience.fillAmount = 0f;
 							this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubJoin;
@@ -308,7 +310,7 @@ public class DialogueWheelScript : MonoBehaviour
 								this.Yandere.TargetStudent.ClubPhase = 1;
 							}
 						}
-						if (this.Selected == 3)
+						else if (this.Selected == 3)
 						{
 							this.Impatience.fillAmount = 0f;
 							this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubQuit;
@@ -317,38 +319,42 @@ public class DialogueWheelScript : MonoBehaviour
 							this.Show = false;
 						}
 						int num = 0;
-						if (this.Yandere.TargetStudent.Sleuthing)
+						if (!this.Yandere.TargetStudent.Sleuthing)
 						{
-							num = 5;
-						}
-						if (this.Selected == 4)
-						{
-							this.Impatience.fillAmount = 0f;
-							this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubBye;
-							this.Yandere.TargetStudent.TalkTimer = this.Yandere.Subtitle.ClubFarewellClips[(int)(this.Yandere.TargetStudent.Club + num)].length;
-							this.Show = false;
-						}
-						if (this.Selected == 5)
-						{
-							this.Impatience.fillAmount = 0f;
-							this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubActivity;
-							this.Yandere.TargetStudent.TalkTimer = 100f;
-							if (this.Clock.HourTime < 17f)
+							if (this.Selected == 4)
 							{
-								this.Yandere.TargetStudent.ClubPhase = 4;
+								this.Impatience.fillAmount = 0f;
+								this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubBye;
+								this.Yandere.TargetStudent.TalkTimer = this.Yandere.Subtitle.ClubFarewellClips[(int)(this.Yandere.TargetStudent.Club + num)].length;
+								this.Show = false;
 							}
-							else if (this.Clock.HourTime > 17.5f)
+							else if (this.Selected == 5)
 							{
-								this.Yandere.TargetStudent.ClubPhase = 5;
+								this.Impatience.fillAmount = 0f;
+								this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubActivity;
+								this.Yandere.TargetStudent.TalkTimer = 100f;
+								if (this.Clock.HourTime < 17f)
+								{
+									this.Yandere.TargetStudent.ClubPhase = 4;
+								}
+								else if (this.Clock.HourTime > 17.5f)
+								{
+									this.Yandere.TargetStudent.ClubPhase = 5;
+								}
+								else
+								{
+									this.Yandere.TargetStudent.ClubPhase = 1;
+								}
+								this.Show = false;
 							}
-							else
+							else if (this.Selected == 6)
 							{
+								this.Impatience.fillAmount = 0f;
+								this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubPractice;
+								this.Yandere.TargetStudent.TalkTimer = 100f;
 								this.Yandere.TargetStudent.ClubPhase = 1;
+								this.Show = false;
 							}
-							this.Show = false;
-						}
-						if (this.Selected == 6)
-						{
 						}
 					}
 				}
@@ -365,14 +371,14 @@ public class DialogueWheelScript : MonoBehaviour
 								this.Yandere.TalkTimer = 3f;
 								this.Show = false;
 							}
-							if (this.Selected == 2)
+							else if (this.Selected == 2)
 							{
 								this.Impatience.fillAmount = 0f;
 								this.Yandere.Interaction = YandereInteractionType.GoAway;
 								this.Yandere.TalkTimer = 3f;
 								this.Show = false;
 							}
-							if (this.Selected == 4)
+							else if (this.Selected == 4)
 							{
 								this.PauseScreen.StudentInfoMenu.Distracting = true;
 								this.PauseScreen.StudentInfoMenu.gameObject.SetActive(true);
@@ -418,14 +424,14 @@ public class DialogueWheelScript : MonoBehaviour
 								this.AppearanceWindow.Show = true;
 								this.Show = false;
 							}
-							if (this.Selected == 2)
+							else if (this.Selected == 2)
 							{
 								this.Impatience.fillAmount = 0f;
 								this.Yandere.Interaction = YandereInteractionType.Court;
 								this.Yandere.TalkTimer = 5f;
 								this.Show = false;
 							}
-							if (this.Selected == 4)
+							else if (this.Selected == 4)
 							{
 								this.Impatience.fillAmount = 0f;
 								this.Yandere.Interaction = YandereInteractionType.Confess;
@@ -448,14 +454,14 @@ public class DialogueWheelScript : MonoBehaviour
 						this.Yandere.TalkTimer = 3f;
 						this.Show = false;
 					}
-					if (this.Selected == 2)
+					else if (this.Selected == 2)
 					{
 						this.Impatience.fillAmount = 0f;
 						this.Yandere.Interaction = YandereInteractionType.Compliment;
 						this.Yandere.TalkTimer = 3f;
 						this.Show = false;
 					}
-					if (this.Selected == 3)
+					else if (this.Selected == 3)
 					{
 						this.PauseScreen.StudentInfoMenu.Gossiping = true;
 						this.PauseScreen.StudentInfoMenu.gameObject.SetActive(true);
@@ -478,14 +484,14 @@ public class DialogueWheelScript : MonoBehaviour
 						this.Yandere.TalkTimer = 3f;
 						this.Show = false;
 					}
-					if (this.Selected == 4)
+					else if (this.Selected == 4)
 					{
 						this.Impatience.fillAmount = 0f;
 						this.Yandere.Interaction = YandereInteractionType.Bye;
 						this.Yandere.TalkTimer = 2f;
 						this.Show = false;
 					}
-					if (this.Selected == 5)
+					else if (this.Selected == 5)
 					{
 						if (!PlayerGlobals.GetStudentFriend(this.Yandere.TargetStudent.StudentID))
 						{
@@ -533,7 +539,7 @@ public class DialogueWheelScript : MonoBehaviour
 							this.Matchmaking = true;
 						}
 					}
-					if (this.Selected == 6)
+					else if (this.Selected == 6)
 					{
 						this.AskingFavor = true;
 					}
@@ -563,7 +569,7 @@ public class DialogueWheelScript : MonoBehaviour
 		this.Jukebox.Dip = 0.5f;
 		this.TaskDialogueWindow.SetActive(false);
 		this.ClubLeaderWindow.SetActive(false);
-		if (this.ClubLeader)
+		if (this.ClubLeader && !this.Yandere.TargetStudent.Talk.Fake)
 		{
 			this.SwitchTopicsWindow.SetActive(true);
 		}
@@ -718,8 +724,11 @@ public class DialogueWheelScript : MonoBehaviour
 			UISprite uisprite28 = this.ClubShadow[5];
 			uisprite28.color = new Color(uisprite28.color.r, uisprite28.color.g, uisprite28.color.b, 0.75f);
 		}
-		UISprite uisprite29 = this.ClubShadow[6];
-		uisprite29.color = new Color(uisprite29.color.r, uisprite29.color.g, uisprite29.color.b, 0.75f);
+		if (this.Yandere.TargetStudent.StudentID != 46)
+		{
+			UISprite uisprite29 = this.ClubShadow[6];
+			uisprite29.color = new Color(uisprite29.color.r, uisprite29.color.g, uisprite29.color.b, 0.75f);
+		}
 		if (this.Yandere.Followers > 0)
 		{
 			UISprite uisprite30 = this.FavorShadow[1];

@@ -87,6 +87,7 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 		this.YandereCosmetic.SetFemaleUniform();
 		this.YandereCosmetic.RightWristband.SetActive(false);
 		this.YandereCosmetic.LeftWristband.SetActive(false);
+		this.YandereCosmetic.ThickBrows.SetActive(false);
 		this.ID = 0;
 		while (this.ID < this.YandereCosmetic.FemaleHair.Length)
 		{
@@ -151,9 +152,23 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 				gameObject7.SetActive(false);
 			}
 		}
-		for (int k = 0; k < 10; k++)
+		foreach (GameObject gameObject8 in this.YandereCosmetic.PunkAccessories)
 		{
-			this.YandereCosmetic.Fingernails[k].gameObject.SetActive(false);
+			if (gameObject8 != null)
+			{
+				gameObject8.SetActive(false);
+			}
+		}
+		foreach (GameObject gameObject9 in this.YandereCosmetic.RedCloth)
+		{
+			if (gameObject9 != null)
+			{
+				gameObject9.SetActive(false);
+			}
+		}
+		for (int m = 0; m < 10; m++)
+		{
+			this.YandereCosmetic.Fingernails[m].gameObject.SetActive(false);
 		}
 		this.ID = 0;
 		this.YandereCosmetic.FemaleHair[1].SetActive(true);

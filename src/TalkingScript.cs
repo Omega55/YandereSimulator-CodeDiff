@@ -834,6 +834,55 @@ public class TalkingScript : MonoBehaviour
 				}
 				this.S.TalkTimer -= Time.deltaTime;
 			}
+			else if (this.S.Interaction == StudentInteractionType.ClubPractice)
+			{
+				if (this.S.TalkTimer == 100f)
+				{
+					if (this.S.ClubPhase == 1)
+					{
+						this.S.Subtitle.UpdateLabel(SubtitleType.ClubPractice, (int)(this.S.Club + this.ClubBonus), 99f);
+						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
+					}
+					else if (this.S.ClubPhase == 2)
+					{
+						this.S.Subtitle.UpdateLabel(SubtitleType.ClubPracticeYes, (int)(this.S.Club + this.ClubBonus), 99f);
+						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
+					}
+					else if (this.S.ClubPhase == 3)
+					{
+						this.S.Subtitle.UpdateLabel(SubtitleType.ClubPracticeNo, (int)(this.S.Club + this.ClubBonus), 99f);
+						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
+					}
+				}
+				else if (Input.GetButtonDown("A"))
+				{
+					this.S.Subtitle.Label.text = string.Empty;
+					UnityEngine.Object.Destroy(this.S.Subtitle.CurrentClip);
+					this.S.TalkTimer = 0f;
+				}
+				this.S.TalkTimer -= Time.deltaTime;
+				if (this.S.TalkTimer <= 0f)
+				{
+					if (this.S.ClubPhase == 1)
+					{
+						this.S.DialogueWheel.PracticeWindow.Club = this.S.Club;
+						this.S.DialogueWheel.PracticeWindow.UpdateWindow();
+						this.S.Subtitle.Label.text = string.Empty;
+						this.S.Interaction = StudentInteractionType.Idle;
+					}
+					else if (this.S.ClubPhase == 2)
+					{
+						this.S.DialogueWheel.PracticeWindow.Club = this.S.Club;
+						this.S.DialogueWheel.PracticeWindow.FadeOut = true;
+						this.S.Subtitle.Label.text = string.Empty;
+						this.S.Interaction = StudentInteractionType.Idle;
+					}
+					else if (this.S.ClubPhase == 3)
+					{
+						this.S.DialogueWheel.End();
+					}
+				}
+			}
 			else if (this.S.Interaction == StudentInteractionType.NamingCrush)
 			{
 				if (this.S.TalkTimer == 3f)
@@ -1044,7 +1093,7 @@ public class TalkingScript : MonoBehaviour
 					this.S.DialogueWheel.TaskManager.UpdateTaskStatus();
 					this.S.Talking = false;
 					this.S.Waiting = false;
-					if (!this.Fake)
+					if (!this.Fake && !this.S.StudentManager.CombatMinigame.Practice)
 					{
 						this.S.Pathfinding.canSearch = true;
 						this.S.Pathfinding.canMove = true;

@@ -39,7 +39,7 @@ public class SuitorBoostScript : MonoBehaviour
 	{
 		if (this.Yandere.Followers > 0)
 		{
-			if (this.Yandere.Follower.StudentID == 13 && this.Yandere.Follower.DistanceToPlayer < 2f)
+			if (this.Yandere.Follower.StudentID == 28 && this.Yandere.Follower.DistanceToPlayer < 2f)
 			{
 				this.Prompt.enabled = true;
 			}

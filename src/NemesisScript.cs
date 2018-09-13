@@ -353,5 +353,10 @@ public class NemesisScript : MonoBehaviour
 		this.Student.Bento.SetActive(false);
 		this.Student.Pen.SetActive(false);
 		this.Student.SpeechLines.Stop();
+		this.Student.InstrumentBag[1].SetActive(false);
+		this.Student.InstrumentBag[2].SetActive(false);
+		this.Student.InstrumentBag[3].SetActive(false);
+		this.Student.InstrumentBag[4].SetActive(false);
+		this.Student.InstrumentBag[5].SetActive(false);
 	}
 }

@@ -235,6 +235,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public GameObject Hoodie;
 
+	public GameObject Tongue;
+
 	public Transform RightBreast;
 
 	public Transform LeftBreast;
@@ -420,6 +422,10 @@ public class CosmeticScript : MonoBehaviour
 		if (!this.Male)
 		{
 			this.ThickBrows.SetActive(false);
+			if (!this.TakingPortrait)
+			{
+				this.Tongue.SetActive(false);
+			}
 			foreach (GameObject gameObject in this.PhoneCharms)
 			{
 				if (gameObject != null)
@@ -512,6 +518,11 @@ public class CosmeticScript : MonoBehaviour
 					this.CharacterAnimation.Play("f02_idleGirly_00");
 					this.CharacterAnimation["f02_idleGirly_00"].time = 1f;
 				}
+				else if (this.StudentID == 51)
+				{
+					this.CharacterAnimation.Play("f02_musicPose_00");
+					this.Tongue.SetActive(true);
+				}
 				else if (this.StudentID == 59)
 				{
 					this.CharacterAnimation.Play("f02_sleuthPortrait_00");
@@ -545,7 +556,7 @@ public class CosmeticScript : MonoBehaviour
 					this.CharacterAnimation.Play("f02_idleGirly_00");
 					this.CharacterAnimation["f02_idleGirly_00"].time = 2.66664f;
 				}
-				else if (this.StudentID == 81 || this.StudentID == 51)
+				else if (this.StudentID == 81)
 				{
 					this.CharacterAnimation.Play("f02_socialCameraPose_00");
 					base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y + 0.05f, base.transform.position.z);
@@ -716,9 +727,54 @@ public class CosmeticScript : MonoBehaviour
 			this.CharacterAnimation["f02_idleCouncil" + str + "_00"].time = 1f;
 			this.CharacterAnimation.Play("f02_idleCouncil" + str + "_00");
 		}
-		if (this.TakingPortrait && (this.StudentID == 21 || this.StudentID == 26 || this.StudentID == 31 || this.StudentID == 36 || this.StudentID == 41 || this.StudentID == 46 || this.StudentID == 51 || this.StudentID == 56 || this.StudentID == 61 || this.StudentID == 66 || this.StudentID == 71))
+		if (!ClubGlobals.GetClubClosed(this.Club) && (this.StudentID == 21 || this.StudentID == 26 || this.StudentID == 31 || this.StudentID == 36 || this.StudentID == 41 || this.StudentID == 46 || this.StudentID == 51 || this.StudentID == 56 || this.StudentID == 61 || this.StudentID == 66 || this.StudentID == 71))
 		{
 			this.Armband.SetActive(true);
+			Renderer component = this.Armband.GetComponent<Renderer>();
+			if (this.StudentID == 21)
+			{
+				component.material.SetTextureOffset("_MainTex", new Vector2(-0.63f, -0.22f));
+			}
+			else if (this.StudentID == 26)
+			{
+				component.material.SetTextureOffset("_MainTex", new Vector2(0f, -0.22f));
+			}
+			else if (this.StudentID == 31)
+			{
+				component.material.SetTextureOffset("_MainTex", new Vector2(0.69f, 0.01f));
+			}
+			else if (this.StudentID == 36)
+			{
+				component.material.SetTextureOffset("_MainTex", new Vector2(-0.633333f, -0.44f));
+			}
+			else if (this.StudentID == 41)
+			{
+				component.material.SetTextureOffset("_MainTex", new Vector2(-0.62f, -0.66666f));
+			}
+			else if (this.StudentID == 46)
+			{
+				component.material.SetTextureOffset("_MainTex", new Vector2(0f, -0.66666f));
+			}
+			else if (this.StudentID == 51)
+			{
+				component.material.SetTextureOffset("_MainTex", new Vector2(0.69f, 0.5566666f));
+			}
+			else if (this.StudentID == 56)
+			{
+				component.material.SetTextureOffset("_MainTex", new Vector2(0f, 0.5533333f));
+			}
+			else if (this.StudentID == 61)
+			{
+				component.material.SetTextureOffset("_MainTex", new Vector2(0f, 0f));
+			}
+			else if (this.StudentID == 66)
+			{
+				component.material.SetTextureOffset("_MainTex", new Vector2(0.69f, -0.22f));
+			}
+			else if (this.StudentID == 71)
+			{
+				component.material.SetTextureOffset("_MainTex", new Vector2(0.69f, 0.335f));
+			}
 		}
 		foreach (GameObject gameObject4 in this.FemaleAccessories)
 		{

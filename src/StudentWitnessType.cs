@@ -13,6 +13,7 @@ public enum StudentWitnessType
 	Lewd,
 	Murder,
 	Pickpocketing,
+	CleaningItem,
 	Suspicious,
 	Stalking,
 	Theft,

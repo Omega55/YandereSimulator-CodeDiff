@@ -369,6 +369,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] Club4Info;
 
+	public string[] Club5Info;
+
 	public string[] Club6Info;
 
 	public string[] Club7InfoLight;
@@ -420,6 +422,12 @@ public class SubtitleScript : MonoBehaviour
 	public string[] ClubYeses;
 
 	public string[] ClubNoes;
+
+	public string[] ClubPractices;
+
+	public string[] ClubPracticeYeses;
+
+	public string[] ClubPracticeNoes;
 
 	public string[] StrictReaction;
 
@@ -559,6 +567,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public AudioClip[] Club4Clips;
 
+	public AudioClip[] Club5Clips;
+
 	public AudioClip[] Club6Clips;
 
 	public AudioClip[] Club7ClipsLight;
@@ -610,6 +620,12 @@ public class SubtitleScript : MonoBehaviour
 	public AudioClip[] ClubYesClips;
 
 	public AudioClip[] ClubNoClips;
+
+	public AudioClip[] ClubPracticeClips;
+
+	public AudioClip[] ClubPracticeYesClips;
+
+	public AudioClip[] ClubPracticeNoClips;
 
 	public AudioClip[] EavesdropClips;
 
@@ -792,6 +808,10 @@ public class SubtitleScript : MonoBehaviour
 				new AudioClipArrayWrapper(this.Club4Clips)
 			},
 			{
+				SubtitleType.ClubLightMusicInfo,
+				new AudioClipArrayWrapper(this.Club5Clips)
+			},
+			{
 				SubtitleType.ClubMartialArtsInfo,
 				new AudioClipArrayWrapper(this.Club6Clips)
 			},
@@ -838,6 +858,18 @@ public class SubtitleScript : MonoBehaviour
 			{
 				SubtitleType.ClubYes,
 				new AudioClipArrayWrapper(this.ClubYesClips)
+			},
+			{
+				SubtitleType.ClubPractice,
+				new AudioClipArrayWrapper(this.ClubPracticeClips)
+			},
+			{
+				SubtitleType.ClubPracticeYes,
+				new AudioClipArrayWrapper(this.ClubPracticeYesClips)
+			},
+			{
+				SubtitleType.ClubPracticeNo,
+				new AudioClipArrayWrapper(this.ClubPracticeNoClips)
 			},
 			{
 				SubtitleType.DrownReaction,
@@ -1259,7 +1291,7 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (subtitleType == SubtitleType.SuspiciousReaction)
 		{
-			this.Label.text = this.GetRandomString(this.SuspiciousReactions);
+			this.Label.text = this.SuspiciousReactions[ID];
 		}
 		else if (subtitleType == SubtitleType.PrankReaction)
 		{
@@ -2043,6 +2075,21 @@ public class SubtitleScript : MonoBehaviour
 			this.Label.text = this.ClubKicks[ID];
 			this.PlayVoice(subtitleType, ID);
 		}
+		else if (subtitleType == SubtitleType.ClubPractice)
+		{
+			this.Label.text = this.ClubPractices[ID];
+			this.PlayVoice(subtitleType, ID);
+		}
+		else if (subtitleType == SubtitleType.ClubPracticeYes)
+		{
+			this.Label.text = this.ClubPracticeYeses[ID];
+			this.PlayVoice(subtitleType, ID);
+		}
+		else if (subtitleType == SubtitleType.ClubPracticeNo)
+		{
+			this.Label.text = this.ClubPracticeNoes[ID];
+			this.PlayVoice(subtitleType, ID);
+		}
 		else if (subtitleType == SubtitleType.ClubPlaceholderInfo)
 		{
 			this.Label.text = this.Club0Info[ID];
@@ -2066,6 +2113,11 @@ public class SubtitleScript : MonoBehaviour
 		else if (subtitleType == SubtitleType.ClubArtInfo)
 		{
 			this.Label.text = this.Club4Info[ID];
+			this.PlayVoice(subtitleType, ID);
+		}
+		else if (subtitleType == SubtitleType.ClubLightMusicInfo)
+		{
+			this.Label.text = this.Club5Info[ID];
 			this.PlayVoice(subtitleType, ID);
 		}
 		else if (subtitleType == SubtitleType.ClubMartialArtsInfo)
@@ -2320,6 +2372,10 @@ public class SubtitleScript : MonoBehaviour
 		if (Club == ClubType.Art)
 		{
 			return this.Club4Clips[ClubPhase].length + 0.5f;
+		}
+		if (Club == ClubType.LightMusic)
+		{
+			return this.Club5Clips[ClubPhase].length + 0.5f;
 		}
 		if (Club == ClubType.MartialArts)
 		{

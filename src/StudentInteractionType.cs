@@ -19,6 +19,7 @@ public enum StudentInteractionType
 	ClubActivity,
 	ClubUnwelcome,
 	ClubKick,
+	ClubPractice,
 	NamingCrush,
 	ChangingAppearance,
 	Court,

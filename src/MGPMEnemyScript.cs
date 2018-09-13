@@ -119,13 +119,13 @@ public class MGPMEnemyScript : MonoBehaviour
 					this.ExtraRenderer.material.mainTexture = this.Sprite[this.Frame];
 				}
 			}
-			if (this.Pattern == 0)
+			switch (this.Pattern)
 			{
+			case 0:
 				base.transform.localPosition = new Vector3(base.transform.localPosition.x, base.transform.localPosition.y - this.Speed * Time.deltaTime, 0f);
 				this.Speed = Mathf.Lerp(this.Speed, 0f, Time.deltaTime);
-			}
-			else if (this.Pattern == 1)
-			{
+				break;
+			case 1:
 				if (this.Phase == 1)
 				{
 					base.transform.localPosition = Vector3.Lerp(base.transform.localPosition, this.Miyuki.transform.localPosition, this.Speed * Time.deltaTime);
@@ -148,9 +148,8 @@ public class MGPMEnemyScript : MonoBehaviour
 						UnityEngine.Object.Destroy(base.gameObject);
 					}
 				}
-			}
-			else if (this.Pattern == 2)
-			{
+				break;
+			case 2:
 				base.transform.localPosition = new Vector3(base.transform.localPosition.x + this.Speed * Time.deltaTime, base.transform.localPosition.y - 100f * Time.deltaTime, base.transform.localPosition.z);
 				if (this.Phase == 1)
 				{
@@ -172,26 +171,23 @@ public class MGPMEnemyScript : MonoBehaviour
 				{
 					UnityEngine.Object.Destroy(base.gameObject);
 				}
-			}
-			else if (this.Pattern == 3)
-			{
+				break;
+			case 3:
 				base.transform.localPosition = new Vector3(base.transform.localPosition.x, base.transform.localPosition.y - this.Speed * Time.deltaTime, 0f);
 				if (base.transform.localPosition.y < -288f)
 				{
 					UnityEngine.Object.Destroy(base.gameObject);
 				}
-			}
-			else if (this.Pattern == 4)
-			{
+				break;
+			case 4:
 				base.transform.LookAt(this.Miyuki.transform.position);
 				base.transform.localPosition = new Vector3(base.transform.localPosition.x, base.transform.localPosition.y - this.Speed * Time.deltaTime, 0f);
 				if (base.transform.localPosition.y < -288f)
 				{
 					UnityEngine.Object.Destroy(base.gameObject);
 				}
-			}
-			else if (this.Pattern == 5)
-			{
+				break;
+			case 5:
 				if (this.Phase == 1)
 				{
 					base.transform.localPosition = Vector3.Lerp(base.transform.localPosition, new Vector3(base.transform.localPosition.x, 0f, base.transform.localPosition.z), this.Speed * Time.deltaTime);
@@ -211,31 +207,27 @@ public class MGPMEnemyScript : MonoBehaviour
 				{
 					UnityEngine.Object.Destroy(base.gameObject);
 				}
-			}
-			else if (this.Pattern == 6)
-			{
+				break;
+			case 6:
 				base.transform.localPosition = Vector3.Lerp(base.transform.localPosition, new Vector3(base.transform.localPosition.x, 135f, base.transform.localPosition.z), this.Speed * Time.deltaTime);
-			}
-			else if (this.Pattern == 7)
-			{
+				break;
+			case 7:
 				base.transform.localEulerAngles = new Vector3(0f, 0f, 90f);
 				base.transform.localPosition = new Vector3(base.transform.localPosition.x - this.Speed * Time.deltaTime, base.transform.localPosition.y - this.Speed * 0.25f * Time.deltaTime, base.transform.localPosition.z);
 				if (base.transform.localPosition.x < -160f)
 				{
 					UnityEngine.Object.Destroy(base.gameObject);
 				}
-			}
-			else if (this.Pattern == 8)
-			{
+				break;
+			case 8:
 				base.transform.localEulerAngles = new Vector3(0f, 0f, -90f);
 				base.transform.localPosition = new Vector3(base.transform.localPosition.x + this.Speed * Time.deltaTime, base.transform.localPosition.y - this.Speed * 0.25f * Time.deltaTime, base.transform.localPosition.z);
 				if (base.transform.localPosition.x > 160f)
 				{
 					UnityEngine.Object.Destroy(base.gameObject);
 				}
-			}
-			else if (this.Pattern == 9)
-			{
+				break;
+			case 9:
 				base.transform.localPosition = new Vector3(base.transform.localPosition.x + this.Speed * Time.deltaTime, base.transform.localPosition.y - 20f * Time.deltaTime, base.transform.localPosition.z);
 				if (base.transform.localPosition.x > 60f)
 				{
@@ -265,9 +257,8 @@ public class MGPMEnemyScript : MonoBehaviour
 				{
 					UnityEngine.Object.Destroy(base.gameObject);
 				}
-			}
-			else if (this.Pattern == 10)
-			{
+				break;
+			case 10:
 				if (this.Phase == 1)
 				{
 					base.transform.LookAt(this.Miyuki.transform);
@@ -281,9 +272,8 @@ public class MGPMEnemyScript : MonoBehaviour
 				{
 					UnityEngine.Object.Destroy(base.gameObject);
 				}
-			}
-			else if (this.Pattern == 11)
-			{
+				break;
+			case 11:
 				if (this.Phase == 1)
 				{
 					base.transform.localPosition = Vector3.Lerp(base.transform.localPosition, new Vector3(base.transform.localPosition.x, 150f, base.transform.localPosition.z), this.Speed * Time.deltaTime);
@@ -339,6 +329,7 @@ public class MGPMEnemyScript : MonoBehaviour
 						this.Phase = 2;
 					}
 				}
+				break;
 			}
 			if (this.AttackFrequency > 0f)
 			{
