@@ -66,6 +66,7 @@ public class BatheEventScript : MonoBehaviour
 					this.EventStudent.Pathfinding.speed = 1f;
 					this.EventStudent.SpeechLines.Stop();
 					this.EventStudent.DistanceToDestination = 100f;
+					this.EventStudent.SmartPhone.SetActive(false);
 					this.EventStudent.Obstacle.checkTime = 99f;
 					this.EventStudent.InEvent = true;
 					this.EventStudent.Private = true;
@@ -116,21 +117,7 @@ public class BatheEventScript : MonoBehaviour
 					}
 					else if (this.EventPhase == 3 && !this.EventStudent.Wet)
 					{
-						if (!this.RivalPhone.activeInHierarchy)
-						{
-							this.EventStudent.Character.GetComponent<Animation>().CrossFade(this.EventAnim[0]);
-							this.EventStudent.Pathfinding.canSearch = false;
-							this.EventStudent.Pathfinding.canMove = false;
-							this.EventStudent.Routine = false;
-							this.StudentManager.CommunalLocker.Open = true;
-							this.EventSubtitle.text = this.EventSpeech[0];
-							AudioClipPlayer.Play(this.EventClip[0], this.EventStudent.transform.position + Vector3.up, 5f, 10f, out this.VoiceClip, out this.CurrentClipLength);
-							this.EventPhase++;
-						}
-						else
-						{
-							this.EndEvent();
-						}
+						this.EndEvent();
 					}
 				}
 				if (this.EventPhase == 4)

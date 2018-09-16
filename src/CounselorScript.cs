@@ -399,7 +399,7 @@ public class CounselorScript : MonoBehaviour
 				this.ExpelTimer += Time.deltaTime;
 				if (this.ExpelTimer > 6f)
 				{
-					if (StudentGlobals.ExpelProgress == 5 && !StudentGlobals.GetStudentExpelled(30) && this.StudentManager.Police.TranqCase.VictimID != 30)
+					if ((StudentGlobals.ExpelProgress == 5 && !StudentGlobals.GetStudentExpelled(30) && this.StudentManager.Police.TranqCase.VictimID != 30) || this.StudentManager.Students[30].SentHome)
 					{
 						StudentGlobals.SetStudentExpelled(30, true);
 						this.EndOfDayDarkness.color = new Color(this.EndOfDayDarkness.color.r, this.EndOfDayDarkness.color.g, this.EndOfDayDarkness.color.b, 0f);

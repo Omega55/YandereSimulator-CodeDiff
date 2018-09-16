@@ -35,5 +35,7 @@ public enum StudentActionType
 	Sunbathe,
 	Shock,
 	Miyuki,
-	Meeting
+	Meeting,
+	Lyrics,
+	Practice
 }

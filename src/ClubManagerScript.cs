@@ -33,6 +33,8 @@ public class ClubManagerScript : MonoBehaviour
 
 	public UISprite Darkness;
 
+	public GameObject ExtraCultist;
+
 	public GameObject Reputation;
 
 	public GameObject Heartrate;
@@ -336,6 +338,11 @@ public class ClubManagerScript : MonoBehaviour
 			component.Play();
 			this.Yandere.gameObject.SetActive(false);
 			this.Ritual.SetActive(true);
+			this.CheckClub(ClubType.Occult);
+			if (this.ClubMembers < 6)
+			{
+				this.ExtraCultist.SetActive(false);
+			}
 		}
 		else if (this.Club == ClubType.Art)
 		{

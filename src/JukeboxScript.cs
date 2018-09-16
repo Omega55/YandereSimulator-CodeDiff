@@ -367,7 +367,7 @@ public class JukeboxScript : MonoBehaviour
 				this.KillVolume();
 				this.Falcon.enabled = true;
 			}
-			else if (Input.GetKeyDown(KeyCode.M))
+			else if (Input.GetKeyDown(KeyCode.Space))
 			{
 				this.Egg = true;
 				this.KillVolume();

@@ -265,6 +265,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform GoAwaySpot;
 
+	public Transform LyricsSpot;
+
 	public Transform SuitorSpot;
 
 	public Transform ToolTarget;
@@ -304,6 +306,8 @@ public class StudentManagerScript : MonoBehaviour
 	public GameObject StudentKun;
 
 	public GameObject RivalChan;
+
+	public GameObject DrumSet;
 
 	public GameObject Flowers;
 
@@ -1837,7 +1841,7 @@ public class StudentManagerScript : MonoBehaviour
 			{
 				if (this.ID != 36 || TaskGlobals.GetTaskStatus(36) != 3)
 				{
-					if (!studentScript.Teacher && !studentScript.Slave && studentScript.Club != ClubType.Bully && studentScript.Club != ClubType.Council && studentScript.Club != ClubType.Delinquent && (float)StudentGlobals.GetStudentReputation(this.ID) < this.LowestRep)
+					if (!studentScript.Teacher && !studentScript.Slave && studentScript.Club != ClubType.Bully && studentScript.Club != ClubType.Council && studentScript.Club != ClubType.Photography && studentScript.Club != ClubType.Delinquent && (float)StudentGlobals.GetStudentReputation(this.ID) < this.LowestRep)
 					{
 						this.LowestRep = (float)StudentGlobals.GetStudentReputation(this.ID);
 						this.VictimID = this.ID;
@@ -1948,7 +1952,7 @@ public class StudentManagerScript : MonoBehaviour
 		this.ID = 56;
 		while (this.ID < 61)
 		{
-			if (this.Students[this.ID] != null)
+			if (this.Students[this.ID] != null && !this.Students[this.ID].Slave)
 			{
 				if (this.SleuthPhase < 3)
 				{

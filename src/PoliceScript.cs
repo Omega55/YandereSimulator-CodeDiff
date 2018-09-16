@@ -621,7 +621,6 @@ public class PoliceScript : MonoBehaviour
 					{
 						SchoolGlobals.SchoolAtmosphere -= 0.15f;
 					}
-					SchoolGlobals.SchoolAtmosphere -= (float)this.Corpses * 0.05f;
 					if (this.JSON.Students[i].Club == ClubType.Council)
 					{
 						SchoolGlobals.SchoolAtmosphere -= 1f;
@@ -631,6 +630,7 @@ public class PoliceScript : MonoBehaviour
 					PlayerGlobals.Kills++;
 				}
 			}
+			SchoolGlobals.SchoolAtmosphere -= (float)this.Corpses * 0.05f;
 		}
 		else if (!SchoolGlobals.HighSecurity)
 		{

@@ -489,7 +489,7 @@ public class CombatMinigameScript : MonoBehaviour
 							this.Yandere.Chasers++;
 						}
 					}
-					else
+					else if (!this.Practice)
 					{
 						this.Yandere.Subtitle.UpdateLabel(SubtitleType.DelinquentSurrender, 0, 5f);
 						this.Delinquent.Persona = PersonaType.Loner;
@@ -518,22 +518,24 @@ public class CombatMinigameScript : MonoBehaviour
 						this.Delinquent.LeanAnim = this.Delinquent.IdleAnim;
 						this.Delinquent.CharacterAnimation.CrossFade(this.Delinquent.IdleAnim);
 						this.Delinquent.Threatened = true;
-						this.Delinquent.Fighting = false;
 						this.Delinquent.Alarmed = true;
-						this.Delinquent.enabled = true;
 						this.Delinquent.Injured = true;
-						this.Delinquent.Distracted = false;
-						this.Delinquent.Shoving = false;
-						this.Delinquent.Paired = false;
 						this.Delinquent.Strength = 0;
 						this.Delinquent.Defeats++;
 					}
 					else
 					{
+						this.Delinquent.Threatened = false;
+						this.Delinquent.Alarmed = false;
 						this.PracticeWindow.Finish();
 						this.Yandere.Health = 10;
 						this.Practice = false;
 					}
+					this.Delinquent.Fighting = false;
+					this.Delinquent.enabled = true;
+					this.Delinquent.Distracted = false;
+					this.Delinquent.Shoving = false;
+					this.Delinquent.Paired = false;
 					this.Delinquent = null;
 					this.ReleaseYandere();
 					this.ResetValues();
