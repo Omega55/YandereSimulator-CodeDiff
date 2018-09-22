@@ -91,6 +91,8 @@ public class ClubManagerScript : MonoBehaviour
 
 	public int[] Club11Students;
 
+	public bool LeaderAshamed;
+
 	public bool ClubEffect;
 
 	public AudioClip OccultAmbience;
@@ -739,6 +741,10 @@ public class ClubManagerScript : MonoBehaviour
 			{
 				this.LeaderMissing = true;
 			}
+		}
+		if (!this.LeaderDead && !this.LeaderMissing && Check == ClubType.LightMusic && (double)StudentGlobals.GetStudentReputation(51) < -33.33333)
+		{
+			this.LeaderAshamed = true;
 		}
 	}
 

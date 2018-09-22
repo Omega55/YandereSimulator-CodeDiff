@@ -400,6 +400,13 @@ public class StudentInfoScript : MonoBehaviour
 			this.Strings[2] = ((!EventGlobals.Event2) ? "?????" : "May be engaging in compensated dating in Shisuta Town.");
 			this.InfoLabel.text = this.Strings[1] + "\n\n" + this.Strings[2];
 		}
+		else if (ID == 51)
+		{
+			if (ClubGlobals.GetClubClosed(ClubType.LightMusic))
+			{
+				this.InfoLabel.text = "Disbanded the Light Music Club, dyed her hair back to its original color, removed her piercings, and stopped socializing with others.";
+			}
+		}
 		else if (!StudentGlobals.GetStudentReplaced(ID))
 		{
 			if (this.JSON.Students[ID].Info == string.Empty)

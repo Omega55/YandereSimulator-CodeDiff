@@ -623,6 +623,15 @@ public class DebugMenuScript : MonoBehaviour
 					this.Yandere.PantyAttacher.newRenderer.enabled = false;
 				}
 			}
+			if (this.Yandere.MiyukiCostume.activeInHierarchy)
+			{
+				this.Yandere.PantyAttacher.newRenderer.enabled = false;
+				this.Yandere.MyRenderer.materials[1].SetTexture("_OverlayTex", this.PantyCensorTexture);
+				this.Yandere.MyRenderer.materials[2].SetTexture("_OverlayTex", this.PantyCensorTexture);
+				this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount1", 0f);
+				this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount1", 1f);
+				this.Yandere.MyRenderer.materials[2].SetFloat("_BlendAmount1", 1f);
+			}
 			this.StudentManager.Censor = true;
 			this.StudentManager.CensorStudents();
 		}
@@ -643,6 +652,10 @@ public class DebugMenuScript : MonoBehaviour
 				this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount1", 0f);
 				this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
 				this.Yandere.PantyAttacher.newRenderer.enabled = false;
+			}
+			if (this.Yandere.MiyukiCostume.activeInHierarchy)
+			{
+				this.Yandere.PantyAttacher.newRenderer.enabled = true;
 			}
 			this.StudentManager.Censor = false;
 			this.StudentManager.CensorStudents();

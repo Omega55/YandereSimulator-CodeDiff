@@ -15,6 +15,8 @@ public class MGPMEnemyScript : MonoBehaviour
 
 	public GameObject Explosion;
 
+	public GameObject PickUp;
+
 	public GameObject Impact;
 
 	public Renderer ExtraRenderer;
@@ -393,6 +395,12 @@ public class MGPMEnemyScript : MonoBehaviour
 			{
 				gameObject.transform.localScale = new Vector3(64f, 64f, 1f);
 			}
+			if (GameGlobals.EasyMode)
+			{
+				GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(this.PickUp, base.transform.position, Quaternion.identity);
+				gameObject2.transform.parent = base.transform.parent;
+				gameObject2.transform.localScale = new Vector3(16f, 16f, 1f);
+			}
 			this.GameplayManager.Score += 100;
 			UnityEngine.Object.Destroy(base.gameObject);
 		}
@@ -406,10 +414,10 @@ public class MGPMEnemyScript : MonoBehaviour
 			{
 				if (this.ExplosionTimer == 0f)
 				{
-					GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(this.Explosion, base.transform.position, Quaternion.identity);
-					gameObject2.transform.parent = base.transform.parent;
-					gameObject2.transform.localPosition += new Vector3(UnityEngine.Random.Range(-100f, 100f), UnityEngine.Random.Range(-50f, 50f), 0f);
-					gameObject2.transform.localScale = new Vector3(128f, 128f, 1f);
+					GameObject gameObject3 = UnityEngine.Object.Instantiate<GameObject>(this.Explosion, base.transform.position, Quaternion.identity);
+					gameObject3.transform.parent = base.transform.parent;
+					gameObject3.transform.localPosition += new Vector3(UnityEngine.Random.Range(-100f, 100f), UnityEngine.Random.Range(-50f, 50f), 0f);
+					gameObject3.transform.localScale = new Vector3(128f, 128f, 1f);
 					this.GameplayManager.Score += 100;
 					this.ExplosionTimer = 0.1f;
 				}
@@ -420,9 +428,9 @@ public class MGPMEnemyScript : MonoBehaviour
 			}
 			else
 			{
-				GameObject gameObject3 = UnityEngine.Object.Instantiate<GameObject>(this.FinalBossExplosion, base.transform.position, Quaternion.identity);
-				gameObject3.transform.parent = base.transform.parent;
-				gameObject3.transform.localScale = new Vector3(256f, 256f, 1f);
+				GameObject gameObject4 = UnityEngine.Object.Instantiate<GameObject>(this.FinalBossExplosion, base.transform.position, Quaternion.identity);
+				gameObject4.transform.parent = base.transform.parent;
+				gameObject4.transform.localScale = new Vector3(256f, 256f, 1f);
 				this.GameplayManager.StageClear = true;
 				this.GameplayManager.Score += 1000;
 				UnityEngine.Object.Destroy(base.gameObject);
@@ -475,6 +483,10 @@ public class MGPMEnemyScript : MonoBehaviour
 			UnityEngine.Object.Destroy(collision.gameObject);
 			this.FlashWhite = 0.05f;
 			this.Health--;
+			if (this.Health == 0)
+			{
+				this.MyCollider.enabled = false;
+			}
 			if (this.HealthBar != null)
 			{
 				this.HealthBar.localScale = new Vector3((float)this.Health / 500f, 1f, 1f);

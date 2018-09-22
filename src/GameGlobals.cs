@@ -8,6 +8,8 @@ public static class GameGlobals
 
 	private const string Str_Paranormal = "Paranormal";
 
+	private const string Str_EasyMode = "EasyMode";
+
 	private const string Str_HardMode = "HardMode";
 
 	public static bool LoveSick
@@ -43,6 +45,18 @@ public static class GameGlobals
 		set
 		{
 			GlobalsHelper.SetBool("Paranormal", value);
+		}
+	}
+
+	public static bool EasyMode
+	{
+		get
+		{
+			return GlobalsHelper.GetBool("EasyMode");
+		}
+		set
+		{
+			GlobalsHelper.SetBool("EasyMode", value);
 		}
 	}
 

@@ -9,6 +9,8 @@ public class MGPMMiyukiScript : MonoBehaviour
 
 	public AudioClip DamageSound;
 
+	public AudioClip PickUpSound;
+
 	public AudioClip DeathSound;
 
 	public GameObject Projectile;
@@ -18,6 +20,8 @@ public class MGPMMiyukiScript : MonoBehaviour
 	public GameObject Explosion;
 
 	public Transform SpawnPoint;
+
+	public Transform MagicBar;
 
 	public Renderer MyRenderer;
 
@@ -37,6 +41,8 @@ public class MGPMMiyukiScript : MonoBehaviour
 
 	public GameObject[] Hearts;
 
+	public int MagicLevel;
+
 	public int Frame;
 
 	public int RightPhase;
@@ -45,7 +51,11 @@ public class MGPMMiyukiScript : MonoBehaviour
 
 	public int Health;
 
+	public float Invincibility;
+
 	public float ShootTimer;
+
+	public float Magic;
 
 	public float Speed;
 
@@ -62,6 +72,10 @@ public class MGPMMiyukiScript : MonoBehaviour
 	private void Start()
 	{
 		Time.timeScale = 1f;
+		if (!GameGlobals.EasyMode)
+		{
+			this.MagicBar.parent.gameObject.SetActive(false);
+		}
 	}
 
 	private void Update()
@@ -190,10 +204,64 @@ public class MGPMMiyukiScript : MonoBehaviour
 			{
 				if (this.ShootTimer == 0f)
 				{
-					GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position, Quaternion.identity);
-					gameObject.transform.parent = base.transform.parent;
-					gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y, 1f);
-					gameObject.transform.localScale = new Vector3(16f, 16f, 1f);
+					if (this.MagicLevel == 0)
+					{
+						GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position, Quaternion.identity);
+						gameObject.transform.parent = base.transform.parent;
+						gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y, 1f);
+						gameObject.transform.localScale = new Vector3(16f, 16f, 1f);
+					}
+					else if (this.MagicLevel == 1)
+					{
+						GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position + new Vector3(0.1f, 0f, 0f), Quaternion.identity);
+						gameObject.transform.parent = base.transform.parent;
+						gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y, 1f);
+						gameObject.transform.localScale = new Vector3(16f, 16f, 1f);
+						gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position + new Vector3(-0.1f, 0f, 0f), Quaternion.identity);
+						gameObject.transform.parent = base.transform.parent;
+						gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y, 1f);
+						gameObject.transform.localScale = new Vector3(16f, 16f, 1f);
+					}
+					else if (this.MagicLevel == 2)
+					{
+						GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position, Quaternion.identity);
+						gameObject.transform.parent = base.transform.parent;
+						gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y, 1f);
+						gameObject.transform.localScale = new Vector3(16f, 16f, 1f);
+						gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position + new Vector3(0.2f, 0f, 0f), Quaternion.identity);
+						gameObject.transform.parent = base.transform.parent;
+						gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y, 1f);
+						gameObject.transform.localScale = new Vector3(16f, 16f, 1f);
+						gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position + new Vector3(-0.2f, 0f, 0f), Quaternion.identity);
+						gameObject.transform.parent = base.transform.parent;
+						gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y, 1f);
+						gameObject.transform.localScale = new Vector3(16f, 16f, 1f);
+					}
+					else
+					{
+						GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position, Quaternion.identity);
+						gameObject.transform.parent = base.transform.parent;
+						gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y, 1f);
+						gameObject.transform.localScale = new Vector3(16f, 16f, 1f);
+						gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position + new Vector3(0.2f, 0f, 0f), Quaternion.identity);
+						gameObject.transform.parent = base.transform.parent;
+						gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y, 1f);
+						gameObject.transform.localScale = new Vector3(16f, 16f, 1f);
+						gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position + new Vector3(-0.2f, 0f, 0f), Quaternion.identity);
+						gameObject.transform.parent = base.transform.parent;
+						gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y, 1f);
+						gameObject.transform.localScale = new Vector3(16f, 16f, 1f);
+						gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position + new Vector3(0.4f, 0f, 0f), Quaternion.identity);
+						gameObject.transform.parent = base.transform.parent;
+						gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y, 1f);
+						gameObject.transform.localScale = new Vector3(16f, 16f, 1f);
+						gameObject.GetComponent<MGPMProjectileScript>().Angle = 1;
+						gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position + new Vector3(-0.4f, 0f, 0f), Quaternion.identity);
+						gameObject.transform.parent = base.transform.parent;
+						gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y, 1f);
+						gameObject.transform.localScale = new Vector3(16f, 16f, 1f);
+						gameObject.GetComponent<MGPMProjectileScript>().Angle = -1;
+					}
 					this.ShootTimer = 0f;
 				}
 				this.ShootTimer += Time.deltaTime;
@@ -211,36 +279,75 @@ public class MGPMMiyukiScript : MonoBehaviour
 				Application.LoadLevel(Application.loadedLevel);
 			}
 		}
+		if (this.Invincibility > 0f)
+		{
+			this.Invincibility = Mathf.MoveTowards(this.Invincibility, 0f, Time.deltaTime);
+			if (this.Invincibility == 0f)
+			{
+				this.MyRenderer.material.SetColor("_EmissionColor", new Color(0f, 0f, 0f, 0f));
+			}
+		}
 	}
 
 	private void OnCollisionEnter(Collision collision)
 	{
 		if (collision.gameObject.layer == 9)
 		{
-			this.Health--;
-			if (this.Health > 0)
+			if (this.Invincibility == 0f)
 			{
-				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Explosion, base.transform.position, Quaternion.identity);
-				gameObject.transform.parent = base.transform.parent;
-				gameObject.transform.localScale = new Vector3(64f, 64f, 1f);
-				AudioSource.PlayClipAtPoint(this.DamageSound, base.transform.position);
+				this.Health--;
+				if (GameGlobals.EasyMode)
+				{
+					this.MyRenderer.material.SetColor("_EmissionColor", new Color(1f, 1f, 1f, 1f));
+					this.Invincibility = 1f;
+				}
+				if (this.Health > 0)
+				{
+					GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Explosion, base.transform.position, Quaternion.identity);
+					gameObject.transform.parent = base.transform.parent;
+					gameObject.transform.localScale = new Vector3(64f, 64f, 1f);
+					AudioSource.PlayClipAtPoint(this.DamageSound, base.transform.position);
+				}
+				else
+				{
+					GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.DeathExplosion, base.transform.position, Quaternion.identity);
+					gameObject.transform.parent = base.transform.parent;
+					gameObject.transform.localScale = new Vector3(128f, 128f, 1f);
+					AudioSource.PlayClipAtPoint(this.DeathSound, base.transform.position);
+					this.GameplayManager.BeginGameOver();
+					base.gameObject.SetActive(false);
+				}
 			}
-			else
+			this.UpdateHearts();
+		}
+		else if (collision.gameObject.layer == 15)
+		{
+			AudioSource.PlayClipAtPoint(this.PickUpSound, base.transform.position);
+			this.GameplayManager.Score += 10;
+			this.Magic += 1f;
+			if (this.Magic == 20f)
 			{
-				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.DeathExplosion, base.transform.position, Quaternion.identity);
-				gameObject.transform.parent = base.transform.parent;
-				gameObject.transform.localScale = new Vector3(128f, 128f, 1f);
-				AudioSource.PlayClipAtPoint(this.DeathSound, base.transform.position);
-				this.GameplayManager.BeginGameOver();
-				base.gameObject.SetActive(false);
+				this.MagicLevel++;
+				if (this.MagicLevel > 3 && this.Health < 3)
+				{
+					this.Health++;
+					this.UpdateHearts();
+				}
+				this.Magic = 0f;
 			}
-			this.Hearts[1].SetActive(false);
-			this.Hearts[2].SetActive(false);
-			this.Hearts[3].SetActive(false);
-			for (int i = 1; i < this.Health + 1; i++)
-			{
-				this.Hearts[i].SetActive(true);
-			}
+			this.MagicBar.localScale = new Vector3(this.Magic / 20f, 1f, 1f);
+			UnityEngine.Object.Destroy(collision.gameObject);
+		}
+	}
+
+	private void UpdateHearts()
+	{
+		this.Hearts[1].SetActive(false);
+		this.Hearts[2].SetActive(false);
+		this.Hearts[3].SetActive(false);
+		for (int i = 1; i < this.Health + 1; i++)
+		{
+			this.Hearts[i].SetActive(true);
 		}
 	}
 }

@@ -448,6 +448,10 @@ public class StudentManagerScript : MonoBehaviour
 
 	private void Start()
 	{
+		if (ClubGlobals.GetClubClosed(ClubType.LightMusic))
+		{
+			this.SpawnPositions[51].position = new Vector3(3f, 0f, -95f);
+		}
 		this.ID = 76;
 		while (this.ID < 81)
 		{
@@ -657,6 +661,7 @@ public class StudentManagerScript : MonoBehaviour
 				{
 					this.TaskManager.UpdateTaskStatus();
 				}
+				this.Yandere.GloveAttacher.newRenderer.enabled = false;
 			}
 		}
 		else if (this.NPCsSpawned < this.StudentsTotal + this.TeachersTotal)

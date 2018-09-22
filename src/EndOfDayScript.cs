@@ -567,6 +567,17 @@ public class EndOfDayScript : MonoBehaviour
 								ClubGlobals.Club = ClubType.None;
 							}
 						}
+						else if (this.ClubManager.LeaderAshamed)
+						{
+							ClubGlobals.SetClubClosed(this.ClubArray[this.ClubID], true);
+							this.Label.text = "The leader of the " + this.ClubNames[this.ClubID].ToString() + " has unexpectedly disbanded the club without explanation.";
+							this.ClubClosed = true;
+							this.ClubManager.LeaderAshamed = false;
+							if (ClubGlobals.Club == this.ClubArray[this.ClubID])
+							{
+								ClubGlobals.Club = ClubType.None;
+							}
+						}
 					}
 					if (!ClubGlobals.GetClubClosed(this.ClubArray[this.ClubID]) && !ClubGlobals.GetClubKicked(this.ClubArray[this.ClubID]) && ClubGlobals.Club == this.ClubArray[this.ClubID])
 					{

@@ -349,6 +349,7 @@ public class NemesisScript : MonoBehaviour
 		this.Student.CandyBar.SetActive(false);
 		this.Student.Scrubber.SetActive(false);
 		this.Student.Lighter.SetActive(false);
+		this.Student.Octodog.SetActive(false);
 		this.Student.Eraser.SetActive(false);
 		this.Student.Bento.SetActive(false);
 		this.Student.Pen.SetActive(false);
@@ -358,5 +359,27 @@ public class NemesisScript : MonoBehaviour
 		this.Student.InstrumentBag[3].SetActive(false);
 		this.Student.InstrumentBag[4].SetActive(false);
 		this.Student.InstrumentBag[5].SetActive(false);
+		this.Student.Instruments[1].SetActive(false);
+		this.Student.Instruments[2].SetActive(false);
+		this.Student.Instruments[3].SetActive(false);
+		this.Student.Instruments[4].SetActive(false);
+		this.Student.Instruments[5].SetActive(false);
+		this.Student.Drumsticks[0].SetActive(false);
+		this.Student.Drumsticks[1].SetActive(false);
+		this.Student.Cosmetic.ThickBrows.SetActive(false);
+		foreach (GameObject gameObject in this.Student.Cosmetic.PunkAccessories)
+		{
+			if (gameObject != null)
+			{
+				gameObject.SetActive(false);
+			}
+		}
+		foreach (GameObject gameObject2 in this.Student.Fingerfood)
+		{
+			if (gameObject2 != null)
+			{
+				gameObject2.SetActive(false);
+			}
+		}
 	}
 }

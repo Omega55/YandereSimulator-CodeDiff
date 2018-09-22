@@ -21,27 +21,33 @@ public class PracticeWindowScript : MonoBehaviour
 
 	public Transform[] SparSpot;
 
+	public string[] Difficulties;
+
+	public Texture[] AlbumCovers;
+
+	public UITexture[] Texture;
+
+	public UILabel[] Label;
+
 	public Transform Highlight;
 
 	public GameObject Window;
 
 	public UISprite Darkness;
 
-	public ClubType Club;
-
-	public UITexture[] Texture;
-
 	public int ClubID;
 
 	public int ID = 1;
 
-	public float Timer;
+	public ClubType Club;
 
 	public bool ButtonUp;
 
 	public bool FadeOut;
 
 	public bool FadeIn;
+
+	public float Timer;
 
 	private void Start()
 	{
@@ -103,7 +109,11 @@ public class PracticeWindowScript : MonoBehaviour
 				{
 					this.DialogueWheel.End();
 				}
-				if (this.Yandere.CanMove)
+				if (this.Club == ClubType.LightMusic)
+				{
+					Debug.Log("This is where the minigame will begin.");
+				}
+				else if (this.Club == ClubType.MartialArts && this.Yandere.CanMove)
 				{
 					this.StudentManager.CombatMinigame.Practice = true;
 					this.StudentManager.Students[46].CharacterAnimation.CrossFade(this.StudentManager.Students[46].IdleAnim);
@@ -218,42 +228,68 @@ public class PracticeWindowScript : MonoBehaviour
 		this.PromptBar.Label[4].text = "Choose";
 		this.PromptBar.UpdateButtons();
 		this.PromptBar.Show = true;
-		if (this.Club == ClubType.MartialArts)
+		if (this.Club == ClubType.LightMusic)
+		{
+			this.Texture[1].mainTexture = this.AlbumCovers[1];
+			this.Texture[2].mainTexture = this.AlbumCovers[2];
+			this.Texture[3].mainTexture = this.AlbumCovers[3];
+			this.Texture[4].mainTexture = this.AlbumCovers[4];
+			this.Texture[5].mainTexture = this.AlbumCovers[5];
+			this.Label[1].text = "Panther\n" + this.Difficulties[1];
+			this.Label[2].text = "?????\n" + this.Difficulties[2];
+			this.Label[3].text = "?????\n" + this.Difficulties[3];
+			this.Label[4].text = "?????\n" + this.Difficulties[4];
+			this.Label[5].text = "?????\n" + this.Difficulties[5];
+			this.Texture[2].color = new Color(0.5f, 0.5f, 0.5f, 1f);
+			this.Texture[3].color = new Color(0.5f, 0.5f, 0.5f, 1f);
+			this.Texture[4].color = new Color(0.5f, 0.5f, 0.5f, 1f);
+			this.Texture[5].color = new Color(0.5f, 0.5f, 0.5f, 1f);
+			this.Label[2].color = new Color(0f, 0f, 0f, 0.5f);
+			this.Label[3].color = new Color(0f, 0f, 0f, 0.5f);
+			this.Label[4].color = new Color(0f, 0f, 0f, 0.5f);
+			this.Label[5].color = new Color(0f, 0f, 0f, 0.5f);
+		}
+		else if (this.Club == ClubType.MartialArts)
 		{
 			this.ClubID = 51;
-		}
-		while (this.ID < 6)
-		{
-			string url = string.Concat(new string[]
+			while (this.ID < 6)
 			{
-				"file:///",
-				Application.streamingAssetsPath,
-				"/Portraits/Student_",
-				(this.ClubID - this.ID).ToString(),
-				".png"
-			});
-			WWW www = new WWW(url);
-			this.Texture[this.ID].mainTexture = www.texture;
-			if (this.StudentManager.Students[this.ClubID - this.ID] != null)
-			{
-				if (!this.StudentManager.Students[this.ClubID - this.ID].Routine)
+				string url = string.Concat(new string[]
 				{
-					Debug.Log("A student is not doing their routine.");
-					this.Texture[this.ID].color = new Color(0.5f, 0.5f, 0.5f, 1f);
+					"file:///",
+					Application.streamingAssetsPath,
+					"/Portraits/Student_",
+					(this.ClubID - this.ID).ToString(),
+					".png"
+				});
+				WWW www = new WWW(url);
+				this.Texture[this.ID].mainTexture = www.texture;
+				this.Label[this.ID].text = this.StudentManager.JSON.Students[this.ClubID - this.ID].Name + "\n" + this.Difficulties[this.ID];
+				if (this.StudentManager.Students[this.ClubID - this.ID] != null)
+				{
+					if (!this.StudentManager.Students[this.ClubID - this.ID].Routine)
+					{
+						Debug.Log("A student is not doing their routine.");
+						this.Texture[this.ID].color = new Color(0.5f, 0.5f, 0.5f, 1f);
+						this.Label[this.ID].color = new Color(0f, 0f, 0f, 0.5f);
+					}
+					else
+					{
+						this.Texture[this.ID].color = new Color(1f, 1f, 1f, 1f);
+						this.Label[this.ID].color = new Color(0f, 0f, 0f, 1f);
+					}
 				}
 				else
 				{
-					this.Texture[this.ID].color = new Color(1f, 1f, 1f, 1f);
+					this.Texture[this.ID].color = new Color(0.5f, 0.5f, 0.5f, 1f);
+					this.Label[this.ID].color = new Color(0f, 0f, 0f, 0.5f);
 				}
+				this.ID++;
 			}
-			else
-			{
-				this.Texture[this.ID].color = new Color(0.5f, 0.5f, 0.5f, 1f);
-			}
-			this.ID++;
+			this.Texture[5].color = new Color(1f, 1f, 1f, 1f);
+			this.Label[5].color = new Color(0f, 0f, 0f, 1f);
+			this.ID = 1;
 		}
-		this.Texture[5].color = new Color(1f, 1f, 1f, 1f);
-		this.ID = 1;
 		this.Window.SetActive(true);
 		this.UpdateHighlight();
 	}

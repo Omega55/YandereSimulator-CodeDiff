@@ -56,12 +56,12 @@ public class RummageSpotScript : MonoBehaviour
 			this.Prompt.Circle[0].fillAmount = 1f;
 			if (!this.Yandere.Chased && this.Yandere.Chasers == 0)
 			{
+				this.Yandere.EmptyHands();
 				this.Yandere.CharacterAnimation.CrossFade("f02_rummage_00");
 				this.Yandere.ProgressBar.transform.parent.gameObject.SetActive(true);
 				this.Yandere.RummageSpot = this;
 				this.Yandere.Rummaging = true;
 				this.Yandere.CanMove = false;
-				this.Yandere.EmptyHands();
 				component.Play();
 			}
 		}

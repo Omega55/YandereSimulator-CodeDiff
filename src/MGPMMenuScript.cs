@@ -20,6 +20,10 @@ public class MGPMMenuScript : MonoBehaviour
 
 	public GameObject Credits;
 
+	public GameObject DifficultySelect;
+
+	public GameObject MainMenu;
+
 	public Renderer Black;
 
 	public Renderer Logo;
@@ -67,14 +71,14 @@ public class MGPMMenuScript : MonoBehaviour
 			this.Jukebox.volume = 1f - this.Black.material.color.a;
 			if (this.Black.material.color.a == 1f)
 			{
-				if (this.ID == 1)
+				if (this.ID == 4)
 				{
-					GameGlobals.HardMode = this.HardMode;
-					SceneManager.LoadScene("MiyukiGameplayScene");
+					SceneManager.LoadScene("HomeScene");
 				}
 				else
 				{
-					SceneManager.LoadScene("HomeScene");
+					GameGlobals.HardMode = this.HardMode;
+					SceneManager.LoadScene("MiyukiGameplayScene");
 				}
 			}
 		}
@@ -114,21 +118,43 @@ public class MGPMMenuScript : MonoBehaviour
 				}
 				if (Input.GetButtonDown("A") || Input.GetKeyDown("z") || (Input.GetKeyDown("return") | Input.GetKeyDown("space")))
 				{
-					if (this.ID == 1 || this.ID == 4)
+					if (this.MainMenu.activeInHierarchy)
 					{
+						if (this.ID == 1)
+						{
+							this.DifficultySelect.SetActive(true);
+							this.MainMenu.SetActive(false);
+							this.ID = 2;
+							this.UpdateHighlight();
+						}
+						else if (this.ID == 2)
+						{
+							this.Highlight.gameObject.SetActive(false);
+							this.Controls.SetActive(true);
+							this.WindowDisplaying = true;
+						}
+						else if (this.ID == 3)
+						{
+							this.Highlight.gameObject.SetActive(false);
+							this.Credits.SetActive(true);
+							this.WindowDisplaying = true;
+						}
+						else if (this.ID == 4)
+						{
+							this.FadeOut = true;
+						}
+					}
+					else
+					{
+						if (this.ID == 2)
+						{
+							GameGlobals.EasyMode = false;
+						}
+						else
+						{
+							GameGlobals.EasyMode = true;
+						}
 						this.FadeOut = true;
-					}
-					else if (this.ID == 2)
-					{
-						this.Highlight.gameObject.SetActive(false);
-						this.Controls.SetActive(true);
-						this.WindowDisplaying = true;
-					}
-					else if (this.ID == 3)
-					{
-						this.Highlight.gameObject.SetActive(false);
-						this.Credits.SetActive(true);
-						this.WindowDisplaying = true;
 					}
 				}
 			}
@@ -144,13 +170,24 @@ public class MGPMMenuScript : MonoBehaviour
 
 	private void UpdateHighlight()
 	{
-		if (this.ID == 0)
+		if (this.MainMenu.activeInHierarchy)
 		{
-			this.ID = 4;
+			if (this.ID == 0)
+			{
+				this.ID = 4;
+			}
+			else if (this.ID == 5)
+			{
+				this.ID = 1;
+			}
 		}
-		else if (this.ID == 5)
+		else if (this.ID == 1)
 		{
-			this.ID = 1;
+			this.ID = 3;
+		}
+		else if (this.ID == 4)
+		{
+			this.ID = 2;
 		}
 		this.Highlight.transform.position = new Vector3(0f, -0.2f * (float)this.ID, this.Highlight.transform.position.z);
 	}

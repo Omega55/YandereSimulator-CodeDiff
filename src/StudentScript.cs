@@ -1636,6 +1636,13 @@ public class StudentScript : MonoBehaviour
 				{
 					this.IdleAnim = "f02_idleConfident_01";
 					this.WalkAnim = "f02_walkConfident_01";
+					if (ClubGlobals.GetClubClosed(ClubType.LightMusic))
+					{
+						this.IdleAnim = this.BulliedIdleAnim;
+						this.WalkAnim = this.BulliedWalkAnim;
+						this.CameraAnims = this.CowardAnims;
+						this.Persona = PersonaType.Loner;
+					}
 				}
 				else if (this.StudentID == 56)
 				{
@@ -1894,7 +1901,11 @@ public class StudentScript : MonoBehaviour
 				{
 					this.ClubMemberID = this.StudentID - 50;
 					this.InstrumentBag[this.ClubMemberID].SetActive(true);
-					if (this.StudentID == 52 || this.StudentID == 53)
+					if (this.StudentID == 51)
+					{
+						this.ClubAnim = "f02_practiceGuitar_01";
+					}
+					else if (this.StudentID == 52 || this.StudentID == 53)
 					{
 						this.ClubAnim = "f02_practiceGuitar_00";
 					}
@@ -2775,7 +2786,7 @@ public class StudentScript : MonoBehaviour
 					}
 					this.CurrentDestination = this.Destinations[this.Phase];
 					this.Pathfinding.target = this.Destinations[this.Phase];
-					if (((this.StudentID == 30 && this.StudentManager.DatingMinigame.Affection == 100f) || (this.StudentID == this.StudentManager.RivalID && DateGlobals.Weekday == DayOfWeek.Friday)) && this.Actions[this.Phase] == StudentActionType.ChangeShoes)
+					if (((this.StudentID == 30 && this.StudentManager.DatingMinigame.Affection == 100f) || (this.StudentID == this.StudentManager.RivalID && DateGlobals.Weekday == DayOfWeek.Friday && !this.InCouple)) && this.Actions[this.Phase] == StudentActionType.ChangeShoes)
 					{
 						if (this.StudentID == 30)
 						{
@@ -4330,7 +4341,7 @@ public class StudentScript : MonoBehaviour
 							}
 							else if (this.Actions[this.Phase] == StudentActionType.Bully)
 							{
-								if (this.StudentManager.Students[this.StudentManager.VictimID].Distracted)
+								if (this.StudentManager.Students[this.StudentManager.VictimID].Distracted || this.StudentManager.Students[this.StudentManager.VictimID].Tranquil)
 								{
 									this.StudentManager.NoBully[this.BullyID] = true;
 									this.KilledMood = true;
@@ -6949,6 +6960,10 @@ public class StudentScript : MonoBehaviour
 											this.Yandere.Pickpocketing = false;
 											this.Witnessed = StudentWitnessType.Pickpocketing;
 											this.Concern = 5;
+											if (this.Teacher)
+											{
+												this.Witnessed = StudentWitnessType.Theft;
+											}
 										}
 										else if (flag && this.WitnessedBlood && this.Yandere.Sanity < 33.333f)
 										{
@@ -8032,13 +8047,9 @@ public class StudentScript : MonoBehaviour
 						{
 							this.Subtitle.UpdateLabel(SubtitleType.TeacherTrespassingReaction, this.Concern, 5f);
 						}
-						else if (this.Witnessed == StudentWitnessType.Theft)
+						else if (this.Witnessed == StudentWitnessType.Theft || this.Witnessed == StudentWitnessType.Pickpocketing)
 						{
 							this.Subtitle.UpdateLabel(SubtitleType.TeacherTheftReaction, 1, 6f);
-						}
-						else if (this.Witnessed == StudentWitnessType.Pickpocketing)
-						{
-							this.Subtitle.UpdateLabel(this.PickpocketSubtitleType, 1, 5f);
 						}
 					}
 					else
@@ -11940,7 +11951,7 @@ public class StudentScript : MonoBehaviour
 	{
 		this.ChameleonBonus = 0f;
 		this.Chameleon = false;
-		if ((this.Yandere.Persona == YanderePersonaType.Scholarly && this.Persona == PersonaType.TeachersPet) || (this.Yandere.Persona == YanderePersonaType.Scholarly && this.Club == ClubType.Science) || (this.Yandere.Persona == YanderePersonaType.Scholarly && this.Club == ClubType.Art) || (this.Yandere.Persona == YanderePersonaType.Chill && this.Persona == PersonaType.SocialButterfly) || (this.Yandere.Persona == YanderePersonaType.Chill && this.Club == ClubType.Photography) || (this.Yandere.Persona == YanderePersonaType.Chill && this.Club == ClubType.Gaming) || (this.Yandere.Persona == YanderePersonaType.Confident && this.Persona == PersonaType.Heroic) || (this.Yandere.Persona == YanderePersonaType.Confident && this.Club == ClubType.MartialArts) || (this.Yandere.Persona == YanderePersonaType.Elegant && this.Club == ClubType.Drama) || (this.Yandere.Persona == YanderePersonaType.Girly && this.Persona == PersonaType.SocialButterfly) || (this.Yandere.Persona == YanderePersonaType.Girly && this.Club == ClubType.Cooking) || (this.Yandere.Persona == YanderePersonaType.Graceful && this.Club == ClubType.Gardening) || (this.Yandere.Persona == YanderePersonaType.Haughty && this.Club == ClubType.Bully) || (this.Yandere.Persona == YanderePersonaType.Lively && this.Persona == PersonaType.SocialButterfly) || (this.Yandere.Persona == YanderePersonaType.Lively && this.Club == ClubType.LightMusic) || (this.Yandere.Persona == YanderePersonaType.Lively && this.Club == ClubType.Sports) || (this.Yandere.Persona == YanderePersonaType.Shy && this.Persona == PersonaType.Loner) || (this.Yandere.Persona == YanderePersonaType.Shy && this.Club == ClubType.Occult) || (this.Yandere.Persona == YanderePersonaType.Tough && this.Persona == PersonaType.Spiteful) || (this.Yandere.Persona == YanderePersonaType.Tough && this.Club == ClubType.Delinquent))
+		if (this.Yandere != null && ((this.Yandere.Persona == YanderePersonaType.Scholarly && this.Persona == PersonaType.TeachersPet) || (this.Yandere.Persona == YanderePersonaType.Scholarly && this.Club == ClubType.Science) || (this.Yandere.Persona == YanderePersonaType.Scholarly && this.Club == ClubType.Art) || (this.Yandere.Persona == YanderePersonaType.Chill && this.Persona == PersonaType.SocialButterfly) || (this.Yandere.Persona == YanderePersonaType.Chill && this.Club == ClubType.Photography) || (this.Yandere.Persona == YanderePersonaType.Chill && this.Club == ClubType.Gaming) || (this.Yandere.Persona == YanderePersonaType.Confident && this.Persona == PersonaType.Heroic) || (this.Yandere.Persona == YanderePersonaType.Confident && this.Club == ClubType.MartialArts) || (this.Yandere.Persona == YanderePersonaType.Elegant && this.Club == ClubType.Drama) || (this.Yandere.Persona == YanderePersonaType.Girly && this.Persona == PersonaType.SocialButterfly) || (this.Yandere.Persona == YanderePersonaType.Girly && this.Club == ClubType.Cooking) || (this.Yandere.Persona == YanderePersonaType.Graceful && this.Club == ClubType.Gardening) || (this.Yandere.Persona == YanderePersonaType.Haughty && this.Club == ClubType.Bully) || (this.Yandere.Persona == YanderePersonaType.Lively && this.Persona == PersonaType.SocialButterfly) || (this.Yandere.Persona == YanderePersonaType.Lively && this.Club == ClubType.LightMusic) || (this.Yandere.Persona == YanderePersonaType.Lively && this.Club == ClubType.Sports) || (this.Yandere.Persona == YanderePersonaType.Shy && this.Persona == PersonaType.Loner) || (this.Yandere.Persona == YanderePersonaType.Shy && this.Club == ClubType.Occult) || (this.Yandere.Persona == YanderePersonaType.Tough && this.Persona == PersonaType.Spiteful) || (this.Yandere.Persona == YanderePersonaType.Tough && this.Club == ClubType.Delinquent)))
 		{
 			Debug.Log("Chameleon is true!");
 			this.ChameleonBonus = this.VisionDistance * 0.5f;

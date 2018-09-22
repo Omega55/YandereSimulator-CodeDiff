@@ -177,6 +177,7 @@ public class PickpocketScript : MonoBehaviour
 		gameObject.GetComponent<AlarmDiscScript>().NoScream = true;
 		if (!this.NotNurse)
 		{
+			Debug.Log("A faculty member saw pickpocketing.");
 			this.Student.Witnessed = StudentWitnessType.Theft;
 			this.Student.SenpaiNoticed();
 			this.Student.CameraEffects.MurderWitnessed();

@@ -42,6 +42,8 @@ public class YandereScript : MonoBehaviour
 
 	public ObstacleDetectorScript ObstacleDetector;
 
+	public RiggedAccessoryAttacher GloveAttacher;
+
 	public RiggedAccessoryAttacher PantyAttacher;
 
 	public AccessoryGroupScript AccessoryGroup;
@@ -1062,13 +1064,13 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject KLKSword;
 
-	public Mesh MiyukiCostume;
+	public GameObject MiyukiCostume;
+
+	public GameObject MiyukiWings;
 
 	public Texture MiyukiSkin;
 
 	public Texture MiyukiFace;
-
-	public Texture MiyukiBody;
 
 	public Mesh SchoolSwimsuit;
 
@@ -2613,6 +2615,7 @@ public class YandereScript : MonoBehaviour
 				{
 					this.Gloves.GetComponent<Rigidbody>().isKinematic = false;
 					this.Gloves.transform.parent = null;
+					this.GloveAttacher.newRenderer.enabled = false;
 					this.Gloves.gameObject.SetActive(true);
 					this.Degloving = false;
 					this.CanMove = true;
@@ -5198,14 +5201,7 @@ public class YandereScript : MonoBehaviour
 			this.Police.BloodyClothing++;
 		}
 		this.Gloved = true;
-		if (StudentGlobals.FemaleUniform == 1)
-		{
-			this.MyRenderer.materials[1].mainTexture = this.GloveTextures[StudentGlobals.FemaleUniform];
-		}
-		else
-		{
-			this.MyRenderer.materials[0].mainTexture = this.GloveTextures[StudentGlobals.FemaleUniform];
-		}
+		this.GloveAttacher.newRenderer.enabled = true;
 	}
 
 	private void AttackOnTitan()
@@ -5853,16 +5849,15 @@ public class YandereScript : MonoBehaviour
 
 	public void Miyuki()
 	{
-		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
-		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
-		this.MyRenderer.materials[2].SetFloat("_BlendAmount", 0f);
+		this.MiyukiCostume.SetActive(true);
+		this.MiyukiWings.SetActive(true);
 		this.IdleAnim = "f02_idleGirly_00";
 		this.WalkAnim = "f02_walkGirly_00";
-		this.MyRenderer.sharedMesh = this.MiyukiCostume;
-		this.MyRenderer.materials[0].mainTexture = this.MiyukiBody;
-		this.MyRenderer.materials[1].mainTexture = this.MiyukiFace;
+		this.MyRenderer.sharedMesh = this.NudeMesh;
+		this.MyRenderer.materials[0].mainTexture = this.MiyukiFace;
+		this.MyRenderer.materials[1].mainTexture = this.MiyukiSkin;
 		this.MyRenderer.materials[2].mainTexture = this.MiyukiSkin;
-		this.PantyAttacher.newRenderer.enabled = false;
+		this.TheDebugMenuScript.UpdateCensor();
 		this.Hairstyle = 171;
 		this.UpdateHair();
 		this.Egg = true;

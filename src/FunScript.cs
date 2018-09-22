@@ -172,7 +172,7 @@ public class FunScript : MonoBehaviour
 					this.Skip.SetActive(false);
 					this.Girl.mainTexture = this.Portraits[this.ID];
 					this.Typewriter.ResetToBeginning();
-					this.Typewriter.mLabel.text = this.Lines[this.ID];
+					this.Typewriter.mFullText = this.Lines[this.ID];
 				}
 			}
 			else if (Input.GetButtonDown("A"))
@@ -192,7 +192,7 @@ public class FunScript : MonoBehaviour
 						}
 						this.Girl.mainTexture = this.Portraits[this.ID];
 						this.Typewriter.ResetToBeginning();
-						this.Typewriter.mLabel.text = this.Lines[this.ID];
+						this.Typewriter.mFullText = this.Lines[this.ID];
 					}
 				}
 				else

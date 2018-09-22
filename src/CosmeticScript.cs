@@ -231,6 +231,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public GameObject LeftShoe;
 
+	public GameObject SadBrows;
+
 	public GameObject Armband;
 
 	public GameObject Hoodie;
@@ -377,6 +379,10 @@ public class CosmeticScript : MonoBehaviour
 				this.Accessory = 0;
 			}
 		}
+		if (this.StudentID == 51 && ClubGlobals.GetClubClosed(ClubType.LightMusic))
+		{
+			this.Hairstyle = 51;
+		}
 		if (this.Name == "Random")
 		{
 			this.Randomize = true;
@@ -443,7 +449,14 @@ public class CosmeticScript : MonoBehaviour
 				this.LeftTemple.name = "RENAMED";
 				this.RightTemple.localScale = new Vector3(0f, 1f, 1f);
 				this.LeftTemple.localScale = new Vector3(0f, 1f, 1f);
-				this.ThickBrows.SetActive(true);
+				if (ClubGlobals.GetClubClosed(ClubType.LightMusic))
+				{
+					this.SadBrows.SetActive(true);
+				}
+				else
+				{
+					this.ThickBrows.SetActive(true);
+				}
 			}
 			if (this.Club == ClubType.Bully)
 			{
@@ -1318,9 +1331,12 @@ public class CosmeticScript : MonoBehaviour
 		}
 		else if (this.StudentID == 51)
 		{
-			this.PunkAccessories[1].SetActive(true);
-			this.PunkAccessories[2].SetActive(true);
-			this.PunkAccessories[3].SetActive(true);
+			if (!ClubGlobals.GetClubClosed(ClubType.LightMusic))
+			{
+				this.PunkAccessories[1].SetActive(true);
+				this.PunkAccessories[2].SetActive(true);
+				this.PunkAccessories[3].SetActive(true);
+			}
 		}
 		else if (this.StudentID == 59)
 		{
@@ -1771,7 +1787,10 @@ public class CosmeticScript : MonoBehaviour
 		}
 		else if (this.Stockings == "Music1")
 		{
-			this.MyStockings = this.MusicStockings[1];
+			if (!ClubGlobals.GetClubClosed(ClubType.LightMusic))
+			{
+				this.MyStockings = this.MusicStockings[1];
+			}
 		}
 		else if (this.Stockings == "Music2")
 		{
