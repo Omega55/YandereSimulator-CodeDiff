@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PracticeWindowScript : MonoBehaviour
 {
@@ -40,6 +41,8 @@ public class PracticeWindowScript : MonoBehaviour
 	public int ID = 1;
 
 	public ClubType Club;
+
+	public bool PlayedRhythmMinigame;
 
 	public bool ButtonUp;
 
@@ -111,7 +114,21 @@ public class PracticeWindowScript : MonoBehaviour
 				}
 				if (this.Club == ClubType.LightMusic)
 				{
-					Debug.Log("This is where the minigame will begin.");
+					for (int i = 52; i < 56; i++)
+					{
+						this.StudentManager.Students[i].transform.position = this.StudentManager.Clubs.List[i].position;
+						this.StudentManager.Students[i].EmptyHands();
+					}
+					Physics.SyncTransforms();
+					PlayerPrefs.SetFloat("TempReputation", this.StudentManager.Reputation.Reputation);
+					SceneManager.LoadScene("RhythmMinigameScene", LoadSceneMode.Additive);
+					foreach (GameObject gameObject in SceneManager.GetActiveScene().GetRootGameObjects())
+					{
+						gameObject.SetActive(false);
+					}
+					this.PlayedRhythmMinigame = true;
+					this.FadeOut = false;
+					this.FadeIn = true;
 				}
 				else if (this.Club == ClubType.MartialArts && this.Yandere.CanMove)
 				{
@@ -124,24 +141,24 @@ public class PracticeWindowScript : MonoBehaviour
 					this.StudentManager.Students[46].enabled = false;
 					this.StudentManager.Students[46].Routine = false;
 					this.StudentManager.Students[46].Hearts.Stop();
-					for (int i = 1; i < 5; i++)
+					for (int k = 1; k < 5; k++)
 					{
-						if (this.StudentManager.Students[46 + i] != null)
+						if (this.StudentManager.Students[46 + k] != null)
 						{
-							this.StudentManager.Students[46 + i].transform.position = this.KneelSpot[i].position;
-							this.StudentManager.Students[46 + i].transform.eulerAngles = this.KneelSpot[i].eulerAngles;
-							this.StudentManager.Students[46 + i].Pathfinding.canSearch = false;
-							this.StudentManager.Students[46 + i].Pathfinding.canMove = false;
-							this.StudentManager.Students[46 + i].Distracted = true;
-							this.StudentManager.Students[46 + i].enabled = false;
-							this.StudentManager.Students[46 + i].Routine = false;
-							if (this.StudentManager.Students[46 + i].Male)
+							this.StudentManager.Students[46 + k].transform.position = this.KneelSpot[k].position;
+							this.StudentManager.Students[46 + k].transform.eulerAngles = this.KneelSpot[k].eulerAngles;
+							this.StudentManager.Students[46 + k].Pathfinding.canSearch = false;
+							this.StudentManager.Students[46 + k].Pathfinding.canMove = false;
+							this.StudentManager.Students[46 + k].Distracted = true;
+							this.StudentManager.Students[46 + k].enabled = false;
+							this.StudentManager.Students[46 + k].Routine = false;
+							if (this.StudentManager.Students[46 + k].Male)
 							{
-								this.StudentManager.Students[46 + i].CharacterAnimation.CrossFade("sit_04");
+								this.StudentManager.Students[46 + k].CharacterAnimation.CrossFade("sit_04");
 							}
 							else
 							{
-								this.StudentManager.Students[46 + i].CharacterAnimation.CrossFade("f02_sit_05");
+								this.StudentManager.Students[46 + k].CharacterAnimation.CrossFade("f02_sit_05");
 							}
 						}
 					}
@@ -167,39 +184,53 @@ public class PracticeWindowScript : MonoBehaviour
 		}
 		if (this.FadeIn)
 		{
-			this.SparringPartner.Pathfinding.canSearch = false;
-			this.SparringPartner.Pathfinding.canMove = false;
 			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 0f, Time.deltaTime));
 			if (this.Darkness.color.a == 0f)
 			{
-				this.Timer += Time.deltaTime;
-				if (this.Timer > 1f)
+				if (this.Club == ClubType.LightMusic)
 				{
-					if (this.ID == 1)
+					this.Timer += Time.deltaTime;
+					if (this.Timer > 1f)
 					{
-						this.StudentManager.CombatMinigame.Difficulty = 0.5f;
+						this.StudentManager.Reputation.PendingRep += PlayerPrefs.GetFloat("TempReputation");
+						PlayerPrefs.SetFloat("TempReputation", 0f);
+						this.FadeIn = false;
+						this.Timer = 0f;
 					}
-					else if (this.ID == 2)
+				}
+				else if (this.Club == ClubType.MartialArts)
+				{
+					this.SparringPartner.Pathfinding.canSearch = false;
+					this.SparringPartner.Pathfinding.canMove = false;
+					this.Timer += Time.deltaTime;
+					if (this.Timer > 1f)
 					{
-						this.StudentManager.CombatMinigame.Difficulty = 0.75f;
+						if (this.ID == 1)
+						{
+							this.StudentManager.CombatMinigame.Difficulty = 0.5f;
+						}
+						else if (this.ID == 2)
+						{
+							this.StudentManager.CombatMinigame.Difficulty = 0.75f;
+						}
+						else if (this.ID == 3)
+						{
+							this.StudentManager.CombatMinigame.Difficulty = 1f;
+						}
+						else if (this.ID == 4)
+						{
+							this.StudentManager.CombatMinigame.Difficulty = 1.5f;
+						}
+						else if (this.ID == 5)
+						{
+							this.StudentManager.CombatMinigame.Difficulty = 2f;
+						}
+						this.StudentManager.Students[this.ClubID - this.ID].Threatened = true;
+						this.StudentManager.Students[this.ClubID - this.ID].Alarmed = true;
+						this.StudentManager.Students[this.ClubID - this.ID].enabled = true;
+						this.FadeIn = false;
+						this.Timer = 0f;
 					}
-					else if (this.ID == 3)
-					{
-						this.StudentManager.CombatMinigame.Difficulty = 1f;
-					}
-					else if (this.ID == 4)
-					{
-						this.StudentManager.CombatMinigame.Difficulty = 1.5f;
-					}
-					else if (this.ID == 5)
-					{
-						this.StudentManager.CombatMinigame.Difficulty = 2f;
-					}
-					this.StudentManager.Students[this.ClubID - this.ID].Threatened = true;
-					this.StudentManager.Students[this.ClubID - this.ID].Alarmed = true;
-					this.StudentManager.Students[this.ClubID - this.ID].enabled = true;
-					this.FadeIn = false;
-					this.Timer = 0f;
 				}
 			}
 		}

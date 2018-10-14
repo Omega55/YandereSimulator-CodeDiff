@@ -5,6 +5,8 @@ public class SlowMoScript : MonoBehaviour
 {
 	public bool Spinning;
 
+	public float Speed;
+
 	private void Update()
 	{
 		if (Input.GetKeyDown("s"))
@@ -22,6 +24,14 @@ public class SlowMoScript : MonoBehaviour
 		if (Input.GetKeyDown("="))
 		{
 			Time.timeScale += 1f;
+		}
+		if (Input.GetKeyDown("z"))
+		{
+			this.Speed += Time.deltaTime;
+		}
+		if (this.Speed > 0f)
+		{
+			base.transform.position += new Vector3(Time.deltaTime * 0.1f, 0f, Time.deltaTime * 0.1f);
 		}
 		if (this.Spinning)
 		{

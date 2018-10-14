@@ -734,7 +734,7 @@ public class MissionModeMenuScript : MonoBehaviour
 				{
 					this.GetNumbers();
 					bool flag = false;
-					if ((this.TargetNumber > 5 && this.TargetNumber < 21) || (this.TargetNumber > 50 && this.TargetNumber < 56) || this.TargetNumber > 97)
+					if ((this.TargetNumber > 5 && this.TargetNumber < 21) || this.TargetNumber > 97)
 					{
 						flag = true;
 					}
@@ -979,14 +979,14 @@ public class MissionModeMenuScript : MonoBehaviour
 		if (this.Phase != 5)
 		{
 			this.TargetID = UnityEngine.Random.Range(2, 90);
-			if ((this.TargetNumber > 5 && this.TargetNumber < 21) || (this.TargetNumber > 50 && this.TargetNumber < 56))
+			if (this.TargetNumber > 5 && this.TargetNumber < 21)
 			{
 				this.ChooseTarget();
 			}
 		}
 		else
 		{
-			if ((this.TargetNumber > 5 && this.TargetNumber < 21) || (this.TargetNumber > 50 && this.TargetNumber < 56))
+			if (this.TargetNumber > 5 && this.TargetNumber < 21)
 			{
 				if (Input.GetButtonDown("A"))
 				{
@@ -1016,7 +1016,7 @@ public class MissionModeMenuScript : MonoBehaviour
 			".png"
 		});
 		WWW www = new WWW(url);
-		if ((this.TargetNumber > 5 && this.TargetNumber < 21) || (this.TargetNumber > 50 && this.TargetNumber < 56))
+		if (this.TargetNumber > 5 && this.TargetNumber < 21)
 		{
 			this.TargetPortrait.mainTexture = this.BlankPortrait;
 		}
@@ -1197,7 +1197,7 @@ public class MissionModeMenuScript : MonoBehaviour
 	public void UpdateGraphics()
 	{
 		this.TargetID = MissionModeGlobals.MissionTarget;
-		if ((this.TargetNumber > 5 && this.TargetNumber < 21) || (this.TargetNumber > 50 && this.TargetNumber < 56))
+		if (this.TargetNumber > 5 && this.TargetNumber < 21)
 		{
 			this.TargetPortrait.mainTexture = this.BlankPortrait;
 			this.TargetName = MissionModeGlobals.MissionTargetName;

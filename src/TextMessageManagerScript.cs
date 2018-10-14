@@ -53,7 +53,14 @@ public class TextMessageManagerScript : MonoBehaviour
 		this.NewMessage.transform.localEulerAngles = Vector3.zero;
 		this.NewMessage.transform.localScale = new Vector3(1f, 1f, 1f);
 		this.MessageText = this.Messages[ServiceID];
-		this.MessageHeight = 5;
+		if (ServiceID == 7)
+		{
+			this.MessageHeight = 11;
+		}
+		else
+		{
+			this.MessageHeight = 5;
+		}
 		this.NewMessage.GetComponent<UISprite>().height = 36 + 36 * this.MessageHeight;
 		this.NewMessage.GetComponent<TextMessageScript>().Label.text = this.MessageText;
 	}

@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class DemonScript : MonoBehaviour
 {
+	public SkinnedMeshRenderer Face;
+
 	public YandereScript Yandere;
 
 	public PromptScript Prompt;
@@ -13,13 +15,21 @@ public class DemonScript : MonoBehaviour
 
 	public UISprite Button;
 
+	public AudioClip MouthOpen;
+
+	public AudioClip MouthClose;
+
 	public AudioClip[] Clips;
 
 	public string[] Lines;
 
 	public bool Communing;
 
+	public bool Open;
+
 	public float Intensity = 1f;
+
+	public float Value;
 
 	public Color MyColor;
 
@@ -36,6 +46,34 @@ public class DemonScript : MonoBehaviour
 			this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
 			this.Yandere.CanMove = false;
 			this.Communing = true;
+		}
+		if (this.DemonID == 1)
+		{
+			if ((double)Vector3.Distance(this.Yandere.transform.position, base.transform.position) < 2.5)
+			{
+				if (!this.Open)
+				{
+					AudioSource.PlayClipAtPoint(this.MouthOpen, base.transform.position);
+				}
+				this.Open = true;
+			}
+			else
+			{
+				if (this.Open)
+				{
+					AudioSource.PlayClipAtPoint(this.MouthClose, base.transform.position);
+				}
+				this.Open = false;
+			}
+			if (this.Open)
+			{
+				this.Value = Mathf.Lerp(this.Value, 100f, Time.deltaTime * 10f);
+			}
+			else
+			{
+				this.Value = Mathf.Lerp(this.Value, 0f, Time.deltaTime * 10f);
+			}
+			this.Face.SetBlendShapeWeight(0, this.Value);
 		}
 		if (this.Communing)
 		{
@@ -59,10 +97,11 @@ public class DemonScript : MonoBehaviour
 			}
 			else if (this.Phase == 2)
 			{
+				Debug.Log("Demon Phase is 2.");
 				this.DemonSubtitle.transform.localPosition = new Vector3(UnityEngine.Random.Range(-this.Intensity, this.Intensity), UnityEngine.Random.Range(-this.Intensity, this.Intensity), UnityEngine.Random.Range(-this.Intensity, this.Intensity));
 				this.DemonSubtitle.color = new Color(this.DemonSubtitle.color.r, this.DemonSubtitle.color.g, this.DemonSubtitle.color.b, Mathf.MoveTowards(this.DemonSubtitle.color.a, 1f, Time.deltaTime));
 				this.Button.color = new Color(this.Button.color.r, this.Button.color.g, this.Button.color.b, Mathf.MoveTowards(this.Button.color.a, 1f, Time.deltaTime));
-				if (this.DemonSubtitle.color.a == 1f && Input.GetButtonDown("A"))
+				if (this.DemonSubtitle.color.a > 0.9f && Input.GetButtonDown("A"))
 				{
 					this.Phase++;
 				}

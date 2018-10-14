@@ -79,6 +79,7 @@ public class GiggleScript : MonoBehaviour
 							this.Student.Cigarette.SetActive(false);
 							this.Student.Lighter.SetActive(false);
 						}
+						this.Student.EmptyHands();
 					}
 					this.Distracted = true;
 				}

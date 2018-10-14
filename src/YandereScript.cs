@@ -544,6 +544,8 @@ public class YandereScript : MonoBehaviour
 
 	public bool Collapse;
 
+	public bool RedPaint;
+
 	public bool RoofPush;
 
 	public bool Demonic;
@@ -1072,6 +1074,14 @@ public class YandereScript : MonoBehaviour
 
 	public Texture MiyukiFace;
 
+	public GameObject AzurGuns;
+
+	public GameObject AzurWater;
+
+	public GameObject AzurMist;
+
+	public bool Shipgirl;
+
 	public Mesh SchoolSwimsuit;
 
 	public Mesh GymUniform;
@@ -1315,6 +1325,7 @@ public class YandereScript : MonoBehaviour
 				}
 			}
 			this.MyProjector.enabled = true;
+			this.RedPaint = false;
 			if (this.Bloodiness == 100f)
 			{
 				this.MyProjector.material.mainTexture = this.BloodTextures[5];
@@ -1548,7 +1559,10 @@ public class YandereScript : MonoBehaviour
 			{
 				if (!this.Collapse)
 				{
-					this.CharacterAnimation.CrossFade("f02_scaredIdle_00");
+					if (this.ShoulderCamera.NoticedTimer < 1f)
+					{
+						this.CharacterAnimation.CrossFade("f02_scaredIdle_00");
+					}
 					this.targetRotation = Quaternion.LookRotation(this.Senpai.position - base.transform.position);
 					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
 					base.transform.localEulerAngles = new Vector3(0f, base.transform.localEulerAngles.y, base.transform.localEulerAngles.z);
@@ -3177,9 +3191,12 @@ public class YandereScript : MonoBehaviour
 				this.CaughtTimer += Time.deltaTime;
 				if (this.CaughtTimer > 1f)
 				{
+					if (!this.CannotRecover)
+					{
+						this.CanMove = true;
+					}
 					this.Pickpocketing = false;
 					this.CaughtTimer = 0f;
-					this.CanMove = true;
 					this.Caught = false;
 				}
 			}
@@ -3670,7 +3687,10 @@ public class YandereScript : MonoBehaviour
 			}
 			if (this.Interaction == YandereInteractionType.Idle)
 			{
-				this.CharacterAnimation.CrossFade(this.IdleAnim);
+				if (this.TargetStudent != null && !this.TargetStudent.Counselor)
+				{
+					this.CharacterAnimation.CrossFade(this.IdleAnim);
+				}
 			}
 			else if (this.Interaction == YandereInteractionType.Apologizing)
 			{
@@ -5860,6 +5880,25 @@ public class YandereScript : MonoBehaviour
 		this.TheDebugMenuScript.UpdateCensor();
 		this.Hairstyle = 171;
 		this.UpdateHair();
+		this.Egg = true;
+	}
+
+	public void AzurLane()
+	{
+		this.Schoolwear = 2;
+		this.ChangeSchoolwear();
+		this.PantyAttacher.newRenderer.enabled = false;
+		this.IdleAnim = "f02_gazerIdle_00";
+		this.WalkAnim = "f02_gazerWalk_00";
+		this.RunAnim = "f02_gazerRun_00";
+		this.OriginalIdleAnim = this.IdleAnim;
+		this.OriginalWalkAnim = this.WalkAnim;
+		this.OriginalRunAnim = this.RunAnim;
+		this.AzurGuns.SetActive(true);
+		this.AzurWater.SetActive(true);
+		this.AzurMist.SetActive(true);
+		this.Shipgirl = true;
+		this.CanMove = true;
 		this.Egg = true;
 	}
 

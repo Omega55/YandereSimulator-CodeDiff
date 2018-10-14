@@ -352,28 +352,35 @@ public class ClockScript : MonoBehaviour
 	{
 		if (weekday == DayOfWeek.Sunday)
 		{
+			this.Weekday = 0;
 			return "SUNDAY";
 		}
 		if (weekday == DayOfWeek.Monday)
 		{
+			this.Weekday = 1;
 			return "MONDAY";
 		}
 		if (weekday == DayOfWeek.Tuesday)
 		{
+			this.Weekday = 2;
 			return "TUESDAY";
 		}
 		if (weekday == DayOfWeek.Wednesday)
 		{
+			this.Weekday = 3;
 			return "WEDNESDAY";
 		}
 		if (weekday == DayOfWeek.Thursday)
 		{
+			this.Weekday = 4;
 			return "THURSDAY";
 		}
 		if (weekday == DayOfWeek.Friday)
 		{
+			this.Weekday = 5;
 			return "FRIDAY";
 		}
+		this.Weekday = 6;
 		return "SATURDAY";
 	}
 

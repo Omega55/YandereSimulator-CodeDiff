@@ -80,7 +80,7 @@ public class ZoomScript : MonoBehaviour
 		{
 			this.Slender = Mathf.Lerp(this.Slender, 2.5f, Time.deltaTime);
 		}
-		else if (this.Yandere.Slender || this.Yandere.Stand.Stand.activeInHierarchy || this.Yandere.Blasting || this.Yandere.PK || this.TallHat.activeInHierarchy)
+		else if (this.Yandere.Slender || this.Yandere.Stand.Stand.activeInHierarchy || this.Yandere.Blasting || this.Yandere.PK || this.TallHat.activeInHierarchy || this.Yandere.Shipgirl)
 		{
 			this.Slender = Mathf.Lerp(this.Slender, 0.5f, Time.deltaTime);
 		}

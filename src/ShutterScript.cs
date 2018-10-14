@@ -261,7 +261,7 @@ public class ShutterScript : MonoBehaviour
 										{
 											if (this.FaceStudent.StudentID > 1)
 											{
-												if (this.Yandere.Bloodiness > 0f || (double)this.Yandere.Sanity < 33.33333)
+												if ((this.Yandere.Bloodiness > 0f && !this.Yandere.Paint) || (double)this.Yandere.Sanity < 33.33333)
 												{
 													this.FaceStudent.Alarm += 200f;
 												}

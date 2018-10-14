@@ -151,6 +151,11 @@ public class ServicesScript : MonoBehaviour
 							this.Police.Delayed = true;
 							this.Purchase();
 						}
+						else if (this.Selected == 7)
+						{
+							PlayerPrefs.SetInt("CounselorTape", 1);
+							this.Purchase();
+						}
 					}
 				}
 				else if (PlayerGlobals.PantyShots < this.ServiceCosts[this.Selected])
@@ -208,7 +213,14 @@ public class ServicesScript : MonoBehaviour
 					this.ServiceAvailable[this.ID] = true;
 				}
 			}
-			else if (this.ID == 6 && this.Police.Show && !this.Police.Delayed)
+			else if (this.ID == 6)
+			{
+				if (this.Police.Show && !this.Police.Delayed)
+				{
+					this.ServiceAvailable[this.ID] = true;
+				}
+			}
+			else if (this.ID == 7 && PlayerPrefs.GetInt("CounselorTape") == 0)
 			{
 				this.ServiceAvailable[this.ID] = true;
 			}

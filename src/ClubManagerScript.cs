@@ -79,6 +79,8 @@ public class ClubManagerScript : MonoBehaviour
 
 	public int[] Club4Students;
 
+	public int[] Club5Students;
+
 	public int[] Club6Students;
 
 	public int[] Club7Students;
@@ -359,7 +361,6 @@ public class ClubManagerScript : MonoBehaviour
 					studentScript4.ClubActivity = true;
 					studentScript4.Talking = false;
 					studentScript4.Routine = true;
-					studentScript4.GetComponent<AudioSource>().volume = 0.1f;
 					if (!studentScript4.ClubAttire)
 					{
 						studentScript4.ChangeClubwear();
@@ -377,21 +378,39 @@ public class ClubManagerScript : MonoBehaviour
 				this.Yandere.ChangeClubwear();
 			}
 		}
+		else if (this.Club == ClubType.LightMusic)
+		{
+			this.ID = 0;
+			while (this.ID < this.Club5Students.Length)
+			{
+				StudentScript studentScript5 = this.StudentManager.Students[this.Club5Students[this.ID]];
+				if (studentScript5 != null && !studentScript5.Tranquil && studentScript5.Alive)
+				{
+					studentScript5.transform.position = studentScript5.CurrentDestination.position;
+					studentScript5.transform.rotation = studentScript5.CurrentDestination.rotation;
+					studentScript5.ClubActivity = false;
+					studentScript5.Talking = false;
+					studentScript5.Routine = true;
+					studentScript5.Stop = false;
+				}
+				this.ID++;
+			}
+		}
 		else if (this.Club == ClubType.MartialArts)
 		{
 			this.ID = 0;
 			while (this.ID < this.Club6Students.Length)
 			{
-				StudentScript studentScript5 = this.StudentManager.Students[this.Club6Students[this.ID]];
-				if (studentScript5 != null && !studentScript5.Tranquil && studentScript5.Alive)
+				StudentScript studentScript6 = this.StudentManager.Students[this.Club6Students[this.ID]];
+				if (studentScript6 != null && !studentScript6.Tranquil && studentScript6.Alive)
 				{
-					studentScript5.transform.position = this.Club6ActivitySpots[this.ID].position;
-					studentScript5.transform.rotation = this.Club6ActivitySpots[this.ID].rotation;
-					studentScript5.ClubActivity = true;
-					studentScript5.GetComponent<AudioSource>().volume = 0.1f;
-					if (!studentScript5.ClubAttire)
+					studentScript6.transform.position = this.Club6ActivitySpots[this.ID].position;
+					studentScript6.transform.rotation = this.Club6ActivitySpots[this.ID].rotation;
+					studentScript6.ClubActivity = true;
+					studentScript6.GetComponent<AudioSource>().volume = 0.1f;
+					if (!studentScript6.ClubAttire)
 					{
-						studentScript5.ChangeClubwear();
+						studentScript6.ChangeClubwear();
 					}
 				}
 				this.ID++;
@@ -410,19 +429,18 @@ public class ClubManagerScript : MonoBehaviour
 			this.ID = 0;
 			while (this.ID < this.Club7Students.Length)
 			{
-				StudentScript studentScript6 = this.StudentManager.Students[this.Club7Students[this.ID]];
-				if (studentScript6 != null && !studentScript6.Tranquil && studentScript6.Alive)
+				StudentScript studentScript7 = this.StudentManager.Students[this.Club7Students[this.ID]];
+				if (studentScript7 != null && !studentScript7.Tranquil && studentScript7.Alive)
 				{
-					studentScript6.transform.position = this.StudentManager.Clubs.List[studentScript6.StudentID].position;
-					studentScript6.transform.rotation = this.StudentManager.Clubs.List[studentScript6.StudentID].rotation;
-					studentScript6.CharacterAnimation[studentScript6.SocialSitAnim].weight = 1f;
-					studentScript6.GetComponent<AudioSource>().volume = 0.1f;
-					studentScript6.SmartPhone.SetActive(false);
-					studentScript6.ClubActivity = true;
-					studentScript6.SpeechLines.Play();
-					studentScript6.Talking = false;
-					studentScript6.Routine = true;
-					studentScript6.Hearts.Stop();
+					studentScript7.transform.position = this.StudentManager.Clubs.List[studentScript7.StudentID].position;
+					studentScript7.transform.rotation = this.StudentManager.Clubs.List[studentScript7.StudentID].rotation;
+					studentScript7.CharacterAnimation[studentScript7.SocialSitAnim].weight = 1f;
+					studentScript7.SmartPhone.SetActive(false);
+					studentScript7.ClubActivity = true;
+					studentScript7.SpeechLines.Play();
+					studentScript7.Talking = false;
+					studentScript7.Routine = true;
+					studentScript7.Hearts.Stop();
 				}
 				this.ID++;
 			}
@@ -441,18 +459,17 @@ public class ClubManagerScript : MonoBehaviour
 			this.ID = 0;
 			while (this.ID < this.Club8Students.Length)
 			{
-				StudentScript studentScript7 = this.StudentManager.Students[this.Club8Students[this.ID]];
-				if (studentScript7 != null && !studentScript7.Tranquil && studentScript7.Alive)
+				StudentScript studentScript8 = this.StudentManager.Students[this.Club8Students[this.ID]];
+				if (studentScript8 != null && !studentScript8.Tranquil && studentScript8.Alive)
 				{
-					studentScript7.transform.position = this.Club8ActivitySpots[this.ID].position;
-					studentScript7.transform.rotation = this.Club8ActivitySpots[this.ID].rotation;
-					studentScript7.ClubActivity = true;
-					studentScript7.Talking = false;
-					studentScript7.Routine = true;
-					studentScript7.GetComponent<AudioSource>().volume = 0.1f;
-					if (!studentScript7.ClubAttire)
+					studentScript8.transform.position = this.Club8ActivitySpots[this.ID].position;
+					studentScript8.transform.rotation = this.Club8ActivitySpots[this.ID].rotation;
+					studentScript8.ClubActivity = true;
+					studentScript8.Talking = false;
+					studentScript8.Routine = true;
+					if (!studentScript8.ClubAttire)
 					{
-						studentScript7.ChangeClubwear();
+						studentScript8.ChangeClubwear();
 					}
 				}
 				this.ID++;
@@ -470,15 +487,14 @@ public class ClubManagerScript : MonoBehaviour
 			this.ID = 0;
 			while (this.ID < this.Club9Students.Length)
 			{
-				StudentScript studentScript8 = this.StudentManager.Students[this.Club9Students[this.ID]];
-				if (studentScript8 != null && !studentScript8.Tranquil && studentScript8.Alive)
+				StudentScript studentScript9 = this.StudentManager.Students[this.Club9Students[this.ID]];
+				if (studentScript9 != null && !studentScript9.Tranquil && studentScript9.Alive)
 				{
-					studentScript8.transform.position = studentScript8.CurrentDestination.position;
-					studentScript8.transform.rotation = studentScript8.CurrentDestination.rotation;
-					studentScript8.ClubActivity = true;
-					studentScript8.Talking = false;
-					studentScript8.Routine = true;
-					studentScript8.GetComponent<AudioSource>().volume = 0.1f;
+					studentScript9.transform.position = studentScript9.CurrentDestination.position;
+					studentScript9.transform.rotation = studentScript9.CurrentDestination.rotation;
+					studentScript9.ClubActivity = true;
+					studentScript9.Talking = false;
+					studentScript9.Routine = true;
 				}
 				this.ID++;
 			}
@@ -493,15 +509,15 @@ public class ClubManagerScript : MonoBehaviour
 			this.ID = 0;
 			while (this.ID < this.Club10Students.Length)
 			{
-				StudentScript studentScript9 = this.StudentManager.Students[this.Club10Students[this.ID]];
-				if (studentScript9 != null && !studentScript9.Tranquil && studentScript9.Alive)
+				StudentScript studentScript10 = this.StudentManager.Students[this.Club10Students[this.ID]];
+				if (studentScript10 != null && !studentScript10.Tranquil && studentScript10.Alive)
 				{
-					studentScript9.transform.position = studentScript9.CurrentDestination.position;
-					studentScript9.transform.rotation = studentScript9.CurrentDestination.rotation;
-					studentScript9.ClubActivity = true;
-					studentScript9.Talking = false;
-					studentScript9.Routine = true;
-					studentScript9.GetComponent<AudioSource>().volume = 0.1f;
+					studentScript10.transform.position = studentScript10.CurrentDestination.position;
+					studentScript10.transform.rotation = studentScript10.CurrentDestination.rotation;
+					studentScript10.ClubActivity = true;
+					studentScript10.Talking = false;
+					studentScript10.Routine = true;
+					studentScript10.GetComponent<AudioSource>().volume = 0.1f;
 				}
 				this.ID++;
 			}
@@ -518,17 +534,17 @@ public class ClubManagerScript : MonoBehaviour
 			this.ID = 0;
 			while (this.ID < this.Club11Students.Length)
 			{
-				StudentScript studentScript10 = this.StudentManager.Students[this.Club11Students[this.ID]];
-				if (studentScript10 != null && !studentScript10.Tranquil && studentScript10.Alive)
+				StudentScript studentScript11 = this.StudentManager.Students[this.Club11Students[this.ID]];
+				if (studentScript11 != null && !studentScript11.Tranquil && studentScript11.Alive)
 				{
-					studentScript10.transform.position = studentScript10.CurrentDestination.position;
-					studentScript10.transform.rotation = studentScript10.CurrentDestination.rotation;
-					studentScript10.ClubManager.GameScreens[this.ID].SetActive(true);
-					studentScript10.SmartPhone.SetActive(false);
-					studentScript10.ClubActivity = true;
-					studentScript10.Talking = false;
-					studentScript10.Routine = false;
-					studentScript10.GetComponent<AudioSource>().volume = 0.1f;
+					studentScript11.transform.position = studentScript11.CurrentDestination.position;
+					studentScript11.transform.rotation = studentScript11.CurrentDestination.rotation;
+					studentScript11.ClubManager.GameScreens[this.ID].SetActive(true);
+					studentScript11.SmartPhone.SetActive(false);
+					studentScript11.ClubActivity = true;
+					studentScript11.Talking = false;
+					studentScript11.Routine = false;
+					studentScript11.GetComponent<AudioSource>().volume = 0.1f;
 				}
 				this.ID++;
 			}
@@ -605,6 +621,10 @@ public class ClubManagerScript : MonoBehaviour
 		if (this.TranqCase.VictimClubType == Check)
 		{
 			this.ClubMembers--;
+		}
+		if (ClubGlobals.Club == ClubType.LightMusic && this.ClubMembers < 5)
+		{
+			this.LeaderAshamed = true;
 		}
 		if (ClubGlobals.Club == Check)
 		{
@@ -762,6 +782,10 @@ public class ClubManagerScript : MonoBehaviour
 		{
 			this.ClubIDs = this.Club3IDs;
 		}
+		else if (Check == ClubType.LightMusic)
+		{
+			this.ClubIDs = this.Club5IDs;
+		}
 		else if (Check == ClubType.MartialArts)
 		{
 			this.ClubIDs = this.Club6IDs;
@@ -828,6 +852,13 @@ public class ClubManagerScript : MonoBehaviour
 		else if (Check == ClubType.MartialArts)
 		{
 			if (this.StudentManager.Students[46].Grudge)
+			{
+				this.LeaderGrudge = true;
+			}
+		}
+		else if (Check == ClubType.LightMusic)
+		{
+			if (this.StudentManager.Students[51].Grudge)
 			{
 				this.LeaderGrudge = true;
 			}

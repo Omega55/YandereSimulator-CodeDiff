@@ -55,6 +55,10 @@ public class StudentManagerScript : MonoBehaviour
 
 	public WeaponScript FragileWeapon;
 
+	public AudioSource PracticeVocals;
+
+	public AudioSource PracticeMusic;
+
 	public ContainerScript Container;
 
 	public RingEventScript RingEvent;
@@ -167,6 +171,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform[] GraffitiSpots;
 
+	public Transform[] PracticeSpots;
+
 	public Transform[] SunbatheSpots;
 
 	public Transform[] MeetingSpots;
@@ -223,6 +229,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform ConfessionWaypoint;
 
+	public Transform OriginalLyricsSpot;
+
 	public Transform FragileSlaveSpot;
 
 	public Transform FemaleCoupleSpot;
@@ -238,6 +246,8 @@ public class StudentManagerScript : MonoBehaviour
 	public Transform FemaleWashSpot;
 
 	public Transform MaleCoupleSpot;
+
+	public Transform AirGuitarSpot;
 
 	public Transform FastBatheSpot;
 
@@ -624,8 +634,11 @@ public class StudentManagerScript : MonoBehaviour
 
 	private void Update()
 	{
-		Cursor.lockState = CursorLockMode.Locked;
-		Cursor.visible = false;
+		if (!this.Yandere.ShoulderCamera.Counselor.Interrogating)
+		{
+			Cursor.lockState = CursorLockMode.Locked;
+			Cursor.visible = false;
+		}
 		if (!this.TakingPortraits)
 		{
 			this.Frame++;
@@ -845,12 +858,16 @@ public class StudentManagerScript : MonoBehaviour
 		{
 			this.DetermineVictim();
 		}
+		if (this.Clock.Period == 6)
+		{
+			this.CheckMusic();
+		}
 	}
 
 	public void SpawnStudent(int spawnID)
 	{
 		bool flag = false;
-		if ((spawnID > 10 && spawnID < 21) || (spawnID > 50 && spawnID < 56))
+		if (spawnID > 10 && spawnID < 21)
 		{
 			flag = true;
 		}
@@ -1158,8 +1175,7 @@ public class StudentManagerScript : MonoBehaviour
 					studentScript.Character.GetComponent<Animation>().Play(studentScript.SitAnim);
 					studentScript.Pathfinding.canSearch = false;
 					studentScript.Pathfinding.canMove = false;
-					studentScript.OccultBook.SetActive(false);
-					studentScript.SmartPhone.SetActive(false);
+					studentScript.EmptyHands();
 					studentScript.Pathfinding.speed = 0f;
 					studentScript.ClubActivityPhase = 0;
 					studentScript.ClubTimer = 0f;
@@ -1359,6 +1375,32 @@ public class StudentManagerScript : MonoBehaviour
 					studentScript.BecomeRagdoll();
 					studentScript.DeathType = DeathType.Mystery;
 					StudentGlobals.SetStudentSlave(studentScript.StudentID);
+				}
+			}
+			this.ID++;
+		}
+	}
+
+	public void ComeBack()
+	{
+		this.Stop = false;
+		this.ID = 1;
+		while (this.ID < this.Students.Length)
+		{
+			StudentScript studentScript = this.Students[this.ID];
+			if (studentScript != null)
+			{
+				if (!studentScript.Dying)
+				{
+					studentScript.gameObject.SetActive(true);
+					studentScript.Pathfinding.canSearch = true;
+					studentScript.Pathfinding.canMove = true;
+					studentScript.Pathfinding.speed = 1f;
+					studentScript.Stop = false;
+				}
+				if (studentScript.Teacher)
+				{
+					studentScript.Concern = 0;
 				}
 			}
 			this.ID++;
@@ -1892,8 +1934,9 @@ public class StudentManagerScript : MonoBehaviour
 		while (this.ID < this.Students.Length)
 		{
 			StudentScript studentScript = this.Students[this.ID];
-			if (studentScript != null && studentScript.SecurityCamera != null && studentScript.Ragdoll != base.enabled)
+			if (studentScript != null && studentScript.SecurityCamera != null && studentScript.Alive)
 			{
+				Debug.Log("Enabling security camera on this character's head.");
 				studentScript.SecurityCamera.SetActive(true);
 			}
 			this.ID++;
@@ -2059,6 +2102,35 @@ public class StudentManagerScript : MonoBehaviour
 				this.Speaker = 41;
 			}
 			this.MeetingTimer = 0f;
+		}
+	}
+
+	public void CheckMusic()
+	{
+		int num = 0;
+		this.ID = 52;
+		while (this.ID < 56)
+		{
+			if (this.Students[this.ID] != null && this.Students[this.ID].Routine && this.Students[this.ID].DistanceToDestination < 0.1f)
+			{
+				num++;
+			}
+			this.ID++;
+		}
+		if (num == 4)
+		{
+			this.PracticeVocals.pitch = Time.timeScale;
+			this.PracticeMusic.pitch = Time.timeScale;
+			if (!this.PracticeMusic.isPlaying)
+			{
+				this.PracticeVocals.Play();
+				this.PracticeMusic.Play();
+			}
+		}
+		else
+		{
+			this.PracticeVocals.Stop();
+			this.PracticeMusic.Stop();
 		}
 	}
 }

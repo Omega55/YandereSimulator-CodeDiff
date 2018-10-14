@@ -53,6 +53,10 @@ public class CalendarScript : MonoBehaviour
 			DateGlobals.Weekday = DayOfWeek.Sunday;
 			Globals.DeleteAll();
 		}
+		if (DateGlobals.PassDays < 1)
+		{
+			DateGlobals.PassDays = 1;
+		}
 		this.Sun.color = new Color(this.Sun.color.r, this.Sun.color.g, this.Sun.color.b, SchoolGlobals.SchoolAtmosphere);
 		this.Cloud.color = new Color(this.Cloud.color.r, this.Cloud.color.g, this.Cloud.color.b, 1f - SchoolGlobals.SchoolAtmosphere);
 		this.AtmosphereLabel.text = (SchoolGlobals.SchoolAtmosphere * 100f).ToString("f0") + "%";
@@ -88,7 +92,11 @@ public class CalendarScript : MonoBehaviour
 			{
 				if (!this.Incremented)
 				{
-					DateGlobals.Weekday++;
+					while (DateGlobals.PassDays > 0)
+					{
+						DateGlobals.Weekday++;
+						DateGlobals.PassDays--;
+					}
 					this.Incremented = true;
 					base.GetComponent<AudioSource>().Play();
 				}

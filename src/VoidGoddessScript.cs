@@ -376,6 +376,37 @@ public class VoidGoddessScript : MonoBehaviour
 			{
 				this.StudentManager.Students[this.Selected].transform.position = this.Prompt.Yandere.transform.position + this.Prompt.Yandere.transform.forward;
 			}
+			if (Input.GetKeyDown(KeyCode.X))
+			{
+				PlayerPrefs.SetInt("CounselorVisits", 0);
+				PlayerPrefs.SetInt("BloodyVisits", 0);
+				PlayerPrefs.SetInt("InsanityVisits", 0);
+				PlayerPrefs.SetInt("LewdVisits", 0);
+				PlayerPrefs.SetInt("TheftVisits", 0);
+				PlayerPrefs.SetInt("TrespassVisits", 0);
+				PlayerPrefs.SetInt("WeaponVisits", 0);
+				PlayerPrefs.SetInt("BloodExcuseUsed", 0);
+				PlayerPrefs.SetInt("InsanityExcuseUsed", 0);
+				PlayerPrefs.SetInt("LewdExcuseUsed", 0);
+				PlayerPrefs.SetInt("TheftExcuseUsed", 0);
+				PlayerPrefs.SetInt("TrespassingExcuseUsed", 0);
+				PlayerPrefs.SetInt("WeaponExcuseUsed", 0);
+				PlayerPrefs.SetInt("BloodBlameUsed", 0);
+				PlayerPrefs.SetInt("InsanityBlameUsed", 0);
+				PlayerPrefs.SetInt("LewdBlameUsed", 0);
+				PlayerPrefs.SetInt("TheftBlameUsed", 0);
+				PlayerPrefs.SetInt("TrespassingBlameUsed", 0);
+				PlayerPrefs.SetInt("WeaponBlameUsed", 0);
+				PlayerPrefs.SetInt("ApologyUsed", 0);
+				PlayerPrefs.SetInt("CounselorPunishments", 0);
+				PlayerPrefs.SetInt("DelinquentPunishments", 0);
+				PlayerPrefs.SetInt("WeaponsBanned", 0);
+				StudentGlobals.SetStudentExpelled(76, false);
+				StudentGlobals.SetStudentExpelled(77, false);
+				StudentGlobals.SetStudentExpelled(78, false);
+				StudentGlobals.SetStudentExpelled(79, false);
+				StudentGlobals.SetStudentExpelled(80, false);
+			}
 		}
 	}
 

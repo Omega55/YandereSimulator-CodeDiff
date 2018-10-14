@@ -7,6 +7,8 @@ public class HeartbrokenScript : MonoBehaviour
 
 	public HeartbrokenCursorScript Cursor;
 
+	public CounselorScript Counselor;
+
 	public YandereScript Yandere;
 
 	public ClockScript Clock;
@@ -137,7 +139,7 @@ public class HeartbrokenScript : MonoBehaviour
 			this.LetterID = 0;
 			this.StopID = 11;
 		}
-		else if ((this.Yandere.Senpai != null && this.Yandere.Senpai.GetComponent<StudentScript>().Teacher) || this.Yandere.Sprayed)
+		else if (this.Counselor.Expelled || this.Yandere.Sprayed)
 		{
 			this.Letters[0].text = string.Empty;
 			this.Letters[1].text = "E";

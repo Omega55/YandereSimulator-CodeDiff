@@ -193,6 +193,8 @@ public class StudentScript : MonoBehaviour
 
 	public Transform MyPlate;
 
+	public Transform Spine;
+
 	public Transform Eyes;
 
 	public Transform Head;
@@ -271,6 +273,8 @@ public class StudentScript : MonoBehaviour
 	public AudioClip PepperSpraySFX;
 
 	public AudioClip BurningClip;
+
+	public AudioSource AirGuitar;
 
 	public AudioClip[] FemaleAttacks;
 
@@ -490,6 +494,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool BatheFast;
 
+	public bool Counselor;
+
 	public bool Depressed;
 
 	public bool DiscCheck;
@@ -704,13 +710,15 @@ public class StudentScript : MonoBehaviour
 
 	public float GoAwayTimer;
 
+	public float IgnoreTimer;
+
+	public float LyricsTimer;
+
 	public float MiyukiTimer;
 
 	public float MusumeTimer;
 
 	public float PatrolTimer;
-
-	public float IgnoreTimer;
 
 	public float ReportTimer;
 
@@ -735,6 +743,8 @@ public class StudentScript : MonoBehaviour
 	public float ClubTimer;
 
 	public float MeetTimer;
+
+	public float SulkTimer;
 
 	public float TalkTimer;
 
@@ -792,6 +802,8 @@ public class StudentScript : MonoBehaviour
 
 	public int SciencePhase;
 
+	public int LyricsPhase;
+
 	public int SplashPhase;
 
 	public int ThreatPhase = 1;
@@ -803,6 +815,8 @@ public class StudentScript : MonoBehaviour
 	public int VomitPhase;
 
 	public int ClubPhase;
+
+	public int SulkPhase;
 
 	public int TaskPhase;
 
@@ -1642,6 +1656,15 @@ public class StudentScript : MonoBehaviour
 						this.WalkAnim = this.BulliedWalkAnim;
 						this.CameraAnims = this.CowardAnims;
 						this.Persona = PersonaType.Loner;
+						ScheduleBlock scheduleBlock9 = this.ScheduleBlocks[2];
+						scheduleBlock9.destination = "Sulk";
+						scheduleBlock9.action = "Sulk";
+						ScheduleBlock scheduleBlock10 = this.ScheduleBlocks[4];
+						scheduleBlock10.destination = "Sulk";
+						scheduleBlock10.action = "Sulk";
+						ScheduleBlock scheduleBlock11 = this.ScheduleBlocks[7];
+						scheduleBlock11.destination = "Sulk";
+						scheduleBlock11.action = "Sulk";
 					}
 				}
 				else if (this.StudentID == 56)
@@ -1743,29 +1766,29 @@ public class StudentScript : MonoBehaviour
 					}
 					if (!this.Grudge)
 					{
-						ScheduleBlock scheduleBlock9 = this.ScheduleBlocks[2];
-						scheduleBlock9.destination = "Sleuth";
-						scheduleBlock9.action = "Sleuth";
-						ScheduleBlock scheduleBlock10 = this.ScheduleBlocks[4];
-						scheduleBlock10.destination = "Sleuth";
-						scheduleBlock10.action = "Sleuth";
-						ScheduleBlock scheduleBlock11 = this.ScheduleBlocks[7];
-						scheduleBlock11.destination = "Sleuth";
-						scheduleBlock11.action = "Sleuth";
+						ScheduleBlock scheduleBlock12 = this.ScheduleBlocks[2];
+						scheduleBlock12.destination = "Sleuth";
+						scheduleBlock12.action = "Sleuth";
+						ScheduleBlock scheduleBlock13 = this.ScheduleBlocks[4];
+						scheduleBlock13.destination = "Sleuth";
+						scheduleBlock13.action = "Sleuth";
+						ScheduleBlock scheduleBlock14 = this.ScheduleBlocks[7];
+						scheduleBlock14.destination = "Sleuth";
+						scheduleBlock14.action = "Sleuth";
 					}
 					else
 					{
 						this.StalkTarget = this.Yandere.transform;
 						this.SleuthTarget = this.Yandere.transform;
-						ScheduleBlock scheduleBlock12 = this.ScheduleBlocks[2];
-						scheduleBlock12.destination = "Stalk";
-						scheduleBlock12.action = "Stalk";
-						ScheduleBlock scheduleBlock13 = this.ScheduleBlocks[4];
-						scheduleBlock13.destination = "Stalk";
-						scheduleBlock13.action = "Stalk";
-						ScheduleBlock scheduleBlock14 = this.ScheduleBlocks[7];
-						scheduleBlock14.destination = "Stalk";
-						scheduleBlock14.action = "Stalk";
+						ScheduleBlock scheduleBlock15 = this.ScheduleBlocks[2];
+						scheduleBlock15.destination = "Stalk";
+						scheduleBlock15.action = "Stalk";
+						ScheduleBlock scheduleBlock16 = this.ScheduleBlocks[4];
+						scheduleBlock16.destination = "Stalk";
+						scheduleBlock16.action = "Stalk";
+						ScheduleBlock scheduleBlock17 = this.ScheduleBlocks[7];
+						scheduleBlock17.destination = "Stalk";
+						scheduleBlock17.action = "Stalk";
 					}
 				}
 				else if (SchoolGlobals.SchoolAtmosphere <= 0.9f)
@@ -1803,12 +1826,21 @@ public class StudentScript : MonoBehaviour
 				}
 				if (this.Club == ClubType.Delinquent)
 				{
-					this.MyWeapon = this.Yandere.WeaponManager.DelinquentWeapons[this.StudentID - 75];
-					this.MyWeapon.transform.parent = this.WeaponBagParent;
-					this.MyWeapon.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
-					this.MyWeapon.transform.localPosition = new Vector3(0f, 0f, 0f);
-					this.MyWeapon.FingerprintID = this.StudentID;
-					this.MyWeapon.MyCollider.enabled = false;
+					if (PlayerPrefs.GetInt("WeaponsBanned") == 0)
+					{
+						this.MyWeapon = this.Yandere.WeaponManager.DelinquentWeapons[this.StudentID - 75];
+						this.MyWeapon.transform.parent = this.WeaponBagParent;
+						this.MyWeapon.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+						this.MyWeapon.transform.localPosition = new Vector3(0f, 0f, 0f);
+						this.MyWeapon.FingerprintID = this.StudentID;
+						this.MyWeapon.MyCollider.enabled = false;
+						this.WeaponBag.SetActive(true);
+					}
+					else
+					{
+						this.OriginalPersona = PersonaType.Heroic;
+						this.Persona = PersonaType.Heroic;
+					}
 					this.CharacterAnimation["walkTough_00"].time += (float)(this.StudentID - 76);
 					this.ScaredAnim = "delinquentCombatIdle_00";
 					this.LeanAnim = "delinquentConcern_00";
@@ -1820,7 +1852,6 @@ public class StudentScript : MonoBehaviour
 					this.Pathfinding.canSearch = false;
 					this.Pathfinding.canMove = false;
 					this.Paired = true;
-					this.WeaponBag.SetActive(true);
 					this.CharacterAnimation[this.WalkAnim].time = UnityEngine.Random.Range(0f, this.CharacterAnimation[this.WalkAnim].length);
 				}
 			}
@@ -1829,8 +1860,8 @@ public class StudentScript : MonoBehaviour
 				this.RivalPrefix = "Rival ";
 				if (DateGlobals.Weekday == DayOfWeek.Friday)
 				{
-					ScheduleBlock scheduleBlock15 = this.ScheduleBlocks[7];
-					scheduleBlock15.time = 17f;
+					ScheduleBlock scheduleBlock18 = this.ScheduleBlocks[7];
+					scheduleBlock18.time = 17f;
 				}
 			}
 			if (this.Club == ClubType.None)
@@ -2171,15 +2202,15 @@ public class StudentScript : MonoBehaviour
 			{
 				if (this.StudentID < 86)
 				{
-					ScheduleBlock scheduleBlock16 = this.ScheduleBlocks[6];
-					scheduleBlock16.destination = "Meeting";
-					scheduleBlock16.action = "Meeting";
+					ScheduleBlock scheduleBlock19 = this.ScheduleBlocks[6];
+					scheduleBlock19.destination = "Meeting";
+					scheduleBlock19.action = "Meeting";
 				}
 				else
 				{
-					ScheduleBlock scheduleBlock17 = this.ScheduleBlocks[5];
-					scheduleBlock17.destination = "Meeting";
-					scheduleBlock17.action = "Meeting";
+					ScheduleBlock scheduleBlock20 = this.ScheduleBlocks[5];
+					scheduleBlock20.destination = "Meeting";
+					scheduleBlock20.action = "Meeting";
 				}
 				this.GetDestinations();
 			}
@@ -2914,7 +2945,25 @@ public class StudentScript : MonoBehaviour
 					}
 					if (this.Club == ClubType.LightMusic)
 					{
-						this.Instruments[this.ClubMemberID].SetActive(false);
+						if (this.StudentID == 51)
+						{
+							if (this.InstrumentBag[this.ClubMemberID].transform.parent == null)
+							{
+								this.Instruments[this.ClubMemberID].GetComponent<AudioSource>().playOnAwake = false;
+								this.Instruments[this.ClubMemberID].GetComponent<AudioSource>().Stop();
+								this.Instruments[this.ClubMemberID].transform.parent = null;
+								this.Instruments[this.ClubMemberID].transform.position = new Vector3(-0.5f, 4.5f, 22.45666f);
+								this.Instruments[this.ClubMemberID].transform.eulerAngles = new Vector3(-15f, 0f, 0f);
+							}
+							else
+							{
+								this.Instruments[this.ClubMemberID].SetActive(false);
+							}
+						}
+						else
+						{
+							this.Instruments[this.ClubMemberID].SetActive(false);
+						}
 					}
 					if (this.Phase == 8 && this.StudentID == 36)
 					{
@@ -3680,13 +3729,220 @@ public class StudentScript : MonoBehaviour
 								}
 								else if (this.Club == ClubType.LightMusic)
 								{
-									this.CharacterAnimation.CrossFade(this.ClubAnim);
-									if (this.StudentID == 54)
+									if (this.Clock.Period < 6)
 									{
+										this.Instruments[this.ClubMemberID].SetActive(true);
+										this.CharacterAnimation.CrossFade(this.ClubAnim);
+										if (this.StudentID == 51)
+										{
+											if (this.InstrumentBag[this.ClubMemberID].transform.parent != null)
+											{
+												this.InstrumentBag[this.ClubMemberID].transform.parent = null;
+												this.InstrumentBag[this.ClubMemberID].transform.position = new Vector3(0.5f, 4.5f, 22.45666f);
+												this.InstrumentBag[this.ClubMemberID].transform.eulerAngles = new Vector3(-15f, 0f, 0f);
+											}
+											if (this.Instruments[this.ClubMemberID].transform.parent == null)
+											{
+												this.Instruments[this.ClubMemberID].GetComponent<AudioSource>().Play();
+												this.Instruments[this.ClubMemberID].transform.parent = base.transform;
+												this.Instruments[this.ClubMemberID].transform.localPosition = new Vector3(0.340493f, 0.653502f, -0.286104f);
+												this.Instruments[this.ClubMemberID].transform.localEulerAngles = new Vector3(-13.6139f, 16.16775f, 72.5293f);
+											}
+										}
+										else if (this.StudentID == 54 && !this.Drumsticks[0].activeInHierarchy)
+										{
+											this.Drumsticks[0].SetActive(true);
+											this.Drumsticks[1].SetActive(true);
+										}
+									}
+									else if (this.StudentID == 51)
+									{
+										this.InstrumentBag[this.ClubMemberID].transform.position = new Vector3(0.5f, 4.5f, 22.45666f);
+										this.InstrumentBag[this.ClubMemberID].transform.eulerAngles = new Vector3(-15f, 0f, 0f);
+										this.InstrumentBag[this.ClubMemberID].transform.parent = null;
+										if (!this.StudentManager.PracticeMusic.isPlaying)
+										{
+											this.CharacterAnimation.CrossFade("f02_vocalIdle_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 112f)
+										{
+											this.CharacterAnimation.CrossFade("f02_vocalCelebrate_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 32f)
+										{
+											this.CharacterAnimation.CrossFade("f02_vocalSingB_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 24f)
+										{
+											this.CharacterAnimation.CrossFade("f02_vocalSingB_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 17f)
+										{
+											this.CharacterAnimation.CrossFade("f02_vocalSingB_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 14f)
+										{
+											this.CharacterAnimation.CrossFade("f02_vocalWait_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 8f)
+										{
+											this.CharacterAnimation.CrossFade("f02_vocalSingA_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 0f)
+										{
+											this.CharacterAnimation.CrossFade("f02_vocalWait_00");
+										}
+									}
+									else if (this.StudentID == 52)
+									{
+										if (!this.Instruments[this.ClubMemberID].activeInHierarchy)
+										{
+											this.Instruments[this.ClubMemberID].SetActive(true);
+											this.Instruments[this.ClubMemberID].GetComponent<AudioSource>().Stop();
+											this.Instruments[this.ClubMemberID].GetComponent<AudioSource>().playOnAwake = false;
+											this.Instruments[this.ClubMemberID].transform.parent = this.Spine;
+											this.Instruments[this.ClubMemberID].transform.localPosition = new Vector3(0.275f, -0.16f, 0.095f);
+											this.Instruments[this.ClubMemberID].transform.localEulerAngles = new Vector3(-22.5f, 30f, 60f);
+											this.InstrumentBag[this.ClubMemberID].transform.parent = null;
+											this.InstrumentBag[this.ClubMemberID].transform.position = new Vector3(5.5825f, 4.01f, 25f);
+											this.InstrumentBag[this.ClubMemberID].transform.eulerAngles = new Vector3(-15f, -90f, 0f);
+										}
+										if (!this.StudentManager.PracticeMusic.isPlaying)
+										{
+											this.CharacterAnimation.CrossFade("f02_guitarIdle_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 112f)
+										{
+											this.CharacterAnimation.CrossFade("f02_guitarCelebrate_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 64f)
+										{
+											this.CharacterAnimation.CrossFade("f02_guitarPlayA_01");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 8f)
+										{
+											this.CharacterAnimation.CrossFade("f02_guitarPlayA_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 0f)
+										{
+											this.CharacterAnimation.CrossFade("f02_guitarWait_00");
+										}
+									}
+									else if (this.StudentID == 53)
+									{
+										if (!this.Instruments[this.ClubMemberID].activeInHierarchy)
+										{
+											this.Instruments[this.ClubMemberID].SetActive(true);
+											this.Instruments[this.ClubMemberID].GetComponent<AudioSource>().Stop();
+											this.Instruments[this.ClubMemberID].GetComponent<AudioSource>().playOnAwake = false;
+											this.Instruments[this.ClubMemberID].transform.parent = this.Spine;
+											this.Instruments[this.ClubMemberID].transform.localPosition = new Vector3(0.275f, -0.16f, 0.095f);
+											this.Instruments[this.ClubMemberID].transform.localEulerAngles = new Vector3(-22.5f, 30f, 60f);
+											this.InstrumentBag[this.ClubMemberID].transform.parent = null;
+											this.InstrumentBag[this.ClubMemberID].transform.position = new Vector3(5.5825f, 4.01f, 26f);
+											this.InstrumentBag[this.ClubMemberID].transform.eulerAngles = new Vector3(-15f, -90f, 0f);
+										}
+										if (!this.StudentManager.PracticeMusic.isPlaying)
+										{
+											this.CharacterAnimation.CrossFade("f02_guitarIdle_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 112f)
+										{
+											this.CharacterAnimation.CrossFade("f02_guitarCelebrate_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 88f)
+										{
+											this.CharacterAnimation.CrossFade("f02_guitarPlayA_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 80f)
+										{
+											this.CharacterAnimation.CrossFade("f02_guitarWait_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 64f)
+										{
+											this.CharacterAnimation.CrossFade("f02_guitarPlayB_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 0f)
+										{
+											this.CharacterAnimation.CrossFade("f02_guitarPlaySlowA_01");
+										}
+									}
+									else if (this.StudentID == 54)
+									{
+										if (this.InstrumentBag[this.ClubMemberID].transform.parent != null)
+										{
+											this.InstrumentBag[this.ClubMemberID].transform.parent = null;
+											this.InstrumentBag[this.ClubMemberID].transform.position = new Vector3(5.5825f, 4.01f, 23f);
+											this.InstrumentBag[this.ClubMemberID].transform.eulerAngles = new Vector3(-15f, -90f, 0f);
+										}
 										this.Drumsticks[0].SetActive(true);
 										this.Drumsticks[1].SetActive(true);
+										if (!this.StudentManager.PracticeMusic.isPlaying)
+										{
+											this.CharacterAnimation.CrossFade("f02_drumsIdle_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 112f)
+										{
+											this.CharacterAnimation.CrossFade("f02_drumsCelebrate_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 108f)
+										{
+											this.CharacterAnimation.CrossFade("f02_drumsIdle_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 96f)
+										{
+											this.CharacterAnimation.CrossFade("f02_drumsPlaySlow_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 80f)
+										{
+											this.CharacterAnimation.CrossFade("f02_drumsIdle_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 38f)
+										{
+											this.CharacterAnimation.CrossFade("f02_drumsPlay_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 46f)
+										{
+											this.CharacterAnimation.CrossFade("f02_drumsIdle_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 16f)
+										{
+											this.CharacterAnimation.CrossFade("f02_drumsPlay_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 0f)
+										{
+											this.CharacterAnimation.CrossFade("f02_drumsIdle_00");
+										}
 									}
-									this.Instruments[this.ClubMemberID].SetActive(true);
+									else if (this.StudentID == 55)
+									{
+										if (this.InstrumentBag[this.ClubMemberID].transform.parent != null)
+										{
+											this.InstrumentBag[this.ClubMemberID].transform.parent = null;
+											this.InstrumentBag[this.ClubMemberID].transform.position = new Vector3(5.5825f, 4.01f, 24f);
+											this.InstrumentBag[this.ClubMemberID].transform.eulerAngles = new Vector3(-15f, -90f, 0f);
+										}
+										if (!this.StudentManager.PracticeMusic.isPlaying)
+										{
+											this.CharacterAnimation.CrossFade("f02_keysIdle_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 112f)
+										{
+											this.CharacterAnimation.CrossFade("f02_keysCelebrate_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 80f)
+										{
+											this.CharacterAnimation.CrossFade("f02_keysWait_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 24f)
+										{
+											this.CharacterAnimation.CrossFade("f02_keysPlay_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 0f)
+										{
+											this.CharacterAnimation.CrossFade("f02_keysWait_00");
+										}
+									}
 								}
 								else if (this.Club == ClubType.Science)
 								{
@@ -4459,7 +4715,24 @@ public class StudentScript : MonoBehaviour
 							}
 							else if (this.Actions[this.Phase] == StudentActionType.Sulk)
 							{
-								this.CharacterAnimation.CrossFade("delinquentSulk_00");
+								if (this.Male)
+								{
+									this.CharacterAnimation.CrossFade("delinquentSulk_00");
+								}
+								else
+								{
+									this.CharacterAnimation.CrossFade("f02_railingSulk_0" + this.SulkPhase, 1f);
+									this.SulkTimer += Time.deltaTime;
+									if (this.SulkTimer > 7.66666f)
+									{
+										this.SulkTimer = 0f;
+										this.SulkPhase++;
+										if (this.SulkPhase == 3)
+										{
+											this.SulkPhase = 0;
+										}
+									}
+								}
 							}
 							else if (this.Actions[this.Phase] == StudentActionType.Sleuth)
 							{
@@ -4664,15 +4937,41 @@ public class StudentScript : MonoBehaviour
 									this.CharacterAnimation.CrossFade(this.PeekAnim);
 								}
 							}
-							else if (this.Actions[this.Phase] == StudentActionType.Practice)
+							else if (this.Actions[this.Phase] == StudentActionType.Lyrics)
 							{
-								this.CharacterAnimation.CrossFade(this.ClubAnim);
-								if (this.StudentID == 54)
+								this.LyricsTimer += Time.deltaTime;
+								if (this.LyricsPhase == 0)
 								{
-									this.Drumsticks[0].SetActive(true);
-									this.Drumsticks[1].SetActive(true);
+									this.CharacterAnimation.CrossFade("f02_writingLyrics_00");
+									if (!this.Pencil.activeInHierarchy)
+									{
+										this.Pencil.SetActive(true);
+									}
+									if (this.LyricsTimer > 18f)
+									{
+										this.StudentManager.LyricsSpot.position = this.StudentManager.AirGuitarSpot.position;
+										this.StudentManager.LyricsSpot.eulerAngles = this.StudentManager.AirGuitarSpot.eulerAngles;
+										this.Pencil.SetActive(false);
+										this.LyricsPhase = 1;
+										this.LyricsTimer = 0f;
+									}
 								}
-								this.Instruments[this.ClubMemberID].SetActive(true);
+								else
+								{
+									this.CharacterAnimation.CrossFade("f02_airGuitar_00");
+									if (!this.AirGuitar.isPlaying)
+									{
+										this.AirGuitar.Play();
+									}
+									if (this.LyricsTimer > 18f)
+									{
+										this.StudentManager.LyricsSpot.position = this.StudentManager.OriginalLyricsSpot.position;
+										this.StudentManager.LyricsSpot.eulerAngles = this.StudentManager.OriginalLyricsSpot.eulerAngles;
+										this.AirGuitar.Stop();
+										this.LyricsPhase = 0;
+										this.LyricsTimer = 0f;
+									}
+								}
 							}
 						}
 						else
@@ -6494,6 +6793,10 @@ public class StudentScript : MonoBehaviour
 				this.CharacterAnimation.CrossFade(this.ShoveAnim);
 				if (this.CharacterAnimation[this.ShoveAnim].time > this.CharacterAnimation[this.ShoveAnim].length)
 				{
+					if (this.Club != ClubType.Council && this.Persona != PersonaType.Violent)
+					{
+						this.Patience = 999;
+					}
 					if (this.Patience > 0)
 					{
 						this.Pathfinding.canSearch = true;
@@ -6921,7 +7224,7 @@ public class StudentScript : MonoBehaviour
 							}
 							if (this.YandereVisible)
 							{
-								if ((!this.Injured && this.Club == ClubType.Delinquent && this.Yandere.Armed && !this.WitnessedCorpse) || (this.Club == ClubType.Delinquent && this.Yandere.DelinquentFighting))
+								if ((!this.Injured && this.Persona == PersonaType.Violent && this.Yandere.Armed && !this.WitnessedCorpse) || (this.Persona == PersonaType.Violent && this.Yandere.DelinquentFighting))
 								{
 									this.Subtitle.UpdateLabel(SubtitleType.DelinquentWeaponReaction, 0, 3f);
 									this.ThreatDistance = this.DistanceToPlayer;
@@ -7280,7 +7583,7 @@ public class StudentScript : MonoBehaviour
 		if (this.StudentID > 1)
 		{
 			bool flag = false;
-			if (this.Armband.activeInHierarchy && (this.Actions[this.Phase] == StudentActionType.ClubAction || this.Actions[this.Phase] == StudentActionType.SitAndSocialize || this.Actions[this.Phase] == StudentActionType.Socializing || this.Actions[this.Phase] == StudentActionType.Sleuth) && (Vector3.Distance(base.transform.position, this.StudentManager.ClubZones[(int)this.Club].position) < this.ClubThreshold || Vector3.Distance(base.transform.position, this.StudentManager.DramaSpots[1].position) < this.ClubThreshold))
+			if (this.Armband.activeInHierarchy && (this.Actions[this.Phase] == StudentActionType.ClubAction || this.Actions[this.Phase] == StudentActionType.SitAndSocialize || this.Actions[this.Phase] == StudentActionType.Socializing || this.Actions[this.Phase] == StudentActionType.Sleuth || this.Actions[this.Phase] == StudentActionType.Lyrics) && (Vector3.Distance(base.transform.position, this.StudentManager.ClubZones[(int)this.Club].position) < this.ClubThreshold || Vector3.Distance(base.transform.position, this.StudentManager.DramaSpots[1].position) < this.ClubThreshold))
 			{
 				flag = true;
 				this.Warned = false;
@@ -8125,7 +8428,7 @@ public class StudentScript : MonoBehaviour
 					}
 					if (this.Concern == 5)
 					{
-						Debug.Log("A Game Over will now occur.");
+						Debug.Log("Yandere-chan is getting sent to the guidance counselor.");
 						this.StudentManager.CombatMinigame.Stop();
 						this.CharacterAnimation[this.AngryFaceAnim].weight = 1f;
 						this.Yandere.ShoulderCamera.enabled = true;
@@ -9443,12 +9746,13 @@ public class StudentScript : MonoBehaviour
 		this.Yandere.EyeShrink = 0f;
 		this.Yandere.Sanity = 100f;
 		this.Yandere.HeartRate.gameObject.SetActive(false);
+		this.Yandere.Stance.Current = StanceType.Standing;
 		this.ShoulderCamera.OverShoulder = false;
 		this.Yandere.Obscurance.enabled = false;
 		this.Yandere.DelinquentFighting = false;
 		this.Yandere.YandereVision = false;
+		this.Yandere.CannotRecover = true;
 		this.Yandere.Police.Show = false;
-		this.Yandere.Stance.Current = StanceType.Standing;
 		this.Yandere.Rummaging = false;
 		this.Yandere.Laughing = false;
 		this.Yandere.CanMove = false;
@@ -10305,7 +10609,7 @@ public class StudentScript : MonoBehaviour
 			}
 			else if (scheduleBlock2.destination == "Sulk")
 			{
-				this.Destinations[this.ID] = this.StudentManager.SulkSpots[this.StudentID - 75];
+				this.Destinations[this.ID] = this.StudentManager.SulkSpots[this.StudentID];
 			}
 			else if (scheduleBlock2.destination == "Sleuth")
 			{
@@ -10326,6 +10630,17 @@ public class StudentScript : MonoBehaviour
 			else if (scheduleBlock2.destination == "Miyuki")
 			{
 				this.Destinations[this.ID] = this.StudentManager.MiyukiSpots[this.StudentID - 35].transform;
+			}
+			else if (scheduleBlock2.destination == "Practice")
+			{
+				if (this.Club > ClubType.None)
+				{
+					this.Destinations[this.ID] = this.StudentManager.PracticeSpots[this.ClubMemberID];
+				}
+				else
+				{
+					this.Destinations[this.ID] = this.StudentManager.Hangouts.List[this.StudentID];
+				}
 			}
 			else if (scheduleBlock2.destination == "Lyrics")
 			{
@@ -11364,6 +11679,21 @@ public class StudentScript : MonoBehaviour
 			this.WateringCan.transform.localPosition = new Vector3(0f, 0.0135f, -0.184f);
 			this.WateringCan.transform.localEulerAngles = new Vector3(0f, 90f, 30f);
 		}
+		else if (this.Club == ClubType.LightMusic && this.StudentID == 51)
+		{
+			if (this.InstrumentBag[this.ClubMemberID].transform.parent == null)
+			{
+				this.Instruments[this.ClubMemberID].transform.parent = null;
+				this.Instruments[this.ClubMemberID].transform.position = new Vector3(-0.5f, 4.5f, 22.45666f);
+				this.Instruments[this.ClubMemberID].transform.eulerAngles = new Vector3(-15f, 0f, 0f);
+				this.Instruments[this.ClubMemberID].GetComponent<AudioSource>().playOnAwake = false;
+				this.Instruments[this.ClubMemberID].GetComponent<AudioSource>().Stop();
+			}
+			else
+			{
+				this.Instruments[this.ClubMemberID].SetActive(false);
+			}
+		}
 		foreach (GameObject gameObject in this.ScienceProps)
 		{
 			if (gameObject != null)
@@ -11725,6 +12055,10 @@ public class StudentScript : MonoBehaviour
 			this.Shoving = true;
 			this.NoTalk = false;
 			this.Patience--;
+			if (this.Club != ClubType.Council && this.Persona != PersonaType.Violent)
+			{
+				this.Patience = 999;
+			}
 			if (this.Patience < 1)
 			{
 				this.Yandere.CannotRecover = true;
@@ -12198,7 +12532,27 @@ public class StudentScript : MonoBehaviour
 		}
 		if (this.Club == ClubType.LightMusic)
 		{
-			this.Instruments[this.ClubMemberID].SetActive(false);
+			if (this.StudentID == 51)
+			{
+				if (this.InstrumentBag[this.ClubMemberID].transform.parent == null)
+				{
+					this.Instruments[this.ClubMemberID].transform.parent = null;
+					this.Instruments[this.ClubMemberID].transform.position = new Vector3(-0.5f, 4.5f, 22.45666f);
+					this.Instruments[this.ClubMemberID].transform.eulerAngles = new Vector3(-15f, 0f, 0f);
+					this.Instruments[this.ClubMemberID].GetComponent<AudioSource>().playOnAwake = false;
+					this.Instruments[this.ClubMemberID].GetComponent<AudioSource>().Stop();
+				}
+				else
+				{
+					this.Instruments[this.ClubMemberID].SetActive(false);
+				}
+			}
+			else
+			{
+				this.Instruments[this.ClubMemberID].SetActive(false);
+			}
+			this.Drumsticks[0].SetActive(false);
+			this.Drumsticks[1].SetActive(false);
 		}
 		if (!this.Male)
 		{

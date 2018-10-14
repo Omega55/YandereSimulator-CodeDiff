@@ -5,6 +5,8 @@ public class ShoulderCameraScript : MonoBehaviour
 {
 	public PauseScreenScript PauseScreen;
 
+	public CounselorScript Counselor;
+
 	public YandereScript Yandere;
 
 	public RPG_Camera RPGCamera;
@@ -12,6 +14,8 @@ public class ShoulderCameraScript : MonoBehaviour
 	public PortalScript Portal;
 
 	public GameObject HeartbrokenCamera;
+
+	public GameObject HUD;
 
 	public Transform Smartphone;
 
@@ -44,6 +48,8 @@ public class ShoulderCameraScript : MonoBehaviour
 	public Vector3 LossFocus;
 
 	public Vector3 LossPOV;
+
+	public bool GoingToCounselor;
 
 	public bool AimingCamera;
 
@@ -99,7 +105,14 @@ public class ShoulderCameraScript : MonoBehaviour
 					this.LastPosition = base.transform.position;
 					this.RPGCamera.enabled = false;
 				}
-				base.transform.position = Vector3.Lerp(base.transform.position, this.ShoulderPOV.position, Time.deltaTime * 10f);
+				if (this.Yandere.TargetStudent.Counselor)
+				{
+					base.transform.position = Vector3.Lerp(base.transform.position, this.ShoulderPOV.position + new Vector3(0f, -0.49f, 0f), Time.deltaTime * 10f);
+				}
+				else
+				{
+					base.transform.position = Vector3.Lerp(base.transform.position, this.ShoulderPOV.position, Time.deltaTime * 10f);
+				}
 				this.ShoulderFocus.position = Vector3.Lerp(this.ShoulderFocus.position, this.Yandere.TargetStudent.transform.position + Vector3.up * this.Height, Time.deltaTime * 10f);
 				base.transform.LookAt(this.ShoulderFocus);
 			}
@@ -116,6 +129,7 @@ public class ShoulderCameraScript : MonoBehaviour
 					StudentScript component = this.Yandere.Senpai.GetComponent<StudentScript>();
 					if (component.Teacher)
 					{
+						this.GoingToCounselor = true;
 						this.NoticedHeight = 1.6f;
 						this.NoticedLimit = 6;
 					}
@@ -137,6 +151,10 @@ public class ShoulderCameraScript : MonoBehaviour
 				this.NoticedTimer += Time.deltaTime;
 				if (this.Phase == 1)
 				{
+					if (Input.GetButtonDown("A"))
+					{
+						this.NoticedTimer += 10f;
+					}
 					this.NoticedFocus.position = Vector3.Lerp(this.NoticedFocus.position, this.Yandere.Senpai.position + Vector3.up * this.NoticedHeight, Time.deltaTime * 10f);
 					this.NoticedPOV.Translate(Vector3.forward * Time.deltaTime * -0.075f);
 					if (this.NoticedTimer > 1f && !this.Spoken && !this.Yandere.Senpai.GetComponent<StudentScript>().Teacher)
@@ -148,36 +166,91 @@ public class ShoulderCameraScript : MonoBehaviour
 					{
 						this.Yandere.Senpai.GetComponent<StudentScript>().Character.SetActive(false);
 						base.GetComponent<Camera>().cullingMask |= 8192;
-						this.Yandere.Subtitle.UpdateLabel(SubtitleType.YandereWhimper, 1, 3.5f);
 						this.NoticedPOV.position = this.Yandere.transform.position + this.Yandere.transform.forward + Vector3.up * 1.375f;
 						this.NoticedPOV.LookAt(this.Yandere.transform.position + Vector3.up * 1.375f);
 						this.NoticedFocus.position = this.Yandere.transform.position + Vector3.up * 1.375f;
 						base.transform.position = this.NoticedPOV.position;
 						this.NoticedTimer = (float)this.NoticedLimit;
 						this.Phase = 2;
+						if (this.GoingToCounselor)
+						{
+							this.Yandere.CharacterAnimation.CrossFade("f02_disappointed_00");
+						}
+						else
+						{
+							this.Yandere.Subtitle.UpdateLabel(SubtitleType.YandereWhimper, 1, 3.5f);
+						}
 					}
 				}
 				else if (this.Phase == 2)
 				{
-					this.Yandere.EyeShrink += Time.deltaTime * 0.25f;
+					if (Input.GetButtonDown("A"))
+					{
+						this.NoticedTimer += 10f;
+					}
+					if (!this.GoingToCounselor)
+					{
+						this.Yandere.EyeShrink += Time.deltaTime * 0.25f;
+					}
 					this.NoticedPOV.Translate(Vector3.forward * Time.deltaTime * 0.075f);
 					if (this.NoticedTimer > (float)(this.NoticedLimit + 4))
 					{
-						this.NoticedPOV.Translate(Vector3.back * 2f);
-						this.NoticedPOV.transform.position = new Vector3(this.NoticedPOV.transform.position.x, this.Yandere.transform.position.y + 1f, this.NoticedPOV.transform.position.z);
-						this.NoticedSpeed = 1f;
-						this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_down_22");
-						this.HeartbrokenCamera.SetActive(true);
-						this.Yandere.Collapse = true;
-						this.Phase = 3;
+						if (!this.GoingToCounselor)
+						{
+							this.NoticedPOV.Translate(Vector3.back * 2f);
+							this.NoticedPOV.transform.position = new Vector3(this.NoticedPOV.transform.position.x, this.Yandere.transform.position.y + 1f, this.NoticedPOV.transform.position.z);
+							this.NoticedSpeed = 1f;
+							this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_down_22");
+							this.HeartbrokenCamera.SetActive(true);
+							this.Yandere.Collapse = true;
+							this.Phase = 3;
+						}
+						else
+						{
+							this.Yandere.Police.Darkness.enabled = true;
+							this.Yandere.HUD.enabled = true;
+							this.Yandere.HUD.alpha = 1f;
+							this.HUD.SetActive(false);
+							this.Phase = 4;
+						}
 					}
 				}
 				else if (this.Phase == 3)
 				{
 					this.NoticedFocus.transform.position = new Vector3(this.NoticedFocus.transform.position.x, Mathf.Lerp(this.NoticedFocus.transform.position.y, this.Yandere.transform.position.y + 1f, Time.deltaTime), this.NoticedFocus.transform.position.z);
 				}
-				base.transform.position = Vector3.Lerp(base.transform.position, this.NoticedPOV.position, Time.deltaTime * this.NoticedSpeed);
-				base.transform.LookAt(this.NoticedFocus);
+				else if (this.Phase == 4)
+				{
+					this.Yandere.Police.Darkness.color += new Color(0f, 0f, 0f, Time.deltaTime);
+					this.NoticedPOV.Translate(Vector3.forward * Time.deltaTime * 0.075f);
+					if (this.Yandere.Police.Darkness.color.a >= 1f)
+					{
+						this.Counselor.Crime = this.Yandere.Senpai.GetComponent<StudentScript>().Witnessed;
+						this.Counselor.MyAnimation.Play("CounselorArmsCrossed");
+						this.Counselor.Laptop.SetActive(false);
+						this.Counselor.Interrogating = true;
+						this.Counselor.LookAtPlayer = true;
+						this.Counselor.Stern = true;
+						this.Counselor.Timer = 0f;
+						base.transform.Translate(Vector3.forward * -1f);
+						this.Yandere.Senpai.GetComponent<StudentScript>().Character.SetActive(true);
+						this.Yandere.transform.localEulerAngles = new Vector3(0f, -90f, 0f);
+						this.Yandere.transform.position = new Vector3(-27.51f, 0f, 12f);
+						this.Yandere.Police.Darkness.color = new Color(0f, 0f, 0f, 1f);
+						this.Yandere.CharacterAnimation.Play("f02_sit_00");
+						this.Yandere.Noticed = false;
+						this.Yandere.Sanity = 100f;
+						Physics.SyncTransforms();
+						base.enabled = false;
+						this.NoticedTimer = 0f;
+						this.Phase = 1;
+					}
+				}
+				if (this.Phase < 5)
+				{
+					base.transform.position = Vector3.Lerp(base.transform.position, this.NoticedPOV.position, Time.deltaTime * this.NoticedSpeed);
+					base.transform.LookAt(this.NoticedFocus);
+				}
 			}
 			else if (this.Scolding)
 			{
