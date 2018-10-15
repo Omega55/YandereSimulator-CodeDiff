@@ -406,6 +406,10 @@ public class StudentInfoScript : MonoBehaviour
 			{
 				this.InfoLabel.text = "Disbanded the Light Music Club, dyed her hair back to its original color, removed her piercings, and stopped socializing with others.";
 			}
+			else
+			{
+				this.InfoLabel.text = this.JSON.Students[ID].Info;
+			}
 		}
 		else if (!StudentGlobals.GetStudentReplaced(ID))
 		{

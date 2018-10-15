@@ -114,21 +114,24 @@ public class PracticeWindowScript : MonoBehaviour
 				}
 				if (this.Club == ClubType.LightMusic)
 				{
-					for (int i = 52; i < 56; i++)
+					if (!this.PlayedRhythmMinigame)
 					{
-						this.StudentManager.Students[i].transform.position = this.StudentManager.Clubs.List[i].position;
-						this.StudentManager.Students[i].EmptyHands();
+						for (int i = 52; i < 56; i++)
+						{
+							this.StudentManager.Students[i].transform.position = this.StudentManager.Clubs.List[i].position;
+							this.StudentManager.Students[i].EmptyHands();
+						}
+						Physics.SyncTransforms();
+						PlayerPrefs.SetFloat("TempReputation", this.StudentManager.Reputation.Reputation);
+						this.PlayedRhythmMinigame = true;
+						this.FadeOut = false;
+						this.FadeIn = true;
+						SceneManager.LoadScene("RhythmMinigameScene", LoadSceneMode.Additive);
+						foreach (GameObject gameObject in SceneManager.GetActiveScene().GetRootGameObjects())
+						{
+							gameObject.SetActive(false);
+						}
 					}
-					Physics.SyncTransforms();
-					PlayerPrefs.SetFloat("TempReputation", this.StudentManager.Reputation.Reputation);
-					SceneManager.LoadScene("RhythmMinigameScene", LoadSceneMode.Additive);
-					foreach (GameObject gameObject in SceneManager.GetActiveScene().GetRootGameObjects())
-					{
-						gameObject.SetActive(false);
-					}
-					this.PlayedRhythmMinigame = true;
-					this.FadeOut = false;
-					this.FadeIn = true;
 				}
 				else if (this.Club == ClubType.MartialArts && this.Yandere.CanMove)
 				{

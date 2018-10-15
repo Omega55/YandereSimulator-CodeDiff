@@ -429,6 +429,24 @@ public class CounselorScript : MonoBehaviour
 					}
 				}
 			}
+			else if (!this.Interrogating)
+			{
+				if (Input.GetButtonDown("A"))
+				{
+					this.MyAudio.Stop();
+				}
+				if (!this.MyAudio.isPlaying)
+				{
+					this.Timer += Time.deltaTime;
+					if (this.Timer > 0.5f)
+					{
+						this.CounselorDoor.FadeOut = true;
+						this.CounselorDoor.Exit = true;
+						this.LookAtPlayer = false;
+						this.UpdateList();
+					}
+				}
+			}
 		}
 		else if (!this.Interrogating)
 		{

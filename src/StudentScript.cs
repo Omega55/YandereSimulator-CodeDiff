@@ -3764,9 +3764,13 @@ public class StudentScript : MonoBehaviour
 										{
 											this.CharacterAnimation.CrossFade("f02_vocalIdle_00");
 										}
-										else if (this.StudentManager.PracticeMusic.time > 112f)
+										else if (this.StudentManager.PracticeMusic.time > 114.5f)
 										{
 											this.CharacterAnimation.CrossFade("f02_vocalCelebrate_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 104f)
+										{
+											this.CharacterAnimation.CrossFade("f02_vocalWait_00");
 										}
 										else if (this.StudentManager.PracticeMusic.time > 32f)
 										{
@@ -3811,9 +3815,13 @@ public class StudentScript : MonoBehaviour
 										{
 											this.CharacterAnimation.CrossFade("f02_guitarIdle_00");
 										}
-										else if (this.StudentManager.PracticeMusic.time > 112f)
+										else if (this.StudentManager.PracticeMusic.time > 114.5f)
 										{
 											this.CharacterAnimation.CrossFade("f02_guitarCelebrate_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 112f)
+										{
+											this.CharacterAnimation.CrossFade("f02_guitarWait_00");
 										}
 										else if (this.StudentManager.PracticeMusic.time > 64f)
 										{
@@ -3846,9 +3854,13 @@ public class StudentScript : MonoBehaviour
 										{
 											this.CharacterAnimation.CrossFade("f02_guitarIdle_00");
 										}
-										else if (this.StudentManager.PracticeMusic.time > 112f)
+										else if (this.StudentManager.PracticeMusic.time > 114.5f)
 										{
 											this.CharacterAnimation.CrossFade("f02_guitarCelebrate_00");
+										}
+										else if (this.StudentManager.PracticeMusic.time > 112f)
+										{
+											this.CharacterAnimation.CrossFade("f02_guitarWait_00");
 										}
 										else if (this.StudentManager.PracticeMusic.time > 88f)
 										{
@@ -3881,7 +3893,7 @@ public class StudentScript : MonoBehaviour
 										{
 											this.CharacterAnimation.CrossFade("f02_drumsIdle_00");
 										}
-										else if (this.StudentManager.PracticeMusic.time > 112f)
+										else if (this.StudentManager.PracticeMusic.time > 114.5f)
 										{
 											this.CharacterAnimation.CrossFade("f02_drumsCelebrate_00");
 										}
@@ -3926,7 +3938,7 @@ public class StudentScript : MonoBehaviour
 										{
 											this.CharacterAnimation.CrossFade("f02_keysIdle_00");
 										}
-										else if (this.StudentManager.PracticeMusic.time > 112f)
+										else if (this.StudentManager.PracticeMusic.time > 114.5f)
 										{
 											this.CharacterAnimation.CrossFade("f02_keysCelebrate_00");
 										}
@@ -6107,95 +6119,23 @@ public class StudentScript : MonoBehaviour
 					this.CanTalk = true;
 					this.Routine = true;
 				}
-				else if (this.DistanceToDestination < 5f)
+				else
 				{
-					if (this.DistractionTarget.InEvent || this.DistractionTarget.Talking || this.DistractionTarget.Following || this.DistractionTarget.TurnOffRadio || this.DistractionTarget.Splashed || this.DistractionTarget.Shoving || this.DistractionTarget.Spraying || this.DistractionTarget.FocusOnYandere || this.DistractionTarget.ShoeRemoval.enabled || this.DistractionTarget.Posing || this.DistractionTarget.ClubActivityPhase >= 16 || !this.DistractionTarget.enabled)
+					if (this.Actions[this.Phase] == StudentActionType.ClubAction && this.Club == ClubType.Cooking && this.DistractionTarget.InEvent)
 					{
-						this.CurrentDestination = this.Destinations[this.Phase];
-						this.Pathfinding.target = this.Destinations[this.Phase];
-						this.DistractionTarget.TargetedForDistraction = false;
-						this.Pathfinding.speed = 1f;
-						this.Distracting = false;
-						this.Distracted = false;
-						this.SpeechLines.Stop();
-						this.CanTalk = true;
-						this.Routine = true;
-						if (this.Actions[this.Phase] == StudentActionType.ClubAction && this.Club == ClubType.Cooking)
-						{
-							this.GetFoodTarget();
-						}
+						this.GetFoodTarget();
 					}
-					else if (this.DistanceToDestination < this.TargetDistance)
+					if (this.DistanceToDestination < 5f)
 					{
-						if (!this.DistractionTarget.Distracted)
-						{
-							if (this.StudentID > 1 && this.DistractionTarget.StudentID > 1 && this.Persona != PersonaType.Fragile && this.DistractionTarget.Persona != PersonaType.Fragile && ((this.Club != ClubType.Bully && this.DistractionTarget.Club == ClubType.Bully) || (this.Club == ClubType.Bully && this.DistractionTarget.Club != ClubType.Bully)))
-							{
-								this.BullyPhotoCollider.SetActive(true);
-							}
-							this.DistractionTarget.Prompt.Label[0].text = "     Talk";
-							this.DistractionTarget.Pathfinding.canSearch = false;
-							this.DistractionTarget.Pathfinding.canMove = false;
-							this.DistractionTarget.OccultBook.SetActive(false);
-							this.DistractionTarget.SmartPhone.SetActive(false);
-							this.DistractionTarget.Distraction = base.transform;
-							this.DistractionTarget.CameraReacting = false;
-							this.DistractionTarget.Pathfinding.speed = 0f;
-							this.DistractionTarget.Pen.SetActive(false);
-							this.DistractionTarget.Drownable = false;
-							this.DistractionTarget.Distracted = true;
-							this.DistractionTarget.Pushable = false;
-							this.DistractionTarget.Routine = false;
-							this.DistractionTarget.CanTalk = false;
-							this.DistractionTarget.ReadPhase = 0;
-							this.DistractionTarget.ChalkDust.Stop();
-							this.DistractionTarget.CleanTimer = 0f;
-							this.DistractionTarget.EmptyHands();
-							this.DistractionTarget.Distractor = this;
-							this.Pathfinding.speed = 0f;
-							this.Distracted = true;
-						}
-						this.targetRotation = Quaternion.LookRotation(new Vector3(this.DistractionTarget.transform.position.x, base.transform.position.y, this.DistractionTarget.transform.position.z) - base.transform.position);
-						base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
-						if (this.Actions[this.Phase] == StudentActionType.ClubAction && this.Club == ClubType.Cooking)
-						{
-							this.CharacterAnimation.CrossFade(this.IdleAnim);
-						}
-						else
-						{
-							this.DistractionTarget.SpeechLines.Play();
-							this.SpeechLines.Play();
-							this.CharacterAnimation.CrossFade(this.RandomAnim);
-							if (this.CharacterAnimation[this.RandomAnim].time >= this.CharacterAnimation[this.RandomAnim].length)
-							{
-								this.PickRandomAnim();
-							}
-						}
-						this.DistractTimer -= Time.deltaTime;
-						if (this.DistractTimer <= 0f)
+						if (this.DistractionTarget.InEvent || this.DistractionTarget.Talking || this.DistractionTarget.Following || this.DistractionTarget.TurnOffRadio || this.DistractionTarget.Splashed || this.DistractionTarget.Shoving || this.DistractionTarget.Spraying || this.DistractionTarget.FocusOnYandere || this.DistractionTarget.ShoeRemoval.enabled || this.DistractionTarget.Posing || this.DistractionTarget.ClubActivityPhase >= 16 || !this.DistractionTarget.enabled)
 						{
 							this.CurrentDestination = this.Destinations[this.Phase];
 							this.Pathfinding.target = this.Destinations[this.Phase];
 							this.DistractionTarget.TargetedForDistraction = false;
-							this.DistractionTarget.Pathfinding.canSearch = true;
-							this.DistractionTarget.Pathfinding.canMove = true;
-							this.DistractionTarget.Pathfinding.speed = 1f;
-							this.DistractionTarget.Octodog.SetActive(false);
-							this.DistractionTarget.Distraction = null;
-							this.DistractionTarget.Distracted = false;
-							this.DistractionTarget.CanTalk = true;
-							this.DistractionTarget.Routine = true;
-							if (this.DistractionTarget.Persona == PersonaType.PhoneAddict)
-							{
-								this.DistractionTarget.SmartPhone.SetActive(true);
-							}
-							this.DistractionTarget.Distractor = null;
-							this.DistractionTarget.SpeechLines.Stop();
-							this.SpeechLines.Stop();
-							this.BullyPhotoCollider.SetActive(false);
 							this.Pathfinding.speed = 1f;
 							this.Distracting = false;
 							this.Distracted = false;
+							this.SpeechLines.Stop();
 							this.CanTalk = true;
 							this.Routine = true;
 							if (this.Actions[this.Phase] == StudentActionType.ClubAction && this.Club == ClubType.Cooking)
@@ -6203,29 +6143,108 @@ public class StudentScript : MonoBehaviour
 								this.GetFoodTarget();
 							}
 						}
+						else if (this.DistanceToDestination < this.TargetDistance)
+						{
+							if (!this.DistractionTarget.Distracted)
+							{
+								if (this.StudentID > 1 && this.DistractionTarget.StudentID > 1 && this.Persona != PersonaType.Fragile && this.DistractionTarget.Persona != PersonaType.Fragile && ((this.Club != ClubType.Bully && this.DistractionTarget.Club == ClubType.Bully) || (this.Club == ClubType.Bully && this.DistractionTarget.Club != ClubType.Bully)))
+								{
+									this.BullyPhotoCollider.SetActive(true);
+								}
+								this.DistractionTarget.Prompt.Label[0].text = "     Talk";
+								this.DistractionTarget.Pathfinding.canSearch = false;
+								this.DistractionTarget.Pathfinding.canMove = false;
+								this.DistractionTarget.OccultBook.SetActive(false);
+								this.DistractionTarget.SmartPhone.SetActive(false);
+								this.DistractionTarget.Distraction = base.transform;
+								this.DistractionTarget.CameraReacting = false;
+								this.DistractionTarget.Pathfinding.speed = 0f;
+								this.DistractionTarget.Pen.SetActive(false);
+								this.DistractionTarget.Drownable = false;
+								this.DistractionTarget.Distracted = true;
+								this.DistractionTarget.Pushable = false;
+								this.DistractionTarget.Routine = false;
+								this.DistractionTarget.CanTalk = false;
+								this.DistractionTarget.ReadPhase = 0;
+								this.DistractionTarget.ChalkDust.Stop();
+								this.DistractionTarget.CleanTimer = 0f;
+								this.DistractionTarget.EmptyHands();
+								this.DistractionTarget.Distractor = this;
+								this.Pathfinding.speed = 0f;
+								this.Distracted = true;
+							}
+							this.targetRotation = Quaternion.LookRotation(new Vector3(this.DistractionTarget.transform.position.x, base.transform.position.y, this.DistractionTarget.transform.position.z) - base.transform.position);
+							base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
+							if (this.Actions[this.Phase] == StudentActionType.ClubAction && this.Club == ClubType.Cooking)
+							{
+								this.CharacterAnimation.CrossFade(this.IdleAnim);
+							}
+							else
+							{
+								this.DistractionTarget.SpeechLines.Play();
+								this.SpeechLines.Play();
+								this.CharacterAnimation.CrossFade(this.RandomAnim);
+								if (this.CharacterAnimation[this.RandomAnim].time >= this.CharacterAnimation[this.RandomAnim].length)
+								{
+									this.PickRandomAnim();
+								}
+							}
+							this.DistractTimer -= Time.deltaTime;
+							if (this.DistractTimer <= 0f)
+							{
+								this.CurrentDestination = this.Destinations[this.Phase];
+								this.Pathfinding.target = this.Destinations[this.Phase];
+								this.DistractionTarget.TargetedForDistraction = false;
+								this.DistractionTarget.Pathfinding.canSearch = true;
+								this.DistractionTarget.Pathfinding.canMove = true;
+								this.DistractionTarget.Pathfinding.speed = 1f;
+								this.DistractionTarget.Octodog.SetActive(false);
+								this.DistractionTarget.Distraction = null;
+								this.DistractionTarget.Distracted = false;
+								this.DistractionTarget.CanTalk = true;
+								this.DistractionTarget.Routine = true;
+								if (this.DistractionTarget.Persona == PersonaType.PhoneAddict)
+								{
+									this.DistractionTarget.SmartPhone.SetActive(true);
+								}
+								this.DistractionTarget.Distractor = null;
+								this.DistractionTarget.SpeechLines.Stop();
+								this.SpeechLines.Stop();
+								this.BullyPhotoCollider.SetActive(false);
+								this.Pathfinding.speed = 1f;
+								this.Distracting = false;
+								this.Distracted = false;
+								this.CanTalk = true;
+								this.Routine = true;
+								if (this.Actions[this.Phase] == StudentActionType.ClubAction && this.Club == ClubType.Cooking)
+								{
+									this.GetFoodTarget();
+								}
+							}
+						}
+						else if (this.Actions[this.Phase] == StudentActionType.ClubAction && this.Club == ClubType.Cooking)
+						{
+							this.Pathfinding.canSearch = true;
+							this.Pathfinding.canMove = true;
+						}
+						else
+						{
+							this.CharacterAnimation.CrossFade(this.RunAnim);
+						}
 					}
 					else if (this.Actions[this.Phase] == StudentActionType.ClubAction && this.Club == ClubType.Cooking)
 					{
 						this.Pathfinding.canSearch = true;
 						this.Pathfinding.canMove = true;
+						if (this.Phase < this.ScheduleBlocks.Length - 1 && this.Clock.HourTime >= this.ScheduleBlocks[this.Phase].time)
+						{
+							this.Routine = true;
+						}
 					}
 					else
 					{
 						this.CharacterAnimation.CrossFade(this.RunAnim);
 					}
-				}
-				else if (this.Actions[this.Phase] == StudentActionType.ClubAction && this.Club == ClubType.Cooking)
-				{
-					this.Pathfinding.canSearch = true;
-					this.Pathfinding.canMove = true;
-					if (this.Phase < this.ScheduleBlocks.Length - 1 && this.Clock.HourTime >= this.ScheduleBlocks[this.Phase].time)
-					{
-						this.Routine = true;
-					}
-				}
-				else
-				{
-					this.CharacterAnimation.CrossFade(this.RunAnim);
 				}
 			}
 			if (this.Hunting)
@@ -12416,9 +12435,9 @@ public class StudentScript : MonoBehaviour
 				{
 					this.GetFoodTarget();
 				}
-				else if (this.StudentManager.Students[this.SleuthID].CurrentAction == StudentActionType.SitAndEatBento || this.StudentManager.Students[this.SleuthID].Club == ClubType.Cooking || this.StudentManager.Students[this.SleuthID].Club == ClubType.Delinquent || this.StudentManager.Students[this.SleuthID].Club == ClubType.Sports || this.StudentManager.Students[this.SleuthID].TargetedForDistraction || this.StudentManager.Students[this.SleuthID].ClubActivityPhase >= 16 || this.StudentManager.Students[this.SleuthID].Slave || this.StudentManager.Students[this.SleuthID].Posing)
+				else if (this.StudentManager.Students[this.SleuthID].CurrentAction == StudentActionType.SitAndEatBento || this.StudentManager.Students[this.SleuthID].Club == ClubType.Cooking || this.StudentManager.Students[this.SleuthID].Club == ClubType.Delinquent || this.StudentManager.Students[this.SleuthID].Club == ClubType.Sports || this.StudentManager.Students[this.SleuthID].TargetedForDistraction || this.StudentManager.Students[this.SleuthID].ClubActivityPhase >= 16 || this.StudentManager.Students[this.SleuthID].InEvent || !this.StudentManager.Students[this.SleuthID].Routine || this.StudentManager.Students[this.SleuthID].Posing || this.StudentManager.Students[this.SleuthID].Slave || this.StudentManager.Students[this.SleuthID].Wet || (this.StudentManager.Students[this.SleuthID].Club == ClubType.LightMusic && this.StudentManager.PracticeMusic.isPlaying))
 				{
-					Debug.Log(this.Name + " can't use this student! This student is part of the Cooking Club.");
+					Debug.Log(this.Name + " can't use this student! This student is busy!");
 					this.GetFoodTarget();
 				}
 				else

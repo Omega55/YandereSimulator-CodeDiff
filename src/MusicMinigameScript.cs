@@ -120,6 +120,7 @@ public class MusicMinigameScript : MonoBehaviour
 
 	private void Start()
 	{
+		Application.targetFrameRate = 60;
 		Time.timeScale = 1f;
 		this.Black.gameObject.SetActive(true);
 		this.GameOverScreen.SetActive(false);

@@ -94,6 +94,9 @@ public class DoorScript : MonoBehaviour
 	[SerializeField]
 	private ClubType Club;
 
+	[SerializeField]
+	private bool DisableSelf;
+
 	private bool Double
 	{
 		get
@@ -124,6 +127,10 @@ public class DoorScript : MonoBehaviour
 		{
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
+			base.enabled = false;
+		}
+		if (this.DisableSelf)
+		{
 			base.enabled = false;
 		}
 	}
