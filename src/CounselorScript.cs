@@ -842,7 +842,7 @@ public class CounselorScript : MonoBehaviour
 			}
 			if (this.Timer > this.MyAudio.clip.length + 0.5f)
 			{
-				if (this.Crime == StudentWitnessType.Blood)
+				if (this.Crime == StudentWitnessType.Blood || this.Crime == StudentWitnessType.BloodAndInsanity)
 				{
 					this.MyAudio.clip = this.BloodLectureClips[PlayerPrefs.GetInt("BloodVisits")];
 					this.CounselorSubtitle.text = this.BloodLectures[PlayerPrefs.GetInt("BloodVisits")];
@@ -892,7 +892,7 @@ public class CounselorScript : MonoBehaviour
 					}
 					this.CrimeID = 5;
 				}
-				else if (this.Crime == StudentWitnessType.Weapon)
+				else if (this.Crime == StudentWitnessType.Weapon || this.Crime == StudentWitnessType.WeaponAndBlood || this.Crime == StudentWitnessType.WeaponAndInsanity || this.Crime == StudentWitnessType.WeaponAndBloodAndInsanity)
 				{
 					this.MyAudio.clip = this.WeaponLectureClips[PlayerPrefs.GetInt("WeaponVisits")];
 					this.CounselorSubtitle.text = this.WeaponLectures[PlayerPrefs.GetInt("WeaponVisits")];
@@ -1218,8 +1218,9 @@ public class CounselorScript : MonoBehaviour
 					}
 					else if (PlayerPrefs.GetInt(this.Crime + "BlameUsed") == 0)
 					{
-						if (this.CrimeID == 6)
+						if (this.CrimeID == 1)
 						{
+							Debug.Log("Banning weapons.");
 							PlayerPrefs.SetInt("WeaponsBanned", 1);
 						}
 						this.MyAudio.clip = this.AcceptBlameClips[this.CrimeID];

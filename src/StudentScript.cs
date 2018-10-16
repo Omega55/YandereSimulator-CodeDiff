@@ -7114,7 +7114,7 @@ public class StudentScript : MonoBehaviour
 						{
 							if (!this.Yandere.Noticed)
 							{
-								if ((this.Yandere.Armed && this.Yandere.EquippedWeapon.Suspicious) || (!this.Teacher && this.StudentID > 1 && this.Yandere.PickUp != null && this.Yandere.PickUp.Suspicious) || (this.Yandere.Bloodiness > 0f && !this.Yandere.Paint) || (this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Struggling || this.Yandere.Dragging || this.Yandere.Lewd || this.Yandere.Carrying || this.Yandere.Medusa || (this.Yandere.PickUp != null && this.Yandere.PickUp.BodyPart != null)) || (this.Yandere.Laughing && this.Yandere.LaughIntensity > 15f) || (this.Private && this.Yandere.Trespassing) || (this.Teacher && !this.WitnessedCorpse && this.Yandere.Trespassing) || (this.Teacher && this.Yandere.Rummaging) || (this.Teacher && this.Yandere.TheftTimer > 0f) || (this.StudentID == 1 && this.Yandere.NearSenpai && !this.Yandere.Talking) || this.Yandere.Eavesdropping || (!this.StudentManager.CombatMinigame.Practice && this.Yandere.DelinquentFighting && this.StudentManager.CombatMinigame.Path < 4))
+								if ((this.Yandere.Armed && this.Yandere.EquippedWeapon.Suspicious) || (!this.Teacher && this.StudentID > 1 && !this.Teacher && this.Yandere.PickUp != null && this.Yandere.PickUp.Suspicious) || (this.Teacher && this.Yandere.PickUp != null && this.Yandere.PickUp.Suspicious && !this.Yandere.PickUp.CleaningProduct) || (this.Yandere.Bloodiness > 0f && !this.Yandere.Paint) || (this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Struggling || this.Yandere.Dragging || this.Yandere.Lewd || this.Yandere.Carrying || this.Yandere.Medusa || (this.Yandere.PickUp != null && this.Yandere.PickUp.BodyPart != null)) || (this.Yandere.Laughing && this.Yandere.LaughIntensity > 15f) || (this.Private && this.Yandere.Trespassing) || (this.Teacher && !this.WitnessedCorpse && this.Yandere.Trespassing) || (this.Teacher && this.Yandere.Rummaging) || (this.Teacher && this.Yandere.TheftTimer > 0f) || (this.StudentID == 1 && this.Yandere.NearSenpai && !this.Yandere.Talking) || this.Yandere.Eavesdropping || (!this.StudentManager.CombatMinigame.Practice && this.Yandere.DelinquentFighting && this.StudentManager.CombatMinigame.Path < 4))
 								{
 									if (this.CanSeeObject(this.Yandere.gameObject, this.Yandere.HeadPosition))
 									{
@@ -7324,9 +7324,13 @@ public class StudentScript : MonoBehaviour
 											{
 												this.Witnessed = StudentWitnessType.CleaningItem;
 											}
-											else
+											else if (this.Teacher)
 											{
 												this.Witnessed = StudentWitnessType.Suspicious;
+											}
+											else
+											{
+												this.Witnessed = StudentWitnessType.Weapon;
 											}
 											this.RepLoss = 10f;
 											this.Concern = 5;
@@ -11698,20 +11702,29 @@ public class StudentScript : MonoBehaviour
 			this.WateringCan.transform.localPosition = new Vector3(0f, 0.0135f, -0.184f);
 			this.WateringCan.transform.localEulerAngles = new Vector3(0f, 90f, 30f);
 		}
-		else if (this.Club == ClubType.LightMusic && this.StudentID == 51)
+		else if (this.Club == ClubType.LightMusic)
 		{
-			if (this.InstrumentBag[this.ClubMemberID].transform.parent == null)
+			if (this.StudentID == 51)
 			{
-				this.Instruments[this.ClubMemberID].transform.parent = null;
-				this.Instruments[this.ClubMemberID].transform.position = new Vector3(-0.5f, 4.5f, 22.45666f);
-				this.Instruments[this.ClubMemberID].transform.eulerAngles = new Vector3(-15f, 0f, 0f);
-				this.Instruments[this.ClubMemberID].GetComponent<AudioSource>().playOnAwake = false;
-				this.Instruments[this.ClubMemberID].GetComponent<AudioSource>().Stop();
+				if (this.InstrumentBag[this.ClubMemberID].transform.parent == null)
+				{
+					this.Instruments[this.ClubMemberID].transform.parent = null;
+					this.Instruments[this.ClubMemberID].transform.position = new Vector3(-0.5f, 4.5f, 22.45666f);
+					this.Instruments[this.ClubMemberID].transform.eulerAngles = new Vector3(-15f, 0f, 0f);
+					this.Instruments[this.ClubMemberID].GetComponent<AudioSource>().playOnAwake = false;
+					this.Instruments[this.ClubMemberID].GetComponent<AudioSource>().Stop();
+				}
+				else
+				{
+					this.Instruments[this.ClubMemberID].SetActive(false);
+				}
 			}
 			else
 			{
 				this.Instruments[this.ClubMemberID].SetActive(false);
 			}
+			this.Drumsticks[0].SetActive(false);
+			this.Drumsticks[1].SetActive(false);
 		}
 		foreach (GameObject gameObject in this.ScienceProps)
 		{

@@ -2108,7 +2108,7 @@ public class StudentManagerScript : MonoBehaviour
 	public void CheckMusic()
 	{
 		int num = 0;
-		this.ID = 52;
+		this.ID = 51;
 		while (this.ID < 56)
 		{
 			if (this.Students[this.ID] != null && this.Students[this.ID].Routine && this.Students[this.ID].DistanceToDestination < 0.1f)
@@ -2117,7 +2117,7 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			this.ID++;
 		}
-		if (num == 4)
+		if (num == 5)
 		{
 			this.PracticeVocals.pitch = Time.timeScale;
 			this.PracticeMusic.pitch = Time.timeScale;

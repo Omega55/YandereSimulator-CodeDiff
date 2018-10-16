@@ -451,6 +451,16 @@ public class PoliceScript : MonoBehaviour
 				this.ResultsLabels[i].text = string.Empty;
 			}
 		}
+		else if (this.Yandere.ShoulderCamera.GoingToCounselor)
+		{
+			this.ResultsLabels[0].text = "While Yandere-chan was in the counselor's office,";
+			this.ResultsLabels[1].text = "a corpse was discovered on school grounds.";
+			this.ResultsLabels[2].text = "The school faculty was informed of the corpse,";
+			this.ResultsLabels[3].text = "and the police were called to the school.";
+			this.ResultsLabels[4].text = "No one is allowed to leave school until a police investigation has taken place.";
+			this.TeacherReport = true;
+			this.Show = true;
+		}
 		else if (this.Reputation.Reputation <= -100f)
 		{
 			this.ResultsLabels[0].text = "Unfortunately...";
