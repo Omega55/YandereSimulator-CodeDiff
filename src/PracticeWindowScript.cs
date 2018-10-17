@@ -195,6 +195,8 @@ public class PracticeWindowScript : MonoBehaviour
 					this.Timer += Time.deltaTime;
 					if (this.Timer > 1f)
 					{
+						this.Yandere.SetAnimationLayers();
+						this.StudentManager.UpdateAllAnimLayers();
 						this.StudentManager.Reputation.PendingRep += PlayerPrefs.GetFloat("TempReputation");
 						PlayerPrefs.SetFloat("TempReputation", 0f);
 						this.FadeIn = false;

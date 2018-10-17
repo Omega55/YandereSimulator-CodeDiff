@@ -250,6 +250,7 @@ public class ShoulderCameraScript : MonoBehaviour
 							this.Yandere.Noticed = false;
 							this.Yandere.Sanity = 100f;
 							Physics.SyncTransforms();
+							this.GoingToCounselor = false;
 							base.enabled = false;
 							this.NoticedTimer = 0f;
 							this.Phase = 1;

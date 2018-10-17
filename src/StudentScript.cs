@@ -878,6 +878,8 @@ public class StudentScript : MonoBehaviour
 
 	public string Hairstyle = string.Empty;
 
+	public string Suffix = string.Empty;
+
 	public string Name = string.Empty;
 
 	public string OriginalIdleAnim = string.Empty;
@@ -1273,9 +1275,6 @@ public class StudentScript : MonoBehaviour
 		if (!this.Started)
 		{
 			this.CharacterAnimation = this.Character.GetComponent<Animation>();
-			this.CharacterAnimation[this.LeanAnim].speed += (float)this.StudentID * 0.01f;
-			this.CharacterAnimation[this.ConfusedSitAnim].speed += (float)this.StudentID * 0.01f;
-			this.CharacterAnimation[this.WalkAnim].time = UnityEngine.Random.Range(0f, this.CharacterAnimation[this.WalkAnim].length);
 			this.Pathfinding.repathRate += (float)this.StudentID * 0.01f;
 			this.OriginalIdleAnim = this.IdleAnim;
 			if (!GameGlobals.LoveSick && SchoolAtmosphere.Type == SchoolAtmosphereType.Low && this.Club <= ClubType.Gaming)
@@ -1432,10 +1431,6 @@ public class StudentScript : MonoBehaviour
 				{
 					this.IdleAnim = this.PhoneAnims[0];
 					this.BullyID = this.StudentID - 80;
-					if (this.BullyID > 1)
-					{
-						this.CharacterAnimation["f02_bullyLaugh_00"].speed = 0.9f + (float)this.BullyID * 0.1f;
-					}
 				}
 				if (TaskGlobals.GetTaskStatus(36) == 3 && !SchoolGlobals.ReactedToGameLeader)
 				{
@@ -1473,8 +1468,6 @@ public class StudentScript : MonoBehaviour
 				}
 				this.Drumsticks[0].SetActive(false);
 				this.Drumsticks[1].SetActive(false);
-				this.CharacterAnimation[this.StripAnim].speed = 1.5f;
-				this.CharacterAnimation[this.GameAnim].speed = 2f;
 				if (this.Club >= ClubType.Teacher)
 				{
 					this.BecomeTeacher();
@@ -1483,56 +1476,11 @@ public class StudentScript : MonoBehaviour
 				{
 					this.Cosmetic.CensorPanties();
 				}
-				this.CharacterAnimation["f02_topHalfTexting_00"].layer = 9;
-				this.CharacterAnimation.Play("f02_topHalfTexting_00");
-				this.CharacterAnimation["f02_topHalfTexting_00"].weight = 0f;
-				this.CharacterAnimation[this.CarryAnim].layer = 8;
-				this.CharacterAnimation.Play(this.CarryAnim);
-				this.CharacterAnimation[this.CarryAnim].weight = 0f;
-				this.CharacterAnimation[this.SocialSitAnim].layer = 7;
-				this.CharacterAnimation.Play(this.SocialSitAnim);
-				this.CharacterAnimation[this.SocialSitAnim].weight = 0f;
-				this.CharacterAnimation[this.ShyAnim].layer = 6;
-				this.CharacterAnimation.Play(this.ShyAnim);
-				this.CharacterAnimation[this.ShyAnim].weight = 0f;
-				this.CharacterAnimation[this.FistAnim].layer = 5;
-				this.CharacterAnimation[this.FistAnim].weight = 0f;
-				this.CharacterAnimation[this.WetAnim].layer = 4;
-				this.CharacterAnimation.Play(this.WetAnim);
-				this.CharacterAnimation[this.WetAnim].weight = 0f;
-				this.CharacterAnimation[this.BentoAnim].layer = 3;
-				this.CharacterAnimation.Play(this.BentoAnim);
-				this.CharacterAnimation[this.BentoAnim].weight = 0f;
-				this.CharacterAnimation[this.AngryFaceAnim].layer = 2;
-				this.CharacterAnimation.Play(this.AngryFaceAnim);
-				this.CharacterAnimation[this.AngryFaceAnim].weight = 0f;
-				this.CharacterAnimation["f02_wetIdle_00"].speed = 1.25f;
-				this.CharacterAnimation["f02_sleuthScan_00"].speed = 1.4f;
 				this.DisableEffects();
 			}
 			else
 			{
 				this.RandomCheerAnim = this.CheerAnims[UnityEngine.Random.Range(0, this.CheerAnims.Length)];
-				this.CharacterAnimation[this.ConfusedSitAnim].speed *= -1f;
-				this.CharacterAnimation[this.ToughFaceAnim].layer = 7;
-				this.CharacterAnimation.Play(this.ToughFaceAnim);
-				this.CharacterAnimation[this.ToughFaceAnim].weight = 0f;
-				this.CharacterAnimation[this.SocialSitAnim].layer = 6;
-				this.CharacterAnimation.Play(this.SocialSitAnim);
-				this.CharacterAnimation[this.SocialSitAnim].weight = 0f;
-				this.CharacterAnimation[this.CarryShoulderAnim].layer = 5;
-				this.CharacterAnimation.Play(this.CarryShoulderAnim);
-				this.CharacterAnimation[this.CarryShoulderAnim].weight = 0f;
-				this.CharacterAnimation["scaredFace_00"].layer = 4;
-				this.CharacterAnimation.Play("scaredFace_00");
-				this.CharacterAnimation["scaredFace_00"].weight = 0f;
-				this.CharacterAnimation[this.SadFaceAnim].layer = 3;
-				this.CharacterAnimation.Play(this.SadFaceAnim);
-				this.CharacterAnimation[this.SadFaceAnim].weight = 0f;
-				this.CharacterAnimation[this.AngryFaceAnim].layer = 2;
-				this.CharacterAnimation.Play(this.AngryFaceAnim);
-				this.CharacterAnimation[this.AngryFaceAnim].weight = 0f;
-				this.CharacterAnimation["sleuthScan_00"].speed = 1.4f;
 				this.DelinquentSpeechLines.Stop();
 				this.WeaponBag.SetActive(false);
 				this.Earpiece.SetActive(false);
@@ -1627,7 +1575,6 @@ public class StudentScript : MonoBehaviour
 				}
 				else if (this.StudentID == 36)
 				{
-					this.CharacterAnimation[this.ToughFaceAnim].weight = 1f;
 					if (TaskGlobals.GetTaskStatus(36) < 3)
 					{
 						this.IdleAnim = "slouchIdle_00";
@@ -1665,6 +1612,9 @@ public class StudentScript : MonoBehaviour
 						ScheduleBlock scheduleBlock11 = this.ScheduleBlocks[7];
 						scheduleBlock11.destination = "Sulk";
 						scheduleBlock11.action = "Sulk";
+						ScheduleBlock scheduleBlock12 = this.ScheduleBlocks[8];
+						scheduleBlock12.destination = "Sulk";
+						scheduleBlock12.action = "Sulk";
 					}
 				}
 				else if (this.StudentID == 56)
@@ -1706,7 +1656,6 @@ public class StudentScript : MonoBehaviour
 				}
 				else if (this.StudentID == 66)
 				{
-					this.CharacterAnimation[this.ToughFaceAnim].weight = 1f;
 					this.IdleAnim = "pose_03";
 					this.OriginalWalkAnim = "walkConfident_00";
 					this.WalkAnim = "walkConfident_00";
@@ -1766,29 +1715,29 @@ public class StudentScript : MonoBehaviour
 					}
 					if (!this.Grudge)
 					{
-						ScheduleBlock scheduleBlock12 = this.ScheduleBlocks[2];
-						scheduleBlock12.destination = "Sleuth";
-						scheduleBlock12.action = "Sleuth";
-						ScheduleBlock scheduleBlock13 = this.ScheduleBlocks[4];
+						ScheduleBlock scheduleBlock13 = this.ScheduleBlocks[2];
 						scheduleBlock13.destination = "Sleuth";
 						scheduleBlock13.action = "Sleuth";
-						ScheduleBlock scheduleBlock14 = this.ScheduleBlocks[7];
+						ScheduleBlock scheduleBlock14 = this.ScheduleBlocks[4];
 						scheduleBlock14.destination = "Sleuth";
 						scheduleBlock14.action = "Sleuth";
+						ScheduleBlock scheduleBlock15 = this.ScheduleBlocks[7];
+						scheduleBlock15.destination = "Sleuth";
+						scheduleBlock15.action = "Sleuth";
 					}
 					else
 					{
 						this.StalkTarget = this.Yandere.transform;
 						this.SleuthTarget = this.Yandere.transform;
-						ScheduleBlock scheduleBlock15 = this.ScheduleBlocks[2];
-						scheduleBlock15.destination = "Stalk";
-						scheduleBlock15.action = "Stalk";
-						ScheduleBlock scheduleBlock16 = this.ScheduleBlocks[4];
+						ScheduleBlock scheduleBlock16 = this.ScheduleBlocks[2];
 						scheduleBlock16.destination = "Stalk";
 						scheduleBlock16.action = "Stalk";
-						ScheduleBlock scheduleBlock17 = this.ScheduleBlocks[7];
+						ScheduleBlock scheduleBlock17 = this.ScheduleBlocks[4];
 						scheduleBlock17.destination = "Stalk";
 						scheduleBlock17.action = "Stalk";
+						ScheduleBlock scheduleBlock18 = this.ScheduleBlocks[7];
+						scheduleBlock18.destination = "Stalk";
+						scheduleBlock18.action = "Stalk";
 					}
 				}
 				else if (SchoolGlobals.SchoolAtmosphere <= 0.9f)
@@ -1796,7 +1745,6 @@ public class StudentScript : MonoBehaviour
 					this.WalkAnim = this.ParanoidWalkAnim;
 					this.CameraAnims = this.HeroAnims;
 				}
-				this.CharacterAnimation[this.WalkAnim].time = UnityEngine.Random.Range(0f, this.CharacterAnimation[this.WalkAnim].length);
 			}
 			if (!this.Slave)
 			{
@@ -1841,18 +1789,15 @@ public class StudentScript : MonoBehaviour
 						this.OriginalPersona = PersonaType.Heroic;
 						this.Persona = PersonaType.Heroic;
 					}
-					this.CharacterAnimation["walkTough_00"].time += (float)(this.StudentID - 76);
 					this.ScaredAnim = "delinquentCombatIdle_00";
 					this.LeanAnim = "delinquentConcern_00";
 					this.ShoveAnim = "pushTough_00";
 					this.WalkAnim = "walkTough_00";
 					this.IdleAnim = "idleTough_00";
-					this.CharacterAnimation[this.LeanAnim].speed = 0.5f;
 					this.SpeechLines = this.DelinquentSpeechLines;
 					this.Pathfinding.canSearch = false;
 					this.Pathfinding.canMove = false;
 					this.Paired = true;
-					this.CharacterAnimation[this.WalkAnim].time = UnityEngine.Random.Range(0f, this.CharacterAnimation[this.WalkAnim].length);
 				}
 			}
 			if (this.StudentID == this.StudentManager.RivalID)
@@ -1860,8 +1805,8 @@ public class StudentScript : MonoBehaviour
 				this.RivalPrefix = "Rival ";
 				if (DateGlobals.Weekday == DayOfWeek.Friday)
 				{
-					ScheduleBlock scheduleBlock18 = this.ScheduleBlocks[7];
-					scheduleBlock18.time = 17f;
+					ScheduleBlock scheduleBlock19 = this.ScheduleBlocks[7];
+					scheduleBlock19.time = 17f;
 				}
 			}
 			if (this.Club == ClubType.None)
@@ -1911,11 +1856,9 @@ public class StudentScript : MonoBehaviour
 			{
 				if (this.Club == ClubType.Gaming)
 				{
-					this.CharacterAnimation[this.VictoryAnim].speed = 0.866666f;
 					this.MiyukiGameScreen.SetActive(true);
 					if (this.StudentID > 36)
 					{
-						this.CharacterAnimation[this.VictoryAnim].speed -= 0.1f * (float)(this.StudentID - 36);
 						this.ClubAnim = this.GameAnim;
 					}
 					this.ActivityAnim = this.GameAnim;
@@ -2165,32 +2108,29 @@ public class StudentScript : MonoBehaviour
 				this.Armband.SetActive(true);
 				this.Indoors = true;
 				this.Spawned = true;
-				string str = string.Empty;
 				if (this.StudentID == 86)
 				{
-					str = "Strict";
+					this.Suffix = "Strict";
 				}
 				else if (this.StudentID == 87)
 				{
-					str = "Casual";
+					this.Suffix = "Casual";
 				}
 				else if (this.StudentID == 88)
 				{
-					str = "Grace";
+					this.Suffix = "Grace";
 				}
 				else if (this.StudentID == 89)
 				{
-					str = "Edgy";
+					this.Suffix = "Edgy";
 				}
-				this.CharacterAnimation["f02_faceCouncil" + str + "_00"].layer = 10;
-				this.CharacterAnimation.Play("f02_faceCouncil" + str + "_00");
-				this.IdleAnim = "f02_idleCouncil" + str + "_00";
-				this.WalkAnim = "f02_walkCouncil" + str + "_00";
-				this.ShoveAnim = "f02_pushCouncil" + str + "_00";
-				this.PatrolAnim = "f02_scanCouncil" + str + "_00";
-				this.RelaxAnim = "f02_relaxCouncil" + str + "_00";
-				this.SprayAnim = "f02_sprayCouncil" + str + "_00";
-				this.BreakUpAnim = "f02_stopCouncil" + str + "_00";
+				this.IdleAnim = "f02_idleCouncil" + this.Suffix + "_00";
+				this.WalkAnim = "f02_walkCouncil" + this.Suffix + "_00";
+				this.ShoveAnim = "f02_pushCouncil" + this.Suffix + "_00";
+				this.PatrolAnim = "f02_scanCouncil" + this.Suffix + "_00";
+				this.RelaxAnim = "f02_relaxCouncil" + this.Suffix + "_00";
+				this.SprayAnim = "f02_sprayCouncil" + this.Suffix + "_00";
+				this.BreakUpAnim = "f02_stopCouncil" + this.Suffix + "_00";
 				this.ScaredAnim = this.ReadyToFightAnim;
 				this.ParanoidAnim = this.GuardAnim;
 				this.CameraAnims[1] = this.IdleAnim;
@@ -2202,15 +2142,15 @@ public class StudentScript : MonoBehaviour
 			{
 				if (this.StudentID < 86)
 				{
-					ScheduleBlock scheduleBlock19 = this.ScheduleBlocks[6];
-					scheduleBlock19.destination = "Meeting";
-					scheduleBlock19.action = "Meeting";
+					ScheduleBlock scheduleBlock20 = this.ScheduleBlocks[6];
+					scheduleBlock20.destination = "Meeting";
+					scheduleBlock20.action = "Meeting";
 				}
 				else
 				{
-					ScheduleBlock scheduleBlock20 = this.ScheduleBlocks[5];
-					scheduleBlock20.destination = "Meeting";
-					scheduleBlock20.action = "Meeting";
+					ScheduleBlock scheduleBlock21 = this.ScheduleBlocks[5];
+					scheduleBlock21.destination = "Meeting";
+					scheduleBlock21.action = "Meeting";
 				}
 				this.GetDestinations();
 			}
@@ -2222,6 +2162,7 @@ public class StudentScript : MonoBehaviour
 				this.Actions[4] = StudentActionType.Shamed;
 			}
 		}
+		this.UpdateAnimLayers();
 		if (this.StudentID == 11 || this.StudentID == 6)
 		{
 			UnityEngine.Object.Destroy(base.gameObject);
@@ -2964,6 +2905,8 @@ public class StudentScript : MonoBehaviour
 						{
 							this.Instruments[this.ClubMemberID].SetActive(false);
 						}
+						this.Drumsticks[0].SetActive(false);
+						this.Drumsticks[1].SetActive(false);
 					}
 					if (this.Phase == 8 && this.StudentID == 36)
 					{
@@ -3729,7 +3672,7 @@ public class StudentScript : MonoBehaviour
 								}
 								else if (this.Club == ClubType.LightMusic)
 								{
-									if (this.Clock.Period < 6)
+									if ((double)this.Clock.HourTime < 16.9)
 									{
 										this.Instruments[this.ClubMemberID].SetActive(true);
 										this.CharacterAnimation.CrossFade(this.ClubAnim);
@@ -12621,6 +12564,104 @@ public class StudentScript : MonoBehaviour
 			{
 				gameObject2.SetActive(false);
 			}
+		}
+	}
+
+	public void UpdateAnimLayers()
+	{
+		this.CharacterAnimation[this.LeanAnim].speed += (float)this.StudentID * 0.01f;
+		this.CharacterAnimation[this.ConfusedSitAnim].speed += (float)this.StudentID * 0.01f;
+		this.CharacterAnimation[this.WalkAnim].time = UnityEngine.Random.Range(0f, this.CharacterAnimation[this.WalkAnim].length);
+		if (!this.Male)
+		{
+			this.CharacterAnimation[this.StripAnim].speed = 1.5f;
+			this.CharacterAnimation[this.GameAnim].speed = 2f;
+			this.CharacterAnimation["f02_topHalfTexting_00"].layer = 9;
+			this.CharacterAnimation.Play("f02_topHalfTexting_00");
+			this.CharacterAnimation["f02_topHalfTexting_00"].weight = 0f;
+			this.CharacterAnimation[this.CarryAnim].layer = 8;
+			this.CharacterAnimation.Play(this.CarryAnim);
+			this.CharacterAnimation[this.CarryAnim].weight = 0f;
+			this.CharacterAnimation[this.SocialSitAnim].layer = 7;
+			this.CharacterAnimation.Play(this.SocialSitAnim);
+			this.CharacterAnimation[this.SocialSitAnim].weight = 0f;
+			this.CharacterAnimation[this.ShyAnim].layer = 6;
+			this.CharacterAnimation.Play(this.ShyAnim);
+			this.CharacterAnimation[this.ShyAnim].weight = 0f;
+			this.CharacterAnimation[this.FistAnim].layer = 5;
+			this.CharacterAnimation[this.FistAnim].weight = 0f;
+			this.CharacterAnimation[this.WetAnim].layer = 4;
+			this.CharacterAnimation.Play(this.WetAnim);
+			this.CharacterAnimation[this.WetAnim].weight = 0f;
+			this.CharacterAnimation[this.BentoAnim].layer = 3;
+			this.CharacterAnimation.Play(this.BentoAnim);
+			this.CharacterAnimation[this.BentoAnim].weight = 0f;
+			this.CharacterAnimation[this.AngryFaceAnim].layer = 2;
+			this.CharacterAnimation.Play(this.AngryFaceAnim);
+			this.CharacterAnimation[this.AngryFaceAnim].weight = 0f;
+			this.CharacterAnimation["f02_wetIdle_00"].speed = 1.25f;
+			this.CharacterAnimation["f02_sleuthScan_00"].speed = 1.4f;
+		}
+		else
+		{
+			this.CharacterAnimation[this.ConfusedSitAnim].speed *= -1f;
+			this.CharacterAnimation[this.ToughFaceAnim].layer = 7;
+			this.CharacterAnimation.Play(this.ToughFaceAnim);
+			this.CharacterAnimation[this.ToughFaceAnim].weight = 0f;
+			this.CharacterAnimation[this.SocialSitAnim].layer = 6;
+			this.CharacterAnimation.Play(this.SocialSitAnim);
+			this.CharacterAnimation[this.SocialSitAnim].weight = 0f;
+			this.CharacterAnimation[this.CarryShoulderAnim].layer = 5;
+			this.CharacterAnimation.Play(this.CarryShoulderAnim);
+			this.CharacterAnimation[this.CarryShoulderAnim].weight = 0f;
+			this.CharacterAnimation["scaredFace_00"].layer = 4;
+			this.CharacterAnimation.Play("scaredFace_00");
+			this.CharacterAnimation["scaredFace_00"].weight = 0f;
+			this.CharacterAnimation[this.SadFaceAnim].layer = 3;
+			this.CharacterAnimation.Play(this.SadFaceAnim);
+			this.CharacterAnimation[this.SadFaceAnim].weight = 0f;
+			this.CharacterAnimation[this.AngryFaceAnim].layer = 2;
+			this.CharacterAnimation.Play(this.AngryFaceAnim);
+			this.CharacterAnimation[this.AngryFaceAnim].weight = 0f;
+			this.CharacterAnimation["sleuthScan_00"].speed = 1.4f;
+		}
+		if (this.Persona == PersonaType.Sleuth)
+		{
+			this.CharacterAnimation[this.WalkAnim].time = UnityEngine.Random.Range(0f, this.CharacterAnimation[this.WalkAnim].length);
+		}
+		if (this.Club == ClubType.Bully)
+		{
+			if (!StudentGlobals.GetStudentBroken(this.StudentID) && this.BullyID > 1)
+			{
+				this.CharacterAnimation["f02_bullyLaugh_00"].speed = 0.9f + (float)this.BullyID * 0.1f;
+			}
+		}
+		else if (this.Club == ClubType.Delinquent)
+		{
+			this.CharacterAnimation[this.WalkAnim].time = UnityEngine.Random.Range(0f, this.CharacterAnimation[this.WalkAnim].length);
+			this.CharacterAnimation[this.LeanAnim].speed = 0.5f;
+		}
+		else if (this.Club == ClubType.Council)
+		{
+			this.CharacterAnimation["f02_faceCouncil" + this.Suffix + "_00"].layer = 10;
+			this.CharacterAnimation.Play("f02_faceCouncil" + this.Suffix + "_00");
+		}
+		else if (this.Club == ClubType.Gaming)
+		{
+			this.CharacterAnimation[this.VictoryAnim].speed -= 0.1f * (float)(this.StudentID - 36);
+			this.CharacterAnimation[this.VictoryAnim].speed = 0.866666f;
+		}
+		else if (this.Club == ClubType.Cooking && this.ClubActivityPhase > 1)
+		{
+			this.WalkAnim = this.PlateWalkAnim;
+		}
+		if (this.StudentID == 36)
+		{
+			this.CharacterAnimation[this.ToughFaceAnim].weight = 1f;
+		}
+		else if (this.StudentID == 66)
+		{
+			this.CharacterAnimation[this.ToughFaceAnim].weight = 1f;
 		}
 	}
 }

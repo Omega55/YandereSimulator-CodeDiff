@@ -89,6 +89,8 @@ public class NemesisScript : MonoBehaviour
 		this.Student.CharacterAnimation = this.Student.Character.GetComponent<Animation>();
 		this.Student.Ragdoll.Nemesis = true;
 		this.Student.Yandere = this.Yandere;
+		this.Student.IdleAnim = "f02_newIdle_00";
+		this.Student.WalkAnim = "f02_newWalk_00";
 		this.Student.ShoeRemoval.RightCasualShoe.gameObject.SetActive(false);
 		this.Student.ShoeRemoval.LeftCasualShoe.gameObject.SetActive(false);
 		if (this.Difficulty < 3)

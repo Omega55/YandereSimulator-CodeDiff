@@ -634,13 +634,13 @@ public class StudentManagerScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (!this.Yandere.ShoulderCamera.Counselor.Interrogating)
-		{
-			Cursor.lockState = CursorLockMode.Locked;
-			Cursor.visible = false;
-		}
 		if (!this.TakingPortraits)
 		{
+			if (!this.Yandere.ShoulderCamera.Counselor.Interrogating)
+			{
+				Cursor.lockState = CursorLockMode.Locked;
+				Cursor.visible = false;
+			}
 			this.Frame++;
 			if (!this.FirstUpdate)
 			{
@@ -675,6 +675,10 @@ public class StudentManagerScript : MonoBehaviour
 					this.TaskManager.UpdateTaskStatus();
 				}
 				this.Yandere.GloveAttacher.newRenderer.enabled = false;
+			}
+			if ((double)this.Clock.HourTime > 16.9)
+			{
+				this.CheckMusic();
 			}
 		}
 		else if (this.NPCsSpawned < this.StudentsTotal + this.TeachersTotal)
@@ -857,10 +861,6 @@ public class StudentManagerScript : MonoBehaviour
 		if (Input.GetKeyDown("space"))
 		{
 			this.DetermineVictim();
-		}
-		if (this.Clock.Period == 6)
-		{
-			this.CheckMusic();
 		}
 	}
 
@@ -1955,29 +1955,30 @@ public class StudentManagerScript : MonoBehaviour
 			else
 			{
 				studentScript.gameObject.SetActive(true);
-				if (studentScript.Club == ClubType.Council)
-				{
-					string str = string.Empty;
-					if (studentScript.StudentID == 86)
-					{
-						str = "Strict";
-					}
-					else if (studentScript.StudentID == 87)
-					{
-						str = "Casual";
-					}
-					else if (studentScript.StudentID == 88)
-					{
-						str = "Grace";
-					}
-					else if (studentScript.StudentID == 89)
-					{
-						str = "Edgy";
-					}
-					studentScript.CharacterAnimation["f02_faceCouncil" + str + "_00"].layer = 10;
-					studentScript.CharacterAnimation.Play("f02_faceCouncil" + str + "_00");
-				}
+				this.UpdateOneAnimLayer(DisableID);
+				this.Students[DisableID].ReadPhase = 0;
 			}
+		}
+	}
+
+	public void UpdateOneAnimLayer(int DisableID)
+	{
+		this.Students[DisableID].UpdateAnimLayers();
+		this.Students[DisableID].ReadPhase = 0;
+	}
+
+	public void UpdateAllAnimLayers()
+	{
+		this.ID = 1;
+		while (this.ID < this.Students.Length)
+		{
+			StudentScript studentScript = this.Students[this.ID];
+			if (studentScript != null)
+			{
+				studentScript.UpdateAnimLayers();
+				studentScript.ReadPhase = 0;
+			}
+			this.ID++;
 		}
 	}
 

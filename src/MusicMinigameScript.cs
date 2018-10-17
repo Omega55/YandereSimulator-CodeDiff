@@ -721,6 +721,10 @@ public class MusicMinigameScript : MonoBehaviour
 		{
 			PlayerPrefs.SetFloat("TempReputation", this.StartRep + (this.Health - 100f));
 		}
+		else
+		{
+			PlayerPrefs.SetFloat("TempReputation", 0f);
+		}
 		foreach (GameObject gameObject in SceneManager.GetActiveScene().GetRootGameObjects())
 		{
 			gameObject.SetActive(true);
