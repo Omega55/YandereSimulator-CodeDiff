@@ -18,6 +18,8 @@ public class EndOfDayScript : MonoBehaviour
 
 	public IncineratorScript Incinerator;
 
+	public VoidGoddessScript VoidGoddess;
+
 	public WoodChipperScript WoodChipper;
 
 	public ReputationScript Reputation;
@@ -34,11 +36,19 @@ public class EndOfDayScript : MonoBehaviour
 
 	public RagdollScript Corpse;
 
+	public StudentScript Patsy;
+
 	public PoliceScript Police;
+
+	public Transform EODCamera;
+
+	public ClockScript Clock;
 
 	public JsonScript JSON;
 
 	public GardenHoleScript[] GardenHoles;
+
+	public Animation[] CopAnimation;
 
 	public GameObject MainCamera;
 
@@ -90,12 +100,46 @@ public class EndOfDayScript : MonoBehaviour
 
 	private SaveFile saveFile;
 
+	public GameObject Cops;
+
+	public GameObject SearchingCop;
+
+	public GameObject MurderScene;
+
+	public GameObject ShruggingCops;
+
+	public GameObject TabletCop;
+
+	public GameObject SecuritySystemScene;
+
+	public GameObject EODTranqCase;
+
+	public GameObject GaudyRing;
+
+	public GameObject AnswerSheet;
+
+	public GameObject Fence;
+
+	public GameObject SCP;
+
+	public GameObject ArrestingCops;
+
+	public Renderer TabletPortrait;
+
 	public void Start()
 	{
 		this.EndOfDayDarkness.color = new Color(this.EndOfDayDarkness.color.r, this.EndOfDayDarkness.color.g, this.EndOfDayDarkness.color.b, 1f);
 		this.PreviouslyActivated = true;
 		base.GetComponent<AudioSource>().volume = 0f;
+		this.Clock.enabled = false;
+		this.Clock.MainLight.color = new Color(1f, 1f, 1f, 1f);
+		RenderSettings.ambientLight = new Color(0.75f, 0.75f, 0.75f, 1f);
+		RenderSettings.skybox.SetColor("_Tint", new Color(0.5f, 0.5f, 0.5f));
 		this.UpdateScene();
+		this.CopAnimation[5]["idleShort_00"].speed = UnityEngine.Random.Range(0.9f, 1.1f);
+		this.CopAnimation[6]["idleShort_00"].speed = UnityEngine.Random.Range(0.9f, 1.1f);
+		this.CopAnimation[7]["idleShort_00"].speed = UnityEngine.Random.Range(0.9f, 1.1f);
+		Time.timeScale = 1f;
 	}
 
 	private void Update()
@@ -106,9 +150,30 @@ public class EndOfDayScript : MonoBehaviour
 		}
 		if (this.Darken)
 		{
-			this.EndOfDayDarkness.color = new Color(this.EndOfDayDarkness.color.r, this.EndOfDayDarkness.color.g, this.EndOfDayDarkness.color.b, Mathf.MoveTowards(this.EndOfDayDarkness.color.a, 1f, Time.deltaTime));
+			this.EndOfDayDarkness.color = new Color(this.EndOfDayDarkness.color.r, this.EndOfDayDarkness.color.g, this.EndOfDayDarkness.color.b, Mathf.MoveTowards(this.EndOfDayDarkness.color.a, 1f, Time.deltaTime * 2f));
 			if (this.EndOfDayDarkness.color.a == 1f)
 			{
+				this.Yandere.transform.parent = null;
+				this.Yandere.transform.position = new Vector3(0f, 0f, -75f);
+				this.EODCamera.localPosition = new Vector3(1f, 1.8f, -2.5f);
+				this.EODCamera.localEulerAngles = new Vector3(22.5f, -22.5f, 0f);
+				this.SearchingCop.SetActive(false);
+				this.MurderScene.SetActive(false);
+				this.Cops.SetActive(false);
+				this.TabletCop.SetActive(false);
+				this.ShruggingCops.SetActive(false);
+				this.SecuritySystemScene.SetActive(false);
+				this.EODTranqCase.SetActive(false);
+				this.GaudyRing.SetActive(false);
+				this.AnswerSheet.SetActive(false);
+				this.Fence.SetActive(false);
+				this.SCP.SetActive(false);
+				this.ArrestingCops.SetActive(false);
+				this.Yandere.Senpai.gameObject.SetActive(false);
+				if (this.Patsy != null)
+				{
+					this.Patsy.gameObject.SetActive(false);
+				}
 				if (!this.GameOver)
 				{
 					this.Darken = false;
@@ -128,14 +193,23 @@ public class EndOfDayScript : MonoBehaviour
 		}
 		else
 		{
-			this.EndOfDayDarkness.color = new Color(this.EndOfDayDarkness.color.r, this.EndOfDayDarkness.color.g, this.EndOfDayDarkness.color.b, Mathf.MoveTowards(this.EndOfDayDarkness.color.a, 0f, Time.deltaTime));
+			this.EndOfDayDarkness.color = new Color(this.EndOfDayDarkness.color.r, this.EndOfDayDarkness.color.g, this.EndOfDayDarkness.color.b, Mathf.MoveTowards(this.EndOfDayDarkness.color.a, 0f, Time.deltaTime * 2f));
 		}
 		AudioSource component = base.GetComponent<AudioSource>();
-		component.volume = Mathf.MoveTowards(component.volume, 1f, Time.deltaTime);
+		component.volume = Mathf.MoveTowards(component.volume, 1f, Time.deltaTime * 2f);
 	}
 
 	public void UpdateScene()
 	{
+		this.ID = 0;
+		while (this.ID < this.WeaponManager.Weapons.Length)
+		{
+			if (this.WeaponManager.Weapons[this.ID] != null)
+			{
+				this.WeaponManager.Weapons[this.ID].gameObject.SetActive(false);
+			}
+			this.ID++;
+		}
 		if (this.PoliceArrived)
 		{
 			if (Input.GetKeyDown(KeyCode.Backspace))
@@ -144,6 +218,10 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			if (this.Phase == 1)
 			{
+				this.CopAnimation[1]["walk_00"].speed = UnityEngine.Random.Range(0.9f, 1.1f);
+				this.CopAnimation[2]["walk_00"].speed = UnityEngine.Random.Range(0.9f, 1.1f);
+				this.CopAnimation[3]["walk_00"].speed = UnityEngine.Random.Range(0.9f, 1.1f);
+				this.Cops.SetActive(true);
 				if (this.Police.PoisonScene)
 				{
 					this.Label.text = "The police and the paramedics arrive at school.";
@@ -181,6 +259,7 @@ public class EndOfDayScript : MonoBehaviour
 			{
 				if (this.Police.Corpses == 0)
 				{
+					this.SearchingCop.SetActive(true);
 					if (!this.Police.PoisonScene && !this.Police.SuicideScene)
 					{
 						this.Label.text = "The police are unable to locate any corpses on school grounds.";
@@ -194,6 +273,7 @@ public class EndOfDayScript : MonoBehaviour
 				}
 				else
 				{
+					this.MurderScene.SetActive(true);
 					List<string> list = new List<string>();
 					foreach (RagdollScript ragdollScript in this.Police.CorpseList)
 					{
@@ -223,13 +303,7 @@ public class EndOfDayScript : MonoBehaviour
 					}
 					else
 					{
-						StringBuilder stringBuilder = new StringBuilder();
-						for (int j = 0; j < list.Count - 1; j++)
-						{
-							stringBuilder.Append(list[j] + ", ");
-						}
-						stringBuilder.Append("and " + list[list.Count - 1] + ".");
-						this.Label.text = text + stringBuilder.ToString();
+						this.Label.text = "The police discover multiple corpses on school grounds.";
 					}
 					this.Phase++;
 				}
@@ -239,6 +313,7 @@ public class EndOfDayScript : MonoBehaviour
 				this.WeaponManager.CheckWeapons();
 				if (this.WeaponManager.MurderWeapons == 0)
 				{
+					this.ShruggingCops.SetActive(true);
 					if (this.Weapons == 0)
 					{
 						this.Label.text = "The police are unable to locate any murder weapons.";
@@ -261,9 +336,17 @@ public class EndOfDayScript : MonoBehaviour
 							WeaponScript weaponScript = this.WeaponManager.Weapons[this.ID];
 							if (weaponScript != null && weaponScript.Blood.enabled)
 							{
-								weaponScript.Blood.enabled = false;
-								this.MurderWeapon = weaponScript;
-								this.WeaponID = this.ID;
+								if (!weaponScript.AlreadyExamined)
+								{
+									weaponScript.gameObject.SetActive(true);
+									weaponScript.AlreadyExamined = true;
+									this.MurderWeapon = weaponScript;
+									this.WeaponID = this.ID;
+								}
+								else
+								{
+									weaponScript.gameObject.SetActive(false);
+								}
 							}
 						}
 						this.ID++;
@@ -300,33 +383,45 @@ public class EndOfDayScript : MonoBehaviour
 					}
 					else
 					{
-						StringBuilder stringBuilder2 = new StringBuilder();
-						for (int k = 0; k < list2.Count - 1; k++)
+						StringBuilder stringBuilder = new StringBuilder();
+						for (int j = 0; j < list2.Count - 1; j++)
 						{
-							stringBuilder2.Append(list2[k] + ", ");
+							stringBuilder.Append(list2[j] + ", ");
 						}
-						stringBuilder2.Append("and " + list2[list2.Count - 1] + ".");
-						this.Label.text = text2 + stringBuilder2.ToString();
+						stringBuilder.Append("and " + list2[list2.Count - 1] + ".");
+						this.Label.text = text2 + stringBuilder.ToString();
 					}
 					this.Weapons++;
 					this.Phase++;
+					this.MurderWeapon.transform.parent = base.transform;
+					this.MurderWeapon.transform.localPosition = new Vector3(0.6f, 1.4f, -1.5f);
+					this.MurderWeapon.transform.localEulerAngles = new Vector3(-45f, 90f, -90f);
+					this.MurderWeapon.MyRigidbody.useGravity = false;
+					this.MurderWeapon.Rotate = true;
 				}
 			}
 			else if (this.Phase == 4)
 			{
 				if (this.MurderWeapon.FingerprintID == 0)
 				{
+					this.ShruggingCops.SetActive(true);
 					this.Label.text = "The police find no fingerprints on the weapon.";
 					this.Phase = 3;
 				}
 				else if (this.MurderWeapon.FingerprintID == 100)
 				{
+					this.TeleportYandere();
+					this.Yandere.CharacterAnimation.Play("f02_disappointed_00");
 					this.Label.text = "The police find Yandere-chan's fingerprints on the weapon.";
 					this.Phase = 100;
 				}
 				else
 				{
-					this.Label.text = "The police find the fingerprints of " + this.JSON.Students[this.WeaponManager.Weapons[this.WeaponID].FingerprintID].Name + " on the weapon.";
+					int fingerprintID = this.WeaponManager.Weapons[this.WeaponID].FingerprintID;
+					this.TabletCop.SetActive(true);
+					this.CopAnimation[4]["scienceTablet_00"].speed = 0f;
+					this.TabletPortrait.material.mainTexture = this.VoidGoddess.Portraits[fingerprintID].mainTexture;
+					this.Label.text = "The police find the fingerprints of " + this.JSON.Students[fingerprintID].Name + " on the weapon.";
 					this.Phase = 101;
 				}
 			}
@@ -334,6 +429,7 @@ public class EndOfDayScript : MonoBehaviour
 			{
 				if (SchoolGlobals.HighSecurity)
 				{
+					this.SecuritySystemScene.SetActive(true);
 					if (!this.SecuritySystem.Evidence)
 					{
 						this.Label.text = "The police investigate the security camera recordings, but cannot find anything incriminating in the footage.";
@@ -363,6 +459,8 @@ public class EndOfDayScript : MonoBehaviour
 				{
 					if (this.Yandere.Bloodiness > 0f || (this.Yandere.Gloved && this.Yandere.Gloves.Blood.enabled))
 					{
+						this.TeleportYandere();
+						this.Yandere.CharacterAnimation.Play("f02_disappointed_00");
 						if (this.Arrests == 0)
 						{
 							this.Label.text = "The police notice that Yandere-chan's clothing is bloody. They confirm that the blood is not hers. Yandere-chan is unable to convince the police that she did not commit murder.";
@@ -383,11 +481,16 @@ public class EndOfDayScript : MonoBehaviour
 					}
 					else if (this.Police.BloodyClothing > 0)
 					{
+						this.TeleportYandere();
+						this.Yandere.CharacterAnimation.Play("f02_disappointed_00");
 						this.Label.text = "The police find bloody clothing that has traces of Yandere-chan's DNA. Yandere-chan is unable to convince the police that she did not commit murder.";
 						this.Phase = 100;
 					}
 					else
 					{
+						this.TeleportYandere();
+						this.Yandere.CharacterAnimation["YandereConfessionRejected"].time = 4f;
+						this.Yandere.CharacterAnimation.Play("YandereConfessionRejected");
 						this.Label.text = "The police question all students in the school, including Yandere-chan. The police are unable to link Yandere-chan to any crimes.";
 						if (!this.TranqCase.Occupied)
 						{
@@ -403,19 +506,25 @@ public class EndOfDayScript : MonoBehaviour
 						}
 					}
 				}
-				else if (this.Yandere.Bloodiness == 0f)
-				{
-					this.Label.text = "The police question Yandere-chan, who exhibits extremely unusual behavior. The police decide to investigate Yandere-chan further, and eventually learn of her crimes.";
-					this.Phase = 100;
-				}
 				else
 				{
-					this.Label.text = "The police notice that Yandere-chan is covered in blood and exhibiting extremely unusual behavior. The police decide to investigate Yandere-chan further, and eventually learn of her crimes.";
-					this.Phase = 100;
+					this.TeleportYandere();
+					this.Yandere.CharacterAnimation.Play("f02_disappointed_00");
+					if (this.Yandere.Bloodiness == 0f)
+					{
+						this.Label.text = "The police question Yandere-chan, who exhibits extremely unusual behavior. The police decide to investigate Yandere-chan further, and eventually learn of her crimes.";
+						this.Phase = 100;
+					}
+					else
+					{
+						this.Label.text = "The police notice that Yandere-chan is covered in blood and exhibiting extremely unusual behavior. The police decide to investigate Yandere-chan further, and eventually learn of her crimes.";
+						this.Phase = 100;
+					}
 				}
 			}
 			else if (this.Phase == 7)
 			{
+				this.EODTranqCase.SetActive(true);
 				this.Label.text = "The police discover " + this.JSON.Students[this.TranqCase.VictimID].Name + " inside of a musical instrument case. However, she is unable to recall how she got inside of the case. The police are unable to determine what happened.";
 				StudentGlobals.SetStudentKidnapped(this.TranqCase.VictimID, false);
 				StudentGlobals.SetStudentMissing(this.TranqCase.VictimID, false);
@@ -428,6 +537,7 @@ public class EndOfDayScript : MonoBehaviour
 			{
 				if (this.Police.MaskReported)
 				{
+					this.ShruggingCops.SetActive(true);
 					GameGlobals.MasksBanned = true;
 					if (this.SecuritySystem.Masked)
 					{
@@ -448,6 +558,8 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 9)
 			{
+				this.Cops.transform.eulerAngles = new Vector3(0f, 180f, 0f);
+				this.Cops.SetActive(true);
 				if (this.Arrests == 0)
 				{
 					if (this.DeadPerps == 0)
@@ -469,11 +581,25 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 10)
 			{
+				this.Yandere.Senpai.parent = base.transform;
+				this.Yandere.Senpai.gameObject.SetActive(true);
+				this.Yandere.Senpai.localPosition = new Vector3(0f, 0f, 0f);
+				this.Yandere.Senpai.localEulerAngles = new Vector3(0f, 180f, 0f);
+				this.Yandere.Senpai.GetComponent<StudentScript>().CharacterAnimation.Play(this.Yandere.Senpai.GetComponent<StudentScript>().WalkAnim);
+				this.Yandere.LookAt.enabled = true;
+				this.Yandere.MyController.enabled = false;
+				this.Yandere.transform.parent = base.transform;
+				this.Yandere.transform.localPosition = new Vector3(2.5f, 0f, 2.5f);
+				this.Yandere.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
+				this.Yandere.CharacterAnimation.Play(this.Yandere.WalkAnim);
+				Physics.SyncTransforms();
 				this.Label.text = "Yandere-chan stalks Senpai until he has returned home safely, and then returns to her own home.";
 				this.Phase++;
 			}
 			else if (this.Phase == 11)
 			{
+				this.EODCamera.position = new Vector3(-21.25f, 1.95f, 8.5f);
+				this.EODCamera.eulerAngles = new Vector3(0f, -22.5f, 0f);
 				if (!StudentGlobals.GetStudentDying(30) && !StudentGlobals.GetStudentDead(30) && !StudentGlobals.GetStudentArrested(30))
 				{
 					if (this.Counselor.LectureID > 0)
@@ -498,11 +624,13 @@ public class EndOfDayScript : MonoBehaviour
 				Debug.Log("Phase 12.");
 				if (SchemeGlobals.GetSchemeStage(2) == 3 && !StudentGlobals.GetStudentDying(30) && !StudentGlobals.GetStudentDead(30) && !StudentGlobals.GetStudentArrested(30))
 				{
+					this.GaudyRing.SetActive(true);
 					this.Label.text = "Kokona discovers Sakyu's ring inside of her book bag. She returns the ring to Sakyu, who decides to never let it out of her sight again.";
 					SchemeGlobals.SetSchemeStage(2, 100);
 				}
 				else if (SchemeGlobals.GetSchemeStage(5) > 1 && SchemeGlobals.GetSchemeStage(5) < 5)
 				{
+					this.AnswerSheet.SetActive(true);
 					this.Label.text = "A faculty member discovers that an answer sheet for an upcoming test is missing. She changes all of the questions for the test and keeps the new answer sheet with her at all times.";
 					SchemeGlobals.SetSchemeStage(5, 100);
 				}
@@ -525,6 +653,9 @@ public class EndOfDayScript : MonoBehaviour
 						this.ClubManager.CheckClub(this.ClubArray[this.ClubID]);
 						if (this.ClubManager.ClubMembers < 5)
 						{
+							this.EODCamera.position = this.ClubManager.ClubVantages[this.ClubID].position;
+							this.EODCamera.eulerAngles = this.ClubManager.ClubVantages[this.ClubID].eulerAngles;
+							this.EODCamera.Translate(Vector3.forward * 0.3f, Space.Self);
 							ClubGlobals.SetClubClosed(this.ClubArray[this.ClubID], true);
 							this.Label.text = "The " + this.ClubNames[this.ClubID].ToString() + " no longer has enough members to remain operational. The school forces the club to disband.";
 							this.ClubClosed = true;
@@ -535,6 +666,8 @@ public class EndOfDayScript : MonoBehaviour
 						}
 						if (this.ClubManager.LeaderMissing)
 						{
+							this.EODCamera.position = this.ClubManager.ClubVantages[this.ClubID].position;
+							this.EODCamera.eulerAngles = this.ClubManager.ClubVantages[this.ClubID].eulerAngles;
 							ClubGlobals.SetClubClosed(this.ClubArray[this.ClubID], true);
 							this.Label.text = string.Concat(new string[]
 							{
@@ -552,6 +685,8 @@ public class EndOfDayScript : MonoBehaviour
 						}
 						else if (this.ClubManager.LeaderDead)
 						{
+							this.EODCamera.position = this.ClubManager.ClubVantages[this.ClubID].position;
+							this.EODCamera.eulerAngles = this.ClubManager.ClubVantages[this.ClubID].eulerAngles;
 							ClubGlobals.SetClubClosed(this.ClubArray[this.ClubID], true);
 							this.Label.text = string.Concat(new string[]
 							{
@@ -569,6 +704,8 @@ public class EndOfDayScript : MonoBehaviour
 						}
 						else if (this.ClubManager.LeaderAshamed)
 						{
+							this.EODCamera.position = this.ClubManager.ClubVantages[this.ClubID].position;
+							this.EODCamera.eulerAngles = this.ClubManager.ClubVantages[this.ClubID].eulerAngles;
 							ClubGlobals.SetClubClosed(this.ClubArray[this.ClubID], true);
 							this.Label.text = "The leader of the " + this.ClubNames[this.ClubID].ToString() + " has unexpectedly disbanded the club without explanation.";
 							this.ClubClosed = true;
@@ -584,6 +721,8 @@ public class EndOfDayScript : MonoBehaviour
 						this.ClubManager.CheckGrudge(this.ClubArray[this.ClubID]);
 						if (this.ClubManager.LeaderGrudge)
 						{
+							this.EODCamera.position = this.ClubManager.ClubVantages[this.ClubID].position;
+							this.EODCamera.eulerAngles = this.ClubManager.ClubVantages[this.ClubID].eulerAngles;
 							this.Label.text = string.Concat(new string[]
 							{
 								"Yandere-chan receives a text message from the president of the ",
@@ -600,6 +739,8 @@ public class EndOfDayScript : MonoBehaviour
 						}
 						else if (this.ClubManager.ClubGrudge)
 						{
+							this.EODCamera.position = this.ClubManager.ClubVantages[this.ClubID].position;
+							this.EODCamera.eulerAngles = this.ClubManager.ClubVantages[this.ClubID].eulerAngles;
 							this.Label.text = string.Concat(new string[]
 							{
 								"Yandere-chan receives a text message from the president of the ",
@@ -622,6 +763,7 @@ public class EndOfDayScript : MonoBehaviour
 						this.ClubID++;
 						this.UpdateScene();
 					}
+					this.ClubManager.LeaderAshamed = false;
 				}
 				else
 				{
@@ -634,8 +776,9 @@ public class EndOfDayScript : MonoBehaviour
 				Debug.Log("Phase 14.");
 				if (this.TranqCase.Occupied)
 				{
+					this.EODTranqCase.SetActive(true);
 					this.Label.color = new Color(this.Label.color.r, this.Label.color.g, this.Label.color.b, 1f);
-					this.Label.text = "Yandere-chan waits until the clock strikes midnight.\n\nUnder the cover of darkness, Yandere-chan travels back to school and sneaks inside of the main school building.\n\nYandere-chan returns to the instrument case that carries her unconscious victim.\n\nShe pushes the case back to her house, pretending to be a young musician returning home from a late-night show.\n\nYandere-chan drags the case down to her basement and ties up her victim.\n\nExhausted, Yandere-chan goes to sleep.";
+					this.Label.text = "Yandere-chan waits until midnight, sneaks into school, and returns to the musical instrument case that contains her unconscious victim. She pushes the case back to her house and ties  the victim to a chair in her basement.";
 					this.Phase++;
 				}
 				else
@@ -649,6 +792,7 @@ public class EndOfDayScript : MonoBehaviour
 				Debug.Log("Phase 15.");
 				if (this.ErectFence)
 				{
+					this.Fence.SetActive(true);
 					this.Label.text = "To prevent any other students from falling off of the school rooftop, the school erects a fence around the roof.";
 					SchoolGlobals.RoofFence = true;
 					this.ErectFence = false;
@@ -664,6 +808,7 @@ public class EndOfDayScript : MonoBehaviour
 				Debug.Log("Phase 16.");
 				if (!SchoolGlobals.HighSecurity && this.Police.CouncilDeath)
 				{
+					this.SCP.SetActive(true);
 					this.Label.text = "The student council president has ordered the implementation of heightened security precautions. Security cameras and metal detectors are now present at school.";
 					this.Police.CouncilDeath = false;
 				}
@@ -679,37 +824,64 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 100)
 			{
+				this.Yandere.MyController.enabled = false;
+				this.Yandere.transform.parent = base.transform;
+				this.Yandere.transform.localPosition = new Vector3(0f, 0f, 0f);
+				this.Yandere.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+				this.Yandere.CharacterAnimation.Play("f02_handcuffs_00");
+				this.ArrestingCops.SetActive(true);
+				Physics.SyncTransforms();
 				this.Label.text = "Yandere-chan is arrested by the police. She will never have Senpai.";
 				this.GameOver = true;
 			}
 			else if (this.Phase == 101)
 			{
-				int fingerprintID = this.WeaponManager.Weapons[this.WeaponID].FingerprintID;
-				StudentScript studentScript = this.StudentManager.Students[fingerprintID];
+				int fingerprintID2 = this.WeaponManager.Weapons[this.WeaponID].FingerprintID;
+				StudentScript studentScript = this.StudentManager.Students[fingerprintID2];
 				if (studentScript.Alive)
 				{
+					this.Patsy = this.StudentManager.Students[fingerprintID2];
+					if (this.Patsy.WeaponBag != null)
+					{
+						this.Patsy.WeaponBag.SetActive(false);
+					}
+					this.Patsy.gameObject.SetActive(true);
+					this.Patsy.MyController.enabled = false;
+					this.Patsy.transform.parent = base.transform;
+					this.Patsy.transform.localPosition = new Vector3(0f, 0f, 0f);
+					this.Patsy.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+					if (this.StudentManager.Students[fingerprintID2].Male)
+					{
+						this.StudentManager.Students[fingerprintID2].CharacterAnimation.Play("handcuffs_00");
+					}
+					else
+					{
+						this.StudentManager.Students[fingerprintID2].CharacterAnimation.Play("f02_handcuffs_00");
+					}
+					this.ArrestingCops.SetActive(true);
 					if (!studentScript.Tranquil)
 					{
-						this.Label.text = this.JSON.Students[fingerprintID].Name + " is arrested by the police.";
-						StudentGlobals.SetStudentArrested(fingerprintID, true);
+						this.Label.text = this.JSON.Students[fingerprintID2].Name + " is arrested by the police.";
+						StudentGlobals.SetStudentArrested(fingerprintID2, true);
 						this.Arrests++;
 					}
 					else
 					{
-						this.Label.text = this.JSON.Students[fingerprintID].Name + " is found asleep inside of a musical instrument case. The police assume that she hid herself inside of the box after committing murder, and arrest her.";
-						StudentGlobals.SetStudentArrested(fingerprintID, true);
-						this.ArrestID = fingerprintID;
+						this.Label.text = this.JSON.Students[fingerprintID2].Name + " is found asleep inside of a musical instrument case. The police assume that she hid herself inside of the box after committing murder, and arrest her.";
+						StudentGlobals.SetStudentArrested(fingerprintID2, true);
+						this.ArrestID = fingerprintID2;
 						this.TranqCase.Occupied = false;
 						this.Arrests++;
 					}
 				}
 				else
 				{
+					this.ShruggingCops.SetActive(true);
 					bool flag = false;
 					this.ID = 0;
 					while (this.ID < this.VictimArray.Length)
 					{
-						if (this.VictimArray[this.ID] == fingerprintID && !studentScript.MurderSuicide)
+						if (this.VictimArray[this.ID] == fingerprintID2 && !studentScript.MurderSuicide)
 						{
 							flag = true;
 						}
@@ -717,12 +889,12 @@ public class EndOfDayScript : MonoBehaviour
 					}
 					if (!flag)
 					{
-						this.Label.text = this.JSON.Students[fingerprintID].Name + " is dead. The police cannot perform an arrest.";
+						this.Label.text = this.JSON.Students[fingerprintID2].Name + " is dead. The police cannot perform an arrest.";
 						this.DeadPerps++;
 					}
 					else
 					{
-						this.Label.text = this.JSON.Students[fingerprintID].Name + "'s fingerprints are on the same weapon that killed them. The police cannot solve this mystery.";
+						this.Label.text = this.JSON.Students[fingerprintID2].Name + "'s fingerprints are on the same weapon that killed them. The police cannot solve this mystery.";
 					}
 				}
 				this.Phase = 6;
@@ -731,11 +903,13 @@ public class EndOfDayScript : MonoBehaviour
 			{
 				if (this.Police.SuicideStudent.activeInHierarchy)
 				{
+					this.MurderScene.SetActive(true);
 					this.Label.text = "The police inspect the corpse of a student who appears to have fallen to their death from the school rooftop. The police treat the incident as a murder case, and search the school for any other victims.";
 					this.ErectFence = true;
 				}
 				else
 				{
+					this.ShruggingCops.SetActive(true);
 					this.Label.text = "The police attempt to determine whether or not a student fell to their death from the school rooftop. The police are unable to reach a conclusion.";
 				}
 				this.ID = 0;
@@ -752,6 +926,7 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 103)
 			{
+				this.MurderScene.SetActive(true);
 				this.Label.text = "The paramedics attempt to resuscitate the poisoned student, but they are unable to revive her. The police treat the incident as a murder case, and search the school for any other victims.";
 				this.ID = 0;
 				while (this.ID < this.Police.CorpseList.Length)
@@ -767,6 +942,7 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 104)
 			{
+				this.MurderScene.SetActive(true);
 				this.Label.text = "The police determine that " + this.Police.DrownedStudentName + " died from drowning. The police treat her death as a possible murder, and search the school for any other victims.";
 				this.ID = 0;
 				while (this.ID < this.Police.CorpseList.Length)
@@ -782,6 +958,7 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 105)
 			{
+				this.MurderScene.SetActive(true);
 				this.Label.text = "The police determine that " + this.Police.ElectrocutedStudentName + " died from being electrocuted. The police treat her death as a possible murder, and search the school for any other victims.";
 				this.ID = 0;
 				while (this.ID < this.Police.CorpseList.Length)
@@ -796,6 +973,15 @@ public class EndOfDayScript : MonoBehaviour
 				this.Phase = 2;
 			}
 		}
+	}
+
+	private void TeleportYandere()
+	{
+		this.Yandere.MyController.enabled = false;
+		this.Yandere.transform.parent = base.transform;
+		this.Yandere.transform.localPosition = new Vector3(0.75f, 0.33333f, -1.9f);
+		this.Yandere.transform.localEulerAngles = new Vector3(-22.5f, 157.5f, 0f);
+		Physics.SyncTransforms();
 	}
 
 	private void Finish()

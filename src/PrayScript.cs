@@ -184,18 +184,18 @@ public class PrayScript : MonoBehaviour
 			if (this.InputManager.TappedUp)
 			{
 				this.Selected--;
-				if (this.Selected == 6)
+				if (this.Selected == 7)
 				{
-					this.Selected = 5;
+					this.Selected = 6;
 				}
 				this.UpdateHighlight();
 			}
 			if (this.InputManager.TappedDown)
 			{
 				this.Selected++;
-				if (this.Selected == 6)
+				if (this.Selected == 7)
 				{
-					this.Selected = 7;
+					this.Selected = 8;
 				}
 				this.UpdateHighlight();
 			}
@@ -260,10 +260,14 @@ public class PrayScript : MonoBehaviour
 					this.Police.BloodyClothing = 0;
 					this.Yandere.Bloodiness = 0f;
 					this.Yandere.Sanity = 100f;
+					this.Exit();
+				}
+				else if (this.Selected == 6)
+				{
 					this.WeaponManager.CleanWeapons();
 					this.Exit();
 				}
-				else if (this.Selected == 7)
+				else if (this.Selected == 8)
 				{
 					this.Exit();
 				}
@@ -275,13 +279,13 @@ public class PrayScript : MonoBehaviour
 	{
 		if (this.Selected < 1)
 		{
-			this.Selected = 7;
+			this.Selected = 8;
 		}
-		else if (this.Selected > 7)
+		else if (this.Selected > 8)
 		{
 			this.Selected = 1;
 		}
-		this.Highlight.transform.localPosition = new Vector3(this.Highlight.transform.localPosition.x, 200f - 50f * (float)this.Selected, this.Highlight.transform.localPosition.z);
+		this.Highlight.transform.localPosition = new Vector3(this.Highlight.transform.localPosition.x, 225f - 50f * (float)this.Selected, this.Highlight.transform.localPosition.z);
 	}
 
 	private void Exit()

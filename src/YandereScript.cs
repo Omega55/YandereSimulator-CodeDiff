@@ -122,6 +122,8 @@ public class YandereScript : MonoBehaviour
 
 	public BucketScript Bucket;
 
+	public LookAtTarget LookAt;
+
 	public PickUpScript PickUp;
 
 	public PoliceScript Police;

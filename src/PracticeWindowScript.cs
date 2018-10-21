@@ -146,7 +146,7 @@ public class PracticeWindowScript : MonoBehaviour
 					this.StudentManager.Students[46].Hearts.Stop();
 					for (int k = 1; k < 5; k++)
 					{
-						if (this.StudentManager.Students[46 + k] != null)
+						if (this.StudentManager.Students[46 + k] != null && this.StudentManager.Students[46 + k].Alive)
 						{
 							this.StudentManager.Students[46 + k].transform.position = this.KneelSpot[k].position;
 							this.StudentManager.Students[46 + k].transform.eulerAngles = this.KneelSpot[k].eulerAngles;

@@ -33,6 +33,8 @@ public class WeaponScript : MonoBehaviour
 
 	public AudioSource FireAudio;
 
+	public Rigidbody MyRigidbody;
+
 	public Collider MyCollider;
 
 	public Renderer MyRenderer;
@@ -40,6 +42,8 @@ public class WeaponScript : MonoBehaviour
 	public Transform Blade;
 
 	public Projector Blood;
+
+	public bool AlreadyExamined;
 
 	public bool DisableCollider;
 
@@ -64,6 +68,8 @@ public class WeaponScript : MonoBehaviour
 	public bool Dumped;
 
 	public bool Heated;
+
+	public bool Rotate;
 
 	public bool Metal;
 
@@ -126,7 +132,8 @@ public class WeaponScript : MonoBehaviour
 		{
 			this.OriginalClip = component.clip;
 		}
-		base.GetComponent<Rigidbody>().isKinematic = true;
+		this.MyRigidbody = base.GetComponent<Rigidbody>();
+		this.MyRigidbody.isKinematic = true;
 	}
 
 	public string GetTypePrefix()
@@ -244,13 +251,12 @@ public class WeaponScript : MonoBehaviour
 		}
 		else
 		{
-			Rigidbody component2 = base.GetComponent<Rigidbody>();
-			if (!component2.isKinematic)
+			if (!this.MyRigidbody.isKinematic)
 			{
 				this.KinematicTimer = Mathf.MoveTowards(this.KinematicTimer, 5f, Time.deltaTime);
 				if (this.KinematicTimer == 5f)
 				{
-					component2.isKinematic = true;
+					this.MyRigidbody.isKinematic = true;
 					this.KinematicTimer = 0f;
 				}
 			}
@@ -262,6 +268,10 @@ public class WeaponScript : MonoBehaviour
 			{
 				base.transform.position = new Vector3(0f, 1f, 79f);
 			}
+		}
+		if (this.Rotate)
+		{
+			base.transform.Rotate(Vector3.forward * Time.deltaTime * 100f);
 		}
 	}
 
@@ -295,7 +305,7 @@ public class WeaponScript : MonoBehaviour
 				base.transform.localEulerAngles = Vector3.zero;
 			}
 			this.MyCollider.enabled = false;
-			base.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+			this.MyRigidbody.constraints = RigidbodyConstraints.FreezeAll;
 			if (this.Yandere.Equipped == 3)
 			{
 				this.Yandere.Weapon[3].Drop();
@@ -449,10 +459,9 @@ public class WeaponScript : MonoBehaviour
 		this.Yandere.StudentManager.UpdateStudents();
 		base.gameObject.SetActive(true);
 		base.transform.parent = null;
-		Rigidbody component = base.GetComponent<Rigidbody>();
-		component.constraints = RigidbodyConstraints.None;
-		component.isKinematic = false;
-		component.useGravity = true;
+		this.MyRigidbody.constraints = RigidbodyConstraints.None;
+		this.MyRigidbody.isKinematic = false;
+		this.MyRigidbody.useGravity = true;
 		if (this.Dumped)
 		{
 			base.transform.position = this.Incinerator.DumpPoint.position;

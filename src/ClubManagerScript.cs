@@ -622,7 +622,7 @@ public class ClubManagerScript : MonoBehaviour
 		{
 			this.ClubMembers--;
 		}
-		if (ClubGlobals.Club == ClubType.LightMusic && this.ClubMembers < 5)
+		if (Check == ClubType.LightMusic && this.ClubMembers < 5)
 		{
 			this.LeaderAshamed = true;
 		}
