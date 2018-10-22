@@ -51,11 +51,13 @@ public class SecurityCameraScript : MonoBehaviour
 						{
 							this.Yandere.NotificationManager.DisplayNotification(NotificationType.Evidence);
 							this.SecuritySystem.Evidence = true;
+							this.SecuritySystem.Masked = false;
 						}
 					}
-					else if (!this.SecuritySystem.Evidence)
+					else if (!this.SecuritySystem.Masked)
 					{
 						this.Yandere.NotificationManager.DisplayNotification(NotificationType.Evidence);
+						this.SecuritySystem.Evidence = true;
 						this.SecuritySystem.Masked = true;
 					}
 				}

@@ -1175,7 +1175,6 @@ public class StudentManagerScript : MonoBehaviour
 					studentScript.Character.GetComponent<Animation>().Play(studentScript.SitAnim);
 					studentScript.Pathfinding.canSearch = false;
 					studentScript.Pathfinding.canMove = false;
-					studentScript.EmptyHands();
 					studentScript.Pathfinding.speed = 0f;
 					studentScript.ClubActivityPhase = 0;
 					studentScript.ClubTimer = 0f;

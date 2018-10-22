@@ -210,9 +210,9 @@ public class RagdollScript : MonoBehaviour
 		}
 		if (!this.Dumped)
 		{
-			if (this.StopAnimation && this.Character.GetComponent<Animation>().isPlaying)
+			if (this.StopAnimation && this.Student.CharacterAnimation.isPlaying)
 			{
-				this.Character.GetComponent<Animation>().Stop();
+				this.Student.CharacterAnimation.Stop();
 			}
 			if (!Input.GetButtonDown("LB"))
 			{
@@ -259,7 +259,7 @@ public class RagdollScript : MonoBehaviour
 						}
 						else
 						{
-							this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_dismember_00");
+							this.Yandere.CharacterAnimation.CrossFade("f02_dismember_00");
 							this.Yandere.transform.LookAt(base.transform);
 							this.Yandere.RPGCamera.transform.position = this.Yandere.DismemberSpot.position;
 							this.Yandere.RPGCamera.transform.eulerAngles = this.Yandere.DismemberSpot.eulerAngles;
@@ -341,8 +341,8 @@ public class RagdollScript : MonoBehaviour
 							Rigidbody rigidbody = this.AllRigidbodies[0];
 							rigidbody.transform.parent.transform.localPosition = new Vector3(rigidbody.transform.parent.transform.localPosition.x, 0.2f, rigidbody.transform.parent.transform.localPosition.z);
 						}
-						this.Yandere.Character.GetComponent<Animation>().Play("f02_carryLiftA_00");
-						this.Character.GetComponent<Animation>().Play(this.LiftAnim);
+						this.Yandere.CharacterAnimation.Play("f02_carryLiftA_00");
+						this.Student.CharacterAnimation.Play(this.LiftAnim);
 						this.BloodSpawnerCollider.enabled = false;
 						this.PelvisRoot.localEulerAngles = new Vector3(this.PelvisRoot.localEulerAngles.x, 0f, this.PelvisRoot.localEulerAngles.z);
 						this.Prompt.MyCollider.enabled = false;
@@ -395,46 +395,49 @@ public class RagdollScript : MonoBehaviour
 		{
 			if (this.DumpTimer == 0f && this.Yandere.Carrying)
 			{
-				this.Character.GetComponent<Animation>()[this.DumpedAnim].time = 2.5f;
+				this.Student.CharacterAnimation[this.DumpedAnim].time = 2.5f;
 			}
-			this.Character.GetComponent<Animation>().CrossFade(this.DumpedAnim);
+			this.Student.CharacterAnimation.CrossFade(this.DumpedAnim);
 			this.DumpTimer += Time.deltaTime;
-			if (this.Character.GetComponent<Animation>()[this.DumpedAnim].time >= this.Character.GetComponent<Animation>()[this.DumpedAnim].length)
+			if (this.Student.CharacterAnimation[this.DumpedAnim].time >= this.Student.CharacterAnimation[this.DumpedAnim].length)
 			{
 				this.Incinerator.Corpses++;
 				this.Incinerator.CorpseList[this.Incinerator.Corpses] = this.StudentID;
 				this.Remove();
+				base.enabled = false;
 			}
 		}
 		else if (this.DumpType == RagdollDumpType.TranqCase)
 		{
 			if (this.DumpTimer == 0f && this.Yandere.Carrying)
 			{
-				this.Character.GetComponent<Animation>()[this.DumpedAnim].time = 2.5f;
+				this.Student.CharacterAnimation[this.DumpedAnim].time = 2.5f;
 			}
-			this.Character.GetComponent<Animation>().CrossFade(this.DumpedAnim);
+			this.Student.CharacterAnimation.CrossFade(this.DumpedAnim);
 			this.DumpTimer += Time.deltaTime;
-			if (this.Character.GetComponent<Animation>()[this.DumpedAnim].time >= this.Character.GetComponent<Animation>()[this.DumpedAnim].length)
+			if (this.Student.CharacterAnimation[this.DumpedAnim].time >= this.Student.CharacterAnimation[this.DumpedAnim].length)
 			{
 				this.TranqCase.Open = false;
 				if (this.AddingToCount)
 				{
 					this.Yandere.NearBodies--;
 				}
+				base.enabled = false;
 			}
 		}
 		else if (this.DumpType == RagdollDumpType.WoodChipper)
 		{
 			if (this.DumpTimer == 0f && this.Yandere.Carrying)
 			{
-				this.Character.GetComponent<Animation>()[this.DumpedAnim].time = 2.5f;
+				this.Student.CharacterAnimation[this.DumpedAnim].time = 2.5f;
 			}
-			this.Character.GetComponent<Animation>().CrossFade(this.DumpedAnim);
+			this.Student.CharacterAnimation.CrossFade(this.DumpedAnim);
 			this.DumpTimer += Time.deltaTime;
-			if (this.Character.GetComponent<Animation>()[this.DumpedAnim].time >= this.Character.GetComponent<Animation>()[this.DumpedAnim].length)
+			if (this.Student.CharacterAnimation[this.DumpedAnim].time >= this.Student.CharacterAnimation[this.DumpedAnim].length)
 			{
 				this.WoodChipper.VictimID = this.StudentID;
 				this.Remove();
+				base.enabled = false;
 			}
 		}
 		if (this.Hidden && this.HideCollider == null)
@@ -510,15 +513,15 @@ public class RagdollScript : MonoBehaviour
 					float axis2 = Input.GetAxis("Horizontal");
 					if (axis != 0f || axis2 != 0f)
 					{
-						this.Character.GetComponent<Animation>().CrossFade((!Input.GetButton("LB")) ? this.WalkAnim : this.RunAnim);
+						this.Student.CharacterAnimation.CrossFade((!Input.GetButton("LB")) ? this.WalkAnim : this.RunAnim);
 					}
 					else
 					{
-						this.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
+						this.Student.CharacterAnimation.CrossFade(this.IdleAnim);
 					}
-					this.Character.GetComponent<Animation>()[this.IdleAnim].time = this.Yandere.Character.GetComponent<Animation>()["f02_carryIdleA_00"].time;
-					this.Character.GetComponent<Animation>()[this.WalkAnim].time = this.Yandere.Character.GetComponent<Animation>()["f02_carryWalkA_00"].time;
-					this.Character.GetComponent<Animation>()[this.RunAnim].time = this.Yandere.Character.GetComponent<Animation>()["f02_carryRunA_00"].time;
+					this.Student.CharacterAnimation[this.IdleAnim].time = this.Yandere.CharacterAnimation["f02_carryIdleA_00"].time;
+					this.Student.CharacterAnimation[this.WalkAnim].time = this.Yandere.CharacterAnimation["f02_carryWalkA_00"].time;
+					this.Student.CharacterAnimation[this.RunAnim].time = this.Yandere.CharacterAnimation["f02_carryRunA_00"].time;
 				}
 			}
 			if (this.Carried)

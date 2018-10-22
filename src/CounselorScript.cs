@@ -376,7 +376,7 @@ public class CounselorScript : MonoBehaviour
 			}
 			if (this.ShowWindow)
 			{
-				if (Input.GetButtonDown("A"))
+				if (this.CounselorDoor.Darkness.color.a == 0f && Input.GetButtonDown("A"))
 				{
 					if (this.Selected == 7)
 					{
@@ -476,7 +476,7 @@ public class CounselorScript : MonoBehaviour
 		}
 		if (this.Lecturing)
 		{
-			this.Chibi.localPosition = new Vector3(this.Chibi.localPosition.x, Mathf.Lerp(this.Chibi.localPosition.y, 250f + (float)StudentGlobals.ExpelProgress * -90f, Time.deltaTime * 2f), this.Chibi.localPosition.z);
+			this.Chibi.localPosition = new Vector3(this.Chibi.localPosition.x, Mathf.Lerp(this.Chibi.localPosition.y, 250f + (float)StudentGlobals.ExpelProgress * -90f, Time.deltaTime * 3f), this.Chibi.localPosition.z);
 			if (this.LecturePhase == 1)
 			{
 				this.LectureLabel.text = this.LectureIntro[this.LectureID];
@@ -500,6 +500,8 @@ public class CounselorScript : MonoBehaviour
 				this.LectureLabel.color = new Color(this.LectureLabel.color.r, this.LectureLabel.color.g, this.LectureLabel.color.b, Mathf.MoveTowards(this.LectureLabel.color.a, 0f, Time.deltaTime));
 				if (this.LectureLabel.color.a == 0f)
 				{
+					this.EndOfDay.TextWindow.SetActive(false);
+					this.EndOfDay.EODCamera.GetComponent<AudioListener>().enabled = true;
 					this.LectureSubtitle.text = this.CounselorLectureText[this.LectureID];
 					this.MyAudio.clip = this.CounselorLectureClips[this.LectureID];
 					this.MyAudio.Play();
@@ -567,10 +569,16 @@ public class CounselorScript : MonoBehaviour
 					}
 					else if (this.LectureID < 6)
 					{
-						this.EndOfDay.enabled = true;
-						this.EndOfDay.Phase++;
-						this.EndOfDay.UpdateScene();
-						base.enabled = false;
+						float num = this.EndOfDayDarkness.color.a;
+						num = Mathf.MoveTowards(num, 1f, Time.deltaTime);
+						this.EndOfDayDarkness.color = new Color(0f, 0f, 0f, num);
+						if (num == 1f)
+						{
+							this.EndOfDay.enabled = true;
+							this.EndOfDay.Phase++;
+							this.EndOfDay.UpdateScene();
+							base.enabled = false;
+						}
 					}
 					else
 					{

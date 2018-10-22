@@ -310,6 +310,8 @@ public class StudentScript : MonoBehaviour
 
 	public GameObject BullyPhotoCollider;
 
+	public GameObject WhiteQuestionMark;
+
 	public GameObject MiyukiGameScreen;
 
 	public GameObject EmptyGameObject;
@@ -9739,6 +9741,7 @@ public class StudentScript : MonoBehaviour
 		this.Yandere.HUD.alpha = 0f;
 		this.Yandere.EyeShrink = 0f;
 		this.Yandere.Sanity = 100f;
+		this.Yandere.ProgressBar.transform.parent.gameObject.SetActive(false);
 		this.Yandere.HeartRate.gameObject.SetActive(false);
 		this.Yandere.Stance.Current = StanceType.Standing;
 		this.ShoulderCamera.OverShoulder = false;
@@ -10929,6 +10932,11 @@ public class StudentScript : MonoBehaviour
 	{
 		if (!this.Ragdoll.enabled)
 		{
+			if (this.Broken != null)
+			{
+				this.Broken.enabled = false;
+				this.Broken.MyAudio.Stop();
+			}
 			if (this.Club == ClubType.Delinquent && this.MyWeapon != null)
 			{
 				this.MyWeapon.transform.parent = null;

@@ -100,6 +100,8 @@ public class EndOfDayScript : MonoBehaviour
 
 	private SaveFile saveFile;
 
+	public GameObject TextWindow;
+
 	public GameObject Cops;
 
 	public GameObject SearchingCop;
@@ -112,7 +114,9 @@ public class EndOfDayScript : MonoBehaviour
 
 	public GameObject SecuritySystemScene;
 
-	public GameObject EODTranqCase;
+	public GameObject OpenTranqCase;
+
+	public GameObject ClosedTranqCase;
 
 	public GameObject GaudyRing;
 
@@ -123,6 +127,10 @@ public class EndOfDayScript : MonoBehaviour
 	public GameObject SCP;
 
 	public GameObject ArrestingCops;
+
+	public GameObject Mask;
+
+	public StudentScript KidnappedVictim;
 
 	public Renderer TabletPortrait;
 
@@ -157,18 +165,24 @@ public class EndOfDayScript : MonoBehaviour
 				this.Yandere.transform.position = new Vector3(0f, 0f, -75f);
 				this.EODCamera.localPosition = new Vector3(1f, 1.8f, -2.5f);
 				this.EODCamera.localEulerAngles = new Vector3(22.5f, -22.5f, 0f);
+				if (this.KidnappedVictim != null)
+				{
+					this.KidnappedVictim.gameObject.SetActive(false);
+				}
 				this.SearchingCop.SetActive(false);
 				this.MurderScene.SetActive(false);
 				this.Cops.SetActive(false);
 				this.TabletCop.SetActive(false);
 				this.ShruggingCops.SetActive(false);
 				this.SecuritySystemScene.SetActive(false);
-				this.EODTranqCase.SetActive(false);
+				this.OpenTranqCase.SetActive(false);
+				this.ClosedTranqCase.SetActive(false);
 				this.GaudyRing.SetActive(false);
 				this.AnswerSheet.SetActive(false);
 				this.Fence.SetActive(false);
 				this.SCP.SetActive(false);
 				this.ArrestingCops.SetActive(false);
+				this.Mask.SetActive(false);
 				this.Yandere.Senpai.gameObject.SetActive(false);
 				if (this.Patsy != null)
 				{
@@ -444,7 +458,7 @@ public class EndOfDayScript : MonoBehaviour
 					{
 						this.Label.text = "The police investigate the security camera recordings, and find footage of a suspicious masked person.";
 						this.Police.MaskReported = true;
-						this.Phase = 100;
+						this.Phase++;
 					}
 				}
 				else
@@ -524,7 +538,15 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 7)
 			{
-				this.EODTranqCase.SetActive(true);
+				this.KidnappedVictim = this.StudentManager.Students[this.TranqCase.VictimID];
+				this.KidnappedVictim.gameObject.SetActive(true);
+				this.KidnappedVictim.Ragdoll.Zs.SetActive(false);
+				this.KidnappedVictim.transform.parent = base.transform;
+				this.KidnappedVictim.transform.localPosition = new Vector3(0f, 0.145f, 0f);
+				this.KidnappedVictim.transform.localEulerAngles = new Vector3(0f, 90f, 0f);
+				this.KidnappedVictim.CharacterAnimation.Play("f02_sit_06");
+				this.KidnappedVictim.WhiteQuestionMark.SetActive(true);
+				this.OpenTranqCase.SetActive(true);
 				this.Label.text = "The police discover " + this.JSON.Students[this.TranqCase.VictimID].Name + " inside of a musical instrument case. However, she is unable to recall how she got inside of the case. The police are unable to determine what happened.";
 				StudentGlobals.SetStudentKidnapped(this.TranqCase.VictimID, false);
 				StudentGlobals.SetStudentMissing(this.TranqCase.VictimID, false);
@@ -537,7 +559,7 @@ public class EndOfDayScript : MonoBehaviour
 			{
 				if (this.Police.MaskReported)
 				{
-					this.ShruggingCops.SetActive(true);
+					this.Mask.SetActive(true);
 					GameGlobals.MasksBanned = true;
 					if (this.SecuritySystem.Masked)
 					{
@@ -585,6 +607,7 @@ public class EndOfDayScript : MonoBehaviour
 				this.Yandere.Senpai.gameObject.SetActive(true);
 				this.Yandere.Senpai.localPosition = new Vector3(0f, 0f, 0f);
 				this.Yandere.Senpai.localEulerAngles = new Vector3(0f, 180f, 0f);
+				this.Yandere.Senpai.GetComponent<StudentScript>().EmptyHands();
 				this.Yandere.Senpai.GetComponent<StudentScript>().CharacterAnimation.Play(this.Yandere.Senpai.GetComponent<StudentScript>().WalkAnim);
 				this.Yandere.LookAt.enabled = true;
 				this.Yandere.MyController.enabled = false;
@@ -598,12 +621,17 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 11)
 			{
-				this.EODCamera.position = new Vector3(-21.25f, 1.95f, 8.5f);
-				this.EODCamera.eulerAngles = new Vector3(0f, -22.5f, 0f);
 				if (!StudentGlobals.GetStudentDying(30) && !StudentGlobals.GetStudentDead(30) && !StudentGlobals.GetStudentArrested(30))
 				{
 					if (this.Counselor.LectureID > 0)
 					{
+						this.Yandere.gameObject.SetActive(false);
+						for (int k = 1; k < 101; k++)
+						{
+							this.StudentManager.DisableStudent(k);
+						}
+						this.EODCamera.position = new Vector3(-18.5f, 1f, 6.5f);
+						this.EODCamera.eulerAngles = new Vector3(0f, -45f, 0f);
 						this.Counselor.Lecturing = true;
 						base.enabled = false;
 					}
@@ -776,7 +804,7 @@ public class EndOfDayScript : MonoBehaviour
 				Debug.Log("Phase 14.");
 				if (this.TranqCase.Occupied)
 				{
-					this.EODTranqCase.SetActive(true);
+					this.ClosedTranqCase.SetActive(true);
 					this.Label.color = new Color(this.Label.color.r, this.Label.color.g, this.Label.color.b, 1f);
 					this.Label.text = "Yandere-chan waits until midnight, sneaks into school, and returns to the musical instrument case that contains her unconscious victim. She pushes the case back to her house and ties  the victim to a chair in her basement.";
 					this.Phase++;
@@ -845,6 +873,8 @@ public class EndOfDayScript : MonoBehaviour
 					{
 						this.Patsy.WeaponBag.SetActive(false);
 					}
+					this.Patsy.EmptyHands();
+					this.Patsy.SpeechLines.Stop();
 					this.Patsy.gameObject.SetActive(true);
 					this.Patsy.MyController.enabled = false;
 					this.Patsy.transform.parent = base.transform;

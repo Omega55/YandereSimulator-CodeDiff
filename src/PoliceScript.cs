@@ -291,11 +291,9 @@ public class PoliceScript : MonoBehaviour
 				this.Yandere.YandereVision = false;
 				this.Yandere.PauseScreen.enabled = false;
 				this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_idleShort_00");
-				for (int i = 1; i < 4; i++)
+				if (this.Yandere.Mask != null)
 				{
-					if (this.Yandere.Weapon[i] != null)
-					{
-					}
+					this.Yandere.Mask.Drop();
 				}
 			}
 			this.PauseScreen.Panel.alpha = Mathf.MoveTowards(this.PauseScreen.Panel.alpha, 0f, Time.deltaTime);
@@ -421,9 +419,9 @@ public class PoliceScript : MonoBehaviour
 						{
 							this.EndOfDay.Start();
 						}
-						for (int l = 0; l < 5; l++)
+						for (int k = 0; k < 5; k++)
 						{
-							this.ResultsLabels[l].text = string.Empty;
+							this.ResultsLabels[k].text = string.Empty;
 						}
 						base.enabled = false;
 					}

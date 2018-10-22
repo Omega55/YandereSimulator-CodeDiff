@@ -29,6 +29,8 @@ public class BrokenScript : MonoBehaviour
 
 	public UILabel Subtitle;
 
+	public AudioSource MyAudio;
+
 	public bool Hunting;
 
 	public bool Stabbed;
