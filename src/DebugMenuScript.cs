@@ -664,9 +664,9 @@ public class DebugMenuScript : MonoBehaviour
 
 	public void EasterEggCheck()
 	{
-		if (this.Yandere.BanchoActive)
+		if (this.Yandere.BanchoActive || this.Yandere.Sans)
 		{
-			Debug.Log("The Bancho easter egg is active, so we're going to disable all shadows and panties.");
+			Debug.Log("A pants-wearing easter egg is active, so we're going to disable all shadows and panties.");
 			this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
 			this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
 			this.Yandere.MyRenderer.materials[2].SetFloat("_BlendAmount", 0f);

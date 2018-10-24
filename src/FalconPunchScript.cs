@@ -5,11 +5,17 @@ public class FalconPunchScript : MonoBehaviour
 {
 	public GameObject FalconExplosion;
 
+	public Rigidbody MyRigidbody;
+
 	public Collider MyCollider;
 
 	public float Strength = 100f;
 
+	public float Speed = 100f;
+
 	public bool IgnoreTime;
+
+	public bool Shipgirl;
 
 	public bool Bancho;
 
@@ -28,6 +34,10 @@ public class FalconPunchScript : MonoBehaviour
 			{
 				this.MyCollider.enabled = false;
 			}
+		}
+		if (this.Shipgirl)
+		{
+			this.MyRigidbody.AddForce(base.transform.forward * this.Speed);
 		}
 	}
 

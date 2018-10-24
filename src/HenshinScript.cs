@@ -147,7 +147,7 @@ public class HenshinScript : MonoBehaviour
 			this.White.material.color -= new Color(0f, 0f, 0f, Time.deltaTime);
 			this.Miyuki.localPosition -= new Vector3(Time.deltaTime * 0.1f, Time.deltaTime * 0.1f, 0f);
 			this.Rotation += Time.deltaTime;
-			this.Miyuki.Rotate(0f, this.Rotation, 0f);
+			this.Miyuki.Rotate(0f, this.Rotation * 360f * Time.deltaTime, 0f);
 			this.Timer += Time.deltaTime;
 			if (this.Timer > 2f)
 			{

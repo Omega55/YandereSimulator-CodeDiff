@@ -134,6 +134,8 @@ public class EndOfDayScript : MonoBehaviour
 
 	public Renderer TabletPortrait;
 
+	public Transform CardboardBox;
+
 	public void Start()
 	{
 		this.EndOfDayDarkness.color = new Color(this.EndOfDayDarkness.color.r, this.EndOfDayDarkness.color.g, this.EndOfDayDarkness.color.b, 1f);
@@ -169,6 +171,7 @@ public class EndOfDayScript : MonoBehaviour
 				{
 					this.KidnappedVictim.gameObject.SetActive(false);
 				}
+				this.CardboardBox.parent = null;
 				this.SearchingCop.SetActive(false);
 				this.MurderScene.SetActive(false);
 				this.Cops.SetActive(false);
@@ -469,6 +472,7 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 6)
 			{
+				this.ShruggingCops.SetActive(false);
 				if (this.Yandere.Sanity > 33.33333f)
 				{
 					if (this.Yandere.Bloodiness > 0f || (this.Yandere.Gloved && this.Yandere.Gloves.Blood.enabled))
@@ -876,6 +880,7 @@ public class EndOfDayScript : MonoBehaviour
 					this.Patsy.EmptyHands();
 					this.Patsy.SpeechLines.Stop();
 					this.Patsy.gameObject.SetActive(true);
+					this.Patsy.Ragdoll.Zs.SetActive(false);
 					this.Patsy.MyController.enabled = false;
 					this.Patsy.transform.parent = base.transform;
 					this.Patsy.transform.localPosition = new Vector3(0f, 0f, 0f);

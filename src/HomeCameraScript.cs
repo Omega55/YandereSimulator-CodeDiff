@@ -248,6 +248,7 @@ public class HomeCameraScript : MonoBehaviour
 		}
 		if (Input.GetKeyDown(KeyCode.M))
 		{
+			this.BasementJukebox.gameObject.SetActive(false);
 			this.RoomJukebox.gameObject.SetActive(false);
 		}
 		if (Input.GetKeyDown(KeyCode.BackQuote))

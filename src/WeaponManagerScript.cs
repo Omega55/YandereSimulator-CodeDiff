@@ -35,7 +35,7 @@ public class WeaponManagerScript : MonoBehaviour
 		}
 		foreach (WeaponScript weaponScript in this.Weapons)
 		{
-			if (weaponScript != null && weaponScript.Blood.enabled)
+			if (weaponScript != null && weaponScript.Blood.enabled && !weaponScript.AlreadyExamined)
 			{
 				this.MurderWeapons++;
 				if (weaponScript.FingerprintID > 0)

@@ -15,6 +15,8 @@ public class JukeboxScript : MonoBehaviour
 
 	public AudioSource Skeletons;
 
+	public AudioSource AzurLane;
+
 	public AudioSource Metroid;
 
 	public AudioSource Nuclear;
@@ -280,6 +282,7 @@ public class JukeboxScript : MonoBehaviour
 			this.Megalovania.volume = Mathf.MoveTowards(this.Megalovania.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
 			this.MissionMode.volume = Mathf.MoveTowards(this.MissionMode.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
 			this.Skeletons.volume = Mathf.MoveTowards(this.Skeletons.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
+			this.AzurLane.volume = Mathf.MoveTowards(this.AzurLane.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
 			this.Metroid.volume = Mathf.MoveTowards(this.Metroid.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
 			this.Nuclear.volume = Mathf.MoveTowards(this.Nuclear.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
 			this.Slender.volume = Mathf.MoveTowards(this.Slender.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
@@ -418,6 +421,13 @@ public class JukeboxScript : MonoBehaviour
 		}
 	}
 
+	public void Shipgirl()
+	{
+		this.Egg = true;
+		this.KillVolume();
+		this.AzurLane.enabled = true;
+	}
+
 	public void KillVolume()
 	{
 		this.FullSanity.volume = 0f;
@@ -432,6 +442,7 @@ public class JukeboxScript : MonoBehaviour
 		this.Megalovania.Stop();
 		this.MissionMode.Stop();
 		this.Skeletons.Stop();
+		this.AzurLane.Stop();
 		this.Metroid.Stop();
 		this.Nuclear.Stop();
 		this.Sukeban.Stop();

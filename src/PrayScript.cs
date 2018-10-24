@@ -257,6 +257,10 @@ public class PrayScript : MonoBehaviour
 				}
 				else if (this.Selected == 5)
 				{
+					if (this.Yandere.Gloved)
+					{
+						this.Yandere.Gloves.Blood.enabled = false;
+					}
 					this.Police.BloodyClothing = 0;
 					this.Yandere.Bloodiness = 0f;
 					this.Yandere.Sanity = 100f;

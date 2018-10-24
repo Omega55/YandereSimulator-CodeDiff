@@ -1678,6 +1678,10 @@ public class StudentScript : MonoBehaviour
 					this.WalkAnim = "scienceWalk_00";
 					this.OriginalWalkAnim = "scienceWalk_00";
 				}
+				else if (this.StudentID == 64 || this.StudentID == 65)
+				{
+					this.WalkAnim = "f02_newWalk_00";
+				}
 				else if (this.StudentID == 66)
 				{
 					this.IdleAnim = "pose_03";
@@ -7192,6 +7196,7 @@ public class StudentScript : MonoBehaviour
 							this.Alarmed = true;
 							this.Witness = true;
 							this.ReadPhase = 0;
+							this.EmptyHands();
 							if (this.Club == ClubType.Cooking && this.ClubActivityPhase == 1)
 							{
 								this.ResumeDistracting = true;
@@ -9837,7 +9842,7 @@ public class StudentScript : MonoBehaviour
 				this.ScaredAnim = this.EvilWitnessAnim;
 				this.Persona = PersonaType.Evil;
 			}
-			if ((this.Yandere.Lifting || this.Yandere.Carrying) && this.Yandere.CurrentRagdoll.Student.Club == ClubType.Bully)
+			if ((this.Yandere.Lifting || this.Yandere.Carrying || this.Yandere.Dragging) && this.Yandere.CurrentRagdoll.Student.Club == ClubType.Bully)
 			{
 				this.ScaredAnim = this.EvilWitnessAnim;
 				this.Persona = PersonaType.Evil;
@@ -10932,6 +10937,7 @@ public class StudentScript : MonoBehaviour
 	{
 		if (!this.Ragdoll.enabled)
 		{
+			this.EmptyHands();
 			if (this.Broken != null)
 			{
 				this.Broken.enabled = false;

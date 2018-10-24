@@ -221,6 +221,7 @@ public class TallLockerScript : MonoBehaviour
 							this.Yandere.Gloves.GetComponent<PickUpScript>().MyRigidbody.isKinematic = false;
 							this.Yandere.Gloves.transform.localPosition = new Vector3(0f, 1f, -1f);
 							this.Yandere.Gloves.transform.parent = null;
+							this.Yandere.GloveAttacher.newRenderer.enabled = false;
 							this.Yandere.Gloves.gameObject.SetActive(true);
 							this.Yandere.Gloved = false;
 							this.Yandere.Gloves = null;

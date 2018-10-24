@@ -1082,6 +1082,12 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject AzurMist;
 
+	public GameObject Shell;
+
+	public Transform[] Guns;
+
+	public int ShotsFired;
+
 	public bool Shipgirl;
 
 	public Mesh SchoolSwimsuit;
@@ -1145,6 +1151,7 @@ public class YandereScript : MonoBehaviour
 		this.LeftEyeOrigin = this.LeftEye.localPosition;
 		this.CharacterAnimation["f02_yanderePose_00"].weight = 0f;
 		this.CharacterAnimation["f02_cameraPose_00"].weight = 0f;
+		this.CharacterAnimation["f02_shipGirlSnap_00"].speed = 2f;
 		this.CharacterAnimation["f02_gazerSnap_00"].speed = 2f;
 		this.CharacterAnimation["f02_performing_00"].speed = 0.9f;
 		ColorCorrectionCurves[] components = Camera.main.GetComponents<ColorCorrectionCurves>();
@@ -1974,10 +1981,18 @@ public class YandereScript : MonoBehaviour
 							}
 							else if (!this.BlackRobe.activeInHierarchy)
 							{
-								if (this.Gazing)
+								if (this.Gazing || this.Shipgirl)
 								{
-									this.CharacterAnimation["f02_gazerSnap_00"].time = 0f;
-									this.CharacterAnimation.CrossFade("f02_gazerSnap_00");
+									if (this.Gazing)
+									{
+										this.CharacterAnimation["f02_gazerSnap_00"].time = 0f;
+										this.CharacterAnimation.CrossFade("f02_gazerSnap_00");
+									}
+									else
+									{
+										this.CharacterAnimation["f02_shipGirlSnap_00"].time = 0f;
+										this.CharacterAnimation.CrossFade("f02_shipGirlSnap_00");
+									}
 									this.Snapping = true;
 									this.CanMove = false;
 								}
@@ -3431,17 +3446,60 @@ public class YandereScript : MonoBehaviour
 			{
 				if (this.SnapPhase == 0)
 				{
-					if (this.CharacterAnimation["f02_gazerSnap_00"].time >= 0.8f)
+					if (this.Gazing)
 					{
-						AudioSource.PlayClipAtPoint(this.FingerSnap, base.transform.position + Vector3.up);
-						this.GazerEyes.ChangeEffect();
+						if (this.CharacterAnimation["f02_gazerSnap_00"].time >= 0.8f)
+						{
+							AudioSource.PlayClipAtPoint(this.FingerSnap, base.transform.position + Vector3.up);
+							this.GazerEyes.ChangeEffect();
+							this.SnapPhase++;
+						}
+					}
+					else if (this.ShotsFired < 1)
+					{
+						if (this.CharacterAnimation["f02_shipGirlSnap_00"].time >= 1f)
+						{
+							UnityEngine.Object.Instantiate<GameObject>(this.Shell, this.Guns[1].position, base.transform.rotation);
+							this.ShotsFired++;
+						}
+					}
+					else if (this.ShotsFired < 2)
+					{
+						if (this.CharacterAnimation["f02_shipGirlSnap_00"].time >= 1.2f)
+						{
+							UnityEngine.Object.Instantiate<GameObject>(this.Shell, this.Guns[2].position, base.transform.rotation);
+							this.ShotsFired++;
+						}
+					}
+					else if (this.ShotsFired < 3)
+					{
+						if (this.CharacterAnimation["f02_shipGirlSnap_00"].time >= 1.4f)
+						{
+							UnityEngine.Object.Instantiate<GameObject>(this.Shell, this.Guns[3].position, base.transform.rotation);
+							this.ShotsFired++;
+						}
+					}
+					else if (this.ShotsFired < 4 && this.CharacterAnimation["f02_shipGirlSnap_00"].time >= 1.6f)
+					{
+						UnityEngine.Object.Instantiate<GameObject>(this.Shell, this.Guns[4].position, base.transform.rotation);
+						this.ShotsFired++;
 						this.SnapPhase++;
 					}
 				}
-				else if (this.CharacterAnimation["f02_gazerSnap_00"].time >= this.CharacterAnimation["f02_gazerSnap_00"].length)
+				else if (this.Gazing)
+				{
+					if (this.CharacterAnimation["f02_gazerSnap_00"].time >= this.CharacterAnimation["f02_gazerSnap_00"].length)
+					{
+						this.Snapping = false;
+						this.CanMove = true;
+						this.SnapPhase = 0;
+					}
+				}
+				else if (this.CharacterAnimation["f02_shipGirlSnap_00"].time >= this.CharacterAnimation["f02_shipGirlSnap_00"].length)
 				{
 					this.Snapping = false;
 					this.CanMove = true;
+					this.ShotsFired = 0;
 					this.SnapPhase = 0;
 				}
 			}
@@ -5541,6 +5599,7 @@ public class YandereScript : MonoBehaviour
 		this.Egg = true;
 		this.Hairstyle = 0;
 		this.UpdateHair();
+		this.DebugMenu.transform.parent.GetComponent<DebugMenuScript>().EasterEggCheck();
 	}
 
 	private void CyborgNinja()
@@ -5899,9 +5958,11 @@ public class YandereScript : MonoBehaviour
 		this.AzurGuns.SetActive(true);
 		this.AzurWater.SetActive(true);
 		this.AzurMist.SetActive(true);
+		this.SithLord = true;
 		this.Shipgirl = true;
 		this.CanMove = true;
 		this.Egg = true;
+		this.Jukebox.Shipgirl();
 	}
 
 	public void ChangeSchoolwear()
