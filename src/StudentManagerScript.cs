@@ -962,6 +962,17 @@ public class StudentManagerScript : MonoBehaviour
 							{
 								studentScript.Prompt.Label[0].text = "     Push";
 							}
+							else if (this.Yandere.SpiderGrow)
+							{
+								if (!studentScript.Armband.activeInHierarchy)
+								{
+									studentScript.Prompt.Label[0].text = "     Send Husk";
+								}
+								else
+								{
+									studentScript.Prompt.Label[0].text = "     Talk";
+								}
+							}
 							else if (!studentScript.Following)
 							{
 								studentScript.Prompt.Label[0].text = "     Talk";
@@ -1071,6 +1082,10 @@ public class StudentManagerScript : MonoBehaviour
 						studentScript.Prompt.HideButton[0] = false;
 						studentScript.Prompt.Label[0].text = "     Gaze";
 					}
+				}
+				if (GameGlobals.EmptyDemon)
+				{
+					studentScript.Prompt.HideButton[0] = false;
 				}
 			}
 			this.ID++;
@@ -1389,7 +1404,7 @@ public class StudentManagerScript : MonoBehaviour
 			StudentScript studentScript = this.Students[this.ID];
 			if (studentScript != null)
 			{
-				if (!studentScript.Dying)
+				if (!studentScript.Dying && !studentScript.Replaced)
 				{
 					studentScript.gameObject.SetActive(true);
 					studentScript.Pathfinding.canSearch = true;

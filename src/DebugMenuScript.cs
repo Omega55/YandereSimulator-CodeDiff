@@ -500,13 +500,7 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					else if (Input.GetKeyDown(KeyCode.LeftControl))
 					{
-						this.Yandere.transform.position = this.TeleportSpot[30].position;
-						if (this.StudentManager.Students[31] != null)
-						{
-							this.StudentManager.Students[31].transform.position = this.TeleportSpot[30].position;
-						}
-						this.Clock.PresentTime = 1015f;
-						this.Clock.HourTime = this.Clock.PresentTime / 60f;
+						this.Yandere.transform.position = this.TeleportSpot[7].position;
 						Physics.SyncTransforms();
 						this.Window.SetActive(false);
 					}
@@ -559,6 +553,17 @@ public class DebugMenuScript : MonoBehaviour
 						StudentGlobals.SetFragileTarget(31);
 						StudentGlobals.SetStudentFragileSlave(5);
 						SceneManager.LoadScene("LoadingScene");
+					}
+					else if (Input.GetKeyDown(KeyCode.I))
+					{
+						this.StudentManager.Students[3].BecomeRagdoll();
+						this.WeaponManager.Weapons[1].Blood.enabled = true;
+						this.WeaponManager.Weapons[1].FingerprintID = 2;
+						this.WeaponManager.Weapons[1].Victims[3] = true;
+						this.StudentManager.Students[5].BecomeRagdoll();
+						this.WeaponManager.Weapons[2].Blood.enabled = true;
+						this.WeaponManager.Weapons[2].FingerprintID = 4;
+						this.WeaponManager.Weapons[2].Victims[5] = true;
 					}
 				}
 			}

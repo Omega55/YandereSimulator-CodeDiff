@@ -477,15 +477,18 @@ public class EndOfDayScript : MonoBehaviour
 				{
 					if (this.Yandere.Bloodiness > 0f || (this.Yandere.Gloved && this.Yandere.Gloves.Blood.enabled))
 					{
-						this.TeleportYandere();
-						this.Yandere.CharacterAnimation.Play("f02_disappointed_00");
 						if (this.Arrests == 0)
 						{
+							this.TeleportYandere();
+							this.Yandere.CharacterAnimation.Play("f02_disappointed_00");
 							this.Label.text = "The police notice that Yandere-chan's clothing is bloody. They confirm that the blood is not hers. Yandere-chan is unable to convince the police that she did not commit murder.";
 							this.Phase = 100;
 						}
 						else
 						{
+							this.TeleportYandere();
+							this.Yandere.CharacterAnimation["YandereConfessionRejected"].time = 4f;
+							this.Yandere.CharacterAnimation.Play("YandereConfessionRejected");
 							this.Label.text = "The police notice that Yandere-chan's clothing is bloody. They confirm that the blood is not hers. Yandere-chan is able to convince the police that she was splashed with blood while witnessing a murder.";
 							if (!this.TranqCase.Occupied)
 							{
@@ -591,19 +594,21 @@ public class EndOfDayScript : MonoBehaviour
 					if (this.DeadPerps == 0)
 					{
 						this.Label.text = "The police do not have enough evidence to perform an arrest. The police investigation ends, and students are free to leave.";
-						this.Phase++;
 					}
 					else
 					{
 						this.Label.text = "The police conclude that a murder-suicide took place, but are unable to take any further action. The police investigation ends, and students are free to leave.";
-						this.Phase++;
 					}
+				}
+				else if (this.Arrests == 1)
+				{
+					this.Label.text = "The police believe that they have arrested the perpetrator of the crime. The police investigation ends, and students are free to leave.";
 				}
 				else
 				{
-					this.Label.text = "The police believe that they have arrested the perpetrator of the crime. The police investigation ends, and students are free to leave.";
-					this.Phase++;
+					this.Label.text = "The police believe that they have arrested the perpetrators of the crimes. The police investigation ends, and students are free to leave.";
 				}
+				this.Phase++;
 			}
 			else if (this.Phase == 10)
 			{
@@ -677,6 +682,7 @@ public class EndOfDayScript : MonoBehaviour
 				Debug.Log("Phase 13 - checking for clubs shutting down.");
 				this.ClubClosed = false;
 				this.ClubKicked = false;
+				float d = 1.2f;
 				if (this.ClubID < this.ClubArray.Length)
 				{
 					if (!ClubGlobals.GetClubClosed(this.ClubArray[this.ClubID]))
@@ -687,7 +693,7 @@ public class EndOfDayScript : MonoBehaviour
 						{
 							this.EODCamera.position = this.ClubManager.ClubVantages[this.ClubID].position;
 							this.EODCamera.eulerAngles = this.ClubManager.ClubVantages[this.ClubID].eulerAngles;
-							this.EODCamera.Translate(Vector3.forward * 0.3f, Space.Self);
+							this.EODCamera.Translate(Vector3.forward * d, Space.Self);
 							ClubGlobals.SetClubClosed(this.ClubArray[this.ClubID], true);
 							this.Label.text = "The " + this.ClubNames[this.ClubID].ToString() + " no longer has enough members to remain operational. The school forces the club to disband.";
 							this.ClubClosed = true;
@@ -700,6 +706,7 @@ public class EndOfDayScript : MonoBehaviour
 						{
 							this.EODCamera.position = this.ClubManager.ClubVantages[this.ClubID].position;
 							this.EODCamera.eulerAngles = this.ClubManager.ClubVantages[this.ClubID].eulerAngles;
+							this.EODCamera.Translate(Vector3.forward * d, Space.Self);
 							ClubGlobals.SetClubClosed(this.ClubArray[this.ClubID], true);
 							this.Label.text = string.Concat(new string[]
 							{
@@ -719,6 +726,7 @@ public class EndOfDayScript : MonoBehaviour
 						{
 							this.EODCamera.position = this.ClubManager.ClubVantages[this.ClubID].position;
 							this.EODCamera.eulerAngles = this.ClubManager.ClubVantages[this.ClubID].eulerAngles;
+							this.EODCamera.Translate(Vector3.forward * d, Space.Self);
 							ClubGlobals.SetClubClosed(this.ClubArray[this.ClubID], true);
 							this.Label.text = string.Concat(new string[]
 							{
@@ -738,6 +746,7 @@ public class EndOfDayScript : MonoBehaviour
 						{
 							this.EODCamera.position = this.ClubManager.ClubVantages[this.ClubID].position;
 							this.EODCamera.eulerAngles = this.ClubManager.ClubVantages[this.ClubID].eulerAngles;
+							this.EODCamera.Translate(Vector3.forward * d, Space.Self);
 							ClubGlobals.SetClubClosed(this.ClubArray[this.ClubID], true);
 							this.Label.text = "The leader of the " + this.ClubNames[this.ClubID].ToString() + " has unexpectedly disbanded the club without explanation.";
 							this.ClubClosed = true;
@@ -755,6 +764,7 @@ public class EndOfDayScript : MonoBehaviour
 						{
 							this.EODCamera.position = this.ClubManager.ClubVantages[this.ClubID].position;
 							this.EODCamera.eulerAngles = this.ClubManager.ClubVantages[this.ClubID].eulerAngles;
+							this.EODCamera.Translate(Vector3.forward * d, Space.Self);
 							this.Label.text = string.Concat(new string[]
 							{
 								"Yandere-chan receives a text message from the president of the ",
@@ -773,6 +783,7 @@ public class EndOfDayScript : MonoBehaviour
 						{
 							this.EODCamera.position = this.ClubManager.ClubVantages[this.ClubID].position;
 							this.EODCamera.eulerAngles = this.ClubManager.ClubVantages[this.ClubID].eulerAngles;
+							this.EODCamera.Translate(Vector3.forward * d, Space.Self);
 							this.Label.text = string.Concat(new string[]
 							{
 								"Yandere-chan receives a text message from the president of the ",
@@ -861,6 +872,7 @@ public class EndOfDayScript : MonoBehaviour
 				this.Yandere.transform.localPosition = new Vector3(0f, 0f, 0f);
 				this.Yandere.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
 				this.Yandere.CharacterAnimation.Play("f02_handcuffs_00");
+				this.Yandere.Handcuffs.SetActive(true);
 				this.ArrestingCops.SetActive(true);
 				Physics.SyncTransforms();
 				this.Label.text = "Yandere-chan is arrested by the police. She will never have Senpai.";
@@ -879,12 +891,14 @@ public class EndOfDayScript : MonoBehaviour
 					}
 					this.Patsy.EmptyHands();
 					this.Patsy.SpeechLines.Stop();
+					this.Patsy.Handcuffs.SetActive(true);
 					this.Patsy.gameObject.SetActive(true);
 					this.Patsy.Ragdoll.Zs.SetActive(false);
 					this.Patsy.MyController.enabled = false;
 					this.Patsy.transform.parent = base.transform;
 					this.Patsy.transform.localPosition = new Vector3(0f, 0f, 0f);
 					this.Patsy.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+					this.Patsy.ShoeRemoval.enabled = false;
 					if (this.StudentManager.Students[fingerprintID2].Male)
 					{
 						this.StudentManager.Students[fingerprintID2].CharacterAnimation.Play("handcuffs_00");
@@ -932,7 +946,7 @@ public class EndOfDayScript : MonoBehaviour
 						this.Label.text = this.JSON.Students[fingerprintID2].Name + "'s fingerprints are on the same weapon that killed them. The police cannot solve this mystery.";
 					}
 				}
-				this.Phase = 6;
+				this.Phase = 3;
 			}
 			else if (this.Phase == 102)
 			{

@@ -370,12 +370,6 @@ public class JukeboxScript : MonoBehaviour
 				this.KillVolume();
 				this.Falcon.enabled = true;
 			}
-			else if (Input.GetKeyDown(KeyCode.Space))
-			{
-				this.Egg = true;
-				this.KillVolume();
-				this.Miyuki.enabled = true;
-			}
 			else if (Input.GetKeyDown(KeyCode.O))
 			{
 				this.Egg = true;
@@ -426,6 +420,13 @@ public class JukeboxScript : MonoBehaviour
 		this.Egg = true;
 		this.KillVolume();
 		this.AzurLane.enabled = true;
+	}
+
+	public void MiyukiMusic()
+	{
+		this.Egg = true;
+		this.KillVolume();
+		this.Miyuki.enabled = true;
 	}
 
 	public void KillVolume()

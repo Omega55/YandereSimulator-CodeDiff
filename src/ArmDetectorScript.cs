@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ArmDetectorScript : MonoBehaviour
 {
@@ -21,6 +22,8 @@ public class ArmDetectorScript : MonoBehaviour
 
 	public Transform[] SpawnPoints;
 
+	public GameObject[] BodyArray;
+
 	public GameObject[] ArmArray;
 
 	public GameObject RiggedAccessory;
@@ -37,6 +40,8 @@ public class ArmDetectorScript : MonoBehaviour
 
 	public GameObject DemonArm;
 
+	public bool SummonEmptyDemon;
+
 	public bool SummonFlameDemon;
 
 	public bool SummonDemon;
@@ -51,6 +56,8 @@ public class ArmDetectorScript : MonoBehaviour
 
 	public int Phase = 1;
 
+	public int Bodies;
+
 	public int Arms;
 
 	public float Timer;
@@ -62,6 +69,8 @@ public class ArmDetectorScript : MonoBehaviour
 	public AudioClip DemonMusic;
 
 	public AudioClip DemonLine;
+
+	public AudioClip EmptyDemonLine;
 
 	private void Start()
 	{
@@ -119,6 +128,13 @@ public class ArmDetectorScript : MonoBehaviour
 				this.SummonFlameDemon = true;
 				component.Play();
 			}
+		}
+		if (!this.SummonEmptyDemon && this.Bodies > 10 && !this.Yandere.Chased && this.Yandere.Chasers == 0)
+		{
+			this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
+			this.Yandere.CanMove = false;
+			this.SummonEmptyDemon = true;
+			component.Play();
 		}
 		if (this.SummonDemon)
 		{
@@ -325,6 +341,66 @@ public class ArmDetectorScript : MonoBehaviour
 				}
 			}
 		}
+		if (this.SummonEmptyDemon)
+		{
+			if (this.Phase == 1)
+			{
+				if (this.BodyArray[1] != null)
+				{
+					for (int l = 1; l < 12; l++)
+					{
+						if (this.BodyArray[l] != null)
+						{
+							UnityEngine.Object.Instantiate<GameObject>(this.SmallDarkAura, this.BodyArray[l].transform.position, Quaternion.identity);
+							UnityEngine.Object.Destroy(this.BodyArray[l]);
+						}
+					}
+				}
+				this.Timer += Time.deltaTime;
+				if (this.Timer > 1f)
+				{
+					this.Timer = 0f;
+					this.Phase++;
+				}
+			}
+			else if (this.Phase == 2)
+			{
+				this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 1f, Time.deltaTime));
+				this.Jukebox.Volume = Mathf.MoveTowards(this.Jukebox.Volume, 0f, Time.deltaTime);
+				if (this.Darkness.color.a == 1f)
+				{
+					this.Yandere.transform.eulerAngles = new Vector3(0f, 180f, 0f);
+					this.Yandere.transform.position = new Vector3(12f, 0.1f, 26f);
+					this.DemonSubtitle.text = "At last...it is time to reclaim our rightful place.";
+					this.BloodProjector.SetActive(true);
+					this.DemonSubtitle.color = new Color(this.DemonSubtitle.color.r, this.DemonSubtitle.color.g, this.DemonSubtitle.color.b, 0f);
+					this.Skull.Prompt.Hide();
+					this.Skull.Prompt.enabled = false;
+					this.Skull.enabled = false;
+					component.clip = this.EmptyDemonLine;
+					component.Play();
+					this.Phase++;
+				}
+			}
+			else if (this.Phase == 3)
+			{
+				this.DemonSubtitle.transform.localPosition = new Vector3(UnityEngine.Random.Range(-10f, 10f), UnityEngine.Random.Range(-10f, 10f), UnityEngine.Random.Range(-10f, 10f));
+				this.DemonSubtitle.color = new Color(this.DemonSubtitle.color.r, this.DemonSubtitle.color.g, this.DemonSubtitle.color.b, Mathf.MoveTowards(this.DemonSubtitle.color.a, 1f, Time.deltaTime));
+				if (this.DemonSubtitle.color.a == 1f && Input.GetButtonDown("A"))
+				{
+					this.Phase++;
+				}
+			}
+			else if (this.Phase == 4)
+			{
+				this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 1f, Time.deltaTime));
+				if (this.Darkness.color.a == 1f)
+				{
+					GameGlobals.EmptyDemon = true;
+					SceneManager.LoadScene("LoadingScene");
+				}
+			}
+		}
 	}
 
 	private void OnTriggerEnter(Collider other)
@@ -356,6 +432,29 @@ public class ArmDetectorScript : MonoBehaviour
 				}
 			}
 		}
+		if (other.transform.parent != null && other.transform.parent.parent != null && other.transform.parent.parent.parent != null)
+		{
+			StudentScript component2 = other.transform.parent.parent.parent.gameObject.GetComponent<StudentScript>();
+			if (component2 != null && component2.Ragdoll.Sacrifice && component2.Armband.activeInHierarchy)
+			{
+				bool flag2 = true;
+				for (int j = 1; j < 11; j++)
+				{
+					if (this.BodyArray[j] == other.gameObject)
+					{
+						flag2 = false;
+					}
+				}
+				if (flag2)
+				{
+					this.Bodies++;
+					if (this.Bodies < this.BodyArray.Length)
+					{
+						this.BodyArray[this.Bodies] = other.gameObject;
+					}
+				}
+			}
+		}
 	}
 
 	private void OnTriggerExit(Collider other)
@@ -369,6 +468,14 @@ public class ArmDetectorScript : MonoBehaviour
 				this.Arms--;
 			}
 		}
+		if (other.transform.parent != null && other.transform.parent.parent != null && other.transform.parent.parent.parent != null)
+		{
+			StudentScript component3 = other.transform.parent.parent.parent.gameObject.GetComponent<StudentScript>();
+			if (component3 != null && component3.Ragdoll.Sacrifice && component3.Armband.activeInHierarchy)
+			{
+				this.Bodies--;
+			}
+		}
 	}
 
 	private void Shuffle(int Start)
@@ -376,6 +483,14 @@ public class ArmDetectorScript : MonoBehaviour
 		for (int i = Start; i < this.ArmArray.Length - 1; i++)
 		{
 			this.ArmArray[i] = this.ArmArray[i + 1];
+		}
+	}
+
+	private void ShuffleBodies(int Start)
+	{
+		for (int i = Start; i < this.BodyArray.Length - 1; i++)
+		{
+			this.BodyArray[i] = this.BodyArray[i + 1];
 		}
 	}
 }

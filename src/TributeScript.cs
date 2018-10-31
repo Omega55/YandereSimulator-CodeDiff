@@ -3,13 +3,19 @@ using UnityEngine;
 
 public class TributeScript : MonoBehaviour
 {
+	public HenshinScript Henshin;
+
 	public YandereScript Yandere;
 
 	public GameObject Rainey;
 
+	public string[] MiyukiLetters;
+
 	public string[] AzurLane;
 
 	public string[] Letter;
+
+	public int MiyukiID;
 
 	public int AzurID;
 
@@ -37,6 +43,16 @@ public class TributeScript : MonoBehaviour
 			if (this.AzurID == this.AzurLane.Length)
 			{
 				this.Yandere.AzurLane();
+				base.enabled = false;
+			}
+		}
+		if (this.Yandere.Armed && this.Yandere.EquippedWeapon.WeaponID == 14 && Input.GetKeyDown(this.MiyukiLetters[this.MiyukiID]))
+		{
+			this.MiyukiID++;
+			if (this.MiyukiID == this.MiyukiLetters.Length)
+			{
+				this.Henshin.TransformYandere();
+				this.Yandere.CanMove = false;
 				base.enabled = false;
 			}
 		}

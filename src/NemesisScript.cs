@@ -140,6 +140,7 @@ public class NemesisScript : MonoBehaviour
 				num = UnityEngine.Random.Range(2, 90);
 			}
 			this.Student.StudentManager.Students[num].gameObject.SetActive(false);
+			this.Student.StudentManager.Students[num].Replaced = true;
 			this.Cosmetic.StudentID = num;
 			this.Cosmetic.Start();
 			OutlineScript component = this.Cosmetic.FemaleHair[this.Cosmetic.Hairstyle].GetComponent<OutlineScript>();
@@ -163,7 +164,7 @@ public class NemesisScript : MonoBehaviour
 				{
 					if (this.Student.Pathfinding.canSearch)
 					{
-						this.Student.Character.GetComponent<Animation>().CrossFade(this.Student.IdleAnim);
+						this.Student.Character.GetComponent<Animation>().CrossFade("f02_idleShort_00");
 						this.Student.Pathfinding.canSearch = false;
 						this.Student.Pathfinding.canMove = false;
 						this.Student.Pathfinding.speed = 0f;
@@ -348,6 +349,7 @@ public class NemesisScript : MonoBehaviour
 		this.Student.OccultBook.SetActive(false);
 		this.Student.Cigarette.SetActive(false);
 		this.Student.EventBook.SetActive(false);
+		this.Student.Handcuffs.SetActive(false);
 		this.Student.CandyBar.SetActive(false);
 		this.Student.Scrubber.SetActive(false);
 		this.Student.Lighter.SetActive(false);

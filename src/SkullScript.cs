@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class SkullScript : MonoBehaviour
 {
+	public StudentManagerScript StudentManager;
+
 	public JukeboxScript Jukebox;
 
 	public YandereScript Yandere;
@@ -18,6 +20,8 @@ public class SkullScript : MonoBehaviour
 	public GameObject HeartbeatCamera;
 
 	public GameObject RitualKnife;
+
+	public GameObject EmptyDemon;
 
 	public GameObject DebugMenu;
 
@@ -91,6 +95,18 @@ public class SkullScript : MonoBehaviour
 					UnityEngine.Object.Instantiate<GameObject>(this.DarkAura, this.Yandere.transform.position + Vector3.up * 0.81f, Quaternion.identity);
 					this.Timer += Time.deltaTime;
 					this.Clock.StopTime = true;
+					if (this.StudentManager.Students[21] == null || this.StudentManager.Students[26] == null || this.StudentManager.Students[31] == null || this.StudentManager.Students[36] == null || this.StudentManager.Students[41] == null || this.StudentManager.Students[46] == null || this.StudentManager.Students[51] == null || this.StudentManager.Students[56] == null || this.StudentManager.Students[61] == null || this.StudentManager.Students[66] == null || this.StudentManager.Students[71] == null)
+					{
+						this.EmptyDemon.SetActive(false);
+					}
+					else if (!this.StudentManager.Students[21].Alive || !this.StudentManager.Students[26].Alive || !this.StudentManager.Students[31].Alive || !this.StudentManager.Students[36].Alive || !this.StudentManager.Students[41].Alive || !this.StudentManager.Students[46].Alive || !this.StudentManager.Students[51].Alive || !this.StudentManager.Students[56].Alive || !this.StudentManager.Students[61].Alive || !this.StudentManager.Students[66].Alive || !this.StudentManager.Students[71].Alive)
+					{
+						this.EmptyDemon.SetActive(false);
+					}
+					if (GameGlobals.EmptyDemon)
+					{
+						this.EmptyDemon.SetActive(false);
+					}
 				}
 			}
 		}

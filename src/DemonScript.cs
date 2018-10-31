@@ -140,6 +140,8 @@ public class DemonScript : MonoBehaviour
 					this.Phase = 1;
 					this.ID = 0;
 					SchoolGlobals.SetDemonActive(this.DemonID, true);
+					StudentGlobals.FemaleUniform = 1;
+					StudentGlobals.MaleUniform = 1;
 					GameGlobals.Paranormal = true;
 				}
 			}

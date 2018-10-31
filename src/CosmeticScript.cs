@@ -205,6 +205,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public Texture BlackFace;
 
+	public Texture GrayFace;
+
 	public Texture DelinquentUniformTexture;
 
 	public Texture DelinquentCasualTexture;
@@ -278,6 +280,8 @@ public class CosmeticScript : MonoBehaviour
 	public bool Teacher;
 
 	public bool Yandere;
+
+	public bool Empty;
 
 	public bool Male;
 
@@ -382,6 +386,23 @@ public class CosmeticScript : MonoBehaviour
 		if (this.StudentID == 51 && ClubGlobals.GetClubClosed(ClubType.LightMusic))
 		{
 			this.Hairstyle = 51;
+		}
+		if (GameGlobals.EmptyDemon && (this.StudentID == 21 || this.StudentID == 26 || this.StudentID == 31 || this.StudentID == 36 || this.StudentID == 41 || this.StudentID == 46 || this.StudentID == 51 || this.StudentID == 56 || this.StudentID == 61 || this.StudentID == 66 || this.StudentID == 71))
+		{
+			if (!this.Male)
+			{
+				this.Hairstyle = 52;
+			}
+			else
+			{
+				this.Hairstyle = 53;
+			}
+			this.FacialHairstyle = 0;
+			this.EyewearID = 0;
+			this.Accessory = 0;
+			this.Stockings = string.Empty;
+			this.BreastSize = 1f;
+			this.Empty = true;
 		}
 		if (this.Name == "Random")
 		{
@@ -495,7 +516,12 @@ public class CosmeticScript : MonoBehaviour
 			}
 			if (!this.Kidnapped && SceneManager.GetActiveScene().name == "PortraitScene")
 			{
-				if (this.StudentID == 5)
+				if (this.StudentID == 4)
+				{
+					this.CharacterAnimation.Play("f02_idleShort_00");
+					base.transform.position = new Vector3(0.015f, 0f, 0f);
+				}
+				else if (this.StudentID == 5)
 				{
 					this.CharacterAnimation.Play("f02_shy_00");
 					this.CharacterAnimation.Play("f02_shy_00");
@@ -544,6 +570,16 @@ public class CosmeticScript : MonoBehaviour
 				{
 					this.CharacterAnimation.Play("f02_sleuthPortrait_01");
 				}
+				else if (this.StudentID == 64)
+				{
+					this.CharacterAnimation.Play("f02_idleShort_00");
+					base.transform.position = new Vector3(0.015f, 0f, 0f);
+				}
+				else if (this.StudentID == 65)
+				{
+					this.CharacterAnimation.Play("f02_idleShort_00");
+					base.transform.position = new Vector3(0.015f, 0f, 0f);
+				}
 				else if (this.StudentID == 71)
 				{
 					this.CharacterAnimation.Play("f02_idleGirly_00");
@@ -589,6 +625,11 @@ public class CosmeticScript : MonoBehaviour
 				else if (this.StudentID == 85 || this.StudentID == 55)
 				{
 					this.CharacterAnimation.Play("f02_galPose_04");
+				}
+				else
+				{
+					this.CharacterAnimation.Play("f02_idleShort_01");
+					base.transform.position = new Vector3(0.015f, 0f, 0f);
 				}
 			}
 		}
@@ -668,6 +709,14 @@ public class CosmeticScript : MonoBehaviour
 				{
 					this.CharacterAnimation.Play("scienceMad_00");
 					base.transform.position = new Vector3(0f, 0.1f, 0f);
+				}
+				else if (this.StudentID == 62)
+				{
+					this.CharacterAnimation.Play("idleFrown_00");
+				}
+				else if (this.StudentID == 69)
+				{
+					this.CharacterAnimation.Play("idleFrown_00");
 				}
 				else if (this.StudentID == 76)
 				{
@@ -1012,79 +1061,82 @@ public class CosmeticScript : MonoBehaviour
 		{
 			this.MaleAccessories[this.Accessory].SetActive(true);
 		}
-		if (this.Club < ClubType.Gaming && this.ClubAccessories[(int)this.Club] != null && !ClubGlobals.GetClubClosed(this.Club) && this.StudentID != 26)
+		if (!this.Empty)
 		{
-			this.ClubAccessories[(int)this.Club].SetActive(true);
-		}
-		if (this.StudentID == 36)
-		{
-			this.ClubAccessories[(int)this.Club].SetActive(true);
-		}
-		if (this.Club == ClubType.Cooking)
-		{
-			this.ClubAccessories[(int)this.Club].SetActive(false);
-			this.ClubAccessories[(int)this.Club] = this.Kerchiefs[this.StudentID];
-			if (!ClubGlobals.GetClubClosed(this.Club))
+			if (this.Club < ClubType.Gaming && this.ClubAccessories[(int)this.Club] != null && !ClubGlobals.GetClubClosed(this.Club) && this.StudentID != 26)
 			{
 				this.ClubAccessories[(int)this.Club].SetActive(true);
 			}
-		}
-		else if (this.Club == ClubType.Drama)
-		{
-			this.ClubAccessories[(int)this.Club].SetActive(false);
-			this.ClubAccessories[(int)this.Club] = this.Roses[this.StudentID];
-			if (!ClubGlobals.GetClubClosed(this.Club))
+			if (this.StudentID == 36)
 			{
 				this.ClubAccessories[(int)this.Club].SetActive(true);
 			}
-		}
-		else if (this.Club == ClubType.Art)
-		{
-			this.ClubAccessories[(int)this.Club].GetComponent<MeshFilter>().sharedMesh = this.Berets[this.StudentID];
-		}
-		else if (this.Club == ClubType.Science)
-		{
-			this.ClubAccessories[(int)this.Club].SetActive(false);
-			this.ClubAccessories[(int)this.Club] = this.Scanners[this.StudentID];
-			if (!ClubGlobals.GetClubClosed(this.Club))
+			if (this.Club == ClubType.Cooking)
 			{
-				this.ClubAccessories[(int)this.Club].SetActive(true);
+				this.ClubAccessories[(int)this.Club].SetActive(false);
+				this.ClubAccessories[(int)this.Club] = this.Kerchiefs[this.StudentID];
+				if (!ClubGlobals.GetClubClosed(this.Club))
+				{
+					this.ClubAccessories[(int)this.Club].SetActive(true);
+				}
 			}
-		}
-		else if (this.Club == ClubType.LightMusic)
-		{
-			this.ClubAccessories[(int)this.Club].SetActive(false);
-			this.ClubAccessories[(int)this.Club] = this.MusicNotes[this.StudentID - 50];
-			if (!ClubGlobals.GetClubClosed(this.Club))
+			else if (this.Club == ClubType.Drama)
 			{
-				this.ClubAccessories[(int)this.Club].SetActive(true);
+				this.ClubAccessories[(int)this.Club].SetActive(false);
+				this.ClubAccessories[(int)this.Club] = this.Roses[this.StudentID];
+				if (!ClubGlobals.GetClubClosed(this.Club))
+				{
+					this.ClubAccessories[(int)this.Club].SetActive(true);
+				}
 			}
-		}
-		else if (this.Club == ClubType.Sports)
-		{
-			this.ClubAccessories[(int)this.Club].SetActive(false);
-			this.ClubAccessories[(int)this.Club] = this.Goggles[this.StudentID];
-			if (!ClubGlobals.GetClubClosed(this.Club))
+			else if (this.Club == ClubType.Art)
 			{
-				this.ClubAccessories[(int)this.Club].SetActive(true);
+				this.ClubAccessories[(int)this.Club].GetComponent<MeshFilter>().sharedMesh = this.Berets[this.StudentID];
 			}
-		}
-		else if (this.Club == ClubType.Gardening)
-		{
-			this.ClubAccessories[(int)this.Club].SetActive(false);
-			this.ClubAccessories[(int)this.Club] = this.Flowers[this.StudentID];
-			if (!ClubGlobals.GetClubClosed(this.Club))
+			else if (this.Club == ClubType.Science)
 			{
-				this.ClubAccessories[(int)this.Club].SetActive(true);
+				this.ClubAccessories[(int)this.Club].SetActive(false);
+				this.ClubAccessories[(int)this.Club] = this.Scanners[this.StudentID];
+				if (!ClubGlobals.GetClubClosed(this.Club))
+				{
+					this.ClubAccessories[(int)this.Club].SetActive(true);
+				}
 			}
-		}
-		else if (this.Club == ClubType.Gaming)
-		{
-			this.ClubAccessories[(int)this.Club].SetActive(false);
-			this.ClubAccessories[(int)this.Club] = this.RedCloth[this.StudentID];
-			if (!ClubGlobals.GetClubClosed(this.Club) && this.ClubAccessories[(int)this.Club] != null)
+			else if (this.Club == ClubType.LightMusic)
 			{
-				this.ClubAccessories[(int)this.Club].SetActive(true);
+				this.ClubAccessories[(int)this.Club].SetActive(false);
+				this.ClubAccessories[(int)this.Club] = this.MusicNotes[this.StudentID - 50];
+				if (!ClubGlobals.GetClubClosed(this.Club))
+				{
+					this.ClubAccessories[(int)this.Club].SetActive(true);
+				}
+			}
+			else if (this.Club == ClubType.Sports)
+			{
+				this.ClubAccessories[(int)this.Club].SetActive(false);
+				this.ClubAccessories[(int)this.Club] = this.Goggles[this.StudentID];
+				if (!ClubGlobals.GetClubClosed(this.Club))
+				{
+					this.ClubAccessories[(int)this.Club].SetActive(true);
+				}
+			}
+			else if (this.Club == ClubType.Gardening)
+			{
+				this.ClubAccessories[(int)this.Club].SetActive(false);
+				this.ClubAccessories[(int)this.Club] = this.Flowers[this.StudentID];
+				if (!ClubGlobals.GetClubClosed(this.Club))
+				{
+					this.ClubAccessories[(int)this.Club].SetActive(true);
+				}
+			}
+			else if (this.Club == ClubType.Gaming)
+			{
+				this.ClubAccessories[(int)this.Club].SetActive(false);
+				this.ClubAccessories[(int)this.Club] = this.RedCloth[this.StudentID];
+				if (!ClubGlobals.GetClubClosed(this.Club) && this.ClubAccessories[(int)this.Club] != null)
+				{
+					this.ClubAccessories[(int)this.Club].SetActive(true);
+				}
 			}
 		}
 		if (this.StudentID == 36 && TaskGlobals.GetTaskStatus(36) == 3)
@@ -1211,6 +1263,10 @@ public class CosmeticScript : MonoBehaviour
 				this.RightEyeRenderer.material.mainTexture = this.HairRenderer.material.mainTexture;
 				this.LeftEyeRenderer.material.mainTexture = this.HairRenderer.material.mainTexture;
 				this.FaceTexture = this.HairRenderer.material.mainTexture;
+				if (this.Empty)
+				{
+					this.FaceTexture = this.GrayFace;
+				}
 				this.CustomHair = true;
 			}
 			if (!this.CustomHair)
@@ -1460,6 +1516,14 @@ public class CosmeticScript : MonoBehaviour
 		{
 			this.SkinColor = 4;
 		}
+		if (this.Empty)
+		{
+			this.UniformTexture = this.MaleUniformTextures[7];
+			this.CasualTexture = this.MaleCasualTextures[7];
+			this.SocksTexture = this.MaleSocksTextures[7];
+			this.FaceTexture = this.GrayFace;
+			this.SkinColor = 7;
+		}
 		if (!this.Student.Indoors)
 		{
 			this.MyRenderer.materials[this.FaceID].mainTexture = this.FaceTexture;
@@ -1513,6 +1577,12 @@ public class CosmeticScript : MonoBehaviour
 			this.UniformTexture = this.FemaleUniformTextures[7];
 			this.CasualTexture = this.FemaleCasualTextures[7];
 			this.SocksTexture = this.FemaleSocksTextures[7];
+		}
+		if (this.Empty)
+		{
+			this.UniformTexture = this.FemaleUniformTextures[8];
+			this.CasualTexture = this.FemaleCasualTextures[8];
+			this.SocksTexture = this.FemaleSocksTextures[8];
 		}
 		if (!this.Cutscene)
 		{

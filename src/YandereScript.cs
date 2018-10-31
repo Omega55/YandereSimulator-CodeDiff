@@ -12,7 +12,7 @@ public class YandereScript : MonoBehaviour
 
 	private GameObject NewTrail;
 
-	private int AccessoryID;
+	public int AccessoryID;
 
 	private int ID;
 
@@ -104,9 +104,11 @@ public class YandereScript : MonoBehaviour
 
 	public SubtitleScript Subtitle;
 
-	public UIPanel DetectionPanel;
-
 	public StudentScript Follower;
+
+	public DemonScript EmptyDemon;
+
+	public UIPanel DetectionPanel;
 
 	public JukeboxScript Jukebox;
 
@@ -222,6 +224,8 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject Microphone;
 
+	public GameObject SpiderLegs;
+
 	public GameObject AlarmDisc;
 
 	public GameObject Character;
@@ -231,6 +235,10 @@ public class YandereScript : MonoBehaviour
 	public GameObject EyepatchL;
 
 	public GameObject EyepatchR;
+
+	public GameObject EmptyHusk;
+
+	public GameObject Handcuffs;
 
 	public GameObject ShoePair;
 
@@ -434,6 +442,8 @@ public class YandereScript : MonoBehaviour
 
 	public bool Dismembering;
 
+	public bool ShootingBeam;
+
 	public bool TimeSkipping;
 
 	public bool Cauterizing;
@@ -537,6 +547,8 @@ public class YandereScript : MonoBehaviour
 	public bool NearSenpai;
 
 	public bool RivalPhone;
+
+	public bool SpiderGrow;
 
 	public bool Possessed;
 
@@ -1068,13 +1080,21 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject KLKSword;
 
+	public AudioClip LoveLoveBeamVoice;
+
 	public GameObject MiyukiCostume;
+
+	public GameObject LoveLoveBeam;
 
 	public GameObject MiyukiWings;
 
 	public Texture MiyukiSkin;
 
 	public Texture MiyukiFace;
+
+	public bool MagicalGirl;
+
+	public int BeamPhase;
 
 	public GameObject AzurGuns;
 
@@ -1142,6 +1162,7 @@ public class YandereScript : MonoBehaviour
 
 	private void Start()
 	{
+		this.SpiderLegs.SetActive(GameGlobals.EmptyDemon);
 		this.MyRenderer.materials[2].SetFloat("_BlendAmount1", 0f);
 		this.CharacterAnimation = this.Character.GetComponent<Animation>();
 		this.GreyTarget = 1f - SchoolGlobals.SchoolAtmosphere;
@@ -1201,6 +1222,7 @@ public class YandereScript : MonoBehaviour
 		this.FalconGun.SetActive(false);
 		this.EyepatchL.SetActive(false);
 		this.EyepatchR.SetActive(false);
+		this.Handcuffs.SetActive(false);
 		this.ZipTie[0].SetActive(false);
 		this.ZipTie[1].SetActive(false);
 		this.Shoes[0].SetActive(false);
@@ -1886,7 +1908,18 @@ public class YandereScript : MonoBehaviour
 				{
 					if (Input.GetButton("RB"))
 					{
-						if (this.BlackRobe.activeInHierarchy)
+						if (this.MagicalGirl)
+						{
+							if (Input.GetButtonDown("RB") && !this.ShootingBeam)
+							{
+								AudioSource.PlayClipAtPoint(this.LoveLoveBeamVoice, base.transform.position);
+								this.CharacterAnimation["f02_LoveLoveBeam_00"].time = 0f;
+								this.CharacterAnimation.CrossFade("f02_LoveLoveBeam_00");
+								this.ShootingBeam = true;
+								this.CanMove = false;
+							}
+						}
+						else if (this.BlackRobe.activeInHierarchy)
 						{
 							if (Input.GetButtonDown("RB"))
 							{
@@ -1916,6 +1949,19 @@ public class YandereScript : MonoBehaviour
 								this.CanMove = false;
 								this.SithPrefix = "Hard";
 							}
+						}
+						else if (Input.GetButtonDown("RB") && this.SpiderLegs.activeInHierarchy)
+						{
+							this.SpiderGrow = !this.SpiderGrow;
+							if (this.SpiderGrow)
+							{
+								AudioSource.PlayClipAtPoint(this.EmptyDemon.MouthOpen, base.transform.position);
+							}
+							else
+							{
+								AudioSource.PlayClipAtPoint(this.EmptyDemon.MouthClose, base.transform.position);
+							}
+							this.StudentManager.UpdateStudents();
 						}
 						this.YandereTimer += Time.deltaTime;
 						if (this.YandereTimer > 0.5f)
@@ -3544,6 +3590,21 @@ public class YandereScript : MonoBehaviour
 					this.BanchoFinisher.MyCollider.enabled = true;
 				}
 			}
+			if (this.ShootingBeam)
+			{
+				if (this.CharacterAnimation["f02_LoveLoveBeam_00"].time >= 2f && this.BeamPhase == 0)
+				{
+					UnityEngine.Object.Instantiate<GameObject>(this.LoveLoveBeam, base.transform.position, base.transform.rotation);
+					this.BeamPhase++;
+				}
+				if (this.CharacterAnimation["f02_LoveLoveBeam_00"].time >= this.CharacterAnimation["f02_LoveLoveBeam_00"].length)
+				{
+					this.ShootingBeam = false;
+					this.YandereTimer = 0f;
+					this.CanMove = true;
+					this.BeamPhase = 0;
+				}
+			}
 			if (this.CanMoveTimer > 0f)
 			{
 				this.CanMoveTimer = Mathf.MoveTowards(this.CanMoveTimer, 0f, Time.deltaTime);
@@ -4883,6 +4944,24 @@ public class YandereScript : MonoBehaviour
 				}
 			}
 		}
+		if (this.SpiderLegs.activeInHierarchy)
+		{
+			if (this.SpiderGrow)
+			{
+				if (this.SpiderLegs.transform.localScale.x < 0.49f)
+				{
+					this.SpiderLegs.transform.localScale = Vector3.Lerp(this.SpiderLegs.transform.localScale, new Vector3(0.5f, 0.5f, 0.5f), Time.deltaTime * 5f);
+					SchoolGlobals.SchoolAtmosphere = 1f - this.SpiderLegs.transform.localScale.x;
+					this.StudentManager.SetAtmosphere();
+				}
+			}
+			else if (this.SpiderLegs.transform.localScale.x > 0.01f)
+			{
+				this.SpiderLegs.transform.localScale = Vector3.Lerp(this.SpiderLegs.transform.localScale, new Vector3(0f, 0f, 0f), Time.deltaTime * 5f);
+				SchoolGlobals.SchoolAtmosphere = 1f - this.SpiderLegs.transform.localScale.x;
+				this.StudentManager.SetAtmosphere();
+			}
+		}
 	}
 
 	public void StainWeapon()
@@ -5938,9 +6017,14 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.materials[0].mainTexture = this.MiyukiFace;
 		this.MyRenderer.materials[1].mainTexture = this.MiyukiSkin;
 		this.MyRenderer.materials[2].mainTexture = this.MiyukiSkin;
+		this.OriginalIdleAnim = this.IdleAnim;
+		this.OriginalWalkAnim = this.WalkAnim;
+		this.OriginalRunAnim = this.RunAnim;
 		this.TheDebugMenuScript.UpdateCensor();
+		this.Jukebox.MiyukiMusic();
 		this.Hairstyle = 171;
 		this.UpdateHair();
+		this.MagicalGirl = true;
 		this.Egg = true;
 	}
 
@@ -6148,7 +6232,7 @@ public class YandereScript : MonoBehaviour
 		}
 	}
 
-	private void UpdateAccessory()
+	public void UpdateAccessory()
 	{
 		if (this.AccessoryGroup != null)
 		{

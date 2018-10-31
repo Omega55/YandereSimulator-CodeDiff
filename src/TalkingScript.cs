@@ -37,6 +37,10 @@ public class TalkingScript : MonoBehaviour
 			{
 				this.ClubBonus = 0;
 			}
+			if (GameGlobals.EmptyDemon)
+			{
+				this.ClubBonus = (int)(this.S.Club * (ClubType)(-1));
+			}
 			if (this.S.Interaction == StudentInteractionType.Idle)
 			{
 				if (!this.Fake)
