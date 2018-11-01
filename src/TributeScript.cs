@@ -28,32 +28,35 @@ public class TributeScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown(this.Letter[this.ID]))
+		if (!this.Yandere.PauseScreen.Show)
 		{
-			this.ID++;
-			if (this.ID == this.Letter.Length)
+			if (Input.GetKeyDown(this.Letter[this.ID]))
 			{
-				this.Rainey.SetActive(true);
-				base.enabled = false;
+				this.ID++;
+				if (this.ID == this.Letter.Length)
+				{
+					this.Rainey.SetActive(true);
+					base.enabled = false;
+				}
 			}
-		}
-		if (Input.GetKeyDown(this.AzurLane[this.AzurID]))
-		{
-			this.AzurID++;
-			if (this.AzurID == this.AzurLane.Length)
+			if (Input.GetKeyDown(this.AzurLane[this.AzurID]))
 			{
-				this.Yandere.AzurLane();
-				base.enabled = false;
+				this.AzurID++;
+				if (this.AzurID == this.AzurLane.Length)
+				{
+					this.Yandere.AzurLane();
+					base.enabled = false;
+				}
 			}
-		}
-		if (this.Yandere.Armed && this.Yandere.EquippedWeapon.WeaponID == 14 && Input.GetKeyDown(this.MiyukiLetters[this.MiyukiID]))
-		{
-			this.MiyukiID++;
-			if (this.MiyukiID == this.MiyukiLetters.Length)
+			if (this.Yandere.Armed && this.Yandere.EquippedWeapon.WeaponID == 14 && Input.GetKeyDown(this.MiyukiLetters[this.MiyukiID]))
 			{
-				this.Henshin.TransformYandere();
-				this.Yandere.CanMove = false;
-				base.enabled = false;
+				this.MiyukiID++;
+				if (this.MiyukiID == this.MiyukiLetters.Length)
+				{
+					this.Henshin.TransformYandere();
+					this.Yandere.CanMove = false;
+					base.enabled = false;
+				}
 			}
 		}
 	}

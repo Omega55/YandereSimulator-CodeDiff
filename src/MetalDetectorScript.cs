@@ -123,6 +123,7 @@ public class MetalDetectorScript : MonoBehaviour
 					this.Yandere.StudentManager.StopMoving();
 					this.Yandere.Blur.blurIterations = 1;
 					this.Yandere.Jukebox.Volume = 0f;
+					Time.timeScale = 1f;
 				}
 			}
 		}

@@ -277,6 +277,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform LyricsSpot;
 
+	public Transform MainCamera;
+
 	public Transform SuitorSpot;
 
 	public Transform ToolTarget;
@@ -964,7 +966,7 @@ public class StudentManagerScript : MonoBehaviour
 							}
 							else if (this.Yandere.SpiderGrow)
 							{
-								if (!studentScript.Armband.activeInHierarchy)
+								if (!studentScript.Cosmetic.Empty)
 								{
 									studentScript.Prompt.Label[0].text = "     Send Husk";
 								}
@@ -1237,7 +1239,10 @@ public class StudentManagerScript : MonoBehaviour
 						studentScript.WalkAnim = studentScript.OriginalWalkAnim;
 						studentScript.Character.transform.localPosition = new Vector3(0f, 0f, 0f);
 						studentScript.Cosmetic.Goggles[studentScript.StudentID].GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, 0f);
-						studentScript.Cosmetic.MaleHair[studentScript.Cosmetic.Hairstyle].GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, 0f);
+						if (!studentScript.Cosmetic.Empty)
+						{
+							studentScript.Cosmetic.MaleHair[studentScript.Cosmetic.Hairstyle].GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, 0f);
+						}
 					}
 					if (studentScript.MyPlate != null && studentScript.MyPlate.transform.parent == studentScript.RightHand)
 					{

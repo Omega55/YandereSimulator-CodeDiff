@@ -1910,7 +1910,7 @@ public class YandereScript : MonoBehaviour
 					{
 						if (this.MagicalGirl)
 						{
-							if (Input.GetButtonDown("RB") && !this.ShootingBeam)
+							if (this.Armed && this.EquippedWeapon.WeaponID == 14 && Input.GetButtonDown("RB") && !this.ShootingBeam)
 							{
 								AudioSource.PlayClipAtPoint(this.LoveLoveBeamVoice, base.transform.position);
 								this.CharacterAnimation["f02_LoveLoveBeam_00"].time = 0f;
@@ -3592,12 +3592,12 @@ public class YandereScript : MonoBehaviour
 			}
 			if (this.ShootingBeam)
 			{
-				if (this.CharacterAnimation["f02_LoveLoveBeam_00"].time >= 2f && this.BeamPhase == 0)
+				if (this.CharacterAnimation["f02_LoveLoveBeam_00"].time >= 1.5f && this.BeamPhase == 0)
 				{
 					UnityEngine.Object.Instantiate<GameObject>(this.LoveLoveBeam, base.transform.position, base.transform.rotation);
 					this.BeamPhase++;
 				}
-				if (this.CharacterAnimation["f02_LoveLoveBeam_00"].time >= this.CharacterAnimation["f02_LoveLoveBeam_00"].length)
+				if (this.CharacterAnimation["f02_LoveLoveBeam_00"].time >= this.CharacterAnimation["f02_LoveLoveBeam_00"].length - 1f)
 				{
 					this.ShootingBeam = false;
 					this.YandereTimer = 0f;
@@ -4955,7 +4955,7 @@ public class YandereScript : MonoBehaviour
 					this.StudentManager.SetAtmosphere();
 				}
 			}
-			else if (this.SpiderLegs.transform.localScale.x > 0.01f)
+			else if (this.SpiderLegs.transform.localScale.x > 0.001f)
 			{
 				this.SpiderLegs.transform.localScale = Vector3.Lerp(this.SpiderLegs.transform.localScale, new Vector3(0f, 0f, 0f), Time.deltaTime * 5f);
 				SchoolGlobals.SchoolAtmosphere = 1f - this.SpiderLegs.transform.localScale.x;

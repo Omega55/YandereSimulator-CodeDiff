@@ -375,6 +375,7 @@ public class VoidGoddessScript : MonoBehaviour
 			if (Input.GetKeyDown(KeyCode.Z))
 			{
 				this.StudentManager.Students[this.Selected].transform.position = this.Prompt.Yandere.transform.position + this.Prompt.Yandere.transform.forward;
+				Physics.SyncTransforms();
 			}
 			if (Input.GetKeyDown(KeyCode.X))
 			{

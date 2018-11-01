@@ -249,6 +249,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public Transform LeftTemple;
 
+	public Transform Head;
+
 	public Color CorrectColor;
 
 	public Color ColorValue;
@@ -266,6 +268,8 @@ public class CosmeticScript : MonoBehaviour
 	public bool CustomEyes;
 
 	public bool CustomHair;
+
+	public bool LookCamera;
 
 	public bool HomeScene;
 
@@ -520,6 +524,7 @@ public class CosmeticScript : MonoBehaviour
 				{
 					this.CharacterAnimation.Play("f02_idleShort_00");
 					base.transform.position = new Vector3(0.015f, 0f, 0f);
+					this.LookCamera = true;
 				}
 				else if (this.StudentID == 5)
 				{
@@ -541,6 +546,18 @@ public class CosmeticScript : MonoBehaviour
 				{
 					this.CharacterAnimation.Play("f02_idleGirly_00");
 					this.CharacterAnimation["f02_idleGirly_00"].time = 0f;
+				}
+				else if (this.StudentID == 34)
+				{
+					this.CharacterAnimation.Play("f02_idleShort_00");
+					base.transform.position = new Vector3(0.015f, 0f, 0f);
+					this.LookCamera = true;
+				}
+				else if (this.StudentID == 35)
+				{
+					this.CharacterAnimation.Play("f02_idleShort_00");
+					base.transform.position = new Vector3(0.015f, 0f, 0f);
+					this.LookCamera = true;
 				}
 				else if (this.StudentID == 38)
 				{
@@ -574,11 +591,13 @@ public class CosmeticScript : MonoBehaviour
 				{
 					this.CharacterAnimation.Play("f02_idleShort_00");
 					base.transform.position = new Vector3(0.015f, 0f, 0f);
+					this.LookCamera = true;
 				}
 				else if (this.StudentID == 65)
 				{
 					this.CharacterAnimation.Play("f02_idleShort_00");
 					base.transform.position = new Vector3(0.015f, 0f, 0f);
+					this.LookCamera = true;
 				}
 				else if (this.StudentID == 71)
 				{
@@ -626,10 +645,11 @@ public class CosmeticScript : MonoBehaviour
 				{
 					this.CharacterAnimation.Play("f02_galPose_04");
 				}
-				else
+				else if (this.Club != ClubType.Council)
 				{
 					this.CharacterAnimation.Play("f02_idleShort_01");
 					base.transform.position = new Vector3(0.015f, 0f, 0f);
+					this.LookCamera = true;
 				}
 			}
 		}
@@ -1363,7 +1383,7 @@ public class CosmeticScript : MonoBehaviour
 		}
 		if (this.StudentID == 2)
 		{
-			if (SchemeGlobals.GetSchemeStage(2) == 2)
+			if (SchemeGlobals.GetSchemeStage(2) == 2 || SchemeGlobals.GetSchemeStage(2) == 100)
 			{
 				this.FemaleAccessories[3].SetActive(false);
 			}
@@ -2031,6 +2051,14 @@ public class CosmeticScript : MonoBehaviour
 	{
 		if (StudentGlobals.FemaleUniform != 1 || this.EyeType == "Gentle")
 		{
+		}
+	}
+
+	public void LateUpdate()
+	{
+		if (this.TakingPortrait && this.LookCamera)
+		{
+			this.Head.LookAt(this.StudentManager.MainCamera);
 		}
 	}
 }

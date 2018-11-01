@@ -5804,7 +5804,10 @@ public class StudentScript : MonoBehaviour
 				}
 				if (this.Phase < this.ScheduleBlocks.Length - 1 && (this.Clock.HourTime >= this.ScheduleBlocks[this.Phase].time || this.StudentManager.LockerRoomArea.bounds.Contains(this.Yandere.transform.position) || this.StudentManager.WestBathroomArea.bounds.Contains(this.Yandere.transform.position) || this.StudentManager.EastBathroomArea.bounds.Contains(this.Yandere.transform.position)))
 				{
-					this.Phase++;
+					if (this.Clock.HourTime >= this.ScheduleBlocks[this.Phase].time)
+					{
+						this.Phase++;
+					}
 					this.CurrentDestination = this.Destinations[this.Phase];
 					this.Pathfinding.target = this.Destinations[this.Phase];
 					this.Hearts.emission.enabled = false;
@@ -7687,7 +7690,7 @@ public class StudentScript : MonoBehaviour
 				}
 				else if (this.Yandere.SpiderGrow)
 				{
-					if (!this.Eaten && !this.Armband.activeInHierarchy)
+					if (!this.Eaten && !this.Cosmetic.Empty)
 					{
 						AudioSource.PlayClipAtPoint(this.Yandere.SixTakedown, base.transform.position);
 						AudioSource.PlayClipAtPoint(this.Yandere.Snarls[UnityEngine.Random.Range(0, this.Yandere.Snarls.Length)], base.transform.position);
@@ -7696,9 +7699,19 @@ public class StudentScript : MonoBehaviour
 						gameObject3.transform.LookAt(base.transform.position);
 						this.CharacterAnimation.CrossFade(this.EatVictimAnim);
 						this.Pathfinding.enabled = false;
+						this.Distracted = false;
 						this.Routine = false;
 						this.Dying = true;
 						this.Eaten = true;
+						if (this.Investigating)
+						{
+							this.StopInvestigating();
+						}
+						if (this.Following)
+						{
+							this.Yandere.Followers--;
+							this.Following = false;
+						}
 						GameObject gameObject4 = UnityEngine.Object.Instantiate<GameObject>(this.EmptyGameObject, base.transform.position, Quaternion.identity);
 					}
 				}

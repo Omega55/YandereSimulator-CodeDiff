@@ -12,7 +12,7 @@ public static class GameGlobals
 
 	private const string Str_HardMode = "HardMode";
 
-	private const string Str_EmptyDemon = "HardMode";
+	private const string Str_EmptyDemon = "EmptyDemon";
 
 	public static bool LoveSick
 	{
@@ -78,11 +78,11 @@ public static class GameGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("HardMode");
+			return GlobalsHelper.GetBool("EmptyDemon");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("HardMode", value);
+			GlobalsHelper.SetBool("EmptyDemon", value);
 		}
 	}
 
@@ -92,6 +92,6 @@ public static class GameGlobals
 		Globals.Delete("MasksBanned");
 		Globals.Delete("Paranormal");
 		Globals.Delete("HardMode");
-		Globals.Delete("HardMode");
+		Globals.Delete("EmptyDemon");
 	}
 }

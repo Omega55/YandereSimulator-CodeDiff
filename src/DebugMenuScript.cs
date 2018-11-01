@@ -565,6 +565,9 @@ public class DebugMenuScript : MonoBehaviour
 						this.WeaponManager.Weapons[2].FingerprintID = 4;
 						this.WeaponManager.Weapons[2].Victims[5] = true;
 					}
+					else if (Input.GetKeyDown(KeyCode.J))
+					{
+					}
 				}
 			}
 			else
