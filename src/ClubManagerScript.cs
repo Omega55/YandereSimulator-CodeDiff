@@ -157,6 +157,7 @@ public class ClubManagerScript : MonoBehaviour
 		{
 			if (ClubGlobals.GetClubClosed(this.ClubArray[this.ID]))
 			{
+				Debug.Log(this.ClubArray[this.ID] + " is closed.");
 				if (this.ClubArray[this.ID] == ClubType.Gardening)
 				{
 					this.ClubPatrolPoints[this.ID].transform.position = new Vector3(-56f, this.ClubPatrolPoints[this.ID].transform.position.y, this.ClubPatrolPoints[this.ID].transform.position.z);

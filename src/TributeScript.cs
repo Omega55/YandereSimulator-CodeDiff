@@ -28,7 +28,7 @@ public class TributeScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (!this.Yandere.PauseScreen.Show)
+		if (!MissionModeGlobals.MissionMode && !this.Yandere.PauseScreen.Show)
 		{
 			if (Input.GetKeyDown(this.Letter[this.ID]))
 			{

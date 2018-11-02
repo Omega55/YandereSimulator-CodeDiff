@@ -93,7 +93,10 @@ public class PickUpScript : MonoBehaviour
 		}
 		this.OriginalColor = this.Outline[0].color;
 		this.OriginalScale = base.transform.localScale;
-		this.MyRigidbody = base.GetComponent<Rigidbody>();
+		if (this.MyRigidbody == null)
+		{
+			this.MyRigidbody = base.GetComponent<Rigidbody>();
+		}
 	}
 
 	private void LateUpdate()
@@ -177,12 +180,22 @@ public class PickUpScript : MonoBehaviour
 				UnityEngine.Object.Destroy(base.gameObject);
 			}
 		}
-		if (this.MyRigidbody != null && !this.MyRigidbody.isKinematic)
+		if (this.Yandere.PickUp != this && !this.MyRigidbody.isKinematic)
 		{
 			this.KinematicTimer = Mathf.MoveTowards(this.KinematicTimer, 5f, Time.deltaTime);
 			if (this.KinematicTimer == 5f)
 			{
 				this.MyRigidbody.isKinematic = true;
+				this.KinematicTimer = 0f;
+			}
+			if (base.transform.position.x > -89f && base.transform.position.x < -79f && base.transform.position.z > -13.5f && base.transform.position.z < -3.5f)
+			{
+				base.transform.position = new Vector3(-80.75f, 1f, -2.75f);
+				this.KinematicTimer = 0f;
+			}
+			if (base.transform.position.x > -46f && base.transform.position.x < -18f && base.transform.position.z > 66f && base.transform.position.z < 78f)
+			{
+				base.transform.position = new Vector3(-16f, 5f, 72f);
 				this.KinematicTimer = 0f;
 			}
 		}
@@ -272,6 +285,7 @@ public class PickUpScript : MonoBehaviour
 			this.Yandere.NearBodies++;
 		}
 		this.Yandere.StudentManager.UpdateStudents();
+		this.MyRigidbody.isKinematic = true;
 		this.KinematicTimer = 0f;
 	}
 

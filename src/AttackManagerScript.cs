@@ -686,13 +686,10 @@ public class AttackManagerScript : MonoBehaviour
 
 	private void CheckForSpecialCase(WeaponScript weapon)
 	{
-		if (weapon.WeaponID == 8)
+		if (weapon.WeaponID == 8 && GameGlobals.Paranormal)
 		{
 			this.Yandere.TargetStudent.Ragdoll.Sacrifice = true;
-			if (GameGlobals.Paranormal)
-			{
-				weapon.Effect();
-			}
+			weapon.Effect();
 		}
 	}
 }

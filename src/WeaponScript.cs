@@ -249,24 +249,23 @@ public class WeaponScript : MonoBehaviour
 				}
 			}
 		}
-		else
+		else if (!this.MyRigidbody.isKinematic)
 		{
-			if (!this.MyRigidbody.isKinematic)
+			this.KinematicTimer = Mathf.MoveTowards(this.KinematicTimer, 5f, Time.deltaTime);
+			if (this.KinematicTimer == 5f)
 			{
-				this.KinematicTimer = Mathf.MoveTowards(this.KinematicTimer, 5f, Time.deltaTime);
-				if (this.KinematicTimer == 5f)
-				{
-					this.MyRigidbody.isKinematic = true;
-					this.KinematicTimer = 0f;
-				}
+				this.MyRigidbody.isKinematic = true;
+				this.KinematicTimer = 0f;
 			}
 			if (base.transform.position.x > -89f && base.transform.position.x < -79f && base.transform.position.z > -13.5f && base.transform.position.z < -3.5f)
 			{
 				base.transform.position = new Vector3(-80.75f, 1f, -2.75f);
+				this.KinematicTimer = 0f;
 			}
-			if (base.transform.position.x > -21f && base.transform.position.x < 21f && base.transform.position.z > 79f && base.transform.position.z < 121f)
+			if (base.transform.position.x > -46f && base.transform.position.x < -18f && base.transform.position.z > 66f && base.transform.position.z < 78f)
 			{
-				base.transform.position = new Vector3(0f, 1f, 79f);
+				base.transform.position = new Vector3(-16f, 5f, 72f);
+				this.KinematicTimer = 0f;
 			}
 		}
 		if (this.Rotate)

@@ -83,6 +83,7 @@ public class HenshinScript : MonoBehaviour
 		this.Cameras[5].SetActive(false);
 		this.Cameras[6].SetActive(false);
 		this.MiyukiCamera.targetTexture = null;
+		this.MiyukiCamera.enabled = true;
 		this.Listener.enabled = true;
 		this.OriginalPosition = this.Yandere.transform.position;
 		this.OriginalRotation = this.Yandere.transform.rotation;
@@ -149,22 +150,7 @@ public class HenshinScript : MonoBehaviour
 			this.MyAudio.pitch += 1f;
 			Time.timeScale += 1f;
 		}
-		if (this.Debugging)
-		{
-			if (Input.GetKeyDown("="))
-			{
-				Time.timeScale += 1f;
-			}
-			else if (Input.GetKeyDown("-"))
-			{
-				Time.timeScale -= 1f;
-			}
-		}
-		if (Vector3.Distance(this.Yandere.transform.position, this.TV.position) > 15f)
-		{
-			this.MiyukiCamera.enabled = false;
-		}
-		else
+		if (this.TransformingYandere || Vector3.Distance(this.Yandere.transform.position, this.TV.position) < 15f)
 		{
 			this.MiyukiCamera.enabled = true;
 			if (this.Phase < 3)
@@ -331,6 +317,10 @@ public class HenshinScript : MonoBehaviour
 					}
 				}
 			}
+		}
+		else
+		{
+			this.MiyukiCamera.enabled = false;
 		}
 	}
 }

@@ -1025,7 +1025,7 @@ public class StudentManagerScript : MonoBehaviour
 								studentScript.Prompt.HideButton[0] = true;
 							}
 						}
-						else if (studentScript.Persona != PersonaType.Fragile)
+						else if (!studentScript.FragileSlave)
 						{
 							if (this.Yandere.Armed)
 							{

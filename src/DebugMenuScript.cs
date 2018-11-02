@@ -338,8 +338,8 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					else if (Input.GetKeyDown(KeyCode.K))
 					{
-						SchoolGlobals.KidnapVictim = 25;
-						StudentGlobals.SetStudentSlave(25);
+						SchoolGlobals.KidnapVictim = 5;
+						StudentGlobals.SetStudentSlave(5);
 						SceneManager.LoadScene("LoadingScene");
 					}
 					else if (Input.GetKeyDown(KeyCode.L))
