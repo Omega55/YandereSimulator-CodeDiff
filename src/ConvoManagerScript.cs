@@ -226,6 +226,54 @@ public class ConvoManagerScript : MonoBehaviour
 				this.ID++;
 			}
 		}
+		else if (StudentID > 60 && StudentID < 66)
+		{
+			this.ID = 61;
+			while (this.ID < 66)
+			{
+				if (this.ID != StudentID)
+				{
+					if (this.SM.Students[this.ID] != null)
+					{
+						if (this.SM.Students[this.ID].Routine && Vector3.Distance(this.SM.Students[this.ID].transform.position, this.SM.Students[StudentID].transform.position) < 2.66666f)
+						{
+							this.SM.Students[StudentID].Alone = false;
+							break;
+						}
+						this.SM.Students[StudentID].Alone = true;
+					}
+					else
+					{
+						this.SM.Students[StudentID].Alone = true;
+					}
+				}
+				this.ID++;
+			}
+		}
+		else if (StudentID > 65 && StudentID < 71)
+		{
+			this.ID = 66;
+			while (this.ID < 71)
+			{
+				if (this.ID != StudentID)
+				{
+					if (this.SM.Students[this.ID] != null)
+					{
+						if (this.SM.Students[this.ID].Routine && Vector3.Distance(this.SM.Students[this.ID].transform.position, this.SM.Students[StudentID].transform.position) < 2.66666f)
+						{
+							this.SM.Students[StudentID].Alone = false;
+							break;
+						}
+						this.SM.Students[StudentID].Alone = true;
+					}
+					else
+					{
+						this.SM.Students[StudentID].Alone = true;
+					}
+				}
+				this.ID++;
+			}
+		}
 		else if (StudentID > 75 && StudentID < 81)
 		{
 			this.ID = 76;

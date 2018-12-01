@@ -42,6 +42,7 @@ public enum SubtitleType
 	ClubPractice,
 	ClubPracticeYes,
 	ClubPracticeNo,
+	CleaningApology,
 	CorpseReaction,
 	CowardGrudge,
 	CowardMurderReaction,

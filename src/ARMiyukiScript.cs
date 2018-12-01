@@ -39,6 +39,10 @@ public class ARMiyukiScript : MonoBehaviour
 
 	public void Shoot()
 	{
+		if (this.Enemy == null)
+		{
+			this.Enemy = this.MyStudent.StudentManager.MiyukiCat;
+		}
 		base.transform.LookAt(this.Enemy.position);
 		UnityEngine.Object.Instantiate<GameObject>(this.Bullet, this.BulletSpawnPoint.position, base.transform.rotation);
 	}

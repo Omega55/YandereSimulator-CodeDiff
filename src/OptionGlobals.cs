@@ -33,6 +33,8 @@ public static class OptionGlobals
 
 	private const string Str_Sensitivity = "Sensitivity";
 
+	private const string Str_InvertAxis = "InvertAxis";
+
 	public static bool DisableBloom
 	{
 		get
@@ -213,6 +215,18 @@ public static class OptionGlobals
 		}
 	}
 
+	public static bool InvertAxis
+	{
+		get
+		{
+			return GlobalsHelper.GetBool("InvertAxis");
+		}
+		set
+		{
+			GlobalsHelper.SetBool("InvertAxis", value);
+		}
+	}
+
 	public static void DeleteAll()
 	{
 		Globals.Delete("DisableBloom");
@@ -230,5 +244,6 @@ public static class OptionGlobals
 		Globals.Delete("RimLight");
 		Globals.Delete("DepthOfField");
 		Globals.Delete("Sensitivity");
+		Globals.Delete("InvertAxis");
 	}
 }

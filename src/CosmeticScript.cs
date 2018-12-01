@@ -119,6 +119,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public Texture[] NoseTextures;
 
+	public Texture[] CanTextures;
+
 	public Texture[] Trunks;
 
 	public Texture[] MusicStockings;
@@ -144,6 +146,8 @@ public class CosmeticScript : MonoBehaviour
 	public Renderer HoodieRenderer;
 
 	public Renderer HairRenderer;
+
+	public Renderer CanRenderer;
 
 	public Mesh DelinquentMesh;
 
@@ -250,6 +254,8 @@ public class CosmeticScript : MonoBehaviour
 	public Transform LeftTemple;
 
 	public Transform Head;
+
+	public Transform Neck;
 
 	public Color CorrectColor;
 
@@ -483,7 +489,11 @@ public class CosmeticScript : MonoBehaviour
 					this.ThickBrows.SetActive(true);
 				}
 			}
-			if (this.Club == ClubType.Bully)
+			if (this.Club == ClubType.Gardening)
+			{
+				this.CanRenderer.material.mainTexture = this.CanTextures[this.StudentID];
+			}
+			else if (this.Club == ClubType.Bully)
 			{
 				if (!this.Kidnapped)
 				{
@@ -520,7 +530,25 @@ public class CosmeticScript : MonoBehaviour
 			}
 			if (!this.Kidnapped && SceneManager.GetActiveScene().name == "PortraitScene")
 			{
-				if (this.StudentID == 4)
+				if (this.StudentID == 2)
+				{
+					this.CharacterAnimation.Play("succubus_a_idle_twins_01");
+					base.transform.position = new Vector3(0.094f, 0f, 0f);
+					this.LookCamera = true;
+					this.CharacterAnimation["f02_smile_00"].layer = 1;
+					this.CharacterAnimation.Play("f02_smile_00");
+					this.CharacterAnimation["f02_smile_00"].weight = 1f;
+				}
+				else if (this.StudentID == 3)
+				{
+					this.CharacterAnimation.Play("succubus_b_idle_twins_01");
+					base.transform.position = new Vector3(-0.332f, 0f, 0f);
+					this.LookCamera = true;
+					this.CharacterAnimation["f02_smile_00"].layer = 1;
+					this.CharacterAnimation.Play("f02_smile_00");
+					this.CharacterAnimation["f02_smile_00"].weight = 1f;
+				}
+				else if (this.StudentID == 4)
 				{
 					this.CharacterAnimation.Play("f02_idleShort_00");
 					base.transform.position = new Vector3(0.015f, 0f, 0f);
@@ -2058,6 +2086,7 @@ public class CosmeticScript : MonoBehaviour
 	{
 		if (this.TakingPortrait && this.LookCamera)
 		{
+			this.Neck.LookAt(this.StudentManager.MainCamera);
 			this.Head.LookAt(this.StudentManager.MainCamera);
 		}
 	}

@@ -35,6 +35,8 @@ public class SettingsScript : MonoBehaviour
 
 	public UILabel SensitivityLabel;
 
+	public UILabel InvertAxisLabel;
+
 	public int SelectionLimit = 2;
 
 	public int Selected = 1;
@@ -225,6 +227,15 @@ public class SettingsScript : MonoBehaviour
 			}
 			this.UpdateText();
 		}
+		else if (this.Selected == 13)
+		{
+			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
+			{
+				OptionGlobals.InvertAxis = !OptionGlobals.InvertAxis;
+				this.UpdateText();
+			}
+			this.UpdateText();
+		}
 		if (Input.GetKeyDown("l"))
 		{
 			OptionGlobals.ParticleCount = 1;
@@ -290,6 +301,7 @@ public class SettingsScript : MonoBehaviour
 		this.ShadowsLabel.text = ((!OptionGlobals.DisableShadows) ? "On" : "Off");
 		this.FarAnimsLabel.text = ((!OptionGlobals.DisableFarAnimations) ? "On" : "Off");
 		this.SensitivityLabel.text = string.Empty + OptionGlobals.Sensitivity;
+		this.InvertAxisLabel.text = ((!OptionGlobals.InvertAxis) ? "No" : "Yes");
 	}
 
 	private void UpdateHighlight()
@@ -302,7 +314,7 @@ public class SettingsScript : MonoBehaviour
 		{
 			this.Selected = 1;
 		}
-		this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 445f - 65f * (float)this.Selected, this.Highlight.localPosition.z);
+		this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 440f - 60f * (float)this.Selected, this.Highlight.localPosition.z);
 	}
 
 	public void ToggleBackground()

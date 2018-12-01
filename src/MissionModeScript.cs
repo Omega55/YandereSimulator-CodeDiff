@@ -460,6 +460,7 @@ public class MissionModeScript : MonoBehaviour
 					this.Yandere.HUD.alpha = Mathf.MoveTowards(this.Yandere.HUD.alpha, 1f, Time.deltaTime / 3f);
 					if (this.Yandere.HUD.alpha == 1f)
 					{
+						Debug.Log("Incrementing phase.");
 						this.Yandere.RPGCamera.enabled = true;
 						this.HeartbeatCamera.SetActive(true);
 						this.Yandere.CanMove = true;
@@ -665,7 +666,7 @@ public class MissionModeScript : MonoBehaviour
 			{
 				if (!this.Yandere.PauseScreen.Show)
 				{
-					this.TimeRemaining = Mathf.MoveTowards(this.TimeRemaining, 0f, 0.0166666675f);
+					this.TimeRemaining = Mathf.MoveTowards(this.TimeRemaining, 0f, Time.deltaTime);
 				}
 				int num2 = Mathf.CeilToInt(this.TimeRemaining);
 				int num3 = num2 / 60;

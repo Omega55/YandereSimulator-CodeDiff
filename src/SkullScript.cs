@@ -5,6 +5,8 @@ public class SkullScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
 
+	public VoidGoddessScript VoidGoddess;
+
 	public JukeboxScript Jukebox;
 
 	public YandereScript Yandere;
@@ -72,6 +74,7 @@ public class SkullScript : MonoBehaviour
 			this.Prompt.Circle[0].fillAmount = 1f;
 			if (!this.Yandere.Chased && this.Yandere.Chasers == 0)
 			{
+				this.VoidGoddess.Follow = false;
 				this.Yandere.EquippedWeapon.Drop();
 				this.Yandere.EquippedWeapon = null;
 				this.Yandere.Unequip();

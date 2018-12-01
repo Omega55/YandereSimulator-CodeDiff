@@ -82,6 +82,10 @@ public class CookingEventScript : MonoBehaviour
 		}
 		this.EventSubtitle.transform.localScale = Vector3.zero;
 		this.EventCheck = true;
+		if (ClubGlobals.GetClubClosed(ClubType.Cooking))
+		{
+			base.enabled = false;
+		}
 	}
 
 	private void Update()

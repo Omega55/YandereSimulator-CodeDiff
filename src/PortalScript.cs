@@ -165,9 +165,12 @@ public class PortalScript : MonoBehaviour
 			}
 			else if (this.Proceed)
 			{
+				Debug.Log("Proceeding.");
 				if (this.ClassDarkness.color.a >= 1f)
 				{
+					Debug.Log("Updating the time of day.");
 					this.HeartbeatCamera.SetActive(true);
+					this.Clock.enabled = true;
 					this.Yandere.FixCamera();
 					this.Yandere.RPGCamera.enabled = false;
 					if (this.Clock.HourTime < 13f)
@@ -194,11 +197,12 @@ public class PortalScript : MonoBehaviour
 				{
 					this.ClassDarkness.enabled = false;
 					this.ClassDarkness.color = new Color(this.ClassDarkness.color.r, this.ClassDarkness.color.g, this.ClassDarkness.color.b, 0f);
-					this.Yandere.RPGCamera.enabled = true;
 					this.Clock.StopTime = false;
-					this.Yandere.CanMove = true;
 					this.Transition = false;
+					this.Proceed = false;
+					this.Yandere.RPGCamera.enabled = true;
 					this.Yandere.InClass = false;
+					this.Yandere.CanMove = true;
 					this.StudentManager.ResumeMovement();
 					if (!MissionModeGlobals.MissionMode)
 					{

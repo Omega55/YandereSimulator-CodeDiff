@@ -145,6 +145,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] PickpocketApologies;
 
+	public string[] CleaningApologies;
+
 	public string[] Greetings;
 
 	public string[] PlayerFarewells;
@@ -1354,6 +1356,11 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.RandomID = UnityEngine.Random.Range(0, this.PickpocketApologies.Length);
 			this.Label.text = this.PickpocketApologies[this.RandomID];
+		}
+		else if (subtitleType == SubtitleType.CleaningApology)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.CleaningApologies.Length);
+			this.Label.text = this.CleaningApologies[this.RandomID];
 		}
 		else if (subtitleType == SubtitleType.RivalPickpocketReaction)
 		{

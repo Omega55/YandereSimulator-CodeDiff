@@ -257,9 +257,9 @@ public class WeaponScript : MonoBehaviour
 				this.MyRigidbody.isKinematic = true;
 				this.KinematicTimer = 0f;
 			}
-			if (base.transform.position.x > -89f && base.transform.position.x < -79f && base.transform.position.z > -13.5f && base.transform.position.z < -3.5f)
+			if (base.transform.position.x > -71f && base.transform.position.x < -61f && base.transform.position.z > -37.5f && base.transform.position.z < -27.5f)
 			{
-				base.transform.position = new Vector3(-80.75f, 1f, -2.75f);
+				base.transform.position = new Vector3(-63f, 1f, -26.5f);
 				this.KinematicTimer = 0f;
 			}
 			if (base.transform.position.x > -46f && base.transform.position.x < -18f && base.transform.position.z > 66f && base.transform.position.z < 78f)

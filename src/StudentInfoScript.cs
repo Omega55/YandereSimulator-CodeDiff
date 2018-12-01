@@ -45,6 +45,8 @@ public class StudentInfoScript : MonoBehaviour
 
 	public UILabel PersonaLabel;
 
+	public UILabel ClassLabel;
+
 	public UILabel CrushLabel;
 
 	public UILabel ClubLabel;
@@ -124,6 +126,13 @@ public class StudentInfoScript : MonoBehaviour
 	{
 		StudentJson studentJson = this.JSON.Students[ID];
 		this.NameLabel.text = studentJson.Name;
+		string text = string.Empty + studentJson.Class;
+		text = text.Insert(1, "-");
+		this.ClassLabel.text = "Class " + text;
+		if (studentJson.Name == "Unknown" || studentJson.Name == "Reserved" || ID == 90 || ID > 96)
+		{
+			this.ClassLabel.text = string.Empty;
+		}
 		if (StudentGlobals.GetStudentReputation(ID) < 0)
 		{
 			this.ReputationLabel.text = StudentGlobals.GetStudentReputation(ID).ToString();

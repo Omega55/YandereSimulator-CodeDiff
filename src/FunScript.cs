@@ -140,7 +140,12 @@ public class FunScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown("="))
+		if (Input.GetKeyDown(",") && PlayerPrefs.GetInt("DebugNumber") > 0)
+		{
+			PlayerPrefs.SetInt("DebugNumber", PlayerPrefs.GetInt("DebugNumber") - 1);
+			Application.LoadLevel(Application.loadedLevel);
+		}
+		if (Input.GetKeyDown(".") && PlayerPrefs.GetInt("DebugNumber") < 10)
 		{
 			PlayerPrefs.SetInt("DebugNumber", PlayerPrefs.GetInt("DebugNumber") + 1);
 			Application.LoadLevel(Application.loadedLevel);

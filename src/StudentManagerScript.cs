@@ -2020,7 +2020,7 @@ public class StudentManagerScript : MonoBehaviour
 		this.ID = 56;
 		while (this.ID < 61)
 		{
-			if (this.Students[this.ID] != null && !this.Students[this.ID].Slave)
+			if (this.Students[this.ID] != null && !this.Students[this.ID].Slave && !this.Students[this.ID].Following)
 			{
 				if (this.SleuthPhase < 3)
 				{

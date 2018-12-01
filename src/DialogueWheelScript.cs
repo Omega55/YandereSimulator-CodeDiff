@@ -726,7 +726,7 @@ public class DialogueWheelScript : MonoBehaviour
 			UISprite uisprite28 = this.ClubShadow[5];
 			uisprite28.color = new Color(uisprite28.color.r, uisprite28.color.g, uisprite28.color.b, 0.75f);
 		}
-		if (this.Yandere.TargetStudent.StudentID != 46 && this.Yandere.TargetStudent.StudentID != 51)
+		if ((this.Yandere.TargetStudent.StudentID != 46 && this.Yandere.TargetStudent.StudentID != 51) || this.Yandere.Police.Show)
 		{
 			UISprite uisprite29 = this.ClubShadow[6];
 			uisprite29.color = new Color(uisprite29.color.r, uisprite29.color.g, uisprite29.color.b, 0.75f);

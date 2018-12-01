@@ -295,6 +295,10 @@ public class PoliceScript : MonoBehaviour
 				{
 					this.Yandere.Mask.Drop();
 				}
+				if (this.Yandere.PickUp != null)
+				{
+					this.Yandere.EmptyHands();
+				}
 			}
 			this.PauseScreen.Panel.alpha = Mathf.MoveTowards(this.PauseScreen.Panel.alpha, 0f, Time.deltaTime);
 			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 1f, Time.deltaTime));
@@ -717,7 +721,7 @@ public class PoliceScript : MonoBehaviour
 			if (studentScript != null && studentScript.Grudge && studentScript.Persona != PersonaType.Evil)
 			{
 				StudentGlobals.SetStudentGrudge(j, true);
-				if (studentScript.OriginalPersona == PersonaType.Sleuth)
+				if (studentScript.OriginalPersona == PersonaType.Sleuth && !StudentGlobals.GetStudentDying(j))
 				{
 					StudentGlobals.SetStudentGrudge(56, true);
 					StudentGlobals.SetStudentGrudge(57, true);

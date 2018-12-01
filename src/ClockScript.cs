@@ -133,7 +133,7 @@ public class ClockScript : MonoBehaviour
 				this.FadeIn = false;
 			}
 		}
-		if (this.CameraTimer < 1f)
+		if (!MissionModeGlobals.MissionMode && this.CameraTimer < 1f)
 		{
 			this.CameraTimer += Time.deltaTime;
 			if (this.CameraTimer > 1f)

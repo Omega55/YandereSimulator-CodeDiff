@@ -350,6 +350,7 @@ public class CounselorScript : MonoBehaviour
 		this.CounselorBar.SetActive(false);
 		this.Reticle.SetActive(false);
 		this.ExpelProgress.color = new Color(this.ExpelProgress.color.r, this.ExpelProgress.color.g, this.ExpelProgress.color.b, 0f);
+		this.Chibi.localPosition = new Vector3(this.Chibi.localPosition.x, 250f + (float)StudentGlobals.ExpelProgress * -90f, this.Chibi.localPosition.z);
 	}
 
 	private void Update()
@@ -560,6 +561,7 @@ public class CounselorScript : MonoBehaviour
 				{
 					if ((StudentGlobals.ExpelProgress == 5 && !StudentGlobals.GetStudentExpelled(30) && this.StudentManager.Police.TranqCase.VictimID != 30) || this.StudentManager.Students[30].SentHome)
 					{
+						Debug.Log("Kokona has now been expelled.");
 						StudentGlobals.SetStudentExpelled(30, true);
 						this.EndOfDayDarkness.color = new Color(this.EndOfDayDarkness.color.r, this.EndOfDayDarkness.color.g, this.EndOfDayDarkness.color.b, 0f);
 						this.LectureLabel.color = new Color(this.LectureLabel.color.r, this.LectureLabel.color.g, this.LectureLabel.color.b, 0f);
@@ -569,6 +571,7 @@ public class CounselorScript : MonoBehaviour
 					}
 					else if (this.LectureID < 6)
 					{
+						Debug.Log("We are heading to the end-of-day scene.");
 						float num = this.EndOfDayDarkness.color.a;
 						num = Mathf.MoveTowards(num, 1f, Time.deltaTime);
 						this.EndOfDayDarkness.color = new Color(0f, 0f, 0f, num);
@@ -582,11 +585,14 @@ public class CounselorScript : MonoBehaviour
 					}
 					else
 					{
+						Debug.Log("We are leaving the end-of-day scene.");
 						this.EndOfDay.gameObject.SetActive(false);
 						this.EndOfDay.Phase = 1;
 						this.CutsceneManager.Phase++;
 						this.Lecturing = false;
 						this.LectureID = 0;
+						this.Yandere.gameObject.SetActive(true);
+						this.StudentManager.ComeBack();
 					}
 				}
 			}

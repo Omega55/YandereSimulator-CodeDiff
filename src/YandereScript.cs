@@ -3858,6 +3858,10 @@ public class YandereScript : MonoBehaviour
 					{
 						this.Subtitle.UpdateLabel(SubtitleType.PickpocketApology, 0, 3f);
 					}
+					else if (this.TargetStudent.Witnessed == StudentWitnessType.CleaningItem)
+					{
+						this.Subtitle.UpdateLabel(SubtitleType.CleaningApology, 0, 3f);
+					}
 				}
 				else
 				{
@@ -5113,8 +5117,10 @@ public class YandereScript : MonoBehaviour
 
 	public void Unequip()
 	{
+		Debug.Log("Yandere-chan has been told to drop her weapon.");
 		if (this.CanMove || this.Noticed)
 		{
+			Debug.Log("Yandere-chan is now dropping her weapon.");
 			if (this.Equipped < 3)
 			{
 				if (this.EquippedWeapon != null)
@@ -5149,6 +5155,7 @@ public class YandereScript : MonoBehaviour
 
 	public void EmptyHands()
 	{
+		Debug.Log("Yandere-chan has been told to drop what she is carrying.");
 		if (this.Carrying || this.HeavyWeight)
 		{
 			this.StopCarrying();
@@ -6042,7 +6049,6 @@ public class YandereScript : MonoBehaviour
 		this.AzurGuns.SetActive(true);
 		this.AzurWater.SetActive(true);
 		this.AzurMist.SetActive(true);
-		this.SithLord = true;
 		this.Shipgirl = true;
 		this.CanMove = true;
 		this.Egg = true;

@@ -150,6 +150,11 @@ public class EndOfDayScript : MonoBehaviour
 		this.CopAnimation[6]["idleShort_00"].speed = UnityEngine.Random.Range(0.9f, 1.1f);
 		this.CopAnimation[7]["idleShort_00"].speed = UnityEngine.Random.Range(0.9f, 1.1f);
 		Time.timeScale = 1f;
+		for (int i = 1; i < 6; i++)
+		{
+			this.Yandere.CharacterAnimation[this.Yandere.CreepyIdles[i]].weight = 0f;
+			this.Yandere.CharacterAnimation[this.Yandere.CreepyWalks[i]].weight = 0f;
+		}
 	}
 
 	private void Update()
@@ -475,7 +480,7 @@ public class EndOfDayScript : MonoBehaviour
 				this.ShruggingCops.SetActive(false);
 				if (this.Yandere.Sanity > 33.33333f)
 				{
-					if (this.Yandere.Bloodiness > 0f || (this.Yandere.Gloved && this.Yandere.Gloves.Blood.enabled))
+					if ((this.Yandere.Bloodiness > 0f && !this.Yandere.RedPaint) || (this.Yandere.Gloved && this.Yandere.Gloves.Blood.enabled))
 					{
 						if (this.Arrests == 0)
 						{
