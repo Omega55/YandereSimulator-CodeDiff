@@ -65,6 +65,8 @@ public class ShutterScript : MonoBehaviour
 
 	public GameObject InfoX;
 
+	public bool AirGuitarShot;
+
 	public bool DisplayError;
 
 	public bool MissionMode;
@@ -387,6 +389,11 @@ public class ShutterScript : MonoBehaviour
 							{
 								PlayerGlobals.SetSenpaiPhoto(this.Slot, true);
 							}
+							if (this.AirGuitarShot)
+							{
+								TaskGlobals.SetGuitarPhoto(this.Slot, true);
+								this.TaskManager.UpdateTaskStatus();
+							}
 							if (this.KittenShot)
 							{
 								TaskGlobals.SetKittenPhoto(this.Slot, true);
@@ -482,12 +489,15 @@ public class ShutterScript : MonoBehaviour
 		this.SenpaiX.SetActive(true);
 		this.PantiesX.SetActive(true);
 		this.ViolenceX.SetActive(true);
+		this.AirGuitarShot = false;
 		this.KittenShot = false;
 		this.Nemesis = false;
 		this.NotFace = false;
 		this.Skirt = false;
 		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyPhotography))
 		{
+			Debug.Log("Took a picture of " + this.hit.collider.gameObject.name);
+			Debug.Log("The root is " + this.hit.collider.gameObject.transform.root.name);
 			if (this.hit.collider.gameObject.name == "Panties")
 			{
 				this.Student = this.hit.collider.gameObject.transform.root.gameObject.GetComponent<StudentScript>();
@@ -524,6 +534,10 @@ public class ShutterScript : MonoBehaviour
 			else if (this.hit.collider.gameObject.name == "Skirt")
 			{
 				this.Skirt = true;
+			}
+			if (this.hit.collider.transform.root.gameObject.name == "Student_51 (Miyuji Shan)" && this.StudentManager.Students[51].AirGuitar.isPlaying)
+			{
+				this.AirGuitarShot = true;
 			}
 			if (this.hit.collider.gameObject.name == "Kitten")
 			{

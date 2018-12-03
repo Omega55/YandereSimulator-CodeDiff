@@ -174,6 +174,7 @@ public enum SubtitleType
 	Task36Line,
 	Task37Line,
 	Task38Line,
+	Task52Line,
 	Task81Line,
 	TaskInquiry,
 	TeacherAttackReaction,

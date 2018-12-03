@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class BucketScript : MonoBehaviour
 {
+	public PhoneEventScript PhoneEvent;
+
 	public ParticleSystem PourEffect;
 
 	public ParticleSystem Sparkles;
@@ -364,6 +366,37 @@ public class BucketScript : MonoBehaviour
 		{
 			this.Bloodiness = 100f;
 		}
+		if (this.Dropped && this.PhoneEvent.EventActive)
+		{
+			base.transform.Translate(base.transform.right * Time.deltaTime * -0.75f, Space.Self);
+			if (base.transform.position.y < 1.65f)
+			{
+				if (this.PhoneEvent.EventStudent.DistanceToDestination < 0.5f)
+				{
+					StudentScript eventStudent = this.PhoneEvent.EventStudent;
+					if (eventStudent != null)
+					{
+						base.GetComponent<AudioSource>().Play();
+						while (this.Dumbbells > 0)
+						{
+							this.Dumbbell[this.Dumbbells].GetComponent<WeaponScript>().enabled = true;
+							this.Dumbbell[this.Dumbbells].GetComponent<PromptScript>().enabled = true;
+							this.Dumbbell[this.Dumbbells].GetComponent<Collider>().enabled = true;
+							Rigidbody component4 = this.Dumbbell[this.Dumbbells].GetComponent<Rigidbody>();
+							component4.constraints = RigidbodyConstraints.None;
+							component4.isKinematic = false;
+							component4.useGravity = true;
+							this.Dumbbell[this.Dumbbells].transform.parent = null;
+							this.Dumbbell[this.Dumbbells] = null;
+							this.Dumbbells--;
+						}
+						eventStudent.DeathType = DeathType.Weapon;
+						eventStudent.BecomeRagdoll();
+					}
+				}
+				this.Dropped = false;
+			}
+		}
 	}
 
 	public void Empty()
@@ -386,31 +419,8 @@ public class BucketScript : MonoBehaviour
 	{
 		if (this.Dropped)
 		{
-			Debug.Log("We collided with: " + other.gameObject.name);
-			if (other.gameObject.layer == 9)
-			{
-				StudentScript component = other.gameObject.GetComponent<StudentScript>();
-				if (component != null)
-				{
-					base.GetComponent<AudioSource>().Play();
-					while (this.Dumbbells > 0)
-					{
-						this.Dumbbell[this.Dumbbells].GetComponent<WeaponScript>().enabled = true;
-						this.Dumbbell[this.Dumbbells].GetComponent<PromptScript>().enabled = true;
-						this.Dumbbell[this.Dumbbells].GetComponent<Collider>().enabled = true;
-						Rigidbody component2 = this.Dumbbell[this.Dumbbells].GetComponent<Rigidbody>();
-						component2.constraints = RigidbodyConstraints.None;
-						component2.isKinematic = false;
-						component2.useGravity = true;
-						this.Dumbbell[this.Dumbbells].transform.parent = null;
-						this.Dumbbell[this.Dumbbells] = null;
-						this.Dumbbells--;
-					}
-					this.Dropped = false;
-					component.DeathType = DeathType.Weapon;
-					component.BecomeRagdoll();
-				}
-			}
+			Debug.Log("The dropped bucket collided with: " + other.gameObject.name);
+			this.Dropped = false;
 		}
 	}
 }

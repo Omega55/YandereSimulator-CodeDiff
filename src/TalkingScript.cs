@@ -819,6 +819,7 @@ public class TalkingScript : MonoBehaviour
 			}
 			else if (this.S.Interaction == StudentInteractionType.ClubKick)
 			{
+				this.S.CharacterAnimation.CrossFade(this.S.IdleAnim);
 				if (this.S.TalkTimer == 5f)
 				{
 					this.S.Subtitle.UpdateLabel(SubtitleType.ClubKick, (int)(this.S.Club + this.ClubBonus), 99f);
@@ -832,8 +833,10 @@ public class TalkingScript : MonoBehaviour
 					}
 					if (this.S.TalkTimer <= 0f)
 					{
+						this.S.ClubManager.DeactivateClubBenefit();
 						ClubGlobals.Club = ClubType.None;
 						this.S.DialogueWheel.End();
+						this.S.Yandere.ClubAccessory();
 					}
 				}
 				this.S.TalkTimer -= Time.deltaTime;

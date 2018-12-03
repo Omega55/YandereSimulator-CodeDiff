@@ -278,6 +278,7 @@ public class PhotoGalleryScript : MonoBehaviour
 				this.Photographs[currentIndex].mainTexture = this.NoPhoto;
 				PlayerGlobals.SetPhoto(currentIndex, false);
 				PlayerGlobals.SetSenpaiPhoto(currentIndex, false);
+				TaskGlobals.SetGuitarPhoto(currentIndex, false);
 				TaskGlobals.SetKittenPhoto(currentIndex, false);
 				this.Hearts[currentIndex].gameObject.SetActive(false);
 				this.TaskManager.UpdateTaskStatus();

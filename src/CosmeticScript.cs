@@ -119,6 +119,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public Texture[] NoseTextures;
 
+	public Texture[] ApronTextures;
+
 	public Texture[] CanTextures;
 
 	public Texture[] Trunks;
@@ -489,11 +491,7 @@ public class CosmeticScript : MonoBehaviour
 					this.ThickBrows.SetActive(true);
 				}
 			}
-			if (this.Club == ClubType.Gardening)
-			{
-				this.CanRenderer.material.mainTexture = this.CanTextures[this.StudentID];
-			}
-			else if (this.Club == ClubType.Bully)
+			if (this.Club == ClubType.Bully)
 			{
 				if (!this.Kidnapped)
 				{
@@ -526,6 +524,10 @@ public class CosmeticScript : MonoBehaviour
 				for (int k = 0; k < 10; k++)
 				{
 					this.Fingernails[k].gameObject.SetActive(false);
+				}
+				if (this.Club == ClubType.Gardening)
+				{
+					this.CanRenderer.material.mainTexture = this.CanTextures[this.StudentID];
 				}
 			}
 			if (!this.Kidnapped && SceneManager.GetActiveScene().name == "PortraitScene")
@@ -2084,10 +2086,17 @@ public class CosmeticScript : MonoBehaviour
 
 	public void LateUpdate()
 	{
-		if (this.TakingPortrait && this.LookCamera)
+		if (this.TakingPortrait)
 		{
-			this.Neck.LookAt(this.StudentManager.MainCamera);
-			this.Head.LookAt(this.StudentManager.MainCamera);
+			if (this.LookCamera)
+			{
+				this.Neck.LookAt(this.StudentManager.MainCamera);
+				this.Head.LookAt(this.StudentManager.MainCamera);
+			}
+		}
+		else
+		{
+			base.enabled = false;
 		}
 	}
 }

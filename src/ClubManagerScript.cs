@@ -816,7 +816,7 @@ public class ClubManagerScript : MonoBehaviour
 		this.ID = 1;
 		while (this.ID < this.ClubIDs.Length)
 		{
-			if (this.StudentManager.Students[this.ClubIDs[this.ID]] != null && this.StudentManager.Students[this.ClubIDs[this.ID]].Grudge)
+			if (this.StudentManager.Students[this.ClubIDs[this.ID]] != null && StudentGlobals.GetStudentGrudge(this.ClubIDs[this.ID]))
 			{
 				this.ClubGrudge = true;
 			}

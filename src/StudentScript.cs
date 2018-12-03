@@ -1902,6 +1902,7 @@ public class StudentScript : MonoBehaviour
 				this.MyPlate = this.StudentManager.Plates[this.StudentID - 20];
 				this.OriginalPlatePosition = this.MyPlate.position;
 				this.OriginalPlateRotation = this.MyPlate.rotation;
+				this.ClubMemberID = this.StudentID - 20;
 				if (!GameGlobals.EmptyDemon)
 				{
 					this.ApronAttacher.enabled = true;
@@ -2036,6 +2037,7 @@ public class StudentScript : MonoBehaviour
 					{
 						this.PatrolAnim = "f02_thinking_00";
 						this.ClubAnim = "f02_thinking_00";
+						this.CharacterAnimation[this.PatrolAnim].speed = 0.9f;
 					}
 					else
 					{
@@ -2364,6 +2366,10 @@ public class StudentScript : MonoBehaviour
 			if (this.StudentID == 38)
 			{
 				return SubtitleType.Task38Line;
+			}
+			if (this.StudentID == 52)
+			{
+				return SubtitleType.Task52Line;
 			}
 			if (this.StudentID == 81)
 			{
@@ -3254,7 +3260,7 @@ public class StudentScript : MonoBehaviour
 								this.CharacterAnimation.CrossFade(this.IdleAnim);
 							}
 						}
-						else
+						else if (!this.GoAway)
 						{
 							this.CurrentDestination = this.Destinations[this.Phase];
 							this.Pathfinding.target = this.Destinations[this.Phase];
@@ -3990,7 +3996,7 @@ public class StudentScript : MonoBehaviour
 								}
 								else if (this.Club == ClubType.Science)
 								{
-									if (this.ClubAttire)
+									if (this.ClubAttire && !this.GoAway)
 									{
 										if (this.SciencePhase == 0)
 										{
@@ -4204,7 +4210,7 @@ public class StudentScript : MonoBehaviour
 										this.WateringCan.transform.localPosition = new Vector3(0.14f, -0.15f, -0.05f);
 										this.WateringCan.transform.localEulerAngles = new Vector3(10f, 15f, 45f);
 									}
-									this.PatrolTimer += Time.deltaTime;
+									this.PatrolTimer += Time.deltaTime * this.CharacterAnimation[this.PatrolAnim].speed;
 									if (this.PatrolTimer >= this.CharacterAnimation[this.ClubAnim].length)
 									{
 										this.PatrolID++;
@@ -4420,7 +4426,7 @@ public class StudentScript : MonoBehaviour
 							}
 							else if (this.Actions[this.Phase] == StudentActionType.Patrol)
 							{
-								this.PatrolTimer += Time.deltaTime;
+								this.PatrolTimer += Time.deltaTime * this.CharacterAnimation[this.PatrolAnim].speed;
 								this.CharacterAnimation.CrossFade(this.PatrolAnim);
 								if (this.PatrolTimer >= this.CharacterAnimation[this.PatrolAnim].length)
 								{
@@ -4523,7 +4529,7 @@ public class StudentScript : MonoBehaviour
 								}
 								if (!this.EndSearch)
 								{
-									this.PatrolTimer += Time.deltaTime;
+									this.PatrolTimer += Time.deltaTime * this.CharacterAnimation[this.PatrolAnim].speed;
 									this.CharacterAnimation.CrossFade(this.SearchPatrolAnim);
 									if (this.PatrolTimer >= this.CharacterAnimation[this.SearchPatrolAnim].length)
 									{
@@ -6819,7 +6825,7 @@ public class StudentScript : MonoBehaviour
 			{
 				this.MoveTowardsTarget(this.Pathfinding.target.position);
 				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.Pathfinding.target.rotation, 10f * Time.deltaTime);
-				this.PatrolTimer += Time.deltaTime;
+				this.PatrolTimer += Time.deltaTime * this.CharacterAnimation[this.PatrolAnim].speed;
 				if (this.PatrolTimer > 5f)
 				{
 					this.StudentManager.CommunalLocker.RivalPhone.gameObject.SetActive(false);
@@ -7880,6 +7886,7 @@ public class StudentScript : MonoBehaviour
 							else if (ClubGlobals.Club == this.Club && flag && this.ClubManager.ClubGrudge)
 							{
 								this.Interaction = StudentInteractionType.ClubKick;
+								ClubGlobals.SetClubKicked(this.Club, true);
 								this.TalkTimer = 5f;
 								this.Warned = true;
 							}

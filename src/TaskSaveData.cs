@@ -4,6 +4,8 @@ using System.Collections.Generic;
 [Serializable]
 public class TaskSaveData
 {
+	public IntHashSet guitarPhoto = new IntHashSet();
+
 	public IntHashSet kittenPhoto = new IntHashSet();
 
 	public IntAndIntDictionary taskStatus = new IntAndIntDictionary();
@@ -11,16 +13,23 @@ public class TaskSaveData
 	public static TaskSaveData ReadFromGlobals()
 	{
 		TaskSaveData taskSaveData = new TaskSaveData();
-		foreach (int num in TaskGlobals.KeysOfKittenPhoto())
+		foreach (int num in TaskGlobals.KeysOfGuitarPhoto())
 		{
-			if (TaskGlobals.GetKittenPhoto(num))
+			if (TaskGlobals.GetGuitarPhoto(num))
 			{
-				taskSaveData.kittenPhoto.Add(num);
+				taskSaveData.guitarPhoto.Add(num);
 			}
 		}
-		foreach (int num2 in TaskGlobals.KeysOfTaskStatus())
+		foreach (int num2 in TaskGlobals.KeysOfKittenPhoto())
 		{
-			taskSaveData.taskStatus.Add(num2, TaskGlobals.GetTaskStatus(num2));
+			if (TaskGlobals.GetKittenPhoto(num2))
+			{
+				taskSaveData.kittenPhoto.Add(num2);
+			}
+		}
+		foreach (int num3 in TaskGlobals.KeysOfTaskStatus())
+		{
+			taskSaveData.taskStatus.Add(num3, TaskGlobals.GetTaskStatus(num3));
 		}
 		return taskSaveData;
 	}
@@ -30,6 +39,10 @@ public class TaskSaveData
 		foreach (int photoID in data.kittenPhoto)
 		{
 			TaskGlobals.SetKittenPhoto(photoID, true);
+		}
+		foreach (int photoID2 in data.guitarPhoto)
+		{
+			TaskGlobals.SetGuitarPhoto(photoID2, true);
 		}
 		foreach (KeyValuePair<int, int> keyValuePair in data.taskStatus)
 		{

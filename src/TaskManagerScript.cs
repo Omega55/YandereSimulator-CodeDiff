@@ -141,6 +141,17 @@ public class TaskManagerScript : MonoBehaviour
 		{
 			this.StudentManager.Students[38].TaskPhase = 5;
 		}
+		if (TaskGlobals.GetTaskStatus(52) == 1 && this.StudentManager.Students[52] != null)
+		{
+			this.StudentManager.Students[52].TaskPhase = 4;
+			for (int j = 1; j < 52; j++)
+			{
+				if (TaskGlobals.GetGuitarPhoto(j))
+				{
+					this.StudentManager.Students[52].TaskPhase = 5;
+				}
+			}
+		}
 		if (TaskGlobals.GetTaskStatus(81) == 3)
 		{
 		}

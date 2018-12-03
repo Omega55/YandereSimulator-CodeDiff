@@ -677,6 +677,7 @@ public class StudentManagerScript : MonoBehaviour
 					this.TaskManager.UpdateTaskStatus();
 				}
 				this.Yandere.GloveAttacher.newRenderer.enabled = false;
+				this.UpdateAprons();
 			}
 			if ((double)this.Clock.HourTime > 16.9)
 			{
@@ -2151,6 +2152,19 @@ public class StudentManagerScript : MonoBehaviour
 		{
 			this.PracticeVocals.Stop();
 			this.PracticeMusic.Stop();
+		}
+	}
+
+	public void UpdateAprons()
+	{
+		this.ID = 21;
+		while (this.ID < 26)
+		{
+			if (this.Students[this.ID] != null && this.Students[this.ID].ClubMemberID > 0)
+			{
+				this.Students[this.ID].ApronAttacher.newRenderer.material.mainTexture = this.Students[this.ID].Cosmetic.ApronTextures[this.Students[this.ID].ClubMemberID];
+			}
+			this.ID++;
 		}
 	}
 }

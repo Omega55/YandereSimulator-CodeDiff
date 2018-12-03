@@ -87,7 +87,7 @@ public class PickpocketScript : MonoBehaviour
 						this.Prompt.enabled = false;
 						this.Prompt.Hide();
 					}
-					this.Timer += Time.deltaTime;
+					this.Timer += Time.deltaTime * this.Student.CharacterAnimation[this.Student.PatrolAnim].speed;
 					this.TimeBar.fillAmount = 1f - this.Timer / this.Student.CharacterAnimation[this.Student.PatrolAnim].length;
 					if (this.Timer > this.Student.CharacterAnimation[this.Student.PatrolAnim].length)
 					{

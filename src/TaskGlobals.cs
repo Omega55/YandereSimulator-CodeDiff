@@ -3,9 +3,28 @@ using UnityEngine;
 
 public static class TaskGlobals
 {
+	private const string Str_GuitarPhoto = "GuitarPhoto_";
+
 	private const string Str_KittenPhoto = "KittenPhoto_";
 
 	private const string Str_TaskStatus = "TaskStatus_";
+
+	public static bool GetGuitarPhoto(int photoID)
+	{
+		return GlobalsHelper.GetBool("GuitarPhoto_" + photoID.ToString());
+	}
+
+	public static void SetGuitarPhoto(int photoID, bool value)
+	{
+		string text = photoID.ToString();
+		KeysHelper.AddIfMissing("GuitarPhoto_", text);
+		GlobalsHelper.SetBool("GuitarPhoto_" + text, value);
+	}
+
+	public static int[] KeysOfGuitarPhoto()
+	{
+		return KeysHelper.GetIntegerKeys("GuitarPhoto_");
+	}
 
 	public static bool GetKittenPhoto(int photoID)
 	{
@@ -43,6 +62,7 @@ public static class TaskGlobals
 
 	public static void DeleteAll()
 	{
+		Globals.DeleteCollection("GuitarPhoto_", TaskGlobals.KeysOfGuitarPhoto());
 		Globals.DeleteCollection("KittenPhoto_", TaskGlobals.KeysOfKittenPhoto());
 		Globals.DeleteCollection("TaskStatus_", TaskGlobals.KeysOfTaskStatus());
 	}
