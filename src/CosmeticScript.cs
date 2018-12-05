@@ -341,7 +341,6 @@ public class CosmeticScript : MonoBehaviour
 
 	public void Start()
 	{
-		this.CharacterAnimation = this.Character.GetComponent<Animation>();
 		if (this.Kidnapped)
 		{
 		}
@@ -525,7 +524,7 @@ public class CosmeticScript : MonoBehaviour
 				{
 					this.Fingernails[k].gameObject.SetActive(false);
 				}
-				if (this.Club == ClubType.Gardening)
+				if (this.Club == ClubType.Gardening && !this.TakingPortrait)
 				{
 					this.CanRenderer.material.mainTexture = this.CanTextures[this.StudentID];
 				}
@@ -1464,7 +1463,10 @@ public class CosmeticScript : MonoBehaviour
 		}
 		this.TaskCheck();
 		this.TurnOnCheck();
-		this.EyeTypeCheck();
+		if (!this.Male && this.StudentID < 90)
+		{
+			this.EyeTypeCheck();
+		}
 		if (this.Kidnapped)
 		{
 			this.WearIndoorShoes();
@@ -2079,8 +2081,64 @@ public class CosmeticScript : MonoBehaviour
 
 	public void EyeTypeCheck()
 	{
-		if (StudentGlobals.FemaleUniform != 1 || this.EyeType == "Gentle")
+		int num = 0;
+		if (this.EyeType == "Thin")
 		{
+			this.MyRenderer.SetBlendShapeWeight(8, 100f);
+			this.MyRenderer.SetBlendShapeWeight(9, 100f);
+			this.StudentManager.Thins++;
+			num = this.StudentManager.Thins;
+		}
+		else if (this.EyeType == "Serious")
+		{
+			this.MyRenderer.SetBlendShapeWeight(5, 50f);
+			this.MyRenderer.SetBlendShapeWeight(9, 100f);
+			this.StudentManager.Seriouses++;
+			num = this.StudentManager.Seriouses;
+		}
+		else if (this.EyeType == "Round")
+		{
+			this.MyRenderer.SetBlendShapeWeight(5, 15f);
+			this.MyRenderer.SetBlendShapeWeight(9, 100f);
+			this.StudentManager.Rounds++;
+			num = this.StudentManager.Rounds;
+		}
+		else if (this.EyeType == "Sad")
+		{
+			this.MyRenderer.SetBlendShapeWeight(0, 50f);
+			this.MyRenderer.SetBlendShapeWeight(5, 15f);
+			this.MyRenderer.SetBlendShapeWeight(6, 100f);
+			this.MyRenderer.SetBlendShapeWeight(8, 50f);
+			this.MyRenderer.SetBlendShapeWeight(9, 100f);
+			this.StudentManager.Sads++;
+			num = this.StudentManager.Sads;
+		}
+		else if (this.EyeType == "Mean")
+		{
+			this.MyRenderer.SetBlendShapeWeight(10, 100f);
+			this.StudentManager.Means++;
+			num = this.StudentManager.Means;
+		}
+		else if (this.EyeType == "Smug")
+		{
+			this.MyRenderer.SetBlendShapeWeight(0, 50f);
+			this.MyRenderer.SetBlendShapeWeight(5, 25f);
+			this.StudentManager.Smugs++;
+			num = this.StudentManager.Smugs;
+		}
+		else if (this.EyeType == "Gentle")
+		{
+			this.MyRenderer.SetBlendShapeWeight(9, 100f);
+			this.MyRenderer.SetBlendShapeWeight(12, 100f);
+			this.StudentManager.Gentles++;
+			num = this.StudentManager.Gentles;
+		}
+		if ((this.EyeType == "Thin" && this.StudentManager.Thins > 1) || (this.EyeType == "Serious" && this.StudentManager.Seriouses > 1) || (this.EyeType == "Round" && this.StudentManager.Rounds > 1) || (this.EyeType == "Sad" && this.StudentManager.Sads > 1) || (this.EyeType == "Mean" && this.StudentManager.Means > 1) || (this.EyeType == "Smug" && this.StudentManager.Smugs > 1) || (this.EyeType == "Gentle" && this.StudentManager.Gentles > 1))
+		{
+			this.MyRenderer.SetBlendShapeWeight(8, this.MyRenderer.GetBlendShapeWeight(8) + (float)num);
+			this.MyRenderer.SetBlendShapeWeight(9, this.MyRenderer.GetBlendShapeWeight(9) + (float)num);
+			this.MyRenderer.SetBlendShapeWeight(10, this.MyRenderer.GetBlendShapeWeight(10) + (float)num);
+			this.MyRenderer.SetBlendShapeWeight(12, this.MyRenderer.GetBlendShapeWeight(12) + (float)num);
 		}
 	}
 

@@ -17,6 +17,8 @@ public class InventoryScript : MonoBehaviour
 
 	public bool RivalPhone;
 
+	public bool LockPick;
+
 	public bool Headset;
 
 	public bool EmeticPoison;

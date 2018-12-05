@@ -160,7 +160,7 @@ public class ClubManagerScript : MonoBehaviour
 				Debug.Log(this.ClubArray[this.ID] + " is closed.");
 				if (this.ClubArray[this.ID] == ClubType.Gardening)
 				{
-					this.ClubPatrolPoints[this.ID].transform.position = new Vector3(-56f, this.ClubPatrolPoints[this.ID].transform.position.y, this.ClubPatrolPoints[this.ID].transform.position.z);
+					this.ClubPatrolPoints[this.ID].transform.position = new Vector3(-36f, this.ClubPatrolPoints[this.ID].transform.position.y, this.ClubPatrolPoints[this.ID].transform.position.z);
 				}
 				else if (this.ClubArray[this.ID] == ClubType.Gaming)
 				{

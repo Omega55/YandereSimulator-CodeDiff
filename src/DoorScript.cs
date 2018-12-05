@@ -240,10 +240,26 @@ public class DoorScript : MonoBehaviour
 				}
 			}
 		}
-		else if (this.Locked && this.Prompt.Circle[0].fillAmount < 1f)
+		else if (this.Locked)
 		{
-			this.Prompt.Label[0].text = "     Locked";
-			this.Prompt.Circle[0].fillAmount = 1f;
+			if (this.Prompt.Circle[0].fillAmount < 1f)
+			{
+				this.Prompt.Label[0].text = "     Locked";
+				this.Prompt.Circle[0].fillAmount = 1f;
+			}
+			if (this.Yandere.Inventory.LockPick)
+			{
+				this.Prompt.HideButton[1] = false;
+				if (this.Prompt.Circle[1].fillAmount < 1f)
+				{
+					this.Prompt.HideButton[1] = true;
+					this.Locked = false;
+				}
+			}
+			else if (!this.Prompt.HideButton[1])
+			{
+				this.Prompt.HideButton[1] = true;
+			}
 		}
 		if (!this.NoTrap && this.Swinging && this.Double)
 		{

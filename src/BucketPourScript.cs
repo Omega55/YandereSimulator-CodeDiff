@@ -92,16 +92,12 @@ public class BucketPourScript : MonoBehaviour
 			{
 				this.SplashCamera.Show = true;
 				this.SplashCamera.MyCamera.enabled = true;
-				this.SplashCamera.transform.position = new Vector3(2.875f, 0.8f, -35.625f);
-				this.SplashCamera.transform.eulerAngles = new Vector3(0f, 45f, 0f);
 			}
 		}
 		else if (this.Yandere.BucketDropping && Input.GetButtonDown("B"))
 		{
 			this.SplashCamera.Show = true;
 			this.SplashCamera.MyCamera.enabled = true;
-			this.SplashCamera.transform.position = new Vector3(2.875f, 0.8f, -35.625f);
-			this.SplashCamera.transform.eulerAngles = new Vector3(0f, 45f, 0f);
 		}
 	}
 }

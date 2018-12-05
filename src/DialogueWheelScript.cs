@@ -831,9 +831,11 @@ public class DialogueWheelScript : MonoBehaviour
 				this.Yandere.TargetStudent.WalkAnim = this.Yandere.TargetStudent.PhoneAnims[1];
 			}
 			this.Yandere.TargetStudent.ShoulderCamera.OverShoulder = false;
+			this.Yandere.TargetStudent.Talk.NegativeResponse = false;
 			this.Yandere.TargetStudent.Waiting = true;
 			this.Yandere.TargetStudent = null;
 		}
+		this.Yandere.StudentManager.VolumeUp();
 		this.Jukebox.Dip = 1f;
 		this.AskingFavor = false;
 		this.Matchmaking = false;

@@ -1588,6 +1588,16 @@ public class StudentScript : MonoBehaviour
 					this.IdleAnim = this.BulliedIdleAnim;
 					this.WalkAnim = this.BulliedWalkAnim;
 				}
+				else if (this.StudentID == 34 || this.StudentID == 35)
+				{
+					this.IdleAnim = "f02_idleShort_00";
+					this.WalkAnim = "f02_newWalk_00";
+					if (this.Paranoia > 1.66666f)
+					{
+						this.IdleAnim = this.ParanoidAnim;
+						this.WalkAnim = this.ParanoidWalkAnim;
+					}
+				}
 				else if (this.StudentID == 36)
 				{
 					if (TaskGlobals.GetTaskStatus(36) < 3)
@@ -7932,6 +7942,7 @@ public class StudentScript : MonoBehaviour
 									this.Hearts.Play();
 								}
 								this.StudentManager.DisablePrompts();
+								this.StudentManager.VolumeDown();
 								this.DialogueWheel.HideShadows();
 								this.DialogueWheel.Show = true;
 								this.DialogueWheel.Panel.enabled = true;
@@ -11780,10 +11791,6 @@ public class StudentScript : MonoBehaviour
 		if (this.StudentID == 26)
 		{
 			this.MyRenderer.sharedMesh = this.NoArmsNoTorso;
-		}
-		else if (this.Cosmetic.EyeType == "Gentle")
-		{
-			this.MyRenderer.sharedMesh = null;
 		}
 		this.RiggedAccessory.SetActive(true);
 	}

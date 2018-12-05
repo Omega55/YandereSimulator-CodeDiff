@@ -38,6 +38,7 @@ public class WelcomeScript : MonoBehaviour
 
 	private void Start()
 	{
+		Time.timeScale = 1f;
 		this.BeginLabel.color = new Color(this.BeginLabel.color.r, this.BeginLabel.color.g, this.BeginLabel.color.b, 0f);
 		this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 2f);
 		Cursor.lockState = CursorLockMode.Locked;

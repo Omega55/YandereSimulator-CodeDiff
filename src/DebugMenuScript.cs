@@ -565,8 +565,13 @@ public class DebugMenuScript : MonoBehaviour
 						this.WeaponManager.Weapons[2].FingerprintID = 4;
 						this.WeaponManager.Weapons[2].Victims[5] = true;
 					}
-					else if (Input.GetKeyDown(KeyCode.J))
+					else if (!Input.GetKeyDown(KeyCode.J))
 					{
+						if (Input.GetKeyDown(KeyCode.V))
+						{
+							this.StudentManager.DatingMinigame.Affection = 100f;
+							DateGlobals.Weekday = DayOfWeek.Friday;
+						}
 					}
 				}
 			}

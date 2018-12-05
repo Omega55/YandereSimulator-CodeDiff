@@ -33,11 +33,15 @@ public class ShutterScript : MonoBehaviour
 
 	public Camera MainCamera;
 
+	public UILabel PhotoDescLabel;
+
 	public UISprite Sprite;
 
 	public GameObject NotificationManager;
 
 	public GameObject BullyPhotoCollider;
+
+	public GameObject PhotoDescription;
 
 	public GameObject HeartbeatCamera;
 
@@ -163,7 +167,7 @@ public class ShutterScript : MonoBehaviour
 		{
 			if (this.Close)
 			{
-				this.currentPercent += 40f * Time.unscaledDeltaTime;
+				this.currentPercent += 60f * Time.unscaledDeltaTime;
 				while (this.currentPercent >= 1f)
 				{
 					this.Frame = Mathf.Min(this.Frame + 1, 8);
@@ -173,8 +177,15 @@ public class ShutterScript : MonoBehaviour
 				if (this.Frame == 8)
 				{
 					this.StudentManager.GhostChan.gameObject.SetActive(true);
+					this.PhotoDescription.SetActive(false);
+					this.PhotoDescLabel.text = string.Empty;
 					this.StudentManager.GhostChan.Look();
 					this.CheckPhoto();
+					if (this.PhotoDescLabel.text == string.Empty)
+					{
+						this.PhotoDescLabel.text = "Cannot determine subject of photo. Try again.";
+					}
+					this.PhotoDescription.SetActive(true);
 					this.SmartphoneCamera.targetTexture = null;
 					this.Yandere.PhonePromptBar.Show = false;
 					this.NotificationManager.SetActive(false);
@@ -198,7 +209,7 @@ public class ShutterScript : MonoBehaviour
 			}
 			else
 			{
-				this.currentPercent += 40f * Time.unscaledDeltaTime;
+				this.currentPercent += 60f * Time.unscaledDeltaTime;
 				while (this.currentPercent >= 1f)
 				{
 					this.Frame = Mathf.Max(this.Frame - 1, 1);
@@ -501,17 +512,20 @@ public class ShutterScript : MonoBehaviour
 			if (this.hit.collider.gameObject.name == "Panties")
 			{
 				this.Student = this.hit.collider.gameObject.transform.root.gameObject.GetComponent<StudentScript>();
+				this.PhotoDescLabel.text = "Photo of: " + this.Student.Name + "'s Panties";
 				this.PantiesX.SetActive(false);
 			}
 			else if (this.hit.collider.gameObject.name == "Face")
 			{
 				if (this.hit.collider.gameObject.tag == "Nemesis")
 				{
+					this.PhotoDescLabel.text = "Photo of: Nemesis";
 					this.Nemesis = true;
 					this.NemesisShots++;
 				}
 				else if (this.hit.collider.gameObject.tag == "Disguise")
 				{
+					this.PhotoDescLabel.text = "Photo of: Disguised Student";
 					this.Disguise = true;
 				}
 				else
@@ -519,29 +533,37 @@ public class ShutterScript : MonoBehaviour
 					this.Student = this.hit.collider.gameObject.transform.root.gameObject.GetComponent<StudentScript>();
 					if (this.Student.StudentID == 1)
 					{
+						this.PhotoDescLabel.text = "Photo of: Senpai";
 						this.SenpaiX.SetActive(false);
 					}
 					else
 					{
+						this.PhotoDescLabel.text = "Photo of: " + this.Student.Name;
 						this.InfoX.SetActive(false);
 					}
 				}
 			}
 			else if (this.hit.collider.gameObject.name == "NotFace")
 			{
+				this.PhotoDescLabel.text = "Photo of: Blocked Face";
 				this.NotFace = true;
 			}
 			else if (this.hit.collider.gameObject.name == "Skirt")
 			{
+				this.PhotoDescLabel.text = "Photo of: Skirt";
 				this.Skirt = true;
 			}
 			if (this.hit.collider.transform.root.gameObject.name == "Student_51 (Miyuji Shan)" && this.StudentManager.Students[51].AirGuitar.isPlaying)
 			{
 				this.AirGuitarShot = true;
+				this.PhotoDescription.SetActive(true);
+				this.PhotoDescLabel.text = "Photo of: Miyuji's True Nature?";
 			}
 			if (this.hit.collider.gameObject.name == "Kitten")
 			{
 				this.KittenShot = true;
+				this.PhotoDescription.SetActive(true);
+				this.PhotoDescLabel.text = "Photo of: Kitten";
 				if (!ConversationGlobals.GetTopicDiscovered(20))
 				{
 					ConversationGlobals.SetTopicDiscovered(20, true);
@@ -550,6 +572,7 @@ public class ShutterScript : MonoBehaviour
 			}
 			if (this.hit.collider.gameObject.tag == "Bully")
 			{
+				this.PhotoDescLabel.text = "Photo of: Student Speaking With Bully";
 				this.BullyPhotoCollider = this.hit.collider.gameObject;
 				this.BullyX.SetActive(false);
 			}

@@ -227,8 +227,6 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform RivalConfessionSpot;
 
-	public Transform ConfessionWaypoint;
-
 	public Transform OriginalLyricsSpot;
 
 	public Transform FragileSlaveSpot;
@@ -457,6 +455,20 @@ public class StudentManagerScript : MonoBehaviour
 	public bool SeatOccupied;
 
 	public int Class = 1;
+
+	public int Thins;
+
+	public int Seriouses;
+
+	public int Rounds;
+
+	public int Sads;
+
+	public int Means;
+
+	public int Smugs;
+
+	public int Gentles;
 
 	private void Start()
 	{
@@ -2163,6 +2175,32 @@ public class StudentManagerScript : MonoBehaviour
 			if (this.Students[this.ID] != null && this.Students[this.ID].ClubMemberID > 0)
 			{
 				this.Students[this.ID].ApronAttacher.newRenderer.material.mainTexture = this.Students[this.ID].Cosmetic.ApronTextures[this.Students[this.ID].ClubMemberID];
+			}
+			this.ID++;
+		}
+	}
+
+	public void VolumeDown()
+	{
+		this.ID = 51;
+		while (this.ID < 56)
+		{
+			if (this.Students[this.ID] != null)
+			{
+				this.Students[this.ID].Instruments[this.Students[this.ID].ClubMemberID].GetComponent<AudioSource>().volume = 0.2f;
+			}
+			this.ID++;
+		}
+	}
+
+	public void VolumeUp()
+	{
+		this.ID = 51;
+		while (this.ID < 56)
+		{
+			if (this.Students[this.ID] != null)
+			{
+				this.Students[this.ID].Instruments[this.Students[this.ID].ClubMemberID].GetComponent<AudioSource>().volume = 1f;
 			}
 			this.ID++;
 		}

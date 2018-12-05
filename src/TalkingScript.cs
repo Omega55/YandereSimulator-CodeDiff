@@ -13,6 +13,8 @@ public class TalkingScript : MonoBehaviour
 
 	public StudentScript S;
 
+	public bool NegativeResponse;
+
 	public bool Follow;
 
 	public bool Grudge;
@@ -370,11 +372,13 @@ public class TalkingScript : MonoBehaviour
 						{
 							this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
 							this.S.Subtitle.UpdateLabel(SubtitleType.StudentStay, 0, 5f);
+							this.NegativeResponse = true;
 						}
 						else if (this.S.StudentManager.LockerRoomArea.bounds.Contains(this.S.Yandere.transform.position) || this.S.StudentManager.WestBathroomArea.bounds.Contains(this.S.Yandere.transform.position) || this.S.StudentManager.EastBathroomArea.bounds.Contains(this.S.Yandere.transform.position))
 						{
 							this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
 							this.S.Subtitle.UpdateLabel(SubtitleType.StudentStay, 1, 5f);
+							this.NegativeResponse = true;
 						}
 						else
 						{
@@ -1090,7 +1094,16 @@ public class TalkingScript : MonoBehaviour
 			}
 			if (this.S.StudentID == 41 && !this.S.DialogueWheel.ClubLeader && this.S.TalkTimer > 0f)
 			{
-				this.S.Subtitle.UpdateLabel(SubtitleType.Impatience, 5, 5f);
+				Debug.Log("Geiju response.");
+				if (this.NegativeResponse)
+				{
+					Debug.Log("Negative response.");
+					this.S.Subtitle.UpdateLabel(SubtitleType.Impatience, 6, 5f);
+				}
+				else
+				{
+					this.S.Subtitle.UpdateLabel(SubtitleType.Impatience, 5, 5f);
+				}
 			}
 			if (this.S.Waiting)
 			{
