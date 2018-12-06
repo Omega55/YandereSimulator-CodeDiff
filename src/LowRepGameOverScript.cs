@@ -176,6 +176,7 @@ public class LowRepGameOverScript : MonoBehaviour
 			if (this.Timer > 2.5f || Input.GetButtonDown("A"))
 			{
 				this.Yandere.CharacterAnimation.Play("f02_scaredIdle_00");
+				this.Yandere.ShoulderCamera.GoingToCounselor = false;
 				this.Yandere.ShoulderCamera.enabled = true;
 				this.Yandere.ShoulderCamera.Noticed = true;
 				this.Yandere.ShoulderCamera.Skip = true;

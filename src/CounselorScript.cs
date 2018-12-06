@@ -784,6 +784,7 @@ public class CounselorScript : MonoBehaviour
 		this.PromptBar.ClearButtons();
 		this.PromptBar.Show = false;
 		this.StudentManager.ComeBack();
+		this.StudentManager.Reputation.UpdateRep();
 		Physics.SyncTransforms();
 	}
 
@@ -1404,6 +1405,8 @@ public class CounselorScript : MonoBehaviour
 			this.InterrogationPhase++;
 			this.Expelled = true;
 			this.Timer = 0f;
+			this.Yandere.Senpai = this.StudentManager.Students[1].transform;
+			this.StudentManager.Reputation.UpdateRep();
 		}
 		if (this.InterrogationPhase > 6)
 		{

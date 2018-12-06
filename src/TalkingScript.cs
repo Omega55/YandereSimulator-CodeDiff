@@ -61,7 +61,14 @@ public class TalkingScript : MonoBehaviour
 					}
 					else if (this.S.StudentManager.Reputation.Reputation < 33.33333f || this.S.Persona == PersonaType.Coward)
 					{
-						this.IdleAnim = this.S.IdleAnim;
+						if (this.S.CurrentAction == StudentActionType.Sunbathe && this.S.SunbathePhase > 2)
+						{
+							this.IdleAnim = this.S.OriginalIdleAnim;
+						}
+						else
+						{
+							this.IdleAnim = this.S.IdleAnim;
+						}
 					}
 					else
 					{

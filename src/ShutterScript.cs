@@ -579,10 +579,12 @@ public class ShutterScript : MonoBehaviour
 		}
 		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyRagdolls) && this.hit.collider.gameObject.layer == 11)
 		{
+			this.PhotoDescLabel.text = "Photo of: Corpse";
 			this.ViolenceX.SetActive(false);
 		}
 		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyBlood) && this.hit.collider.gameObject.layer == 14)
 		{
+			this.PhotoDescLabel.text = "Photo of: Blood";
 			this.ViolenceX.SetActive(false);
 		}
 	}

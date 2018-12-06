@@ -711,6 +711,12 @@ public class MissionModeScript : MonoBehaviour
 				this.GameOver();
 				this.Phase = 4;
 			}
+			if (this.Yandere.ShoulderCamera.Noticed)
+			{
+				this.GameOverID = 17;
+				this.GameOver();
+				this.Phase = 4;
+			}
 			if (this.ExitPortal.activeInHierarchy)
 			{
 				if (this.Yandere.Chased || this.Yandere.Chasers > 0)

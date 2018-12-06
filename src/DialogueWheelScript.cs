@@ -825,10 +825,22 @@ public class DialogueWheelScript : MonoBehaviour
 					this.Yandere.TargetStudent.Pathfinding.target = this.Yandere.StudentManager.SunbatheSpots[this.Yandere.TargetStudent.StudentID - 80];
 				}
 			}
-			if (this.Yandere.TargetStudent.Persona == PersonaType.PhoneAddict && !this.Yandere.TargetStudent.Scrubber.activeInHierarchy)
+			if (this.Yandere.TargetStudent.Persona == PersonaType.PhoneAddict)
 			{
-				this.Yandere.TargetStudent.SmartPhone.SetActive(true);
-				this.Yandere.TargetStudent.WalkAnim = this.Yandere.TargetStudent.PhoneAnims[1];
+				bool flag = false;
+				if (this.Yandere.TargetStudent.CurrentAction == StudentActionType.Sunbathe && this.Yandere.TargetStudent.SunbathePhase > 2)
+				{
+					flag = true;
+				}
+				if (!this.Yandere.TargetStudent.Scrubber.activeInHierarchy && !flag)
+				{
+					this.Yandere.TargetStudent.SmartPhone.SetActive(true);
+					this.Yandere.TargetStudent.WalkAnim = this.Yandere.TargetStudent.PhoneAnims[1];
+				}
+				else
+				{
+					this.Yandere.TargetStudent.SmartPhone.SetActive(false);
+				}
 			}
 			this.Yandere.TargetStudent.ShoulderCamera.OverShoulder = false;
 			this.Yandere.TargetStudent.Talk.NegativeResponse = false;

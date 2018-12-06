@@ -1035,7 +1035,7 @@ public class MissionModeMenuScript : MonoBehaviour
 		}
 		this.CustomDescs[1].text = "Kill " + this.TargetName + ".";
 		this.Descs[1].text = "Kill " + this.TargetName + ".";
-		if (this.TargetID > 10 && this.TargetID < 21)
+		if (this.TargetID > 5 && this.TargetID < 21)
 		{
 			if (this.Phase == 5)
 			{

@@ -2180,6 +2180,19 @@ public class StudentManagerScript : MonoBehaviour
 		}
 	}
 
+	public void PreventAlarm()
+	{
+		this.ID = 1;
+		while (this.ID < 101)
+		{
+			if (this.Students[this.ID] != null)
+			{
+				this.Students[this.ID].Alarm = 0f;
+			}
+			this.ID++;
+		}
+	}
+
 	public void VolumeDown()
 	{
 		this.ID = 51;

@@ -465,11 +465,11 @@ public class PoliceScript : MonoBehaviour
 		}
 		else if (this.Reputation.Reputation <= -100f)
 		{
-			this.ResultsLabels[0].text = "Unfortunately...";
-			this.ResultsLabels[1].text = "Yandere-chan's unusual behavior has been observed by many people.";
-			this.ResultsLabels[2].text = "Word has spread throughout the school of Yandere-chan's bizarre conduct.";
-			this.ResultsLabels[3].text = "The entire school is now aware of Yandere-chan's true nature.";
-			this.ResultsLabels[4].text = "From this day forward, nothing will be the same.";
+			this.ResultsLabels[0].text = "Yandere-chan's bizarre conduct has been observed and discussed by many people.";
+			this.ResultsLabels[1].text = "Word of Yandere-chan's strange behavior has reached Senpai.";
+			this.ResultsLabels[2].text = "Senpai is now aware that Yandere-chan is a deranged person.";
+			this.ResultsLabels[3].text = "From this day forward, Senpai will fear and avoid Yandere-chan.";
+			this.ResultsLabels[4].text = "Yandere-chan will never have her Senpai's love.";
 			this.LowRep = true;
 		}
 		else if (DateGlobals.Weekday == DayOfWeek.Friday)
