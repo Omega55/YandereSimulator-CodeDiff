@@ -13,7 +13,26 @@ public class CabinetDoorScript : MonoBehaviour
 	{
 		if (this.Locked)
 		{
-			this.Prompt.Circle[0].fillAmount = 1f;
+			if (this.Prompt.Circle[0].fillAmount < 1f)
+			{
+				this.Prompt.Label[0].text = "     Locked";
+				this.Prompt.Circle[0].fillAmount = 1f;
+			}
+			if (this.Prompt.Yandere.Inventory.LockPick)
+			{
+				this.Prompt.HideButton[2] = false;
+				if (this.Prompt.Circle[2].fillAmount == 0f)
+				{
+					this.Prompt.Yandere.Inventory.LockPick = false;
+					this.Prompt.Label[0].text = "     Open";
+					this.Prompt.HideButton[2] = true;
+					this.Locked = false;
+				}
+			}
+			else if (!this.Prompt.HideButton[2])
+			{
+				this.Prompt.HideButton[2] = true;
+			}
 		}
 		else
 		{

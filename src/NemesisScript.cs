@@ -149,6 +149,7 @@ public class NemesisScript : MonoBehaviour
 				component.enabled = false;
 			}
 			this.Student.FaceCollider.tag = "Disguise";
+			Debug.Log("Nemesis has disguised hserself as " + this.Student.StudentManager.Students[num].Name);
 			this.PutOnDisguise = false;
 		}
 		if (!this.Dying)

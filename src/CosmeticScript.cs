@@ -287,6 +287,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public bool Cutscene;
 
+	public bool Modified;
+
 	public bool TurnedOn;
 
 	public bool Teacher;
@@ -2133,12 +2135,16 @@ public class CosmeticScript : MonoBehaviour
 			this.StudentManager.Gentles++;
 			num = this.StudentManager.Gentles;
 		}
-		if ((this.EyeType == "Thin" && this.StudentManager.Thins > 1) || (this.EyeType == "Serious" && this.StudentManager.Seriouses > 1) || (this.EyeType == "Round" && this.StudentManager.Rounds > 1) || (this.EyeType == "Sad" && this.StudentManager.Sads > 1) || (this.EyeType == "Mean" && this.StudentManager.Means > 1) || (this.EyeType == "Smug" && this.StudentManager.Smugs > 1) || (this.EyeType == "Gentle" && this.StudentManager.Gentles > 1))
+		if (!this.Modified)
 		{
-			this.MyRenderer.SetBlendShapeWeight(8, this.MyRenderer.GetBlendShapeWeight(8) + (float)num);
-			this.MyRenderer.SetBlendShapeWeight(9, this.MyRenderer.GetBlendShapeWeight(9) + (float)num);
-			this.MyRenderer.SetBlendShapeWeight(10, this.MyRenderer.GetBlendShapeWeight(10) + (float)num);
-			this.MyRenderer.SetBlendShapeWeight(12, this.MyRenderer.GetBlendShapeWeight(12) + (float)num);
+			if ((this.EyeType == "Thin" && this.StudentManager.Thins > 1) || (this.EyeType == "Serious" && this.StudentManager.Seriouses > 1) || (this.EyeType == "Round" && this.StudentManager.Rounds > 1) || (this.EyeType == "Sad" && this.StudentManager.Sads > 1) || (this.EyeType == "Mean" && this.StudentManager.Means > 1) || (this.EyeType == "Smug" && this.StudentManager.Smugs > 1) || (this.EyeType == "Gentle" && this.StudentManager.Gentles > 1))
+			{
+				this.MyRenderer.SetBlendShapeWeight(8, this.MyRenderer.GetBlendShapeWeight(8) + (float)num);
+				this.MyRenderer.SetBlendShapeWeight(9, this.MyRenderer.GetBlendShapeWeight(9) + (float)num);
+				this.MyRenderer.SetBlendShapeWeight(10, this.MyRenderer.GetBlendShapeWeight(10) + (float)num);
+				this.MyRenderer.SetBlendShapeWeight(12, this.MyRenderer.GetBlendShapeWeight(12) + (float)num);
+			}
+			this.Modified = true;
 		}
 	}
 

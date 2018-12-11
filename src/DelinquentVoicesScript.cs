@@ -22,7 +22,7 @@ public class DelinquentVoicesScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (this.Radio.GetComponent<AudioSource>().isPlaying && Vector3.Distance(this.Yandere.transform.position, base.transform.position) < 5f)
+		if (this.Radio.MyAudio.isPlaying && this.Yandere.CanMove && Vector3.Distance(this.Yandere.transform.position, base.transform.position) < 5f)
 		{
 			this.Timer = Mathf.MoveTowards(this.Timer, 0f, Time.deltaTime);
 			if (this.Timer == 0f)

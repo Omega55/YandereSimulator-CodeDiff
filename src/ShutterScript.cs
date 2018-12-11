@@ -525,7 +525,7 @@ public class ShutterScript : MonoBehaviour
 				}
 				else if (this.hit.collider.gameObject.tag == "Disguise")
 				{
-					this.PhotoDescLabel.text = "Photo of: Disguised Student";
+					this.PhotoDescLabel.text = "Photo of: ?????";
 					this.Disguise = true;
 				}
 				else

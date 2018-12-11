@@ -424,6 +424,7 @@ public class TalkingScript : MonoBehaviour
 							this.S.Yandere.Follower = this.S;
 							this.S.Yandere.Followers++;
 							this.S.Following = true;
+							this.S.Hurry = false;
 						}
 						this.Follow = false;
 					}

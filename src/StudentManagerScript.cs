@@ -634,8 +634,12 @@ public class StudentManagerScript : MonoBehaviour
 		float num = 1f - SchoolGlobals.SchoolAtmosphere;
 		if (!this.TakingPortraits)
 		{
-			this.SmartphoneSelectiveGreyscale.desaturation = num;
 			this.SelectiveGreyscale.desaturation = num;
+			if (this.HandSelectiveGreyscale != null)
+			{
+				this.HandSelectiveGreyscale.desaturation = num;
+				this.SmartphoneSelectiveGreyscale.desaturation = num;
+			}
 			components[2].intensity = num * 5f;
 			components[2].blur = num;
 			components[2].chromaticAberration = num * 5f;
@@ -1397,7 +1401,7 @@ public class StudentManagerScript : MonoBehaviour
 				{
 					this.Police.MaskReported = true;
 				}
-				if (studentScript.Slave)
+				if (studentScript.Slave && this.Police.DayOver)
 				{
 					studentScript.Broken.Subtitle.text = string.Empty;
 					studentScript.Broken.Done = true;
@@ -2172,7 +2176,7 @@ public class StudentManagerScript : MonoBehaviour
 		this.ID = 21;
 		while (this.ID < 26)
 		{
-			if (this.Students[this.ID] != null && this.Students[this.ID].ClubMemberID > 0)
+			if (this.Students[this.ID] != null && this.Students[this.ID].ClubMemberID > 0 && this.Students[this.ID].ApronAttacher != null)
 			{
 				this.Students[this.ID].ApronAttacher.newRenderer.material.mainTexture = this.Students[this.ID].Cosmetic.ApronTextures[this.Students[this.ID].ClubMemberID];
 			}

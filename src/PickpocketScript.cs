@@ -48,7 +48,7 @@ public class PickpocketScript : MonoBehaviour
 			}
 			else
 			{
-				this.Prompt.Label[0].text = "     Steal Shed Key";
+				this.Prompt.Label[3].text = "     Steal Shed Key";
 				this.NotNurse = true;
 			}
 		}
@@ -113,9 +113,9 @@ public class PickpocketScript : MonoBehaviour
 					this.Punish();
 				}
 			}
-			if (this.Prompt.Circle[0].fillAmount == 0f)
+			if (this.Prompt.Circle[3].fillAmount == 0f)
 			{
-				this.Prompt.Circle[0].fillAmount = 1f;
+				this.Prompt.Circle[3].fillAmount = 1f;
 				if (!this.Prompt.Yandere.Chased && this.Prompt.Yandere.Chasers == 0)
 				{
 					this.PickpocketMinigame.PickpocketSpot = this.PickpocketSpot;
@@ -158,7 +158,7 @@ public class PickpocketScript : MonoBehaviour
 				base.transform.parent = null;
 			}
 		}
-		else if (this.Prompt.Circle[0].fillAmount == 0f)
+		else if (this.Prompt.Circle[3].fillAmount == 0f)
 		{
 			this.Succeed();
 			this.Prompt.Hide();

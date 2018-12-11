@@ -256,6 +256,7 @@ public class PortalScript : MonoBehaviour
 		this.Clock.StopTime = true;
 		this.Police.Darkness.enabled = true;
 		this.Police.FadeOut = true;
+		this.Police.DayOver = true;
 	}
 
 	private void CheckForLateness()

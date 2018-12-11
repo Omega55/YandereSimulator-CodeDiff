@@ -1406,6 +1406,7 @@ public class CounselorScript : MonoBehaviour
 			this.Expelled = true;
 			this.Timer = 0f;
 			this.Yandere.Senpai = this.StudentManager.Students[1].transform;
+			this.StudentManager.Reputation.PendingRep -= 10f;
 			this.StudentManager.Reputation.UpdateRep();
 		}
 		if (this.InterrogationPhase > 6)

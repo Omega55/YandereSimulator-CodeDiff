@@ -26,6 +26,8 @@ public class PoseModeScript : MonoBehaviour
 
 	public GameObject Warning;
 
+	public Camera PoseModeCamera;
+
 	public bool ChoosingBodyRegion;
 
 	public bool ChoosingAction = true;
@@ -33,6 +35,8 @@ public class PoseModeScript : MonoBehaviour
 	public bool ChoosingBone = true;
 
 	public bool Customizing;
+
+	public bool EditingFace;
 
 	public bool Animating;
 
@@ -64,6 +68,7 @@ public class PoseModeScript : MonoBehaviour
 
 	private void Start()
 	{
+		this.PoseModeCamera.gameObject.SetActive(false);
 		base.transform.localScale = Vector3.zero;
 		this.Panel.enabled = false;
 	}
@@ -131,6 +136,20 @@ public class PoseModeScript : MonoBehaviour
 						this.ChoosingAction = true;
 					}
 					else if (this.Selected == 6)
+					{
+						this.PoseModeCamera.gameObject.SetActive(true);
+						this.PoseModeCamera.transform.parent = this.Student.Head;
+						this.PoseModeCamera.transform.localPosition = new Vector3(0f, 0f, 0.5f);
+						this.PoseModeCamera.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
+						this.PromptBar.Label[2].text = "Set to 0";
+						this.PromptBar.Label[3].text = "Set to 100";
+						this.PromptBar.UpdateButtons();
+						this.EditingFace = true;
+						this.UpdateLabels();
+						this.Selected = 1;
+						this.UpdateHighlight();
+					}
+					else if (this.Selected == 7)
 					{
 						this.Student.MyController.enabled = true;
 						this.Student.Pathfinding.canSearch = true;
@@ -544,6 +563,71 @@ public class PoseModeScript : MonoBehaviour
 					this.UpdateHighlight();
 				}
 			}
+			else if (this.EditingFace)
+			{
+				if (this.Selected == 18)
+				{
+					if (this.InputManager.TappedRight)
+					{
+						if (this.Degree < 10)
+						{
+							this.Degree++;
+						}
+						this.UpdateLabels();
+					}
+					else if (this.InputManager.TappedLeft)
+					{
+						if (this.Degree > 1)
+						{
+							this.Degree--;
+						}
+						this.UpdateLabels();
+					}
+				}
+				else
+				{
+					if (this.InputManager.TappedRight)
+					{
+						this.Student.MyRenderer.SetBlendShapeWeight(this.Selected - 1, this.Student.MyRenderer.GetBlendShapeWeight(this.Selected - 1) + (float)this.Degree);
+						if (this.Student.MyRenderer.GetBlendShapeWeight(this.Selected - 1) > 100f)
+						{
+							this.Student.MyRenderer.SetBlendShapeWeight(this.Selected - 1, 100f);
+						}
+						this.UpdateLabels();
+					}
+					else if (this.InputManager.TappedLeft)
+					{
+						this.Student.MyRenderer.SetBlendShapeWeight(this.Selected - 1, this.Student.MyRenderer.GetBlendShapeWeight(this.Selected - 1) - (float)this.Degree);
+						if (this.Student.MyRenderer.GetBlendShapeWeight(this.Selected - 1) < 0f)
+						{
+							this.Student.MyRenderer.SetBlendShapeWeight(this.Selected - 1, 0f);
+						}
+						this.UpdateLabels();
+					}
+					if (Input.GetButtonDown("X"))
+					{
+						this.Student.MyRenderer.SetBlendShapeWeight(this.Selected - 1, 0f);
+						this.UpdateLabels();
+					}
+					if (Input.GetButtonDown("Y"))
+					{
+						this.Student.MyRenderer.SetBlendShapeWeight(this.Selected - 1, 100f);
+						this.UpdateLabels();
+					}
+				}
+				if (Input.GetButtonDown("B"))
+				{
+					this.PromptBar.Label[2].text = string.Empty;
+					this.PromptBar.Label[3].text = string.Empty;
+					this.PromptBar.UpdateButtons();
+					this.PoseModeCamera.gameObject.SetActive(false);
+					this.ChoosingAction = true;
+					this.EditingFace = false;
+					this.UpdateLabels();
+					this.Selected = 1;
+					this.UpdateHighlight();
+				}
+			}
 		}
 		else
 		{
@@ -604,7 +688,7 @@ public class PoseModeScript : MonoBehaviour
 			}
 			this.UpdateLabels();
 		}
-		this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 350f - (float)this.Selected * 50f, this.Highlight.localPosition.z);
+		this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 400f - (float)this.Selected * 50f, this.Highlight.localPosition.z);
 	}
 
 	public void UpdateLabels()
@@ -625,8 +709,9 @@ public class PoseModeScript : MonoBehaviour
 			this.OptionLabels[3].text = "Customize Appearance";
 			this.OptionLabels[4].text = "Perform Animation";
 			this.OptionLabels[5].text = "Stop Animation";
-			this.OptionLabels[6].text = "Release Student";
-			this.Limit = 6;
+			this.OptionLabels[6].text = "Edit Face";
+			this.OptionLabels[7].text = "Release Student";
+			this.Limit = 7;
 		}
 		else if (this.ChoosingBodyRegion)
 		{
@@ -806,7 +891,7 @@ public class PoseModeScript : MonoBehaviour
 		else if (this.Animating)
 		{
 			this.HeaderLabel.text = "Choose Animation";
-			for (int j = 1; j < 17; j++)
+			for (int j = 1; j < 19; j++)
 			{
 				this.OptionLabels[j].text = string.Concat(new string[]
 				{
@@ -818,7 +903,29 @@ public class PoseModeScript : MonoBehaviour
 					this.AnimationArray[j + this.Offset]
 				});
 			}
-			this.Limit = 16;
+			this.Limit = 18;
+		}
+		else if (this.EditingFace)
+		{
+			this.OptionLabels[1].text = "Smile Mouth (" + this.Student.MyRenderer.GetBlendShapeWeight(0) + ")";
+			this.OptionLabels[2].text = "Angry Eyebrows (" + this.Student.MyRenderer.GetBlendShapeWeight(1) + ")";
+			this.OptionLabels[3].text = "Open Mouth (" + this.Student.MyRenderer.GetBlendShapeWeight(2) + ")";
+			this.OptionLabels[4].text = "Ear Size (" + this.Student.MyRenderer.GetBlendShapeWeight(3) + ")";
+			this.OptionLabels[5].text = "Nose Size (" + this.Student.MyRenderer.GetBlendShapeWeight(4) + ")";
+			this.OptionLabels[6].text = "Close Eyes (" + this.Student.MyRenderer.GetBlendShapeWeight(5) + ")";
+			this.OptionLabels[7].text = "Sad Face (" + this.Student.MyRenderer.GetBlendShapeWeight(6) + ")";
+			this.OptionLabels[8].text = "(Unavailable) (" + this.Student.MyRenderer.GetBlendShapeWeight(7) + ")";
+			this.OptionLabels[9].text = "Thin Eyes (" + this.Student.MyRenderer.GetBlendShapeWeight(8) + ")";
+			this.OptionLabels[10].text = "Round Eyes (" + this.Student.MyRenderer.GetBlendShapeWeight(9) + ")";
+			this.OptionLabels[11].text = "Evil Face (" + this.Student.MyRenderer.GetBlendShapeWeight(10) + ")";
+			this.OptionLabels[12].text = "Naughty Face (" + this.Student.MyRenderer.GetBlendShapeWeight(11) + ")";
+			this.OptionLabels[13].text = "Gentle Face (" + this.Student.MyRenderer.GetBlendShapeWeight(12) + ")";
+			this.OptionLabels[14].text = "Thick Body (" + this.Student.MyRenderer.GetBlendShapeWeight(13) + ")";
+			this.OptionLabels[15].text = "Slim Body (" + this.Student.MyRenderer.GetBlendShapeWeight(14) + ")";
+			this.OptionLabels[16].text = "Long Skirt (" + this.Student.MyRenderer.GetBlendShapeWeight(15) + ")";
+			this.OptionLabels[17].text = "Short Skirt (" + this.Student.MyRenderer.GetBlendShapeWeight(16) + ")";
+			this.OptionLabels[18].text = "Degree of Change: " + this.Degree.ToString();
+			this.Limit = 18;
 		}
 	}
 

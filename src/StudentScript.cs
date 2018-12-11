@@ -5842,7 +5842,8 @@ public class StudentScript : MonoBehaviour
 				}
 				else if (this.DistanceToDestination > 1f)
 				{
-					this.CharacterAnimation.CrossFade(this.WalkAnim);
+					Debug.Log("Supposed to be walking.");
+					this.CharacterAnimation.CrossFade(this.OriginalWalkAnim);
 					this.Pathfinding.canMove = true;
 					this.Pathfinding.speed = 1f;
 					this.Obstacle.enabled = false;
@@ -6214,6 +6215,7 @@ public class StudentScript : MonoBehaviour
 								{
 									this.BullyPhotoCollider.SetActive(true);
 								}
+								this.DistractionTarget.StopInvestigating();
 								this.DistractionTarget.Prompt.Label[0].text = "     Talk";
 								this.DistractionTarget.Pathfinding.canSearch = false;
 								this.DistractionTarget.Pathfinding.canMove = false;
@@ -6290,9 +6292,13 @@ public class StudentScript : MonoBehaviour
 							this.Pathfinding.canSearch = true;
 							this.Pathfinding.canMove = true;
 						}
-						else
+						else if (this.Pathfinding.speed == 1f)
 						{
 							this.CharacterAnimation.CrossFade(this.WalkAnim);
+						}
+						else
+						{
+							this.CharacterAnimation.CrossFade(this.SprintAnim);
 						}
 					}
 					else if (this.Actions[this.Phase] == StudentActionType.ClubAction && this.Club == ClubType.Cooking)
@@ -6304,9 +6310,13 @@ public class StudentScript : MonoBehaviour
 							this.Routine = true;
 						}
 					}
-					else
+					else if (this.Pathfinding.speed == 1f)
 					{
 						this.CharacterAnimation.CrossFade(this.WalkAnim);
+					}
+					else
+					{
+						this.CharacterAnimation.CrossFade(this.SprintAnim);
 					}
 				}
 			}
@@ -10062,14 +10072,7 @@ public class StudentScript : MonoBehaviour
 			this.Yandere.Talking = false;
 			this.CameraEffects.MurderWitnessed();
 			this.ShoulderCamera.OverShoulder = false;
-			if (this.Persona != PersonaType.PhoneAddict)
-			{
-				this.CharacterAnimation.CrossFade(this.ScaredAnim);
-			}
-			else
-			{
-				this.CharacterAnimation.CrossFade(this.PhoneAnims[4]);
-			}
+			this.CharacterAnimation.CrossFade(this.ScaredAnim);
 			this.CharacterAnimation["scaredFace_00"].weight = 1f;
 			if (this.StudentID == 1)
 			{

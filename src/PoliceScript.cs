@@ -109,6 +109,8 @@ public class PoliceScript : MonoBehaviour
 
 	public bool GameOver;
 
+	public bool DayOver;
+
 	public bool Delayed;
 
 	public bool FadeOut;
@@ -740,6 +742,7 @@ public class PoliceScript : MonoBehaviour
 		this.Yandere.StopLaughing();
 		this.Clock.StopTime = true;
 		this.FadeOut = true;
+		this.DayOver = true;
 		if (!this.EndOfDay.gameObject.activeInHierarchy)
 		{
 			Time.timeScale = 1f;

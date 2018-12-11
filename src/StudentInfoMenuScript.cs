@@ -354,7 +354,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	private void UpdateNameLabel()
 	{
-		if (this.StudentID > 97 || StudentGlobals.GetStudentPhotographed(this.StudentID))
+		if (this.StudentID > 97 || StudentGlobals.GetStudentPhotographed(this.StudentID) || this.GettingInfo)
 		{
 			this.NameLabel.text = this.JSON.Students[this.StudentID].Name;
 		}
