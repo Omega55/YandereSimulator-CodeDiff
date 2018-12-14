@@ -457,6 +457,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public float Timer;
 
+	public int StudentID;
+
 	public AudioClip[] NoteReactionClips;
 
 	public AudioClip[] GrudgeWarningClips;
@@ -1256,7 +1258,14 @@ public class SubtitleScript : MonoBehaviour
 			}
 			else if (ID == 8)
 			{
-				this.Label.text = this.GetRandomString(this.RitualReactions);
+				if (this.StudentID < 31 || this.StudentID > 35)
+				{
+					this.Label.text = this.RitualReactions[0];
+				}
+				else
+				{
+					this.Label.text = this.RitualReactions[1];
+				}
 			}
 			else if (ID == 9)
 			{

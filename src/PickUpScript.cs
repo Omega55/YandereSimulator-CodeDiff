@@ -203,7 +203,7 @@ public class PickUpScript : MonoBehaviour
 		{
 			if (this.Yandere.Lifting)
 			{
-				if (this.Yandere.CharacterAnimation["f02_heavyWeightLift_00"].time >= 2f)
+				if (this.Yandere.CharacterAnimation["f02_heavyWeightLift_00"].time >= 3f)
 				{
 					base.transform.parent = this.Yandere.LeftItemParent;
 					base.transform.localPosition = this.HoldPosition;

@@ -8615,6 +8615,7 @@ public class StudentScript : MonoBehaviour
 						}
 						else if (this.Witnessed == StudentWitnessType.Weapon)
 						{
+							this.Subtitle.StudentID = this.StudentID;
 							this.Subtitle.UpdateLabel(SubtitleType.WeaponReaction, this.WeaponWitnessed, 3f);
 						}
 						else if (this.Witnessed == StudentWitnessType.Blood)

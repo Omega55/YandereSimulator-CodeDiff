@@ -90,7 +90,7 @@ public class PoseModeScript : MonoBehaviour
 			}
 			if (this.ChoosingAction)
 			{
-				if (Input.GetButtonDown("A"))
+				if (Input.GetButtonDown("A") && this.OptionLabels[this.Selected].color.a == 1f)
 				{
 					this.ChoosingAction = false;
 					if (this.Selected == 1)
@@ -712,6 +712,10 @@ public class PoseModeScript : MonoBehaviour
 			this.OptionLabels[6].text = "Edit Face";
 			this.OptionLabels[7].text = "Release Student";
 			this.Limit = 7;
+			if (this.Student.Male)
+			{
+				this.OptionLabels[6].color = new Color(1f, 1f, 1f, 0.5f);
+			}
 		}
 		else if (this.ChoosingBodyRegion)
 		{
