@@ -146,7 +146,10 @@ public class CalendarScript : MonoBehaviour
 			{
 				if (this.Reset)
 				{
+					int profile = GameGlobals.Profile;
 					Globals.DeleteAll();
+					PlayerPrefs.SetInt("ProfileCreated_" + profile, 1);
+					GameGlobals.Profile = profile;
 					GameGlobals.LoveSick = this.LoveSick;
 					SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 				}

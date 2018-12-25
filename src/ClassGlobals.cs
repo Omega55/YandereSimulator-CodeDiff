@@ -37,11 +37,11 @@ public static class ClassGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("Biology");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_Biology");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("Biology", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_Biology", value);
 		}
 	}
 
@@ -49,11 +49,11 @@ public static class ClassGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("BiologyBonus");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_BiologyBonus");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("BiologyBonus", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_BiologyBonus", value);
 		}
 	}
 
@@ -61,11 +61,11 @@ public static class ClassGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("BiologyGrade");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_BiologyGrade");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("BiologyGrade", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_BiologyGrade", value);
 		}
 	}
 
@@ -73,11 +73,11 @@ public static class ClassGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("Chemistry");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_Chemistry");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("Chemistry", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_Chemistry", value);
 		}
 	}
 
@@ -85,11 +85,11 @@ public static class ClassGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("ChemistryBonus");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_ChemistryBonus");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("ChemistryBonus", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_ChemistryBonus", value);
 		}
 	}
 
@@ -97,11 +97,11 @@ public static class ClassGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("ChemistryGrade");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_ChemistryGrade");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("ChemistryGrade", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_ChemistryGrade", value);
 		}
 	}
 
@@ -109,11 +109,11 @@ public static class ClassGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("Language");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_Language");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("Language", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_Language", value);
 		}
 	}
 
@@ -121,11 +121,11 @@ public static class ClassGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("LanguageBonus");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_LanguageBonus");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("LanguageBonus", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_LanguageBonus", value);
 		}
 	}
 
@@ -133,11 +133,11 @@ public static class ClassGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("LanguageGrade");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_LanguageGrade");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("LanguageGrade", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_LanguageGrade", value);
 		}
 	}
 
@@ -145,11 +145,11 @@ public static class ClassGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("Physical");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_Physical");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("Physical", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_Physical", value);
 		}
 	}
 
@@ -157,11 +157,11 @@ public static class ClassGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("PhysicalBonus");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_PhysicalBonus");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("PhysicalBonus", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_PhysicalBonus", value);
 		}
 	}
 
@@ -169,11 +169,11 @@ public static class ClassGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("PhysicalGrade");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_PhysicalGrade");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("PhysicalGrade", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_PhysicalGrade", value);
 		}
 	}
 
@@ -181,11 +181,11 @@ public static class ClassGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("Psychology");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_Psychology");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("Psychology", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_Psychology", value);
 		}
 	}
 
@@ -193,11 +193,11 @@ public static class ClassGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("PsychologyBonus");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_PsychologyBonus");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("PsychologyBonus", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_PsychologyBonus", value);
 		}
 	}
 
@@ -205,30 +205,30 @@ public static class ClassGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("PsychologyGrade");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_PsychologyGrade");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("PsychologyGrade", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_PsychologyGrade", value);
 		}
 	}
 
 	public static void DeleteAll()
 	{
-		Globals.Delete("Biology");
-		Globals.Delete("BiologyBonus");
-		Globals.Delete("BiologyGrade");
-		Globals.Delete("Chemistry");
-		Globals.Delete("ChemistryBonus");
-		Globals.Delete("ChemistryGrade");
-		Globals.Delete("Language");
-		Globals.Delete("LanguageBonus");
-		Globals.Delete("LanguageGrade");
-		Globals.Delete("Physical");
-		Globals.Delete("PhysicalBonus");
-		Globals.Delete("PhysicalGrade");
-		Globals.Delete("Psychology");
-		Globals.Delete("PsychologyBonus");
-		Globals.Delete("PsychologyGrade");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_Biology");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_BiologyBonus");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_BiologyGrade");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_Chemistry");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_ChemistryBonus");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_ChemistryGrade");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_Language");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_LanguageBonus");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_LanguageGrade");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_Physical");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_PhysicalBonus");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_PhysicalGrade");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_Psychology");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_PsychologyBonus");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_PsychologyGrade");
 	}
 }

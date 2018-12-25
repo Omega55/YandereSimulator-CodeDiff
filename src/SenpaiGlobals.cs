@@ -21,11 +21,11 @@ public static class SenpaiGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("CustomSenpai");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_CustomSenpai");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("CustomSenpai", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_CustomSenpai", value);
 		}
 	}
 
@@ -33,11 +33,11 @@ public static class SenpaiGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetString("SenpaiEyeColor");
+			return PlayerPrefs.GetString("Profile_" + GameGlobals.Profile + "_SenpaiEyeColor");
 		}
 		set
 		{
-			PlayerPrefs.SetString("SenpaiEyeColor", value);
+			PlayerPrefs.SetString("Profile_" + GameGlobals.Profile + "_SenpaiEyeColor", value);
 		}
 	}
 
@@ -45,11 +45,11 @@ public static class SenpaiGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("SenpaiEyeWear");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_SenpaiEyeWear");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("SenpaiEyeWear", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_SenpaiEyeWear", value);
 		}
 	}
 
@@ -57,11 +57,11 @@ public static class SenpaiGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("SenpaiFacialHair");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_SenpaiFacialHair");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("SenpaiFacialHair", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_SenpaiFacialHair", value);
 		}
 	}
 
@@ -69,11 +69,11 @@ public static class SenpaiGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetString("SenpaiHairColor");
+			return PlayerPrefs.GetString("Profile_" + GameGlobals.Profile + "_SenpaiHairColor");
 		}
 		set
 		{
-			PlayerPrefs.SetString("SenpaiHairColor", value);
+			PlayerPrefs.SetString("Profile_" + GameGlobals.Profile + "_SenpaiHairColor", value);
 		}
 	}
 
@@ -81,11 +81,11 @@ public static class SenpaiGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("SenpaiHairStyle");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_SenpaiHairStyle");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("SenpaiHairStyle", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_SenpaiHairStyle", value);
 		}
 	}
 
@@ -93,22 +93,22 @@ public static class SenpaiGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("SenpaiSkinColor");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_SenpaiSkinColor");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("SenpaiSkinColor", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_SenpaiSkinColor", value);
 		}
 	}
 
 	public static void DeleteAll()
 	{
-		Globals.Delete("CustomSenpai");
-		Globals.Delete("SenpaiEyeColor");
-		Globals.Delete("SenpaiEyeWear");
-		Globals.Delete("SenpaiFacialHair");
-		Globals.Delete("SenpaiHairColor");
-		Globals.Delete("SenpaiHairStyle");
-		Globals.Delete("SenpaiSkinColor");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_CustomSenpai");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_SenpaiEyeColor");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_SenpaiEyeWear");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_SenpaiFacialHair");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_SenpaiHairColor");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_SenpaiHairStyle");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_SenpaiSkinColor");
 	}
 }

@@ -67,6 +67,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Collider WestBathroomArea;
 
+	public Collider IncineratorArea;
+
 	public HologramScript Holograms;
 
 	public RobotArmScript RobotArms;
@@ -476,6 +478,10 @@ public class StudentManagerScript : MonoBehaviour
 		{
 			this.SpawnPositions[51].position = new Vector3(3f, 0f, -95f);
 		}
+		if (GameGlobals.Profile == 0)
+		{
+			GameGlobals.Profile = 1;
+		}
 		this.ID = 76;
 		while (this.ID < 81)
 		{
@@ -559,10 +565,8 @@ public class StudentManagerScript : MonoBehaviour
 				this.ID = 1;
 				while (this.ID < this.Lockers.List.Length)
 				{
-					Transform transform = UnityEngine.Object.Instantiate<GameObject>(this.EmptyObject, this.Lockers.List[this.ID].position + this.Lockers.List[this.ID].forward * 0.5f, this.Lockers.List[this.ID].rotation).transform;
-					transform.parent = this.Lockers.transform;
-					transform.transform.eulerAngles = new Vector3(transform.transform.eulerAngles.x, transform.transform.eulerAngles.y + 180f, transform.transform.eulerAngles.z);
-					this.LockerPositions[this.ID] = transform;
+					this.LockerPositions[this.ID].transform.position = this.Lockers.List[this.ID].position + this.Lockers.List[this.ID].forward * 0.5f;
+					this.LockerPositions[this.ID].LookAt(this.Lockers.List[this.ID].position);
 					this.ID++;
 				}
 				this.ID = 1;
@@ -694,6 +698,11 @@ public class StudentManagerScript : MonoBehaviour
 				}
 				this.Yandere.GloveAttacher.newRenderer.enabled = false;
 				this.UpdateAprons();
+				if (PlayerPrefs.GetInt("LoadingSave") == 1)
+				{
+					this.Load();
+					PlayerPrefs.SetInt("LoadingSave", 0);
+				}
 			}
 			if ((double)this.Clock.HourTime > 16.9)
 			{
@@ -1223,6 +1232,7 @@ public class StudentManagerScript : MonoBehaviour
 					studentScript.Safe = false;
 					if (studentScript.Wet)
 					{
+						this.CommunalLocker.Student = null;
 						studentScript.Schoolwear = 3;
 						studentScript.ChangeSchoolwear();
 						studentScript.LiquidProjector.enabled = false;
@@ -1953,6 +1963,11 @@ public class StudentManagerScript : MonoBehaviour
 			ScheduleBlock scheduleBlock2 = studentScript2.ScheduleBlocks[4];
 			scheduleBlock2.destination = "Seat";
 			scheduleBlock2.action = "Sit";
+			if (studentScript2.Male)
+			{
+				studentScript2.ChemistScanner.MyRenderer.materials[1].mainTexture = studentScript2.ChemistScanner.SadEyes;
+				studentScript2.ChemistScanner.enabled = false;
+			}
 			studentScript2.IdleAnim = studentScript2.BulliedIdleAnim;
 			studentScript2.WalkAnim = studentScript2.BulliedWalkAnim;
 			studentScript2.Bullied = true;
@@ -2176,7 +2191,7 @@ public class StudentManagerScript : MonoBehaviour
 		this.ID = 21;
 		while (this.ID < 26)
 		{
-			if (this.Students[this.ID] != null && this.Students[this.ID].ClubMemberID > 0 && this.Students[this.ID].ApronAttacher != null)
+			if (this.Students[this.ID] != null && this.Students[this.ID].ClubMemberID > 0 && this.Students[this.ID].ApronAttacher != null && this.Students[this.ID].ApronAttacher.newRenderer != null)
 			{
 				this.Students[this.ID].ApronAttacher.newRenderer.material.mainTexture = this.Students[this.ID].Cosmetic.ApronTextures[this.Students[this.ID].ClubMemberID];
 			}
@@ -2202,7 +2217,7 @@ public class StudentManagerScript : MonoBehaviour
 		this.ID = 51;
 		while (this.ID < 56)
 		{
-			if (this.Students[this.ID] != null)
+			if (this.Students[this.ID] != null && this.Students[this.ID].Instruments[this.Students[this.ID].ClubMemberID] != null)
 			{
 				this.Students[this.ID].Instruments[this.Students[this.ID].ClubMemberID].GetComponent<AudioSource>().volume = 0.2f;
 			}
@@ -2215,11 +2230,85 @@ public class StudentManagerScript : MonoBehaviour
 		this.ID = 51;
 		while (this.ID < 56)
 		{
-			if (this.Students[this.ID] != null)
+			if (this.Students[this.ID] != null && this.Students[this.ID].Instruments[this.Students[this.ID].ClubMemberID] != null)
 			{
 				this.Students[this.ID].Instruments[this.Students[this.ID].ClubMemberID].GetComponent<AudioSource>().volume = 1f;
 			}
 			this.ID++;
 		}
+	}
+
+	public void Save()
+	{
+		this.ID = 1;
+		while (this.ID < 101)
+		{
+			if (this.Students[this.ID] != null)
+			{
+				this.Students[this.ID].SaveLoad.SaveData();
+			}
+			this.ID++;
+		}
+	}
+
+	public void Load()
+	{
+		this.ID = 1;
+		while (this.ID < 101)
+		{
+			if (this.Students[this.ID] != null)
+			{
+				this.Students[this.ID].SaveLoad.LoadData();
+			}
+			this.ID++;
+		}
+		int profile = GameGlobals.Profile;
+		int @int = PlayerPrefs.GetInt("SaveSlot");
+		this.Yandere.transform.position = new Vector3(PlayerPrefs.GetFloat(string.Concat(new object[]
+		{
+			"Profile_",
+			profile,
+			"_Slot_",
+			@int,
+			"_YanderePosX"
+		})), PlayerPrefs.GetFloat(string.Concat(new object[]
+		{
+			"Profile_",
+			profile,
+			"_Slot_",
+			@int,
+			"_YanderePosY"
+		})), PlayerPrefs.GetFloat(string.Concat(new object[]
+		{
+			"Profile_",
+			profile,
+			"_Slot_",
+			@int,
+			"_YanderePosZ"
+		})));
+		this.Yandere.transform.eulerAngles = new Vector3(PlayerPrefs.GetFloat(string.Concat(new object[]
+		{
+			"Profile_",
+			profile,
+			"_Slot_",
+			@int,
+			"_YandereRotX"
+		})), PlayerPrefs.GetFloat(string.Concat(new object[]
+		{
+			"Profile_",
+			profile,
+			"_Slot_",
+			@int,
+			"_YandereRotY"
+		})), PlayerPrefs.GetFloat(string.Concat(new object[]
+		{
+			"Profile_",
+			profile,
+			"_Slot_",
+			@int,
+			"_YandereRotZ"
+		})));
+		this.Yandere.FixCamera();
+		Physics.SyncTransforms();
 	}
 }

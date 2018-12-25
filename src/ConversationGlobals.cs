@@ -9,26 +9,40 @@ public static class ConversationGlobals
 
 	public static bool GetTopicDiscovered(int topicID)
 	{
-		return GlobalsHelper.GetBool("TopicDiscovered_" + topicID.ToString());
+		return GlobalsHelper.GetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_TopicDiscovered_",
+			topicID.ToString()
+		}));
 	}
 
 	public static void SetTopicDiscovered(int topicID, bool value)
 	{
 		string text = topicID.ToString();
-		KeysHelper.AddIfMissing("TopicDiscovered_", text);
-		GlobalsHelper.SetBool("TopicDiscovered_" + text, value);
+		KeysHelper.AddIfMissing("Profile_" + GameGlobals.Profile + "_TopicDiscovered_", text);
+		GlobalsHelper.SetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_TopicDiscovered_",
+			text
+		}), value);
 	}
 
 	public static int[] KeysOfTopicDiscovered()
 	{
-		return KeysHelper.GetIntegerKeys("TopicDiscovered_");
+		return KeysHelper.GetIntegerKeys("Profile_" + GameGlobals.Profile + "_TopicDiscovered_");
 	}
 
 	public static bool GetTopicLearnedByStudent(int topicID, int studentID)
 	{
 		return GlobalsHelper.GetBool(string.Concat(new object[]
 		{
-			"TopicLearnedByStudent_",
+			"Profile_",
+			GameGlobals.Profile,
+			"_TopicLearnedByStudent_",
 			topicID.ToString(),
 			'_',
 			studentID.ToString()
@@ -39,10 +53,12 @@ public static class ConversationGlobals
 	{
 		string text = topicID.ToString();
 		string text2 = studentID.ToString();
-		KeysHelper.AddIfMissing("TopicLearnedByStudent_", text + '^' + text2);
+		KeysHelper.AddIfMissing("Profile_" + GameGlobals.Profile + "_TopicLearnedByStudent_", text + '^' + text2);
 		GlobalsHelper.SetBool(string.Concat(new object[]
 		{
-			"TopicLearnedByStudent_",
+			"Profile_",
+			GameGlobals.Profile,
+			"_TopicLearnedByStudent_",
 			text,
 			'_',
 			text2
@@ -51,7 +67,7 @@ public static class ConversationGlobals
 
 	public static IntAndIntPair[] KeysOfTopicLearnedByStudent()
 	{
-		KeyValuePair<int, int>[] keys = KeysHelper.GetKeys<int, int>("TopicLearnedByStudent_");
+		KeyValuePair<int, int>[] keys = KeysHelper.GetKeys<int, int>("Profile_" + GameGlobals.Profile + "_TopicLearnedByStudent_");
 		IntAndIntPair[] array = new IntAndIntPair[keys.Length];
 		for (int i = 0; i < keys.Length; i++)
 		{
@@ -63,17 +79,19 @@ public static class ConversationGlobals
 
 	public static void DeleteAll()
 	{
-		Globals.DeleteCollection("TopicDiscovered_", ConversationGlobals.KeysOfTopicDiscovered());
+		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_TopicDiscovered_", ConversationGlobals.KeysOfTopicDiscovered());
 		foreach (IntAndIntPair intAndIntPair in ConversationGlobals.KeysOfTopicLearnedByStudent())
 		{
 			Globals.Delete(string.Concat(new object[]
 			{
-				"TopicLearnedByStudent_",
+				"Profile_",
+				GameGlobals.Profile,
+				"_TopicLearnedByStudent_",
 				intAndIntPair.first.ToString(),
 				'_',
 				intAndIntPair.second.ToString()
 			}));
 		}
-		KeysHelper.Delete("TopicLearnedByStudent_");
+		KeysHelper.Delete("Profile_" + GameGlobals.Profile + "_TopicLearnedByStudent_");
 	}
 }

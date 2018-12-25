@@ -141,7 +141,17 @@ public class TaskManagerScript : MonoBehaviour
 		{
 			this.StudentManager.Students[38].TaskPhase = 5;
 		}
-		if (TaskGlobals.GetTaskStatus(52) == 1 && this.StudentManager.Students[52] != null)
+		if (ClubGlobals.GetClubClosed(ClubType.LightMusic))
+		{
+			this.StudentManager.Students[52].TaskPhase = 100;
+			TaskGlobals.SetTaskStatus(52, 100);
+		}
+		else if (this.StudentManager.Students[52] == null)
+		{
+			this.StudentManager.Students[52].TaskPhase = 100;
+			TaskGlobals.SetTaskStatus(52, 100);
+		}
+		else if (TaskGlobals.GetTaskStatus(52) == 1 && this.StudentManager.Students[52] != null)
 		{
 			this.StudentManager.Students[52].TaskPhase = 4;
 			for (int j = 1; j < 52; j++)

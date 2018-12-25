@@ -11,6 +11,8 @@ public class ChemistScannerScript : MonoBehaviour
 
 	public Texture DeadEyes;
 
+	public Texture SadEyes;
+
 	public Texture[] Textures;
 
 	public float Timer;

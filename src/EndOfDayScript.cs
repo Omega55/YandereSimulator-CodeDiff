@@ -72,6 +72,8 @@ public class EndOfDayScript : MonoBehaviour
 
 	public int FragileTarget;
 
+	public int NewFriends;
+
 	public int DeadPerps;
 
 	public int Arrests;
@@ -434,7 +436,7 @@ public class EndOfDayScript : MonoBehaviour
 				{
 					this.TeleportYandere();
 					this.Yandere.CharacterAnimation.Play("f02_disappointed_00");
-					this.Label.text = "The police find Yandere-chan's fingerprints on the weapon.";
+					this.Label.text = "The police find Ayano's fingerprints on the weapon.";
 					this.Phase = 100;
 				}
 				else
@@ -459,7 +461,7 @@ public class EndOfDayScript : MonoBehaviour
 					}
 					else if (!this.SecuritySystem.Masked)
 					{
-						this.Label.text = "The police investigate the security camera recordings, and find incriminating footage of Yandere-chan.";
+						this.Label.text = "The police investigate the security camera recordings, and find incriminating footage of Ayano.";
 						this.Phase = 100;
 					}
 					else
@@ -486,7 +488,7 @@ public class EndOfDayScript : MonoBehaviour
 						{
 							this.TeleportYandere();
 							this.Yandere.CharacterAnimation.Play("f02_disappointed_00");
-							this.Label.text = "The police notice that Yandere-chan's clothing is bloody. They confirm that the blood is not hers. Yandere-chan is unable to convince the police that she did not commit murder.";
+							this.Label.text = "The police notice that Ayano's clothing is bloody. They confirm that the blood is not hers. Ayano is unable to convince the police that she did not commit murder.";
 							this.Phase = 100;
 						}
 						else
@@ -494,7 +496,7 @@ public class EndOfDayScript : MonoBehaviour
 							this.TeleportYandere();
 							this.Yandere.CharacterAnimation["YandereConfessionRejected"].time = 4f;
 							this.Yandere.CharacterAnimation.Play("YandereConfessionRejected");
-							this.Label.text = "The police notice that Yandere-chan's clothing is bloody. They confirm that the blood is not hers. Yandere-chan is able to convince the police that she was splashed with blood while witnessing a murder.";
+							this.Label.text = "The police notice that Ayano's clothing is bloody. They confirm that the blood is not hers. Ayano is able to convince the police that she was splashed with blood while witnessing a murder.";
 							if (!this.TranqCase.Occupied)
 							{
 								this.Phase = 8;
@@ -509,7 +511,7 @@ public class EndOfDayScript : MonoBehaviour
 					{
 						this.TeleportYandere();
 						this.Yandere.CharacterAnimation.Play("f02_disappointed_00");
-						this.Label.text = "The police find bloody clothing that has traces of Yandere-chan's DNA. Yandere-chan is unable to convince the police that she did not commit murder.";
+						this.Label.text = "The police find bloody clothing that has traces of Ayano's DNA. Ayano is unable to convince the police that she did not commit murder.";
 						this.Phase = 100;
 					}
 					else
@@ -517,7 +519,7 @@ public class EndOfDayScript : MonoBehaviour
 						this.TeleportYandere();
 						this.Yandere.CharacterAnimation["YandereConfessionRejected"].time = 4f;
 						this.Yandere.CharacterAnimation.Play("YandereConfessionRejected");
-						this.Label.text = "The police question all students in the school, including Yandere-chan. The police are unable to link Yandere-chan to any crimes.";
+						this.Label.text = "The police question all students in the school, including Ayano. The police are unable to link Ayano to any crimes.";
 						if (!this.TranqCase.Occupied)
 						{
 							this.Phase = 8;
@@ -538,12 +540,12 @@ public class EndOfDayScript : MonoBehaviour
 					this.Yandere.CharacterAnimation.Play("f02_disappointed_00");
 					if (this.Yandere.Bloodiness == 0f)
 					{
-						this.Label.text = "The police question Yandere-chan, who exhibits extremely unusual behavior. The police decide to investigate Yandere-chan further, and eventually learn of her crimes.";
+						this.Label.text = "The police question Ayano, who exhibits extremely unusual behavior. The police decide to investigate Ayano further, and eventually learn of her crimes.";
 						this.Phase = 100;
 					}
 					else
 					{
-						this.Label.text = "The police notice that Yandere-chan is covered in blood and exhibiting extremely unusual behavior. The police decide to investigate Yandere-chan further, and eventually learn of her crimes.";
+						this.Label.text = "The police notice that Ayano is covered in blood and exhibiting extremely unusual behavior. The police decide to investigate Ayano further, and eventually learn of her crimes.";
 						this.Phase = 100;
 					}
 				}
@@ -630,7 +632,7 @@ public class EndOfDayScript : MonoBehaviour
 				this.Yandere.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
 				this.Yandere.CharacterAnimation.Play(this.Yandere.WalkAnim);
 				Physics.SyncTransforms();
-				this.Label.text = "Yandere-chan stalks Senpai until he has returned home safely, and then returns to her own home.";
+				this.Label.text = "Ayano stalks Senpai until he has returned home safely, and then returns to her own home.";
 				this.Phase++;
 			}
 			else if (this.Phase == 11)
@@ -781,9 +783,9 @@ public class EndOfDayScript : MonoBehaviour
 							this.EODCamera.Translate(Vector3.forward * d, Space.Self);
 							this.Label.text = string.Concat(new string[]
 							{
-								"Yandere-chan receives a text message from the president of the ",
+								"Ayano receives a text message from the president of the ",
 								this.ClubNames[this.ClubID].ToString(),
-								". Yandere-chan is no longer a member of the ",
+								". Ayano is no longer a member of the ",
 								this.ClubNames[this.ClubID].ToString(),
 								", and is not welcome in the ",
 								this.ClubNames[this.ClubID].ToString(),
@@ -800,11 +802,11 @@ public class EndOfDayScript : MonoBehaviour
 							this.EODCamera.Translate(Vector3.forward * d, Space.Self);
 							this.Label.text = string.Concat(new string[]
 							{
-								"Yandere-chan receives a text message from the president of the ",
+								"Ayano receives a text message from the president of the ",
 								this.ClubNames[this.ClubID].ToString(),
 								". There is someone in the ",
 								this.ClubNames[this.ClubID].ToString(),
-								" who hates and fears Yandere-chan. Yandere-chan is no longer a member of the ",
+								" who hates and fears Ayano. Ayano is no longer a member of the ",
 								this.ClubNames[this.ClubID].ToString(),
 								", and is not welcome in the ",
 								this.ClubNames[this.ClubID].ToString(),
@@ -835,7 +837,7 @@ public class EndOfDayScript : MonoBehaviour
 				{
 					this.ClosedTranqCase.SetActive(true);
 					this.Label.color = new Color(this.Label.color.r, this.Label.color.g, this.Label.color.b, 1f);
-					this.Label.text = "Yandere-chan waits until midnight, sneaks into school, and returns to the musical instrument case that contains her unconscious victim. She pushes the case back to her house and ties  the victim to a chair in her basement.";
+					this.Label.text = "Ayano waits until midnight, sneaks into school, and returns to the musical instrument case that contains her unconscious victim. She pushes the case back to her house and ties  the victim to a chair in her basement.";
 					this.Phase++;
 				}
 				else
@@ -889,7 +891,7 @@ public class EndOfDayScript : MonoBehaviour
 				this.Yandere.Handcuffs.SetActive(true);
 				this.ArrestingCops.SetActive(true);
 				Physics.SyncTransforms();
-				this.Label.text = "Yandere-chan is arrested by the police. She will never have Senpai.";
+				this.Label.text = "Ayano is arrested by the police. She will never have Senpai.";
 				this.GameOver = true;
 			}
 			else if (this.Phase == 101)
@@ -1092,6 +1094,18 @@ public class EndOfDayScript : MonoBehaviour
 		if (this.StudentManager.ReactedToGameLeader)
 		{
 			SchoolGlobals.ReactedToGameLeader = true;
+		}
+		if (this.NewFriends > 0)
+		{
+			PlayerGlobals.Friends += this.NewFriends;
+		}
+		if (this.Yandere.Alerts > 0)
+		{
+			PlayerGlobals.Alerts += this.Yandere.Alerts;
+		}
+		if (this.Counselor.ExpelledDelinquents)
+		{
+			SchoolGlobals.SchoolAtmosphere += 5f;
 		}
 	}
 }

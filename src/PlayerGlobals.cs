@@ -11,6 +11,8 @@ public static class PlayerGlobals
 
 	private const string Str_EnlightenmentBonus = "EnlightenmentBonus";
 
+	private const string Str_Friends = "Friends";
+
 	private const string Str_Headset = "Headset";
 
 	private const string Str_Kills = "Kills";
@@ -55,11 +57,11 @@ public static class PlayerGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("Alerts");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_Alerts");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("Alerts", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_Alerts", value);
 		}
 	}
 
@@ -67,11 +69,11 @@ public static class PlayerGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("Enlightenment");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_Enlightenment");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("Enlightenment", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_Enlightenment", value);
 		}
 	}
 
@@ -79,11 +81,23 @@ public static class PlayerGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("EnlightenmentBonus");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_EnlightenmentBonus");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("EnlightenmentBonus", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_EnlightenmentBonus", value);
+		}
+	}
+
+	public static int Friends
+	{
+		get
+		{
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_Friends");
+		}
+		set
+		{
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_Friends", value);
 		}
 	}
 
@@ -91,11 +105,11 @@ public static class PlayerGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("Headset");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_Headset");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("Headset", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_Headset", value);
 		}
 	}
 
@@ -103,11 +117,11 @@ public static class PlayerGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("Kills");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_Kills");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("Kills", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_Kills", value);
 		}
 	}
 
@@ -115,11 +129,11 @@ public static class PlayerGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("Numbness");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_Numbness");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("Numbness", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_Numbness", value);
 		}
 	}
 
@@ -127,11 +141,11 @@ public static class PlayerGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("NumbnessBonus");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_NumbnessBonus");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("NumbnessBonus", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_NumbnessBonus", value);
 		}
 	}
 
@@ -139,11 +153,11 @@ public static class PlayerGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("PantiesEquipped");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_PantiesEquipped");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("PantiesEquipped", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_PantiesEquipped", value);
 		}
 	}
 
@@ -151,91 +165,139 @@ public static class PlayerGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("PantyShots");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_PantyShots");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("PantyShots", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_PantyShots", value);
 		}
 	}
 
 	public static bool GetPhoto(int photoID)
 	{
-		return GlobalsHelper.GetBool("Photo_" + photoID.ToString());
+		return GlobalsHelper.GetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_Photo_",
+			photoID.ToString()
+		}));
 	}
 
 	public static void SetPhoto(int photoID, bool value)
 	{
 		string text = photoID.ToString();
-		KeysHelper.AddIfMissing("Photo_", text);
-		GlobalsHelper.SetBool("Photo_" + text, value);
+		KeysHelper.AddIfMissing("Profile_" + GameGlobals.Profile + "_Photo_", text);
+		GlobalsHelper.SetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_Photo_",
+			text
+		}), value);
 	}
 
 	public static int[] KeysOfPhoto()
 	{
-		return KeysHelper.GetIntegerKeys("Photo_");
+		return KeysHelper.GetIntegerKeys("Profile_" + GameGlobals.Profile + "_Photo_");
 	}
 
 	public static bool GetPhotoOnCorkboard(int photoID)
 	{
-		return GlobalsHelper.GetBool("PhotoOnCorkboard_" + photoID.ToString());
+		return GlobalsHelper.GetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_PhotoOnCorkboard_",
+			photoID.ToString()
+		}));
 	}
 
 	public static void SetPhotoOnCorkboard(int photoID, bool value)
 	{
 		string text = photoID.ToString();
-		KeysHelper.AddIfMissing("PhotoOnCorkboard_", text);
-		GlobalsHelper.SetBool("PhotoOnCorkboard_" + text, value);
+		KeysHelper.AddIfMissing("Profile_" + GameGlobals.Profile + "_PhotoOnCorkboard_", text);
+		GlobalsHelper.SetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_PhotoOnCorkboard_",
+			text
+		}), value);
 	}
 
 	public static int[] KeysOfPhotoOnCorkboard()
 	{
-		return KeysHelper.GetIntegerKeys("PhotoOnCorkboard_");
+		return KeysHelper.GetIntegerKeys("Profile_" + GameGlobals.Profile + "_PhotoOnCorkboard_");
 	}
 
 	public static Vector2 GetPhotoPosition(int photoID)
 	{
-		return GlobalsHelper.GetVector2("PhotoPosition_" + photoID.ToString());
+		return GlobalsHelper.GetVector2(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_PhotoPosition_",
+			photoID.ToString()
+		}));
 	}
 
 	public static void SetPhotoPosition(int photoID, Vector2 value)
 	{
 		string text = photoID.ToString();
-		KeysHelper.AddIfMissing("PhotoPosition_", text);
-		GlobalsHelper.SetVector2("PhotoPosition_" + text, value);
+		KeysHelper.AddIfMissing("Profile_" + GameGlobals.Profile + "_PhotoPosition_", text);
+		GlobalsHelper.SetVector2(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_PhotoPosition_",
+			text
+		}), value);
 	}
 
 	public static int[] KeysOfPhotoPosition()
 	{
-		return KeysHelper.GetIntegerKeys("PhotoPosition_");
+		return KeysHelper.GetIntegerKeys("Profile_" + GameGlobals.Profile + "_PhotoPosition_");
 	}
 
 	public static float GetPhotoRotation(int photoID)
 	{
-		return PlayerPrefs.GetFloat("PhotoRotation_" + photoID.ToString());
+		return PlayerPrefs.GetFloat(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_PhotoRotation_",
+			photoID.ToString()
+		}));
 	}
 
 	public static void SetPhotoRotation(int photoID, float value)
 	{
 		string text = photoID.ToString();
-		KeysHelper.AddIfMissing("PhotoRotation_", text);
-		PlayerPrefs.SetFloat("PhotoRotation_" + text, value);
+		KeysHelper.AddIfMissing("Profile_" + GameGlobals.Profile + "_PhotoRotation_", text);
+		PlayerPrefs.SetFloat(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_PhotoRotation_",
+			text
+		}), value);
 	}
 
 	public static int[] KeysOfPhotoRotation()
 	{
-		return KeysHelper.GetIntegerKeys("PhotoRotation_");
+		return KeysHelper.GetIntegerKeys("Profile_" + GameGlobals.Profile + "_PhotoRotation_");
 	}
 
 	public static float Reputation
 	{
 		get
 		{
-			return PlayerPrefs.GetFloat("Reputation");
+			return PlayerPrefs.GetFloat("Profile_" + GameGlobals.Profile + "_Reputation");
 		}
 		set
 		{
-			PlayerPrefs.SetFloat("Reputation", value);
+			PlayerPrefs.SetFloat("Profile_" + GameGlobals.Profile + "_Reputation", value);
 		}
 	}
 
@@ -243,11 +305,11 @@ public static class PlayerGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("Seduction");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_Seduction");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("Seduction", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_Seduction", value);
 		}
 	}
 
@@ -255,50 +317,74 @@ public static class PlayerGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("SeductionBonus");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_SeductionBonus");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("SeductionBonus", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_SeductionBonus", value);
 		}
 	}
 
 	public static bool GetSenpaiPhoto(int photoID)
 	{
-		return GlobalsHelper.GetBool("SenpaiPhoto_" + photoID.ToString());
+		return GlobalsHelper.GetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_SenpaiPhoto_",
+			photoID.ToString()
+		}));
 	}
 
 	public static void SetSenpaiPhoto(int photoID, bool value)
 	{
 		string text = photoID.ToString();
-		KeysHelper.AddIfMissing("SenpaiPhoto_", text);
-		GlobalsHelper.SetBool("SenpaiPhoto_" + text, value);
+		KeysHelper.AddIfMissing("Profile_" + GameGlobals.Profile + "_SenpaiPhoto_", text);
+		GlobalsHelper.SetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_SenpaiPhoto_",
+			text
+		}), value);
 	}
 
 	public static int GetBullyPhoto(int photoID)
 	{
-		return PlayerPrefs.GetInt("BullyPhoto_" + photoID.ToString());
+		return PlayerPrefs.GetInt(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_BullyPhoto_",
+			photoID.ToString()
+		}));
 	}
 
 	public static void SetBullyPhoto(int photoID, int value)
 	{
-		PlayerPrefs.SetInt("BullyPhoto_" + photoID.ToString(), value);
+		PlayerPrefs.SetInt(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_BullyPhoto_",
+			photoID.ToString()
+		}), value);
 	}
 
 	public static int[] KeysOfSenpaiPhoto()
 	{
-		return KeysHelper.GetIntegerKeys("SenpaiPhoto_");
+		return KeysHelper.GetIntegerKeys("Profile_" + GameGlobals.Profile + "_SenpaiPhoto_");
 	}
 
 	public static int SenpaiShots
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("SenpaiShots");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_SenpaiShots");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("SenpaiShots", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_SenpaiShots", value);
 		}
 	}
 
@@ -306,11 +392,11 @@ public static class PlayerGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("SocialBonus");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_SocialBonus");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("SocialBonus", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_SocialBonus", value);
 		}
 	}
 
@@ -318,11 +404,11 @@ public static class PlayerGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("SpeedBonus");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_SpeedBonus");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("SpeedBonus", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_SpeedBonus", value);
 		}
 	}
 
@@ -330,71 +416,96 @@ public static class PlayerGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("StealthBonus");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_StealthBonus");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("StealthBonus", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_StealthBonus", value);
 		}
 	}
 
 	public static bool GetStudentFriend(int studentID)
 	{
-		return GlobalsHelper.GetBool("StudentFriend_" + studentID.ToString());
+		return GlobalsHelper.GetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_StudentFriend_",
+			studentID.ToString()
+		}));
 	}
 
 	public static void SetStudentFriend(int studentID, bool value)
 	{
 		string text = studentID.ToString();
-		KeysHelper.AddIfMissing("StudentFriend_", text);
-		GlobalsHelper.SetBool("StudentFriend_" + text, value);
+		KeysHelper.AddIfMissing("Profile_" + GameGlobals.Profile + "_StudentFriend_", text);
+		GlobalsHelper.SetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_StudentFriend_",
+			text
+		}), value);
 	}
 
 	public static int[] KeysOfStudentFriend()
 	{
-		return KeysHelper.GetIntegerKeys("StudentFriend_");
+		return KeysHelper.GetIntegerKeys("Profile_" + GameGlobals.Profile + "_StudentFriend_");
 	}
 
 	public static bool GetStudentPantyShot(string studentName)
 	{
-		return GlobalsHelper.GetBool("StudentPantyShot_" + studentName);
+		return GlobalsHelper.GetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_StudentPantyShot_",
+			studentName
+		}));
 	}
 
 	public static void SetStudentPantyShot(string studentName, bool value)
 	{
-		KeysHelper.AddIfMissing("StudentPantyShot_", studentName);
-		GlobalsHelper.SetBool("StudentPantyShot_" + studentName, value);
+		KeysHelper.AddIfMissing("Profile_" + GameGlobals.Profile + "_StudentPantyShot_", studentName);
+		GlobalsHelper.SetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_StudentPantyShot_",
+			studentName
+		}), value);
 	}
 
 	public static string[] KeysOfStudentPantyShot()
 	{
-		return KeysHelper.GetStringKeys("StudentPantyShot_");
+		return KeysHelper.GetStringKeys("Profile_" + GameGlobals.Profile + "_StudentPantyShot_");
 	}
 
 	public static void DeleteAll()
 	{
-		Globals.Delete("Alerts");
-		Globals.Delete("Enlightenment");
-		Globals.Delete("EnlightenmentBonus");
-		Globals.Delete("Headset");
-		Globals.Delete("Kills");
-		Globals.Delete("Numbness");
-		Globals.Delete("NumbnessBonus");
-		Globals.Delete("PantiesEquipped");
-		Globals.Delete("PantyShots");
-		Globals.DeleteCollection("Photo_", PlayerGlobals.KeysOfPhoto());
-		Globals.DeleteCollection("PhotoOnCorkboard_", PlayerGlobals.KeysOfPhotoOnCorkboard());
-		Globals.DeleteCollection("PhotoPosition_", PlayerGlobals.KeysOfPhotoPosition());
-		Globals.DeleteCollection("PhotoRotation_", PlayerGlobals.KeysOfPhotoRotation());
-		Globals.Delete("Reputation");
-		Globals.Delete("Seduction");
-		Globals.Delete("SeductionBonus");
-		Globals.DeleteCollection("SenpaiPhoto_", PlayerGlobals.KeysOfSenpaiPhoto());
-		Globals.Delete("SenpaiShots");
-		Globals.Delete("SocialBonus");
-		Globals.Delete("SpeedBonus");
-		Globals.Delete("StealthBonus");
-		Globals.DeleteCollection("StudentFriend_", PlayerGlobals.KeysOfStudentFriend());
-		Globals.DeleteCollection("StudentPantyShot_", PlayerGlobals.KeysOfStudentPantyShot());
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_Alerts");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_Enlightenment");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_EnlightenmentBonus");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_Friends");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_Headset");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_Kills");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_Numbness");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_NumbnessBonus");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_PantiesEquipped");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_PantyShots");
+		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_Photo_", PlayerGlobals.KeysOfPhoto());
+		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_PhotoOnCorkboard_", PlayerGlobals.KeysOfPhotoOnCorkboard());
+		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_PhotoPosition_", PlayerGlobals.KeysOfPhotoPosition());
+		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_PhotoRotation_", PlayerGlobals.KeysOfPhotoRotation());
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_Reputation");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_Seduction");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_SeductionBonus");
+		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_SenpaiPhoto_", PlayerGlobals.KeysOfSenpaiPhoto());
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_SenpaiShots");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_SocialBonus");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_SpeedBonus");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_StealthBonus");
+		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_StudentFriend_", PlayerGlobals.KeysOfStudentFriend());
+		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_StudentPantyShot_", PlayerGlobals.KeysOfStudentPantyShot());
 	}
 }

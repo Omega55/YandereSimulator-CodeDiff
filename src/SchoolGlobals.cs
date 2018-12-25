@@ -25,47 +25,71 @@ public static class SchoolGlobals
 
 	public static bool GetDemonActive(int demonID)
 	{
-		return GlobalsHelper.GetBool("DemonActive_" + demonID.ToString());
+		return GlobalsHelper.GetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_DemonActive_",
+			demonID.ToString()
+		}));
 	}
 
 	public static void SetDemonActive(int demonID, bool value)
 	{
 		string text = demonID.ToString();
-		KeysHelper.AddIfMissing("DemonActive_", text);
-		GlobalsHelper.SetBool("DemonActive_" + text, value);
+		KeysHelper.AddIfMissing("Profile_" + GameGlobals.Profile + "_DemonActive_", text);
+		GlobalsHelper.SetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_DemonActive_",
+			text
+		}), value);
 	}
 
 	public static int[] KeysOfDemonActive()
 	{
-		return KeysHelper.GetIntegerKeys("DemonActive_");
+		return KeysHelper.GetIntegerKeys("Profile_" + GameGlobals.Profile + "_DemonActive_");
 	}
 
 	public static bool GetGardenGraveOccupied(int graveID)
 	{
-		return GlobalsHelper.GetBool("GardenGraveOccupied_" + graveID.ToString());
+		return GlobalsHelper.GetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_GardenGraveOccupied_",
+			graveID.ToString()
+		}));
 	}
 
 	public static void SetGardenGraveOccupied(int graveID, bool value)
 	{
 		string text = graveID.ToString();
-		KeysHelper.AddIfMissing("GardenGraveOccupied_", text);
-		GlobalsHelper.SetBool("GardenGraveOccupied_" + text, value);
+		KeysHelper.AddIfMissing("Profile_" + GameGlobals.Profile + "_GardenGraveOccupied_", text);
+		GlobalsHelper.SetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_GardenGraveOccupied_",
+			text
+		}), value);
 	}
 
 	public static int[] KeysOfGardenGraveOccupied()
 	{
-		return KeysHelper.GetIntegerKeys("GardenGraveOccupied_");
+		return KeysHelper.GetIntegerKeys("Profile_" + GameGlobals.Profile + "_GardenGraveOccupied_");
 	}
 
 	public static int KidnapVictim
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("KidnapVictim");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_KidnapVictim");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("KidnapVictim", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_KidnapVictim", value);
 		}
 	}
 
@@ -73,11 +97,11 @@ public static class SchoolGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("Population");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_Population");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("Population", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_Population", value);
 		}
 	}
 
@@ -85,11 +109,11 @@ public static class SchoolGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("RoofFence");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_RoofFence");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("RoofFence", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_RoofFence", value);
 		}
 	}
 
@@ -97,11 +121,11 @@ public static class SchoolGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetFloat("SchoolAtmosphere");
+			return PlayerPrefs.GetFloat("Profile_" + GameGlobals.Profile + "_SchoolAtmosphere");
 		}
 		set
 		{
-			PlayerPrefs.SetFloat("SchoolAtmosphere", value);
+			PlayerPrefs.SetFloat("Profile_" + GameGlobals.Profile + "_SchoolAtmosphere", value);
 		}
 	}
 
@@ -109,11 +133,11 @@ public static class SchoolGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("SchoolAtmosphereSet");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_SchoolAtmosphereSet");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("SchoolAtmosphereSet", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_SchoolAtmosphereSet", value);
 		}
 	}
 
@@ -121,11 +145,11 @@ public static class SchoolGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("ReactedToGameLeader");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_ReactedToGameLeader");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("ReactedToGameLeader", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_ReactedToGameLeader", value);
 		}
 	}
 
@@ -133,11 +157,11 @@ public static class SchoolGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("SCP");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_SCP");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("SCP", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_SCP", value);
 		}
 	}
 
@@ -145,24 +169,24 @@ public static class SchoolGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("HighSecurity");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_HighSecurity");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("HighSecurity", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_HighSecurity", value);
 		}
 	}
 
 	public static void DeleteAll()
 	{
-		Globals.DeleteCollection("DemonActive_", SchoolGlobals.KeysOfDemonActive());
-		Globals.DeleteCollection("GardenGraveOccupied_", SchoolGlobals.KeysOfGardenGraveOccupied());
-		Globals.Delete("KidnapVictim");
-		Globals.Delete("Population");
-		Globals.Delete("RoofFence");
-		Globals.Delete("SchoolAtmosphere");
-		Globals.Delete("SchoolAtmosphereSet");
-		Globals.Delete("ReactedToGameLeader");
-		Globals.Delete("SCP");
+		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_DemonActive_", SchoolGlobals.KeysOfDemonActive());
+		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_GardenGraveOccupied_", SchoolGlobals.KeysOfGardenGraveOccupied());
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_KidnapVictim");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_Population");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_RoofFence");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_SchoolAtmosphere");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_SchoolAtmosphereSet");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_ReactedToGameLeader");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_SCP");
 	}
 }

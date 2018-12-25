@@ -9,16 +9,16 @@ public static class SaveFileGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("CurrentSaveFile");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_CurrentSaveFile");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("CurrentSaveFile", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_CurrentSaveFile", value);
 		}
 	}
 
 	public static void DeleteAll()
 	{
-		Globals.Delete("CurrentSaveFile");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_CurrentSaveFile");
 	}
 }

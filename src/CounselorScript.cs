@@ -200,6 +200,8 @@ public class CounselorScript : MonoBehaviour
 
 	public bool MustExpelDelinquents;
 
+	public bool ExpelledDelinquents;
+
 	public bool SilentTreatment;
 
 	public bool Interrogating;
@@ -1323,6 +1325,7 @@ public class CounselorScript : MonoBehaviour
 						StudentGlobals.SetStudentExpelled(78, true);
 						StudentGlobals.SetStudentExpelled(79, true);
 						StudentGlobals.SetStudentExpelled(80, true);
+						this.ExpelledDelinquents = true;
 					}
 					else if (this.Answer == 4)
 					{

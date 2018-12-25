@@ -165,7 +165,6 @@ public class PortalScript : MonoBehaviour
 			}
 			else if (this.Proceed)
 			{
-				Debug.Log("Proceeding.");
 				if (this.ClassDarkness.color.a >= 1f)
 				{
 					Debug.Log("Updating the time of day.");

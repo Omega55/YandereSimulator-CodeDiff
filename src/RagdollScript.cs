@@ -216,7 +216,7 @@ public class RagdollScript : MonoBehaviour
 			}
 			if (!Input.GetButtonDown("LB"))
 			{
-				if (this.BloodPoolSpawner.gameObject.activeInHierarchy && !this.Cauterized)
+				if (this.BloodPoolSpawner != null && this.BloodPoolSpawner.gameObject.activeInHierarchy && !this.Cauterized)
 				{
 					if (this.Yandere.PickUp != null)
 					{

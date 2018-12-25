@@ -10,11 +10,11 @@ public static class YanvaniaGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("DraculaDefeated");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_DraculaDefeated");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("DraculaDefeated", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_DraculaDefeated", value);
 		}
 	}
 
@@ -22,17 +22,17 @@ public static class YanvaniaGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("MidoriEasterEgg");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_MidoriEasterEgg");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("MidoriEasterEgg", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_MidoriEasterEgg", value);
 		}
 	}
 
 	public static void DeleteAll()
 	{
-		Globals.Delete("DraculaDefeated");
-		Globals.Delete("MidoriEasterEgg");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_DraculaDefeated");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_MidoriEasterEgg");
 	}
 }

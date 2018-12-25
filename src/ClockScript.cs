@@ -75,6 +75,8 @@ public class ClockScript : MonoBehaviour
 
 	public bool IgnorePhotographyClub;
 
+	public bool UpdateBloom;
+
 	public bool StopTime;
 
 	public bool TimeSkip;
@@ -89,27 +91,85 @@ public class ClockScript : MonoBehaviour
 	{
 		this.PeriodLabel.text = "BEFORE CLASS";
 		this.PresentTime = this.StartHour * 60f;
+		if (PlayerPrefs.GetInt("LoadingSave") == 1)
+		{
+			int profile = GameGlobals.Profile;
+			int @int = PlayerPrefs.GetInt("SaveSlot");
+			Debug.Log(string.Concat(new object[]
+			{
+				"Loading time! Profile_",
+				profile,
+				"_Slot_",
+				@int,
+				"_Time is ",
+				PlayerPrefs.GetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					profile,
+					"_Slot_",
+					@int,
+					"_Time"
+				}))
+			}));
+			this.PresentTime = PlayerPrefs.GetFloat(string.Concat(new object[]
+			{
+				"Profile_",
+				profile,
+				"_Slot_",
+				@int,
+				"_Time"
+			}));
+			this.Weekday = PlayerPrefs.GetInt(string.Concat(new object[]
+			{
+				"Profile_",
+				profile,
+				"_Slot_",
+				@int,
+				"_Weekday"
+			}));
+			if (this.Weekday == 1)
+			{
+				DateGlobals.Weekday = DayOfWeek.Monday;
+			}
+			else if (this.Weekday == 2)
+			{
+				DateGlobals.Weekday = DayOfWeek.Tuesday;
+			}
+			else if (this.Weekday == 3)
+			{
+				DateGlobals.Weekday = DayOfWeek.Wednesday;
+			}
+			else if (this.Weekday == 4)
+			{
+				DateGlobals.Weekday = DayOfWeek.Thursday;
+			}
+			else if (this.Weekday == 5)
+			{
+				DateGlobals.Weekday = DayOfWeek.Friday;
+			}
+		}
 		if (DateGlobals.Weekday == DayOfWeek.Sunday)
 		{
 			DateGlobals.Weekday = DayOfWeek.Monday;
 		}
-		if (DateGlobals.Weekday == DayOfWeek.Friday)
+		if (!SchoolGlobals.SchoolAtmosphereSet)
 		{
-			this.Weekday = 5;
+			SchoolGlobals.SchoolAtmosphereSet = true;
+			SchoolGlobals.SchoolAtmosphere = 1f;
 		}
 		if (SchoolGlobals.SchoolAtmosphere < 0.5f)
 		{
-			this.BloomEffect.bloomIntensity = 0.25f;
-			this.BloomEffect.bloomThreshhold = 0.5f;
+			this.BloomEffect.bloomIntensity = 0.2f;
+			this.BloomEffect.bloomThreshhold = 0f;
 			this.Police.Darkness.enabled = true;
 			this.Police.Darkness.color = new Color(this.Police.Darkness.color.r, this.Police.Darkness.color.g, this.Police.Darkness.color.b, 1f);
 			this.FadeIn = true;
-			this.Timer = 5f;
 		}
 		else
 		{
 			this.BloomEffect.bloomIntensity = 10f;
 			this.BloomEffect.bloomThreshhold = 0f;
+			this.UpdateBloom = true;
 		}
 		this.BloomEffect.bloomThreshhold = 0f;
 		this.DayLabel.text = this.GetWeekdayText(DateGlobals.Weekday);
@@ -144,15 +204,12 @@ public class ClockScript : MonoBehaviour
 		}
 		if (this.PresentTime < 1080f)
 		{
-			if (this.Timer < 5f)
+			if (this.UpdateBloom)
 			{
-				this.Timer += Time.deltaTime;
-				this.BloomEffect.bloomIntensity -= Time.deltaTime * 9.75f;
-				this.BloomEffect.bloomThreshhold += Time.deltaTime * 0.5f;
-				if (this.BloomEffect.bloomThreshhold > 0.5f)
+				this.BloomEffect.bloomIntensity = Mathf.MoveTowards(this.BloomEffect.bloomIntensity, 0.2f, Time.deltaTime * 5f);
+				if (this.BloomEffect.bloomIntensity == 0.2f)
 				{
-					this.BloomEffect.bloomIntensity = 0.25f;
-					this.BloomEffect.bloomThreshhold = 0.5f;
+					this.UpdateBloom = false;
 				}
 			}
 		}
@@ -348,7 +405,7 @@ public class ClockScript : MonoBehaviour
 		}
 	}
 
-	private string GetWeekdayText(DayOfWeek weekday)
+	public string GetWeekdayText(DayOfWeek weekday)
 	{
 		if (weekday == DayOfWeek.Sunday)
 		{

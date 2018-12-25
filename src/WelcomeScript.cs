@@ -45,7 +45,6 @@ public class WelcomeScript : MonoBehaviour
 		Cursor.visible = false;
 		if (ApplicationGlobals.VersionNumber != this.VersionNumber)
 		{
-			Globals.DeleteAll();
 			ApplicationGlobals.VersionNumber = this.VersionNumber;
 		}
 		if (File.Exists(Application.streamingAssetsPath + "/Fun.txt"))

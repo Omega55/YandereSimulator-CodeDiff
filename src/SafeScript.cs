@@ -30,6 +30,7 @@ public class SafeScript : MonoBehaviour
 		if (this.Key.activeInHierarchy && this.KeyPrompt.Circle[0].fillAmount == 0f)
 		{
 			this.KeyPrompt.Yandere.Inventory.SafeKey = true;
+			this.SafePrompt.HideButton[0] = false;
 			this.SafePrompt.enabled = true;
 			this.Key.SetActive(false);
 		}
@@ -57,6 +58,24 @@ public class SafeScript : MonoBehaviour
 			{
 				this.Open = false;
 			}
+		}
+		else if (this.SafePrompt.Yandere.Inventory.LockPick)
+		{
+			this.SafePrompt.HideButton[2] = false;
+			this.SafePrompt.enabled = true;
+			if (this.SafePrompt.Circle[2].fillAmount == 0f)
+			{
+				this.KeyPrompt.Hide();
+				this.KeyPrompt.enabled = false;
+				this.SafePrompt.Yandere.Inventory.LockPick = false;
+				this.SafePrompt.HideButton[2] = true;
+				this.ContentsPrompt.MyCollider.enabled = true;
+				this.Open = true;
+			}
+		}
+		else if (!this.SafePrompt.HideButton[2])
+		{
+			this.SafePrompt.HideButton[2] = true;
 		}
 	}
 }

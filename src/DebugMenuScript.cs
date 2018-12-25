@@ -651,7 +651,7 @@ public class DebugMenuScript : MonoBehaviour
 		else
 		{
 			this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount1", 0f);
-			this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
+			this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", 1f);
 			this.Yandere.MyRenderer.materials[2].SetFloat("_BlendAmount", 0f);
 			if (this.Yandere.MyRenderer.sharedMesh != this.Yandere.NudeMesh)
 			{

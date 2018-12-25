@@ -16,11 +16,11 @@ public static class EventGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("BefriendConversation");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_BefriendConversation");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("BefriendConversation", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_BefriendConversation", value);
 		}
 	}
 
@@ -28,11 +28,11 @@ public static class EventGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("Event1");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_Event1");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("Event1", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_Event1", value);
 		}
 	}
 
@@ -40,11 +40,11 @@ public static class EventGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("Event2");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_Event2");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("Event2", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_Event2", value);
 		}
 	}
 
@@ -52,11 +52,11 @@ public static class EventGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("KidnapConversation");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_KidnapConversation");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("KidnapConversation", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_KidnapConversation", value);
 		}
 	}
 
@@ -64,20 +64,20 @@ public static class EventGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("LivingRoom");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_LivingRoom");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("LivingRoom", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_LivingRoom", value);
 		}
 	}
 
 	public static void DeleteAll()
 	{
-		Globals.Delete("BefriendConversation");
-		Globals.Delete("Event1");
-		Globals.Delete("Event2");
-		Globals.Delete("KidnapConversation");
-		Globals.Delete("LivingRoom");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_BefriendConversation");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_Event1");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_Event2");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_KidnapConversation");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_LivingRoom");
 	}
 }

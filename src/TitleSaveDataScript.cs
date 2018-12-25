@@ -7,6 +7,10 @@ public class TitleSaveDataScript : MonoBehaviour
 
 	public GameObject Data;
 
+	public Texture[] Bloods;
+
+	public UITexture Blood;
+
 	public UILabel Kills;
 
 	public UILabel Mood;
@@ -27,9 +31,52 @@ public class TitleSaveDataScript : MonoBehaviour
 
 	public int ID;
 
-	private SaveFile saveFile;
-
 	public void Start()
 	{
+		if (PlayerPrefs.GetInt("ProfileCreated_" + this.ID) == 1)
+		{
+			GameGlobals.Profile = this.ID;
+			this.EmptyFile.SetActive(false);
+			this.Data.SetActive(true);
+			this.Kills.text = "Kills: " + PlayerGlobals.Kills;
+			this.Mood.text = "Mood: " + Mathf.RoundToInt(SchoolGlobals.SchoolAtmosphere * 100f);
+			this.Alerts.text = "Alerts: " + PlayerGlobals.Alerts;
+			this.Week.text = "Week: " + 1;
+			this.Day.text = "Day: " + DateGlobals.Weekday;
+			this.Rival.text = "Rival: Osana";
+			this.Rep.text = "Rep: " + PlayerGlobals.Reputation;
+			this.Club.text = "Club: " + ClubGlobals.Club;
+			this.Friends.text = "Friends: " + PlayerGlobals.Friends;
+			if (PlayerGlobals.Kills == 0)
+			{
+				this.Blood.mainTexture = null;
+			}
+			else if (PlayerGlobals.Kills > 0)
+			{
+				this.Blood.mainTexture = this.Bloods[1];
+			}
+			else if (PlayerGlobals.Kills > 5)
+			{
+				this.Blood.mainTexture = this.Bloods[2];
+			}
+			else if (PlayerGlobals.Kills > 10)
+			{
+				this.Blood.mainTexture = this.Bloods[3];
+			}
+			else if (PlayerGlobals.Kills > 15)
+			{
+				this.Blood.mainTexture = this.Bloods[4];
+			}
+			else if (PlayerGlobals.Kills > 20)
+			{
+				this.Blood.mainTexture = this.Bloods[5];
+			}
+		}
+		else
+		{
+			this.EmptyFile.SetActive(true);
+			this.Data.SetActive(false);
+			this.Blood.mainTexture = null;
+		}
 	}
 }

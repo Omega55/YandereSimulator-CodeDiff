@@ -13,11 +13,11 @@ public static class PoseModeGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetVector3("PosePosition");
+			return GlobalsHelper.GetVector3("Profile_" + GameGlobals.Profile + "_PosePosition");
 		}
 		set
 		{
-			GlobalsHelper.SetVector3("PosePosition", value);
+			GlobalsHelper.SetVector3("Profile_" + GameGlobals.Profile + "_PosePosition", value);
 		}
 	}
 
@@ -25,11 +25,11 @@ public static class PoseModeGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetVector3("PoseRotation");
+			return GlobalsHelper.GetVector3("Profile_" + GameGlobals.Profile + "_PoseRotation");
 		}
 		set
 		{
-			GlobalsHelper.SetVector3("PoseRotation", value);
+			GlobalsHelper.SetVector3("Profile_" + GameGlobals.Profile + "_PoseRotation", value);
 		}
 	}
 
@@ -37,18 +37,18 @@ public static class PoseModeGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetVector3("PoseScale");
+			return GlobalsHelper.GetVector3("Profile_" + GameGlobals.Profile + "_PoseScale");
 		}
 		set
 		{
-			GlobalsHelper.SetVector3("PoseScale", value);
+			GlobalsHelper.SetVector3("Profile_" + GameGlobals.Profile + "_PoseScale", value);
 		}
 	}
 
 	public static void DeleteAll()
 	{
-		GlobalsHelper.DeleteVector3("PosePosition");
-		GlobalsHelper.DeleteVector3("PoseRotation");
-		GlobalsHelper.DeleteVector3("PoseScale");
+		GlobalsHelper.DeleteVector3("Profile_" + GameGlobals.Profile + "_PosePosition");
+		GlobalsHelper.DeleteVector3("Profile_" + GameGlobals.Profile + "_PoseRotation");
+		GlobalsHelper.DeleteVector3("Profile_" + GameGlobals.Profile + "_PoseScale");
 	}
 }

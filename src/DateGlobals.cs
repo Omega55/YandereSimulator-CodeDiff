@@ -13,11 +13,11 @@ public static class DateGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("Week");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_Week");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("Week", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_Week", value);
 		}
 	}
 
@@ -25,11 +25,11 @@ public static class DateGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetEnum<DayOfWeek>("Weekday");
+			return GlobalsHelper.GetEnum<DayOfWeek>("Profile_" + GameGlobals.Profile + "_Weekday");
 		}
 		set
 		{
-			GlobalsHelper.SetEnum<DayOfWeek>("Weekday", value);
+			GlobalsHelper.SetEnum<DayOfWeek>("Profile_" + GameGlobals.Profile + "_Weekday", value);
 		}
 	}
 
@@ -37,18 +37,18 @@ public static class DateGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("PassDays");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_PassDays");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("PassDays", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_PassDays", value);
 		}
 	}
 
 	public static void DeleteAll()
 	{
-		Globals.Delete("Week");
-		Globals.Delete("Weekday");
-		Globals.Delete("PassDays");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_Week");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_Weekday");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_PassDays");
 	}
 }

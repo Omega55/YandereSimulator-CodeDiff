@@ -14,97 +14,145 @@ public static class ClubGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetEnum<ClubType>("Club");
+			return GlobalsHelper.GetEnum<ClubType>("Profile_" + GameGlobals.Profile + "_Club");
 		}
 		set
 		{
-			GlobalsHelper.SetEnum<ClubType>("Club", value);
+			GlobalsHelper.SetEnum<ClubType>("Profile_" + GameGlobals.Profile + "_Club", value);
 		}
 	}
 
 	public static bool GetClubClosed(ClubType clubID)
 	{
-		string str = "ClubClosed_";
-		int num = (int)clubID;
-		return GlobalsHelper.GetBool(str + num.ToString());
+		object[] array = new object[4];
+		array[0] = "Profile_";
+		array[1] = GameGlobals.Profile;
+		array[2] = "_ClubClosed_";
+		int num = 3;
+		int num2 = (int)clubID;
+		array[num] = num2.ToString();
+		return GlobalsHelper.GetBool(string.Concat(array));
 	}
 
 	public static void SetClubClosed(ClubType clubID, bool value)
 	{
 		int num = (int)clubID;
 		string text = num.ToString();
-		KeysHelper.AddIfMissing("ClubClosed_", text);
-		GlobalsHelper.SetBool("ClubClosed_" + text, value);
+		KeysHelper.AddIfMissing("Profile_" + GameGlobals.Profile + "_ClubClosed_", text);
+		GlobalsHelper.SetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_ClubClosed_",
+			text
+		}), value);
 	}
 
 	public static ClubType[] KeysOfClubClosed()
 	{
-		return KeysHelper.GetEnumKeys<ClubType>("ClubClosed_");
+		return KeysHelper.GetEnumKeys<ClubType>("Profile_" + GameGlobals.Profile + "_ClubClosed_");
 	}
 
 	public static bool GetClubKicked(ClubType clubID)
 	{
-		string str = "ClubKicked_";
-		int num = (int)clubID;
-		return GlobalsHelper.GetBool(str + num.ToString());
+		object[] array = new object[4];
+		array[0] = "Profile_";
+		array[1] = GameGlobals.Profile;
+		array[2] = "_ClubKicked_";
+		int num = 3;
+		int num2 = (int)clubID;
+		array[num] = num2.ToString();
+		return GlobalsHelper.GetBool(string.Concat(array));
 	}
 
 	public static void SetClubKicked(ClubType clubID, bool value)
 	{
 		int num = (int)clubID;
 		string text = num.ToString();
-		KeysHelper.AddIfMissing("ClubKicked_", text);
-		GlobalsHelper.SetBool("ClubKicked_" + text, value);
+		KeysHelper.AddIfMissing("Profile_" + GameGlobals.Profile + "_ClubKicked_", text);
+		GlobalsHelper.SetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_ClubKicked_",
+			text
+		}), value);
 	}
 
 	public static ClubType[] KeysOfClubKicked()
 	{
-		return KeysHelper.GetEnumKeys<ClubType>("ClubKicked_");
+		return KeysHelper.GetEnumKeys<ClubType>("Profile_" + GameGlobals.Profile + "_ClubKicked_");
 	}
 
 	public static bool GetQuitClub(ClubType clubID)
 	{
-		string str = "QuitClub_";
-		int num = (int)clubID;
-		return GlobalsHelper.GetBool(str + num.ToString());
+		object[] array = new object[4];
+		array[0] = "Profile_";
+		array[1] = GameGlobals.Profile;
+		array[2] = "_QuitClub_";
+		int num = 3;
+		int num2 = (int)clubID;
+		array[num] = num2.ToString();
+		return GlobalsHelper.GetBool(string.Concat(array));
 	}
 
 	public static void SetQuitClub(ClubType clubID, bool value)
 	{
 		int num = (int)clubID;
 		string text = num.ToString();
-		KeysHelper.AddIfMissing("QuitClub_", text);
-		GlobalsHelper.SetBool("QuitClub_" + text, value);
+		KeysHelper.AddIfMissing("Profile_" + GameGlobals.Profile + "_QuitClub_", text);
+		GlobalsHelper.SetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_QuitClub_",
+			text
+		}), value);
 	}
 
 	public static ClubType[] KeysOfQuitClub()
 	{
-		return KeysHelper.GetEnumKeys<ClubType>("QuitClub_");
+		return KeysHelper.GetEnumKeys<ClubType>("Profile_" + GameGlobals.Profile + "_QuitClub_");
 	}
 
 	public static void DeleteAll()
 	{
-		Globals.Delete("Club");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_Club");
 		foreach (ClubType clubType in ClubGlobals.KeysOfClubClosed())
 		{
-			string str = "ClubClosed_";
-			int num = (int)clubType;
-			Globals.Delete(str + num.ToString());
+			object[] array2 = new object[4];
+			array2[0] = "Profile_";
+			array2[1] = GameGlobals.Profile;
+			array2[2] = "_ClubClosed_";
+			int num = 3;
+			int num2 = (int)clubType;
+			array2[num] = num2.ToString();
+			Globals.Delete(string.Concat(array2));
 		}
 		foreach (ClubType clubType2 in ClubGlobals.KeysOfClubKicked())
 		{
-			string str2 = "ClubKicked_";
-			int num2 = (int)clubType2;
-			Globals.Delete(str2 + num2.ToString());
+			object[] array4 = new object[4];
+			array4[0] = "Profile_";
+			array4[1] = GameGlobals.Profile;
+			array4[2] = "_ClubKicked_";
+			int num3 = 3;
+			int num4 = (int)clubType2;
+			array4[num3] = num4.ToString();
+			Globals.Delete(string.Concat(array4));
 		}
 		foreach (ClubType clubType3 in ClubGlobals.KeysOfQuitClub())
 		{
-			string str3 = "QuitClub_";
-			int num3 = (int)clubType3;
-			Globals.Delete(str3 + num3.ToString());
+			object[] array6 = new object[4];
+			array6[0] = "Profile_";
+			array6[1] = GameGlobals.Profile;
+			array6[2] = "_QuitClub_";
+			int num5 = 3;
+			int num6 = (int)clubType3;
+			array6[num5] = num6.ToString();
+			Globals.Delete(string.Concat(array6));
 		}
-		KeysHelper.Delete("ClubClosed_");
-		KeysHelper.Delete("ClubKicked_");
-		KeysHelper.Delete("QuitClub_");
+		KeysHelper.Delete("Profile_" + GameGlobals.Profile + "_ClubClosed_");
+		KeysHelper.Delete("Profile_" + GameGlobals.Profile + "_ClubKicked_");
+		KeysHelper.Delete("Profile_" + GameGlobals.Profile + "_QuitClub_");
 	}
 }

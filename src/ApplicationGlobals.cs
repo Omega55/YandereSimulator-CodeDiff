@@ -9,16 +9,16 @@ public static class ApplicationGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetFloat("VersionNumber");
+			return PlayerPrefs.GetFloat("Profile_" + GameGlobals.Profile + "_VersionNumber");
 		}
 		set
 		{
-			PlayerPrefs.SetFloat("VersionNumber", value);
+			PlayerPrefs.SetFloat("Profile_" + GameGlobals.Profile + "_VersionNumber", value);
 		}
 	}
 
 	public static void DeleteAll()
 	{
-		Globals.Delete("VersionNumber");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_VersionNumber");
 	}
 }

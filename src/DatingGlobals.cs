@@ -25,11 +25,11 @@ public static class DatingGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetFloat("Affection");
+			return PlayerPrefs.GetFloat("Profile_" + GameGlobals.Profile + "_Affection");
 		}
 		set
 		{
-			PlayerPrefs.SetFloat("Affection", value);
+			PlayerPrefs.SetFloat("Profile_" + GameGlobals.Profile + "_Affection", value);
 		}
 	}
 
@@ -37,133 +37,193 @@ public static class DatingGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetFloat("AffectionLevel");
+			return PlayerPrefs.GetFloat("Profile_" + GameGlobals.Profile + "_AffectionLevel");
 		}
 		set
 		{
-			PlayerPrefs.SetFloat("AffectionLevel", value);
+			PlayerPrefs.SetFloat("Profile_" + GameGlobals.Profile + "_AffectionLevel", value);
 		}
 	}
 
 	public static bool GetComplimentGiven(int complimentID)
 	{
-		return GlobalsHelper.GetBool("ComplimentGiven_" + complimentID.ToString());
+		return GlobalsHelper.GetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_ComplimentGiven_",
+			complimentID.ToString()
+		}));
 	}
 
 	public static void SetComplimentGiven(int complimentID, bool value)
 	{
 		string text = complimentID.ToString();
-		KeysHelper.AddIfMissing("ComplimentGiven_", text);
-		GlobalsHelper.SetBool("ComplimentGiven_" + text, value);
+		KeysHelper.AddIfMissing("Profile_" + GameGlobals.Profile + "_ComplimentGiven_", text);
+		GlobalsHelper.SetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_ComplimentGiven_",
+			text
+		}), value);
 	}
 
 	public static int[] KeysOfComplimentGiven()
 	{
-		return KeysHelper.GetIntegerKeys("ComplimentGiven_");
+		return KeysHelper.GetIntegerKeys("Profile_" + GameGlobals.Profile + "_ComplimentGiven_");
 	}
 
 	public static bool GetSuitorCheck(int checkID)
 	{
-		return GlobalsHelper.GetBool("SuitorCheck_" + checkID.ToString());
+		return GlobalsHelper.GetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_SuitorCheck_",
+			checkID.ToString()
+		}));
 	}
 
 	public static void SetSuitorCheck(int checkID, bool value)
 	{
 		string text = checkID.ToString();
-		KeysHelper.AddIfMissing("SuitorCheck_", text);
-		GlobalsHelper.SetBool("SuitorCheck_" + text, value);
+		KeysHelper.AddIfMissing("Profile_" + GameGlobals.Profile + "_SuitorCheck_", text);
+		GlobalsHelper.SetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_SuitorCheck_",
+			text
+		}), value);
 	}
 
 	public static int[] KeysOfSuitorCheck()
 	{
-		return KeysHelper.GetIntegerKeys("SuitorCheck_");
+		return KeysHelper.GetIntegerKeys("Profile_" + GameGlobals.Profile + "_SuitorCheck_");
 	}
 
 	public static int SuitorProgress
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("SuitorProgress");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_SuitorProgress");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("SuitorProgress", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_SuitorProgress", value);
 		}
 	}
 
 	public static int GetSuitorTrait(int traitID)
 	{
-		return PlayerPrefs.GetInt("SuitorTrait_" + traitID.ToString());
+		return PlayerPrefs.GetInt(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_SuitorTrait_",
+			traitID.ToString()
+		}));
 	}
 
 	public static void SetSuitorTrait(int traitID, int value)
 	{
 		string text = traitID.ToString();
-		KeysHelper.AddIfMissing("SuitorTrait_", text);
-		PlayerPrefs.SetInt("SuitorTrait_" + text, value);
+		KeysHelper.AddIfMissing("Profile_" + GameGlobals.Profile + "_SuitorTrait_", text);
+		PlayerPrefs.SetInt(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_SuitorTrait_",
+			text
+		}), value);
 	}
 
 	public static int[] KeysOfSuitorTrait()
 	{
-		return KeysHelper.GetIntegerKeys("SuitorTrait_");
+		return KeysHelper.GetIntegerKeys("Profile_" + GameGlobals.Profile + "_SuitorTrait_");
 	}
 
 	public static bool GetTopicDiscussed(int topicID)
 	{
-		return GlobalsHelper.GetBool("TopicDiscussed_" + topicID.ToString());
+		return GlobalsHelper.GetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_TopicDiscussed_",
+			topicID.ToString()
+		}));
 	}
 
 	public static void SetTopicDiscussed(int topicID, bool value)
 	{
 		string text = topicID.ToString();
-		KeysHelper.AddIfMissing("TopicDiscussed_", text);
-		GlobalsHelper.SetBool("TopicDiscussed_" + text, value);
+		KeysHelper.AddIfMissing("Profile_" + GameGlobals.Profile + "_TopicDiscussed_", text);
+		GlobalsHelper.SetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_TopicDiscussed_",
+			text
+		}), value);
 	}
 
 	public static int[] KeysOfTopicDiscussed()
 	{
-		return KeysHelper.GetIntegerKeys("TopicDiscussed_");
+		return KeysHelper.GetIntegerKeys("Profile_" + GameGlobals.Profile + "_TopicDiscussed_");
 	}
 
 	public static int GetTraitDemonstrated(int traitID)
 	{
-		return PlayerPrefs.GetInt("TraitDemonstrated_" + traitID.ToString());
+		return PlayerPrefs.GetInt(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_TraitDemonstrated_",
+			traitID.ToString()
+		}));
 	}
 
 	public static void SetTraitDemonstrated(int traitID, int value)
 	{
 		string text = traitID.ToString();
-		KeysHelper.AddIfMissing("TraitDemonstrated_", text);
-		PlayerPrefs.SetInt("TraitDemonstrated_" + text, value);
+		KeysHelper.AddIfMissing("Profile_" + GameGlobals.Profile + "_TraitDemonstrated_", text);
+		PlayerPrefs.SetInt(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_TraitDemonstrated_",
+			text
+		}), value);
 	}
 
 	public static int[] KeysOfTraitDemonstrated()
 	{
-		return KeysHelper.GetIntegerKeys("TraitDemonstrated_");
+		return KeysHelper.GetIntegerKeys("Profile_" + GameGlobals.Profile + "_TraitDemonstrated_");
 	}
 
 	public static int RivalSabotaged
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("RivalSabotaged");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_RivalSabotaged");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("RivalSabotaged", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_RivalSabotaged", value);
 		}
 	}
 
 	public static void DeleteAll()
 	{
-		Globals.Delete("Affection");
-		Globals.Delete("AffectionLevel");
-		Globals.DeleteCollection("ComplimentGiven_", DatingGlobals.KeysOfComplimentGiven());
-		Globals.DeleteCollection("SuitorCheck_", DatingGlobals.KeysOfSuitorCheck());
-		Globals.Delete("SuitorProgress");
-		Globals.Delete("RivalSabotaged");
-		Globals.DeleteCollection("SuitorTrait_", DatingGlobals.KeysOfSuitorTrait());
-		Globals.DeleteCollection("TopicDiscussed_", DatingGlobals.KeysOfTopicDiscussed());
-		Globals.DeleteCollection("TraitDemonstrated_", DatingGlobals.KeysOfTraitDemonstrated());
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_Affection");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_AffectionLevel");
+		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_ComplimentGiven_", DatingGlobals.KeysOfComplimentGiven());
+		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_SuitorCheck_", DatingGlobals.KeysOfSuitorCheck());
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_SuitorProgress");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_RivalSabotaged");
+		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_SuitorTrait_", DatingGlobals.KeysOfSuitorTrait());
+		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_TopicDiscussed_", DatingGlobals.KeysOfTopicDiscussed());
+		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_TraitDemonstrated_", DatingGlobals.KeysOfTraitDemonstrated());
 	}
 }

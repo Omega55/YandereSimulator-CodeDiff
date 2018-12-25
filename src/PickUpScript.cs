@@ -17,6 +17,8 @@ public class PickUpScript : MonoBehaviour
 
 	public YandereScript Yandere;
 
+	public Animation MyAnimation;
+
 	public BucketScript Bucket;
 
 	public PromptScript Prompt;
@@ -143,13 +145,13 @@ public class PickUpScript : MonoBehaviour
 					this.Yandere.transform.rotation = this.Yandere.targetRotation;
 					this.Yandere.EmptyHands();
 					base.transform.parent = this.Yandere.transform;
-					base.transform.localPosition = new Vector3(0f, 0f, 0.75f);
-					base.transform.localEulerAngles = new Vector3(0f, 90f, 0f);
-					base.transform.parent = null;
+					base.transform.localPosition = new Vector3(0f, 0f, 0.79184f);
+					base.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
 					this.Yandere.Character.GetComponent<Animation>().Play("f02_heavyWeightLift_00");
 					this.Yandere.HeavyWeight = true;
 					this.Yandere.CanMove = false;
 					this.Yandere.Lifting = true;
+					this.MyAnimation.Play("Weight_liftUp_00");
 					this.MyRigidbody.isKinematic = true;
 					this.BeingLifted = true;
 				}
@@ -203,28 +205,26 @@ public class PickUpScript : MonoBehaviour
 		{
 			if (this.Yandere.Lifting)
 			{
-				if (this.Yandere.CharacterAnimation["f02_heavyWeightLift_00"].time >= 3f)
+				if (this.Yandere.StudentManager.Stop)
 				{
-					base.transform.parent = this.Yandere.LeftItemParent;
-					base.transform.localPosition = this.HoldPosition;
-					base.transform.localEulerAngles = this.HoldRotation;
-					if (this.Yandere.StudentManager.Stop)
-					{
-						this.Drop();
-					}
+					this.Drop();
 				}
 			}
 			else
 			{
 				this.BePickedUp();
-				this.BeingLifted = false;
 			}
 		}
 	}
 
-	private void BePickedUp()
+	public void BePickedUp()
 	{
+		if (this.MyAnimation != null)
+		{
+			this.MyAnimation.Stop();
+		}
 		this.Prompt.Circle[3].fillAmount = 1f;
+		this.BeingLifted = false;
 		if (this.Yandere.PickUp != null)
 		{
 			this.Yandere.PickUp.Drop();
@@ -257,8 +257,6 @@ public class PickUpScript : MonoBehaviour
 		{
 			base.GetComponent<RadioScript>().TurnOff();
 		}
-		base.transform.localPosition = new Vector3(0f, 0f, 0f);
-		base.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
 		this.MyCollider.enabled = false;
 		if (this.MyRigidbody != null)
 		{

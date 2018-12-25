@@ -74,6 +74,7 @@ public class ChangingBoothScript : MonoBehaviour
 			{
 				if (this.OccupyTimer < 2f)
 				{
+					this.Yandere.CharacterAnimation.CrossFade(this.Yandere.IdleAnim);
 					this.Weight = Mathf.Lerp(this.Weight, 0f, Time.deltaTime * 10f);
 					this.Curtains.SetBlendShapeWeight(0, this.Weight);
 					this.Yandere.MoveTowardsTarget(base.transform.position);

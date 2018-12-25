@@ -1829,7 +1829,7 @@ public class YandereScript : MonoBehaviour
 			}
 			if (!this.NearSenpai)
 			{
-				if (!Input.GetButton("A") && !Input.GetButton("B") && !Input.GetButton("X") && !Input.GetButton("Y") && this.StudentManager.Clock.Timer > 1f && (Input.GetAxis("LT") > 0.5f || Input.GetMouseButton(1)))
+				if (!Input.GetButton("A") && !Input.GetButton("B") && !Input.GetButton("X") && !Input.GetButton("Y") && !this.StudentManager.Clock.UpdateBloom && (Input.GetAxis("LT") > 0.5f || Input.GetMouseButton(1)))
 				{
 					if (this.Inventory.RivalPhone)
 					{
@@ -5155,7 +5155,6 @@ public class YandereScript : MonoBehaviour
 
 	public void EmptyHands()
 	{
-		Debug.Log("Yandere-chan has been told to drop what she is carrying.");
 		if (this.Carrying || this.HeavyWeight)
 		{
 			this.StopCarrying();

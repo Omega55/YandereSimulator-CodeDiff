@@ -347,6 +347,7 @@ public class TalkingScript : MonoBehaviour
 						this.S.DialogueWheel.TaskWindow.TaskComplete = true;
 						TaskGlobals.SetTaskStatus(this.S.StudentID, 3);
 						PlayerGlobals.SetStudentFriend(this.S.StudentID, true);
+						this.S.Police.EndOfDay.NewFriends++;
 						this.S.Interaction = StudentInteractionType.Idle;
 					}
 					else if (this.S.TaskPhase == 4 || this.S.TaskPhase == 0)

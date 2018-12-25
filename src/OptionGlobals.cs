@@ -39,11 +39,11 @@ public static class OptionGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("DisableBloom");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_DisableBloom");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("DisableBloom", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_DisableBloom", value);
 		}
 	}
 
@@ -51,11 +51,11 @@ public static class OptionGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("DisableFarAnimations");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_DisableFarAnimations");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("DisableFarAnimations", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_DisableFarAnimations", value);
 		}
 	}
 
@@ -63,11 +63,11 @@ public static class OptionGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("DisableOutlines");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_DisableOutlines");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("DisableOutlines", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_DisableOutlines", value);
 		}
 	}
 
@@ -75,11 +75,11 @@ public static class OptionGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("DisablePostAliasing");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_DisablePostAliasing");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("DisablePostAliasing", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_DisablePostAliasing", value);
 		}
 	}
 
@@ -87,11 +87,11 @@ public static class OptionGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("DisableShadows");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_DisableShadows");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("DisableShadows", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_DisableShadows", value);
 		}
 	}
 
@@ -99,11 +99,11 @@ public static class OptionGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("DrawDistance");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_DrawDistance");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("DrawDistance", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_DrawDistance", value);
 		}
 	}
 
@@ -111,11 +111,11 @@ public static class OptionGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("DrawDistanceLimit");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_DrawDistanceLimit");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("DrawDistanceLimit", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_DrawDistanceLimit", value);
 		}
 	}
 
@@ -123,11 +123,11 @@ public static class OptionGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("Fog");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_Fog");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("Fog", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_Fog", value);
 		}
 	}
 
@@ -135,11 +135,11 @@ public static class OptionGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("FPSIndex");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_FPSIndex");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("FPSIndex", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_FPSIndex", value);
 		}
 	}
 
@@ -147,11 +147,11 @@ public static class OptionGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("HighPopulation");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_HighPopulation");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("HighPopulation", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_HighPopulation", value);
 		}
 	}
 
@@ -159,11 +159,11 @@ public static class OptionGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("LowDetailStudents");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_LowDetailStudents");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("LowDetailStudents", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_LowDetailStudents", value);
 		}
 	}
 
@@ -171,11 +171,11 @@ public static class OptionGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("ParticleCount");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_ParticleCount");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("ParticleCount", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_ParticleCount", value);
 		}
 	}
 
@@ -183,11 +183,11 @@ public static class OptionGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("RimLight");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_RimLight");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("RimLight", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_RimLight", value);
 		}
 	}
 
@@ -195,11 +195,11 @@ public static class OptionGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("DepthOfField");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_DepthOfField");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("DepthOfField", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_DepthOfField", value);
 		}
 	}
 
@@ -207,11 +207,11 @@ public static class OptionGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("Sensitivity");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_Sensitivity");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("Sensitivity", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_Sensitivity", value);
 		}
 	}
 
@@ -219,31 +219,31 @@ public static class OptionGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("InvertAxis");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_InvertAxis");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("InvertAxis", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_InvertAxis", value);
 		}
 	}
 
 	public static void DeleteAll()
 	{
-		Globals.Delete("DisableBloom");
-		Globals.Delete("DisableFarAnimations");
-		Globals.Delete("DisableOutlines");
-		Globals.Delete("DisablePostAliasing");
-		Globals.Delete("DisableShadows");
-		Globals.Delete("DrawDistance");
-		Globals.Delete("DrawDistanceLimit");
-		Globals.Delete("Fog");
-		Globals.Delete("FPSIndex");
-		Globals.Delete("HighPopulation");
-		Globals.Delete("LowDetailStudents");
-		Globals.Delete("ParticleCount");
-		Globals.Delete("RimLight");
-		Globals.Delete("DepthOfField");
-		Globals.Delete("Sensitivity");
-		Globals.Delete("InvertAxis");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_DisableBloom");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_DisableFarAnimations");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_DisableOutlines");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_DisablePostAliasing");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_DisableShadows");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_DrawDistance");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_DrawDistanceLimit");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_Fog");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_FPSIndex");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_HighPopulation");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_LowDetailStudents");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_ParticleCount");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_RimLight");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_DepthOfField");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_Sensitivity");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_InvertAxis");
 	}
 }

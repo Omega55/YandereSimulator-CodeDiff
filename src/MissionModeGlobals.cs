@@ -23,30 +23,42 @@ public static class MissionModeGlobals
 
 	public static int GetMissionCondition(int id)
 	{
-		return PlayerPrefs.GetInt("MissionCondition_" + id.ToString());
+		return PlayerPrefs.GetInt(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_MissionCondition_",
+			id.ToString()
+		}));
 	}
 
 	public static void SetMissionCondition(int id, int value)
 	{
 		string text = id.ToString();
-		KeysHelper.AddIfMissing("MissionCondition_", text);
-		PlayerPrefs.SetInt("MissionCondition_" + text, value);
+		KeysHelper.AddIfMissing("Profile_" + GameGlobals.Profile + "_MissionCondition_", text);
+		PlayerPrefs.SetInt(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_MissionCondition_",
+			text
+		}), value);
 	}
 
 	public static int[] KeysOfMissionCondition()
 	{
-		return KeysHelper.GetIntegerKeys("MissionCondition_");
+		return KeysHelper.GetIntegerKeys("Profile_" + GameGlobals.Profile + "_MissionCondition_");
 	}
 
 	public static int MissionDifficulty
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("MissionDifficulty");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_MissionDifficulty");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("MissionDifficulty", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_MissionDifficulty", value);
 		}
 	}
 
@@ -54,11 +66,11 @@ public static class MissionModeGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("MissionMode");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_MissionMode");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("MissionMode", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_MissionMode", value);
 		}
 	}
 
@@ -66,11 +78,11 @@ public static class MissionModeGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("MissionRequiredClothing");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_MissionRequiredClothing");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("MissionRequiredClothing", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_MissionRequiredClothing", value);
 		}
 	}
 
@@ -78,11 +90,11 @@ public static class MissionModeGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("MissionRequiredDisposal");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_MissionRequiredDisposal");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("MissionRequiredDisposal", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_MissionRequiredDisposal", value);
 		}
 	}
 
@@ -90,11 +102,11 @@ public static class MissionModeGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("MissionRequiredWeapon");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_MissionRequiredWeapon");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("MissionRequiredWeapon", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_MissionRequiredWeapon", value);
 		}
 	}
 
@@ -102,11 +114,11 @@ public static class MissionModeGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("MissionTarget");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_MissionTarget");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("MissionTarget", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_MissionTarget", value);
 		}
 	}
 
@@ -114,11 +126,11 @@ public static class MissionModeGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetString("MissionTargetName");
+			return PlayerPrefs.GetString("Profile_" + GameGlobals.Profile + "_MissionTargetName");
 		}
 		set
 		{
-			PlayerPrefs.SetString("MissionTargetName", value);
+			PlayerPrefs.SetString("Profile_" + GameGlobals.Profile + "_MissionTargetName", value);
 		}
 	}
 
@@ -126,24 +138,24 @@ public static class MissionModeGlobals
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("NemesisDifficulty");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_NemesisDifficulty");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("NemesisDifficulty", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_NemesisDifficulty", value);
 		}
 	}
 
 	public static void DeleteAll()
 	{
-		Globals.DeleteCollection("MissionCondition_", MissionModeGlobals.KeysOfMissionCondition());
-		Globals.Delete("MissionDifficulty");
-		Globals.Delete("MissionMode");
-		Globals.Delete("MissionRequiredClothing");
-		Globals.Delete("MissionRequiredDisposal");
-		Globals.Delete("MissionRequiredWeapon");
-		Globals.Delete("MissionTarget");
-		Globals.Delete("MissionTargetName");
-		Globals.Delete("NemesisDifficulty");
+		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_MissionCondition_", MissionModeGlobals.KeysOfMissionCondition());
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_MissionDifficulty");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_MissionMode");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_MissionRequiredClothing");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_MissionRequiredDisposal");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_MissionRequiredWeapon");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_MissionTarget");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_MissionTargetName");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_NemesisDifficulty");
 	}
 }

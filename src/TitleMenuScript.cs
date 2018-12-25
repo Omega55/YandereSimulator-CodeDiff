@@ -92,7 +92,7 @@ public class TitleMenuScript : MonoBehaviour
 
 	public bool Fading = true;
 
-	private int SelectionCount = 9;
+	public int SelectionCount = 8;
 
 	public int Selected;
 
@@ -218,24 +218,22 @@ public class TitleMenuScript : MonoBehaviour
 				}
 				if (Input.GetButtonDown("A"))
 				{
-					if (this.Selected == 0 || this.Selected == 3 || this.Selected == 6 || this.Selected == 8)
+					if (this.Selected == 0 || this.Selected == 2 || this.Selected == 5 || this.Selected == 7)
 					{
 						this.Darkness.color = new Color(0f, 0f, 0f, this.Darkness.color.a);
 						this.InputTimer = -10f;
 						this.FadeOut = true;
 						this.Fading = true;
 					}
-					if (this.Selected == 2)
+					else if (this.Selected == 1)
 					{
-						if (!this.LoveSick)
-						{
-							this.Darkness.color = new Color(1f, 1f, 1f, this.Darkness.color.a);
-						}
-						this.InputTimer = -10f;
-						this.FadeOut = true;
-						this.Fading = true;
+						this.PromptBar.Label[0].text = "Select";
+						this.PromptBar.Label[1].text = "Back";
+						this.PromptBar.Label[2].text = "Delete";
+						this.PromptBar.UpdateButtons();
+						this.SaveFiles.Show = true;
 					}
-					if (this.Selected == 4)
+					else if (this.Selected == 3)
 					{
 						this.PromptBar.Label[0].text = "Visit";
 						this.PromptBar.Label[1].text = "Back";
@@ -333,30 +331,42 @@ public class TitleMenuScript : MonoBehaviour
 				{
 					if (this.Selected == 0)
 					{
+						GameGlobals.Profile = 1;
 						SceneManager.LoadScene("CalendarScene");
 					}
 					else if (this.Selected == 1)
 					{
-						SceneManager.LoadScene("CalendarScene");
-					}
-					else if (this.Selected == 2)
-					{
-						Globals.DeleteAll();
 						if (this.LoveSick)
 						{
 							GameGlobals.LoveSick = true;
 						}
-						SceneManager.LoadScene("SenpaiScene");
+						if (PlayerPrefs.GetInt("ProfileCreated_" + GameGlobals.Profile) == 0)
+						{
+							PlayerPrefs.SetInt("ProfileCreated_" + GameGlobals.Profile, 1);
+							Debug.Log(string.Concat(new object[]
+							{
+								"ProfileCreated_",
+								GameGlobals.Profile,
+								" is: ",
+								PlayerPrefs.GetInt("ProfileCreated_" + GameGlobals.Profile)
+							}));
+							DateGlobals.Weekday = DayOfWeek.Sunday;
+							SceneManager.LoadScene("SenpaiScene");
+						}
+						else
+						{
+							SceneManager.LoadScene("CalendarScene");
+						}
 					}
-					else if (this.Selected == 3)
+					else if (this.Selected == 2)
 					{
 						SceneManager.LoadScene("MissionModeScene");
 					}
-					else if (this.Selected == 6)
+					else if (this.Selected == 5)
 					{
 						SceneManager.LoadScene("CreditsScene");
 					}
-					else if (this.Selected == 8)
+					else if (this.Selected == 7)
 					{
 						Application.Quit();
 					}

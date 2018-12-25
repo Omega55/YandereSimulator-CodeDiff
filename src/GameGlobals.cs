@@ -1,7 +1,10 @@
 ﻿using System;
+using UnityEngine;
 
 public static class GameGlobals
 {
+	private const string Str_Profile = "Profile";
+
 	private const string Str_LoveSick = "LoveSick";
 
 	private const string Str_MasksBanned = "MasksBanned";
@@ -14,15 +17,27 @@ public static class GameGlobals
 
 	private const string Str_EmptyDemon = "EmptyDemon";
 
+	public static int Profile
+	{
+		get
+		{
+			return PlayerPrefs.GetInt("Profile");
+		}
+		set
+		{
+			PlayerPrefs.SetInt("Profile", value);
+		}
+	}
+
 	public static bool LoveSick
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("LoveSick");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_LoveSick");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("LoveSick", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_LoveSick", value);
 		}
 	}
 
@@ -30,11 +45,11 @@ public static class GameGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("MasksBanned");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_MasksBanned");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("MasksBanned", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_MasksBanned", value);
 		}
 	}
 
@@ -42,11 +57,11 @@ public static class GameGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("Paranormal");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_Paranormal");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("Paranormal", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_Paranormal", value);
 		}
 	}
 
@@ -54,11 +69,11 @@ public static class GameGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("EasyMode");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_EasyMode");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("EasyMode", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_EasyMode", value);
 		}
 	}
 
@@ -66,11 +81,11 @@ public static class GameGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("HardMode");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_HardMode");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("HardMode", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_HardMode", value);
 		}
 	}
 
@@ -78,20 +93,21 @@ public static class GameGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("EmptyDemon");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_EmptyDemon");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("EmptyDemon", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_EmptyDemon", value);
 		}
 	}
 
 	public static void DeleteAll()
 	{
-		Globals.Delete("LoveSick");
-		Globals.Delete("MasksBanned");
-		Globals.Delete("Paranormal");
-		Globals.Delete("HardMode");
-		Globals.Delete("EmptyDemon");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_LoveSick");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_MasksBanned");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_Paranormal");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_EasyMode");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_HardMode");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_EmptyDemon");
 	}
 }

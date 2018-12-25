@@ -589,6 +589,14 @@ public class DatingMinigameScript : MonoBehaviour
 						this.ShowingOff = false;
 						if (this.TraitSelected == 2)
 						{
+							Debug.Log(string.Concat(new object[]
+							{
+								"Wisdom trait is ",
+								DatingGlobals.GetSuitorTrait(2),
+								". Wisdom Demonstrated is ",
+								DatingGlobals.GetTraitDemonstrated(2),
+								"."
+							}));
 							if (DatingGlobals.GetSuitorTrait(2) > DatingGlobals.GetTraitDemonstrated(2))
 							{
 								DatingGlobals.SetTraitDemonstrated(2, DatingGlobals.GetTraitDemonstrated(2) + 1);
@@ -598,7 +606,11 @@ public class DatingMinigameScript : MonoBehaviour
 								this.Affection += (float)this.Multiplier;
 								this.CalculateAffection();
 							}
-							else
+							else if (DatingGlobals.GetSuitorTrait(2) == 0)
+							{
+								this.DialogueLabel.text = "Uh...that doesn't sound correct...";
+							}
+							else if (DatingGlobals.GetSuitorTrait(2) == DatingGlobals.GetTraitDemonstrated(2))
 							{
 								this.DialogueLabel.text = "Uh...you already told me about that...";
 							}

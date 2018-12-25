@@ -14,44 +14,25 @@ public class SponsorScript : MonoBehaviour
 
 	private void Start()
 	{
+		Time.timeScale = 1f;
 		this.Set[1].SetActive(true);
 		this.Set[2].SetActive(false);
 		this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 1f);
-		base.GetComponent<AudioSource>().Play();
 	}
 
 	private void Update()
 	{
-		this.Timer += Time.deltaTime * 1.33333337f;
-		if (this.Timer < 6f)
+		this.Timer += Time.deltaTime;
+		if (this.Timer < 4f)
 		{
-			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a - Time.deltaTime * 1.33333337f);
-			if (this.Darkness.color.a < 0f)
-			{
-				this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 0f);
-				if (Input.anyKeyDown)
-				{
-					this.Timer = 6f;
-				}
-			}
+			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 0f, Time.deltaTime));
 		}
 		else
 		{
-			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a + Time.deltaTime * 1.33333337f);
-			if (this.Darkness.color.a >= 1f)
+			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 1f, Time.deltaTime));
+			if (this.Darkness.color.a == 1f)
 			{
-				this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 1f);
-				this.Set[this.ID].SetActive(false);
-				this.ID++;
-				if (this.ID < this.Set.Length)
-				{
-					this.Set[this.ID].SetActive(true);
-					this.Timer = 0f;
-				}
-				else
-				{
-					SceneManager.LoadScene("TitleScene");
-				}
+				SceneManager.LoadScene("TitleScene");
 			}
 		}
 	}

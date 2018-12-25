@@ -50,30 +50,15 @@ public class TitleSaveFilesScript : MonoBehaviour
 			}
 			if (Input.GetButtonDown("A"))
 			{
-				if (this.SaveDatas[this.ID].EmptyFile.activeInHierarchy)
-				{
-					SaveFile saveFile = new SaveFile(this.ID);
-					SaveFileData data = saveFile.Data;
-					data.playerData.kills = 0;
-					data.schoolData.schoolAtmosphere = 1f;
-					data.playerData.alerts = 0;
-					data.dateData.week = 1;
-					data.dateData.weekday = DayOfWeek.Sunday;
-					data.playerData.reputation = 0f;
-					data.clubData.club = ClubType.None;
-					saveFile.Save();
-					this.SaveDatas[this.ID].Start();
-				}
-				else
-				{
-					SaveFileGlobals.CurrentSaveFile = this.ID;
-					this.Menu.FadeOut = true;
-					this.Menu.Fading = true;
-				}
+				Debug.Log("ID is: " + this.ID);
+				GameGlobals.Profile = this.ID;
+				Debug.Log("GameGlobals.Profile is: " + GameGlobals.Profile);
+				this.Menu.FadeOut = true;
+				this.Menu.Fading = true;
 			}
 			else if (Input.GetButtonDown("X"))
 			{
-				SaveFile.Delete(this.ID);
+				PlayerPrefs.SetInt("ProfileCreated_" + this.ID, 0);
 				this.SaveDatas[this.ID].Start();
 			}
 		}

@@ -14,11 +14,11 @@ public static class HomeGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("LateForSchool");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_LateForSchool");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("LateForSchool", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_LateForSchool", value);
 		}
 	}
 
@@ -26,11 +26,11 @@ public static class HomeGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("Night");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_Night");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("Night", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_Night", value);
 		}
 	}
 
@@ -38,11 +38,11 @@ public static class HomeGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("StartInBasement");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_StartInBasement");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("StartInBasement", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_StartInBasement", value);
 		}
 	}
 
@@ -50,19 +50,19 @@ public static class HomeGlobals
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("MiyukiDefeated");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_MiyukiDefeated");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("MiyukiDefeated", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_MiyukiDefeated", value);
 		}
 	}
 
 	public static void DeleteAll()
 	{
-		Globals.Delete("LateForSchool");
-		Globals.Delete("Night");
-		Globals.Delete("StartInBasement");
-		Globals.Delete("MiyukiDefeated");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_LateForSchool");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_Night");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_StartInBasement");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_MiyukiDefeated");
 	}
 }
