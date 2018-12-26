@@ -53,6 +53,8 @@ public class ClubManagerScript : MonoBehaviour
 
 	public Transform[] ClubPatrolPoints;
 
+	public GameObject[] ClubPosters;
+
 	public GameObject[] GameScreens;
 
 	public Transform[] ClubVantages;
@@ -158,6 +160,7 @@ public class ClubManagerScript : MonoBehaviour
 			if (ClubGlobals.GetClubClosed(this.ClubArray[this.ID]))
 			{
 				Debug.Log(this.ClubArray[this.ID] + " is closed.");
+				this.ClubPosters[this.ID].SetActive(false);
 				if (this.ClubArray[this.ID] == ClubType.Gardening)
 				{
 					this.ClubPatrolPoints[this.ID].transform.position = new Vector3(-36f, this.ClubPatrolPoints[this.ID].transform.position.y, this.ClubPatrolPoints[this.ID].transform.position.z);

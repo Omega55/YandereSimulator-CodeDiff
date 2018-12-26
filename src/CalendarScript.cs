@@ -10,6 +10,8 @@ public class CalendarScript : MonoBehaviour
 
 	public Vignetting Vignette;
 
+	public GameObject ConfirmationWindow;
+
 	public UILabel AtmosphereLabel;
 
 	public UIPanel ChallengePanel;
@@ -109,30 +111,44 @@ public class CalendarScript : MonoBehaviour
 					this.Continue.localPosition = new Vector3(this.Continue.localPosition.x, Mathf.Lerp(this.Continue.localPosition.y, -500f, Time.deltaTime * 10f), this.Continue.localPosition.z);
 					if (!this.Switch)
 					{
-						if (Input.GetButtonDown("A"))
+						if (!this.ConfirmationWindow.activeInHierarchy)
 						{
-							this.FadeOut = true;
-						}
-						if (Input.GetButtonDown("Y"))
-						{
-							this.Switch = true;
-						}
-						if (Input.GetButtonDown("B"))
-						{
-							this.FadeOut = true;
-							this.Reset = true;
-						}
-						if (Input.GetKeyDown(KeyCode.Z))
-						{
-							if (SchoolGlobals.SchoolAtmosphere > 0f)
+							if (Input.GetButtonDown("A"))
 							{
-								SchoolGlobals.SchoolAtmosphere -= 0.1f;
+								this.FadeOut = true;
 							}
-							else
+							if (Input.GetButtonDown("Y"))
 							{
-								SchoolGlobals.SchoolAtmosphere = 100f;
+								this.Switch = true;
 							}
-							SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+							if (Input.GetButtonDown("B"))
+							{
+								this.ConfirmationWindow.SetActive(true);
+							}
+							if (Input.GetKeyDown(KeyCode.Z))
+							{
+								if (SchoolGlobals.SchoolAtmosphere > 0f)
+								{
+									SchoolGlobals.SchoolAtmosphere -= 0.1f;
+								}
+								else
+								{
+									SchoolGlobals.SchoolAtmosphere = 100f;
+								}
+								SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+							}
+						}
+						else
+						{
+							if (Input.GetButtonDown("A"))
+							{
+								this.FadeOut = true;
+								this.Reset = true;
+							}
+							if (Input.GetButtonDown("B"))
+							{
+								this.ConfirmationWindow.SetActive(false);
+							}
 						}
 					}
 				}

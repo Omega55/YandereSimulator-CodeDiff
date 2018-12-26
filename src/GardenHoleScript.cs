@@ -13,6 +13,8 @@ public class GardenHoleScript : MonoBehaviour
 
 	public MeshFilter MyMesh;
 
+	public GameObject Carrots;
+
 	public GameObject Pile;
 
 	public Mesh MoundMesh;
@@ -83,6 +85,7 @@ public class GardenHoleScript : MonoBehaviour
 				this.Yandere.RPGCamera.enabled = false;
 				this.Yandere.CanMove = false;
 				this.Yandere.DigPhase = 1;
+				this.Carrots.SetActive(false);
 				this.Prompt.Circle[0].fillAmount = 1f;
 				if (!this.Dug)
 				{

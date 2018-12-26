@@ -7,6 +7,8 @@ public class TitleSaveFilesScript : MonoBehaviour
 
 	public TitleSaveDataScript[] SaveDatas;
 
+	public GameObject ConfirmationWindow;
+
 	public TitleMenuScript Menu;
 
 	public Transform Highlight;
@@ -48,18 +50,33 @@ public class TitleSaveFilesScript : MonoBehaviour
 				}
 				this.UpdateHighlight();
 			}
-			if (Input.GetButtonDown("A"))
+			if (base.transform.localPosition.x < 50f)
 			{
-				Debug.Log("ID is: " + this.ID);
-				GameGlobals.Profile = this.ID;
-				Debug.Log("GameGlobals.Profile is: " + GameGlobals.Profile);
-				this.Menu.FadeOut = true;
-				this.Menu.Fading = true;
-			}
-			else if (Input.GetButtonDown("X"))
-			{
-				PlayerPrefs.SetInt("ProfileCreated_" + this.ID, 0);
-				this.SaveDatas[this.ID].Start();
+				if (!this.ConfirmationWindow.activeInHierarchy)
+				{
+					if (Input.GetButtonDown("A"))
+					{
+						Debug.Log("ID is: " + this.ID);
+						GameGlobals.Profile = this.ID;
+						Debug.Log("GameGlobals.Profile is: " + GameGlobals.Profile);
+						this.Menu.FadeOut = true;
+						this.Menu.Fading = true;
+					}
+					else if (Input.GetButtonDown("X"))
+					{
+						this.ConfirmationWindow.SetActive(true);
+					}
+				}
+				else if (Input.GetButtonDown("A"))
+				{
+					PlayerPrefs.SetInt("ProfileCreated_" + this.ID, 0);
+					this.ConfirmationWindow.SetActive(false);
+					this.SaveDatas[this.ID].Start();
+				}
+				else if (Input.GetButtonDown("B"))
+				{
+					this.ConfirmationWindow.SetActive(false);
+				}
 			}
 		}
 	}

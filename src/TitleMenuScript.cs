@@ -299,7 +299,7 @@ public class TitleMenuScript : MonoBehaviour
 					this.PromptBar.UpdateButtons();
 				}
 			}
-			if (Input.GetButtonDown("B"))
+			if (Input.GetButtonDown("B") && !this.SaveFiles.ConfirmationWindow.activeInHierarchy)
 			{
 				this.SaveFiles.Show = false;
 				this.Sponsors.Show = false;

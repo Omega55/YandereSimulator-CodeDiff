@@ -23,6 +23,8 @@ public class SaveLoadScript : MonoBehaviour
 
 	public DialogueWheelScript DialogueWheel;
 
+	public WitnessCameraScript WitnessCamera;
+
 	public RiggedAccessoryAttacher Attacher;
 
 	public CharacterController MyController;
@@ -398,6 +400,7 @@ public class SaveLoadScript : MonoBehaviour
 		this.DramaticCamera = this.Student.DramaticCamera;
 		this.ApronAttacher = this.Student.ApronAttacher;
 		this.DialogueWheel = this.Student.DialogueWheel;
+		this.WitnessCamera = this.Student.WitnessCamera;
 		this.MyController = this.Student.MyController;
 		this.ClubManager = this.Student.ClubManager;
 		this.Pathfinding = this.Student.Pathfinding;
@@ -501,6 +504,7 @@ public class SaveLoadScript : MonoBehaviour
 		this.Student.DramaticCamera = this.DramaticCamera;
 		this.Student.ApronAttacher = this.ApronAttacher;
 		this.Student.DialogueWheel = this.DialogueWheel;
+		this.Student.WitnessCamera = this.WitnessCamera;
 		this.Student.MyController = this.MyController;
 		this.Student.ClubManager = this.ClubManager;
 		this.Student.Pathfinding = this.Pathfinding;
@@ -618,6 +622,10 @@ public class SaveLoadScript : MonoBehaviour
 			this.StudentManager.CleaningManager.GetRole(this.Student.StudentID);
 			this.Student.CleaningSpot = this.StudentManager.CleaningManager.Spot;
 			this.Student.CleaningRole = this.StudentManager.CleaningManager.Role;
+		}
+		if (this.Student.StudentID == 54)
+		{
+			this.Instruments[4] = this.StudentManager.DrumSet;
 		}
 		this.Student.Reputation = this.StudentManager.Reputation;
 		this.Student.Yandere = this.StudentManager.Yandere;

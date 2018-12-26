@@ -83,14 +83,6 @@ public class SaveLoadMenuScript : MonoBehaviour
 				GameGlobals.Profile = 1;
 				this.Profile = 1;
 			}
-			Debug.Log(string.Concat(new object[]
-			{
-				"Saving data to Profile_",
-				this.Profile,
-				"_Slot_",
-				this.Selected,
-				"."
-			}));
 			this.PauseScreen.ScreenBlur.enabled = true;
 			this.UICamera.enabled = true;
 			this.StudentManager.Save();
@@ -151,22 +143,6 @@ public class SaveLoadMenuScript : MonoBehaviour
 				this.Selected,
 				"_Time"
 			}), this.Clock.PresentTime);
-			Debug.Log(string.Concat(new object[]
-			{
-				"Saving time! Profile_",
-				this.Profile,
-				"_Slot_",
-				this.Selected,
-				"_Time is ",
-				PlayerPrefs.GetFloat(string.Concat(new object[]
-				{
-					"Profile_",
-					this.Profile,
-					"_Slot_",
-					this.Selected,
-					"_Time"
-				}))
-			}));
 			if (DateGlobals.Weekday == DayOfWeek.Monday)
 			{
 				PlayerPrefs.SetInt(string.Concat(new object[]
