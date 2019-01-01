@@ -97,6 +97,10 @@ public class DoorScript : MonoBehaviour
 	[SerializeField]
 	private bool DisableSelf;
 
+	private StudentManagerScript StudentManager;
+
+	public int DoorID;
+
 	private bool Double
 	{
 		get
@@ -109,6 +113,10 @@ public class DoorScript : MonoBehaviour
 	{
 		this.TrapSwing = 12.15f;
 		this.Yandere = GameObject.Find("YandereChan").GetComponent<YandereScript>();
+		this.StudentManager = this.Yandere.StudentManager;
+		this.StudentManager.Doors[this.StudentManager.DoorID] = this;
+		this.StudentManager.DoorID++;
+		this.DoorID = this.StudentManager.DoorID;
 		if (this.Swinging)
 		{
 			this.OriginX[0] = this.Doors[0].transform.localPosition.z;

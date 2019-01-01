@@ -601,7 +601,6 @@ public class PhotoGalleryScript : MonoBehaviour
 
 	public IEnumerator GetPhotos()
 	{
-		Debug.Log("We were told to get photos.");
 		if (!this.Corkboard)
 		{
 			for (int i = 1; i < 26; i++)

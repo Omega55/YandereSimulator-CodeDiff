@@ -23,7 +23,7 @@ public class SponsorScript : MonoBehaviour
 	private void Update()
 	{
 		this.Timer += Time.deltaTime;
-		if (this.Timer < 4f)
+		if (this.Timer < 3.33333f)
 		{
 			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 0f, Time.deltaTime));
 		}

@@ -77,6 +77,7 @@ public enum SubtitleType
 	EventEavesdropReaction,
 	RivalEavesdropReaction,
 	EavesdropApology,
+	Eulogy,
 	EventApology,
 	EvilCorpseReaction,
 	EvilDelinquentCorpseReaction,

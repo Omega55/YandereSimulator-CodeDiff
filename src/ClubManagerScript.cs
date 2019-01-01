@@ -159,7 +159,6 @@ public class ClubManagerScript : MonoBehaviour
 		{
 			if (ClubGlobals.GetClubClosed(this.ClubArray[this.ID]))
 			{
-				Debug.Log(this.ClubArray[this.ID] + " is closed.");
 				this.ClubPosters[this.ID].SetActive(false);
 				if (this.ClubArray[this.ID] == ClubType.Gardening)
 				{

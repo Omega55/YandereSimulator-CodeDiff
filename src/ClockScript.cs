@@ -196,7 +196,7 @@ public class ClockScript : MonoBehaviour
 		if (!MissionModeGlobals.MissionMode && this.CameraTimer < 1f)
 		{
 			this.CameraTimer += Time.deltaTime;
-			if (this.CameraTimer > 1f)
+			if (this.CameraTimer > 1f && !this.StudentManager.MemorialScene.enabled)
 			{
 				this.Yandere.RPGCamera.enabled = true;
 				this.Yandere.CanMove = true;

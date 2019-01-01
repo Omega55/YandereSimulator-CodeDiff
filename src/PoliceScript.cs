@@ -366,6 +366,13 @@ public class PoliceScript : MonoBehaviour
 					this.ContinueLabel.color = new Color(this.ContinueLabel.color.r, this.ContinueLabel.color.g, this.ContinueLabel.color.b, 1f);
 				}
 			}
+			if (Input.GetKeyDown("space"))
+			{
+				this.ShowResults = false;
+				this.FadeResults = true;
+				this.FadeOut = false;
+				this.ResultsTimer = 0f;
+			}
 			if (this.ResultsTimer > 7f && Input.GetButtonDown("A"))
 			{
 				this.ShowResults = false;
@@ -711,19 +718,62 @@ public class PoliceScript : MonoBehaviour
 				}
 			}
 			SchoolGlobals.SchoolAtmosphere -= (float)this.Corpses * 0.05f;
+			foreach (RagdollScript ragdollScript in this.CorpseList)
+			{
+				if (ragdollScript != null && StudentGlobals.MemorialStudents < 9)
+				{
+					StudentGlobals.MemorialStudents++;
+					if (StudentGlobals.MemorialStudents == 1)
+					{
+						StudentGlobals.MemorialStudent1 = ragdollScript.Student.StudentID;
+					}
+					else if (StudentGlobals.MemorialStudents == 2)
+					{
+						StudentGlobals.MemorialStudent2 = ragdollScript.Student.StudentID;
+					}
+					else if (StudentGlobals.MemorialStudents == 3)
+					{
+						StudentGlobals.MemorialStudent3 = ragdollScript.Student.StudentID;
+					}
+					else if (StudentGlobals.MemorialStudents == 4)
+					{
+						StudentGlobals.MemorialStudent4 = ragdollScript.Student.StudentID;
+					}
+					else if (StudentGlobals.MemorialStudents == 5)
+					{
+						StudentGlobals.MemorialStudent5 = ragdollScript.Student.StudentID;
+					}
+					else if (StudentGlobals.MemorialStudents == 6)
+					{
+						StudentGlobals.MemorialStudent6 = ragdollScript.Student.StudentID;
+					}
+					else if (StudentGlobals.MemorialStudents == 7)
+					{
+						StudentGlobals.MemorialStudent7 = ragdollScript.Student.StudentID;
+					}
+					else if (StudentGlobals.MemorialStudents == 8)
+					{
+						StudentGlobals.MemorialStudent8 = ragdollScript.Student.StudentID;
+					}
+					else if (StudentGlobals.MemorialStudents == 9)
+					{
+						StudentGlobals.MemorialStudent9 = ragdollScript.Student.StudentID;
+					}
+				}
+			}
 		}
 		else if (!SchoolGlobals.HighSecurity)
 		{
 			SchoolGlobals.SchoolAtmosphere += 0.2f;
 		}
 		SchoolGlobals.SchoolAtmosphere = Mathf.Clamp01(SchoolGlobals.SchoolAtmosphere);
-		for (int j = 1; j < this.StudentManager.StudentsTotal; j++)
+		for (int k = 1; k < this.StudentManager.StudentsTotal; k++)
 		{
-			StudentScript studentScript = this.StudentManager.Students[j];
+			StudentScript studentScript = this.StudentManager.Students[k];
 			if (studentScript != null && studentScript.Grudge && studentScript.Persona != PersonaType.Evil)
 			{
-				StudentGlobals.SetStudentGrudge(j, true);
-				if (studentScript.OriginalPersona == PersonaType.Sleuth && !StudentGlobals.GetStudentDying(j))
+				StudentGlobals.SetStudentGrudge(k, true);
+				if (studentScript.OriginalPersona == PersonaType.Sleuth && !StudentGlobals.GetStudentDying(k))
 				{
 					StudentGlobals.SetStudentGrudge(56, true);
 					StudentGlobals.SetStudentGrudge(57, true);

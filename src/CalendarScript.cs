@@ -50,6 +50,10 @@ public class CalendarScript : MonoBehaviour
 			SchoolGlobals.SchoolAtmosphereSet = true;
 			SchoolGlobals.SchoolAtmosphere = 1f;
 		}
+		if (SchoolGlobals.SchoolAtmosphere > 1f)
+		{
+			SchoolGlobals.SchoolAtmosphere = 1f;
+		}
 		if (DateGlobals.Weekday > DayOfWeek.Thursday)
 		{
 			DateGlobals.Weekday = DayOfWeek.Sunday;

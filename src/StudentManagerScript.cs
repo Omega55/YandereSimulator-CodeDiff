@@ -33,6 +33,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public EmergencyExitScript EmergencyExit;
 
+	public MemorialSceneScript MemorialScene;
+
 	public TranqDetectorScript TranqDetector;
 
 	public WitnessCameraScript WitnessCamera;
@@ -472,11 +474,20 @@ public class StudentManagerScript : MonoBehaviour
 
 	public int Gentles;
 
+	public DoorScript[] Doors;
+
+	public int DoorID;
+
 	private void Start()
 	{
 		if (ClubGlobals.GetClubClosed(ClubType.LightMusic))
 		{
 			this.SpawnPositions[51].position = new Vector3(3f, 0f, -95f);
+		}
+		if (StudentGlobals.MemorialStudents > 0)
+		{
+			this.Yandere.HUD.alpha = 0f;
+			this.Yandere.HeartCamera.enabled = false;
 		}
 		if (GameGlobals.Profile == 0)
 		{
@@ -702,6 +713,20 @@ public class StudentManagerScript : MonoBehaviour
 				{
 					this.Load();
 					PlayerPrefs.SetInt("LoadingSave", 0);
+				}
+				if (StudentGlobals.MemorialStudents > 0)
+				{
+					this.Yandere.HUD.alpha = 0f;
+					this.Yandere.RPGCamera.transform.position = new Vector3(38f, 4.125f, 68.825f);
+					this.Yandere.RPGCamera.transform.eulerAngles = new Vector3(22.5f, 67.5f, 0f);
+					this.Yandere.RPGCamera.transform.Translate(Vector3.forward, Space.Self);
+					this.Yandere.RPGCamera.enabled = false;
+					this.Yandere.HeartCamera.enabled = false;
+					this.Yandere.CanMove = false;
+					this.Clock.StopTime = true;
+					this.StopMoving();
+					this.MemorialScene.gameObject.SetActive(true);
+					this.MemorialScene.enabled = true;
 				}
 			}
 			if ((double)this.Clock.HourTime > 16.9)
@@ -1304,6 +1329,8 @@ public class StudentManagerScript : MonoBehaviour
 			this.SpawnStudent(this.SpawnID);
 			this.SpawnID++;
 		}
+		int num = 0;
+		int num2 = 0;
 		this.ID = 1;
 		while (this.ID < this.Students.Length)
 		{
@@ -1313,6 +1340,12 @@ public class StudentManagerScript : MonoBehaviour
 				if (!studentScript.Started)
 				{
 					studentScript.Start();
+				}
+				bool flag = false;
+				if (this.MemorialScene.enabled && studentScript.Teacher)
+				{
+					flag = true;
+					studentScript.Teacher = false;
 				}
 				if (!studentScript.Teacher)
 				{
@@ -1348,6 +1381,20 @@ public class StudentManagerScript : MonoBehaviour
 				{
 					studentScript.TeleportToDestination();
 					studentScript.TeleportToDestination();
+				}
+				if (this.MemorialScene.enabled)
+				{
+					if (flag)
+					{
+						studentScript.Teacher = true;
+					}
+					studentScript.transform.position = new Vector3(20f + (float)num * 1.1f, 0f, (float)(82 - num2 * 5));
+					num2++;
+					if (num2 > 4)
+					{
+						num++;
+						num2 = 0;
+					}
 				}
 			}
 			this.ID++;
@@ -1625,7 +1672,7 @@ public class StudentManagerScript : MonoBehaviour
 		}
 	}
 
-	private void Unstop()
+	public void Unstop()
 	{
 		this.ID = 0;
 		while (this.ID < this.Students.Length)
@@ -2079,59 +2126,61 @@ public class StudentManagerScript : MonoBehaviour
 
 	public void UpdateDrama()
 	{
-		this.DramaPhase++;
-		Debug.Log("DramaPhase is: " + this.DramaPhase);
-		this.ID = 26;
-		while (this.ID < 31)
+		if (!this.MemorialScene.gameObject.activeInHierarchy)
 		{
-			if (this.Students[this.ID] != null)
+			this.DramaPhase++;
+			this.ID = 26;
+			while (this.ID < 31)
 			{
-				if (this.DramaPhase == 1)
+				if (this.Students[this.ID] != null)
 				{
-					this.Clubs.List[this.ID].position = this.OriginalClubPositions[this.ID - 25];
-					this.Clubs.List[this.ID].rotation = this.OriginalClubRotations[this.ID - 25];
-					this.Students[this.ID].ClubAnim = this.Students[this.ID].OriginalClubAnim;
+					if (this.DramaPhase == 1)
+					{
+						this.Clubs.List[this.ID].position = this.OriginalClubPositions[this.ID - 25];
+						this.Clubs.List[this.ID].rotation = this.OriginalClubRotations[this.ID - 25];
+						this.Students[this.ID].ClubAnim = this.Students[this.ID].OriginalClubAnim;
+					}
+					else if (this.DramaPhase == 2)
+					{
+						this.Clubs.List[this.ID].position = this.DramaSpots[this.ID - 25].position;
+						this.Clubs.List[this.ID].rotation = this.DramaSpots[this.ID - 25].rotation;
+						if (this.ID == 26)
+						{
+							this.Students[this.ID].ClubAnim = this.Students[this.ID].ActAnim;
+						}
+						else if (this.ID == 27)
+						{
+							this.Students[this.ID].ClubAnim = this.Students[this.ID].ThinkAnim;
+						}
+						else if (this.ID == 28)
+						{
+							this.Students[this.ID].ClubAnim = this.Students[this.ID].ThinkAnim;
+						}
+						else if (this.ID == 29)
+						{
+							this.Students[this.ID].ClubAnim = this.Students[this.ID].ActAnim;
+						}
+						else if (this.ID == 30)
+						{
+							this.Students[this.ID].ClubAnim = this.Students[this.ID].ThinkAnim;
+						}
+					}
+					else if (this.DramaPhase == 3)
+					{
+						this.Clubs.List[this.ID].position = this.BackstageSpots[this.ID - 25].position;
+						this.Clubs.List[this.ID].rotation = this.BackstageSpots[this.ID - 25].rotation;
+					}
+					else if (this.DramaPhase == 4)
+					{
+						this.DramaPhase = 1;
+						this.UpdateDrama();
+					}
+					this.Students[this.ID].DistanceToDestination = 100f;
+					this.Students[this.ID].SmartPhone.SetActive(false);
+					this.Students[this.ID].SpeechLines.Stop();
 				}
-				else if (this.DramaPhase == 2)
-				{
-					this.Clubs.List[this.ID].position = this.DramaSpots[this.ID - 25].position;
-					this.Clubs.List[this.ID].rotation = this.DramaSpots[this.ID - 25].rotation;
-					if (this.ID == 26)
-					{
-						this.Students[this.ID].ClubAnim = this.Students[this.ID].ActAnim;
-					}
-					else if (this.ID == 27)
-					{
-						this.Students[this.ID].ClubAnim = this.Students[this.ID].ThinkAnim;
-					}
-					else if (this.ID == 28)
-					{
-						this.Students[this.ID].ClubAnim = this.Students[this.ID].ThinkAnim;
-					}
-					else if (this.ID == 29)
-					{
-						this.Students[this.ID].ClubAnim = this.Students[this.ID].ActAnim;
-					}
-					else if (this.ID == 30)
-					{
-						this.Students[this.ID].ClubAnim = this.Students[this.ID].ThinkAnim;
-					}
-				}
-				else if (this.DramaPhase == 3)
-				{
-					this.Clubs.List[this.ID].position = this.BackstageSpots[this.ID - 25].position;
-					this.Clubs.List[this.ID].rotation = this.BackstageSpots[this.ID - 25].rotation;
-				}
-				else if (this.DramaPhase == 4)
-				{
-					this.DramaPhase = 1;
-					this.UpdateDrama();
-				}
-				this.Students[this.ID].DistanceToDestination = 100f;
-				this.Students[this.ID].SmartPhone.SetActive(false);
-				this.Students[this.ID].SpeechLines.Stop();
+				this.ID++;
 			}
-			this.ID++;
 		}
 	}
 
@@ -2249,6 +2298,47 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			this.ID++;
 		}
+		int profile = GameGlobals.Profile;
+		int @int = PlayerPrefs.GetInt("SaveSlot");
+		foreach (DoorScript doorScript in this.Doors)
+		{
+			if (doorScript != null)
+			{
+				if (doorScript.Open)
+				{
+					PlayerPrefs.SetInt(string.Concat(new object[]
+					{
+						"Profile_",
+						profile,
+						"_Slot_",
+						@int,
+						"_Door",
+						doorScript.DoorID,
+						"_Open"
+					}), 1);
+					Debug.Log(string.Concat(new object[]
+					{
+						"Saving: The door with the ID number of ",
+						doorScript.DoorID,
+						" is supposed to be open! It's located at: ",
+						doorScript.transform.position
+					}));
+				}
+				else
+				{
+					PlayerPrefs.SetInt(string.Concat(new object[]
+					{
+						"Profile_",
+						profile,
+						"_Slot_",
+						@int,
+						"_Door",
+						doorScript.DoorID,
+						"_Open"
+					}), 0);
+				}
+			}
+		}
 	}
 
 	public void Load()
@@ -2310,5 +2400,36 @@ public class StudentManagerScript : MonoBehaviour
 		})));
 		this.Yandere.FixCamera();
 		Physics.SyncTransforms();
+		foreach (DoorScript doorScript in this.Doors)
+		{
+			if (doorScript != null)
+			{
+				if (PlayerPrefs.GetInt(string.Concat(new object[]
+				{
+					"Profile_",
+					profile,
+					"_Slot_",
+					@int,
+					"_Door",
+					doorScript.DoorID,
+					"_Open"
+				})) == 1)
+				{
+					Debug.Log(string.Concat(new object[]
+					{
+						"Loading: The door with the ID number of ",
+						doorScript.DoorID,
+						" is supposed to be open! It's located at: ",
+						doorScript.transform.position
+					}));
+					doorScript.Open = true;
+					doorScript.OpenDoor();
+				}
+				else
+				{
+					doorScript.Open = false;
+				}
+			}
+		}
 	}
 }

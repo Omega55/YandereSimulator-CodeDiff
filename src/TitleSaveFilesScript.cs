@@ -32,23 +32,26 @@ public class TitleSaveFilesScript : MonoBehaviour
 		else
 		{
 			base.transform.localPosition = new Vector3(Mathf.Lerp(base.transform.localPosition.x, 0f, Time.deltaTime * 10f), base.transform.localPosition.y, base.transform.localPosition.z);
-			if (this.InputManager.TappedDown)
+			if (!this.ConfirmationWindow.activeInHierarchy)
 			{
-				this.ID++;
-				if (this.ID > 3)
+				if (this.InputManager.TappedDown)
 				{
-					this.ID = 1;
+					this.ID++;
+					if (this.ID > 3)
+					{
+						this.ID = 1;
+					}
+					this.UpdateHighlight();
 				}
-				this.UpdateHighlight();
-			}
-			if (this.InputManager.TappedUp)
-			{
-				this.ID--;
-				if (this.ID < 1)
+				if (this.InputManager.TappedUp)
 				{
-					this.ID = 3;
+					this.ID--;
+					if (this.ID < 1)
+					{
+						this.ID = 3;
+					}
+					this.UpdateHighlight();
 				}
-				this.UpdateHighlight();
 			}
 			if (base.transform.localPosition.x < 50f)
 			{

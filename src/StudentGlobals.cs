@@ -67,6 +67,26 @@ public static class StudentGlobals
 
 	private const string Str_FragileTarget = "FragileTarget";
 
+	private const string Str_MemorialStudents = "MemorialStudents";
+
+	private const string Str_MemorialStudent1 = "MemorialStudent1";
+
+	private const string Str_MemorialStudent2 = "MemorialStudent2";
+
+	private const string Str_MemorialStudent3 = "MemorialStudent3";
+
+	private const string Str_MemorialStudent4 = "MemorialStudent4";
+
+	private const string Str_MemorialStudent5 = "MemorialStudent5";
+
+	private const string Str_MemorialStudent6 = "MemorialStudent6";
+
+	private const string Str_MemorialStudent7 = "MemorialStudent7";
+
+	private const string Str_MemorialStudent8 = "MemorialStudent8";
+
+	private const string Str_MemorialStudent9 = "MemorialStudent9";
+
 	public static bool CustomSuitor
 	{
 		get
@@ -184,6 +204,126 @@ public static class StudentGlobals
 		set
 		{
 			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_MaleUniform", value);
+		}
+	}
+
+	public static int MemorialStudents
+	{
+		get
+		{
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_MemorialStudents");
+		}
+		set
+		{
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_MemorialStudents", value);
+		}
+	}
+
+	public static int MemorialStudent1
+	{
+		get
+		{
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_MemorialStudent1");
+		}
+		set
+		{
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_MemorialStudent1", value);
+		}
+	}
+
+	public static int MemorialStudent2
+	{
+		get
+		{
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_MemorialStudent2");
+		}
+		set
+		{
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_MemorialStudent2", value);
+		}
+	}
+
+	public static int MemorialStudent3
+	{
+		get
+		{
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_MemorialStudent3");
+		}
+		set
+		{
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_MemorialStudent3", value);
+		}
+	}
+
+	public static int MemorialStudent4
+	{
+		get
+		{
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_MemorialStudent4");
+		}
+		set
+		{
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_MemorialStudent4", value);
+		}
+	}
+
+	public static int MemorialStudent5
+	{
+		get
+		{
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_MemorialStudent5");
+		}
+		set
+		{
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_MemorialStudent5", value);
+		}
+	}
+
+	public static int MemorialStudent6
+	{
+		get
+		{
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_MemorialStudent6");
+		}
+		set
+		{
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_MemorialStudent6", value);
+		}
+	}
+
+	public static int MemorialStudent7
+	{
+		get
+		{
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_MemorialStudent7");
+		}
+		set
+		{
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_MemorialStudent7", value);
+		}
+	}
+
+	public static int MemorialStudent8
+	{
+		get
+		{
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_MemorialStudent8");
+		}
+		set
+		{
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_MemorialStudent8", value);
+		}
+	}
+
+	public static int MemorialStudent9
+	{
+		get
+		{
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_MemorialStudent9");
+		}
+		set
+		{
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_MemorialStudent9", value);
 		}
 	}
 
@@ -805,5 +945,15 @@ public static class StudentGlobals
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_StudentReputation_", StudentGlobals.KeysOfStudentReputation());
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_StudentSanity_", StudentGlobals.KeysOfStudentSanity());
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_StudentSlave", StudentGlobals.KeysOfStudentSlave());
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_MemorialStudents");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_MemorialStudent1");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_MemorialStudent2");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_MemorialStudent3");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_MemorialStudent4");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_MemorialStudent5");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_MemorialStudent6");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_MemorialStudent7");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_MemorialStudent8");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_MemorialStudent9");
 	}
 }

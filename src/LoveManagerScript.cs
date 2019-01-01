@@ -183,6 +183,7 @@ public class LoveManagerScript : MonoBehaviour
 				this.Suitor.CoupleID = 30;
 				this.Rival.CoupleID = 28;
 				this.HoldingHands = true;
+				base.enabled = false;
 			}
 		}
 	}

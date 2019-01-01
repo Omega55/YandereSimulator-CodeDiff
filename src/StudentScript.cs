@@ -4684,116 +4684,130 @@ public class StudentScript : MonoBehaviour
 							}
 							else if (this.Actions[this.Phase] == StudentActionType.Bully)
 							{
-								if (this.StudentManager.Students[this.StudentManager.VictimID].Distracted || this.StudentManager.Students[this.StudentManager.VictimID].Tranquil)
+								if (this.StudentManager.Students[this.StudentManager.VictimID] != null)
 								{
-									this.StudentManager.NoBully[this.BullyID] = true;
-									this.KilledMood = true;
-								}
-								if (this.KilledMood)
-								{
-									this.Subtitle.UpdateLabel(SubtitleType.KilledMood, 0, 5f);
-									this.BullyPhase = 4;
-									this.KilledMood = false;
-									this.BullyDust.Stop();
-								}
-								if (this.StudentManager.Students[81] == null)
-								{
-									ScheduleBlock scheduleBlock5 = this.ScheduleBlocks[4];
-									scheduleBlock5.destination = "Patrol";
-									scheduleBlock5.action = "Patrol";
-									this.GetDestinations();
-									this.CurrentDestination = this.Destinations[this.Phase];
-									this.Pathfinding.target = this.Destinations[this.Phase];
-								}
-								else
-								{
-									this.SmartPhone.SetActive(false);
-									if (this.BullyID == 1)
+									if (this.StudentManager.Students[this.StudentManager.VictimID].Distracted || this.StudentManager.Students[this.StudentManager.VictimID].Tranquil)
 									{
-										if (this.BullyPhase == 0)
-										{
-											this.Scrubber.GetComponent<Renderer>().material.mainTexture = this.Eraser.GetComponent<Renderer>().material.mainTexture;
-											this.Scrubber.SetActive(true);
-											this.Eraser.SetActive(true);
-											this.StudentManager.Students[this.StudentManager.VictimID].CharacterAnimation.CrossFade(this.StudentManager.Students[this.StudentManager.VictimID].BullyVictimAnim);
-											this.StudentManager.Students[this.StudentManager.VictimID].Routine = false;
-											this.CharacterAnimation.CrossFade("f02_bullyEraser_00");
-											this.BullyPhase++;
-										}
-										else if (this.BullyPhase == 1)
-										{
-											if (this.CharacterAnimation["f02_bullyEraser_00"].time >= 0.833333f)
-											{
-												this.BullyDust.Play();
-												this.BullyPhase++;
-											}
-										}
-										else if (this.BullyPhase == 2)
-										{
-											if (this.CharacterAnimation["f02_bullyEraser_00"].time >= this.CharacterAnimation["f02_bullyEraser_00"].length)
-											{
-												AudioSource.PlayClipAtPoint(this.BullyLaughs[this.BullyID], this.Head.position);
-												this.CharacterAnimation.CrossFade("f02_bullyLaugh_00");
-												this.Scrubber.SetActive(false);
-												this.Eraser.SetActive(false);
-												this.BullyPhase++;
-											}
-										}
-										else if (this.BullyPhase == 3)
-										{
-											if (this.CharacterAnimation["f02_bullyLaugh_00"].time >= this.CharacterAnimation["f02_bullyLaugh_00"].length)
-											{
-												this.BullyPhase++;
-											}
-										}
-										else if (this.BullyPhase == 4)
-										{
-											this.StudentManager.Students[this.StudentManager.VictimID].Routine = true;
-											ScheduleBlock scheduleBlock6 = this.ScheduleBlocks[4];
-											scheduleBlock6.destination = "LunchSpot";
-											scheduleBlock6.action = "Wait";
-											this.GetDestinations();
-											this.CurrentDestination = this.Destinations[this.Phase];
-											this.Pathfinding.target = this.Destinations[this.Phase];
-											this.SmartPhone.SetActive(true);
-											this.Scrubber.SetActive(false);
-											this.Eraser.SetActive(false);
-										}
+										this.StudentManager.NoBully[this.BullyID] = true;
+										this.KilledMood = true;
+									}
+									if (this.KilledMood)
+									{
+										this.Subtitle.UpdateLabel(SubtitleType.KilledMood, 0, 5f);
+										this.BullyPhase = 4;
+										this.KilledMood = false;
+										this.BullyDust.Stop();
+									}
+									if (this.StudentManager.Students[81] == null)
+									{
+										ScheduleBlock scheduleBlock5 = this.ScheduleBlocks[4];
+										scheduleBlock5.destination = "Patrol";
+										scheduleBlock5.action = "Patrol";
+										this.GetDestinations();
+										this.CurrentDestination = this.Destinations[this.Phase];
+										this.Pathfinding.target = this.Destinations[this.Phase];
 									}
 									else
 									{
-										if (this.StudentManager.Students[81].BullyPhase < 2)
+										this.SmartPhone.SetActive(false);
+										if (this.BullyID == 1)
 										{
-											if (this.GiggleTimer == 0f)
+											if (this.BullyPhase == 0)
 											{
-												AudioSource.PlayClipAtPoint(this.BullyGiggles[UnityEngine.Random.Range(0, this.BullyGiggles.Length)], this.Head.position);
-												this.GiggleTimer = 5f;
+												this.Scrubber.GetComponent<Renderer>().material.mainTexture = this.Eraser.GetComponent<Renderer>().material.mainTexture;
+												this.Scrubber.SetActive(true);
+												this.Eraser.SetActive(true);
+												this.StudentManager.Students[this.StudentManager.VictimID].CharacterAnimation.CrossFade(this.StudentManager.Students[this.StudentManager.VictimID].BullyVictimAnim);
+												this.StudentManager.Students[this.StudentManager.VictimID].Routine = false;
+												this.CharacterAnimation.CrossFade("f02_bullyEraser_00");
+												this.BullyPhase++;
 											}
-											this.GiggleTimer = Mathf.MoveTowards(this.GiggleTimer, 0f, Time.deltaTime);
-											this.CharacterAnimation.CrossFade("f02_bullyGiggle_00");
-										}
-										else if (this.StudentManager.Students[81].BullyPhase < 4)
-										{
-											if (this.LaughTimer == 0f)
+											else if (this.BullyPhase == 1)
 											{
-												AudioSource.PlayClipAtPoint(this.BullyLaughs[this.BullyID], this.Head.position);
-												this.LaughTimer = 5f;
+												if (this.CharacterAnimation["f02_bullyEraser_00"].time >= 0.833333f)
+												{
+													this.BullyDust.Play();
+													this.BullyPhase++;
+												}
 											}
-											this.LaughTimer = Mathf.MoveTowards(this.LaughTimer, 0f, Time.deltaTime);
-											this.CharacterAnimation.CrossFade("f02_bullyLaugh_00");
+											else if (this.BullyPhase == 2)
+											{
+												if (this.CharacterAnimation["f02_bullyEraser_00"].time >= this.CharacterAnimation["f02_bullyEraser_00"].length)
+												{
+													AudioSource.PlayClipAtPoint(this.BullyLaughs[this.BullyID], this.Head.position);
+													this.CharacterAnimation.CrossFade("f02_bullyLaugh_00");
+													this.Scrubber.SetActive(false);
+													this.Eraser.SetActive(false);
+													this.BullyPhase++;
+												}
+											}
+											else if (this.BullyPhase == 3)
+											{
+												if (this.CharacterAnimation["f02_bullyLaugh_00"].time >= this.CharacterAnimation["f02_bullyLaugh_00"].length)
+												{
+													this.BullyPhase++;
+												}
+											}
+											else if (this.BullyPhase == 4)
+											{
+												this.StudentManager.Students[this.StudentManager.VictimID].Routine = true;
+												ScheduleBlock scheduleBlock6 = this.ScheduleBlocks[4];
+												scheduleBlock6.destination = "LunchSpot";
+												scheduleBlock6.action = "Wait";
+												this.GetDestinations();
+												this.CurrentDestination = this.Destinations[this.Phase];
+												this.Pathfinding.target = this.Destinations[this.Phase];
+												this.SmartPhone.SetActive(true);
+												this.Scrubber.SetActive(false);
+												this.Eraser.SetActive(false);
+											}
 										}
-										if (this.CharacterAnimation["f02_bullyLaugh_00"].time >= this.CharacterAnimation["f02_bullyLaugh_00"].length || this.StudentManager.Students[81].BullyPhase == 4 || this.BullyPhase == 4)
+										else
 										{
-											this.DistanceToDestination = 100f;
-											ScheduleBlock scheduleBlock7 = this.ScheduleBlocks[4];
-											scheduleBlock7.destination = "Patrol";
-											scheduleBlock7.action = "Patrol";
-											this.GetDestinations();
-											this.CurrentDestination = this.Destinations[this.Phase];
-											this.Pathfinding.target = this.Destinations[this.Phase];
-											this.SmartPhone.SetActive(true);
+											if (this.StudentManager.Students[81].BullyPhase < 2)
+											{
+												if (this.GiggleTimer == 0f)
+												{
+													AudioSource.PlayClipAtPoint(this.BullyGiggles[UnityEngine.Random.Range(0, this.BullyGiggles.Length)], this.Head.position);
+													this.GiggleTimer = 5f;
+												}
+												this.GiggleTimer = Mathf.MoveTowards(this.GiggleTimer, 0f, Time.deltaTime);
+												this.CharacterAnimation.CrossFade("f02_bullyGiggle_00");
+											}
+											else if (this.StudentManager.Students[81].BullyPhase < 4)
+											{
+												if (this.LaughTimer == 0f)
+												{
+													AudioSource.PlayClipAtPoint(this.BullyLaughs[this.BullyID], this.Head.position);
+													this.LaughTimer = 5f;
+												}
+												this.LaughTimer = Mathf.MoveTowards(this.LaughTimer, 0f, Time.deltaTime);
+												this.CharacterAnimation.CrossFade("f02_bullyLaugh_00");
+											}
+											if (this.CharacterAnimation["f02_bullyLaugh_00"].time >= this.CharacterAnimation["f02_bullyLaugh_00"].length || this.StudentManager.Students[81].BullyPhase == 4 || this.BullyPhase == 4)
+											{
+												this.DistanceToDestination = 100f;
+												ScheduleBlock scheduleBlock7 = this.ScheduleBlocks[4];
+												scheduleBlock7.destination = "Patrol";
+												scheduleBlock7.action = "Patrol";
+												this.GetDestinations();
+												this.CurrentDestination = this.Destinations[this.Phase];
+												this.Pathfinding.target = this.Destinations[this.Phase];
+												this.SmartPhone.SetActive(true);
+											}
 										}
 									}
+								}
+								else
+								{
+									this.DistanceToDestination = 100f;
+									ScheduleBlock scheduleBlock8 = this.ScheduleBlocks[4];
+									scheduleBlock8.destination = "Patrol";
+									scheduleBlock8.action = "Patrol";
+									this.GetDestinations();
+									this.CurrentDestination = this.Destinations[this.Phase];
+									this.Pathfinding.target = this.Destinations[this.Phase];
+									this.SmartPhone.SetActive(true);
 								}
 							}
 							else if (this.Actions[this.Phase] == StudentActionType.Follow)
@@ -6845,7 +6859,6 @@ public class StudentScript : MonoBehaviour
 					{
 						if (this.Persona == PersonaType.Heroic)
 						{
-							Debug.Log("Sprinting 6");
 							this.CharacterAnimation.CrossFade(this.SprintAnim);
 						}
 						else
@@ -6888,15 +6901,15 @@ public class StudentScript : MonoBehaviour
 				if (this.PatrolTimer > 5f)
 				{
 					this.StudentManager.CommunalLocker.RivalPhone.gameObject.SetActive(false);
-					ScheduleBlock scheduleBlock8 = this.ScheduleBlocks[2];
-					scheduleBlock8.destination = "Hangout";
-					scheduleBlock8.action = "Hangout";
-					ScheduleBlock scheduleBlock9 = this.ScheduleBlocks[4];
-					scheduleBlock9.destination = "LunchSpot";
-					scheduleBlock9.action = "Eat";
-					ScheduleBlock scheduleBlock10 = this.ScheduleBlocks[7];
-					scheduleBlock10.destination = "Hangout";
-					scheduleBlock10.action = "Hangout";
+					ScheduleBlock scheduleBlock9 = this.ScheduleBlocks[2];
+					scheduleBlock9.destination = "Hangout";
+					scheduleBlock9.action = "Hangout";
+					ScheduleBlock scheduleBlock10 = this.ScheduleBlocks[4];
+					scheduleBlock10.destination = "LunchSpot";
+					scheduleBlock10.action = "Eat";
+					ScheduleBlock scheduleBlock11 = this.ScheduleBlocks[7];
+					scheduleBlock11.destination = "Hangout";
+					scheduleBlock11.action = "Hangout";
 					this.GetDestinations();
 					Array.Copy(this.OriginalActions, this.Actions, this.OriginalActions.Length);
 					this.CurrentDestination = this.Destinations[this.Phase];
@@ -7119,7 +7132,6 @@ public class StudentScript : MonoBehaviour
 					{
 						if (!this.WitnessedCorpse)
 						{
-							Debug.Log(this.Name + " discovered a corpse.");
 							if (this.Club == ClubType.Delinquent && this.Corpse.Student.Club == ClubType.Bully)
 							{
 								this.FoundEnemyCorpse = true;
@@ -7150,14 +7162,10 @@ public class StudentScript : MonoBehaviour
 							this.Threatened = false;
 							this.SentHome = false;
 							this.Routine = false;
-							if (this.Persona == PersonaType.Spiteful)
+							if (this.Persona == PersonaType.Spiteful && ((this.Bullied && this.Corpse.Student.Club == ClubType.Bully) || this.Corpse.Student.Bullied))
 							{
-								Debug.Log("A Spiteful student witnessed a murder.");
-								if ((this.Bullied && this.Corpse.Student.Club == ClubType.Bully) || this.Corpse.Student.Bullied)
-								{
-									this.ScaredAnim = this.EvilWitnessAnim;
-									this.Persona = PersonaType.Evil;
-								}
+								this.ScaredAnim = this.EvilWitnessAnim;
+								this.Persona = PersonaType.Evil;
 							}
 							this.ForgetRadio();
 							if (this.Wet)
@@ -7639,7 +7647,6 @@ public class StudentScript : MonoBehaviour
 								}
 								else
 								{
-									Debug.Log(this.Name + " was alarmed by something, but didn't see what it was.");
 									this.Witnessed = StudentWitnessType.None;
 									this.DiscCheck = true;
 									this.Witness = false;
@@ -7649,7 +7656,6 @@ public class StudentScript : MonoBehaviour
 							{
 								this.Pathfinding.canSearch = false;
 								this.Pathfinding.canMove = false;
-								Debug.Log(this.Name + " discovered a corpse.");
 							}
 						}
 					}
@@ -8390,7 +8396,6 @@ public class StudentScript : MonoBehaviour
 				{
 					if (this.StudentID == 1)
 					{
-						Debug.Log("Senpai entered his scared animation.");
 					}
 					if (this.Persona != PersonaType.PhoneAddict)
 					{
@@ -9900,7 +9905,7 @@ public class StudentScript : MonoBehaviour
 				this.StudentManager.CorpseLocation.position = Vector3.zero;
 			}
 		}
-		if (this.Club == ClubType.Delinquent && this.MyWeapon.transform.parent == this.ItemParent)
+		if (this.Club == ClubType.Delinquent && this.MyWeapon != null && this.MyWeapon.transform.parent == this.ItemParent)
 		{
 			this.MyWeapon.transform.parent = null;
 			this.MyWeapon.MyCollider.enabled = true;
@@ -10217,7 +10222,6 @@ public class StudentScript : MonoBehaviour
 
 	private void PersonaReaction()
 	{
-		Debug.Log("PersonaReaction() is being called.");
 		if (this.Persona == PersonaType.Sleuth)
 		{
 			if (this.Sleuthing)
@@ -10248,7 +10252,6 @@ public class StudentScript : MonoBehaviour
 			}
 			else if (this.Persona == PersonaType.Coward || this.Persona == PersonaType.Evil || this.Persona == PersonaType.Fragile)
 			{
-				Debug.Log(this.Name + " is switching to the Loner Persona.");
 				this.Persona = PersonaType.Loner;
 			}
 		}
@@ -10328,7 +10331,6 @@ public class StudentScript : MonoBehaviour
 			}
 			if (this.StudentManager.Reporter == this)
 			{
-				Debug.Log("A student is running to a teacher.");
 				this.Pathfinding.target = this.StudentManager.Teachers[this.Class].transform;
 				this.CurrentDestination = this.StudentManager.Teachers[this.Class].transform;
 				this.TargetDistance = 2f;
@@ -10345,7 +10347,6 @@ public class StudentScript : MonoBehaviour
 			{
 				if (this.Club == ClubType.Council)
 				{
-					Debug.Log("A student council member has been told to travel to ''CorpseGuardLocation''.");
 					if (this.StudentManager.CorpseLocation.position == Vector3.zero)
 					{
 						this.StudentManager.CorpseLocation.position = this.Corpse.AllColliders[0].transform.position;
@@ -10437,7 +10438,6 @@ public class StudentScript : MonoBehaviour
 		}
 		else if (this.Persona == PersonaType.SocialButterfly)
 		{
-			Debug.Log("A social butterfly is reacting.");
 			this.CurrentDestination = this.StudentManager.HidingSpots.List[this.StudentID];
 			this.Pathfinding.target = this.StudentManager.HidingSpots.List[this.StudentID];
 			this.Subtitle.UpdateLabel(SubtitleType.SocialDeathReaction, 1, 5f);
@@ -10469,10 +10469,8 @@ public class StudentScript : MonoBehaviour
 		}
 		else if (this.Persona == PersonaType.Dangerous)
 		{
-			Debug.Log("A student council member's PersonaReaction has been triggered.");
 			if (this.WitnessedMurder)
 			{
-				Debug.Log("Began fleeing because Dangerous persona reaction was called.");
 				if (this.StudentID == 86)
 				{
 					this.Subtitle.UpdateLabel(SubtitleType.Chasing, 1, 5f);
@@ -10554,7 +10552,6 @@ public class StudentScript : MonoBehaviour
 			}
 			else
 			{
-				Debug.Log("A delinquent is fleeing.");
 				if (this.FoundFriendCorpse)
 				{
 					this.Subtitle.UpdateLabel(SubtitleType.DelinquentFriendFlee, 1, 3f);
@@ -12417,14 +12414,12 @@ public class StudentScript : MonoBehaviour
 
 	private void DetermineCorpseLocation()
 	{
-		Debug.Log(this.Name + " has called the DetermineCorpseLocation() function.");
 		if (this.StudentManager.Reporter == null)
 		{
 			this.StudentManager.Reporter = this;
 		}
 		if (this.Teacher)
 		{
-			Debug.Log("A teacher has witnessed a corpse, and they're going to try to stop 1 meter in front of the corpse.");
 			this.StudentManager.CorpseLocation.position = this.Corpse.AllColliders[0].transform.position;
 			this.StudentManager.CorpseLocation.LookAt(new Vector3(base.transform.position.x, this.StudentManager.CorpseLocation.position.y, base.transform.position.z));
 			this.StudentManager.CorpseLocation.Translate(this.StudentManager.CorpseLocation.forward);
@@ -12548,7 +12543,6 @@ public class StudentScript : MonoBehaviour
 
 	private void EndAlarm()
 	{
-		Debug.Log("Alarm is ending.");
 		this.Pathfinding.canSearch = true;
 		this.Pathfinding.canMove = true;
 		if (this.StudentID == 1 || this.Teacher)
@@ -12751,7 +12745,6 @@ public class StudentScript : MonoBehaviour
 
 	public void EmptyHands()
 	{
-		Debug.Log("This character has been told to empty their hands.");
 		bool flag = false;
 		if (this.SentHome && this.SmartPhone.activeInHierarchy)
 		{

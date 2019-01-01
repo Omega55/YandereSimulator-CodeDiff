@@ -86,6 +86,10 @@ public class HomeCameraScript : MonoBehaviour
 
 	public bool Torturing;
 
+	public CosmeticScript SenpaiCosmetic;
+
+	public Renderer HairLock;
+
 	public Transform PromptBarPanel;
 
 	public Transform PauseScreen;
@@ -139,6 +143,11 @@ public class HomeCameraScript : MonoBehaviour
 			this.LoveSickColorSwap();
 		}
 		Time.timeScale = 1f;
+		this.HairLock.material.color = this.SenpaiCosmetic.ColorValue;
+		if (SchoolGlobals.SchoolAtmosphere > 1f)
+		{
+			SchoolGlobals.SchoolAtmosphere = 1f;
+		}
 	}
 
 	private void LateUpdate()

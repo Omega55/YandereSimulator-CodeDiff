@@ -161,6 +161,11 @@ public class EndOfDayScript : MonoBehaviour
 
 	private void Update()
 	{
+		if (Input.GetKeyDown("space"))
+		{
+			this.EndOfDayDarkness.color = new Color(0f, 0f, 0f, 1f);
+			this.Darken = true;
+		}
 		if (this.EndOfDayDarkness.color.a == 0f && Input.GetButtonDown("A"))
 		{
 			this.Darken = true;
@@ -665,7 +670,6 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 12)
 			{
-				Debug.Log("Phase 12.");
 				if (SchemeGlobals.GetSchemeStage(2) == 3)
 				{
 					if (!StudentGlobals.GetStudentDying(30) && !StudentGlobals.GetStudentDead(30) && !StudentGlobals.GetStudentArrested(30))
@@ -695,7 +699,6 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 13)
 			{
-				Debug.Log("Phase 13 - checking for clubs shutting down.");
 				this.ClubClosed = false;
 				this.ClubKicked = false;
 				float d = 1.2f;
@@ -703,7 +706,6 @@ public class EndOfDayScript : MonoBehaviour
 				{
 					if (!ClubGlobals.GetClubClosed(this.ClubArray[this.ClubID]))
 					{
-						Debug.Log("Right now, we're checking the " + this.ClubNames[this.ClubID].ToString() + ".");
 						this.ClubManager.CheckClub(this.ClubArray[this.ClubID]);
 						if (this.ClubManager.ClubMembers < 5)
 						{
@@ -832,7 +834,6 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 14)
 			{
-				Debug.Log("Phase 14.");
 				if (this.TranqCase.Occupied)
 				{
 					this.ClosedTranqCase.SetActive(true);
@@ -848,7 +849,6 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 15)
 			{
-				Debug.Log("Phase 15.");
 				if (this.ErectFence)
 				{
 					this.Fence.SetActive(true);
@@ -864,7 +864,6 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 16)
 			{
-				Debug.Log("Phase 16.");
 				if (!SchoolGlobals.HighSecurity && this.Police.CouncilDeath)
 				{
 					this.SCP.SetActive(true);
@@ -1105,7 +1104,7 @@ public class EndOfDayScript : MonoBehaviour
 		}
 		if (this.Counselor.ExpelledDelinquents)
 		{
-			SchoolGlobals.SchoolAtmosphere += 5f;
+			SchoolGlobals.SchoolAtmosphere += 0.25f;
 		}
 	}
 }

@@ -143,7 +143,10 @@ public class TaskManagerScript : MonoBehaviour
 		}
 		if (ClubGlobals.GetClubClosed(ClubType.LightMusic))
 		{
-			this.StudentManager.Students[52].TaskPhase = 100;
+			if (this.StudentManager.Students[52] != null)
+			{
+				this.StudentManager.Students[52].TaskPhase = 100;
+			}
 			TaskGlobals.SetTaskStatus(52, 100);
 		}
 		else if (this.StudentManager.Students[52] == null)

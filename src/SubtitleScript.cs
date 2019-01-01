@@ -451,6 +451,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] HmmReactions;
 
+	public string[] Eulogies;
+
 	public string InfoNotice;
 
 	public int RandomID;
@@ -696,6 +698,8 @@ public class SubtitleScript : MonoBehaviour
 	public AudioClip[] DismissiveClips;
 
 	public AudioClip[] EvilDelinquentCorpseReactionClips;
+
+	public AudioClip[] EulogyClips;
 
 	private SubtitleTypeAndAudioClipArrayDictionary SubtitleClipArrays;
 
@@ -1206,6 +1210,10 @@ public class SubtitleScript : MonoBehaviour
 			{
 				SubtitleType.EvilDelinquentCorpseReaction,
 				new AudioClipArrayWrapper(this.EvilDelinquentCorpseReactionClips)
+			},
+			{
+				SubtitleType.Eulogy,
+				new AudioClipArrayWrapper(this.EulogyClips)
 			}
 		};
 	}
@@ -2290,6 +2298,11 @@ public class SubtitleScript : MonoBehaviour
 		else if (subtitleType == SubtitleType.Chasing)
 		{
 			this.Label.text = this.Chasing[ID];
+		}
+		else if (subtitleType == SubtitleType.Eulogy)
+		{
+			this.Label.text = this.Eulogies[ID];
+			this.PlayVoice(subtitleType, ID);
 		}
 		this.Timer = Duration;
 	}

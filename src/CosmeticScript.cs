@@ -1246,6 +1246,12 @@ public class CosmeticScript : MonoBehaviour
 				{
 					this.CorrectColor = new Color(0f, 0f, 0f);
 				}
+				if (this.StudentID > 90 && this.StudentID < 97)
+				{
+					this.CorrectColor.r = this.CorrectColor.r * 0.5f;
+					this.CorrectColor.g = this.CorrectColor.g * 0.5f;
+					this.CorrectColor.b = this.CorrectColor.b * 0.5f;
+				}
 				if (this.CorrectColor != new Color(0f, 0f, 0f))
 				{
 					this.RightEyeRenderer.material.color = this.CorrectColor;
@@ -1308,6 +1314,12 @@ public class CosmeticScript : MonoBehaviour
 				this.ColorValue = new Color(0f, 0f, 0f);
 				this.RightIrisLight.SetActive(false);
 				this.LeftIrisLight.SetActive(false);
+			}
+			if (this.StudentID > 90 && this.StudentID < 97)
+			{
+				this.ColorValue.r = this.ColorValue.r * 0.5f;
+				this.ColorValue.g = this.ColorValue.g * 0.5f;
+				this.ColorValue.b = this.ColorValue.b * 0.5f;
 			}
 			if (this.ColorValue == new Color(0f, 0f, 0f))
 			{
@@ -1741,12 +1753,12 @@ public class CosmeticScript : MonoBehaviour
 				this.LoveManager.Targets[this.LoveManager.TotalTargets] = this.Student.Head;
 				this.LoveManager.TotalTargets++;
 			}
-			if (this.Hairstyle == 28)
+			if (this.Hairstyle == 30)
 			{
 				this.LoveManager.Targets[this.LoveManager.TotalTargets] = this.Student.Head;
 				this.LoveManager.TotalTargets++;
 			}
-			if (this.Accessory > 1)
+			if ((this.Accessory > 1 && this.Accessory < 5) || this.Accessory == 13)
 			{
 				this.LoveManager.Targets[this.LoveManager.TotalTargets] = this.Student.Head;
 				this.LoveManager.TotalTargets++;

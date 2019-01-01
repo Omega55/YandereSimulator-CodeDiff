@@ -129,6 +129,12 @@ public class JukeboxScript : MonoBehaviour
 
 	public AudioClip[] SeventhNo;
 
+	public AudioClip[] EighthFull;
+
+	public AudioClip[] EighthHalf;
+
+	public AudioClip[] EighthNo;
+
 	private void Start()
 	{
 		if (this.BGM == 0)
@@ -138,7 +144,7 @@ public class JukeboxScript : MonoBehaviour
 		else
 		{
 			this.BGM++;
-			if (this.BGM > 7)
+			if (this.BGM > 8)
 			{
 				this.BGM = 1;
 			}
@@ -184,6 +190,12 @@ public class JukeboxScript : MonoBehaviour
 			this.FullSanities = this.SeventhFull;
 			this.HalfSanities = this.SeventhHalf;
 			this.NoSanities = this.SeventhNo;
+		}
+		else if (this.BGM == 8)
+		{
+			this.FullSanities = this.EighthFull;
+			this.HalfSanities = this.EighthHalf;
+			this.NoSanities = this.EighthNo;
 		}
 		if (!SchoolGlobals.SchoolAtmosphereSet)
 		{
@@ -247,7 +259,7 @@ public class JukeboxScript : MonoBehaviour
 		}
 		if (!this.Egg)
 		{
-			if (!this.Yandere.Police.Clock.SchoolBell.isPlaying)
+			if (!this.Yandere.Police.Clock.SchoolBell.isPlaying && !this.Yandere.StudentManager.MemorialScene.enabled)
 			{
 				if (!this.StartMusic)
 				{

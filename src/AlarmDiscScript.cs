@@ -157,20 +157,10 @@ public class AlarmDiscScript : MonoBehaviour
 					this.Student.TurnOffRadio = true;
 					this.Student.Routine = false;
 					this.Student.GoAway = false;
+					this.Student.EmptyHands();
+					this.Student.SpeechLines.Stop();
 					this.Student.ChalkDust.Stop();
 					this.Student.CleanTimer = 0f;
-					if (!this.Student.Male)
-					{
-						this.Student.Cigarette.SetActive(false);
-						this.Student.Lighter.SetActive(false);
-					}
-					this.Student.Chopsticks[0].SetActive(false);
-					this.Student.Chopsticks[1].SetActive(false);
-					this.Student.SmartPhone.SetActive(false);
-					this.Student.OccultBook.SetActive(false);
-					this.Student.Bento.SetActive(false);
-					this.Student.Pen.SetActive(false);
-					this.Student.SpeechLines.Stop();
 					this.Student.RadioTimer = 0f;
 					this.Student.ReadPhase = 0;
 					this.SourceRadio.Victim = this.Student;
@@ -225,25 +215,7 @@ public class AlarmDiscScript : MonoBehaviour
 					this.Student.CleanTimer = 0f;
 					this.Student.ReadPhase = 0;
 					this.Student.StopPairing();
-					this.Student.ChalkDust.emission.enabled = false;
-					Debug.Log(this.Student.Name + " was just alarmed by an alarm disc!");
-					if (this.Student.Persona == PersonaType.PhoneAddict || this.Student.Sleuthing)
-					{
-						Debug.Log(this.Student.Name + "'s phone should be active.");
-						this.Student.SmartPhone.SetActive(true);
-					}
-					else
-					{
-						Debug.Log(this.Student.Name + "'s phone should not be active.");
-						this.Student.SmartPhone.SetActive(false);
-					}
-					this.Student.OccultBook.SetActive(false);
-					this.Student.Pen.SetActive(false);
-					if (!this.Student.Male)
-					{
-						this.Student.Cigarette.SetActive(false);
-						this.Student.Lighter.SetActive(false);
-					}
+					this.Student.EmptyHands();
 				}
 			}
 		}
