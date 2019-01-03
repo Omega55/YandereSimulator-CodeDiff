@@ -787,15 +787,31 @@ public class PoliceScript : MonoBehaviour
 
 	public void BeginFadingOut()
 	{
+		Debug.Log("BeginFadingOut() has been called.");
+		this.DayOver = true;
 		this.StudentManager.StopMoving();
 		this.Darkness.enabled = true;
 		this.Yandere.StopLaughing();
 		this.Clock.StopTime = true;
 		this.FadeOut = true;
-		this.DayOver = true;
 		if (!this.EndOfDay.gameObject.activeInHierarchy)
 		{
 			Time.timeScale = 1f;
+		}
+	}
+
+	public void UpdateCorpses()
+	{
+		foreach (RagdollScript ragdollScript in this.CorpseList)
+		{
+			if (ragdollScript != null)
+			{
+				ragdollScript.Prompt.HideButton[3] = true;
+				if (ClassGlobals.PhysicalGrade + ClassGlobals.PhysicalBonus > 0 && !ragdollScript.Tranquil)
+				{
+					ragdollScript.Prompt.HideButton[3] = false;
+				}
+			}
 		}
 	}
 }

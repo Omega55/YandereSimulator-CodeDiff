@@ -113,6 +113,8 @@ public class MemorialSceneScript : MonoBehaviour
 			this.StudentManager.Clock.BloomEffect.bloomIntensity += Time.deltaTime * 10f;
 			if (this.StudentManager.Clock.BloomEffect.bloomIntensity > 10f)
 			{
+				this.StudentManager.Yandere.Casual = !this.StudentManager.Yandere.Casual;
+				this.StudentManager.Yandere.ChangeSchoolwear();
 				this.StudentManager.Yandere.transform.position = new Vector3(12f, 0f, 72f);
 				this.StudentManager.Yandere.transform.eulerAngles = new Vector3(0f, -90f, 0f);
 				this.StudentManager.Yandere.HeartCamera.enabled = true;

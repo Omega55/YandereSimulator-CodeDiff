@@ -19,6 +19,10 @@ public class TranqCaseScript : MonoBehaviour
 
 	public ClubType VictimClubType;
 
+	public float Rotation;
+
+	public bool Animate;
+
 	private void Start()
 	{
 		this.Prompt.enabled = false;
@@ -69,9 +73,26 @@ public class TranqCaseScript : MonoBehaviour
 				this.Door.Prompt.enabled = true;
 				this.Door.enabled = true;
 				this.Occupied = true;
+				this.Animate = true;
 				this.Open = true;
 			}
 		}
-		this.Hinge.localEulerAngles = new Vector3(this.Hinge.localEulerAngles.x, this.Hinge.localEulerAngles.y, Mathf.Lerp(this.Hinge.localEulerAngles.z, (!this.Open) ? 0f : 135f, Time.deltaTime * 10f));
+		if (this.Animate)
+		{
+			if (this.Open)
+			{
+				this.Rotation = Mathf.Lerp(this.Rotation, 105f, Time.deltaTime * 10f);
+			}
+			else
+			{
+				this.Rotation = Mathf.Lerp(this.Rotation, 0f, Time.deltaTime * 10f);
+				if (this.Rotation < 1f)
+				{
+					this.Animate = false;
+					this.Rotation = 0f;
+				}
+			}
+			this.Hinge.localEulerAngles = new Vector3(0f, 0f, this.Rotation);
+		}
 	}
 }

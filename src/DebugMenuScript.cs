@@ -386,6 +386,7 @@ public class DebugMenuScript : MonoBehaviour
 					{
 						ClassGlobals.PhysicalGrade = 5;
 						PlayerGlobals.Seduction = 5;
+						this.StudentManager.Police.UpdateCorpses();
 						this.ID = 1;
 						while (this.ID < 101)
 						{

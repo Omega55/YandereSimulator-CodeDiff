@@ -15,6 +15,8 @@ public class ComputerGamesScript : MonoBehaviour
 
 	public YandereScript Yandere;
 
+	public PoliceScript Police;
+
 	public PoisonScript Poison;
 
 	public Quaternion targetRotation;
@@ -281,6 +283,7 @@ public class ComputerGamesScript : MonoBehaviour
 		}
 		this.StudentManager.UpdatePerception();
 		this.Yandere.UpdateNumbness();
+		this.Police.UpdateCorpses();
 	}
 
 	private void DeactivateBenefit()
@@ -335,6 +338,7 @@ public class ComputerGamesScript : MonoBehaviour
 		}
 		this.StudentManager.UpdatePerception();
 		this.Yandere.UpdateNumbness();
+		this.Police.UpdateCorpses();
 	}
 
 	public void DeactivateAllBenefits()

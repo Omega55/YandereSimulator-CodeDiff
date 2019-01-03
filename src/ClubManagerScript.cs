@@ -310,8 +310,15 @@ public class ClubManagerScript : MonoBehaviour
 				StudentScript studentScript2 = this.StudentManager.Students[this.Club2Students[this.ID]];
 				if (studentScript2 != null && !studentScript2.Tranquil && studentScript2.Alive)
 				{
-					studentScript2.transform.position = studentScript2.CurrentDestination.position;
-					studentScript2.transform.rotation = studentScript2.CurrentDestination.rotation;
+					if (!this.StudentManager.MemorialScene.gameObject.activeInHierarchy)
+					{
+						studentScript2.transform.position = studentScript2.CurrentDestination.position;
+						studentScript2.transform.rotation = studentScript2.CurrentDestination.rotation;
+					}
+					else
+					{
+						studentScript2.transform.position = new Vector3(0f, 0f, 0f);
+					}
 					studentScript2.ClubActivity = true;
 					studentScript2.Talking = false;
 					studentScript2.Routine = true;

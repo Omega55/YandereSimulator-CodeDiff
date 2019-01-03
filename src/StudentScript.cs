@@ -2524,7 +2524,7 @@ public class StudentScript : MonoBehaviour
 
 	private bool AffectedByEbola(float distance)
 	{
-		bool flag = this.Yandere.EbolaHair != null && this.Yandere.EbolaHair.activeInHierarchy;
+		bool flag = this.Yandere.EbolaHair != null && this.StudentID > 1 && this.Yandere.EbolaHair.activeInHierarchy;
 		return distance <= 1f && flag;
 	}
 
@@ -7944,6 +7944,7 @@ public class StudentScript : MonoBehaviour
 					}
 					else
 					{
+						this.SpeechLines.Stop();
 						this.Yandere.TargetStudent = this;
 						if (!this.Grudge)
 						{
@@ -9518,7 +9519,7 @@ public class StudentScript : MonoBehaviour
 				{
 					base.transform.position = new Vector3(base.transform.position.x, 0f, base.transform.position.z);
 				}
-				if (!this.Dying && !this.Distracted && !this.WalkBack && !this.Waiting && !this.WitnessedMurder && !this.WitnessedCorpse && !this.Yandere.Egg && !this.StudentManager.Pose && !this.ShoeRemoval.enabled && !this.Blind && !this.SentHome)
+				if (!this.Dying && !this.Distracted && !this.WalkBack && !this.Waiting && !this.WitnessedMurder && !this.WitnessedCorpse && !this.Yandere.Egg && !this.StudentManager.Pose && !this.ShoeRemoval.enabled && !this.Blind && !this.SentHome && !this.TurnOffRadio)
 				{
 					if ((this.Club == ClubType.Council || (this.Club == ClubType.Delinquent && !this.Injured)) && (double)this.DistanceToPlayer < 0.5 && (this.Yandere.h != 0f || this.Yandere.v != 0f))
 					{

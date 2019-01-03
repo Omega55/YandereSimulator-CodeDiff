@@ -702,6 +702,7 @@ public class CosmeticScript : MonoBehaviour
 				if (StudentGlobals.CustomSuitorHair > 0)
 				{
 					this.Hairstyle = StudentGlobals.CustomSuitorHair;
+					this.HairColor = "Purple";
 				}
 				if (StudentGlobals.CustomSuitorAccessory > 0)
 				{

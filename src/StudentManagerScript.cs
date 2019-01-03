@@ -527,12 +527,12 @@ public class StudentManagerScript : MonoBehaviour
 				this.ErrorLabel.enabled = false;
 			}
 			this.SetAtmosphere();
-			GameGlobals.Paranormal = false;
 			if (MissionModeGlobals.MissionMode)
 			{
 				StudentGlobals.FemaleUniform = 5;
 				StudentGlobals.MaleUniform = 5;
 			}
+			GameGlobals.Paranormal = false;
 			if (StudentGlobals.GetStudentSlave() > 0 && !StudentGlobals.GetStudentDead(StudentGlobals.GetStudentSlave()))
 			{
 				int studentSlave = StudentGlobals.GetStudentSlave();
@@ -1361,8 +1361,6 @@ public class StudentManagerScript : MonoBehaviour
 					studentScript.transform.rotation = studentScript.Seat.rotation;
 					studentScript.Pathfinding.canSearch = true;
 					studentScript.Pathfinding.canMove = true;
-					studentScript.SmartPhone.SetActive(false);
-					studentScript.OccultBook.SetActive(false);
 					studentScript.Pathfinding.speed = 1f;
 					studentScript.ClubActivityPhase = 0;
 					studentScript.Distracted = false;
@@ -1388,6 +1386,18 @@ public class StudentManagerScript : MonoBehaviour
 					{
 						studentScript.Teacher = true;
 					}
+					if (studentScript.Persona == PersonaType.PhoneAddict)
+					{
+						studentScript.SmartPhone.SetActive(true);
+					}
+					if (studentScript.Actions[studentScript.Phase] == StudentActionType.Graffiti && !this.Bully)
+					{
+						ScheduleBlock scheduleBlock = studentScript.ScheduleBlocks[2];
+						scheduleBlock.destination = "Patrol";
+						scheduleBlock.action = "Patrol";
+						studentScript.GetDestinations();
+					}
+					studentScript.SpeechLines.Stop();
 					studentScript.transform.position = new Vector3(20f + (float)num * 1.1f, 0f, (float)(82 - num2 * 5));
 					num2++;
 					if (num2 > 4)
@@ -1443,7 +1453,7 @@ public class StudentManagerScript : MonoBehaviour
 					}
 					else if (this.ID > 1)
 					{
-						studentScript.Character.GetComponent<Animation>().CrossFade(studentScript.IdleAnim);
+						studentScript.CharacterAnimation.CrossFade(studentScript.IdleAnim);
 					}
 					studentScript.Pathfinding.canSearch = false;
 					studentScript.Pathfinding.canMove = false;
@@ -1460,12 +1470,13 @@ public class StudentManagerScript : MonoBehaviour
 				}
 				if (studentScript.Slave && this.Police.DayOver)
 				{
+					Debug.Log("A mind-broken slave committed suicide.");
 					studentScript.Broken.Subtitle.text = string.Empty;
 					studentScript.Broken.Done = true;
 					UnityEngine.Object.Destroy(studentScript.Broken);
+					studentScript.BecomeRagdoll();
 					studentScript.Slave = false;
 					studentScript.Suicide = true;
-					studentScript.BecomeRagdoll();
 					studentScript.DeathType = DeathType.Mystery;
 					StudentGlobals.SetStudentSlave(studentScript.StudentID);
 				}
