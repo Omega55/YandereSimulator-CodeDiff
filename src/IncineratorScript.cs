@@ -276,8 +276,8 @@ public class IncineratorScript : MonoBehaviour
 		if (this.Panel.activeInHierarchy)
 		{
 			float num = (float)Mathf.CeilToInt(this.Timer * 60f);
-			float num2 = num / 60f;
-			float num3 = num % 60f;
+			float num2 = Mathf.Floor(num / 60f);
+			float num3 = (float)Mathf.RoundToInt(num % 60f);
 			this.TimeLabel.text = string.Format("{0:00}:{1:00}", num2, num3);
 		}
 	}

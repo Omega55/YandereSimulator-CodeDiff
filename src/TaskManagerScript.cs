@@ -88,10 +88,6 @@ public class TaskManagerScript : MonoBehaviour
 		{
 			this.TaskObjects[25].SetActive(false);
 		}
-		if (TaskGlobals.GetTaskStatus(30) == 1 && this.StudentManager.Students[30] != null && this.StudentManager.Students[30].TaskPhase == 0)
-		{
-			this.StudentManager.Students[30].TaskPhase = 4;
-		}
 		if (TaskGlobals.GetTaskStatus(28) == 1 && this.StudentManager.Students[28] != null)
 		{
 			this.StudentManager.Students[28].TaskPhase = 4;
@@ -102,6 +98,10 @@ public class TaskManagerScript : MonoBehaviour
 					this.StudentManager.Students[28].TaskPhase = 5;
 				}
 			}
+		}
+		if (TaskGlobals.GetTaskStatus(30) == 1 && this.StudentManager.Students[30] != null && this.StudentManager.Students[30].TaskPhase == 0)
+		{
+			this.StudentManager.Students[30].TaskPhase = 4;
 		}
 		if (TaskGlobals.GetTaskStatus(36) == 1 && this.StudentManager.Students[36] != null)
 		{
@@ -141,17 +141,12 @@ public class TaskManagerScript : MonoBehaviour
 		{
 			this.StudentManager.Students[38].TaskPhase = 5;
 		}
-		if (ClubGlobals.GetClubClosed(ClubType.LightMusic))
+		if (ClubGlobals.GetClubClosed(ClubType.LightMusic) || this.StudentManager.Students[51] == null)
 		{
 			if (this.StudentManager.Students[52] != null)
 			{
 				this.StudentManager.Students[52].TaskPhase = 100;
 			}
-			TaskGlobals.SetTaskStatus(52, 100);
-		}
-		else if (this.StudentManager.Students[52] == null)
-		{
-			this.StudentManager.Students[52].TaskPhase = 100;
 			TaskGlobals.SetTaskStatus(52, 100);
 		}
 		else if (TaskGlobals.GetTaskStatus(52) == 1 && this.StudentManager.Students[52] != null)

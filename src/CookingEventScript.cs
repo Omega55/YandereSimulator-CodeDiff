@@ -141,6 +141,7 @@ public class CookingEventScript : MonoBehaviour
 			{
 				if (this.EventPhase == -1)
 				{
+					this.EventStudent.CharacterAnimation.CrossFade(this.EventAnim[0]);
 					this.Timer += Time.deltaTime;
 					if (this.Timer > 5f)
 					{
@@ -156,7 +157,7 @@ public class CookingEventScript : MonoBehaviour
 				{
 					if (!this.RivalPhone.activeInHierarchy)
 					{
-						this.EventStudent.Character.GetComponent<Animation>().Play("f02_prepareFood_00");
+						this.EventStudent.CharacterAnimation.Play("f02_prepareFood_00");
 						this.EventStudent.SmartPhone.SetActive(false);
 						this.Octodog.transform.parent = this.EventStudent.RightHand;
 						this.Octodog.transform.localPosition = new Vector3(0.0129f, -0.02475f, 0.0316f);
@@ -169,15 +170,15 @@ public class CookingEventScript : MonoBehaviour
 					else
 					{
 						AudioClipPlayer.Play(this.EventClip[0], this.EventStudent.transform.position + Vector3.up, 5f, 10f, out this.VoiceClip, out this.CurrentClipLength);
-						this.EventStudent.Character.GetComponent<Animation>().CrossFade(this.EventAnim[0]);
+						this.EventStudent.CharacterAnimation.CrossFade(this.EventAnim[0]);
 						this.EventSubtitle.text = this.EventSpeech[0];
 						this.EventPhase--;
 					}
 				}
 				else if (this.EventPhase == 1)
 				{
-					this.EventStudent.Character.GetComponent<Animation>().Play("f02_prepareFood_00");
-					if (this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].time > 1f)
+					this.EventStudent.CharacterAnimation.Play("f02_prepareFood_00");
+					if (this.EventStudent.CharacterAnimation["f02_prepareFood_00"].time > 1f)
 					{
 						this.EventPhase++;
 					}
@@ -185,7 +186,7 @@ public class CookingEventScript : MonoBehaviour
 				else if (this.EventPhase == 2)
 				{
 					this.Refrigerator.GetComponent<Animation>().Play("FridgeOpen");
-					if (this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].time > 3f)
+					if (this.EventStudent.CharacterAnimation["f02_prepareFood_00"].time > 3f)
 					{
 						this.Jar.transform.parent = this.EventStudent.RightHand;
 						this.EventPhase++;
@@ -193,7 +194,7 @@ public class CookingEventScript : MonoBehaviour
 				}
 				else if (this.EventPhase == 3)
 				{
-					if (this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].time > 5f)
+					if (this.EventStudent.CharacterAnimation["f02_prepareFood_00"].time > 5f)
 					{
 						this.JarLid.transform.parent = this.EventStudent.LeftHand;
 						this.EventPhase++;
@@ -201,7 +202,7 @@ public class CookingEventScript : MonoBehaviour
 				}
 				else if (this.EventPhase == 4)
 				{
-					if (this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].time > 6f)
+					if (this.EventStudent.CharacterAnimation["f02_prepareFood_00"].time > 6f)
 					{
 						this.JarLid.transform.parent = this.CookingClub;
 						this.JarLid.transform.localPosition = new Vector3(0.334585f, 1f, -0.2528915f);
@@ -214,7 +215,7 @@ public class CookingEventScript : MonoBehaviour
 				}
 				else if (this.EventPhase == 5)
 				{
-					if (this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].time > 7f)
+					if (this.EventStudent.CharacterAnimation["f02_prepareFood_00"].time > 7f)
 					{
 						this.Knife.GetComponent<WeaponScript>().FingerprintID = this.EventStudent.StudentID;
 						this.Knife.parent = this.EventStudent.LeftHand;
@@ -225,16 +226,16 @@ public class CookingEventScript : MonoBehaviour
 				}
 				else if (this.EventPhase == 6)
 				{
-					if (this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].time >= this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].length)
+					if (this.EventStudent.CharacterAnimation["f02_prepareFood_00"].time >= this.EventStudent.CharacterAnimation["f02_prepareFood_00"].length)
 					{
-						this.EventStudent.Character.GetComponent<Animation>().CrossFade("f02_cutFood_00");
+						this.EventStudent.CharacterAnimation.CrossFade("f02_cutFood_00");
 						this.Sausage.SetActive(true);
 						this.EventPhase++;
 					}
 				}
 				else if (this.EventPhase == 7)
 				{
-					if (this.EventStudent.Character.GetComponent<Animation>()["f02_cutFood_00"].time > 2.66666f)
+					if (this.EventStudent.CharacterAnimation["f02_cutFood_00"].time > 2.66666f)
 					{
 						this.Octodog.SetActive(true);
 						this.Sausage.SetActive(false);
@@ -243,13 +244,13 @@ public class CookingEventScript : MonoBehaviour
 				}
 				else if (this.EventPhase == 8)
 				{
-					if (this.EventStudent.Character.GetComponent<Animation>()["f02_cutFood_00"].time > 3f)
+					if (this.EventStudent.CharacterAnimation["f02_cutFood_00"].time > 3f)
 					{
 						this.Rotation = Mathf.MoveTowards(this.Rotation, 90f, Time.deltaTime * 360f);
 						this.Octodog.transform.localEulerAngles = new Vector3(this.Rotation, this.Octodog.transform.localEulerAngles.y, this.Octodog.transform.localEulerAngles.z);
 						this.Octodog.transform.localPosition = new Vector3(this.Octodog.transform.localPosition.x, this.Octodog.transform.localPosition.y, Mathf.MoveTowards(this.Octodog.transform.localPosition.z, 0.012f, Time.deltaTime));
 					}
-					if (this.EventStudent.Character.GetComponent<Animation>()["f02_cutFood_00"].time > 6f)
+					if (this.EventStudent.CharacterAnimation["f02_cutFood_00"].time > 6f)
 					{
 						this.Octodog.SetActive(false);
 						this.Octodogs[this.Loop].gameObject.SetActive(true);
@@ -258,14 +259,14 @@ public class CookingEventScript : MonoBehaviour
 				}
 				else if (this.EventPhase == 9)
 				{
-					if (this.EventStudent.Character.GetComponent<Animation>()["f02_cutFood_00"].time >= this.EventStudent.Character.GetComponent<Animation>()["f02_cutFood_00"].length)
+					if (this.EventStudent.CharacterAnimation["f02_cutFood_00"].time >= this.EventStudent.CharacterAnimation["f02_cutFood_00"].length)
 					{
 						if (this.Loop < this.Octodogs.Length - 1)
 						{
 							this.Octodog.transform.localEulerAngles = new Vector3(-90f, this.Octodog.transform.localEulerAngles.y, this.Octodog.transform.localEulerAngles.z);
 							this.Octodog.transform.localPosition = new Vector3(this.Octodog.transform.localPosition.x, this.Octodog.transform.localPosition.y, 0.0316f);
-							this.EventStudent.Character.GetComponent<Animation>()["f02_cutFood_00"].time = 0f;
-							this.EventStudent.Character.GetComponent<Animation>().Play("f02_cutFood_00");
+							this.EventStudent.CharacterAnimation["f02_cutFood_00"].time = 0f;
+							this.EventStudent.CharacterAnimation.Play("f02_cutFood_00");
 							this.Sausage.SetActive(true);
 							this.EventPhase = 7;
 							this.Rotation = -90f;
@@ -273,16 +274,16 @@ public class CookingEventScript : MonoBehaviour
 						}
 						else
 						{
-							this.EventStudent.Character.GetComponent<Animation>().Play("f02_prepareFood_00");
-							this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].time = this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].length;
-							this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].speed = -1f;
+							this.EventStudent.CharacterAnimation.Play("f02_prepareFood_00");
+							this.EventStudent.CharacterAnimation["f02_prepareFood_00"].time = this.EventStudent.CharacterAnimation["f02_prepareFood_00"].length;
+							this.EventStudent.CharacterAnimation["f02_prepareFood_00"].speed = -1f;
 							this.EventPhase++;
 						}
 					}
 				}
 				else if (this.EventPhase == 10)
 				{
-					if (this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].time < this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].length - 1f)
+					if (this.EventStudent.CharacterAnimation["f02_prepareFood_00"].time < this.EventStudent.CharacterAnimation["f02_prepareFood_00"].length - 1f)
 					{
 						this.Knife.parent = this.CookingClub;
 						this.Knife.localPosition = new Vector3(0.197f, 1.1903f, -0.33333f);
@@ -292,7 +293,7 @@ public class CookingEventScript : MonoBehaviour
 				}
 				else if (this.EventPhase == 11)
 				{
-					if (this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].time < this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].length - 2f)
+					if (this.EventStudent.CharacterAnimation["f02_prepareFood_00"].time < this.EventStudent.CharacterAnimation["f02_prepareFood_00"].length - 2f)
 					{
 						this.JarLid.parent = this.EventStudent.LeftHand;
 						this.Jar.parent = this.EventStudent.RightHand;
@@ -301,7 +302,7 @@ public class CookingEventScript : MonoBehaviour
 				}
 				else if (this.EventPhase == 12)
 				{
-					if (this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].time < this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].length - 3f)
+					if (this.EventStudent.CharacterAnimation["f02_prepareFood_00"].time < this.EventStudent.CharacterAnimation["f02_prepareFood_00"].length - 3f)
 					{
 						this.JarLid.parent = this.Jar;
 						this.JarLid.localPosition = new Vector3(0f, 0.175f, 0f);
@@ -314,7 +315,7 @@ public class CookingEventScript : MonoBehaviour
 				}
 				else if (this.EventPhase == 13)
 				{
-					if (this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].time < this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].length - 5f)
+					if (this.EventStudent.CharacterAnimation["f02_prepareFood_00"].time < this.EventStudent.CharacterAnimation["f02_prepareFood_00"].length - 5f)
 					{
 						this.Jar.parent = this.CookingClub;
 						this.Jar.localPosition = new Vector3(0.1f, 0.941f, 0.75f);
@@ -324,7 +325,7 @@ public class CookingEventScript : MonoBehaviour
 				}
 				else if (this.EventPhase == 14)
 				{
-					if (this.EventStudent.Character.GetComponent<Animation>()["f02_prepareFood_00"].time <= 0f)
+					if (this.EventStudent.CharacterAnimation["f02_prepareFood_00"].time <= 0f)
 					{
 						this.Knife.GetComponent<Collider>().enabled = true;
 						this.Plate.parent = this.EventStudent.RightHand;
@@ -332,7 +333,7 @@ public class CookingEventScript : MonoBehaviour
 						this.Plate.localEulerAngles = new Vector3(0f, -90f, -180f);
 						this.EventStudent.CurrentDestination = this.EventLocations[1];
 						this.EventStudent.Pathfinding.target = this.EventLocations[1];
-						this.EventStudent.Character.GetComponent<Animation>()[this.EventStudent.CarryAnim].weight = 1f;
+						this.EventStudent.CharacterAnimation[this.EventStudent.CarryAnim].weight = 1f;
 						this.EventPhase++;
 					}
 				}
@@ -386,7 +387,7 @@ public class CookingEventScript : MonoBehaviour
 				this.Plate.GetComponent<Rigidbody>().useGravity = true;
 				this.Plate.GetComponent<BoxCollider>().enabled = true;
 			}
-			this.EventStudent.Character.GetComponent<Animation>()[this.EventStudent.CarryAnim].weight = 0f;
+			this.EventStudent.CharacterAnimation[this.EventStudent.CarryAnim].weight = 0f;
 			this.EventStudent.SmartPhone.SetActive(false);
 			this.EventStudent.Pathfinding.speed = 1f;
 			this.EventStudent.TargetDistance = 1f;

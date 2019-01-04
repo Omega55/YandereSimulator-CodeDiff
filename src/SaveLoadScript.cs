@@ -15,6 +15,8 @@ public class SaveLoadScript : MonoBehaviour
 
 	public int SaveSlot;
 
+	public SelectiveGrayscale ChaseSelectiveGrayscale;
+
 	public RiggedAccessoryAttacher LabcoatAttacher;
 
 	public RiggedAccessoryAttacher ApronAttacher;
@@ -393,6 +395,7 @@ public class SaveLoadScript : MonoBehaviour
 
 	private void SaveReferences()
 	{
+		this.ChaseSelectiveGrayscale = this.Student.ChaseSelectiveGrayscale;
 		this.CharacterAnimation = this.Student.CharacterAnimation;
 		this.LabcoatAttacher = this.Student.LabcoatAttacher;
 		this.LiquidProjector = this.Student.LiquidProjector;
@@ -497,6 +500,7 @@ public class SaveLoadScript : MonoBehaviour
 	private void LoadReferences()
 	{
 		this.Student.SaveLoad = this;
+		this.Student.ChaseSelectiveGrayscale = this.ChaseSelectiveGrayscale;
 		this.Student.CharacterAnimation = this.CharacterAnimation;
 		this.Student.LabcoatAttacher = this.LabcoatAttacher;
 		this.Student.LiquidProjector = this.LiquidProjector;

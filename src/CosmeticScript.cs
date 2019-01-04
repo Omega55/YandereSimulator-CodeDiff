@@ -1340,6 +1340,10 @@ public class CosmeticScript : MonoBehaviour
 					if (GameGlobals.LoveSick)
 					{
 						this.HairRenderer.material.color = new Color(0.1f, 0.1f, 0.1f);
+						if (this.HairRenderer.materials.Length > 1)
+						{
+							this.HairRenderer.materials[1].color = new Color(0.1f, 0.1f, 0.1f);
+						}
 					}
 					else
 					{
@@ -1350,6 +1354,10 @@ public class CosmeticScript : MonoBehaviour
 			else if (GameGlobals.LoveSick)
 			{
 				this.HairRenderer.material.color = new Color(0.1f, 0.1f, 0.1f);
+				if (this.HairRenderer.materials.Length > 1)
+				{
+					this.HairRenderer.materials[1].color = new Color(0.1f, 0.1f, 0.1f);
+				}
 			}
 			if (!this.Male)
 			{

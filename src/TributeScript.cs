@@ -23,6 +23,10 @@ public class TributeScript : MonoBehaviour
 
 	private void Start()
 	{
+		if (GameGlobals.LoveSick)
+		{
+			base.enabled = false;
+		}
 		this.Rainey.SetActive(false);
 	}
 

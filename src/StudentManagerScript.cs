@@ -381,6 +381,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public bool DisableFarAnims;
 
+	public bool NoClubMeeting;
+
 	public bool YandereDying;
 
 	public bool YandereLate;
@@ -966,6 +968,7 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			this.Students[spawnID] = this.NewStudent.GetComponent<StudentScript>();
 			StudentScript studentScript = this.Students[spawnID];
+			studentScript.ChaseSelectiveGrayscale.desaturation = 1f - SchoolGlobals.SchoolAtmosphere;
 			studentScript.Cosmetic.TextureManager = this.TextureManager;
 			studentScript.WitnessCamera = this.WitnessCamera;
 			studentScript.StudentManager = this;

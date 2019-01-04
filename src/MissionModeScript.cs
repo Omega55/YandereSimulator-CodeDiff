@@ -296,6 +296,11 @@ public class MissionModeScript : MonoBehaviour
 			this.NemesisDifficulty = MissionModeGlobals.NemesisDifficulty;
 			this.Difficulty = MissionModeGlobals.MissionDifficulty;
 			this.TargetID = MissionModeGlobals.MissionTarget;
+			ClassGlobals.BiologyGrade = 1;
+			ClassGlobals.ChemistryGrade = 1;
+			ClassGlobals.LanguageGrade = 1;
+			ClassGlobals.PhysicalGrade = 1;
+			ClassGlobals.PsychologyGrade = 1;
 			SchoolGlobals.SchoolAtmosphereSet = true;
 			SchoolGlobals.SchoolAtmosphere = 1f - (float)this.Difficulty * 0.1f;
 			this.ID = 1;

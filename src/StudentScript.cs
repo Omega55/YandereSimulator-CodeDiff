@@ -11,6 +11,8 @@ public class StudentScript : MonoBehaviour
 
 	public Quaternion OriginalPlateRotation;
 
+	public SelectiveGrayscale ChaseSelectiveGrayscale;
+
 	public DetectionMarkerScript DetectionMarker;
 
 	public ChemistScannerScript ChemistScanner;
@@ -2056,7 +2058,7 @@ public class StudentScript : MonoBehaviour
 					}
 				}
 			}
-			if (this.Club != ClubType.Gaming)
+			if (this.OriginalClub != ClubType.Gaming)
 			{
 				this.Miyuki.gameObject.SetActive(false);
 			}
@@ -2233,7 +2235,7 @@ public class StudentScript : MonoBehaviour
 				this.CameraAnims[3] = this.IdleAnim;
 				this.VisionDistance *= 2f;
 			}
-			if (this.Armband.activeInHierarchy && this.Clock.Weekday == 5)
+			if (!this.StudentManager.NoClubMeeting && this.Armband.activeInHierarchy && this.Clock.Weekday == 5)
 			{
 				if (this.StudentID < 86)
 				{
@@ -2939,17 +2941,7 @@ public class StudentScript : MonoBehaviour
 					this.PatrolID = 0;
 					if (this.Actions[this.Phase] == StudentActionType.Clean)
 					{
-						if (this.Persona == PersonaType.PhoneAddict || this.Persona == PersonaType.Sleuth)
-						{
-							this.WalkAnim = this.OriginalWalkAnim;
-						}
-						this.SmartPhone.SetActive(false);
-						this.Scrubber.SetActive(true);
-						if (this.CleaningRole == 5)
-						{
-							this.Scrubber.GetComponent<Renderer>().material.mainTexture = this.Eraser.GetComponent<Renderer>().material.mainTexture;
-							this.Eraser.SetActive(true);
-						}
+						this.EquipCleaningItems();
 					}
 					else if (!this.Slave)
 					{
@@ -6271,6 +6263,7 @@ public class StudentScript : MonoBehaviour
 								this.DistractionTarget.Routine = false;
 								this.DistractionTarget.CanTalk = false;
 								this.DistractionTarget.ReadPhase = 0;
+								this.DistractionTarget.SpeechLines.Stop();
 								this.DistractionTarget.ChalkDust.Stop();
 								this.DistractionTarget.CleanTimer = 0f;
 								this.DistractionTarget.EmptyHands();
@@ -12926,5 +12919,20 @@ public class StudentScript : MonoBehaviour
 		this.DetectionMarker = UnityEngine.Object.Instantiate<GameObject>(this.Marker, GameObject.Find("DetectionPanel").transform.position, Quaternion.identity).GetComponent<DetectionMarkerScript>();
 		this.DetectionMarker.transform.parent = GameObject.Find("DetectionPanel").transform;
 		this.DetectionMarker.Target = base.transform;
+	}
+
+	public void EquipCleaningItems()
+	{
+		if (this.Persona == PersonaType.PhoneAddict || this.Persona == PersonaType.Sleuth)
+		{
+			this.WalkAnim = this.OriginalWalkAnim;
+		}
+		this.SmartPhone.SetActive(false);
+		this.Scrubber.SetActive(true);
+		if (this.CleaningRole == 5)
+		{
+			this.Scrubber.GetComponent<Renderer>().material.mainTexture = this.Eraser.GetComponent<Renderer>().material.mainTexture;
+			this.Eraser.SetActive(true);
+		}
 	}
 }

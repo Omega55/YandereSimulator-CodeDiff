@@ -652,7 +652,7 @@ public class DialogueWheelScript : MonoBehaviour
 			}
 			else
 			{
-				if (this.Yandere.TargetStudent.TaskPhase > 0 && this.Yandere.TargetStudent.TaskPhase < 5)
+				if ((this.Yandere.TargetStudent.TaskPhase > 0 && this.Yandere.TargetStudent.TaskPhase < 5) || this.Yandere.TargetStudent.TaskPhase == 100)
 				{
 					UISprite uisprite14 = this.Shadow[5];
 					uisprite14.color = new Color(uisprite14.color.r, uisprite14.color.g, uisprite14.color.b, 0.75f);
@@ -809,6 +809,10 @@ public class DialogueWheelScript : MonoBehaviour
 				Debug.Log(this.Yandere.TargetStudent.Name + " has been told to travel to the destination of their current phase.");
 				this.Yandere.TargetStudent.CurrentDestination = this.Yandere.TargetStudent.Destinations[this.Yandere.TargetStudent.Phase];
 				this.Yandere.TargetStudent.Pathfinding.target = this.Yandere.TargetStudent.Destinations[this.Yandere.TargetStudent.Phase];
+				if (this.Yandere.TargetStudent.Actions[this.Yandere.TargetStudent.Phase] == StudentActionType.Clean)
+				{
+					this.Yandere.TargetStudent.EquipCleaningItems();
+				}
 				if (this.Yandere.TargetStudent.Actions[this.Yandere.TargetStudent.Phase] == StudentActionType.Patrol)
 				{
 					this.Yandere.TargetStudent.CurrentDestination = this.Yandere.TargetStudent.StudentManager.Patrols.List[this.Yandere.TargetStudent.StudentID].GetChild(this.Yandere.TargetStudent.PatrolID);

@@ -154,6 +154,7 @@ public class ClubManagerScript : MonoBehaviour
 		this.ClubWindow.ActivityWindow.localScale = Vector3.zero;
 		this.ClubWindow.ActivityWindow.gameObject.SetActive(false);
 		this.ActivateClubBenefit();
+		int num = 0;
 		this.ID = 1;
 		while (this.ID < this.ClubArray.Length)
 		{
@@ -172,8 +173,13 @@ public class ClubManagerScript : MonoBehaviour
 				{
 					this.ClubPatrolPoints[this.ID].transform.position = new Vector3(this.ClubPatrolPoints[this.ID].transform.position.x, this.ClubPatrolPoints[this.ID].transform.position.y, 20f);
 				}
+				num++;
 			}
 			this.ID++;
+		}
+		if (num > 10)
+		{
+			this.StudentManager.NoClubMeeting = true;
 		}
 		if (ClubGlobals.GetClubClosed(this.ClubArray[2]))
 		{

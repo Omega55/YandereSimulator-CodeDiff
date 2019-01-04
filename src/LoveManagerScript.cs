@@ -48,7 +48,7 @@ public class LoveManagerScript : MonoBehaviour
 
 	private void LateUpdate()
 	{
-		if (this.Follower != null && this.Follower.Alive)
+		if (this.Follower != null && this.Follower.Alive && !this.Follower.InCouple)
 		{
 			this.ID = 0;
 			while (this.ID < this.TotalTargets)
@@ -183,7 +183,6 @@ public class LoveManagerScript : MonoBehaviour
 				this.Suitor.CoupleID = 30;
 				this.Rival.CoupleID = 28;
 				this.HoldingHands = true;
-				base.enabled = false;
 			}
 		}
 	}
