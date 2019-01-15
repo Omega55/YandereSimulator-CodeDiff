@@ -23,7 +23,7 @@ public class TributeScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (GameGlobals.LoveSick)
+		if (GameGlobals.LoveSick || !MissionModeGlobals.MissionMode)
 		{
 			base.enabled = false;
 		}
@@ -32,7 +32,7 @@ public class TributeScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (!MissionModeGlobals.MissionMode && !this.Yandere.PauseScreen.Show)
+		if (!this.Yandere.PauseScreen.Show)
 		{
 			if (Input.GetKeyDown(this.Letter[this.ID]))
 			{

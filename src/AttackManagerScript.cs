@@ -96,12 +96,31 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					return (!this.Stealth) ? 1f : 0.7f;
 				}
-				if (weaponType == WeaponType.Syringe)
+				if (weaponType == WeaponType.Weight)
 				{
-					return 0.5f;
+					if (this.Stealth)
+					{
+						return 0.75f;
+					}
+					if (sanityType == SanityType.High)
+					{
+						return 0.75f;
+					}
+					if (sanityType == SanityType.Medium)
+					{
+						return 0.75f;
+					}
+					return 0.75f;
 				}
-				Debug.LogError("Weapon type \"" + weaponType.ToString() + "\" not implemented.");
-				return 0f;
+				else
+				{
+					if (weaponType == WeaponType.Syringe)
+					{
+						return 0.5f;
+					}
+					Debug.LogError("Weapon type \"" + weaponType.ToString() + "\" not implemented.");
+					return 0f;
+				}
 			}
 		}
 	}
@@ -115,17 +134,25 @@ public class AttackManagerScript : MonoBehaviour
 		this.Yandere.Sanity = Mathf.Clamp(this.Yandere.Sanity, 0f, 100f);
 		SanityType sanityType = this.Yandere.SanityType;
 		string sanityString = this.Yandere.GetSanityString(sanityType);
-		string typePrefix = weapon.GetTypePrefix();
-		string str = (!this.Yandere.TargetStudent.Male) ? "f02_" : string.Empty;
+		string str = weapon.GetTypePrefix();
+		string str2 = (!this.Yandere.TargetStudent.Male) ? "f02_" : string.Empty;
 		if (!this.Stealth)
 		{
-			this.AnimName = "f02_" + typePrefix + sanityString + "SanityA_00";
-			this.VictimAnimName = str + typePrefix + sanityString + "SanityB_00";
+			this.VictimAnimName = str2 + str + sanityString + "SanityB_00";
+			if (weapon.WeaponID == 23)
+			{
+				str = "extin";
+			}
+			this.AnimName = "f02_" + str + sanityString + "SanityA_00";
 		}
 		else
 		{
-			this.AnimName = "f02_" + typePrefix + "StealthA_00";
-			this.VictimAnimName = str + typePrefix + "StealthB_00";
+			this.VictimAnimName = str2 + str + "StealthB_00";
+			if (weapon.WeaponID == 23)
+			{
+				str = "extin";
+			}
+			this.AnimName = "f02_" + str + "StealthA_00";
 		}
 		Animation component = this.Yandere.Character.GetComponent<Animation>();
 		component[this.AnimName].time = 0f;
@@ -602,6 +629,59 @@ public class AttackManagerScript : MonoBehaviour
 				this.EffectPhase++;
 			}
 		}
+		else if (weapon.Type == WeaponType.Weight)
+		{
+			if (!this.Stealth)
+			{
+				if (sanityType == SanityType.High)
+				{
+					if (this.EffectPhase == 0 && component[this.AnimName].time > 0.6666667f)
+					{
+						this.Yandere.Bloodiness += 20f;
+						this.Yandere.StainWeapon();
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
+						this.EffectPhase++;
+					}
+				}
+				else if (sanityType == SanityType.Medium)
+				{
+					if (this.EffectPhase == 0)
+					{
+						if (component[this.AnimName].time > 1f)
+						{
+							this.Yandere.Bloodiness += 20f;
+							this.Yandere.StainWeapon();
+							UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
+							this.EffectPhase++;
+						}
+					}
+					else if (this.EffectPhase == 1 && component[this.AnimName].time > 2.83333325f)
+					{
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
+						this.EffectPhase++;
+					}
+				}
+				else if (this.EffectPhase == 0)
+				{
+					if (component[this.AnimName].time > 2.16666675f)
+					{
+						this.Yandere.Bloodiness += 20f;
+						this.Yandere.StainWeapon();
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
+						this.EffectPhase++;
+					}
+				}
+				else if (this.EffectPhase == 1 && component[this.AnimName].time > 4.16666651f)
+				{
+					UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
+					this.EffectPhase++;
+				}
+			}
+			else
+			{
+				this.Yandere.TargetStudent.Ragdoll.NeckSnapped = true;
+			}
+		}
 	}
 
 	private void LoopCheck(WeaponScript weapon)
@@ -639,12 +719,22 @@ public class AttackManagerScript : MonoBehaviour
 					this.Loop = true;
 				}
 			}
-			else if (weapon.Type == WeaponType.Saw && component[this.AnimName].time > 3.0333333f && component[this.AnimName].time < 4.5666666f)
+			else if (weapon.Type == WeaponType.Saw)
 			{
-				this.LoopStart = 91f;
-				this.LoopEnd = 137f;
-				this.LoopPhase = 3;
-				this.PingPong = true;
+				if (component[this.AnimName].time > 3.0333333f && component[this.AnimName].time < 4.5666666f)
+				{
+					this.LoopStart = 91f;
+					this.LoopEnd = 137f;
+					this.LoopPhase = 3;
+					this.PingPong = true;
+				}
+			}
+			else if (weapon.Type == WeaponType.Weight && component[this.AnimName].time > 3f && component[this.AnimName].time < 4.5f)
+			{
+				this.LoopStart = 90f;
+				this.LoopEnd = 135f;
+				this.LoopPhase = 1;
+				this.Loop = true;
 			}
 		}
 		AudioSource component2 = weapon.gameObject.GetComponent<AudioSource>();

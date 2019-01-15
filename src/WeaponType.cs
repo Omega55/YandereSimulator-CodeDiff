@@ -6,5 +6,6 @@ public enum WeaponType
 	Katana,
 	Bat,
 	Saw,
-	Syringe
+	Syringe,
+	Weight
 }

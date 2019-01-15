@@ -12,19 +12,23 @@ public class PoisonBottleScript : MonoBehaviour
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Yandere.TheftTimer = 0.1f;
-			InventoryScript inventory = this.Prompt.Yandere.Inventory;
 			if (this.ID == 1)
 			{
-				inventory.EmeticPoison = true;
+				this.Prompt.Yandere.Inventory.EmeticPoison = true;
 			}
 			else if (this.ID == 2)
 			{
-				inventory.LethalPoison = true;
+				this.Prompt.Yandere.Inventory.LethalPoison = true;
 			}
 			else if (this.ID == 3)
 			{
-				inventory.RatPoison = true;
+				this.Prompt.Yandere.Inventory.RatPoison = true;
 			}
+			else if (this.ID == 4)
+			{
+				this.Prompt.Yandere.Inventory.HeadachePoison = true;
+			}
+			this.Prompt.Yandere.StudentManager.UpdateAllBentos();
 			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}

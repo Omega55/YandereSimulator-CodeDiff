@@ -402,7 +402,7 @@ public class CookingEventScript : MonoBehaviour
 				this.Knife.localEulerAngles = new Vector3(45f, -90f, -90f);
 				this.Knife.GetComponent<Collider>().enabled = true;
 			}
-			this.StudentManager.UpdateStudents();
+			this.StudentManager.UpdateStudents(0);
 		}
 		this.EventActive = false;
 		this.EventCheck = false;

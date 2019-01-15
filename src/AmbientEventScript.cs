@@ -90,7 +90,7 @@ public class AmbientEventScript : MonoBehaviour
 					{
 						this.EventStudent[j].Character.GetComponent<Animation>().CrossFade(this.EventStudent[j].IdleAnim);
 						this.EventStudent[j].Private = true;
-						this.StudentManager.UpdateStudents();
+						this.StudentManager.UpdateStudents(0);
 					}
 				}
 				if (!this.EventStudent[1].Pathfinding.canMove && !this.EventStudent[2].Pathfinding.canMove)
@@ -185,7 +185,7 @@ public class AmbientEventScript : MonoBehaviour
 		}
 		if (!this.StudentManager.Stop)
 		{
-			this.StudentManager.UpdateStudents();
+			this.StudentManager.UpdateStudents(0);
 		}
 		this.EventSubtitle.text = string.Empty;
 		base.enabled = false;

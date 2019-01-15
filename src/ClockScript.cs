@@ -75,7 +75,11 @@ public class ClockScript : MonoBehaviour
 
 	public bool IgnorePhotographyClub;
 
+	public bool LateStudent;
+
 	public bool UpdateBloom;
+
+	public bool MissionMode;
 
 	public bool StopTime;
 
@@ -180,6 +184,7 @@ public class ClockScript : MonoBehaviour
 		{
 			this.IgnorePhotographyClub = true;
 		}
+		this.MissionMode = MissionModeGlobals.MissionMode;
 	}
 
 	private void Update()
@@ -193,7 +198,7 @@ public class ClockScript : MonoBehaviour
 				this.FadeIn = false;
 			}
 		}
-		if (!MissionModeGlobals.MissionMode && this.CameraTimer < 1f)
+		if (!this.MissionMode && this.CameraTimer < 1f)
 		{
 			this.CameraTimer += Time.deltaTime;
 			if (this.CameraTimer > 1f && !this.StudentManager.MemorialScene.enabled)
@@ -232,10 +237,6 @@ public class ClockScript : MonoBehaviour
 				this.PresentTime += Time.deltaTime * 0.0166666675f * this.TimeSpeed;
 			}
 		}
-		if (this.PresentTime > 1440f)
-		{
-			this.PresentTime -= 1440f;
-		}
 		this.HourTime = this.PresentTime / 60f;
 		this.Hour = Mathf.Floor(this.PresentTime / 60f);
 		this.Minute = Mathf.Floor((this.PresentTime / 60f - this.Hour) * 60f);
@@ -263,6 +264,10 @@ public class ClockScript : MonoBehaviour
 		this.TimeLabel.text = this.TimeText;
 		this.MinuteHand.localEulerAngles = new Vector3(this.MinuteHand.localEulerAngles.x, this.MinuteHand.localEulerAngles.y, this.Minute * 6f);
 		this.HourHand.localEulerAngles = new Vector3(this.HourHand.localEulerAngles.x, this.HourHand.localEulerAngles.y, this.Hour * 30f);
+		if (this.LateStudent && this.HourTime > 7.9f)
+		{
+			this.ActivateLateStudent();
+		}
 		if (this.HourTime < 8.5f)
 		{
 			if (this.Period < 1)
@@ -330,21 +335,13 @@ public class ClockScript : MonoBehaviour
 			this.StudentManager.UpdateSleuths();
 		}
 		this.Sun.eulerAngles = new Vector3(this.Sun.eulerAngles.x, this.Sun.eulerAngles.y, -45f + 90f * (this.PresentTime - 420f) / 660f);
-		if ((this.Yandere.transform.position.y < 11f && this.Yandere.transform.position.x > -30f && this.Yandere.transform.position.z > -38f && this.Yandere.transform.position.x < -22f && this.Yandere.transform.position.z < -26f) || (this.Yandere.transform.position.y < 11f && this.Yandere.transform.position.x > 22f && this.Yandere.transform.position.z > -38f && this.Yandere.transform.position.x < 30f && this.Yandere.transform.position.z < -26f))
+		if (this.StudentManager.LockerRoomArea.bounds.Contains(this.Yandere.transform.position) || this.StudentManager.WestBathroomArea.bounds.Contains(this.Yandere.transform.position) || this.StudentManager.EastBathroomArea.bounds.Contains(this.Yandere.transform.position) || this.StudentManager.IncineratorArea.bounds.Contains(this.Yandere.transform.position))
 		{
-			this.AmbientLightDim -= Time.deltaTime;
-			if (this.AmbientLightDim < 0.1f)
-			{
-				this.AmbientLightDim = 0.1f;
-			}
+			this.AmbientLightDim = Mathf.MoveTowards(this.AmbientLightDim, 0.1f, Time.deltaTime);
 		}
 		else
 		{
-			this.AmbientLightDim += Time.deltaTime;
-			if (this.AmbientLightDim > 0.75f)
-			{
-				this.AmbientLightDim = 0.75f;
-			}
+			this.AmbientLightDim = Mathf.MoveTowards(this.AmbientLightDim, 0.75f, Time.deltaTime);
 		}
 		if (this.PresentTime > 930f)
 		{
@@ -462,5 +459,17 @@ public class ClockScript : MonoBehaviour
 				collider.enabled = false;
 			}
 		}
+	}
+
+	public void ActivateLateStudent()
+	{
+		if (this.StudentManager.Students[7] != null)
+		{
+			this.StudentManager.Students[7].gameObject.SetActive(true);
+			this.StudentManager.Students[7].Pathfinding.speed = 4f;
+			this.StudentManager.Students[7].Spawned = true;
+			this.StudentManager.Students[7].Hurry = true;
+		}
+		this.LateStudent = false;
 	}
 }

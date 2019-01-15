@@ -50,16 +50,22 @@ public class GradingPaperScript : MonoBehaviour
 	{
 		if (!this.Writing)
 		{
-			this.Chair.position = Vector3.Lerp(this.Chair.position, this.OriginalPosition, Time.deltaTime * 10f);
+			if (Vector3.Distance(this.Chair.position, this.OriginalPosition) > 0.01f)
+			{
+				this.Chair.position = Vector3.Lerp(this.Chair.position, this.OriginalPosition, Time.deltaTime * 10f);
+			}
 		}
 		else if (this.Character != null)
 		{
-			this.Chair.position = Vector3.Lerp(this.Chair.position, this.Character.transform.position + this.Character.transform.forward * 0.1f, Time.deltaTime * 10f);
+			if (Vector3.Distance(this.Chair.position, this.Character.transform.position + this.Character.transform.forward * 0.1f) > 0.01f)
+			{
+				this.Chair.position = Vector3.Lerp(this.Chair.position, this.Character.transform.position + this.Character.transform.forward * 0.1f, Time.deltaTime * 10f);
+			}
 			if (this.Phase == 1)
 			{
-				if (this.Character.GetComponent<Animation>()["f02_deskWrite"].time > this.PickUpTime1)
+				if (this.Teacher.CharacterAnimation["f02_deskWrite"].time > this.PickUpTime1)
 				{
-					this.Character.GetComponent<Animation>()["f02_deskWrite"].speed = this.Speed;
+					this.Teacher.CharacterAnimation["f02_deskWrite"].speed = this.Speed;
 					this.Paper.parent = this.LeftHand;
 					this.Paper.localPosition = this.PickUpPosition1;
 					this.Paper.localEulerAngles = this.PickUpRotation1;
@@ -69,7 +75,7 @@ public class GradingPaperScript : MonoBehaviour
 			}
 			else if (this.Phase == 2)
 			{
-				if (this.Character.GetComponent<Animation>()["f02_deskWrite"].time > this.SetDownTime1)
+				if (this.Teacher.CharacterAnimation["f02_deskWrite"].time > this.SetDownTime1)
 				{
 					this.Paper.parent = this.Character.transform;
 					this.Paper.localPosition = this.SetDownPosition1;
@@ -79,7 +85,7 @@ public class GradingPaperScript : MonoBehaviour
 			}
 			else if (this.Phase == 3)
 			{
-				if (this.Character.GetComponent<Animation>()["f02_deskWrite"].time > this.PickUpTime2)
+				if (this.Teacher.CharacterAnimation["f02_deskWrite"].time > this.PickUpTime2)
 				{
 					this.Paper.parent = this.LeftHand;
 					this.Paper.localPosition = this.PickUpPosition2;
@@ -89,17 +95,17 @@ public class GradingPaperScript : MonoBehaviour
 			}
 			else if (this.Phase == 4)
 			{
-				if (this.Character.GetComponent<Animation>()["f02_deskWrite"].time > this.SetDownTime2)
+				if (this.Teacher.CharacterAnimation["f02_deskWrite"].time > this.SetDownTime2)
 				{
 					this.Paper.parent = this.Character.transform;
 					this.Paper.localScale = Vector3.zero;
 					this.Phase++;
 				}
 			}
-			else if (this.Phase == 5 && this.Character.GetComponent<Animation>()["f02_deskWrite"].time >= this.Character.GetComponent<Animation>()["f02_deskWrite"].length)
+			else if (this.Phase == 5 && this.Teacher.CharacterAnimation["f02_deskWrite"].time >= this.Teacher.CharacterAnimation["f02_deskWrite"].length)
 			{
-				this.Character.GetComponent<Animation>()["f02_deskWrite"].time = 0f;
-				this.Character.GetComponent<Animation>().Play("f02_deskWrite");
+				this.Teacher.CharacterAnimation["f02_deskWrite"].time = 0f;
+				this.Teacher.CharacterAnimation.Play("f02_deskWrite");
 				this.Phase = 1;
 			}
 			if (this.Teacher.Actions[this.Teacher.Phase] != StudentActionType.GradePapers || !this.Teacher.Routine || this.Teacher.Stop)

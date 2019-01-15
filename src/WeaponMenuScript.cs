@@ -284,7 +284,7 @@ public class WeaponMenuScript : MonoBehaviour
 			{
 				this.Yandere.EquippedWeapon.FingerprintID = 100;
 			}
-			this.Yandere.StudentManager.UpdateStudents();
+			this.Yandere.StudentManager.UpdateStudents(0);
 			this.Yandere.WeaponManager.UpdateLabels();
 			if (this.Yandere.EquippedWeapon.Suspicious)
 			{
@@ -432,7 +432,7 @@ public class WeaponMenuScript : MonoBehaviour
 		{
 			this.Yandere.Mask.Drop();
 			this.UpdateSprites();
-			this.StudentManager.UpdateStudents();
+			this.StudentManager.UpdateStudents(0);
 		}
 	}
 }

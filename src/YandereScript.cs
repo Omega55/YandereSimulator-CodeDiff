@@ -214,6 +214,8 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject EasterEggMenu;
 
+	public GameObject SelfieGuide;
+
 	public GameObject MemeGlasses;
 
 	public GameObject GiggleDisc;
@@ -526,15 +528,11 @@ public class YandereScript : MonoBehaviour
 
 	public bool CannotRecover;
 
-	public bool PossessPoison;
-
 	public bool YandereVision;
 
 	public bool ClubActivity;
 
 	public bool FlameDemonic;
-
-	public bool PossessTranq;
 
 	public bool SanityBased;
 
@@ -583,6 +581,8 @@ public class YandereScript : MonoBehaviour
 	public bool Chased;
 
 	public bool Gloved;
+
+	public bool Selfie;
 
 	public bool Shoved;
 
@@ -1172,6 +1172,7 @@ public class YandereScript : MonoBehaviour
 		this.LeftEyeOrigin = this.LeftEye.localPosition;
 		this.CharacterAnimation["f02_yanderePose_00"].weight = 0f;
 		this.CharacterAnimation["f02_cameraPose_00"].weight = 0f;
+		this.CharacterAnimation["f02_selfie_00"].weight = 0f;
 		this.CharacterAnimation["f02_shipGirlSnap_00"].speed = 2f;
 		this.CharacterAnimation["f02_gazerSnap_00"].speed = 2f;
 		this.CharacterAnimation["f02_performing_00"].speed = 0.9f;
@@ -1304,7 +1305,7 @@ public class YandereScript : MonoBehaviour
 				this.SanityWarning = false;
 				if (this.PreviousSanity < 33.33333f)
 				{
-					this.StudentManager.UpdateStudents();
+					this.StudentManager.UpdateStudents(0);
 				}
 			}
 			else
@@ -1526,6 +1527,9 @@ public class YandereScript : MonoBehaviour
 		this.CharacterAnimation["f02_carryDramatic_00"].layer = 26;
 		this.CharacterAnimation.Play("f02_carryDramatic_00");
 		this.CharacterAnimation["f02_carryDramatic_00"].weight = 0f;
+		this.CharacterAnimation["f02_selfie_00"].layer = 27;
+		this.CharacterAnimation.Play("f02_selfie_00");
+		this.CharacterAnimation["f02_selfie_00"].weight = 0f;
 		this.CharacterAnimation["f02_dipping_00"].speed = 2f;
 		this.CharacterAnimation["f02_stripping_00"].speed = 1.5f;
 		this.CharacterAnimation["f02_falconIdle_00"].speed = 2f;
@@ -1549,7 +1553,7 @@ public class YandereScript : MonoBehaviour
 			{
 				component.volume -= Time.deltaTime * 2f;
 			}
-			else if (this.PickUp != null)
+			else if (this.PickUp != null && !this.PickUp.Clothing)
 			{
 				this.CharacterAnimation[this.CarryAnims[1]].weight = Mathf.Lerp(this.CharacterAnimation[this.CarryAnims[1]].weight, 1f, Time.deltaTime * 10f);
 			}
@@ -1652,6 +1656,11 @@ public class YandereScript : MonoBehaviour
 			this.v = Input.GetAxis("Vertical");
 			this.h = Input.GetAxis("Horizontal");
 			this.FlapSpeed = Mathf.Abs(this.v) + Mathf.Abs(this.h);
+			if (this.Selfie)
+			{
+				this.v = -1f * this.v;
+				this.h = -1f * this.h;
+			}
 			if (!this.Aiming)
 			{
 				Vector3 a = this.MainCamera.transform.TransformDirection(Vector3.forward);
@@ -1836,6 +1845,7 @@ public class YandereScript : MonoBehaviour
 						if (Input.GetButtonDown("LB"))
 						{
 							this.CharacterAnimation["f02_cameraPose_00"].weight = 0f;
+							this.CharacterAnimation["f02_selfie_00"].weight = 0f;
 							if (!this.RivalPhone)
 							{
 								this.SmartphoneRenderer.material.mainTexture = this.RivalPhoneTexture;
@@ -1848,7 +1858,7 @@ public class YandereScript : MonoBehaviour
 							}
 						}
 					}
-					else if (Input.GetButtonDown("LB"))
+					else if (!this.Selfie && Input.GetButtonDown("LB"))
 					{
 						if (!this.AR)
 						{
@@ -1889,6 +1899,7 @@ public class YandereScript : MonoBehaviour
 						this.YandereVision = false;
 						this.Blur.enabled = true;
 						this.Mopping = false;
+						this.Selfie = false;
 						this.Aiming = true;
 						this.EmptyHands();
 						this.PhonePromptBar.Panel.enabled = true;
@@ -1902,6 +1913,7 @@ public class YandereScript : MonoBehaviour
 							this.PhonePromptBar.Label.text = "AR GAME ON/OFF";
 						}
 						Time.timeScale = 1f;
+						this.UpdateSelfieStatus();
 					}
 				}
 				if (!this.Aiming && !this.Accessories[9].activeInHierarchy && !this.Accessories[16].activeInHierarchy)
@@ -1961,7 +1973,7 @@ public class YandereScript : MonoBehaviour
 							{
 								AudioSource.PlayClipAtPoint(this.EmptyDemon.MouthClose, base.transform.position);
 							}
-							this.StudentManager.UpdateStudents();
+							this.StudentManager.UpdateStudents(0);
 						}
 						this.YandereTimer += Time.deltaTime;
 						if (this.YandereTimer > 0.5f)
@@ -2162,7 +2174,32 @@ public class YandereScript : MonoBehaviour
 			}
 			if (this.Aiming)
 			{
-				this.CharacterAnimation["f02_cameraPose_00"].weight = Mathf.Lerp(this.CharacterAnimation["f02_cameraPose_00"].weight, 1f, Time.deltaTime * 10f);
+				if (Input.GetButtonDown("A"))
+				{
+					this.Selfie = !this.Selfie;
+					this.UpdateSelfieStatus();
+				}
+				if (!this.Selfie)
+				{
+					this.CharacterAnimation["f02_cameraPose_00"].weight = Mathf.Lerp(this.CharacterAnimation["f02_cameraPose_00"].weight, 1f, Time.deltaTime * 10f);
+					this.CharacterAnimation["f02_selfie_00"].weight = Mathf.Lerp(this.CharacterAnimation["f02_selfie_00"].weight, 0f, Time.deltaTime * 10f);
+				}
+				else
+				{
+					this.CharacterAnimation["f02_cameraPose_00"].weight = Mathf.Lerp(this.CharacterAnimation["f02_cameraPose_00"].weight, 0f, Time.deltaTime * 10f);
+					this.CharacterAnimation["f02_selfie_00"].weight = Mathf.Lerp(this.CharacterAnimation["f02_selfie_00"].weight, 1f, Time.deltaTime * 10f);
+					if (Input.GetButtonDown("B"))
+					{
+						if (!this.SelfieGuide.activeInHierarchy)
+						{
+							this.SelfieGuide.SetActive(true);
+						}
+						else
+						{
+							this.SelfieGuide.SetActive(false);
+						}
+					}
+				}
 				if (this.ClubAccessories[7].activeInHierarchy && (Input.GetAxis("DpadY") != 0f || Input.GetAxis("Mouse ScrollWheel") != 0f || Input.GetKey(KeyCode.Tab) || Input.GetKey(KeyCode.LeftShift)))
 				{
 					if (Input.GetKey(KeyCode.Tab))
@@ -2650,11 +2687,11 @@ public class YandereScript : MonoBehaviour
 			}
 			if (this.DumpsterGrabbing)
 			{
-				if (Input.GetAxis("Horizontal") > 0.5f || Input.GetAxis("DpadX") > 0.5f)
+				if (Input.GetAxis("Horizontal") > 0.5f || Input.GetAxis("DpadX") > 0.5f || Input.GetKey("right"))
 				{
 					this.CharacterAnimation.CrossFade((this.DumpsterHandle.Direction != -1f) ? "f02_dumpsterPush_00" : "f02_dumpsterPull_00");
 				}
-				else if (Input.GetAxis("Horizontal") < -0.5f || Input.GetAxis("DpadX") < -0.5f)
+				else if (Input.GetAxis("Horizontal") < -0.5f || Input.GetAxis("DpadX") < -0.5f || Input.GetKey("left"))
 				{
 					this.CharacterAnimation.CrossFade((this.DumpsterHandle.Direction != -1f) ? "f02_dumpsterPull_00" : "f02_dumpsterPush_00");
 				}
@@ -4490,13 +4527,13 @@ public class YandereScript : MonoBehaviour
 			if (!this.CorpseWarning)
 			{
 				this.NotificationManager.DisplayNotification(NotificationType.Body);
-				this.StudentManager.UpdateStudents();
+				this.StudentManager.UpdateStudents(0);
 				this.CorpseWarning = true;
 			}
 		}
 		else if (this.CorpseWarning)
 		{
-			this.StudentManager.UpdateStudents();
+			this.StudentManager.UpdateStudents(0);
 			this.CorpseWarning = false;
 		}
 		if (this.Eavesdropping)
@@ -4857,18 +4894,23 @@ public class YandereScript : MonoBehaviour
 		}
 		if (this.Aiming)
 		{
+			float num = 1f;
+			if (this.Selfie)
+			{
+				num = -1f;
+			}
 			Transform transform2 = this.Spine[3].transform;
-			transform2.localEulerAngles = new Vector3(transform2.localEulerAngles.x - this.Bend, transform2.localEulerAngles.y, transform2.localEulerAngles.z);
+			transform2.localEulerAngles = new Vector3(transform2.localEulerAngles.x - this.Bend * num, transform2.localEulerAngles.y, transform2.localEulerAngles.z);
 		}
-		float num = 1f;
+		float num2 = 1f;
 		if (this.Stance.Current == StanceType.Crouching)
 		{
-			num = 3.66666f;
+			num2 = 3.66666f;
 		}
 		Transform transform3 = this.Arm[0].transform;
-		transform3.localEulerAngles = new Vector3(transform3.localEulerAngles.x, transform3.localEulerAngles.y, transform3.localEulerAngles.z - this.Slouch * (3f + num));
+		transform3.localEulerAngles = new Vector3(transform3.localEulerAngles.x, transform3.localEulerAngles.y, transform3.localEulerAngles.z - this.Slouch * (3f + num2));
 		Transform transform4 = this.Arm[1].transform;
-		transform4.localEulerAngles = new Vector3(transform4.localEulerAngles.x, transform4.localEulerAngles.y, transform4.localEulerAngles.z + this.Slouch * (3f + num));
+		transform4.localEulerAngles = new Vector3(transform4.localEulerAngles.x, transform4.localEulerAngles.y, transform4.localEulerAngles.z + this.Slouch * (3f + num2));
 		if (!this.Aiming)
 		{
 			this.Head.localEulerAngles += this.Twitch;
@@ -5009,6 +5051,7 @@ public class YandereScript : MonoBehaviour
 		this.UpdateAccessory();
 		this.UpdateHair();
 		this.CharacterAnimation["f02_cameraPose_00"].weight = 0f;
+		this.CharacterAnimation["f02_selfie_00"].weight = 0f;
 		this.PelvisRoot.transform.localPosition = new Vector3(this.PelvisRoot.transform.localPosition.x, 0f, this.PelvisRoot.transform.localPosition.z);
 		this.ShoulderCamera.AimingCamera = false;
 		if (!Input.GetButtonDown("Start") && !Input.GetKeyDown(KeyCode.Escape))
@@ -5025,15 +5068,20 @@ public class YandereScript : MonoBehaviour
 		}
 		this.MainCamera.farClipPlane = (float)OptionGlobals.DrawDistance;
 		this.Smartphone.transform.parent.gameObject.SetActive(false);
-		this.PhonePromptBar.Show = false;
+		this.Smartphone.targetTexture = this.Shutter.SmartphoneScreen;
+		this.Smartphone.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
 		this.Smartphone.fieldOfView = 60f;
 		this.Shutter.TargetStudent = 0;
-		this.HandCamera.SetActive(false);
-		this.UsingController = false;
-		this.Aiming = false;
-		this.Lewd = false;
 		this.Height = 0f;
 		this.Bend = 0f;
+		this.SelfieGuide.SetActive(false);
+		this.PhonePromptBar.Show = false;
+		this.HandCamera.SetActive(false);
+		this.MainCamera.enabled = true;
+		this.UsingController = false;
+		this.Aiming = false;
+		this.Selfie = false;
+		this.Lewd = false;
 	}
 
 	public void FixCamera()
@@ -5134,7 +5182,7 @@ public class YandereScript : MonoBehaviour
 			}
 			this.Equipped = 0;
 			this.Mopping = false;
-			this.StudentManager.UpdateStudents();
+			this.StudentManager.UpdateStudents(0);
 			this.WeaponManager.UpdateLabels();
 			this.WeaponMenu.UpdateSprites();
 			this.WeaponWarning = false;
@@ -5816,7 +5864,7 @@ public class YandereScript : MonoBehaviour
 		{
 			this.StudentManager.Pose = false;
 		}
-		this.StudentManager.UpdateStudents();
+		this.StudentManager.UpdateStudents(0);
 	}
 
 	private void HairBlades()
@@ -5944,7 +5992,7 @@ public class YandereScript : MonoBehaviour
 		this.Hairstyle = 158;
 		this.UpdateHair();
 		this.StudentManager.Gaze = true;
-		this.StudentManager.UpdateStudents();
+		this.StudentManager.UpdateStudents(0);
 		this.Gazing = true;
 		this.Egg = true;
 		this.DebugMenu.transform.parent.GetComponent<DebugMenuScript>().UpdateCensor();
@@ -5973,7 +6021,7 @@ public class YandereScript : MonoBehaviour
 		SchoolGlobals.SchoolAtmosphere = 0f;
 		this.StudentManager.SetAtmosphere();
 		this.StudentManager.Six = true;
-		this.StudentManager.UpdateStudents();
+		this.StudentManager.UpdateStudents(0);
 		this.WalkSpeed = 0.75f;
 		this.RunSpeed = 2f;
 		this.Hungry = true;
@@ -6395,6 +6443,30 @@ public class YandereScript : MonoBehaviour
 			this.SithAudio.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
 			this.SithAudio.Play();
 			this.SithSounds++;
+		}
+	}
+
+	public void UpdateSelfieStatus()
+	{
+		if (!this.Selfie)
+		{
+			this.Smartphone.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+			this.Smartphone.targetTexture = this.Shutter.SmartphoneScreen;
+			this.SelfieGuide.SetActive(false);
+			this.HandCamera.SetActive(true);
+			this.MainCamera.enabled = true;
+			this.Blur.enabled = true;
+		}
+		else
+		{
+			this.Smartphone.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
+			this.UpdateAccessory();
+			this.UpdateHair();
+			this.Smartphone.targetTexture = null;
+			this.HandCamera.SetActive(false);
+			this.MainCamera.enabled = false;
+			this.Smartphone.cullingMask &= ~(1 << LayerMask.NameToLayer("Miyuki"));
+			this.AR = false;
 		}
 	}
 }

@@ -154,7 +154,7 @@ public class MovingEventScript : MonoBehaviour
 						}
 						if (this.Timer > 2f)
 						{
-							if (this.Yandere.PossessPoison)
+							if (this.Yandere.Inventory.ChemicalPoison || this.Yandere.Inventory.LethalPoison)
 							{
 								this.Prompt.HideButton[0] = false;
 							}
@@ -353,7 +353,7 @@ public class MovingEventScript : MonoBehaviour
 			this.EventStudent.InEvent = false;
 			this.EventStudent.Private = false;
 			this.EventSubtitle.text = string.Empty;
-			this.StudentManager.UpdateStudents();
+			this.StudentManager.UpdateStudents(0);
 		}
 		this.EventActive = false;
 		this.EventCheck = false;

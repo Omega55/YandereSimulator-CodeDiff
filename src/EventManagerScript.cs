@@ -99,13 +99,13 @@ public class EventManagerScript : MonoBehaviour
 				{
 					this.EventStudent[1].Character.GetComponent<Animation>().CrossFade(this.EventStudent[1].IdleAnim);
 					this.EventStudent[1].Private = true;
-					this.StudentManager.UpdateStudents();
+					this.StudentManager.UpdateStudents(0);
 				}
 				if (!this.EventStudent[2].Pathfinding.canMove && !this.EventStudent[2].Private)
 				{
 					this.EventStudent[2].Character.GetComponent<Animation>().CrossFade(this.EventStudent[2].IdleAnim);
 					this.EventStudent[2].Private = true;
-					this.StudentManager.UpdateStudents();
+					this.StudentManager.UpdateStudents(0);
 				}
 				if (!this.EventStudent[1].Pathfinding.canMove && !this.EventStudent[2].Pathfinding.canMove)
 				{
@@ -205,7 +205,7 @@ public class EventManagerScript : MonoBehaviour
 		this.EventStudent[2].Private = false;
 		if (!this.StudentManager.Stop)
 		{
-			this.StudentManager.UpdateStudents();
+			this.StudentManager.UpdateStudents(0);
 		}
 		this.Yandere.Eavesdropping = false;
 		this.EventSubtitle.text = string.Empty;

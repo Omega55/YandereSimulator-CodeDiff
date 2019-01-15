@@ -269,6 +269,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public Mesh NurseMesh;
 
+	public bool MysteriousObstacle;
+
 	public bool TakingPortrait;
 
 	public bool Initialized;
@@ -526,7 +528,7 @@ public class CosmeticScript : MonoBehaviour
 				{
 					this.Fingernails[k].gameObject.SetActive(false);
 				}
-				if (this.Club == ClubType.Gardening && !this.TakingPortrait)
+				if (this.Club == ClubType.Gardening && !this.TakingPortrait && !this.Kidnapped)
 				{
 					this.CanRenderer.material.mainTexture = this.CanTextures[this.StudentID];
 				}
@@ -703,6 +705,7 @@ public class CosmeticScript : MonoBehaviour
 				{
 					this.Hairstyle = StudentGlobals.CustomSuitorHair;
 					this.HairColor = "Purple";
+					this.EyeColor = "Purple";
 				}
 				if (StudentGlobals.CustomSuitorAccessory > 0)
 				{
@@ -1494,6 +1497,10 @@ public class CosmeticScript : MonoBehaviour
 		{
 			this.WearIndoorShoes();
 		}
+		if (!this.Male && (this.Hairstyle == 20 || this.Hairstyle == 21))
+		{
+			UnityEngine.Object.Destroy(base.gameObject);
+		}
 	}
 
 	public void SetMaleUniform()
@@ -1625,8 +1632,9 @@ public class CosmeticScript : MonoBehaviour
 				this.CasualTexture = this.GanguroCasualTextures[StudentGlobals.FemaleUniform];
 				this.SocksTexture = this.GanguroSocksTextures[StudentGlobals.FemaleUniform];
 			}
-			else if (this.StudentID == 6 || this.Name == "Unknown")
+			else if (this.StudentID > 9 && this.StudentID < 21 && this.StudentID != 11)
 			{
+				this.MysteriousObstacle = true;
 				this.UniformTexture = this.BlackBody;
 				this.CasualTexture = this.BlackBody;
 				this.SocksTexture = this.BlackBody;
@@ -1690,7 +1698,7 @@ public class CosmeticScript : MonoBehaviour
 		if (this.Club == ClubType.Bully)
 		{
 		}
-		if (this.StudentID == 6 || this.Name == "Unknown")
+		if (this.MysteriousObstacle)
 		{
 			this.FaceTexture = this.BlackBody;
 		}
@@ -1762,17 +1770,22 @@ public class CosmeticScript : MonoBehaviour
 				this.LoveManager.Targets[this.LoveManager.TotalTargets] = this.Student.Head;
 				this.LoveManager.TotalTargets++;
 			}
-			if (this.Hairstyle == 30)
+			else if (this.Hairstyle == 30)
 			{
 				this.LoveManager.Targets[this.LoveManager.TotalTargets] = this.Student.Head;
 				this.LoveManager.TotalTargets++;
 			}
-			if ((this.Accessory > 1 && this.Accessory < 5) || this.Accessory == 13)
+			else if ((this.Accessory > 1 && this.Accessory < 5) || this.Accessory == 13)
 			{
 				this.LoveManager.Targets[this.LoveManager.TotalTargets] = this.Student.Head;
 				this.LoveManager.TotalTargets++;
 			}
-			if (this.Student.Persona == PersonaType.TeachersPet)
+			else if (this.Student.Persona == PersonaType.TeachersPet)
+			{
+				this.LoveManager.Targets[this.LoveManager.TotalTargets] = this.Student.Head;
+				this.LoveManager.TotalTargets++;
+			}
+			else if (this.EyewearID > 0)
 			{
 				this.LoveManager.Targets[this.LoveManager.TotalTargets] = this.Student.Head;
 				this.LoveManager.TotalTargets++;

@@ -54,7 +54,7 @@ public class MaskScript : MonoBehaviour
 			base.transform.localEulerAngles = Vector3.zero;
 			this.Yandere.Mask = this;
 			this.ClubManager.UpdateMasks();
-			this.StudentManager.UpdateStudents();
+			this.StudentManager.UpdateStudents(0);
 		}
 	}
 
@@ -69,6 +69,6 @@ public class MaskScript : MonoBehaviour
 		base.transform.parent = null;
 		this.Yandere.Mask = null;
 		this.ClubManager.UpdateMasks();
-		this.StudentManager.UpdateStudents();
+		this.StudentManager.UpdateStudents(0);
 	}
 }

@@ -539,7 +539,7 @@ public class CombatMinigameScript : MonoBehaviour
 					this.Delinquent = null;
 					this.ReleaseYandere();
 					this.ResetValues();
-					this.Yandere.StudentManager.UpdateStudents();
+					this.Yandere.StudentManager.UpdateStudents(0);
 				}
 			}
 		}
@@ -617,7 +617,7 @@ public class CombatMinigameScript : MonoBehaviour
 					this.Delinquent.Paired = false;
 					this.Delinquent.Patience = 5;
 					this.ResetValues();
-					this.Yandere.StudentManager.UpdateStudents();
+					this.Yandere.StudentManager.UpdateStudents(0);
 				}
 			}
 		}
@@ -655,7 +655,7 @@ public class CombatMinigameScript : MonoBehaviour
 				this.Delinquent = null;
 				this.DisablePrompts();
 				this.ResetValues();
-				this.Yandere.StudentManager.UpdateStudents();
+				this.Yandere.StudentManager.UpdateStudents(0);
 			}
 		}
 	}

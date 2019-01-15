@@ -75,16 +75,6 @@ public class StudentJson : JsonData
 		{
 			array[i] = new StudentJson();
 		}
-		StudentJson studentJson = array[0];
-		studentJson.name = "Info-chan";
-		studentJson.club = ClubType.Nemesis;
-		studentJson.persona = PersonaType.Nemesis;
-		studentJson.crush = 99;
-		StudentJson studentJson2 = array[90];
-		studentJson2.name = "Info-chan";
-		studentJson2.club = ClubType.Nemesis;
-		studentJson2.persona = PersonaType.Nemesis;
-		studentJson2.crush = 99;
 		foreach (Dictionary<string, object> dictionary in JsonData.Deserialize(path))
 		{
 			int num = TFUtils.LoadInt(dictionary, "ID");
@@ -92,41 +82,63 @@ public class StudentJson : JsonData
 			{
 				break;
 			}
-			StudentJson studentJson3 = array[num];
-			studentJson3.name = TFUtils.LoadString(dictionary, "Name");
-			studentJson3.gender = TFUtils.LoadInt(dictionary, "Gender");
-			studentJson3.classID = TFUtils.LoadInt(dictionary, "Class");
-			studentJson3.seat = TFUtils.LoadInt(dictionary, "Seat");
-			studentJson3.club = (ClubType)TFUtils.LoadInt(dictionary, "Club");
-			studentJson3.persona = (PersonaType)TFUtils.LoadInt(dictionary, "Persona");
-			studentJson3.crush = TFUtils.LoadInt(dictionary, "Crush");
-			studentJson3.breastSize = TFUtils.LoadFloat(dictionary, "BreastSize");
-			studentJson3.strength = TFUtils.LoadInt(dictionary, "Strength");
-			studentJson3.hairstyle = TFUtils.LoadString(dictionary, "Hairstyle");
-			studentJson3.color = TFUtils.LoadString(dictionary, "Color");
-			studentJson3.eyes = TFUtils.LoadString(dictionary, "Eyes");
-			studentJson3.eyeType = TFUtils.LoadString(dictionary, "EyeType");
-			studentJson3.stockings = TFUtils.LoadString(dictionary, "Stockings");
-			studentJson3.accessory = TFUtils.LoadString(dictionary, "Accessory");
-			studentJson3.info = TFUtils.LoadString(dictionary, "Info");
-			if (GameGlobals.LoveSick && studentJson3.name == "Mai Waifu")
+			StudentJson studentJson = array[num];
+			studentJson.name = TFUtils.LoadString(dictionary, "Name");
+			studentJson.gender = TFUtils.LoadInt(dictionary, "Gender");
+			studentJson.classID = TFUtils.LoadInt(dictionary, "Class");
+			studentJson.seat = TFUtils.LoadInt(dictionary, "Seat");
+			studentJson.club = (ClubType)TFUtils.LoadInt(dictionary, "Club");
+			studentJson.persona = (PersonaType)TFUtils.LoadInt(dictionary, "Persona");
+			studentJson.crush = TFUtils.LoadInt(dictionary, "Crush");
+			studentJson.breastSize = TFUtils.LoadFloat(dictionary, "BreastSize");
+			studentJson.strength = TFUtils.LoadInt(dictionary, "Strength");
+			studentJson.hairstyle = TFUtils.LoadString(dictionary, "Hairstyle");
+			studentJson.color = TFUtils.LoadString(dictionary, "Color");
+			studentJson.eyes = TFUtils.LoadString(dictionary, "Eyes");
+			studentJson.eyeType = TFUtils.LoadString(dictionary, "EyeType");
+			studentJson.stockings = TFUtils.LoadString(dictionary, "Stockings");
+			studentJson.accessory = TFUtils.LoadString(dictionary, "Accessory");
+			studentJson.info = TFUtils.LoadString(dictionary, "Info");
+			if (GameGlobals.LoveSick && studentJson.name == "Mai Waifu")
 			{
-				studentJson3.name = "Mai Wakabayashi";
+				studentJson.name = "Mai Wakabayashi";
 			}
-			if (OptionGlobals.HighPopulation && studentJson3.name == "Unknown")
+			if (OptionGlobals.HighPopulation && studentJson.name == "Unknown")
 			{
-				studentJson3.name = "Random";
+				studentJson.name = "Random";
 			}
 			float[] array3 = StudentJson.ConstructTempFloatArray(TFUtils.LoadString(dictionary, "ScheduleTime"));
 			string[] array4 = StudentJson.ConstructTempStringArray(TFUtils.LoadString(dictionary, "ScheduleDestination"));
 			string[] array5 = StudentJson.ConstructTempStringArray(TFUtils.LoadString(dictionary, "ScheduleAction"));
-			studentJson3.scheduleBlocks = new ScheduleBlock[array3.Length];
-			for (int k = 0; k < studentJson3.scheduleBlocks.Length; k++)
+			studentJson.scheduleBlocks = new ScheduleBlock[array3.Length];
+			for (int k = 0; k < studentJson.scheduleBlocks.Length; k++)
 			{
-				studentJson3.scheduleBlocks[k] = new ScheduleBlock(array3[k], array4[k], array5[k]);
+				studentJson.scheduleBlocks[k] = new ScheduleBlock(array3[k], array4[k], array5[k]);
 			}
-			studentJson3.success = true;
+			studentJson.success = true;
 		}
+		StudentJson studentJson2 = array[10];
+		studentJson2.name = "Reserved";
+		StudentJson studentJson3 = array[11];
+		studentJson3.name = "Reserved";
+		StudentJson studentJson4 = array[12];
+		studentJson3.name = "Reserved";
+		StudentJson studentJson5 = array[13];
+		studentJson3.name = "Reserved";
+		StudentJson studentJson6 = array[14];
+		studentJson3.name = "Reserved";
+		StudentJson studentJson7 = array[15];
+		studentJson3.name = "Reserved";
+		StudentJson studentJson8 = array[16];
+		studentJson3.name = "Reserved";
+		StudentJson studentJson9 = array[17];
+		studentJson3.name = "Reserved";
+		StudentJson studentJson10 = array[18];
+		studentJson3.name = "Reserved";
+		StudentJson studentJson11 = array[19];
+		studentJson3.name = "Reserved";
+		StudentJson studentJson12 = array[20];
+		studentJson3.name = "Reserved";
 		return array;
 	}
 

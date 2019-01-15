@@ -282,7 +282,7 @@ public class PickUpScript : MonoBehaviour
 		{
 			this.Yandere.NearBodies++;
 		}
-		this.Yandere.StudentManager.UpdateStudents();
+		this.Yandere.StudentManager.UpdateStudents(0);
 		this.MyRigidbody.isKinematic = true;
 		this.KinematicTimer = 0f;
 	}
@@ -336,6 +336,6 @@ public class PickUpScript : MonoBehaviour
 		{
 			this.Yandere.NearBodies--;
 		}
-		this.Yandere.StudentManager.UpdateStudents();
+		this.Yandere.StudentManager.UpdateStudents(0);
 	}
 }

@@ -254,7 +254,7 @@ public class RingEventScript : MonoBehaviour
 			this.EventStudent.InEvent = false;
 			this.EventStudent.Private = false;
 			this.EventSubtitle.text = string.Empty;
-			this.StudentManager.UpdateStudents();
+			this.StudentManager.UpdateStudents(0);
 		}
 		this.EventActive = false;
 		base.enabled = false;

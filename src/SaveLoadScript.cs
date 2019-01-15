@@ -87,6 +87,8 @@ public class SaveLoadScript : MonoBehaviour
 
 	public Transform WeaponBagParent;
 
+	public Transform LeftItemParent;
+
 	public Transform DefaultTarget;
 
 	public Transform ItemParent;
@@ -142,6 +144,8 @@ public class SaveLoadScript : MonoBehaviour
 	public GameObject ChaseCamera;
 
 	public GameObject PepperSpray;
+
+	public GameObject PinkSeifuku;
 
 	public GameObject BloodSpray;
 
@@ -430,6 +434,7 @@ public class SaveLoadScript : MonoBehaviour
 		this.MyRenderer = this.Student.MyRenderer;
 		this.Tears = this.Student.Tears;
 		this.WeaponBagParent = this.Student.WeaponBagParent;
+		this.LeftItemParent = this.Student.LeftItemParent;
 		this.DefaultTarget = this.Student.DefaultTarget;
 		this.ItemParent = this.Student.ItemParent;
 		this.WitnessPOV = this.Student.WitnessPOV;
@@ -458,6 +463,7 @@ public class SaveLoadScript : MonoBehaviour
 		this.CameraFlash = this.Student.CameraFlash;
 		this.ChaseCamera = this.Student.ChaseCamera;
 		this.PepperSpray = this.Student.PepperSpray;
+		this.PinkSeifuku = this.Student.PinkSeifuku;
 		this.BloodSpray = this.Student.BloodSpray;
 		this.Sketchbook = this.Student.Sketchbook;
 		this.SmartPhone = this.Student.SmartPhone;
@@ -535,6 +541,7 @@ public class SaveLoadScript : MonoBehaviour
 		this.Student.MyRenderer = this.MyRenderer;
 		this.Student.Tears = this.Tears;
 		this.Student.WeaponBagParent = this.WeaponBagParent;
+		this.Student.LeftItemParent = this.LeftItemParent;
 		this.Student.DefaultTarget = this.DefaultTarget;
 		this.Student.ItemParent = this.ItemParent;
 		this.Student.WitnessPOV = this.WitnessPOV;
@@ -563,6 +570,7 @@ public class SaveLoadScript : MonoBehaviour
 		this.Student.CameraFlash = this.CameraFlash;
 		this.Student.ChaseCamera = this.ChaseCamera;
 		this.Student.PepperSpray = this.PepperSpray;
+		this.Student.PinkSeifuku = this.PinkSeifuku;
 		this.Student.BloodSpray = this.BloodSpray;
 		this.Student.Sketchbook = this.Sketchbook;
 		this.Student.SmartPhone = this.SmartPhone;

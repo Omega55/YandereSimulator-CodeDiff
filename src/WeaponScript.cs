@@ -158,6 +158,10 @@ public class WeaponScript : MonoBehaviour
 		{
 			return "syringe";
 		}
+		if (this.Type == WeaponType.Weight)
+		{
+			return "weight";
+		}
 		Debug.LogError("Weapon type \"" + this.Type.ToString() + "\" not implemented.");
 		return string.Empty;
 	}
@@ -367,7 +371,7 @@ public class WeaponScript : MonoBehaviour
 				this.Yandere.Equipped = 3;
 				this.Yandere.EquippedWeapon = this;
 			}
-			this.Yandere.StudentManager.UpdateStudents();
+			this.Yandere.StudentManager.UpdateStudents(0);
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
 			this.Yandere.NearestPrompt = null;
@@ -455,7 +459,7 @@ public class WeaponScript : MonoBehaviour
 		}
 		this.Yandere.EquippedWeapon = null;
 		this.Yandere.Equipped = 0;
-		this.Yandere.StudentManager.UpdateStudents();
+		this.Yandere.StudentManager.UpdateStudents(0);
 		base.gameObject.SetActive(true);
 		base.transform.parent = null;
 		this.MyRigidbody.constraints = RigidbodyConstraints.None;

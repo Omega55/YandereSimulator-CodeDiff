@@ -18,7 +18,8 @@ public class PoisonScript : MonoBehaviour
 	{
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			this.Yandere.PossessPoison = true;
+			this.Yandere.Inventory.ChemicalPoison = true;
+			this.Yandere.StudentManager.UpdateAllBentos();
 			UnityEngine.Object.Destroy(base.gameObject);
 			UnityEngine.Object.Destroy(this.Bottle);
 		}

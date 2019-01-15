@@ -21,15 +21,21 @@ public class InventoryScript : MonoBehaviour
 
 	public bool Headset;
 
-	public bool EmeticPoison;
-
 	public bool LethalPoison;
 
+	public bool ChemicalPoison;
+
+	public bool EmeticPoison;
+
 	public bool RatPoison;
+
+	public bool HeadachePoison;
 
 	public bool Cigs;
 
 	public bool Ring;
+
+	public bool Soda;
 
 	public bool Rose;
 

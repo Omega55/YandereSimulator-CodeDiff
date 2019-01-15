@@ -349,6 +349,9 @@ public class TalkingScript : MonoBehaviour
 						PlayerGlobals.SetStudentFriend(this.S.StudentID, true);
 						this.S.Police.EndOfDay.NewFriends++;
 						this.S.Interaction = StudentInteractionType.Idle;
+						this.CalculateRepBonus();
+						this.S.Reputation.PendingRep += 1f + (float)this.S.RepBonus;
+						this.S.PendingRep += 1f + (float)this.S.RepBonus;
 					}
 					else if (this.S.TaskPhase == 4 || this.S.TaskPhase == 0)
 					{
@@ -887,6 +890,7 @@ public class TalkingScript : MonoBehaviour
 					{
 						this.S.DialogueWheel.PracticeWindow.Club = this.S.Club;
 						this.S.DialogueWheel.PracticeWindow.UpdateWindow();
+						this.S.DialogueWheel.PracticeWindow.ID = 1;
 						this.S.Subtitle.Label.text = string.Empty;
 						this.S.Interaction = StudentInteractionType.Idle;
 					}
@@ -1076,7 +1080,7 @@ public class TalkingScript : MonoBehaviour
 						this.S.Fed = true;
 					}
 					this.S.DialogueWheel.End();
-					this.S.StudentManager.UpdateStudents();
+					this.S.StudentManager.UpdateStudents(0);
 				}
 			}
 			else if (this.S.Interaction == StudentInteractionType.TaskInquiry)
@@ -1122,6 +1126,7 @@ public class TalkingScript : MonoBehaviour
 					this.S.DialogueWheel.TaskManager.UpdateTaskStatus();
 					this.S.Talking = false;
 					this.S.Waiting = false;
+					base.enabled = false;
 					if (!this.Fake && !this.S.StudentManager.CombatMinigame.Practice)
 					{
 						this.S.Pathfinding.canSearch = true;

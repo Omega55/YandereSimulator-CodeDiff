@@ -55,21 +55,6 @@ public class WelcomeScript : MonoBehaviour
 		{
 			SceneManager.LoadScene("VeryFunScene");
 		}
-		if (this.JSON.Students[6].Name != "Reserved" || this.JSON.Students[11].Name != "Reserved")
-		{
-			if (Application.CanStreamedLevelBeLoaded("FunScene"))
-			{
-				SceneManager.LoadScene("FunScene");
-			}
-			else if (Application.CanStreamedLevelBeLoaded("MoreFunScene"))
-			{
-				SceneManager.LoadScene("MoreFunScene");
-			}
-			else
-			{
-				Application.Quit();
-			}
-		}
 	}
 
 	private void Update()

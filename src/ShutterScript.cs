@@ -117,6 +117,8 @@ public class ShutterScript : MonoBehaviour
 
 	public AudioSource MyAudio;
 
+	public Transform SelfieRayParent;
+
 	public int OnlyPhotography
 	{
 		get
@@ -163,6 +165,14 @@ public class ShutterScript : MonoBehaviour
 
 	private void Update()
 	{
+		if (!this.Yandere.Selfie)
+		{
+			Debug.DrawRay(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward) * 10f, Color.green);
+		}
+		else
+		{
+			Debug.DrawRay(this.SmartphoneCamera.transform.position, this.SelfieRayParent.TransformDirection(Vector3.forward) * 10f, Color.green);
+		}
 		if (this.Snapping)
 		{
 			if (this.Close)
@@ -190,6 +200,7 @@ public class ShutterScript : MonoBehaviour
 					this.Yandere.PhonePromptBar.Show = false;
 					this.NotificationManager.SetActive(false);
 					this.HeartbeatCamera.SetActive(false);
+					this.Yandere.SelfieGuide.SetActive(false);
 					this.MainCamera.enabled = false;
 					this.PhotoIcons.SetActive(true);
 					this.SubPanel.SetActive(false);
@@ -229,7 +240,16 @@ public class ShutterScript : MonoBehaviour
 			this.Timer += Time.deltaTime;
 			if (this.Timer > 0.5f)
 			{
-				if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyPhotography))
+				Vector3 direction;
+				if (!this.Yandere.Selfie)
+				{
+					direction = this.SmartphoneCamera.transform.TransformDirection(Vector3.forward);
+				}
+				else
+				{
+					direction = this.SelfieRayParent.TransformDirection(Vector3.forward);
+				}
+				if (Physics.Raycast(this.SmartphoneCamera.transform.position, direction, out this.hit, float.PositiveInfinity, this.OnlyPhotography))
 				{
 					if (this.hit.collider.gameObject.name == "Face")
 					{
@@ -309,7 +329,7 @@ public class ShutterScript : MonoBehaviour
 					else if (this.hit.collider.gameObject.name == "Panties" || this.hit.collider.gameObject.name == "Skirt")
 					{
 						GameObject gameObject2 = this.hit.collider.gameObject.transform.root.gameObject;
-						if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyCharacters))
+						if (Physics.Raycast(this.SmartphoneCamera.transform.position, direction, out this.hit, float.PositiveInfinity, this.OnlyCharacters))
 						{
 							if (Vector3.Distance(this.Yandere.transform.position, gameObject2.transform.position) < 5f)
 							{
@@ -505,7 +525,16 @@ public class ShutterScript : MonoBehaviour
 		this.Nemesis = false;
 		this.NotFace = false;
 		this.Skirt = false;
-		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyPhotography))
+		Vector3 direction;
+		if (!this.Yandere.Selfie)
+		{
+			direction = this.SmartphoneCamera.transform.TransformDirection(Vector3.forward);
+		}
+		else
+		{
+			direction = this.SelfieRayParent.TransformDirection(Vector3.forward);
+		}
+		if (Physics.Raycast(this.SmartphoneCamera.transform.position, direction, out this.hit, float.PositiveInfinity, this.OnlyPhotography))
 		{
 			Debug.Log("Took a picture of " + this.hit.collider.gameObject.name);
 			Debug.Log("The root is " + this.hit.collider.gameObject.transform.root.name);
@@ -577,7 +606,7 @@ public class ShutterScript : MonoBehaviour
 				this.BullyX.SetActive(false);
 			}
 		}
-		if (Physics.Raycast(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward), out this.hit, float.PositiveInfinity, this.OnlyRagdolls) && this.hit.collider.gameObject.layer == 11)
+		if (Physics.Raycast(this.SmartphoneCamera.transform.position, direction, out this.hit, float.PositiveInfinity, this.OnlyRagdolls) && this.hit.collider.gameObject.layer == 11)
 		{
 			this.PhotoDescLabel.text = "Photo of: Corpse";
 			this.ViolenceX.SetActive(false);
@@ -770,6 +799,8 @@ public class ShutterScript : MonoBehaviour
 		Time.timeScale = 1f;
 		this.TakePhoto = false;
 		this.TookPhoto = false;
+		this.Yandere.PhonePromptBar.Panel.enabled = true;
+		this.Yandere.PhonePromptBar.Show = true;
 		this.PromptBar.ClearButtons();
 		this.PromptBar.Show = false;
 		if (this.NewMessage != null)
@@ -781,6 +812,7 @@ public class ShutterScript : MonoBehaviour
 			this.Yandere.MainCamera.clearFlags = CameraClearFlags.Skybox;
 			this.Yandere.MainCamera.farClipPlane = (float)OptionGlobals.DrawDistance;
 		}
+		this.Yandere.UpdateSelfieStatus();
 	}
 
 	public void Penalize()

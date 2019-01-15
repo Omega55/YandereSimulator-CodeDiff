@@ -12,6 +12,7 @@ public class TranquilizerScript : MonoBehaviour
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Yandere.Inventory.Tranquilizer = true;
+			this.Yandere.StudentManager.UpdateAllBentos();
 			this.Yandere.TheftTimer = 0.1f;
 			UnityEngine.Object.Destroy(base.gameObject);
 		}

@@ -42,7 +42,7 @@ public class GazerEyesScript : MonoBehaviour
 
 	private void Update()
 	{
-		this.StudentManager.UpdateStudents();
+		this.StudentManager.UpdateStudents(0);
 		if (!this.Attacking)
 		{
 			this.AnimTime += Time.deltaTime;

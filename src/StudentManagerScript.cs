@@ -690,7 +690,7 @@ public class StudentManagerScript : MonoBehaviour
 				{
 					this.DetermineVictim();
 				}
-				this.UpdateStudents();
+				this.UpdateStudents(0);
 				if (!OptionGlobals.RimLight)
 				{
 					this.QualityManager.RimLight();
@@ -922,7 +922,7 @@ public class StudentManagerScript : MonoBehaviour
 	public void SpawnStudent(int spawnID)
 	{
 		bool flag = false;
-		if (spawnID > 10 && spawnID < 21)
+		if (spawnID > 9 && spawnID < 21)
 		{
 			flag = true;
 		}
@@ -974,6 +974,10 @@ public class StudentManagerScript : MonoBehaviour
 			studentScript.StudentManager = this;
 			studentScript.StudentID = spawnID;
 			studentScript.JSON = this.JSON;
+			if (studentScript.Miyuki != null)
+			{
+				studentScript.Miyuki.Enemy = this.MiyukiCat;
+			}
 			if (this.AoT)
 			{
 				studentScript.AoT = true;
@@ -1000,11 +1004,17 @@ public class StudentManagerScript : MonoBehaviour
 		this.ForceSpawn = false;
 	}
 
-	public void UpdateStudents()
+	public void UpdateStudents(int SpecificStudent = 0)
 	{
 		this.ID = 2;
 		while (this.ID < this.Students.Length)
 		{
+			bool flag = false;
+			if (SpecificStudent != 0)
+			{
+				this.ID = SpecificStudent;
+				flag = true;
+			}
 			StudentScript studentScript = this.Students[this.ID];
 			if (studentScript != null)
 			{
@@ -1145,6 +1155,10 @@ public class StudentManagerScript : MonoBehaviour
 				}
 			}
 			this.ID++;
+			if (flag)
+			{
+				this.ID = this.Students.Length;
+			}
 		}
 		this.Container.UpdatePrompts();
 		this.TrashCan.UpdatePrompt();
@@ -1220,6 +1234,10 @@ public class StudentManagerScript : MonoBehaviour
 		{
 			this.SpawnStudent(this.SpawnID);
 			this.SpawnID++;
+		}
+		if (this.Clock.LateStudent)
+		{
+			this.Clock.ActivateLateStudent();
 		}
 		this.ID = 1;
 		while (this.ID < this.Students.Length)
@@ -1321,7 +1339,7 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			this.ID++;
 		}
-		this.UpdateStudents();
+		this.UpdateStudents(0);
 		Physics.SyncTransforms();
 	}
 
@@ -2102,6 +2120,21 @@ public class StudentManagerScript : MonoBehaviour
 			if (!this.NoBully[this.ID])
 			{
 				this.Graffiti[this.ID].SetActive(true);
+			}
+			this.ID++;
+		}
+	}
+
+	public void UpdateAllBentos()
+	{
+		this.ID = 1;
+		while (this.ID < this.Students.Length)
+		{
+			StudentScript studentScript = this.Students[this.ID];
+			if (studentScript != null)
+			{
+				studentScript.Bento.GetComponent<GenericBentoScript>().Prompt.Yandere = this.Yandere;
+				studentScript.Bento.GetComponent<GenericBentoScript>().UpdatePrompts();
 			}
 			this.ID++;
 		}

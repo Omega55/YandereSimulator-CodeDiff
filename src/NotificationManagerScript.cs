@@ -92,6 +92,10 @@ public class NotificationManagerScript : MonoBehaviour
 			{
 				NotificationType.Persona,
 				"Persona"
+			},
+			{
+				NotificationType.LackPoison,
+				"You do not possess the necessary poison"
 			}
 		};
 	}

@@ -5,13 +5,16 @@ public class AudioListenerScript : MonoBehaviour
 {
 	public Transform Target;
 
+	public Camera mainCamera;
+
+	private void Start()
+	{
+		this.mainCamera = Camera.main;
+	}
+
 	private void Update()
 	{
-		Camera main = Camera.main;
-		if (main != null)
-		{
-			base.transform.position = this.Target.position;
-			base.transform.eulerAngles = main.transform.eulerAngles;
-		}
+		base.transform.position = this.Target.position;
+		base.transform.eulerAngles = this.mainCamera.transform.eulerAngles;
 	}
 }

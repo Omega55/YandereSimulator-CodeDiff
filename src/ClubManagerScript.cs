@@ -335,8 +335,11 @@ public class ClubManagerScript : MonoBehaviour
 			this.Yandere.Talking = false;
 			this.Yandere.CanMove = false;
 			this.Yandere.ClubActivity = true;
-			this.Yandere.transform.position = new Vector3(42f, 1.3775f, 72f);
-			this.Yandere.transform.eulerAngles = new Vector3(0f, -90f, 0f);
+			if (!this.StudentManager.MemorialScene.gameObject.activeInHierarchy)
+			{
+				this.Yandere.transform.position = new Vector3(42f, 1.3775f, 72f);
+				this.Yandere.transform.eulerAngles = new Vector3(0f, -90f, 0f);
+			}
 		}
 		else if (this.Club == ClubType.Occult)
 		{

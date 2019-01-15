@@ -513,8 +513,7 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					else if (Input.GetKeyDown(KeyCode.Equals))
 					{
-						this.DelinquentManager.Timer -= 30f;
-						this.Clock.PresentTime += 30f;
+						this.Clock.PresentTime += 25f;
 						this.Window.SetActive(false);
 					}
 					else if (Input.GetKeyDown(KeyCode.Return))

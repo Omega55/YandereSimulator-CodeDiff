@@ -123,7 +123,7 @@ public class DumpsterLidScript : MonoBehaviour
 				this.StudentToGoMissing = this.Corpse.GetComponent<StudentScript>().StudentID;
 				UnityEngine.Object.Destroy(this.Corpse);
 				this.Fill = false;
-				this.Prompt.Yandere.StudentManager.UpdateStudents();
+				this.Prompt.Yandere.StudentManager.UpdateStudents(0);
 			}
 		}
 	}

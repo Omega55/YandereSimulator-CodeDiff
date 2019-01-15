@@ -80,6 +80,13 @@ public class NemesisScript : MonoBehaviour
 				gameObject5.SetActive(false);
 			}
 		}
+		foreach (GameObject gameObject6 in this.Cosmetic.Kerchiefs)
+		{
+			if (gameObject6 != null)
+			{
+				gameObject6.SetActive(false);
+			}
+		}
 		this.Difficulty = MissionModeGlobals.NemesisDifficulty;
 		this.Student.StudentManager = GameObject.Find("StudentManager").GetComponent<StudentManagerScript>();
 		this.Student.WitnessCamera = GameObject.Find("WitnessCamera").GetComponent<WitnessCameraScript>();

@@ -37,5 +37,6 @@ public enum StudentActionType
 	Miyuki,
 	Meeting,
 	Lyrics,
-	Practice
+	Practice,
+	Sew
 }

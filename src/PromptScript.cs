@@ -537,7 +537,7 @@ public class PromptScript : MonoBehaviour
 						{
 							if (this.Debugging)
 							{
-								Debug.Log("1.");
+								Debug.Log("Yandere-chan's raycast is not hitting this object.");
 							}
 							this.Hide();
 						}
@@ -546,7 +546,7 @@ public class PromptScript : MonoBehaviour
 					{
 						if (this.Debugging)
 						{
-							Debug.Log("2.");
+							Debug.Log("Yandere-chan is in a state which prevents her from being able to interact with propts.");
 						}
 						this.Hide();
 					}
@@ -555,7 +555,7 @@ public class PromptScript : MonoBehaviour
 				{
 					if (this.Debugging)
 					{
-						Debug.Log("3.");
+						Debug.Log("Yandere-chan is too far away.");
 					}
 					this.Hide();
 				}
@@ -564,7 +564,7 @@ public class PromptScript : MonoBehaviour
 			{
 				if (this.Debugging)
 				{
-					Debug.Log("4.");
+					Debug.Log("This object is not in view.");
 				}
 				this.DistanceSqr = float.PositiveInfinity;
 				this.Hide();
@@ -574,7 +574,7 @@ public class PromptScript : MonoBehaviour
 		{
 			if (this.Debugging)
 			{
-				Debug.Log("4.");
+				Debug.Log("The pause screen is showing.");
 			}
 			this.Hide();
 		}

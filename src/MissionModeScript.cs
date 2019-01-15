@@ -44,6 +44,8 @@ public class MissionModeScript : MonoBehaviour
 
 	public UILabel SubtitleLabel;
 
+	public UILabel LoadingLabel;
+
 	public UILabel SpottedLabel;
 
 	public UILabel TimeLabel;
@@ -824,6 +826,7 @@ public class MissionModeScript : MonoBehaviour
 					{
 						if (this.Destination == 1)
 						{
+							this.LoadingLabel.enabled = true;
 							this.ResetGlobals();
 							SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 						}

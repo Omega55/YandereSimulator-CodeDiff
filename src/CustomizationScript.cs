@@ -237,6 +237,7 @@ public class CustomizationScript : MonoBehaviour
 
 	private void Start()
 	{
+		Time.timeScale = 1f;
 		this.LoveSick = GameGlobals.LoveSick;
 		this.ApologyWindow.localPosition = new Vector3(1360f, this.ApologyWindow.localPosition.y, this.ApologyWindow.localPosition.z);
 		this.CustomizePanel.alpha = 0f;

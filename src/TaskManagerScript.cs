@@ -18,8 +18,17 @@ public class TaskManagerScript : MonoBehaviour
 		this.UpdateTaskStatus();
 	}
 
-	private void Update()
+	public void CheckTaskPickups()
 	{
+		if (TaskGlobals.GetTaskStatus(11) == 1 && this.Prompts[11].Circle[3] != null && this.Prompts[11].Circle[3].fillAmount == 0f)
+		{
+			if (this.StudentManager.Students[11] != null)
+			{
+				this.StudentManager.Students[11].TaskPhase = 5;
+			}
+			TaskGlobals.SetTaskStatus(11, 2);
+			UnityEngine.Object.Destroy(this.TaskObjects[11]);
+		}
 		if (TaskGlobals.GetTaskStatus(25) == 1 && this.Prompts[25].Circle[3].fillAmount == 0f)
 		{
 			if (this.StudentManager.Students[25] != null)
@@ -37,15 +46,6 @@ public class TaskManagerScript : MonoBehaviour
 			}
 			TaskGlobals.SetTaskStatus(37, 2);
 			UnityEngine.Object.Destroy(this.TaskObjects[37]);
-		}
-		if (TaskGlobals.GetTaskStatus(11) == 1 && this.Prompts[11].Circle[3] != null && this.Prompts[11].Circle[3].fillAmount == 0f)
-		{
-			if (this.StudentManager.Students[11] != null)
-			{
-				this.StudentManager.Students[11].TaskPhase = 5;
-			}
-			TaskGlobals.SetTaskStatus(11, 2);
-			UnityEngine.Object.Destroy(this.TaskObjects[11]);
 		}
 		if (!this.Yandere.Talking)
 		{
@@ -73,6 +73,17 @@ public class TaskManagerScript : MonoBehaviour
 
 	public void UpdateTaskStatus()
 	{
+		if (TaskGlobals.GetTaskStatus(8) == 1 && this.StudentManager.Students[8] != null)
+		{
+			if (this.StudentManager.Students[8].TaskPhase == 0)
+			{
+				this.StudentManager.Students[8].TaskPhase = 4;
+			}
+			if (this.Yandere.Inventory.Soda)
+			{
+				this.StudentManager.Students[8].TaskPhase = 5;
+			}
+		}
 		if (TaskGlobals.GetTaskStatus(25) == 1)
 		{
 			if (this.StudentManager.Students[25] != null)
@@ -90,7 +101,10 @@ public class TaskManagerScript : MonoBehaviour
 		}
 		if (TaskGlobals.GetTaskStatus(28) == 1 && this.StudentManager.Students[28] != null)
 		{
-			this.StudentManager.Students[28].TaskPhase = 4;
+			if (this.StudentManager.Students[28].TaskPhase == 0)
+			{
+				this.StudentManager.Students[28].TaskPhase = 4;
+			}
 			for (int i = 1; i < 26; i++)
 			{
 				if (TaskGlobals.GetKittenPhoto(i))

@@ -289,7 +289,7 @@ public class RagdollScript : MonoBehaviour
 							this.Yandere.DragState = 0;
 							this.Yandere.Ragdoll = base.gameObject;
 							this.Dragged = true;
-							this.Yandere.StudentManager.UpdateStudents();
+							this.Yandere.StudentManager.UpdateStudents(0);
 							if (this.MurderSuicide)
 							{
 								this.Police.MurderSuicideScene = false;
@@ -559,7 +559,7 @@ public class RagdollScript : MonoBehaviour
 		this.Yandere.RagdollPK.connectedBody = null;
 		this.Yandere.Dragging = false;
 		this.Yandere.Ragdoll = null;
-		this.Yandere.StudentManager.UpdateStudents();
+		this.Yandere.StudentManager.UpdateStudents(0);
 		this.SettleTimer = 0f;
 		this.Settled = false;
 		this.Dragged = false;

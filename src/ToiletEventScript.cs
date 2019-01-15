@@ -260,7 +260,7 @@ public class ToiletEventScript : MonoBehaviour
 			this.EventStudent.InEvent = false;
 			this.EventStudent.Private = false;
 			this.EventSubtitle.text = string.Empty;
-			this.StudentManager.UpdateStudents();
+			this.StudentManager.UpdateStudents(0);
 		}
 		this.StallDoor.gameObject.SetActive(true);
 		this.StallDoor.Prompt.enabled = true;

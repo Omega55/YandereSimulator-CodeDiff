@@ -311,7 +311,7 @@ public class PrayScript : MonoBehaviour
 
 	public void SpawnWeapons()
 	{
-		for (int i = 1; i < 5; i++)
+		for (int i = 1; i < 6; i++)
 		{
 			if (this.Weapon[i] != null)
 			{

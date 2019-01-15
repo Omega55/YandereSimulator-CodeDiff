@@ -36,6 +36,8 @@ public class PracticeWindowScript : MonoBehaviour
 
 	public UISprite Darkness;
 
+	public int Selected;
+
 	public int ClubID;
 
 	public int ID = 1;
@@ -63,23 +65,28 @@ public class PracticeWindowScript : MonoBehaviour
 		{
 			if (this.InputManager.TappedUp)
 			{
-				this.ID--;
+				this.Selected--;
 				this.UpdateHighlight();
 			}
 			else if (this.InputManager.TappedDown)
 			{
-				this.ID++;
+				this.Selected++;
 				this.UpdateHighlight();
 			}
 			if (this.ButtonUp)
 			{
 				if (Input.GetButtonDown("A"))
 				{
-					if (this.Texture[this.ID].color.r == 1f)
+					this.UpdateWindow();
+					if (this.Texture[this.Selected].color.r == 1f)
 					{
 						this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubPractice;
 						this.Yandere.TargetStudent.TalkTimer = 100f;
 						this.Yandere.TargetStudent.ClubPhase = 2;
+						if (this.Club == ClubType.MartialArts)
+						{
+							this.StudentManager.Students[this.ClubID - this.Selected].Distracted = true;
+						}
 						this.PromptBar.ClearButtons();
 						this.PromptBar.Show = false;
 						this.Window.SetActive(false);
@@ -168,7 +175,7 @@ public class PracticeWindowScript : MonoBehaviour
 					this.Yandere.transform.eulerAngles = this.SparSpot[1].eulerAngles;
 					this.Yandere.transform.position = this.SparSpot[1].position;
 					this.Yandere.CanMove = false;
-					this.SparringPartner = this.StudentManager.Students[this.ClubID - this.ID];
+					this.SparringPartner = this.StudentManager.Students[this.ClubID - this.Selected];
 					this.SparringPartner.CharacterAnimation.CrossFade(this.SparringPartner.IdleAnim);
 					this.SparringPartner.transform.eulerAngles = this.SparSpot[2].eulerAngles;
 					this.SparringPartner.transform.position = this.SparSpot[2].position;
@@ -210,29 +217,29 @@ public class PracticeWindowScript : MonoBehaviour
 					this.Timer += Time.deltaTime;
 					if (this.Timer > 1f)
 					{
-						if (this.ID == 1)
+						if (this.Selected == 1)
 						{
 							this.StudentManager.CombatMinigame.Difficulty = 0.5f;
 						}
-						else if (this.ID == 2)
+						else if (this.Selected == 2)
 						{
 							this.StudentManager.CombatMinigame.Difficulty = 0.75f;
 						}
-						else if (this.ID == 3)
+						else if (this.Selected == 3)
 						{
 							this.StudentManager.CombatMinigame.Difficulty = 1f;
 						}
-						else if (this.ID == 4)
+						else if (this.Selected == 4)
 						{
 							this.StudentManager.CombatMinigame.Difficulty = 1.5f;
 						}
-						else if (this.ID == 5)
+						else if (this.Selected == 5)
 						{
 							this.StudentManager.CombatMinigame.Difficulty = 2f;
 						}
-						this.StudentManager.Students[this.ClubID - this.ID].Threatened = true;
-						this.StudentManager.Students[this.ClubID - this.ID].Alarmed = true;
-						this.StudentManager.Students[this.ClubID - this.ID].enabled = true;
+						this.StudentManager.Students[this.ClubID - this.Selected].Threatened = true;
+						this.StudentManager.Students[this.ClubID - this.Selected].Alarmed = true;
+						this.StudentManager.Students[this.ClubID - this.Selected].enabled = true;
 						this.FadeIn = false;
 						this.Timer = 0f;
 					}
@@ -288,6 +295,7 @@ public class PracticeWindowScript : MonoBehaviour
 		else if (this.Club == ClubType.MartialArts)
 		{
 			this.ClubID = 51;
+			this.ID = 1;
 			while (this.ID < 6)
 			{
 				string url = string.Concat(new string[]
@@ -324,7 +332,6 @@ public class PracticeWindowScript : MonoBehaviour
 			}
 			this.Texture[5].color = new Color(1f, 1f, 1f, 1f);
 			this.Label[5].color = new Color(0f, 0f, 0f, 1f);
-			this.ID = 1;
 		}
 		this.Window.SetActive(true);
 		this.UpdateHighlight();
@@ -332,14 +339,14 @@ public class PracticeWindowScript : MonoBehaviour
 
 	public void UpdateHighlight()
 	{
-		if (this.ID < 1)
+		if (this.Selected < 1)
 		{
-			this.ID = 5;
+			this.Selected = 5;
 		}
-		else if (this.ID > 5)
+		else if (this.Selected > 5)
 		{
-			this.ID = 1;
+			this.Selected = 1;
 		}
-		this.Highlight.localPosition = new Vector3(0f, (float)(660 - 220 * this.ID), 0f);
+		this.Highlight.localPosition = new Vector3(0f, (float)(660 - 220 * this.Selected), 0f);
 	}
 }

@@ -308,6 +308,19 @@ public class QualityManagerScript : MonoBehaviour
 			OptionGlobals.LowDetailStudents = 10;
 		}
 		this.StudentManager.LowDetailThreshold = OptionGlobals.LowDetailStudents * 10;
+		bool flag = (float)this.StudentManager.LowDetailThreshold > 0f;
+		for (int i = 1; i < 101; i++)
+		{
+			if (this.StudentManager.Students[i] != null)
+			{
+				this.StudentManager.Students[i].LowPoly.enabled = flag;
+				if (!flag && this.StudentManager.Students[i].LowPoly.MyMesh.enabled)
+				{
+					this.StudentManager.Students[i].LowPoly.MyMesh.enabled = false;
+					this.StudentManager.Students[i].MyRenderer.enabled = true;
+				}
+			}
+		}
 	}
 
 	public void UpdateDrawDistance()

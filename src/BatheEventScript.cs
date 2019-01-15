@@ -176,7 +176,7 @@ public class BatheEventScript : MonoBehaviour
 			}
 			this.EventStudent.InEvent = false;
 			this.EventSubtitle.text = string.Empty;
-			this.StudentManager.UpdateStudents();
+			this.StudentManager.UpdateStudents(0);
 		}
 		this.EventActive = false;
 		base.enabled = false;

@@ -83,7 +83,30 @@ public class GiggleScript : MonoBehaviour
 							this.Student.Cigarette.SetActive(false);
 							this.Student.Lighter.SetActive(false);
 						}
+						bool flag = false;
+						if (this.Student.Bento.activeInHierarchy)
+						{
+							flag = true;
+						}
 						this.Student.EmptyHands();
+						if (flag)
+						{
+							GenericBentoScript component = this.Student.Bento.GetComponent<GenericBentoScript>();
+							component.enabled = true;
+							component.Prompt.enabled = true;
+							this.Student.Bento.SetActive(true);
+							this.Student.Bento.transform.parent = this.Student.transform;
+							if (this.Student.Male)
+							{
+								this.Student.Bento.transform.localPosition = new Vector3(0f, 0.4266666f, -0.075f);
+							}
+							else
+							{
+								this.Student.Bento.transform.localPosition = new Vector3(0f, 0.461f, -0.075f);
+							}
+							this.Student.Bento.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+							this.Student.Bento.transform.parent = null;
+						}
 					}
 					this.Distracted = true;
 				}

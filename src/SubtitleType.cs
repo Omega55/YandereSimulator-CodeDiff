@@ -162,6 +162,7 @@ public enum SubtitleType
 	StudentStay,
 	Task6Line,
 	Task7Line,
+	Task8Line,
 	Task11Line,
 	Task13Line,
 	Task14Line,
