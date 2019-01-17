@@ -532,6 +532,8 @@ public static class AnimNames
 
 	public const string MalePinDown01 = "pinDown_01";
 
+	public const string MalePoisonDeath = "poisonDeath_00";
+
 	public const string MalePose03 = "pose_03";
 
 	public const string MaleSadFace = "sadFace_00";
@@ -553,6 +555,8 @@ public static class AnimNames
 	public const string MaleSit01 = "sit_01";
 
 	public const string MaleSit04 = "sit_04";
+
+	public const string MaleStomachPainWalk = "stomachPainWalk_00";
 
 	public const string MaleStorePower20 = "storepower_20";
 

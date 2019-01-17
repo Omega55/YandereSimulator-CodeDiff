@@ -2143,12 +2143,15 @@ public class YandereScript : MonoBehaviour
 							}
 							if (this.CrawlTimer > 0.5f)
 							{
-								this.EmptyHands();
-								this.Obscurance.enabled = false;
-								this.YandereVision = false;
-								this.Stance.Current = StanceType.Crawling;
-								this.CrawlTimer = 0f;
-								this.Crawl();
+								if (!this.Selfie)
+								{
+									this.EmptyHands();
+									this.Obscurance.enabled = false;
+									this.YandereVision = false;
+									this.Stance.Current = StanceType.Crawling;
+									this.CrawlTimer = 0f;
+									this.Crawl();
+								}
 							}
 							else if (Input.GetButtonUp("RS") && !this.CrouchButtonDown && !this.CameFromCrouch)
 							{
@@ -6459,6 +6462,10 @@ public class YandereScript : MonoBehaviour
 		}
 		else
 		{
+			if (this.Stance.Current == StanceType.Crawling)
+			{
+				this.Stance.Current = StanceType.Crouching;
+			}
 			this.Smartphone.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
 			this.UpdateAccessory();
 			this.UpdateHair();

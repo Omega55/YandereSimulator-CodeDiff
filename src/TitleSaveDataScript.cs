@@ -76,7 +76,7 @@ public class TitleSaveDataScript : MonoBehaviour
 		{
 			this.EmptyFile.SetActive(true);
 			this.Data.SetActive(false);
-			this.Blood.mainTexture = null;
+			this.Blood.enabled = false;
 		}
 	}
 }

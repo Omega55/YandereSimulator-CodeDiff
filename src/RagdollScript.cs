@@ -645,6 +645,11 @@ public class RagdollScript : MonoBehaviour
 			this.Student.LiquidProjector.material.mainTexture = this.Student.BloodTexture;
 			for (int i = 0; i < this.BodyParts.Length; i++)
 			{
+				if (this.Decapitated)
+				{
+					i++;
+					this.Decapitated = false;
+				}
 				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.BodyParts[i], this.SpawnPoints[i].position, Quaternion.identity);
 				gameObject.transform.eulerAngles = this.SpawnPoints[i].eulerAngles;
 				gameObject.GetComponent<BodyPartScript>().StudentID = this.StudentID;

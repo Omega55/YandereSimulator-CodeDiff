@@ -570,6 +570,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool SawMask;
 
+	public bool Sedated;
+
 	public bool Spawned;
 
 	public bool Started;
@@ -1133,6 +1135,8 @@ public class StudentScript : MonoBehaviour
 	public string PlateEatAnim = string.Empty;
 
 	public string PrepareFoodAnim = string.Empty;
+
+	public string PoisonDeathAnim = string.Empty;
 
 	public string[] CleanAnims;
 
@@ -2904,6 +2908,11 @@ public class StudentScript : MonoBehaviour
 						scheduleBlock2.action = "Sunbathe";
 						this.GetDestinations();
 					}
+					if (this.Sedated)
+					{
+						this.SprintAnim = this.OriginalSprintAnim;
+						this.Sedated = false;
+					}
 					this.CurrentAction = this.Actions[this.Phase];
 					this.CurrentDestination = this.Destinations[this.Phase];
 					this.Pathfinding.target = this.Destinations[this.Phase];
@@ -2936,6 +2945,7 @@ public class StudentScript : MonoBehaviour
 					if (this.Male)
 					{
 						this.Cosmetic.MyRenderer.materials[this.Cosmetic.FaceID].SetFloat("_BlendAmount", 0f);
+						this.PinkSeifuku.SetActive(false);
 					}
 					if (this.StudentID == 81)
 					{
@@ -4396,8 +4406,24 @@ public class StudentScript : MonoBehaviour
 									this.Chopsticks[1].SetActive(true);
 									this.Bento.SetActive(true);
 									this.Lid.SetActive(false);
+									GenericBentoScript component = this.Bento.GetComponent<GenericBentoScript>();
+									if (component.Tampered)
+									{
+										if (component.Emetic)
+										{
+											this.Emetic = true;
+										}
+										else if (component.Lethal)
+										{
+											this.Lethal = true;
+										}
+										else if (component.Tranquil)
+										{
+											this.Sedated = true;
+										}
+									}
 								}
-								if (!this.Emetic && !this.Lethal)
+								if (!this.Emetic && !this.Lethal && !this.Sedated)
 								{
 									this.CharacterAnimation.CrossFade(this.EatAnim);
 									if (this.FollowTarget != null && (double)this.FollowTarget.transform.position.x > 6.5)
@@ -4419,43 +4445,62 @@ public class StudentScript : MonoBehaviour
 									}
 									if (this.CharacterAnimation[this.EmeticAnim].time >= this.CharacterAnimation[this.EmeticAnim].length)
 									{
-										this.WalkAnim = "f02_stomachPainWalk_00";
 										this.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
-										this.Pathfinding.target = this.StudentManager.FemaleVomitSpot;
-										this.CurrentDestination = this.StudentManager.FemaleVomitSpot;
+										if (this.Male)
+										{
+											this.WalkAnim = "stomachPainWalk_00";
+											this.Pathfinding.target = this.StudentManager.MaleVomitSpot;
+											this.CurrentDestination = this.StudentManager.MaleVomitSpot;
+										}
+										else
+										{
+											this.WalkAnim = "f02_stomachPainWalk_00";
+											this.Pathfinding.target = this.StudentManager.FemaleVomitSpot;
+											this.CurrentDestination = this.StudentManager.FemaleVomitSpot;
+										}
 										if (this.StudentID == 6)
 										{
 											this.Pathfinding.target = this.StudentManager.AltFemaleVomitSpot;
 											this.CurrentDestination = this.StudentManager.AltFemaleVomitSpot;
 										}
+										this.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
 										this.CharacterAnimation.CrossFade(this.WalkAnim);
-										this.Pathfinding.canSearch = true;
 										this.DistanceToDestination = 100f;
+										this.Pathfinding.canSearch = true;
 										this.Pathfinding.canMove = true;
 										this.Pathfinding.speed = 2f;
-										this.Routine = false;
 										this.Vomiting = true;
+										this.Routine = false;
 										this.Private = true;
 										this.Chopsticks[0].SetActive(false);
 										this.Chopsticks[1].SetActive(false);
 										this.Bento.SetActive(false);
 									}
 								}
-								else
+								else if (this.Lethal)
 								{
 									if (!this.Distracted)
 									{
 										this.StudentManager.Students[1].CharacterAnimation.CrossFade("witnessPoisoning_00");
 										this.StudentManager.Students[1].Distracted = true;
 										this.StudentManager.Students[1].Routine = false;
+										if (this.Male)
+										{
+											this.CharacterAnimation.CrossFade("poisonDeath_00");
+											this.PoisonDeathAnim = "poisonDeath_00";
+										}
+										else
+										{
+											this.CharacterAnimation.CrossFade("f02_poisonDeath_00");
+											this.PoisonDeathAnim = "f02_poisonDeath_00";
+										}
 										this.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
-										this.CharacterAnimation.CrossFade("f02_poisonDeath_00");
 										this.Ragdoll.Poisoned = true;
 										this.Distracted = true;
 										this.Prompt.Hide();
 										this.Prompt.enabled = false;
 									}
-									if (this.CharacterAnimation["f02_poisonDeath_00"].time >= 17.5f && this.Bento.activeInHierarchy)
+									if (this.CharacterAnimation[this.PoisonDeathAnim].time >= 17.5f && this.Bento.activeInHierarchy)
 									{
 										this.StudentManager.Students[1].Chopsticks[0].SetActive(false);
 										this.StudentManager.Students[1].Chopsticks[1].SetActive(false);
@@ -4464,10 +4509,54 @@ public class StudentScript : MonoBehaviour
 										this.Chopsticks[1].SetActive(false);
 										this.Bento.SetActive(false);
 									}
-									if (this.CharacterAnimation["f02_poisonDeath_00"].time >= this.CharacterAnimation["f02_poisonDeath_00"].length)
+									if (this.CharacterAnimation[this.PoisonDeathAnim].time >= this.CharacterAnimation[this.PoisonDeathAnim].length)
 									{
 										this.BecomeRagdoll();
 										this.DeathType = DeathType.Poison;
+									}
+								}
+								else if (this.Sedated)
+								{
+									if (!this.Distracted)
+									{
+										this.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
+										this.CharacterAnimation.CrossFade(this.EmeticAnim);
+										this.Distracted = true;
+										this.CanTalk = false;
+									}
+									if (this.CharacterAnimation[this.EmeticAnim].time >= this.CharacterAnimation[this.EmeticAnim].length)
+									{
+										this.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
+										if (this.Male)
+										{
+											this.SprintAnim = "stomachPainWalk_00";
+											this.Pathfinding.target = this.StudentManager.MaleRestSpot;
+											this.CurrentDestination = this.StudentManager.MaleRestSpot;
+										}
+										else
+										{
+											this.SprintAnim = "f02_stomachPainWalk_00";
+											this.Pathfinding.target = this.StudentManager.MaleRestSpot;
+											this.CurrentDestination = this.StudentManager.MaleRestSpot;
+										}
+										this.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
+										this.CharacterAnimation.CrossFade(this.SprintAnim);
+										this.RelaxAnim = "infirmaryRest_00";
+										this.DistanceToDestination = 100f;
+										this.Pathfinding.canSearch = true;
+										this.Pathfinding.canMove = true;
+										this.Pathfinding.speed = 2f;
+										this.Distracted = true;
+										this.Private = true;
+										ScheduleBlock scheduleBlock4 = this.ScheduleBlocks[4];
+										scheduleBlock4.destination = "InfirmaryBed";
+										scheduleBlock4.action = "Relax";
+										this.GetDestinations();
+										this.CurrentDestination = this.Destinations[this.Phase];
+										this.Pathfinding.target = this.Destinations[this.Phase];
+										this.Chopsticks[0].SetActive(false);
+										this.Chopsticks[1].SetActive(false);
+										this.Bento.SetActive(false);
 									}
 								}
 							}
@@ -4721,9 +4810,9 @@ public class StudentScript : MonoBehaviour
 								else if (this.GraffitiPhase == 4)
 								{
 									this.DistanceToDestination = 100f;
-									ScheduleBlock scheduleBlock4 = this.ScheduleBlocks[2];
-									scheduleBlock4.destination = "Patrol";
-									scheduleBlock4.action = "Patrol";
+									ScheduleBlock scheduleBlock5 = this.ScheduleBlocks[2];
+									scheduleBlock5.destination = "Patrol";
+									scheduleBlock5.action = "Patrol";
 									this.GetDestinations();
 									this.CurrentDestination = this.Destinations[this.Phase];
 									this.Pathfinding.target = this.Destinations[this.Phase];
@@ -4748,9 +4837,9 @@ public class StudentScript : MonoBehaviour
 									}
 									if (this.StudentManager.Students[81] == null)
 									{
-										ScheduleBlock scheduleBlock5 = this.ScheduleBlocks[4];
-										scheduleBlock5.destination = "Patrol";
-										scheduleBlock5.action = "Patrol";
+										ScheduleBlock scheduleBlock6 = this.ScheduleBlocks[4];
+										scheduleBlock6.destination = "Patrol";
+										scheduleBlock6.action = "Patrol";
 										this.GetDestinations();
 										this.CurrentDestination = this.Destinations[this.Phase];
 										this.Pathfinding.target = this.Destinations[this.Phase];
@@ -4799,9 +4888,9 @@ public class StudentScript : MonoBehaviour
 											else if (this.BullyPhase == 4)
 											{
 												this.StudentManager.Students[this.StudentManager.VictimID].Routine = true;
-												ScheduleBlock scheduleBlock6 = this.ScheduleBlocks[4];
-												scheduleBlock6.destination = "LunchSpot";
-												scheduleBlock6.action = "Wait";
+												ScheduleBlock scheduleBlock7 = this.ScheduleBlocks[4];
+												scheduleBlock7.destination = "LunchSpot";
+												scheduleBlock7.action = "Wait";
 												this.GetDestinations();
 												this.CurrentDestination = this.Destinations[this.Phase];
 												this.Pathfinding.target = this.Destinations[this.Phase];
@@ -4835,9 +4924,9 @@ public class StudentScript : MonoBehaviour
 											if (this.CharacterAnimation["f02_bullyLaugh_00"].time >= this.CharacterAnimation["f02_bullyLaugh_00"].length || this.StudentManager.Students[81].BullyPhase == 4 || this.BullyPhase == 4)
 											{
 												this.DistanceToDestination = 100f;
-												ScheduleBlock scheduleBlock7 = this.ScheduleBlocks[4];
-												scheduleBlock7.destination = "Patrol";
-												scheduleBlock7.action = "Patrol";
+												ScheduleBlock scheduleBlock8 = this.ScheduleBlocks[4];
+												scheduleBlock8.destination = "Patrol";
+												scheduleBlock8.action = "Patrol";
 												this.GetDestinations();
 												this.CurrentDestination = this.Destinations[this.Phase];
 												this.Pathfinding.target = this.Destinations[this.Phase];
@@ -4849,9 +4938,9 @@ public class StudentScript : MonoBehaviour
 								else
 								{
 									this.DistanceToDestination = 100f;
-									ScheduleBlock scheduleBlock8 = this.ScheduleBlocks[4];
-									scheduleBlock8.destination = "Patrol";
-									scheduleBlock8.action = "Patrol";
+									ScheduleBlock scheduleBlock9 = this.ScheduleBlocks[4];
+									scheduleBlock9.destination = "Patrol";
+									scheduleBlock9.action = "Patrol";
 									this.GetDestinations();
 									this.CurrentDestination = this.Destinations[this.Phase];
 									this.Pathfinding.target = this.Destinations[this.Phase];
@@ -6454,7 +6543,7 @@ public class StudentScript : MonoBehaviour
 								this.CharacterAnimation.CrossFade(this.WalkAnim);
 								this.HuntTarget.MoveTowardsTarget(base.transform.position + base.transform.forward * 0.01f);
 							}
-							if (this.HuntTarget.Dying)
+							if (this.HuntTarget.Dying || this.HuntTarget.Ragdoll.enabled)
 							{
 								this.Hunting = false;
 								this.Suicide = true;
@@ -6477,9 +6566,9 @@ public class StudentScript : MonoBehaviour
 									this.MyController.radius = 0f;
 									this.Broken.Done = true;
 									AudioSource.PlayClipAtPoint(this.MurderSuicideSounds, base.transform.position + new Vector3(0f, 1f, 0f));
-									AudioSource component = base.GetComponent<AudioSource>();
-									component.clip = this.MurderSuicideKiller;
-									component.Play();
+									AudioSource component2 = base.GetComponent<AudioSource>();
+									component2.clip = this.MurderSuicideKiller;
+									component2.Play();
 									if (this.HuntTarget.Shoving)
 									{
 										this.Yandere.CannotRecover = false;
@@ -6503,6 +6592,7 @@ public class StudentScript : MonoBehaviour
 									this.HuntTarget.Fleeing = false;
 									this.HuntTarget.Routine = false;
 									this.HuntTarget.Shoving = false;
+									this.HuntTarget.Tripped = false;
 									this.HuntTarget.Wet = false;
 									this.HuntTarget.Prompt.Hide();
 									this.HuntTarget.Prompt.enabled = false;
@@ -6964,15 +7054,15 @@ public class StudentScript : MonoBehaviour
 				if (this.PatrolTimer > 5f)
 				{
 					this.StudentManager.CommunalLocker.RivalPhone.gameObject.SetActive(false);
-					ScheduleBlock scheduleBlock9 = this.ScheduleBlocks[2];
-					scheduleBlock9.destination = "Hangout";
-					scheduleBlock9.action = "Hangout";
-					ScheduleBlock scheduleBlock10 = this.ScheduleBlocks[4];
-					scheduleBlock10.destination = "LunchSpot";
-					scheduleBlock10.action = "Eat";
-					ScheduleBlock scheduleBlock11 = this.ScheduleBlocks[7];
-					scheduleBlock11.destination = "Hangout";
-					scheduleBlock11.action = "Hangout";
+					ScheduleBlock scheduleBlock10 = this.ScheduleBlocks[2];
+					scheduleBlock10.destination = "Hangout";
+					scheduleBlock10.action = "Hangout";
+					ScheduleBlock scheduleBlock11 = this.ScheduleBlocks[4];
+					scheduleBlock11.destination = "LunchSpot";
+					scheduleBlock11.action = "Eat";
+					ScheduleBlock scheduleBlock12 = this.ScheduleBlocks[7];
+					scheduleBlock12.destination = "Hangout";
+					scheduleBlock12.action = "Hangout";
 					this.GetDestinations();
 					Array.Copy(this.OriginalActions, this.Actions, this.OriginalActions.Length);
 					this.CurrentDestination = this.Destinations[this.Phase];
@@ -9469,6 +9559,7 @@ public class StudentScript : MonoBehaviour
 				this.Routine = true;
 				this.Emetic = false;
 				this.VomitPhase = 0;
+				this.Phase++;
 				this.Pathfinding.target = this.Destinations[this.Phase];
 				this.CurrentDestination = this.Destinations[this.Phase];
 				this.DistanceToDestination = 100f;
@@ -10934,6 +11025,10 @@ public class StudentScript : MonoBehaviour
 			else if (scheduleBlock2.destination == "Meeting")
 			{
 				this.Destinations[this.ID] = this.StudentManager.MeetingSpots[this.StudentID].transform;
+			}
+			else if (scheduleBlock2.destination == "InfirmaryBed")
+			{
+				this.Destinations[this.ID] = this.StudentManager.MaleRestSpot;
 			}
 			if (scheduleBlock2.action == "Stand")
 			{

@@ -267,6 +267,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform SuitorLocker;
 
+	public Transform MaleRestSpot;
+
 	public Transform RomanceSpot;
 
 	public Transform BrokenSpot;
@@ -1272,10 +1274,14 @@ public class StudentManagerScript : MonoBehaviour
 					studentScript.Distracted = false;
 					studentScript.Ignoring = false;
 					studentScript.Pushable = false;
-					studentScript.CanTalk = true;
-					studentScript.Routine = true;
+					studentScript.Vomiting = false;
+					studentScript.Private = false;
+					studentScript.Sedated = false;
+					studentScript.Emetic = false;
 					studentScript.Hurry = false;
 					studentScript.Safe = false;
+					studentScript.CanTalk = true;
+					studentScript.Routine = true;
 					if (studentScript.Wet)
 					{
 						this.CommunalLocker.Student = null;
@@ -1388,6 +1394,7 @@ public class StudentManagerScript : MonoBehaviour
 					studentScript.Spawned = true;
 					studentScript.Routine = true;
 					studentScript.Safe = false;
+					studentScript.SprintAnim = studentScript.OriginalSprintAnim;
 					if (studentScript.ClubAttire)
 					{
 						studentScript.ChangeSchoolwear();

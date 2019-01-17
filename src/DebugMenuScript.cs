@@ -40,6 +40,8 @@ public class DebugMenuScript : MonoBehaviour
 
 	public GameObject CircularSaw;
 
+	public GameObject DebugPoisons;
+
 	public GameObject Knife;
 
 	public Transform[] TeleportSpot;
@@ -360,6 +362,7 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					else if (Input.GetKeyDown(KeyCode.P))
 					{
+						this.DebugPoisons.SetActive(true);
 						PlayerGlobals.PantyShots += 20;
 						this.Window.SetActive(false);
 					}
