@@ -600,7 +600,7 @@ public class PromptScript : MonoBehaviour
 		if (!this.Hidden)
 		{
 			this.Hidden = true;
-			if (this.YandereObject != null)
+			if (this.Yandere != null)
 			{
 				if (this.Yandere.NearestPrompt == this)
 				{

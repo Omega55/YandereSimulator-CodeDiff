@@ -11,7 +11,9 @@ public class RestScript : MonoBehaviour
 	{
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			if (!this.Portal.Prompt.enabled)
+			this.Portal.CanAttendClass = true;
+			this.Portal.CheckForProblems();
+			if (!this.Portal.CanAttendClass)
 			{
 				this.Prompt.Circle[0].fillAmount = 1f;
 			}

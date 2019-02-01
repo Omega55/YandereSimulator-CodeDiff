@@ -134,6 +134,17 @@ public class DebugMenuScript : MonoBehaviour
 					StudentGlobals.MaleUniform = 6;
 					SceneManager.LoadScene("LoadingScene");
 				}
+				else if (Input.GetKeyDown(KeyCode.F7))
+				{
+					this.ID = 1;
+					while (this.ID < 8)
+					{
+						this.StudentManager.DrinkingFountains[this.ID].PowerSwitch.PowerOutlet.SabotagedOutlet.SetActive(true);
+						this.StudentManager.DrinkingFountains[this.ID].Puddle.SetActive(true);
+						this.ID++;
+					}
+					this.Window.SetActive(false);
+				}
 				else if (!Input.GetKeyDown(KeyCode.F12))
 				{
 					if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -639,7 +650,7 @@ public class DebugMenuScript : MonoBehaviour
 					this.Yandere.PantyAttacher.newRenderer.enabled = false;
 				}
 			}
-			if (this.Yandere.MiyukiCostume.activeInHierarchy)
+			if (this.Yandere.MiyukiCostume.activeInHierarchy || this.Yandere.Rain.activeInHierarchy)
 			{
 				this.Yandere.PantyAttacher.newRenderer.enabled = false;
 				this.Yandere.MyRenderer.materials[1].SetTexture("_OverlayTex", this.PantyCensorTexture);
@@ -668,6 +679,7 @@ public class DebugMenuScript : MonoBehaviour
 				this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount1", 0f);
 				this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
 				this.Yandere.PantyAttacher.newRenderer.enabled = false;
+				this.EasterEggCheck();
 			}
 			if (this.Yandere.MiyukiCostume.activeInHierarchy)
 			{
@@ -680,7 +692,7 @@ public class DebugMenuScript : MonoBehaviour
 
 	public void EasterEggCheck()
 	{
-		if (this.Yandere.BanchoActive || this.Yandere.Sans)
+		if (this.Yandere.BanchoActive || this.Yandere.Sans || this.Yandere.Raincoat.activeInHierarchy || this.Yandere.KLKSword.activeInHierarchy)
 		{
 			this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
 			this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);

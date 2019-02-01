@@ -19,6 +19,7 @@ public enum StudentWitnessType
 	Theft,
 	Trespassing,
 	Violence,
+	Poisoning,
 	Weapon,
 	WeaponAndBlood,
 	WeaponAndBloodAndInsanity,

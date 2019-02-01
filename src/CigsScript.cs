@@ -13,6 +13,7 @@ public class CigsScript : MonoBehaviour
 			this.Prompt.Yandere.Inventory.Schemes.UpdateInstructions();
 			this.Prompt.Yandere.Inventory.Cigs = true;
 			UnityEngine.Object.Destroy(base.gameObject);
+			this.Prompt.Yandere.StudentManager.TaskManager.CheckTaskPickups();
 		}
 	}
 }

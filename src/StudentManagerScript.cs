@@ -53,6 +53,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public TaskManagerScript TaskManager;
 
+	public HeadmasterScript Headmaster;
+
 	public ReputationScript Reputation;
 
 	public WeaponScript FragileWeapon;
@@ -74,6 +76,8 @@ public class StudentManagerScript : MonoBehaviour
 	public HologramScript Holograms;
 
 	public RobotArmScript RobotArms;
+
+	public PickUpScript Flashlight;
 
 	public FountainScript Fountain;
 
@@ -116,8 +120,6 @@ public class StudentManagerScript : MonoBehaviour
 	public OfferHelpScript OfferHelp;
 
 	public Transform AltFemaleVomitSpot;
-
-	public Transform FemaleVomitSpot;
 
 	public ListScript SearchPatrols;
 
@@ -205,6 +207,20 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform[] Plates;
 
+	public Transform[] FemaleVomitSpots;
+
+	public Transform[] MaleVomitSpots;
+
+	public Transform[] FemaleWashSpots;
+
+	public Transform[] MaleWashSpots;
+
+	public DoorScript[] FemaleToiletDoors;
+
+	public DoorScript[] MaleToiletDoors;
+
+	public DrinkingFountainScript[] DrinkingFountains;
+
 	public bool[] SeatsTaken11;
 
 	public bool[] SeatsTaken12;
@@ -241,9 +257,15 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform FemaleStalkSpot;
 
+	public Transform FemaleVomitSpot;
+
+	public Transform MedicineCabinet;
+
 	public Transform ConfessionSpot;
 
 	public Transform CorpseLocation;
+
+	public Transform FemaleRestSpot;
 
 	public Transform FemaleWashSpot;
 
@@ -252,6 +274,8 @@ public class StudentManagerScript : MonoBehaviour
 	public Transform AirGuitarSpot;
 
 	public Transform FastBatheSpot;
+
+	public Transform InfirmarySeat;
 
 	public Transform MaleStalkSpot;
 
@@ -323,6 +347,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public GameObject RivalChan;
 
+	public GameObject Medicine;
+
 	public GameObject DrumSet;
 
 	public GameObject Flowers;
@@ -335,11 +361,17 @@ public class StudentManagerScript : MonoBehaviour
 
 	public int StudentsSpawned;
 
+	public int SedatedStudents;
+
 	public int StudentsTotal = 13;
 
 	public int TeachersTotal = 6;
 
 	public int NPCsSpawned;
+
+	public int SleuthPhase = 1;
+
+	public int DramaPhase = 1;
 
 	public int NPCsTotal;
 
@@ -354,10 +386,6 @@ public class StudentManagerScript : MonoBehaviour
 	public int Frame;
 
 	public int GymTeacherID = 100;
-
-	public int SleuthPhase = 1;
-
-	public int DramaPhase = 1;
 
 	public int ObstacleID = 6;
 
@@ -401,6 +429,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public bool Randomize;
 
+	public bool LoveSick;
+
 	public bool NoSpeech;
 
 	public bool Meeting;
@@ -426,6 +456,8 @@ public class StudentManagerScript : MonoBehaviour
 	public bool AoT;
 
 	public bool DK;
+
+	public float Atmosphere;
 
 	public float MeetingTimer;
 
@@ -460,6 +492,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public SkinnedMeshRenderer CardiganRenderer;
 
+	public Mesh OpenChipBag;
+
 	public bool SeatOccupied;
 
 	public int Class = 1;
@@ -484,6 +518,7 @@ public class StudentManagerScript : MonoBehaviour
 
 	private void Start()
 	{
+		this.LoveSick = GameGlobals.LoveSick;
 		if (ClubGlobals.GetClubClosed(ClubType.LightMusic))
 		{
 			this.SpawnPositions[51].position = new Vector3(3f, 0f, -95f);
@@ -649,6 +684,7 @@ public class StudentManagerScript : MonoBehaviour
 			SchoolGlobals.SchoolAtmosphereSet = true;
 			SchoolGlobals.SchoolAtmosphere = 1f;
 		}
+		this.Atmosphere = SchoolGlobals.SchoolAtmosphere;
 		Vignetting[] components = Camera.main.GetComponents<Vignetting>();
 		float num = 1f - SchoolGlobals.SchoolAtmosphere;
 		if (!this.TakingPortraits)
@@ -1060,11 +1096,20 @@ public class StudentManagerScript : MonoBehaviour
 							{
 								studentScript.Prompt.HideButton[0] = true;
 								studentScript.Prompt.HideButton[2] = true;
-								if (this.Yandere.PickUp != null && this.Yandere.PickUp.Food > 0)
+								if (this.Yandere.PickUp != null)
 								{
-									studentScript.Prompt.Label[0].text = "     Feed";
-									studentScript.Prompt.HideButton[0] = false;
-									studentScript.Prompt.HideButton[2] = true;
+									if (this.Yandere.PickUp.Food > 0)
+									{
+										studentScript.Prompt.Label[0].text = "     Feed";
+										studentScript.Prompt.HideButton[0] = false;
+										studentScript.Prompt.HideButton[2] = true;
+									}
+									else if (this.Yandere.PickUp.Salty)
+									{
+										studentScript.Prompt.Label[0].text = "     Give Snack";
+										studentScript.Prompt.HideButton[0] = false;
+										studentScript.Prompt.HideButton[2] = true;
+									}
 								}
 							}
 							if (this.Yandere.Armed)
@@ -2339,6 +2384,91 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			this.ID++;
 		}
+	}
+
+	public void GetMaleVomitSpot(StudentScript VomitStudent)
+	{
+		if (VomitStudent.transform.position.y < 1f)
+		{
+			this.MaleVomitSpot = this.MaleVomitSpots[1];
+			VomitStudent.VomitDoor = this.MaleToiletDoors[1];
+		}
+		else if (VomitStudent.transform.position.y < 5f)
+		{
+			this.MaleVomitSpot = this.MaleVomitSpots[2];
+			VomitStudent.VomitDoor = this.MaleToiletDoors[2];
+		}
+		else
+		{
+			this.MaleVomitSpot = this.MaleVomitSpots[3];
+			VomitStudent.VomitDoor = this.MaleToiletDoors[3];
+		}
+	}
+
+	public void GetFemaleVomitSpot(StudentScript VomitStudent)
+	{
+		if (VomitStudent.transform.position.y < 1f)
+		{
+			this.FemaleVomitSpot = this.FemaleVomitSpots[1];
+			VomitStudent.VomitDoor = this.FemaleToiletDoors[1];
+		}
+		else if (VomitStudent.transform.position.y < 5f)
+		{
+			this.FemaleVomitSpot = this.FemaleVomitSpots[2];
+			VomitStudent.VomitDoor = this.FemaleToiletDoors[2];
+		}
+		else
+		{
+			this.FemaleVomitSpot = this.FemaleVomitSpots[3];
+			VomitStudent.VomitDoor = this.FemaleToiletDoors[3];
+		}
+	}
+
+	public void GetMaleWashSpot(StudentScript VomitStudent)
+	{
+		if (VomitStudent.transform.position.y < 1f)
+		{
+			this.MaleWashSpot = this.MaleWashSpots[1];
+		}
+		else if (VomitStudent.transform.position.y < 5f)
+		{
+			this.MaleWashSpot = this.MaleWashSpots[2];
+		}
+		else
+		{
+			this.MaleWashSpot = this.MaleWashSpots[3];
+		}
+	}
+
+	public void GetFemaleWashSpot(StudentScript VomitStudent)
+	{
+		if (VomitStudent.transform.position.y < 1f)
+		{
+			this.FemaleWashSpot = this.FemaleWashSpots[1];
+		}
+		else if (VomitStudent.transform.position.y < 5f)
+		{
+			this.FemaleWashSpot = this.FemaleWashSpots[2];
+		}
+		else
+		{
+			this.FemaleWashSpot = this.FemaleWashSpots[3];
+		}
+	}
+
+	public void GetNearestFountain(StudentScript Student)
+	{
+		DrinkingFountainScript drinkingFountainScript = this.DrinkingFountains[1];
+		this.ID = 2;
+		while (this.ID < 8)
+		{
+			if (Vector3.Distance(Student.transform.position, this.DrinkingFountains[this.ID].transform.position) < Vector3.Distance(Student.transform.position, drinkingFountainScript.transform.position))
+			{
+				drinkingFountainScript = this.DrinkingFountains[this.ID];
+			}
+			this.ID++;
+		}
+		Student.DrinkingFountain = drinkingFountainScript;
 	}
 
 	public void Save()

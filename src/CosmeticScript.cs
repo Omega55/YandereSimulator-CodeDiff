@@ -319,6 +319,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public int Accessory;
 
+	public int Direction;
+
 	public int Hairstyle;
 
 	public int SkinColor;
@@ -463,6 +465,17 @@ public class CosmeticScript : MonoBehaviour
 		}
 		if (!this.Male)
 		{
+			if (this.Hairstyle == 20 || this.Hairstyle == 21)
+			{
+				if (this.Direction == 1)
+				{
+					this.Hairstyle = 22;
+				}
+				else
+				{
+					this.Hairstyle = 19;
+				}
+			}
 			this.ThickBrows.SetActive(false);
 			if (!this.TakingPortrait)
 			{

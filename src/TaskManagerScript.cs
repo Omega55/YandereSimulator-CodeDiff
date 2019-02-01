@@ -20,6 +20,7 @@ public class TaskManagerScript : MonoBehaviour
 
 	public void CheckTaskPickups()
 	{
+		Debug.Log("Checking Tasks that are completed by picking something up!");
 		if (TaskGlobals.GetTaskStatus(11) == 1 && this.Prompts[11].Circle[3] != null && this.Prompts[11].Circle[3].fillAmount == 0f)
 		{
 			if (this.StudentManager.Students[11] != null)
@@ -49,6 +50,7 @@ public class TaskManagerScript : MonoBehaviour
 		}
 		if (!this.Yandere.Talking)
 		{
+			Debug.Log("Checking Musume's Task.");
 			if (TaskGlobals.GetTaskStatus(81) == 1)
 			{
 				if (this.Yandere.Inventory.Cigs)

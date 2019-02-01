@@ -296,17 +296,7 @@ public class HeadmasterScript : MonoBehaviour
 				this.HeadmasterSubtitle.text = string.Empty;
 				if (this.Shooting)
 				{
-					UnityEngine.Object.Instantiate<GameObject>(this.LightningEffect, this.TazerEffectTarget.position, Quaternion.identity);
-					UnityEngine.Object.Instantiate<GameObject>(this.LightningEffect, this.Yandere.Spine[3].position, Quaternion.identity);
-					this.MyAudio.clip = this.HeadmasterShockClip;
-					this.MyAudio.Play();
-					this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_swingB_00");
-					this.Yandere.Character.GetComponent<Animation>()["f02_swingB_00"].time = 0.5f;
-					this.Yandere.RPGCamera.enabled = false;
-					this.Yandere.Attacked = true;
-					this.Heartbroken.Headmaster = true;
-					this.Jukebox.Volume = 0f;
-					this.Shooting = false;
+					this.Taze();
 				}
 			}
 			if (this.Yandere.Attacked && this.Yandere.Character.GetComponent<Animation>()["f02_swingB_00"].time >= this.Yandere.Character.GetComponent<Animation>()["f02_swingB_00"].length * 0.85f)
@@ -357,7 +347,7 @@ public class HeadmasterScript : MonoBehaviour
 		}
 	}
 
-	private void Shoot()
+	public void Shoot()
 	{
 		this.StudentManager.YandereDying = true;
 		this.Yandere.StopAiming();
@@ -413,5 +403,29 @@ public class HeadmasterScript : MonoBehaviour
 				this.Shoot();
 			}
 		}
+	}
+
+	public void Taze()
+	{
+		if (this.Yandere.CanMove)
+		{
+			this.StudentManager.YandereDying = true;
+			this.Yandere.StopAiming();
+			this.Yandere.StopLaughing();
+			this.StudentManager.StopMoving();
+			this.Yandere.EmptyHands();
+			this.Yandere.CanMove = false;
+		}
+		UnityEngine.Object.Instantiate<GameObject>(this.LightningEffect, this.TazerEffectTarget.position, Quaternion.identity);
+		UnityEngine.Object.Instantiate<GameObject>(this.LightningEffect, this.Yandere.Spine[3].position, Quaternion.identity);
+		this.MyAudio.clip = this.HeadmasterShockClip;
+		this.MyAudio.Play();
+		this.Yandere.CharacterAnimation.CrossFade("f02_swingB_00");
+		this.Yandere.CharacterAnimation["f02_swingB_00"].time = 0.5f;
+		this.Yandere.RPGCamera.enabled = false;
+		this.Yandere.Attacked = true;
+		this.Heartbroken.Headmaster = true;
+		this.Jukebox.Volume = 0f;
+		this.Shooting = false;
 	}
 }

@@ -19,6 +19,8 @@ public class NotificationManagerScript : MonoBehaviour
 
 	public string PersonaName;
 
+	public string CustomText;
+
 	private NotificationTypeAndStringDictionary NotificationMessages;
 
 	private void Awake()
@@ -94,8 +96,8 @@ public class NotificationManagerScript : MonoBehaviour
 				"Persona"
 			},
 			{
-				NotificationType.LackPoison,
-				"You do not possess the necessary poison"
+				NotificationType.Custom,
+				this.CustomText
 			}
 		};
 	}
@@ -149,9 +151,13 @@ public class NotificationManagerScript : MonoBehaviour
 			component.NotificationManager = this;
 			string text;
 			bool flag = this.NotificationMessages.TryGetValue(Type, out text);
-			if (Type != NotificationType.Persona)
+			if (Type != NotificationType.Persona && Type != NotificationType.Custom)
 			{
 				component.Label.text = text;
+			}
+			else if (Type == NotificationType.Custom)
+			{
+				component.Label.text = this.CustomText;
 			}
 			else
 			{

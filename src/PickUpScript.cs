@@ -45,11 +45,17 @@ public class PickUpScript : MonoBehaviour
 
 	public bool CleaningProduct;
 
+	public bool DisableAtStart;
+
 	public bool LockRotation;
 
 	public bool BeingLifted;
 
 	public bool CanCollide;
+
+	public bool Electronic;
+
+	public bool Flashlight;
 
 	public bool Suspicious;
 
@@ -72,6 +78,8 @@ public class PickUpScript : MonoBehaviour
 	public bool Usable;
 
 	public bool Weight;
+
+	public bool Salty;
 
 	public int CarryAnimID;
 
@@ -98,6 +106,10 @@ public class PickUpScript : MonoBehaviour
 		if (this.MyRigidbody == null)
 		{
 			this.MyRigidbody = base.GetComponent<Rigidbody>();
+		}
+		if (this.DisableAtStart)
+		{
+			base.gameObject.SetActive(false);
 		}
 	}
 

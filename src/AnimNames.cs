@@ -176,6 +176,10 @@ public static class AnimNames
 
 	public const string FemaleHeating = "f02_heating_00";
 
+	public const string FemaleHeadacheIdle = "f02_headacheIdle_00";
+
+	public const string FemaleHeadacheWalk = "f02_headacheWalk_00";
+
 	public const string FemaleHeavyWeightLift = "f02_heavyWeightLift_00";
 
 	public const string FemaleHeroicIdle = "f02_heroicIdle_00";
@@ -505,6 +509,10 @@ public static class AnimNames
 	public const string LockerTossNote = "lockerTossNote";
 
 	public const string MaleExhausted = "exhausted_00";
+
+	public const string MaleHeadacheIdle = "headacheIdle_00";
+
+	public const string MaleHeadacheWalk = "headacheWalk_00";
 
 	public const string MaleIdle01 = "idle_01";
 

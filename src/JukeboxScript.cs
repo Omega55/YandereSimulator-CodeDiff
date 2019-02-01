@@ -31,6 +31,8 @@ public class JukeboxScript : MonoBehaviour
 
 	public AudioSource Hitman;
 
+	public AudioSource Horror;
+
 	public AudioSource Touhou;
 
 	public AudioSource Falcon;
@@ -135,7 +137,7 @@ public class JukeboxScript : MonoBehaviour
 
 	public AudioClip[] EighthNo;
 
-	private void Start()
+	public void Start()
 	{
 		if (this.BGM == 0)
 		{
@@ -313,6 +315,7 @@ public class JukeboxScript : MonoBehaviour
 			this.Jojo.volume = Mathf.MoveTowards(this.Jojo.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
 			this.Sith.volume = Mathf.MoveTowards(this.Sith.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
 			this.DK.volume = Mathf.MoveTowards(this.DK.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
+			this.Horror.volume = Mathf.MoveTowards(this.Horror.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
 		}
 		if (!this.Yandere.PauseScreen.Show && !this.Yandere.Noticed && this.Yandere.CanMove && this.Yandere.EasterEggMenu.activeInHierarchy && !this.Egg)
 		{
@@ -424,6 +427,12 @@ public class JukeboxScript : MonoBehaviour
 				this.KillVolume();
 				this.Sith.enabled = true;
 			}
+			else if (Input.GetKeyDown(KeyCode.F2))
+			{
+				this.Egg = true;
+				this.KillVolume();
+				this.Horror.enabled = true;
+			}
 		}
 	}
 
@@ -463,6 +472,7 @@ public class JukeboxScript : MonoBehaviour
 		this.Slender.Stop();
 		this.Hatred.Stop();
 		this.Hitman.Stop();
+		this.Horror.Stop();
 		this.Touhou.Stop();
 		this.Falcon.Stop();
 		this.Miyuki.Stop();

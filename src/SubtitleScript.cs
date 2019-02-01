@@ -69,6 +69,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] CorpseReactions;
 
+	public string[] PoisonReactions;
+
 	public string[] PrankReactions;
 
 	public string[] InterruptReactions;
@@ -76,6 +78,8 @@ public class SubtitleScript : MonoBehaviour
 	public string[] IntrusionReactions;
 
 	public string[] NoteReactions;
+
+	public string[] OfferSnacks;
 
 	public string[] FoodAccepts;
 
@@ -94,6 +98,8 @@ public class SubtitleScript : MonoBehaviour
 	public string[] RivalPickpocketReactions;
 
 	public string[] DrownReactions;
+
+	public string[] ParanoidReactions;
 
 	public string[] KilledMoods;
 
@@ -146,6 +152,8 @@ public class SubtitleScript : MonoBehaviour
 	public string[] PickpocketApologies;
 
 	public string[] CleaningApologies;
+
+	public string[] PoisonApologies;
 
 	public string[] Greetings;
 
@@ -204,6 +212,8 @@ public class SubtitleScript : MonoBehaviour
 	public string[] SuitorLove;
 
 	public string[] RivalLove;
+
+	public string[] RequestMedicines;
 
 	public string[] Impatiences;
 
@@ -1328,6 +1338,10 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.Label.text = this.SuspiciousReactions[ID];
 		}
+		else if (subtitleType == SubtitleType.PoisonReaction)
+		{
+			this.Label.text = this.PoisonReactions[ID];
+		}
 		else if (subtitleType == SubtitleType.PrankReaction)
 		{
 			this.Label.text = this.GetRandomString(this.PrankReactions);
@@ -1348,6 +1362,10 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.Label.text = this.NoteReactions[ID];
 			this.PlayVoice(subtitleType, ID);
+		}
+		else if (subtitleType == SubtitleType.OfferSnack)
+		{
+			this.Label.text = this.OfferSnacks[ID];
 		}
 		else if (subtitleType == SubtitleType.AcceptFood)
 		{
@@ -1395,6 +1413,11 @@ public class SubtitleScript : MonoBehaviour
 			this.RandomID = UnityEngine.Random.Range(0, this.CleaningApologies.Length);
 			this.Label.text = this.CleaningApologies[this.RandomID];
 		}
+		else if (subtitleType == SubtitleType.PoisonApology)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.PoisonApologies.Length);
+			this.Label.text = this.PoisonApologies[this.RandomID];
+		}
 		else if (subtitleType == SubtitleType.RivalPickpocketReaction)
 		{
 			this.RandomID = UnityEngine.Random.Range(0, this.RivalPickpocketReactions.Length);
@@ -1413,6 +1436,14 @@ public class SubtitleScript : MonoBehaviour
 			{
 				this.RandomID = UnityEngine.Random.Range(0, this.HmmReactions.Length);
 				this.Label.text = this.HmmReactions[this.RandomID];
+			}
+		}
+		else if (subtitleType == SubtitleType.ParanoidReaction)
+		{
+			if (this.Label.text == string.Empty)
+			{
+				this.RandomID = UnityEngine.Random.Range(0, this.ParanoidReactions.Length);
+				this.Label.text = this.ParanoidReactions[this.RandomID];
 			}
 		}
 		else if (subtitleType == SubtitleType.TeacherWeaponReaction)
@@ -1681,7 +1712,7 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (subtitleType == SubtitleType.CorpseReaction)
 		{
-			this.Label.text = this.GetRandomString(this.CorpseReactions);
+			this.Label.text = this.CorpseReactions[ID];
 		}
 		else if (subtitleType == SubtitleType.CouncilCorpseReaction)
 		{
@@ -1937,6 +1968,10 @@ public class SubtitleScript : MonoBehaviour
 		else if (subtitleType == SubtitleType.RivalLove)
 		{
 			this.Label.text = this.RivalLove[ID];
+		}
+		else if (subtitleType == SubtitleType.RequestMedicine)
+		{
+			this.Label.text = this.RequestMedicines[ID];
 		}
 		else if (subtitleType == SubtitleType.Dying)
 		{

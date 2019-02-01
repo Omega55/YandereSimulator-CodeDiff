@@ -317,7 +317,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
-		if (this.Targeting && (this.StudentID == 1 || StudentGlobals.GetStudentDead(this.StudentID) || this.StudentID > 97))
+		if (this.Targeting && (this.StudentID == 1 || StudentGlobals.GetStudentDead(this.StudentID) || this.StudentID > 97 || !this.StudentManager.Students[this.StudentID].gameObject.activeInHierarchy))
 		{
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();

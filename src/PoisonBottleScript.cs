@@ -28,6 +28,14 @@ public class PoisonBottleScript : MonoBehaviour
 			{
 				this.Prompt.Yandere.Inventory.HeadachePoison = true;
 			}
+			else if (this.ID == 5)
+			{
+				this.Prompt.Yandere.Inventory.Tranquilizer = true;
+			}
+			else if (this.ID == 6)
+			{
+				this.Prompt.Yandere.Inventory.Sedative = true;
+			}
 			this.Prompt.Yandere.StudentManager.UpdateAllBentos();
 			UnityEngine.Object.Destroy(base.gameObject);
 		}

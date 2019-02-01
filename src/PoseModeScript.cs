@@ -337,6 +337,7 @@ public class PoseModeScript : MonoBehaviour
 				{
 					if (this.InputManager.TappedRight)
 					{
+						this.Student.Cosmetic.Direction = 1;
 						this.Student.Cosmetic.Hairstyle++;
 						if (!this.Student.Male)
 						{
@@ -361,6 +362,7 @@ public class PoseModeScript : MonoBehaviour
 					}
 					if (this.InputManager.TappedLeft)
 					{
+						this.Student.Cosmetic.Direction = -1;
 						this.Student.Cosmetic.Hairstyle--;
 						if (this.Student.Cosmetic.Hairstyle == 0)
 						{

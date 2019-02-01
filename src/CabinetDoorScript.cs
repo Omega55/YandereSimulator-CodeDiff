@@ -9,6 +9,8 @@ public class CabinetDoorScript : MonoBehaviour
 
 	public bool Open;
 
+	public float Timer;
+
 	private void Update()
 	{
 		if (this.Locked)
@@ -34,16 +36,25 @@ public class CabinetDoorScript : MonoBehaviour
 				this.Prompt.HideButton[2] = true;
 			}
 		}
-		else
+		else if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			if (this.Prompt.Circle[0].fillAmount == 0f)
+			this.Prompt.Yandere.TheftTimer = 0.1f;
+			this.Prompt.Circle[0].fillAmount = 1f;
+			this.Open = !this.Open;
+			this.UpdateLabel();
+			this.Timer = 0f;
+		}
+		if (this.Timer < 2f)
+		{
+			this.Timer += Time.deltaTime;
+			if (this.Open)
 			{
-				this.Prompt.Yandere.TheftTimer = 0.1f;
-				this.Prompt.Circle[0].fillAmount = 1f;
-				this.Open = !this.Open;
-				this.UpdateLabel();
+				base.transform.localPosition = new Vector3(Mathf.Lerp(base.transform.localPosition.x, 0.41775f, Time.deltaTime * 10f), base.transform.localPosition.y, base.transform.localPosition.z);
 			}
-			base.transform.localPosition = new Vector3(Mathf.Lerp(base.transform.localPosition.x, (!this.Open) ? 0f : 0.41775f, Time.deltaTime * 10f), base.transform.localPosition.y, base.transform.localPosition.z);
+			else
+			{
+				base.transform.localPosition = new Vector3(Mathf.Lerp(base.transform.localPosition.x, 0f, Time.deltaTime * 10f), base.transform.localPosition.y, base.transform.localPosition.z);
+			}
 		}
 	}
 

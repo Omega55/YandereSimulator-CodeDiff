@@ -37,6 +37,8 @@ public class PortalScript : MonoBehaviour
 
 	public Transform Teacher;
 
+	public bool CanAttendClass;
+
 	public bool LateReport1;
 
 	public bool LateReport2;
@@ -46,6 +48,8 @@ public class PortalScript : MonoBehaviour
 	public bool FadeOut;
 
 	public bool Proceed;
+
+	public float Timer;
 
 	public int Late;
 
@@ -236,14 +240,74 @@ public class PortalScript : MonoBehaviour
 				}
 			}
 		}
-		else if (this.Yandere.Armed || this.Yandere.Bloodiness > 0f || this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Dragging || this.Yandere.PickUp != null || this.Yandere.Chased || this.Yandere.Chasers > 0 || this.StudentManager.Reporter != null || this.StudentManager.MurderTakingPlace)
+		else if (!this.Yandere.Police.FadeOut && Vector3.Distance(this.Yandere.transform.position, base.transform.position) < 1.4f)
 		{
-			this.Prompt.Hide();
-			this.Prompt.enabled = false;
+			this.CanAttendClass = true;
+			this.CheckForProblems();
+			if (!this.CanAttendClass)
+			{
+				if (this.Timer == 0f)
+				{
+					if (this.Yandere.Armed)
+					{
+						this.Yandere.NotificationManager.CustomText = "Carrying Weapon";
+					}
+					else if (this.Yandere.Bloodiness > 0f)
+					{
+						this.Yandere.NotificationManager.CustomText = "Bloody";
+					}
+					else if (this.Yandere.Sanity < 33.333f)
+					{
+						this.Yandere.NotificationManager.CustomText = "Visibly Insane";
+					}
+					else if (this.Yandere.Attacking)
+					{
+						this.Yandere.NotificationManager.CustomText = "In Combat";
+					}
+					else if (this.Yandere.Dragging || this.Yandere.Carrying)
+					{
+						this.Yandere.NotificationManager.CustomText = "Holding Corpse";
+					}
+					else if (this.Yandere.PickUp != null)
+					{
+						this.Yandere.NotificationManager.CustomText = "Carrying Item";
+					}
+					else if (this.Yandere.Chased || this.Yandere.Chasers > 0)
+					{
+						this.Yandere.NotificationManager.CustomText = "Chased";
+					}
+					else if (this.StudentManager.Reporter)
+					{
+						this.Yandere.NotificationManager.CustomText = "Murder being reported";
+					}
+					else if (this.StudentManager.MurderTakingPlace)
+					{
+						this.Yandere.NotificationManager.CustomText = "Murder taking place";
+					}
+					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
+					this.Yandere.NotificationManager.CustomText = "Cannot attend class. Reason:";
+					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
+				}
+				this.Prompt.Hide();
+				this.Prompt.enabled = false;
+				this.Timer += Time.deltaTime;
+				if (this.Timer > 5f)
+				{
+					this.Timer = 0f;
+				}
+			}
+			else
+			{
+				this.Prompt.enabled = true;
+			}
 		}
-		else
+	}
+
+	public void CheckForProblems()
+	{
+		if (this.Yandere.Armed || this.Yandere.Bloodiness > 0f || this.Yandere.Sanity < 33.333f || this.Yandere.Attacking || this.Yandere.Dragging || this.Yandere.Carrying || this.Yandere.PickUp != null || this.Yandere.Chased || this.Yandere.Chasers > 0 || this.StudentManager.Reporter != null || this.StudentManager.MurderTakingPlace)
 		{
-			this.Prompt.enabled = true;
+			this.CanAttendClass = false;
 		}
 	}
 

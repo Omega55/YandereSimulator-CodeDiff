@@ -29,7 +29,7 @@ public class PickpocketScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (this.Student.StudentID != this.Student.StudentManager.NurseID && this.Student.StudentID != 71)
+		if (this.Student.StudentID != 71)
 		{
 			this.Prompt.transform.parent.gameObject.SetActive(false);
 			base.enabled = false;

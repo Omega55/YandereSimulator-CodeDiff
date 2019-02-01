@@ -747,7 +747,7 @@ public class MissionModeScript : MonoBehaviour
 						this.Yandere.HUD.gameObject.SetActive(false);
 						this.Yandere.CanMove = false;
 						AudioSource component = this.Jukebox.MissionMode.GetComponent<AudioSource>();
-						component.clip = this.StealthMusic[9];
+						component.clip = this.StealthMusic[10];
 						component.loop = false;
 						component.Play();
 						base.GetComponent<AudioSource>().PlayOneShot(this.InfoAccomplished);
@@ -916,7 +916,7 @@ public class MissionModeScript : MonoBehaviour
 	public void ChangeMusic()
 	{
 		this.MusicID++;
-		if (this.MusicID > 8)
+		if (this.MusicID > 9)
 		{
 			this.MusicID = 1;
 		}

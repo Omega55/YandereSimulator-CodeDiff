@@ -20,5 +20,6 @@ public enum YandereInteractionType
 	Court,
 	Confess,
 	Feed,
-	TaskInquiry
+	TaskInquiry,
+	GivingSnack
 }

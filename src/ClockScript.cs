@@ -29,6 +29,8 @@ public class ClockScript : MonoBehaviour
 
 	public Transform Sun;
 
+	public GameObject SunFlare;
+
 	public UILabel PeriodLabel;
 
 	public UILabel TimeLabel;
@@ -87,12 +89,15 @@ public class ClockScript : MonoBehaviour
 
 	public bool FadeIn;
 
+	public bool Horror;
+
 	public AudioSource SchoolBell;
 
 	public Color SkyboxColor;
 
 	private void Start()
 	{
+		RenderSettings.ambientLight = new Color(0.75f, 0.75f, 0.75f);
 		this.PeriodLabel.text = "BEFORE CLASS";
 		this.PresentTime = this.StartHour * 60f;
 		if (PlayerPrefs.GetInt("LoadingSave") == 1)
@@ -335,25 +340,28 @@ public class ClockScript : MonoBehaviour
 			this.StudentManager.UpdateSleuths();
 		}
 		this.Sun.eulerAngles = new Vector3(this.Sun.eulerAngles.x, this.Sun.eulerAngles.y, -45f + 90f * (this.PresentTime - 420f) / 660f);
-		if (this.StudentManager.WestBathroomArea.bounds.Contains(this.Yandere.transform.position) || this.StudentManager.EastBathroomArea.bounds.Contains(this.Yandere.transform.position))
+		if (!this.Horror)
 		{
-			this.AmbientLightDim = Mathf.MoveTowards(this.AmbientLightDim, 0.1f, Time.deltaTime);
-		}
-		else
-		{
-			this.AmbientLightDim = Mathf.MoveTowards(this.AmbientLightDim, 0.75f, Time.deltaTime);
-		}
-		if (this.PresentTime > 930f)
-		{
-			this.DayProgress = (this.PresentTime - 930f) / 150f;
-			this.MainLight.color = new Color(1f - 0.149019614f * this.DayProgress, 1f - 0.403921574f * this.DayProgress, 1f - 0.709803939f * this.DayProgress);
-			RenderSettings.ambientLight = new Color(1f - 0.149019614f * this.DayProgress - (1f - this.AmbientLightDim) * (1f - this.DayProgress), 1f - 0.403921574f * this.DayProgress - (1f - this.AmbientLightDim) * (1f - this.DayProgress), 1f - 0.709803939f * this.DayProgress - (1f - this.AmbientLightDim) * (1f - this.DayProgress));
-			this.SkyboxColor = new Color(1f - 0.149019614f * this.DayProgress - 0.5f * (1f - this.DayProgress), 1f - 0.403921574f * this.DayProgress - 0.5f * (1f - this.DayProgress), 1f - 0.709803939f * this.DayProgress - 0.5f * (1f - this.DayProgress));
-			RenderSettings.skybox.SetColor("_Tint", new Color(this.SkyboxColor.r, this.SkyboxColor.g, this.SkyboxColor.b));
-		}
-		else
-		{
-			RenderSettings.ambientLight = new Color(this.AmbientLightDim, this.AmbientLightDim, this.AmbientLightDim);
+			if (this.StudentManager.WestBathroomArea.bounds.Contains(this.Yandere.transform.position) || this.StudentManager.EastBathroomArea.bounds.Contains(this.Yandere.transform.position))
+			{
+				this.AmbientLightDim = Mathf.MoveTowards(this.AmbientLightDim, 0.1f, Time.deltaTime);
+			}
+			else
+			{
+				this.AmbientLightDim = Mathf.MoveTowards(this.AmbientLightDim, 0.75f, Time.deltaTime);
+			}
+			if (this.PresentTime > 930f)
+			{
+				this.DayProgress = (this.PresentTime - 930f) / 150f;
+				this.MainLight.color = new Color(1f - 0.149019614f * this.DayProgress, 1f - 0.403921574f * this.DayProgress, 1f - 0.709803939f * this.DayProgress);
+				RenderSettings.ambientLight = new Color(1f - 0.149019614f * this.DayProgress - (1f - this.AmbientLightDim) * (1f - this.DayProgress), 1f - 0.403921574f * this.DayProgress - (1f - this.AmbientLightDim) * (1f - this.DayProgress), 1f - 0.709803939f * this.DayProgress - (1f - this.AmbientLightDim) * (1f - this.DayProgress));
+				this.SkyboxColor = new Color(1f - 0.149019614f * this.DayProgress - 0.5f * (1f - this.DayProgress), 1f - 0.403921574f * this.DayProgress - 0.5f * (1f - this.DayProgress), 1f - 0.709803939f * this.DayProgress - 0.5f * (1f - this.DayProgress));
+				RenderSettings.skybox.SetColor("_Tint", new Color(this.SkyboxColor.r, this.SkyboxColor.g, this.SkyboxColor.b));
+			}
+			else
+			{
+				RenderSettings.ambientLight = new Color(this.AmbientLightDim, this.AmbientLightDim, this.AmbientLightDim);
+			}
 		}
 		if (this.TimeSkip)
 		{

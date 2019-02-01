@@ -101,6 +101,8 @@ public class RagdollScript : MonoBehaviour
 
 	public bool Carried;
 
+	public bool Choking;
+
 	public bool Dragged;
 
 	public bool Drowned;

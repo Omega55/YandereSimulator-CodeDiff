@@ -19,5 +19,5 @@ public enum NotificationType
 	ClassNow,
 	Eavesdropping,
 	Persona,
-	LackPoison
+	Custom
 }

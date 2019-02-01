@@ -54,6 +54,8 @@ public class WalkToSchoolManagerScript : MonoBehaviour
 
 	public Transform YandereEyeL;
 
+	public AudioSource MyAudio;
+
 	public float ScrollSpeed = 1f;
 
 	public float LipStrength = 0.0001f;
@@ -61,6 +63,8 @@ public class WalkToSchoolManagerScript : MonoBehaviour
 	public float TimerLimit = 0.1f;
 
 	public float TalkSpeed = 10f;
+
+	public float AutoTimer;
 
 	public float Timer;
 
@@ -98,6 +102,8 @@ public class WalkToSchoolManagerScript : MonoBehaviour
 
 	public bool Ending;
 
+	public bool Auto;
+
 	public bool Talk;
 
 	public TypewriterEffect Typewriter;
@@ -110,10 +116,13 @@ public class WalkToSchoolManagerScript : MonoBehaviour
 
 	public bool[] Speakers;
 
+	public int Frame;
+
 	public int ID;
 
 	private void Start()
 	{
+		Application.targetFrameRate = 60;
 		if (SchoolGlobals.SchoolAtmosphere < 0.5f || GameGlobals.LoveSick)
 		{
 			this.Darkness.color = new Color(0f, 0f, 0f, 1f);
@@ -149,6 +158,10 @@ public class WalkToSchoolManagerScript : MonoBehaviour
 				{
 					if (!this.Ending)
 					{
+						if (Input.GetButtonDown("A"))
+						{
+							this.Timer = 1f;
+						}
 						this.Timer += Time.deltaTime;
 						if (this.Timer > 1f)
 						{
@@ -180,38 +193,59 @@ public class WalkToSchoolManagerScript : MonoBehaviour
 				else
 				{
 					this.Window.localScale = Vector3.Lerp(this.Window.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
-					this.Typewriter.mLabel.color = new Color(1f, 1f, 1f, 1f);
+					if ((double)this.Window.localScale.x > 0.99)
+					{
+						if (this.Frame > 3)
+						{
+							this.Typewriter.mLabel.color = new Color(1f, 1f, 1f, 1f);
+						}
+						this.Frame++;
+					}
 					if (!this.Talk)
 					{
 						if ((double)this.Window.localScale.x > 0.99)
 						{
 							this.Talk = true;
 							this.UpdateNameLabel();
+							this.Typewriter.enabled = true;
 							this.Typewriter.ResetToBeginning();
+							this.Typewriter.mFullText = this.Lines[this.ID];
 							this.Typewriter.mLabel.text = this.Lines[this.ID];
 							this.Typewriter.mLabel.color = new Color(1f, 1f, 1f, 0f);
-							base.GetComponent<AudioSource>().clip = this.Speech[this.ID];
-							base.GetComponent<AudioSource>().Play();
+							this.MyAudio.clip = this.Speech[this.ID];
+							this.MyAudio.Play();
 						}
 					}
 					else
 					{
-						if (Input.GetButtonDown("A"))
+						Debug.Log("Waiting for button press.");
+						if (this.Auto && !this.MyAudio.isPlaying)
 						{
+							this.AutoTimer += Time.deltaTime;
+						}
+						if (Input.GetButtonDown("A") || this.AutoTimer > 1f)
+						{
+							Debug.Log("Detected button press.");
+							this.AutoTimer = 0f;
 							if (this.ID < this.Lines.Length - 1)
 							{
 								if (this.Typewriter.mCurrentOffset < this.Typewriter.mFullText.Length)
 								{
+									Debug.Log("Line not finished yet.");
 									this.Typewriter.Finish();
+									this.Typewriter.mCurrentOffset = this.Typewriter.mFullText.Length;
 								}
 								else
 								{
+									Debug.Log("Line finished.");
 									this.ID++;
+									this.Frame = 0;
 									this.Typewriter.ResetToBeginning();
+									this.Typewriter.mFullText = this.Lines[this.ID];
 									this.Typewriter.mLabel.text = this.Lines[this.ID];
 									this.Typewriter.mLabel.color = new Color(1f, 1f, 1f, 0f);
-									base.GetComponent<AudioSource>().clip = this.Speech[this.ID];
-									base.GetComponent<AudioSource>().Play();
+									this.MyAudio.clip = this.Speech[this.ID];
+									this.MyAudio.Play();
 									this.UpdateNameLabel();
 								}
 							}
@@ -234,7 +268,7 @@ public class WalkToSchoolManagerScript : MonoBehaviour
 		}
 		else
 		{
-			base.GetComponent<AudioSource>().volume -= Time.deltaTime;
+			this.MyAudio.volume -= Time.deltaTime;
 			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 1f, Time.deltaTime));
 			if (this.Darkness.color.a == 1f && !this.Debugging)
 			{
@@ -291,7 +325,7 @@ public class WalkToSchoolManagerScript : MonoBehaviour
 			this.SenpaiEyeL.localEulerAngles = new Vector3(this.SenpaiEyeL.localEulerAngles.x, this.SenpaiEyeLTarget, this.SenpaiEyeL.localEulerAngles.z);
 			this.YandereNeck.localEulerAngles = new Vector3(this.YandereNeck.localEulerAngles.x, this.YandereNeckTarget, this.YandereNeck.localEulerAngles.z);
 			this.YandereHead.localEulerAngles = new Vector3(this.YandereHead.localEulerAngles.x, this.YandereHeadTarget, this.YandereHead.localEulerAngles.z);
-			if (base.GetComponent<AudioSource>().isPlaying)
+			if (this.MyAudio.isPlaying)
 			{
 				this.MouthTimer += Time.deltaTime;
 				if (this.MouthTimer > this.TimerLimit)

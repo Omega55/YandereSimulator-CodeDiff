@@ -1105,6 +1105,68 @@ public class TalkingScript : MonoBehaviour
 					this.S.DialogueWheel.End();
 				}
 			}
+			else if (this.S.Interaction == StudentInteractionType.TakingSnack)
+			{
+				Debug.Log("Taking snack.");
+				if (this.S.TalkTimer == 5f)
+				{
+					if (this.S.Club == ClubType.Delinquent)
+					{
+						this.S.Character.GetComponent<Animation>().CrossFade(this.S.IdleAnim);
+						this.S.Subtitle.UpdateLabel(SubtitleType.RejectFood, 1, 3f);
+					}
+					else if (this.S.Fed || this.S.Club == ClubType.Council)
+					{
+						this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
+						this.S.Subtitle.UpdateLabel(SubtitleType.RejectFood, 0, 3f);
+						this.S.Fed = true;
+					}
+					else
+					{
+						this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod2Anim);
+						this.S.Subtitle.UpdateLabel(SubtitleType.AcceptFood, 0, 3f);
+						this.CalculateRepBonus();
+						this.S.Reputation.PendingRep += 1f + (float)this.S.RepBonus;
+						this.S.PendingRep += 1f + (float)this.S.RepBonus;
+					}
+				}
+				else if (Input.GetButtonDown("A"))
+				{
+					this.S.TalkTimer = 0f;
+				}
+				if (this.S.Character.GetComponent<Animation>()[this.S.Nod2Anim].time >= this.S.Character.GetComponent<Animation>()[this.S.Nod2Anim].length)
+				{
+					this.S.Character.GetComponent<Animation>().CrossFade(this.S.IdleAnim);
+				}
+				if (this.S.Character.GetComponent<Animation>()[this.S.GossipAnim].time >= this.S.Character.GetComponent<Animation>()[this.S.GossipAnim].length)
+				{
+					this.S.Character.GetComponent<Animation>().CrossFade(this.S.IdleAnim);
+				}
+				this.S.TalkTimer -= Time.deltaTime;
+				if (this.S.TalkTimer <= 0f)
+				{
+					if (!this.S.Fed && this.S.Club != ClubType.Delinquent)
+					{
+						PickUpScript pickUp = this.S.Yandere.PickUp;
+						this.S.Yandere.EmptyHands();
+						pickUp.GetComponent<MeshFilter>().mesh = this.S.StudentManager.OpenChipBag;
+						pickUp.transform.parent = this.S.LeftItemParent;
+						pickUp.transform.localPosition = new Vector3(-0.02f, -0.075f, 0f);
+						pickUp.transform.localEulerAngles = new Vector3(-15f, -15f, 30f);
+						pickUp.MyRigidbody.useGravity = false;
+						pickUp.MyRigidbody.isKinematic = true;
+						pickUp.Prompt.Hide();
+						pickUp.Prompt.enabled = false;
+						pickUp.enabled = false;
+						this.S.BagOfChips = pickUp.gameObject;
+						this.S.EatingSnack = true;
+						this.S.Private = true;
+						this.S.Fed = true;
+					}
+					this.S.DialogueWheel.End();
+					this.S.StudentManager.UpdateStudents(0);
+				}
+			}
 			if (this.S.StudentID == 41 && !this.S.DialogueWheel.ClubLeader && this.S.TalkTimer > 0f)
 			{
 				Debug.Log("Geiju response.");
@@ -1133,7 +1195,7 @@ public class TalkingScript : MonoBehaviour
 						this.S.Pathfinding.canMove = true;
 						this.S.Obstacle.enabled = false;
 						this.S.Alarmed = false;
-						if (!this.S.Following && !this.S.Distracting && !this.S.Wet)
+						if (!this.S.Following && !this.S.Distracting && !this.S.Wet && !this.S.EatingSnack)
 						{
 							this.S.Routine = true;
 						}

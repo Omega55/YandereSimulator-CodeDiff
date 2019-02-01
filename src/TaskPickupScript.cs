@@ -5,9 +5,11 @@ public class TaskPickupScript : MonoBehaviour
 {
 	public PromptScript Prompt;
 
+	public int ButtonID = 3;
+
 	private void Update()
 	{
-		if (this.Prompt.Circle[3].fillAmount == 0f)
+		if (this.Prompt.Circle[this.ButtonID].fillAmount == 0f)
 		{
 			this.Prompt.Yandere.StudentManager.TaskManager.CheckTaskPickups();
 		}

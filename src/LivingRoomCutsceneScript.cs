@@ -166,9 +166,16 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 				gameObject9.SetActive(false);
 			}
 		}
-		for (int m = 0; m < 10; m++)
+		foreach (GameObject gameObject10 in this.YandereCosmetic.Kerchiefs)
 		{
-			this.YandereCosmetic.Fingernails[m].gameObject.SetActive(false);
+			if (gameObject10 != null)
+			{
+				gameObject10.SetActive(false);
+			}
+		}
+		for (int n = 0; n < 10; n++)
+		{
+			this.YandereCosmetic.Fingernails[n].gameObject.SetActive(false);
 		}
 		this.ID = 0;
 		this.YandereCosmetic.FemaleHair[1].SetActive(true);
@@ -346,9 +353,9 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 			{
 				StudentGlobals.SetStudentKidnapped(81, false);
 				StudentGlobals.SetStudentBroken(81, true);
-				StudentGlobals.SetStudentKidnapped(7, true);
-				StudentGlobals.SetStudentSanity(7, 100f);
-				SchoolGlobals.KidnapVictim = 7;
+				StudentGlobals.SetStudentKidnapped(30, true);
+				StudentGlobals.SetStudentSanity(30, 100f);
+				SchoolGlobals.KidnapVictim = 30;
 				HomeGlobals.StartInBasement = true;
 				SceneManager.LoadScene("CalendarScene");
 			}

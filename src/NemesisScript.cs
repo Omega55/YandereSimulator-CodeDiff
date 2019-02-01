@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class NemesisScript : MonoBehaviour
 {
@@ -90,7 +91,6 @@ public class NemesisScript : MonoBehaviour
 		this.Difficulty = MissionModeGlobals.NemesisDifficulty;
 		this.Student.StudentManager = GameObject.Find("StudentManager").GetComponent<StudentManagerScript>();
 		this.Student.WitnessCamera = GameObject.Find("WitnessCamera").GetComponent<WitnessCameraScript>();
-		this.Student.Reputation = GameObject.Find("Reputation").GetComponent<ReputationScript>();
 		this.Student.Police = GameObject.Find("Police").GetComponent<PoliceScript>();
 		this.Student.JSON = GameObject.Find("JSON").GetComponent<JsonScript>();
 		this.Student.CharacterAnimation = this.Student.Character.GetComponent<Animation>();
@@ -274,10 +274,17 @@ public class NemesisScript : MonoBehaviour
 				Animation component3 = this.Student.Character.GetComponent<Animation>();
 				if (component3["f02_knifeLowSanityA_00"].time >= component3["f02_knifeLowSanityA_00"].length)
 				{
-					this.MissionMode.GameOverID = 13;
-					this.MissionMode.GameOver();
-					this.MissionMode.Phase = 4;
-					base.enabled = false;
+					if (this.MissionMode.enabled)
+					{
+						this.MissionMode.GameOverID = 13;
+						this.MissionMode.GameOver();
+						this.MissionMode.Phase = 4;
+						base.enabled = false;
+					}
+					else
+					{
+						SceneManager.LoadScene("LoadingScene");
+					}
 				}
 			}
 		}
@@ -347,6 +354,7 @@ public class NemesisScript : MonoBehaviour
 		this.Student.Cosmetic.RightWristband.SetActive(false);
 		this.Student.Cosmetic.LeftWristband.SetActive(false);
 		this.Student.DramaticCamera.gameObject.SetActive(false);
+		this.Student.VomitEmitter.gameObject.SetActive(false);
 		this.Student.Countdown.gameObject.SetActive(false);
 		this.Student.ScienceProps[0].SetActive(false);
 		this.Student.Chopsticks[0].SetActive(false);

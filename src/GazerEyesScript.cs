@@ -143,35 +143,7 @@ public class GazerEyesScript : MonoBehaviour
 		}
 		else if (this.Effect == 1)
 		{
-			StudentScript targetStudent = this.Yandere.TargetStudent;
-			targetStudent.CharacterAnimation["f02_electrocution_00"].speed = 0.85f;
-			targetStudent.CharacterAnimation["f02_electrocution_00"].time = 2f;
-			targetStudent.CharacterAnimation.CrossFade("f02_electrocution_00");
-			targetStudent.Pathfinding.canSearch = false;
-			targetStudent.Pathfinding.canMove = false;
-			targetStudent.Electrified = true;
-			targetStudent.Fleeing = false;
-			targetStudent.Routine = false;
-			targetStudent.Dying = true;
-			GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(this.StudentManager.LightSwitch.Electricity, targetStudent.transform.position, Quaternion.identity);
-			gameObject2.transform.parent = targetStudent.BoneSets.RightArm;
-			gameObject2.transform.localPosition = Vector3.zero;
-			GameObject gameObject3 = UnityEngine.Object.Instantiate<GameObject>(this.StudentManager.LightSwitch.Electricity, targetStudent.transform.position, Quaternion.identity);
-			gameObject3.transform.parent = targetStudent.BoneSets.LeftArm;
-			gameObject3.transform.localPosition = Vector3.zero;
-			GameObject gameObject4 = UnityEngine.Object.Instantiate<GameObject>(this.StudentManager.LightSwitch.Electricity, targetStudent.transform.position, Quaternion.identity);
-			gameObject4.transform.parent = targetStudent.BoneSets.RightLeg;
-			gameObject4.transform.localPosition = Vector3.zero;
-			GameObject gameObject5 = UnityEngine.Object.Instantiate<GameObject>(this.StudentManager.LightSwitch.Electricity, targetStudent.transform.position, Quaternion.identity);
-			gameObject5.transform.parent = targetStudent.BoneSets.LeftLeg;
-			gameObject5.transform.localPosition = Vector3.zero;
-			GameObject gameObject6 = UnityEngine.Object.Instantiate<GameObject>(this.StudentManager.LightSwitch.Electricity, targetStudent.transform.position, Quaternion.identity);
-			gameObject6.transform.parent = targetStudent.BoneSets.Head;
-			gameObject6.transform.localPosition = Vector3.zero;
-			GameObject gameObject7 = UnityEngine.Object.Instantiate<GameObject>(this.StudentManager.LightSwitch.Electricity, targetStudent.transform.position, Quaternion.identity);
-			gameObject7.transform.parent = targetStudent.Hips;
-			gameObject7.transform.localPosition = Vector3.zero;
-			AudioSource.PlayClipAtPoint(this.StudentManager.LightSwitch.Flick[2], targetStudent.transform.position + Vector3.up);
+			this.ElectrocuteStudent(this.Yandere.TargetStudent);
 		}
 		else if (this.Effect == 2)
 		{
@@ -202,5 +174,43 @@ public class GazerEyesScript : MonoBehaviour
 		}
 		this.Yandere.TargetStudent.Prompt.Hide();
 		this.Yandere.TargetStudent.Prompt.enabled = false;
+	}
+
+	public void ElectrocuteStudent(StudentScript Target)
+	{
+		Target.CharacterAnimation[Target.ElectroAnim].speed = 0.85f;
+		Target.CharacterAnimation[Target.ElectroAnim].time = 2f;
+		Target.CharacterAnimation.CrossFade(Target.ElectroAnim);
+		Target.Pathfinding.canSearch = false;
+		Target.Pathfinding.canMove = false;
+		Target.EatingSnack = false;
+		Target.Electrified = true;
+		Target.Fleeing = false;
+		Target.Routine = false;
+		Target.Dying = true;
+		if (Target.Following)
+		{
+			Target.Yandere.Followers--;
+			Target.Following = false;
+		}
+		GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.StudentManager.LightSwitch.Electricity, Target.transform.position, Quaternion.identity);
+		gameObject.transform.parent = Target.BoneSets.RightArm;
+		gameObject.transform.localPosition = Vector3.zero;
+		GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(this.StudentManager.LightSwitch.Electricity, Target.transform.position, Quaternion.identity);
+		gameObject2.transform.parent = Target.BoneSets.LeftArm;
+		gameObject2.transform.localPosition = Vector3.zero;
+		GameObject gameObject3 = UnityEngine.Object.Instantiate<GameObject>(this.StudentManager.LightSwitch.Electricity, Target.transform.position, Quaternion.identity);
+		gameObject3.transform.parent = Target.BoneSets.RightLeg;
+		gameObject3.transform.localPosition = Vector3.zero;
+		GameObject gameObject4 = UnityEngine.Object.Instantiate<GameObject>(this.StudentManager.LightSwitch.Electricity, Target.transform.position, Quaternion.identity);
+		gameObject4.transform.parent = Target.BoneSets.LeftLeg;
+		gameObject4.transform.localPosition = Vector3.zero;
+		GameObject gameObject5 = UnityEngine.Object.Instantiate<GameObject>(this.StudentManager.LightSwitch.Electricity, Target.transform.position, Quaternion.identity);
+		gameObject5.transform.parent = Target.BoneSets.Head;
+		gameObject5.transform.localPosition = Vector3.zero;
+		GameObject gameObject6 = UnityEngine.Object.Instantiate<GameObject>(this.StudentManager.LightSwitch.Electricity, Target.transform.position, Quaternion.identity);
+		gameObject6.transform.parent = Target.Hips;
+		gameObject6.transform.localPosition = Vector3.zero;
+		AudioSource.PlayClipAtPoint(this.StudentManager.LightSwitch.Flick[2], Target.transform.position + Vector3.up);
 	}
 }
