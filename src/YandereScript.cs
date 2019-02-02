@@ -6224,6 +6224,7 @@ public class YandereScript : MonoBehaviour
 		RenderSettings.skybox = this.HorrorSkybox;
 		SchoolGlobals.SchoolAtmosphere = 0f;
 		this.StudentManager.SetAtmosphere();
+		this.StudentManager.Portal.SetActive(false);
 		this.RPGCamera.desiredDistance = 0.33333f;
 		this.Zoom.OverShoulder = true;
 		this.Zoom.TargetZoom = 0.2f;
@@ -6241,7 +6242,7 @@ public class YandereScript : MonoBehaviour
 		this.ID = 1;
 		while (this.ID < 101)
 		{
-			if (this.StudentManager.Students[this.ID].gameObject.activeInHierarchy)
+			if (this.StudentManager.Students[this.ID] != null && this.StudentManager.Students[this.ID].gameObject.activeInHierarchy)
 			{
 				this.StudentManager.DisableStudent(this.ID);
 			}

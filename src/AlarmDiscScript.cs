@@ -158,7 +158,7 @@ public class AlarmDiscScript : MonoBehaviour
 					this.Student.Routine = false;
 					this.Student.GoAway = false;
 					bool flag = false;
-					if (this.Student.Bento.activeInHierarchy)
+					if (this.Student.Bento.activeInHierarchy && this.Student.StudentID > 1)
 					{
 						flag = true;
 					}

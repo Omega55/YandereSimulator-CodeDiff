@@ -4445,6 +4445,7 @@ public class StudentScript : MonoBehaviour
 							{
 								if (!this.Ragdoll.Poisoned && (!this.Bento.activeInHierarchy || this.Bento.transform.parent == null))
 								{
+									this.SmartPhone.SetActive(false);
 									if (!this.Male)
 									{
 										this.Bento.transform.parent = this.LeftItemParent;
@@ -8424,7 +8425,7 @@ public class StudentScript : MonoBehaviour
 					}
 					this.CharacterAnimation.CrossFade(this.DrownAnim);
 				}
-				else if (this.Clock.Period == 2 || this.Clock.Period == 4)
+				else if (this.Clock.Period == 2 || this.Clock.Period == 4 || this.CurrentDestination == this.Seat)
 				{
 					this.Subtitle.UpdateLabel(SubtitleType.ClassApology, 0, 3f);
 					this.Prompt.Circle[0].fillAmount = 1f;

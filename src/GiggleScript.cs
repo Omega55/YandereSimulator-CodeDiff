@@ -84,7 +84,7 @@ public class GiggleScript : MonoBehaviour
 							this.Student.Lighter.SetActive(false);
 						}
 						bool flag = false;
-						if (this.Student.Bento.activeInHierarchy)
+						if (this.Student.Bento.activeInHierarchy && this.Student.StudentID > 1)
 						{
 							flag = true;
 						}
