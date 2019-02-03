@@ -6220,11 +6220,11 @@ public class YandereScript : MonoBehaviour
 
 	private void Horror()
 	{
+		this.Rain.SetActive(false);
 		RenderSettings.ambientLight = new Color(0.1f, 0.1f, 0.1f);
 		RenderSettings.skybox = this.HorrorSkybox;
 		SchoolGlobals.SchoolAtmosphere = 0f;
 		this.StudentManager.SetAtmosphere();
-		this.StudentManager.Portal.SetActive(false);
 		this.RPGCamera.desiredDistance = 0.33333f;
 		this.Zoom.OverShoulder = true;
 		this.Zoom.TargetZoom = 0.2f;
@@ -6235,9 +6235,16 @@ public class YandereScript : MonoBehaviour
 		this.StudentManager.Clock.gameObject.SetActive(false);
 		this.StudentManager.Clock.SunFlare.SetActive(false);
 		this.StudentManager.Clock.Horror = true;
+		this.StudentManager.Headmaster.gameObject.SetActive(false);
 		this.StudentManager.Reputation.gameObject.SetActive(false);
 		this.StudentManager.Flashlight.gameObject.SetActive(true);
 		this.StudentManager.Flashlight.BePickedUp();
+		this.StudentManager.DelinquentRadio.SetActive(false);
+		this.StudentManager.CounselorDoor[0].enabled = false;
+		this.StudentManager.CounselorDoor[1].enabled = false;
+		this.StudentManager.CounselorDoor[0].Prompt.enabled = false;
+		this.StudentManager.CounselorDoor[1].Prompt.enabled = false;
+		this.StudentManager.Portal.SetActive(false);
 		RenderSettings.ambientLight = new Color(0.1f, 0.1f, 0.1f);
 		this.ID = 1;
 		while (this.ID < 101)
@@ -6248,6 +6255,7 @@ public class YandereScript : MonoBehaviour
 			}
 			this.ID++;
 		}
+		this.Egg = true;
 	}
 
 	public void ChangeSchoolwear()

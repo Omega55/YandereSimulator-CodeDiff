@@ -692,7 +692,7 @@ public class DebugMenuScript : MonoBehaviour
 
 	public void EasterEggCheck()
 	{
-		if (this.Yandere.BanchoActive || this.Yandere.Sans || this.Yandere.Raincoat.activeInHierarchy || this.Yandere.KLKSword.activeInHierarchy)
+		if (this.Yandere.BanchoActive || this.Yandere.Sans || this.Yandere.Raincoat.activeInHierarchy || this.Yandere.KLKSword.activeInHierarchy || this.Yandere.Gazing)
 		{
 			this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
 			this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);

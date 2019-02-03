@@ -1149,6 +1149,7 @@ public class TalkingScript : MonoBehaviour
 					{
 						PickUpScript pickUp = this.S.Yandere.PickUp;
 						this.S.Yandere.EmptyHands();
+						this.S.EmptyHands();
 						pickUp.GetComponent<MeshFilter>().mesh = this.S.StudentManager.OpenChipBag;
 						pickUp.transform.parent = this.S.LeftItemParent;
 						pickUp.transform.localPosition = new Vector3(-0.02f, -0.075f, 0f);

@@ -15,6 +15,8 @@ public class DrinkingFountainScript : MonoBehaviour
 
 	public PromptScript Prompt;
 
+	public AudioSource MyAudio;
+
 	private void Update()
 	{
 		if (this.Prompt.Yandere.EquippedWeapon != null)
@@ -54,6 +56,7 @@ public class DrinkingFountainScript : MonoBehaviour
 				this.Prompt.HideButton[1] = true;
 				this.Puddle.SetActive(true);
 				this.Leak.SetActive(true);
+				this.MyAudio.Play();
 				this.PowerSwitch.CheckPuddle();
 			}
 		}

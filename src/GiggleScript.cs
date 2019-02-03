@@ -57,6 +57,7 @@ public class GiggleScript : MonoBehaviour
 						this.Student.InvestigationPhase = 0;
 						this.Student.InvestigationTimer = 0f;
 						this.Student.Investigating = true;
+						this.Student.EatingSnack = false;
 						this.Student.SpeechLines.Stop();
 						this.Student.ChalkDust.Stop();
 						this.Student.DiscCheck = true;

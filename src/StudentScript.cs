@@ -1829,9 +1829,9 @@ public class StudentScript : MonoBehaviour
 				{
 					this.IdleAnim = "f02_idleGirly_00";
 					this.WalkAnim = "f02_walkGirly_00";
-					this.OriginalWalkAnim = this.WalkAnim;
 				}
 			}
+			this.OriginalWalkAnim = this.WalkAnim;
 			if (StudentGlobals.GetStudentGrudge(this.StudentID))
 			{
 				if (this.Persona != PersonaType.Coward && this.Persona != PersonaType.Evil)
@@ -3122,7 +3122,6 @@ public class StudentScript : MonoBehaviour
 					}
 					if (this.MyPlate != null && this.MyPlate.parent == this.RightHand)
 					{
-						Debug.Log("We need to put this plate away...");
 						this.CurrentDestination = this.StudentManager.Clubs.List[this.StudentID];
 						this.Pathfinding.target = this.StudentManager.Clubs.List[this.StudentID];
 					}
@@ -4576,6 +4575,8 @@ public class StudentScript : MonoBehaviour
 										this.Police.Corpses++;
 										GameObjectUtils.SetLayerRecursively(base.gameObject, 11);
 										base.tag = "Blood";
+										this.Ragdoll.ChokingAnimation = true;
+										this.Ragdoll.Disturbing = true;
 										this.Ragdoll.Choking = true;
 										this.Dying = true;
 										this.MurderSuicidePhase = 100;
@@ -6725,6 +6726,7 @@ public class StudentScript : MonoBehaviour
 									this.Police.Corpses++;
 									GameObjectUtils.SetLayerRecursively(this.HuntTarget.gameObject, 11);
 									this.HuntTarget.tag = "Blood";
+									this.HuntTarget.Ragdoll.MurderSuicideAnimation = true;
 									this.HuntTarget.Ragdoll.Disturbing = true;
 									this.HuntTarget.Dying = true;
 									this.HuntTarget.MurderSuicidePhase = 100;
@@ -7533,6 +7535,7 @@ public class StudentScript : MonoBehaviour
 				if (this.SnackPhase == 0)
 				{
 					this.CharacterAnimation.CrossFade(this.EatChipsAnim);
+					this.SmartPhone.SetActive(false);
 					this.Pathfinding.canSearch = false;
 					this.Pathfinding.canMove = false;
 					this.SnackTimer += Time.deltaTime;
@@ -7565,6 +7568,7 @@ public class StudentScript : MonoBehaviour
 					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.DrinkingFountain.DrinkPosition.rotation, 10f * Time.deltaTime);
 					if (this.CharacterAnimation[this.DrinkFountainAnim].time >= this.CharacterAnimation[this.DrinkFountainAnim].length)
 					{
+						this.EquipCleaningItems();
 						this.EatingSnack = false;
 						this.Private = false;
 						this.Routine = true;
@@ -7660,6 +7664,7 @@ public class StudentScript : MonoBehaviour
 							this.LastKnownCorpse = this.Corpse.AllColliders[0].transform.position;
 							this.WitnessedCorpse = true;
 							this.Investigating = false;
+							this.EatingSnack = false;
 							this.Threatened = false;
 							this.SentHome = false;
 							this.Routine = false;
@@ -7673,23 +7678,32 @@ public class StudentScript : MonoBehaviour
 							{
 								this.Persona = PersonaType.Loner;
 							}
-							if (this.Corpse.Burning)
-							{
-								this.WalkBackTimer = 5f;
-								this.WalkBack = true;
-								this.Hesitation = 0.5f;
-							}
 							if (this.Corpse.Disturbing)
 							{
-								this.WalkBackTimer = 5f;
-								this.WalkBack = true;
-								this.Hesitation = 1f;
-							}
-							if (this.Corpse.Choking)
-							{
-								this.WalkBackTimer = 0f;
-								this.WalkBack = true;
-								this.Hesitation = 0.6f;
+								if (this.Corpse.BurningAnimation)
+								{
+									this.WalkBackTimer = 5f;
+									this.WalkBack = true;
+									this.Hesitation = 0.5f;
+								}
+								if (this.Corpse.MurderSuicideAnimation)
+								{
+									this.WalkBackTimer = 5f;
+									this.WalkBack = true;
+									this.Hesitation = 1f;
+								}
+								if (this.Corpse.ChokingAnimation)
+								{
+									this.WalkBackTimer = 0f;
+									this.WalkBack = true;
+									this.Hesitation = 0.6f;
+								}
+								if (this.Corpse.ElectrocutionAnimation)
+								{
+									this.WalkBackTimer = 0f;
+									this.WalkBack = true;
+									this.Hesitation = 0.5f;
+								}
 							}
 							this.StudentManager.UpdateMe(this.StudentID);
 							if (!this.Teacher)
@@ -9017,7 +9031,6 @@ public class StudentScript : MonoBehaviour
 				{
 					if (!this.WitnessedCorpse)
 					{
-						Debug.Log("A teacher's reaction is now being determined.");
 						this.CharacterAnimation.CrossFade(this.IdleAnim);
 						if (this.Witnessed == StudentWitnessType.WeaponAndBloodAndInsanity)
 						{
@@ -9934,6 +9947,7 @@ public class StudentScript : MonoBehaviour
 				this.Routine = true;
 				this.Emetic = false;
 				this.VomitPhase = 0;
+				this.WalkAnim = this.OriginalWalkAnim;
 				this.Phase++;
 				this.Pathfinding.target = this.Destinations[this.Phase];
 				this.CurrentDestination = this.Destinations[this.Phase];
@@ -10367,6 +10381,7 @@ public class StudentScript : MonoBehaviour
 		}
 		this.Investigating = false;
 		this.Pen.SetActive(false);
+		this.EatingSnack = false;
 		this.SpeechLines.Stop();
 		this.Attacked = true;
 		this.Alarmed = false;
@@ -10548,6 +10563,7 @@ public class StudentScript : MonoBehaviour
 		this.WitnessedMurder = true;
 		this.Investigating = false;
 		this.Distracting = false;
+		this.EatingSnack = false;
 		this.Threatened = false;
 		this.Distracted = false;
 		this.Reacted = false;
@@ -11959,9 +11975,12 @@ public class StudentScript : MonoBehaviour
 		this.Character.GetComponent<Animation>().CrossFade(this.BurningAnim);
 		this.Pathfinding.canSearch = false;
 		this.Pathfinding.canMove = false;
+		this.Ragdoll.BurningAnimation = true;
+		this.Ragdoll.Disturbing = true;
 		this.Ragdoll.Burning = true;
 		this.WitnessedCorpse = false;
 		this.Investigating = false;
+		this.EatingSnack = false;
 		this.DiscCheck = false;
 		this.WalkBack = false;
 		this.Alarmed = false;
@@ -12006,6 +12025,7 @@ public class StudentScript : MonoBehaviour
 			this.Pathfinding.canMove = false;
 			this.WitnessedCorpse = false;
 			this.Investigating = false;
+			this.EatingSnack = false;
 			this.DiscCheck = false;
 			this.WalkBack = false;
 			this.Alarmed = false;
@@ -12571,6 +12591,7 @@ public class StudentScript : MonoBehaviour
 		}
 		this.YandereInnocent = false;
 		this.Investigating = false;
+		this.EatingSnack = false;
 		this.DiscCheck = false;
 		this.Routine = true;
 	}
@@ -13506,16 +13527,19 @@ public class StudentScript : MonoBehaviour
 
 	public void EquipCleaningItems()
 	{
-		if (this.Persona == PersonaType.PhoneAddict || this.Persona == PersonaType.Sleuth)
+		if (this.CurrentAction == StudentActionType.Clean)
 		{
-			this.WalkAnim = this.OriginalWalkAnim;
-		}
-		this.SmartPhone.SetActive(false);
-		this.Scrubber.SetActive(true);
-		if (this.CleaningRole == 5)
-		{
-			this.Scrubber.GetComponent<Renderer>().material.mainTexture = this.Eraser.GetComponent<Renderer>().material.mainTexture;
-			this.Eraser.SetActive(true);
+			if (this.Persona == PersonaType.PhoneAddict || this.Persona == PersonaType.Sleuth)
+			{
+				this.WalkAnim = this.OriginalWalkAnim;
+			}
+			this.SmartPhone.SetActive(false);
+			this.Scrubber.SetActive(true);
+			if (this.CleaningRole == 5)
+			{
+				this.Scrubber.GetComponent<Renderer>().material.mainTexture = this.Eraser.GetComponent<Renderer>().material.mainTexture;
+				this.Eraser.SetActive(true);
+			}
 		}
 	}
 }

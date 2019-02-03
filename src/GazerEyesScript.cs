@@ -193,6 +193,15 @@ public class GazerEyesScript : MonoBehaviour
 			Target.Yandere.Followers--;
 			Target.Following = false;
 		}
+		Target.Police.CorpseList[Target.Police.Corpses] = Target.Ragdoll;
+		Target.Police.Corpses++;
+		GameObjectUtils.SetLayerRecursively(Target.gameObject, 11);
+		Target.tag = "Blood";
+		Target.Ragdoll.ElectrocutionAnimation = true;
+		Target.Ragdoll.Disturbing = true;
+		Target.Dying = true;
+		Target.MurderSuicidePhase = 100;
+		Target.SpawnAlarmDisc();
 		GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.StudentManager.LightSwitch.Electricity, Target.transform.position, Quaternion.identity);
 		gameObject.transform.parent = Target.BoneSets.RightArm;
 		gameObject.transform.localPosition = Vector3.zero;

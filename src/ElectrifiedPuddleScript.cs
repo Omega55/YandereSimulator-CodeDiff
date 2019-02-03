@@ -7,11 +7,10 @@ public class ElectrifiedPuddleScript : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		Debug.Log(other.name + " touched me!");
 		if (other.gameObject.layer == 9)
 		{
 			StudentScript component = other.gameObject.GetComponent<StudentScript>();
-			if (component != null)
+			if (component != null && !component.Electrified)
 			{
 				component.Yandere.GazerEyes.ElectrocuteStudent(component);
 				base.gameObject.SetActive(false);

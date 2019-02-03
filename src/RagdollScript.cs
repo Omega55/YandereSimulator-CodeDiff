@@ -71,6 +71,14 @@ public class RagdollScript : MonoBehaviour
 
 	public GameObject Zs;
 
+	public bool ElectrocutionAnimation;
+
+	public bool MurderSuicideAnimation;
+
+	public bool BurningAnimation;
+
+	public bool ChokingAnimation;
+
 	public bool AddingToCount;
 
 	public bool MurderSuicide;
@@ -157,6 +165,11 @@ public class RagdollScript : MonoBehaviour
 
 	private void Start()
 	{
+		this.ElectrocutionAnimation = false;
+		this.MurderSuicideAnimation = false;
+		this.BurningAnimation = false;
+		this.ChokingAnimation = false;
+		this.Disturbing = false;
 		Physics.IgnoreLayerCollision(11, 13, true);
 		this.Zs.SetActive(this.Tranquil);
 		if (!this.Tranquil && !this.Poisoned && !this.Drowned && !this.Electrocuted && !this.Burning && !this.NeckSnapped)

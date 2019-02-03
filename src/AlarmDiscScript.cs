@@ -153,6 +153,7 @@ public class AlarmDiscScript : MonoBehaviour
 					this.Student.CharacterAnimation.CrossFade(this.Student.LeanAnim);
 					this.Student.Pathfinding.canSearch = false;
 					this.Student.Pathfinding.canMove = false;
+					this.Student.EatingSnack = false;
 					this.Student.Radio = this.SourceRadio;
 					this.Student.TurnOffRadio = true;
 					this.Student.Routine = false;
@@ -231,6 +232,7 @@ public class AlarmDiscScript : MonoBehaviour
 					this.Student.InvestigationPhase = 0;
 					this.Student.InvestigationTimer = 0f;
 					this.Student.Investigating = true;
+					this.Student.EatingSnack = false;
 					this.Student.SpeechLines.Stop();
 					this.Student.ChalkDust.Stop();
 					this.Student.DiscCheck = true;

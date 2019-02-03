@@ -846,6 +846,11 @@ public class DialogueWheelScript : MonoBehaviour
 					this.Yandere.TargetStudent.SmartPhone.SetActive(false);
 				}
 			}
+			if (this.Yandere.TargetStudent.EatingSnack)
+			{
+				this.Yandere.TargetStudent.Scrubber.SetActive(false);
+				this.Yandere.TargetStudent.Eraser.SetActive(false);
+			}
 			this.Yandere.TargetStudent.Talk.NegativeResponse = false;
 			this.Yandere.ShoulderCamera.OverShoulder = false;
 			this.Yandere.TargetStudent.Waiting = true;

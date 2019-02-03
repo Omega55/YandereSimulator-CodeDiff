@@ -111,6 +111,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public DoorScript FemaleVomitDoor;
 
+	public CounselorDoorScript[] CounselorDoor;
+
 	public ParticleSystem AltFemaleDrownSplashes;
 
 	public ParticleSystem FemaleDrownSplashes;
@@ -328,6 +330,8 @@ public class StudentManagerScript : MonoBehaviour
 	public Transform Exit;
 
 	public GameObject LovestruckCamera;
+
+	public GameObject DelinquentRadio;
 
 	public GameObject GardenBlockade;
 
