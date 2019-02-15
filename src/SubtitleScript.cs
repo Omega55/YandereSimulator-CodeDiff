@@ -465,6 +465,12 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] Eulogies;
 
+	public string[] AskForHelps;
+
+	public string[] GiveHelps;
+
+	public string[] RejectHelps;
+
 	public string InfoNotice;
 
 	public int RandomID;
@@ -2351,6 +2357,18 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.Label.text = this.Eulogies[ID];
 			this.PlayVoice(subtitleType, ID);
+		}
+		else if (subtitleType == SubtitleType.AskForHelp)
+		{
+			this.Label.text = this.AskForHelps[ID];
+		}
+		else if (subtitleType == SubtitleType.GiveHelp)
+		{
+			this.Label.text = this.GiveHelps[ID];
+		}
+		else if (subtitleType == SubtitleType.RejectHelp)
+		{
+			this.Label.text = this.RejectHelps[ID];
 		}
 		this.Timer = Duration;
 	}

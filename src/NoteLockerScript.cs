@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class NoteLockerScript : MonoBehaviour
 {
+	public FindStudentLockerScript FindStudentLocker;
+
 	public StudentManagerScript StudentManager;
 
 	public NoteWindowScript NoteWindow;
@@ -103,16 +105,14 @@ public class NoteLockerScript : MonoBehaviour
 		{
 			if (this.Student != null && (this.Student.Phase == 2 || this.Student.Phase == 8) && this.Student.Routine && Vector3.Distance(base.transform.position, this.Student.transform.position) < 2f && !this.Student.InEvent)
 			{
-				this.Student.Character.GetComponent<Animation>().cullingType = AnimationCullingType.AlwaysAnimate;
+				this.Student.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
 				if (!this.Success)
 				{
-					this.Student.Character.GetComponent<Animation>().CrossFade("f02_tossNote_00");
-					this.Locker.GetComponent<Animation>().CrossFade("lockerTossNote");
+					this.Student.CharacterAnimation.CrossFade(this.Student.TossNoteAnim);
 				}
 				else
 				{
-					this.Student.Character.GetComponent<Animation>().CrossFade("f02_keepNote_00");
-					this.Locker.GetComponent<Animation>().CrossFade("lockerKeepNote");
+					this.Student.CharacterAnimation.CrossFade(this.Student.KeepNoteAnim);
 				}
 				this.Student.Pathfinding.canSearch = false;
 				this.Student.Pathfinding.canMove = false;
@@ -128,12 +128,11 @@ public class NoteLockerScript : MonoBehaviour
 				this.Student.transform.rotation = Quaternion.Slerp(this.Student.transform.rotation, this.Student.MyLocker.rotation, 10f * Time.deltaTime);
 				if (this.Student != null)
 				{
-					Animation component = this.Student.Character.GetComponent<Animation>();
-					if (component["f02_tossNote_00"].time >= component["f02_tossNote_00"].length)
+					if (this.Student.CharacterAnimation[this.Student.TossNoteAnim].time >= this.Student.CharacterAnimation[this.Student.TossNoteAnim].length)
 					{
 						this.Finish();
 					}
-					if (component["f02_keepNote_00"].time >= component["f02_keepNote_00"].length)
+					if (this.Student.CharacterAnimation[this.Student.KeepNoteAnim].time >= this.Student.CharacterAnimation[this.Student.KeepNoteAnim].length)
 					{
 						this.DetermineSchedule();
 						this.Finish();
@@ -164,9 +163,9 @@ public class NoteLockerScript : MonoBehaviour
 					if (this.Timer > 13.333333f && this.NewBall == null)
 					{
 						this.NewBall = UnityEngine.Object.Instantiate<GameObject>(this.Ball, this.Student.LeftHand.position, Quaternion.identity);
-						Rigidbody component2 = this.NewBall.GetComponent<Rigidbody>();
-						component2.AddRelativeForce(Vector3.right * 100f);
-						component2.AddRelativeForce(Vector3.up * 100f);
+						Rigidbody component = this.NewBall.GetComponent<Rigidbody>();
+						component.AddRelativeForce(Vector3.right * 100f);
+						component.AddRelativeForce(Vector3.up * 100f);
 						this.Phase++;
 					}
 				}

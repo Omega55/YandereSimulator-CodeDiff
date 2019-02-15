@@ -24,6 +24,8 @@ public class HomeCameraScript : MonoBehaviour
 
 	public HomeYandereScript HomeYandere;
 
+	public HomeSleepScript HomeAnime;
+
 	public HomeMangaScript HomeManga;
 
 	public HomeSleepScript HomeSleep;
@@ -160,7 +162,7 @@ public class HomeCameraScript : MonoBehaviour
 		this.Focus.position = Vector3.Lerp(this.Focus.position, this.Target.position, Time.deltaTime * 10f);
 		base.transform.position = Vector3.Lerp(base.transform.position, this.Destination.position, Time.deltaTime * 10f);
 		base.transform.LookAt(this.Focus.position);
-		if (this.ID < 11 && Input.GetButtonDown("A") && this.HomeYandere.CanMove && this.ID != 0)
+		if (this.ID != 11 && Input.GetButtonDown("A") && this.HomeYandere.CanMove && this.ID != 0)
 		{
 			this.Destination = this.Destinations[this.ID];
 			this.Target = this.Targets[this.ID];
@@ -221,6 +223,10 @@ public class HomeCameraScript : MonoBehaviour
 				this.PromptBar.Show = true;
 				this.HomePrisoner.UpdateDesc();
 				this.HomeYandere.gameObject.SetActive(false);
+			}
+			else if (this.ID == 12)
+			{
+				this.HomeAnime.enabled = true;
 			}
 		}
 		if (this.Destination == this.Destinations[0])

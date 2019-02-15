@@ -60,6 +60,10 @@ public class HomeDarknessScript : MonoBehaviour
 						EventGlobals.KidnapConversation = true;
 						SceneManager.LoadScene("PhoneScene");
 					}
+					else if (this.HomeCamera.ID == 12)
+					{
+						SceneManager.LoadScene("LifeNoteScene");
+					}
 					else if (this.HomeExit.ID == 1)
 					{
 						SceneManager.LoadScene("LoadingScene");

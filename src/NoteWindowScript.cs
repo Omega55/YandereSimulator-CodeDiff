@@ -140,14 +140,69 @@ public class NoteWindowScript : MonoBehaviour
 					this.NoteLocker.Prompt.enabled = false;
 					this.NoteLocker.CanLeaveNote = false;
 					this.NoteLocker.NoteLeft = true;
-					if (this.NoteLocker.Student.StudentID == 30 && this.SlotLabels[1].text == this.Subjects[10])
+					if (this.NoteLocker.Student.StudentID == 30)
+					{
+						if (this.SlotLabels[1].text == this.Subjects[10])
+						{
+							this.NoteLocker.Success = true;
+						}
+					}
+					else if (this.NoteLocker.Student.StudentID == 5)
+					{
+						if (this.NoteLocker.Student.Bullied && this.SlotLabels[1].text == this.Subjects[6] && this.MeetID > 7)
+						{
+							this.NoteLocker.Success = true;
+						}
+					}
+					else if (this.NoteLocker.Student.StudentID == 65)
+					{
+						if (this.SlotLabels[1].text == this.Subjects[7])
+						{
+							this.NoteLocker.Success = true;
+						}
+					}
+					else if (this.NoteLocker.Student.Persona == PersonaType.Loner && this.SlotLabels[1].text == this.Subjects[1])
 					{
 						this.NoteLocker.Success = true;
 					}
-					if (this.NoteLocker.Student.StudentID == 5 && this.NoteLocker.Student.Bullied && this.SlotLabels[1].text == this.Subjects[6] && this.MeetID > 7)
+					else if (this.NoteLocker.Student.Persona == PersonaType.TeachersPet && this.SlotLabels[1].text == this.Subjects[2])
 					{
 						this.NoteLocker.Success = true;
 					}
+					else if (this.NoteLocker.Student.Persona == PersonaType.Heroic || this.NoteLocker.Student.Persona == PersonaType.Sleuth)
+					{
+						if (this.SlotLabels[1].text == this.Subjects[3])
+						{
+							this.NoteLocker.Success = true;
+						}
+					}
+					else if (this.NoteLocker.Student.Persona == PersonaType.Coward && this.SlotLabels[1].text == this.Subjects[4])
+					{
+						this.NoteLocker.Success = true;
+					}
+					else if (this.NoteLocker.Student.Persona == PersonaType.SocialButterfly && this.SlotLabels[1].text == this.Subjects[5])
+					{
+						this.NoteLocker.Success = true;
+					}
+					else if (this.NoteLocker.Student.Persona == PersonaType.PhoneAddict && this.SlotLabels[1].text == this.Subjects[6])
+					{
+						this.NoteLocker.Success = true;
+					}
+					else if (this.NoteLocker.Student.StudentID == 2 || this.NoteLocker.Student.StudentID == 3 || this.NoteLocker.Student.Club == ClubType.Occult)
+					{
+						if (this.SlotLabels[1].text == this.Subjects[9])
+						{
+							this.NoteLocker.Success = true;
+						}
+					}
+					else if (this.NoteLocker.Student.Club == ClubType.Bully && this.SlotLabels[1].text == this.Subjects[9])
+					{
+						this.NoteLocker.Success = true;
+					}
+					this.NoteLocker.FindStudentLocker.Prompt.Hide();
+					this.NoteLocker.FindStudentLocker.Prompt.enabled = false;
+					this.NoteLocker.FindStudentLocker.enabled = false;
+					this.NoteLocker.transform.GetChild(0).gameObject.SetActive(false);
 					this.Exit();
 				}
 			}

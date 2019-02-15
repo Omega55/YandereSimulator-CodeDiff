@@ -20,7 +20,10 @@ public class MatchTriggerScript : MonoBehaviour
 			if (this.Student != null && (this.Student.Gas || this.Fireball))
 			{
 				this.Student.Combust();
-				UnityEngine.Object.Destroy(base.gameObject);
+				if (this.Fireball)
+				{
+					UnityEngine.Object.Destroy(base.gameObject);
+				}
 			}
 		}
 	}

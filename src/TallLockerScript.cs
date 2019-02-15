@@ -287,7 +287,7 @@ public class TallLockerScript : MonoBehaviour
 		{
 			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.SteamCloud, this.Student.transform.position + Vector3.up * 0.81f, Quaternion.identity);
 			gameObject.transform.parent = this.Student.transform;
-			this.Student.Character.GetComponent<Animation>().CrossFade(this.Student.StripAnim);
+			this.Student.CharacterAnimation.CrossFade(this.Student.StripAnim);
 			this.Student.Pathfinding.canSearch = false;
 			this.Student.Pathfinding.canMove = false;
 		}

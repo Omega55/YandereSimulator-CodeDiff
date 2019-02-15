@@ -13,6 +13,8 @@ public class InventoryScript : MonoBehaviour
 
 	public bool AnswerSheet;
 
+	public bool MaskingTape;
+
 	public bool RivalPhone;
 
 	public bool LockPick;

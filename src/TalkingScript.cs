@@ -13,6 +13,8 @@ public class TalkingScript : MonoBehaviour
 
 	public StudentScript S;
 
+	public WeaponScript StuckBoxCutter;
+
 	public bool NegativeResponse;
 
 	public bool Follow;
@@ -74,11 +76,11 @@ public class TalkingScript : MonoBehaviour
 					{
 						this.IdleAnim = this.S.CuteAnim;
 					}
-					this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
+					this.S.CharacterAnimation.CrossFade(this.IdleAnim);
 				}
 				else if (this.IdleAnim != string.Empty)
 				{
-					this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
+					this.S.CharacterAnimation.CrossFade(this.IdleAnim);
 				}
 				if (this.S.TalkTimer == 0f)
 				{
@@ -128,7 +130,7 @@ public class TalkingScript : MonoBehaviour
 				{
 					if (this.S.Club != ClubType.Delinquent)
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod2Anim);
+						this.S.CharacterAnimation.CrossFade(this.S.Nod2Anim);
 						this.S.RepRecovery = 5f;
 						if (PlayerGlobals.PantiesEquipped == 6)
 						{
@@ -171,9 +173,9 @@ public class TalkingScript : MonoBehaviour
 					{
 						this.S.TalkTimer = 0f;
 					}
-					if (this.S.Character.GetComponent<Animation>()[this.S.Nod2Anim].time >= this.S.Character.GetComponent<Animation>()[this.S.Nod2Anim].length)
+					if (this.S.CharacterAnimation[this.S.Nod2Anim].time >= this.S.CharacterAnimation[this.S.Nod2Anim].length)
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
+						this.S.CharacterAnimation.CrossFade(this.IdleAnim);
 					}
 					if (this.S.TalkTimer <= 0f)
 					{
@@ -189,7 +191,7 @@ public class TalkingScript : MonoBehaviour
 				{
 					if (this.S.Club != ClubType.Delinquent)
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.LookDownAnim);
+						this.S.CharacterAnimation.CrossFade(this.S.LookDownAnim);
 						if (PlayerGlobals.Reputation < -33.33333f)
 						{
 							this.S.Subtitle.UpdateLabel(SubtitleType.StudentLowCompliment, 0, 3f);
@@ -228,7 +230,7 @@ public class TalkingScript : MonoBehaviour
 				{
 					if (this.S.Club != ClubType.Delinquent)
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
+						this.S.CharacterAnimation.CrossFade(this.S.GossipAnim);
 						this.S.Subtitle.UpdateLabel(SubtitleType.StudentGossip, 0, 3f);
 						this.S.GossipBonus = 0;
 						if (this.S.Reputation.Reputation > 33.33333f)
@@ -284,9 +286,9 @@ public class TalkingScript : MonoBehaviour
 					{
 						this.S.TalkTimer = 0f;
 					}
-					if (this.S.Character.GetComponent<Animation>()[this.S.GossipAnim].time >= this.S.Character.GetComponent<Animation>()[this.S.GossipAnim].length)
+					if (this.S.CharacterAnimation[this.S.GossipAnim].time >= this.S.CharacterAnimation[this.S.GossipAnim].length)
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
+						this.S.CharacterAnimation.CrossFade(this.IdleAnim);
 					}
 					if (this.S.TalkTimer <= 0f)
 					{
@@ -312,7 +314,7 @@ public class TalkingScript : MonoBehaviour
 				{
 					this.S.TalkTimer = 0f;
 				}
-				this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
+				this.S.CharacterAnimation.CrossFade(this.IdleAnim);
 				this.S.TalkTimer -= Time.deltaTime;
 				if (this.S.TalkTimer <= 0f)
 				{
@@ -325,7 +327,7 @@ public class TalkingScript : MonoBehaviour
 				if (this.S.TalkTimer == 100f)
 				{
 					this.S.Subtitle.UpdateLabel(this.S.TaskLineResponseType, this.S.TaskPhase, this.S.Subtitle.GetClipLength(this.S.StudentID, this.S.TaskPhase));
-					this.S.Character.GetComponent<Animation>().CrossFade(this.S.TaskAnims[this.S.TaskPhase]);
+					this.S.CharacterAnimation.CrossFade(this.S.TaskAnims[this.S.TaskPhase]);
 					this.S.CurrentAnim = this.S.TaskAnims[this.S.TaskPhase];
 					this.S.TalkTimer = this.S.Subtitle.GetClipLength(this.S.StudentID, this.S.TaskPhase);
 				}
@@ -335,9 +337,9 @@ public class TalkingScript : MonoBehaviour
 					UnityEngine.Object.Destroy(this.S.Subtitle.CurrentClip);
 					this.S.TalkTimer = 0f;
 				}
-				if (this.S.Character.GetComponent<Animation>()[this.S.CurrentAnim].time >= this.S.Character.GetComponent<Animation>()[this.S.CurrentAnim].length)
+				if (this.S.CharacterAnimation[this.S.CurrentAnim].time >= this.S.CharacterAnimation[this.S.CurrentAnim].length)
 				{
-					this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
+					this.S.CharacterAnimation.CrossFade(this.IdleAnim);
 				}
 				this.S.TalkTimer -= Time.deltaTime;
 				if (this.S.TalkTimer <= 0f)
@@ -367,7 +369,7 @@ public class TalkingScript : MonoBehaviour
 					{
 						this.S.TaskPhase++;
 						this.S.Subtitle.UpdateLabel(this.S.TaskLineResponseType, this.S.TaskPhase, this.S.Subtitle.GetClipLength(this.S.StudentID, this.S.TaskPhase));
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.TaskAnims[this.S.TaskPhase]);
+						this.S.CharacterAnimation.CrossFade(this.S.TaskAnims[this.S.TaskPhase]);
 						this.S.CurrentAnim = this.S.TaskAnims[this.S.TaskPhase];
 						this.S.TalkTimer = this.S.Subtitle.GetClipLength(this.S.StudentID, this.S.TaskPhase);
 					}
@@ -381,19 +383,19 @@ public class TalkingScript : MonoBehaviour
 					{
 						if ((this.S.Clock.HourTime > 8f && this.S.Clock.HourTime < 13f) || (this.S.Clock.HourTime > 13.375f && this.S.Clock.HourTime < 15.5f))
 						{
-							this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
+							this.S.CharacterAnimation.CrossFade(this.S.GossipAnim);
 							this.S.Subtitle.UpdateLabel(SubtitleType.StudentStay, 0, 5f);
 							this.NegativeResponse = true;
 						}
 						else if (this.S.StudentManager.LockerRoomArea.bounds.Contains(this.S.Yandere.transform.position) || this.S.StudentManager.WestBathroomArea.bounds.Contains(this.S.Yandere.transform.position) || this.S.StudentManager.EastBathroomArea.bounds.Contains(this.S.Yandere.transform.position))
 						{
-							this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
+							this.S.CharacterAnimation.CrossFade(this.S.GossipAnim);
 							this.S.Subtitle.UpdateLabel(SubtitleType.StudentStay, 1, 5f);
 							this.NegativeResponse = true;
 						}
 						else
 						{
-							this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod1Anim);
+							this.S.CharacterAnimation.CrossFade(this.S.Nod1Anim);
 							this.S.Subtitle.UpdateLabel(SubtitleType.StudentFollow, 0, 2f);
 							this.Follow = true;
 						}
@@ -409,9 +411,9 @@ public class TalkingScript : MonoBehaviour
 					{
 						this.S.TalkTimer = 0f;
 					}
-					if (this.S.Character.GetComponent<Animation>()[this.S.Nod1Anim].time >= this.S.Character.GetComponent<Animation>()[this.S.Nod1Anim].length)
+					if (this.S.CharacterAnimation[this.S.Nod1Anim].time >= this.S.CharacterAnimation[this.S.Nod1Anim].length)
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
+						this.S.CharacterAnimation.CrossFade(this.IdleAnim);
 					}
 					if (this.S.TalkTimer <= 0f)
 					{
@@ -443,12 +445,12 @@ public class TalkingScript : MonoBehaviour
 					{
 						if ((this.S.Clock.HourTime > 8f && this.S.Clock.HourTime < 13f) || (this.S.Clock.HourTime > 13.375f && this.S.Clock.HourTime < 15.5f))
 						{
-							this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
+							this.S.CharacterAnimation.CrossFade(this.S.GossipAnim);
 							this.S.Subtitle.UpdateLabel(SubtitleType.StudentStay, 0, 5f);
 						}
 						else
 						{
-							this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod1Anim);
+							this.S.CharacterAnimation.CrossFade(this.S.Nod1Anim);
 							this.S.Subtitle.UpdateLabel(SubtitleType.StudentLeave, 0, 3f);
 							this.S.GoAway = true;
 						}
@@ -464,9 +466,9 @@ public class TalkingScript : MonoBehaviour
 					{
 						this.S.TalkTimer = 0f;
 					}
-					if (this.S.Character.GetComponent<Animation>()[this.S.Nod1Anim].time >= this.S.Character.GetComponent<Animation>()[this.S.Nod1Anim].length)
+					if (this.S.CharacterAnimation[this.S.Nod1Anim].time >= this.S.CharacterAnimation[this.S.Nod1Anim].length)
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
+						this.S.CharacterAnimation.CrossFade(this.IdleAnim);
 					}
 					if (this.S.TalkTimer <= 0f)
 					{
@@ -483,7 +485,7 @@ public class TalkingScript : MonoBehaviour
 					{
 						if ((this.S.Clock.HourTime > 8f && this.S.Clock.HourTime < 13f) || (this.S.Clock.HourTime > 13.375f && this.S.Clock.HourTime < 15.5f))
 						{
-							this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
+							this.S.CharacterAnimation.CrossFade(this.S.GossipAnim);
 							this.S.Subtitle.UpdateLabel(SubtitleType.StudentStay, 0, 5f);
 						}
 						else
@@ -496,13 +498,13 @@ public class TalkingScript : MonoBehaviour
 							}
 							if (studentScript.Routine && !studentScript.TargetedForDistraction && !studentScript.InEvent && !this.Grudge && studentScript.Indoors && studentScript.gameObject.activeInHierarchy && studentScript.ClubActivityPhase < 16)
 							{
-								this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod1Anim);
+								this.S.CharacterAnimation.CrossFade(this.S.Nod1Anim);
 								this.S.Subtitle.UpdateLabel(SubtitleType.StudentDistract, 0, 3f);
 								this.Refuse = false;
 							}
 							else
 							{
-								this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
+								this.S.CharacterAnimation.CrossFade(this.S.GossipAnim);
 								if (this.Grudge)
 								{
 									this.S.Subtitle.UpdateLabel(SubtitleType.StudentDistractBullyRefuse, 0, 3f);
@@ -527,9 +529,9 @@ public class TalkingScript : MonoBehaviour
 					{
 						this.S.TalkTimer = 0f;
 					}
-					if (this.S.Character.GetComponent<Animation>()[this.S.Nod1Anim].time >= this.S.Character.GetComponent<Animation>()[this.S.Nod1Anim].length)
+					if (this.S.CharacterAnimation[this.S.Nod1Anim].time >= this.S.CharacterAnimation[this.S.Nod1Anim].length)
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
+						this.S.CharacterAnimation.CrossFade(this.IdleAnim);
 					}
 					if (this.S.TalkTimer <= 0f)
 					{
@@ -558,7 +560,7 @@ public class TalkingScript : MonoBehaviour
 					if (this.S.Persona == PersonaType.Coward || this.S.Persona == PersonaType.Fragile)
 					{
 						this.S.Subtitle.UpdateLabel(SubtitleType.CowardGrudge, 0, 5f);
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.CowardAnim);
+						this.S.CharacterAnimation.CrossFade(this.S.CowardAnim);
 						this.S.TalkTimer = 5f;
 					}
 					else
@@ -576,7 +578,7 @@ public class TalkingScript : MonoBehaviour
 							this.S.Subtitle.UpdateLabel(SubtitleType.GrudgeWarning, 1, 99f);
 						}
 						this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.GrudgeAnim);
+						this.S.CharacterAnimation.CrossFade(this.S.GrudgeAnim);
 					}
 				}
 				else
@@ -914,7 +916,7 @@ public class TalkingScript : MonoBehaviour
 					if (this.S.DialogueWheel.Victim != this.S.Crush)
 					{
 						this.S.Subtitle.UpdateLabel(SubtitleType.SuitorLove, 0, 3f);
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
+						this.S.CharacterAnimation.CrossFade(this.S.GossipAnim);
 						this.S.CurrentAnim = this.S.GossipAnim;
 					}
 					else
@@ -922,7 +924,7 @@ public class TalkingScript : MonoBehaviour
 						DatingGlobals.SuitorProgress = 1;
 						this.S.Yandere.LoveManager.SuitorProgress++;
 						this.S.Subtitle.UpdateLabel(SubtitleType.SuitorLove, 1, 3f);
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod1Anim);
+						this.S.CharacterAnimation.CrossFade(this.S.Nod1Anim);
 						this.S.CurrentAnim = this.S.Nod1Anim;
 					}
 				}
@@ -932,9 +934,9 @@ public class TalkingScript : MonoBehaviour
 					{
 						this.S.TalkTimer = 0f;
 					}
-					if (this.S.Character.GetComponent<Animation>()[this.S.CurrentAnim].time >= this.S.Character.GetComponent<Animation>()[this.S.CurrentAnim].length)
+					if (this.S.CharacterAnimation[this.S.CurrentAnim].time >= this.S.CharacterAnimation[this.S.CurrentAnim].length)
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
+						this.S.CharacterAnimation.CrossFade(this.IdleAnim);
 					}
 					if (this.S.TalkTimer <= 0f)
 					{
@@ -948,7 +950,7 @@ public class TalkingScript : MonoBehaviour
 				if (this.S.TalkTimer == 3f)
 				{
 					this.S.Subtitle.UpdateLabel(SubtitleType.SuitorLove, 2, 3f);
-					this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod1Anim);
+					this.S.CharacterAnimation.CrossFade(this.S.Nod1Anim);
 				}
 				else
 				{
@@ -956,9 +958,9 @@ public class TalkingScript : MonoBehaviour
 					{
 						this.S.TalkTimer = 0f;
 					}
-					if (this.S.Character.GetComponent<Animation>()[this.S.Nod1Anim].time >= this.S.Character.GetComponent<Animation>()[this.S.Nod1Anim].length)
+					if (this.S.CharacterAnimation[this.S.Nod1Anim].time >= this.S.CharacterAnimation[this.S.Nod1Anim].length)
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
+						this.S.CharacterAnimation.CrossFade(this.IdleAnim);
 					}
 					if (this.S.TalkTimer <= 0f)
 					{
@@ -979,7 +981,7 @@ public class TalkingScript : MonoBehaviour
 					{
 						this.S.Subtitle.UpdateLabel(SubtitleType.SuitorLove, 4, 5f);
 					}
-					this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod1Anim);
+					this.S.CharacterAnimation.CrossFade(this.S.Nod1Anim);
 				}
 				else
 				{
@@ -987,9 +989,9 @@ public class TalkingScript : MonoBehaviour
 					{
 						this.S.TalkTimer = 0f;
 					}
-					if (this.S.Character.GetComponent<Animation>()[this.S.Nod1Anim].time >= this.S.Character.GetComponent<Animation>()[this.S.Nod1Anim].length)
+					if (this.S.CharacterAnimation[this.S.Nod1Anim].time >= this.S.CharacterAnimation[this.S.Nod1Anim].length)
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
+						this.S.CharacterAnimation.CrossFade(this.IdleAnim);
 					}
 					if (this.S.TalkTimer <= 0f)
 					{
@@ -1013,7 +1015,7 @@ public class TalkingScript : MonoBehaviour
 				if (this.S.TalkTimer == 5f)
 				{
 					this.S.Subtitle.UpdateLabel(SubtitleType.SuitorLove, 5, 99f);
-					this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod1Anim);
+					this.S.CharacterAnimation.CrossFade(this.S.Nod1Anim);
 				}
 				else
 				{
@@ -1021,9 +1023,9 @@ public class TalkingScript : MonoBehaviour
 					{
 						this.S.TalkTimer = 0f;
 					}
-					if (this.S.Character.GetComponent<Animation>()[this.S.Nod1Anim].time >= this.S.Character.GetComponent<Animation>()[this.S.Nod1Anim].length)
+					if (this.S.CharacterAnimation[this.S.Nod1Anim].time >= this.S.CharacterAnimation[this.S.Nod1Anim].length)
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
+						this.S.CharacterAnimation.CrossFade(this.IdleAnim);
 					}
 					if (this.S.TalkTimer <= 0f)
 					{
@@ -1040,18 +1042,18 @@ public class TalkingScript : MonoBehaviour
 				{
 					if (this.S.Club == ClubType.Delinquent)
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.IdleAnim);
+						this.S.CharacterAnimation.CrossFade(this.S.IdleAnim);
 						this.S.Subtitle.UpdateLabel(SubtitleType.RejectFood, 1, 3f);
 					}
 					else if (this.S.Fed || this.S.Club == ClubType.Council)
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
+						this.S.CharacterAnimation.CrossFade(this.S.GossipAnim);
 						this.S.Subtitle.UpdateLabel(SubtitleType.RejectFood, 0, 3f);
 						this.S.Fed = true;
 					}
 					else
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod2Anim);
+						this.S.CharacterAnimation.CrossFade(this.S.Nod2Anim);
 						this.S.Subtitle.UpdateLabel(SubtitleType.AcceptFood, 0, 3f);
 						this.CalculateRepBonus();
 						this.S.Reputation.PendingRep += 1f + (float)this.S.RepBonus;
@@ -1062,13 +1064,13 @@ public class TalkingScript : MonoBehaviour
 				{
 					this.S.TalkTimer = 0f;
 				}
-				if (this.S.Character.GetComponent<Animation>()[this.S.Nod2Anim].time >= this.S.Character.GetComponent<Animation>()[this.S.Nod2Anim].length)
+				if (this.S.CharacterAnimation[this.S.Nod2Anim].time >= this.S.CharacterAnimation[this.S.Nod2Anim].length)
 				{
-					this.S.Character.GetComponent<Animation>().CrossFade(this.S.IdleAnim);
+					this.S.CharacterAnimation.CrossFade(this.S.IdleAnim);
 				}
-				if (this.S.Character.GetComponent<Animation>()[this.S.GossipAnim].time >= this.S.Character.GetComponent<Animation>()[this.S.GossipAnim].length)
+				if (this.S.CharacterAnimation[this.S.GossipAnim].time >= this.S.CharacterAnimation[this.S.GossipAnim].length)
 				{
-					this.S.Character.GetComponent<Animation>().CrossFade(this.S.IdleAnim);
+					this.S.CharacterAnimation.CrossFade(this.S.IdleAnim);
 				}
 				this.S.TalkTimer -= Time.deltaTime;
 				if (this.S.TalkTimer <= 0f)
@@ -1094,9 +1096,9 @@ public class TalkingScript : MonoBehaviour
 				{
 					this.S.TalkTimer = 0f;
 				}
-				if (this.S.Character.GetComponent<Animation>()["f02_embar_00"].time >= this.S.Character.GetComponent<Animation>()["f02_embar_00"].length)
+				if (this.S.CharacterAnimation["f02_embar_00"].time >= this.S.CharacterAnimation["f02_embar_00"].length)
 				{
-					this.S.Character.GetComponent<Animation>().CrossFade(this.IdleAnim);
+					this.S.CharacterAnimation.CrossFade(this.IdleAnim);
 				}
 				this.S.TalkTimer -= Time.deltaTime;
 				if (this.S.TalkTimer <= 0f)
@@ -1112,18 +1114,18 @@ public class TalkingScript : MonoBehaviour
 				{
 					if (this.S.Club == ClubType.Delinquent)
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.IdleAnim);
+						this.S.CharacterAnimation.CrossFade(this.S.IdleAnim);
 						this.S.Subtitle.UpdateLabel(SubtitleType.RejectFood, 1, 3f);
 					}
 					else if (this.S.Fed || this.S.Club == ClubType.Council)
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.GossipAnim);
+						this.S.CharacterAnimation.CrossFade(this.S.GossipAnim);
 						this.S.Subtitle.UpdateLabel(SubtitleType.RejectFood, 0, 3f);
 						this.S.Fed = true;
 					}
 					else
 					{
-						this.S.Character.GetComponent<Animation>().CrossFade(this.S.Nod2Anim);
+						this.S.CharacterAnimation.CrossFade(this.S.Nod2Anim);
 						this.S.Subtitle.UpdateLabel(SubtitleType.AcceptFood, 0, 3f);
 						this.CalculateRepBonus();
 						this.S.Reputation.PendingRep += 1f + (float)this.S.RepBonus;
@@ -1134,13 +1136,13 @@ public class TalkingScript : MonoBehaviour
 				{
 					this.S.TalkTimer = 0f;
 				}
-				if (this.S.Character.GetComponent<Animation>()[this.S.Nod2Anim].time >= this.S.Character.GetComponent<Animation>()[this.S.Nod2Anim].length)
+				if (this.S.CharacterAnimation[this.S.Nod2Anim].time >= this.S.CharacterAnimation[this.S.Nod2Anim].length)
 				{
-					this.S.Character.GetComponent<Animation>().CrossFade(this.S.IdleAnim);
+					this.S.CharacterAnimation.CrossFade(this.S.IdleAnim);
 				}
-				if (this.S.Character.GetComponent<Animation>()[this.S.GossipAnim].time >= this.S.Character.GetComponent<Animation>()[this.S.GossipAnim].length)
+				if (this.S.CharacterAnimation[this.S.GossipAnim].time >= this.S.CharacterAnimation[this.S.GossipAnim].length)
 				{
-					this.S.Character.GetComponent<Animation>().CrossFade(this.S.IdleAnim);
+					this.S.CharacterAnimation.CrossFade(this.S.IdleAnim);
 				}
 				this.S.TalkTimer -= Time.deltaTime;
 				if (this.S.TalkTimer <= 0f)
@@ -1164,6 +1166,68 @@ public class TalkingScript : MonoBehaviour
 						this.S.Private = true;
 						this.S.Fed = true;
 					}
+					this.S.DialogueWheel.End();
+					this.S.StudentManager.UpdateStudents(0);
+				}
+			}
+			else if (this.S.Interaction == StudentInteractionType.GivingHelp)
+			{
+				if (this.S.TalkTimer == 4f)
+				{
+					if (this.S.Club == ClubType.Council || this.S.Club == ClubType.Delinquent)
+					{
+						this.S.CharacterAnimation.CrossFade(this.S.GossipAnim);
+						this.S.Subtitle.UpdateLabel(SubtitleType.RejectHelp, 0, 4f);
+					}
+					else
+					{
+						this.S.CharacterAnimation.CrossFade(this.S.PullBoxCutterAnim);
+						this.S.Subtitle.UpdateLabel(SubtitleType.GiveHelp, 0, 4f);
+					}
+				}
+				else if (Input.GetButtonDown("A"))
+				{
+				}
+				if (this.S.CharacterAnimation[this.S.GossipAnim].time >= this.S.CharacterAnimation[this.S.GossipAnim].length)
+				{
+					this.S.CharacterAnimation.CrossFade(this.S.IdleAnim);
+				}
+				if (this.S.CharacterAnimation[this.S.PullBoxCutterAnim].time >= this.S.CharacterAnimation[this.S.PullBoxCutterAnim].length)
+				{
+					this.S.CharacterAnimation.CrossFade(this.S.IdleAnim);
+				}
+				this.S.TalkTimer -= Time.deltaTime;
+				if (this.S.Club != ClubType.Council || this.S.Club != ClubType.Delinquent)
+				{
+					this.S.MoveTowardsTarget(this.S.Yandere.transform.position + this.S.Yandere.transform.forward * 0.75f);
+					if (this.S.CharacterAnimation[this.S.PullBoxCutterAnim].time >= this.S.CharacterAnimation[this.S.PullBoxCutterAnim].length)
+					{
+						this.S.CharacterAnimation.CrossFade(this.S.IdleAnim);
+						this.StuckBoxCutter = null;
+					}
+					else if (this.S.CharacterAnimation[this.S.PullBoxCutterAnim].time >= 2f)
+					{
+						if (this.StuckBoxCutter.transform.parent != this.S.RightEye)
+						{
+							this.StuckBoxCutter.Prompt.enabled = true;
+							this.StuckBoxCutter.enabled = true;
+							this.StuckBoxCutter.transform.parent = this.S.Yandere.PickUp.transform;
+							this.StuckBoxCutter.transform.localPosition = new Vector3(0f, 0.19f, 0f);
+							this.StuckBoxCutter.transform.localEulerAngles = new Vector3(0f, -90f, 0f);
+						}
+					}
+					else if (this.S.CharacterAnimation[this.S.PullBoxCutterAnim].time >= 1.166666f && this.StuckBoxCutter == null)
+					{
+						this.StuckBoxCutter = this.S.Yandere.PickUp.StuckBoxCutter;
+						this.S.Yandere.PickUp.StuckBoxCutter = null;
+						this.StuckBoxCutter.FingerprintID = this.S.StudentID;
+						this.StuckBoxCutter.transform.parent = this.S.RightHand;
+						this.StuckBoxCutter.transform.localPosition = new Vector3(0f, 0f, 0f);
+						this.StuckBoxCutter.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
+					}
+				}
+				if (this.S.TalkTimer <= 0f)
+				{
 					this.S.DialogueWheel.End();
 					this.S.StudentManager.UpdateStudents(0);
 				}

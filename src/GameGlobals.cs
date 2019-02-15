@@ -17,6 +17,8 @@ public static class GameGlobals
 
 	private const string Str_EmptyDemon = "EmptyDemon";
 
+	private const string Str_CensorBlood = "CensorBlood";
+
 	public static int Profile
 	{
 		get
@@ -101,6 +103,18 @@ public static class GameGlobals
 		}
 	}
 
+	public static bool CensorBlood
+	{
+		get
+		{
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_CensorBlood");
+		}
+		set
+		{
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_CensorBlood", value);
+		}
+	}
+
 	public static void DeleteAll()
 	{
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_LoveSick");
@@ -109,5 +123,6 @@ public static class GameGlobals
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_EasyMode");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_HardMode");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_EmptyDemon");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_CensorBlood");
 	}
 }

@@ -58,8 +58,8 @@ public class BatheEventScript : MonoBehaviour
 				if (!this.EventStudent.WitnessedMurder)
 				{
 					this.OriginalPosition = this.EventStudent.Cosmetic.FemaleAccessories[3].transform.localPosition;
-					this.EventStudent.CurrentDestination = this.StudentManager.StripSpot;
-					this.EventStudent.Pathfinding.target = this.StudentManager.StripSpot;
+					this.EventStudent.CurrentDestination = this.StudentManager.FemaleStripSpot;
+					this.EventStudent.Pathfinding.target = this.StudentManager.FemaleStripSpot;
 					this.EventStudent.Character.GetComponent<Animation>().CrossFade(this.EventStudent.WalkAnim);
 					this.EventStudent.Pathfinding.canSearch = true;
 					this.EventStudent.Pathfinding.canMove = true;

@@ -53,6 +53,8 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	public bool CyberBullying;
 
+	public bool FindingLocker;
+
 	public bool GettingInfo;
 
 	public bool MatchMaking;
@@ -125,6 +127,10 @@ public class StudentInfoMenuScript : MonoBehaviour
 				{
 					this.PromptBar.Label[0].text = "Accept";
 				}
+				if (this.FindingLocker)
+				{
+					this.PromptBar.Label[0].text = "Find Locker";
+				}
 				if (this.MatchMaking)
 				{
 					this.PromptBar.Label[0].text = "Match";
@@ -196,12 +202,17 @@ public class StudentInfoMenuScript : MonoBehaviour
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Show = false;
 			}
-			else if (this.CyberBullying)
+			else if (this.CyberBullying || this.FindingLocker)
 			{
 				this.PauseScreen.MainMenu.SetActive(true);
 				this.PauseScreen.Sideways = false;
 				this.PauseScreen.Show = false;
 				base.gameObject.SetActive(false);
+				Time.timeScale = 1f;
+				if (this.FindingLocker)
+				{
+					this.PauseScreen.Yandere.RPGCamera.enabled = true;
+				}
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Show = false;
 			}
@@ -294,6 +305,11 @@ public class StudentInfoMenuScript : MonoBehaviour
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
+		if (this.FindingLocker && (this.StudentID == 1 || this.StudentID > 85 || StudentGlobals.GetStudentDead(this.StudentID)))
+		{
+			this.PromptBar.Label[0].text = string.Empty;
+			this.PromptBar.UpdateButtons();
+		}
 		if (this.Distracting)
 		{
 			this.Dead = false;
@@ -366,74 +382,61 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	public IEnumerator UpdatePortraits()
 	{
-		Debug.Log("The Student Info Menu was instructed to get photos.");
 		for (int ID = 1; ID < 101; ID++)
 		{
-			Debug.Log("1 - We entered the loop.");
 			if (ID == 0)
 			{
 				this.StudentPortraits[ID].Portrait.mainTexture = this.InfoChan;
 			}
-			else
+			else if (!this.PortraitLoaded[ID])
 			{
-				Debug.Log("2 - ID is not zero.");
-				if (!this.PortraitLoaded[ID])
+				if (ID < 98)
 				{
-					Debug.Log("3 - PortraitLoaded is false.");
-					if (ID < 98)
+					if (StudentGlobals.GetStudentPhotographed(ID))
 					{
-						Debug.Log("4 - ID is less than 98.");
-						if (StudentGlobals.GetStudentPhotographed(ID))
+						string path = string.Concat(new string[]
 						{
-							Debug.Log("5 - GetStudentPhotographed is true.");
-							string path = string.Concat(new string[]
+							"file:///",
+							Application.streamingAssetsPath,
+							"/Portraits/Student_",
+							ID.ToString(),
+							".png"
+						});
+						WWW www = new WWW(path);
+						yield return www;
+						if (www.error == null)
+						{
+							if (!StudentGlobals.GetStudentReplaced(ID))
 							{
-								"file:///",
-								Application.streamingAssetsPath,
-								"/Portraits/Student_",
-								ID.ToString(),
-								".png"
-							});
-							WWW www = new WWW(path);
-							Debug.Log("Waiting for www to return.");
-							yield return www;
-							Debug.Log("www has returned.");
-							if (www.error == null)
-							{
-								Debug.Log("6 - Error is null.");
-								if (!StudentGlobals.GetStudentReplaced(ID))
-								{
-									this.StudentPortraits[ID].Portrait.mainTexture = www.texture;
-								}
-								else
-								{
-									this.StudentPortraits[ID].Portrait.mainTexture = this.BlankPortrait;
-								}
+								this.StudentPortraits[ID].Portrait.mainTexture = www.texture;
 							}
 							else
 							{
-								Debug.Log("We got an error when trying to retrieve a student's portrait!");
-								this.StudentPortraits[ID].Portrait.mainTexture = this.UnknownPortrait;
+								this.StudentPortraits[ID].Portrait.mainTexture = this.BlankPortrait;
 							}
-							this.PortraitLoaded[ID] = true;
 						}
 						else
 						{
 							this.StudentPortraits[ID].Portrait.mainTexture = this.UnknownPortrait;
 						}
+						this.PortraitLoaded[ID] = true;
 					}
-					else if (ID == 98)
+					else
 					{
-						this.StudentPortraits[ID].Portrait.mainTexture = this.Counselor;
+						this.StudentPortraits[ID].Portrait.mainTexture = this.UnknownPortrait;
 					}
-					else if (ID == 99)
-					{
-						this.StudentPortraits[ID].Portrait.mainTexture = this.Headmaster;
-					}
-					else if (ID == 100)
-					{
-						this.StudentPortraits[ID].Portrait.mainTexture = this.InfoChan;
-					}
+				}
+				else if (ID == 98)
+				{
+					this.StudentPortraits[ID].Portrait.mainTexture = this.Counselor;
+				}
+				else if (ID == 99)
+				{
+					this.StudentPortraits[ID].Portrait.mainTexture = this.Headmaster;
+				}
+				else if (ID == 100)
+				{
+					this.StudentPortraits[ID].Portrait.mainTexture = this.InfoChan;
 				}
 			}
 			if (PlayerGlobals.GetStudentPantyShot(this.JSON.Students[ID].Name))

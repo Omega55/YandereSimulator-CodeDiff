@@ -465,6 +465,7 @@ public class WeaponScript : MonoBehaviour
 		this.MyRigidbody.constraints = RigidbodyConstraints.None;
 		this.MyRigidbody.isKinematic = false;
 		this.MyRigidbody.useGravity = true;
+		this.MyCollider.isTrigger = false;
 		if (this.Dumped)
 		{
 			base.transform.position = this.Incinerator.DumpPoint.position;

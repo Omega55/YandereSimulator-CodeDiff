@@ -4,6 +4,7 @@ public enum SubtitleType
 {
 	AcceptFood,
 	AccidentApology,
+	AskForHelp,
 	BloodApology,
 	BloodReaction,
 	BloodAndInsanityReaction,
@@ -85,6 +86,7 @@ public enum SubtitleType
 	Forgiving,
 	ForgivingAccident,
 	ForgivingInsanity,
+	GiveHelp,
 	Greeting,
 	GrudgeRefusal,
 	GrudgeWarning,
@@ -128,6 +130,7 @@ public enum SubtitleType
 	PoisonReaction,
 	PrankReaction,
 	RejectFood,
+	RejectHelp,
 	RepeatReaction,
 	RequestMedicine,
 	RivalEavesdropReaction,

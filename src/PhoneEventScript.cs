@@ -354,9 +354,6 @@ public class PhoneEventScript : MonoBehaviour
 			this.EventStudent.CanTalk = true;
 			this.EventSubtitle.text = string.Empty;
 			this.StudentManager.UpdateStudents(0);
-			this.DumpPoint.enabled = false;
-			this.DumpPoint.Prompt.Hide();
-			this.DumpPoint.Prompt.enabled = false;
 		}
 		this.Yandere.Eavesdropping = false;
 		this.EventActive = false;

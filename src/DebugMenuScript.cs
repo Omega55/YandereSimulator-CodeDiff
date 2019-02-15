@@ -145,6 +145,14 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					this.Window.SetActive(false);
 				}
+				else if (Input.GetKeyDown(KeyCode.F8))
+				{
+					GameGlobals.CensorBlood = !GameGlobals.CensorBlood;
+					this.WeaponManager.ChangeBloodTexture();
+					YandereScript yandere = this.Yandere;
+					yandere.Bloodiness = yandere.Bloodiness;
+					this.Window.SetActive(false);
+				}
 				else if (!Input.GetKeyDown(KeyCode.F12))
 				{
 					if (Input.GetKeyDown(KeyCode.Alpha1))

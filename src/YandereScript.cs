@@ -616,6 +616,8 @@ public class YandereScript : MonoBehaviour
 
 	public Texture[] CasualTextures;
 
+	public Texture[] FlowerTextures;
+
 	public Texture[] BloodTextures;
 
 	public WeaponScript[] Weapon;
@@ -1370,30 +1372,63 @@ public class YandereScript : MonoBehaviour
 			}
 			this.MyProjector.enabled = true;
 			this.RedPaint = false;
-			if (this.Bloodiness == 100f)
+			if (!GameGlobals.CensorBlood)
 			{
-				this.MyProjector.material.mainTexture = this.BloodTextures[5];
-			}
-			else if (this.Bloodiness >= 80f)
-			{
-				this.MyProjector.material.mainTexture = this.BloodTextures[4];
-			}
-			else if (this.Bloodiness >= 60f)
-			{
-				this.MyProjector.material.mainTexture = this.BloodTextures[3];
-			}
-			else if (this.Bloodiness >= 40f)
-			{
-				this.MyProjector.material.mainTexture = this.BloodTextures[2];
-			}
-			else if (this.Bloodiness >= 20f)
-			{
-				this.MyProjector.material.mainTexture = this.BloodTextures[1];
+				this.MyProjector.material.SetColor("_TintColor", new Color(0.25f, 0.25f, 0.25f, 0.5f));
+				if (this.Bloodiness == 100f)
+				{
+					this.MyProjector.material.mainTexture = this.BloodTextures[5];
+				}
+				else if (this.Bloodiness >= 80f)
+				{
+					this.MyProjector.material.mainTexture = this.BloodTextures[4];
+				}
+				else if (this.Bloodiness >= 60f)
+				{
+					this.MyProjector.material.mainTexture = this.BloodTextures[3];
+				}
+				else if (this.Bloodiness >= 40f)
+				{
+					this.MyProjector.material.mainTexture = this.BloodTextures[2];
+				}
+				else if (this.Bloodiness >= 20f)
+				{
+					this.MyProjector.material.mainTexture = this.BloodTextures[1];
+				}
+				else
+				{
+					this.MyProjector.enabled = false;
+					this.BloodyWarning = false;
+				}
 			}
 			else
 			{
-				this.MyProjector.enabled = false;
-				this.BloodyWarning = false;
+				this.MyProjector.material.SetColor("_TintColor", new Color(0.5f, 0.5f, 0.5f, 0.5f));
+				if (this.Bloodiness == 100f)
+				{
+					this.MyProjector.material.mainTexture = this.FlowerTextures[5];
+				}
+				else if (this.Bloodiness >= 80f)
+				{
+					this.MyProjector.material.mainTexture = this.FlowerTextures[4];
+				}
+				else if (this.Bloodiness >= 60f)
+				{
+					this.MyProjector.material.mainTexture = this.FlowerTextures[3];
+				}
+				else if (this.Bloodiness >= 40f)
+				{
+					this.MyProjector.material.mainTexture = this.FlowerTextures[2];
+				}
+				else if (this.Bloodiness >= 20f)
+				{
+					this.MyProjector.material.mainTexture = this.FlowerTextures[1];
+				}
+				else
+				{
+					this.MyProjector.enabled = false;
+					this.BloodyWarning = false;
+				}
 			}
 			this.StudentManager.UpdateBooths();
 			this.MyLocker.UpdateButtons();
@@ -1509,40 +1544,43 @@ public class YandereScript : MonoBehaviour
 		this.CharacterAnimation["f02_carryFlashlight_00"].layer = 16;
 		this.CharacterAnimation.Play("f02_carryFlashlight_00");
 		this.CharacterAnimation["f02_carryFlashlight_00"].weight = 0f;
-		this.CharacterAnimation[this.CreepyIdles[1]].layer = 17;
+		this.CharacterAnimation["f02_carryBox_00"].layer = 17;
+		this.CharacterAnimation.Play("f02_carryBox_00");
+		this.CharacterAnimation["f02_carryBox_00"].weight = 0f;
+		this.CharacterAnimation[this.CreepyIdles[1]].layer = 18;
 		this.CharacterAnimation.Play(this.CreepyIdles[1]);
 		this.CharacterAnimation[this.CreepyIdles[1]].weight = 0f;
-		this.CharacterAnimation[this.CreepyIdles[2]].layer = 18;
+		this.CharacterAnimation[this.CreepyIdles[2]].layer = 19;
 		this.CharacterAnimation.Play(this.CreepyIdles[2]);
 		this.CharacterAnimation[this.CreepyIdles[2]].weight = 0f;
-		this.CharacterAnimation[this.CreepyIdles[3]].layer = 19;
+		this.CharacterAnimation[this.CreepyIdles[3]].layer = 20;
 		this.CharacterAnimation.Play(this.CreepyIdles[3]);
 		this.CharacterAnimation[this.CreepyIdles[3]].weight = 0f;
-		this.CharacterAnimation[this.CreepyIdles[4]].layer = 20;
+		this.CharacterAnimation[this.CreepyIdles[4]].layer = 21;
 		this.CharacterAnimation.Play(this.CreepyIdles[4]);
 		this.CharacterAnimation[this.CreepyIdles[4]].weight = 0f;
-		this.CharacterAnimation[this.CreepyIdles[5]].layer = 21;
+		this.CharacterAnimation[this.CreepyIdles[5]].layer = 22;
 		this.CharacterAnimation.Play(this.CreepyIdles[5]);
 		this.CharacterAnimation[this.CreepyIdles[5]].weight = 0f;
-		this.CharacterAnimation[this.CreepyWalks[1]].layer = 22;
+		this.CharacterAnimation[this.CreepyWalks[1]].layer = 23;
 		this.CharacterAnimation.Play(this.CreepyWalks[1]);
 		this.CharacterAnimation[this.CreepyWalks[1]].weight = 0f;
-		this.CharacterAnimation[this.CreepyWalks[2]].layer = 23;
+		this.CharacterAnimation[this.CreepyWalks[2]].layer = 24;
 		this.CharacterAnimation.Play(this.CreepyWalks[2]);
 		this.CharacterAnimation[this.CreepyWalks[2]].weight = 0f;
-		this.CharacterAnimation[this.CreepyWalks[3]].layer = 24;
+		this.CharacterAnimation[this.CreepyWalks[3]].layer = 25;
 		this.CharacterAnimation.Play(this.CreepyWalks[3]);
 		this.CharacterAnimation[this.CreepyWalks[3]].weight = 0f;
-		this.CharacterAnimation[this.CreepyWalks[4]].layer = 25;
+		this.CharacterAnimation[this.CreepyWalks[4]].layer = 26;
 		this.CharacterAnimation.Play(this.CreepyWalks[4]);
 		this.CharacterAnimation[this.CreepyWalks[4]].weight = 0f;
-		this.CharacterAnimation[this.CreepyWalks[5]].layer = 26;
+		this.CharacterAnimation[this.CreepyWalks[5]].layer = 27;
 		this.CharacterAnimation.Play(this.CreepyWalks[5]);
 		this.CharacterAnimation[this.CreepyWalks[5]].weight = 0f;
-		this.CharacterAnimation["f02_carryDramatic_00"].layer = 27;
+		this.CharacterAnimation["f02_carryDramatic_00"].layer = 28;
 		this.CharacterAnimation.Play("f02_carryDramatic_00");
 		this.CharacterAnimation["f02_carryDramatic_00"].weight = 0f;
-		this.CharacterAnimation["f02_selfie_00"].layer = 28;
+		this.CharacterAnimation["f02_selfie_00"].layer = 29;
 		this.CharacterAnimation.Play("f02_selfie_00");
 		this.CharacterAnimation["f02_selfie_00"].weight = 0f;
 		this.CharacterAnimation["f02_dipping_00"].speed = 2f;
@@ -3195,6 +3233,7 @@ public class YandereScript : MonoBehaviour
 				}
 				else if (this.CharacterAnimation["f02_bucketDrop_00"].time >= 1f && this.PickUp != null)
 				{
+					GameObjectUtils.SetLayerRecursively(this.PickUp.Bucket.gameObject, 0);
 					this.PickUp.Bucket.UpdateAppearance = true;
 					this.PickUp.Bucket.Dropped = true;
 					this.EmptyHands();
@@ -4265,7 +4304,7 @@ public class YandereScript : MonoBehaviour
 				if (this.TalkTimer == 5f)
 				{
 					this.CharacterAnimation.CrossFade("f02_greet_01");
-					this.Subtitle.UpdateLabel(SubtitleType.OfferSnack, 0, 5f);
+					this.Subtitle.UpdateLabel(SubtitleType.OfferSnack, 0, 3f);
 				}
 				else
 				{
@@ -4281,6 +4320,28 @@ public class YandereScript : MonoBehaviour
 					{
 						this.TargetStudent.Interaction = StudentInteractionType.TakingSnack;
 						this.TargetStudent.TalkTimer = 5f;
+						this.Interaction = YandereInteractionType.Idle;
+					}
+				}
+				this.TalkTimer -= Time.deltaTime;
+			}
+			else if (this.Interaction == YandereInteractionType.AskingForHelp)
+			{
+				if (this.TalkTimer == 5f)
+				{
+					this.CharacterAnimation.CrossFade(this.IdleAnim);
+					this.Subtitle.UpdateLabel(SubtitleType.AskForHelp, 0, 5f);
+				}
+				else
+				{
+					if (Input.GetButtonDown("A"))
+					{
+						this.TalkTimer = 0f;
+					}
+					if (this.TalkTimer <= 0f)
+					{
+						this.TargetStudent.Interaction = StudentInteractionType.GivingHelp;
+						this.TargetStudent.TalkTimer = 4f;
 						this.Interaction = YandereInteractionType.Idle;
 					}
 				}
@@ -5283,7 +5344,6 @@ public class YandereScript : MonoBehaviour
 		if (this.DropTimer[ID] > 0.5f)
 		{
 			this.Weapon[ID].Drop();
-			this.Weapon[ID] = null;
 			this.Unequip();
 			this.DropTimer[ID] = 0f;
 		}

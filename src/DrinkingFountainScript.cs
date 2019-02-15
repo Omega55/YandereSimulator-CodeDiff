@@ -17,6 +17,8 @@ public class DrinkingFountainScript : MonoBehaviour
 
 	public AudioSource MyAudio;
 
+	public bool Occupied;
+
 	private void Update()
 	{
 		if (this.Prompt.Yandere.EquippedWeapon != null)

@@ -15,6 +15,10 @@ public class WeaponManagerScript : MonoBehaviour
 
 	public int Fingerprints;
 
+	public Texture Flower;
+
+	public Texture Blood;
+
 	public bool YandereGuilty;
 
 	public void UpdateLabels()
@@ -61,6 +65,26 @@ public class WeaponManagerScript : MonoBehaviour
 			{
 				weaponScript.Blood.enabled = false;
 				weaponScript.FingerprintID = 0;
+			}
+		}
+	}
+
+	public void ChangeBloodTexture()
+	{
+		foreach (WeaponScript weaponScript in this.Weapons)
+		{
+			if (weaponScript != null)
+			{
+				if (!GameGlobals.CensorBlood)
+				{
+					weaponScript.Blood.material.mainTexture = this.Blood;
+					weaponScript.Blood.material.SetColor("_TintColor", new Color(0.25f, 0.25f, 0.25f, 0.5f));
+				}
+				else
+				{
+					weaponScript.Blood.material.mainTexture = this.Flower;
+					weaponScript.Blood.material.SetColor("_TintColor", new Color(0.5f, 0.5f, 0.5f, 0.5f));
+				}
 			}
 		}
 	}

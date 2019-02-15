@@ -59,19 +59,32 @@ public class LiquidColliderScript : MonoBehaviour
 		if (other.gameObject.layer == 9)
 		{
 			StudentScript component = other.gameObject.GetComponent<StudentScript>();
-			if (component != null && (component.StudentID == 30 || component.StudentID == component.StudentManager.RivalID))
+			if (component != null)
 			{
-				AudioSource.PlayClipAtPoint(this.SplashSound, base.transform.position);
-				UnityEngine.Object.Instantiate<GameObject>(this.Splash, new Vector3(base.transform.position.x, 1.5f, base.transform.position.z), Quaternion.identity);
-				if (this.Blood)
+				if (!component.BeenSplashed && component.StudentID > 1)
 				{
-					component.Bloody = true;
+					AudioSource.PlayClipAtPoint(this.SplashSound, base.transform.position);
+					UnityEngine.Object.Instantiate<GameObject>(this.Splash, new Vector3(base.transform.position.x, 1.5f, base.transform.position.z), Quaternion.identity);
+					if (this.Blood)
+					{
+						component.Bloody = true;
+					}
+					else if (this.Gas)
+					{
+						component.Gas = true;
+					}
+					component.GetWet();
 				}
-				else if (this.Gas)
+				else
 				{
-					component.Gas = true;
+					component.CharacterAnimation.CrossFade(component.DodgeAnim);
+					component.Pathfinding.canSearch = false;
+					component.Pathfinding.canMove = false;
+					component.Routine = false;
+					component.DodgeSpeed = 2f;
+					component.Dodging = true;
 				}
-				component.GetWet();
+				UnityEngine.Object.Destroy(base.gameObject);
 			}
 		}
 	}

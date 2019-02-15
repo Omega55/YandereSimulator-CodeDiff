@@ -160,16 +160,6 @@ public class BucketScript : MonoBehaviour
 					this.Prompt.HideButton[0] = true;
 				}
 			}
-			else if (this.Yandere.PickUp == this.PickUp && (this.Yandere.v != 0f || this.Yandere.h != 0f) && this.Full && Input.GetButtonDown("RB"))
-			{
-				this.Yandere.EmptyHands();
-				this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_bucketTrip_00");
-				this.Yandere.Tripping = true;
-				this.Yandere.CanMove = false;
-				this.UpdateAppearance = true;
-				this.Full = false;
-				this.Fly = true;
-			}
 		}
 		else if (this.Yandere.Equipped > 0)
 		{
@@ -289,8 +279,8 @@ public class BucketScript : MonoBehaviour
 			this.Blood.material.color = new Color(this.Blood.material.color.r, this.Blood.material.color.g, this.Blood.material.color.b, Mathf.Lerp(this.Blood.material.color.a, this.Bloodiness / 100f, Time.deltaTime));
 			this.Blood.transform.localPosition = new Vector3(this.Blood.transform.localPosition.x, this.Water.transform.localPosition.y + 0.001f, this.Blood.transform.localPosition.z);
 			this.Blood.transform.localScale = this.Water.transform.localScale;
-			this.Timer = Mathf.MoveTowards(this.Timer, 2f, Time.deltaTime);
-			if (this.Timer == 2f)
+			this.Timer = Mathf.MoveTowards(this.Timer, 5f, Time.deltaTime);
+			if (this.Timer == 5f)
 			{
 				this.UpdateAppearance = false;
 				this.Timer = 0f;
@@ -302,6 +292,20 @@ public class BucketScript : MonoBehaviour
 			{
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
+				if (Input.GetKeyDown(KeyCode.B))
+				{
+					this.UpdateAppearance = true;
+					if (this.Bloodiness == 0f)
+					{
+						this.Bloodiness = 100f;
+						this.Gasoline = false;
+					}
+					else
+					{
+						this.Bloodiness = 0f;
+						this.Gasoline = true;
+					}
+				}
 			}
 			else if (!this.Trap)
 			{
@@ -362,35 +366,8 @@ public class BucketScript : MonoBehaviour
 				this.Prompt.enabled = true;
 			}
 		}
-		if (Input.GetKeyDown(KeyCode.B))
+		if (this.Dropped && base.transform.position.y < 0.5f)
 		{
-			this.Bloodiness = 100f;
-		}
-		if (this.Dropped && this.PhoneEvent.EventActive && base.transform.position.y < 1.65f)
-		{
-			if (this.PhoneEvent.EventStudent.DistanceToDestination < 0.5f)
-			{
-				StudentScript eventStudent = this.PhoneEvent.EventStudent;
-				if (eventStudent != null)
-				{
-					base.GetComponent<AudioSource>().Play();
-					while (this.Dumbbells > 0)
-					{
-						this.Dumbbell[this.Dumbbells].GetComponent<WeaponScript>().enabled = true;
-						this.Dumbbell[this.Dumbbells].GetComponent<PromptScript>().enabled = true;
-						this.Dumbbell[this.Dumbbells].GetComponent<Collider>().enabled = true;
-						Rigidbody component4 = this.Dumbbell[this.Dumbbells].GetComponent<Rigidbody>();
-						component4.constraints = RigidbodyConstraints.None;
-						component4.isKinematic = false;
-						component4.useGravity = true;
-						this.Dumbbell[this.Dumbbells].transform.parent = null;
-						this.Dumbbell[this.Dumbbells] = null;
-						this.Dumbbells--;
-					}
-					eventStudent.DeathType = DeathType.Weapon;
-					eventStudent.BecomeRagdoll();
-				}
-			}
 			this.Dropped = false;
 		}
 	}
@@ -415,8 +392,28 @@ public class BucketScript : MonoBehaviour
 	{
 		if (this.Dropped)
 		{
-			Debug.Log("The dropped bucket collided with: " + other.gameObject.name);
-			this.Dropped = false;
+			StudentScript component = other.gameObject.GetComponent<StudentScript>();
+			if (component != null)
+			{
+				base.GetComponent<AudioSource>().Play();
+				while (this.Dumbbells > 0)
+				{
+					this.Dumbbell[this.Dumbbells].GetComponent<WeaponScript>().enabled = true;
+					this.Dumbbell[this.Dumbbells].GetComponent<PromptScript>().enabled = true;
+					this.Dumbbell[this.Dumbbells].GetComponent<Collider>().enabled = true;
+					Rigidbody component2 = this.Dumbbell[this.Dumbbells].GetComponent<Rigidbody>();
+					component2.constraints = RigidbodyConstraints.None;
+					component2.isKinematic = false;
+					component2.useGravity = true;
+					this.Dumbbell[this.Dumbbells].transform.parent = null;
+					this.Dumbbell[this.Dumbbells] = null;
+					this.Dumbbells--;
+				}
+				component.DeathType = DeathType.Weapon;
+				component.BecomeRagdoll();
+				this.Dropped = false;
+				GameObjectUtils.SetLayerRecursively(base.gameObject, 15);
+			}
 		}
 	}
 }

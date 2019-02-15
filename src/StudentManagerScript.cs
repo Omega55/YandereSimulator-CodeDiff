@@ -257,7 +257,11 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform YandereStripSpot;
 
+	public Transform FemaleBatheSpot;
+
 	public Transform FemaleStalkSpot;
+
+	public Transform FemaleStripSpot;
 
 	public Transform FemaleVomitSpot;
 
@@ -279,7 +283,11 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform InfirmarySeat;
 
+	public Transform MaleBatheSpot;
+
 	public Transform MaleStalkSpot;
+
+	public Transform MaleStripSpot;
 
 	public Transform MaleVomitSpot;
 
@@ -313,8 +321,6 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform ToolTarget;
 
-	public Transform BatheSpot;
-
 	public Transform MiyukiCat;
 
 	public Transform MournSpot;
@@ -322,8 +328,6 @@ public class StudentManagerScript : MonoBehaviour
 	public Transform ShameSpot;
 
 	public Transform SlaveSpot;
-
-	public Transform StripSpot;
 
 	public Transform Papers;
 
@@ -464,6 +468,8 @@ public class StudentManagerScript : MonoBehaviour
 	public float Atmosphere;
 
 	public float MeetingTimer;
+
+	public float PinDownTimer;
 
 	public float ChangeTimer;
 
@@ -772,6 +778,15 @@ public class StudentManagerScript : MonoBehaviour
 					this.MemorialScene.gameObject.SetActive(true);
 					this.MemorialScene.enabled = true;
 				}
+				this.ID = 1;
+				while (this.ID < 90)
+				{
+					if (this.Students[this.ID] != null)
+					{
+						this.Students[this.ID].ShoeRemoval.Start();
+					}
+					this.ID++;
+				}
 			}
 			if ((double)this.Clock.HourTime > 16.9)
 			{
@@ -841,6 +856,7 @@ public class StudentManagerScript : MonoBehaviour
 					this.Yandere.CanMove = true;
 				}
 				this.PinningDown = false;
+				this.PinDownTimer = 0f;
 				this.PinPhase = 0;
 			}
 		}
@@ -890,7 +906,8 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			else if (this.WitnessList[1].PinPhase == 0)
 			{
-				if (this.WitnessList[1].DistanceToDestination < 1f && this.WitnessList[2].DistanceToDestination < 1f && this.WitnessList[3].DistanceToDestination < 1f && this.WitnessList[4].DistanceToDestination < 1f)
+				this.PinDownTimer += Time.deltaTime;
+				if (this.PinDownTimer > 10f || (this.WitnessList[1].DistanceToDestination < 1f && this.WitnessList[2].DistanceToDestination < 1f && this.WitnessList[3].DistanceToDestination < 1f && this.WitnessList[4].DistanceToDestination < 1f))
 				{
 					this.Clock.StopTime = true;
 					if (this.Yandere.Aiming)
@@ -1111,6 +1128,12 @@ public class StudentManagerScript : MonoBehaviour
 									else if (this.Yandere.PickUp.Salty)
 									{
 										studentScript.Prompt.Label[0].text = "     Give Snack";
+										studentScript.Prompt.HideButton[0] = false;
+										studentScript.Prompt.HideButton[2] = true;
+									}
+									else if (this.Yandere.PickUp.StuckBoxCutter != null)
+									{
+										studentScript.Prompt.Label[0].text = "     Ask For Help";
 										studentScript.Prompt.HideButton[0] = false;
 										studentScript.Prompt.HideButton[2] = true;
 									}
@@ -2466,13 +2489,14 @@ public class StudentManagerScript : MonoBehaviour
 		this.ID = 2;
 		while (this.ID < 8)
 		{
-			if (Vector3.Distance(Student.transform.position, this.DrinkingFountains[this.ID].transform.position) < Vector3.Distance(Student.transform.position, drinkingFountainScript.transform.position))
+			if (Vector3.Distance(Student.transform.position, this.DrinkingFountains[this.ID].transform.position) < Vector3.Distance(Student.transform.position, drinkingFountainScript.transform.position) && !this.DrinkingFountains[this.ID].Occupied)
 			{
 				drinkingFountainScript = this.DrinkingFountains[this.ID];
 			}
 			this.ID++;
 		}
 		Student.DrinkingFountain = drinkingFountainScript;
+		Student.DrinkingFountain.Occupied = true;
 	}
 
 	public void Save()

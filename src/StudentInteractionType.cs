@@ -26,5 +26,6 @@ public enum StudentInteractionType
 	Gift,
 	Feeding,
 	TaskInquiry,
-	TakingSnack
+	TakingSnack,
+	GivingHelp
 }

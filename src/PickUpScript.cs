@@ -93,6 +93,8 @@ public class PickUpScript : MonoBehaviour
 
 	public GameObject[] FoodPieces;
 
+	public WeaponScript StuckBoxCutter;
+
 	private void Start()
 	{
 		this.Yandere = GameObject.Find("YandereChan").GetComponent<YandereScript>();

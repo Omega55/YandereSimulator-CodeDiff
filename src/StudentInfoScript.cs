@@ -13,6 +13,8 @@ public class StudentInfoScript : MonoBehaviour
 
 	public TopicManagerScript TopicManager;
 
+	public NoteLockerScript NoteLocker;
+
 	public PromptBarScript PromptBar;
 
 	public ShutterScript Shutter;
@@ -329,6 +331,24 @@ public class StudentInfoScript : MonoBehaviour
 					this.PromptBar.Label[1].text = "Back";
 					this.PromptBar.UpdateButtons();
 				}
+			}
+			else if (this.StudentInfoMenu.FindingLocker)
+			{
+				this.NoteLocker.gameObject.SetActive(true);
+				this.NoteLocker.transform.position = this.StudentManager.Students[this.StudentInfoMenu.StudentID].MyLocker.position;
+				this.NoteLocker.transform.position += new Vector3(0f, 1.355f, 0f);
+				this.NoteLocker.transform.position += this.StudentManager.Students[this.StudentInfoMenu.StudentID].MyLocker.forward * 0.33333f;
+				this.NoteLocker.Prompt.Label[0].text = "     Leave note for " + this.StudentManager.Students[this.StudentInfoMenu.StudentID].Name;
+				this.NoteLocker.Student = this.StudentManager.Students[this.StudentInfoMenu.StudentID];
+				this.NoteLocker.LockerOwner = this.StudentInfoMenu.StudentID;
+				this.StudentInfoMenu.PauseScreen.MainMenu.SetActive(true);
+				this.StudentInfoMenu.PauseScreen.Show = false;
+				this.StudentInfoMenu.FindingLocker = false;
+				base.gameObject.SetActive(false);
+				this.PromptBar.ClearButtons();
+				this.PromptBar.Show = false;
+				this.Yandere.RPGCamera.enabled = true;
+				Time.timeScale = 1f;
 			}
 		}
 		if (Input.GetButtonDown("B"))

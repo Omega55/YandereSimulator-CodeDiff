@@ -145,7 +145,7 @@ public class DoorScript : MonoBehaviour
 
 	private void Update()
 	{
-		if ((base.transform.position - this.Yandere.transform.position).sqrMagnitude <= 1f)
+		if (this.Prompt.DistanceSqr <= 1f)
 		{
 			if (!this.Near)
 			{
@@ -154,51 +154,51 @@ public class DoorScript : MonoBehaviour
 				this.Yandere.Location.Show = true;
 				this.Near = true;
 			}
+			if (this.Prompt.Circle[0].fillAmount == 0f)
+			{
+				this.Prompt.Circle[0].fillAmount = 1f;
+				if (!this.Open)
+				{
+					this.OpenDoor();
+				}
+				else
+				{
+					this.CloseDoor();
+				}
+			}
+			if (this.Double && this.Swinging && this.Prompt.Circle[1].fillAmount == 0f)
+			{
+				this.Bucket = this.Yandere.PickUp.Bucket;
+				this.Yandere.EmptyHands();
+				this.Bucket.transform.parent = base.transform;
+				this.Bucket.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+				this.Bucket.Trap = true;
+				this.Bucket.Prompt.Hide();
+				this.Bucket.Prompt.enabled = false;
+				this.CheckDirection();
+				if (this.North)
+				{
+					this.Bucket.transform.localPosition = new Vector3(0f, 2.25f, 0.2975f);
+				}
+				else
+				{
+					this.Bucket.transform.localPosition = new Vector3(0f, 2.25f, -0.2975f);
+				}
+				this.Bucket.GetComponent<Rigidbody>().isKinematic = true;
+				this.Bucket.GetComponent<Rigidbody>().useGravity = false;
+				this.Prompt.HideButton[1] = true;
+				this.CanSetBucket = false;
+				this.BucketSet = true;
+				this.Open = false;
+				this.Timer = 0f;
+				this.Prompt.enabled = false;
+				this.Prompt.Hide();
+			}
 		}
 		else if (this.Near)
 		{
 			this.Yandere.Location.Show = false;
 			this.Near = false;
-		}
-		if (this.Prompt.Circle[0].fillAmount == 0f)
-		{
-			this.Prompt.Circle[0].fillAmount = 1f;
-			if (!this.Open)
-			{
-				this.OpenDoor();
-			}
-			else
-			{
-				this.CloseDoor();
-			}
-		}
-		if (this.Double && this.Swinging && this.Prompt.Circle[1].fillAmount == 0f)
-		{
-			this.Bucket = this.Yandere.PickUp.Bucket;
-			this.Yandere.EmptyHands();
-			this.Bucket.transform.parent = base.transform;
-			this.Bucket.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
-			this.Bucket.Trap = true;
-			this.Bucket.Prompt.Hide();
-			this.Bucket.Prompt.enabled = false;
-			this.CheckDirection();
-			if (this.North)
-			{
-				this.Bucket.transform.localPosition = new Vector3(0f, 2.25f, 0.2975f);
-			}
-			else
-			{
-				this.Bucket.transform.localPosition = new Vector3(0f, 2.25f, -0.2975f);
-			}
-			this.Bucket.GetComponent<Rigidbody>().isKinematic = true;
-			this.Bucket.GetComponent<Rigidbody>().useGravity = false;
-			this.Prompt.HideButton[1] = true;
-			this.CanSetBucket = false;
-			this.BucketSet = true;
-			this.Open = false;
-			this.Timer = 0f;
-			this.Prompt.enabled = false;
-			this.Prompt.Hide();
 		}
 		if (this.Timer < 2f)
 		{

@@ -470,6 +470,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool MurderSuicide;
 
+	public bool BeenSplashed;
+
 	public bool BoobsResized;
 
 	public bool CheckingNote;
@@ -718,6 +720,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool Posing;
 
+	public bool Dodging;
+
 	public bool Dying;
 
 	public float DistanceToDestination;
@@ -811,6 +815,8 @@ public class StudentScript : MonoBehaviour
 	public float RepDeduction;
 
 	public float BreastSize;
+
+	public float DodgeSpeed = 2f;
 
 	public float Hesitation;
 
@@ -1177,6 +1183,16 @@ public class StudentScript : MonoBehaviour
 	public string EatChipsAnim = string.Empty;
 
 	public string DrinkFountainAnim = string.Empty;
+
+	public string PullBoxCutterAnim = string.Empty;
+
+	public string TossNoteAnim = string.Empty;
+
+	public string KeepNoteAnim = string.Empty;
+
+	public string BathingAnim = string.Empty;
+
+	public string DodgeAnim = string.Empty;
 
 	public string[] CleanAnims;
 
@@ -3225,8 +3241,8 @@ public class StudentScript : MonoBehaviour
 						}
 						else if (this.Actions[this.Phase] == StudentActionType.SitAndTakeNotes && this.Schoolwear > 1 && !this.SchoolwearUnavailable)
 						{
-							this.CurrentDestination = this.StudentManager.StripSpot;
-							this.Pathfinding.target = this.StudentManager.StripSpot;
+							this.CurrentDestination = this.StudentManager.FemaleStripSpot;
+							this.Pathfinding.target = this.StudentManager.FemaleStripSpot;
 						}
 					}
 					if (!this.Pathfinding.canMove)
@@ -6203,13 +6219,26 @@ public class StudentScript : MonoBehaviour
 								this.CharacterAnimation.CrossFade(this.WalkAnim);
 								if (!this.BatheFast)
 								{
-									this.CurrentDestination = this.StudentManager.BatheSpot;
-									this.Pathfinding.target = this.StudentManager.BatheSpot;
+									if (!this.Male)
+									{
+										this.CurrentDestination = this.StudentManager.FemaleBatheSpot;
+										this.Pathfinding.target = this.StudentManager.FemaleBatheSpot;
+									}
+									else
+									{
+										this.CurrentDestination = this.StudentManager.MaleBatheSpot;
+										this.Pathfinding.target = this.StudentManager.MaleBatheSpot;
+									}
 								}
-								else
+								else if (!this.Male)
 								{
 									this.CurrentDestination = this.StudentManager.FastBatheSpot;
 									this.Pathfinding.target = this.StudentManager.FastBatheSpot;
+								}
+								else
+								{
+									this.CurrentDestination = this.StudentManager.MaleBatheSpot;
+									this.Pathfinding.target = this.StudentManager.MaleBatheSpot;
 								}
 								this.Pathfinding.canSearch = true;
 								this.Pathfinding.canMove = true;
@@ -6235,8 +6264,8 @@ public class StudentScript : MonoBehaviour
 								}
 								else
 								{
-									this.CharacterAnimation.CrossFade("f02_stoolBathing_00");
-									if (this.CharacterAnimation["f02_stoolBathing_00"].time >= this.CharacterAnimation["f02_stoolBathing_00"].length)
+									this.CharacterAnimation.CrossFade(this.BathingAnim);
+									if (this.CharacterAnimation[this.BathingAnim].time >= this.CharacterAnimation[this.BathingAnim].length)
 									{
 										this.LiquidProjector.enabled = false;
 										this.Bloody = false;
@@ -6370,8 +6399,8 @@ public class StudentScript : MonoBehaviour
 									{
 										this.Subtitle.UpdateLabel(this.SplashSubtitleType, 4, 5f);
 									}
-									this.CurrentDestination = this.StudentManager.StripSpot;
-									this.Pathfinding.target = this.StudentManager.StripSpot;
+									this.CurrentDestination = this.StudentManager.FemaleStripSpot;
+									this.Pathfinding.target = this.StudentManager.FemaleStripSpot;
 									this.Pathfinding.canSearch = true;
 									this.Pathfinding.canMove = true;
 									this.Pathfinding.speed = 4f;
@@ -6447,7 +6476,6 @@ public class StudentScript : MonoBehaviour
 				{
 					if (this.BathePhase == 1 || this.FleeWhenClean)
 					{
-						Debug.Log("Sprinting 5");
 						this.CharacterAnimation.CrossFade(this.SprintAnim);
 						this.Pathfinding.speed = 4f;
 					}
@@ -6572,6 +6600,11 @@ public class StudentScript : MonoBehaviour
 								this.DistractionTarget.Distracted = false;
 								this.DistractionTarget.CanTalk = true;
 								this.DistractionTarget.Routine = true;
+								this.DistractionTarget.EquipCleaningItems();
+								this.DistractionTarget.EatingSnack = false;
+								this.Private = false;
+								this.DistractionTarget.CurrentDestination = this.Destinations[this.Phase];
+								this.DistractionTarget.Pathfinding.target = this.Destinations[this.Phase];
 								if (this.DistractionTarget.Persona == PersonaType.PhoneAddict)
 								{
 									this.DistractionTarget.SmartPhone.SetActive(true);
@@ -7554,8 +7587,13 @@ public class StudentScript : MonoBehaviour
 				else if (this.SnackPhase == 1)
 				{
 					this.CharacterAnimation.CrossFade(this.WalkAnim);
+					if (this.DistractionTarget.Persona == PersonaType.PhoneAddict)
+					{
+						this.DistractionTarget.SmartPhone.SetActive(true);
+					}
 					if (this.DistanceToDestination < 1f)
 					{
+						this.DistractionTarget.SmartPhone.SetActive(false);
 						this.Pathfinding.canSearch = false;
 						this.Pathfinding.canMove = false;
 						this.SnackPhase++;
@@ -7568,6 +7606,7 @@ public class StudentScript : MonoBehaviour
 					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.DrinkingFountain.DrinkPosition.rotation, 10f * Time.deltaTime);
 					if (this.CharacterAnimation[this.DrinkFountainAnim].time >= this.CharacterAnimation[this.DrinkFountainAnim].length)
 					{
+						this.DrinkingFountain.Occupied = false;
 						this.EquipCleaningItems();
 						this.EatingSnack = false;
 						this.Private = false;
@@ -7578,6 +7617,25 @@ public class StudentScript : MonoBehaviour
 					else if (this.CharacterAnimation[this.DrinkFountainAnim].time > 0.5f && this.CharacterAnimation[this.DrinkFountainAnim].time < 1.5f)
 					{
 						this.DrinkingFountain.WaterStream.Play();
+					}
+				}
+			}
+			if (this.Dodging)
+			{
+				if (this.CharacterAnimation[this.DodgeAnim].time >= this.CharacterAnimation[this.DodgeAnim].length)
+				{
+					this.Routine = true;
+					this.Dodging = false;
+					this.Pathfinding.canSearch = false;
+					this.Pathfinding.canMove = false;
+				}
+				else if (this.CharacterAnimation[this.DodgeAnim].time < 0.66666f)
+				{
+					this.MyController.Move(base.transform.forward * -1f * this.DodgeSpeed * Time.deltaTime);
+					this.MyController.Move(Physics.gravity * 0.1f);
+					if (this.DodgeSpeed > 0f)
+					{
+						this.DodgeSpeed = Mathf.MoveTowards(this.DodgeSpeed, 0f, Time.deltaTime * 3f);
 					}
 				}
 			}
@@ -8264,7 +8322,7 @@ public class StudentScript : MonoBehaviour
 			if (this.Prompt.Circle[0].fillAmount == 0f)
 			{
 				bool flag = false;
-				if (this.Armband.activeInHierarchy && (this.Actions[this.Phase] == StudentActionType.ClubAction || this.Actions[this.Phase] == StudentActionType.SitAndSocialize || this.Actions[this.Phase] == StudentActionType.Socializing || this.Actions[this.Phase] == StudentActionType.Sleuth || this.Actions[this.Phase] == StudentActionType.Lyrics) && ((base.transform.position.y > this.StudentManager.ClubZones[(int)this.Club].position.y - 1f && base.transform.position.y < this.StudentManager.ClubZones[(int)this.Club].position.y + 1f && Vector3.Distance(base.transform.position, this.StudentManager.ClubZones[(int)this.Club].position) < this.ClubThreshold) || Vector3.Distance(base.transform.position, this.StudentManager.DramaSpots[1].position) < 12f))
+				if (this.Armband.activeInHierarchy && (this.Actions[this.Phase] == StudentActionType.ClubAction || this.Actions[this.Phase] == StudentActionType.SitAndSocialize || this.Actions[this.Phase] == StudentActionType.Socializing || this.Actions[this.Phase] == StudentActionType.Sleuth || this.Actions[this.Phase] == StudentActionType.Lyrics || this.Actions[this.Phase] == StudentActionType.SitAndEatBento) && ((base.transform.position.y > this.StudentManager.ClubZones[(int)this.Club].position.y - 1f && base.transform.position.y < this.StudentManager.ClubZones[(int)this.Club].position.y + 1f && Vector3.Distance(base.transform.position, this.StudentManager.ClubZones[(int)this.Club].position) < this.ClubThreshold) || Vector3.Distance(base.transform.position, this.StudentManager.DramaSpots[1].position) < 12f))
 				{
 					flag = true;
 					this.Warned = false;
@@ -8506,6 +8564,12 @@ public class StudentScript : MonoBehaviour
 							else if (this.Prompt.Label[0].text == "     Give Snack")
 							{
 								this.Yandere.Interaction = YandereInteractionType.GivingSnack;
+								this.Yandere.TalkTimer = 3f;
+								this.Interaction = StudentInteractionType.Idle;
+							}
+							else if (this.Prompt.Label[0].text == "     Ask For Help")
+							{
+								this.Yandere.Interaction = YandereInteractionType.AskingForHelp;
 								this.Yandere.TalkTimer = 5f;
 								this.Interaction = StudentInteractionType.Idle;
 							}
@@ -9727,8 +9791,16 @@ public class StudentScript : MonoBehaviour
 						this.Subtitle.UpdateLabel(this.SplashSubtitleType, 2, 5f);
 					}
 					this.SplashPhase++;
-					this.CurrentDestination = this.StudentManager.StripSpot;
-					this.Pathfinding.target = this.StudentManager.StripSpot;
+					if (!this.Male)
+					{
+						this.CurrentDestination = this.StudentManager.FemaleStripSpot;
+						this.Pathfinding.target = this.StudentManager.FemaleStripSpot;
+					}
+					else
+					{
+						this.CurrentDestination = this.StudentManager.MaleStripSpot;
+						this.Pathfinding.target = this.StudentManager.MaleStripSpot;
+					}
 				}
 				else if (!this.LightSwitch.BathroomLight.activeInHierarchy)
 				{
@@ -9757,8 +9829,8 @@ public class StudentScript : MonoBehaviour
 						this.Subtitle.UpdateLabel(this.SplashSubtitleType, 4, 5f);
 					}
 					this.SplashPhase++;
-					this.CurrentDestination = this.StudentManager.StripSpot;
-					this.Pathfinding.target = this.StudentManager.StripSpot;
+					this.CurrentDestination = this.StudentManager.FemaleStripSpot;
+					this.Pathfinding.target = this.StudentManager.FemaleStripSpot;
 				}
 				this.Pathfinding.canSearch = true;
 				this.Pathfinding.canMove = true;
@@ -9865,6 +9937,7 @@ public class StudentScript : MonoBehaviour
 			{
 				if (this.DistanceToDestination < 0.5f)
 				{
+					Debug.Log("Character is now drownable.");
 					this.Prompt.Label[0].text = "     Drown";
 					this.Prompt.enabled = true;
 					this.Drownable = true;
@@ -10117,19 +10190,16 @@ public class StudentScript : MonoBehaviour
 				}
 			}
 		}
-		if (!this.Male)
+		if (!this.Splashed && this.Wet && !this.Burning && !this.Dying && Mathf.Abs(this.BathePhase) == 1)
 		{
-			if (!this.Splashed && this.Wet && !this.Burning && !this.Dying && Mathf.Abs(this.BathePhase) == 1)
+			if (this.CharacterAnimation[this.WetAnim].weight < 1f)
 			{
-				if (this.CharacterAnimation[this.WetAnim].weight < 1f)
-				{
-					this.CharacterAnimation[this.WetAnim].weight = 1f;
-				}
+				this.CharacterAnimation[this.WetAnim].weight = 1f;
 			}
-			else if (this.CharacterAnimation[this.WetAnim].weight > 0f)
-			{
-				this.CharacterAnimation[this.WetAnim].weight = 0f;
-			}
+		}
+		else if (this.CharacterAnimation[this.WetAnim].weight > 0f)
+		{
+			this.CharacterAnimation[this.WetAnim].weight = 0f;
 		}
 		if (this.Dying)
 		{
@@ -11382,7 +11452,7 @@ public class StudentScript : MonoBehaviour
 			}
 			else if (scheduleBlock2.destination == "Sunbathe")
 			{
-				this.Destinations[this.ID] = this.StudentManager.StripSpot;
+				this.Destinations[this.ID] = this.StudentManager.FemaleStripSpot;
 			}
 			else if (scheduleBlock2.destination == "Shock")
 			{
@@ -11706,8 +11776,16 @@ public class StudentScript : MonoBehaviour
 	{
 		if (this.Schoolwear == 1)
 		{
-			this.MyRenderer.materials[0].mainTexture = this.SocksTextures[StudentGlobals.FemaleUniform];
-			this.MyRenderer.materials[1].mainTexture = this.SocksTextures[StudentGlobals.FemaleUniform];
+			if (!this.Male)
+			{
+				this.MyRenderer.materials[0].mainTexture = this.Cosmetic.FemaleSocksTextures[StudentGlobals.FemaleUniform];
+				this.MyRenderer.materials[1].mainTexture = this.Cosmetic.FemaleSocksTextures[StudentGlobals.FemaleUniform];
+			}
+			else
+			{
+				this.MyRenderer.materials[0].mainTexture = this.Cosmetic.MaleSocksTextures[StudentGlobals.MaleUniform];
+				this.MyRenderer.materials[1].mainTexture = this.Cosmetic.MaleSocksTextures[StudentGlobals.MaleUniform];
+			}
 		}
 		else if (this.Schoolwear == 3)
 		{
@@ -11718,6 +11796,10 @@ public class StudentScript : MonoBehaviour
 
 	public void BecomeRagdoll()
 	{
+		if (this.DrinkingFountain != null)
+		{
+			this.DrinkingFountain.Occupied = false;
+		}
 		if (!this.Ragdoll.enabled)
 		{
 			this.EmptyHands();
@@ -11841,6 +11923,8 @@ public class StudentScript : MonoBehaviour
 
 	public void GetWet()
 	{
+		this.BeenSplashed = true;
+		this.BatheFast = true;
 		this.LiquidProjector.enabled = true;
 		if (this.Gas)
 		{
@@ -12255,8 +12339,16 @@ public class StudentScript : MonoBehaviour
 
 	private void GoChange()
 	{
-		this.CurrentDestination = this.StudentManager.StripSpot;
-		this.Pathfinding.target = this.StudentManager.StripSpot;
+		if (!this.Male)
+		{
+			this.CurrentDestination = this.StudentManager.FemaleStripSpot;
+			this.Pathfinding.target = this.StudentManager.FemaleStripSpot;
+		}
+		else
+		{
+			this.CurrentDestination = this.StudentManager.MaleStripSpot;
+			this.Pathfinding.target = this.StudentManager.MaleStripSpot;
+		}
 		this.Pathfinding.canSearch = true;
 		this.Pathfinding.canMove = true;
 		this.Distracted = false;
@@ -13277,6 +13369,7 @@ public class StudentScript : MonoBehaviour
 	{
 		this.SmartPhone.transform.localPosition = new Vector3(0f, 0.005f, -0.01f);
 		this.SmartPhone.transform.localEulerAngles = new Vector3(7.33333f, -154f, 173.666656f);
+		this.SmartPhone.SetActive(true);
 		if (this.Sleuthing)
 		{
 			if (this.AlarmTimer < 2f)
@@ -13425,27 +13518,27 @@ public class StudentScript : MonoBehaviour
 		this.CharacterAnimation[this.LeanAnim].speed += (float)this.StudentID * 0.01f;
 		this.CharacterAnimation[this.ConfusedSitAnim].speed += (float)this.StudentID * 0.01f;
 		this.CharacterAnimation[this.WalkAnim].time = UnityEngine.Random.Range(0f, this.CharacterAnimation[this.WalkAnim].length);
+		this.CharacterAnimation[this.WetAnim].layer = 9;
+		this.CharacterAnimation.Play(this.WetAnim);
+		this.CharacterAnimation[this.WetAnim].weight = 0f;
 		if (!this.Male)
 		{
 			this.CharacterAnimation[this.StripAnim].speed = 1.5f;
 			this.CharacterAnimation[this.GameAnim].speed = 2f;
-			this.CharacterAnimation["f02_topHalfTexting_00"].layer = 9;
+			this.CharacterAnimation["f02_topHalfTexting_00"].layer = 8;
 			this.CharacterAnimation.Play("f02_topHalfTexting_00");
 			this.CharacterAnimation["f02_topHalfTexting_00"].weight = 0f;
-			this.CharacterAnimation[this.CarryAnim].layer = 8;
+			this.CharacterAnimation[this.CarryAnim].layer = 7;
 			this.CharacterAnimation.Play(this.CarryAnim);
 			this.CharacterAnimation[this.CarryAnim].weight = 0f;
-			this.CharacterAnimation[this.SocialSitAnim].layer = 7;
+			this.CharacterAnimation[this.SocialSitAnim].layer = 6;
 			this.CharacterAnimation.Play(this.SocialSitAnim);
 			this.CharacterAnimation[this.SocialSitAnim].weight = 0f;
-			this.CharacterAnimation[this.ShyAnim].layer = 6;
+			this.CharacterAnimation[this.ShyAnim].layer = 5;
 			this.CharacterAnimation.Play(this.ShyAnim);
 			this.CharacterAnimation[this.ShyAnim].weight = 0f;
-			this.CharacterAnimation[this.FistAnim].layer = 5;
+			this.CharacterAnimation[this.FistAnim].layer = 4;
 			this.CharacterAnimation[this.FistAnim].weight = 0f;
-			this.CharacterAnimation[this.WetAnim].layer = 4;
-			this.CharacterAnimation.Play(this.WetAnim);
-			this.CharacterAnimation[this.WetAnim].weight = 0f;
 			this.CharacterAnimation[this.BentoAnim].layer = 3;
 			this.CharacterAnimation.Play(this.BentoAnim);
 			this.CharacterAnimation[this.BentoAnim].weight = 0f;

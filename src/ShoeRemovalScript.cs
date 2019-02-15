@@ -114,9 +114,6 @@ public class ShoeRemovalScript : MonoBehaviour
 				}
 			}
 			this.TargetShoes = this.IndoorShoes;
-			this.Locker.gameObject.GetComponent<Animation>().Play(this.LockerAnims[this.Height]);
-			this.Student.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
-			this.Student.CharacterAnimation.CrossFade(this.RemovalAnim);
 		}
 	}
 
@@ -131,6 +128,7 @@ public class ShoeRemovalScript : MonoBehaviour
 			}
 			this.Student.MoveTowardsTarget(this.Student.CurrentDestination.position);
 			base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.Student.CurrentDestination.rotation, 10f * Time.deltaTime);
+			this.Student.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
 			this.Student.CharacterAnimation.CrossFade(this.RemovalAnim);
 			if (this.Phase == 1)
 			{
@@ -266,7 +264,6 @@ public class ShoeRemovalScript : MonoBehaviour
 				{
 					this.Student.CurrentDestination = this.Student.StudentManager.Hangouts.List[0];
 					this.Student.Pathfinding.target = this.Student.StudentManager.Hangouts.List[0];
-					this.Locker.gameObject.GetComponent<Animation>().Stop();
 					this.Student.CanTalk = false;
 					this.Student.Leaving = true;
 					this.Student.Phase++;
@@ -344,7 +341,6 @@ public class ShoeRemovalScript : MonoBehaviour
 
 	public void CloseLocker()
 	{
-		this.Locker.gameObject.GetComponent<Animation>()[this.LockerAnims[this.Height]].time = this.Locker.gameObject.GetComponent<Animation>()[this.LockerAnims[this.Height]].length;
 	}
 
 	private void UpdateShoes()
@@ -375,8 +371,6 @@ public class ShoeRemovalScript : MonoBehaviour
 		this.IndoorShoes = this.Student.Cosmetic.UniformTexture;
 		this.Socks = this.Student.Cosmetic.SocksTexture;
 		this.RemovalAnim = this.RemoveSchoolAnim;
-		this.Locker.gameObject.GetComponent<Animation>()[this.LockerAnims[this.Height]].time = 0f;
-		this.Locker.gameObject.GetComponent<Animation>().Play(this.LockerAnims[this.Height]);
 		if (!this.Student.AoT)
 		{
 			if (!this.Male)
@@ -406,16 +400,7 @@ public class ShoeRemovalScript : MonoBehaviour
 
 	private void GetHeight(int StudentID)
 	{
-		this.Height = 6;
-		while (StudentID > 0)
-		{
-			this.Height--;
-			StudentID--;
-			if (this.Height == 0)
-			{
-				this.Height = 5;
-			}
-		}
+		this.Height = 5;
 		if (this.Student.StudentID == 30 || this.Student.StudentID == 5 || this.Student.StudentID == this.Student.StudentManager.RivalID || this.Student.StudentID == this.Student.StudentManager.SuitorID)
 		{
 			this.Height = 5;

@@ -9,11 +9,20 @@ public class BloodPoolScript : MonoBehaviour
 
 	public bool Grow;
 
+	public Renderer MyRenderer;
+
+	public Texture Flower;
+
 	private void Start()
 	{
 		if (PlayerGlobals.PantiesEquipped == 7 && this.Blood)
 		{
 			this.TargetSize *= 0.5f;
+		}
+		if (GameGlobals.CensorBlood)
+		{
+			this.MyRenderer.material.color = new Color(1f, 1f, 1f, 1f);
+			this.MyRenderer.material.mainTexture = this.Flower;
 		}
 		base.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 		Vector3 position = base.transform.position;
