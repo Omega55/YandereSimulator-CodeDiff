@@ -312,58 +312,54 @@ public class BucketScript : MonoBehaviour
 				this.Prompt.enabled = true;
 			}
 		}
-		else
+		else if (!this.Trap)
 		{
-			if (this.Fly)
+			this.Prompt.enabled = true;
+		}
+		if (this.Fly)
+		{
+			if (this.Rotate < 360f)
 			{
-				if (this.Rotate < 360f)
+				if (this.Rotate == 0f)
 				{
-					if (this.Rotate == 0f)
+					if (this.Bloodiness < 50f)
 					{
-						base.transform.rotation = this.Yandere.transform.rotation;
-						if (this.Bloodiness < 50f)
+						if (!this.Gasoline)
 						{
-							if (!this.Gasoline)
-							{
-								this.Effect = UnityEngine.Object.Instantiate<GameObject>(this.SpillEffect, base.transform.position + base.transform.forward * 0.5f + base.transform.up * 0.5f, base.transform.rotation);
-							}
-							else
-							{
-								this.Effect = UnityEngine.Object.Instantiate<GameObject>(this.GasSpillEffect, base.transform.position + base.transform.forward * 0.5f + base.transform.up * 0.5f, base.transform.rotation);
-								this.Gasoline = false;
-							}
+							this.Effect = UnityEngine.Object.Instantiate<GameObject>(this.SpillEffect, base.transform.position + base.transform.forward * 0.5f + base.transform.up * 0.5f, base.transform.rotation);
 						}
 						else
 						{
-							this.Effect = UnityEngine.Object.Instantiate<GameObject>(this.BloodSpillEffect, base.transform.position + base.transform.forward * 0.5f + base.transform.up * 0.5f, base.transform.rotation);
-							this.Bloodiness = 0f;
-						}
-						if (this.Trap)
-						{
-							this.Effect.transform.LookAt(this.Effect.transform.position - Vector3.up);
-						}
-						else
-						{
-							Rigidbody component3 = base.GetComponent<Rigidbody>();
-							component3.AddRelativeForce(Vector3.forward * 150f);
-							component3.AddRelativeForce(Vector3.up * 250f);
-							base.transform.Translate(Vector3.forward * 0.5f);
+							this.Effect = UnityEngine.Object.Instantiate<GameObject>(this.GasSpillEffect, base.transform.position + base.transform.forward * 0.5f + base.transform.up * 0.5f, base.transform.rotation);
+							this.Gasoline = false;
 						}
 					}
-					this.Rotate += Time.deltaTime * 360f;
-					base.transform.Rotate(Vector3.right * Time.deltaTime * 360f);
+					else
+					{
+						this.Effect = UnityEngine.Object.Instantiate<GameObject>(this.BloodSpillEffect, base.transform.position + base.transform.forward * 0.5f + base.transform.up * 0.5f, base.transform.rotation);
+						this.Bloodiness = 0f;
+					}
+					if (this.Trap)
+					{
+						this.Effect.transform.LookAt(this.Effect.transform.position - Vector3.up);
+					}
+					else
+					{
+						Rigidbody component3 = base.GetComponent<Rigidbody>();
+						component3.AddRelativeForce(Vector3.forward * 150f);
+						component3.AddRelativeForce(Vector3.up * 250f);
+						base.transform.Translate(Vector3.forward * 0.5f);
+					}
 				}
-				else
-				{
-					this.Sparkles.Stop();
-					this.Rotate = 0f;
-					this.Trap = false;
-					this.Fly = false;
-				}
+				this.Rotate += Time.deltaTime * 360f;
+				base.transform.Rotate(Vector3.right * Time.deltaTime * 360f);
 			}
-			if (!this.Trap)
+			else
 			{
-				this.Prompt.enabled = true;
+				this.Sparkles.Stop();
+				this.Rotate = 0f;
+				this.Trap = false;
+				this.Fly = false;
 			}
 		}
 		if (this.Dropped && base.transform.position.y < 0.5f)

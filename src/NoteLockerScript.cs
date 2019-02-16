@@ -164,7 +164,7 @@ public class NoteLockerScript : MonoBehaviour
 					{
 						this.NewBall = UnityEngine.Object.Instantiate<GameObject>(this.Ball, this.Student.LeftHand.position, Quaternion.identity);
 						Rigidbody component = this.NewBall.GetComponent<Rigidbody>();
-						component.AddRelativeForce(Vector3.right * 100f);
+						component.AddRelativeForce(this.Student.transform.forward * -100f);
 						component.AddRelativeForce(Vector3.up * 100f);
 						this.Phase++;
 					}

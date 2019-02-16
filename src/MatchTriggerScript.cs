@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class MatchTriggerScript : MonoBehaviour
 {
+	public PickUpScript PickUp;
+
 	public StudentScript Student;
 
 	public bool Fireball;
@@ -20,6 +22,10 @@ public class MatchTriggerScript : MonoBehaviour
 			if (this.Student != null && (this.Student.Gas || this.Fireball))
 			{
 				this.Student.Combust();
+				if (this.PickUp != null && this.PickUp.Yandere.PickUp != null && this.PickUp.Yandere.PickUp == this.PickUp)
+				{
+					this.PickUp.Yandere.MurderousActionTimer = 1f;
+				}
 				if (this.Fireball)
 				{
 					UnityEngine.Object.Destroy(base.gameObject);

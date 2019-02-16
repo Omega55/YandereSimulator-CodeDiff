@@ -13,6 +13,8 @@ public class LiquidColliderScript : MonoBehaviour
 
 	public GameObject Pool;
 
+	public bool AlreadyDoused;
+
 	public bool Static;
 
 	public bool Bucket;
@@ -56,7 +58,7 @@ public class LiquidColliderScript : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.gameObject.layer == 9)
+		if (!this.AlreadyDoused && other.gameObject.layer == 9)
 		{
 			StudentScript component = other.gameObject.GetComponent<StudentScript>();
 			if (component != null)
@@ -74,8 +76,10 @@ public class LiquidColliderScript : MonoBehaviour
 						component.Gas = true;
 					}
 					component.GetWet();
+					this.AlreadyDoused = true;
+					UnityEngine.Object.Destroy(base.gameObject);
 				}
-				else
+				else if (!component.Wet)
 				{
 					component.CharacterAnimation.CrossFade(component.DodgeAnim);
 					component.Pathfinding.canSearch = false;
@@ -84,7 +88,6 @@ public class LiquidColliderScript : MonoBehaviour
 					component.DodgeSpeed = 2f;
 					component.Dodging = true;
 				}
-				UnityEngine.Object.Destroy(base.gameObject);
 			}
 		}
 	}

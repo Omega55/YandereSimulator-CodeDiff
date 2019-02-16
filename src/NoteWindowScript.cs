@@ -190,12 +190,12 @@ public class NoteWindowScript : MonoBehaviour
 					}
 					else if (this.NoteLocker.Student.StudentID == 2 || this.NoteLocker.Student.StudentID == 3 || this.NoteLocker.Student.Club == ClubType.Occult)
 					{
-						if (this.SlotLabels[1].text == this.Subjects[9])
+						if (this.SlotLabels[1].text == this.Subjects[8])
 						{
 							this.NoteLocker.Success = true;
 						}
 					}
-					else if (this.NoteLocker.Student.Club == ClubType.Bully && this.SlotLabels[1].text == this.Subjects[9])
+					else if (this.NoteLocker.Student.Club == ClubType.Bully && (this.SlotLabels[1].text == this.Subjects[5] || this.SlotLabels[1].text == this.Subjects[9]))
 					{
 						this.NoteLocker.Success = true;
 					}

@@ -292,6 +292,8 @@ public class YandereScript : MonoBehaviour
 
 	public Renderer Drills;
 
+	public float MurderousActionTimer;
+
 	public float CinematicTimer;
 
 	public float CanMoveTimer;
@@ -3723,6 +3725,7 @@ public class YandereScript : MonoBehaviour
 					this.CanMove = true;
 				}
 			}
+			this.MurderousActionTimer = Mathf.MoveTowards(this.MurderousActionTimer, 0f, Time.deltaTime);
 		}
 	}
 

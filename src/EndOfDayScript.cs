@@ -1007,7 +1007,7 @@ public class EndOfDayScript : MonoBehaviour
 			else if (this.Phase == 104)
 			{
 				this.MurderScene.SetActive(true);
-				this.Label.text = "The police determine that " + this.Police.DrownedStudentName + " died from drowning. The police treat her death as a possible murder, and search the school for any other victims.";
+				this.Label.text = "The police determine that " + this.Police.DrownedStudentName + " died from drowning. The police treat the death as a possible murder, and search the school for any other victims.";
 				this.ID = 0;
 				while (this.ID < this.Police.CorpseList.Length)
 				{
@@ -1023,7 +1023,7 @@ public class EndOfDayScript : MonoBehaviour
 			else if (this.Phase == 105)
 			{
 				this.MurderScene.SetActive(true);
-				this.Label.text = "The police determine that " + this.Police.ElectrocutedStudentName + " died from being electrocuted. The police treat her death as a possible murder, and search the school for any other victims.";
+				this.Label.text = "The police determine that " + this.Police.ElectrocutedStudentName + " died from being electrocuted. The police treat the death as a possible murder, and search the school for any other victims.";
 				this.ID = 0;
 				while (this.ID < this.Police.CorpseList.Length)
 				{
