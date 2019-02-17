@@ -2041,127 +2041,130 @@ public class StudentScript : MonoBehaviour
 				}
 				this.OriginalClubAnim = this.ClubAnim;
 			}
-			else if (this.Club != ClubType.Occult)
+			else if (this.Club == ClubType.Occult)
 			{
-				if (this.Club == ClubType.Gaming)
+				this.PatrolAnim = this.ThinkAnim;
+				this.CharacterAnimation[this.PatrolAnim].speed = 0.2f;
+			}
+			else if (this.Club == ClubType.Gaming)
+			{
+				this.MiyukiGameScreen.SetActive(true);
+				this.ClubMemberID = this.StudentID - 35;
+				if (this.StudentID > 36)
 				{
-					this.MiyukiGameScreen.SetActive(true);
-					this.ClubMemberID = this.StudentID - 35;
-					if (this.StudentID > 36)
-					{
-						this.ClubAnim = this.GameAnim;
-					}
-					this.ActivityAnim = this.GameAnim;
+					this.ClubAnim = this.GameAnim;
 				}
-				else if (this.Club == ClubType.Art)
+				this.ActivityAnim = this.GameAnim;
+			}
+			else if (this.Club == ClubType.Art)
+			{
+				this.ChangingBooth = this.StudentManager.ChangingBooths[4];
+				this.ActivityAnim = this.PaintAnim;
+				this.Attacher.ArtClub = true;
+				this.ClubAnim = this.PaintAnim;
+				this.DressCode = true;
+			}
+			else if (this.Club == ClubType.LightMusic)
+			{
+				this.ClubMemberID = this.StudentID - 50;
+				this.InstrumentBag[this.ClubMemberID].SetActive(true);
+				if (this.StudentID == 51)
 				{
-					this.ChangingBooth = this.StudentManager.ChangingBooths[4];
-					this.ActivityAnim = this.PaintAnim;
-					this.Attacher.ArtClub = true;
-					this.ClubAnim = this.PaintAnim;
-					this.DressCode = true;
+					this.ClubAnim = "f02_practiceGuitar_01";
 				}
-				else if (this.Club == ClubType.LightMusic)
+				else if (this.StudentID == 52 || this.StudentID == 53)
 				{
-					this.ClubMemberID = this.StudentID - 50;
-					this.InstrumentBag[this.ClubMemberID].SetActive(true);
-					if (this.StudentID == 51)
-					{
-						this.ClubAnim = "f02_practiceGuitar_01";
-					}
-					else if (this.StudentID == 52 || this.StudentID == 53)
-					{
-						this.ClubAnim = "f02_practiceGuitar_00";
-					}
-					else if (this.StudentID == 54)
-					{
-						this.ClubAnim = "f02_practiceDrums_00";
-						this.Instruments[4] = this.StudentManager.DrumSet;
-					}
-					else if (this.StudentID == 55)
-					{
-						this.ClubAnim = "f02_practiceKeytar_00";
-					}
+					this.ClubAnim = "f02_practiceGuitar_00";
 				}
-				else if (this.Club == ClubType.MartialArts)
+				else if (this.StudentID == 54)
 				{
-					this.ChangingBooth = this.StudentManager.ChangingBooths[6];
-					this.DressCode = true;
-					if (this.StudentID == 46)
-					{
-						this.IdleAnim = "pose_03";
-						this.ClubAnim = "pose_03";
-					}
-					else if (this.StudentID == 47)
-					{
-						this.GetNewAnimation = true;
-						this.ClubAnim = "idle_20";
-						this.ActivityAnim = "kick_24";
-					}
-					else if (this.StudentID == 48)
-					{
-						this.ClubAnim = "sit_04";
-						this.ActivityAnim = "kick_24";
-					}
-					else if (this.StudentID == 49)
-					{
-						this.GetNewAnimation = true;
-						this.ClubAnim = "f02_idle_20";
-						this.ActivityAnim = "f02_kick_23";
-					}
-					else if (this.StudentID == 50)
-					{
-						this.ClubAnim = "f02_sit_05";
-						this.ActivityAnim = "f02_kick_23";
-					}
-					this.ClubMemberID = this.StudentID - 45;
+					this.ClubAnim = "f02_practiceDrums_00";
+					this.Instruments[4] = this.StudentManager.DrumSet;
 				}
-				else if (this.Club == ClubType.Science)
+				else if (this.StudentID == 55)
 				{
-					this.ChangingBooth = this.StudentManager.ChangingBooths[8];
-					this.Attacher.ScienceClub = true;
-					this.DressCode = true;
-					if (this.StudentID == 61)
-					{
-						this.ClubAnim = "scienceMad_00";
-					}
-					else if (this.StudentID == 62)
-					{
-						this.ClubAnim = "scienceTablet_00";
-					}
-					else if (this.StudentID == 63)
-					{
-						this.ClubAnim = "scienceChemistry_00";
-					}
-					else if (this.StudentID == 64)
-					{
-						this.ClubAnim = "f02_scienceLeg_00";
-					}
-					else if (this.StudentID == 65)
-					{
-						this.ClubAnim = "f02_scienceConsole_00";
-					}
-					this.ClubMemberID = this.StudentID - 60;
+					this.ClubAnim = "f02_practiceKeytar_00";
 				}
-				else if (this.Club == ClubType.Sports)
+			}
+			else if (this.Club == ClubType.MartialArts)
+			{
+				this.ChangingBooth = this.StudentManager.ChangingBooths[6];
+				this.DressCode = true;
+				if (this.StudentID == 46)
 				{
-					this.ChangingBooth = this.StudentManager.ChangingBooths[9];
-					this.DressCode = true;
-					this.ClubAnim = "stretch_00";
+					this.IdleAnim = "pose_03";
+					this.ClubAnim = "pose_03";
 				}
-				else if (this.Club == ClubType.Gardening)
+				else if (this.StudentID == 47)
 				{
-					if (this.StudentID == 71)
-					{
-						this.PatrolAnim = "f02_thinking_00";
-						this.ClubAnim = "f02_thinking_00";
-						this.CharacterAnimation[this.PatrolAnim].speed = 0.9f;
-					}
-					else
-					{
-						this.ClubAnim = "f02_waterPlant_00";
-						this.WateringCan.SetActive(true);
-					}
+					this.GetNewAnimation = true;
+					this.ClubAnim = "idle_20";
+					this.ActivityAnim = "kick_24";
+				}
+				else if (this.StudentID == 48)
+				{
+					this.ClubAnim = "sit_04";
+					this.ActivityAnim = "kick_24";
+				}
+				else if (this.StudentID == 49)
+				{
+					this.GetNewAnimation = true;
+					this.ClubAnim = "f02_idle_20";
+					this.ActivityAnim = "f02_kick_23";
+				}
+				else if (this.StudentID == 50)
+				{
+					this.ClubAnim = "f02_sit_05";
+					this.ActivityAnim = "f02_kick_23";
+				}
+				this.ClubMemberID = this.StudentID - 45;
+			}
+			else if (this.Club == ClubType.Science)
+			{
+				this.ChangingBooth = this.StudentManager.ChangingBooths[8];
+				this.Attacher.ScienceClub = true;
+				this.DressCode = true;
+				if (this.StudentID == 61)
+				{
+					this.ClubAnim = "scienceMad_00";
+				}
+				else if (this.StudentID == 62)
+				{
+					this.ClubAnim = "scienceTablet_00";
+				}
+				else if (this.StudentID == 63)
+				{
+					this.ClubAnim = "scienceChemistry_00";
+				}
+				else if (this.StudentID == 64)
+				{
+					this.ClubAnim = "f02_scienceLeg_00";
+				}
+				else if (this.StudentID == 65)
+				{
+					this.ClubAnim = "f02_scienceConsole_00";
+				}
+				this.ClubMemberID = this.StudentID - 60;
+			}
+			else if (this.Club == ClubType.Sports)
+			{
+				this.ChangingBooth = this.StudentManager.ChangingBooths[9];
+				this.DressCode = true;
+				this.ClubAnim = "stretch_00";
+				this.ClubMemberID = this.StudentID - 65;
+			}
+			else if (this.Club == ClubType.Gardening)
+			{
+				if (this.StudentID == 71)
+				{
+					this.PatrolAnim = "f02_thinking_00";
+					this.ClubAnim = "f02_thinking_00";
+					this.CharacterAnimation[this.PatrolAnim].speed = 0.9f;
+				}
+				else
+				{
+					this.ClubAnim = "f02_waterPlant_00";
+					this.WateringCan.SetActive(true);
 				}
 			}
 			if (this.OriginalClub != ClubType.Gaming)
@@ -2311,6 +2314,11 @@ public class StudentScript : MonoBehaviour
 				this.Armband.SetActive(true);
 				this.Indoors = true;
 				this.Spawned = true;
+				if (this.ShoeRemoval.Locker == null)
+				{
+					this.ShoeRemoval.Start();
+				}
+				this.ShoeRemoval.PutOnShoes();
 				if (this.StudentID == 86)
 				{
 					this.Suffix = "Strict";
@@ -2943,6 +2951,7 @@ public class StudentScript : MonoBehaviour
 					this.SmartPhone.SetActive(false);
 					this.Pathfinding.canSearch = false;
 					this.Pathfinding.canMove = false;
+					this.ShoeRemoval.StartChangingShoes();
 					this.ShoeRemoval.enabled = true;
 					this.CanTalk = false;
 					this.Routine = false;
@@ -4567,9 +4576,12 @@ public class StudentScript : MonoBehaviour
 										AudioSource component2 = base.GetComponent<AudioSource>();
 										component2.clip = this.PoisonDeathClip;
 										component2.Play();
-										this.StudentManager.Students[1].CharacterAnimation.CrossFade("witnessPoisoning_00");
-										this.StudentManager.Students[1].Distracted = true;
-										this.StudentManager.Students[1].Routine = false;
+										if (this.StudentManager.Students[11] != null)
+										{
+											this.StudentManager.Students[1].CharacterAnimation.CrossFade("witnessPoisoning_00");
+											this.StudentManager.Students[1].Distracted = true;
+											this.StudentManager.Students[1].Routine = false;
+										}
 										if (this.Male)
 										{
 											this.CharacterAnimation.CrossFade("poisonDeath_00");
@@ -4602,9 +4614,12 @@ public class StudentScript : MonoBehaviour
 										this.Dying = true;
 										this.MurderSuicidePhase = 100;
 										this.SpawnAlarmDisc();
-										this.StudentManager.Students[1].Chopsticks[0].SetActive(false);
-										this.StudentManager.Students[1].Chopsticks[1].SetActive(false);
-										this.StudentManager.Students[1].Bento.SetActive(false);
+										if (this.StudentManager.Students[11] != null)
+										{
+											this.StudentManager.Students[1].Chopsticks[0].SetActive(false);
+											this.StudentManager.Students[1].Chopsticks[1].SetActive(false);
+											this.StudentManager.Students[1].Bento.SetActive(false);
+										}
 										this.Chopsticks[0].SetActive(false);
 										this.Chopsticks[1].SetActive(false);
 										this.Bento.SetActive(false);
@@ -6610,8 +6625,8 @@ public class StudentScript : MonoBehaviour
 								this.DistractionTarget.EquipCleaningItems();
 								this.DistractionTarget.EatingSnack = false;
 								this.Private = false;
-								this.DistractionTarget.CurrentDestination = this.Destinations[this.Phase];
-								this.DistractionTarget.Pathfinding.target = this.Destinations[this.Phase];
+								this.DistractionTarget.CurrentDestination = this.DistractionTarget.Destinations[this.Phase];
+								this.DistractionTarget.Pathfinding.target = this.DistractionTarget.Destinations[this.Phase];
 								if (this.DistractionTarget.Persona == PersonaType.PhoneAddict)
 								{
 									this.DistractionTarget.SmartPhone.SetActive(true);
@@ -7594,13 +7609,14 @@ public class StudentScript : MonoBehaviour
 				else if (this.SnackPhase == 1)
 				{
 					this.CharacterAnimation.CrossFade(this.WalkAnim);
-					if (this.DistractionTarget.Persona == PersonaType.PhoneAddict)
+					if (this.Persona == PersonaType.PhoneAddict)
 					{
-						this.DistractionTarget.SmartPhone.SetActive(true);
+						this.SmartPhone.SetActive(true);
 					}
+					Debug.Log("Distance to destination is..." + this.DistanceToDestination);
 					if (this.DistanceToDestination < 1f)
 					{
-						this.DistractionTarget.SmartPhone.SetActive(false);
+						this.SmartPhone.SetActive(false);
 						this.Pathfinding.canSearch = false;
 						this.Pathfinding.canMove = false;
 						this.SnackPhase++;
@@ -8329,7 +8345,7 @@ public class StudentScript : MonoBehaviour
 			if (this.Prompt.Circle[0].fillAmount == 0f)
 			{
 				bool flag = false;
-				if (this.Armband.activeInHierarchy && (this.Actions[this.Phase] == StudentActionType.ClubAction || this.Actions[this.Phase] == StudentActionType.SitAndSocialize || this.Actions[this.Phase] == StudentActionType.Socializing || this.Actions[this.Phase] == StudentActionType.Sleuth || this.Actions[this.Phase] == StudentActionType.Lyrics || this.Actions[this.Phase] == StudentActionType.SitAndEatBento) && ((base.transform.position.y > this.StudentManager.ClubZones[(int)this.Club].position.y - 1f && base.transform.position.y < this.StudentManager.ClubZones[(int)this.Club].position.y + 1f && Vector3.Distance(base.transform.position, this.StudentManager.ClubZones[(int)this.Club].position) < this.ClubThreshold) || Vector3.Distance(base.transform.position, this.StudentManager.DramaSpots[1].position) < 12f))
+				if (this.Armband.activeInHierarchy && (this.Actions[this.Phase] == StudentActionType.ClubAction || this.Actions[this.Phase] == StudentActionType.SitAndSocialize || this.Actions[this.Phase] == StudentActionType.Socializing || this.Actions[this.Phase] == StudentActionType.Sleuth || this.Actions[this.Phase] == StudentActionType.Lyrics || this.Actions[this.Phase] == StudentActionType.Patrol || this.Actions[this.Phase] == StudentActionType.SitAndEatBento) && (this.DistanceToDestination < 1f || (base.transform.position.y > this.StudentManager.ClubZones[(int)this.Club].position.y - 1f && base.transform.position.y < this.StudentManager.ClubZones[(int)this.Club].position.y + 1f && Vector3.Distance(base.transform.position, this.StudentManager.ClubZones[(int)this.Club].position) < this.ClubThreshold) || Vector3.Distance(base.transform.position, this.StudentManager.DramaSpots[1].position) < 12f))
 				{
 					flag = true;
 					this.Warned = false;
@@ -11785,6 +11801,7 @@ public class StudentScript : MonoBehaviour
 
 	public void RemoveShoes()
 	{
+		Debug.Log("Does this get called immediately?");
 		if (this.Schoolwear == 1)
 		{
 			if (!this.Male)
@@ -12218,6 +12235,8 @@ public class StudentScript : MonoBehaviour
 			if (this.Club == ClubType.Sports)
 			{
 				this.MyRenderer.sharedMesh = this.SwimmingTrunks;
+				this.MyRenderer.SetBlendShapeWeight(0, (float)(20 * (6 - this.ClubMemberID)));
+				this.MyRenderer.SetBlendShapeWeight(1, (float)(20 * (6 - this.ClubMemberID)));
 				this.MyRenderer.materials[0].mainTexture = this.Cosmetic.Trunks[this.StudentID];
 				this.MyRenderer.materials[1].mainTexture = this.Cosmetic.FaceTexture;
 				this.MyRenderer.materials[2].mainTexture = this.Cosmetic.Trunks[this.StudentID];
@@ -12441,6 +12460,8 @@ public class StudentScript : MonoBehaviour
 				else
 				{
 					this.MyRenderer.sharedMesh = this.SwimmingTrunks;
+					this.MyRenderer.SetBlendShapeWeight(0, (float)(20 * (6 - this.ClubMemberID)));
+					this.MyRenderer.SetBlendShapeWeight(1, (float)(20 * (6 - this.ClubMemberID)));
 					this.MyRenderer.materials[0].mainTexture = this.Cosmetic.Trunks[this.StudentID];
 					this.MyRenderer.materials[1].mainTexture = this.Cosmetic.FaceTexture;
 					this.MyRenderer.materials[2].mainTexture = this.Cosmetic.Trunks[this.StudentID];

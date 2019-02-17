@@ -222,30 +222,24 @@ public class DebugMenuScript : MonoBehaviour
 							StudentScript studentScript2 = this.StudentManager.Students[28];
 							if (studentScript2 != null)
 							{
-								if (studentScript2.Phase < 2)
-								{
-									studentScript2.ShoeRemoval.Start();
-									studentScript2.ShoeRemoval.PutOnShoes();
-									studentScript2.Phase = 2;
-									studentScript2.CurrentDestination = studentScript2.Destinations[2];
-									studentScript2.Pathfinding.target = studentScript2.Destinations[2];
-								}
+								studentScript2.ShoeRemoval.Start();
+								studentScript2.ShoeRemoval.PutOnShoes();
+								studentScript2.Phase = 2;
+								studentScript2.CurrentDestination = studentScript2.Destinations[2];
+								studentScript2.Pathfinding.target = studentScript2.Destinations[2];
 								studentScript2.transform.position = studentScript2.Destinations[2].position;
 							}
 							StudentScript studentScript3 = this.StudentManager.Students[39];
 							if (studentScript3 != null)
 							{
-								if (studentScript3.Phase < 2)
-								{
-									studentScript3.ShoeRemoval.Start();
-									studentScript3.ShoeRemoval.PutOnShoes();
-									studentScript3.Phase = 2;
-									ScheduleBlock scheduleBlock = studentScript3.ScheduleBlocks[2];
-									scheduleBlock.action = "Stand";
-									studentScript3.GetDestinations();
-									studentScript3.CurrentDestination = this.MidoriSpot;
-									studentScript3.Pathfinding.target = this.MidoriSpot;
-								}
+								studentScript3.ShoeRemoval.Start();
+								studentScript3.ShoeRemoval.PutOnShoes();
+								studentScript3.Phase = 2;
+								ScheduleBlock scheduleBlock = studentScript3.ScheduleBlocks[2];
+								scheduleBlock.action = "Stand";
+								studentScript3.GetDestinations();
+								studentScript3.CurrentDestination = this.MidoriSpot;
+								studentScript3.Pathfinding.target = this.MidoriSpot;
 								studentScript3.transform.position = this.MidoriSpot.position;
 							}
 						}

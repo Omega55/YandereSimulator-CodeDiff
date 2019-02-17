@@ -101,19 +101,23 @@ public class ShoeRemovalScript : MonoBehaviour
 			this.OutdoorShoes = this.Student.Cosmetic.CasualTexture;
 			this.IndoorShoes = this.Student.Cosmetic.UniformTexture;
 			this.Socks = this.Student.Cosmetic.SocksTexture;
-			if (!this.Student.AoT)
-			{
-				if (!this.Male)
-				{
-					this.MyRenderer.materials[0].mainTexture = this.Socks;
-					this.MyRenderer.materials[1].mainTexture = this.Socks;
-				}
-				else
-				{
-					this.MyRenderer.materials[this.Student.Cosmetic.UniformID].mainTexture = this.Socks;
-				}
-			}
 			this.TargetShoes = this.IndoorShoes;
+		}
+	}
+
+	public void StartChangingShoes()
+	{
+		if (!this.Student.AoT)
+		{
+			if (!this.Male)
+			{
+				this.MyRenderer.materials[0].mainTexture = this.Socks;
+				this.MyRenderer.materials[1].mainTexture = this.Socks;
+			}
+			else
+			{
+				this.MyRenderer.materials[this.Student.Cosmetic.UniformID].mainTexture = this.Socks;
+			}
 		}
 	}
 

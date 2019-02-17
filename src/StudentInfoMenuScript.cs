@@ -213,6 +213,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 				{
 					this.PauseScreen.Yandere.RPGCamera.enabled = true;
 				}
+				this.FindingLocker = false;
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Show = false;
 			}
