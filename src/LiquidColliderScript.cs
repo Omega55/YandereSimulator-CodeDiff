@@ -81,6 +81,10 @@ public class LiquidColliderScript : MonoBehaviour
 				}
 				else if (!component.Wet && !component.Fleeing)
 				{
+					if (component.Investigating)
+					{
+						component.StopInvestigating();
+					}
 					component.CharacterAnimation.CrossFade(component.DodgeAnim);
 					component.Pathfinding.canSearch = false;
 					component.Pathfinding.canMove = false;

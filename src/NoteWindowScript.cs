@@ -154,7 +154,7 @@ public class NoteWindowScript : MonoBehaviour
 							this.NoteLocker.Success = true;
 						}
 					}
-					else if (this.NoteLocker.Student.StudentID == 65)
+					else if (this.NoteLocker.Student.StudentID == 2 || this.NoteLocker.Student.StudentID == 3 || this.NoteLocker.Student.StudentID == 65)
 					{
 						if (this.SlotLabels[1].text == this.Subjects[7])
 						{

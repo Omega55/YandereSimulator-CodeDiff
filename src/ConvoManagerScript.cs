@@ -19,6 +19,8 @@ public class ConvoManagerScript : MonoBehaviour
 
 	public bool Confirmed;
 
+	public int Cycles;
+
 	public void CheckMe(int StudentID)
 	{
 		if (StudentID == 2)
@@ -349,6 +351,12 @@ public class ConvoManagerScript : MonoBehaviour
 			this.SM.Students[49].ClubAnim = this.FemaleCombatAnims[this.CombatAnimID];
 			this.SM.Students[47].GetNewAnimation = false;
 			this.SM.Students[49].GetNewAnimation = false;
+			this.Cycles++;
+			if (this.Cycles == 5)
+			{
+				this.SM.UpdateMartialArts();
+				this.Cycles = 0;
+			}
 		}
 	}
 

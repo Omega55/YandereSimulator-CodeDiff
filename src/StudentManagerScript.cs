@@ -171,6 +171,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform[] GardeningPatrols;
 
+	public Transform[] MartialArtsSpots;
+
 	public Transform[] LockerPositions;
 
 	public Transform[] BackstageSpots;
@@ -367,6 +369,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public int LowDetailThreshold;
 
+	public int MartialArtsPhase;
+
 	public int StudentsSpawned;
 
 	public int SedatedStudents;
@@ -521,6 +525,8 @@ public class StudentManagerScript : MonoBehaviour
 	public int Smugs;
 
 	public int Gentles;
+
+	public int Rival1s;
 
 	public DoorScript[] Doors;
 
@@ -2307,6 +2313,42 @@ public class StudentManagerScript : MonoBehaviour
 				}
 				this.ID++;
 			}
+		}
+	}
+
+	public void UpdateMartialArts()
+	{
+		this.MartialArtsPhase++;
+		this.ID = 46;
+		while (this.ID < 51)
+		{
+			if (this.Students[this.ID] != null)
+			{
+				if (this.MartialArtsPhase == 1)
+				{
+					this.Clubs.List[this.ID].position = this.MartialArtsSpots[this.ID - 45].position;
+					this.Clubs.List[this.ID].rotation = this.MartialArtsSpots[this.ID - 45].rotation;
+				}
+				else if (this.MartialArtsPhase == 2)
+				{
+					this.Clubs.List[this.ID].position = this.MartialArtsSpots[this.ID - 40].position;
+					this.Clubs.List[this.ID].rotation = this.MartialArtsSpots[this.ID - 40].rotation;
+				}
+				else if (this.MartialArtsPhase == 3)
+				{
+					this.Clubs.List[this.ID].position = this.MartialArtsSpots[this.ID - 35].position;
+					this.Clubs.List[this.ID].rotation = this.MartialArtsSpots[this.ID - 35].rotation;
+				}
+				else if (this.MartialArtsPhase == 4)
+				{
+					this.MartialArtsPhase = 0;
+					this.UpdateMartialArts();
+				}
+				this.Students[this.ID].DistanceToDestination = 100f;
+				this.Students[this.ID].SmartPhone.SetActive(false);
+				this.Students[this.ID].SpeechLines.Stop();
+			}
+			this.ID++;
 		}
 	}
 

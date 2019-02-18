@@ -2182,6 +2182,17 @@ public class CosmeticScript : MonoBehaviour
 			this.StudentManager.Gentles++;
 			num = this.StudentManager.Gentles;
 		}
+		else if (this.EyeType == "Rival1")
+		{
+			this.MyRenderer.SetBlendShapeWeight(0, 35f);
+			this.MyRenderer.SetBlendShapeWeight(8, 5f);
+			this.MyRenderer.SetBlendShapeWeight(9, 20f);
+			this.MyRenderer.SetBlendShapeWeight(10, 50f);
+			this.MyRenderer.SetBlendShapeWeight(11, 50f);
+			this.MyRenderer.SetBlendShapeWeight(12, 10f);
+			this.StudentManager.Rival1s++;
+			num = this.StudentManager.Rival1s;
+		}
 		if (!this.Modified)
 		{
 			if ((this.EyeType == "Thin" && this.StudentManager.Thins > 1) || (this.EyeType == "Serious" && this.StudentManager.Seriouses > 1) || (this.EyeType == "Round" && this.StudentManager.Rounds > 1) || (this.EyeType == "Sad" && this.StudentManager.Sads > 1) || (this.EyeType == "Mean" && this.StudentManager.Means > 1) || (this.EyeType == "Smug" && this.StudentManager.Smugs > 1) || (this.EyeType == "Gentle" && this.StudentManager.Gentles > 1))

@@ -1286,8 +1286,6 @@ public class StudentScript : MonoBehaviour
 
 	public LowPolyStudentScript LowPoly;
 
-	public Texture[] SocksTextures;
-
 	public GameObject JojoHitEffect;
 
 	public GameObject[] ElectroSteam;
@@ -11801,24 +11799,14 @@ public class StudentScript : MonoBehaviour
 
 	public void RemoveShoes()
 	{
-		Debug.Log("Does this get called immediately?");
-		if (this.Schoolwear == 1)
+		if (!this.Male)
 		{
-			if (!this.Male)
-			{
-				this.MyRenderer.materials[0].mainTexture = this.Cosmetic.FemaleSocksTextures[StudentGlobals.FemaleUniform];
-				this.MyRenderer.materials[1].mainTexture = this.Cosmetic.FemaleSocksTextures[StudentGlobals.FemaleUniform];
-			}
-			else
-			{
-				this.MyRenderer.materials[0].mainTexture = this.Cosmetic.MaleSocksTextures[StudentGlobals.MaleUniform];
-				this.MyRenderer.materials[1].mainTexture = this.Cosmetic.MaleSocksTextures[StudentGlobals.MaleUniform];
-			}
+			this.MyRenderer.materials[0].mainTexture = this.Cosmetic.SocksTexture;
+			this.MyRenderer.materials[1].mainTexture = this.Cosmetic.SocksTexture;
 		}
-		else if (this.Schoolwear == 3)
+		else
 		{
-			this.MyRenderer.materials[0].mainTexture = this.SocksTextures[0];
-			this.MyRenderer.materials[1].mainTexture = this.SocksTextures[0];
+			this.MyRenderer.materials[this.Cosmetic.UniformID].mainTexture = this.Cosmetic.SocksTexture;
 		}
 	}
 

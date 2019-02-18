@@ -61,7 +61,7 @@ public class TallLockerScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (this.Prompt.Circle[0].fillAmount == 0f)
+		if (this.Prompt.Circle[0].fillAmount == 0f && !this.Yandere.Chased && this.Yandere.Chasers == 0)
 		{
 			this.Prompt.Circle[0].fillAmount = 1f;
 			if (!this.Open)
