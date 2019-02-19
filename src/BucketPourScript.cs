@@ -15,6 +15,8 @@ public class BucketPourScript : MonoBehaviour
 
 	public float PourTime;
 
+	public int ID;
+
 	private void Start()
 	{
 	}
@@ -84,16 +86,36 @@ public class BucketPourScript : MonoBehaviour
 		}
 		if (this.Yandere.Pouring)
 		{
-			if (this.PourHeight == "Low" && Input.GetButtonDown("B"))
+			if (this.PourHeight == "Low" && Input.GetButtonDown("B") && this.Prompt.DistanceSqr < 1f)
 			{
 				this.SplashCamera.Show = true;
 				this.SplashCamera.MyCamera.enabled = true;
+				if (this.ID == 1)
+				{
+					this.SplashCamera.transform.position = new Vector3(32.1f, 0.8f, 26.9f);
+					this.SplashCamera.transform.eulerAngles = new Vector3(0f, -45f, 0f);
+				}
+				else
+				{
+					this.SplashCamera.transform.position = new Vector3(1.1f, 0.8f, 32.1f);
+					this.SplashCamera.transform.eulerAngles = new Vector3(0f, -135f, 0f);
+				}
 			}
 		}
-		else if (this.Yandere.BucketDropping && Input.GetButtonDown("B"))
+		else if (this.Yandere.BucketDropping && Input.GetButtonDown("B") && this.Prompt.DistanceSqr < 1f)
 		{
 			this.SplashCamera.Show = true;
 			this.SplashCamera.MyCamera.enabled = true;
+			if (this.ID == 1)
+			{
+				this.SplashCamera.transform.position = new Vector3(32.1f, 0.8f, 26.9f);
+				this.SplashCamera.transform.eulerAngles = new Vector3(0f, -45f, 0f);
+			}
+			else
+			{
+				this.SplashCamera.transform.position = new Vector3(1.1f, 0.8f, 32.1f);
+				this.SplashCamera.transform.eulerAngles = new Vector3(0f, -135f, 0f);
+			}
 		}
 	}
 }

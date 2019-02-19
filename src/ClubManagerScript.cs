@@ -961,6 +961,7 @@ public class ClubManagerScript : MonoBehaviour
 			if (ClubGlobals.Club == ClubType.Science)
 			{
 				this.BloodCleaner.Prompt.enabled = true;
+				this.StudentManager.UpdateBooths();
 			}
 			else if (ClubGlobals.Club == ClubType.Sports)
 			{

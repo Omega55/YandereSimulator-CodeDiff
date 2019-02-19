@@ -8343,7 +8343,7 @@ public class StudentScript : MonoBehaviour
 			if (this.Prompt.Circle[0].fillAmount == 0f)
 			{
 				bool flag = false;
-				if (this.Armband.activeInHierarchy && (this.Actions[this.Phase] == StudentActionType.ClubAction || this.Actions[this.Phase] == StudentActionType.SitAndSocialize || this.Actions[this.Phase] == StudentActionType.Socializing || this.Actions[this.Phase] == StudentActionType.Sleuth || this.Actions[this.Phase] == StudentActionType.Lyrics || this.Actions[this.Phase] == StudentActionType.Patrol || this.Actions[this.Phase] == StudentActionType.SitAndEatBento) && (this.DistanceToDestination < 1f || (base.transform.position.y > this.StudentManager.ClubZones[(int)this.Club].position.y - 1f && base.transform.position.y < this.StudentManager.ClubZones[(int)this.Club].position.y + 1f && Vector3.Distance(base.transform.position, this.StudentManager.ClubZones[(int)this.Club].position) < this.ClubThreshold) || Vector3.Distance(base.transform.position, this.StudentManager.DramaSpots[1].position) < 12f))
+				if (this.StudentID < 86 && this.Armband.activeInHierarchy && (this.Actions[this.Phase] == StudentActionType.ClubAction || this.Actions[this.Phase] == StudentActionType.SitAndSocialize || this.Actions[this.Phase] == StudentActionType.Socializing || this.Actions[this.Phase] == StudentActionType.Sleuth || this.Actions[this.Phase] == StudentActionType.Lyrics || this.Actions[this.Phase] == StudentActionType.Patrol || this.Actions[this.Phase] == StudentActionType.SitAndEatBento) && (this.DistanceToDestination < 1f || (base.transform.position.y > this.StudentManager.ClubZones[(int)this.Club].position.y - 1f && base.transform.position.y < this.StudentManager.ClubZones[(int)this.Club].position.y + 1f && Vector3.Distance(base.transform.position, this.StudentManager.ClubZones[(int)this.Club].position) < this.ClubThreshold) || Vector3.Distance(base.transform.position, this.StudentManager.DramaSpots[1].position) < 12f))
 				{
 					flag = true;
 					this.Warned = false;
@@ -11390,7 +11390,7 @@ public class StudentScript : MonoBehaviour
 			else if (scheduleBlock2.destination == "Patrol")
 			{
 				this.Destinations[this.ID] = this.StudentManager.Patrols.List[this.StudentID].GetChild(0);
-				if (this.OriginalClub == ClubType.Gardening && this.Club == ClubType.None)
+				if ((this.OriginalClub == ClubType.Gardening || this.OriginalClub == ClubType.Occult) && this.Club == ClubType.None)
 				{
 					this.Destinations[this.ID] = this.StudentManager.Hangouts.List[this.StudentID];
 				}

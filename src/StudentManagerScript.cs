@@ -2570,13 +2570,6 @@ public class StudentManagerScript : MonoBehaviour
 						doorScript.DoorID,
 						"_Open"
 					}), 1);
-					Debug.Log(string.Concat(new object[]
-					{
-						"Saving: The door with the ID number of ",
-						doorScript.DoorID,
-						" is supposed to be open! It's located at: ",
-						doorScript.transform.position
-					}));
 				}
 				else
 				{
@@ -2669,13 +2662,6 @@ public class StudentManagerScript : MonoBehaviour
 					"_Open"
 				})) == 1)
 				{
-					Debug.Log(string.Concat(new object[]
-					{
-						"Loading: The door with the ID number of ",
-						doorScript.DoorID,
-						" is supposed to be open! It's located at: ",
-						doorScript.transform.position
-					}));
 					doorScript.Open = true;
 					doorScript.OpenDoor();
 				}
