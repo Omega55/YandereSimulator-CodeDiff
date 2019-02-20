@@ -21,6 +21,18 @@ public class WeaponManagerScript : MonoBehaviour
 
 	public bool YandereGuilty;
 
+	public void Start()
+	{
+		for (int i = 0; i < this.Weapons.Length; i++)
+		{
+			this.Weapons[i].GlobalID = i;
+			if (WeaponGlobals.GetWeaponStatus(i) == 1)
+			{
+				this.Weapons[i].gameObject.SetActive(false);
+			}
+		}
+	}
+
 	public void UpdateLabels()
 	{
 		foreach (WeaponScript weaponScript in this.Weapons)
@@ -114,6 +126,17 @@ public class WeaponManagerScript : MonoBehaviour
 						}));
 					}
 				}
+			}
+		}
+	}
+
+	public void TrackDumpedWeapons()
+	{
+		for (int i = 0; i < this.Weapons.Length; i++)
+		{
+			if (this.Weapons[i] == null)
+			{
+				Debug.Log("Weapon #" + i + " was destroyed! Setting status to 1!");
 			}
 		}
 	}

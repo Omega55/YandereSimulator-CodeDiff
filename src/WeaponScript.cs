@@ -99,6 +99,8 @@ public class WeaponScript : MonoBehaviour
 
 	public int FingerprintID;
 
+	public int GlobalID;
+
 	public int WeaponID;
 
 	public int AnimID;

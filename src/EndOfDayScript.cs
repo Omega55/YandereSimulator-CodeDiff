@@ -1106,5 +1106,6 @@ public class EndOfDayScript : MonoBehaviour
 		{
 			SchoolGlobals.SchoolAtmosphere += 0.25f;
 		}
+		this.WeaponManager.TrackDumpedWeapons();
 	}
 }

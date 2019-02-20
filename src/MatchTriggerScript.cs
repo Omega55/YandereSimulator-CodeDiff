@@ -24,6 +24,7 @@ public class MatchTriggerScript : MonoBehaviour
 				this.Student.Combust();
 				if (this.PickUp != null && this.PickUp.Yandere.PickUp != null && this.PickUp.Yandere.PickUp == this.PickUp)
 				{
+					this.PickUp.Yandere.TargetStudent = this.Student;
 					this.PickUp.Yandere.MurderousActionTimer = 1f;
 				}
 				if (this.Fireball)

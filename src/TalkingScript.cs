@@ -1179,9 +1179,15 @@ public class TalkingScript : MonoBehaviour
 						this.S.CharacterAnimation.CrossFade(this.S.GossipAnim);
 						this.S.Subtitle.UpdateLabel(SubtitleType.RejectHelp, 0, 4f);
 					}
+					else if (this.S.Yandere.Bloodiness > 0f)
+					{
+						this.S.CharacterAnimation.CrossFade(this.S.GossipAnim);
+						this.S.Subtitle.UpdateLabel(SubtitleType.RejectHelp, 1, 4f);
+					}
 					else
 					{
 						this.S.CharacterAnimation.CrossFade(this.S.PullBoxCutterAnim);
+						this.S.SmartPhone.SetActive(false);
 						this.S.Subtitle.UpdateLabel(SubtitleType.GiveHelp, 0, 4f);
 					}
 				}

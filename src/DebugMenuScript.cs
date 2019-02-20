@@ -409,6 +409,10 @@ public class DebugMenuScript : MonoBehaviour
 							StudentGlobals.SetStudentPhotographed(this.ID, true);
 							this.ID++;
 						}
+						foreach (WeaponScript weaponScript in this.WeaponManager.Weapons)
+						{
+							weaponScript.gameObject.SetActive(true);
+						}
 						this.Window.SetActive(false);
 					}
 					else if (Input.GetKeyDown(KeyCode.T))
@@ -483,18 +487,18 @@ public class DebugMenuScript : MonoBehaviour
 					else if (Input.GetKeyDown(KeyCode.Space))
 					{
 						this.Yandere.transform.position = this.TeleportSpot[5].position;
-						for (int i = 46; i < 51; i++)
+						for (int j = 46; j < 51; j++)
 						{
-							if (this.StudentManager.Students[i] != null)
+							if (this.StudentManager.Students[j] != null)
 							{
-								this.StudentManager.Students[i].transform.position = this.TeleportSpot[5].position;
-								if (!this.StudentManager.Students[i].Indoors)
+								this.StudentManager.Students[j].transform.position = this.TeleportSpot[5].position;
+								if (!this.StudentManager.Students[j].Indoors)
 								{
-									if (this.StudentManager.Students[i].ShoeRemoval.Locker == null)
+									if (this.StudentManager.Students[j].ShoeRemoval.Locker == null)
 									{
-										this.StudentManager.Students[i].ShoeRemoval.Start();
+										this.StudentManager.Students[j].ShoeRemoval.Start();
 									}
-									this.StudentManager.Students[i].ShoeRemoval.PutOnShoes();
+									this.StudentManager.Students[j].ShoeRemoval.PutOnShoes();
 								}
 							}
 						}

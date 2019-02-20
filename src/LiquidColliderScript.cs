@@ -63,7 +63,7 @@ public class LiquidColliderScript : MonoBehaviour
 			StudentScript component = other.gameObject.GetComponent<StudentScript>();
 			if (component != null)
 			{
-				if (!component.BeenSplashed && component.StudentID > 1 && !component.Teacher)
+				if (!component.BeenSplashed && component.StudentID > 1 && !component.Teacher && component.Club != ClubType.Council)
 				{
 					AudioSource.PlayClipAtPoint(this.SplashSound, base.transform.position);
 					UnityEngine.Object.Instantiate<GameObject>(this.Splash, new Vector3(base.transform.position.x, 1.5f, base.transform.position.z), Quaternion.identity);

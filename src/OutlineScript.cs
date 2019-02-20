@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class OutlineScript : MonoBehaviour
 {
+	public YandereScript Yandere;
+
 	public Highlighter h;
 
 	public Color color = new Color(1f, 1f, 1f, 1f);

@@ -4899,6 +4899,16 @@ public class StudentScript : MonoBehaviour
 										}
 									}
 								}
+								else if (this.CleaningRole == 4)
+								{
+									this.CharacterAnimation.CrossFade(this.CleanAnims[this.CleaningRole]);
+									if (!this.Drownable)
+									{
+										this.Prompt.Label[0].text = "     Drown";
+										this.Prompt.HideButton[0] = false;
+										this.Drownable = true;
+									}
+								}
 								else
 								{
 									this.CharacterAnimation.CrossFade(this.CleanAnims[this.CleaningRole]);
@@ -4914,6 +4924,11 @@ public class StudentScript : MonoBehaviour
 									this.Pathfinding.target = this.CurrentDestination;
 									this.DistanceToDestination = 100f;
 									this.CleanTimer = 0f;
+									if (this.Drownable)
+									{
+										this.Drownable = false;
+										this.StudentManager.UpdateMe(this.StudentID);
+									}
 								}
 							}
 							else if (this.Actions[this.Phase] == StudentActionType.Graffiti)
@@ -9067,11 +9082,14 @@ public class StudentScript : MonoBehaviour
 						if (this.DistanceToPlayer < 1f && !this.Injured)
 						{
 							this.AlarmTimer = 0f;
-							this.ThreatTimer += Time.deltaTime;
-							if (this.ThreatTimer > 5f && !this.Yandere.Struggling && !this.Yandere.DelinquentFighting && this.Prompt.InSight)
+							if (this.Club == ClubType.Council || (this.Club == ClubType.Delinquent && !this.Injured))
 							{
-								this.ThreatTimer = 0f;
-								this.Shove();
+								this.ThreatTimer += Time.deltaTime;
+								if (this.ThreatTimer > 5f && !this.Yandere.Struggling && !this.Yandere.DelinquentFighting && this.Prompt.InSight)
+								{
+									this.ThreatTimer = 0f;
+									this.Shove();
+								}
 							}
 						}
 						this.DistractionSpot = new Vector3(this.Yandere.transform.position.x, base.transform.position.y, this.Yandere.transform.position.z);
@@ -12664,7 +12682,6 @@ public class StudentScript : MonoBehaviour
 
 	public void StopInvestigating()
 	{
-		Debug.Log(this.Name + " was invesigating a giggle, but has stopped.");
 		this.Giggle = null;
 		if (!this.Sleuthing)
 		{

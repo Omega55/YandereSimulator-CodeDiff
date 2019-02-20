@@ -2431,6 +2431,14 @@ public class YandereScript : MonoBehaviour
 				this.Eating = false;
 				this.EatPhase = 0;
 			}
+			if (this.MurderousActionTimer > 0f)
+			{
+				this.MurderousActionTimer = Mathf.MoveTowards(this.MurderousActionTimer, 0f, Time.deltaTime);
+				if (this.MurderousActionTimer == 0f)
+				{
+					this.TargetStudent = null;
+				}
+			}
 		}
 		else
 		{
@@ -3725,7 +3733,6 @@ public class YandereScript : MonoBehaviour
 					this.CanMove = true;
 				}
 			}
-			this.MurderousActionTimer = Mathf.MoveTowards(this.MurderousActionTimer, 0f, Time.deltaTime);
 		}
 	}
 
@@ -6298,6 +6305,7 @@ public class YandereScript : MonoBehaviour
 		this.StudentManager.Clock.gameObject.SetActive(false);
 		this.StudentManager.Clock.SunFlare.SetActive(false);
 		this.StudentManager.Clock.Horror = true;
+		this.StudentManager.Students[1].transform.position = new Vector3(0f, 0f, 0f);
 		this.StudentManager.Headmaster.gameObject.SetActive(false);
 		this.StudentManager.Reputation.gameObject.SetActive(false);
 		this.StudentManager.Flashlight.gameObject.SetActive(true);
