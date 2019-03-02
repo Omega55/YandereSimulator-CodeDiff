@@ -23,11 +23,19 @@ public class FakeStudentSpawnerScript : MonoBehaviour
 
 	public int RowLimit;
 
+	public int StudentIDLimit;
+
+	public int StudentID;
+
 	public int Spawned;
 
 	public int Height;
 
 	public int NESW;
+
+	public int ID;
+
+	public GameObject[] SuspiciousObjects;
 
 	public void Spawn()
 	{
@@ -35,7 +43,7 @@ public class FakeStudentSpawnerScript : MonoBehaviour
 		{
 			this.Student = this.FakeFemale;
 			this.NESW = 1;
-			while (this.Spawned < this.FloorLimit * 3)
+			while (this.Spawned < 100)
 			{
 				if (this.NESW == 1)
 				{
@@ -53,6 +61,9 @@ public class FakeStudentSpawnerScript : MonoBehaviour
 				{
 					this.NewStudent = UnityEngine.Object.Instantiate<GameObject>(this.Student, new Vector3(UnityEngine.Random.Range(-19f, -21f), (float)this.Height, UnityEngine.Random.Range(29f, -37f)), Quaternion.identity);
 				}
+				this.StudentID++;
+				this.NewStudent.GetComponent<PlaceholderStudentScript>().FakeStudentSpawner = this;
+				this.NewStudent.GetComponent<PlaceholderStudentScript>().StudentID = this.StudentID;
 				this.NewStudent.GetComponent<PlaceholderStudentScript>().NESW = this.NESW;
 				this.NewStudent.transform.parent = this.FakeStudentParent;
 				this.CurrentFloor++;
@@ -74,6 +85,8 @@ public class FakeStudentSpawnerScript : MonoBehaviour
 				}
 				this.Student = ((!(this.Student == this.FakeFemale)) ? this.FakeFemale : this.FakeMale);
 			}
+			this.StudentIDLimit = this.StudentID;
+			this.StudentID = 1;
 			this.AlreadySpawned = true;
 		}
 		else

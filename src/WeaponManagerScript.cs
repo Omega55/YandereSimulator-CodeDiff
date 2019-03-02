@@ -11,6 +11,8 @@ public class WeaponManagerScript : MonoBehaviour
 
 	public int[] Victims;
 
+	public int MisplacedWeapons;
+
 	public int MurderWeapons;
 
 	public int Fingerprints;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class StudentManagerScript : MonoBehaviour
@@ -52,6 +53,8 @@ public class StudentManagerScript : MonoBehaviour
 	public MiyukiEnemyScript MiyukiEnemy;
 
 	public TaskManagerScript TaskManager;
+
+	public StudentScript BloodReporter;
 
 	public HeadmasterScript Headmaster;
 
@@ -162,6 +165,10 @@ public class StudentManagerScript : MonoBehaviour
 	public GameObject[] Graffiti;
 
 	public ListScript[] Seats;
+
+	public Collider[] Blood;
+
+	public Collider[] Limbs;
 
 	public Transform[] TeacherGuardLocation;
 
@@ -281,6 +288,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform AirGuitarSpot;
 
+	public Transform BloodLocation;
+
 	public Transform FastBatheSpot;
 
 	public Transform InfirmarySeat;
@@ -294,6 +303,8 @@ public class StudentManagerScript : MonoBehaviour
 	public Transform MaleVomitSpot;
 
 	public Transform SacrificeSpot;
+
+	public Transform WeaponBoxSpot;
 
 	public Transform FountainSpot;
 
@@ -401,6 +412,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public int ObstacleID = 6;
 
+	public int CurrentID;
+
 	public int SuitorID = 13;
 
 	public int VictimID;
@@ -424,6 +437,8 @@ public class StudentManagerScript : MonoBehaviour
 	public bool DisableFarAnims;
 
 	public bool NoClubMeeting;
+
+	public bool UpdatedBlood;
 
 	public bool YandereDying;
 
@@ -982,6 +997,23 @@ public class StudentManagerScript : MonoBehaviour
 		{
 			this.DetermineVictim();
 		}
+		if (this.Police.BloodParent.childCount > 0 || this.Police.LimbParent.childCount > 0 || this.Yandere.WeaponManager.MisplacedWeapons > 0)
+		{
+			this.CurrentID++;
+			if (this.CurrentID > 97)
+			{
+				this.UpdateBlood();
+				this.CurrentID = 1;
+			}
+			if (this.Students[this.CurrentID] == null)
+			{
+				this.CurrentID++;
+			}
+			else if (!this.Students[this.CurrentID].gameObject.activeInHierarchy)
+			{
+				this.CurrentID++;
+			}
+		}
 	}
 
 	public void SpawnStudent(int spawnID)
@@ -1323,102 +1355,113 @@ public class StudentManagerScript : MonoBehaviour
 		while (this.ID < this.Students.Length)
 		{
 			StudentScript studentScript = this.Students[this.ID];
-			if (studentScript != null && studentScript.Alive && !studentScript.Slave && !studentScript.Tranquil && !studentScript.Fleeing && studentScript.enabled && studentScript.gameObject.activeInHierarchy)
+			if (studentScript != null)
 			{
-				if (!studentScript.Started)
+				if (studentScript.WitnessedBloodPool && !studentScript.WitnessedMurder && !studentScript.WitnessedCorpse)
 				{
-					studentScript.Start();
+					studentScript.Fleeing = false;
+					studentScript.Alarmed = false;
+					studentScript.AlarmTimer = 0f;
+					studentScript.ReportPhase = 0;
+					studentScript.WitnessedBloodPool = false;
 				}
-				if (!studentScript.Teacher)
+				if (studentScript.Alive && !studentScript.Slave && !studentScript.Tranquil && !studentScript.Fleeing && studentScript.enabled && studentScript.gameObject.activeInHierarchy)
 				{
-					if (!studentScript.Indoors)
+					if (!studentScript.Started)
 					{
-						if (studentScript.ShoeRemoval.Locker == null)
+						studentScript.Start();
+					}
+					if (!studentScript.Teacher)
+					{
+						if (!studentScript.Indoors)
 						{
-							studentScript.ShoeRemoval.Start();
+							if (studentScript.ShoeRemoval.Locker == null)
+							{
+								studentScript.ShoeRemoval.Start();
+							}
+							studentScript.ShoeRemoval.PutOnShoes();
 						}
-						studentScript.ShoeRemoval.PutOnShoes();
-					}
-					studentScript.transform.position = studentScript.Seat.position + Vector3.up * 0.01f;
-					studentScript.transform.rotation = studentScript.Seat.rotation;
-					studentScript.Character.GetComponent<Animation>().Play(studentScript.SitAnim);
-					studentScript.Pathfinding.canSearch = false;
-					studentScript.Pathfinding.canMove = false;
-					studentScript.Pathfinding.speed = 0f;
-					studentScript.ClubActivityPhase = 0;
-					studentScript.ClubTimer = 0f;
-					studentScript.Pestered = 0;
-					studentScript.Distracting = false;
-					studentScript.Distracted = false;
-					studentScript.Ignoring = false;
-					studentScript.Pushable = false;
-					studentScript.Vomiting = false;
-					studentScript.Private = false;
-					studentScript.Sedated = false;
-					studentScript.Emetic = false;
-					studentScript.Hurry = false;
-					studentScript.Safe = false;
-					studentScript.CanTalk = true;
-					studentScript.Routine = true;
-					if (studentScript.Wet)
-					{
-						this.CommunalLocker.Student = null;
-						studentScript.Schoolwear = 3;
-						studentScript.ChangeSchoolwear();
-						studentScript.LiquidProjector.enabled = false;
-						studentScript.Splashed = false;
-						studentScript.Bloody = false;
-						studentScript.BathePhase = 1;
-						studentScript.Wet = false;
-						studentScript.UnWet();
-						if (studentScript.Rival && this.CommunalLocker.RivalPhone.Stolen)
+						studentScript.transform.position = studentScript.Seat.position + Vector3.up * 0.01f;
+						studentScript.transform.rotation = studentScript.Seat.rotation;
+						studentScript.Character.GetComponent<Animation>().Play(studentScript.SitAnim);
+						studentScript.Pathfinding.canSearch = false;
+						studentScript.Pathfinding.canMove = false;
+						studentScript.Pathfinding.speed = 0f;
+						studentScript.ClubActivityPhase = 0;
+						studentScript.ClubTimer = 0f;
+						studentScript.Pestered = 0;
+						studentScript.Distracting = false;
+						studentScript.Distracted = false;
+						studentScript.Ignoring = false;
+						studentScript.Pushable = false;
+						studentScript.Vomiting = false;
+						studentScript.Private = false;
+						studentScript.Sedated = false;
+						studentScript.Emetic = false;
+						studentScript.Hurry = false;
+						studentScript.Safe = false;
+						studentScript.CanTalk = true;
+						studentScript.Routine = true;
+						if (studentScript.Wet)
 						{
-							studentScript.RealizePhoneIsMissing();
+							this.CommunalLocker.Student = null;
+							studentScript.Schoolwear = 3;
+							studentScript.ChangeSchoolwear();
+							studentScript.LiquidProjector.enabled = false;
+							studentScript.Splashed = false;
+							studentScript.Bloody = false;
+							studentScript.BathePhase = 1;
+							studentScript.Wet = false;
+							studentScript.UnWet();
+							if (studentScript.Rival && this.CommunalLocker.RivalPhone.Stolen)
+							{
+								studentScript.RealizePhoneIsMissing();
+							}
 						}
-					}
-					if (studentScript.ClubAttire)
-					{
-						studentScript.ChangeSchoolwear();
-						studentScript.ClubAttire = false;
-					}
-					if (studentScript.Schoolwear != 1)
-					{
-						studentScript.Schoolwear = 1;
-						studentScript.ChangeSchoolwear();
-					}
-					if (studentScript.Meeting && this.Clock.HourTime > studentScript.MeetTime)
-					{
-						studentScript.Meeting = false;
-					}
-					if (studentScript.Club == ClubType.Sports)
-					{
-						studentScript.SetSplashes(false);
-						studentScript.WalkAnim = studentScript.OriginalWalkAnim;
-						studentScript.Character.transform.localPosition = new Vector3(0f, 0f, 0f);
-						studentScript.Cosmetic.Goggles[studentScript.StudentID].GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, 0f);
-						if (!studentScript.Cosmetic.Empty)
+						if (studentScript.ClubAttire)
 						{
-							studentScript.Cosmetic.MaleHair[studentScript.Cosmetic.Hairstyle].GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, 0f);
+							studentScript.ChangeSchoolwear();
+							studentScript.ClubAttire = false;
+						}
+						if (studentScript.Schoolwear != 1)
+						{
+							studentScript.Schoolwear = 1;
+							studentScript.ChangeSchoolwear();
+						}
+						if (studentScript.Meeting && this.Clock.HourTime > studentScript.MeetTime)
+						{
+							studentScript.Meeting = false;
+						}
+						if (studentScript.Club == ClubType.Sports)
+						{
+							studentScript.SetSplashes(false);
+							studentScript.WalkAnim = studentScript.OriginalWalkAnim;
+							studentScript.Character.transform.localPosition = new Vector3(0f, 0f, 0f);
+							studentScript.Cosmetic.Goggles[studentScript.StudentID].GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, 0f);
+							if (!studentScript.Cosmetic.Empty)
+							{
+								studentScript.Cosmetic.MaleHair[studentScript.Cosmetic.Hairstyle].GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, 0f);
+							}
+						}
+						if (studentScript.MyPlate != null && studentScript.MyPlate.transform.parent == studentScript.RightHand)
+						{
+							studentScript.MyPlate.transform.parent = null;
+							studentScript.MyPlate.transform.position = studentScript.OriginalPlatePosition;
+							studentScript.MyPlate.transform.rotation = studentScript.OriginalPlateRotation;
+							studentScript.IdleAnim = studentScript.OriginalIdleAnim;
+							studentScript.WalkAnim = studentScript.OriginalWalkAnim;
 						}
 					}
-					if (studentScript.MyPlate != null && studentScript.MyPlate.transform.parent == studentScript.RightHand)
+					else if (this.ID != this.GymTeacherID && this.ID != this.NurseID)
 					{
-						studentScript.MyPlate.transform.parent = null;
-						studentScript.MyPlate.transform.position = studentScript.OriginalPlatePosition;
-						studentScript.MyPlate.transform.rotation = studentScript.OriginalPlateRotation;
-						studentScript.IdleAnim = studentScript.OriginalIdleAnim;
-						studentScript.WalkAnim = studentScript.OriginalWalkAnim;
+						studentScript.transform.position = this.Podiums.List[studentScript.Class].position + Vector3.up * 0.01f;
+						studentScript.transform.rotation = this.Podiums.List[studentScript.Class].rotation;
 					}
-				}
-				else if (this.ID != this.GymTeacherID && this.ID != this.NurseID)
-				{
-					studentScript.transform.position = this.Podiums.List[studentScript.Class].position + Vector3.up * 0.01f;
-					studentScript.transform.rotation = this.Podiums.List[studentScript.Class].rotation;
-				}
-				else
-				{
-					studentScript.transform.position = studentScript.Seat.position + Vector3.up * 0.01f;
-					studentScript.transform.rotation = studentScript.Seat.rotation;
+					else
+					{
+						studentScript.transform.position = studentScript.Seat.position + Vector3.up * 0.01f;
+						studentScript.transform.rotation = studentScript.Seat.rotation;
+					}
 				}
 			}
 			this.ID++;
@@ -1823,6 +1866,26 @@ public class StudentManagerScript : MonoBehaviour
 		}
 	}
 
+	public void LowerBloodPosition()
+	{
+		if (this.BloodLocation.position.y < 4f)
+		{
+			this.BloodLocation.position = new Vector3(this.BloodLocation.position.x, 0f, this.BloodLocation.position.z);
+		}
+		else if (this.BloodLocation.position.y < 8f)
+		{
+			this.BloodLocation.position = new Vector3(this.BloodLocation.position.x, 4f, this.BloodLocation.position.z);
+		}
+		else if (this.BloodLocation.position.y < 12f)
+		{
+			this.BloodLocation.position = new Vector3(this.BloodLocation.position.x, 8f, this.BloodLocation.position.z);
+		}
+		else
+		{
+			this.BloodLocation.position = new Vector3(this.BloodLocation.position.x, 12f, this.BloodLocation.position.z);
+		}
+	}
+
 	public void CensorStudents()
 	{
 		this.ID = 0;
@@ -2153,6 +2216,20 @@ public class StudentManagerScript : MonoBehaviour
 			{
 				Debug.Log("Enabling security camera on this character's head.");
 				studentScript.SecurityCamera.SetActive(true);
+			}
+			this.ID++;
+		}
+	}
+
+	public void DisableEveryone()
+	{
+		this.ID = 1;
+		while (this.ID < this.Students.Length)
+		{
+			StudentScript studentScript = this.Students[this.ID];
+			if (studentScript != null)
+			{
+				studentScript.gameObject.SetActive(false);
 			}
 			this.ID++;
 		}
@@ -2668,6 +2745,62 @@ public class StudentManagerScript : MonoBehaviour
 				else
 				{
 					doorScript.Open = false;
+				}
+			}
+		}
+	}
+
+	public void UpdateBlood()
+	{
+		if (this.Police.BloodParent.childCount > 0)
+		{
+			this.ID = 0;
+			IEnumerator enumerator = this.Police.BloodParent.GetEnumerator();
+			try
+			{
+				while (enumerator.MoveNext())
+				{
+					object obj = enumerator.Current;
+					Transform transform = (Transform)obj;
+					if (this.ID < 100)
+					{
+						this.Blood[this.ID] = transform.gameObject.GetComponent<Collider>();
+						this.ID++;
+					}
+				}
+			}
+			finally
+			{
+				IDisposable disposable;
+				if ((disposable = (enumerator as IDisposable)) != null)
+				{
+					disposable.Dispose();
+				}
+			}
+		}
+		if (this.Police.BloodParent.childCount > 0 || this.Police.LimbParent.childCount > 0)
+		{
+			this.ID = 0;
+			IEnumerator enumerator2 = this.Police.LimbParent.GetEnumerator();
+			try
+			{
+				while (enumerator2.MoveNext())
+				{
+					object obj2 = enumerator2.Current;
+					Transform transform2 = (Transform)obj2;
+					if (this.ID < 100)
+					{
+						this.Limbs[this.ID] = transform2.gameObject.GetComponent<Collider>();
+						this.ID++;
+					}
+				}
+			}
+			finally
+			{
+				IDisposable disposable2;
+				if ((disposable2 = (enumerator2 as IDisposable)) != null)
+				{
+					disposable2.Dispose();
 				}
 			}
 		}

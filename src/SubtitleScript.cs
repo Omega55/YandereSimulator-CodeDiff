@@ -19,6 +19,12 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] BloodReactions;
 
+	public string[] BloodPoolReactions;
+
+	public string[] BloodyWeaponReactions;
+
+	public string[] LimbReactions;
+
 	public string[] WetBloodReactions;
 
 	public string[] InsanityReactions;
@@ -33,13 +39,29 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] EvilMurderReactions;
 
-	public string[] PetMurderReports;
+	public string[] PetBloodReports;
 
-	public string[] PetMurderReactions;
+	public string[] PetBloodReactions;
 
 	public string[] PetCorpseReports;
 
 	public string[] PetCorpseReactions;
+
+	public string[] PetLimbReports;
+
+	public string[] PetLimbReactions;
+
+	public string[] PetMurderReports;
+
+	public string[] PetMurderReactions;
+
+	public string[] PetWeaponReports;
+
+	public string[] PetWeaponReactions;
+
+	public string[] PetBloodyWeaponReports;
+
+	public string[] PetBloodyWeaponReactions;
 
 	public string[] HeroMurderReactions;
 
@@ -248,6 +270,8 @@ public class SubtitleScript : MonoBehaviour
 	public string[] TeacherWeaponHostiles;
 
 	public string[] TeacherBloodHostiles;
+
+	public string[] TeacherCoverUpHostiles;
 
 	public string[] TeacherLewdReactions;
 
@@ -510,6 +534,8 @@ public class SubtitleScript : MonoBehaviour
 	public AudioClip[] TeacherBloodHostileClips;
 
 	public AudioClip[] TeacherInsanityHostileClips;
+
+	public AudioClip[] TeacherCoverUpHostileClips;
 
 	public AudioClip[] TeacherLewdClips;
 
@@ -1128,6 +1154,10 @@ public class SubtitleScript : MonoBehaviour
 				new AudioClipArrayWrapper(this.TeacherWeaponClips)
 			},
 			{
+				SubtitleType.TeacherCoverUpHostile,
+				new AudioClipArrayWrapper(this.TeacherCoverUpHostileClips)
+			},
+			{
 				SubtitleType.YandereWhimper,
 				new AudioClipArrayWrapper(this.YandereWhimperClips)
 			},
@@ -1328,6 +1358,18 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.Label.text = this.GetRandomString(this.BloodReactions);
 		}
+		else if (subtitleType == SubtitleType.BloodPoolReaction)
+		{
+			this.Label.text = this.BloodPoolReactions[ID];
+		}
+		else if (subtitleType == SubtitleType.BloodyWeaponReaction)
+		{
+			this.Label.text = this.BloodyWeaponReactions[ID];
+		}
+		else if (subtitleType == SubtitleType.LimbReaction)
+		{
+			this.Label.text = this.LimbReactions[ID];
+		}
 		else if (subtitleType == SubtitleType.WetBloodReaction)
 		{
 			this.Label.text = this.GetRandomString(this.WetBloodReactions);
@@ -1488,6 +1530,12 @@ public class SubtitleScript : MonoBehaviour
 			this.Label.text = this.TeacherInsanityHostiles[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
+		else if (subtitleType == SubtitleType.TeacherCoverUpHostile)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.TeacherCoverUpHostiles.Length);
+			this.Label.text = this.TeacherCoverUpHostiles[this.RandomID];
+			this.PlayVoice(subtitleType, this.RandomID);
+		}
 		else if (subtitleType == SubtitleType.TeacherLewdReaction)
 		{
 			this.RandomID = UnityEngine.Random.Range(0, this.TeacherLewdReactions.Length);
@@ -1508,9 +1556,8 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (subtitleType == SubtitleType.TeacherReportReaction)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.TeacherReportReactions.Length);
-			this.Label.text = this.TeacherReportReactions[this.RandomID];
-			this.PlayVoice(subtitleType, this.RandomID);
+			this.Label.text = this.TeacherReportReactions[ID];
+			this.PlayVoice(subtitleType, ID);
 		}
 		else if (subtitleType == SubtitleType.TeacherCorpseReaction)
 		{
@@ -1525,9 +1572,8 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (subtitleType == SubtitleType.TeacherPoliceReport)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.TeacherPoliceReports.Length);
-			this.Label.text = this.TeacherPoliceReports[this.RandomID];
-			this.PlayVoice(subtitleType, this.RandomID);
+			this.Label.text = this.TeacherPoliceReports[ID];
+			this.PlayVoice(subtitleType, ID);
 		}
 		else if (subtitleType == SubtitleType.TeacherAttackReaction)
 		{
@@ -1732,13 +1778,13 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.Label.text = this.GetRandomString(this.LonerCorpseReactions);
 		}
-		else if (subtitleType == SubtitleType.PetMurderReport)
+		else if (subtitleType == SubtitleType.PetBloodReport)
 		{
-			this.Label.text = this.PetMurderReports[ID];
+			this.Label.text = this.PetBloodReports[ID];
 		}
-		else if (subtitleType == SubtitleType.PetMurderReaction)
+		else if (subtitleType == SubtitleType.PetBloodReaction)
 		{
-			this.Label.text = this.GetRandomString(this.PetMurderReactions);
+			this.Label.text = this.GetRandomString(this.PetBloodReactions);
 		}
 		else if (subtitleType == SubtitleType.PetCorpseReport)
 		{
@@ -1747,6 +1793,38 @@ public class SubtitleScript : MonoBehaviour
 		else if (subtitleType == SubtitleType.PetCorpseReaction)
 		{
 			this.Label.text = this.GetRandomString(this.PetCorpseReactions);
+		}
+		else if (subtitleType == SubtitleType.PetLimbReport)
+		{
+			this.Label.text = this.PetLimbReports[ID];
+		}
+		else if (subtitleType == SubtitleType.PetLimbReaction)
+		{
+			this.Label.text = this.GetRandomString(this.PetLimbReactions);
+		}
+		else if (subtitleType == SubtitleType.PetMurderReport)
+		{
+			this.Label.text = this.PetMurderReports[ID];
+		}
+		else if (subtitleType == SubtitleType.PetMurderReaction)
+		{
+			this.Label.text = this.GetRandomString(this.PetMurderReactions);
+		}
+		else if (subtitleType == SubtitleType.PetWeaponReport)
+		{
+			this.Label.text = this.PetWeaponReports[ID];
+		}
+		else if (subtitleType == SubtitleType.PetWeaponReaction)
+		{
+			this.Label.text = this.GetRandomString(this.PetWeaponReactions);
+		}
+		else if (subtitleType == SubtitleType.PetBloodyWeaponReport)
+		{
+			this.Label.text = this.PetBloodyWeaponReports[ID];
+		}
+		else if (subtitleType == SubtitleType.PetBloodyWeaponReaction)
+		{
+			this.Label.text = this.GetRandomString(this.PetBloodyWeaponReactions);
 		}
 		else if (subtitleType == SubtitleType.EvilCorpseReaction)
 		{

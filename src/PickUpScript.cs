@@ -25,6 +25,8 @@ public class PickUpScript : MonoBehaviour
 
 	public ClockScript Clock;
 
+	public MopScript Mop;
+
 	public Rigidbody MyRigidbody;
 
 	public Collider MyCollider;
@@ -315,7 +317,14 @@ public class PickUpScript : MonoBehaviour
 			this.BloodCleaner.Pathfinding.enabled = true;
 		}
 		this.Yandere.PickUp = null;
-		base.transform.parent = null;
+		if (this.BodyPart)
+		{
+			base.transform.parent = this.Yandere.LimbParent;
+		}
+		else
+		{
+			base.transform.parent = null;
+		}
 		if (this.LockRotation)
 		{
 			base.transform.localEulerAngles = new Vector3(0f, base.transform.localEulerAngles.y, 0f);

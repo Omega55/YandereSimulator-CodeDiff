@@ -62,6 +62,8 @@ public class YandereScript : MonoBehaviour
 
 	public WeaponManagerScript WeaponManager;
 
+	public YandereShowerScript YandereShower;
+
 	public SplashCameraScript SplashCamera;
 
 	public SWP_HeartRateMonitor HeartRate;
@@ -160,9 +162,11 @@ public class YandereScript : MonoBehaviour
 
 	public Transform HidingSpot;
 
+	public Transform ItemParent;
+
 	public Transform LeftBreast;
 
-	public Transform ItemParent;
+	public Transform LimbParent;
 
 	public Transform PelvisRoot;
 
@@ -2778,10 +2782,10 @@ public class YandereScript : MonoBehaviour
 			}
 			if (this.Bathing)
 			{
-				this.MoveTowardsTarget(this.Stool.position);
-				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.Stool.rotation, 10f * Time.deltaTime);
-				this.CharacterAnimation.CrossFade("f02_stoolBathing_00");
-				if (this.CharacterAnimation["f02_stoolBathing_00"].time >= this.CharacterAnimation["f02_stoolBathing_00"].length)
+				this.MoveTowardsTarget(this.YandereShower.BatheSpot.position);
+				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.YandereShower.BatheSpot.rotation, 10f * Time.deltaTime);
+				this.CharacterAnimation.CrossFade(this.IdleAnim);
+				if (this.YandereShower.Timer < 1f)
 				{
 					this.Bloodiness = 0f;
 					this.Bathing = false;
@@ -5324,10 +5328,8 @@ public class YandereScript : MonoBehaviour
 
 	public void Unequip()
 	{
-		Debug.Log("Yandere-chan has been told to drop her weapon.");
 		if (this.CanMove || this.Noticed)
 		{
-			Debug.Log("Yandere-chan is now dropping her weapon.");
 			if (this.Equipped < 3)
 			{
 				if (this.EquippedWeapon != null)
@@ -5354,6 +5356,7 @@ public class YandereScript : MonoBehaviour
 		if (this.DropTimer[ID] > 0.5f)
 		{
 			this.Weapon[ID].Drop();
+			this.Weapon[ID] = null;
 			this.Unequip();
 			this.DropTimer[ID] = 0f;
 		}

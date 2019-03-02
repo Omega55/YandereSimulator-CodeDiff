@@ -9,11 +9,17 @@ public class VoidGoddessScript : MonoBehaviour
 
 	public PromptScript Prompt;
 
+	public GameObject SeveredLimb;
+
 	public GameObject NewPortrait;
+
+	public GameObject BloodPool;
 
 	public GameObject Portrait;
 
 	public GameObject Goddess;
+
+	public Transform BloodParent;
 
 	public Transform Highlight;
 
@@ -26,6 +32,8 @@ public class VoidGoddessScript : MonoBehaviour
 	public Animation[] Legs;
 
 	public bool PassingJudgement;
+
+	public bool Disabled;
 
 	public bool Follow;
 
@@ -174,11 +182,19 @@ public class VoidGoddessScript : MonoBehaviour
 			}
 			if (Input.GetKeyDown(KeyCode.Alpha1))
 			{
-				this.ID = 1;
-				while (this.ID < 101)
+				if (!this.Disabled)
 				{
-					this.StudentManager.DisableStudent(this.ID);
-					this.ID++;
+					this.StudentManager.DisableEveryone();
+					this.Disabled = true;
+				}
+				else
+				{
+					this.ID = 1;
+					while (this.ID < 101)
+					{
+						this.StudentManager.DisableStudent(this.ID);
+						this.ID++;
+					}
 				}
 				this.UpdatePortraits();
 			}

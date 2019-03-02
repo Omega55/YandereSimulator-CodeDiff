@@ -43,6 +43,8 @@ public class PoliceScript : MonoBehaviour
 
 	public Transform BloodParent;
 
+	public Transform LimbParent;
+
 	public RagdollScript[] CorpseList;
 
 	public UILabel[] ResultsLabels;
@@ -581,7 +583,7 @@ public class PoliceScript : MonoBehaviour
 				{
 					this.BloodyClothing--;
 				}
-				if (this.Corpses == 0 && this.BloodParent.childCount == 0 && this.BloodyWeapons == 0 && this.BloodyClothing == 0 && !this.SuicideScene)
+				if (this.Corpses == 0 && this.LimbParent.childCount == 0 && this.BloodParent.childCount == 0 && this.BloodyWeapons == 0 && this.BloodyClothing == 0 && !this.SuicideScene)
 				{
 					if (this.Yandere.Sanity < 66.66666f || (this.Yandere.Bloodiness > 0f && !this.Yandere.RedPaint))
 					{
@@ -616,47 +618,7 @@ public class PoliceScript : MonoBehaviour
 						this.ResultsLabels[4].text = "Once he is safely home, Ayano returns to her own home.";
 					}
 				}
-				else if (this.Corpses == 0)
-				{
-					if (this.BloodParent.childCount > 0 || this.BloodyClothing > 0)
-					{
-						if (this.BloodyWeapons == 0)
-						{
-							this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a mysterious blood stain.";
-							this.ResultsLabels[2].text = "The faculty member decides to call the police.";
-							this.ResultsLabels[3].text = "The faculty member informs the rest of the faculty about her discovery.";
-							this.ResultsLabels[4].text = "The faculty do not allow any students to leave the school until a police investigation has taken place.";
-							this.TeacherReport = true;
-							this.Show = true;
-						}
-						else
-						{
-							this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a mysterious bloody weapon.";
-							this.ResultsLabels[2].text = "The faculty member decides to call the police.";
-							this.ResultsLabels[3].text = "The faculty member informs the rest of the faculty about her discovery.";
-							this.ResultsLabels[4].text = "The faculty do not allow any students to leave the school until a police investigation has taken place.";
-							this.TeacherReport = true;
-							this.Show = true;
-						}
-					}
-					else if (this.BloodyWeapons > 0)
-					{
-						this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a mysterious bloody weapon.";
-						this.ResultsLabels[2].text = "The faculty member decides to call the police.";
-						this.ResultsLabels[3].text = "The faculty member informs the rest of the faculty about her discovery.";
-						this.ResultsLabels[4].text = "The faculty do not allow any students to leave the school until a police investigation has taken place.";
-						this.TeacherReport = true;
-						this.Show = true;
-					}
-					else if (this.SuicideScene)
-					{
-						this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a pair of shoes on the rooftop.";
-						this.ResultsLabels[2].text = "The faculty member fears that there has been a suicide, but cannot find a corpse anywhere. The faculty member does not take any action.";
-						this.ResultsLabels[3].text = "Ayano leaves school and watches Senpai walk home.";
-						this.ResultsLabels[4].text = "Once he is safely home, Ayano returns to her own home.";
-					}
-				}
-				else
+				else if (this.Corpses > 0)
 				{
 					this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a corpse.";
 					this.ResultsLabels[2].text = "The faculty member immediately calls the police.";
@@ -664,6 +626,40 @@ public class PoliceScript : MonoBehaviour
 					this.ResultsLabels[4].text = "The faculty do not allow any students to leave the school until a police investigation has taken place.";
 					this.TeacherReport = true;
 					this.Show = true;
+				}
+				else if (this.LimbParent.childCount > 0)
+				{
+					this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a dismembered body part.";
+					this.ResultsLabels[2].text = "The faculty member decides to call the police.";
+					this.ResultsLabels[3].text = "The faculty member informs the rest of the faculty about her discovery.";
+					this.ResultsLabels[4].text = "The faculty do not allow any students to leave the school until a police investigation has taken place.";
+					this.TeacherReport = true;
+					this.Show = true;
+				}
+				else if (this.BloodParent.childCount > 0 || this.BloodyClothing > 0)
+				{
+					this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a mysterious blood stain.";
+					this.ResultsLabels[2].text = "The faculty member decides to call the police.";
+					this.ResultsLabels[3].text = "The faculty member informs the rest of the faculty about her discovery.";
+					this.ResultsLabels[4].text = "The faculty do not allow any students to leave the school until a police investigation has taken place.";
+					this.TeacherReport = true;
+					this.Show = true;
+				}
+				else if (this.BloodyWeapons > 0)
+				{
+					this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a mysterious bloody weapon.";
+					this.ResultsLabels[2].text = "The faculty member decides to call the police.";
+					this.ResultsLabels[3].text = "The faculty member informs the rest of the faculty about her discovery.";
+					this.ResultsLabels[4].text = "The faculty do not allow any students to leave the school until a police investigation has taken place.";
+					this.TeacherReport = true;
+					this.Show = true;
+				}
+				else if (this.SuicideScene)
+				{
+					this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a pair of shoes on the rooftop.";
+					this.ResultsLabels[2].text = "The faculty member fears that there has been a suicide, but cannot find a corpse anywhere. The faculty member does not take any action.";
+					this.ResultsLabels[3].text = "Ayano leaves school and watches Senpai walk home.";
+					this.ResultsLabels[4].text = "Once he is safely home, Ayano returns to her own home.";
 				}
 			}
 		}

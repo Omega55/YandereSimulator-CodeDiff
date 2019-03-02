@@ -666,6 +666,7 @@ public class RagdollScript : MonoBehaviour
 					this.Decapitated = false;
 				}
 				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.BodyParts[i], this.SpawnPoints[i].position, Quaternion.identity);
+				gameObject.transform.parent = this.Yandere.LimbParent;
 				gameObject.transform.eulerAngles = this.SpawnPoints[i].eulerAngles;
 				gameObject.GetComponent<BodyPartScript>().StudentID = this.StudentID;
 				gameObject.GetComponent<BodyPartScript>().Sacrifice = this.Sacrifice;

@@ -3,15 +3,20 @@ using UnityEngine;
 
 public class YouTubeScript : MonoBehaviour
 {
-	public float Timer;
+	public float Strength;
+
+	public bool Begin;
 
 	private void Update()
 	{
-		this.Timer += Time.deltaTime;
-		if (this.Timer > 1f)
+		if (Input.GetKeyDown("space"))
 		{
-			base.GetComponent<AudioSource>().Play();
-			UnityEngine.Object.Destroy(this);
+			this.Begin = true;
+		}
+		if (this.Begin)
+		{
+			this.Strength += Time.deltaTime;
+			base.transform.localPosition = Vector3.Lerp(base.transform.localPosition, new Vector3(0f, 1.15f, 1f), Time.deltaTime * this.Strength);
 		}
 	}
 }

@@ -23,5 +23,10 @@ public enum StudentWitnessType
 	Weapon,
 	WeaponAndBlood,
 	WeaponAndBloodAndInsanity,
-	WeaponAndInsanity
+	WeaponAndInsanity,
+	BloodPool,
+	SeveredLimb,
+	BloodyWeapon,
+	DroppedWeapon,
+	CoverUp
 }

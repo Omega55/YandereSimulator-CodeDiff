@@ -43,6 +43,8 @@ public class WeaponScript : MonoBehaviour
 
 	public Projector Blood;
 
+	public Vector3 StartingPosition;
+
 	public bool AlreadyExamined;
 
 	public bool DisableCollider;
@@ -56,6 +58,8 @@ public class WeaponScript : MonoBehaviour
 	public bool Concealable;
 
 	public bool Suspicious;
+
+	public bool Misplaced;
 
 	public bool Evidence;
 
@@ -118,6 +122,7 @@ public class WeaponScript : MonoBehaviour
 	private void Start()
 	{
 		this.Yandere = GameObject.Find("YandereChan").GetComponent<YandereScript>();
+		this.StartingPosition = base.transform.position;
 		Physics.IgnoreCollision(this.Yandere.GetComponent<Collider>(), this.MyCollider);
 		this.OriginalColor = this.Outline[0].color;
 		if (this.StartLow)
@@ -448,7 +453,6 @@ public class WeaponScript : MonoBehaviour
 
 	public void Drop()
 	{
-		Debug.Log("Yandere-chan dropped her weapon.");
 		if (this.WeaponID == 11)
 		{
 			this.Yandere.IdleAnim = "CyborgNinja_Idle_Unarmed";
@@ -484,6 +488,22 @@ public class WeaponScript : MonoBehaviour
 		if (this.Evidence)
 		{
 			this.Yandere.Police.BloodyWeapons++;
+		}
+		if (this.Suspicious)
+		{
+			if (Vector3.Distance(this.StartingPosition, base.transform.position) > 5f && Vector3.Distance(base.transform.position, this.Yandere.StudentManager.WeaponBoxSpot.parent.position) > 1f)
+			{
+				if (!this.Misplaced)
+				{
+					this.Prompt.Yandere.WeaponManager.MisplacedWeapons++;
+					this.Misplaced = true;
+				}
+			}
+			else if (this.Misplaced)
+			{
+				this.Prompt.Yandere.WeaponManager.MisplacedWeapons--;
+				this.Misplaced = false;
+			}
 		}
 		this.ID = 0;
 		while (this.ID < this.Outline.Length)

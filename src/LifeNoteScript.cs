@@ -18,6 +18,8 @@ public class LifeNoteScript : MonoBehaviour
 
 	public AudioSource MyAudio;
 
+	public AudioClip[] Voices;
+
 	public string[] Lines;
 
 	public int[] Alphas;
@@ -32,15 +34,21 @@ public class LifeNoteScript : MonoBehaviour
 
 	public int ID;
 
+	public float AutoTimer;
+
 	public float Alpha;
 
 	public string Text;
 
 	public AudioClip[] SFX;
 
+	public bool Spoke;
+
 	public bool Auto;
 
-	public float AutoTimer;
+	public AudioSource SFXAudioSource;
+
+	public AudioSource Jukebox;
 
 	private void Start()
 	{
@@ -69,11 +77,7 @@ public class LifeNoteScript : MonoBehaviour
 					this.Label.color = new Color(1f, 1f, 1f, 1f);
 				}
 			}
-			if (this.Auto && this.Typewriter.mCurrentOffset == this.Typewriter.mFullText.Length)
-			{
-				this.AutoTimer += Time.deltaTime;
-			}
-			if (Input.GetButtonDown("A") || this.AutoTimer > 1f)
+			if (Input.GetButtonDown("A") || this.AutoTimer > 0.5f)
 			{
 				if (this.ID < this.Lines.Length - 1)
 				{
@@ -89,26 +93,29 @@ public class LifeNoteScript : MonoBehaviour
 						this.Typewriter.ResetToBeginning();
 						this.Typewriter.mFullText = this.Lines[this.ID];
 						this.Label.text = string.Empty;
+						this.Spoke = false;
 						this.Frame = 0;
 						if (this.Alphas[this.ID] == 1)
 						{
-							this.MyAudio.Stop();
+							this.Jukebox.Stop();
 						}
-						else if (!this.MyAudio.isPlaying)
+						else if (!this.Jukebox.isPlaying)
 						{
-							this.MyAudio.Play();
+							this.Jukebox.Play();
 						}
 						if (this.ID == 17)
 						{
-							AudioSource.PlayClipAtPoint(this.SFX[1], new Vector3(0f, 0f, 10f));
+							this.SFXAudioSource.clip = this.SFX[1];
+							this.SFXAudioSource.Play();
 						}
 						if (this.ID == 18)
 						{
-							AudioSource.PlayClipAtPoint(this.SFX[2], new Vector3(0f, 0f, 10f));
+							this.SFXAudioSource.clip = this.SFX[2];
+							this.SFXAudioSource.Play();
 						}
 						if (this.ID > 25)
 						{
-							this.Typewriter.charsPerSecond = 10;
+							this.Typewriter.charsPerSecond = 15;
 						}
 						this.AutoTimer = 0f;
 					}
@@ -118,6 +125,16 @@ public class LifeNoteScript : MonoBehaviour
 					this.FinalDarkness.enabled = true;
 					this.Alpha = 0f;
 				}
+			}
+			if (!this.Spoke && !this.SFXAudioSource.isPlaying)
+			{
+				this.MyAudio.clip = this.Voices[this.ID];
+				this.MyAudio.Play();
+				this.Spoke = true;
+			}
+			if (this.Auto && this.Typewriter.mCurrentOffset == this.Typewriter.mFullText.Length && !this.SFXAudioSource.isPlaying && !this.MyAudio.isPlaying)
+			{
+				this.AutoTimer += Time.deltaTime;
 			}
 			if (this.FinalDarkness.enabled)
 			{

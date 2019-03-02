@@ -71,6 +71,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public Renderer[] Fingernails;
 
+	public Texture[] GanguroSwimsuitTextures;
+
 	public Texture[] GanguroUniformTextures;
 
 	public Texture[] GanguroCasualTextures;
