@@ -915,6 +915,7 @@ public class StudentManagerScript : MonoBehaviour
 							studentScript2.Routine = false;
 							studentScript2.Fleeing = true;
 							studentScript2.AlarmTimer = 0f;
+							studentScript2.SmartPhone.SetActive(false);
 							studentScript2.Safe = true;
 							studentScript2.Prompt.Hide();
 							studentScript2.Prompt.enabled = false;
@@ -1653,6 +1654,11 @@ public class StudentManagerScript : MonoBehaviour
 				}
 				if (studentScript.Teacher)
 				{
+					studentScript.Alarmed = false;
+					studentScript.Reacted = false;
+					studentScript.Witness = false;
+					studentScript.Routine = true;
+					studentScript.AlarmTimer = 0f;
 					studentScript.Concern = 0;
 				}
 			}

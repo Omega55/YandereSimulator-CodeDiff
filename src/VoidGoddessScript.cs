@@ -9,6 +9,8 @@ public class VoidGoddessScript : MonoBehaviour
 
 	public PromptScript Prompt;
 
+	public GameObject BloodyUniform;
+
 	public GameObject SeveredLimb;
 
 	public GameObject NewPortrait;

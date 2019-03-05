@@ -321,6 +321,10 @@ public class ShutterScript : MonoBehaviour
 									if (this.FaceStudent.PhotoPatience > 0f)
 									{
 										this.FaceStudent.CameraPoseTimer = 1f;
+										if (this.MissionMode)
+										{
+											this.FaceStudent.PhotoPatience = 0f;
+										}
 									}
 								}
 							}

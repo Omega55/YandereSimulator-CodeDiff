@@ -65,6 +65,10 @@ public class HeartbrokenScript : MonoBehaviour
 
 	private void Start()
 	{
+		if (this.Yandere.Bloodiness > 0f && !this.Yandere.RedPaint)
+		{
+			this.Arrested = true;
+		}
 		if (this.Confessed)
 		{
 			this.Letters[0].text = "S";
@@ -139,15 +143,15 @@ public class HeartbrokenScript : MonoBehaviour
 			this.LetterID = 0;
 			this.StopID = 11;
 		}
-		else if (this.Counselor.Expelled || this.Yandere.Sprayed)
+		else if (this.Arrested)
 		{
 			this.Letters[0].text = string.Empty;
-			this.Letters[1].text = "E";
-			this.Letters[2].text = "X";
-			this.Letters[3].text = "P";
+			this.Letters[1].text = "A";
+			this.Letters[2].text = "R";
+			this.Letters[3].text = "R";
 			this.Letters[4].text = "E";
-			this.Letters[5].text = "L";
-			this.Letters[6].text = "L";
+			this.Letters[5].text = "S";
+			this.Letters[6].text = "T";
 			this.Letters[7].text = "E";
 			this.Letters[8].text = "D";
 			this.Letters[9].text = string.Empty;
@@ -159,15 +163,15 @@ public class HeartbrokenScript : MonoBehaviour
 			this.LetterID = 1;
 			this.StopID = 9;
 		}
-		else if (this.Arrested)
+		else if (this.Counselor.Expelled || this.Yandere.Sprayed)
 		{
 			this.Letters[0].text = string.Empty;
-			this.Letters[1].text = "A";
-			this.Letters[2].text = "R";
-			this.Letters[3].text = "R";
+			this.Letters[1].text = "E";
+			this.Letters[2].text = "X";
+			this.Letters[3].text = "P";
 			this.Letters[4].text = "E";
-			this.Letters[5].text = "S";
-			this.Letters[6].text = "T";
+			this.Letters[5].text = "L";
+			this.Letters[6].text = "L";
 			this.Letters[7].text = "E";
 			this.Letters[8].text = "D";
 			this.Letters[9].text = string.Empty;

@@ -291,7 +291,14 @@ public class EndOfDayScript : MonoBehaviour
 					this.SearchingCop.SetActive(true);
 					if (!this.Police.PoisonScene && !this.Police.SuicideScene)
 					{
-						this.Label.text = "The police are unable to locate any corpses on school grounds.";
+						if (this.Police.BloodParent.childCount > 0)
+						{
+							this.Label.text = "The police find mysterious blood stains, but are unable to locate any corpses on school grounds.";
+						}
+						else
+						{
+							this.Label.text = "The police are unable to locate any corpses on school grounds.";
+						}
 						this.Phase++;
 					}
 					else
@@ -1102,6 +1109,7 @@ public class EndOfDayScript : MonoBehaviour
 		{
 			PlayerGlobals.Alerts += this.Yandere.Alerts;
 		}
+		SchoolGlobals.SchoolAtmosphere += (float)this.Arrests * 0.05f;
 		if (this.Counselor.ExpelledDelinquents)
 		{
 			SchoolGlobals.SchoolAtmosphere += 0.25f;

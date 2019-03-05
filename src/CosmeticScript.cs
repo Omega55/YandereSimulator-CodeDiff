@@ -221,6 +221,10 @@ public class CosmeticScript : MonoBehaviour
 
 	public Texture DelinquentSocksTexture;
 
+	public Texture TanSwimsuitTexture;
+
+	public Texture TanGymTexture;
+
 	public GameObject RightIrisLight;
 
 	public GameObject LeftIrisLight;
@@ -1611,7 +1615,8 @@ public class CosmeticScript : MonoBehaviour
 		}
 		if (this.StudentID == 58)
 		{
-			this.SkinColor = 4;
+			this.SkinColor = 8;
+			this.Student.SwimsuitTexture = this.TanSwimsuitTexture;
 		}
 		if (this.Empty)
 		{

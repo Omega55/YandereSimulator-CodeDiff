@@ -916,6 +916,8 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject EnergySword;
 
+	public bool Ninja;
+
 	public GameObject EbolaEffect;
 
 	public GameObject EbolaWings;
@@ -1134,6 +1136,8 @@ public class YandereScript : MonoBehaviour
 
 	public Mesh GymUniform;
 
+	public Mesh Towel;
+
 	public Texture FaceTexture;
 
 	public Texture SwimsuitTexture;
@@ -1141,6 +1145,8 @@ public class YandereScript : MonoBehaviour
 	public Texture GymTexture;
 
 	public Texture TextureToUse;
+
+	public Texture TowelTexture;
 
 	public bool Casual = true;
 
@@ -4315,7 +4321,7 @@ public class YandereScript : MonoBehaviour
 			}
 			else if (this.Interaction == YandereInteractionType.GivingSnack)
 			{
-				if (this.TalkTimer == 5f)
+				if (this.TalkTimer == 3f)
 				{
 					this.CharacterAnimation.CrossFade("f02_greet_01");
 					this.Subtitle.UpdateLabel(SubtitleType.OfferSnack, 0, 3f);
@@ -5929,6 +5935,7 @@ public class YandereScript : MonoBehaviour
 		this.EyewearID = 6;
 		this.Hairstyle = 45;
 		this.UpdateHair();
+		this.Ninja = true;
 		this.Egg = true;
 		this.DebugMenu.transform.parent.GetComponent<DebugMenuScript>().UpdateCensor();
 	}
@@ -6359,7 +6366,14 @@ public class YandereScript : MonoBehaviour
 		}
 		if ((this.ClubAttire && this.Bloodiness > 0f) || this.Schoolwear == 0)
 		{
-			this.Nude();
+			this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+			this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
+			this.MyRenderer.materials[0].SetFloat("_BlendAmount1", 0f);
+			this.MyRenderer.materials[1].SetFloat("_BlendAmount1", 0f);
+			this.MyRenderer.sharedMesh = this.Towel;
+			this.MyRenderer.materials[0].mainTexture = this.TowelTexture;
+			this.MyRenderer.materials[1].mainTexture = this.TowelTexture;
+			this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
 		}
 		else if (this.Schoolwear == 1)
 		{

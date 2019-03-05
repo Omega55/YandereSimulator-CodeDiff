@@ -409,10 +409,6 @@ public class DebugMenuScript : MonoBehaviour
 							StudentGlobals.SetStudentPhotographed(this.ID, true);
 							this.ID++;
 						}
-						foreach (WeaponScript weaponScript in this.WeaponManager.Weapons)
-						{
-							weaponScript.gameObject.SetActive(true);
-						}
 						this.Window.SetActive(false);
 					}
 					else if (Input.GetKeyDown(KeyCode.T))
@@ -487,18 +483,18 @@ public class DebugMenuScript : MonoBehaviour
 					else if (Input.GetKeyDown(KeyCode.Space))
 					{
 						this.Yandere.transform.position = this.TeleportSpot[5].position;
-						for (int j = 46; j < 51; j++)
+						for (int i = 46; i < 51; i++)
 						{
-							if (this.StudentManager.Students[j] != null)
+							if (this.StudentManager.Students[i] != null)
 							{
-								this.StudentManager.Students[j].transform.position = this.TeleportSpot[5].position;
-								if (!this.StudentManager.Students[j].Indoors)
+								this.StudentManager.Students[i].transform.position = this.TeleportSpot[5].position;
+								if (!this.StudentManager.Students[i].Indoors)
 								{
-									if (this.StudentManager.Students[j].ShoeRemoval.Locker == null)
+									if (this.StudentManager.Students[i].ShoeRemoval.Locker == null)
 									{
-										this.StudentManager.Students[j].ShoeRemoval.Start();
+										this.StudentManager.Students[i].ShoeRemoval.Start();
 									}
-									this.StudentManager.Students[j].ShoeRemoval.PutOnShoes();
+									this.StudentManager.Students[i].ShoeRemoval.PutOnShoes();
 								}
 							}
 						}
@@ -698,7 +694,7 @@ public class DebugMenuScript : MonoBehaviour
 
 	public void EasterEggCheck()
 	{
-		if (this.Yandere.BanchoActive || this.Yandere.Sans || this.Yandere.Raincoat.activeInHierarchy || this.Yandere.KLKSword.activeInHierarchy || this.Yandere.Gazing)
+		if (this.Yandere.BanchoActive || this.Yandere.Sans || this.Yandere.Raincoat.activeInHierarchy || this.Yandere.KLKSword.activeInHierarchy || this.Yandere.Gazing || this.Yandere.Ninja)
 		{
 			this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
 			this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);

@@ -176,6 +176,8 @@ public class MissionModeMenuScript : MonoBehaviour
 
 	public UILabel MissionIDLabel;
 
+	public Font Arial;
+
 	private void Start()
 	{
 		this.NemesisPortrait.transform.parent.localScale = Vector3.zero;
@@ -212,6 +214,7 @@ public class MissionModeMenuScript : MonoBehaviour
 		}
 		this.CustomPopulationLabel.text = string.Empty;
 		this.PopulationLabel.text = string.Empty;
+		this.ChangeFont();
 	}
 
 	private void Update()
@@ -1401,5 +1404,19 @@ public class MissionModeMenuScript : MonoBehaviour
 		this.PromptBar.Show = false;
 		this.Speed = 0f;
 		this.Phase = 4;
+	}
+
+	private void ChangeFont()
+	{
+		UILabel[] array = UnityEngine.Object.FindObjectsOfType<UILabel>();
+		foreach (UILabel uilabel in array)
+		{
+			uilabel.trueTypeFont = this.Arial;
+			uilabel.fontSize += 10;
+			if (uilabel.height == 150)
+			{
+				uilabel.height = 100;
+			}
+		}
 	}
 }
