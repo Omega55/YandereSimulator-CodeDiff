@@ -312,6 +312,8 @@ public class YandereScript : MonoBehaviour
 
 	public float SenpaiTimer;
 
+	public float WeaponTimer;
+
 	public float CrawlTimer;
 
 	public float GloveTimer;
@@ -465,6 +467,8 @@ public class YandereScript : MonoBehaviour
 	public bool HeavyWeight;
 
 	public bool Trespassing;
+
+	public bool WritingName;
 
 	public bool Struggling;
 
@@ -707,6 +711,8 @@ public class YandereScript : MonoBehaviour
 	public string[] CreepyIdles;
 
 	public string[] CreepyWalks;
+
+	public AudioClip DramaticWriting;
 
 	public AudioClip ChargeUp;
 
@@ -1131,6 +1137,22 @@ public class YandereScript : MonoBehaviour
 	public GameObject Rain;
 
 	public Material HorrorSkybox;
+
+	public Texture YamikoFaceTexture;
+
+	public Texture YamikoSkinTexture;
+
+	public Texture YamikoAccessoryTexture;
+
+	public GameObject LifeNotebook;
+
+	public GameObject LifeNotePen;
+
+	public Mesh YamikoMesh;
+
+	public Texture NierTexture;
+
+	public GameObject NierCostume;
 
 	public Mesh SchoolSwimsuit;
 
@@ -1559,42 +1581,49 @@ public class YandereScript : MonoBehaviour
 		this.CharacterAnimation["f02_carryBox_00"].layer = 17;
 		this.CharacterAnimation.Play("f02_carryBox_00");
 		this.CharacterAnimation["f02_carryBox_00"].weight = 0f;
-		this.CharacterAnimation[this.CreepyIdles[1]].layer = 18;
+		this.CharacterAnimation["f02_holdBook_00"].layer = 18;
+		this.CharacterAnimation.Play("f02_holdBook_00");
+		this.CharacterAnimation["f02_holdBook_00"].weight = 0f;
+		this.CharacterAnimation["f02_holdBook_00"].speed = 0.5f;
+		this.CharacterAnimation[this.CreepyIdles[1]].layer = 19;
 		this.CharacterAnimation.Play(this.CreepyIdles[1]);
 		this.CharacterAnimation[this.CreepyIdles[1]].weight = 0f;
-		this.CharacterAnimation[this.CreepyIdles[2]].layer = 19;
+		this.CharacterAnimation[this.CreepyIdles[2]].layer = 20;
 		this.CharacterAnimation.Play(this.CreepyIdles[2]);
 		this.CharacterAnimation[this.CreepyIdles[2]].weight = 0f;
-		this.CharacterAnimation[this.CreepyIdles[3]].layer = 20;
+		this.CharacterAnimation[this.CreepyIdles[3]].layer = 21;
 		this.CharacterAnimation.Play(this.CreepyIdles[3]);
 		this.CharacterAnimation[this.CreepyIdles[3]].weight = 0f;
-		this.CharacterAnimation[this.CreepyIdles[4]].layer = 21;
+		this.CharacterAnimation[this.CreepyIdles[4]].layer = 22;
 		this.CharacterAnimation.Play(this.CreepyIdles[4]);
 		this.CharacterAnimation[this.CreepyIdles[4]].weight = 0f;
-		this.CharacterAnimation[this.CreepyIdles[5]].layer = 22;
+		this.CharacterAnimation[this.CreepyIdles[5]].layer = 23;
 		this.CharacterAnimation.Play(this.CreepyIdles[5]);
 		this.CharacterAnimation[this.CreepyIdles[5]].weight = 0f;
-		this.CharacterAnimation[this.CreepyWalks[1]].layer = 23;
+		this.CharacterAnimation[this.CreepyWalks[1]].layer = 24;
 		this.CharacterAnimation.Play(this.CreepyWalks[1]);
 		this.CharacterAnimation[this.CreepyWalks[1]].weight = 0f;
-		this.CharacterAnimation[this.CreepyWalks[2]].layer = 24;
+		this.CharacterAnimation[this.CreepyWalks[2]].layer = 25;
 		this.CharacterAnimation.Play(this.CreepyWalks[2]);
 		this.CharacterAnimation[this.CreepyWalks[2]].weight = 0f;
-		this.CharacterAnimation[this.CreepyWalks[3]].layer = 25;
+		this.CharacterAnimation[this.CreepyWalks[3]].layer = 26;
 		this.CharacterAnimation.Play(this.CreepyWalks[3]);
 		this.CharacterAnimation[this.CreepyWalks[3]].weight = 0f;
-		this.CharacterAnimation[this.CreepyWalks[4]].layer = 26;
+		this.CharacterAnimation[this.CreepyWalks[4]].layer = 27;
 		this.CharacterAnimation.Play(this.CreepyWalks[4]);
 		this.CharacterAnimation[this.CreepyWalks[4]].weight = 0f;
-		this.CharacterAnimation[this.CreepyWalks[5]].layer = 27;
+		this.CharacterAnimation[this.CreepyWalks[5]].layer = 28;
 		this.CharacterAnimation.Play(this.CreepyWalks[5]);
 		this.CharacterAnimation[this.CreepyWalks[5]].weight = 0f;
-		this.CharacterAnimation["f02_carryDramatic_00"].layer = 28;
+		this.CharacterAnimation["f02_carryDramatic_00"].layer = 29;
 		this.CharacterAnimation.Play("f02_carryDramatic_00");
 		this.CharacterAnimation["f02_carryDramatic_00"].weight = 0f;
-		this.CharacterAnimation["f02_selfie_00"].layer = 29;
+		this.CharacterAnimation["f02_selfie_00"].layer = 30;
 		this.CharacterAnimation.Play("f02_selfie_00");
 		this.CharacterAnimation["f02_selfie_00"].weight = 0f;
+		this.CharacterAnimation["f02_dramaticWriting_00"].layer = 31;
+		this.CharacterAnimation.Play("f02_dramaticWriting_00");
+		this.CharacterAnimation["f02_dramaticWriting_00"].weight = 0f;
 		this.CharacterAnimation["f02_dipping_00"].speed = 2f;
 		this.CharacterAnimation["f02_stripping_00"].speed = 1.5f;
 		this.CharacterAnimation["f02_falconIdle_00"].speed = 2f;
@@ -1640,7 +1669,7 @@ public class YandereScript : MonoBehaviour
 				while (this.ID < this.CarryAnims.Length)
 				{
 					string name = this.CarryAnims[this.ID];
-					if (this.PickUp != null && this.CarryAnimID == this.ID && !this.Mopping && !this.Dipping && !this.Pouring && !this.BucketDropping && !this.Digging && !this.Burying)
+					if (this.PickUp != null && this.CarryAnimID == this.ID && !this.Mopping && !this.Dipping && !this.Pouring && !this.BucketDropping && !this.Digging && !this.Burying && !this.WritingName)
 					{
 						this.CharacterAnimation[name].weight = Mathf.Lerp(this.CharacterAnimation[name].weight, 1f, Time.deltaTime * 10f);
 					}
@@ -2119,6 +2148,17 @@ public class YandereScript : MonoBehaviour
 									this.Snapping = true;
 									this.CanMove = false;
 								}
+								else if (this.PickUp != null && this.PickUp.CarryAnimID == 10)
+								{
+									AudioSource.PlayClipAtPoint(this.DramaticWriting, base.transform.position);
+									this.CharacterAnimation.CrossFade(this.IdleAnim);
+									this.CharacterAnimation["f02_dramaticWriting_00"].speed = 2f;
+									this.CharacterAnimation["f02_dramaticWriting_00"].time = 0f;
+									this.CharacterAnimation["f02_dramaticWriting_00"].weight = 0.75f;
+									this.CharacterAnimation.CrossFade("f02_dramaticWriting_00");
+									this.WritingName = true;
+									this.CanMove = false;
+								}
 								else if (!this.FalconHelmet.activeInHierarchy && this.Barcode.activeInHierarchy)
 								{
 									if (!this.Xtan)
@@ -2432,6 +2472,10 @@ public class YandereScript : MonoBehaviour
 			if (this.TheftTimer > 0f)
 			{
 				this.TheftTimer = Mathf.MoveTowards(this.TheftTimer, 0f, Time.deltaTime);
+			}
+			if (this.WeaponTimer > 0f)
+			{
+				this.WeaponTimer = Mathf.MoveTowards(this.WeaponTimer, 0f, Time.deltaTime);
 			}
 			if (this.Eating)
 			{
@@ -3735,6 +3779,18 @@ public class YandereScript : MonoBehaviour
 					this.CanMove = true;
 				}
 			}
+			if (this.WritingName)
+			{
+				this.CharacterAnimation.CrossFade("f02_dramaticWriting_00");
+				if (this.CharacterAnimation["f02_dramaticWriting_00"].time >= this.CharacterAnimation["f02_dramaticWriting_00"].length)
+				{
+					this.CharacterAnimation[this.CarryAnims[10]].weight = 1f;
+					this.CharacterAnimation["f02_dramaticWriting_00"].time = 0f;
+					this.CharacterAnimation.Stop("f02_dramaticWriting_00");
+					this.WritingName = false;
+					this.CanMove = true;
+				}
+			}
 			if (this.CanMoveTimer > 0f)
 			{
 				this.CanMoveTimer = Mathf.MoveTowards(this.CanMoveTimer, 0f, Time.deltaTime);
@@ -4005,6 +4061,10 @@ public class YandereScript : MonoBehaviour
 					else if (this.TargetStudent.Witnessed == StudentWitnessType.Poisoning)
 					{
 						this.Subtitle.UpdateLabel(SubtitleType.PoisonApology, 0, 3f);
+					}
+					else if (this.TargetStudent.Witnessed == StudentWitnessType.HoldingBloodyClothing)
+					{
+						this.Subtitle.UpdateLabel(SubtitleType.HoldingBloodyClothingApology, 0, 3f);
 					}
 				}
 				else
@@ -5029,6 +5089,16 @@ public class YandereScript : MonoBehaviour
 								this.Horror();
 								this.EasterEggMenu.SetActive(false);
 							}
+							else if (Input.GetKeyDown(KeyCode.F3))
+							{
+								this.LifeNote();
+								this.EasterEggMenu.SetActive(false);
+							}
+							else if (Input.GetKeyDown(KeyCode.F4))
+							{
+								this.Nier();
+								this.EasterEggMenu.SetActive(false);
+							}
 							else if (Input.GetKeyDown(KeyCode.Space))
 							{
 								this.EasterEggMenu.SetActive(false);
@@ -5857,6 +5927,7 @@ public class YandereScript : MonoBehaviour
 		this.Egg = true;
 		this.Hairstyle = 0;
 		this.UpdateHair();
+		this.DebugMenu.transform.parent.GetComponent<DebugMenuScript>().UpdateCensor();
 	}
 
 	private void Punch()
@@ -5878,6 +5949,7 @@ public class YandereScript : MonoBehaviour
 		this.Egg = true;
 		this.Hairstyle = 0;
 		this.UpdateHair();
+		this.DebugMenu.transform.parent.GetComponent<DebugMenuScript>().UpdateCensor();
 	}
 
 	private void BadTime()
@@ -6337,6 +6409,39 @@ public class YandereScript : MonoBehaviour
 			this.ID++;
 		}
 		this.Egg = true;
+	}
+
+	private void LifeNote()
+	{
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
+		this.LifeNotebook.gameObject.SetActive(true);
+		this.MyRenderer.sharedMesh = this.YamikoMesh;
+		this.MyRenderer.materials[0].mainTexture = this.YamikoSkinTexture;
+		this.MyRenderer.materials[1].mainTexture = this.YamikoAccessoryTexture;
+		this.MyRenderer.materials[2].mainTexture = this.YamikoFaceTexture;
+		this.PantyAttacher.newRenderer.enabled = false;
+		this.Schoolwear = 0;
+		this.Hairstyle = 180;
+		this.UpdateHair();
+		this.Egg = true;
+		this.DebugMenu.transform.parent.GetComponent<DebugMenuScript>().UpdateCensor();
+	}
+
+	private void Nier()
+	{
+		this.NierCostume.SetActive(true);
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
+		this.MyRenderer.sharedMesh = null;
+		this.PantyAttacher.newRenderer.enabled = false;
+		this.Schoolwear = 0;
+		this.Hairstyle = 181;
+		this.UpdateHair();
+		this.Egg = true;
+		this.IdleAnim = "f02_heroicIdle_00";
+		this.WalkAnim = "f02_walkConfident_00";
+		this.DebugMenu.transform.parent.GetComponent<DebugMenuScript>().UpdateCensor();
 	}
 
 	public void ChangeSchoolwear()

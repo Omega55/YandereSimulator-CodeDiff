@@ -10,6 +10,8 @@ public class MusicMenuScript : MonoBehaviour
 
 	public PromptBarScript PromptBar;
 
+	public GameObject AudioMenu;
+
 	public JukeboxScript Jukebox;
 
 	public int SelectionLimit = 9;
@@ -24,6 +26,11 @@ public class MusicMenuScript : MonoBehaviour
 
 	private void Update()
 	{
+		if (Input.GetKeyDown(KeyCode.C))
+		{
+			this.AudioMenu.SetActive(true);
+			base.gameObject.SetActive(false);
+		}
 		if (this.InputManager.TappedUp)
 		{
 			this.Selected--;

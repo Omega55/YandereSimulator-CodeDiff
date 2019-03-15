@@ -39,6 +39,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] EvilMurderReactions;
 
+	public string[] HoldingBloodyClothingReactions;
+
 	public string[] PetBloodReports;
 
 	public string[] PetBloodReactions;
@@ -177,6 +179,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] PoisonApologies;
 
+	public string[] HoldingBloodyClothingApologies;
+
 	public string[] Greetings;
 
 	public string[] PlayerFarewells;
@@ -236,6 +240,8 @@ public class SubtitleScript : MonoBehaviour
 	public string[] RivalLove;
 
 	public string[] RequestMedicines;
+
+	public string[] ReturningWeapons;
 
 	public string[] Impatiences;
 
@@ -1466,6 +1472,11 @@ public class SubtitleScript : MonoBehaviour
 			this.RandomID = UnityEngine.Random.Range(0, this.PoisonApologies.Length);
 			this.Label.text = this.PoisonApologies[this.RandomID];
 		}
+		else if (subtitleType == SubtitleType.HoldingBloodyClothingApology)
+		{
+			this.RandomID = UnityEngine.Random.Range(0, this.HoldingBloodyClothingApologies.Length);
+			this.Label.text = this.HoldingBloodyClothingApologies[this.RandomID];
+		}
 		else if (subtitleType == SubtitleType.RivalPickpocketReaction)
 		{
 			this.RandomID = UnityEngine.Random.Range(0, this.RivalPickpocketReactions.Length);
@@ -1484,6 +1495,14 @@ public class SubtitleScript : MonoBehaviour
 			{
 				this.RandomID = UnityEngine.Random.Range(0, this.HmmReactions.Length);
 				this.Label.text = this.HmmReactions[this.RandomID];
+			}
+		}
+		else if (subtitleType == SubtitleType.HoldingBloodyClothingReaction)
+		{
+			if (this.Label.text == string.Empty)
+			{
+				this.RandomID = UnityEngine.Random.Range(0, this.HoldingBloodyClothingReactions.Length);
+				this.Label.text = this.HoldingBloodyClothingReactions[this.RandomID];
 			}
 		}
 		else if (subtitleType == SubtitleType.ParanoidReaction)
@@ -2056,6 +2075,10 @@ public class SubtitleScript : MonoBehaviour
 		else if (subtitleType == SubtitleType.RequestMedicine)
 		{
 			this.Label.text = this.RequestMedicines[ID];
+		}
+		else if (subtitleType == SubtitleType.ReturningWeapon)
+		{
+			this.Label.text = this.ReturningWeapons[ID];
 		}
 		else if (subtitleType == SubtitleType.Dying)
 		{

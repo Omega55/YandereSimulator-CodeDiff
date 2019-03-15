@@ -624,9 +624,9 @@ public class DebugMenuScript : MonoBehaviour
 
 	public void Censor()
 	{
-		Debug.Log("We're updating the censor.");
 		if (!this.StudentManager.Censor)
 		{
+			Debug.Log("We're turning the censor ON.");
 			if (this.Yandere.Schoolwear == 1)
 			{
 				if (!this.Yandere.Sans && !this.Yandere.SithLord && !this.Yandere.BanchoActive)
@@ -661,15 +661,20 @@ public class DebugMenuScript : MonoBehaviour
 				this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount1", 1f);
 				this.Yandere.MyRenderer.materials[2].SetFloat("_BlendAmount1", 1f);
 			}
+			if (this.Yandere.NierCostume.activeInHierarchy || this.Yandere.MyRenderer.sharedMesh == this.Yandere.NudeMesh || this.Yandere.MyRenderer.sharedMesh == this.Yandere.SchoolSwimsuit)
+			{
+				this.EasterEggCheck();
+			}
 			this.StudentManager.Censor = true;
 			this.StudentManager.CensorStudents();
 		}
 		else
 		{
+			Debug.Log("We're turning the censor OFF.");
 			this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount1", 0f);
 			this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", 1f);
 			this.Yandere.MyRenderer.materials[2].SetFloat("_BlendAmount", 0f);
-			if (this.Yandere.MyRenderer.sharedMesh != this.Yandere.NudeMesh)
+			if (this.Yandere.MyRenderer.sharedMesh != this.Yandere.NudeMesh && this.Yandere.MyRenderer.sharedMesh != this.Yandere.SchoolSwimsuit)
 			{
 				this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount1", 1f);
 				this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", 1f);
@@ -694,8 +699,10 @@ public class DebugMenuScript : MonoBehaviour
 
 	public void EasterEggCheck()
 	{
-		if (this.Yandere.BanchoActive || this.Yandere.Sans || this.Yandere.Raincoat.activeInHierarchy || this.Yandere.KLKSword.activeInHierarchy || this.Yandere.Gazing || this.Yandere.Ninja)
+		Debug.Log("Checking for easter eggs.");
+		if (this.Yandere.BanchoActive || this.Yandere.Sans || this.Yandere.Raincoat.activeInHierarchy || this.Yandere.KLKSword.activeInHierarchy || this.Yandere.Gazing || this.Yandere.Ninja || this.Yandere.LifeNotebook.activeInHierarchy || this.Yandere.FalconHelmet.activeInHierarchy || this.Yandere.MyRenderer.sharedMesh == this.Yandere.NudeMesh || this.Yandere.MyRenderer.sharedMesh == this.Yandere.SchoolSwimsuit)
 		{
+			Debug.Log("A pants-wearing easter egg is active, so we're going to disable all shadows and panties.");
 			this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
 			this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
 			this.Yandere.MyRenderer.materials[2].SetFloat("_BlendAmount", 0f);
@@ -703,6 +710,26 @@ public class DebugMenuScript : MonoBehaviour
 			this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount1", 0f);
 			this.Yandere.MyRenderer.materials[2].SetFloat("_BlendAmount1", 0f);
 			this.Yandere.PantyAttacher.newRenderer.enabled = false;
+		}
+		if (this.Yandere.NierCostume.activeInHierarchy)
+		{
+			Debug.Log("Nier costume special case.");
+			this.Yandere.PantyAttacher.newRenderer.enabled = false;
+			SkinnedMeshRenderer newRenderer = this.Yandere.NierCostume.GetComponent<RiggedAccessoryAttacher>().newRenderer;
+			if (!this.StudentManager.Censor)
+			{
+				newRenderer.materials[0].SetFloat("_BlendAmount", 1f);
+				newRenderer.materials[1].SetFloat("_BlendAmount", 1f);
+				newRenderer.materials[2].SetFloat("_BlendAmount", 1f);
+				newRenderer.materials[3].SetFloat("_BlendAmount", 1f);
+			}
+			else
+			{
+				newRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+				newRenderer.materials[1].SetFloat("_BlendAmount", 0f);
+				newRenderer.materials[2].SetFloat("_BlendAmount", 0f);
+				newRenderer.materials[3].SetFloat("_BlendAmount", 0f);
+			}
 		}
 	}
 

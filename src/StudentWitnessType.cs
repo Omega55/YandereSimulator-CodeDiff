@@ -28,5 +28,6 @@ public enum StudentWitnessType
 	SeveredLimb,
 	BloodyWeapon,
 	DroppedWeapon,
-	CoverUp
+	CoverUp,
+	HoldingBloodyClothing
 }

@@ -229,9 +229,11 @@ public class TallLockerScript : MonoBehaviour
 						this.Yandere.ChangeSchoolwear();
 						if (this.Yandere.Bloodiness > 0f)
 						{
+							PickUpScript component;
 							if (this.RemovingClubAttire)
 							{
-								UnityEngine.Object.Instantiate<GameObject>(this.BloodyClubUniform[(int)ClubGlobals.Club], this.Yandere.transform.position + Vector3.forward * 0.5f + Vector3.up, Quaternion.identity);
+								GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.BloodyClubUniform[(int)ClubGlobals.Club], this.Yandere.transform.position + Vector3.forward * 0.5f + Vector3.up, Quaternion.identity);
+								component = gameObject.GetComponent<PickUpScript>();
 								this.StudentManager.ChangingBooths[(int)ClubGlobals.Club].CannotChange = true;
 								this.StudentManager.ChangingBooths[(int)ClubGlobals.Club].CheckYandereClub();
 								this.Prompt.HideButton[1] = true;
@@ -241,9 +243,14 @@ public class TallLockerScript : MonoBehaviour
 							}
 							else
 							{
-								UnityEngine.Object.Instantiate<GameObject>(this.BloodyUniform[this.Yandere.PreviousSchoolwear], this.Yandere.transform.position + Vector3.forward * 0.5f + Vector3.up, Quaternion.identity);
+								GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(this.BloodyUniform[this.Yandere.PreviousSchoolwear], this.Yandere.transform.position + Vector3.forward * 0.5f + Vector3.up, Quaternion.identity);
+								component = gameObject2.GetComponent<PickUpScript>();
 								this.Prompt.HideButton[this.Yandere.PreviousSchoolwear] = true;
 								this.Bloody[this.Yandere.PreviousSchoolwear] = true;
+							}
+							if (this.Yandere.RedPaint)
+							{
+								component.RedPaint = true;
 							}
 						}
 					}

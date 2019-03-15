@@ -17,6 +17,8 @@ public class WeaponScript : MonoBehaviour
 
 	public PromptScript Prompt;
 
+	public Transform Origin;
+
 	public AudioClip[] Clips;
 
 	public AudioClip[] Clips2;
@@ -44,6 +46,8 @@ public class WeaponScript : MonoBehaviour
 	public Projector Blood;
 
 	public Vector3 StartingPosition;
+
+	public Vector3 StartingRotation;
 
 	public bool AlreadyExamined;
 
@@ -123,6 +127,7 @@ public class WeaponScript : MonoBehaviour
 	{
 		this.Yandere = GameObject.Find("YandereChan").GetComponent<YandereScript>();
 		this.StartingPosition = base.transform.position;
+		this.StartingRotation = base.transform.eulerAngles;
 		Physics.IgnoreCollision(this.Yandere.GetComponent<Collider>(), this.MyCollider);
 		this.OriginalColor = this.Outline[0].color;
 		if (this.StartLow)
@@ -141,6 +146,7 @@ public class WeaponScript : MonoBehaviour
 		}
 		this.MyRigidbody = base.GetComponent<Rigidbody>();
 		this.MyRigidbody.isKinematic = true;
+		this.Origin = UnityEngine.Object.Instantiate<GameObject>(this.Prompt.Yandere.StudentManager.EmptyObject, base.transform.position, Quaternion.identity).transform;
 	}
 
 	public string GetTypePrefix()
@@ -293,6 +299,10 @@ public class WeaponScript : MonoBehaviour
 			if (this.Prompt.Suspicious)
 			{
 				this.Yandere.TheftTimer = 0.1f;
+			}
+			if (this.Suspicious)
+			{
+				this.Yandere.WeaponTimer = 0.1f;
 			}
 			if (!this.Yandere.Gloved)
 			{
@@ -489,21 +499,18 @@ public class WeaponScript : MonoBehaviour
 		{
 			this.Yandere.Police.BloodyWeapons++;
 		}
-		if (this.Suspicious)
+		if (Vector3.Distance(this.StartingPosition, base.transform.position) > 5f && Vector3.Distance(base.transform.position, this.Yandere.StudentManager.WeaponBoxSpot.parent.position) > 1f)
 		{
-			if (Vector3.Distance(this.StartingPosition, base.transform.position) > 5f && Vector3.Distance(base.transform.position, this.Yandere.StudentManager.WeaponBoxSpot.parent.position) > 1f)
+			if (!this.Misplaced)
 			{
-				if (!this.Misplaced)
-				{
-					this.Prompt.Yandere.WeaponManager.MisplacedWeapons++;
-					this.Misplaced = true;
-				}
+				this.Prompt.Yandere.WeaponManager.MisplacedWeapons++;
+				this.Misplaced = true;
 			}
-			else if (this.Misplaced)
-			{
-				this.Prompt.Yandere.WeaponManager.MisplacedWeapons--;
-				this.Misplaced = false;
-			}
+		}
+		else if (this.Misplaced)
+		{
+			this.Prompt.Yandere.WeaponManager.MisplacedWeapons--;
+			this.Misplaced = false;
 		}
 		this.ID = 0;
 		while (this.ID < this.Outline.Length)

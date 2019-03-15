@@ -17,6 +17,8 @@ public class JukeboxScript : MonoBehaviour
 
 	public AudioSource AzurLane;
 
+	public AudioSource LifeNote;
+
 	public AudioSource Metroid;
 
 	public AudioSource Nuclear;
@@ -227,37 +229,9 @@ public class JukeboxScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (!this.Yandere.PauseScreen.Show && !this.Yandere.EasterEggMenu.activeInHierarchy)
+		if (!this.Yandere.PauseScreen.Show && !this.Yandere.EasterEggMenu.activeInHierarchy && Input.GetKeyDown(KeyCode.M))
 		{
-			if (Input.GetKeyDown(KeyCode.M))
-			{
-				if (this.Custom.isPlaying)
-				{
-					this.Egg = false;
-					this.Custom.Stop();
-				}
-				if (this.Volume == 0f)
-				{
-					this.FadeSpeed = 1f;
-					this.StartMusic = false;
-					this.Volume = this.LastVolume;
-					this.Start();
-				}
-				else
-				{
-					this.LastVolume = this.Volume;
-					this.FadeSpeed = 10f;
-					this.Volume = 0f;
-				}
-			}
-			if (Input.GetKeyDown(KeyCode.N) && this.Volume < 1f)
-			{
-				this.Volume += 0.1f;
-			}
-			if (Input.GetKeyDown(KeyCode.B) && this.Volume > 0f)
-			{
-				this.Volume -= 0.1f;
-			}
+			this.StartStopMusic();
 		}
 		if (!this.Egg)
 		{
@@ -272,50 +246,51 @@ public class JukeboxScript : MonoBehaviour
 				}
 				if (this.Yandere.Sanity >= 66.6666641f)
 				{
-					this.FullSanity.volume = Mathf.MoveTowards(this.FullSanity.volume, this.Volume * this.Dip - this.ClubDip, Time.deltaTime * this.FadeSpeed);
-					this.HalfSanity.volume = Mathf.MoveTowards(this.HalfSanity.volume, 0f, Time.deltaTime * this.FadeSpeed);
-					this.NoSanity.volume = Mathf.MoveTowards(this.NoSanity.volume, 0f, Time.deltaTime * this.FadeSpeed);
+					this.FullSanity.volume = Mathf.MoveTowards(this.FullSanity.volume, this.Volume * this.Dip - this.ClubDip, 0.0166666675f * this.FadeSpeed);
+					this.HalfSanity.volume = Mathf.MoveTowards(this.HalfSanity.volume, 0f, 0.0166666675f * this.FadeSpeed);
+					this.NoSanity.volume = Mathf.MoveTowards(this.NoSanity.volume, 0f, 0.0166666675f * this.FadeSpeed);
 				}
 				else if (this.Yandere.Sanity >= 33.3333321f)
 				{
-					this.FullSanity.volume = Mathf.MoveTowards(this.FullSanity.volume, 0f, Time.deltaTime * this.FadeSpeed);
-					this.HalfSanity.volume = Mathf.MoveTowards(this.HalfSanity.volume, this.Volume * this.Dip - this.ClubDip, Time.deltaTime * this.FadeSpeed);
-					this.NoSanity.volume = Mathf.MoveTowards(this.NoSanity.volume, 0f, Time.deltaTime * this.FadeSpeed);
+					this.FullSanity.volume = Mathf.MoveTowards(this.FullSanity.volume, 0f, 0.0166666675f * this.FadeSpeed);
+					this.HalfSanity.volume = Mathf.MoveTowards(this.HalfSanity.volume, this.Volume * this.Dip - this.ClubDip, 0.0166666675f * this.FadeSpeed);
+					this.NoSanity.volume = Mathf.MoveTowards(this.NoSanity.volume, 0f, 0.0166666675f * this.FadeSpeed);
 				}
 				else
 				{
-					this.FullSanity.volume = Mathf.MoveTowards(this.FullSanity.volume, 0f, Time.deltaTime * this.FadeSpeed);
-					this.HalfSanity.volume = Mathf.MoveTowards(this.HalfSanity.volume, 0f, Time.deltaTime * this.FadeSpeed);
-					this.NoSanity.volume = Mathf.MoveTowards(this.NoSanity.volume, this.Volume * this.Dip - this.ClubDip, Time.deltaTime * this.FadeSpeed);
+					this.FullSanity.volume = Mathf.MoveTowards(this.FullSanity.volume, 0f, 0.0166666675f * this.FadeSpeed);
+					this.HalfSanity.volume = Mathf.MoveTowards(this.HalfSanity.volume, 0f, 0.0166666675f * this.FadeSpeed);
+					this.NoSanity.volume = Mathf.MoveTowards(this.NoSanity.volume, this.Volume * this.Dip - this.ClubDip, 0.0166666675f * this.FadeSpeed);
 				}
 			}
 		}
 		else
 		{
-			this.AttackOnTitan.volume = Mathf.MoveTowards(this.AttackOnTitan.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
-			this.Megalovania.volume = Mathf.MoveTowards(this.Megalovania.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
-			this.MissionMode.volume = Mathf.MoveTowards(this.MissionMode.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
-			this.Skeletons.volume = Mathf.MoveTowards(this.Skeletons.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
-			this.AzurLane.volume = Mathf.MoveTowards(this.AzurLane.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
-			this.Metroid.volume = Mathf.MoveTowards(this.Metroid.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
-			this.Nuclear.volume = Mathf.MoveTowards(this.Nuclear.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
-			this.Slender.volume = Mathf.MoveTowards(this.Slender.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
-			this.Sukeban.volume = Mathf.MoveTowards(this.Sukeban.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
-			this.Custom.volume = Mathf.MoveTowards(this.Custom.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
-			this.Hatred.volume = Mathf.MoveTowards(this.Hatred.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
-			this.Hitman.volume = Mathf.MoveTowards(this.Hitman.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
-			this.Touhou.volume = Mathf.MoveTowards(this.Touhou.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
-			this.Falcon.volume = Mathf.MoveTowards(this.Falcon.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
-			this.Miyuki.volume = Mathf.MoveTowards(this.Miyuki.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
-			this.Demon.volume = Mathf.MoveTowards(this.Demon.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
-			this.Ebola.volume = Mathf.MoveTowards(this.Ebola.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
-			this.Ninja.volume = Mathf.MoveTowards(this.Ninja.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
-			this.Punch.volume = Mathf.MoveTowards(this.Punch.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
-			this.Galo.volume = Mathf.MoveTowards(this.Galo.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
-			this.Jojo.volume = Mathf.MoveTowards(this.Jojo.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
-			this.Sith.volume = Mathf.MoveTowards(this.Sith.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
-			this.DK.volume = Mathf.MoveTowards(this.DK.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
-			this.Horror.volume = Mathf.MoveTowards(this.Horror.volume, this.Volume * this.Dip, Time.deltaTime * 10f);
+			this.AttackOnTitan.volume = Mathf.MoveTowards(this.AttackOnTitan.volume, this.Volume * this.Dip, 0.166666672f);
+			this.Megalovania.volume = Mathf.MoveTowards(this.Megalovania.volume, this.Volume * this.Dip, 0.166666672f);
+			this.MissionMode.volume = Mathf.MoveTowards(this.MissionMode.volume, this.Volume * this.Dip, 0.166666672f);
+			this.Skeletons.volume = Mathf.MoveTowards(this.Skeletons.volume, this.Volume * this.Dip, 0.166666672f);
+			this.AzurLane.volume = Mathf.MoveTowards(this.AzurLane.volume, this.Volume * this.Dip, 0.166666672f);
+			this.LifeNote.volume = Mathf.MoveTowards(this.LifeNote.volume, this.Volume * this.Dip, 0.166666672f);
+			this.Metroid.volume = Mathf.MoveTowards(this.Metroid.volume, this.Volume * this.Dip, 0.166666672f);
+			this.Nuclear.volume = Mathf.MoveTowards(this.Nuclear.volume, this.Volume * this.Dip, 0.166666672f);
+			this.Slender.volume = Mathf.MoveTowards(this.Slender.volume, this.Volume * this.Dip, 0.166666672f);
+			this.Sukeban.volume = Mathf.MoveTowards(this.Sukeban.volume, this.Volume * this.Dip, 0.166666672f);
+			this.Custom.volume = Mathf.MoveTowards(this.Custom.volume, this.Volume * this.Dip, 0.166666672f);
+			this.Hatred.volume = Mathf.MoveTowards(this.Hatred.volume, this.Volume * this.Dip, 0.166666672f);
+			this.Hitman.volume = Mathf.MoveTowards(this.Hitman.volume, this.Volume * this.Dip, 0.166666672f);
+			this.Touhou.volume = Mathf.MoveTowards(this.Touhou.volume, this.Volume * this.Dip, 0.166666672f);
+			this.Falcon.volume = Mathf.MoveTowards(this.Falcon.volume, this.Volume * this.Dip, 0.166666672f);
+			this.Miyuki.volume = Mathf.MoveTowards(this.Miyuki.volume, this.Volume * this.Dip, 0.166666672f);
+			this.Demon.volume = Mathf.MoveTowards(this.Demon.volume, this.Volume * this.Dip, 0.166666672f);
+			this.Ebola.volume = Mathf.MoveTowards(this.Ebola.volume, this.Volume * this.Dip, 0.166666672f);
+			this.Ninja.volume = Mathf.MoveTowards(this.Ninja.volume, this.Volume * this.Dip, 0.166666672f);
+			this.Punch.volume = Mathf.MoveTowards(this.Punch.volume, this.Volume * this.Dip, 0.166666672f);
+			this.Galo.volume = Mathf.MoveTowards(this.Galo.volume, this.Volume * this.Dip, 0.166666672f);
+			this.Jojo.volume = Mathf.MoveTowards(this.Jojo.volume, this.Volume * this.Dip, 0.166666672f);
+			this.Sith.volume = Mathf.MoveTowards(this.Sith.volume, this.Volume * this.Dip, 0.166666672f);
+			this.DK.volume = Mathf.MoveTowards(this.DK.volume, this.Volume * this.Dip, 0.166666672f);
+			this.Horror.volume = Mathf.MoveTowards(this.Horror.volume, this.Volume * this.Dip, 0.166666672f);
 		}
 		if (!this.Yandere.PauseScreen.Show && !this.Yandere.Noticed && this.Yandere.CanMove && this.Yandere.EasterEggMenu.activeInHierarchy && !this.Egg)
 		{
@@ -433,6 +408,38 @@ public class JukeboxScript : MonoBehaviour
 				this.KillVolume();
 				this.Horror.enabled = true;
 			}
+			else if (Input.GetKeyDown(KeyCode.F3))
+			{
+				this.Egg = true;
+				this.KillVolume();
+				this.LifeNote.enabled = true;
+			}
+		}
+	}
+
+	public void StartStopMusic()
+	{
+		if (this.Custom.isPlaying)
+		{
+			this.Egg = false;
+			this.Custom.Stop();
+			this.FadeSpeed = 1f;
+			this.StartMusic = false;
+			this.Volume = this.LastVolume;
+			this.Start();
+		}
+		else if (this.Volume == 0f)
+		{
+			this.FadeSpeed = 1f;
+			this.StartMusic = false;
+			this.Volume = this.LastVolume;
+			this.Start();
+		}
+		else
+		{
+			this.LastVolume = this.Volume;
+			this.FadeSpeed = 10f;
+			this.Volume = 0f;
 		}
 	}
 
@@ -465,6 +472,7 @@ public class JukeboxScript : MonoBehaviour
 		this.MissionMode.Stop();
 		this.Skeletons.Stop();
 		this.AzurLane.Stop();
+		this.LifeNote.Stop();
 		this.Metroid.Stop();
 		this.Nuclear.Stop();
 		this.Sukeban.Stop();

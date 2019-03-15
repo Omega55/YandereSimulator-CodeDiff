@@ -22,7 +22,7 @@ public class PauseScreenScript : MonoBehaviour
 
 	public FavorMenuScript FavorMenu;
 
-	public MusicMenuScript MusicMenu;
+	public AudioMenuScript AudioMenu;
 
 	public PromptBarScript PromptBar;
 
@@ -110,7 +110,7 @@ public class PauseScreenScript : MonoBehaviour
 		this.SaveLoadMenu.gameObject.SetActive(false);
 		this.ServiceMenu.gameObject.SetActive(false);
 		this.FavorMenu.gameObject.SetActive(false);
-		this.MusicMenu.gameObject.SetActive(false);
+		this.AudioMenu.gameObject.SetActive(false);
 		this.PassTime.gameObject.SetActive(false);
 		this.Settings.gameObject.SetActive(false);
 		this.Stats.gameObject.SetActive(false);
@@ -458,8 +458,8 @@ public class PauseScreenScript : MonoBehaviour
 							{
 								if (!MissionModeGlobals.MissionMode)
 								{
-									this.MusicMenu.gameObject.SetActive(true);
-									this.Settings.UpdateText();
+									this.AudioMenu.gameObject.SetActive(true);
+									this.AudioMenu.UpdateText();
 									this.MainMenu.SetActive(false);
 									this.PromptBar.ClearButtons();
 									this.PromptBar.Label[0].text = "Play";

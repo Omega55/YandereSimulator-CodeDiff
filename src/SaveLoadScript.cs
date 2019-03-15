@@ -139,6 +139,8 @@ public class SaveLoadScript : MonoBehaviour
 
 	public GameObject AnimatedBook;
 
+	public GameObject Handkerchief;
+
 	public GameObject CameraFlash;
 
 	public GameObject ChaseCamera;
@@ -460,6 +462,7 @@ public class SaveLoadScript : MonoBehaviour
 		this.RightEmptyEye = this.Student.RightEmptyEye;
 		this.LeftEmptyEye = this.Student.LeftEmptyEye;
 		this.AnimatedBook = this.Student.AnimatedBook;
+		this.Handkerchief = this.Student.Handkerchief;
 		this.CameraFlash = this.Student.CameraFlash;
 		this.ChaseCamera = this.Student.ChaseCamera;
 		this.PepperSpray = this.Student.PepperSpray;
@@ -567,6 +570,7 @@ public class SaveLoadScript : MonoBehaviour
 		this.Student.RightEmptyEye = this.RightEmptyEye;
 		this.Student.LeftEmptyEye = this.LeftEmptyEye;
 		this.Student.AnimatedBook = this.AnimatedBook;
+		this.Student.Handkerchief = this.Handkerchief;
 		this.Student.CameraFlash = this.CameraFlash;
 		this.Student.ChaseCamera = this.ChaseCamera;
 		this.Student.PepperSpray = this.PepperSpray;

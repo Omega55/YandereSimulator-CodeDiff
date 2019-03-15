@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -69,6 +70,8 @@ public class EndOfDayScript : MonoBehaviour
 	public bool GameOver;
 
 	public bool Darken;
+
+	public int ClothingWithRedPaint;
 
 	public int FragileTarget;
 
@@ -157,6 +160,30 @@ public class EndOfDayScript : MonoBehaviour
 			this.Yandere.CharacterAnimation[this.Yandere.CreepyIdles[i]].weight = 0f;
 			this.Yandere.CharacterAnimation[this.Yandere.CreepyWalks[i]].weight = 0f;
 		}
+		Debug.Log("BloodParent.childCount is: " + this.Police.BloodParent.childCount);
+		IEnumerator enumerator = this.Police.BloodParent.GetEnumerator();
+		try
+		{
+			while (enumerator.MoveNext())
+			{
+				object obj = enumerator.Current;
+				Transform transform = (Transform)obj;
+				PickUpScript component = transform.gameObject.GetComponent<PickUpScript>();
+				if (component != null && component.RedPaint)
+				{
+					this.ClothingWithRedPaint++;
+				}
+			}
+		}
+		finally
+		{
+			IDisposable disposable;
+			if ((disposable = (enumerator as IDisposable)) != null)
+			{
+				disposable.Dispose();
+			}
+		}
+		Debug.Log("Clothing with red paint is: " + this.ClothingWithRedPaint);
 	}
 
 	private void Update()
@@ -288,16 +315,35 @@ public class EndOfDayScript : MonoBehaviour
 			{
 				if (this.Police.Corpses == 0)
 				{
-					this.SearchingCop.SetActive(true);
 					if (!this.Police.PoisonScene && !this.Police.SuicideScene)
 					{
-						if (this.Police.BloodParent.childCount > 0)
+						if (this.Police.LimbParent.childCount > 0)
 						{
-							this.Label.text = "The police find mysterious blood stains, but are unable to locate any corpses on school grounds.";
+							if (this.Police.LimbParent.childCount == 1)
+							{
+								this.Label.text = "The police find a severed body part at school.";
+							}
+							else
+							{
+								this.Label.text = "The police find multiple severed body parts at school.";
+							}
+							this.MurderScene.SetActive(true);
 						}
 						else
 						{
-							this.Label.text = "The police are unable to locate any corpses on school grounds.";
+							this.SearchingCop.SetActive(true);
+							if (this.Police.BloodParent.childCount - this.ClothingWithRedPaint > 0)
+							{
+								this.Label.text = "The police find mysterious blood stains, but are unable to locate any corpses on school grounds.";
+							}
+							else if (this.ClothingWithRedPaint == 0)
+							{
+								this.Label.text = "The police are unable to locate any corpses on school grounds.";
+							}
+							else
+							{
+								this.Label.text = "The police find clothing that is stained with red paint, but are unable to locate any actual blood stains, and cannot locate any corpses, either.";
+							}
 						}
 						this.Phase++;
 					}
@@ -519,7 +565,7 @@ public class EndOfDayScript : MonoBehaviour
 							}
 						}
 					}
-					else if (this.Police.BloodyClothing > 0)
+					else if (this.Police.BloodyClothing - this.ClothingWithRedPaint > 0)
 					{
 						this.TeleportYandere();
 						this.Yandere.CharacterAnimation.Play("f02_disappointed_00");

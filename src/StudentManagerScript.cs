@@ -174,6 +174,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform[] CorpseGuardLocation;
 
+	public Transform[] BloodGuardLocation;
+
 	public Transform[] SleuthDestinations;
 
 	public Transform[] GardeningPatrols;

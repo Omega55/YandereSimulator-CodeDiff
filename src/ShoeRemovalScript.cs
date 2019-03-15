@@ -88,8 +88,6 @@ public class ShoeRemovalScript : MonoBehaviour
 			this.RemovalAnim = this.RemoveCasualAnim;
 			this.RightCurrentShoe = this.RightCasualShoe;
 			this.LeftCurrentShoe = this.LeftCasualShoe;
-			this.RightCasualShoe.gameObject.SetActive(true);
-			this.LeftCasualShoe.gameObject.SetActive(true);
 			this.RightNewShoe = this.RightSchoolShoe;
 			this.LeftNewShoe = this.LeftSchoolShoe;
 			this.ShoeParent = gameObject.transform;
@@ -109,6 +107,8 @@ public class ShoeRemovalScript : MonoBehaviour
 	{
 		if (!this.Student.AoT)
 		{
+			this.RightCasualShoe.gameObject.SetActive(true);
+			this.LeftCasualShoe.gameObject.SetActive(true);
 			if (!this.Male)
 			{
 				this.MyRenderer.materials[0].mainTexture = this.Socks;

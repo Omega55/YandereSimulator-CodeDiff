@@ -21,6 +21,8 @@ public class ChangingBoothScript : MonoBehaviour
 
 	public bool Occupied;
 
+	public AudioSource MyAudioSource;
+
 	public AudioClip CurtainSound;
 
 	public AudioClip ClothSound;
@@ -35,6 +37,7 @@ public class ChangingBoothScript : MonoBehaviour
 
 	private void Start()
 	{
+		this.MyAudioSource = base.GetComponent<AudioSource>();
 		this.CheckYandereClub();
 	}
 
@@ -51,21 +54,20 @@ public class ChangingBoothScript : MonoBehaviour
 		}
 		if (this.Occupied)
 		{
-			AudioSource component = base.GetComponent<AudioSource>();
 			if (this.OccupyTimer == 0f)
 			{
 				if (this.Yandere.transform.position.y > base.transform.position.y - 1f && this.Yandere.transform.position.y < base.transform.position.y + 1f)
 				{
-					component.clip = this.CurtainSound;
-					component.Play();
+					this.MyAudioSource.clip = this.CurtainSound;
+					this.MyAudioSource.Play();
 				}
 			}
 			else if (this.OccupyTimer > 1f && this.Phase == 0)
 			{
 				if (this.Yandere.transform.position.y > base.transform.position.y - 1f && this.Yandere.transform.position.y < base.transform.position.y + 1f)
 				{
-					component.clip = this.ClothSound;
-					component.Play();
+					this.MyAudioSource.clip = this.ClothSound;
+					this.MyAudioSource.Play();
 				}
 				this.Phase++;
 			}
@@ -85,8 +87,8 @@ public class ChangingBoothScript : MonoBehaviour
 					this.Curtains.SetBlendShapeWeight(0, this.Weight);
 					if (this.Phase < 2)
 					{
-						component.clip = this.CurtainSound;
-						component.Play();
+						this.MyAudioSource.clip = this.CurtainSound;
+						this.MyAudioSource.Play();
 						if (!this.Yandere.ClubAttire)
 						{
 							this.Yandere.PreviousSchoolwear = this.Yandere.Schoolwear;
@@ -120,8 +122,8 @@ public class ChangingBoothScript : MonoBehaviour
 				{
 					if (this.Yandere.transform.position.y > base.transform.position.y - 1f && this.Yandere.transform.position.y < base.transform.position.y + 1f)
 					{
-						component.clip = this.CurtainSound;
-						component.Play();
+						this.MyAudioSource.clip = this.CurtainSound;
+						this.MyAudioSource.Play();
 					}
 					this.Student.ChangeClubwear();
 					this.Phase++;

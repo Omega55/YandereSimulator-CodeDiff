@@ -27,9 +27,15 @@ public class PickUpScript : MonoBehaviour
 
 	public MopScript Mop;
 
+	public Mesh ClosedBook;
+
+	public Mesh OpenBook;
+
 	public Rigidbody MyRigidbody;
 
 	public Collider MyCollider;
+
+	public MeshFilter MyRenderer;
 
 	public Vector3 TrashPosition;
 
@@ -70,6 +76,8 @@ public class PickUpScript : MonoBehaviour
 	public bool JerryCan;
 
 	public bool LeftHand;
+
+	public bool RedPaint;
 
 	public bool Garbage;
 
@@ -235,6 +243,11 @@ public class PickUpScript : MonoBehaviour
 
 	public void BePickedUp()
 	{
+		if (this.CarryAnimID == 10)
+		{
+			this.MyRenderer.mesh = this.OpenBook;
+			this.Yandere.LifeNotePen.SetActive(true);
+		}
 		if (this.MyAnimation != null)
 		{
 			this.MyAnimation.Stop();
@@ -305,6 +318,11 @@ public class PickUpScript : MonoBehaviour
 
 	public void Drop()
 	{
+		if (this.CarryAnimID == 10)
+		{
+			this.MyRenderer.mesh = this.ClosedBook;
+			this.Yandere.LifeNotePen.SetActive(false);
+		}
 		if (this.Weight)
 		{
 			this.Yandere.IdleAnim = this.Yandere.OriginalIdleAnim;
