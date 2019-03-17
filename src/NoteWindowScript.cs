@@ -53,6 +53,22 @@ public class NoteWindowScript : MonoBehaviour
 
 	public bool Show;
 
+	public UITexture Stationery;
+
+	public UISprite Background1;
+
+	public UISprite Background2;
+
+	public Texture LifeNoteTexture;
+
+	public UILabel[] Labels;
+
+	public bool LifeNote;
+
+	public int TargetStudent;
+
+	public string[] MurderMethods;
+
 	private void Start()
 	{
 		this.SubMenu.transform.localScale = Vector3.zero;
@@ -63,6 +79,35 @@ public class NoteWindowScript : MonoBehaviour
 		this.OriginalText[3] = this.SlotLabels[3].text;
 		this.UpdateHighlights();
 		this.UpdateSubLabels();
+	}
+
+	public void BecomeLifeNote()
+	{
+		this.Stationery.mainTexture = this.LifeNoteTexture;
+		this.Stationery.color = new Color(1f, 1f, 1f, 1f);
+		this.Background2.color = new Color(0f, 0f, 0f, 1f);
+		foreach (UILabel uilabel in this.Labels)
+		{
+			if (uilabel != null)
+			{
+				uilabel.color = new Color(1f, 1f, 1f, 1f);
+			}
+		}
+		this.Labels[1].color = new Color(1f, 1f, 1f, 0f);
+		this.Labels[2].color = new Color(1f, 1f, 1f, 0f);
+		this.Labels[3].transform.localPosition = new Vector3(-365f, 265f, 0f);
+		this.Labels[3].text = "______________";
+		this.Labels[4].text = "will die from";
+		this.Labels[8].color = new Color(1f, 1f, 1f, 0f);
+		this.SlotHighlights[1].transform.localPosition = new Vector3(-100f, 280f, 0f);
+		foreach (UILabel uilabel2 in this.SubLabels)
+		{
+			if (uilabel2 != null)
+			{
+				uilabel2.color = new Color(1f, 1f, 1f, 1f);
+			}
+		}
+		this.LifeNote = true;
 	}
 
 	private void Update()
@@ -116,93 +161,122 @@ public class NoteWindowScript : MonoBehaviour
 				}
 				if (Input.GetButtonDown("A"))
 				{
-					this.PromptBar.Label[2].text = string.Empty;
-					this.PromptBar.UpdateButtons();
-					this.Selecting = true;
-					this.UpdateSubLabels();
+					if (this.LifeNote && this.Slot == 1)
+					{
+						this.Yandere.PauseScreen.transform.parent.GetComponent<UIPanel>().alpha = 1f;
+						this.Yandere.PauseScreen.StudentInfoMenu.UsingLifeNote = true;
+						this.Yandere.PauseScreen.StudentInfoMenu.gameObject.SetActive(true);
+						this.Yandere.PauseScreen.StudentInfoMenu.Column = 0;
+						this.Yandere.PauseScreen.StudentInfoMenu.Row = 0;
+						this.Yandere.PauseScreen.StudentInfoMenu.UpdateHighlight();
+						this.Yandere.PauseScreen.StudentInfoMenu.GrabbedPortraits = false;
+						this.Yandere.PauseScreen.MainMenu.SetActive(false);
+						this.Yandere.PauseScreen.Panel.enabled = true;
+						this.Yandere.PauseScreen.Sideways = true;
+						this.Yandere.PauseScreen.Show = true;
+						Time.timeScale = 0.0001f;
+						this.Yandere.PromptBar.ClearButtons();
+						this.Yandere.PromptBar.Label[1].text = "Cancel";
+						this.Yandere.PromptBar.UpdateButtons();
+						this.Yandere.PromptBar.Show = true;
+						base.gameObject.SetActive(false);
+					}
+					else
+					{
+						this.PromptBar.Label[2].text = string.Empty;
+						this.PromptBar.UpdateButtons();
+						this.Selecting = true;
+						this.UpdateSubLabels();
+					}
 				}
 				if (Input.GetButtonDown("B"))
 				{
-					this.Slot = 1;
-					this.UpdateHighlights();
-					this.SlotLabels[1].text = this.OriginalText[1];
-					this.SlotLabels[2].text = this.OriginalText[2];
-					this.SlotLabels[3].text = this.OriginalText[3];
-					this.SlotsFilled[1] = false;
-					this.SlotsFilled[2] = false;
-					this.SlotsFilled[3] = false;
 					this.Exit();
 				}
 				if (Input.GetButtonDown("X") && this.SlotsFilled[1] && this.SlotsFilled[2] && this.SlotsFilled[3])
 				{
-					this.NoteLocker.MeetID = this.MeetID;
-					this.NoteLocker.MeetTime = this.TimeID;
-					this.NoteLocker.Prompt.enabled = false;
-					this.NoteLocker.CanLeaveNote = false;
-					this.NoteLocker.NoteLeft = true;
-					if (this.NoteLocker.Student.StudentID == 30)
+					if (this.LifeNote)
 					{
-						if (this.SlotLabels[1].text == this.Subjects[10])
+						AudioSource.PlayClipAtPoint(this.Yandere.DramaticWriting, this.Yandere.transform.position);
+						this.Yandere.CharacterAnimation.CrossFade(this.Yandere.IdleAnim);
+						this.Yandere.CharacterAnimation["f02_dramaticWriting_00"].speed = 2f;
+						this.Yandere.CharacterAnimation["f02_dramaticWriting_00"].time = 0f;
+						this.Yandere.CharacterAnimation["f02_dramaticWriting_00"].weight = 0.75f;
+						this.Yandere.CharacterAnimation.CrossFade("f02_dramaticWriting_00");
+						this.Yandere.WritingName = true;
+						this.Exit();
+					}
+					else
+					{
+						this.NoteLocker.MeetID = this.MeetID;
+						this.NoteLocker.MeetTime = this.TimeID;
+						this.NoteLocker.Prompt.enabled = false;
+						this.NoteLocker.CanLeaveNote = false;
+						this.NoteLocker.NoteLeft = true;
+						if (this.NoteLocker.Student.StudentID == 30)
+						{
+							if (this.SlotLabels[1].text == this.Subjects[10])
+							{
+								this.NoteLocker.Success = true;
+							}
+						}
+						else if (this.NoteLocker.Student.StudentID == 5)
+						{
+							if (this.NoteLocker.Student.Bullied && this.SlotLabels[1].text == this.Subjects[6] && this.MeetID > 7)
+							{
+								this.NoteLocker.Success = true;
+							}
+						}
+						else if (this.NoteLocker.Student.StudentID == 2 || this.NoteLocker.Student.StudentID == 3 || this.NoteLocker.Student.StudentID == 65)
+						{
+							if (this.SlotLabels[1].text == this.Subjects[7])
+							{
+								this.NoteLocker.Success = true;
+							}
+						}
+						else if (this.NoteLocker.Student.Persona == PersonaType.Loner && this.SlotLabels[1].text == this.Subjects[1])
 						{
 							this.NoteLocker.Success = true;
 						}
-					}
-					else if (this.NoteLocker.Student.StudentID == 5)
-					{
-						if (this.NoteLocker.Student.Bullied && this.SlotLabels[1].text == this.Subjects[6] && this.MeetID > 7)
+						else if (this.NoteLocker.Student.Persona == PersonaType.TeachersPet && this.SlotLabels[1].text == this.Subjects[2])
 						{
 							this.NoteLocker.Success = true;
 						}
-					}
-					else if (this.NoteLocker.Student.StudentID == 2 || this.NoteLocker.Student.StudentID == 3 || this.NoteLocker.Student.StudentID == 65)
-					{
-						if (this.SlotLabels[1].text == this.Subjects[7])
+						else if (this.NoteLocker.Student.Persona == PersonaType.Heroic || this.NoteLocker.Student.Persona == PersonaType.Sleuth)
+						{
+							if (this.SlotLabels[1].text == this.Subjects[3])
+							{
+								this.NoteLocker.Success = true;
+							}
+						}
+						else if (this.NoteLocker.Student.Persona == PersonaType.Coward && this.SlotLabels[1].text == this.Subjects[4])
 						{
 							this.NoteLocker.Success = true;
 						}
-					}
-					else if (this.NoteLocker.Student.Persona == PersonaType.Loner && this.SlotLabels[1].text == this.Subjects[1])
-					{
-						this.NoteLocker.Success = true;
-					}
-					else if (this.NoteLocker.Student.Persona == PersonaType.TeachersPet && this.SlotLabels[1].text == this.Subjects[2])
-					{
-						this.NoteLocker.Success = true;
-					}
-					else if (this.NoteLocker.Student.Persona == PersonaType.Heroic || this.NoteLocker.Student.Persona == PersonaType.Sleuth)
-					{
-						if (this.SlotLabels[1].text == this.Subjects[3])
+						else if (this.NoteLocker.Student.Persona == PersonaType.SocialButterfly && this.SlotLabels[1].text == this.Subjects[5])
 						{
 							this.NoteLocker.Success = true;
 						}
-					}
-					else if (this.NoteLocker.Student.Persona == PersonaType.Coward && this.SlotLabels[1].text == this.Subjects[4])
-					{
-						this.NoteLocker.Success = true;
-					}
-					else if (this.NoteLocker.Student.Persona == PersonaType.SocialButterfly && this.SlotLabels[1].text == this.Subjects[5])
-					{
-						this.NoteLocker.Success = true;
-					}
-					else if (this.NoteLocker.Student.Persona == PersonaType.PhoneAddict && this.SlotLabels[1].text == this.Subjects[6])
-					{
-						this.NoteLocker.Success = true;
-					}
-					else if (this.NoteLocker.Student.StudentID == 2 || this.NoteLocker.Student.StudentID == 3 || this.NoteLocker.Student.Club == ClubType.Occult)
-					{
-						if (this.SlotLabels[1].text == this.Subjects[8])
+						else if (this.NoteLocker.Student.Persona == PersonaType.PhoneAddict && this.SlotLabels[1].text == this.Subjects[6])
 						{
 							this.NoteLocker.Success = true;
 						}
+						else if (this.NoteLocker.Student.StudentID == 2 || this.NoteLocker.Student.StudentID == 3 || this.NoteLocker.Student.Club == ClubType.Occult)
+						{
+							if (this.SlotLabels[1].text == this.Subjects[8])
+							{
+								this.NoteLocker.Success = true;
+							}
+						}
+						else if (this.NoteLocker.Student.Club == ClubType.Bully && (this.SlotLabels[1].text == this.Subjects[5] || this.SlotLabels[1].text == this.Subjects[9]))
+						{
+							this.NoteLocker.Success = true;
+						}
+						this.NoteLocker.FindStudentLocker.Prompt.Hide();
+						this.NoteLocker.FindStudentLocker.Prompt.enabled = false;
+						this.NoteLocker.FindStudentLocker.enabled = false;
+						this.NoteLocker.transform.GetChild(0).gameObject.SetActive(false);
 					}
-					else if (this.NoteLocker.Student.Club == ClubType.Bully && (this.SlotLabels[1].text == this.Subjects[5] || this.SlotLabels[1].text == this.Subjects[9]))
-					{
-						this.NoteLocker.Success = true;
-					}
-					this.NoteLocker.FindStudentLocker.Prompt.Hide();
-					this.NoteLocker.FindStudentLocker.Prompt.enabled = false;
-					this.NoteLocker.FindStudentLocker.enabled = false;
-					this.NoteLocker.transform.GetChild(0).gameObject.SetActive(false);
 					this.Exit();
 				}
 			}
@@ -212,7 +286,14 @@ public class NoteWindowScript : MonoBehaviour
 				if (this.InputManager.TappedDown)
 				{
 					this.SubSlot++;
-					if (this.SubSlot > 10)
+					if (this.LifeNote && this.Slot == 2)
+					{
+						if (this.SubSlot > 6)
+						{
+							this.SubSlot = 1;
+						}
+					}
+					else if (this.SubSlot > 10)
 					{
 						this.SubSlot = 1;
 					}
@@ -221,7 +302,14 @@ public class NoteWindowScript : MonoBehaviour
 				if (this.InputManager.TappedUp)
 				{
 					this.SubSlot--;
-					if (this.SubSlot < 1)
+					if (this.LifeNote && this.Slot == 2)
+					{
+						if (this.SubSlot < 1)
+						{
+							this.SubSlot = 6;
+						}
+					}
+					else if (this.SubSlot < 1)
 					{
 						this.SubSlot = 10;
 					}
@@ -304,8 +392,15 @@ public class NoteWindowScript : MonoBehaviour
 			while (this.ID < this.SubLabels.Length)
 			{
 				UILabel uilabel2 = this.SubLabels[this.ID];
-				uilabel2.text = this.Locations[this.ID];
 				uilabel2.color = new Color(uilabel2.color.r, uilabel2.color.g, uilabel2.color.b, 1f);
+				if (this.LifeNote)
+				{
+					uilabel2.text = this.MurderMethods[this.ID];
+				}
+				else
+				{
+					uilabel2.text = this.Locations[this.ID];
+				}
 				this.ID++;
 			}
 		}
@@ -323,7 +418,7 @@ public class NoteWindowScript : MonoBehaviour
 		}
 	}
 
-	private void CheckForCompletion()
+	public void CheckForCompletion()
 	{
 		if (this.SlotsFilled[1] && this.SlotsFilled[2] && this.SlotsFilled[3])
 		{
@@ -334,17 +429,29 @@ public class NoteWindowScript : MonoBehaviour
 
 	private void Exit()
 	{
+		this.UpdateHighlights();
+		if (!this.Yandere.WritingName)
+		{
+			this.Yandere.CanMove = true;
+		}
+		this.Yandere.RPGCamera.enabled = true;
 		this.Yandere.Blur.enabled = false;
-		this.Yandere.CanMove = true;
-		this.Show = false;
 		this.Yandere.HUD.alpha = 1f;
 		Time.timeScale = 1f;
+		this.Show = false;
+		this.Slot = 1;
 		this.PromptBar.Label[0].text = string.Empty;
 		this.PromptBar.Label[1].text = string.Empty;
 		this.PromptBar.Label[2].text = string.Empty;
 		this.PromptBar.Label[4].text = string.Empty;
 		this.PromptBar.Show = false;
 		this.PromptBar.UpdateButtons();
+		this.SlotLabels[1].text = this.OriginalText[1];
+		this.SlotLabels[2].text = this.OriginalText[2];
+		this.SlotLabels[3].text = this.OriginalText[3];
+		this.SlotsFilled[1] = false;
+		this.SlotsFilled[2] = false;
+		this.SlotsFilled[3] = false;
 	}
 
 	private void DisableOptions()

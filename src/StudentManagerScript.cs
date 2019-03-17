@@ -58,6 +58,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public HeadmasterScript Headmaster;
 
+	public NoteWindowScript NoteWindow;
+
 	public ReputationScript Reputation;
 
 	public WeaponScript FragileWeapon;
@@ -69,6 +71,8 @@ public class StudentManagerScript : MonoBehaviour
 	public ContainerScript Container;
 
 	public RingEventScript RingEvent;
+
+	public GazerEyesScript Shinigami;
 
 	public Collider EastBathroomArea;
 
@@ -598,12 +602,12 @@ public class StudentManagerScript : MonoBehaviour
 				this.ErrorLabel.text = string.Empty;
 				this.ErrorLabel.enabled = false;
 			}
-			this.SetAtmosphere();
 			if (MissionModeGlobals.MissionMode)
 			{
 				StudentGlobals.FemaleUniform = 5;
 				StudentGlobals.MaleUniform = 5;
 			}
+			this.SetAtmosphere();
 			GameGlobals.Paranormal = false;
 			if (StudentGlobals.GetStudentSlave() > 0 && !StudentGlobals.GetStudentDead(StudentGlobals.GetStudentSlave()))
 			{
@@ -712,14 +716,17 @@ public class StudentManagerScript : MonoBehaviour
 			SchoolGlobals.SchoolAtmosphereSet = true;
 			SchoolGlobals.SchoolAtmosphere = 0f;
 		}
-		if (!SchoolGlobals.SchoolAtmosphereSet)
+		if (!MissionModeGlobals.MissionMode)
 		{
-			SchoolGlobals.SchoolAtmosphereSet = true;
-			SchoolGlobals.SchoolAtmosphere = 1f;
+			if (!SchoolGlobals.SchoolAtmosphereSet)
+			{
+				SchoolGlobals.SchoolAtmosphereSet = true;
+				SchoolGlobals.SchoolAtmosphere = 1f;
+			}
+			this.Atmosphere = SchoolGlobals.SchoolAtmosphere;
 		}
-		this.Atmosphere = SchoolGlobals.SchoolAtmosphere;
 		Vignetting[] components = Camera.main.GetComponents<Vignetting>();
-		float num = 1f - SchoolGlobals.SchoolAtmosphere;
+		float num = 1f - this.Atmosphere;
 		if (!this.TakingPortraits)
 		{
 			this.SelectiveGreyscale.desaturation = num;
@@ -1338,7 +1345,6 @@ public class StudentManagerScript : MonoBehaviour
 
 	public void AttendClass()
 	{
-		Debug.Log("All students are now being told to attend class.");
 		this.ConvoManager.Confirmed = false;
 		this.SleuthPhase = 3;
 		if (this.RingEvent.EventActive)
@@ -1603,7 +1609,7 @@ public class StudentManagerScript : MonoBehaviour
 							studentScript.Character.GetComponent<Animation>().CrossFade(studentScript.ScaredAnim);
 						}
 					}
-					else if (this.ID > 1)
+					else if (this.ID > 1 && studentScript.CharacterAnimation != null)
 					{
 						studentScript.CharacterAnimation.CrossFade(studentScript.IdleAnim);
 					}

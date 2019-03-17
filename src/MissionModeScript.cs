@@ -305,6 +305,8 @@ public class MissionModeScript : MonoBehaviour
 			ClassGlobals.PsychologyGrade = 1;
 			SchoolGlobals.SchoolAtmosphereSet = true;
 			SchoolGlobals.SchoolAtmosphere = 1f - (float)this.Difficulty * 0.1f;
+			Debug.Log("Mission Mode has lowered school atmosphere according to the difficulty level.");
+			this.StudentManager.Atmosphere = 1f - (float)this.Difficulty * 0.1f;
 			this.ID = 1;
 			while (this.ID < this.PoliceLabel.Length)
 			{
@@ -445,6 +447,7 @@ public class MissionModeScript : MonoBehaviour
 			this.MusicIcon.color = new Color(this.MusicIcon.color.r, this.MusicIcon.color.g, this.MusicIcon.color.b, 1f);
 			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 1f);
 			this.MissionModeMenu.UpdateGraphics();
+			this.MissionModeMenu.gameObject.SetActive(true);
 			this.Enabled = true;
 		}
 		else
@@ -496,7 +499,18 @@ public class MissionModeScript : MonoBehaviour
 				{
 					if (this.Yandere.Equipped > 0)
 					{
-						this.MurderWeaponID = this.Yandere.EquippedWeapon.WeaponID;
+						if (this.StudentManager.Students[this.TargetID].DeathType == DeathType.Weapon)
+						{
+							this.MurderWeaponID = this.Yandere.EquippedWeapon.WeaponID;
+						}
+						else
+						{
+							this.WeaponDisposed = true;
+						}
+					}
+					else
+					{
+						this.WeaponDisposed = true;
 					}
 					this.TargetDead = true;
 				}

@@ -222,6 +222,8 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject EasterEggMenu;
 
+	public GameObject StolenObject;
+
 	public GameObject SelfieGuide;
 
 	public GameObject MemeGlasses;
@@ -2150,14 +2152,17 @@ public class YandereScript : MonoBehaviour
 								}
 								else if (this.PickUp != null && this.PickUp.CarryAnimID == 10)
 								{
-									AudioSource.PlayClipAtPoint(this.DramaticWriting, base.transform.position);
-									this.CharacterAnimation.CrossFade(this.IdleAnim);
-									this.CharacterAnimation["f02_dramaticWriting_00"].speed = 2f;
-									this.CharacterAnimation["f02_dramaticWriting_00"].time = 0f;
-									this.CharacterAnimation["f02_dramaticWriting_00"].weight = 0.75f;
-									this.CharacterAnimation.CrossFade("f02_dramaticWriting_00");
-									this.WritingName = true;
+									this.StudentManager.NoteWindow.gameObject.SetActive(true);
+									this.StudentManager.NoteWindow.Show = true;
+									this.PromptBar.Show = true;
+									this.Blur.enabled = true;
 									this.CanMove = false;
+									Time.timeScale = 0.0001f;
+									this.HUD.alpha = 0f;
+									this.PromptBar.Label[0].text = "Confirm";
+									this.PromptBar.Label[1].text = "Cancel";
+									this.PromptBar.Label[4].text = "Select";
+									this.PromptBar.UpdateButtons();
 								}
 								else if (!this.FalconHelmet.activeInHierarchy && this.Barcode.activeInHierarchy)
 								{
@@ -3782,6 +3787,16 @@ public class YandereScript : MonoBehaviour
 			if (this.WritingName)
 			{
 				this.CharacterAnimation.CrossFade("f02_dramaticWriting_00");
+				if (this.CharacterAnimation["f02_dramaticWriting_00"].time == 0f)
+				{
+					AudioSource.PlayClipAtPoint(this.DramaticWriting, base.transform.position);
+				}
+				if (this.CharacterAnimation["f02_dramaticWriting_00"].time >= 5f && this.StudentManager.NoteWindow.TargetStudent > 0)
+				{
+					this.StudentManager.Students[this.StudentManager.NoteWindow.TargetStudent].Fate = this.StudentManager.NoteWindow.MeetID;
+					this.StudentManager.Students[this.StudentManager.NoteWindow.TargetStudent].TimeOfDeath = this.StudentManager.NoteWindow.TimeID;
+					this.StudentManager.NoteWindow.TargetStudent = 0;
+				}
 				if (this.CharacterAnimation["f02_dramaticWriting_00"].time >= this.CharacterAnimation["f02_dramaticWriting_00"].length)
 				{
 					this.CharacterAnimation[this.CarryAnims[10]].weight = 1f;
@@ -6413,8 +6428,17 @@ public class YandereScript : MonoBehaviour
 
 	private void LifeNote()
 	{
+		this.ID = 1;
+		while (this.ID < 101)
+		{
+			StudentGlobals.SetStudentPhotographed(this.ID, true);
+			this.ID++;
+		}
 		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
 		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
+		this.LifeNotebook.transform.position = base.transform.position + base.transform.forward + new Vector3(0f, 2.5f, 0f);
+		this.LifeNotebook.GetComponent<Rigidbody>().useGravity = true;
+		this.LifeNotebook.GetComponent<Rigidbody>().isKinematic = false;
 		this.LifeNotebook.gameObject.SetActive(true);
 		this.MyRenderer.sharedMesh = this.YamikoMesh;
 		this.MyRenderer.materials[0].mainTexture = this.YamikoSkinTexture;
@@ -6424,6 +6448,7 @@ public class YandereScript : MonoBehaviour
 		this.Schoolwear = 0;
 		this.Hairstyle = 180;
 		this.UpdateHair();
+		this.StudentManager.NoteWindow.BecomeLifeNote();
 		this.Egg = true;
 		this.DebugMenu.transform.parent.GetComponent<DebugMenuScript>().UpdateCensor();
 	}

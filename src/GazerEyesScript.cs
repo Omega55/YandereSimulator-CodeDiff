@@ -33,6 +33,8 @@ public class GazerEyesScript : MonoBehaviour
 
 	public int ID;
 
+	public bool Shinigami;
+
 	private void Start()
 	{
 		base.GetComponent<Animation>()["Eyeballs_Run"].speed = 0f;
@@ -129,13 +131,16 @@ public class GazerEyesScript : MonoBehaviour
 
 	public void Attack()
 	{
-		this.ID = 0;
-		while (this.ID < this.Eyes.Length)
+		if (!this.Shinigami)
 		{
-			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Laser, this.Eyes[this.ID].transform.position, Quaternion.identity);
-			gameObject.transform.LookAt(this.Yandere.TargetStudent.Hips.position + new Vector3(0f, 0.33333f, 0f));
-			gameObject.transform.localScale = new Vector3(1f, 1f, Vector3.Distance(this.Eyes[this.ID].transform.position, this.Yandere.TargetStudent.Hips.position + new Vector3(0f, 0.33333f, 0f)) * 0.5f);
-			this.ID++;
+			this.ID = 0;
+			while (this.ID < this.Eyes.Length)
+			{
+				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Laser, this.Eyes[this.ID].transform.position, Quaternion.identity);
+				gameObject.transform.LookAt(this.Yandere.TargetStudent.Hips.position + new Vector3(0f, 0.33333f, 0f));
+				gameObject.transform.localScale = new Vector3(1f, 1f, Vector3.Distance(this.Eyes[this.ID].transform.position, this.Yandere.TargetStudent.Hips.position + new Vector3(0f, 0.33333f, 0f)) * 0.5f);
+				this.ID++;
+			}
 		}
 		if (this.Effect == 0)
 		{

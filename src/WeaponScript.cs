@@ -13,6 +13,8 @@ public class WeaponScript : MonoBehaviour
 
 	public IncineratorScript Incinerator;
 
+	public StudentScript Returner;
+
 	public YandereScript Yandere;
 
 	public PromptScript Prompt;
@@ -62,6 +64,8 @@ public class WeaponScript : MonoBehaviour
 	public bool Concealable;
 
 	public bool Suspicious;
+
+	public bool Dangerous;
 
 	public bool Misplaced;
 
@@ -300,7 +304,7 @@ public class WeaponScript : MonoBehaviour
 			{
 				this.Yandere.TheftTimer = 0.1f;
 			}
-			if (this.Suspicious)
+			if (this.Dangerous || this.Suspicious)
 			{
 				this.Yandere.WeaponTimer = 0.1f;
 			}
@@ -473,9 +477,12 @@ public class WeaponScript : MonoBehaviour
 		{
 			this.Prompt.OffsetY[3] = this.OriginalOffset;
 		}
-		this.Yandere.EquippedWeapon = null;
-		this.Yandere.Equipped = 0;
-		this.Yandere.StudentManager.UpdateStudents(0);
+		if (this.Yandere.EquippedWeapon == this)
+		{
+			this.Yandere.EquippedWeapon = null;
+			this.Yandere.Equipped = 0;
+			this.Yandere.StudentManager.UpdateStudents(0);
+		}
 		base.gameObject.SetActive(true);
 		base.transform.parent = null;
 		this.MyRigidbody.constraints = RigidbodyConstraints.None;

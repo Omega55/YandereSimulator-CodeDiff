@@ -13,6 +13,8 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	public StudentInfoScript StudentInfo;
 
+	public NoteWindowScript NoteWindow;
+
 	public PromptBarScript PromptBar;
 
 	public JsonScript JSON;
@@ -55,6 +57,8 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	public bool FindingLocker;
 
+	public bool UsingLifeNote;
+
 	public bool GettingInfo;
 
 	public bool MatchMaking;
@@ -83,6 +87,10 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	public int Rows;
 
+	public bool GrabbedPortraits;
+
+	public bool Debugging;
+
 	private void Start()
 	{
 		for (int i = 1; i < 101; i++)
@@ -106,68 +114,91 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	private void Update()
 	{
+		if (!this.GrabbedPortraits)
+		{
+			base.StartCoroutine(this.UpdatePortraits());
+			this.GrabbedPortraits = true;
+		}
 		if (Input.GetButtonDown("A") && this.PromptBar.Label[0].text != string.Empty)
 		{
 			if (StudentGlobals.GetStudentPhotographed(this.StudentID) || this.StudentID > 97)
 			{
-				this.StudentInfo.gameObject.SetActive(true);
-				this.StudentInfo.UpdateInfo(this.StudentID);
-				this.StudentInfo.Topics.SetActive(false);
-				base.gameObject.SetActive(false);
-				this.PromptBar.ClearButtons();
-				if (this.Gossiping)
+				if (this.UsingLifeNote)
 				{
-					this.PromptBar.Label[0].text = "Gossip";
+					this.PauseScreen.MainMenu.SetActive(true);
+					this.PauseScreen.Sideways = false;
+					this.PauseScreen.Show = false;
+					base.gameObject.SetActive(false);
+					this.NoteWindow.TargetStudent = this.StudentID;
+					this.NoteWindow.gameObject.SetActive(true);
+					this.NoteWindow.SlotLabels[1].text = this.StudentManager.Students[this.StudentID].Name;
+					this.NoteWindow.SlotsFilled[1] = true;
+					this.UsingLifeNote = false;
+					this.PromptBar.Label[0].text = "Confirm";
+					this.PromptBar.UpdateButtons();
+					this.NoteWindow.CheckForCompletion();
 				}
-				if (this.Distracting)
+				else
 				{
-					this.PromptBar.Label[0].text = "Distract";
-				}
-				if (this.CyberBullying)
-				{
-					this.PromptBar.Label[0].text = "Accept";
-				}
-				if (this.FindingLocker)
-				{
-					this.PromptBar.Label[0].text = "Find Locker";
-				}
-				if (this.MatchMaking)
-				{
-					this.PromptBar.Label[0].text = "Match";
-				}
-				if (this.Targeting)
-				{
-					this.PromptBar.Label[0].text = "Kill";
-				}
-				if (this.SendingHome)
-				{
-					this.PromptBar.Label[0].text = "Send Home";
-				}
-				if (this.StudentManager.Students[this.StudentID] != null)
-				{
-					if (this.StudentManager.Students[this.StudentID].gameObject.activeInHierarchy)
+					this.StudentInfo.gameObject.SetActive(true);
+					this.StudentInfo.UpdateInfo(this.StudentID);
+					this.StudentInfo.Topics.SetActive(false);
+					base.gameObject.SetActive(false);
+					this.PromptBar.ClearButtons();
+					if (this.Gossiping)
 					{
-						if (this.StudentManager.Tag.Target == this.StudentManager.Students[this.StudentID].Head)
+						this.PromptBar.Label[0].text = "Gossip";
+					}
+					if (this.Distracting)
+					{
+						this.PromptBar.Label[0].text = "Distract";
+					}
+					if (this.CyberBullying)
+					{
+						this.PromptBar.Label[0].text = "Accept";
+					}
+					if (this.FindingLocker)
+					{
+						this.PromptBar.Label[0].text = "Find Locker";
+					}
+					if (this.MatchMaking)
+					{
+						this.PromptBar.Label[0].text = "Match";
+					}
+					if (this.Targeting || this.UsingLifeNote)
+					{
+						this.PromptBar.Label[0].text = "Kill";
+					}
+					if (this.SendingHome)
+					{
+						this.PromptBar.Label[0].text = "Send Home";
+					}
+					if (this.StudentManager.Students[this.StudentID] != null)
+					{
+						if (this.StudentManager.Students[this.StudentID].gameObject.activeInHierarchy)
 						{
-							this.PromptBar.Label[2].text = "Untag";
+							if (this.StudentManager.Tag.Target == this.StudentManager.Students[this.StudentID].Head)
+							{
+								this.PromptBar.Label[2].text = "Untag";
+							}
+							else
+							{
+								this.PromptBar.Label[2].text = "Tag";
+							}
 						}
 						else
 						{
-							this.PromptBar.Label[2].text = "Tag";
+							this.PromptBar.Label[2].text = string.Empty;
 						}
 					}
 					else
 					{
 						this.PromptBar.Label[2].text = string.Empty;
 					}
+					this.PromptBar.Label[1].text = "Back";
+					this.PromptBar.Label[3].text = "Interests";
+					this.PromptBar.UpdateButtons();
 				}
-				else
-				{
-					this.PromptBar.Label[2].text = string.Empty;
-				}
-				this.PromptBar.Label[1].text = "Back";
-				this.PromptBar.Label[3].text = "Interests";
-				this.PromptBar.UpdateButtons();
 			}
 			else
 			{
@@ -225,6 +256,15 @@ public class StudentInfoMenuScript : MonoBehaviour
 				base.gameObject.SetActive(false);
 				this.SendingHome = false;
 				this.GettingInfo = false;
+			}
+			else if (this.UsingLifeNote)
+			{
+				this.PauseScreen.MainMenu.SetActive(true);
+				this.PauseScreen.Sideways = false;
+				this.PauseScreen.Show = false;
+				base.gameObject.SetActive(false);
+				this.NoteWindow.gameObject.SetActive(true);
+				this.UsingLifeNote = false;
 			}
 			else
 			{
@@ -365,6 +405,18 @@ public class StudentInfoMenuScript : MonoBehaviour
 				this.PromptBar.UpdateButtons();
 			}
 		}
+		if (this.UsingLifeNote)
+		{
+			if (this.StudentID == 1 || this.StudentID > 97 || this.StudentPortraits[this.StudentID].DeathShadow.activeInHierarchy || (this.StudentManager.Students[this.StudentID] != null && !this.StudentManager.Students[this.StudentID].enabled))
+			{
+				this.PromptBar.Label[0].text = string.Empty;
+			}
+			else
+			{
+				this.PromptBar.Label[0].text = "Kill";
+			}
+			this.PromptBar.UpdateButtons();
+		}
 		this.Highlight.localPosition = new Vector3(-300f + (float)this.Column * 150f, 80f - (float)this.Row * 160f, this.Highlight.localPosition.z);
 		this.UpdateNameLabel();
 	}
@@ -383,61 +435,100 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	public IEnumerator UpdatePortraits()
 	{
+		if (this.Debugging)
+		{
+			Debug.Log("The Student Info Menu was instructed to get photos.");
+		}
 		for (int ID = 1; ID < 101; ID++)
 		{
+			if (this.Debugging)
+			{
+				Debug.Log("1 - We entered the loop.");
+			}
 			if (ID == 0)
 			{
 				this.StudentPortraits[ID].Portrait.mainTexture = this.InfoChan;
 			}
-			else if (!this.PortraitLoaded[ID])
+			else
 			{
-				if (ID < 98)
+				if (this.Debugging)
 				{
-					if (StudentGlobals.GetStudentPhotographed(ID))
+					Debug.Log("2 - ID is not zero.");
+				}
+				if (!this.PortraitLoaded[ID])
+				{
+					if (this.Debugging)
 					{
-						string path = string.Concat(new string[]
+						Debug.Log("3 - PortraitLoaded is false.");
+					}
+					if (ID < 98)
+					{
+						if (this.Debugging)
 						{
-							"file:///",
-							Application.streamingAssetsPath,
-							"/Portraits/Student_",
-							ID.ToString(),
-							".png"
-						});
-						WWW www = new WWW(path);
-						yield return www;
-						if (www.error == null)
+							Debug.Log("4 - ID is less than 98.");
+						}
+						if (StudentGlobals.GetStudentPhotographed(ID))
 						{
-							if (!StudentGlobals.GetStudentReplaced(ID))
+							if (this.Debugging)
 							{
-								this.StudentPortraits[ID].Portrait.mainTexture = www.texture;
+								Debug.Log("5 - GetStudentPhotographed is true.");
+							}
+							string path = string.Concat(new string[]
+							{
+								"file:///",
+								Application.streamingAssetsPath,
+								"/Portraits/Student_",
+								ID.ToString(),
+								".png"
+							});
+							if (this.Debugging)
+							{
+								Debug.Log("Path is: " + path);
+							}
+							WWW www = new WWW(path);
+							if (this.Debugging)
+							{
+								Debug.Log("Waiting for www to return.");
+							}
+							yield return www;
+							if (this.Debugging)
+							{
+								Debug.Log("www has returned.");
+							}
+							if (www.error == null)
+							{
+								if (!StudentGlobals.GetStudentReplaced(ID))
+								{
+									this.StudentPortraits[ID].Portrait.mainTexture = www.texture;
+								}
+								else
+								{
+									this.StudentPortraits[ID].Portrait.mainTexture = this.BlankPortrait;
+								}
 							}
 							else
 							{
-								this.StudentPortraits[ID].Portrait.mainTexture = this.BlankPortrait;
+								this.StudentPortraits[ID].Portrait.mainTexture = this.UnknownPortrait;
 							}
+							this.PortraitLoaded[ID] = true;
 						}
 						else
 						{
 							this.StudentPortraits[ID].Portrait.mainTexture = this.UnknownPortrait;
 						}
-						this.PortraitLoaded[ID] = true;
 					}
-					else
+					else if (ID == 98)
 					{
-						this.StudentPortraits[ID].Portrait.mainTexture = this.UnknownPortrait;
+						this.StudentPortraits[ID].Portrait.mainTexture = this.Counselor;
 					}
-				}
-				else if (ID == 98)
-				{
-					this.StudentPortraits[ID].Portrait.mainTexture = this.Counselor;
-				}
-				else if (ID == 99)
-				{
-					this.StudentPortraits[ID].Portrait.mainTexture = this.Headmaster;
-				}
-				else if (ID == 100)
-				{
-					this.StudentPortraits[ID].Portrait.mainTexture = this.InfoChan;
+					else if (ID == 99)
+					{
+						this.StudentPortraits[ID].Portrait.mainTexture = this.Headmaster;
+					}
+					else if (ID == 100)
+					{
+						this.StudentPortraits[ID].Portrait.mainTexture = this.InfoChan;
+					}
 				}
 			}
 			if (PlayerGlobals.GetStudentPantyShot(this.JSON.Students[ID].Name))

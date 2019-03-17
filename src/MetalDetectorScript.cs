@@ -92,7 +92,7 @@ public class MetalDetectorScript : MonoBehaviour
 					flag = weaponScript.Metal;
 				}
 			}
-			if (flag)
+			if (flag && !this.Yandere.Inventory.IDCard)
 			{
 				if (this.MissionMode.enabled)
 				{

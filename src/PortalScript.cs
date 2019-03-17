@@ -171,7 +171,6 @@ public class PortalScript : MonoBehaviour
 			{
 				if (this.ClassDarkness.color.a >= 1f)
 				{
-					Debug.Log("Updating the time of day.");
 					this.HeartbeatCamera.SetActive(true);
 					this.Clock.enabled = true;
 					this.Yandere.FixCamera();

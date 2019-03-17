@@ -825,16 +825,24 @@ public class ShutterScript : MonoBehaviour
 		if (this.PenaltyTimer >= 1f)
 		{
 			this.Subtitle.UpdateLabel(SubtitleType.PhotoAnnoyance, 0, 3f);
-			this.FaceStudent.RepDeduction = 0f;
-			this.FaceStudent.RepLoss = 1f;
-			this.FaceStudent.CalculateReputationPenalty();
-			if (this.FaceStudent.RepDeduction >= 0f)
+			if (this.MissionMode && this.FaceStudent.TimesAnnoyed < 5)
 			{
-				this.FaceStudent.RepLoss -= this.FaceStudent.RepDeduction;
+				this.FaceStudent.TimesAnnoyed++;
+				this.PenaltyTimer = 0f;
 			}
-			this.FaceStudent.Reputation.PendingRep -= this.FaceStudent.RepLoss * this.FaceStudent.Paranoia;
-			this.FaceStudent.PendingRep -= this.FaceStudent.RepLoss * this.FaceStudent.Paranoia;
-			this.PenaltyTimer = 0f;
+			else
+			{
+				this.FaceStudent.RepDeduction = 0f;
+				this.FaceStudent.RepLoss = 1f;
+				this.FaceStudent.CalculateReputationPenalty();
+				if (this.FaceStudent.RepDeduction >= 0f)
+				{
+					this.FaceStudent.RepLoss -= this.FaceStudent.RepDeduction;
+				}
+				this.FaceStudent.Reputation.PendingRep -= this.FaceStudent.RepLoss * this.FaceStudent.Paranoia;
+				this.FaceStudent.PendingRep -= this.FaceStudent.RepLoss * this.FaceStudent.Paranoia;
+				this.PenaltyTimer = 0f;
+			}
 		}
 	}
 }

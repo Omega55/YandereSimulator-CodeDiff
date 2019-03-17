@@ -503,6 +503,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string InfoNotice;
 
+	public int PreviousRandom;
+
 	public int RandomID;
 
 	public float Timer;
@@ -1835,7 +1837,7 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (subtitleType == SubtitleType.PetWeaponReaction)
 		{
-			this.Label.text = this.GetRandomString(this.PetWeaponReactions);
+			this.Label.text = this.PetWeaponReactions[ID];
 		}
 		else if (subtitleType == SubtitleType.PetBloodyWeaponReport)
 		{
@@ -2154,7 +2156,11 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (subtitleType == SubtitleType.PhotoAnnoyance)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.PhotoAnnoyances.Length);
+			while (this.RandomID == this.PreviousRandom)
+			{
+				this.RandomID = UnityEngine.Random.Range(0, this.PhotoAnnoyances.Length);
+			}
+			this.PreviousRandom = this.RandomID;
 			this.Label.text = this.PhotoAnnoyances[this.RandomID];
 		}
 		else if (subtitleType == SubtitleType.Task6Line)
