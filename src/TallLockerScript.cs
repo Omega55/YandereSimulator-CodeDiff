@@ -47,11 +47,6 @@ public class TallLockerScript : MonoBehaviour
 
 	public int Phase = 1;
 
-	private void Awake()
-	{
-		this.Yandere = GameObject.Find("YandereChan").GetComponent<YandereScript>();
-	}
-
 	private void Start()
 	{
 		this.Prompt.HideButton[1] = true;

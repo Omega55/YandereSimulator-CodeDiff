@@ -26,6 +26,8 @@ public class TitleMenuScript : MonoBehaviour
 
 	public UISprite[] DarkSprites;
 
+	public UILabel TitleLabel;
+
 	public UILabel SimulatorLabel;
 
 	public UILabel[] ColoredLabels;
@@ -83,6 +85,8 @@ public class TitleMenuScript : MonoBehaviour
 	public Vector3 PermaPositionL;
 
 	public Vector3 PermaPositionR;
+
+	public bool NeverChange;
 
 	public bool LoveSick;
 
@@ -250,8 +254,16 @@ public class TitleMenuScript : MonoBehaviour
 					GameGlobals.LoveSick = !GameGlobals.LoveSick;
 					SceneManager.LoadScene("TitleScene");
 				}
+				if (Input.GetKeyDown("m"))
+				{
+					this.TitleLabel.text = "MANDERE";
+				}
 				if (!this.LoveSick)
 				{
+					if (this.NeverChange)
+					{
+						this.Timer = 0f;
+					}
 					if (Input.GetKeyDown(KeyCode.Space))
 					{
 						this.Timer = 10f;

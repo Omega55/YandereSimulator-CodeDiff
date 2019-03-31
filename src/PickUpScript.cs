@@ -378,7 +378,7 @@ public class PickUpScript : MonoBehaviour
 			this.Yandere.NearBodies--;
 		}
 		this.Yandere.StudentManager.UpdateStudents(0);
-		if (this.Clothing)
+		if (this.Clothing && this.Evidence)
 		{
 			base.transform.parent = this.Yandere.Police.BloodParent;
 		}

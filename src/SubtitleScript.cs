@@ -103,6 +103,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] NoteReactions;
 
+	public string[] NoteReactionsMale;
+
 	public string[] OfferSnacks;
 
 	public string[] FoodAccepts;
@@ -361,6 +363,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] SplashReactions;
 
+	public string[] SplashReactionsMale;
+
 	public string[] RivalSplashReactions;
 
 	public string[] LightSwitchReactions;
@@ -513,6 +517,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public AudioClip[] NoteReactionClips;
 
+	public AudioClip[] NoteReactionMaleClips;
+
 	public AudioClip[] GrudgeWarningClips;
 
 	public AudioClip[] SenpaiInsanityReactionClips;
@@ -576,6 +582,8 @@ public class SubtitleScript : MonoBehaviour
 	public AudioClip[] RivalPickpocketReactionClips;
 
 	public AudioClip[] SplashReactionClips;
+
+	public AudioClip[] SplashReactionMaleClips;
 
 	public AudioClip[] RivalSplashReactionClips;
 
@@ -978,6 +986,10 @@ public class SubtitleScript : MonoBehaviour
 				new AudioClipArrayWrapper(this.NoteReactionClips)
 			},
 			{
+				SubtitleType.NoteReactionMale,
+				new AudioClipArrayWrapper(this.NoteReactionMaleClips)
+			},
+			{
 				SubtitleType.PickpocketReaction,
 				new AudioClipArrayWrapper(this.PickpocketReactionClips)
 			},
@@ -1024,6 +1036,10 @@ public class SubtitleScript : MonoBehaviour
 			{
 				SubtitleType.SplashReaction,
 				new AudioClipArrayWrapper(this.SplashReactionClips)
+			},
+			{
+				SubtitleType.SplashReactionMale,
+				new AudioClipArrayWrapper(this.SplashReactionMaleClips)
 			},
 			{
 				SubtitleType.Task6Line,
@@ -1417,6 +1433,11 @@ public class SubtitleScript : MonoBehaviour
 		else if (subtitleType == SubtitleType.NoteReaction)
 		{
 			this.Label.text = this.NoteReactions[ID];
+			this.PlayVoice(subtitleType, ID);
+		}
+		else if (subtitleType == SubtitleType.NoteReactionMale)
+		{
+			this.Label.text = this.NoteReactionsMale[ID];
 			this.PlayVoice(subtitleType, ID);
 		}
 		else if (subtitleType == SubtitleType.OfferSnack)
@@ -2142,6 +2163,11 @@ public class SubtitleScript : MonoBehaviour
 		else if (subtitleType == SubtitleType.SplashReaction)
 		{
 			this.Label.text = this.SplashReactions[ID];
+			this.PlayVoice(subtitleType, ID);
+		}
+		else if (subtitleType == SubtitleType.SplashReactionMale)
+		{
+			this.Label.text = this.SplashReactionsMale[ID];
 			this.PlayVoice(subtitleType, ID);
 		}
 		else if (subtitleType == SubtitleType.RivalSplashReaction)

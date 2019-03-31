@@ -825,10 +825,19 @@ public class ShutterScript : MonoBehaviour
 		if (this.PenaltyTimer >= 1f)
 		{
 			this.Subtitle.UpdateLabel(SubtitleType.PhotoAnnoyance, 0, 3f);
-			if (this.MissionMode && this.FaceStudent.TimesAnnoyed < 5)
+			if (this.MissionMode)
 			{
-				this.FaceStudent.TimesAnnoyed++;
-				this.PenaltyTimer = 0f;
+				if (this.FaceStudent.TimesAnnoyed < 5)
+				{
+					this.FaceStudent.TimesAnnoyed++;
+				}
+				else
+				{
+					this.FaceStudent.RepDeduction = 0f;
+					this.FaceStudent.RepLoss = 20f;
+					this.FaceStudent.Reputation.PendingRep -= this.FaceStudent.RepLoss * this.FaceStudent.Paranoia;
+					this.FaceStudent.PendingRep -= this.FaceStudent.RepLoss * this.FaceStudent.Paranoia;
+				}
 			}
 			else
 			{
@@ -841,8 +850,8 @@ public class ShutterScript : MonoBehaviour
 				}
 				this.FaceStudent.Reputation.PendingRep -= this.FaceStudent.RepLoss * this.FaceStudent.Paranoia;
 				this.FaceStudent.PendingRep -= this.FaceStudent.RepLoss * this.FaceStudent.Paranoia;
-				this.PenaltyTimer = 0f;
 			}
+			this.PenaltyTimer = 0f;
 		}
 	}
 }

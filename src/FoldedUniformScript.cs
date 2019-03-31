@@ -30,8 +30,8 @@ public class FoldedUniformScript : MonoBehaviour
 	{
 		if (this.Clean)
 		{
-			this.InPosition = (this.Yandere.transform.position.x > 10f && this.Yandere.transform.position.x < 22f && this.Yandere.transform.position.z > 42f && this.Yandere.transform.position.z < 50f);
-			this.Prompt.HideButton[0] = (!this.Yandere.CensorSteam[0].activeInHierarchy || this.Yandere.Bloodiness != 0f || !this.InPosition);
+			this.InPosition = this.Yandere.StudentManager.LockerRoomArea.bounds.Contains(base.transform.position);
+			this.Prompt.HideButton[0] = (!this.Yandere.MyRenderer.sharedMesh == this.Yandere.Towel || this.Yandere.Bloodiness != 0f || !this.InPosition);
 			if (this.Prompt.Circle[0].fillAmount == 0f)
 			{
 				UnityEngine.Object.Instantiate<GameObject>(this.SteamCloud, this.Yandere.transform.position + Vector3.up * 0.81f, Quaternion.identity);

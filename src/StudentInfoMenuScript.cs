@@ -407,7 +407,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 		}
 		if (this.UsingLifeNote)
 		{
-			if (this.StudentID == 1 || this.StudentID > 97 || this.StudentPortraits[this.StudentID].DeathShadow.activeInHierarchy || (this.StudentManager.Students[this.StudentID] != null && !this.StudentManager.Students[this.StudentID].enabled))
+			if (this.StudentID == 1 || this.StudentID > 97 || (this.StudentID > 10 && this.StudentID < 21) || this.StudentPortraits[this.StudentID].DeathShadow.activeInHierarchy || (this.StudentManager.Students[this.StudentID] != null && !this.StudentManager.Students[this.StudentID].enabled))
 			{
 				this.PromptBar.Label[0].text = string.Empty;
 			}

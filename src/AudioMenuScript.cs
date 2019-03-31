@@ -88,15 +88,18 @@ public class AudioMenuScript : MonoBehaviour
 
 	public void UpdateText()
 	{
-		this.CurrentTrackLabel.text = "Current Track: " + this.Jukebox.BGM;
-		this.MusicVolumeLabel.text = string.Empty + (this.Jukebox.Volume * 10f).ToString("F1");
-		if (this.Jukebox.Volume == 0f)
+		if (this.Jukebox != null)
 		{
-			this.MusicOnOffLabel.text = "Off";
-		}
-		else
-		{
-			this.MusicOnOffLabel.text = "On";
+			this.CurrentTrackLabel.text = "Current Track: " + this.Jukebox.BGM;
+			this.MusicVolumeLabel.text = string.Empty + (this.Jukebox.Volume * 10f).ToString("F1");
+			if (this.Jukebox.Volume == 0f)
+			{
+				this.MusicOnOffLabel.text = "Off";
+			}
+			else
+			{
+				this.MusicOnOffLabel.text = "On";
+			}
 		}
 	}
 

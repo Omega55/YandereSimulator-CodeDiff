@@ -54,6 +54,8 @@ public class DebugMenuScript : MonoBehaviour
 
 	public GameObject Window;
 
+	public bool TryNextFrame;
+
 	public bool MissionMode;
 
 	public bool NoDebug;
@@ -615,6 +617,10 @@ public class DebugMenuScript : MonoBehaviour
 					this.Timer = 0f;
 				}
 			}
+			if (this.TryNextFrame)
+			{
+				this.UpdateCensor();
+			}
 		}
 		else if (Input.GetKeyDown(KeyCode.Backslash))
 		{
@@ -716,19 +722,27 @@ public class DebugMenuScript : MonoBehaviour
 			Debug.Log("Nier costume special case.");
 			this.Yandere.PantyAttacher.newRenderer.enabled = false;
 			SkinnedMeshRenderer newRenderer = this.Yandere.NierCostume.GetComponent<RiggedAccessoryAttacher>().newRenderer;
-			if (!this.StudentManager.Censor)
+			if (newRenderer == null)
 			{
-				newRenderer.materials[0].SetFloat("_BlendAmount", 1f);
-				newRenderer.materials[1].SetFloat("_BlendAmount", 1f);
-				newRenderer.materials[2].SetFloat("_BlendAmount", 1f);
-				newRenderer.materials[3].SetFloat("_BlendAmount", 1f);
+				this.TryNextFrame = true;
 			}
 			else
 			{
-				newRenderer.materials[0].SetFloat("_BlendAmount", 0f);
-				newRenderer.materials[1].SetFloat("_BlendAmount", 0f);
-				newRenderer.materials[2].SetFloat("_BlendAmount", 0f);
-				newRenderer.materials[3].SetFloat("_BlendAmount", 0f);
+				this.TryNextFrame = false;
+				if (!this.StudentManager.Censor)
+				{
+					newRenderer.materials[0].SetFloat("_BlendAmount", 1f);
+					newRenderer.materials[1].SetFloat("_BlendAmount", 1f);
+					newRenderer.materials[2].SetFloat("_BlendAmount", 1f);
+					newRenderer.materials[3].SetFloat("_BlendAmount", 1f);
+				}
+				else
+				{
+					newRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+					newRenderer.materials[1].SetFloat("_BlendAmount", 0f);
+					newRenderer.materials[2].SetFloat("_BlendAmount", 0f);
+					newRenderer.materials[3].SetFloat("_BlendAmount", 0f);
+				}
 			}
 		}
 	}

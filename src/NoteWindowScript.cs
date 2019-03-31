@@ -227,14 +227,11 @@ public class NoteWindowScript : MonoBehaviour
 								this.NoteLocker.Success = true;
 							}
 						}
-						else if (this.NoteLocker.Student.StudentID == 2 || this.NoteLocker.Student.StudentID == 3 || this.NoteLocker.Student.StudentID == 65)
+						else if ((this.NoteLocker.Student.StudentID == 2 || this.NoteLocker.Student.StudentID == 3 || this.NoteLocker.Student.StudentID == 65) && this.SlotLabels[1].text == this.Subjects[7])
 						{
-							if (this.SlotLabels[1].text == this.Subjects[7])
-							{
-								this.NoteLocker.Success = true;
-							}
+							this.NoteLocker.Success = true;
 						}
-						else if (this.NoteLocker.Student.Persona == PersonaType.Loner && this.SlotLabels[1].text == this.Subjects[1])
+						if (this.NoteLocker.Student.Persona == PersonaType.Loner && this.SlotLabels[1].text == this.Subjects[1])
 						{
 							this.NoteLocker.Success = true;
 						}
@@ -253,9 +250,12 @@ public class NoteWindowScript : MonoBehaviour
 						{
 							this.NoteLocker.Success = true;
 						}
-						else if (this.NoteLocker.Student.Persona == PersonaType.SocialButterfly && this.SlotLabels[1].text == this.Subjects[5])
+						else if (this.NoteLocker.Student.Persona == PersonaType.SocialButterfly)
 						{
-							this.NoteLocker.Success = true;
+							if (this.SlotLabels[1].text == this.Subjects[1] || this.SlotLabels[1].text == this.Subjects[5])
+							{
+								this.NoteLocker.Success = true;
+							}
 						}
 						else if (this.NoteLocker.Student.Persona == PersonaType.PhoneAddict && this.SlotLabels[1].text == this.Subjects[6])
 						{

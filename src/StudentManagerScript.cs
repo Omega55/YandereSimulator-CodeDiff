@@ -442,6 +442,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public bool DisableFarAnims;
 
+	public bool MetalDetectors;
+
 	public bool NoClubMeeting;
 
 	public bool UpdatedBlood;
@@ -556,6 +558,7 @@ public class StudentManagerScript : MonoBehaviour
 	private void Start()
 	{
 		this.LoveSick = GameGlobals.LoveSick;
+		this.MetalDetectors = SchoolGlobals.HighSecurity;
 		if (ClubGlobals.GetClubClosed(ClubType.LightMusic))
 		{
 			this.SpawnPositions[51].position = new Vector3(3f, 0f, -95f);

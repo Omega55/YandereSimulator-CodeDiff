@@ -138,7 +138,7 @@ public class NoteLockerScript : MonoBehaviour
 						this.Finish();
 					}
 				}
-				if (this.Timer > 4.66666651f && !this.SpawnedNote)
+				if (this.Timer > 3.5f && !this.SpawnedNote)
 				{
 					this.NewNote = UnityEngine.Object.Instantiate<GameObject>(this.Note, base.transform.position, Quaternion.identity);
 					this.NewNote.transform.parent = this.Student.LeftHand;
@@ -149,18 +149,18 @@ public class NoteLockerScript : MonoBehaviour
 				}
 				if (!this.Success)
 				{
-					if (this.Timer > 11.666667f && this.NewNote != null)
+					if (this.Timer > 10f && this.NewNote != null)
 					{
 						if (this.NewNote.transform.localScale.z > 0.1f)
 						{
-							this.NewNote.transform.localScale = Vector3.MoveTowards(this.NewNote.transform.localScale, Vector3.zero, Time.deltaTime);
+							this.NewNote.transform.localScale = Vector3.MoveTowards(this.NewNote.transform.localScale, Vector3.zero, Time.deltaTime * 2f);
 						}
 						else
 						{
 							UnityEngine.Object.Destroy(this.NewNote);
 						}
 					}
-					if (this.Timer > 13.333333f && this.NewBall == null)
+					if (this.Timer > 12.25f && this.NewBall == null)
 					{
 						this.NewBall = UnityEngine.Object.Instantiate<GameObject>(this.Ball, this.Student.LeftHand.position, Quaternion.identity);
 						Rigidbody component = this.NewBall.GetComponent<Rigidbody>();
@@ -169,11 +169,11 @@ public class NoteLockerScript : MonoBehaviour
 						this.Phase++;
 					}
 				}
-				else if (this.Timer > 12.833333f && this.NewNote != null)
+				else if (this.Timer > 12.5f && this.NewNote != null)
 				{
 					if (this.NewNote.transform.localScale.z > 0.1f)
 					{
-						this.NewNote.transform.localScale = Vector3.MoveTowards(this.NewNote.transform.localScale, Vector3.zero, Time.deltaTime);
+						this.NewNote.transform.localScale = Vector3.MoveTowards(this.NewNote.transform.localScale, Vector3.zero, Time.deltaTime * 2f);
 					}
 					else
 					{
@@ -184,7 +184,14 @@ public class NoteLockerScript : MonoBehaviour
 				{
 					if (this.Timer > 2.33333325f)
 					{
-						this.Yandere.Subtitle.UpdateLabel(SubtitleType.NoteReaction, 1, 3f);
+						if (!this.Student.Male)
+						{
+							this.Yandere.Subtitle.UpdateLabel(SubtitleType.NoteReaction, 1, 3f);
+						}
+						else
+						{
+							this.Yandere.Subtitle.UpdateLabel(SubtitleType.NoteReactionMale, 1, 3f);
+						}
 						this.Phase++;
 					}
 				}
@@ -194,13 +201,27 @@ public class NoteLockerScript : MonoBehaviour
 					{
 						if (this.Timer > 9.666667f)
 						{
-							this.Yandere.Subtitle.UpdateLabel(SubtitleType.NoteReaction, 2, 3f);
+							if (!this.Student.Male)
+							{
+								this.Yandere.Subtitle.UpdateLabel(SubtitleType.NoteReaction, 2, 3f);
+							}
+							else
+							{
+								this.Yandere.Subtitle.UpdateLabel(SubtitleType.NoteReactionMale, 2, 3f);
+							}
 							this.Phase++;
 						}
 					}
 					else if (this.Timer > 10.166667f)
 					{
-						this.Yandere.Subtitle.UpdateLabel(SubtitleType.NoteReaction, 3, 3f);
+						if (!this.Student.Male)
+						{
+							this.Yandere.Subtitle.UpdateLabel(SubtitleType.NoteReaction, 3, 3f);
+						}
+						else
+						{
+							this.Yandere.Subtitle.UpdateLabel(SubtitleType.NoteReactionMale, 3, 3f);
+						}
 						this.Phase++;
 					}
 				}

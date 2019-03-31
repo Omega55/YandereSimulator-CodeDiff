@@ -15,6 +15,9 @@ public class WelcomeScript : MonoBehaviour
 	private UILabel[] FlashingLabels;
 
 	[SerializeField]
+	private UILabel AltBeginLabel;
+
+	[SerializeField]
 	private UILabel BeginLabel;
 
 	[SerializeField]
@@ -40,6 +43,7 @@ public class WelcomeScript : MonoBehaviour
 	{
 		Time.timeScale = 1f;
 		this.BeginLabel.color = new Color(this.BeginLabel.color.r, this.BeginLabel.color.g, this.BeginLabel.color.b, 0f);
+		this.AltBeginLabel.color = this.BeginLabel.color;
 		this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 2f);
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
@@ -81,7 +85,8 @@ public class WelcomeScript : MonoBehaviour
 				if (this.Timer > 5f)
 				{
 					this.BeginLabel.color = new Color(this.BeginLabel.color.r, this.BeginLabel.color.g, this.BeginLabel.color.b, this.BeginLabel.color.a + Time.deltaTime);
-					if (this.BeginLabel.color.a >= 1f && this.WelcomePanel.activeInHierarchy && Input.anyKeyDown)
+					this.AltBeginLabel.color = this.BeginLabel.color;
+					if (this.BeginLabel.color.a >= 1f && Input.anyKeyDown)
 					{
 						this.Darkness.color = new Color(1f, 1f, 1f, 0f);
 						this.Continue = true;

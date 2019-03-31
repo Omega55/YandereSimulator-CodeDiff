@@ -136,7 +136,7 @@ public class ShoeRemovalScript : MonoBehaviour
 			this.Student.CharacterAnimation.CrossFade(this.RemovalAnim);
 			if (this.Phase == 1)
 			{
-				if (this.Student.CharacterAnimation[this.RemovalAnim].time >= 1.1f)
+				if (this.Student.CharacterAnimation[this.RemovalAnim].time >= 0.833333f)
 				{
 					this.ShoeParent.parent = this.LeftHand;
 					this.Phase++;
@@ -144,7 +144,7 @@ public class ShoeRemovalScript : MonoBehaviour
 			}
 			else if (this.Phase == 2)
 			{
-				if (this.Student.CharacterAnimation[this.RemovalAnim].time >= 2f)
+				if (this.Student.CharacterAnimation[this.RemovalAnim].time >= 1.833333f)
 				{
 					this.ShoeParent.parent = this.Locker;
 					this.X = this.ShoeParent.localEulerAngles.x;
@@ -169,7 +169,7 @@ public class ShoeRemovalScript : MonoBehaviour
 			}
 			else if (this.Phase == 4)
 			{
-				if (this.Student.CharacterAnimation[this.RemovalAnim].time >= 3.4f)
+				if (this.Student.CharacterAnimation[this.RemovalAnim].time >= 3.5f)
 				{
 					this.RightCurrentShoe.parent = null;
 					this.RightCurrentShoe.position = new Vector3(this.RightCurrentShoe.position.x, 0.05f, this.RightCurrentShoe.position.z);
@@ -179,7 +179,7 @@ public class ShoeRemovalScript : MonoBehaviour
 			}
 			else if (this.Phase == 5)
 			{
-				if (this.Student.CharacterAnimation[this.RemovalAnim].time >= 4.4f)
+				if (this.Student.CharacterAnimation[this.RemovalAnim].time >= 4f)
 				{
 					this.LeftCurrentShoe.parent = null;
 					this.LeftCurrentShoe.position = new Vector3(this.LeftCurrentShoe.position.x, 0.05f, this.LeftCurrentShoe.position.z);
@@ -189,7 +189,7 @@ public class ShoeRemovalScript : MonoBehaviour
 			}
 			else if (this.Phase == 6)
 			{
-				if (this.Student.CharacterAnimation[this.RemovalAnim].time >= 5.6f)
+				if (this.Student.CharacterAnimation[this.RemovalAnim].time >= 5.5f)
 				{
 					this.LeftNewShoe.parent = this.LeftFoot;
 					this.LeftNewShoe.localPosition = this.LeftShoePosition;
@@ -199,7 +199,7 @@ public class ShoeRemovalScript : MonoBehaviour
 			}
 			else if (this.Phase == 7)
 			{
-				if (this.Student.CharacterAnimation[this.RemovalAnim].time >= 6.8f)
+				if (this.Student.CharacterAnimation[this.RemovalAnim].time >= 6.66666f)
 				{
 					if (!this.Student.AoT)
 					{
@@ -223,7 +223,7 @@ public class ShoeRemovalScript : MonoBehaviour
 			}
 			else if (this.Phase == 8)
 			{
-				if (this.Student.CharacterAnimation[this.RemovalAnim].time >= 7.6f)
+				if (this.Student.CharacterAnimation[this.RemovalAnim].time >= 7.666666f)
 				{
 					this.ShoeParent.transform.position = (this.RightCurrentShoe.position - this.LeftCurrentShoe.position) * 0.5f;
 					this.RightCurrentShoe.parent = this.ShoeParent;

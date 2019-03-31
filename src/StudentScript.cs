@@ -2477,13 +2477,20 @@ public class StudentScript : MonoBehaviour
 		{
 			if (this.RivalPrefix == string.Empty)
 			{
-				return SubtitleType.SplashReaction;
+				if (!this.Male)
+				{
+					return SubtitleType.SplashReaction;
+				}
+				return SubtitleType.SplashReactionMale;
 			}
-			if (this.RivalPrefix == "Rival ")
+			else
 			{
-				return SubtitleType.RivalSplashReaction;
+				if (this.RivalPrefix == "Rival ")
+				{
+					return SubtitleType.RivalSplashReaction;
+				}
+				throw new NotImplementedException("\"" + this.RivalPrefix + "\" case not implemented.");
 			}
-			throw new NotImplementedException("\"" + this.RivalPrefix + "\" case not implemented.");
 		}
 	}
 
@@ -5507,9 +5514,13 @@ public class StudentScript : MonoBehaviour
 							{
 								this.Subtitle.UpdateLabel(SubtitleType.NoteReaction, 4, 3f);
 							}
+							else if (this.StudentID == 28)
+							{
+								this.Subtitle.UpdateLabel(SubtitleType.NoteReactionMale, 6, 3f);
+							}
 							else
 							{
-								this.Subtitle.UpdateLabel(SubtitleType.NoteReaction, 6, 3f);
+								this.Subtitle.UpdateLabel(SubtitleType.NoteReactionMale, 4, 3f);
 							}
 							while (this.Clock.HourTime >= this.ScheduleBlocks[this.Phase].time)
 							{
@@ -8045,15 +8056,23 @@ public class StudentScript : MonoBehaviour
 						{
 							flag2 = true;
 						}
-						if (this.WitnessedWeapon && !this.WitnessedBloodyWeapon && this.StudentID > 1 && this.CurrentAction != StudentActionType.SitAndTakeNotes && this.Indoors && !flag2 && !this.BloodPool.GetComponent<WeaponScript>().Dangerous && this.BloodPool.GetComponent<WeaponScript>().Returner == null)
+						if (this.WitnessedWeapon)
 						{
-							this.CharacterAnimation[this.PickUpAnim].time = 0f;
-							this.BloodPool.GetComponent<WeaponScript>().Prompt.Hide();
-							this.BloodPool.GetComponent<WeaponScript>().Prompt.enabled = false;
-							this.BloodPool.GetComponent<WeaponScript>().enabled = false;
-							this.BloodPool.GetComponent<WeaponScript>().Returner = this;
-							this.Subtitle.UpdateLabel(SubtitleType.ReturningWeapon, 0, 5f);
-							this.ReturningMisplacedWeapon = true;
+							bool flag3 = false;
+							if (!this.Teacher && this.BloodPool.GetComponent<WeaponScript>().Metal && this.StudentManager.MetalDetectors)
+							{
+								flag3 = true;
+							}
+							if (!this.WitnessedBloodyWeapon && this.StudentID > 1 && !flag3 && this.CurrentAction != StudentActionType.SitAndTakeNotes && this.Indoors && !flag2 && !this.BloodPool.GetComponent<WeaponScript>().Dangerous && this.BloodPool.GetComponent<WeaponScript>().Returner == null)
+							{
+								this.CharacterAnimation[this.PickUpAnim].time = 0f;
+								this.BloodPool.GetComponent<WeaponScript>().Prompt.Hide();
+								this.BloodPool.GetComponent<WeaponScript>().Prompt.enabled = false;
+								this.BloodPool.GetComponent<WeaponScript>().enabled = false;
+								this.BloodPool.GetComponent<WeaponScript>().Returner = this;
+								this.Subtitle.UpdateLabel(SubtitleType.ReturningWeapon, 0, 5f);
+								this.ReturningMisplacedWeapon = true;
+							}
 						}
 						this.InvestigatingBloodPool = false;
 						this.WitnessCooldownTimer = 5f;
@@ -8220,8 +8239,11 @@ public class StudentScript : MonoBehaviour
 						this.Pathfinding.speed = 1f;
 						this.ReturningMisplacedWeapon = false;
 						this.WitnessedSomething = false;
+						this.WitnessedWeapon = false;
+						this.ReportingBlood = false;
 						this.Routine = true;
 						this.ReturningMisplacedWeaponPhase = 0;
+						this.WitnessCooldownTimer = 0f;
 					}
 				}
 			}
@@ -9124,7 +9146,14 @@ public class StudentScript : MonoBehaviour
 				else if (this.Pushable)
 				{
 					this.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
-					this.Subtitle.UpdateLabel(SubtitleType.NoteReaction, 5, 3f);
+					if (!this.Male)
+					{
+						this.Subtitle.UpdateLabel(SubtitleType.NoteReaction, 5, 3f);
+					}
+					else
+					{
+						this.Subtitle.UpdateLabel(SubtitleType.NoteReactionMale, 5, 3f);
+					}
 					this.Prompt.Label[0].text = "     Talk";
 					this.Prompt.Circle[0].fillAmount = 1f;
 					this.Yandere.TargetStudent = this;
@@ -10837,7 +10866,7 @@ public class StudentScript : MonoBehaviour
 				{
 					base.transform.position = new Vector3(base.transform.position.x, 0f, base.transform.position.z);
 				}
-				if (!this.Dying && !this.Distracted && !this.WalkBack && !this.Waiting && !this.Guarding && !this.WitnessedMurder && !this.WitnessedCorpse && !this.Yandere.Egg && !this.StudentManager.Pose && !this.ShoeRemoval.enabled && !this.Blind && !this.SentHome && !this.TurnOffRadio && !this.Wet && !this.InvestigatingBloodPool)
+				if (!this.Dying && !this.Distracted && !this.WalkBack && !this.Waiting && !this.Guarding && !this.WitnessedMurder && !this.WitnessedCorpse && !this.Yandere.Egg && !this.StudentManager.Pose && !this.ShoeRemoval.enabled && !this.Blind && !this.SentHome && !this.TurnOffRadio && !this.Wet && !this.InvestigatingBloodPool && !this.ReturningMisplacedWeapon && this.AlarmTimer == 0f)
 				{
 					if (this.StudentManager.MissionMode && (double)this.DistanceToPlayer < 0.5)
 					{

@@ -1152,9 +1152,13 @@ public class YandereScript : MonoBehaviour
 
 	public Mesh YamikoMesh;
 
-	public Texture NierTexture;
-
 	public GameObject NierCostume;
+
+	public GameObject HeavySword;
+
+	public GameObject LightSword;
+
+	public GameObject Pod;
 
 	public Mesh SchoolSwimsuit;
 
@@ -1210,6 +1214,8 @@ public class YandereScript : MonoBehaviour
 
 	public bool BullyPhoto;
 
+	public bool AprilFools;
+
 	private void Start()
 	{
 		this.SpiderLegs.SetActive(GameGlobals.EmptyDemon);
@@ -1226,6 +1232,12 @@ public class YandereScript : MonoBehaviour
 		this.CharacterAnimation["f02_shipGirlSnap_00"].speed = 2f;
 		this.CharacterAnimation["f02_gazerSnap_00"].speed = 2f;
 		this.CharacterAnimation["f02_performing_00"].speed = 0.9f;
+		this.CharacterAnimation["f02_sithAttack_00"].speed = 1.5f;
+		this.CharacterAnimation["f02_sithAttack_01"].speed = 1.5f;
+		this.CharacterAnimation["f02_sithAttack_02"].speed = 1.5f;
+		this.CharacterAnimation["f02_sithAttackHard_00"].speed = 1.5f;
+		this.CharacterAnimation["f02_sithAttackHard_01"].speed = 1.5f;
+		this.CharacterAnimation["f02_sithAttackHard_02"].speed = 1.5f;
 		ColorCorrectionCurves[] components = Camera.main.GetComponents<ColorCorrectionCurves>();
 		Vignetting[] components2 = Camera.main.GetComponents<Vignetting>();
 		this.YandereColorCorrection = components[1];
@@ -1280,6 +1292,9 @@ public class YandereScript : MonoBehaviour
 		this.Shoes[1].SetActive(false);
 		this.Phone.SetActive(false);
 		this.Cape.SetActive(false);
+		this.HeavySword.SetActive(false);
+		this.LightSword.SetActive(false);
+		this.Pod.SetActive(false);
 		this.OriginalIdleAnim = this.IdleAnim;
 		this.OriginalWalkAnim = this.WalkAnim;
 		this.OriginalRunAnim = this.RunAnim;
@@ -2012,7 +2027,7 @@ public class YandereScript : MonoBehaviour
 						this.UpdateSelfieStatus();
 					}
 				}
-				if (!this.Aiming && !this.Accessories[9].activeInHierarchy && !this.Accessories[16].activeInHierarchy)
+				if (!this.Aiming && !this.Accessories[9].activeInHierarchy && !this.Accessories[16].activeInHierarchy && !this.Pod.activeInHierarchy)
 				{
 					if (Input.GetButton("RB"))
 					{
@@ -2041,6 +2056,7 @@ public class YandereScript : MonoBehaviour
 							this.Beam[3].Play();
 							if (Input.GetButtonDown("X"))
 							{
+								this.CharacterAnimation["f02_sithAttack_00"].time = 0f;
 								this.CharacterAnimation.Play("f02_sithAttack_00");
 								this.SithBeam[1].Damage = 10f;
 								this.SithBeam[2].Damage = 10f;
@@ -2050,6 +2066,7 @@ public class YandereScript : MonoBehaviour
 							}
 							if (Input.GetButtonDown("Y"))
 							{
+								this.CharacterAnimation["f02_sithAttackHard_00"].time = 0f;
 								this.CharacterAnimation.Play("f02_sithAttackHard_00");
 								this.SithBeam[1].Damage = 20f;
 								this.SithBeam[2].Damage = 20f;
@@ -2112,7 +2129,7 @@ public class YandereScript : MonoBehaviour
 					}
 					if (Input.GetButtonUp("RB"))
 					{
-						if (this.Stance.Current != StanceType.Crouching && this.Stance.Current != StanceType.Crawling && this.YandereTimer < 0.5f && !this.Dragging && !this.Carrying && !this.Laughing)
+						if (this.Stance.Current != StanceType.Crouching && this.Stance.Current != StanceType.Crawling && this.YandereTimer < 0.5f && !this.Dragging && !this.Carrying && !this.Pod.activeInHierarchy && !this.Laughing)
 						{
 							if (this.Sans)
 							{
@@ -2164,7 +2181,7 @@ public class YandereScript : MonoBehaviour
 									this.PromptBar.Label[4].text = "Select";
 									this.PromptBar.UpdateButtons();
 								}
-								else if (!this.FalconHelmet.activeInHierarchy && this.Barcode.activeInHierarchy)
+								else if (!this.FalconHelmet.activeInHierarchy && !this.Cape.activeInHierarchy)
 								{
 									if (!this.Xtan)
 									{
@@ -3601,7 +3618,7 @@ public class YandereScript : MonoBehaviour
 					this.SithPrefix,
 					"_0",
 					this.SithCombo
-				})].length)
+				})].length || this.h + this.v != 0f)
 				{
 					this.CharacterAnimation[string.Concat(new object[]
 					{
@@ -5109,14 +5126,15 @@ public class YandereScript : MonoBehaviour
 								this.LifeNote();
 								this.EasterEggMenu.SetActive(false);
 							}
-							else if (Input.GetKeyDown(KeyCode.F4))
+							else if (!Input.GetKeyDown(KeyCode.F4))
 							{
-								this.Nier();
-								this.EasterEggMenu.SetActive(false);
-							}
-							else if (Input.GetKeyDown(KeyCode.Space))
-							{
-								this.EasterEggMenu.SetActive(false);
+								if (!Input.GetKeyDown(KeyCode.F5))
+								{
+									if (Input.GetKeyDown(KeyCode.Space))
+									{
+										this.EasterEggMenu.SetActive(false);
+									}
+								}
 							}
 						}
 					}
@@ -6456,6 +6474,10 @@ public class YandereScript : MonoBehaviour
 	private void Nier()
 	{
 		this.NierCostume.SetActive(true);
+		this.HeavySword.SetActive(true);
+		this.LightSword.SetActive(true);
+		this.Pod.SetActive(true);
+		this.Pod.transform.parent = null;
 		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
 		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
 		this.MyRenderer.sharedMesh = null;
@@ -6465,7 +6487,9 @@ public class YandereScript : MonoBehaviour
 		this.UpdateHair();
 		this.Egg = true;
 		this.IdleAnim = "f02_heroicIdle_00";
-		this.WalkAnim = "f02_walkConfident_00";
+		this.WalkAnim = "f02_walkGraceful_00";
+		this.RunAnim = "CyborgNinja_Run_Unarmed";
+		this.RunSpeed = 10f;
 		this.DebugMenu.transform.parent.GetComponent<DebugMenuScript>().UpdateCensor();
 	}
 
@@ -6504,6 +6528,8 @@ public class YandereScript : MonoBehaviour
 			this.MyRenderer.materials[0].mainTexture = this.TowelTexture;
 			this.MyRenderer.materials[1].mainTexture = this.TowelTexture;
 			this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
+			this.ClubAttire = false;
+			this.Schoolwear = 0;
 		}
 		else if (this.Schoolwear == 1)
 		{

@@ -5,6 +5,8 @@ public class YandereShowerScript : MonoBehaviour
 {
 	public SkinnedMeshRenderer Curtain;
 
+	public GameObject CensorSteam;
+
 	public YandereScript Yandere;
 
 	public PromptScript Prompt;
@@ -36,6 +38,7 @@ public class YandereShowerScript : MonoBehaviour
 			else
 			{
 				AudioSource.PlayClipAtPoint(this.CurtainOpen, base.transform.position);
+				this.CensorSteam.SetActive(true);
 				this.MyAudio.Play();
 				this.Yandere.EmptyHands();
 				this.Yandere.YandereShower = this;
@@ -56,6 +59,11 @@ public class YandereShowerScript : MonoBehaviour
 					AudioSource.PlayClipAtPoint(this.CurtainClose, base.transform.position);
 				}
 				this.Open = false;
+				if (this.Timer == 0f)
+				{
+					this.CensorSteam.SetActive(false);
+					this.UpdateCurtain = false;
+				}
 			}
 			if (this.Open)
 			{

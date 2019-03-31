@@ -604,7 +604,7 @@ public class MissionModeScript : MonoBehaviour
 			{
 				if (this.Police.Corpses == 1)
 				{
-					if (this.StudentManager.Students[this.TargetID] != null && this.StudentManager.Students[this.TargetID].Alive)
+					if (this.Police.CorpseList[0].StudentID != this.TargetID)
 					{
 						this.Chastise = true;
 						this.GameOverID = 5;
