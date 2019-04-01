@@ -419,9 +419,6 @@ public class JukeboxScript : MonoBehaviour
 			}
 			else if (Input.GetKeyDown(KeyCode.F5))
 			{
-				this.Egg = true;
-				this.KillVolume();
-				this.Nier.enabled = true;
 			}
 		}
 	}

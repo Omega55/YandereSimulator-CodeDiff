@@ -35,6 +35,9 @@ public class CreditsScript : MonoBehaviour
 	private float FadeTimer;
 
 	[SerializeField]
+	private float Speed = 1f;
+
+	[SerializeField]
 	private float Timer;
 
 	[SerializeField]
@@ -87,7 +90,7 @@ public class CreditsScript : MonoBehaviour
 					gameObject.GetComponent<UILabel>().text = creditJson.Name;
 					this.ID++;
 				}
-				this.Timer += Time.deltaTime;
+				this.Timer += Time.deltaTime * this.Speed;
 				if (this.Timer >= this.TimerLimit)
 				{
 					this.Timer = 0f;

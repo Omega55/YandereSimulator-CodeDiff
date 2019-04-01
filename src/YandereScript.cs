@@ -982,6 +982,8 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject Kun;
 
+	public GameObject Man;
+
 	public GameObject Kizuna;
 
 	public AudioClip HaiDomo;
@@ -5126,14 +5128,16 @@ public class YandereScript : MonoBehaviour
 								this.LifeNote();
 								this.EasterEggMenu.SetActive(false);
 							}
-							else if (!Input.GetKeyDown(KeyCode.F4))
+							else if (Input.GetKeyDown(KeyCode.F4))
 							{
-								if (!Input.GetKeyDown(KeyCode.F5))
+								this.Mandere();
+								this.EasterEggMenu.SetActive(false);
+							}
+							else if (!Input.GetKeyDown(KeyCode.F5))
+							{
+								if (Input.GetKeyDown(KeyCode.Space))
 								{
-									if (Input.GetKeyDown(KeyCode.Space))
-									{
-										this.EasterEggMenu.SetActive(false);
-									}
+									this.EasterEggMenu.SetActive(false);
 								}
 							}
 						}
@@ -5279,6 +5283,11 @@ public class YandereScript : MonoBehaviour
 		if (this.PickUp != null && this.PickUp.Flashlight)
 		{
 			this.RightHand.transform.eulerAngles = new Vector3(0f, base.transform.eulerAngles.y, base.transform.eulerAngles.z);
+		}
+		if (this.AprilFools)
+		{
+			this.Mandere();
+			this.AprilFools = false;
 		}
 	}
 
@@ -6179,6 +6188,26 @@ public class YandereScript : MonoBehaviour
 		this.PantyAttacher.newRenderer.enabled = false;
 		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
 		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
+		this.IdleAnim = "idleShort_00";
+		this.WalkAnim = "walk_00";
+		this.RunAnim = "newSprint_00";
+		this.OriginalIdleAnim = this.IdleAnim;
+		this.OriginalWalkAnim = this.WalkAnim;
+		this.OriginalRunAnim = this.RunAnim;
+		this.Hairstyle = 0;
+		this.UpdateHair();
+	}
+
+	private void Mandere()
+	{
+		this.Man.SetActive(true);
+		this.Barcode.SetActive(false);
+		this.MyRenderer.enabled = false;
+		this.PantyAttacher.newRenderer.enabled = false;
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
+		this.RightYandereEye.gameObject.SetActive(false);
+		this.LeftYandereEye.gameObject.SetActive(false);
 		this.IdleAnim = "idleShort_00";
 		this.WalkAnim = "walk_00";
 		this.RunAnim = "newSprint_00";
