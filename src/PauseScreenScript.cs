@@ -46,11 +46,15 @@ public class PauseScreenScript : MonoBehaviour
 
 	public Blur ScreenBlur;
 
+	public MapScript Map;
+
 	public UILabel SelectionLabel;
 
 	public UIPanel Panel;
 
 	public UISprite Wifi;
+
+	public GameObject MissionModeLabel;
 
 	public GameObject MissionModeIcons;
 
@@ -72,9 +76,13 @@ public class PauseScreenScript : MonoBehaviour
 
 	public Transform[] Eggs;
 
+	public int Prompts;
+
 	public int Selected = 1;
 
 	public float Speed;
+
+	public bool ShowMissionModeDetails;
 
 	public bool CorrectingTime;
 
@@ -100,6 +108,14 @@ public class PauseScreenScript : MonoBehaviour
 
 	private void Start()
 	{
+		if (SceneManager.GetActiveScene().name != "SchoolScene")
+		{
+			MissionModeGlobals.MultiMission = false;
+		}
+		if (!MissionModeGlobals.MultiMission)
+		{
+			this.MissionModeLabel.SetActive(false);
+		}
 		StudentGlobals.SetStudentPhotographed(0, true);
 		StudentGlobals.SetStudentPhotographed(1, true);
 		base.transform.localPosition = new Vector3(1350f, 0f, 0f);
@@ -151,7 +167,7 @@ public class PauseScreenScript : MonoBehaviour
 	private void Update()
 	{
 		this.Speed = Time.unscaledDeltaTime * 10f;
-		if (!this.Police.FadeOut)
+		if (!this.Police.FadeOut && !this.Map.Show)
 		{
 			if (!this.Show)
 			{
@@ -269,7 +285,12 @@ public class PauseScreenScript : MonoBehaviour
 					Time.timeScale = Mathf.Lerp(Time.timeScale, 0f, this.Speed);
 					this.RPGCamera.enabled = false;
 				}
-				if (this.Quitting)
+				if (this.ShowMissionModeDetails)
+				{
+					base.transform.localScale = Vector3.Lerp(base.transform.localScale, new Vector3(1f, 1f, 1f), this.Speed);
+					base.transform.localPosition = Vector3.Lerp(base.transform.localPosition, new Vector3(0f, 1200f, 0f), this.Speed);
+				}
+				else if (this.Quitting)
 				{
 					base.transform.localScale = Vector3.Lerp(base.transform.localScale, new Vector3(1f, 1f, 1f), this.Speed);
 					base.transform.localPosition = Vector3.Lerp(base.transform.localPosition, new Vector3(0f, -1200f, 0f), this.Speed);
@@ -308,6 +329,10 @@ public class PauseScreenScript : MonoBehaviour
 						this.Column--;
 						this.UpdateSelection();
 					}
+					if (Input.GetKeyDown("space"))
+					{
+						this.ShowMissionModeDetails = !this.ShowMissionModeDetails;
+					}
 					for (int j = 1; j < this.PhoneIcons.Length; j++)
 					{
 						if (this.PhoneIcons[j] != null)
@@ -316,182 +341,185 @@ public class PauseScreenScript : MonoBehaviour
 							this.PhoneIcons[j].transform.localScale = Vector3.Lerp(this.PhoneIcons[j].transform.localScale, b, this.Speed);
 						}
 					}
-					if (Input.GetButtonDown("A"))
+					if (!this.ShowMissionModeDetails)
 					{
-						this.PressedA = true;
-						if (this.PhoneIcons[this.Selected].color.a == 1f)
+						if (Input.GetButtonDown("A"))
 						{
-							if (this.Selected == 1)
+							this.PressedA = true;
+							if (this.PhoneIcons[this.Selected].color.a == 1f)
 							{
-								this.MainMenu.SetActive(false);
-								this.LoadingScreen.SetActive(true);
-								this.PromptBar.ClearButtons();
-								this.PromptBar.Label[1].text = "Back";
-								this.PromptBar.Label[4].text = "Choose";
-								this.PromptBar.Label[5].text = "Choose";
-								this.PromptBar.UpdateButtons();
-								base.StartCoroutine(this.PhotoGallery.GetPhotos());
-							}
-							else if (this.Selected == 2)
-							{
-								this.TaskList.gameObject.SetActive(true);
-								this.MainMenu.SetActive(false);
-								this.Sideways = true;
-								this.PromptBar.ClearButtons();
-								this.PromptBar.Label[1].text = "Back";
-								this.PromptBar.Label[4].text = "Choose";
-								this.PromptBar.UpdateButtons();
-								this.TaskList.UpdateTaskList();
-								base.StartCoroutine(this.TaskList.UpdateTaskInfo());
-							}
-							else if (this.Selected == 3)
-							{
-								if (this.PhoneIcons[3].color.a == 1f && this.Yandere.CanMove && !this.Yandere.Dragging)
+								if (this.Selected == 1)
 								{
-									for (int k = 0; k < this.Yandere.ArmedAnims.Length; k++)
-									{
-										this.Yandere.CharacterAnimation[this.Yandere.ArmedAnims[k]].weight = 0f;
-									}
 									this.MainMenu.SetActive(false);
+									this.LoadingScreen.SetActive(true);
 									this.PromptBar.ClearButtons();
-									this.PromptBar.Label[0].text = "Begin";
 									this.PromptBar.Label[1].text = "Back";
-									this.PromptBar.Label[4].text = "Adjust";
+									this.PromptBar.Label[4].text = "Choose";
 									this.PromptBar.Label[5].text = "Choose";
 									this.PromptBar.UpdateButtons();
-									this.PassTime.gameObject.SetActive(true);
-									this.PassTime.GetCurrentTime();
+									base.StartCoroutine(this.PhotoGallery.GetPhotos());
 								}
-							}
-							else if (this.Selected == 4)
-							{
-								this.PromptBar.ClearButtons();
-								this.PromptBar.Label[1].text = "Exit";
-								this.PromptBar.UpdateButtons();
-								this.Stats.gameObject.SetActive(true);
-								this.Stats.UpdateStats();
-								this.MainMenu.SetActive(false);
-								this.Sideways = true;
-							}
-							else if (this.Selected == 5)
-							{
-								if (this.PhoneIcons[5].color.a == 1f)
+								else if (this.Selected == 2)
 								{
-									this.PromptBar.ClearButtons();
-									this.PromptBar.Label[0].text = "Accept";
-									this.PromptBar.Label[1].text = "Exit";
-									this.PromptBar.Label[5].text = "Choose";
-									this.PromptBar.UpdateButtons();
-									this.FavorMenu.gameObject.SetActive(true);
-									this.FavorMenu.gameObject.GetComponent<AudioSource>().Play();
+									this.TaskList.gameObject.SetActive(true);
 									this.MainMenu.SetActive(false);
 									this.Sideways = true;
-								}
-							}
-							else if (this.Selected == 6)
-							{
-								this.StudentInfoMenu.gameObject.SetActive(true);
-								base.StartCoroutine(this.StudentInfoMenu.UpdatePortraits());
-								this.MainMenu.SetActive(false);
-								this.Sideways = true;
-								this.PromptBar.ClearButtons();
-								this.PromptBar.Label[0].text = "View Info";
-								this.PromptBar.Label[1].text = "Back";
-								this.PromptBar.UpdateButtons();
-								this.PromptBar.Show = true;
-							}
-							else if (this.Selected == 7)
-							{
-								this.SaveLoadMenu.gameObject.SetActive(true);
-								this.SaveLoadMenu.Header.text = "Load Data";
-								this.SaveLoadMenu.Loading = true;
-								this.SaveLoadMenu.Saving = false;
-								this.SaveLoadMenu.Column = 1;
-								this.SaveLoadMenu.Row = 1;
-								this.SaveLoadMenu.UpdateHighlight();
-								base.StartCoroutine(this.SaveLoadMenu.GetThumbnails());
-								this.MainMenu.SetActive(false);
-								this.Sideways = true;
-								this.PromptBar.ClearButtons();
-								this.PromptBar.Label[0].text = "Choose";
-								this.PromptBar.Label[1].text = "Back";
-								this.PromptBar.Label[2].text = "Debug";
-								this.PromptBar.Label[4].text = "Change";
-								this.PromptBar.Label[5].text = "Change";
-								this.PromptBar.UpdateButtons();
-								this.PromptBar.Show = true;
-							}
-							else if (this.Selected == 8)
-							{
-								this.Settings.gameObject.SetActive(true);
-								this.ScreenBlur.enabled = false;
-								this.Settings.UpdateText();
-								this.MainMenu.SetActive(false);
-								this.PromptBar.ClearButtons();
-								this.PromptBar.Label[1].text = "Back";
-								this.PromptBar.Label[4].text = "Choose";
-								this.PromptBar.Label[5].text = "Change";
-								this.PromptBar.UpdateButtons();
-								this.PromptBar.Show = true;
-							}
-							else if (this.Selected == 9)
-							{
-								this.SaveLoadMenu.gameObject.SetActive(true);
-								this.SaveLoadMenu.Header.text = "Save Data";
-								this.SaveLoadMenu.Loading = false;
-								this.SaveLoadMenu.Saving = true;
-								this.SaveLoadMenu.Column = 1;
-								this.SaveLoadMenu.Row = 1;
-								this.SaveLoadMenu.UpdateHighlight();
-								base.StartCoroutine(this.SaveLoadMenu.GetThumbnails());
-								this.MainMenu.SetActive(false);
-								this.Sideways = true;
-								this.PromptBar.ClearButtons();
-								this.PromptBar.Label[0].text = "Choose";
-								this.PromptBar.Label[1].text = "Back";
-								this.PromptBar.Label[4].text = "Change";
-								this.PromptBar.Label[5].text = "Change";
-								this.PromptBar.UpdateButtons();
-								this.PromptBar.Show = true;
-							}
-							else if (this.Selected == 10)
-							{
-								if (!MissionModeGlobals.MissionMode)
-								{
-									this.AudioMenu.gameObject.SetActive(true);
-									this.AudioMenu.UpdateText();
-									this.MainMenu.SetActive(false);
 									this.PromptBar.ClearButtons();
-									this.PromptBar.Label[0].text = "Play";
 									this.PromptBar.Label[1].text = "Back";
 									this.PromptBar.Label[4].text = "Choose";
 									this.PromptBar.UpdateButtons();
+									this.TaskList.UpdateTaskList();
+									base.StartCoroutine(this.TaskList.UpdateTaskInfo());
+								}
+								else if (this.Selected == 3)
+								{
+									if (this.PhoneIcons[3].color.a == 1f && this.Yandere.CanMove && !this.Yandere.Dragging)
+									{
+										for (int k = 0; k < this.Yandere.ArmedAnims.Length; k++)
+										{
+											this.Yandere.CharacterAnimation[this.Yandere.ArmedAnims[k]].weight = 0f;
+										}
+										this.MainMenu.SetActive(false);
+										this.PromptBar.ClearButtons();
+										this.PromptBar.Label[0].text = "Begin";
+										this.PromptBar.Label[1].text = "Back";
+										this.PromptBar.Label[4].text = "Adjust";
+										this.PromptBar.Label[5].text = "Choose";
+										this.PromptBar.UpdateButtons();
+										this.PassTime.gameObject.SetActive(true);
+										this.PassTime.GetCurrentTime();
+									}
+								}
+								else if (this.Selected == 4)
+								{
+									this.PromptBar.ClearButtons();
+									this.PromptBar.Label[1].text = "Exit";
+									this.PromptBar.UpdateButtons();
+									this.Stats.gameObject.SetActive(true);
+									this.Stats.UpdateStats();
+									this.MainMenu.SetActive(false);
+									this.Sideways = true;
+								}
+								else if (this.Selected == 5)
+								{
+									if (this.PhoneIcons[5].color.a == 1f)
+									{
+										this.PromptBar.ClearButtons();
+										this.PromptBar.Label[0].text = "Accept";
+										this.PromptBar.Label[1].text = "Exit";
+										this.PromptBar.Label[5].text = "Choose";
+										this.PromptBar.UpdateButtons();
+										this.FavorMenu.gameObject.SetActive(true);
+										this.FavorMenu.gameObject.GetComponent<AudioSource>().Play();
+										this.MainMenu.SetActive(false);
+										this.Sideways = true;
+									}
+								}
+								else if (this.Selected == 6)
+								{
+									this.StudentInfoMenu.gameObject.SetActive(true);
+									base.StartCoroutine(this.StudentInfoMenu.UpdatePortraits());
+									this.MainMenu.SetActive(false);
+									this.Sideways = true;
+									this.PromptBar.ClearButtons();
+									this.PromptBar.Label[0].text = "View Info";
+									this.PromptBar.Label[1].text = "Back";
+									this.PromptBar.UpdateButtons();
 									this.PromptBar.Show = true;
 								}
-								else
+								else if (this.Selected == 7)
 								{
-									this.PhoneIcons[this.Selected].transform.localScale = new Vector3(1f, 1f, 1f);
-									this.MissionMode.ChangeMusic();
+									this.SaveLoadMenu.gameObject.SetActive(true);
+									this.SaveLoadMenu.Header.text = "Load Data";
+									this.SaveLoadMenu.Loading = true;
+									this.SaveLoadMenu.Saving = false;
+									this.SaveLoadMenu.Column = 1;
+									this.SaveLoadMenu.Row = 1;
+									this.SaveLoadMenu.UpdateHighlight();
+									base.StartCoroutine(this.SaveLoadMenu.GetThumbnails());
+									this.MainMenu.SetActive(false);
+									this.Sideways = true;
+									this.PromptBar.ClearButtons();
+									this.PromptBar.Label[0].text = "Choose";
+									this.PromptBar.Label[1].text = "Back";
+									this.PromptBar.Label[2].text = "Debug";
+									this.PromptBar.Label[4].text = "Change";
+									this.PromptBar.Label[5].text = "Change";
+									this.PromptBar.UpdateButtons();
+									this.PromptBar.Show = true;
+								}
+								else if (this.Selected == 8)
+								{
+									this.Settings.gameObject.SetActive(true);
+									this.ScreenBlur.enabled = false;
+									this.Settings.UpdateText();
+									this.MainMenu.SetActive(false);
+									this.PromptBar.ClearButtons();
+									this.PromptBar.Label[1].text = "Back";
+									this.PromptBar.Label[4].text = "Choose";
+									this.PromptBar.Label[5].text = "Change";
+									this.PromptBar.UpdateButtons();
+									this.PromptBar.Show = true;
+								}
+								else if (this.Selected == 9)
+								{
+									this.SaveLoadMenu.gameObject.SetActive(true);
+									this.SaveLoadMenu.Header.text = "Save Data";
+									this.SaveLoadMenu.Loading = false;
+									this.SaveLoadMenu.Saving = true;
+									this.SaveLoadMenu.Column = 1;
+									this.SaveLoadMenu.Row = 1;
+									this.SaveLoadMenu.UpdateHighlight();
+									base.StartCoroutine(this.SaveLoadMenu.GetThumbnails());
+									this.MainMenu.SetActive(false);
+									this.Sideways = true;
+									this.PromptBar.ClearButtons();
+									this.PromptBar.Label[0].text = "Choose";
+									this.PromptBar.Label[1].text = "Back";
+									this.PromptBar.Label[4].text = "Change";
+									this.PromptBar.Label[5].text = "Change";
+									this.PromptBar.UpdateButtons();
+									this.PromptBar.Show = true;
+								}
+								else if (this.Selected == 10)
+								{
+									if (!MissionModeGlobals.MissionMode)
+									{
+										this.AudioMenu.gameObject.SetActive(true);
+										this.AudioMenu.UpdateText();
+										this.MainMenu.SetActive(false);
+										this.PromptBar.ClearButtons();
+										this.PromptBar.Label[0].text = "Play";
+										this.PromptBar.Label[1].text = "Back";
+										this.PromptBar.Label[4].text = "Choose";
+										this.PromptBar.UpdateButtons();
+										this.PromptBar.Show = true;
+									}
+									else
+									{
+										this.PhoneIcons[this.Selected].transform.localScale = new Vector3(1f, 1f, 1f);
+										this.MissionMode.ChangeMusic();
+									}
+								}
+								else if (this.Selected == 11)
+								{
+									this.PromptBar.ClearButtons();
+									this.PromptBar.Show = false;
+									this.Quitting = true;
+								}
+								else if (this.Selected == 12)
+								{
 								}
 							}
-							else if (this.Selected == 11)
-							{
-								this.PromptBar.ClearButtons();
-								this.PromptBar.Show = false;
-								this.Quitting = true;
-							}
-							else if (this.Selected == 12)
-							{
-							}
 						}
-					}
-					if (!this.PressedB && (Input.GetButtonDown("Start") || Input.GetButtonDown("B")))
-					{
-						this.ExitPhone();
-					}
-					if (Input.GetButtonUp("B"))
-					{
-						this.PressedB = false;
+						if (!this.PressedB && (Input.GetButtonDown("Start") || Input.GetButtonDown("B")))
+						{
+							this.ExitPhone();
+						}
+						if (Input.GetButtonUp("B"))
+						{
+							this.PressedB = false;
+						}
 					}
 				}
 				if (!this.PressedA)

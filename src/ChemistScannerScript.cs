@@ -23,10 +23,38 @@ public class ChemistScannerScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (this.Student.Ragdoll.enabled)
+		if (this.Student.Ragdoll != null && this.Student.Ragdoll.enabled)
 		{
 			this.MyRenderer.materials[1].mainTexture = this.DeadEyes;
 			base.enabled = false;
+		}
+		else if (this.Student.Dying)
+		{
+			if (this.MyRenderer.materials[1].mainTexture != this.AlarmedEyes)
+			{
+				this.MyRenderer.materials[1].mainTexture = this.AlarmedEyes;
+			}
+		}
+		else if (this.Student.Emetic || this.Student.Lethal || this.Student.Tranquil || this.Student.Headache)
+		{
+			if (this.MyRenderer.materials[1].mainTexture != this.Textures[6])
+			{
+				this.MyRenderer.materials[1].mainTexture = this.Textures[6];
+			}
+		}
+		else if (this.Student.Grudge)
+		{
+			if (this.MyRenderer.materials[1].mainTexture != this.Textures[1])
+			{
+				this.MyRenderer.materials[1].mainTexture = this.Textures[1];
+			}
+		}
+		else if (this.Student.LostTeacherTrust)
+		{
+			if (this.MyRenderer.materials[1].mainTexture != this.SadEyes)
+			{
+				this.MyRenderer.materials[1].mainTexture = this.SadEyes;
+			}
 		}
 		else if (this.Student.WitnessedMurder || this.Student.WitnessedCorpse)
 		{

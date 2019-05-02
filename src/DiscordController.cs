@@ -12,8 +12,6 @@ public class DiscordController : MonoBehaviour
 
 	public int callbackCalls;
 
-	public int clickCounter;
-
 	public DiscordRpc.JoinRequest joinRequest;
 
 	public UnityEvent onConnect;
@@ -30,20 +28,30 @@ public class DiscordController : MonoBehaviour
 
 	private DiscordRpc.EventHandlers handlers;
 
-	public void OnClick(bool disconnect)
+	public bool IsClone;
+
+	private void Awake()
 	{
-		if (disconnect)
-		{
-			Debug.Log("Discord: on click - shutdown");
-			DiscordRpc.Shutdown();
-		}
-		else
-		{
-			Debug.Log("Discord: on click!");
-			this.clickCounter++;
-			this.presence.details = string.Format("Button clicked {0} times", this.clickCounter);
-			DiscordRpc.UpdatePresence(ref this.presence);
-		}
+		UnityEngine.Object.DontDestroyOnLoad(base.gameObject);
+	}
+
+	private void OnLevelWasLoaded(int level)
+	{
+		this.callbackCalls = 0;
+		this.handlers = default(DiscordRpc.EventHandlers);
+		this.handlers.readyCallback = new DiscordRpc.ReadyCallback(this.ReadyCallback);
+		this.handlers.disconnectedCallback = (DiscordRpc.DisconnectedCallback)Delegate.Combine(this.handlers.disconnectedCallback, new DiscordRpc.DisconnectedCallback(this.DisconnectedCallback));
+		this.handlers.errorCallback = (DiscordRpc.ErrorCallback)Delegate.Combine(this.handlers.errorCallback, new DiscordRpc.ErrorCallback(this.ErrorCallback));
+		this.handlers.joinCallback = (DiscordRpc.JoinCallback)Delegate.Combine(this.handlers.joinCallback, new DiscordRpc.JoinCallback(this.JoinCallback));
+		this.handlers.spectateCallback = (DiscordRpc.SpectateCallback)Delegate.Combine(this.handlers.spectateCallback, new DiscordRpc.SpectateCallback(this.SpectateCallback));
+		this.handlers.requestCallback = (DiscordRpc.RequestCallback)Delegate.Combine(this.handlers.requestCallback, new DiscordRpc.RequestCallback(this.RequestCallback));
+		DiscordRpc.Initialize(this.applicationId, ref this.handlers, true, this.optionalSteamId);
+		base.InvokeRepeating("UpdatePresence", 0f, 10f);
+	}
+
+	private void UpdatePresence()
+	{
+		DiscordRpc.UpdatePresence(ref this.presence);
 	}
 
 	public void RequestRespondYes()
@@ -107,10 +115,6 @@ public class DiscordController : MonoBehaviour
 		this.onJoinRequest.Invoke(request);
 	}
 
-	private void Start()
-	{
-	}
-
 	private void Update()
 	{
 		DiscordRpc.RunCallbacks();
@@ -128,15 +132,16 @@ public class DiscordController : MonoBehaviour
 		this.handlers.spectateCallback = (DiscordRpc.SpectateCallback)Delegate.Combine(this.handlers.spectateCallback, new DiscordRpc.SpectateCallback(this.SpectateCallback));
 		this.handlers.requestCallback = (DiscordRpc.RequestCallback)Delegate.Combine(this.handlers.requestCallback, new DiscordRpc.RequestCallback(this.RequestCallback));
 		DiscordRpc.Initialize(this.applicationId, ref this.handlers, true, this.optionalSteamId);
-	}
-
-	private void OnDisable()
-	{
-		Debug.Log("Discord: shutdown");
-		DiscordRpc.Shutdown();
+		base.InvokeRepeating("UpdatePresence", 0f, 10f);
 	}
 
 	private void OnDestroy()
 	{
+		if (this.IsClone)
+		{
+			return;
+		}
+		Debug.Log("Discord: shutdown");
+		DiscordRpc.Shutdown();
 	}
 }

@@ -22,5 +22,6 @@ public enum YandereInteractionType
 	Feed,
 	TaskInquiry,
 	GivingSnack,
-	AskingForHelp
+	AskingForHelp,
+	SendingToLocker
 }

@@ -44,7 +44,14 @@ public class TranqDetectorScript : MonoBehaviour
 				}
 				else
 				{
-					this.TranquilizerIcon.spriteName = ((!this.Yandere.Inventory.Tranquilizer) ? "No" : "Yes");
+					if (this.Yandere.Inventory.Tranquilizer || this.Yandere.Inventory.Sedative)
+					{
+						this.TranquilizerIcon.spriteName = "Yes";
+					}
+					else
+					{
+						this.TranquilizerIcon.spriteName = "No";
+					}
 					if (this.Yandere.Followers != 1)
 					{
 						this.FollowerIcon.spriteName = "No";

@@ -47,15 +47,15 @@ public static class OptionGlobals
 		}
 	}
 
-	public static bool DisableFarAnimations
+	public static int DisableFarAnimations
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_DisableFarAnimations");
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_DisableFarAnimations");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_DisableFarAnimations", value);
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_DisableFarAnimations", value);
 		}
 	}
 

@@ -143,7 +143,6 @@ public class RPG_Camera : MonoBehaviour
 	{
 		if ((double)this.distance > 0.1)
 		{
-			Debug.DrawLine(base.transform.position, base.transform.position - Vector3.up * this.camBottomDistance, Color.green);
 			this.camBottom = Physics.Linecast(base.transform.position, base.transform.position - Vector3.up * this.camBottomDistance);
 		}
 		bool flag = this.camBottom && base.transform.position.y - this.cameraPivot.transform.position.y <= 0f;
@@ -279,15 +278,6 @@ public class RPG_Camera : MonoBehaviour
 	{
 		float num = -1f;
 		RPG_Camera.ClipPlaneVertexes clipPlaneAt = RPG_Camera.GetClipPlaneAt(to);
-		Debug.DrawLine(clipPlaneAt.UpperLeft, clipPlaneAt.UpperRight);
-		Debug.DrawLine(clipPlaneAt.UpperRight, clipPlaneAt.LowerRight);
-		Debug.DrawLine(clipPlaneAt.LowerRight, clipPlaneAt.LowerLeft);
-		Debug.DrawLine(clipPlaneAt.LowerLeft, clipPlaneAt.UpperLeft);
-		Debug.DrawLine(from, to, Color.red);
-		Debug.DrawLine(from - base.transform.right * RPG_Camera.halfPlaneWidth + base.transform.up * RPG_Camera.halfPlaneHeight, clipPlaneAt.UpperLeft, Color.cyan);
-		Debug.DrawLine(from + base.transform.right * RPG_Camera.halfPlaneWidth + base.transform.up * RPG_Camera.halfPlaneHeight, clipPlaneAt.UpperRight, Color.cyan);
-		Debug.DrawLine(from - base.transform.right * RPG_Camera.halfPlaneWidth - base.transform.up * RPG_Camera.halfPlaneHeight, clipPlaneAt.LowerLeft, Color.cyan);
-		Debug.DrawLine(from + base.transform.right * RPG_Camera.halfPlaneWidth - base.transform.up * RPG_Camera.halfPlaneHeight, clipPlaneAt.LowerRight, Color.cyan);
 		int layerMask = 257;
 		if (Camera.main != null)
 		{

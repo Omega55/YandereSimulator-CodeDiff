@@ -52,7 +52,7 @@ public class EventManagerScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (!this.Clock.StopTime && this.EventCheck)
+		if (!this.Clock.StopTime && this.EventCheck && this.Clock.HourTime > 13.01f)
 		{
 			if (this.EventStudent[1] == null)
 			{
@@ -72,7 +72,7 @@ public class EventManagerScript : MonoBehaviour
 				this.EventCheck = false;
 				base.enabled = false;
 			}
-			if (this.Clock.HourTime > 13.01f && this.EventStudent[1] != null && this.EventStudent[2] != null && !this.EventStudent[1].Slave && !this.EventStudent[2].Slave && this.EventStudent[1].Pathfinding.canMove && this.EventStudent[2].Pathfinding.canMove)
+			if (this.EventStudent[1] != null && this.EventStudent[2] != null && !this.EventStudent[1].Slave && !this.EventStudent[2].Slave && this.EventStudent[1].Pathfinding.canMove && this.EventStudent[2].Pathfinding.canMove)
 			{
 				this.EventStudent[1].CurrentDestination = this.EventLocation[1];
 				this.EventStudent[1].Pathfinding.target = this.EventLocation[1];

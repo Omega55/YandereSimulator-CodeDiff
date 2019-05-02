@@ -112,6 +112,7 @@ public class NotificationManagerScript : MonoBehaviour
 		{
 			if (this.Clock.HourTime > 8.4f)
 			{
+				this.Yandere.StudentManager.TutorialWindow.ShowClassMessage = true;
 				this.DisplayNotification(NotificationType.ClassSoon);
 				this.Phase++;
 			}

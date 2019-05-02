@@ -9,6 +9,8 @@ public class GazerHairScript : MonoBehaviour
 
 	public float[] Weight;
 
+	public float Strength = 100f;
+
 	public int ID;
 
 	private void Update()
@@ -16,7 +18,7 @@ public class GazerHairScript : MonoBehaviour
 		this.ID = 0;
 		while (this.ID < this.Weight.Length)
 		{
-			this.Weight[this.ID] = Mathf.MoveTowards(this.Weight[this.ID], this.TargetWeight[this.ID], Time.deltaTime * 100f);
+			this.Weight[this.ID] = Mathf.MoveTowards(this.Weight[this.ID], this.TargetWeight[this.ID], Time.deltaTime * this.Strength);
 			if (this.Weight[this.ID] == this.TargetWeight[this.ID])
 			{
 				this.TargetWeight[this.ID] = UnityEngine.Random.Range(0f, 100f);

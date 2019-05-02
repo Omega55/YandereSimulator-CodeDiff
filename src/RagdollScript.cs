@@ -101,6 +101,8 @@ public class RagdollScript : MonoBehaviour
 
 	public bool Sacrifice;
 
+	public bool Disposed;
+
 	public bool Poisoned;
 
 	public bool Tranquil;
@@ -174,6 +176,7 @@ public class RagdollScript : MonoBehaviour
 		this.Zs.SetActive(this.Tranquil);
 		if (!this.Tranquil && !this.Poisoned && !this.Drowned && !this.Electrocuted && !this.Burning && !this.NeckSnapped)
 		{
+			this.Student.StudentManager.TutorialWindow.ShowPoolMessage = true;
 			this.BloodPoolSpawner.gameObject.SetActive(true);
 			if (this.Pushed)
 			{
@@ -193,6 +196,10 @@ public class RagdollScript : MonoBehaviour
 		if (ClassGlobals.PhysicalGrade + ClassGlobals.PhysicalBonus > 0 && !this.Tranquil)
 		{
 			this.Prompt.HideButton[3] = false;
+		}
+		if (this.Student.Yandere.BlackHole)
+		{
+			this.DisableRigidbodies();
 		}
 	}
 
@@ -396,7 +403,7 @@ public class RagdollScript : MonoBehaviour
 				this.Prompt.AcceptingInput[1] = true;
 			}
 			bool flag = false;
-			if (this.Yandere.Armed && this.Yandere.EquippedWeapon.WeaponID == 7)
+			if (this.Yandere.Armed && this.Yandere.EquippedWeapon.WeaponID == 7 && !this.Student.Nemesis)
 			{
 				flag = true;
 			}
@@ -404,7 +411,7 @@ public class RagdollScript : MonoBehaviour
 			{
 				flag = true;
 			}
-			this.Prompt.HideButton[0] = (this.Dragged || this.Carried || this.Tranquil || !flag || this.Nemesis);
+			this.Prompt.HideButton[0] = (this.Dragged || this.Carried || this.Tranquil || !flag);
 		}
 		else if (this.DumpType == RagdollDumpType.Incinerator)
 		{
@@ -653,6 +660,24 @@ public class RagdollScript : MonoBehaviour
 		}
 	}
 
+	public void QuickDismember()
+	{
+		for (int i = 0; i < this.BodyParts.Length; i++)
+		{
+			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.BodyParts[i], this.SpawnPoints[i].position, Quaternion.identity);
+			gameObject.transform.eulerAngles = this.SpawnPoints[i].eulerAngles;
+			gameObject.GetComponent<PromptScript>().enabled = false;
+			gameObject.GetComponent<PickUpScript>().enabled = false;
+			gameObject.GetComponent<OutlineScript>().enabled = false;
+		}
+		if (this.BloodPoolSpawner.BloodParent == null)
+		{
+			this.BloodPoolSpawner.Start();
+		}
+		this.BloodPoolSpawner.SpawnBigPool();
+		base.gameObject.SetActive(false);
+	}
+
 	public void Dismember()
 	{
 		if (!this.Dismembered)
@@ -668,8 +693,9 @@ public class RagdollScript : MonoBehaviour
 				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.BodyParts[i], this.SpawnPoints[i].position, Quaternion.identity);
 				gameObject.transform.parent = this.Yandere.LimbParent;
 				gameObject.transform.eulerAngles = this.SpawnPoints[i].eulerAngles;
-				gameObject.GetComponent<BodyPartScript>().StudentID = this.StudentID;
-				gameObject.GetComponent<BodyPartScript>().Sacrifice = this.Sacrifice;
+				BodyPartScript component = gameObject.GetComponent<BodyPartScript>();
+				component.StudentID = this.StudentID;
+				component.Sacrifice = this.Sacrifice;
 				if (this.Yandere.StudentManager.NoGravity)
 				{
 					gameObject.GetComponent<Rigidbody>().useGravity = false;
@@ -752,7 +778,7 @@ public class RagdollScript : MonoBehaviour
 			this.Police.BodyParts += 6;
 			this.Yandere.NearBodies--;
 			this.Police.Corpses--;
-			UnityEngine.Object.Destroy(base.gameObject);
+			base.gameObject.SetActive(false);
 			this.Dismembered = true;
 		}
 	}
@@ -768,5 +794,22 @@ public class RagdollScript : MonoBehaviour
 			this.Police.PoisonScene = false;
 		}
 		base.gameObject.SetActive(false);
+	}
+
+	public void DisableRigidbodies()
+	{
+		this.BloodPoolSpawner.gameObject.SetActive(false);
+		for (int i = 0; i < this.AllRigidbodies.Length; i++)
+		{
+			if (this.AllRigidbodies[i].gameObject.GetComponent<CharacterJoint>() != null)
+			{
+				UnityEngine.Object.Destroy(this.AllRigidbodies[i].gameObject.GetComponent<CharacterJoint>());
+			}
+			UnityEngine.Object.Destroy(this.AllRigidbodies[i]);
+			this.AllColliders[i].enabled = false;
+		}
+		this.Prompt.Hide();
+		this.Prompt.enabled = false;
+		base.enabled = false;
 	}
 }

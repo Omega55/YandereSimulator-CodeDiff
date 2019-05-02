@@ -263,6 +263,11 @@ public class DatingMinigameScript : MonoBehaviour
 				this.Yandere.Headset.SetActive(true);
 				this.Yandere.CanMove = false;
 				this.Yandere.EmptyHands();
+				if (this.Yandere.YandereVision)
+				{
+					this.Yandere.ResetYandereEffects();
+					this.Yandere.YandereVision = false;
+				}
 				this.Yandere.transform.position = this.PeekSpot.position;
 				this.Yandere.transform.eulerAngles = this.PeekSpot.eulerAngles;
 				this.Yandere.Character.GetComponent<Animation>().Play("f02_treePeeking_00");
@@ -275,6 +280,7 @@ public class DatingMinigameScript : MonoBehaviour
 				}
 				this.Matchmaking = true;
 				this.UpdateTopics();
+				Time.timeScale = 1f;
 			}
 		}
 		if (this.Matchmaking)

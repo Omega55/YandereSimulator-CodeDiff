@@ -6,6 +6,8 @@ public class MissionModeMenuScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
 
+	public NewMissionWindowScript MultiMission;
+
 	public InputManagerScript InputManager;
 
 	public PromptBarScript PromptBar;
@@ -43,6 +45,8 @@ public class MissionModeMenuScript : MonoBehaviour
 	public UISprite Darkness;
 
 	public Transform CustomMissionWindow;
+
+	public Transform MultiMissionWindow;
 
 	public Transform ObjectiveHighlight;
 
@@ -180,8 +184,10 @@ public class MissionModeMenuScript : MonoBehaviour
 
 	private void Start()
 	{
+		MissionModeGlobals.MultiMission = false;
 		this.NemesisPortrait.transform.parent.localScale = Vector3.zero;
 		this.CustomMissionWindow.transform.localScale = Vector3.zero;
+		this.MultiMissionWindow.transform.localScale = Vector3.zero;
 		this.LoadMissionWindow.transform.localScale = Vector3.zero;
 		this.MissionWindow.transform.localScale = Vector3.zero;
 		this.Options.transform.localPosition = new Vector3(-700f, this.Options.transform.localPosition.y, this.Options.transform.localPosition.z);
@@ -299,6 +305,7 @@ public class MissionModeMenuScript : MonoBehaviour
 			this.CustomMissionWindow.localScale = Vector3.Lerp(this.CustomMissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
 			this.LoadMissionWindow.localScale = Vector3.Lerp(this.LoadMissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
 			this.MissionWindow.localScale = Vector3.Lerp(this.MissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
+			this.MultiMissionWindow.localScale = Vector3.Lerp(this.MultiMissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
 			this.Options.localPosition = new Vector3(Mathf.Lerp(this.Options.localPosition.x, -700f, Time.deltaTime * 10f), this.Options.localPosition.y, this.Options.localPosition.z);
 			base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y, Mathf.Lerp(base.transform.position.z, 2f, this.Speed * Time.deltaTime * 0.25f));
 			if (this.InputManager.TappedUp)
@@ -383,12 +390,28 @@ public class MissionModeMenuScript : MonoBehaviour
 				}
 				else if (this.Selected == 3)
 				{
+					this.PromptBar.ClearButtons();
+					this.PromptBar.Label[0].text = string.Empty;
+					this.PromptBar.Label[1].text = "Return";
+					this.PromptBar.Label[2].text = "Adjust Up";
+					this.PromptBar.Label[3].text = "Adjust Down";
+					this.PromptBar.Label[4].text = "Selection";
+					this.PromptBar.Label[5].text = "Selection";
+					this.PromptBar.UpdateButtons();
+					this.MultiMission.enabled = true;
+					this.MultiMission.Column = 1;
+					this.MultiMission.Row = 1;
+					this.MultiMission.UpdateHighlight();
+					this.Phase = 6;
+				}
+				else if (this.Selected == 4)
+				{
 					Cursor.visible = true;
 					this.PromptBar.ClearButtons();
 					this.PromptBar.Label[0].text = "Confirm";
 					this.PromptBar.Label[1].text = "Back";
 					this.PromptBar.UpdateButtons();
-					this.Phase = 6;
+					this.Phase = 7;
 				}
 				else if (this.Selected == 5)
 				{
@@ -405,6 +428,7 @@ public class MissionModeMenuScript : MonoBehaviour
 			this.CustomMissionWindow.localScale = Vector3.Lerp(this.CustomMissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
 			this.LoadMissionWindow.localScale = Vector3.Lerp(this.LoadMissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
 			this.MissionWindow.localScale = Vector3.Lerp(this.MissionWindow.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+			this.MultiMissionWindow.localScale = Vector3.Lerp(this.MultiMissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
 			this.Options.localPosition = new Vector3(Mathf.Lerp(this.Options.localPosition.x, -1550f, Time.deltaTime * 10f), this.Options.localPosition.y, this.Options.localPosition.z);
 			if (this.InputManager.TappedLeft)
 			{
@@ -506,6 +530,7 @@ public class MissionModeMenuScript : MonoBehaviour
 			this.CustomMissionWindow.localScale = Vector3.Lerp(this.CustomMissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
 			this.LoadMissionWindow.localScale = Vector3.Lerp(this.LoadMissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
 			this.MissionWindow.localScale = Vector3.Lerp(this.MissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
+			this.MultiMissionWindow.localScale = Vector3.Lerp(this.MultiMissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
 			this.InfoChan.localEulerAngles = new Vector3(this.InfoChan.localEulerAngles.x, Mathf.Lerp(this.InfoChan.localEulerAngles.y, 0f, Time.deltaTime * this.Speed), this.InfoChan.localEulerAngles.z);
 			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 1f, Time.deltaTime * 0.5f));
 			Transform parent = this.Option[1].parent;
@@ -515,7 +540,7 @@ public class MissionModeMenuScript : MonoBehaviour
 			this.Header.color = new Color(this.Header.color.r, this.Header.color.g, this.Header.color.b, this.Header.color.a - Time.deltaTime);
 			if (this.Darkness.color.a == 1f)
 			{
-				if (this.TargetID == 0)
+				if (this.TargetID == 0 && !MissionModeGlobals.MultiMission)
 				{
 					SceneManager.LoadScene("TitleScene");
 				}
@@ -533,6 +558,7 @@ public class MissionModeMenuScript : MonoBehaviour
 			this.CustomMissionWindow.localScale = Vector3.Lerp(this.CustomMissionWindow.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 			this.LoadMissionWindow.localScale = Vector3.Lerp(this.LoadMissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
 			this.MissionWindow.localScale = Vector3.Lerp(this.MissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
+			this.MultiMissionWindow.localScale = Vector3.Lerp(this.MultiMissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
 			this.Options.localPosition = new Vector3(Mathf.Lerp(this.Options.localPosition.x, -1550f, Time.deltaTime * 10f), this.Options.localPosition.y, this.Options.localPosition.z);
 			if (this.InputManager.TappedUp)
 			{
@@ -720,11 +746,20 @@ public class MissionModeMenuScript : MonoBehaviour
 		}
 		else if (this.Phase == 6)
 		{
+			this.CustomMissionWindow.localScale = Vector3.Lerp(this.CustomMissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
+			this.LoadMissionWindow.localScale = Vector3.Lerp(this.LoadMissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
+			this.MissionWindow.localScale = Vector3.Lerp(this.MissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
+			this.MultiMissionWindow.localScale = Vector3.Lerp(this.MultiMissionWindow.localScale, new Vector3(0.9f, 0.9f, 0.9f), Time.deltaTime * 10f);
+			this.Options.localPosition = new Vector3(Mathf.Lerp(this.Options.localPosition.x, -1550f, Time.deltaTime * 10f), this.Options.localPosition.y, this.Options.localPosition.z);
+		}
+		else if (this.Phase == 7)
+		{
 			this.InfoChan.localEulerAngles = new Vector3(this.InfoChan.localEulerAngles.x, Mathf.Lerp(this.InfoChan.localEulerAngles.y, 180f, Time.deltaTime * (this.Speed - 3f)), this.InfoChan.localEulerAngles.z);
 			base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y, Mathf.Lerp(base.transform.position.z, 2f, this.Speed * Time.deltaTime * 0.25f));
 			this.CustomMissionWindow.localScale = Vector3.Lerp(this.CustomMissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
 			this.LoadMissionWindow.localScale = Vector3.Lerp(this.LoadMissionWindow.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 			this.MissionWindow.localScale = Vector3.Lerp(this.MissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
+			this.MultiMissionWindow.localScale = Vector3.Lerp(this.MultiMissionWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
 			this.Options.localPosition = new Vector3(Mathf.Lerp(this.Options.localPosition.x, -1550f, Time.deltaTime * 10f), this.Options.localPosition.y, this.Options.localPosition.z);
 			if (!Input.anyKey)
 			{
@@ -737,7 +772,7 @@ public class MissionModeMenuScript : MonoBehaviour
 				{
 					this.GetNumbers();
 					bool flag = false;
-					if ((this.TargetNumber > 5 && this.TargetNumber < 21) || this.TargetNumber > 97)
+					if ((this.TargetNumber > 9 && this.TargetNumber < 21) || this.TargetNumber > 97)
 					{
 						flag = true;
 					}
@@ -1370,6 +1405,7 @@ public class MissionModeMenuScript : MonoBehaviour
 	{
 		base.GetComponent<AudioSource>().PlayOneShot(this.InfoLines[6]);
 		Globals.DeleteAll();
+		TutorialGlobals.TutorialsOff = true;
 		SchoolGlobals.SchoolAtmosphere = 1f - (float)this.Difficulty * 0.1f;
 		MissionModeGlobals.NemesisDifficulty = this.NemesisDifficulty;
 		MissionModeGlobals.MissionTargetName = this.TargetName;

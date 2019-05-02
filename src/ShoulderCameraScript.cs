@@ -133,6 +133,12 @@ public class ShoulderCameraScript : MonoBehaviour
 						this.NoticedHeight = 1.6f;
 						this.NoticedLimit = 6;
 					}
+					if (component.Club == ClubType.Council)
+					{
+						this.GoingToCounselor = true;
+						this.NoticedHeight = 1.375f;
+						this.NoticedLimit = 6;
+					}
 					else if (component.Witnessed == StudentWitnessType.Stalking)
 					{
 						this.NoticedHeight = 1.481275f;
@@ -151,8 +157,9 @@ public class ShoulderCameraScript : MonoBehaviour
 				this.NoticedTimer += Time.deltaTime;
 				if (this.Phase == 1)
 				{
-					if (Input.GetButtonDown("A"))
+					if (Input.GetButtonDown("A") && !this.Yandere.Attacking)
 					{
+						this.Yandere.transform.rotation = Quaternion.LookRotation(this.Yandere.Senpai.position - this.Yandere.transform.position);
 						this.NoticedTimer += 10f;
 					}
 					this.NoticedFocus.position = Vector3.Lerp(this.NoticedFocus.position, this.Yandere.Senpai.position + Vector3.up * this.NoticedHeight, Time.deltaTime * 10f);
@@ -178,7 +185,9 @@ public class ShoulderCameraScript : MonoBehaviour
 						}
 						else
 						{
+							this.Yandere.CharacterAnimation.CrossFade("f02_scaredIdle_00");
 							this.Yandere.Subtitle.UpdateLabel(SubtitleType.YandereWhimper, 1, 3.5f);
+							Debug.Log("We're here.");
 						}
 					}
 				}
@@ -193,6 +202,14 @@ public class ShoulderCameraScript : MonoBehaviour
 						this.Yandere.EyeShrink += Time.deltaTime * 0.25f;
 					}
 					this.NoticedPOV.Translate(Vector3.forward * Time.deltaTime * 0.075f);
+					if (this.GoingToCounselor)
+					{
+						this.Yandere.CharacterAnimation.CrossFade("f02_disappointed_00");
+					}
+					else
+					{
+						this.Yandere.CharacterAnimation.CrossFade("f02_scaredIdle_00");
+					}
 					if (this.NoticedTimer > (float)(this.NoticedLimit + 4))
 					{
 						if (!this.GoingToCounselor)
@@ -477,5 +494,19 @@ public class ShoulderCameraScript : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	public void YandereNo()
+	{
+		AudioSource component = base.GetComponent<AudioSource>();
+		component.clip = this.StruggleLose;
+		component.Play();
+	}
+
+	public void GameOver()
+	{
+		this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_down_22");
+		this.HeartbrokenCamera.SetActive(true);
+		this.Yandere.Collapse = true;
 	}
 }

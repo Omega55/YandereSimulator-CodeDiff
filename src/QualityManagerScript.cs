@@ -85,6 +85,10 @@ public class QualityManagerScript : MonoBehaviour
 			OptionGlobals.DrawDistanceLimit = 350;
 			OptionGlobals.DrawDistance = 350;
 		}
+		if (OptionGlobals.DisableFarAnimations == 0)
+		{
+			OptionGlobals.DisableFarAnimations = 5;
+		}
 		if (OptionGlobals.Sensitivity == 0)
 		{
 			OptionGlobals.Sensitivity = 3;
@@ -200,6 +204,28 @@ public class QualityManagerScript : MonoBehaviour
 					studentScript.MyRenderer.materials[2].shader = this.NewBodyShader;
 					studentScript.Cosmetic.RightStockings[0].GetComponent<Renderer>().material.shader = this.NewBodyShader;
 					studentScript.Cosmetic.LeftStockings[0].GetComponent<Renderer>().material.shader = this.NewBodyShader;
+					if (studentScript.Club == ClubType.Bully)
+					{
+						studentScript.Cosmetic.Bookbag.GetComponent<Renderer>().material.shader = this.NewHairShader;
+						studentScript.Cosmetic.LeftWristband.GetComponent<Renderer>().material.shader = this.NewHairShader;
+						studentScript.Cosmetic.RightWristband.GetComponent<Renderer>().material.shader = this.NewBodyShader;
+						studentScript.Cosmetic.HoodieRenderer.GetComponent<Renderer>().material.shader = this.NewHairShader;
+					}
+					if (studentScript.StudentID == 87)
+					{
+						studentScript.Cosmetic.ScarfRenderer.material.shader = this.NewHairShader;
+					}
+					else if (studentScript.StudentID == 90)
+					{
+						if (studentScript.Cosmetic.TeacherAccessories[studentScript.Cosmetic.Accessory] != null)
+						{
+							studentScript.Cosmetic.TeacherAccessories[studentScript.Cosmetic.Accessory].GetComponent<Renderer>().material.shader = this.NewHairShader;
+						}
+						if (studentScript.MyRenderer.materials.Length == 4)
+						{
+							studentScript.MyRenderer.materials[3].shader = this.NewBodyShader;
+						}
+					}
 				}
 				else
 				{
@@ -207,6 +233,7 @@ public class QualityManagerScript : MonoBehaviour
 					studentScript.MyRenderer.materials[1].shader = this.NewHairShader;
 					studentScript.MyRenderer.materials[2].shader = this.NewBodyShader;
 				}
+				studentScript.Armband.GetComponent<Renderer>().material.shader = this.NewHairShader;
 				if (!studentScript.Male)
 				{
 					if (!studentScript.Teacher)
@@ -230,7 +257,10 @@ public class QualityManagerScript : MonoBehaviour
 					}
 					else
 					{
-						studentScript.Cosmetic.TeacherHairRenderers[studentScript.Cosmetic.Hairstyle].material.shader = this.NewHairShader;
+						if (studentScript.Cosmetic.TeacherHairRenderers[studentScript.Cosmetic.Hairstyle] != null)
+						{
+							studentScript.Cosmetic.TeacherHairRenderers[studentScript.Cosmetic.Hairstyle].material.shader = this.NewHairShader;
+						}
 						if (studentScript.Cosmetic.Accessory > 0)
 						{
 						}
@@ -323,6 +353,27 @@ public class QualityManagerScript : MonoBehaviour
 		}
 	}
 
+	public void UpdateAnims()
+	{
+		if (OptionGlobals.DisableFarAnimations == 21)
+		{
+			OptionGlobals.DisableFarAnimations = 0;
+		}
+		else if (OptionGlobals.DisableFarAnimations == -1)
+		{
+			OptionGlobals.DisableFarAnimations = 20;
+		}
+		this.StudentManager.FarAnimThreshold = OptionGlobals.DisableFarAnimations * 5;
+		if ((float)this.StudentManager.FarAnimThreshold > 0f)
+		{
+			this.StudentManager.DisableFarAnims = true;
+		}
+		else
+		{
+			this.StudentManager.DisableFarAnims = false;
+		}
+	}
+
 	public void UpdateDrawDistance()
 	{
 		if (OptionGlobals.DrawDistance > OptionGlobals.DrawDistanceLimit)
@@ -356,11 +407,6 @@ public class QualityManagerScript : MonoBehaviour
 	public void UpdateShadows()
 	{
 		this.Sun.shadows = ((!OptionGlobals.DisableShadows) ? LightShadows.Soft : LightShadows.None);
-	}
-
-	public void UpdateAnims()
-	{
-		this.StudentManager.DisableFarAnims = OptionGlobals.DisableFarAnimations;
 	}
 
 	public void UpdateFPSIndex()

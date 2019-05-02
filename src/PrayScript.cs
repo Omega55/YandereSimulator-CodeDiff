@@ -153,13 +153,16 @@ public class PrayScript : MonoBehaviour
 				this.PromptBar.UpdateButtons();
 				this.PromptBar.Show = true;
 				this.StudentNumber = ((!this.SpawnMale) ? 39 : 37);
-				if (this.StudentManager.Students[39] != null && !this.StudentManager.Students[39].gameObject.activeInHierarchy)
+				if (this.StudentManager.Students[this.StudentNumber] != null)
 				{
-					this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, 0.5f);
-				}
-				if (this.StudentManager.Students[37] != null && !this.StudentManager.Students[37].gameObject.activeInHierarchy)
-				{
-					this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, 0.5f);
+					if (!this.StudentManager.Students[this.StudentNumber].gameObject.activeInHierarchy)
+					{
+						this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, 0.5f);
+					}
+					else
+					{
+						this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, 1f);
+					}
 				}
 			}
 		}

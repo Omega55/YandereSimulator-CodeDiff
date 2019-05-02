@@ -47,6 +47,8 @@ public class YanvaniaYanmontScript : MonoBehaviour
 
 	public UISprite Darkness;
 
+	public Collider[] SphereCollider;
+
 	public Collider[] WhipCollider;
 
 	public Transform[] WhipChain;
@@ -75,6 +77,8 @@ public class YanvaniaYanmontScript : MonoBehaviour
 
 	public bool Injured;
 
+	public bool Loose;
+
 	public bool Red;
 
 	public bool SpunUp;
@@ -96,6 +100,8 @@ public class YanvaniaYanmontScript : MonoBehaviour
 	public float FlashTimer;
 
 	public float IdleTimer;
+
+	public float WhipTimer;
 
 	public float TapTimer;
 
@@ -545,9 +551,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 				}
 				else
 				{
-					for (int i = 1; i < this.WhipChain.Length; i++)
-					{
-					}
+					this.LoosenWhip();
 					if (Input.GetAxis("VaniaHorizontal") > -0.5f && Input.GetAxis("VaniaHorizontal") < 0.5f && Input.GetAxis("VaniaVertical") > -0.5f && Input.GetAxis("VaniaVertical") < 0.5f)
 					{
 						component.CrossFade("f02_yanvaniaWhip_Neutral");
@@ -643,6 +647,14 @@ public class YanvaniaYanmontScript : MonoBehaviour
 			}
 			else
 			{
+				if (this.WhipCollider[1].enabled)
+				{
+					for (int i = 1; i < this.WhipChain.Length; i++)
+					{
+						this.SphereCollider[i].enabled = false;
+						this.WhipCollider[i].enabled = false;
+					}
+				}
 				this.WhipChain[0].transform.localScale = Vector3.MoveTowards(this.WhipChain[0].transform.localScale, Vector3.zero, Time.deltaTime * 10f);
 			}
 			if ((!this.Crouching && component["f02_yanvaniaAttack_00"].time >= component["f02_yanvaniaAttack_00"].length) || (this.Crouching && component["f02_yanvaniaCrouchAttack_00"].time >= component["f02_yanvaniaCrouchAttack_00"].length))
@@ -800,11 +812,31 @@ public class YanvaniaYanmontScript : MonoBehaviour
 		for (int i = 1; i < this.WhipChain.Length; i++)
 		{
 			this.WhipCollider[i].enabled = true;
+			this.WhipChain[i].gameObject.GetComponent<Rigidbody>().isKinematic = true;
 			Transform transform = this.WhipChain[i].transform;
 			transform.localPosition = new Vector3(0f, -0.03f, 0f);
 			transform.localEulerAngles = Vector3.zero;
 		}
 		this.WhipChain[1].transform.localPosition = new Vector3(0f, -0.1f, 0f);
+		this.WhipTimer = 0f;
+		this.Loose = false;
+	}
+
+	private void LoosenWhip()
+	{
+		if (!this.Loose)
+		{
+			this.WhipTimer += Time.deltaTime;
+			if (this.WhipTimer > 0.25f)
+			{
+				for (int i = 1; i < this.WhipChain.Length; i++)
+				{
+					this.WhipChain[i].gameObject.GetComponent<Rigidbody>().isKinematic = false;
+					this.SphereCollider[i].enabled = true;
+				}
+				this.Loose = true;
+			}
+		}
 	}
 
 	private void StopAttacking()
@@ -822,6 +854,14 @@ public class YanvaniaYanmontScript : MonoBehaviour
 
 	public void TakeDamage(int Damage)
 	{
+		if (this.WhipCollider[1].enabled)
+		{
+			for (int i = 1; i < this.WhipChain.Length; i++)
+			{
+				this.SphereCollider[i].enabled = false;
+				this.WhipCollider[i].enabled = false;
+			}
+		}
 		AudioSource component = base.GetComponent<AudioSource>();
 		component.clip = this.Injuries[UnityEngine.Random.Range(0, this.Injuries.Length)];
 		component.Play();

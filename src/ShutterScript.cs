@@ -509,7 +509,7 @@ public class ShutterScript : MonoBehaviour
 	public void Snap()
 	{
 		this.ErrorWindow.transform.localScale = Vector3.zero;
-		this.Yandere.HandCamera.SetActive(false);
+		this.Yandere.HandCamera.gameObject.SetActive(false);
 		this.Sprite.color = new Color(this.Sprite.color.r, this.Sprite.color.g, this.Sprite.color.b, 1f);
 		this.MyAudio.Play();
 		this.Snapping = true;
@@ -786,9 +786,9 @@ public class ShutterScript : MonoBehaviour
 		this.ErrorWindow.transform.localScale = Vector3.zero;
 		this.SmartphoneCamera.targetTexture = this.SmartphoneScreen;
 		this.StudentManager.GhostChan.gameObject.SetActive(false);
+		this.Yandere.HandCamera.gameObject.SetActive(true);
 		this.NotificationManager.SetActive(true);
 		this.PauseScreen.CorrectingTime = true;
-		this.Yandere.HandCamera.SetActive(true);
 		this.HeartbeatCamera.SetActive(true);
 		this.TextMessages.gameObject.SetActive(false);
 		this.StudentInfo.gameObject.SetActive(false);

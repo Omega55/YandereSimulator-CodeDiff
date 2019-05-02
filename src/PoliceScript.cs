@@ -131,9 +131,11 @@ public class PoliceScript : MonoBehaviour
 
 	public int BloodyWeapons;
 
+	public int HiddenCorpses;
+
 	public int MurderWeapons;
 
-	public int HiddenCorpses;
+	public int PhotoEvidence;
 
 	public int BodyParts;
 
@@ -178,6 +180,7 @@ public class PoliceScript : MonoBehaviour
 	{
 		if (this.Show)
 		{
+			this.StudentManager.TutorialWindow.ShowPoliceMessage = true;
 			if (this.PoisonScene)
 			{
 			}
@@ -433,7 +436,7 @@ public class PoliceScript : MonoBehaviour
 					{
 						this.EndOfDay.gameObject.SetActive(true);
 						this.EndOfDay.enabled = true;
-						this.EndOfDay.Phase = 11;
+						this.EndOfDay.Phase = 12;
 						if (this.EndOfDay.PreviouslyActivated)
 						{
 							this.EndOfDay.Start();
@@ -718,46 +721,50 @@ public class PoliceScript : MonoBehaviour
 				}
 			}
 			SchoolGlobals.SchoolAtmosphere -= (float)this.Corpses * 0.05f;
-			foreach (RagdollScript ragdollScript in this.CorpseList)
+			if (this.Corpses > 0)
 			{
-				if (ragdollScript != null && StudentGlobals.MemorialStudents < 9)
+				foreach (RagdollScript ragdollScript in this.CorpseList)
 				{
-					StudentGlobals.MemorialStudents++;
-					if (StudentGlobals.MemorialStudents == 1)
+					if (ragdollScript != null && StudentGlobals.MemorialStudents < 9)
 					{
-						StudentGlobals.MemorialStudent1 = ragdollScript.Student.StudentID;
-					}
-					else if (StudentGlobals.MemorialStudents == 2)
-					{
-						StudentGlobals.MemorialStudent2 = ragdollScript.Student.StudentID;
-					}
-					else if (StudentGlobals.MemorialStudents == 3)
-					{
-						StudentGlobals.MemorialStudent3 = ragdollScript.Student.StudentID;
-					}
-					else if (StudentGlobals.MemorialStudents == 4)
-					{
-						StudentGlobals.MemorialStudent4 = ragdollScript.Student.StudentID;
-					}
-					else if (StudentGlobals.MemorialStudents == 5)
-					{
-						StudentGlobals.MemorialStudent5 = ragdollScript.Student.StudentID;
-					}
-					else if (StudentGlobals.MemorialStudents == 6)
-					{
-						StudentGlobals.MemorialStudent6 = ragdollScript.Student.StudentID;
-					}
-					else if (StudentGlobals.MemorialStudents == 7)
-					{
-						StudentGlobals.MemorialStudent7 = ragdollScript.Student.StudentID;
-					}
-					else if (StudentGlobals.MemorialStudents == 8)
-					{
-						StudentGlobals.MemorialStudent8 = ragdollScript.Student.StudentID;
-					}
-					else if (StudentGlobals.MemorialStudents == 9)
-					{
-						StudentGlobals.MemorialStudent9 = ragdollScript.Student.StudentID;
+						Debug.Log("''MemorialStudents'' is being incremented upwards.");
+						StudentGlobals.MemorialStudents++;
+						if (StudentGlobals.MemorialStudents == 1)
+						{
+							StudentGlobals.MemorialStudent1 = ragdollScript.Student.StudentID;
+						}
+						else if (StudentGlobals.MemorialStudents == 2)
+						{
+							StudentGlobals.MemorialStudent2 = ragdollScript.Student.StudentID;
+						}
+						else if (StudentGlobals.MemorialStudents == 3)
+						{
+							StudentGlobals.MemorialStudent3 = ragdollScript.Student.StudentID;
+						}
+						else if (StudentGlobals.MemorialStudents == 4)
+						{
+							StudentGlobals.MemorialStudent4 = ragdollScript.Student.StudentID;
+						}
+						else if (StudentGlobals.MemorialStudents == 5)
+						{
+							StudentGlobals.MemorialStudent5 = ragdollScript.Student.StudentID;
+						}
+						else if (StudentGlobals.MemorialStudents == 6)
+						{
+							StudentGlobals.MemorialStudent6 = ragdollScript.Student.StudentID;
+						}
+						else if (StudentGlobals.MemorialStudents == 7)
+						{
+							StudentGlobals.MemorialStudent7 = ragdollScript.Student.StudentID;
+						}
+						else if (StudentGlobals.MemorialStudents == 8)
+						{
+							StudentGlobals.MemorialStudent8 = ragdollScript.Student.StudentID;
+						}
+						else if (StudentGlobals.MemorialStudents == 9)
+						{
+							StudentGlobals.MemorialStudent9 = ragdollScript.Student.StudentID;
+						}
 					}
 				}
 			}

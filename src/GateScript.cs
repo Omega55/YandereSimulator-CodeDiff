@@ -126,13 +126,9 @@ public class GateScript : MonoBehaviour
 		}
 		else if (this.RightGate.localPosition.x != 2.325f)
 		{
-			if (this.RightGate.localPosition.x < 2.4f && this.RightGate.localPosition.x > 2.325f)
+			if (this.RightGate.localPosition.x < 2.4f)
 			{
 				this.Crushing = true;
-			}
-			else
-			{
-				this.Crushing = false;
 			}
 			this.RightGate.localPosition = new Vector3(Mathf.MoveTowards(this.RightGate.localPosition.x, 2.325f, Time.deltaTime), this.RightGate.localPosition.y, this.RightGate.localPosition.z);
 			this.LeftGate.localPosition = new Vector3(Mathf.MoveTowards(this.LeftGate.localPosition.x, -2.325f, Time.deltaTime), this.LeftGate.localPosition.y, this.LeftGate.localPosition.z);
@@ -145,6 +141,7 @@ public class GateScript : MonoBehaviour
 				this.RightGateLoop.Stop();
 				this.LeftGateLoop.Stop();
 				this.AudioPlayed = true;
+				this.Crushing = false;
 			}
 		}
 	}

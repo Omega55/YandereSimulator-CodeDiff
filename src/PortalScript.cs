@@ -35,6 +35,10 @@ public class PortalScript : MonoBehaviour
 
 	public UISprite ClassDarkness;
 
+	public Texture HomeMapMarker;
+
+	public Renderer MapMarker;
+
 	public Transform Teacher;
 
 	public bool CanAttendClass;
@@ -227,6 +231,7 @@ public class PortalScript : MonoBehaviour
 				this.StudentManager.RemovePapersFromDesks();
 				if (!MissionModeGlobals.MissionMode)
 				{
+					this.MapMarker.material.mainTexture = this.HomeMapMarker;
 					base.transform.position = new Vector3(0f, 1f, -75f);
 					this.Prompt.Label[0].text = "     Go Home";
 					this.Prompt.enabled = true;

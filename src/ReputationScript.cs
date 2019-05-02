@@ -61,6 +61,10 @@ public class ReputationScript : MonoBehaviour
 		{
 			this.Phase++;
 		}
+		if (this.PendingRep < 0f)
+		{
+			this.StudentManager.TutorialWindow.ShowRepMessage = true;
+		}
 		if (this.CheckedRep < this.Phase && !this.StudentManager.Yandere.Struggling && !this.StudentManager.Yandere.DelinquentFighting && !this.StudentManager.Yandere.Pickpocketing && !this.StudentManager.Yandere.Noticed && !this.ArmDetector.SummonDemon)
 		{
 			this.UpdateRep();

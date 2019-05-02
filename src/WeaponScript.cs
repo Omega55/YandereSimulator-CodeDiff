@@ -150,7 +150,9 @@ public class WeaponScript : MonoBehaviour
 		}
 		this.MyRigidbody = base.GetComponent<Rigidbody>();
 		this.MyRigidbody.isKinematic = true;
+		Transform transform = GameObject.Find("WeaponOriginParent").transform;
 		this.Origin = UnityEngine.Object.Instantiate<GameObject>(this.Prompt.Yandere.StudentManager.EmptyObject, base.transform.position, Quaternion.identity).transform;
+		this.Origin.parent = transform;
 	}
 
 	public string GetTypePrefix()

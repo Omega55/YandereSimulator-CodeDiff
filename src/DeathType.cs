@@ -11,5 +11,6 @@ public enum DeathType
 	Falling,
 	Poison,
 	Weapon,
-	Mystery
+	Mystery,
+	Weight
 }

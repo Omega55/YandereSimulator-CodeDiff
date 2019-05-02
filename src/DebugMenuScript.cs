@@ -38,9 +38,9 @@ public class DebugMenuScript : MonoBehaviour
 
 	public GameObject SacrificialArm;
 
-	public GameObject CircularSaw;
-
 	public GameObject DebugPoisons;
+
+	public GameObject CircularSaw;
 
 	public GameObject Knife;
 
@@ -51,6 +51,8 @@ public class DebugMenuScript : MonoBehaviour
 	public Transform MidoriSpot;
 
 	public Transform Lockers;
+
+	public GameObject MissionModeWindow;
 
 	public GameObject Window;
 
@@ -71,6 +73,7 @@ public class DebugMenuScript : MonoBehaviour
 	private void Start()
 	{
 		base.transform.localPosition = new Vector3(base.transform.localPosition.x, 0f, base.transform.localPosition.z);
+		this.MissionModeWindow.SetActive(false);
 		this.Window.SetActive(false);
 		if (MissionModeGlobals.MissionMode)
 		{
@@ -153,6 +156,11 @@ public class DebugMenuScript : MonoBehaviour
 					this.WeaponManager.ChangeBloodTexture();
 					YandereScript yandere = this.Yandere;
 					yandere.Bloodiness = yandere.Bloodiness;
+					this.Window.SetActive(false);
+				}
+				else if (Input.GetKeyDown(KeyCode.F9))
+				{
+					this.Yandere.AttackManager.Censor = !this.Yandere.AttackManager.Censor;
 					this.Window.SetActive(false);
 				}
 				else if (!Input.GetKeyDown(KeyCode.F12))
@@ -452,7 +460,7 @@ public class DebugMenuScript : MonoBehaviour
 							while (this.ID < 101)
 							{
 								StudentScript studentScript6 = this.StudentManager.Students[this.ID];
-								if (studentScript6 != null && studentScript6.Club != ClubType.Council)
+								if (studentScript6 != null)
 								{
 									studentScript6.SpawnAlarmDisc();
 									studentScript6.BecomeRagdoll();
@@ -622,9 +630,30 @@ public class DebugMenuScript : MonoBehaviour
 				this.UpdateCensor();
 			}
 		}
-		else if (Input.GetKeyDown(KeyCode.Backslash))
+		else
 		{
-			this.Censor();
+			if (Input.GetKeyDown(KeyCode.Backslash))
+			{
+				this.MissionModeWindow.SetActive(!this.MissionModeWindow.activeInHierarchy);
+			}
+			if (this.MissionModeWindow.activeInHierarchy)
+			{
+				if (Input.GetKeyDown(KeyCode.Alpha1))
+				{
+					this.Censor();
+				}
+				if (Input.GetKeyDown(KeyCode.Alpha2))
+				{
+					GameGlobals.CensorBlood = !GameGlobals.CensorBlood;
+					this.WeaponManager.ChangeBloodTexture();
+					YandereScript yandere2 = this.Yandere;
+					yandere2.Bloodiness = yandere2.Bloodiness;
+				}
+				if (Input.GetKeyDown(KeyCode.Alpha3))
+				{
+					this.Yandere.AttackManager.Censor = !this.Yandere.AttackManager.Censor;
+				}
+			}
 		}
 	}
 
@@ -696,7 +725,7 @@ public class DebugMenuScript : MonoBehaviour
 			}
 			if (this.Yandere.MiyukiCostume.activeInHierarchy)
 			{
-				this.Yandere.PantyAttacher.newRenderer.enabled = true;
+				this.Yandere.PantyAttacher.newRenderer.enabled = false;
 			}
 			this.StudentManager.Censor = false;
 			this.StudentManager.CensorStudents();
@@ -706,7 +735,7 @@ public class DebugMenuScript : MonoBehaviour
 	public void EasterEggCheck()
 	{
 		Debug.Log("Checking for easter eggs.");
-		if (this.Yandere.BanchoActive || this.Yandere.Sans || this.Yandere.Raincoat.activeInHierarchy || this.Yandere.KLKSword.activeInHierarchy || this.Yandere.Gazing || this.Yandere.Ninja || this.Yandere.LifeNotebook.activeInHierarchy || this.Yandere.FalconHelmet.activeInHierarchy || this.Yandere.MyRenderer.sharedMesh == this.Yandere.NudeMesh || this.Yandere.MyRenderer.sharedMesh == this.Yandere.SchoolSwimsuit)
+		if (this.Yandere.BanchoActive || this.Yandere.Sans || this.Yandere.Raincoat.activeInHierarchy || this.Yandere.KLKSword.activeInHierarchy || this.Yandere.Gazing || this.Yandere.Ninja || this.Yandere.ClubAttire || this.Yandere.LifeNotebook.activeInHierarchy || this.Yandere.FalconHelmet.activeInHierarchy || this.Yandere.MyRenderer.sharedMesh == this.Yandere.NudeMesh || this.Yandere.MyRenderer.sharedMesh == this.Yandere.SchoolSwimsuit)
 		{
 			Debug.Log("A pants-wearing easter egg is active, so we're going to disable all shadows and panties.");
 			this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);

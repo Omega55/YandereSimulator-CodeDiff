@@ -453,16 +453,6 @@ public class CounselorScript : MonoBehaviour
 		}
 		else if (!this.Interrogating)
 		{
-			this.ChinTimer += Time.deltaTime;
-			if (this.ChinTimer > 10f)
-			{
-				this.MyAnimation.CrossFade("CounselorComputerChin");
-				if (this.MyAnimation["CounselorComputerChin"].time > this.MyAnimation["CounselorComputerChin"].length)
-				{
-					this.MyAnimation.CrossFade("CounselorComputerLoop");
-					this.ChinTimer = 0f;
-				}
-			}
 		}
 		if (this.ShowWindow)
 		{
@@ -472,7 +462,7 @@ public class CounselorScript : MonoBehaviour
 		{
 			this.CounselorWindow.localScale = Vector3.Lerp(this.CounselorWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
 		}
-		else
+		else if (this.CounselorWindow.gameObject.activeInHierarchy)
 		{
 			this.CounselorWindow.localScale = Vector3.zero;
 			this.CounselorWindow.gameObject.SetActive(false);
@@ -593,6 +583,7 @@ public class CounselorScript : MonoBehaviour
 						this.CutsceneManager.Phase++;
 						this.Lecturing = false;
 						this.LectureID = 0;
+						this.Yandere.MainCamera.gameObject.SetActive(true);
 						this.Yandere.gameObject.SetActive(true);
 						this.StudentManager.ComeBack();
 					}
@@ -689,62 +680,65 @@ public class CounselorScript : MonoBehaviour
 
 	private void LateUpdate()
 	{
-		if (this.Angry)
+		if (Vector3.Distance(base.transform.position, this.Yandere.transform.position) < 5f)
 		{
-			this.BS_SadMouth = Mathf.Lerp(this.BS_SadMouth, 100f, Time.deltaTime * 10f);
-			this.BS_MadBrow = Mathf.Lerp(this.BS_MadBrow, 100f, Time.deltaTime * 10f);
-			this.BS_SadBrow = Mathf.Lerp(this.BS_SadBrow, 0f, Time.deltaTime * 10f);
-			this.BS_AngryEyes = Mathf.Lerp(this.BS_AngryEyes, 100f, Time.deltaTime * 10f);
-		}
-		else if (this.Stern)
-		{
-			this.BS_SadMouth = Mathf.Lerp(this.BS_SadMouth, 0f, Time.deltaTime * 10f);
-			this.BS_MadBrow = Mathf.Lerp(this.BS_MadBrow, 100f, Time.deltaTime * 10f);
-			this.BS_SadBrow = Mathf.Lerp(this.BS_SadBrow, 0f, Time.deltaTime * 10f);
-			this.BS_AngryEyes = Mathf.Lerp(this.BS_AngryEyes, 0f, Time.deltaTime * 10f);
-		}
-		else if (this.Sad)
-		{
-			this.BS_SadMouth = Mathf.Lerp(this.BS_SadMouth, 100f, Time.deltaTime * 10f);
-			this.BS_MadBrow = Mathf.Lerp(this.BS_MadBrow, 0f, Time.deltaTime * 10f);
-			this.BS_SadBrow = Mathf.Lerp(this.BS_SadBrow, 100f, Time.deltaTime * 10f);
-			this.BS_AngryEyes = Mathf.Lerp(this.BS_AngryEyes, 0f, Time.deltaTime * 10f);
-		}
-		else
-		{
-			this.BS_SadMouth = Mathf.Lerp(this.BS_SadMouth, 0f, Time.deltaTime * 10f);
-			this.BS_MadBrow = Mathf.Lerp(this.BS_MadBrow, 0f, Time.deltaTime * 10f);
-			this.BS_SadBrow = Mathf.Lerp(this.BS_SadBrow, 0f, Time.deltaTime * 10f);
-			this.BS_AngryEyes = Mathf.Lerp(this.BS_AngryEyes, 0f, Time.deltaTime * 10f);
-		}
-		this.Face.SetBlendShapeWeight(1, this.BS_SadMouth);
-		this.Face.SetBlendShapeWeight(5, this.BS_MadBrow);
-		this.Face.SetBlendShapeWeight(6, this.BS_SadBrow);
-		this.Face.SetBlendShapeWeight(9, this.BS_AngryEyes);
-		if (this.MyAudio.isPlaying)
-		{
-			if (this.InterrogationPhase != 6)
+			if (this.Angry)
 			{
-				this.MouthTimer += Time.deltaTime;
-				if (this.MouthTimer > this.TimerLimit)
+				this.BS_SadMouth = Mathf.Lerp(this.BS_SadMouth, 100f, Time.deltaTime * 10f);
+				this.BS_MadBrow = Mathf.Lerp(this.BS_MadBrow, 100f, Time.deltaTime * 10f);
+				this.BS_SadBrow = Mathf.Lerp(this.BS_SadBrow, 0f, Time.deltaTime * 10f);
+				this.BS_AngryEyes = Mathf.Lerp(this.BS_AngryEyes, 100f, Time.deltaTime * 10f);
+			}
+			else if (this.Stern)
+			{
+				this.BS_SadMouth = Mathf.Lerp(this.BS_SadMouth, 0f, Time.deltaTime * 10f);
+				this.BS_MadBrow = Mathf.Lerp(this.BS_MadBrow, 100f, Time.deltaTime * 10f);
+				this.BS_SadBrow = Mathf.Lerp(this.BS_SadBrow, 0f, Time.deltaTime * 10f);
+				this.BS_AngryEyes = Mathf.Lerp(this.BS_AngryEyes, 0f, Time.deltaTime * 10f);
+			}
+			else if (this.Sad)
+			{
+				this.BS_SadMouth = Mathf.Lerp(this.BS_SadMouth, 100f, Time.deltaTime * 10f);
+				this.BS_MadBrow = Mathf.Lerp(this.BS_MadBrow, 0f, Time.deltaTime * 10f);
+				this.BS_SadBrow = Mathf.Lerp(this.BS_SadBrow, 100f, Time.deltaTime * 10f);
+				this.BS_AngryEyes = Mathf.Lerp(this.BS_AngryEyes, 0f, Time.deltaTime * 10f);
+			}
+			else
+			{
+				this.BS_SadMouth = Mathf.Lerp(this.BS_SadMouth, 0f, Time.deltaTime * 10f);
+				this.BS_MadBrow = Mathf.Lerp(this.BS_MadBrow, 0f, Time.deltaTime * 10f);
+				this.BS_SadBrow = Mathf.Lerp(this.BS_SadBrow, 0f, Time.deltaTime * 10f);
+				this.BS_AngryEyes = Mathf.Lerp(this.BS_AngryEyes, 0f, Time.deltaTime * 10f);
+			}
+			this.Face.SetBlendShapeWeight(1, this.BS_SadMouth);
+			this.Face.SetBlendShapeWeight(5, this.BS_MadBrow);
+			this.Face.SetBlendShapeWeight(6, this.BS_SadBrow);
+			this.Face.SetBlendShapeWeight(9, this.BS_AngryEyes);
+			if (this.MyAudio.isPlaying)
+			{
+				if (this.InterrogationPhase != 6)
 				{
-					this.MouthTarget = UnityEngine.Random.Range(0f, 100f);
-					this.MouthTimer = 0f;
+					this.MouthTimer += Time.deltaTime;
+					if (this.MouthTimer > this.TimerLimit)
+					{
+						this.MouthTarget = UnityEngine.Random.Range(0f, 100f);
+						this.MouthTimer = 0f;
+					}
+					this.MouthOpen = Mathf.Lerp(this.MouthOpen, this.MouthTarget, Time.deltaTime * this.TalkSpeed);
 				}
-				this.MouthOpen = Mathf.Lerp(this.MouthOpen, this.MouthTarget, Time.deltaTime * this.TalkSpeed);
+				else
+				{
+					this.MouthOpen = Mathf.Lerp(this.MouthOpen, 0f, Time.deltaTime * this.TalkSpeed);
+				}
 			}
 			else
 			{
 				this.MouthOpen = Mathf.Lerp(this.MouthOpen, 0f, Time.deltaTime * this.TalkSpeed);
 			}
+			this.Face.SetBlendShapeWeight(2, this.MouthOpen);
+			this.LookAtTarget = Vector3.Lerp(this.LookAtTarget, (!this.LookAtPlayer) ? this.Default.position : this.Yandere.Head.position, Time.deltaTime * 2f);
+			this.Head.LookAt(this.LookAtTarget);
 		}
-		else
-		{
-			this.MouthOpen = Mathf.Lerp(this.MouthOpen, 0f, Time.deltaTime * this.TalkSpeed);
-		}
-		this.Face.SetBlendShapeWeight(2, this.MouthOpen);
-		this.LookAtTarget = Vector3.Lerp(this.LookAtTarget, (!this.LookAtPlayer) ? this.Default.position : this.Yandere.Head.position, Time.deltaTime * 2f);
-		this.Head.LookAt(this.LookAtTarget);
 	}
 
 	public void Quit()

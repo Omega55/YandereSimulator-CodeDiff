@@ -3,10 +3,16 @@ using UnityEngine;
 
 public class FindStudentLockerScript : MonoBehaviour
 {
+	public TutorialWindowScript TutorialWindow;
+
 	public PromptScript Prompt;
 
 	private void Update()
 	{
+		if (this.Prompt.DistanceSqr < 5f)
+		{
+			this.TutorialWindow.ShowLockerMessage = true;
+		}
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Yandere.PauseScreen.StudentInfoMenu.FindingLocker = true;

@@ -46,7 +46,7 @@ public class StruggleBarScript : MonoBehaviour
 			this.Intensity = Mathf.MoveTowards(this.Intensity, 1f, Time.deltaTime);
 			base.transform.localScale = Vector3.Lerp(base.transform.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 			this.Spikes.localEulerAngles = new Vector3(this.Spikes.localEulerAngles.x, this.Spikes.localEulerAngles.y, this.Spikes.localEulerAngles.z - Time.deltaTime * 360f);
-			this.Victory -= Time.deltaTime * 20f * this.Strength * this.Intensity;
+			this.Victory -= Time.deltaTime * 10f * this.Strength * this.Intensity;
 			if (ClubGlobals.Club == ClubType.MartialArts)
 			{
 				this.Victory = 100f;
@@ -91,6 +91,7 @@ public class StruggleBarScript : MonoBehaviour
 				{
 					this.ChooseButton();
 					this.ButtonTimer = 0f;
+					this.Intensity = 0f;
 				}
 			}
 		}

@@ -387,7 +387,7 @@ public class TalkingScript : MonoBehaviour
 							this.S.Subtitle.UpdateLabel(SubtitleType.StudentStay, 0, 5f);
 							this.NegativeResponse = true;
 						}
-						else if (this.S.StudentManager.LockerRoomArea.bounds.Contains(this.S.Yandere.transform.position) || this.S.StudentManager.WestBathroomArea.bounds.Contains(this.S.Yandere.transform.position) || this.S.StudentManager.EastBathroomArea.bounds.Contains(this.S.Yandere.transform.position))
+						else if (this.S.StudentManager.LockerRoomArea.bounds.Contains(this.S.Yandere.transform.position) || this.S.StudentManager.WestBathroomArea.bounds.Contains(this.S.Yandere.transform.position) || this.S.StudentManager.EastBathroomArea.bounds.Contains(this.S.Yandere.transform.position) || this.S.StudentManager.HeadmasterArea.bounds.Contains(this.S.Yandere.transform.position) || this.S.MyRenderer.sharedMesh == this.S.SchoolSwimsuit || this.S.MyRenderer.sharedMesh == this.S.SwimmingTrunks)
 						{
 							this.S.CharacterAnimation.CrossFade(this.S.GossipAnim);
 							this.S.Subtitle.UpdateLabel(SubtitleType.StudentStay, 1, 5f);
@@ -492,7 +492,7 @@ public class TalkingScript : MonoBehaviour
 						{
 							StudentScript studentScript = this.S.StudentManager.Students[this.S.DialogueWheel.Victim];
 							this.Grudge = false;
-							if (studentScript.Club == ClubType.Delinquent || (this.S.Bullied && studentScript.Club == ClubType.Bully))
+							if (studentScript.Club == ClubType.Delinquent || (this.S.Bullied && studentScript.Club == ClubType.Bully) || (studentScript.StudentID == 36 && TaskGlobals.GetTaskStatus(36) < 3))
 							{
 								this.Grudge = true;
 							}
@@ -855,6 +855,27 @@ public class TalkingScript : MonoBehaviour
 						ClubGlobals.Club = ClubType.None;
 						this.S.DialogueWheel.End();
 						this.S.Yandere.ClubAccessory();
+					}
+				}
+				this.S.TalkTimer -= Time.deltaTime;
+			}
+			else if (this.S.Interaction == StudentInteractionType.ClubGrudge)
+			{
+				this.S.CharacterAnimation.CrossFade(this.S.IdleAnim);
+				if (this.S.TalkTimer == 5f)
+				{
+					this.S.Subtitle.UpdateLabel(SubtitleType.ClubGrudge, (int)(this.S.Club + this.ClubBonus), 99f);
+					this.S.TalkTimer = this.S.Subtitle.CurrentClip.GetComponent<AudioSource>().clip.length;
+				}
+				else
+				{
+					if (Input.GetButtonDown("A"))
+					{
+						this.S.TalkTimer = 0f;
+					}
+					if (this.S.TalkTimer <= 0f)
+					{
+						this.S.DialogueWheel.End();
 					}
 				}
 				this.S.TalkTimer -= Time.deltaTime;
@@ -1238,6 +1259,55 @@ public class TalkingScript : MonoBehaviour
 					this.S.StudentManager.UpdateStudents(0);
 				}
 			}
+			else if (this.S.Interaction == StudentInteractionType.SentToLocker)
+			{
+				if (this.S.TalkTimer == 5f)
+				{
+					if (this.S.Club != ClubType.Delinquent)
+					{
+						this.Refuse = false;
+						if ((this.S.Clock.HourTime > 8f && this.S.Clock.HourTime < 13f) || (this.S.Clock.HourTime > 13.375f && this.S.Clock.HourTime < 15.5f))
+						{
+							this.S.CharacterAnimation.CrossFade(this.S.GossipAnim);
+							this.S.Subtitle.UpdateLabel(SubtitleType.SendToLocker, 1, 5f);
+							this.Refuse = true;
+						}
+						else
+						{
+							this.S.CharacterAnimation.CrossFade(this.S.Nod1Anim);
+							this.S.Subtitle.UpdateLabel(SubtitleType.SendToLocker, 2, 5f);
+						}
+					}
+					else
+					{
+						this.S.Subtitle.UpdateLabel(SubtitleType.Dismissive, 5, 5f);
+					}
+				}
+				else
+				{
+					if (Input.GetButtonDown("A"))
+					{
+						this.S.TalkTimer = 0f;
+					}
+					if (this.S.CharacterAnimation[this.S.Nod1Anim].time >= this.S.CharacterAnimation[this.S.Nod1Anim].length)
+					{
+						this.S.CharacterAnimation.CrossFade(this.IdleAnim);
+					}
+					if (this.S.TalkTimer <= 0f)
+					{
+						if (!this.Refuse)
+						{
+							this.S.Pathfinding.speed = 4f;
+							this.S.TargetDistance = 1f;
+							this.S.SentToLocker = true;
+							this.S.Routine = false;
+							this.S.CanTalk = false;
+						}
+						this.S.DialogueWheel.End();
+					}
+				}
+				this.S.TalkTimer -= Time.deltaTime;
+			}
 			if (this.S.StudentID == 41 && !this.S.DialogueWheel.ClubLeader && this.S.TalkTimer > 0f)
 			{
 				Debug.Log("Geiju response.");
@@ -1266,7 +1336,7 @@ public class TalkingScript : MonoBehaviour
 						this.S.Pathfinding.canMove = true;
 						this.S.Obstacle.enabled = false;
 						this.S.Alarmed = false;
-						if (!this.S.Following && !this.S.Distracting && !this.S.Wet && !this.S.EatingSnack)
+						if (!this.S.Following && !this.S.Distracting && !this.S.Wet && !this.S.EatingSnack && !this.S.SentToLocker)
 						{
 							this.S.Routine = true;
 						}

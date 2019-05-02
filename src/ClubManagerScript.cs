@@ -33,8 +33,6 @@ public class ClubManagerScript : MonoBehaviour
 
 	public UISprite Darkness;
 
-	public GameObject ExtraCultist;
-
 	public GameObject Reputation;
 
 	public GameObject Heartrate;
@@ -60,6 +58,8 @@ public class ClubManagerScript : MonoBehaviour
 	public Transform[] ClubVantages;
 
 	public MaskScript[] Masks;
+
+	public GameObject[] Cultists;
 
 	public Transform[] Club1ActivitySpots;
 
@@ -362,10 +362,19 @@ public class ClubManagerScript : MonoBehaviour
 			this.Yandere.gameObject.SetActive(false);
 			this.Ritual.SetActive(true);
 			this.CheckClub(ClubType.Occult);
-			if (this.ClubMembers < 6)
+			foreach (GameObject gameObject in this.Cultists)
 			{
-				this.ExtraCultist.SetActive(false);
+				if (gameObject != null)
+				{
+					gameObject.SetActive(false);
+				}
 			}
+			while (this.ClubMembers > 0)
+			{
+				this.Cultists[this.ClubMembers].SetActive(true);
+				this.ClubMembers--;
+			}
+			this.CheckClub(ClubType.Occult);
 		}
 		else if (this.Club == ClubType.Art)
 		{
@@ -631,7 +640,7 @@ public class ClubManagerScript : MonoBehaviour
 		this.ID = 1;
 		while (this.ID < this.ClubIDs.Length)
 		{
-			if (!StudentGlobals.GetStudentDead(this.ClubIDs[this.ID]) && !StudentGlobals.GetStudentDying(this.ClubIDs[this.ID]) && !StudentGlobals.GetStudentKidnapped(this.ClubIDs[this.ID]) && !StudentGlobals.GetStudentArrested(this.ClubIDs[this.ID]) && StudentGlobals.GetStudentReputation(this.ClubIDs[this.ID]) > -100)
+			if (!StudentGlobals.GetStudentDead(this.ClubIDs[this.ID]) && !StudentGlobals.GetStudentDying(this.ClubIDs[this.ID]) && !StudentGlobals.GetStudentKidnapped(this.ClubIDs[this.ID]) && !StudentGlobals.GetStudentArrested(this.ClubIDs[this.ID]) && !StudentGlobals.GetStudentExpelled(this.ClubIDs[this.ID]) && StudentGlobals.GetStudentReputation(this.ClubIDs[this.ID]) > -100)
 			{
 				this.ClubMembers++;
 			}

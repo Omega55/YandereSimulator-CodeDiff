@@ -7,9 +7,16 @@ public class DemonSlashScript : MonoBehaviour
 
 	public GameObject MaleBloodyScream;
 
+	public AudioSource MyAudio;
+
 	public Collider MyCollider;
 
 	public float Timer;
+
+	private void Start()
+	{
+		this.MyAudio = base.GetComponent<AudioSource>();
+	}
 
 	private void Update()
 	{
@@ -41,7 +48,7 @@ public class DemonSlashScript : MonoBehaviour
 			}
 			component.BecomeRagdoll();
 			component.Ragdoll.Dismember();
-			base.GetComponent<AudioSource>().Play();
+			this.MyAudio.Play();
 		}
 	}
 }

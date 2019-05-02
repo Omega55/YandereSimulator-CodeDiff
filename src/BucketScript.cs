@@ -405,7 +405,7 @@ public class BucketScript : MonoBehaviour
 					this.Dumbbell[this.Dumbbells] = null;
 					this.Dumbbells--;
 				}
-				component.DeathType = DeathType.Weapon;
+				component.DeathType = DeathType.Weight;
 				component.BecomeRagdoll();
 				this.Dropped = false;
 				GameObjectUtils.SetLayerRecursively(base.gameObject, 15);

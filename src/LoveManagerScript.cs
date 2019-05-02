@@ -89,7 +89,7 @@ public class LoveManagerScript : MonoBehaviour
 				this.Rival = this.StudentManager.Students[this.StudentManager.RivalID];
 				this.Suitor = this.StudentManager.Students[1];
 			}
-			if (this.Rival != null && this.Suitor != null && this.Rival.Alive && this.Suitor.Alive && this.Rival.ConfessPhase == 5 && this.Suitor.ConfessPhase == 3)
+			if (this.Rival != null && this.Suitor != null && this.Rival.Alive && this.Suitor.Alive && !this.Rival.Dying && !this.Suitor.Dying && this.Rival.ConfessPhase == 5 && this.Suitor.ConfessPhase == 3)
 			{
 				float num = Vector3.Distance(this.Yandere.transform.position, this.MythHill.position);
 				if (!this.Yandere.Chased && this.Yandere.Chasers == 0 && num > 10f && num < 25f)

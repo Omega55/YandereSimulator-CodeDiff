@@ -43,18 +43,28 @@ public class MaskScript : MonoBehaviour
 	{
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			Rigidbody component = base.GetComponent<Rigidbody>();
-			component.useGravity = false;
-			component.isKinematic = true;
-			this.Prompt.Hide();
-			this.Prompt.enabled = false;
-			this.Prompt.MyCollider.enabled = false;
-			base.transform.parent = this.Yandere.Head;
-			base.transform.localPosition = new Vector3(0f, 0.033333f, 0.1f);
-			base.transform.localEulerAngles = Vector3.zero;
-			this.Yandere.Mask = this;
-			this.ClubManager.UpdateMasks();
-			this.StudentManager.UpdateStudents(0);
+			this.Prompt.Circle[0].fillAmount = 1f;
+			this.StudentManager.CanAnyoneSeeYandere();
+			if (!this.StudentManager.YandereVisible && !this.Yandere.Chased && this.Yandere.Chasers == 0)
+			{
+				Rigidbody component = base.GetComponent<Rigidbody>();
+				component.useGravity = false;
+				component.isKinematic = true;
+				this.Prompt.Hide();
+				this.Prompt.enabled = false;
+				this.Prompt.MyCollider.enabled = false;
+				base.transform.parent = this.Yandere.Head;
+				base.transform.localPosition = new Vector3(0f, 0.033333f, 0.1f);
+				base.transform.localEulerAngles = Vector3.zero;
+				this.Yandere.Mask = this;
+				this.ClubManager.UpdateMasks();
+				this.StudentManager.UpdateStudents(0);
+			}
+			else
+			{
+				this.Yandere.NotificationManager.CustomText = "Not now. Too suspicious.";
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
+			}
 		}
 	}
 

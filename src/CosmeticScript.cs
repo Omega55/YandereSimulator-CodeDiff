@@ -149,6 +149,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public Renderer HoodieRenderer;
 
+	public Renderer ScarfRenderer;
+
 	public Renderer HairRenderer;
 
 	public Renderer CanRenderer;
@@ -2163,7 +2165,7 @@ public class CosmeticScript : MonoBehaviour
 		{
 			this.MyRenderer.SetBlendShapeWeight(0, 50f);
 			this.MyRenderer.SetBlendShapeWeight(5, 15f);
-			this.MyRenderer.SetBlendShapeWeight(6, 100f);
+			this.MyRenderer.SetBlendShapeWeight(6, 50f);
 			this.MyRenderer.SetBlendShapeWeight(8, 50f);
 			this.MyRenderer.SetBlendShapeWeight(9, 100f);
 			this.StudentManager.Sads++;
@@ -2210,22 +2212,6 @@ public class CosmeticScript : MonoBehaviour
 				this.MyRenderer.SetBlendShapeWeight(12, this.MyRenderer.GetBlendShapeWeight(12) + (float)num);
 			}
 			this.Modified = true;
-		}
-	}
-
-	public void LateUpdate()
-	{
-		if (this.TakingPortrait)
-		{
-			if (this.LookCamera)
-			{
-				this.Neck.LookAt(this.StudentManager.MainCamera);
-				this.Head.LookAt(this.StudentManager.MainCamera);
-			}
-		}
-		else
-		{
-			base.enabled = false;
 		}
 	}
 }

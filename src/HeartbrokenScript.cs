@@ -65,7 +65,7 @@ public class HeartbrokenScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (this.Yandere.Bloodiness > 0f && !this.Yandere.RedPaint)
+		if (this.Yandere.Bloodiness > 0f && !this.Yandere.RedPaint && !this.Yandere.Unmasked)
 		{
 			this.Arrested = true;
 		}

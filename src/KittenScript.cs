@@ -35,15 +35,18 @@ public class KittenScript : MonoBehaviour
 
 	private void LateUpdate()
 	{
-		if (!this.Yandere.Aiming)
+		if (Vector3.Distance(base.transform.position, this.Yandere.transform.position) < 5f)
 		{
-			Vector3 b = (this.Yandere.Head.transform.position.x >= base.transform.position.x) ? (base.transform.position + base.transform.forward + base.transform.up * 0.139854f) : this.Yandere.Head.transform.position;
-			this.Target.position = Vector3.Lerp(this.Target.position, b, Time.deltaTime * 5f);
-			this.Head.transform.LookAt(this.Target);
-		}
-		else
-		{
-			this.Head.transform.LookAt(this.Yandere.transform.position + Vector3.up * this.Head.position.y);
+			if (!this.Yandere.Aiming)
+			{
+				Vector3 b = (this.Yandere.Head.transform.position.x >= base.transform.position.x) ? (base.transform.position + base.transform.forward + base.transform.up * 0.139854f) : this.Yandere.Head.transform.position;
+				this.Target.position = Vector3.Lerp(this.Target.position, b, Time.deltaTime * 5f);
+				this.Head.transform.LookAt(this.Target);
+			}
+			else
+			{
+				this.Head.transform.LookAt(this.Yandere.transform.position + Vector3.up * this.Head.position.y);
+			}
 		}
 	}
 }

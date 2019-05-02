@@ -19,8 +19,18 @@ public class PeekScript : MonoBehaviour
 
 	public float Timer;
 
+	private void Start()
+	{
+		this.Prompt.Door = true;
+	}
+
 	private void Update()
 	{
+		float num = Vector3.Distance(base.transform.position, this.Prompt.Yandere.transform.position);
+		if (num < 2f)
+		{
+			this.Prompt.Yandere.StudentManager.TutorialWindow.ShowInfoMessage = true;
+		}
 		if (this.InfoChanWindow.Drop)
 		{
 			this.Prompt.Circle[0].fillAmount = 1f;

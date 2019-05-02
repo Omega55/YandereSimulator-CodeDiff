@@ -37,7 +37,6 @@ public class ChangingBoothScript : MonoBehaviour
 
 	private void Start()
 	{
-		this.MyAudioSource = base.GetComponent<AudioSource>();
 		this.CheckYandereClub();
 	}
 

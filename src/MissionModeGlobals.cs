@@ -21,6 +21,8 @@ public static class MissionModeGlobals
 
 	private const string Str_NemesisDifficulty = "NemesisDifficulty";
 
+	private const string Str_MultiMission = "MultiMission";
+
 	public static int GetMissionCondition(int id)
 	{
 		return PlayerPrefs.GetInt("MissionCondition_" + id.ToString());
@@ -59,6 +61,18 @@ public static class MissionModeGlobals
 		set
 		{
 			GlobalsHelper.SetBool("MissionMode", value);
+		}
+	}
+
+	public static bool MultiMission
+	{
+		get
+		{
+			return GlobalsHelper.GetBool("MultiMission");
+		}
+		set
+		{
+			GlobalsHelper.SetBool("MultiMission", value);
 		}
 	}
 
@@ -145,5 +159,6 @@ public static class MissionModeGlobals
 		Globals.Delete("MissionTarget");
 		Globals.Delete("MissionTargetName");
 		Globals.Delete("NemesisDifficulty");
+		Globals.Delete("MultiMission");
 	}
 }

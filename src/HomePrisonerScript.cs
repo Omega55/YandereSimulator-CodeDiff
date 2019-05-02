@@ -323,7 +323,6 @@ public class HomePrisonerScript : MonoBehaviour
 					{
 						SceneManager.LoadScene("CalendarScene");
 						StudentGlobals.SetStudentSanity(SchoolGlobals.KidnapVictim, this.Sanity - 10f);
-						PlayerGlobals.Reputation -= 20f;
 					}
 					else if (this.ID == 3)
 					{

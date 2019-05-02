@@ -363,15 +363,27 @@ public class ConvoManagerScript : MonoBehaviour
 	public void LateUpdate()
 	{
 		this.CheckTimer = Mathf.MoveTowards(this.CheckTimer, 0f, Time.deltaTime);
-		if (this.Confirmed && this.SM.Students[47].Routine && this.SM.Students[49].Routine && (this.SM.Students[47].DistanceToPlayer < 1.5f || this.SM.Students[49].DistanceToPlayer < 1.5f || this.SM.Students[47].Talking || this.SM.Students[49].Talking || this.SM.Students[47].Distracted || this.SM.Students[49].Distracted))
+		if (this.Confirmed)
 		{
-			if (this.SM.Students[47].DistanceToPlayer < 1.5f || this.SM.Students[49].DistanceToPlayer < 1.5f)
+			if (this.SM.Students[47].Routine && this.SM.Students[49].Routine)
 			{
-				this.SM.Students[47].Subtitle.UpdateLabel(SubtitleType.IntrusionReaction, 2, 5f);
+				if (this.SM.Students[47].DistanceToPlayer < 1.5f || this.SM.Students[49].DistanceToPlayer < 1.5f || this.SM.Students[47].Talking || this.SM.Students[49].Talking || this.SM.Students[47].Distracted || this.SM.Students[49].Distracted || this.SM.Students[47].TurnOffRadio || this.SM.Students[49].TurnOffRadio)
+				{
+					if (this.SM.Students[47].DistanceToPlayer < 1.5f || this.SM.Students[49].DistanceToPlayer < 1.5f)
+					{
+						this.SM.Students[47].Subtitle.UpdateLabel(SubtitleType.IntrusionReaction, 2, 5f);
+					}
+					this.SM.Students[47].ClubAnim = "idle_20";
+					this.SM.Students[49].ClubAnim = "f02_idle_20";
+					this.Confirmed = false;
+				}
 			}
-			this.SM.Students[47].ClubAnim = "idle_20";
-			this.SM.Students[49].ClubAnim = "f02_idle_20";
-			this.Confirmed = false;
+			else
+			{
+				this.SM.Students[47].ClubAnim = "idle_20";
+				this.SM.Students[49].ClubAnim = "f02_idle_20";
+				this.Confirmed = false;
+			}
 		}
 	}
 }

@@ -166,6 +166,7 @@ public class WoodChipperScript : MonoBehaviour
 				this.Yandere.Police.MurderScene = false;
 			}
 			this.Shredding = true;
+			this.Yandere.StudentManager.Students[this.VictimID].Ragdoll.Disposed = true;
 		}
 		if (this.Shredding)
 		{

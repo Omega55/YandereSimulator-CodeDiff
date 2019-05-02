@@ -250,7 +250,11 @@ public class IncineratorScript : MonoBehaviour
 			this.ID = 0;
 			while (this.ID < 101)
 			{
-				this.ConfirmedDead[this.ID] = this.CorpseList[this.ID];
+				if (this.Yandere.StudentManager.Students[this.CorpseList[this.ID]] != null)
+				{
+					this.Yandere.StudentManager.Students[this.CorpseList[this.ID]].Ragdoll.Disposed = true;
+					this.ConfirmedDead[this.ID] = this.CorpseList[this.ID];
+				}
 				this.ID++;
 			}
 		}

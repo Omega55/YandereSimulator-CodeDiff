@@ -146,6 +146,7 @@ public class NemesisScript : MonoBehaviour
 			{
 				num = UnityEngine.Random.Range(2, 90);
 			}
+			num = 72;
 			this.Student.StudentManager.Students[num].gameObject.SetActive(false);
 			this.Student.StudentManager.Students[num].Replaced = true;
 			this.Cosmetic.StudentID = num;
@@ -154,6 +155,14 @@ public class NemesisScript : MonoBehaviour
 			if (component != null)
 			{
 				component.enabled = false;
+			}
+			else
+			{
+				component = this.Cosmetic.FemaleHairRenderers[this.Cosmetic.Hairstyle].GetComponent<OutlineScript>();
+				if (component != null)
+				{
+					component.enabled = false;
+				}
 			}
 			this.Student.FaceCollider.tag = "Disguise";
 			Debug.Log("Nemesis has disguised herself as " + this.Student.StudentManager.Students[num].Name);

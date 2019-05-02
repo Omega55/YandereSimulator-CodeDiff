@@ -141,58 +141,63 @@ public class DoorScript : MonoBehaviour
 		{
 			base.enabled = false;
 		}
+		this.Prompt.Student = false;
+		this.Prompt.Door = true;
 	}
 
 	private void Update()
 	{
 		if (this.Prompt.DistanceSqr <= 1f)
 		{
-			if (!this.Near)
+			if (Vector3.Distance(this.Yandere.transform.position, base.transform.position) < 2f)
 			{
-				this.TopicCheck();
-				this.Yandere.Location.Label.text = this.RoomName;
-				this.Yandere.Location.Show = true;
-				this.Near = true;
-			}
-			if (this.Prompt.Circle[0].fillAmount == 0f)
-			{
-				this.Prompt.Circle[0].fillAmount = 1f;
-				if (!this.Open)
+				if (!this.Near)
 				{
-					this.OpenDoor();
+					this.TopicCheck();
+					this.Yandere.Location.Label.text = this.RoomName;
+					this.Yandere.Location.Show = true;
+					this.Near = true;
 				}
-				else
+				if (this.Prompt.Circle[0].fillAmount == 0f)
 				{
-					this.CloseDoor();
+					this.Prompt.Circle[0].fillAmount = 1f;
+					if (!this.Open)
+					{
+						this.OpenDoor();
+					}
+					else
+					{
+						this.CloseDoor();
+					}
 				}
-			}
-			if (this.Double && this.Swinging && this.Prompt.Circle[1].fillAmount == 0f)
-			{
-				this.Bucket = this.Yandere.PickUp.Bucket;
-				this.Yandere.EmptyHands();
-				this.Bucket.transform.parent = base.transform;
-				this.Bucket.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
-				this.Bucket.Trap = true;
-				this.Bucket.Prompt.Hide();
-				this.Bucket.Prompt.enabled = false;
-				this.CheckDirection();
-				if (this.North)
+				if (this.Double && this.Swinging && this.Prompt.Circle[1].fillAmount == 0f)
 				{
-					this.Bucket.transform.localPosition = new Vector3(0f, 2.25f, 0.2975f);
+					this.Bucket = this.Yandere.PickUp.Bucket;
+					this.Yandere.EmptyHands();
+					this.Bucket.transform.parent = base.transform;
+					this.Bucket.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+					this.Bucket.Trap = true;
+					this.Bucket.Prompt.Hide();
+					this.Bucket.Prompt.enabled = false;
+					this.CheckDirection();
+					if (this.North)
+					{
+						this.Bucket.transform.localPosition = new Vector3(0f, 2.25f, 0.2975f);
+					}
+					else
+					{
+						this.Bucket.transform.localPosition = new Vector3(0f, 2.25f, -0.2975f);
+					}
+					this.Bucket.GetComponent<Rigidbody>().isKinematic = true;
+					this.Bucket.GetComponent<Rigidbody>().useGravity = false;
+					this.Prompt.HideButton[1] = true;
+					this.CanSetBucket = false;
+					this.BucketSet = true;
+					this.Open = false;
+					this.Timer = 0f;
+					this.Prompt.enabled = false;
+					this.Prompt.Hide();
 				}
-				else
-				{
-					this.Bucket.transform.localPosition = new Vector3(0f, 2.25f, -0.2975f);
-				}
-				this.Bucket.GetComponent<Rigidbody>().isKinematic = true;
-				this.Bucket.GetComponent<Rigidbody>().useGravity = false;
-				this.Prompt.HideButton[1] = true;
-				this.CanSetBucket = false;
-				this.BucketSet = true;
-				this.Open = false;
-				this.Timer = 0f;
-				this.Prompt.enabled = false;
-				this.Prompt.Hide();
 			}
 		}
 		else if (this.Near)
@@ -535,6 +540,10 @@ public class DoorScript : MonoBehaviour
 
 	private void TopicCheck()
 	{
+		if (this.RoomID > 25 && this.RoomID < 37)
+		{
+			this.StudentManager.TutorialWindow.ShowClubMessage = true;
+		}
 		switch (this.RoomID)
 		{
 		case 3:
@@ -552,12 +561,12 @@ public class DoorScript : MonoBehaviour
 			}
 			break;
 		case 15:
-			if (!ConversationGlobals.GetTopicDiscovered(16))
+			if (!ConversationGlobals.GetTopicDiscovered(11))
 			{
-				ConversationGlobals.SetTopicDiscovered(16, true);
-				ConversationGlobals.SetTopicDiscovered(17, true);
-				ConversationGlobals.SetTopicDiscovered(18, true);
-				ConversationGlobals.SetTopicDiscovered(19, true);
+				ConversationGlobals.SetTopicDiscovered(11, true);
+				ConversationGlobals.SetTopicDiscovered(12, true);
+				ConversationGlobals.SetTopicDiscovered(13, true);
+				ConversationGlobals.SetTopicDiscovered(14, true);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
@@ -617,6 +626,20 @@ public class DoorScript : MonoBehaviour
 			if (!ConversationGlobals.GetTopicDiscovered(8))
 			{
 				ConversationGlobals.SetTopicDiscovered(8, true);
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+			}
+			break;
+		case 35:
+			if (!ConversationGlobals.GetTopicDiscovered(9))
+			{
+				ConversationGlobals.SetTopicDiscovered(9, true);
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+			}
+			break;
+		case 36:
+			if (!ConversationGlobals.GetTopicDiscovered(10))
+			{
+				ConversationGlobals.SetTopicDiscovered(10, true);
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;

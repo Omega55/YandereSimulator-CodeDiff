@@ -53,6 +53,8 @@ public class JukeboxScript : MonoBehaviour
 
 	public AudioSource Jojo;
 
+	public AudioSource Lied;
+
 	public AudioSource Nier;
 
 	public AudioSource Sith;
@@ -290,6 +292,7 @@ public class JukeboxScript : MonoBehaviour
 			this.Punch.volume = Mathf.MoveTowards(this.Punch.volume, this.Volume * this.Dip, 0.166666672f);
 			this.Galo.volume = Mathf.MoveTowards(this.Galo.volume, this.Volume * this.Dip, 0.166666672f);
 			this.Jojo.volume = Mathf.MoveTowards(this.Jojo.volume, this.Volume * this.Dip, 0.166666672f);
+			this.Lied.volume = Mathf.MoveTowards(this.Lied.volume, this.Volume * this.Dip, 0.166666672f);
 			this.Nier.volume = Mathf.MoveTowards(this.Nier.volume, this.Volume * this.Dip, 0.166666672f);
 			this.Sith.volume = Mathf.MoveTowards(this.Sith.volume, this.Volume * this.Dip, 0.166666672f);
 			this.DK.volume = Mathf.MoveTowards(this.DK.volume, this.Volume * this.Dip, 0.166666672f);
@@ -387,7 +390,7 @@ public class JukeboxScript : MonoBehaviour
 				this.KillVolume();
 				this.Ninja.enabled = true;
 			}
-			else if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha7))
+			else if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha7) || Input.GetKeyDown(KeyCode.F5))
 			{
 				this.Egg = true;
 				this.KillVolume();
@@ -417,7 +420,13 @@ public class JukeboxScript : MonoBehaviour
 				this.KillVolume();
 				this.LifeNote.enabled = true;
 			}
-			else if (Input.GetKeyDown(KeyCode.F5))
+			else if (Input.GetKeyDown(KeyCode.F6))
+			{
+				this.Egg = true;
+				this.KillVolume();
+				this.Lied.enabled = true;
+			}
+			else if (Input.GetKeyDown(KeyCode.F7))
 			{
 			}
 		}
@@ -495,6 +504,7 @@ public class JukeboxScript : MonoBehaviour
 		this.Ninja.Stop();
 		this.Jojo.Stop();
 		this.Galo.Stop();
+		this.Lied.Stop();
 		this.Nier.Stop();
 		this.Sith.Stop();
 		this.DK.Stop();
@@ -509,13 +519,6 @@ public class JukeboxScript : MonoBehaviour
 		this.Egg = true;
 		this.KillVolume();
 		this.Jojo.enabled = true;
-	}
-
-	public void PlayNier()
-	{
-		this.Egg = true;
-		this.KillVolume();
-		this.Nier.enabled = true;
 	}
 
 	public void PlayCustom()

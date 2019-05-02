@@ -19,6 +19,7 @@ public enum StudentInteractionType
 	ClubActivity,
 	ClubUnwelcome,
 	ClubKick,
+	ClubGrudge,
 	ClubPractice,
 	NamingCrush,
 	ChangingAppearance,
@@ -27,5 +28,6 @@ public enum StudentInteractionType
 	Feeding,
 	TaskInquiry,
 	TakingSnack,
-	GivingHelp
+	GivingHelp,
+	SentToLocker
 }

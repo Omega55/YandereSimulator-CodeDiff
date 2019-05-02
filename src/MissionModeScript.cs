@@ -6,6 +6,8 @@ public class MissionModeScript : MonoBehaviour
 {
 	public NotificationManagerScript NotificationManager;
 
+	public NewMissionWindowScript NewMissionWindow;
+
 	public MissionModeMenuScript MissionModeMenu;
 
 	public StudentManagerScript StudentManager;
@@ -144,6 +146,10 @@ public class MissionModeScript : MonoBehaviour
 
 	public int ID;
 
+	public int[] Target;
+
+	public int[] Method;
+
 	public bool SecurityCameras;
 
 	public bool MetalDetectors;
@@ -178,6 +184,8 @@ public class MissionModeScript : MonoBehaviour
 
 	public bool BloodCleaned;
 
+	public bool MultiMission;
+
 	public bool InfoRemark;
 
 	public bool TargetDead;
@@ -187,6 +195,8 @@ public class MissionModeScript : MonoBehaviour
 	public bool FadeOut;
 
 	public bool Enabled;
+
+	public bool[] Checking;
 
 	public string CauseOfFailure = string.Empty;
 
@@ -225,6 +235,7 @@ public class MissionModeScript : MonoBehaviour
 			this.SecurityCameraGroup.SetActive(false);
 			this.MetalDetectorGroup.SetActive(false);
 		}
+		this.NewMissionWindow.gameObject.SetActive(false);
 		this.MissionModeHUD.SetActive(false);
 		this.SpottedWindow.SetActive(false);
 		this.ExitPortal.SetActive(false);
@@ -303,6 +314,8 @@ public class MissionModeScript : MonoBehaviour
 			ClassGlobals.LanguageGrade = 1;
 			ClassGlobals.PhysicalGrade = 1;
 			ClassGlobals.PsychologyGrade = 1;
+			this.Yandere.StudentManager.TutorialWindow.gameObject.SetActive(false);
+			TutorialGlobals.TutorialsOff = true;
 			SchoolGlobals.SchoolAtmosphereSet = true;
 			SchoolGlobals.SchoolAtmosphere = 1f - (float)this.Difficulty * 0.1f;
 			Debug.Log("Mission Mode has lowered school atmosphere according to the difficulty level.");
@@ -448,6 +461,19 @@ public class MissionModeScript : MonoBehaviour
 			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 1f);
 			this.MissionModeMenu.UpdateGraphics();
 			this.MissionModeMenu.gameObject.SetActive(true);
+			if (MissionModeGlobals.MultiMission)
+			{
+				this.NewMissionWindow.gameObject.SetActive(true);
+				this.MissionModeMenu.gameObject.SetActive(false);
+				this.NewMissionWindow.FillOutInfo();
+				this.NewMissionWindow.HideButtons();
+				this.MultiMission = true;
+				for (int i = 1; i < 11; i++)
+				{
+					this.Target[i] = PlayerPrefs.GetInt("MissionModeTarget" + i);
+					this.Method[i] = PlayerPrefs.GetInt("MissionModeMethod" + i);
+				}
+			}
 			this.Enabled = true;
 		}
 		else
@@ -493,6 +519,133 @@ public class MissionModeScript : MonoBehaviour
 		}
 		else if (this.Phase == 2)
 		{
+			if (this.MultiMission)
+			{
+				for (int i = 1; i < this.Target.Length; i++)
+				{
+					if (this.Target[i] == 0)
+					{
+						this.Checking[i] = false;
+					}
+					else if (this.Checking[i])
+					{
+						if (this.StudentManager.Students[this.Target[i]].transform.position.y < -11f)
+						{
+							this.GameOverID = 1;
+							this.GameOver();
+							this.Phase = 4;
+						}
+						else if (!this.StudentManager.Students[this.Target[i]].Alive)
+						{
+							if (this.Method[i] == 0)
+							{
+								if (this.StudentManager.Students[this.Target[i]].DeathType == DeathType.Weapon)
+								{
+									this.NewMissionWindow.DeathSkulls[i].SetActive(true);
+									this.Checking[i] = false;
+									this.CheckForCompletion();
+								}
+								else
+								{
+									this.GameOverID = 18;
+									this.GameOver();
+									this.Phase = 4;
+								}
+							}
+							else if (this.Method[i] == 1)
+							{
+								if (this.StudentManager.Students[this.Target[i]].DeathType == DeathType.Drowning)
+								{
+									this.NewMissionWindow.DeathSkulls[i].SetActive(true);
+									this.Checking[i] = false;
+									this.CheckForCompletion();
+								}
+								else
+								{
+									this.GameOverID = 18;
+									this.GameOver();
+									this.Phase = 4;
+								}
+							}
+							else if (this.Method[i] == 2)
+							{
+								if (this.StudentManager.Students[this.Target[i]].DeathType == DeathType.Poison)
+								{
+									this.NewMissionWindow.DeathSkulls[i].SetActive(true);
+									this.Checking[i] = false;
+									this.CheckForCompletion();
+								}
+								else
+								{
+									this.GameOverID = 18;
+									this.GameOver();
+									this.Phase = 4;
+								}
+							}
+							else if (this.Method[i] == 3)
+							{
+								if (this.StudentManager.Students[this.Target[i]].DeathType == DeathType.Electrocution)
+								{
+									this.NewMissionWindow.DeathSkulls[i].SetActive(true);
+									this.Checking[i] = false;
+									this.CheckForCompletion();
+								}
+								else
+								{
+									this.GameOverID = 18;
+									this.GameOver();
+									this.Phase = 4;
+								}
+							}
+							else if (this.Method[i] == 4)
+							{
+								if (this.StudentManager.Students[this.Target[i]].DeathType == DeathType.Burning)
+								{
+									this.NewMissionWindow.DeathSkulls[i].SetActive(true);
+									this.Checking[i] = false;
+									this.CheckForCompletion();
+								}
+								else
+								{
+									this.GameOverID = 18;
+									this.GameOver();
+									this.Phase = 4;
+								}
+							}
+							else if (this.Method[i] == 5)
+							{
+								if (this.StudentManager.Students[this.Target[i]].DeathType == DeathType.Falling)
+								{
+									this.NewMissionWindow.DeathSkulls[i].SetActive(true);
+									this.Checking[i] = false;
+									this.CheckForCompletion();
+								}
+								else
+								{
+									this.GameOverID = 18;
+									this.GameOver();
+									this.Phase = 4;
+								}
+							}
+							else if (this.Method[i] == 6)
+							{
+								if (this.StudentManager.Students[this.Target[i]].DeathType == DeathType.Weight)
+								{
+									this.Checking[i] = false;
+									this.CheckForCompletion();
+								}
+								else
+								{
+									this.NewMissionWindow.DeathSkulls[i].SetActive(true);
+									this.GameOverID = 18;
+									this.GameOver();
+									this.Phase = 4;
+								}
+							}
+						}
+					}
+				}
+			}
 			if (!this.TargetDead && this.StudentManager.Students[this.TargetID] != null)
 			{
 				if (!this.StudentManager.Students[this.TargetID].Alive)
@@ -646,7 +799,14 @@ public class MissionModeScript : MonoBehaviour
 						this.SpottedLabel.text = this.StudentManager.Students[this.ID].Name;
 						this.SpottedWindow.SetActive(true);
 						this.Chastise = true;
-						this.GameOverID = 7;
+						if (this.Yandere.DelinquentFighting)
+						{
+							this.GameOverID = 19;
+						}
+						else
+						{
+							this.GameOverID = 7;
+						}
 						this.GameOver();
 						this.Phase = 4;
 					}
@@ -942,7 +1102,7 @@ public class MissionModeScript : MonoBehaviour
 
 	private void ResetGlobals()
 	{
-		bool disableFarAnimations = OptionGlobals.DisableFarAnimations;
+		int disableFarAnimations = OptionGlobals.DisableFarAnimations;
 		bool disablePostAliasing = OptionGlobals.DisablePostAliasing;
 		bool disableOutlines = OptionGlobals.DisableOutlines;
 		int lowDetailStudents = OptionGlobals.LowDetailStudents;
@@ -955,6 +1115,12 @@ public class MissionModeScript : MonoBehaviour
 		string missionTargetName = MissionModeGlobals.MissionTargetName;
 		bool highPopulation = OptionGlobals.HighPopulation;
 		Globals.DeleteAll();
+		TutorialGlobals.TutorialsOff = true;
+		for (int i = 1; i < 11; i++)
+		{
+			PlayerPrefs.SetInt("MissionModeTarget" + i, this.Target[i]);
+			PlayerPrefs.SetInt("MissionModeMethod" + i, this.Method[i]);
+		}
 		SchoolGlobals.SchoolAtmosphere = 1f - (float)this.Difficulty * 0.1f;
 		MissionModeGlobals.MissionTargetName = missionTargetName;
 		MissionModeGlobals.MissionDifficulty = this.Difficulty;
@@ -962,6 +1128,7 @@ public class MissionModeScript : MonoBehaviour
 		MissionModeGlobals.MissionTarget = this.TargetID;
 		SchoolGlobals.SchoolAtmosphereSet = true;
 		MissionModeGlobals.MissionMode = true;
+		MissionModeGlobals.MultiMission = this.MultiMission;
 		MissionModeGlobals.MissionRequiredWeapon = this.RequiredWeaponID;
 		MissionModeGlobals.MissionRequiredClothing = this.RequiredClothingID;
 		MissionModeGlobals.MissionRequiredDisposal = this.RequiredDisposalID;
@@ -1006,6 +1173,14 @@ public class MissionModeScript : MonoBehaviour
 			{
 				uisprite.color = new Color(1f, 1f, 1f, a2);
 			}
+		}
+	}
+
+	private void CheckForCompletion()
+	{
+		if (!this.Checking[1] && !this.Checking[2] && !this.Checking[3] && !this.Checking[4] && !this.Checking[5] && !this.Checking[6] && !this.Checking[7] && !this.Checking[8] && !this.Checking[9] && !this.Checking[10])
+		{
+			this.TargetDead = true;
 		}
 	}
 }

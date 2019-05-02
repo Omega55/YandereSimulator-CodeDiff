@@ -86,6 +86,8 @@ public class PickpocketMinigameScript : MonoBehaviour
 					this.Progress++;
 					if (this.Progress == 5)
 					{
+						this.Yandere.NotificationManager.CustomText = "Pickpocket Success";
+						this.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
 						this.Yandere.Pickpocketing = false;
 						this.Yandere.CanMove = true;
 						this.Success = true;

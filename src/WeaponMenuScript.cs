@@ -57,7 +57,7 @@ public class WeaponMenuScript : MonoBehaviour
 	{
 		if (!this.PauseScreen.Show)
 		{
-			if (this.Yandere.CanMove && !this.Yandere.Aiming)
+			if ((this.Yandere.CanMove && !this.Yandere.Aiming) || (this.Yandere.Chased && !this.Yandere.Sprayed))
 			{
 				if ((this.IM.DPadUp && this.IM.TappedUp) || (this.IM.DPadDown && this.IM.TappedDown) || (this.IM.DPadLeft && this.IM.TappedLeft) || (this.IM.DPadRight && this.IM.TappedRight))
 				{
@@ -110,6 +110,8 @@ public class WeaponMenuScript : MonoBehaviour
 						this.Selected = 4;
 						if (this.Yandere.Equipped > 0)
 						{
+							this.Yandere.CharacterAnimation["f02_reachForWeapon_00"].time = 0f;
+							this.Yandere.ReachWeight = 1f;
 							this.Yandere.Unequip();
 						}
 						if (this.Yandere.PickUp != null)
@@ -146,7 +148,7 @@ public class WeaponMenuScript : MonoBehaviour
 					this.UpdateSprites();
 				}
 			}
-			if (this.Yandere.CanMove)
+			if (this.Yandere.CanMove || (this.Yandere.Chased && !this.Yandere.Sprayed))
 			{
 				if (!this.Show)
 				{
@@ -154,6 +156,18 @@ public class WeaponMenuScript : MonoBehaviour
 					{
 						if (this.Yandere.Equipped > 0)
 						{
+							Debug.Log(string.Concat(new object[]
+							{
+								"Yandere-chan is currently carrying a: ",
+								this.Yandere.EquippedWeapon.gameObject.name,
+								". Is it concealable? ",
+								this.Yandere.EquippedWeapon.Concealable
+							}));
+							if (this.Yandere.EquippedWeapon.Concealable)
+							{
+								this.Yandere.CharacterAnimation["f02_reachForWeapon_00"].time = 0f;
+								this.Yandere.ReachWeight = 1f;
+							}
 							this.Yandere.Unequip();
 						}
 						if (this.Yandere.PickUp != null)
@@ -222,7 +236,7 @@ public class WeaponMenuScript : MonoBehaviour
 		else
 		{
 			base.transform.localScale = Vector3.Lerp(base.transform.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
-			if (!this.Yandere.CanMove || this.Yandere.Aiming || this.PauseScreen.Show || this.InputDevice.Type == InputDeviceType.MouseAndKeyboard)
+			if ((!this.Yandere.CanMove || this.Yandere.Aiming || this.PauseScreen.Show || this.InputDevice.Type == InputDeviceType.MouseAndKeyboard) && (!this.Yandere.Chased || this.Yandere.Sprayed))
 			{
 				this.Show = false;
 			}
@@ -258,6 +272,8 @@ public class WeaponMenuScript : MonoBehaviour
 	{
 		if (this.Yandere.Weapon[this.Selected] != null)
 		{
+			this.Yandere.CharacterAnimation["f02_reachForWeapon_00"].time = 0f;
+			this.Yandere.ReachWeight = 1f;
 			if (this.Yandere.PickUp != null)
 			{
 				this.Yandere.PickUp.Drop();
@@ -430,9 +446,18 @@ public class WeaponMenuScript : MonoBehaviour
 	{
 		if (this.Yandere.Mask != null)
 		{
-			this.Yandere.Mask.Drop();
-			this.UpdateSprites();
-			this.StudentManager.UpdateStudents(0);
+			this.StudentManager.CanAnyoneSeeYandere();
+			if (!this.StudentManager.YandereVisible && !this.Yandere.Chased && this.Yandere.Chasers == 0)
+			{
+				this.Yandere.Mask.Drop();
+				this.UpdateSprites();
+				this.StudentManager.UpdateStudents(0);
+			}
+			else
+			{
+				this.Yandere.NotificationManager.CustomText = "Not now. Too suspicious.";
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
+			}
 		}
 	}
 }

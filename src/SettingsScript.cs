@@ -37,6 +37,8 @@ public class SettingsScript : MonoBehaviour
 
 	public UILabel InvertAxisLabel;
 
+	public UILabel DisableTutorialsLabel;
+
 	public int SelectionLimit = 2;
 
 	public int Selected = 1;
@@ -192,11 +194,17 @@ public class SettingsScript : MonoBehaviour
 		}
 		else if (this.Selected == 10)
 		{
-			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
+			if (this.InputManager.TappedRight)
 			{
-				OptionGlobals.DisableFarAnimations = !OptionGlobals.DisableFarAnimations;
-				this.UpdateText();
+				OptionGlobals.DisableFarAnimations++;
 				this.QualityManager.UpdateAnims();
+				this.UpdateText();
+			}
+			else if (this.InputManager.TappedLeft)
+			{
+				OptionGlobals.DisableFarAnimations--;
+				this.QualityManager.UpdateAnims();
+				this.UpdateText();
 			}
 		}
 		else if (this.Selected == 11)
@@ -236,6 +244,16 @@ public class SettingsScript : MonoBehaviour
 			}
 			this.UpdateText();
 		}
+		else if (this.Selected == 14)
+		{
+			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
+			{
+				TutorialGlobals.TutorialsOff = !TutorialGlobals.TutorialsOff;
+				this.PauseScreen.Yandere.StudentManager.TutorialWindow.enabled = !TutorialGlobals.TutorialsOff;
+				this.UpdateText();
+			}
+			this.UpdateText();
+		}
 		if (Input.GetKeyDown("l"))
 		{
 			OptionGlobals.ParticleCount = 1;
@@ -246,7 +264,7 @@ public class SettingsScript : MonoBehaviour
 			OptionGlobals.LowDetailStudents = 1;
 			OptionGlobals.DrawDistance = 50;
 			OptionGlobals.DisableShadows = true;
-			OptionGlobals.DisableFarAnimations = true;
+			OptionGlobals.DisableFarAnimations = 1;
 			OptionGlobals.RimLight = false;
 			OptionGlobals.DepthOfField = false;
 			this.QualityManager.UpdateFog();
@@ -296,12 +314,13 @@ public class SettingsScript : MonoBehaviour
 		this.PostAliasingLabel.text = ((!OptionGlobals.DisablePostAliasing) ? "On" : "Off");
 		this.BloomLabel.text = ((!OptionGlobals.DisableBloom) ? "On" : "Off");
 		this.LowDetailLabel.text = ((OptionGlobals.LowDetailStudents != 0) ? ((OptionGlobals.LowDetailStudents * 10).ToString() + "m") : "Off");
+		this.FarAnimsLabel.text = ((OptionGlobals.DisableFarAnimations != 0) ? ((OptionGlobals.DisableFarAnimations * 5).ToString() + "m") : "Off");
 		this.DrawDistanceLabel.text = OptionGlobals.DrawDistance + "m";
 		this.FogLabel.text = ((!OptionGlobals.Fog) ? "Off" : "On");
 		this.ShadowsLabel.text = ((!OptionGlobals.DisableShadows) ? "On" : "Off");
-		this.FarAnimsLabel.text = ((!OptionGlobals.DisableFarAnimations) ? "On" : "Off");
 		this.SensitivityLabel.text = string.Empty + OptionGlobals.Sensitivity;
 		this.InvertAxisLabel.text = ((!OptionGlobals.InvertAxis) ? "No" : "Yes");
+		this.DisableTutorialsLabel.text = ((!TutorialGlobals.TutorialsOff) ? "No" : "Yes");
 	}
 
 	private void UpdateHighlight()
@@ -314,7 +333,7 @@ public class SettingsScript : MonoBehaviour
 		{
 			this.Selected = 1;
 		}
-		this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 440f - 60f * (float)this.Selected, this.Highlight.localPosition.z);
+		this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 430f - 50f * (float)this.Selected, this.Highlight.localPosition.z);
 	}
 
 	public void ToggleBackground()

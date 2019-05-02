@@ -96,7 +96,7 @@ public class CookingEventScript : MonoBehaviour
 		if (!this.Clock.StopTime && this.EventCheck && this.Clock.HourTime > this.EventTime)
 		{
 			this.EventStudent = this.StudentManager.Students[this.EventStudentID];
-			if (this.EventStudent != null && !this.EventStudent.Distracted && !this.EventStudent.Meeting && !this.EventStudent.Wet)
+			if (this.EventStudent != null && !this.EventStudent.Distracted && this.EventStudent.MeetTime == 0f && !this.EventStudent.Meeting && !this.EventStudent.Wet)
 			{
 				if (!this.EventStudent.WitnessedMurder)
 				{

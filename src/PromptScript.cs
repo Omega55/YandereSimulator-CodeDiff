@@ -5,6 +5,8 @@ public class PromptScript : MonoBehaviour
 {
 	public PauseScreenScript PauseScreen;
 
+	public StudentScript MyStudent;
+
 	public YandereScript Yandere;
 
 	public GameObject[] ButtonObject;
@@ -93,12 +95,22 @@ public class PromptScript : MonoBehaviour
 
 	public Transform RaycastTarget;
 
+	public float MinimumDistanceSqr;
+
+	public float MaximumDistanceSqr;
+
 	public float Timer;
+
+	public bool Student;
+
+	public bool Door;
 
 	public bool Hidden;
 
 	private void Awake()
 	{
+		this.MinimumDistanceSqr = this.MinimumDistance;
+		this.MaximumDistanceSqr = this.MaximumDistance;
 		this.DistanceSqr = float.PositiveInfinity;
 		this.OwnerType = this.DecideOwnerType();
 		if (this.RaycastTarget == null)
@@ -192,22 +204,6 @@ public class PromptScript : MonoBehaviour
 		}
 	}
 
-	private float MinimumDistanceSqr
-	{
-		get
-		{
-			return this.MinimumDistance * this.MinimumDistance;
-		}
-	}
-
-	private float MaximumDistanceSqr
-	{
-		get
-		{
-			return this.MaximumDistance * this.MaximumDistance;
-		}
-	}
-
 	private PromptOwnerType DecideOwnerType()
 	{
 		if (base.GetComponent<DoorScript>() != null)
@@ -233,8 +229,15 @@ public class PromptScript : MonoBehaviour
 		{
 			if (this.InView)
 			{
-				Vector3 a = new Vector3(base.transform.position.x, this.Yandere.transform.position.y, base.transform.position.z);
-				this.DistanceSqr = (a - this.Yandere.transform.position).sqrMagnitude;
+				if (this.MyStudent == null)
+				{
+					Vector3 a = new Vector3(base.transform.position.x, this.Yandere.transform.position.y, base.transform.position.z);
+					this.DistanceSqr = (a - this.Yandere.transform.position).sqrMagnitude;
+				}
+				else
+				{
+					this.DistanceSqr = this.MyStudent.DistanceToPlayer;
+				}
 				if (this.DistanceSqr < this.MaximumDistanceSqr)
 				{
 					this.NoCheck = true;
@@ -242,14 +245,9 @@ public class PromptScript : MonoBehaviour
 					bool flag2 = this.Yandere.Stance.Current == StanceType.Crawling;
 					if (this.Yandere.CanMove && (!flag || this.AllowedWhenCrouching(this.OwnerType)) && (!flag2 || this.AllowedWhenCrawling(this.OwnerType)) && !this.Yandere.Aiming && !this.Yandere.Mopping && !this.Yandere.NearSenpai)
 					{
-						Debug.DrawLine(this.Yandere.Eyes.position + Vector3.down * this.Height, this.RaycastTarget.position, Color.green);
 						RaycastHit raycastHit;
 						if (Physics.Linecast(this.Yandere.Eyes.position + Vector3.down * this.Height, this.RaycastTarget.position, out raycastHit, this.BloodMask))
 						{
-							if (this.Debugging)
-							{
-								Debug.Log("We hit a collider named " + raycastHit.collider.name);
-							}
 							this.InSight = (raycastHit.collider == this.MyCollider);
 						}
 						if (this.Carried || this.InSight)
@@ -514,19 +512,11 @@ public class PromptScript : MonoBehaviour
 						}
 						else
 						{
-							if (this.Debugging)
-							{
-								Debug.Log("Yandere-chan's raycast is not hitting this object.");
-							}
 							this.Hide();
 						}
 					}
 					else
 					{
-						if (this.Debugging)
-						{
-							Debug.Log("Yandere-chan is in a state which prevents her from being able to interact with propts.");
-						}
 						this.Hide();
 					}
 				}
@@ -541,20 +531,12 @@ public class PromptScript : MonoBehaviour
 			}
 			else
 			{
-				if (this.Debugging)
-				{
-					Debug.Log("This object is not in view.");
-				}
 				this.DistanceSqr = float.PositiveInfinity;
 				this.Hide();
 			}
 		}
 		else
 		{
-			if (this.Debugging)
-			{
-				Debug.Log("The pause screen is showing.");
-			}
 			this.Hide();
 		}
 	}
@@ -567,10 +549,6 @@ public class PromptScript : MonoBehaviour
 	private void OnBecameInvisible()
 	{
 		this.InView = false;
-		if (this.Debugging)
-		{
-			Debug.Log("5.");
-		}
 		this.Hide();
 	}
 

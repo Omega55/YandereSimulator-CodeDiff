@@ -15,6 +15,13 @@ public class InterestManagerScript : MonoBehaviour
 
 	public Transform Kitten;
 
+	private void Start()
+	{
+		ConversationGlobals.SetTopicDiscovered(22, true);
+		ConversationGlobals.SetTopicDiscovered(23, true);
+		ConversationGlobals.SetTopicDiscovered(24, true);
+	}
+
 	private void Update()
 	{
 		if (this.Yandere.Follower != null)

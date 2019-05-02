@@ -129,6 +129,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] KilledMoods;
 
+	public string[] SendToLockers;
+
 	public string[] KnifeReactions;
 
 	public string[] SyringeReactions;
@@ -495,6 +497,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] CouncilCorpseReactions;
 
+	public string[] CouncilToCounselors;
+
 	public string[] HmmReactions;
 
 	public string[] Eulogies;
@@ -766,6 +770,8 @@ public class SubtitleScript : MonoBehaviour
 	private SubtitleTypeAndAudioClipArrayDictionary SubtitleClipArrays;
 
 	public GameObject CurrentClip;
+
+	public StudentScript Speaker;
 
 	private void Awake()
 	{
@@ -1430,6 +1436,10 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.Label.text = this.GetRandomString(this.KilledMoods);
 		}
+		else if (subtitleType == SubtitleType.SendToLocker)
+		{
+			this.Label.text = this.SendToLockers[ID];
+		}
 		else if (subtitleType == SubtitleType.NoteReaction)
 		{
 			this.Label.text = this.NoteReactions[ID];
@@ -1811,6 +1821,10 @@ public class SubtitleScript : MonoBehaviour
 		else if (subtitleType == SubtitleType.CouncilCorpseReaction)
 		{
 			this.Label.text = this.CouncilCorpseReactions[ID];
+		}
+		else if (subtitleType == SubtitleType.CouncilToCounselor)
+		{
+			this.Label.text = this.CouncilToCounselors[ID];
 		}
 		else if (subtitleType == SubtitleType.LonerMurderReaction)
 		{
@@ -2665,17 +2679,27 @@ public class SubtitleScript : MonoBehaviour
 		if (clip != null)
 		{
 			GameObject gameObject = new GameObject("TempAudio");
-			gameObject.transform.position = this.Yandere.transform.position + base.transform.up;
-			gameObject.transform.parent = this.Yandere.transform;
+			if (this.Speaker != null)
+			{
+				gameObject.transform.position = this.Speaker.transform.position + base.transform.up;
+				gameObject.transform.parent = this.Speaker.transform;
+			}
+			else
+			{
+				gameObject.transform.position = this.Yandere.transform.position + base.transform.up;
+				gameObject.transform.parent = this.Yandere.transform;
+			}
 			AudioSource audioSource = gameObject.AddComponent<AudioSource>();
 			audioSource.clip = clip;
 			audioSource.Play();
 			UnityEngine.Object.Destroy(gameObject, clip.length);
 			audioSource.rolloffMode = AudioRolloffMode.Linear;
+			audioSource.spatialBlend = 1f;
 			audioSource.minDistance = 5f;
-			audioSource.maxDistance = 10f;
+			audioSource.maxDistance = 15f;
 			this.CurrentClip = gameObject;
 			audioSource.volume = ((this.Yandere.position.y >= gameObject.transform.position.y - 2f) ? 1f : 0f);
+			this.Speaker = null;
 		}
 	}
 }

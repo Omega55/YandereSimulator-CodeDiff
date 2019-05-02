@@ -249,7 +249,6 @@ public class GardeningClubMemberScript : MonoBehaviour
 			Plane[] planes = GeometryUtility.CalculateFrustumPlanes(this.VisionCone);
 			if (GeometryUtility.TestPlanesAABB(planes, this.Yandere.GetComponent<Collider>().bounds))
 			{
-				Debug.DrawLine(this.Eyes.transform.position, new Vector3(this.Yandere.transform.position.x, this.Yandere.Head.position.y, this.Yandere.transform.position.z), Color.green);
 				Vector3 end = new Vector3(this.Yandere.transform.position.x, this.Yandere.Head.position.y, this.Yandere.transform.position.z);
 				RaycastHit raycastHit;
 				if (Physics.Linecast(this.Eyes.transform.position, end, out raycastHit))

@@ -25,6 +25,7 @@ public class TrashCanScript : MonoBehaviour
 				if (this.Yandere.PickUp != null)
 				{
 					this.Item = this.Yandere.PickUp.gameObject;
+					this.Yandere.MyController.radius = 0.5f;
 					this.Yandere.EmptyHands();
 				}
 				else

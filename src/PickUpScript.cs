@@ -93,6 +93,10 @@ public class PickUpScript : MonoBehaviour
 
 	public int CarryAnimID;
 
+	public int Strength;
+
+	public int Period;
+
 	public int Food;
 
 	public float KinematicTimer;
@@ -140,7 +144,11 @@ public class PickUpScript : MonoBehaviour
 		}
 		if (this.Weight)
 		{
-			if (ClassGlobals.PhysicalGrade + ClassGlobals.PhysicalBonus == 0)
+			if (this.Period < this.Clock.Period)
+			{
+				this.Strength = ClassGlobals.PhysicalGrade + ClassGlobals.PhysicalBonus;
+			}
+			if (this.Strength == 0)
 			{
 				this.Prompt.Label[3].text = "     Physical Stat Too Low";
 				this.Prompt.Circle[3].fillAmount = 1f;
@@ -189,6 +197,11 @@ public class PickUpScript : MonoBehaviour
 		{
 			base.transform.localPosition = this.HoldPosition;
 			base.transform.localEulerAngles = this.HoldRotation;
+			if (this.Garbage && !this.Yandere.StudentManager.IncineratorArea.bounds.Contains(this.Yandere.transform.position))
+			{
+				this.Drop();
+				base.transform.position = new Vector3(-40f, 0f, 24f);
+			}
 		}
 		if (this.Dumped)
 		{
@@ -318,6 +331,10 @@ public class PickUpScript : MonoBehaviour
 
 	public void Drop()
 	{
+		if (this.TrashCan)
+		{
+			this.Yandere.MyController.radius = 0.2f;
+		}
 		if (this.CarryAnimID == 10)
 		{
 			this.MyRenderer.mesh = this.ClosedBook;

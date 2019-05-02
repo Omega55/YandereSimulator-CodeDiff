@@ -5,6 +5,8 @@ public class DemonArmScript : MonoBehaviour
 {
 	public GameObject DismembermentCollider;
 
+	public Animation MyAnimation;
+
 	public Collider ClawCollider;
 
 	public bool Attacking;
@@ -15,33 +17,62 @@ public class DemonArmScript : MonoBehaviour
 
 	public string IdleAnim = "DemonArmIdle";
 
+	public string AttackAnim = "DemonArmAttack";
+
 	public AudioClip Whoosh;
+
+	public float AnimSpeed = 1f;
+
+	public float AnimTime;
+
+	private void Start()
+	{
+		this.MyAnimation = base.GetComponent<Animation>();
+		if (!this.Rising)
+		{
+			this.MyAnimation[this.IdleAnim].speed = this.AnimSpeed * 0.5f;
+		}
+		this.MyAnimation[this.AttackAnim].speed = 0f;
+	}
 
 	private void Update()
 	{
-		Animation component = base.GetComponent<Animation>();
 		if (!this.Rising)
 		{
 			if (!this.Attacking)
 			{
-				component.CrossFade(this.IdleAnim);
+				this.MyAnimation.CrossFade(this.IdleAnim);
 			}
-			else if (!this.Attacked)
+			else
 			{
-				if (component["DemonArmAttack"].time >= component["DemonArmAttack"].length * 0.25f)
+				this.AnimTime += 0.0166666675f;
+				this.MyAnimation[this.AttackAnim].time = this.AnimTime;
+				if (!this.Attacked)
 				{
-					this.ClawCollider.enabled = true;
-					this.Attacked = true;
+					if (this.MyAnimation[this.AttackAnim].time >= this.MyAnimation[this.AttackAnim].length * 0.15f)
+					{
+						this.ClawCollider.enabled = true;
+						this.Attacked = true;
+					}
+				}
+				else
+				{
+					if (this.MyAnimation[this.AttackAnim].time >= this.MyAnimation[this.AttackAnim].length * 0.4f)
+					{
+						this.ClawCollider.enabled = false;
+					}
+					if (this.MyAnimation[this.AttackAnim].time >= this.MyAnimation[this.AttackAnim].length)
+					{
+						this.MyAnimation.CrossFade(this.IdleAnim);
+						this.ClawCollider.enabled = false;
+						this.Attacking = false;
+						this.Attacked = false;
+						this.AnimTime = 0f;
+					}
 				}
 			}
-			else if (component["DemonArmAttack"].time >= component["DemonArmAttack"].length)
-			{
-				component.CrossFade(this.IdleAnim);
-				this.Attacking = false;
-				this.Attacked = false;
-			}
 		}
-		else if (component["DemonArmRise"].time > component["DemonArmRise"].length)
+		else if (this.MyAnimation[this.AttackAnim].time > this.MyAnimation[this.AttackAnim].length)
 		{
 			this.Rising = false;
 		}
@@ -56,7 +87,7 @@ public class DemonArmScript : MonoBehaviour
 			component2.clip = this.Whoosh;
 			component2.pitch = UnityEngine.Random.Range(-0.9f, 1.1f);
 			component2.Play();
-			base.GetComponent<Animation>().CrossFade("DemonArmAttack");
+			base.GetComponent<Animation>().CrossFade(this.AttackAnim);
 			this.Attacking = true;
 		}
 	}

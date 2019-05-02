@@ -5,7 +5,7 @@ public class OptionSaveData
 {
 	public bool disableBloom;
 
-	public bool disableFarAnimations;
+	public int disableFarAnimations = 5;
 
 	public bool disableOutlines;
 

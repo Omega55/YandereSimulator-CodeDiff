@@ -154,6 +154,7 @@ public enum SubtitleType
 	RivalPickpocketReaction,
 	RivalSplashReaction,
 	SadApology,
+	SendToLocker,
 	SenpaiBloodReaction,
 	SenpaiCorpseReaction,
 	SenpaiInsanityReaction,
@@ -238,5 +239,6 @@ public enum SubtitleType
 	Spraying,
 	Shoving,
 	Chasing,
-	CouncilCorpseReaction
+	CouncilCorpseReaction,
+	CouncilToCounselor
 }

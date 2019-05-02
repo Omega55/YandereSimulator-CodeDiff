@@ -103,7 +103,7 @@ public class NoteLockerScript : MonoBehaviour
 		}
 		if (this.NoteLeft)
 		{
-			if (this.Student != null && (this.Student.Phase == 2 || this.Student.Phase == 8) && this.Student.Routine && Vector3.Distance(base.transform.position, this.Student.transform.position) < 2f && !this.Student.InEvent)
+			if (this.Student != null && ((this.Student.Routine && this.Student.Phase == 2) || (this.Student.Routine && this.Student.Phase == 8) || this.Student.SentToLocker) && Vector3.Distance(base.transform.position, this.Student.transform.position) < 2f && !this.Student.InEvent)
 			{
 				this.Student.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
 				if (!this.Success)
@@ -186,10 +186,12 @@ public class NoteLockerScript : MonoBehaviour
 					{
 						if (!this.Student.Male)
 						{
+							this.Yandere.Subtitle.Speaker = this.Student;
 							this.Yandere.Subtitle.UpdateLabel(SubtitleType.NoteReaction, 1, 3f);
 						}
 						else
 						{
+							this.Yandere.Subtitle.Speaker = this.Student;
 							this.Yandere.Subtitle.UpdateLabel(SubtitleType.NoteReactionMale, 1, 3f);
 						}
 						this.Phase++;
@@ -203,10 +205,12 @@ public class NoteLockerScript : MonoBehaviour
 						{
 							if (!this.Student.Male)
 							{
+								this.Yandere.Subtitle.Speaker = this.Student;
 								this.Yandere.Subtitle.UpdateLabel(SubtitleType.NoteReaction, 2, 3f);
 							}
 							else
 							{
+								this.Yandere.Subtitle.Speaker = this.Student;
 								this.Yandere.Subtitle.UpdateLabel(SubtitleType.NoteReactionMale, 2, 3f);
 							}
 							this.Phase++;
@@ -216,10 +220,12 @@ public class NoteLockerScript : MonoBehaviour
 					{
 						if (!this.Student.Male)
 						{
+							this.Yandere.Subtitle.Speaker = this.Student;
 							this.Yandere.Subtitle.UpdateLabel(SubtitleType.NoteReaction, 3, 3f);
 						}
 						else
 						{
+							this.Yandere.Subtitle.Speaker = this.Student;
 							this.Yandere.Subtitle.UpdateLabel(SubtitleType.NoteReactionMale, 3, 3f);
 						}
 						this.Phase++;
@@ -231,14 +237,23 @@ public class NoteLockerScript : MonoBehaviour
 
 	private void Finish()
 	{
-		if (this.Success && this.Student.Clock.HourTime > this.Student.MeetTime)
+		if (this.Success)
 		{
-			this.Student.CurrentDestination = this.Student.MeetSpot;
-			this.Student.Pathfinding.target = this.Student.MeetSpot;
+			if (this.Student.Clock.HourTime > this.Student.MeetTime)
+			{
+				this.Student.CurrentDestination = this.Student.MeetSpot;
+				this.Student.Pathfinding.target = this.Student.MeetSpot;
+				this.Student.Meeting = true;
+				this.Student.MeetTime = 0f;
+			}
+			else
+			{
+				this.Student.CurrentDestination = this.Student.Destinations[this.Student.Phase];
+				this.Student.Pathfinding.target = this.Student.Destinations[this.Student.Phase];
+			}
 			this.Student.Pathfinding.canSearch = true;
 			this.Student.Pathfinding.canMove = true;
-			this.Student.Meeting = true;
-			this.Student.MeetTime = 0f;
+			this.Student.Pathfinding.speed = 1f;
 		}
 		Animation component = this.Student.Character.GetComponent<Animation>();
 		component.cullingType = AnimationCullingType.BasedOnRenderers;

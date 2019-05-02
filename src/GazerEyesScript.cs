@@ -158,6 +158,7 @@ public class GazerEyesScript : MonoBehaviour
 		{
 			UnityEngine.Object.Instantiate<GameObject>(this.Yandere.EbolaEffect, this.Yandere.TargetStudent.transform.position + Vector3.up, Quaternion.identity);
 			this.Yandere.TargetStudent.SpawnAlarmDisc();
+			this.Yandere.TargetStudent.DeathType = DeathType.Poison;
 			this.Yandere.TargetStudent.BecomeRagdoll();
 		}
 		else if (this.Effect == 4)

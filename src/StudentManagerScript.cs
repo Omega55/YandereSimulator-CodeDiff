@@ -14,7 +14,11 @@ public class StudentManagerScript : MonoBehaviour
 
 	public PickpocketMinigameScript PickpocketMinigame;
 
+	public PopulationManagerScript PopulationManager;
+
 	public SelectiveGrayscale HandSelectiveGreyscale;
+
+	public SkinnedMeshRenderer FemaleShowerCurtain;
 
 	public CleaningManagerScript CleaningManager;
 
@@ -27,6 +31,8 @@ public class StudentManagerScript : MonoBehaviour
 	public DatingMinigameScript DatingMinigame;
 
 	public TextureManagerScript TextureManager;
+
+	public TutorialWindowScript TutorialWindow;
 
 	public QualityManagerScript QualityManager;
 
@@ -70,15 +76,11 @@ public class StudentManagerScript : MonoBehaviour
 
 	public ContainerScript Container;
 
+	public RedStringScript RedString;
+
 	public RingEventScript RingEvent;
 
 	public GazerEyesScript Shinigami;
-
-	public Collider EastBathroomArea;
-
-	public Collider WestBathroomArea;
-
-	public Collider IncineratorArea;
 
 	public HologramScript Holograms;
 
@@ -113,6 +115,22 @@ public class StudentManagerScript : MonoBehaviour
 	public RestScript Rest;
 
 	public TagScript Tag;
+
+	public Collider EastBathroomArea;
+
+	public Collider WestBathroomArea;
+
+	public Collider IncineratorArea;
+
+	public Collider HeadmasterArea;
+
+	public Collider NEStairs;
+
+	public Collider NWStairs;
+
+	public Collider SEStairs;
+
+	public Collider SWStairs;
 
 	public DoorScript AltFemaleVomitDoor;
 
@@ -386,6 +404,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public int LowDetailThreshold;
 
+	public int FarAnimThreshold;
+
 	public int MartialArtsPhase;
 
 	public int StudentsSpawned;
@@ -444,6 +464,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public bool MetalDetectors;
 
+	public bool YandereVisible;
+
 	public bool NoClubMeeting;
 
 	public bool UpdatedBlood;
@@ -455,6 +477,8 @@ public class StudentManagerScript : MonoBehaviour
 	public bool FirstUpdate;
 
 	public bool MissionMode;
+
+	public bool OpenCurtain;
 
 	public bool PinningDown;
 
@@ -493,6 +517,8 @@ public class StudentManagerScript : MonoBehaviour
 	public bool DK;
 
 	public float Atmosphere;
+
+	public float OpenValue = 100f;
 
 	public float MeetingTimer;
 
@@ -563,7 +589,13 @@ public class StudentManagerScript : MonoBehaviour
 		{
 			this.SpawnPositions[51].position = new Vector3(3f, 0f, -95f);
 		}
-		if (StudentGlobals.MemorialStudents > 0)
+		if (HomeGlobals.LateForSchool)
+		{
+			HomeGlobals.LateForSchool = false;
+			this.YandereLate = true;
+			Debug.Log("Yandere-chan is late for school!");
+		}
+		if (!this.YandereLate && StudentGlobals.MemorialStudents > 0)
 		{
 			this.Yandere.HUD.alpha = 0f;
 			this.Yandere.HeartCamera.enabled = false;
@@ -675,10 +707,8 @@ public class StudentManagerScript : MonoBehaviour
 					this.ID++;
 				}
 			}
-			if (HomeGlobals.LateForSchool)
+			if (this.YandereLate)
 			{
-				HomeGlobals.LateForSchool = false;
-				this.YandereLate = true;
 				this.Clock.PresentTime = 480f;
 				this.Clock.HourTime = 8f;
 				this.SkipTo8();
@@ -710,6 +740,10 @@ public class StudentManagerScript : MonoBehaviour
 				this.ErrorLabel.enabled = true;
 			}
 		}
+		this.NEStairs = GameObject.Find("NEStairs").GetComponent<Collider>();
+		this.NWStairs = GameObject.Find("NWStairs").GetComponent<Collider>();
+		this.SEStairs = GameObject.Find("SEStairs").GetComponent<Collider>();
+		this.SWStairs = GameObject.Find("SWStairs").GetComponent<Collider>();
 	}
 
 	public void SetAtmosphere()
@@ -797,7 +831,7 @@ public class StudentManagerScript : MonoBehaviour
 					this.Load();
 					PlayerPrefs.SetInt("LoadingSave", 0);
 				}
-				if (StudentGlobals.MemorialStudents > 0)
+				if (!this.YandereLate && StudentGlobals.MemorialStudents > 0)
 				{
 					this.Yandere.HUD.alpha = 0f;
 					this.Yandere.RPGCamera.transform.position = new Vector3(38f, 4.125f, 68.825f);
@@ -870,7 +904,7 @@ public class StudentManagerScript : MonoBehaviour
 			while (this.ID < this.WitnessList.Length)
 			{
 				StudentScript studentScript = this.WitnessList[this.ID];
-				if (studentScript != null && (!studentScript.Alive || studentScript.Attacked || (studentScript.Fleeing && !studentScript.PinningDown)))
+				if (studentScript != null && (!studentScript.Alive || studentScript.Attacked || studentScript.Dying || (studentScript.Fleeing && !studentScript.PinningDown)))
 				{
 					studentScript.PinDownWitness = false;
 					if (this.ID != this.WitnessList.Length - 1)
@@ -1027,6 +1061,16 @@ public class StudentManagerScript : MonoBehaviour
 				this.CurrentID++;
 			}
 		}
+		if (this.OpenCurtain)
+		{
+			this.OpenValue = Mathf.Lerp(this.OpenValue, 100f, Time.deltaTime * 10f);
+			if (this.OpenValue > 99f)
+			{
+				this.OpenCurtain = false;
+			}
+			this.FemaleShowerCurtain.SetBlendShapeWeight(0, this.OpenValue);
+		}
+		this.YandereVisible = false;
 	}
 
 	public void SpawnStudent(int spawnID)
@@ -1108,6 +1152,10 @@ public class StudentManagerScript : MonoBehaviour
 			{
 				studentScript.Rival = true;
 			}
+			if (spawnID == 1)
+			{
+				this.RedString.Target = studentScript.LeftPinky;
+			}
 			this.OccupySeat();
 		}
 		this.NPCsSpawned++;
@@ -1168,7 +1216,7 @@ public class StudentManagerScript : MonoBehaviour
 							{
 								studentScript.Prompt.HideButton[0] = true;
 								studentScript.Prompt.HideButton[2] = true;
-								if (this.Yandere.PickUp != null)
+								if (this.Yandere.PickUp != null && !studentScript.Following)
 								{
 									if (this.Yandere.PickUp.Food > 0)
 									{
@@ -1655,7 +1703,7 @@ public class StudentManagerScript : MonoBehaviour
 			StudentScript studentScript = this.Students[this.ID];
 			if (studentScript != null)
 			{
-				if (!studentScript.Dying && !studentScript.Replaced)
+				if (!studentScript.Dying && !studentScript.Replaced && !StudentGlobals.GetStudentExpelled(this.ID))
 				{
 					studentScript.gameObject.SetActive(true);
 					studentScript.Pathfinding.canSearch = true;
@@ -1671,6 +1719,10 @@ public class StudentManagerScript : MonoBehaviour
 					studentScript.Routine = true;
 					studentScript.AlarmTimer = 0f;
 					studentScript.Concern = 0;
+				}
+				if (studentScript.Club == ClubType.Council)
+				{
+					studentScript.Teacher = false;
 				}
 			}
 			this.ID++;
@@ -2085,7 +2137,7 @@ public class StudentManagerScript : MonoBehaviour
 			while (this.ID < this.WitnessList.Length)
 			{
 				StudentScript studentScript = this.WitnessList[this.ID];
-				if (studentScript != null && (!studentScript.Alive || studentScript.Attacked || studentScript.Fleeing))
+				if (studentScript != null && (!studentScript.Alive || studentScript.Attacked || studentScript.Fleeing || studentScript.Dying))
 				{
 					if (this.ID != this.WitnessList.Length - 1)
 					{
@@ -2412,6 +2464,7 @@ public class StudentManagerScript : MonoBehaviour
 
 	public void UpdateMartialArts()
 	{
+		this.ConvoManager.Confirmed = false;
 		this.MartialArtsPhase++;
 		this.ID = 46;
 		while (this.ID < 51)
@@ -2819,6 +2872,35 @@ public class StudentManagerScript : MonoBehaviour
 				{
 					disposable2.Dispose();
 				}
+			}
+		}
+	}
+
+	public void CanAnyoneSeeYandere()
+	{
+		this.YandereVisible = false;
+		foreach (StudentScript studentScript in this.Students)
+		{
+			if (studentScript != null && studentScript.CanSeeObject(studentScript.Yandere.gameObject, studentScript.Yandere.HeadPosition))
+			{
+				this.YandereVisible = true;
+				break;
+			}
+		}
+	}
+
+	public void SetFaces(float alpha)
+	{
+		foreach (StudentScript studentScript in this.Students)
+		{
+			if (studentScript != null && studentScript.StudentID > 1)
+			{
+				studentScript.MyRenderer.materials[0].color = new Color(1f - alpha, 1f - alpha, 1f - alpha, 1f);
+				studentScript.MyRenderer.materials[1].color = new Color(1f - alpha, 1f - alpha, 1f - alpha, 1f);
+				studentScript.MyRenderer.materials[2].color = new Color(1f - alpha, 1f - alpha, 1f - alpha, 1f);
+				studentScript.Cosmetic.LeftEyeRenderer.material.color = new Color(1f - alpha, 1f - alpha, 1f - alpha, 1f);
+				studentScript.Cosmetic.RightEyeRenderer.material.color = new Color(1f - alpha, 1f - alpha, 1f - alpha, 1f);
+				studentScript.Cosmetic.HairRenderer.material.color = new Color(1f - alpha, 1f - alpha, 1f - alpha, 1f);
 			}
 		}
 	}
