@@ -208,7 +208,7 @@ public class QualityManagerScript : MonoBehaviour
 					{
 						studentScript.Cosmetic.Bookbag.GetComponent<Renderer>().material.shader = this.NewHairShader;
 						studentScript.Cosmetic.LeftWristband.GetComponent<Renderer>().material.shader = this.NewHairShader;
-						studentScript.Cosmetic.RightWristband.GetComponent<Renderer>().material.shader = this.NewBodyShader;
+						studentScript.Cosmetic.RightWristband.GetComponent<Renderer>().material.shader = this.NewHairShader;
 						studentScript.Cosmetic.HoodieRenderer.GetComponent<Renderer>().material.shader = this.NewHairShader;
 					}
 					if (studentScript.StudentID == 87)

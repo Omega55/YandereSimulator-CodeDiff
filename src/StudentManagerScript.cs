@@ -1151,6 +1151,8 @@ public class StudentManagerScript : MonoBehaviour
 			if (spawnID == this.RivalID)
 			{
 				studentScript.Rival = true;
+				this.RedString.transform.parent = studentScript.LeftPinky;
+				this.RedString.transform.localPosition = new Vector3(0f, 0f, 0f);
 			}
 			if (spawnID == 1)
 			{

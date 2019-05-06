@@ -163,8 +163,11 @@ public class DatingMinigameScript : MonoBehaviour
 
 	public Color OriginalColor;
 
+	public Camera MainCamera;
+
 	private void Start()
 	{
+		this.MainCamera = Camera.main;
 		this.Affection = DatingGlobals.Affection;
 		this.AffectionBar.localScale = new Vector3(this.Affection / 100f, this.AffectionBar.localScale.y, this.AffectionBar.localScale.z);
 		this.CalculateAffection();
@@ -271,8 +274,8 @@ public class DatingMinigameScript : MonoBehaviour
 				this.Yandere.transform.position = this.PeekSpot.position;
 				this.Yandere.transform.eulerAngles = this.PeekSpot.eulerAngles;
 				this.Yandere.Character.GetComponent<Animation>().Play("f02_treePeeking_00");
-				Camera.main.transform.position = new Vector3(48f, 3f, -44f);
-				Camera.main.transform.eulerAngles = new Vector3(15f, 90f, 0f);
+				this.MainCamera.transform.position = new Vector3(48f, 3f, -44f);
+				this.MainCamera.transform.eulerAngles = new Vector3(15f, 90f, 0f);
 				this.WisdomLabel.text = "Wisdom: " + DatingGlobals.GetSuitorTrait(2).ToString();
 				if (!this.Suitor.Rose)
 				{
@@ -293,16 +296,16 @@ public class DatingMinigameScript : MonoBehaviour
 			{
 				this.Panel.alpha = Mathf.MoveTowards(this.Panel.alpha, 0f, Time.deltaTime);
 				this.Timer += Time.deltaTime;
-				Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(54f, 1.25f, -45.25f), this.Timer * 0.02f);
-				Camera.main.transform.eulerAngles = Vector3.Lerp(Camera.main.transform.eulerAngles, new Vector3(0f, 45f, 0f), this.Timer * 0.02f);
+				this.MainCamera.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(54f, 1.25f, -45.25f), this.Timer * 0.02f);
+				this.MainCamera.transform.eulerAngles = Vector3.Lerp(this.MainCamera.transform.eulerAngles, new Vector3(0f, 45f, 0f), this.Timer * 0.02f);
 				if (this.Timer > 5f)
 				{
 					this.Suitor.Character.GetComponent<Animation>().Play("insertEarpiece_00");
 					this.Suitor.Character.GetComponent<Animation>()["insertEarpiece_00"].time = 0f;
 					this.Suitor.Character.GetComponent<Animation>().Play("insertEarpiece_00");
 					this.Suitor.Earpiece.SetActive(true);
-					Camera.main.transform.position = new Vector3(45.5f, 1.25f, -44.5f);
-					Camera.main.transform.eulerAngles = new Vector3(0f, -45f, 0f);
+					this.MainCamera.transform.position = new Vector3(45.5f, 1.25f, -44.5f);
+					this.MainCamera.transform.eulerAngles = new Vector3(0f, -45f, 0f);
 					this.Rotation = -45f;
 					this.Timer = 0f;
 					this.Phase++;
@@ -316,9 +319,9 @@ public class DatingMinigameScript : MonoBehaviour
 					this.Suitor.Earpiece.transform.parent = this.Suitor.Head;
 					this.Suitor.Earpiece.transform.localPosition = new Vector3(0f, -1.12f, 1.14f);
 					this.Suitor.Earpiece.transform.localEulerAngles = new Vector3(45f, -180f, 0f);
-					Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(45.11f, 1.375f, -44f), (this.Timer - 4f) * 0.02f);
+					this.MainCamera.transform.position = Vector3.Lerp(this.MainCamera.transform.position, new Vector3(45.11f, 1.375f, -44f), (this.Timer - 4f) * 0.02f);
 					this.Rotation = Mathf.Lerp(this.Rotation, 90f, (this.Timer - 4f) * 0.02f);
-					Camera.main.transform.eulerAngles = new Vector3(Camera.main.transform.eulerAngles.x, this.Rotation, Camera.main.transform.eulerAngles.z);
+					this.MainCamera.transform.eulerAngles = new Vector3(this.MainCamera.transform.eulerAngles.x, this.Rotation, this.MainCamera.transform.eulerAngles.z);
 					if (this.Rotation > 89.9f)
 					{
 						this.Rival.Character.GetComponent<Animation>()["f02_turnAround_00"].time = 0f;

@@ -222,6 +222,8 @@ public class MissionModeScript : MonoBehaviour
 
 	public ColorCorrectionCurves[] ColorCorrections;
 
+	public Camera MainCamera;
+
 	public UILabel Watermark;
 
 	public Font Arial;
@@ -240,6 +242,7 @@ public class MissionModeScript : MonoBehaviour
 		this.SpottedWindow.SetActive(false);
 		this.ExitPortal.SetActive(false);
 		this.Safe.SetActive(false);
+		this.MainCamera = Camera.main;
 		if (GameGlobals.LoveSick)
 		{
 			this.MurderKit.SetActive(false);
@@ -304,7 +307,7 @@ public class MissionModeScript : MonoBehaviour
 			this.SubtitleLabel.color = new Color(1f, 1f, 1f, 1f);
 			this.CautionSign.color = new Color(1f, 1f, 1f, 1f);
 			this.FPS.color = new Color(1f, 1f, 1f, 1f);
-			this.ColorCorrections = Camera.main.GetComponents<ColorCorrectionCurves>();
+			this.ColorCorrections = this.MainCamera.GetComponents<ColorCorrectionCurves>();
 			this.StudentManager.MissionMode = true;
 			this.NemesisDifficulty = MissionModeGlobals.NemesisDifficulty;
 			this.Difficulty = MissionModeGlobals.MissionDifficulty;
@@ -445,8 +448,8 @@ public class MissionModeScript : MonoBehaviour
 			this.Jukebox.MissionMode.enabled = true;
 			this.Jukebox.MissionMode.volume = 0f;
 			this.Yandere.FixCamera();
-			Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, 6.51505f, -76.9222f);
-			Camera.main.transform.eulerAngles = new Vector3(15f, Camera.main.transform.eulerAngles.y, Camera.main.transform.eulerAngles.z);
+			this.MainCamera.transform.position = new Vector3(this.MainCamera.transform.position.x, 6.51505f, -76.9222f);
+			this.MainCamera.transform.eulerAngles = new Vector3(15f, this.MainCamera.transform.eulerAngles.y, this.MainCamera.transform.eulerAngles.z);
 			this.Yandere.RPGCamera.enabled = false;
 			this.Yandere.SanityBased = true;
 			this.Yandere.CanMove = false;
@@ -492,8 +495,8 @@ public class MissionModeScript : MonoBehaviour
 			if (this.Darkness.color.a == 0f)
 			{
 				this.Speed += Time.deltaTime / 3f;
-				Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, Mathf.Lerp(Camera.main.transform.position.y, this.TargetHeight, Time.deltaTime * this.Speed), Camera.main.transform.position.z);
-				if (Camera.main.transform.position.y < this.TargetHeight + 0.1f)
+				this.MainCamera.transform.position = new Vector3(this.MainCamera.transform.position.x, Mathf.Lerp(this.MainCamera.transform.position.y, this.TargetHeight, Time.deltaTime * this.Speed), this.MainCamera.transform.position.z);
+				if (this.MainCamera.transform.position.y < this.TargetHeight + 0.1f)
 				{
 					this.Yandere.HUD.alpha = Mathf.MoveTowards(this.Yandere.HUD.alpha, 1f, Time.deltaTime / 3f);
 					if (this.Yandere.HUD.alpha == 1f)
@@ -508,7 +511,7 @@ public class MissionModeScript : MonoBehaviour
 			}
 			if (Input.GetButtonDown("A"))
 			{
-				Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, this.TargetHeight, Camera.main.transform.position.z);
+				this.MainCamera.transform.position = new Vector3(this.MainCamera.transform.position.x, this.TargetHeight, this.MainCamera.transform.position.z);
 				this.Yandere.RPGCamera.enabled = true;
 				this.HeartbeatCamera.SetActive(true);
 				this.Yandere.CanMove = true;
@@ -914,8 +917,8 @@ public class MissionModeScript : MonoBehaviour
 					this.ExitPortalPrompt.Label[0].text = "     Exfiltrate";
 					if (this.ExitPortalPrompt.Circle[0].fillAmount == 0f)
 					{
-						Camera.main.transform.position = new Vector3(0.5f, 2.25f, -100.5f);
-						Camera.main.transform.eulerAngles = Vector3.zero;
+						this.MainCamera.transform.position = new Vector3(0.5f, 2.25f, -100.5f);
+						this.MainCamera.transform.eulerAngles = Vector3.zero;
 						this.Yandere.transform.eulerAngles = new Vector3(0f, 180f, 0f);
 						this.Yandere.transform.position = new Vector3(0f, 0f, -94.5f);
 						this.Yandere.Character.GetComponent<Animation>().Play(this.Yandere.WalkAnim);
@@ -955,7 +958,7 @@ public class MissionModeScript : MonoBehaviour
 		else if (this.Phase == 3)
 		{
 			this.Timer += Time.deltaTime;
-			Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y - Time.deltaTime * 0.2f, Camera.main.transform.position.z);
+			this.MainCamera.transform.position = new Vector3(this.MainCamera.transform.position.x, this.MainCamera.transform.position.y - Time.deltaTime * 0.2f, this.MainCamera.transform.position.z);
 			this.Yandere.transform.position = new Vector3(this.Yandere.transform.position.x, this.Yandere.transform.position.y, this.Yandere.transform.position.z - Time.deltaTime);
 			if (this.Timer > 5f)
 			{

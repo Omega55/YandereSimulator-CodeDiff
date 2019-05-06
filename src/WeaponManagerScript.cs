@@ -33,6 +33,7 @@ public class WeaponManagerScript : MonoBehaviour
 				this.Weapons[i].gameObject.SetActive(false);
 			}
 		}
+		this.ChangeBloodTexture();
 	}
 
 	public void UpdateLabels()

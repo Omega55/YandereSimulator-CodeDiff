@@ -279,12 +279,12 @@ public class RPG_Camera : MonoBehaviour
 		float num = -1f;
 		RPG_Camera.ClipPlaneVertexes clipPlaneAt = RPG_Camera.GetClipPlaneAt(to);
 		int layerMask = 257;
-		if (Camera.main != null)
+		if (RPG_Camera.MainCamera != null)
 		{
 			RaycastHit raycastHit;
 			if (Physics.Linecast(from, to, out raycastHit, layerMask))
 			{
-				num = raycastHit.distance - Camera.main.nearClipPlane;
+				num = raycastHit.distance - RPG_Camera.MainCamera.nearClipPlane;
 			}
 			if (Physics.Linecast(from - base.transform.right * RPG_Camera.halfPlaneWidth + base.transform.up * RPG_Camera.halfPlaneHeight, clipPlaneAt.UpperLeft, out raycastHit, layerMask) && (raycastHit.distance < num || num == -1f))
 			{

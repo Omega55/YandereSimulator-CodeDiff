@@ -21,6 +21,8 @@ public class PromptScript : MonoBehaviour
 
 	public Collider MyCollider;
 
+	public Camera MainCamera;
+
 	public Camera UICamera;
 
 	public bool[] AcceptingInput;
@@ -134,6 +136,7 @@ public class PromptScript : MonoBehaviour
 			this.PauseScreen = GameObject.Find("PauseScreen").GetComponent<PauseScreenScript>();
 			this.PromptParent = GameObject.Find("PromptParent").GetComponent<PromptParentScript>();
 			this.UICamera = GameObject.Find("UI Camera").GetComponent<Camera>();
+			this.MainCamera = Camera.main;
 			if (this.Noisy)
 			{
 				this.Speaker = UnityEngine.Object.Instantiate<GameObject>(this.SpeakerObject, base.transform.position, Quaternion.identity).GetComponent<UISprite>();
@@ -265,7 +268,7 @@ public class PromptScript : MonoBehaviour
 									{
 										if (this.Local)
 										{
-											Vector2 vector2 = Camera.main.WorldToScreenPoint(base.transform.position + base.transform.right * this.OffsetX[this.ID] + base.transform.up * this.OffsetY[this.ID] + base.transform.forward * this.OffsetZ[this.ID]);
+											Vector2 vector2 = this.MainCamera.WorldToScreenPoint(base.transform.position + base.transform.right * this.OffsetX[this.ID] + base.transform.up * this.OffsetY[this.ID] + base.transform.forward * this.OffsetZ[this.ID]);
 											this.Button[this.ID].transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector2.x, vector2.y, 1f));
 											this.Circle[this.ID].transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector2.x, vector2.y, 1f));
 											if (!this.SquareSet)
@@ -273,13 +276,13 @@ public class PromptScript : MonoBehaviour
 												this.Square.transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector2.x, vector2.y, 1f));
 												this.SquareSet = true;
 											}
-											Vector2 vector3 = Camera.main.WorldToScreenPoint(base.transform.position + base.transform.right * this.OffsetX[this.ID] + base.transform.up * this.OffsetY[this.ID] + base.transform.forward * this.OffsetZ[this.ID]);
+											Vector2 vector3 = this.MainCamera.WorldToScreenPoint(base.transform.position + base.transform.right * this.OffsetX[this.ID] + base.transform.up * this.OffsetY[this.ID] + base.transform.forward * this.OffsetZ[this.ID]);
 											this.Label[this.ID].transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector3.x + this.OffsetX[this.ID], vector3.y, 1f));
 											this.RelativePosition = vector2.x;
 										}
 										else
 										{
-											vector = Camera.main.WorldToScreenPoint(base.transform.position + new Vector3(this.OffsetX[this.ID], this.OffsetY[this.ID], this.OffsetZ[this.ID]));
+											vector = this.MainCamera.WorldToScreenPoint(base.transform.position + new Vector3(this.OffsetX[this.ID], this.OffsetY[this.ID], this.OffsetZ[this.ID]));
 											this.Button[this.ID].transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector.x, vector.y, 1f));
 											this.Circle[this.ID].transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector.x, vector.y, 1f));
 											if (!this.SquareSet)
@@ -287,7 +290,7 @@ public class PromptScript : MonoBehaviour
 												this.Square.transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector.x, vector.y, 1f));
 												this.SquareSet = true;
 											}
-											Vector2 vector4 = Camera.main.WorldToScreenPoint(base.transform.position + new Vector3(this.OffsetX[this.ID], this.OffsetY[this.ID], this.OffsetZ[this.ID]));
+											Vector2 vector4 = this.MainCamera.WorldToScreenPoint(base.transform.position + new Vector3(this.OffsetX[this.ID], this.OffsetY[this.ID], this.OffsetZ[this.ID]));
 											this.Label[this.ID].transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector4.x + this.OffsetX[this.ID], vector4.y, 1f));
 											this.RelativePosition = vector.x;
 										}

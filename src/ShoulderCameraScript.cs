@@ -199,7 +199,7 @@ public class ShoulderCameraScript : MonoBehaviour
 					}
 					if (!this.GoingToCounselor)
 					{
-						this.Yandere.EyeShrink += Time.deltaTime * 0.25f;
+						this.Yandere.EyeShrink = Mathf.MoveTowards(this.Yandere.EyeShrink, 0.5f, Time.deltaTime * 0.125f);
 					}
 					this.NoticedPOV.Translate(Vector3.forward * Time.deltaTime * 0.075f);
 					if (this.GoingToCounselor)

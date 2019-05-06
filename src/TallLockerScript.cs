@@ -323,7 +323,7 @@ public class TallLockerScript : MonoBehaviour
 			{
 				if (this.Yandere.Schoolwear > 0)
 				{
-					this.Prompt.Label[this.Yandere.Schoolwear].text = "     Nude";
+					this.Prompt.Label[this.Yandere.Schoolwear].text = "     Towel";
 					if (this.Removed[this.Yandere.Schoolwear])
 					{
 						this.Schoolwear[this.Yandere.Schoolwear].SetActive(false);
@@ -332,7 +332,7 @@ public class TallLockerScript : MonoBehaviour
 			}
 			else
 			{
-				this.Prompt.Label[1].text = "     Nude";
+				this.Prompt.Label[1].text = "     Towel";
 			}
 		}
 		else if (this.Student != null && this.Student.Schoolwear > 0)

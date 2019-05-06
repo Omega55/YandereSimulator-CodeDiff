@@ -5597,10 +5597,6 @@ public class StudentScript : MonoBehaviour
 							this.ReturnToRoutine();
 						}
 					}
-					if (this.Yandere.Chased)
-					{
-						this.Pathfinding.speed += Time.deltaTime;
-					}
 					if (this.Pathfinding.target != null)
 					{
 						this.DistanceToDestination = Vector3.Distance(base.transform.position, this.Pathfinding.target.position);
@@ -5670,7 +5666,7 @@ public class StudentScript : MonoBehaviour
 							if (this.Yandere.Chased)
 							{
 								this.Pathfinding.repathRate = 0f;
-								this.Pathfinding.speed = 7.5f;
+								this.Pathfinding.speed = 5f;
 							}
 							else
 							{
@@ -8117,6 +8113,7 @@ public class StudentScript : MonoBehaviour
 			{
 				if (this.DistanceToDestination < 1f)
 				{
+					this.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
 					this.CharacterAnimation[this.InspectBloodAnim].speed = 1f;
 					this.CharacterAnimation.CrossFade(this.InspectBloodAnim);
 					this.Pathfinding.canSearch = false;
@@ -8144,6 +8141,7 @@ public class StudentScript : MonoBehaviour
 								this.BloodPool.GetComponent<WeaponScript>().Returner = this;
 								this.Subtitle.UpdateLabel(SubtitleType.ReturningWeapon, 0, 5f);
 								this.ReturningMisplacedWeapon = true;
+								this.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
 							}
 						}
 						this.InvestigatingBloodPool = false;
@@ -8204,6 +8202,7 @@ public class StudentScript : MonoBehaviour
 								}
 								this.PersonaReaction();
 							}
+							this.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
 						}
 					}
 				}
@@ -9509,7 +9508,7 @@ public class StudentScript : MonoBehaviour
 				}
 			}
 		}
-		if ((this.Prompt.Circle[2].fillAmount == 0f || (this.DistanceToPlayer <= 1f && this.Club != ClubType.Council && this.Yandere.Armed && this.Yandere.CanMove && this.Yandere.Sanity < 33.33333f)) && this.ClubActivityPhase < 16)
+		if ((this.Prompt.Circle[2].fillAmount == 0f || (this.Yandere.Sanity < 33.33333f && !this.Prompt.HideButton[2])) && this.ClubActivityPhase < 16)
 		{
 			float f = Vector3.Angle(-base.transform.forward, this.Yandere.transform.position - base.transform.position);
 			this.Yandere.AttackManager.Stealth = (Mathf.Abs(f) <= 45f);
@@ -11007,15 +11006,6 @@ public class StudentScript : MonoBehaviour
 						this.Yandere.Shutter.FaceStudent = this;
 						this.Yandere.Shutter.Penalize();
 					}
-					if ((this.Club == ClubType.Council || (this.Club == ClubType.Delinquent && !this.Injured)) && (double)this.DistanceToPlayer < 0.5 && (this.Yandere.h != 0f || this.Yandere.v != 0f))
-					{
-						if (this.Club == ClubType.Delinquent)
-						{
-							this.Subtitle.Speaker = this;
-							this.Subtitle.UpdateLabel(SubtitleType.DelinquentShove, 0, 3f);
-						}
-						this.Shove();
-					}
 					if (this.Club == ClubType.Council)
 					{
 						if (this.DistanceToPlayer < 5f)
@@ -11043,6 +11033,15 @@ public class StudentScript : MonoBehaviour
 								this.Spray();
 							}
 						}
+					}
+					if (((this.Club == ClubType.Council && !this.Spraying) || (this.Club == ClubType.Delinquent && !this.Injured)) && (double)this.DistanceToPlayer < 0.5 && (this.Yandere.h != 0f || this.Yandere.v != 0f))
+					{
+						if (this.Club == ClubType.Delinquent)
+						{
+							this.Subtitle.Speaker = this;
+							this.Subtitle.UpdateLabel(SubtitleType.DelinquentShove, 0, 3f);
+						}
+						this.Shove();
 					}
 				}
 			}
@@ -11790,13 +11789,13 @@ public class StudentScript : MonoBehaviour
 		Debug.Log("A character has begun to chase Yandere-chan.");
 		this.CurrentDestination = this.Yandere.transform;
 		this.Pathfinding.target = this.Yandere.transform;
-		this.Pathfinding.speed = 7.5f;
+		this.Pathfinding.speed = 5f;
 		this.StudentManager.Portal.SetActive(false);
 		if (this.Yandere.Pursuer == null)
 		{
 			this.Yandere.Pursuer = this;
 		}
-		this.TargetDistance = 0.5f;
+		this.TargetDistance = 1f;
 		this.AlarmTimer = 0f;
 		this.Chasing = false;
 		this.Fleeing = false;
@@ -12097,11 +12096,11 @@ public class StudentScript : MonoBehaviour
 						this.Subtitle.UpdateLabel(SubtitleType.DelinquentMurderReaction, 3, 3f);
 					}
 					this.Pathfinding.target = this.Yandere.transform;
-					this.Pathfinding.speed = 7.5f;
+					this.Pathfinding.speed = 5f;
 					this.StudentManager.Portal.SetActive(false);
 					this.Yandere.Pursuer = this;
 					this.Yandere.Chased = true;
-					this.TargetDistance = 0.5f;
+					this.TargetDistance = 1f;
 					this.StudentManager.UpdateStudents(0);
 					this.Routine = false;
 					this.Fleeing = true;
@@ -12178,7 +12177,7 @@ public class StudentScript : MonoBehaviour
 					this.Subtitle.UpdateLabel(SubtitleType.Chasing, 4, 5f);
 				}
 				this.Pathfinding.target = this.Yandere.transform;
-				this.Pathfinding.speed = 7.5f;
+				this.Pathfinding.speed = 5f;
 				this.StudentManager.Portal.SetActive(false);
 				this.Yandere.Chased = true;
 				this.TargetDistance = 1f;
@@ -12232,7 +12231,7 @@ public class StudentScript : MonoBehaviour
 						this.Pathfinding.target = this.Yandere.transform;
 						this.Pathfinding.canSearch = true;
 						this.Pathfinding.canMove = true;
-						this.Pathfinding.speed = 7.5f;
+						this.Pathfinding.speed = 5f;
 						this.StudentManager.Portal.SetActive(false);
 						this.Yandere.Chased = true;
 						this.TargetDistance = 1f;
@@ -12275,10 +12274,10 @@ public class StudentScript : MonoBehaviour
 					Debug.Log("A teacher is now reacting to the sight of murder.");
 					this.Subtitle.UpdateLabel(SubtitleType.TeacherMurderReaction, 3, 3f);
 					this.Pathfinding.target = this.Yandere.transform;
-					this.Pathfinding.speed = 7.5f;
+					this.Pathfinding.speed = 5f;
 					this.StudentManager.Portal.SetActive(false);
 					this.Yandere.Chased = true;
-					this.TargetDistance = 0.5f;
+					this.TargetDistance = 1f;
 					this.StudentManager.UpdateStudents(0);
 					base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y + 0.1f, base.transform.position.z);
 					this.Routine = false;

@@ -5,6 +5,8 @@ public class CheckmarkScript : MonoBehaviour
 {
 	public GameObject[] Checkmarks;
 
+	public int ButtonPresses;
+
 	public int ID;
 
 	private void Start()
@@ -19,12 +21,13 @@ public class CheckmarkScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown("space"))
+		if (Input.GetKeyDown("space") && this.ButtonPresses < 26)
 		{
-			this.ID = UnityEngine.Random.Range(0, this.Checkmarks.Length);
+			this.ButtonPresses++;
+			this.ID = UnityEngine.Random.Range(0, this.Checkmarks.Length - 4);
 			while (this.Checkmarks[this.ID].active)
 			{
-				this.ID = UnityEngine.Random.Range(0, this.Checkmarks.Length);
+				this.ID = UnityEngine.Random.Range(0, this.Checkmarks.Length - 4);
 			}
 			this.Checkmarks[this.ID].SetActive(true);
 		}

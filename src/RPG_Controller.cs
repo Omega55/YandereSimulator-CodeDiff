@@ -23,16 +23,19 @@ public class RPG_Controller : MonoBehaviour
 
 	private Vector3 rotation = Vector3.zero;
 
+	private Camera MainCamera;
+
 	private void Awake()
 	{
 		RPG_Controller.instance = this;
 		this.characterController = (base.GetComponent("CharacterController") as CharacterController);
 		RPG_Camera.CameraSetup();
+		this.MainCamera = Camera.main;
 	}
 
 	private void Update()
 	{
-		if (Camera.main == null)
+		if (this.MainCamera == null)
 		{
 			return;
 		}
