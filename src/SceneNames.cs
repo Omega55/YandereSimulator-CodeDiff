@@ -42,6 +42,8 @@ public static class SceneNames
 
 	public const string LifeNoteScene = "LifeNoteScene";
 
+	public const string YancordScene = "YancordScene";
+
 	public const string MiyukiTitleScene = "MiyukiTitleScene";
 
 	public const string MiyukiGameplayScene = "MiyukiGameplayScene";

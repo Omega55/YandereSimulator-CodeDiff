@@ -34,7 +34,11 @@ public class HomeDarknessScript : MonoBehaviour
 			{
 				if (this.HomeCamera.ID != 2)
 				{
-					if (this.HomeCamera.ID == 5)
+					if (this.HomeCamera.ID == 3)
+					{
+						SceneManager.LoadScene("YancordScene");
+					}
+					else if (this.HomeCamera.ID == 5)
 					{
 						if (this.HomeVideoGames.ID == 1)
 						{

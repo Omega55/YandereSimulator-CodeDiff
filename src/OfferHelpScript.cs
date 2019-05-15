@@ -113,6 +113,10 @@ public class OfferHelpScript : MonoBehaviour
 						Debug.Log("Emptying string.");
 						this.EventSubtitle.text = string.Empty;
 					}
+					else
+					{
+						this.EventSubtitle.text = this.EventSpeech[this.EventPhase];
+					}
 					if (this.Timer > this.EventClip[this.EventPhase].length + 1f)
 					{
 						if (this.EventStudentID == 5 && this.EventPhase == 2)
@@ -165,10 +169,21 @@ public class OfferHelpScript : MonoBehaviour
 			base.transform.position = this.Locations[3].position;
 			base.transform.eulerAngles = this.Locations[3].eulerAngles;
 		}
-		if (this.EventStudentID == 30 && !PlayerGlobals.GetStudentFriend(30))
+		if (this.EventStudentID == 30)
 		{
-			this.Prompt.Label[0].text = "     Must Befriend Student First";
-			this.Unable = true;
+			if (!PlayerGlobals.GetStudentFriend(30))
+			{
+				this.Prompt.Label[0].text = "     Must Befriend Student First";
+				this.Unable = true;
+			}
+			else
+			{
+				this.Prompt.MyCollider.enabled = true;
+			}
+		}
+		else if (this.EventStudentID == 5)
+		{
+			this.Prompt.MyCollider.enabled = true;
 		}
 	}
 
@@ -203,7 +218,6 @@ public class OfferHelpScript : MonoBehaviour
 			this.Student.Pathfinding.canSearch = true;
 			this.Student.Pathfinding.canMove = true;
 			this.Student.Routine = true;
-			this.EventSubtitle.transform.localScale = Vector3.zero;
 			this.Yandere.CanMove = true;
 			this.Jukebox.Dip = 1f;
 			UnityEngine.Object.Destroy(base.gameObject);

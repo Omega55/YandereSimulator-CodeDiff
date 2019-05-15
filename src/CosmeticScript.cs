@@ -1076,23 +1076,23 @@ public class CosmeticScript : MonoBehaviour
 				this.HairRenderer = this.TeacherHairRenderers[this.Hairstyle];
 				if (this.Club == ClubType.Teacher)
 				{
+					this.MyRenderer.materials[1].mainTexture = this.TeacherBodyTexture;
+					this.MyRenderer.materials[2].mainTexture = this.DefaultFaceTexture;
 					this.MyRenderer.materials[0].mainTexture = this.TeacherBodyTexture;
-					this.MyRenderer.materials[1].mainTexture = this.DefaultFaceTexture;
-					this.MyRenderer.materials[2].mainTexture = this.TeacherBodyTexture;
 				}
 				else if (this.Club == ClubType.GymTeacher)
 				{
 					if (StudentGlobals.GetStudentReplaced(this.StudentID))
 					{
-						this.MyRenderer.materials[0].mainTexture = this.DefaultFaceTexture;
+						this.MyRenderer.materials[2].mainTexture = this.DefaultFaceTexture;
+						this.MyRenderer.materials[0].mainTexture = this.CoachPaleBodyTexture;
 						this.MyRenderer.materials[1].mainTexture = this.CoachPaleBodyTexture;
-						this.MyRenderer.materials[2].mainTexture = this.CoachPaleBodyTexture;
 					}
 					else
 					{
-						this.MyRenderer.materials[0].mainTexture = this.CoachFaceTexture;
+						this.MyRenderer.materials[2].mainTexture = this.CoachFaceTexture;
+						this.MyRenderer.materials[0].mainTexture = this.CoachBodyTexture;
 						this.MyRenderer.materials[1].mainTexture = this.CoachBodyTexture;
-						this.MyRenderer.materials[2].mainTexture = this.CoachBodyTexture;
 					}
 				}
 				else if (this.Club == ClubType.Nurse)
@@ -1510,7 +1510,7 @@ public class CosmeticScript : MonoBehaviour
 		}
 		this.TaskCheck();
 		this.TurnOnCheck();
-		if (!this.Male && this.StudentID < 90)
+		if (!this.Male)
 		{
 			this.EyeTypeCheck();
 		}

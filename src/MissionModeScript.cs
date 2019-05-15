@@ -50,6 +50,8 @@ public class MissionModeScript : MonoBehaviour
 
 	public UILabel SpottedLabel;
 
+	public UILabel SanityLabel;
+
 	public UILabel TimeLabel;
 
 	public UISprite ReputationFace1;
@@ -263,6 +265,7 @@ public class MissionModeScript : MonoBehaviour
 			this.SubtitleLabel.color = new Color(1f, 0f, 0f, 1f);
 			this.CautionSign.color = new Color(1f, 0f, 0f, 1f);
 			this.FPS.color = new Color(1f, 0f, 0f, 1f);
+			this.SanityLabel.color = new Color(1f, 0f, 0f, 1f);
 			this.ID = 1;
 			while (this.ID < this.PoliceLabel.Length)
 			{
@@ -307,6 +310,7 @@ public class MissionModeScript : MonoBehaviour
 			this.SubtitleLabel.color = new Color(1f, 1f, 1f, 1f);
 			this.CautionSign.color = new Color(1f, 1f, 1f, 1f);
 			this.FPS.color = new Color(1f, 1f, 1f, 1f);
+			this.SanityLabel.color = new Color(1f, 1f, 1f, 1f);
 			this.ColorCorrections = this.MainCamera.GetComponents<ColorCorrectionCurves>();
 			this.StudentManager.MissionMode = true;
 			this.NemesisDifficulty = MissionModeGlobals.NemesisDifficulty;
@@ -321,8 +325,8 @@ public class MissionModeScript : MonoBehaviour
 			TutorialGlobals.TutorialsOff = true;
 			SchoolGlobals.SchoolAtmosphereSet = true;
 			SchoolGlobals.SchoolAtmosphere = 1f - (float)this.Difficulty * 0.1f;
-			Debug.Log("Mission Mode has lowered school atmosphere according to the difficulty level.");
 			this.StudentManager.Atmosphere = 1f - (float)this.Difficulty * 0.1f;
+			this.StudentManager.SetAtmosphere();
 			this.ID = 1;
 			while (this.ID < this.PoliceLabel.Length)
 			{
@@ -1105,6 +1109,7 @@ public class MissionModeScript : MonoBehaviour
 
 	private void ResetGlobals()
 	{
+		Debug.Log("Mission Difficulty was: " + MissionModeGlobals.MissionDifficulty);
 		int disableFarAnimations = OptionGlobals.DisableFarAnimations;
 		bool disablePostAliasing = OptionGlobals.DisablePostAliasing;
 		bool disableOutlines = OptionGlobals.DisableOutlines;
@@ -1157,6 +1162,7 @@ public class MissionModeScript : MonoBehaviour
 		OptionGlobals.DrawDistanceLimit = drawDistanceLimit;
 		OptionGlobals.DisableBloom = disableBloom;
 		OptionGlobals.Fog = fog;
+		Debug.Log("Mission Difficulty is now: " + MissionModeGlobals.MissionDifficulty);
 	}
 
 	private void ChangeAllText()

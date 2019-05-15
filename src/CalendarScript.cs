@@ -63,6 +63,7 @@ public class CalendarScript : MonoBehaviour
 		{
 			DateGlobals.PassDays = 1;
 		}
+		DateGlobals.DayPassed = true;
 		this.Sun.color = new Color(this.Sun.color.r, this.Sun.color.g, this.Sun.color.b, SchoolGlobals.SchoolAtmosphere);
 		this.Cloud.color = new Color(this.Cloud.color.r, this.Cloud.color.g, this.Cloud.color.b, 1f - SchoolGlobals.SchoolAtmosphere);
 		this.AtmosphereLabel.text = (SchoolGlobals.SchoolAtmosphere * 100f).ToString("f0") + "%";

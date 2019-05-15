@@ -9,6 +9,8 @@ public static class DateGlobals
 
 	private const string Str_PassDays = "PassDays";
 
+	private const string Str_DayPassed = "DayPassed";
+
 	public static int Week
 	{
 		get
@@ -45,10 +47,23 @@ public static class DateGlobals
 		}
 	}
 
+	public static bool DayPassed
+	{
+		get
+		{
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_DayPassed");
+		}
+		set
+		{
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_DayPassed", value);
+		}
+	}
+
 	public static void DeleteAll()
 	{
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_Week");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_Weekday");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_PassDays");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_DayPassed");
 	}
 }

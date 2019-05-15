@@ -76,6 +76,7 @@ public class RichPresenceHelper : MonoBehaviour
 		this._sceneDescriptions.Add("MiyukiThanksScene", "Finishing Magical Girl Pretty Miyuki!");
 		this._sceneDescriptions.Add("RhythmMinigameScene", "Jamming out with the Light Music Club!");
 		this._sceneDescriptions.Add("LifeNoteScene", "Watching an episode of Life Note!");
+		this._sceneDescriptions.Add("YancordScene", "Chatting over Yancord!");
 	}
 
 	private string GetSceneDescription()

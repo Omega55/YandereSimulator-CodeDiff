@@ -21,6 +21,8 @@ public class StruggleBarScript : MonoBehaviour
 
 	public bool Invincible;
 
+	public float AttackTimer;
+
 	public float ButtonTimer;
 
 	public float Intensity;
@@ -102,7 +104,44 @@ public class StruggleBarScript : MonoBehaviour
 		else
 		{
 			base.transform.localScale = Vector3.zero;
-			base.gameObject.SetActive(false);
+			if (!this.Yandere.AttackManager.Censor)
+			{
+				base.gameObject.SetActive(false);
+			}
+			else
+			{
+				if (this.AttackTimer == 0f)
+				{
+					this.Yandere.Blur.enabled = true;
+					this.Yandere.Blur.blurSize = 0f;
+					this.Yandere.Blur.blurIterations = 0;
+				}
+				this.AttackTimer += Time.deltaTime;
+				if (this.AttackTimer < 2.5f)
+				{
+					this.Yandere.Blur.blurSize = Mathf.MoveTowards(this.Yandere.Blur.blurSize, 10f, Time.deltaTime * 10f);
+					if (this.Yandere.Blur.blurSize > (float)this.Yandere.Blur.blurIterations)
+					{
+						this.Yandere.Blur.blurIterations++;
+					}
+				}
+				else
+				{
+					this.Yandere.Blur.blurSize = Mathf.Lerp(this.Yandere.Blur.blurSize, 0f, Time.deltaTime * 10f);
+					if (this.Yandere.Blur.blurSize < (float)this.Yandere.Blur.blurIterations)
+					{
+						this.Yandere.Blur.blurIterations--;
+					}
+					if (this.AttackTimer >= 3f)
+					{
+						base.gameObject.SetActive(false);
+						this.Yandere.Blur.enabled = false;
+						this.Yandere.Blur.blurSize = 0f;
+						this.Yandere.Blur.blurIterations = 0;
+						this.AttackTimer = 0f;
+					}
+				}
+			}
 		}
 	}
 

@@ -260,6 +260,7 @@ public class NoteLockerScript : MonoBehaviour
 		component.CrossFade(this.Student.IdleAnim);
 		this.Student.DistanceToDestination = 100f;
 		this.Student.CheckingNote = false;
+		this.Student.SentToLocker = false;
 		this.Student.InEvent = false;
 		this.Student.Routine = true;
 		this.CheckingNote = false;

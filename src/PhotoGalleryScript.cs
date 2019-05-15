@@ -48,6 +48,8 @@ public class PhotoGalleryScript : MonoBehaviour
 
 	public UISprite[] Hearts;
 
+	public AudioClip[] Sighs;
+
 	public UITexture ViewPhoto;
 
 	public Texture NoPhoto;
@@ -295,7 +297,7 @@ public class PhotoGalleryScript : MonoBehaviour
 				this.UpdateButtonPrompts();
 			}
 		}
-		else if (this.CanAdjust && Input.GetButtonDown("Y"))
+		else if (Input.GetButtonDown("Y") && PlayerGlobals.GetSenpaiPhoto(this.CurrentIndex))
 		{
 			int currentIndex2 = this.CurrentIndex;
 			PlayerGlobals.SetSenpaiPhoto(currentIndex2, false);
@@ -303,6 +305,7 @@ public class PhotoGalleryScript : MonoBehaviour
 			this.CanAdjust = false;
 			this.Yandere.Sanity += 20f;
 			this.UpdateButtonPrompts();
+			AudioSource.PlayClipAtPoint(this.Sighs[UnityEngine.Random.Range(0, this.Sighs.Length)], this.Yandere.Head.position);
 		}
 		if (this.InputManager.TappedRight)
 		{

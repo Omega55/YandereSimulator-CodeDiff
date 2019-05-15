@@ -248,9 +248,17 @@ public class PromptScript : MonoBehaviour
 					bool flag2 = this.Yandere.Stance.Current == StanceType.Crawling;
 					if (this.Yandere.CanMove && (!flag || this.AllowedWhenCrouching(this.OwnerType)) && (!flag2 || this.AllowedWhenCrawling(this.OwnerType)) && !this.Yandere.Aiming && !this.Yandere.Mopping && !this.Yandere.NearSenpai)
 					{
+						if (this.Debugging)
+						{
+							Debug.DrawLine(this.Yandere.Eyes.position + Vector3.down * this.Height, this.RaycastTarget.position, Color.green);
+						}
 						RaycastHit raycastHit;
 						if (Physics.Linecast(this.Yandere.Eyes.position + Vector3.down * this.Height, this.RaycastTarget.position, out raycastHit, this.BloodMask))
 						{
+							if (this.Debugging)
+							{
+								Debug.Log("We hit a collider named " + raycastHit.collider.name);
+							}
 							this.InSight = (raycastHit.collider == this.MyCollider);
 						}
 						if (this.Carried || this.InSight)

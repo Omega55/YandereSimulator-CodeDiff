@@ -650,6 +650,10 @@ public class YandereScript : MonoBehaviour
 
 	public Texture[] BloodTextures;
 
+	public AudioClip[] CreepyGiggles;
+
+	public AudioClip[] Stabs;
+
 	public WeaponScript[] Weapon;
 
 	public GameObject[] ZipTie;
@@ -659,8 +663,6 @@ public class YandereScript : MonoBehaviour
 	public string[] CarryAnims;
 
 	public Transform[] Spine;
-
-	public AudioClip[] Stabs;
 
 	public Transform[] Foot;
 
@@ -1259,7 +1261,6 @@ public class YandereScript : MonoBehaviour
 		this.SanitySmudges.color = new Color(1f, 1f, 1f, 0f);
 		this.SpiderLegs.SetActive(GameGlobals.EmptyDemon);
 		this.MyRenderer.materials[2].SetFloat("_BlendAmount1", 0f);
-		this.GreyTarget = 1f - SchoolGlobals.SchoolAtmosphere;
 		this.SetAnimationLayers();
 		this.UpdateNumbness();
 		this.RightEyeOrigin = this.RightEye.localPosition;
@@ -2582,7 +2583,7 @@ public class YandereScript : MonoBehaviour
 		}
 		else
 		{
-			if (this.Chased && !this.Sprayed && !this.Attacking)
+			if (this.Chased && !this.Sprayed && !this.Attacking && !this.StudentManager.PinningDown)
 			{
 				this.targetRotation = Quaternion.LookRotation(this.Pursuer.transform.position - base.transform.position);
 				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
@@ -5413,7 +5414,8 @@ public class YandereScript : MonoBehaviour
 			float num3 = this.SanitySmudges.color.a;
 			num3 = Mathf.MoveTowards(num3, 1f - this.sanity / 100f, Time.deltaTime);
 			this.SanitySmudges.color = new Color(1f, 1f, 1f, num3);
-			this.StudentManager.SelectiveGreyscale.desaturation = num3;
+			this.StudentManager.SelectiveGreyscale.desaturation = 1f - this.StudentManager.Atmosphere + num3;
+			Debug.Log("Yandere-chan's Sanity is setting the desaturation to: " + this.StudentManager.SelectiveGreyscale.desaturation);
 			if (num3 > 0.66666f)
 			{
 				float faces = 1f - (1f - num3) / 0.33333f;
@@ -5432,7 +5434,7 @@ public class YandereScript : MonoBehaviour
 			if (this.GiggleTimer > 10f)
 			{
 				UnityEngine.Object.Instantiate<GameObject>(this.GiggleDisc, base.transform.position + Vector3.up, Quaternion.identity);
-				AudioSource.PlayClipAtPoint(this.Laugh0, base.transform.position);
+				AudioSource.PlayClipAtPoint(this.CreepyGiggles[UnityEngine.Random.Range(0, this.CreepyGiggles.Length)], base.transform.position);
 				this.GiggleLines.Play();
 				this.GiggleTimer = 0f;
 			}

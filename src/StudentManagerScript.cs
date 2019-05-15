@@ -780,6 +780,7 @@ public class StudentManagerScript : MonoBehaviour
 			Camera.main.backgroundColor = new Color(num2, num2, num2, 1f);
 			RenderSettings.fogDensity = num * 0.1f;
 		}
+		this.Yandere.GreyTarget = num;
 	}
 
 	private void Update()
@@ -1243,12 +1244,14 @@ public class StudentManagerScript : MonoBehaviour
 							if (this.Yandere.Armed)
 							{
 								studentScript.Prompt.HideButton[0] = true;
-								studentScript.Prompt.MinimumDistance = 1f;
 								studentScript.Prompt.Attack = true;
+								studentScript.Prompt.MinimumDistanceSqr = 1f;
+								studentScript.Prompt.MinimumDistance = 1f;
 							}
 							else
 							{
 								studentScript.Prompt.HideButton[2] = true;
+								studentScript.Prompt.MinimumDistanceSqr = 2f;
 								studentScript.Prompt.MinimumDistance = 2f;
 								if (studentScript.WitnessedMurder || studentScript.WitnessedCorpse || studentScript.Private)
 								{

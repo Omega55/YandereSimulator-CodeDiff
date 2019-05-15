@@ -133,11 +133,12 @@ public class NewMissionWindowScript : MonoBehaviour
 				this.Increment(0);
 				if (this.Target[this.Column] != 0)
 				{
-					while (this.Target[this.Column] == this.UnsafeNumbers[1] || this.Target[this.Column] == this.UnsafeNumbers[2] || this.Target[this.Column] == this.UnsafeNumbers[3] || this.Target[this.Column] == this.UnsafeNumbers[4] || this.Target[this.Column] == this.UnsafeNumbers[5] || this.Target[this.Column] == this.UnsafeNumbers[6] || this.Target[this.Column] == this.UnsafeNumbers[7] || this.Target[this.Column] == this.UnsafeNumbers[8] || this.Target[this.Column] == this.UnsafeNumbers[9] || this.Target[this.Column] == this.UnsafeNumbers[10])
+					while ((this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[1]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[2]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[3]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[4]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[5]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[6]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[7]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[8]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[9]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[10]))
 					{
 						this.Increment(0);
 					}
 				}
+				this.UnsafeNumbers[this.Column] = this.Target[this.Column];
 			}
 			else if (this.Row == 2)
 			{
@@ -155,13 +156,14 @@ public class NewMissionWindowScript : MonoBehaviour
 					this.UnsafeNumbers[k] = this.Target[k];
 				}
 				this.Increment(5);
-				if (this.Target[this.Column] != 0)
+				if (this.Target[this.Column + 5] != 0)
 				{
-					while (this.Target[this.Column + 5] == this.UnsafeNumbers[1] || this.Target[this.Column + 5] == this.UnsafeNumbers[2] || this.Target[this.Column + 5] == this.UnsafeNumbers[3] || this.Target[this.Column + 5] == this.UnsafeNumbers[4] || this.Target[this.Column + 5] == this.UnsafeNumbers[5] || this.Target[this.Column + 5] == this.UnsafeNumbers[6] || this.Target[this.Column + 5] == this.UnsafeNumbers[7] || this.Target[this.Column + 5] == this.UnsafeNumbers[8] || this.Target[this.Column + 5] == this.UnsafeNumbers[9] || this.Target[this.Column + 5] == this.UnsafeNumbers[10])
+					while ((this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[1]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[2]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[3]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[4]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[5]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[6]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[7]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[8]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[9]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[10]))
 					{
 						this.Increment(5);
 					}
 				}
+				this.UnsafeNumbers[this.Column + 5] = this.Target[this.Column + 5];
 			}
 			else if (this.Row == 4)
 			{
@@ -184,11 +186,13 @@ public class NewMissionWindowScript : MonoBehaviour
 				this.Decrement(0);
 				if (this.Target[this.Column] != 0)
 				{
-					while (this.Target[this.Column] == this.UnsafeNumbers[1] || this.Target[this.Column] == this.UnsafeNumbers[2] || this.Target[this.Column] == this.UnsafeNumbers[3] || this.Target[this.Column] == this.UnsafeNumbers[4] || this.Target[this.Column] == this.UnsafeNumbers[5] || this.Target[this.Column] == this.UnsafeNumbers[6] || this.Target[this.Column] == this.UnsafeNumbers[7] || this.Target[this.Column] == this.UnsafeNumbers[8] || this.Target[this.Column] == this.UnsafeNumbers[9] || this.Target[this.Column] == this.UnsafeNumbers[10])
+					while ((this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[1]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[2]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[3]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[4]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[5]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[6]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[7]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[8]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[9]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[10]))
 					{
+						Debug.Log("Unsafe number. We're going to have to decrement.");
 						this.Decrement(0);
 					}
 				}
+				this.UnsafeNumbers[this.Column] = this.Target[this.Column];
 			}
 			else if (this.Row == 2)
 			{
@@ -206,13 +210,15 @@ public class NewMissionWindowScript : MonoBehaviour
 					this.UnsafeNumbers[m] = this.Target[m];
 				}
 				this.Decrement(5);
-				if (this.Target[this.Column] != 0)
+				if (this.Target[this.Column + 5] != 0)
 				{
-					while (this.Target[this.Column + 5] == this.UnsafeNumbers[1] || this.Target[this.Column + 5] == this.UnsafeNumbers[2] || this.Target[this.Column + 5] == this.UnsafeNumbers[3] || this.Target[this.Column + 5] == this.UnsafeNumbers[4] || this.Target[this.Column + 5] == this.UnsafeNumbers[5] || this.Target[this.Column + 5] == this.UnsafeNumbers[6] || this.Target[this.Column + 5] == this.UnsafeNumbers[7] || this.Target[this.Column + 5] == this.UnsafeNumbers[8] || this.Target[this.Column + 5] == this.UnsafeNumbers[9] || this.Target[this.Column + 5] == this.UnsafeNumbers[10])
+					while ((this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[1]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[2]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[3]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[4]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[5]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[6]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[7]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[8]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[9]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[10]))
 					{
+						Debug.Log("Unsafe number. We're going to have to decrement.");
 						this.Decrement(5);
 					}
 				}
+				this.UnsafeNumbers[this.Column + 5] = this.Target[this.Column + 5];
 			}
 			else if (this.Row == 4)
 			{
@@ -268,17 +274,21 @@ public class NewMissionWindowScript : MonoBehaviour
 	private void Decrement(int Number)
 	{
 		this.Target[this.Column + Number]--;
+		Debug.Log("Decremented. Number has become: " + this.Target[this.Column + Number]);
 		if (this.Target[this.Column + Number] == 1)
 		{
 			this.Target[this.Column + Number] = 0;
+			Debug.Log("Correcting to 0.");
 		}
 		else if (this.Target[this.Column + Number] == 20)
 		{
 			this.Target[this.Column + Number] = 9;
+			Debug.Log("Correcting to 9.");
 		}
 		else if (this.Target[this.Column + Number] == -1)
 		{
 			this.Target[this.Column + Number] = 89;
+			Debug.Log("Correcting to 89.");
 		}
 		if (this.Target[this.Column + Number] == 0)
 		{
