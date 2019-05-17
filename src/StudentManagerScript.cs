@@ -740,10 +740,13 @@ public class StudentManagerScript : MonoBehaviour
 				this.ErrorLabel.enabled = true;
 			}
 		}
-		this.NEStairs = GameObject.Find("NEStairs").GetComponent<Collider>();
-		this.NWStairs = GameObject.Find("NWStairs").GetComponent<Collider>();
-		this.SEStairs = GameObject.Find("SEStairs").GetComponent<Collider>();
-		this.SWStairs = GameObject.Find("SWStairs").GetComponent<Collider>();
+		if (!this.TakingPortraits)
+		{
+			this.NEStairs = GameObject.Find("NEStairs").GetComponent<Collider>();
+			this.NWStairs = GameObject.Find("NWStairs").GetComponent<Collider>();
+			this.SEStairs = GameObject.Find("SEStairs").GetComponent<Collider>();
+			this.SWStairs = GameObject.Find("SWStairs").GetComponent<Collider>();
+		}
 	}
 
 	public void SetAtmosphere()
@@ -780,7 +783,10 @@ public class StudentManagerScript : MonoBehaviour
 			Camera.main.backgroundColor = new Color(num2, num2, num2, 1f);
 			RenderSettings.fogDensity = num * 0.1f;
 		}
-		this.Yandere.GreyTarget = num;
+		if (this.Yandere != null)
+		{
+			this.Yandere.GreyTarget = num;
+		}
 	}
 
 	private void Update()
@@ -1045,7 +1051,7 @@ public class StudentManagerScript : MonoBehaviour
 		{
 			this.DetermineVictim();
 		}
-		if (this.Police.BloodParent.childCount > 0 || this.Police.LimbParent.childCount > 0 || this.Yandere.WeaponManager.MisplacedWeapons > 0)
+		if (this.Police != null && (this.Police.BloodParent.childCount > 0 || this.Police.LimbParent.childCount > 0 || this.Yandere.WeaponManager.MisplacedWeapons > 0))
 		{
 			this.CurrentID++;
 			if (this.CurrentID > 97)

@@ -1007,6 +1007,7 @@ public class EndOfDayScript : MonoBehaviour
 					this.Patsy.Handcuffs.SetActive(true);
 					this.Patsy.gameObject.SetActive(true);
 					this.Patsy.Ragdoll.Zs.SetActive(false);
+					this.Patsy.SmartPhone.SetActive(false);
 					this.Patsy.MyController.enabled = false;
 					this.Patsy.transform.parent = base.transform;
 					this.Patsy.transform.localPosition = new Vector3(0f, 0f, 0f);

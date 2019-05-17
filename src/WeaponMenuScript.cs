@@ -148,7 +148,7 @@ public class WeaponMenuScript : MonoBehaviour
 					this.UpdateSprites();
 				}
 			}
-			if (this.Yandere.CanMove || (this.Yandere.Chased && !this.Yandere.Sprayed))
+			if (this.Yandere.CanMove || (this.Yandere.Chased && !this.Yandere.Sprayed && !this.StudentManager.PinningDown))
 			{
 				if (!this.Show)
 				{

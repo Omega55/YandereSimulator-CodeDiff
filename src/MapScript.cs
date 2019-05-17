@@ -173,6 +173,7 @@ public class MapScript : MonoBehaviour
 					Time.timeScale = 1f;
 					this.PromptBar.ClearButtons();
 					this.PromptBar.Show = false;
+					this.Yandere.RPGCamera.enabled = true;
 					this.Show = false;
 				}
 			}

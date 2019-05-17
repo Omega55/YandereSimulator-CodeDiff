@@ -676,6 +676,7 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					else
 					{
+						Debug.Log("This block of code activated a shadow.");
 						this.Yandere.MyRenderer.materials[2].SetTexture("_OverlayTex", this.PantyCensorTexture);
 						this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
 						this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
@@ -745,6 +746,17 @@ public class DebugMenuScript : MonoBehaviour
 			this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount1", 0f);
 			this.Yandere.MyRenderer.materials[2].SetFloat("_BlendAmount1", 0f);
 			this.Yandere.PantyAttacher.newRenderer.enabled = false;
+		}
+		if (this.Yandere.FlameDemonic || this.Yandere.TornadoHair.activeInHierarchy)
+		{
+			Debug.Log("This other block of code activated a shadow.");
+			this.Yandere.MyRenderer.materials[1].SetTexture("_OverlayTex", this.PantyCensorTexture);
+			this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+			this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", 1f);
+			this.Yandere.MyRenderer.materials[2].SetFloat("_BlendAmount", 0f);
+			this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount1", 0f);
+			this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount1", 0f);
+			this.Yandere.MyRenderer.materials[2].SetFloat("_BlendAmount1", 0f);
 		}
 		if (this.Yandere.NierCostume.activeInHierarchy)
 		{

@@ -13215,6 +13215,10 @@ public class StudentScript : MonoBehaviour
 		if (!this.Male)
 		{
 			this.MyRenderer.sharedMesh = this.TowelMesh;
+			if (this.Club == ClubType.Bully)
+			{
+				this.Cosmetic.DeactivateBullyAccessories();
+			}
 			this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
 			this.MyRenderer.materials[0].mainTexture = this.TowelTexture;
 			this.MyRenderer.materials[1].mainTexture = this.TowelTexture;
@@ -13329,6 +13333,10 @@ public class StudentScript : MonoBehaviour
 				this.MyRenderer.materials[0].mainTexture = this.GymTexture;
 				this.MyRenderer.materials[1].mainTexture = this.GymTexture;
 				this.MyRenderer.materials[2].mainTexture = this.Cosmetic.FaceTexture;
+				if (this.Club == ClubType.Bully)
+				{
+					this.Cosmetic.ActivateBullyAccessories();
+				}
 			}
 			else
 			{

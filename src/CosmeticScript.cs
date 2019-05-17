@@ -225,6 +225,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public Texture TanSwimsuitTexture;
 
+	public Texture TanTowelTexture;
+
 	public Texture TanGymTexture;
 
 	public GameObject RightIrisLight;
@@ -542,6 +544,8 @@ public class CosmeticScript : MonoBehaviour
 				{
 					this.Fingernails[j].material.color = this.BullyColor[this.StudentID];
 				}
+				this.Student.GymTexture = this.TanGymTexture;
+				this.Student.TowelTexture = this.TanTowelTexture;
 			}
 			else
 			{
@@ -1618,6 +1622,8 @@ public class CosmeticScript : MonoBehaviour
 		if (this.StudentID == 58)
 		{
 			this.SkinColor = 8;
+			this.Student.GymTexture = this.TanGymTexture;
+			this.Student.TowelTexture = this.TanTowelTexture;
 			this.Student.SwimsuitTexture = this.TanSwimsuitTexture;
 		}
 		if (this.Empty)
@@ -2193,7 +2199,6 @@ public class CosmeticScript : MonoBehaviour
 		}
 		else if (this.EyeType == "Rival1")
 		{
-			this.MyRenderer.SetBlendShapeWeight(0, 35f);
 			this.MyRenderer.SetBlendShapeWeight(8, 5f);
 			this.MyRenderer.SetBlendShapeWeight(9, 20f);
 			this.MyRenderer.SetBlendShapeWeight(10, 50f);
@@ -2213,5 +2218,27 @@ public class CosmeticScript : MonoBehaviour
 			}
 			this.Modified = true;
 		}
+	}
+
+	public void DeactivateBullyAccessories()
+	{
+		if (StudentGlobals.FemaleUniform < 2 || StudentGlobals.FemaleUniform == 3)
+		{
+			this.RightWristband.SetActive(false);
+			this.LeftWristband.SetActive(false);
+		}
+		this.Bookbag.SetActive(false);
+		this.Hoodie.SetActive(false);
+	}
+
+	public void ActivateBullyAccessories()
+	{
+		if (StudentGlobals.FemaleUniform < 2 || StudentGlobals.FemaleUniform == 3)
+		{
+			this.RightWristband.SetActive(true);
+			this.LeftWristband.SetActive(true);
+		}
+		this.Bookbag.SetActive(true);
+		this.Hoodie.SetActive(true);
 	}
 }
