@@ -62,7 +62,7 @@ public class CutsceneManagerScript : MonoBehaviour
 		else if (this.Phase == 4)
 		{
 			this.EndOfDay.gameObject.SetActive(true);
-			this.EndOfDay.Phase = 12;
+			this.EndOfDay.Phase = 13;
 			this.Counselor.LecturePhase = 5;
 			this.Phase++;
 		}

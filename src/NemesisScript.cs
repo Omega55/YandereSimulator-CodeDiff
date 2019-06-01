@@ -245,28 +245,35 @@ public class NemesisScript : MonoBehaviour
 				}
 				if (this.Difficulty == 1 || this.Difficulty == 3)
 				{
-					float f = Vector3.Angle(-base.transform.forward, this.Yandere.transform.position - base.transform.position);
-					if (Mathf.Abs(f) > 45f)
+					if (Vector3.Distance(base.transform.position, this.Yandere.transform.position) < 1f)
+					{
+						float f = Vector3.Angle(-base.transform.forward, this.Yandere.transform.position - base.transform.position);
+						if (Mathf.Abs(f) > 45f)
+						{
+							this.Student.Prompt.HideButton[2] = true;
+						}
+						else if (this.Yandere.Armed)
+						{
+							this.Student.Prompt.HideButton[2] = false;
+						}
+						if (!this.Yandere.Armed)
+						{
+							this.Student.Prompt.HideButton[2] = true;
+						}
+						if (this.Student.Prompt.Circle[2].fillAmount < 1f)
+						{
+							this.Yandere.TargetStudent = this.Student;
+							this.Yandere.AttackManager.Stealth = true;
+							this.Student.AttackReaction();
+							this.Student.Pathfinding.canSearch = false;
+							this.Student.Pathfinding.canMove = false;
+							this.Student.Prompt.HideButton[2] = true;
+							this.Dying = true;
+						}
+					}
+					else
 					{
 						this.Student.Prompt.HideButton[2] = true;
-					}
-					else if (this.Yandere.Armed)
-					{
-						this.Student.Prompt.HideButton[2] = false;
-					}
-					if (!this.Yandere.Armed)
-					{
-						this.Student.Prompt.HideButton[2] = true;
-					}
-					if (this.Student.Prompt.Circle[2].fillAmount < 1f)
-					{
-						this.Yandere.TargetStudent = this.Student;
-						this.Yandere.AttackManager.Stealth = true;
-						this.Student.AttackReaction();
-						this.Student.Pathfinding.canSearch = false;
-						this.Student.Pathfinding.canMove = false;
-						this.Student.Prompt.HideButton[2] = true;
-						this.Dying = true;
 					}
 				}
 			}

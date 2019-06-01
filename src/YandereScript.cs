@@ -1024,9 +1024,15 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject[] Vectors;
 
-	public GameObject Kizuna;
+	public GameObject[] Armor;
 
-	public AudioClip HaiDomo;
+	public Texture Chainmail;
+
+	public Texture Scarface;
+
+	public Material Metal;
+
+	public Material Trans;
 
 	public GameObject BlackRobe;
 
@@ -1338,23 +1344,27 @@ public class YandereScript : MonoBehaviour
 		this.OriginalIdleAnim = this.IdleAnim;
 		this.OriginalWalkAnim = this.WalkAnim;
 		this.OriginalRunAnim = this.RunAnim;
+		foreach (GameObject gameObject in this.Armor)
+		{
+			gameObject.SetActive(false);
+		}
 		this.ID = 1;
 		while (this.ID < this.Accessories.Length)
 		{
 			this.Accessories[this.ID].SetActive(false);
 			this.ID++;
 		}
-		foreach (GameObject gameObject in this.PunishedArm)
-		{
-			gameObject.SetActive(false);
-		}
-		foreach (GameObject gameObject2 in this.GaloAccessories)
+		foreach (GameObject gameObject2 in this.PunishedArm)
 		{
 			gameObject2.SetActive(false);
 		}
-		foreach (GameObject gameObject3 in this.Vectors)
+		foreach (GameObject gameObject3 in this.GaloAccessories)
 		{
 			gameObject3.SetActive(false);
+		}
+		foreach (GameObject gameObject4 in this.Vectors)
+		{
+			gameObject4.SetActive(false);
 		}
 		this.ID = 1;
 		while (this.ID < this.CyborgParts.Length)
@@ -1698,6 +1708,9 @@ public class YandereScript : MonoBehaviour
 		this.CharacterAnimation.Play("f02_reachForWeapon_00");
 		this.CharacterAnimation["f02_reachForWeapon_00"].weight = 0f;
 		this.CharacterAnimation["f02_reachForWeapon_00"].speed = 2f;
+		this.CharacterAnimation["f02_gutsEye_00"].layer = 33;
+		this.CharacterAnimation.Play("f02_gutsEye_00");
+		this.CharacterAnimation["f02_gutsEye_00"].weight = 0f;
 		this.CharacterAnimation["f02_dipping_00"].speed = 2f;
 		this.CharacterAnimation["f02_stripping_00"].speed = 1.5f;
 		this.CharacterAnimation["f02_falconIdle_00"].speed = 2f;
@@ -5243,7 +5256,12 @@ public class YandereScript : MonoBehaviour
 								this.ElfenLied();
 								this.EasterEggMenu.SetActive(false);
 							}
-							else if (!Input.GetKeyDown(KeyCode.F7))
+							else if (Input.GetKeyDown(KeyCode.F7))
+							{
+								this.Berserk();
+								this.EasterEggMenu.SetActive(false);
+							}
+							else if (!Input.GetKeyDown(KeyCode.F8))
 							{
 								if (Input.GetKeyDown(KeyCode.Space))
 								{
@@ -5415,7 +5433,6 @@ public class YandereScript : MonoBehaviour
 			num3 = Mathf.MoveTowards(num3, 1f - this.sanity / 100f, Time.deltaTime);
 			this.SanitySmudges.color = new Color(1f, 1f, 1f, num3);
 			this.StudentManager.SelectiveGreyscale.desaturation = 1f - this.StudentManager.Atmosphere + num3;
-			Debug.Log("Yandere-chan's Sanity is setting the desaturation to: " + this.StudentManager.SelectiveGreyscale.desaturation);
 			if (num3 > 0.66666f)
 			{
 				float faces = 1f - (1f - num3) / 0.33333f;
@@ -6427,19 +6444,36 @@ public class YandereScript : MonoBehaviour
 		this.DebugMenu.transform.parent.GetComponent<DebugMenuScript>().UpdateCensor();
 	}
 
-	private void KizunaAI()
+	private void Berserk()
 	{
-		AudioSource.PlayClipAtPoint(this.HaiDomo, base.transform.position);
-		this.RightYandereEye.enabled = false;
-		this.LeftYandereEye.enabled = false;
-		this.Kizuna.SetActive(true);
-		this.MyRenderer.enabled = false;
-		this.IdleAnim = "f02_idleGirly_00";
+		SchoolGlobals.SchoolAtmosphere = 0.5f;
+		this.StudentManager.SetAtmosphere();
+		foreach (GameObject gameObject in this.Armor)
+		{
+			gameObject.SetActive(true);
+		}
+		foreach (Renderer renderer in this.StudentManager.Trees)
+		{
+			renderer.materials[1] = this.Trans;
+		}
+		this.MyRenderer.sharedMesh = this.NudeMesh;
+		this.MyRenderer.materials[0].mainTexture = this.Scarface;
+		this.MyRenderer.materials[1].mainTexture = this.Chainmail;
+		this.MyRenderer.materials[2].mainTexture = this.Chainmail;
+		this.PantyAttacher.newRenderer.enabled = false;
+		this.Schoolwear = 0;
+		this.IdleAnim = "f02_heroicIdle_00";
+		this.WalkAnim = "f02_walkConfident_00";
+		this.RunAnim = "f02_nierRun_00";
+		this.CharacterAnimation["f02_nierRun_00"].speed = 1f;
+		this.CharacterAnimation["f02_gutsEye_00"].weight = 1f;
+		this.RunSpeed = 7.5f;
 		this.OriginalIdleAnim = this.IdleAnim;
 		this.OriginalWalkAnim = this.WalkAnim;
 		this.OriginalRunAnim = this.RunAnim;
-		this.Hairstyle = 0;
+		this.Hairstyle = 188;
 		this.UpdateHair();
+		this.Egg = true;
 	}
 
 	private void Sith()

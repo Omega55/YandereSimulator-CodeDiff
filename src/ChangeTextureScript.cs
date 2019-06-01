@@ -11,7 +11,7 @@ public class ChangeTextureScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Space))
+		if (Input.GetKeyDown(KeyCode.LeftAlt))
 		{
 			this.ID++;
 			if (this.ID == this.Textures.Length)

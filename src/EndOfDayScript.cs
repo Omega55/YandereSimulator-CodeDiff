@@ -51,6 +51,8 @@ public class EndOfDayScript : MonoBehaviour
 
 	public GardenHoleScript[] GardenHoles;
 
+	public StudentScript[] WitnessList;
+
 	public Animation[] CopAnimation;
 
 	public GameObject MainCamera;
@@ -76,6 +78,8 @@ public class EndOfDayScript : MonoBehaviour
 	public int ClothingWithRedPaint;
 
 	public int FragileTarget;
+
+	public int EyeWitnesses;
 
 	public int NewFriends;
 
@@ -136,6 +140,8 @@ public class EndOfDayScript : MonoBehaviour
 	public GameObject ArrestingCops;
 
 	public GameObject Mask;
+
+	public GameObject EyeWitnessScene;
 
 	public StudentScript KidnappedVictim;
 
@@ -234,7 +240,28 @@ public class EndOfDayScript : MonoBehaviour
 				this.SCP.SetActive(false);
 				this.ArrestingCops.SetActive(false);
 				this.Mask.SetActive(false);
+				this.EyeWitnessScene.SetActive(false);
 				this.Senpai.gameObject.SetActive(false);
+				if (this.WitnessList[1] != null)
+				{
+					this.WitnessList[1].gameObject.SetActive(false);
+				}
+				if (this.WitnessList[2] != null)
+				{
+					this.WitnessList[2].gameObject.SetActive(false);
+				}
+				if (this.WitnessList[3] != null)
+				{
+					this.WitnessList[3].gameObject.SetActive(false);
+				}
+				if (this.WitnessList[4] != null)
+				{
+					this.WitnessList[4].gameObject.SetActive(false);
+				}
+				if (this.WitnessList[5] != null)
+				{
+					this.WitnessList[5].gameObject.SetActive(false);
+				}
 				if (this.Patsy != null)
 				{
 					this.Patsy.gameObject.SetActive(false);
@@ -574,6 +601,73 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 7)
 			{
+				this.ID = 1;
+				while (this.ID < this.StudentManager.Students.Length)
+				{
+					if (this.StudentManager.Students[this.ID] != null && this.StudentManager.Students[this.ID].Alive && this.StudentManager.Students[this.ID].Persona != PersonaType.Coward && this.StudentManager.Students[this.ID].WitnessedMurder)
+					{
+						this.EyeWitnesses++;
+						this.WitnessList[this.EyeWitnesses] = this.StudentManager.Students[this.ID];
+					}
+					this.ID++;
+				}
+				if (this.EyeWitnesses > 0)
+				{
+					this.DisableThings(this.WitnessList[1]);
+					this.DisableThings(this.WitnessList[2]);
+					this.DisableThings(this.WitnessList[3]);
+					this.DisableThings(this.WitnessList[4]);
+					this.DisableThings(this.WitnessList[5]);
+					this.WitnessList[1].transform.localPosition = Vector3.zero;
+					if (this.WitnessList[2] != null)
+					{
+						this.WitnessList[2].transform.localPosition = new Vector3(-1f, 0f, -0.5f);
+					}
+					if (this.WitnessList[3] != null)
+					{
+						this.WitnessList[3].transform.localPosition = new Vector3(1f, 0f, -0.5f);
+					}
+					if (this.WitnessList[4] != null)
+					{
+						this.WitnessList[4].transform.localPosition = new Vector3(-2f, 0f, -1f);
+					}
+					if (this.WitnessList[5] != null)
+					{
+						this.WitnessList[5].transform.localPosition = new Vector3(1.5f, 0f, -1f);
+					}
+					if (this.WitnessList[1].Male)
+					{
+						this.WitnessList[1].CharacterAnimation.Play("carefreeTalk_02");
+					}
+					else
+					{
+						this.WitnessList[1].CharacterAnimation.Play("f02_carefreeTalk_02");
+					}
+					this.EyeWitnessScene.SetActive(true);
+					if (this.EyeWitnesses == 1)
+					{
+						this.Label.text = "One student accuses Ayano of murder, but nobody else can corroborate that students' claims, so the police are unable to develop reasonable justification to arrest Ayano.";
+						this.Phase++;
+					}
+					else if (this.EyeWitnesses < 5)
+					{
+						this.Label.text = "Several students accuse Ayano of murder, but there are not enough witnesses to provide the police with reasonable justification to arrest her.";
+						this.Phase++;
+					}
+					else
+					{
+						this.Label.text = "Numerous students accuse Ayano of murder, providing the police with enough justification to arrest her.";
+						this.Phase = 100;
+					}
+				}
+				else
+				{
+					this.Phase++;
+					this.UpdateScene();
+				}
+			}
+			else if (this.Phase == 8)
+			{
 				this.ShruggingCops.SetActive(false);
 				if (this.Yandere.Sanity > 33.33333f)
 				{
@@ -594,7 +688,7 @@ public class EndOfDayScript : MonoBehaviour
 							this.Label.text = "The police notice that Ayano's clothing is bloody. They confirm that the blood is not hers. Ayano is able to convince the police that she was splashed with blood while witnessing a murder.";
 							if (!this.TranqCase.Occupied)
 							{
-								this.Phase = 9;
+								this.Phase += 2;
 							}
 							else
 							{
@@ -617,11 +711,11 @@ public class EndOfDayScript : MonoBehaviour
 						this.Label.text = "The police question all students in the school, including Ayano. The police are unable to link Ayano to any crimes.";
 						if (!this.TranqCase.Occupied)
 						{
-							this.Phase = 9;
+							this.Phase += 2;
 						}
 						else if (this.TranqCase.VictimID == this.ArrestID)
 						{
-							this.Phase = 9;
+							this.Phase += 2;
 						}
 						else
 						{
@@ -645,7 +739,7 @@ public class EndOfDayScript : MonoBehaviour
 					}
 				}
 			}
-			else if (this.Phase == 8)
+			else if (this.Phase == 9)
 			{
 				this.KidnappedVictim = this.StudentManager.Students[this.TranqCase.VictimID];
 				this.KidnappedVictim.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
@@ -666,7 +760,7 @@ public class EndOfDayScript : MonoBehaviour
 				this.TranqCase.Occupied = false;
 				this.Phase++;
 			}
-			else if (this.Phase == 9)
+			else if (this.Phase == 10)
 			{
 				if (this.Police.MaskReported)
 				{
@@ -689,7 +783,7 @@ public class EndOfDayScript : MonoBehaviour
 					this.UpdateScene();
 				}
 			}
-			else if (this.Phase == 10)
+			else if (this.Phase == 11)
 			{
 				this.Cops.transform.eulerAngles = new Vector3(0f, 180f, 0f);
 				this.Cops.SetActive(true);
@@ -714,7 +808,7 @@ public class EndOfDayScript : MonoBehaviour
 				}
 				this.Phase++;
 			}
-			else if (this.Phase == 11)
+			else if (this.Phase == 12)
 			{
 				this.Senpai.enabled = false;
 				this.Senpai.transform.parent = base.transform;
@@ -733,7 +827,7 @@ public class EndOfDayScript : MonoBehaviour
 				this.Label.text = "Ayano stalks Senpai until he has returned home safely, and then returns to her own home.";
 				this.Phase++;
 			}
-			else if (this.Phase == 12)
+			else if (this.Phase == 13)
 			{
 				if (!StudentGlobals.GetStudentDying(30) && !StudentGlobals.GetStudentDead(30) && !StudentGlobals.GetStudentArrested(30))
 				{
@@ -761,7 +855,7 @@ public class EndOfDayScript : MonoBehaviour
 					this.UpdateScene();
 				}
 			}
-			else if (this.Phase == 13)
+			else if (this.Phase == 14)
 			{
 				this.EODCamera.localPosition = new Vector3(1f, 1.8f, -2.5f);
 				this.EODCamera.localEulerAngles = new Vector3(22.5f, -22.5f, 0f);
@@ -793,7 +887,7 @@ public class EndOfDayScript : MonoBehaviour
 					this.UpdateScene();
 				}
 			}
-			else if (this.Phase == 14)
+			else if (this.Phase == 15)
 			{
 				this.ClubClosed = false;
 				this.ClubKicked = false;
@@ -928,7 +1022,7 @@ public class EndOfDayScript : MonoBehaviour
 					this.UpdateScene();
 				}
 			}
-			else if (this.Phase == 15)
+			else if (this.Phase == 16)
 			{
 				if (this.TranqCase.Occupied)
 				{
@@ -943,7 +1037,7 @@ public class EndOfDayScript : MonoBehaviour
 					this.UpdateScene();
 				}
 			}
-			else if (this.Phase == 16)
+			else if (this.Phase == 17)
 			{
 				if (this.ErectFence)
 				{
@@ -958,7 +1052,7 @@ public class EndOfDayScript : MonoBehaviour
 					this.UpdateScene();
 				}
 			}
-			else if (this.Phase == 17)
+			else if (this.Phase == 18)
 			{
 				if (!SchoolGlobals.HighSecurity && this.Police.CouncilDeath)
 				{
@@ -972,7 +1066,7 @@ public class EndOfDayScript : MonoBehaviour
 					this.UpdateScene();
 				}
 			}
-			else if (this.Phase == 18)
+			else if (this.Phase == 19)
 			{
 				this.Finish();
 			}
@@ -1207,5 +1301,25 @@ public class EndOfDayScript : MonoBehaviour
 			SchoolGlobals.SchoolAtmosphere += 0.25f;
 		}
 		this.WeaponManager.TrackDumpedWeapons();
+	}
+
+	private void DisableThings(StudentScript TargetStudent)
+	{
+		if (TargetStudent != null)
+		{
+			TargetStudent.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
+			TargetStudent.CharacterAnimation.enabled = true;
+			TargetStudent.CharacterAnimation.Play(TargetStudent.IdleAnim);
+			TargetStudent.EmptyHands();
+			TargetStudent.SpeechLines.Stop();
+			TargetStudent.Ragdoll.Zs.SetActive(false);
+			TargetStudent.SmartPhone.SetActive(false);
+			TargetStudent.MyController.enabled = false;
+			TargetStudent.ShoeRemoval.enabled = false;
+			TargetStudent.enabled = false;
+			TargetStudent.gameObject.SetActive(true);
+			TargetStudent.transform.parent = base.transform;
+			TargetStudent.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+		}
 	}
 }

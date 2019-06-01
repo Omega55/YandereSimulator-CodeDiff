@@ -19,6 +19,8 @@ public class JukeboxScript : MonoBehaviour
 
 	public AudioSource LifeNote;
 
+	public AudioSource Berserk;
+
 	public AudioSource Metroid;
 
 	public AudioSource Nuclear;
@@ -276,6 +278,7 @@ public class JukeboxScript : MonoBehaviour
 			this.Skeletons.volume = Mathf.MoveTowards(this.Skeletons.volume, this.Volume * this.Dip, 0.166666672f);
 			this.AzurLane.volume = Mathf.MoveTowards(this.AzurLane.volume, this.Volume * this.Dip, 0.166666672f);
 			this.LifeNote.volume = Mathf.MoveTowards(this.LifeNote.volume, this.Volume * this.Dip, 0.166666672f);
+			this.Berserk.volume = Mathf.MoveTowards(this.Berserk.volume, this.Volume * this.Dip, 0.166666672f);
 			this.Metroid.volume = Mathf.MoveTowards(this.Metroid.volume, this.Volume * this.Dip, 0.166666672f);
 			this.Nuclear.volume = Mathf.MoveTowards(this.Nuclear.volume, this.Volume * this.Dip, 0.166666672f);
 			this.Slender.volume = Mathf.MoveTowards(this.Slender.volume, this.Volume * this.Dip, 0.166666672f);
@@ -428,6 +431,12 @@ public class JukeboxScript : MonoBehaviour
 			}
 			else if (Input.GetKeyDown(KeyCode.F7))
 			{
+				this.Egg = true;
+				this.KillVolume();
+				this.Berserk.enabled = true;
+			}
+			else if (Input.GetKeyDown(KeyCode.F8))
+			{
 			}
 		}
 	}
@@ -488,6 +497,7 @@ public class JukeboxScript : MonoBehaviour
 		this.Skeletons.Stop();
 		this.AzurLane.Stop();
 		this.LifeNote.Stop();
+		this.Berserk.Stop();
 		this.Metroid.Stop();
 		this.Nuclear.Stop();
 		this.Sukeban.Stop();

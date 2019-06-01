@@ -30,6 +30,10 @@ public class BloodPoolScript : MonoBehaviour
 		{
 			UnityEngine.Object.Destroy(base.gameObject);
 		}
+		if (Application.loadedLevelName == "IntroScene" || Application.loadedLevelName == "NewIntroScene")
+		{
+			this.MyRenderer.material.SetColor("_TintColor", new Color(0.1f, 0.1f, 0.1f));
+		}
 	}
 
 	private void Update()

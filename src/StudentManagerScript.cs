@@ -557,6 +557,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Mesh OpenChipBag;
 
+	public Renderer[] Trees;
+
 	public bool SeatOccupied;
 
 	public int Class = 1;
@@ -981,37 +983,40 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			else if (this.WitnessList[1].PinPhase == 0)
 			{
-				this.PinDownTimer += Time.deltaTime;
-				if (this.PinDownTimer > 10f || (this.WitnessList[1].DistanceToDestination < 1f && this.WitnessList[2].DistanceToDestination < 1f && this.WitnessList[3].DistanceToDestination < 1f && this.WitnessList[4].DistanceToDestination < 1f))
+				if (!this.Yandere.ShoulderCamera.HeartbrokenCamera.activeInHierarchy)
 				{
-					this.Clock.StopTime = true;
-					if (this.Yandere.Aiming)
+					this.PinDownTimer += Time.deltaTime;
+					if (this.PinDownTimer > 10f || (this.WitnessList[1].DistanceToDestination < 1f && this.WitnessList[2].DistanceToDestination < 1f && this.WitnessList[3].DistanceToDestination < 1f && this.WitnessList[4].DistanceToDestination < 1f))
 					{
-						this.Yandere.StopAiming();
-						this.Yandere.enabled = false;
-					}
-					this.Yandere.Mopping = false;
-					this.Yandere.EmptyHands();
-					AudioSource component = base.GetComponent<AudioSource>();
-					component.PlayOneShot(this.PinDownSFX);
-					component.PlayOneShot(this.YanderePinDown);
-					this.Yandere.CharacterAnimation.CrossFade("f02_pinDown_00");
-					this.Yandere.CanMove = false;
-					this.Yandere.ShoulderCamera.LookDown = true;
-					this.Yandere.RPGCamera.enabled = false;
-					this.StopMoving();
-					this.Yandere.ShoulderCamera.HeartbrokenCamera.GetComponent<Camera>().cullingMask |= 512;
-					this.ID = 1;
-					while (this.ID < 5)
-					{
-						StudentScript studentScript3 = this.WitnessList[this.ID];
-						if (studentScript3.MyWeapon != null)
+						this.Clock.StopTime = true;
+						if (this.Yandere.Aiming)
 						{
-							GameObjectUtils.SetLayerRecursively(studentScript3.MyWeapon.gameObject, 13);
+							this.Yandere.StopAiming();
+							this.Yandere.enabled = false;
 						}
-						studentScript3.CharacterAnimation.CrossFade((((!studentScript3.Male) ? "f02_pinDown_0" : "pinDown_0") + this.ID).ToString());
-						studentScript3.PinPhase++;
-						this.ID++;
+						this.Yandere.Mopping = false;
+						this.Yandere.EmptyHands();
+						AudioSource component = base.GetComponent<AudioSource>();
+						component.PlayOneShot(this.PinDownSFX);
+						component.PlayOneShot(this.YanderePinDown);
+						this.Yandere.CharacterAnimation.CrossFade("f02_pinDown_00");
+						this.Yandere.CanMove = false;
+						this.Yandere.ShoulderCamera.LookDown = true;
+						this.Yandere.RPGCamera.enabled = false;
+						this.StopMoving();
+						this.Yandere.ShoulderCamera.HeartbrokenCamera.GetComponent<Camera>().cullingMask |= 512;
+						this.ID = 1;
+						while (this.ID < 5)
+						{
+							StudentScript studentScript3 = this.WitnessList[this.ID];
+							if (studentScript3.MyWeapon != null)
+							{
+								GameObjectUtils.SetLayerRecursively(studentScript3.MyWeapon.gameObject, 13);
+							}
+							studentScript3.CharacterAnimation.CrossFade((((!studentScript3.Male) ? "f02_pinDown_0" : "pinDown_0") + this.ID).ToString());
+							studentScript3.PinPhase++;
+							this.ID++;
+						}
 					}
 				}
 			}

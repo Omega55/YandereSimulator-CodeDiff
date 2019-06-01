@@ -8352,7 +8352,7 @@ public class StudentScript : MonoBehaviour
 					{
 						this.StudentManager.CorpseLocation.position = this.Corpse.AllColliders[0].transform.position;
 						this.StudentManager.CorpseLocation.LookAt(base.transform.position);
-						this.StudentManager.CorpseLocation.Translate(this.StudentManager.CorpseLocation.forward);
+						this.StudentManager.CorpseLocation.Translate(this.StudentManager.CorpseLocation.forward * -1f);
 						this.StudentManager.LowerCorpsePosition();
 						this.StudentManager.Reporter = this;
 						this.ReportingMurder = true;
@@ -8382,7 +8382,7 @@ public class StudentScript : MonoBehaviour
 				{
 					this.StudentManager.BloodLocation.position = this.BloodPool.position;
 					this.StudentManager.BloodLocation.LookAt(new Vector3(base.transform.position.x, this.StudentManager.BloodLocation.position.y, base.transform.position.z));
-					this.StudentManager.BloodLocation.Translate(this.StudentManager.BloodLocation.forward);
+					this.StudentManager.BloodLocation.Translate(this.StudentManager.BloodLocation.forward * -1f);
 					this.StudentManager.LowerBloodPosition();
 					this.StudentManager.BloodReporter = this;
 					this.ReportingBlood = true;
@@ -8411,7 +8411,7 @@ public class StudentScript : MonoBehaviour
 				{
 					this.StudentManager.BloodLocation.position = this.BloodPool.position;
 					this.StudentManager.BloodLocation.LookAt(new Vector3(base.transform.position.x, this.StudentManager.BloodLocation.position.y, base.transform.position.z));
-					this.StudentManager.BloodLocation.Translate(this.StudentManager.BloodLocation.forward);
+					this.StudentManager.BloodLocation.Translate(this.StudentManager.BloodLocation.forward * -1f);
 					this.StudentManager.LowerBloodPosition();
 					this.StudentManager.BloodReporter = this;
 					this.ReportingBlood = true;
@@ -8449,7 +8449,7 @@ public class StudentScript : MonoBehaviour
 						{
 							this.StudentManager.BloodLocation.position = this.BloodPool.position;
 							this.StudentManager.BloodLocation.LookAt(new Vector3(base.transform.position.x, this.StudentManager.BloodLocation.position.y, base.transform.position.z));
-							this.StudentManager.BloodLocation.Translate(this.StudentManager.BloodLocation.forward);
+							this.StudentManager.BloodLocation.Translate(this.StudentManager.BloodLocation.forward * -1f);
 							this.StudentManager.LowerBloodPosition();
 							this.StudentManager.BloodReporter = this;
 							this.ReportingBlood = true;
@@ -8868,7 +8868,7 @@ public class StudentScript : MonoBehaviour
 			this.Routine = false;
 			this.Alarmed = true;
 			this.ReadPhase = 0;
-			if (this.Yandere.Mask == null)
+			if (this.YandereVisible && this.Yandere.Mask == null)
 			{
 				this.Witness = true;
 			}
@@ -9516,7 +9516,7 @@ public class StudentScript : MonoBehaviour
 				}
 			}
 		}
-		if ((this.Prompt.Circle[2].fillAmount == 0f || (this.Yandere.Sanity < 33.33333f && !this.Prompt.HideButton[2] && this.Club != ClubType.Council)) && this.ClubActivityPhase < 16)
+		if ((this.Prompt.Circle[2].fillAmount == 0f || (this.Yandere.Sanity < 33.33333f && !this.Prompt.HideButton[2] && this.Club != ClubType.Council && !this.Struggling)) && this.ClubActivityPhase < 16)
 		{
 			float f = Vector3.Angle(-base.transform.forward, this.Yandere.transform.position - base.transform.position);
 			this.Yandere.AttackManager.Stealth = (Mathf.Abs(f) <= 45f);

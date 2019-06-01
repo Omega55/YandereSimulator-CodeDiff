@@ -21,6 +21,8 @@ public class WeaponScript : MonoBehaviour
 
 	public Transform Origin;
 
+	public Transform Parent;
+
 	public AudioClip[] Clips;
 
 	public AudioClip[] Clips2;
@@ -32,6 +34,8 @@ public class WeaponScript : MonoBehaviour
 	public AudioClip EquipClip;
 
 	public ParticleSystem FireEffect;
+
+	public GameObject WeaponTrail;
 
 	public GameObject ExtraBlade;
 
@@ -426,6 +430,10 @@ public class WeaponScript : MonoBehaviour
 				this.Yandere.WalkAnim = "CyborgNinja_Walk_Armed";
 				this.Yandere.RunAnim = "CyborgNinja_Run_Armed";
 			}
+			if (this.WeaponID == 26)
+			{
+				this.WeaponTrail.SetActive(true);
+			}
 			this.KinematicTimer = 0f;
 			AudioSource.PlayClipAtPoint(this.EquipClip, Camera.main.transform.position);
 		}
@@ -530,6 +538,14 @@ public class WeaponScript : MonoBehaviour
 		if (base.transform.position.y > 1000f)
 		{
 			base.transform.position = new Vector3(12f, 0f, 28f);
+		}
+		if (this.WeaponID == 26)
+		{
+			base.transform.parent = this.Parent;
+			base.transform.localEulerAngles = Vector3.zero;
+			base.transform.localPosition = Vector3.zero;
+			this.MyRigidbody.isKinematic = true;
+			this.WeaponTrail.SetActive(false);
 		}
 	}
 

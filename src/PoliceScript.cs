@@ -436,7 +436,7 @@ public class PoliceScript : MonoBehaviour
 					{
 						this.EndOfDay.gameObject.SetActive(true);
 						this.EndOfDay.enabled = true;
-						this.EndOfDay.Phase = 12;
+						this.EndOfDay.Phase = 13;
 						if (this.EndOfDay.PreviouslyActivated)
 						{
 							this.EndOfDay.Start();
