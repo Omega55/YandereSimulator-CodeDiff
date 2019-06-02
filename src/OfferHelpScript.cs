@@ -153,21 +153,27 @@ public class OfferHelpScript : MonoBehaviour
 
 	public void UpdateLocation()
 	{
+		Debug.Log("The ''Offer Help'' prompt was told to update its location.");
 		this.Student = this.StudentManager.Students[this.EventStudentID];
-		if (this.Student.CurrentDestination == this.StudentManager.MeetSpots.List[8])
+		if (this.Student.CurrentDestination == this.StudentManager.MeetSpots.List[7])
 		{
 			base.transform.position = this.Locations[1].position;
 			base.transform.eulerAngles = this.Locations[1].eulerAngles;
 		}
-		else if (this.Student.CurrentDestination == this.StudentManager.MeetSpots.List[9])
+		else if (this.Student.CurrentDestination == this.StudentManager.MeetSpots.List[8])
 		{
 			base.transform.position = this.Locations[2].position;
 			base.transform.eulerAngles = this.Locations[2].eulerAngles;
 		}
-		else if (this.Student.CurrentDestination == this.StudentManager.MeetSpots.List[10])
+		else if (this.Student.CurrentDestination == this.StudentManager.MeetSpots.List[9])
 		{
 			base.transform.position = this.Locations[3].position;
 			base.transform.eulerAngles = this.Locations[3].eulerAngles;
+		}
+		else if (this.Student.CurrentDestination == this.StudentManager.MeetSpots.List[10])
+		{
+			base.transform.position = this.Locations[4].position;
+			base.transform.eulerAngles = this.Locations[4].eulerAngles;
 		}
 		if (this.EventStudentID == 30)
 		{
@@ -176,10 +182,7 @@ public class OfferHelpScript : MonoBehaviour
 				this.Prompt.Label[0].text = "     Must Befriend Student First";
 				this.Unable = true;
 			}
-			else
-			{
-				this.Prompt.MyCollider.enabled = true;
-			}
+			this.Prompt.MyCollider.enabled = true;
 		}
 		else if (this.EventStudentID == 5)
 		{

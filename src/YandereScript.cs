@@ -5923,6 +5923,7 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.materials[1].SetFloat("_Shininess", 1f);
 		this.MyRenderer.materials[1].SetFloat("_ShadowThreshold", 0f);
 		this.MyRenderer.materials[1].SetFloat("_Cutoff", 0.9f);
+		this.MyRenderer.materials[1].color = new Color(1f, 1f, 1f, 1f);
 		this.Outline.h.ReinitMaterials();
 	}
 
@@ -6462,6 +6463,7 @@ public class YandereScript : MonoBehaviour
 		this.MyRenderer.materials[2].mainTexture = this.Chainmail;
 		this.PantyAttacher.newRenderer.enabled = false;
 		this.Schoolwear = 0;
+		this.TheDebugMenuScript.UpdateCensor();
 		this.IdleAnim = "f02_heroicIdle_00";
 		this.WalkAnim = "f02_walkConfident_00";
 		this.RunAnim = "f02_nierRun_00";

@@ -61,13 +61,15 @@ public class PromptScript : MonoBehaviour
 
 	public bool Carried;
 
+	[Tooltip("This means that the prompt's renderer is within the camera's cone of vision")]
 	public bool InSight;
+
+	[Tooltip("This means that a raycast can hit the prompt's collider.")]
+	public bool InView;
 
 	public bool NoCheck;
 
 	public bool Attack;
-
-	public bool InView;
 
 	public bool Weapon;
 

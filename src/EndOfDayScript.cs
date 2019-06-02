@@ -289,6 +289,22 @@ public class EndOfDayScript : MonoBehaviour
 		}
 		AudioSource component = base.GetComponent<AudioSource>();
 		component.volume = Mathf.MoveTowards(component.volume, 1f, Time.deltaTime * 2f);
+		if (this.WitnessList[2] != null)
+		{
+			this.WitnessList[2].CharacterAnimation.Play(this.WitnessList[2].IdleAnim);
+		}
+		if (this.WitnessList[3] != null)
+		{
+			this.WitnessList[3].CharacterAnimation.Play(this.WitnessList[3].IdleAnim);
+		}
+		if (this.WitnessList[4] != null)
+		{
+			this.WitnessList[4].CharacterAnimation.Play(this.WitnessList[4].IdleAnim);
+		}
+		if (this.WitnessList[5] != null)
+		{
+			this.WitnessList[5].CharacterAnimation.Play(this.WitnessList[5].IdleAnim);
+		}
 	}
 
 	public void UpdateScene()
@@ -604,7 +620,7 @@ public class EndOfDayScript : MonoBehaviour
 				this.ID = 1;
 				while (this.ID < this.StudentManager.Students.Length)
 				{
-					if (this.StudentManager.Students[this.ID] != null && this.StudentManager.Students[this.ID].Alive && this.StudentManager.Students[this.ID].Persona != PersonaType.Coward && this.StudentManager.Students[this.ID].WitnessedMurder)
+					if (this.StudentManager.Students[this.ID] != null && this.StudentManager.Students[this.ID].Alive && this.StudentManager.Students[this.ID].Persona != PersonaType.Coward && this.StudentManager.Students[this.ID].Persona != PersonaType.Spiteful && this.StudentManager.Students[this.ID].Club != ClubType.Delinquent && this.StudentManager.Students[this.ID].WitnessedMurder)
 					{
 						this.EyeWitnesses++;
 						this.WitnessList[this.EyeWitnesses] = this.StudentManager.Students[this.ID];

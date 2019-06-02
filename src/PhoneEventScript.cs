@@ -169,6 +169,8 @@ public class PhoneEventScript : MonoBehaviour
 						if (this.Timer > 1.5f)
 						{
 							this.EventStudent.SmartPhone.SetActive(true);
+							this.EventStudent.SmartPhone.transform.localPosition = new Vector3(-0.015f, -0.005f, -0.015f);
+							this.EventStudent.SmartPhone.transform.localEulerAngles = new Vector3(0f, -150f, 165f);
 						}
 						if (this.Timer > 3f)
 						{

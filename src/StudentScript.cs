@@ -3061,6 +3061,11 @@ public class StudentScript : MonoBehaviour
 				{
 					this.MyRenderer.updateWhenOffscreen = false;
 					this.SprintAnim = this.OriginalSprintAnim;
+					if (this.Headache)
+					{
+						this.SprintAnim = this.OriginalSprintAnim;
+						this.WalkAnim = this.OriginalWalkAnim;
+					}
 					this.Headache = false;
 					this.Sedated = false;
 					this.Hurry = false;
@@ -9516,7 +9521,7 @@ public class StudentScript : MonoBehaviour
 				}
 			}
 		}
-		if ((this.Prompt.Circle[2].fillAmount == 0f || (this.Yandere.Sanity < 33.33333f && !this.Prompt.HideButton[2] && this.Club != ClubType.Council && !this.Struggling)) && this.ClubActivityPhase < 16)
+		if ((this.Prompt.Circle[2].fillAmount == 0f || (this.Yandere.Sanity < 33.33333f && !this.Prompt.HideButton[2] && this.Prompt.InSight && this.Club != ClubType.Council && !this.Struggling)) && this.ClubActivityPhase < 16)
 		{
 			float f = Vector3.Angle(-base.transform.forward, this.Yandere.transform.position - base.transform.position);
 			this.Yandere.AttackManager.Stealth = (Mathf.Abs(f) <= 45f);
