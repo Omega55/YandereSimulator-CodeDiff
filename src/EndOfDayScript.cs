@@ -336,7 +336,7 @@ public class EndOfDayScript : MonoBehaviour
 					this.Label.text = "The police and the paramedics arrive at school.";
 					this.Phase = 103;
 				}
-				else if (this.Police.DrownScene)
+				else if (this.Police.DrownVictims > 0)
 				{
 					this.Label.text = "The police arrive at school.";
 					this.Phase = 104;
@@ -620,7 +620,7 @@ public class EndOfDayScript : MonoBehaviour
 				this.ID = 1;
 				while (this.ID < this.StudentManager.Students.Length)
 				{
-					if (this.StudentManager.Students[this.ID] != null && this.StudentManager.Students[this.ID].Alive && this.StudentManager.Students[this.ID].Persona != PersonaType.Coward && this.StudentManager.Students[this.ID].Persona != PersonaType.Spiteful && this.StudentManager.Students[this.ID].Club != ClubType.Delinquent && this.StudentManager.Students[this.ID].WitnessedMurder)
+					if (this.StudentManager.Students[this.ID] != null && this.StudentManager.Students[this.ID].Alive && this.StudentManager.Students[this.ID].Persona != PersonaType.Coward && this.StudentManager.Students[this.ID].Persona != PersonaType.Spiteful && this.StudentManager.Students[this.ID].Club != ClubType.Delinquent && !this.StudentManager.Students[this.ID].SawMask && this.StudentManager.Students[this.ID].WitnessedMurder)
 					{
 						this.EyeWitnesses++;
 						this.WitnessList[this.EyeWitnesses] = this.StudentManager.Students[this.ID];

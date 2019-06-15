@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class GenericBentoScript : MonoBehaviour
 {
+	public GameObject EmptyGameObject;
+
+	public Transform PoisonSpot;
+
 	public PromptScript Prompt;
 
 	public bool Emetic;
@@ -74,6 +78,11 @@ public class GenericBentoScript : MonoBehaviour
 
 	private void ShutOff()
 	{
+		GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.EmptyGameObject, base.transform.position, Quaternion.identity);
+		this.PoisonSpot = gameObject.transform;
+		this.PoisonSpot.position = new Vector3(this.PoisonSpot.position.x, this.Prompt.Yandere.transform.position.y, this.PoisonSpot.position.z);
+		this.PoisonSpot.LookAt(this.Prompt.Yandere.transform.position);
+		this.PoisonSpot.Translate(Vector3.forward * 0.25f);
 		this.Prompt.Yandere.CharacterAnimation["f02_poisoning_00"].speed = 2f;
 		this.Prompt.Yandere.CharacterAnimation.CrossFade("f02_poisoning_00");
 		this.Prompt.Yandere.StudentManager.UpdateAllBentos();

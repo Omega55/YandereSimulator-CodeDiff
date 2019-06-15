@@ -175,7 +175,12 @@ public class ShutterScript : MonoBehaviour
 		}
 		if (this.Snapping)
 		{
-			if (this.Close)
+			if (this.Yandere.Noticed)
+			{
+				this.Yandere.Shutter.ResumeGameplay();
+				this.Yandere.StopAiming();
+			}
+			else if (this.Close)
 			{
 				this.currentPercent += 60f * Time.unscaledDeltaTime;
 				while (this.currentPercent >= 1f)
@@ -781,7 +786,7 @@ public class ShutterScript : MonoBehaviour
 		this.NewMessage.GetComponent<TextMessageScript>().Label.text = text;
 	}
 
-	private void ResumeGameplay()
+	public void ResumeGameplay()
 	{
 		this.ErrorWindow.transform.localScale = Vector3.zero;
 		this.SmartphoneCamera.targetTexture = this.SmartphoneScreen;

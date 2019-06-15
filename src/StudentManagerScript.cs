@@ -80,6 +80,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public RingEventScript RingEvent;
 
+	public RivalPoseScript RivalPose;
+
 	public GazerEyesScript Shinigami;
 
 	public HologramScript Holograms;

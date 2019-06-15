@@ -35,6 +35,14 @@ public class IntroScript : MonoBehaviour
 
 	public Texture[] Textures;
 
+	public Transform RightForeArm;
+
+	public Transform LeftForeArm;
+
+	public Transform RightWrist;
+
+	public Transform LeftWrist;
+
 	public Transform Corridors;
 
 	public Transform RightHand;
@@ -99,6 +107,8 @@ public class IntroScript : MonoBehaviour
 
 	public AudioSource Narration;
 
+	public AudioSource BGM;
+
 	public string[] Lines;
 
 	public float[] Cue;
@@ -115,9 +125,15 @@ public class IntroScript : MonoBehaviour
 
 	public float CameraRotationY;
 
+	public float ThirdSpeed;
+
 	public float SecondSpeed;
 
+	public float Speed;
+
 	public float Brightness;
+
+	public float StartTimer;
 
 	public float SkipTimer;
 
@@ -125,9 +141,9 @@ public class IntroScript : MonoBehaviour
 
 	public float Alpha;
 
-	public float Speed;
-
 	public float Timer;
+
+	public float AnimTimer;
 
 	public int TextureID;
 
@@ -171,6 +187,7 @@ public class IntroScript : MonoBehaviour
 
 	private void Start()
 	{
+		Application.targetFrameRate = 60;
 		this.LoveSickCheck();
 		this.Circle.fillAmount = 0f;
 		if (!this.New)
@@ -182,7 +199,7 @@ public class IntroScript : MonoBehaviour
 		if (this.New)
 		{
 			RenderSettings.ambientLight = new Color(1f, 1f, 1f);
-			this.BloodyHandsAnim["f02_clenchFists_00"].speed = 0.15f;
+			this.BloodyHandsAnim["f02_clenchFists_00"].speed = 0.166666f;
 			this.HoleInChestAnim["f02_holeInChest_00"].speed = 0f;
 			this.YoungRyobaAnim["f02_introHoldHands_00"].speed = 0f;
 			this.YoungFatherAnim["introHoldHands_00"].speed = 0f;
@@ -200,7 +217,7 @@ public class IntroScript : MonoBehaviour
 			this.Room.SetActive(false);
 			this.SetToDefault();
 			DepthOfFieldModel.Settings settings = this.Profile.depthOfField.settings;
-			settings.focusDistance = 0.2f;
+			settings.focusDistance = 0.66666f;
 			settings.aperture = 32f;
 			this.Profile.depthOfField.settings = settings;
 			Renderer[] componentsInChildren = this.Corridors.gameObject.GetComponentsInChildren<Renderer>();
@@ -208,14 +225,33 @@ public class IntroScript : MonoBehaviour
 			{
 				renderer.material.color = new Color(0.75f, 0.75f, 0.75f, 1f);
 			}
-			this.AttackAnim[1]["f02_katanaHighSanityA_00"].speed = 2f;
-			this.AttackAnim[2]["f02_katanaHighSanityB_00"].speed = 2f;
-			this.AttackAnim[3]["f02_batLowSanityA_00"].speed = 2f;
-			this.AttackAnim[4]["f02_batLowSanityB_00"].speed = 2f;
-			this.AttackAnim[5]["f02_katanaLowSanityA_00"].speed = 2f;
-			this.AttackAnim[6]["f02_katanaLowSanityB_00"].speed = 2f;
+			this.AttackAnim[1]["f02_katanaHighSanityA_00"].speed = 2.5f;
+			this.AttackAnim[2]["f02_katanaHighSanityB_00"].speed = 2.5f;
+			this.AttackAnim[3]["f02_batLowSanityA_00"].speed = 2.5f;
+			this.AttackAnim[4]["f02_batLowSanityB_00"].speed = 2.5f;
+			this.AttackAnim[5]["f02_katanaLowSanityA_00"].speed = 2.5f;
+			this.AttackAnim[6]["f02_katanaLowSanityB_00"].speed = 2.5f;
 			this.MotherAnim["f02_parentTalking_00"].speed = 0.75f;
 			this.ChildAnim["f02_childListening_00"].speed = 0.75f;
+			for (int j = 4; j < this.Cue.Length; j++)
+			{
+				if (j < 21)
+				{
+					this.Cue[j] += 3.898f;
+				}
+				else if (j > 32)
+				{
+					this.Cue[j] += 4f;
+				}
+				else
+				{
+					this.Cue[j] += 2f;
+				}
+				if (j > 40)
+				{
+					this.Cue[j] += 3f;
+				}
+			}
 		}
 	}
 
@@ -237,19 +273,17 @@ public class IntroScript : MonoBehaviour
 			this.SkipTimer -= Time.deltaTime * 2f;
 			this.SkipPanel.alpha = this.SkipTimer / 10f;
 		}
-		if (this.New)
-		{
-			this.Timer = this.Narration.time;
-		}
-		else
-		{
-			this.Timer += Time.deltaTime;
-		}
-		if (this.Timer > 1f && !this.Narrating)
+		this.StartTimer += Time.deltaTime;
+		if (this.StartTimer > 1f && !this.Narrating)
 		{
 			this.Narration.Play();
 			this.Narrating = true;
+			if (this.BGM != null)
+			{
+				this.BGM.Play();
+			}
 		}
+		this.Timer = this.Narration.time;
 		if (this.ID < this.Cue.Length && this.Narration.time > this.Cue[this.ID])
 		{
 			this.Label.text = this.Lines[this.ID];
@@ -290,19 +324,23 @@ public class IntroScript : MonoBehaviour
 				this.Logo.color = new Color(this.Logo.color.r, this.Logo.color.g, this.Logo.color.b, 1f);
 				this.LoveSickLogo.color = new Color(this.LoveSickLogo.color.r, this.LoveSickLogo.color.g, this.LoveSickLogo.color.b, 1f);
 			}
-			if (this.Narration.time > 152f)
+			if (this.Narration.time > 155.898f)
 			{
 				this.Logo.color = new Color(this.Logo.color.r, this.Logo.color.g, this.Logo.color.b, 0f);
 				this.LoveSickLogo.color = new Color(this.LoveSickLogo.color.r, this.LoveSickLogo.color.g, this.LoveSickLogo.color.b, 0f);
 			}
-			if (this.Narration.time > 156f)
+			if (this.Narration.time > 159.898f)
 			{
 				SceneManager.LoadScene("PhoneScene");
 			}
 		}
 		if (this.New)
 		{
-			if (this.ID > 49)
+			if (this.ID > 19)
+			{
+				this.AnimTimer += Time.deltaTime;
+			}
+			if (this.ID > 52)
 			{
 				if (!this.Narration.isPlaying)
 				{
@@ -334,7 +372,7 @@ public class IntroScript : MonoBehaviour
 					this.Logo.color = new Color(this.Logo.color.r, this.Logo.color.g, this.Logo.color.b, 1f);
 					this.LoveSickLogo.color = new Color(this.LoveSickLogo.color.r, this.LoveSickLogo.color.g, this.LoveSickLogo.color.b, 1f);
 					this.Speed += Time.deltaTime;
-					if (this.Speed > 10f)
+					if (this.Speed > 11f)
 					{
 						SceneManager.LoadScene("PhoneScene");
 					}
@@ -345,7 +383,7 @@ public class IntroScript : MonoBehaviour
 					}
 				}
 			}
-			else if (this.ID > 48)
+			else if (this.ID > 51)
 			{
 				if (!this.Montage.gameObject.activeInHierarchy)
 				{
@@ -355,6 +393,7 @@ public class IntroScript : MonoBehaviour
 					this.PostProcessing.enabled = false;
 					this.BloodParent.SetActive(false);
 					this.Stalking.SetActive(false);
+					this.BGM.volume = 1f;
 					this.Speed = 0f;
 					this.SetToDefault();
 					DepthOfFieldModel.Settings settings3 = this.Profile.depthOfField.settings;
@@ -365,7 +404,7 @@ public class IntroScript : MonoBehaviour
 					this.Profile.bloom.settings = settings4;
 				}
 				this.Speed += 1f;
-				if (this.Speed > 9f)
+				if (this.Speed > 2f)
 				{
 					this.Speed = 0f;
 					this.TextureID++;
@@ -383,12 +422,12 @@ public class IntroScript : MonoBehaviour
 					}
 					this.Montage.material.mainTexture = this.Textures[this.TextureID];
 				}
-				if (this.Timer > 218f)
+				if (this.Timer > 225f)
 				{
 					this.Darkness.color = new Color(0f, 0f, 0f, 1f);
 				}
 			}
-			else if (this.ID > 39)
+			else if (this.ID > 41)
 			{
 				if (base.transform.position.z < 0f)
 				{
@@ -407,12 +446,13 @@ public class IntroScript : MonoBehaviour
 					this.Profile.colorGrading.settings = settings5;
 					this.Rotation = -15f;
 					this.Speed = 0f;
+					this.BGM.volume = 0.5f;
 				}
-				this.Speed += Time.deltaTime * 0.01f;
-				base.transform.position = Vector3.Lerp(base.transform.position, new Vector3(0f, 1f, 35f), Time.deltaTime * this.Speed);
+				this.Speed += Time.deltaTime * 0.015f;
+				base.transform.position = Vector3.Lerp(base.transform.position, new Vector3(0f, 1f, 34f), Time.deltaTime * this.Speed);
 				this.Rotation = Mathf.Lerp(this.Rotation, 15f, Time.deltaTime * this.Speed);
 				base.transform.eulerAngles = new Vector3(0f, 0f, this.Rotation);
-				if (this.ID < 48)
+				if (this.ID < 51)
 				{
 					this.Alpha = Mathf.MoveTowards(this.Alpha, 0f, Time.deltaTime * 0.2f);
 				}
@@ -422,7 +462,7 @@ public class IntroScript : MonoBehaviour
 				}
 				this.Darkness.color = new Color(0f, 0f, 0f, this.Alpha);
 			}
-			else if (this.ID > 31)
+			else if (this.ID > 33)
 			{
 				if (this.School.activeInHierarchy)
 				{
@@ -433,7 +473,7 @@ public class IntroScript : MonoBehaviour
 					this.SetToDefault();
 					this.Speed = 0f;
 				}
-				if (this.ID < 35)
+				if (this.ID < 37)
 				{
 					this.Speed += Time.deltaTime * 0.1f;
 					base.transform.position = Vector3.Lerp(base.transform.position, new Vector3(-0.02f, 1.12f, -0.25f), Time.deltaTime * this.Speed);
@@ -450,40 +490,44 @@ public class IntroScript : MonoBehaviour
 					base.transform.position = Vector3.Lerp(base.transform.position, new Vector3(0.3f, 0.8f, -0.25f), Time.deltaTime * this.Speed * -1f);
 					this.CameraRotationY = Mathf.Lerp(this.CameraRotationY, -15f, Time.deltaTime * this.Speed * -1f);
 					base.transform.eulerAngles = new Vector3(0f, this.CameraRotationY, 0f);
-					if (this.Timer > 175f)
+					if (this.Timer > 179f)
 					{
 						this.StalkerAnim.Play("f02_clenchFist_00");
 					}
-					if (this.ID == 38)
+					if (this.ID == 40)
 					{
 						this.Alpha = 1f;
 					}
-					if (this.Timer > 181f)
+					if (this.ID > 39)
+					{
+						this.BGM.volume += Time.deltaTime;
+					}
+					if (this.Timer > 186f)
 					{
 						this.DeathCorridor.SetActive(true);
 						this.Alpha = 1f;
 					}
-					else if (this.Timer > 180.6f)
+					else if (this.Timer > 185.6f)
 					{
 						this.AttackPair[2].SetActive(false);
 						this.AttackPair[3].SetActive(true);
 						this.Alpha = 0f;
 					}
-					else if (this.Timer > 180.2f)
+					else if (this.Timer > 185.2f)
 					{
 						this.Alpha = 1f;
 					}
-					else if (this.Timer > 179.8f)
+					else if (this.Timer > 184.8f)
 					{
 						this.AttackPair[1].SetActive(false);
 						this.AttackPair[2].SetActive(true);
 						this.Alpha = 0f;
 					}
-					else if (this.Timer > 179.4f)
+					else if (this.Timer > 184.4f)
 					{
 						this.Alpha = 1f;
 					}
-					else if (this.Timer > 179f)
+					else if (this.Timer > 184f)
 					{
 						ColorGradingModel.Settings settings6 = this.Profile.colorGrading.settings;
 						settings6.channelMixer.red = new Vector3(0.1f, 0f, 0f);
@@ -498,7 +542,7 @@ public class IntroScript : MonoBehaviour
 				}
 				this.Darkness.color = new Color(0f, 0f, 0f, this.Alpha);
 			}
-			else if (this.ID > 29)
+			else if (this.ID > 31)
 			{
 				if (!this.Osana.activeInHierarchy)
 				{
@@ -509,19 +553,21 @@ public class IntroScript : MonoBehaviour
 					this.SenpaiAnim.Play("Monday_1");
 					this.Osana.SetActive(true);
 					DepthOfFieldModel.Settings settings7 = this.Profile.depthOfField.settings;
-					settings7.focusDistance = 1f;
+					settings7.focusDistance = 1.5f;
 					this.Profile.depthOfField.settings = settings7;
 					this.YandereAnim["f02_Intro_00"].speed = 0.33333f;
+					this.Darkness.color = new Color(0f, 0f, 0f, 0f);
+					this.Alpha = 0f;
 				}
 				base.transform.Translate(Vector3.forward * 0.01f * Time.deltaTime, Space.Self);
 				this.TurnRed();
-				if (this.Narration.time > 153f)
+				if (this.Narration.time > 156.2f)
 				{
 					this.Darkness.color = new Color(0f, 0f, 0f, 1f);
 					this.Alpha = 1f;
 				}
 			}
-			else if (this.ID > 25)
+			else if (this.ID > 27)
 			{
 				if (base.transform.position.x > 0f)
 				{
@@ -535,27 +581,27 @@ public class IntroScript : MonoBehaviour
 					this.SenpaiAnim["Intro_00"].speed = 1.33333f;
 					this.Speed = 0f;
 					DepthOfFieldModel.Settings settings8 = this.Profile.depthOfField.settings;
-					settings8.focusDistance = 10f;
+					settings8.focusDistance = 1.5f;
 					settings8.aperture = 11.2f;
 					this.Profile.depthOfField.settings = settings8;
 				}
-				if (this.ID > 26)
+				if (this.ID > 28)
 				{
 					this.Speed += Time.deltaTime * 0.1f;
 					base.transform.position = Vector3.Lerp(base.transform.position, new Vector3(-1.1f, 1.33333f, 1f), Time.deltaTime * this.Speed);
 					base.transform.eulerAngles = Vector3.Lerp(base.transform.eulerAngles, new Vector3(0f, 135f, 0f), Time.deltaTime * this.Speed);
 				}
-				if (this.ID > 27)
+				if (this.ID > 29)
 				{
 					this.Stars.Stop();
 					this.Bubbles.Stop();
 				}
-				if (this.ID > 28)
+				if (this.ID > 30)
 				{
 					this.TurnNeutral();
 				}
 			}
-			else if (this.ID > 21)
+			else if (this.ID > 23)
 			{
 				if (this.EyeTimer == 0f)
 				{
@@ -565,7 +611,7 @@ public class IntroScript : MonoBehaviour
 					this.SenpaiAnim["Intro_00"].speed = 0.2f;
 					this.Yandere.materials[2].SetFloat("_BlendAmount", 1f);
 					DepthOfFieldModel.Settings settings9 = this.Profile.depthOfField.settings;
-					settings9.focusDistance = 10f;
+					settings9.focusDistance = 1.5f;
 					settings9.aperture = 11.2f;
 					this.Profile.depthOfField.settings = settings9;
 				}
@@ -577,7 +623,7 @@ public class IntroScript : MonoBehaviour
 				}
 				base.transform.Translate(Vector3.forward * -0.1f * Time.deltaTime, Space.Self);
 			}
-			else if (this.ID > 17)
+			else if (this.ID > 19)
 			{
 				if (this.Room.gameObject.activeInHierarchy)
 				{
@@ -596,17 +642,17 @@ public class IntroScript : MonoBehaviour
 					this.Profile.depthOfField.settings = settings11;
 					this.Yandere.materials[2].SetFloat("_BlendAmount", 0f);
 				}
-				if (this.Narration.time < 91f)
+				if (this.Narration.time < 94.898f)
 				{
 					base.transform.position = Vector3.MoveTowards(base.transform.position, new Vector3(0f, 1f, -2f), Time.deltaTime * 1.09f);
 				}
 				else
 				{
 					DepthOfFieldModel.Settings settings12 = this.Profile.depthOfField.settings;
-					settings12.focusDistance = 1f;
+					settings12.focusDistance = 1.2f;
 					settings12.aperture = 11.2f;
 					this.Profile.depthOfField.settings = settings12;
-					if (this.Narration.time < 100f)
+					if (this.Narration.time < 101.5f)
 					{
 						base.transform.position = new Vector3(-0.25f, 0.75f, -0.25f);
 						base.transform.eulerAngles = new Vector3(22.5f, -45f, 0f);
@@ -622,11 +668,11 @@ public class IntroScript : MonoBehaviour
 						base.transform.eulerAngles = new Vector3(this.CameraRotationX, this.CameraRotationY, 0f);
 					}
 				}
-				if (this.ID > 19)
+				if (this.ID > 21)
 				{
 					this.YandereAnim["f02_Intro_00"].speed = Mathf.MoveTowards(this.YandereAnim["f02_Intro_00"].speed, 0.1f, Time.deltaTime);
 					this.SenpaiAnim["Intro_00"].speed = Mathf.MoveTowards(this.SenpaiAnim["Intro_00"].speed, 0.1f, Time.deltaTime);
-					if (this.Narration.time > 104.5f)
+					if (this.Narration.time > 106.5f)
 					{
 						ColorGradingModel.Settings settings13 = this.Profile.colorGrading.settings;
 						settings13.basic.saturation = Mathf.MoveTowards(settings13.basic.saturation, 2f, Time.deltaTime);
@@ -636,17 +682,20 @@ public class IntroScript : MonoBehaviour
 						this.Particles.SetActive(true);
 					}
 				}
-				if (this.Narration.time > 120f)
+				else if (this.Narration.time > 98f)
 				{
-					this.Alpha = Mathf.MoveTowards(this.Alpha, 1f, Time.deltaTime * 0.66666f);
+					this.YandereAnim["f02_Intro_00"].speed = 1f;
+					this.SenpaiAnim["Intro_00"].speed = 1f;
 				}
-				else
+				else if (this.Narration.time > 97f)
 				{
-					this.Alpha = Mathf.MoveTowards(this.Alpha, 0f, Time.deltaTime * 0.2f);
+					this.YandereAnim["f02_Intro_00"].speed = 3f;
+					this.SenpaiAnim["Intro_00"].speed = 3f;
 				}
+				this.Alpha = Mathf.MoveTowards(this.Alpha, 0f, Time.deltaTime * 0.2f);
 				this.Darkness.color = new Color(0f, 0f, 0f, this.Alpha);
 			}
-			else if (this.ID > 13)
+			else if (this.ID > 15)
 			{
 				if (this.ParentAndChild.gameObject.activeInHierarchy)
 				{
@@ -661,7 +710,7 @@ public class IntroScript : MonoBehaviour
 					this.Profile.depthOfField.settings = settings14;
 				}
 				base.transform.position -= new Vector3(0f, 0f, Time.deltaTime * this.Speed * 0.75f);
-				if (this.Narration.time > 85f)
+				if (this.Narration.time > 88.898f)
 				{
 					this.Alpha = Mathf.MoveTowards(this.Alpha, 1f, Time.deltaTime * 0.66666f);
 				}
@@ -671,7 +720,7 @@ public class IntroScript : MonoBehaviour
 				}
 				this.Darkness.color = new Color(0f, 0f, 0f, this.Alpha);
 			}
-			else if (this.ID > 11)
+			else if (this.ID > 13)
 			{
 				if (this.ConfessionScene.gameObject.activeInHierarchy)
 				{
@@ -691,9 +740,13 @@ public class IntroScript : MonoBehaviour
 					BloomModel.Settings settings16 = this.Profile.bloom.settings;
 					settings16.bloom.intensity = 1f;
 					this.Profile.bloom.settings = settings16;
+					DepthOfFieldModel.Settings settings17 = this.Profile.depthOfField.settings;
+					settings17.focusDistance = 10f;
+					settings17.aperture = 11.2f;
+					this.Profile.depthOfField.settings = settings17;
 				}
 				base.transform.position -= new Vector3(0f, 0f, Time.deltaTime * this.Speed);
-				if (this.Narration.time > 66f)
+				if (this.Narration.time > 69.898f)
 				{
 					this.Alpha = Mathf.MoveTowards(this.Alpha, 1f, Time.deltaTime * 0.5f);
 				}
@@ -703,7 +756,7 @@ public class IntroScript : MonoBehaviour
 				}
 				this.Darkness.color = new Color(0f, 0f, 0f, this.Alpha);
 			}
-			else if (this.ID > 7)
+			else if (this.ID > 9)
 			{
 				if (this.HoleInChestAnim.gameObject.activeInHierarchy)
 				{
@@ -713,15 +766,15 @@ public class IntroScript : MonoBehaviour
 					this.Darkness.color = new Color(0f, 0f, 0f, 1f);
 					this.Alpha = 1f;
 					this.Speed = 0.1f;
-					DepthOfFieldModel.Settings settings17 = this.Profile.depthOfField.settings;
-					settings17.focusDistance = 1f;
-					this.Profile.depthOfField.settings = settings17;
-					ColorGradingModel.Settings settings18 = this.Profile.colorGrading.settings;
-					settings18.basic.saturation = 0f;
-					this.Profile.colorGrading.settings = settings18;
+					DepthOfFieldModel.Settings settings18 = this.Profile.depthOfField.settings;
+					settings18.focusDistance = 1f;
+					this.Profile.depthOfField.settings = settings18;
+					ColorGradingModel.Settings settings19 = this.Profile.colorGrading.settings;
+					settings19.basic.saturation = 0f;
+					this.Profile.colorGrading.settings = settings19;
 				}
 				base.transform.position -= new Vector3(0f, 0f, Time.deltaTime * this.Speed);
-				if (this.ID > 8)
+				if (this.ID > 10)
 				{
 					this.YoungRyobaAnim["f02_introHoldHands_00"].speed = 0.5f;
 					this.YoungRyobaAnim.Play();
@@ -731,16 +784,16 @@ public class IntroScript : MonoBehaviour
 					this.BrightenEnvironment();
 					this.Blossoms.Play();
 				}
-				if (this.ID > 9)
+				if (this.ID > 11)
 				{
-					ColorGradingModel.Settings settings19 = this.Profile.colorGrading.settings;
-					settings19.basic.saturation = settings19.basic.saturation + Time.deltaTime * 0.25f;
-					BloomModel.Settings settings20 = this.Profile.bloom.settings;
-					settings20.bloom.intensity = 1f + settings19.basic.saturation;
-					this.Profile.bloom.settings = settings20;
-					this.Profile.colorGrading.settings = settings19;
+					ColorGradingModel.Settings settings20 = this.Profile.colorGrading.settings;
+					settings20.basic.saturation = settings20.basic.saturation + Time.deltaTime * 0.25f;
+					BloomModel.Settings settings21 = this.Profile.bloom.settings;
+					settings21.bloom.intensity = 1f + settings20.basic.saturation;
+					this.Profile.bloom.settings = settings21;
+					this.Profile.colorGrading.settings = settings20;
 				}
-				if (this.Narration.time > 53f)
+				if (this.Narration.time > 56.898f)
 				{
 					this.Alpha = Mathf.MoveTowards(this.Alpha, 1f, Time.deltaTime * 0.5f);
 				}
@@ -750,7 +803,7 @@ public class IntroScript : MonoBehaviour
 				}
 				this.Darkness.color = new Color(0f, 0f, 0f, this.Alpha);
 			}
-			else if (this.ID > 2)
+			else if (this.ID > 4)
 			{
 				if (this.BloodyHandsAnim.gameObject.activeInHierarchy)
 				{
@@ -766,7 +819,7 @@ public class IntroScript : MonoBehaviour
 				base.transform.position -= new Vector3(0f, 0f, Time.deltaTime * this.Speed);
 				if (base.transform.position.z < -0.05f)
 				{
-					this.SecondSpeed = Mathf.MoveTowards(this.SecondSpeed, 0.1f, Time.deltaTime);
+					this.SecondSpeed = Mathf.MoveTowards(this.SecondSpeed, 0.1f, Time.deltaTime * 0.1f);
 					base.transform.position = Vector3.Lerp(base.transform.position, new Vector3(base.transform.position.x, 1f, base.transform.position.z), Time.deltaTime * this.SecondSpeed);
 				}
 				if (base.transform.position.z < -0.5f)
@@ -774,16 +827,29 @@ public class IntroScript : MonoBehaviour
 					this.HoleInChestAnim["f02_holeInChest_00"].speed = 0.5f;
 					this.HoleInChestAnim.Play();
 				}
-				if (this.ID > 6)
+				if (this.ID > 8)
 				{
 					this.Alpha = Mathf.MoveTowards(this.Alpha, 1f, Time.deltaTime * 0.2f);
 					this.Darkness.color = new Color(0f, 0f, 0f, this.Alpha);
 				}
 			}
-			else if (this.ID > 0 && this.ID > 1)
+			else if (this.ID > 0)
 			{
-				this.Alpha = 1f;
-				this.Darkness.color = new Color(0f, 0f, 0f, this.Alpha);
+				if (this.Timer < 2f)
+				{
+					this.BloodyHandsAnim["f02_clenchFists_00"].time = 0.6f;
+					this.BloodyHandsAnim["f02_clenchFists_00"].speed = 0f;
+				}
+				else
+				{
+					this.BloodyHandsAnim["f02_clenchFists_00"].speed = 0.07f;
+				}
+				if (this.ID > 3)
+				{
+					this.Alpha = 1f;
+					this.Darkness.color = new Color(0f, 0f, 0f, this.Alpha);
+					this.BGM.volume = Mathf.MoveTowards(this.BGM.volume, 0.5f, Time.deltaTime * 0.266666f);
+				}
 			}
 		}
 	}
@@ -792,12 +858,11 @@ public class IntroScript : MonoBehaviour
 	{
 		if (this.New)
 		{
-			if (this.ID < 39)
+			if (this.ID < 41)
 			{
-				if (this.Narration.time > 100f)
+				if (this.Narration.time > 103f)
 				{
-					this.Rotation = Mathf.MoveTowards(this.Rotation, 0f, Time.deltaTime * 3.6f);
-					if (this.ID < 22)
+					if (this.ID < 24)
 					{
 						this.LeftArm.localEulerAngles = new Vector3(0f, 15f, 0f);
 						this.BookRight.localEulerAngles = new Vector3(0f, 180f, -90f);
@@ -814,17 +879,22 @@ public class IntroScript : MonoBehaviour
 						this.BookLeft.localEulerAngles = new Vector3(0f, 180f, 45f);
 					}
 				}
-				else if (this.Narration.time > 91f)
+				else if (this.Narration.time > 94.898f)
 				{
 					this.Rotation = 22.5f;
 				}
 			}
-			this.Neck.localEulerAngles += new Vector3(this.Rotation, 0f, 0f);
-			if (this.Narration.time > 97f)
+			if (this.Narration.time > 104f && this.Narration.time < 190f)
 			{
-				this.Weight = Mathf.MoveTowards(this.Weight, 0f, Time.deltaTime * 100f);
+				this.ThirdSpeed += Time.deltaTime;
+				this.Rotation = Mathf.Lerp(this.Rotation, 0f, Time.deltaTime * 3.6f * this.ThirdSpeed);
 			}
-			else if (this.Narration.time > 92.75f)
+			this.Neck.localEulerAngles += new Vector3(this.Rotation, 0f, 0f);
+			if (this.Narration.time > 99f)
+			{
+				this.Weight = Mathf.MoveTowards(this.Weight, 0f, Time.deltaTime * 20f);
+			}
+			else if (this.Narration.time > 96.648f)
 			{
 				this.Weight = Mathf.MoveTowards(this.Weight, 50f, Time.deltaTime * 100f);
 			}

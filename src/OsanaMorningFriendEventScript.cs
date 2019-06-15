@@ -17,6 +17,8 @@ public class OsanaMorningFriendEventScript : MonoBehaviour
 
 	public SpyScript Spy;
 
+	public StudentScript CurrentSpeaker;
+
 	public StudentScript Friend;
 
 	public StudentScript Rival;
@@ -30,6 +32,8 @@ public class OsanaMorningFriendEventScript : MonoBehaviour
 	public float[] SpeechTime;
 
 	public string[] EventAnim;
+
+	public int[] Speaker;
 
 	public GameObject AlarmDisc;
 

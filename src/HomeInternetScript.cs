@@ -176,6 +176,21 @@ public class HomeInternetScript : MonoBehaviour
 						this.HomeCamera.HomeDarkness.FadeOut = true;
 					}
 				}
+				else if (Input.GetButtonDown("Y"))
+				{
+					this.PauseScreen.MainMenu.SetActive(false);
+					this.PauseScreen.Panel.enabled = true;
+					this.PauseScreen.Sideways = true;
+					this.PauseScreen.Show = true;
+					this.StudentInfoMenu.gameObject.SetActive(true);
+					this.StudentInfoMenu.CyberStalking = true;
+					base.StartCoroutine(this.StudentInfoMenu.UpdatePortraits());
+					this.PromptBar.ClearButtons();
+					this.PromptBar.Label[0].text = "View Info";
+					this.PromptBar.Label[1].text = "Back";
+					this.PromptBar.UpdateButtons();
+					this.PromptBar.Show = true;
+				}
 				else if (Input.GetButtonDown("B"))
 				{
 					this.HomeCamera.Destination = this.HomeCamera.Destinations[0];

@@ -1453,6 +1453,9 @@ public class CosmeticScript : MonoBehaviour
 				}
 			}
 		}
+		if (this.StudentID == 10)
+		{
+		}
 		if (this.StudentID == 25 || this.StudentID == 30)
 		{
 			this.FemaleAccessories[6].SetActive(true);
@@ -1671,6 +1674,7 @@ public class CosmeticScript : MonoBehaviour
 				this.LeftEyeRenderer.enabled = false;
 				this.RightIrisLight.SetActive(false);
 				this.LeftIrisLight.SetActive(false);
+				Debug.Log("Is this code running?");
 			}
 			else
 			{
@@ -2192,6 +2196,14 @@ public class CosmeticScript : MonoBehaviour
 		}
 		else if (this.EyeType == "Gentle")
 		{
+			this.MyRenderer.SetBlendShapeWeight(9, 100f);
+			this.MyRenderer.SetBlendShapeWeight(12, 100f);
+			this.StudentManager.Gentles++;
+			num = this.StudentManager.Gentles;
+		}
+		else if (this.EyeType == "MO")
+		{
+			this.MyRenderer.SetBlendShapeWeight(0, 50f);
 			this.MyRenderer.SetBlendShapeWeight(9, 100f);
 			this.MyRenderer.SetBlendShapeWeight(12, 100f);
 			this.StudentManager.Gentles++;

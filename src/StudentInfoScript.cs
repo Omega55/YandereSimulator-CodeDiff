@@ -231,7 +231,7 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			this.Portrait.mainTexture = this.InfoChan;
 			this.Static.SetActive(true);
-			if (!this.StudentInfoMenu.Gossiping && !this.StudentInfoMenu.Distracting && !this.StudentInfoMenu.CyberBullying)
+			if (!this.StudentInfoMenu.Gossiping && !this.StudentInfoMenu.Distracting && !this.StudentInfoMenu.CyberBullying && !this.StudentInfoMenu.CyberStalking)
 			{
 				component.enabled = true;
 				component.volume = 1f;
@@ -275,6 +275,17 @@ public class StudentInfoScript : MonoBehaviour
 				this.StudentInfoMenu.PauseScreen.MainMenu.SetActive(true);
 				this.StudentInfoMenu.PauseScreen.Show = false;
 				this.StudentInfoMenu.CyberBullying = false;
+				base.gameObject.SetActive(false);
+				this.PromptBar.ClearButtons();
+				this.PromptBar.Show = false;
+			}
+			else if (this.StudentInfoMenu.CyberStalking)
+			{
+				this.HomeInternet.HomeCamera.CyberstalkWindow.SetActive(true);
+				this.HomeInternet.Student = this.CurrentStudent;
+				this.StudentInfoMenu.PauseScreen.MainMenu.SetActive(true);
+				this.StudentInfoMenu.PauseScreen.Show = false;
+				this.StudentInfoMenu.CyberStalking = false;
 				base.gameObject.SetActive(false);
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Show = false;

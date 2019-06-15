@@ -93,19 +93,23 @@ public class PhoneEventScript : MonoBehaviour
 				this.EventStudent = this.StudentManager.Students[this.EventStudentID];
 				if (this.EventStudent != null)
 				{
-					if (this.EventStudentID == 11 && this.EventFriend != null)
+					if (this.EventStudentID == 11)
 					{
 						this.EventFriend = this.StudentManager.Students[this.EventFriendID];
-						this.EventFriend.Pathfinding.canSearch = false;
-						this.EventFriend.Pathfinding.canMove = false;
-						this.EventFriend.TargetDistance = 0.5f;
-						this.EventFriend.SpeechLines.Stop();
-						this.EventFriend.PhoneEvent = this;
-						this.EventFriend.CanTalk = false;
-						this.EventFriend.Routine = false;
-						this.EventFriend.InEvent = true;
-						this.EventFriend.Private = true;
-						this.EventFriend.Prompt.Hide();
+						if (this.EventFriend != null)
+						{
+							this.EventFriend.CharacterAnimation.CrossFade(this.EventFriend.IdleAnim);
+							this.EventFriend.Pathfinding.canSearch = false;
+							this.EventFriend.Pathfinding.canMove = false;
+							this.EventFriend.TargetDistance = 0.5f;
+							this.EventFriend.SpeechLines.Stop();
+							this.EventFriend.PhoneEvent = this;
+							this.EventFriend.CanTalk = false;
+							this.EventFriend.Routine = false;
+							this.EventFriend.InEvent = true;
+							this.EventFriend.Private = true;
+							this.EventFriend.Prompt.Hide();
+						}
 					}
 					if (this.EventStudent.Routine && !this.EventStudent.Distracted && !this.EventStudent.Talking && !this.EventStudent.Meeting && this.EventStudent.Indoors)
 					{

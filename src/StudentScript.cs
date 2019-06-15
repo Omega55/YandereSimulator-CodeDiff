@@ -86,6 +86,8 @@ public class StudentScript : MonoBehaviour
 
 	public SubtitleScript Subtitle;
 
+	public StudentScript Follower;
+
 	public DynamicBone OsanaHairL;
 
 	public DynamicBone OsanaHairR;
@@ -115,6 +117,8 @@ public class StudentScript : MonoBehaviour
 	public AIPath Pathfinding;
 
 	public TalkingScript Talk;
+
+	public CheerScript Cheer;
 
 	public ClockScript Clock;
 
@@ -181,8 +185,6 @@ public class StudentScript : MonoBehaviour
 	public Transform LastSuspiciousObject;
 
 	public Transform CurrentDestination;
-
-	public Transform TeacherTalkPoint;
 
 	public Transform LeftMiddleFinger;
 
@@ -1718,7 +1720,15 @@ public class StudentScript : MonoBehaviour
 			{
 				if (this.StudentManager.Students[11] != null)
 				{
+					this.Indoors = true;
+					this.Spawned = true;
+					if (this.ShoeRemoval.Locker == null)
+					{
+						this.ShoeRemoval.Start();
+					}
+					this.ShoeRemoval.PutOnShoes();
 					this.FollowTarget = this.StudentManager.Students[11];
+					this.FollowTarget.Follower = this;
 				}
 				else
 				{
@@ -3079,10 +3089,6 @@ public class StudentScript : MonoBehaviour
 					{
 						Debug.Log("Osana's phase has increased to " + this.Phase.ToString() + ".");
 					}
-					if (this.Actions[this.Phase] == StudentActionType.Follow)
-					{
-						this.TargetDistance = 1f;
-					}
 					if (this.Schoolwear > 1 && this.Destinations[this.Phase] == this.MyLocker)
 					{
 						this.Phase++;
@@ -3210,6 +3216,10 @@ public class StudentScript : MonoBehaviour
 					{
 						this.TargetDistance = 10f;
 					}
+					else if (this.Actions[this.Phase] == StudentActionType.Follow)
+					{
+						this.TargetDistance = 1f;
+					}
 					else
 					{
 						this.TargetDistance = 0.5f;
@@ -3301,9 +3311,10 @@ public class StudentScript : MonoBehaviour
 				}
 				if (this.Actions[this.Phase] == StudentActionType.Follow)
 				{
-					if (this.DistanceToDestination > 5f)
+					if (this.DistanceToDestination > 2f)
 					{
 						this.Pathfinding.speed = 5f;
+						this.SpeechLines.Stop();
 					}
 					else
 					{
@@ -3440,7 +3451,7 @@ public class StudentScript : MonoBehaviour
 					if (this.Actions[this.Phase] == StudentActionType.Follow)
 					{
 						this.FollowTargetDistance = Vector3.Distance(this.FollowTarget.transform.position, this.StudentManager.Hangouts.List[this.StudentID].transform.position);
-						if (this.FollowTargetDistance < 1f && !this.FollowTarget.Alone)
+						if (this.FollowTargetDistance < 1.1f && !this.FollowTarget.Alone)
 						{
 							this.MoveTowardsTarget(this.StudentManager.Hangouts.List[this.StudentID].position);
 							float num = Quaternion.Angle(base.transform.rotation, this.StudentManager.Hangouts.List[this.StudentID].rotation);
@@ -5233,7 +5244,33 @@ public class StudentScript : MonoBehaviour
 							}
 							else if (this.Actions[this.Phase] == StudentActionType.Follow)
 							{
-								this.CharacterAnimation.CrossFade(this.IdleAnim);
+								if (this.FollowTarget.Routine && this.FollowTarget.CurrentAction == StudentActionType.Clean && this.FollowTarget.DistanceToDestination < 1f)
+								{
+									this.EquipCleaningItems();
+									this.CharacterAnimation.CrossFade(this.CleanAnims[this.CleaningRole]);
+								}
+								else if (this.FollowTarget.Routine && this.FollowTarget.CurrentAction == StudentActionType.Socializing && this.FollowTarget.DistanceToDestination < 1f)
+								{
+									if (this.FollowTarget.Alone)
+									{
+										this.CharacterAnimation.CrossFade(this.IdleAnim);
+										this.SpeechLines.Stop();
+									}
+									else
+									{
+										this.SpeechLines.Play();
+										this.CharacterAnimation.CrossFade(this.RandomAnim);
+										if (this.CharacterAnimation[this.RandomAnim].time >= this.CharacterAnimation[this.RandomAnim].length)
+										{
+											this.PickRandomAnim();
+										}
+									}
+								}
+								else
+								{
+									this.CharacterAnimation.CrossFade(this.IdleAnim);
+									this.SpeechLines.Stop();
+								}
 							}
 							else if (this.Actions[this.Phase] == StudentActionType.Sulk)
 							{
@@ -5847,6 +5884,7 @@ public class StudentScript : MonoBehaviour
 									}
 									else if (this.ReportPhase == 3)
 									{
+										Debug.Log("This character just set their destination to themself.");
 										this.Pathfinding.target = base.transform;
 										this.CurrentDestination = base.transform;
 										if (this.WitnessedBloodPool || (this.WitnessedWeapon && !this.WitnessedBloodyWeapon))
@@ -5864,6 +5902,7 @@ public class StudentScript : MonoBehaviour
 									}
 									else
 									{
+										Debug.Log("This character just set their destination to themself.");
 										this.Pathfinding.target = base.transform;
 										this.CurrentDestination = base.transform;
 										this.CharacterAnimation.CrossFade(this.ScaredAnim);
@@ -8981,12 +9020,9 @@ public class StudentScript : MonoBehaviour
 						{
 							this.CameraEffects.Alarm();
 						}
-						else
+						else if (!this.Yandere.Struggling && !this.StudentManager.PinningDown)
 						{
-							if (!this.Yandere.Struggling)
-							{
-								this.SenpaiNoticed();
-							}
+							this.SenpaiNoticed();
 							this.CameraEffects.MurderWitnessed();
 						}
 					}
@@ -9287,7 +9323,8 @@ public class StudentScript : MonoBehaviour
 					this.Police.DrownedStudentName = this.Name;
 					this.MyController.enabled = false;
 					this.VomitEmitter.gameObject.SetActive(false);
-					this.Police.DrownScene = true;
+					this.SmartPhone.SetActive(false);
+					this.Police.DrownVictims++;
 					this.Distracted = true;
 					this.Drownable = false;
 					this.Routine = false;
@@ -9553,6 +9590,7 @@ public class StudentScript : MonoBehaviour
 					}
 					this.Yandere.CharacterAnimation.CrossFade("f02_readyToFight_00");
 					this.Yandere.CanMove = false;
+					this.DramaticCamera.enabled = true;
 					this.DramaticCamera.rect = new Rect(0f, 0.5f, 1f, 0f);
 					this.DramaticCamera.gameObject.SetActive(true);
 					this.DramaticCamera.gameObject.GetComponent<AudioSource>().Play();
@@ -11296,6 +11334,10 @@ public class StudentScript : MonoBehaviour
 			this.SmartPhone.transform.parent = null;
 			this.SmartPhone.layer = 15;
 		}
+		else
+		{
+			this.SmartPhone.SetActive(false);
+		}
 		if (!this.WitnessedMurder)
 		{
 			float f = Vector3.Angle(-base.transform.forward, this.Yandere.transform.position - base.transform.position);
@@ -11467,6 +11509,11 @@ public class StudentScript : MonoBehaviour
 	public void SenpaiNoticed()
 	{
 		Debug.Log("The ''SenpaiNoticed'' function has been called.");
+		if (this.Yandere.Shutter.Snapping)
+		{
+			this.Yandere.Shutter.ResumeGameplay();
+			this.Yandere.StopAiming();
+		}
 		this.Yandere.Noticed = true;
 		if (this.WeaponToTakeAway != null && this.Teacher && !this.Yandere.Attacking)
 		{
@@ -12122,6 +12169,7 @@ public class StudentScript : MonoBehaviour
 		}
 		else if (this.Persona == PersonaType.Coward || this.Persona == PersonaType.Fragile)
 		{
+			Debug.Log("This character just set their destination to themself.");
 			this.CurrentDestination = base.transform;
 			this.Pathfinding.target = base.transform;
 			this.Subtitle.UpdateLabel(SubtitleType.CowardMurderReaction, 1, 5f);
@@ -12130,6 +12178,7 @@ public class StudentScript : MonoBehaviour
 		}
 		else if (this.Persona == PersonaType.Evil)
 		{
+			Debug.Log("This character just set their destination to themself.");
 			this.CurrentDestination = base.transform;
 			this.Pathfinding.target = base.transform;
 			this.Subtitle.UpdateLabel(SubtitleType.EvilMurderReaction, 1, 5f);

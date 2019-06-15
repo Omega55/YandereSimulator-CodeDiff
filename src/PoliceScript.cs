@@ -95,8 +95,6 @@ public class PoliceScript : MonoBehaviour
 
 	public bool MurderScene;
 
-	public bool DrownScene;
-
 	public bool TeacherReport;
 
 	public bool ClubActivity;
@@ -136,6 +134,8 @@ public class PoliceScript : MonoBehaviour
 	public int MurderWeapons;
 
 	public int PhotoEvidence;
+
+	public int DrownVictims;
 
 	public int BodyParts;
 

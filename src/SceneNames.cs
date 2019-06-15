@@ -14,11 +14,15 @@ public static class SceneNames
 
 	public const string IntroScene = "IntroScene";
 
+	public const string NewIntroScene = "NewIntroScene";
+
 	public const string LivingRoomScene = "LivingRoomScene";
 
 	public const string LoadingScene = "LoadingScene";
 
 	public const string MissionModeScene = "MissionModeScene";
+
+	public const string OsanaWarningScene = "OsanaWarningScene";
 
 	public const string PhoneScene = "PhoneScene";
 

@@ -74,7 +74,7 @@ public class CleaningManagerScript : MonoBehaviour
 			break;
 		case 10:
 			this.Role = 3;
-			this.Spot = this.StudentManager.Students[StudentID].transform;
+			this.Spot = this.StudentManager.Students[11].transform;
 			break;
 		case 11:
 			this.Role = 4;

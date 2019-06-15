@@ -99,6 +99,8 @@ public class DoorScript : MonoBehaviour
 
 	private StudentManagerScript StudentManager;
 
+	public OcclusionPortal Portal;
+
 	public int DoorID;
 
 	private bool Double
@@ -208,6 +210,10 @@ public class DoorScript : MonoBehaviour
 		if (this.Timer < 2f)
 		{
 			this.Timer += Time.deltaTime;
+			if (this.Timer >= 2f && this.Portal != null)
+			{
+				this.Portal.open = this.Open;
+			}
 			if (this.BucketSet)
 			{
 				for (int i = 0; i < this.Doors.Length; i++)
@@ -308,6 +314,10 @@ public class DoorScript : MonoBehaviour
 
 	public void OpenDoor()
 	{
+		if (this.Portal != null)
+		{
+			this.Portal.open = true;
+		}
 		this.Open = true;
 		this.Timer = 0f;
 		this.UpdateLabel();

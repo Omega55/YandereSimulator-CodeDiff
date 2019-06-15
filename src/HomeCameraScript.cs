@@ -40,6 +40,8 @@ public class HomeCameraScript : MonoBehaviour
 
 	public UISprite Button;
 
+	public GameObject CyberstalkWindow;
+
 	public GameObject ComputerScreen;
 
 	public GameObject CorkboardLabel;

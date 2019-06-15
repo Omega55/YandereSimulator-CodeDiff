@@ -33,11 +33,21 @@ public class EventManagerScript : MonoBehaviour
 
 	public bool Spoken;
 
+	public bool Osana;
+
 	public int EventPhase;
 
 	public float Timer;
 
 	public float Scale;
+
+	public float StartTime = 13.01f;
+
+	public float EndTime = 13.5f;
+
+	public int EventStudent1;
+
+	public int EventStudent2;
 
 	private void Start()
 	{
@@ -52,11 +62,11 @@ public class EventManagerScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (!this.Clock.StopTime && this.EventCheck && this.Clock.HourTime > 13.01f)
+		if (!this.Clock.StopTime && this.EventCheck && this.Clock.HourTime > this.StartTime)
 		{
 			if (this.EventStudent[1] == null)
 			{
-				this.EventStudent[1] = this.StudentManager.Students[25];
+				this.EventStudent[1] = this.StudentManager.Students[this.EventStudent1];
 			}
 			else if (!this.EventStudent[1].Alive)
 			{
@@ -65,7 +75,7 @@ public class EventManagerScript : MonoBehaviour
 			}
 			if (this.EventStudent[2] == null)
 			{
-				this.EventStudent[2] = this.StudentManager.Students[30];
+				this.EventStudent[2] = this.StudentManager.Students[this.EventStudent2];
 			}
 			else if (!this.EventStudent[2].Alive)
 			{
@@ -78,10 +88,15 @@ public class EventManagerScript : MonoBehaviour
 				this.EventStudent[1].Pathfinding.target = this.EventLocation[1];
 				this.EventStudent[1].EventManager = this;
 				this.EventStudent[1].InEvent = true;
-				this.EventStudent[2].CurrentDestination = this.EventLocation[2];
-				this.EventStudent[2].Pathfinding.target = this.EventLocation[2];
-				this.EventStudent[2].EventManager = this;
-				this.EventStudent[2].InEvent = true;
+				this.EventStudent[1].EmptyHands();
+				if (!this.Osana)
+				{
+					this.EventStudent[2].CurrentDestination = this.EventLocation[2];
+					this.EventStudent[2].Pathfinding.target = this.EventLocation[2];
+					this.EventStudent[2].EventManager = this;
+					this.EventStudent[2].InEvent = true;
+				}
+				this.EventStudent[2].EmptyHands();
 				this.EventCheck = false;
 				this.EventOn = true;
 			}
@@ -89,29 +104,40 @@ public class EventManagerScript : MonoBehaviour
 		if (this.EventOn)
 		{
 			float num = Vector3.Distance(this.Yandere.transform.position, this.EventStudent[this.EventSpeaker[this.EventPhase]].transform.position);
-			if (this.Clock.HourTime > 13.5f || this.EventStudent[1].WitnessedCorpse || this.EventStudent[2].WitnessedCorpse || this.EventStudent[1].Dying || this.EventStudent[2].Dying || this.EventStudent[1].Splashed || this.EventStudent[2].Splashed || this.EventStudent[1].Alarmed || this.EventStudent[2].Alarmed)
+			if (this.Clock.HourTime > this.EndTime || this.EventStudent[1].WitnessedCorpse || this.EventStudent[2].WitnessedCorpse || this.EventStudent[1].Dying || this.EventStudent[2].Dying || this.EventStudent[1].Splashed || this.EventStudent[2].Splashed || this.EventStudent[1].Alarmed || this.EventStudent[2].Alarmed)
 			{
 				this.EndEvent();
 			}
 			else
 			{
+				if (this.Osana && this.EventStudent[1].DistanceToDestination < 1f)
+				{
+					this.EventStudent[2].CurrentDestination = this.EventLocation[2];
+					this.EventStudent[2].Pathfinding.target = this.EventLocation[2];
+					this.EventStudent[2].EventManager = this;
+					this.EventStudent[2].InEvent = true;
+				}
 				if (!this.EventStudent[1].Pathfinding.canMove && !this.EventStudent[1].Private)
 				{
-					this.EventStudent[1].Character.GetComponent<Animation>().CrossFade(this.EventStudent[1].IdleAnim);
+					this.EventStudent[1].CharacterAnimation.CrossFade(this.EventStudent[1].IdleAnim);
 					this.EventStudent[1].Private = true;
 					this.StudentManager.UpdateStudents(0);
 				}
 				if (!this.EventStudent[2].Pathfinding.canMove && !this.EventStudent[2].Private)
 				{
-					this.EventStudent[2].Character.GetComponent<Animation>().CrossFade(this.EventStudent[2].IdleAnim);
+					this.EventStudent[2].CharacterAnimation.CrossFade(this.EventStudent[2].IdleAnim);
 					this.EventStudent[2].Private = true;
 					this.StudentManager.UpdateStudents(0);
 				}
 				if (!this.EventStudent[1].Pathfinding.canMove && !this.EventStudent[2].Pathfinding.canMove)
 				{
+					if (this.Osana)
+					{
+						this.SettleFriend();
+					}
 					if (!this.Spoken)
 					{
-						this.EventStudent[this.EventSpeaker[this.EventPhase]].Character.GetComponent<Animation>().CrossFade(this.EventAnim[this.EventPhase]);
+						this.EventStudent[this.EventSpeaker[this.EventPhase]].CharacterAnimation.CrossFade(this.EventAnim[this.EventPhase]);
 						if (num < 10f)
 						{
 							this.EventSubtitle.text = this.EventSpeech[this.EventPhase];
@@ -149,10 +175,10 @@ public class EventManagerScript : MonoBehaviour
 							{
 								this.EventSubtitle.transform.localScale = Vector3.zero;
 							}
-							Animation component = this.EventStudent[this.EventSpeaker[this.EventPhase]].Character.GetComponent<Animation>();
-							if (component[this.EventAnim[this.EventPhase]].time >= component[this.EventAnim[this.EventPhase]].length)
+							Animation characterAnimation = this.EventStudent[this.EventSpeaker[this.EventPhase]].CharacterAnimation;
+							if (characterAnimation[this.EventAnim[this.EventPhase]].time >= characterAnimation[this.EventAnim[this.EventPhase]].length - 1f)
 							{
-								component.CrossFade(this.EventStudent[this.EventSpeaker[this.EventPhase]].IdleAnim);
+								characterAnimation.CrossFade(this.EventStudent[this.EventSpeaker[this.EventPhase]].IdleAnim, 1f);
 							}
 							if (this.Timer > this.EventClip[this.EventPhase].length + 1f)
 							{
@@ -184,6 +210,16 @@ public class EventManagerScript : MonoBehaviour
 					}
 				}
 			}
+		}
+	}
+
+	private void SettleFriend()
+	{
+		this.EventStudent[2].MoveTowardsTarget(this.EventLocation[2].position);
+		float num = Quaternion.Angle(this.EventStudent[2].transform.rotation, this.EventLocation[2].rotation);
+		if (num > 1f)
+		{
+			this.EventStudent[2].transform.rotation = Quaternion.Slerp(this.EventStudent[2].transform.rotation, this.EventLocation[2].rotation, 10f * Time.deltaTime);
 		}
 	}
 

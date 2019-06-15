@@ -754,7 +754,7 @@ public class CustomizationScript : MonoBehaviour
 				SenpaiGlobals.SenpaiFacialHair = this.Data.facialHair.Value;
 				StudentGlobals.MaleUniform = this.Data.maleUniform.Value;
 				StudentGlobals.FemaleUniform = this.Data.femaleUniform.Value;
-				SceneManager.LoadScene("IntroScene");
+				SceneManager.LoadScene("NewIntroScene");
 			}
 		}
 		else

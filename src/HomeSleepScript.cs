@@ -18,6 +18,7 @@ public class HomeSleepScript : MonoBehaviour
 			if (Input.GetButtonDown("A"))
 			{
 				this.HomeDarkness.Sprite.color = new Color(0f, 0f, 0f, 0f);
+				this.HomeDarkness.Cyberstalking = true;
 				this.HomeDarkness.FadeOut = true;
 				this.HomeWindow.Show = false;
 				base.enabled = false;

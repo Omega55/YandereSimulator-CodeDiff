@@ -140,7 +140,11 @@ public class PhoneScript : MonoBehaviour
 			this.Jukebox.volume = 1f - this.Darkness.color.a;
 			if (this.Darkness.color.a >= 1f)
 			{
-				if (!EventGlobals.BefriendConversation && !EventGlobals.LivingRoom)
+				if (DateGlobals.Weekday == DayOfWeek.Sunday)
+				{
+					SceneManager.LoadScene("OsanaWarningScene");
+				}
+				else if (!EventGlobals.BefriendConversation && !EventGlobals.LivingRoom)
 				{
 					SceneManager.LoadScene("CalendarScene");
 				}

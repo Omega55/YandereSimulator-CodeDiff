@@ -60,6 +60,7 @@ public class RichPresenceHelper : MonoBehaviour
 		this._sceneDescriptions.Add("TitleScene", "At the title screen!");
 		this._sceneDescriptions.Add("SenpaiScene", "Customizing Senpai!");
 		this._sceneDescriptions.Add("IntroScene", "Watching the Intro!");
+		this._sceneDescriptions.Add("NewIntroScene", "Watching the Intro!");
 		this._sceneDescriptions.Add("PhoneScene", "Texting with Info-Chan!");
 		this._sceneDescriptions.Add("CalendarScene", "Checking out the Calendar!");
 		this._sceneDescriptions.Add("HomeScene", "Chilling at home!");

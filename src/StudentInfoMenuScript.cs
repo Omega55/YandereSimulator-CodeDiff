@@ -55,6 +55,8 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	public bool CyberBullying;
 
+	public bool CyberStalking;
+
 	public bool FindingLocker;
 
 	public bool UsingLifeNote;
@@ -153,7 +155,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 					{
 						this.PromptBar.Label[0].text = "Distract";
 					}
-					if (this.CyberBullying)
+					if (this.CyberBullying || this.CyberStalking)
 					{
 						this.PromptBar.Label[0].text = "Accept";
 					}
@@ -233,7 +235,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Show = false;
 			}
-			else if (this.CyberBullying || this.FindingLocker)
+			else if (this.CyberBullying || this.CyberStalking || this.FindingLocker)
 			{
 				this.PauseScreen.MainMenu.SetActive(true);
 				this.PauseScreen.Sideways = false;
@@ -342,6 +344,11 @@ public class StudentInfoMenuScript : MonoBehaviour
 			this.PromptBar.UpdateButtons();
 		}
 		if (this.CyberBullying && (this.JSON.Students[this.StudentID].Gender == 1 || StudentGlobals.GetStudentDead(this.StudentID) || this.StudentID > 97))
+		{
+			this.PromptBar.Label[0].text = string.Empty;
+			this.PromptBar.UpdateButtons();
+		}
+		if (this.CyberStalking && (StudentGlobals.GetStudentDead(this.StudentID) || this.StudentID > 97))
 		{
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();

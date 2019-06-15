@@ -16,9 +16,9 @@ public class JsonScript : MonoBehaviour
 	private void Start()
 	{
 		this.students = StudentJson.LoadFromJson(StudentJson.FilePath);
+		this.topics = TopicJson.LoadFromJson(TopicJson.FilePath);
 		if (SceneManager.GetActiveScene().name == "SchoolScene")
 		{
-			this.topics = TopicJson.LoadFromJson(TopicJson.FilePath);
 			StudentManagerScript studentManagerScript = UnityEngine.Object.FindObjectOfType<StudentManagerScript>();
 			this.ReplaceDeadTeachers(studentManagerScript.FirstNames, studentManagerScript.LastNames);
 		}

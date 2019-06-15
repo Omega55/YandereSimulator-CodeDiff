@@ -84,6 +84,8 @@ public class YandereScript : MonoBehaviour
 
 	public PauseScreenScript PauseScreen;
 
+	public SmartphoneScript PhoneToCrush;
+
 	public WoodChipperScript WoodChipper;
 
 	public RagdollScript CurrentRagdoll;
@@ -467,6 +469,8 @@ public class YandereScript : MonoBehaviour
 	public bool CleaningWeapon;
 
 	public bool TranquilHiding;
+
+	public bool CrushingPhone;
 
 	public bool Eavesdropping;
 
@@ -896,15 +900,13 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject FalconShoulderpad;
 
-	public GameObject FalconNipple1;
+	public GameObject FalconKneepad1;
 
-	public GameObject FalconNipple2;
+	public GameObject FalconKneepad2;
 
 	public GameObject FalconBuckle;
 
 	public GameObject FalconHelmet;
-
-	public GameObject FalconGun;
 
 	public AudioClip[] OnePunchVoices;
 
@@ -1309,8 +1311,8 @@ public class YandereScript : MonoBehaviour
 		this.FloatingShovel.SetActive(false);
 		this.BlackEyePatch.SetActive(false);
 		this.EasterEggMenu.SetActive(false);
-		this.FalconNipple1.SetActive(false);
-		this.FalconNipple2.SetActive(false);
+		this.FalconKneepad1.SetActive(false);
+		this.FalconKneepad2.SetActive(false);
 		this.PunishedScarf.SetActive(false);
 		this.FalconBuckle.SetActive(false);
 		this.FalconHelmet.SetActive(false);
@@ -1328,7 +1330,6 @@ public class YandereScript : MonoBehaviour
 		this.BladeHair.SetActive(false);
 		this.CirnoHair.SetActive(false);
 		this.EbolaHair.SetActive(false);
-		this.FalconGun.SetActive(false);
 		this.EyepatchL.SetActive(false);
 		this.EyepatchR.SetActive(false);
 		this.Handcuffs.SetActive(false);
@@ -3911,6 +3912,29 @@ public class YandereScript : MonoBehaviour
 					this.CanMove = true;
 				}
 			}
+			if (this.CrushingPhone)
+			{
+				this.CharacterAnimation.CrossFade("f02_phoneCrush_00");
+				this.targetRotation = Quaternion.LookRotation(new Vector3(this.PhoneToCrush.transform.position.x, base.transform.position.y, this.PhoneToCrush.transform.position.z) - base.transform.position);
+				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
+				this.MoveTowardsTarget(this.PhoneToCrush.PhoneCrushingSpot.position);
+				if (this.CharacterAnimation["f02_phoneCrush_00"].time >= 0.5f && this.PhoneToCrush.enabled)
+				{
+					this.PhoneToCrush.transform.localEulerAngles = new Vector3(this.PhoneToCrush.transform.localEulerAngles.x, this.PhoneToCrush.transform.localEulerAngles.y, 0f);
+					UnityEngine.Object.Instantiate<GameObject>(this.PhoneToCrush.PhoneSmash, this.PhoneToCrush.transform.position, Quaternion.identity);
+					this.Police.PhotoEvidence--;
+					this.PhoneToCrush.MyRenderer.material.mainTexture = this.PhoneToCrush.SmashedTexture;
+					this.PhoneToCrush.MyMesh.mesh = this.PhoneToCrush.SmashedMesh;
+					this.PhoneToCrush.Prompt.Hide();
+					this.PhoneToCrush.Prompt.enabled = false;
+					this.PhoneToCrush.enabled = false;
+				}
+				if (this.CharacterAnimation["f02_phoneCrush_00"].time >= this.CharacterAnimation["f02_phoneCrush_00"].length)
+				{
+					this.CrushingPhone = false;
+					this.CanMove = true;
+				}
+			}
 			if (this.CanMoveTimer > 0f)
 			{
 				this.CanMoveTimer = Mathf.MoveTowards(this.CanMoveTimer, 0f, Time.deltaTime);
@@ -3935,6 +3959,7 @@ public class YandereScript : MonoBehaviour
 			{
 				this.targetRotation = Quaternion.LookRotation(new Vector3(this.TargetBento.transform.position.x, base.transform.position.y, this.TargetBento.transform.position.z) - base.transform.position);
 				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
+				this.MoveTowardsTarget(this.TargetBento.PoisonSpot.position);
 			}
 			if (this.CharacterAnimation["f02_poisoning_00"].time >= this.CharacterAnimation["f02_poisoning_00"].length)
 			{
@@ -6125,24 +6150,23 @@ public class YandereScript : MonoBehaviour
 
 	private void Falcon()
 	{
-		this.MyRenderer.sharedMesh = this.SchoolSwimsuit;
+		this.MyRenderer.sharedMesh = this.NudeMesh;
 		this.PantyAttacher.newRenderer.enabled = false;
 		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
 		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
-		this.MyRenderer.materials[0].mainTexture = this.FalconBody;
+		this.MyRenderer.materials[0].mainTexture = this.FalconFace;
 		this.MyRenderer.materials[1].mainTexture = this.FalconBody;
-		this.MyRenderer.materials[2].mainTexture = this.FalconFace;
+		this.MyRenderer.materials[2].mainTexture = this.FalconBody;
 		this.FalconShoulderpad.SetActive(true);
-		this.FalconNipple1.SetActive(true);
-		this.FalconNipple2.SetActive(true);
+		this.FalconKneepad1.SetActive(true);
+		this.FalconKneepad2.SetActive(true);
 		this.FalconBuckle.SetActive(true);
 		this.FalconHelmet.SetActive(true);
-		this.FalconGun.SetActive(true);
 		this.CharacterAnimation[this.RunAnim].speed = 5f;
 		this.IdleAnim = "f02_falconIdle_00";
 		this.RunSpeed *= 5f;
 		this.Egg = true;
-		this.Hairstyle = 0;
+		this.Hairstyle = 3;
 		this.UpdateHair();
 		this.DebugMenu.transform.parent.GetComponent<DebugMenuScript>().UpdateCensor();
 	}

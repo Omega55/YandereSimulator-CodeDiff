@@ -16,6 +16,8 @@ public class HomeDarknessScript : MonoBehaviour
 
 	public UISprite Sprite;
 
+	public bool Cyberstalking;
+
 	public bool FadeSlow;
 
 	public bool FadeOut;
@@ -36,7 +38,14 @@ public class HomeDarknessScript : MonoBehaviour
 				{
 					if (this.HomeCamera.ID == 3)
 					{
-						SceneManager.LoadScene("YancordScene");
+						if (this.Cyberstalking)
+						{
+							SceneManager.LoadScene("CalendarScene");
+						}
+						else
+						{
+							SceneManager.LoadScene("YancordScene");
+						}
 					}
 					else if (this.HomeCamera.ID == 5)
 					{
