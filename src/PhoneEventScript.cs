@@ -11,6 +11,8 @@ public class PhoneEventScript : MonoBehaviour
 
 	public YandereScript Yandere;
 
+	public JukeboxScript Jukebox;
+
 	public ClockScript Clock;
 
 	public StudentScript EventStudent;
@@ -107,7 +109,6 @@ public class PhoneEventScript : MonoBehaviour
 							this.EventFriend.CanTalk = false;
 							this.EventFriend.Routine = false;
 							this.EventFriend.InEvent = true;
-							this.EventFriend.Private = true;
 							this.EventFriend.Prompt.Hide();
 						}
 					}
@@ -122,7 +123,6 @@ public class PhoneEventScript : MonoBehaviour
 							this.EventStudent.PhoneEvent = this;
 							this.EventStudent.CanTalk = false;
 							this.EventStudent.InEvent = true;
-							this.EventStudent.Private = true;
 							this.EventStudent.Prompt.Hide();
 							this.EventCheck = false;
 							this.EventActive = true;
@@ -176,7 +176,7 @@ public class PhoneEventScript : MonoBehaviour
 							this.EventStudent.SmartPhone.transform.localPosition = new Vector3(-0.015f, -0.005f, -0.015f);
 							this.EventStudent.SmartPhone.transform.localEulerAngles = new Vector3(0f, -150f, 165f);
 						}
-						if (this.Timer > 3f)
+						if (this.Timer > 2f)
 						{
 							AudioClipPlayer.Play(this.EventClip[1], this.EventStudent.transform.position, 5f, 10f, out this.VoiceClip, out this.CurrentClipLength);
 							this.EventSubtitle.text = this.EventSpeech[1];
@@ -202,7 +202,11 @@ public class PhoneEventScript : MonoBehaviour
 					}
 					else if (this.EventPhase == 4)
 					{
-						this.DumpPoint.enabled = true;
+						if (this.EventStudentID != 11)
+						{
+							this.DumpPoint.enabled = true;
+						}
+						this.EventStudent.Private = true;
 						this.EventStudent.Character.GetComponent<Animation>().CrossFade(this.EventAnim[2]);
 						AudioClipPlayer.Play(this.EventClip[2], this.EventStudent.transform.position, 5f, 10f, out this.VoiceClip, out this.CurrentClipLength);
 						this.EventPhase++;
@@ -243,6 +247,7 @@ public class PhoneEventScript : MonoBehaviour
 						{
 							num2 = 1f;
 						}
+						this.Jukebox.Dip = 1f - 0.5f * num2;
 						this.EventSubtitle.transform.localScale = new Vector3(num2, num2, num2);
 					}
 					else
@@ -275,7 +280,7 @@ public class PhoneEventScript : MonoBehaviour
 					if (this.EventFriend.CurrentDestination != this.SpyLocation)
 					{
 						this.Timer += Time.deltaTime;
-						if (this.Timer > 2f)
+						if (this.Timer > 3f)
 						{
 							this.EventFriend.Character.GetComponent<Animation>().CrossFade(this.EventStudent.RunAnim);
 							this.EventFriend.CurrentDestination = this.SpyLocation;
@@ -292,16 +297,12 @@ public class PhoneEventScript : MonoBehaviour
 							this.EventFriend.transform.rotation = Quaternion.Slerp(this.EventFriend.transform.rotation, this.EventFriend.targetRotation, 10f * Time.deltaTime);
 						}
 					}
-					else
+					else if (this.EventFriend.DistanceToDestination < 0.5f)
 					{
-						Debug.Log("Friend is heading to destination.");
-						if (this.EventFriend.DistanceToDestination < 0.5f)
-						{
-							this.EventFriend.CharacterAnimation.CrossFade("f02_cornerPeek_00");
-							this.EventFriend.Pathfinding.canSearch = false;
-							this.EventFriend.Pathfinding.canMove = false;
-							this.SettleFriend();
-						}
+						this.EventFriend.CharacterAnimation.CrossFade("f02_cornerPeek_00");
+						this.EventFriend.Pathfinding.canSearch = false;
+						this.EventFriend.Pathfinding.canMove = false;
+						this.SettleFriend();
 					}
 				}
 			}
@@ -362,6 +363,7 @@ public class PhoneEventScript : MonoBehaviour
 			this.StudentManager.UpdateStudents(0);
 		}
 		this.Yandere.Eavesdropping = false;
+		this.Jukebox.Dip = 1f;
 		this.EventActive = false;
 		this.EventCheck = false;
 		base.enabled = false;

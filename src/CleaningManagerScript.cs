@@ -73,8 +73,11 @@ public class CleaningManagerScript : MonoBehaviour
 			this.Spot = this.Floors[15];
 			break;
 		case 10:
-			this.Role = 3;
-			this.Spot = this.StudentManager.Students[11].transform;
+			if (this.StudentManager.Students[11] != null)
+			{
+				this.Role = 3;
+				this.Spot = this.StudentManager.Students[11].transform;
+			}
 			break;
 		case 11:
 			this.Role = 4;

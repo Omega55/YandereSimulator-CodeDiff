@@ -11,6 +11,8 @@ public class EventManagerScript : MonoBehaviour
 
 	public YandereScript Yandere;
 
+	public JukeboxScript Jukebox;
+
 	public ClockScript Clock;
 
 	public StudentScript[] EventStudent;
@@ -169,6 +171,7 @@ public class EventManagerScript : MonoBehaviour
 								{
 									this.Scale = 1f;
 								}
+								this.Jukebox.Dip = 1f - 0.5f * this.Scale;
 								this.EventSubtitle.transform.localScale = new Vector3(this.Scale, this.Scale, this.Scale);
 							}
 							else
@@ -243,6 +246,7 @@ public class EventManagerScript : MonoBehaviour
 		{
 			this.StudentManager.UpdateStudents(0);
 		}
+		this.Jukebox.Dip = 1f;
 		this.Yandere.Eavesdropping = false;
 		this.EventSubtitle.text = string.Empty;
 		this.EventCheck = false;

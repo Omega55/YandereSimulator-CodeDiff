@@ -232,9 +232,11 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform[] SupplySpots;
 
+	public Transform[] BullySpots;
+
 	public Transform[] DramaSpots;
 
-	public Transform[] BullySpots;
+	public Transform[] MournSpots;
 
 	public Transform[] ClubZones;
 
@@ -361,8 +363,6 @@ public class StudentManagerScript : MonoBehaviour
 	public Transform ToolTarget;
 
 	public Transform MiyukiCat;
-
-	public Transform MournSpot;
 
 	public Transform ShameSpot;
 

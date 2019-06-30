@@ -42,7 +42,6 @@ public class PeekScript : MonoBehaviour
 			{
 				this.Prompt.Yandere.CanMove = false;
 				this.PeekCamera.SetActive(true);
-				this.Jukebox.Dip = 0.5f;
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Label[1].text = "Stop";
 				this.PromptBar.UpdateButtons();
@@ -62,7 +61,6 @@ public class PeekScript : MonoBehaviour
 			{
 				this.Prompt.Yandere.CanMove = true;
 				this.PeekCamera.SetActive(false);
-				this.Jukebox.Dip = 1f;
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Show = false;
 				this.Timer = 0f;

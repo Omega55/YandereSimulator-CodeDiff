@@ -383,6 +383,18 @@ public class VoidGoddessScript : MonoBehaviour
 				}
 				this.UpdatePortraits();
 			}
+			else if (Input.GetKeyDown("space"))
+			{
+				this.ID = 2;
+				while (this.ID < 101)
+				{
+					if (this.ID != 10 && this.ID != 11)
+					{
+						this.StudentManager.DisableStudent(this.ID);
+					}
+					this.ID++;
+				}
+			}
 			if (Input.GetButtonDown("B"))
 			{
 				this.Window.parent.gameObject.SetActive(false);

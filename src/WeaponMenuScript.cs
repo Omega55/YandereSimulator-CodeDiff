@@ -57,7 +57,7 @@ public class WeaponMenuScript : MonoBehaviour
 	{
 		if (!this.PauseScreen.Show)
 		{
-			if ((this.Yandere.CanMove && !this.Yandere.Aiming) || (this.Yandere.Chased && !this.Yandere.Sprayed))
+			if ((this.Yandere.CanMove && !this.Yandere.Aiming) || (this.Yandere.Chased && !this.Yandere.Sprayed && !this.Yandere.DelinquentFighting))
 			{
 				if ((this.IM.DPadUp && this.IM.TappedUp) || (this.IM.DPadDown && this.IM.TappedDown) || (this.IM.DPadLeft && this.IM.TappedLeft) || (this.IM.DPadRight && this.IM.TappedRight))
 				{

@@ -7,6 +7,8 @@ public class OsanaThursdayAfterClassEventScript : MonoBehaviour
 
 	public PhoneMinigameScript PhoneMinigame;
 
+	public JukeboxScript Jukebox;
+
 	public UILabel EventSubtitle;
 
 	public YandereScript Yandere;

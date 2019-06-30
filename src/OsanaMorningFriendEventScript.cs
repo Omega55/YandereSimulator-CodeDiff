@@ -23,6 +23,8 @@ public class OsanaMorningFriendEventScript : MonoBehaviour
 
 	public StudentScript Rival;
 
+	public Transform Epicenter;
+
 	public Transform[] Location;
 
 	public AudioClip SpeechClip;
@@ -34,6 +36,16 @@ public class OsanaMorningFriendEventScript : MonoBehaviour
 	public string[] EventAnim;
 
 	public int[] Speaker;
+
+	public AudioClip InterruptedClip;
+
+	public string[] InterruptedSpeech;
+
+	public float[] InterruptedTime;
+
+	public string[] InterruptedAnim;
+
+	public int[] InterruptedSpeaker;
 
 	public GameObject AlarmDisc;
 

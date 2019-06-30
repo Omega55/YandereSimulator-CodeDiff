@@ -79,6 +79,12 @@ public class CosmeticScript : MonoBehaviour
 
 	public Texture[] GanguroSocksTextures;
 
+	public Texture[] ObstacleUniformTextures;
+
+	public Texture[] ObstacleCasualTextures;
+
+	public Texture[] ObstacleSocksTextures;
+
 	public Texture[] OccultUniformTextures;
 
 	public Texture[] OccultCasualTextures;
@@ -222,6 +228,12 @@ public class CosmeticScript : MonoBehaviour
 	public Texture DelinquentCasualTexture;
 
 	public Texture DelinquentSocksTexture;
+
+	public Texture ObstacleSwimsuitTexture;
+
+	public Texture ObstacleTowelTexture;
+
+	public Texture ObstacleGymTexture;
 
 	public Texture TanSwimsuitTexture;
 
@@ -1621,6 +1633,12 @@ public class CosmeticScript : MonoBehaviour
 				this.CasualTexture = this.NoseTextures[1];
 				this.SocksTexture = this.NoseTextures[2];
 			}
+		}
+		if (this.StudentID == 10)
+		{
+			this.Student.GymTexture = this.ObstacleGymTexture;
+			this.Student.TowelTexture = this.ObstacleTowelTexture;
+			this.Student.SwimsuitTexture = this.ObstacleSwimsuitTexture;
 		}
 		if (this.StudentID == 58)
 		{

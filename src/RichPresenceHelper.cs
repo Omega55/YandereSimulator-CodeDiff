@@ -69,7 +69,7 @@ public class RichPresenceHelper : MonoBehaviour
 		this._sceneDescriptions.Add("YanvaniaTitleScene", "Beginning Yanvania: Senpai of the Night!");
 		this._sceneDescriptions.Add("YanvaniaScene", "Playing Yanvania: Senpai of the Night!");
 		this._sceneDescriptions.Add("LivingRoomScene", "Chatting with Kokona!");
-		this._sceneDescriptions.Add("MissionModeScene", "Acceping a mission!");
+		this._sceneDescriptions.Add("MissionModeScene", "Accepting a mission!");
 		this._sceneDescriptions.Add("VeryFunScene", "??????????");
 		this._sceneDescriptions.Add("CreditsScene", "Viewing the credits!");
 		this._sceneDescriptions.Add("MiyukiTitleScene", "Beginning Magical Girl Pretty Miyuki!");

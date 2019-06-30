@@ -729,6 +729,6 @@ public class MusicMinigameScript : MonoBehaviour
 		{
 			gameObject.SetActive(true);
 		}
-		SceneManager.UnloadSceneAsync(19);
+		SceneManager.UnloadSceneAsync(21);
 	}
 }

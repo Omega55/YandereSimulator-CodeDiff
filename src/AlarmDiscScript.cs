@@ -19,6 +19,8 @@ public class AlarmDiscScript : MonoBehaviour
 
 	public StudentScript Student;
 
+	public bool FocusOnYandere;
+
 	public bool StudentIsBusy;
 
 	public bool Delinquent;
@@ -32,6 +34,8 @@ public class AlarmDiscScript : MonoBehaviour
 	public bool Male;
 
 	public bool Long;
+
+	public float Hesitation = 1f;
 
 	public int Frame;
 
@@ -144,6 +148,14 @@ public class AlarmDiscScript : MonoBehaviour
 							if (!this.NoScream)
 							{
 								this.InvestigateScream();
+							}
+							if (this.FocusOnYandere)
+							{
+								this.Student.FocusOnYandere = true;
+							}
+							if (this.Hesitation != 1f)
+							{
+								this.Student.Hesitation = this.Hesitation;
 							}
 						}
 					}

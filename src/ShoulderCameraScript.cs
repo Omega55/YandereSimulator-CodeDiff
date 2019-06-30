@@ -187,7 +187,6 @@ public class ShoulderCameraScript : MonoBehaviour
 						{
 							this.Yandere.CharacterAnimation.CrossFade("f02_scaredIdle_00");
 							this.Yandere.Subtitle.UpdateLabel(SubtitleType.YandereWhimper, 1, 3.5f);
-							Debug.Log("We're here.");
 						}
 					}
 				}

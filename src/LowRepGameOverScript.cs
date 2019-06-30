@@ -52,6 +52,8 @@ public class LowRepGameOverScript : MonoBehaviour
 		this.Senpai.Scrubber.SetActive(false);
 		this.Senpai.Eraser.SetActive(false);
 		this.Senpai.Pen.SetActive(false);
+		this.Senpai.enabled = false;
+		this.Senpai.CharacterAnimation.enabled = true;
 		Time.timeScale = 1f;
 	}
 
