@@ -1,9 +1,12 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.PostProcessing;
 using UnityEngine.SceneManagement;
 
 public class OsanaWarningScript : MonoBehaviour
 {
+	public PostProcessingProfile Profile;
+
 	public Transform RightHand;
 
 	public UISprite Darkness;
@@ -15,6 +18,19 @@ public class OsanaWarningScript : MonoBehaviour
 	private void Start()
 	{
 		this.Darkness.color = new Color(0f, 0f, 0f, 1f);
+		ColorGradingModel.Settings settings = this.Profile.colorGrading.settings;
+		settings.basic.saturation = 1f;
+		settings.channelMixer.red = new Vector3(1f, 0f, 0f);
+		settings.channelMixer.green = new Vector3(0f, 1f, 0f);
+		settings.channelMixer.blue = new Vector3(0f, 0f, 1f);
+		this.Profile.colorGrading.settings = settings;
+		DepthOfFieldModel.Settings settings2 = this.Profile.depthOfField.settings;
+		settings2.focusDistance = 10f;
+		settings2.aperture = 11.2f;
+		this.Profile.depthOfField.settings = settings2;
+		BloomModel.Settings settings3 = this.Profile.bloom.settings;
+		settings3.bloom.intensity = 1f;
+		this.Profile.bloom.settings = settings3;
 	}
 
 	private void Update()
