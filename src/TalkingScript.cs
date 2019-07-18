@@ -496,7 +496,7 @@ public class TalkingScript : MonoBehaviour
 							{
 								this.Grudge = true;
 							}
-							if (studentScript.Routine && !studentScript.TargetedForDistraction && !studentScript.InEvent && !this.Grudge && studentScript.Indoors && studentScript.gameObject.activeInHierarchy && studentScript.ClubActivityPhase < 16)
+							if (studentScript.Routine && !studentScript.TargetedForDistraction && !studentScript.InEvent && !this.Grudge && studentScript.Indoors && studentScript.gameObject.activeInHierarchy && studentScript.ClubActivityPhase < 16 && studentScript.FollowTarget == null)
 							{
 								this.S.CharacterAnimation.CrossFade(this.S.Nod1Anim);
 								this.S.Subtitle.UpdateLabel(SubtitleType.StudentDistract, 0, 3f);

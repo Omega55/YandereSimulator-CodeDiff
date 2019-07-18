@@ -3021,6 +3021,7 @@ public class YandereScript : MonoBehaviour
 					{
 						if ((!this.TargetStudent.Teacher && this.CharacterAnimation["f02_struggleWinA_00"].time > 1.3f) || (this.TargetStudent.Teacher && this.CharacterAnimation["f02_teacherStruggleWinA_00"].time > 0.8f))
 						{
+							this.TargetStudent.DeathCause = this.EquippedWeapon.WeaponID;
 							UnityEngine.Object.Instantiate<GameObject>(this.TargetStudent.StabBloodEffect, (!this.TargetStudent.Teacher) ? this.TargetStudent.Head.position : this.EquippedWeapon.transform.position, Quaternion.identity);
 							this.Bloodiness += 20f;
 							this.Sanity -= 20f * this.Numbness;
@@ -3315,6 +3316,7 @@ public class YandereScript : MonoBehaviour
 				this.TargetStudent = null;
 				this.Dismembering = false;
 				this.CanMove = true;
+				this.Ragdoll = null;
 			}
 			if (this.Shoved)
 			{

@@ -13,9 +13,9 @@ public class SlowMoScript : MonoBehaviour
 		{
 			this.Spinning = !this.Spinning;
 		}
-		if (Input.GetKeyDown("space"))
+		if (Input.GetKeyDown("a"))
 		{
-			Time.timeScale = 0.5f;
+			Time.timeScale = 0.1f;
 		}
 		if (Input.GetKeyDown("-"))
 		{

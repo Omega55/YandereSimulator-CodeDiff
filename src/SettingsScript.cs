@@ -39,6 +39,8 @@ public class SettingsScript : MonoBehaviour
 
 	public UILabel DisableTutorialsLabel;
 
+	public UILabel WindowedMode;
+
 	public int SelectionLimit = 2;
 
 	public int Selected = 1;
@@ -254,6 +256,15 @@ public class SettingsScript : MonoBehaviour
 			}
 			this.UpdateText();
 		}
+		else if (this.Selected == 15)
+		{
+			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
+			{
+				Screen.SetResolution(Screen.width, Screen.height, !Screen.fullScreen);
+				this.UpdateText();
+			}
+			this.UpdateText();
+		}
 		if (Input.GetKeyDown("l"))
 		{
 			OptionGlobals.ParticleCount = 1;
@@ -321,6 +332,7 @@ public class SettingsScript : MonoBehaviour
 		this.SensitivityLabel.text = string.Empty + OptionGlobals.Sensitivity;
 		this.InvertAxisLabel.text = ((!OptionGlobals.InvertAxis) ? "No" : "Yes");
 		this.DisableTutorialsLabel.text = ((!TutorialGlobals.TutorialsOff) ? "No" : "Yes");
+		this.WindowedMode.text = ((!Screen.fullScreen) ? "Yes" : "No");
 	}
 
 	private void UpdateHighlight()

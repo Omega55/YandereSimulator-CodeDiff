@@ -116,6 +116,7 @@ public enum SubtitleType
 	MurderReaction,
 	NoteReaction,
 	NoteReactionMale,
+	ObstacleMurderReaction,
 	OfferSnack,
 	ParanoidReaction,
 	PetBloodReaction,

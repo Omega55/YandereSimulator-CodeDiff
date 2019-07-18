@@ -7,6 +7,8 @@ public class RadioScript : MonoBehaviour
 
 	public JukeboxScript Jukebox;
 
+	public GameObject RadioNotes;
+
 	public GameObject AlarmDisc;
 
 	public AudioSource MyAudio;
@@ -54,6 +56,7 @@ public class RadioScript : MonoBehaviour
 						this.Prompt.Label[0].text = "     Turn Off";
 						this.MyRenderer.material.mainTexture = this.OnTexture;
 						base.GetComponent<AudioSource>().Play();
+						this.RadioNotes.SetActive(true);
 						this.On = true;
 					}
 					else
@@ -134,6 +137,7 @@ public class RadioScript : MonoBehaviour
 		this.Prompt.Hide();
 		this.MyRenderer.material.mainTexture = this.OffTexture;
 		base.GetComponent<AudioSource>().Stop();
+		this.RadioNotes.SetActive(false);
 		this.CooldownTimer = 1f;
 		this.Victim = null;
 		this.On = false;

@@ -127,7 +127,7 @@ public class HeartbrokenScript : MonoBehaviour
 			this.SNAP.SetActive(false);
 			this.Cursor.Options = 3;
 		}
-		else if (this.Yandere.Lost || this.ShoulderCamera.LookDown || this.ShoulderCamera.Counter)
+		else if (this.Yandere.Lost || this.ShoulderCamera.LookDown || this.ShoulderCamera.Counter || this.ShoulderCamera.ObstacleCounter)
 		{
 			this.Letters[0].text = "A";
 			this.Letters[1].text = "P";

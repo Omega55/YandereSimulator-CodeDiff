@@ -193,25 +193,40 @@ public class DebugMenuScript : MonoBehaviour
 					else if (Input.GetKeyDown(KeyCode.Alpha6))
 					{
 						this.Yandere.transform.position = this.TeleportSpot[1].position;
+						if (this.Yandere.Follower != null)
+						{
+							this.Yandere.Follower.transform.position = this.Yandere.transform.position;
+						}
 						Physics.SyncTransforms();
 						this.Window.SetActive(false);
 					}
 					else if (Input.GetKeyDown(KeyCode.Alpha7))
 					{
 						this.Yandere.transform.position = this.TeleportSpot[2].position + new Vector3(0.75f, 0f, 0f);
+						if (this.Yandere.Follower != null)
+						{
+							this.Yandere.Follower.transform.position = this.Yandere.transform.position;
+						}
 						Physics.SyncTransforms();
 						this.Window.SetActive(false);
 					}
 					else if (Input.GetKeyDown(KeyCode.Alpha8))
 					{
 						this.Yandere.transform.position = this.TeleportSpot[3].position;
+						if (this.Yandere.Follower != null)
+						{
+							this.Yandere.Follower.transform.position = this.Yandere.transform.position;
+						}
 						Physics.SyncTransforms();
 						this.Window.SetActive(false);
 					}
 					else if (Input.GetKeyDown(KeyCode.Alpha9))
 					{
 						this.Yandere.transform.position = this.TeleportSpot[4].position;
-						this.Window.SetActive(false);
+						if (this.Yandere.Follower != null)
+						{
+							this.Yandere.Follower.transform.position = this.Yandere.transform.position;
+						}
 						if (this.Clock.HourTime < 7.1f)
 						{
 							this.Clock.PresentTime = 426f;
@@ -253,6 +268,7 @@ public class DebugMenuScript : MonoBehaviour
 								studentScript3.transform.position = this.MidoriSpot.position;
 							}
 						}
+						this.Window.SetActive(false);
 						Physics.SyncTransforms();
 					}
 					else if (Input.GetKeyDown(KeyCode.Alpha0))
@@ -493,6 +509,10 @@ public class DebugMenuScript : MonoBehaviour
 					else if (Input.GetKeyDown(KeyCode.Space))
 					{
 						this.Yandere.transform.position = this.TeleportSpot[5].position;
+						if (this.Yandere.Follower != null)
+						{
+							this.Yandere.Follower.transform.position = this.Yandere.transform.position;
+						}
 						for (int i = 46; i < 51; i++)
 						{
 							if (this.StudentManager.Students[i] != null)
@@ -520,6 +540,10 @@ public class DebugMenuScript : MonoBehaviour
 					{
 						this.Turtle.SpawnWeapons();
 						this.Yandere.transform.position = this.TeleportSpot[6].position;
+						if (this.Yandere.Follower != null)
+						{
+							this.Yandere.Follower.transform.position = this.Yandere.transform.position;
+						}
 						this.Clock.PresentTime = 425f;
 						this.Clock.HourTime = this.Clock.PresentTime / 60f;
 						Physics.SyncTransforms();
@@ -528,12 +552,20 @@ public class DebugMenuScript : MonoBehaviour
 					else if (Input.GetKeyDown(KeyCode.LeftControl))
 					{
 						this.Yandere.transform.position = this.TeleportSpot[7].position;
+						if (this.Yandere.Follower != null)
+						{
+							this.Yandere.Follower.transform.position = this.Yandere.transform.position;
+						}
 						Physics.SyncTransforms();
 						this.Window.SetActive(false);
 					}
 					else if (Input.GetKeyDown(KeyCode.RightControl))
 					{
 						this.Yandere.transform.position = this.TeleportSpot[8].position;
+						if (this.Yandere.Follower != null)
+						{
+							this.Yandere.Follower.transform.position = this.Yandere.transform.position;
+						}
 						Physics.SyncTransforms();
 						this.Window.SetActive(false);
 					}
@@ -546,6 +578,10 @@ public class DebugMenuScript : MonoBehaviour
 					{
 						this.Yandere.transform.eulerAngles = this.TeleportSpot[10].eulerAngles;
 						this.Yandere.transform.position = this.TeleportSpot[10].position;
+						if (this.Yandere.Follower != null)
+						{
+							this.Yandere.Follower.transform.position = this.Yandere.transform.position;
+						}
 						this.StudentManager.Students[1].ShoeRemoval.Start();
 						this.StudentManager.Students[1].ShoeRemoval.PutOnShoes();
 						this.StudentManager.Students[1].transform.position = new Vector3(0f, 12.1f, -25f);

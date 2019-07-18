@@ -602,6 +602,10 @@ public class CosmeticScript : MonoBehaviour
 					this.CharacterAnimation.Play("f02_shy_00");
 					this.CharacterAnimation["f02_shy_00"].time = 1f;
 				}
+				else if (this.StudentID == 10)
+				{
+					this.CharacterAnimation.Play("f02_idleGirly_00");
+				}
 				else if (this.StudentID == 24)
 				{
 					this.CharacterAnimation.Play("f02_idleGirly_00");
@@ -1681,7 +1685,13 @@ public class CosmeticScript : MonoBehaviour
 				this.CasualTexture = this.GanguroCasualTextures[StudentGlobals.FemaleUniform];
 				this.SocksTexture = this.GanguroSocksTextures[StudentGlobals.FemaleUniform];
 			}
-			else if (this.StudentID > 9 && this.StudentID < 21 && this.StudentID != 11)
+			else if (this.StudentID == 10)
+			{
+				this.UniformTexture = this.ObstacleUniformTextures[StudentGlobals.FemaleUniform];
+				this.CasualTexture = this.ObstacleCasualTextures[StudentGlobals.FemaleUniform];
+				this.SocksTexture = this.ObstacleSocksTextures[StudentGlobals.FemaleUniform];
+			}
+			else if (this.StudentID > 11 && this.StudentID < 21)
 			{
 				this.MysteriousObstacle = true;
 				this.UniformTexture = this.BlackBody;
@@ -1692,7 +1702,6 @@ public class CosmeticScript : MonoBehaviour
 				this.LeftEyeRenderer.enabled = false;
 				this.RightIrisLight.SetActive(false);
 				this.LeftIrisLight.SetActive(false);
-				Debug.Log("Is this code running?");
 			}
 			else
 			{
@@ -2221,7 +2230,7 @@ public class CosmeticScript : MonoBehaviour
 		}
 		else if (this.EyeType == "MO")
 		{
-			this.MyRenderer.SetBlendShapeWeight(0, 50f);
+			this.MyRenderer.SetBlendShapeWeight(8, 50f);
 			this.MyRenderer.SetBlendShapeWeight(9, 100f);
 			this.MyRenderer.SetBlendShapeWeight(12, 100f);
 			this.StudentManager.Gentles++;

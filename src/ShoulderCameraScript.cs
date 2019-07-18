@@ -51,11 +51,11 @@ public class ShoulderCameraScript : MonoBehaviour
 
 	public bool GoingToCounselor;
 
+	public bool ObstacleCounter;
+
 	public bool AimingCamera;
 
 	public bool OverShoulder;
-
-	public bool DoNotMove;
 
 	public bool Summoning;
 
@@ -84,6 +84,8 @@ public class ShoulderCameraScript : MonoBehaviour
 	public float NoticedSpeed;
 
 	public float Height;
+
+	public float Shake;
 
 	public float PullBackTimer;
 
@@ -363,6 +365,69 @@ public class ShoulderCameraScript : MonoBehaviour
 				{
 					this.StruggleFocus.localPosition = Vector3.Lerp(this.StruggleFocus.localPosition, new Vector3(0f, 0.3f, -0.4f), Time.deltaTime);
 					this.StrugglePOV.localPosition = Vector3.Lerp(this.StrugglePOV.localPosition, new Vector3(1.05f, 0.3f, -0.4f), Time.deltaTime);
+				}
+			}
+			else if (this.ObstacleCounter)
+			{
+				this.StruggleFocus.position += new Vector3(this.Shake * UnityEngine.Random.Range(-1f, 1f), this.Shake * UnityEngine.Random.Range(-0.5f, 0.5f), this.Shake * UnityEngine.Random.Range(-1f, 1f));
+				this.Shake = Mathf.Lerp(this.Shake, 0f, Time.deltaTime * 5f);
+				if (this.Yandere.Armed)
+				{
+					this.Yandere.EquippedWeapon.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
+				}
+				if (this.Timer == 0f)
+				{
+					this.StruggleFocus.position = base.transform.position + base.transform.forward;
+					this.StrugglePOV.position = base.transform.position;
+				}
+				base.transform.position = Vector3.Lerp(base.transform.position, this.StrugglePOV.position, Time.deltaTime * 10f);
+				base.transform.LookAt(this.StruggleFocus);
+				this.Timer += Time.deltaTime;
+				if (this.Timer > 0.5f && this.Phase < 2)
+				{
+					this.Yandere.CameraEffects.MurderWitnessed();
+					this.Yandere.Jukebox.GameOver();
+					this.Phase++;
+				}
+				if (this.Timer > 7.6f && this.Phase < 3)
+				{
+					if (this.Yandere.Armed)
+					{
+						this.Yandere.EquippedWeapon.Drop();
+					}
+					this.Shake += 0.2f;
+					this.Phase++;
+				}
+				if (this.Timer > 10f && this.Phase < 4)
+				{
+					this.Shake += 0.2f;
+					this.Phase++;
+				}
+				if (this.Timer > 12f && this.Phase < 5)
+				{
+					this.HeartbrokenCamera.GetComponent<Camera>().cullingMask |= 512;
+					this.HeartbrokenCamera.SetActive(true);
+					this.Phase++;
+				}
+				if (this.Timer < 6f)
+				{
+					this.StruggleFocus.localPosition = Vector3.Lerp(this.StruggleFocus.localPosition, new Vector3(-0.166666f, 1.2f, 0.82f), Time.deltaTime);
+					this.StrugglePOV.localPosition = Vector3.Lerp(this.StrugglePOV.localPosition, new Vector3(0.66666f, 1.2f, 0.82f), Time.deltaTime);
+				}
+				else if (this.Timer < 8.5f)
+				{
+					this.StruggleFocus.localPosition = Vector3.Lerp(this.StruggleFocus.localPosition, new Vector3(-0.166666f, 1.2f, 0.82f), Time.deltaTime);
+					this.StrugglePOV.localPosition = Vector3.Lerp(this.StrugglePOV.localPosition, new Vector3(2f, 1.2f, 0.82f), Time.deltaTime);
+				}
+				else if (this.Timer < 12f)
+				{
+					this.StruggleFocus.localPosition = Vector3.Lerp(this.StruggleFocus.localPosition, new Vector3(-0.85f, 0.5f, 1.75f), Time.deltaTime * 2f);
+					this.StrugglePOV.localPosition = Vector3.Lerp(this.StrugglePOV.localPosition, new Vector3(-0.85f, 0.5f, 3f), Time.deltaTime * 2f);
+				}
+				else
+				{
+					this.StruggleFocus.localPosition = Vector3.Lerp(this.StruggleFocus.localPosition, new Vector3(-0.85f, 1.1f, 1.75f), Time.deltaTime * 2f);
+					this.StrugglePOV.localPosition = Vector3.Lerp(this.StrugglePOV.localPosition, new Vector3(-0.85f, 1f, 4f), Time.deltaTime * 2f);
 				}
 			}
 			else if (this.Struggle)

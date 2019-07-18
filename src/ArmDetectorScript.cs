@@ -20,6 +20,8 @@ public class ArmDetectorScript : MonoBehaviour
 
 	public UISprite Darkness;
 
+	public Transform LimbParent;
+
 	public Transform[] SpawnPoints;
 
 	public GameObject[] BodyArray;
@@ -84,7 +86,7 @@ public class ArmDetectorScript : MonoBehaviour
 		{
 			for (int i = 1; i < this.ArmArray.Length; i++)
 			{
-				if (this.ArmArray[i] != null && this.ArmArray[i].transform.parent != null)
+				if (this.ArmArray[i] != null && this.ArmArray[i].transform.parent != this.LimbParent)
 				{
 					this.ArmArray[i] = null;
 					if (i != this.ArmArray.Length - 1)
@@ -92,6 +94,7 @@ public class ArmDetectorScript : MonoBehaviour
 						this.Shuffle(i);
 					}
 					this.Arms--;
+					Debug.Log("Decrement arm count?");
 				}
 			}
 			if (this.Arms > 9)
@@ -405,28 +408,37 @@ public class ArmDetectorScript : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.transform.parent == null)
+		Debug.Log("Trigger collision!");
+		if (other.transform.parent == this.LimbParent)
 		{
+			Debug.Log("The object is a child of LimbParent!");
 			PickUpScript component = other.gameObject.GetComponent<PickUpScript>();
 			if (component != null)
 			{
+				Debug.Log("The object has a PickUpScript!");
 				BodyPartScript bodyPart = component.BodyPart;
-				if (bodyPart.Sacrifice && (bodyPart.Type == 3 || bodyPart.Type == 4))
+				if (bodyPart.Sacrifice)
 				{
-					bool flag = true;
-					for (int i = 1; i < 11; i++)
+					Debug.Log("The object is a sacrifice!");
+					if (bodyPart.Type == 3 || bodyPart.Type == 4)
 					{
-						if (this.ArmArray[i] == other.gameObject)
+						Debug.Log("The object is an arm or a leg!");
+						bool flag = true;
+						for (int i = 1; i < 11; i++)
 						{
-							flag = false;
+							if (this.ArmArray[i] == other.gameObject)
+							{
+								flag = false;
+							}
 						}
-					}
-					if (flag)
-					{
-						this.Arms++;
-						if (this.Arms < this.ArmArray.Length)
+						if (flag)
 						{
-							this.ArmArray[this.Arms] = other.gameObject;
+							Debug.Log("Increment arm count!");
+							this.Arms++;
+							if (this.Arms < this.ArmArray.Length)
+							{
+								this.ArmArray[this.Arms] = other.gameObject;
+							}
 						}
 					}
 				}
@@ -466,6 +478,7 @@ public class ArmDetectorScript : MonoBehaviour
 			if (component2.Sacrifice && (other.gameObject.name == "FemaleRightArm(Clone)" || other.gameObject.name == "FemaleLeftArm(Clone)" || other.gameObject.name == "MaleRightArm(Clone)" || other.gameObject.name == "MaleLeftArm(Clone)" || other.gameObject.name == "SacrificialArm(Clone)"))
 			{
 				this.Arms--;
+				Debug.Log("Decrement arm count again?");
 			}
 		}
 		if (other.transform.parent != null && other.transform.parent.parent != null && other.transform.parent.parent.parent != null)

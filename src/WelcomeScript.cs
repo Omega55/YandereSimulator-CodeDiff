@@ -59,6 +59,19 @@ public class WelcomeScript : MonoBehaviour
 		{
 			SceneManager.LoadScene("VeryFunScene");
 		}
+		this.ID = 0;
+		while (this.ID < 100)
+		{
+			if (this.ID != 10 && (this.JSON.Students[this.ID].Hairstyle == "21" || this.JSON.Students[this.ID].Persona == PersonaType.Protective))
+			{
+				Debug.Log("Player is cheating!");
+				if (Application.CanStreamedLevelBeLoaded("FunScene"))
+				{
+					SceneManager.LoadScene("FunScene");
+				}
+			}
+			this.ID++;
+		}
 	}
 
 	private void Update()

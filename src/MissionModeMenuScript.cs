@@ -199,6 +199,9 @@ public class MissionModeMenuScript : MonoBehaviour
 		this.Profile.depthOfField.settings = settings2;
 		BloomModel.Settings settings3 = this.Profile.bloom.settings;
 		settings3.bloom.intensity = 1f;
+		settings3.bloom.threshold = 1f;
+		settings3.bloom.softKnee = 1f;
+		settings3.bloom.radius = 4f;
 		this.Profile.bloom.settings = settings3;
 		MissionModeGlobals.MultiMission = false;
 		this.NemesisPortrait.transform.parent.localScale = Vector3.zero;

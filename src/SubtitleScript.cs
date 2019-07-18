@@ -509,6 +509,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] RejectHelps;
 
+	public string[] ObstacleMurderReactions;
+
 	public string InfoNotice;
 
 	public int PreviousRandom;
@@ -766,6 +768,8 @@ public class SubtitleScript : MonoBehaviour
 	public AudioClip[] EvilDelinquentCorpseReactionClips;
 
 	public AudioClip[] EulogyClips;
+
+	public AudioClip[] ObstacleMurderReactionClips;
 
 	private SubtitleTypeAndAudioClipArrayDictionary SubtitleClipArrays;
 
@@ -1298,6 +1302,10 @@ public class SubtitleScript : MonoBehaviour
 			{
 				SubtitleType.Eulogy,
 				new AudioClipArrayWrapper(this.EulogyClips)
+			},
+			{
+				SubtitleType.ObstacleMurderReaction,
+				new AudioClipArrayWrapper(this.ObstacleMurderReactionClips)
 			}
 		};
 	}
@@ -2516,6 +2524,11 @@ public class SubtitleScript : MonoBehaviour
 		else if (subtitleType == SubtitleType.RejectHelp)
 		{
 			this.Label.text = this.RejectHelps[ID];
+		}
+		else if (subtitleType == SubtitleType.ObstacleMurderReaction)
+		{
+			this.Label.text = this.ObstacleMurderReactions[ID];
+			this.PlayVoice(subtitleType, ID);
 		}
 		this.Timer = Duration;
 	}

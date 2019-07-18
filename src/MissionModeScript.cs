@@ -790,6 +790,10 @@ public class MissionModeScript : MonoBehaviour
 						this.SpottedWindow.SetActive(true);
 						this.Chastise = true;
 						this.GameOverID = 6;
+						if (this.Yandere.Mopping)
+						{
+							this.GameOverID = 20;
+						}
 						this.GameOver();
 						this.Phase = 4;
 					}

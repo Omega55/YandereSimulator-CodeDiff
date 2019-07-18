@@ -6278,12 +6278,12 @@ public class StudentScript : MonoBehaviour
 									}
 									this.Yandere.Mopping = false;
 									this.Yandere.EmptyHands();
+									this.Subtitle.UpdateLabel(SubtitleType.ObstacleMurderReaction, 4, 0f);
 									this.AttackReaction();
-									this.CharacterAnimation["f0_moCounterA_00"].time = 5f;
-									this.Yandere.CharacterAnimation["f0_moCounterA_00"].time = 5f;
-									this.Yandere.ShoulderCamera.DoNotMove = true;
-									this.Yandere.ShoulderCamera.Timer = 5f;
-									this.Yandere.ShoulderCamera.Phase = 3;
+									this.CharacterAnimation["f02_moCounterB_00"].time = 6f;
+									this.Yandere.CharacterAnimation["f02_moCounterA_00"].time = 6f;
+									this.Yandere.ShoulderCamera.ObstacleCounter = true;
+									this.Yandere.ShoulderCamera.Timer = 6f;
 									this.Police.Show = false;
 									this.Yandere.CameraEffects.MurderWitnessed();
 									this.Yandere.Jukebox.GameOver();
@@ -6648,7 +6648,6 @@ public class StudentScript : MonoBehaviour
 										this.AttackReaction();
 										this.CharacterAnimation[this.CounterAnim].time = 5f;
 										this.Yandere.CharacterAnimation["f02_counterA_00"].time = 5f;
-										this.Yandere.ShoulderCamera.DoNotMove = true;
 										this.Yandere.ShoulderCamera.Timer = 5f;
 										this.Yandere.ShoulderCamera.Phase = 3;
 										this.Police.Show = false;
@@ -9656,7 +9655,14 @@ public class StudentScript : MonoBehaviour
 						this.SmartPhone.SetActive(false);
 						this.Police.Show = false;
 					}
+					Debug.Log("The mysterious obstacle is counter-attacking!");
 					this.CharacterAnimation.CrossFade("f02_moCounterB_00");
+					if (!this.WitnessedMurder && this.CharacterAnimation["f02_moLipSync_00"].weight == 0f)
+					{
+						this.CharacterAnimation["f02_moLipSync_00"].weight = 1f;
+						this.CharacterAnimation["f02_moLipSync_00"].time = 0f;
+						this.CharacterAnimation.Play("f02_moLipSync_00");
+					}
 					this.targetRotation = Quaternion.LookRotation(new Vector3(this.Yandere.transform.position.x, base.transform.position.y, this.Yandere.transform.position.z) - base.transform.position);
 					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
 					this.MoveTowardsTarget(this.Yandere.transform.position + this.Yandere.transform.forward);
@@ -9820,7 +9826,7 @@ public class StudentScript : MonoBehaviour
 			base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
 			if (!this.Yandere.Struggling)
 			{
-				if (this.Persona != PersonaType.Heroic && this.Persona != PersonaType.Dangerous && this.Persona != PersonaType.Protective && this.Persona != PersonaType.Violent)
+				if (this.Persona != PersonaType.Heroic && this.Persona != PersonaType.Dangerous && this.Persona != PersonaType.Violent)
 				{
 					this.AlarmTimer += Time.deltaTime * (float)this.MurdersWitnessed;
 				}
@@ -9851,6 +9857,10 @@ public class StudentScript : MonoBehaviour
 							if (this.Club == ClubType.Delinquent)
 							{
 								this.SmartPhone.SetActive(false);
+							}
+							else if (this.StudentID == 10)
+							{
+								this.Subtitle.UpdateLabel(SubtitleType.ObstacleMurderReaction, 1, 3f);
 							}
 							else
 							{
@@ -11483,9 +11493,13 @@ public class StudentScript : MonoBehaviour
 		}
 		else if (this.Strength == 9)
 		{
+			if (!this.WitnessedMurder)
+			{
+				this.Subtitle.UpdateLabel(SubtitleType.ObstacleMurderReaction, 3, 11f);
+			}
 			this.Yandere.CharacterAnimation.CrossFade("f02_moCounterA_00");
 			this.Yandere.HeartRate.gameObject.SetActive(false);
-			this.Yandere.ShoulderCamera.Counter = true;
+			this.Yandere.ShoulderCamera.ObstacleCounter = true;
 			this.Yandere.ShoulderCamera.OverShoulder = false;
 			this.Yandere.RPGCamera.enabled = false;
 			this.Yandere.Senpai = base.transform;
@@ -11903,6 +11917,7 @@ public class StudentScript : MonoBehaviour
 
 	private void PersonaReaction()
 	{
+		Debug.Log("PersonaReaction() is being called.");
 		if (this.Persona == PersonaType.Sleuth)
 		{
 			if (this.Sleuthing)
@@ -12180,7 +12195,11 @@ public class StudentScript : MonoBehaviour
 				if (!this.StudentManager.PinningDown)
 				{
 					Debug.Log("Began fleeing because Hero persona reaction was called.");
-					if (this.Persona != PersonaType.Violent)
+					if (this.Persona == PersonaType.Protective)
+					{
+						this.Subtitle.UpdateLabel(SubtitleType.ObstacleMurderReaction, 2, 3f);
+					}
+					else if (this.Persona != PersonaType.Violent)
 					{
 						this.Subtitle.UpdateLabel(SubtitleType.HeroMurderReaction, 3, 3f);
 					}
@@ -13326,14 +13345,28 @@ public class StudentScript : MonoBehaviour
 			this.MyRenderer.materials[2].mainTexture = this.Cosmetic.FaceTextures[this.SkinColor];
 		}
 		this.Cosmetic.RemoveCensor();
-		if (!this.AoT && this.Male)
+		if (!this.AoT)
 		{
-			this.ID = 0;
-			while (this.ID < this.CensorSteam.Length)
+			if (this.Male)
 			{
-				this.CensorSteam[this.ID].SetActive(true);
-				this.ID++;
+				this.ID = 0;
+				while (this.ID < this.CensorSteam.Length)
+				{
+					this.CensorSteam[this.ID].SetActive(true);
+					this.ID++;
+				}
 			}
+		}
+		else if (!this.Male)
+		{
+			this.MyRenderer.sharedMesh = this.BaldNudeMesh;
+			this.MyRenderer.materials[0].mainTexture = this.Cosmetic.FaceTexture;
+			this.MyRenderer.materials[1].mainTexture = this.NudeTexture;
+			this.MyRenderer.materials[2].mainTexture = this.NudeTexture;
+		}
+		else
+		{
+			this.MyRenderer.materials[1].mainTexture = this.Cosmetic.FaceTextures[this.SkinColor];
 		}
 	}
 
@@ -14800,6 +14833,9 @@ public class StudentScript : MonoBehaviour
 		{
 			this.CharacterAnimation[this.StripAnim].speed = 1.5f;
 			this.CharacterAnimation[this.GameAnim].speed = 2f;
+			this.CharacterAnimation["f02_moLipSync_00"].layer = 9;
+			this.CharacterAnimation.Play("f02_moLipSync_00");
+			this.CharacterAnimation["f02_moLipSync_00"].weight = 0f;
 			this.CharacterAnimation["f02_topHalfTexting_00"].layer = 8;
 			this.CharacterAnimation.Play("f02_topHalfTexting_00");
 			this.CharacterAnimation["f02_topHalfTexting_00"].weight = 0f;

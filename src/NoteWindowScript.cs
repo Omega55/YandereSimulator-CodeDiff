@@ -220,14 +220,7 @@ public class NoteWindowScript : MonoBehaviour
 								this.NoteLocker.Success = true;
 							}
 						}
-						else if (this.NoteLocker.Student.StudentID == 5)
-						{
-							if (this.NoteLocker.Student.Bullied && this.SlotLabels[1].text == this.Subjects[6] && this.MeetID > 7)
-							{
-								this.NoteLocker.Success = true;
-							}
-						}
-						else if ((this.NoteLocker.Student.StudentID == 2 || this.NoteLocker.Student.StudentID == 3 || this.NoteLocker.Student.StudentID == 65) && this.SlotLabels[1].text == this.Subjects[7])
+						else if (this.NoteLocker.Student.StudentID == 5 && this.NoteLocker.Student.Bullied && this.SlotLabels[1].text == this.Subjects[7] && this.MeetID > 7)
 						{
 							this.NoteLocker.Success = true;
 						}

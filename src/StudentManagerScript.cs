@@ -985,7 +985,7 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			else if (this.WitnessList[1].PinPhase == 0)
 			{
-				if (!this.Yandere.ShoulderCamera.HeartbrokenCamera.activeInHierarchy)
+				if (!this.Yandere.ShoulderCamera.Noticed && !this.Yandere.ShoulderCamera.HeartbrokenCamera.activeInHierarchy)
 				{
 					this.PinDownTimer += Time.deltaTime;
 					if (this.PinDownTimer > 10f || (this.WitnessList[1].DistanceToDestination < 1f && this.WitnessList[2].DistanceToDestination < 1f && this.WitnessList[3].DistanceToDestination < 1f && this.WitnessList[4].DistanceToDestination < 1f))
