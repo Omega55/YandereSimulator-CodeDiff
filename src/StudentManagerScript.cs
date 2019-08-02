@@ -474,8 +474,6 @@ public class StudentManagerScript : MonoBehaviour
 
 	public bool YandereDying;
 
-	public bool YandereLate;
-
 	public bool FirstUpdate;
 
 	public bool MissionMode;
@@ -483,6 +481,10 @@ public class StudentManagerScript : MonoBehaviour
 	public bool OpenCurtain;
 
 	public bool PinningDown;
+
+	public bool RoofFenceUp;
+
+	public bool YandereLate;
 
 	public bool ForceSpawn;
 
@@ -589,6 +591,7 @@ public class StudentManagerScript : MonoBehaviour
 	{
 		this.LoveSick = GameGlobals.LoveSick;
 		this.MetalDetectors = SchoolGlobals.HighSecurity;
+		this.RoofFenceUp = SchoolGlobals.RoofFence;
 		if (ClubGlobals.GetClubClosed(ClubType.LightMusic))
 		{
 			this.SpawnPositions[51].position = new Vector3(3f, 0f, -95f);
@@ -607,6 +610,7 @@ public class StudentManagerScript : MonoBehaviour
 		if (GameGlobals.Profile == 0)
 		{
 			GameGlobals.Profile = 1;
+			PlayerGlobals.Money = 10f;
 		}
 		this.ID = 76;
 		while (this.ID < 81)
@@ -1094,7 +1098,7 @@ public class StudentManagerScript : MonoBehaviour
 		{
 			flag = true;
 		}
-		if (!flag && this.Students[spawnID] == null && !StudentGlobals.GetStudentDead(spawnID) && !StudentGlobals.GetStudentKidnapped(spawnID) && !StudentGlobals.GetStudentArrested(spawnID) && !StudentGlobals.GetStudentExpelled(spawnID) && this.JSON.Students[spawnID].Name != "Unknown" && this.JSON.Students[spawnID].Name != "Reserved" && StudentGlobals.GetStudentReputation(spawnID) > -100)
+		if (!flag && this.Students[spawnID] == null && !StudentGlobals.GetStudentDead(spawnID) && !StudentGlobals.GetStudentKidnapped(spawnID) && !StudentGlobals.GetStudentArrested(spawnID) && !StudentGlobals.GetStudentExpelled(spawnID) && StudentGlobals.GetStudentReputation(spawnID) > -100)
 		{
 			int num;
 			if (this.JSON.Students[spawnID].Name == "Random")
@@ -1176,6 +1180,12 @@ public class StudentManagerScript : MonoBehaviour
 		}
 		this.NPCsSpawned++;
 		this.ForceSpawn = false;
+		if (this.Students[10] != null || this.Students[11] != null)
+		{
+			UnityEngine.Object.Destroy(this.Students[10].gameObject);
+			UnityEngine.Object.Destroy(this.Students[11].gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
+		}
 	}
 
 	public void UpdateStudents(int SpecificStudent = 0)
@@ -1501,7 +1511,7 @@ public class StudentManagerScript : MonoBehaviour
 							studentScript.ChangeSchoolwear();
 							studentScript.ClubAttire = false;
 						}
-						if (studentScript.Schoolwear != 1)
+						if (studentScript.Schoolwear != 1 && !studentScript.BeenSplashed)
 						{
 							studentScript.Schoolwear = 1;
 							studentScript.ChangeSchoolwear();
@@ -1731,6 +1741,8 @@ public class StudentManagerScript : MonoBehaviour
 				}
 				if (studentScript.Teacher)
 				{
+					studentScript.CurrentDestination = studentScript.Destinations[studentScript.Phase];
+					studentScript.Pathfinding.target = studentScript.Destinations[studentScript.Phase];
 					studentScript.Alarmed = false;
 					studentScript.Reacted = false;
 					studentScript.Witness = false;

@@ -51,6 +51,10 @@ public class WelcomeScript : MonoBehaviour
 		{
 			ApplicationGlobals.VersionNumber = this.VersionNumber;
 		}
+		if (!Application.CanStreamedLevelBeLoaded("FunScene"))
+		{
+			Application.Quit();
+		}
 		if (File.Exists(Application.streamingAssetsPath + "/Fun.txt"))
 		{
 			this.Text = File.ReadAllText(Application.streamingAssetsPath + "/Fun.txt");

@@ -13,6 +13,8 @@ public class FoldedUniformScript : MonoBehaviour
 
 	public bool Clean;
 
+	public bool Spare;
+
 	public float Timer;
 
 	public int Type;
@@ -24,6 +26,10 @@ public class FoldedUniformScript : MonoBehaviour
 		{
 			this.Prompt.HideButton[0] = true;
 		}
+		if (this.Spare && !GameGlobals.SpareUniform)
+		{
+			UnityEngine.Object.Destroy(base.gameObject);
+		}
 	}
 
 	private void Update()
@@ -31,7 +37,26 @@ public class FoldedUniformScript : MonoBehaviour
 		if (this.Clean)
 		{
 			this.InPosition = this.Yandere.StudentManager.LockerRoomArea.bounds.Contains(base.transform.position);
-			this.Prompt.HideButton[0] = (!this.Yandere.MyRenderer.sharedMesh == this.Yandere.Towel || this.Yandere.Bloodiness != 0f || !this.InPosition);
+			if (this.Yandere.MyRenderer.sharedMesh == this.Yandere.Towel)
+			{
+				Debug.Log("Yandere-chan is wearing a towel.");
+			}
+			if (this.Yandere.Bloodiness == 0f)
+			{
+				Debug.Log("Yandere-chan is not bloody.");
+			}
+			if (this.InPosition)
+			{
+				Debug.Log("This uniform is in the locker room.");
+			}
+			if (this.Yandere.MyRenderer.sharedMesh != this.Yandere.Towel || this.Yandere.Bloodiness != 0f || !this.InPosition)
+			{
+				this.Prompt.HideButton[0] = true;
+			}
+			else
+			{
+				this.Prompt.HideButton[0] = false;
+			}
 			if (this.Prompt.Circle[0].fillAmount == 0f)
 			{
 				UnityEngine.Object.Instantiate<GameObject>(this.SteamCloud, this.Yandere.transform.position + Vector3.up * 0.81f, Quaternion.identity);

@@ -3,6 +3,8 @@ using UnityEngine;
 
 public static class PlayerGlobals
 {
+	private const string Str_Money = "Money";
+
 	private const string Str_Alerts = "Alerts";
 
 	private const string Str_BullyPhoto = "BullyPhoto_";
@@ -52,6 +54,18 @@ public static class PlayerGlobals
 	private const string Str_StudentFriend = "StudentFriend_";
 
 	private const string Str_StudentPantyShot = "StudentPantyShot_";
+
+	public static float Money
+	{
+		get
+		{
+			return PlayerPrefs.GetFloat("Profile_" + GameGlobals.Profile + "_Money");
+		}
+		set
+		{
+			PlayerPrefs.SetFloat("Profile_" + GameGlobals.Profile + "_Money", value);
+		}
+	}
 
 	public static int Alerts
 	{
@@ -483,6 +497,7 @@ public static class PlayerGlobals
 
 	public static void DeleteAll()
 	{
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_Money");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_Alerts");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_Enlightenment");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_EnlightenmentBonus");

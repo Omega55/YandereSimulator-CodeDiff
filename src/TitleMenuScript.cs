@@ -158,21 +158,6 @@ public class TitleMenuScript : MonoBehaviour
 			this.TurnLoveSick();
 		}
 		Time.timeScale = 1f;
-		if (this.JSON.Students[11].Name != "Reserved")
-		{
-			if (Application.CanStreamedLevelBeLoaded("FunScene"))
-			{
-				SceneManager.LoadScene("FunScene");
-			}
-			else if (Application.CanStreamedLevelBeLoaded("MoreFunScene"))
-			{
-				SceneManager.LoadScene("MoreFunScene");
-			}
-			else
-			{
-				Application.Quit();
-			}
-		}
 	}
 
 	private void Update()
@@ -362,6 +347,7 @@ public class TitleMenuScript : MonoBehaviour
 								" is: ",
 								PlayerPrefs.GetInt("ProfileCreated_" + GameGlobals.Profile)
 							}));
+							PlayerGlobals.Money = 10f;
 							DateGlobals.Weekday = DayOfWeek.Sunday;
 							SceneManager.LoadScene("SenpaiScene");
 						}

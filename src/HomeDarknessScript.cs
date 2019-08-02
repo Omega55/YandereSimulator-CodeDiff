@@ -81,43 +81,44 @@ public class HomeDarknessScript : MonoBehaviour
 					{
 						SceneManager.LoadScene("LoadingScene");
 					}
-					else if (this.HomeExit.ID != 2)
+					else if (this.HomeExit.ID == 2)
 					{
-						if (this.HomeExit.ID == 3)
+						SceneManager.LoadScene("MaidMenuScene");
+					}
+					else if (this.HomeExit.ID == 3)
+					{
+						if (this.HomeYandere.transform.position.y > -5f)
 						{
-							if (this.HomeYandere.transform.position.y > -5f)
+							this.HomeYandere.transform.position = new Vector3(-2f, -10f, -2f);
+							this.HomeYandere.transform.eulerAngles = new Vector3(0f, 90f, 0f);
+							this.HomeYandere.CanMove = true;
+							this.FadeOut = false;
+							this.HomeCamera.Destinations[0].position = new Vector3(2.425f, -8f, 0f);
+							this.HomeCamera.Destination = this.HomeCamera.Destinations[0];
+							this.HomeCamera.transform.position = this.HomeCamera.Destination.position;
+							this.HomeCamera.Target = this.HomeCamera.Targets[0];
+							this.HomeCamera.Focus.position = this.HomeCamera.Target.position;
+							this.BasementLabel.text = "Upstairs";
+							this.HomeCamera.DayLight.SetActive(true);
+							Physics.SyncTransforms();
+						}
+						else
+						{
+							this.HomeYandere.transform.position = new Vector3(-1.6f, 0f, -1.6f);
+							this.HomeYandere.transform.eulerAngles = new Vector3(0f, 45f, 0f);
+							this.HomeYandere.CanMove = true;
+							this.FadeOut = false;
+							this.HomeCamera.Destinations[0].position = new Vector3(-2.0615f, 2f, 2.418f);
+							this.HomeCamera.Destination = this.HomeCamera.Destinations[0];
+							this.HomeCamera.transform.position = this.HomeCamera.Destination.position;
+							this.HomeCamera.Target = this.HomeCamera.Targets[0];
+							this.HomeCamera.Focus.position = this.HomeCamera.Target.position;
+							this.BasementLabel.text = "Basement";
+							if (HomeGlobals.Night)
 							{
-								this.HomeYandere.transform.position = new Vector3(-2f, -10f, -2f);
-								this.HomeYandere.transform.eulerAngles = new Vector3(0f, 90f, 0f);
-								this.HomeYandere.CanMove = true;
-								this.FadeOut = false;
-								this.HomeCamera.Destinations[0].position = new Vector3(2.425f, -8f, 0f);
-								this.HomeCamera.Destination = this.HomeCamera.Destinations[0];
-								this.HomeCamera.transform.position = this.HomeCamera.Destination.position;
-								this.HomeCamera.Target = this.HomeCamera.Targets[0];
-								this.HomeCamera.Focus.position = this.HomeCamera.Target.position;
-								this.BasementLabel.text = "Upstairs";
-								this.HomeCamera.DayLight.SetActive(true);
-								Physics.SyncTransforms();
+								this.HomeCamera.DayLight.SetActive(false);
 							}
-							else
-							{
-								this.HomeYandere.transform.position = new Vector3(-1.6f, 0f, -1.6f);
-								this.HomeYandere.transform.eulerAngles = new Vector3(0f, 45f, 0f);
-								this.HomeYandere.CanMove = true;
-								this.FadeOut = false;
-								this.HomeCamera.Destinations[0].position = new Vector3(-2.0615f, 2f, 2.418f);
-								this.HomeCamera.Destination = this.HomeCamera.Destinations[0];
-								this.HomeCamera.transform.position = this.HomeCamera.Destination.position;
-								this.HomeCamera.Target = this.HomeCamera.Targets[0];
-								this.HomeCamera.Focus.position = this.HomeCamera.Target.position;
-								this.BasementLabel.text = "Basement";
-								if (HomeGlobals.Night)
-								{
-									this.HomeCamera.DayLight.SetActive(false);
-								}
-								Physics.SyncTransforms();
-							}
+							Physics.SyncTransforms();
 						}
 					}
 				}

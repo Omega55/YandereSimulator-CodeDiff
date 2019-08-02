@@ -1,11 +1,14 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.PostProcessing;
 
 public class QualityManagerScript : MonoBehaviour
 {
+	public AntialiasingAsPostEffect PostAliasing;
+
 	public StudentManagerScript StudentManager;
 
-	public AntialiasingAsPostEffect PostAliasing;
+	public PostProcessingBehaviour Obscurance;
 
 	public SettingsScript Settings;
 
@@ -99,6 +102,7 @@ public class QualityManagerScript : MonoBehaviour
 		this.UpdateFPSIndex();
 		this.UpdateShadows();
 		this.UpdateParticles();
+		this.UpdateObscurance();
 		this.UpdatePostAliasing();
 		this.UpdateDrawDistance();
 		this.UpdateLowDetailStudents();
@@ -558,6 +562,11 @@ public class QualityManagerScript : MonoBehaviour
 			this.RimLightActive = false;
 			this.UpdateOutlines();
 		}
+	}
+
+	public void UpdateObscurance()
+	{
+		this.Obscurance.enabled = !OptionGlobals.DisableObscurance;
 	}
 
 	public void AdjustRimLight(Material mat)

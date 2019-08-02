@@ -19,20 +19,16 @@ public class OtherScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (this.JSON.Students[11].Name != "Reserved")
+		for (int i = 1; i < 101; i++)
 		{
-			Application.Quit();
-			this.Wow();
-		}
-		else
-		{
-			for (int i = 1; i < 101; i++)
+			if (!this.StudentManager.Students[i].Male && (this.StudentManager.Students[i].Cosmetic.Hairstyle == 20 || this.StudentManager.Students[i].Cosmetic.Hairstyle == 21))
 			{
-				if (this.JSON.Students[i].Gender == 0 && this.JSON.Students[i].Hairstyle == "20" && this.StudentManager.Students[i] != null)
-				{
-					this.StudentManager.Students[i].gameObject.SetActive(false);
-				}
+				this.Wow();
 			}
+		}
+		if (!this.Other.gameObject.activeInHierarchy)
+		{
+			base.enabled = false;
 		}
 	}
 

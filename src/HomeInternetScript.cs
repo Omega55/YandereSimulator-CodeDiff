@@ -29,6 +29,8 @@ public class HomeInternetScript : MonoBehaviour
 
 	public GameObject NavigationMenu;
 
+	public GameObject OnlineShopping;
+
 	public GameObject SocialMedia;
 
 	public GameObject NewPostText;
@@ -111,6 +113,20 @@ public class HomeInternetScript : MonoBehaviour
 
 	public UITexture[] Portraits;
 
+	public int Height;
+
+	public Transform Highlight;
+
+	public Transform ItemList;
+
+	public GameObject AreYouSure;
+
+	public AudioSource MyAudio;
+
+	public UILabel MoneyLabel;
+
+	public float Shake;
+
 	private void Awake()
 	{
 		this.StudentPost1.localPosition = new Vector3(this.StudentPost1.localPosition.x, -180f, this.StudentPost1.localPosition.z);
@@ -127,10 +143,12 @@ public class HomeInternetScript : MonoBehaviour
 		this.Highlights[2].enabled = false;
 		this.Highlights[3].enabled = false;
 		this.YanderePost.gameObject.SetActive(false);
+		this.NavigationMenu.SetActive(true);
 		this.ChangeLabel.SetActive(false);
 		this.ChangeIcon.SetActive(false);
 		this.PostLabel.SetActive(false);
 		this.PostIcon.SetActive(false);
+		this.OnlineShopping.SetActive(false);
 		this.NewPostText.SetActive(false);
 		this.BG.SetActive(false);
 		if (!EventGlobals.Event2 || StudentGlobals.GetStudentExposed(30))
@@ -162,7 +180,7 @@ public class HomeInternetScript : MonoBehaviour
 	{
 		if (!this.HomeYandere.CanMove && !this.PauseScreen.Show)
 		{
-			if (!this.SocialMedia.activeInHierarchy)
+			if (this.NavigationMenu.activeInHierarchy)
 			{
 				if (Input.GetButtonDown("A"))
 				{
@@ -191,6 +209,12 @@ public class HomeInternetScript : MonoBehaviour
 					this.PromptBar.UpdateButtons();
 					this.PromptBar.Show = true;
 				}
+				else if (Input.GetButtonDown("LB"))
+				{
+					this.NavigationMenu.SetActive(false);
+					this.OnlineShopping.SetActive(true);
+					this.MoneyLabel.text = "$" + PlayerGlobals.Money.ToString("F2");
+				}
 				else if (Input.GetButtonDown("B"))
 				{
 					this.HomeCamera.Destination = this.HomeCamera.Destinations[0];
@@ -200,7 +224,7 @@ public class HomeInternetScript : MonoBehaviour
 					base.enabled = false;
 				}
 			}
-			else
+			else if (this.SocialMedia.activeInHierarchy)
 			{
 				this.Menu.localScale = Vector3.Lerp(this.Menu.localScale, (!this.ShowMenu) ? Vector3.zero : new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 				if (this.WritingPost)
@@ -472,6 +496,81 @@ public class HomeInternetScript : MonoBehaviour
 							this.PostSequence = false;
 						}
 					}
+				}
+			}
+			else if (this.OnlineShopping.activeInHierarchy)
+			{
+				if (Input.GetKeyDown("m"))
+				{
+					PlayerGlobals.Money = 100f;
+				}
+				if (Input.GetButtonDown("A"))
+				{
+					if (PlayerGlobals.Money > 33.33f)
+					{
+						if (!this.AreYouSure.activeInHierarchy)
+						{
+							this.AreYouSure.SetActive(true);
+						}
+						else
+						{
+							this.AreYouSure.SetActive(false);
+							GameGlobals.SpareUniform = true;
+							PlayerGlobals.Money -= 33.33f;
+							this.MyAudio.Play();
+							this.MoneyLabel.text = "$" + PlayerGlobals.Money.ToString("F2");
+						}
+					}
+					else
+					{
+						this.Shake = 10f;
+					}
+				}
+				this.Shake = Mathf.MoveTowards(this.Shake, 0f, Time.deltaTime * 10f);
+				this.MoneyLabel.transform.localPosition = new Vector3(445f + UnityEngine.Random.Range(this.Shake * -1f, this.Shake * 1f), 410f + UnityEngine.Random.Range(this.Shake * -1f, this.Shake * 1f), 0f);
+				if (Input.GetButtonDown("B"))
+				{
+					if (!this.AreYouSure.activeInHierarchy)
+					{
+						this.NavigationMenu.SetActive(true);
+						this.OnlineShopping.SetActive(false);
+					}
+					else
+					{
+						this.AreYouSure.SetActive(false);
+					}
+				}
+				if (this.InputManager.TappedDown)
+				{
+					this.Height++;
+				}
+				if (this.InputManager.TappedUp)
+				{
+					this.Height--;
+				}
+				if (this.Height < 0)
+				{
+					this.Height = 0;
+				}
+				if (this.Height > 4)
+				{
+					this.Height = 4;
+				}
+				if (this.Height == 0)
+				{
+					this.Highlight.localPosition = Vector3.Lerp(this.Highlight.localPosition, new Vector3(this.Highlight.localPosition.x, 130f, this.Highlight.localPosition.z), Time.deltaTime * 10f);
+				}
+				else if (this.Height > 0)
+				{
+					this.Highlight.localPosition = Vector3.Lerp(this.Highlight.localPosition, new Vector3(this.Highlight.localPosition.x, -85f, this.Highlight.localPosition.z), Time.deltaTime * 10f);
+				}
+				if (this.Height < 2)
+				{
+					this.ItemList.localPosition = Vector3.Lerp(this.ItemList.localPosition, new Vector3(this.ItemList.localPosition.x, 130f, this.ItemList.localPosition.z), Time.deltaTime * 10f);
+				}
+				else
+				{
+					this.ItemList.localPosition = Vector3.Lerp(this.ItemList.localPosition, new Vector3(this.ItemList.localPosition.x, (float)(130 + 215 * (this.Height - 1)), this.ItemList.localPosition.z), Time.deltaTime * 10f);
 				}
 			}
 		}

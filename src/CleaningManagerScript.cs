@@ -27,7 +27,7 @@ public class CleaningManagerScript : MonoBehaviour
 		{
 			for (int i = 1; i < this.ClappingSpots.Length; i++)
 			{
-				this.ClappingSpots[i].transform.position = new Vector3(this.ClappingSpots[i].transform.position.x, this.ClappingSpots[i].transform.position.y, this.ClappingSpots[i].transform.position.z + 1f);
+				this.ClappingSpots[i].transform.position = new Vector3(this.ClappingSpots[i].transform.position.x, this.ClappingSpots[i].transform.position.y, this.ClappingSpots[i].transform.position.z + 0.5f);
 			}
 		}
 	}

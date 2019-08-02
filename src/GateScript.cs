@@ -69,7 +69,7 @@ public class GateScript : MonoBehaviour
 		}
 		if (this.StudentManager.Students[97] != null)
 		{
-			if (this.StudentManager.Students[97].CurrentAction == StudentActionType.AtLocker)
+			if (this.StudentManager.Students[97].CurrentAction == StudentActionType.AtLocker && this.StudentManager.Students[97].Routine)
 			{
 				if ((double)Vector3.Distance(this.StudentManager.Students[97].transform.position, this.Prompt.transform.position) < 1.6)
 				{

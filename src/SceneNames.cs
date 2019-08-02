@@ -53,4 +53,8 @@ public static class SceneNames
 	public const string MiyukiGameplayScene = "MiyukiGameplayScene";
 
 	public const string MiyukiThanksScene = "MiyukiThanksScene";
+
+	public const string MaidMenuScene = "MaidMenuScene";
+
+	public const string MaidGameScene = "MaidGameScene";
 }

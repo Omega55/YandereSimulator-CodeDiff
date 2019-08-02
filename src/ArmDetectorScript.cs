@@ -408,37 +408,28 @@ public class ArmDetectorScript : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		Debug.Log("Trigger collision!");
 		if (other.transform.parent == this.LimbParent)
 		{
-			Debug.Log("The object is a child of LimbParent!");
 			PickUpScript component = other.gameObject.GetComponent<PickUpScript>();
 			if (component != null)
 			{
-				Debug.Log("The object has a PickUpScript!");
 				BodyPartScript bodyPart = component.BodyPart;
-				if (bodyPart.Sacrifice)
+				if (bodyPart.Sacrifice && (bodyPart.Type == 3 || bodyPart.Type == 4))
 				{
-					Debug.Log("The object is a sacrifice!");
-					if (bodyPart.Type == 3 || bodyPart.Type == 4)
+					bool flag = true;
+					for (int i = 1; i < 11; i++)
 					{
-						Debug.Log("The object is an arm or a leg!");
-						bool flag = true;
-						for (int i = 1; i < 11; i++)
+						if (this.ArmArray[i] == other.gameObject)
 						{
-							if (this.ArmArray[i] == other.gameObject)
-							{
-								flag = false;
-							}
+							flag = false;
 						}
-						if (flag)
+					}
+					if (flag)
+					{
+						this.Arms++;
+						if (this.Arms < this.ArmArray.Length)
 						{
-							Debug.Log("Increment arm count!");
-							this.Arms++;
-							if (this.Arms < this.ArmArray.Length)
-							{
-								this.ArmArray[this.Arms] = other.gameObject;
-							}
+							this.ArmArray[this.Arms] = other.gameObject;
 						}
 					}
 				}

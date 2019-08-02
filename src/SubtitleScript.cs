@@ -409,6 +409,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] Task81Lines;
 
+	public string[] TaskGenericLines;
+
 	public string[] TaskInquiries;
 
 	public string[] Club0Info;
@@ -510,6 +512,8 @@ public class SubtitleScript : MonoBehaviour
 	public string[] RejectHelps;
 
 	public string[] ObstacleMurderReactions;
+
+	public string[] ObstaclePoisonReactions;
 
 	public string InfoNotice;
 
@@ -632,6 +636,8 @@ public class SubtitleScript : MonoBehaviour
 	public AudioClip[] Task52Clips;
 
 	public AudioClip[] Task81Clips;
+
+	public AudioClip[] TaskGenericClips;
 
 	public AudioClip[] TaskInquiryClips;
 
@@ -770,6 +776,8 @@ public class SubtitleScript : MonoBehaviour
 	public AudioClip[] EulogyClips;
 
 	public AudioClip[] ObstacleMurderReactionClips;
+
+	public AudioClip[] ObstaclePoisonReactionClips;
 
 	private SubtitleTypeAndAudioClipArrayDictionary SubtitleClipArrays;
 
@@ -1116,6 +1124,10 @@ public class SubtitleScript : MonoBehaviour
 				new AudioClipArrayWrapper(this.Task81Clips)
 			},
 			{
+				SubtitleType.TaskGenericLine,
+				new AudioClipArrayWrapper(this.TaskGenericClips)
+			},
+			{
 				SubtitleType.TaskInquiry,
 				new AudioClipArrayWrapper(this.TaskInquiryClips)
 			},
@@ -1306,6 +1318,10 @@ public class SubtitleScript : MonoBehaviour
 			{
 				SubtitleType.ObstacleMurderReaction,
 				new AudioClipArrayWrapper(this.ObstacleMurderReactionClips)
+			},
+			{
+				SubtitleType.ObstaclePoisonReaction,
+				new AudioClipArrayWrapper(this.ObstaclePoisonReactionClips)
 			}
 		};
 	}
@@ -2301,6 +2317,11 @@ public class SubtitleScript : MonoBehaviour
 			this.Label.text = this.Task81Lines[ID];
 			this.PlayVoice(subtitleType, ID);
 		}
+		else if (subtitleType == SubtitleType.TaskGenericLine)
+		{
+			this.Label.text = "(PLACEHOLDER TASK - WILL BE REPLACED AFTER DEMO)\n" + this.TaskGenericLines[ID];
+			this.PlayVoice(subtitleType, ID);
+		}
 		else if (subtitleType == SubtitleType.TaskInquiry)
 		{
 			this.Label.text = this.TaskInquiries[ID];
@@ -2530,6 +2551,11 @@ public class SubtitleScript : MonoBehaviour
 			this.Label.text = this.ObstacleMurderReactions[ID];
 			this.PlayVoice(subtitleType, ID);
 		}
+		else if (subtitleType == SubtitleType.ObstaclePoisonReaction)
+		{
+			this.Label.text = this.ObstaclePoisonReactions[ID];
+			this.PlayVoice(subtitleType, ID);
+		}
 		this.Timer = Duration;
 	}
 
@@ -2560,14 +2586,6 @@ public class SubtitleScript : MonoBehaviour
 
 	public float GetClipLength(int StudentID, int TaskPhase)
 	{
-		if (StudentID == 6)
-		{
-			return this.Task6Clips[TaskPhase].length;
-		}
-		if (StudentID == 7)
-		{
-			return this.Task7Clips[TaskPhase].length;
-		}
 		if (StudentID == 8)
 		{
 			return this.Task8Clips[TaskPhase].length;
@@ -2575,18 +2593,6 @@ public class SubtitleScript : MonoBehaviour
 		if (StudentID == 11)
 		{
 			return this.Task11Clips[TaskPhase].length;
-		}
-		if (StudentID == 13)
-		{
-			return this.Task13Clips[TaskPhase].length;
-		}
-		if (StudentID == 14)
-		{
-			return this.Task14Clips[TaskPhase].length;
-		}
-		if (StudentID == 15)
-		{
-			return this.Task15Clips[TaskPhase].length;
 		}
 		if (StudentID == 25)
 		{
@@ -2599,10 +2605,6 @@ public class SubtitleScript : MonoBehaviour
 		if (StudentID == 30)
 		{
 			return this.Task30Clips[TaskPhase].length;
-		}
-		if (StudentID == 33)
-		{
-			return this.Task33Clips[TaskPhase].length;
 		}
 		if (StudentID == 34)
 		{
@@ -2628,7 +2630,7 @@ public class SubtitleScript : MonoBehaviour
 		{
 			return this.Task81Clips[TaskPhase].length;
 		}
-		return 0f;
+		return this.TaskGenericClips[TaskPhase].length;
 	}
 
 	public float GetClubClipLength(ClubType Club, int ClubPhase)

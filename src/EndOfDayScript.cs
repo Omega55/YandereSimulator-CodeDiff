@@ -1189,7 +1189,7 @@ public class EndOfDayScript : MonoBehaviour
 				while (this.ID < this.Police.CorpseList.Length)
 				{
 					RagdollScript ragdollScript2 = this.Police.CorpseList[this.ID];
-					if (ragdollScript2 != null && ragdollScript2.Suicide)
+					if (ragdollScript2 != null && ragdollScript2.Suicide && this.Police.Corpses > 0)
 					{
 						this.Police.Corpses--;
 					}
@@ -1205,7 +1205,7 @@ public class EndOfDayScript : MonoBehaviour
 				while (this.ID < this.Police.CorpseList.Length)
 				{
 					RagdollScript ragdollScript3 = this.Police.CorpseList[this.ID];
-					if (ragdollScript3 != null && ragdollScript3.Poisoned)
+					if (ragdollScript3 != null && ragdollScript3.Poisoned && this.Police.Corpses > 0)
 					{
 						this.Police.Corpses--;
 					}
@@ -1221,7 +1221,7 @@ public class EndOfDayScript : MonoBehaviour
 				while (this.ID < this.Police.CorpseList.Length)
 				{
 					RagdollScript ragdollScript4 = this.Police.CorpseList[this.ID];
-					if (ragdollScript4 != null && ragdollScript4.Drowned)
+					if (ragdollScript4 != null && ragdollScript4.Drowned && this.Police.Corpses > 0)
 					{
 						this.Police.Corpses--;
 					}
@@ -1237,7 +1237,7 @@ public class EndOfDayScript : MonoBehaviour
 				while (this.ID < this.Police.CorpseList.Length)
 				{
 					RagdollScript ragdollScript5 = this.Police.CorpseList[this.ID];
-					if (ragdollScript5 != null && ragdollScript5.Electrocuted)
+					if (ragdollScript5 != null && ragdollScript5.Electrocuted && this.Police.Corpses > 0)
 					{
 						this.Police.Corpses--;
 					}

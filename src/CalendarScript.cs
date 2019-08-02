@@ -49,6 +49,7 @@ public class CalendarScript : MonoBehaviour
 		{
 			SchoolGlobals.SchoolAtmosphereSet = true;
 			SchoolGlobals.SchoolAtmosphere = 1f;
+			PlayerGlobals.Money = 10f;
 		}
 		if (SchoolGlobals.SchoolAtmosphere > 1f)
 		{

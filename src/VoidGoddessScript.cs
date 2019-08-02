@@ -394,6 +394,7 @@ public class VoidGoddessScript : MonoBehaviour
 					}
 					this.ID++;
 				}
+				this.UpdatePortraits();
 			}
 			if (Input.GetButtonDown("B"))
 			{

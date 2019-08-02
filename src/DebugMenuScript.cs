@@ -391,8 +391,8 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					else if (Input.GetKeyDown(KeyCode.M))
 					{
-						StudentGlobals.SetStudentBroken(81, true);
-						SceneManager.LoadScene("LoadingScene");
+						PlayerGlobals.Money = 10f;
+						this.Window.SetActive(false);
 					}
 					else if (Input.GetKeyDown(KeyCode.O))
 					{

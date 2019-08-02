@@ -131,7 +131,7 @@ public class StudentInfoScript : MonoBehaviour
 		string text = string.Empty + studentJson.Class;
 		text = text.Insert(1, "-");
 		this.ClassLabel.text = "Class " + text;
-		if (studentJson.Name == "Unknown" || studentJson.Name == "Reserved" || ID == 90 || ID > 96)
+		if (ID == 90 || ID > 96)
 		{
 			this.ClassLabel.text = string.Empty;
 		}
@@ -317,7 +317,16 @@ public class StudentInfoScript : MonoBehaviour
 			}
 			else if (this.StudentInfoMenu.SendingHome)
 			{
-				if (this.StudentManager.Students[this.CurrentStudent].Routine && !this.StudentManager.Students[this.CurrentStudent].InEvent && !this.StudentManager.Students[this.CurrentStudent].TargetedForDistraction && this.StudentManager.Students[this.CurrentStudent].ClubActivityPhase < 16 && !this.StudentManager.Students[this.CurrentStudent].MyBento.Tampered)
+				if (this.CurrentStudent == 10)
+				{
+					this.StudentInfoMenu.PauseScreen.ServiceMenu.TextMessageManager.SpawnMessage(8);
+					base.gameObject.SetActive(false);
+					this.PromptBar.ClearButtons();
+					this.PromptBar.Label[0].text = string.Empty;
+					this.PromptBar.Label[1].text = "Back";
+					this.PromptBar.UpdateButtons();
+				}
+				else if (this.StudentManager.Students[this.CurrentStudent].Routine && !this.StudentManager.Students[this.CurrentStudent].InEvent && !this.StudentManager.Students[this.CurrentStudent].TargetedForDistraction && this.StudentManager.Students[this.CurrentStudent].ClubActivityPhase < 16 && !this.StudentManager.Students[this.CurrentStudent].MyBento.Tampered)
 				{
 					this.StudentManager.Students[this.CurrentStudent].Routine = false;
 					this.StudentManager.Students[this.CurrentStudent].SentHome = true;

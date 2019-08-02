@@ -7,6 +7,8 @@ public class TaskWindowScript : MonoBehaviour
 
 	public SewingMachineScript SewingMachine;
 
+	public CheckOutBookScript CheckOutBook;
+
 	public TaskManagerScript TaskManager;
 
 	public PromptBarScript PromptBar;
@@ -28,6 +30,8 @@ public class TaskWindowScript : MonoBehaviour
 	public Texture[] Icons;
 
 	public bool TaskComplete;
+
+	public bool Generic;
 
 	public GameObject Window;
 
@@ -52,12 +56,18 @@ public class TaskWindowScript : MonoBehaviour
 		this.PromptBar.Label[1].text = "Refuse";
 		this.PromptBar.UpdateButtons();
 		this.PromptBar.Show = true;
+		this.GetPortrait(ID);
+		this.StudentID = ID;
+		this.GenericCheck();
+		if (this.Generic)
+		{
+			ID = 0;
+			this.Generic = false;
+		}
 		this.TaskDescLabel.transform.parent.gameObject.SetActive(true);
 		this.TaskDescLabel.text = this.Descriptions[ID];
 		this.Icon.mainTexture = this.Icons[ID];
 		this.Window.SetActive(true);
-		this.GetPortrait(ID);
-		this.StudentID = ID;
 	}
 
 	private void Update()
@@ -123,6 +133,13 @@ public class TaskWindowScript : MonoBehaviour
 		{
 			this.DialogueWheel.Yandere.TargetStudent.Cosmetic.MaleAccessories[1].SetActive(true);
 		}
+		this.GenericCheck();
+		if (this.Generic)
+		{
+			this.Yandere.Inventory.Book = false;
+			this.CheckOutBook.UpdatePrompt();
+			this.Generic = false;
+		}
 	}
 
 	private void GetPortrait(int ID)
@@ -144,6 +161,15 @@ public class TaskWindowScript : MonoBehaviour
 		if (this.StudentID == 30)
 		{
 			this.SewingMachine.Check = true;
+		}
+	}
+
+	public void GenericCheck()
+	{
+		this.Generic = false;
+		if (this.Yandere.TargetStudent.StudentID != 8 && this.Yandere.TargetStudent.StudentID != 11 && this.Yandere.TargetStudent.StudentID != 25 && this.Yandere.TargetStudent.StudentID != 28 && this.Yandere.TargetStudent.StudentID != 30 && this.Yandere.TargetStudent.StudentID != 36 && this.Yandere.TargetStudent.StudentID != 37 && this.Yandere.TargetStudent.StudentID != 38 && this.Yandere.TargetStudent.StudentID != 52 && this.Yandere.TargetStudent.StudentID != 81)
+		{
+			this.Generic = true;
 		}
 	}
 }

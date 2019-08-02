@@ -661,7 +661,12 @@ public class DialogueWheelScript : MonoBehaviour
 		}
 		else if (!PlayerGlobals.GetStudentFriend(this.Yandere.TargetStudent.StudentID))
 		{
+			bool flag = false;
 			if (this.Yandere.TargetStudent.StudentID != 8 && this.Yandere.TargetStudent.StudentID != 11 && this.Yandere.TargetStudent.StudentID != 25 && this.Yandere.TargetStudent.StudentID != 28 && this.Yandere.TargetStudent.StudentID != 30 && this.Yandere.TargetStudent.StudentID != 36 && this.Yandere.TargetStudent.StudentID != 37 && this.Yandere.TargetStudent.StudentID != 38 && this.Yandere.TargetStudent.StudentID != 52 && this.Yandere.TargetStudent.StudentID != 81)
+			{
+				flag = true;
+			}
+			if (this.Yandere.TargetStudent.StudentID == 1 || this.Yandere.TargetStudent.Club == ClubType.Delinquent || this.Yandere.TargetStudent.StudentID == 41)
 			{
 				UISprite uisprite13 = this.Shadow[5];
 				uisprite13.color = new Color(uisprite13.color.r, uisprite13.color.g, uisprite13.color.b, 0.75f);
@@ -691,66 +696,71 @@ public class DialogueWheelScript : MonoBehaviour
 						uisprite17.color = new Color(uisprite17.color.r, uisprite17.color.g, uisprite17.color.b, 0f);
 					}
 				}
+				if (flag && TaskGlobals.GetTaskStatus(this.Yandere.TargetStudent.StudentID) == 1 && this.Yandere.Inventory.Book)
+				{
+					UISprite uisprite18 = this.Shadow[5];
+					uisprite18.color = new Color(uisprite18.color.r, uisprite18.color.g, uisprite18.color.b, 0f);
+				}
 			}
 		}
 		else if (this.Yandere.TargetStudent.StudentID != 28 && this.Yandere.TargetStudent.StudentID != 30)
 		{
-			UISprite uisprite18 = this.Shadow[5];
-			uisprite18.color = new Color(uisprite18.color.r, uisprite18.color.g, uisprite18.color.b, 0.75f);
-		}
-		else if (!this.Yandere.TargetStudent.Male && this.LoveManager.SuitorProgress == 0)
-		{
 			UISprite uisprite19 = this.Shadow[5];
 			uisprite19.color = new Color(uisprite19.color.r, uisprite19.color.g, uisprite19.color.b, 0.75f);
 		}
+		else if (!this.Yandere.TargetStudent.Male && this.LoveManager.SuitorProgress == 0)
+		{
+			UISprite uisprite20 = this.Shadow[5];
+			uisprite20.color = new Color(uisprite20.color.r, uisprite20.color.g, uisprite20.color.b, 0.75f);
+		}
 		if (!this.Yandere.TargetStudent.Indoors || this.Yandere.TargetStudent.Club == ClubType.Council)
 		{
-			UISprite uisprite20 = this.Shadow[6];
-			uisprite20.color = new Color(uisprite20.color.r, uisprite20.color.g, uisprite20.color.b, 0.75f);
+			UISprite uisprite21 = this.Shadow[6];
+			uisprite21.color = new Color(uisprite21.color.r, uisprite21.color.g, uisprite21.color.b, 0.75f);
 		}
 		else
 		{
 			if (!PlayerGlobals.GetStudentFriend(this.Yandere.TargetStudent.StudentID))
 			{
-				UISprite uisprite21 = this.Shadow[6];
-				uisprite21.color = new Color(uisprite21.color.r, uisprite21.color.g, uisprite21.color.b, 0.75f);
+				UISprite uisprite22 = this.Shadow[6];
+				uisprite22.color = new Color(uisprite22.color.r, uisprite22.color.g, uisprite22.color.b, 0.75f);
 			}
 			if ((this.Yandere.TargetStudent.Male && PlayerGlobals.Seduction + PlayerGlobals.SeductionBonus > 3) || PlayerGlobals.Seduction + PlayerGlobals.SeductionBonus > 4)
 			{
-				UISprite uisprite22 = this.Shadow[6];
-				uisprite22.color = new Color(uisprite22.color.r, uisprite22.color.g, uisprite22.color.b, 0f);
+				UISprite uisprite23 = this.Shadow[6];
+				uisprite23.color = new Color(uisprite23.color.r, uisprite23.color.g, uisprite23.color.b, 0f);
 			}
 		}
 		if (ClubGlobals.Club == this.Yandere.TargetStudent.Club)
 		{
-			UISprite uisprite23 = this.ClubShadow[1];
-			uisprite23.color = new Color(uisprite23.color.r, uisprite23.color.g, uisprite23.color.b, 0.75f);
-			UISprite uisprite24 = this.ClubShadow[2];
+			UISprite uisprite24 = this.ClubShadow[1];
 			uisprite24.color = new Color(uisprite24.color.r, uisprite24.color.g, uisprite24.color.b, 0.75f);
+			UISprite uisprite25 = this.ClubShadow[2];
+			uisprite25.color = new Color(uisprite25.color.r, uisprite25.color.g, uisprite25.color.b, 0.75f);
 		}
 		if (this.Yandere.ClubAttire || this.Yandere.Mask != null || this.Yandere.Gloves != null || this.Yandere.Container != null)
 		{
-			UISprite uisprite25 = this.ClubShadow[3];
-			uisprite25.color = new Color(uisprite25.color.r, uisprite25.color.g, uisprite25.color.b, 0.75f);
+			UISprite uisprite26 = this.ClubShadow[3];
+			uisprite26.color = new Color(uisprite26.color.r, uisprite26.color.g, uisprite26.color.b, 0.75f);
 		}
 		if (ClubGlobals.Club != this.Yandere.TargetStudent.Club)
 		{
-			UISprite uisprite26 = this.ClubShadow[2];
-			uisprite26.color = new Color(uisprite26.color.r, uisprite26.color.g, uisprite26.color.b, 0f);
-			UISprite uisprite27 = this.ClubShadow[3];
-			uisprite27.color = new Color(uisprite27.color.r, uisprite27.color.g, uisprite27.color.b, 0.75f);
-			UISprite uisprite28 = this.ClubShadow[5];
+			UISprite uisprite27 = this.ClubShadow[2];
+			uisprite27.color = new Color(uisprite27.color.r, uisprite27.color.g, uisprite27.color.b, 0f);
+			UISprite uisprite28 = this.ClubShadow[3];
 			uisprite28.color = new Color(uisprite28.color.r, uisprite28.color.g, uisprite28.color.b, 0.75f);
-		}
-		if (this.Yandere.StudentManager.MurderTakingPlace)
-		{
 			UISprite uisprite29 = this.ClubShadow[5];
 			uisprite29.color = new Color(uisprite29.color.r, uisprite29.color.g, uisprite29.color.b, 0.75f);
 		}
+		if (this.Yandere.StudentManager.MurderTakingPlace)
+		{
+			UISprite uisprite30 = this.ClubShadow[5];
+			uisprite30.color = new Color(uisprite30.color.r, uisprite30.color.g, uisprite30.color.b, 0.75f);
+		}
 		if ((this.Yandere.TargetStudent.StudentID != 46 && this.Yandere.TargetStudent.StudentID != 51) || this.Yandere.Police.Show)
 		{
-			UISprite uisprite30 = this.ClubShadow[6];
-			uisprite30.color = new Color(uisprite30.color.r, uisprite30.color.g, uisprite30.color.b, 0.75f);
+			UISprite uisprite31 = this.ClubShadow[6];
+			uisprite31.color = new Color(uisprite31.color.r, uisprite31.color.g, uisprite31.color.b, 0.75f);
 		}
 		if (this.Yandere.TargetStudent.StudentID == 51)
 		{
@@ -772,42 +782,56 @@ public class DialogueWheelScript : MonoBehaviour
 			}
 			if (num < 4)
 			{
-				UISprite uisprite31 = this.ClubShadow[6];
-				uisprite31.color = new Color(uisprite31.color.r, uisprite31.color.g, uisprite31.color.b, 0.75f);
+				UISprite uisprite32 = this.ClubShadow[6];
+				uisprite32.color = new Color(uisprite32.color.r, uisprite32.color.g, uisprite32.color.b, 0.75f);
 			}
 		}
 		if (this.Yandere.Followers > 0)
 		{
-			UISprite uisprite32 = this.FavorShadow[1];
-			uisprite32.color = new Color(uisprite32.color.r, uisprite32.color.g, uisprite32.color.b, 0.75f);
+			UISprite uisprite33 = this.FavorShadow[1];
+			uisprite33.color = new Color(uisprite33.color.r, uisprite33.color.g, uisprite33.color.b, 0.75f);
 		}
 		if (this.Yandere.TargetStudent.DistanceToDestination > 0.5f)
 		{
-			UISprite uisprite33 = this.FavorShadow[2];
-			uisprite33.color = new Color(uisprite33.color.r, uisprite33.color.g, uisprite33.color.b, 0.75f);
+			UISprite uisprite34 = this.FavorShadow[2];
+			uisprite34.color = new Color(uisprite34.color.r, uisprite34.color.g, uisprite34.color.b, 0.75f);
 		}
 		if (!this.Yandere.TargetStudent.Male)
 		{
-			UISprite uisprite34 = this.LoveShadow[1];
-			uisprite34.color = new Color(uisprite34.color.r, uisprite34.color.g, uisprite34.color.b, 0.75f);
+			UISprite uisprite35 = this.LoveShadow[1];
+			uisprite35.color = new Color(uisprite35.color.r, uisprite35.color.g, uisprite35.color.b, 0.75f);
 		}
 		if (this.DatingMinigame == null || !this.Yandere.Inventory.Headset || (this.Yandere.TargetStudent.Male && !this.LoveManager.RivalWaiting) || this.LoveManager.Courted)
 		{
-			UISprite uisprite35 = this.LoveShadow[2];
-			uisprite35.color = new Color(uisprite35.color.r, uisprite35.color.g, uisprite35.color.b, 0.75f);
+			UISprite uisprite36 = this.LoveShadow[2];
+			uisprite36.color = new Color(uisprite36.color.r, uisprite36.color.g, uisprite36.color.b, 0.75f);
 		}
 		if (!this.Yandere.TargetStudent.Male || !this.Yandere.Inventory.Rose || this.Yandere.TargetStudent.Rose)
 		{
-			UISprite uisprite36 = this.LoveShadow[4];
-			uisprite36.color = new Color(uisprite36.color.r, uisprite36.color.g, uisprite36.color.b, 0.75f);
+			UISprite uisprite37 = this.LoveShadow[4];
+			uisprite37.color = new Color(uisprite37.color.r, uisprite37.color.g, uisprite37.color.b, 0.75f);
 		}
 	}
 
 	private void CheckTaskCompletion()
 	{
+		Debug.Log("Checking for task completion.");
 		if (TaskGlobals.GetTaskStatus(this.Yandere.TargetStudent.StudentID) == 2 && this.Yandere.TargetStudent.StudentID == 81)
 		{
 			this.Yandere.Inventory.Cigs = false;
+		}
+		bool flag = false;
+		if (this.Yandere.TargetStudent.StudentID != 8 && this.Yandere.TargetStudent.StudentID != 11 && this.Yandere.TargetStudent.StudentID != 25 && this.Yandere.TargetStudent.StudentID != 28 && this.Yandere.TargetStudent.StudentID != 30 && this.Yandere.TargetStudent.StudentID != 36 && this.Yandere.TargetStudent.StudentID != 37 && this.Yandere.TargetStudent.StudentID != 38 && this.Yandere.TargetStudent.StudentID != 52 && this.Yandere.TargetStudent.StudentID != 81)
+		{
+			flag = true;
+		}
+		if (flag)
+		{
+			Debug.Log("This student's Task Status is: " + TaskGlobals.GetTaskStatus(this.Yandere.TargetStudent.StudentID));
+			if (TaskGlobals.GetTaskStatus(this.Yandere.TargetStudent.StudentID) == 1 && this.Yandere.Inventory.Book)
+			{
+				this.Yandere.TargetStudent.TaskPhase = 5;
+			}
 		}
 	}
 

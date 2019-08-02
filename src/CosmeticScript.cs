@@ -229,6 +229,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public Texture DelinquentSocksTexture;
 
+	public Texture OsanaSwimsuitTexture;
+
 	public Texture ObstacleSwimsuitTexture;
 
 	public Texture ObstacleTowelTexture;
@@ -1643,6 +1645,10 @@ public class CosmeticScript : MonoBehaviour
 			this.Student.GymTexture = this.ObstacleGymTexture;
 			this.Student.TowelTexture = this.ObstacleTowelTexture;
 			this.Student.SwimsuitTexture = this.ObstacleSwimsuitTexture;
+		}
+		if (this.StudentID == 11)
+		{
+			this.Student.SwimsuitTexture = this.OsanaSwimsuitTexture;
 		}
 		if (this.StudentID == 58)
 		{

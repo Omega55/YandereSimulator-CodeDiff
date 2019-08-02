@@ -86,6 +86,21 @@ public class TaskManagerScript : MonoBehaviour
 				this.StudentManager.Students[8].TaskPhase = 5;
 			}
 		}
+		if (TaskGlobals.GetTaskStatus(11) == 1)
+		{
+			if (this.StudentManager.Students[11] != null)
+			{
+				if (this.StudentManager.Students[11].TaskPhase == 0)
+				{
+					this.StudentManager.Students[11].TaskPhase = 4;
+				}
+				this.TaskObjects[11].SetActive(true);
+			}
+		}
+		else if (this.TaskObjects[11] != null)
+		{
+			this.TaskObjects[11].SetActive(false);
+		}
 		if (TaskGlobals.GetTaskStatus(25) == 1)
 		{
 			if (this.StudentManager.Students[25] != null)
@@ -178,21 +193,6 @@ public class TaskManagerScript : MonoBehaviour
 		}
 		if (TaskGlobals.GetTaskStatus(81) == 3)
 		{
-		}
-		if (TaskGlobals.GetTaskStatus(11) == 1)
-		{
-			if (this.StudentManager.Students[11] != null)
-			{
-				if (this.StudentManager.Students[11].TaskPhase == 0)
-				{
-					this.StudentManager.Students[11].TaskPhase = 4;
-				}
-				this.TaskObjects[11].SetActive(true);
-			}
-		}
-		else if (this.TaskObjects[11] != null)
-		{
-			this.TaskObjects[11].SetActive(false);
 		}
 	}
 }

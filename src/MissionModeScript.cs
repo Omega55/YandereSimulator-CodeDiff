@@ -52,6 +52,8 @@ public class MissionModeScript : MonoBehaviour
 
 	public UILabel SanityLabel;
 
+	public UILabel MoneyLabel;
+
 	public UILabel TimeLabel;
 
 	public UISprite ReputationFace1;
@@ -253,6 +255,7 @@ public class MissionModeScript : MonoBehaviour
 			this.Clock.PeriodLabel.color = new Color(1f, 0f, 0f, 1f);
 			this.Clock.TimeLabel.color = new Color(1f, 0f, 0f, 1f);
 			this.Clock.DayLabel.enabled = false;
+			this.MoneyLabel.color = new Color(1f, 0f, 0f, 1f);
 			this.Reputation.PendingRepMarker.GetComponent<UISprite>().color = new Color(1f, 0f, 0f, 1f);
 			this.Reputation.CurrentRepMarker.gameObject.SetActive(false);
 			this.Reputation.PendingRepLabel.color = new Color(1f, 0f, 0f, 1f);
@@ -287,6 +290,7 @@ public class MissionModeScript : MonoBehaviour
 			this.Clock.PeriodLabel.color = new Color(1f, 1f, 1f, 1f);
 			this.Clock.TimeLabel.color = new Color(1f, 1f, 1f, 1f);
 			this.Clock.DayLabel.enabled = false;
+			this.MoneyLabel.color = new Color(1f, 1f, 1f, 1f);
 			this.Reputation.PendingRepMarker.GetComponent<UISprite>().color = new Color(1f, 1f, 1f, 1f);
 			this.Reputation.CurrentRepMarker.gameObject.SetActive(false);
 			this.Reputation.PendingRepLabel.color = new Color(1f, 1f, 1f, 1f);

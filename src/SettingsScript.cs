@@ -41,6 +41,8 @@ public class SettingsScript : MonoBehaviour
 
 	public UILabel WindowedMode;
 
+	public UILabel AmbientObscurance;
+
 	public int SelectionLimit = 2;
 
 	public int Selected = 1;
@@ -265,6 +267,16 @@ public class SettingsScript : MonoBehaviour
 			}
 			this.UpdateText();
 		}
+		else if (this.Selected == 16)
+		{
+			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
+			{
+				OptionGlobals.DisableObscurance = !OptionGlobals.DisableObscurance;
+				this.QualityManager.UpdateObscurance();
+				this.UpdateText();
+			}
+			this.UpdateText();
+		}
 		if (Input.GetKeyDown("l"))
 		{
 			OptionGlobals.ParticleCount = 1;
@@ -333,6 +345,7 @@ public class SettingsScript : MonoBehaviour
 		this.InvertAxisLabel.text = ((!OptionGlobals.InvertAxis) ? "No" : "Yes");
 		this.DisableTutorialsLabel.text = ((!TutorialGlobals.TutorialsOff) ? "No" : "Yes");
 		this.WindowedMode.text = ((!Screen.fullScreen) ? "Yes" : "No");
+		this.AmbientObscurance.text = ((!OptionGlobals.DisableObscurance) ? "On" : "Off");
 	}
 
 	private void UpdateHighlight()

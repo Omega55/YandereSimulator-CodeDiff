@@ -457,6 +457,7 @@ public class CombatMinigameScript : MonoBehaviour
 							this.Delinquent.MyWeapon.transform.parent = null;
 							this.Delinquent.MyWeapon.MyCollider.enabled = true;
 							this.Delinquent.MyWeapon.Prompt.enabled = true;
+							this.Delinquent.IgnoreBlood = true;
 							Rigidbody component = this.Delinquent.MyWeapon.GetComponent<Rigidbody>();
 							component.constraints = RigidbodyConstraints.None;
 							component.isKinematic = false;

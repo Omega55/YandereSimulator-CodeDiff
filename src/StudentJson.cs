@@ -117,28 +117,6 @@ public class StudentJson : JsonData
 			}
 			studentJson.success = true;
 		}
-		StudentJson studentJson2 = array[10];
-		studentJson2.name = "Reserved";
-		StudentJson studentJson3 = array[11];
-		studentJson3.name = "Reserved";
-		StudentJson studentJson4 = array[12];
-		studentJson3.name = "Reserved";
-		StudentJson studentJson5 = array[13];
-		studentJson3.name = "Reserved";
-		StudentJson studentJson6 = array[14];
-		studentJson3.name = "Reserved";
-		StudentJson studentJson7 = array[15];
-		studentJson3.name = "Reserved";
-		StudentJson studentJson8 = array[16];
-		studentJson3.name = "Reserved";
-		StudentJson studentJson9 = array[17];
-		studentJson3.name = "Reserved";
-		StudentJson studentJson10 = array[18];
-		studentJson3.name = "Reserved";
-		StudentJson studentJson11 = array[19];
-		studentJson3.name = "Reserved";
-		StudentJson studentJson12 = array[20];
-		studentJson3.name = "Reserved";
 		return array;
 	}
 

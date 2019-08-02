@@ -863,7 +863,7 @@ public class CounselorScript : MonoBehaviour
 					}
 					this.CrimeID = 1;
 				}
-				else if (this.Crime == StudentWitnessType.Insanity || this.Crime == StudentWitnessType.CleaningItem || this.Crime == StudentWitnessType.HoldingBloodyClothing)
+				else if (this.Crime == StudentWitnessType.Insanity || this.Crime == StudentWitnessType.CleaningItem || this.Crime == StudentWitnessType.HoldingBloodyClothing || this.Crime == StudentWitnessType.Poisoning)
 				{
 					this.MyAudio.clip = this.InsanityLectureClips[PlayerPrefs.GetInt("InsanityVisits")];
 					this.CounselorSubtitle.text = this.InsanityLectures[PlayerPrefs.GetInt("InsanityVisits")];

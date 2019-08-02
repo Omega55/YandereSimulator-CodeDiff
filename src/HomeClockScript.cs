@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class HomeClockScript : MonoBehaviour
 {
+	public UILabel MoneyLabel;
+
 	public UILabel HourLabel;
 
 	public UILabel DayLabel;
@@ -18,6 +20,7 @@ public class HomeClockScript : MonoBehaviour
 		{
 			this.HourLabel.text = ((!HomeGlobals.LateForSchool) ? "6:30 AM" : "7:30 AM");
 		}
+		this.MoneyLabel.text = "$" + PlayerGlobals.Money.ToString("F2");
 	}
 
 	private string GetWeekdayText(DayOfWeek weekday)

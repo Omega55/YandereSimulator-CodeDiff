@@ -27,7 +27,7 @@ public class HomeExitScript : MonoBehaviour
 		{
 			UILabel uilabel2 = this.Labels[1];
 			uilabel2.color = new Color(uilabel2.color.r, uilabel2.color.g, uilabel2.color.b, 0.5f);
-			uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, 0.5f);
+			uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, 1f);
 		}
 	}
 
@@ -53,11 +53,22 @@ public class HomeExitScript : MonoBehaviour
 				}
 				this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 50f - (float)this.ID * 50f, this.Highlight.localPosition.z);
 			}
-			if (Input.GetButtonDown("A") && this.ID != 2 && (!HomeGlobals.Night || (HomeGlobals.Night && this.ID == 3)))
+			if (Input.GetButtonDown("A") && this.Labels[this.ID].color.a == 1f)
 			{
-				if (this.ID < 3 && SchoolGlobals.SchoolAtmosphere >= 0.5f)
+				if (this.ID == 1)
+				{
+					if (SchoolGlobals.SchoolAtmosphere >= 0.5f)
+					{
+						this.HomeDarkness.Sprite.color = new Color(1f, 1f, 1f, 0f);
+					}
+				}
+				else if (this.ID == 2)
 				{
 					this.HomeDarkness.Sprite.color = new Color(1f, 1f, 1f, 0f);
+				}
+				else
+				{
+					this.HomeDarkness.Sprite.color = new Color(0f, 0f, 0f, 0f);
 				}
 				this.HomeDarkness.FadeOut = true;
 				this.HomeWindow.Show = false;

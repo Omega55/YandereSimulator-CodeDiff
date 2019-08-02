@@ -23,6 +23,8 @@ public class InventoryScript : MonoBehaviour
 
 	public bool IDCard;
 
+	public bool Book;
+
 	public bool LethalPoison;
 
 	public bool ChemicalPoison;
@@ -54,4 +56,17 @@ public class InventoryScript : MonoBehaviour
 	public bool SafeKey;
 
 	public bool ShedKey;
+
+	public UILabel MoneyLabel;
+
+	private void Start()
+	{
+		this.UpdateMoney();
+	}
+
+	public void UpdateMoney()
+	{
+		Debug.Log("Inventory says that money is " + PlayerGlobals.Money);
+		this.MoneyLabel.text = "$" + PlayerGlobals.Money.ToString("F2");
+	}
 }
