@@ -124,6 +124,10 @@ public class DialogueWheelScript : MonoBehaviour
 		}
 		else
 		{
+			if (this.Yandere.PauseScreen.Show)
+			{
+				this.Yandere.PauseScreen.ExitPhone();
+			}
 			if (this.ClubLeader)
 			{
 				this.Interaction.localScale = Vector3.Lerp(this.Interaction.localScale, Vector3.zero, Time.deltaTime * 10f);

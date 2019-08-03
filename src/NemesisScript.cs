@@ -146,7 +146,6 @@ public class NemesisScript : MonoBehaviour
 			{
 				num = UnityEngine.Random.Range(2, 90);
 			}
-			num = 72;
 			this.Student.StudentManager.Students[num].gameObject.SetActive(false);
 			this.Student.StudentManager.Students[num].Replaced = true;
 			this.Cosmetic.StudentID = num;

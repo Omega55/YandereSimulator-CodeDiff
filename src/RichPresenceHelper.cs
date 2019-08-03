@@ -29,7 +29,7 @@ public class RichPresenceHelper : MonoBehaviour
 
 	private void OnLevelWasLoaded(int level)
 	{
-		if (level == 9)
+		if (level == 11)
 		{
 			this._clockScript = UnityEngine.Object.FindObjectOfType<ClockScript>();
 		}
@@ -78,6 +78,8 @@ public class RichPresenceHelper : MonoBehaviour
 		this._sceneDescriptions.Add("RhythmMinigameScene", "Jamming out with the Light Music Club!");
 		this._sceneDescriptions.Add("LifeNoteScene", "Watching an episode of Life Note!");
 		this._sceneDescriptions.Add("YancordScene", "Chatting over Yancord!");
+		this._sceneDescriptions.Add("MaidMenuScene", "Getting ready to be cute at a maid cafe!");
+		this._sceneDescriptions.Add("MaidGameScene", "Being a cute maid! MOE MOE KYUN!");
 	}
 
 	private string GetSceneDescription()

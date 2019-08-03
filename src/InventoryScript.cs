@@ -66,7 +66,6 @@ public class InventoryScript : MonoBehaviour
 
 	public void UpdateMoney()
 	{
-		Debug.Log("Inventory says that money is " + PlayerGlobals.Money);
 		this.MoneyLabel.text = "$" + PlayerGlobals.Money.ToString("F2");
 	}
 }

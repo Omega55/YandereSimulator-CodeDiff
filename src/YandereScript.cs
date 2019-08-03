@@ -5541,6 +5541,10 @@ public class YandereScript : MonoBehaviour
 		{
 			this.MainCamera.clearFlags = CameraClearFlags.Skybox;
 		}
+		else
+		{
+			this.MainCamera.clearFlags = CameraClearFlags.Color;
+		}
 		this.MainCamera.farClipPlane = (float)OptionGlobals.DrawDistance;
 		this.Smartphone.transform.parent.gameObject.SetActive(false);
 		this.Smartphone.targetTexture = this.Shutter.SmartphoneScreen;
@@ -5753,6 +5757,7 @@ public class YandereScript : MonoBehaviour
 		this.LaughIntensity = 0f;
 		this.Laughing = false;
 		this.LaughClip = null;
+		this.Twitch = Vector3.zero;
 		if (!this.Stand.Stand.activeInHierarchy)
 		{
 			this.CanMove = true;

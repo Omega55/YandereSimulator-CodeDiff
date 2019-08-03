@@ -7,7 +7,7 @@ public class YandereShoverScript : MonoBehaviour
 
 	public bool PreventNudity;
 
-	private void OnTriggerEnter(Collider other)
+	private void OnTriggerStay(Collider other)
 	{
 		if (other.gameObject.layer == 13)
 		{

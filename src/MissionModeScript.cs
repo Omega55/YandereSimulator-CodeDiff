@@ -291,6 +291,8 @@ public class MissionModeScript : MonoBehaviour
 			this.Clock.TimeLabel.color = new Color(1f, 1f, 1f, 1f);
 			this.Clock.DayLabel.enabled = false;
 			this.MoneyLabel.color = new Color(1f, 1f, 1f, 1f);
+			this.MoneyLabel.fontStyle = FontStyle.Bold;
+			this.MoneyLabel.trueTypeFont = this.Arial;
 			this.Reputation.PendingRepMarker.GetComponent<UISprite>().color = new Color(1f, 1f, 1f, 1f);
 			this.Reputation.CurrentRepMarker.gameObject.SetActive(false);
 			this.Reputation.PendingRepLabel.color = new Color(1f, 1f, 1f, 1f);

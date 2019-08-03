@@ -512,11 +512,14 @@ public class PauseScreenScript : MonoBehaviour
 								}
 							}
 						}
-						if (!this.PressedB && (Input.GetButtonDown("Start") || Input.GetButtonDown("B")))
+						else if (!this.PressedB)
 						{
-							this.ExitPhone();
+							if (Input.GetButtonDown("Start") || Input.GetButtonDown("B"))
+							{
+								this.ExitPhone();
+							}
 						}
-						if (Input.GetButtonUp("B"))
+						else if (Input.GetButtonUp("B"))
 						{
 							this.PressedB = false;
 						}
@@ -543,7 +546,7 @@ public class PauseScreenScript : MonoBehaviour
 							this.Clock.TimeSkip = true;
 							Time.timeScale = 1f;
 						}
-						if (Input.GetButtonDown("B"))
+						else if (Input.GetButtonDown("B"))
 						{
 							this.MainMenu.SetActive(true);
 							this.PromptBar.ClearButtons();
@@ -561,7 +564,7 @@ public class PauseScreenScript : MonoBehaviour
 						{
 							SceneManager.LoadScene("TitleScene");
 						}
-						if (Input.GetButtonDown("B"))
+						else if (Input.GetButtonDown("B"))
 						{
 							this.PromptBar.ClearButtons();
 							this.PromptBar.Label[0].text = "Accept";
