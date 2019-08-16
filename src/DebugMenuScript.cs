@@ -70,6 +70,10 @@ public class DebugMenuScript : MonoBehaviour
 
 	public Texture PantyCensorTexture;
 
+	private int DebugInt;
+
+	public GameObject Mop;
+
 	private void Start()
 	{
 		base.transform.localPosition = new Vector3(base.transform.localPosition.x, 0f, base.transform.localPosition.z);
@@ -379,8 +383,8 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					else if (Input.GetKeyDown(KeyCode.K))
 					{
-						SchoolGlobals.KidnapVictim = 5;
-						StudentGlobals.SetStudentSlave(5);
+						SchoolGlobals.KidnapVictim = 25;
+						StudentGlobals.SetStudentSlave(25);
 						SceneManager.LoadScene("LoadingScene");
 					}
 					else if (Input.GetKeyDown(KeyCode.L))
@@ -391,7 +395,8 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					else if (Input.GetKeyDown(KeyCode.M))
 					{
-						PlayerGlobals.Money = 10f;
+						PlayerGlobals.Money = 100f;
+						this.Yandere.Inventory.UpdateMoney();
 						this.Window.SetActive(false);
 					}
 					else if (Input.GetKeyDown(KeyCode.O))
@@ -828,5 +833,36 @@ public class DebugMenuScript : MonoBehaviour
 	{
 		this.Censor();
 		this.Censor();
+	}
+
+	public void DebugTest()
+	{
+		if (this.DebugInt == 0)
+		{
+			StudentScript studentScript = this.StudentManager.Students[39];
+			studentScript.ShoeRemoval.Start();
+			studentScript.ShoeRemoval.PutOnShoes();
+			studentScript.Phase = 2;
+			ScheduleBlock scheduleBlock = studentScript.ScheduleBlocks[2];
+			scheduleBlock.action = "Stand";
+			studentScript.GetDestinations();
+			studentScript.CurrentDestination = this.MidoriSpot;
+			studentScript.Pathfinding.target = this.MidoriSpot;
+			studentScript.transform.position = this.Yandere.transform.position;
+			Physics.SyncTransforms();
+		}
+		else if (this.DebugInt == 1)
+		{
+			this.Knife.transform.position = this.Yandere.transform.position + new Vector3(-1f, 1f, 0f);
+			this.Knife.GetComponent<Rigidbody>().isKinematic = false;
+			this.Knife.GetComponent<Rigidbody>().useGravity = true;
+		}
+		else if (this.DebugInt == 2)
+		{
+			this.Mop.transform.position = this.Yandere.transform.position + new Vector3(1f, 1f, 0f);
+			this.Mop.GetComponent<Rigidbody>().isKinematic = false;
+			this.Mop.GetComponent<Rigidbody>().useGravity = true;
+		}
+		this.DebugInt++;
 	}
 }

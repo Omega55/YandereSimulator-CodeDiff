@@ -42,6 +42,18 @@ public class SithBeamScript : MonoBehaviour
 			if (component != null && component.StudentID > 1)
 			{
 				AudioSource.PlayClipAtPoint(this.Hit, base.transform.position);
+				this.RandomNumber = UnityEngine.Random.Range(0, 3);
+				if (this.MalePain.Length > 0)
+				{
+					if (component.Male)
+					{
+						AudioSource.PlayClipAtPoint(this.MalePain[this.RandomNumber], base.transform.position);
+					}
+					else
+					{
+						AudioSource.PlayClipAtPoint(this.FemalePain[this.RandomNumber], base.transform.position);
+					}
+				}
 				UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, component.transform.position + new Vector3(0f, 1f, 0f), Quaternion.identity);
 				component.Health -= this.Damage;
 				component.HealthBar.transform.parent.gameObject.SetActive(true);

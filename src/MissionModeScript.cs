@@ -931,6 +931,7 @@ public class MissionModeScript : MonoBehaviour
 					this.ExitPortalPrompt.Label[0].text = "     Exfiltrate";
 					if (this.ExitPortalPrompt.Circle[0].fillAmount == 0f)
 					{
+						this.StudentManager.DisableChaseCameras();
 						this.MainCamera.transform.position = new Vector3(0.5f, 2.25f, -100.5f);
 						this.MainCamera.transform.eulerAngles = Vector3.zero;
 						this.Yandere.transform.eulerAngles = new Vector3(0f, 180f, 0f);

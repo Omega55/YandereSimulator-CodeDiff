@@ -21,6 +21,8 @@ public static class GameGlobals
 
 	private const string Str_SpareUniform = "SpareUniform";
 
+	private const string Str_BlondeHair = "BlondeHair";
+
 	public static int Profile
 	{
 		get
@@ -129,6 +131,18 @@ public static class GameGlobals
 		}
 	}
 
+	public static bool BlondeHair
+	{
+		get
+		{
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_BlondeHair");
+		}
+		set
+		{
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_BlondeHair", value);
+		}
+	}
+
 	public static void DeleteAll()
 	{
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_LoveSick");
@@ -139,5 +153,6 @@ public static class GameGlobals
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_EmptyDemon");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_CensorBlood");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_SpareUniform");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_BlondeHair");
 	}
 }

@@ -18,6 +18,14 @@ public class MirrorScript : MonoBehaviour
 	private void Start()
 	{
 		this.Limit = this.Idles.Length - 1;
+		if (ClubGlobals.Club == ClubType.Delinquent)
+		{
+			this.ID = 10;
+			if (this.Prompt.Yandere.Persona != YanderePersonaType.Tough)
+			{
+				this.UpdatePersona();
+			}
+		}
 	}
 
 	private void Update()

@@ -1653,7 +1653,6 @@ public class CosmeticScript : MonoBehaviour
 		if (this.StudentID == 58)
 		{
 			this.SkinColor = 8;
-			this.Student.GymTexture = this.TanGymTexture;
 			this.Student.TowelTexture = this.TanTowelTexture;
 			this.Student.SwimsuitTexture = this.TanSwimsuitTexture;
 		}

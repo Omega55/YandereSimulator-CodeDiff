@@ -506,24 +506,49 @@ public class HomeInternetScript : MonoBehaviour
 				}
 				if (Input.GetButtonDown("A"))
 				{
-					if (PlayerGlobals.Money > 33.33f)
+					if (this.Height == 0 || this.Height > 1)
 					{
-						if (!this.AreYouSure.activeInHierarchy)
+						if (PlayerGlobals.Money > 33.33f)
 						{
-							this.AreYouSure.SetActive(true);
+							if (!this.AreYouSure.activeInHierarchy)
+							{
+								this.AreYouSure.SetActive(true);
+							}
+							else
+							{
+								this.AreYouSure.SetActive(false);
+								GameGlobals.SpareUniform = true;
+								PlayerGlobals.Money -= 33.33f;
+								this.MyAudio.Play();
+								this.MoneyLabel.text = "$" + PlayerGlobals.Money.ToString("F2");
+							}
 						}
 						else
 						{
-							this.AreYouSure.SetActive(false);
-							GameGlobals.SpareUniform = true;
-							PlayerGlobals.Money -= 33.33f;
-							this.MyAudio.Play();
-							this.MoneyLabel.text = "$" + PlayerGlobals.Money.ToString("F2");
+							this.Shake = 10f;
 						}
 					}
-					else
+					else if (this.Height == 1)
 					{
-						this.Shake = 10f;
+						if (PlayerGlobals.Money > 8.49f)
+						{
+							if (!this.AreYouSure.activeInHierarchy)
+							{
+								this.AreYouSure.SetActive(true);
+							}
+							else
+							{
+								this.AreYouSure.SetActive(false);
+								GameGlobals.BlondeHair = true;
+								PlayerGlobals.Money -= 8.49f;
+								this.MyAudio.Play();
+								this.MoneyLabel.text = "$" + PlayerGlobals.Money.ToString("F2");
+							}
+						}
+						else
+						{
+							this.Shake = 10f;
+						}
 					}
 				}
 				this.Shake = Mathf.MoveTowards(this.Shake, 0f, Time.deltaTime * 10f);

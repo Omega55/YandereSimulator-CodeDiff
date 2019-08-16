@@ -768,9 +768,13 @@ public class YandereScript : MonoBehaviour
 
 	public Texture RivalPhoneTexture;
 
+	public Texture BlondePony;
+
 	public float v;
 
 	public float h;
+
+	private int DebugInt;
 
 	public GameObject CreepyArms;
 
@@ -1202,6 +1206,8 @@ public class YandereScript : MonoBehaviour
 
 	public Mesh YamikoMesh;
 
+	public GameObject GroundImpact;
+
 	public GameObject NierCostume;
 
 	public GameObject HeavySword;
@@ -1209,6 +1215,24 @@ public class YandereScript : MonoBehaviour
 	public GameObject LightSword;
 
 	public GameObject Pod;
+
+	public Transform LightSwordParent;
+
+	public Transform HeavySwordParent;
+
+	public ParticleSystem LightSwordParticles;
+
+	public ParticleSystem HeavySwordParticles;
+
+	public string AttackPrefix;
+
+	public float NierDamage;
+
+	public float[] NierSpawnTime;
+
+	public float[] NierHardSpawnTime;
+
+	public AudioClip NierSwoosh;
 
 	public Mesh SchoolSwimsuit;
 
@@ -1339,8 +1363,8 @@ public class YandereScript : MonoBehaviour
 		this.Shoes[1].SetActive(false);
 		this.Phone.SetActive(false);
 		this.Cape.SetActive(false);
-		this.HeavySword.SetActive(false);
-		this.LightSword.SetActive(false);
+		this.HeavySwordParent.gameObject.SetActive(false);
+		this.LightSwordParent.gameObject.SetActive(false);
 		this.Pod.SetActive(false);
 		this.OriginalIdleAnim = this.IdleAnim;
 		this.OriginalWalkAnim = this.WalkAnim;
@@ -1398,6 +1422,10 @@ public class YandereScript : MonoBehaviour
 		if (MissionModeGlobals.MissionMode || GameGlobals.LoveSick)
 		{
 			this.NoDebug = true;
+		}
+		if (GameGlobals.BlondeHair)
+		{
+			this.PonytailRenderer.material.mainTexture = this.BlondePony;
 		}
 		if (this.StudentManager.Students[11] != null)
 		{
@@ -2135,6 +2163,7 @@ public class YandereScript : MonoBehaviour
 								this.SithAttacking = true;
 								this.CanMove = false;
 								this.SithPrefix = string.Empty;
+								this.AttackPrefix = "sith";
 							}
 							if (Input.GetButtonDown("Y"))
 							{
@@ -2145,6 +2174,7 @@ public class YandereScript : MonoBehaviour
 								this.SithAttacking = true;
 								this.CanMove = false;
 								this.SithPrefix = "Hard";
+								this.AttackPrefix = "sith";
 							}
 						}
 						else if (Input.GetButtonDown("RB") && this.SpiderLegs.activeInHierarchy)
@@ -2573,14 +2603,6 @@ public class YandereScript : MonoBehaviour
 			{
 				this.WeaponTimer = Mathf.MoveTowards(this.WeaponTimer, 0f, Time.deltaTime);
 			}
-			if (this.Eating)
-			{
-				this.FollowHips = false;
-				this.Attacking = false;
-				this.CanMove = true;
-				this.Eating = false;
-				this.EatPhase = 0;
-			}
 			if (this.MurderousActionTimer > 0f)
 			{
 				this.MurderousActionTimer = Mathf.MoveTowards(this.MurderousActionTimer, 0f, Time.deltaTime);
@@ -2593,6 +2615,80 @@ public class YandereScript : MonoBehaviour
 			{
 				this.PreparedForStruggle = true;
 				this.CanMove = false;
+			}
+			if (this.Egg)
+			{
+				if (this.Eating)
+				{
+					this.FollowHips = false;
+					this.Attacking = false;
+					this.CanMove = true;
+					this.Eating = false;
+					this.EatPhase = 0;
+				}
+				if (this.Pod.activeInHierarchy)
+				{
+					if (!this.SithAttacking)
+					{
+						if (this.LightSword.transform.parent != this.LightSwordParent)
+						{
+							this.LightSword.transform.parent = this.LightSwordParent;
+							this.LightSword.transform.localPosition = new Vector3(0f, 0f, 0f);
+							this.LightSword.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+							this.LightSwordParticles.Play();
+						}
+						if (this.HeavySword.transform.parent != this.HeavySwordParent)
+						{
+							this.HeavySword.transform.parent = this.HeavySwordParent;
+							this.HeavySword.transform.localPosition = new Vector3(0f, 0f, 0f);
+							this.HeavySword.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+							this.HeavySwordParticles.Play();
+						}
+					}
+					if (Input.GetButtonDown("X"))
+					{
+						this.LightSword.transform.parent = this.LeftItemParent;
+						this.LightSword.transform.localPosition = new Vector3(-0.015f, 0f, 0f);
+						this.LightSword.transform.localEulerAngles = new Vector3(0f, 0f, -90f);
+						this.LightSword.GetComponent<WeaponTrail>().enabled = true;
+						this.LightSword.GetComponent<WeaponTrail>().Start();
+						this.CharacterAnimation["f02_nierAttack_00"].time = 0f;
+						this.CharacterAnimation.Play("f02_nierAttack_00");
+						this.SithAttacking = true;
+						this.CanMove = false;
+						this.SithBeam[1].Damage = 10f;
+						this.NierDamage = 10f;
+						this.SithPrefix = string.Empty;
+						this.AttackPrefix = "nier";
+					}
+					if (Input.GetButtonDown("Y"))
+					{
+						this.HeavySword.transform.parent = this.ItemParent;
+						this.HeavySword.transform.localPosition = new Vector3(-0.015f, 0f, 0f);
+						this.HeavySword.transform.localEulerAngles = new Vector3(0f, 0f, -90f);
+						this.HeavySword.GetComponent<WeaponTrail>().enabled = true;
+						this.HeavySword.GetComponent<WeaponTrail>().Start();
+						this.CharacterAnimation["f02_nierAttackHard_00"].time = 0f;
+						this.CharacterAnimation.Play("f02_nierAttackHard_00");
+						this.SithAttacking = true;
+						this.CanMove = false;
+						this.SithBeam[1].Damage = 20f;
+						this.NierDamage = 20f;
+						this.SithPrefix = "Hard";
+						this.AttackPrefix = "nier";
+					}
+				}
+				if (this.Armor[20].activeInHierarchy && this.Armor[20].transform.parent == this.ItemParent && (Input.GetButtonDown("X") || Input.GetButtonDown("Y")))
+				{
+					this.CharacterAnimation["f02_nierAttackHard_00"].time = 0f;
+					this.CharacterAnimation.Play("f02_nierAttackHard_00");
+					this.SithAttacking = true;
+					this.CanMove = false;
+					this.SithBeam[1].Damage = 20f;
+					this.NierDamage = 20f;
+					this.SithPrefix = "Hard";
+					this.AttackPrefix = "nier";
+				}
 			}
 		}
 		else
@@ -3094,144 +3190,6 @@ public class YandereScript : MonoBehaviour
 			{
 				this.CharacterAnimation.CrossFade("f02_possessionPose_00");
 			}
-			if (this.Punching)
-			{
-				if (this.FalconHelmet.activeInHierarchy)
-				{
-					if (this.CharacterAnimation["f02_falconPunch_00"].time >= 1f && this.CharacterAnimation["f02_falconPunch_00"].time <= 1.25f)
-					{
-						this.FalconSpeed = Mathf.MoveTowards(this.FalconSpeed, 2.5f, Time.deltaTime * 2.5f);
-					}
-					else if (this.CharacterAnimation["f02_falconPunch_00"].time >= 1.25f && this.CharacterAnimation["f02_falconPunch_00"].time <= 1.5f)
-					{
-						this.FalconSpeed = Mathf.MoveTowards(this.FalconSpeed, 0f, Time.deltaTime * 2.5f);
-					}
-					if (this.CharacterAnimation["f02_falconPunch_00"].time >= 1f && this.CharacterAnimation["f02_falconPunch_00"].time <= 1.5f)
-					{
-						if (this.NewFalconPunch == null)
-						{
-							this.NewFalconPunch = UnityEngine.Object.Instantiate<GameObject>(this.FalconPunch);
-							this.NewFalconPunch.transform.parent = this.ItemParent;
-							this.NewFalconPunch.transform.localPosition = Vector3.zero;
-						}
-						this.MyController.Move(base.transform.forward * this.FalconSpeed);
-					}
-					if (this.CharacterAnimation["f02_falconPunch_00"].time >= this.CharacterAnimation["f02_falconPunch_00"].length)
-					{
-						this.NewFalconPunch = null;
-						this.Punching = false;
-						this.CanMove = true;
-					}
-				}
-				else
-				{
-					if (this.CharacterAnimation["f02_onePunch_00"].time >= 0.833333f && this.CharacterAnimation["f02_onePunch_00"].time <= 1f && this.NewOnePunch == null)
-					{
-						this.NewOnePunch = UnityEngine.Object.Instantiate<GameObject>(this.OnePunch);
-						this.NewOnePunch.transform.parent = this.ItemParent;
-						this.NewOnePunch.transform.localPosition = Vector3.zero;
-					}
-					if (this.CharacterAnimation["f02_onePunch_00"].time >= 2f)
-					{
-						this.NewOnePunch = null;
-						this.Punching = false;
-						this.CanMove = true;
-					}
-				}
-			}
-			if (this.PK)
-			{
-				if (Input.GetAxis("Vertical") > 0.5f)
-				{
-					this.GoToPKDir(PKDirType.Up, "f02_sansUp_00", new Vector3(0f, 3f, 2f));
-				}
-				else if (Input.GetAxis("Vertical") < -0.5f)
-				{
-					this.GoToPKDir(PKDirType.Down, "f02_sansDown_00", new Vector3(0f, 0f, 2f));
-				}
-				else if (Input.GetAxis("Horizontal") > 0.5f)
-				{
-					this.GoToPKDir(PKDirType.Right, "f02_sansRight_00", new Vector3(1.5f, 1.5f, 2f));
-				}
-				else if (Input.GetAxis("Horizontal") < -0.5f)
-				{
-					this.GoToPKDir(PKDirType.Left, "f02_sansLeft_00", new Vector3(-1.5f, 1.5f, 2f));
-				}
-				else
-				{
-					this.CharacterAnimation.CrossFade("f02_sansHold_00");
-					this.RagdollPK.transform.localPosition = new Vector3(0f, 1.5f, 2f);
-					this.PKDir = PKDirType.None;
-				}
-				if (Input.GetButtonDown("B"))
-				{
-					this.PromptBar.ClearButtons();
-					this.PromptBar.UpdateButtons();
-					this.PromptBar.Show = false;
-					this.Ragdoll.GetComponent<RagdollScript>().StopDragging();
-					this.SansEyes[0].SetActive(false);
-					this.SansEyes[1].SetActive(false);
-					this.GlowEffect.Stop();
-					this.CanMove = true;
-					this.PK = false;
-				}
-			}
-			if (this.SummonBones)
-			{
-				this.CharacterAnimation.CrossFade("f02_sansBones_00");
-				if (this.BoneTimer == 0f)
-				{
-					UnityEngine.Object.Instantiate<GameObject>(this.Bone, base.transform.position + base.transform.right * UnityEngine.Random.Range(-2.5f, 2.5f) + base.transform.up * -2f + base.transform.forward * UnityEngine.Random.Range(1f, 6f), Quaternion.identity);
-				}
-				this.BoneTimer += Time.deltaTime;
-				if (this.BoneTimer > 0.1f)
-				{
-					this.BoneTimer = 0f;
-				}
-				if (Input.GetButtonUp("RB"))
-				{
-					this.SansEyes[0].SetActive(false);
-					this.SansEyes[1].SetActive(false);
-					this.GlowEffect.Stop();
-					this.SummonBones = false;
-					this.CanMove = true;
-				}
-				if (this.PK)
-				{
-					this.PromptBar.ClearButtons();
-					this.PromptBar.UpdateButtons();
-					this.PromptBar.Show = false;
-					this.Ragdoll.GetComponent<RagdollScript>().StopDragging();
-					this.SansEyes[0].SetActive(false);
-					this.SansEyes[1].SetActive(false);
-					this.GlowEffect.Stop();
-					this.CanMove = true;
-					this.PK = false;
-				}
-			}
-			if (this.Blasting)
-			{
-				if (this.CharacterAnimation["f02_sansBlaster_00"].time >= this.CharacterAnimation["f02_sansBlaster_00"].length - 0.25f)
-				{
-					this.SansEyes[0].SetActive(false);
-					this.SansEyes[1].SetActive(false);
-					this.GlowEffect.Stop();
-					this.Blasting = false;
-					this.CanMove = true;
-				}
-				if (this.PK)
-				{
-					this.PromptBar.ClearButtons();
-					this.PromptBar.UpdateButtons();
-					this.PromptBar.Show = false;
-					this.Ragdoll.GetComponent<RagdollScript>().StopDragging();
-					this.SansEyes[0].SetActive(false);
-					this.SansEyes[1].SetActive(false);
-					this.GlowEffect.Stop();
-					this.CanMove = true;
-					this.PK = false;
-				}
-			}
 			if (this.Lifting)
 			{
 				if (!this.HeavyWeight)
@@ -3375,28 +3333,6 @@ public class YandereScript : MonoBehaviour
 					}
 				}
 			}
-			if (this.Tripping)
-			{
-				if (this.CharacterAnimation["f02_bucketTrip_00"].time >= this.CharacterAnimation["f02_bucketTrip_00"].length)
-				{
-					this.CharacterAnimation["f02_bucketTrip_00"].speed = 1f;
-					this.Tripping = false;
-					this.CanMove = true;
-				}
-				else if (this.CharacterAnimation["f02_bucketTrip_00"].time < 0.5f)
-				{
-					this.MyController.Move(base.transform.forward * (Time.deltaTime * 2f));
-					if (this.CharacterAnimation["f02_bucketTrip_00"].time > 0.333333343f && this.CharacterAnimation["f02_bucketTrip_00"].speed == 1f)
-					{
-						this.CharacterAnimation["f02_bucketTrip_00"].speed += 1E-06f;
-						AudioSource.PlayClipAtPoint(this.Thud, base.transform.position);
-					}
-				}
-				else if (Input.GetButtonDown("A"))
-				{
-					this.CharacterAnimation["f02_bucketTrip_00"].speed += 0.1f;
-				}
-			}
 			if (this.BucketDropping)
 			{
 				this.targetRotation = Quaternion.LookRotation(this.DropSpot.position + this.DropSpot.forward - base.transform.position);
@@ -3414,25 +3350,6 @@ public class YandereScript : MonoBehaviour
 					this.PickUp.Bucket.UpdateAppearance = true;
 					this.PickUp.Bucket.Dropped = true;
 					this.EmptyHands();
-				}
-			}
-			if (this.Flicking)
-			{
-				if (this.CharacterAnimation["f02_flickingMatch_00"].time >= this.CharacterAnimation["f02_flickingMatch_00"].length)
-				{
-					this.PickUp.GetComponent<MatchboxScript>().Prompt.enabled = true;
-					this.Arc.SetActive(true);
-					this.Flicking = false;
-					this.CanMove = true;
-				}
-				else if (this.CharacterAnimation["f02_flickingMatch_00"].time > 1f && this.Match != null)
-				{
-					Rigidbody component = this.Match.GetComponent<Rigidbody>();
-					component.isKinematic = false;
-					component.useGravity = true;
-					component.AddRelativeForce(Vector3.right * 250f);
-					this.Match.transform.parent = null;
-					this.Match = null;
 				}
 			}
 			if (this.Rummaging)
@@ -3581,301 +3498,6 @@ public class YandereScript : MonoBehaviour
 					}
 				}
 			}
-			if (this.SithAttacking)
-			{
-				if (!this.SithRecovering)
-				{
-					if (this.SithBeam[1].Damage == 10f)
-					{
-						if (this.SithAttacks == 0 && this.CharacterAnimation[string.Concat(new object[]
-						{
-							"f02_sithAttack",
-							this.SithPrefix,
-							"_0",
-							this.SithCombo
-						})].time >= this.SithSpawnTime[this.SithCombo])
-						{
-							UnityEngine.Object.Instantiate<GameObject>(this.SithHitbox, base.transform.position + base.transform.forward * 1f + base.transform.up, base.transform.rotation);
-							this.SithAttacks++;
-						}
-					}
-					else if (this.SithAttacks == 0)
-					{
-						if (this.CharacterAnimation[string.Concat(new object[]
-						{
-							"f02_sithAttack",
-							this.SithPrefix,
-							"_0",
-							this.SithCombo
-						})].time >= this.SithHardSpawnTime1[this.SithCombo])
-						{
-							UnityEngine.Object.Instantiate<GameObject>(this.SithHardHitbox, base.transform.position + base.transform.forward * 1f + base.transform.up, base.transform.rotation);
-							this.SithAttacks++;
-						}
-					}
-					else if (this.SithAttacks == 1)
-					{
-						if (this.CharacterAnimation[string.Concat(new object[]
-						{
-							"f02_sithAttack",
-							this.SithPrefix,
-							"_0",
-							this.SithCombo
-						})].time >= this.SithHardSpawnTime2[this.SithCombo])
-						{
-							UnityEngine.Object.Instantiate<GameObject>(this.SithHardHitbox, base.transform.position + base.transform.forward * 1f + base.transform.up, base.transform.rotation);
-							this.SithAttacks++;
-						}
-					}
-					else if (this.SithAttacks == 2 && this.SithCombo == 1 && this.CharacterAnimation[string.Concat(new object[]
-					{
-						"f02_sithAttack",
-						this.SithPrefix,
-						"_0",
-						this.SithCombo
-					})].time >= 0.933333337f)
-					{
-						UnityEngine.Object.Instantiate<GameObject>(this.SithHardHitbox, base.transform.position + base.transform.forward * 1f + base.transform.up, base.transform.rotation);
-						this.SithAttacks++;
-					}
-					this.SithSoundCheck();
-					if (this.CharacterAnimation[string.Concat(new object[]
-					{
-						"f02_sithAttack",
-						this.SithPrefix,
-						"_0",
-						this.SithCombo
-					})].time >= this.CharacterAnimation[string.Concat(new object[]
-					{
-						"f02_sithAttack",
-						this.SithPrefix,
-						"_0",
-						this.SithCombo
-					})].length)
-					{
-						if (this.SithCombo < this.SithComboLength)
-						{
-							this.SithCombo++;
-							this.SithSounds = 0;
-							this.SithAttacks = 0;
-							this.CharacterAnimation.CrossFade(string.Concat(new object[]
-							{
-								"f02_sithAttack",
-								this.SithPrefix,
-								"_0",
-								this.SithCombo
-							}));
-						}
-						else
-						{
-							this.CharacterAnimation.CrossFade(string.Concat(new object[]
-							{
-								"f02_sithRecover",
-								this.SithPrefix,
-								"_0",
-								this.SithCombo
-							}));
-							this.CharacterAnimation[string.Concat(new object[]
-							{
-								"f02_sithRecover",
-								this.SithPrefix,
-								"_0",
-								this.SithCombo
-							})].speed = 2f;
-							this.SithRecovering = true;
-						}
-					}
-					else
-					{
-						if (Input.GetButtonDown("X") && this.SithComboLength < this.SithCombo + 1 && this.SithComboLength < 2)
-						{
-							this.SithComboLength++;
-						}
-						if (Input.GetButtonDown("Y") && this.SithComboLength < this.SithCombo + 1 && this.SithComboLength < 2)
-						{
-							this.SithComboLength++;
-						}
-					}
-				}
-				else if (this.CharacterAnimation[string.Concat(new object[]
-				{
-					"f02_sithRecover",
-					this.SithPrefix,
-					"_0",
-					this.SithCombo
-				})].time >= this.CharacterAnimation[string.Concat(new object[]
-				{
-					"f02_sithRecover",
-					this.SithPrefix,
-					"_0",
-					this.SithCombo
-				})].length || this.h + this.v != 0f)
-				{
-					this.CharacterAnimation[string.Concat(new object[]
-					{
-						"f02_sithRecover",
-						this.SithPrefix,
-						"_0",
-						this.SithCombo
-					})].speed = 1f;
-					this.SithRecovering = false;
-					this.SithAttacking = false;
-					this.SithComboLength = 0;
-					this.SithAttacks = 0;
-					this.SithSounds = 0;
-					this.SithCombo = 0;
-					this.CanMove = true;
-				}
-			}
-			if (this.Eating)
-			{
-				this.targetRotation = Quaternion.LookRotation(new Vector3(this.TargetStudent.transform.position.x, base.transform.position.y, this.TargetStudent.transform.position.z) - base.transform.position);
-				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
-				if (this.CharacterAnimation["f02_sixEat_00"].time > this.BloodTimes[this.EatPhase])
-				{
-					GameObject gameObject10 = UnityEngine.Object.Instantiate<GameObject>(this.TargetStudent.StabBloodEffect, this.Mouth.position, Quaternion.identity);
-					gameObject10.GetComponent<RandomStabScript>().Biting = true;
-					this.Bloodiness += 20f;
-					this.EatPhase++;
-				}
-				if (this.CharacterAnimation["f02_sixEat_00"].time >= this.CharacterAnimation["f02_sixEat_00"].length)
-				{
-					if (this.Hunger < 5)
-					{
-						this.CharacterAnimation["f02_sixRun_00"].speed += 0.1f;
-						this.RunSpeed += 1f;
-						this.Hunger++;
-						if (this.Hunger == 5)
-						{
-							this.RisingSmoke.SetActive(true);
-							this.RunAnim = "f02_sixFastRun_00";
-						}
-					}
-					Debug.Log("Finished eating.");
-					this.FollowHips = false;
-					this.Attacking = false;
-					this.CanMove = true;
-					this.Eating = false;
-					this.EatPhase = 0;
-				}
-			}
-			if (this.Snapping)
-			{
-				if (this.SnapPhase == 0)
-				{
-					if (this.Gazing)
-					{
-						if (this.CharacterAnimation["f02_gazerSnap_00"].time >= 0.8f)
-						{
-							AudioSource.PlayClipAtPoint(this.FingerSnap, base.transform.position + Vector3.up);
-							this.GazerEyes.ChangeEffect();
-							this.SnapPhase++;
-						}
-					}
-					else if (this.ShotsFired < 1)
-					{
-						if (this.CharacterAnimation["f02_shipGirlSnap_00"].time >= 1f)
-						{
-							UnityEngine.Object.Instantiate<GameObject>(this.Shell, this.Guns[1].position, base.transform.rotation);
-							this.ShotsFired++;
-						}
-					}
-					else if (this.ShotsFired < 2)
-					{
-						if (this.CharacterAnimation["f02_shipGirlSnap_00"].time >= 1.2f)
-						{
-							UnityEngine.Object.Instantiate<GameObject>(this.Shell, this.Guns[2].position, base.transform.rotation);
-							this.ShotsFired++;
-						}
-					}
-					else if (this.ShotsFired < 3)
-					{
-						if (this.CharacterAnimation["f02_shipGirlSnap_00"].time >= 1.4f)
-						{
-							UnityEngine.Object.Instantiate<GameObject>(this.Shell, this.Guns[3].position, base.transform.rotation);
-							this.ShotsFired++;
-						}
-					}
-					else if (this.ShotsFired < 4 && this.CharacterAnimation["f02_shipGirlSnap_00"].time >= 1.6f)
-					{
-						UnityEngine.Object.Instantiate<GameObject>(this.Shell, this.Guns[4].position, base.transform.rotation);
-						this.ShotsFired++;
-						this.SnapPhase++;
-					}
-				}
-				else if (this.Gazing)
-				{
-					if (this.CharacterAnimation["f02_gazerSnap_00"].time >= this.CharacterAnimation["f02_gazerSnap_00"].length)
-					{
-						this.Snapping = false;
-						this.CanMove = true;
-						this.SnapPhase = 0;
-					}
-				}
-				else if (this.CharacterAnimation["f02_shipGirlSnap_00"].time >= this.CharacterAnimation["f02_shipGirlSnap_00"].length)
-				{
-					this.Snapping = false;
-					this.CanMove = true;
-					this.ShotsFired = 0;
-					this.SnapPhase = 0;
-				}
-			}
-			if (this.GazeAttacking)
-			{
-				if (this.TargetStudent != null)
-				{
-					this.targetRotation = Quaternion.LookRotation(new Vector3(this.TargetStudent.transform.position.x, base.transform.position.y, this.TargetStudent.transform.position.z) - base.transform.position);
-					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
-				}
-				if (this.SnapPhase == 0)
-				{
-					if (this.CharacterAnimation["f02_gazerPoint_00"].time >= 1f)
-					{
-						AudioSource.PlayClipAtPoint(this.Zap, base.transform.position + Vector3.up);
-						this.GazerEyes.Attack();
-						this.SnapPhase++;
-					}
-				}
-				else if (this.CharacterAnimation["f02_gazerPoint_00"].time >= this.CharacterAnimation["f02_gazerPoint_00"].length)
-				{
-					this.GazerEyes.Attacking = false;
-					this.GazeAttacking = false;
-					this.CanMove = true;
-					this.SnapPhase = 0;
-				}
-			}
-			if (this.Finisher)
-			{
-				if (this.CharacterAnimation["f02_banchoFinisher_00"].time >= this.CharacterAnimation["f02_banchoFinisher_00"].length)
-				{
-					this.CharacterAnimation.CrossFade(this.IdleAnim);
-					this.Finisher = false;
-					this.CanMove = true;
-				}
-				else if (this.CharacterAnimation["f02_banchoFinisher_00"].time >= 1.66666663f)
-				{
-					this.BanchoFinisher.MyCollider.enabled = false;
-				}
-				else if (this.CharacterAnimation["f02_banchoFinisher_00"].time >= 0.8333333f)
-				{
-					this.BanchoFinisher.MyCollider.enabled = true;
-				}
-			}
-			if (this.ShootingBeam)
-			{
-				if (this.CharacterAnimation["f02_LoveLoveBeam_00"].time >= 1.5f && this.BeamPhase == 0)
-				{
-					UnityEngine.Object.Instantiate<GameObject>(this.LoveLoveBeam, base.transform.position, base.transform.rotation);
-					this.BeamPhase++;
-				}
-				if (this.CharacterAnimation["f02_LoveLoveBeam_00"].time >= this.CharacterAnimation["f02_LoveLoveBeam_00"].length - 1f)
-				{
-					this.ShootingBeam = false;
-					this.YandereTimer = 0f;
-					this.CanMove = true;
-					this.BeamPhase = 0;
-				}
-			}
 			if (this.CleaningWeapon)
 			{
 				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.Target.rotation, Time.deltaTime * 10f);
@@ -3889,28 +3511,6 @@ public class YandereScript : MonoBehaviour
 						this.EquippedWeapon.FingerprintID = 0;
 					}
 					this.CleaningWeapon = false;
-					this.CanMove = true;
-				}
-			}
-			if (this.WritingName)
-			{
-				this.CharacterAnimation.CrossFade("f02_dramaticWriting_00");
-				if (this.CharacterAnimation["f02_dramaticWriting_00"].time == 0f)
-				{
-					AudioSource.PlayClipAtPoint(this.DramaticWriting, base.transform.position);
-				}
-				if (this.CharacterAnimation["f02_dramaticWriting_00"].time >= 5f && this.StudentManager.NoteWindow.TargetStudent > 0)
-				{
-					this.StudentManager.Students[this.StudentManager.NoteWindow.TargetStudent].Fate = this.StudentManager.NoteWindow.MeetID;
-					this.StudentManager.Students[this.StudentManager.NoteWindow.TargetStudent].TimeOfDeath = this.StudentManager.NoteWindow.TimeID;
-					this.StudentManager.NoteWindow.TargetStudent = 0;
-				}
-				if (this.CharacterAnimation["f02_dramaticWriting_00"].time >= this.CharacterAnimation["f02_dramaticWriting_00"].length)
-				{
-					this.CharacterAnimation[this.CarryAnims[10]].weight = 1f;
-					this.CharacterAnimation["f02_dramaticWriting_00"].time = 0f;
-					this.CharacterAnimation.Stop("f02_dramaticWriting_00");
-					this.WritingName = false;
 					this.CanMove = true;
 				}
 			}
@@ -3943,6 +3543,526 @@ public class YandereScript : MonoBehaviour
 				if (this.CanMoveTimer == 0f)
 				{
 					this.CanMove = true;
+				}
+			}
+			if (this.Egg)
+			{
+				if (this.Punching)
+				{
+					if (this.FalconHelmet.activeInHierarchy)
+					{
+						if (this.CharacterAnimation["f02_falconPunch_00"].time >= 1f && this.CharacterAnimation["f02_falconPunch_00"].time <= 1.25f)
+						{
+							this.FalconSpeed = Mathf.MoveTowards(this.FalconSpeed, 2.5f, Time.deltaTime * 2.5f);
+						}
+						else if (this.CharacterAnimation["f02_falconPunch_00"].time >= 1.25f && this.CharacterAnimation["f02_falconPunch_00"].time <= 1.5f)
+						{
+							this.FalconSpeed = Mathf.MoveTowards(this.FalconSpeed, 0f, Time.deltaTime * 2.5f);
+						}
+						if (this.CharacterAnimation["f02_falconPunch_00"].time >= 1f && this.CharacterAnimation["f02_falconPunch_00"].time <= 1.5f)
+						{
+							if (this.NewFalconPunch == null)
+							{
+								this.NewFalconPunch = UnityEngine.Object.Instantiate<GameObject>(this.FalconPunch);
+								this.NewFalconPunch.transform.parent = this.ItemParent;
+								this.NewFalconPunch.transform.localPosition = Vector3.zero;
+							}
+							this.MyController.Move(base.transform.forward * this.FalconSpeed);
+						}
+						if (this.CharacterAnimation["f02_falconPunch_00"].time >= this.CharacterAnimation["f02_falconPunch_00"].length)
+						{
+							this.NewFalconPunch = null;
+							this.Punching = false;
+							this.CanMove = true;
+						}
+					}
+					else
+					{
+						if (this.CharacterAnimation["f02_onePunch_00"].time >= 0.833333f && this.CharacterAnimation["f02_onePunch_00"].time <= 1f && this.NewOnePunch == null)
+						{
+							this.NewOnePunch = UnityEngine.Object.Instantiate<GameObject>(this.OnePunch);
+							this.NewOnePunch.transform.parent = this.ItemParent;
+							this.NewOnePunch.transform.localPosition = Vector3.zero;
+						}
+						if (this.CharacterAnimation["f02_onePunch_00"].time >= 2f)
+						{
+							this.NewOnePunch = null;
+							this.Punching = false;
+							this.CanMove = true;
+						}
+					}
+				}
+				if (this.PK)
+				{
+					if (Input.GetAxis("Vertical") > 0.5f)
+					{
+						this.GoToPKDir(PKDirType.Up, "f02_sansUp_00", new Vector3(0f, 3f, 2f));
+					}
+					else if (Input.GetAxis("Vertical") < -0.5f)
+					{
+						this.GoToPKDir(PKDirType.Down, "f02_sansDown_00", new Vector3(0f, 0f, 2f));
+					}
+					else if (Input.GetAxis("Horizontal") > 0.5f)
+					{
+						this.GoToPKDir(PKDirType.Right, "f02_sansRight_00", new Vector3(1.5f, 1.5f, 2f));
+					}
+					else if (Input.GetAxis("Horizontal") < -0.5f)
+					{
+						this.GoToPKDir(PKDirType.Left, "f02_sansLeft_00", new Vector3(-1.5f, 1.5f, 2f));
+					}
+					else
+					{
+						this.CharacterAnimation.CrossFade("f02_sansHold_00");
+						this.RagdollPK.transform.localPosition = new Vector3(0f, 1.5f, 2f);
+						this.PKDir = PKDirType.None;
+					}
+					if (Input.GetButtonDown("B"))
+					{
+						this.PromptBar.ClearButtons();
+						this.PromptBar.UpdateButtons();
+						this.PromptBar.Show = false;
+						this.Ragdoll.GetComponent<RagdollScript>().StopDragging();
+						this.SansEyes[0].SetActive(false);
+						this.SansEyes[1].SetActive(false);
+						this.GlowEffect.Stop();
+						this.CanMove = true;
+						this.PK = false;
+					}
+				}
+				if (this.SummonBones)
+				{
+					this.CharacterAnimation.CrossFade("f02_sansBones_00");
+					if (this.BoneTimer == 0f)
+					{
+						UnityEngine.Object.Instantiate<GameObject>(this.Bone, base.transform.position + base.transform.right * UnityEngine.Random.Range(-2.5f, 2.5f) + base.transform.up * -2f + base.transform.forward * UnityEngine.Random.Range(1f, 6f), Quaternion.identity);
+					}
+					this.BoneTimer += Time.deltaTime;
+					if (this.BoneTimer > 0.1f)
+					{
+						this.BoneTimer = 0f;
+					}
+					if (Input.GetButtonUp("RB"))
+					{
+						this.SansEyes[0].SetActive(false);
+						this.SansEyes[1].SetActive(false);
+						this.GlowEffect.Stop();
+						this.SummonBones = false;
+						this.CanMove = true;
+					}
+					if (this.PK)
+					{
+						this.PromptBar.ClearButtons();
+						this.PromptBar.UpdateButtons();
+						this.PromptBar.Show = false;
+						this.Ragdoll.GetComponent<RagdollScript>().StopDragging();
+						this.SansEyes[0].SetActive(false);
+						this.SansEyes[1].SetActive(false);
+						this.GlowEffect.Stop();
+						this.CanMove = true;
+						this.PK = false;
+					}
+				}
+				if (this.Blasting)
+				{
+					if (this.CharacterAnimation["f02_sansBlaster_00"].time >= this.CharacterAnimation["f02_sansBlaster_00"].length - 0.25f)
+					{
+						this.SansEyes[0].SetActive(false);
+						this.SansEyes[1].SetActive(false);
+						this.GlowEffect.Stop();
+						this.Blasting = false;
+						this.CanMove = true;
+					}
+					if (this.PK)
+					{
+						this.PromptBar.ClearButtons();
+						this.PromptBar.UpdateButtons();
+						this.PromptBar.Show = false;
+						this.Ragdoll.GetComponent<RagdollScript>().StopDragging();
+						this.SansEyes[0].SetActive(false);
+						this.SansEyes[1].SetActive(false);
+						this.GlowEffect.Stop();
+						this.CanMove = true;
+						this.PK = false;
+					}
+				}
+				if (this.SithAttacking)
+				{
+					if (!this.SithRecovering)
+					{
+						if (this.SithBeam[1].Damage == 10f || this.NierDamage == 10f)
+						{
+							if (this.SithAttacks == 0 && this.CharacterAnimation[string.Concat(new object[]
+							{
+								"f02_",
+								this.AttackPrefix,
+								"Attack",
+								this.SithPrefix,
+								"_0",
+								this.SithCombo
+							})].time >= this.SithSpawnTime[this.SithCombo])
+							{
+								UnityEngine.Object.Instantiate<GameObject>(this.SithHitbox, base.transform.position + base.transform.forward * 1f + base.transform.up, base.transform.rotation);
+								this.SithAttacks++;
+							}
+						}
+						else if (this.Pod.activeInHierarchy || this.Armor[20].activeInHierarchy)
+						{
+							if (this.CharacterAnimation[string.Concat(new object[]
+							{
+								"f02_",
+								this.AttackPrefix,
+								"Attack",
+								this.SithPrefix,
+								"_0",
+								this.SithCombo
+							})].time >= this.SithHardSpawnTime1[this.SithCombo] && this.SithAttacks == 0)
+							{
+								GameObject gameObject10 = UnityEngine.Object.Instantiate<GameObject>(this.SithHitbox, base.transform.position + base.transform.forward * 1.5f + base.transform.up, base.transform.rotation);
+								gameObject10.GetComponent<SithBeamScript>().Damage = 20f;
+								this.SithAttacks++;
+								if (this.SithCombo < 2)
+								{
+									GameObject gameObject11 = UnityEngine.Object.Instantiate<GameObject>(this.GroundImpact, base.transform.position + base.transform.forward * 1.5f, base.transform.rotation);
+									gameObject11.transform.localScale = new Vector3(2f, 2f, 2f);
+								}
+							}
+						}
+						else if (this.SithAttacks == 0)
+						{
+							if (this.CharacterAnimation[string.Concat(new object[]
+							{
+								"f02_",
+								this.AttackPrefix,
+								"Attack",
+								this.SithPrefix,
+								"_0",
+								this.SithCombo
+							})].time >= this.SithHardSpawnTime1[this.SithCombo])
+							{
+								UnityEngine.Object.Instantiate<GameObject>(this.SithHardHitbox, base.transform.position + base.transform.forward * 1f + base.transform.up, base.transform.rotation);
+								this.SithAttacks++;
+							}
+						}
+						else if (this.SithAttacks == 1)
+						{
+							if (this.CharacterAnimation[string.Concat(new object[]
+							{
+								"f02_",
+								this.AttackPrefix,
+								"Attack",
+								this.SithPrefix,
+								"_0",
+								this.SithCombo
+							})].time >= this.SithHardSpawnTime2[this.SithCombo])
+							{
+								UnityEngine.Object.Instantiate<GameObject>(this.SithHardHitbox, base.transform.position + base.transform.forward * 1f + base.transform.up, base.transform.rotation);
+								this.SithAttacks++;
+							}
+						}
+						else if (this.SithAttacks == 2 && this.SithCombo == 1 && this.CharacterAnimation[string.Concat(new object[]
+						{
+							"f02_",
+							this.AttackPrefix,
+							"Attack",
+							this.SithPrefix,
+							"_0",
+							this.SithCombo
+						})].time >= 0.933333337f)
+						{
+							UnityEngine.Object.Instantiate<GameObject>(this.SithHardHitbox, base.transform.position + base.transform.forward * 1f + base.transform.up, base.transform.rotation);
+							this.SithAttacks++;
+						}
+						this.SithSoundCheck();
+						if (this.CharacterAnimation[string.Concat(new object[]
+						{
+							"f02_",
+							this.AttackPrefix,
+							"Attack",
+							this.SithPrefix,
+							"_0",
+							this.SithCombo
+						})].time >= this.CharacterAnimation[string.Concat(new object[]
+						{
+							"f02_",
+							this.AttackPrefix,
+							"Attack",
+							this.SithPrefix,
+							"_0",
+							this.SithCombo
+						})].length)
+						{
+							if (this.SithCombo < this.SithComboLength)
+							{
+								this.SithCombo++;
+								this.SithSounds = 0;
+								this.SithAttacks = 0;
+								this.CharacterAnimation.Play(string.Concat(new object[]
+								{
+									"f02_",
+									this.AttackPrefix,
+									"Attack",
+									this.SithPrefix,
+									"_0",
+									this.SithCombo
+								}));
+							}
+							else
+							{
+								this.CharacterAnimation.Play(string.Concat(new object[]
+								{
+									"f02_",
+									this.AttackPrefix,
+									"Recover",
+									this.SithPrefix,
+									"_0",
+									this.SithCombo
+								}));
+								if (!this.Pod.activeInHierarchy)
+								{
+									this.CharacterAnimation[string.Concat(new object[]
+									{
+										"f02_",
+										this.AttackPrefix,
+										"Recover",
+										this.SithPrefix,
+										"_0",
+										this.SithCombo
+									})].speed = 2f;
+								}
+								else
+								{
+									this.CharacterAnimation[string.Concat(new object[]
+									{
+										"f02_",
+										this.AttackPrefix,
+										"Recover",
+										this.SithPrefix,
+										"_0",
+										this.SithCombo
+									})].speed = 0.5f;
+								}
+								this.SithRecovering = true;
+							}
+						}
+						else
+						{
+							if (Input.GetButtonDown("X") && this.SithComboLength < this.SithCombo + 1 && this.SithComboLength < 2)
+							{
+								this.SithComboLength++;
+							}
+							if (Input.GetButtonDown("Y") && this.SithComboLength < this.SithCombo + 1 && this.SithComboLength < 2)
+							{
+								this.SithComboLength++;
+							}
+						}
+					}
+					else if (this.CharacterAnimation[string.Concat(new object[]
+					{
+						"f02_",
+						this.AttackPrefix,
+						"Recover",
+						this.SithPrefix,
+						"_0",
+						this.SithCombo
+					})].time >= this.CharacterAnimation[string.Concat(new object[]
+					{
+						"f02_",
+						this.AttackPrefix,
+						"Recover",
+						this.SithPrefix,
+						"_0",
+						this.SithCombo
+					})].length || this.h + this.v != 0f)
+					{
+						if (this.SithPrefix == string.Empty)
+						{
+							this.LightSwordParticles.Play();
+						}
+						else
+						{
+							this.HeavySwordParticles.Play();
+						}
+						this.HeavySword.GetComponent<WeaponTrail>().enabled = false;
+						this.LightSword.GetComponent<WeaponTrail>().enabled = false;
+						this.SithRecovering = false;
+						this.SithAttacking = false;
+						this.SithComboLength = 0;
+						this.SithAttacks = 0;
+						this.SithSounds = 0;
+						this.SithCombo = 0;
+						this.CanMove = true;
+					}
+				}
+				if (this.Eating)
+				{
+					this.targetRotation = Quaternion.LookRotation(new Vector3(this.TargetStudent.transform.position.x, base.transform.position.y, this.TargetStudent.transform.position.z) - base.transform.position);
+					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
+					if (this.CharacterAnimation["f02_sixEat_00"].time > this.BloodTimes[this.EatPhase])
+					{
+						GameObject gameObject12 = UnityEngine.Object.Instantiate<GameObject>(this.TargetStudent.StabBloodEffect, this.Mouth.position, Quaternion.identity);
+						gameObject12.GetComponent<RandomStabScript>().Biting = true;
+						this.Bloodiness += 20f;
+						this.EatPhase++;
+					}
+					if (this.CharacterAnimation["f02_sixEat_00"].time >= this.CharacterAnimation["f02_sixEat_00"].length)
+					{
+						if (this.Hunger < 5)
+						{
+							this.CharacterAnimation["f02_sixRun_00"].speed += 0.1f;
+							this.RunSpeed += 1f;
+							this.Hunger++;
+							if (this.Hunger == 5)
+							{
+								this.RisingSmoke.SetActive(true);
+								this.RunAnim = "f02_sixFastRun_00";
+							}
+						}
+						Debug.Log("Finished eating.");
+						this.FollowHips = false;
+						this.Attacking = false;
+						this.CanMove = true;
+						this.Eating = false;
+						this.EatPhase = 0;
+					}
+				}
+				if (this.Snapping)
+				{
+					if (this.SnapPhase == 0)
+					{
+						if (this.Gazing)
+						{
+							if (this.CharacterAnimation["f02_gazerSnap_00"].time >= 0.8f)
+							{
+								AudioSource.PlayClipAtPoint(this.FingerSnap, base.transform.position + Vector3.up);
+								this.GazerEyes.ChangeEffect();
+								this.SnapPhase++;
+							}
+						}
+						else if (this.ShotsFired < 1)
+						{
+							if (this.CharacterAnimation["f02_shipGirlSnap_00"].time >= 1f)
+							{
+								UnityEngine.Object.Instantiate<GameObject>(this.Shell, this.Guns[1].position, base.transform.rotation);
+								this.ShotsFired++;
+							}
+						}
+						else if (this.ShotsFired < 2)
+						{
+							if (this.CharacterAnimation["f02_shipGirlSnap_00"].time >= 1.2f)
+							{
+								UnityEngine.Object.Instantiate<GameObject>(this.Shell, this.Guns[2].position, base.transform.rotation);
+								this.ShotsFired++;
+							}
+						}
+						else if (this.ShotsFired < 3)
+						{
+							if (this.CharacterAnimation["f02_shipGirlSnap_00"].time >= 1.4f)
+							{
+								UnityEngine.Object.Instantiate<GameObject>(this.Shell, this.Guns[3].position, base.transform.rotation);
+								this.ShotsFired++;
+							}
+						}
+						else if (this.ShotsFired < 4 && this.CharacterAnimation["f02_shipGirlSnap_00"].time >= 1.6f)
+						{
+							UnityEngine.Object.Instantiate<GameObject>(this.Shell, this.Guns[4].position, base.transform.rotation);
+							this.ShotsFired++;
+							this.SnapPhase++;
+						}
+					}
+					else if (this.Gazing)
+					{
+						if (this.CharacterAnimation["f02_gazerSnap_00"].time >= this.CharacterAnimation["f02_gazerSnap_00"].length)
+						{
+							this.Snapping = false;
+							this.CanMove = true;
+							this.SnapPhase = 0;
+						}
+					}
+					else if (this.CharacterAnimation["f02_shipGirlSnap_00"].time >= this.CharacterAnimation["f02_shipGirlSnap_00"].length)
+					{
+						this.Snapping = false;
+						this.CanMove = true;
+						this.ShotsFired = 0;
+						this.SnapPhase = 0;
+					}
+				}
+				if (this.GazeAttacking)
+				{
+					if (this.TargetStudent != null)
+					{
+						this.targetRotation = Quaternion.LookRotation(new Vector3(this.TargetStudent.transform.position.x, base.transform.position.y, this.TargetStudent.transform.position.z) - base.transform.position);
+						base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
+					}
+					if (this.SnapPhase == 0)
+					{
+						if (this.CharacterAnimation["f02_gazerPoint_00"].time >= 1f)
+						{
+							AudioSource.PlayClipAtPoint(this.Zap, base.transform.position + Vector3.up);
+							this.GazerEyes.Attack();
+							this.SnapPhase++;
+						}
+					}
+					else if (this.CharacterAnimation["f02_gazerPoint_00"].time >= this.CharacterAnimation["f02_gazerPoint_00"].length)
+					{
+						this.GazerEyes.Attacking = false;
+						this.GazeAttacking = false;
+						this.CanMove = true;
+						this.SnapPhase = 0;
+					}
+				}
+				if (this.Finisher)
+				{
+					if (this.CharacterAnimation["f02_banchoFinisher_00"].time >= this.CharacterAnimation["f02_banchoFinisher_00"].length)
+					{
+						this.CharacterAnimation.CrossFade(this.IdleAnim);
+						this.Finisher = false;
+						this.CanMove = true;
+					}
+					else if (this.CharacterAnimation["f02_banchoFinisher_00"].time >= 1.66666663f)
+					{
+						this.BanchoFinisher.MyCollider.enabled = false;
+					}
+					else if (this.CharacterAnimation["f02_banchoFinisher_00"].time >= 0.8333333f)
+					{
+						this.BanchoFinisher.MyCollider.enabled = true;
+					}
+				}
+				if (this.ShootingBeam)
+				{
+					if (this.CharacterAnimation["f02_LoveLoveBeam_00"].time >= 1.5f && this.BeamPhase == 0)
+					{
+						UnityEngine.Object.Instantiate<GameObject>(this.LoveLoveBeam, base.transform.position, base.transform.rotation);
+						this.BeamPhase++;
+					}
+					if (this.CharacterAnimation["f02_LoveLoveBeam_00"].time >= this.CharacterAnimation["f02_LoveLoveBeam_00"].length - 1f)
+					{
+						this.ShootingBeam = false;
+						this.YandereTimer = 0f;
+						this.CanMove = true;
+						this.BeamPhase = 0;
+					}
+				}
+				if (this.WritingName)
+				{
+					this.CharacterAnimation.CrossFade("f02_dramaticWriting_00");
+					if (this.CharacterAnimation["f02_dramaticWriting_00"].time == 0f)
+					{
+						AudioSource.PlayClipAtPoint(this.DramaticWriting, base.transform.position);
+					}
+					if (this.CharacterAnimation["f02_dramaticWriting_00"].time >= 5f && this.StudentManager.NoteWindow.TargetStudent > 0)
+					{
+						this.StudentManager.Students[this.StudentManager.NoteWindow.TargetStudent].Fate = this.StudentManager.NoteWindow.MeetID;
+						this.StudentManager.Students[this.StudentManager.NoteWindow.TargetStudent].TimeOfDeath = this.StudentManager.NoteWindow.TimeID;
+						this.StudentManager.NoteWindow.TargetStudent = 0;
+					}
+					if (this.CharacterAnimation["f02_dramaticWriting_00"].time >= this.CharacterAnimation["f02_dramaticWriting_00"].length)
+					{
+						this.CharacterAnimation[this.CarryAnims[10]].weight = 1f;
+						this.CharacterAnimation["f02_dramaticWriting_00"].time = 0f;
+						this.CharacterAnimation.Stop("f02_dramaticWriting_00");
+						this.WritingName = false;
+						this.CanMove = true;
+					}
 				}
 			}
 		}
@@ -4316,10 +4436,15 @@ public class YandereScript : MonoBehaviour
 			}
 			else if (this.Interaction == YandereInteractionType.FollowMe)
 			{
+				int num = 0;
+				if (ClubGlobals.Club == ClubType.Delinquent)
+				{
+					num++;
+				}
 				if (this.TalkTimer == 3f)
 				{
 					this.CharacterAnimation.CrossFade("f02_greet_01");
-					this.Subtitle.UpdateLabel(SubtitleType.PlayerFollow, 0, 3f);
+					this.Subtitle.UpdateLabel(SubtitleType.PlayerFollow, num, 3f);
 				}
 				else
 				{
@@ -4342,10 +4467,15 @@ public class YandereScript : MonoBehaviour
 			}
 			else if (this.Interaction == YandereInteractionType.GoAway)
 			{
+				int num2 = 0;
+				if (ClubGlobals.Club == ClubType.Delinquent)
+				{
+					num2++;
+				}
 				if (this.TalkTimer == 3f)
 				{
 					this.CharacterAnimation.CrossFade("f02_lookdown_00");
-					this.Subtitle.UpdateLabel(SubtitleType.PlayerLeave, 0, 3f);
+					this.Subtitle.UpdateLabel(SubtitleType.PlayerLeave, num2, 3f);
 				}
 				else
 				{
@@ -4368,10 +4498,15 @@ public class YandereScript : MonoBehaviour
 			}
 			else if (this.Interaction == YandereInteractionType.DistractThem)
 			{
+				int num3 = 0;
+				if (ClubGlobals.Club == ClubType.Delinquent)
+				{
+					num3++;
+				}
 				if (this.TalkTimer == 3f)
 				{
 					this.CharacterAnimation.CrossFade("f02_lookdown_00");
-					this.Subtitle.UpdateLabel(SubtitleType.PlayerDistract, 0, 3f);
+					this.Subtitle.UpdateLabel(SubtitleType.PlayerDistract, num3, 3f);
 				}
 				else
 				{
@@ -4685,7 +4820,8 @@ public class YandereScript : MonoBehaviour
 			}
 			else if (this.TargetStudent.Teacher)
 			{
-				this.CharacterAnimation.CrossFade("f02_counterA_00");
+				this.CharacterAnimation.CrossFade("f02_teacherCounterA_00");
+				this.EquippedWeapon.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
 				this.Character.transform.position = new Vector3(this.Character.transform.position.x, this.TargetStudent.transform.position.y, this.Character.transform.position.z);
 			}
 			else if (!this.SanityBased)
@@ -5288,12 +5424,14 @@ public class YandereScript : MonoBehaviour
 								this.Berserk();
 								this.EasterEggMenu.SetActive(false);
 							}
-							else if (!Input.GetKeyDown(KeyCode.F8))
+							else if (Input.GetKeyDown(KeyCode.F8))
 							{
-								if (Input.GetKeyDown(KeyCode.Space))
-								{
-									this.EasterEggMenu.SetActive(false);
-								}
+								this.Nier();
+								this.EasterEggMenu.SetActive(false);
+							}
+							else if (Input.GetKeyDown(KeyCode.Space))
+							{
+								this.EasterEggMenu.SetActive(false);
 							}
 						}
 					}
@@ -6488,6 +6626,10 @@ public class YandereScript : MonoBehaviour
 		{
 			renderer.materials[1] = this.Trans;
 		}
+		this.SithSpawnTime = this.NierSpawnTime;
+		this.SithHardSpawnTime1 = this.NierHardSpawnTime;
+		this.SithHardSpawnTime2 = this.NierHardSpawnTime;
+		this.SithAudio.clip = this.NierSwoosh;
 		this.MyRenderer.sharedMesh = this.NudeMesh;
 		this.MyRenderer.materials[0].mainTexture = this.Scarface;
 		this.MyRenderer.materials[1].mainTexture = this.Chainmail;
@@ -6779,9 +6921,17 @@ public class YandereScript : MonoBehaviour
 	private void Nier()
 	{
 		this.NierCostume.SetActive(true);
-		this.HeavySword.SetActive(true);
-		this.LightSword.SetActive(true);
+		this.HeavySwordParent.gameObject.SetActive(true);
+		this.LightSwordParent.gameObject.SetActive(true);
+		this.HeavySword.GetComponent<WeaponTrail>().Start();
+		this.LightSword.GetComponent<WeaponTrail>().Start();
+		this.HeavySword.GetComponent<WeaponTrail>().enabled = false;
+		this.LightSword.GetComponent<WeaponTrail>().enabled = false;
 		this.Pod.SetActive(true);
+		this.SithSpawnTime = this.NierSpawnTime;
+		this.SithHardSpawnTime1 = this.NierHardSpawnTime;
+		this.SithHardSpawnTime2 = this.NierHardSpawnTime;
+		this.SithAudio.clip = this.NierSwoosh;
 		this.Pod.transform.parent = null;
 		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
 		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
@@ -7092,11 +7242,13 @@ public class YandereScript : MonoBehaviour
 
 	private void SithSoundCheck()
 	{
-		if (this.SithBeam[1].Damage == 10f)
+		if (this.SithBeam[1].Damage == 10f || this.NierDamage == 10f)
 		{
 			if (this.SithSounds == 0 && this.CharacterAnimation[string.Concat(new object[]
 			{
-				"f02_sithAttack",
+				"f02_",
+				this.AttackPrefix,
+				"Attack",
 				this.SithPrefix,
 				"_0",
 				this.SithCombo
@@ -7111,7 +7263,9 @@ public class YandereScript : MonoBehaviour
 		{
 			if (this.CharacterAnimation[string.Concat(new object[]
 			{
-				"f02_sithAttack",
+				"f02_",
+				this.AttackPrefix,
+				"Attack",
 				this.SithPrefix,
 				"_0",
 				this.SithCombo
@@ -7126,7 +7280,9 @@ public class YandereScript : MonoBehaviour
 		{
 			if (this.CharacterAnimation[string.Concat(new object[]
 			{
-				"f02_sithAttack",
+				"f02_",
+				this.AttackPrefix,
+				"Attack",
 				this.SithPrefix,
 				"_0",
 				this.SithCombo
@@ -7139,7 +7295,9 @@ public class YandereScript : MonoBehaviour
 		}
 		else if (this.SithSounds == 2 && this.SithCombo == 1 && this.CharacterAnimation[string.Concat(new object[]
 		{
-			"f02_sithAttack",
+			"f02_",
+			this.AttackPrefix,
+			"Attack",
 			this.SithPrefix,
 			"_0",
 			this.SithCombo

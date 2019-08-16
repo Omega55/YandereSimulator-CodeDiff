@@ -407,6 +407,16 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] Task52Lines;
 
+	public string[] Task76Lines;
+
+	public string[] Task77Lines;
+
+	public string[] Task78Lines;
+
+	public string[] Task79Lines;
+
+	public string[] Task80Lines;
+
 	public string[] Task81Lines;
 
 	public string[] TaskGenericLines;
@@ -438,6 +448,8 @@ public class SubtitleScript : MonoBehaviour
 	public string[] Club10Info;
 
 	public string[] Club11Info;
+
+	public string[] Club12Info;
 
 	public string[] SubClub3Info;
 
@@ -635,6 +647,16 @@ public class SubtitleScript : MonoBehaviour
 
 	public AudioClip[] Task52Clips;
 
+	public AudioClip[] Task76Clips;
+
+	public AudioClip[] Task77Clips;
+
+	public AudioClip[] Task78Clips;
+
+	public AudioClip[] Task79Clips;
+
+	public AudioClip[] Task80Clips;
+
 	public AudioClip[] Task81Clips;
 
 	public AudioClip[] TaskGenericClips;
@@ -666,6 +688,8 @@ public class SubtitleScript : MonoBehaviour
 	public AudioClip[] Club10Clips;
 
 	public AudioClip[] Club11Clips;
+
+	public AudioClip[] Club12Clips;
 
 	public AudioClip[] SubClub3Clips;
 
@@ -932,6 +956,10 @@ public class SubtitleScript : MonoBehaviour
 				new AudioClipArrayWrapper(this.Club11Clips)
 			},
 			{
+				SubtitleType.ClubDelinquentInfo,
+				new AudioClipArrayWrapper(this.Club12Clips)
+			},
+			{
 				SubtitleType.ClubQuit,
 				new AudioClipArrayWrapper(this.ClubQuitClips)
 			},
@@ -1118,6 +1146,26 @@ public class SubtitleScript : MonoBehaviour
 			{
 				SubtitleType.Task52Line,
 				new AudioClipArrayWrapper(this.Task52Clips)
+			},
+			{
+				SubtitleType.Task76Line,
+				new AudioClipArrayWrapper(this.Task76Clips)
+			},
+			{
+				SubtitleType.Task77Line,
+				new AudioClipArrayWrapper(this.Task77Clips)
+			},
+			{
+				SubtitleType.Task78Line,
+				new AudioClipArrayWrapper(this.Task78Clips)
+			},
+			{
+				SubtitleType.Task79Line,
+				new AudioClipArrayWrapper(this.Task79Clips)
+			},
+			{
+				SubtitleType.Task80Line,
+				new AudioClipArrayWrapper(this.Task80Clips)
 			},
 			{
 				SubtitleType.Task81Line,
@@ -1934,15 +1982,15 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (subtitleType == SubtitleType.LovestruckDeathReaction)
 		{
-			this.Label.text = this.GetRandomString(this.LovestruckDeathReactions);
+			this.Label.text = this.LovestruckDeathReactions[ID];
 		}
 		else if (subtitleType == SubtitleType.LovestruckMurderReport)
 		{
-			this.Label.text = this.GetRandomString(this.LovestruckMurderReports);
+			this.Label.text = this.LovestruckMurderReports[ID];
 		}
 		else if (subtitleType == SubtitleType.LovestruckCorpseReport)
 		{
-			this.Label.text = this.GetRandomString(this.LovestruckCorpseReports);
+			this.Label.text = this.LovestruckCorpseReports[ID];
 		}
 		else if (subtitleType == SubtitleType.SocialReport)
 		{
@@ -2066,19 +2114,19 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (subtitleType == SubtitleType.PlayerFollow)
 		{
-			this.Label.text = this.GetRandomString(this.PlayerFollows);
+			this.Label.text = this.PlayerFollows[ID];
 		}
 		else if (subtitleType == SubtitleType.StudentFollow)
 		{
-			this.Label.text = this.GetRandomString(this.StudentFollows);
+			this.Label.text = this.StudentFollows[ID];
 		}
 		else if (subtitleType == SubtitleType.PlayerLeave)
 		{
-			this.Label.text = this.GetRandomString(this.PlayerLeaves);
+			this.Label.text = this.PlayerLeaves[ID];
 		}
 		else if (subtitleType == SubtitleType.StudentLeave)
 		{
-			this.Label.text = this.GetRandomString(this.StudentLeaves);
+			this.Label.text = this.StudentLeaves[ID];
 		}
 		else if (subtitleType == SubtitleType.StudentStay)
 		{
@@ -2086,11 +2134,11 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (subtitleType == SubtitleType.PlayerDistract)
 		{
-			this.Label.text = this.GetRandomString(this.PlayerDistracts);
+			this.Label.text = this.PlayerDistracts[ID];
 		}
 		else if (subtitleType == SubtitleType.StudentDistract)
 		{
-			this.Label.text = this.GetRandomString(this.StudentDistracts);
+			this.Label.text = this.StudentDistracts[ID];
 		}
 		else if (subtitleType == SubtitleType.StudentDistractRefuse)
 		{
@@ -2312,6 +2360,31 @@ public class SubtitleScript : MonoBehaviour
 			this.Label.text = this.Task52Lines[ID];
 			this.PlayVoice(subtitleType, ID);
 		}
+		else if (subtitleType == SubtitleType.Task76Line)
+		{
+			this.Label.text = this.Task76Lines[ID];
+			this.PlayVoice(subtitleType, ID);
+		}
+		else if (subtitleType == SubtitleType.Task77Line)
+		{
+			this.Label.text = this.Task77Lines[ID];
+			this.PlayVoice(subtitleType, ID);
+		}
+		else if (subtitleType == SubtitleType.Task78Line)
+		{
+			this.Label.text = this.Task78Lines[ID];
+			this.PlayVoice(subtitleType, ID);
+		}
+		else if (subtitleType == SubtitleType.Task79Line)
+		{
+			this.Label.text = this.Task79Lines[ID];
+			this.PlayVoice(subtitleType, ID);
+		}
+		else if (subtitleType == SubtitleType.Task80Line)
+		{
+			this.Label.text = this.Task80Lines[ID];
+			this.PlayVoice(subtitleType, ID);
+		}
 		else if (subtitleType == SubtitleType.Task81Line)
 		{
 			this.Label.text = this.Task81Lines[ID];
@@ -2420,6 +2493,11 @@ public class SubtitleScript : MonoBehaviour
 		else if (subtitleType == SubtitleType.ClubGamingInfo)
 		{
 			this.Label.text = this.Club11Info[ID];
+			this.PlayVoice(subtitleType, ID);
+		}
+		else if (subtitleType == SubtitleType.ClubDelinquentInfo)
+		{
+			this.Label.text = this.Club12Info[ID];
 			this.PlayVoice(subtitleType, ID);
 		}
 		else if (subtitleType == SubtitleType.ClubJoin)
@@ -2626,6 +2704,26 @@ public class SubtitleScript : MonoBehaviour
 		{
 			return this.Task52Clips[TaskPhase].length;
 		}
+		if (StudentID == 76)
+		{
+			return this.Task76Clips[TaskPhase].length;
+		}
+		if (StudentID == 77)
+		{
+			return this.Task77Clips[TaskPhase].length;
+		}
+		if (StudentID == 78)
+		{
+			return this.Task78Clips[TaskPhase].length;
+		}
+		if (StudentID == 79)
+		{
+			return this.Task79Clips[TaskPhase].length;
+		}
+		if (StudentID == 80)
+		{
+			return this.Task80Clips[TaskPhase].length;
+		}
 		if (StudentID == 81)
 		{
 			return this.Task81Clips[TaskPhase].length;
@@ -2684,6 +2782,10 @@ public class SubtitleScript : MonoBehaviour
 			if (Club == ClubType.Gaming)
 			{
 				return this.Club11Clips[ClubPhase].length + 0.5f;
+			}
+			if (Club == ClubType.Delinquent)
+			{
+				return this.Club12Clips[ClubPhase].length + 0.5f;
 			}
 			return 0f;
 		}

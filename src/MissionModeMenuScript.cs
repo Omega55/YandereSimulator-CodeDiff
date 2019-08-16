@@ -187,6 +187,7 @@ public class MissionModeMenuScript : MonoBehaviour
 
 	private void Start()
 	{
+		base.transform.position = new Vector3(0f, 0.95f, -4.266667f);
 		ColorGradingModel.Settings settings = this.Profile.colorGrading.settings;
 		settings.basic.saturation = 1f;
 		settings.channelMixer.red = new Vector3(1f, 0f, 0f);

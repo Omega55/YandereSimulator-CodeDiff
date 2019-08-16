@@ -25,7 +25,7 @@ public class DelinquentVoicesScript : MonoBehaviour
 		if (this.Radio.MyAudio.isPlaying && this.Yandere.CanMove && Vector3.Distance(this.Yandere.transform.position, base.transform.position) < 5f)
 		{
 			this.Timer = Mathf.MoveTowards(this.Timer, 0f, Time.deltaTime);
-			if (this.Timer == 0f)
+			if (this.Timer == 0f && ClubGlobals.Club != ClubType.Delinquent)
 			{
 				if (this.Yandere.Container == null)
 				{

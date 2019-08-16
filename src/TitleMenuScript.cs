@@ -14,6 +14,8 @@ public class TitleMenuScript : MonoBehaviour
 
 	public TitleSponsorScript Sponsors;
 
+	public TitleExtrasScript Extras;
+
 	public PromptBarScript PromptBar;
 
 	public SSAOEffect SSAO;
@@ -187,7 +189,7 @@ public class TitleMenuScript : MonoBehaviour
 				this.LoveSickYandere.CrossFade("f02_edgyOverShoulder_00");
 			}
 		}
-		if (!this.Sponsors.Show && !this.SaveFiles.Show)
+		if (!this.Sponsors.Show && !this.SaveFiles.Show && !this.Extras.Show)
 		{
 			this.InputTimer += Time.deltaTime;
 			if (this.InputTimer > 1f)
@@ -229,6 +231,12 @@ public class TitleMenuScript : MonoBehaviour
 						this.PromptBar.UpdateButtons();
 						this.Sponsors.Show = true;
 					}
+					else if (this.Selected == 6)
+					{
+						this.PromptBar.Label[1].text = "Back";
+						this.PromptBar.UpdateButtons();
+						this.Extras.Show = true;
+					}
 					if (!this.LoveSick)
 					{
 						this.TurnCute();
@@ -241,7 +249,6 @@ public class TitleMenuScript : MonoBehaviour
 				}
 				if (Input.GetKeyDown("m"))
 				{
-					this.TitleLabel.text = "MANDERE";
 				}
 				if (!this.LoveSick)
 				{
@@ -300,6 +307,7 @@ public class TitleMenuScript : MonoBehaviour
 			{
 				this.SaveFiles.Show = false;
 				this.Sponsors.Show = false;
+				this.Extras.Show = false;
 				this.PromptBar.Label[0].text = "Confirm";
 				this.PromptBar.Label[1].text = string.Empty;
 				this.PromptBar.Label[2].text = string.Empty;

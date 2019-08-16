@@ -395,8 +395,15 @@ public class TalkingScript : MonoBehaviour
 						}
 						else
 						{
+							int num = 0;
+							if (ClubGlobals.Club == ClubType.Delinquent)
+							{
+								this.S.Reputation.PendingRep -= 10f;
+								this.S.PendingRep -= 10f;
+								num++;
+							}
 							this.S.CharacterAnimation.CrossFade(this.S.Nod1Anim);
-							this.S.Subtitle.UpdateLabel(SubtitleType.StudentFollow, 0, 2f);
+							this.S.Subtitle.UpdateLabel(SubtitleType.StudentFollow, num, 2f);
 							this.Follow = true;
 						}
 					}
@@ -450,8 +457,15 @@ public class TalkingScript : MonoBehaviour
 						}
 						else
 						{
+							int num2 = 0;
+							if (ClubGlobals.Club == ClubType.Delinquent)
+							{
+								this.S.Reputation.PendingRep -= 10f;
+								this.S.PendingRep -= 10f;
+								num2++;
+							}
 							this.S.CharacterAnimation.CrossFade(this.S.Nod1Anim);
-							this.S.Subtitle.UpdateLabel(SubtitleType.StudentLeave, 0, 3f);
+							this.S.Subtitle.UpdateLabel(SubtitleType.StudentLeave, num2, 3f);
 							this.S.GoAway = true;
 						}
 					}
@@ -498,8 +512,15 @@ public class TalkingScript : MonoBehaviour
 							}
 							if (studentScript.Routine && !studentScript.TargetedForDistraction && !studentScript.InEvent && !this.Grudge && studentScript.Indoors && studentScript.gameObject.activeInHierarchy && studentScript.ClubActivityPhase < 16 && studentScript.FollowTarget == null)
 							{
+								int num3 = 0;
+								if (ClubGlobals.Club == ClubType.Delinquent)
+								{
+									this.S.Reputation.PendingRep -= 10f;
+									this.S.PendingRep -= 10f;
+									num3++;
+								}
 								this.S.CharacterAnimation.CrossFade(this.S.Nod1Anim);
-								this.S.Subtitle.UpdateLabel(SubtitleType.StudentDistract, 0, 3f);
+								this.S.Subtitle.UpdateLabel(SubtitleType.StudentDistract, num3, 3f);
 								this.Refuse = false;
 							}
 							else
@@ -1270,6 +1291,12 @@ public class TalkingScript : MonoBehaviour
 						{
 							this.S.CharacterAnimation.CrossFade(this.S.GossipAnim);
 							this.S.Subtitle.UpdateLabel(SubtitleType.SendToLocker, 1, 5f);
+							this.Refuse = true;
+						}
+						else if (this.S.Club != ClubType.Council)
+						{
+							this.S.CharacterAnimation.CrossFade(this.S.GossipAnim);
+							this.S.Subtitle.UpdateLabel(SubtitleType.SendToLocker, 3, 5f);
 							this.Refuse = true;
 						}
 						else

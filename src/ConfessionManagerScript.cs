@@ -77,6 +77,8 @@ public class ConfessionManagerScript : MonoBehaviour
 
 	public float Timer;
 
+	public bool CheatRejection;
+
 	public bool ReverseTears;
 
 	public bool FadeOut;
@@ -93,7 +95,8 @@ public class ConfessionManagerScript : MonoBehaviour
 
 	private void Start()
 	{
-		this.ConfessionCamera.gameObject.SetActive(false);
+		this.Senpai["SenpaiConfession"].speed = 0.9f;
+		this.ConfessionCamera.gameObject.SetActive(true);
 		this.TimelessDarkness.color = new Color(0f, 0f, 0f, 0f);
 		this.Darkness.color = new Color(0f, 0f, 0f, 1f);
 		this.SubtitleLabel.text = string.Empty;
@@ -143,9 +146,18 @@ public class ConfessionManagerScript : MonoBehaviour
 		{
 			if (this.Timer > 11f)
 			{
-				this.FadeOut = true;
-				this.Timer = 0f;
-				this.Phase++;
+				if (!this.CheatRejection)
+				{
+					this.FadeOut = true;
+					this.Timer = 0f;
+					this.Phase++;
+				}
+				else if (this.Osana["OsanaConfessionRejected"].time < 45f)
+				{
+					this.Senpai.CrossFade("SenpaiConfessionRejected", 1f);
+					this.Osana["OsanaConfessionRejected"].time = 45f;
+					this.Osana.CrossFade("OsanaConfessionRejected", 1f);
+				}
 			}
 		}
 		else if (this.Phase == 1)

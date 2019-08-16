@@ -1176,6 +1176,10 @@ public class StudentManagerScript : MonoBehaviour
 			{
 				this.RedString.Target = studentScript.LeftPinky;
 			}
+			if (this.JSON.Students[spawnID].Persona == PersonaType.Protective || this.JSON.Students[spawnID].Hairstyle == "20" || this.JSON.Students[spawnID].Hairstyle == "21")
+			{
+				UnityEngine.Object.Destroy(studentScript);
+			}
 			this.OccupySeat();
 		}
 		this.NPCsSpawned++;
@@ -2931,6 +2935,17 @@ public class StudentManagerScript : MonoBehaviour
 				studentScript.Cosmetic.LeftEyeRenderer.material.color = new Color(1f - alpha, 1f - alpha, 1f - alpha, 1f);
 				studentScript.Cosmetic.RightEyeRenderer.material.color = new Color(1f - alpha, 1f - alpha, 1f - alpha, 1f);
 				studentScript.Cosmetic.HairRenderer.material.color = new Color(1f - alpha, 1f - alpha, 1f - alpha, 1f);
+			}
+		}
+	}
+
+	public void DisableChaseCameras()
+	{
+		foreach (StudentScript studentScript in this.Students)
+		{
+			if (studentScript != null)
+			{
+				studentScript.ChaseCamera.SetActive(false);
 			}
 		}
 	}

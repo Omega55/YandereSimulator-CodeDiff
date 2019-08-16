@@ -43,9 +43,11 @@ public class InventoryScript : MonoBehaviour
 
 	public bool Ring;
 
-	public bool Soda;
-
 	public bool Rose;
+
+	public bool Sake;
+
+	public bool Soda;
 
 	public bool Bra;
 

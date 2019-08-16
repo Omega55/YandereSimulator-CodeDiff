@@ -133,6 +133,10 @@ public class ReputationScript : MonoBehaviour
 		this.Reputation += this.PendingRep;
 		this.PendingRep = 0f;
 		this.CheckedRep++;
+		if (ClubGlobals.Club == ClubType.Delinquent && this.Reputation > -33.33333f)
+		{
+			this.Reputation = -33.33333f;
+		}
 		this.StudentManager.WipePendingRep();
 	}
 }

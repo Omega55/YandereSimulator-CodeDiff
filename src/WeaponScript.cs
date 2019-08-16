@@ -477,6 +477,7 @@ public class WeaponScript : MonoBehaviour
 
 	public void Drop()
 	{
+		Debug.Log("Yandere-chan dropped a " + base.gameObject.name + ".");
 		if (this.WeaponID == 11)
 		{
 			this.Yandere.IdleAnim = "CyborgNinja_Idle_Unarmed";

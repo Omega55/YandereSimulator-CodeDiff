@@ -27,7 +27,7 @@ public class TrashCompactorScript : MonoBehaviour
 		{
 			for (int i = 1; i < 101; i++)
 			{
-				if (this.StudentManager.Students[i] != null && !this.StudentManager.Students[i].Male && (this.StudentManager.Students[i].Cosmetic.Hairstyle == 20 || this.StudentManager.Students[i].Cosmetic.Hairstyle == 21))
+				if (this.StudentManager.Students[i] != null && !this.StudentManager.Students[i].Male && (this.StudentManager.Students[i].Cosmetic.Hairstyle == 20 || this.StudentManager.Students[i].Cosmetic.Hairstyle == 21 || this.StudentManager.Students[i].Persona == PersonaType.Protective))
 				{
 					this.CompactTrash();
 				}
@@ -51,6 +51,7 @@ public class TrashCompactorScript : MonoBehaviour
 
 	private void CompactTrash()
 	{
+		Debug.Log("Taking out the garbage.");
 		if (!this.TrashCompactorObject.gameObject.activeInHierarchy)
 		{
 			SchoolGlobals.SchoolAtmosphereSet = true;
