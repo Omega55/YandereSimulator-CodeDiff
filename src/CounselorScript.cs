@@ -1168,35 +1168,35 @@ public class CounselorScript : MonoBehaviour
 						{
 							num5--;
 						}
-						if (this.StudentManager.Students[76] == null)
+						if (this.StudentManager.Students[77] == null)
 						{
 							num5--;
 						}
-						else if (!this.StudentManager.Students[76].gameObject.activeInHierarchy)
+						else if (!this.StudentManager.Students[77].gameObject.activeInHierarchy)
 						{
 							num5--;
 						}
-						if (this.StudentManager.Students[76] == null)
+						if (this.StudentManager.Students[78] == null)
 						{
 							num5--;
 						}
-						else if (!this.StudentManager.Students[76].gameObject.activeInHierarchy)
+						else if (!this.StudentManager.Students[78].gameObject.activeInHierarchy)
 						{
 							num5--;
 						}
-						if (this.StudentManager.Students[76] == null)
+						if (this.StudentManager.Students[79] == null)
 						{
 							num5--;
 						}
-						else if (!this.StudentManager.Students[76].gameObject.activeInHierarchy)
+						else if (!this.StudentManager.Students[79].gameObject.activeInHierarchy)
 						{
 							num5--;
 						}
-						if (this.StudentManager.Students[76] == null)
+						if (this.StudentManager.Students[80] == null)
 						{
 							num5--;
 						}
-						else if (!this.StudentManager.Students[76].gameObject.activeInHierarchy)
+						else if (!this.StudentManager.Students[80].gameObject.activeInHierarchy)
 						{
 							num5--;
 						}

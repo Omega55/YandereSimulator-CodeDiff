@@ -5,6 +5,11 @@ public class CardboardBoxScript : MonoBehaviour
 {
 	public PromptScript Prompt;
 
+	private void Start()
+	{
+		Physics.IgnoreCollision(this.Prompt.Yandere.GetComponent<Collider>(), base.GetComponent<Collider>());
+	}
+
 	private void Update()
 	{
 		if (this.Prompt.Circle[0].fillAmount == 0f)

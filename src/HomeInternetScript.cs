@@ -11,6 +11,8 @@ public class HomeInternetScript : MonoBehaviour
 
 	public PromptBarScript PromptBar;
 
+	public HomeClockScript Clock;
+
 	public HomeYandereScript HomeYandere;
 
 	public HomeCameraScript HomeCamera;
@@ -521,6 +523,7 @@ public class HomeInternetScript : MonoBehaviour
 								PlayerGlobals.Money -= 33.33f;
 								this.MyAudio.Play();
 								this.MoneyLabel.text = "$" + PlayerGlobals.Money.ToString("F2");
+								this.Clock.UpdateMoneyLabel();
 							}
 						}
 						else
@@ -543,6 +546,7 @@ public class HomeInternetScript : MonoBehaviour
 								PlayerGlobals.Money -= 8.49f;
 								this.MyAudio.Play();
 								this.MoneyLabel.text = "$" + PlayerGlobals.Money.ToString("F2");
+								this.Clock.UpdateMoneyLabel();
 							}
 						}
 						else

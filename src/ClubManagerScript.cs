@@ -95,6 +95,8 @@ public class ClubManagerScript : MonoBehaviour
 
 	public int[] Club11Students;
 
+	public int[] Club14Students;
+
 	public bool LeaderAshamed;
 
 	public bool ClubEffect;
@@ -142,6 +144,8 @@ public class ClubManagerScript : MonoBehaviour
 	public int[] Club10IDs;
 
 	public int[] Club11IDs;
+
+	public int[] Club14IDs;
 
 	public int[] ClubIDs;
 
@@ -581,6 +585,29 @@ public class ClubManagerScript : MonoBehaviour
 			this.Yandere.ClubActivity = true;
 			this.Yandere.transform.position = this.StudentManager.ComputerGames.Chairs[1].transform.position;
 			this.Yandere.transform.rotation = this.StudentManager.ComputerGames.Chairs[1].transform.rotation;
+		}
+		else if (this.Club == ClubType.Delinquent)
+		{
+			Debug.Log("Calling the Delinquent 'club activity'.");
+			this.Yandere.gameObject.SetActive(false);
+			this.ID = 0;
+			while (this.ID < this.Club14Students.Length)
+			{
+				StudentScript studentScript12 = this.StudentManager.Students[this.Club14Students[this.ID]];
+				if (studentScript12 != null && studentScript12.Alive)
+				{
+					Debug.Log("Telling a delinquent #" + studentScript12.StudentID + " to leave school.");
+					studentScript12.Pathfinding.target = this.StudentManager.Exit;
+					studentScript12.CurrentDestination = this.StudentManager.Exit;
+					studentScript12.Pathfinding.canSearch = true;
+					studentScript12.Pathfinding.canMove = true;
+					studentScript12.Pathfinding.speed = 1f;
+					studentScript12.DistanceToDestination = 100f;
+					studentScript12.Talking = false;
+					studentScript12.Stop = false;
+				}
+				this.ID++;
+			}
 		}
 		this.Clock.SetActive(false);
 		this.Reputation.SetActive(false);

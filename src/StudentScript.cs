@@ -11739,6 +11739,7 @@ public class StudentScript : MonoBehaviour
 
 	private void WitnessMurder()
 	{
+		this.RespectEarned = false;
 		if ((this.Fleeing && this.WitnessedBloodPool) || this.ReportPhase == 2)
 		{
 			this.WitnessedBloodyWeapon = false;

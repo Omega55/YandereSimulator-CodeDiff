@@ -20,7 +20,7 @@ public class HomeClockScript : MonoBehaviour
 		{
 			this.HourLabel.text = ((!HomeGlobals.LateForSchool) ? "6:30 AM" : "7:30 AM");
 		}
-		this.MoneyLabel.text = "$" + PlayerGlobals.Money.ToString("F2");
+		this.UpdateMoneyLabel();
 	}
 
 	private string GetWeekdayText(DayOfWeek weekday)
@@ -50,5 +50,10 @@ public class HomeClockScript : MonoBehaviour
 			return "FRIDAY";
 		}
 		return "SATURDAY";
+	}
+
+	public void UpdateMoneyLabel()
+	{
+		this.MoneyLabel.text = "$" + PlayerGlobals.Money.ToString("F2");
 	}
 }
