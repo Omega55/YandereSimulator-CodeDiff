@@ -8,6 +8,10 @@ public class TaskListScript : MonoBehaviour
 
 	public PauseScreenScript PauseScreen;
 
+	public TaskWindowScript TaskWindow;
+
+	public JsonScript JSON;
+
 	public GameObject MainMenu;
 
 	public UITexture StudentIcon;
@@ -26,11 +30,7 @@ public class TaskListScript : MonoBehaviour
 
 	public UISprite[] Checkmarks;
 
-	public Texture[] TaskIcons;
-
-	public string[] TaskDescs;
-
-	public string[] TaskNames;
+	public int ListPosition;
 
 	public int ID = 1;
 
@@ -38,20 +38,38 @@ public class TaskListScript : MonoBehaviour
 	{
 		if (this.InputManager.TappedUp)
 		{
-			this.ID--;
-			if (this.ID < 1)
+			if (this.ID == 1)
 			{
-				this.ID = 16;
+				this.ListPosition--;
+				if (this.ListPosition < 0)
+				{
+					this.ListPosition = 84;
+					this.ID = 16;
+				}
 			}
+			else
+			{
+				this.ID--;
+			}
+			this.UpdateTaskList();
 			base.StartCoroutine(this.UpdateTaskInfo());
 		}
 		if (this.InputManager.TappedDown)
 		{
-			this.ID++;
-			if (this.ID > 16)
+			if (this.ID == 16)
 			{
-				this.ID = 1;
+				this.ListPosition++;
+				if (this.ListPosition > 84)
+				{
+					this.ListPosition = 0;
+					this.ID = 1;
+				}
 			}
+			else
+			{
+				this.ID++;
+			}
+			this.UpdateTaskList();
 			base.StartCoroutine(this.UpdateTaskInfo());
 		}
 		if (Input.GetButtonDown("B"))
@@ -71,17 +89,24 @@ public class TaskListScript : MonoBehaviour
 
 	public void UpdateTaskList()
 	{
-		for (int i = 1; i < this.TaskNames.Length; i++)
+		for (int i = 1; i < this.TaskNameLabels.Length; i++)
 		{
-			this.TaskNameLabels[i].text = ((TaskGlobals.GetTaskStatus(i) != 0) ? this.TaskNames[i] : "?????");
-			this.Checkmarks[i].enabled = (TaskGlobals.GetTaskStatus(i) == 3);
+			if (TaskGlobals.GetTaskStatus(i + this.ListPosition) == 0)
+			{
+				this.TaskNameLabels[i].text = "Undiscovered Task #" + (i + this.ListPosition);
+			}
+			else
+			{
+				this.TaskNameLabels[i].text = this.JSON.Students[i + this.ListPosition].Name + "'s Task";
+			}
+			this.Checkmarks[i].enabled = (TaskGlobals.GetTaskStatus(i + this.ListPosition) == 3);
 		}
 	}
 
 	public IEnumerator UpdateTaskInfo()
 	{
 		this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 200f - 25f * (float)this.ID, this.Highlight.localPosition.z);
-		if (TaskGlobals.GetTaskStatus(this.ID) == 0)
+		if (TaskGlobals.GetTaskStatus(this.ID + this.ListPosition) == 0)
 		{
 			this.StudentIcon.mainTexture = this.Silhouette;
 			this.TaskIcon.mainTexture = this.QuestionMark;
@@ -94,14 +119,23 @@ public class TaskListScript : MonoBehaviour
 				"file:///",
 				Application.streamingAssetsPath,
 				"/Portraits/Student_",
-				this.ID.ToString(),
+				(this.ID + this.ListPosition).ToString(),
 				".png"
 			});
 			WWW www = new WWW(path);
 			yield return www;
 			this.StudentIcon.mainTexture = www.texture;
-			this.TaskIcon.mainTexture = this.TaskIcons[this.ID];
-			this.TaskDesc.text = this.TaskDescs[this.ID];
+			this.TaskWindow.AltGenericCheck(this.ID + this.ListPosition);
+			if (this.TaskWindow.Generic)
+			{
+				this.TaskIcon.mainTexture = this.TaskWindow.Icons[0];
+				this.TaskDesc.text = this.TaskWindow.Descriptions[0];
+			}
+			else
+			{
+				this.TaskIcon.mainTexture = this.TaskWindow.Icons[this.ID + this.ListPosition];
+				this.TaskDesc.text = this.TaskWindow.Descriptions[this.ID + this.ListPosition];
+			}
 		}
 		yield break;
 	}

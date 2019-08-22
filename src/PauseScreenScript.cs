@@ -129,6 +129,7 @@ public class PauseScreenScript : MonoBehaviour
 		this.AudioMenu.gameObject.SetActive(false);
 		this.PassTime.gameObject.SetActive(false);
 		this.Settings.gameObject.SetActive(false);
+		this.TaskList.gameObject.SetActive(false);
 		this.Stats.gameObject.SetActive(false);
 		this.LoadingScreen.SetActive(false);
 		this.SchemesMenu.SetActive(false);

@@ -659,7 +659,9 @@ public class SubtitleScript : MonoBehaviour
 
 	public AudioClip[] Task81Clips;
 
-	public AudioClip[] TaskGenericClips;
+	public AudioClip[] TaskGenericMaleClips;
+
+	public AudioClip[] TaskGenericFemaleClips;
 
 	public AudioClip[] TaskInquiryClips;
 
@@ -1172,8 +1174,12 @@ public class SubtitleScript : MonoBehaviour
 				new AudioClipArrayWrapper(this.Task81Clips)
 			},
 			{
-				SubtitleType.TaskGenericLine,
-				new AudioClipArrayWrapper(this.TaskGenericClips)
+				SubtitleType.TaskGenericLineMale,
+				new AudioClipArrayWrapper(this.TaskGenericMaleClips)
+			},
+			{
+				SubtitleType.TaskGenericLineFemale,
+				new AudioClipArrayWrapper(this.TaskGenericFemaleClips)
 			},
 			{
 				SubtitleType.TaskInquiry,
@@ -2393,7 +2399,14 @@ public class SubtitleScript : MonoBehaviour
 		else if (subtitleType == SubtitleType.TaskGenericLine)
 		{
 			this.Label.text = "(PLACEHOLDER TASK - WILL BE REPLACED AFTER DEMO)\n" + this.TaskGenericLines[ID];
-			this.PlayVoice(subtitleType, ID);
+			if (this.Yandere.GetComponent<YandereScript>().TargetStudent.Male)
+			{
+				this.PlayVoice(SubtitleType.TaskGenericLineMale, ID);
+			}
+			else
+			{
+				this.PlayVoice(SubtitleType.TaskGenericLineFemale, ID);
+			}
 		}
 		else if (subtitleType == SubtitleType.TaskInquiry)
 		{
@@ -2728,7 +2741,11 @@ public class SubtitleScript : MonoBehaviour
 		{
 			return this.Task81Clips[TaskPhase].length;
 		}
-		return this.TaskGenericClips[TaskPhase].length;
+		if (this.Yandere.GetComponent<YandereScript>().TargetStudent.Male)
+		{
+			return this.TaskGenericMaleClips[TaskPhase].length;
+		}
+		return this.TaskGenericFemaleClips[TaskPhase].length;
 	}
 
 	public float GetClubClipLength(ClubType Club, int ClubPhase)

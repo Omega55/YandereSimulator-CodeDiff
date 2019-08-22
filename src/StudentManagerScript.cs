@@ -1316,6 +1316,14 @@ public class StudentManagerScript : MonoBehaviour
 							}
 						}
 					}
+					if (studentScript.FightingSlave && this.Yandere.Armed)
+					{
+						Debug.Log("Fighting with a slave!");
+						studentScript.Prompt.Label[0].text = "     Stab";
+						studentScript.Prompt.HideButton[0] = false;
+						studentScript.Prompt.HideButton[2] = true;
+						studentScript.Prompt.enabled = true;
+					}
 					if (this.NoSpeech && !studentScript.Armband.activeInHierarchy)
 					{
 						studentScript.Prompt.HideButton[0] = true;
@@ -1380,33 +1388,47 @@ public class StudentManagerScript : MonoBehaviour
 				studentScript.Prompt.HideButton[0] = false;
 				studentScript.Prompt.HideButton[2] = false;
 				studentScript.Prompt.Attack = false;
-				if (this.Yandere.Armed)
+				if (studentScript.FightingSlave)
 				{
-					studentScript.Prompt.HideButton[0] = true;
-					studentScript.Prompt.MinimumDistance = 1f;
-					studentScript.Prompt.Attack = true;
+					if (this.Yandere.Armed)
+					{
+						Debug.Log("Fighting with a slave!");
+						studentScript.Prompt.Label[0].text = "     Stab";
+						studentScript.Prompt.HideButton[0] = false;
+						studentScript.Prompt.HideButton[2] = true;
+						studentScript.Prompt.enabled = true;
+					}
 				}
 				else
 				{
-					studentScript.Prompt.HideButton[2] = true;
-					studentScript.Prompt.MinimumDistance = 2f;
-					if (studentScript.WitnessedMurder || studentScript.WitnessedCorpse || studentScript.Private)
+					if (this.Yandere.Armed)
+					{
+						studentScript.Prompt.HideButton[0] = true;
+						studentScript.Prompt.MinimumDistance = 1f;
+						studentScript.Prompt.Attack = true;
+					}
+					else
+					{
+						studentScript.Prompt.HideButton[2] = true;
+						studentScript.Prompt.MinimumDistance = 2f;
+						if (studentScript.WitnessedMurder || studentScript.WitnessedCorpse || studentScript.Private)
+						{
+							studentScript.Prompt.HideButton[0] = true;
+						}
+					}
+					if (this.Yandere.Dragging || this.Yandere.PickUp != null || this.Yandere.Chased || this.Yandere.Chasers > 0)
+					{
+						studentScript.Prompt.HideButton[0] = true;
+						studentScript.Prompt.HideButton[2] = true;
+					}
+					if (this.Yandere.NearBodies > 0 || this.Yandere.Sanity < 33.33333f)
 					{
 						studentScript.Prompt.HideButton[0] = true;
 					}
-				}
-				if (this.Yandere.Dragging || this.Yandere.PickUp != null || this.Yandere.Chased || this.Yandere.Chasers > 0)
-				{
-					studentScript.Prompt.HideButton[0] = true;
-					studentScript.Prompt.HideButton[2] = true;
-				}
-				if (this.Yandere.NearBodies > 0 || this.Yandere.Sanity < 33.33333f)
-				{
-					studentScript.Prompt.HideButton[0] = true;
-				}
-				if (studentScript.Teacher)
-				{
-					studentScript.Prompt.HideButton[0] = true;
+					if (studentScript.Teacher)
+					{
+						studentScript.Prompt.HideButton[0] = true;
+					}
 				}
 			}
 			if (this.Sans)
@@ -1721,6 +1743,42 @@ public class StudentManagerScript : MonoBehaviour
 					studentScript.DeathType = DeathType.Mystery;
 					StudentGlobals.SetStudentSlave(studentScript.StudentID);
 				}
+			}
+			this.ID++;
+		}
+	}
+
+	public void TimeFreeze()
+	{
+		this.ID = 1;
+		while (this.ID < this.Students.Length)
+		{
+			StudentScript studentScript = this.Students[this.ID];
+			if (studentScript != null && studentScript.Alive)
+			{
+				studentScript.enabled = false;
+				studentScript.CharacterAnimation.Stop();
+				studentScript.Pathfinding.canSearch = false;
+				studentScript.Pathfinding.canMove = false;
+				studentScript.Prompt.Hide();
+				studentScript.Prompt.enabled = false;
+			}
+			this.ID++;
+		}
+	}
+
+	public void TimeUnfreeze()
+	{
+		this.ID = 1;
+		while (this.ID < this.Students.Length)
+		{
+			StudentScript studentScript = this.Students[this.ID];
+			if (studentScript != null && studentScript.Alive)
+			{
+				studentScript.enabled = true;
+				studentScript.Prompt.enabled = true;
+				studentScript.Pathfinding.canSearch = true;
+				studentScript.Pathfinding.canMove = true;
 			}
 			this.ID++;
 		}

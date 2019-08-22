@@ -212,6 +212,8 @@ public enum SubtitleType
 	Task80Line,
 	Task81Line,
 	TaskGenericLine,
+	TaskGenericLineMale,
+	TaskGenericLineFemale,
 	TaskInquiry,
 	TeacherAttackReaction,
 	TeacherBloodHostile,

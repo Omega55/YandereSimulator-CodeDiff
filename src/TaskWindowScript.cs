@@ -68,6 +68,7 @@ public class TaskWindowScript : MonoBehaviour
 		this.TaskDescLabel.text = this.Descriptions[ID];
 		this.Icon.mainTexture = this.Icons[ID];
 		this.Window.SetActive(true);
+		Time.timeScale = 0.0001f;
 	}
 
 	private void Update()
@@ -84,6 +85,7 @@ public class TaskWindowScript : MonoBehaviour
 				this.PromptBar.Show = false;
 				this.Window.SetActive(false);
 				this.UpdateTaskObjects(this.StudentID);
+				Time.timeScale = 1f;
 			}
 			else if (Input.GetButtonDown("B"))
 			{
@@ -93,6 +95,7 @@ public class TaskWindowScript : MonoBehaviour
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Show = false;
 				this.Window.SetActive(false);
+				Time.timeScale = 1f;
 			}
 		}
 		if (this.TaskComplete)
@@ -168,6 +171,15 @@ public class TaskWindowScript : MonoBehaviour
 	{
 		this.Generic = false;
 		if (this.Yandere.TargetStudent.StudentID != 8 && this.Yandere.TargetStudent.StudentID != 11 && this.Yandere.TargetStudent.StudentID != 25 && this.Yandere.TargetStudent.StudentID != 28 && this.Yandere.TargetStudent.StudentID != 30 && this.Yandere.TargetStudent.StudentID != 36 && this.Yandere.TargetStudent.StudentID != 37 && this.Yandere.TargetStudent.StudentID != 38 && this.Yandere.TargetStudent.StudentID != 52 && this.Yandere.TargetStudent.StudentID != 76 && this.Yandere.TargetStudent.StudentID != 77 && this.Yandere.TargetStudent.StudentID != 78 && this.Yandere.TargetStudent.StudentID != 79 && this.Yandere.TargetStudent.StudentID != 80 && this.Yandere.TargetStudent.StudentID != 81)
+		{
+			this.Generic = true;
+		}
+	}
+
+	public void AltGenericCheck(int TempID)
+	{
+		this.Generic = false;
+		if (TempID != 8 && TempID != 11 && TempID != 25 && TempID != 28 && TempID != 30 && TempID != 36 && TempID != 37 && TempID != 38 && TempID != 52 && TempID != 76 && TempID != 77 && TempID != 78 && TempID != 79 && TempID != 80 && TempID != 81)
 		{
 			this.Generic = true;
 		}
