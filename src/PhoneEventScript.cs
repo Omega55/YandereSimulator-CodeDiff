@@ -270,7 +270,9 @@ public class PhoneEventScript : MonoBehaviour
 						EventGlobals.Event2 = true;
 						this.Yandere.NotificationManager.DisplayNotification(NotificationType.Info);
 						ConversationGlobals.SetTopicDiscovered(25, true);
+						this.Yandere.NotificationManager.TopicName = "Money";
 						this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+						this.Yandere.NotificationManager.TopicName = "Money";
 						this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
 						ConversationGlobals.SetTopicLearnedByStudent(25, this.EventStudentID, true);
 					}

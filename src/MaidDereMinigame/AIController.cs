@@ -58,6 +58,8 @@ namespace MaidDereMinigame
 
 		private bool isPaused;
 
+		public bool Male;
+
 		public void Init()
 		{
 			this.animator = base.GetComponent<Animator>();
@@ -82,6 +84,7 @@ namespace MaidDereMinigame
 			this.eatTime = GameController.Instance.activeDifficultyVariables.timeSpentEatingFood;
 			this.patienceDegradation = GameController.Instance.activeDifficultyVariables.customerPatienceDegradation;
 			this.timeToEat = GameController.Instance.activeDifficultyVariables.timeSpentEatingFood;
+			SFXController.PlaySound(SFXController.Sounds.DoorBell);
 		}
 
 		private void OnEnable()
@@ -222,6 +225,14 @@ namespace MaidDereMinigame
 			this.desiredFood = FoodMenu.Instance.GetRandomFood();
 			this.speechBubble.gameObject.SetActive(true);
 			this.speechBubble.food = this.desiredFood;
+			if (this.Male)
+			{
+				SFXController.PlaySound(SFXController.Sounds.MaleCustomerGreet);
+			}
+			else
+			{
+				SFXController.PlaySound(SFXController.Sounds.FemaleCustomerGreet);
+			}
 		}
 
 		public void DeliverFood(Food deliveredFood)
@@ -237,6 +248,14 @@ namespace MaidDereMinigame
 					this.happiness = 50f;
 					this.animator.SetFloat("Happiness", this.happiness);
 				}
+				if (this.Male)
+				{
+					SFXController.PlaySound(SFXController.Sounds.MaleCustomerThank);
+				}
+				else
+				{
+					SFXController.PlaySound(SFXController.Sounds.FemaleCustomerThank);
+				}
 			}
 			else
 			{
@@ -245,6 +264,14 @@ namespace MaidDereMinigame
 				this.animator.SetFloat("Happiness", this.happiness);
 				GameController.AddAngryCustomer();
 				this.StandUp();
+				if (this.Male)
+				{
+					SFXController.PlaySound(SFXController.Sounds.MaleCustomerLeave);
+				}
+				else
+				{
+					SFXController.PlaySound(SFXController.Sounds.FemaleCustomerLeave);
+				}
 			}
 			this.happinessMeter.gameObject.SetActive(false);
 		}

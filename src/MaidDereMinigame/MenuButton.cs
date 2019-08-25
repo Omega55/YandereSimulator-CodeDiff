@@ -61,16 +61,19 @@ namespace MaidDereMinigame
 				this.menu.StopInputs();
 				GameController.Instance.activeDifficultyVariables = GameController.Instance.easyVariables;
 				GameController.Instance.LoadScene(this.targetScene);
+				SFXController.PlaySound(SFXController.Sounds.MenuConfirm);
 				break;
 			case MenuButton.ButtonType.Medium:
 				this.menu.StopInputs();
 				GameController.Instance.activeDifficultyVariables = GameController.Instance.mediumVariables;
 				GameController.Instance.LoadScene(this.targetScene);
+				SFXController.PlaySound(SFXController.Sounds.MenuConfirm);
 				break;
 			case MenuButton.ButtonType.Hard:
 				this.menu.StopInputs();
 				GameController.Instance.activeDifficultyVariables = GameController.Instance.hardVariables;
 				GameController.Instance.LoadScene(this.targetScene);
+				SFXController.PlaySound(SFXController.Sounds.MenuConfirm);
 				break;
 			}
 		}

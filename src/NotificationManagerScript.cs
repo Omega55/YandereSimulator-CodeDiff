@@ -21,6 +21,8 @@ public class NotificationManagerScript : MonoBehaviour
 
 	public string CustomText;
 
+	public string TopicName;
+
 	private NotificationTypeAndStringDictionary NotificationMessages;
 
 	private void Awake()
@@ -61,11 +63,11 @@ public class NotificationManagerScript : MonoBehaviour
 			},
 			{
 				NotificationType.Topic,
-				"Learned New Topic"
+				"Learned New Topic: "
 			},
 			{
 				NotificationType.Opinion,
-				"Learned Opinion"
+				"Learned Opinion on: "
 			},
 			{
 				NotificationType.Complete,
@@ -154,7 +156,12 @@ public class NotificationManagerScript : MonoBehaviour
 			bool flag = this.NotificationMessages.TryGetValue(Type, out text);
 			if (Type != NotificationType.Persona && Type != NotificationType.Custom)
 			{
-				component.Label.text = text;
+				string str = string.Empty;
+				if (Type == NotificationType.Topic || Type == NotificationType.Opinion)
+				{
+					str = this.TopicName;
+				}
+				component.Label.text = text + str;
 			}
 			else if (Type == NotificationType.Custom)
 			{

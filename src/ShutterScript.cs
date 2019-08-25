@@ -602,9 +602,10 @@ public class ShutterScript : MonoBehaviour
 				this.KittenShot = true;
 				this.PhotoDescription.SetActive(true);
 				this.PhotoDescLabel.text = "Photo of: Kitten";
-				if (!ConversationGlobals.GetTopicDiscovered(20))
+				if (!ConversationGlobals.GetTopicDiscovered(15))
 				{
-					ConversationGlobals.SetTopicDiscovered(20, true);
+					ConversationGlobals.SetTopicDiscovered(15, true);
+					this.Yandere.NotificationManager.TopicName = "Cats";
 					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 				}
 			}

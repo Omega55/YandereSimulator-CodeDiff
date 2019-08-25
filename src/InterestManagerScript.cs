@@ -15,11 +15,10 @@ public class InterestManagerScript : MonoBehaviour
 
 	public Transform Kitten;
 
+	public string[] TopicNames;
+
 	private void Start()
 	{
-		ConversationGlobals.SetTopicDiscovered(22, true);
-		ConversationGlobals.SetTopicDiscovered(23, true);
-		ConversationGlobals.SetTopicDiscovered(24, true);
 	}
 
 	private void Update()
@@ -31,6 +30,7 @@ public class InterestManagerScript : MonoBehaviour
 			{
 				if (!ConversationGlobals.GetTopicLearnedByStudent(i, studentID) && Vector3.Distance(this.Yandere.Follower.transform.position, this.Clubs[i].position) < 5f)
 				{
+					this.Yandere.NotificationManager.TopicName = this.TopicNames[i];
 					if (!ConversationGlobals.GetTopicDiscovered(i))
 					{
 						this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
@@ -44,12 +44,26 @@ public class InterestManagerScript : MonoBehaviour
 			{
 				if (!ConversationGlobals.GetTopicDiscovered(11))
 				{
+					this.Yandere.NotificationManager.TopicName = "Video Games";
+					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+					this.Yandere.NotificationManager.TopicName = "Anime";
+					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+					this.Yandere.NotificationManager.TopicName = "Cosplay";
+					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+					this.Yandere.NotificationManager.TopicName = "Memes";
 					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 					ConversationGlobals.SetTopicDiscovered(11, true);
 					ConversationGlobals.SetTopicDiscovered(12, true);
 					ConversationGlobals.SetTopicDiscovered(13, true);
 					ConversationGlobals.SetTopicDiscovered(14, true);
 				}
+				this.Yandere.NotificationManager.TopicName = "Video Games";
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
+				this.Yandere.NotificationManager.TopicName = "Anime";
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
+				this.Yandere.NotificationManager.TopicName = "Cosplay";
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
+				this.Yandere.NotificationManager.TopicName = "Memes";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
 				ConversationGlobals.SetTopicLearnedByStudent(11, studentID, true);
 				ConversationGlobals.SetTopicLearnedByStudent(12, studentID, true);
@@ -58,6 +72,7 @@ public class InterestManagerScript : MonoBehaviour
 			}
 			if (!ConversationGlobals.GetTopicLearnedByStudent(15, studentID) && Vector3.Distance(this.Yandere.Follower.transform.position, this.Kitten.position) < 2.5f)
 			{
+				this.Yandere.NotificationManager.TopicName = "Cats";
 				if (!ConversationGlobals.GetTopicDiscovered(15))
 				{
 					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
@@ -68,6 +83,7 @@ public class InterestManagerScript : MonoBehaviour
 			}
 			if (!ConversationGlobals.GetTopicLearnedByStudent(16, studentID) && Vector3.Distance(this.Yandere.Follower.transform.position, this.Clubs[6].position) < 5f)
 			{
+				this.Yandere.NotificationManager.TopicName = "Justice";
 				if (!ConversationGlobals.GetTopicDiscovered(16))
 				{
 					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
@@ -78,6 +94,7 @@ public class InterestManagerScript : MonoBehaviour
 			}
 			if (!ConversationGlobals.GetTopicLearnedByStudent(17, studentID) && Vector3.Distance(this.Yandere.Follower.transform.position, this.DelinquentZone.position) < 5f)
 			{
+				this.Yandere.NotificationManager.TopicName = "Violence";
 				if (!ConversationGlobals.GetTopicDiscovered(17))
 				{
 					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
@@ -88,6 +105,7 @@ public class InterestManagerScript : MonoBehaviour
 			}
 			if (!ConversationGlobals.GetTopicLearnedByStudent(18, studentID) && Vector3.Distance(this.Yandere.Follower.transform.position, this.Library.position) < 5f)
 			{
+				this.Yandere.NotificationManager.TopicName = "Reading";
 				if (!ConversationGlobals.GetTopicDiscovered(18))
 				{
 					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);

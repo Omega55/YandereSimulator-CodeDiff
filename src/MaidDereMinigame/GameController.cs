@@ -146,6 +146,7 @@ namespace MaidDereMinigame
 			GameController.SetPause(true);
 			GameController.Instance.tipPage.Init();
 			GameController.Instance.tipPage.DisplayTips(GameController.Instance.tips);
+			UnityEngine.Object.FindObjectOfType<GameStarter>().GetComponent<AudioSource>().Stop();
 		}
 
 		public static void AddTip(float tip)

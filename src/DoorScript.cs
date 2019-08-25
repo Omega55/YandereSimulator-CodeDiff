@@ -20,6 +20,9 @@ public class DoorScript : MonoBehaviour
 	public PromptScript Prompt;
 
 	[SerializeField]
+	private Collider[] DoorColliders;
+
+	[SerializeField]
 	private float[] ClosedPositions;
 
 	[SerializeField]
@@ -145,6 +148,16 @@ public class DoorScript : MonoBehaviour
 		}
 		this.Prompt.Student = false;
 		this.Prompt.Door = true;
+		this.DoorColliders = new Collider[2];
+		this.DoorColliders[0] = this.Doors[0].gameObject.GetComponent<BoxCollider>();
+		if (this.DoorColliders[0] == null)
+		{
+			this.DoorColliders[0] = this.Doors[0].GetChild(0).gameObject.GetComponent<BoxCollider>();
+		}
+		if (this.Doors.Length > 1)
+		{
+			this.DoorColliders[1] = this.Doors[1].GetComponent<BoxCollider>();
+		}
 	}
 
 	private void Update()
@@ -207,12 +220,20 @@ public class DoorScript : MonoBehaviour
 			this.Yandere.Location.Show = false;
 			this.Near = false;
 		}
-		if (this.Timer < 2f)
+		if (this.Timer < 1f)
 		{
 			this.Timer += Time.deltaTime;
-			if (this.Timer >= 2f && this.Portal != null)
+			if (this.Timer >= 1f)
 			{
-				this.Portal.open = this.Open;
+				this.DoorColliders[0].isTrigger = false;
+				if (this.DoorColliders[1] != null)
+				{
+					this.DoorColliders[1].isTrigger = false;
+				}
+				if (this.Portal != null)
+				{
+					this.Portal.open = this.Open;
+				}
 			}
 			if (this.BucketSet)
 			{
@@ -383,6 +404,11 @@ public class DoorScript : MonoBehaviour
 		this.Open = false;
 		this.Timer = 0f;
 		this.UpdateLabel();
+		this.DoorColliders[0].isTrigger = true;
+		if (this.DoorColliders[1] != null)
+		{
+			this.DoorColliders[1].isTrigger = true;
+		}
 		if (this.HidingSpot)
 		{
 			this.HideCollider.gameObject.AddComponent<BoxCollider>();
@@ -557,29 +583,35 @@ public class DoorScript : MonoBehaviour
 		switch (this.RoomID)
 		{
 		case 3:
-			if (!ConversationGlobals.GetTopicDiscovered(12))
+			if (!ConversationGlobals.GetTopicDiscovered(22))
 			{
-				ConversationGlobals.SetTopicDiscovered(12, true);
+				ConversationGlobals.SetTopicDiscovered(22, true);
+				this.Yandere.NotificationManager.TopicName = "School";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
 		case 13:
-			if (!ConversationGlobals.GetTopicDiscovered(21))
+			if (!ConversationGlobals.GetTopicDiscovered(18))
 			{
-				ConversationGlobals.SetTopicDiscovered(21, true);
+				ConversationGlobals.SetTopicDiscovered(18, true);
+				this.Yandere.NotificationManager.TopicName = "Reading";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
-		case 15:
+		case 22:
 			if (!ConversationGlobals.GetTopicDiscovered(11))
 			{
 				ConversationGlobals.SetTopicDiscovered(11, true);
 				ConversationGlobals.SetTopicDiscovered(12, true);
 				ConversationGlobals.SetTopicDiscovered(13, true);
 				ConversationGlobals.SetTopicDiscovered(14, true);
+				this.Yandere.NotificationManager.TopicName = "Video Games";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+				this.Yandere.NotificationManager.TopicName = "Anime";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+				this.Yandere.NotificationManager.TopicName = "Cosplay";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+				this.Yandere.NotificationManager.TopicName = "Memes";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
@@ -587,6 +619,7 @@ public class DoorScript : MonoBehaviour
 			if (!ConversationGlobals.GetTopicDiscovered(1))
 			{
 				ConversationGlobals.SetTopicDiscovered(1, true);
+				this.Yandere.NotificationManager.TopicName = "Cooking";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
@@ -594,6 +627,7 @@ public class DoorScript : MonoBehaviour
 			if (!ConversationGlobals.GetTopicDiscovered(2))
 			{
 				ConversationGlobals.SetTopicDiscovered(2, true);
+				this.Yandere.NotificationManager.TopicName = "Drama";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
@@ -601,6 +635,7 @@ public class DoorScript : MonoBehaviour
 			if (!ConversationGlobals.GetTopicDiscovered(3))
 			{
 				ConversationGlobals.SetTopicDiscovered(3, true);
+				this.Yandere.NotificationManager.TopicName = "Occult";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
@@ -608,6 +643,7 @@ public class DoorScript : MonoBehaviour
 			if (!ConversationGlobals.GetTopicDiscovered(4))
 			{
 				ConversationGlobals.SetTopicDiscovered(4, true);
+				this.Yandere.NotificationManager.TopicName = "Art";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
@@ -615,6 +651,7 @@ public class DoorScript : MonoBehaviour
 			if (!ConversationGlobals.GetTopicDiscovered(5))
 			{
 				ConversationGlobals.SetTopicDiscovered(5, true);
+				this.Yandere.NotificationManager.TopicName = "Music";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
@@ -622,6 +659,7 @@ public class DoorScript : MonoBehaviour
 			if (!ConversationGlobals.GetTopicDiscovered(6))
 			{
 				ConversationGlobals.SetTopicDiscovered(6, true);
+				this.Yandere.NotificationManager.TopicName = "Martial Arts";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
@@ -629,6 +667,7 @@ public class DoorScript : MonoBehaviour
 			if (!ConversationGlobals.GetTopicDiscovered(7))
 			{
 				ConversationGlobals.SetTopicDiscovered(7, true);
+				this.Yandere.NotificationManager.TopicName = "Photography";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
@@ -636,6 +675,7 @@ public class DoorScript : MonoBehaviour
 			if (!ConversationGlobals.GetTopicDiscovered(8))
 			{
 				ConversationGlobals.SetTopicDiscovered(8, true);
+				this.Yandere.NotificationManager.TopicName = "Science";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
@@ -643,6 +683,7 @@ public class DoorScript : MonoBehaviour
 			if (!ConversationGlobals.GetTopicDiscovered(9))
 			{
 				ConversationGlobals.SetTopicDiscovered(9, true);
+				this.Yandere.NotificationManager.TopicName = "Sports";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
@@ -650,6 +691,13 @@ public class DoorScript : MonoBehaviour
 			if (!ConversationGlobals.GetTopicDiscovered(10))
 			{
 				ConversationGlobals.SetTopicDiscovered(10, true);
+				this.Yandere.NotificationManager.TopicName = "Gardening";
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+			}
+			if (!ConversationGlobals.GetTopicDiscovered(24))
+			{
+				ConversationGlobals.SetTopicDiscovered(24, true);
+				this.Yandere.NotificationManager.TopicName = "Nature";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;

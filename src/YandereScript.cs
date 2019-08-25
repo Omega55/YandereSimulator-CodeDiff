@@ -4440,6 +4440,10 @@ public class YandereScript : MonoBehaviour
 			{
 				this.targetRotation = Quaternion.LookRotation(new Vector3(this.TargetStudent.transform.position.x, base.transform.position.y, this.TargetStudent.transform.position.z) - base.transform.position);
 				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
+				if (Vector3.Distance(base.transform.position, this.TargetStudent.transform.position) < 1f)
+				{
+					this.MyController.Move(base.transform.forward * Time.deltaTime * -1f);
+				}
 			}
 			if (this.Interaction == YandereInteractionType.Idle)
 			{
@@ -5270,7 +5274,7 @@ public class YandereScript : MonoBehaviour
 
 	private void UpdateDebugFunctionality()
 	{
-		if (!this.EasterEggMenu.activeInHierarchy)
+		if (!this.EasterEggMenu.activeInHierarchy && !this.DebugMenu.activeInHierarchy)
 		{
 			if (!this.Aiming && this.CanMove && Time.timeScale > 0f && Input.GetKeyDown(KeyCode.Escape))
 			{

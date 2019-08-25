@@ -201,11 +201,13 @@ public class OfferHelpScript : MonoBehaviour
 		{
 			if (!ConversationGlobals.GetTopicDiscovered(23))
 			{
+				this.Yandere.NotificationManager.TopicName = "Family";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 				ConversationGlobals.SetTopicDiscovered(23, true);
 			}
 			if (!ConversationGlobals.GetTopicLearnedByStudent(23, this.EventStudentID))
 			{
+				this.Yandere.NotificationManager.TopicName = "Family";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
 				ConversationGlobals.SetTopicLearnedByStudent(23, this.EventStudentID, true);
 			}

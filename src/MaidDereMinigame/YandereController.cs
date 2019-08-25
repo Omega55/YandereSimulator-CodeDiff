@@ -119,6 +119,7 @@ namespace MaidDereMinigame
 				else if (this.aiTarget.state == AIController.AIState.Waiting && this.heldItem != null)
 				{
 					this.aiTarget.DeliverFood(this.heldItem);
+					SFXController.PlaySound(SFXController.Sounds.Plate);
 					InteractionMenu.SetAButton(InteractionMenu.AButtonText.None);
 					this.DropTray();
 				}

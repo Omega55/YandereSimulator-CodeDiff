@@ -60,6 +60,7 @@ namespace MaidDereMinigame
 
 		public void FlipToPage(int page)
 		{
+			SFXController.PlaySound(SFXController.Sounds.PageTurn);
 			base.StartCoroutine(this.FlipToPageRoutine(page));
 		}
 

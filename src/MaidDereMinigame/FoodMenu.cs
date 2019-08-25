@@ -111,6 +111,7 @@ namespace MaidDereMinigame
 		private void IncrementSelection()
 		{
 			this.SetActive((this.activeIndex + 1) % this.menuSlots.Count);
+			SFXController.PlaySound(SFXController.Sounds.MenuSelect);
 		}
 
 		private void DecrementSelection()
@@ -123,6 +124,7 @@ namespace MaidDereMinigame
 			{
 				this.SetActive(this.activeIndex - 1);
 			}
+			SFXController.PlaySound(SFXController.Sounds.MenuSelect);
 		}
 	}
 }

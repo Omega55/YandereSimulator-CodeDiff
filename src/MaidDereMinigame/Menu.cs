@@ -17,6 +17,8 @@ namespace MaidDereMinigame
 
 		private bool cancelInputs;
 
+		private float PreviousFrameVertical;
+
 		private void Start()
 		{
 			for (int i = 0; i < this.mainMenuButtons.Count; i++)
@@ -50,6 +52,11 @@ namespace MaidDereMinigame
 			{
 				num = 1f;
 			}
+			if (num != 0f && this.PreviousFrameVertical == 0f)
+			{
+				SFXController.PlaySound(SFXController.Sounds.MenuSelect);
+			}
+			this.PreviousFrameVertical = num;
 			if (num != 0f)
 			{
 				if (!this.prevVertical)

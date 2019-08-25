@@ -41,6 +41,7 @@ namespace MaidDereMinigame
 		{
 			FailGame.Instance.StartCoroutine(FailGame.Instance.GameFailedRoutine());
 			FailGame.Instance.StartCoroutine(FailGame.Instance.SlowPitch());
+			SFXController.PlaySound(SFXController.Sounds.GameFail);
 		}
 
 		private IEnumerator GameFailedRoutine()

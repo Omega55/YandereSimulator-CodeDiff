@@ -9641,21 +9641,25 @@ public class StudentScript : MonoBehaviour
 								this.TalkTimer = 0f;
 								if (!ConversationGlobals.GetTopicDiscovered(20))
 								{
+									this.Yandere.NotificationManager.TopicName = "Socializing";
 									this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 									ConversationGlobals.SetTopicDiscovered(20, true);
 								}
 								if (!ConversationGlobals.GetTopicLearnedByStudent(20, this.StudentID))
 								{
+									this.Yandere.NotificationManager.TopicName = "Socializing";
 									this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
 									ConversationGlobals.SetTopicLearnedByStudent(20, this.StudentID, true);
 								}
 								if (!ConversationGlobals.GetTopicDiscovered(21))
 								{
+									this.Yandere.NotificationManager.TopicName = "Solitude";
 									this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 									ConversationGlobals.SetTopicDiscovered(21, true);
 								}
 								if (!ConversationGlobals.GetTopicLearnedByStudent(21, this.StudentID))
 								{
+									this.Yandere.NotificationManager.TopicName = "Solitude";
 									this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
 									ConversationGlobals.SetTopicLearnedByStudent(21, this.StudentID, true);
 								}

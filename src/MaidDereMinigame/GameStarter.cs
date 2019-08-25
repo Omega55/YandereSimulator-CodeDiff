@@ -32,17 +32,21 @@ namespace MaidDereMinigame
 
 		public void SetGameTime(float gameTime)
 		{
+			int num = Mathf.CeilToInt(gameTime);
+			if ((float)num == 10f)
+			{
+				SFXController.PlaySound(SFXController.Sounds.ClockTick);
+			}
 			if (gameTime > 3f)
 			{
 				return;
 			}
-			int index = Mathf.CeilToInt(gameTime);
-			switch (index)
+			switch (num)
 			{
 			case 1:
 			case 2:
 			case 3:
-				this.spriteRenderer.sprite = this.numbers[index];
+				this.spriteRenderer.sprite = this.numbers[num];
 				break;
 			default:
 				this.EndGame();
@@ -53,11 +57,13 @@ namespace MaidDereMinigame
 		public void EndGame()
 		{
 			base.StartCoroutine(this.EndGameRoutine());
+			SFXController.PlaySound(SFXController.Sounds.GameSuccess);
 		}
 
 		private IEnumerator CountdownToStart()
 		{
 			yield return new WaitForSeconds(GameController.Instance.activeDifficultyVariables.transitionTime);
+			SFXController.PlaySound(SFXController.Sounds.Countdown);
 			while (this.timeToStart > 0)
 			{
 				yield return new WaitForSeconds(1f);

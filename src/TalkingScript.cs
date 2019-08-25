@@ -264,6 +264,7 @@ public class TalkingScript : MonoBehaviour
 							this.S.PendingRep -= 2f;
 						}
 						this.S.Gossiped = true;
+						this.S.Yandere.NotificationManager.TopicName = "Gossip";
 						if (!ConversationGlobals.GetTopicDiscovered(19))
 						{
 							this.S.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
@@ -1293,7 +1294,7 @@ public class TalkingScript : MonoBehaviour
 							this.S.Subtitle.UpdateLabel(SubtitleType.SendToLocker, 1, 5f);
 							this.Refuse = true;
 						}
-						else if (this.S.Club != ClubType.Council)
+						else if (this.S.Club == ClubType.Council)
 						{
 							this.S.CharacterAnimation.CrossFade(this.S.GossipAnim);
 							this.S.Subtitle.UpdateLabel(SubtitleType.SendToLocker, 3, 5f);

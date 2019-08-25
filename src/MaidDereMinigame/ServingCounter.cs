@@ -97,6 +97,7 @@ namespace MaidDereMinigame
 					this.selectedIndex = ((this.plates.Count != 0) ? 0 : 2);
 					this.kitchenModeHide.gameObject.SetActive(true);
 					this.SetMask(this.selectedIndex);
+					SFXController.PlaySound(SFXController.Sounds.MenuOpen);
 					if (this.plates.Count == 0 && YandereController.Instance.heldItem == null)
 					{
 						this.interactionIndicator.transform.position = Chef.Instance.transform.position + Vector3.up * 0.8f;
@@ -125,6 +126,7 @@ namespace MaidDereMinigame
 								this.state = ServingCounter.KitchenState.Chef;
 								InteractionMenu.SetAButton(InteractionMenu.AButtonText.PlaceOrder);
 								FoodMenu.Instance.gameObject.SetActive(true);
+								SFXController.PlaySound(SFXController.Sounds.MenuOpen);
 							}
 						}
 					}
@@ -136,6 +138,7 @@ namespace MaidDereMinigame
 						if (Input.GetButtonDown("A"))
 						{
 							this.state = ServingCounter.KitchenState.Trash;
+							SFXController.PlaySound(SFXController.Sounds.MenuOpen);
 						}
 					}
 				}
@@ -149,6 +152,7 @@ namespace MaidDereMinigame
 						this.state = ServingCounter.KitchenState.Plates;
 						this.selectedIndex = 0;
 						InteractionMenu.SetAButton(InteractionMenu.AButtonText.GrabPlate);
+						SFXController.PlaySound(SFXController.Sounds.MenuOpen);
 					}
 				}
 				if (Input.GetButtonDown("B"))
@@ -159,6 +163,7 @@ namespace MaidDereMinigame
 					GameController.SetPause(false);
 					this.kitchenModeHide.gameObject.SetActive(false);
 					this.interactionIndicator.transform.position = this.interactionIndicatorStartingPos;
+					SFXController.PlaySound(SFXController.Sounds.MenuBack);
 				}
 				if (YandereController.rightButton)
 				{
@@ -171,6 +176,7 @@ namespace MaidDereMinigame
 					{
 						this.selectedIndex = (this.selectedIndex + 1) % 3;
 					}
+					SFXController.PlaySound(SFXController.Sounds.MenuSelect);
 				}
 				if (YandereController.leftButton)
 				{
@@ -190,6 +196,7 @@ namespace MaidDereMinigame
 					{
 						this.selectedIndex = 2;
 					}
+					SFXController.PlaySound(SFXController.Sounds.MenuSelect);
 				}
 				break;
 			}
@@ -208,10 +215,12 @@ namespace MaidDereMinigame
 					{
 						this.selectedIndex--;
 					}
+					SFXController.PlaySound(SFXController.Sounds.MenuSelect);
 				}
 				else if (YandereController.leftButton)
 				{
 					this.selectedIndex = (this.selectedIndex + 1) % this.plates.Count;
+					SFXController.PlaySound(SFXController.Sounds.MenuSelect);
 				}
 				if (Input.GetButtonDown("A") && YandereController.Instance.heldItem == null)
 				{
@@ -219,10 +228,12 @@ namespace MaidDereMinigame
 					this.RemovePlate(this.selectedIndex);
 					this.selectedIndex = 2;
 					this.state = ServingCounter.KitchenState.SelectingInteraction;
+					SFXController.PlaySound(SFXController.Sounds.MenuOpen);
 				}
 				if (Input.GetButtonDown("B"))
 				{
 					this.state = ServingCounter.KitchenState.SelectingInteraction;
+					SFXController.PlaySound(SFXController.Sounds.MenuBack);
 				}
 				break;
 			case ServingCounter.KitchenState.Chef:
@@ -231,12 +242,14 @@ namespace MaidDereMinigame
 					this.state = ServingCounter.KitchenState.SelectingInteraction;
 					FoodMenu.Instance.gameObject.SetActive(false);
 					this.state = ServingCounter.KitchenState.SelectingInteraction;
+					SFXController.PlaySound(SFXController.Sounds.MenuBack);
 				}
 				if (Input.GetButtonDown("A"))
 				{
 					this.state = ServingCounter.KitchenState.SelectingInteraction;
 					Chef.AddToQueue(FoodMenu.Instance.GetActiveFood());
 					FoodMenu.Instance.gameObject.SetActive(false);
+					SFXController.PlaySound(SFXController.Sounds.MenuOpen);
 				}
 				break;
 			case ServingCounter.KitchenState.Trash:
@@ -268,6 +281,7 @@ namespace MaidDereMinigame
 				foodInstance.transform.parent = this.platePositions[i + 1];
 				foodInstance.transform.localPosition = Vector3.zero;
 			}
+			SFXController.PlaySound(SFXController.Sounds.Plate);
 			FoodInstance foodInstance2 = UnityEngine.Object.Instantiate<FoodInstance>(this.platePrefab);
 			foodInstance2.transform.parent = this.platePositions[0];
 			foodInstance2.transform.localPosition = Vector3.zero;
