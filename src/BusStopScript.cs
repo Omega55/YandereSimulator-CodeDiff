@@ -9,6 +9,8 @@ public class BusStopScript : MonoBehaviour
 
 	public Texture CasualClothes;
 
+	public MeshRenderer Renderer;
+
 	public Animation SenpaiAnim;
 
 	public GameObject Amai;
@@ -23,10 +25,17 @@ public class BusStopScript : MonoBehaviour
 
 	public Animation InfoChan;
 
+	public float ExtraTimer;
+
+	public float Alpha;
+
+	public float Timer;
+
 	public int Phase = 1;
 
 	private void Start()
 	{
+		this.Renderer.material.color = new Color(0f, 0f, 0f, 0f);
 		base.transform.position = new Vector3(0f, 0.5f, 2f);
 		base.transform.eulerAngles = new Vector3(0f, 180f, 0f);
 		this.SenpaiAnim["sadFace_00"].layer = 1;
@@ -48,17 +57,39 @@ public class BusStopScript : MonoBehaviour
 		}
 		else
 		{
-			this.Speed += Time.deltaTime * 0.1f;
+			this.Alpha = Mathf.MoveTowards(this.Alpha, 0f, Time.deltaTime * 0.5f);
+			this.Renderer.material.color = new Color(0f, 0f, 0f, this.Alpha);
+			this.Timer += Time.deltaTime;
+			if (this.Timer > 15f)
+			{
+				this.Speed += Time.deltaTime * 0.1f;
+			}
 			base.transform.position = Vector3.Lerp(base.transform.position, new Vector3(-1.939f, 1.4f, 5.69f), this.Speed * Time.deltaTime);
 			if (this.Speed > 1f)
 			{
 				this.InfoChan.CrossFade("f02_infoSnapPhoto_00", 1f);
 			}
+			if (this.Timer > 30.5f)
+			{
+				this.Alpha = 1f;
+			}
+			if (this.BakerySenpai["bakeryTalk_00"].time >= this.BakerySenpai["bakeryTalk_00"].length - 1f)
+			{
+				if (this.Alpha < 1f)
+				{
+					this.ExtraTimer += Time.deltaTime;
+					Debug.Log(this.ExtraTimer);
+				}
+				this.BakerySenpai.CrossFade("carefreeTalk_02", 1f);
+				this.BakeryAmai.CrossFade("f02_carefreeTalk_02", 1f);
+			}
 		}
 		if (Input.GetKeyDown("space"))
 		{
-			base.transform.position = new Vector3(-0.75f, 1.4f, 7.75f);
+			base.transform.position = new Vector3(-0.75f, 1.1f, 7.75f);
 			base.transform.eulerAngles = new Vector3(0f, 30f, 0f);
+			this.Renderer.material.color = new Color(0f, 0f, 0f, 1f);
+			this.Alpha = 1f;
 			this.BakerySenpai.Play();
 			this.BakeryAmai.Play();
 			this.Speed = 0f;

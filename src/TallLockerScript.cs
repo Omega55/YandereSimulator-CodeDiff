@@ -295,6 +295,19 @@ public class TallLockerScript : MonoBehaviour
 		}
 	}
 
+	public void SpawnSteamNoSideEffects(StudentScript SteamStudent)
+	{
+		Debug.Log("Changing clothes, no strings attached.");
+		GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.SteamCloud, SteamStudent.transform.position + Vector3.up * 0.81f, Quaternion.identity);
+		gameObject.transform.parent = SteamStudent.transform;
+		SteamStudent.CharacterAnimation.CrossFade(SteamStudent.StripAnim);
+		SteamStudent.Pathfinding.canSearch = false;
+		SteamStudent.Pathfinding.canMove = false;
+		SteamStudent.MustChangeClothing = false;
+		SteamStudent.Stripping = true;
+		SteamStudent.Routine = false;
+	}
+
 	public void UpdateSchoolwear()
 	{
 		if (this.DropCleanUniform)

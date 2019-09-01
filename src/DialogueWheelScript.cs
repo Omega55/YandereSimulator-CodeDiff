@@ -685,7 +685,14 @@ public class DialogueWheelScript : MonoBehaviour
 			{
 				if ((this.Yandere.TargetStudent.TaskPhase > 0 && this.Yandere.TargetStudent.TaskPhase < 5) || (TaskGlobals.GetTaskStatus(this.Yandere.TargetStudent.StudentID) > 0 && TaskGlobals.GetTaskStatus(this.Yandere.TargetStudent.StudentID) < 5 && TaskGlobals.GetTaskStatus(this.Yandere.TargetStudent.StudentID) != 2) || this.Yandere.TargetStudent.TaskPhase == 100)
 				{
+					Debug.Log("Hiding task button.");
 					this.Shadow[5].color = new Color(0f, 0f, 0f, 0.75f);
+				}
+				Debug.Log("This student's Task Phase is: " + this.Yandere.TargetStudent.TaskPhase);
+				if (this.Yandere.TargetStudent.TaskPhase == 5)
+				{
+					Debug.Log("Unhiding task button.");
+					this.Shadow[5].color = new Color(0f, 0f, 0f, 0f);
 				}
 				if (this.Yandere.TargetStudent.StudentID == 36 && TaskGlobals.GetTaskStatus(36) == 0 && (StudentGlobals.GetStudentDead(81) || StudentGlobals.GetStudentDead(82) || StudentGlobals.GetStudentDead(83) || StudentGlobals.GetStudentDead(84) || StudentGlobals.GetStudentDead(85)))
 				{
@@ -964,8 +971,8 @@ public class DialogueWheelScript : MonoBehaviour
 				}
 				if (this.Yandere.TargetStudent.Actions[this.Yandere.TargetStudent.Phase] == StudentActionType.Sunbathe && this.Yandere.TargetStudent.SunbathePhase > 1)
 				{
-					this.Yandere.TargetStudent.CurrentDestination = this.Yandere.StudentManager.SunbatheSpots[this.Yandere.TargetStudent.StudentID - 80];
-					this.Yandere.TargetStudent.Pathfinding.target = this.Yandere.StudentManager.SunbatheSpots[this.Yandere.TargetStudent.StudentID - 80];
+					this.Yandere.TargetStudent.CurrentDestination = this.Yandere.StudentManager.SunbatheSpots[this.Yandere.TargetStudent.StudentID];
+					this.Yandere.TargetStudent.Pathfinding.target = this.Yandere.StudentManager.SunbatheSpots[this.Yandere.TargetStudent.StudentID];
 				}
 			}
 			if (this.Yandere.TargetStudent.Persona == PersonaType.PhoneAddict)

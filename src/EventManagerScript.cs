@@ -194,10 +194,21 @@ public class EventManagerScript : MonoBehaviour
 								}
 							}
 						}
-						if (this.Yandere.transform.position.y > this.EventStudent[1].transform.position.y - 1f && this.EventPhase == 7 && num < 5f && !EventGlobals.Event1)
+						if (this.Yandere.transform.position.y > this.EventStudent[1].transform.position.y - 1f && this.EventPhase == 7 && num < 5f)
 						{
-							this.Yandere.NotificationManager.DisplayNotification(NotificationType.Info);
-							EventGlobals.Event1 = true;
+							if (this.EventStudent1 == 30)
+							{
+								if (!EventGlobals.Event1)
+								{
+									this.Yandere.NotificationManager.DisplayNotification(NotificationType.Info);
+									EventGlobals.Event1 = true;
+								}
+							}
+							else if (!EventGlobals.OsanaEvent2)
+							{
+								this.Yandere.NotificationManager.DisplayNotification(NotificationType.Info);
+								EventGlobals.Event2 = true;
+							}
 						}
 					}
 					if (base.enabled)

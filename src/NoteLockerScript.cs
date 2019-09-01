@@ -142,7 +142,14 @@ public class NoteLockerScript : MonoBehaviour
 				{
 					this.NewNote = UnityEngine.Object.Instantiate<GameObject>(this.Note, base.transform.position, Quaternion.identity);
 					this.NewNote.transform.parent = this.Student.LeftHand;
-					this.NewNote.transform.localPosition = new Vector3(-0.06f, -0.01f, 0f);
+					if (this.Student.Male)
+					{
+						this.NewNote.transform.localPosition = new Vector3(-0.133333f, -0.03f, 0.0133333f);
+					}
+					else
+					{
+						this.NewNote.transform.localPosition = new Vector3(-0.06f, -0.01f, 0f);
+					}
 					this.NewNote.transform.localEulerAngles = new Vector3(-75f, -90f, 180f);
 					this.NewNote.transform.localScale = new Vector3(0.1f, 0.2f, 1f);
 					this.SpawnedNote = true;
@@ -254,6 +261,12 @@ public class NoteLockerScript : MonoBehaviour
 			this.Student.Pathfinding.canSearch = true;
 			this.Student.Pathfinding.canMove = true;
 			this.Student.Pathfinding.speed = 1f;
+		}
+		else
+		{
+			Debug.Log(this.Student.Name + " has rejected the note, and is being told to travel to the destination of their current phase.");
+			this.Student.CurrentDestination = this.Student.Destinations[this.Student.Phase];
+			this.Student.Pathfinding.target = this.Student.Destinations[this.Student.Phase];
 		}
 		Animation component = this.Student.Character.GetComponent<Animation>();
 		component.cullingType = AnimationCullingType.BasedOnRenderers;

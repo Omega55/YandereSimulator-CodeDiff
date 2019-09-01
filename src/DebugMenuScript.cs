@@ -406,6 +406,18 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					else if (Input.GetKeyDown(KeyCode.P))
 					{
+						this.ID = 2;
+						while (this.ID < 93)
+						{
+							StudentScript studentScript6 = this.StudentManager.Students[this.ID];
+							if (studentScript6 != null)
+							{
+								studentScript6.Patience = 999;
+								studentScript6.Pestered = -999;
+								studentScript6.Ignoring = false;
+							}
+							this.ID++;
+						}
 						this.DebugPoisons.SetActive(true);
 						PlayerGlobals.PantyShots += 20;
 						this.Window.SetActive(false);
@@ -480,12 +492,12 @@ public class DebugMenuScript : MonoBehaviour
 							this.ID = 2;
 							while (this.ID < 101)
 							{
-								StudentScript studentScript6 = this.StudentManager.Students[this.ID];
-								if (studentScript6 != null)
+								StudentScript studentScript7 = this.StudentManager.Students[this.ID];
+								if (studentScript7 != null)
 								{
-									studentScript6.SpawnAlarmDisc();
-									studentScript6.BecomeRagdoll();
-									studentScript6.DeathType = DeathType.EasterEgg;
+									studentScript7.SpawnAlarmDisc();
+									studentScript7.BecomeRagdoll();
+									studentScript7.DeathType = DeathType.EasterEgg;
 									StudentGlobals.SetStudentDead(this.ID, true);
 								}
 								this.ID++;
@@ -576,7 +588,7 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					else if (Input.GetKeyDown(KeyCode.Equals))
 					{
-						this.Clock.PresentTime += 20f;
+						this.Clock.PresentTime += 10f;
 						this.Window.SetActive(false);
 					}
 					else if (Input.GetKeyDown(KeyCode.Return))

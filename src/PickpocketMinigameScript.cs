@@ -23,6 +23,8 @@ public class PickpocketMinigameScript : MonoBehaviour
 
 	public bool Show;
 
+	public int StartingAlerts;
+
 	public int ButtonID;
 
 	public int Progress;
@@ -53,9 +55,16 @@ public class PickpocketMinigameScript : MonoBehaviour
 			}
 			base.transform.localScale = Vector3.Lerp(base.transform.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 			this.Timer += Time.deltaTime;
+			Debug.Log(string.Concat(new object[]
+			{
+				"Starting Alerts is: ",
+				this.StartingAlerts,
+				". Yandere's current Alerts are: ",
+				this.Yandere.Alerts
+			}));
 			if (this.Timer > 1f)
 			{
-				if (this.ButtonID == 0)
+				if (this.ButtonID == 0 && this.Yandere.Alerts == this.StartingAlerts)
 				{
 					this.ChooseButton();
 					this.Timer = 0f;

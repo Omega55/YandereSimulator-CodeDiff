@@ -9,6 +9,8 @@ public class PortalScript : MonoBehaviour
 
 	public OsanaMondayBeforeClassEventScript OsanaEvent;
 
+	public OsanaPoolEventScript OsanaPoolEvent;
+
 	public DelinquentManagerScript DelinquentManager;
 
 	public StudentManagerScript StudentManager;
@@ -87,18 +89,31 @@ public class PortalScript : MonoBehaviour
 			{
 				if (!this.Police.Show)
 				{
-					if (this.Late == 0)
+					bool flag = false;
+					if (this.StudentManager.Teachers[21] != null && this.StudentManager.Teachers[21].DistanceToDestination < 1f)
 					{
-						this.ClassDarkness.enabled = true;
-						this.Transition = true;
-						this.FadeOut = true;
+						flag = true;
+					}
+					if (flag)
+					{
+						Debug.Log("The teacher is present.");
 					}
 					else
+					{
+						Debug.Log("The teacher is not present.");
+					}
+					if (this.Late > 0 && flag)
 					{
 						this.Yandere.Subtitle.UpdateLabel(SubtitleType.TeacherLateReaction, this.Late, 5.5f);
 						this.Yandere.RPGCamera.enabled = false;
 						this.Yandere.ShoulderCamera.Scolding = true;
 						this.Yandere.ShoulderCamera.Teacher = this.Teacher;
+					}
+					else
+					{
+						this.ClassDarkness.enabled = true;
+						this.Transition = true;
+						this.FadeOut = true;
 					}
 					this.Clock.StopTime = true;
 				}
@@ -114,10 +129,18 @@ public class PortalScript : MonoBehaviour
 			this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
 			this.Yandere.YandereVision = false;
 			this.Yandere.CanMove = false;
+			Debug.Log("As of right now, the time is: " + this.Clock.HourTime);
 			if (this.Clock.HourTime < 15.5f)
 			{
 				this.Yandere.InClass = true;
-				this.EndEvents();
+				if (this.Clock.HourTime < 8.5f)
+				{
+					this.EndEvents();
+				}
+				else
+				{
+					this.EndLaterEvents();
+				}
 			}
 		}
 		if (this.Transition)
@@ -328,53 +351,59 @@ public class PortalScript : MonoBehaviour
 
 	private void CheckForLateness()
 	{
+		Debug.Log("Determining if Yandere-chan is late to class.");
 		this.Late = 0;
-		if (this.StudentManager.Teachers[21] != null && this.StudentManager.Teachers[21].DistanceToDestination < 1f)
+		if (this.Clock.HourTime < 13f)
 		{
-			if (this.Clock.HourTime < 13f)
-			{
-				if (this.Clock.HourTime < 8.52f)
-				{
-					this.Late = 0;
-				}
-				else if (this.Clock.HourTime < 10f)
-				{
-					this.Late = 1;
-				}
-				else if (this.Clock.HourTime < 11f)
-				{
-					this.Late = 2;
-				}
-				else if (this.Clock.HourTime < 12f)
-				{
-					this.Late = 3;
-				}
-				else if (this.Clock.HourTime < 13f)
-				{
-					this.Late = 4;
-				}
-			}
-			else if (this.Clock.HourTime < 13.52f)
+			if (this.Clock.HourTime < 8.52f)
 			{
 				this.Late = 0;
 			}
-			else if (this.Clock.HourTime < 14f)
+			else if (this.Clock.HourTime < 10f)
 			{
 				this.Late = 1;
 			}
-			else if (this.Clock.HourTime < 14.5f)
+			else if (this.Clock.HourTime < 11f)
 			{
 				this.Late = 2;
 			}
-			else if (this.Clock.HourTime < 15f)
+			else if (this.Clock.HourTime < 12f)
 			{
 				this.Late = 3;
 			}
-			else if (this.Clock.HourTime < 15.5f)
+			else if (this.Clock.HourTime < 13f)
 			{
 				this.Late = 4;
 			}
-			this.Reputation.PendingRep -= (float)(5 * this.Late);
+		}
+		else if (this.Clock.HourTime < 13.52f)
+		{
+			this.Late = 0;
+		}
+		else if (this.Clock.HourTime < 14f)
+		{
+			this.Late = 1;
+		}
+		else if (this.Clock.HourTime < 14.5f)
+		{
+			this.Late = 2;
+		}
+		else if (this.Clock.HourTime < 15f)
+		{
+			this.Late = 3;
+		}
+		else if (this.Clock.HourTime < 15.5f)
+		{
+			this.Late = 4;
+		}
+		this.Reputation.PendingRep -= (float)(5 * this.Late);
+		if (this.Late > 0)
+		{
+			Debug.Log("Yep, Yandere-chan is late.");
+		}
+		else
+		{
+			Debug.Log("Nope, Yandere-chan is not late.");
 		}
 	}
 
@@ -387,5 +416,9 @@ public class PortalScript : MonoBehaviour
 				this.MorningEvents[i].EndEvent();
 			}
 		}
+	}
+
+	public void EndLaterEvents()
+	{
 	}
 }

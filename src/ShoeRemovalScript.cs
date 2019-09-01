@@ -266,8 +266,16 @@ public class ShoeRemovalScript : MonoBehaviour
 				}
 				else
 				{
-					this.Student.CurrentDestination = this.Student.StudentManager.Hangouts.List[0];
-					this.Student.Pathfinding.target = this.Student.StudentManager.Hangouts.List[0];
+					if (this.Student.Destinations[this.Student.Phase + 1] != null)
+					{
+						this.Student.CurrentDestination = this.Student.Destinations[this.Student.Phase + 1];
+						this.Student.Pathfinding.target = this.Student.Destinations[this.Student.Phase + 1];
+					}
+					else
+					{
+						this.Student.CurrentDestination = this.Student.StudentManager.Hangouts.List[0];
+						this.Student.Pathfinding.target = this.Student.StudentManager.Hangouts.List[0];
+					}
 					this.Student.CanTalk = false;
 					this.Student.Leaving = true;
 					this.Student.Phase++;

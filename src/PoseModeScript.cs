@@ -339,6 +339,10 @@ public class PoseModeScript : MonoBehaviour
 					{
 						this.Student.Cosmetic.Direction = 1;
 						this.Student.Cosmetic.Hairstyle++;
+						if (this.Student.Cosmetic.Hairstyle == 20)
+						{
+							this.Student.Cosmetic.Hairstyle += 2;
+						}
 						if (!this.Student.Male)
 						{
 							if (!this.Student.Teacher)
@@ -364,6 +368,10 @@ public class PoseModeScript : MonoBehaviour
 					{
 						this.Student.Cosmetic.Direction = -1;
 						this.Student.Cosmetic.Hairstyle--;
+						if (this.Student.Cosmetic.Hairstyle == 21)
+						{
+							this.Student.Cosmetic.Hairstyle -= 2;
+						}
 						if (this.Student.Cosmetic.Hairstyle == 0)
 						{
 							if (!this.Student.Male)

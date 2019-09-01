@@ -445,6 +445,12 @@ public class StudentInfoScript : MonoBehaviour
 	{
 		if (ID == 30)
 		{
+			this.Strings[1] = ((!EventGlobals.OsanaEvent1) ? "?????" : "May be a victim of blackmail");
+			this.Strings[2] = ((!EventGlobals.OsanaEvent2) ? "?????" : "Has a stalker.");
+			this.InfoLabel.text = this.Strings[1] + "\n\n" + this.Strings[2];
+		}
+		else if (ID == 30)
+		{
 			this.Strings[1] = ((!EventGlobals.Event1) ? "?????" : "May be a victim of domestic abuse.");
 			this.Strings[2] = ((!EventGlobals.Event2) ? "?????" : "May be engaging in compensated dating in Shisuta Town.");
 			this.InfoLabel.text = this.Strings[1] + "\n\n" + this.Strings[2];

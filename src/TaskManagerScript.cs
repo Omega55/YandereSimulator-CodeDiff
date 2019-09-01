@@ -126,6 +126,7 @@ public class TaskManagerScript : MonoBehaviour
 			{
 				if (TaskGlobals.GetKittenPhoto(i))
 				{
+					Debug.Log("Riku's Task can be turned in.");
 					this.StudentManager.Students[28].TaskPhase = 5;
 				}
 			}

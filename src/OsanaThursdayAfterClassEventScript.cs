@@ -15,7 +15,11 @@ public class OsanaThursdayAfterClassEventScript : MonoBehaviour
 
 	public ClockScript Clock;
 
+	public StudentScript Friend;
+
 	public StudentScript Rival;
+
+	public Transform FriendLocation;
 
 	public Transform Location;
 
@@ -36,6 +40,8 @@ public class OsanaThursdayAfterClassEventScript : MonoBehaviour
 	public float Timer;
 
 	public DayOfWeek EventDay;
+
+	public int FriendID = 10;
 
 	public int RivalID = 11;
 

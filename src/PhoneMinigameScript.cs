@@ -28,13 +28,14 @@ public class PhoneMinigameScript : MonoBehaviour
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Yandere.MainCamera.GetComponent<AudioListener>().enabled = true;
-			this.Prompt.Yandere.gameObject.SetActive(false);
+			this.Prompt.Yandere.Pickpocketing = true;
 			this.Prompt.Yandere.CanMove = false;
 			this.Prompt.Yandere.MainCamera.transform.eulerAngles = new Vector3(45f, 180f, 0f);
 			this.Prompt.Yandere.MainCamera.transform.position = new Vector3(0.4f, 12.66666f, -29.2f);
 			this.Prompt.Yandere.RPGCamera.enabled = false;
 			this.SmartPhoneScreen = this.Event.Rival.SmartPhoneScreen;
 			this.Smartphone = this.Event.Rival.SmartPhone.transform;
+			this.PickpocketMinigame.StartingAlerts = this.Prompt.Yandere.Alerts;
 			this.PickpocketMinigame.PickpocketSpot = null;
 			this.PickpocketMinigame.Show = true;
 			this.OriginalRotation = this.Smartphone.eulerAngles;
@@ -43,6 +44,7 @@ public class PhoneMinigameScript : MonoBehaviour
 		}
 		if (this.Tampering)
 		{
+			this.Prompt.Yandere.MoveTowardsTarget(new Vector3(0f, 12f, -28.66666f));
 			if (!this.PickpocketMinigame.Failure)
 			{
 				if (this.PickpocketMinigame.Progress == 1)

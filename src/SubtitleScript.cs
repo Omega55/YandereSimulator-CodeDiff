@@ -2697,10 +2697,6 @@ public class SubtitleScript : MonoBehaviour
 		{
 			return this.Task30Clips[TaskPhase].length;
 		}
-		if (StudentID == 34)
-		{
-			return this.Task34Clips[TaskPhase].length;
-		}
 		if (StudentID == 36)
 		{
 			return this.Task36Clips[TaskPhase].length;

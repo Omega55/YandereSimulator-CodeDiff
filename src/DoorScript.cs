@@ -74,6 +74,8 @@ public class DoorScript : MonoBehaviour
 	[SerializeField]
 	private float Rotation;
 
+	public float TimeLimit = 2f;
+
 	public float Timer;
 
 	[SerializeField]
@@ -129,6 +131,7 @@ public class DoorScript : MonoBehaviour
 			{
 				this.OriginX[1] = this.Doors[1].transform.localPosition.z;
 			}
+			this.TimeLimit = 1f;
 		}
 		if (this.Labels.Length > 0)
 		{
@@ -220,10 +223,10 @@ public class DoorScript : MonoBehaviour
 			this.Yandere.Location.Show = false;
 			this.Near = false;
 		}
-		if (this.Timer < 1f)
+		if (this.Timer < this.TimeLimit)
 		{
 			this.Timer += Time.deltaTime;
-			if (this.Timer >= 1f)
+			if (this.Timer >= this.TimeLimit)
 			{
 				this.DoorColliders[0].isTrigger = false;
 				if (this.DoorColliders[1] != null)

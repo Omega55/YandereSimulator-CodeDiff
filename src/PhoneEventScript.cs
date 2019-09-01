@@ -265,16 +265,27 @@ public class PhoneEventScript : MonoBehaviour
 							this.Yandere.Eavesdropping = false;
 						}
 					}
-					if (this.EventPhase == 11 && num < 5f && !EventGlobals.Event2)
+					if (this.EventPhase == 11 && num < 5f)
 					{
-						EventGlobals.Event2 = true;
-						this.Yandere.NotificationManager.DisplayNotification(NotificationType.Info);
-						ConversationGlobals.SetTopicDiscovered(25, true);
-						this.Yandere.NotificationManager.TopicName = "Money";
-						this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
-						this.Yandere.NotificationManager.TopicName = "Money";
-						this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
-						ConversationGlobals.SetTopicLearnedByStudent(25, this.EventStudentID, true);
+						if (this.EventStudentID == 30)
+						{
+							if (!EventGlobals.Event2)
+							{
+								EventGlobals.Event2 = true;
+								this.Yandere.NotificationManager.DisplayNotification(NotificationType.Info);
+								ConversationGlobals.SetTopicDiscovered(25, true);
+								this.Yandere.NotificationManager.TopicName = "Money";
+								this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+								this.Yandere.NotificationManager.TopicName = "Money";
+								this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
+								ConversationGlobals.SetTopicLearnedByStudent(25, this.EventStudentID, true);
+							}
+						}
+						else if (!EventGlobals.OsanaEvent1)
+						{
+							EventGlobals.OsanaEvent1 = true;
+							this.Yandere.NotificationManager.DisplayNotification(NotificationType.Info);
+						}
 					}
 				}
 				if ((this.EventStudent.Pathfinding.canMove || this.EventPhase > 3) && this.EventFriend != null && this.EventPhase > 3)
