@@ -795,8 +795,8 @@ public class CounselorScript : MonoBehaviour
 		{
 			if (this.Timer > 1f || Input.GetButtonDown("A"))
 			{
-				Debug.Log("Previous Punishments: " + PlayerPrefs.GetInt("CounselorPunishments"));
-				this.Patience -= PlayerPrefs.GetInt("CounselorPunishments");
+				Debug.Log("Previous Punishments: " + CounselorGlobals.CounselorPunishments);
+				this.Patience -= CounselorGlobals.CounselorPunishments;
 				if (this.Patience < -6)
 				{
 					this.Patience = -6;
@@ -805,11 +805,11 @@ public class CounselorScript : MonoBehaviour
 				this.Yandere.MainCamera.transform.eulerAngles = this.CameraTarget.eulerAngles;
 				this.Yandere.MainCamera.transform.position = this.CameraTarget.position;
 				this.Yandere.MainCamera.transform.Translate(Vector3.forward * -1f);
-				if (PlayerPrefs.GetInt("CounselorVisits") < 3)
+				if (CounselorGlobals.CounselorVisits < 3)
 				{
-					PlayerPrefs.SetInt("CounselorVisits", PlayerPrefs.GetInt("CounselorVisits") + 1);
+					CounselorGlobals.CounselorVisits++;
 				}
-				if (PlayerPrefs.GetInt("CounselorTape") == 0)
+				if (CounselorGlobals.CounselorTape == 0)
 				{
 					this.CounselorOption[4].Label.color = new Color(0f, 0f, 0f, 0.5f);
 				}
@@ -837,8 +837,8 @@ public class CounselorScript : MonoBehaviour
 			if (this.Timer > 5f || Input.GetButtonDown("A"))
 			{
 				this.Yandere.MainCamera.transform.position = this.CameraTarget.position;
-				this.MyAudio.clip = this.GreetingClips[PlayerPrefs.GetInt("CounselorVisits")];
-				this.CounselorSubtitle.text = this.Greetings[PlayerPrefs.GetInt("CounselorVisits")];
+				this.MyAudio.clip = this.GreetingClips[CounselorGlobals.CounselorVisits];
+				this.CounselorSubtitle.text = this.Greetings[CounselorGlobals.CounselorVisits];
 				this.Yandere.Police.Darkness.color = new Color(0f, 0f, 0f, 0f);
 				this.InterrogationPhase++;
 				this.MyAudio.Play();
@@ -855,61 +855,61 @@ public class CounselorScript : MonoBehaviour
 			{
 				if (this.Crime == StudentWitnessType.Blood || this.Crime == StudentWitnessType.BloodAndInsanity)
 				{
-					this.MyAudio.clip = this.BloodLectureClips[PlayerPrefs.GetInt("BloodVisits")];
-					this.CounselorSubtitle.text = this.BloodLectures[PlayerPrefs.GetInt("BloodVisits")];
-					if (PlayerPrefs.GetInt("BloodVisits") < 2)
+					this.MyAudio.clip = this.BloodLectureClips[CounselorGlobals.BloodVisits];
+					this.CounselorSubtitle.text = this.BloodLectures[CounselorGlobals.BloodVisits];
+					if (CounselorGlobals.BloodVisits < 2)
 					{
-						PlayerPrefs.SetInt("BloodVisits", PlayerPrefs.GetInt("BloodVisits") + 1);
+						CounselorGlobals.BloodVisits++;
 					}
 					this.CrimeID = 1;
 				}
 				else if (this.Crime == StudentWitnessType.Insanity || this.Crime == StudentWitnessType.CleaningItem || this.Crime == StudentWitnessType.HoldingBloodyClothing || this.Crime == StudentWitnessType.Poisoning)
 				{
-					this.MyAudio.clip = this.InsanityLectureClips[PlayerPrefs.GetInt("InsanityVisits")];
-					this.CounselorSubtitle.text = this.InsanityLectures[PlayerPrefs.GetInt("InsanityVisits")];
-					if (PlayerPrefs.GetInt("InsanityVisits") < 2)
+					this.MyAudio.clip = this.InsanityLectureClips[CounselorGlobals.InsanityVisits];
+					this.CounselorSubtitle.text = this.InsanityLectures[CounselorGlobals.InsanityVisits];
+					if (CounselorGlobals.InsanityVisits < 2)
 					{
-						PlayerPrefs.SetInt("InsanityVisits", PlayerPrefs.GetInt("InsanityVisits") + 1);
+						CounselorGlobals.InsanityVisits++;
 					}
 					this.CrimeID = 2;
 				}
 				else if (this.Crime == StudentWitnessType.Lewd)
 				{
-					this.MyAudio.clip = this.LewdLectureClips[PlayerPrefs.GetInt("LewdVisits")];
-					this.CounselorSubtitle.text = this.LewdLectures[PlayerPrefs.GetInt("LewdVisits")];
-					if (PlayerPrefs.GetInt("LewdVisits") < 2)
+					this.MyAudio.clip = this.LewdLectureClips[CounselorGlobals.LewdVisits];
+					this.CounselorSubtitle.text = this.LewdLectures[CounselorGlobals.LewdVisits];
+					if (CounselorGlobals.LewdVisits < 2)
 					{
-						PlayerPrefs.SetInt("LewdVisits", PlayerPrefs.GetInt("LewdVisits") + 1);
+						CounselorGlobals.LewdVisits++;
 					}
 					this.CrimeID = 3;
 				}
 				else if (this.Crime == StudentWitnessType.Theft || this.Crime == StudentWitnessType.Pickpocketing)
 				{
-					this.MyAudio.clip = this.TheftLectureClips[PlayerPrefs.GetInt("TheftVisits")];
-					this.CounselorSubtitle.text = this.TheftLectures[PlayerPrefs.GetInt("TheftVisits")];
-					if (PlayerPrefs.GetInt("TheftVisits") < 2)
+					this.MyAudio.clip = this.TheftLectureClips[CounselorGlobals.TheftVisits];
+					this.CounselorSubtitle.text = this.TheftLectures[CounselorGlobals.TheftVisits];
+					if (CounselorGlobals.TheftVisits < 2)
 					{
-						PlayerPrefs.SetInt("TheftVisits", PlayerPrefs.GetInt("TheftVisits") + 1);
+						CounselorGlobals.TheftVisits++;
 					}
 					this.CrimeID = 4;
 				}
 				else if (this.Crime == StudentWitnessType.Trespassing)
 				{
-					this.MyAudio.clip = this.TrespassLectureClips[PlayerPrefs.GetInt("TrespassVisits")];
-					this.CounselorSubtitle.text = this.TrespassLectures[PlayerPrefs.GetInt("TrespassVisits")];
-					if (PlayerPrefs.GetInt("TrespassVisits") < 2)
+					this.MyAudio.clip = this.TrespassLectureClips[CounselorGlobals.TrespassVisits];
+					this.CounselorSubtitle.text = this.TrespassLectures[CounselorGlobals.TrespassVisits];
+					if (CounselorGlobals.TrespassVisits < 2)
 					{
-						PlayerPrefs.SetInt("TrespassVisits", PlayerPrefs.GetInt("TrespassVisits") + 1);
+						CounselorGlobals.TrespassVisits++;
 					}
 					this.CrimeID = 5;
 				}
 				else if (this.Crime == StudentWitnessType.Weapon || this.Crime == StudentWitnessType.WeaponAndBlood || this.Crime == StudentWitnessType.WeaponAndInsanity || this.Crime == StudentWitnessType.WeaponAndBloodAndInsanity)
 				{
-					this.MyAudio.clip = this.WeaponLectureClips[PlayerPrefs.GetInt("WeaponVisits")];
-					this.CounselorSubtitle.text = this.WeaponLectures[PlayerPrefs.GetInt("WeaponVisits")];
-					if (PlayerPrefs.GetInt("WeaponVisits") < 2)
+					this.MyAudio.clip = this.WeaponLectureClips[CounselorGlobals.WeaponVisits];
+					this.CounselorSubtitle.text = this.WeaponLectures[CounselorGlobals.WeaponVisits];
+					if (CounselorGlobals.WeaponVisits < 2)
 					{
-						PlayerPrefs.SetInt("WeaponVisits", PlayerPrefs.GetInt("WeaponVisits") + 1);
+						CounselorGlobals.WeaponVisits++;
 					}
 					this.CrimeID = 6;
 				}
@@ -1046,13 +1046,36 @@ public class CounselorScript : MonoBehaviour
 				{
 					this.MyAudio.clip = this.ExcuseClips[this.CrimeID];
 					this.CounselorSubtitle.text = this.Excuses[this.CrimeID];
-					PlayerPrefs.SetInt(this.Crime + "ExcuseUsed", PlayerPrefs.GetInt(this.Crime + "ExcuseUsed") + 1);
+					if (this.CrimeID == 1)
+					{
+						CounselorGlobals.BloodExcuseUsed++;
+					}
+					else if (this.CrimeID == 2)
+					{
+						CounselorGlobals.InsanityExcuseUsed++;
+					}
+					else if (this.CrimeID == 3)
+					{
+						CounselorGlobals.LewdExcuseUsed++;
+					}
+					else if (this.CrimeID == 4)
+					{
+						CounselorGlobals.TheftExcuseUsed++;
+					}
+					else if (this.CrimeID == 5)
+					{
+						CounselorGlobals.TrespassExcuseUsed++;
+					}
+					else if (this.CrimeID == 6)
+					{
+						CounselorGlobals.WeaponExcuseUsed++;
+					}
 				}
 				else if (this.Answer == 2)
 				{
 					this.MyAudio.clip = this.ApologyClip;
 					this.CounselorSubtitle.text = this.Apology;
-					PlayerPrefs.SetInt("ApologyUsed", PlayerPrefs.GetInt("ApologyUsed") + 1);
+					CounselorGlobals.ApologiesUsed++;
 				}
 				else if (this.Answer == 3)
 				{
@@ -1098,8 +1121,40 @@ public class CounselorScript : MonoBehaviour
 				}
 				else if (this.Answer == 1)
 				{
-					if (PlayerPrefs.GetInt(this.Crime + "ExcuseUsed") == 1)
+					if (this.CrimeID == 1)
 					{
+						Debug.Log("The player's crime is Bloodiness.");
+					}
+					else if (this.CrimeID == 2)
+					{
+						Debug.Log("The player's crime is Insanity.");
+					}
+					else if (this.CrimeID == 3)
+					{
+						Debug.Log("The player's crime is Lewdness.");
+					}
+					else if (this.CrimeID == 4)
+					{
+						Debug.Log("The player's crime is Theft.");
+					}
+					else if (this.CrimeID == 5)
+					{
+						Debug.Log("The player's crime is Trespassing.");
+					}
+					else if (this.CrimeID == 6)
+					{
+						Debug.Log("The player's crime is Weaponry.");
+					}
+					Debug.Log("The player has chosen to use an exuse.");
+					bool flag = false;
+					if ((this.CrimeID == 1 && CounselorGlobals.BloodExcuseUsed > 1) || (this.CrimeID == 2 && CounselorGlobals.InsanityExcuseUsed > 1) || (this.CrimeID == 3 && CounselorGlobals.LewdExcuseUsed > 1) || (this.CrimeID == 4 && CounselorGlobals.TheftExcuseUsed > 1) || (this.CrimeID == 5 && CounselorGlobals.TrespassExcuseUsed > 1) || (this.CrimeID == 6 && CounselorGlobals.WeaponExcuseUsed > 1))
+					{
+						Debug.Log("Yandere-chan has already used this excuse before.");
+						flag = true;
+					}
+					if (!flag)
+					{
+						Debug.Log("Yandere-chan's excuse is not invalid!");
 						this.MyAudio.clip = this.AcceptExcuseClips[this.CrimeID];
 						this.CounselorSubtitle.text = this.AcceptExcuses[this.CrimeID];
 						this.MyAnimation.CrossFade("CounselorRelief", 1f);
@@ -1108,6 +1163,7 @@ public class CounselorScript : MonoBehaviour
 					}
 					else
 					{
+						Debug.Log("Yandere-chan's excuse has been deemed invalid.");
 						int num2 = UnityEngine.Random.Range(0, 3);
 						this.MyAudio.clip = this.RejectExcuseClips[num2];
 						this.CounselorSubtitle.text = this.RejectExcuses[num2];
@@ -1118,7 +1174,7 @@ public class CounselorScript : MonoBehaviour
 				}
 				else if (this.Answer == 2)
 				{
-					if (PlayerPrefs.GetInt("ApologyUsed") == 1)
+					if (CounselorGlobals.ApologiesUsed == 1)
 					{
 						this.MyAudio.clip = this.AcceptApologyClip;
 						this.CounselorSubtitle.text = this.AcceptApology;
@@ -1146,17 +1202,17 @@ public class CounselorScript : MonoBehaviour
 				}
 				else if (this.Answer == 4)
 				{
-					bool flag = false;
 					bool flag2 = false;
 					bool flag3 = false;
+					bool flag4 = false;
 					int num5 = 5;
 					if (StudentGlobals.GetStudentDead(76) && StudentGlobals.GetStudentDead(77) && StudentGlobals.GetStudentDead(78) && StudentGlobals.GetStudentDead(79) && StudentGlobals.GetStudentDead(80))
 					{
-						flag3 = true;
+						flag4 = true;
 					}
 					else if (StudentGlobals.GetStudentExpelled(76) && StudentGlobals.GetStudentExpelled(77) && StudentGlobals.GetStudentExpelled(78) && StudentGlobals.GetStudentExpelled(79) && StudentGlobals.GetStudentExpelled(80))
 					{
-						flag2 = true;
+						flag3 = true;
 					}
 					else
 					{
@@ -1202,10 +1258,15 @@ public class CounselorScript : MonoBehaviour
 						}
 						if (num5 == 0)
 						{
-							flag = true;
+							flag2 = true;
 						}
 					}
-					if (flag3)
+					bool flag5 = false;
+					if ((this.CrimeID == 1 && CounselorGlobals.BloodBlameUsed > 1) || (this.CrimeID == 2 && CounselorGlobals.InsanityBlameUsed > 1) || (this.CrimeID == 3 && CounselorGlobals.LewdBlameUsed > 1) || (this.CrimeID == 4 && CounselorGlobals.TheftBlameUsed > 1) || (this.CrimeID == 5 && CounselorGlobals.TrespassBlameUsed > 1) || (this.CrimeID == 6 && CounselorGlobals.WeaponBlameUsed > 1))
+					{
+						flag5 = true;
+					}
+					if (flag4)
 					{
 						this.MyAudio.clip = this.DelinquentsDeadClip;
 						this.CounselorSubtitle.text = this.DelinquentsDead;
@@ -1213,26 +1274,26 @@ public class CounselorScript : MonoBehaviour
 						this.Angry = true;
 						this.Patience--;
 					}
-					else if (flag2)
+					else if (flag3)
 					{
 						this.MyAudio.clip = this.DelinquentsExpelledClip;
 						this.CounselorSubtitle.text = this.DelinquentsExpelled;
 						this.MyAnimation.CrossFade("CounselorAnnoyed");
 						this.Patience--;
 					}
-					else if (flag)
+					else if (flag2)
 					{
 						this.MyAudio.clip = this.DelinquentsGoneClip;
 						this.CounselorSubtitle.text = this.DelinquentsGone;
 						this.MyAnimation.CrossFade("CounselorAnnoyed");
 						this.Patience--;
 					}
-					else if (PlayerPrefs.GetInt(this.Crime + "BlameUsed") == 0)
+					else if (!flag5)
 					{
 						if (this.CrimeID == 1)
 						{
 							Debug.Log("Banning weapons.");
-							PlayerPrefs.SetInt("WeaponsBanned", 1);
+							CounselorGlobals.WeaponsBanned++;
 						}
 						this.MyAudio.clip = this.AcceptBlameClips[this.CrimeID];
 						this.CounselorSubtitle.text = this.AcceptBlames[this.CrimeID];
@@ -1240,9 +1301,32 @@ public class CounselorScript : MonoBehaviour
 						this.Stern = false;
 						this.Sad = true;
 						this.Patience = 1;
-						PlayerPrefs.SetInt("DelinquentPunishments", PlayerPrefs.GetInt("DelinquentPunishments") + 1);
-						PlayerPrefs.SetInt(this.Crime + "BlameUsed", PlayerPrefs.GetInt(this.Crime + "BlameUsed") + 1);
-						if (PlayerPrefs.GetInt("DelinquentPunishments") > 5)
+						CounselorGlobals.DelinquentPunishments++;
+						if (this.CrimeID == 1)
+						{
+							CounselorGlobals.BloodBlameUsed++;
+						}
+						else if (this.CrimeID == 2)
+						{
+							CounselorGlobals.InsanityBlameUsed++;
+						}
+						else if (this.CrimeID == 3)
+						{
+							CounselorGlobals.LewdBlameUsed++;
+						}
+						else if (this.CrimeID == 4)
+						{
+							CounselorGlobals.TheftBlameUsed++;
+						}
+						else if (this.CrimeID == 5)
+						{
+							CounselorGlobals.TrespassBlameUsed++;
+						}
+						else if (this.CrimeID == 6)
+						{
+							CounselorGlobals.WeaponBlameUsed++;
+						}
+						if (CounselorGlobals.DelinquentPunishments > 5)
 						{
 							this.MustExpelDelinquents = true;
 						}
@@ -1391,7 +1475,7 @@ public class CounselorScript : MonoBehaviour
 		}
 		else if (this.InterrogationPhase == 11 && (this.Timer > this.MyAudio.clip.length + 0.5f || Input.GetButtonDown("A")) && !this.Yandere.Police.FadeOut)
 		{
-			PlayerPrefs.SetInt("CounselorPunishments", PlayerPrefs.GetInt("CounselorPunishments") + 1);
+			CounselorGlobals.CounselorPunishments++;
 			this.Yandere.Police.Darkness.color = new Color(0f, 0f, 0f, 0f);
 			this.Yandere.Police.SuspensionLength = Mathf.Abs(this.Patience);
 			this.Yandere.Police.Darkness.enabled = true;

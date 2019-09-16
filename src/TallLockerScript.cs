@@ -45,6 +45,8 @@ public class TallLockerScript : MonoBehaviour
 
 	public float Timer;
 
+	public int AvailableUniforms = 2;
+
 	public int Phase = 1;
 
 	private void Start()
@@ -151,30 +153,54 @@ public class TallLockerScript : MonoBehaviour
 					this.Removed[1] = true;
 				}
 				this.SpawnSteam();
+				this.Yandere.CurrentUniformOrigin = 1;
 			}
 			else if (this.Prompt.Circle[2].fillAmount == 0f)
 			{
-				this.Yandere.EmptyHands();
-				if (this.Yandere.ClubAttire)
+				bool flag = false;
+				if (this.Yandere.Schoolwear > 0)
 				{
-					this.RemovingClubAttire = true;
-				}
-				this.Yandere.PreviousSchoolwear = this.Yandere.Schoolwear;
-				if (this.Yandere.Schoolwear == 1 && !this.Removed[1])
-				{
-					this.DropCleanUniform = true;
-				}
-				if (this.Yandere.Schoolwear == 2)
-				{
-					this.Yandere.Schoolwear = 0;
-					this.Removed[2] = false;
+					Debug.Log("Checking to see if it's okay for the player to take off clothing.");
+					this.CheckAvailableUniforms();
+					if (this.AvailableUniforms > 0)
+					{
+						flag = true;
+					}
 				}
 				else
 				{
-					this.Yandere.Schoolwear = 2;
-					this.Removed[2] = true;
+					flag = true;
 				}
-				this.SpawnSteam();
+				if (flag)
+				{
+					this.Yandere.EmptyHands();
+					if (this.Yandere.ClubAttire)
+					{
+						this.RemovingClubAttire = true;
+					}
+					this.Yandere.PreviousSchoolwear = this.Yandere.Schoolwear;
+					if (this.Yandere.Schoolwear == 1 && !this.Removed[1])
+					{
+						this.DropCleanUniform = true;
+					}
+					if (this.Yandere.Schoolwear == 2)
+					{
+						this.Yandere.Schoolwear = 0;
+						this.Removed[2] = false;
+					}
+					else
+					{
+						this.Yandere.Schoolwear = 2;
+						this.Removed[2] = true;
+					}
+					this.SpawnSteam();
+					this.Yandere.CurrentUniformOrigin = 1;
+				}
+				else
+				{
+					this.Prompt.Circle[2].fillAmount = 1f;
+					Debug.Log("Error Message.");
+				}
 			}
 			else if (this.Prompt.Circle[3].fillAmount == 0f)
 			{
@@ -199,6 +225,7 @@ public class TallLockerScript : MonoBehaviour
 					this.Removed[3] = true;
 				}
 				this.SpawnSteam();
+				this.Yandere.CurrentUniformOrigin = 1;
 			}
 		}
 		this.Hinge.localEulerAngles = new Vector3(0f, this.Rotation, 0f);
@@ -399,6 +426,25 @@ public class TallLockerScript : MonoBehaviour
 			this.Prompt.HideButton[1] = true;
 			this.Prompt.HideButton[2] = true;
 			this.Prompt.HideButton[3] = true;
+		}
+	}
+
+	private void CheckAvailableUniforms()
+	{
+		this.AvailableUniforms = this.StudentManager.OriginalUniforms;
+		Debug.Log(this.AvailableUniforms + " of the original uniforms are still clean.");
+		Debug.Log("There are " + this.StudentManager.NewUniforms + " new uniforms in school.");
+		if (this.StudentManager.NewUniforms > 0)
+		{
+			for (int i = 0; i < this.StudentManager.Uniforms.Length; i++)
+			{
+				Transform transform = this.StudentManager.Uniforms[i];
+				if (transform != null && this.StudentManager.LockerRoomArea.bounds.Contains(transform.position))
+				{
+					Debug.Log("Cool, there's a uniform in the locker room.");
+					this.AvailableUniforms++;
+				}
+			}
 		}
 	}
 }

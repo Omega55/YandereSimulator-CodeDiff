@@ -75,6 +75,8 @@ public class ShutterScript : MonoBehaviour
 
 	public bool MissionMode;
 
+	public bool HorudaShot;
+
 	public bool KittenShot;
 
 	public bool FreeSpace;
@@ -439,6 +441,11 @@ public class ShutterScript : MonoBehaviour
 								TaskGlobals.SetKittenPhoto(this.Slot, true);
 								this.TaskManager.UpdateTaskStatus();
 							}
+							if (this.HorudaShot)
+							{
+								TaskGlobals.SetHorudaPhoto(this.Slot, true);
+								this.TaskManager.UpdateTaskStatus();
+							}
 						}
 						else
 						{
@@ -530,6 +537,7 @@ public class ShutterScript : MonoBehaviour
 		this.PantiesX.SetActive(true);
 		this.ViolenceX.SetActive(true);
 		this.AirGuitarShot = false;
+		this.HorudaShot = false;
 		this.KittenShot = false;
 		this.Nemesis = false;
 		this.NotFace = false;
@@ -608,6 +616,12 @@ public class ShutterScript : MonoBehaviour
 					this.Yandere.NotificationManager.TopicName = "Cats";
 					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 				}
+			}
+			if (this.hit.collider.gameObject.tag == "Horuda")
+			{
+				this.HorudaShot = true;
+				this.PhotoDescription.SetActive(true);
+				this.PhotoDescLabel.text = "Photo of: Horuda's Hiding Spot";
 			}
 			if (this.hit.collider.gameObject.tag == "Bully")
 			{

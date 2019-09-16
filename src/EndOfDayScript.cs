@@ -197,6 +197,7 @@ public class EndOfDayScript : MonoBehaviour
 
 	private void Update()
 	{
+		this.Yandere.UpdateSlouch();
 		if (Input.GetKeyDown("space"))
 		{
 			this.EndOfDayDarkness.color = new Color(0f, 0f, 0f, 1f);

@@ -5,6 +5,8 @@ public class TutorialWindowScript : MonoBehaviour
 {
 	public YandereScript Yandere;
 
+	public bool ShowClothingMessage;
+
 	public bool ShowCouncilMessage;
 
 	public bool ShowTeacherMessage;
@@ -34,6 +36,8 @@ public class TutorialWindowScript : MonoBehaviour
 	public bool ShowPoolMessage;
 
 	public bool ShowRepMessage;
+
+	public bool IgnoreClothing;
 
 	public bool IgnoreCouncil;
 
@@ -80,6 +84,10 @@ public class TutorialWindowScript : MonoBehaviour
 	public string DisabledString;
 
 	public Texture DisabledTexture;
+
+	public string ClothingString;
+
+	public Texture ClothingTexture;
 
 	public string CouncilString;
 
@@ -146,12 +154,13 @@ public class TutorialWindowScript : MonoBehaviour
 	private void Start()
 	{
 		base.transform.localScale = new Vector3(0f, 0f, 0f);
-		if (TutorialGlobals.TutorialsOff)
+		if (OptionGlobals.TutorialsOff)
 		{
 			base.enabled = false;
 		}
 		else
 		{
+			this.IgnoreClothing = TutorialGlobals.IgnoreClothing;
 			this.IgnoreCouncil = TutorialGlobals.IgnoreCouncil;
 			this.IgnoreTeacher = TutorialGlobals.IgnoreTeacher;
 			this.IgnoreLocker = TutorialGlobals.IgnoreLocker;
@@ -179,7 +188,7 @@ public class TutorialWindowScript : MonoBehaviour
 			{
 				if (Input.GetButtonDown("B"))
 				{
-					TutorialGlobals.TutorialsOff = true;
+					OptionGlobals.TutorialsOff = true;
 					this.TitleLabel.text = "Tutorials Disabled";
 					this.TutorialLabel.text = this.DisabledString;
 					this.TutorialLabel.text = this.TutorialLabel.text.Replace('@', '\n');
@@ -203,7 +212,7 @@ public class TutorialWindowScript : MonoBehaviour
 			{
 				base.transform.localScale = new Vector3(0f, 0f, 0f);
 				this.Hide = false;
-				if (TutorialGlobals.TutorialsOff)
+				if (OptionGlobals.TutorialsOff)
 				{
 					base.enabled = false;
 				}
@@ -214,6 +223,16 @@ public class TutorialWindowScript : MonoBehaviour
 			this.Timer += Time.deltaTime;
 			if (this.Timer > 5f)
 			{
+				if (!this.IgnoreClothing && this.ShowClothingMessage && !this.Show)
+				{
+					TutorialGlobals.IgnoreClothing = true;
+					this.IgnoreClothing = true;
+					this.TitleLabel.text = "No Spare Clothing";
+					this.TutorialLabel.text = this.ClothingString;
+					this.TutorialLabel.text = this.TutorialLabel.text.Replace('@', '\n');
+					this.TutorialImage.mainTexture = this.ClothingTexture;
+					this.SummonWindow();
+				}
 				if (!this.IgnoreCouncil && this.ShowCouncilMessage && !this.Show)
 				{
 					TutorialGlobals.IgnoreCouncil = true;

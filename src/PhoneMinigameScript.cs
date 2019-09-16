@@ -37,6 +37,7 @@ public class PhoneMinigameScript : MonoBehaviour
 			this.Smartphone = this.Event.Rival.SmartPhone.transform;
 			this.PickpocketMinigame.StartingAlerts = this.Prompt.Yandere.Alerts;
 			this.PickpocketMinigame.PickpocketSpot = null;
+			this.PickpocketMinigame.Sabotage = true;
 			this.PickpocketMinigame.Show = true;
 			this.OriginalRotation = this.Smartphone.eulerAngles;
 			this.OriginalPosition = this.Smartphone.position;

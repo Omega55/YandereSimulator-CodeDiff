@@ -46,7 +46,7 @@ public class HallucinationScript : MonoBehaviour
 	{
 		if (this.Yandere.Sanity < 33.33333f)
 		{
-			if (!this.Yandere.Aiming)
+			if (!this.Yandere.Aiming && this.Yandere.CanMove)
 			{
 				this.Timer += Time.deltaTime;
 			}

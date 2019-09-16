@@ -23,6 +23,8 @@ public class NotificationManagerScript : MonoBehaviour
 
 	public string TopicName;
 
+	public string[] ClubNames;
+
 	private NotificationTypeAndStringDictionary NotificationMessages;
 
 	private void Awake()
@@ -92,6 +94,10 @@ public class NotificationManagerScript : MonoBehaviour
 			{
 				NotificationType.Eavesdropping,
 				"Eavesdropping"
+			},
+			{
+				NotificationType.Clothing,
+				"Cannot Attack; No Spare Clothing"
 			},
 			{
 				NotificationType.Persona,

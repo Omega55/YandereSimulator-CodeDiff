@@ -277,8 +277,9 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					else if (Input.GetKeyDown(KeyCode.Alpha0))
 					{
-						this.CameraEffects.DisableCamera();
+						this.Yandere.transform.position = this.TeleportSpot[11].position;
 						this.Window.SetActive(false);
+						Physics.SyncTransforms();
 					}
 					else if (Input.GetKeyDown(KeyCode.A))
 					{

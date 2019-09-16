@@ -92,6 +92,7 @@ public class HomePantyChangerScript : MonoBehaviour
 			{
 				PlayerGlobals.PantiesEquipped = this.Selected;
 				this.UpdatePantyLabels();
+				Debug.Log("Yandere-chan should now be equipped with Panties #" + PlayerGlobals.PantiesEquipped);
 			}
 			if (Input.GetButtonDown("B"))
 			{

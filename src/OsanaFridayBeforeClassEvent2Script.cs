@@ -21,6 +21,8 @@ public class OsanaFridayBeforeClassEvent2Script : MonoBehaviour
 
 	public StudentScript Ganguro;
 
+	public StudentScript Friend;
+
 	public StudentScript Rival;
 
 	public Transform[] Location;
@@ -50,6 +52,8 @@ public class OsanaFridayBeforeClassEvent2Script : MonoBehaviour
 	public int SpeechPhase = 1;
 
 	public int GanguroID = 81;
+
+	public int FriendID = 10;
 
 	public int RivalID = 11;
 

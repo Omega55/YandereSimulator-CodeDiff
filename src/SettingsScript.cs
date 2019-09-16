@@ -252,8 +252,8 @@ public class SettingsScript : MonoBehaviour
 		{
 			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
 			{
-				TutorialGlobals.TutorialsOff = !TutorialGlobals.TutorialsOff;
-				this.PauseScreen.Yandere.StudentManager.TutorialWindow.enabled = !TutorialGlobals.TutorialsOff;
+				OptionGlobals.TutorialsOff = !OptionGlobals.TutorialsOff;
+				this.PauseScreen.Yandere.StudentManager.TutorialWindow.enabled = !OptionGlobals.TutorialsOff;
 				this.UpdateText();
 			}
 			this.UpdateText();
@@ -343,7 +343,7 @@ public class SettingsScript : MonoBehaviour
 		this.ShadowsLabel.text = ((!OptionGlobals.DisableShadows) ? "On" : "Off");
 		this.SensitivityLabel.text = string.Empty + OptionGlobals.Sensitivity;
 		this.InvertAxisLabel.text = ((!OptionGlobals.InvertAxis) ? "No" : "Yes");
-		this.DisableTutorialsLabel.text = ((!TutorialGlobals.TutorialsOff) ? "No" : "Yes");
+		this.DisableTutorialsLabel.text = ((!OptionGlobals.TutorialsOff) ? "No" : "Yes");
 		this.WindowedMode.text = ((!Screen.fullScreen) ? "Yes" : "No");
 		this.AmbientObscurance.text = ((!OptionGlobals.DisableObscurance) ? "On" : "Off");
 	}

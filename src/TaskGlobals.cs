@@ -7,6 +7,8 @@ public static class TaskGlobals
 
 	private const string Str_KittenPhoto = "KittenPhoto_";
 
+	private const string Str_HorudaPhoto = "HorudaPhoto_";
+
 	private const string Str_TaskStatus = "TaskStatus_";
 
 	public static bool GetGuitarPhoto(int photoID)
@@ -67,6 +69,35 @@ public static class TaskGlobals
 		return KeysHelper.GetIntegerKeys("Profile_" + GameGlobals.Profile + "_KittenPhoto_");
 	}
 
+	public static bool GetHorudaPhoto(int photoID)
+	{
+		return GlobalsHelper.GetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_HorudaPhoto_",
+			photoID.ToString()
+		}));
+	}
+
+	public static void SetHorudaPhoto(int photoID, bool value)
+	{
+		string text = photoID.ToString();
+		KeysHelper.AddIfMissing("Profile_" + GameGlobals.Profile + "_HorudaPhoto_", text);
+		GlobalsHelper.SetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_HorudaPhoto_",
+			text
+		}), value);
+	}
+
+	public static int[] KeysOfHorudaPhoto()
+	{
+		return KeysHelper.GetIntegerKeys("Profile_" + GameGlobals.Profile + "_HorudaPhoto_");
+	}
+
 	public static int GetTaskStatus(int taskID)
 	{
 		return PlayerPrefs.GetInt(string.Concat(new object[]
@@ -100,6 +131,7 @@ public static class TaskGlobals
 	{
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_GuitarPhoto_", TaskGlobals.KeysOfGuitarPhoto());
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_KittenPhoto_", TaskGlobals.KeysOfKittenPhoto());
+		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_HorudaPhoto_", TaskGlobals.KeysOfHorudaPhoto());
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_TaskStatus_", TaskGlobals.KeysOfTaskStatus());
 	}
 }

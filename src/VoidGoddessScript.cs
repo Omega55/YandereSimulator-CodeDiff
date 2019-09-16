@@ -388,7 +388,7 @@ public class VoidGoddessScript : MonoBehaviour
 				this.ID = 2;
 				while (this.ID < 101)
 				{
-					if (this.ID != 10 && this.ID != 11)
+					if (this.ID != 6 && this.ID != 10 && this.ID != 11 && this.ID != 41 && this.ID != 42 && this.ID != 43 && this.ID != 44 && this.ID != 45 && this.ID != 81)
 					{
 						this.StudentManager.DisableStudent(this.ID);
 					}
@@ -410,29 +410,7 @@ public class VoidGoddessScript : MonoBehaviour
 			}
 			if (Input.GetKeyDown(KeyCode.X))
 			{
-				PlayerPrefs.SetInt("CounselorVisits", 0);
-				PlayerPrefs.SetInt("BloodyVisits", 0);
-				PlayerPrefs.SetInt("InsanityVisits", 0);
-				PlayerPrefs.SetInt("LewdVisits", 0);
-				PlayerPrefs.SetInt("TheftVisits", 0);
-				PlayerPrefs.SetInt("TrespassVisits", 0);
-				PlayerPrefs.SetInt("WeaponVisits", 0);
-				PlayerPrefs.SetInt("BloodExcuseUsed", 0);
-				PlayerPrefs.SetInt("InsanityExcuseUsed", 0);
-				PlayerPrefs.SetInt("LewdExcuseUsed", 0);
-				PlayerPrefs.SetInt("TheftExcuseUsed", 0);
-				PlayerPrefs.SetInt("TrespassingExcuseUsed", 0);
-				PlayerPrefs.SetInt("WeaponExcuseUsed", 0);
-				PlayerPrefs.SetInt("BloodBlameUsed", 0);
-				PlayerPrefs.SetInt("InsanityBlameUsed", 0);
-				PlayerPrefs.SetInt("LewdBlameUsed", 0);
-				PlayerPrefs.SetInt("TheftBlameUsed", 0);
-				PlayerPrefs.SetInt("TrespassingBlameUsed", 0);
-				PlayerPrefs.SetInt("WeaponBlameUsed", 0);
-				PlayerPrefs.SetInt("ApologyUsed", 0);
-				PlayerPrefs.SetInt("CounselorPunishments", 0);
-				PlayerPrefs.SetInt("DelinquentPunishments", 0);
-				PlayerPrefs.SetInt("WeaponsBanned", 0);
+				CounselorGlobals.DeleteAll();
 				StudentGlobals.SetStudentExpelled(76, false);
 				StudentGlobals.SetStudentExpelled(77, false);
 				StudentGlobals.SetStudentExpelled(78, false);

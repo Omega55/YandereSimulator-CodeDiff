@@ -153,7 +153,7 @@ public class ServicesScript : MonoBehaviour
 						}
 						else if (this.Selected == 7)
 						{
-							PlayerPrefs.SetInt("CounselorTape", 1);
+							CounselorGlobals.CounselorTape = 1;
 							this.Purchase();
 						}
 					}
@@ -220,7 +220,7 @@ public class ServicesScript : MonoBehaviour
 					this.ServiceAvailable[this.ID] = true;
 				}
 			}
-			else if (this.ID == 7 && PlayerPrefs.GetInt("CounselorTape") == 0)
+			else if (this.ID == 7 && CounselorGlobals.CounselorTape == 0)
 			{
 				this.ServiceAvailable[this.ID] = true;
 			}

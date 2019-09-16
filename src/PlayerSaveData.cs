@@ -127,6 +127,7 @@ public class PlayerSaveData
 		PlayerGlobals.NumbnessBonus = data.numbnessBonus;
 		PlayerGlobals.PantiesEquipped = data.pantiesEquipped;
 		PlayerGlobals.PantyShots = data.pantyShots;
+		Debug.Log("Is this being called anywhere?");
 		foreach (int photoID in data.photo)
 		{
 			PlayerGlobals.SetPhoto(photoID, true);

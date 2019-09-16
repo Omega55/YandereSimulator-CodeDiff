@@ -243,7 +243,7 @@ public class AttackManagerScript : MonoBehaviour
 				this.Yandere.Sanity -= ((PlayerGlobals.PantiesEquipped != 10) ? 20f : 10f) * this.Yandere.Numbness;
 				this.Yandere.Attacking = false;
 				this.Yandere.FollowHips = false;
-				this.Yandere.MyController.radius = 0.2f;
+				this.Yandere.HipCollider.enabled = false;
 				bool flag = false;
 				if (this.Yandere.EquippedWeapon.Type == WeaponType.Bat && this.Stealth)
 				{

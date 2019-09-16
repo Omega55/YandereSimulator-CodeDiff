@@ -17,6 +17,8 @@ public class PickpocketMinigameScript : MonoBehaviour
 
 	public bool NotNurse;
 
+	public bool Sabotage;
+
 	public bool Failure;
 
 	public bool Success;
@@ -95,8 +97,16 @@ public class PickpocketMinigameScript : MonoBehaviour
 					this.Progress++;
 					if (this.Progress == 5)
 					{
-						this.Yandere.NotificationManager.CustomText = "Pickpocket Success";
-						this.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
+						if (this.Sabotage)
+						{
+							this.Yandere.NotificationManager.CustomText = "Sabotage Success";
+							this.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
+						}
+						else
+						{
+							this.Yandere.NotificationManager.CustomText = "Pickpocket Success";
+							this.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
+						}
 						this.Yandere.Pickpocketing = false;
 						this.Yandere.CanMove = true;
 						this.Success = true;

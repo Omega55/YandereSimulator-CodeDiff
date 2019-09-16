@@ -33,6 +33,8 @@ public class EventManagerScript : MonoBehaviour
 
 	public bool EventOn;
 
+	public bool Suitor;
+
 	public bool Spoken;
 
 	public bool Osana;
@@ -84,7 +86,7 @@ public class EventManagerScript : MonoBehaviour
 				this.EventCheck = false;
 				base.enabled = false;
 			}
-			if (this.EventStudent[1] != null && this.EventStudent[2] != null && !this.EventStudent[1].Slave && !this.EventStudent[2].Slave && this.EventStudent[1].Pathfinding.canMove && this.EventStudent[2].Pathfinding.canMove)
+			if (this.EventStudent[1] != null && this.EventStudent[2] != null && !this.EventStudent[1].Slave && !this.EventStudent[2].Slave && this.EventStudent[1].Routine && this.EventStudent[2].Routine && !this.EventStudent[1].InEvent && !this.EventStudent[2].InEvent)
 			{
 				this.EventStudent[1].CurrentDestination = this.EventLocation[1];
 				this.EventStudent[1].Pathfinding.target = this.EventLocation[1];
@@ -149,52 +151,49 @@ public class EventManagerScript : MonoBehaviour
 					}
 					else
 					{
-						if (this.Yandere.transform.position.z > 0f)
+						this.Timer += Time.deltaTime;
+						if (this.Timer > this.EventClip[this.EventPhase].length)
 						{
-							this.Timer += Time.deltaTime;
-							if (this.Timer > this.EventClip[this.EventPhase].length)
+							this.EventSubtitle.text = string.Empty;
+						}
+						if (this.Yandere.transform.position.y < this.EventStudent[1].transform.position.y - 1f)
+						{
+							this.EventSubtitle.transform.localScale = Vector3.zero;
+						}
+						else if (num < 10f)
+						{
+							this.Scale = Mathf.Abs((num - 10f) * 0.2f);
+							if (this.Scale < 0f)
 							{
-								this.EventSubtitle.text = string.Empty;
+								this.Scale = 0f;
 							}
-							if (this.Yandere.transform.position.y < this.EventStudent[1].transform.position.y - 1f)
+							if (this.Scale > 1f)
 							{
-								this.EventSubtitle.transform.localScale = Vector3.zero;
+								this.Scale = 1f;
 							}
-							else if (num < 10f)
+							this.Jukebox.Dip = 1f - 0.5f * this.Scale;
+							this.EventSubtitle.transform.localScale = new Vector3(this.Scale, this.Scale, this.Scale);
+						}
+						else
+						{
+							this.EventSubtitle.transform.localScale = Vector3.zero;
+						}
+						Animation characterAnimation = this.EventStudent[this.EventSpeaker[this.EventPhase]].CharacterAnimation;
+						if (characterAnimation[this.EventAnim[this.EventPhase]].time >= characterAnimation[this.EventAnim[this.EventPhase]].length - 1f)
+						{
+							characterAnimation.CrossFade(this.EventStudent[this.EventSpeaker[this.EventPhase]].IdleAnim, 1f);
+						}
+						if (this.Timer > this.EventClip[this.EventPhase].length + 1f)
+						{
+							this.Spoken = false;
+							this.EventPhase++;
+							this.Timer = 0f;
+							if (this.EventPhase == this.EventSpeech.Length)
 							{
-								this.Scale = Mathf.Abs((num - 10f) * 0.2f);
-								if (this.Scale < 0f)
-								{
-									this.Scale = 0f;
-								}
-								if (this.Scale > 1f)
-								{
-									this.Scale = 1f;
-								}
-								this.Jukebox.Dip = 1f - 0.5f * this.Scale;
-								this.EventSubtitle.transform.localScale = new Vector3(this.Scale, this.Scale, this.Scale);
-							}
-							else
-							{
-								this.EventSubtitle.transform.localScale = Vector3.zero;
-							}
-							Animation characterAnimation = this.EventStudent[this.EventSpeaker[this.EventPhase]].CharacterAnimation;
-							if (characterAnimation[this.EventAnim[this.EventPhase]].time >= characterAnimation[this.EventAnim[this.EventPhase]].length - 1f)
-							{
-								characterAnimation.CrossFade(this.EventStudent[this.EventSpeaker[this.EventPhase]].IdleAnim, 1f);
-							}
-							if (this.Timer > this.EventClip[this.EventPhase].length + 1f)
-							{
-								this.Spoken = false;
-								this.EventPhase++;
-								this.Timer = 0f;
-								if (this.EventPhase == this.EventSpeech.Length)
-								{
-									this.EndEvent();
-								}
+								this.EndEvent();
 							}
 						}
-						if (this.Yandere.transform.position.y > this.EventStudent[1].transform.position.y - 1f && this.EventPhase == 7 && num < 5f)
+						if (!this.Suitor && this.Yandere.transform.position.y > this.EventStudent[1].transform.position.y - 1f && this.EventPhase == 7 && num < 5f)
 						{
 							if (this.EventStudent1 == 30)
 							{

@@ -208,6 +208,11 @@ public class DoorScript : MonoBehaviour
 					}
 					this.Bucket.GetComponent<Rigidbody>().isKinematic = true;
 					this.Bucket.GetComponent<Rigidbody>().useGravity = false;
+					if (this.Open)
+					{
+						this.DoorColliders[0].isTrigger = true;
+						this.DoorColliders[1].isTrigger = true;
+					}
 					this.Prompt.HideButton[1] = true;
 					this.CanSetBucket = false;
 					this.BucketSet = true;

@@ -224,6 +224,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform[] ShockedSpots;
 
+	public Transform[] FridaySpots;
+
 	public Transform[] MiyukiSpots;
 
 	public Transform[] SocialSeats;
@@ -244,6 +246,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform[] FleeSpots;
 
+	public Transform[] Uniforms;
+
 	public Transform[] Plates;
 
 	public Transform[] FemaleVomitSpots;
@@ -259,6 +263,8 @@ public class StudentManagerScript : MonoBehaviour
 	public DoorScript[] MaleToiletDoors;
 
 	public DrinkingFountainScript[] DrinkingFountains;
+
+	public Renderer[] FridayPaintings;
 
 	public bool[] SeatsTaken11;
 
@@ -394,6 +400,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public GameObject RivalChan;
 
+	public GameObject Canvases;
+
 	public GameObject Medicine;
 
 	public GameObject DrumSet;
@@ -410,6 +418,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public int MartialArtsPhase;
 
+	public int OriginalUniforms = 2;
+
 	public int StudentsSpawned;
 
 	public int SedatedStudents;
@@ -417,6 +427,8 @@ public class StudentManagerScript : MonoBehaviour
 	public int StudentsTotal = 13;
 
 	public int TeachersTotal = 6;
+
+	public int NewUniforms;
 
 	public int NPCsSpawned;
 
@@ -636,6 +648,20 @@ public class StudentManagerScript : MonoBehaviour
 				break;
 			}
 			this.ID++;
+		}
+		if (this.FridayPaintings.Length > 0)
+		{
+			this.ID = 1;
+			while (this.ID < this.FridayPaintings.Length)
+			{
+				Renderer renderer = this.FridayPaintings[this.ID];
+				renderer.material.color = new Color(1f, 1f, 1f, 0f);
+				this.ID++;
+			}
+		}
+		if (DateGlobals.Weekday != DayOfWeek.Friday && this.Canvases != null)
+		{
+			this.Canvases.SetActive(false);
 		}
 		bool flag = this.ProblemID != -1;
 		if (flag)
@@ -1238,7 +1264,7 @@ public class StudentManagerScript : MonoBehaviour
 							studentScript.Prompt.HideButton[0] = false;
 							studentScript.Prompt.HideButton[2] = false;
 							studentScript.Prompt.Attack = false;
-							if (this.Yandere.Mask != null)
+							if (this.Yandere.Mask != null || studentScript.Ragdoll.Zs.activeInHierarchy)
 							{
 								studentScript.Prompt.HideButton[0] = true;
 							}
@@ -1401,7 +1427,7 @@ public class StudentManagerScript : MonoBehaviour
 				}
 				else
 				{
-					if (this.Yandere.Armed)
+					if (this.Yandere.Armed && this.OriginalUniforms + this.NewUniforms > 0)
 					{
 						studentScript.Prompt.HideButton[0] = true;
 						studentScript.Prompt.MinimumDistance = 1f;
@@ -1441,7 +1467,7 @@ public class StudentManagerScript : MonoBehaviour
 				studentScript.Prompt.HideButton[0] = false;
 				studentScript.Prompt.Label[0].text = "     Pose";
 			}
-			if (this.NoSpeech)
+			if (this.NoSpeech || studentScript.Ragdoll.Zs.activeInHierarchy)
 			{
 				studentScript.Prompt.HideButton[0] = true;
 			}
@@ -1819,6 +1845,7 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			this.ID++;
 		}
+		this.UpdateAllAnimLayers();
 	}
 
 	public void StopFleeing()
@@ -2029,22 +2056,6 @@ public class StudentManagerScript : MonoBehaviour
 
 	public void LowerBloodPosition()
 	{
-		if (this.BloodLocation.position.y < 4f)
-		{
-			this.BloodLocation.position = new Vector3(this.BloodLocation.position.x, 0f, this.BloodLocation.position.z);
-		}
-		else if (this.BloodLocation.position.y < 8f)
-		{
-			this.BloodLocation.position = new Vector3(this.BloodLocation.position.x, 4f, this.BloodLocation.position.z);
-		}
-		else if (this.BloodLocation.position.y < 12f)
-		{
-			this.BloodLocation.position = new Vector3(this.BloodLocation.position.x, 8f, this.BloodLocation.position.z);
-		}
-		else
-		{
-			this.BloodLocation.position = new Vector3(this.BloodLocation.position.x, 12f, this.BloodLocation.position.z);
-		}
 	}
 
 	public void CensorStudents()

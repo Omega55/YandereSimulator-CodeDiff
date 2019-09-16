@@ -22,13 +22,19 @@ public class FoldedUniformScript : MonoBehaviour
 	private void Start()
 	{
 		this.Yandere = GameObject.Find("YandereChan").GetComponent<YandereScript>();
-		if (this.Clean && this.Prompt.Button[0] != null)
-		{
-			this.Prompt.HideButton[0] = true;
-		}
+		bool flag = false;
 		if (this.Spare && !GameGlobals.SpareUniform)
 		{
 			UnityEngine.Object.Destroy(base.gameObject);
+			flag = true;
+		}
+		if (!flag && this.Clean && this.Prompt.Button[0] != null)
+		{
+			this.Prompt.HideButton[0] = true;
+			this.Yandere.StudentManager.NewUniforms++;
+			this.Yandere.StudentManager.UpdateStudents(0);
+			this.Yandere.StudentManager.Uniforms[this.Yandere.StudentManager.NewUniforms] = base.transform;
+			Debug.Log("A new uniform has appeared. There are now " + this.Yandere.StudentManager.NewUniforms + " new uniforms at school.");
 		}
 	}
 
@@ -61,6 +67,7 @@ public class FoldedUniformScript : MonoBehaviour
 			{
 				UnityEngine.Object.Instantiate<GameObject>(this.SteamCloud, this.Yandere.transform.position + Vector3.up * 0.81f, Quaternion.identity);
 				this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_stripping_00");
+				this.Yandere.CurrentUniformOrigin = 2;
 				this.Yandere.Stripping = true;
 				this.Yandere.CanMove = false;
 				this.Timer += Time.deltaTime;

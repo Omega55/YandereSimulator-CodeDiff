@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class LoveManagerScript : MonoBehaviour
 {
+	public ConfessionManagerScript ConfessionManager;
+
 	public ConfessionSceneScript ConfessionScene;
 
 	public StudentManagerScript StudentManager;
-
-	public GameObject ConfessionManager;
 
 	public YandereScript Yandere;
 
@@ -101,7 +101,7 @@ public class LoveManagerScript : MonoBehaviour
 					this.Rival.enabled = false;
 					if (this.StudentManager.Students[this.StudentManager.RivalID] != null)
 					{
-						this.ConfessionManager.SetActive(true);
+						this.ConfessionManager.gameObject.SetActive(true);
 					}
 					else
 					{

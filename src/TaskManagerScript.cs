@@ -48,29 +48,6 @@ public class TaskManagerScript : MonoBehaviour
 			TaskGlobals.SetTaskStatus(37, 2);
 			UnityEngine.Object.Destroy(this.TaskObjects[37]);
 		}
-		if (!this.Yandere.Talking)
-		{
-			Debug.Log("Checking Musume's Task.");
-			if (TaskGlobals.GetTaskStatus(81) == 1)
-			{
-				if (this.Yandere.Inventory.Cigs)
-				{
-					if (this.StudentManager.Students[81] != null)
-					{
-						this.StudentManager.Students[81].TaskPhase = 5;
-					}
-					TaskGlobals.SetTaskStatus(81, 2);
-				}
-			}
-			else if (TaskGlobals.GetTaskStatus(81) == 2 && !this.Yandere.Inventory.Cigs)
-			{
-				if (this.StudentManager.Students[81] != null)
-				{
-					this.StudentManager.Students[81].TaskPhase = 4;
-				}
-				TaskGlobals.SetTaskStatus(81, 1);
-			}
-		}
 	}
 
 	public void UpdateTaskStatus()
@@ -189,6 +166,21 @@ public class TaskManagerScript : MonoBehaviour
 				if (TaskGlobals.GetGuitarPhoto(j))
 				{
 					this.StudentManager.Students[52].TaskPhase = 5;
+				}
+			}
+		}
+		if (TaskGlobals.GetTaskStatus(81) == 1 && this.StudentManager.Students[81] != null)
+		{
+			if (this.StudentManager.Students[81].TaskPhase == 0)
+			{
+				this.StudentManager.Students[81].TaskPhase = 4;
+			}
+			for (int k = 1; k < 26; k++)
+			{
+				if (TaskGlobals.GetHorudaPhoto(k))
+				{
+					Debug.Log("Musume's Task can be turned in.");
+					this.StudentManager.Students[81].TaskPhase = 5;
 				}
 			}
 		}

@@ -310,7 +310,7 @@ public class PhoneEventScript : MonoBehaviour
 							this.EventFriend.transform.rotation = Quaternion.Slerp(this.EventFriend.transform.rotation, this.EventFriend.targetRotation, 10f * Time.deltaTime);
 						}
 					}
-					else if (this.EventFriend.DistanceToDestination < 0.5f)
+					else if (this.EventFriend.DistanceToDestination < 1f)
 					{
 						this.EventFriend.CharacterAnimation.CrossFade("f02_cornerPeek_00");
 						this.EventFriend.Pathfinding.canSearch = false;

@@ -7,6 +7,8 @@ public class StolenPhoneSpotScript : MonoBehaviour
 
 	public GameObject RivalPhone;
 
+	public Transform PhoneSpot;
+
 	private void Update()
 	{
 		if (this.Prompt.Yandere.Inventory.RivalPhone)
@@ -23,7 +25,14 @@ public class StolenPhoneSpotScript : MonoBehaviour
 				this.Prompt.Yandere.Inventory.RivalPhone = false;
 				this.Prompt.Yandere.RivalPhone = false;
 				this.RivalPhone.transform.parent = null;
-				this.RivalPhone.transform.position = base.transform.position;
+				if (this.PhoneSpot == null)
+				{
+					this.RivalPhone.transform.position = base.transform.position;
+				}
+				else
+				{
+					this.RivalPhone.transform.position = this.PhoneSpot.position;
+				}
 				this.RivalPhone.transform.eulerAngles = base.transform.eulerAngles;
 				this.RivalPhone.SetActive(true);
 				UnityEngine.Object.Destroy(base.gameObject);

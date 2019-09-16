@@ -1379,6 +1379,8 @@ public class TalkingScript : MonoBehaviour
 						Debug.Log("This student was just told to go away.");
 						this.S.CurrentDestination = this.S.StudentManager.GoAwaySpots.List[this.S.StudentID];
 						this.S.Pathfinding.target = this.S.StudentManager.GoAwaySpots.List[this.S.StudentID];
+						this.S.Pathfinding.canSearch = true;
+						this.S.Pathfinding.canMove = true;
 						this.S.DistanceToDestination = 100f;
 					}
 				}

@@ -37,6 +37,8 @@ public static class OptionGlobals
 
 	private const string Str_InvertAxis = "InvertAxis";
 
+	private const string Str_TutorialsOff = "TutorialsOff";
+
 	public static bool DisableBloom
 	{
 		get
@@ -241,6 +243,18 @@ public static class OptionGlobals
 		}
 	}
 
+	public static bool TutorialsOff
+	{
+		get
+		{
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_TutorialsOff");
+		}
+		set
+		{
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_TutorialsOff", value);
+		}
+	}
+
 	public static void DeleteAll()
 	{
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_DisableBloom");
@@ -260,5 +274,6 @@ public static class OptionGlobals
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_DepthOfField");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_Sensitivity");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_InvertAxis");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_TutorialsOff");
 	}
 }

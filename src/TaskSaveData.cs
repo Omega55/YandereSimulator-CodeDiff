@@ -8,6 +8,8 @@ public class TaskSaveData
 
 	public IntHashSet kittenPhoto = new IntHashSet();
 
+	public IntHashSet horudaPhoto = new IntHashSet();
+
 	public IntAndIntDictionary taskStatus = new IntAndIntDictionary();
 
 	public static TaskSaveData ReadFromGlobals()
@@ -27,9 +29,16 @@ public class TaskSaveData
 				taskSaveData.kittenPhoto.Add(num2);
 			}
 		}
-		foreach (int num3 in TaskGlobals.KeysOfTaskStatus())
+		foreach (int num3 in TaskGlobals.KeysOfHorudaPhoto())
 		{
-			taskSaveData.taskStatus.Add(num3, TaskGlobals.GetTaskStatus(num3));
+			if (TaskGlobals.GetHorudaPhoto(num3))
+			{
+				taskSaveData.horudaPhoto.Add(num3);
+			}
+		}
+		foreach (int num4 in TaskGlobals.KeysOfTaskStatus())
+		{
+			taskSaveData.taskStatus.Add(num4, TaskGlobals.GetTaskStatus(num4));
 		}
 		return taskSaveData;
 	}

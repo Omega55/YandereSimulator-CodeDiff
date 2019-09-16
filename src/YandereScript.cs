@@ -126,6 +126,8 @@ public class YandereScript : MonoBehaviour
 
 	public ShutterScript Shutter;
 
+	public Collider HipCollider;
+
 	public UISprite ProgressBar;
 
 	public RPG_Camera RPGCamera;
@@ -286,6 +288,8 @@ public class YandereScript : MonoBehaviour
 
 	public ParticleSystem GiggleLines;
 
+	public ParticleSystem InsaneLines;
+
 	public SpringJoint RagdollDragger;
 
 	public SpringJoint RagdollPK;
@@ -315,6 +319,8 @@ public class YandereScript : MonoBehaviour
 	public float MurderousActionTimer;
 
 	public float CinematicTimer;
+
+	public float ClothingTimer;
 
 	public float CanMoveTimer;
 
@@ -408,6 +414,8 @@ public class YandereScript : MonoBehaviour
 
 	public float GreyTarget;
 
+	public int CurrentUniformOrigin = 1;
+
 	public int PreviousSchoolwear;
 
 	public int NearestCorpseID;
@@ -453,6 +461,8 @@ public class YandereScript : MonoBehaviour
 	public YanderePersonaType Persona;
 
 	public bool EavesdropWarning;
+
+	public bool ClothingWarning;
 
 	public bool BloodyWarning;
 
@@ -1539,6 +1549,16 @@ public class YandereScript : MonoBehaviour
 				if (this.Schoolwear > 0)
 				{
 					this.Police.BloodyClothing++;
+					if (this.CurrentUniformOrigin == 1)
+					{
+						this.StudentManager.OriginalUniforms--;
+						Debug.Log("One of the original uniforms has become bloody. There are now " + this.StudentManager.OriginalUniforms + " clean original uniforms in the school.");
+					}
+					else
+					{
+						this.StudentManager.NewUniforms--;
+						Debug.Log("One of the new uniforms has become bloody. There are now " + this.StudentManager.NewUniforms + " clean original uniforms in the school.");
+					}
 				}
 			}
 			this.MyProjector.enabled = true;
@@ -2050,7 +2070,14 @@ public class YandereScript : MonoBehaviour
 				{
 					this.CharacterAnimation.CrossFade(this.IdleAnim);
 				}
-				this.Bend += Input.GetAxis("Mouse Y") * 8f;
+				if (!OptionGlobals.InvertAxis)
+				{
+					this.Bend += Input.GetAxis("Mouse Y") * 8f;
+				}
+				else
+				{
+					this.Bend -= Input.GetAxis("Mouse Y") * 8f;
+				}
 				if (this.Stance.Current == StanceType.Crawling)
 				{
 					if (this.Bend < 0f)
@@ -2347,6 +2374,7 @@ public class YandereScript : MonoBehaviour
 											this.MyAudio.time = 0f;
 											this.MyAudio.Play();
 										}
+										this.GiggleLines.Play();
 										UnityEngine.Object.Instantiate<GameObject>(this.GiggleDisc, base.transform.position + Vector3.up, Quaternion.identity);
 										this.MyAudio.volume = 1f;
 										this.LaughTimer = 0.5f;
@@ -5206,7 +5234,7 @@ public class YandereScript : MonoBehaviour
 		}
 	}
 
-	private void UpdateSlouch()
+	public void UpdateSlouch()
 	{
 		if (this.CanMove && !this.Attacking && !this.Dragging && this.PickUp == null && !this.Aiming && this.Stance.Current != StanceType.Crawling && !this.Possessed && !this.Carrying && !this.CirnoWings.activeInHierarchy && this.LaughIntensity < 16f)
 		{
@@ -5269,6 +5297,15 @@ public class YandereScript : MonoBehaviour
 		else if (this.EavesdropWarning)
 		{
 			this.EavesdropWarning = false;
+		}
+		if (this.ClothingWarning)
+		{
+			this.ClothingTimer += Time.deltaTime;
+			if (this.ClothingTimer > 1f)
+			{
+				this.ClothingWarning = false;
+				this.ClothingTimer = 0f;
+			}
 		}
 	}
 
@@ -5816,7 +5853,7 @@ public class YandereScript : MonoBehaviour
 			{
 				UnityEngine.Object.Instantiate<GameObject>(this.GiggleDisc, base.transform.position + Vector3.up, Quaternion.identity);
 				AudioSource.PlayClipAtPoint(this.CreepyGiggles[UnityEngine.Random.Range(0, this.CreepyGiggles.Length)], base.transform.position);
-				this.GiggleLines.Play();
+				this.InsaneLines.Play();
 				this.GiggleTimer = 0f;
 			}
 		}
@@ -6035,6 +6072,12 @@ public class YandereScript : MonoBehaviour
 		if (this.Dragging)
 		{
 			this.Ragdoll.GetComponent<RagdollScript>().StopDragging();
+		}
+		this.ID = 1;
+		while (this.ID < this.Poisons.Length)
+		{
+			this.Poisons[this.ID].SetActive(false);
+			this.ID++;
 		}
 		this.Mopping = false;
 	}

@@ -698,18 +698,6 @@ public class DialogueWheelScript : MonoBehaviour
 				{
 					this.Shadow[5].color = new Color(0f, 0f, 0f, 0.75f);
 				}
-				if (this.Yandere.TargetStudent.StudentID == 81)
-				{
-					if (this.Yandere.TargetStudent.Actions[this.Yandere.TargetStudent.Phase] != StudentActionType.Wait || this.Yandere.TargetStudent.DistanceToDestination > 1f)
-					{
-						this.Shadow[5].color = new Color(0f, 0f, 0f, 0.75f);
-					}
-					else if (TaskGlobals.GetTaskStatus(81) == 1 && this.Yandere.Inventory.Cigs)
-					{
-						this.Shadow[5].color = new Color(0f, 0f, 0f, 0f);
-						Debug.Log("The player has cigarettes.");
-					}
-				}
 				if (this.Yandere.TargetStudent.StudentID == 76)
 				{
 					Debug.Log("The status of Task #76 is:" + TaskGlobals.GetTaskStatus(76));
@@ -867,10 +855,6 @@ public class DialogueWheelScript : MonoBehaviour
 	{
 		Debug.Log("This student's Task Status is: " + TaskGlobals.GetTaskStatus(this.Yandere.TargetStudent.StudentID));
 		Debug.Log("Checking for task completion.");
-		if (TaskGlobals.GetTaskStatus(this.Yandere.TargetStudent.StudentID) == 2 && this.Yandere.TargetStudent.StudentID == 81)
-		{
-			this.Yandere.Inventory.Cigs = false;
-		}
 		if (this.Yandere.TargetStudent.StudentID == 76 && TaskGlobals.GetTaskStatus(76) == 1)
 		{
 			this.Yandere.TargetStudent.RespectEarned = true;

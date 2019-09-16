@@ -10,7 +10,28 @@ public static class Globals
 
 	public static void DeleteAll()
 	{
-		PlayerPrefs.DeleteAll();
+		Debug.Log("All globals (except OptionGlobals and SaveFileGlobals) have just been deleted.");
+		ClassGlobals.DeleteAll();
+		ClubGlobals.DeleteAll();
+		CollectibleGlobals.DeleteAll();
+		ConversationGlobals.DeleteAll();
+		DateGlobals.DeleteAll();
+		DatingGlobals.DeleteAll();
+		EventGlobals.DeleteAll();
+		GameGlobals.DeleteAll();
+		HomeGlobals.DeleteAll();
+		MissionModeGlobals.DeleteAll();
+		PlayerGlobals.DeleteAll();
+		PoseModeGlobals.DeleteAll();
+		SchemeGlobals.DeleteAll();
+		SchoolGlobals.DeleteAll();
+		SenpaiGlobals.DeleteAll();
+		StudentGlobals.DeleteAll();
+		TaskGlobals.DeleteAll();
+		YanvaniaGlobals.DeleteAll();
+		WeaponGlobals.DeleteAll();
+		TutorialGlobals.DeleteAll();
+		CounselorGlobals.DeleteAll();
 	}
 
 	public static void Delete(string key)

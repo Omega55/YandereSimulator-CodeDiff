@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class BusStopScript : MonoBehaviour
 {
+	public SkinnedMeshRenderer BakerSenpaiRenderer;
+
 	public SkinnedMeshRenderer SenpaiRenderer;
 
 	public CosmeticScript Cosmetic;
@@ -12,6 +14,8 @@ public class BusStopScript : MonoBehaviour
 	public MeshRenderer Renderer;
 
 	public Animation SenpaiAnim;
+
+	public AudioSource Jukebox;
 
 	public GameObject Amai;
 
@@ -35,7 +39,7 @@ public class BusStopScript : MonoBehaviour
 
 	private void Start()
 	{
-		this.Renderer.material.color = new Color(0f, 0f, 0f, 0f);
+		this.Renderer.material.color = new Color(0f, 0f, 0f, 1f);
 		base.transform.position = new Vector3(0f, 0.5f, 2f);
 		base.transform.eulerAngles = new Vector3(0f, 180f, 0f);
 		this.SenpaiAnim["sadFace_00"].layer = 1;
@@ -46,11 +50,19 @@ public class BusStopScript : MonoBehaviour
 	{
 		if (this.Phase == 1)
 		{
+			this.Alpha = Mathf.MoveTowards(this.Alpha, 0f, Time.deltaTime * 0.5f);
+			this.Renderer.material.color = new Color(0f, 0f, 0f, this.Alpha);
 			if (this.SenpaiRenderer.sharedMesh != this.CasualMesh)
 			{
 				this.SenpaiRenderer.sharedMesh = this.CasualMesh;
 				this.SenpaiRenderer.materials[0].mainTexture = this.CasualClothes;
 				this.SenpaiRenderer.materials[1].mainTexture = this.Cosmetic.SkinTextures[this.Cosmetic.SkinID];
+			}
+			if (this.BakerSenpaiRenderer.sharedMesh != this.CasualMesh)
+			{
+				this.BakerSenpaiRenderer.sharedMesh = this.CasualMesh;
+				this.BakerSenpaiRenderer.materials[0].mainTexture = this.CasualClothes;
+				this.BakerSenpaiRenderer.materials[1].mainTexture = this.Cosmetic.SkinTextures[this.Cosmetic.SkinID];
 			}
 			base.transform.position += new Vector3(0f, 0f, this.Speed * Time.deltaTime);
 			this.Amai.transform.position -= new Vector3(1f * Time.deltaTime, 0f, 0f);
@@ -92,6 +104,7 @@ public class BusStopScript : MonoBehaviour
 			this.Alpha = 1f;
 			this.BakerySenpai.Play();
 			this.BakeryAmai.Play();
+			this.Jukebox.Play();
 			this.Speed = 0f;
 			this.Phase++;
 		}

@@ -38,5 +38,6 @@ public enum StudentActionType
 	Meeting,
 	Lyrics,
 	Practice,
-	Sew
+	Sew,
+	Paint
 }

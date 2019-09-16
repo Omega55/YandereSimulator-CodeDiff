@@ -153,18 +153,6 @@ public static class SchoolGlobals
 		}
 	}
 
-	public static bool SCP
-	{
-		get
-		{
-			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_SCP");
-		}
-		set
-		{
-			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_SCP", value);
-		}
-	}
-
 	public static bool HighSecurity
 	{
 		get
@@ -174,6 +162,18 @@ public static class SchoolGlobals
 		set
 		{
 			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_HighSecurity", value);
+		}
+	}
+
+	public static bool SCP
+	{
+		get
+		{
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_SCP");
+		}
+		set
+		{
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_SCP", value);
 		}
 	}
 
@@ -187,6 +187,7 @@ public static class SchoolGlobals
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_SchoolAtmosphere");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_SchoolAtmosphereSet");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_ReactedToGameLeader");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_HighSecurity");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_SCP");
 	}
 }

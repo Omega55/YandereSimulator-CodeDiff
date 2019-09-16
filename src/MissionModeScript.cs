@@ -328,7 +328,7 @@ public class MissionModeScript : MonoBehaviour
 			ClassGlobals.PhysicalGrade = 1;
 			ClassGlobals.PsychologyGrade = 1;
 			this.Yandere.StudentManager.TutorialWindow.gameObject.SetActive(false);
-			TutorialGlobals.TutorialsOff = true;
+			OptionGlobals.TutorialsOff = true;
 			SchoolGlobals.SchoolAtmosphereSet = true;
 			SchoolGlobals.SchoolAtmosphere = 1f - (float)this.Difficulty * 0.1f;
 			this.StudentManager.Atmosphere = 1f - (float)this.Difficulty * 0.1f;
@@ -1134,7 +1134,7 @@ public class MissionModeScript : MonoBehaviour
 		string missionTargetName = MissionModeGlobals.MissionTargetName;
 		bool highPopulation = OptionGlobals.HighPopulation;
 		Globals.DeleteAll();
-		TutorialGlobals.TutorialsOff = true;
+		OptionGlobals.TutorialsOff = true;
 		for (int i = 1; i < 11; i++)
 		{
 			PlayerPrefs.SetInt("MissionModeTarget" + i, this.Target[i]);
