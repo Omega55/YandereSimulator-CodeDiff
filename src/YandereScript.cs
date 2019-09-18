@@ -4418,7 +4418,10 @@ public class YandereScript : MonoBehaviour
 			{
 				this.StudentManager.Tag.Sprite.color = new Color(1f, 0f, 0f, Mathf.Lerp(this.StudentManager.Tag.Sprite.color.a, 1f, Time.unscaledDeltaTime * 10f));
 			}
-			this.StudentManager.RedString.gameObject.SetActive(true);
+			if (this.StudentManager.Students[this.StudentManager.RivalID] != null)
+			{
+				this.StudentManager.RedString.gameObject.SetActive(true);
+			}
 		}
 		else
 		{

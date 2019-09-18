@@ -402,7 +402,7 @@ public class WeaponScript : MonoBehaviour
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
 			this.Yandere.NearestPrompt = null;
-			if (this.WeaponID == 9 || this.WeaponID == 10 || this.WeaponID == 12)
+			if (this.WeaponID == 9 || this.WeaponID == 10 || this.WeaponID == 12 || this.WeaponID == 25)
 			{
 				this.SuspicionCheck();
 			}
@@ -609,7 +609,8 @@ public class WeaponScript : MonoBehaviour
 
 	public void SuspicionCheck()
 	{
-		if ((this.WeaponID == 9 && ClubGlobals.Club == ClubType.Sports) || (this.WeaponID == 10 && ClubGlobals.Club == ClubType.Gardening) || (this.WeaponID == 12 && ClubGlobals.Club == ClubType.Sports))
+		Debug.Log("Suspicion Check!");
+		if ((this.WeaponID == 9 && ClubGlobals.Club == ClubType.Sports) || (this.WeaponID == 10 && ClubGlobals.Club == ClubType.Gardening) || (this.WeaponID == 12 && ClubGlobals.Club == ClubType.Sports) || (this.WeaponID == 25 && ClubGlobals.Club == ClubType.LightMusic))
 		{
 			this.Suspicious = false;
 		}

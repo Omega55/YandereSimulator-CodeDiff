@@ -688,7 +688,6 @@ public class DialogueWheelScript : MonoBehaviour
 					Debug.Log("Hiding task button.");
 					this.Shadow[5].color = new Color(0f, 0f, 0f, 0.75f);
 				}
-				Debug.Log("This student's Task Phase is: " + this.Yandere.TargetStudent.TaskPhase);
 				if (this.Yandere.TargetStudent.TaskPhase == 5)
 				{
 					Debug.Log("Unhiding task button.");
@@ -936,7 +935,6 @@ public class DialogueWheelScript : MonoBehaviour
 			this.Yandere.TargetStudent.WaitTimer = 1f;
 			if (this.Yandere.TargetStudent.enabled)
 			{
-				Debug.Log(this.Yandere.TargetStudent.Name + " has been told to travel to the destination of their current phase.");
 				this.Yandere.TargetStudent.CurrentDestination = this.Yandere.TargetStudent.Destinations[this.Yandere.TargetStudent.Phase];
 				this.Yandere.TargetStudent.Pathfinding.target = this.Yandere.TargetStudent.Destinations[this.Yandere.TargetStudent.Phase];
 				if (this.Yandere.TargetStudent.Actions[this.Yandere.TargetStudent.Phase] == StudentActionType.Clean)

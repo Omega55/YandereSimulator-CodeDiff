@@ -153,6 +153,12 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] DelinkWeaponReactions;
 
+	public string[] ExtinguisherReactions;
+
+	public string[] WrenchReactions;
+
+	public string[] GuitarReactions;
+
 	public string[] WeaponBloodApologies;
 
 	public string[] WeaponApologies;
@@ -1460,6 +1466,18 @@ public class SubtitleScript : MonoBehaviour
 			else if (ID > 17 && ID < 22)
 			{
 				this.Label.text = this.GetRandomString(this.DelinkWeaponReactions);
+			}
+			else if (ID == 23)
+			{
+				this.Label.text = this.GetRandomString(this.ExtinguisherReactions);
+			}
+			else if (ID == 24)
+			{
+				this.Label.text = this.GetRandomString(this.WrenchReactions);
+			}
+			else if (ID == 25)
+			{
+				this.Label.text = this.GetRandomString(this.GuitarReactions);
 			}
 		}
 		else if (subtitleType == SubtitleType.BloodReaction)
