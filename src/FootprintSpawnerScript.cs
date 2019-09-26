@@ -78,7 +78,7 @@ public class FootprintSpawnerScript : MonoBehaviour
 			if (this.Yandere.Stance.Current != StanceType.Crouching && this.Yandere.Stance.Current != StanceType.Crawling && this.Yandere.CanMove && !this.Yandere.NearSenpai && this.FootUp)
 			{
 				AudioSource component = base.GetComponent<AudioSource>();
-				if (Input.GetButton("LB"))
+				if (this.Yandere.Running)
 				{
 					component.clip = this.RunFootsteps[UnityEngine.Random.Range(0, this.RunFootsteps.Length)];
 					component.volume = 0.2f;

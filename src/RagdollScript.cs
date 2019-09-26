@@ -236,7 +236,7 @@ public class RagdollScript : MonoBehaviour
 			{
 				this.Student.CharacterAnimation.Stop();
 			}
-			if (!Input.GetButtonDown("LB"))
+			if (!this.Yandere.Running)
 			{
 				if (this.BloodPoolSpawner != null && this.BloodPoolSpawner.gameObject.activeInHierarchy && !this.Cauterized)
 				{
@@ -538,7 +538,7 @@ public class RagdollScript : MonoBehaviour
 					float axis2 = Input.GetAxis("Horizontal");
 					if (axis != 0f || axis2 != 0f)
 					{
-						this.Student.CharacterAnimation.CrossFade((!Input.GetButton("LB")) ? this.WalkAnim : this.RunAnim);
+						this.Student.CharacterAnimation.CrossFade((!this.Yandere.Running) ? this.WalkAnim : this.RunAnim);
 					}
 					else
 					{

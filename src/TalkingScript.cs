@@ -1246,7 +1246,7 @@ public class TalkingScript : MonoBehaviour
 					this.S.CharacterAnimation.CrossFade(this.S.IdleAnim);
 				}
 				this.S.TalkTimer -= Time.deltaTime;
-				if (this.S.Club != ClubType.Council || this.S.Club != ClubType.Delinquent)
+				if (this.S.Club != ClubType.Council && this.S.Club != ClubType.Delinquent)
 				{
 					this.S.MoveTowardsTarget(this.S.Yandere.transform.position + this.S.Yandere.transform.forward * 0.75f);
 					if (this.S.CharacterAnimation[this.S.PullBoxCutterAnim].time >= this.S.CharacterAnimation[this.S.PullBoxCutterAnim].length)
@@ -1336,7 +1336,7 @@ public class TalkingScript : MonoBehaviour
 				}
 				this.S.TalkTimer -= Time.deltaTime;
 			}
-			if (this.S.StudentID == 41 && !this.S.DialogueWheel.ClubLeader && this.S.TalkTimer > 0f)
+			if (this.S.StudentID == 41 && !this.S.DialogueWheel.ClubLeader && this.S.Interaction != StudentInteractionType.ClubUnwelcome && this.S.TalkTimer > 0f)
 			{
 				Debug.Log("Geiju response.");
 				if (this.NegativeResponse)

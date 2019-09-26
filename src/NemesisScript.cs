@@ -188,7 +188,7 @@ public class NemesisScript : MonoBehaviour
 				}
 				else
 				{
-					if (this.Yandere.Stance.Current != StanceType.Crouching && this.Yandere.Stance.Current != StanceType.Crawling && Vector3.Distance(base.transform.position, this.Yandere.transform.position) < 10f && Input.GetButton("LB"))
+					if (this.Yandere.Stance.Current != StanceType.Crouching && this.Yandere.Stance.Current != StanceType.Crawling && Vector3.Distance(base.transform.position, this.Yandere.transform.position) < 10f && this.Yandere.Running)
 					{
 						this.MissionMode.LastKnownPosition.position = this.Yandere.transform.position;
 						this.UpdateLKP();

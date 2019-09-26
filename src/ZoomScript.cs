@@ -76,7 +76,7 @@ public class ZoomScript : MonoBehaviour
 		{
 			this.TargetZoom += Input.GetAxis("Mouse ScrollWheel");
 		}
-		if (this.Yandere.SithLord)
+		if (this.Yandere.SithLord || this.Yandere.Riding)
 		{
 			this.Slender = Mathf.Lerp(this.Slender, 2.5f, Time.deltaTime);
 		}

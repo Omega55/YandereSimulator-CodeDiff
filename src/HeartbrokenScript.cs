@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using XInputDotNetPure;
 
 public class HeartbrokenScript : MonoBehaviour
 {
@@ -46,6 +47,8 @@ public class HeartbrokenScript : MonoBehaviour
 	public bool Exposed;
 
 	public bool Noticed = true;
+
+	public float VibrationTimer;
 
 	public float AudioTimer;
 
@@ -240,6 +243,11 @@ public class HeartbrokenScript : MonoBehaviour
 
 	private void Update()
 	{
+		this.VibrationTimer = Mathf.MoveTowards(this.VibrationTimer, 0f, Time.deltaTime);
+		if (this.VibrationTimer == 0f)
+		{
+			GamePad.SetVibration(PlayerIndex.One, 0f, 0f);
+		}
 		if (this.Noticed)
 		{
 			this.Ground.transform.eulerAngles = new Vector3(90f, 0f, 0f);
@@ -283,6 +291,8 @@ public class HeartbrokenScript : MonoBehaviour
 			if (uilabel.transform.localScale == new Vector3(1f, 1f, 1f))
 			{
 				component.PlayOneShot(this.Slam);
+				GamePad.SetVibration(PlayerIndex.One, 1f, 1f);
+				this.VibrationTimer = 0.1f;
 				this.LetterID++;
 				if (this.LetterID == this.StopID)
 				{

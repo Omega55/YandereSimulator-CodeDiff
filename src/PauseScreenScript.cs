@@ -86,6 +86,8 @@ public class PauseScreenScript : MonoBehaviour
 
 	public bool CorrectingTime;
 
+	public bool MultiMission;
+
 	public bool BypassPhone;
 
 	public bool EggsChecked;
@@ -116,6 +118,7 @@ public class PauseScreenScript : MonoBehaviour
 		{
 			this.MissionModeLabel.SetActive(false);
 		}
+		this.MultiMission = MissionModeGlobals.MultiMission;
 		StudentGlobals.SetStudentPhotographed(0, true);
 		StudentGlobals.SetStudentPhotographed(1, true);
 		base.transform.localPosition = new Vector3(1350f, 0f, 0f);
@@ -330,7 +333,7 @@ public class PauseScreenScript : MonoBehaviour
 						this.Column--;
 						this.UpdateSelection();
 					}
-					if (Input.GetKeyDown("space"))
+					if (Input.GetKeyDown("space") && this.MultiMission)
 					{
 						this.ShowMissionModeDetails = !this.ShowMissionModeDetails;
 					}

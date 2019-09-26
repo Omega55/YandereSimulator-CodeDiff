@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using XInputDotNetPure;
 
 public class CounselorScript : MonoBehaviour
 {
@@ -343,6 +344,10 @@ public class CounselorScript : MonoBehaviour
 	public string Threaten;
 
 	public AudioClip Silence;
+
+	public float VibrationTimer;
+
+	public bool VibrationCheck;
 
 	private void Start()
 	{
@@ -786,6 +791,15 @@ public class CounselorScript : MonoBehaviour
 
 	private void UpdateInterrogation()
 	{
+		if (this.VibrationCheck)
+		{
+			this.VibrationTimer = Mathf.MoveTowards(this.VibrationTimer, 0f, Time.deltaTime);
+			if (this.VibrationTimer == 0f)
+			{
+				GamePad.SetVibration(PlayerIndex.One, 0f, 0f);
+				this.VibrationCheck = false;
+			}
+		}
 		this.Timer += Time.deltaTime;
 		if (Input.GetButtonDown("A") && this.InterrogationPhase != 4)
 		{
@@ -1453,6 +1467,9 @@ public class CounselorScript : MonoBehaviour
 			{
 				if (!this.Slammed)
 				{
+					GamePad.SetVibration(PlayerIndex.One, 1f, 1f);
+					this.VibrationCheck = true;
+					this.VibrationTimer = 0.2f;
 					AudioSource.PlayClipAtPoint(this.Slam, base.transform.position);
 					this.Shake.shakeAmount = 0.1f;
 					this.Shake.enabled = true;

@@ -419,7 +419,6 @@ public class DebugMenuScript : MonoBehaviour
 							}
 							this.ID++;
 						}
-						this.DebugPoisons.SetActive(true);
 						PlayerGlobals.PantyShots += 20;
 						this.Window.SetActive(false);
 					}

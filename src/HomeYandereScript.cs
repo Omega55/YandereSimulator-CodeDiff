@@ -29,6 +29,8 @@ public class HomeYandereScript : MonoBehaviour
 
 	public bool CanMove;
 
+	public bool Running;
+
 	public AudioClip MiyukiReaction;
 
 	public AudioClip DiscScratch;
@@ -132,6 +134,18 @@ public class HomeYandereScript : MonoBehaviour
 			Animation component = this.Character.GetComponent<Animation>();
 			if (this.CanMove)
 			{
+				if (!OptionGlobals.ToggleRun)
+				{
+					this.Running = false;
+					if (Input.GetButton("LB"))
+					{
+						this.Running = true;
+					}
+				}
+				else if (Input.GetButtonDown("LB"))
+				{
+					this.Running = !this.Running;
+				}
 				this.MyController.Move(Physics.gravity * 0.01f);
 				float axis = Input.GetAxis("Vertical");
 				float axis2 = Input.GetAxis("Horizontal");
@@ -147,7 +161,7 @@ public class HomeYandereScript : MonoBehaviour
 				}
 				if (axis != 0f || axis2 != 0f)
 				{
-					if (Input.GetButton("LB"))
+					if (this.Running)
 					{
 						component.CrossFade("f02_run_00");
 						this.MyController.Move(base.transform.forward * this.RunSpeed * Time.deltaTime);

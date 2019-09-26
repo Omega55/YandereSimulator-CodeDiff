@@ -13,6 +13,8 @@ public class FalconPunchScript : MonoBehaviour
 
 	public float Speed = 100f;
 
+	public bool Destructive;
+
 	public bool IgnoreTime;
 
 	public bool Shipgirl;
@@ -21,9 +23,19 @@ public class FalconPunchScript : MonoBehaviour
 
 	public bool Falcon;
 
+	public bool Mecha;
+
 	public float TimeLimit = 0.5f;
 
 	public float Timer;
+
+	private void Start()
+	{
+		if (this.Mecha)
+		{
+			this.MyRigidbody.AddForce(base.transform.forward * this.Speed * 10f);
+		}
+	}
 
 	private void Update()
 	{
@@ -59,22 +71,27 @@ public class FalconPunchScript : MonoBehaviour
 					component.BecomeRagdoll();
 					Rigidbody rigidbody = component.Ragdoll.AllRigidbodies[0];
 					rigidbody.isKinematic = false;
-					Vector3 vector = rigidbody.transform.position - component.Yandere.transform.position;
-					Debug.Log("Direction is: " + vector);
+					Vector3 a = rigidbody.transform.position - component.Yandere.transform.position;
 					if (this.Falcon)
 					{
-						rigidbody.AddForce(vector * this.Strength);
+						rigidbody.AddForce(a * this.Strength);
 					}
 					else if (this.Bancho)
 					{
-						rigidbody.AddForce(vector.x * this.Strength, 5000f, vector.z * this.Strength);
+						rigidbody.AddForce(a.x * this.Strength, 5000f, a.z * this.Strength);
 					}
 					else
 					{
-						rigidbody.AddForce(vector.x * this.Strength, 10000f, vector.z * this.Strength);
+						rigidbody.AddForce(a.x * this.Strength, 10000f, a.z * this.Strength);
 					}
 				}
 			}
+		}
+		if (this.Destructive && other.gameObject.layer != 2 && other.gameObject.layer != 8 && other.gameObject.layer != 9 && other.gameObject.layer != 13 && other.gameObject.layer != 17)
+		{
+			UnityEngine.Object.Instantiate<GameObject>(this.FalconExplosion, base.transform.position + new Vector3(0f, 0f, 0f), Quaternion.identity);
+			UnityEngine.Object.Destroy(other.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 }

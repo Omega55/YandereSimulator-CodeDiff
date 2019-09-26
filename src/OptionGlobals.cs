@@ -39,6 +39,8 @@ public static class OptionGlobals
 
 	private const string Str_TutorialsOff = "TutorialsOff";
 
+	private const string Str_ToggleRun = "ToggleRun";
+
 	public static bool DisableBloom
 	{
 		get
@@ -255,6 +257,18 @@ public static class OptionGlobals
 		}
 	}
 
+	public static bool ToggleRun
+	{
+		get
+		{
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_ToggleRun");
+		}
+		set
+		{
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_ToggleRun", value);
+		}
+	}
+
 	public static void DeleteAll()
 	{
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_DisableBloom");
@@ -275,5 +289,6 @@ public static class OptionGlobals
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_Sensitivity");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_InvertAxis");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_TutorialsOff");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_ToggleRun");
 	}
 }

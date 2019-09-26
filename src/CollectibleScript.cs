@@ -7,6 +7,8 @@ public class CollectibleScript : MonoBehaviour
 
 	public string Name = string.Empty;
 
+	public int Type;
+
 	public int ID;
 
 	private void Start()
@@ -38,6 +40,10 @@ public class CollectibleScript : MonoBehaviour
 			{
 				return CollectibleType.Tape;
 			}
+			if (this.Type == 5)
+			{
+				return CollectibleType.Key;
+			}
 			Debug.LogError("Unrecognized collectible \"" + this.Name + "\".", base.gameObject);
 			return CollectibleType.Tape;
 		}
@@ -62,6 +68,10 @@ public class CollectibleScript : MonoBehaviour
 			else if (this.CollectibleType == CollectibleType.Tape)
 			{
 				CollectibleGlobals.SetTapeCollected(this.ID, true);
+			}
+			else if (this.CollectibleType == CollectibleType.Key)
+			{
+				this.Prompt.Yandere.Inventory.MysteriousKeys++;
 			}
 			else
 			{

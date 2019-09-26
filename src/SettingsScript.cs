@@ -27,7 +27,7 @@ public class SettingsScript : MonoBehaviour
 
 	public UILabel FogLabel;
 
-	public UILabel ShadowsLabel;
+	public UILabel ToggleRunLabel;
 
 	public UILabel FarAnimsLabel;
 
@@ -191,9 +191,9 @@ public class SettingsScript : MonoBehaviour
 		{
 			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
 			{
-				OptionGlobals.DisableShadows = !OptionGlobals.DisableShadows;
+				OptionGlobals.ToggleRun = !OptionGlobals.ToggleRun;
 				this.UpdateText();
-				this.QualityManager.UpdateShadows();
+				this.QualityManager.ToggleRun();
 			}
 		}
 		else if (this.Selected == 10)
@@ -340,7 +340,7 @@ public class SettingsScript : MonoBehaviour
 		this.FarAnimsLabel.text = ((OptionGlobals.DisableFarAnimations != 0) ? ((OptionGlobals.DisableFarAnimations * 5).ToString() + "m") : "Off");
 		this.DrawDistanceLabel.text = OptionGlobals.DrawDistance + "m";
 		this.FogLabel.text = ((!OptionGlobals.Fog) ? "Off" : "On");
-		this.ShadowsLabel.text = ((!OptionGlobals.DisableShadows) ? "On" : "Off");
+		this.ToggleRunLabel.text = ((!OptionGlobals.ToggleRun) ? "Toggle" : "Hold");
 		this.SensitivityLabel.text = string.Empty + OptionGlobals.Sensitivity;
 		this.InvertAxisLabel.text = ((!OptionGlobals.InvertAxis) ? "No" : "Yes");
 		this.DisableTutorialsLabel.text = ((!OptionGlobals.TutorialsOff) ? "No" : "Yes");

@@ -394,6 +394,10 @@ public class VoidGoddessScript : MonoBehaviour
 					}
 					this.ID++;
 				}
+				if (this.StudentManager.Students[7].gameObject.activeInHierarchy)
+				{
+					this.StudentManager.DisableStudent(7);
+				}
 				this.UpdatePortraits();
 			}
 			if (Input.GetButtonDown("B"))

@@ -33,6 +33,8 @@ public class OsanaThursdayAfterClassEventScript : MonoBehaviour
 
 	public GameObject VoiceClip;
 
+	public float FriendWarningTimer;
+
 	public float Distance;
 
 	public float Scale;
@@ -48,6 +50,8 @@ public class OsanaThursdayAfterClassEventScript : MonoBehaviour
 	public int Phase;
 
 	public int Frame;
+
+	public bool FriendWarned;
 
 	public bool Sabotaged;
 

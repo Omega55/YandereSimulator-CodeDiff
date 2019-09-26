@@ -264,6 +264,14 @@ public class PrayScript : MonoBehaviour
 					{
 						this.Yandere.Gloves.Blood.enabled = false;
 					}
+					if (this.Yandere.CurrentUniformOrigin == 1)
+					{
+						this.StudentManager.OriginalUniforms++;
+					}
+					else
+					{
+						this.StudentManager.NewUniforms++;
+					}
 					this.Police.BloodyClothing = 0;
 					this.Yandere.Bloodiness = 0f;
 					this.Yandere.Sanity = 100f;

@@ -1522,7 +1522,7 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (subtitleType == SubtitleType.InterruptionReaction)
 		{
-			this.Label.text = this.GetRandomString(this.InterruptReactions);
+			this.Label.text = this.InterruptReactions[ID];
 		}
 		else if (subtitleType == SubtitleType.IntrusionReaction)
 		{
@@ -1576,9 +1576,9 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (subtitleType == SubtitleType.RivalEavesdropReaction)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.RivalEavesdropReactions.Length);
-			this.Label.text = this.RivalEavesdropReactions[this.RandomID];
-			this.PlayVoice(subtitleType, this.RandomID);
+			Debug.Log("Rival eavesdrop reaction. ID is: " + ID);
+			this.Label.text = this.RivalEavesdropReactions[ID];
+			this.PlayVoice(subtitleType, ID);
 		}
 		else if (subtitleType == SubtitleType.PickpocketReaction)
 		{

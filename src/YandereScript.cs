@@ -562,6 +562,8 @@ public class YandereScript : MonoBehaviour
 
 	public bool Resting;
 
+	public bool Running;
+
 	public bool Talking;
 
 	public bool Testing;
@@ -571,6 +573,8 @@ public class YandereScript : MonoBehaviour
 	public bool Eating;
 
 	public bool Hiding;
+
+	public bool Riding;
 
 	public Stance Stance = new Stance(StanceType.Standing);
 
@@ -605,6 +609,8 @@ public class YandereScript : MonoBehaviour
 	public bool SpiderGrow;
 
 	public bool Possessed;
+
+	public bool ToggleRun;
 
 	public bool WitchMode;
 
@@ -1911,6 +1917,18 @@ public class YandereScript : MonoBehaviour
 	{
 		if (this.CanMove)
 		{
+			if (!this.ToggleRun)
+			{
+				this.Running = false;
+				if (Input.GetButton("LB"))
+				{
+					this.Running = true;
+				}
+			}
+			else if (Input.GetButtonDown("LB"))
+			{
+				this.Running = !this.Running;
+			}
 			this.MyController.Move(Physics.gravity * Time.deltaTime);
 			this.v = Input.GetAxis("Vertical");
 			this.h = Input.GetAxis("Horizontal");
@@ -1938,7 +1956,7 @@ public class YandereScript : MonoBehaviour
 				}
 				if (this.v != 0f || this.h != 0f)
 				{
-					if (Input.GetButton("LB") && Vector3.Distance(base.transform.position, this.Senpai.position) > 1f)
+					if (this.Running && Vector3.Distance(base.transform.position, this.Senpai.position) > 1f)
 					{
 						if (this.Stance.Current == StanceType.Crouching)
 						{
@@ -2361,7 +2379,7 @@ public class YandereScript : MonoBehaviour
 									this.PromptBar.Label[4].text = "Select";
 									this.PromptBar.UpdateButtons();
 								}
-								else if (!this.FalconHelmet.activeInHierarchy && !this.Cape.activeInHierarchy)
+								else if (!this.FalconHelmet.activeInHierarchy && !this.Cape.activeInHierarchy && !this.MagicalGirl)
 								{
 									if (!this.Xtan)
 									{
@@ -2428,7 +2446,7 @@ public class YandereScript : MonoBehaviour
 						this.YandereTimer = 0f;
 					}
 				}
-				if (!Input.GetButton("LB"))
+				if (!this.Running)
 				{
 					if (this.Stance.Current != StanceType.Crouching && this.Stance.Current != StanceType.Crawling)
 					{
@@ -2780,7 +2798,7 @@ public class YandereScript : MonoBehaviour
 		}
 		else
 		{
-			if (this.Chased && !this.Sprayed && !this.Attacking && !this.StudentManager.PinningDown && !this.DelinquentFighting)
+			if (this.Chased && !this.Sprayed && !this.Attacking && !this.Dumping && !this.StudentManager.PinningDown && !this.DelinquentFighting)
 			{
 				this.targetRotation = Quaternion.LookRotation(this.Pursuer.transform.position - base.transform.position);
 				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
@@ -2803,7 +2821,7 @@ public class YandereScript : MonoBehaviour
 				this.DumpTimer += Time.deltaTime;
 				if (this.DumpTimer > 1f)
 				{
-					if (!this.Ragdoll.GetComponent<RagdollScript>().Dumped)
+					if (this.Ragdoll != null && !this.Ragdoll.GetComponent<RagdollScript>().Dumped)
 					{
 						this.DumpRagdoll(RagdollDumpType.Incinerator);
 					}
@@ -4180,6 +4198,7 @@ public class YandereScript : MonoBehaviour
 				}
 				if (this.ShootingBeam)
 				{
+					this.CharacterAnimation.CrossFade("f02_LoveLoveBeam_00");
 					if (this.CharacterAnimation["f02_LoveLoveBeam_00"].time >= 1.5f && this.BeamPhase == 0)
 					{
 						UnityEngine.Object.Instantiate<GameObject>(this.LoveLoveBeam, base.transform.position, base.transform.rotation);
@@ -4565,7 +4584,14 @@ public class YandereScript : MonoBehaviour
 				if (this.TalkTimer == 3f)
 				{
 					this.CharacterAnimation.CrossFade("f02_greet_01");
-					this.Subtitle.UpdateLabel(SubtitleType.PlayerCompliment, 0, 3f);
+					if (!this.TargetStudent.Male)
+					{
+						this.Subtitle.UpdateLabel(SubtitleType.PlayerCompliment, 0, 3f);
+					}
+					else
+					{
+						this.Subtitle.UpdateLabel(SubtitleType.PlayerCompliment, 1, 3f);
+					}
 				}
 				else
 				{
@@ -5759,7 +5785,7 @@ public class YandereScript : MonoBehaviour
 		}
 		if (this.CirnoWings.activeInHierarchy)
 		{
-			if (Input.GetButton("LB"))
+			if (this.Running)
 			{
 				this.FlapSpeed = 5f;
 			}

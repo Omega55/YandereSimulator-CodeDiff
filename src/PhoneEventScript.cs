@@ -95,6 +95,7 @@ public class PhoneEventScript : MonoBehaviour
 				this.EventStudent = this.StudentManager.Students[this.EventStudentID];
 				if (this.EventStudent != null)
 				{
+					this.EventStudent.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
 					if (this.EventStudentID == 11)
 					{
 						this.EventFriend = this.StudentManager.Students[this.EventFriendID];
@@ -337,6 +338,7 @@ public class PhoneEventScript : MonoBehaviour
 		Debug.Log("A phone event ended.");
 		if (!this.EventOver)
 		{
+			this.EventStudent.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
 			if (this.VoiceClip != null)
 			{
 				UnityEngine.Object.Destroy(this.VoiceClip);

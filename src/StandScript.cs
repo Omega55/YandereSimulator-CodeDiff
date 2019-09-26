@@ -77,7 +77,7 @@ public class StandScript : MonoBehaviour
 				this.Return();
 				if (axis != 0f || axis2 != 0f)
 				{
-					if (Input.GetButton("LB"))
+					if (this.Yandere.Running)
 					{
 						this.Stand.GetComponent<Animation>().CrossFade("StandRun");
 					}

@@ -96,11 +96,12 @@ public class QualityManagerScript : MonoBehaviour
 		{
 			OptionGlobals.Sensitivity = 3;
 		}
+		this.ToggleRun();
 		this.UpdateFog();
 		this.UpdateAnims();
 		this.UpdateBloom();
-		this.UpdateFPSIndex();
 		this.UpdateShadows();
+		this.UpdateFPSIndex();
 		this.UpdateParticles();
 		this.UpdateObscurance();
 		this.UpdatePostAliasing();
@@ -411,6 +412,11 @@ public class QualityManagerScript : MonoBehaviour
 	public void UpdateShadows()
 	{
 		this.Sun.shadows = ((!OptionGlobals.DisableShadows) ? LightShadows.Soft : LightShadows.None);
+	}
+
+	public void ToggleRun()
+	{
+		this.Yandere.ToggleRun = OptionGlobals.ToggleRun;
 	}
 
 	public void UpdateFPSIndex()

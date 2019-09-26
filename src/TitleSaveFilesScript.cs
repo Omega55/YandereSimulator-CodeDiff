@@ -61,6 +61,8 @@ public class TitleSaveFilesScript : MonoBehaviour
 					{
 						Debug.Log("ID is: " + this.ID);
 						GameGlobals.Profile = this.ID;
+						Globals.DeleteAll();
+						GameGlobals.Profile = this.ID;
 						Debug.Log("GameGlobals.Profile is: " + GameGlobals.Profile);
 						this.Menu.FadeOut = true;
 						this.Menu.Fading = true;

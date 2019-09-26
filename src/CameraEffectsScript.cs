@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using XInputDotNetPure;
 
 public class CameraEffectsScript : MonoBehaviour
 {
@@ -15,11 +16,15 @@ public class CameraEffectsScript : MonoBehaviour
 
 	public float EffectStrength;
 
+	public float VibrationTimer;
+
 	public Bloom QualityBloom;
 
 	public Vignetting QualityVignetting;
 
 	public AntialiasingAsPostEffect QualityAntialiasingAsPostEffect;
+
+	public bool VibrationCheck;
 
 	public bool OneCamera;
 
@@ -37,6 +42,15 @@ public class CameraEffectsScript : MonoBehaviour
 
 	private void Update()
 	{
+		if (this.VibrationCheck)
+		{
+			this.VibrationTimer = Mathf.MoveTowards(this.VibrationTimer, 0f, Time.deltaTime);
+			if (this.VibrationTimer == 0f)
+			{
+				GamePad.SetVibration(PlayerIndex.One, 0f, 0f);
+				this.VibrationCheck = false;
+			}
+		}
 		if (this.Streaks.color.a > 0f)
 		{
 			this.AlarmBloom.bloomIntensity -= Time.deltaTime;
@@ -58,6 +72,9 @@ public class CameraEffectsScript : MonoBehaviour
 
 	public void Alarm()
 	{
+		GamePad.SetVibration(PlayerIndex.One, 1f, 1f);
+		this.VibrationCheck = true;
+		this.VibrationTimer = 0.1f;
 		this.AlarmBloom.bloomIntensity = 1f;
 		this.Streaks.color = new Color(this.Streaks.color.r, this.Streaks.color.g, this.Streaks.color.b, 1f);
 		this.AlarmBloom.enabled = true;
@@ -66,6 +83,9 @@ public class CameraEffectsScript : MonoBehaviour
 
 	public void MurderWitnessed()
 	{
+		GamePad.SetVibration(PlayerIndex.One, 1f, 1f);
+		this.VibrationCheck = true;
+		this.VibrationTimer = 0.1f;
 		this.MurderStreaks.color = new Color(this.MurderStreaks.color.r, this.MurderStreaks.color.g, this.MurderStreaks.color.b, 1f);
 		this.Yandere.Jukebox.SFX.PlayOneShot((!this.Yandere.Noticed) ? this.MurderNoticed : this.SenpaiNoticed);
 	}

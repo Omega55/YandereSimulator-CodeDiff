@@ -17,6 +17,8 @@ public class StalkerYandereScript : MonoBehaviour
 
 	public bool Climbing;
 
+	public bool Running;
+
 	public bool CanMove;
 
 	public Stance Stance = new Stance(StanceType.Standing);
@@ -42,10 +44,6 @@ public class StalkerYandereScript : MonoBehaviour
 	public float CrouchRunSpeed;
 
 	public int Frame;
-
-	private void Start()
-	{
-	}
 
 	private void Update()
 	{
@@ -96,6 +94,18 @@ public class StalkerYandereScript : MonoBehaviour
 
 	private void UpdateMovement()
 	{
+		if (!OptionGlobals.ToggleRun)
+		{
+			this.Running = false;
+			if (Input.GetButton("LB"))
+			{
+				this.Running = true;
+			}
+		}
+		else if (Input.GetButtonDown("LB"))
+		{
+			this.Running = !this.Running;
+		}
 		this.MyController.Move(Physics.gravity * Time.deltaTime);
 		float axis = Input.GetAxis("Vertical");
 		float axis2 = Input.GetAxis("Horizontal");
@@ -130,7 +140,7 @@ public class StalkerYandereScript : MonoBehaviour
 		}
 		if (axis != 0f || axis2 != 0f)
 		{
-			if (Input.GetButton("LB"))
+			if (this.Running)
 			{
 				if (this.Stance.Current == StanceType.Crouching)
 				{

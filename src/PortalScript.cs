@@ -102,11 +102,6 @@ public class PortalScript : MonoBehaviour
 					}
 					if (flag)
 					{
-						Debug.Log("The teacher is present.");
-					}
-					else
-					{
-						Debug.Log("The teacher is not present.");
 					}
 					if (this.Late > 0 && flag)
 					{
@@ -135,7 +130,6 @@ public class PortalScript : MonoBehaviour
 			this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
 			this.Yandere.YandereVision = false;
 			this.Yandere.CanMove = false;
-			Debug.Log("As of right now, the time is: " + this.Clock.HourTime);
 			if (this.Clock.HourTime < 15.5f)
 			{
 				this.Yandere.InClass = true;
@@ -405,11 +399,6 @@ public class PortalScript : MonoBehaviour
 		this.Reputation.PendingRep -= (float)(5 * this.Late);
 		if (this.Late > 0)
 		{
-			Debug.Log("Yep, Yandere-chan is late.");
-		}
-		else
-		{
-			Debug.Log("Nope, Yandere-chan is not late.");
 		}
 	}
 

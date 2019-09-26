@@ -101,6 +101,8 @@ public class EventManagerScript : MonoBehaviour
 					this.EventStudent[2].InEvent = true;
 				}
 				this.EventStudent[2].EmptyHands();
+				this.EventStudent[1].SpeechLines.Stop();
+				this.EventStudent[2].SpeechLines.Stop();
 				this.EventCheck = false;
 				this.EventOn = true;
 			}
@@ -206,13 +208,13 @@ public class EventManagerScript : MonoBehaviour
 							else if (!EventGlobals.OsanaEvent2)
 							{
 								this.Yandere.NotificationManager.DisplayNotification(NotificationType.Info);
-								EventGlobals.Event2 = true;
+								EventGlobals.OsanaEvent2 = true;
 							}
 						}
 					}
 					if (base.enabled)
 					{
-						if (num < 5f)
+						if (num < 3f)
 						{
 							this.Yandere.Eavesdropping = true;
 						}

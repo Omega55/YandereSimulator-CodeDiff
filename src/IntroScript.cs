@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.PostProcessing;
 using UnityEngine.SceneManagement;
+using XInputDotNetPure;
 
 public class IntroScript : MonoBehaviour
 {
@@ -149,6 +150,12 @@ public class IntroScript : MonoBehaviour
 
 	public int ID;
 
+	public float VibrationIntensity;
+
+	public float VibrationTimer;
+
+	public bool VibrationCheck;
+
 	public Transform RightHair;
 
 	public Transform LeftHair;
@@ -257,6 +264,15 @@ public class IntroScript : MonoBehaviour
 
 	private void Update()
 	{
+		if (this.VibrationCheck)
+		{
+			this.VibrationTimer = Mathf.MoveTowards(this.VibrationTimer, 0f, Time.deltaTime);
+			if (this.VibrationTimer == 0f)
+			{
+				GamePad.SetVibration(PlayerIndex.One, 0f, 0f);
+				this.VibrationCheck = false;
+			}
+		}
 		if (Input.GetButton("X"))
 		{
 			this.Circle.fillAmount = Mathf.MoveTowards(this.Circle.fillAmount, 1f, Time.deltaTime);
@@ -366,6 +382,9 @@ public class IntroScript : MonoBehaviour
 						BloomModel.Settings settings2 = this.Profile.bloom.settings;
 						settings2.bloom.intensity = 1f;
 						this.Profile.bloom.settings = settings2;
+						GamePad.SetVibration(PlayerIndex.One, 1f, 1f);
+						this.VibrationCheck = true;
+						this.VibrationTimer = 0.1f;
 					}
 					this.Logo.transform.localScale = new Vector3(this.Logo.transform.localScale.x + Time.deltaTime * 0.1f, this.Logo.transform.localScale.y + Time.deltaTime * 0.1f, this.Logo.transform.localScale.z + Time.deltaTime * 0.1f);
 					this.LoveSickLogo.transform.localScale = new Vector3(this.LoveSickLogo.transform.localScale.x + Time.deltaTime * 0.05f, this.LoveSickLogo.transform.localScale.y + Time.deltaTime * 0.05f, this.LoveSickLogo.transform.localScale.z + Time.deltaTime * 0.05f);
@@ -376,10 +395,13 @@ public class IntroScript : MonoBehaviour
 					{
 						SceneManager.LoadScene("PhoneScene");
 					}
-					else if (this.Speed > 5f)
+					else if (this.Speed > 5f && (this.Logo.gameObject.activeInHierarchy || this.LoveSickLogo.gameObject.activeInHierarchy))
 					{
 						this.LoveSickLogo.gameObject.SetActive(false);
 						this.Logo.gameObject.SetActive(false);
+						GamePad.SetVibration(PlayerIndex.One, 1f, 1f);
+						this.VibrationCheck = true;
+						this.VibrationTimer = 0.1f;
 					}
 				}
 			}
@@ -402,6 +424,7 @@ public class IntroScript : MonoBehaviour
 					BloomModel.Settings settings4 = this.Profile.bloom.settings;
 					settings4.bloom.intensity = 0.5f;
 					this.Profile.bloom.settings = settings4;
+					this.VibrationIntensity = 0f;
 				}
 				this.Speed += 1f;
 				if (this.Speed > 2f)
@@ -425,6 +448,13 @@ public class IntroScript : MonoBehaviour
 				if (this.Timer > 225f)
 				{
 					this.Darkness.color = new Color(0f, 0f, 0f, 1f);
+				}
+				else
+				{
+					this.VibrationIntensity += Time.deltaTime * 0.2f;
+					GamePad.SetVibration(PlayerIndex.One, this.VibrationIntensity, this.VibrationIntensity);
+					this.VibrationCheck = true;
+					this.VibrationTimer = 0.1f;
 				}
 			}
 			else if (this.ID > 41)
@@ -473,6 +503,13 @@ public class IntroScript : MonoBehaviour
 					this.SetToDefault();
 					this.Speed = 0f;
 				}
+				if (this.ID < 40)
+				{
+					this.VibrationIntensity += Time.deltaTime * 0.05f;
+					GamePad.SetVibration(PlayerIndex.One, this.VibrationIntensity, this.VibrationIntensity);
+					this.VibrationCheck = true;
+					this.VibrationTimer = 0.1f;
+				}
 				if (this.ID < 37)
 				{
 					this.Speed += Time.deltaTime * 0.1f;
@@ -511,6 +548,9 @@ public class IntroScript : MonoBehaviour
 					{
 						this.AttackPair[2].SetActive(false);
 						this.AttackPair[3].SetActive(true);
+						GamePad.SetVibration(PlayerIndex.One, 1f, 1f);
+						this.VibrationCheck = true;
+						this.VibrationTimer = 0.2f;
 						this.Alpha = 0f;
 					}
 					else if (this.Timer > 185.2f)
@@ -521,6 +561,9 @@ public class IntroScript : MonoBehaviour
 					{
 						this.AttackPair[1].SetActive(false);
 						this.AttackPair[2].SetActive(true);
+						GamePad.SetVibration(PlayerIndex.One, 1f, 1f);
+						this.VibrationCheck = true;
+						this.VibrationTimer = 0.2f;
 						this.Alpha = 0f;
 					}
 					else if (this.Timer > 184.4f)
@@ -538,6 +581,9 @@ public class IntroScript : MonoBehaviour
 						this.Stalking.SetActive(false);
 						this.Quad.SetActive(true);
 						this.AttackPair[1].SetActive(true);
+						GamePad.SetVibration(PlayerIndex.One, 1f, 1f);
+						this.VibrationCheck = true;
+						this.VibrationTimer = 0.2f;
 					}
 				}
 				this.Darkness.color = new Color(0f, 0f, 0f, this.Alpha);

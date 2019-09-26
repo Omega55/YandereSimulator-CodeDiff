@@ -59,6 +59,8 @@ public class InventoryScript : MonoBehaviour
 
 	public bool ShedKey;
 
+	public int MysteriousKeys;
+
 	public UILabel MoneyLabel;
 
 	private void Start()
