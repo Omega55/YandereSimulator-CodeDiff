@@ -40,6 +40,7 @@ public class MechaScript : MonoBehaviour
 			this.Prompt.Yandere.CharacterAnimation.CrossFade("f02_riding_00");
 			this.Prompt.Yandere.enabled = false;
 			this.Prompt.Yandere.Riding = true;
+			this.Prompt.Yandere.Egg = true;
 			this.Prompt.Yandere.Jukebox.Egg = true;
 			this.Prompt.Yandere.Jukebox.KillVolume();
 			this.Prompt.Yandere.Jukebox.Ninja.enabled = true;

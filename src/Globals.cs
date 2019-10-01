@@ -10,7 +10,6 @@ public static class Globals
 
 	public static void DeleteAll()
 	{
-		Debug.Log("All globals (except OptionGlobals and SaveFileGlobals) have just been deleted.");
 		int profile = GameGlobals.Profile;
 		ClassGlobals.DeleteAll();
 		ClubGlobals.DeleteAll();

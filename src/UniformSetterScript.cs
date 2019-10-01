@@ -65,7 +65,6 @@ public class UniformSetterScript : MonoBehaviour
 
 	public void SetMaleUniform()
 	{
-		Debug.Log("StudentGlobals.MaleUniform is: " + StudentGlobals.MaleUniform);
 		this.MyRenderer.sharedMesh = this.MaleUniforms[StudentGlobals.MaleUniform];
 		if (StudentGlobals.MaleUniform == 1)
 		{
@@ -92,7 +91,6 @@ public class UniformSetterScript : MonoBehaviour
 
 	public void SetFemaleUniform()
 	{
-		Debug.Log("StudentGlobals.FemaleUniform is: " + StudentGlobals.FemaleUniform);
 		this.MyRenderer.sharedMesh = this.FemaleUniforms[StudentGlobals.FemaleUniform];
 		this.MyRenderer.materials[0].mainTexture = this.FemaleUniformTextures[StudentGlobals.FemaleUniform];
 		this.MyRenderer.materials[1].mainTexture = this.FemaleUniformTextures[StudentGlobals.FemaleUniform];

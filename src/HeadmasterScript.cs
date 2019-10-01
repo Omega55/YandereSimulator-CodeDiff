@@ -158,7 +158,7 @@ public class HeadmasterScript : MonoBehaviour
 			else if ((double)this.Distance < 1.2)
 			{
 				this.AimBodyAtYandere();
-				if (this.Yandere.CanMove && !this.Shooting)
+				if (this.Yandere.CanMove && !this.Yandere.Egg && !this.Shooting)
 				{
 					this.Shoot();
 				}
@@ -170,7 +170,7 @@ public class HeadmasterScript : MonoBehaviour
 				{
 					this.PatienceTimer -= Time.deltaTime;
 				}
-				if (this.PatienceTimer < 0f)
+				if (this.PatienceTimer < 0f && !this.Yandere.Egg)
 				{
 					this.LostPatience = true;
 					this.PatienceTimer = 60f;
@@ -181,7 +181,7 @@ public class HeadmasterScript : MonoBehaviour
 				{
 					this.LostPatience = true;
 					this.Patience--;
-					if (this.Patience < 1 && !this.Shooting)
+					if (this.Patience < 1 && !this.Yandere.Egg && !this.Shooting)
 					{
 						this.Shoot();
 					}
@@ -382,7 +382,7 @@ public class HeadmasterScript : MonoBehaviour
 
 	private void CheckBehavior()
 	{
-		if (this.Yandere.CanMove)
+		if (this.Yandere.CanMove && !this.Yandere.Egg)
 		{
 			if (this.Yandere.Chased || this.Yandere.Chasers > 0)
 			{

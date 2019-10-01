@@ -348,13 +348,6 @@ public class TitleMenuScript : MonoBehaviour
 						if (PlayerPrefs.GetInt("ProfileCreated_" + GameGlobals.Profile) == 0)
 						{
 							PlayerPrefs.SetInt("ProfileCreated_" + GameGlobals.Profile, 1);
-							Debug.Log(string.Concat(new object[]
-							{
-								"ProfileCreated_",
-								GameGlobals.Profile,
-								" is: ",
-								PlayerPrefs.GetInt("ProfileCreated_" + GameGlobals.Profile)
-							}));
 							PlayerGlobals.Money = 10f;
 							DateGlobals.Weekday = DayOfWeek.Sunday;
 							SceneManager.LoadScene("SenpaiScene");

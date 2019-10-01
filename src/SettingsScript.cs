@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SettingsScript : MonoBehaviour
 {
@@ -216,12 +217,13 @@ public class SettingsScript : MonoBehaviour
 			if (this.InputManager.TappedRight)
 			{
 				OptionGlobals.FPSIndex++;
+				this.QualityManager.UpdateFPSIndex();
 			}
 			else if (this.InputManager.TappedLeft)
 			{
 				OptionGlobals.FPSIndex--;
+				this.QualityManager.UpdateFPSIndex();
 			}
-			this.QualityManager.UpdateFPSIndex();
 			this.UpdateText();
 		}
 		else if (this.Selected == 12)
@@ -253,7 +255,10 @@ public class SettingsScript : MonoBehaviour
 			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
 			{
 				OptionGlobals.TutorialsOff = !OptionGlobals.TutorialsOff;
-				this.PauseScreen.Yandere.StudentManager.TutorialWindow.enabled = !OptionGlobals.TutorialsOff;
+				if (SceneManager.GetActiveScene().name == "SchoolScene")
+				{
+					this.PauseScreen.Yandere.StudentManager.TutorialWindow.enabled = !OptionGlobals.TutorialsOff;
+				}
 				this.UpdateText();
 			}
 			this.UpdateText();
@@ -340,7 +345,7 @@ public class SettingsScript : MonoBehaviour
 		this.FarAnimsLabel.text = ((OptionGlobals.DisableFarAnimations != 0) ? ((OptionGlobals.DisableFarAnimations * 5).ToString() + "m") : "Off");
 		this.DrawDistanceLabel.text = OptionGlobals.DrawDistance + "m";
 		this.FogLabel.text = ((!OptionGlobals.Fog) ? "Off" : "On");
-		this.ToggleRunLabel.text = ((!OptionGlobals.ToggleRun) ? "Toggle" : "Hold");
+		this.ToggleRunLabel.text = ((!OptionGlobals.ToggleRun) ? "Hold" : "Toggle");
 		this.SensitivityLabel.text = string.Empty + OptionGlobals.Sensitivity;
 		this.InvertAxisLabel.text = ((!OptionGlobals.InvertAxis) ? "No" : "Yes");
 		this.DisableTutorialsLabel.text = ((!OptionGlobals.TutorialsOff) ? "No" : "Yes");

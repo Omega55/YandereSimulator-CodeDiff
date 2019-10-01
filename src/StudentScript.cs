@@ -8572,7 +8572,7 @@ public class StudentScript : MonoBehaviour
 									this.Subtitle.UpdateLabel(SubtitleType.ReturningWeapon, 0, 5f);
 								}
 								this.ReturningMisplacedWeapon = true;
-								this.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
+								this.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
 							}
 						}
 						this.InvestigatingBloodPool = false;
@@ -8749,6 +8749,7 @@ public class StudentScript : MonoBehaviour
 							this.Handkerchief.SetActive(false);
 						}
 						this.Pathfinding.speed = 1f;
+						this.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
 						this.ReturningMisplacedWeapon = false;
 						this.WitnessedSomething = false;
 						this.WitnessedWeapon = false;
@@ -10019,6 +10020,10 @@ public class StudentScript : MonoBehaviour
 						this.Patience = 1;
 						this.Shove();
 						this.SpawnAlarmDisc();
+					}
+					if (this.Yandere.AttackManager.Stealth)
+					{
+						this.SpawnSmallAlarmDisc();
 					}
 					if (!flag4 && !this.Yandere.NearSenpai && !this.Yandere.Attacking && this.Yandere.Stance.Current != StanceType.Crouching)
 					{
@@ -11901,6 +11906,7 @@ public class StudentScript : MonoBehaviour
 		if (this.Following)
 		{
 			this.Hearts.emission.enabled = false;
+			this.Yandere.Follower = null;
 			this.Yandere.Followers--;
 			this.Following = false;
 		}
@@ -14071,6 +14077,13 @@ public class StudentScript : MonoBehaviour
 		}
 	}
 
+	public void SpawnSmallAlarmDisc()
+	{
+		GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + Vector3.up, Quaternion.identity);
+		gameObject.transform.localScale = new Vector3(100f, 1f, 100f);
+		gameObject.GetComponent<AlarmDiscScript>().NoScream = true;
+	}
+
 	public void ChangeClubwear()
 	{
 		if (!this.ClubAttire)
@@ -14619,7 +14632,7 @@ public class StudentScript : MonoBehaviour
 
 	public void Shove()
 	{
-		if (!this.Yandere.Shoved && !this.Dying && !this.Yandere.Egg && !this.ShoeRemoval.enabled && !this.Yandere.Talking)
+		if (!this.Yandere.Shoved && !this.Dying && !this.Yandere.Egg && !this.ShoeRemoval.enabled && !this.Yandere.Talking && !this.SentToLocker)
 		{
 			this.ForgetRadio();
 			Debug.Log(this.Name + " is shoving Yandere-chan.");

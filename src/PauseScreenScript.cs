@@ -151,7 +151,7 @@ public class PauseScreenScript : MonoBehaviour
 			UISprite uisprite2 = this.PhoneIcons[7];
 			uisprite2.color = new Color(uisprite2.color.r, uisprite2.color.g, uisprite2.color.b, 0.5f);
 			UISprite uisprite3 = this.PhoneIcons[8];
-			uisprite3.color = new Color(uisprite3.color.r, uisprite3.color.g, uisprite3.color.b, 0.5f);
+			uisprite3.color = new Color(uisprite3.color.r, uisprite3.color.g, uisprite3.color.b, 1f);
 			UISprite uisprite4 = this.PhoneIcons[9];
 			uisprite4.color = new Color(uisprite4.color.r, uisprite4.color.g, uisprite4.color.b, 0.5f);
 		}
@@ -455,7 +455,10 @@ public class PauseScreenScript : MonoBehaviour
 								else if (this.Selected == 8)
 								{
 									this.Settings.gameObject.SetActive(true);
-									this.ScreenBlur.enabled = false;
+									if (this.ScreenBlur != null)
+									{
+										this.ScreenBlur.enabled = false;
+									}
 									this.Settings.UpdateText();
 									this.MainMenu.SetActive(false);
 									this.PromptBar.ClearButtons();

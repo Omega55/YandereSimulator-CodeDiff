@@ -27,6 +27,12 @@ public class HallucinationScript : MonoBehaviour
 
 	public int Weapon;
 
+	public Renderer[] WeaponRenderers;
+
+	public Renderer SawRenderer;
+
+	public GameObject[] Weapons;
+
 	public string[] WeaponName;
 
 	private void Start()
@@ -39,6 +45,14 @@ public class HallucinationScript : MonoBehaviour
 		this.RivalRenderer.materials[0] = this.Black;
 		this.RivalRenderer.materials[1] = this.Black;
 		this.RivalRenderer.materials[2] = this.Black;
+		foreach (Renderer renderer in this.WeaponRenderers)
+		{
+			if (renderer != null)
+			{
+				renderer.material = this.Black;
+			}
+		}
+		this.SawRenderer.material = this.Black;
 		this.MakeTransparent();
 	}
 
@@ -59,6 +73,26 @@ public class HallucinationScript : MonoBehaviour
 				this.RivalAnimation["f02_" + this.WeaponName[this.Weapon] + "LowSanityB_00"].time = 0f;
 				this.YandereAnimation.Play("f02_" + this.WeaponName[this.Weapon] + "LowSanityA_00");
 				this.RivalAnimation.Play("f02_" + this.WeaponName[this.Weapon] + "LowSanityB_00");
+				if (this.Weapon == 1)
+				{
+					this.YandereAnimation.transform.localPosition = new Vector3(0f, 0f, 0f);
+				}
+				else if (this.Weapon == 5)
+				{
+					this.YandereAnimation.transform.localPosition = new Vector3(-0.25f, 0f, 0f);
+				}
+				else
+				{
+					this.YandereAnimation.transform.localPosition = new Vector3(-0.5f, 0f, 0f);
+				}
+				foreach (GameObject gameObject in this.Weapons)
+				{
+					if (gameObject != null)
+					{
+						gameObject.SetActive(false);
+					}
+				}
+				this.Weapons[this.Weapon].SetActive(true);
 				this.Hallucinate = true;
 				this.Timer = 0f;
 			}
@@ -81,6 +115,14 @@ public class HallucinationScript : MonoBehaviour
 			this.RivalRenderer.materials[0].color = new Color(0f, 0f, 0f, this.Alpha);
 			this.RivalRenderer.materials[1].color = new Color(0f, 0f, 0f, this.Alpha);
 			this.RivalRenderer.materials[2].color = new Color(0f, 0f, 0f, this.Alpha);
+			foreach (Renderer renderer in this.WeaponRenderers)
+			{
+				if (renderer != null)
+				{
+					renderer.material.color = new Color(0f, 0f, 0f, this.Alpha);
+				}
+			}
+			this.SawRenderer.material.color = new Color(0f, 0f, 0f, this.Alpha);
 			if (this.YandereAnimation["f02_" + this.WeaponName[this.Weapon] + "LowSanityA_00"].time == this.YandereAnimation["f02_" + this.WeaponName[this.Weapon] + "LowSanityA_00"].length || this.Yandere.Aiming)
 			{
 				this.MakeTransparent();
@@ -100,5 +142,13 @@ public class HallucinationScript : MonoBehaviour
 		this.RivalRenderer.materials[0].color = new Color(0f, 0f, 0f, this.Alpha);
 		this.RivalRenderer.materials[1].color = new Color(0f, 0f, 0f, this.Alpha);
 		this.RivalRenderer.materials[2].color = new Color(0f, 0f, 0f, this.Alpha);
+		foreach (Renderer renderer in this.WeaponRenderers)
+		{
+			if (renderer != null)
+			{
+				renderer.material.color = new Color(0f, 0f, 0f, this.Alpha);
+			}
+		}
+		this.SawRenderer.material.color = new Color(0f, 0f, 0f, this.Alpha);
 	}
 }

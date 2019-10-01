@@ -124,6 +124,10 @@ public class DoorScript : MonoBehaviour
 		this.StudentManager.Doors[this.StudentManager.DoorID] = this;
 		this.StudentManager.DoorID++;
 		this.DoorID = this.StudentManager.DoorID;
+		if (this.StudentManager.EastBathroomArea.bounds.Contains(base.transform.position) || this.StudentManager.WestBathroomArea.bounds.Contains(base.transform.position))
+		{
+			this.RoomName = "Toilet Stall";
+		}
 		if (this.Swinging)
 		{
 			this.OriginX[0] = this.Doors[0].transform.localPosition.z;

@@ -351,7 +351,6 @@ public class PortalScript : MonoBehaviour
 
 	private void CheckForLateness()
 	{
-		Debug.Log("Determining if Yandere-chan is late to class.");
 		this.Late = 0;
 		if (this.Clock.HourTime < 13f)
 		{

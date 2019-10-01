@@ -143,6 +143,8 @@ public class EndOfDayScript : MonoBehaviour
 
 	public GameObject EyeWitnessScene;
 
+	public GameObject ScaredCops;
+
 	public StudentScript KidnappedVictim;
 
 	public Renderer TabletPortrait;
@@ -243,6 +245,7 @@ public class EndOfDayScript : MonoBehaviour
 				this.Mask.SetActive(false);
 				this.EyeWitnessScene.SetActive(false);
 				this.Senpai.gameObject.SetActive(false);
+				this.ScaredCops.SetActive(false);
 				if (this.WitnessList[1] != null)
 				{
 					this.WitnessList[1].gameObject.SetActive(false);
@@ -332,7 +335,12 @@ public class EndOfDayScript : MonoBehaviour
 				this.CopAnimation[2]["walk_00"].speed = UnityEngine.Random.Range(0.9f, 1.1f);
 				this.CopAnimation[3]["walk_00"].speed = UnityEngine.Random.Range(0.9f, 1.1f);
 				this.Cops.SetActive(true);
-				if (this.Police.PoisonScene)
+				if (this.Yandere.Egg)
+				{
+					this.Label.text = "The police arrive at school.";
+					this.Phase = 999;
+				}
+				else if (this.Police.PoisonScene)
 				{
 					this.Label.text = "The police and the paramedics arrive at school.";
 					this.Phase = 103;
@@ -1245,6 +1253,17 @@ public class EndOfDayScript : MonoBehaviour
 					this.ID++;
 				}
 				this.Phase = 2;
+			}
+			else if (this.Phase == 999)
+			{
+				this.ScaredCops.SetActive(true);
+				this.Yandere.MyController.enabled = false;
+				this.Yandere.transform.parent = base.transform;
+				this.Yandere.transform.localPosition = new Vector3(0f, 0f, -1f);
+				this.Yandere.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+				Physics.SyncTransforms();
+				this.Label.text = "The police see Yandere-chan, are absolutely horrified, and run for their lives.";
+				this.Phase = 12;
 			}
 		}
 	}

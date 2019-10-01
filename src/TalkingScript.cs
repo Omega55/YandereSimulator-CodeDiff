@@ -1283,9 +1283,18 @@ public class TalkingScript : MonoBehaviour
 			}
 			else if (this.S.Interaction == StudentInteractionType.SentToLocker)
 			{
+				bool flag = false;
+				if (this.S.Club == ClubType.Delinquent)
+				{
+					flag = true;
+				}
+				if (PlayerGlobals.GetStudentFriend(this.S.StudentID))
+				{
+					flag = false;
+				}
 				if (this.S.TalkTimer == 5f)
 				{
-					if (this.S.Club != ClubType.Delinquent)
+					if (!flag)
 					{
 						this.Refuse = false;
 						if ((this.S.Clock.HourTime > 8f && this.S.Clock.HourTime < 13f) || (this.S.Clock.HourTime > 13.375f && this.S.Clock.HourTime < 15.5f))
@@ -1325,11 +1334,21 @@ public class TalkingScript : MonoBehaviour
 					{
 						if (!this.Refuse)
 						{
-							this.S.Pathfinding.speed = 4f;
-							this.S.TargetDistance = 1f;
-							this.S.SentToLocker = true;
-							this.S.Routine = false;
-							this.S.CanTalk = false;
+							if (!flag)
+							{
+								this.S.Pathfinding.speed = 4f;
+								this.S.TargetDistance = 1f;
+								this.S.SentToLocker = true;
+								this.S.Routine = false;
+								this.S.CanTalk = false;
+							}
+							else
+							{
+								this.S.Pathfinding.speed = 1f;
+								this.S.TargetDistance = 0.5f;
+								this.S.Routine = true;
+								this.S.CanTalk = true;
+							}
 						}
 						this.S.DialogueWheel.End();
 					}
