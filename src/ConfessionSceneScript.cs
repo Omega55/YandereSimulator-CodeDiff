@@ -51,6 +51,11 @@ public class ConfessionSceneScript : MonoBehaviour
 
 	public float Timer;
 
+	private void Start()
+	{
+		Time.timeScale = 1f;
+	}
+
 	private void Update()
 	{
 		if (this.Phase == 1)
@@ -171,6 +176,7 @@ public class ConfessionSceneScript : MonoBehaviour
 			this.Panel.alpha = Mathf.MoveTowards(this.Panel.alpha, 1f, Time.deltaTime);
 			if (this.Darkness.color.a == 0f)
 			{
+				this.StudentManager.ComeBack();
 				this.Yandere.RPGCamera.enabled = true;
 				this.Yandere.CanMove = true;
 				this.HeartBeatCamera.SetActive(true);

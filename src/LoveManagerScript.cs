@@ -33,6 +33,8 @@ public class LoveManagerScript : MonoBehaviour
 
 	public float AngleLimit;
 
+	public bool WaitingToConfess;
+
 	public bool HoldingHands;
 
 	public bool RivalWaiting;
@@ -91,24 +93,11 @@ public class LoveManagerScript : MonoBehaviour
 			}
 			if (this.Rival != null && this.Suitor != null && this.Rival.Alive && this.Suitor.Alive && !this.Rival.Dying && !this.Suitor.Dying && this.Rival.ConfessPhase == 5 && this.Suitor.ConfessPhase == 3)
 			{
+				this.WaitingToConfess = true;
 				float num = Vector3.Distance(this.Yandere.transform.position, this.MythHill.position);
-				if (!this.Yandere.Chased && this.Yandere.Chasers == 0 && num > 10f && num < 25f)
+				if (this.WaitingToConfess && !this.Yandere.Chased && this.Yandere.Chasers == 0 && num > 10f && num < 25f)
 				{
-					this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
-					this.Yandere.RPGCamera.enabled = false;
-					this.Yandere.CanMove = false;
-					this.Suitor.enabled = false;
-					this.Rival.enabled = false;
-					if (this.StudentManager.Students[this.StudentManager.RivalID] != null)
-					{
-						this.ConfessionManager.gameObject.SetActive(true);
-					}
-					else
-					{
-						this.ConfessionScene.enabled = true;
-					}
-					this.Clock.StopTime = true;
-					this.LeftNote = false;
+					this.BeginConfession();
 				}
 			}
 		}
@@ -185,5 +174,27 @@ public class LoveManagerScript : MonoBehaviour
 				this.HoldingHands = true;
 			}
 		}
+	}
+
+	public void BeginConfession()
+	{
+		this.Yandere.CharacterAnimation.CrossFade(this.Yandere.IdleAnim);
+		this.Yandere.RPGCamera.enabled = false;
+		this.Yandere.CanMove = false;
+		this.StudentManager.DisableEveryone();
+		this.Suitor.gameObject.SetActive(true);
+		this.Rival.gameObject.SetActive(true);
+		this.Suitor.enabled = false;
+		this.Rival.enabled = false;
+		if (this.StudentManager.Students[this.StudentManager.RivalID] != null)
+		{
+			this.ConfessionManager.gameObject.SetActive(true);
+		}
+		else
+		{
+			this.ConfessionScene.enabled = true;
+		}
+		this.Clock.StopTime = true;
+		this.LeftNote = false;
 	}
 }

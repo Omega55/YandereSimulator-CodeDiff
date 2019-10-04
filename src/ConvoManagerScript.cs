@@ -47,9 +47,16 @@ public class ConvoManagerScript : MonoBehaviour
 		}
 		else if (StudentID == 11)
 		{
-			if (this.SM.Students[10].Routine && Vector3.Distance(this.SM.Students[11].transform.position, this.SM.Students[10].transform.position) < 1.1f)
+			if (this.SM.Students[10] != null)
 			{
-				this.SM.Students[11].Alone = false;
+				if (this.SM.Students[10].Routine && Vector3.Distance(this.SM.Students[11].transform.position, this.SM.Students[10].transform.position) < 1.1f)
+				{
+					this.SM.Students[11].Alone = false;
+				}
+				else
+				{
+					this.SM.Students[11].Alone = true;
+				}
 			}
 			else
 			{

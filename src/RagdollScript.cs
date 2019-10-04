@@ -236,24 +236,16 @@ public class RagdollScript : MonoBehaviour
 			{
 				this.Student.CharacterAnimation.Stop();
 			}
-			if (!this.Yandere.Running)
+			if (this.BloodPoolSpawner != null && this.BloodPoolSpawner.gameObject.activeInHierarchy && !this.Cauterized)
 			{
-				if (this.BloodPoolSpawner != null && this.BloodPoolSpawner.gameObject.activeInHierarchy && !this.Cauterized)
+				if (this.Yandere.PickUp != null)
 				{
-					if (this.Yandere.PickUp != null)
+					if (this.Yandere.PickUp.Blowtorch)
 					{
-						if (this.Yandere.PickUp.Blowtorch)
+						if (!this.Cauterizable)
 						{
-							if (!this.Cauterizable)
-							{
-								this.Prompt.Label[0].text = "     Cauterize";
-								this.Cauterizable = true;
-							}
-						}
-						else if (this.Cauterizable)
-						{
-							this.Prompt.Label[0].text = "     Dismember";
-							this.Cauterizable = false;
+							this.Prompt.Label[0].text = "     Cauterize";
+							this.Cauterizable = true;
 						}
 					}
 					else if (this.Cauterizable)
@@ -262,125 +254,137 @@ public class RagdollScript : MonoBehaviour
 						this.Cauterizable = false;
 					}
 				}
-				if (this.Prompt.Circle[0].fillAmount == 0f)
+				else if (this.Cauterizable)
 				{
-					this.Prompt.Circle[0].fillAmount = 1f;
-					if (!this.Yandere.Chased && this.Yandere.Chasers == 0)
-					{
-						if (this.Cauterizable)
-						{
-							this.Prompt.Label[0].text = "     Dismember";
-							this.BloodPoolSpawner.enabled = false;
-							this.Cauterizable = false;
-							this.Cauterized = true;
-							this.Yandere.CharacterAnimation.CrossFade("f02_cauterize_00");
-							this.Yandere.Cauterizing = true;
-							this.Yandere.CanMove = false;
-							this.Yandere.PickUp.GetComponent<BlowtorchScript>().enabled = true;
-							this.Yandere.PickUp.GetComponent<AudioSource>().Play();
-						}
-						else
-						{
-							this.Yandere.CharacterAnimation.CrossFade("f02_dismember_00");
-							this.Yandere.transform.LookAt(base.transform);
-							this.Yandere.RPGCamera.transform.position = this.Yandere.DismemberSpot.position;
-							this.Yandere.RPGCamera.transform.eulerAngles = this.Yandere.DismemberSpot.eulerAngles;
-							this.Yandere.EquippedWeapon.Dismember();
-							this.Yandere.RPGCamera.enabled = false;
-							this.Yandere.TargetStudent = this.Student;
-							this.Yandere.Ragdoll = base.gameObject;
-							this.Yandere.Dismembering = true;
-							this.Yandere.CanMove = false;
-						}
-					}
+					this.Prompt.Label[0].text = "     Dismember";
+					this.Cauterizable = false;
 				}
-				if (this.Prompt.Circle[1].fillAmount == 0f)
+			}
+			if (this.Prompt.Circle[0].fillAmount == 0f)
+			{
+				this.Prompt.Circle[0].fillAmount = 1f;
+				if (!this.Yandere.Chased && this.Yandere.Chasers == 0)
 				{
-					this.Prompt.Circle[1].fillAmount = 1f;
-					if (!this.Student.FireEmitters[1].isPlaying)
+					if (this.Cauterizable)
 					{
-						if (!this.Dragged)
-						{
-							this.Yandere.EmptyHands();
-							this.Prompt.AcceptingInput[1] = false;
-							this.Prompt.Label[1].text = "     Drop";
-							this.PickNearestLimb();
-							this.Yandere.RagdollDragger.connectedBody = this.Rigidbodies[this.LimbID];
-							this.Yandere.RagdollDragger.connectedAnchor = this.LimbAnchor[this.LimbID];
-							this.Yandere.Dragging = true;
-							this.Yandere.DragState = 0;
-							this.Yandere.Ragdoll = base.gameObject;
-							this.Dragged = true;
-							this.Yandere.StudentManager.UpdateStudents(0);
-							if (this.MurderSuicide)
-							{
-								this.Police.MurderSuicideScene = false;
-								this.MurderSuicide = false;
-							}
-							if (this.Suicide)
-							{
-								this.Police.Suicide = false;
-								this.Suicide = false;
-							}
-							for (int j = 0; j < this.Student.Ragdoll.AllRigidbodies.Length; j++)
-							{
-								this.Student.Ragdoll.AllRigidbodies[j].drag = 2f;
-							}
-							for (int k = 0; k < this.AllRigidbodies.Length; k++)
-							{
-								this.AllRigidbodies[k].isKinematic = false;
-								this.AllColliders[k].enabled = true;
-								if (this.Yandere.StudentManager.NoGravity)
-								{
-									this.AllRigidbodies[k].useGravity = false;
-								}
-							}
-						}
-						else
-						{
-							this.StopDragging();
-						}
-					}
-				}
-				if (this.Prompt.Circle[3].fillAmount == 0f)
-				{
-					this.Prompt.Circle[3].fillAmount = 1f;
-					if (!this.Student.FireEmitters[1].isPlaying)
-					{
-						this.Yandere.EmptyHands();
-						this.Prompt.Label[1].text = "     Drop";
-						this.Prompt.HideButton[1] = true;
-						this.Prompt.HideButton[3] = true;
-						this.Prompt.enabled = false;
-						this.Prompt.Hide();
-						for (int l = 0; l < this.AllRigidbodies.Length; l++)
-						{
-							this.AllRigidbodies[l].isKinematic = true;
-							this.AllColliders[l].enabled = false;
-						}
-						if (this.Male)
-						{
-							Rigidbody rigidbody = this.AllRigidbodies[0];
-							rigidbody.transform.parent.transform.localPosition = new Vector3(rigidbody.transform.parent.transform.localPosition.x, 0.2f, rigidbody.transform.parent.transform.localPosition.z);
-						}
-						this.Yandere.CharacterAnimation.Play("f02_carryLiftA_00");
-						this.Student.CharacterAnimation.Play(this.LiftAnim);
-						this.BloodSpawnerCollider.enabled = false;
-						this.PelvisRoot.localEulerAngles = new Vector3(this.PelvisRoot.localEulerAngles.x, 0f, this.PelvisRoot.localEulerAngles.z);
-						this.Prompt.MyCollider.enabled = false;
-						this.PelvisRoot.localPosition = new Vector3(this.PelvisRoot.localPosition.x, this.PelvisRoot.localPosition.y, 0f);
-						this.Yandere.Ragdoll = base.gameObject;
-						this.Yandere.CurrentRagdoll = this;
+						this.Prompt.Label[0].text = "     Dismember";
+						this.BloodPoolSpawner.enabled = false;
+						this.Cauterizable = false;
+						this.Cauterized = true;
+						this.Yandere.CharacterAnimation.CrossFade("f02_cauterize_00");
+						this.Yandere.Cauterizing = true;
 						this.Yandere.CanMove = false;
-						this.Yandere.Lifting = true;
-						this.StopAnimation = false;
-						this.Carried = true;
-						this.Falling = false;
-						this.FallTimer = 0f;
+						this.Yandere.PickUp.GetComponent<BlowtorchScript>().enabled = true;
+						this.Yandere.PickUp.GetComponent<AudioSource>().Play();
+					}
+					else if (this.Yandere.StudentManager.OriginalUniforms + this.Yandere.StudentManager.NewUniforms > 1)
+					{
+						this.Yandere.CharacterAnimation.CrossFade("f02_dismember_00");
+						this.Yandere.transform.LookAt(base.transform);
+						this.Yandere.RPGCamera.transform.position = this.Yandere.DismemberSpot.position;
+						this.Yandere.RPGCamera.transform.eulerAngles = this.Yandere.DismemberSpot.eulerAngles;
+						this.Yandere.EquippedWeapon.Dismember();
+						this.Yandere.RPGCamera.enabled = false;
+						this.Yandere.TargetStudent = this.Student;
+						this.Yandere.Ragdoll = base.gameObject;
+						this.Yandere.Dismembering = true;
+						this.Yandere.CanMove = false;
+					}
+					else if (!this.Yandere.ClothingWarning)
+					{
+						this.Yandere.NotificationManager.DisplayNotification(NotificationType.Clothing);
+						this.Yandere.StudentManager.TutorialWindow.ShowClothingMessage = true;
+						this.Yandere.ClothingWarning = true;
 					}
 				}
 			}
-			else if (this.Yandere.CanMove && this.Dragged)
+			if (this.Prompt.Circle[1].fillAmount == 0f)
+			{
+				this.Prompt.Circle[1].fillAmount = 1f;
+				if (!this.Student.FireEmitters[1].isPlaying)
+				{
+					if (!this.Dragged)
+					{
+						this.Yandere.EmptyHands();
+						this.Prompt.AcceptingInput[1] = false;
+						this.Prompt.Label[1].text = "     Drop";
+						this.PickNearestLimb();
+						this.Yandere.RagdollDragger.connectedBody = this.Rigidbodies[this.LimbID];
+						this.Yandere.RagdollDragger.connectedAnchor = this.LimbAnchor[this.LimbID];
+						this.Yandere.Dragging = true;
+						this.Yandere.Running = false;
+						this.Yandere.DragState = 0;
+						this.Yandere.Ragdoll = base.gameObject;
+						this.Dragged = true;
+						this.Yandere.StudentManager.UpdateStudents(0);
+						if (this.MurderSuicide)
+						{
+							this.Police.MurderSuicideScene = false;
+							this.MurderSuicide = false;
+						}
+						if (this.Suicide)
+						{
+							this.Police.Suicide = false;
+							this.Suicide = false;
+						}
+						for (int j = 0; j < this.Student.Ragdoll.AllRigidbodies.Length; j++)
+						{
+							this.Student.Ragdoll.AllRigidbodies[j].drag = 2f;
+						}
+						for (int k = 0; k < this.AllRigidbodies.Length; k++)
+						{
+							this.AllRigidbodies[k].isKinematic = false;
+							this.AllColliders[k].enabled = true;
+							if (this.Yandere.StudentManager.NoGravity)
+							{
+								this.AllRigidbodies[k].useGravity = false;
+							}
+						}
+					}
+					else
+					{
+						this.StopDragging();
+					}
+				}
+			}
+			if (this.Prompt.Circle[3].fillAmount == 0f)
+			{
+				this.Prompt.Circle[3].fillAmount = 1f;
+				if (!this.Student.FireEmitters[1].isPlaying)
+				{
+					this.Yandere.EmptyHands();
+					this.Prompt.Label[1].text = "     Drop";
+					this.Prompt.HideButton[1] = true;
+					this.Prompt.HideButton[3] = true;
+					this.Prompt.enabled = false;
+					this.Prompt.Hide();
+					for (int l = 0; l < this.AllRigidbodies.Length; l++)
+					{
+						this.AllRigidbodies[l].isKinematic = true;
+						this.AllColliders[l].enabled = false;
+					}
+					if (this.Male)
+					{
+						Rigidbody rigidbody = this.AllRigidbodies[0];
+						rigidbody.transform.parent.transform.localPosition = new Vector3(rigidbody.transform.parent.transform.localPosition.x, 0.2f, rigidbody.transform.parent.transform.localPosition.z);
+					}
+					this.Yandere.CharacterAnimation.Play("f02_carryLiftA_00");
+					this.Student.CharacterAnimation.Play(this.LiftAnim);
+					this.BloodSpawnerCollider.enabled = false;
+					this.PelvisRoot.localEulerAngles = new Vector3(this.PelvisRoot.localEulerAngles.x, 0f, this.PelvisRoot.localEulerAngles.z);
+					this.Prompt.MyCollider.enabled = false;
+					this.PelvisRoot.localPosition = new Vector3(this.PelvisRoot.localPosition.x, this.PelvisRoot.localPosition.y, 0f);
+					this.Yandere.Ragdoll = base.gameObject;
+					this.Yandere.CurrentRagdoll = this;
+					this.Yandere.CanMove = false;
+					this.Yandere.Lifting = true;
+					this.StopAnimation = false;
+					this.Carried = true;
+					this.Falling = false;
+					this.FallTimer = 0f;
+				}
+			}
+			if (this.Yandere.Running && this.Yandere.CanMove && this.Dragged)
 			{
 				this.StopDragging();
 			}
@@ -574,7 +578,7 @@ public class RagdollScript : MonoBehaviour
 		{
 			this.Prompt.HideButton[3] = false;
 		}
-		this.Prompt.AcceptingInput[1] = false;
+		this.Prompt.AcceptingInput[1] = true;
 		this.Prompt.Circle[1].fillAmount = 1f;
 		this.Prompt.Label[1].text = "     Drag";
 		this.Yandere.RagdollDragger.connectedBody = null;

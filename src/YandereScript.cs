@@ -3,6 +3,7 @@ using System.Collections;
 using HighlightingSystem;
 using Pathfinding;
 using UnityEngine;
+using XInputDotNetPure;
 
 public class YandereScript : MonoBehaviour
 {
@@ -347,6 +348,8 @@ public class YandereScript : MonoBehaviour
 	public float SprayTimer;
 
 	public float TheftTimer;
+
+	public float BeatTimer;
 
 	public float BoneTimer;
 
@@ -797,6 +800,12 @@ public class YandereScript : MonoBehaviour
 	public Texture RivalPhoneTexture;
 
 	public Texture BlondePony;
+
+	public float VibrationIntensity;
+
+	public float VibrationTimer;
+
+	public bool VibrationCheck;
 
 	public float v;
 
@@ -4377,6 +4386,14 @@ public class YandereScript : MonoBehaviour
 			this.HeartBeat.volume = this.SenpaiTint;
 			this.Sanity += Time.deltaTime * 10f;
 			this.SenpaiTimer += Time.deltaTime;
+			this.BeatTimer += Time.deltaTime;
+			if (this.BeatTimer > 60f / (float)this.HeartRate.BeatsPerMinute)
+			{
+				GamePad.SetVibration(PlayerIndex.One, 1f, 1f);
+				this.VibrationCheck = true;
+				this.VibrationTimer = 0.1f;
+				this.BeatTimer = 0f;
+			}
 			if (this.SenpaiTimer > 10f && this.Creepiness < 5)
 			{
 				this.SenpaiTimer = 0f;
@@ -5711,6 +5728,15 @@ public class YandereScript : MonoBehaviour
 
 	private void LateUpdate()
 	{
+		if (this.VibrationCheck)
+		{
+			this.VibrationTimer = Mathf.MoveTowards(this.VibrationTimer, 0f, Time.deltaTime);
+			if (this.VibrationTimer == 0f)
+			{
+				GamePad.SetVibration(PlayerIndex.One, 0f, 0f);
+				this.VibrationCheck = false;
+			}
+		}
 		this.LeftEye.localPosition = new Vector3(this.LeftEye.localPosition.x, this.LeftEye.localPosition.y, this.LeftEyeOrigin.z - this.EyeShrink * 0.02f);
 		this.RightEye.localPosition = new Vector3(this.RightEye.localPosition.x, this.RightEye.localPosition.y, this.RightEyeOrigin.z + this.EyeShrink * 0.02f);
 		this.LeftEye.localScale = new Vector3(1f - this.EyeShrink, 1f - this.EyeShrink, this.LeftEye.localScale.z);
@@ -5875,7 +5901,7 @@ public class YandereScript : MonoBehaviour
 			float num4 = 100f - num3 * 100f;
 			this.SanityLabel.text = num4.ToString("0") + "%";
 		}
-		if (this.CanMove && this.sanity < 33.333f)
+		if (this.CanMove && this.sanity < 33.333f && !this.NearSenpai)
 		{
 			this.GiggleTimer += Time.deltaTime * (1f - this.sanity / 33.333f);
 			if (this.GiggleTimer > 10f)

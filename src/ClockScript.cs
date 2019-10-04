@@ -11,6 +11,8 @@ public class ClockScript : MonoBehaviour
 
 	public StudentManagerScript StudentManager;
 
+	public LoveManagerScript LoveManager;
+
 	public YandereScript Yandere;
 
 	public PoliceScript Police;
@@ -221,6 +223,13 @@ public class ClockScript : MonoBehaviour
 				{
 					this.UpdateBloom = false;
 				}
+			}
+		}
+		else if (this.LoveManager.WaitingToConfess)
+		{
+			if (!this.StopTime)
+			{
+				this.LoveManager.BeginConfession();
 			}
 		}
 		else if (!this.Police.FadeOut && !this.Yandere.Attacking && !this.Yandere.Struggling && !this.Yandere.DelinquentFighting && !this.Yandere.Pickpocketing && !this.Yandere.Noticed)

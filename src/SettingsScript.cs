@@ -314,7 +314,10 @@ public class SettingsScript : MonoBehaviour
 			this.PromptBar.Label[1].text = "Exit";
 			this.PromptBar.Label[4].text = "Choose";
 			this.PromptBar.UpdateButtons();
-			this.PauseScreen.ScreenBlur.enabled = true;
+			if (this.PauseScreen.ScreenBlur != null)
+			{
+				this.PauseScreen.ScreenBlur.enabled = true;
+			}
 			this.PauseScreen.MainMenu.SetActive(true);
 			this.PauseScreen.Sideways = false;
 			this.PauseScreen.PressedB = true;
