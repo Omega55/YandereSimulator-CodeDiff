@@ -9,6 +9,14 @@ public class HomeClockScript : MonoBehaviour
 
 	public UILabel DayLabel;
 
+	public bool ShakeMoney;
+
+	public float Shake;
+
+	public float G;
+
+	public float B;
+
 	private void Start()
 	{
 		this.DayLabel.text = this.GetWeekdayText(DateGlobals.Weekday);
@@ -21,6 +29,22 @@ public class HomeClockScript : MonoBehaviour
 			this.HourLabel.text = ((!HomeGlobals.LateForSchool) ? "6:30 AM" : "7:30 AM");
 		}
 		this.UpdateMoneyLabel();
+	}
+
+	private void Update()
+	{
+		if (this.ShakeMoney)
+		{
+			this.Shake = Mathf.MoveTowards(this.Shake, 0f, Time.deltaTime * 10f);
+			this.MoneyLabel.transform.localPosition = new Vector3(1020f + UnityEngine.Random.Range(this.Shake * -1f, this.Shake * 1f), 375f + UnityEngine.Random.Range(this.Shake * -1f, this.Shake * 1f), 0f);
+			this.G = Mathf.MoveTowards(this.G, 0.75f, Time.deltaTime);
+			this.B = Mathf.MoveTowards(this.B, 1f, Time.deltaTime);
+			this.MoneyLabel.color = new Color(1f, this.G, this.B, 1f);
+			if (this.Shake == 0f)
+			{
+				this.ShakeMoney = false;
+			}
+		}
 	}
 
 	private string GetWeekdayText(DayOfWeek weekday)

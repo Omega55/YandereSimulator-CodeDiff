@@ -21,6 +21,8 @@ public class InventoryScript : MonoBehaviour
 
 	public bool Headset;
 
+	public bool FakeID;
+
 	public bool IDCard;
 
 	public bool Book;

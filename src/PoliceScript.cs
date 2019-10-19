@@ -267,7 +267,10 @@ public class PoliceScript : MonoBehaviour
 				this.SanityIcon.spriteName = "No";
 				this.SanityRestored = false;
 			}
-			this.Timer = Mathf.MoveTowards(this.Timer, 0f, Time.deltaTime);
+			if (!this.Clock.StopTime)
+			{
+				this.Timer = Mathf.MoveTowards(this.Timer, 0f, Time.deltaTime);
+			}
 			if (this.Timer <= 0f)
 			{
 				this.Timer = 0f;
@@ -697,8 +700,10 @@ public class PoliceScript : MonoBehaviour
 
 	public void KillStudents()
 	{
+		Debug.Log("KillStudents() is being called.");
 		if (this.Deaths > 0)
 		{
+			Debug.Log("There were deaths at school today.");
 			for (int i = 2; i < this.StudentManager.NPCsTotal + 1; i++)
 			{
 				if (StudentGlobals.GetStudentDying(i))
@@ -721,8 +726,9 @@ public class PoliceScript : MonoBehaviour
 				}
 			}
 			SchoolGlobals.SchoolAtmosphere -= (float)this.Corpses * 0.05f;
-			if (this.Corpses > 0)
+			if (this.DrownVictims + this.Corpses > 0)
 			{
+				Debug.Log("There are corpses on school grounds.");
 				foreach (RagdollScript ragdollScript in this.CorpseList)
 				{
 					if (ragdollScript != null && StudentGlobals.MemorialStudents < 9)

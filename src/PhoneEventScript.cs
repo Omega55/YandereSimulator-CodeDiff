@@ -237,9 +237,11 @@ public class PhoneEventScript : MonoBehaviour
 						}
 					}
 					float num = Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position);
+					Debug.Log("Distance is: " + num);
 					if (num < 10f)
 					{
 						float num2 = Mathf.Abs((num - 10f) * 0.2f);
+						Debug.Log("Scale is: " + num2);
 						if (num2 < 0f)
 						{
 							num2 = 0f;
@@ -296,7 +298,7 @@ public class PhoneEventScript : MonoBehaviour
 						this.Timer += Time.deltaTime;
 						if (this.Timer > 3f)
 						{
-							this.EventFriend.Character.GetComponent<Animation>().CrossFade(this.EventStudent.RunAnim);
+							this.EventFriend.CharacterAnimation.CrossFade(this.EventStudent.RunAnim);
 							this.EventFriend.CurrentDestination = this.SpyLocation;
 							this.EventFriend.Pathfinding.target = this.SpyLocation;
 							this.EventFriend.Pathfinding.canSearch = true;

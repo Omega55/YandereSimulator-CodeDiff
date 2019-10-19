@@ -69,7 +69,14 @@ namespace MaidDereMinigame
 			GameController.Instance.StartCoroutine(GameController.Instance.FadeWithAction(delegate
 			{
 				PlayerGlobals.Money += GameController.Instance.totalPayout;
-				SceneManager.LoadScene("CalendarScene");
+				if (SceneManager.GetActiveScene().name == "MaidMenuScene")
+				{
+					SceneManager.LoadScene("StreetScene");
+				}
+				else
+				{
+					SceneManager.LoadScene("CalendarScene");
+				}
 			}, fadeOut, true));
 		}
 

@@ -275,6 +275,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] SenpaiViolenceReactions;
 
+	public string[] SenpaiRivalDeathReactions;
+
 	public string[] TeacherInsanityReactions;
 
 	public string[] TeacherWeaponReactions;
@@ -562,6 +564,8 @@ public class SubtitleScript : MonoBehaviour
 	public AudioClip[] SenpaiMurderReactionClips;
 
 	public AudioClip[] SenpaiViolenceReactionClips;
+
+	public AudioClip[] SenpaiRivalDeathReactionClips;
 
 	public AudioClip[] YandereWhimperClips;
 
@@ -1086,6 +1090,10 @@ public class SubtitleScript : MonoBehaviour
 			{
 				SubtitleType.SenpaiViolenceReaction,
 				new AudioClipArrayWrapper(this.SenpaiViolenceReactionClips)
+			},
+			{
+				SubtitleType.SenpaiRivalDeathReaction,
+				new AudioClipArrayWrapper(this.SenpaiRivalDeathReactionClips)
 			},
 			{
 				SubtitleType.SplashReaction,
@@ -2259,6 +2267,11 @@ public class SubtitleScript : MonoBehaviour
 			this.RandomID = UnityEngine.Random.Range(0, this.SenpaiViolenceReactions.Length);
 			this.Label.text = this.SenpaiViolenceReactions[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
+		}
+		else if (subtitleType == SubtitleType.SenpaiRivalDeathReaction)
+		{
+			this.Label.text = this.SenpaiRivalDeathReactions[ID];
+			this.PlayVoice(subtitleType, ID);
 		}
 		else if (subtitleType == SubtitleType.YandereWhimper)
 		{

@@ -166,6 +166,7 @@ public enum SubtitleType
 	SenpaiStalkingReaction,
 	SenpaiViolenceReaction,
 	SenpaiWeaponReaction,
+	SenpaiRivalDeathReaction,
 	SocialDeathReaction,
 	SocialFear,
 	SocialReport,

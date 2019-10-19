@@ -918,11 +918,12 @@ public class StudentManagerScript : MonoBehaviour
 				{
 					this.NewStudent = UnityEngine.Object.Instantiate<GameObject>((this.JSON.Students[this.NPCsSpawned + 1].Gender != 0) ? this.PortraitKun : this.PortraitChan, Vector3.zero, Quaternion.identity);
 				}
-				this.NewStudent.GetComponent<CosmeticScript>().StudentID = this.NPCsSpawned + 1;
-				this.NewStudent.GetComponent<CosmeticScript>().StudentManager = this;
-				this.NewStudent.GetComponent<CosmeticScript>().TakingPortrait = true;
-				this.NewStudent.GetComponent<CosmeticScript>().Randomize = this.Randomize;
-				this.NewStudent.GetComponent<CosmeticScript>().JSON = this.JSON;
+				CosmeticScript component = this.NewStudent.GetComponent<CosmeticScript>();
+				component.StudentID = this.NPCsSpawned + 1;
+				component.StudentManager = this;
+				component.TakingPortrait = true;
+				component.Randomize = this.Randomize;
+				component.JSON = this.JSON;
 				if (!this.Randomize)
 				{
 					this.NPCsSpawned++;
@@ -1028,9 +1029,9 @@ public class StudentManagerScript : MonoBehaviour
 						}
 						this.Yandere.Mopping = false;
 						this.Yandere.EmptyHands();
-						AudioSource component = base.GetComponent<AudioSource>();
-						component.PlayOneShot(this.PinDownSFX);
-						component.PlayOneShot(this.YanderePinDown);
+						AudioSource component2 = base.GetComponent<AudioSource>();
+						component2.PlayOneShot(this.PinDownSFX);
+						component2.PlayOneShot(this.YanderePinDown);
 						this.Yandere.CharacterAnimation.CrossFade("f02_pinDown_00");
 						this.Yandere.CanMove = false;
 						this.Yandere.ShoulderCamera.LookDown = true;
@@ -1150,11 +1151,12 @@ public class StudentManagerScript : MonoBehaviour
 				num = this.JSON.Students[spawnID].Gender;
 			}
 			this.NewStudent = UnityEngine.Object.Instantiate<GameObject>((num != 0) ? this.StudentKun : this.StudentChan, this.SpawnPositions[spawnID].position, Quaternion.identity);
-			this.NewStudent.GetComponent<CosmeticScript>().LoveManager = this.LoveManager;
-			this.NewStudent.GetComponent<CosmeticScript>().StudentManager = this;
-			this.NewStudent.GetComponent<CosmeticScript>().Randomize = this.Randomize;
-			this.NewStudent.GetComponent<CosmeticScript>().StudentID = spawnID;
-			this.NewStudent.GetComponent<CosmeticScript>().JSON = this.JSON;
+			CosmeticScript component = this.NewStudent.GetComponent<CosmeticScript>();
+			component.LoveManager = this.LoveManager;
+			component.StudentManager = this;
+			component.Randomize = this.Randomize;
+			component.StudentID = spawnID;
+			component.JSON = this.JSON;
 			if (this.JSON.Students[spawnID].Name == "Random")
 			{
 				this.NewStudent.GetComponent<StudentScript>().CleaningSpot = this.CleaningSpots.List[spawnID];

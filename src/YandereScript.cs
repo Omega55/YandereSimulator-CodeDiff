@@ -431,6 +431,8 @@ public class YandereScript : MonoBehaviour
 
 	public int Creepiness = 1;
 
+	public int GloveBlood;
+
 	public int NearBodies;
 
 	public int PoisonType;
@@ -796,6 +798,8 @@ public class YandereScript : MonoBehaviour
 	public string OriginalRunAnim = string.Empty;
 
 	public Texture YanderePhoneTexture;
+
+	public Texture BloodyGloveTexture;
 
 	public Texture RivalPhoneTexture;
 
@@ -3177,6 +3181,7 @@ public class YandereScript : MonoBehaviour
 					this.Gloved = false;
 					this.Gloves = null;
 					this.SetUniform();
+					this.GloveBlood = 0;
 					Debug.Log("Gloves removed.");
 				}
 				else if (this.Chased || this.Chasers > 0 || this.Noticed)
@@ -5029,25 +5034,6 @@ public class YandereScript : MonoBehaviour
 					this.Drown = false;
 					this.Sanity -= ((PlayerGlobals.PantiesEquipped != 10) ? 20f : 10f) * this.Numbness;
 				}
-				if (this.TargetStudent.StudentID == 6)
-				{
-					if (this.CharacterAnimation[this.DrownAnim].time > 9f)
-					{
-						this.StudentManager.AltFemaleDrownSplashes.Stop();
-					}
-					else if (this.CharacterAnimation[this.DrownAnim].time > 3f)
-					{
-						this.StudentManager.AltFemaleDrownSplashes.Play();
-					}
-				}
-				else if (this.CharacterAnimation[this.DrownAnim].time > 9f)
-				{
-					this.StudentManager.FemaleDrownSplashes.Stop();
-				}
-				else if (this.CharacterAnimation[this.DrownAnim].time > 3f)
-				{
-					this.StudentManager.FemaleDrownSplashes.Play();
-				}
 			}
 			else if (this.RoofPush)
 			{
@@ -5926,8 +5912,10 @@ public class YandereScript : MonoBehaviour
 			this.EquippedWeapon.MurderWeapon = true;
 			if (this.Gloved && !this.Gloves.Blood.enabled)
 			{
+				this.GloveAttacher.newRenderer.material.mainTexture = this.BloodyGloveTexture;
 				this.Gloves.PickUp.Evidence = true;
 				this.Gloves.Blood.enabled = true;
+				this.GloveBlood = 1;
 				this.Police.BloodyClothing++;
 			}
 			if (this.Mask != null && !this.Mask.Blood.enabled)
@@ -6332,6 +6320,10 @@ public class YandereScript : MonoBehaviour
 			this.Gloves.PickUp.Evidence = true;
 			this.Gloves.Blood.enabled = true;
 			this.Police.BloodyClothing++;
+		}
+		if (this.Gloves.Blood.enabled)
+		{
+			this.GloveBlood = 1;
 		}
 		this.Gloved = true;
 		this.GloveAttacher.newRenderer.enabled = true;
@@ -7636,5 +7628,15 @@ public class YandereScript : MonoBehaviour
 			this.Smartphone.cullingMask &= ~(1 << LayerMask.NameToLayer("Miyuki"));
 			this.AR = false;
 		}
+	}
+
+	private void OnApplicationFocus(bool hasFocus)
+	{
+		Cursor.lockState = CursorLockMode.Locked;
+	}
+
+	private void OnApplicationPause(bool pauseStatus)
+	{
+		Cursor.lockState = CursorLockMode.None;
 	}
 }

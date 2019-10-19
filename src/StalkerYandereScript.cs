@@ -11,7 +11,11 @@ public class StalkerYandereScript : MonoBehaviour
 
 	public Transform Hips;
 
+	public RPG_Camera RPGCamera;
+
 	public Animation MyAnimation;
+
+	public AudioSource Jukebox;
 
 	public Camera MainCamera;
 
@@ -20,6 +24,8 @@ public class StalkerYandereScript : MonoBehaviour
 	public bool Running;
 
 	public bool CanMove;
+
+	public bool Street;
 
 	public Stance Stance = new Stance(StanceType.Standing);
 
@@ -47,6 +53,8 @@ public class StalkerYandereScript : MonoBehaviour
 
 	private void Update()
 	{
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
 		if (Input.GetKeyDown("="))
 		{
 			Time.timeScale += 1f;
@@ -55,16 +63,22 @@ public class StalkerYandereScript : MonoBehaviour
 		{
 			Time.timeScale -= 1f;
 		}
-		if (Input.GetKeyDown("1"))
+		if (Input.GetKeyDown("m"))
 		{
-			base.transform.position = new Vector3(-13f, 0f, -2.5f);
-			Physics.SyncTransforms();
+			PlayerGlobals.Money += 1f;
+			if (this.Jukebox != null)
+			{
+				if (this.Jukebox.isPlaying)
+				{
+					this.Jukebox.Stop();
+				}
+				else
+				{
+					this.Jukebox.Play();
+				}
+			}
 		}
-		if (Input.GetKeyDown("2"))
-		{
-			base.transform.position = new Vector3(-9.5f, 4f, -2.5f);
-			Physics.SyncTransforms();
-		}
+		this.CameraTarget.localPosition = new Vector3(0f, 1f + (this.RPGCamera.distanceMax - this.RPGCamera.distance) * 0.2f, 0f);
 		if (this.CanMove)
 		{
 			this.UpdateMovement();
@@ -89,6 +103,10 @@ public class StalkerYandereScript : MonoBehaviour
 				this.Climbing = false;
 				this.CanMove = true;
 			}
+		}
+		if (this.Street && base.transform.position.x < -16f)
+		{
+			base.transform.position = new Vector3(-16f, 0f, base.transform.position.z);
 		}
 	}
 
@@ -127,16 +145,19 @@ public class StalkerYandereScript : MonoBehaviour
 		{
 			b = new Quaternion(0f, 0f, 0f, 0f);
 		}
-		if (this.Stance.Current == StanceType.Standing)
+		if (!this.Street)
 		{
-			if (Input.GetButtonDown("RS"))
+			if (this.Stance.Current == StanceType.Standing)
 			{
-				this.Stance.Current = StanceType.Crouching;
+				if (Input.GetButtonDown("RS"))
+				{
+					this.Stance.Current = StanceType.Crouching;
+				}
 			}
-		}
-		else if (Input.GetButtonDown("RS"))
-		{
-			this.Stance.Current = StanceType.Standing;
+			else if (Input.GetButtonDown("RS"))
+			{
+				this.Stance.Current = StanceType.Standing;
+			}
 		}
 		if (axis != 0f || axis2 != 0f)
 		{

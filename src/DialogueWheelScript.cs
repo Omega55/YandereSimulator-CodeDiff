@@ -295,6 +295,11 @@ public class DialogueWheelScript : MonoBehaviour
 				{
 					if (this.Selected != 0 && this.ClubShadow[this.Selected].color.a == 0f)
 					{
+						int num = 0;
+						if (this.Yandere.TargetStudent.Sleuthing)
+						{
+							num = 5;
+						}
 						if (this.Selected == 1)
 						{
 							this.Impatience.fillAmount = 0f;
@@ -335,44 +340,40 @@ public class DialogueWheelScript : MonoBehaviour
 							this.Yandere.TargetStudent.ClubPhase = 1;
 							this.Show = false;
 						}
-						int num = 0;
-						if (!this.Yandere.TargetStudent.Sleuthing)
+						else if (this.Selected == 4)
 						{
-							if (this.Selected == 4)
+							this.Impatience.fillAmount = 0f;
+							this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubBye;
+							this.Yandere.TargetStudent.TalkTimer = this.Yandere.Subtitle.ClubFarewellClips[(int)(this.Yandere.TargetStudent.Club + num)].length;
+							this.Show = false;
+							Debug.Log("This club leader exchange is over.");
+						}
+						else if (this.Selected == 5)
+						{
+							this.Impatience.fillAmount = 0f;
+							this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubActivity;
+							this.Yandere.TargetStudent.TalkTimer = 100f;
+							if (this.Clock.HourTime < 17f)
 							{
-								this.Impatience.fillAmount = 0f;
-								this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubBye;
-								this.Yandere.TargetStudent.TalkTimer = this.Yandere.Subtitle.ClubFarewellClips[(int)(this.Yandere.TargetStudent.Club + num)].length;
-								this.Show = false;
-								Debug.Log("This club leader exchange is over.");
+								this.Yandere.TargetStudent.ClubPhase = 4;
 							}
-							else if (this.Selected == 5)
+							else if (this.Clock.HourTime > 17.5f)
 							{
-								this.Impatience.fillAmount = 0f;
-								this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubActivity;
-								this.Yandere.TargetStudent.TalkTimer = 100f;
-								if (this.Clock.HourTime < 17f)
-								{
-									this.Yandere.TargetStudent.ClubPhase = 4;
-								}
-								else if (this.Clock.HourTime > 17.5f)
-								{
-									this.Yandere.TargetStudent.ClubPhase = 5;
-								}
-								else
-								{
-									this.Yandere.TargetStudent.ClubPhase = 1;
-								}
-								this.Show = false;
+								this.Yandere.TargetStudent.ClubPhase = 5;
 							}
-							else if (this.Selected == 6)
+							else
 							{
-								this.Impatience.fillAmount = 0f;
-								this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubPractice;
-								this.Yandere.TargetStudent.TalkTimer = 100f;
 								this.Yandere.TargetStudent.ClubPhase = 1;
-								this.Show = false;
 							}
+							this.Show = false;
+						}
+						else if (this.Selected == 6)
+						{
+							this.Impatience.fillAmount = 0f;
+							this.Yandere.TargetStudent.Interaction = StudentInteractionType.ClubPractice;
+							this.Yandere.TargetStudent.TalkTimer = 100f;
+							this.Yandere.TargetStudent.ClubPhase = 1;
+							this.Show = false;
 						}
 					}
 				}

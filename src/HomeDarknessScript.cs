@@ -83,7 +83,7 @@ public class HomeDarknessScript : MonoBehaviour
 					}
 					else if (this.HomeExit.ID == 2)
 					{
-						SceneManager.LoadScene("MaidMenuScene");
+						SceneManager.LoadScene("StreetScene");
 					}
 					else if (this.HomeExit.ID == 3)
 					{

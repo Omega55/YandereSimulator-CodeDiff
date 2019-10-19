@@ -80,6 +80,7 @@ public class RichPresenceHelper : MonoBehaviour
 		this._sceneDescriptions.Add("YancordScene", "Chatting over Yancord!");
 		this._sceneDescriptions.Add("MaidMenuScene", "Getting ready to be cute at a maid cafe!");
 		this._sceneDescriptions.Add("MaidGameScene", "Being a cute maid! MOE MOE KYUN!");
+		this._sceneDescriptions.Add("StreetScene", "Chilling in town!");
 	}
 
 	private string GetSceneDescription()

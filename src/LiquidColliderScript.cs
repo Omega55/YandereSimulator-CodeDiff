@@ -81,9 +81,14 @@ public class LiquidColliderScript : MonoBehaviour
 				}
 				else if (!component.Wet && !component.Fleeing)
 				{
+					Debug.Log(component.Name + " just dodged a bucket of water.");
 					if (component.Investigating)
 					{
 						component.StopInvestigating();
+					}
+					if (component.ReturningMisplacedWeapon)
+					{
+						component.DropMisplacedWeapon();
 					}
 					component.CharacterAnimation.CrossFade(component.DodgeAnim);
 					component.Pathfinding.canSearch = false;
