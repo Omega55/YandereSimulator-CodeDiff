@@ -5050,13 +5050,22 @@ public class YandereScript : MonoBehaviour
 						this.Shoes[1].SetActive(false);
 					}
 				}
-				else if (this.CharacterAnimation["f02_roofPushA_00"].time > 2.16666675f && !this.Shoes[0].activeInHierarchy)
+				else if (this.CharacterAnimation["f02_roofPushA_00"].time > 2.16666675f && this.TargetStudent.Schoolwear == 1 && !this.TargetStudent.ClubAttire && !this.Shoes[0].activeInHierarchy)
 				{
 					this.TargetStudent.RemoveShoes();
 					this.Shoes[0].SetActive(true);
 					this.Shoes[1].SetActive(true);
 				}
-				if (this.CharacterAnimation["f02_roofPushA_00"].time > this.CharacterAnimation["f02_roofPushA_00"].length)
+				float num;
+				if (this.TargetStudent.Schoolwear == 1 && !this.TargetStudent.ClubAttire)
+				{
+					num = this.CharacterAnimation["f02_roofPushA_00"].length;
+				}
+				else
+				{
+					num = 3.5f;
+				}
+				if (this.CharacterAnimation["f02_roofPushA_00"].time > num)
 				{
 					this.CameraTarget.localPosition = new Vector3(0f, 1f, 0f);
 					this.TargetStudent.DeathType = DeathType.Falling;
@@ -5206,6 +5215,7 @@ public class YandereScript : MonoBehaviour
 						this.CharacterAnimation.CrossFade(this.IdleAnim);
 						if (this.EquippedWeapon.Flaming)
 						{
+							this.Egg = true;
 							this.TargetStudent.Combust();
 						}
 						else if (this.CanTranq && !this.TargetStudent.Male && this.TargetStudent.Club != ClubType.Council)

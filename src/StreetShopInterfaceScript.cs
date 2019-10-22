@@ -28,6 +28,12 @@ public class StreetShopInterfaceScript : MonoBehaviour
 
 	public UILabel[] PricesLabel;
 
+	public UISprite[] Icons;
+
+	public bool[] AdultProducts;
+
+	public float[] Costs;
+
 	public UITexture Shopkeeper;
 
 	public Transform SpeechBubbleParent;
@@ -37,6 +43,10 @@ public class StreetShopInterfaceScript : MonoBehaviour
 	public Transform Highlight;
 
 	public Transform Interface;
+
+	public GameObject FakeIDBox;
+
+	public AudioSource MyAudio;
 
 	public float BlurAmount;
 
@@ -52,11 +62,14 @@ public class StreetShopInterfaceScript : MonoBehaviour
 
 	public bool Show;
 
+	public ShopType CurrentStore;
+
 	private void Start()
 	{
 		this.Shopkeeper.transform.localPosition = new Vector3(1485f, 0f, 0f);
 		this.Interface.localPosition = new Vector3(-815.5f, 0f, 0f);
 		this.SpeechBubbleParent.localScale = new Vector3(0f, 0f, 0f);
+		this.UpdateFakeID();
 	}
 
 	private void Update()
@@ -73,12 +86,10 @@ public class StreetShopInterfaceScript : MonoBehaviour
 				this.Yandere.CanMove = true;
 				this.Show = false;
 			}
-			if (this.Timer > 0.5f && Input.GetButtonUp("A"))
+			if (this.Timer > 0.5f && Input.GetButtonUp("A") && this.Icons[this.Selected].spriteName != "Yes")
 			{
-				this.SpeechBubbleLabel.text = this.ShopkeeperSpeeches[3];
-				this.SpeechBubbleParent.localScale = new Vector3(0f, 0f, 0f);
-				this.SpeechPhase = 0;
-				this.Timer = 1f;
+				this.CheckStore();
+				this.UpdateIcons();
 			}
 			if (this.InputManager.TappedDown)
 			{
@@ -165,5 +176,174 @@ public class StreetShopInterfaceScript : MonoBehaviour
 	public void UpdateHighlight()
 	{
 		this.Highlight.localPosition = new Vector3(-50f, (float)(50 - 50 * this.Selected), 0f);
+	}
+
+	public void CheckStore()
+	{
+		if (this.AdultProducts[this.Selected] && !PlayerGlobals.FakeID)
+		{
+			this.SpeechBubbleLabel.text = this.ShopkeeperSpeeches[3];
+			this.SpeechBubbleParent.localScale = new Vector3(0f, 0f, 0f);
+			this.SpeechPhase = 0;
+			this.Timer = 1f;
+		}
+		else if (PlayerGlobals.Money < this.Costs[this.Selected])
+		{
+			this.StreetManager.Clock.MoneyFail();
+			this.SpeechBubbleLabel.text = this.ShopkeeperSpeeches[4];
+			this.SpeechBubbleParent.localScale = new Vector3(0f, 0f, 0f);
+			this.SpeechPhase = 0;
+			this.Timer = 1f;
+		}
+		else
+		{
+			ShopType currentStore = this.CurrentStore;
+			if (currentStore != ShopType.Nonfunctional)
+			{
+				if (currentStore == ShopType.Manga)
+				{
+					this.PurchaseEffect();
+					switch (this.Selected)
+					{
+					case 1:
+						CollectibleGlobals.SetMangaCollected(6, true);
+						break;
+					case 2:
+						CollectibleGlobals.SetMangaCollected(7, true);
+						break;
+					case 3:
+						CollectibleGlobals.SetMangaCollected(8, true);
+						break;
+					case 4:
+						CollectibleGlobals.SetMangaCollected(9, true);
+						break;
+					case 5:
+						CollectibleGlobals.SetMangaCollected(10, true);
+						break;
+					case 6:
+						CollectibleGlobals.SetMangaCollected(1, true);
+						break;
+					case 7:
+						CollectibleGlobals.SetMangaCollected(2, true);
+						break;
+					case 8:
+						CollectibleGlobals.SetMangaCollected(3, true);
+						break;
+					case 9:
+						CollectibleGlobals.SetMangaCollected(4, true);
+						break;
+					case 10:
+						CollectibleGlobals.SetMangaCollected(5, true);
+						break;
+					}
+				}
+			}
+			else
+			{
+				this.SpeechBubbleLabel.text = this.ShopkeeperSpeeches[6];
+				this.SpeechBubbleParent.localScale = new Vector3(0f, 0f, 0f);
+				this.SpeechPhase = 0;
+				this.Timer = 1f;
+			}
+		}
+	}
+
+	public void PurchaseEffect()
+	{
+		this.SpeechBubbleLabel.text = this.ShopkeeperSpeeches[5];
+		this.SpeechBubbleParent.localScale = new Vector3(0f, 0f, 0f);
+		this.SpeechPhase = 0;
+		this.Timer = 1f;
+		PlayerGlobals.Money -= this.Costs[this.Selected];
+		this.MoneyLabel.text = "$" + PlayerGlobals.Money.ToString("F2");
+		this.StreetManager.Clock.UpdateMoneyLabel();
+		this.MyAudio.Play();
+	}
+
+	public void UpdateFakeID()
+	{
+		this.FakeIDBox.SetActive(PlayerGlobals.FakeID);
+	}
+
+	public void UpdateIcons()
+	{
+		for (int i = 1; i < 11; i++)
+		{
+			this.Icons[i].spriteName = string.Empty;
+			this.Icons[i].gameObject.SetActive(false);
+			this.ProductsLabel[i].color = new Color(1f, 1f, 1f, 1f);
+		}
+		for (int i = 1; i < 11; i++)
+		{
+			if (this.AdultProducts[i])
+			{
+				this.Icons[i].spriteName = "18+";
+			}
+		}
+		ShopType currentStore = this.CurrentStore;
+		if (currentStore == ShopType.Manga)
+		{
+			if (CollectibleGlobals.GetMangaCollected(1))
+			{
+				this.Icons[6].spriteName = "Yes";
+				this.PricesLabel[6].text = "Owned";
+			}
+			if (CollectibleGlobals.GetMangaCollected(2))
+			{
+				this.Icons[7].spriteName = "Yes";
+				this.PricesLabel[7].text = "Owned";
+			}
+			if (CollectibleGlobals.GetMangaCollected(3))
+			{
+				this.Icons[8].spriteName = "Yes";
+				this.PricesLabel[8].text = "Owned";
+			}
+			if (CollectibleGlobals.GetMangaCollected(4))
+			{
+				this.Icons[9].spriteName = "Yes";
+				this.PricesLabel[9].text = "Owned";
+			}
+			if (CollectibleGlobals.GetMangaCollected(5))
+			{
+				this.Icons[10].spriteName = "Yes";
+				this.PricesLabel[10].text = "Owned";
+			}
+			if (CollectibleGlobals.GetMangaCollected(6))
+			{
+				this.Icons[1].spriteName = "Yes";
+				this.PricesLabel[1].text = "Owned";
+			}
+			if (CollectibleGlobals.GetMangaCollected(7))
+			{
+				this.Icons[2].spriteName = "Yes";
+				this.PricesLabel[2].text = "Owned";
+			}
+			if (CollectibleGlobals.GetMangaCollected(8))
+			{
+				this.Icons[3].spriteName = "Yes";
+				this.PricesLabel[3].text = "Owned";
+			}
+			if (CollectibleGlobals.GetMangaCollected(9))
+			{
+				this.Icons[4].spriteName = "Yes";
+				this.PricesLabel[4].text = "Owned";
+			}
+			if (CollectibleGlobals.GetMangaCollected(10))
+			{
+				this.Icons[5].spriteName = "Yes";
+				this.PricesLabel[5].text = "Owned";
+			}
+		}
+		for (int i = 1; i < 11; i++)
+		{
+			if (this.Icons[i].spriteName != string.Empty)
+			{
+				this.Icons[i].gameObject.SetActive(true);
+				if (this.Icons[i].spriteName == "Yes")
+				{
+					this.ProductsLabel[i].color = new Color(1f, 1f, 1f, 0.5f);
+				}
+			}
+		}
 	}
 }

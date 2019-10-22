@@ -17,6 +17,8 @@ public static class PlayerGlobals
 
 	private const string Str_Headset = "Headset";
 
+	private const string Str_FakeID = "FakeID";
+
 	private const string Str_Kills = "Kills";
 
 	private const string Str_Numbness = "Numbness";
@@ -124,6 +126,18 @@ public static class PlayerGlobals
 		set
 		{
 			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_Headset", value);
+		}
+	}
+
+	public static bool FakeID
+	{
+		get
+		{
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_FakeID");
+		}
+		set
+		{
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_FakeID", value);
 		}
 	}
 
@@ -503,6 +517,7 @@ public static class PlayerGlobals
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_EnlightenmentBonus");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_Friends");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_Headset");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_FakeID");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_Kills");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_Numbness");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_NumbnessBonus");

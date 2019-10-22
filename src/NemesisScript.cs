@@ -208,7 +208,7 @@ public class NemesisScript : MonoBehaviour
 					{
 						if (this.InView)
 						{
-							this.Student.Character.GetComponent<Animation>().CrossFade("f02_knifeLowSanityA_00");
+							this.Student.CharacterAnimation.CrossFade("f02_knifeLowSanityA_00");
 							this.Yandere.CharacterAnimation.CrossFade("f02_knifeLowSanityB_00");
 							AudioSource.PlayClipAtPoint(this.YandereDeath, base.transform.position);
 							this.Student.Pathfinding.canSearch = false;

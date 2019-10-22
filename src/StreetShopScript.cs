@@ -33,6 +33,8 @@ public class StreetShopScript : MonoBehaviour
 
 	public string[] ShopkeeperSpeeches;
 
+	public bool[] AdultProducts;
+
 	public string[] Products;
 
 	public float[] Costs;
@@ -54,6 +56,8 @@ public class StreetShopScript : MonoBehaviour
 	public bool Exit;
 
 	public string StoreName;
+
+	public ShopType StoreType;
 
 	private void Start()
 	{
@@ -90,6 +94,7 @@ public class StreetShopScript : MonoBehaviour
 			{
 				if (!this.StreetShopInterface.Show)
 				{
+					this.StreetShopInterface.CurrentStore = this.StoreType;
 					this.StreetShopInterface.Show = true;
 					this.PromptBar.ClearButtons();
 					this.PromptBar.Label[0].text = "Purchase";
@@ -101,33 +106,26 @@ public class StreetShopScript : MonoBehaviour
 					this.UpdateShopInterface();
 				}
 			}
+			else if (PlayerGlobals.Money >= 0.25f)
+			{
+				this.MyAudio.clip = this.InsertCoin;
+				PlayerGlobals.Money -= 0.25f;
+				this.HomeClock.UpdateMoneyLabel();
+				this.BinocularCamera.gameObject.SetActive(true);
+				this.BinocularRenderer.enabled = false;
+				this.BinocularOverlay.SetActive(true);
+				this.PromptBar.ClearButtons();
+				this.PromptBar.Label[1].text = "Exit";
+				this.PromptBar.UpdateButtons();
+				this.PromptBar.Show = true;
+				this.Yandere.MyAnimation.CrossFade(this.Yandere.IdleAnim);
+				this.Yandere.transform.position = new Vector3(5f, 0f, 3f);
+				this.Yandere.CanMove = false;
+				this.MyAudio.Play();
+			}
 			else
 			{
-				if (PlayerGlobals.Money >= 0.25f)
-				{
-					this.MyAudio.clip = this.InsertCoin;
-					PlayerGlobals.Money -= 0.25f;
-					this.HomeClock.UpdateMoneyLabel();
-					this.BinocularCamera.gameObject.SetActive(true);
-					this.BinocularRenderer.enabled = false;
-					this.BinocularOverlay.SetActive(true);
-					this.PromptBar.ClearButtons();
-					this.PromptBar.Label[1].text = "Exit";
-					this.PromptBar.UpdateButtons();
-					this.PromptBar.Show = true;
-					this.Yandere.MyAnimation.CrossFade(this.Yandere.IdleAnim);
-					this.Yandere.transform.position = new Vector3(5f, 0f, 3f);
-					this.Yandere.CanMove = false;
-				}
-				else
-				{
-					this.MyAudio.clip = this.Fail;
-					this.HomeClock.ShakeMoney = true;
-					this.HomeClock.Shake = 10f;
-					this.HomeClock.G = 0f;
-					this.HomeClock.B = 0f;
-				}
-				this.MyAudio.Play();
+				this.HomeClock.MoneyFail();
 			}
 		}
 		if (this.Binoculars && this.BinocularCamera.gameObject.activeInHierarchy)
@@ -196,7 +194,9 @@ public class StreetShopScript : MonoBehaviour
 		this.StreetShopInterface.SpeechBubbleLabel.text = this.ShopkeeperSpeeches[1];
 		this.StreetShopInterface.ShopkeeperPortraits = this.ShopkeeperPortraits;
 		this.StreetShopInterface.ShopkeeperSpeeches = this.ShopkeeperSpeeches;
+		this.StreetShopInterface.AdultProducts = this.AdultProducts;
 		this.StreetShopInterface.SpeechPhase = 0;
+		this.StreetShopInterface.Costs = this.Costs;
 		this.StreetShopInterface.Limit = this.Limit;
 		this.StreetShopInterface.Selected = 1;
 		this.StreetShopInterface.Timer = 0f;
@@ -210,5 +210,6 @@ public class StreetShopScript : MonoBehaviour
 				this.StreetShopInterface.PricesLabel[i].text = string.Empty;
 			}
 		}
+		this.StreetShopInterface.UpdateIcons();
 	}
 }

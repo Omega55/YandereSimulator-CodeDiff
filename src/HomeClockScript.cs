@@ -9,6 +9,8 @@ public class HomeClockScript : MonoBehaviour
 
 	public UILabel DayLabel;
 
+	public AudioSource MyAudio;
+
 	public bool ShakeMoney;
 
 	public float Shake;
@@ -79,5 +81,14 @@ public class HomeClockScript : MonoBehaviour
 	public void UpdateMoneyLabel()
 	{
 		this.MoneyLabel.text = "$" + PlayerGlobals.Money.ToString("F2");
+	}
+
+	public void MoneyFail()
+	{
+		this.ShakeMoney = true;
+		this.Shake = 10f;
+		this.G = 0f;
+		this.B = 0f;
+		this.MyAudio.Play();
 	}
 }

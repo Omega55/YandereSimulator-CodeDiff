@@ -240,7 +240,6 @@ public class BucketScript : MonoBehaviour
 			}
 			else if (this.Prompt.Label[0].text == "     Pour Gasoline")
 			{
-				this.Yandere.PickUp.Empty = true;
 				this.Gasoline = true;
 				this.Fill();
 			}

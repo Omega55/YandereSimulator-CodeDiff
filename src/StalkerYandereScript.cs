@@ -55,11 +55,11 @@ public class StalkerYandereScript : MonoBehaviour
 	{
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
-		if (Input.GetKeyDown("="))
+		if (Input.GetKeyDown("=") && Time.timeScale < 10f)
 		{
 			Time.timeScale += 1f;
 		}
-		if (Input.GetKeyDown("-"))
+		if (Input.GetKeyDown("-") && Time.timeScale > 1f)
 		{
 			Time.timeScale -= 1f;
 		}

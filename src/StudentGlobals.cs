@@ -925,6 +925,9 @@ public static class StudentGlobals
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_ExpelProgress");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_FemaleUniform");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_MaleUniform");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_StudentSlave");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_StudentFragileSlave");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_FragileTarget");
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_StudentAccessory_", StudentGlobals.KeysOfStudentAccessory());
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_StudentArrested_", StudentGlobals.KeysOfStudentArrested());
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_StudentBroken_", StudentGlobals.KeysOfStudentBroken());

@@ -1821,7 +1821,7 @@ public class StudentManagerScript : MonoBehaviour
 			StudentScript studentScript = this.Students[this.ID];
 			if (studentScript != null)
 			{
-				if (!studentScript.Dying && !studentScript.Replaced && !StudentGlobals.GetStudentExpelled(this.ID))
+				if (!studentScript.Dying && !studentScript.Replaced && studentScript.Spawned && !StudentGlobals.GetStudentExpelled(this.ID))
 				{
 					studentScript.gameObject.SetActive(true);
 					studentScript.Pathfinding.canSearch = true;

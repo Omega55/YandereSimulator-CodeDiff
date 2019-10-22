@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class StreetManagerScript : MonoBehaviour
 {
+	public StreetShopInterfaceScript StreetShopInterface;
+
 	public Transform BinocularCamera;
 
 	public Transform Yandere;
@@ -28,6 +30,10 @@ public class StreetManagerScript : MonoBehaviour
 
 	public HomeClockScript Clock;
 
+	public Animation[] Civilian;
+
+	public GameObject Couple;
+
 	public UISprite Darkness;
 
 	public Renderer Stars;
@@ -44,6 +50,8 @@ public class StreetManagerScript : MonoBehaviour
 
 	public float Timer;
 
+	public float DesiredValue;
+
 	public float StarAlpha;
 
 	public float Alpha;
@@ -59,9 +67,19 @@ public class StreetManagerScript : MonoBehaviour
 		this.Gossip2["f02_socialSit_00"].layer = 1;
 		this.Gossip2.Play("f02_socialSit_00");
 		this.Gossip2["f02_socialSit_00"].weight = 1f;
+		for (int i = 2; i < 5; i++)
+		{
+			this.Civilian[i]["f02_smile_00"].layer = 1;
+			this.Civilian[i].Play("f02_smile_00");
+			this.Civilian[i]["f02_smile_00"].weight = 1f;
+		}
 		this.Darkness.color = new Color(1f, 1f, 1f, 1f);
 		this.CurrentlyActiveJukebox = this.JukeboxNight;
 		this.Alpha = 1f;
+		if (StudentGlobals.GetStudentDead(30) || StudentGlobals.GetStudentBroken(81))
+		{
+			this.Couple.SetActive(false);
+		}
 	}
 
 	private void Update()
@@ -69,6 +87,7 @@ public class StreetManagerScript : MonoBehaviour
 		if (Input.GetKeyDown("m"))
 		{
 			PlayerGlobals.Money += 1f;
+			this.Clock.UpdateMoneyLabel();
 			if (this.JukeboxNight.isPlaying)
 			{
 				this.JukeboxNight.Stop();
@@ -79,6 +98,11 @@ public class StreetManagerScript : MonoBehaviour
 				this.JukeboxNight.Play();
 				this.JukeboxDay.Stop();
 			}
+		}
+		if (Input.GetKeyDown("f"))
+		{
+			PlayerGlobals.FakeID = !PlayerGlobals.FakeID;
+			this.StreetShopInterface.UpdateFakeID();
 		}
 		this.Timer += Time.deltaTime;
 		if (this.Timer > 0.5f)
@@ -119,16 +143,23 @@ public class StreetManagerScript : MonoBehaviour
 		}
 		if (!this.FadeOut && !this.BinocularCamera.gameObject.activeInHierarchy)
 		{
-			float b = Vector3.Distance(this.Yandere.position, this.Yakuza.transform.position) * 0.1f * 0.5f;
+			if (Vector3.Distance(this.Yandere.position, this.Yakuza.transform.position) > 5f)
+			{
+				this.DesiredValue = 0.5f;
+			}
+			else
+			{
+				this.DesiredValue = Vector3.Distance(this.Yandere.position, this.Yakuza.transform.position) * 0.1f;
+			}
 			if (this.Day)
 			{
-				this.JukeboxDay.volume = Mathf.Lerp(this.JukeboxDay.volume, b, Time.deltaTime * 10f);
+				this.JukeboxDay.volume = Mathf.Lerp(this.JukeboxDay.volume, this.DesiredValue, Time.deltaTime * 10f);
 				this.JukeboxNight.volume = Mathf.Lerp(this.JukeboxNight.volume, 0f, Time.deltaTime * 10f);
 			}
 			else
 			{
 				this.JukeboxDay.volume = Mathf.Lerp(this.JukeboxDay.volume, 0f, Time.deltaTime * 10f);
-				this.JukeboxNight.volume = Mathf.Lerp(this.JukeboxNight.volume, b, Time.deltaTime * 10f);
+				this.JukeboxNight.volume = Mathf.Lerp(this.JukeboxNight.volume, this.DesiredValue, Time.deltaTime * 10f);
 			}
 			if (Vector3.Distance(this.Yandere.position, this.Yakuza.transform.position) < 1f && !this.Threatened)
 			{

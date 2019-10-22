@@ -511,7 +511,7 @@ public class TalkingScript : MonoBehaviour
 							{
 								this.Grudge = true;
 							}
-							if (studentScript.Routine && !studentScript.TargetedForDistraction && !studentScript.InEvent && !this.Grudge && studentScript.Indoors && studentScript.gameObject.activeInHierarchy && studentScript.ClubActivityPhase < 16 && studentScript.FollowTarget == null)
+							if (studentScript.Routine && !studentScript.TargetedForDistraction && !studentScript.InEvent && !this.Grudge && studentScript.Indoors && studentScript.gameObject.activeInHierarchy && studentScript.ClubActivityPhase < 16 && studentScript.CurrentAction != StudentActionType.Sunbathe && studentScript.FollowTarget == null)
 							{
 								int num3 = 0;
 								if (ClubGlobals.Club == ClubType.Delinquent)

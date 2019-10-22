@@ -770,6 +770,10 @@ public class DialogueWheelScript : MonoBehaviour
 			{
 				this.Shadow[6].color = new Color(0f, 0f, 0f, 0.75f);
 			}
+			if (this.Yandere.TargetStudent.CurrentAction == StudentActionType.Sunbathe)
+			{
+				this.Shadow[6].color = new Color(0f, 0f, 0f, 0.75f);
+			}
 		}
 		if (ClubGlobals.Club == this.Yandere.TargetStudent.Club)
 		{

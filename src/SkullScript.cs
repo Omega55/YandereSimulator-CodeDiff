@@ -43,10 +43,13 @@ public class SkullScript : MonoBehaviour
 
 	public float Timer;
 
+	public bool MissionMode;
+
 	private void Start()
 	{
 		this.OriginalPosition = this.RitualKnife.transform.position;
 		this.OriginalRotation = this.RitualKnife.transform.eulerAngles;
+		this.MissionMode = MissionModeGlobals.MissionMode;
 	}
 
 	private void Update()
@@ -82,33 +85,36 @@ public class SkullScript : MonoBehaviour
 				this.RitualKnife.transform.position = this.OriginalPosition;
 				this.RitualKnife.transform.eulerAngles = this.OriginalRotation;
 				this.RitualKnife.GetComponent<Rigidbody>().useGravity = false;
-				if (this.RitualKnife.GetComponent<WeaponScript>().Heated && !this.RitualKnife.GetComponent<WeaponScript>().Flaming)
+				if (!this.MissionMode)
 				{
-					component.clip = this.FlameDemonVoice;
-					component.Play();
-					this.FlameTimer = 10f;
-					this.RitualKnife.GetComponent<WeaponScript>().Prompt.Hide();
-					this.RitualKnife.GetComponent<WeaponScript>().Prompt.enabled = false;
-				}
-				else if (this.RitualKnife.GetComponent<WeaponScript>().Blood.enabled)
-				{
-					this.DebugMenu.SetActive(false);
-					this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
-					this.Yandere.CanMove = false;
-					UnityEngine.Object.Instantiate<GameObject>(this.DarkAura, this.Yandere.transform.position + Vector3.up * 0.81f, Quaternion.identity);
-					this.Timer += Time.deltaTime;
-					this.Clock.StopTime = true;
-					if (this.StudentManager.Students[21] == null || this.StudentManager.Students[26] == null || this.StudentManager.Students[31] == null || this.StudentManager.Students[36] == null || this.StudentManager.Students[41] == null || this.StudentManager.Students[46] == null || this.StudentManager.Students[51] == null || this.StudentManager.Students[56] == null || this.StudentManager.Students[61] == null || this.StudentManager.Students[66] == null || this.StudentManager.Students[71] == null)
+					if (this.RitualKnife.GetComponent<WeaponScript>().Heated && !this.RitualKnife.GetComponent<WeaponScript>().Flaming)
 					{
-						this.EmptyDemon.SetActive(false);
+						component.clip = this.FlameDemonVoice;
+						component.Play();
+						this.FlameTimer = 10f;
+						this.RitualKnife.GetComponent<WeaponScript>().Prompt.Hide();
+						this.RitualKnife.GetComponent<WeaponScript>().Prompt.enabled = false;
 					}
-					else if (!this.StudentManager.Students[21].Alive || !this.StudentManager.Students[26].Alive || !this.StudentManager.Students[31].Alive || !this.StudentManager.Students[36].Alive || !this.StudentManager.Students[41].Alive || !this.StudentManager.Students[46].Alive || !this.StudentManager.Students[51].Alive || !this.StudentManager.Students[56].Alive || !this.StudentManager.Students[61].Alive || !this.StudentManager.Students[66].Alive || !this.StudentManager.Students[71].Alive)
+					else if (this.RitualKnife.GetComponent<WeaponScript>().Blood.enabled)
 					{
-						this.EmptyDemon.SetActive(false);
-					}
-					if (GameGlobals.EmptyDemon)
-					{
-						this.EmptyDemon.SetActive(false);
+						this.DebugMenu.SetActive(false);
+						this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
+						this.Yandere.CanMove = false;
+						UnityEngine.Object.Instantiate<GameObject>(this.DarkAura, this.Yandere.transform.position + Vector3.up * 0.81f, Quaternion.identity);
+						this.Timer += Time.deltaTime;
+						this.Clock.StopTime = true;
+						if (this.StudentManager.Students[21] == null || this.StudentManager.Students[26] == null || this.StudentManager.Students[31] == null || this.StudentManager.Students[36] == null || this.StudentManager.Students[41] == null || this.StudentManager.Students[46] == null || this.StudentManager.Students[51] == null || this.StudentManager.Students[56] == null || this.StudentManager.Students[61] == null || this.StudentManager.Students[66] == null || this.StudentManager.Students[71] == null)
+						{
+							this.EmptyDemon.SetActive(false);
+						}
+						else if (!this.StudentManager.Students[21].Alive || !this.StudentManager.Students[26].Alive || !this.StudentManager.Students[31].Alive || !this.StudentManager.Students[36].Alive || !this.StudentManager.Students[41].Alive || !this.StudentManager.Students[46].Alive || !this.StudentManager.Students[51].Alive || !this.StudentManager.Students[56].Alive || !this.StudentManager.Students[61].Alive || !this.StudentManager.Students[66].Alive || !this.StudentManager.Students[71].Alive)
+						{
+							this.EmptyDemon.SetActive(false);
+						}
+						if (GameGlobals.EmptyDemon)
+						{
+							this.EmptyDemon.SetActive(false);
+						}
 					}
 				}
 			}

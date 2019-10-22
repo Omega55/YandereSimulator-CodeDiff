@@ -1262,7 +1262,7 @@ public class EndOfDayScript : MonoBehaviour
 				this.Yandere.transform.localPosition = new Vector3(0f, 0f, -1f);
 				this.Yandere.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
 				Physics.SyncTransforms();
-				this.Label.text = "The police see Yandere-chan, are absolutely horrified, and run for their lives.";
+				this.Label.text = "The police witness actual evidence of the supernatural, are absolutely horrified, and run for their lives.";
 				this.Phase = 12;
 			}
 		}
@@ -1335,6 +1335,10 @@ public class EndOfDayScript : MonoBehaviour
 		if (this.Counselor.ExpelledDelinquents)
 		{
 			SchoolGlobals.SchoolAtmosphere += 0.25f;
+		}
+		if (this.Yandere.Inventory.FakeID)
+		{
+			PlayerGlobals.FakeID = true;
 		}
 		this.WeaponManager.TrackDumpedWeapons();
 	}

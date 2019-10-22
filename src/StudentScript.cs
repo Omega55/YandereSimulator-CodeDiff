@@ -3613,11 +3613,9 @@ public class StudentScript : MonoBehaviour
 					}
 					if (this.Actions[this.Phase] == StudentActionType.Follow)
 					{
-						Debug.Log("Raibaru has reached her destination.");
 						this.FollowTargetDistance = Vector3.Distance(this.FollowTarget.transform.position, this.StudentManager.Hangouts.List[this.StudentID].transform.position);
 						if (this.FollowTargetDistance < 1.1f && !this.FollowTarget.Alone)
 						{
-							Debug.Log("Raibaru is sliding towards her hangout location.");
 							this.MoveTowardsTarget(this.StudentManager.Hangouts.List[this.StudentID].position);
 							float num = Quaternion.Angle(base.transform.rotation, this.StudentManager.Hangouts.List[this.StudentID].rotation);
 							if (num > 1f && !this.StopRotating)
@@ -9888,6 +9886,7 @@ public class StudentScript : MonoBehaviour
 					this.Yandere.RoofPush = true;
 					this.Yandere.CanMove = false;
 					this.Yandere.EmptyHands();
+					this.EmptyHands();
 					this.Distracted = true;
 					this.Routine = false;
 					this.Pushed = true;
@@ -11287,7 +11286,7 @@ public class StudentScript : MonoBehaviour
 
 	private void UpdateBurning()
 	{
-		if (this.DistanceToPlayer < 1f && !this.Yandere.Shoved)
+		if (this.DistanceToPlayer < 1f && !this.Yandere.Shoved && !this.Yandere.Egg)
 		{
 			this.PushYandereAway();
 		}
@@ -11751,7 +11750,7 @@ public class StudentScript : MonoBehaviour
 							}
 						}
 					}
-					if (((this.Club == ClubType.Council && !this.Spraying) || (this.Club == ClubType.Delinquent && !this.Injured && !this.RespectEarned)) && (double)this.DistanceToPlayer < 0.5 && this.Yandere.CanMove && (this.Yandere.h != 0f || this.Yandere.v != 0f))
+					if (((this.Club == ClubType.Council && !this.Spraying) || (this.Club == ClubType.Delinquent && !this.Injured && !this.RespectEarned && !this.Vomiting && !this.Emetic && !this.Headache && !this.Sedated && !this.Lethal)) && (double)this.DistanceToPlayer < 0.5 && this.Yandere.CanMove && (this.Yandere.h != 0f || this.Yandere.v != 0f))
 					{
 						if (this.Club == ClubType.Delinquent)
 						{
@@ -13645,6 +13644,14 @@ public class StudentScript : MonoBehaviour
 		{
 			this.LabcoatAttacher.newRenderer.updateWhenOffscreen = true;
 		}
+		if (this.ApronAttacher.newRenderer != null)
+		{
+			this.ApronAttacher.newRenderer.updateWhenOffscreen = true;
+		}
+		if (this.Attacher.newRenderer != null)
+		{
+			this.Attacher.newRenderer.updateWhenOffscreen = true;
+		}
 		if (this.DrinkingFountain != null)
 		{
 			this.DrinkingFountain.Occupied = false;
@@ -13767,6 +13774,10 @@ public class StudentScript : MonoBehaviour
 			this.LowPoly.transform.parent = this.Hips;
 			this.LowPoly.transform.localPosition = new Vector3(0f, -1f, 0f);
 			this.LowPoly.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+		}
+		if (this.SmartPhone.transform.parent == this.ItemParent)
+		{
+			this.SmartPhone.SetActive(false);
 		}
 	}
 
