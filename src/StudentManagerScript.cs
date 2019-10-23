@@ -1534,6 +1534,7 @@ public class StudentManagerScript : MonoBehaviour
 						studentScript.Pestered = 0;
 						studentScript.Distracting = false;
 						studentScript.Distracted = false;
+						studentScript.Tripping = false;
 						studentScript.Ignoring = false;
 						studentScript.Pushable = false;
 						studentScript.Vomiting = false;
@@ -2780,17 +2781,42 @@ public class StudentManagerScript : MonoBehaviour
 	public void GetNearestFountain(StudentScript Student)
 	{
 		DrinkingFountainScript drinkingFountainScript = this.DrinkingFountains[1];
-		this.ID = 2;
-		while (this.ID < 8)
+		bool flag = false;
+		this.ID = 1;
+		while (drinkingFountainScript.Occupied)
 		{
-			if (Vector3.Distance(Student.transform.position, this.DrinkingFountains[this.ID].transform.position) < Vector3.Distance(Student.transform.position, drinkingFountainScript.transform.position) && !this.DrinkingFountains[this.ID].Occupied)
-			{
-				drinkingFountainScript = this.DrinkingFountains[this.ID];
-			}
+			drinkingFountainScript = this.DrinkingFountains[1 + this.ID];
 			this.ID++;
+			if (1 + this.ID == this.DrinkingFountains.Length)
+			{
+				flag = true;
+				break;
+			}
 		}
-		Student.DrinkingFountain = drinkingFountainScript;
-		Student.DrinkingFountain.Occupied = true;
+		if (flag)
+		{
+			Student.EquipCleaningItems();
+			Student.EatingSnack = false;
+			Student.Private = false;
+			Student.Routine = true;
+			Student.StudentManager.UpdateMe(Student.StudentID);
+			Student.CurrentDestination = Student.Destinations[Student.Phase];
+			Student.Pathfinding.target = Student.Destinations[Student.Phase];
+		}
+		else
+		{
+			this.ID = 2;
+			while (this.ID < 8)
+			{
+				if (Vector3.Distance(Student.transform.position, this.DrinkingFountains[this.ID].transform.position) < Vector3.Distance(Student.transform.position, drinkingFountainScript.transform.position) && !this.DrinkingFountains[this.ID].Occupied)
+				{
+					drinkingFountainScript = this.DrinkingFountains[this.ID];
+				}
+				this.ID++;
+			}
+			Student.DrinkingFountain = drinkingFountainScript;
+			Student.DrinkingFountain.Occupied = true;
+		}
 	}
 
 	public void Save()

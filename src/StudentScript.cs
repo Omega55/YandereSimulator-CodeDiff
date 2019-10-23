@@ -4153,6 +4153,13 @@ public class StudentScript : MonoBehaviour
 								{
 									if (this.ClubActivityPhase == 0)
 									{
+										if (this.ClubTimer == 0f)
+										{
+											this.MyPlate.parent = null;
+											this.MyPlate.gameObject.SetActive(true);
+											this.MyPlate.position = this.OriginalPlatePosition;
+											this.MyPlate.rotation = this.OriginalPlateRotation;
+										}
 										this.ClubTimer += Time.deltaTime;
 										if (this.ClubTimer > 60f)
 										{
@@ -13861,7 +13868,11 @@ public class StudentScript : MonoBehaviour
 			this.SpawnAlarmDisc();
 			if (this.Club == ClubType.Cooking)
 			{
+				this.IdleAnim = this.OriginalIdleAnim;
+				this.WalkAnim = this.OriginalWalkAnim;
+				this.LeanAnim = this.OriginalLeanAnim;
 				this.ClubActivityPhase = 0;
+				this.ClubTimer = 0f;
 			}
 			this.EmptyHands();
 		}

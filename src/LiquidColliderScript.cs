@@ -63,7 +63,7 @@ public class LiquidColliderScript : MonoBehaviour
 			StudentScript component = other.gameObject.GetComponent<StudentScript>();
 			if (component != null)
 			{
-				if (!component.BeenSplashed && component.StudentID > 1 && component.StudentID != 10 && !component.Teacher && component.Club != ClubType.Council && !component.Fleeing)
+				if (!component.BeenSplashed && component.StudentID > 1 && component.StudentID != 10 && !component.Teacher && component.Club != ClubType.Council && !component.Fleeing && component.CurrentAction != StudentActionType.Sunbathe)
 				{
 					AudioSource.PlayClipAtPoint(this.SplashSound, base.transform.position);
 					UnityEngine.Object.Instantiate<GameObject>(this.Splash, new Vector3(base.transform.position.x, 1.5f, base.transform.position.z), Quaternion.identity);
@@ -96,6 +96,15 @@ public class LiquidColliderScript : MonoBehaviour
 					component.Routine = false;
 					component.DodgeSpeed = 2f;
 					component.Dodging = true;
+					if (component.Following)
+					{
+						component.Hearts.emission.enabled = false;
+						component.Yandere.Followers--;
+						component.Following = false;
+						component.CurrentDestination = component.Destinations[component.Phase];
+						component.Pathfinding.target = component.Destinations[component.Phase];
+						component.Pathfinding.speed = 1f;
+					}
 				}
 			}
 		}

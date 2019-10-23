@@ -32,6 +32,7 @@ public static class Globals
 		WeaponGlobals.DeleteAll();
 		TutorialGlobals.DeleteAll();
 		CounselorGlobals.DeleteAll();
+		YancordGlobals.DeleteAll();
 		GameGlobals.Profile = profile;
 	}
 

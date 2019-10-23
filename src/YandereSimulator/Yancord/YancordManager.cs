@@ -94,7 +94,9 @@ namespace YandereSimulator.Yancord
 		{
 			if (!YancordGlobals.JoinedYancord)
 			{
+				Debug.Log("This is the player's first time launching Yancord.");
 				YancordGlobals.CurrentConversation = 1;
+				Debug.Log("YancordGlobals.CurrentConversation is: " + YancordGlobals.CurrentConversation);
 				if (this.ConversationID != YancordGlobals.CurrentConversation)
 				{
 					base.enabled = false;
@@ -106,6 +108,7 @@ namespace YandereSimulator.Yancord
 			}
 			else
 			{
+				Debug.Log("The player has launched Yancord before.");
 				if (this.ConversationID != YancordGlobals.CurrentConversation)
 				{
 					base.enabled = false;
