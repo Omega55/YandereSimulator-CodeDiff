@@ -132,13 +132,13 @@ public class StreetShopScript : MonoBehaviour
 		{
 			if (this.InputDevice.Type == InputDeviceType.MouseAndKeyboard)
 			{
-				this.RotationX -= Input.GetAxis("Mouse Y");
-				this.RotationY += Input.GetAxis("Mouse X");
+				this.RotationX -= Input.GetAxis("Mouse Y") * (this.BinocularCamera.fieldOfView / 60f);
+				this.RotationY += Input.GetAxis("Mouse X") * (this.BinocularCamera.fieldOfView / 60f);
 			}
 			else
 			{
-				this.RotationX -= Input.GetAxis("Mouse Y") * 0.1f;
-				this.RotationY += Input.GetAxis("Mouse X") * 0.1f;
+				this.RotationX -= Input.GetAxis("Mouse Y") * (this.BinocularCamera.fieldOfView / 60f);
+				this.RotationY += Input.GetAxis("Mouse X") * (this.BinocularCamera.fieldOfView / 60f);
 			}
 			this.BinocularCamera.transform.eulerAngles = new Vector3(this.RotationX, this.RotationY + 90f, 0f);
 			if (this.RotationX > 45f)

@@ -323,6 +323,8 @@ public class YandereScript : MonoBehaviour
 
 	public float ClothingTimer;
 
+	public float BreakUpTimer;
+
 	public float CanMoveTimer;
 
 	public float RummageTimer;
@@ -586,6 +588,8 @@ public class YandereScript : MonoBehaviour
 	public bool PreparedForStruggle;
 
 	public bool CrouchButtonDown;
+
+	public bool FightHasBrokenUp;
 
 	public bool UsingController;
 
@@ -5906,6 +5910,14 @@ public class YandereScript : MonoBehaviour
 				AudioSource.PlayClipAtPoint(this.CreepyGiggles[UnityEngine.Random.Range(0, this.CreepyGiggles.Length)], base.transform.position);
 				this.InsaneLines.Play();
 				this.GiggleTimer = 0f;
+			}
+		}
+		if (this.FightHasBrokenUp)
+		{
+			this.BreakUpTimer = Mathf.MoveTowards(this.BreakUpTimer, 0f, Time.deltaTime);
+			if (this.BreakUpTimer == 0f)
+			{
+				this.FightHasBrokenUp = false;
 			}
 		}
 	}

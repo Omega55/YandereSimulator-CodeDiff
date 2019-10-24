@@ -5709,28 +5709,40 @@ public class StudentScript : MonoBehaviour
 							{
 								if (this.SunbathePhase == 0)
 								{
-									if (this.StudentManager.CommunalLocker.Student == null)
-									{
-										this.StudentManager.CommunalLocker.Open = true;
-										this.StudentManager.CommunalLocker.Student = this;
-										this.StudentManager.CommunalLocker.SpawnSteam();
-										this.MustChangeClothing = true;
-										this.Schoolwear = 2;
-										this.SunbathePhase++;
-									}
-									else
-									{
-										this.CharacterAnimation.CrossFade(this.IdleAnim);
-									}
+									this.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
+									this.StudentManager.CommunalLocker.Open = true;
+									this.StudentManager.CommunalLocker.SpawnSteamNoSideEffects(this);
+									this.MustChangeClothing = true;
+									this.ChangeClothingPhase++;
+									this.SunbathePhase++;
 								}
 								else if (this.SunbathePhase == 1)
 								{
-									if (!this.StudentManager.CommunalLocker.SteamCountdown)
+									this.CharacterAnimation.CrossFade(this.StripAnim);
+									this.Pathfinding.canSearch = false;
+									this.Pathfinding.canMove = false;
+									if (this.CharacterAnimation[this.StripAnim].time >= 1.5f)
 									{
-										this.Pathfinding.target = this.StudentManager.SunbatheSpots[this.StudentID];
-										this.CurrentDestination = this.StudentManager.SunbatheSpots[this.StudentID];
-										this.StudentManager.CommunalLocker.Student = null;
-										this.SunbathePhase++;
+										if (this.Schoolwear != 2)
+										{
+											this.Schoolwear = 2;
+											this.ChangeSchoolwear();
+										}
+										if (this.CharacterAnimation[this.StripAnim].time > this.CharacterAnimation[this.StripAnim].length)
+										{
+											this.Pathfinding.canSearch = true;
+											this.Pathfinding.canMove = true;
+											this.Stripping = false;
+											if (!this.StudentManager.CommunalLocker.SteamCountdown)
+											{
+												this.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
+												this.Destinations[this.Phase] = this.StudentManager.SunbatheSpots[this.StudentID];
+												this.Pathfinding.target = this.StudentManager.SunbatheSpots[this.StudentID];
+												this.CurrentDestination = this.StudentManager.SunbatheSpots[this.StudentID];
+												this.StudentManager.CommunalLocker.Student = null;
+												this.SunbathePhase++;
+											}
+										}
 									}
 								}
 								else if (this.SunbathePhase == 2)
@@ -5990,7 +6002,7 @@ public class StudentScript : MonoBehaviour
 					if (this.Persona == PersonaType.Dangerous)
 					{
 						this.Yandere.Pursuer = this;
-						Debug.Log("This student council member is running to pepper spray Yandere-chan.");
+						Debug.Log("This student council member is running to intercept Yandere-chan.");
 						if (this.StudentManager.CombatMinigame.Path > 3 && this.StudentManager.CombatMinigame.Path < 7)
 						{
 							this.ReturnToRoutine();
@@ -6912,6 +6924,7 @@ public class StudentScript : MonoBehaviour
 												this.BloodPool.parent = this.RightHand;
 												this.BloodPool.localPosition = new Vector3(0f, 0f, 0f);
 												this.BloodPool.localEulerAngles = new Vector3(0f, 0f, 0f);
+												this.BloodPool.GetComponent<WeaponScript>().Returner = this;
 											}
 											if (this.CharacterAnimation["f02_teacherPickUp_00"].time >= this.CharacterAnimation["f02_teacherPickUp_00"].length)
 											{
@@ -6929,6 +6942,7 @@ public class StudentScript : MonoBehaviour
 											this.BloodPool.position = this.StudentManager.WeaponBoxSpot.parent.position + new Vector3(0f, 1f, 0f);
 											this.BloodPool.eulerAngles = new Vector3(0f, 90f, 0f);
 											this.BloodPool.GetComponent<WeaponScript>().Prompt.enabled = true;
+											this.BloodPool.GetComponent<WeaponScript>().Returner = null;
 											this.BloodPool.GetComponent<WeaponScript>().enabled = true;
 											this.BloodPool.GetComponent<WeaponScript>().Drop();
 											this.BloodPool = null;
@@ -8639,6 +8653,7 @@ public class StudentScript : MonoBehaviour
 							}
 							if (!this.WitnessedBloodyWeapon && this.StudentID > 1 && !flag3 && this.CurrentAction != StudentActionType.SitAndTakeNotes && this.Indoors && !flag2 && this.Club != ClubType.Delinquent && !this.BloodPool.GetComponent<WeaponScript>().Dangerous && this.BloodPool.GetComponent<WeaponScript>().Returner == null)
 							{
+								Debug.Log(this.Name + " has picked up a weapon with intent to return it to its original location.");
 								this.CharacterAnimation[this.PickUpAnim].time = 0f;
 								this.BloodPool.GetComponent<WeaponScript>().Prompt.Hide();
 								this.BloodPool.GetComponent<WeaponScript>().Prompt.enabled = false;
@@ -12018,7 +12033,19 @@ public class StudentScript : MonoBehaviour
 		}
 		if (this.ReturningMisplacedWeapon)
 		{
+			Debug.Log(this.Name + " was in the process of returning a weapon when they were attacked.");
 			this.DropMisplacedWeapon();
+		}
+		if (this.BloodPool != null)
+		{
+			Debug.Log(this.Name + "'s BloodPool was not null.");
+			if (this.BloodPool.GetComponent<WeaponScript>() != null && this.BloodPool.GetComponent<WeaponScript>().Returner == this)
+			{
+				this.BloodPool.GetComponent<WeaponScript>().Returner = null;
+				this.BloodPool.GetComponent<WeaponScript>().Drop();
+				this.BloodPool.GetComponent<WeaponScript>().enabled = true;
+				this.BloodPool = null;
+			}
 		}
 		if (!this.Male)
 		{
@@ -12934,7 +12961,6 @@ public class StudentScript : MonoBehaviour
 				this.TargetDistance = 1f;
 				this.StudentManager.UpdateStudents(0);
 				Debug.Log("Sprinting 10");
-				this.CharacterAnimation.CrossFade(this.SprintAnim);
 				this.Routine = false;
 				this.Fleeing = true;
 				this.Halt = true;
@@ -13037,8 +13063,31 @@ public class StudentScript : MonoBehaviour
 				}
 				else if (!this.Yandere.Chased)
 				{
-					Debug.Log("A teacher has reached ChaseYandere through PersonaReaction.");
-					this.ChaseYandere();
+					if (this.Yandere.FightHasBrokenUp)
+					{
+						Debug.Log("This teacher is returning to normal after witnessing a SC member break up a fight.");
+						this.WitnessedMurder = false;
+						this.PinDownWitness = false;
+						this.Alarmed = false;
+						this.Reacted = false;
+						this.Routine = true;
+						this.Grudge = false;
+						this.AlarmTimer = 0f;
+						this.PreviousEyeShrink = 0f;
+						this.EyeShrink = 0f;
+						this.PreviousAlarm = 0f;
+						this.MurdersWitnessed = 0;
+						this.Concern = 0;
+						this.Witnessed = StudentWitnessType.None;
+						this.GameOverCause = GameOverType.None;
+						this.CurrentDestination = this.Destinations[this.Phase];
+						this.Pathfinding.target = this.Destinations[this.Phase];
+					}
+					else
+					{
+						Debug.Log("A teacher has reached ChaseYandere through PersonaReaction.");
+						this.ChaseYandere();
+					}
 				}
 			}
 			else if (this.WitnessedCorpse)
@@ -13088,6 +13137,7 @@ public class StudentScript : MonoBehaviour
 
 	private void BeginStruggle()
 	{
+		Debug.Log("My name is " + this.Name + " and now I am fighting Yandere-chan.");
 		if (this.Yandere.Dragging)
 		{
 			this.Yandere.Ragdoll.GetComponent<RagdollScript>().StopDragging();
@@ -13238,7 +13288,6 @@ public class StudentScript : MonoBehaviour
 			}
 			else if (scheduleBlock2.destination == "Follow")
 			{
-				Debug.Log("Currently setting destination for block #" + this.ID);
 				this.Destinations[this.ID] = this.StudentManager.Students[11].transform;
 			}
 			else if (scheduleBlock2.destination == "Cuddle")
@@ -13856,7 +13905,7 @@ public class StudentScript : MonoBehaviour
 				this.Investigating = false;
 			}
 			this.SchoolwearUnavailable = true;
-			this.Distracted = false;
+			this.Distracted = true;
 			this.Splashed = true;
 			this.Routine = false;
 			this.Wet = true;
@@ -15018,8 +15067,11 @@ public class StudentScript : MonoBehaviour
 		}
 		else
 		{
+			Debug.Log("A student council member is breaking up the fight.");
 			this.StudentManager.CombatMinigame.Delinquent.CharacterAnimation.Play("stopFighting_00");
 			this.Yandere.CharacterAnimation.Play("f02_stopFighting_00");
+			this.Yandere.FightHasBrokenUp = true;
+			this.Yandere.BreakUpTimer = 10f;
 			this.StudentManager.CombatMinigame.Path = 7;
 			this.CharacterAnimation.Play(this.BreakUpAnim);
 			this.BreakingUpFight = true;
@@ -15423,7 +15475,6 @@ public class StudentScript : MonoBehaviour
 
 	public void EmptyHands()
 	{
-		Debug.Log(this.Name + " was told to empty their hands.");
 		bool flag = false;
 		if ((this.SentHome && this.SmartPhone.activeInHierarchy) || this.PhotoEvidence || (this.Persona == PersonaType.PhoneAddict && !this.Dying && !this.Wet))
 		{

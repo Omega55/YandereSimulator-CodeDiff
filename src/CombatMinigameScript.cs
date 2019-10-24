@@ -126,7 +126,7 @@ public class CombatMinigameScript : MonoBehaviour
 			this.AdjustMidpoint();
 			if (this.Timer > 1.5f)
 			{
-				Debug.Log("The character is being instructed to perform the first combat animation.");
+				Debug.Log(base.name + " is being instructed to perform the first combat animation of the combat minigame.");
 				this.Delinquent.CharacterAnimation.CrossFade(this.Prefix + "Delinquent_CombatA");
 				this.Yandere.CharacterAnimation.CrossFade("Yandere_CombatA");
 				this.CameraStart = this.MainCamera.localPosition;
