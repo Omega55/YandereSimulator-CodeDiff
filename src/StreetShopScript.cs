@@ -47,6 +47,8 @@ public class StreetShopScript : MonoBehaviour
 
 	public float Zoom;
 
+	public int ShopkeeperPosition = 500;
+
 	public int Limit;
 
 	public bool Binoculars;
@@ -194,6 +196,7 @@ public class StreetShopScript : MonoBehaviour
 		this.StreetShopInterface.SpeechBubbleLabel.text = this.ShopkeeperSpeeches[1];
 		this.StreetShopInterface.ShopkeeperPortraits = this.ShopkeeperPortraits;
 		this.StreetShopInterface.ShopkeeperSpeeches = this.ShopkeeperSpeeches;
+		this.StreetShopInterface.ShopkeeperPosition = this.ShopkeeperPosition;
 		this.StreetShopInterface.AdultProducts = this.AdultProducts;
 		this.StreetShopInterface.SpeechPhase = 0;
 		this.StreetShopInterface.Costs = this.Costs;

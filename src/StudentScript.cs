@@ -1761,12 +1761,12 @@ public class StudentScript : MonoBehaviour
 			}
 			else if (this.StudentID == 10)
 			{
-				if (this.StudentManager.Students[11] != null)
+				this.LovestruckTarget = 11;
+				if (this.StudentManager.Students[11] != null && (float)StudentGlobals.GetStudentReputation(10) > -33.33333f)
 				{
 					this.StudentManager.Patrols.List[this.StudentID].parent = this.StudentManager.Students[11].transform;
 					this.StudentManager.Patrols.List[this.StudentID].localEulerAngles = new Vector3(0f, 0f, 0f);
 					this.StudentManager.Patrols.List[this.StudentID].localPosition = new Vector3(0f, 0f, 0f);
-					this.LovestruckTarget = 11;
 					this.VisionDistance = 12f;
 					this.VomitPhase = -1;
 					this.Indoors = true;
@@ -1786,35 +1786,48 @@ public class StudentScript : MonoBehaviour
 				}
 				else
 				{
-					Debug.Log("Osana is gone, so we're changing this student's destinations.");
-					ScheduleBlock scheduleBlock4 = this.ScheduleBlocks[2];
-					scheduleBlock4.destination = "Mourn";
-					scheduleBlock4.action = "Mourn";
-					ScheduleBlock scheduleBlock5 = this.ScheduleBlocks[3];
-					scheduleBlock5.destination = "Seat";
-					scheduleBlock5.action = "Sit";
-					ScheduleBlock scheduleBlock6 = this.ScheduleBlocks[4];
-					scheduleBlock6.destination = "Mourn";
-					scheduleBlock6.action = "Mourn";
-					ScheduleBlock scheduleBlock7 = this.ScheduleBlocks[5];
-					scheduleBlock7.destination = "Seat";
-					scheduleBlock7.action = "Sit";
-					ScheduleBlock scheduleBlock8 = this.ScheduleBlocks[6];
-					scheduleBlock8.destination = "Locker";
-					scheduleBlock8.action = "Shoes";
-					ScheduleBlock scheduleBlock9 = this.ScheduleBlocks[7];
-					scheduleBlock9.destination = "Exit";
-					scheduleBlock9.action = "Exit";
-					ScheduleBlock scheduleBlock10 = this.ScheduleBlocks[8];
-					scheduleBlock10.destination = "Exit";
-					scheduleBlock10.action = "Exit";
-					ScheduleBlock scheduleBlock11 = this.ScheduleBlocks[9];
+					Debug.Log("Due to the circumstances, we're changing Raibaru's destinations.");
+					if (this.StudentManager.Students[11] == null)
+					{
+						ScheduleBlock scheduleBlock4 = this.ScheduleBlocks[2];
+						scheduleBlock4.destination = "Mourn";
+						scheduleBlock4.action = "Mourn";
+						ScheduleBlock scheduleBlock5 = this.ScheduleBlocks[4];
+						scheduleBlock5.destination = "Mourn";
+						scheduleBlock5.action = "Mourn";
+						this.Persona = PersonaType.Heroic;
+					}
+					else
+					{
+						ScheduleBlock scheduleBlock6 = this.ScheduleBlocks[2];
+						scheduleBlock6.destination = "Seat";
+						scheduleBlock6.action = "Sit";
+						ScheduleBlock scheduleBlock7 = this.ScheduleBlocks[4];
+						scheduleBlock7.destination = "Seat";
+						scheduleBlock7.action = "Sit";
+					}
+					ScheduleBlock scheduleBlock8 = this.ScheduleBlocks[3];
+					scheduleBlock8.destination = "Seat";
+					scheduleBlock8.action = "Sit";
+					ScheduleBlock scheduleBlock9 = this.ScheduleBlocks[5];
+					scheduleBlock9.destination = "Seat";
+					scheduleBlock9.action = "Sit";
+					ScheduleBlock scheduleBlock10 = this.ScheduleBlocks[6];
+					scheduleBlock10.destination = "Locker";
+					scheduleBlock10.action = "Shoes";
+					ScheduleBlock scheduleBlock11 = this.ScheduleBlocks[7];
 					scheduleBlock11.destination = "Exit";
 					scheduleBlock11.action = "Exit";
+					ScheduleBlock scheduleBlock12 = this.ScheduleBlocks[8];
+					scheduleBlock12.destination = "Exit";
+					scheduleBlock12.action = "Exit";
+					ScheduleBlock scheduleBlock13 = this.ScheduleBlocks[9];
+					scheduleBlock13.destination = "Exit";
+					scheduleBlock13.action = "Exit";
+					this.TargetDistance = 0.5f;
 					this.IdleAnim = this.BulliedIdleAnim;
 					this.WalkAnim = this.BulliedWalkAnim;
-					this.TargetDistance = 0.5f;
-					this.Persona = PersonaType.Heroic;
+					this.OriginalIdleAnim = this.IdleAnim;
 				}
 				this.PhotoPatience = 0f;
 				this.OriginalWalkAnim = this.WalkAnim;
@@ -1838,12 +1851,12 @@ public class StudentScript : MonoBehaviour
 				if (this.StudentManager.Students[10] == null)
 				{
 					Debug.Log("Raibaru is gone, so Osana's schedule has changed.");
-					ScheduleBlock scheduleBlock12 = this.ScheduleBlocks[2];
-					scheduleBlock12.destination = "Mourn";
-					scheduleBlock12.action = "Mourn";
-					ScheduleBlock scheduleBlock13 = this.ScheduleBlocks[7];
-					scheduleBlock13.destination = "Mourn";
-					scheduleBlock13.action = "Mourn";
+					ScheduleBlock scheduleBlock14 = this.ScheduleBlocks[2];
+					scheduleBlock14.destination = "Mourn";
+					scheduleBlock14.action = "Mourn";
+					ScheduleBlock scheduleBlock15 = this.ScheduleBlocks[7];
+					scheduleBlock15.destination = "Mourn";
+					scheduleBlock15.action = "Mourn";
 					this.IdleAnim = this.BulliedIdleAnim;
 					this.WalkAnim = this.BulliedWalkAnim;
 				}
@@ -1869,9 +1882,9 @@ public class StudentScript : MonoBehaviour
 				if (DatingGlobals.SuitorProgress == 2)
 				{
 					this.Partner = ((this.StudentID != 30) ? this.StudentManager.Students[30] : this.StudentManager.Students[28]);
-					ScheduleBlock scheduleBlock14 = this.ScheduleBlocks[4];
-					scheduleBlock14.destination = "Cuddle";
-					scheduleBlock14.action = "Cuddle";
+					ScheduleBlock scheduleBlock16 = this.ScheduleBlocks[4];
+					scheduleBlock16.destination = "Cuddle";
+					scheduleBlock16.action = "Cuddle";
 				}
 			}
 			else if (this.StudentID == 31)
@@ -1926,33 +1939,33 @@ public class StudentScript : MonoBehaviour
 					this.Persona = PersonaType.Loner;
 					if (!SchoolGlobals.RoofFence)
 					{
-						ScheduleBlock scheduleBlock15 = this.ScheduleBlocks[2];
-						scheduleBlock15.destination = "Sulk";
-						scheduleBlock15.action = "Sulk";
-						ScheduleBlock scheduleBlock16 = this.ScheduleBlocks[4];
-						scheduleBlock16.destination = "Sulk";
-						scheduleBlock16.action = "Sulk";
-						ScheduleBlock scheduleBlock17 = this.ScheduleBlocks[7];
+						ScheduleBlock scheduleBlock17 = this.ScheduleBlocks[2];
 						scheduleBlock17.destination = "Sulk";
 						scheduleBlock17.action = "Sulk";
-						ScheduleBlock scheduleBlock18 = this.ScheduleBlocks[8];
+						ScheduleBlock scheduleBlock18 = this.ScheduleBlocks[4];
 						scheduleBlock18.destination = "Sulk";
 						scheduleBlock18.action = "Sulk";
+						ScheduleBlock scheduleBlock19 = this.ScheduleBlocks[7];
+						scheduleBlock19.destination = "Sulk";
+						scheduleBlock19.action = "Sulk";
+						ScheduleBlock scheduleBlock20 = this.ScheduleBlocks[8];
+						scheduleBlock20.destination = "Sulk";
+						scheduleBlock20.action = "Sulk";
 					}
 					else
 					{
-						ScheduleBlock scheduleBlock19 = this.ScheduleBlocks[2];
-						scheduleBlock19.destination = "Seat";
-						scheduleBlock19.action = "Sit";
-						ScheduleBlock scheduleBlock20 = this.ScheduleBlocks[4];
-						scheduleBlock20.destination = "Seat";
-						scheduleBlock20.action = "Sit";
-						ScheduleBlock scheduleBlock21 = this.ScheduleBlocks[7];
+						ScheduleBlock scheduleBlock21 = this.ScheduleBlocks[2];
 						scheduleBlock21.destination = "Seat";
 						scheduleBlock21.action = "Sit";
-						ScheduleBlock scheduleBlock22 = this.ScheduleBlocks[8];
+						ScheduleBlock scheduleBlock22 = this.ScheduleBlocks[4];
 						scheduleBlock22.destination = "Seat";
 						scheduleBlock22.action = "Sit";
+						ScheduleBlock scheduleBlock23 = this.ScheduleBlocks[7];
+						scheduleBlock23.destination = "Seat";
+						scheduleBlock23.action = "Sit";
+						ScheduleBlock scheduleBlock24 = this.ScheduleBlocks[8];
+						scheduleBlock24.destination = "Seat";
+						scheduleBlock24.action = "Sit";
 					}
 				}
 			}
@@ -2091,29 +2104,29 @@ public class StudentScript : MonoBehaviour
 					}
 					if (!this.Grudge)
 					{
-						ScheduleBlock scheduleBlock23 = this.ScheduleBlocks[2];
-						scheduleBlock23.destination = "Sleuth";
-						scheduleBlock23.action = "Sleuth";
-						ScheduleBlock scheduleBlock24 = this.ScheduleBlocks[4];
-						scheduleBlock24.destination = "Sleuth";
-						scheduleBlock24.action = "Sleuth";
-						ScheduleBlock scheduleBlock25 = this.ScheduleBlocks[7];
+						ScheduleBlock scheduleBlock25 = this.ScheduleBlocks[2];
 						scheduleBlock25.destination = "Sleuth";
 						scheduleBlock25.action = "Sleuth";
+						ScheduleBlock scheduleBlock26 = this.ScheduleBlocks[4];
+						scheduleBlock26.destination = "Sleuth";
+						scheduleBlock26.action = "Sleuth";
+						ScheduleBlock scheduleBlock27 = this.ScheduleBlocks[7];
+						scheduleBlock27.destination = "Sleuth";
+						scheduleBlock27.action = "Sleuth";
 					}
 					else
 					{
 						this.StalkTarget = this.Yandere.transform;
 						this.SleuthTarget = this.Yandere.transform;
-						ScheduleBlock scheduleBlock26 = this.ScheduleBlocks[2];
-						scheduleBlock26.destination = "Stalk";
-						scheduleBlock26.action = "Stalk";
-						ScheduleBlock scheduleBlock27 = this.ScheduleBlocks[4];
-						scheduleBlock27.destination = "Stalk";
-						scheduleBlock27.action = "Stalk";
-						ScheduleBlock scheduleBlock28 = this.ScheduleBlocks[7];
+						ScheduleBlock scheduleBlock28 = this.ScheduleBlocks[2];
 						scheduleBlock28.destination = "Stalk";
 						scheduleBlock28.action = "Stalk";
+						ScheduleBlock scheduleBlock29 = this.ScheduleBlocks[4];
+						scheduleBlock29.destination = "Stalk";
+						scheduleBlock29.action = "Stalk";
+						ScheduleBlock scheduleBlock30 = this.ScheduleBlocks[7];
+						scheduleBlock30.destination = "Stalk";
+						scheduleBlock30.action = "Stalk";
 					}
 				}
 				else if (SchoolGlobals.SchoolAtmosphere <= 0.9f)
@@ -2192,8 +2205,8 @@ public class StudentScript : MonoBehaviour
 				if (DateGlobals.Weekday == DayOfWeek.Friday)
 				{
 					Debug.Log("It's Friday, and " + this.Name + " should leave a note in Senpai's locker ar 5:00 PM.");
-					ScheduleBlock scheduleBlock29 = this.ScheduleBlocks[7];
-					scheduleBlock29.time = 17f;
+					ScheduleBlock scheduleBlock31 = this.ScheduleBlocks[7];
+					scheduleBlock31.time = 17f;
 				}
 			}
 			if (!this.Teacher && this.Name != "Random")
@@ -2256,9 +2269,9 @@ public class StudentScript : MonoBehaviour
 				if (DateGlobals.Weekday == DayOfWeek.Friday)
 				{
 					Debug.Log("It's Friday, so the art club is changing their club activity to painting the cherry tree.");
-					ScheduleBlock scheduleBlock30 = this.ScheduleBlocks[7];
-					scheduleBlock30.destination = "Paint";
-					scheduleBlock30.action = "Paint";
+					ScheduleBlock scheduleBlock32 = this.ScheduleBlocks[7];
+					scheduleBlock32.destination = "Paint";
+					scheduleBlock32.action = "Paint";
 				}
 				this.ClubMemberID = this.StudentID - 40;
 				this.Painting = this.StudentManager.FridayPaintings[this.ClubMemberID];
@@ -2553,15 +2566,15 @@ public class StudentScript : MonoBehaviour
 			{
 				if (this.StudentID < 86)
 				{
-					ScheduleBlock scheduleBlock31 = this.ScheduleBlocks[6];
-					scheduleBlock31.destination = "Meeting";
-					scheduleBlock31.action = "Meeting";
+					ScheduleBlock scheduleBlock33 = this.ScheduleBlocks[6];
+					scheduleBlock33.destination = "Meeting";
+					scheduleBlock33.action = "Meeting";
 				}
 				else
 				{
-					ScheduleBlock scheduleBlock32 = this.ScheduleBlocks[5];
-					scheduleBlock32.destination = "Meeting";
-					scheduleBlock32.action = "Meeting";
+					ScheduleBlock scheduleBlock34 = this.ScheduleBlocks[5];
+					scheduleBlock34.destination = "Meeting";
+					scheduleBlock34.action = "Meeting";
 				}
 				this.GetDestinations();
 			}
@@ -3212,11 +3225,9 @@ public class StudentScript : MonoBehaviour
 					}
 					if (this.StudentID == 1)
 					{
-						Debug.Log("Senpai's phase has increased to " + this.Phase.ToString() + ".");
 					}
 					if (this.StudentID == 11)
 					{
-						Debug.Log("Osana's phase has increased to " + this.Phase.ToString() + ".");
 					}
 					if (this.Schoolwear > 1 && this.Destinations[this.Phase] == this.MyLocker)
 					{
@@ -7089,6 +7100,7 @@ public class StudentScript : MonoBehaviour
 				}
 				else if (this.DistanceToDestination > 1f)
 				{
+					Debug.Log("Raibaru is being told to perform her walk animation.");
 					this.CharacterAnimation.CrossFade(this.OriginalWalkAnim);
 					this.Pathfinding.canMove = true;
 					this.Pathfinding.speed = 1f;
@@ -8637,6 +8649,7 @@ public class StudentScript : MonoBehaviour
 					this.CharacterAnimation.CrossFade(this.InspectBloodAnim);
 					this.Pathfinding.canSearch = false;
 					this.Pathfinding.canMove = false;
+					this.Distracted = true;
 					if (this.CharacterAnimation[this.InspectBloodAnim].time >= this.CharacterAnimation[this.InspectBloodAnim].length || this.Persona == PersonaType.Strict)
 					{
 						bool flag2 = false;
@@ -8668,6 +8681,8 @@ public class StudentScript : MonoBehaviour
 									this.Subtitle.UpdateLabel(SubtitleType.ReturningWeapon, 0, 5f);
 								}
 								this.ReturningMisplacedWeapon = true;
+								this.ReportingBlood = false;
+								this.Distracted = false;
 								this.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
 							}
 						}
@@ -8828,6 +8843,10 @@ public class StudentScript : MonoBehaviour
 					this.CharacterAnimation.CrossFade(this.WalkAnim);
 					if (this.DistanceToDestination < 1.1f)
 					{
+						if (this.StudentManager.BloodReporter == this)
+						{
+							this.StudentManager.BloodReporter = null;
+						}
 						this.BloodPool.parent = null;
 						this.BloodPool.position = this.BloodPool.GetComponent<WeaponScript>().StartingPosition;
 						this.BloodPool.eulerAngles = this.BloodPool.GetComponent<WeaponScript>().StartingRotation;
@@ -9061,7 +9080,7 @@ public class StudentScript : MonoBehaviour
 					Collider myCollider = this.Yandere.WeaponManager.Weapons[this.ID].MyCollider;
 					if (myCollider != null && this.CanSeeObject(myCollider.gameObject, myCollider.transform.position))
 					{
-						Debug.Log(this.Name + " has seen a weapon.");
+						Debug.Log(this.Name + " has seen a dropped weapon on the ground.");
 						this.BloodPool = myCollider.transform;
 						if (this.Yandere.WeaponManager.Weapons[this.ID].Blood.enabled)
 						{
@@ -9241,13 +9260,13 @@ public class StudentScript : MonoBehaviour
 					{
 						this.WitnessCooldownTimer = Mathf.MoveTowards(this.WitnessCooldownTimer, 0f, Time.deltaTime);
 					}
-					else if ((this.StudentID == this.StudentManager.CurrentID || (this.Persona == PersonaType.Strict && this.Fleeing)) && !this.Wet && !this.Guarding && !this.IgnoreBlood && !this.InvestigatingPossibleDeath && !this.Emetic && !this.Sedated && !this.Headache && !this.SentHome)
+					else if ((this.StudentID == this.StudentManager.CurrentID || (this.Persona == PersonaType.Strict && this.Fleeing)) && !this.Wet && !this.Guarding && !this.IgnoreBlood && !this.InvestigatingPossibleDeath && !this.Emetic && !this.Sedated && !this.Headache && !this.SentHome && !this.Slave)
 					{
 						if (this.BloodPool == null && this.StudentManager.Police.LimbParent.childCount > 0)
 						{
 							this.UpdateVisibleLimbs();
 						}
-						if (this.BloodPool == null && (this.Police.BloodyWeapons > 0 || this.Yandere.WeaponManager.MisplacedWeapons > 0) && !this.InvestigatingPossibleLimb)
+						if (this.BloodPool == null && (this.Police.BloodyWeapons > 0 || this.Yandere.WeaponManager.MisplacedWeapons > 0) && !this.InvestigatingPossibleLimb && !this.Alarmed)
 						{
 							this.UpdateVisibleWeapons();
 						}
@@ -9303,7 +9322,7 @@ public class StudentScript : MonoBehaviour
 				this.PreviousAlarm = this.Alarm;
 				if (this.DistanceToPlayer < this.VisionDistance - this.ChameleonBonus)
 				{
-					if (!this.Talking && !this.Spraying && !this.SentHome)
+					if (!this.Talking && !this.Spraying && !this.SentHome && !this.Slave)
 					{
 						if (!this.Yandere.Noticed)
 						{
@@ -9473,6 +9492,7 @@ public class StudentScript : MonoBehaviour
 			if (this.ReturningMisplacedWeapon)
 			{
 				this.DropMisplacedWeapon();
+				this.ReturnToRoutineAfter = true;
 			}
 			if (this.StudentID > 1)
 			{
@@ -12089,6 +12109,7 @@ public class StudentScript : MonoBehaviour
 				this.StudentManager.ChaseCamera = null;
 			}
 		}
+		this.VomitEmitter.gameObject.SetActive(false);
 		this.InvestigatingBloodPool = false;
 		this.Investigating = false;
 		this.Pen.SetActive(false);
@@ -13196,7 +13217,6 @@ public class StudentScript : MonoBehaviour
 	{
 		if (this.StudentID == 10)
 		{
-			Debug.Log(this.Name + " is getting their destinations now.");
 		}
 		if (!this.Teacher)
 		{
@@ -14668,8 +14688,8 @@ public class StudentScript : MonoBehaviour
 		bool flag3 = this.StudentID == 2 && yandereTargetID == 3;
 		bool flag4 = this.StudentID == 38 && yandereTargetID == 37;
 		bool flag5 = this.StudentID == 37 && yandereTargetID == 38;
-		bool flag6 = this.StudentID == 30 && yandereTargetID == 25;
-		bool flag7 = this.StudentID == 25 && yandereTargetID == 30;
+		bool flag6 = this.StudentID == 31 && yandereTargetID == 26;
+		bool flag7 = this.StudentID == 26 && yandereTargetID == 31;
 		bool flag8 = this.StudentID == 28 && yandereTargetID == 30;
 		bool flag9 = false;
 		bool flag10 = this.StudentID > 55 && this.StudentID < 61 && yandereTargetID > 55 && yandereTargetID < 61;
@@ -15241,6 +15261,7 @@ public class StudentScript : MonoBehaviour
 
 	private void EndAlarm()
 	{
+		Debug.Log(this.Name + " has stopped being alarmed and has returned back to their normal routine.");
 		if (this.ReturnToRoutineAfter)
 		{
 			this.CurrentDestination = this.Destinations[this.Phase];
@@ -15307,6 +15328,10 @@ public class StudentScript : MonoBehaviour
 				this.Scrubber.GetComponent<Renderer>().material.mainTexture = this.Eraser.GetComponent<Renderer>().material.mainTexture;
 				this.Eraser.SetActive(true);
 			}
+		}
+		if (this.TurnOffRadio)
+		{
+			this.Routine = false;
 		}
 	}
 
@@ -15534,6 +15559,7 @@ public class StudentScript : MonoBehaviour
 		}
 		if (!flag)
 		{
+			this.SmartPhone.SetActive(false);
 		}
 		if (this.BagOfChips != null)
 		{
@@ -15718,7 +15744,6 @@ public class StudentScript : MonoBehaviour
 			bool flag3 = this.Yandere.PickUp != null && this.Yandere.PickUp.Suspicious;
 			bool flag4 = this.Yandere.PickUp != null && this.Yandere.PickUp.BodyPart != null;
 			bool flag5 = this.Yandere.PickUp != null && this.Yandere.PickUp.Clothing && this.Yandere.PickUp.Evidence;
-			Debug.Log("carryingBloodyClothing is: " + flag5);
 			int concern = this.Concern;
 			if (flag2)
 			{

@@ -7,6 +7,8 @@ public class OsanaMorningFriendEventScript : MonoBehaviour
 
 	public StudentManagerScript StudentManager;
 
+	public EndOfDayScript EndOfDay;
+
 	public JukeboxScript Jukebox;
 
 	public UILabel EventSubtitle;
@@ -47,6 +49,16 @@ public class OsanaMorningFriendEventScript : MonoBehaviour
 
 	public int[] InterruptedSpeaker;
 
+	public AudioClip AltSpeechClip;
+
+	public string[] AltSpeechText;
+
+	public float[] AltSpeechTime;
+
+	public string[] AltEventAnim;
+
+	public int[] AltSpeaker;
+
 	public GameObject AlarmDisc;
 
 	public GameObject VoiceClip;
@@ -74,4 +86,6 @@ public class OsanaMorningFriendEventScript : MonoBehaviour
 	public Vector3 OriginalPosition;
 
 	public Vector3 OriginalRotation;
+
+	public bool LosingFriend;
 }

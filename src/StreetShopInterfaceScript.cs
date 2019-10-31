@@ -48,15 +48,17 @@ public class StreetShopInterfaceScript : MonoBehaviour
 
 	public AudioSource MyAudio;
 
-	public float BlurAmount;
-
-	public float Timer;
+	public int ShopkeeperPosition;
 
 	public int SpeechPhase;
 
 	public int Selected;
 
 	public int Limit;
+
+	public float BlurAmount;
+
+	public float Timer;
 
 	public bool ShowMaid;
 
@@ -76,7 +78,7 @@ public class StreetShopInterfaceScript : MonoBehaviour
 	{
 		if (this.Show)
 		{
-			this.Shopkeeper.transform.localPosition = Vector3.Lerp(this.Shopkeeper.transform.localPosition, new Vector3(500f, 0f, 0f), Time.deltaTime * 10f);
+			this.Shopkeeper.transform.localPosition = Vector3.Lerp(this.Shopkeeper.transform.localPosition, new Vector3((float)this.ShopkeeperPosition, 0f, 0f), Time.deltaTime * 10f);
 			this.Interface.localPosition = Vector3.Lerp(this.Interface.localPosition, new Vector3(100f, 0f, 0f), Time.deltaTime * 10f);
 			this.BlurAmount = Mathf.Lerp(this.BlurAmount, 0f, Time.deltaTime * 10f);
 			if (Input.GetButtonUp("B"))

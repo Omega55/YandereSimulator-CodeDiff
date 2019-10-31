@@ -29,6 +29,8 @@ public class EventManagerScript : MonoBehaviour
 
 	public GameObject VoiceClip;
 
+	public bool StopWalking;
+
 	public bool EventCheck;
 
 	public bool EventOn;
@@ -62,6 +64,10 @@ public class EventManagerScript : MonoBehaviour
 		}
 		this.NoteLocker.Prompt.enabled = true;
 		this.NoteLocker.CanLeaveNote = true;
+		if (this.EventStudent1 == 11)
+		{
+			UnityEngine.Object.Destroy(this);
+		}
 	}
 
 	private void Update()
@@ -100,6 +106,10 @@ public class EventManagerScript : MonoBehaviour
 					this.EventStudent[2].EventManager = this;
 					this.EventStudent[2].InEvent = true;
 				}
+				else
+				{
+					Debug.Log("Osana's ''talk on the rooftop with Raibaru'' event is beginning.");
+				}
 				this.EventStudent[2].EmptyHands();
 				this.EventStudent[1].SpeechLines.Stop();
 				this.EventStudent[2].SpeechLines.Stop();
@@ -129,14 +139,23 @@ public class EventManagerScript : MonoBehaviour
 					this.EventStudent[1].Private = true;
 					this.StudentManager.UpdateStudents(0);
 				}
-				if (!this.EventStudent[2].Pathfinding.canMove && !this.EventStudent[2].Private)
+				if (Vector3.Distance(this.EventStudent[2].transform.position, this.EventLocation[2].position) < 1f && !this.EventStudent[2].Pathfinding.canMove && !this.StopWalking)
 				{
+					this.StopWalking = true;
 					this.EventStudent[2].CharacterAnimation.CrossFade(this.EventStudent[2].IdleAnim);
 					this.EventStudent[2].Private = true;
 					this.StudentManager.UpdateStudents(0);
 				}
-				if (!this.EventStudent[1].Pathfinding.canMove && !this.EventStudent[2].Pathfinding.canMove)
+				if (this.StopWalking && this.EventPhase == 1)
 				{
+					this.EventStudent[2].CharacterAnimation.CrossFade(this.EventStudent[2].IdleAnim);
+				}
+				if (Vector3.Distance(this.EventStudent[1].transform.position, this.EventLocation[1].position) < 1f && !this.EventStudent[1].Pathfinding.canMove && !this.EventStudent[2].Pathfinding.canMove)
+				{
+					if (this.EventPhase == 1)
+					{
+						this.EventStudent[1].CharacterAnimation.CrossFade(this.EventStudent[1].IdleAnim);
+					}
 					if (this.Osana)
 					{
 						this.SettleFriend();

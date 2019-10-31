@@ -65,6 +65,8 @@ public class EndOfDayScript : MonoBehaviour
 
 	public bool PoliceArrived;
 
+	public bool RaibaruLoner;
+
 	public bool ClubClosed;
 
 	public bool ClubKicked;
@@ -1339,6 +1341,10 @@ public class EndOfDayScript : MonoBehaviour
 		if (this.Yandere.Inventory.FakeID)
 		{
 			PlayerGlobals.FakeID = true;
+		}
+		if (this.RaibaruLoner)
+		{
+			PlayerGlobals.RaibaruLoner = true;
 		}
 		this.WeaponManager.TrackDumpedWeapons();
 	}

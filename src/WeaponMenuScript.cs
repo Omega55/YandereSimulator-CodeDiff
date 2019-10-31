@@ -156,13 +156,6 @@ public class WeaponMenuScript : MonoBehaviour
 					{
 						if (this.Yandere.Equipped > 0)
 						{
-							Debug.Log(string.Concat(new object[]
-							{
-								"Yandere-chan is currently carrying a: ",
-								this.Yandere.EquippedWeapon.gameObject.name,
-								". Is it concealable? ",
-								this.Yandere.EquippedWeapon.Concealable
-							}));
 							if (this.Yandere.EquippedWeapon.Concealable)
 							{
 								this.Yandere.CharacterAnimation["f02_reachForWeapon_00"].time = 0f;

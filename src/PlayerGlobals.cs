@@ -19,6 +19,8 @@ public static class PlayerGlobals
 
 	private const string Str_FakeID = "FakeID";
 
+	private const string Str_RaibaruLoner = "RaibaruLoner";
+
 	private const string Str_Kills = "Kills";
 
 	private const string Str_Numbness = "Numbness";
@@ -138,6 +140,18 @@ public static class PlayerGlobals
 		set
 		{
 			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_FakeID", value);
+		}
+	}
+
+	public static bool RaibaruLoner
+	{
+		get
+		{
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_RaibaruLoner");
+		}
+		set
+		{
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_RaibaruLoner", value);
 		}
 	}
 
@@ -518,6 +532,7 @@ public static class PlayerGlobals
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_Friends");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_Headset");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_FakeID");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_RaibaruLoner");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_Kills");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_Numbness");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_NumbnessBonus");

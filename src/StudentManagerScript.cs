@@ -2332,7 +2332,7 @@ public class StudentManagerScript : MonoBehaviour
 		while (this.ID < this.Students.Length)
 		{
 			StudentScript studentScript = this.Students[this.ID];
-			if (studentScript != null)
+			if (studentScript != null && (float)StudentGlobals.GetStudentReputation(this.ID) < 33.33333f)
 			{
 				if (this.ID != 36 || TaskGlobals.GetTaskStatus(36) != 3)
 				{
