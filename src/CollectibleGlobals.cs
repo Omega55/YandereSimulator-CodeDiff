@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 public static class CollectibleGlobals
 {
@@ -11,6 +12,12 @@ public static class CollectibleGlobals
 	private const string Str_BasementTapeListened = "BasementTapeListened_";
 
 	private const string Str_MangaCollected = "MangaCollected_";
+
+	private const string Str_GiftPurchased = "GiftPurchased_";
+
+	private const string Str_MatchmakingGifts = "MatchmakingGifts";
+
+	private const string Str_SenpaiGifts = "SenpaiGifts";
 
 	private const string Str_TapeCollected = "TapeCollected_";
 
@@ -146,9 +153,62 @@ public static class CollectibleGlobals
 		}), value);
 	}
 
+	public static bool GetGiftPurchased(int giftID)
+	{
+		return GlobalsHelper.GetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_GiftPurchased_",
+			giftID.ToString()
+		}));
+	}
+
+	public static void SetGiftPurchased(int giftID, bool value)
+	{
+		string text = giftID.ToString();
+		KeysHelper.AddIfMissing("Profile_" + GameGlobals.Profile + "_GiftPurchased_", text);
+		GlobalsHelper.SetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_GiftPurchased_",
+			text
+		}), value);
+	}
+
+	public static int MatchmakingGifts
+	{
+		get
+		{
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_MatchmakingGifts");
+		}
+		set
+		{
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_MatchmakingGifts", value);
+		}
+	}
+
+	public static int SenpaiGifts
+	{
+		get
+		{
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_SenpaiGifts");
+		}
+		set
+		{
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_SenpaiGifts", value);
+		}
+	}
+
 	public static int[] KeysOfMangaCollected()
 	{
 		return KeysHelper.GetIntegerKeys("Profile_" + GameGlobals.Profile + "_MangaCollected_");
+	}
+
+	public static int[] KeysOfGiftPurchased()
+	{
+		return KeysHelper.GetIntegerKeys("Profile_" + GameGlobals.Profile + "_GiftPurchased_");
 	}
 
 	public static bool GetTapeCollected(int tapeID)
@@ -214,7 +274,10 @@ public static class CollectibleGlobals
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_BasementTapeCollected_", CollectibleGlobals.KeysOfBasementTapeCollected());
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_BasementTapeListened_", CollectibleGlobals.KeysOfBasementTapeListened());
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_MangaCollected_", CollectibleGlobals.KeysOfMangaCollected());
+		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_GiftPurchased_", CollectibleGlobals.KeysOfGiftPurchased());
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_TapeCollected_", CollectibleGlobals.KeysOfTapeCollected());
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_TapeListened_", CollectibleGlobals.KeysOfTapeListened());
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_MatchmakingGifts");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_SenpaiGifts");
 	}
 }

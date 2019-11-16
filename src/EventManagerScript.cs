@@ -108,7 +108,7 @@ public class EventManagerScript : MonoBehaviour
 				}
 				else
 				{
-					Debug.Log("Osana's ''talk on the rooftop with Raibaru'' event is beginning.");
+					Debug.Log("One of Osana's ''talk privately with Raibaru'' events is beginning.");
 				}
 				this.EventStudent[2].EmptyHands();
 				this.EventStudent[1].SpeechLines.Stop();

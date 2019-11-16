@@ -23,7 +23,7 @@ public class StreetCivilianScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (Vector3.Distance(base.transform.position, this.Destinations[this.ID].position) < 0.5f)
+		if (Vector3.Distance(base.transform.position, this.Destinations[this.ID].position) < 0.55f)
 		{
 			this.MoveTowardsTarget(this.Destinations[this.ID].position);
 			this.MyAnimation.CrossFade("f02_idle_00");

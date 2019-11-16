@@ -15,6 +15,8 @@ public class StudentInfoScript : MonoBehaviour
 
 	public NoteLockerScript NoteLocker;
 
+	public RadarChart ReputationChart;
+
 	public PromptBarScript PromptBar;
 
 	public ShutterScript Shutter;
@@ -64,6 +66,8 @@ public class StudentInfoScript : MonoBehaviour
 	public string[] Strings;
 
 	public int CurrentStudent;
+
+	public bool ShowRep;
 
 	public bool Back;
 
@@ -240,10 +244,15 @@ public class StudentInfoScript : MonoBehaviour
 		}
 		this.UpdateAdditionalInfo(ID);
 		this.CurrentStudent = ID;
+		this.UpdateRepChart();
 	}
 
 	private void Update()
 	{
+		if (this.CurrentStudent == 100)
+		{
+			this.UpdateRepChart();
+		}
 		if (Input.GetButtonDown("A"))
 		{
 			if (this.StudentInfoMenu.Gossiping)
@@ -373,8 +382,10 @@ public class StudentInfoScript : MonoBehaviour
 		}
 		if (Input.GetButtonDown("B"))
 		{
+			this.ShowRep = false;
 			this.Topics.SetActive(false);
 			base.GetComponent<AudioSource>().Stop();
+			this.ReputationChart.transform.localScale = new Vector3(0f, 0f, 0f);
 			if (this.Shutter != null)
 			{
 				if (!this.Shutter.PhotoIcons.activeInHierarchy)
@@ -429,6 +440,11 @@ public class StudentInfoScript : MonoBehaviour
 				this.Topics.SetActive(false);
 			}
 		}
+		if (Input.GetButtonDown("LB"))
+		{
+			this.UpdateRepChart();
+			this.ShowRep = !this.ShowRep;
+		}
 		if (Input.GetKeyDown(KeyCode.Equals))
 		{
 			StudentGlobals.SetStudentReputation(this.CurrentStudent, StudentGlobals.GetStudentReputation(this.CurrentStudent) + 10);
@@ -438,6 +454,36 @@ public class StudentInfoScript : MonoBehaviour
 		{
 			StudentGlobals.SetStudentReputation(this.CurrentStudent, StudentGlobals.GetStudentReputation(this.CurrentStudent) - 10);
 			this.UpdateInfo(this.CurrentStudent);
+		}
+		StudentInfoMenuScript studentInfoMenu = this.StudentInfoMenu;
+		if (!studentInfoMenu.CyberBullying && !studentInfoMenu.CyberStalking && !studentInfoMenu.FindingLocker && !studentInfoMenu.UsingLifeNote && !studentInfoMenu.GettingInfo && !studentInfoMenu.MatchMaking && !studentInfoMenu.Distracting && !studentInfoMenu.SendingHome && !studentInfoMenu.Gossiping && !studentInfoMenu.Targeting && !studentInfoMenu.Dead)
+		{
+			if (this.StudentInfoMenu.PauseScreen.InputManager.TappedRight)
+			{
+				this.CurrentStudent++;
+				if (this.CurrentStudent > 100)
+				{
+					this.CurrentStudent = 1;
+				}
+				this.UpdateInfo(this.CurrentStudent);
+			}
+			if (this.StudentInfoMenu.PauseScreen.InputManager.TappedLeft)
+			{
+				this.CurrentStudent--;
+				if (this.CurrentStudent < 1)
+				{
+					this.CurrentStudent = 100;
+				}
+				this.UpdateInfo(this.CurrentStudent);
+			}
+		}
+		if (this.ShowRep)
+		{
+			this.ReputationChart.transform.localScale = Vector3.Lerp(this.ReputationChart.transform.localScale, new Vector3(138f, 138f, 138f), Time.unscaledDeltaTime * 10f);
+		}
+		else
+		{
+			this.ReputationChart.transform.localScale = Vector3.Lerp(this.ReputationChart.transform.localScale, new Vector3(0f, 0f, 0f), Time.unscaledDeltaTime * 10f);
 		}
 	}
 
@@ -502,5 +548,21 @@ public class StudentInfoScript : MonoBehaviour
 				uisprite.spriteName = this.OpinionSpriteNames[topics[j]];
 			}
 		}
+	}
+
+	private void UpdateRepChart()
+	{
+		Vector3 reputationTriangle;
+		if (this.CurrentStudent < 100)
+		{
+			reputationTriangle = StudentGlobals.GetReputationTriangle(this.CurrentStudent);
+		}
+		else
+		{
+			reputationTriangle = new Vector3((float)UnityEngine.Random.Range(-100, 101), (float)UnityEngine.Random.Range(-100, 101), (float)UnityEngine.Random.Range(-100, 101));
+		}
+		this.ReputationChart.fields[0].Value = reputationTriangle.x;
+		this.ReputationChart.fields[1].Value = reputationTriangle.y;
+		this.ReputationChart.fields[2].Value = reputationTriangle.z;
 	}
 }

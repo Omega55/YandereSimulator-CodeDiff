@@ -19,6 +19,8 @@ public class EndOfDayScript : MonoBehaviour
 
 	public IncineratorScript Incinerator;
 
+	public LoveManagerScript LoveManager;
+
 	public VoidGoddessScript VoidGoddess;
 
 	public WoodChipperScript WoodChipper;
@@ -45,6 +47,8 @@ public class EndOfDayScript : MonoBehaviour
 
 	public Transform EODCamera;
 
+	public StudentScript Rival;
+
 	public ClockScript Clock;
 
 	public JsonScript JSON;
@@ -66,6 +70,8 @@ public class EndOfDayScript : MonoBehaviour
 	public bool PoliceArrived;
 
 	public bool RaibaruLoner;
+
+	public bool StopMourning;
 
 	public bool ClubClosed;
 
@@ -96,6 +102,10 @@ public class EndOfDayScript : MonoBehaviour
 	public int Weapons;
 
 	public int Phase = 1;
+
+	public int MatchmakingGifts;
+
+	public int SenpaiGifts;
 
 	public int WeaponID;
 
@@ -153,8 +163,14 @@ public class EndOfDayScript : MonoBehaviour
 
 	public Transform CardboardBox;
 
+	public RivalEliminationType RivalEliminationMethod;
+
 	public void Start()
 	{
+		if (GameGlobals.SenpaiMourning)
+		{
+			this.StopMourning = true;
+		}
 		this.Yandere.MainCamera.gameObject.SetActive(false);
 		this.EndOfDayDarkness.color = new Color(this.EndOfDayDarkness.color.r, this.EndOfDayDarkness.color.g, this.EndOfDayDarkness.color.b, 1f);
 		this.PreviouslyActivated = true;
@@ -216,12 +232,20 @@ public class EndOfDayScript : MonoBehaviour
 			this.EndOfDayDarkness.color = new Color(this.EndOfDayDarkness.color.r, this.EndOfDayDarkness.color.g, this.EndOfDayDarkness.color.b, Mathf.MoveTowards(this.EndOfDayDarkness.color.a, 1f, Time.deltaTime * 2f));
 			if (this.EndOfDayDarkness.color.a == 1f)
 			{
-				if (this.Senpai == null)
+				if (this.Senpai == null && this.StudentManager.Students[1] != null)
 				{
 					this.Senpai = this.StudentManager.Students[1];
 					this.Senpai.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
 					this.Senpai.CharacterAnimation.enabled = true;
 				}
+				this.Senpai.gameObject.SetActive(false);
+				if (this.Rival == null && this.StudentManager.Students[this.StudentManager.RivalID] != null)
+				{
+					this.Rival = this.StudentManager.Students[this.StudentManager.RivalID];
+					this.Rival.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
+					this.Rival.CharacterAnimation.enabled = true;
+				}
+				this.Rival.gameObject.SetActive(false);
 				this.Yandere.transform.parent = null;
 				this.Yandere.transform.position = new Vector3(0f, 0f, -75f);
 				this.EODCamera.localPosition = new Vector3(1f, 1.8f, -2.5f);
@@ -246,7 +270,6 @@ public class EndOfDayScript : MonoBehaviour
 				this.ArrestingCops.SetActive(false);
 				this.Mask.SetActive(false);
 				this.EyeWitnessScene.SetActive(false);
-				this.Senpai.gameObject.SetActive(false);
 				this.ScaredCops.SetActive(false);
 				if (this.WitnessList[1] != null)
 				{
@@ -426,6 +449,10 @@ public class EndOfDayScript : MonoBehaviour
 					{
 						if (ragdollScript != null && !ragdollScript.Disposed)
 						{
+							if (ragdollScript.Student.StudentID == this.StudentManager.RivalID)
+							{
+								this.RivalEliminationMethod = RivalEliminationType.Dead;
+							}
 							this.VictimArray[this.Corpses] = ragdollScript.Student.StudentID;
 							list.Add(ragdollScript.Student.Name);
 							this.Corpses++;
@@ -833,7 +860,18 @@ public class EndOfDayScript : MonoBehaviour
 				{
 					this.Label.text = "The police believe that they have arrested the perpetrators of the crimes. The police investigation ends, and students are free to leave.";
 				}
-				this.Phase++;
+				if (this.StudentManager.RivalEliminated)
+				{
+					this.Phase++;
+				}
+				else if (DateGlobals.Weekday == DayOfWeek.Friday)
+				{
+					this.Phase = 21;
+				}
+				else
+				{
+					this.Phase += 2;
+				}
 			}
 			else if (this.Phase == 12)
 			{
@@ -841,20 +879,92 @@ public class EndOfDayScript : MonoBehaviour
 				this.Senpai.transform.parent = base.transform;
 				this.Senpai.gameObject.SetActive(true);
 				this.Senpai.transform.localPosition = new Vector3(0f, 0f, 0f);
+				this.Senpai.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+				this.Senpai.EmptyHands();
+				Physics.SyncTransforms();
+				string str2 = string.Empty;
+				if (this.Yandere.Egg && this.StudentManager.Students[11] != null && !this.StudentManager.Students[11].Alive)
+				{
+					this.RivalEliminationMethod = RivalEliminationType.Dead;
+				}
+				if (this.RivalEliminationMethod == RivalEliminationType.Dead)
+				{
+					this.Senpai.CharacterAnimation.Play("kneelCry_00");
+					if (DateGlobals.Weekday != DayOfWeek.Friday)
+					{
+						str2 = "\nSenpai will stay home from school for one day to mourn Osana's death.";
+						GameGlobals.SenpaiMourning = true;
+					}
+					this.Label.text = "Senpai is absolutely devastated by the death of his childhood friend. His mental stability has been greatly affected." + str2;
+				}
+				else
+				{
+					this.Senpai.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
+					if (this.RivalEliminationMethod == RivalEliminationType.Vanished)
+					{
+						this.Senpai.CharacterAnimation.Play(this.Senpai.BulliedIdleAnim);
+						this.Label.text = "Senpai is concerned about the sudden disappearance of his childhood friend. His mental stability has been slightly affected.";
+					}
+					else if (this.RivalEliminationMethod == RivalEliminationType.Arrested)
+					{
+						this.Senpai.CharacterAnimation["refuse_02"].speed = 0.5f;
+						this.Senpai.CharacterAnimation.Play("refuse_02");
+						this.Label.text = "Senpai is disgusted to learn that his childhood friend would actually commit murder. He is deeply disappointed in her.";
+					}
+					else if (this.RivalEliminationMethod == RivalEliminationType.Ruined)
+					{
+						this.Senpai.CharacterAnimation["refuse_02"].speed = 0.5f;
+						this.Senpai.CharacterAnimation.Play("refuse_02");
+						this.Label.text = "Senpai is disturbed by the rumors circulating about his childhood friend. He is deeply disappointed in her.";
+					}
+					else if (this.RivalEliminationMethod == RivalEliminationType.Expelled)
+					{
+						this.Senpai.CharacterAnimation.Play("surprisedPose_00");
+						this.Label.text = "Senpai is shocked by the expulsion of his childhood friend. He is deeply disappointed in her.";
+					}
+					else if (this.RivalEliminationMethod == RivalEliminationType.Rejected)
+					{
+						this.Senpai.CharacterAnimation.Play(this.Senpai.BulliedIdleAnim);
+						this.Label.text = "Senpai feels guilty for turning down Osana's feelings, but also he knows that he cannot take back what has been said.";
+					}
+				}
+				this.Phase++;
+			}
+			else if (this.Phase == 13)
+			{
+				this.Senpai.enabled = false;
+				this.Senpai.transform.parent = base.transform;
+				this.Senpai.gameObject.SetActive(true);
+				this.Senpai.transform.localPosition = new Vector3(0f, 0f, 0f);
 				this.Senpai.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
 				this.Senpai.EmptyHands();
-				this.Senpai.CharacterAnimation.Play(this.Senpai.WalkAnim);
+				if (this.StudentManager.RivalEliminated)
+				{
+					this.Senpai.CharacterAnimation.Play(this.Senpai.BulliedWalkAnim);
+				}
+				else
+				{
+					this.Senpai.CharacterAnimation.Play(this.Senpai.WalkAnim);
+				}
 				this.Yandere.LookAt.enabled = true;
 				this.Yandere.MyController.enabled = false;
 				this.Yandere.transform.parent = base.transform;
 				this.Yandere.transform.localPosition = new Vector3(2.5f, 0f, 2.5f);
 				this.Yandere.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
 				this.Yandere.CharacterAnimation.Play(this.Yandere.WalkAnim);
+				this.Label.text = "Ayano stalks Senpai until he has returned home, and then returns to her own home.";
+				if (GameGlobals.SenpaiMourning)
+				{
+					this.Senpai.gameObject.SetActive(false);
+					this.Yandere.LookAt.enabled = false;
+					this.Yandere.transform.localPosition = new Vector3(0f, 0f, 0f);
+					this.Yandere.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
+					this.Label.text = "Ayano returns home, thinking of Senpai every step of the way.";
+				}
 				Physics.SyncTransforms();
-				this.Label.text = "Ayano stalks Senpai until he has returned home safely, and then returns to her own home.";
 				this.Phase++;
 			}
-			else if (this.Phase == 13)
+			else if (this.Phase == 14)
 			{
 				if (!StudentGlobals.GetStudentDying(30) && !StudentGlobals.GetStudentDead(30) && !StudentGlobals.GetStudentArrested(30))
 				{
@@ -882,7 +992,7 @@ public class EndOfDayScript : MonoBehaviour
 					this.UpdateScene();
 				}
 			}
-			else if (this.Phase == 14)
+			else if (this.Phase == 15)
 			{
 				this.EODCamera.localPosition = new Vector3(1f, 1.8f, -2.5f);
 				this.EODCamera.localEulerAngles = new Vector3(22.5f, -22.5f, 0f);
@@ -914,7 +1024,7 @@ public class EndOfDayScript : MonoBehaviour
 					this.UpdateScene();
 				}
 			}
-			else if (this.Phase == 15)
+			else if (this.Phase == 16)
 			{
 				this.ClubClosed = false;
 				this.ClubKicked = false;
@@ -1049,7 +1159,7 @@ public class EndOfDayScript : MonoBehaviour
 					this.UpdateScene();
 				}
 			}
-			else if (this.Phase == 16)
+			else if (this.Phase == 17)
 			{
 				if (this.TranqCase.Occupied)
 				{
@@ -1064,7 +1174,7 @@ public class EndOfDayScript : MonoBehaviour
 					this.UpdateScene();
 				}
 			}
-			else if (this.Phase == 17)
+			else if (this.Phase == 18)
 			{
 				if (this.ErectFence)
 				{
@@ -1079,7 +1189,7 @@ public class EndOfDayScript : MonoBehaviour
 					this.UpdateScene();
 				}
 			}
-			else if (this.Phase == 18)
+			else if (this.Phase == 19)
 			{
 				if (!SchoolGlobals.HighSecurity && this.Police.CouncilDeath)
 				{
@@ -1093,9 +1203,56 @@ public class EndOfDayScript : MonoBehaviour
 					this.UpdateScene();
 				}
 			}
-			else if (this.Phase == 19)
+			else if (this.Phase == 20)
 			{
 				this.Finish();
+			}
+			else if (this.Phase == 21)
+			{
+				this.Senpai.enabled = false;
+				this.Senpai.Pathfinding.enabled = false;
+				this.Senpai.transform.parent = base.transform;
+				this.Senpai.gameObject.SetActive(true);
+				this.Senpai.transform.localPosition = new Vector3(0f, 0f, 0f);
+				this.Senpai.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+				this.Senpai.EmptyHands();
+				this.Senpai.MyController.enabled = false;
+				this.Senpai.CharacterAnimation.enabled = true;
+				this.Senpai.CharacterAnimation.CrossFade(this.Senpai.IdleAnim);
+				this.Rival.enabled = false;
+				this.Rival.Pathfinding.enabled = false;
+				this.Rival.transform.parent = base.transform;
+				this.Rival.gameObject.SetActive(true);
+				this.Rival.transform.localPosition = new Vector3(0f, 0f, 1f);
+				this.Rival.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
+				this.Rival.EmptyHands();
+				this.Rival.MyController.enabled = false;
+				this.Rival.CharacterAnimation.enabled = true;
+				this.Rival.CharacterAnimation.CrossFade(this.Rival.IdleAnim);
+				this.Rival.CharacterAnimation["f02_shy_00"].weight = 1f;
+				this.Rival.CharacterAnimation.Play("f02_shy_00");
+				this.Label.text = "After the police investigation ends, Osana asks Senpai to speak with her under the cherry tree behind the school.";
+				this.Phase++;
+			}
+			else if (this.Phase == 22)
+			{
+				for (int m = 1; m < 101; m++)
+				{
+					this.StudentManager.DisableStudent(m);
+				}
+				this.LoveManager.Suitor = this.Senpai;
+				this.LoveManager.Rival = this.Rival;
+				this.LoveManager.Rival.CharacterAnimation["f02_shy_00"].weight = 0f;
+				this.LoveManager.Suitor.gameObject.SetActive(true);
+				this.LoveManager.Rival.gameObject.SetActive(true);
+				this.Yandere.gameObject.SetActive(true);
+				this.LoveManager.Suitor.transform.parent = null;
+				this.LoveManager.Rival.transform.parent = null;
+				this.Yandere.gameObject.transform.parent = null;
+				this.LoveManager.BeginConfession();
+				this.Clock.NightLighting();
+				this.Clock.enabled = false;
+				base.gameObject.SetActive(false);
 			}
 			else if (this.Phase == 100)
 			{
@@ -1265,7 +1422,14 @@ public class EndOfDayScript : MonoBehaviour
 				this.Yandere.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
 				Physics.SyncTransforms();
 				this.Label.text = "The police witness actual evidence of the supernatural, are absolutely horrified, and run for their lives.";
-				this.Phase = 12;
+				if (this.StudentManager.RivalEliminated)
+				{
+					this.Phase = 12;
+				}
+				else
+				{
+					this.Phase = 13;
+				}
 			}
 		}
 	}
@@ -1346,6 +1510,12 @@ public class EndOfDayScript : MonoBehaviour
 		{
 			PlayerGlobals.RaibaruLoner = true;
 		}
+		if (this.StopMourning)
+		{
+			GameGlobals.SenpaiMourning = false;
+		}
+		CollectibleGlobals.MatchmakingGifts = this.MatchmakingGifts;
+		CollectibleGlobals.SenpaiGifts = this.SenpaiGifts;
 		this.WeaponManager.TrackDumpedWeapons();
 	}
 

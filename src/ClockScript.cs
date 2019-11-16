@@ -489,4 +489,12 @@ public class ClockScript : MonoBehaviour
 		}
 		this.LateStudent = false;
 	}
+
+	public void NightLighting()
+	{
+		this.MainLight.color = new Color(0.25f, 0.25f, 0.5f);
+		RenderSettings.ambientLight = new Color(0.25f, 0.25f, 0.5f);
+		this.SkyboxColor = new Color(0.1f, 0.1f, 0.2f);
+		RenderSettings.skybox.SetColor("_Tint", new Color(0.1f, 0.1f, 0.2f));
+	}
 }

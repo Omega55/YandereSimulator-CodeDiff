@@ -82,6 +82,31 @@ public static class GlobalsHelper
 		KeysHelper.Delete(key);
 	}
 
+	public static Vector4 GetVector4(string key)
+	{
+		float @float = PlayerPrefs.GetFloat(key + "_W");
+		float float2 = PlayerPrefs.GetFloat(key + "_X");
+		float float3 = PlayerPrefs.GetFloat(key + "_Y");
+		float float4 = PlayerPrefs.GetFloat(key + "_Z");
+		return new Vector4(@float, float2, float3, float4);
+	}
+
+	public static void SetVector4(string key, Vector4 value)
+	{
+		PlayerPrefs.SetFloat(key + "_W", value.w);
+		PlayerPrefs.SetFloat(key + "_X", value.x);
+		PlayerPrefs.SetFloat(key + "_Y", value.y);
+		PlayerPrefs.SetFloat(key + "_Z", value.z);
+	}
+
+	public static void DeleteVector4(string key)
+	{
+		Globals.Delete(key + "_W");
+		Globals.Delete(key + "_X");
+		Globals.Delete(key + "_Y");
+		Globals.Delete(key + "_Z");
+	}
+
 	public static Color GetColor(string key)
 	{
 		float @float = PlayerPrefs.GetFloat(key + "_R");

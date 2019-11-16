@@ -11,6 +11,8 @@ public class PoliceScript : MonoBehaviour
 
 	public HeartbrokenScript Heartbroken;
 
+	public LoveManagerScript LoveManager;
+
 	public PauseScreenScript PauseScreen;
 
 	public ReputationScript Reputation;
@@ -94,6 +96,8 @@ public class PoliceScript : MonoBehaviour
 	public bool PoisonScene;
 
 	public bool MurderScene;
+
+	public bool BeginConfession;
 
 	public bool TeacherReport;
 
@@ -410,7 +414,17 @@ public class PoliceScript : MonoBehaviour
 			this.ContinueLabel.color = new Color(this.ContinueLabel.color.r, this.ContinueLabel.color.g, this.ContinueLabel.color.b, this.ContinueLabel.color.a - Time.deltaTime);
 			if (this.ResultsLabels[0].color.a <= 0f)
 			{
-				if (this.GameOver)
+				if (this.BeginConfession)
+				{
+					this.LoveManager.Suitor = this.StudentManager.Students[1];
+					this.LoveManager.Rival = this.StudentManager.Students[this.StudentManager.RivalID];
+					this.LoveManager.Suitor.CharacterAnimation.enabled = true;
+					this.LoveManager.Rival.CharacterAnimation.enabled = true;
+					this.LoveManager.BeginConfession();
+					Time.timeScale = 1f;
+					base.enabled = false;
+				}
+				else if (this.GameOver)
 				{
 					this.Heartbroken.transform.parent.transform.parent = null;
 					this.Heartbroken.transform.parent.gameObject.SetActive(true);
@@ -439,7 +453,7 @@ public class PoliceScript : MonoBehaviour
 					{
 						this.EndOfDay.gameObject.SetActive(true);
 						this.EndOfDay.enabled = true;
-						this.EndOfDay.Phase = 13;
+						this.EndOfDay.Phase = 14;
 						if (this.EndOfDay.PreviouslyActivated)
 						{
 							this.EndOfDay.Start();
@@ -516,7 +530,18 @@ public class PoliceScript : MonoBehaviour
 				}
 				else if (this.Yandere.Resting)
 				{
-					this.ResultsLabels[0].text = "Ayano recovers from her injuries, then stands near the school gate and waits for Senpai to leave school.";
+					if (GameGlobals.SenpaiMourning)
+					{
+						this.ResultsLabels[0].text = "Ayano recovers from her injuries.";
+					}
+					else
+					{
+						this.ResultsLabels[0].text = "Ayano recovers from her injuries, then stands near the school gate and waits for Senpai to leave school.";
+					}
+				}
+				else if (GameGlobals.SenpaiMourning)
+				{
+					this.ResultsLabels[0].text = "Ayano decides to leave school.";
 				}
 				else
 				{
@@ -609,19 +634,29 @@ public class PoliceScript : MonoBehaviour
 							this.ResultsLabels[4].text = "Ayano returns home.";
 						}
 					}
-					else if (this.Clock.HourTime < 18f)
-					{
-						this.ResultsLabels[1].text = "Finally, Senpai exits the school.";
-						this.ResultsLabels[2].text = "Ayano's heart skips a beat when she sees him.";
-						this.ResultsLabels[3].text = "Ayano leaves school and watches Senpai walk home.";
-						this.ResultsLabels[4].text = "Once he is safely home, Ayano returns to her own home.";
-					}
 					else
 					{
-						this.ResultsLabels[1].text = "Like all other students, Ayano is instructed to leave school.";
-						this.ResultsLabels[2].text = "Senpai leaves school, too.";
-						this.ResultsLabels[3].text = "Ayano leaves school and watches Senpai walk home.";
-						this.ResultsLabels[4].text = "Once he is safely home, Ayano returns to her own home.";
+						if (this.Clock.HourTime < 18f)
+						{
+							this.ResultsLabels[1].text = "Finally, Senpai exits the school.";
+							this.ResultsLabels[2].text = "Ayano's heart skips a beat when she sees him.";
+							this.ResultsLabels[3].text = "Ayano leaves school and watches Senpai walk home.";
+							this.ResultsLabels[4].text = "Once he is safely home, Ayano returns to her own home.";
+						}
+						else
+						{
+							this.ResultsLabels[1].text = "Like all other students, Ayano is instructed to leave school.";
+							this.ResultsLabels[2].text = "Senpai leaves school, too.";
+							this.ResultsLabels[3].text = "Ayano leaves school and watches Senpai walk home.";
+							this.ResultsLabels[4].text = "Once he is safely home, Ayano returns to her own home.";
+						}
+						if (GameGlobals.SenpaiMourning)
+						{
+							this.ResultsLabels[1].text = "Like all other students, Ayano is instructed to leave school.";
+							this.ResultsLabels[2].text = "Her heart aches as she thinks of senpai.";
+							this.ResultsLabels[3].text = "Ayano leaves school.";
+							this.ResultsLabels[4].text = "Ayano returns to her home.";
+						}
 					}
 				}
 				else if (this.Corpses > 0)
@@ -666,6 +701,11 @@ public class PoliceScript : MonoBehaviour
 					this.ResultsLabels[2].text = "The faculty member fears that there has been a suicide, but cannot find a corpse anywhere. The faculty member does not take any action.";
 					this.ResultsLabels[3].text = "Ayano leaves school and watches Senpai walk home.";
 					this.ResultsLabels[4].text = "Once he is safely home, Ayano returns to her own home.";
+					if (GameGlobals.SenpaiMourning)
+					{
+						this.ResultsLabels[3].text = "Ayano leaves school.";
+						this.ResultsLabels[4].text = "Ayano returns home.";
+					}
 				}
 			}
 		}

@@ -7,7 +7,7 @@ public enum ShopType
 	Manga,
 	Maid,
 	Salon,
-	Music,
+	Gift,
 	Convenience,
 	Games,
 	Electronics

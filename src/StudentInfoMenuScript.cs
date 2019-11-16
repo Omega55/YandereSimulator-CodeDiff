@@ -199,6 +199,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 					}
 					this.PromptBar.Label[1].text = "Back";
 					this.PromptBar.Label[3].text = "Interests";
+					this.PromptBar.Label[6].text = "Reputation";
 					this.PromptBar.UpdateButtons();
 				}
 			}

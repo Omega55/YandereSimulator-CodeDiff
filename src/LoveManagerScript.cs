@@ -178,6 +178,8 @@ public class LoveManagerScript : MonoBehaviour
 
 	public void BeginConfession()
 	{
+		this.Suitor.EmptyHands();
+		this.Rival.EmptyHands();
 		this.Yandere.CharacterAnimation.CrossFade(this.Yandere.IdleAnim);
 		this.Yandere.RPGCamera.enabled = false;
 		this.Yandere.CanMove = false;

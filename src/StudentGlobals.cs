@@ -67,6 +67,8 @@ public static class StudentGlobals
 
 	private const string Str_FragileTarget = "FragileTarget";
 
+	private const string Str_ReputationTriangle = "ReputatonTriangle";
+
 	private const string Str_MemorialStudents = "MemorialStudents";
 
 	private const string Str_MemorialStudent1 = "MemorialStudent1";
@@ -911,6 +913,30 @@ public static class StudentGlobals
 	public static void SetFragileTarget(int value)
 	{
 		PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_FragileTarget", value);
+	}
+
+	public static Vector3 GetReputationTriangle(int studentID)
+	{
+		return GlobalsHelper.GetVector3(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_Student_",
+			studentID,
+			"_ReputatonTriangle"
+		}));
+	}
+
+	public static void SetReputationTriangle(int studentID, Vector3 triangle)
+	{
+		GlobalsHelper.SetVector3(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_Student_",
+			studentID,
+			"_ReputatonTriangle"
+		}), triangle);
 	}
 
 	public static void DeleteAll()

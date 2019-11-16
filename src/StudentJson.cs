@@ -99,6 +99,25 @@ public class StudentJson : JsonData
 			studentJson.stockings = TFUtils.LoadString(dictionary, "Stockings");
 			studentJson.accessory = TFUtils.LoadString(dictionary, "Accessory");
 			studentJson.info = TFUtils.LoadString(dictionary, "Info");
+			if (num == 10 || num == 11)
+			{
+				studentJson.name = string.Empty;
+				studentJson.gender = 0;
+				studentJson.classID = 0;
+				studentJson.seat = 0;
+				studentJson.club = ClubType.None;
+				studentJson.persona = PersonaType.None;
+				studentJson.crush = 0;
+				studentJson.breastSize = 0f;
+				studentJson.strength = 0;
+				studentJson.hairstyle = string.Empty;
+				studentJson.color = string.Empty;
+				studentJson.eyes = string.Empty;
+				studentJson.eyeType = string.Empty;
+				studentJson.stockings = string.Empty;
+				studentJson.accessory = string.Empty;
+				studentJson.info = "Just stop.";
+			}
 			if (GameGlobals.LoveSick && studentJson.name == "Mai Waifu")
 			{
 				studentJson.name = "Mai Wakabayashi";

@@ -202,7 +202,23 @@ public class StreetShopInterfaceScript : MonoBehaviour
 			ShopType currentStore = this.CurrentStore;
 			if (currentStore != ShopType.Nonfunctional)
 			{
-				if (currentStore == ShopType.Manga)
+				if (currentStore != ShopType.Manga)
+				{
+					if (currentStore == ShopType.Gift)
+					{
+						this.PurchaseEffect();
+						if (this.Selected < 6)
+						{
+							CollectibleGlobals.SenpaiGifts++;
+						}
+						else
+						{
+							CollectibleGlobals.MatchmakingGifts++;
+						}
+						CollectibleGlobals.SetGiftPurchased(this.Selected, true);
+					}
+				}
+				else
 				{
 					this.PurchaseEffect();
 					switch (this.Selected)
@@ -283,7 +299,21 @@ public class StreetShopInterfaceScript : MonoBehaviour
 			}
 		}
 		ShopType currentStore = this.CurrentStore;
-		if (currentStore == ShopType.Manga)
+		if (currentStore != ShopType.Manga)
+		{
+			if (currentStore == ShopType.Gift)
+			{
+				for (int i = 1; i < 11; i++)
+				{
+					if (CollectibleGlobals.GetGiftPurchased(i))
+					{
+						this.Icons[i].spriteName = "Yes";
+						this.PricesLabel[i].text = "Owned";
+					}
+				}
+			}
+		}
+		else
 		{
 			if (CollectibleGlobals.GetMangaCollected(1))
 			{

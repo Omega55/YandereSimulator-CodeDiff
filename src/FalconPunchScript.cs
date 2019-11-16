@@ -89,9 +89,25 @@ public class FalconPunchScript : MonoBehaviour
 		}
 		if (this.Destructive && other.gameObject.layer != 2 && other.gameObject.layer != 8 && other.gameObject.layer != 9 && other.gameObject.layer != 13 && other.gameObject.layer != 17)
 		{
-			UnityEngine.Object.Instantiate<GameObject>(this.FalconExplosion, base.transform.position + new Vector3(0f, 0f, 0f), Quaternion.identity);
-			UnityEngine.Object.Destroy(other.gameObject);
-			UnityEngine.Object.Destroy(base.gameObject);
+			GameObject gameObject = null;
+			StudentScript component2 = other.gameObject.transform.root.GetComponent<StudentScript>();
+			if (component2 != null)
+			{
+				if (component2.StudentID <= 1)
+				{
+					gameObject = component2.gameObject;
+				}
+			}
+			else
+			{
+				gameObject = other.gameObject;
+			}
+			if (gameObject != null)
+			{
+				UnityEngine.Object.Instantiate<GameObject>(this.FalconExplosion, base.transform.position + new Vector3(0f, 0f, 0f), Quaternion.identity);
+				UnityEngine.Object.Destroy(gameObject);
+				UnityEngine.Object.Destroy(base.gameObject);
+			}
 		}
 	}
 }

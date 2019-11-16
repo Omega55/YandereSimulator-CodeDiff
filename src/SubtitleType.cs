@@ -146,6 +146,7 @@ public enum SubtitleType
 	PoisonApology,
 	PoisonReaction,
 	PrankReaction,
+	RaibaruRivalDeathReaction,
 	RejectFood,
 	RejectHelp,
 	RepeatReaction,

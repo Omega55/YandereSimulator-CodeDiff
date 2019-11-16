@@ -23,6 +23,10 @@ public static class GameGlobals
 
 	private const string Str_BlondeHair = "BlondeHair";
 
+	private const string Str_SenpaiMourning = "SenpaiMourning";
+
+	private const string Str_ReputationsInitialized = "ReputationsInitialized";
+
 	public static int Profile
 	{
 		get
@@ -143,6 +147,30 @@ public static class GameGlobals
 		}
 	}
 
+	public static bool SenpaiMourning
+	{
+		get
+		{
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_SenpaiMourning");
+		}
+		set
+		{
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_SenpaiMourning", value);
+		}
+	}
+
+	public static bool ReputationsInitialized
+	{
+		get
+		{
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_ReputationsInitialized");
+		}
+		set
+		{
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_ReputationsInitialized", value);
+		}
+	}
+
 	public static void DeleteAll()
 	{
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_LoveSick");
@@ -154,5 +182,7 @@ public static class GameGlobals
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_CensorBlood");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_SpareUniform");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_BlondeHair");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_SenpaiMourning");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_ReputationsInitialized");
 	}
 }

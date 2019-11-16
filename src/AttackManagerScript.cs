@@ -235,6 +235,7 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					this.Yandere.TargetStudent.Tranquil = true;
 					this.Yandere.CanTranq = false;
+					this.Yandere.StainWeapon();
 					this.Yandere.Followers--;
 					equippedWeapon.Type = WeaponType.Knife;
 				}

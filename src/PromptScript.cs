@@ -578,6 +578,10 @@ public class PromptScript : MonoBehaviour
 				{
 					this.Yandere.NearestPrompt = null;
 				}
+				if (this.Square == null)
+				{
+					Debug.Log("Yo, some prompt named " + base.gameObject.name + " apparently doesn't have a ''Square'' Sprite.");
+				}
 				if (this.Square.enabled)
 				{
 					this.Square.enabled = false;
