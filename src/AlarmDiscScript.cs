@@ -253,6 +253,7 @@ public class AlarmDiscScript : MonoBehaviour
 					this.Student.ReadPhase = 0;
 					this.Student.StopPairing();
 					this.Student.EmptyHands();
+					this.Student.HeardScream = true;
 				}
 			}
 		}

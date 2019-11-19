@@ -567,6 +567,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool Electrified;
 
+	public bool HeardScream;
+
 	public bool IgnoreBlood;
 
 	public bool MusumeRight;
@@ -3036,6 +3038,7 @@ public class StudentScript : MonoBehaviour
 				this.TargetDistance = 10f;
 				if (this.DistanceToPlayer > 20f)
 				{
+					Debug.Log("Sprinting 1");
 					this.Pathfinding.speed = 4f;
 				}
 				else if (this.DistanceToPlayer < 10f)
@@ -3345,11 +3348,13 @@ public class StudentScript : MonoBehaviour
 				}
 				if (!this.Teacher && this.Club != ClubType.Delinquent && (this.Clock.Period == 2 || this.Clock.Period == 4) && this.ClubActivityPhase < 16)
 				{
+					Debug.Log("Sprinting 2");
 					this.Pathfinding.speed = 4f;
 				}
 			}
 			if (this.MeetTime > 0f && this.Clock.HourTime > this.MeetTime)
 			{
+				Debug.Log("Sprinting 3");
 				this.CurrentDestination = this.MeetSpot;
 				this.Pathfinding.target = this.MeetSpot;
 				this.DistanceToDestination = Vector3.Distance(base.transform.position, this.CurrentDestination.position);
@@ -3400,6 +3405,7 @@ public class StudentScript : MonoBehaviour
 				{
 					if (((this.Clock.Period == 1 && this.Clock.HourTime > 8.483334f) || (this.Clock.Period == 3 && this.Clock.HourTime > 13.4833336f)) && !this.Teacher)
 					{
+						Debug.Log("Sprinting 4");
 						this.Pathfinding.speed = 4f;
 					}
 					if (!this.InEvent && !this.Meeting && !this.GoAway)
@@ -3578,6 +3584,7 @@ public class StudentScript : MonoBehaviour
 					}
 					else
 					{
+						Debug.Log("Sprinting 5");
 						this.Pathfinding.speed = 4f;
 					}
 				}
@@ -4627,6 +4634,7 @@ public class StudentScript : MonoBehaviour
 											this.Distracted = false;
 											if (this.Clock.Period == 2 || this.Clock.Period == 4)
 											{
+												Debug.Log("Sprinting 6");
 												this.Pathfinding.speed = 4f;
 											}
 										}
@@ -5601,6 +5609,7 @@ public class StudentScript : MonoBehaviour
 										this.Pathfinding.target = this.StudentManager.FleeSpots[1];
 										this.CurrentDestination = this.StudentManager.FleeSpots[1];
 									}
+									Debug.Log("Sprinting 7");
 									this.Pathfinding.speed = 4f;
 									this.StalkerFleeing = true;
 								}
@@ -6006,6 +6015,7 @@ public class StudentScript : MonoBehaviour
 							}
 							else
 							{
+								Debug.Log("Sprinting 8");
 								this.Pathfinding.speed = 4f;
 							}
 							if (this.Persona == PersonaType.PhoneAddict && !this.CrimeReported)
@@ -6893,6 +6903,7 @@ public class StudentScript : MonoBehaviour
 				this.DistanceToDestination = Vector3.Distance(base.transform.position, this.Pathfinding.target.position);
 				if (this.DistanceToDestination > 2f)
 				{
+					Debug.Log("Sprinting 10");
 					this.CharacterAnimation.CrossFade(this.RunAnim);
 					this.Pathfinding.speed = 4f;
 					this.Obstacle.enabled = false;
@@ -6996,9 +7007,11 @@ public class StudentScript : MonoBehaviour
 								this.StudentManager.FemaleShowerCurtain.SetBlendShapeWeight(0, this.StudentManager.OpenValue);
 								base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.CurrentDestination.rotation, Time.deltaTime * 10f);
 								this.MoveTowardsTarget(this.CurrentDestination.position);
+								this.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
 								this.CharacterAnimation.CrossFade(this.BathingAnim);
 								if (this.CharacterAnimation[this.BathingAnim].time >= this.CharacterAnimation[this.BathingAnim].length)
 								{
+									this.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
 									this.StudentManager.OpenCurtain = true;
 									this.LiquidProjector.enabled = false;
 									this.Bloody = false;
@@ -7119,6 +7132,7 @@ public class StudentScript : MonoBehaviour
 									}
 									this.CurrentDestination = this.StudentManager.FemaleStripSpot;
 									this.Pathfinding.target = this.StudentManager.FemaleStripSpot;
+									Debug.Log("Sprinting 11");
 									this.Pathfinding.canSearch = true;
 									this.Pathfinding.canMove = true;
 									this.Pathfinding.speed = 4f;
@@ -7202,6 +7216,7 @@ public class StudentScript : MonoBehaviour
 						{
 							this.CharacterAnimation.CrossFade(this.SprintAnim);
 						}
+						Debug.Log("Sprinting 12");
 						this.Pathfinding.speed = 4f;
 					}
 					else
@@ -7940,8 +7955,9 @@ public class StudentScript : MonoBehaviour
 						this.CurrentDestination = this.Giggle.transform;
 						this.Pathfinding.canSearch = true;
 						this.Pathfinding.canMove = true;
-						if (this.Persona == PersonaType.Heroic)
+						if (this.Persona == PersonaType.Heroic && this.HeardScream)
 						{
+							Debug.Log("Sprinting 13");
 							this.Pathfinding.speed = 4f;
 						}
 						else
@@ -7955,7 +7971,7 @@ public class StudentScript : MonoBehaviour
 				{
 					if (this.DistanceToDestination > 1f)
 					{
-						if (this.Persona == PersonaType.Heroic)
+						if (this.Persona == PersonaType.Heroic && this.HeardScream)
 						{
 							this.CharacterAnimation.CrossFade(this.SprintAnim);
 						}
@@ -8091,8 +8107,8 @@ public class StudentScript : MonoBehaviour
 				}
 				else if (this.SentHomePhase == 2 && this.CharacterAnimation[this.SentHomeAnim].time > this.CharacterAnimation[this.SentHomeAnim].length)
 				{
+					Debug.Log("Sprinting 14");
 					this.SprintAnim = this.OriginalSprintAnim;
-					Debug.Log("Sprinting 7");
 					this.CharacterAnimation.CrossFade(this.SprintAnim);
 					this.CurrentDestination = this.StudentManager.Exit;
 					this.Pathfinding.target = this.StudentManager.Exit;
@@ -11453,6 +11469,7 @@ public class StudentScript : MonoBehaviour
 			{
 				if (this.CharacterAnimation["f02_insertNote_00"].time >= this.CharacterAnimation["f02_insertNote_00"].length)
 				{
+					Debug.Log("Sprinting 15");
 					this.CurrentDestination = this.StudentManager.RivalConfessionSpot;
 					this.Pathfinding.target = this.StudentManager.RivalConfessionSpot;
 					this.Pathfinding.canSearch = true;
@@ -11495,6 +11512,7 @@ public class StudentScript : MonoBehaviour
 			}
 			if (this.CharacterAnimation["keepNote_00"].time >= this.CharacterAnimation["keepNote_00"].length)
 			{
+				Debug.Log("Sprinting 16");
 				this.CurrentDestination = this.StudentManager.SuitorConfessionSpot;
 				this.Pathfinding.target = this.StudentManager.SuitorConfessionSpot;
 				this.Pathfinding.canSearch = true;
@@ -11912,6 +11930,7 @@ public class StudentScript : MonoBehaviour
 		this.Prompt.enabled = false;
 		if (this.Following)
 		{
+			Debug.Log("Yandere-chan's follower is being set to ''null''.");
 			this.Hearts.emission.enabled = false;
 			this.Yandere.Follower = null;
 			this.Yandere.Followers--;
@@ -14423,6 +14442,7 @@ public class StudentScript : MonoBehaviour
 		}
 		else
 		{
+			Debug.Log("Sprinting 17");
 			this.Pathfinding.speed = 4f;
 		}
 		if (this.CurrentAction == StudentActionType.Clean)
@@ -14438,6 +14458,7 @@ public class StudentScript : MonoBehaviour
 		this.YandereInnocent = false;
 		this.Investigating = false;
 		this.EatingSnack = false;
+		this.HeardScream = false;
 		this.DiscCheck = false;
 		this.Routine = true;
 	}

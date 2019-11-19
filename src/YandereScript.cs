@@ -4516,7 +4516,7 @@ public class YandereScript : MonoBehaviour
 			{
 				this.targetRotation = Quaternion.LookRotation(new Vector3(this.TargetStudent.transform.position.x, base.transform.position.y, this.TargetStudent.transform.position.z) - base.transform.position);
 				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
-				if (Vector3.Distance(base.transform.position, this.TargetStudent.transform.position) < 1f)
+				if (Vector3.Distance(base.transform.position, this.TargetStudent.transform.position) < 0.75f)
 				{
 					this.MyController.Move(base.transform.forward * Time.deltaTime * -1f);
 				}

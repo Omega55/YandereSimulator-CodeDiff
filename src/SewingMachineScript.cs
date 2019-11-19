@@ -25,7 +25,11 @@ public class SewingMachineScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (TaskGlobals.GetTaskStatus(30) > 2)
+		if (TaskGlobals.GetTaskStatus(30) == 1)
+		{
+			this.Check = true;
+		}
+		else if (TaskGlobals.GetTaskStatus(30) > 2)
 		{
 			base.enabled = false;
 		}

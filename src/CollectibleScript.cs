@@ -18,6 +18,10 @@ public class CollectibleScript : MonoBehaviour
 		{
 			UnityEngine.Object.Destroy(base.gameObject);
 		}
+		if (GameGlobals.LoveSick || MissionModeGlobals.MissionMode)
+		{
+			UnityEngine.Object.Destroy(base.gameObject);
+		}
 	}
 
 	public CollectibleType CollectibleType

@@ -238,14 +238,20 @@ public class EndOfDayScript : MonoBehaviour
 					this.Senpai.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
 					this.Senpai.CharacterAnimation.enabled = true;
 				}
-				this.Senpai.gameObject.SetActive(false);
+				if (this.Senpai != null)
+				{
+					this.Senpai.gameObject.SetActive(false);
+				}
 				if (this.Rival == null && this.StudentManager.Students[this.StudentManager.RivalID] != null)
 				{
 					this.Rival = this.StudentManager.Students[this.StudentManager.RivalID];
 					this.Rival.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
 					this.Rival.CharacterAnimation.enabled = true;
 				}
-				this.Rival.gameObject.SetActive(false);
+				if (this.Rival != null)
+				{
+					this.Rival.gameObject.SetActive(false);
+				}
 				this.Yandere.transform.parent = null;
 				this.Yandere.transform.position = new Vector3(0f, 0f, -75f);
 				this.EODCamera.localPosition = new Vector3(1f, 1.8f, -2.5f);

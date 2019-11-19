@@ -331,6 +331,7 @@ public class MissionModeScript : MonoBehaviour
 			OptionGlobals.TutorialsOff = true;
 			SchoolGlobals.SchoolAtmosphereSet = true;
 			SchoolGlobals.SchoolAtmosphere = 1f - (float)this.Difficulty * 0.1f;
+			PlayerGlobals.Money = 10f;
 			this.StudentManager.Atmosphere = 1f - (float)this.Difficulty * 0.1f;
 			this.StudentManager.SetAtmosphere();
 			this.ID = 1;
