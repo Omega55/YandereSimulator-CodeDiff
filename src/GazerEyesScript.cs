@@ -178,8 +178,6 @@ public class GazerEyesScript : MonoBehaviour
 		{
 			this.Yandere.TargetStudent.TurnToStone();
 		}
-		this.Yandere.TargetStudent.Prompt.Hide();
-		this.Yandere.TargetStudent.Prompt.enabled = false;
 	}
 
 	public void ElectrocuteStudent(StudentScript Target)

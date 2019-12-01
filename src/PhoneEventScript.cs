@@ -93,7 +93,7 @@ public class PhoneEventScript : MonoBehaviour
 			else if (this.Clock.HourTime > this.EventTime)
 			{
 				this.EventStudent = this.StudentManager.Students[this.EventStudentID];
-				if (this.EventStudent != null)
+				if (this.EventStudent != null && !this.StudentManager.CommunalLocker.RivalPhone.Stolen)
 				{
 					this.EventStudent.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
 					if (this.EventStudentID == 11)

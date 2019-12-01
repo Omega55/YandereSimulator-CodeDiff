@@ -81,15 +81,26 @@ public class MetalDetectorScript : MonoBehaviour
 			{
 				WeaponScript weaponScript = this.Yandere.Weapon[i];
 				flag |= (weaponScript != null && weaponScript.Metal);
-				if (!flag && this.Yandere.Container != null && this.Yandere.Container.Weapon != null)
+				if (!flag)
 				{
-					weaponScript = this.Yandere.Container.Weapon;
-					flag = weaponScript.Metal;
-				}
-				if (!flag && this.Yandere.PickUp != null && this.Yandere.PickUp.TrashCan != null && this.Yandere.PickUp.TrashCan.Weapon)
-				{
-					weaponScript = this.Yandere.PickUp.TrashCan.Item.GetComponent<WeaponScript>();
-					flag = weaponScript.Metal;
+					if (this.Yandere.Container != null && this.Yandere.Container.Weapon != null)
+					{
+						weaponScript = this.Yandere.Container.Weapon;
+						flag = weaponScript.Metal;
+					}
+					if (this.Yandere.PickUp != null)
+					{
+						if (this.Yandere.PickUp.TrashCan != null && this.Yandere.PickUp.TrashCan.Weapon)
+						{
+							weaponScript = this.Yandere.PickUp.TrashCan.Item.GetComponent<WeaponScript>();
+							flag = weaponScript.Metal;
+						}
+						if (this.Yandere.PickUp.StuckBoxCutter != null)
+						{
+							weaponScript = this.Yandere.PickUp.StuckBoxCutter;
+							flag = true;
+						}
+					}
 				}
 			}
 			if (flag && !this.Yandere.Inventory.IDCard)

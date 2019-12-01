@@ -41,6 +41,8 @@ public class SchemesScript : MonoBehaviour
 
 	public string[] SchemeNames;
 
+	[Multiline]
+	[SerializeField]
 	public string[] SchemeSteps;
 
 	public int ID = 1;

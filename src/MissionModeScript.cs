@@ -1127,7 +1127,7 @@ public class MissionModeScript : MonoBehaviour
 		bool disableOutlines = OptionGlobals.DisableOutlines;
 		int lowDetailStudents = OptionGlobals.LowDetailStudents;
 		int particleCount = OptionGlobals.ParticleCount;
-		bool disableShadows = OptionGlobals.DisableShadows;
+		bool enableShadows = OptionGlobals.EnableShadows;
 		int drawDistance = OptionGlobals.DrawDistance;
 		int drawDistanceLimit = OptionGlobals.DrawDistanceLimit;
 		bool disableBloom = OptionGlobals.DisableBloom;
@@ -1169,7 +1169,7 @@ public class MissionModeScript : MonoBehaviour
 		OptionGlobals.DisableOutlines = disableOutlines;
 		OptionGlobals.LowDetailStudents = lowDetailStudents;
 		OptionGlobals.ParticleCount = particleCount;
-		OptionGlobals.DisableShadows = disableShadows;
+		OptionGlobals.EnableShadows = enableShadows;
 		OptionGlobals.DrawDistance = drawDistance;
 		OptionGlobals.DrawDistanceLimit = drawDistanceLimit;
 		OptionGlobals.DisableBloom = disableBloom;

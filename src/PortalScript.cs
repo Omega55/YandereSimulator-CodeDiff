@@ -15,6 +15,8 @@ public class PortalScript : MonoBehaviour
 
 	public OsanaFridayLunchEventScript OsanaFridayLunchEvent;
 
+	public OsanaClubEventScript OsanaClubEvent;
+
 	public OsanaPoolEventScript OsanaPoolEvent;
 
 	public DelinquentManagerScript DelinquentManager;

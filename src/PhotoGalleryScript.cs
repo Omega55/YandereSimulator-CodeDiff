@@ -796,21 +796,105 @@ public class PhotoGalleryScript : MonoBehaviour
 		{
 			if (this.CorkboardPhotographs[i] != null)
 			{
-				PlayerPrefs.SetInt("CorkboardPhoto_" + i + "_Exists", 1);
-				PlayerPrefs.SetInt("CorkboardPhoto_" + i + "_PhotoID", this.CorkboardPhotographs[i].ID);
-				PlayerPrefs.SetFloat("CorkboardPhoto_" + i + "_PositionX", this.CorkboardPhotographs[i].transform.localPosition.x);
-				PlayerPrefs.SetFloat("CorkboardPhoto_" + i + "_PositionY", this.CorkboardPhotographs[i].transform.localPosition.y);
-				PlayerPrefs.SetFloat("CorkboardPhoto_" + i + "_PositionZ", this.CorkboardPhotographs[i].transform.localPosition.z);
-				PlayerPrefs.SetFloat("CorkboardPhoto_" + i + "_RotationX", this.CorkboardPhotographs[i].transform.localEulerAngles.x);
-				PlayerPrefs.SetFloat("CorkboardPhoto_" + i + "_RotationY", this.CorkboardPhotographs[i].transform.localEulerAngles.y);
-				PlayerPrefs.SetFloat("CorkboardPhoto_" + i + "_RotationZ", this.CorkboardPhotographs[i].transform.localEulerAngles.z);
-				PlayerPrefs.SetFloat("CorkboardPhoto_" + i + "_ScaleX", this.CorkboardPhotographs[i].transform.localScale.x);
-				PlayerPrefs.SetFloat("CorkboardPhoto_" + i + "_ScaleY", this.CorkboardPhotographs[i].transform.localScale.y);
-				PlayerPrefs.SetFloat("CorkboardPhoto_" + i + "_ScaleZ", this.CorkboardPhotographs[i].transform.localScale.z);
+				PlayerPrefs.SetInt(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardPhoto_",
+					i,
+					"_Exists"
+				}), 1);
+				PlayerPrefs.SetInt(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardPhoto_",
+					i,
+					"_PhotoID"
+				}), this.CorkboardPhotographs[i].ID);
+				PlayerPrefs.SetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardPhoto_",
+					i,
+					"_PositionX"
+				}), this.CorkboardPhotographs[i].transform.localPosition.x);
+				PlayerPrefs.SetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardPhoto_",
+					i,
+					"_PositionY"
+				}), this.CorkboardPhotographs[i].transform.localPosition.y);
+				PlayerPrefs.SetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardPhoto_",
+					i,
+					"_PositionZ"
+				}), this.CorkboardPhotographs[i].transform.localPosition.z);
+				PlayerPrefs.SetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardPhoto_",
+					i,
+					"_RotationX"
+				}), this.CorkboardPhotographs[i].transform.localEulerAngles.x);
+				PlayerPrefs.SetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardPhoto_",
+					i,
+					"_RotationY"
+				}), this.CorkboardPhotographs[i].transform.localEulerAngles.y);
+				PlayerPrefs.SetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardPhoto_",
+					i,
+					"_RotationZ"
+				}), this.CorkboardPhotographs[i].transform.localEulerAngles.z);
+				PlayerPrefs.SetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardPhoto_",
+					i,
+					"_ScaleX"
+				}), this.CorkboardPhotographs[i].transform.localScale.x);
+				PlayerPrefs.SetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardPhoto_",
+					i,
+					"_ScaleY"
+				}), this.CorkboardPhotographs[i].transform.localScale.y);
+				PlayerPrefs.SetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardPhoto_",
+					i,
+					"_ScaleZ"
+				}), this.CorkboardPhotographs[i].transform.localScale.z);
 			}
 			else
 			{
-				PlayerPrefs.SetInt("CorkboardPhoto_" + i + "_Exists", 0);
+				PlayerPrefs.SetInt(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardPhoto_",
+					i,
+					"_Exists"
+				}), 0);
 			}
 		}
 	}
@@ -819,16 +903,100 @@ public class PhotoGalleryScript : MonoBehaviour
 	{
 		for (int i = 0; i < 100; i++)
 		{
-			if (PlayerPrefs.GetInt("CorkboardPhoto_" + i + "_Exists") == 1)
+			if (PlayerPrefs.GetInt(string.Concat(new object[]
+			{
+				"Profile_",
+				GameGlobals.Profile,
+				"_CorkboardPhoto_",
+				i,
+				"_Exists"
+			})) == 1)
 			{
 				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Photograph, base.transform.position, Quaternion.identity);
 				gameObject.transform.parent = this.CorkboardPanel;
-				gameObject.transform.localPosition = new Vector3(PlayerPrefs.GetFloat("CorkboardPhoto_" + i + "_PositionX"), PlayerPrefs.GetFloat("CorkboardPhoto_" + i + "_PositionY"), PlayerPrefs.GetFloat("CorkboardPhoto_" + i + "_PositionZ"));
-				gameObject.transform.localEulerAngles = new Vector3(PlayerPrefs.GetFloat("CorkboardPhoto_" + i + "_RotationX"), PlayerPrefs.GetFloat("CorkboardPhoto_" + i + "_RotationY"), PlayerPrefs.GetFloat("CorkboardPhoto_" + i + "_RotationZ"));
-				gameObject.transform.localScale = new Vector3(PlayerPrefs.GetFloat("CorkboardPhoto_" + i + "_ScaleX"), PlayerPrefs.GetFloat("CorkboardPhoto_" + i + "_ScaleY"), PlayerPrefs.GetFloat("CorkboardPhoto_" + i + "_ScaleZ"));
-				gameObject.GetComponent<UITexture>().mainTexture = this.Photographs[PlayerPrefs.GetInt("CorkboardPhoto_" + i + "_PhotoID")].mainTexture;
+				gameObject.transform.localPosition = new Vector3(PlayerPrefs.GetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardPhoto_",
+					i,
+					"_PositionX"
+				})), PlayerPrefs.GetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardPhoto_",
+					i,
+					"_PositionY"
+				})), PlayerPrefs.GetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardPhoto_",
+					i,
+					"_PositionZ"
+				})));
+				gameObject.transform.localEulerAngles = new Vector3(PlayerPrefs.GetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardPhoto_",
+					i,
+					"_RotationX"
+				})), PlayerPrefs.GetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardPhoto_",
+					i,
+					"_RotationY"
+				})), PlayerPrefs.GetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardPhoto_",
+					i,
+					"_RotationZ"
+				})));
+				gameObject.transform.localScale = new Vector3(PlayerPrefs.GetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardPhoto_",
+					i,
+					"_ScaleX"
+				})), PlayerPrefs.GetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardPhoto_",
+					i,
+					"_ScaleY"
+				})), PlayerPrefs.GetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardPhoto_",
+					i,
+					"_ScaleZ"
+				})));
+				gameObject.GetComponent<UITexture>().mainTexture = this.Photographs[PlayerPrefs.GetInt(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardPhoto_",
+					i,
+					"_PhotoID"
+				}))].mainTexture;
 				this.CorkboardPhotographs[this.Photos] = gameObject.GetComponent<HomeCorkboardPhotoScript>();
-				this.CorkboardPhotographs[this.Photos].ID = PlayerPrefs.GetInt("CorkboardPhoto_" + i + "_PhotoID");
+				this.CorkboardPhotographs[this.Photos].ID = PlayerPrefs.GetInt(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardPhoto_",
+					i,
+					"_PhotoID"
+				}));
 				this.CorkboardPhotographs[this.Photos].ArrayID = this.Photos;
 				this.Photos++;
 			}
@@ -843,17 +1011,73 @@ public class PhotoGalleryScript : MonoBehaviour
 		{
 			if (this.CorkboardStrings[i] != null)
 			{
-				PlayerPrefs.SetInt("CorkboardString_" + i + "_Exists", 1);
-				PlayerPrefs.SetFloat("CorkboardString_" + i + "_PositionX", this.CorkboardStrings[i].Origin.localPosition.x);
-				PlayerPrefs.SetFloat("CorkboardString_" + i + "_PositionY", this.CorkboardStrings[i].Origin.localPosition.y);
-				PlayerPrefs.SetFloat("CorkboardString_" + i + "_PositionZ", this.CorkboardStrings[i].Origin.localPosition.z);
-				PlayerPrefs.SetFloat("CorkboardString2_" + i + "_PositionX", this.CorkboardStrings[i].Target.localPosition.x);
-				PlayerPrefs.SetFloat("CorkboardString2_" + i + "_PositionY", this.CorkboardStrings[i].Target.localPosition.y);
-				PlayerPrefs.SetFloat("CorkboardString2_" + i + "_PositionZ", this.CorkboardStrings[i].Target.localPosition.z);
+				PlayerPrefs.SetInt(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardString_",
+					i,
+					"_Exists"
+				}), 1);
+				PlayerPrefs.SetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardString_",
+					i,
+					"_PositionX"
+				}), this.CorkboardStrings[i].Origin.localPosition.x);
+				PlayerPrefs.SetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardString_",
+					i,
+					"_PositionY"
+				}), this.CorkboardStrings[i].Origin.localPosition.y);
+				PlayerPrefs.SetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardString_",
+					i,
+					"_PositionZ"
+				}), this.CorkboardStrings[i].Origin.localPosition.z);
+				PlayerPrefs.SetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardString2_",
+					i,
+					"_PositionX"
+				}), this.CorkboardStrings[i].Target.localPosition.x);
+				PlayerPrefs.SetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardString2_",
+					i,
+					"_PositionY"
+				}), this.CorkboardStrings[i].Target.localPosition.y);
+				PlayerPrefs.SetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardString2_",
+					i,
+					"_PositionZ"
+				}), this.CorkboardStrings[i].Target.localPosition.z);
 			}
 			else
 			{
-				PlayerPrefs.SetInt("CorkboardString_" + i + "_Exists", 0);
+				PlayerPrefs.SetInt(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardString_",
+					i,
+					"_Exists"
+				}), 0);
 			}
 		}
 	}
@@ -862,22 +1086,78 @@ public class PhotoGalleryScript : MonoBehaviour
 	{
 		for (int i = 0; i < 100; i++)
 		{
-			if (PlayerPrefs.GetInt("CorkboardString_" + i + "_Exists") == 1)
+			if (PlayerPrefs.GetInt(string.Concat(new object[]
+			{
+				"Profile_",
+				GameGlobals.Profile,
+				"_CorkboardString_",
+				i,
+				"_Exists"
+			})) == 1)
 			{
 				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.StringSet, base.transform.position, Quaternion.identity);
 				gameObject.transform.parent = this.StringParent;
 				gameObject.transform.localPosition = new Vector3(0f, 0f, 0f);
 				gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
 				this.String = gameObject.GetComponent<StringScript>();
-				this.String.Origin.localPosition = new Vector3(PlayerPrefs.GetFloat("CorkboardString_" + i + "_PositionX"), PlayerPrefs.GetFloat("CorkboardString_" + i + "_PositionY"), PlayerPrefs.GetFloat("CorkboardString_" + i + "_PositionZ"));
-				this.String.Target.localPosition = new Vector3(PlayerPrefs.GetFloat("CorkboardString2_" + i + "_PositionX"), PlayerPrefs.GetFloat("CorkboardString2_" + i + "_PositionY"), PlayerPrefs.GetFloat("CorkboardString2_" + i + "_PositionZ"));
+				this.String.Origin.localPosition = new Vector3(PlayerPrefs.GetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardString_",
+					i,
+					"_PositionX"
+				})), PlayerPrefs.GetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardString_",
+					i,
+					"_PositionY"
+				})), PlayerPrefs.GetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardString_",
+					i,
+					"_PositionZ"
+				})));
+				this.String.Target.localPosition = new Vector3(PlayerPrefs.GetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardString2_",
+					i,
+					"_PositionX"
+				})), PlayerPrefs.GetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardString2_",
+					i,
+					"_PositionY"
+				})), PlayerPrefs.GetFloat(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardString2_",
+					i,
+					"_PositionZ"
+				})));
 				this.CorkboardStrings[this.Strings] = this.String.GetComponent<StringScript>();
 				this.CorkboardStrings[this.Strings].ArrayID = this.Strings;
 				this.Strings++;
 			}
 			else
 			{
-				PlayerPrefs.SetInt("CorkboardString_" + i + "_Exists", 0);
+				PlayerPrefs.SetInt(string.Concat(new object[]
+				{
+					"Profile_",
+					GameGlobals.Profile,
+					"_CorkboardString_",
+					i,
+					"_Exists"
+				}), 0);
 			}
 		}
 	}

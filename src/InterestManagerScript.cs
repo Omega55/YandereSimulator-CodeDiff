@@ -28,7 +28,7 @@ public class InterestManagerScript : MonoBehaviour
 			int studentID = this.Yandere.Follower.StudentID;
 			for (int i = 1; i < 11; i++)
 			{
-				if (!ConversationGlobals.GetTopicLearnedByStudent(i, studentID) && Vector3.Distance(this.Yandere.Follower.transform.position, this.Clubs[i].position) < 5f)
+				if (!ConversationGlobals.GetTopicLearnedByStudent(i, studentID) && Vector3.Distance(this.Yandere.Follower.transform.position, this.Clubs[i].position) < 4f)
 				{
 					this.Yandere.NotificationManager.TopicName = this.TopicNames[i];
 					if (!ConversationGlobals.GetTopicDiscovered(i))
@@ -40,7 +40,7 @@ public class InterestManagerScript : MonoBehaviour
 					ConversationGlobals.SetTopicLearnedByStudent(i, studentID, true);
 				}
 			}
-			if (!ConversationGlobals.GetTopicLearnedByStudent(11, studentID) && Vector3.Distance(this.Yandere.Follower.transform.position, this.Clubs[11].position) < 5f)
+			if (!ConversationGlobals.GetTopicLearnedByStudent(11, studentID) && Vector3.Distance(this.Yandere.Follower.transform.position, this.Clubs[11].position) < 4f)
 			{
 				if (!ConversationGlobals.GetTopicDiscovered(11))
 				{
@@ -81,7 +81,7 @@ public class InterestManagerScript : MonoBehaviour
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
 				ConversationGlobals.SetTopicLearnedByStudent(15, studentID, true);
 			}
-			if (!ConversationGlobals.GetTopicLearnedByStudent(16, studentID) && Vector3.Distance(this.Yandere.Follower.transform.position, this.Clubs[6].position) < 5f)
+			if (!ConversationGlobals.GetTopicLearnedByStudent(16, studentID) && Vector3.Distance(this.Yandere.Follower.transform.position, this.Clubs[6].position) < 4f)
 			{
 				this.Yandere.NotificationManager.TopicName = "Justice";
 				if (!ConversationGlobals.GetTopicDiscovered(16))
@@ -92,7 +92,7 @@ public class InterestManagerScript : MonoBehaviour
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
 				ConversationGlobals.SetTopicLearnedByStudent(16, studentID, true);
 			}
-			if (!ConversationGlobals.GetTopicLearnedByStudent(17, studentID) && Vector3.Distance(this.Yandere.Follower.transform.position, this.DelinquentZone.position) < 5f)
+			if (!ConversationGlobals.GetTopicLearnedByStudent(17, studentID) && Vector3.Distance(this.Yandere.Follower.transform.position, this.DelinquentZone.position) < 4f)
 			{
 				this.Yandere.NotificationManager.TopicName = "Violence";
 				if (!ConversationGlobals.GetTopicDiscovered(17))
@@ -103,7 +103,7 @@ public class InterestManagerScript : MonoBehaviour
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
 				ConversationGlobals.SetTopicLearnedByStudent(17, studentID, true);
 			}
-			if (!ConversationGlobals.GetTopicLearnedByStudent(18, studentID) && Vector3.Distance(this.Yandere.Follower.transform.position, this.Library.position) < 5f)
+			if (!ConversationGlobals.GetTopicLearnedByStudent(18, studentID) && Vector3.Distance(this.Yandere.Follower.transform.position, this.Library.position) < 4f)
 			{
 				this.Yandere.NotificationManager.TopicName = "Reading";
 				if (!ConversationGlobals.GetTopicDiscovered(18))

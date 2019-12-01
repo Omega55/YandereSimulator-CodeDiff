@@ -15,6 +15,12 @@ public class CounselorDoorScript : MonoBehaviour
 
 	public bool Exit;
 
+	private void Start()
+	{
+		this.Prompt.enabled = false;
+		this.Prompt.Hide();
+	}
+
 	private void Update()
 	{
 		if (this.Prompt.Circle[0].fillAmount == 0f)

@@ -9,6 +9,13 @@ public class RivalBagScript : MonoBehaviour
 
 	public PromptScript Prompt;
 
+	private void Start()
+	{
+		this.Prompt.enabled = false;
+		this.Prompt.Hide();
+		base.enabled = false;
+	}
+
 	private void Update()
 	{
 		if (this.Clock.Period == 2 || this.Clock.Period == 4)

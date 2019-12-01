@@ -33,6 +33,7 @@ public static class Globals
 		TutorialGlobals.DeleteAll();
 		CounselorGlobals.DeleteAll();
 		YancordGlobals.DeleteAll();
+		CorkboardGlobals.DeleteAll();
 		GameGlobals.Profile = profile;
 	}
 

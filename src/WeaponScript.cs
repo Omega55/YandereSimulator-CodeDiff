@@ -305,6 +305,11 @@ public class WeaponScript : MonoBehaviour
 	{
 		if (this.Prompt.Circle[3].fillAmount == 0f)
 		{
+			if (this.WeaponID == 6 && SchemeGlobals.GetSchemeStage(4) == 1)
+			{
+				SchemeGlobals.SetSchemeStage(4, 2);
+				this.Yandere.PauseScreen.Schemes.UpdateInstructions();
+			}
 			this.Prompt.Circle[3].fillAmount = 1f;
 			if (this.Prompt.Suspicious)
 			{
@@ -477,6 +482,11 @@ public class WeaponScript : MonoBehaviour
 
 	public void Drop()
 	{
+		if (this.WeaponID == 6 && SchemeGlobals.GetSchemeStage(4) == 2)
+		{
+			SchemeGlobals.SetSchemeStage(4, 1);
+			this.Yandere.PauseScreen.Schemes.UpdateInstructions();
+		}
 		Debug.Log("A " + base.gameObject.name + " has been dropped.");
 		if (this.WeaponID == 11)
 		{

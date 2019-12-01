@@ -56,10 +56,10 @@ public class CounselorScript : MonoBehaviour
 	public readonly string[] CounselorLectureText = new string[]
 	{
 		string.Empty,
-		"Your \"after-school activities\" are completely unacceptable. You should not be conducting yourself in such a manner. This kind of behavior could cause a scandal! You could run the school's reputation into the ground!",
+		"May I see your phone for a moment? ...what is THIS?! Would you care to explain why something like this is on your phone?",
 		"May I take a look inside your bag? ...this doesn't belong to you, does it?! What are you doing with someone else's property?",
 		"I need to take a look in your bag. ...cigarettes?! You have absolutely no excuse to be carrying something like this around!",
-		"May I see your phone for a moment? ...what is THIS?! Would you care to explain why something like this is on your phone?",
+		"It has come to my attention that you've been vandalizing the school's property. What, exactly, do you have to say for yourself?",
 		"Obviously, we need to have a long talk about the kind of behavior that will not tolerated at this school!",
 		"That's it! I've given you enough second chances. You have repeatedly broken school rules and ignored every warning that I have given you. You have left me with no choice but to permanently expel you!"
 	};
@@ -67,32 +67,32 @@ public class CounselorScript : MonoBehaviour
 	public readonly string[] CounselorReportText = new string[]
 	{
 		string.Empty,
-		"This is...! Thank you for bringing this to my attention. This kind of conduct will definitely harm the school's reputation. I'll have to have a word with her later today.",
+		"That's a very serious accusation. I hope you're not lying to me. Hopefully, it's just a misunderstanding. I'll investigate the matter.",
 		"Is that true? I'd hate to think we have a thief here at school. Don't worry - I'll get to the bottom of this.",
 		"That's a clear violation of school rules, not to mention completely illegal. If what you're saying is true, she will face serious consequences. I'll confront her about this.",
-		"That's a very serious accusation. I hope you're not lying to me. Hopefully, it's just a misunderstanding. I'll investigate the matter.",
+		"It's appalling to learn that there is a student at this school who thinks they can get away with this kind of misbehavior. I'll be sure to speak with her about this later today.",
 		"That's a bold claim. Are you certain? I'll investigate the matter. If she is cheating, I'll catch her in the act."
 	};
 
 	public readonly string[] LectureIntro = new string[]
 	{
 		string.Empty,
-		"The guidance counselor asks Kokona to visit her office after school ends...",
-		"The guidance counselor asks Kokona to visit her office after school ends...",
-		"The guidance counselor asks Kokona to visit her office after school ends...",
-		"The guidance counselor asks Kokona to visit her office after school ends...",
-		"The guidance counselor asks Kokona to visit her office after school ends..."
+		"The guidance counselor asks Osana to visit her office after school ends...",
+		"The guidance counselor asks Osana to visit her office after school ends...",
+		"The guidance counselor asks Osana to visit her office after school ends...",
+		"The guidance counselor asks Osana to visit her office after school ends...",
+		"The guidance counselor asks Osana to visit her office after school ends..."
 	};
 
 	public readonly string[] RivalText = new string[]
 	{
 		string.Empty,
-		"It...it's not what you think...I was just...um...",
+		"What?! I've never taken and pictures like that! How did this get on my phone?!",
 		"No! I'm not the one who did this! I would never steal from anyone!",
-		"Huh? I don't smoke! I don't know why something like this was in my bag!",
-		"What?! I've never taken any pictures like that! How did this get on my phone?!",
+		"Huh? I don't smoke! I don't know why something like this was in my desk!",
+		"W-wait, I can explain! It's not what you think!",
 		"I'm telling the truth! I didn't steal the answer sheet! I don't know why it was in my desk!",
-		"No! Please! Don't do this!"
+		"No...! P-please! Don't do this!"
 	};
 
 	public UILabel[] Labels;
@@ -540,6 +540,7 @@ public class CounselorScript : MonoBehaviour
 				{
 					StudentGlobals.ExpelProgress++;
 					this.LecturePhase++;
+					Debug.Log("StudentGlobals.ExpelProgress is now: " + StudentGlobals.ExpelProgress);
 				}
 			}
 			else if (this.LecturePhase == 6)
@@ -642,7 +643,7 @@ public class CounselorScript : MonoBehaviour
 		}
 		if (this.StudentManager.Students[30] != null)
 		{
-			if (SchemeGlobals.GetSchemeStage(1) == 2)
+			if (SchemeGlobals.GetSchemeStage(1) == 7)
 			{
 				UILabel uilabel2 = this.Labels[1];
 				uilabel2.color = new Color(uilabel2.color.r, uilabel2.color.g, uilabel2.color.b, 1f);
@@ -657,7 +658,7 @@ public class CounselorScript : MonoBehaviour
 				UILabel uilabel4 = this.Labels[3];
 				uilabel4.color = new Color(uilabel4.color.r, uilabel4.color.g, uilabel4.color.b, 1f);
 			}
-			if (SchemeGlobals.GetSchemeStage(4) == 5)
+			if (SchemeGlobals.GetSchemeStage(4) == 7)
 			{
 				UILabel uilabel5 = this.Labels[4];
 				uilabel5.color = new Color(uilabel5.color.r, uilabel5.color.g, uilabel5.color.b, 1f);

@@ -23,13 +23,24 @@ public class LeaveGiftScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (this.Prompt.Circle[0].fillAmount == 0f)
+		Debug.Log(Vector3.Distance(this.Prompt.Yandere.transform.position, this.Prompt.Yandere.Senpai.position));
+		if (this.Prompt.InView)
 		{
-			this.EndOfDay.SenpaiGifts--;
-			this.Prompt.Hide();
-			this.Prompt.enabled = false;
-			this.Box.SetActive(true);
-			base.enabled = false;
+			if (Vector3.Distance(this.Prompt.Yandere.transform.position, this.Prompt.Yandere.Senpai.position) > 10f)
+			{
+				if (this.Prompt.Circle[0].fillAmount == 0f)
+				{
+					this.EndOfDay.SenpaiGifts--;
+					this.Prompt.Hide();
+					this.Prompt.enabled = false;
+					this.Box.SetActive(true);
+					base.enabled = false;
+				}
+			}
+			else
+			{
+				this.Prompt.Hide();
+			}
 		}
 	}
 }

@@ -44,6 +44,8 @@ public class SettingsScript : MonoBehaviour
 
 	public UILabel AmbientObscurance;
 
+	public UILabel ShadowsLabel;
+
 	public int SelectionLimit = 2;
 
 	public int Selected = 1;
@@ -53,6 +55,8 @@ public class SettingsScript : MonoBehaviour
 	public Transform Highlight;
 
 	public GameObject Background;
+
+	public GameObject WarningMessage;
 
 	private void Update()
 	{
@@ -282,6 +286,21 @@ public class SettingsScript : MonoBehaviour
 			}
 			this.UpdateText();
 		}
+		else if (this.Selected == 17)
+		{
+			this.WarningMessage.SetActive(true);
+			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
+			{
+				OptionGlobals.EnableShadows = !OptionGlobals.EnableShadows;
+				this.QualityManager.UpdateShadows();
+				this.UpdateText();
+			}
+			this.UpdateText();
+		}
+		if (this.Selected != 17)
+		{
+			this.WarningMessage.SetActive(false);
+		}
 		if (Input.GetKeyDown("l"))
 		{
 			OptionGlobals.ParticleCount = 1;
@@ -291,7 +310,7 @@ public class SettingsScript : MonoBehaviour
 			OptionGlobals.DisableBloom = true;
 			OptionGlobals.LowDetailStudents = 1;
 			OptionGlobals.DrawDistance = 50;
-			OptionGlobals.DisableShadows = true;
+			OptionGlobals.EnableShadows = false;
 			OptionGlobals.DisableFarAnimations = 1;
 			OptionGlobals.RimLight = false;
 			OptionGlobals.DepthOfField = false;
@@ -309,6 +328,7 @@ public class SettingsScript : MonoBehaviour
 		}
 		if (Input.GetButtonDown("B"))
 		{
+			this.WarningMessage.SetActive(false);
 			this.PromptBar.ClearButtons();
 			this.PromptBar.Label[0].text = "Accept";
 			this.PromptBar.Label[1].text = "Exit";
@@ -354,6 +374,7 @@ public class SettingsScript : MonoBehaviour
 		this.DisableTutorialsLabel.text = ((!OptionGlobals.TutorialsOff) ? "No" : "Yes");
 		this.WindowedMode.text = ((!Screen.fullScreen) ? "Yes" : "No");
 		this.AmbientObscurance.text = ((!OptionGlobals.DisableObscurance) ? "On" : "Off");
+		this.ShadowsLabel.text = ((!OptionGlobals.EnableShadows) ? "No" : "Yes");
 	}
 
 	private void UpdateHighlight()

@@ -256,6 +256,12 @@ public class PickUpScript : MonoBehaviour
 
 	public void BePickedUp()
 	{
+		Debug.Log("SchemeGlobals.GetSchemeStage(4) is: " + SchemeGlobals.GetSchemeStage(4));
+		if (this.Salty && SchemeGlobals.GetSchemeStage(4) == 4)
+		{
+			SchemeGlobals.SetSchemeStage(4, 5);
+			this.Yandere.PauseScreen.Schemes.UpdateInstructions();
+		}
 		if (this.CarryAnimID == 10)
 		{
 			this.MyRenderer.mesh = this.OpenBook;
@@ -331,6 +337,11 @@ public class PickUpScript : MonoBehaviour
 
 	public void Drop()
 	{
+		if (this.Salty && SchemeGlobals.GetSchemeStage(4) == 5)
+		{
+			SchemeGlobals.SetSchemeStage(4, 4);
+			this.Yandere.PauseScreen.Schemes.UpdateInstructions();
+		}
 		if (this.TrashCan)
 		{
 			this.Yandere.MyController.radius = 0.2f;

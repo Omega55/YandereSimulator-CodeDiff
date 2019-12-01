@@ -235,6 +235,8 @@ public enum SubtitleType
 	TeacherTrespassingReaction,
 	TeacherWeaponHostile,
 	TeacherWeaponReaction,
+	TheftApology,
+	TheftReaction,
 	ViolenceApology,
 	ViolenceReaction,
 	WeaponApology,

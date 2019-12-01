@@ -11,7 +11,7 @@ public static class OptionGlobals
 
 	private const string Str_DisablePostAliasing = "DisablePostAliasing";
 
-	private const string Str_DisableShadows = "DisableShadows";
+	private const string Str_EnableShadows = "EnableShadows";
 
 	private const string Str_DisableObscurance = "DisableObscurance";
 
@@ -89,15 +89,15 @@ public static class OptionGlobals
 		}
 	}
 
-	public static bool DisableShadows
+	public static bool EnableShadows
 	{
 		get
 		{
-			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_DisableShadows");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_EnableShadows");
 		}
 		set
 		{
-			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_DisableShadows", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_EnableShadows", value);
 		}
 	}
 
@@ -275,7 +275,7 @@ public static class OptionGlobals
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_DisableFarAnimations");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_DisableOutlines");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_DisablePostAliasing");
-		Globals.Delete("Profile_" + GameGlobals.Profile + "_DisableShadows");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_EnableShadows");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_DisableObscurance");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_DrawDistance");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_DrawDistanceLimit");

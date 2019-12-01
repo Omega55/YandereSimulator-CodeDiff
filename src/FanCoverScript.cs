@@ -87,7 +87,9 @@ public class FanCoverScript : MonoBehaviour
 			this.Rival.Meeting = false;
 			this.FanSFX.enabled = false;
 			base.GetComponent<AudioSource>().Play();
-			base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, base.transform.localEulerAngles.y, base.transform.localEulerAngles.z + 15f);
+			base.transform.localPosition = new Vector3(-1.733f, 0.465f, 0.952f);
+			base.transform.localEulerAngles = new Vector3(-90f, 165f, 0f);
+			Physics.SyncTransforms();
 			Rigidbody component = base.GetComponent<Rigidbody>();
 			component.isKinematic = false;
 			component.useGravity = true;

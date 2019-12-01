@@ -1155,12 +1155,17 @@ public class TalkingScript : MonoBehaviour
 				Debug.Log("Taking snack.");
 				if (this.S.TalkTimer == 5f)
 				{
+					bool flag = false;
+					if (this.S.StudentID == this.S.StudentManager.RivalID && !this.S.Hungry)
+					{
+						flag = true;
+					}
 					if (this.S.Club == ClubType.Delinquent)
 					{
 						this.S.CharacterAnimation.CrossFade(this.S.IdleAnim);
 						this.S.Subtitle.UpdateLabel(SubtitleType.RejectFood, 1, 3f);
 					}
-					else if (this.S.Fed || this.S.Club == ClubType.Council)
+					else if (this.S.Fed || this.S.Club == ClubType.Council || flag)
 					{
 						this.S.CharacterAnimation.CrossFade(this.S.GossipAnim);
 						this.S.Subtitle.UpdateLabel(SubtitleType.RejectFood, 0, 3f);
@@ -1192,6 +1197,11 @@ public class TalkingScript : MonoBehaviour
 				{
 					if (!this.S.Fed && this.S.Club != ClubType.Delinquent)
 					{
+						if (this.S.StudentID == this.S.StudentManager.RivalID && SchemeGlobals.GetSchemeStage(4) == 5)
+						{
+							SchemeGlobals.SetSchemeStage(4, 6);
+							this.S.Yandere.PauseScreen.Schemes.UpdateInstructions();
+						}
 						PickUpScript pickUp = this.S.Yandere.PickUp;
 						this.S.Yandere.EmptyHands();
 						this.S.EmptyHands();
@@ -1207,6 +1217,7 @@ public class TalkingScript : MonoBehaviour
 						this.S.BagOfChips = pickUp.gameObject;
 						this.S.EatingSnack = true;
 						this.S.Private = true;
+						this.S.Hungry = false;
 						this.S.Fed = true;
 					}
 					this.S.DialogueWheel.End();
@@ -1283,18 +1294,18 @@ public class TalkingScript : MonoBehaviour
 			}
 			else if (this.S.Interaction == StudentInteractionType.SentToLocker)
 			{
-				bool flag = false;
+				bool flag2 = false;
 				if (this.S.Club == ClubType.Delinquent)
 				{
-					flag = true;
+					flag2 = true;
 				}
 				if (PlayerGlobals.GetStudentFriend(this.S.StudentID))
 				{
-					flag = false;
+					flag2 = false;
 				}
 				if (this.S.TalkTimer == 5f)
 				{
-					if (!flag)
+					if (!flag2)
 					{
 						this.Refuse = false;
 						if ((this.S.Clock.HourTime > 8f && this.S.Clock.HourTime < 13f) || (this.S.Clock.HourTime > 13.375f && this.S.Clock.HourTime < 15.5f))
@@ -1334,7 +1345,7 @@ public class TalkingScript : MonoBehaviour
 					{
 						if (!this.Refuse)
 						{
-							if (!flag)
+							if (!flag2)
 							{
 								this.S.Pathfinding.speed = 4f;
 								this.S.TargetDistance = 1f;

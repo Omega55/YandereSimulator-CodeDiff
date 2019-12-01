@@ -20,25 +20,10 @@ public class AnswerSheetScript : MonoBehaviour
 	private void Start()
 	{
 		this.OriginalMesh = this.MyMesh.mesh;
-		if (SchemeGlobals.GetSchemeStage(5) == 100)
+		if (DateGlobals.Weekday != DayOfWeek.Friday)
 		{
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
-			base.gameObject.SetActive(false);
-		}
-		else
-		{
-			if (SchemeGlobals.GetSchemeStage(5) > 4)
-			{
-				this.Prompt.Hide();
-				this.Prompt.enabled = false;
-			}
-			if (DateGlobals.Weekday == DayOfWeek.Friday && this.Clock.HourTime > 13.5f)
-			{
-				this.Prompt.Hide();
-				this.Prompt.enabled = false;
-				base.gameObject.SetActive(false);
-			}
 		}
 	}
 

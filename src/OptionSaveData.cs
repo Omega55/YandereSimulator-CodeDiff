@@ -11,7 +11,7 @@ public class OptionSaveData
 
 	public bool disablePostAliasing;
 
-	public bool disableShadows;
+	public bool enableShadows;
 
 	public int drawDistance;
 
@@ -35,7 +35,7 @@ public class OptionSaveData
 			disableFarAnimations = OptionGlobals.DisableFarAnimations,
 			disableOutlines = OptionGlobals.DisableOutlines,
 			disablePostAliasing = OptionGlobals.DisablePostAliasing,
-			disableShadows = OptionGlobals.DisableShadows,
+			enableShadows = OptionGlobals.EnableShadows,
 			drawDistance = OptionGlobals.DrawDistance,
 			drawDistanceLimit = OptionGlobals.DrawDistanceLimit,
 			fog = OptionGlobals.Fog,
@@ -52,7 +52,7 @@ public class OptionSaveData
 		OptionGlobals.DisableFarAnimations = data.disableFarAnimations;
 		OptionGlobals.DisableOutlines = data.disableOutlines;
 		OptionGlobals.DisablePostAliasing = data.disablePostAliasing;
-		OptionGlobals.DisableShadows = data.disableShadows;
+		OptionGlobals.EnableShadows = data.enableShadows;
 		OptionGlobals.DrawDistance = data.drawDistance;
 		OptionGlobals.DrawDistanceLimit = data.drawDistanceLimit;
 		OptionGlobals.Fog = data.fog;

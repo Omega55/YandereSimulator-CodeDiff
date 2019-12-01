@@ -11,6 +11,8 @@ public class VendingMachineScript : MonoBehaviour
 
 	public bool SnackMachine;
 
+	public bool Sabotaged;
+
 	private void Start()
 	{
 		if (this.SnackMachine)
@@ -31,8 +33,16 @@ public class VendingMachineScript : MonoBehaviour
 			this.Prompt.Circle[0].fillAmount = 1f;
 			if (PlayerGlobals.Money >= 1f)
 			{
-				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Cans[UnityEngine.Random.Range(0, this.Cans.Length)], this.CanSpawn.position, this.CanSpawn.rotation);
-				gameObject.GetComponent<AudioSource>().pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+				if (!this.Sabotaged)
+				{
+					GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Cans[UnityEngine.Random.Range(0, this.Cans.Length)], this.CanSpawn.position, this.CanSpawn.rotation);
+					gameObject.GetComponent<AudioSource>().pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+				}
+				if (this.SnackMachine && SchemeGlobals.GetSchemeStage(4) == 3)
+				{
+					SchemeGlobals.SetSchemeStage(4, 4);
+					this.Prompt.Yandere.PauseScreen.Schemes.UpdateInstructions();
+				}
 				PlayerGlobals.Money -= 1f;
 				this.Prompt.Yandere.Inventory.UpdateMoney();
 			}

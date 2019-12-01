@@ -16,9 +16,10 @@ public class StolenPhoneSpotScript : MonoBehaviour
 			this.Prompt.enabled = true;
 			if (this.Prompt.Circle[0].fillAmount == 0f)
 			{
-				if (SchemeGlobals.GetSchemeStage(4) == 3)
+				if (SchemeGlobals.GetSchemeStage(1) == 6)
 				{
-					SchemeGlobals.SetSchemeStage(4, 4);
+					SchemeGlobals.SetSchemeStage(1, 7);
+					this.Prompt.Yandere.PauseScreen.Schemes.UpdateInstructions();
 				}
 				this.Prompt.Yandere.SmartphoneRenderer.material.mainTexture = this.Prompt.Yandere.YanderePhoneTexture;
 				this.Prompt.Yandere.Inventory.Schemes.UpdateInstructions();

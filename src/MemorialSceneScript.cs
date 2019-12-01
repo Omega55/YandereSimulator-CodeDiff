@@ -15,6 +15,8 @@ public class MemorialSceneScript : MonoBehaviour
 
 	public GameObject Counselor;
 
+	public int MemorialStudents;
+
 	public float Speed;
 
 	public bool Eulogized;
@@ -23,7 +25,8 @@ public class MemorialSceneScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (StudentGlobals.MemorialStudents % 2 == 0)
+		this.MemorialStudents = StudentGlobals.MemorialStudents;
+		if (this.MemorialStudents % 2 == 0)
 		{
 			this.CanvasGroup.transform.localPosition = new Vector3(-0.5f, 0f, -2f);
 		}
@@ -34,43 +37,43 @@ public class MemorialSceneScript : MonoBehaviour
 			this.Canvases[i].SetActive(false);
 		}
 		i = 0;
-		while (StudentGlobals.MemorialStudents > 0)
+		while (this.MemorialStudents > 0)
 		{
 			i++;
 			this.Canvases[i].SetActive(true);
-			if (StudentGlobals.MemorialStudents == 1)
+			if (this.MemorialStudents == 1)
 			{
 				num = StudentGlobals.MemorialStudent1;
 			}
-			else if (StudentGlobals.MemorialStudents == 2)
+			else if (this.MemorialStudents == 2)
 			{
 				num = StudentGlobals.MemorialStudent2;
 			}
-			else if (StudentGlobals.MemorialStudents == 3)
+			else if (this.MemorialStudents == 3)
 			{
 				num = StudentGlobals.MemorialStudent3;
 			}
-			else if (StudentGlobals.MemorialStudents == 4)
+			else if (this.MemorialStudents == 4)
 			{
 				num = StudentGlobals.MemorialStudent4;
 			}
-			else if (StudentGlobals.MemorialStudents == 5)
+			else if (this.MemorialStudents == 5)
 			{
 				num = StudentGlobals.MemorialStudent5;
 			}
-			else if (StudentGlobals.MemorialStudents == 6)
+			else if (this.MemorialStudents == 6)
 			{
 				num = StudentGlobals.MemorialStudent6;
 			}
-			else if (StudentGlobals.MemorialStudents == 7)
+			else if (this.MemorialStudents == 7)
 			{
 				num = StudentGlobals.MemorialStudent7;
 			}
-			else if (StudentGlobals.MemorialStudents == 8)
+			else if (this.MemorialStudents == 8)
 			{
 				num = StudentGlobals.MemorialStudent8;
 			}
-			else if (StudentGlobals.MemorialStudents == 9)
+			else if (this.MemorialStudents == 9)
 			{
 				num = StudentGlobals.MemorialStudent9;
 			}
@@ -84,7 +87,7 @@ public class MemorialSceneScript : MonoBehaviour
 			});
 			WWW www = new WWW(url);
 			this.Portraits[i].mainTexture = www.texture;
-			StudentGlobals.MemorialStudents--;
+			this.MemorialStudents--;
 		}
 	}
 

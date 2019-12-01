@@ -12,7 +12,8 @@ public class RingScript : MonoBehaviour
 			SchemeGlobals.SetSchemeStage(2, 2);
 			this.Prompt.Yandere.Inventory.Schemes.UpdateInstructions();
 			this.Prompt.Yandere.Inventory.Ring = true;
-			UnityEngine.Object.Destroy(base.gameObject);
+			this.Prompt.Yandere.TheftTimer = 0.1f;
+			base.gameObject.SetActive(false);
 		}
 	}
 }

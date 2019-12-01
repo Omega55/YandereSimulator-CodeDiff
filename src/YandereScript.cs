@@ -2463,59 +2463,56 @@ public class YandereScript : MonoBehaviour
 						this.YandereTimer = 0f;
 					}
 				}
-				if (!this.Running)
+				if (this.Stance.Current != StanceType.Crouching && this.Stance.Current != StanceType.Crawling)
 				{
-					if (this.Stance.Current != StanceType.Crouching && this.Stance.Current != StanceType.Crawling)
+					if (Input.GetButtonDown("RS"))
 					{
-						if (Input.GetButtonDown("RS"))
+						this.Obscurance.enabled = false;
+						this.CrouchButtonDown = true;
+						this.YandereVision = false;
+						this.Stance.Current = StanceType.Crouching;
+						this.Crouch();
+						this.EmptyHands();
+					}
+				}
+				else
+				{
+					if (this.Stance.Current == StanceType.Crouching)
+					{
+						if (Input.GetButton("RS") && !this.CameFromCrouch)
 						{
-							this.Obscurance.enabled = false;
-							this.CrouchButtonDown = true;
-							this.YandereVision = false;
-							this.Stance.Current = StanceType.Crouching;
-							this.Crouch();
-							this.EmptyHands();
+							this.CrawlTimer += Time.deltaTime;
+						}
+						if (this.CrawlTimer > 0.5f)
+						{
+							if (!this.Selfie)
+							{
+								this.EmptyHands();
+								this.Obscurance.enabled = false;
+								this.YandereVision = false;
+								this.Stance.Current = StanceType.Crawling;
+								this.CrawlTimer = 0f;
+								this.Crawl();
+							}
+						}
+						else if (Input.GetButtonUp("RS") && !this.CrouchButtonDown && !this.CameFromCrouch)
+						{
+							this.Stance.Current = StanceType.Standing;
+							this.CrawlTimer = 0f;
+							this.Uncrouch();
 						}
 					}
-					else
+					else if (Input.GetButtonDown("RS"))
 					{
-						if (this.Stance.Current == StanceType.Crouching)
-						{
-							if (Input.GetButton("RS") && !this.CameFromCrouch)
-							{
-								this.CrawlTimer += Time.deltaTime;
-							}
-							if (this.CrawlTimer > 0.5f)
-							{
-								if (!this.Selfie)
-								{
-									this.EmptyHands();
-									this.Obscurance.enabled = false;
-									this.YandereVision = false;
-									this.Stance.Current = StanceType.Crawling;
-									this.CrawlTimer = 0f;
-									this.Crawl();
-								}
-							}
-							else if (Input.GetButtonUp("RS") && !this.CrouchButtonDown && !this.CameFromCrouch)
-							{
-								this.Stance.Current = StanceType.Standing;
-								this.CrawlTimer = 0f;
-								this.Uncrouch();
-							}
-						}
-						else if (Input.GetButtonDown("RS"))
-						{
-							this.CameFromCrouch = true;
-							this.Stance.Current = StanceType.Crouching;
-							this.Crouch();
-						}
-						if (Input.GetButtonUp("RS"))
-						{
-							this.CrouchButtonDown = false;
-							this.CameFromCrouch = false;
-							this.CrawlTimer = 0f;
-						}
+						this.CameFromCrouch = true;
+						this.Stance.Current = StanceType.Crouching;
+						this.Crouch();
+					}
+					if (Input.GetButtonUp("RS"))
+					{
+						this.CrouchButtonDown = false;
+						this.CameFromCrouch = false;
+						this.CrawlTimer = 0f;
 					}
 				}
 			}
@@ -5091,7 +5088,10 @@ public class YandereScript : MonoBehaviour
 			else if (this.TargetStudent.Teacher)
 			{
 				this.CharacterAnimation.CrossFade("f02_teacherCounterA_00");
-				this.EquippedWeapon.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
+				if (this.EquippedWeapon != null)
+				{
+					this.EquippedWeapon.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
+				}
 				this.Character.transform.position = new Vector3(this.Character.transform.position.x, this.TargetStudent.transform.position.y, this.Character.transform.position.z);
 			}
 			else if (!this.SanityBased)

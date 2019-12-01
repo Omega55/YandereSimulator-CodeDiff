@@ -79,6 +79,8 @@ public class ShutterScript : MonoBehaviour
 
 	public bool KittenShot;
 
+	public bool OsanaShot;
+
 	public bool FreeSpace;
 
 	public bool TakePhoto;
@@ -446,6 +448,11 @@ public class ShutterScript : MonoBehaviour
 								TaskGlobals.SetHorudaPhoto(this.Slot, true);
 								this.TaskManager.UpdateTaskStatus();
 							}
+							if (this.OsanaShot && SchemeGlobals.GetSchemeStage(4) == 6)
+							{
+								SchemeGlobals.SetSchemeStage(4, 7);
+								this.Yandere.PauseScreen.Schemes.UpdateInstructions();
+							}
 						}
 						else
 						{
@@ -454,9 +461,12 @@ public class ShutterScript : MonoBehaviour
 					}
 					else if (!this.PantiesX.activeInHierarchy)
 					{
+						if (SchemeGlobals.GetSchemeStage(1) == 5)
+						{
+							SchemeGlobals.SetSchemeStage(1, 6);
+							this.Schemes.UpdateInstructions();
+						}
 						this.StudentManager.CommunalLocker.RivalPhone.LewdPhotos = true;
-						SchemeGlobals.SetSchemeStage(4, 3);
-						this.Schemes.UpdateInstructions();
 						this.ResumeGameplay();
 					}
 				}
@@ -539,6 +549,7 @@ public class ShutterScript : MonoBehaviour
 		this.AirGuitarShot = false;
 		this.HorudaShot = false;
 		this.KittenShot = false;
+		this.OsanaShot = false;
 		this.Nemesis = false;
 		this.NotFace = false;
 		this.Skirt = false;
@@ -628,6 +639,12 @@ public class ShutterScript : MonoBehaviour
 				this.PhotoDescLabel.text = "Photo of: Student Speaking With Bully";
 				this.BullyPhotoCollider = this.hit.collider.gameObject;
 				this.BullyX.SetActive(false);
+			}
+			if (this.hit.collider.gameObject.tag == "RivalEvidence")
+			{
+				this.OsanaShot = true;
+				this.PhotoDescription.SetActive(true);
+				this.PhotoDescLabel.text = "Photo of: Osana Vandalizing School Property";
 			}
 		}
 		if (Physics.Raycast(this.SmartphoneCamera.transform.position, direction, out this.hit, float.PositiveInfinity, this.OnlyRagdolls) && this.hit.collider.gameObject.layer == 11)

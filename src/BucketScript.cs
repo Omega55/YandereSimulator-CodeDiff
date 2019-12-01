@@ -369,6 +369,11 @@ public class BucketScript : MonoBehaviour
 
 	public void Empty()
 	{
+		if (SchemeGlobals.GetSchemeStage(1) == 2)
+		{
+			SchemeGlobals.SetSchemeStage(1, 1);
+			this.Yandere.PauseScreen.Schemes.UpdateInstructions();
+		}
 		this.UpdateAppearance = true;
 		this.Bloodiness = 0f;
 		this.Bleached = false;
@@ -379,6 +384,11 @@ public class BucketScript : MonoBehaviour
 
 	public void Fill()
 	{
+		if (SchemeGlobals.GetSchemeStage(1) == 1)
+		{
+			SchemeGlobals.SetSchemeStage(1, 2);
+			this.Yandere.PauseScreen.Schemes.UpdateInstructions();
+		}
 		this.UpdateAppearance = true;
 		this.Full = true;
 	}

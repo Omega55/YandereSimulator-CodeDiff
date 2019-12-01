@@ -1452,6 +1452,7 @@ public class EndOfDayScript : MonoBehaviour
 	private void Finish()
 	{
 		PlayerGlobals.Reputation = this.Reputation.Reputation;
+		StudentGlobals.MemorialStudents = 0;
 		HomeGlobals.Night = true;
 		this.Police.KillStudents();
 		if (this.Police.Suspended)

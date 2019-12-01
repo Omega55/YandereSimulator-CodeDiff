@@ -447,7 +447,7 @@ public class QualityManagerScript : MonoBehaviour
 	{
 		if (!this.DoNothing)
 		{
-			this.Sun.shadows = ((!OptionGlobals.DisableShadows) ? LightShadows.Soft : LightShadows.None);
+			this.Sun.shadows = ((!OptionGlobals.EnableShadows) ? LightShadows.None : LightShadows.Soft);
 		}
 	}
 

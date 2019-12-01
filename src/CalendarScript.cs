@@ -47,6 +47,7 @@ public class CalendarScript : MonoBehaviour
 		this.LoveSickCheck();
 		if (!SchoolGlobals.SchoolAtmosphereSet)
 		{
+			OptionGlobals.EnableShadows = false;
 			SchoolGlobals.SchoolAtmosphereSet = true;
 			SchoolGlobals.SchoolAtmosphere = 1f;
 			PlayerGlobals.Money = 10f;

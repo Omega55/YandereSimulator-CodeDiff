@@ -106,7 +106,18 @@ public class RingEventScript : MonoBehaviour
 				this.EventStudent.Pathfinding.canSearch = false;
 				this.EventStudent.Pathfinding.canMove = false;
 			}
-			if (this.Clock.HourTime > this.EventTime + 0.5f || this.EventStudent.WitnessedMurder || this.EventStudent.Splashed || this.EventStudent.Alarmed || this.EventStudent.Dying || !this.EventStudent.Alive)
+			if (this.EventStudent.Alarmed && this.Yandere.TheftTimer > 0f)
+			{
+				Debug.Log("Event ended because Sakyu saw theft.");
+				this.EventStudent.Cosmetic.FemaleAccessories[3].transform.parent = this.EventStudent.LeftMiddleFinger;
+				this.EventStudent.Cosmetic.FemaleAccessories[3].transform.localPosition = this.OriginalPosition;
+				this.EventStudent.Cosmetic.FemaleAccessories[3].transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+				this.RingCollider.gameObject.SetActive(true);
+				this.RingCollider.enabled = false;
+				this.Yandere.Inventory.Ring = false;
+				this.EndEvent();
+			}
+			else if (this.Clock.HourTime > this.EventTime + 0.5f || this.EventStudent.WitnessedMurder || this.EventStudent.Splashed || this.EventStudent.Alarmed || this.EventStudent.Dying || !this.EventStudent.Alive)
 			{
 				this.EndEvent();
 			}

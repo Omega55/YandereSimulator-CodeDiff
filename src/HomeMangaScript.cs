@@ -200,7 +200,6 @@ public class HomeMangaScript : MonoBehaviour
 					{
 						PlayerGlobals.Enlightenment++;
 					}
-					HomeGlobals.LateForSchool = true;
 					this.AreYouSure.SetActive(false);
 					this.Darkness.FadeOut = true;
 				}

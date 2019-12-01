@@ -194,6 +194,11 @@ public class DoorScript : MonoBehaviour
 				}
 				if (this.Double && this.Swinging && this.Prompt.Circle[1].fillAmount == 0f)
 				{
+					if (SchemeGlobals.GetSchemeStage(1) == 2)
+					{
+						SchemeGlobals.SetSchemeStage(1, 3);
+						this.Yandere.PauseScreen.Schemes.UpdateInstructions();
+					}
 					this.Bucket = this.Yandere.PickUp.Bucket;
 					this.Yandere.EmptyHands();
 					this.Bucket.transform.parent = base.transform;

@@ -127,6 +127,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] ParanoidReactions;
 
+	public string[] TheftReactions;
+
 	public string[] KilledMoods;
 
 	public string[] SendToLockers;
@@ -190,6 +192,8 @@ public class SubtitleScript : MonoBehaviour
 	public string[] PoisonApologies;
 
 	public string[] HoldingBloodyClothingApologies;
+
+	public string[] TheftApologies;
 
 	public string[] Greetings;
 
@@ -1544,6 +1548,10 @@ public class SubtitleScript : MonoBehaviour
 		{
 			this.Label.text = this.GetRandomString(this.IntrusionReactions);
 		}
+		else if (subtitleType == SubtitleType.TheftReaction)
+		{
+			this.Label.text = this.GetRandomString(this.TheftReactions);
+		}
 		else if (subtitleType == SubtitleType.KilledMood)
 		{
 			this.Label.text = this.GetRandomString(this.KilledMoods);
@@ -2091,6 +2099,10 @@ public class SubtitleScript : MonoBehaviour
 		else if (subtitleType == SubtitleType.ViolenceApology)
 		{
 			this.Label.text = this.GetRandomString(this.ViolenceApologies);
+		}
+		else if (subtitleType == SubtitleType.TheftApology)
+		{
+			this.Label.text = this.GetRandomString(this.TheftApologies);
 		}
 		else if (subtitleType == SubtitleType.EventApology)
 		{

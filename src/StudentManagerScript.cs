@@ -472,6 +472,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public bool MurderTakingPlace;
 
+	public bool ControllerShrink;
+
 	public bool DisableFarAnims;
 
 	public bool RivalEliminated;
@@ -539,6 +541,8 @@ public class StudentManagerScript : MonoBehaviour
 	public float Atmosphere;
 
 	public float OpenValue = 100f;
+
+	public float YandereHeight = 999f;
 
 	public float MeetingTimer;
 
@@ -608,6 +612,7 @@ public class StudentManagerScript : MonoBehaviour
 		this.LoveSick = GameGlobals.LoveSick;
 		this.MetalDetectors = SchoolGlobals.HighSecurity;
 		this.RoofFenceUp = SchoolGlobals.RoofFence;
+		SchemeGlobals.DeleteAll();
 		if (ClubGlobals.GetClubClosed(ClubType.LightMusic))
 		{
 			this.SpawnPositions[51].position = new Vector3(3f, 0f, -95f);
@@ -1864,6 +1869,10 @@ public class StudentManagerScript : MonoBehaviour
 				{
 					studentScript.Teacher = false;
 				}
+				if (studentScript.Slave)
+				{
+					studentScript.Stop = false;
+				}
 			}
 			this.ID++;
 		}
@@ -2401,7 +2410,6 @@ public class StudentManagerScript : MonoBehaviour
 			studentScript2.BusyAtLunch = true;
 			studentScript2.Shy = false;
 		}
-		Debug.Log("As of now, the ''Bully'' boolean is set to " + this.Bully);
 	}
 
 	public void SecurityCameras()
@@ -2426,7 +2434,7 @@ public class StudentManagerScript : MonoBehaviour
 		while (this.ID < this.Students.Length)
 		{
 			StudentScript studentScript = this.Students[this.ID];
-			if (studentScript != null)
+			if (studentScript != null && !studentScript.Ragdoll.enabled)
 			{
 				studentScript.gameObject.SetActive(false);
 			}

@@ -99,25 +99,6 @@ public class StudentJson : JsonData
 			studentJson.stockings = TFUtils.LoadString(dictionary, "Stockings");
 			studentJson.accessory = TFUtils.LoadString(dictionary, "Accessory");
 			studentJson.info = TFUtils.LoadString(dictionary, "Info");
-			if (num == 10 || num == 11)
-			{
-				studentJson.name = string.Empty;
-				studentJson.gender = 0;
-				studentJson.classID = 0;
-				studentJson.seat = 0;
-				studentJson.club = ClubType.None;
-				studentJson.persona = PersonaType.None;
-				studentJson.crush = 0;
-				studentJson.breastSize = 0f;
-				studentJson.strength = 0;
-				studentJson.hairstyle = string.Empty;
-				studentJson.color = string.Empty;
-				studentJson.eyes = string.Empty;
-				studentJson.eyeType = string.Empty;
-				studentJson.stockings = string.Empty;
-				studentJson.accessory = string.Empty;
-				studentJson.info = "Just stop.";
-			}
 			if (GameGlobals.LoveSick && studentJson.name == "Mai Waifu")
 			{
 				studentJson.name = "Mai Wakabayashi";
@@ -133,6 +114,13 @@ public class StudentJson : JsonData
 			for (int k = 0; k < studentJson.scheduleBlocks.Length; k++)
 			{
 				studentJson.scheduleBlocks[k] = new ScheduleBlock(array3[k], array4[k], array5[k]);
+			}
+			if (num == 10 || num == 11)
+			{
+				for (int l = 0; l < studentJson.scheduleBlocks.Length; l++)
+				{
+					studentJson.scheduleBlocks[l] = null;
+				}
 			}
 			studentJson.success = true;
 		}
