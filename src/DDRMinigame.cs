@@ -83,8 +83,6 @@ public class DDRMinigame : MonoBehaviour
 
 	private Dictionary<float, RectTransform>[] trackCache;
 
-	public bool LevelIconsSpawned;
-
 	public void LoadLevel(DDRLevel level)
 	{
 		this.gameplayUiParent.anchoredPosition = Vector2.zero;
@@ -119,19 +117,15 @@ public class DDRMinigame : MonoBehaviour
 
 	public void LoadLevelSelect(DDRLevel[] levels)
 	{
-		if (!this.LevelIconsSpawned)
+		this.levelSelectCache = new Dictionary<RectTransform, DDRLevel>();
+		this.levels = levels;
+		for (int i = 0; i < levels.Length; i++)
 		{
-			this.levelSelectCache = new Dictionary<RectTransform, DDRLevel>();
-			this.levels = levels;
-			for (int i = 0; i < levels.Length; i++)
-			{
-				RectTransform component = UnityEngine.Object.Instantiate<GameObject>(this.levelIconPrefab, this.levelSelectParent).GetComponent<RectTransform>();
-				component.GetComponent<Image>().sprite = levels[i].LevelIcon;
-				this.levelSelectCache.Add(component, levels[i]);
-			}
-			this.positionLevels(true);
-			this.LevelIconsSpawned = true;
+			RectTransform component = UnityEngine.Object.Instantiate<GameObject>(this.levelIconPrefab, this.levelSelectParent).GetComponent<RectTransform>();
+			component.GetComponent<Image>().sprite = levels[i].LevelIcon;
+			this.levelSelectCache.Add(component, levels[i]);
 		}
+		this.positionLevels(true);
 	}
 
 	public void UnloadLevelSelect()

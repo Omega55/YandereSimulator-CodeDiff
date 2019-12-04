@@ -38,29 +38,24 @@ public class FavorMenuScript : MonoBehaviour
 			this.PromptBar.Label[1].text = "Exit";
 			this.PromptBar.Label[4].text = "Choose";
 			this.PromptBar.UpdateButtons();
-			if (this.ID == 1)
+			if (this.ID != 1)
 			{
-				this.SchemesMenu.UpdatePantyCount();
-				this.SchemesMenu.UpdateSchemeList();
-				this.SchemesMenu.UpdateSchemeInfo();
-				this.SchemesMenu.gameObject.SetActive(true);
-				base.gameObject.SetActive(false);
-			}
-			else if (this.ID == 2)
-			{
-				this.ServicesMenu.UpdatePantyCount();
-				this.ServicesMenu.UpdateList();
-				this.ServicesMenu.UpdateDesc();
-				this.ServicesMenu.gameObject.SetActive(true);
-				base.gameObject.SetActive(false);
-			}
-			else if (this.ID == 3)
-			{
-				this.DropsMenu.UpdatePantyCount();
-				this.DropsMenu.UpdateList();
-				this.DropsMenu.UpdateDesc();
-				this.DropsMenu.gameObject.SetActive(true);
-				base.gameObject.SetActive(false);
+				if (this.ID == 2)
+				{
+					this.ServicesMenu.UpdatePantyCount();
+					this.ServicesMenu.UpdateList();
+					this.ServicesMenu.UpdateDesc();
+					this.ServicesMenu.gameObject.SetActive(true);
+					base.gameObject.SetActive(false);
+				}
+				else if (this.ID == 3)
+				{
+					this.DropsMenu.UpdatePantyCount();
+					this.DropsMenu.UpdateList();
+					this.DropsMenu.UpdateDesc();
+					this.DropsMenu.gameObject.SetActive(true);
+					base.gameObject.SetActive(false);
+				}
 			}
 		}
 		if (Input.GetButtonDown("B"))

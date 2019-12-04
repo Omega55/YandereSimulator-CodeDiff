@@ -121,13 +121,11 @@ public class AlarmDiscScript : MonoBehaviour
 							if (!this.Student.Struggling)
 							{
 								this.Student.Character.GetComponent<Animation>().CrossFade(this.Student.LeanAnim);
-								Debug.Log(this.Student.Name + " was told to perform their LeanAnim.");
 							}
 							if (this.Originator != null)
 							{
 								if (this.Originator.WitnessedMurder)
 								{
-									Debug.Log("Somebody witnessed murder, and is directing attention towards Yandere-chan.");
 									this.Student.DistractionSpot = new Vector3(base.transform.position.x, this.Student.Yandere.transform.position.y, base.transform.position.z);
 								}
 								else if (this.Originator.Corpse == null)
@@ -144,7 +142,6 @@ public class AlarmDiscScript : MonoBehaviour
 								this.Student.DistractionSpot = new Vector3(base.transform.position.x, this.Student.transform.position.y, base.transform.position.z);
 							}
 							this.Student.DiscCheck = true;
-							Debug.Log(this.Student.name + "'s ''DiskCheck'' was just set to ''true''.");
 							if (this.Shocking)
 							{
 								this.Student.Hesitation = 0.5f;

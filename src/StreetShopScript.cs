@@ -212,6 +212,10 @@ public class StreetShopScript : MonoBehaviour
 			{
 				this.StreetShopInterface.PricesLabel[i].text = string.Empty;
 			}
+			if (this.StoreType == ShopType.Salon)
+			{
+				this.StreetShopInterface.PricesLabel[i].text = "Free";
+			}
 		}
 		this.StreetShopInterface.UpdateIcons();
 	}

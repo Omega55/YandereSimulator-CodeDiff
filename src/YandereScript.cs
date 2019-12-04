@@ -597,6 +597,8 @@ public class YandereScript : MonoBehaviour
 
 	public bool CannotRecover;
 
+	public bool NoStainGloves;
+
 	public bool YandereVision;
 
 	public bool ClubActivity;
@@ -1492,6 +1494,7 @@ public class YandereScript : MonoBehaviour
 		{
 			UnityEngine.Object.Destroy(base.gameObject);
 		}
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 1f);
 	}
 
 	public float Sanity
@@ -5932,7 +5935,7 @@ public class YandereScript : MonoBehaviour
 			}
 			this.EquippedWeapon.Blood.enabled = true;
 			this.EquippedWeapon.MurderWeapon = true;
-			if (this.Gloved && !this.Gloves.Blood.enabled)
+			if (!this.NoStainGloves && this.Gloved && !this.Gloves.Blood.enabled)
 			{
 				this.GloveAttacher.newRenderer.material.mainTexture = this.BloodyGloveTexture;
 				this.Gloves.PickUp.Evidence = true;
@@ -5940,6 +5943,7 @@ public class YandereScript : MonoBehaviour
 				this.GloveBlood = 1;
 				this.Police.BloodyClothing++;
 			}
+			this.NoStainGloves = false;
 			if (this.Mask != null && !this.Mask.Blood.enabled)
 			{
 				this.Mask.PickUp.Evidence = true;

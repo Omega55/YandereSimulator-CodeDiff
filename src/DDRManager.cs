@@ -94,6 +94,7 @@ public class DDRManager : MonoBehaviour
 
 	private void Start()
 	{
+		this.minigameCamera.position = this.startPoint.position;
 		if (this.DebugMode)
 		{
 			this.BeginMinigame();
@@ -138,7 +139,6 @@ public class DDRManager : MonoBehaviour
 		this.yandereAnim.transform.position = Vector3.Lerp(this.yandereAnim.transform.position, position, 10f * Time.deltaTime);
 		if (this.CheckingForEnd && !this.audioSource.isPlaying)
 		{
-			this.ddrMinigame.LevelIconsSpawned = false;
 			this.OverlayCanvas.SetActive(false);
 			this.GameUI.SetActive(false);
 			this.CheckingForEnd = false;
@@ -147,7 +147,6 @@ public class DDRManager : MonoBehaviour
 		}
 		if (this.GameState.Health <= 0f && this.audioSource.pitch < 0.01f)
 		{
-			this.ddrMinigame.LevelIconsSpawned = false;
 			this.OverlayCanvas.SetActive(false);
 			this.GameUI.SetActive(false);
 			if (this.audioSource.isPlaying)
@@ -179,10 +178,10 @@ public class DDRManager : MonoBehaviour
 
 	public void BootOut()
 	{
-		Debug.Log("BootOut() was called.");
+		this.minigameCamera.position = this.startPoint.position;
 		base.StartCoroutine(this.fade(true, this.fadeImage, 5f));
 		this.target = this.startPoint;
-		this.ddrMinigame.LevelIconsSpawned = false;
+		this.ddrMinigame.UnloadLevelSelect();
 		this.ReturnToNormalGameplay();
 	}
 
@@ -238,7 +237,6 @@ public class DDRManager : MonoBehaviour
 					{
 						Debug.Log("Pitch reached zero.");
 						this.audioSource.time = this.audioSource.clip.length;
-						this.ddrMinigame.LevelIconsSpawned = false;
 						this.OverlayCanvas.SetActive(false);
 						this.GameUI.SetActive(false);
 					}

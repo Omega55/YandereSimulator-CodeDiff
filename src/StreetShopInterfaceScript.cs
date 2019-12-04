@@ -199,69 +199,68 @@ public class StreetShopInterfaceScript : MonoBehaviour
 		}
 		else
 		{
-			ShopType currentStore = this.CurrentStore;
-			if (currentStore != ShopType.Nonfunctional)
+			switch (this.CurrentStore)
 			{
-				if (currentStore != ShopType.Manga)
-				{
-					if (currentStore == ShopType.Gift)
-					{
-						this.PurchaseEffect();
-						if (this.Selected < 6)
-						{
-							CollectibleGlobals.SenpaiGifts++;
-						}
-						else
-						{
-							CollectibleGlobals.MatchmakingGifts++;
-						}
-						CollectibleGlobals.SetGiftPurchased(this.Selected, true);
-					}
-				}
-				else
-				{
-					this.PurchaseEffect();
-					switch (this.Selected)
-					{
-					case 1:
-						CollectibleGlobals.SetMangaCollected(6, true);
-						break;
-					case 2:
-						CollectibleGlobals.SetMangaCollected(7, true);
-						break;
-					case 3:
-						CollectibleGlobals.SetMangaCollected(8, true);
-						break;
-					case 4:
-						CollectibleGlobals.SetMangaCollected(9, true);
-						break;
-					case 5:
-						CollectibleGlobals.SetMangaCollected(10, true);
-						break;
-					case 6:
-						CollectibleGlobals.SetMangaCollected(1, true);
-						break;
-					case 7:
-						CollectibleGlobals.SetMangaCollected(2, true);
-						break;
-					case 8:
-						CollectibleGlobals.SetMangaCollected(3, true);
-						break;
-					case 9:
-						CollectibleGlobals.SetMangaCollected(4, true);
-						break;
-					case 10:
-						CollectibleGlobals.SetMangaCollected(5, true);
-						break;
-					}
-				}
-			}
-			else
-			{
+			case ShopType.Nonfunctional:
 				this.SpeechBubbleLabel.text = this.ShopkeeperSpeeches[6];
 				this.SpeechBubbleParent.localScale = new Vector3(0f, 0f, 0f);
 				this.SpeechPhase = 0;
 				this.Timer = 1f;
+				break;
+			case ShopType.Manga:
+				this.PurchaseEffect();
+				switch (this.Selected)
+				{
+				case 1:
+					CollectibleGlobals.SetMangaCollected(6, true);
+					break;
+				case 2:
+					CollectibleGlobals.SetMangaCollected(7, true);
+					break;
+				case 3:
+					CollectibleGlobals.SetMangaCollected(8, true);
+					break;
+				case 4:
+					CollectibleGlobals.SetMangaCollected(9, true);
+					break;
+				case 5:
+					CollectibleGlobals.SetMangaCollected(10, true);
+					break;
+				case 6:
+					CollectibleGlobals.SetMangaCollected(1, true);
+					break;
+				case 7:
+					CollectibleGlobals.SetMangaCollected(2, true);
+					break;
+				case 8:
+					CollectibleGlobals.SetMangaCollected(3, true);
+					break;
+				case 9:
+					CollectibleGlobals.SetMangaCollected(4, true);
+					break;
+				case 10:
+					CollectibleGlobals.SetMangaCollected(5, true);
+					break;
+				}
+				break;
+			case ShopType.Salon:
+				this.SpeechBubbleLabel.text = this.ShopkeeperSpeeches[6];
+				this.SpeechBubbleParent.localScale = new Vector3(0f, 0f, 0f);
+				this.SpeechPhase = 0;
+				this.Timer = 1f;
+				break;
+			case ShopType.Gift:
+				this.PurchaseEffect();
+				if (this.Selected < 6)
+				{
+					CollectibleGlobals.SenpaiGifts++;
+				}
+				else
+				{
+					CollectibleGlobals.MatchmakingGifts++;
+				}
+				CollectibleGlobals.SetGiftPurchased(this.Selected, true);
+				break;
 			}
 		}
 	}

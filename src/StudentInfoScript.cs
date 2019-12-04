@@ -489,7 +489,8 @@ public class StudentInfoScript : MonoBehaviour
 
 	private void UpdateAdditionalInfo(int ID)
 	{
-		if (ID == 30)
+		Debug.Log("EventGlobals.Event1 is: " + EventGlobals.Event1);
+		if (ID == 11)
 		{
 			this.Strings[1] = ((!EventGlobals.OsanaEvent1) ? "?????" : "May be a victim of blackmail");
 			this.Strings[2] = ((!EventGlobals.OsanaEvent2) ? "?????" : "Has a stalker.");

@@ -234,6 +234,7 @@ public class AttackManagerScript : MonoBehaviour
 				else
 				{
 					this.Yandere.TargetStudent.Tranquil = true;
+					this.Yandere.NoStainGloves = true;
 					this.Yandere.CanTranq = false;
 					this.Yandere.StainWeapon();
 					this.Yandere.Followers--;

@@ -38,6 +38,8 @@ public class StreetManagerScript : MonoBehaviour
 
 	public Renderer Stars;
 
+	public Light Sunlight;
+
 	public bool Threatened;
 
 	public bool GoToCafe;
@@ -76,10 +78,11 @@ public class StreetManagerScript : MonoBehaviour
 		this.Darkness.color = new Color(1f, 1f, 1f, 1f);
 		this.CurrentlyActiveJukebox = this.JukeboxNight;
 		this.Alpha = 1f;
-		if (StudentGlobals.GetStudentDead(30) || StudentGlobals.GetStudentBroken(81))
+		if (StudentGlobals.GetStudentDead(30) || StudentGlobals.GetStudentKidnapped(30) || StudentGlobals.GetStudentBroken(81))
 		{
 			this.Couple.SetActive(false);
 		}
+		this.Sunlight.shadows = LightShadows.None;
 	}
 
 	private void Update()
@@ -173,10 +176,12 @@ public class StreetManagerScript : MonoBehaviour
 			if (this.Day)
 			{
 				this.Clock.HourLabel.text = "12:00 PM";
+				this.Sunlight.shadows = LightShadows.Soft;
 			}
 			else
 			{
 				this.Clock.HourLabel.text = "8:00 PM";
+				this.Sunlight.shadows = LightShadows.None;
 			}
 		}
 		if (this.Day)

@@ -216,7 +216,7 @@ public class EventManagerScript : MonoBehaviour
 						}
 						if (!this.Suitor && this.Yandere.transform.position.y > this.EventStudent[1].transform.position.y - 1f && this.EventPhase == 7 && num < 5f)
 						{
-							if (this.EventStudent1 == 30)
+							if (this.EventStudent1 == 25)
 							{
 								if (!EventGlobals.Event1)
 								{
