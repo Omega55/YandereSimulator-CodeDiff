@@ -64,6 +64,10 @@ public class PhoneScript : MonoBehaviour
 	{
 		this.Buttons.localPosition = new Vector3(this.Buttons.localPosition.x, -135f, this.Buttons.localPosition.z);
 		this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 1f);
+		if (DateGlobals.Weekday == DayOfWeek.Sunday)
+		{
+			this.Darkness.color = new Color(0f, 0f, 0f, 0f);
+		}
 		if (EventGlobals.KidnapConversation)
 		{
 			this.VoiceClips = this.KidnapClip;
@@ -93,7 +97,7 @@ public class PhoneScript : MonoBehaviour
 	{
 		if (!this.FadeOut)
 		{
-			if (this.Timer > 0f)
+			if (this.Timer > 0f && this.Buttons.gameObject.activeInHierarchy)
 			{
 				this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 0f, Time.deltaTime));
 				if (this.Darkness.color.a == 0f)
@@ -124,6 +128,10 @@ public class PhoneScript : MonoBehaviour
 					{
 						this.Darkness.color = new Color(0f, 0f, 0f, 0f);
 						this.FadeOut = true;
+						if (!this.Buttons.gameObject.activeInHierarchy)
+						{
+							this.Darkness.color = new Color(0f, 0f, 0f, 1f);
+						}
 					}
 				}
 				if (Input.GetButtonDown("X"))
@@ -135,7 +143,6 @@ public class PhoneScript : MonoBehaviour
 		else
 		{
 			this.Buttons.localPosition = new Vector3(this.Buttons.localPosition.x, Mathf.Lerp(this.Buttons.localPosition.y, -135f, Time.deltaTime * 10f), this.Buttons.localPosition.z);
-			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a + Time.deltaTime);
 			base.GetComponent<AudioSource>().volume = 1f - this.Darkness.color.a;
 			this.Jukebox.volume = 1f - this.Darkness.color.a;
 			if (this.Darkness.color.a >= 1f)
@@ -157,6 +164,7 @@ public class PhoneScript : MonoBehaviour
 					SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 				}
 			}
+			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a + Time.deltaTime);
 		}
 		this.Timer += Time.deltaTime;
 	}
@@ -188,6 +196,13 @@ public class PhoneScript : MonoBehaviour
 			{
 				this.NewMessage.GetComponent<TextMessageScript>().Attachment = true;
 			}
+		}
+		if (this.Height[this.ID] == 9)
+		{
+			this.Buttons.gameObject.SetActive(false);
+			this.Darkness.enabled = true;
+			this.Jukebox.Stop();
+			this.Timer = -99999f;
 		}
 		this.AutoLimit = (float)(this.Height[this.ID] + 1);
 		this.NewMessage.GetComponent<TextMessageScript>().Label.text = this.Text[this.ID];

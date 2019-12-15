@@ -115,7 +115,15 @@ public class HomeSenpaiShrineScript : MonoBehaviour
 
 	private void UpdateText(int newIndex)
 	{
-		this.NameLabel.text = this.Names[newIndex];
-		this.DescLabel.text = this.Descs[newIndex];
+		if (newIndex == 1)
+		{
+			this.NameLabel.text = this.Names[newIndex];
+			this.DescLabel.text = this.Descs[newIndex];
+		}
+		else
+		{
+			this.NameLabel.text = "???";
+			this.DescLabel.text = "I'd like to find something that Senpai touched and keep it here...";
+		}
 	}
 }

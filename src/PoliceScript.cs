@@ -509,12 +509,33 @@ public class PoliceScript : MonoBehaviour
 		}
 		else if (DateGlobals.Weekday == DayOfWeek.Friday)
 		{
-			this.ResultsLabels[0].text = "This is the part where the game will determine whether or not the player has eliminated their rival.";
-			this.ResultsLabels[1].text = "This game is still in development.";
-			this.ResultsLabels[2].text = "The ''player eliminated rival'' state has not yet been implemented.";
-			this.ResultsLabels[3].text = "Thank you for playtesting Yandere Simulator!";
-			this.ResultsLabels[4].text = "Please check back soon for more updates!";
-			this.GameOver = true;
+			bool flag = true;
+			if (flag)
+			{
+				this.ResultsLabels[0].text = "This is the part where the game will determine whether or not the player has eliminated their rival.";
+				this.ResultsLabels[1].text = "This game is still in development.";
+				this.ResultsLabels[2].text = "The ''player eliminated rival'' state has not yet been implemented.";
+				this.ResultsLabels[3].text = "Thank you for playtesting Yandere Simulator!";
+				this.ResultsLabels[4].text = "Please check back soon for more updates!";
+				this.GameOver = true;
+			}
+			else if (!this.StudentManager.RivalEliminated)
+			{
+				this.ResultsLabels[0].text = "Ayano has failed to eliminate Osana before Friday evening.";
+				this.ResultsLabels[1].text = "Osana asks Senpai to meet her under the cherry tree behind the school.";
+				this.ResultsLabels[2].text = "As cherry blossoms fall around them...";
+				this.ResultsLabels[3].text = "...Osana confesses her feelings for Senpai.";
+				this.ResultsLabels[4].text = "Ayano watches from a short distance away...";
+				this.BeginConfession = true;
+			}
+			else
+			{
+				this.ResultsLabels[0].text = "Ayano no longer has to worry about competing with Osana for Senpai's love.";
+				this.ResultsLabels[1].text = "Ayano considers confessing her love to Senpai...";
+				this.ResultsLabels[2].text = "...but she cannot build up the courage to speak to him.";
+				this.ResultsLabels[3].text = "Ayano waits until Senpai leaves school, and follows him until he is safe in his home.";
+				this.ResultsLabels[4].text = "Then, Ayano returns to her own home, and considers what she should do next...";
+			}
 		}
 		else if (!this.Suicide && !this.PoisonScene)
 		{
@@ -740,10 +761,8 @@ public class PoliceScript : MonoBehaviour
 
 	public void KillStudents()
 	{
-		Debug.Log("KillStudents() is being called.");
 		if (this.Deaths > 0)
 		{
-			Debug.Log("There were deaths at school today.");
 			for (int i = 2; i < this.StudentManager.NPCsTotal + 1; i++)
 			{
 				if (StudentGlobals.GetStudentDying(i))
@@ -768,12 +787,10 @@ public class PoliceScript : MonoBehaviour
 			SchoolGlobals.SchoolAtmosphere -= (float)this.Corpses * 0.05f;
 			if (this.DrownVictims + this.Corpses > 0)
 			{
-				Debug.Log("There are corpses on school grounds.");
 				foreach (RagdollScript ragdollScript in this.CorpseList)
 				{
 					if (ragdollScript != null && StudentGlobals.MemorialStudents < 9)
 					{
-						Debug.Log("''MemorialStudents'' is being incremented upwards.");
 						StudentGlobals.MemorialStudents++;
 						if (StudentGlobals.MemorialStudents == 1)
 						{
@@ -840,7 +857,6 @@ public class PoliceScript : MonoBehaviour
 
 	public void BeginFadingOut()
 	{
-		Debug.Log("BeginFadingOut() has been called.");
 		this.DayOver = true;
 		this.StudentManager.StopMoving();
 		this.Darkness.enabled = true;

@@ -34,6 +34,8 @@ public class PoseModeScript : MonoBehaviour
 
 	public bool ChoosingBone = true;
 
+	public bool SavingLoading;
+
 	public bool Customizing;
 
 	public bool EditingFace;
@@ -45,6 +47,8 @@ public class PoseModeScript : MonoBehaviour
 	public bool Posing;
 
 	public bool Show;
+
+	public int SaveSlot = 1;
 
 	public int Selected = 1;
 
@@ -150,6 +154,13 @@ public class PoseModeScript : MonoBehaviour
 						this.UpdateHighlight();
 					}
 					else if (this.Selected == 7)
+					{
+						this.SavingLoading = true;
+						this.UpdateLabels();
+						this.Selected = 1;
+						this.UpdateHighlight();
+					}
+					else if (this.Selected == 8)
 					{
 						this.Student.MyController.enabled = true;
 						this.Student.Pathfinding.canSearch = true;
@@ -638,6 +649,49 @@ public class PoseModeScript : MonoBehaviour
 					this.UpdateHighlight();
 				}
 			}
+			else if (this.SavingLoading)
+			{
+				if (this.Selected == 1)
+				{
+					if (this.InputManager.TappedRight)
+					{
+						this.SaveSlot++;
+						this.UpdateLabels();
+					}
+					else if (this.InputManager.TappedLeft)
+					{
+						if (this.SaveSlot > 1)
+						{
+							this.SaveSlot--;
+						}
+						this.UpdateLabels();
+					}
+				}
+				if (Input.GetButtonDown("A"))
+				{
+					if (this.Selected == 2)
+					{
+						PoseSerializer.SerializePose(this.Student.Cosmetic, this.Student.transform, string.Empty + this.SaveSlot);
+					}
+					else if (this.Selected == 3)
+					{
+						Debug.Log("Our intention is to change the Cosmetic data for: " + this.Student.Name);
+						PoseSerializer.DeserializePose(this.Student.Cosmetic, this.Student.transform, string.Empty + this.SaveSlot);
+					}
+				}
+				if (Input.GetButtonDown("B"))
+				{
+					this.PromptBar.Label[2].text = string.Empty;
+					this.PromptBar.Label[3].text = string.Empty;
+					this.PromptBar.UpdateButtons();
+					this.PoseModeCamera.gameObject.SetActive(false);
+					this.ChoosingAction = true;
+					this.SavingLoading = false;
+					this.UpdateLabels();
+					this.Selected = 1;
+					this.UpdateHighlight();
+				}
+			}
 		}
 		else
 		{
@@ -720,8 +774,9 @@ public class PoseModeScript : MonoBehaviour
 			this.OptionLabels[4].text = "Perform Animation";
 			this.OptionLabels[5].text = "Stop Animation";
 			this.OptionLabels[6].text = "Edit Face";
-			this.OptionLabels[7].text = "Release Student";
-			this.Limit = 7;
+			this.OptionLabels[7].text = "Save/Load Pose";
+			this.OptionLabels[8].text = "Release Student";
+			this.Limit = 8;
 			if (this.Student.Male)
 			{
 				this.OptionLabels[6].color = new Color(1f, 1f, 1f, 0.5f);
@@ -921,6 +976,7 @@ public class PoseModeScript : MonoBehaviour
 		}
 		else if (this.EditingFace)
 		{
+			this.HeaderLabel.text = "Edit Face";
 			this.OptionLabels[1].text = "Smile Mouth (" + this.Student.MyRenderer.GetBlendShapeWeight(0) + ")";
 			this.OptionLabels[2].text = "Angry Eyebrows (" + this.Student.MyRenderer.GetBlendShapeWeight(1) + ")";
 			this.OptionLabels[3].text = "Open Mouth (" + this.Student.MyRenderer.GetBlendShapeWeight(2) + ")";
@@ -940,6 +996,14 @@ public class PoseModeScript : MonoBehaviour
 			this.OptionLabels[17].text = "Short Skirt (" + this.Student.MyRenderer.GetBlendShapeWeight(16) + ")";
 			this.OptionLabels[18].text = "Degree of Change: " + this.Degree.ToString();
 			this.Limit = 18;
+		}
+		else if (this.SavingLoading)
+		{
+			this.HeaderLabel.text = "Save / Load";
+			this.OptionLabels[1].text = "Save Slot: " + this.SaveSlot;
+			this.OptionLabels[2].text = "Save";
+			this.OptionLabels[3].text = "Load";
+			this.Limit = 3;
 		}
 	}
 

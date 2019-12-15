@@ -98,7 +98,7 @@ public class HomeCameraScript : MonoBehaviour
 
 	public Transform PauseScreen;
 
-	private void Start()
+	public void Start()
 	{
 		this.Button.color = new Color(this.Button.color.r, this.Button.color.g, this.Button.color.b, 0f);
 		this.Focus.position = this.Target.position;

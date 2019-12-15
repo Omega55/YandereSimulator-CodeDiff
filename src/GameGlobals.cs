@@ -25,6 +25,8 @@ public static class GameGlobals
 
 	private const string Str_SenpaiMourning = "SenpaiMourning";
 
+	private const string Str_RivalEliminationID = "RivalEliminationID";
+
 	private const string Str_ReputationsInitialized = "ReputationsInitialized";
 
 	public static int Profile
@@ -159,6 +161,18 @@ public static class GameGlobals
 		}
 	}
 
+	public static int RivalEliminationID
+	{
+		get
+		{
+			return PlayerPrefs.GetInt("RivalEliminationID");
+		}
+		set
+		{
+			PlayerPrefs.SetInt("RivalEliminationID", value);
+		}
+	}
+
 	public static bool ReputationsInitialized
 	{
 		get
@@ -183,6 +197,7 @@ public static class GameGlobals
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_SpareUniform");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_BlondeHair");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_SenpaiMourning");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_RivalEliminationID");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_ReputationsInitialized");
 	}
 }

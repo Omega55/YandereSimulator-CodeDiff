@@ -17,11 +17,21 @@ public class YandereShoverScript : MonoBehaviour
 				if (this.Yandere.Schoolwear == 0)
 				{
 					flag = true;
+					if (this.Yandere.NotificationManager.NotificationParent.childCount == 0)
+					{
+						this.Yandere.NotificationManager.CustomText = "Get dressed first!";
+						this.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
+					}
 				}
 			}
 			else
 			{
 				flag = true;
+				if (this.Yandere.NotificationManager.NotificationParent.childCount == 0)
+				{
+					this.Yandere.NotificationManager.CustomText = "That's the boys' locker room!";
+					this.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
+				}
 			}
 			if (flag)
 			{

@@ -1877,6 +1877,10 @@ public class StudentManagerScript : MonoBehaviour
 			this.ID++;
 		}
 		this.UpdateAllAnimLayers();
+		if (this.Police.EndOfDay.RivalEliminationMethod == RivalEliminationType.Expelled)
+		{
+			this.Students[this.RivalID].gameObject.SetActive(false);
+		}
 		if (GameGlobals.SenpaiMourning)
 		{
 			this.Students[1].gameObject.SetActive(false);

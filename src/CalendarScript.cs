@@ -28,6 +28,10 @@ public class CalendarScript : MonoBehaviour
 
 	public Transform Continue;
 
+	public UILabel[] DayNumber;
+
+	public UILabel WeekNumber;
+
 	public bool Incremented;
 
 	public bool LoveSick;
@@ -40,10 +44,13 @@ public class CalendarScript : MonoBehaviour
 
 	public float Timer;
 
+	public float Target;
+
 	public int Phase = 1;
 
 	private void Start()
 	{
+		Debug.Log("Upon entering the Calendar screen, DateGlobals.Weekday is: " + DateGlobals.Weekday);
 		this.LoveSickCheck();
 		if (!SchoolGlobals.SchoolAtmosphereSet)
 		{
@@ -84,6 +91,21 @@ public class CalendarScript : MonoBehaviour
 		this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 1f);
 		Time.timeScale = 1f;
 		this.Highlight.localPosition = new Vector3(-600f + 200f * (float)DateGlobals.Weekday, this.Highlight.localPosition.y, this.Highlight.localPosition.z);
+		if (DateGlobals.Weekday == DayOfWeek.Saturday)
+		{
+			this.Highlight.localPosition = new Vector3(-1125f, this.Highlight.localPosition.y, this.Highlight.localPosition.z);
+		}
+		if (DateGlobals.Week == 2)
+		{
+			this.DayNumber[1].text = "11";
+			this.DayNumber[2].text = "12";
+			this.DayNumber[3].text = "13";
+			this.DayNumber[4].text = "14";
+			this.DayNumber[5].text = "15";
+			this.DayNumber[6].text = "16";
+			this.DayNumber[7].text = "17";
+		}
+		this.WeekNumber.text = "Week " + DateGlobals.Week;
 		this.LoveSickCheck();
 	}
 
@@ -106,12 +128,20 @@ public class CalendarScript : MonoBehaviour
 						DateGlobals.Weekday++;
 						DateGlobals.PassDays--;
 					}
+					this.Target = 200f * (float)DateGlobals.Weekday;
+					if (DateGlobals.Weekday > DayOfWeek.Saturday)
+					{
+						this.Darkness.color = new Color(0f, 0f, 0f, 0f);
+						DateGlobals.Weekday = DayOfWeek.Sunday;
+						this.Target = 0f;
+					}
+					Debug.Log("And, as of now, DateGlobals.Weekday is: " + DateGlobals.Weekday);
 					this.Incremented = true;
 					base.GetComponent<AudioSource>().Play();
 				}
 				else
 				{
-					this.Highlight.localPosition = new Vector3(Mathf.Lerp(this.Highlight.localPosition.x, -600f + 200f * (float)DateGlobals.Weekday, Time.deltaTime * 10f), this.Highlight.localPosition.y, this.Highlight.localPosition.z);
+					this.Highlight.localPosition = new Vector3(Mathf.Lerp(this.Highlight.localPosition.x, -600f + this.Target, Time.deltaTime * 10f), this.Highlight.localPosition.y, this.Highlight.localPosition.z);
 				}
 				if (this.Timer > 2f)
 				{
@@ -182,7 +212,18 @@ public class CalendarScript : MonoBehaviour
 					{
 						HomeGlobals.Night = false;
 					}
-					SceneManager.LoadScene("HomeScene");
+					if (DateGlobals.Weekday == DayOfWeek.Saturday)
+					{
+						SceneManager.LoadScene("BusStopScene");
+					}
+					else
+					{
+						if (DateGlobals.Weekday == DayOfWeek.Sunday)
+						{
+							HomeGlobals.Night = true;
+						}
+						SceneManager.LoadScene("HomeScene");
+					}
 				}
 			}
 		}
@@ -211,22 +252,27 @@ public class CalendarScript : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Alpha1))
 		{
 			DateGlobals.Weekday = DayOfWeek.Monday;
+			this.Target = 200f * (float)DateGlobals.Weekday;
 		}
 		if (Input.GetKeyDown(KeyCode.Alpha2))
 		{
 			DateGlobals.Weekday = DayOfWeek.Tuesday;
+			this.Target = 200f * (float)DateGlobals.Weekday;
 		}
 		if (Input.GetKeyDown(KeyCode.Alpha3))
 		{
 			DateGlobals.Weekday = DayOfWeek.Wednesday;
+			this.Target = 200f * (float)DateGlobals.Weekday;
 		}
 		if (Input.GetKeyDown(KeyCode.Alpha4))
 		{
 			DateGlobals.Weekday = DayOfWeek.Thursday;
+			this.Target = 200f * (float)DateGlobals.Weekday;
 		}
 		if (Input.GetKeyDown(KeyCode.Alpha5))
 		{
 			DateGlobals.Weekday = DayOfWeek.Friday;
+			this.Target = 200f * (float)DateGlobals.Weekday;
 		}
 	}
 

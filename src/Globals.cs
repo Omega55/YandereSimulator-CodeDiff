@@ -35,6 +35,7 @@ public static class Globals
 		YancordGlobals.DeleteAll();
 		CorkboardGlobals.DeleteAll();
 		GameGlobals.Profile = profile;
+		DateGlobals.Week = 1;
 	}
 
 	public static void Delete(string key)

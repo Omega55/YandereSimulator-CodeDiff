@@ -16,6 +16,8 @@ public class DebugMenuScript : MonoBehaviour
 
 	public ReputationScript Reputation;
 
+	public CounselorScript Counselor;
+
 	public YandereScript Yandere;
 
 	public BentoScript Bento;

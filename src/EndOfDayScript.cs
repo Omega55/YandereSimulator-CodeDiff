@@ -972,8 +972,11 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 14)
 			{
-				if (!StudentGlobals.GetStudentDying(30) && !StudentGlobals.GetStudentDead(30) && !StudentGlobals.GetStudentArrested(30))
+				Debug.Log("We're currently in the End-of-Day sequence, checking to see if the Counselor has to lecture anyone.");
+				if (!StudentGlobals.GetStudentDying(11) && !StudentGlobals.GetStudentDead(11) && !StudentGlobals.GetStudentArrested(11))
 				{
+					Debug.Log("Osana is not dying, dead, or arrested.");
+					Debug.Log("Counselor.LectureID is: " + this.Counselor.LectureID);
 					if (this.Counselor.LectureID > 0)
 					{
 						this.Yandere.gameObject.SetActive(false);
@@ -985,6 +988,7 @@ public class EndOfDayScript : MonoBehaviour
 						this.EODCamera.eulerAngles = new Vector3(0f, -45f, 0f);
 						this.Counselor.Lecturing = true;
 						base.enabled = false;
+						Debug.Log("The counselor is going to lecture somebody! Exiting End-of-Day sequence.");
 					}
 					else
 					{
@@ -1000,12 +1004,13 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			else if (this.Phase == 15)
 			{
+				Debug.Log("We've moved on, and now we're checking to see if any schemes are failing.");
 				this.EODCamera.localPosition = new Vector3(1f, 1.8f, -2.5f);
 				this.EODCamera.localEulerAngles = new Vector3(22.5f, -22.5f, 0f);
 				this.TextWindow.SetActive(true);
 				if (SchemeGlobals.GetSchemeStage(2) == 3)
 				{
-					if (!StudentGlobals.GetStudentDying(30) && !StudentGlobals.GetStudentDead(30) && !StudentGlobals.GetStudentArrested(30))
+					if (!StudentGlobals.GetStudentDying(11) && !StudentGlobals.GetStudentDead(11) && !StudentGlobals.GetStudentArrested(11))
 					{
 						this.GaudyRing.SetActive(true);
 						this.Label.text = "Kokona discovers Sakyu's ring inside of her book bag. She returns the ring to Sakyu, who decides to stop bringing it to school.";
@@ -1451,6 +1456,12 @@ public class EndOfDayScript : MonoBehaviour
 
 	private void Finish()
 	{
+		Debug.Log("We have reached the end of the End-of-Day sequence.");
+		if (this.RivalEliminationMethod == RivalEliminationType.Expelled)
+		{
+			Debug.Log("Osana was expelled.");
+			StudentGlobals.SetStudentExpelled(this.StudentManager.RivalID, true);
+		}
 		PlayerGlobals.Reputation = this.Reputation.Reputation;
 		StudentGlobals.MemorialStudents = 0;
 		HomeGlobals.Night = true;

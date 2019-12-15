@@ -474,9 +474,11 @@ public class CounselorScript : MonoBehaviour
 		}
 		if (this.Lecturing)
 		{
+			Debug.Log("The guidance counselor is lecturing!");
 			this.Chibi.localPosition = new Vector3(this.Chibi.localPosition.x, Mathf.Lerp(this.Chibi.localPosition.y, 250f + (float)StudentGlobals.ExpelProgress * -90f, Time.deltaTime * 3f), this.Chibi.localPosition.z);
 			if (this.LecturePhase == 1)
 			{
+				Debug.Log("Lecture Phase 1.");
 				this.LectureLabel.text = this.LectureIntro[this.LectureID];
 				this.EndOfDayDarkness.color = new Color(this.EndOfDayDarkness.color.r, this.EndOfDayDarkness.color.g, this.EndOfDayDarkness.color.b, Mathf.MoveTowards(this.EndOfDayDarkness.color.a, 0f, Time.deltaTime));
 				if (this.EndOfDayDarkness.color.a == 0f)
@@ -495,6 +497,7 @@ public class CounselorScript : MonoBehaviour
 			}
 			else if (this.LecturePhase == 2)
 			{
+				Debug.Log("Lecture Phase 2.");
 				this.LectureLabel.color = new Color(this.LectureLabel.color.r, this.LectureLabel.color.g, this.LectureLabel.color.b, Mathf.MoveTowards(this.LectureLabel.color.a, 0f, Time.deltaTime));
 				if (this.LectureLabel.color.a == 0f)
 				{
@@ -508,6 +511,7 @@ public class CounselorScript : MonoBehaviour
 			}
 			else if (this.LecturePhase == 3)
 			{
+				Debug.Log("Lecture Phase 3.");
 				if (!this.MyAudio.isPlaying || Input.GetButtonDown("A"))
 				{
 					this.LectureSubtitle.text = this.RivalText[this.LectureID];
@@ -518,6 +522,7 @@ public class CounselorScript : MonoBehaviour
 			}
 			else if (this.LecturePhase == 4)
 			{
+				Debug.Log("Lecture Phase 4.");
 				if (!this.MyAudio.isPlaying || Input.GetButtonDown("A"))
 				{
 					this.LectureSubtitle.text = string.Empty;
@@ -534,6 +539,7 @@ public class CounselorScript : MonoBehaviour
 			}
 			else if (this.LecturePhase == 5)
 			{
+				Debug.Log("Lecture Phase 5.");
 				this.ExpelProgress.color = new Color(this.ExpelProgress.color.r, this.ExpelProgress.color.g, this.ExpelProgress.color.b, Mathf.MoveTowards(this.ExpelProgress.color.a, 1f, Time.deltaTime));
 				this.ExpelTimer += Time.deltaTime;
 				if (this.ExpelTimer > 2f)
@@ -545,6 +551,7 @@ public class CounselorScript : MonoBehaviour
 			}
 			else if (this.LecturePhase == 6)
 			{
+				Debug.Log("Lecture Phase 6.");
 				this.ExpelTimer += Time.deltaTime;
 				if (this.ExpelTimer > 4f)
 				{
@@ -553,14 +560,16 @@ public class CounselorScript : MonoBehaviour
 			}
 			else if (this.LecturePhase == 7)
 			{
+				Debug.Log("Lecture Phase 7.");
 				this.ExpelProgress.color = new Color(this.ExpelProgress.color.r, this.ExpelProgress.color.g, this.ExpelProgress.color.b, Mathf.MoveTowards(this.ExpelProgress.color.a, 0f, Time.deltaTime));
 				this.ExpelTimer += Time.deltaTime;
 				if (this.ExpelTimer > 6f)
 				{
-					if ((StudentGlobals.ExpelProgress == 5 && !StudentGlobals.GetStudentExpelled(30) && this.StudentManager.Police.TranqCase.VictimID != 30) || this.StudentManager.Students[30].SentHome)
+					if ((StudentGlobals.ExpelProgress == 5 && !StudentGlobals.GetStudentExpelled(11) && this.EndOfDay.RivalEliminationMethod != RivalEliminationType.Expelled && this.StudentManager.Police.TranqCase.VictimID != 11) || this.StudentManager.Students[11].SentHome)
 					{
-						Debug.Log("Kokona has now been expelled.");
-						StudentGlobals.SetStudentExpelled(30, true);
+						Debug.Log("Osana has now been expelled.");
+						this.EndOfDay.RivalEliminationMethod = RivalEliminationType.Expelled;
+						this.StudentManager.RivalEliminated = true;
 						this.EndOfDayDarkness.color = new Color(this.EndOfDayDarkness.color.r, this.EndOfDayDarkness.color.g, this.EndOfDayDarkness.color.b, 0f);
 						this.LectureLabel.color = new Color(this.LectureLabel.color.r, this.LectureLabel.color.g, this.LectureLabel.color.b, 0f);
 						this.LecturePhase = 2;
@@ -569,7 +578,7 @@ public class CounselorScript : MonoBehaviour
 					}
 					else if (this.LectureID < 6)
 					{
-						Debug.Log("We are heading to the end-of-day scene.");
+						Debug.Log("We are leaving the lecture and heading to the end-of-day scene.");
 						float num = this.EndOfDayDarkness.color.a;
 						num = Mathf.MoveTowards(num, 1f, Time.deltaTime);
 						this.EndOfDayDarkness.color = new Color(0f, 0f, 0f, num);
@@ -583,7 +592,7 @@ public class CounselorScript : MonoBehaviour
 					}
 					else
 					{
-						Debug.Log("We are leaving the end-of-day scene.");
+						Debug.Log("We are leaving the lecture and returning to gameplay.");
 						this.EndOfDay.gameObject.SetActive(false);
 						this.EndOfDay.Phase = 1;
 						this.CutsceneManager.Phase++;
@@ -592,6 +601,28 @@ public class CounselorScript : MonoBehaviour
 						this.Yandere.MainCamera.gameObject.SetActive(true);
 						this.Yandere.gameObject.SetActive(true);
 						this.StudentManager.ComeBack();
+						if (this.StudentManager.Students[10] != null)
+						{
+							StudentScript studentScript = this.StudentManager.Students[10];
+							Debug.Log("Osana is gone, so Raibaru's routine has to change.");
+							ScheduleBlock scheduleBlock = studentScript.ScheduleBlocks[6];
+							scheduleBlock.destination = "Locker";
+							scheduleBlock.action = "Shoes";
+							ScheduleBlock scheduleBlock2 = studentScript.ScheduleBlocks[7];
+							scheduleBlock2.destination = "Exit";
+							scheduleBlock2.action = "Exit";
+							ScheduleBlock scheduleBlock3 = studentScript.ScheduleBlocks[8];
+							scheduleBlock3.destination = "Exit";
+							scheduleBlock3.action = "Exit";
+							ScheduleBlock scheduleBlock4 = studentScript.ScheduleBlocks[9];
+							scheduleBlock4.destination = "Exit";
+							scheduleBlock4.action = "Exit";
+							studentScript.TargetDistance = 0.5f;
+							studentScript.IdleAnim = studentScript.BulliedIdleAnim;
+							studentScript.WalkAnim = studentScript.BulliedWalkAnim;
+							studentScript.OriginalIdleAnim = studentScript.IdleAnim;
+							studentScript.GetDestinations();
+						}
 					}
 				}
 			}
@@ -641,7 +672,7 @@ public class CounselorScript : MonoBehaviour
 			UILabel uilabel = this.Labels[i];
 			uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, 0.5f);
 		}
-		if (this.StudentManager.Students[30] != null)
+		if (this.StudentManager.Students[11] != null)
 		{
 			if (SchemeGlobals.GetSchemeStage(1) == 7)
 			{

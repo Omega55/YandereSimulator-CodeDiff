@@ -113,7 +113,10 @@ public class AlarmDiscScript : MonoBehaviour
 						{
 							this.StudentIsBusy = true;
 						}
-						if (!this.Student.TurnOffRadio && this.Student.Alive && !this.Student.Pushed && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Guarding && !this.Student.Wet && !this.Student.Slave && !this.Student.CheckingNote && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.StudentIsBusy && !this.Student.FocusOnYandere && this.Student.Persona != PersonaType.Protective && !this.Student.Fleeing && !this.Student.Shoving && !this.Student.SentHome && this.Student.ClubActivityPhase < 16 && !this.Student.Vomiting && !this.Student.Lethal && !this.Student.Headache && !this.Student.Sedated && !this.Student.SenpaiWitnessingRivalDie)
+						if ((this.Student.StudentID != this.Student.StudentManager.RivalID && this.Student.StudentID != 1) || this.Student.CurrentAction == StudentActionType.SitAndEatBento)
+						{
+						}
+						if ((!this.Student.TurnOffRadio && this.Student.Alive && !this.Student.Pushed && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Guarding && !this.Student.Wet && !this.Student.Slave && !this.Student.CheckingNote && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.StudentIsBusy && !this.Student.FocusOnYandere && !this.Student.Fleeing && !this.Student.Shoving && !this.Student.SentHome && this.Student.ClubActivityPhase < 16 && !this.Student.Vomiting && !this.Student.Lethal && !this.Student.Headache && !this.Student.Sedated && !this.Student.SenpaiWitnessingRivalDie) || (this.Student.Persona == PersonaType.Protective && this.Originator.StudentID == 11))
 						{
 							if (this.Student.Male)
 							{
@@ -149,6 +152,7 @@ public class AlarmDiscScript : MonoBehaviour
 							this.Student.Alarm = 200f;
 							if (!this.NoScream)
 							{
+								this.Student.Giggle = null;
 								this.InvestigateScream();
 							}
 							if (this.FocusOnYandere)
@@ -205,6 +209,7 @@ public class AlarmDiscScript : MonoBehaviour
 				}
 			}
 		}
+		this.Student = null;
 	}
 
 	private void PlayClip(AudioClip clip, Vector3 pos)
@@ -228,36 +233,35 @@ public class AlarmDiscScript : MonoBehaviour
 
 	private void InvestigateScream()
 	{
-		if (this.Student.Giggle == null)
+		Debug.Log(this.Student.Name + " just heard a scream.");
+		if (this.Student.Clock.Period == 3 && this.Student.BusyAtLunch)
 		{
-			if (this.Student.Clock.Period == 3 && this.Student.BusyAtLunch)
+			this.StudentIsBusy = true;
+		}
+		if (!this.Student.YandereVisible && !this.Student.Alarmed && !this.Student.Distracted && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.Student.InEvent && !this.Student.Following && !this.Student.Confessing && !this.Student.Meeting && !this.Student.TurnOffRadio && !this.Student.Fleeing && !this.Student.Distracting && !this.Student.GoAway && !this.Student.FocusOnYandere && !this.StudentIsBusy && this.Student.Actions[this.Student.Phase] != StudentActionType.Teaching && this.Student.Actions[this.Student.Phase] != StudentActionType.SitAndTakeNotes && this.Student.Actions[this.Student.Phase] != StudentActionType.Graffiti && this.Student.Actions[this.Student.Phase] != StudentActionType.Bully && !this.Student.Headache)
+		{
+			Debug.Log(this.Student.Name + " should be going to investigate that scream now.");
+			this.Student.Character.GetComponent<Animation>().CrossFade(this.Student.IdleAnim);
+			GameObject giggle = UnityEngine.Object.Instantiate<GameObject>(this.Student.EmptyGameObject, new Vector3(base.transform.position.x, this.Student.transform.position.y, base.transform.position.z), Quaternion.identity);
+			this.Student.Giggle = giggle;
+			if (this.Student.Pathfinding != null && !this.Student.Nemesis)
 			{
-				this.StudentIsBusy = true;
-			}
-			if (!this.Student.YandereVisible && !this.Student.Alarmed && !this.Student.Distracted && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.Student.Investigating && !this.Student.InEvent && !this.Student.Following && !this.Student.Confessing && !this.Student.Meeting && !this.Student.TurnOffRadio && !this.Student.Fleeing && !this.Student.Distracting && !this.Student.GoAway && !this.Student.FocusOnYandere && !this.StudentIsBusy && this.Student.Actions[this.Student.Phase] != StudentActionType.Teaching && this.Student.Actions[this.Student.Phase] != StudentActionType.SitAndTakeNotes && this.Student.Actions[this.Student.Phase] != StudentActionType.Graffiti && this.Student.Actions[this.Student.Phase] != StudentActionType.Bully && this.Student.Routine && !this.Student.Headache)
-			{
-				this.Student.Character.GetComponent<Animation>().CrossFade(this.Student.IdleAnim);
-				GameObject giggle = UnityEngine.Object.Instantiate<GameObject>(this.Student.EmptyGameObject, new Vector3(base.transform.position.x, this.Student.transform.position.y, base.transform.position.z), Quaternion.identity);
-				this.Student.Giggle = giggle;
-				if (this.Student.Pathfinding != null && !this.Student.Nemesis)
-				{
-					this.Student.Pathfinding.canSearch = false;
-					this.Student.Pathfinding.canMove = false;
-					this.Student.InvestigationPhase = 0;
-					this.Student.InvestigationTimer = 0f;
-					this.Student.Investigating = true;
-					this.Student.EatingSnack = false;
-					this.Student.SpeechLines.Stop();
-					this.Student.ChalkDust.Stop();
-					this.Student.DiscCheck = true;
-					this.Student.Routine = false;
-					this.Student.CleanTimer = 0f;
-					this.Student.ReadPhase = 0;
-					this.Student.StopPairing();
-					this.Student.EmptyHands();
-					this.Student.HeardScream = true;
-					Debug.Log(this.Student.name + "'s ''DiskCheck'' was just set to ''true''.");
-				}
+				this.Student.Pathfinding.canSearch = false;
+				this.Student.Pathfinding.canMove = false;
+				this.Student.InvestigationPhase = 0;
+				this.Student.InvestigationTimer = 0f;
+				this.Student.Investigating = true;
+				this.Student.EatingSnack = false;
+				this.Student.SpeechLines.Stop();
+				this.Student.ChalkDust.Stop();
+				this.Student.DiscCheck = true;
+				this.Student.Routine = false;
+				this.Student.CleanTimer = 0f;
+				this.Student.ReadPhase = 0;
+				this.Student.StopPairing();
+				this.Student.EmptyHands();
+				this.Student.HeardScream = true;
+				Debug.Log(this.Student.Name + "'s ''DiskCheck'' was just set to ''true''.");
 			}
 		}
 	}

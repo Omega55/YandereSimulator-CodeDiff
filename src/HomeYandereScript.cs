@@ -69,7 +69,11 @@ public class HomeYandereScript : MonoBehaviour
 
 	public Mesh PajamaMesh;
 
-	private void Start()
+	public Texture NudeTexture;
+
+	public Mesh NudeMesh;
+
+	public void Start()
 	{
 		if (this.CutsceneYandere != null)
 		{
@@ -89,6 +93,10 @@ public class HomeYandereScript : MonoBehaviour
 				else
 				{
 					this.WearPajamas();
+				}
+				if (DateGlobals.Weekday == DayOfWeek.Sunday)
+				{
+					this.Nude();
 				}
 			}
 			else if (HomeGlobals.StartInBasement)
@@ -337,6 +345,14 @@ public class HomeYandereScript : MonoBehaviour
 		this.MyRenderer.materials[1].mainTexture = this.PajamaTexture;
 		this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
 		base.StartCoroutine(this.ApplyCustomFace());
+	}
+
+	private void Nude()
+	{
+		this.MyRenderer.sharedMesh = this.NudeMesh;
+		this.MyRenderer.materials[0].mainTexture = this.NudeTexture;
+		this.MyRenderer.materials[1].mainTexture = this.NudeTexture;
+		this.MyRenderer.materials[2].mainTexture = this.NudeTexture;
 	}
 
 	private IEnumerator ApplyCustomCostume()

@@ -2568,8 +2568,9 @@ public class YandereScript : MonoBehaviour
 						this.Smartphone.fieldOfView = 30f;
 					}
 				}
-				if (Input.GetAxis("RT") != 0f || Input.GetMouseButtonDown(0) || Input.GetButtonDown("RB"))
+				if (Input.GetAxis("RT") == 1f || Input.GetMouseButtonDown(0) || Input.GetButtonDown("RB"))
 				{
+					Debug.Log(Input.GetAxis("RT"));
 					this.FixCamera();
 					this.PauseScreen.CorrectingTime = false;
 					Time.timeScale = 0.0001f;

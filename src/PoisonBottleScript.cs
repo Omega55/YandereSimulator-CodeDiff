@@ -5,13 +5,18 @@ public class PoisonBottleScript : MonoBehaviour
 {
 	public PromptScript Prompt;
 
+	public bool Theft;
+
 	public int ID;
 
 	private void Update()
 	{
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			this.Prompt.Yandere.TheftTimer = 0.1f;
+			if (this.Theft)
+			{
+				this.Prompt.Yandere.TheftTimer = 0.1f;
+			}
 			if (this.ID == 1)
 			{
 				this.Prompt.Yandere.Inventory.EmeticPoison = true;

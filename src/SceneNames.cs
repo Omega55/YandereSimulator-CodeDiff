@@ -59,4 +59,6 @@ public static class SceneNames
 	public const string MaidMenuScene = "MaidMenuScene";
 
 	public const string MaidGameScene = "MaidGameScene";
+
+	public const string BusStopScene = "BusStopScene";
 }
