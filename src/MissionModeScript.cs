@@ -645,12 +645,12 @@ public class MissionModeScript : MonoBehaviour
 							{
 								if (this.StudentManager.Students[this.Target[i]].DeathType == DeathType.Weight)
 								{
+									this.NewMissionWindow.DeathSkulls[i].SetActive(true);
 									this.Checking[i] = false;
 									this.CheckForCompletion();
 								}
 								else
 								{
-									this.NewMissionWindow.DeathSkulls[i].SetActive(true);
 									this.GameOverID = 18;
 									this.GameOver();
 									this.Phase = 4;

@@ -672,6 +672,8 @@ public class PoseModeScript : MonoBehaviour
 					if (this.Selected == 2)
 					{
 						PoseSerializer.SerializePose(this.Student.Cosmetic, this.Student.transform, string.Empty + this.SaveSlot);
+						this.Yandere.NotificationManager.CustomText = "Pose Saved!";
+						this.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
 					}
 					else if (this.Selected == 3)
 					{

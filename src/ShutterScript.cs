@@ -171,11 +171,6 @@ public class ShutterScript : MonoBehaviour
 	{
 		if (!this.Yandere.Selfie)
 		{
-			Debug.DrawRay(this.SmartphoneCamera.transform.position, this.SmartphoneCamera.transform.TransformDirection(Vector3.forward) * 10f, Color.green);
-		}
-		else
-		{
-			Debug.DrawRay(this.SmartphoneCamera.transform.position, this.SelfieRayParent.TransformDirection(Vector3.forward) * 10f, Color.green);
 		}
 		if (this.Snapping)
 		{

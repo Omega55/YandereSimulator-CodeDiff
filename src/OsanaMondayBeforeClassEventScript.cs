@@ -5,6 +5,8 @@ public class OsanaMondayBeforeClassEventScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
 
+	public EventManagerScript NextEvent;
+
 	public JukeboxScript Jukebox;
 
 	public UILabel EventSubtitle;

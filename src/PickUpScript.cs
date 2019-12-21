@@ -256,7 +256,6 @@ public class PickUpScript : MonoBehaviour
 
 	public void BePickedUp()
 	{
-		Debug.Log("SchemeGlobals.GetSchemeStage(4) is: " + SchemeGlobals.GetSchemeStage(4));
 		if (this.Salty && SchemeGlobals.GetSchemeStage(4) == 4)
 		{
 			SchemeGlobals.SetSchemeStage(4, 5);

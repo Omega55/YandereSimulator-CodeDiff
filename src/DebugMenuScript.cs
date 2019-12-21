@@ -44,6 +44,8 @@ public class DebugMenuScript : MonoBehaviour
 
 	public GameObject CircularSaw;
 
+	public GameObject GreenScreen;
+
 	public GameObject Knife;
 
 	public Transform[] TeleportSpot;
@@ -57,6 +59,8 @@ public class DebugMenuScript : MonoBehaviour
 	public GameObject MissionModeWindow;
 
 	public GameObject Window;
+
+	public bool WaitingForNumber;
 
 	public bool TryNextFrame;
 
@@ -334,7 +338,7 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					else if (Input.GetKeyDown(KeyCode.F))
 					{
-						this.FakeStudentSpawner.Spawn();
+						this.GreenScreen.SetActive(true);
 						this.Window.SetActive(false);
 					}
 					else if (Input.GetKeyDown(KeyCode.G))
@@ -708,6 +712,54 @@ public class DebugMenuScript : MonoBehaviour
 				{
 					this.Yandere.AttackManager.Censor = !this.Yandere.AttackManager.Censor;
 				}
+			}
+		}
+		if (this.WaitingForNumber)
+		{
+			if (Input.GetKey("1"))
+			{
+				Debug.Log("Going to class should trigger panty shot lecture.");
+				SchemeGlobals.SetSchemeStage(1, 100);
+				StudentGlobals.ExpelProgress = 0;
+				this.Counselor.CutsceneManager.Scheme = 1;
+				this.Counselor.LectureID = 1;
+				this.WaitingForNumber = false;
+			}
+			else if (Input.GetKey("2"))
+			{
+				Debug.Log("Going to class should trigger theft lecture.");
+				SchemeGlobals.SetSchemeStage(2, 100);
+				StudentGlobals.ExpelProgress = 1;
+				this.Counselor.CutsceneManager.Scheme = 2;
+				this.Counselor.LectureID = 2;
+				this.WaitingForNumber = false;
+			}
+			else if (Input.GetKey("3"))
+			{
+				Debug.Log("Going to class should trigger contraband lecture.");
+				SchemeGlobals.SetSchemeStage(3, 0);
+				StudentGlobals.ExpelProgress = 2;
+				this.Counselor.CutsceneManager.Scheme = 3;
+				this.Counselor.LectureID = 3;
+				this.WaitingForNumber = false;
+			}
+			else if (Input.GetKey("4"))
+			{
+				Debug.Log("Going to class should trigger Vandalism lecture.");
+				SchemeGlobals.SetSchemeStage(4, 0);
+				StudentGlobals.ExpelProgress = 4;
+				this.Counselor.CutsceneManager.Scheme = 4;
+				this.Counselor.LectureID = 4;
+				this.WaitingForNumber = false;
+			}
+			else if (Input.GetKey("5"))
+			{
+				Debug.Log("Going to class at lunchtime should get Osana expelled!");
+				SchemeGlobals.SetSchemeStage(5, 7);
+				StudentGlobals.ExpelProgress = 4;
+				this.Counselor.CutsceneManager.Scheme = 5;
+				this.Counselor.LectureID = 5;
+				this.WaitingForNumber = false;
 			}
 		}
 	}

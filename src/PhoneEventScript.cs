@@ -113,7 +113,7 @@ public class PhoneEventScript : MonoBehaviour
 							this.EventFriend.Prompt.Hide();
 						}
 					}
-					if (this.EventStudent.Routine && !this.EventStudent.Distracted && !this.EventStudent.Talking && !this.EventStudent.Meeting && this.EventStudent.Indoors)
+					if (this.EventStudent.Routine && !this.EventStudent.Distracted && !this.EventStudent.Talking && !this.EventStudent.Meeting && !this.EventStudent.Investigating && this.EventStudent.Indoors)
 					{
 						if (!this.EventStudent.WitnessedMurder)
 						{
@@ -237,11 +237,9 @@ public class PhoneEventScript : MonoBehaviour
 						}
 					}
 					float num = Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position);
-					Debug.Log("Distance is: " + num);
 					if (num < 10f)
 					{
 						float num2 = Mathf.Abs((num - 10f) * 0.2f);
-						Debug.Log("Scale is: " + num2);
 						if (num2 < 0f)
 						{
 							num2 = 0f;

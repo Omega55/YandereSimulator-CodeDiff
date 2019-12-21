@@ -3591,7 +3591,6 @@ public class StudentScript : MonoBehaviour
 					}
 					else
 					{
-						Debug.Log("Sprinting 5");
 						this.Pathfinding.speed = 4f;
 					}
 				}
@@ -3958,6 +3957,11 @@ public class StudentScript : MonoBehaviour
 								{
 									if (this.Rival && this.Phoneless && this.StudentManager.CommunalLocker.RivalPhone.gameObject.activeInHierarchy && !this.EndSearch && this.Yandere.CanMove)
 									{
+										if (SchemeGlobals.GetSchemeStage(1) == 7)
+										{
+											SchemeGlobals.SetSchemeStage(1, 8);
+											this.Yandere.PauseScreen.Schemes.UpdateInstructions();
+										}
 										this.CharacterAnimation.CrossFade(this.DiscoverPhoneAnim);
 										this.Subtitle.UpdateLabel(this.LostPhoneSubtitleType, 2, 5f);
 										this.EndSearch = true;
@@ -5166,6 +5170,11 @@ public class StudentScript : MonoBehaviour
 							{
 								if (this.PatrolID == 0 && this.StudentManager.CommunalLocker.RivalPhone.gameObject.activeInHierarchy && !this.EndSearch)
 								{
+									if (SchemeGlobals.GetSchemeStage(1) == 7)
+									{
+										SchemeGlobals.SetSchemeStage(1, 8);
+										this.Yandere.PauseScreen.Schemes.UpdateInstructions();
+									}
 									this.CharacterAnimation.CrossFade(this.DiscoverPhoneAnim);
 									this.Subtitle.UpdateLabel(this.LostPhoneSubtitleType, 2, 5f);
 									this.EndSearch = true;
@@ -7226,7 +7235,6 @@ public class StudentScript : MonoBehaviour
 						{
 							this.CharacterAnimation.CrossFade(this.SprintAnim);
 						}
-						Debug.Log("Sprinting 12");
 						this.Pathfinding.speed = 4f;
 					}
 					else
@@ -8747,7 +8755,12 @@ public class StudentScript : MonoBehaviour
 			if (ragdollScript != null && !ragdollScript.Hidden)
 			{
 				Collider collider = ragdollScript.AllColliders[0];
-				if (this.CanSeeObject(collider.gameObject, collider.transform.position, this.CorpseLayers, this.Mask))
+				bool flag = false;
+				if (collider.transform.position.y < base.transform.position.y + 4f)
+				{
+					flag = true;
+				}
+				if (flag && this.CanSeeObject(collider.gameObject, collider.transform.position, this.CorpseLayers, this.Mask))
 				{
 					this.VisibleCorpses.Add(ragdollScript.StudentID);
 					this.Corpse = ragdollScript;
@@ -8782,7 +8795,7 @@ public class StudentScript : MonoBehaviour
 				break;
 			}
 			Collider collider = this.StudentManager.Blood[this.ID];
-			if (collider != null && this.CanSeeObject(collider.gameObject, collider.transform.position))
+			if (collider != null && Vector3.Distance(base.transform.position, collider.transform.position) < this.VisionDistance && this.CanSeeObject(collider.gameObject, collider.transform.position))
 			{
 				this.BloodPool = collider.transform;
 				this.WitnessedBloodPool = true;
@@ -9099,7 +9112,12 @@ public class StudentScript : MonoBehaviour
 							}
 							if ((this.Yandere.Armed && this.Yandere.EquippedWeapon.Suspicious) || (!this.Teacher && this.StudentID > 1 && !this.Teacher && this.Yandere.PickUp != null && this.Yandere.PickUp.Suspicious) || (this.Teacher && this.Yandere.PickUp != null && this.Yandere.PickUp.Suspicious && !this.Yandere.PickUp.CleaningProduct) || (this.Yandere.Bloodiness + (float)this.Yandere.GloveBlood > 0f && !this.Yandere.Paint) || (this.Yandere.Sanity < 33.333f || this.Yandere.Pickpocketing || this.Yandere.Attacking || this.Yandere.Struggling || this.Yandere.Dragging || (!this.IgnoringPettyActions && this.Yandere.Lewd)) || (this.Yandere.Carrying || this.Yandere.Medusa || this.Yandere.Poisoning || this.Yandere.Pickpocketing || this.Yandere.WeaponTimer > 0f || this.Yandere.MurderousActionTimer > 0f || (this.Yandere.PickUp != null && this.Yandere.PickUp.BodyPart != null)) || (this.Yandere.Laughing && this.Yandere.LaughIntensity > 15f) || (!this.IgnoringPettyActions && this.Yandere.Stance.Current == StanceType.Crouching) || (!this.IgnoringPettyActions && this.Yandere.Stance.Current == StanceType.Crawling) || (this.Private && this.Yandere.Trespassing) || (this.Private && this.Yandere.Eavesdropping) || (this.Teacher && !this.WitnessedCorpse && this.Yandere.Trespassing) || (this.Teacher && !this.IgnoringPettyActions && this.Yandere.Rummaging) || (!this.IgnoringPettyActions && this.Yandere.TheftTimer > 0f) || (this.StudentID == 1 && this.Yandere.NearSenpai && !this.Yandere.Talking) || (this.Yandere.Eavesdropping && this.Private) || (!this.StudentManager.CombatMinigame.Practice && this.Yandere.DelinquentFighting && this.StudentManager.CombatMinigame.Path < 4) || (flag3 && this.Yandere.PickUp != null && this.Yandere.PickUp.Mop != null && this.Yandere.PickUp.Mop.Bloodiness > 0f) || (flag3 && this.Yandere.PickUp != null && this.Yandere.PickUp.BodyPart != null) || (this.Yandere.PickUp != null && this.Yandere.PickUp.Clothing && this.Yandere.PickUp.Evidence))
 							{
-								if (this.CanSeeObject(this.Yandere.gameObject, this.Yandere.HeadPosition))
+								bool flag4 = false;
+								if (this.Yandere.transform.position.y < base.transform.position.y + 4f)
+								{
+									flag4 = true;
+								}
+								if (flag4 && this.CanSeeObject(this.Yandere.gameObject, this.Yandere.HeadPosition))
 								{
 									this.YandereVisible = true;
 									if (this.Yandere.Attacking || this.Yandere.Struggling || (this.WitnessedCorpse && this.Yandere.NearBodies > 0 && this.Yandere.Bloodiness + (float)this.Yandere.GloveBlood > 0f && !this.Yandere.Paint) || (this.WitnessedCorpse && this.Yandere.NearBodies > 0 && this.Yandere.Armed) || (this.WitnessedCorpse && this.Yandere.NearBodies > 0 && this.Yandere.Sanity < 66.66666f) || (this.Yandere.Carrying || this.Yandere.Dragging || this.Yandere.MurderousActionTimer > 0f || (this.Guarding && this.Yandere.Bloodiness + (float)this.Yandere.GloveBlood > 0f && !this.Yandere.Paint)) || (this.Guarding && this.Yandere.Armed) || (this.Guarding && this.Yandere.Sanity < 66.66666f) || (!this.StudentManager.CombatMinigame.Practice && this.Club == ClubType.Council && this.Yandere.DelinquentFighting && this.StudentManager.CombatMinigame.Path < 4 && !this.StudentManager.CombatMinigame.Practice) || (!this.StudentManager.CombatMinigame.Practice && this.Teacher && this.Yandere.DelinquentFighting && this.StudentManager.CombatMinigame.Path < 4 && !this.StudentManager.CombatMinigame.Practice) || (flag3 && this.Yandere.PickUp != null && this.Yandere.PickUp.Mop != null && this.Yandere.PickUp.Mop.Bloodiness > 0f) || (flag3 && this.Yandere.PickUp != null && this.Yandere.PickUp.BodyPart != null) || (this.Yandere.PickUp != null && this.Teacher && this.Yandere.PickUp.Clothing && this.Yandere.PickUp.Evidence) || (this.StudentManager.Atmosphere < 0.33333f && this.Yandere.Bloodiness + (float)this.Yandere.GloveBlood > 0f && this.Yandere.Armed))
@@ -11691,8 +11709,10 @@ public class StudentScript : MonoBehaviour
 			}
 			if (this.LongHair[0] != null)
 			{
-				this.LongHair[0].eulerAngles = new Vector3(0f, this.LongHair[0].eulerAngles.y, this.LongHair[0].eulerAngles.z);
-				this.LongHair[1].eulerAngles = new Vector3(0f, this.LongHair[0].eulerAngles.y, this.LongHair[0].eulerAngles.z);
+				this.LongHair[0].eulerAngles = new Vector3(this.Spine.eulerAngles.x, this.Spine.eulerAngles.y, this.Spine.eulerAngles.z);
+				this.LongHair[0].RotateAround(this.LongHair[0].position, base.transform.right, 180f);
+				this.LongHair[1].eulerAngles = new Vector3(this.Spine.eulerAngles.x, this.Spine.eulerAngles.y, this.Spine.eulerAngles.z);
+				this.LongHair[1].RotateAround(this.LongHair[1].position, base.transform.right, 180f);
 			}
 		}
 		if (this.Routine && !this.InEvent && !this.Meeting && !this.GoAway)

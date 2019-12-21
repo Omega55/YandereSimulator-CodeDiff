@@ -64,7 +64,7 @@ public class PhoneScript : MonoBehaviour
 	{
 		this.Buttons.localPosition = new Vector3(this.Buttons.localPosition.x, -135f, this.Buttons.localPosition.z);
 		this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 1f);
-		if (DateGlobals.Weekday == DayOfWeek.Sunday)
+		if (DateGlobals.Week > 1 && DateGlobals.Weekday == DayOfWeek.Sunday)
 		{
 			this.Darkness.color = new Color(0f, 0f, 0f, 0f);
 		}

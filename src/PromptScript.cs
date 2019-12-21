@@ -61,7 +61,7 @@ public class PromptScript : MonoBehaviour
 
 	public bool Carried;
 
-	[Tooltip("This means that the prompt's renderer is within the camera's cone of vision")]
+	[Tooltip("This means that the prompt's renderer is within the camera's cone of vision.")]
 	public bool InSight;
 
 	[Tooltip("This means that a raycast can hit the prompt's collider.")]
@@ -327,6 +327,10 @@ public class PromptScript : MonoBehaviour
 								else if (Mathf.Abs(this.RelativePosition - (float)Screen.width * 0.5f) < Mathf.Abs(this.Yandere.NearestPrompt.RelativePosition - (float)Screen.width * 0.5f))
 								{
 									this.Yandere.NearestPrompt = this;
+								}
+								if (this.Debugging)
+								{
+									Debug.Log("The nearest prompt to Yandere-chan is: " + this.Yandere.NearestPrompt);
 								}
 								if (this.Yandere.NearestPrompt == this)
 								{

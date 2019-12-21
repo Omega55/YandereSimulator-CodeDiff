@@ -418,6 +418,7 @@ public class BucketScript : MonoBehaviour
 				component.BecomeRagdoll();
 				this.Dropped = false;
 				GameObjectUtils.SetLayerRecursively(base.gameObject, 15);
+				Debug.Log(component.Name + "'s ''Alive'' variable is: " + component.Alive);
 			}
 		}
 	}

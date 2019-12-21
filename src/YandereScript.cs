@@ -2521,7 +2521,7 @@ public class YandereScript : MonoBehaviour
 			}
 			if (this.Aiming)
 			{
-				if (Input.GetButtonDown("A"))
+				if (!this.RivalPhone && Input.GetButtonDown("A"))
 				{
 					this.Selfie = !this.Selfie;
 					this.UpdateSelfieStatus();
@@ -2570,7 +2570,6 @@ public class YandereScript : MonoBehaviour
 				}
 				if (Input.GetAxis("RT") == 1f || Input.GetMouseButtonDown(0) || Input.GetButtonDown("RB"))
 				{
-					Debug.Log(Input.GetAxis("RT"));
 					this.FixCamera();
 					this.PauseScreen.CorrectingTime = false;
 					Time.timeScale = 0.0001f;

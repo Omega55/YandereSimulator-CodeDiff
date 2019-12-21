@@ -180,9 +180,10 @@ public class ClassScript : MonoBehaviour
 							{
 								this.Poison.SetActive(true);
 							}
-							if (SchemeGlobals.GetSchemeStage(5) == 7)
+							Debug.Log("CutsceneManager.Scheme is: " + this.CutsceneManager.Scheme);
+							if (this.CutsceneManager.Scheme > 0)
 							{
-								SchemeGlobals.SetSchemeStage(5, 100);
+								SchemeGlobals.SetSchemeStage(this.CutsceneManager.Scheme, 100);
 								this.PromptBar.ClearButtons();
 								this.PromptBar.Label[0].text = "Continue";
 								this.PromptBar.UpdateButtons();

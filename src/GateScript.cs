@@ -101,7 +101,7 @@ public class GateScript : MonoBehaviour
 			this.EmergencyDoor.enabled = !this.EmergencyDoor.enabled;
 			this.ManuallyAdjusted = true;
 			this.Closed = !this.Closed;
-			if (this.StudentManager.Students[97] != null)
+			if (this.StudentManager.Students[97] != null && this.StudentManager.Students[97].Investigating)
 			{
 				this.StudentManager.Students[97].StopInvestigating();
 			}

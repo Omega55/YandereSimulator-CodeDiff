@@ -55,6 +55,8 @@ public class EventManagerScript : MonoBehaviour
 
 	public int EventStudent2;
 
+	public int OsanaID = 1;
+
 	private void Start()
 	{
 		this.EventSubtitle.transform.localScale = Vector3.zero;
@@ -92,7 +94,7 @@ public class EventManagerScript : MonoBehaviour
 				this.EventCheck = false;
 				base.enabled = false;
 			}
-			if (this.EventStudent[1] != null && this.EventStudent[2] != null && !this.EventStudent[1].Slave && !this.EventStudent[2].Slave && this.EventStudent[1].Routine && this.EventStudent[2].Routine && !this.EventStudent[1].InEvent && !this.EventStudent[2].InEvent)
+			if (this.EventStudent[1] != null && this.EventStudent[2] != null && !this.EventStudent[1].Slave && !this.EventStudent[2].Slave && this.EventStudent[1].Indoors && !this.EventStudent[1].Wet && (this.OsanaID < 2 || (this.OsanaID == 2 && this.EventStudent[1].DistanceToDestination < 0.5f)) && this.EventStudent[1].Routine && this.EventStudent[2].Routine && !this.EventStudent[1].InEvent && !this.EventStudent[2].InEvent)
 			{
 				this.EventStudent[1].CurrentDestination = this.EventLocation[1];
 				this.EventStudent[1].Pathfinding.target = this.EventLocation[1];
@@ -224,7 +226,7 @@ public class EventManagerScript : MonoBehaviour
 									EventGlobals.Event1 = true;
 								}
 							}
-							else if (!EventGlobals.OsanaEvent2)
+							else if (this.OsanaID < 2 && !EventGlobals.OsanaEvent2)
 							{
 								this.Yandere.NotificationManager.DisplayNotification(NotificationType.Info);
 								EventGlobals.OsanaEvent2 = true;

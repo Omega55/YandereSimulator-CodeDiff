@@ -21,6 +21,8 @@ public class CutsceneManagerScript : MonoBehaviour
 
 	public string[] Text;
 
+	public int Scheme;
+
 	public int Phase = 1;
 
 	public int Line = 1;
@@ -33,7 +35,14 @@ public class CutsceneManagerScript : MonoBehaviour
 			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 1f, Time.deltaTime));
 			if (this.Darkness.color.a == 1f)
 			{
-				this.Phase++;
+				if (this.Scheme == 5)
+				{
+					this.Phase++;
+				}
+				else
+				{
+					this.Phase = 4;
+				}
 			}
 		}
 		else if (this.Phase == 2)
@@ -61,9 +70,17 @@ public class CutsceneManagerScript : MonoBehaviour
 		}
 		else if (this.Phase == 4)
 		{
+			Debug.Log("We're activating EndOfDay from CutsceneManager.");
 			this.EndOfDay.gameObject.SetActive(true);
 			this.EndOfDay.Phase = 14;
-			this.Counselor.LecturePhase = 5;
+			if (this.Scheme == 5)
+			{
+				this.Counselor.LecturePhase = 5;
+			}
+			else
+			{
+				this.Counselor.LecturePhase = 1;
+			}
 			this.Phase++;
 		}
 		else if (this.Phase == 6)
@@ -76,14 +93,14 @@ public class CutsceneManagerScript : MonoBehaviour
 		}
 		else if (this.Phase == 7)
 		{
-			if (this.StudentManager.Students[7] != null)
+			if (this.Scheme != 5 || this.StudentManager.Students[this.StudentManager.RivalID] != null)
 			{
-				UnityEngine.Object.Destroy(this.StudentManager.Students[7].gameObject);
 			}
 			this.PromptBar.ClearButtons();
 			this.PromptBar.Show = false;
 			this.Portal.Proceed = true;
 			base.gameObject.SetActive(false);
+			this.Scheme = 0;
 		}
 	}
 }

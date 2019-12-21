@@ -77,11 +77,11 @@ public class CounselorScript : MonoBehaviour
 	public readonly string[] LectureIntro = new string[]
 	{
 		string.Empty,
-		"The guidance counselor asks Osana to visit her office after school ends...",
-		"The guidance counselor asks Osana to visit her office after school ends...",
-		"The guidance counselor asks Osana to visit her office after school ends...",
-		"The guidance counselor asks Osana to visit her office after school ends...",
-		"The guidance counselor asks Osana to visit her office after school ends..."
+		"During class, the guidance counselor enters the classroom and says that she needs to speak with Osana...",
+		"During class, the guidance counselor enters the classroom and says that she needs to speak with Osana...",
+		"During class, the guidance counselor enters the classroom and says that she needs to speak with Osana...",
+		"During class, the guidance counselor enters the classroom and says that she needs to speak with Osana...",
+		"During class, the guidance counselor enters the classroom and says that she needs to speak with Osana..."
 	};
 
 	public readonly string[] RivalText = new string[]
@@ -430,6 +430,7 @@ public class CounselorScript : MonoBehaviour
 						this.MyAudio.Play();
 						this.ShowWindow = false;
 						this.Angry = true;
+						this.CutsceneManager.Scheme = this.Selected;
 						this.LectureID = this.Selected;
 						this.PromptBar.ClearButtons();
 						this.PromptBar.Show = false;
@@ -576,20 +577,6 @@ public class CounselorScript : MonoBehaviour
 						this.ExpelTimer = 0f;
 						this.LectureID = 6;
 					}
-					else if (this.LectureID < 6)
-					{
-						Debug.Log("We are leaving the lecture and heading to the end-of-day scene.");
-						float num = this.EndOfDayDarkness.color.a;
-						num = Mathf.MoveTowards(num, 1f, Time.deltaTime);
-						this.EndOfDayDarkness.color = new Color(0f, 0f, 0f, num);
-						if (num == 1f)
-						{
-							this.EndOfDay.enabled = true;
-							this.EndOfDay.Phase++;
-							this.EndOfDay.UpdateScene();
-							base.enabled = false;
-						}
-					}
 					else
 					{
 						Debug.Log("We are leaving the lecture and returning to gameplay.");
@@ -601,7 +588,9 @@ public class CounselorScript : MonoBehaviour
 						this.Yandere.MainCamera.gameObject.SetActive(true);
 						this.Yandere.gameObject.SetActive(true);
 						this.StudentManager.ComeBack();
-						if (this.StudentManager.Students[10] != null)
+						this.StudentManager.Students[this.StudentManager.RivalID].IdleAnim = this.StudentManager.Students[this.StudentManager.RivalID].BulliedIdleAnim;
+						this.StudentManager.Students[this.StudentManager.RivalID].WalkAnim = this.StudentManager.Students[this.StudentManager.RivalID].BulliedWalkAnim;
+						if (this.LectureID == 6 && this.StudentManager.Students[10] != null)
 						{
 							StudentScript studentScript = this.StudentManager.Students[10];
 							Debug.Log("Osana is gone, so Raibaru's routine has to change.");
@@ -674,7 +663,7 @@ public class CounselorScript : MonoBehaviour
 		}
 		if (this.StudentManager.Students[11] != null)
 		{
-			if (SchemeGlobals.GetSchemeStage(1) == 7)
+			if (SchemeGlobals.GetSchemeStage(1) == 8)
 			{
 				UILabel uilabel2 = this.Labels[1];
 				uilabel2.color = new Color(uilabel2.color.r, uilabel2.color.g, uilabel2.color.b, 1f);

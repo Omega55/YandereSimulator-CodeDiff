@@ -122,6 +122,8 @@ public class GiggleScript : MonoBehaviour
 							this.Student.Bento.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
 							this.Student.Bento.transform.parent = null;
 						}
+						this.Student.Yandere.NotificationManager.CustomText = this.Student.Name + " heard that giggle.";
+						this.Student.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
 					}
 					this.Distracted = true;
 				}

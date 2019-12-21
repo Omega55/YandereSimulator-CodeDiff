@@ -23,6 +23,7 @@ public class RivalDeskScript : MonoBehaviour
 	{
 		if (!this.Prompt.Yandere.Inventory.AnswerSheet && this.Prompt.Yandere.Inventory.DuplicateSheet)
 		{
+			this.Prompt.enabled = true;
 			if (this.Clock.HourTime > 13f)
 			{
 				this.Prompt.HideButton[0] = false;
@@ -41,6 +42,7 @@ public class RivalDeskScript : MonoBehaviour
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
 				this.Cheating = true;
+				base.enabled = false;
 			}
 		}
 	}
