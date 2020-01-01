@@ -206,6 +206,12 @@ public class AlarmDiscScript : MonoBehaviour
 					this.Student.RadioTimer = 0f;
 					this.Student.ReadPhase = 0;
 					this.SourceRadio.Victim = this.Student;
+					if (this.Student.ID == 97 && SchemeGlobals.GetSchemeStage(5) == 3)
+					{
+						SchemeGlobals.SetSchemeStage(5, 4);
+						this.Student.Yandere.PauseScreen.Schemes.UpdateInstructions();
+						base.enabled = false;
+					}
 				}
 			}
 		}

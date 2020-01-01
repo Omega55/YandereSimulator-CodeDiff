@@ -41,7 +41,7 @@ public class EventManagerScript : MonoBehaviour
 
 	public bool Osana;
 
-	public int EventPhase;
+	public float StartTimer;
 
 	public float Timer;
 
@@ -54,6 +54,8 @@ public class EventManagerScript : MonoBehaviour
 	public int EventStudent1;
 
 	public int EventStudent2;
+
+	public int EventPhase;
 
 	public int OsanaID = 1;
 
@@ -94,29 +96,33 @@ public class EventManagerScript : MonoBehaviour
 				this.EventCheck = false;
 				base.enabled = false;
 			}
-			if (this.EventStudent[1] != null && this.EventStudent[2] != null && !this.EventStudent[1].Slave && !this.EventStudent[2].Slave && this.EventStudent[1].Indoors && !this.EventStudent[1].Wet && (this.OsanaID < 2 || (this.OsanaID == 2 && this.EventStudent[1].DistanceToDestination < 0.5f)) && this.EventStudent[1].Routine && this.EventStudent[2].Routine && !this.EventStudent[1].InEvent && !this.EventStudent[2].InEvent)
+			if (this.EventStudent[1] != null && this.EventStudent[2] != null && !this.EventStudent[1].Slave && !this.EventStudent[2].Slave && this.EventStudent[1].Indoors && !this.EventStudent[1].Wet && (this.OsanaID < 2 || (this.OsanaID == 2 && Vector3.Distance(this.EventStudent[1].transform.position, this.EventLocation[1].position) < 1f)))
 			{
-				this.EventStudent[1].CurrentDestination = this.EventLocation[1];
-				this.EventStudent[1].Pathfinding.target = this.EventLocation[1];
-				this.EventStudent[1].EventManager = this;
-				this.EventStudent[1].InEvent = true;
-				this.EventStudent[1].EmptyHands();
-				if (!this.Osana)
+				this.StartTimer += Time.deltaTime;
+				if (this.StartTimer > 1f && this.EventStudent[1].Routine && this.EventStudent[2].Routine && !this.EventStudent[1].InEvent && !this.EventStudent[2].InEvent)
 				{
-					this.EventStudent[2].CurrentDestination = this.EventLocation[2];
-					this.EventStudent[2].Pathfinding.target = this.EventLocation[2];
-					this.EventStudent[2].EventManager = this;
-					this.EventStudent[2].InEvent = true;
+					this.EventStudent[1].CurrentDestination = this.EventLocation[1];
+					this.EventStudent[1].Pathfinding.target = this.EventLocation[1];
+					this.EventStudent[1].EventManager = this;
+					this.EventStudent[1].InEvent = true;
+					this.EventStudent[1].EmptyHands();
+					if (!this.Osana)
+					{
+						this.EventStudent[2].CurrentDestination = this.EventLocation[2];
+						this.EventStudent[2].Pathfinding.target = this.EventLocation[2];
+						this.EventStudent[2].EventManager = this;
+						this.EventStudent[2].InEvent = true;
+					}
+					else
+					{
+						Debug.Log("One of Osana's ''talk privately with Raibaru'' events is beginning.");
+					}
+					this.EventStudent[2].EmptyHands();
+					this.EventStudent[1].SpeechLines.Stop();
+					this.EventStudent[2].SpeechLines.Stop();
+					this.EventCheck = false;
+					this.EventOn = true;
 				}
-				else
-				{
-					Debug.Log("One of Osana's ''talk privately with Raibaru'' events is beginning.");
-				}
-				this.EventStudent[2].EmptyHands();
-				this.EventStudent[1].SpeechLines.Stop();
-				this.EventStudent[2].SpeechLines.Stop();
-				this.EventCheck = false;
-				this.EventOn = true;
 			}
 		}
 		if (this.EventOn)

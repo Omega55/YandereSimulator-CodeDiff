@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class SchemesScript : MonoBehaviour
 {
+	public SchemeManagerScript SchemeManager;
+
 	public InputManagerScript InputManager;
 
 	public PromptBarScript PromptBar;
@@ -124,6 +126,10 @@ public class SchemesScript : MonoBehaviour
 					}
 					this.UpdateSchemeInfo();
 					this.UpdateInstructions();
+					if (this.ID == 5)
+					{
+						this.SchemeManager.enabled = true;
+					}
 				}
 			}
 			else if (SchemeGlobals.GetSchemeStage(this.ID) != 100 && PlayerGlobals.PantyShots < this.SchemeCosts[this.ID])
@@ -184,7 +190,7 @@ public class SchemesScript : MonoBehaviour
 			else if (SchemeGlobals.CurrentScheme == this.ID)
 			{
 				this.Arrow.gameObject.SetActive(true);
-				this.Arrow.localPosition = new Vector3(this.Arrow.localPosition.x, -17f - 28f * (float)SchemeGlobals.GetSchemeStage(this.ID), this.Arrow.localPosition.z);
+				this.Arrow.localPosition = new Vector3(this.Arrow.localPosition.x, -10f - 20f * (float)SchemeGlobals.GetSchemeStage(this.ID), this.Arrow.localPosition.z);
 				this.PromptBar.Label[0].text = "Stop Tracking";
 				this.PromptBar.UpdateButtons();
 			}

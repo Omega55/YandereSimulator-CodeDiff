@@ -402,27 +402,27 @@ public class CounselorScript : MonoBehaviour
 					{
 						if (this.Selected == 1)
 						{
-							SchemeGlobals.SetSchemeStage(1, 100);
+							SchemeGlobals.SetSchemeStage(1, 9);
 							this.Schemes.UpdateInstructions();
 						}
 						else if (this.Selected == 2)
 						{
-							SchemeGlobals.SetSchemeStage(2, 100);
+							SchemeGlobals.SetSchemeStage(2, 4);
 							this.Schemes.UpdateInstructions();
 						}
 						else if (this.Selected == 3)
 						{
-							SchemeGlobals.SetSchemeStage(3, 100);
+							SchemeGlobals.SetSchemeStage(3, 5);
 							this.Schemes.UpdateInstructions();
 						}
 						else if (this.Selected == 4)
 						{
-							SchemeGlobals.SetSchemeStage(4, 100);
+							SchemeGlobals.SetSchemeStage(4, 8);
 							this.Schemes.UpdateInstructions();
 						}
 						else if (this.Selected == 5)
 						{
-							SchemeGlobals.SetSchemeStage(5, 7);
+							SchemeGlobals.SetSchemeStage(5, 10);
 							this.Schemes.UpdateInstructions();
 						}
 						this.CounselorSubtitle.text = this.CounselorReportText[this.Selected];

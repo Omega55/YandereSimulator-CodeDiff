@@ -60,6 +60,8 @@ public class DebugMenuScript : MonoBehaviour
 
 	public GameObject Window;
 
+	public GameObject[] ElectrocutionKit;
+
 	public bool WaitingForNumber;
 
 	public bool TryNextFrame;
@@ -657,6 +659,14 @@ public class DebugMenuScript : MonoBehaviour
 							this.StudentManager.DatingMinigame.Affection = 100f;
 							DateGlobals.Weekday = DayOfWeek.Friday;
 						}
+						else if (Input.GetKeyDown(KeyCode.N))
+						{
+							this.ElectrocutionKit[0].transform.position = this.Yandere.transform.position;
+							this.ElectrocutionKit[1].transform.position = this.Yandere.transform.position;
+							this.ElectrocutionKit[2].transform.position = this.Yandere.transform.position;
+							this.ElectrocutionKit[3].transform.position = this.Yandere.transform.position;
+							this.ElectrocutionKit[3].SetActive(true);
+						}
 					}
 				}
 			}
@@ -719,7 +729,7 @@ public class DebugMenuScript : MonoBehaviour
 			if (Input.GetKey("1"))
 			{
 				Debug.Log("Going to class should trigger panty shot lecture.");
-				SchemeGlobals.SetSchemeStage(1, 100);
+				SchemeGlobals.SetSchemeStage(1, 8);
 				StudentGlobals.ExpelProgress = 0;
 				this.Counselor.CutsceneManager.Scheme = 1;
 				this.Counselor.LectureID = 1;
@@ -737,7 +747,7 @@ public class DebugMenuScript : MonoBehaviour
 			else if (Input.GetKey("3"))
 			{
 				Debug.Log("Going to class should trigger contraband lecture.");
-				SchemeGlobals.SetSchemeStage(3, 0);
+				SchemeGlobals.SetSchemeStage(3, 100);
 				StudentGlobals.ExpelProgress = 2;
 				this.Counselor.CutsceneManager.Scheme = 3;
 				this.Counselor.LectureID = 3;
@@ -746,7 +756,7 @@ public class DebugMenuScript : MonoBehaviour
 			else if (Input.GetKey("4"))
 			{
 				Debug.Log("Going to class should trigger Vandalism lecture.");
-				SchemeGlobals.SetSchemeStage(4, 0);
+				SchemeGlobals.SetSchemeStage(4, 100);
 				StudentGlobals.ExpelProgress = 4;
 				this.Counselor.CutsceneManager.Scheme = 4;
 				this.Counselor.LectureID = 4;
@@ -755,7 +765,7 @@ public class DebugMenuScript : MonoBehaviour
 			else if (Input.GetKey("5"))
 			{
 				Debug.Log("Going to class at lunchtime should get Osana expelled!");
-				SchemeGlobals.SetSchemeStage(5, 7);
+				SchemeGlobals.SetSchemeStage(5, 10);
 				StudentGlobals.ExpelProgress = 4;
 				this.Counselor.CutsceneManager.Scheme = 5;
 				this.Counselor.LectureID = 5;

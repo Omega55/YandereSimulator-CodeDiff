@@ -9,6 +9,8 @@ public class PowerSwitchScript : MonoBehaviour
 
 	public GameObject Electricity;
 
+	public Light BathroomLight;
+
 	public PromptScript Prompt;
 
 	public AudioSource MyAudio;
@@ -32,6 +34,10 @@ public class PowerSwitchScript : MonoBehaviour
 			{
 				this.Prompt.Label[0].text = "     Turn On";
 				this.MyAudio.clip = this.Flick[0];
+			}
+			if (this.BathroomLight != null)
+			{
+				this.BathroomLight.enabled = !this.BathroomLight.enabled;
 			}
 			this.CheckPuddle();
 			this.MyAudio.Play();

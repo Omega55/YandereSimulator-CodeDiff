@@ -30,7 +30,7 @@ public class DoorGapScript : MonoBehaviour
 				this.Prompt.enabled = false;
 				this.Prompt.Yandere.Inventory.AnswerSheet = false;
 				this.Papers[1].gameObject.SetActive(true);
-				SchemeGlobals.SetSchemeStage(5, 3);
+				SchemeGlobals.SetSchemeStage(5, 6);
 				this.Schemes.UpdateInstructions();
 				base.GetComponent<AudioSource>().Play();
 			}
@@ -43,7 +43,7 @@ public class DoorGapScript : MonoBehaviour
 				this.Papers[2].gameObject.SetActive(false);
 				this.RummageSpot.Prompt.Label[0].text = "     Return Answer Sheet";
 				this.RummageSpot.Prompt.enabled = true;
-				SchemeGlobals.SetSchemeStage(5, 4);
+				SchemeGlobals.SetSchemeStage(5, 7);
 				this.Schemes.UpdateInstructions();
 			}
 			this.Phase++;

@@ -83,7 +83,7 @@ public class RummageSpotScript : MonoBehaviour
 		{
 			if (this.Phase == 1)
 			{
-				SchemeGlobals.SetSchemeStage(5, 2);
+				SchemeGlobals.SetSchemeStage(5, 5);
 				this.Schemes.UpdateInstructions();
 				this.Yandere.Inventory.AnswerSheet = true;
 				this.Prompt.Hide();
@@ -93,7 +93,7 @@ public class RummageSpotScript : MonoBehaviour
 			}
 			else
 			{
-				SchemeGlobals.SetSchemeStage(5, 5);
+				SchemeGlobals.SetSchemeStage(5, 8);
 				this.Schemes.UpdateInstructions();
 				this.Prompt.Yandere.Inventory.AnswerSheet = false;
 				this.Prompt.Hide();

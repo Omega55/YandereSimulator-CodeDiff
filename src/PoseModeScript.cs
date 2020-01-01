@@ -169,6 +169,21 @@ public class PoseModeScript : MonoBehaviour
 						this.Student.Stop = false;
 						this.Exit();
 					}
+					else if (this.Selected == 9)
+					{
+						this.ChoosingAction = true;
+						for (int i = 1; i < 100; i++)
+						{
+							if (this.Student.StudentManager.Students[i] != null)
+							{
+								this.Student.StudentManager.Students[i].Pathfinding.canSearch = false;
+								this.Student.StudentManager.Students[i].Pathfinding.canMove = false;
+								this.Student.StudentManager.Students[i].MyController.enabled = false;
+								this.Student.StudentManager.Students[i].Posing = true;
+								this.Student.StudentManager.Students[i].Stop = true;
+							}
+						}
+					}
 				}
 				if (Input.GetButtonDown("B"))
 				{
@@ -778,7 +793,8 @@ public class PoseModeScript : MonoBehaviour
 			this.OptionLabels[6].text = "Edit Face";
 			this.OptionLabels[7].text = "Save/Load Pose";
 			this.OptionLabels[8].text = "Release Student";
-			this.Limit = 8;
+			this.OptionLabels[9].text = "Freeze All Students";
+			this.Limit = 9;
 			if (this.Student.Male)
 			{
 				this.OptionLabels[6].color = new Color(1f, 1f, 1f, 0.5f);

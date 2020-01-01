@@ -2746,72 +2746,64 @@ public class StudentManagerScript : MonoBehaviour
 
 	public void GetMaleVomitSpot(StudentScript VomitStudent)
 	{
-		if (VomitStudent.transform.position.y < 1f)
+		this.MaleVomitSpot = this.MaleVomitSpots[1];
+		VomitStudent.VomitDoor = this.MaleToiletDoors[1];
+		this.ID = 2;
+		while (this.ID < 7)
 		{
-			this.MaleVomitSpot = this.MaleVomitSpots[1];
-			VomitStudent.VomitDoor = this.MaleToiletDoors[1];
-		}
-		else if (VomitStudent.transform.position.y < 5f)
-		{
-			this.MaleVomitSpot = this.MaleVomitSpots[2];
-			VomitStudent.VomitDoor = this.MaleToiletDoors[2];
-		}
-		else
-		{
-			this.MaleVomitSpot = this.MaleVomitSpots[3];
-			VomitStudent.VomitDoor = this.MaleToiletDoors[3];
+			if (Vector3.Distance(VomitStudent.transform.position, this.MaleVomitSpots[this.ID].position) < Vector3.Distance(VomitStudent.transform.position, this.MaleVomitSpot.position))
+			{
+				this.MaleVomitSpot = this.MaleVomitSpots[this.ID];
+				VomitStudent.VomitDoor = this.MaleToiletDoors[this.ID];
+			}
+			this.ID++;
 		}
 	}
 
 	public void GetFemaleVomitSpot(StudentScript VomitStudent)
 	{
-		if (VomitStudent.transform.position.y < 1f)
+		this.FemaleVomitSpot = this.FemaleVomitSpots[1];
+		VomitStudent.VomitDoor = this.FemaleToiletDoors[1];
+		this.ID = 2;
+		while (this.ID < 7)
 		{
-			this.FemaleVomitSpot = this.FemaleVomitSpots[1];
-			VomitStudent.VomitDoor = this.FemaleToiletDoors[1];
-		}
-		else if (VomitStudent.transform.position.y < 5f)
-		{
-			this.FemaleVomitSpot = this.FemaleVomitSpots[2];
-			VomitStudent.VomitDoor = this.FemaleToiletDoors[2];
-		}
-		else
-		{
-			this.FemaleVomitSpot = this.FemaleVomitSpots[3];
-			VomitStudent.VomitDoor = this.FemaleToiletDoors[3];
+			if (Vector3.Distance(VomitStudent.transform.position, this.FemaleVomitSpots[this.ID].position) < Vector3.Distance(VomitStudent.transform.position, this.FemaleVomitSpot.position))
+			{
+				this.FemaleVomitSpot = this.FemaleVomitSpots[this.ID];
+				VomitStudent.VomitDoor = this.FemaleToiletDoors[this.ID];
+			}
+			this.ID++;
 		}
 	}
 
 	public void GetMaleWashSpot(StudentScript VomitStudent)
 	{
-		if (VomitStudent.transform.position.y < 1f)
+		Transform transform = this.MaleWashSpots[1];
+		this.ID = 2;
+		while (this.ID < 7)
 		{
-			this.MaleWashSpot = this.MaleWashSpots[1];
+			if (Vector3.Distance(VomitStudent.transform.position, this.MaleWashSpots[this.ID].position) < Vector3.Distance(VomitStudent.transform.position, transform.position))
+			{
+				transform = this.MaleWashSpots[this.ID];
+			}
+			this.ID++;
 		}
-		else if (VomitStudent.transform.position.y < 5f)
-		{
-			this.MaleWashSpot = this.MaleWashSpots[2];
-		}
-		else
-		{
-			this.MaleWashSpot = this.MaleWashSpots[3];
-		}
+		this.MaleWashSpot = transform;
 	}
 
 	public void GetFemaleWashSpot(StudentScript VomitStudent)
 	{
-		if (VomitStudent.transform.position.y < 1f)
+		Transform transform = this.FemaleWashSpots[1];
+		this.ID = 2;
+		while (this.ID < 7)
 		{
-			this.FemaleWashSpot = this.FemaleWashSpots[1];
+			if (Vector3.Distance(VomitStudent.transform.position, this.FemaleWashSpots[this.ID].position) < Vector3.Distance(VomitStudent.transform.position, transform.position))
+			{
+				transform = this.FemaleWashSpots[this.ID];
+			}
+			this.ID++;
 		}
-		else if (VomitStudent.transform.position.y < 5f)
-		{
-			this.FemaleWashSpot = this.FemaleWashSpots[2];
-		}
-		else
-		{
-			this.FemaleWashSpot = this.FemaleWashSpots[3];
-		}
+		this.FemaleWashSpot = transform;
 	}
 
 	public void GetNearestFountain(StudentScript Student)

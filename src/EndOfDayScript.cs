@@ -1013,13 +1013,13 @@ public class EndOfDayScript : MonoBehaviour
 					if (!StudentGlobals.GetStudentDying(11) && !StudentGlobals.GetStudentDead(11) && !StudentGlobals.GetStudentArrested(11))
 					{
 						this.GaudyRing.SetActive(true);
-						this.Label.text = "Kokona discovers Sakyu's ring inside of her book bag. She returns the ring to Sakyu, who decides to stop bringing it to school.";
+						this.Label.text = "Osana discovers Sakyu's ring inside of her book bag. She returns the ring to Sakyu, who decides to stop bringing it to school.";
 						SchemeGlobals.SetSchemeStage(2, 100);
 					}
 					else
 					{
 						this.GaudyRing.SetActive(true);
-						this.Label.text = "Sakyu Basu's ring is permanently lost.";
+						this.Label.text = "Yandere-chan decides to keep Sakyu Basu's ring.";
 						SchemeGlobals.SetSchemeStage(2, 100);
 					}
 				}

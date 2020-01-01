@@ -13,15 +13,17 @@ public class VendingMachineScript : MonoBehaviour
 
 	public bool Sabotaged;
 
+	public int Price;
+
 	private void Start()
 	{
 		if (this.SnackMachine)
 		{
-			this.Prompt.Text[0] = "Buy Snack for $1.00";
+			this.Prompt.Text[0] = "Buy Snack for $" + this.Price + ".00";
 		}
 		else
 		{
-			this.Prompt.Text[0] = "Buy Drink for $1.00";
+			this.Prompt.Text[0] = "Buy Drink for $" + this.Price + ".00";
 		}
 		this.Prompt.Label[0].text = "     " + this.Prompt.Text[0];
 	}
@@ -31,7 +33,7 @@ public class VendingMachineScript : MonoBehaviour
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Circle[0].fillAmount = 1f;
-			if (PlayerGlobals.Money >= 1f)
+			if (PlayerGlobals.Money >= (float)this.Price)
 			{
 				if (!this.Sabotaged)
 				{
@@ -43,8 +45,13 @@ public class VendingMachineScript : MonoBehaviour
 					SchemeGlobals.SetSchemeStage(4, 4);
 					this.Prompt.Yandere.PauseScreen.Schemes.UpdateInstructions();
 				}
-				PlayerGlobals.Money -= 1f;
+				PlayerGlobals.Money -= (float)this.Price;
 				this.Prompt.Yandere.Inventory.UpdateMoney();
+			}
+			else
+			{
+				this.Prompt.Yandere.NotificationManager.CustomText = "Not enough money!";
+				this.Prompt.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
 			}
 		}
 	}

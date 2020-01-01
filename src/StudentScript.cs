@@ -2885,6 +2885,7 @@ public class StudentScript : MonoBehaviour
 		{
 			if (this.StudentManager.Pose)
 			{
+				this.DistanceToPlayer = Vector3.Distance(base.transform.position, this.Yandere.transform.position);
 				if (this.Prompt.Circle[0].fillAmount == 0f)
 				{
 					this.Pose();
@@ -3382,9 +3383,11 @@ public class StudentScript : MonoBehaviour
 				}
 				if (this.Actions[this.Phase] == StudentActionType.Follow)
 				{
+					this.Obstacle.enabled = false;
+					this.MyController.radius = 0f;
 					if (this.FollowTarget.Wet && this.FollowTarget.DistanceToDestination < 5f)
 					{
-						this.TargetDistance = 5f;
+						this.TargetDistance = 4f;
 					}
 					else
 					{
@@ -3873,7 +3876,7 @@ public class StudentScript : MonoBehaviour
 										this.CuriosityTimer += Time.deltaTime;
 										if (this.CuriosityTimer > 30f)
 										{
-											if (!this.StudentManager.Students[this.Crush].Private)
+											if (!this.StudentManager.Students[this.Crush].Private && !this.StudentManager.Students[this.Crush].Wet)
 											{
 												this.Pathfinding.target = this.StudentManager.Students[this.Crush].transform;
 												this.CurrentDestination = this.StudentManager.Students[this.Crush].transform;
@@ -3892,7 +3895,7 @@ public class StudentScript : MonoBehaviour
 								{
 									this.CharacterAnimation.CrossFade(this.LeanAnim);
 									this.CuriosityTimer += Time.deltaTime;
-									if (this.CuriosityTimer > 10f)
+									if (this.CuriosityTimer > 10f || !this.StudentManager.Students[this.Crush].Private || !this.StudentManager.Students[this.Crush].Wet)
 									{
 										this.Pathfinding.target = this.Destinations[this.Phase];
 										this.CurrentDestination = this.Destinations[this.Phase];
@@ -7103,7 +7106,7 @@ public class StudentScript : MonoBehaviour
 								{
 									this.Phase++;
 								}
-								Debug.Log("Finished bathing. Returning to normal routine.");
+								Debug.Log(this.Name + " has finished bathing. Returning to normal routine.");
 								this.CurrentDestination = this.Destinations[this.Phase];
 								this.Pathfinding.target = this.Destinations[this.Phase];
 								this.Pathfinding.canSearch = true;
@@ -7272,7 +7275,7 @@ public class StudentScript : MonoBehaviour
 				}
 				else
 				{
-					if (this.Actions[this.Phase] == StudentActionType.ClubAction && this.Club == ClubType.Cooking && this.DistractionTarget.InEvent)
+					if (this.Actions[this.Phase] == StudentActionType.ClubAction && this.Club == ClubType.Cooking && this.ClubActivityPhase > 0 && this.DistractionTarget.InEvent)
 					{
 						this.GetFoodTarget();
 					}
@@ -7289,7 +7292,7 @@ public class StudentScript : MonoBehaviour
 							this.SpeechLines.Stop();
 							this.CanTalk = true;
 							this.Routine = true;
-							if (this.Actions[this.Phase] == StudentActionType.ClubAction && this.Club == ClubType.Cooking)
+							if (this.Actions[this.Phase] == StudentActionType.ClubAction && this.Club == ClubType.Cooking && this.ClubActivityPhase > 0)
 							{
 								this.GetFoodTarget();
 							}
@@ -7331,7 +7334,7 @@ public class StudentScript : MonoBehaviour
 							}
 							this.targetRotation = Quaternion.LookRotation(new Vector3(this.DistractionTarget.transform.position.x, base.transform.position.y, this.DistractionTarget.transform.position.z) - base.transform.position);
 							base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
-							if (this.Actions[this.Phase] == StudentActionType.ClubAction && this.Club == ClubType.Cooking)
+							if (this.Actions[this.Phase] == StudentActionType.ClubAction && this.Club == ClubType.Cooking && this.ClubActivityPhase > 0)
 							{
 								this.CharacterAnimation.CrossFade(this.IdleAnim);
 							}
@@ -7377,13 +7380,13 @@ public class StudentScript : MonoBehaviour
 								this.Distracted = false;
 								this.CanTalk = true;
 								this.Routine = true;
-								if (this.Actions[this.Phase] == StudentActionType.ClubAction && this.Club == ClubType.Cooking)
+								if (this.Actions[this.Phase] == StudentActionType.ClubAction && this.Club == ClubType.Cooking && this.ClubActivityPhase > 0)
 								{
 									this.GetFoodTarget();
 								}
 							}
 						}
-						else if (this.Actions[this.Phase] == StudentActionType.ClubAction && this.Club == ClubType.Cooking)
+						else if (this.Actions[this.Phase] == StudentActionType.ClubAction && this.Club == ClubType.Cooking && this.ClubActivityPhase > 0)
 						{
 							this.CharacterAnimation.CrossFade(this.WalkAnim);
 							this.Pathfinding.canSearch = true;
@@ -7398,7 +7401,7 @@ public class StudentScript : MonoBehaviour
 							this.CharacterAnimation.CrossFade(this.SprintAnim);
 						}
 					}
-					else if (this.Actions[this.Phase] == StudentActionType.ClubAction && this.Club == ClubType.Cooking)
+					else if (this.Actions[this.Phase] == StudentActionType.ClubAction && this.Club == ClubType.Cooking && this.ClubActivityPhase > 0)
 					{
 						this.CharacterAnimation.CrossFade(this.WalkAnim);
 						this.Pathfinding.canSearch = true;
@@ -9234,7 +9237,7 @@ public class StudentScript : MonoBehaviour
 			base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
 			if (this.Distractor != null)
 			{
-				if (this.Distractor.Club == ClubType.Cooking && this.Distractor.Actions[this.Distractor.Phase] == StudentActionType.ClubAction)
+				if (this.Distractor.Club == ClubType.Cooking && this.Distractor.ClubActivityPhase > 0 && this.Distractor.Actions[this.Distractor.Phase] == StudentActionType.ClubAction)
 				{
 					this.CharacterAnimation.CrossFade(this.PlateEatAnim);
 					if ((double)this.CharacterAnimation[this.PlateEatAnim].time > 6.83333)
@@ -15314,7 +15317,7 @@ public class StudentScript : MonoBehaviour
 		{
 			flag = true;
 		}
-		if (this.MyPlate != null)
+		if (this.MyPlate != null && this.MyPlate.parent != null)
 		{
 			if (this.WitnessedMurder || this.WitnessedCorpse)
 			{

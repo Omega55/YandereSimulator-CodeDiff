@@ -89,6 +89,8 @@ public class PickUpScript : MonoBehaviour
 
 	public bool Weight;
 
+	public bool Radio;
+
 	public bool Salty;
 
 	public int CarryAnimID;
@@ -256,6 +258,11 @@ public class PickUpScript : MonoBehaviour
 
 	public void BePickedUp()
 	{
+		if (this.Radio && SchemeGlobals.GetSchemeStage(5) == 2)
+		{
+			SchemeGlobals.SetSchemeStage(5, 3);
+			this.Yandere.PauseScreen.Schemes.UpdateInstructions();
+		}
 		if (this.Salty && SchemeGlobals.GetSchemeStage(4) == 4)
 		{
 			SchemeGlobals.SetSchemeStage(4, 5);
