@@ -29,6 +29,8 @@ public static class GameGlobals
 
 	private const string Str_ReputationsInitialized = "ReputationsInitialized";
 
+	private const string Str_AnswerSheetUnavailable = "AnswerSheetUnavailable";
+
 	public static int Profile
 	{
 		get
@@ -185,6 +187,18 @@ public static class GameGlobals
 		}
 	}
 
+	public static bool AnswerSheetUnavailable
+	{
+		get
+		{
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_AnswerSheetUnavailable");
+		}
+		set
+		{
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_AnswerSheetUnavailable", value);
+		}
+	}
+
 	public static void DeleteAll()
 	{
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_LoveSick");
@@ -199,5 +213,6 @@ public static class GameGlobals
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_SenpaiMourning");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_RivalEliminationID");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_ReputationsInitialized");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_AnswerSheetUnavailable");
 	}
 }

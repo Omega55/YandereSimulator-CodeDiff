@@ -25,25 +25,18 @@ public class RummageSpotScript : MonoBehaviour
 	{
 		if (this.ID == 1)
 		{
-			if (SchemeGlobals.GetSchemeStage(5) == 100)
+			if (GameGlobals.AnswerSheetUnavailable)
 			{
+				Debug.Log("The answer sheet is no longer available, due to events on a previous day.");
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
 				base.gameObject.SetActive(false);
 			}
-			else
+			else if (DateGlobals.Weekday == DayOfWeek.Friday && this.Clock.HourTime > 13.5f)
 			{
-				if (SchemeGlobals.GetSchemeStage(5) > 4)
-				{
-					this.Prompt.Hide();
-					this.Prompt.enabled = false;
-				}
-				if (DateGlobals.Weekday == DayOfWeek.Friday && this.Clock.HourTime > 13.5f)
-				{
-					this.Prompt.Hide();
-					this.Prompt.enabled = false;
-					base.gameObject.SetActive(false);
-				}
+				this.Prompt.Hide();
+				this.Prompt.enabled = false;
+				base.gameObject.SetActive(false);
 			}
 		}
 	}
@@ -91,7 +84,7 @@ public class RummageSpotScript : MonoBehaviour
 				this.DoorGap.Prompt.enabled = true;
 				this.Phase++;
 			}
-			else
+			else if (this.Phase == 2)
 			{
 				SchemeGlobals.SetSchemeStage(5, 8);
 				this.Schemes.UpdateInstructions();

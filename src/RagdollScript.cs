@@ -778,6 +778,7 @@ public class RagdollScript : MonoBehaviour
 			{
 				this.BloodPoolSpawner.Start();
 			}
+			this.Police.PartsIcon.gameObject.SetActive(true);
 			this.BloodPoolSpawner.SpawnBigPool();
 			this.Police.BodyParts += 6;
 			this.Yandere.NearBodies--;

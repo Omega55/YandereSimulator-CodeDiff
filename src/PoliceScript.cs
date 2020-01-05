@@ -165,6 +165,7 @@ public class PoliceScript : MonoBehaviour
 
 	private void Start()
 	{
+		this.PartsIcon.gameObject.SetActive(false);
 		if (SchoolGlobals.SchoolAtmosphere > 0.5f)
 		{
 			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 0f);

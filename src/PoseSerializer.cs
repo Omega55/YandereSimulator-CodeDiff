@@ -9,8 +9,9 @@ public static class PoseSerializer
 
 	public static void SerializePose(CosmeticScript cosmeticScript, Transform root, string poseName)
 	{
+		StudentCosmeticSheet studentCosmeticSheet = cosmeticScript.CosmeticSheet();
 		SerializedPose serializedPose;
-		serializedPose.CosmeticData = JsonUtility.ToJson(cosmeticScript);
+		serializedPose.CosmeticData = JsonUtility.ToJson(studentCosmeticSheet);
 		serializedPose.BoneData = PoseSerializer.getBoneData(root);
 		string contents = JsonUtility.ToJson(serializedPose);
 		string text = string.Format("{0}/Poses/{1}", Application.streamingAssetsPath, poseName + ".txt");
@@ -27,7 +28,7 @@ public static class PoseSerializer
 		{
 			list.Add(new BoneData
 			{
-				BoneName = transform.name,
+				BoneName = ((!(transform == root)) ? transform.name : "StudentRoot"),
 				LocalPosition = transform.localPosition,
 				LocalRotation = transform.localRotation,
 				LocalScale = transform.localScale
@@ -43,17 +44,25 @@ public static class PoseSerializer
 		{
 			string json = File.ReadAllText(path);
 			SerializedPose serializedPose = JsonUtility.FromJson<SerializedPose>(json);
-			StudentScript student = cosmeticScript.Student;
-			JsonUtility.FromJsonOverwrite(serializedPose.CosmeticData, cosmeticScript);
-			cosmeticScript.Student.CharacterAnimation.Stop();
-			cosmeticScript.Student = student;
-			cosmeticScript.Start();
+			StudentCosmeticSheet mySheet = JsonUtility.FromJson<StudentCosmeticSheet>(serializedPose.CosmeticData);
+			cosmeticScript.LoadCosmeticSheet(mySheet);
+			cosmeticScript.CharacterAnimation.Stop();
+			bool flag = cosmeticScript.Male == mySheet.Male;
 			Transform[] componentsInChildren = root.GetComponentsInChildren<Transform>();
 			foreach (BoneData boneData2 in serializedPose.BoneData)
 			{
 				foreach (Transform transform in componentsInChildren)
 				{
 					if (transform.name == boneData2.BoneName)
+					{
+						transform.localRotation = boneData2.LocalRotation;
+						if (flag)
+						{
+							transform.localPosition = boneData2.LocalPosition;
+							transform.localScale = boneData2.LocalScale;
+						}
+					}
+					else if (boneData2.BoneName == "StudentRoot" && transform == root)
 					{
 						transform.localPosition = boneData2.LocalPosition;
 						transform.localRotation = boneData2.LocalRotation;

@@ -729,7 +729,7 @@ public class DebugMenuScript : MonoBehaviour
 			if (Input.GetKey("1"))
 			{
 				Debug.Log("Going to class should trigger panty shot lecture.");
-				SchemeGlobals.SetSchemeStage(1, 8);
+				SchemeGlobals.SetSchemeStage(1, 100);
 				StudentGlobals.ExpelProgress = 0;
 				this.Counselor.CutsceneManager.Scheme = 1;
 				this.Counselor.LectureID = 1;
@@ -757,7 +757,7 @@ public class DebugMenuScript : MonoBehaviour
 			{
 				Debug.Log("Going to class should trigger Vandalism lecture.");
 				SchemeGlobals.SetSchemeStage(4, 100);
-				StudentGlobals.ExpelProgress = 4;
+				StudentGlobals.ExpelProgress = 3;
 				this.Counselor.CutsceneManager.Scheme = 4;
 				this.Counselor.LectureID = 4;
 				this.WaitingForNumber = false;
@@ -765,7 +765,7 @@ public class DebugMenuScript : MonoBehaviour
 			else if (Input.GetKey("5"))
 			{
 				Debug.Log("Going to class at lunchtime should get Osana expelled!");
-				SchemeGlobals.SetSchemeStage(5, 10);
+				SchemeGlobals.SetSchemeStage(5, 100);
 				StudentGlobals.ExpelProgress = 4;
 				this.Counselor.CutsceneManager.Scheme = 5;
 				this.Counselor.LectureID = 5;

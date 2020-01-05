@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -2284,5 +2285,73 @@ public class CosmeticScript : MonoBehaviour
 		}
 		this.Bookbag.SetActive(true);
 		this.Hoodie.SetActive(true);
+	}
+
+	public void LoadCosmeticSheet(StudentCosmeticSheet mySheet)
+	{
+		if (this.Male != mySheet.Male)
+		{
+			return;
+		}
+		this.Accessory = mySheet.Accessory;
+		this.Hairstyle = mySheet.Hairstyle;
+		this.Stockings = mySheet.Stockings;
+		this.BreastSize = mySheet.BreastSize;
+		this.Start();
+		this.ColorValue = mySheet.HairColor;
+		this.HairRenderer.material.color = this.ColorValue;
+		if (mySheet.CustomHair)
+		{
+			this.RightEyeRenderer.material.mainTexture = this.HairRenderer.material.mainTexture;
+			this.LeftEyeRenderer.material.mainTexture = this.HairRenderer.material.mainTexture;
+			this.FaceTexture = this.HairRenderer.material.mainTexture;
+			this.LeftIrisLight.SetActive(false);
+			this.RightIrisLight.SetActive(false);
+			this.CustomHair = true;
+		}
+		this.CorrectColor = mySheet.EyeColor;
+		this.RightEyeRenderer.material.color = this.CorrectColor;
+		this.LeftEyeRenderer.material.color = this.CorrectColor;
+		this.Student.Schoolwear = mySheet.Schoolwear;
+		this.Student.ChangeSchoolwear();
+		if (mySheet.Bloody)
+		{
+			this.Student.LiquidProjector.material.mainTexture = this.Student.BloodTexture;
+			this.Student.LiquidProjector.enabled = true;
+		}
+		if (!this.Male)
+		{
+			this.Stockings = mySheet.Stockings;
+			base.StartCoroutine(this.Student.Cosmetic.PutOnStockings());
+			for (int i = 0; i < this.MyRenderer.sharedMesh.blendShapeCount; i++)
+			{
+				this.MyRenderer.SetBlendShapeWeight(i, mySheet.Blendshapes[i]);
+			}
+		}
+	}
+
+	public StudentCosmeticSheet CosmeticSheet()
+	{
+		StudentCosmeticSheet result = default(StudentCosmeticSheet);
+		result.Blendshapes = new List<float>();
+		result.Male = this.Male;
+		result.CustomHair = this.CustomHair;
+		result.Accessory = this.Accessory;
+		result.Hairstyle = this.Hairstyle;
+		result.Stockings = this.Stockings;
+		result.BreastSize = this.BreastSize;
+		result.CustomHair = this.CustomHair;
+		result.Schoolwear = this.Student.Schoolwear;
+		result.Bloody = (this.Student.LiquidProjector.enabled && this.Student.LiquidProjector.material.mainTexture == this.Student.BloodTexture);
+		result.HairColor = this.HairRenderer.material.color;
+		result.EyeColor = this.RightEyeRenderer.material.color;
+		if (!this.Male)
+		{
+			for (int i = 0; i < this.MyRenderer.sharedMesh.blendShapeCount; i++)
+			{
+				result.Blendshapes.Add(this.MyRenderer.GetBlendShapeWeight(i));
+			}
+		}
+		return result;
 	}
 }

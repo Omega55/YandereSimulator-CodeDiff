@@ -6701,6 +6701,7 @@ public class StudentScript : MonoBehaviour
 											this.WitnessedSomething = false;
 											this.WitnessedWeapon = false;
 											this.WitnessedLimb = false;
+											this.IgnoringPettyActions = true;
 											this.Police.Called = true;
 											this.Police.Show = true;
 											this.ReportTimer = 0f;
@@ -8578,6 +8579,7 @@ public class StudentScript : MonoBehaviour
 								}
 								this.WitnessedSomething = false;
 								this.WitnessedWeapon = false;
+								this.Distracted = false;
 								this.Routine = true;
 								this.BloodPool = null;
 								if (this.StudentManager.BloodReporter == this)
@@ -8613,6 +8615,7 @@ public class StudentScript : MonoBehaviour
 						this.WitnessedBloodPool = false;
 						this.WitnessedSomething = false;
 						this.WitnessedWeapon = false;
+						this.Distracted = false;
 						this.Routine = true;
 						this.BloodPool = null;
 						this.WitnessCooldownTimer = 5f;
@@ -8624,6 +8627,7 @@ public class StudentScript : MonoBehaviour
 						this.WitnessedBloodPool = false;
 						this.WitnessedSomething = false;
 						this.WitnessedWeapon = false;
+						this.Distracted = false;
 						this.Routine = true;
 						this.BloodPool = null;
 						this.WitnessCooldownTimer = 5f;
@@ -8648,6 +8652,7 @@ public class StudentScript : MonoBehaviour
 					this.WitnessedBloodPool = false;
 					this.WitnessedSomething = false;
 					this.WitnessedWeapon = false;
+					this.Distracted = false;
 					this.Routine = true;
 					this.BloodPool = null;
 					this.WitnessCooldownTimer = 5f;
@@ -9113,7 +9118,7 @@ public class StudentScript : MonoBehaviour
 							{
 								flag3 = true;
 							}
-							if ((this.Yandere.Armed && this.Yandere.EquippedWeapon.Suspicious) || (!this.Teacher && this.StudentID > 1 && !this.Teacher && this.Yandere.PickUp != null && this.Yandere.PickUp.Suspicious) || (this.Teacher && this.Yandere.PickUp != null && this.Yandere.PickUp.Suspicious && !this.Yandere.PickUp.CleaningProduct) || (this.Yandere.Bloodiness + (float)this.Yandere.GloveBlood > 0f && !this.Yandere.Paint) || (this.Yandere.Sanity < 33.333f || this.Yandere.Pickpocketing || this.Yandere.Attacking || this.Yandere.Struggling || this.Yandere.Dragging || (!this.IgnoringPettyActions && this.Yandere.Lewd)) || (this.Yandere.Carrying || this.Yandere.Medusa || this.Yandere.Poisoning || this.Yandere.Pickpocketing || this.Yandere.WeaponTimer > 0f || this.Yandere.MurderousActionTimer > 0f || (this.Yandere.PickUp != null && this.Yandere.PickUp.BodyPart != null)) || (this.Yandere.Laughing && this.Yandere.LaughIntensity > 15f) || (!this.IgnoringPettyActions && this.Yandere.Stance.Current == StanceType.Crouching) || (!this.IgnoringPettyActions && this.Yandere.Stance.Current == StanceType.Crawling) || (this.Private && this.Yandere.Trespassing) || (this.Private && this.Yandere.Eavesdropping) || (this.Teacher && !this.WitnessedCorpse && this.Yandere.Trespassing) || (this.Teacher && !this.IgnoringPettyActions && this.Yandere.Rummaging) || (!this.IgnoringPettyActions && this.Yandere.TheftTimer > 0f) || (this.StudentID == 1 && this.Yandere.NearSenpai && !this.Yandere.Talking) || (this.Yandere.Eavesdropping && this.Private) || (!this.StudentManager.CombatMinigame.Practice && this.Yandere.DelinquentFighting && this.StudentManager.CombatMinigame.Path < 4) || (flag3 && this.Yandere.PickUp != null && this.Yandere.PickUp.Mop != null && this.Yandere.PickUp.Mop.Bloodiness > 0f) || (flag3 && this.Yandere.PickUp != null && this.Yandere.PickUp.BodyPart != null) || (this.Yandere.PickUp != null && this.Yandere.PickUp.Clothing && this.Yandere.PickUp.Evidence))
+							if ((this.Yandere.Armed && this.Yandere.EquippedWeapon.Suspicious) || (!this.Teacher && this.StudentID > 1 && !this.Teacher && this.Yandere.PickUp != null && this.Yandere.PickUp.Suspicious) || (this.Teacher && this.Yandere.PickUp != null && this.Yandere.PickUp.Suspicious && !this.Yandere.PickUp.CleaningProduct) || (this.Yandere.Bloodiness + (float)this.Yandere.GloveBlood > 0f && !this.Yandere.Paint) || (this.Yandere.Sanity < 33.333f || this.Yandere.Pickpocketing || this.Yandere.Attacking || this.Yandere.Struggling || this.Yandere.Dragging || (!this.IgnoringPettyActions && this.Yandere.Lewd)) || (this.Yandere.Carrying || this.Yandere.Medusa || this.Yandere.Poisoning || this.Yandere.Pickpocketing || this.Yandere.WeaponTimer > 0f || this.Yandere.MurderousActionTimer > 0f || (this.Yandere.PickUp != null && this.Yandere.PickUp.BodyPart != null)) || (!this.IgnoringPettyActions && this.Yandere.Laughing && this.Yandere.LaughIntensity > 15f) || (!this.IgnoringPettyActions && this.Yandere.Stance.Current == StanceType.Crouching) || (!this.IgnoringPettyActions && this.Yandere.Stance.Current == StanceType.Crawling) || (this.Private && this.Yandere.Trespassing) || (this.Private && this.Yandere.Eavesdropping) || (this.Teacher && !this.WitnessedCorpse && this.Yandere.Trespassing) || (this.Teacher && !this.IgnoringPettyActions && this.Yandere.Rummaging) || (!this.IgnoringPettyActions && this.Yandere.TheftTimer > 0f) || (this.StudentID == 1 && this.Yandere.NearSenpai && !this.Yandere.Talking) || (this.Yandere.Eavesdropping && this.Private) || (!this.StudentManager.CombatMinigame.Practice && this.Yandere.DelinquentFighting && this.StudentManager.CombatMinigame.Path < 4) || (flag3 && this.Yandere.PickUp != null && this.Yandere.PickUp.Mop != null && this.Yandere.PickUp.Mop.Bloodiness > 0f) || (flag3 && this.Yandere.PickUp != null && this.Yandere.PickUp.BodyPart != null) || (this.Yandere.PickUp != null && this.Yandere.PickUp.Clothing && this.Yandere.PickUp.Evidence))
 							{
 								bool flag4 = false;
 								if (this.Yandere.transform.position.y < base.transform.position.y + 4f)
@@ -14430,6 +14435,7 @@ public class StudentScript : MonoBehaviour
 
 	public void StopInvestigating()
 	{
+		Debug.Log(this.Name + " was invesigating a giggle, but has stopped.");
 		this.Giggle = null;
 		if (!this.Sleuthing)
 		{

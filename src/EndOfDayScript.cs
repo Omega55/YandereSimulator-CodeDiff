@@ -21,6 +21,8 @@ public class EndOfDayScript : MonoBehaviour
 
 	public LoveManagerScript LoveManager;
 
+	public RummageSpotScript RummageSpot;
+
 	public VoidGoddessScript VoidGoddess;
 
 	public WoodChipperScript WoodChipper;
@@ -1023,11 +1025,12 @@ public class EndOfDayScript : MonoBehaviour
 						SchemeGlobals.SetSchemeStage(2, 100);
 					}
 				}
-				else if (SchemeGlobals.GetSchemeStage(5) > 1 && SchemeGlobals.GetSchemeStage(5) < 5)
+				else if (this.RummageSpot.Phase == 2)
 				{
 					this.AnswerSheet.SetActive(true);
 					this.Label.text = "A faculty member discovers that an answer sheet for an upcoming test is missing. She changes all of the questions for the test and keeps the new answer sheet with her at all times.";
-					SchemeGlobals.SetSchemeStage(5, 100);
+					GameGlobals.AnswerSheetUnavailable = true;
+					this.RummageSpot.Phase = 0;
 				}
 				else
 				{

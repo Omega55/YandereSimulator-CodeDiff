@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class SchemesScript : MonoBehaviour
 {
+	public StudentManagerScript StudentManager;
+
 	public SchemeManagerScript SchemeManager;
 
 	public InputManagerScript InputManager;
@@ -35,6 +37,8 @@ public class SchemesScript : MonoBehaviour
 
 	public int[] SchemeCosts;
 
+	public Transform[] SchemeDestinations;
+
 	public string[] SchemeDeadlines;
 
 	public string[] SchemeSkills;
@@ -55,6 +59,16 @@ public class SchemesScript : MonoBehaviour
 
 	public AudioClip InfoAfford;
 
+	public Transform[] Scheme1Destinations;
+
+	public Transform[] Scheme2Destinations;
+
+	public Transform[] Scheme3Destinations;
+
+	public Transform[] Scheme4Destinations;
+
+	public Transform[] Scheme5Destinations;
+
 	public GameObject HUDIcon;
 
 	public UILabel HUDInstructions;
@@ -68,6 +82,31 @@ public class SchemesScript : MonoBehaviour
 				this.SchemeDeadlineLabels[i].text = this.SchemeDeadlines[i];
 				this.SchemeNameLabels[i].text = this.SchemeNames[i];
 			}
+		}
+		this.SchemeNameLabels[1].color = new Color(0f, 0f, 0f, 0.5f);
+		this.SchemeNameLabels[2].color = new Color(0f, 0f, 0f, 0.5f);
+		this.SchemeNameLabels[3].color = new Color(0f, 0f, 0f, 0.5f);
+		this.SchemeNameLabels[4].color = new Color(0f, 0f, 0f, 0.5f);
+		this.SchemeNameLabels[5].color = new Color(0f, 0f, 0f, 0.5f);
+		if (DateGlobals.Weekday == DayOfWeek.Monday)
+		{
+			this.SchemeNameLabels[1].color = new Color(0f, 0f, 0f, 1f);
+		}
+		if (DateGlobals.Weekday == DayOfWeek.Tuesday)
+		{
+			this.SchemeNameLabels[2].color = new Color(0f, 0f, 0f, 1f);
+		}
+		if (DateGlobals.Weekday == DayOfWeek.Wednesday)
+		{
+			this.SchemeNameLabels[3].color = new Color(0f, 0f, 0f, 1f);
+		}
+		if (DateGlobals.Weekday == DayOfWeek.Thursday)
+		{
+			this.SchemeNameLabels[4].color = new Color(0f, 0f, 0f, 1f);
+		}
+		if (DateGlobals.Weekday == DayOfWeek.Friday)
+		{
+			this.SchemeNameLabels[5].color = new Color(0f, 0f, 0f, 1f);
 		}
 	}
 
@@ -96,39 +135,46 @@ public class SchemesScript : MonoBehaviour
 			AudioSource component = base.GetComponent<AudioSource>();
 			if (this.PromptBar.Label[0].text != string.Empty)
 			{
-				if (!SchemeGlobals.GetSchemeUnlocked(this.ID))
+				if (this.SchemeNameLabels[this.ID].color.a == 1f)
 				{
-					if (PlayerGlobals.PantyShots >= this.SchemeCosts[this.ID])
+					this.SchemeManager.enabled = true;
+					if (this.ID == 5)
 					{
-						PlayerGlobals.PantyShots -= this.SchemeCosts[this.ID];
-						SchemeGlobals.SetSchemeUnlocked(this.ID, true);
-						SchemeGlobals.CurrentScheme = this.ID;
-						if (SchemeGlobals.GetSchemeStage(this.ID) == 0)
-						{
-							SchemeGlobals.SetSchemeStage(this.ID, 1);
-						}
-						this.UpdateInstructions();
-						this.UpdateSchemeList();
-						this.UpdateSchemeInfo();
-						component.clip = this.InfoPurchase;
-						component.Play();
+						this.SchemeManager.ClockCheck = true;
 					}
-				}
-				else
-				{
-					if (SchemeGlobals.CurrentScheme == this.ID)
+					if (!SchemeGlobals.GetSchemeUnlocked(this.ID))
 					{
-						SchemeGlobals.CurrentScheme = 0;
+						if (PlayerGlobals.PantyShots >= this.SchemeCosts[this.ID])
+						{
+							PlayerGlobals.PantyShots -= this.SchemeCosts[this.ID];
+							SchemeGlobals.SetSchemeUnlocked(this.ID, true);
+							SchemeGlobals.CurrentScheme = this.ID;
+							if (SchemeGlobals.GetSchemeStage(this.ID) == 0)
+							{
+								SchemeGlobals.SetSchemeStage(this.ID, 1);
+							}
+							this.UpdateSchemeDestinations();
+							this.UpdateInstructions();
+							this.UpdateSchemeList();
+							this.UpdateSchemeInfo();
+							component.clip = this.InfoPurchase;
+							component.Play();
+						}
 					}
 					else
 					{
-						SchemeGlobals.CurrentScheme = this.ID;
-					}
-					this.UpdateSchemeInfo();
-					this.UpdateInstructions();
-					if (this.ID == 5)
-					{
-						this.SchemeManager.enabled = true;
+						if (SchemeGlobals.CurrentScheme == this.ID)
+						{
+							SchemeGlobals.CurrentScheme = 0;
+							this.SchemeManager.enabled = false;
+						}
+						else
+						{
+							SchemeGlobals.CurrentScheme = this.ID;
+						}
+						this.UpdateSchemeDestinations();
+						this.UpdateInstructions();
+						this.UpdateSchemeInfo();
 					}
 				}
 			}
@@ -250,6 +296,45 @@ public class SchemesScript : MonoBehaviour
 		{
 			this.HUDIcon.SetActive(false);
 			this.HUDInstructions.text = string.Empty;
+		}
+	}
+
+	public void UpdateSchemeDestinations()
+	{
+		if (this.StudentManager.Students[this.StudentManager.RivalID] != null)
+		{
+			this.Scheme1Destinations[3] = this.StudentManager.Students[this.StudentManager.RivalID].transform;
+			this.Scheme1Destinations[7] = this.StudentManager.Students[this.StudentManager.RivalID].transform;
+			this.Scheme4Destinations[5] = this.StudentManager.Students[this.StudentManager.RivalID].transform;
+			this.Scheme4Destinations[6] = this.StudentManager.Students[this.StudentManager.RivalID].transform;
+		}
+		if (this.StudentManager.Students[2] != null)
+		{
+			this.Scheme2Destinations[1] = this.StudentManager.Students[2].transform;
+		}
+		if (this.StudentManager.Students[97] != null)
+		{
+			this.Scheme5Destinations[3] = this.StudentManager.Students[97].transform;
+		}
+		if (SchemeGlobals.CurrentScheme == 1)
+		{
+			this.SchemeDestinations = this.Scheme1Destinations;
+		}
+		else if (SchemeGlobals.CurrentScheme == 2)
+		{
+			this.SchemeDestinations = this.Scheme2Destinations;
+		}
+		else if (SchemeGlobals.CurrentScheme == 3)
+		{
+			this.SchemeDestinations = this.Scheme3Destinations;
+		}
+		else if (SchemeGlobals.CurrentScheme == 4)
+		{
+			this.SchemeDestinations = this.Scheme4Destinations;
+		}
+		else if (SchemeGlobals.CurrentScheme == 5)
+		{
+			this.SchemeDestinations = this.Scheme5Destinations;
 		}
 	}
 }

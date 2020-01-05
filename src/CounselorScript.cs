@@ -131,6 +131,8 @@ public class CounselorScript : MonoBehaviour
 
 	public float ChinTimer;
 
+	public float TalkTimer = 1f;
+
 	public float Timer;
 
 	public Vector3 LookAtTarget;
@@ -349,6 +351,10 @@ public class CounselorScript : MonoBehaviour
 
 	public bool VibrationCheck;
 
+	public UILabel RIVAL;
+
+	public UILabel EXPELLED;
+
 	private void Start()
 	{
 		this.CounselorWindow.localScale = Vector3.zero;
@@ -364,6 +370,17 @@ public class CounselorScript : MonoBehaviour
 	{
 		if (this.LookAtPlayer)
 		{
+			if (this.TalkTimer < 1f)
+			{
+				this.TalkTimer = Mathf.MoveTowards(this.TalkTimer, 1f, Time.deltaTime);
+				if (this.TalkTimer == 1f)
+				{
+					int num = UnityEngine.Random.Range(1, 3);
+					this.CounselorSubtitle.text = this.CounselorGreetingText[num];
+					this.MyAudio.clip = this.CounselorGreetingClips[num];
+					this.MyAudio.Play();
+				}
+			}
 			if (this.InputManager.TappedUp)
 			{
 				this.Selected--;
@@ -534,7 +551,7 @@ public class CounselorScript : MonoBehaviour
 					else
 					{
 						this.LecturePhase = 7;
-						this.ExpelTimer = 11f;
+						this.ExpelTimer = 0f;
 					}
 				}
 			}
@@ -556,12 +573,36 @@ public class CounselorScript : MonoBehaviour
 				this.ExpelTimer += Time.deltaTime;
 				if (this.ExpelTimer > 4f)
 				{
-					this.LecturePhase++;
+					this.LecturePhase += 2;
 				}
 			}
 			else if (this.LecturePhase == 7)
 			{
 				Debug.Log("Lecture Phase 7.");
+				this.ExpelTimer += Time.deltaTime;
+				if (this.ExpelTimer > 1f)
+				{
+					this.RIVAL.gameObject.SetActive(true);
+				}
+				if (this.ExpelTimer > 3f)
+				{
+					this.EXPELLED.gameObject.SetActive(true);
+				}
+				if (this.ExpelTimer > 5f)
+				{
+					this.RIVAL.color = new Color(this.RIVAL.color.r, this.RIVAL.color.g, this.RIVAL.color.b, this.RIVAL.color.a - Time.deltaTime);
+					this.EXPELLED.color = new Color(this.EXPELLED.color.r, this.EXPELLED.color.g, this.EXPELLED.color.b, this.EXPELLED.color.a - Time.deltaTime);
+				}
+				if (this.ExpelTimer > 7f)
+				{
+					this.RIVAL.gameObject.SetActive(false);
+					this.EXPELLED.gameObject.SetActive(false);
+					this.LecturePhase++;
+				}
+			}
+			else if (this.LecturePhase == 8)
+			{
+				Debug.Log("Lecture Phase 8.");
 				this.ExpelProgress.color = new Color(this.ExpelProgress.color.r, this.ExpelProgress.color.g, this.ExpelProgress.color.b, Mathf.MoveTowards(this.ExpelProgress.color.a, 0f, Time.deltaTime));
 				this.ExpelTimer += Time.deltaTime;
 				if (this.ExpelTimer > 6f)
@@ -584,7 +625,7 @@ public class CounselorScript : MonoBehaviour
 						this.EndOfDay.Phase = 1;
 						this.CutsceneManager.Phase++;
 						this.Lecturing = false;
-						this.LectureID = 0;
+						this.Yandere.PauseScreen.Schemes.SchemeManager.enabled = false;
 						this.Yandere.MainCamera.gameObject.SetActive(true);
 						this.Yandere.gameObject.SetActive(true);
 						this.StudentManager.ComeBack();
@@ -594,24 +635,32 @@ public class CounselorScript : MonoBehaviour
 						{
 							StudentScript studentScript = this.StudentManager.Students[10];
 							Debug.Log("Osana is gone, so Raibaru's routine has to change.");
-							ScheduleBlock scheduleBlock = studentScript.ScheduleBlocks[6];
-							scheduleBlock.destination = "Locker";
-							scheduleBlock.action = "Shoes";
-							ScheduleBlock scheduleBlock2 = studentScript.ScheduleBlocks[7];
-							scheduleBlock2.destination = "Exit";
-							scheduleBlock2.action = "Exit";
-							ScheduleBlock scheduleBlock3 = studentScript.ScheduleBlocks[8];
-							scheduleBlock3.destination = "Exit";
-							scheduleBlock3.action = "Exit";
-							ScheduleBlock scheduleBlock4 = studentScript.ScheduleBlocks[9];
+							ScheduleBlock scheduleBlock = studentScript.ScheduleBlocks[4];
+							scheduleBlock.destination = "Mourn";
+							scheduleBlock.action = "Mourn";
+							ScheduleBlock scheduleBlock2 = studentScript.ScheduleBlocks[5];
+							scheduleBlock2.destination = "Seat";
+							scheduleBlock2.action = "Sit";
+							ScheduleBlock scheduleBlock3 = studentScript.ScheduleBlocks[6];
+							scheduleBlock3.destination = "Locker";
+							scheduleBlock3.action = "Shoes";
+							ScheduleBlock scheduleBlock4 = studentScript.ScheduleBlocks[7];
 							scheduleBlock4.destination = "Exit";
 							scheduleBlock4.action = "Exit";
+							ScheduleBlock scheduleBlock5 = studentScript.ScheduleBlocks[8];
+							scheduleBlock5.destination = "Exit";
+							scheduleBlock5.action = "Exit";
+							ScheduleBlock scheduleBlock6 = studentScript.ScheduleBlocks[9];
+							scheduleBlock6.destination = "Exit";
+							scheduleBlock6.action = "Exit";
 							studentScript.TargetDistance = 0.5f;
 							studentScript.IdleAnim = studentScript.BulliedIdleAnim;
 							studentScript.WalkAnim = studentScript.BulliedWalkAnim;
 							studentScript.OriginalIdleAnim = studentScript.IdleAnim;
+							studentScript.Pathfinding.speed = 1f;
 							studentScript.GetDestinations();
 						}
+						this.LectureID = 0;
 					}
 				}
 			}
@@ -631,10 +680,7 @@ public class CounselorScript : MonoBehaviour
 		this.MyAnimation.CrossFade("CounselorComputerAttention", 1f);
 		this.ChinTimer = 0f;
 		this.Yandere.TargetStudent = this.Student;
-		int num = UnityEngine.Random.Range(1, 3);
-		this.CounselorSubtitle.text = this.CounselorGreetingText[num];
-		this.MyAudio.clip = this.CounselorGreetingClips[num];
-		this.MyAudio.Play();
+		this.TalkTimer = 0f;
 		this.StudentManager.DisablePrompts();
 		this.CounselorWindow.gameObject.SetActive(true);
 		this.LookAtPlayer = true;
@@ -683,7 +729,7 @@ public class CounselorScript : MonoBehaviour
 				UILabel uilabel5 = this.Labels[4];
 				uilabel5.color = new Color(uilabel5.color.r, uilabel5.color.g, uilabel5.color.b, 1f);
 			}
-			if (SchemeGlobals.GetSchemeStage(5) == 6)
+			if (SchemeGlobals.GetSchemeStage(5) == 9)
 			{
 				UILabel uilabel6 = this.Labels[5];
 				uilabel6.color = new Color(uilabel6.color.r, uilabel6.color.g, uilabel6.color.b, 1f);
@@ -799,6 +845,7 @@ public class CounselorScript : MonoBehaviour
 		this.Laptop.SetActive(true);
 		this.LookAtPlayer = false;
 		this.ShowWindow = false;
+		this.TalkTimer = 1f;
 		this.Patience = 0;
 		this.Stern = false;
 		this.Angry = false;

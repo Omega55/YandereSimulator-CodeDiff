@@ -15,6 +15,8 @@ public class JukeboxScript : MonoBehaviour
 
 	public AudioSource Skeletons;
 
+	public AudioSource Vaporwave;
+
 	public AudioSource AzurLane;
 
 	public AudioSource LifeNote;
@@ -276,6 +278,7 @@ public class JukeboxScript : MonoBehaviour
 			this.Megalovania.volume = Mathf.MoveTowards(this.Megalovania.volume, this.Volume * this.Dip, 0.166666672f);
 			this.MissionMode.volume = Mathf.MoveTowards(this.MissionMode.volume, this.Volume * this.Dip, 0.166666672f);
 			this.Skeletons.volume = Mathf.MoveTowards(this.Skeletons.volume, this.Volume * this.Dip, 0.166666672f);
+			this.Vaporwave.volume = Mathf.MoveTowards(this.Vaporwave.volume, this.Volume * this.Dip, 0.166666672f);
 			this.AzurLane.volume = Mathf.MoveTowards(this.AzurLane.volume, this.Volume * this.Dip, 0.166666672f);
 			this.LifeNote.volume = Mathf.MoveTowards(this.LifeNote.volume, this.Volume * this.Dip, 0.166666672f);
 			this.Berserk.volume = Mathf.MoveTowards(this.Berserk.volume, this.Volume * this.Dip, 0.166666672f);
@@ -441,6 +444,12 @@ public class JukeboxScript : MonoBehaviour
 				this.KillVolume();
 				this.Nier.enabled = true;
 			}
+			else if (Input.GetKeyDown(KeyCode.V))
+			{
+				this.Egg = true;
+				this.KillVolume();
+				this.Vaporwave.enabled = true;
+			}
 		}
 	}
 
@@ -498,6 +507,7 @@ public class JukeboxScript : MonoBehaviour
 		this.Megalovania.Stop();
 		this.MissionMode.Stop();
 		this.Skeletons.Stop();
+		this.Vaporwave.Stop();
 		this.AzurLane.Stop();
 		this.LifeNote.Stop();
 		this.Berserk.Stop();

@@ -166,51 +166,62 @@ public class AlarmDiscScript : MonoBehaviour
 						}
 					}
 				}
-				else if (!this.Student.Nemesis && this.Student.Alive && !this.Student.Dying && !this.Student.Guarding && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.Headache && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.Student.InEvent && !this.Student.Following && !this.Student.Distracting && this.Student.Actions[this.Student.Phase] != StudentActionType.Teaching && this.Student.Actions[this.Student.Phase] != StudentActionType.SitAndTakeNotes && !this.Student.GoAway && this.Student.Routine && !this.Student.CheckingNote && !this.Student.SentHome && this.Student.Persona != PersonaType.Protective && this.Student.CharacterAnimation != null && this.SourceRadio.Victim == null)
+				else
 				{
-					this.Student.CharacterAnimation.CrossFade(this.Student.LeanAnim);
-					this.Student.Pathfinding.canSearch = false;
-					this.Student.Pathfinding.canMove = false;
-					this.Student.EatingSnack = false;
-					this.Student.Radio = this.SourceRadio;
-					this.Student.TurnOffRadio = true;
-					this.Student.Routine = false;
-					this.Student.GoAway = false;
-					bool flag = false;
-					if (this.Student.Bento.activeInHierarchy && this.Student.StudentID > 1)
+					Debug.Log("A student just heard a radio...");
+					if (this.Student.Giggle != null)
 					{
-						flag = true;
+						this.Student.StopInvestigating();
 					}
-					this.Student.EmptyHands();
-					if (flag)
+					if (!this.Student.Nemesis && this.Student.Alive && !this.Student.Dying && !this.Student.Guarding && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.Headache && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.Student.InEvent && !this.Student.Following && !this.Student.Distracting && this.Student.Actions[this.Student.Phase] != StudentActionType.Teaching && this.Student.Actions[this.Student.Phase] != StudentActionType.SitAndTakeNotes && !this.Student.GoAway && this.Student.Routine && !this.Student.CheckingNote && !this.Student.SentHome && this.Student.Persona != PersonaType.Protective && this.Student.CharacterAnimation != null && this.SourceRadio.Victim == null)
 					{
-						GenericBentoScript component = this.Student.Bento.GetComponent<GenericBentoScript>();
-						component.enabled = true;
-						component.Prompt.enabled = true;
-						this.Student.Bento.SetActive(true);
-						this.Student.Bento.transform.parent = this.Student.transform;
-						if (this.Student.Male)
+						Debug.Log(this.Student.Name + " has just been alarmed by a radio!");
+						this.Student.CharacterAnimation.CrossFade(this.Student.LeanAnim);
+						this.Student.Pathfinding.canSearch = false;
+						this.Student.Pathfinding.canMove = false;
+						this.Student.EatingSnack = false;
+						this.Student.Radio = this.SourceRadio;
+						this.Student.TurnOffRadio = true;
+						this.Student.Routine = false;
+						this.Student.GoAway = false;
+						bool flag = false;
+						if (this.Student.Bento.activeInHierarchy && this.Student.StudentID > 1)
 						{
-							this.Student.Bento.transform.localPosition = new Vector3(0f, 0.4266666f, -0.075f);
+							flag = true;
 						}
-						else
+						this.Student.EmptyHands();
+						if (flag)
 						{
-							this.Student.Bento.transform.localPosition = new Vector3(0f, 0.461f, -0.075f);
+							GenericBentoScript component = this.Student.Bento.GetComponent<GenericBentoScript>();
+							component.enabled = true;
+							component.Prompt.enabled = true;
+							this.Student.Bento.SetActive(true);
+							this.Student.Bento.transform.parent = this.Student.transform;
+							if (this.Student.Male)
+							{
+								this.Student.Bento.transform.localPosition = new Vector3(0f, 0.4266666f, -0.075f);
+							}
+							else
+							{
+								this.Student.Bento.transform.localPosition = new Vector3(0f, 0.461f, -0.075f);
+							}
+							this.Student.Bento.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+							this.Student.Bento.transform.parent = null;
 						}
-						this.Student.Bento.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
-						this.Student.Bento.transform.parent = null;
-					}
-					this.Student.SpeechLines.Stop();
-					this.Student.ChalkDust.Stop();
-					this.Student.CleanTimer = 0f;
-					this.Student.RadioTimer = 0f;
-					this.Student.ReadPhase = 0;
-					this.SourceRadio.Victim = this.Student;
-					if (this.Student.ID == 97 && SchemeGlobals.GetSchemeStage(5) == 3)
-					{
-						SchemeGlobals.SetSchemeStage(5, 4);
-						this.Student.Yandere.PauseScreen.Schemes.UpdateInstructions();
-						base.enabled = false;
+						this.Student.SpeechLines.Stop();
+						this.Student.ChalkDust.Stop();
+						this.Student.CleanTimer = 0f;
+						this.Student.RadioTimer = 0f;
+						this.Student.ReadPhase = 0;
+						this.SourceRadio.Victim = this.Student;
+						if (this.Student.StudentID == 97 && SchemeGlobals.GetSchemeStage(5) == 3)
+						{
+							SchemeGlobals.SetSchemeStage(5, 4);
+							this.Student.Yandere.PauseScreen.Schemes.UpdateInstructions();
+							base.enabled = false;
+						}
+						this.Student.Yandere.NotificationManager.CustomText = this.Student.Name + " hears the radio.";
+						this.Student.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
 					}
 				}
 			}

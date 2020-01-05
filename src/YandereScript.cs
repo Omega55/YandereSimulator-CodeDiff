@@ -1297,6 +1297,14 @@ public class YandereScript : MonoBehaviour
 
 	public AudioClip NierSwoosh;
 
+	public NormalBufferView VaporwaveVisuals;
+
+	public Material VaporwaveSkybox;
+
+	public GameObject PalmTrees;
+
+	public GameObject[] Trees;
+
 	public Mesh SchoolSwimsuit;
 
 	public Mesh GymUniform;
@@ -2693,7 +2701,18 @@ public class YandereScript : MonoBehaviour
 					UnityEngine.Object.Destroy(this.NewTrail);
 				}
 				this.NewTrail = UnityEngine.Object.Instantiate<GameObject>(this.Trail, base.transform.position + base.transform.forward * 0.5f + Vector3.up * 0.1f, Quaternion.identity);
-				this.NewTrail.GetComponent<AIPath>().target = this.Homeroom;
+				if (SchemeGlobals.CurrentScheme == 0)
+				{
+					this.NewTrail.GetComponent<AIPath>().target = this.Homeroom;
+				}
+				else if (this.PauseScreen.Schemes.SchemeDestinations[SchemeGlobals.GetSchemeStage(SchemeGlobals.CurrentScheme)] != null)
+				{
+					this.NewTrail.GetComponent<AIPath>().target = this.PauseScreen.Schemes.SchemeDestinations[SchemeGlobals.GetSchemeStage(SchemeGlobals.CurrentScheme)];
+				}
+				else
+				{
+					UnityEngine.Object.Destroy(this.NewTrail);
+				}
 			}
 			if (this.Armed)
 			{
@@ -5614,7 +5633,7 @@ public class YandereScript : MonoBehaviour
 						else if (Input.GetKeyDown(KeyCode.V))
 						{
 							this.EasterEggMenu.SetActive(false);
-							this.Long();
+							this.Vaporwave();
 						}
 						else if (Input.GetKeyDown(KeyCode.Alpha2))
 						{
@@ -7265,6 +7284,18 @@ public class YandereScript : MonoBehaviour
 		this.RunAnim = "f02_nierRun_00";
 		this.RunSpeed = 10f;
 		this.DebugMenu.transform.parent.GetComponent<DebugMenuScript>().UpdateCensor();
+	}
+
+	private void Vaporwave()
+	{
+		this.VaporwaveVisuals.ApplyNormalView();
+		RenderSettings.skybox = this.VaporwaveSkybox;
+		this.PauseScreen.Settings.QualityManager.Obscurance.enabled = false;
+		this.PalmTrees.SetActive(true);
+		for (int i = 1; i < this.Trees.Length; i++)
+		{
+			this.Trees[i].SetActive(false);
+		}
 	}
 
 	public void ChangeSchoolwear()
