@@ -9,6 +9,8 @@ public class SchemesScript : MonoBehaviour
 
 	public InputManagerScript InputManager;
 
+	public InventoryScript Inventory;
+
 	public PromptBarScript PromptBar;
 
 	public GameObject FavorMenu;
@@ -144,9 +146,9 @@ public class SchemesScript : MonoBehaviour
 					}
 					if (!SchemeGlobals.GetSchemeUnlocked(this.ID))
 					{
-						if (PlayerGlobals.PantyShots >= this.SchemeCosts[this.ID])
+						if (this.Inventory.PantyShots >= this.SchemeCosts[this.ID])
 						{
-							PlayerGlobals.PantyShots -= this.SchemeCosts[this.ID];
+							this.Inventory.PantyShots -= this.SchemeCosts[this.ID];
 							SchemeGlobals.SetSchemeUnlocked(this.ID, true);
 							SchemeGlobals.CurrentScheme = this.ID;
 							if (SchemeGlobals.GetSchemeStage(this.ID) == 0)
@@ -178,7 +180,7 @@ public class SchemesScript : MonoBehaviour
 					}
 				}
 			}
-			else if (SchemeGlobals.GetSchemeStage(this.ID) != 100 && PlayerGlobals.PantyShots < this.SchemeCosts[this.ID])
+			else if (SchemeGlobals.GetSchemeStage(this.ID) != 100 && this.Inventory.PantyShots < this.SchemeCosts[this.ID])
 			{
 				component.clip = this.InfoAfford;
 				component.Play();
@@ -230,7 +232,7 @@ public class SchemesScript : MonoBehaviour
 			if (!SchemeGlobals.GetSchemeUnlocked(this.ID))
 			{
 				this.Arrow.gameObject.SetActive(false);
-				this.PromptBar.Label[0].text = ((PlayerGlobals.PantyShots < this.SchemeCosts[this.ID]) ? string.Empty : "Purchase");
+				this.PromptBar.Label[0].text = ((this.Inventory.PantyShots < this.SchemeCosts[this.ID]) ? string.Empty : "Purchase");
 				this.PromptBar.UpdateButtons();
 			}
 			else if (SchemeGlobals.CurrentScheme == this.ID)
@@ -268,7 +270,7 @@ public class SchemesScript : MonoBehaviour
 
 	public void UpdatePantyCount()
 	{
-		this.PantyCount.text = PlayerGlobals.PantyShots.ToString();
+		this.PantyCount.text = this.Inventory.PantyShots.ToString();
 	}
 
 	public void UpdateInstructions()

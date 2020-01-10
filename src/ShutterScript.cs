@@ -696,12 +696,12 @@ public class ShutterScript : MonoBehaviour
 					else if (this.Student.Club == ClubType.Bully || this.Student.Club == ClubType.Council || this.Student.Club == ClubType.Nurse || this.Student.StudentID == 20)
 					{
 						text = "A high value target! " + this.Student.Name + "'s panties were in high demand. I owe you a big favor for this one.";
-						PlayerGlobals.PantyShots += 5;
+						this.Yandere.Inventory.PantyShots += 5;
 					}
 					else
 					{
 						text = "Excellent! Now I have a picture of " + this.Student.Name + "'s panties. I owe you a favor for this one.";
-						PlayerGlobals.PantyShots++;
+						this.Yandere.Inventory.PantyShots++;
 					}
 					num = 5;
 				}

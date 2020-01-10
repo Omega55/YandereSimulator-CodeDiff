@@ -72,6 +72,8 @@ public class DebugMenuScript : MonoBehaviour
 
 	public int RooftopStudent = 7;
 
+	public int DebugInputs;
+
 	public float Timer;
 
 	public int ID;
@@ -427,6 +429,7 @@ public class DebugMenuScript : MonoBehaviour
 							}
 							this.ID++;
 						}
+						this.Yandere.Inventory.PantyShots += 20;
 						PlayerGlobals.PantyShots += 20;
 						this.Window.SetActive(false);
 					}
@@ -704,6 +707,7 @@ public class DebugMenuScript : MonoBehaviour
 			if (Input.GetKeyDown(KeyCode.Backslash))
 			{
 				this.MissionModeWindow.SetActive(!this.MissionModeWindow.activeInHierarchy);
+				this.DebugInputs++;
 			}
 			if (this.MissionModeWindow.activeInHierarchy)
 			{

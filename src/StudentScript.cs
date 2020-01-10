@@ -6347,6 +6347,10 @@ public class StudentScript : MonoBehaviour
 											{
 											}
 										}
+										else if (this.Won)
+										{
+											this.CharacterAnimation.CrossFade(this.StruggleLostAnim);
+										}
 									}
 									else
 									{
@@ -9326,6 +9330,7 @@ public class StudentScript : MonoBehaviour
 			if (this.Club == ClubType.Cooking && this.Actions[this.Phase] == StudentActionType.ClubAction && this.ClubActivityPhase == 1 && !this.WitnessedCorpse)
 			{
 				this.ResumeDistracting = true;
+				this.MyPlate.gameObject.SetActive(true);
 			}
 			this.SpeechLines.Stop();
 			this.StopPairing();
@@ -9985,7 +9990,7 @@ public class StudentScript : MonoBehaviour
 				}
 			}
 		}
-		if (this.Prompt.Circle[2].fillAmount == 0f || (this.Yandere.Sanity < 33.33333f && !this.Prompt.HideButton[2] && this.Prompt.InSight && this.Club != ClubType.Council && !this.Struggling))
+		if (this.Prompt.Circle[2].fillAmount == 0f || (this.Yandere.Sanity < 33.33333f && this.Yandere.CanMove && !this.Prompt.HideButton[2] && this.Prompt.InSight && this.Club != ClubType.Council && !this.Struggling))
 		{
 			float f = Vector3.Angle(-base.transform.forward, this.Yandere.transform.position - base.transform.position);
 			this.Yandere.AttackManager.Stealth = (Mathf.Abs(f) <= 45f);
@@ -11358,6 +11363,7 @@ public class StudentScript : MonoBehaviour
 			{
 				Debug.Log("Character is now drownable.");
 				this.Prompt.Label[0].text = "     Drown";
+				this.Prompt.HideButton[0] = false;
 				this.Prompt.enabled = true;
 				this.Drownable = true;
 				if (this.VomitDoor != null)
@@ -11576,10 +11582,11 @@ public class StudentScript : MonoBehaviour
 				{
 					base.transform.position = new Vector3(base.transform.position.x, 0f, base.transform.position.z);
 				}
-				if (!this.Dying && !this.Distracted && !this.WalkBack && !this.Waiting && !this.Guarding && !this.WitnessedMurder && !this.WitnessedCorpse && !this.Blind && !this.SentHome && !this.TurnOffRadio && !this.Wet && !this.InvestigatingBloodPool && !this.ReturningMisplacedWeapon && !this.Yandere.Egg && !this.StudentManager.Pose && !this.ShoeRemoval.enabled)
+				if (!this.Dying && !this.Distracted && !this.WalkBack && !this.Waiting && !this.Guarding && !this.WitnessedMurder && !this.WitnessedCorpse && !this.Blind && !this.SentHome && !this.TurnOffRadio && !this.Wet && !this.InvestigatingBloodPool && !this.ReturningMisplacedWeapon && !this.Yandere.Egg && !this.StudentManager.Pose && !this.ShoeRemoval.enabled && !this.Drownable)
 				{
 					if (this.StudentManager.MissionMode && (double)this.DistanceToPlayer < 0.5)
 					{
+						Debug.Log("This student cannot be interacted with right now.");
 						this.Yandere.Shutter.FaceStudent = this;
 						this.Yandere.Shutter.Penalize();
 					}
@@ -12051,13 +12058,23 @@ public class StudentScript : MonoBehaviour
 
 	public void DropPlate()
 	{
-		if (this.MyPlate != null && this.MyPlate.parent == this.RightHand)
+		if (this.MyPlate != null)
 		{
-			this.MyPlate.GetComponent<Rigidbody>().isKinematic = false;
-			this.MyPlate.GetComponent<Rigidbody>().useGravity = true;
-			this.MyPlate.GetComponent<Collider>().enabled = true;
-			this.MyPlate.parent = null;
-			this.MyPlate.gameObject.SetActive(true);
+			if (this.MyPlate.parent == this.RightHand)
+			{
+				this.MyPlate.GetComponent<Rigidbody>().isKinematic = false;
+				this.MyPlate.GetComponent<Rigidbody>().useGravity = true;
+				this.MyPlate.GetComponent<Collider>().enabled = true;
+				this.MyPlate.parent = null;
+				this.MyPlate.gameObject.SetActive(true);
+			}
+			if (this.Distracting)
+			{
+				this.DistractionTarget.TargetedForDistraction = false;
+				this.Distracting = false;
+				this.IdleAnim = this.OriginalIdleAnim;
+				this.WalkAnim = this.OriginalWalkAnim;
+			}
 		}
 	}
 

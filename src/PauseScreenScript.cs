@@ -337,6 +337,10 @@ public class PauseScreenScript : MonoBehaviour
 					{
 						this.ShowMissionModeDetails = !this.ShowMissionModeDetails;
 					}
+					if (this.ShowMissionModeDetails && Input.GetButtonDown("B"))
+					{
+						this.ShowMissionModeDetails = false;
+					}
 					for (int j = 1; j < this.PhoneIcons.Length; j++)
 					{
 						if (this.PhoneIcons[j] != null)

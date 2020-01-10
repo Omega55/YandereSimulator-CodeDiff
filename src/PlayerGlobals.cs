@@ -59,6 +59,8 @@ public static class PlayerGlobals
 
 	private const string Str_StudentPantyShot = "StudentPantyShot_";
 
+	private const string Str_ShrineCollectible = "ShrineCollectible";
+
 	public static float Money
 	{
 		get
@@ -523,6 +525,35 @@ public static class PlayerGlobals
 		return KeysHelper.GetStringKeys("Profile_" + GameGlobals.Profile + "_StudentPantyShot_");
 	}
 
+	public static string[] KeysOfShrineCollectible()
+	{
+		return KeysHelper.GetStringKeys("Profile_" + GameGlobals.Profile + "_ShrineCollectible");
+	}
+
+	public static bool GetShrineCollectible(int ID)
+	{
+		return GlobalsHelper.GetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_ShrineCollectible",
+			ID.ToString()
+		}));
+	}
+
+	public static void SetShrineCollectible(int ID, bool value)
+	{
+		string text = ID.ToString();
+		KeysHelper.AddIfMissing("Profile_" + GameGlobals.Profile + "_ShrineCollectible", text);
+		GlobalsHelper.SetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_ShrineCollectible",
+			text
+		}), value);
+	}
+
 	public static void DeleteAll()
 	{
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_Money");
@@ -552,5 +583,6 @@ public static class PlayerGlobals
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_StealthBonus");
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_StudentFriend_", PlayerGlobals.KeysOfStudentFriend());
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_StudentPantyShot_", PlayerGlobals.KeysOfStudentPantyShot());
+		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_ShrineCollectible", PlayerGlobals.KeysOfShrineCollectible());
 	}
 }

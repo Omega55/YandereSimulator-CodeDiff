@@ -13,6 +13,8 @@ public class HomeSenpaiShrineScript : MonoBehaviour
 
 	public HomeWindowScript HomeWindow;
 
+	public GameObject[] Collectibles;
+
 	public Transform[] Destinations;
 
 	public Transform[] Targets;
@@ -42,6 +44,13 @@ public class HomeSenpaiShrineScript : MonoBehaviour
 	private void Start()
 	{
 		this.UpdateText(this.GetCurrentIndex());
+		for (int i = 1; i < 11; i++)
+		{
+			if (PlayerGlobals.GetShrineCollectible(i))
+			{
+				this.Collectibles[i].SetActive(true);
+			}
+		}
 	}
 
 	private bool InUpperHalf()
@@ -93,7 +102,7 @@ public class HomeSenpaiShrineScript : MonoBehaviour
 				bool flag = this.InputManager.TappedUp || this.InputManager.TappedDown || this.InputManager.TappedRight || this.InputManager.TappedLeft;
 				if (flag)
 				{
-					this.UpdateText(currentIndex);
+					this.UpdateText(currentIndex - 1);
 				}
 				if (Input.GetButtonDown("B"))
 				{
@@ -115,7 +124,16 @@ public class HomeSenpaiShrineScript : MonoBehaviour
 
 	private void UpdateText(int newIndex)
 	{
-		if (newIndex == 1)
+		if (newIndex == -1)
+		{
+			newIndex = 10;
+		}
+		if (newIndex == 0)
+		{
+			this.NameLabel.text = this.Names[newIndex];
+			this.DescLabel.text = this.Descs[newIndex];
+		}
+		else if (PlayerGlobals.GetShrineCollectible(newIndex))
 		{
 			this.NameLabel.text = this.Names[newIndex];
 			this.DescLabel.text = this.Descs[newIndex];

@@ -57,7 +57,11 @@ public class HomeExitScript : MonoBehaviour
 			{
 				if (this.ID == 1)
 				{
-					if (SchoolGlobals.SchoolAtmosphere >= 0.5f)
+					if (SchoolGlobals.SchoolAtmosphere < 0.5f || GameGlobals.LoveSick)
+					{
+						this.HomeDarkness.Sprite.color = new Color(0f, 0f, 0f, 0f);
+					}
+					else
 					{
 						this.HomeDarkness.Sprite.color = new Color(1f, 1f, 1f, 0f);
 					}

@@ -24,6 +24,10 @@ public class HomeDarknessScript : MonoBehaviour
 
 	private void Start()
 	{
+		if (GameGlobals.LoveSick)
+		{
+			this.Sprite.color = new Color(0f, 0f, 0f, 1f);
+		}
 		this.Sprite.color = new Color(this.Sprite.color.r, this.Sprite.color.g, this.Sprite.color.b, 1f);
 	}
 

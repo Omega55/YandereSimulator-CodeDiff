@@ -80,10 +80,13 @@ public class StalkerYandereScript : MonoBehaviour
 		}
 		if (this.CanMove)
 		{
-			this.CameraTarget.localPosition = new Vector3(0f, 1f + (this.RPGCamera.distanceMax - this.RPGCamera.distance) * 0.2f, 0f);
+			if (this.CameraTarget != null)
+			{
+				this.CameraTarget.localPosition = new Vector3(0f, 1f + (this.RPGCamera.distanceMax - this.RPGCamera.distance) * 0.2f, 0f);
+			}
 			this.UpdateMovement();
 		}
-		else if (this.Climbing)
+		else if (this.CameraTarget != null && this.Climbing)
 		{
 			if (this.MyAnimation["f02_climbTrellis_00"].time < this.MyAnimation["f02_climbTrellis_00"].length - 1f)
 			{

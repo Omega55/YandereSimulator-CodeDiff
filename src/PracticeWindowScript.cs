@@ -145,6 +145,7 @@ public class PracticeWindowScript : MonoBehaviour
 					this.StudentManager.CombatMinigame.Practice = true;
 					this.StudentManager.Students[46].CharacterAnimation.CrossFade(this.StudentManager.Students[46].IdleAnim);
 					this.StudentManager.Students[46].transform.eulerAngles = new Vector3(0f, 0f, 0f);
+					this.StudentManager.Students[46].transform.position = this.KneelSpot[0].position;
 					this.StudentManager.Students[46].Pathfinding.canSearch = false;
 					this.StudentManager.Students[46].Pathfinding.canMove = false;
 					this.StudentManager.Students[46].Distracted = true;

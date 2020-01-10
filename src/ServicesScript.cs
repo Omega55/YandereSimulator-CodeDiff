@@ -11,6 +11,8 @@ public class ServicesScript : MonoBehaviour
 
 	public ReputationScript Reputation;
 
+	public InventoryScript Inventory;
+
 	public PromptBarScript PromptBar;
 
 	public SchemesScript Schemes;
@@ -95,7 +97,7 @@ public class ServicesScript : MonoBehaviour
 			{
 				if (this.PromptBar.Label[0].text != string.Empty)
 				{
-					if (PlayerGlobals.PantyShots >= this.ServiceCosts[this.Selected])
+					if (this.Inventory.PantyShots >= this.ServiceCosts[this.Selected])
 					{
 						if (this.Selected == 1)
 						{
@@ -158,7 +160,7 @@ public class ServicesScript : MonoBehaviour
 						}
 					}
 				}
-				else if (PlayerGlobals.PantyShots < this.ServiceCosts[this.Selected])
+				else if (this.Inventory.PantyShots < this.ServiceCosts[this.Selected])
 				{
 					component.clip = this.InfoAfford;
 					component.Play();
@@ -234,7 +236,7 @@ public class ServicesScript : MonoBehaviour
 	{
 		if (this.ServiceAvailable[this.Selected] && !SchemeGlobals.GetServicePurchased(this.Selected))
 		{
-			this.PromptBar.Label[0].text = ((PlayerGlobals.PantyShots < this.ServiceCosts[this.Selected]) ? string.Empty : "Purchase");
+			this.PromptBar.Label[0].text = ((this.Inventory.PantyShots < this.ServiceCosts[this.Selected]) ? string.Empty : "Purchase");
 			this.PromptBar.UpdateButtons();
 		}
 		else
@@ -255,14 +257,14 @@ public class ServicesScript : MonoBehaviour
 
 	public void UpdatePantyCount()
 	{
-		this.PantyCount.text = PlayerGlobals.PantyShots.ToString();
+		this.PantyCount.text = this.Inventory.PantyShots.ToString();
 	}
 
 	public void Purchase()
 	{
 		this.ServicePurchased[this.Selected] = true;
 		this.TextMessageManager.SpawnMessage(this.Selected);
-		PlayerGlobals.PantyShots -= this.ServiceCosts[this.Selected];
+		this.Inventory.PantyShots -= this.ServiceCosts[this.Selected];
 		AudioSource.PlayClipAtPoint(this.InfoPurchase, base.transform.position);
 		this.UpdateList();
 		this.UpdateDesc();

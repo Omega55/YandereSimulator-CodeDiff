@@ -7,6 +7,8 @@ public class DropsScript : MonoBehaviour
 
 	public InputManagerScript InputManager;
 
+	public InventoryScript Inventory;
+
 	public PromptBarScript PromptBar;
 
 	public SchemesScript Schemes;
@@ -82,9 +84,9 @@ public class DropsScript : MonoBehaviour
 			{
 				if (this.PromptBar.Label[0].text != string.Empty)
 				{
-					if (PlayerGlobals.PantyShots >= this.DropCosts[this.Selected])
+					if (this.Inventory.PantyShots >= this.DropCosts[this.Selected])
 					{
-						PlayerGlobals.PantyShots -= this.DropCosts[this.Selected];
+						this.Inventory.PantyShots -= this.DropCosts[this.Selected];
 						this.Purchased[this.Selected] = true;
 						this.InfoChanWindow.Orders++;
 						this.InfoChanWindow.ItemsToDrop[this.InfoChanWindow.Orders] = this.Selected;
@@ -100,7 +102,7 @@ public class DropsScript : MonoBehaviour
 						}
 					}
 				}
-				else if (PlayerGlobals.PantyShots < this.DropCosts[this.Selected])
+				else if (this.Inventory.PantyShots < this.DropCosts[this.Selected])
 				{
 					component.clip = this.InfoAfford;
 					component.Play();
@@ -153,7 +155,7 @@ public class DropsScript : MonoBehaviour
 	{
 		if (!this.Purchased[this.Selected])
 		{
-			if (PlayerGlobals.PantyShots >= this.DropCosts[this.Selected])
+			if (this.Inventory.PantyShots >= this.DropCosts[this.Selected])
 			{
 				this.PromptBar.Label[0].text = "Purchase";
 				this.PromptBar.UpdateButtons();
@@ -177,6 +179,6 @@ public class DropsScript : MonoBehaviour
 
 	public void UpdatePantyCount()
 	{
-		this.PantyCount.text = PlayerGlobals.PantyShots.ToString();
+		this.PantyCount.text = this.Inventory.PantyShots.ToString();
 	}
 }

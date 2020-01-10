@@ -63,10 +63,15 @@ public class InventoryScript : MonoBehaviour
 
 	public int MysteriousKeys;
 
+	public int PantyShots;
+
+	public bool[] ShrineCollectibles;
+
 	public UILabel MoneyLabel;
 
 	private void Start()
 	{
+		this.PantyShots = PlayerGlobals.PantyShots;
 		this.UpdateMoney();
 	}
 

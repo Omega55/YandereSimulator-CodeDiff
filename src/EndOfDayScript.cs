@@ -1464,6 +1464,7 @@ public class EndOfDayScript : MonoBehaviour
 		{
 			Debug.Log("Osana was expelled.");
 			StudentGlobals.SetStudentExpelled(this.StudentManager.RivalID, true);
+			GameGlobals.RivalEliminationID = 5;
 		}
 		PlayerGlobals.Reputation = this.Reputation.Reputation;
 		StudentGlobals.MemorialStudents = 0;
@@ -1496,6 +1497,15 @@ public class EndOfDayScript : MonoBehaviour
 		while (this.ID < this.GardenHoles.Length)
 		{
 			this.GardenHoles[this.ID].EndOfDayCheck();
+			this.ID++;
+		}
+		this.ID = 1;
+		while (this.ID < this.Yandere.Inventory.ShrineCollectibles.Length)
+		{
+			if (this.Yandere.Inventory.ShrineCollectibles[this.ID])
+			{
+				PlayerGlobals.SetShrineCollectible(this.ID, true);
+			}
 			this.ID++;
 		}
 		this.Incinerator.SetVictimsMissing();
@@ -1537,6 +1547,7 @@ public class EndOfDayScript : MonoBehaviour
 		}
 		CollectibleGlobals.MatchmakingGifts = this.MatchmakingGifts;
 		CollectibleGlobals.SenpaiGifts = this.SenpaiGifts;
+		PlayerGlobals.PantyShots = this.Yandere.Inventory.PantyShots;
 		this.WeaponManager.TrackDumpedWeapons();
 	}
 

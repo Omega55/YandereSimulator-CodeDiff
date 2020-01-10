@@ -182,6 +182,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public GradingPaperScript[] FacultyDesks;
 
+	public GameObject[] ShrineCollectibles;
+
 	public StudentScript[] WitnessList;
 
 	public StudentScript[] Teachers;
@@ -1633,6 +1635,13 @@ public class StudentManagerScript : MonoBehaviour
 		if (GameGlobals.SenpaiMourning)
 		{
 			this.Students[1].gameObject.SetActive(false);
+		}
+		for (int i = 1; i < 10; i++)
+		{
+			if (this.ShrineCollectibles[i] != null)
+			{
+				this.ShrineCollectibles[i].SetActive(true);
+			}
 		}
 		this.Gift.SetActive(false);
 	}
