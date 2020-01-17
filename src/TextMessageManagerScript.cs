@@ -53,7 +53,7 @@ public class TextMessageManagerScript : MonoBehaviour
 		this.NewMessage.transform.localEulerAngles = Vector3.zero;
 		this.NewMessage.transform.localScale = new Vector3(1f, 1f, 1f);
 		this.MessageText = this.Messages[ServiceID];
-		if (ServiceID == 7)
+		if (ServiceID == 7 || ServiceID == 4)
 		{
 			this.MessageHeight = 11;
 		}

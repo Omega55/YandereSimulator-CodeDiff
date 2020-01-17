@@ -125,6 +125,9 @@ public class StudentInfoScript : MonoBehaviour
 
 	private void Start()
 	{
+		StudentGlobals.SetStudentPhotographed(98, true);
+		StudentGlobals.SetStudentPhotographed(99, true);
+		StudentGlobals.SetStudentPhotographed(100, true);
 		this.Topics.SetActive(false);
 	}
 
@@ -328,7 +331,8 @@ public class StudentInfoScript : MonoBehaviour
 			{
 				if (this.CurrentStudent == 10)
 				{
-					this.StudentInfoMenu.PauseScreen.ServiceMenu.TextMessageManager.SpawnMessage(8);
+					this.StudentInfoMenu.PauseScreen.ServiceMenu.TextMessageManager.SpawnMessage(10);
+					this.Yandere.Inventory.PantyShots += this.Yandere.PauseScreen.ServiceMenu.ServiceCosts[8];
 					base.gameObject.SetActive(false);
 					this.PromptBar.ClearButtons();
 					this.PromptBar.Label[0].text = string.Empty;
@@ -465,6 +469,14 @@ public class StudentInfoScript : MonoBehaviour
 				{
 					this.CurrentStudent = 1;
 				}
+				while (!StudentGlobals.GetStudentPhotographed(this.CurrentStudent))
+				{
+					this.CurrentStudent++;
+					if (this.CurrentStudent > 100)
+					{
+						this.CurrentStudent = 1;
+					}
+				}
 				this.UpdateInfo(this.CurrentStudent);
 			}
 			if (this.StudentInfoMenu.PauseScreen.InputManager.TappedLeft)
@@ -473,6 +485,14 @@ public class StudentInfoScript : MonoBehaviour
 				if (this.CurrentStudent < 1)
 				{
 					this.CurrentStudent = 100;
+				}
+				while (!StudentGlobals.GetStudentPhotographed(this.CurrentStudent))
+				{
+					this.CurrentStudent--;
+					if (this.CurrentStudent < 1)
+					{
+						this.CurrentStudent = 100;
+					}
 				}
 				this.UpdateInfo(this.CurrentStudent);
 			}

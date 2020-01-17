@@ -19,6 +19,8 @@ public class LoveManagerScript : MonoBehaviour
 
 	public StudentScript Rival;
 
+	public Transform FriendWaitSpot;
+
 	public Transform[] Targets;
 
 	public Transform MythHill;
@@ -30,6 +32,10 @@ public class LoveManagerScript : MonoBehaviour
 	public int Phase = 1;
 
 	public int ID;
+
+	public int SuitorID = 28;
+
+	public int RivalID = 30;
 
 	public float AngleLimit;
 
@@ -84,8 +90,8 @@ public class LoveManagerScript : MonoBehaviour
 		}
 		if (this.LeftNote)
 		{
-			this.Rival = this.StudentManager.Students[30];
-			this.Suitor = this.StudentManager.Students[28];
+			this.Rival = this.StudentManager.Students[this.RivalID];
+			this.Suitor = this.StudentManager.Students[this.SuitorID];
 			if (this.StudentManager.Students[this.StudentManager.RivalID] != null)
 			{
 				this.Rival = this.StudentManager.Students[this.StudentManager.RivalID];
@@ -105,11 +111,11 @@ public class LoveManagerScript : MonoBehaviour
 		{
 			if (this.Rival == null)
 			{
-				this.Rival = this.StudentManager.Students[30];
+				this.Rival = this.StudentManager.Students[this.RivalID];
 			}
 			if (this.Suitor == null)
 			{
-				this.Suitor = this.StudentManager.Students[28];
+				this.Suitor = this.StudentManager.Students[this.SuitorID];
 			}
 			this.Rival.MyController.Move(base.transform.forward * Time.deltaTime);
 			this.Suitor.transform.position = new Vector3(this.Rival.transform.position.x - 0.5f, this.Rival.transform.position.y, this.Rival.transform.position.z);
@@ -134,8 +140,8 @@ public class LoveManagerScript : MonoBehaviour
 	{
 		if (this.SuitorProgress == 2)
 		{
-			this.Rival = this.StudentManager.Students[30];
-			this.Suitor = this.StudentManager.Students[28];
+			this.Rival = this.StudentManager.Students[this.RivalID];
+			this.Suitor = this.StudentManager.Students[this.SuitorID];
 			if (this.Rival != null && this.Suitor != null)
 			{
 				this.Suitor.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
@@ -169,8 +175,8 @@ public class LoveManagerScript : MonoBehaviour
 				this.Rival.Hearts.Play();
 				this.Suitor.HoldingHands = true;
 				this.Rival.HoldingHands = true;
-				this.Suitor.CoupleID = 30;
-				this.Rival.CoupleID = 28;
+				this.Suitor.CoupleID = this.SuitorID;
+				this.Rival.CoupleID = this.RivalID;
 				this.HoldingHands = true;
 			}
 		}

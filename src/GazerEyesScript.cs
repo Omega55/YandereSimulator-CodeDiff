@@ -182,6 +182,11 @@ public class GazerEyesScript : MonoBehaviour
 
 	public void ElectrocuteStudent(StudentScript Target)
 	{
+		Target.EmptyHands();
+		if (Target.Investigating)
+		{
+			Target.StopInvestigating();
+		}
 		Target.CharacterAnimation[Target.ElectroAnim].speed = 0.85f;
 		Target.CharacterAnimation[Target.ElectroAnim].time = 2f;
 		Target.CharacterAnimation.CrossFade(Target.ElectroAnim);

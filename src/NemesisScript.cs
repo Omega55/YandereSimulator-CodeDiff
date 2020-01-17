@@ -135,6 +135,8 @@ public class NemesisScript : MonoBehaviour
 		base.transform.position = this.MissionMode.SpawnPoints[UnityEngine.Random.Range(0, 4)].position;
 		this.MissionMode.LastKnownPosition.position = new Vector3(0f, 0f, -36f);
 		this.UpdateLKP();
+		base.transform.parent = null;
+		this.Student.Name = "Nemesis";
 	}
 
 	private void Update()

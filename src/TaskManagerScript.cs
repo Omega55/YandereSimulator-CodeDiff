@@ -27,6 +27,11 @@ public class TaskManagerScript : MonoBehaviour
 			{
 				this.StudentManager.Students[11].TaskPhase = 5;
 			}
+			ConversationGlobals.SetTopicDiscovered(15, true);
+			this.Yandere.NotificationManager.TopicName = "Cats";
+			this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+			this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
+			ConversationGlobals.SetTopicLearnedByStudent(15, 11, true);
 			TaskGlobals.SetTaskStatus(11, 2);
 			UnityEngine.Object.Destroy(this.TaskObjects[11]);
 		}

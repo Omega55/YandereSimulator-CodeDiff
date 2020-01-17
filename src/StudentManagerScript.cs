@@ -2407,6 +2407,7 @@ public class StudentManagerScript : MonoBehaviour
 			ScheduleBlock scheduleBlock = studentScript2.ScheduleBlocks[2];
 			scheduleBlock.destination = "ShameSpot";
 			scheduleBlock.action = "Shamed";
+			scheduleBlock.time = 8f;
 			ScheduleBlock scheduleBlock2 = studentScript2.ScheduleBlocks[4];
 			scheduleBlock2.destination = "Seat";
 			scheduleBlock2.action = "Sit";

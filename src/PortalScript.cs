@@ -89,6 +89,7 @@ public class PortalScript : MonoBehaviour
 			this.Prompt.Circle[0].fillAmount = 1f;
 			this.CheckForLateness();
 			this.Reputation.UpdateRep();
+			bool flag = false;
 			if (this.Police.PoisonScene || (this.Police.SuicideScene && this.Police.Corpses - this.Police.HiddenCorpses > 0) || this.Police.Corpses - this.Police.HiddenCorpses > 0 || this.Reputation.Reputation <= -100f)
 			{
 				this.EndDay();
@@ -97,15 +98,15 @@ public class PortalScript : MonoBehaviour
 			{
 				if (!this.Police.Show)
 				{
-					bool flag = false;
+					bool flag2 = false;
 					if (this.StudentManager.Teachers[21] != null && this.StudentManager.Teachers[21].DistanceToDestination < 1f)
 					{
-						flag = true;
+						flag2 = true;
 					}
-					if (flag)
+					if (flag2)
 					{
 					}
-					if (this.Late > 0 && flag)
+					if (this.Late > 0 && flag2)
 					{
 						this.Yandere.Subtitle.UpdateLabel(SubtitleType.TeacherLateReaction, this.Late, 5.5f);
 						this.Yandere.RPGCamera.enabled = false;
@@ -125,23 +126,34 @@ public class PortalScript : MonoBehaviour
 					this.EndDay();
 				}
 			}
+			else if (this.Yandere.Inventory.RivalPhone && !this.StudentManager.RivalEliminated)
+			{
+				this.Yandere.NotificationManager.CustomText = "Put your rival's phone on her desk!";
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
+				this.Yandere.NotificationManager.CustomText = "You are carrying stolen property!";
+				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
+				flag = true;
+			}
 			else
 			{
 				this.EndDay();
 			}
-			this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
-			this.Yandere.YandereVision = false;
-			this.Yandere.CanMove = false;
-			if (this.Clock.HourTime < 15.5f)
+			if (!flag)
 			{
-				this.Yandere.InClass = true;
-				if (this.Clock.HourTime < 8.5f)
+				this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
+				this.Yandere.YandereVision = false;
+				this.Yandere.CanMove = false;
+				if (this.Clock.HourTime < 15.5f)
 				{
-					this.EndEvents();
-				}
-				else
-				{
-					this.EndLaterEvents();
+					this.Yandere.InClass = true;
+					if (this.Clock.HourTime < 8.5f)
+					{
+						this.EndEvents();
+					}
+					else
+					{
+						this.EndLaterEvents();
+					}
 				}
 			}
 		}

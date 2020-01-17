@@ -71,7 +71,7 @@ public class GateScript : MonoBehaviour
 		{
 			if (this.StudentManager.Students[97].CurrentAction == StudentActionType.AtLocker && this.StudentManager.Students[97].Routine && this.StudentManager.Students[97].Alive)
 			{
-				if ((double)Vector3.Distance(this.StudentManager.Students[97].transform.position, this.Prompt.transform.position) < 1.6)
+				if (Vector3.Distance(this.StudentManager.Students[97].transform.position, this.StudentManager.Podiums.List[0].position) < 0.1f)
 				{
 					if (this.ManuallyAdjusted)
 					{

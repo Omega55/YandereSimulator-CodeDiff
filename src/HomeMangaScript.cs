@@ -17,7 +17,7 @@ public class HomeMangaScript : MonoBehaviour
 	{
 		"Stoic",
 		"Somber",
-		"Detatched",
+		"Detached",
 		"Unemotional",
 		"Desensitized",
 		"Dead Inside"

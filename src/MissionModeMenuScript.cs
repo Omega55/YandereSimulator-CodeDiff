@@ -527,6 +527,9 @@ public class MissionModeMenuScript : MonoBehaviour
 			}
 			else if (Input.GetButtonDown("X"))
 			{
+				this.RequiredClothingID = 0;
+				this.RequiredDisposalID = 0;
+				this.RequiredWeaponID = 0;
 				this.ChooseTarget();
 				if (this.Difficulty > 1)
 				{
@@ -1037,14 +1040,14 @@ public class MissionModeMenuScript : MonoBehaviour
 		if (this.Phase != 5)
 		{
 			this.TargetID = UnityEngine.Random.Range(2, 90);
-			if (this.TargetNumber > 5 && this.TargetNumber < 21)
+			if (this.TargetNumber > 9 && this.TargetNumber < 21)
 			{
 				this.ChooseTarget();
 			}
 		}
 		else
 		{
-			if (this.TargetNumber > 5 && this.TargetNumber < 21)
+			if (this.TargetNumber > 9 && this.TargetNumber < 21)
 			{
 				if (Input.GetButtonDown("A"))
 				{
@@ -1074,7 +1077,7 @@ public class MissionModeMenuScript : MonoBehaviour
 			".png"
 		});
 		WWW www = new WWW(url);
-		if (this.TargetNumber > 5 && this.TargetNumber < 21)
+		if (this.TargetNumber > 9 && this.TargetNumber < 21)
 		{
 			this.TargetPortrait.mainTexture = this.BlankPortrait;
 		}
@@ -1093,7 +1096,7 @@ public class MissionModeMenuScript : MonoBehaviour
 		}
 		this.CustomDescs[1].text = "Kill " + this.TargetName + ".";
 		this.Descs[1].text = "Kill " + this.TargetName + ".";
-		if (this.TargetID > 5 && this.TargetID < 21)
+		if (this.TargetID > 9 && this.TargetID < 21)
 		{
 			if (this.Phase == 5)
 			{
@@ -1255,7 +1258,7 @@ public class MissionModeMenuScript : MonoBehaviour
 	public void UpdateGraphics()
 	{
 		this.TargetID = MissionModeGlobals.MissionTarget;
-		if (this.TargetNumber > 5 && this.TargetNumber < 21)
+		if (this.TargetNumber > 9 && this.TargetNumber < 21)
 		{
 			this.TargetPortrait.mainTexture = this.BlankPortrait;
 			this.TargetName = MissionModeGlobals.MissionTargetName;

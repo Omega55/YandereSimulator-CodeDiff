@@ -508,10 +508,10 @@ public class PoliceScript : MonoBehaviour
 			this.ResultsLabels[4].text = "Ayano will never have her Senpai's love.";
 			this.LowRep = true;
 		}
-		else if (DateGlobals.Weekday == DayOfWeek.Friday)
+		else
 		{
 			bool flag = true;
-			if (flag)
+			if (flag && DateGlobals.Weekday == DayOfWeek.Friday)
 			{
 				this.ResultsLabels[0].text = "This is the part where the game will determine whether or not the player has eliminated their rival.";
 				this.ResultsLabels[1].text = "This game is still in development.";
@@ -520,243 +520,266 @@ public class PoliceScript : MonoBehaviour
 				this.ResultsLabels[4].text = "Please check back soon for more updates!";
 				this.GameOver = true;
 			}
-			else if (!this.StudentManager.RivalEliminated)
+			else if (!this.Suicide && !this.PoisonScene)
 			{
-				this.ResultsLabels[0].text = "Ayano has failed to eliminate Osana before Friday evening.";
-				this.ResultsLabels[1].text = "Osana asks Senpai to meet her under the cherry tree behind the school.";
-				this.ResultsLabels[2].text = "As cherry blossoms fall around them...";
-				this.ResultsLabels[3].text = "...Osana confesses her feelings for Senpai.";
-				this.ResultsLabels[4].text = "Ayano watches from a short distance away...";
-				this.BeginConfession = true;
-			}
-			else
-			{
-				this.ResultsLabels[0].text = "Ayano no longer has to worry about competing with Osana for Senpai's love.";
-				this.ResultsLabels[1].text = "Ayano considers confessing her love to Senpai...";
-				this.ResultsLabels[2].text = "...but she cannot build up the courage to speak to him.";
-				this.ResultsLabels[3].text = "Ayano waits until Senpai leaves school, and follows him until he is safe in his home.";
-				this.ResultsLabels[4].text = "Then, Ayano returns to her own home, and considers what she should do next...";
-			}
-		}
-		else if (!this.Suicide && !this.PoisonScene)
-		{
-			if (this.Clock.HourTime < 18f)
-			{
-				if (this.Yandere.InClass)
+				if (this.Clock.HourTime < 18f)
 				{
-					this.ResultsLabels[0].text = "Ayano attempts to attend class without disposing of a corpse.";
-				}
-				else if (this.Yandere.Resting && this.Corpses > 0)
-				{
-					this.ResultsLabels[0].text = "Ayano rests without disposing of a corpse.";
-				}
-				else if (this.Yandere.Resting)
-				{
-					if (GameGlobals.SenpaiMourning)
+					if (this.Yandere.InClass)
 					{
-						this.ResultsLabels[0].text = "Ayano recovers from her injuries.";
+						this.ResultsLabels[0].text = "Ayano attempts to attend class without disposing of a corpse.";
 					}
-					else
+					else if (this.Yandere.Resting && this.Corpses > 0)
 					{
-						this.ResultsLabels[0].text = "Ayano recovers from her injuries, then stands near the school gate and waits for Senpai to leave school.";
+						this.ResultsLabels[0].text = "Ayano rests without disposing of a corpse.";
 					}
-				}
-				else if (GameGlobals.SenpaiMourning)
-				{
-					this.ResultsLabels[0].text = "Ayano decides to leave school.";
-				}
-				else
-				{
-					this.ResultsLabels[0].text = "Ayano stands near the school gate and waits for Senpai to leave school.";
-				}
-			}
-			else
-			{
-				this.ResultsLabels[0].text = "The school day has ended. Faculty members must walk through the school and tell any lingering students to leave.";
-			}
-			if (this.Suspended)
-			{
-				if (this.Clock.Weekday == 1)
-				{
-					this.RemainingDays = 5;
-				}
-				else if (this.Clock.Weekday == 2)
-				{
-					this.RemainingDays = 4;
-				}
-				else if (this.Clock.Weekday == 3)
-				{
-					this.RemainingDays = 3;
-				}
-				else if (this.Clock.Weekday == 4)
-				{
-					this.RemainingDays = 2;
-				}
-				else if (this.Clock.Weekday == 5)
-				{
-					this.RemainingDays = 1;
-				}
-				if (this.RemainingDays - this.SuspensionLength <= 0)
-				{
-					this.ResultsLabels[0].text = "Due to her suspension,";
-					this.ResultsLabels[1].text = "Ayano will be unable";
-					this.ResultsLabels[2].text = "to prevent her rival";
-					this.ResultsLabels[3].text = "from confessing to Senpai.";
-					this.ResultsLabels[4].text = "Ayano will never have Senpai.";
-					this.GameOver = true;
-				}
-				else if (this.SuspensionLength == 1)
-				{
-					this.ResultsLabels[0].text = "Ayano has been sent home early.";
-					this.ResultsLabels[1].text = string.Empty;
-					this.ResultsLabels[2].text = "She won't be able to see Senpai again until tomorrow.";
-					this.ResultsLabels[3].text = string.Empty;
-					this.ResultsLabels[4].text = "Ayano's heart aches as she thinks of Senpai.";
-				}
-				else if (this.SuspensionLength == 2)
-				{
-					this.ResultsLabels[0].text = "Ayano has been sent home early.";
-					this.ResultsLabels[1].text = string.Empty;
-					this.ResultsLabels[2].text = "She will have to wait one day before returning to school.";
-					this.ResultsLabels[3].text = string.Empty;
-					this.ResultsLabels[4].text = "Ayano's heart aches as she thinks of Senpai.";
-				}
-				else
-				{
-					this.ResultsLabels[0].text = "Ayano has been sent home early.";
-					this.ResultsLabels[1].text = string.Empty;
-					this.ResultsLabels[2].text = "She will have to wait " + (this.SuspensionLength - 1) + " days before returning to school.";
-					this.ResultsLabels[3].text = string.Empty;
-					this.ResultsLabels[4].text = "Ayano's heart aches as she thinks of Senpai.";
-				}
-			}
-			else
-			{
-				if (this.Yandere.RedPaint)
-				{
-					this.BloodyClothing--;
-				}
-				if (this.Corpses == 0 && this.LimbParent.childCount == 0 && this.BloodParent.childCount == 0 && this.BloodyWeapons == 0 && this.BloodyClothing == 0 && !this.SuicideScene)
-				{
-					if (this.Yandere.Sanity < 66.66666f || (this.Yandere.Bloodiness > 0f && !this.Yandere.RedPaint))
+					else if (this.Yandere.Resting)
 					{
-						this.ResultsLabels[1].text = "Ayano is approached by a faculty member.";
-						if (this.Yandere.Bloodiness > 0f)
+						if (GameGlobals.SenpaiMourning)
 						{
-							this.ResultsLabels[2].text = "The faculty member immediately notices the blood staining her clothing.";
-							this.ResultsLabels[3].text = "Ayano is not able to convince the faculty member that nothing is wrong.";
-							this.ResultsLabels[4].text = "The faculty member calls the police.";
-							this.TeacherReport = true;
-							this.Show = true;
+							this.ResultsLabels[0].text = "Ayano recovers from her injuries, and is ready to leave school.";
 						}
 						else
 						{
-							this.ResultsLabels[2].text = "Ayano exhibited extremely erratic behavior, frightening the faculty member.";
-							this.ResultsLabels[3].text = "The faculty member becomes angry with Ayano, but Ayano leaves before the situation gets worse.";
+							this.ResultsLabels[0].text = "Ayano recovers from her injuries, and is ready to leave school.";
+						}
+					}
+					else if (GameGlobals.SenpaiMourning)
+					{
+						this.ResultsLabels[0].text = "Ayano is ready to leave school.";
+					}
+					else
+					{
+						this.ResultsLabels[0].text = "Ayano is ready to leave school.";
+					}
+				}
+				else
+				{
+					this.ResultsLabels[0].text = "The school day has ended. Faculty members must walk through the school and tell any lingering students to leave.";
+				}
+				if (this.Suspended)
+				{
+					if (this.Clock.Weekday == 1)
+					{
+						this.RemainingDays = 5;
+					}
+					else if (this.Clock.Weekday == 2)
+					{
+						this.RemainingDays = 4;
+					}
+					else if (this.Clock.Weekday == 3)
+					{
+						this.RemainingDays = 3;
+					}
+					else if (this.Clock.Weekday == 4)
+					{
+						this.RemainingDays = 2;
+					}
+					else if (this.Clock.Weekday == 5)
+					{
+						this.RemainingDays = 1;
+					}
+					if (this.RemainingDays - this.SuspensionLength <= 0)
+					{
+						this.ResultsLabels[0].text = "Due to her suspension,";
+						this.ResultsLabels[1].text = "Ayano will be unable";
+						this.ResultsLabels[2].text = "to prevent her rival";
+						this.ResultsLabels[3].text = "from confessing to Senpai.";
+						this.ResultsLabels[4].text = "Ayano will never have Senpai.";
+						this.GameOver = true;
+					}
+					else if (this.SuspensionLength == 1)
+					{
+						this.ResultsLabels[0].text = "Ayano has been sent home early.";
+						this.ResultsLabels[1].text = string.Empty;
+						this.ResultsLabels[2].text = "She won't be able to see Senpai again until tomorrow.";
+						this.ResultsLabels[3].text = string.Empty;
+						this.ResultsLabels[4].text = "Ayano's heart aches as she thinks of Senpai.";
+					}
+					else if (this.SuspensionLength == 2)
+					{
+						this.ResultsLabels[0].text = "Ayano has been sent home early.";
+						this.ResultsLabels[1].text = string.Empty;
+						this.ResultsLabels[2].text = "She will have to wait one day before returning to school.";
+						this.ResultsLabels[3].text = string.Empty;
+						this.ResultsLabels[4].text = "Ayano's heart aches as she thinks of Senpai.";
+					}
+					else
+					{
+						this.ResultsLabels[0].text = "Ayano has been sent home early.";
+						this.ResultsLabels[1].text = string.Empty;
+						this.ResultsLabels[2].text = "She will have to wait " + (this.SuspensionLength - 1) + " days before returning to school.";
+						this.ResultsLabels[3].text = string.Empty;
+						this.ResultsLabels[4].text = "Ayano's heart aches as she thinks of Senpai.";
+					}
+				}
+				else
+				{
+					if (this.Yandere.RedPaint)
+					{
+						this.BloodyClothing--;
+					}
+					if (this.Corpses == 0 && this.LimbParent.childCount == 0 && this.BloodParent.childCount == 0 && this.BloodyWeapons == 0 && this.BloodyClothing == 0 && !this.SuicideScene)
+					{
+						if (this.Yandere.Sanity < 66.66666f || (this.Yandere.Bloodiness > 0f && !this.Yandere.RedPaint))
+						{
+							this.ResultsLabels[1].text = "Ayano is approached by a faculty member.";
+							if (this.Yandere.Bloodiness > 0f)
+							{
+								this.ResultsLabels[2].text = "The faculty member immediately notices the blood staining her clothing.";
+								this.ResultsLabels[3].text = "Ayano is not able to convince the faculty member that nothing is wrong.";
+								this.ResultsLabels[4].text = "The faculty member calls the police.";
+								this.TeacherReport = true;
+								this.Show = true;
+							}
+							else
+							{
+								this.ResultsLabels[2].text = "Ayano exhibited extremely erratic behavior, frightening the faculty member.";
+								this.ResultsLabels[3].text = "The faculty member becomes angry with Ayano, but Ayano leaves before the situation gets worse.";
+								this.ResultsLabels[4].text = "Ayano returns home.";
+							}
+						}
+						else if (this.Yandere.Inventory.RivalPhone && !this.StudentManager.RivalEliminated)
+						{
+							this.ResultsLabels[1].text = "Osana tells the faculty that her phone is missing.";
+							this.ResultsLabels[2].text = "Suspecting theft, the faculty check all students' belongings before they are allowed to leave school.";
+							this.ResultsLabels[3].text = "Osana's stolen phone is found on Ayano's person.";
+							this.ResultsLabels[4].text = "Ayano is expelled from school for stealing from another student.";
+							this.GameOver = true;
+							this.Heartbroken.Counselor.Expelled = true;
+						}
+						else if (DateGlobals.Weekday == DayOfWeek.Friday)
+						{
+							if (!this.StudentManager.RivalEliminated)
+							{
+								this.ResultsLabels[0].text = "Ayano has failed to eliminate Osana before Friday evening.";
+								this.ResultsLabels[1].text = "Osana asks Senpai to meet her under the cherry tree behind the school.";
+								this.ResultsLabels[2].text = "As cherry blossoms fall around them...";
+								this.ResultsLabels[3].text = "...Osana confesses her feelings for Senpai.";
+								this.ResultsLabels[4].text = "Ayano watches from a short distance away...";
+								this.BeginConfession = true;
+							}
+							else
+							{
+								this.ResultsLabels[0].text = "Ayano no longer has to worry about competing with Osana for Senpai's love.";
+								this.ResultsLabels[1].text = "Ayano considers confessing her love to Senpai...";
+								this.ResultsLabels[2].text = "...but she cannot build up the courage to speak to him.";
+								this.ResultsLabels[3].text = "Ayano follows Senpai out of school and watches him from a distance until he has returned to his home.";
+								this.ResultsLabels[4].text = "Then, Ayano returns to her own home, and considers what she should do next...";
+							}
+						}
+						else
+						{
+							if (this.Clock.HourTime < 18f)
+							{
+								Debug.Log("Senpai's position is: " + this.Yandere.Senpai.position);
+								if (this.Yandere.Senpai.position.z > -75f)
+								{
+									this.ResultsLabels[1].text = "However, she can't bring herself to leave before Senpai does.";
+									this.ResultsLabels[2].text = "Ayano waits at the school's entrance until Senpai eventually appears.";
+									this.ResultsLabels[3].text = "She follows him and watches him from a distance until he has returned to his home.";
+									this.ResultsLabels[4].text = "Then, Ayano returns to her house.";
+								}
+								else
+								{
+									this.ResultsLabels[1].text = "Ayano quickly runs out of school, determined to catch a glimpse of Senpai as he walks home.";
+									this.ResultsLabels[2].text = "Eventually, she catches up to him.";
+									this.ResultsLabels[3].text = "Ayano follows Senpai and watches him from a distance until he has returned to his home.";
+									this.ResultsLabels[4].text = "Then, Ayano returns to her house.";
+								}
+							}
+							else
+							{
+								this.ResultsLabels[1].text = "Like all other students, Ayano is instructed to leave school.";
+								this.ResultsLabels[2].text = "After exiting school, Ayano locates Senpai.";
+								this.ResultsLabels[3].text = "Ayano follows Senpai and watches him from a distance until he has returned to his home.";
+								this.ResultsLabels[4].text = "Then, Ayano returns to her house.";
+							}
+							if (GameGlobals.SenpaiMourning)
+							{
+								this.ResultsLabels[1].text = "Like all other students, Ayano is instructed to leave school.";
+								this.ResultsLabels[2].text = "Ayano leaves school.";
+								this.ResultsLabels[3].text = "Ayano returns to her home.";
+								this.ResultsLabels[4].text = "Her heart aches as she thinks of Senpai.";
+							}
+						}
+					}
+					else if (this.Corpses > 0)
+					{
+						this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a corpse.";
+						this.ResultsLabels[2].text = "The faculty member immediately calls the police.";
+						this.ResultsLabels[3].text = "The faculty member informs the rest of the faculty about her discovery.";
+						this.ResultsLabels[4].text = "The faculty do not allow any students to leave the school until a police investigation has taken place.";
+						this.TeacherReport = true;
+						this.Show = true;
+					}
+					else if (this.LimbParent.childCount > 0)
+					{
+						this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a dismembered body part.";
+						this.ResultsLabels[2].text = "The faculty member decides to call the police.";
+						this.ResultsLabels[3].text = "The faculty member informs the rest of the faculty about her discovery.";
+						this.ResultsLabels[4].text = "The faculty do not allow any students to leave the school until a police investigation has taken place.";
+						this.TeacherReport = true;
+						this.Show = true;
+					}
+					else if (this.BloodParent.childCount > 0 || this.BloodyClothing > 0)
+					{
+						this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a mysterious blood stain.";
+						this.ResultsLabels[2].text = "The faculty member decides to call the police.";
+						this.ResultsLabels[3].text = "The faculty member informs the rest of the faculty about her discovery.";
+						this.ResultsLabels[4].text = "The faculty do not allow any students to leave the school until a police investigation has taken place.";
+						this.TeacherReport = true;
+						this.Show = true;
+					}
+					else if (this.BloodyWeapons > 0)
+					{
+						this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a mysterious bloody weapon.";
+						this.ResultsLabels[2].text = "The faculty member decides to call the police.";
+						this.ResultsLabels[3].text = "The faculty member informs the rest of the faculty about her discovery.";
+						this.ResultsLabels[4].text = "The faculty do not allow any students to leave the school until a police investigation has taken place.";
+						this.TeacherReport = true;
+						this.Show = true;
+					}
+					else if (this.SuicideScene)
+					{
+						this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a pair of shoes on the rooftop.";
+						this.ResultsLabels[2].text = "The faculty member fears that there has been a suicide, but cannot find a corpse anywhere. The faculty member does not take any action.";
+						this.ResultsLabels[3].text = "Ayano leaves school and follows Senpai, watching him as he walks home.";
+						this.ResultsLabels[4].text = "Once he is safely home, Ayano returns to her own home.";
+						if (GameGlobals.SenpaiMourning)
+						{
+							this.ResultsLabels[3].text = "Ayano leaves school.";
 							this.ResultsLabels[4].text = "Ayano returns home.";
 						}
 					}
-					else
-					{
-						if (this.Clock.HourTime < 18f)
-						{
-							this.ResultsLabels[1].text = "Finally, Senpai exits the school.";
-							this.ResultsLabels[2].text = "Ayano's heart skips a beat when she sees him.";
-							this.ResultsLabels[3].text = "Ayano leaves school and watches Senpai walk home.";
-							this.ResultsLabels[4].text = "Once he is safely home, Ayano returns to her own home.";
-						}
-						else
-						{
-							this.ResultsLabels[1].text = "Like all other students, Ayano is instructed to leave school.";
-							this.ResultsLabels[2].text = "Senpai leaves school, too.";
-							this.ResultsLabels[3].text = "Ayano leaves school and watches Senpai walk home.";
-							this.ResultsLabels[4].text = "Once he is safely home, Ayano returns to her own home.";
-						}
-						if (GameGlobals.SenpaiMourning)
-						{
-							this.ResultsLabels[1].text = "Like all other students, Ayano is instructed to leave school.";
-							this.ResultsLabels[2].text = "Her heart aches as she thinks of senpai.";
-							this.ResultsLabels[3].text = "Ayano leaves school.";
-							this.ResultsLabels[4].text = "Ayano returns to her home.";
-						}
-					}
-				}
-				else if (this.Corpses > 0)
-				{
-					this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a corpse.";
-					this.ResultsLabels[2].text = "The faculty member immediately calls the police.";
-					this.ResultsLabels[3].text = "The faculty member informs the rest of the faculty about her discovery.";
-					this.ResultsLabels[4].text = "The faculty do not allow any students to leave the school until a police investigation has taken place.";
-					this.TeacherReport = true;
-					this.Show = true;
-				}
-				else if (this.LimbParent.childCount > 0)
-				{
-					this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a dismembered body part.";
-					this.ResultsLabels[2].text = "The faculty member decides to call the police.";
-					this.ResultsLabels[3].text = "The faculty member informs the rest of the faculty about her discovery.";
-					this.ResultsLabels[4].text = "The faculty do not allow any students to leave the school until a police investigation has taken place.";
-					this.TeacherReport = true;
-					this.Show = true;
-				}
-				else if (this.BloodParent.childCount > 0 || this.BloodyClothing > 0)
-				{
-					this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a mysterious blood stain.";
-					this.ResultsLabels[2].text = "The faculty member decides to call the police.";
-					this.ResultsLabels[3].text = "The faculty member informs the rest of the faculty about her discovery.";
-					this.ResultsLabels[4].text = "The faculty do not allow any students to leave the school until a police investigation has taken place.";
-					this.TeacherReport = true;
-					this.Show = true;
-				}
-				else if (this.BloodyWeapons > 0)
-				{
-					this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a mysterious bloody weapon.";
-					this.ResultsLabels[2].text = "The faculty member decides to call the police.";
-					this.ResultsLabels[3].text = "The faculty member informs the rest of the faculty about her discovery.";
-					this.ResultsLabels[4].text = "The faculty do not allow any students to leave the school until a police investigation has taken place.";
-					this.TeacherReport = true;
-					this.Show = true;
-				}
-				else if (this.SuicideScene)
-				{
-					this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a pair of shoes on the rooftop.";
-					this.ResultsLabels[2].text = "The faculty member fears that there has been a suicide, but cannot find a corpse anywhere. The faculty member does not take any action.";
-					this.ResultsLabels[3].text = "Ayano leaves school and watches Senpai walk home.";
-					this.ResultsLabels[4].text = "Once he is safely home, Ayano returns to her own home.";
-					if (GameGlobals.SenpaiMourning)
-					{
-						this.ResultsLabels[3].text = "Ayano leaves school.";
-						this.ResultsLabels[4].text = "Ayano returns home.";
-					}
 				}
 			}
-		}
-		else if (this.Suicide)
-		{
-			if (!this.Yandere.InClass)
+			else if (this.Suicide)
 			{
-				this.ResultsLabels[0].text = "The school day has ended. Faculty members must walk through the school and tell any lingering students to leave.";
+				if (!this.Yandere.InClass)
+				{
+					this.ResultsLabels[0].text = "The school day has ended. Faculty members must walk through the school and tell any lingering students to leave.";
+				}
+				else
+				{
+					this.ResultsLabels[0].text = "Ayano attempts to attend class without disposing of a corpse.";
+				}
+				this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a corpse.";
+				this.ResultsLabels[2].text = "It appears as though a student has committed suicide.";
+				this.ResultsLabels[3].text = "The faculty member informs the rest of the faculty about her discovery.";
+				this.ResultsLabels[4].text = "The faculty members agree to call the police and report the student's death.";
+				this.TeacherReport = true;
+				this.Show = true;
 			}
-			else
+			else if (this.PoisonScene)
 			{
-				this.ResultsLabels[0].text = "Ayano attempts to attend class without disposing of a corpse.";
+				this.ResultsLabels[0].text = "A faculty member discovers the student who Ayano poisoned.";
+				this.ResultsLabels[1].text = "The faculty member calls for an ambulance immediately.";
+				this.ResultsLabels[2].text = "The faculty member suspects that the student's death was a murder.";
+				this.ResultsLabels[3].text = "The faculty member also calls for the police.";
+				this.ResultsLabels[4].text = "The school's students are not allowed to leave until a police investigation has taken place.";
+				this.TeacherReport = true;
+				this.Show = true;
 			}
-			this.ResultsLabels[1].text = "While walking around the school, a faculty member discovers a corpse.";
-			this.ResultsLabels[2].text = "It appears as though a student has committed suicide.";
-			this.ResultsLabels[3].text = "The faculty member informs the rest of the faculty about her discovery.";
-			this.ResultsLabels[4].text = "The faculty members agree to call the police and report the student's death.";
-			this.TeacherReport = true;
-			this.Show = true;
-		}
-		else if (this.PoisonScene)
-		{
-			this.ResultsLabels[0].text = "A faculty member discovers the student who Ayano poisoned.";
-			this.ResultsLabels[1].text = "The faculty member calls for an ambulance immediately.";
-			this.ResultsLabels[2].text = "The faculty member suspects that the student's death was a murder.";
-			this.ResultsLabels[3].text = "The faculty member also calls for the police.";
-			this.ResultsLabels[4].text = "The school's students are not allowed to leave until a police investigation has taken place.";
-			this.TeacherReport = true;
-			this.Show = true;
 		}
 	}
 

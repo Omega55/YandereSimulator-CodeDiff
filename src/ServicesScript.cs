@@ -127,9 +127,7 @@ public class ServicesScript : MonoBehaviour
 						else if (this.Selected == 4)
 						{
 							SchemeGlobals.SetServicePurchased(this.Selected, true);
-							SchemeGlobals.SetSchemeStage(1, 2);
 							SchemeGlobals.DarkSecret = true;
-							this.Schemes.UpdateInstructions();
 							this.Purchase();
 						}
 						else if (this.Selected == 5)
@@ -155,7 +153,17 @@ public class ServicesScript : MonoBehaviour
 						}
 						else if (this.Selected == 7)
 						{
+							SchemeGlobals.SetServicePurchased(this.Selected, true);
 							CounselorGlobals.CounselorTape = 1;
+							this.Purchase();
+						}
+						else if (this.Selected == 8)
+						{
+							SchemeGlobals.SetServicePurchased(this.Selected, true);
+							for (int i = 1; i < 26; i++)
+							{
+								ConversationGlobals.SetTopicLearnedByStudent(i, 11, true);
+							}
 							this.Purchase();
 						}
 					}
@@ -222,7 +230,14 @@ public class ServicesScript : MonoBehaviour
 					this.ServiceAvailable[this.ID] = true;
 				}
 			}
-			else if (this.ID == 7 && CounselorGlobals.CounselorTape == 0)
+			else if (this.ID == 7)
+			{
+				if (CounselorGlobals.CounselorTape == 0)
+				{
+					this.ServiceAvailable[this.ID] = true;
+				}
+			}
+			else if (this.ID == 8 && !SchemeGlobals.GetServicePurchased(8))
 			{
 				this.ServiceAvailable[this.ID] = true;
 			}

@@ -70,7 +70,7 @@ public class HomeDarknessScript : MonoBehaviour
 					{
 						StudentGlobals.SetStudentKidnapped(SchoolGlobals.KidnapVictim, false);
 						StudentGlobals.SetStudentSlave(SchoolGlobals.KidnapVictim);
-						SceneManager.LoadScene("LoadingScene");
+						this.CheckForOsanaThursday();
 					}
 					else if (this.HomeCamera.ID == 11)
 					{
@@ -83,7 +83,7 @@ public class HomeDarknessScript : MonoBehaviour
 					}
 					else if (this.HomeExit.ID == 1)
 					{
-						SceneManager.LoadScene("LoadingScene");
+						this.CheckForOsanaThursday();
 					}
 					else if (this.HomeExit.ID == 2)
 					{
@@ -140,5 +140,11 @@ public class HomeDarknessScript : MonoBehaviour
 				this.Sprite.color = new Color(this.Sprite.color.r, this.Sprite.color.g, this.Sprite.color.b, 0f);
 			}
 		}
+	}
+
+	private void CheckForOsanaThursday()
+	{
+		Debug.Log("Time to check if we need to display the Osana-walks-to-school cutscene...");
+		SceneManager.LoadScene("LoadingScene");
 	}
 }

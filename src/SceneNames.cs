@@ -60,7 +60,11 @@ public static class SceneNames
 
 	public const string MaidGameScene = "MaidGameScene";
 
+	public const string WalkToSchoolScene = "WalkToSchoolScene";
+
 	public const string BusStopScene = "BusStopScene";
+
+	public const string PostCreditsScene = "PostCreditsScene";
 
 	public const string ThanksForPlayingScene = "ThanksForPlayingScene";
 }

@@ -743,7 +743,8 @@ public class CosmeticScript : MonoBehaviour
 				this.CharacterAnimation.Play("sadFace_00");
 				this.CharacterAnimation["sadFace_00"].weight = 1f;
 			}
-			if (this.StudentID == 28 && StudentGlobals.CustomSuitor)
+			bool flag = false;
+			if ((this.StudentID == 28 || flag) && StudentGlobals.CustomSuitor)
 			{
 				if (StudentGlobals.CustomSuitorHair > 0)
 				{
@@ -1070,7 +1071,8 @@ public class CosmeticScript : MonoBehaviour
 				gameObject22.SetActive(false);
 			}
 		}
-		if (this.StudentID == 28 && StudentGlobals.CustomSuitor && StudentGlobals.CustomSuitorEyewear > 0)
+		bool flag2 = false;
+		if ((this.StudentID == 28 || flag2) && StudentGlobals.CustomSuitor && StudentGlobals.CustomSuitorEyewear > 0)
 		{
 			this.Eyewear[StudentGlobals.CustomSuitorEyewear].SetActive(true);
 		}
@@ -1560,7 +1562,8 @@ public class CosmeticScript : MonoBehaviour
 		else
 		{
 			this.FaceTexture = ((!this.CustomHair) ? this.FaceTextures[this.SkinColor] : this.HairRenderer.material.mainTexture);
-			if (this.StudentID == 28 && StudentGlobals.CustomSuitor && StudentGlobals.CustomSuitorTan)
+			bool flag = false;
+			if ((this.StudentID == 28 || flag) && StudentGlobals.CustomSuitor && StudentGlobals.CustomSuitorTan)
 			{
 				this.SkinColor = 6;
 				this.FaceTexture = this.FaceTextures[6];

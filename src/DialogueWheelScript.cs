@@ -694,14 +694,26 @@ public class DialogueWheelScript : MonoBehaviour
 					Debug.Log("Unhiding task button.");
 					this.Shadow[5].color = new Color(0f, 0f, 0f, 0f);
 				}
-				if (this.Yandere.TargetStudent.StudentID == 36 && TaskGlobals.GetTaskStatus(36) == 0 && (StudentGlobals.GetStudentDead(81) || StudentGlobals.GetStudentDead(82) || StudentGlobals.GetStudentDead(83) || StudentGlobals.GetStudentDead(84) || StudentGlobals.GetStudentDead(85)))
+				if (this.Yandere.TargetStudent.StudentID == 6)
 				{
-					this.Shadow[5].color = new Color(0f, 0f, 0f, 0.75f);
+					Debug.Log("The status of Task #6 is:" + TaskGlobals.GetTaskStatus(6));
+					if (TaskGlobals.GetTaskStatus(6) == 1 && this.Yandere.Inventory.Headset)
+					{
+						this.Shadow[5].color = new Color(0f, 0f, 0f, 0f);
+						Debug.Log("Player has a headset.");
+					}
 				}
-				if (this.Yandere.TargetStudent.StudentID == 76)
+				else if (this.Yandere.TargetStudent.StudentID == 36)
+				{
+					if (TaskGlobals.GetTaskStatus(36) == 0 && (StudentGlobals.GetStudentDead(81) || StudentGlobals.GetStudentDead(82) || StudentGlobals.GetStudentDead(83) || StudentGlobals.GetStudentDead(84) || StudentGlobals.GetStudentDead(85)))
+					{
+						this.Shadow[5].color = new Color(0f, 0f, 0f, 0.75f);
+					}
+				}
+				else if (this.Yandere.TargetStudent.StudentID == 76)
 				{
 					Debug.Log("The status of Task #76 is:" + TaskGlobals.GetTaskStatus(76));
-					if (TaskGlobals.GetTaskStatus(76) == 1 && PlayerGlobals.Money >= 100f)
+					if (TaskGlobals.GetTaskStatus(76) == 1 && this.Yandere.Inventory.Money >= 100f)
 					{
 						this.Shadow[5].color = new Color(0f, 0f, 0f, 0f);
 						Debug.Log("Player has over $100.");
@@ -743,7 +755,7 @@ public class DialogueWheelScript : MonoBehaviour
 				}
 			}
 		}
-		else if (this.Yandere.TargetStudent.StudentID != 28 && this.Yandere.TargetStudent.StudentID != 30)
+		else if (this.Yandere.TargetStudent.StudentID != this.LoveManager.RivalID && this.Yandere.TargetStudent.StudentID != this.LoveManager.SuitorID)
 		{
 			this.Shadow[5].color = new Color(0f, 0f, 0f, 0.75f);
 		}
@@ -859,11 +871,16 @@ public class DialogueWheelScript : MonoBehaviour
 	{
 		Debug.Log("This student's Task Status is: " + TaskGlobals.GetTaskStatus(this.Yandere.TargetStudent.StudentID));
 		Debug.Log("Checking for task completion.");
+		if (this.Yandere.TargetStudent.StudentID == 6 && TaskGlobals.GetTaskStatus(6) == 1 && this.Yandere.Inventory.Headset)
+		{
+			this.Yandere.TargetStudent.TaskPhase = 5;
+			this.Yandere.LoveManager.SuitorProgress = 1;
+		}
 		if (this.Yandere.TargetStudent.StudentID == 76 && TaskGlobals.GetTaskStatus(76) == 1)
 		{
 			this.Yandere.TargetStudent.RespectEarned = true;
 			this.Yandere.TargetStudent.TaskPhase = 5;
-			PlayerGlobals.Money -= 100f;
+			this.Yandere.Inventory.Money -= 100f;
 			this.Yandere.Inventory.UpdateMoney();
 		}
 		else if (this.Yandere.TargetStudent.StudentID == 77 && TaskGlobals.GetTaskStatus(77) == 1)

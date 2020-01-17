@@ -1548,6 +1548,7 @@ public class EndOfDayScript : MonoBehaviour
 		CollectibleGlobals.MatchmakingGifts = this.MatchmakingGifts;
 		CollectibleGlobals.SenpaiGifts = this.SenpaiGifts;
 		PlayerGlobals.PantyShots = this.Yandere.Inventory.PantyShots;
+		PlayerGlobals.Money = this.Yandere.Inventory.Money;
 		this.WeaponManager.TrackDumpedWeapons();
 	}
 

@@ -65,6 +65,8 @@ public class InventoryScript : MonoBehaviour
 
 	public int PantyShots;
 
+	public float Money;
+
 	public bool[] ShrineCollectibles;
 
 	public UILabel MoneyLabel;
@@ -72,11 +74,12 @@ public class InventoryScript : MonoBehaviour
 	private void Start()
 	{
 		this.PantyShots = PlayerGlobals.PantyShots;
+		this.Money = PlayerGlobals.Money;
 		this.UpdateMoney();
 	}
 
 	public void UpdateMoney()
 	{
-		this.MoneyLabel.text = "$" + PlayerGlobals.Money.ToString("F2");
+		this.MoneyLabel.text = "$" + this.Money.ToString("F2");
 	}
 }

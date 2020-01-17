@@ -5,6 +5,8 @@ public class SabotageVendingMachineScript : MonoBehaviour
 {
 	public VendingMachineScript VendingMachine;
 
+	public GameObject SabotageSparks;
+
 	public YandereScript Yandere;
 
 	public PromptScript Prompt;
@@ -29,6 +31,12 @@ public class SabotageVendingMachineScript : MonoBehaviour
 						SchemeGlobals.SetSchemeStage(4, 3);
 						this.Yandere.PauseScreen.Schemes.UpdateInstructions();
 					}
+					if (this.Yandere.StudentManager.Students[11] != null && DateGlobals.Weekday == DayOfWeek.Thursday)
+					{
+						this.Yandere.StudentManager.Students[11].Hungry = true;
+						this.Yandere.StudentManager.Students[11].Fed = false;
+					}
+					UnityEngine.Object.Instantiate<GameObject>(this.SabotageSparks, new Vector3(-2.5f, 5.3605f, -32.982f), Quaternion.identity);
 					this.VendingMachine.Sabotaged = true;
 					this.Prompt.enabled = false;
 					this.Prompt.Hide();

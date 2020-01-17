@@ -241,7 +241,7 @@ public class TalkingScript : MonoBehaviour
 						{
 							this.S.GossipBonus++;
 						}
-						if (SchemeGlobals.DarkSecret)
+						if (SchemeGlobals.DarkSecret && this.S.DialogueWheel.Victim == this.S.StudentManager.RivalID)
 						{
 							this.S.GossipBonus++;
 						}
@@ -1152,12 +1152,13 @@ public class TalkingScript : MonoBehaviour
 			}
 			else if (this.S.Interaction == StudentInteractionType.TakingSnack)
 			{
-				Debug.Log("Taking snack.");
+				Debug.Log("Student is reacting to being offered a snack.");
 				if (this.S.TalkTimer == 5f)
 				{
 					bool flag = false;
 					if (this.S.StudentID == this.S.StudentManager.RivalID && !this.S.Hungry)
 					{
+						Debug.Log("Osana is not hungry, so she is going to refuse the snack.");
 						flag = true;
 					}
 					if (this.S.Club == ClubType.Delinquent)
@@ -1170,11 +1171,16 @@ public class TalkingScript : MonoBehaviour
 						this.S.CharacterAnimation.CrossFade(this.S.GossipAnim);
 						this.S.Subtitle.UpdateLabel(SubtitleType.RejectFood, 0, 3f);
 						this.S.Fed = true;
+						if (this.S.StudentID == this.S.StudentManager.RivalID)
+						{
+							this.S.Subtitle.UpdateLabel(SubtitleType.RejectFood, 2, 5f);
+						}
+						Debug.Log("Osana is refusing the snack.");
 					}
 					else
 					{
 						this.S.CharacterAnimation.CrossFade(this.S.Nod2Anim);
-						this.S.Subtitle.UpdateLabel(SubtitleType.AcceptFood, 0, 3f);
+						this.S.Subtitle.UpdateLabel(SubtitleType.AcceptFood, 0, 10f);
 						this.CalculateRepBonus();
 						this.S.Reputation.PendingRep += 1f + (float)this.S.RepBonus;
 						this.S.PendingRep += 1f + (float)this.S.RepBonus;

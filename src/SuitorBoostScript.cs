@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class SuitorBoostScript : MonoBehaviour
 {
+	public LoveManagerScript LoveManager;
+
 	public PromptBarScript PromptBar;
 
 	public YandereScript Yandere;
@@ -39,7 +41,7 @@ public class SuitorBoostScript : MonoBehaviour
 	{
 		if (this.Yandere.Followers > 0)
 		{
-			if (this.Yandere.Follower.StudentID == 28 && this.Yandere.Follower.DistanceToPlayer < 2f)
+			if (this.Yandere.Follower.StudentID == this.LoveManager.SuitorID && this.Yandere.Follower.DistanceToPlayer < 2f)
 			{
 				this.Prompt.enabled = true;
 			}

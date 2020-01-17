@@ -485,6 +485,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool MustChangeClothing;
 
+	public bool SawCorpseThisFrame;
+
 	public bool WitnessedBloodPool;
 
 	public bool WitnessedSomething;
@@ -879,6 +881,8 @@ public class StudentScript : MonoBehaviour
 
 	public float BatheTimer;
 
+	public float ChaseTimer;
+
 	public float CheerTimer;
 
 	public float CleanTimer;
@@ -1015,11 +1019,13 @@ public class StudentScript : MonoBehaviour
 
 	public int MurderReaction;
 
-	public int GossipBonus;
-
 	public int CleaningRole;
 
+	public int StruggleWait;
+
 	public int TimesAnnoyed;
+
+	public int GossipBonus;
 
 	public int DeathCause;
 
@@ -1793,13 +1799,6 @@ public class StudentScript : MonoBehaviour
 				{
 					this.SmartPhone.GetComponent<Renderer>().material.mainTexture = this.KokonaPhoneTexture;
 				}
-				if (DatingGlobals.SuitorProgress == 2)
-				{
-					this.Partner = ((this.StudentID != 30) ? this.StudentManager.Students[30] : this.StudentManager.Students[28]);
-					ScheduleBlock scheduleBlock4 = this.ScheduleBlocks[4];
-					scheduleBlock4.destination = "Cuddle";
-					scheduleBlock4.action = "Cuddle";
-				}
 			}
 			else if (this.StudentID == 31)
 			{
@@ -1853,33 +1852,33 @@ public class StudentScript : MonoBehaviour
 					this.Persona = PersonaType.Loner;
 					if (!SchoolGlobals.RoofFence)
 					{
-						ScheduleBlock scheduleBlock5 = this.ScheduleBlocks[2];
+						ScheduleBlock scheduleBlock4 = this.ScheduleBlocks[2];
+						scheduleBlock4.destination = "Sulk";
+						scheduleBlock4.action = "Sulk";
+						ScheduleBlock scheduleBlock5 = this.ScheduleBlocks[4];
 						scheduleBlock5.destination = "Sulk";
 						scheduleBlock5.action = "Sulk";
-						ScheduleBlock scheduleBlock6 = this.ScheduleBlocks[4];
+						ScheduleBlock scheduleBlock6 = this.ScheduleBlocks[7];
 						scheduleBlock6.destination = "Sulk";
 						scheduleBlock6.action = "Sulk";
-						ScheduleBlock scheduleBlock7 = this.ScheduleBlocks[7];
+						ScheduleBlock scheduleBlock7 = this.ScheduleBlocks[8];
 						scheduleBlock7.destination = "Sulk";
 						scheduleBlock7.action = "Sulk";
-						ScheduleBlock scheduleBlock8 = this.ScheduleBlocks[8];
-						scheduleBlock8.destination = "Sulk";
-						scheduleBlock8.action = "Sulk";
 					}
 					else
 					{
-						ScheduleBlock scheduleBlock9 = this.ScheduleBlocks[2];
+						ScheduleBlock scheduleBlock8 = this.ScheduleBlocks[2];
+						scheduleBlock8.destination = "Seat";
+						scheduleBlock8.action = "Sit";
+						ScheduleBlock scheduleBlock9 = this.ScheduleBlocks[4];
 						scheduleBlock9.destination = "Seat";
 						scheduleBlock9.action = "Sit";
-						ScheduleBlock scheduleBlock10 = this.ScheduleBlocks[4];
+						ScheduleBlock scheduleBlock10 = this.ScheduleBlocks[7];
 						scheduleBlock10.destination = "Seat";
 						scheduleBlock10.action = "Sit";
-						ScheduleBlock scheduleBlock11 = this.ScheduleBlocks[7];
+						ScheduleBlock scheduleBlock11 = this.ScheduleBlocks[8];
 						scheduleBlock11.destination = "Seat";
 						scheduleBlock11.action = "Sit";
-						ScheduleBlock scheduleBlock12 = this.ScheduleBlocks[8];
-						scheduleBlock12.destination = "Seat";
-						scheduleBlock12.action = "Sit";
 					}
 				}
 			}
@@ -2018,29 +2017,29 @@ public class StudentScript : MonoBehaviour
 					}
 					if (!this.Grudge)
 					{
-						ScheduleBlock scheduleBlock13 = this.ScheduleBlocks[2];
+						ScheduleBlock scheduleBlock12 = this.ScheduleBlocks[2];
+						scheduleBlock12.destination = "Sleuth";
+						scheduleBlock12.action = "Sleuth";
+						ScheduleBlock scheduleBlock13 = this.ScheduleBlocks[4];
 						scheduleBlock13.destination = "Sleuth";
 						scheduleBlock13.action = "Sleuth";
-						ScheduleBlock scheduleBlock14 = this.ScheduleBlocks[4];
+						ScheduleBlock scheduleBlock14 = this.ScheduleBlocks[7];
 						scheduleBlock14.destination = "Sleuth";
 						scheduleBlock14.action = "Sleuth";
-						ScheduleBlock scheduleBlock15 = this.ScheduleBlocks[7];
-						scheduleBlock15.destination = "Sleuth";
-						scheduleBlock15.action = "Sleuth";
 					}
 					else
 					{
 						this.StalkTarget = this.Yandere.transform;
 						this.SleuthTarget = this.Yandere.transform;
-						ScheduleBlock scheduleBlock16 = this.ScheduleBlocks[2];
+						ScheduleBlock scheduleBlock15 = this.ScheduleBlocks[2];
+						scheduleBlock15.destination = "Stalk";
+						scheduleBlock15.action = "Stalk";
+						ScheduleBlock scheduleBlock16 = this.ScheduleBlocks[4];
 						scheduleBlock16.destination = "Stalk";
 						scheduleBlock16.action = "Stalk";
-						ScheduleBlock scheduleBlock17 = this.ScheduleBlocks[4];
+						ScheduleBlock scheduleBlock17 = this.ScheduleBlocks[7];
 						scheduleBlock17.destination = "Stalk";
 						scheduleBlock17.action = "Stalk";
-						ScheduleBlock scheduleBlock18 = this.ScheduleBlocks[7];
-						scheduleBlock18.destination = "Stalk";
-						scheduleBlock18.action = "Stalk";
 					}
 				}
 				else if (SchoolGlobals.SchoolAtmosphere <= 0.9f)
@@ -2119,8 +2118,8 @@ public class StudentScript : MonoBehaviour
 				if (DateGlobals.Weekday == DayOfWeek.Friday)
 				{
 					Debug.Log("It's Friday, and " + this.Name + " should leave a note in Senpai's locker ar 5:00 PM.");
-					ScheduleBlock scheduleBlock19 = this.ScheduleBlocks[7];
-					scheduleBlock19.time = 17f;
+					ScheduleBlock scheduleBlock18 = this.ScheduleBlocks[7];
+					scheduleBlock18.time = 17f;
 				}
 			}
 			if (!this.Teacher && this.Name != "Random")
@@ -2183,9 +2182,9 @@ public class StudentScript : MonoBehaviour
 				if (DateGlobals.Weekday == DayOfWeek.Friday)
 				{
 					Debug.Log("It's Friday, so the art club is changing their club activity to painting the cherry tree.");
-					ScheduleBlock scheduleBlock20 = this.ScheduleBlocks[7];
-					scheduleBlock20.destination = "Paint";
-					scheduleBlock20.action = "Paint";
+					ScheduleBlock scheduleBlock19 = this.ScheduleBlocks[7];
+					scheduleBlock19.destination = "Paint";
+					scheduleBlock19.action = "Paint";
 				}
 				this.ClubMemberID = this.StudentID - 40;
 				this.Painting = this.StudentManager.FridayPaintings[this.ClubMemberID];
@@ -2480,15 +2479,15 @@ public class StudentScript : MonoBehaviour
 			{
 				if (this.StudentID < 86)
 				{
-					ScheduleBlock scheduleBlock21 = this.ScheduleBlocks[6];
-					scheduleBlock21.destination = "Meeting";
-					scheduleBlock21.action = "Meeting";
+					ScheduleBlock scheduleBlock20 = this.ScheduleBlocks[6];
+					scheduleBlock20.destination = "Meeting";
+					scheduleBlock20.action = "Meeting";
 				}
 				else
 				{
-					ScheduleBlock scheduleBlock22 = this.ScheduleBlocks[5];
-					scheduleBlock22.destination = "Meeting";
-					scheduleBlock22.action = "Meeting";
+					ScheduleBlock scheduleBlock21 = this.ScheduleBlocks[5];
+					scheduleBlock21.destination = "Meeting";
+					scheduleBlock21.action = "Meeting";
 				}
 				this.GetDestinations();
 			}
@@ -5464,7 +5463,7 @@ public class StudentScript : MonoBehaviour
 								}
 								else if (this.FollowTarget.Routine && !this.FollowTarget.InEvent && this.FollowTarget.CurrentAction == StudentActionType.Socializing && this.FollowTarget.DistanceToDestination < 1f)
 								{
-									if (this.FollowTarget.Alone)
+									if (this.FollowTarget.Alone || this.FollowTarget.Meeting)
 									{
 										this.CharacterAnimation.CrossFade(this.IdleAnim);
 										this.SpeechLines.Stop();
@@ -5515,6 +5514,13 @@ public class StudentScript : MonoBehaviour
 									this.GetDestinations();
 									this.CurrentDestination = this.Destinations[this.Phase];
 									this.Pathfinding.target = this.Destinations[this.Phase];
+								}
+								else if (this.StudentManager.LoveManager.RivalWaiting && this.FollowTarget.DistanceToDestination < 1f)
+								{
+									Debug.Log("Raibaru just changed her destination to the bush near the matchmaking spot.");
+									this.CurrentDestination = this.StudentManager.LoveManager.FriendWaitSpot;
+									this.Pathfinding.target = this.StudentManager.LoveManager.FriendWaitSpot;
+									this.CharacterAnimation.CrossFade(this.IdleAnim);
 								}
 								else if (this.FollowTarget.ConfessPhase == 5)
 								{
@@ -6031,8 +6037,16 @@ public class StudentScript : MonoBehaviour
 							this.Pathfinding.canMove = true;
 							if (this.Yandere.Chased)
 							{
+								Debug.Log(this.Name + " is chasing Yandere-chan.");
 								this.Pathfinding.repathRate = 0f;
 								this.Pathfinding.speed = 5f;
+								this.ChaseTimer += Time.deltaTime;
+								if (this.ChaseTimer > 10f)
+								{
+									base.transform.position = this.Yandere.transform.position + this.Yandere.transform.forward * 1f;
+									base.transform.LookAt(this.Yandere.transform.position);
+									Physics.SyncTransforms();
+								}
 							}
 							else
 							{
@@ -6304,7 +6318,7 @@ public class StudentScript : MonoBehaviour
 							else if (this.Persona == PersonaType.Heroic)
 							{
 								Debug.Log(this.Name + " has the ''Heroic'' Persona and is using the ''Fleeing'' protocol.");
-								if (this.Yandere.Struggling && this.Yandere.StruggleBar.Student != this)
+								if (this.Yandere.Attacking || (this.Yandere.Struggling && this.Yandere.StruggleBar.Student != this))
 								{
 									Debug.Log(this.Name + " is waiting his turn to fight Yandere-chan.");
 									this.CharacterAnimation.CrossFade(this.ReadyToFightAnim);
@@ -6726,7 +6740,10 @@ public class StudentScript : MonoBehaviour
 										if (this.ReportPhase == 7)
 										{
 											Debug.Log("Telling reporter to go back to their normal routine.");
-											this.StudentManager.BloodReporter = null;
+											if (this.StudentManager.BloodReporter != this)
+											{
+												this.StudentManager.BloodReporter = null;
+											}
 											this.StudentManager.UpdateStudents(0);
 											if (this.MyReporter != null)
 											{
@@ -6803,6 +6820,9 @@ public class StudentScript : MonoBehaviour
 											this.Pathfinding.canMove = true;
 											this.Pathfinding.speed = 1f;
 											this.WitnessedSomething = false;
+											this.WitnessedWeapon = false;
+											this.ReportingBlood = false;
+											this.Distracted = false;
 											this.Alarmed = false;
 											this.Fleeing = false;
 											this.Routine = true;
@@ -8697,6 +8717,7 @@ public class StudentScript : MonoBehaviour
 					this.CharacterAnimation.CrossFade(this.WalkAnim);
 					if (this.DistanceToDestination < 1.1f)
 					{
+						Debug.Log(this.Name + " has returned a misplaced weapon.");
 						if (this.StudentManager.BloodReporter == this)
 						{
 							this.StudentManager.BloodReporter = null;
@@ -8723,6 +8744,7 @@ public class StudentScript : MonoBehaviour
 						this.WitnessedSomething = false;
 						this.WitnessedWeapon = false;
 						this.ReportingBlood = false;
+						this.Distracted = false;
 						this.Routine = true;
 						this.ReturningMisplacedWeaponPhase = 0;
 						this.WitnessCooldownTimer = 0f;
@@ -8901,7 +8923,7 @@ public class StudentScript : MonoBehaviour
 		if (this.Distracted)
 		{
 			flag = true;
-			if (!this.Hunting && (this.Yandere.Attacking || this.Yandere.Dragging || this.Yandere.Carrying))
+			if (!this.Hunting && this.ClubActivityPhase < 15 && (this.Yandere.Attacking || this.Yandere.Dragging || this.Yandere.Carrying))
 			{
 				flag = false;
 			}
@@ -8923,6 +8945,7 @@ public class StudentScript : MonoBehaviour
 						if (!this.WitnessedCorpse)
 						{
 							Debug.Log(this.Name + " discovered a corpse.");
+							this.SawCorpseThisFrame = true;
 							if (this.Club == ClubType.Delinquent && this.Corpse.Student.Club == ClubType.Bully)
 							{
 								this.FoundEnemyCorpse = true;
@@ -9364,6 +9387,10 @@ public class StudentScript : MonoBehaviour
 			{
 				this.Witnessed = StudentWitnessType.DroppedWeapon;
 			}
+			if (this.SawCorpseThisFrame)
+			{
+				this.YandereVisible = false;
+			}
 			if (this.YandereVisible)
 			{
 				if ((!this.Injured && this.Persona == PersonaType.Violent && this.Yandere.Armed && !this.WitnessedCorpse && !this.RespectEarned) || (this.Persona == PersonaType.Violent && this.Yandere.DelinquentFighting))
@@ -9526,6 +9553,7 @@ public class StudentScript : MonoBehaviour
 				this.Pathfinding.canMove = false;
 			}
 		}
+		this.SawCorpseThisFrame = false;
 	}
 
 	private void UpdateDetectionMarker()
@@ -9990,8 +10018,9 @@ public class StudentScript : MonoBehaviour
 				}
 			}
 		}
-		if (this.Prompt.Circle[2].fillAmount == 0f || (this.Yandere.Sanity < 33.33333f && this.Yandere.CanMove && !this.Prompt.HideButton[2] && this.Prompt.InSight && this.Club != ClubType.Council && !this.Struggling))
+		if (this.Prompt.Circle[2].fillAmount == 0f || (this.Yandere.Sanity < 33.33333f && this.Yandere.CanMove && !this.Prompt.HideButton[2] && this.Prompt.InSight && this.Club != ClubType.Council && !this.Struggling && !this.Chasing))
 		{
+			Debug.Log(this.Name + " was attacked because the player pressed the X button, or because Yandere-chan had low sanity.");
 			float f = Vector3.Angle(-base.transform.forward, this.Yandere.transform.position - base.transform.position);
 			this.Yandere.AttackManager.Stealth = (Mathf.Abs(f) <= 45f);
 			bool flag5 = false;
@@ -12142,6 +12171,7 @@ public class StudentScript : MonoBehaviour
 
 	private void WitnessMurder()
 	{
+		Debug.Log(this.Name + " just realized that Yandere-chan is responsible for a murder!");
 		this.RespectEarned = false;
 		if ((this.Fleeing && this.WitnessedBloodPool) || this.ReportPhase == 2)
 		{
@@ -12198,6 +12228,10 @@ public class StudentScript : MonoBehaviour
 			Debug.Log(this.Name + " is reverting back into their original Persona.");
 			this.Persona = this.OriginalPersona;
 			this.SwitchBack = false;
+			if (this.Persona == PersonaType.Heroic)
+			{
+				this.PersonaReaction();
+			}
 		}
 		if (this.Persona == PersonaType.Spiteful && this.Yandere.TargetStudent != null)
 		{
@@ -12934,6 +12968,7 @@ public class StudentScript : MonoBehaviour
 					this.Subtitle.UpdateLabel(SubtitleType.TeacherCorpseReaction, 1, 3f);
 				}
 				this.Pathfinding.target = UnityEngine.Object.Instantiate<GameObject>(this.EmptyGameObject, new Vector3(this.Corpse.AllColliders[0].transform.position.x, base.transform.position.y, this.Corpse.AllColliders[0].transform.position.z), Quaternion.identity).transform;
+				this.Pathfinding.target.position = Vector3.MoveTowards(this.Pathfinding.target.position, base.transform.position, 1.5f);
 				this.TargetDistance = 1f;
 				this.ReportPhase = 2;
 				base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y + 0.1f, base.transform.position.z);

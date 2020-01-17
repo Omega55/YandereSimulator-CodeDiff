@@ -691,7 +691,7 @@ public class ShutterScript : MonoBehaviour
 					PlayerGlobals.SetStudentPantyShot(this.Student.Name, true);
 					if (this.Student.Nemesis)
 					{
-						text = "Wait...I recognize those panties! This person is extremely dangerous! Avoid her at all costs!";
+						text = "Hey, wait a minute...I recognize those panties! This person is extremely dangerous! Avoid her at all costs!";
 					}
 					else if (this.Student.Club == ClubType.Bully || this.Student.Club == ClubType.Council || this.Student.Club == ClubType.Nurse || this.Student.StudentID == 20)
 					{

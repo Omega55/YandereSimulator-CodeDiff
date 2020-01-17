@@ -2733,6 +2733,10 @@ public class SubtitleScript : MonoBehaviour
 
 	public float GetClipLength(int StudentID, int TaskPhase)
 	{
+		if (StudentID == 6)
+		{
+			return this.Task6Clips[TaskPhase].length + 0.5f;
+		}
 		if (StudentID == 8)
 		{
 			return this.Task8Clips[TaskPhase].length;

@@ -33,7 +33,7 @@ public class VendingMachineScript : MonoBehaviour
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Circle[0].fillAmount = 1f;
-			if (PlayerGlobals.Money >= (float)this.Price)
+			if (this.Prompt.Yandere.Inventory.Money >= (float)this.Price)
 			{
 				if (!this.Sabotaged)
 				{
@@ -45,7 +45,7 @@ public class VendingMachineScript : MonoBehaviour
 					SchemeGlobals.SetSchemeStage(4, 4);
 					this.Prompt.Yandere.PauseScreen.Schemes.UpdateInstructions();
 				}
-				PlayerGlobals.Money -= (float)this.Price;
+				this.Prompt.Yandere.Inventory.Money -= (float)this.Price;
 				this.Prompt.Yandere.Inventory.UpdateMoney();
 			}
 			else

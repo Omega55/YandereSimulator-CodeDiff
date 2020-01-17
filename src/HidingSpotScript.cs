@@ -18,7 +18,7 @@ public class HidingSpotScript : MonoBehaviour
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Circle[0].fillAmount = 1f;
-			if (!this.Prompt.Yandere.Chased && this.Prompt.Yandere.Chasers == 0)
+			if (!this.Prompt.Yandere.Chased && this.Prompt.Yandere.Chasers == 0 && this.Prompt.Yandere.Pursuer == null)
 			{
 				this.Prompt.Yandere.MyController.center = new Vector3(this.Prompt.Yandere.MyController.center.x, 0.3f, this.Prompt.Yandere.MyController.center.z);
 				this.Prompt.Yandere.MyController.radius = 0f;
