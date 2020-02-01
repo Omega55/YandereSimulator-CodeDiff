@@ -678,7 +678,12 @@ public class RagdollScript : MonoBehaviour
 		{
 			this.BloodPoolSpawner.Start();
 		}
-		this.BloodPoolSpawner.SpawnBigPool();
+		Debug.Log("BloodPoolSpawner.transform.position is: " + this.BloodPoolSpawner.transform.position);
+		Debug.Log("Student.StudentManager.SEStairs.bounds is: " + this.Student.StudentManager.SEStairs.bounds);
+		if (!this.Student.StudentManager.NEStairs.bounds.Contains(this.BloodPoolSpawner.transform.position) && !this.Student.StudentManager.NWStairs.bounds.Contains(this.BloodPoolSpawner.transform.position) && !this.Student.StudentManager.SEStairs.bounds.Contains(this.BloodPoolSpawner.transform.position) && !this.Student.StudentManager.SWStairs.bounds.Contains(this.BloodPoolSpawner.transform.position))
+		{
+			this.BloodPoolSpawner.SpawnBigPool();
+		}
 		base.gameObject.SetActive(false);
 	}
 
@@ -778,8 +783,14 @@ public class RagdollScript : MonoBehaviour
 			{
 				this.BloodPoolSpawner.Start();
 			}
+			Debug.Log("BloodPoolSpawner.transform.position is: " + this.BloodPoolSpawner.transform.position);
+			Debug.Log("Student.StudentManager.SEStairs.bounds is: " + this.Student.StudentManager.SEStairs.bounds);
+			Debug.Log("Student.StudentManager.SEStairs.bounds.Contains(BloodPoolSpawner.transform.position) is: " + this.Student.StudentManager.SEStairs.bounds.Contains(this.BloodPoolSpawner.transform.position));
+			if (!this.Student.StudentManager.NEStairs.bounds.Contains(this.BloodPoolSpawner.transform.position) && !this.Student.StudentManager.NWStairs.bounds.Contains(this.BloodPoolSpawner.transform.position) && !this.Student.StudentManager.SEStairs.bounds.Contains(this.BloodPoolSpawner.transform.position) && !this.Student.StudentManager.SWStairs.bounds.Contains(this.BloodPoolSpawner.transform.position))
+			{
+				this.BloodPoolSpawner.SpawnBigPool();
+			}
 			this.Police.PartsIcon.gameObject.SetActive(true);
-			this.BloodPoolSpawner.SpawnBigPool();
 			this.Police.BodyParts += 6;
 			this.Yandere.NearBodies--;
 			this.Police.Corpses--;
@@ -790,6 +801,7 @@ public class RagdollScript : MonoBehaviour
 
 	public void Remove()
 	{
+		this.BloodPoolSpawner.enabled = false;
 		if (this.AddingToCount)
 		{
 			this.Yandere.NearBodies--;

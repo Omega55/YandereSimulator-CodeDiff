@@ -1021,7 +1021,7 @@ public class EndOfDayScript : MonoBehaviour
 					else
 					{
 						this.GaudyRing.SetActive(true);
-						this.Label.text = "Yandere-chan decides to keep Sakyu Basu's ring.";
+						this.Label.text = "Ayano decides to keep Sakyu Basu's ring.";
 						SchemeGlobals.SetSchemeStage(2, 100);
 					}
 				}

@@ -9,6 +9,8 @@ public class StalkerYandereScript : MonoBehaviour
 
 	public Transform CameraTarget;
 
+	public Transform EntryPOV;
+
 	public Transform Hips;
 
 	public RPG_Camera RPGCamera;
@@ -49,6 +51,8 @@ public class StalkerYandereScript : MonoBehaviour
 
 	public float CrouchRunSpeed;
 
+	public int ClimbPhase;
+
 	public int Frame;
 
 	private void Update()
@@ -88,21 +92,42 @@ public class StalkerYandereScript : MonoBehaviour
 		}
 		else if (this.CameraTarget != null && this.Climbing)
 		{
-			if (this.MyAnimation["f02_climbTrellis_00"].time < this.MyAnimation["f02_climbTrellis_00"].length - 1f)
+			if (this.ClimbPhase == 1)
 			{
-				this.CameraTarget.position = Vector3.MoveTowards(this.CameraTarget.position, this.Hips.position + new Vector3(0f, 0.103729f, 0.003539f), Time.deltaTime);
+				if (this.MyAnimation["f02_climbTrellis_00"].time < this.MyAnimation["f02_climbTrellis_00"].length - 1f)
+				{
+					this.CameraTarget.position = Vector3.MoveTowards(this.CameraTarget.position, this.Hips.position + new Vector3(0f, 0.103729f, 0.003539f), Time.deltaTime);
+				}
+				else
+				{
+					this.CameraTarget.position = Vector3.MoveTowards(this.CameraTarget.position, new Vector3(-9.5f, 5f, -2.5f), Time.deltaTime);
+				}
+				this.MoveTowardsTarget(this.TrellisClimbSpot.position);
+				this.SpinTowardsTarget(this.TrellisClimbSpot.rotation);
+				if (this.MyAnimation["f02_climbTrellis_00"].time > 7.5f)
+				{
+					this.RPGCamera.transform.position = this.EntryPOV.position;
+					this.RPGCamera.transform.eulerAngles = this.EntryPOV.eulerAngles;
+					this.RPGCamera.enabled = false;
+					RenderSettings.ambientIntensity = 8f;
+					this.ClimbPhase++;
+				}
 			}
 			else
 			{
-				this.CameraTarget.position = Vector3.MoveTowards(this.CameraTarget.position, new Vector3(-9.5f, 5f, -2.5f), Time.deltaTime);
+				this.RPGCamera.transform.position = this.EntryPOV.position;
+				this.RPGCamera.transform.eulerAngles = this.EntryPOV.eulerAngles;
+				if (this.MyAnimation["f02_climbTrellis_00"].time > 11f)
+				{
+					base.transform.position = Vector3.MoveTowards(base.transform.position, this.TrellisClimbSpot.position + new Vector3(0.4f, 0f, 0f), Time.deltaTime * 0.5f);
+				}
 			}
-			this.MoveTowardsTarget(this.TrellisClimbSpot.position);
-			this.SpinTowardsTarget(this.TrellisClimbSpot.rotation);
 			if (this.MyAnimation["f02_climbTrellis_00"].time > this.MyAnimation["f02_climbTrellis_00"].length)
 			{
 				this.MyAnimation.Play(this.IdleAnim);
-				base.transform.position = new Vector3(-9.5f, 4f, -2.5f);
+				base.transform.position = new Vector3(-9.1f, 4f, -2.5f);
 				this.CameraTarget.position = base.transform.position + new Vector3(0f, 1f, 0f);
+				this.RPGCamera.enabled = true;
 				this.Climbing = false;
 				this.CanMove = true;
 			}

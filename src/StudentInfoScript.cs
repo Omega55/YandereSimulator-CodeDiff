@@ -318,6 +318,7 @@ public class StudentInfoScript : MonoBehaviour
 				this.StudentInfoMenu.PauseScreen.MainMenu.SetActive(true);
 				this.StudentInfoMenu.PauseScreen.Show = false;
 				this.Yandere.TargetStudent.HuntTarget = this.StudentManager.Students[this.CurrentStudent];
+				this.Yandere.TargetStudent.HuntTarget.Hunted = true;
 				this.Yandere.TargetStudent.GoCommitMurder();
 				this.Yandere.RPGCamera.enabled = true;
 				this.Yandere.TargetStudent = null;

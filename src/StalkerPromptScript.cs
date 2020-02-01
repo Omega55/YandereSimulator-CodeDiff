@@ -23,6 +23,7 @@ public class StalkerPromptScript : MonoBehaviour
 				this.Yandere.Climbing = true;
 				this.Yandere.CanMove = false;
 				UnityEngine.Object.Destroy(base.gameObject);
+				UnityEngine.Object.Destroy(this.MySprite);
 			}
 		}
 		else

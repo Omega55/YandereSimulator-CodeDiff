@@ -103,7 +103,7 @@ public class GardenHoleScript : MonoBehaviour
 				{
 					this.Yandere.FloatingShovel.GetComponent<Animation>()["Bury"].time = 0f;
 					this.Yandere.FloatingShovel.GetComponent<Animation>().Play("Bury");
-					this.Yandere.Character.GetComponent<Animation>().Play("f02_shovelBury_00");
+					this.Yandere.CharacterAnimation.Play("f02_shovelBury_00");
 					this.Yandere.Burying = true;
 					this.Prompt.Label[0].text = "     Dig";
 					this.MyCollider.isTrigger = false;

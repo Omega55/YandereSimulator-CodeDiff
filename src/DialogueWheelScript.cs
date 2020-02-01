@@ -855,7 +855,7 @@ public class DialogueWheelScript : MonoBehaviour
 			UISprite uisprite21 = this.LoveShadow[1];
 			uisprite21.color = new Color(uisprite21.color.r, uisprite21.color.g, uisprite21.color.b, 0.75f);
 		}
-		if (this.DatingMinigame == null || !this.Yandere.Inventory.Headset || (this.Yandere.TargetStudent.Male && !this.LoveManager.RivalWaiting) || this.LoveManager.Courted)
+		if (this.DatingMinigame == null || (this.Yandere.TargetStudent.Male && !this.LoveManager.RivalWaiting) || this.LoveManager.Courted)
 		{
 			UISprite uisprite22 = this.LoveShadow[2];
 			uisprite22.color = new Color(uisprite22.color.r, uisprite22.color.g, uisprite22.color.b, 0.75f);

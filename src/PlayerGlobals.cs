@@ -61,6 +61,8 @@ public static class PlayerGlobals
 
 	private const string Str_ShrineCollectible = "ShrineCollectible";
 
+	private const string Str_UsingGamepad = "UsingGamepad";
+
 	public static float Money
 	{
 		get
@@ -552,6 +554,18 @@ public static class PlayerGlobals
 			"_ShrineCollectible",
 			text
 		}), value);
+	}
+
+	public static bool UsingGamepad
+	{
+		get
+		{
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_UsingGamepad");
+		}
+		set
+		{
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_UsingGamepad", value);
+		}
 	}
 
 	public static void DeleteAll()

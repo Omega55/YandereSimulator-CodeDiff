@@ -1502,6 +1502,7 @@ public class YandereScript : MonoBehaviour
 		{
 			UnityEngine.Object.Destroy(base.gameObject);
 		}
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 1f);
 		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 1f);
 	}
 
@@ -7341,6 +7342,7 @@ public class YandereScript : MonoBehaviour
 		{
 			this.PantyAttacher.newRenderer.enabled = true;
 			this.MyRenderer.sharedMesh = this.Uniforms[StudentGlobals.FemaleUniform];
+			this.MyRenderer.materials[0].SetFloat("_BlendAmount", 1f);
 			this.MyRenderer.materials[1].SetFloat("_BlendAmount", 1f);
 			if (this.StudentManager.Censor)
 			{

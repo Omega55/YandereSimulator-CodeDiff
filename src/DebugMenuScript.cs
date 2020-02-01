@@ -207,7 +207,7 @@ public class DebugMenuScript : MonoBehaviour
 					else if (Input.GetKeyDown(KeyCode.Alpha6))
 					{
 						this.Yandere.transform.position = this.TeleportSpot[1].position;
-						if (this.Yandere.Follower != null)
+						if (this.Yandere.Followers > 0)
 						{
 							this.Yandere.Follower.transform.position = this.Yandere.transform.position;
 						}
@@ -217,7 +217,7 @@ public class DebugMenuScript : MonoBehaviour
 					else if (Input.GetKeyDown(KeyCode.Alpha7))
 					{
 						this.Yandere.transform.position = this.TeleportSpot[2].position + new Vector3(0.75f, 0f, 0f);
-						if (this.Yandere.Follower != null)
+						if (this.Yandere.Followers > 0)
 						{
 							this.Yandere.Follower.transform.position = this.Yandere.transform.position;
 						}
@@ -227,7 +227,7 @@ public class DebugMenuScript : MonoBehaviour
 					else if (Input.GetKeyDown(KeyCode.Alpha8))
 					{
 						this.Yandere.transform.position = this.TeleportSpot[3].position;
-						if (this.Yandere.Follower != null)
+						if (this.Yandere.Followers > 0)
 						{
 							this.Yandere.Follower.transform.position = this.Yandere.transform.position;
 						}
@@ -237,50 +237,47 @@ public class DebugMenuScript : MonoBehaviour
 					else if (Input.GetKeyDown(KeyCode.Alpha9))
 					{
 						this.Yandere.transform.position = this.TeleportSpot[4].position;
-						if (this.Yandere.Follower != null)
+						if (this.Yandere.Followers > 0)
 						{
 							this.Yandere.Follower.transform.position = this.Yandere.transform.position;
 						}
-						if (this.Clock.HourTime < 7.1f)
+						this.Clock.PresentTime = 426f;
+						StudentScript studentScript = this.StudentManager.Students[30];
+						if (studentScript != null)
 						{
-							this.Clock.PresentTime = 426f;
-							StudentScript studentScript = this.StudentManager.Students[30];
-							if (studentScript != null)
+							if (studentScript.Phase < 2)
 							{
-								if (studentScript.Phase < 2)
-								{
-									studentScript.ShoeRemoval.Start();
-									studentScript.ShoeRemoval.PutOnShoes();
-									studentScript.CanTalk = true;
-									studentScript.Phase = 2;
-									studentScript.CurrentDestination = studentScript.Destinations[2];
-									studentScript.Pathfinding.target = studentScript.Destinations[2];
-								}
-								studentScript.transform.position = studentScript.Destinations[2].position;
+								studentScript.ShoeRemoval.Start();
+								studentScript.ShoeRemoval.PutOnShoes();
+								studentScript.CanTalk = true;
+								studentScript.Phase = 2;
+								studentScript.CurrentDestination = studentScript.Destinations[2];
+								studentScript.Pathfinding.target = studentScript.Destinations[2];
 							}
-							StudentScript studentScript2 = this.StudentManager.Students[28];
-							if (studentScript2 != null)
-							{
-								studentScript2.ShoeRemoval.Start();
-								studentScript2.ShoeRemoval.PutOnShoes();
-								studentScript2.Phase = 2;
-								studentScript2.CurrentDestination = studentScript2.Destinations[2];
-								studentScript2.Pathfinding.target = studentScript2.Destinations[2];
-								studentScript2.transform.position = studentScript2.Destinations[2].position;
-							}
-							StudentScript studentScript3 = this.StudentManager.Students[39];
-							if (studentScript3 != null)
-							{
-								studentScript3.ShoeRemoval.Start();
-								studentScript3.ShoeRemoval.PutOnShoes();
-								studentScript3.Phase = 2;
-								ScheduleBlock scheduleBlock = studentScript3.ScheduleBlocks[2];
-								scheduleBlock.action = "Stand";
-								studentScript3.GetDestinations();
-								studentScript3.CurrentDestination = this.MidoriSpot;
-								studentScript3.Pathfinding.target = this.MidoriSpot;
-								studentScript3.transform.position = this.MidoriSpot.position;
-							}
+							studentScript.transform.position = studentScript.Destinations[2].position;
+						}
+						StudentScript studentScript2 = this.StudentManager.Students[28];
+						if (studentScript2 != null)
+						{
+							studentScript2.ShoeRemoval.Start();
+							studentScript2.ShoeRemoval.PutOnShoes();
+							studentScript2.Phase = 2;
+							studentScript2.CurrentDestination = studentScript2.Destinations[2];
+							studentScript2.Pathfinding.target = studentScript2.Destinations[2];
+							studentScript2.transform.position = studentScript2.Destinations[2].position;
+						}
+						StudentScript studentScript3 = this.StudentManager.Students[39];
+						if (studentScript3 != null)
+						{
+							studentScript3.ShoeRemoval.Start();
+							studentScript3.ShoeRemoval.PutOnShoes();
+							studentScript3.Phase = 2;
+							ScheduleBlock scheduleBlock = studentScript3.ScheduleBlocks[2];
+							scheduleBlock.action = "Stand";
+							studentScript3.GetDestinations();
+							studentScript3.CurrentDestination = this.MidoriSpot;
+							studentScript3.Pathfinding.target = this.MidoriSpot;
+							studentScript3.transform.position = this.MidoriSpot.position;
 						}
 						this.Window.SetActive(false);
 						Physics.SyncTransforms();
@@ -625,8 +622,39 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					else if (Input.GetKeyDown(KeyCode.B))
 					{
-						DatingGlobals.SuitorProgress = 2;
-						SceneManager.LoadScene("LoadingScene");
+						DatingGlobals.SuitorProgress = 1;
+						PlayerGlobals.SetStudentFriend(6, true);
+						PlayerGlobals.SetStudentFriend(11, true);
+						this.ID = 1;
+						while (this.ID < 26)
+						{
+							ConversationGlobals.SetTopicLearnedByStudent(this.ID, 11, true);
+							ConversationGlobals.SetTopicDiscovered(this.ID, true);
+							this.ID++;
+						}
+						StudentScript studentScript8 = this.StudentManager.Students[11];
+						if (studentScript8 != null)
+						{
+							studentScript8.ShoeRemoval.Start();
+							studentScript8.ShoeRemoval.PutOnShoes();
+							studentScript8.CanTalk = true;
+							studentScript8.Phase = 2;
+							studentScript8.CurrentDestination = studentScript8.Destinations[2];
+							studentScript8.Pathfinding.target = studentScript8.Destinations[2];
+							studentScript8.transform.position = studentScript8.Destinations[2].position;
+						}
+						StudentScript studentScript9 = this.StudentManager.Students[6];
+						if (studentScript9 != null)
+						{
+							studentScript9.ShoeRemoval.Start();
+							studentScript9.ShoeRemoval.PutOnShoes();
+							studentScript9.Phase = 2;
+							studentScript9.CurrentDestination = studentScript9.Destinations[2];
+							studentScript9.Pathfinding.target = studentScript9.Destinations[2];
+							studentScript9.transform.position = studentScript9.Destinations[2].position;
+						}
+						Physics.SyncTransforms();
+						this.Window.SetActive(false);
 					}
 					else if (Input.GetKeyDown(KeyCode.Pause))
 					{
@@ -671,6 +699,11 @@ public class DebugMenuScript : MonoBehaviour
 							this.ElectrocutionKit[3].SetActive(true);
 						}
 					}
+				}
+				if (Input.GetKeyDown(KeyCode.Tab))
+				{
+					DatingGlobals.SuitorProgress = 2;
+					SceneManager.LoadScene("LoadingScene");
 				}
 			}
 			else

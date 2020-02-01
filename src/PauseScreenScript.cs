@@ -54,6 +54,8 @@ public class PauseScreenScript : MonoBehaviour
 
 	public UISprite Wifi;
 
+	public GameObject NewMissionModeWindow;
+
 	public GameObject MissionModeLabel;
 
 	public GameObject MissionModeIcons;
@@ -154,6 +156,10 @@ public class PauseScreenScript : MonoBehaviour
 			uisprite3.color = new Color(uisprite3.color.r, uisprite3.color.g, uisprite3.color.b, 1f);
 			UISprite uisprite4 = this.PhoneIcons[9];
 			uisprite4.color = new Color(uisprite4.color.r, uisprite4.color.g, uisprite4.color.b, 0.5f);
+			if (this.NewMissionModeWindow != null)
+			{
+				this.NewMissionModeWindow.SetActive(false);
+			}
 		}
 		if (MissionModeGlobals.MissionMode)
 		{

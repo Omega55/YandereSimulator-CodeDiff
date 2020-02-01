@@ -12,6 +12,8 @@ public class HomeDarknessScript : MonoBehaviour
 
 	public HomeExitScript HomeExit;
 
+	public InputDeviceScript InputDevice;
+
 	public UILabel BasementLabel;
 
 	public UISprite Sprite;
@@ -145,6 +147,14 @@ public class HomeDarknessScript : MonoBehaviour
 	private void CheckForOsanaThursday()
 	{
 		Debug.Log("Time to check if we need to display the Osana-walks-to-school cutscene...");
+		if (this.InputDevice.Type == InputDeviceType.Gamepad)
+		{
+			PlayerGlobals.UsingGamepad = true;
+		}
+		else
+		{
+			PlayerGlobals.UsingGamepad = false;
+		}
 		SceneManager.LoadScene("LoadingScene");
 	}
 }

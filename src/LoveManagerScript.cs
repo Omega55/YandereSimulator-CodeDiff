@@ -178,6 +178,7 @@ public class LoveManagerScript : MonoBehaviour
 				this.Suitor.CoupleID = this.SuitorID;
 				this.Rival.CoupleID = this.RivalID;
 				this.HoldingHands = true;
+				Debug.Log("Students are now holding hands.");
 			}
 		}
 	}

@@ -74,7 +74,7 @@ public class StruggleBarScript : MonoBehaviour
 			this.Spikes.localPosition = new Vector3(uisprite.transform.localPosition.x, this.Spikes.localPosition.y, this.Spikes.localPosition.z);
 			if (this.Victory == 100f)
 			{
-				Debug.Log("Yandere-chan just won a struggle against " + this.Student.Name);
+				Debug.Log("Yandere-chan just won a struggle against " + this.Student.Name + ".");
 				this.Yandere.Won = true;
 				this.Student.Lost = true;
 				this.Struggling = false;

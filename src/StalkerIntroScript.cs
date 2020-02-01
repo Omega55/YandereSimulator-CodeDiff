@@ -26,8 +26,11 @@ public class StalkerIntroScript : MonoBehaviour
 
 	public int Phase;
 
+	public GameObject[] Neighborhood;
+
 	private void Start()
 	{
+		RenderSettings.ambientIntensity = 4f;
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
 		base.transform.position = new Vector3(12.5f, 5f, 13f);
@@ -105,8 +108,21 @@ public class StalkerIntroScript : MonoBehaviour
 				{
 					this.RPGCamera.enabled = true;
 					this.Yandere.enabled = true;
-					base.enabled = false;
+					this.Phase++;
 				}
+			}
+		}
+		if (Input.GetKeyDown("space"))
+		{
+			if (this.Neighborhood[0].activeInHierarchy)
+			{
+				this.Neighborhood[0].SetActive(false);
+				this.Neighborhood[1].SetActive(true);
+			}
+			else
+			{
+				this.Neighborhood[0].SetActive(true);
+				this.Neighborhood[1].SetActive(false);
 			}
 		}
 	}

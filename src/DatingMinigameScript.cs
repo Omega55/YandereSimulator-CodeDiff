@@ -201,30 +201,8 @@ public class DatingMinigameScript : MonoBehaviour
 
 	private void CalculateAffection()
 	{
-		if (this.Affection == 0f)
-		{
-			this.AffectionLevel = 0;
-		}
-		else if (this.Affection < 25f)
-		{
-			this.AffectionLevel = 1;
-		}
-		else if (this.Affection < 50f)
-		{
-			this.AffectionLevel = 2;
-		}
-		else if (this.Affection < 75f)
-		{
-			this.AffectionLevel = 3;
-		}
-		else if (this.Affection < 100f)
-		{
-			this.AffectionLevel = 4;
-		}
-		else
-		{
-			this.AffectionLevel = 5;
-		}
+		this.AffectionLevel = (int)Mathf.Floor(Mathf.Min(this.Affection / 25f, 100f));
+		Debug.Log("AffectionLevel is now: " + this.AffectionLevel);
 	}
 
 	private void Update()
@@ -253,7 +231,7 @@ public class DatingMinigameScript : MonoBehaviour
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
 			this.Prompt.Circle[0].fillAmount = 1f;
-			if (!this.Yandere.Chased && this.Yandere.Chasers == 0)
+			if (!this.Yandere.Chased && this.Yandere.Chasers == 0 && !this.Rival.Hunted)
 			{
 				this.Suitor.enabled = false;
 				this.Rival.enabled = false;
@@ -757,6 +735,12 @@ public class DatingMinigameScript : MonoBehaviour
 				}
 				this.Panel.alpha = Mathf.MoveTowards(this.Panel.alpha, 1f, Time.deltaTime);
 			}
+		}
+		if (Input.GetKeyDown(KeyCode.LeftControl))
+		{
+			this.Affection += 10f;
+			this.CalculateAffection();
+			this.DialogueLabel.text = this.Greetings[this.AffectionLevel];
 		}
 	}
 

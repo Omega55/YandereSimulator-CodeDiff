@@ -1528,6 +1528,12 @@ public class StudentManagerScript : MonoBehaviour
 					studentScript.ReportPhase = 0;
 					studentScript.WitnessedBloodPool = false;
 				}
+				if (studentScript.HoldingHands)
+				{
+					studentScript.HoldingHands = false;
+					studentScript.Paired = false;
+					studentScript.enabled = true;
+				}
 				if (studentScript.Alive && !studentScript.Slave && !studentScript.Tranquil && !studentScript.Fleeing && studentScript.enabled && studentScript.gameObject.activeInHierarchy)
 				{
 					if (!studentScript.Started)
@@ -1614,6 +1620,10 @@ public class StudentManagerScript : MonoBehaviour
 							studentScript.MyPlate.transform.rotation = studentScript.OriginalPlateRotation;
 							studentScript.IdleAnim = studentScript.OriginalIdleAnim;
 							studentScript.WalkAnim = studentScript.OriginalWalkAnim;
+						}
+						if (studentScript.ReturningMisplacedWeapon)
+						{
+							studentScript.ReturnMisplacedWeapon();
 						}
 					}
 					else if (this.ID != this.GymTeacherID && this.ID != this.NurseID)
@@ -2084,26 +2094,70 @@ public class StudentManagerScript : MonoBehaviour
 
 	public void LowerCorpsePosition()
 	{
-		if (this.CorpseLocation.position.y < 4f)
+		int num;
+		if (this.CorpseLocation.position.y < 2f)
 		{
-			this.CorpseLocation.position = new Vector3(this.CorpseLocation.position.x, 0f, this.CorpseLocation.position.z);
+			num = 0;
+		}
+		else if (this.CorpseLocation.position.y < 4f)
+		{
+			num = 2;
+		}
+		else if (this.CorpseLocation.position.y < 6f)
+		{
+			num = 4;
 		}
 		else if (this.CorpseLocation.position.y < 8f)
 		{
-			this.CorpseLocation.position = new Vector3(this.CorpseLocation.position.x, 4f, this.CorpseLocation.position.z);
+			num = 6;
+		}
+		else if (this.CorpseLocation.position.y < 10f)
+		{
+			num = 8;
 		}
 		else if (this.CorpseLocation.position.y < 12f)
 		{
-			this.CorpseLocation.position = new Vector3(this.CorpseLocation.position.x, 8f, this.CorpseLocation.position.z);
+			num = 10;
 		}
 		else
 		{
-			this.CorpseLocation.position = new Vector3(this.CorpseLocation.position.x, 12f, this.CorpseLocation.position.z);
+			num = 12;
 		}
+		this.CorpseLocation.position = new Vector3(this.CorpseLocation.position.x, (float)num, this.CorpseLocation.position.z);
 	}
 
 	public void LowerBloodPosition()
 	{
+		int num;
+		if (this.BloodLocation.position.y < 2f)
+		{
+			num = 0;
+		}
+		else if (this.BloodLocation.position.y < 4f)
+		{
+			num = 2;
+		}
+		else if (this.BloodLocation.position.y < 6f)
+		{
+			num = 4;
+		}
+		else if (this.BloodLocation.position.y < 8f)
+		{
+			num = 6;
+		}
+		else if (this.BloodLocation.position.y < 10f)
+		{
+			num = 8;
+		}
+		else if (this.BloodLocation.position.y < 12f)
+		{
+			num = 10;
+		}
+		else
+		{
+			num = 12;
+		}
+		this.BloodLocation.position = new Vector3(this.BloodLocation.position.x, (float)num, this.BloodLocation.position.z);
 	}
 
 	public void CensorStudents()
@@ -3154,7 +3208,7 @@ public class StudentManagerScript : MonoBehaviour
 		StudentGlobals.SetReputationTriangle(65, new Vector3(-10f, 30f, 50f));
 		StudentGlobals.SetReputationTriangle(66, new Vector3(-50f, 100f, 50f));
 		StudentGlobals.SetReputationTriangle(67, new Vector3(30f, 70f, 0f));
-		StudentGlobals.SetReputationTriangle(68, new Vector3(30f, -50f, 0f));
+		StudentGlobals.SetReputationTriangle(68, new Vector3(0f, 0f, 50f));
 		StudentGlobals.SetReputationTriangle(69, new Vector3(30f, 50f, 0f));
 		StudentGlobals.SetReputationTriangle(70, new Vector3(50f, 30f, 0f));
 		StudentGlobals.SetReputationTriangle(71, new Vector3(100f, 100f, -100f));

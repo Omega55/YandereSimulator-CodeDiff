@@ -146,6 +146,26 @@ public class HeartbrokenScript : MonoBehaviour
 			this.LetterID = 0;
 			this.StopID = 11;
 		}
+		else if (this.Exposed)
+		{
+			this.Letters[0].text = string.Empty;
+			this.Letters[1].text = string.Empty;
+			this.Letters[2].text = "E";
+			this.Letters[3].text = "X";
+			this.Letters[4].text = "P";
+			this.Letters[5].text = "O";
+			this.Letters[6].text = "S";
+			this.Letters[7].text = "E";
+			this.Letters[8].text = "D";
+			this.Letters[9].text = string.Empty;
+			this.Letters[10].text = string.Empty;
+			foreach (UILabel uilabel2 in this.Letters)
+			{
+				uilabel2.transform.localPosition = new Vector3(uilabel2.transform.localPosition.x + 100f, uilabel2.transform.localPosition.y, uilabel2.transform.localPosition.z);
+			}
+			this.LetterID = 1;
+			this.StopID = 9;
+		}
 		else if (this.Arrested)
 		{
 			this.Letters[0].text = string.Empty;
@@ -159,9 +179,9 @@ public class HeartbrokenScript : MonoBehaviour
 			this.Letters[8].text = "D";
 			this.Letters[9].text = string.Empty;
 			this.Letters[10].text = string.Empty;
-			foreach (UILabel uilabel2 in this.Letters)
+			foreach (UILabel uilabel3 in this.Letters)
 			{
-				uilabel2.transform.localPosition = new Vector3(uilabel2.transform.localPosition.x + 100f, uilabel2.transform.localPosition.y, uilabel2.transform.localPosition.z);
+				uilabel3.transform.localPosition = new Vector3(uilabel3.transform.localPosition.x + 100f, uilabel3.transform.localPosition.y, uilabel3.transform.localPosition.z);
 			}
 			this.LetterID = 1;
 			this.StopID = 9;
@@ -175,26 +195,6 @@ public class HeartbrokenScript : MonoBehaviour
 			this.Letters[4].text = "E";
 			this.Letters[5].text = "L";
 			this.Letters[6].text = "L";
-			this.Letters[7].text = "E";
-			this.Letters[8].text = "D";
-			this.Letters[9].text = string.Empty;
-			this.Letters[10].text = string.Empty;
-			foreach (UILabel uilabel3 in this.Letters)
-			{
-				uilabel3.transform.localPosition = new Vector3(uilabel3.transform.localPosition.x + 100f, uilabel3.transform.localPosition.y, uilabel3.transform.localPosition.z);
-			}
-			this.LetterID = 1;
-			this.StopID = 9;
-		}
-		else if (this.Exposed)
-		{
-			this.Letters[0].text = string.Empty;
-			this.Letters[1].text = string.Empty;
-			this.Letters[2].text = "E";
-			this.Letters[3].text = "X";
-			this.Letters[4].text = "P";
-			this.Letters[5].text = "O";
-			this.Letters[6].text = "S";
 			this.Letters[7].text = "E";
 			this.Letters[8].text = "D";
 			this.Letters[9].text = string.Empty;
