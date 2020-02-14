@@ -48,6 +48,8 @@ public class HeartbrokenScript : MonoBehaviour
 
 	public bool Noticed = true;
 
+	public bool Freeze;
+
 	public float VibrationTimer;
 
 	public float AudioTimer;
@@ -243,6 +245,10 @@ public class HeartbrokenScript : MonoBehaviour
 
 	private void Update()
 	{
+		if (Input.GetKeyDown("m"))
+		{
+			base.gameObject.GetComponent<AudioSource>().Stop();
+		}
 		this.VibrationTimer = Mathf.MoveTowards(this.VibrationTimer, 0f, Time.deltaTime);
 		if (this.VibrationTimer == 0f)
 		{
@@ -317,13 +323,16 @@ public class HeartbrokenScript : MonoBehaviour
 				}
 			}
 		}
-		this.ShakeID = 0;
-		while (this.ShakeID < this.Letters.Length)
+		if (!this.Freeze)
 		{
-			UILabel uilabel3 = this.Letters[this.ShakeID];
-			Vector3 vector = this.Origins[this.ShakeID];
-			uilabel3.transform.localPosition = new Vector3(vector.x + UnityEngine.Random.Range(-5f, 5f), vector.y + UnityEngine.Random.Range(-5f, 5f), uilabel3.transform.localPosition.z);
-			this.ShakeID++;
+			this.ShakeID = 0;
+			while (this.ShakeID < this.Letters.Length)
+			{
+				UILabel uilabel3 = this.Letters[this.ShakeID];
+				Vector3 vector = this.Origins[this.ShakeID];
+				uilabel3.transform.localPosition = new Vector3(vector.x + UnityEngine.Random.Range(-5f, 5f), vector.y + UnityEngine.Random.Range(-5f, 5f), uilabel3.transform.localPosition.z);
+				this.ShakeID++;
+			}
 		}
 		this.GrowID = 0;
 		while (this.GrowID < 4)
@@ -376,6 +385,26 @@ public class HeartbrokenScript : MonoBehaviour
 			this.Subtitle.text = this.NoticedLines[7];
 			this.Subtitle.GetComponent<AudioSource>().clip = this.NoticedClips[7];
 			this.Subtitle.GetComponent<AudioSource>().Play();
+		}
+	}
+
+	public void Darken()
+	{
+		for (int i = 0; i < this.Letters.Length; i++)
+		{
+			if (this.Letters[i].color.a > 1f)
+			{
+				this.Letters[i].color = new Color(1f, 0f, 0f, 1f);
+			}
+			this.Letters[i].color = new Color(1f, 0f, 0f, this.Letters[i].color.a - 0.05882353f);
+		}
+		for (int i = 0; i < 3; i++)
+		{
+			if (this.Options[i].color.a > 1f)
+			{
+				this.Options[i].color = new Color(this.Options[i].color.r, this.Options[i].color.g, this.Options[i].color.b, 1f);
+			}
+			this.Options[i].color = new Color(this.Options[i].color.r, this.Options[i].color.g, this.Options[i].color.b, this.Options[i].color.a - 0.05882353f);
 		}
 	}
 }

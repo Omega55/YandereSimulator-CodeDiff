@@ -3987,6 +3987,7 @@ public class StudentScript : MonoBehaviour
 												{
 													if (this.StudentID == 1 && this.StudentManager.Gift.activeInHierarchy)
 													{
+														this.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
 														this.CharacterAnimation.CrossFade(this.InspectBloodAnim);
 														if (this.CharacterAnimation[this.InspectBloodAnim].time >= this.CharacterAnimation[this.InspectBloodAnim].length)
 														{
@@ -4800,6 +4801,7 @@ public class StudentScript : MonoBehaviour
 											{
 												this.Headache = true;
 											}
+											this.Distracted = true;
 										}
 									}
 									if (!this.Emetic && !this.Lethal && !this.Sedated && !this.Headache)
@@ -5536,6 +5538,7 @@ public class StudentScript : MonoBehaviour
 									this.GetDestinations();
 									this.CurrentDestination = this.Destinations[this.Phase];
 									this.Pathfinding.target = this.Destinations[this.Phase];
+									this.MyController.radius = 0.1f;
 								}
 								else
 								{
@@ -6670,12 +6673,14 @@ public class StudentScript : MonoBehaviour
 										{
 											this.targetRotation = Quaternion.LookRotation(new Vector3(this.Corpse.AllColliders[0].transform.position.x, base.transform.position.y, this.Corpse.AllColliders[0].transform.position.z) - base.transform.position);
 											base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
+											this.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
 											this.CharacterAnimation.CrossFade(this.InspectAnim);
 										}
 										else if (this.WitnessedBloodPool || this.WitnessedLimb || this.WitnessedWeapon)
 										{
 											this.targetRotation = Quaternion.LookRotation(new Vector3(this.BloodPool.transform.position.x, base.transform.position.y, this.BloodPool.transform.position.z) - base.transform.position);
 											base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
+											this.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
 											this.CharacterAnimation[this.InspectBloodAnim].speed = 0.66666f;
 											this.CharacterAnimation.CrossFade(this.InspectBloodAnim);
 										}

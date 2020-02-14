@@ -4586,6 +4586,10 @@ public class YandereScript : MonoBehaviour
 					{
 						this.Subtitle.UpdateLabel(SubtitleType.EavesdropApology, 0, 3f);
 					}
+					else if (this.TargetStudent.Witnessed == StudentWitnessType.Theft)
+					{
+						this.Subtitle.UpdateLabel(SubtitleType.TheftApology, 0, 3f);
+					}
 					else if (this.TargetStudent.Witnessed == StudentWitnessType.Violence)
 					{
 						this.Subtitle.UpdateLabel(SubtitleType.ViolenceApology, 0, 3f);

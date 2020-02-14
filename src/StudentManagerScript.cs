@@ -190,6 +190,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public GameObject[] Graffiti;
 
+	public GameObject[] Canvas;
+
 	public ListScript[] Seats;
 
 	public Collider[] Blood;
@@ -675,7 +677,14 @@ public class StudentManagerScript : MonoBehaviour
 				this.ID++;
 			}
 		}
-		if (DateGlobals.Weekday != DayOfWeek.Friday && this.Canvases != null)
+		if (DateGlobals.Weekday != DayOfWeek.Friday)
+		{
+			if (this.Canvases != null)
+			{
+				this.Canvases.SetActive(false);
+			}
+		}
+		else if (ClubGlobals.GetClubClosed(ClubType.Art))
 		{
 			this.Canvases.SetActive(false);
 		}

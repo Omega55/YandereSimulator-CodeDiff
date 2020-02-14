@@ -252,6 +252,10 @@ public class ShoulderCameraScript : MonoBehaviour
 						}
 						else
 						{
+							if (this.Yandere.Mask != null)
+							{
+								this.Yandere.Mask.Drop();
+							}
 							this.Yandere.StudentManager.PreventAlarm();
 							this.Counselor.Crime = this.Yandere.Senpai.GetComponent<StudentScript>().Witnessed;
 							this.Counselor.MyAnimation.Play("CounselorArmsCrossed");

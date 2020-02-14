@@ -217,6 +217,10 @@ public class ShutterScript : MonoBehaviour
 					{
 						this.PromptBar.Label[2].text = "Send";
 					}
+					else if (this.PantiesX.activeInHierarchy)
+					{
+						this.PromptBar.Label[0].text = string.Empty;
+					}
 					this.PromptBar.UpdateButtons();
 					this.PromptBar.Show = true;
 					Time.timeScale = 0.0001f;

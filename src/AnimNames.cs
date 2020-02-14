@@ -382,6 +382,8 @@ public static class AnimNames
 
 	public const string FemaleSurprise = "f02_surprise_00";
 
+	public const string FemaleSurprised = "f02_surprised_00";
+
 	public const string FemaleSwingA = "f02_swingA_00";
 
 	public const string FemaleSwingB = "f02_swingB_00";

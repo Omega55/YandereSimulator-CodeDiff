@@ -57,6 +57,8 @@ public class HomeYandereScript : MonoBehaviour
 
 	public float Timer;
 
+	public Texture BlondePony;
+
 	public SkinnedMeshRenderer MyRenderer;
 
 	public Texture[] UniformTextures;
@@ -129,6 +131,10 @@ public class HomeYandereScript : MonoBehaviour
 				this.HomeCamera.Target = this.HomeCamera.Targets[5];
 				this.Disc.SetActive(true);
 				this.WearPajamas();
+			}
+			if (GameGlobals.BlondeHair)
+			{
+				this.PonytailRenderer.material.mainTexture = this.BlondePony;
 			}
 		}
 		Time.timeScale = 1f;

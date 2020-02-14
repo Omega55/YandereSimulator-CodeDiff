@@ -22,13 +22,25 @@ public class HeartbrokenCursorScript : MonoBehaviour
 
 	public bool Nudge;
 
+	public int CracksSpawned;
+
 	public int Selected = 1;
 
 	public int Options = 4;
 
+	public int LastRandomCrack;
+
+	public int RandomCrack;
+
 	public AudioClip SelectSound;
 
 	public AudioClip MoveSound;
+
+	public VibrateScript[] Vibrations;
+
+	public AudioClip[] CrackSound;
+
+	public GameObject[] Cracks;
 
 	private void Start()
 	{
@@ -38,6 +50,7 @@ public class HeartbrokenCursorScript : MonoBehaviour
 
 	private void Update()
 	{
+		this.StudentManager.Yandere.Twitch = Vector3.Lerp(this.StudentManager.Yandere.Twitch, Vector3.zero, Time.deltaTime * 10f);
 		base.transform.localPosition = new Vector3(base.transform.localPosition.x, Mathf.Lerp(base.transform.localPosition.y, 255f - (float)this.Selected * 50f, Time.deltaTime * 10f), base.transform.localPosition.z);
 		if (!this.FadeOut)
 		{
@@ -67,11 +80,11 @@ public class HeartbrokenCursorScript : MonoBehaviour
 				this.Continue.color = new Color(this.Continue.color.r, this.Continue.color.g, this.Continue.color.b, (this.Selected == 4) ? 0f : 1f);
 				if (Input.GetButtonDown("A"))
 				{
-					component.clip = this.SelectSound;
-					component.Play();
 					this.Nudge = true;
 					if (this.Selected != 4)
 					{
+						component.clip = this.SelectSound;
+						component.Play();
 						this.FadeOut = true;
 					}
 				}

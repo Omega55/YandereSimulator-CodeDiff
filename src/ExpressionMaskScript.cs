@@ -9,7 +9,7 @@ public class ExpressionMaskScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Space))
+		if (Input.GetKeyDown(KeyCode.LeftAlt))
 		{
 			if (this.ID < 3)
 			{

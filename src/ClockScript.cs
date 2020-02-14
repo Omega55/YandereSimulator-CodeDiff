@@ -57,6 +57,8 @@ public class ClockScript : MonoBehaviour
 
 	public float DayProgress;
 
+	public float LastMinute;
+
 	public float StartHour;
 
 	public float TimeSpeed;
@@ -192,6 +194,10 @@ public class ClockScript : MonoBehaviour
 			this.IgnorePhotographyClub = true;
 		}
 		this.MissionMode = MissionModeGlobals.MissionMode;
+		this.HourTime = this.PresentTime / 60f;
+		this.Hour = Mathf.Floor(this.PresentTime / 60f);
+		this.Minute = Mathf.Floor((this.PresentTime / 60f - this.Hour) * 60f);
+		this.UpdateClock();
 	}
 
 	private void Update()
@@ -254,28 +260,10 @@ public class ClockScript : MonoBehaviour
 		this.HourTime = this.PresentTime / 60f;
 		this.Hour = Mathf.Floor(this.PresentTime / 60f);
 		this.Minute = Mathf.Floor((this.PresentTime / 60f - this.Hour) * 60f);
-		if (this.Hour == 0f || this.Hour == 12f)
+		if (this.Minute != this.LastMinute)
 		{
-			this.HourNumber = "12";
+			this.UpdateClock();
 		}
-		else if (this.Hour < 12f)
-		{
-			this.HourNumber = this.Hour.ToString("f0");
-		}
-		else
-		{
-			this.HourNumber = (this.Hour - 12f).ToString("f0");
-		}
-		if (this.Minute < 10f)
-		{
-			this.MinuteNumber = "0" + this.Minute.ToString("f0");
-		}
-		else
-		{
-			this.MinuteNumber = this.Minute.ToString("f0");
-		}
-		this.TimeText = this.HourNumber + ":" + this.MinuteNumber + ((this.Hour >= 12f) ? " PM" : " AM");
-		this.TimeLabel.text = this.TimeText;
 		this.MinuteHand.localEulerAngles = new Vector3(this.MinuteHand.localEulerAngles.x, this.MinuteHand.localEulerAngles.y, this.Minute * 6f);
 		this.HourHand.localEulerAngles = new Vector3(this.HourHand.localEulerAngles.x, this.HourHand.localEulerAngles.y, this.Hour * 30f);
 		if (this.LateStudent && this.HourTime > 7.9f)
@@ -496,5 +484,33 @@ public class ClockScript : MonoBehaviour
 		RenderSettings.ambientLight = new Color(0.25f, 0.25f, 0.5f);
 		this.SkyboxColor = new Color(0.1f, 0.1f, 0.2f);
 		RenderSettings.skybox.SetColor("_Tint", new Color(0.1f, 0.1f, 0.2f));
+	}
+
+	private void UpdateClock()
+	{
+		this.LastMinute = this.Minute;
+		Debug.Log("Updating clock!");
+		if (this.Hour == 0f || this.Hour == 12f)
+		{
+			this.HourNumber = "12";
+		}
+		else if (this.Hour < 12f)
+		{
+			this.HourNumber = this.Hour.ToString("f0");
+		}
+		else
+		{
+			this.HourNumber = (this.Hour - 12f).ToString("f0");
+		}
+		if (this.Minute < 10f)
+		{
+			this.MinuteNumber = "0" + this.Minute.ToString("f0");
+		}
+		else
+		{
+			this.MinuteNumber = this.Minute.ToString("f0");
+		}
+		this.TimeText = this.HourNumber + ":" + this.MinuteNumber + ((this.Hour >= 12f) ? " PM" : " AM");
+		this.TimeLabel.text = this.TimeText;
 	}
 }
