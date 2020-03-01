@@ -445,6 +445,8 @@ public class YandereScript : MonoBehaviour
 
 	public int DragState;
 
+	public int EggBypass;
+
 	public int EyewearID;
 
 	public int Followers;
@@ -1358,6 +1360,8 @@ public class YandereScript : MonoBehaviour
 	public Mesh TestMesh;
 
 	public bool BullyPhoto;
+
+	public CameraFilterScript CameraFilters;
 
 	private void Start()
 	{
@@ -5530,221 +5534,236 @@ public class YandereScript : MonoBehaviour
 		}
 		if (!this.NoDebug)
 		{
-			if (this.CanMove && !this.Egg && base.transform.position.y < 1000f)
+			if (this.CanMove)
 			{
-				if (Input.GetKeyDown(KeyCode.Slash))
+				if (!this.Egg || this.EggBypass > 8)
 				{
-					this.DebugMenu.SetActive(false);
-					this.EasterEggMenu.SetActive(!this.EasterEggMenu.activeInHierarchy);
+					if (base.transform.position.y < 1000f)
+					{
+						if (Input.GetKeyDown(KeyCode.Slash))
+						{
+							this.DebugMenu.SetActive(false);
+							this.EasterEggMenu.SetActive(!this.EasterEggMenu.activeInHierarchy);
+						}
+						if (this.EasterEggMenu.activeInHierarchy)
+						{
+							if (Input.GetKeyDown(KeyCode.P))
+							{
+								this.Punish();
+							}
+							else if (Input.GetKeyDown(KeyCode.Z))
+							{
+								this.Slend();
+							}
+							else if (Input.GetKeyDown(KeyCode.B))
+							{
+								this.Bancho();
+							}
+							else if (Input.GetKeyDown(KeyCode.C))
+							{
+								this.Cirno();
+							}
+							else if (Input.GetKeyDown(KeyCode.H))
+							{
+								this.EmptyHands();
+								this.Hate();
+							}
+							else if (Input.GetKeyDown(KeyCode.T))
+							{
+								this.StudentManager.AttackOnTitan();
+								this.AttackOnTitan();
+							}
+							else if (Input.GetKeyDown(KeyCode.G))
+							{
+								this.GaloSengen();
+							}
+							else if (!Input.GetKeyDown(KeyCode.J))
+							{
+								if (Input.GetKeyDown(KeyCode.K))
+								{
+									this.EasterEggMenu.SetActive(false);
+									this.StudentManager.Kong();
+									this.DK = true;
+								}
+								else if (Input.GetKeyDown(KeyCode.L))
+								{
+									this.Agent();
+								}
+								else if (Input.GetKeyDown(KeyCode.N))
+								{
+									this.Nude();
+								}
+								else if (Input.GetKeyDown(KeyCode.S))
+								{
+									this.EasterEggMenu.SetActive(false);
+									this.Egg = true;
+									this.StudentManager.Spook();
+								}
+								else if (Input.GetKeyDown(KeyCode.F))
+								{
+									this.EasterEggMenu.SetActive(false);
+									this.Falcon();
+								}
+								else if (Input.GetKeyDown(KeyCode.X))
+								{
+									this.EasterEggMenu.SetActive(false);
+									this.X();
+								}
+								else if (Input.GetKeyDown(KeyCode.O))
+								{
+									this.EasterEggMenu.SetActive(false);
+									this.Punch();
+								}
+								else if (Input.GetKeyDown(KeyCode.U))
+								{
+									this.EasterEggMenu.SetActive(false);
+									this.BadTime();
+								}
+								else if (Input.GetKeyDown(KeyCode.Y))
+								{
+									this.EasterEggMenu.SetActive(false);
+									this.CyborgNinja();
+								}
+								else if (Input.GetKeyDown(KeyCode.E))
+								{
+									this.EasterEggMenu.SetActive(false);
+									this.Ebola();
+								}
+								else if (Input.GetKeyDown(KeyCode.Q))
+								{
+									this.EasterEggMenu.SetActive(false);
+									this.Samus();
+								}
+								else if (Input.GetKeyDown(KeyCode.W))
+								{
+									this.EasterEggMenu.SetActive(false);
+									this.Witch();
+								}
+								else if (Input.GetKeyDown(KeyCode.R))
+								{
+									this.EasterEggMenu.SetActive(false);
+									this.Pose();
+								}
+								else if (Input.GetKeyDown(KeyCode.V))
+								{
+									this.EasterEggMenu.SetActive(false);
+									this.Vaporwave();
+								}
+								else if (Input.GetKeyDown(KeyCode.Alpha2))
+								{
+									this.EasterEggMenu.SetActive(false);
+									this.HairBlades();
+								}
+								else if (Input.GetKeyDown(KeyCode.Alpha7))
+								{
+									this.EasterEggMenu.SetActive(false);
+									this.Tornado();
+								}
+								else if (Input.GetKeyDown(KeyCode.Alpha8))
+								{
+									this.EasterEggMenu.SetActive(false);
+									this.GenderSwap();
+								}
+								else if (Input.GetKeyDown("[5]"))
+								{
+									this.EasterEggMenu.SetActive(false);
+									this.SwapMesh();
+								}
+								else if (Input.GetKeyDown(KeyCode.A))
+								{
+									this.EasterEggMenu.SetActive(false);
+								}
+								else if (Input.GetKeyDown(KeyCode.I))
+								{
+									this.StudentManager.NoGravity = true;
+									this.EasterEggMenu.SetActive(false);
+								}
+								else if (Input.GetKeyDown(KeyCode.D))
+								{
+									this.EasterEggMenu.SetActive(false);
+									this.Sith();
+								}
+								else if (Input.GetKeyDown(KeyCode.M))
+								{
+									this.EasterEggMenu.SetActive(false);
+									this.Snake();
+								}
+								else if (Input.GetKeyDown(KeyCode.Alpha1))
+								{
+									this.EasterEggMenu.SetActive(false);
+									this.Gazer();
+								}
+								else if (Input.GetKeyDown(KeyCode.Alpha3))
+								{
+									this.StudentManager.SecurityCameras();
+									this.EasterEggMenu.SetActive(false);
+								}
+								else if (Input.GetKeyDown(KeyCode.Alpha4))
+								{
+									this.KLK();
+									this.EasterEggMenu.SetActive(false);
+								}
+								else if (Input.GetKeyDown(KeyCode.Alpha6))
+								{
+									this.EasterEggMenu.SetActive(false);
+									this.Six();
+								}
+								else if (Input.GetKeyDown(KeyCode.F1))
+								{
+									this.Weather();
+									this.EasterEggMenu.SetActive(false);
+								}
+								else if (Input.GetKeyDown(KeyCode.F2))
+								{
+									this.Horror();
+									this.EasterEggMenu.SetActive(false);
+								}
+								else if (Input.GetKeyDown(KeyCode.F3))
+								{
+									this.LifeNote();
+									this.EasterEggMenu.SetActive(false);
+								}
+								else if (Input.GetKeyDown(KeyCode.F4))
+								{
+									this.Mandere();
+									this.EasterEggMenu.SetActive(false);
+								}
+								else if (Input.GetKeyDown(KeyCode.F5))
+								{
+									this.BlackHoleChan();
+									this.EasterEggMenu.SetActive(false);
+								}
+								else if (Input.GetKeyDown(KeyCode.F6))
+								{
+									this.ElfenLied();
+									this.EasterEggMenu.SetActive(false);
+								}
+								else if (Input.GetKeyDown(KeyCode.F7))
+								{
+									this.Berserk();
+									this.EasterEggMenu.SetActive(false);
+								}
+								else if (Input.GetKeyDown(KeyCode.F8))
+								{
+									this.Nier();
+									this.EasterEggMenu.SetActive(false);
+								}
+								else if (Input.GetKeyDown(KeyCode.F9))
+								{
+									this.CameraFilters.enabled = true;
+									this.EasterEggMenu.SetActive(false);
+								}
+								else if (Input.GetKeyDown(KeyCode.Space))
+								{
+									this.EasterEggMenu.SetActive(false);
+								}
+							}
+						}
+					}
 				}
-				if (this.EasterEggMenu.activeInHierarchy && !this.Egg)
+				else if (Input.GetKeyDown(KeyCode.Slash))
 				{
-					if (Input.GetKeyDown(KeyCode.P))
-					{
-						this.Punish();
-					}
-					else if (Input.GetKeyDown(KeyCode.Z))
-					{
-						this.Slend();
-					}
-					else if (Input.GetKeyDown(KeyCode.B))
-					{
-						this.Bancho();
-					}
-					else if (Input.GetKeyDown(KeyCode.C))
-					{
-						this.Cirno();
-					}
-					else if (Input.GetKeyDown(KeyCode.H))
-					{
-						this.EmptyHands();
-						this.Hate();
-					}
-					else if (Input.GetKeyDown(KeyCode.T))
-					{
-						this.StudentManager.AttackOnTitan();
-						this.AttackOnTitan();
-					}
-					else if (Input.GetKeyDown(KeyCode.G))
-					{
-						this.GaloSengen();
-					}
-					else if (!Input.GetKeyDown(KeyCode.J))
-					{
-						if (Input.GetKeyDown(KeyCode.K))
-						{
-							this.EasterEggMenu.SetActive(false);
-							this.StudentManager.Kong();
-							this.DK = true;
-						}
-						else if (Input.GetKeyDown(KeyCode.L))
-						{
-							this.Agent();
-						}
-						else if (Input.GetKeyDown(KeyCode.N))
-						{
-							this.Nude();
-						}
-						else if (Input.GetKeyDown(KeyCode.S))
-						{
-							this.EasterEggMenu.SetActive(false);
-							this.Egg = true;
-							this.StudentManager.Spook();
-						}
-						else if (Input.GetKeyDown(KeyCode.F))
-						{
-							this.EasterEggMenu.SetActive(false);
-							this.Falcon();
-						}
-						else if (Input.GetKeyDown(KeyCode.X))
-						{
-							this.EasterEggMenu.SetActive(false);
-							this.X();
-						}
-						else if (Input.GetKeyDown(KeyCode.O))
-						{
-							this.EasterEggMenu.SetActive(false);
-							this.Punch();
-						}
-						else if (Input.GetKeyDown(KeyCode.U))
-						{
-							this.EasterEggMenu.SetActive(false);
-							this.BadTime();
-						}
-						else if (Input.GetKeyDown(KeyCode.Y))
-						{
-							this.EasterEggMenu.SetActive(false);
-							this.CyborgNinja();
-						}
-						else if (Input.GetKeyDown(KeyCode.E))
-						{
-							this.EasterEggMenu.SetActive(false);
-							this.Ebola();
-						}
-						else if (Input.GetKeyDown(KeyCode.Q))
-						{
-							this.EasterEggMenu.SetActive(false);
-							this.Samus();
-						}
-						else if (Input.GetKeyDown(KeyCode.W))
-						{
-							this.EasterEggMenu.SetActive(false);
-							this.Witch();
-						}
-						else if (Input.GetKeyDown(KeyCode.R))
-						{
-							this.EasterEggMenu.SetActive(false);
-							this.Pose();
-						}
-						else if (Input.GetKeyDown(KeyCode.V))
-						{
-							this.EasterEggMenu.SetActive(false);
-							this.Vaporwave();
-						}
-						else if (Input.GetKeyDown(KeyCode.Alpha2))
-						{
-							this.EasterEggMenu.SetActive(false);
-							this.HairBlades();
-						}
-						else if (Input.GetKeyDown(KeyCode.Alpha7))
-						{
-							this.EasterEggMenu.SetActive(false);
-							this.Tornado();
-						}
-						else if (Input.GetKeyDown(KeyCode.Alpha8))
-						{
-							this.EasterEggMenu.SetActive(false);
-							this.GenderSwap();
-						}
-						else if (Input.GetKeyDown("[5]"))
-						{
-							this.EasterEggMenu.SetActive(false);
-							this.SwapMesh();
-						}
-						else if (Input.GetKeyDown(KeyCode.A))
-						{
-							this.EasterEggMenu.SetActive(false);
-						}
-						else if (Input.GetKeyDown(KeyCode.I))
-						{
-							this.StudentManager.NoGravity = true;
-							this.EasterEggMenu.SetActive(false);
-						}
-						else if (Input.GetKeyDown(KeyCode.D))
-						{
-							this.EasterEggMenu.SetActive(false);
-							this.Sith();
-						}
-						else if (Input.GetKeyDown(KeyCode.M))
-						{
-							this.EasterEggMenu.SetActive(false);
-							this.Snake();
-						}
-						else if (Input.GetKeyDown(KeyCode.Alpha1))
-						{
-							this.EasterEggMenu.SetActive(false);
-							this.Gazer();
-						}
-						else if (Input.GetKeyDown(KeyCode.Alpha3))
-						{
-							this.StudentManager.SecurityCameras();
-							this.EasterEggMenu.SetActive(false);
-						}
-						else if (Input.GetKeyDown(KeyCode.Alpha4))
-						{
-							this.KLK();
-							this.EasterEggMenu.SetActive(false);
-						}
-						else if (Input.GetKeyDown(KeyCode.Alpha6))
-						{
-							this.EasterEggMenu.SetActive(false);
-							this.Six();
-						}
-						else if (Input.GetKeyDown(KeyCode.F1))
-						{
-							this.Weather();
-							this.EasterEggMenu.SetActive(false);
-						}
-						else if (Input.GetKeyDown(KeyCode.F2))
-						{
-							this.Horror();
-							this.EasterEggMenu.SetActive(false);
-						}
-						else if (Input.GetKeyDown(KeyCode.F3))
-						{
-							this.LifeNote();
-							this.EasterEggMenu.SetActive(false);
-						}
-						else if (Input.GetKeyDown(KeyCode.F4))
-						{
-							this.Mandere();
-							this.EasterEggMenu.SetActive(false);
-						}
-						else if (Input.GetKeyDown(KeyCode.F5))
-						{
-							this.BlackHoleChan();
-							this.EasterEggMenu.SetActive(false);
-						}
-						else if (Input.GetKeyDown(KeyCode.F6))
-						{
-							this.ElfenLied();
-							this.EasterEggMenu.SetActive(false);
-						}
-						else if (Input.GetKeyDown(KeyCode.F7))
-						{
-							this.Berserk();
-							this.EasterEggMenu.SetActive(false);
-						}
-						else if (Input.GetKeyDown(KeyCode.F8))
-						{
-							this.Nier();
-							this.EasterEggMenu.SetActive(false);
-						}
-						else if (Input.GetKeyDown(KeyCode.Space))
-						{
-							this.EasterEggMenu.SetActive(false);
-						}
-					}
+					this.EggBypass++;
 				}
 			}
 		}

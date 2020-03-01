@@ -875,6 +875,7 @@ public class DialogueWheelScript : MonoBehaviour
 		{
 			this.Yandere.TargetStudent.TaskPhase = 5;
 			this.Yandere.LoveManager.SuitorProgress = 1;
+			DatingGlobals.SuitorProgress = 1;
 		}
 		if (this.Yandere.TargetStudent.StudentID == 76 && TaskGlobals.GetTaskStatus(76) == 1)
 		{

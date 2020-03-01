@@ -234,6 +234,12 @@ public class MissionModeScript : MonoBehaviour
 
 	public int Frame;
 
+	public UILabel DiscordCodeLabel;
+
+	public float RandomNumber;
+
+	public bool Valid;
+
 	private void Start()
 	{
 		if (!SchoolGlobals.HighSecurity)
@@ -1095,6 +1101,17 @@ public class MissionModeScript : MonoBehaviour
 
 	private void Success()
 	{
+		while (!this.Valid)
+		{
+			this.RandomNumber = (float)UnityEngine.Random.Range(1000000, 10000000);
+			float num = this.RandomNumber / 9f;
+			if (num % 5f == 0f)
+			{
+				this.Valid = true;
+			}
+		}
+		this.DiscordCodeLabel.text = string.Empty + this.RandomNumber;
+		this.DiscordCodeLabel.transform.parent.gameObject.SetActive(true);
 		this.GameOverHeader.transform.localPosition = new Vector3(this.GameOverHeader.transform.localPosition.x, 0f, this.GameOverHeader.transform.localPosition.z);
 		this.GameOverHeader.text = "MISSION ACCOMPLISHED";
 		this.GameOverReason.gameObject.SetActive(false);
@@ -1132,6 +1149,7 @@ public class MissionModeScript : MonoBehaviour
 		int drawDistanceLimit = OptionGlobals.DrawDistanceLimit;
 		bool disableBloom = OptionGlobals.DisableBloom;
 		bool fog = OptionGlobals.Fog;
+		bool nemesisAggression = MissionModeGlobals.NemesisAggression;
 		string missionTargetName = MissionModeGlobals.MissionTargetName;
 		bool highPopulation = OptionGlobals.HighPopulation;
 		Globals.DeleteAll();
@@ -1164,6 +1182,7 @@ public class MissionModeScript : MonoBehaviour
 			this.ID++;
 		}
 		MissionModeGlobals.NemesisDifficulty = this.NemesisDifficulty;
+		MissionModeGlobals.NemesisAggression = nemesisAggression;
 		OptionGlobals.DisableFarAnimations = disableFarAnimations;
 		OptionGlobals.DisablePostAliasing = disablePostAliasing;
 		OptionGlobals.DisableOutlines = disableOutlines;

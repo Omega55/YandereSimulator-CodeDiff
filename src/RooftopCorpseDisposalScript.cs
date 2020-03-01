@@ -38,6 +38,7 @@ public class RooftopCorpseDisposalScript : MonoBehaviour
 						this.Yandere.CanMove = false;
 						this.Prompt.Hide();
 						this.Prompt.enabled = false;
+						this.Yandere.CurrentRagdoll.BloodPoolSpawner.Falling = true;
 					}
 				}
 			}

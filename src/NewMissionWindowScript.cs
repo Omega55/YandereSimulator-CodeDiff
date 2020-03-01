@@ -19,6 +19,8 @@ public class NewMissionWindowScript : MonoBehaviour
 
 	public UITexture[] Portrait;
 
+	public bool ChangingDifficulty;
+
 	public int[] UnsafeNumbers;
 
 	public int[] Target;
@@ -33,9 +35,25 @@ public class NewMissionWindowScript : MonoBehaviour
 
 	public int Row;
 
+	public Transform DifficultyOptions;
+
 	public Transform Highlight;
 
 	public Texture BlankPortrait;
+
+	public int NemesisDifficulty;
+
+	public bool NemesisAggression;
+
+	public UILabel NemesisLabel;
+
+	public UITexture NemesisPortrait;
+
+	public Texture AnonymousPortrait;
+
+	public Texture NemesisGraphic;
+
+	public Transform[] NemesisObjectives;
 
 	private void Start()
 	{
@@ -47,193 +65,238 @@ public class NewMissionWindowScript : MonoBehaviour
 			this.MethodLabel[i].text = "By: Attacking";
 			this.DeathSkulls[i].SetActive(false);
 		}
+		this.DifficultyOptions.localScale = new Vector3(0f, 0f, 0f);
 	}
 
 	private void Update()
 	{
-		if (this.InputManager.TappedDown)
+		if (!this.ChangingDifficulty)
 		{
-			this.Row++;
-			this.UpdateHighlight();
-		}
-		if (this.InputManager.TappedUp)
-		{
-			this.Row--;
-			this.UpdateHighlight();
-		}
-		if (this.InputManager.TappedRight)
-		{
-			this.Column++;
-			this.UpdateHighlight();
-		}
-		if (this.InputManager.TappedLeft)
-		{
-			this.Column--;
-			this.UpdateHighlight();
-		}
-		if (Input.GetButtonDown("A"))
-		{
-			int num = 0;
-			for (int i = 0; i < 11; i++)
+			if (this.InputManager.TappedDown)
 			{
-				if (this.Target[i] > 0)
-				{
-					num++;
-				}
+				this.Row++;
+				this.UpdateHighlight();
 			}
-			if (this.Row == 5)
+			if (this.InputManager.TappedUp)
 			{
-				if (this.Column == 1)
+				this.Row--;
+				this.UpdateHighlight();
+			}
+			if (this.InputManager.TappedRight)
+			{
+				this.Column++;
+				this.UpdateHighlight();
+			}
+			if (this.InputManager.TappedLeft)
+			{
+				this.Column--;
+				this.UpdateHighlight();
+			}
+			if (Input.GetButtonDown("A"))
+			{
+				int num = 0;
+				for (int i = 0; i < 11; i++)
 				{
-					if (num > 0)
+					if (this.Target[i] > 0)
 					{
-						Globals.DeleteAll();
-						this.SaveInfo();
-						this.MissionModeMenu.GetComponent<AudioSource>().PlayOneShot(this.MissionModeMenu.InfoLines[6]);
-						SchoolGlobals.SchoolAtmosphere = 1f - (float)num * 0.1f;
-						SchoolGlobals.SchoolAtmosphereSet = true;
-						MissionModeGlobals.MissionMode = true;
-						MissionModeGlobals.MultiMission = true;
-						MissionModeGlobals.MissionDifficulty = num;
-						ClassGlobals.BiologyGrade = 1;
-						ClassGlobals.ChemistryGrade = 1;
-						ClassGlobals.LanguageGrade = 1;
-						ClassGlobals.PhysicalGrade = 1;
-						ClassGlobals.PsychologyGrade = 1;
-						this.MissionModeMenu.PromptBar.Show = false;
-						this.MissionModeMenu.Speed = 0f;
-						this.MissionModeMenu.Phase = 4;
-						base.enabled = false;
+						num++;
 					}
 				}
-				else if (this.Column == 2)
+				if (this.Row == 5)
 				{
-					this.Randomize();
-				}
-			}
-		}
-		if (Input.GetButtonDown("B"))
-		{
-			this.MissionModeMenu.PromptBar.ClearButtons();
-			this.MissionModeMenu.PromptBar.Label[0].text = "Accept";
-			this.MissionModeMenu.PromptBar.Label[4].text = "Choose";
-			this.MissionModeMenu.PromptBar.UpdateButtons();
-			this.MissionModeMenu.PromptBar.Show = true;
-			this.MissionModeMenu.TargetID = 0;
-			this.MissionModeMenu.Phase = 2;
-		}
-		if (Input.GetButtonDown("X"))
-		{
-			if (this.Row == 1)
-			{
-				for (int j = 1; j < 11; j++)
-				{
-					this.UnsafeNumbers[j] = this.Target[j];
-				}
-				this.Increment(0);
-				if (this.Target[this.Column] != 0)
-				{
-					while ((this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[1]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[2]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[3]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[4]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[5]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[6]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[7]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[8]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[9]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[10]))
+					if (this.Column == 1)
 					{
-						this.Increment(0);
+						if (num > 0)
+						{
+							Globals.DeleteAll();
+							this.SaveInfo();
+							this.MissionModeMenu.GetComponent<AudioSource>().PlayOneShot(this.MissionModeMenu.InfoLines[6]);
+							SchoolGlobals.SchoolAtmosphere = 1f - (float)num * 0.1f;
+							SchoolGlobals.SchoolAtmosphereSet = true;
+							MissionModeGlobals.MissionMode = true;
+							MissionModeGlobals.MultiMission = true;
+							MissionModeGlobals.MissionDifficulty = num;
+							ClassGlobals.BiologyGrade = 1;
+							ClassGlobals.ChemistryGrade = 1;
+							ClassGlobals.LanguageGrade = 1;
+							ClassGlobals.PhysicalGrade = 1;
+							ClassGlobals.PsychologyGrade = 1;
+							this.MissionModeMenu.PromptBar.Show = false;
+							this.MissionModeMenu.Speed = 0f;
+							this.MissionModeMenu.Phase = 4;
+							base.enabled = false;
+						}
+					}
+					else if (this.Column == 2)
+					{
+						this.Randomize();
+					}
+					else if (this.Column == 3)
+					{
+						this.ChangingDifficulty = true;
+						this.MissionModeMenu.PromptBar.ClearButtons();
+						this.MissionModeMenu.PromptBar.Label[0].text = "Change";
+						this.MissionModeMenu.PromptBar.Label[1].text = "Back";
+						this.MissionModeMenu.PromptBar.Label[2].text = "Aggression";
+						this.MissionModeMenu.PromptBar.UpdateButtons();
+						this.MissionModeMenu.PromptBar.Show = true;
 					}
 				}
-				this.UnsafeNumbers[this.Column] = this.Target[this.Column];
 			}
-			else if (this.Row == 2)
+			if (Input.GetButtonDown("B"))
 			{
-				this.Method[this.Column]++;
-				if (this.Method[this.Column] == this.MethodNames.Length)
-				{
-					this.Method[this.Column] = 0;
-				}
-				this.MethodLabel[this.Column].text = "By: " + this.MethodNames[this.Method[this.Column]];
+				this.MissionModeMenu.PromptBar.ClearButtons();
+				this.MissionModeMenu.PromptBar.Label[0].text = "Accept";
+				this.MissionModeMenu.PromptBar.Label[4].text = "Choose";
+				this.MissionModeMenu.PromptBar.UpdateButtons();
+				this.MissionModeMenu.PromptBar.Show = true;
+				this.MissionModeMenu.TargetID = 0;
+				this.MissionModeMenu.Phase = 2;
 			}
-			else if (this.Row == 3)
+			if (Input.GetButtonDown("X"))
 			{
-				for (int k = 1; k < 11; k++)
+				if (this.Row == 1)
 				{
-					this.UnsafeNumbers[k] = this.Target[k];
-				}
-				this.Increment(5);
-				if (this.Target[this.Column + 5] != 0)
-				{
-					while ((this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[1]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[2]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[3]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[4]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[5]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[6]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[7]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[8]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[9]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[10]))
+					for (int j = 1; j < 11; j++)
 					{
-						this.Increment(5);
+						this.UnsafeNumbers[j] = this.Target[j];
 					}
+					this.Increment(0);
+					if (this.Target[this.Column] != 0)
+					{
+						while ((this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[1]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[2]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[3]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[4]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[5]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[6]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[7]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[8]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[9]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[10]))
+						{
+							this.Increment(0);
+						}
+					}
+					this.UnsafeNumbers[this.Column] = this.Target[this.Column];
 				}
-				this.UnsafeNumbers[this.Column + 5] = this.Target[this.Column + 5];
-			}
-			else if (this.Row == 4)
-			{
-				this.Method[this.Column + 5]++;
-				if (this.Method[this.Column + 5] == this.MethodNames.Length)
+				else if (this.Row == 2)
 				{
-					this.Method[this.Column + 5] = 0;
+					this.Method[this.Column]++;
+					if (this.Method[this.Column] == this.MethodNames.Length)
+					{
+						this.Method[this.Column] = 0;
+					}
+					this.MethodLabel[this.Column].text = "By: " + this.MethodNames[this.Method[this.Column]];
 				}
-				this.MethodLabel[this.Column + 5].text = "By: " + this.MethodNames[this.Method[this.Column + 5]];
+				else if (this.Row == 3)
+				{
+					for (int k = 1; k < 11; k++)
+					{
+						this.UnsafeNumbers[k] = this.Target[k];
+					}
+					this.Increment(5);
+					if (this.Target[this.Column + 5] != 0)
+					{
+						while ((this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[1]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[2]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[3]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[4]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[5]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[6]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[7]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[8]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[9]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[10]))
+						{
+							this.Increment(5);
+						}
+					}
+					this.UnsafeNumbers[this.Column + 5] = this.Target[this.Column + 5];
+				}
+				else if (this.Row == 4)
+				{
+					this.Method[this.Column + 5]++;
+					if (this.Method[this.Column + 5] == this.MethodNames.Length)
+					{
+						this.Method[this.Column + 5] = 0;
+					}
+					this.MethodLabel[this.Column + 5].text = "By: " + this.MethodNames[this.Method[this.Column + 5]];
+				}
 			}
+			if (Input.GetButtonDown("Y"))
+			{
+				if (this.Row == 1)
+				{
+					for (int l = 1; l < 11; l++)
+					{
+						this.UnsafeNumbers[l] = this.Target[l];
+					}
+					this.Decrement(0);
+					if (this.Target[this.Column] != 0)
+					{
+						while ((this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[1]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[2]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[3]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[4]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[5]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[6]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[7]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[8]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[9]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[10]))
+						{
+							Debug.Log("Unsafe number. We're going to have to decrement.");
+							this.Decrement(0);
+						}
+					}
+					this.UnsafeNumbers[this.Column] = this.Target[this.Column];
+				}
+				else if (this.Row == 2)
+				{
+					this.Method[this.Column]--;
+					if (this.Method[this.Column] < 0)
+					{
+						this.Method[this.Column] = this.MethodNames.Length - 1;
+					}
+					this.MethodLabel[this.Column].text = "By: " + this.MethodNames[this.Method[this.Column]];
+				}
+				else if (this.Row == 3)
+				{
+					for (int m = 1; m < 11; m++)
+					{
+						this.UnsafeNumbers[m] = this.Target[m];
+					}
+					this.Decrement(5);
+					if (this.Target[this.Column + 5] != 0)
+					{
+						while ((this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[1]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[2]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[3]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[4]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[5]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[6]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[7]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[8]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[9]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[10]))
+						{
+							Debug.Log("Unsafe number. We're going to have to decrement.");
+							this.Decrement(5);
+						}
+					}
+					this.UnsafeNumbers[this.Column + 5] = this.Target[this.Column + 5];
+				}
+				else if (this.Row == 4)
+				{
+					this.Method[this.Column + 5]--;
+					if (this.Method[this.Column + 5] < 0)
+					{
+						this.Method[this.Column + 5] = this.MethodNames.Length - 1;
+					}
+					this.MethodLabel[this.Column + 5].text = "By: " + this.MethodNames[this.Method[this.Column + 5]];
+				}
+			}
+			if (Input.GetKeyDown("space"))
+			{
+				this.FillOutInfo();
+			}
+			this.DifficultyOptions.localScale = Vector3.Lerp(this.DifficultyOptions.localScale, new Vector3(0f, 0f, 0f), Time.deltaTime * 10f);
 		}
-		if (Input.GetButtonDown("Y"))
+		else
 		{
-			if (this.Row == 1)
+			this.DifficultyOptions.localScale = Vector3.Lerp(this.DifficultyOptions.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+			if (Input.GetButtonDown("A"))
 			{
-				for (int l = 1; l < 11; l++)
-				{
-					this.UnsafeNumbers[l] = this.Target[l];
-				}
-				this.Decrement(0);
-				if (this.Target[this.Column] != 0)
-				{
-					while ((this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[1]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[2]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[3]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[4]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[5]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[6]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[7]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[8]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[9]) || (this.Target[this.Column] != 0 && this.Target[this.Column] == this.UnsafeNumbers[10]))
-					{
-						Debug.Log("Unsafe number. We're going to have to decrement.");
-						this.Decrement(0);
-					}
-				}
-				this.UnsafeNumbers[this.Column] = this.Target[this.Column];
+				this.NemesisDifficulty++;
+				this.UpdateNemesisDifficulty();
 			}
-			else if (this.Row == 2)
+			if (Input.GetButtonDown("X"))
 			{
-				this.Method[this.Column]--;
-				if (this.Method[this.Column] < 0)
-				{
-					this.Method[this.Column] = this.MethodNames.Length - 1;
-				}
-				this.MethodLabel[this.Column].text = "By: " + this.MethodNames[this.Method[this.Column]];
+				this.NemesisAggression = !this.NemesisAggression;
+				this.UpdateNemesisDifficulty();
 			}
-			else if (this.Row == 3)
+			if (Input.GetButtonDown("B"))
 			{
-				for (int m = 1; m < 11; m++)
-				{
-					this.UnsafeNumbers[m] = this.Target[m];
-				}
-				this.Decrement(5);
-				if (this.Target[this.Column + 5] != 0)
-				{
-					while ((this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[1]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[2]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[3]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[4]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[5]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[6]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[7]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[8]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[9]) || (this.Target[this.Column + 5] != 0 && this.Target[this.Column + 5] == this.UnsafeNumbers[10]))
-					{
-						Debug.Log("Unsafe number. We're going to have to decrement.");
-						this.Decrement(5);
-					}
-				}
-				this.UnsafeNumbers[this.Column + 5] = this.Target[this.Column + 5];
-			}
-			else if (this.Row == 4)
-			{
-				this.Method[this.Column + 5]--;
-				if (this.Method[this.Column + 5] < 0)
-				{
-					this.Method[this.Column + 5] = this.MethodNames.Length - 1;
-				}
-				this.MethodLabel[this.Column + 5].text = "By: " + this.MethodNames[this.Method[this.Column + 5]];
+				this.MissionModeMenu.PromptBar.ClearButtons();
+				this.MissionModeMenu.PromptBar.Label[0].text = string.Empty;
+				this.MissionModeMenu.PromptBar.Label[1].text = "Return";
+				this.MissionModeMenu.PromptBar.Label[2].text = "Adjust Up";
+				this.MissionModeMenu.PromptBar.Label[3].text = "Adjust Down";
+				this.MissionModeMenu.PromptBar.Label[4].text = "Selection";
+				this.MissionModeMenu.PromptBar.Label[5].text = "Selection";
+				this.MissionModeMenu.PromptBar.UpdateButtons();
+				this.Column = 1;
+				this.Row = 1;
+				this.UpdateHighlight();
+				this.ChangingDifficulty = false;
 			}
 		}
-		if (Input.GetKeyDown("space"))
-		{
-			this.FillOutInfo();
-		}
+		this.UpdateNemesisList();
 	}
 
 	private void Increment(int Number)
@@ -417,6 +480,8 @@ public class NewMissionWindowScript : MonoBehaviour
 			PlayerPrefs.SetInt("MissionModeTarget" + i, this.Target[i]);
 			PlayerPrefs.SetInt("MissionModeMethod" + i, this.Method[i]);
 		}
+		MissionModeGlobals.NemesisDifficulty = this.NemesisDifficulty;
+		MissionModeGlobals.NemesisAggression = this.NemesisAggression;
 	}
 
 	public void FillOutInfo()
@@ -454,5 +519,68 @@ public class NewMissionWindowScript : MonoBehaviour
 		this.Button[1].SetActive(false);
 		this.Button[2].SetActive(false);
 		this.Button[3].SetActive(false);
+	}
+
+	private void UpdateNemesisDifficulty()
+	{
+		if (this.NemesisDifficulty < 0)
+		{
+			this.NemesisDifficulty = 4;
+		}
+		else if (this.NemesisDifficulty > 4)
+		{
+			this.NemesisDifficulty = 0;
+		}
+		if (this.NemesisDifficulty == 0)
+		{
+			this.NemesisLabel.text = "Nemesis: Off";
+		}
+		else
+		{
+			this.NemesisLabel.text = "Nemesis: On";
+			this.NemesisPortrait.mainTexture = ((this.NemesisDifficulty <= 2) ? this.NemesisGraphic : this.AnonymousPortrait);
+		}
+	}
+
+	private void UpdateNemesisList()
+	{
+		if (this.NemesisDifficulty == 0)
+		{
+			this.NemesisObjectives[1].localScale = Vector3.Lerp(this.NemesisObjectives[1].localScale, Vector3.zero, Time.deltaTime * 10f);
+			this.NemesisObjectives[2].localScale = Vector3.Lerp(this.NemesisObjectives[2].localScale, Vector3.zero, Time.deltaTime * 10f);
+			this.NemesisObjectives[3].localScale = Vector3.Lerp(this.NemesisObjectives[3].localScale, Vector3.zero, Time.deltaTime * 10f);
+		}
+		else if (this.NemesisDifficulty == 1)
+		{
+			this.NemesisObjectives[1].localScale = Vector3.Lerp(this.NemesisObjectives[1].localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+			this.NemesisObjectives[2].localScale = Vector3.Lerp(this.NemesisObjectives[2].localScale, Vector3.zero, Time.deltaTime * 10f);
+			this.NemesisObjectives[3].localScale = Vector3.Lerp(this.NemesisObjectives[3].localScale, Vector3.zero, Time.deltaTime * 10f);
+		}
+		else if (this.NemesisDifficulty == 2)
+		{
+			this.NemesisObjectives[1].localScale = Vector3.Lerp(this.NemesisObjectives[1].localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+			this.NemesisObjectives[2].localScale = Vector3.Lerp(this.NemesisObjectives[2].localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+			this.NemesisObjectives[3].localScale = Vector3.Lerp(this.NemesisObjectives[3].localScale, Vector3.zero, Time.deltaTime * 10f);
+		}
+		else if (this.NemesisDifficulty == 3)
+		{
+			this.NemesisObjectives[1].localScale = Vector3.Lerp(this.NemesisObjectives[1].localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+			this.NemesisObjectives[2].localScale = Vector3.Lerp(this.NemesisObjectives[2].localScale, Vector3.zero, Time.deltaTime * 10f);
+			this.NemesisObjectives[3].localScale = Vector3.Lerp(this.NemesisObjectives[3].localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+		}
+		else if (this.NemesisDifficulty == 4)
+		{
+			this.NemesisObjectives[1].localScale = Vector3.Lerp(this.NemesisObjectives[1].localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+			this.NemesisObjectives[2].localScale = Vector3.Lerp(this.NemesisObjectives[2].localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+			this.NemesisObjectives[3].localScale = Vector3.Lerp(this.NemesisObjectives[3].localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+		}
+		if (this.NemesisAggression)
+		{
+			this.NemesisObjectives[4].localScale = Vector3.Lerp(this.NemesisObjectives[4].localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+		}
+		else
+		{
+			this.NemesisObjectives[4].localScale = Vector3.Lerp(this.NemesisObjectives[4].localScale, new Vector3(0f, 0f, 0f), Time.deltaTime * 10f);
+		}
 	}
 }

@@ -9,7 +9,7 @@ public class StudentSaveData
 
 	public int customSuitorAccessory;
 
-	public int customSuitorBlonde;
+	public bool customSuitorBlonde;
 
 	public int customSuitorEyewear;
 

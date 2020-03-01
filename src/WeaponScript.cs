@@ -628,5 +628,9 @@ public class WeaponScript : MonoBehaviour
 		{
 			this.Suspicious = true;
 		}
+		if (this.Bloody)
+		{
+			this.Suspicious = true;
+		}
 	}
 }

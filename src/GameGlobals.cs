@@ -27,6 +27,8 @@ public static class GameGlobals
 
 	private const string Str_RivalEliminationID = "RivalEliminationID";
 
+	private const string Str_NonlethalElimination = "NonlethalElimination";
+
 	private const string Str_ReputationsInitialized = "ReputationsInitialized";
 
 	private const string Str_AnswerSheetUnavailable = "AnswerSheetUnavailable";
@@ -175,6 +177,18 @@ public static class GameGlobals
 		}
 	}
 
+	public static bool NonlethalElimination
+	{
+		get
+		{
+			return GlobalsHelper.GetBool("NonlethalElimination");
+		}
+		set
+		{
+			GlobalsHelper.SetBool("NonlethalElimination", value);
+		}
+	}
+
 	public static bool ReputationsInitialized
 	{
 		get
@@ -212,6 +226,7 @@ public static class GameGlobals
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_BlondeHair");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_SenpaiMourning");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_RivalEliminationID");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_NonlethalElimination");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_ReputationsInitialized");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_AnswerSheetUnavailable");
 	}

@@ -83,6 +83,8 @@ public class ShoulderCameraScript : MonoBehaviour
 
 	public float NoticedSpeed;
 
+	public float ReturnSpeed = 10f;
+
 	public float Height;
 
 	public float Shake;
@@ -534,15 +536,15 @@ public class ShoulderCameraScript : MonoBehaviour
 				this.Timer += Time.deltaTime;
 				if (this.Timer < 0.5f)
 				{
-					base.transform.position = Vector3.Lerp(base.transform.position, this.LastPosition, Time.deltaTime * 10f);
+					base.transform.position = Vector3.Lerp(base.transform.position, this.LastPosition, Time.deltaTime * this.ReturnSpeed);
 					if (this.Yandere.Talking)
 					{
-						this.ShoulderFocus.position = Vector3.Lerp(this.ShoulderFocus.position, this.RPGCamera.cameraPivot.position, Time.deltaTime * 10f);
+						this.ShoulderFocus.position = Vector3.Lerp(this.ShoulderFocus.position, this.RPGCamera.cameraPivot.position, Time.deltaTime * this.ReturnSpeed);
 						base.transform.LookAt(this.ShoulderFocus);
 					}
 					else
 					{
-						this.StruggleFocus.position = Vector3.Lerp(this.StruggleFocus.position, this.RPGCamera.cameraPivot.position, Time.deltaTime * 10f);
+						this.StruggleFocus.position = Vector3.Lerp(this.StruggleFocus.position, this.RPGCamera.cameraPivot.position, Time.deltaTime * this.ReturnSpeed);
 						base.transform.LookAt(this.StruggleFocus);
 					}
 				}

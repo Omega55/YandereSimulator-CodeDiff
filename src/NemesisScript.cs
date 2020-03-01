@@ -28,7 +28,11 @@ public class NemesisScript : MonoBehaviour
 
 	public bool PutOnDisguise;
 
+	public bool Aggressive;
+
 	public bool Attacking;
+
+	public bool Chasing;
 
 	public bool InView;
 
@@ -137,6 +141,7 @@ public class NemesisScript : MonoBehaviour
 		this.UpdateLKP();
 		base.transform.parent = null;
 		this.Student.Name = "Nemesis";
+		this.Aggressive = MissionModeGlobals.NemesisAggression;
 	}
 
 	private void Update()
@@ -197,15 +202,30 @@ public class NemesisScript : MonoBehaviour
 					}
 					if (!this.Student.Pathfinding.canSearch)
 					{
-						this.Student.Character.GetComponent<Animation>().CrossFade(this.Student.WalkAnim);
+						if (!this.Chasing)
+						{
+							this.Student.Character.GetComponent<Animation>().CrossFade(this.Student.WalkAnim);
+							this.Student.Pathfinding.speed = 1f;
+						}
+						else
+						{
+							this.Student.Character.GetComponent<Animation>().CrossFade("f02_sithRun_00");
+							this.Student.Pathfinding.speed = 5f;
+						}
 						this.Student.Pathfinding.canSearch = true;
 						this.Student.Pathfinding.canMove = true;
-						this.Student.Pathfinding.speed = 1f;
 					}
 					this.InView = false;
 					this.LookForYandere();
-					this.Student.Pathfinding.speed = Mathf.MoveTowards(this.Student.Pathfinding.speed, (!this.InView) ? 1f : 2f, Time.deltaTime * 0.1f);
-					this.Student.Character.GetComponent<Animation>()[this.Student.WalkAnim].speed = this.Student.Pathfinding.speed;
+					if (!this.Chasing)
+					{
+						this.Student.Pathfinding.speed = Mathf.MoveTowards(this.Student.Pathfinding.speed, (!this.InView) ? 1f : 2f, Time.deltaTime * 0.1f);
+						this.Student.Character.GetComponent<Animation>()[this.Student.WalkAnim].speed = this.Student.Pathfinding.speed;
+					}
+					else
+					{
+						this.Student.Pathfinding.speed = 5f;
+					}
 					if (Vector3.Distance(base.transform.position, this.Yandere.transform.position) < 1f)
 					{
 						if (this.InView)
@@ -240,6 +260,7 @@ public class NemesisScript : MonoBehaviour
 						{
 							Vector3 vector = new Vector3(0f, 0f, -2.5f);
 							this.MissionMode.LastKnownPosition.position = ((!(this.MissionMode.LastKnownPosition.position == vector)) ? vector : this.Yandere.transform.position);
+							this.Chasing = false;
 							this.UpdateLKP();
 						}
 					}
@@ -319,20 +340,39 @@ public class NemesisScript : MonoBehaviour
 
 	private void LookForYandere()
 	{
+		this.Student.VisionDistance = 25f;
 		if (this.Student.CanSeeObject(this.Yandere.gameObject, this.Yandere.HeadPosition))
 		{
 			this.MissionMode.LastKnownPosition.position = this.Yandere.transform.position;
 			this.InView = true;
 			this.UpdateLKP();
+			if (this.Aggressive)
+			{
+				this.Chasing = true;
+			}
 		}
 	}
 
 	private void UpdateLKP()
 	{
-		this.Student.Character.GetComponent<Animation>().CrossFade(this.Student.WalkAnim);
+		if (!this.Chasing)
+		{
+			this.Student.Character.GetComponent<Animation>().CrossFade(this.Student.WalkAnim);
+		}
+		else
+		{
+			this.Student.Character.GetComponent<Animation>().CrossFade("f02_sithRun_00");
+		}
 		if (this.Student.Pathfinding.speed == 0f)
 		{
-			this.Student.Pathfinding.speed = 1f;
+			if (!this.Chasing)
+			{
+				this.Student.Pathfinding.speed = 1f;
+			}
+			else
+			{
+				this.Student.Pathfinding.speed = 5f;
+			}
 		}
 		this.ScanTimer = 0f;
 		this.InView = true;

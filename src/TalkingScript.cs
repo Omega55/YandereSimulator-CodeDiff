@@ -189,30 +189,12 @@ public class TalkingScript : MonoBehaviour
 			{
 				if (this.S.TalkTimer == 3f)
 				{
-					if (this.S.Club != ClubType.Delinquent)
-					{
-						this.S.CharacterAnimation.CrossFade(this.S.LookDownAnim);
-						if (PlayerGlobals.Reputation < -33.33333f)
-						{
-							this.S.Subtitle.UpdateLabel(SubtitleType.StudentLowCompliment, 0, 3f);
-						}
-						else if (PlayerGlobals.Reputation > 33.33333f)
-						{
-							this.S.Subtitle.UpdateLabel(SubtitleType.StudentHighCompliment, 0, 3f);
-						}
-						else
-						{
-							this.S.Subtitle.UpdateLabel(SubtitleType.StudentMidCompliment, 0, 3f);
-						}
-						this.CalculateRepBonus();
-						this.S.Reputation.PendingRep += 1f + (float)this.S.RepBonus;
-						this.S.PendingRep += 1f + (float)this.S.RepBonus;
-						this.S.Complimented = true;
-					}
-					else
-					{
-						this.S.Subtitle.UpdateLabel(SubtitleType.Dismissive, 1, 5f);
-					}
+					this.S.CharacterAnimation.CrossFade(this.S.LookDownAnim);
+					this.S.Subtitle.PersonaSubtitle.UpdateLabel(this.S.Persona, this.S.Reputation.Reputation, 5f);
+					this.CalculateRepBonus();
+					this.S.Reputation.PendingRep += 1f + (float)this.S.RepBonus;
+					this.S.PendingRep += 1f + (float)this.S.RepBonus;
+					this.S.Complimented = true;
 				}
 				else if (Input.GetButtonDown("A"))
 				{

@@ -296,6 +296,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public bool MysteriousObstacle;
 
+	public bool DoNotChangeFace;
+
 	public bool TakingPortrait;
 
 	public bool Initialized;
@@ -744,13 +746,15 @@ public class CosmeticScript : MonoBehaviour
 				this.CharacterAnimation["sadFace_00"].weight = 1f;
 			}
 			bool flag = false;
-			if ((this.StudentID == 28 || flag) && StudentGlobals.CustomSuitor)
+			if (this.StudentID == 28)
+			{
+				flag = true;
+			}
+			if (flag && StudentGlobals.CustomSuitor)
 			{
 				if (StudentGlobals.CustomSuitorHair > 0)
 				{
 					this.Hairstyle = StudentGlobals.CustomSuitorHair;
-					this.HairColor = "Purple";
-					this.EyeColor = "Purple";
 				}
 				if (StudentGlobals.CustomSuitorAccessory > 0)
 				{
@@ -758,12 +762,13 @@ public class CosmeticScript : MonoBehaviour
 					if (this.Accessory == 1)
 					{
 						Transform transform = this.MaleAccessories[1].transform;
-						transform.localScale = new Vector3(1.02f, transform.localScale.y, 1.062f);
+						transform.localScale = new Vector3(1.066666f, 1f, 1f);
+						transform.localPosition = new Vector3(0f, -1.525f, 0.0066666f);
 					}
 				}
-				if (StudentGlobals.CustomSuitorBlonde > 0)
+				if (StudentGlobals.CustomSuitorBlack)
 				{
-					this.HairColor = "Yellow";
+					this.HairColor = "SolidBlack";
 				}
 				if (StudentGlobals.CustomSuitorJewelry > 0)
 				{
@@ -1072,7 +1077,11 @@ public class CosmeticScript : MonoBehaviour
 			}
 		}
 		bool flag2 = false;
-		if ((this.StudentID == 28 || flag2) && StudentGlobals.CustomSuitor && StudentGlobals.CustomSuitorEyewear > 0)
+		if (this.StudentID == 28)
+		{
+			flag2 = true;
+		}
+		if (flag2 && StudentGlobals.CustomSuitor && StudentGlobals.CustomSuitorEyewear > 0)
 		{
 			this.Eyewear[StudentGlobals.CustomSuitorEyewear].SetActive(true);
 		}
@@ -1327,6 +1336,10 @@ public class CosmeticScript : MonoBehaviour
 			{
 				this.ColorValue = new Color(0.5f, 0.5f, 0.5f);
 			}
+			else if (this.HairColor == "SolidBlack")
+			{
+				this.ColorValue = new Color(0.0001f, 0.0001f, 0.0001f);
+			}
 			else if (this.HairColor == "Red")
 			{
 				this.ColorValue = new Color(1f, 0f, 0f);
@@ -1375,7 +1388,10 @@ public class CosmeticScript : MonoBehaviour
 			{
 				this.RightEyeRenderer.material.mainTexture = this.HairRenderer.material.mainTexture;
 				this.LeftEyeRenderer.material.mainTexture = this.HairRenderer.material.mainTexture;
-				this.FaceTexture = this.HairRenderer.material.mainTexture;
+				if (!this.DoNotChangeFace)
+				{
+					this.FaceTexture = this.HairRenderer.material.mainTexture;
+				}
 				if (this.Empty)
 				{
 					this.FaceTexture = this.GrayFace;
@@ -1563,9 +1579,14 @@ public class CosmeticScript : MonoBehaviour
 		{
 			this.FaceTexture = ((!this.CustomHair) ? this.FaceTextures[this.SkinColor] : this.HairRenderer.material.mainTexture);
 			bool flag = false;
-			if ((this.StudentID == 28 || flag) && StudentGlobals.CustomSuitor && StudentGlobals.CustomSuitorTan)
+			if (this.StudentID == 28)
+			{
+				flag = true;
+			}
+			if (flag && StudentGlobals.CustomSuitor && StudentGlobals.CustomSuitorTan)
 			{
 				this.SkinColor = 6;
+				this.DoNotChangeFace = true;
 				this.FaceTexture = this.FaceTextures[6];
 			}
 		}

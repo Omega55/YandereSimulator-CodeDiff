@@ -30,13 +30,19 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 
 	public bool CanSpawn;
 
+	public bool Falling;
+
 	public int PoolsSpawned;
 
 	public int NearbyBlood;
 
+	public float FallTimer;
+
 	public float Height;
 
 	public float Timer;
+
+	public LayerMask Mask;
 
 	public void Start()
 	{
@@ -76,51 +82,58 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (this.MyCollider.enabled)
+		if (!this.Falling)
 		{
-			if (this.Timer > 0f)
+			if (this.MyCollider.enabled)
 			{
-				this.Timer -= Time.deltaTime;
-			}
-			this.SetHeight();
-			Vector3 position = base.transform.position;
-			if (SceneManager.GetActiveScene().name == "SchoolScene")
-			{
-				this.CanSpawn = (!this.GardenArea.bounds.Contains(position) && !this.NEStairs.bounds.Contains(position) && !this.NWStairs.bounds.Contains(position) && !this.SEStairs.bounds.Contains(position) && !this.SWStairs.bounds.Contains(position));
-			}
-			else
-			{
-				this.CanSpawn = true;
-			}
-			if (this.CanSpawn && position.y < this.Height + 0.333333343f)
-			{
-				if (this.NearbyBlood > 0 && this.LastBloodPool == null)
+				if (this.Timer > 0f)
 				{
-					this.NearbyBlood--;
+					this.Timer -= Time.deltaTime;
 				}
-				if (this.NearbyBlood < 1 && this.Timer <= 0f)
+				this.SetHeight();
+				Vector3 position = base.transform.position;
+				if (SceneManager.GetActiveScene().name == "SchoolScene")
 				{
-					this.Timer = 0.1f;
-					if (this.PoolsSpawned < 10)
+					this.CanSpawn = (!this.GardenArea.bounds.Contains(position) && !this.NEStairs.bounds.Contains(position) && !this.NWStairs.bounds.Contains(position) && !this.SEStairs.bounds.Contains(position) && !this.SWStairs.bounds.Contains(position));
+				}
+				if (this.CanSpawn && position.y < this.Height + 0.333333343f)
+				{
+					if (this.NearbyBlood > 0 && this.LastBloodPool == null)
 					{
-						GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.BloodPool, new Vector3(position.x, this.Height + 0.012f, position.z), Quaternion.identity);
-						gameObject.transform.localEulerAngles = new Vector3(90f, UnityEngine.Random.Range(0f, 360f), 0f);
-						gameObject.transform.parent = this.BloodParent;
-						this.PoolsSpawned++;
+						this.NearbyBlood--;
 					}
-					else if (this.PoolsSpawned < 20)
+					if (this.NearbyBlood < 1 && this.Timer <= 0f)
 					{
-						GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(this.BloodPool, new Vector3(position.x, this.Height + 0.012f, position.z), Quaternion.identity);
-						gameObject2.transform.localEulerAngles = new Vector3(90f, UnityEngine.Random.Range(0f, 360f), 0f);
-						gameObject2.transform.parent = this.BloodParent;
-						this.PoolsSpawned++;
-						gameObject2.GetComponent<BloodPoolScript>().TargetSize = 1f - (float)(this.PoolsSpawned - 10) * 0.1f;
-						if (this.PoolsSpawned == 20)
+						this.Timer = 0.1f;
+						if (this.PoolsSpawned < 10)
 						{
-							base.gameObject.SetActive(false);
+							GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.BloodPool, new Vector3(position.x, this.Height + 0.012f, position.z), Quaternion.identity);
+							gameObject.transform.localEulerAngles = new Vector3(90f, UnityEngine.Random.Range(0f, 360f), 0f);
+							gameObject.transform.parent = this.BloodParent;
+							this.PoolsSpawned++;
+						}
+						else if (this.PoolsSpawned < 20)
+						{
+							GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(this.BloodPool, new Vector3(position.x, this.Height + 0.012f, position.z), Quaternion.identity);
+							gameObject2.transform.localEulerAngles = new Vector3(90f, UnityEngine.Random.Range(0f, 360f), 0f);
+							gameObject2.transform.parent = this.BloodParent;
+							this.PoolsSpawned++;
+							gameObject2.GetComponent<BloodPoolScript>().TargetSize = 1f - (float)(this.PoolsSpawned - 10) * 0.1f;
+							if (this.PoolsSpawned == 20)
+							{
+								base.gameObject.SetActive(false);
+							}
 						}
 					}
 				}
+			}
+		}
+		else
+		{
+			this.FallTimer += Time.deltaTime;
+			if (this.FallTimer > 10f)
+			{
+				this.Falling = false;
 			}
 		}
 	}

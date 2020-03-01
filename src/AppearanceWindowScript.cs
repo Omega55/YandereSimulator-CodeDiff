@@ -78,7 +78,7 @@ public class AppearanceWindowScript : MonoBehaviour
 					{
 						if (!this.Checks[1].activeInHierarchy)
 						{
-							StudentGlobals.CustomSuitorHair = 22;
+							StudentGlobals.CustomSuitorHair = 55;
 							DatingGlobals.SetSuitorCheck(1, true);
 							DatingGlobals.SetSuitorCheck(2, false);
 							this.Checks[1].SetActive(true);
@@ -95,7 +95,7 @@ public class AppearanceWindowScript : MonoBehaviour
 					{
 						if (!this.Checks[2].activeInHierarchy)
 						{
-							StudentGlobals.CustomSuitorHair = 21;
+							StudentGlobals.CustomSuitorHair = 56;
 							DatingGlobals.SetSuitorCheck(1, false);
 							DatingGlobals.SetSuitorCheck(2, true);
 							this.Checks[1].SetActive(false);
@@ -112,7 +112,7 @@ public class AppearanceWindowScript : MonoBehaviour
 					{
 						if (!this.Checks[3].activeInHierarchy)
 						{
-							StudentGlobals.CustomSuitorAccessory = 3;
+							StudentGlobals.CustomSuitorAccessory = 17;
 							DatingGlobals.SetSuitorCheck(3, true);
 							DatingGlobals.SetSuitorCheck(4, false);
 							this.Checks[3].SetActive(true);
@@ -146,13 +146,15 @@ public class AppearanceWindowScript : MonoBehaviour
 					{
 						if (!this.Checks[5].activeInHierarchy)
 						{
-							StudentGlobals.CustomSuitorBlonde = 1;
+							StudentGlobals.CustomSuitorEyewear = 6;
 							DatingGlobals.SetSuitorCheck(5, true);
+							DatingGlobals.SetSuitorCheck(6, false);
 							this.Checks[5].SetActive(true);
+							this.Checks[6].SetActive(false);
 						}
 						else
 						{
-							StudentGlobals.CustomSuitorBlonde = 0;
+							StudentGlobals.CustomSuitorEyewear = 0;
 							DatingGlobals.SetSuitorCheck(5, false);
 							this.Checks[5].SetActive(false);
 						}
@@ -161,11 +163,11 @@ public class AppearanceWindowScript : MonoBehaviour
 					{
 						if (!this.Checks[6].activeInHierarchy)
 						{
-							StudentGlobals.CustomSuitorEyewear = 6;
+							StudentGlobals.CustomSuitorEyewear = 3;
+							DatingGlobals.SetSuitorCheck(5, false);
 							DatingGlobals.SetSuitorCheck(6, true);
-							DatingGlobals.SetSuitorCheck(8, false);
+							this.Checks[5].SetActive(false);
 							this.Checks[6].SetActive(true);
-							this.Checks[8].SetActive(false);
 						}
 						else
 						{
@@ -178,13 +180,13 @@ public class AppearanceWindowScript : MonoBehaviour
 					{
 						if (!this.Checks[7].activeInHierarchy)
 						{
-							StudentGlobals.CustomSuitorJewelry = 1;
+							StudentGlobals.CustomSuitorTan = true;
 							DatingGlobals.SetSuitorCheck(7, true);
 							this.Checks[7].SetActive(true);
 						}
 						else
 						{
-							StudentGlobals.CustomSuitorJewelry = 0;
+							StudentGlobals.CustomSuitorTan = false;
 							DatingGlobals.SetSuitorCheck(7, false);
 							this.Checks[7].SetActive(false);
 						}
@@ -193,15 +195,13 @@ public class AppearanceWindowScript : MonoBehaviour
 					{
 						if (!this.Checks[8].activeInHierarchy)
 						{
-							StudentGlobals.CustomSuitorEyewear = 7;
-							DatingGlobals.SetSuitorCheck(6, false);
+							StudentGlobals.CustomSuitorBlack = true;
 							DatingGlobals.SetSuitorCheck(8, true);
-							this.Checks[6].SetActive(false);
 							this.Checks[8].SetActive(true);
 						}
 						else
 						{
-							StudentGlobals.CustomSuitorEyewear = 0;
+							StudentGlobals.CustomSuitorBlack = false;
 							DatingGlobals.SetSuitorCheck(8, false);
 							this.Checks[8].SetActive(false);
 						}
@@ -210,13 +210,13 @@ public class AppearanceWindowScript : MonoBehaviour
 					{
 						if (!this.Checks[9].activeInHierarchy)
 						{
-							StudentGlobals.CustomSuitorTan = true;
+							StudentGlobals.CustomSuitorJewelry = 1;
 							DatingGlobals.SetSuitorCheck(9, true);
 							this.Checks[9].SetActive(true);
 						}
 						else
 						{
-							StudentGlobals.CustomSuitorTan = false;
+							StudentGlobals.CustomSuitorJewelry = 0;
 							DatingGlobals.SetSuitorCheck(9, false);
 							this.Checks[9].SetActive(false);
 						}

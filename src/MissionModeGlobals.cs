@@ -21,6 +21,8 @@ public static class MissionModeGlobals
 
 	private const string Str_NemesisDifficulty = "NemesisDifficulty";
 
+	private const string Str_NemesisAggression = "NemesisAggression";
+
 	private const string Str_MultiMission = "MultiMission";
 
 	public static int GetMissionCondition(int id)
@@ -148,6 +150,18 @@ public static class MissionModeGlobals
 		}
 	}
 
+	public static bool NemesisAggression
+	{
+		get
+		{
+			return GlobalsHelper.GetBool("NemesisAggression");
+		}
+		set
+		{
+			GlobalsHelper.SetBool("NemesisAggression", value);
+		}
+	}
+
 	public static void DeleteAll()
 	{
 		Globals.DeleteCollection("MissionCondition_", MissionModeGlobals.KeysOfMissionCondition());
@@ -159,6 +173,7 @@ public static class MissionModeGlobals
 		Globals.Delete("MissionTarget");
 		Globals.Delete("MissionTargetName");
 		Globals.Delete("NemesisDifficulty");
+		Globals.Delete("NemesisAggression");
 		Globals.Delete("MultiMission");
 	}
 }

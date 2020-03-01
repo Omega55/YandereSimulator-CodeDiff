@@ -551,6 +551,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public int StudentID;
 
+	public PersonaSubtitleScript PersonaSubtitle;
+
 	public AudioClip[] NoteReactionClips;
 
 	public AudioClip[] NoteReactionMaleClips;

@@ -266,8 +266,8 @@ public class NoteWindowScript : MonoBehaviour
 							this.NoteLocker.Success = true;
 						}
 						this.NoteLocker.FindStudentLocker.Prompt.Hide();
-						this.NoteLocker.FindStudentLocker.Prompt.enabled = false;
-						this.NoteLocker.FindStudentLocker.enabled = false;
+						this.NoteLocker.FindStudentLocker.Prompt.Label[0].text = "     You Must Wait For Other Student";
+						this.NoteLocker.FindStudentLocker.TargetedStudent = this.NoteLocker.Student;
 						this.NoteLocker.transform.GetChild(0).gameObject.SetActive(false);
 					}
 					this.Exit();

@@ -378,7 +378,7 @@ public class EndOfDayScript : MonoBehaviour
 					this.Label.text = "The police and the paramedics arrive at school.";
 					this.Phase = 103;
 				}
-				else if (this.Police.DrownVictims > 0)
+				else if (this.Police.DrownVictims == 1)
 				{
 					this.Label.text = "The police arrive at school.";
 					this.Phase = 104;
@@ -1464,6 +1464,7 @@ public class EndOfDayScript : MonoBehaviour
 		{
 			Debug.Log("Osana was expelled.");
 			StudentGlobals.SetStudentExpelled(this.StudentManager.RivalID, true);
+			GameGlobals.NonlethalElimination = true;
 			GameGlobals.RivalEliminationID = 5;
 		}
 		PlayerGlobals.Reputation = this.Reputation.Reputation;

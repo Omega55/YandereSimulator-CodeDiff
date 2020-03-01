@@ -29,6 +29,8 @@ public class SkullScript : MonoBehaviour
 
 	public GameObject DarkAura;
 
+	public GameObject Hell;
+
 	public GameObject FPS;
 
 	public GameObject HUD;
@@ -151,6 +153,7 @@ public class SkullScript : MonoBehaviour
 						this.HeartbeatCamera.SetActive(false);
 						this.FPS.SetActive(false);
 						this.HUD.SetActive(false);
+						this.Hell.SetActive(true);
 					}
 				}
 				else if (this.Timer > 1f)

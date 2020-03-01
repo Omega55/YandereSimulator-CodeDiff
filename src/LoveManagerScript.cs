@@ -41,6 +41,8 @@ public class LoveManagerScript : MonoBehaviour
 
 	public bool WaitingToConfess;
 
+	public bool ConfessToSuitor;
+
 	public bool HoldingHands;
 
 	public bool RivalWaiting;
@@ -52,6 +54,11 @@ public class LoveManagerScript : MonoBehaviour
 	private void Start()
 	{
 		this.SuitorProgress = DatingGlobals.SuitorProgress;
+		Debug.Log("DatingGlobals.Affection is: " + DatingGlobals.Affection);
+		if (DatingGlobals.Affection == 100f)
+		{
+			this.ConfessToSuitor = true;
+		}
 	}
 
 	private void LateUpdate()
@@ -90,12 +97,20 @@ public class LoveManagerScript : MonoBehaviour
 		}
 		if (this.LeftNote)
 		{
-			this.Rival = this.StudentManager.Students[this.RivalID];
-			this.Suitor = this.StudentManager.Students[this.SuitorID];
-			if (this.StudentManager.Students[this.StudentManager.RivalID] != null)
+			if (this.Rival == null)
 			{
-				this.Rival = this.StudentManager.Students[this.StudentManager.RivalID];
-				this.Suitor = this.StudentManager.Students[1];
+				this.Rival = this.StudentManager.Students[this.RivalID];
+			}
+			if (this.Suitor == null)
+			{
+				if (this.ConfessToSuitor)
+				{
+					this.Suitor = this.StudentManager.Students[this.SuitorID];
+				}
+				else
+				{
+					this.Suitor = this.StudentManager.Students[1];
+				}
 			}
 			if (this.Rival != null && this.Suitor != null && this.Rival.Alive && this.Suitor.Alive && !this.Rival.Dying && !this.Suitor.Dying && this.Rival.ConfessPhase == 5 && this.Suitor.ConfessPhase == 3)
 			{
@@ -146,16 +161,16 @@ public class LoveManagerScript : MonoBehaviour
 			{
 				this.Suitor.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
 				this.Rival.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
-				this.Suitor.Character.GetComponent<Animation>().enabled = true;
-				this.Rival.Character.GetComponent<Animation>().enabled = true;
-				this.Suitor.Character.GetComponent<Animation>().Play("walkHands_00");
+				this.Suitor.CharacterAnimation.enabled = true;
+				this.Rival.CharacterAnimation.enabled = true;
+				this.Suitor.CharacterAnimation.Play("walkHands_00");
 				this.Suitor.transform.eulerAngles = Vector3.zero;
 				this.Suitor.transform.position = new Vector3(-0.25f, 0f, -90f);
 				this.Suitor.Pathfinding.canSearch = false;
 				this.Suitor.Pathfinding.canMove = false;
 				this.Suitor.MyController.radius = 0f;
 				this.Suitor.enabled = false;
-				this.Rival.Character.GetComponent<Animation>().Play("f02_walkHands_00");
+				this.Rival.CharacterAnimation.Play("f02_walkHands_00");
 				this.Rival.transform.eulerAngles = Vector3.zero;
 				this.Rival.transform.position = new Vector3(0.25f, 0f, -90f);
 				this.Rival.Pathfinding.canSearch = false;
@@ -195,7 +210,7 @@ public class LoveManagerScript : MonoBehaviour
 		this.Rival.gameObject.SetActive(true);
 		this.Suitor.enabled = false;
 		this.Rival.enabled = false;
-		if (this.StudentManager.Students[this.StudentManager.RivalID] != null)
+		if (!this.ConfessToSuitor)
 		{
 			this.ConfessionManager.gameObject.SetActive(true);
 		}

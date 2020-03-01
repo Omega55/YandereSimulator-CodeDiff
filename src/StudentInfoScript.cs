@@ -375,6 +375,14 @@ public class StudentInfoScript : MonoBehaviour
 				this.NoteLocker.Prompt.Label[0].text = "     Leave note for " + this.StudentManager.Students[this.StudentInfoMenu.StudentID].Name;
 				this.NoteLocker.Student = this.StudentManager.Students[this.StudentInfoMenu.StudentID];
 				this.NoteLocker.LockerOwner = this.StudentInfoMenu.StudentID;
+				this.NoteLocker.Prompt.enabled = true;
+				this.NoteLocker.transform.GetChild(0).gameObject.SetActive(true);
+				this.NoteLocker.CheckingNote = false;
+				this.NoteLocker.CanLeaveNote = true;
+				this.NoteLocker.SpawnedNote = false;
+				this.NoteLocker.NoteLeft = false;
+				this.NoteLocker.Success = false;
+				this.NoteLocker.Timer = 0f;
 				this.StudentInfoMenu.PauseScreen.MainMenu.SetActive(true);
 				this.StudentInfoMenu.PauseScreen.Show = false;
 				this.StudentInfoMenu.FindingLocker = false;

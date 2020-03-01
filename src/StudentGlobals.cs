@@ -9,6 +9,8 @@ public static class StudentGlobals
 
 	private const string Str_CustomSuitorBlonde = "CustomSuitorBlonde";
 
+	private const string Str_CustomSuitorBlack = "CustomSuitorBlack";
+
 	private const string Str_CustomSuitorEyewear = "CustomSuitorEyewear";
 
 	private const string Str_CustomSuitorHair = "CustomSuitorHair";
@@ -113,15 +115,27 @@ public static class StudentGlobals
 		}
 	}
 
-	public static int CustomSuitorBlonde
+	public static bool CustomSuitorBlonde
 	{
 		get
 		{
-			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_CustomSuitorBlonde");
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_CustomSuitorBlonde");
 		}
 		set
 		{
-			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_CustomSuitorBlonde", value);
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_CustomSuitorBlonde", value);
+		}
+	}
+
+	public static bool CustomSuitorBlack
+	{
+		get
+		{
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_CustomSuitorBlack");
+		}
+		set
+		{
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_CustomSuitorBlack", value);
 		}
 	}
 
@@ -944,6 +958,7 @@ public static class StudentGlobals
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_CustomSuitor");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_CustomSuitorAccessory");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_CustomSuitorBlonde");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_CustomSuitorBlack");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_CustomSuitorEyewear");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_CustomSuitorHair");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_CustomSuitorJewelry");

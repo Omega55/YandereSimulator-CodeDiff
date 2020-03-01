@@ -489,7 +489,6 @@ public class ClockScript : MonoBehaviour
 	private void UpdateClock()
 	{
 		this.LastMinute = this.Minute;
-		Debug.Log("Updating clock!");
 		if (this.Hour == 0f || this.Hour == 12f)
 		{
 			this.HourNumber = "12";

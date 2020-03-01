@@ -48,6 +48,14 @@ public class PhoneScript : MonoBehaviour
 
 	public int[] BefriendHeight;
 
+	public AudioClip[] NonlethalClip;
+
+	public string[] NonlethalText;
+
+	public int[] NonlethalHeight;
+
+	public bool PostElimination;
+
 	public bool FadeOut;
 
 	public bool Auto;
@@ -90,6 +98,18 @@ public class PhoneScript : MonoBehaviour
 		{
 			Camera.main.backgroundColor = Color.black;
 			this.LoveSickColorSwap();
+		}
+		if (this.PostElimination && GameGlobals.NonlethalElimination)
+		{
+			this.VoiceClips[1] = this.NonlethalClip[1];
+			this.VoiceClips[2] = this.NonlethalClip[2];
+			this.VoiceClips[3] = this.NonlethalClip[3];
+			this.Text[1] = this.NonlethalText[1];
+			this.Text[2] = this.NonlethalText[2];
+			this.Text[3] = this.NonlethalText[3];
+			this.Height[1] = this.NonlethalHeight[1];
+			this.Height[2] = this.NonlethalHeight[2];
+			this.Height[3] = this.NonlethalHeight[3];
 		}
 	}
 
@@ -147,7 +167,11 @@ public class PhoneScript : MonoBehaviour
 			this.Jukebox.volume = 1f - this.Darkness.color.a;
 			if (this.Darkness.color.a >= 1f)
 			{
-				if (DateGlobals.Weekday == DayOfWeek.Sunday)
+				if (DateGlobals.Week == 2)
+				{
+					SceneManager.LoadScene("CreditsScene");
+				}
+				else if (DateGlobals.Weekday == DayOfWeek.Sunday)
 				{
 					SceneManager.LoadScene("OsanaWarningScene");
 				}
@@ -197,7 +221,7 @@ public class PhoneScript : MonoBehaviour
 				this.NewMessage.GetComponent<TextMessageScript>().Attachment = true;
 			}
 		}
-		if (this.Height[this.ID] == 9)
+		if (this.Height[this.ID] == 9 && this.Speaker[this.ID] == 2)
 		{
 			this.Buttons.gameObject.SetActive(false);
 			this.Darkness.enabled = true;

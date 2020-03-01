@@ -10,11 +10,23 @@ public class HeartbrokenCursorScript : MonoBehaviour
 
 	public HeartbrokenScript Heartbroken;
 
+	public VibrateScript[] Vibrations;
+
+	public UISprite CursorSprite;
+
 	public UISprite Darkness;
+
+	public AudioClip SelectSound;
+
+	public AudioClip MoveSound;
+
+	public AudioSource MyAudio;
 
 	public UILabel Continue;
 
 	public UILabel MyLabel;
+
+	public GameObject FPS;
 
 	public bool LoveSick;
 
@@ -32,16 +44,6 @@ public class HeartbrokenCursorScript : MonoBehaviour
 
 	public int RandomCrack;
 
-	public AudioClip SelectSound;
-
-	public AudioClip MoveSound;
-
-	public VibrateScript[] Vibrations;
-
-	public AudioClip[] CrackSound;
-
-	public GameObject[] Cracks;
-
 	private void Start()
 	{
 		this.Darkness.transform.localPosition = new Vector3(this.Darkness.transform.localPosition.x, this.Darkness.transform.localPosition.y, -989f);
@@ -54,7 +56,6 @@ public class HeartbrokenCursorScript : MonoBehaviour
 		base.transform.localPosition = new Vector3(base.transform.localPosition.x, Mathf.Lerp(base.transform.localPosition.y, 255f - (float)this.Selected * 50f, Time.deltaTime * 10f), base.transform.localPosition.z);
 		if (!this.FadeOut)
 		{
-			AudioSource component = base.GetComponent<AudioSource>();
 			if (this.MyLabel.color.a >= 1f)
 			{
 				if (this.InputManager.TappedDown)
@@ -64,8 +65,8 @@ public class HeartbrokenCursorScript : MonoBehaviour
 					{
 						this.Selected = 1;
 					}
-					component.clip = this.MoveSound;
-					component.Play();
+					this.MyAudio.clip = this.MoveSound;
+					this.MyAudio.Play();
 				}
 				if (this.InputManager.TappedUp)
 				{
@@ -74,8 +75,8 @@ public class HeartbrokenCursorScript : MonoBehaviour
 					{
 						this.Selected = this.Options;
 					}
-					component.clip = this.MoveSound;
-					component.Play();
+					this.MyAudio.clip = this.MoveSound;
+					this.MyAudio.Play();
 				}
 				this.Continue.color = new Color(this.Continue.color.r, this.Continue.color.g, this.Continue.color.b, (this.Selected == 4) ? 0f : 1f);
 				if (Input.GetButtonDown("A"))
@@ -83,8 +84,8 @@ public class HeartbrokenCursorScript : MonoBehaviour
 					this.Nudge = true;
 					if (this.Selected != 4)
 					{
-						component.clip = this.SelectSound;
-						component.Play();
+						this.MyAudio.clip = this.SelectSound;
+						this.MyAudio.Play();
 						this.FadeOut = true;
 					}
 				}

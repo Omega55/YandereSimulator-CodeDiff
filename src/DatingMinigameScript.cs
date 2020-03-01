@@ -73,15 +73,15 @@ public class DatingMinigameScript : MonoBehaviour
 
 	public UILabel WisdomLabel;
 
+	public UIPanel Panel;
+
+	public UITexture[] GiftIcons;
+
 	public UISprite[] TraitBGs;
 
 	public UISprite[] GiftBGs;
 
-	public UITexture RoseIcon;
-
 	public UILabel[] Labels;
-
-	public UIPanel Panel;
 
 	public string[] OpinionSpriteNames;
 
@@ -201,7 +201,35 @@ public class DatingMinigameScript : MonoBehaviour
 
 	private void CalculateAffection()
 	{
-		this.AffectionLevel = (int)Mathf.Floor(Mathf.Min(this.Affection / 25f, 100f));
+		if (this.Affection > 100f)
+		{
+			this.Affection = 100f;
+		}
+		if (this.Affection == 0f)
+		{
+			this.AffectionLevel = 0;
+		}
+		else if (this.Affection < 25f)
+		{
+			this.AffectionLevel = 1;
+		}
+		else if (this.Affection < 50f)
+		{
+			this.AffectionLevel = 2;
+		}
+		else if (this.Affection < 75f)
+		{
+			this.AffectionLevel = 3;
+		}
+		else if (this.Affection < 100f)
+		{
+			this.AffectionLevel = 4;
+		}
+		else
+		{
+			this.AffectionLevel = 5;
+		}
+		Debug.Log("Affection is: " + this.Affection);
 		Debug.Log("AffectionLevel is now: " + this.AffectionLevel);
 	}
 
@@ -255,10 +283,10 @@ public class DatingMinigameScript : MonoBehaviour
 				this.MainCamera.transform.position = new Vector3(48f, 3f, -44f);
 				this.MainCamera.transform.eulerAngles = new Vector3(15f, 90f, 0f);
 				this.WisdomLabel.text = "Wisdom: " + DatingGlobals.GetSuitorTrait(2).ToString();
-				if (!this.Suitor.Rose)
-				{
-					this.RoseIcon.enabled = false;
-				}
+				this.GiftIcons[1].enabled = CollectibleGlobals.GetGiftPurchased(6);
+				this.GiftIcons[2].enabled = CollectibleGlobals.GetGiftPurchased(7);
+				this.GiftIcons[3].enabled = CollectibleGlobals.GetGiftPurchased(8);
+				this.GiftIcons[4].enabled = CollectibleGlobals.GetGiftPurchased(9);
 				this.Matchmaking = true;
 				this.UpdateTopics();
 				Time.timeScale = 1f;
@@ -324,6 +352,7 @@ public class DatingMinigameScript : MonoBehaviour
 					this.Rival.CharacterAnimation["f02_turnAround_00"].speed = 0f;
 					this.Rival.CharacterAnimation.Play("f02_turnAround_00");
 					this.Rival.CharacterAnimation.CrossFade(this.Rival.IdleAnim);
+					Time.timeScale = 1f;
 					this.PromptBar.ClearButtons();
 					this.PromptBar.Label[0].text = "Confirm";
 					this.PromptBar.Label[1].text = "Back";
@@ -430,9 +459,9 @@ public class DatingMinigameScript : MonoBehaviour
 						uisprite.color = new Color(uisprite.color.r, uisprite.color.g, uisprite.color.b, 0.5f);
 						DatingGlobals.SetTopicDiscussed(this.TopicSelected, true);
 						this.DetermineOpinion();
-						if (!ConversationGlobals.GetTopicLearnedByStudent(this.Opinion, 30))
+						if (!ConversationGlobals.GetTopicLearnedByStudent(this.Opinion, this.LoveManager.RivalID))
 						{
-							ConversationGlobals.SetTopicLearnedByStudent(this.Opinion, 30, true);
+							ConversationGlobals.SetTopicLearnedByStudent(this.Opinion, this.LoveManager.RivalID, true);
 						}
 						if (this.Negative)
 						{
@@ -645,12 +674,13 @@ public class DatingMinigameScript : MonoBehaviour
 					}
 					if (Input.GetButtonDown("A"))
 					{
-						if (this.GiftSelected == 1 && this.RoseIcon.enabled)
+						if (this.GiftIcons[this.GiftSelected].enabled)
 						{
+							CollectibleGlobals.SetGiftPurchased(this.GiftSelected + 5, false);
 							UILabel uilabel5 = this.Labels[5];
 							uilabel5.color = new Color(uilabel5.color.r, uilabel5.color.g, uilabel5.color.b, 0.5f);
 							this.GivingGift = false;
-							this.DialogueLabel.text = this.GiveGifts[this.AffectionLevel];
+							this.DialogueLabel.text = this.GiveGifts[this.GiftSelected];
 							this.Rival.CharacterAnimation.CrossFade("f02_lookdown_00");
 							this.CurrentAnim = "f02_lookdown_00";
 							this.Affection += (float)this.Multiplier;
@@ -724,8 +754,17 @@ public class DatingMinigameScript : MonoBehaviour
 					this.HeartbeatCamera.SetActive(true);
 					this.Yandere.Headset.SetActive(false);
 					DatingGlobals.Affection = this.Affection;
+					if (this.AffectionLevel == 5)
+					{
+						this.LoveManager.ConfessToSuitor = true;
+					}
 					this.PromptBar.ClearButtons();
 					this.PromptBar.Show = false;
+					if (this.StudentManager.Students[10] != null)
+					{
+						this.StudentManager.Students[10].CurrentDestination = this.StudentManager.Students[10].FollowTarget.transform;
+						this.StudentManager.Students[10].Pathfinding.target = this.StudentManager.Students[10].FollowTarget.transform;
+					}
 				}
 				else if (this.Panel.alpha == 1f)
 				{
@@ -735,12 +774,6 @@ public class DatingMinigameScript : MonoBehaviour
 				}
 				this.Panel.alpha = Mathf.MoveTowards(this.Panel.alpha, 1f, Time.deltaTime);
 			}
-		}
-		if (Input.GetKeyDown(KeyCode.LeftControl))
-		{
-			this.Affection += 10f;
-			this.CalculateAffection();
-			this.DialogueLabel.text = this.Greetings[this.AffectionLevel];
 		}
 	}
 
@@ -754,22 +787,22 @@ public class DatingMinigameScript : MonoBehaviour
 	private void CalculateMultiplier()
 	{
 		this.Multiplier = 5;
-		if (!this.Suitor.Cosmetic.Eyewear[6].activeInHierarchy)
+		if (!this.Suitor.Cosmetic.MaleHair[55].activeInHierarchy)
 		{
 			this.MultiplierIcons[1].mainTexture = this.X;
 			this.Multiplier--;
 		}
-		if (!this.Suitor.Cosmetic.MaleAccessories[3].activeInHierarchy)
+		if (!this.Suitor.Cosmetic.MaleAccessories[17].activeInHierarchy)
 		{
 			this.MultiplierIcons[2].mainTexture = this.X;
 			this.Multiplier--;
 		}
-		if (!this.Suitor.Cosmetic.MaleHair[22].activeInHierarchy)
+		if (!this.Suitor.Cosmetic.Eyewear[6].activeInHierarchy)
 		{
 			this.MultiplierIcons[3].mainTexture = this.X;
 			this.Multiplier--;
 		}
-		if (this.Suitor.Cosmetic.HairColor != "Purple")
+		if (this.Suitor.Cosmetic.SkinColor != 6)
 		{
 			this.MultiplierIcons[4].mainTexture = this.X;
 			this.Multiplier--;
@@ -834,7 +867,7 @@ public class DatingMinigameScript : MonoBehaviour
 
 	private void DetermineOpinion()
 	{
-		int[] topics = this.JSON.Topics[30].Topics;
+		int[] topics = this.JSON.Topics[this.LoveManager.RivalID].Topics;
 		this.Opinion = topics[this.TopicSelected];
 	}
 
@@ -856,13 +889,13 @@ public class DatingMinigameScript : MonoBehaviour
 		for (int j = 1; j <= 25; j++)
 		{
 			UISprite uisprite2 = this.OpinionIcons[j];
-			if (!ConversationGlobals.GetTopicLearnedByStudent(j, 30))
+			if (!ConversationGlobals.GetTopicLearnedByStudent(j, this.LoveManager.RivalID))
 			{
 				uisprite2.spriteName = "Unknown";
 			}
 			else
 			{
-				int[] topics = this.JSON.Topics[30].Topics;
+				int[] topics = this.JSON.Topics[this.LoveManager.RivalID].Topics;
 				uisprite2.spriteName = this.OpinionSpriteNames[topics[j]];
 			}
 		}

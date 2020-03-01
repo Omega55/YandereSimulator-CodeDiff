@@ -511,6 +511,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool WitnessedWeapon;
 
+	public bool VerballyReacted;
+
 	public bool YandereInnocent;
 
 	public bool GetNewAnimation = true;
@@ -3178,15 +3180,15 @@ public class StudentScript : MonoBehaviour
 					this.CurrentAction = this.Actions[this.Phase];
 					this.CurrentDestination = this.Destinations[this.Phase];
 					this.Pathfinding.target = this.Destinations[this.Phase];
-					if ((this.StudentID == 30 && this.StudentManager.DatingMinigame.Affection == 100f) || (this.StudentID == this.StudentManager.RivalID && DateGlobals.Weekday == DayOfWeek.Friday && !this.InCouple))
+					if (this.StudentID == this.StudentManager.RivalID && DateGlobals.Weekday == DayOfWeek.Friday && !this.InCouple)
 					{
 						if (this.StudentID == this.StudentManager.RivalID && DateGlobals.Weekday == DayOfWeek.Friday)
 						{
-							Debug.Log("This is the part where Osana should go put a note in Senpai's locker.");
+							Debug.Log("This is the part where Osana decides to put a note in someone's locker.");
 						}
 						if (this.Actions[this.Phase] == StudentActionType.ChangeShoes)
 						{
-							if (this.StudentID == 30)
+							if (this.StudentManager.LoveManager.ConfessToSuitor)
 							{
 								this.CurrentDestination = this.StudentManager.SuitorLocker;
 								this.Pathfinding.target = this.StudentManager.SuitorLocker;
@@ -5027,11 +5029,10 @@ public class StudentScript : MonoBehaviour
 							{
 								if (this.MeetTime == 0f)
 								{
-									if (this.StudentManager.LoveManager.Suitor == this && this.StudentManager.LoveManager.LeftNote)
+									if ((this.StudentID == 1 && !this.StudentManager.LoveManager.ConfessToSuitor && this.StudentManager.LoveManager.LeftNote) || (this.StudentID == this.StudentManager.LoveManager.SuitorID && this.StudentManager.LoveManager.ConfessToSuitor && this.StudentManager.LoveManager.LeftNote))
 									{
 										this.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
 										this.CharacterAnimation.CrossFade("keepNote_00");
-										this.ShoeRemoval.Locker.GetComponent<Animation>().CrossFade("lockerKeepNote");
 										this.Pathfinding.canSearch = false;
 										this.Pathfinding.canMove = false;
 										this.Confessing = true;
@@ -5467,7 +5468,7 @@ public class StudentScript : MonoBehaviour
 									this.CharacterAnimation.CrossFade(this.CleanAnims[this.CleaningRole]);
 									this.Scrubber.SetActive(true);
 								}
-								else if (this.FollowTarget.Routine && !this.FollowTarget.InEvent && this.FollowTarget.CurrentAction == StudentActionType.Socializing && this.FollowTarget.DistanceToDestination < 1f)
+								else if (this.FollowTarget.Routine && !this.FollowTarget.InEvent && !this.FollowTarget.Meeting && this.FollowTarget.CurrentAction == StudentActionType.Socializing && this.FollowTarget.DistanceToDestination < 1f)
 								{
 									if (this.FollowTarget.Alone || this.FollowTarget.Meeting)
 									{
@@ -5521,7 +5522,7 @@ public class StudentScript : MonoBehaviour
 									this.CurrentDestination = this.Destinations[this.Phase];
 									this.Pathfinding.target = this.Destinations[this.Phase];
 								}
-								else if (this.StudentManager.LoveManager.RivalWaiting && this.FollowTarget.DistanceToDestination < 1f)
+								else if (this.StudentManager.LoveManager.RivalWaiting && this.FollowTarget.transform.position.x > 40f && this.FollowTarget.DistanceToDestination < 1f)
 								{
 									Debug.Log("Raibaru just changed her destination to the bush near the matchmaking spot.");
 									this.CurrentDestination = this.StudentManager.LoveManager.FriendWaitSpot;
@@ -5901,7 +5902,12 @@ public class StudentScript : MonoBehaviour
 						{
 							if (this.Yandere.Bloodiness + (float)this.Yandere.GloveBlood == 0f && (double)this.Yandere.Sanity >= 66.66666 && (this.CurrentDestination == this.StudentManager.MeetSpots.List[8] || this.CurrentDestination == this.StudentManager.MeetSpots.List[9] || this.CurrentDestination == this.StudentManager.MeetSpots.List[10]))
 							{
-								if (this.StudentID == 30)
+								if (this.StudentID == 11)
+								{
+									this.StudentManager.OfferHelp.UpdateLocation();
+									this.StudentManager.OfferHelp.enabled = true;
+								}
+								else if (this.StudentID == 30)
 								{
 									this.StudentManager.OfferHelp.UpdateLocation();
 									this.StudentManager.OfferHelp.enabled = true;
@@ -6010,7 +6016,7 @@ public class StudentScript : MonoBehaviour
 					{
 						if (this.Persona == PersonaType.TeachersPet && this.WitnessedMurder && this.ReportPhase == 0 && this.StudentManager.Reporter == null && !this.Police.Called)
 						{
-							Debug.Log("Setting teacher as destination at beginning of Flee protocol.");
+							Debug.Log(this.Name + " is setting their teacher as their destination at the beginning of Flee protocol.");
 							this.Pathfinding.target = this.StudentManager.Teachers[this.Class].transform;
 							this.CurrentDestination = this.StudentManager.Teachers[this.Class].transform;
 							this.StudentManager.Reporter = this;
@@ -6039,6 +6045,7 @@ public class StudentScript : MonoBehaviour
 						}
 						if (this.DistanceToDestination > this.TargetDistance)
 						{
+							Debug.Log(this.Name + " must run to a destination before they can continue their Flee() protocol.");
 							this.CharacterAnimation.CrossFade(this.SprintAnim);
 							this.Pathfinding.canSearch = true;
 							this.Pathfinding.canMove = true;
@@ -6142,6 +6149,7 @@ public class StudentScript : MonoBehaviour
 									}
 									if (this.ReportPhase == 0)
 									{
+										Debug.Log(this.Name + ", currently acting as a Teacher's Pet, is talking to a teacher.");
 										if (this.WitnessedMurder)
 										{
 											this.Subtitle.Speaker = this;
@@ -6178,6 +6186,11 @@ public class StudentScript : MonoBehaviour
 											this.Subtitle.UpdateLabel(SubtitleType.PetWeaponReport, 2, 3f);
 											this.CharacterAnimation.CrossFade(this.ScaredAnim);
 										}
+										this.MyTeacher = this.StudentManager.Teachers[this.Class];
+										this.MyTeacher.CurrentDestination = this.MyTeacher.transform;
+										this.MyTeacher.Pathfinding.target = this.MyTeacher.transform;
+										this.MyTeacher.Pathfinding.canSearch = false;
+										this.MyTeacher.Pathfinding.canMove = false;
 										this.StudentManager.Teachers[this.Class].CharacterAnimation.CrossFade(this.StudentManager.Teachers[this.Class].IdleAnim);
 										this.StudentManager.Teachers[this.Class].Routine = false;
 										if (this.StudentManager.Teachers[this.Class].Investigating)
@@ -6631,20 +6644,23 @@ public class StudentScript : MonoBehaviour
 										{
 											Debug.Log("A teacher has just witnessed an alarming object while on their way to investigate a student's report.");
 											this.DetermineBloodLocation();
-											if (this.WitnessedLimb)
+											if (!this.VerballyReacted)
 											{
-												this.Subtitle.Speaker = this;
-												this.Subtitle.UpdateLabel(SubtitleType.TeacherCorpseInspection, 4, 5f);
-											}
-											else if (this.WitnessedBloodPool || this.WitnessedBloodyWeapon)
-											{
-												this.Subtitle.Speaker = this;
-												this.Subtitle.UpdateLabel(SubtitleType.TeacherCorpseInspection, 3, 5f);
-											}
-											else if (this.WitnessedWeapon)
-											{
-												this.Subtitle.Speaker = this;
-												this.Subtitle.UpdateLabel(SubtitleType.TeacherCorpseInspection, 5, 5f);
+												if (this.WitnessedLimb)
+												{
+													this.Subtitle.Speaker = this;
+													this.Subtitle.UpdateLabel(SubtitleType.TeacherCorpseInspection, 4, 5f);
+												}
+												else if (this.WitnessedBloodPool || this.WitnessedBloodyWeapon)
+												{
+													this.Subtitle.Speaker = this;
+													this.Subtitle.UpdateLabel(SubtitleType.TeacherCorpseInspection, 3, 5f);
+												}
+												else if (this.WitnessedWeapon)
+												{
+													this.Subtitle.Speaker = this;
+													this.Subtitle.UpdateLabel(SubtitleType.TeacherCorpseInspection, 5, 5f);
+												}
 											}
 											PromptScript component2 = this.BloodPool.GetComponent<PromptScript>();
 											if (component2 != null)
@@ -10012,7 +10028,7 @@ public class StudentScript : MonoBehaviour
 				}
 			}
 		}
-		if (this.Prompt.Circle[2].fillAmount == 0f || (this.Yandere.Sanity < 33.33333f && this.Yandere.CanMove && !this.Prompt.HideButton[2] && this.Prompt.InSight && this.Club != ClubType.Council && !this.Struggling && !this.Chasing))
+		if (this.Prompt.Circle[2].fillAmount == 0f || (this.Yandere.Sanity < 33.33333f && this.Yandere.CanMove && !this.Prompt.HideButton[2] && this.Prompt.InSight && this.Club != ClubType.Council && !this.Struggling && !this.Chasing && this.CanSeeObject(this.Yandere.gameObject, this.Yandere.HeadPosition)))
 		{
 			Debug.Log(this.Name + " was attacked because the player pressed the X button, or because Yandere-chan had low sanity.");
 			float f = Vector3.Angle(-base.transform.forward, this.Yandere.transform.position - base.transform.position);
@@ -10472,7 +10488,7 @@ public class StudentScript : MonoBehaviour
 				}
 				else
 				{
-					this.targetRotation = Quaternion.LookRotation(this.Yandere.transform.position - base.transform.position);
+					this.targetRotation = Quaternion.LookRotation(new Vector3(this.DistractionSpot.x, base.transform.position.y, this.DistractionSpot.z) - base.transform.position);
 				}
 				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
 			}
@@ -11518,14 +11534,12 @@ public class StudentScript : MonoBehaviour
 			{
 				if (this.CharacterAnimation["f02_insertNote_00"].time >= this.CharacterAnimation["f02_insertNote_00"].length)
 				{
-					Debug.Log("Sprinting 15");
 					this.CurrentDestination = this.StudentManager.RivalConfessionSpot;
 					this.Pathfinding.target = this.StudentManager.RivalConfessionSpot;
 					this.Pathfinding.canSearch = true;
 					this.Pathfinding.canMove = true;
 					this.Pathfinding.speed = 4f;
 					this.StudentManager.LoveManager.LeftNote = true;
-					Debug.Log("Sprinting 8");
 					this.CharacterAnimation.CrossFade(this.SprintAnim);
 					this.ConfessPhase++;
 				}
@@ -11561,13 +11575,11 @@ public class StudentScript : MonoBehaviour
 			}
 			if (this.CharacterAnimation["keepNote_00"].time >= this.CharacterAnimation["keepNote_00"].length)
 			{
-				Debug.Log("Sprinting 16");
 				this.CurrentDestination = this.StudentManager.SuitorConfessionSpot;
 				this.Pathfinding.target = this.StudentManager.SuitorConfessionSpot;
 				this.Pathfinding.canSearch = true;
 				this.Pathfinding.canMove = true;
 				this.Pathfinding.speed = 4f;
-				Debug.Log("Sprinting 9");
 				this.CharacterAnimation.CrossFade(this.SprintAnim);
 				this.ConfessPhase++;
 			}
@@ -13008,6 +13020,7 @@ public class StudentScript : MonoBehaviour
 				}
 				this.TargetDistance = 1f;
 				this.ReportPhase = 2;
+				this.VerballyReacted = true;
 				this.Routine = false;
 				this.Fleeing = true;
 				this.Halt = true;
@@ -13589,6 +13602,16 @@ public class StudentScript : MonoBehaviour
 
 	public void BecomeRagdoll()
 	{
+		if (this.BloodPool != null)
+		{
+			PromptScript component = this.BloodPool.GetComponent<PromptScript>();
+			if (component != null)
+			{
+				Debug.Log("Re-enabling an object's prompt.");
+				component.enabled = true;
+			}
+		}
+		this.Meeting = false;
 		if (this.StudentID == this.StudentManager.RivalID)
 		{
 			this.StudentManager.RivalEliminated = true;
@@ -13622,10 +13645,10 @@ public class StudentScript : MonoBehaviour
 				this.MyWeapon.transform.parent = null;
 				this.MyWeapon.MyCollider.enabled = true;
 				this.MyWeapon.Prompt.enabled = true;
-				Rigidbody component = this.MyWeapon.GetComponent<Rigidbody>();
-				component.constraints = RigidbodyConstraints.None;
-				component.isKinematic = false;
-				component.useGravity = true;
+				Rigidbody component2 = this.MyWeapon.GetComponent<Rigidbody>();
+				component2.constraints = RigidbodyConstraints.None;
+				component2.isKinematic = false;
+				component2.useGravity = true;
 				this.MyWeapon = null;
 			}
 			if (this.StudentManager.ChaseCamera == this.ChaseCamera)
@@ -13861,7 +13884,12 @@ public class StudentScript : MonoBehaviour
 		this.Pushable = false;
 		this.Meeting = false;
 		this.MeetTimer = 0f;
-		if (this.StudentID == 30)
+		if (this.StudentID == 11)
+		{
+			this.StudentManager.OfferHelp.gameObject.SetActive(false);
+			this.StudentManager.LoveManager.RivalWaiting = false;
+		}
+		else if (this.StudentID == 30)
 		{
 			this.StudentManager.OfferHelp.gameObject.SetActive(false);
 			this.StudentManager.LoveManager.RivalWaiting = false;

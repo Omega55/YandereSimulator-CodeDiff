@@ -404,6 +404,7 @@ public class DebugMenuScript : MonoBehaviour
 					else if (Input.GetKeyDown(KeyCode.M))
 					{
 						PlayerGlobals.Money = 100f;
+						this.Yandere.Inventory.Money = 100f;
 						this.Yandere.Inventory.UpdateMoney();
 						this.Window.SetActive(false);
 					}
@@ -622,9 +623,15 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					else if (Input.GetKeyDown(KeyCode.B))
 					{
+						this.Yandere.Inventory.Headset = true;
+						this.StudentManager.LoveManager.SuitorProgress = 1;
 						DatingGlobals.SuitorProgress = 1;
 						PlayerGlobals.SetStudentFriend(6, true);
 						PlayerGlobals.SetStudentFriend(11, true);
+						for (int j = 0; j < 11; j++)
+						{
+							DatingGlobals.SetComplimentGiven(j, false);
+						}
 						this.ID = 1;
 						while (this.ID < 26)
 						{
@@ -639,6 +646,9 @@ public class DebugMenuScript : MonoBehaviour
 							studentScript8.ShoeRemoval.PutOnShoes();
 							studentScript8.CanTalk = true;
 							studentScript8.Phase = 2;
+							studentScript8.Pestered = 0;
+							studentScript8.Patience = 999;
+							studentScript8.Ignoring = false;
 							studentScript8.CurrentDestination = studentScript8.Destinations[2];
 							studentScript8.Pathfinding.target = studentScript8.Destinations[2];
 							studentScript8.transform.position = studentScript8.Destinations[2].position;
@@ -649,10 +659,22 @@ public class DebugMenuScript : MonoBehaviour
 							studentScript9.ShoeRemoval.Start();
 							studentScript9.ShoeRemoval.PutOnShoes();
 							studentScript9.Phase = 2;
+							studentScript9.Pestered = 0;
+							studentScript9.Patience = 999;
+							studentScript9.Ignoring = false;
 							studentScript9.CurrentDestination = studentScript9.Destinations[2];
 							studentScript9.Pathfinding.target = studentScript9.Destinations[2];
 							studentScript9.transform.position = studentScript9.Destinations[2].position;
 						}
+						StudentScript studentScript10 = this.StudentManager.Students[10];
+						if (studentScript9 != null)
+						{
+							studentScript9.transform.position = studentScript8.transform.position;
+						}
+						CollectibleGlobals.SetGiftPurchased(6, true);
+						CollectibleGlobals.SetGiftPurchased(7, true);
+						CollectibleGlobals.SetGiftPurchased(8, true);
+						CollectibleGlobals.SetGiftPurchased(9, true);
 						Physics.SyncTransforms();
 						this.Window.SetActive(false);
 					}
@@ -687,6 +709,7 @@ public class DebugMenuScript : MonoBehaviour
 					{
 						if (Input.GetKeyDown(KeyCode.V))
 						{
+							this.StudentManager.LoveManager.ConfessToSuitor = true;
 							this.StudentManager.DatingMinigame.Affection = 100f;
 							DateGlobals.Weekday = DayOfWeek.Friday;
 						}
@@ -704,6 +727,10 @@ public class DebugMenuScript : MonoBehaviour
 				{
 					DatingGlobals.SuitorProgress = 2;
 					SceneManager.LoadScene("LoadingScene");
+				}
+				if (Input.GetKeyDown(KeyCode.CapsLock))
+				{
+					this.StudentManager.LoveManager.ConfessToSuitor = true;
 				}
 			}
 			else

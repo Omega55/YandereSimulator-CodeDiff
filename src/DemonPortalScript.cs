@@ -66,6 +66,7 @@ public class DemonPortalScript : MonoBehaviour
 					this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 0f, Time.deltaTime));
 					if (this.Darkness.color.a == 0f)
 					{
+						base.transform.parent.gameObject.SetActive(false);
 						this.Darkness.enabled = false;
 						this.Yandere.CanMove = true;
 						this.Clock.StopTime = false;

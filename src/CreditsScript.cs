@@ -50,6 +50,10 @@ public class CreditsScript : MonoBehaviour
 
 	private const int BigTextSize = 2;
 
+	public AudioClip DarkCreditsMusic;
+
+	public AudioSource Jukebox;
+
 	private bool ShouldStopCredits
 	{
 		get
@@ -63,16 +67,25 @@ public class CreditsScript : MonoBehaviour
 		return UnityEngine.Object.Instantiate<GameObject>((size != 1) ? this.BigCreditsLabel : this.SmallCreditsLabel, this.SpawnPoint.position, Quaternion.identity);
 	}
 
+	private void Start()
+	{
+		if (DateGlobals.Weekday == DayOfWeek.Sunday)
+		{
+			this.Jukebox.clip = this.DarkCreditsMusic;
+			this.Darkness.color = new Color(0f, 0f, 0f, 0f);
+			this.Speed = 1.1f;
+		}
+	}
+
 	private void Update()
 	{
-		AudioSource component = base.GetComponent<AudioSource>();
 		if (!this.Begin)
 		{
 			this.Timer += Time.deltaTime;
 			if (this.Timer > 1f)
 			{
 				this.Begin = true;
-				component.Play();
+				this.Jukebox.Play();
 				this.Timer = 0f;
 			}
 		}
@@ -96,7 +109,7 @@ public class CreditsScript : MonoBehaviour
 					this.Timer = 0f;
 				}
 			}
-			if (Input.GetButtonDown("B") || !component.isPlaying)
+			if (Input.GetButtonDown("B") || !this.Jukebox.isPlaying)
 			{
 				this.FadeOut = true;
 			}
@@ -104,10 +117,17 @@ public class CreditsScript : MonoBehaviour
 		if (this.FadeOut)
 		{
 			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 1f, Time.deltaTime));
-			component.volume -= Time.deltaTime;
+			this.Jukebox.volume -= Time.deltaTime;
 			if (this.Darkness.color.a == 1f)
 			{
-				SceneManager.LoadScene("TitleScene");
+				if (this.Darkness.color.r == 1f)
+				{
+					SceneManager.LoadScene("TitleScene");
+				}
+				else
+				{
+					SceneManager.LoadScene("PostCreditsScene");
+				}
 			}
 		}
 		bool keyDown = Input.GetKeyDown(KeyCode.Minus);
@@ -122,7 +142,7 @@ public class CreditsScript : MonoBehaviour
 		}
 		if (keyDown || keyDown2)
 		{
-			component.pitch = Time.timeScale;
+			this.Jukebox.pitch = Time.timeScale;
 		}
 	}
 }

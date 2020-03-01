@@ -2103,6 +2103,7 @@ public class StudentManagerScript : MonoBehaviour
 
 	public void LowerCorpsePosition()
 	{
+		Debug.Log("Corpse's Y position is: " + this.CorpseLocation.position.y);
 		int num;
 		if (this.CorpseLocation.position.y < 2f)
 		{
@@ -2133,6 +2134,7 @@ public class StudentManagerScript : MonoBehaviour
 			num = 12;
 		}
 		this.CorpseLocation.position = new Vector3(this.CorpseLocation.position.x, (float)num, this.CorpseLocation.position.z);
+		Debug.Log("The corpse's height is: " + num);
 	}
 
 	public void LowerBloodPosition()

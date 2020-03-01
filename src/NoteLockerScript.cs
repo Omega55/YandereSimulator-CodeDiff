@@ -55,14 +55,6 @@ public class NoteLockerScript : MonoBehaviour
 
 	public int Phase = 1;
 
-	private void Start()
-	{
-		if (StudentGlobals.GetStudentDead(this.LockerOwner))
-		{
-			base.gameObject.SetActive(false);
-		}
-	}
-
 	private void Update()
 	{
 		if (this.Student != null)

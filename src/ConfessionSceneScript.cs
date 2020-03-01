@@ -37,11 +37,17 @@ public class ConfessionSceneScript : MonoBehaviour
 
 	public string[] Text;
 
+	public GameObject[] Letters;
+
 	public UISprite Darkness;
 
 	public UILabel Label;
 
 	public UIPanel Panel;
+
+	public AudioSource Jingle;
+
+	public bool MoveSuitor;
 
 	public bool ShowLabel;
 
@@ -49,7 +55,13 @@ public class ConfessionSceneScript : MonoBehaviour
 
 	public int TextPhase = 1;
 
+	public int LetterID = 1;
+
 	public int Phase = 1;
+
+	public float LetterTimer = 0.1f;
+
+	public float Speed;
 
 	public float Timer;
 
@@ -80,7 +92,7 @@ public class ConfessionSceneScript : MonoBehaviour
 					this.Suitor.Cosmetic.MyRenderer.materials[this.Suitor.Cosmetic.FaceID].SetFloat("_BlendAmount", 1f);
 					this.Suitor.transform.eulerAngles = this.StudentManager.SuitorConfessionSpot.eulerAngles;
 					this.Suitor.transform.position = this.StudentManager.SuitorConfessionSpot.position;
-					this.Suitor.Character.GetComponent<Animation>().Play(this.Suitor.IdleAnim);
+					this.Suitor.CharacterAnimation.Play(this.Suitor.IdleAnim);
 					this.MythBlossoms.emission.rateOverTime = 100f;
 					this.HeartBeatCamera.SetActive(false);
 					this.ConfessionBG.SetActive(true);
@@ -117,10 +129,10 @@ public class ConfessionSceneScript : MonoBehaviour
 								emission2.rateOverTime = 10f;
 								this.Rival.Hearts.Play();
 								this.Suitor.Character.transform.localScale = new Vector3(1f, 1f, 1f);
-								this.Suitor.Character.GetComponent<Animation>().Play("kiss_00");
+								this.Suitor.CharacterAnimation.Play("kiss_00");
 								this.Suitor.transform.position = this.KissSpot.position;
-								this.Rival.Character.GetComponent<Animation>()[this.Rival.ShyAnim].weight = 0f;
-								this.Rival.Character.GetComponent<Animation>().Play("f02_kiss_00");
+								this.Rival.CharacterAnimation[this.Rival.ShyAnim].weight = 0f;
+								this.Rival.CharacterAnimation.Play("f02_kiss_00");
 								this.Kissing = true;
 							}
 							this.Label.text = this.Text[this.TextPhase];
@@ -128,6 +140,7 @@ public class ConfessionSceneScript : MonoBehaviour
 						}
 						else
 						{
+							this.Jingle.Play();
 							this.Phase++;
 						}
 					}
@@ -155,6 +168,20 @@ public class ConfessionSceneScript : MonoBehaviour
 		}
 		else if (this.Phase == 3)
 		{
+			this.LetterTimer += Time.deltaTime;
+			if (this.LetterTimer > 0.1f && this.LetterID < this.Letters.Length)
+			{
+				this.Letters[this.LetterID].SetActive(true);
+				this.LetterTimer = 0f;
+				this.LetterID++;
+			}
+			if (this.LetterTimer > 5f)
+			{
+				this.Phase++;
+			}
+		}
+		else if (this.Phase == 4)
+		{
 			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 1f, Time.deltaTime));
 			if (this.Darkness.color.a == 1f)
 			{
@@ -179,6 +206,14 @@ public class ConfessionSceneScript : MonoBehaviour
 			if (this.Darkness.color.a == 0f)
 			{
 				this.StudentManager.ComeBack();
+				this.Suitor.enabled = false;
+				this.Suitor.Prompt.enabled = false;
+				this.Suitor.Pathfinding.canMove = false;
+				this.Suitor.Pathfinding.canSearch = false;
+				this.Rival.enabled = false;
+				this.Rival.Prompt.enabled = false;
+				this.Rival.Pathfinding.canMove = false;
+				this.Rival.Pathfinding.canSearch = false;
 				this.Yandere.RPGCamera.enabled = true;
 				this.Yandere.CanMove = true;
 				this.HeartBeatCamera.SetActive(true);
@@ -191,12 +226,25 @@ public class ConfessionSceneScript : MonoBehaviour
 		}
 		if (this.Kissing)
 		{
-			Animation component = this.Suitor.Character.GetComponent<Animation>();
-			if (component["kiss_00"].time >= component["kiss_00"].length)
+			if (this.Suitor.CharacterAnimation["kiss_00"].time >= this.Suitor.CharacterAnimation["kiss_00"].length * 0.66666f)
 			{
-				component.CrossFade(this.Suitor.IdleAnim);
-				this.Rival.Character.GetComponent<Animation>().CrossFade(this.Rival.IdleAnim);
+				this.Suitor.Character.transform.localScale = Vector3.Lerp(this.Suitor.Character.transform.localScale, new Vector3(0.94f, 0.94f, 0.94f), Time.deltaTime);
+			}
+			if (this.Suitor.CharacterAnimation["kiss_00"].time >= this.Suitor.CharacterAnimation["kiss_00"].length)
+			{
+				this.Rival.CharacterAnimation.CrossFade("f02_introHoldHands_00");
+				this.Suitor.CharacterAnimation.CrossFade("introHoldHands_00");
 				this.Kissing = false;
+				this.MoveSuitor = true;
+			}
+		}
+		else if (this.Suitor != null)
+		{
+			this.Suitor.Character.transform.localScale = Vector3.Lerp(this.Suitor.Character.transform.localScale, new Vector3(0.94f, 0.94f, 0.94f), Time.deltaTime);
+			if (this.MoveSuitor)
+			{
+				this.Speed += Time.deltaTime;
+				this.Suitor.Character.transform.position = Vector3.Lerp(this.Suitor.Character.transform.position, new Vector3(0f, 6.6f, 119.2f), Time.deltaTime * this.Speed);
 			}
 		}
 	}
