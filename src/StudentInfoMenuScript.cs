@@ -39,6 +39,8 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	public StudentPortraitScript[] StudentPortraits;
 
+	public Texture[] RivalPortraits;
+
 	public bool[] PortraitLoaded;
 
 	public UISprite[] DeathShadows;
@@ -469,7 +471,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 					{
 						Debug.Log("3 - PortraitLoaded is false.");
 					}
-					if (ID < 98)
+					if (ID < 12 || ID > 20)
 					{
 						if (this.Debugging)
 						{
@@ -536,6 +538,10 @@ public class StudentInfoMenuScript : MonoBehaviour
 					else if (ID == 100)
 					{
 						this.StudentPortraits[ID].Portrait.mainTexture = this.InfoChan;
+					}
+					else
+					{
+						this.StudentPortraits[ID].Portrait.mainTexture = this.RivalPortraits[ID];
 					}
 				}
 			}

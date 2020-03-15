@@ -417,6 +417,16 @@ public class TalkingScript : MonoBehaviour
 								this.S.StudentManager.FollowerLookAtTarget.position = this.S.DefaultTarget.position;
 								this.S.StudentManager.LoveManager.Follower = this.S;
 							}
+							this.S.FollowCountdown.Sprite.fillAmount = 1f;
+							this.S.FollowCountdown.Speed = 1f / (35f + this.S.Reputation.Reputation * 0.25f);
+							Debug.Log(string.Concat(new object[]
+							{
+								"Reputation is: ",
+								this.S.Reputation.Reputation,
+								"  and Countdown Speed is: ",
+								this.S.FollowCountdown.Speed
+							}));
+							this.S.FollowCountdown.gameObject.SetActive(true);
 							this.S.Yandere.Follower = this.S;
 							this.S.Yandere.Followers++;
 							this.S.Following = true;

@@ -129,6 +129,8 @@ public class PoliceScript : MonoBehaviour
 
 	public int IncineratedWeapons;
 
+	public int SuicideVictims;
+
 	public int BloodyClothing;
 
 	public int BloodyWeapons;
@@ -638,12 +640,22 @@ public class PoliceScript : MonoBehaviour
 								this.ResultsLabels[4].text = "Ayano returns home.";
 							}
 						}
-						else if (this.Yandere.Inventory.RivalPhone && !this.StudentManager.RivalEliminated)
+						else if ((this.Yandere.Inventory.RivalPhone && this.StudentManager.CommunalLocker.RivalPhone.StudentID == this.StudentManager.RivalID && !this.StudentManager.RivalEliminated) || (this.Yandere.Inventory.RivalPhone && this.StudentManager.CommunalLocker.RivalPhone.StudentID != this.StudentManager.RivalID && this.StudentManager.Students[this.StudentManager.CommunalLocker.RivalPhone.StudentID].Alive))
 						{
-							this.ResultsLabels[1].text = "Osana tells the faculty that her phone is missing.";
-							this.ResultsLabels[2].text = "Suspecting theft, the faculty check all students' belongings before they are allowed to leave school.";
-							this.ResultsLabels[3].text = "Osana's stolen phone is found on Ayano's person.";
-							this.ResultsLabels[4].text = "Ayano is expelled from school for stealing from another student.";
+							if (this.StudentManager.CommunalLocker.RivalPhone.StudentID == this.StudentManager.RivalID)
+							{
+								this.ResultsLabels[1].text = "Osana tells the faculty that her phone is missing.";
+								this.ResultsLabels[2].text = "Suspecting theft, the faculty check all students' belongings before they are allowed to leave school.";
+								this.ResultsLabels[3].text = "Osana's stolen phone is found on Ayano's person.";
+								this.ResultsLabels[4].text = "Ayano is expelled from school for stealing from another student.";
+							}
+							else
+							{
+								this.ResultsLabels[1].text = "A student tells the faculty that her phone is missing.";
+								this.ResultsLabels[2].text = "Suspecting theft, the faculty check all students' belongings before they are allowed to leave school.";
+								this.ResultsLabels[3].text = "The student's stolen phone is found on Ayano's person.";
+								this.ResultsLabels[4].text = "Ayano is expelled from school for stealing from another student.";
+							}
 							this.GameOver = true;
 							this.Heartbroken.Counselor.Expelled = true;
 						}
@@ -809,7 +821,7 @@ public class PoliceScript : MonoBehaviour
 				}
 			}
 			SchoolGlobals.SchoolAtmosphere -= (float)this.Corpses * 0.05f;
-			if (this.DrownVictims + this.Corpses > 0)
+			if (this.SuicideVictims + this.DrownVictims + this.Corpses > 0)
 			{
 				foreach (RagdollScript ragdollScript in this.CorpseList)
 				{

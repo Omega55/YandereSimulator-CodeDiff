@@ -152,6 +152,7 @@ public class NewMissionWindowScript : MonoBehaviour
 				this.MissionModeMenu.PromptBar.Show = true;
 				this.MissionModeMenu.TargetID = 0;
 				this.MissionModeMenu.Phase = 2;
+				base.enabled = false;
 			}
 			if (Input.GetButtonDown("X"))
 			{

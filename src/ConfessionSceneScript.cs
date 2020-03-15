@@ -222,6 +222,8 @@ public class ConfessionSceneScript : MonoBehaviour
 				base.enabled = false;
 				this.Suitor.CoupleID = this.LoveManager.SuitorID;
 				this.Rival.CoupleID = this.LoveManager.RivalID;
+				this.Suitor.CharacterAnimation.CrossFade("holdHandsLoop_00");
+				this.Rival.CharacterAnimation.CrossFade("f02_holdHandsLoop_00");
 			}
 		}
 		if (this.Kissing)

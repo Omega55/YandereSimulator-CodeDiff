@@ -128,9 +128,9 @@ public class PortalScript : MonoBehaviour
 			}
 			else if (this.Yandere.Inventory.RivalPhone && !this.StudentManager.RivalEliminated)
 			{
-				this.Yandere.NotificationManager.CustomText = "Put your rival's phone on her desk!";
+				this.Yandere.NotificationManager.CustomText = "Put the stolen phone on the owner's desk!";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
-				this.Yandere.NotificationManager.CustomText = "You are carrying stolen property!";
+				this.Yandere.NotificationManager.CustomText = "You are carrying a stolen phone!";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
 				flag = true;
 			}

@@ -438,16 +438,27 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					else if (Input.GetKeyDown(KeyCode.R))
 					{
-						if (PlayerGlobals.Reputation != 66.66666f)
-						{
-							PlayerGlobals.Reputation = 66.66666f;
-							this.Reputation.Reputation = PlayerGlobals.Reputation;
-						}
-						else
+						if (PlayerGlobals.Reputation == -100f)
 						{
 							PlayerGlobals.Reputation = -66.66666f;
-							this.Reputation.Reputation = PlayerGlobals.Reputation;
 						}
+						else if (PlayerGlobals.Reputation == -66.66666f)
+						{
+							PlayerGlobals.Reputation = 0f;
+						}
+						else if (PlayerGlobals.Reputation == 0f)
+						{
+							PlayerGlobals.Reputation = 66.66666f;
+						}
+						else if (PlayerGlobals.Reputation == 66.66666f)
+						{
+							PlayerGlobals.Reputation = 100f;
+						}
+						else if (PlayerGlobals.Reputation == 100f)
+						{
+							PlayerGlobals.Reputation = -100f;
+						}
+						this.Reputation.Reputation = PlayerGlobals.Reputation;
 						this.Window.SetActive(false);
 					}
 					else if (Input.GetKeyDown(KeyCode.S))
@@ -712,6 +723,7 @@ public class DebugMenuScript : MonoBehaviour
 							this.StudentManager.LoveManager.ConfessToSuitor = true;
 							this.StudentManager.DatingMinigame.Affection = 100f;
 							DateGlobals.Weekday = DayOfWeek.Friday;
+							this.Window.SetActive(false);
 						}
 						else if (Input.GetKeyDown(KeyCode.N))
 						{

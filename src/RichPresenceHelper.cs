@@ -81,6 +81,7 @@ public class RichPresenceHelper : MonoBehaviour
 		this._sceneDescriptions.Add("MaidMenuScene", "Getting ready to be cute at a maid cafe!");
 		this._sceneDescriptions.Add("MaidGameScene", "Being a cute maid! MOE MOE KYUN!");
 		this._sceneDescriptions.Add("StreetScene", "Chilling in town!");
+		this._sceneDescriptions.Add("DiscordScene", "Awaiting Verification");
 	}
 
 	private string GetSceneDescription()

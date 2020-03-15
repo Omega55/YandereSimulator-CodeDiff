@@ -57,6 +57,8 @@ public static class StudentGlobals
 
 	private const string Str_StudentPhotographed = "StudentPhotographed_";
 
+	private const string Str_StudentPhoneStolen = "StudentPhoneStolen_";
+
 	private const string Str_StudentReplaced = "StudentReplaced_";
 
 	private const string Str_StudentReputation = "StudentReputation_";
@@ -807,6 +809,35 @@ public static class StudentGlobals
 		return KeysHelper.GetIntegerKeys("Profile_" + GameGlobals.Profile + "_StudentPhotographed_");
 	}
 
+	public static bool GetStudentPhoneStolen(int studentID)
+	{
+		return GlobalsHelper.GetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_StudentPhoneStolen_",
+			studentID.ToString()
+		}));
+	}
+
+	public static void SetStudentPhoneStolen(int studentID, bool value)
+	{
+		string text = studentID.ToString();
+		KeysHelper.AddIfMissing("Profile_" + GameGlobals.Profile + "_StudentPhoneStolen_", text);
+		GlobalsHelper.SetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_StudentPhoneStolen_",
+			text
+		}), value);
+	}
+
+	public static int[] KeysOfStudentPhoneStolen()
+	{
+		return KeysHelper.GetIntegerKeys("Profile_" + GameGlobals.Profile + "_StudentPhoneStolen_");
+	}
+
 	public static bool GetStudentReplaced(int studentID)
 	{
 		return GlobalsHelper.GetBool(string.Concat(new object[]
@@ -985,6 +1016,7 @@ public static class StudentGlobals
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_StudentMissing_", StudentGlobals.KeysOfStudentMissing());
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_StudentName_", StudentGlobals.KeysOfStudentName());
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_StudentPhotographed_", StudentGlobals.KeysOfStudentPhotographed());
+		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_StudentPhoneStolen_", StudentGlobals.KeysOfStudentPhoneStolen());
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_StudentReplaced_", StudentGlobals.KeysOfStudentReplaced());
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_StudentReputation_", StudentGlobals.KeysOfStudentReputation());
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_StudentSanity_", StudentGlobals.KeysOfStudentSanity());

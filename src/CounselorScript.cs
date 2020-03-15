@@ -815,10 +815,13 @@ public class CounselorScript : MonoBehaviour
 
 	public void Quit()
 	{
+		Debug.Log("CounselorScript has called the Quit() function.");
 		this.Yandere.Senpai = this.StudentManager.Students[1].transform;
 		this.Yandere.DetectionPanel.alpha = 1f;
 		this.Yandere.RPGCamera.mouseSpeed = 8f;
 		this.Yandere.HUD.alpha = 1f;
+		this.Yandere.WeaponTimer = 0f;
+		this.Yandere.TheftTimer = 0f;
 		this.Yandere.HeartRate.gameObject.SetActive(true);
 		this.Yandere.CannotRecover = false;
 		this.Yandere.Noticed = false;
@@ -853,6 +856,7 @@ public class CounselorScript : MonoBehaviour
 		this.PromptBar.ClearButtons();
 		this.PromptBar.Show = false;
 		this.StudentManager.ComeBack();
+		this.StudentManager.GracePeriod(10f);
 		this.StudentManager.Reputation.UpdateRep();
 		Physics.SyncTransforms();
 	}

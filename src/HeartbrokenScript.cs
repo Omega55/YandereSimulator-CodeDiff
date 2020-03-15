@@ -272,6 +272,10 @@ public class HeartbrokenScript : MonoBehaviour
 			}
 			else if (this.Phase == 2)
 			{
+				if (Input.GetButtonDown("A"))
+				{
+					this.AudioTimer = 100f;
+				}
 				this.AudioTimer += Time.deltaTime;
 				if (this.AudioTimer > this.Subtitle.GetComponent<AudioSource>().clip.length)
 				{
@@ -316,7 +320,7 @@ public class HeartbrokenScript : MonoBehaviour
 			if (this.ID < this.Options.Length)
 			{
 				UILabel uilabel2 = this.Options[this.ID];
-				uilabel2.color = new Color(uilabel2.color.r, uilabel2.color.g, uilabel2.color.b, uilabel2.color.a + Time.deltaTime * 2f);
+				uilabel2.color = new Color(uilabel2.color.r, uilabel2.color.g, uilabel2.color.b, uilabel2.color.a + Time.deltaTime * 5f);
 				if (uilabel2.color.a >= 1f)
 				{
 					this.ID++;

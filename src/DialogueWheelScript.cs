@@ -987,7 +987,7 @@ public class DialogueWheelScript : MonoBehaviour
 				{
 					flag = true;
 				}
-				if (!this.Yandere.TargetStudent.Scrubber.activeInHierarchy && !flag)
+				if (!this.Yandere.TargetStudent.Scrubber.activeInHierarchy && !flag && !this.Yandere.TargetStudent.Phoneless)
 				{
 					this.Yandere.TargetStudent.SmartPhone.SetActive(true);
 					this.Yandere.TargetStudent.WalkAnim = this.Yandere.TargetStudent.PhoneAnims[1];

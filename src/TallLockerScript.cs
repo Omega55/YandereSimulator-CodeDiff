@@ -278,9 +278,10 @@ public class TallLockerScript : MonoBehaviour
 					}
 					else
 					{
-						if (this.Student.Schoolwear == 0 && this.Student.StudentID == this.StudentManager.RivalID)
+						if (this.Student.Schoolwear == 0)
 						{
 							this.RivalPhone.gameObject.SetActive(true);
+							this.RivalPhone.StudentID = this.Student.StudentID;
 							this.RivalPhone.MyRenderer.material.mainTexture = this.Student.SmartPhone.GetComponent<Renderer>().material.mainTexture;
 						}
 						this.Student.ChangeSchoolwear();

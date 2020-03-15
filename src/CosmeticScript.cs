@@ -48,6 +48,8 @@ public class CosmeticScript : MonoBehaviour
 
 	public GameObject[] Kerchiefs;
 
+	public GameObject[] CatGifts;
+
 	public GameObject[] MaleHair;
 
 	public GameObject[] RedCloth;
@@ -1062,18 +1064,25 @@ public class CosmeticScript : MonoBehaviour
 				gameObject20.SetActive(false);
 			}
 		}
-		foreach (GameObject gameObject21 in this.PunkAccessories)
+		foreach (GameObject gameObject21 in this.CatGifts)
 		{
 			if (gameObject21 != null)
 			{
 				gameObject21.SetActive(false);
 			}
 		}
-		foreach (GameObject gameObject22 in this.MusicNotes)
+		foreach (GameObject gameObject22 in this.PunkAccessories)
 		{
 			if (gameObject22 != null)
 			{
 				gameObject22.SetActive(false);
+			}
+		}
+		foreach (GameObject gameObject23 in this.MusicNotes)
+		{
+			if (gameObject23 != null)
+			{
+				gameObject23.SetActive(false);
 			}
 		}
 		bool flag2 = false;

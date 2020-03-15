@@ -426,7 +426,7 @@ public class JukeboxScript : MonoBehaviour
 				this.KillVolume();
 				this.LifeNote.enabled = true;
 			}
-			else if (Input.GetKeyDown(KeyCode.F6))
+			else if (Input.GetKeyDown(KeyCode.F6) || Input.GetKeyDown(KeyCode.F9))
 			{
 				this.Egg = true;
 				this.KillVolume();

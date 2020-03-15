@@ -537,6 +537,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public string[] RejectHelps;
 
+	public string[] GasWarnings;
+
 	public string[] ObstacleMurderReactions;
 
 	public string[] ObstaclePoisonReactions;
@@ -824,6 +826,8 @@ public class SubtitleScript : MonoBehaviour
 	public AudioClip[] ObstacleMurderReactionClips;
 
 	public AudioClip[] ObstaclePoisonReactionClips;
+
+	public AudioClip[] GasWarningClips;
 
 	private SubtitleTypeAndAudioClipArrayDictionary SubtitleClipArrays;
 
@@ -1398,6 +1402,10 @@ public class SubtitleScript : MonoBehaviour
 				new AudioClipArrayWrapper(this.EulogyClips)
 			},
 			{
+				SubtitleType.GasWarning,
+				new AudioClipArrayWrapper(this.GasWarningClips)
+			},
+			{
 				SubtitleType.ObstacleMurderReaction,
 				new AudioClipArrayWrapper(this.ObstacleMurderReactionClips)
 			},
@@ -1640,9 +1648,8 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (subtitleType == SubtitleType.DrownReaction)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.DrownReactions.Length);
-			this.Label.text = this.DrownReactions[this.RandomID];
-			this.PlayVoice(subtitleType, this.RandomID);
+			this.Label.text = this.DrownReactions[ID];
+			this.PlayVoice(subtitleType, ID);
 		}
 		else if (subtitleType == SubtitleType.HmmReaction)
 		{
@@ -2703,6 +2710,11 @@ public class SubtitleScript : MonoBehaviour
 		else if (subtitleType == SubtitleType.ObstaclePoisonReaction)
 		{
 			this.Label.text = this.ObstaclePoisonReactions[ID];
+			this.PlayVoice(subtitleType, ID);
+		}
+		else if (subtitleType == SubtitleType.GasWarning)
+		{
+			this.Label.text = this.GasWarnings[ID];
 			this.PlayVoice(subtitleType, ID);
 		}
 		this.Timer = Duration;

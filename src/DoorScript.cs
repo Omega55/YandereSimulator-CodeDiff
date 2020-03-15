@@ -348,6 +348,28 @@ public class DoorScript : MonoBehaviour
 				this.CanSetBucket = false;
 			}
 		}
+		if (this.BucketSet)
+		{
+			Debug.Log("Bucket set.");
+			if (this.Bucket.Gasoline)
+			{
+				Debug.Log("It's full of gasoline.");
+				if (this.StudentManager.Students[this.StudentManager.RivalID] != null)
+				{
+					Debug.Log("The rival exists.");
+					if (this.StudentManager.Students[this.StudentManager.RivalID].Follower != null)
+					{
+						Debug.Log("The rival has a follower.");
+						if (Vector3.Distance(base.transform.position, this.StudentManager.Students[this.StudentManager.RivalID].transform.position) < 5f)
+						{
+							Debug.Log("The follower has warned the rival.");
+							this.Yandere.Subtitle.UpdateLabel(SubtitleType.GasWarning, 1, 5f);
+							this.StudentManager.Students[this.StudentManager.RivalID].GasWarned = true;
+						}
+					}
+				}
+			}
+		}
 	}
 
 	public void OpenDoor()

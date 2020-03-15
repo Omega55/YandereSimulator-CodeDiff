@@ -677,6 +677,8 @@ public class DatingMinigameScript : MonoBehaviour
 						if (this.GiftIcons[this.GiftSelected].enabled)
 						{
 							CollectibleGlobals.SetGiftPurchased(this.GiftSelected + 5, false);
+							CollectibleGlobals.SetGiftGiven(this.GiftSelected, false);
+							this.Rival.Cosmetic.CatGifts[this.GiftSelected].SetActive(true);
 							UILabel uilabel5 = this.Labels[5];
 							uilabel5.color = new Color(uilabel5.color.r, uilabel5.color.g, uilabel5.color.b, 0.5f);
 							this.GivingGift = false;

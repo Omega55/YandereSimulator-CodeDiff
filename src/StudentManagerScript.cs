@@ -30,6 +30,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public DatingMinigameScript DatingMinigame;
 
+	public SnappedYandereScript SnappedYandere;
+
 	public TextureManagerScript TextureManager;
 
 	public TutorialWindowScript TutorialWindow;
@@ -526,6 +528,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public bool Bully;
 
+	public bool Ebola;
+
 	public bool Gaze;
 
 	public bool Pose;
@@ -585,7 +589,11 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Mesh OpenChipBag;
 
+	public Vignetting[] Vignettes;
+
 	public Renderer[] Trees;
+
+	public DoorScript[] AllDoors;
 
 	public bool SeatOccupied;
 
@@ -610,6 +618,8 @@ public class StudentManagerScript : MonoBehaviour
 	public DoorScript[] Doors;
 
 	public int DoorID;
+
+	private int OpenedDoors;
 
 	private void Start()
 	{
@@ -806,6 +816,7 @@ public class StudentManagerScript : MonoBehaviour
 			this.NWStairs = GameObject.Find("NWStairs").GetComponent<Collider>();
 			this.SEStairs = GameObject.Find("SEStairs").GetComponent<Collider>();
 			this.SWStairs = GameObject.Find("SWStairs").GetComponent<Collider>();
+			this.AllDoors = (UnityEngine.Object.FindSceneObjectsOfType(typeof(DoorScript)) as DoorScript[]);
 		}
 	}
 
@@ -825,7 +836,7 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			this.Atmosphere = SchoolGlobals.SchoolAtmosphere;
 		}
-		Vignetting[] components = Camera.main.GetComponents<Vignetting>();
+		this.Vignettes = Camera.main.GetComponents<Vignetting>();
 		float num = 1f - this.Atmosphere;
 		if (!this.TakingPortraits)
 		{
@@ -835,9 +846,9 @@ public class StudentManagerScript : MonoBehaviour
 				this.HandSelectiveGreyscale.desaturation = num;
 				this.SmartphoneSelectiveGreyscale.desaturation = num;
 			}
-			components[2].intensity = num * 5f;
-			components[2].blur = num;
-			components[2].chromaticAberration = num * 5f;
+			this.Vignettes[2].intensity = num * 5f;
+			this.Vignettes[2].blur = num;
+			this.Vignettes[2].chromaticAberration = num * 5f;
 			float num2 = 1f - num;
 			RenderSettings.fogColor = new Color(num2, num2, num2, 1f);
 			Camera.main.backgroundColor = new Color(num2, num2, num2, 1f);
@@ -1141,6 +1152,80 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			this.FemaleShowerCurtain.SetBlendShapeWeight(0, this.OpenValue);
 		}
+		if (this.AoT)
+		{
+			this.ID = 1;
+			while (this.ID < this.Students.Length)
+			{
+				StudentScript studentScript5 = this.Students[this.ID];
+				if (studentScript5 != null && studentScript5.transform.localScale.x < 9.99f)
+				{
+					studentScript5.transform.localScale = Vector3.Lerp(studentScript5.transform.localScale, new Vector3(10f, 10f, 10f), Time.deltaTime);
+				}
+				this.ID++;
+			}
+		}
+		if (this.Pose)
+		{
+			this.ID = 1;
+			while (this.ID < this.Students.Length)
+			{
+				StudentScript studentScript6 = this.Students[this.ID];
+				if (studentScript6 != null && studentScript6.Prompt.Label[0] != null)
+				{
+					studentScript6.Prompt.Label[0].text = "     Pose";
+				}
+				this.ID++;
+			}
+		}
+		if (this.Yandere.Egg)
+		{
+			if (this.Sans)
+			{
+				this.ID = 1;
+				while (this.ID < this.Students.Length)
+				{
+					StudentScript studentScript7 = this.Students[this.ID];
+					if (studentScript7 != null && studentScript7.Prompt.Label[0] != null)
+					{
+						studentScript7.Prompt.Label[0].text = "     Psychokinesis";
+					}
+					this.ID++;
+				}
+			}
+			if (this.Ebola)
+			{
+				this.ID = 2;
+				while (this.ID < this.Students.Length)
+				{
+					StudentScript studentScript8 = this.Students[this.ID];
+					if (studentScript8 != null && studentScript8.isActiveAndEnabled && studentScript8.DistanceToPlayer < 1f)
+					{
+						UnityEngine.Object.Instantiate<GameObject>(this.Yandere.EbolaEffect, studentScript8.transform.position + Vector3.up, Quaternion.identity);
+						studentScript8.SpawnAlarmDisc();
+						studentScript8.BecomeRagdoll();
+						studentScript8.DeathType = DeathType.EasterEgg;
+					}
+					this.ID++;
+				}
+			}
+			if (this.Yandere.Hunger >= 5)
+			{
+				this.ID = 2;
+				while (this.ID < this.Students.Length)
+				{
+					StudentScript studentScript9 = this.Students[this.ID];
+					if (studentScript9 != null && studentScript9.isActiveAndEnabled && studentScript9.DistanceToPlayer < 5f)
+					{
+						UnityEngine.Object.Instantiate<GameObject>(this.Yandere.DarkHelix, studentScript9.transform.position + Vector3.up, Quaternion.identity);
+						studentScript9.SpawnAlarmDisc();
+						studentScript9.BecomeRagdoll();
+						studentScript9.DeathType = DeathType.EasterEgg;
+					}
+					this.ID++;
+				}
+			}
+		}
 		this.YandereVisible = false;
 	}
 
@@ -1264,7 +1349,7 @@ public class StudentManagerScript : MonoBehaviour
 			StudentScript studentScript = this.Students[this.ID];
 			if (studentScript != null)
 			{
-				if (studentScript.gameObject.activeInHierarchy)
+				if (studentScript.gameObject.activeInHierarchy || studentScript.Hurry)
 				{
 					if (!studentScript.Safe)
 					{
@@ -3261,6 +3346,34 @@ public class StudentManagerScript : MonoBehaviour
 			reputationTriangle.z *= 0.33333f;
 			StudentGlobals.SetStudentReputation(this.ID, Mathf.RoundToInt(reputationTriangle.x + reputationTriangle.y + reputationTriangle.z));
 			this.ID++;
+		}
+	}
+
+	public void GracePeriod(float Length)
+	{
+		this.ID = 1;
+		while (this.ID < this.Students.Length)
+		{
+			StudentScript studentScript = this.Students[this.ID];
+			if (studentScript != null)
+			{
+				studentScript.IgnoreTimer = Length;
+			}
+			this.ID++;
+		}
+	}
+
+	public void OpenSomeDoors()
+	{
+		int openedDoors = this.OpenedDoors;
+		while (this.OpenedDoors < openedDoors + 11)
+		{
+			if (this.OpenedDoors < this.Doors.Length && this.Doors[this.OpenedDoors] != null)
+			{
+				this.Doors[this.OpenedDoors].Open = true;
+				this.Doors[this.OpenedDoors].OpenDoor();
+			}
+			this.OpenedDoors++;
 		}
 	}
 }

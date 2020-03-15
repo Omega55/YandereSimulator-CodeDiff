@@ -89,6 +89,7 @@ public enum SubtitleType
 	Forgiving,
 	ForgivingAccident,
 	ForgivingInsanity,
+	GasWarning,
 	GiveHelp,
 	Greeting,
 	GrudgeRefusal,

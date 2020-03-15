@@ -228,7 +228,7 @@ public class NemesisScript : MonoBehaviour
 					}
 					if (Vector3.Distance(base.transform.position, this.Yandere.transform.position) < 1f)
 					{
-						if (this.InView)
+						if (this.InView || this.Chasing)
 						{
 							this.Student.CharacterAnimation.CrossFade("f02_knifeLowSanityA_00");
 							this.Yandere.CharacterAnimation.CrossFade("f02_knifeLowSanityB_00");
@@ -340,9 +340,11 @@ public class NemesisScript : MonoBehaviour
 
 	private void LookForYandere()
 	{
+		Debug.Log("Nemesis is looking for Yan-chan...");
 		this.Student.VisionDistance = 25f;
 		if (this.Student.CanSeeObject(this.Yandere.gameObject, this.Yandere.HeadPosition))
 		{
+			Debug.Log("Nemesis has spotted Yan-chan.");
 			this.MissionMode.LastKnownPosition.position = this.Yandere.transform.position;
 			this.InView = true;
 			this.UpdateLKP();
@@ -350,6 +352,10 @@ public class NemesisScript : MonoBehaviour
 			{
 				this.Chasing = true;
 			}
+		}
+		else
+		{
+			Debug.Log("Nemesis currently cannot see Yandere-chan.");
 		}
 	}
 

@@ -15,6 +15,8 @@ public static class CollectibleGlobals
 
 	private const string Str_GiftPurchased = "GiftPurchased_";
 
+	private const string Str_GiftGiven = "GiftGiven_";
+
 	private const string Str_MatchmakingGifts = "MatchmakingGifts";
 
 	private const string Str_SenpaiGifts = "SenpaiGifts";
@@ -177,6 +179,30 @@ public static class CollectibleGlobals
 		}), value);
 	}
 
+	public static bool GetGiftGiven(int giftID)
+	{
+		return GlobalsHelper.GetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_GiftGiven_",
+			giftID.ToString()
+		}));
+	}
+
+	public static void SetGiftGiven(int giftID, bool value)
+	{
+		string text = giftID.ToString();
+		KeysHelper.AddIfMissing("Profile_" + GameGlobals.Profile + "_GiftGiven_", text);
+		GlobalsHelper.SetBool(string.Concat(new object[]
+		{
+			"Profile_",
+			GameGlobals.Profile,
+			"_GiftGiven_",
+			text
+		}), value);
+	}
+
 	public static int MatchmakingGifts
 	{
 		get
@@ -209,6 +235,11 @@ public static class CollectibleGlobals
 	public static int[] KeysOfGiftPurchased()
 	{
 		return KeysHelper.GetIntegerKeys("Profile_" + GameGlobals.Profile + "_GiftPurchased_");
+	}
+
+	public static int[] KeysOfGiftGiven()
+	{
+		return KeysHelper.GetIntegerKeys("Profile_" + GameGlobals.Profile + "_GiftGiven_");
 	}
 
 	public static bool GetTapeCollected(int tapeID)
@@ -275,6 +306,7 @@ public static class CollectibleGlobals
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_BasementTapeListened_", CollectibleGlobals.KeysOfBasementTapeListened());
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_MangaCollected_", CollectibleGlobals.KeysOfMangaCollected());
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_GiftPurchased_", CollectibleGlobals.KeysOfGiftPurchased());
+		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_GiftGiven_", CollectibleGlobals.KeysOfGiftGiven());
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_TapeCollected_", CollectibleGlobals.KeysOfTapeCollected());
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_TapeListened_", CollectibleGlobals.KeysOfTapeListened());
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_MatchmakingGifts");

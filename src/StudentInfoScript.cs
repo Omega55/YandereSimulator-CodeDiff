@@ -206,7 +206,7 @@ public class StudentInfoScript : MonoBehaviour
 		this.Static.SetActive(false);
 		component.volume = 0f;
 		component.Stop();
-		if (ID < 98)
+		if (ID < 12 || ID > 20)
 		{
 			string url = string.Concat(new string[]
 			{
@@ -244,6 +244,10 @@ public class StudentInfoScript : MonoBehaviour
 				component.volume = 1f;
 				component.Play();
 			}
+		}
+		else
+		{
+			this.Portrait.mainTexture = this.StudentInfoMenu.RivalPortraits[ID];
 		}
 		this.UpdateAdditionalInfo(ID);
 		this.CurrentStudent = ID;

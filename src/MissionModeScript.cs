@@ -797,7 +797,7 @@ public class MissionModeScript : MonoBehaviour
 				this.ID = 1;
 				while (this.ID < this.StudentManager.Students.Length)
 				{
-					if (this.StudentManager.Students[this.ID] != null && this.StudentManager.Students[this.ID].WitnessedMurder)
+					if (this.StudentManager.Students[this.ID] != null && this.StudentManager.Students[this.ID].WitnessedMurder && !this.Yandere.DelinquentFighting)
 					{
 						this.SpottedLabel.text = this.StudentManager.Students[this.ID].Name;
 						this.SpottedWindow.SetActive(true);
@@ -1018,6 +1018,12 @@ public class MissionModeScript : MonoBehaviour
 						this.Destination = 3;
 						this.FadeOut = true;
 					}
+					else if (Input.GetButtonDown("Y"))
+					{
+						this.PromptBar.Show = false;
+						this.Destination = 4;
+						this.FadeOut = true;
+					}
 				}
 				else
 				{
@@ -1040,6 +1046,11 @@ public class MissionModeScript : MonoBehaviour
 						{
 							Globals.DeleteAll();
 							SceneManager.LoadScene("TitleScene");
+						}
+						else if (this.Destination == 4)
+						{
+							Globals.DeleteAll();
+							SceneManager.LoadScene("DiscordScene");
 						}
 					}
 				}

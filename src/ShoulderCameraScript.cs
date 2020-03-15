@@ -189,8 +189,10 @@ public class ShoulderCameraScript : MonoBehaviour
 						}
 						else
 						{
-							this.Yandere.CharacterAnimation.CrossFade("f02_scaredIdle_00");
+							this.Yandere.CharacterAnimation["f02_sadEyebrows_00"].weight = 1f;
+							this.Yandere.CharacterAnimation.CrossFade("f02_whimper_00");
 							this.Yandere.Subtitle.UpdateLabel(SubtitleType.YandereWhimper, 1, 3.5f);
+							Debug.Log("Yandere-chan shoulder be whimpering now.");
 						}
 					}
 				}
@@ -211,7 +213,7 @@ public class ShoulderCameraScript : MonoBehaviour
 					}
 					else
 					{
-						this.Yandere.CharacterAnimation.CrossFade("f02_scaredIdle_00");
+						this.Yandere.CharacterAnimation.CrossFade("f02_whimper_00");
 					}
 					if (this.NoticedTimer > (float)(this.NoticedLimit + 4))
 					{

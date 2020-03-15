@@ -5,6 +5,8 @@ public class TranqCaseScript : MonoBehaviour
 {
 	public YandereScript Yandere;
 
+	public RagdollScript Ragdoll;
+
 	public PromptScript Prompt;
 
 	public DoorScript Door;
@@ -34,7 +36,11 @@ public class TranqCaseScript : MonoBehaviour
 		{
 			if (this.Yandere.Dragging)
 			{
-				if (this.Yandere.Ragdoll.GetComponent<RagdollScript>().Tranquil)
+				if (this.Ragdoll == null)
+				{
+					this.Ragdoll = this.Yandere.Ragdoll.GetComponent<RagdollScript>();
+				}
+				if (this.Ragdoll.Tranquil)
 				{
 					if (!this.Prompt.enabled)
 					{
@@ -67,9 +73,9 @@ public class TranqCaseScript : MonoBehaviour
 				this.Yandere.CanMove = false;
 				this.Prompt.enabled = false;
 				this.Prompt.Hide();
-				this.Yandere.Ragdoll.GetComponent<RagdollScript>().TranqCase = this;
-				this.VictimClubType = this.Yandere.Ragdoll.GetComponent<RagdollScript>().Student.Club;
-				this.VictimID = this.Yandere.Ragdoll.GetComponent<RagdollScript>().StudentID;
+				this.Ragdoll.TranqCase = this;
+				this.VictimClubType = this.Ragdoll.Student.Club;
+				this.VictimID = this.Ragdoll.StudentID;
 				this.Door.Prompt.enabled = true;
 				this.Door.enabled = true;
 				this.Occupied = true;
@@ -86,6 +92,8 @@ public class TranqCaseScript : MonoBehaviour
 			else
 			{
 				this.Rotation = Mathf.Lerp(this.Rotation, 0f, Time.deltaTime * 10f);
+				this.Ragdoll.Student.OsanaHairL.transform.localScale = Vector3.MoveTowards(this.Ragdoll.Student.OsanaHairL.transform.localScale, new Vector3(0f, 0f, 0f), Time.deltaTime * 10f);
+				this.Ragdoll.Student.OsanaHairR.transform.localScale = Vector3.MoveTowards(this.Ragdoll.Student.OsanaHairR.transform.localScale, new Vector3(0f, 0f, 0f), Time.deltaTime * 10f);
 				if (this.Rotation < 1f)
 				{
 					this.Animate = false;

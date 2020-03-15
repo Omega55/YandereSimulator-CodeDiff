@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class HeartbrokenCursorScript : MonoBehaviour
 {
+	public SnappedYandereScript SnappedYandere;
+
 	public StudentManagerScript StudentManager;
 
 	public InputManagerScript InputManager;
@@ -48,11 +50,11 @@ public class HeartbrokenCursorScript : MonoBehaviour
 	{
 		this.Darkness.transform.localPosition = new Vector3(this.Darkness.transform.localPosition.x, this.Darkness.transform.localPosition.y, -989f);
 		this.Continue.color = new Color(this.Continue.color.r, this.Continue.color.g, this.Continue.color.b, 0f);
+		this.StudentManager.Yandere.Jukebox.gameObject.SetActive(false);
 	}
 
 	private void Update()
 	{
-		this.StudentManager.Yandere.Twitch = Vector3.Lerp(this.StudentManager.Yandere.Twitch, Vector3.zero, Time.deltaTime * 10f);
 		base.transform.localPosition = new Vector3(base.transform.localPosition.x, Mathf.Lerp(base.transform.localPosition.y, 255f - (float)this.Selected * 50f, Time.deltaTime * 10f), base.transform.localPosition.z);
 		if (!this.FadeOut)
 		{

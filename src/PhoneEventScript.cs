@@ -93,7 +93,7 @@ public class PhoneEventScript : MonoBehaviour
 			else if (this.Clock.HourTime > this.EventTime)
 			{
 				this.EventStudent = this.StudentManager.Students[this.EventStudentID];
-				if (this.EventStudent != null && !this.StudentManager.CommunalLocker.RivalPhone.Stolen)
+				if (this.EventStudent != null && !this.EventStudent.InEvent && this.EventStudent.DistanceToDestination < 1f && !this.StudentManager.CommunalLocker.RivalPhone.Stolen)
 				{
 					this.EventStudent.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
 					if (this.EventStudentID == 11)
@@ -164,7 +164,7 @@ public class PhoneEventScript : MonoBehaviour
 					if (this.EventPhase == 1)
 					{
 						this.Timer += Time.deltaTime;
-						this.EventStudent.Character.GetComponent<Animation>().CrossFade(this.EventAnim[0]);
+						this.EventStudent.CharacterAnimation.CrossFade(this.EventAnim[0]);
 						AudioClipPlayer.Play(this.EventClip[0], this.EventStudent.transform.position, 5f, 10f, out this.VoiceClip, out this.CurrentClipLength);
 						this.EventPhase++;
 					}

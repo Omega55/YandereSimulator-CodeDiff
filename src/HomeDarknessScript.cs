@@ -95,7 +95,7 @@ public class HomeDarknessScript : MonoBehaviour
 					{
 						if (this.HomeYandere.transform.position.y > -5f)
 						{
-							this.HomeYandere.transform.position = new Vector3(-2f, -10f, -2f);
+							this.HomeYandere.transform.position = new Vector3(-2f, -10f, -2.75f);
 							this.HomeYandere.transform.eulerAngles = new Vector3(0f, 90f, 0f);
 							this.HomeYandere.CanMove = true;
 							this.FadeOut = false;
@@ -106,6 +106,7 @@ public class HomeDarknessScript : MonoBehaviour
 							this.HomeCamera.Focus.position = this.HomeCamera.Target.position;
 							this.BasementLabel.text = "Upstairs";
 							this.HomeCamera.DayLight.SetActive(true);
+							this.HomeCamera.DayLight.GetComponent<Light>().intensity = 0.66666f;
 							Physics.SyncTransforms();
 						}
 						else
@@ -124,6 +125,7 @@ public class HomeDarknessScript : MonoBehaviour
 							{
 								this.HomeCamera.DayLight.SetActive(false);
 							}
+							this.HomeCamera.DayLight.GetComponent<Light>().intensity = 2f;
 							Physics.SyncTransforms();
 						}
 					}

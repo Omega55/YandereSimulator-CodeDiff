@@ -32,13 +32,13 @@ public class RooftopCorpseDisposalScript : MonoBehaviour
 					if (this.Prompt.Circle[0].fillAmount == 0f)
 					{
 						this.DropSpot.position = new Vector3(this.DropSpot.position.x, this.DropSpot.position.y, this.Yandere.transform.position.z);
-						this.Yandere.Character.GetComponent<Animation>().CrossFade((!this.Yandere.Carrying) ? "f02_dragIdle_00" : "f02_carryIdleA_00");
+						this.Yandere.CharacterAnimation.CrossFade((!this.Yandere.Carrying) ? "f02_dragIdle_00" : "f02_carryIdleA_00");
 						this.Yandere.DropSpot = this.DropSpot;
 						this.Yandere.Dropping = true;
 						this.Yandere.CanMove = false;
 						this.Prompt.Hide();
 						this.Prompt.enabled = false;
-						this.Yandere.CurrentRagdoll.BloodPoolSpawner.Falling = true;
+						this.Yandere.Ragdoll.GetComponent<RagdollScript>().BloodPoolSpawner.Falling = true;
 					}
 				}
 			}

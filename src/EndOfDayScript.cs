@@ -1371,9 +1371,13 @@ public class EndOfDayScript : MonoBehaviour
 				while (this.ID < this.Police.CorpseList.Length)
 				{
 					RagdollScript ragdollScript2 = this.Police.CorpseList[this.ID];
-					if (ragdollScript2 != null && ragdollScript2.Suicide && this.Police.Corpses > 0)
+					if (ragdollScript2 != null && ragdollScript2.Suicide)
 					{
-						this.Police.Corpses--;
+						this.Police.SuicideVictims++;
+						if (this.Police.Corpses > 0)
+						{
+							this.Police.Corpses--;
+						}
 					}
 					this.ID++;
 				}
@@ -1551,6 +1555,7 @@ public class EndOfDayScript : MonoBehaviour
 		PlayerGlobals.PantyShots = this.Yandere.Inventory.PantyShots;
 		PlayerGlobals.Money = this.Yandere.Inventory.Money;
 		this.WeaponManager.TrackDumpedWeapons();
+		this.StudentManager.CommunalLocker.RivalPhone.StolenPhoneDropoff.SetPhonesHacked();
 	}
 
 	private void DisableThings(StudentScript TargetStudent)

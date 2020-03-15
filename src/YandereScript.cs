@@ -595,6 +595,8 @@ public class YandereScript : MonoBehaviour
 
 	public bool UsingController;
 
+	public bool SeenByAuthority;
+
 	public bool CameFromCrouch;
 
 	public bool CannotRecover;
@@ -1095,6 +1097,24 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject[] Vectors;
 
+	public GameObject[] Kagune;
+
+	public Texture GhoulFace;
+
+	public Texture GhoulBody;
+
+	public bool ReturnKagune;
+
+	public bool SwingKagune;
+
+	public Vector3[] KaguneRotation;
+
+	public AudioClip KaguneSwoosh;
+
+	public GameObject DemonSlash;
+
+	public int KagunePhase;
+
 	public GameObject[] Armor;
 
 	public Texture Chainmail;
@@ -1360,6 +1380,8 @@ public class YandereScript : MonoBehaviour
 	public Mesh TestMesh;
 
 	public bool BullyPhoto;
+
+	public CameraFilterScript CinematicCameraFilters;
 
 	public CameraFilterScript CameraFilters;
 
@@ -1830,6 +1852,9 @@ public class YandereScript : MonoBehaviour
 		this.CharacterAnimation["f02_fingerSnap_00"].layer = 34;
 		this.CharacterAnimation.Play("f02_fingerSnap_00");
 		this.CharacterAnimation["f02_fingerSnap_00"].weight = 0f;
+		this.CharacterAnimation["f02_sadEyebrows_00"].layer = 35;
+		this.CharacterAnimation.Play("f02_sadEyebrows_00");
+		this.CharacterAnimation["f02_sadEyebrows_00"].weight = 0f;
 		this.CharacterAnimation["f02_dipping_00"].speed = 2f;
 		this.CharacterAnimation["f02_stripping_00"].speed = 1.5f;
 		this.CharacterAnimation["f02_falconIdle_00"].speed = 2f;
@@ -2166,11 +2191,13 @@ public class YandereScript : MonoBehaviour
 							if (!this.RivalPhone)
 							{
 								this.SmartphoneRenderer.material.mainTexture = this.RivalPhoneTexture;
+								this.PhonePromptBar.Label.text = "SWITCH TO YOUR PHONE";
 								this.RivalPhone = true;
 							}
 							else
 							{
 								this.SmartphoneRenderer.material.mainTexture = this.YanderePhoneTexture;
+								this.PhonePromptBar.Label.text = "SWITCH TO STOLEN PHONE";
 								this.RivalPhone = false;
 							}
 						}
@@ -2226,7 +2253,14 @@ public class YandereScript : MonoBehaviour
 						this.PhonePromptBar.Show = true;
 						if (this.Inventory.RivalPhone)
 						{
-							this.PhonePromptBar.Label.text = "SWITCH PHONE";
+							if (!this.RivalPhone)
+							{
+								this.PhonePromptBar.Label.text = "SWITCH TO STOLEN PHONE";
+							}
+							else
+							{
+								this.PhonePromptBar.Label.text = "SWITCH TO YOUR PHONE";
+							}
 						}
 						else
 						{
@@ -2363,7 +2397,15 @@ public class YandereScript : MonoBehaviour
 							}
 							else if (!this.BlackRobe.activeInHierarchy)
 							{
-								if (this.Gazing || this.Shipgirl)
+								if (this.Kagune[0].activeInHierarchy)
+								{
+									if (!this.SwingKagune)
+									{
+										AudioSource.PlayClipAtPoint(this.KaguneSwoosh, base.transform.position + Vector3.up);
+										this.SwingKagune = true;
+									}
+								}
+								else if (this.Gazing || this.Shipgirl)
 								{
 									if (this.Gazing)
 									{
@@ -3300,6 +3342,7 @@ public class YandereScript : MonoBehaviour
 						}
 						this.TargetStudent.BecomeRagdoll();
 						this.TargetStudent.DeathType = DeathType.Weapon;
+						this.SeenByAuthority = false;
 					}
 				}
 				else if (this.Lost)
@@ -3367,7 +3410,7 @@ public class YandereScript : MonoBehaviour
 				this.targetRotation = Quaternion.LookRotation(this.DropSpot.position + this.DropSpot.forward - base.transform.position);
 				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
 				this.MoveTowardsTarget(this.DropSpot.position);
-				if (this.Ragdoll != null)
+				if (this.Ragdoll != null && this.CurrentRagdoll == null)
 				{
 					this.CurrentRagdoll = this.Ragdoll.GetComponent<RagdollScript>();
 				}
@@ -4087,6 +4130,10 @@ public class YandereScript : MonoBehaviour
 				}
 				if (this.Eating)
 				{
+					if (Vector3.Distance(base.transform.position, this.TargetStudent.transform.position) > 0.5f)
+					{
+						base.transform.Translate(Vector3.forward * Time.deltaTime);
+					}
 					this.targetRotation = Quaternion.LookRotation(new Vector3(this.TargetStudent.transform.position.x, base.transform.position.y, this.TargetStudent.transform.position.z) - base.transform.position);
 					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
 					if (this.CharacterAnimation["f02_sixEat_00"].time > this.BloodTimes[this.EatPhase])
@@ -4098,7 +4145,7 @@ public class YandereScript : MonoBehaviour
 					}
 					if (this.CharacterAnimation["f02_sixEat_00"].time >= this.CharacterAnimation["f02_sixEat_00"].length)
 					{
-						if (this.Hunger < 5)
+						if (!this.Kagune[0].activeInHierarchy && this.Hunger < 5)
 						{
 							this.CharacterAnimation["f02_sixRun_00"].speed += 0.1f;
 							this.RunSpeed += 1f;
@@ -5750,6 +5797,12 @@ public class YandereScript : MonoBehaviour
 								}
 								else if (Input.GetKeyDown(KeyCode.F9))
 								{
+									this.Ghoul();
+									this.EasterEggMenu.SetActive(false);
+								}
+								else if (Input.GetKeyDown(KeyCode.F10))
+								{
+									this.CinematicCameraFilters.enabled = true;
 									this.CameraFilters.enabled = true;
 									this.EasterEggMenu.SetActive(false);
 								}
@@ -5835,90 +5888,150 @@ public class YandereScript : MonoBehaviour
 			this.Height = Mathf.Lerp(this.Height, this.TargetHeight, Time.deltaTime * 10f);
 			this.PelvisRoot.transform.localPosition = new Vector3(this.PelvisRoot.transform.localPosition.x, this.Height, this.PelvisRoot.transform.localPosition.z);
 		}
-		if (this.Slender)
+		if (this.Egg)
 		{
-			Transform transform5 = this.Leg[0];
-			transform5.localScale = new Vector3(transform5.localScale.x, 2f, transform5.localScale.z);
-			Transform transform6 = this.Foot[0];
-			transform6.localScale = new Vector3(transform6.localScale.x, 0.5f, transform6.localScale.z);
-			Transform transform7 = this.Leg[1];
-			transform7.localScale = new Vector3(transform7.localScale.x, 2f, transform7.localScale.z);
-			Transform transform8 = this.Foot[1];
-			transform8.localScale = new Vector3(transform8.localScale.x, 0.5f, transform8.localScale.z);
-			Transform transform9 = this.Arm[0];
-			transform9.localScale = new Vector3(2f, transform9.localScale.y, transform9.localScale.z);
-			Transform transform10 = this.Arm[1];
-			transform10.localScale = new Vector3(2f, transform10.localScale.y, transform10.localScale.z);
-		}
-		if (this.DK)
-		{
-			this.Arm[0].localScale = new Vector3(2f, 2f, 2f);
-			this.Arm[1].localScale = new Vector3(2f, 2f, 2f);
-			this.Head.localScale = new Vector3(2f, 2f, 2f);
-		}
-		if (this.CirnoWings.activeInHierarchy)
-		{
-			if (this.Running)
+			if (this.Slender)
 			{
-				this.FlapSpeed = 5f;
+				Transform transform5 = this.Leg[0];
+				transform5.localScale = new Vector3(transform5.localScale.x, 2f, transform5.localScale.z);
+				Transform transform6 = this.Foot[0];
+				transform6.localScale = new Vector3(transform6.localScale.x, 0.5f, transform6.localScale.z);
+				Transform transform7 = this.Leg[1];
+				transform7.localScale = new Vector3(transform7.localScale.x, 2f, transform7.localScale.z);
+				Transform transform8 = this.Foot[1];
+				transform8.localScale = new Vector3(transform8.localScale.x, 0.5f, transform8.localScale.z);
+				Transform transform9 = this.Arm[0];
+				transform9.localScale = new Vector3(2f, transform9.localScale.y, transform9.localScale.z);
+				Transform transform10 = this.Arm[1];
+				transform10.localScale = new Vector3(2f, transform10.localScale.y, transform10.localScale.z);
 			}
-			else if (this.FlapSpeed == 0f)
+			if (this.DK)
 			{
-				this.FlapSpeed = 1f;
+				this.Arm[0].localScale = new Vector3(2f, 2f, 2f);
+				this.Arm[1].localScale = new Vector3(2f, 2f, 2f);
+				this.Head.localScale = new Vector3(2f, 2f, 2f);
 			}
-			else
+			if (this.CirnoWings.activeInHierarchy)
 			{
-				this.FlapSpeed = 3f;
-			}
-			Transform transform11 = this.CirnoWing[0];
-			Transform transform12 = this.CirnoWing[1];
-			if (!this.FlapOut)
-			{
-				this.CirnoRotation += Time.deltaTime * 100f * this.FlapSpeed;
-				transform11.localEulerAngles = new Vector3(transform11.localEulerAngles.x, this.CirnoRotation, transform11.localEulerAngles.z);
-				transform12.localEulerAngles = new Vector3(transform12.localEulerAngles.x, -this.CirnoRotation, transform12.localEulerAngles.z);
-				if (this.CirnoRotation > 15f)
+				if (this.Running)
 				{
-					this.FlapOut = true;
+					this.FlapSpeed = 5f;
+				}
+				else if (this.FlapSpeed == 0f)
+				{
+					this.FlapSpeed = 1f;
+				}
+				else
+				{
+					this.FlapSpeed = 3f;
+				}
+				Transform transform11 = this.CirnoWing[0];
+				Transform transform12 = this.CirnoWing[1];
+				if (!this.FlapOut)
+				{
+					this.CirnoRotation += Time.deltaTime * 100f * this.FlapSpeed;
+					transform11.localEulerAngles = new Vector3(transform11.localEulerAngles.x, this.CirnoRotation, transform11.localEulerAngles.z);
+					transform12.localEulerAngles = new Vector3(transform12.localEulerAngles.x, -this.CirnoRotation, transform12.localEulerAngles.z);
+					if (this.CirnoRotation > 15f)
+					{
+						this.FlapOut = true;
+					}
+				}
+				else
+				{
+					this.CirnoRotation -= Time.deltaTime * 100f * this.FlapSpeed;
+					transform11.localEulerAngles = new Vector3(transform11.localEulerAngles.x, this.CirnoRotation, transform11.localEulerAngles.z);
+					transform12.localEulerAngles = new Vector3(transform12.localEulerAngles.x, -this.CirnoRotation, transform12.localEulerAngles.z);
+					if (this.CirnoRotation < -15f)
+					{
+						this.FlapOut = false;
+					}
 				}
 			}
-			else
+			if (this.SpiderLegs.activeInHierarchy)
 			{
-				this.CirnoRotation -= Time.deltaTime * 100f * this.FlapSpeed;
-				transform11.localEulerAngles = new Vector3(transform11.localEulerAngles.x, this.CirnoRotation, transform11.localEulerAngles.z);
-				transform12.localEulerAngles = new Vector3(transform12.localEulerAngles.x, -this.CirnoRotation, transform12.localEulerAngles.z);
-				if (this.CirnoRotation < -15f)
+				if (this.SpiderGrow)
 				{
-					this.FlapOut = false;
+					if (this.SpiderLegs.transform.localScale.x < 0.49f)
+					{
+						this.SpiderLegs.transform.localScale = Vector3.Lerp(this.SpiderLegs.transform.localScale, new Vector3(0.5f, 0.5f, 0.5f), Time.deltaTime * 5f);
+						SchoolGlobals.SchoolAtmosphere = 1f - this.SpiderLegs.transform.localScale.x;
+						this.StudentManager.SetAtmosphere();
+					}
 				}
-			}
-		}
-		if (this.SpiderLegs.activeInHierarchy)
-		{
-			if (this.SpiderGrow)
-			{
-				if (this.SpiderLegs.transform.localScale.x < 0.49f)
+				else if (this.SpiderLegs.transform.localScale.x > 0.001f)
 				{
-					this.SpiderLegs.transform.localScale = Vector3.Lerp(this.SpiderLegs.transform.localScale, new Vector3(0.5f, 0.5f, 0.5f), Time.deltaTime * 5f);
+					this.SpiderLegs.transform.localScale = Vector3.Lerp(this.SpiderLegs.transform.localScale, new Vector3(0f, 0f, 0f), Time.deltaTime * 5f);
 					SchoolGlobals.SchoolAtmosphere = 1f - this.SpiderLegs.transform.localScale.x;
 					this.StudentManager.SetAtmosphere();
 				}
 			}
-			else if (this.SpiderLegs.transform.localScale.x > 0.001f)
+			if (this.BlackHole)
 			{
-				this.SpiderLegs.transform.localScale = Vector3.Lerp(this.SpiderLegs.transform.localScale, new Vector3(0f, 0f, 0f), Time.deltaTime * 5f);
-				SchoolGlobals.SchoolAtmosphere = 1f - this.SpiderLegs.transform.localScale.x;
-				this.StudentManager.SetAtmosphere();
+				this.RightLeg.transform.Rotate(-60f, 0f, 0f, Space.Self);
+				this.LeftLeg.transform.Rotate(-60f, 0f, 0f, Space.Self);
+			}
+			if (this.SwingKagune)
+			{
+				if (!this.ReturnKagune)
+				{
+					for (int i = 0; i < this.Kagune.Length; i++)
+					{
+						if (i < 2)
+						{
+							this.KaguneRotation[i] = new Vector3(Mathf.MoveTowards(this.KaguneRotation[i].x, 15f, Time.deltaTime * 1000f), Mathf.MoveTowards(this.KaguneRotation[i].y, 180f, Time.deltaTime * 1000f), Mathf.MoveTowards(this.KaguneRotation[i].z, 500f, Time.deltaTime * 1000f));
+							this.Kagune[i].transform.localEulerAngles = this.KaguneRotation[i];
+						}
+						else
+						{
+							this.KaguneRotation[i] = new Vector3(Mathf.MoveTowards(this.KaguneRotation[i].x, 15f, Time.deltaTime * 1000f), Mathf.MoveTowards(this.KaguneRotation[i].y, -180f, Time.deltaTime * 1000f), Mathf.MoveTowards(this.KaguneRotation[i].z, -500f, Time.deltaTime * 1000f));
+							this.Kagune[i].transform.localEulerAngles = this.KaguneRotation[i];
+						}
+					}
+					if (this.KagunePhase == 0 && this.KaguneRotation[0].y == 180f)
+					{
+						UnityEngine.Object.Instantiate<GameObject>(this.DemonSlash, base.transform.position + base.transform.up + base.transform.forward, Quaternion.identity);
+						this.KagunePhase = 1;
+					}
+					if (this.KaguneRotation[0] == new Vector3(15f, 180f, 500f))
+					{
+						this.ReturnKagune = true;
+					}
+				}
+				else
+				{
+					for (int j = 0; j < this.Kagune.Length; j++)
+					{
+						if (j == 0)
+						{
+							this.KaguneRotation[j] = new Vector3(Mathf.Lerp(this.KaguneRotation[j].x, 22.5f, Time.deltaTime * 10f), Mathf.Lerp(this.KaguneRotation[j].y, 22.5f, Time.deltaTime * 10f), Mathf.Lerp(this.KaguneRotation[j].z, 0f, Time.deltaTime * 10f));
+						}
+						else if (j == 1)
+						{
+							this.KaguneRotation[j] = new Vector3(Mathf.Lerp(this.KaguneRotation[j].x, -22.5f, Time.deltaTime * 10f), Mathf.Lerp(this.KaguneRotation[j].y, 22.5f, Time.deltaTime * 10f), Mathf.Lerp(this.KaguneRotation[j].z, 0f, Time.deltaTime * 10f));
+						}
+						else if (j == 2)
+						{
+							this.KaguneRotation[j] = new Vector3(Mathf.Lerp(this.KaguneRotation[j].x, 22.5f, Time.deltaTime * 10f), Mathf.Lerp(this.KaguneRotation[j].y, -22.5f, Time.deltaTime * 10f), Mathf.Lerp(this.KaguneRotation[j].z, 0f, Time.deltaTime * 10f));
+						}
+						else if (j == 3)
+						{
+							this.KaguneRotation[j] = new Vector3(Mathf.Lerp(this.KaguneRotation[j].x, -22.5f, Time.deltaTime * 10f), Mathf.Lerp(this.KaguneRotation[j].y, -22.5f, Time.deltaTime * 10f), Mathf.Lerp(this.KaguneRotation[j].z, 0f, Time.deltaTime * 10f));
+						}
+						this.Kagune[j].transform.localEulerAngles = this.KaguneRotation[j];
+					}
+					if (Vector3.Distance(this.KaguneRotation[0], new Vector3(22.5f, 22.5f, 0f)) < 10f)
+					{
+						this.SwingKagune = false;
+						this.ReturnKagune = false;
+						this.KagunePhase = 0;
+					}
+				}
 			}
 		}
 		if (this.PickUp != null && this.PickUp.Flashlight)
 		{
 			this.RightHand.transform.eulerAngles = new Vector3(0f, base.transform.eulerAngles.y, base.transform.eulerAngles.z);
-		}
-		if (this.BlackHole)
-		{
-			this.RightLeg.transform.Rotate(-60f, 0f, 0f, Space.Self);
-			this.LeftLeg.transform.Rotate(-60f, 0f, 0f, Space.Self);
 		}
 		if (this.ReachWeight > 0f)
 		{
@@ -5965,6 +6078,7 @@ public class YandereScript : MonoBehaviour
 			if (this.BreakUpTimer == 0f)
 			{
 				this.FightHasBrokenUp = false;
+				this.SeenByAuthority = false;
 			}
 		}
 	}
@@ -6759,6 +6873,7 @@ public class YandereScript : MonoBehaviour
 
 	private void Ebola()
 	{
+		this.StudentManager.Ebola = true;
 		this.PantyAttacher.newRenderer.enabled = false;
 		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
 		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
@@ -6973,6 +7088,34 @@ public class YandereScript : MonoBehaviour
 		this.WalkSpeed = 0.75f;
 		this.RunSpeed = 2f;
 		this.Hairstyle = 0;
+		this.UpdateHair();
+		this.DebugMenu.transform.parent.GetComponent<DebugMenuScript>().UpdateCensor();
+	}
+
+	private void Ghoul()
+	{
+		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
+		this.MyRenderer.sharedMesh = this.NudeMesh;
+		this.MyRenderer.materials[0].mainTexture = this.GhoulFace;
+		this.MyRenderer.materials[1].mainTexture = this.GhoulBody;
+		this.MyRenderer.materials[2].mainTexture = this.GhoulBody;
+		foreach (GameObject gameObject in this.Kagune)
+		{
+			gameObject.SetActive(true);
+		}
+		this.IdleAnim = "f02_sixIdle_00";
+		this.WalkAnim = "f02_sixWalk_00";
+		this.RunAnim = "f02_psychoRun_00";
+		this.OriginalIdleAnim = this.IdleAnim;
+		this.OriginalWalkAnim = this.WalkAnim;
+		this.OriginalRunAnim = this.RunAnim;
+		this.StudentManager.Six = true;
+		this.StudentManager.UpdateStudents(0);
+		this.Egg = true;
+		this.WalkSpeed = 0.75f;
+		this.RunSpeed = 10f;
+		this.Hairstyle = 15;
 		this.UpdateHair();
 		this.DebugMenu.transform.parent.GetComponent<DebugMenuScript>().UpdateCensor();
 	}
