@@ -182,7 +182,7 @@ public class HomeInternetScript : MonoBehaviour
 	{
 		if (!this.HomeYandere.CanMove && !this.PauseScreen.Show)
 		{
-			if (this.NavigationMenu.activeInHierarchy)
+			if (this.NavigationMenu.activeInHierarchy && !this.HomeCamera.CyberstalkWindow.activeInHierarchy)
 			{
 				if (Input.GetButtonDown("A"))
 				{

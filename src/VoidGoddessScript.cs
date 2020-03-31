@@ -71,7 +71,11 @@ public class VoidGoddessScript : MonoBehaviour
 			this.NewPortrait.transform.localScale = new Vector3(1f, 1f, 1f);
 			this.NewPortrait.transform.localPosition = new Vector3((float)(-450 + this.Column * 100), (float)(450 - this.Row * 100), 0f);
 			this.Portraits[this.ID] = this.NewPortrait.GetComponent<UITexture>();
-			if (this.ID < 98)
+			if (this.ID > 11 && this.ID < 20)
+			{
+				this.NewPortrait.GetComponent<UITexture>().mainTexture = this.Prompt.Yandere.PauseScreen.StudentInfoMenu.RivalPortraits[this.ID];
+			}
+			else if (this.ID < 98)
 			{
 				string url = string.Concat(new string[]
 				{

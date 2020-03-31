@@ -166,6 +166,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public ListScript EntranceVectors;
 
+	public ListScript ShowerLockers;
+
 	public ListScript GoAwaySpots;
 
 	public ListScript HidingSpots;
@@ -207,6 +209,8 @@ public class StudentManagerScript : MonoBehaviour
 	public Transform[] BloodGuardLocation;
 
 	public Transform[] SleuthDestinations;
+
+	public Transform[] StrippingPositions;
 
 	public Transform[] GardeningPatrols;
 
@@ -436,6 +440,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public int TeachersTotal = 6;
 
+	public int GirlsSpawned;
+
 	public int NewUniforms;
 
 	public int NPCsSpawned;
@@ -576,6 +582,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public string[] LastNames;
 
+	public AudioSource[] FountainAudio;
+
 	public AudioClip YanderePinDown;
 
 	public AudioClip PinDownSFX;
@@ -594,6 +602,8 @@ public class StudentManagerScript : MonoBehaviour
 	public Renderer[] Trees;
 
 	public DoorScript[] AllDoors;
+
+	public OcclusionPortal PlazaOccluder;
 
 	public bool SeatOccupied;
 
@@ -620,6 +630,12 @@ public class StudentManagerScript : MonoBehaviour
 	public int DoorID;
 
 	private int OpenedDoors;
+
+	private int SnappedStudents = 1;
+
+	public Texture PureWhite;
+
+	public Transform[] BullySnapPosition;
 
 	private void Start()
 	{
@@ -762,6 +778,15 @@ public class StudentManagerScript : MonoBehaviour
 					this.ID++;
 				}
 				this.ID = 1;
+				while (this.ID < this.ShowerLockers.List.Length)
+				{
+					Transform transform = UnityEngine.Object.Instantiate<GameObject>(this.EmptyObject, this.ShowerLockers.List[this.ID].position + this.ShowerLockers.List[this.ID].forward * 0.5f, this.ShowerLockers.List[this.ID].rotation).transform;
+					transform.parent = this.ShowerLockers.transform;
+					transform.transform.eulerAngles = new Vector3(transform.transform.eulerAngles.x, transform.transform.eulerAngles.y + 180f, transform.transform.eulerAngles.z);
+					this.StrippingPositions[this.ID] = transform;
+					this.ID++;
+				}
+				this.ID = 1;
 				while (this.ID < this.HidingSpots.List.Length)
 				{
 					if (this.HidingSpots.List[this.ID] == null)
@@ -781,6 +806,7 @@ public class StudentManagerScript : MonoBehaviour
 			{
 				this.Clock.PresentTime = 480f;
 				this.Clock.HourTime = 8f;
+				this.Clock.UpdateClock();
 				this.SkipTo8();
 			}
 			if (!this.TakingPortraits)
@@ -1226,6 +1252,14 @@ public class StudentManagerScript : MonoBehaviour
 				}
 			}
 		}
+		if (this.Yandere.transform.position.z < -50f)
+		{
+			this.PlazaOccluder.open = false;
+		}
+		else
+		{
+			this.PlazaOccluder.open = true;
+		}
 		this.YandereVisible = false;
 	}
 
@@ -1322,6 +1356,11 @@ public class StudentManagerScript : MonoBehaviour
 			if (this.JSON.Students[spawnID].Persona == PersonaType.Protective || this.JSON.Students[spawnID].Hairstyle == "20" || this.JSON.Students[spawnID].Hairstyle == "21")
 			{
 				UnityEngine.Object.Destroy(studentScript);
+			}
+			if (num == 0)
+			{
+				this.GirlsSpawned++;
+				studentScript.GirlID = this.GirlsSpawned;
 			}
 			this.OccupySeat();
 		}
@@ -1867,7 +1906,7 @@ public class StudentManagerScript : MonoBehaviour
 			StudentScript studentScript = this.Students[this.ID];
 			if (studentScript != null)
 			{
-				if (!studentScript.Dying && !studentScript.PinningDown && !studentScript.Spraying)
+				if (!studentScript.Dying && !studentScript.PinningDown && !studentScript.Spraying && !studentScript.Struggling)
 				{
 					if (this.YandereDying && studentScript.Club != ClubType.Council)
 					{
@@ -3374,6 +3413,72 @@ public class StudentManagerScript : MonoBehaviour
 				this.Doors[this.OpenedDoors].OpenDoor();
 			}
 			this.OpenedDoors++;
+		}
+	}
+
+	public void SnapSomeStudents()
+	{
+		int snappedStudents = this.SnappedStudents;
+		while (this.SnappedStudents < snappedStudents + 10)
+		{
+			if (this.SnappedStudents < this.Students.Length)
+			{
+				StudentScript studentScript = this.Students[this.SnappedStudents];
+				if (studentScript != null && studentScript.gameObject.activeInHierarchy && studentScript.Alive)
+				{
+					studentScript.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
+					studentScript.SnapStudent.Yandere = this.SnappedYandere;
+					studentScript.SnapStudent.enabled = true;
+					studentScript.SpeechLines.Stop();
+					studentScript.enabled = false;
+					if (studentScript.Shy)
+					{
+						studentScript.CharacterAnimation[studentScript.ShyAnim].weight = 0f;
+					}
+				}
+			}
+			this.SnappedStudents++;
+		}
+	}
+
+	public void DarkenAllStudents()
+	{
+		foreach (StudentScript studentScript in this.Students)
+		{
+			if (studentScript != null && studentScript.StudentID > 1)
+			{
+				studentScript.MyRenderer.materials[0].mainTexture = this.PureWhite;
+				studentScript.MyRenderer.materials[1].mainTexture = this.PureWhite;
+				studentScript.MyRenderer.materials[2].mainTexture = this.PureWhite;
+				studentScript.MyRenderer.materials[0].color = new Color(1f, 1f, 1f, 1f);
+				studentScript.MyRenderer.materials[1].color = new Color(1f, 1f, 1f, 1f);
+				studentScript.MyRenderer.materials[2].color = new Color(1f, 1f, 1f, 1f);
+				studentScript.Cosmetic.LeftEyeRenderer.material.mainTexture = this.PureWhite;
+				studentScript.Cosmetic.RightEyeRenderer.material.mainTexture = this.PureWhite;
+				studentScript.Cosmetic.HairRenderer.material.mainTexture = this.PureWhite;
+				studentScript.Cosmetic.LeftEyeRenderer.material.color = new Color(1f, 1f, 1f, 1f);
+				studentScript.Cosmetic.RightEyeRenderer.material.color = new Color(1f, 1f, 1f, 1f);
+				studentScript.Cosmetic.HairRenderer.material.color = new Color(1f, 1f, 1f, 1f);
+			}
+		}
+	}
+
+	public void LockDownOccultClub()
+	{
+		for (int i = 31; i < 36; i++)
+		{
+			this.Patrols.List[i].GetChild(1).position = this.Patrols.List[i].GetChild(0).position;
+			this.Patrols.List[i].GetChild(2).position = this.Patrols.List[i].GetChild(0).position;
+			this.Patrols.List[i].GetChild(3).position = this.Patrols.List[i].GetChild(0).position;
+			this.Patrols.List[i].GetChild(4).position = this.Patrols.List[i].GetChild(0).position;
+			this.Patrols.List[i].GetChild(5).position = this.Patrols.List[i].GetChild(0).position;
+		}
+		for (int j = 81; j < 86; j++)
+		{
+			this.Patrols.List[j].GetChild(0).position = this.BullySnapPosition[j].position;
+			this.Patrols.List[j].GetChild(1).position = this.BullySnapPosition[j].position;
+			this.Patrols.List[j].GetChild(2).position = this.BullySnapPosition[j].position;
+			this.Patrols.List[j].GetChild(3).position = this.BullySnapPosition[j].position;
 		}
 	}
 }

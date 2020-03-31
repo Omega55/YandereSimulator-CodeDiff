@@ -471,7 +471,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 					{
 						Debug.Log("3 - PortraitLoaded is false.");
 					}
-					if (ID < 12 || ID > 20)
+					if (ID < 12 || (ID > 20 && ID < 98))
 					{
 						if (this.Debugging)
 						{

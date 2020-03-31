@@ -1371,6 +1371,8 @@ public class StudentScript : MonoBehaviour
 
 	public int CleanID;
 
+	public int GirlID;
+
 	public int Class;
 
 	public int ID;
@@ -1732,6 +1734,7 @@ public class StudentScript : MonoBehaviour
 			if (this.StudentID == 1)
 			{
 				this.MapMarker.gameObject.SetActive(true);
+				this.Perception = 5f;
 			}
 			else if (this.StudentID == 2)
 			{
@@ -3233,7 +3236,7 @@ public class StudentScript : MonoBehaviour
 					{
 						this.SmartPhone.SetActive(false);
 					}
-					else if (!this.Slave)
+					else if (!this.Slave && !this.Phoneless)
 					{
 						this.IdleAnim = this.PhoneAnims[0];
 						this.SmartPhone.SetActive(true);
@@ -3268,7 +3271,7 @@ public class StudentScript : MonoBehaviour
 					{
 						this.EquipCleaningItems();
 					}
-					else if (!this.Slave)
+					else if (!this.Slave && !this.Phoneless)
 					{
 						if (this.Persona == PersonaType.PhoneAddict)
 						{
@@ -3467,8 +3470,8 @@ public class StudentScript : MonoBehaviour
 						}
 						else if (this.Actions[this.Phase] == StudentActionType.SitAndTakeNotes && this.Schoolwear > 1 && !this.SchoolwearUnavailable)
 						{
-							this.CurrentDestination = this.StudentManager.FemaleStripSpot;
-							this.Pathfinding.target = this.StudentManager.FemaleStripSpot;
+							this.CurrentDestination = this.StudentManager.StrippingPositions[this.GirlID];
+							this.Pathfinding.target = this.StudentManager.StrippingPositions[this.GirlID];
 						}
 					}
 					if (!this.Pathfinding.canMove)
@@ -3960,7 +3963,7 @@ public class StudentScript : MonoBehaviour
 								}
 								else
 								{
-									if (this.Rival && this.Phoneless && this.StudentManager.CommunalLocker.RivalPhone.gameObject.activeInHierarchy && !this.EndSearch && this.Yandere.CanMove)
+									if (this.Phoneless && this.StudentManager.CommunalLocker.RivalPhone.gameObject.activeInHierarchy && !this.EndSearch && this.Yandere.CanMove)
 									{
 										if (this.StudentID == this.StudentManager.RivalID && SchemeGlobals.GetSchemeStage(1) == 7)
 										{
@@ -5175,7 +5178,7 @@ public class StudentScript : MonoBehaviour
 							{
 								if (this.PatrolID == 0 && this.StudentManager.CommunalLocker.RivalPhone.gameObject.activeInHierarchy && !this.EndSearch)
 								{
-									if (SchemeGlobals.GetSchemeStage(1) == 7)
+									if (this.StudentID == this.StudentManager.RivalID && SchemeGlobals.GetSchemeStage(1) == 7)
 									{
 										SchemeGlobals.SetSchemeStage(1, 8);
 										this.Yandere.PauseScreen.Schemes.UpdateInstructions();
@@ -7201,8 +7204,8 @@ public class StudentScript : MonoBehaviour
 										this.Subtitle.Speaker = this;
 										this.Subtitle.UpdateLabel(this.SplashSubtitleType, 4, 5f);
 									}
-									this.CurrentDestination = this.StudentManager.FemaleStripSpot;
-									this.Pathfinding.target = this.StudentManager.FemaleStripSpot;
+									this.CurrentDestination = this.StudentManager.StrippingPositions[this.GirlID];
+									this.Pathfinding.target = this.StudentManager.StrippingPositions[this.GirlID];
 									this.Pathfinding.canSearch = true;
 									this.Pathfinding.canMove = true;
 									this.Pathfinding.speed = 4f;
@@ -9150,7 +9153,7 @@ public class StudentScript : MonoBehaviour
 							{
 								flag3 = true;
 							}
-							if ((this.Yandere.Armed && this.Yandere.EquippedWeapon.Suspicious) || (!this.Teacher && this.StudentID > 1 && !this.Teacher && this.Yandere.PickUp != null && this.Yandere.PickUp.Suspicious) || (this.Teacher && this.Yandere.PickUp != null && this.Yandere.PickUp.Suspicious && !this.Yandere.PickUp.CleaningProduct) || (this.Yandere.Bloodiness + (float)this.Yandere.GloveBlood > 0f && !this.Yandere.Paint) || (this.Yandere.Sanity < 33.333f || this.Yandere.Pickpocketing || this.Yandere.Attacking || this.Yandere.Struggling || this.Yandere.Dragging || (!this.IgnoringPettyActions && this.Yandere.Lewd)) || (this.Yandere.Carrying || this.Yandere.Medusa || this.Yandere.Poisoning || this.Yandere.Pickpocketing || this.Yandere.WeaponTimer > 0f || this.Yandere.MurderousActionTimer > 0f || (this.Yandere.PickUp != null && this.Yandere.PickUp.BodyPart != null)) || (!this.IgnoringPettyActions && this.Yandere.Laughing && this.Yandere.LaughIntensity > 15f) || (!this.IgnoringPettyActions && this.Yandere.Stance.Current == StanceType.Crouching) || (!this.IgnoringPettyActions && this.Yandere.Stance.Current == StanceType.Crawling) || (this.Private && this.Yandere.Trespassing) || (this.Private && this.Yandere.Eavesdropping) || (this.Teacher && !this.WitnessedCorpse && this.Yandere.Trespassing) || (this.Teacher && !this.IgnoringPettyActions && this.Yandere.Rummaging) || (!this.IgnoringPettyActions && this.Yandere.TheftTimer > 0f) || (this.StudentID == 1 && this.Yandere.NearSenpai && !this.Yandere.Talking) || (this.Yandere.Eavesdropping && this.Private) || (!this.StudentManager.CombatMinigame.Practice && this.Yandere.DelinquentFighting && this.StudentManager.CombatMinigame.Path < 4 && !this.StudentManager.CombatMinigame.Practice && !this.Yandere.SeenByAuthority) || (flag3 && this.Yandere.PickUp != null && this.Yandere.PickUp.Mop != null && this.Yandere.PickUp.Mop.Bloodiness > 0f) || (flag3 && this.Yandere.PickUp != null && this.Yandere.PickUp.BodyPart != null) || (this.Yandere.PickUp != null && this.Yandere.PickUp.Clothing && this.Yandere.PickUp.Evidence))
+							if ((this.Yandere.Armed && this.Yandere.EquippedWeapon.Suspicious) || (!this.Teacher && this.StudentID > 1 && !this.Teacher && this.Yandere.PickUp != null && this.Yandere.PickUp.Suspicious) || (this.Teacher && this.Yandere.PickUp != null && this.Yandere.PickUp.Suspicious && !this.Yandere.PickUp.CleaningProduct) || (this.Yandere.Bloodiness + (float)this.Yandere.GloveBlood > 0f && !this.Yandere.Paint) || (this.Yandere.Sanity < 33.333f || this.Yandere.Pickpocketing || this.Yandere.Attacking || this.Yandere.Struggling || this.Yandere.Dragging || (!this.IgnoringPettyActions && this.Yandere.Lewd)) || (this.Yandere.Carrying || this.Yandere.Medusa || this.Yandere.Poisoning || this.Yandere.Pickpocketing || this.Yandere.WeaponTimer > 0f || this.Yandere.MurderousActionTimer > 0f || (this.Yandere.PickUp != null && this.Yandere.PickUp.BodyPart != null)) || (!this.IgnoringPettyActions && this.Yandere.Laughing && this.Yandere.LaughIntensity > 15f) || (!this.IgnoringPettyActions && this.Yandere.Stance.Current == StanceType.Crouching) || (!this.IgnoringPettyActions && this.Yandere.Stance.Current == StanceType.Crawling) || (this.Yandere.Trespassing || (this.Private && this.Yandere.Eavesdropping)) || (this.Teacher && !this.WitnessedCorpse && this.Yandere.Trespassing) || (this.Teacher && !this.IgnoringPettyActions && this.Yandere.Rummaging) || (!this.IgnoringPettyActions && this.Yandere.TheftTimer > 0f) || (this.StudentID == 1 && this.Yandere.NearSenpai && !this.Yandere.Talking) || (this.Yandere.Eavesdropping && this.Private) || (!this.StudentManager.CombatMinigame.Practice && this.Yandere.DelinquentFighting && this.StudentManager.CombatMinigame.Path < 4 && !this.StudentManager.CombatMinigame.Practice && !this.Yandere.SeenByAuthority) || (flag3 && this.Yandere.PickUp != null && this.Yandere.PickUp.Mop != null && this.Yandere.PickUp.Mop.Bloodiness > 0f) || (flag3 && this.Yandere.PickUp != null && this.Yandere.PickUp.BodyPart != null) || (this.Yandere.PickUp != null && this.Yandere.PickUp.Clothing && this.Yandere.PickUp.Evidence))
 							{
 								bool flag4 = false;
 								if (this.Yandere.transform.position.y < base.transform.position.y + 4f)
@@ -11298,8 +11301,8 @@ public class StudentScript : MonoBehaviour
 				this.SplashPhase++;
 				if (!this.Male)
 				{
-					this.CurrentDestination = this.StudentManager.FemaleStripSpot;
-					this.Pathfinding.target = this.StudentManager.FemaleStripSpot;
+					this.CurrentDestination = this.StudentManager.StrippingPositions[this.GirlID];
+					this.Pathfinding.target = this.StudentManager.StrippingPositions[this.GirlID];
 				}
 				else
 				{
@@ -11336,8 +11339,8 @@ public class StudentScript : MonoBehaviour
 					this.Subtitle.UpdateLabel(this.SplashSubtitleType, 4, 5f);
 				}
 				this.SplashPhase++;
-				this.CurrentDestination = this.StudentManager.FemaleStripSpot;
-				this.Pathfinding.target = this.StudentManager.FemaleStripSpot;
+				this.CurrentDestination = this.StudentManager.StrippingPositions[this.GirlID];
+				this.Pathfinding.target = this.StudentManager.StrippingPositions[this.GirlID];
 			}
 			this.Pathfinding.canSearch = true;
 			this.Pathfinding.canMove = true;
@@ -12223,6 +12226,11 @@ public class StudentScript : MonoBehaviour
 			this.AlarmTimer = 0f;
 			base.enabled = true;
 			this.Stop = false;
+		}
+		if (this.StudentID == 1)
+		{
+			this.StudentManager.FountainAudio[0].Stop();
+			this.StudentManager.FountainAudio[1].Stop();
 		}
 	}
 
@@ -13302,7 +13310,7 @@ public class StudentScript : MonoBehaviour
 			}
 			else if (scheduleBlock2.destination == "Sunbathe")
 			{
-				this.Destinations[this.ID] = this.StudentManager.FemaleStripSpot;
+				this.Destinations[this.ID] = this.StudentManager.StrippingPositions[this.GirlID];
 			}
 			else if (scheduleBlock2.destination == "Shock")
 			{
@@ -13905,6 +13913,10 @@ public class StudentScript : MonoBehaviour
 				this.ClubActivityPhase = 0;
 				this.ClubTimer = 0f;
 			}
+			if (this.ReturningMisplacedWeapon)
+			{
+				this.DropMisplacedWeapon();
+			}
 			this.EmptyHands();
 		}
 	}
@@ -14279,8 +14291,8 @@ public class StudentScript : MonoBehaviour
 	{
 		if (!this.Male)
 		{
-			this.CurrentDestination = this.StudentManager.FemaleStripSpot;
-			this.Pathfinding.target = this.StudentManager.FemaleStripSpot;
+			this.CurrentDestination = this.StudentManager.StrippingPositions[this.GirlID];
+			this.Pathfinding.target = this.StudentManager.StrippingPositions[this.GirlID];
 		}
 		else
 		{
@@ -15848,6 +15860,7 @@ public class StudentScript : MonoBehaviour
 			{
 				this.Witnessed = ((!this.Private) ? StudentWitnessType.Trespassing : StudentWitnessType.Interruption);
 				this.Witness = false;
+				this.RepLoss = 10f;
 				this.Concern++;
 			}
 			else if (this.Yandere.NearSenpai)

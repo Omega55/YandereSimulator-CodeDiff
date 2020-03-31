@@ -194,41 +194,53 @@ public class DoorScript : MonoBehaviour
 				}
 				if (this.Double && this.Swinging && this.Prompt.Circle[1].fillAmount == 0f)
 				{
-					if (SchemeGlobals.GetSchemeStage(1) == 2)
+					this.Prompt.Circle[1].fillAmount = 1f;
+					if (!this.BucketSet)
 					{
-						SchemeGlobals.SetSchemeStage(1, 3);
-						this.Yandere.PauseScreen.Schemes.UpdateInstructions();
-					}
-					this.Bucket = this.Yandere.PickUp.Bucket;
-					this.Yandere.EmptyHands();
-					this.Bucket.transform.parent = base.transform;
-					this.Bucket.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
-					this.Bucket.Trap = true;
-					this.Bucket.Prompt.Hide();
-					this.Bucket.Prompt.enabled = false;
-					this.CheckDirection();
-					if (this.North)
-					{
-						this.Bucket.transform.localPosition = new Vector3(0f, 2.25f, 0.2975f);
+						if (SchemeGlobals.GetSchemeStage(1) == 2)
+						{
+							SchemeGlobals.SetSchemeStage(1, 3);
+							this.Yandere.PauseScreen.Schemes.UpdateInstructions();
+						}
+						this.Bucket = this.Yandere.PickUp.Bucket;
+						this.Yandere.EmptyHands();
+						this.Bucket.transform.parent = base.transform;
+						this.Bucket.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+						this.Bucket.Trap = true;
+						this.Bucket.Prompt.Hide();
+						this.Bucket.Prompt.enabled = false;
+						this.CheckDirection();
+						if (this.North)
+						{
+							this.Bucket.transform.localPosition = new Vector3(0f, 2.25f, 0.2975f);
+						}
+						else
+						{
+							this.Bucket.transform.localPosition = new Vector3(0f, 2.25f, -0.2975f);
+						}
+						this.Bucket.GetComponent<Rigidbody>().isKinematic = true;
+						this.Bucket.GetComponent<Rigidbody>().useGravity = false;
+						if (this.Open)
+						{
+							this.DoorColliders[0].isTrigger = true;
+							this.DoorColliders[1].isTrigger = true;
+						}
+						this.Prompt.Label[1].text = "     Remove Bucket";
+						this.Prompt.HideButton[0] = true;
+						this.CanSetBucket = false;
+						this.BucketSet = true;
+						this.Open = false;
+						this.Timer = 0f;
 					}
 					else
 					{
-						this.Bucket.transform.localPosition = new Vector3(0f, 2.25f, -0.2975f);
+						this.Yandere.EmptyHands();
+						this.Bucket.PickUp.BePickedUp();
+						this.Prompt.HideButton[0] = false;
+						this.Prompt.Label[1].text = "     Set Trap";
+						this.BucketSet = false;
+						this.Timer = 0f;
 					}
-					this.Bucket.GetComponent<Rigidbody>().isKinematic = true;
-					this.Bucket.GetComponent<Rigidbody>().useGravity = false;
-					if (this.Open)
-					{
-						this.DoorColliders[0].isTrigger = true;
-						this.DoorColliders[1].isTrigger = true;
-					}
-					this.Prompt.HideButton[1] = true;
-					this.CanSetBucket = false;
-					this.BucketSet = true;
-					this.Open = false;
-					this.Timer = 0f;
-					this.Prompt.enabled = false;
-					this.Prompt.Hide();
 				}
 			}
 		}
@@ -348,27 +360,10 @@ public class DoorScript : MonoBehaviour
 				this.CanSetBucket = false;
 			}
 		}
-		if (this.BucketSet)
+		if (this.BucketSet && this.Bucket.Gasoline && this.StudentManager.Students[this.StudentManager.RivalID] != null && this.StudentManager.Students[this.StudentManager.RivalID].Follower != null && Vector3.Distance(base.transform.position, this.StudentManager.Students[this.StudentManager.RivalID].transform.position) < 5f)
 		{
-			Debug.Log("Bucket set.");
-			if (this.Bucket.Gasoline)
-			{
-				Debug.Log("It's full of gasoline.");
-				if (this.StudentManager.Students[this.StudentManager.RivalID] != null)
-				{
-					Debug.Log("The rival exists.");
-					if (this.StudentManager.Students[this.StudentManager.RivalID].Follower != null)
-					{
-						Debug.Log("The rival has a follower.");
-						if (Vector3.Distance(base.transform.position, this.StudentManager.Students[this.StudentManager.RivalID].transform.position) < 5f)
-						{
-							Debug.Log("The follower has warned the rival.");
-							this.Yandere.Subtitle.UpdateLabel(SubtitleType.GasWarning, 1, 5f);
-							this.StudentManager.Students[this.StudentManager.RivalID].GasWarned = true;
-						}
-					}
-				}
-			}
+			this.Yandere.Subtitle.UpdateLabel(SubtitleType.GasWarning, 1, 5f);
+			this.StudentManager.Students[this.StudentManager.RivalID].GasWarned = true;
 		}
 	}
 

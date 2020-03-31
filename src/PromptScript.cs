@@ -251,17 +251,9 @@ public class PromptScript : MonoBehaviour
 					bool flag2 = this.Yandere.Stance.Current == StanceType.Crawling;
 					if (this.Yandere.CanMove && (!flag || this.AllowedWhenCrouching(this.OwnerType)) && (!flag2 || this.AllowedWhenCrawling(this.OwnerType)) && !this.Yandere.Aiming && !this.Yandere.Mopping && !this.Yandere.NearSenpai)
 					{
-						if (this.Debugging)
-						{
-							Debug.DrawLine(this.Yandere.Eyes.position + Vector3.down * this.Height, this.RaycastTarget.position, Color.green);
-						}
 						RaycastHit raycastHit;
 						if (Physics.Linecast(this.Yandere.Eyes.position + Vector3.down * this.Height, this.RaycastTarget.position, out raycastHit, this.BloodMask))
 						{
-							if (this.Debugging)
-							{
-								Debug.Log("We hit a collider named " + raycastHit.collider.name);
-							}
 							this.InSight = (raycastHit.collider == this.MyCollider);
 						}
 						if (this.Carried || this.InSight)
@@ -327,10 +319,6 @@ public class PromptScript : MonoBehaviour
 								else if (Mathf.Abs(this.RelativePosition - (float)Screen.width * 0.5f) < Mathf.Abs(this.Yandere.NearestPrompt.RelativePosition - (float)Screen.width * 0.5f))
 								{
 									this.Yandere.NearestPrompt = this;
-								}
-								if (this.Debugging)
-								{
-									Debug.Log("The nearest prompt to Yandere-chan is: " + this.Yandere.NearestPrompt);
 								}
 								if (this.Yandere.NearestPrompt == this)
 								{
@@ -540,10 +528,6 @@ public class PromptScript : MonoBehaviour
 				}
 				else
 				{
-					if (this.Debugging)
-					{
-						Debug.Log("Yandere-chan is too far away.");
-					}
 					this.Hide();
 				}
 			}

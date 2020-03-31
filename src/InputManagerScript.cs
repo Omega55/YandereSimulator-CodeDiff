@@ -13,17 +13,17 @@ public class InputManagerScript : MonoBehaviour
 
 	public bool DPadUp;
 
-	public bool StickUp;
-
 	public bool DPadDown;
-
-	public bool StickDown;
 
 	public bool DPadRight;
 
-	public bool StickRight;
-
 	public bool DPadLeft;
+
+	public bool StickUp;
+
+	public bool StickDown;
+
+	public bool StickRight;
 
 	public bool StickLeft;
 

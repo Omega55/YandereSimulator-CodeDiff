@@ -181,12 +181,21 @@ public class PauseScreenScript : MonoBehaviour
 		{
 			if (!this.Show)
 			{
-				base.transform.localPosition = Vector3.Lerp(base.transform.localPosition, new Vector3(1350f, 50f, 0f), this.Speed);
-				base.transform.localScale = Vector3.Lerp(base.transform.localScale, new Vector3(0.9133334f, 0.9133334f, 0.9133334f), this.Speed);
-				base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, base.transform.localEulerAngles.y, Mathf.Lerp(base.transform.localEulerAngles.z, 0f, this.Speed));
-				if (base.transform.localPosition.x > 1349f && this.Panel.enabled)
+				if (base.transform.localPosition.x > 1349f)
 				{
-					this.Panel.enabled = false;
+					if (this.Panel.enabled)
+					{
+						this.Panel.enabled = false;
+						base.transform.localPosition = new Vector3(1350f, 50f, 0f);
+						base.transform.localScale = new Vector3(0.9133334f, 0.9133334f, 0.9133334f);
+						base.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+					}
+				}
+				else
+				{
+					base.transform.localPosition = Vector3.Lerp(base.transform.localPosition, new Vector3(1350f, 50f, 0f), this.Speed);
+					base.transform.localScale = Vector3.Lerp(base.transform.localScale, new Vector3(0.9133334f, 0.9133334f, 0.9133334f), this.Speed);
+					base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, base.transform.localEulerAngles.y, Mathf.Lerp(base.transform.localEulerAngles.z, 0f, this.Speed));
 				}
 				if (this.CorrectingTime && Time.timeScale < 0.9f)
 				{
@@ -307,8 +316,15 @@ public class PauseScreenScript : MonoBehaviour
 				}
 				else if (!this.Sideways)
 				{
+					if (!this.Settings.gameObject.activeInHierarchy)
+					{
+						base.transform.localPosition = Vector3.Lerp(base.transform.localPosition, new Vector3(0f, 50f, 0f), this.Speed);
+					}
+					else
+					{
+						base.transform.localPosition = Vector3.Lerp(base.transform.localPosition, new Vector3(-774f, 50f, 0f), this.Speed);
+					}
 					base.transform.localScale = Vector3.Lerp(base.transform.localScale, new Vector3(0.9133334f, 0.9133334f, 0.9133334f), this.Speed);
-					base.transform.localPosition = Vector3.Lerp(base.transform.localPosition, new Vector3(0f, 50f, 0f), this.Speed);
 					base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, base.transform.localEulerAngles.y, Mathf.Lerp(base.transform.localEulerAngles.z, 0f, this.Speed));
 				}
 				else

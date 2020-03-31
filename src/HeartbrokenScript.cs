@@ -50,6 +50,8 @@ public class HeartbrokenScript : MonoBehaviour
 
 	public bool Freeze;
 
+	public bool NoSnap;
+
 	public float VibrationTimer;
 
 	public float AudioTimer;
@@ -70,7 +72,7 @@ public class HeartbrokenScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (this.Yandere.Bloodiness > 0f && !this.Yandere.RedPaint && !this.Yandere.Unmasked)
+		if (!this.Noticed && this.Yandere.Bloodiness > 0f && !this.Yandere.RedPaint && !this.Yandere.Unmasked)
 		{
 			this.Arrested = true;
 		}
@@ -89,6 +91,7 @@ public class HeartbrokenScript : MonoBehaviour
 			this.Letters[10].text = "T";
 			this.LetterID = 0;
 			this.StopID = 11;
+			this.NoSnap = true;
 		}
 		else if (this.Yandere.Attacked)
 		{
@@ -131,6 +134,7 @@ public class HeartbrokenScript : MonoBehaviour
 			}
 			this.SNAP.SetActive(false);
 			this.Cursor.Options = 3;
+			this.NoSnap = true;
 		}
 		else if (this.Yandere.Lost || this.ShoulderCamera.LookDown || this.ShoulderCamera.Counter || this.ShoulderCamera.ObstacleCounter)
 		{
@@ -147,6 +151,7 @@ public class HeartbrokenScript : MonoBehaviour
 			this.Letters[10].text = "D";
 			this.LetterID = 0;
 			this.StopID = 11;
+			this.NoSnap = true;
 		}
 		else if (this.Exposed)
 		{
@@ -167,6 +172,7 @@ public class HeartbrokenScript : MonoBehaviour
 			}
 			this.LetterID = 1;
 			this.StopID = 9;
+			this.NoSnap = true;
 		}
 		else if (this.Arrested)
 		{
@@ -187,6 +193,7 @@ public class HeartbrokenScript : MonoBehaviour
 			}
 			this.LetterID = 1;
 			this.StopID = 9;
+			this.NoSnap = true;
 		}
 		else if (this.Counselor.Expelled || this.Yandere.Sprayed)
 		{
@@ -207,6 +214,7 @@ public class HeartbrokenScript : MonoBehaviour
 			}
 			this.LetterID = 1;
 			this.StopID = 9;
+			this.NoSnap = true;
 		}
 		else
 		{
@@ -239,6 +247,19 @@ public class HeartbrokenScript : MonoBehaviour
 		else
 		{
 			base.transform.parent.transform.position = new Vector3(base.transform.parent.transform.position.x, 100f, base.transform.parent.transform.position.z);
+		}
+		int num = 0;
+		foreach (WeaponScript x in this.Cursor.SnappedYandere.Weapons)
+		{
+			if (x != null)
+			{
+				num++;
+			}
+		}
+		if (num == 0 || this.NoSnap || this.Yandere.transform.position.y < -1f)
+		{
+			this.SNAP.SetActive(false);
+			this.Cursor.Options = 3;
 		}
 		this.Clock.StopTime = true;
 	}
@@ -365,7 +386,7 @@ public class HeartbrokenScript : MonoBehaviour
 			}
 			else if (gameOverCause == GameOverType.Weapon)
 			{
-				num = 2;
+				num = 1;
 			}
 			else if (gameOverCause == GameOverType.Murder)
 			{
@@ -373,7 +394,7 @@ public class HeartbrokenScript : MonoBehaviour
 			}
 			else if (gameOverCause == GameOverType.Blood)
 			{
-				num = 1;
+				num = 2;
 			}
 			else if (gameOverCause == GameOverType.Lewd)
 			{
@@ -386,8 +407,8 @@ public class HeartbrokenScript : MonoBehaviour
 		else if (this.Headmaster)
 		{
 			this.Subtitle.color = new Color(this.Subtitle.color.r, this.Subtitle.color.g, this.Subtitle.color.b, 1f);
-			this.Subtitle.text = this.NoticedLines[7];
-			this.Subtitle.GetComponent<AudioSource>().clip = this.NoticedClips[7];
+			this.Subtitle.text = this.NoticedLines[8];
+			this.Subtitle.GetComponent<AudioSource>().clip = this.NoticedClips[8];
 			this.Subtitle.GetComponent<AudioSource>().Play();
 		}
 	}

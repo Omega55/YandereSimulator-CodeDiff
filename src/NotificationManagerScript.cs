@@ -120,8 +120,11 @@ public class NotificationManagerScript : MonoBehaviour
 		{
 			if (this.Clock.HourTime > 8.4f)
 			{
-				this.Yandere.StudentManager.TutorialWindow.ShowClassMessage = true;
-				this.DisplayNotification(NotificationType.ClassSoon);
+				if (!this.Yandere.InClass)
+				{
+					this.Yandere.StudentManager.TutorialWindow.ShowClassMessage = true;
+					this.DisplayNotification(NotificationType.ClassSoon);
+				}
 				this.Phase++;
 			}
 		}
@@ -129,7 +132,10 @@ public class NotificationManagerScript : MonoBehaviour
 		{
 			if (this.Clock.HourTime > 8.5f)
 			{
-				this.DisplayNotification(NotificationType.ClassNow);
+				if (!this.Yandere.InClass)
+				{
+					this.DisplayNotification(NotificationType.ClassNow);
+				}
 				this.Phase++;
 			}
 		}
@@ -137,13 +143,19 @@ public class NotificationManagerScript : MonoBehaviour
 		{
 			if (this.Clock.HourTime > 13.4f)
 			{
-				this.DisplayNotification(NotificationType.ClassSoon);
+				if (!this.Yandere.InClass)
+				{
+					this.DisplayNotification(NotificationType.ClassSoon);
+				}
 				this.Phase++;
 			}
 		}
 		else if (this.Phase == 4 && this.Clock.HourTime > 13.5f)
 		{
-			this.DisplayNotification(NotificationType.ClassNow);
+			if (!this.Yandere.InClass)
+			{
+				this.DisplayNotification(NotificationType.ClassNow);
+			}
 			this.Phase++;
 		}
 	}

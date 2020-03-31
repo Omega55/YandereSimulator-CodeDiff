@@ -214,6 +214,10 @@ public class ShoulderCameraScript : MonoBehaviour
 					else
 					{
 						this.Yandere.CharacterAnimation.CrossFade("f02_whimper_00");
+						if (this.Yandere.CharacterAnimation["f02_whimper_00"].time > 3.5f)
+						{
+							this.Yandere.CharacterAnimation["f02_whimper_00"].speed -= Time.deltaTime;
+						}
 					}
 					if (this.NoticedTimer > (float)(this.NoticedLimit + 4))
 					{

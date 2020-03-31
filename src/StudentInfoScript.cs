@@ -206,7 +206,7 @@ public class StudentInfoScript : MonoBehaviour
 		this.Static.SetActive(false);
 		component.volume = 0f;
 		component.Stop();
-		if (ID < 12 || ID > 20)
+		if (ID < 12 || (ID > 20 && ID < 98))
 		{
 			string url = string.Concat(new string[]
 			{
@@ -428,7 +428,7 @@ public class StudentInfoScript : MonoBehaviour
 				this.Back = false;
 			}
 		}
-		if (Input.GetButtonDown("X"))
+		if (Input.GetButtonDown("X") && this.PromptBar.Button[2].enabled)
 		{
 			if (this.StudentManager.Tag.Target != this.StudentManager.Students[this.CurrentStudent].Head)
 			{

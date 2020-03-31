@@ -440,7 +440,7 @@ public class WeaponScript : MonoBehaviour
 				this.WeaponTrail.SetActive(true);
 			}
 			this.KinematicTimer = 0f;
-			AudioSource.PlayClipAtPoint(this.EquipClip, Camera.main.transform.position);
+			AudioSource.PlayClipAtPoint(this.EquipClip, this.Yandere.MainCamera.transform.position);
 		}
 		if (this.Yandere.EquippedWeapon == this && this.Yandere.Armed)
 		{

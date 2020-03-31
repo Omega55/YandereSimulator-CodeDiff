@@ -116,14 +116,20 @@ public class TallLockerScript : MonoBehaviour
 		}
 		if (!this.Open)
 		{
-			this.Rotation = Mathf.Lerp(this.Rotation, 0f, Time.deltaTime * 10f);
+			if (this.YandereLocker)
+			{
+				this.Rotation = Mathf.Lerp(this.Rotation, 0f, Time.deltaTime * 10f);
+			}
 			this.Prompt.HideButton[1] = true;
 			this.Prompt.HideButton[2] = true;
 			this.Prompt.HideButton[3] = true;
 		}
 		else
 		{
-			this.Rotation = Mathf.Lerp(this.Rotation, -180f, Time.deltaTime * 10f);
+			if (this.YandereLocker)
+			{
+				this.Rotation = Mathf.Lerp(this.Rotation, -180f, Time.deltaTime * 10f);
+			}
 			if (this.Prompt.Circle[1].fillAmount == 0f)
 			{
 				this.Yandere.EmptyHands();
@@ -228,7 +234,10 @@ public class TallLockerScript : MonoBehaviour
 				this.Yandere.CurrentUniformOrigin = 1;
 			}
 		}
-		this.Hinge.localEulerAngles = new Vector3(0f, this.Rotation, 0f);
+		if (this.YandereLocker)
+		{
+			this.Hinge.localEulerAngles = new Vector3(0f, this.Rotation, 0f);
+		}
 		if (this.SteamCountdown)
 		{
 			this.Timer += Time.deltaTime;
@@ -280,6 +289,9 @@ public class TallLockerScript : MonoBehaviour
 					{
 						if (this.Student.Schoolwear == 0)
 						{
+							this.RivalPhone.transform.parent = this.StudentManager.StrippingPositions[this.Student.GirlID];
+							this.RivalPhone.transform.localPosition = new Vector3(0f, 0.92f, 0.2375f);
+							this.RivalPhone.transform.localEulerAngles = new Vector3(-80f, 0f, 0f);
 							this.RivalPhone.gameObject.SetActive(true);
 							this.RivalPhone.StudentID = this.Student.StudentID;
 							this.RivalPhone.MyRenderer.material.mainTexture = this.Student.SmartPhone.GetComponent<Renderer>().material.mainTexture;

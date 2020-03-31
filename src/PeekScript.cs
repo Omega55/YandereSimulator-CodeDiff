@@ -57,9 +57,12 @@ public class PeekScript : MonoBehaviour
 				this.Spoke = true;
 				base.GetComponent<AudioSource>().Play();
 			}
-			if (Input.GetButtonDown("B"))
+			if (Input.GetButtonDown("B") || this.Prompt.Yandere.Noticed || this.Prompt.Yandere.Sprayed)
 			{
-				this.Prompt.Yandere.CanMove = true;
+				if (!this.Prompt.Yandere.Noticed && !this.Prompt.Yandere.Sprayed)
+				{
+					this.Prompt.Yandere.CanMove = true;
+				}
 				this.PeekCamera.SetActive(false);
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Show = false;

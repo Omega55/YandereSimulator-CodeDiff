@@ -15,6 +15,8 @@ public class FramerateScript : MonoBehaviour
 
 	public float FPS;
 
+	public UILabel FPSLabel;
+
 	private void Start()
 	{
 		this.fpsText = base.GetComponent<GUIText>();
@@ -32,7 +34,7 @@ public class FramerateScript : MonoBehaviour
 			int num = Mathf.Clamp((int)this.FPS, 0, Application.targetFrameRate);
 			if (num > 0)
 			{
-				this.fpsText.text = "FPS: " + num.ToString();
+				this.FPSLabel.text = "FPS: " + num.ToString();
 			}
 			this.timeleft = this.updateInterval;
 			this.accum = 0f;

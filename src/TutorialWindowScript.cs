@@ -149,6 +149,8 @@ public class TutorialWindowScript : MonoBehaviour
 
 	public Texture RepTexture;
 
+	public string PointsString;
+
 	public float Timer;
 
 	private void Start()
@@ -207,7 +209,7 @@ public class TutorialWindowScript : MonoBehaviour
 		}
 		else if (this.Hide)
 		{
-			base.transform.localScale = Vector3.Lerp(base.transform.localScale, new Vector3(0f, 0f, 0f), Time.deltaTime * 10f);
+			base.transform.localScale = Vector3.Lerp(base.transform.localScale, new Vector3(0f, 0f, 0f), Time.unscaledDeltaTime * 10f);
 			if (base.transform.localScale.x < 0.1f)
 			{
 				base.transform.localScale = new Vector3(0f, 0f, 0f);
@@ -408,8 +410,9 @@ public class TutorialWindowScript : MonoBehaviour
 		}
 	}
 
-	private void SummonWindow()
+	public void SummonWindow()
 	{
+		Debug.Log("Summoning tutorial window.");
 		this.ShadowLabel.text = this.TutorialLabel.text;
 		this.Yandere.RPGCamera.enabled = false;
 		this.Yandere.Blur.enabled = true;

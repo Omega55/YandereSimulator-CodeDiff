@@ -7,6 +7,8 @@ public class ClockScript : MonoBehaviour
 
 	private string HourNumber = string.Empty;
 
+	public Collider MeetingRoomTrespassZone;
+
 	public Collider[] TrespassZones;
 
 	public StudentManagerScript StudentManager;
@@ -321,6 +323,10 @@ public class ClockScript : MonoBehaviour
 				}
 				this.PeriodLabel.text = "CLEANING TIME";
 				this.DeactivateTrespassZones();
+				if (this.Weekday == 5)
+				{
+					this.MeetingRoomTrespassZone.enabled = true;
+				}
 				this.Period++;
 			}
 		}
@@ -446,7 +452,10 @@ public class ClockScript : MonoBehaviour
 
 	private void ActivateTrespassZones()
 	{
-		this.SchoolBell.Play();
+		if (!this.SchoolBell.isPlaying || this.SchoolBell.time > 1f)
+		{
+			this.SchoolBell.Play();
+		}
 		foreach (Collider collider in this.TrespassZones)
 		{
 			collider.enabled = true;
@@ -456,7 +465,10 @@ public class ClockScript : MonoBehaviour
 	public void DeactivateTrespassZones()
 	{
 		this.Yandere.Trespassing = false;
-		this.SchoolBell.Play();
+		if (!this.SchoolBell.isPlaying || this.SchoolBell.time > 1f)
+		{
+			this.SchoolBell.Play();
+		}
 		foreach (Collider collider in this.TrespassZones)
 		{
 			if (!collider.GetComponent<TrespassScript>().OffLimits)
@@ -486,7 +498,7 @@ public class ClockScript : MonoBehaviour
 		RenderSettings.skybox.SetColor("_Tint", new Color(0.1f, 0.1f, 0.2f));
 	}
 
-	private void UpdateClock()
+	public void UpdateClock()
 	{
 		this.LastMinute = this.Minute;
 		if (this.Hour == 0f || this.Hour == 12f)

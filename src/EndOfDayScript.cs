@@ -167,8 +167,14 @@ public class EndOfDayScript : MonoBehaviour
 
 	public RivalEliminationType RivalEliminationMethod;
 
+	public Vector3 YandereInitialPosition;
+
+	public Quaternion YandereInitialRotation;
+
 	public void Start()
 	{
+		this.YandereInitialPosition = this.Yandere.transform.position;
+		this.YandereInitialRotation = this.Yandere.transform.rotation;
 		if (GameGlobals.SenpaiMourning)
 		{
 			this.StopMourning = true;
@@ -312,6 +318,7 @@ public class EndOfDayScript : MonoBehaviour
 				{
 					this.Heartbroken.transform.parent.transform.parent = null;
 					this.Heartbroken.transform.parent.gameObject.SetActive(true);
+					this.Heartbroken.Cursor.HeartbrokenCamera.depth = 6f;
 					this.Heartbroken.Noticed = false;
 					this.Heartbroken.Arrested = true;
 					this.MainCamera.SetActive(false);

@@ -92,7 +92,18 @@ public class NemesisScript : MonoBehaviour
 				gameObject6.SetActive(false);
 			}
 		}
+		foreach (GameObject gameObject7 in this.Cosmetic.CatGifts)
+		{
+			if (gameObject7 != null)
+			{
+				gameObject7.SetActive(false);
+			}
+		}
 		this.Difficulty = MissionModeGlobals.NemesisDifficulty;
+		if (this.Difficulty == 0)
+		{
+			this.Difficulty = 1;
+		}
 		this.Student.StudentManager = GameObject.Find("StudentManager").GetComponent<StudentManagerScript>();
 		this.Student.WitnessCamera = GameObject.Find("WitnessCamera").GetComponent<WitnessCameraScript>();
 		this.Student.Police = GameObject.Find("Police").GetComponent<PoliceScript>();
@@ -416,6 +427,7 @@ public class NemesisScript : MonoBehaviour
 		this.Student.Cosmetic.LeftStockings[0].SetActive(false);
 		this.Student.Cosmetic.RightWristband.SetActive(false);
 		this.Student.Cosmetic.LeftWristband.SetActive(false);
+		this.Student.FollowCountdown.gameObject.SetActive(false);
 		this.Student.DramaticCamera.gameObject.SetActive(false);
 		this.Student.VomitEmitter.gameObject.SetActive(false);
 		this.Student.Countdown.gameObject.SetActive(false);

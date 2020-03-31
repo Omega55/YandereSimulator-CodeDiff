@@ -156,6 +156,7 @@ public class StruggleBarScript : MonoBehaviour
 		this.Student.Won = true;
 		this.Struggling = false;
 		this.Victory = 0f;
+		this.Yandere.StudentManager.StopMoving();
 	}
 
 	private void ChooseButton()

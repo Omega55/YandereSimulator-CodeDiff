@@ -922,7 +922,14 @@ public class MissionModeScript : MonoBehaviour
 			}
 			if (this.Yandere.ShoulderCamera.Noticed)
 			{
-				this.GameOverID = 17;
+				if (this.Yandere.Senpai.GetComponent<StudentScript>().Club == ClubType.Council)
+				{
+					this.GameOverID = 21;
+				}
+				else
+				{
+					this.GameOverID = 17;
+				}
 				this.GameOver();
 				this.Phase = 4;
 			}

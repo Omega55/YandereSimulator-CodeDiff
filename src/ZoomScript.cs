@@ -15,6 +15,8 @@ public class ZoomScript : MonoBehaviour
 
 	public float ShakeStrength;
 
+	public float midOffset = 0.25f;
+
 	public float Slender;
 
 	public float Height;
@@ -143,6 +145,19 @@ public class ZoomScript : MonoBehaviour
 		{
 			base.transform.localPosition = Vector3.MoveTowards(base.transform.localPosition, this.Target, Time.deltaTime * this.ShakeStrength * 0.1f);
 		}
-		base.transform.localPosition = new Vector3((!this.OverShoulder) ? 0f : 0.25f, base.transform.localPosition.y, base.transform.localPosition.z);
+	}
+
+	public void LateUpdate()
+	{
+		base.transform.eulerAngles = Vector3.zero;
+		if (this.OverShoulder)
+		{
+			Vector3 lhs = this.Yandere.MainCamera.transform.TransformDirection(Vector3.forward);
+			base.transform.position = new Vector3(this.Yandere.transform.position.x + this.midOffset * Vector3.Dot(lhs, Vector3.forward), base.transform.position.y, this.Yandere.transform.position.z + this.midOffset * Vector3.Dot(lhs, -Vector3.right));
+		}
+		else
+		{
+			base.transform.localPosition = new Vector3(0f, base.transform.localPosition.y, 0f);
+		}
 	}
 }

@@ -3703,6 +3703,8 @@ public class YandereScript : MonoBehaviour
 						if (this.SprayTimer > 1f)
 						{
 							this.ShoulderCamera.HeartbrokenCamera.SetActive(true);
+							this.HeartCamera.gameObject.SetActive(false);
+							this.HUD.alpha = 0f;
 							this.SprayPhase++;
 						}
 					}
