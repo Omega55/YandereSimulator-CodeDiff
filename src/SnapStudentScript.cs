@@ -91,10 +91,6 @@ public class SnapStudentScript : MonoBehaviour
 				}
 				this.VoicedConcern = true;
 			}
-			if (this.Student.StudentID == 1)
-			{
-				Debug.Log("I'm being told to animate...");
-			}
 			this.MyAnim.Play(this.FearAnim);
 		}
 		else

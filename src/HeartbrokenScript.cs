@@ -256,7 +256,7 @@ public class HeartbrokenScript : MonoBehaviour
 				num++;
 			}
 		}
-		if (num == 0 || this.NoSnap || this.Yandere.transform.position.y < -1f)
+		if (num == 0 || this.NoSnap || this.Yandere.Police.GameOver || this.Yandere.StudentManager.Clock.HourTime >= 18f || this.Yandere.transform.position.y < -1f)
 		{
 			this.SNAP.SetActive(false);
 			this.Cursor.Options = 3;

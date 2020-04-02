@@ -210,7 +210,7 @@ public class SnappedYandereScript : MonoBehaviour
 					this.MainCamera.transform.localPosition = new Vector3(0f, 0f, -1f);
 					this.MainCamera.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
 					this.SnapAttackPivot.localEulerAngles = new Vector3(UnityEngine.Random.Range(-45f, 45f), UnityEngine.Random.Range(0f, 360f), 0f);
-					while (this.MainCamera.transform.position.y < 0.1f)
+					while (this.MainCamera.transform.position.y < base.transform.position.y + 0.1f)
 					{
 						this.SnapAttackPivot.localEulerAngles = new Vector3(UnityEngine.Random.Range(-45f, 45f), UnityEngine.Random.Range(0f, 360f), 0f);
 					}
@@ -264,7 +264,7 @@ public class SnappedYandereScript : MonoBehaviour
 		{
 			this.SNAPLabel.alpha = Mathf.MoveTowards(this.SNAPLabel.alpha, 1f, Time.deltaTime * 0.2f);
 			this.HurryTimer += Time.deltaTime;
-			if (this.HurryTimer > 40f)
+			if (this.HurryTimer > 40f || base.transform.position.y < -0.1f || this.StudentManager.MaleLockerRoomArea.bounds.Contains(base.transform.position))
 			{
 				this.Teleport();
 				this.HurryTimer = 0f;
@@ -285,7 +285,6 @@ public class SnappedYandereScript : MonoBehaviour
 			{
 				this.MyAnim[this.AttackAnims[this.AttackID]].speed = 1f;
 			}
-			Debug.Log(this.AttackAnims[this.AttackID] + "'s time is: " + this.MyAnim[this.AttackAnims[this.AttackID]].time);
 			if (this.MyAnim[this.AttackAnims[this.AttackID]].time >= this.MyAnim[this.AttackAnims[this.AttackID]].length)
 			{
 				if (this.Attacks < 5)
@@ -382,6 +381,7 @@ public class SnappedYandereScript : MonoBehaviour
 			this.Jukebox.volume -= Time.deltaTime * 0.5f;
 			this.SnapStatic.volume -= Time.deltaTime * 0.5f * 0.2f;
 			this.SNAPLabel.alpha = Mathf.MoveTowards(this.SNAPLabel.alpha, 0f, Time.deltaTime * 0.5f);
+			this.SnapVoice.volume -= Time.deltaTime;
 			Quaternion b = Quaternion.LookRotation(this.TargetStudent.transform.position - base.transform.position);
 			base.transform.rotation = Quaternion.Slerp(base.transform.rotation, b, Time.deltaTime);
 			base.transform.position = Vector3.MoveTowards(base.transform.position, this.TargetStudent.transform.position + this.TargetStudent.transform.forward * 1f, Time.deltaTime);

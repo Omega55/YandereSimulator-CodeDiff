@@ -1925,6 +1925,10 @@ public class YandereScript : MonoBehaviour
 					this.targetRotation = Quaternion.LookRotation(this.Senpai.position - base.transform.position);
 					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
 					base.transform.localEulerAngles = new Vector3(0f, base.transform.localEulerAngles.y, base.transform.localEulerAngles.z);
+					if (Vector3.Distance(base.transform.position, this.Senpai.position) < 1f)
+					{
+						this.MyController.Move(base.transform.forward * (Time.deltaTime * -1f));
+					}
 				}
 				else if (this.CharacterAnimation["f02_down_22"].time >= this.CharacterAnimation["f02_down_22"].length)
 				{

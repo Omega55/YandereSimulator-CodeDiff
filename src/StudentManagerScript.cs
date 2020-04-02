@@ -62,6 +62,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public TaskManagerScript TaskManager;
 
+	public Collider MaleLockerRoomArea;
+
 	public StudentScript BloodReporter;
 
 	public HeadmasterScript Headmaster;
@@ -3427,13 +3429,19 @@ public class StudentManagerScript : MonoBehaviour
 				if (studentScript != null && studentScript.gameObject.activeInHierarchy && studentScript.Alive)
 				{
 					studentScript.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
+					studentScript.CharacterAnimation[studentScript.SocialSitAnim].weight = 0f;
 					studentScript.SnapStudent.Yandere = this.SnappedYandere;
 					studentScript.SnapStudent.enabled = true;
 					studentScript.SpeechLines.Stop();
 					studentScript.enabled = false;
+					studentScript.EmptyHands();
 					if (studentScript.Shy)
 					{
 						studentScript.CharacterAnimation[studentScript.ShyAnim].weight = 0f;
+					}
+					if (studentScript.Club == ClubType.LightMusic)
+					{
+						studentScript.StopMusic();
 					}
 				}
 			}

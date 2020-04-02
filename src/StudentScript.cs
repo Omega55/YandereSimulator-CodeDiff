@@ -2925,6 +2925,10 @@ public class StudentScript : MonoBehaviour
 				{
 					this.targetRotation = Quaternion.LookRotation(new Vector3(this.Yandere.Hips.transform.position.x, base.transform.position.y, this.Yandere.Hips.transform.position.z) - base.transform.position);
 					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
+					if (Vector3.Distance(base.transform.position, this.Yandere.transform.position) < 1f)
+					{
+						this.MyController.Move(base.transform.forward * (Time.deltaTime * -1f));
+					}
 				}
 			}
 		}
@@ -16095,5 +16099,30 @@ public class StudentScript : MonoBehaviour
 		this.Routine = true;
 		this.ReturningMisplacedWeaponPhase = 0;
 		this.WitnessCooldownTimer = 0f;
+	}
+
+	public void StopMusic()
+	{
+		if (this.StudentID == 51)
+		{
+			if (this.InstrumentBag[this.ClubMemberID].transform.parent == null)
+			{
+				this.Instruments[this.ClubMemberID].transform.parent = null;
+				this.Instruments[this.ClubMemberID].transform.position = new Vector3(-0.5f, 4.5f, 22.45666f);
+				this.Instruments[this.ClubMemberID].transform.eulerAngles = new Vector3(-15f, 0f, 0f);
+				this.Instruments[this.ClubMemberID].GetComponent<AudioSource>().playOnAwake = false;
+				this.Instruments[this.ClubMemberID].GetComponent<AudioSource>().Stop();
+			}
+			else
+			{
+				this.Instruments[this.ClubMemberID].SetActive(false);
+			}
+		}
+		else
+		{
+			this.Instruments[this.ClubMemberID].SetActive(false);
+		}
+		this.Drumsticks[0].SetActive(false);
+		this.Drumsticks[1].SetActive(false);
 	}
 }
