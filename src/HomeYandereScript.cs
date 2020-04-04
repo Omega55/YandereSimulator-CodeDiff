@@ -59,6 +59,10 @@ public class HomeYandereScript : MonoBehaviour
 
 	public Texture BlondePony;
 
+	public int AlphabetID;
+
+	public string[] Letter;
+
 	public SkinnedMeshRenderer MyRenderer;
 
 	public Texture[] UniformTextures;
@@ -277,6 +281,15 @@ public class HomeYandereScript : MonoBehaviour
 			this.Ponytail.localScale = new Vector3(0.0001f, 0.0001f, 0.0001f);
 			this.HairR.localScale = new Vector3(0.0001f, 0.0001f, 0.0001f);
 			this.HairL.localScale = new Vector3(0.0001f, 0.0001f, 0.0001f);
+		}
+		if (Input.GetKeyDown(this.Letter[this.AlphabetID]))
+		{
+			this.AlphabetID++;
+			if (this.AlphabetID == this.Letter.Length)
+			{
+				GameGlobals.AlphabetMode = true;
+				SceneManager.LoadScene("LoadingScene");
+			}
 		}
 	}
 

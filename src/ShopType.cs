@@ -10,5 +10,6 @@ public enum ShopType
 	Gift,
 	Convenience,
 	Games,
-	Electronics
+	Electronics,
+	Lingerie
 }

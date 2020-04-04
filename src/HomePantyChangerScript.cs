@@ -114,9 +114,32 @@ public class HomePantyChangerScript : MonoBehaviour
 
 	private void UpdatePantyLabels()
 	{
-		this.PantyNameLabel.text = this.PantyNames[this.Selected];
-		this.PantyDescLabel.text = this.PantyDescs[this.Selected];
-		this.PantyBuffLabel.text = this.PantyBuffs[this.Selected];
-		this.ButtonLabel.text = ((this.Selected != PlayerGlobals.PantiesEquipped) ? "Wear" : "Equipped");
+		if (this.Selected == 0 || CollectibleGlobals.GetPantyPurchased(this.Selected))
+		{
+			this.PantyNameLabel.text = this.PantyNames[this.Selected];
+			this.PantyDescLabel.text = this.PantyDescs[this.Selected];
+			this.PantyBuffLabel.text = this.PantyBuffs[this.Selected];
+		}
+		else
+		{
+			this.PantyNameLabel.text = "?????";
+			this.PantyBuffLabel.text = "?????";
+			if (this.Selected < 11)
+			{
+				this.PantyDescLabel.text = "Unlock these panties by going shopping in town at night!";
+			}
+			else
+			{
+				this.PantyDescLabel.text = "Unlock these panties by locating them and picking them up!";
+			}
+		}
+		if (this.Selected == 0 || CollectibleGlobals.GetPantyPurchased(this.Selected))
+		{
+			this.ButtonLabel.text = ((this.Selected != PlayerGlobals.PantiesEquipped) ? "Wear" : "Equipped");
+		}
+		else
+		{
+			this.ButtonLabel.text = "Unavailable";
+		}
 	}
 }

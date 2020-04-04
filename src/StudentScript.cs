@@ -6524,7 +6524,7 @@ public class StudentScript : MonoBehaviour
 							}
 							else if (this.Persona == PersonaType.Dangerous)
 							{
-								if (!this.Yandere.Attacking && !this.StudentManager.PinningDown && !this.Yandere.Struggling)
+								if (!this.Yandere.Attacking && !this.StudentManager.PinningDown && !this.Yandere.Struggling && !this.Yandere.Noticed)
 								{
 									this.Spray();
 								}
@@ -9084,7 +9084,7 @@ public class StudentScript : MonoBehaviour
 					{
 						this.WitnessCooldownTimer = Mathf.MoveTowards(this.WitnessCooldownTimer, 0f, Time.deltaTime);
 					}
-					else if ((this.StudentID == this.StudentManager.CurrentID || (this.Persona == PersonaType.Strict && this.Fleeing)) && !this.Wet && !this.Guarding && !this.IgnoreBlood && !this.InvestigatingPossibleDeath && !this.Emetic && !this.Sedated && !this.Headache && !this.SentHome && !this.Slave && !this.Talking)
+					else if ((this.StudentID == this.StudentManager.CurrentID || (this.Persona == PersonaType.Strict && this.Fleeing)) && !this.Wet && !this.Guarding && !this.IgnoreBlood && !this.InvestigatingPossibleDeath && !this.Spraying && !this.Emetic && !this.Sedated && !this.Headache && !this.SentHome && !this.Slave && !this.Talking)
 					{
 						if (this.BloodPool == null && this.StudentManager.Police.LimbParent.childCount > 0)
 						{
@@ -15018,7 +15018,7 @@ public class StudentScript : MonoBehaviour
 			}
 			if (!flag)
 			{
-				if (!this.Yandere.Sprayed && !this.Dying && !this.Yandere.Egg && !this.Yandere.Dumping && !this.Yandere.Bathing)
+				if (!this.Yandere.Sprayed && !this.Dying && !this.Blind && !this.Yandere.Egg && !this.Yandere.Dumping && !this.Yandere.Bathing && !this.Yandere.Noticed)
 				{
 					if (this.SprayTimer > 0f)
 					{

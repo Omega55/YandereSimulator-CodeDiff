@@ -261,6 +261,10 @@ public class StreetShopInterfaceScript : MonoBehaviour
 				}
 				CollectibleGlobals.SetGiftPurchased(this.Selected, true);
 				break;
+			case ShopType.Lingerie:
+				this.PurchaseEffect();
+				CollectibleGlobals.SetPantyPurchased(this.Selected, true);
+				break;
 			}
 		}
 	}
@@ -300,7 +304,21 @@ public class StreetShopInterfaceScript : MonoBehaviour
 		ShopType currentStore = this.CurrentStore;
 		if (currentStore != ShopType.Manga)
 		{
-			if (currentStore == ShopType.Gift)
+			if (currentStore != ShopType.Gift)
+			{
+				if (currentStore == ShopType.Lingerie)
+				{
+					for (int i = 1; i < 11; i++)
+					{
+						if (CollectibleGlobals.GetPantyPurchased(i))
+						{
+							this.Icons[i].spriteName = "Yes";
+							this.PricesLabel[i].text = "Owned";
+						}
+					}
+				}
+			}
+			else
 			{
 				for (int i = 1; i < 11; i++)
 				{

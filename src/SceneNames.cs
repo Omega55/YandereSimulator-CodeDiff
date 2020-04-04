@@ -69,4 +69,6 @@ public static class SceneNames
 	public const string ThanksForPlayingScene = "ThanksForPlayingScene";
 
 	public const string DiscordScene = "DiscordScene";
+
+	public const string OsanaJokeScene = "OsanaJokeScene";
 }

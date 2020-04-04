@@ -1087,6 +1087,7 @@ public class StudentManagerScript : MonoBehaviour
 					if (this.PinDownTimer > 10f || (this.WitnessList[1].DistanceToDestination < 1f && this.WitnessList[2].DistanceToDestination < 1f && this.WitnessList[3].DistanceToDestination < 1f && this.WitnessList[4].DistanceToDestination < 1f))
 					{
 						this.Clock.StopTime = true;
+						this.Yandere.HUD.enabled = false;
 						if (this.Yandere.Aiming)
 						{
 							this.Yandere.StopAiming();

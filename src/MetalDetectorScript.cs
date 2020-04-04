@@ -74,67 +74,70 @@ public class MetalDetectorScript : MonoBehaviour
 
 	private void OnTriggerStay(Collider other)
 	{
-		bool flag = false;
-		if (this.MissionMode.GameOverID == 0 && other.gameObject.layer == 13)
+		if (this.Yandere.enabled)
 		{
-			for (int i = 1; i < 4; i++)
+			bool flag = false;
+			if (this.MissionMode.GameOverID == 0 && other.gameObject.layer == 13)
 			{
-				WeaponScript weaponScript = this.Yandere.Weapon[i];
-				flag |= (weaponScript != null && weaponScript.Metal);
-				if (!flag)
+				for (int i = 1; i < 4; i++)
 				{
-					if (this.Yandere.Container != null && this.Yandere.Container.Weapon != null)
+					WeaponScript weaponScript = this.Yandere.Weapon[i];
+					flag |= (weaponScript != null && weaponScript.Metal);
+					if (!flag)
 					{
-						weaponScript = this.Yandere.Container.Weapon;
-						flag = weaponScript.Metal;
-					}
-					if (this.Yandere.PickUp != null)
-					{
-						if (this.Yandere.PickUp.TrashCan != null && this.Yandere.PickUp.TrashCan.Weapon)
+						if (this.Yandere.Container != null && this.Yandere.Container.Weapon != null)
 						{
-							weaponScript = this.Yandere.PickUp.TrashCan.Item.GetComponent<WeaponScript>();
+							weaponScript = this.Yandere.Container.Weapon;
 							flag = weaponScript.Metal;
 						}
-						if (this.Yandere.PickUp.StuckBoxCutter != null)
+						if (this.Yandere.PickUp != null)
 						{
-							weaponScript = this.Yandere.PickUp.StuckBoxCutter;
-							flag = true;
+							if (this.Yandere.PickUp.TrashCan != null && this.Yandere.PickUp.TrashCan.Weapon)
+							{
+								weaponScript = this.Yandere.PickUp.TrashCan.Item.GetComponent<WeaponScript>();
+								flag = weaponScript.Metal;
+							}
+							if (this.Yandere.PickUp.StuckBoxCutter != null)
+							{
+								weaponScript = this.Yandere.PickUp.StuckBoxCutter;
+								flag = true;
+							}
 						}
 					}
 				}
-			}
-			if (flag && !this.Yandere.Inventory.IDCard)
-			{
-				if (this.MissionMode.enabled)
+				if (flag && !this.Yandere.Inventory.IDCard)
 				{
-					this.MissionMode.GameOverID = 16;
-					this.MissionMode.GameOver();
-					this.MissionMode.Phase = 4;
-					base.enabled = false;
-				}
-				else if (!this.Yandere.Sprayed)
-				{
-					this.MyAudio.clip = this.Alarm;
-					this.MyAudio.loop = true;
-					this.MyAudio.Play();
-					this.MyAudio.volume = 0.1f;
-					AudioSource.PlayClipAtPoint(this.PepperSpraySFX, base.transform.position);
-					if (this.Yandere.Aiming)
+					if (this.MissionMode.enabled)
 					{
-						this.Yandere.StopAiming();
+						this.MissionMode.GameOverID = 16;
+						this.MissionMode.GameOver();
+						this.MissionMode.Phase = 4;
+						base.enabled = false;
 					}
-					this.PepperSprayEffect.transform.position = new Vector3(base.transform.position.x, this.Yandere.transform.position.y + 1.8f, this.Yandere.transform.position.z);
-					this.Spraying = true;
-					this.Yandere.CharacterAnimation.CrossFade("f02_sprayed_00");
-					this.Yandere.FollowHips = true;
-					this.Yandere.Punching = false;
-					this.Yandere.CanMove = false;
-					this.Yandere.Sprayed = true;
-					this.Yandere.StudentManager.YandereDying = true;
-					this.Yandere.StudentManager.StopMoving();
-					this.Yandere.Blur.blurIterations = 1;
-					this.Yandere.Jukebox.Volume = 0f;
-					Time.timeScale = 1f;
+					else if (!this.Yandere.Sprayed)
+					{
+						this.MyAudio.clip = this.Alarm;
+						this.MyAudio.loop = true;
+						this.MyAudio.Play();
+						this.MyAudio.volume = 0.1f;
+						AudioSource.PlayClipAtPoint(this.PepperSpraySFX, base.transform.position);
+						if (this.Yandere.Aiming)
+						{
+							this.Yandere.StopAiming();
+						}
+						this.PepperSprayEffect.transform.position = new Vector3(base.transform.position.x, this.Yandere.transform.position.y + 1.8f, this.Yandere.transform.position.z);
+						this.Spraying = true;
+						this.Yandere.CharacterAnimation.CrossFade("f02_sprayed_00");
+						this.Yandere.FollowHips = true;
+						this.Yandere.Punching = false;
+						this.Yandere.CanMove = false;
+						this.Yandere.Sprayed = true;
+						this.Yandere.StudentManager.YandereDying = true;
+						this.Yandere.StudentManager.StopMoving();
+						this.Yandere.Blur.blurIterations = 1;
+						this.Yandere.Jukebox.Volume = 0f;
+						Time.timeScale = 1f;
+					}
 				}
 			}
 		}
