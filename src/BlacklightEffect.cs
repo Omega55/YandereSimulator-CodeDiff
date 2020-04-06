@@ -20,11 +20,11 @@ public class BlacklightEffect : MonoBehaviour
 	[Space(5f)]
 	[Header("Glow")]
 	[SerializeField]
-	[ColorUsage(true)]
+	[ColorUsage(true, true, 0f, 3f, 0f, 3f)]
 	private Color glowColor = new Color(0f, 0.482352942f, 0.7490196f) * 9f;
 
 	[SerializeField]
-	[ColorUsage(true)]
+	[ColorUsage(true, true, 0f, 3f, 0f, 3f)]
 	private Color glowColorSecondary = new Color(0.7490196f, 0f, 0.6784314f) * 9f;
 
 	[SerializeField]
@@ -40,14 +40,11 @@ public class BlacklightEffect : MonoBehaviour
 	[Space(5f)]
 	[Header("Targetted highlighting")]
 	[SerializeField]
-	[ColorUsage(true)]
-	private Color targettedHighlightColor = new Color(0f, 0.482352942f, 0.7490196f) * 6f;
+	private HighlightTarget[] highlightTargets;
 
 	[SerializeField]
-	private Color[] highlightTargets;
-
-	[SerializeField]
-	private float[] highlightThresholds;
+	[Range(0f, 1f)]
+	private float smoothDropoff;
 
 	[Space(5f)]
 	[Header("Edge")]
@@ -73,6 +70,12 @@ public class BlacklightEffect : MonoBehaviour
 	[SerializeField]
 	[Range(0f, 1f)]
 	private float overlayOpacity = 0.06f;
+
+	private Color[] hTargets = new Color[100];
+
+	private float[] hThresholds = new float[100];
+
+	private Color[] hColors = new Color[100];
 
 	private Camera camera;
 
@@ -101,27 +104,23 @@ public class BlacklightEffect : MonoBehaviour
 			this.post.SetColor("_OverlayBottom", this.overlayBottom);
 			this.post.SetFloat("_OverlayOpacity", this.overlayOpacity);
 			this.post.SetFloat("_HighlightFlip", this.glowFlip);
-			this.post.SetInt("_HighlightTargetsLength", Mathf.Clamp(this.highlightTargets.Length, 0, 100));
-			this.post.SetColor("_HighlightColor", this.targettedHighlightColor);
-			if (this.highlightTargets.Length != 0)
+			this.post.SetFloat("_HighlightTargetSmooth", this.smoothDropoff);
+			if (this.highlightTargets != null)
 			{
-				this.post.SetColorArray("_HighlightTargets", this.highlightTargets);
-			}
-			else
-			{
-				this.post.SetColorArray("_HighlightTargets", new Color[]
+				for (int i = 0; i < this.highlightTargets.Length; i++)
 				{
-					new Color(0f, 0f, 0f, 0f)
-				});
+					this.hTargets[i] = this.highlightTargets[i].TargetColor;
+					this.hThresholds[i] = this.highlightTargets[i].Threshold;
+					this.hColors[i] = this.highlightTargets[i].ReplacementColor;
+				}
 			}
-			if (this.highlightThresholds.Length != 0)
+			if (this.highlightTargets != null && this.highlightTargets.Length != 0)
 			{
-				this.post.SetFloatArray("_HighlightTargetThresholds", this.highlightThresholds);
+				this.post.SetInt("_HighlightTargetsLength", Mathf.Clamp(this.highlightTargets.Length, 0, 100));
 			}
-			else
-			{
-				this.post.SetFloatArray("_HighlightTargetThresholds", new float[1]);
-			}
+			this.post.SetColorArray("_HighlightTargets", this.hTargets);
+			this.post.SetFloatArray("_HighlightTargetThresholds", this.hThresholds);
+			this.post.SetColorArray("_HighlightColors", this.hColors);
 		}
 	}
 

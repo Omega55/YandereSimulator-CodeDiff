@@ -90,9 +90,16 @@ public class HomePantyChangerScript : MonoBehaviour
 			this.PantyParent.localEulerAngles = new Vector3(this.PantyParent.localEulerAngles.x, this.Rotation, this.PantyParent.localEulerAngles.z);
 			if (Input.GetButtonDown("A"))
 			{
-				PlayerGlobals.PantiesEquipped = this.Selected;
+				if (this.Selected == 0 || CollectibleGlobals.GetPantyPurchased(this.Selected))
+				{
+					PlayerGlobals.PantiesEquipped = this.Selected;
+					Debug.Log("Yandere-chan should now be equipped with Panties #" + PlayerGlobals.PantiesEquipped);
+				}
+				else
+				{
+					Debug.Log("Yandere-chan doesn't own those panties.");
+				}
 				this.UpdatePantyLabels();
-				Debug.Log("Yandere-chan should now be equipped with Panties #" + PlayerGlobals.PantiesEquipped);
 			}
 			if (Input.GetButtonDown("B"))
 			{

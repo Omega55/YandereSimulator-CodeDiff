@@ -25,23 +25,6 @@ public class OsanaJokeScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown("f"))
-		{
-			this.Rotation[0].enabled = false;
-			this.Rotation[1].enabled = false;
-			this.Rotation[2].enabled = false;
-			this.Rotation[3].enabled = false;
-			this.Rotation[4].enabled = false;
-			this.Rotation[5].enabled = false;
-			this.Rotation[6].enabled = false;
-			this.Rotation[7].enabled = false;
-			UnityEngine.Object.Instantiate<GameObject>(this.BloodSplatterEffect, this.Head.position, Quaternion.identity);
-			this.Head.localScale = new Vector3(0f, 0f, 0f);
-			this.Jukebox.clip = this.BloodSplatterSFX;
-			this.Jukebox.Play();
-			this.Label.text = string.Empty;
-			this.Advance = true;
-		}
 		if (this.Advance)
 		{
 			this.Timer += Time.deltaTime;
@@ -58,6 +41,23 @@ public class OsanaJokeScript : MonoBehaviour
 			{
 				Application.Quit();
 			}
+		}
+		else if (Input.GetKeyDown("f"))
+		{
+			this.Rotation[0].enabled = false;
+			this.Rotation[1].enabled = false;
+			this.Rotation[2].enabled = false;
+			this.Rotation[3].enabled = false;
+			this.Rotation[4].enabled = false;
+			this.Rotation[5].enabled = false;
+			this.Rotation[6].enabled = false;
+			this.Rotation[7].enabled = false;
+			UnityEngine.Object.Instantiate<GameObject>(this.BloodSplatterEffect, this.Head.position, Quaternion.identity);
+			this.Head.localScale = new Vector3(0f, 0f, 0f);
+			this.Jukebox.clip = this.BloodSplatterSFX;
+			this.Jukebox.Play();
+			this.Label.text = string.Empty;
+			this.Advance = true;
 		}
 	}
 }

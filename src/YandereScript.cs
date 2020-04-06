@@ -1319,6 +1319,8 @@ public class YandereScript : MonoBehaviour
 
 	public AudioClip NierSwoosh;
 
+	public GameObject ChinaDress;
+
 	public NormalBufferView VaporwaveVisuals;
 
 	public Material VaporwaveSkybox;
@@ -5812,6 +5814,11 @@ public class YandereScript : MonoBehaviour
 									this.CameraFilters.enabled = true;
 									this.EasterEggMenu.SetActive(false);
 								}
+								else if (Input.GetKeyDown(KeyCode.F11))
+								{
+									this.WuFlu();
+									this.EasterEggMenu.SetActive(false);
+								}
 								else if (Input.GetKeyDown(KeyCode.Space))
 								{
 									this.EasterEggMenu.SetActive(false);
@@ -6919,7 +6926,6 @@ public class YandereScript : MonoBehaviour
 		this.ID = 0;
 		while (this.ID < this.CensorSteam.Length)
 		{
-			this.CensorSteam[this.ID].SetActive(true);
 			this.ID++;
 		}
 		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
@@ -7458,6 +7464,12 @@ public class YandereScript : MonoBehaviour
 		this.RunAnim = "f02_nierRun_00";
 		this.RunSpeed = 10f;
 		this.DebugMenu.transform.parent.GetComponent<DebugMenuScript>().UpdateCensor();
+	}
+
+	private void WuFlu()
+	{
+		this.ChinaDress.SetActive(true);
+		this.Nude();
 	}
 
 	private void Vaporwave()

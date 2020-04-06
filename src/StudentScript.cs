@@ -86,6 +86,8 @@ public class StudentScript : MonoBehaviour
 
 	public CosmeticScript Cosmetic;
 
+	public PickUpScript PuzzleCube;
+
 	public SaveLoadScript SaveLoad;
 
 	public SubtitleScript Subtitle;
@@ -783,6 +785,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool Investigating;
 
+	public bool SolvingPuzzle;
+
 	public bool Distracting;
 
 	public bool EatingSnack;
@@ -869,7 +873,7 @@ public class StudentScript : MonoBehaviour
 
 	public float ElectroTimer;
 
-	public float ThreatTimer;
+	public float PuzzleTimer;
 
 	public float GiggleTimer;
 
@@ -888,6 +892,8 @@ public class StudentScript : MonoBehaviour
 	public float ReportTimer;
 
 	public float SplashTimer;
+
+	public float ThreatTimer;
 
 	public float UpdateTimer;
 
@@ -1342,6 +1348,8 @@ public class StudentScript : MonoBehaviour
 	public string InspectBloodAnim = string.Empty;
 
 	public string PickUpAnim = string.Empty;
+
+	public string PuzzleAnim = string.Empty;
 
 	public string[] CleanAnims;
 
@@ -8280,6 +8288,7 @@ public class StudentScript : MonoBehaviour
 				if (this.CharacterAnimation["trip_00"].time >= 0.5f && this.CharacterAnimation["trip_00"].time <= 5.5f && this.StudentManager.Gate.Crushing)
 				{
 					this.BecomeRagdoll();
+					this.DeathType = DeathType.Weight;
 					this.Ragdoll.Decapitated = true;
 					UnityEngine.Object.Instantiate<GameObject>(this.SquishyBloodEffect, this.Head.position, Quaternion.identity);
 				}
@@ -8783,6 +8792,18 @@ public class StudentScript : MonoBehaviour
 						this.Stripping = false;
 						this.Routine = true;
 					}
+				}
+			}
+			if (this.SolvingPuzzle)
+			{
+				this.PuzzleTimer += Time.deltaTime;
+				this.CharacterAnimation.CrossFade(this.PuzzleAnim);
+				if (this.PuzzleTimer > 30f)
+				{
+					this.Pathfinding.canSearch = true;
+					this.Pathfinding.canMove = true;
+					this.Routine = true;
+					this.DropPuzzle();
 				}
 			}
 		}
@@ -9353,6 +9374,10 @@ public class StudentScript : MonoBehaviour
 			{
 				this.DistractionTarget.TargetedForDistraction = false;
 			}
+			if (this.SolvingPuzzle)
+			{
+				this.DropPuzzle();
+			}
 			this.CharacterAnimation.CrossFade(this.IdleAnim);
 			this.Pathfinding.canSearch = false;
 			this.Pathfinding.canMove = false;
@@ -9364,6 +9389,7 @@ public class StudentScript : MonoBehaviour
 			this.Reacted = false;
 			this.Routine = false;
 			this.Alarmed = true;
+			this.PuzzleTimer = 0f;
 			this.ReadPhase = 0;
 			if (!this.Male)
 			{
@@ -9871,6 +9897,27 @@ public class StudentScript : MonoBehaviour
 				{
 					this.Subtitle.UpdateLabel(SubtitleType.PhotoAnnoyance, 0, 3f);
 					this.Prompt.Circle[0].fillAmount = 1f;
+				}
+				else if (this.Yandere.PickUp != null && this.Yandere.PickUp.PuzzleCube)
+				{
+					this.EmptyHands();
+					this.Prompt.Circle[0].fillAmount = 1f;
+					this.PuzzleCube = this.Yandere.PickUp;
+					this.Yandere.EmptyHands();
+					this.PuzzleCube.enabled = false;
+					this.PuzzleCube.Prompt.Hide();
+					this.PuzzleCube.Prompt.enabled = false;
+					this.PuzzleCube.MyRigidbody.useGravity = false;
+					this.PuzzleCube.MyRigidbody.isKinematic = true;
+					this.PuzzleCube.gameObject.transform.parent = this.RightHand;
+					this.PuzzleCube.gameObject.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+					this.PuzzleCube.gameObject.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+					this.PuzzleCube.gameObject.transform.localPosition = new Vector3(0f, -0.0475f, 0f);
+					this.Pathfinding.canSearch = false;
+					this.Pathfinding.canMove = false;
+					this.SolvingPuzzle = true;
+					this.Distracted = true;
+					this.Routine = false;
 				}
 				else
 				{
@@ -11954,6 +12001,10 @@ public class StudentScript : MonoBehaviour
 	public void AttackReaction()
 	{
 		Debug.Log(this.Name + " is being attacked.");
+		if (this.SolvingPuzzle)
+		{
+			this.DropPuzzle();
+		}
 		if (this.HorudaCollider != null)
 		{
 			this.HorudaCollider.gameObject.SetActive(false);
@@ -14842,6 +14893,26 @@ public class StudentScript : MonoBehaviour
 		}
 	}
 
+	public void AltTeleportToDestination()
+	{
+		if (this.CurrentDestination == null || this.Armband.activeInHierarchy)
+		{
+			this.Phase++;
+		}
+		if (this.Actions[this.Phase] == StudentActionType.Patrol)
+		{
+			this.CurrentDestination = this.StudentManager.Patrols.List[this.StudentID].GetChild(this.PatrolID);
+			this.Pathfinding.target = this.CurrentDestination;
+		}
+		else
+		{
+			this.CurrentDestination = this.Destinations[this.Phase];
+			this.Pathfinding.target = this.Destinations[this.Phase];
+		}
+		Debug.Log(this.Name + " was told to teleport to " + this.CurrentDestination);
+		base.transform.position = this.CurrentDestination.position;
+	}
+
 	public void GoCommitMurder()
 	{
 		this.StudentManager.MurderTakingPlace = true;
@@ -16124,5 +16195,14 @@ public class StudentScript : MonoBehaviour
 		}
 		this.Drumsticks[0].SetActive(false);
 		this.Drumsticks[1].SetActive(false);
+	}
+
+	public void DropPuzzle()
+	{
+		this.PuzzleCube.enabled = true;
+		this.PuzzleCube.Drop();
+		this.SolvingPuzzle = false;
+		this.Distracted = false;
+		this.PuzzleTimer = 0f;
 	}
 }

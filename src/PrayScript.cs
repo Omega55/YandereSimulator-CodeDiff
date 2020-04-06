@@ -64,7 +64,7 @@ public class PrayScript : MonoBehaviour
 			this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, 0.5f);
 		}
 		this.PrayWindow.localScale = Vector3.zero;
-		if (MissionModeGlobals.MissionMode)
+		if (MissionModeGlobals.MissionMode || GameGlobals.AlphabetMode)
 		{
 			this.Disable();
 		}

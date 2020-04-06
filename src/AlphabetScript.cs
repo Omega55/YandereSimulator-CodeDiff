@@ -10,6 +10,10 @@ public class AlphabetScript : MonoBehaviour
 
 	public GameObject SmokeBombBox;
 
+	public GameObject PuzzleCube;
+
+	public GameObject SuperRobot;
+
 	public GameObject SmokeBomb;
 
 	public UILabel ChallengeFailed;
@@ -40,6 +44,8 @@ public class AlphabetScript : MonoBehaviour
 			this.TargetLabel.transform.parent.gameObject.SetActive(true);
 			this.BodyHidingLockers.SetActive(true);
 			this.SmokeBombBox.SetActive(true);
+			this.SuperRobot.SetActive(true);
+			this.PuzzleCube.SetActive(true);
 			ClassGlobals.PhysicalGrade = 5;
 		}
 		else

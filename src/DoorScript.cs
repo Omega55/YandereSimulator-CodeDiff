@@ -389,6 +389,9 @@ public class DoorScript : MonoBehaviour
 			this.Bucket.Prompt.enabled = true;
 			this.Bucket.Full = false;
 			this.Bucket.Fly = true;
+			this.Prompt.HideButton[0] = false;
+			this.Prompt.HideButton[1] = true;
+			this.Prompt.Label[1].text = string.Empty;
 			this.Prompt.enabled = true;
 			this.BucketSet = false;
 		}

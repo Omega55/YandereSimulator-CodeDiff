@@ -41,6 +41,10 @@ public class BodyHidingLockerScript : MonoBehaviour
 				AudioSource.PlayClipAtPoint(this.LockerOpen, this.Prompt.Yandere.MainCamera.transform.position);
 				this.Corpse = this.Prompt.Yandere.CurrentRagdoll;
 				this.Prompt.Yandere.EmptyHands();
+				this.Prompt.Yandere.NearBodies = 0;
+				this.Prompt.Yandere.NearestCorpseID = 0;
+				this.Prompt.Yandere.CorpseWarning = false;
+				this.Prompt.Yandere.StudentManager.UpdateStudents(0);
 				this.Corpse.Student.CharacterAnimation.Play("f02_lockerPose_00");
 				this.Corpse.transform.parent = base.transform;
 				this.Corpse.transform.position = base.transform.position + new Vector3(0f, 0.1f, 0f);

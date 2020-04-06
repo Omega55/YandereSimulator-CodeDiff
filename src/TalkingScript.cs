@@ -191,9 +191,12 @@ public class TalkingScript : MonoBehaviour
 				{
 					this.S.CharacterAnimation.CrossFade(this.S.LookDownAnim);
 					this.S.Subtitle.PersonaSubtitle.UpdateLabel(this.S.Persona, this.S.Reputation.Reputation, 5f);
-					this.CalculateRepBonus();
-					this.S.Reputation.PendingRep += 1f + (float)this.S.RepBonus;
-					this.S.PendingRep += 1f + (float)this.S.RepBonus;
+					if (this.S.Club != ClubType.Delinquent)
+					{
+						this.CalculateRepBonus();
+						this.S.Reputation.PendingRep += 1f + (float)this.S.RepBonus;
+						this.S.PendingRep += 1f + (float)this.S.RepBonus;
+					}
 					this.S.Complimented = true;
 				}
 				else if (Input.GetButtonDown("A"))

@@ -811,6 +811,11 @@ public class StudentManagerScript : MonoBehaviour
 				this.Clock.UpdateClock();
 				this.SkipTo8();
 			}
+			if (GameGlobals.AlphabetMode)
+			{
+				this.Yandere.transform.position = this.Portal.transform.position;
+				this.SkipTo730();
+			}
 			if (!this.TakingPortraits)
 			{
 				while (this.SpawnID < this.NPCsTotal + 1)
@@ -1451,6 +1456,12 @@ public class StudentManagerScript : MonoBehaviour
 										studentScript.Prompt.HideButton[0] = false;
 										studentScript.Prompt.HideButton[2] = true;
 									}
+									else if (this.Yandere.PickUp.PuzzleCube)
+									{
+										studentScript.Prompt.Label[0].text = "     Give Puzzle";
+										studentScript.Prompt.HideButton[0] = false;
+										studentScript.Prompt.HideButton[2] = true;
+									}
 								}
 							}
 							if (this.Yandere.Armed)
@@ -1880,6 +1891,63 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			this.ID++;
 		}
+	}
+
+	public void SkipTo730()
+	{
+		while (this.NPCsSpawned < this.NPCsTotal)
+		{
+			this.SpawnStudent(this.SpawnID);
+			this.SpawnID++;
+		}
+		this.ID = 1;
+		while (this.ID < this.Students.Length)
+		{
+			StudentScript studentScript = this.Students[this.ID];
+			if (studentScript != null && studentScript.Alive && !studentScript.Slave && !studentScript.Tranquil)
+			{
+				if (!studentScript.Started)
+				{
+					studentScript.Start();
+				}
+				if (!studentScript.Teacher)
+				{
+					if (!studentScript.Indoors)
+					{
+						if (studentScript.ShoeRemoval.Locker == null)
+						{
+							studentScript.ShoeRemoval.Start();
+						}
+						studentScript.ShoeRemoval.PutOnShoes();
+					}
+					studentScript.transform.position = studentScript.Seat.position + Vector3.up * 0.01f;
+					studentScript.transform.rotation = studentScript.Seat.rotation;
+					studentScript.Pathfinding.canSearch = true;
+					studentScript.Pathfinding.canMove = true;
+					studentScript.Pathfinding.speed = 1f;
+					studentScript.ClubActivityPhase = 0;
+					studentScript.Distracted = false;
+					studentScript.Spawned = true;
+					studentScript.Routine = true;
+					studentScript.Safe = false;
+					studentScript.SprintAnim = studentScript.OriginalSprintAnim;
+					if (studentScript.ClubAttire)
+					{
+						studentScript.ChangeSchoolwear();
+						studentScript.ClubAttire = true;
+					}
+					studentScript.AltTeleportToDestination();
+					studentScript.AltTeleportToDestination();
+				}
+				else
+				{
+					studentScript.AltTeleportToDestination();
+					studentScript.AltTeleportToDestination();
+				}
+			}
+			this.ID++;
+		}
+		Physics.SyncTransforms();
 	}
 
 	public void ResumeMovement()
@@ -3410,7 +3478,7 @@ public class StudentManagerScript : MonoBehaviour
 		int openedDoors = this.OpenedDoors;
 		while (this.OpenedDoors < openedDoors + 11)
 		{
-			if (this.OpenedDoors < this.Doors.Length && this.Doors[this.OpenedDoors] != null)
+			if (this.OpenedDoors < this.Doors.Length && this.Doors[this.OpenedDoors] != null && this.Doors[this.OpenedDoors].enabled)
 			{
 				this.Doors[this.OpenedDoors].Open = true;
 				this.Doors[this.OpenedDoors].OpenDoor();

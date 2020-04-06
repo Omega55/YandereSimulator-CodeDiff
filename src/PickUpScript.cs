@@ -65,6 +65,8 @@ public class PickUpScript : MonoBehaviour
 
 	public bool Flashlight;
 
+	public bool PuzzleCube;
+
 	public bool Suspicious;
 
 	public bool Blowtorch;
@@ -119,7 +121,10 @@ public class PickUpScript : MonoBehaviour
 		{
 			Physics.IgnoreCollision(this.Yandere.GetComponent<Collider>(), this.MyCollider);
 		}
-		this.OriginalColor = this.Outline[0].color;
+		if (this.Outline.Length > 0)
+		{
+			this.OriginalColor = this.Outline[0].color;
+		}
 		this.OriginalScale = base.transform.localScale;
 		if (this.MyRigidbody == null)
 		{
