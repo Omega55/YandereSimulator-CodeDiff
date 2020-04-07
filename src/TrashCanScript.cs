@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class TrashCanScript : MonoBehaviour
 {
+	public ContainerScript Container;
+
 	public YandereScript Yandere;
 
 	public PromptScript Prompt;
@@ -13,13 +15,22 @@ public class TrashCanScript : MonoBehaviour
 
 	public bool Occupied;
 
+	public bool Wearable;
+
 	public bool Weapon;
 
 	private void Update()
 	{
 		if (!this.Occupied)
 		{
-			if (this.Prompt.Circle[0].fillAmount == 0f)
+			if (this.Prompt.HideButton[0])
+			{
+				if (this.Yandere.Armed)
+				{
+					this.UpdatePrompt();
+				}
+			}
+			else if (this.Prompt.Circle[0].fillAmount == 0f)
 			{
 				this.Prompt.Circle[0].fillAmount = 1f;
 				if (this.Yandere.PickUp != null)
@@ -66,6 +77,22 @@ public class TrashCanScript : MonoBehaviour
 				this.Item.transform.localPosition = new Vector3(0f, 0f, -0.021f);
 				this.Item.transform.localEulerAngles = Vector3.zero;
 			}
+		}
+		if (this.Wearable && this.Prompt.Circle[3].fillAmount == 0f)
+		{
+			this.Prompt.Circle[3].fillAmount = 1f;
+			base.transform.parent = this.Prompt.Yandere.Backpack;
+			base.transform.localPosition = Vector3.zero;
+			base.transform.localEulerAngles = new Vector3(90f, -154f, 0f);
+			this.Prompt.Yandere.Container = this.Container;
+			this.Prompt.Yandere.WeaponMenu.UpdateSprites();
+			this.Prompt.Yandere.ObstacleDetector.gameObject.SetActive(true);
+			this.Prompt.MyCollider.enabled = false;
+			this.Prompt.Hide();
+			this.Prompt.enabled = false;
+			Rigidbody component = base.GetComponent<Rigidbody>();
+			component.isKinematic = true;
+			component.useGravity = false;
 		}
 	}
 

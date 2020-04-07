@@ -17,8 +17,6 @@ public class InventoryScript : MonoBehaviour
 
 	public bool RivalPhone;
 
-	public bool SmokeBomb;
-
 	public bool LockPick;
 
 	public bool Headset;
@@ -28,6 +26,12 @@ public class InventoryScript : MonoBehaviour
 	public bool IDCard;
 
 	public bool Book;
+
+	public bool AmnesiaBomb;
+
+	public bool SmokeBomb;
+
+	public bool StinkBomb;
 
 	public bool LethalPoison;
 

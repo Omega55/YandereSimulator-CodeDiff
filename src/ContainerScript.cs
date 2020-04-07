@@ -59,7 +59,7 @@ public class ContainerScript : MonoBehaviour
 			this.Prompt.Circle[1].fillAmount = 1f;
 			if (this.Prompt.Yandere.Armed)
 			{
-				this.Weapon = this.Prompt.Yandere.EquippedWeapon.gameObject.GetComponent<WeaponScript>();
+				this.Weapon = this.Prompt.Yandere.EquippedWeapon;
 				this.Prompt.Yandere.EmptyHands();
 				this.Weapon.transform.parent = this.WeaponSpot;
 				this.Weapon.transform.localPosition = Vector3.zero;
@@ -146,8 +146,11 @@ public class ContainerScript : MonoBehaviour
 	public void Drop()
 	{
 		base.transform.parent = null;
-		base.transform.position = this.Prompt.Yandere.ObstacleDetector.transform.position + new Vector3(0f, 0.5f, 0f);
-		base.transform.eulerAngles = this.Prompt.Yandere.ObstacleDetector.transform.eulerAngles;
+		if (base.enabled)
+		{
+			base.transform.position = this.Prompt.Yandere.ObstacleDetector.transform.position + new Vector3(0f, 0.5f, 0f);
+			base.transform.eulerAngles = this.Prompt.Yandere.ObstacleDetector.transform.eulerAngles;
+		}
 		this.Prompt.Yandere.Container = null;
 		this.Prompt.MyCollider.enabled = true;
 		this.Prompt.enabled = true;

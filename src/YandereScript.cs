@@ -145,6 +145,8 @@ public class YandereScript : MonoBehaviour
 
 	public GloveScript Gloves;
 
+	public Camera UICamera;
+
 	public UILabel PowerUp;
 
 	public MaskScript Mask;
@@ -1609,7 +1611,7 @@ public class YandereScript : MonoBehaviour
 			{
 				this.NotificationManager.DisplayNotification(NotificationType.Bloody);
 				this.BloodyWarning = true;
-				if (this.Schoolwear > 0)
+				if (this.Schoolwear > 0 && this.ClubAttire)
 				{
 					this.Police.BloodyClothing++;
 					if (this.CurrentUniformOrigin == 1)

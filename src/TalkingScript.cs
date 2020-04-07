@@ -1090,7 +1090,7 @@ public class TalkingScript : MonoBehaviour
 						this.S.CharacterAnimation.CrossFade(this.S.IdleAnim);
 						this.S.Subtitle.UpdateLabel(SubtitleType.RejectFood, 1, 3f);
 					}
-					else if (this.S.Fed || this.S.Club == ClubType.Council)
+					else if (this.S.Fed || this.S.Club == ClubType.Council || this.S.StudentID == 22)
 					{
 						this.S.CharacterAnimation.CrossFade(this.S.GossipAnim);
 						this.S.Subtitle.UpdateLabel(SubtitleType.RejectFood, 0, 3f);
@@ -1154,7 +1154,7 @@ public class TalkingScript : MonoBehaviour
 			}
 			else if (this.S.Interaction == StudentInteractionType.TakingSnack)
 			{
-				Debug.Log("Student is reacting to being offered a snack.");
+				Debug.Log(this.S.Name + " is reacting to being offered a snack.");
 				if (this.S.TalkTimer == 5f)
 				{
 					bool flag = false;
@@ -1168,7 +1168,7 @@ public class TalkingScript : MonoBehaviour
 						this.S.CharacterAnimation.CrossFade(this.S.IdleAnim);
 						this.S.Subtitle.UpdateLabel(SubtitleType.RejectFood, 1, 3f);
 					}
-					else if (this.S.Fed || this.S.Club == ClubType.Council || flag)
+					else if (this.S.Fed || this.S.Club == ClubType.Council || flag || this.S.StudentID == 22)
 					{
 						this.S.CharacterAnimation.CrossFade(this.S.GossipAnim);
 						this.S.Subtitle.UpdateLabel(SubtitleType.RejectFood, 0, 3f);
@@ -1177,7 +1177,7 @@ public class TalkingScript : MonoBehaviour
 						{
 							this.S.Subtitle.UpdateLabel(SubtitleType.RejectFood, 2, 5f);
 						}
-						Debug.Log("Osana is refusing the snack.");
+						Debug.Log(this.S.Name + " has refused the snack.");
 					}
 					else
 					{

@@ -8,7 +8,13 @@ public class AlphabetScript : MonoBehaviour
 
 	public GameObject BodyHidingLockers;
 
+	public GameObject AmnesiaBombBox;
+
 	public GameObject SmokeBombBox;
+
+	public GameObject StinkBombBox;
+
+	public GameObject AmnesiaBomb;
 
 	public GameObject PuzzleCube;
 
@@ -16,13 +22,21 @@ public class AlphabetScript : MonoBehaviour
 
 	public GameObject SmokeBomb;
 
+	public GameObject StinkBomb;
+
+	public GameObject WeaponBag;
+
 	public UILabel ChallengeFailed;
 
 	public UILabel TargetLabel;
 
+	public UILabel BombLabel;
+
 	public Transform LocalArrow;
 
 	public Transform Yandere;
+
+	public int RemainingBombs;
 
 	public int CurrentTarget;
 
@@ -42,14 +56,19 @@ public class AlphabetScript : MonoBehaviour
 				this.StudentManager.JSON.Students[this.IDs[this.CurrentTarget]].Name
 			});
 			this.TargetLabel.transform.parent.gameObject.SetActive(true);
+			this.StudentManager.Yandere.NoDebug = true;
 			this.BodyHidingLockers.SetActive(true);
+			this.AmnesiaBombBox.SetActive(true);
 			this.SmokeBombBox.SetActive(true);
+			this.StinkBombBox.SetActive(true);
 			this.SuperRobot.SetActive(true);
 			this.PuzzleCube.SetActive(true);
+			this.WeaponBag.SetActive(true);
 			ClassGlobals.PhysicalGrade = 5;
 		}
 		else
 		{
+			this.BombLabel.transform.parent.gameObject.SetActive(false);
 			base.gameObject.SetActive(false);
 		}
 	}
@@ -58,10 +77,38 @@ public class AlphabetScript : MonoBehaviour
 	{
 		if (this.CurrentTarget < this.IDs.Length)
 		{
-			if ((Input.GetButtonDown("LS") || Input.GetKeyDown(KeyCode.T)) && this.StudentManager.Yandere.Inventory.SmokeBomb)
+			if (this.StudentManager.Yandere.CanMove && (Input.GetButtonDown("LS") || Input.GetKeyDown(KeyCode.T)))
 			{
-				UnityEngine.Object.Instantiate<GameObject>(this.SmokeBomb, this.Yandere.position, Quaternion.identity);
-				this.StudentManager.Yandere.Inventory.SmokeBomb = false;
+				if (this.StudentManager.Yandere.Inventory.SmokeBomb)
+				{
+					UnityEngine.Object.Instantiate<GameObject>(this.SmokeBomb, this.Yandere.position, Quaternion.identity);
+					this.RemainingBombs--;
+					this.BombLabel.text = string.Empty + this.RemainingBombs;
+					if (this.RemainingBombs == 0)
+					{
+						this.StudentManager.Yandere.Inventory.SmokeBomb = false;
+					}
+				}
+				else if (this.StudentManager.Yandere.Inventory.StinkBomb)
+				{
+					UnityEngine.Object.Instantiate<GameObject>(this.StinkBomb, this.Yandere.position, Quaternion.identity);
+					this.RemainingBombs--;
+					this.BombLabel.text = string.Empty + this.RemainingBombs;
+					if (this.RemainingBombs == 0)
+					{
+						this.StudentManager.Yandere.Inventory.StinkBomb = false;
+					}
+				}
+				else if (this.StudentManager.Yandere.Inventory.AmnesiaBomb)
+				{
+					UnityEngine.Object.Instantiate<GameObject>(this.AmnesiaBomb, this.Yandere.position, Quaternion.identity);
+					this.RemainingBombs--;
+					this.BombLabel.text = string.Empty + this.RemainingBombs;
+					if (this.RemainingBombs == 0)
+					{
+						this.StudentManager.Yandere.Inventory.AmnesiaBomb = false;
+					}
+				}
 			}
 			this.LocalArrow.LookAt(this.StudentManager.Students[this.IDs[this.CurrentTarget]].transform.position);
 			base.transform.eulerAngles = this.LocalArrow.eulerAngles - new Vector3(0f, this.StudentManager.MainCamera.transform.eulerAngles.y, 0f);

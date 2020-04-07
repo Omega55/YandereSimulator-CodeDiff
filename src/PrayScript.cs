@@ -68,7 +68,7 @@ public class PrayScript : MonoBehaviour
 		{
 			this.Disable();
 		}
-		if (GameGlobals.LoveSick)
+		if (GameGlobals.LoveSick || GameGlobals.AlphabetMode)
 		{
 			this.Disable();
 		}

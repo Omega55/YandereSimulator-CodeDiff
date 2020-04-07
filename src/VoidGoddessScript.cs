@@ -55,64 +55,71 @@ public class VoidGoddessScript : MonoBehaviour
 
 	private void Start()
 	{
-		this.Legs[1]["SpiderLegWiggle"].speed = 1f;
-		this.Legs[2]["SpiderLegWiggle"].speed = 0.95f;
-		this.Legs[3]["SpiderLegWiggle"].speed = 0.9f;
-		this.Legs[4]["SpiderLegWiggle"].speed = 0.85f;
-		this.Legs[5]["SpiderLegWiggle"].speed = 0.8f;
-		this.Legs[6]["SpiderLegWiggle"].speed = 0.75f;
-		this.Legs[7]["SpiderLegWiggle"].speed = 0.7f;
-		this.Legs[8]["SpiderLegWiggle"].speed = 0.65f;
-		this.ID = 1;
-		while (this.ID < 101)
+		if (GameGlobals.AlphabetMode)
 		{
-			this.NewPortrait = UnityEngine.Object.Instantiate<GameObject>(this.Portrait, base.transform.position, Quaternion.identity);
-			this.NewPortrait.transform.parent = this.Window;
-			this.NewPortrait.transform.localScale = new Vector3(1f, 1f, 1f);
-			this.NewPortrait.transform.localPosition = new Vector3((float)(-450 + this.Column * 100), (float)(450 - this.Row * 100), 0f);
-			this.Portraits[this.ID] = this.NewPortrait.GetComponent<UITexture>();
-			if (this.ID > 11 && this.ID < 20)
-			{
-				this.NewPortrait.GetComponent<UITexture>().mainTexture = this.Prompt.Yandere.PauseScreen.StudentInfoMenu.RivalPortraits[this.ID];
-			}
-			else if (this.ID < 98)
-			{
-				string url = string.Concat(new string[]
-				{
-					"file:///",
-					Application.streamingAssetsPath,
-					"/Portraits/Student_",
-					this.ID.ToString(),
-					".png"
-				});
-				WWW www = new WWW(url);
-				this.NewPortrait.GetComponent<UITexture>().mainTexture = www.texture;
-			}
-			else if (this.ID == 98)
-			{
-				this.NewPortrait.GetComponent<UITexture>().mainTexture = this.Counselor;
-			}
-			else if (this.ID == 99)
-			{
-				this.NewPortrait.GetComponent<UITexture>().mainTexture = this.Headmaster;
-			}
-			else if (this.ID == 100)
-			{
-				this.NewPortrait.GetComponent<UITexture>().mainTexture = this.Infochan;
-			}
-			this.Column++;
-			if (this.Column == 10)
-			{
-				this.Column = 0;
-				this.Row++;
-			}
-			this.ID++;
+			base.gameObject.SetActive(false);
 		}
-		this.Window.parent.gameObject.SetActive(false);
-		this.Selected = 1;
-		this.Column = 0;
-		this.Row = 0;
-		this.UpdatePortraits();
+		else
+		{
+			this.Legs[1]["SpiderLegWiggle"].speed = 1f;
+			this.Legs[2]["SpiderLegWiggle"].speed = 0.95f;
+			this.Legs[3]["SpiderLegWiggle"].speed = 0.9f;
+			this.Legs[4]["SpiderLegWiggle"].speed = 0.85f;
+			this.Legs[5]["SpiderLegWiggle"].speed = 0.8f;
+			this.Legs[6]["SpiderLegWiggle"].speed = 0.75f;
+			this.Legs[7]["SpiderLegWiggle"].speed = 0.7f;
+			this.Legs[8]["SpiderLegWiggle"].speed = 0.65f;
+			this.ID = 1;
+			while (this.ID < 101)
+			{
+				this.NewPortrait = UnityEngine.Object.Instantiate<GameObject>(this.Portrait, base.transform.position, Quaternion.identity);
+				this.NewPortrait.transform.parent = this.Window;
+				this.NewPortrait.transform.localScale = new Vector3(1f, 1f, 1f);
+				this.NewPortrait.transform.localPosition = new Vector3((float)(-450 + this.Column * 100), (float)(450 - this.Row * 100), 0f);
+				this.Portraits[this.ID] = this.NewPortrait.GetComponent<UITexture>();
+				if (this.ID > 11 && this.ID < 20)
+				{
+					this.NewPortrait.GetComponent<UITexture>().mainTexture = this.Prompt.Yandere.PauseScreen.StudentInfoMenu.RivalPortraits[this.ID];
+				}
+				else if (this.ID < 98)
+				{
+					string url = string.Concat(new string[]
+					{
+						"file:///",
+						Application.streamingAssetsPath,
+						"/Portraits/Student_",
+						this.ID.ToString(),
+						".png"
+					});
+					WWW www = new WWW(url);
+					this.NewPortrait.GetComponent<UITexture>().mainTexture = www.texture;
+				}
+				else if (this.ID == 98)
+				{
+					this.NewPortrait.GetComponent<UITexture>().mainTexture = this.Counselor;
+				}
+				else if (this.ID == 99)
+				{
+					this.NewPortrait.GetComponent<UITexture>().mainTexture = this.Headmaster;
+				}
+				else if (this.ID == 100)
+				{
+					this.NewPortrait.GetComponent<UITexture>().mainTexture = this.Infochan;
+				}
+				this.Column++;
+				if (this.Column == 10)
+				{
+					this.Column = 0;
+					this.Row++;
+				}
+				this.ID++;
+			}
+			this.Window.parent.gameObject.SetActive(false);
+			this.Selected = 1;
+			this.Column = 0;
+			this.Row = 0;
+			this.UpdatePortraits();
+		}
 	}
 
 	private void Update()
