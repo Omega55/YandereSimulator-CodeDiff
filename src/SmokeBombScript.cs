@@ -82,7 +82,7 @@ public class SmokeBombScript : MonoBehaviour
 
 	private void OnTriggerExit(Collider other)
 	{
-		if (!this.Stink && other.gameObject.layer == 9)
+		if (!this.Stink && !this.Amnesia && other.gameObject.layer == 9)
 		{
 			StudentScript component = other.gameObject.GetComponent<StudentScript>();
 			if (component != null)
@@ -95,11 +95,17 @@ public class SmokeBombScript : MonoBehaviour
 
 	private void GoAway(StudentScript Student)
 	{
+		Student.BecomeAlarmed();
 		Student.CurrentDestination = Student.StudentManager.GoAwaySpots.List[Student.StudentID];
 		Student.Pathfinding.target = Student.StudentManager.GoAwaySpots.List[Student.StudentID];
+		Student.Pathfinding.canSearch = true;
+		Student.Pathfinding.canMove = true;
 		Student.CharacterAnimation.CrossFade(Student.SprintAnim);
+		Student.DistanceToDestination = 100f;
 		Student.Pathfinding.speed = 4f;
-		Student.GoAwayTimer = 11f;
+		Student.AmnesiaTimer = 10f;
+		Student.Distracted = true;
+		Student.Alarmed = false;
 		Student.Routine = false;
 		Student.GoAway = true;
 	}

@@ -813,7 +813,7 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			if (GameGlobals.AlphabetMode)
 			{
-				this.Yandere.transform.position = this.Portal.transform.position;
+				this.Yandere.transform.position = this.Portal.transform.position + new Vector3(1f, 0f, 0f);
 				this.SkipTo730();
 			}
 			if (!this.TakingPortraits)

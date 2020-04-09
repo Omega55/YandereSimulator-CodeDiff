@@ -68,8 +68,10 @@ public class AlphabetScript : MonoBehaviour
 		}
 		else
 		{
+			this.TargetLabel.transform.parent.gameObject.SetActive(false);
 			this.BombLabel.transform.parent.gameObject.SetActive(false);
 			base.gameObject.SetActive(false);
+			base.enabled = false;
 		}
 	}
 

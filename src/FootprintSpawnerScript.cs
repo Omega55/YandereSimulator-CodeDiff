@@ -81,7 +81,7 @@ public class FootprintSpawnerScript : MonoBehaviour
 				if (this.Yandere.Running)
 				{
 					component.clip = this.RunFootsteps[UnityEngine.Random.Range(0, this.RunFootsteps.Length)];
-					component.volume = 0.2f;
+					component.volume = 0.15f;
 					component.Play();
 				}
 				else

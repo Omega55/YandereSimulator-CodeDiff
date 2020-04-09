@@ -20,6 +20,8 @@ public class MissionModeScript : MonoBehaviour
 
 	public WoodChipperScript WoodChipper;
 
+	public AlphabetScript AlphabetArrow;
+
 	public ReputationScript Reputation;
 
 	public GrayscaleEffect Grayscale;
@@ -290,6 +292,9 @@ public class MissionModeScript : MonoBehaviour
 		}
 		if (MissionModeGlobals.MissionMode)
 		{
+			this.AlphabetArrow.gameObject.SetActive(true);
+			this.AlphabetArrow.gameObject.GetComponent<Renderer>().material.shader = this.StudentManager.QualityManager.ToonOutline;
+			this.AlphabetArrow.gameObject.GetComponent<Renderer>().material.color = new Color(1f, 1f, 1f, 0f);
 			this.Headmaster.SetActive(false);
 			this.Yandere.HeartRate.MediumColour = new Color(1f, 0.5f, 0.5f, 1f);
 			this.Yandere.HeartRate.NormalColour = new Color(1f, 1f, 1f, 1f);
@@ -668,6 +673,9 @@ public class MissionModeScript : MonoBehaviour
 			}
 			if (!this.TargetDead && this.StudentManager.Students[this.TargetID] != null)
 			{
+				this.AlphabetArrow.LocalArrow.LookAt(this.StudentManager.Students[this.TargetID].transform.position);
+				this.AlphabetArrow.transform.eulerAngles = this.AlphabetArrow.LocalArrow.eulerAngles - new Vector3(0f, this.StudentManager.MainCamera.transform.eulerAngles.y, 0f);
+				this.AlphabetArrow.gameObject.SetActive(true);
 				if (!this.StudentManager.Students[this.TargetID].Alive)
 				{
 					if (this.Yandere.Equipped > 0)
@@ -685,6 +693,7 @@ public class MissionModeScript : MonoBehaviour
 					{
 						this.WeaponDisposed = true;
 					}
+					this.AlphabetArrow.gameObject.SetActive(false);
 					this.TargetDead = true;
 				}
 				if (this.StudentManager.Students[this.TargetID].transform.position.y < -11f)
@@ -970,6 +979,7 @@ public class MissionModeScript : MonoBehaviour
 				this.NotificationManager.DisplayNotification(NotificationType.Complete);
 				this.NotificationManager.DisplayNotification(NotificationType.Exfiltrate);
 				base.GetComponent<AudioSource>().PlayOneShot(this.InfoExfiltrate);
+				this.AlphabetArrow.gameObject.SetActive(true);
 				this.ExitPortal.SetActive(true);
 			}
 			if (this.NoBlood && this.BloodCleaned && this.Police.BloodParent.childCount > 0)
@@ -982,6 +992,11 @@ public class MissionModeScript : MonoBehaviour
 			{
 				base.GetComponent<AudioSource>().PlayOneShot(this.InfoObjective);
 				this.InfoRemark = true;
+			}
+			if (this.ExitPortal.activeInHierarchy)
+			{
+				this.AlphabetArrow.LocalArrow.LookAt(new Vector3(0f, 0f, this.ExitPortal.transform.position.z));
+				this.AlphabetArrow.transform.eulerAngles = this.AlphabetArrow.LocalArrow.transform.eulerAngles - new Vector3(0f, this.StudentManager.MainCamera.transform.eulerAngles.y, 0f);
 			}
 		}
 		else if (this.Phase == 3)

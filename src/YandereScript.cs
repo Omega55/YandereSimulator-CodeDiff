@@ -1323,6 +1323,8 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject ChinaDress;
 
+	public int Corona;
+
 	public NormalBufferView VaporwaveVisuals;
 
 	public Material VaporwaveSkybox;
@@ -2806,6 +2808,14 @@ public class YandereScript : MonoBehaviour
 			}
 			if (this.Egg)
 			{
+				if (this.StudentManager.Ebola && Input.GetKeyDown("v"))
+				{
+					this.Corona++;
+					if (this.Corona >= 10)
+					{
+						this.WuFlu();
+					}
+				}
 				if (this.Eating)
 				{
 					this.FollowHips = false;
@@ -5816,14 +5826,12 @@ public class YandereScript : MonoBehaviour
 									this.CameraFilters.enabled = true;
 									this.EasterEggMenu.SetActive(false);
 								}
-								else if (Input.GetKeyDown(KeyCode.F11))
+								else if (!Input.GetKeyDown(KeyCode.F11))
 								{
-									this.WuFlu();
-									this.EasterEggMenu.SetActive(false);
-								}
-								else if (Input.GetKeyDown(KeyCode.Space))
-								{
-									this.EasterEggMenu.SetActive(false);
+									if (Input.GetKeyDown(KeyCode.Space))
+									{
+										this.EasterEggMenu.SetActive(false);
+									}
 								}
 							}
 						}
@@ -7470,6 +7478,11 @@ public class YandereScript : MonoBehaviour
 
 	private void WuFlu()
 	{
+		this.EbolaHair.SetActive(false);
+		this.EbolaWings.GetComponent<Renderer>().material.color = new Color(0f, 0f, 0f);
+		this.EbolaWings.GetComponent<Renderer>().material.SetColor("_OutlineColor", new Color(0f, 0f, 0f));
+		this.Hairstyle = 195;
+		this.UpdateHair();
 		this.ChinaDress.SetActive(true);
 		this.Nude();
 	}

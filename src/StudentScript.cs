@@ -873,6 +873,8 @@ public class StudentScript : MonoBehaviour
 
 	public float WalkBackTimer;
 
+	public float AmnesiaTimer;
+
 	public float ElectroTimer;
 
 	public float PuzzleTimer;
@@ -6058,7 +6060,6 @@ public class StudentScript : MonoBehaviour
 						}
 						if (this.DistanceToDestination > this.TargetDistance)
 						{
-							Debug.Log(this.Name + " must run to a destination before they can continue their Flee() protocol.");
 							if (!this.Phoneless)
 							{
 								this.CharacterAnimation.CrossFade(this.SprintAnim);
@@ -8768,6 +8769,18 @@ public class StudentScript : MonoBehaviour
 					this.DropPuzzle();
 				}
 			}
+			if (this.GoAway)
+			{
+				this.GoAwayTimer += Time.deltaTime;
+				if (this.GoAwayTimer > 15f)
+				{
+					this.CurrentDestination = this.Destinations[this.Phase];
+					this.Pathfinding.target = this.Destinations[this.Phase];
+					this.GoAwayTimer = 0f;
+					this.GoAway = false;
+					this.Routine = true;
+				}
+			}
 		}
 	}
 
@@ -8919,6 +8932,14 @@ public class StudentScript : MonoBehaviour
 			{
 				flag = false;
 			}
+			if (this.AmnesiaTimer > 0f)
+			{
+				this.AmnesiaTimer = Mathf.MoveTowards(this.AmnesiaTimer, 0f, Time.deltaTime);
+				if (this.AmnesiaTimer == 0f)
+				{
+					this.Distracted = false;
+				}
+			}
 		}
 		if (!flag)
 		{
@@ -8931,7 +8952,10 @@ public class StudentScript : MonoBehaviour
 			{
 				if (this.Police.Corpses > 0)
 				{
-					this.UpdateVisibleCorpses();
+					if (!this.Blind)
+					{
+						this.UpdateVisibleCorpses();
+					}
 					if (this.VisibleCorpses.Count > 0)
 					{
 						if (!this.WitnessedCorpse)
@@ -9300,7 +9324,7 @@ public class StudentScript : MonoBehaviour
 		}
 	}
 
-	private void BecomeAlarmed()
+	public void BecomeAlarmed()
 	{
 		if (this.Yandere.Medusa && this.YandereVisible)
 		{
@@ -9309,7 +9333,6 @@ public class StudentScript : MonoBehaviour
 		}
 		if (!this.Alarmed || this.DiscCheck)
 		{
-			Debug.Log(this.Name + " has become alarmed.");
 			if (this.Persona == PersonaType.PhoneAddict && !this.Phoneless)
 			{
 				this.SmartPhone.SetActive(true);
@@ -9553,7 +9576,6 @@ public class StudentScript : MonoBehaviour
 				}
 				else
 				{
-					Debug.Log(this.Name + " was alarmed by something, but didn't see what it was.");
 					this.Witnessed = StudentWitnessType.None;
 					this.DiscCheck = true;
 					this.Witness = false;
@@ -10413,7 +10435,6 @@ public class StudentScript : MonoBehaviour
 
 	private void UpdateAlarmed()
 	{
-		Debug.Log(this.Name + " is calling UpdateAlarmed()");
 		if (!this.Threatened)
 		{
 			if (this.Yandere.Medusa && this.YandereVisible)
@@ -12520,7 +12541,6 @@ public class StudentScript : MonoBehaviour
 
 	private void ChaseYandere()
 	{
-		Debug.Log("A character has begun to chase Yandere-chan.");
 		this.CurrentDestination = this.Yandere.transform;
 		this.Pathfinding.target = this.Yandere.transform;
 		this.Pathfinding.speed = 5f;
@@ -12538,13 +12558,6 @@ public class StudentScript : MonoBehaviour
 
 	private void PersonaReaction()
 	{
-		Debug.Log(string.Concat(new object[]
-		{
-			this.Name,
-			" has started calling PersonaReaction(). As of now, they are a: ",
-			this.Persona,
-			"."
-		}));
 		if (this.Persona == PersonaType.Sleuth)
 		{
 			if (this.Sleuthing)
@@ -12559,7 +12572,6 @@ public class StudentScript : MonoBehaviour
 		}
 		if (this.Persona == PersonaType.PhoneAddict && this.Phoneless)
 		{
-			Debug.Log(this.Name + " was a phone addict, but they don't have a phone right now, so they are switching to the Loner Persona.");
 			this.Persona = PersonaType.Loner;
 		}
 		if (!this.Indoors && this.WitnessedMurder && this.StudentID != this.StudentManager.RivalID)
@@ -14621,7 +14633,6 @@ public class StudentScript : MonoBehaviour
 
 	public void StopInvestigating()
 	{
-		Debug.Log(this.Name + " was invesigating a giggle, but has stopped.");
 		this.Giggle = null;
 		if (!this.Sleuthing)
 		{
@@ -15897,7 +15908,10 @@ public class StudentScript : MonoBehaviour
 			{
 				this.Witnessed = ((!this.Private) ? StudentWitnessType.Trespassing : StudentWitnessType.Interruption);
 				this.Witness = false;
-				this.RepLoss = 10f;
+				if (!this.Teacher)
+				{
+					this.RepLoss = 10f;
+				}
 				this.Concern++;
 			}
 			else if (this.Yandere.NearSenpai)
@@ -16184,11 +16198,14 @@ public class StudentScript : MonoBehaviour
 		this.StudentManager.UpdateStudents(0);
 		this.CurrentDestination = this.Destinations[this.Phase];
 		this.Pathfinding.target = this.Destinations[this.Phase];
+		this.Pathfinding.canSearch = true;
+		this.Pathfinding.canMove = true;
 		this.Pathfinding.speed = 1f;
 		this.TargetDistance = 1f;
 		this.ReportPhase = 0;
 		this.ReportTimer = 0f;
 		this.AlarmTimer = 0f;
+		this.AmnesiaTimer = 10f;
 		this.RandomAnim = this.BulliedIdleAnim;
 		this.IdleAnim = this.BulliedIdleAnim;
 		this.WalkAnim = this.BulliedWalkAnim;
@@ -16208,7 +16225,7 @@ public class StudentScript : MonoBehaviour
 		this.LostTeacherTrust = true;
 		this.ReportingMurder = false;
 		this.ReportingBlood = false;
-		this.Distracted = false;
+		this.Distracted = true;
 		this.Reacted = false;
 		this.Alarmed = false;
 		this.Fleeing = false;

@@ -107,22 +107,22 @@ public class HallucinationScript : MonoBehaviour
 			{
 				this.Alpha = Mathf.MoveTowards(this.Alpha, 0f, Time.deltaTime * 0.33333f);
 			}
-			this.YandereHairRenderer.material.color = new Color(0f, 0f, 0f, this.Alpha);
-			this.RivalHairRenderer.material.color = new Color(0f, 0f, 0f, this.Alpha);
-			this.YandereRenderer.materials[0].color = new Color(0f, 0f, 0f, this.Alpha);
-			this.YandereRenderer.materials[1].color = new Color(0f, 0f, 0f, this.Alpha);
-			this.YandereRenderer.materials[2].color = new Color(0f, 0f, 0f, this.Alpha);
-			this.RivalRenderer.materials[0].color = new Color(0f, 0f, 0f, this.Alpha);
-			this.RivalRenderer.materials[1].color = new Color(0f, 0f, 0f, this.Alpha);
-			this.RivalRenderer.materials[2].color = new Color(0f, 0f, 0f, this.Alpha);
+			this.YandereHairRenderer.material.SetFloat("_Alpha", this.Alpha);
+			this.RivalHairRenderer.material.SetFloat("_Alpha", this.Alpha);
+			this.YandereRenderer.materials[0].SetFloat("_Alpha", this.Alpha);
+			this.YandereRenderer.materials[1].SetFloat("_Alpha", this.Alpha);
+			this.YandereRenderer.materials[2].SetFloat("_Alpha", this.Alpha);
+			this.RivalRenderer.materials[0].SetFloat("_Alpha", this.Alpha);
+			this.RivalRenderer.materials[1].SetFloat("_Alpha", this.Alpha);
+			this.RivalRenderer.materials[2].SetFloat("_Alpha", this.Alpha);
 			foreach (Renderer renderer in this.WeaponRenderers)
 			{
 				if (renderer != null)
 				{
-					renderer.material.color = new Color(0f, 0f, 0f, this.Alpha);
+					renderer.material.SetFloat("_Alpha", this.Alpha);
 				}
 			}
-			this.SawRenderer.material.color = new Color(0f, 0f, 0f, this.Alpha);
+			this.SawRenderer.material.SetFloat("_Alpha", this.Alpha);
 			if (this.YandereAnimation["f02_" + this.WeaponName[this.Weapon] + "LowSanityA_00"].time == this.YandereAnimation["f02_" + this.WeaponName[this.Weapon] + "LowSanityA_00"].length || this.Yandere.Aiming)
 			{
 				this.MakeTransparent();
@@ -134,21 +134,21 @@ public class HallucinationScript : MonoBehaviour
 	private void MakeTransparent()
 	{
 		this.Alpha = 0f;
-		this.YandereHairRenderer.material.color = new Color(0f, 0f, 0f, this.Alpha);
-		this.RivalHairRenderer.material.color = new Color(0f, 0f, 0f, this.Alpha);
-		this.YandereRenderer.materials[0].color = new Color(0f, 0f, 0f, this.Alpha);
-		this.YandereRenderer.materials[1].color = new Color(0f, 0f, 0f, this.Alpha);
-		this.YandereRenderer.materials[2].color = new Color(0f, 0f, 0f, this.Alpha);
-		this.RivalRenderer.materials[0].color = new Color(0f, 0f, 0f, this.Alpha);
-		this.RivalRenderer.materials[1].color = new Color(0f, 0f, 0f, this.Alpha);
-		this.RivalRenderer.materials[2].color = new Color(0f, 0f, 0f, this.Alpha);
+		this.YandereHairRenderer.material.SetFloat("_Alpha", this.Alpha);
+		this.RivalHairRenderer.material.SetFloat("_Alpha", this.Alpha);
+		this.YandereRenderer.materials[0].SetFloat("_Alpha", this.Alpha);
+		this.YandereRenderer.materials[1].SetFloat("_Alpha", this.Alpha);
+		this.YandereRenderer.materials[2].SetFloat("_Alpha", this.Alpha);
+		this.RivalRenderer.materials[0].SetFloat("_Alpha", this.Alpha);
+		this.RivalRenderer.materials[1].SetFloat("_Alpha", this.Alpha);
+		this.RivalRenderer.materials[2].SetFloat("_Alpha", this.Alpha);
 		foreach (Renderer renderer in this.WeaponRenderers)
 		{
 			if (renderer != null)
 			{
-				renderer.material.color = new Color(0f, 0f, 0f, this.Alpha);
+				renderer.material.SetFloat("_Alpha", this.Alpha);
 			}
 		}
-		this.SawRenderer.material.color = new Color(0f, 0f, 0f, this.Alpha);
+		this.SawRenderer.material.SetFloat("_Alpha", this.Alpha);
 	}
 }

@@ -89,7 +89,7 @@ public class DebugMenuScript : MonoBehaviour
 		base.transform.localPosition = new Vector3(base.transform.localPosition.x, 0f, base.transform.localPosition.z);
 		this.MissionModeWindow.SetActive(false);
 		this.Window.SetActive(false);
-		if (MissionModeGlobals.MissionMode)
+		if (MissionModeGlobals.MissionMode || GameGlobals.AlphabetMode)
 		{
 			this.MissionMode = true;
 		}
