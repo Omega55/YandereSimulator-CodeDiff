@@ -193,6 +193,7 @@ public class ClassScript : MonoBehaviour
 							}
 							else if (!this.Portal.FadeOut)
 							{
+								this.Portal.Yandere.PhysicalGrade = ClassGlobals.PhysicalGrade;
 								this.PromptBar.Show = false;
 								this.Portal.Proceed = true;
 								base.gameObject.SetActive(false);

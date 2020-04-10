@@ -37,7 +37,7 @@ public class GiggleScript : MonoBehaviour
 			this.Student = other.gameObject.GetComponent<StudentScript>();
 			if (this.Student != null && this.Student.Giggle == null)
 			{
-				if (this.Student.StudentManager.LockerRoomArea.bounds.Contains(base.transform.position) || this.Student.StudentManager.WestBathroomArea.bounds.Contains(base.transform.position) || this.Student.StudentManager.EastBathroomArea.bounds.Contains(base.transform.position) || this.Student.StudentManager.IncineratorArea.bounds.Contains(base.transform.position) || this.Student.StudentManager.HeadmasterArea.bounds.Contains(base.transform.position))
+				if (this.Student.StudentManager.LockerRoomArea.bounds.Contains(base.transform.position) || this.Student.StudentManager.WestBathroomArea.bounds.Contains(base.transform.position) || this.Student.StudentManager.EastBathroomArea.bounds.Contains(base.transform.position) || (this.Student.Club != ClubType.Delinquent && this.Student.StudentManager.IncineratorArea.bounds.Contains(base.transform.position)) || this.Student.StudentManager.HeadmasterArea.bounds.Contains(base.transform.position))
 				{
 					this.Student.Yandere.NotificationManager.CustomText = this.Student.Name + " ignored a giggle.";
 					this.Student.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);

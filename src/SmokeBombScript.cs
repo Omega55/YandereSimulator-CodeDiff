@@ -45,7 +45,7 @@ public class SmokeBombScript : MonoBehaviour
 				}
 				else
 				{
-					if (this.Amnesia)
+					if (this.Amnesia && !component.Chasing)
 					{
 						component.ReturnToNormal();
 					}
@@ -73,7 +73,7 @@ public class SmokeBombScript : MonoBehaviour
 		else if (this.Amnesia && other.gameObject.layer == 9)
 		{
 			StudentScript component2 = other.gameObject.GetComponent<StudentScript>();
-			if (component2 != null && component2.Alarmed)
+			if (component2 != null && component2.Alarmed && !component2.Chasing)
 			{
 				component2.ReturnToNormal();
 			}
@@ -95,18 +95,21 @@ public class SmokeBombScript : MonoBehaviour
 
 	private void GoAway(StudentScript Student)
 	{
-		Student.BecomeAlarmed();
-		Student.CurrentDestination = Student.StudentManager.GoAwaySpots.List[Student.StudentID];
-		Student.Pathfinding.target = Student.StudentManager.GoAwaySpots.List[Student.StudentID];
-		Student.Pathfinding.canSearch = true;
-		Student.Pathfinding.canMove = true;
-		Student.CharacterAnimation.CrossFade(Student.SprintAnim);
-		Student.DistanceToDestination = 100f;
-		Student.Pathfinding.speed = 4f;
-		Student.AmnesiaTimer = 10f;
-		Student.Distracted = true;
-		Student.Alarmed = false;
-		Student.Routine = false;
-		Student.GoAway = true;
+		if (!Student.Chasing)
+		{
+			Student.BecomeAlarmed();
+			Student.CurrentDestination = Student.StudentManager.GoAwaySpots.List[Student.StudentID];
+			Student.Pathfinding.target = Student.StudentManager.GoAwaySpots.List[Student.StudentID];
+			Student.Pathfinding.canSearch = true;
+			Student.Pathfinding.canMove = true;
+			Student.CharacterAnimation.CrossFade(Student.SprintAnim);
+			Student.DistanceToDestination = 100f;
+			Student.Pathfinding.speed = 4f;
+			Student.AmnesiaTimer = 10f;
+			Student.Distracted = true;
+			Student.Alarmed = false;
+			Student.Routine = false;
+			Student.GoAway = true;
+		}
 	}
 }

@@ -7128,7 +7128,6 @@ public class StudentScript : MonoBehaviour
 								{
 									this.Phase++;
 								}
-								Debug.Log(this.Name + " has finished bathing. Returning to normal routine.");
 								this.CurrentDestination = this.Destinations[this.Phase];
 								this.Pathfinding.target = this.Destinations[this.Phase];
 								this.Pathfinding.canSearch = true;
@@ -8066,6 +8065,11 @@ public class StudentScript : MonoBehaviour
 					ScheduleBlock scheduleBlock16 = this.ScheduleBlocks[2];
 					scheduleBlock16.destination = "Hangout";
 					scheduleBlock16.action = "Hangout";
+					if (this.Club == ClubType.Cooking)
+					{
+						scheduleBlock16.destination = "Club";
+						scheduleBlock16.action = "Club";
+					}
 					ScheduleBlock scheduleBlock17 = this.ScheduleBlocks[4];
 					scheduleBlock17.destination = "LunchSpot";
 					scheduleBlock17.action = "Eat";
@@ -8076,6 +8080,7 @@ public class StudentScript : MonoBehaviour
 					Array.Copy(this.OriginalActions, this.Actions, this.OriginalActions.Length);
 					this.CurrentDestination = this.Destinations[this.Phase];
 					this.Pathfinding.target = this.Destinations[this.Phase];
+					this.CurrentAction = this.Actions[this.Phase];
 					this.DistanceToDestination = 100f;
 					this.LewdPhotos = this.StudentManager.CommunalLocker.RivalPhone.LewdPhotos;
 					this.EndSearch = false;
@@ -8960,7 +8965,6 @@ public class StudentScript : MonoBehaviour
 					{
 						if (!this.WitnessedCorpse)
 						{
-							Debug.Log(this.Name + " discovered a corpse.");
 							this.SawCorpseThisFrame = true;
 							if (this.Club == ClubType.Delinquent && this.Corpse.Student.Club == ClubType.Bully)
 							{
@@ -14836,11 +14840,9 @@ public class StudentScript : MonoBehaviour
 		ScheduleBlock scheduleBlock = this.ScheduleBlocks[2];
 		scheduleBlock.destination = "Search Patrol";
 		scheduleBlock.action = "Search Patrol";
-		this.GetDestinations();
 		ScheduleBlock scheduleBlock2 = this.ScheduleBlocks[4];
 		scheduleBlock2.destination = "Search Patrol";
 		scheduleBlock2.action = "Search Patrol";
-		this.GetDestinations();
 		ScheduleBlock scheduleBlock3 = this.ScheduleBlocks[7];
 		scheduleBlock3.destination = "Search Patrol";
 		scheduleBlock3.action = "Search Patrol";
@@ -15308,7 +15310,6 @@ public class StudentScript : MonoBehaviour
 
 	private void EndAlarm()
 	{
-		Debug.Log(this.Name + " has stopped being alarmed.");
 		if (this.ReturnToRoutineAfter)
 		{
 			this.CurrentDestination = this.Destinations[this.Phase];

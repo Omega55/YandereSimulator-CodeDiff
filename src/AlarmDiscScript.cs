@@ -250,14 +250,12 @@ public class AlarmDiscScript : MonoBehaviour
 
 	private void InvestigateScream()
 	{
-		Debug.Log(this.Student.Name + " just heard a scream.");
 		if (this.Student.Clock.Period == 3 && this.Student.BusyAtLunch)
 		{
 			this.StudentIsBusy = true;
 		}
 		if (!this.Student.YandereVisible && !this.Student.Alarmed && !this.Student.Distracted && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.Student.InEvent && !this.Student.Following && !this.Student.Confessing && !this.Student.Meeting && !this.Student.TurnOffRadio && !this.Student.Fleeing && !this.Student.Distracting && !this.Student.GoAway && !this.Student.FocusOnYandere && !this.StudentIsBusy && this.Student.Actions[this.Student.Phase] != StudentActionType.Teaching && this.Student.Actions[this.Student.Phase] != StudentActionType.SitAndTakeNotes && this.Student.Actions[this.Student.Phase] != StudentActionType.Graffiti && this.Student.Actions[this.Student.Phase] != StudentActionType.Bully && !this.Student.Headache)
 		{
-			Debug.Log(this.Student.Name + " should be going to investigate that scream now.");
 			this.Student.Character.GetComponent<Animation>().CrossFade(this.Student.IdleAnim);
 			GameObject giggle = UnityEngine.Object.Instantiate<GameObject>(this.Student.EmptyGameObject, new Vector3(base.transform.position.x, this.Student.transform.position.y, base.transform.position.z), Quaternion.identity);
 			this.Student.Giggle = giggle;
@@ -278,7 +276,6 @@ public class AlarmDiscScript : MonoBehaviour
 				this.Student.StopPairing();
 				this.Student.EmptyHands();
 				this.Student.HeardScream = true;
-				Debug.Log(this.Student.Name + "'s ''DiskCheck'' was just set to ''true''.");
 			}
 		}
 	}

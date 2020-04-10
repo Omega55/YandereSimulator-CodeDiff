@@ -68,6 +68,10 @@ public class RPG_Camera : MonoBehaviour
 
 	private bool constraint;
 
+	public bool invertAxis;
+
+	public float sensitivity;
+
 	private static float halfFieldOfView;
 
 	private static float planeAspect;
@@ -85,6 +89,8 @@ public class RPG_Camera : MonoBehaviour
 	{
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
+		this.invertAxis = OptionGlobals.InvertAxis;
+		this.sensitivity = (float)OptionGlobals.Sensitivity;
 		RPG_Camera.MainCamera = base.GetComponent<Camera>();
 		this.distance = Mathf.Clamp(this.distance, 0.05f, this.distanceMax);
 		this.desiredDistance = this.distance;
@@ -146,36 +152,36 @@ public class RPG_Camera : MonoBehaviour
 			this.camBottom = Physics.Linecast(base.transform.position, base.transform.position - Vector3.up * this.camBottomDistance);
 		}
 		bool flag = this.camBottom && base.transform.position.y - this.cameraPivot.transform.position.y <= 0f;
-		this.mouseX += Input.GetAxis("Mouse X") * this.mouseSpeed * (Time.deltaTime / Mathf.Clamp(Time.timeScale, 1E-10f, 1E+10f)) * (float)OptionGlobals.Sensitivity * 10f;
+		this.mouseX += Input.GetAxis("Mouse X") * this.mouseSpeed * (Time.deltaTime / Mathf.Clamp(Time.timeScale, 1E-10f, 1E+10f)) * this.sensitivity * 10f;
 		if (flag)
 		{
 			if (Input.GetAxis("Mouse Y") < 0f)
 			{
-				if (!OptionGlobals.InvertAxis)
+				if (!this.invertAxis)
 				{
-					this.mouseY -= Input.GetAxis("Mouse Y") * this.mouseSpeed * (Time.deltaTime / Mathf.Clamp(Time.timeScale, 1E-10f, 1E+10f)) * (float)OptionGlobals.Sensitivity * 10f;
+					this.mouseY -= Input.GetAxis("Mouse Y") * this.mouseSpeed * (Time.deltaTime / Mathf.Clamp(Time.timeScale, 1E-10f, 1E+10f)) * this.sensitivity * 10f;
 				}
 				else
 				{
-					this.mouseY += Input.GetAxis("Mouse Y") * this.mouseSpeed * (Time.deltaTime / Mathf.Clamp(Time.timeScale, 1E-10f, 1E+10f)) * (float)OptionGlobals.Sensitivity * 10f;
+					this.mouseY += Input.GetAxis("Mouse Y") * this.mouseSpeed * (Time.deltaTime / Mathf.Clamp(Time.timeScale, 1E-10f, 1E+10f)) * this.sensitivity * 10f;
 				}
 			}
-			else if (!OptionGlobals.InvertAxis)
+			else if (!this.invertAxis)
 			{
-				this.mouseY -= Input.GetAxis("Mouse Y") * this.mouseSpeed * (Time.deltaTime / Mathf.Clamp(Time.timeScale, 1E-10f, 1E+10f)) * (float)OptionGlobals.Sensitivity * 10f;
+				this.mouseY -= Input.GetAxis("Mouse Y") * this.mouseSpeed * (Time.deltaTime / Mathf.Clamp(Time.timeScale, 1E-10f, 1E+10f)) * this.sensitivity * 10f;
 			}
 			else
 			{
-				this.mouseY += Input.GetAxis("Mouse Y") * this.mouseSpeed * (Time.deltaTime / Mathf.Clamp(Time.timeScale, 1E-10f, 1E+10f)) * (float)OptionGlobals.Sensitivity * 10f;
+				this.mouseY += Input.GetAxis("Mouse Y") * this.mouseSpeed * (Time.deltaTime / Mathf.Clamp(Time.timeScale, 1E-10f, 1E+10f)) * this.sensitivity * 10f;
 			}
 		}
-		else if (!OptionGlobals.InvertAxis)
+		else if (!this.invertAxis)
 		{
-			this.mouseY -= Input.GetAxis("Mouse Y") * this.mouseSpeed * (Time.deltaTime / Mathf.Clamp(Time.timeScale, 1E-10f, 1E+10f)) * (float)OptionGlobals.Sensitivity * 10f;
+			this.mouseY -= Input.GetAxis("Mouse Y") * this.mouseSpeed * (Time.deltaTime / Mathf.Clamp(Time.timeScale, 1E-10f, 1E+10f)) * this.sensitivity * 10f;
 		}
 		else
 		{
-			this.mouseY += Input.GetAxis("Mouse Y") * this.mouseSpeed * (Time.deltaTime / Mathf.Clamp(Time.timeScale, 1E-10f, 1E+10f)) * (float)OptionGlobals.Sensitivity * 10f;
+			this.mouseY += Input.GetAxis("Mouse Y") * this.mouseSpeed * (Time.deltaTime / Mathf.Clamp(Time.timeScale, 1E-10f, 1E+10f)) * this.sensitivity * 10f;
 		}
 		this.mouseY = this.ClampAngle(this.mouseY, -89.5f, 89.5f);
 		this.mouseXSmooth = Mathf.SmoothDamp(this.mouseXSmooth, this.mouseX, ref this.mouseXVel, this.mouseSmoothingFactor);

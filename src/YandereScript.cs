@@ -65,6 +65,8 @@ public class YandereScript : MonoBehaviour
 
 	public YandereShowerScript YandereShower;
 
+	public PromptParentScript PromptParent;
+
 	public SplashCameraScript SplashCamera;
 
 	public SWP_HeartRateMonitor HeartRate;
@@ -429,6 +431,8 @@ public class YandereScript : MonoBehaviour
 
 	public int StrugglePhase;
 
+	public int PhysicalGrade;
+
 	public int CarryAnimID;
 
 	public int AttackPhase;
@@ -442,6 +446,8 @@ public class YandereScript : MonoBehaviour
 	public int PoisonType;
 
 	public int Schoolwear;
+
+	public int SpeedBonus;
 
 	public int SprayPhase;
 
@@ -1323,8 +1329,6 @@ public class YandereScript : MonoBehaviour
 
 	public GameObject ChinaDress;
 
-	public int Corona;
-
 	public NormalBufferView VaporwaveVisuals;
 
 	public Material VaporwaveSkybox;
@@ -1393,6 +1397,8 @@ public class YandereScript : MonoBehaviour
 
 	private void Start()
 	{
+		this.PhysicalGrade = ClassGlobals.PhysicalGrade;
+		this.SpeedBonus = PlayerGlobals.SpeedBonus;
 		this.SanitySmudges.color = new Color(1f, 1f, 1f, 0f);
 		this.SpiderLegs.SetActive(GameGlobals.EmptyDemon);
 		this.MyRenderer.materials[2].SetFloat("_BlendAmount1", 0f);
@@ -2029,12 +2035,12 @@ public class YandereScript : MonoBehaviour
 						if (this.Stance.Current == StanceType.Crouching)
 						{
 							this.CharacterAnimation.CrossFade(this.CrouchRunAnim);
-							this.MyController.Move(base.transform.forward * (this.CrouchRunSpeed + (float)(ClassGlobals.PhysicalGrade + PlayerGlobals.SpeedBonus) * 0.25f) * Time.deltaTime);
+							this.MyController.Move(base.transform.forward * (this.CrouchRunSpeed + (float)(this.PhysicalGrade + this.SpeedBonus) * 0.25f) * Time.deltaTime);
 						}
 						else if (!this.Dragging && !this.Mopping)
 						{
 							this.CharacterAnimation.CrossFade(this.RunAnim);
-							this.MyController.Move(base.transform.forward * (this.RunSpeed + (float)(ClassGlobals.PhysicalGrade + PlayerGlobals.SpeedBonus) * 0.25f) * Time.deltaTime);
+							this.MyController.Move(base.transform.forward * (this.RunSpeed + (float)(this.PhysicalGrade + this.SpeedBonus) * 0.25f) * Time.deltaTime);
 						}
 						else if (this.Mopping)
 						{
@@ -2156,7 +2162,7 @@ public class YandereScript : MonoBehaviour
 				{
 					this.CharacterAnimation.CrossFade(this.IdleAnim);
 				}
-				if (!OptionGlobals.InvertAxis)
+				if (!this.RPGCamera.invertAxis)
 				{
 					this.Bend += Input.GetAxis("Mouse Y") * 8f;
 				}
@@ -2808,14 +2814,6 @@ public class YandereScript : MonoBehaviour
 			}
 			if (this.Egg)
 			{
-				if (this.StudentManager.Ebola && Input.GetKeyDown("v"))
-				{
-					this.Corona++;
-					if (this.Corona >= 10)
-					{
-						this.WuFlu();
-					}
-				}
 				if (this.Eating)
 				{
 					this.FollowHips = false;
@@ -7476,15 +7474,16 @@ public class YandereScript : MonoBehaviour
 		this.DebugMenu.transform.parent.GetComponent<DebugMenuScript>().UpdateCensor();
 	}
 
-	private void WuFlu()
+	public void WearChinaDress()
 	{
 		this.EbolaHair.SetActive(false);
 		this.EbolaWings.GetComponent<Renderer>().material.color = new Color(0f, 0f, 0f);
 		this.EbolaWings.GetComponent<Renderer>().material.SetColor("_OutlineColor", new Color(0f, 0f, 0f));
-		this.Hairstyle = 195;
+		this.Hairstyle = 1;
 		this.UpdateHair();
 		this.ChinaDress.SetActive(true);
 		this.Nude();
+		this.PantyAttacher.newRenderer.enabled = true;
 	}
 
 	private void Vaporwave()

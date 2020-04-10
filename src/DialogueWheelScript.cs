@@ -554,10 +554,6 @@ public class DialogueWheelScript : MonoBehaviour
 							this.Yandere.TalkTimer = 3f;
 							this.Show = false;
 						}
-						else
-						{
-							this.Matchmaking = true;
-						}
 					}
 					else if (this.Selected == 6)
 					{

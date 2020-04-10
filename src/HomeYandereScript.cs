@@ -282,7 +282,7 @@ public class HomeYandereScript : MonoBehaviour
 			this.HairR.localScale = new Vector3(0.0001f, 0.0001f, 0.0001f);
 			this.HairL.localScale = new Vector3(0.0001f, 0.0001f, 0.0001f);
 		}
-		if (this.Letter.Length > 0 && Input.GetKeyDown(this.Letter[this.AlphabetID]))
+		if (Input.GetKeyDown(this.Letter[this.AlphabetID]))
 		{
 			this.AlphabetID++;
 			if (this.AlphabetID == this.Letter.Length)

@@ -135,10 +135,10 @@ public class PromptScript : MonoBehaviour
 		}
 		if (this.Yandere != null)
 		{
-			this.PauseScreen = GameObject.Find("PauseScreen").GetComponent<PauseScreenScript>();
-			this.PromptParent = GameObject.Find("PromptParent").GetComponent<PromptParentScript>();
-			this.UICamera = GameObject.Find("UI Camera").GetComponent<Camera>();
-			this.MainCamera = Camera.main;
+			this.PauseScreen = this.Yandere.PauseScreen;
+			this.PromptParent = this.Yandere.PromptParent;
+			this.UICamera = this.Yandere.UICamera;
+			this.MainCamera = this.Yandere.MainCamera;
 			if (this.Noisy)
 			{
 				this.Speaker = UnityEngine.Object.Instantiate<GameObject>(this.SpeakerObject, base.transform.position, Quaternion.identity).GetComponent<UISprite>();

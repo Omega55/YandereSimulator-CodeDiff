@@ -243,6 +243,7 @@ public class SettingsScript : MonoBehaviour
 			{
 				OptionGlobals.Sensitivity--;
 			}
+			this.PauseScreen.RPGCamera.sensitivity = (float)OptionGlobals.Sensitivity;
 			this.UpdateText();
 		}
 		else if (this.Selected == 13)
@@ -250,6 +251,7 @@ public class SettingsScript : MonoBehaviour
 			if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
 			{
 				OptionGlobals.InvertAxis = !OptionGlobals.InvertAxis;
+				this.PauseScreen.RPGCamera.invertAxis = OptionGlobals.InvertAxis;
 				this.UpdateText();
 			}
 			this.UpdateText();

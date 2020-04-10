@@ -261,6 +261,10 @@ public class DatingMinigameScript : MonoBehaviour
 			this.Prompt.Circle[0].fillAmount = 1f;
 			if (!this.Yandere.Chased && this.Yandere.Chasers == 0 && !this.Rival.Hunted)
 			{
+				this.Suitor.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
+				this.Rival.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
+				this.Suitor.CharacterAnimation.enabled = true;
+				this.Rival.CharacterAnimation.enabled = true;
 				this.Suitor.enabled = false;
 				this.Rival.enabled = false;
 				this.Rival.CharacterAnimation["f02_smile_00"].layer = 1;
@@ -726,6 +730,7 @@ public class DatingMinigameScript : MonoBehaviour
 			{
 				if (this.Panel.alpha == 0f)
 				{
+					this.Suitor.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
 					this.LoveManager.RivalWaiting = false;
 					this.LoveManager.Courted = true;
 					this.Suitor.enabled = true;
